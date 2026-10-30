@@ -2814,10 +2814,94 @@ export const COMMAND_INDEX = {
     result: "draw.content.add.result",
     examples: [
       {
-        content: {},
+        elementId: "scene:#1/element:\"Bob\"",
+        frame: 1,
+        content: {
+          nodes: [
+            {
+              type: "layer",
+              id: "l_1",
+              layerKind: "pencil",
+              strokes: [
+                {
+                  id: "s_1",
+                  kind: "pencil",
+                  closed: false,
+                  bezier: [
+                    {
+                      x: 0,
+                      y: 0,
+                    },
+                    {
+                      x: 10,
+                      y: 5,
+                    },
+                    {
+                      x: 20,
+                      y: 5,
+                    },
+                    {
+                      x: 30,
+                      y: 0,
+                    },
+                  ],
+                  colourId: null,
+                  lineStyle: {
+                    thickness: 2,
+                    lineType: "solid",
+                  },
+                },
+              ],
+            },
+            {
+              type: "text",
+              id: "t_1",
+              text: "Hi",
+              transform: [
+                1,
+                0,
+                0,
+                1,
+                -50,
+                120,
+              ],
+              widthMode: "auto",
+              width: null,
+              runs: [
+                {
+                  start: 0,
+                  length: 2,
+                  font: "sans-serif",
+                  size: 36,
+                  bold: false,
+                  italic: false,
+                  baseline: "normal",
+                  kerning: 0,
+                  autoKern: true,
+                  colourId: null,
+                  outlineColourId: null,
+                },
+              ],
+              paragraphs: [
+                {
+                  start: 0,
+                  length: 2,
+                  align: "left",
+                  leftMargin: 0,
+                  rightMargin: 0,
+                  indent: 0,
+                  lineSpacing: 0,
+                },
+              ],
+            },
+          ],
+        },
+        offset: {
+          x: 10,
+          y: -10,
+        },
       },
     ],
-    milestone: "M2 C2.3",
   },
   "draw.current.get": {
     kind: "query",
@@ -2826,7 +2910,6 @@ export const COMMAND_INDEX = {
     examples: [
       {},
     ],
-    milestone: "M2 C2.3",
   },
   "draw.cut.apply": {
     kind: "action",
@@ -2852,9 +2935,19 @@ export const COMMAND_INDEX = {
     params: "draw.drawing.get.params",
     result: "draw.drawing.get.result",
     examples: [
-      {},
+      {
+        elementId: "scene:#1/element:\"Bob\"",
+        frame: 1,
+      },
+      {
+        drawingId: "drawingBank:#1/drawing:#1",
+        flatten: true,
+        include: [
+          "pressure",
+          "bounds",
+        ],
+      },
     ],
-    milestone: "M2 C2.3",
   },
   "draw.drawing.rename": {
     kind: "action",
@@ -2950,18 +3043,27 @@ export const COMMAND_INDEX = {
     params: "draw.group.create.params",
     result: "draw.group.create.result",
     examples: [
-      {},
+      {
+        drawingId: "drawingBank:#1/drawing:#1",
+        ids: [
+          "nd_01K742SG0TX3WF1BSWWGMWM5WG",
+          "nd_01K742SG0WFAQJFKAZKV4CD56C",
+        ],
+      },
     ],
-    milestone: "M2 C2.3",
   },
   "draw.group.delete": {
     kind: "action",
     params: "draw.group.delete.params",
     result: "draw.group.delete.result",
     examples: [
-      {},
+      {
+        drawingId: "drawingBank:#1/drawing:#1",
+        groupIds: [
+          "nd_01K742SG0TX3WF1BSWWGMWM5WG",
+        ],
+      },
     ],
-    milestone: "M2 C2.3",
   },
   "draw.hitTest.get": {
     kind: "query",
@@ -3027,9 +3129,14 @@ export const COMMAND_INDEX = {
     params: "draw.object.delete.params",
     result: "draw.object.delete.result",
     examples: [
-      {},
+      {
+        elementId: "scene:#1/element:\"Bob\"",
+        frame: 1,
+        ids: [
+          "st_01K742SG0S0NT23BWCZN64SFQ5",
+        ],
+      },
     ],
-    milestone: "M2 C2.3",
   },
   "draw.optimize.apply": {
     kind: "action",
@@ -3046,13 +3153,14 @@ export const COMMAND_INDEX = {
     result: "draw.pivot.set.result",
     examples: [
       {
+        elementId: "scene:#1/element:\"Bob\"",
+        frame: 1,
         point: {
-          x: 1,
-          y: 1,
+          x: 0,
+          y: -120,
         },
       },
     ],
-    milestone: "M2 C2.3",
   },
   "draw.point.add": {
     kind: "action",
@@ -3216,9 +3324,75 @@ export const COMMAND_INDEX = {
     params: "draw.stroke.add.params",
     result: "draw.stroke.add.result",
     examples: [
-      {},
+      {
+        elementId: "scene:#1/element:\"Bob\"",
+        frame: 1,
+        kind: "brush",
+        points: [
+          {
+            x: 0,
+            y: 0,
+            pressure: 0.2,
+          },
+          {
+            x: 20,
+            y: 8,
+            pressure: 0.6,
+          },
+          {
+            x: 40,
+            y: 10,
+            pressure: 1,
+          },
+          {
+            x: 60,
+            y: 4,
+            pressure: 0.5,
+          },
+        ],
+      },
+      {
+        elementId: "scene:#1/element:\"Bob\"",
+        frame: 1,
+        kind: "pencil",
+        bezier: [
+          {
+            x: -50,
+            y: 0,
+          },
+          {
+            x: -20,
+            y: 30,
+          },
+          {
+            x: 20,
+            y: 30,
+          },
+          {
+            x: 50,
+            y: 0,
+          },
+        ],
+        thickness: 3,
+        layer: "new",
+      },
+      {
+        elementId: "scene:#1/element:\"Bob\"",
+        frame: 1,
+        kind: "invisible",
+        points: [
+          {
+            x: 0,
+            y: 0,
+          },
+          {
+            x: 0,
+            y: 100,
+          },
+        ],
+        fit: false,
+      },
     ],
-    milestone: "M2 C2.3",
   },
   "draw.stroke.set": {
     kind: "action",
@@ -3226,10 +3400,11 @@ export const COMMAND_INDEX = {
     result: "draw.stroke.set.result",
     examples: [
       {
-        strokeId: "scene:#1",
+        drawingId: "drawingBank:#1/drawing:#1",
+        strokeId: "st_01K742SG0R61SYK9GG0HGYVNBT",
+        thickness: 4,
       },
     ],
-    milestone: "M2 C2.3",
   },
   "draw.text.add": {
     kind: "action",
@@ -3237,14 +3412,30 @@ export const COMMAND_INDEX = {
     result: "draw.text.add.result",
     examples: [
       {
+        elementId: "scene:#1/element:\"Bob\"",
+        frame: 1,
         position: {
-          x: 1,
-          y: 1,
+          x: -100,
+          y: 300,
         },
-        text: "example",
+        text: "Hello\nworld",
+        format: {
+          size: 48,
+          bold: true,
+          align: "centre",
+        },
+      },
+      {
+        elementId: "scene:#1/element:\"Bob\"",
+        frame: 1,
+        position: {
+          x: -200,
+          y: 0,
+        },
+        text: "A longer note that wraps inside its box",
+        width: 300,
       },
     ],
-    milestone: "M2 C2.3",
   },
   "draw.text.set": {
     kind: "action",
@@ -3252,10 +3443,14 @@ export const COMMAND_INDEX = {
     result: "draw.text.set.result",
     examples: [
       {
-        textId: "scene:#1",
+        drawingId: "drawingBank:#1/drawing:#1",
+        textId: "nd_01K742SG0WFAQJFKAZKV4CD56C",
+        insert: {
+          at: 5,
+          text: "!",
+        },
       },
     ],
-    milestone: "M2 C2.3",
   },
   "draw.textFormat.set": {
     kind: "action",
@@ -3263,10 +3458,14 @@ export const COMMAND_INDEX = {
     result: "draw.textFormat.set.result",
     examples: [
       {
-        textId: "scene:#1",
+        drawingId: "drawingBank:#1/drawing:#1",
+        textId: "nd_01K742SG0WFAQJFKAZKV4CD56C",
+        start: 0,
+        length: 2,
+        bold: true,
+        size: 30,
       },
     ],
-    milestone: "M2 C2.3",
   },
   "draw.transform.apply": {
     kind: "action",
@@ -28461,156 +28660,1187 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
     "x-spec": "`{strokeIds: [id], removedIds: [id], warnings: [code], rev}`",
     additionalProperties: false,
   },
-  "draw.content.add.params": {
-    title: "draw.content.add parameters",
+  "draw.content.add.ContentIn": {
+    description: "Content to insert: `{nodes}` (a whole `draw.drawing.get` result is accepted).",
     type: "object",
     properties: {
-      drawingId: {
-        type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
-      },
-      content: {
-        type: "object",
-        properties: {},
-        additionalProperties: false,
-        "x-placeholder": true,
-        description: "shape not defined by the owning section (spec issue); only {} is accepted until it is",
-        "x-specIssue": "SI-026",
-      },
-      offset: {
-        type: "object",
-        properties: {
-          x: {
-            type: "number",
-          },
-          y: {
-            type: "number",
-          },
+      nodes: {
+        description: "Nodes, back to front.",
+        type: "array",
+        items: {
+          $ref: "#/$defs/draw.content.add.NodeIn",
         },
-        required: [
-          "x",
-          "y",
+        maxItems: 100000,
+      },
+      drawingId: {
+        description: "Read-only (ignored).",
+        type: [
+          "string",
+          "null",
         ],
-        additionalProperties: false,
-        description: "Default: {0,0}.",
+        default: null,
       },
-      layer: {
-        type: "string",
-        enum: [
-          "top",
-          "behind",
+      elementId: {
+        description: "Read-only (ignored).",
+        type: [
+          "string",
+          "null",
         ],
-        default: "top",
+        default: null,
       },
-      select: {
-        type: "boolean",
-        default: true,
-      },
-    },
-    required: [
-      "content",
-    ],
-    additionalProperties: false,
-    "x-spec": "`drawingId?: id; content: object; offset: point = {0,0}; layer: enum \"top\"|\"behind\" = \"top\"; select: bool = true`",
-  },
-  "draw.content.add.result": {
-    title: "draw.content.add result",
-    type: "object",
-    properties: {
-      idMap: {
-        type: "object",
-        properties: {},
-        additionalProperties: false,
-        "x-placeholder": true,
-        description: "shape not defined by the owning section (spec issue); only {} is accepted until it is",
-        "x-specIssue": "SI-026",
+      name: {
+        description: "Read-only (ignored).",
+        type: [
+          "string",
+          "null",
+        ],
+        default: null,
       },
       rev: {
-        type: "number",
+        description: "Read-only (ignored).",
+        type: [
+          "integer",
+          "null",
+        ],
+        maximum: 18446744073709551615n,
+        minimum: 0,
+        default: null,
       },
-    },
-    required: [
-      "idMap",
-      "rev",
-    ],
-    "x-spec": "`{idMap: object, rev}`",
-    additionalProperties: false,
-  },
-  "draw.current.get.params": {
-    title: "draw.current.get parameters",
-    type: "object",
-    properties: {
-      view: {
-        type: "string",
-        maxLength: 65536,
+      locked: {
+        description: "Read-only (ignored).",
+        type: [
+          "boolean",
+          "null",
+        ],
+        default: null,
       },
-    },
-    additionalProperties: false,
-    "x-spec": "`view?: string`",
-  },
-  "draw.current.get.result": {
-    title: "draw.current.get result",
-    type: "object",
-    properties: {
-      drawingId: {
+      space: {
+        description: "Read-only (ignored).",
         anyOf: [
           {
-            type: "string",
-            minLength: 1,
-            maxLength: 4096,
-            description: "object ID or path reference (10 §3)",
+            $ref: "#/$defs/draw.content.add.SpaceIn",
           },
           {
             type: "null",
           },
         ],
       },
-      elementId: {
+      pivot: {
+        description: "Read-only (ignored; the target drawing keeps its pivot).",
+        anyOf: [
+          {
+            $ref: "#/$defs/draw.content.add.PointIn",
+          },
+          {
+            type: "null",
+          },
+        ],
+      },
+      bounds: {
+        description: "Read-only (ignored).",
+        anyOf: [
+          {
+            $ref: "#/$defs/draw.content.add.BoundsIn",
+          },
+          {
+            type: "null",
+          },
+        ],
+      },
+    },
+    additionalProperties: false,
+    required: [
+      "nodes",
+    ],
+  },
+  "draw.content.add.NodeIn": {
+    description: "A node of the 02 §13.4 shape.",
+    oneOf: [
+      {
+        description: "A layer.",
+        type: "object",
+        properties: {
+          type: {
+            type: "string",
+            const: "layer",
+          },
+          id: {
+            description: "ID (replaced).",
+            type: "string",
+          },
+          name: {
+            description: "Optional name.",
+            type: [
+              "string",
+              "null",
+            ],
+            default: null,
+          },
+          layerKind: {
+            description: "Type hint.",
+            $ref: "#/$defs/draw.content.add.LayerKindIn",
+          },
+          strokes: {
+            description: "Strokes.",
+            type: "array",
+            items: {
+              $ref: "#/$defs/draw.content.add.StrokeIn",
+            },
+            maxItems: 100000,
+          },
+          bounds: {
+            description: "Read-only (ignored).",
+            anyOf: [
+              {
+                $ref: "#/$defs/draw.content.add.BoundsIn",
+              },
+              {
+                type: "null",
+              },
+            ],
+          },
+        },
+        additionalProperties: false,
+        required: [
+          "type",
+          "id",
+          "layerKind",
+          "strokes",
+        ],
+      },
+      {
+        description: "A group.",
+        type: "object",
+        properties: {
+          type: {
+            type: "string",
+            const: "group",
+          },
+          id: {
+            description: "ID (replaced).",
+            type: "string",
+          },
+          name: {
+            description: "Optional name.",
+            type: [
+              "string",
+              "null",
+            ],
+            default: null,
+          },
+          children: {
+            description: "Children, back to front.",
+            type: "array",
+            items: {
+              $ref: "#/$defs/draw.content.add.NodeIn",
+            },
+          },
+          bounds: {
+            description: "Read-only (ignored).",
+            anyOf: [
+              {
+                $ref: "#/$defs/draw.content.add.BoundsIn",
+              },
+              {
+                type: "null",
+              },
+            ],
+          },
+        },
+        additionalProperties: false,
+        required: [
+          "type",
+          "id",
+          "children",
+        ],
+      },
+      {
+        description: "A text object.",
+        type: "object",
+        properties: {
+          type: {
+            type: "string",
+            const: "text",
+          },
+          id: {
+            description: "ID (replaced).",
+            type: "string",
+          },
+          name: {
+            description: "Optional name.",
+            type: [
+              "string",
+              "null",
+            ],
+            default: null,
+          },
+          text: {
+            description: "The characters.",
+            type: "string",
+            maxLength: 100000,
+          },
+          transform: {
+            description: "Placement (origin = top-left of the box).",
+            type: "array",
+            items: {
+              type: "number",
+            },
+            minItems: 6,
+            maxItems: 6,
+          },
+          widthMode: {
+            description: "Auto or fixed width.",
+            $ref: "#/$defs/draw.content.add.WidthModeIn",
+          },
+          width: {
+            description: "Wrap width (fixed mode).",
+            type: [
+              "number",
+              "null",
+            ],
+            default: null,
+          },
+          runs: {
+            description: "Runs covering the text.",
+            type: "array",
+            items: {
+              $ref: "#/$defs/draw.content.add.RunIn",
+            },
+          },
+          paragraphs: {
+            description: "Paragraphs.",
+            type: "array",
+            items: {
+              $ref: "#/$defs/draw.content.add.ParaIn",
+            },
+          },
+          bounds: {
+            description: "Read-only (ignored).",
+            anyOf: [
+              {
+                $ref: "#/$defs/draw.content.add.BoundsIn",
+              },
+              {
+                type: "null",
+              },
+            ],
+          },
+        },
+        additionalProperties: false,
+        required: [
+          "type",
+          "id",
+          "text",
+          "transform",
+          "widthMode",
+          "runs",
+          "paragraphs",
+        ],
+      },
+      {
+        description: "An embedded bitmap.",
+        type: "object",
+        properties: {
+          type: {
+            type: "string",
+            const: "bitmap",
+          },
+          id: {
+            description: "ID (replaced).",
+            type: "string",
+          },
+          name: {
+            description: "Optional name.",
+            type: [
+              "string",
+              "null",
+            ],
+            default: null,
+          },
+          mediaId: {
+            description: "The package entry of an image the document holds.",
+            type: "string",
+          },
+          pixelWidth: {
+            description: "Pixel width (1–16384).",
+            type: "number",
+            maximum: 16384,
+            minimum: 1,
+          },
+          pixelHeight: {
+            description: "Pixel height (1–16384).",
+            type: "number",
+            maximum: 16384,
+            minimum: 1,
+          },
+          transform: {
+            description: "Pixel space → drawing space.",
+            type: "array",
+            items: {
+              type: "number",
+            },
+            minItems: 6,
+            maxItems: 6,
+          },
+          image: {
+            description: "The image blob as read back (must match `mediaId`).",
+            anyOf: [
+              {
+                $ref: "#/$defs/draw.content.add.Blob",
+              },
+              {
+                type: "null",
+              },
+            ],
+            default: null,
+          },
+          bounds: {
+            description: "Read-only (ignored).",
+            anyOf: [
+              {
+                $ref: "#/$defs/draw.content.add.BoundsIn",
+              },
+              {
+                type: "null",
+              },
+            ],
+          },
+        },
+        additionalProperties: false,
+        required: [
+          "type",
+          "id",
+          "mediaId",
+          "pixelWidth",
+          "pixelHeight",
+          "transform",
+        ],
+      },
+    ],
+  },
+  "draw.content.add.LayerKindIn": {
+    description: "Layer type hint.",
+    oneOf: [
+      {
+        description: "Contour artwork.",
         type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
+        const: "brush",
       },
-      sceneId: {
+      {
+        description: "Centre-line artwork.",
         type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
+        const: "pencil",
       },
-      frame: {
-        type: "number",
+    ],
+  },
+  "draw.content.add.StrokeIn": {
+    description: "A stroke of the 02 §13.4 shape.",
+    type: "object",
+    properties: {
+      type: {
+        description: "`stroke` (optional).",
+        anyOf: [
+          {
+            $ref: "#/$defs/draw.content.add.StrokeTypeIn",
+          },
+          {
+            type: "null",
+          },
+        ],
       },
-      cellEmpty: {
+      id: {
+        description: "ID (replaced).",
+        type: "string",
+      },
+      kind: {
+        description: "Kind.",
+        $ref: "#/$defs/draw.content.add.StrokeKindIn",
+      },
+      closed: {
+        description: "Whether `bezier` is closed.",
         type: "boolean",
+        default: false,
       },
-      locked: {
-        type: "boolean",
-      },
-      activeView: {
+      bezier: {
+        description: "Centre line (pencil, invisible) or spine (brush; `null` once the outline was edited).",
         type: [
-          "string",
-          "number",
-          "boolean",
+          "array",
           "null",
         ],
-        "x-placeholder": true,
-        description: "type not stated by the owning section (spec issue); a scalar",
-        "x-specIssue": "SI-026",
+        items: {
+          $ref: "#/$defs/draw.content.add.PointIn",
+        },
+      },
+      colourId: {
+        description: "Colour (kept as given, ID-05).",
+        type: [
+          "string",
+          "null",
+        ],
+        default: null,
+      },
+      lineStyle: {
+        description: "Pencil line style.",
+        anyOf: [
+          {
+            $ref: "#/$defs/draw.content.add.LineStyleIn",
+          },
+          {
+            type: "null",
+          },
+        ],
+      },
+      penId: {
+        description: "Brush pen ID (kept when the pen exists in this project).",
+        type: [
+          "string",
+          "null",
+        ],
+        default: null,
+      },
+      pen: {
+        description: "Brush pen.",
+        anyOf: [
+          {
+            $ref: "#/$defs/draw.content.add.PenIn",
+          },
+          {
+            type: "null",
+          },
+        ],
+      },
+      pressure: {
+        description: "Brush spine pressure.",
+        type: [
+          "array",
+          "null",
+        ],
+        items: {
+          $ref: "#/$defs/draw.content.add.PressureIn",
+        },
+      },
+      textureMatrix: {
+        description: "Gradient/texture placement of a brush fill.",
+        type: [
+          "array",
+          "null",
+        ],
+        items: {
+          type: "number",
+        },
+        minItems: 6,
+        maxItems: 6,
+        default: null,
+      },
+      outline: {
+        description: "Brush outline contours (closed Bézier lists; one contour, SI-053).",
+        type: [
+          "array",
+          "null",
+        ],
+        items: {
+          type: "array",
+          items: {
+            $ref: "#/$defs/draw.content.add.PointIn",
+          },
+        },
+      },
+      bounds: {
+        description: "Read-only (ignored).",
+        anyOf: [
+          {
+            $ref: "#/$defs/draw.content.add.BoundsIn",
+          },
+          {
+            type: "null",
+          },
+        ],
+      },
+    },
+    additionalProperties: false,
+    required: [
+      "id",
+      "kind",
+    ],
+  },
+  "draw.content.add.StrokeTypeIn": {
+    description: "`stroke` (the `type` of a stroke in a read-back).",
+    oneOf: [
+      {
+        description: "A stroke.",
+        type: "string",
+        const: "stroke",
+      },
+    ],
+  },
+  "draw.content.add.StrokeKindIn": {
+    description: "Stroke kind.",
+    oneOf: [
+      {
+        description: "Brush.",
+        type: "string",
+        const: "brush",
+      },
+      {
+        description: "Pencil.",
+        type: "string",
+        const: "pencil",
+      },
+      {
+        description: "Invisible.",
+        type: "string",
+        const: "invisible",
+      },
+    ],
+  },
+  "draw.content.add.PointIn": {
+    description: "A point `{x, y}`.",
+    type: "object",
+    properties: {
+      x: {
+        description: "X (du).",
+        type: "number",
+      },
+      y: {
+        description: "Y (du).",
+        type: "number",
+      },
+    },
+    additionalProperties: false,
+    required: [
+      "x",
+      "y",
+    ],
+  },
+  "draw.content.add.LineStyleIn": {
+    description: "Line style.",
+    type: "object",
+    properties: {
+      thickness: {
+        description: "Thickness (du).",
+        type: "number",
+        maximum: 100,
+        minimum: 0,
+      },
+      lineType: {
+        description: "`solid`.",
+        $ref: "#/$defs/draw.content.add.LineTypeIn",
+      },
+    },
+    additionalProperties: false,
+    required: [
+      "thickness",
+      "lineType",
+    ],
+  },
+  "draw.content.add.LineTypeIn": {
+    description: "Line type.",
+    oneOf: [
+      {
+        description: "Solid.",
+        type: "string",
+        const: "solid",
+      },
+    ],
+  },
+  "draw.content.add.PenIn": {
+    description: "A brush pen.",
+    type: "object",
+    properties: {
+      tipShape: {
+        description: "Tip shape.",
+        $ref: "#/$defs/draw.content.add.TipIn",
+      },
+      minSize: {
+        description: "Minimum size (du).",
+        type: "number",
+        maximum: 100,
+        minimum: 0,
+      },
+      maxSize: {
+        description: "Maximum size (du).",
+        type: "number",
+        maximum: 100,
+        minimum: 0,
+      },
+      tipAngle: {
+        description: "Tip angle (degrees).",
+        type: "number",
+        default: 0,
+        minimum: 0,
+        maximum: 360,
+      },
+    },
+    additionalProperties: false,
+    required: [
+      "tipShape",
+      "minSize",
+      "maxSize",
+    ],
+  },
+  "draw.content.add.TipIn": {
+    description: "Tip shape.",
+    oneOf: [
+      {
+        description: "Round.",
+        type: "string",
+        const: "round",
+      },
+      {
+        description: "Oval.",
+        type: "string",
+        const: "oval",
+      },
+      {
+        description: "Square.",
+        type: "string",
+        const: "square",
+      },
+      {
+        description: "Flat.",
+        type: "string",
+        const: "flat",
+      },
+    ],
+  },
+  "draw.content.add.PressureIn": {
+    description: "A pressure sample.",
+    type: "object",
+    properties: {
+      t: {
+        description: "Position 0–1.",
+        type: "number",
+        maximum: 1,
+        minimum: 0,
+      },
+      p: {
+        description: "Pressure 0–1.",
+        type: "number",
+        maximum: 1,
+        minimum: 0,
+      },
+    },
+    additionalProperties: false,
+    required: [
+      "t",
+      "p",
+    ],
+  },
+  "draw.content.add.BoundsIn": {
+    description: "`{x, y, width, height}` (read-only; ignored).",
+    type: "object",
+    properties: {
+      x: {
+        description: "X.",
+        type: "number",
+      },
+      y: {
+        description: "Y.",
+        type: "number",
+      },
+      width: {
+        description: "Width.",
+        type: "number",
+      },
+      height: {
+        description: "Height.",
+        type: "number",
+      },
+    },
+    additionalProperties: false,
+    required: [
+      "x",
+      "y",
+      "width",
+      "height",
+    ],
+  },
+  "draw.content.add.WidthModeIn": {
+    description: "Width mode.",
+    oneOf: [
+      {
+        description: "No wrapping.",
+        type: "string",
+        const: "auto",
+      },
+      {
+        description: "Word wrap at `width`.",
+        type: "string",
+        const: "fixed",
+      },
+    ],
+  },
+  "draw.content.add.RunIn": {
+    description: "A character run of the 02 §13.4 shape.",
+    type: "object",
+    properties: {
+      start: {
+        description: "First code point.",
+        type: "integer",
+        maximum: 2147483647,
+        minimum: 0,
+      },
+      length: {
+        description: "Number of code points.",
+        type: "integer",
+        maximum: 2147483647,
+        minimum: 0,
+      },
+      font: {
+        description: "Font family.",
+        type: "string",
+        minLength: 1,
+        maxLength: 256,
+      },
+      size: {
+        description: "Size (du).",
+        type: "number",
+        maximum: 512,
+        minimum: 1,
+      },
+      bold: {
+        description: "Bold.",
+        type: "boolean",
+      },
+      italic: {
+        description: "Italic.",
+        type: "boolean",
+      },
+      baseline: {
+        description: "Baseline.",
+        $ref: "#/$defs/draw.content.add.BaselineIn",
+      },
+      kerning: {
+        description: "Kerning (1/100 em).",
+        type: "number",
+        maximum: 60,
+        minimum: -60,
+      },
+      autoKern: {
+        description: "Automatic kerning.",
+        type: "boolean",
+      },
+      colourId: {
+        description: "Fill colour.",
+        type: [
+          "string",
+          "null",
+        ],
+        default: null,
+      },
+      outlineColourId: {
+        description: "Outline colour (must be `null`: 10 §4.9 runs have no outline colour, SI-055).",
+        type: [
+          "string",
+          "null",
+        ],
+        default: null,
+      },
+    },
+    additionalProperties: false,
+    required: [
+      "start",
+      "length",
+      "font",
+      "size",
+      "bold",
+      "italic",
+      "baseline",
+      "kerning",
+      "autoKern",
+    ],
+  },
+  "draw.content.add.BaselineIn": {
+    description: "Baseline.",
+    oneOf: [
+      {
+        description: "Normal.",
+        type: "string",
+        const: "normal",
+      },
+      {
+        description: "Subscript.",
+        type: "string",
+        const: "subscript",
+      },
+      {
+        description: "Superscript.",
+        type: "string",
+        const: "superscript",
+      },
+    ],
+  },
+  "draw.content.add.ParaIn": {
+    description: "A paragraph of the 02 §13.4 shape.",
+    type: "object",
+    properties: {
+      start: {
+        description: "First code point.",
+        type: "integer",
+        maximum: 2147483647,
+        minimum: 0,
+      },
+      length: {
+        description: "Number of code points.",
+        type: "integer",
+        maximum: 2147483647,
+        minimum: 0,
+      },
+      align: {
+        description: "Alignment.",
+        $ref: "#/$defs/draw.content.add.AlignIn",
+      },
+      leftMargin: {
+        description: "Left margin (du).",
+        type: "number",
+        maximum: 1000,
+        minimum: 0,
+      },
+      rightMargin: {
+        description: "Right margin (du).",
+        type: "number",
+        maximum: 1000,
+        minimum: 0,
+      },
+      indent: {
+        description: "First-line indent (du).",
+        type: "number",
+        maximum: 1000,
+        minimum: -99,
+      },
+      lineSpacing: {
+        description: "Line spacing (du).",
+        type: "number",
+        maximum: 1000,
+        minimum: -99,
+      },
+    },
+    additionalProperties: false,
+    required: [
+      "start",
+      "length",
+      "align",
+      "leftMargin",
+      "rightMargin",
+      "indent",
+      "lineSpacing",
+    ],
+  },
+  "draw.content.add.AlignIn": {
+    description: "Alignment.",
+    oneOf: [
+      {
+        description: "Left.",
+        type: "string",
+        const: "left",
+      },
+      {
+        description: "Centre.",
+        type: "string",
+        const: "centre",
+      },
+      {
+        description: "Right.",
+        type: "string",
+        const: "right",
+      },
+      {
+        description: "Justify.",
+        type: "string",
+        const: "justify",
+      },
+    ],
+  },
+  "draw.content.add.Blob": {
+    description: "A binary payload stored as a package entry (10 §1.1). Never inlined in object JSON.",
+    type: "object",
+    properties: {
+      entry: {
+        description: "Package entry path.",
+        type: "string",
+        minLength: 1,
+        maxLength: 1024,
+      },
+      mediaType: {
+        description: "IANA media type.",
+        type: "string",
+        minLength: 1,
+        maxLength: 255,
+      },
+      size: {
+        description: "Size in bytes (64-bit: entries larger than 4 GiB are supported, 10 §5).",
+        type: "integer",
+        maximum: 18446744073709551615n,
+        minimum: 0,
+      },
+      sha256: {
+        description: "Lower-case hex SHA-256 of the bytes.",
+        type: "string",
+        pattern: "^[0-9a-f]{64}$",
+      },
+    },
+    additionalProperties: false,
+    required: [
+      "entry",
+      "mediaType",
+      "size",
+      "sha256",
+    ],
+  },
+  "draw.content.add.SpaceIn": {
+    description: "The drawing space description of a read-back (ignored).",
+    type: "object",
+    properties: {
+      units: {
+        description: "`du`.",
+        type: "string",
+      },
+      duPerField: {
+        description: "100.",
+        type: "number",
+      },
+      yAxis: {
+        description: "`up`.",
+        type: "string",
+      },
+      origin: {
+        description: "`drawingCentre`.",
+        type: "string",
+      },
+    },
+    additionalProperties: false,
+    required: [
+      "units",
+      "duPerField",
+      "yAxis",
+      "origin",
+    ],
+  },
+  "draw.content.add.Point": {
+    description: "A point `{x, y}` in drawing units.",
+    type: "object",
+    properties: {
+      x: {
+        description: "X (du).",
+        type: "number",
+      },
+      y: {
+        description: "Y (du, up).",
+        type: "number",
+      },
+    },
+    additionalProperties: false,
+    required: [
+      "x",
+      "y",
+    ],
+  },
+  "draw.content.add.ContentLayer": {
+    description: "Where inserted content goes.",
+    oneOf: [
+      {
+        description: "On top of the drawing.",
+        type: "string",
+        const: "top",
+      },
+      {
+        description: "Behind all artwork.",
+        type: "string",
+        const: "behind",
+      },
+    ],
+  },
+  "draw.content.add.params": {
+    title: "ContentAddParams",
+    description: "`draw.content.add` parameters (02 §13.5).",
+    type: "object",
+    properties: {
+      drawingId: {
+        description: "The drawing (default: `elementId` + `frame`, else the current drawing).",
+        type: [
+          "string",
+          "null",
+        ],
+        default: null,
+      },
+      elementId: {
+        description: "The element whose cell receives the content.",
+        type: [
+          "string",
+          "null",
+        ],
+        default: null,
+      },
+      frame: {
+        description: "The frame of that cell.",
+        type: [
+          "integer",
+          "null",
+        ],
+        default: null,
+        minimum: 1,
+        maximum: 2147483647,
+      },
+      createDrawing: {
+        description: "Create a drawing in an empty addressed cell.",
+        type: "boolean",
+        default: true,
+      },
+      content: {
+        description: "Drawing content in the 02 §13.4 shape: `{nodes: [...]}`, a `draw.drawing.get` result as returned.",
+        $ref: "#/$defs/draw.content.add.ContentIn",
+      },
+      offset: {
+        description: "Offset added to all geometry (du).",
+        anyOf: [
+          {
+            $ref: "#/$defs/draw.content.add.Point",
+          },
+          {
+            type: "null",
+          },
+        ],
+        default: null,
+      },
+      layer: {
+        description: "Insert on top or behind.",
+        $ref: "#/$defs/draw.content.add.ContentLayer",
+      },
+      select: {
+        description: "Make the inserted objects the drawing selection.",
+        type: "boolean",
+        default: true,
+      },
+    },
+    additionalProperties: false,
+    required: [
+      "content",
+    ],
+  },
+  "draw.content.add.result": {
+    title: "ContentAddResult",
+    description: "`{idMap, rev}`.",
+    type: "object",
+    properties: {
+      drawingId: {
+        description: "The drawing.",
+        type: "string",
+      },
+      createdDrawing: {
+        description: "A drawing was created in the empty cell.",
+        type: "boolean",
+      },
+      idMap: {
+        description: "Old ID → new ID of every inserted node and stroke (SI-026 `idMap`).",
+        type: "object",
+        additionalProperties: {
+          type: "string",
+        },
+      },
+      rev: {
+        description: "The drawing revision after the change.",
+        type: "integer",
+        maximum: 18446744073709551615n,
+        minimum: 0,
       },
     },
     required: [
       "drawingId",
-      "elementId",
-      "sceneId",
+      "createdDrawing",
+      "idMap",
+      "rev",
+    ],
+  },
+  "draw.current.get.params": {
+    title: "CurrentGetParams",
+    description: "`draw.current.get` parameters.",
+    type: "object",
+    properties: {
+      view: {
+        description: "A view id (default: the active view, the central view of the arrangement in use).",
+        type: [
+          "string",
+          "null",
+        ],
+        default: null,
+      },
+    },
+    additionalProperties: false,
+  },
+  "draw.current.get.ViewRef": {
+    description: "The view a drawing is edited in (SI-026 `activeView`, the `AppState.activeView` shape).",
+    type: "object",
+    properties: {
+      viewId: {
+        description: "View id.",
+        type: "string",
+      },
+      panelId: {
+        description: "Panel id.",
+        type: "string",
+      },
+      type: {
+        description: "`camera`, `drawing`, `top` or `side`.",
+        type: "string",
+      },
+    },
+    required: [
+      "viewId",
+      "panelId",
+      "type",
+    ],
+  },
+  "draw.current.get.result": {
+    title: "CurrentResult",
+    description: "`draw.current.get` result (02 §13.5).",
+    type: "object",
+    properties: {
+      drawingId: {
+        description: "The current drawing, `null` for an empty cell.",
+        type: [
+          "string",
+          "null",
+        ],
+      },
+      elementId: {
+        description: "The current element.",
+        type: [
+          "string",
+          "null",
+        ],
+      },
+      sceneId: {
+        description: "The current scene.",
+        type: [
+          "string",
+          "null",
+        ],
+      },
+      frame: {
+        description: "The current frame.",
+        type: "integer",
+        maximum: 2147483647,
+        minimum: 0,
+      },
+      cellEmpty: {
+        description: "The current cell is empty.",
+        type: "boolean",
+      },
+      locked: {
+        description: "The current drawing is locked.",
+        type: "boolean",
+      },
+      activeView: {
+        description: "The active view.",
+        $ref: "#/$defs/draw.current.get.ViewRef",
+      },
+    },
+    required: [
       "frame",
       "cellEmpty",
       "locked",
       "activeView",
     ],
-    "x-spec": "`{drawingId|null, elementId, sceneId, frame, cellEmpty: bool, locked: bool, activeView}`",
-    additionalProperties: false,
   },
   "draw.cut.apply.params": {
     title: "draw.cut.apply parameters",
@@ -28784,77 +30014,720 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
     "x-spec": "`{drawingId, rev, commandId, createdIds: [id], modifiedIds: [id], removedIds: [id]}`",
     additionalProperties: false,
   },
+  "draw.drawing.get.IncludePart": {
+    description: "What `draw.drawing.get` includes.",
+    oneOf: [
+      {
+        description: "Zones per layer (planar map, M2 C2.2; reported as unavailable).",
+        type: "string",
+        const: "zones",
+      },
+      {
+        description: "Pressure maps.",
+        type: "string",
+        const: "pressure",
+      },
+      {
+        description: "Brush outlines.",
+        type: "string",
+        const: "outline",
+      },
+      {
+        description: "Bounds.",
+        type: "string",
+        const: "bounds",
+      },
+    ],
+  },
   "draw.drawing.get.params": {
-    title: "draw.drawing.get parameters",
+    title: "DrawingGetParams",
+    description: "`draw.drawing.get` parameters (02 §13.5).",
     type: "object",
     properties: {
       drawingId: {
-        type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
+        description: "The drawing (default: `elementId` + `frame`, else the current drawing).",
+        type: [
+          "string",
+          "null",
+        ],
+        default: null,
       },
       elementId: {
-        type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
+        description: "The element whose cell exposes the drawing.",
+        type: [
+          "string",
+          "null",
+        ],
+        default: null,
       },
       frame: {
-        type: "integer",
+        description: "The frame of that cell (default: current frame).",
+        type: [
+          "integer",
+          "null",
+        ],
+        default: null,
+        minimum: 1,
+        maximum: 2147483647,
       },
       include: {
-        type: "array",
+        description: "Parts to include (default: all).",
+        type: [
+          "array",
+          "null",
+        ],
         items: {
-          type: "string",
-          enum: [
-            "zones",
-            "pressure",
-            "outline",
-            "bounds",
-          ],
+          $ref: "#/$defs/draw.drawing.get.IncludePart",
         },
-        maxItems: 100000,
       },
       flatten: {
+        description: "A flat object list with `parentId` instead of nesting.",
         type: "boolean",
         default: false,
       },
       ids: {
-        type: "array",
+        description: "Return only these objects (flat list).",
+        type: [
+          "array",
+          "null",
+        ],
         items: {
           type: "string",
-          minLength: 1,
-          maxLength: 4096,
-          description: "object ID or path reference (10 §3)",
         },
-        maxItems: 100000,
+        default: null,
       },
     },
     additionalProperties: false,
-    "x-spec": "`drawingId?: id; elementId?: id; frame?: int; include?: [enum \"zones\"|\"pressure\"|\"outline\"|\"bounds\"]; flatten: bool = false; ids?: [id]`",
   },
-  "draw.drawing.get.spec.DrawingReadback": {
+  "draw.drawing.get.point": {
+    type: "object",
+    properties: {
+      x: {
+        type: "number",
+      },
+      y: {
+        type: "number",
+      },
+    },
+    additionalProperties: false,
+    required: [
+      "x",
+      "y",
+    ],
+  },
+  "draw.drawing.get.bounds": {
+    type: "object",
+    properties: {
+      x: {
+        type: "number",
+      },
+      y: {
+        type: "number",
+      },
+      width: {
+        type: "number",
+        minimum: 0,
+      },
+      height: {
+        type: "number",
+        minimum: 0,
+      },
+    },
+    additionalProperties: false,
+    required: [
+      "x",
+      "y",
+      "width",
+      "height",
+    ],
+  },
+  "draw.drawing.get.bezier": {
+    type: "array",
+    minItems: 1,
+    items: {
+      $ref: "#/$defs/draw.drawing.get.point",
+    },
+  },
+  "draw.drawing.get.matrix": {
+    type: "array",
+    minItems: 6,
+    maxItems: 6,
+    items: {
+      type: "number",
+    },
+  },
+  "draw.drawing.get.colour": {
+    type: [
+      "string",
+      "null",
+    ],
+  },
+  "draw.drawing.get.parentId": {
+    type: [
+      "string",
+      "null",
+    ],
+  },
+  "draw.drawing.get.item": {
+    oneOf: [
+      {
+        $ref: "#/$defs/draw.drawing.get.layer",
+      },
+      {
+        $ref: "#/$defs/draw.drawing.get.group",
+      },
+      {
+        $ref: "#/$defs/draw.drawing.get.text",
+      },
+      {
+        $ref: "#/$defs/draw.drawing.get.bitmap",
+      },
+      {
+        $ref: "#/$defs/draw.drawing.get.stroke",
+      },
+    ],
+  },
+  "draw.drawing.get.layer": {
+    type: "object",
+    properties: {
+      type: {
+        const: "layer",
+      },
+      id: {
+        type: "string",
+      },
+      name: {
+        type: "string",
+      },
+      layerKind: {
+        enum: [
+          "brush",
+          "pencil",
+        ],
+      },
+      strokes: {
+        type: "array",
+        items: {
+          $ref: "#/$defs/draw.drawing.get.stroke",
+        },
+      },
+      parentId: {
+        $ref: "#/$defs/draw.drawing.get.parentId",
+      },
+    },
+    additionalProperties: false,
+    required: [
+      "type",
+      "id",
+      "layerKind",
+    ],
+  },
+  "draw.drawing.get.group": {
+    type: "object",
+    properties: {
+      type: {
+        const: "group",
+      },
+      id: {
+        type: "string",
+      },
+      name: {
+        type: "string",
+      },
+      children: {
+        type: "array",
+        items: {
+          $ref: "#/$defs/draw.drawing.get.item",
+        },
+      },
+      bounds: {
+        oneOf: [
+          {
+            $ref: "#/$defs/draw.drawing.get.bounds",
+          },
+          {
+            type: "null",
+          },
+        ],
+      },
+      parentId: {
+        $ref: "#/$defs/draw.drawing.get.parentId",
+      },
+    },
+    additionalProperties: false,
+    required: [
+      "type",
+      "id",
+    ],
+  },
+  "draw.drawing.get.run": {
+    type: "object",
+    properties: {
+      start: {
+        type: "integer",
+        minimum: 0,
+      },
+      length: {
+        type: "integer",
+        minimum: 0,
+      },
+      font: {
+        type: "string",
+      },
+      size: {
+        type: "number",
+        minimum: 0,
+      },
+      bold: {
+        type: "boolean",
+      },
+      italic: {
+        type: "boolean",
+      },
+      baseline: {
+        enum: [
+          "normal",
+          "subscript",
+          "superscript",
+        ],
+      },
+      kerning: {
+        type: "number",
+      },
+      autoKern: {
+        type: "boolean",
+      },
+      colourId: {
+        $ref: "#/$defs/draw.drawing.get.colour",
+      },
+      outlineColourId: {
+        type: "null",
+      },
+    },
+    additionalProperties: false,
+    required: [
+      "start",
+      "length",
+      "font",
+      "size",
+      "bold",
+      "italic",
+      "baseline",
+      "kerning",
+      "autoKern",
+      "colourId",
+      "outlineColourId",
+    ],
+  },
+  "draw.drawing.get.paragraph": {
+    type: "object",
+    properties: {
+      start: {
+        type: "integer",
+        minimum: 0,
+      },
+      length: {
+        type: "integer",
+        minimum: 0,
+      },
+      align: {
+        enum: [
+          "left",
+          "centre",
+          "right",
+          "justify",
+        ],
+      },
+      leftMargin: {
+        type: "number",
+      },
+      rightMargin: {
+        type: "number",
+      },
+      indent: {
+        type: "number",
+      },
+      lineSpacing: {
+        type: "number",
+      },
+    },
+    additionalProperties: false,
+    required: [
+      "start",
+      "length",
+      "align",
+      "leftMargin",
+      "rightMargin",
+      "indent",
+      "lineSpacing",
+    ],
+  },
+  "draw.drawing.get.text": {
+    type: "object",
+    properties: {
+      type: {
+        const: "text",
+      },
+      id: {
+        type: "string",
+      },
+      name: {
+        type: "string",
+      },
+      text: {
+        type: "string",
+      },
+      transform: {
+        $ref: "#/$defs/draw.drawing.get.matrix",
+      },
+      widthMode: {
+        enum: [
+          "auto",
+          "fixed",
+        ],
+      },
+      width: {
+        type: [
+          "number",
+          "null",
+        ],
+      },
+      runs: {
+        type: "array",
+        items: {
+          $ref: "#/$defs/draw.drawing.get.run",
+        },
+      },
+      paragraphs: {
+        type: "array",
+        items: {
+          $ref: "#/$defs/draw.drawing.get.paragraph",
+        },
+      },
+      bounds: {
+        oneOf: [
+          {
+            $ref: "#/$defs/draw.drawing.get.bounds",
+          },
+          {
+            type: "null",
+          },
+        ],
+      },
+      parentId: {
+        $ref: "#/$defs/draw.drawing.get.parentId",
+      },
+    },
+    additionalProperties: false,
+    required: [
+      "type",
+      "id",
+      "text",
+      "transform",
+      "widthMode",
+      "width",
+      "runs",
+      "paragraphs",
+    ],
+  },
+  "draw.drawing.get.blob": {
+    type: "object",
+    properties: {
+      entry: {
+        type: "string",
+      },
+      mediaType: {
+        type: "string",
+      },
+      size: {
+        type: "integer",
+        minimum: 0,
+      },
+      sha256: {
+        type: "string",
+        pattern: "^[0-9a-f]{64}$",
+      },
+    },
+    additionalProperties: false,
+    required: [
+      "entry",
+      "mediaType",
+      "size",
+      "sha256",
+    ],
+  },
+  "draw.drawing.get.bitmap": {
+    type: "object",
+    properties: {
+      type: {
+        const: "bitmap",
+      },
+      id: {
+        type: "string",
+      },
+      name: {
+        type: "string",
+      },
+      mediaId: {
+        type: [
+          "string",
+          "null",
+        ],
+      },
+      pixelWidth: {
+        type: [
+          "number",
+          "null",
+        ],
+      },
+      pixelHeight: {
+        type: [
+          "number",
+          "null",
+        ],
+      },
+      transform: {
+        oneOf: [
+          {
+            $ref: "#/$defs/draw.drawing.get.matrix",
+          },
+          {
+            type: "null",
+          },
+        ],
+      },
+      image: {
+        oneOf: [
+          {
+            $ref: "#/$defs/draw.drawing.get.blob",
+          },
+          {
+            type: "null",
+          },
+        ],
+      },
+      bounds: {
+        oneOf: [
+          {
+            $ref: "#/$defs/draw.drawing.get.bounds",
+          },
+          {
+            type: "null",
+          },
+        ],
+      },
+      parentId: {
+        $ref: "#/$defs/draw.drawing.get.parentId",
+      },
+    },
+    additionalProperties: false,
+    required: [
+      "type",
+      "id",
+      "mediaId",
+      "pixelWidth",
+      "pixelHeight",
+      "transform",
+      "image",
+    ],
+  },
+  "draw.drawing.get.pressure": {
+    oneOf: [
+      {
+        type: "array",
+        items: {
+          type: "object",
+          properties: {
+            t: {
+              type: "number",
+              minimum: 0,
+              maximum: 1,
+            },
+            p: {
+              type: "number",
+              minimum: 0,
+              maximum: 1,
+            },
+          },
+          additionalProperties: false,
+          required: [
+            "t",
+            "p",
+          ],
+        },
+      },
+      {
+        type: "null",
+      },
+    ],
+  },
+  "draw.drawing.get.pen": {
+    oneOf: [
+      {
+        type: "object",
+        properties: {
+          tipShape: {
+            enum: [
+              "round",
+              "oval",
+              "square",
+              "flat",
+            ],
+          },
+          minSize: {
+            type: "number",
+            minimum: 0,
+            maximum: 100,
+          },
+          maxSize: {
+            type: "number",
+            minimum: 0,
+            maximum: 100,
+          },
+          tipAngle: {
+            type: "number",
+            minimum: 0,
+            maximum: 360,
+          },
+        },
+        additionalProperties: false,
+        required: [
+          "tipShape",
+          "minSize",
+          "maxSize",
+          "tipAngle",
+        ],
+      },
+      {
+        type: "null",
+      },
+    ],
+  },
+  "draw.drawing.get.stroke": {
+    type: "object",
+    properties: {
+      type: {
+        const: "stroke",
+      },
+      id: {
+        type: "string",
+      },
+      kind: {
+        enum: [
+          "brush",
+          "pencil",
+          "invisible",
+        ],
+      },
+      closed: {
+        type: "boolean",
+      },
+      bezier: {
+        oneOf: [
+          {
+            $ref: "#/$defs/draw.drawing.get.bezier",
+          },
+          {
+            type: "null",
+          },
+        ],
+      },
+      colourId: {
+        $ref: "#/$defs/draw.drawing.get.colour",
+      },
+      lineStyle: {
+        type: "object",
+        properties: {
+          thickness: {
+            type: "number",
+            minimum: 0,
+          },
+          lineType: {
+            const: "solid",
+          },
+        },
+        additionalProperties: false,
+        required: [
+          "thickness",
+          "lineType",
+        ],
+      },
+      penId: {
+        type: [
+          "string",
+          "null",
+        ],
+      },
+      pen: {
+        $ref: "#/$defs/draw.drawing.get.pen",
+      },
+      pressure: {
+        $ref: "#/$defs/draw.drawing.get.pressure",
+      },
+      textureMatrix: {
+        oneOf: [
+          {
+            $ref: "#/$defs/draw.drawing.get.matrix",
+          },
+          {
+            type: "null",
+          },
+        ],
+      },
+      outline: {
+        type: "array",
+        minItems: 1,
+        maxItems: 1,
+        items: {
+          $ref: "#/$defs/draw.drawing.get.bezier",
+        },
+      },
+      bounds: {
+        oneOf: [
+          {
+            $ref: "#/$defs/draw.drawing.get.bounds",
+          },
+          {
+            type: "null",
+          },
+        ],
+      },
+      parentId: {
+        $ref: "#/$defs/draw.drawing.get.parentId",
+      },
+    },
+    additionalProperties: false,
+    required: [
+      "type",
+      "id",
+      "kind",
+      "closed",
+      "bezier",
+      "colourId",
+    ],
+  },
+  "draw.drawing.get.result": {
+    title: "DrawingReadback",
     type: "object",
     properties: {
       drawingId: {
         type: "string",
         minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
+        maxLength: 64,
       },
       elementId: {
-        type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
+        type: [
+          "string",
+          "null",
+        ],
       },
       name: {
         type: "string",
-        maxLength: 65536,
       },
       rev: {
         type: "integer",
+        minimum: 0,
+        maximum: 18446744073709551615n,
       },
       locked: {
         type: "boolean",
@@ -28863,19 +30736,16 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
         type: "object",
         properties: {
           units: {
-            type: "string",
-            maxLength: 65536,
+            const: "du",
           },
           duPerField: {
-            type: "number",
+            const: 100,
           },
           yAxis: {
-            type: "string",
-            maxLength: 65536,
+            const: "up",
           },
           origin: {
-            type: "string",
-            maxLength: 65536,
+            const: "drawingCentre",
           },
         },
         additionalProperties: false,
@@ -28887,576 +30757,26 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
         ],
       },
       pivot: {
-        type: "object",
-        properties: {
-          x: {
-            type: "number",
-          },
-          y: {
-            type: "number",
-          },
-        },
-        additionalProperties: false,
-        required: [
-          "x",
-          "y",
-        ],
+        $ref: "#/$defs/draw.drawing.get.point",
       },
       bounds: {
-        type: "object",
-        properties: {
-          x: {
-            type: "number",
+        oneOf: [
+          {
+            $ref: "#/$defs/draw.drawing.get.bounds",
           },
-          y: {
-            type: "number",
+          {
+            type: "null",
           },
-          width: {
-            type: "number",
-          },
-          height: {
-            type: "number",
-          },
-        },
-        additionalProperties: false,
-        required: [
-          "x",
-          "y",
-          "width",
-          "height",
         ],
       },
       nodes: {
         type: "array",
         items: {
-          type: "object",
-          properties: {
-            type: {
-              type: "string",
-              maxLength: 65536,
-            },
-            id: {
-              type: "string",
-              minLength: 1,
-              maxLength: 4096,
-              description: "object ID or path reference (10 §3)",
-            },
-            layerKind: {
-              type: "string",
-              maxLength: 65536,
-            },
-            strokes: {
-              type: "array",
-              items: {
-                type: "object",
-                properties: {
-                  id: {
-                    type: "string",
-                    minLength: 1,
-                    maxLength: 4096,
-                    description: "object ID or path reference (10 §3)",
-                  },
-                  kind: {
-                    type: "string",
-                    maxLength: 65536,
-                  },
-                  closed: {
-                    type: "boolean",
-                  },
-                  bezier: {
-                    type: "array",
-                    items: {
-                      anyOf: [
-                        {
-                          type: "object",
-                          properties: {
-                            x: {
-                              type: "number",
-                            },
-                            y: {
-                              type: "number",
-                            },
-                          },
-                          additionalProperties: false,
-                          required: [
-                            "x",
-                            "y",
-                          ],
-                        },
-                        {
-                          type: "string",
-                          maxLength: 65536,
-                        },
-                      ],
-                    },
-                    maxItems: 100000,
-                  },
-                  colourId: {
-                    anyOf: [
-                      {
-                        type: "string",
-                        minLength: 1,
-                        maxLength: 4096,
-                        description: "object ID or path reference (10 §3)",
-                      },
-                      {
-                        type: "null",
-                      },
-                    ],
-                  },
-                  lineStyle: {
-                    type: "object",
-                    properties: {
-                      thickness: {
-                        type: "number",
-                      },
-                      lineType: {
-                        type: "string",
-                        maxLength: 65536,
-                      },
-                    },
-                    additionalProperties: false,
-                    required: [
-                      "thickness",
-                      "lineType",
-                    ],
-                  },
-                  penId: {
-                    type: "string",
-                    minLength: 1,
-                    maxLength: 4096,
-                    description: "object ID or path reference (10 §3)",
-                  },
-                  pressure: {
-                    anyOf: [
-                      {
-                        type: "array",
-                        items: {
-                          type: "object",
-                          properties: {
-                            t: {
-                              type: "number",
-                            },
-                            p: {
-                              type: "number",
-                            },
-                          },
-                          additionalProperties: false,
-                          required: [
-                            "t",
-                            "p",
-                          ],
-                        },
-                        maxItems: 100000,
-                      },
-                      {
-                        type: "null",
-                      },
-                    ],
-                  },
-                  leftZoneId: {
-                    type: "string",
-                    minLength: 1,
-                    maxLength: 4096,
-                    description: "object ID or path reference (10 §3)",
-                  },
-                  rightZoneId: {
-                    type: "string",
-                    minLength: 1,
-                    maxLength: 4096,
-                    description: "object ID or path reference (10 §3)",
-                  },
-                  pen: {
-                    type: "object",
-                    properties: {
-                      tipShape: {
-                        type: "string",
-                        maxLength: 65536,
-                      },
-                      minSize: {
-                        type: "number",
-                      },
-                      maxSize: {
-                        type: "integer",
-                      },
-                      tipAngle: {
-                        type: "number",
-                      },
-                    },
-                    additionalProperties: false,
-                    required: [
-                      "tipShape",
-                      "minSize",
-                      "maxSize",
-                      "tipAngle",
-                    ],
-                  },
-                  textureMatrix: {
-                    type: [
-                      "string",
-                      "number",
-                      "boolean",
-                      "null",
-                    ],
-                    "x-placeholder": true,
-                    description: "type not stated by the owning section (spec issue); a scalar",
-                    "x-specIssue": "SI-026",
-                  },
-                  outline: {
-                    type: "array",
-                    items: {
-                      type: "array",
-                      items: {
-                        type: "string",
-                        maxLength: 65536,
-                      },
-                      maxItems: 100000,
-                    },
-                    maxItems: 100000,
-                  },
-                },
-                additionalProperties: false,
-                required: [
-                  "id",
-                  "kind",
-                  "closed",
-                  "bezier",
-                  "colourId",
-                ],
-              },
-              maxItems: 100000,
-            },
-            zones: {
-              type: "array",
-              items: {
-                type: "object",
-                properties: {
-                  id: {
-                    type: "string",
-                    minLength: 1,
-                    maxLength: 4096,
-                    description: "object ID or path reference (10 §3)",
-                  },
-                  colourId: {
-                    type: "string",
-                    minLength: 1,
-                    maxLength: 4096,
-                    description: "object ID or path reference (10 §3)",
-                  },
-                  textureMatrix: {
-                    type: [
-                      "string",
-                      "number",
-                      "boolean",
-                      "null",
-                    ],
-                    "x-placeholder": true,
-                    description: "type not stated by the owning section (spec issue); a scalar",
-                    "x-specIssue": "SI-026",
-                  },
-                  boundaryStrokeIds: {
-                    type: "array",
-                    items: {
-                      type: "string",
-                      minLength: 1,
-                      maxLength: 4096,
-                      description: "object ID or path reference (10 §3)",
-                    },
-                    maxItems: 100000,
-                  },
-                  holes: {
-                    type: "array",
-                    items: {
-                      type: "object",
-                      properties: {
-                        boundaryStrokeIds: {
-                          type: "array",
-                          items: {
-                            type: "string",
-                            minLength: 1,
-                            maxLength: 4096,
-                            description: "object ID or path reference (10 §3)",
-                          },
-                          maxItems: 100000,
-                        },
-                        zoneId: {
-                          type: "string",
-                          minLength: 1,
-                          maxLength: 4096,
-                          description: "object ID or path reference (10 §3)",
-                        },
-                      },
-                      additionalProperties: false,
-                      required: [
-                        "boundaryStrokeIds",
-                        "zoneId",
-                      ],
-                    },
-                    maxItems: 100000,
-                  },
-                  parentZoneId: {
-                    anyOf: [
-                      {
-                        type: "string",
-                        minLength: 1,
-                        maxLength: 4096,
-                        description: "object ID or path reference (10 §3)",
-                      },
-                      {
-                        type: "null",
-                      },
-                    ],
-                  },
-                  area: {
-                    type: "number",
-                  },
-                  bounds: {
-                    type: "object",
-                    properties: {
-                      x: {
-                        type: "number",
-                      },
-                      y: {
-                        type: "number",
-                      },
-                      width: {
-                        type: "integer",
-                      },
-                      height: {
-                        type: "integer",
-                      },
-                    },
-                    additionalProperties: false,
-                    required: [
-                      "x",
-                      "y",
-                      "width",
-                      "height",
-                    ],
-                  },
-                  interiorPoint: {
-                    type: "object",
-                    properties: {
-                      x: {
-                        type: "number",
-                      },
-                      y: {
-                        type: "number",
-                      },
-                    },
-                    additionalProperties: false,
-                    required: [
-                      "x",
-                      "y",
-                    ],
-                  },
-                },
-                additionalProperties: false,
-                required: [
-                  "id",
-                  "colourId",
-                  "textureMatrix",
-                  "boundaryStrokeIds",
-                  "holes",
-                  "parentZoneId",
-                  "area",
-                  "bounds",
-                  "interiorPoint",
-                ],
-              },
-              maxItems: 100000,
-            },
-            children: {
-              type: "array",
-              items: {
-                type: "string",
-                maxLength: 65536,
-              },
-              maxItems: 100000,
-            },
-            text: {
-              type: "string",
-              maxLength: 65536,
-            },
-            transform: {
-              type: "array",
-              items: {
-                type: "number",
-              },
-              maxItems: 100000,
-            },
-            widthMode: {
-              type: "string",
-              maxLength: 65536,
-            },
-            width: {
-              anyOf: [
-                {
-                  type: "integer",
-                },
-                {
-                  type: "null",
-                },
-              ],
-            },
-            runs: {
-              type: "array",
-              items: {
-                type: "object",
-                properties: {
-                  start: {
-                    type: "integer",
-                  },
-                  length: {
-                    type: "integer",
-                  },
-                  font: {
-                    type: "string",
-                    maxLength: 65536,
-                  },
-                  size: {
-                    type: "integer",
-                  },
-                  bold: {
-                    type: "boolean",
-                  },
-                  italic: {
-                    type: "boolean",
-                  },
-                  baseline: {
-                    type: "string",
-                    maxLength: 65536,
-                  },
-                  kerning: {
-                    type: "number",
-                  },
-                  autoKern: {
-                    type: "boolean",
-                  },
-                  colourId: {
-                    type: "string",
-                    minLength: 1,
-                    maxLength: 4096,
-                    description: "object ID or path reference (10 §3)",
-                  },
-                  outlineColourId: {
-                    anyOf: [
-                      {
-                        type: "string",
-                        minLength: 1,
-                        maxLength: 4096,
-                        description: "object ID or path reference (10 §3)",
-                      },
-                      {
-                        type: "null",
-                      },
-                    ],
-                  },
-                },
-                additionalProperties: false,
-                required: [
-                  "start",
-                  "length",
-                  "font",
-                  "size",
-                  "bold",
-                  "italic",
-                  "baseline",
-                  "kerning",
-                  "autoKern",
-                  "colourId",
-                  "outlineColourId",
-                ],
-              },
-              maxItems: 100000,
-            },
-            paragraphs: {
-              type: "array",
-              items: {
-                type: "object",
-                properties: {
-                  start: {
-                    type: "integer",
-                  },
-                  length: {
-                    type: "integer",
-                  },
-                  align: {
-                    type: "string",
-                    maxLength: 65536,
-                  },
-                  leftMargin: {
-                    type: "number",
-                  },
-                  rightMargin: {
-                    type: "number",
-                  },
-                  indent: {
-                    type: "number",
-                  },
-                  lineSpacing: {
-                    type: "number",
-                  },
-                },
-                additionalProperties: false,
-                required: [
-                  "start",
-                  "length",
-                  "align",
-                  "leftMargin",
-                  "rightMargin",
-                  "indent",
-                  "lineSpacing",
-                ],
-              },
-              maxItems: 100000,
-            },
-            bounds: {
-              type: "object",
-              properties: {
-                x: {
-                  type: "number",
-                },
-                y: {
-                  type: "number",
-                },
-                width: {
-                  type: "integer",
-                },
-                height: {
-                  type: "integer",
-                },
-              },
-              additionalProperties: false,
-              required: [
-                "x",
-                "y",
-                "width",
-                "height",
-              ],
-            },
-            mediaId: {
-              type: "string",
-              minLength: 1,
-              maxLength: 4096,
-              description: "object ID or path reference (10 §3)",
-            },
-            pixelWidth: {
-              type: "integer",
-            },
-            pixelHeight: {
-              type: "integer",
-            },
-          },
-          additionalProperties: false,
-          required: [
-            "type",
-            "id",
-          ],
+          $ref: "#/$defs/draw.drawing.get.item",
         },
-        maxItems: 100000,
       },
     },
+    $comment: "draw.drawing.get result (02 §13.4), closed. Zones (and the leftZoneId/rightZoneId of strokes) are the planar map's, M2 C2.2; they are absent until then.",
     additionalProperties: false,
     required: [
       "drawingId",
@@ -29469,12 +30789,6 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
       "bounds",
       "nodes",
     ],
-    "x-specSection": "02",
-  },
-  "draw.drawing.get.result": {
-    $ref: "#/$defs/draw.drawing.get.spec.DrawingReadback",
-    title: "draw.drawing.get result",
-    "x-spec": "drawing JSON (§13.4)",
   },
   "draw.drawing.rename.params": {
     title: "draw.drawing.rename parameters",
@@ -30204,100 +31518,167 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
     additionalProperties: false,
   },
   "draw.group.create.params": {
-    title: "draw.group.create parameters",
+    title: "GroupCreateParams",
+    description: "`draw.group.create` parameters.",
     type: "object",
     properties: {
       drawingId: {
-        type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
+        description: "The drawing (default: `elementId` + `frame`, else the current drawing).",
+        type: [
+          "string",
+          "null",
+        ],
+        default: null,
+      },
+      elementId: {
+        description: "The element whose cell exposes the drawing.",
+        type: [
+          "string",
+          "null",
+        ],
+        default: null,
+      },
+      frame: {
+        description: "The frame of that cell.",
+        type: [
+          "integer",
+          "null",
+        ],
+        default: null,
+        minimum: 1,
+        maximum: 2147483647,
       },
       ids: {
-        type: "array",
+        description: "Objects to group (default: the drawing selection).",
+        type: [
+          "array",
+          "null",
+        ],
         items: {
           type: "string",
-          minLength: 1,
-          maxLength: 4096,
-          description: "object ID or path reference (10 §3)",
         },
-        maxItems: 100000,
-        description: "Default: selection.",
+        default: null,
+      },
+      expectRev: {
+        description: "The drawing revision the caller read (02 §3.12).",
+        type: [
+          "integer",
+          "null",
+        ],
+        maximum: 18446744073709551615n,
+        minimum: 0,
+        default: null,
       },
     },
     additionalProperties: false,
-    "x-spec": "`drawingId?: id; ids?: [id] = selection`",
   },
   "draw.group.create.result": {
-    title: "draw.group.create result",
+    title: "GroupCreateResult",
+    description: "`{groupId, rev}`.",
     type: "object",
     properties: {
       groupId: {
+        description: "The new group.",
         type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
+      },
+      createdIds: {
+        description: "New layers holding grouped strokes (strokes are grouped in their own layer, 02 §8.4).",
+        type: "array",
+        items: {
+          type: "string",
+        },
       },
       rev: {
-        type: "number",
+        description: "The drawing revision after the change.",
+        type: "integer",
+        maximum: 18446744073709551615n,
+        minimum: 0,
       },
     },
     required: [
       "groupId",
+      "createdIds",
       "rev",
     ],
-    "x-spec": "`{groupId, rev}`",
-    additionalProperties: false,
   },
   "draw.group.delete.params": {
-    title: "draw.group.delete parameters",
+    title: "GroupDeleteParams",
+    description: "`draw.group.delete` parameters.",
     type: "object",
     properties: {
       drawingId: {
-        type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
+        description: "The drawing (default: `elementId` + `frame`, else the current drawing).",
+        type: [
+          "string",
+          "null",
+        ],
+        default: null,
+      },
+      elementId: {
+        description: "The element whose cell exposes the drawing.",
+        type: [
+          "string",
+          "null",
+        ],
+        default: null,
+      },
+      frame: {
+        description: "The frame of that cell.",
+        type: [
+          "integer",
+          "null",
+        ],
+        default: null,
+        minimum: 1,
+        maximum: 2147483647,
       },
       groupIds: {
-        type: "array",
+        description: "Groups to dissolve (default: the selected groups).",
+        type: [
+          "array",
+          "null",
+        ],
         items: {
           type: "string",
-          minLength: 1,
-          maxLength: 4096,
-          description: "object ID or path reference (10 §3)",
         },
-        maxItems: 100000,
-        description: "Default: selected groups.",
+        default: null,
+      },
+      expectRev: {
+        description: "The drawing revision the caller read (02 §3.12).",
+        type: [
+          "integer",
+          "null",
+        ],
+        maximum: 18446744073709551615n,
+        minimum: 0,
+        default: null,
       },
     },
     additionalProperties: false,
-    "x-spec": "`drawingId?: id; groupIds?: [id] = selected groups`",
   },
   "draw.group.delete.result": {
-    title: "draw.group.delete result",
+    title: "GroupDeleteResult",
+    description: "`{memberIds, rev}`.",
     type: "object",
     properties: {
       memberIds: {
+        description: "The former members, in order.",
         type: "array",
         items: {
           type: "string",
-          minLength: 1,
-          maxLength: 4096,
-          description: "object ID or path reference (10 §3)",
         },
-        maxItems: 100000,
       },
       rev: {
-        type: "number",
+        description: "The drawing revision after the change.",
+        type: "integer",
+        maximum: 18446744073709551615n,
+        minimum: 0,
       },
     },
     required: [
       "memberIds",
       "rev",
     ],
-    "x-spec": "`{memberIds: [id], rev}`",
-    additionalProperties: false,
   },
   "draw.hitTest.get.params": {
     title: "draw.hitTest.get parameters",
@@ -30633,54 +32014,83 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
     additionalProperties: false,
   },
   "draw.object.delete.params": {
-    title: "draw.object.delete parameters",
+    title: "DeleteParams",
+    description: "`draw.object.delete` parameters.",
     type: "object",
     properties: {
       drawingId: {
-        type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
+        description: "The drawing (default: `elementId` + `frame`, else the current drawing).",
+        type: [
+          "string",
+          "null",
+        ],
+        default: null,
+      },
+      elementId: {
+        description: "The element whose cell exposes the drawing.",
+        type: [
+          "string",
+          "null",
+        ],
+        default: null,
+      },
+      frame: {
+        description: "The frame of that cell.",
+        type: [
+          "integer",
+          "null",
+        ],
+        default: null,
+        minimum: 1,
+        maximum: 2147483647,
       },
       ids: {
-        type: "array",
+        description: "Objects to delete (default: the drawing selection).",
+        type: [
+          "array",
+          "null",
+        ],
         items: {
           type: "string",
-          minLength: 1,
-          maxLength: 4096,
-          description: "object ID or path reference (10 §3)",
         },
-        maxItems: 100000,
-        description: "Default: selection.",
+        default: null,
+      },
+      expectRev: {
+        description: "The drawing revision the caller read (02 §3.12).",
+        type: [
+          "integer",
+          "null",
+        ],
+        maximum: 18446744073709551615n,
+        minimum: 0,
+        default: null,
       },
     },
     additionalProperties: false,
-    "x-spec": "`drawingId?: id; ids?: [id] = selection`",
   },
   "draw.object.delete.result": {
-    title: "draw.object.delete result",
+    title: "DeleteResult",
+    description: "`{removedIds, rev}`.",
     type: "object",
     properties: {
       removedIds: {
+        description: "Removed objects (their descendants included, and layers left empty).",
         type: "array",
         items: {
           type: "string",
-          minLength: 1,
-          maxLength: 4096,
-          description: "object ID or path reference (10 §3)",
         },
-        maxItems: 100000,
       },
       rev: {
-        type: "number",
+        description: "The drawing revision after the change.",
+        type: "integer",
+        maximum: 18446744073709551615n,
+        minimum: 0,
       },
     },
     required: [
       "removedIds",
       "rev",
     ],
-    "x-spec": "`{removedIds: [id], rev}`",
-    additionalProperties: false,
   },
   "draw.optimize.apply.params": {
     title: "draw.optimize.apply parameters",
@@ -30736,69 +32146,96 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
     "x-spec": "`{layerIds: [id], merged: int, rev}`",
     additionalProperties: false,
   },
+  "draw.pivot.set.Point": {
+    description: "A point `{x, y}` in drawing units.",
+    type: "object",
+    properties: {
+      x: {
+        description: "X (du).",
+        type: "number",
+      },
+      y: {
+        description: "Y (du, up).",
+        type: "number",
+      },
+    },
+    additionalProperties: false,
+    required: [
+      "x",
+      "y",
+    ],
+  },
   "draw.pivot.set.params": {
-    title: "draw.pivot.set parameters",
+    title: "PivotParams",
+    description: "`draw.pivot.set` parameters.",
     type: "object",
     properties: {
       drawingId: {
-        type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
+        description: "The drawing (default: `elementId` + `frame`, else the current drawing).",
+        type: [
+          "string",
+          "null",
+        ],
+        default: null,
+      },
+      elementId: {
+        description: "The element whose cell exposes the drawing.",
+        type: [
+          "string",
+          "null",
+        ],
+        default: null,
+      },
+      frame: {
+        description: "The frame of that cell.",
+        type: [
+          "integer",
+          "null",
+        ],
+        default: null,
+        minimum: 1,
+        maximum: 2147483647,
       },
       point: {
-        type: "object",
-        properties: {
-          x: {
-            type: "number",
-          },
-          y: {
-            type: "number",
-          },
-        },
-        required: [
-          "x",
-          "y",
+        description: "The new pivot (du).",
+        $ref: "#/$defs/draw.pivot.set.Point",
+      },
+      expectRev: {
+        description: "The drawing revision the caller read (02 §3.12; `drawing.staleRevision` when it changed).",
+        type: [
+          "integer",
+          "null",
         ],
-        additionalProperties: false,
+        maximum: 18446744073709551615n,
+        minimum: 0,
+        default: null,
       },
     },
+    additionalProperties: false,
     required: [
       "point",
     ],
-    additionalProperties: false,
-    "x-spec": "`drawingId?: id; point: point`",
   },
   "draw.pivot.set.result": {
-    title: "draw.pivot.set result",
+    title: "PivotResult",
+    description: "`{pivot, rev}`.",
     type: "object",
     properties: {
       pivot: {
-        type: "object",
-        properties: {
-          x: {
-            type: "number",
-          },
-          y: {
-            type: "number",
-          },
-        },
-        required: [
-          "x",
-          "y",
-        ],
-        additionalProperties: false,
+        description: "The pivot.",
+        $ref: "#/$defs/draw.pivot.set.Point",
       },
       rev: {
-        type: "number",
+        description: "The drawing revision after the change.",
+        type: "integer",
+        maximum: 18446744073709551615n,
+        minimum: 0,
       },
     },
     required: [
       "pivot",
       "rev",
     ],
-    "x-spec": "`{pivot, rev}`",
-    additionalProperties: false,
   },
   "draw.point.add.params": {
     title: "draw.point.add parameters",
@@ -32149,252 +33586,365 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
     "x-spec": "`{removedPointCount: int, rev}`",
     additionalProperties: false,
   },
+  "draw.stroke.add.KindParam": {
+    description: "Stroke kind parameter.",
+    oneOf: [
+      {
+        description: "Filled brush shape.",
+        type: "string",
+        const: "brush",
+      },
+      {
+        description: "Centre line with a line style.",
+        type: "string",
+        const: "pencil",
+      },
+      {
+        description: "Never rendered; closes and splits zones.",
+        type: "string",
+        const: "invisible",
+      },
+    ],
+  },
+  "draw.stroke.add.PointIn": {
+    description: "A sample `{x, y, pressure?}`.",
+    type: "object",
+    properties: {
+      x: {
+        description: "X (du).",
+        type: "number",
+      },
+      y: {
+        description: "Y (du).",
+        type: "number",
+      },
+      pressure: {
+        description: "Pressure 0–1 (default 1: a mouse, 02 §3.4).",
+        type: [
+          "number",
+          "null",
+        ],
+        default: null,
+        minimum: 0,
+        maximum: 1,
+      },
+    },
+    additionalProperties: false,
+    required: [
+      "x",
+      "y",
+    ],
+  },
+  "draw.stroke.add.Point": {
+    description: "A point `{x, y}` in drawing units.",
+    type: "object",
+    properties: {
+      x: {
+        description: "X (du).",
+        type: "number",
+      },
+      y: {
+        description: "Y (du, up).",
+        type: "number",
+      },
+    },
+    additionalProperties: false,
+    required: [
+      "x",
+      "y",
+    ],
+  },
+  "draw.stroke.add.PressureIn": {
+    description: "A pressure sample `{t, p}` (02 §3.2).",
+    type: "object",
+    properties: {
+      t: {
+        description: "Normalised arc-length position 0–1.",
+        type: "number",
+        maximum: 1,
+        minimum: 0,
+      },
+      p: {
+        description: "Pressure 0–1.",
+        type: "number",
+        maximum: 1,
+        minimum: 0,
+      },
+    },
+    additionalProperties: false,
+    required: [
+      "t",
+      "p",
+    ],
+  },
+  "draw.stroke.add.PenIn": {
+    description: "An explicit pen `{tipShape, minSize, maxSize, tipAngle}` (02 §13.4 `pen`).",
+    type: "object",
+    properties: {
+      tipShape: {
+        description: "Tip shape.",
+        $ref: "#/$defs/draw.stroke.add.TipParam",
+      },
+      minSize: {
+        description: "Width at lowest pressure (du).",
+        type: "number",
+        maximum: 100,
+        minimum: 0,
+      },
+      maxSize: {
+        description: "Width at full pressure (du).",
+        type: "number",
+        maximum: 100,
+        minimum: 0,
+      },
+      tipAngle: {
+        description: "Orientation of non-round tips (degrees).",
+        type: "number",
+        default: 0,
+        minimum: 0,
+        maximum: 360,
+      },
+    },
+    additionalProperties: false,
+    required: [
+      "tipShape",
+      "minSize",
+      "maxSize",
+    ],
+  },
+  "draw.stroke.add.TipParam": {
+    description: "Tip shape parameter.",
+    oneOf: [
+      {
+        description: "Round nib.",
+        type: "string",
+        const: "round",
+      },
+      {
+        description: "Oval nib.",
+        type: "string",
+        const: "oval",
+      },
+      {
+        description: "Square nib.",
+        type: "string",
+        const: "square",
+      },
+      {
+        description: "Flat nib.",
+        type: "string",
+        const: "flat",
+      },
+    ],
+  },
   "draw.stroke.add.params": {
-    title: "draw.stroke.add parameters",
+    title: "StrokeAddParams",
+    description: "`draw.stroke.add` parameters (02 §13.5).",
     type: "object",
     properties: {
       drawingId: {
-        type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
+        description: "The drawing (default: `elementId` + `frame`, else the current drawing).",
+        type: [
+          "string",
+          "null",
+        ],
+        default: null,
       },
       elementId: {
-        type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
+        description: "The element whose cell receives the stroke.",
+        type: [
+          "string",
+          "null",
+        ],
+        default: null,
       },
       frame: {
-        type: "integer",
+        description: "The frame of that cell (default: current frame).",
+        type: [
+          "integer",
+          "null",
+        ],
+        default: null,
+        minimum: 1,
+        maximum: 2147483647,
       },
       createDrawing: {
+        description: "Create a drawing in an empty addressed cell (same undo step, 02 §1.1).",
         type: "boolean",
         default: true,
       },
       kind: {
-        type: "string",
-        enum: [
-          "brush",
-          "pencil",
-          "invisible",
-        ],
-        default: "brush",
+        description: "Stroke kind.",
+        $ref: "#/$defs/draw.stroke.add.KindParam",
       },
       points: {
-        type: "array",
+        description: "Samples (curve-fitted when `fit`).",
+        type: [
+          "array",
+          "null",
+        ],
         items: {
-          type: "object",
-          properties: {
-            x: {
-              type: "number",
-            },
-            y: {
-              type: "number",
-            },
-            pressure: {
-              type: "array",
-              items: {
-                type: "object",
-                properties: {
-                  t: {
-                    type: "number",
-                  },
-                  p: {
-                    type: "number",
-                  },
-                },
-                required: [
-                  "t",
-                  "p",
-                ],
-                additionalProperties: false,
-              },
-              maxItems: 100000,
-            },
-          },
-          required: [
-            "x",
-            "y",
-          ],
-          additionalProperties: false,
+          $ref: "#/$defs/draw.stroke.add.PointIn",
         },
+        minItems: 1,
         maxItems: 100000,
       },
       bezier: {
-        type: "array",
+        description: "Bézier control points used verbatim (02 §13.4 Bézier list).",
+        type: [
+          "array",
+          "null",
+        ],
         items: {
-          type: "object",
-          properties: {
-            x: {
-              type: "number",
-            },
-            y: {
-              type: "number",
-            },
-          },
-          required: [
-            "x",
-            "y",
-          ],
-          additionalProperties: false,
+          $ref: "#/$defs/draw.stroke.add.Point",
         },
-        maxItems: 100000,
+        minItems: 1,
+        maxItems: 300001,
+        default: null,
       },
       closed: {
+        description: "Closed path.",
         type: "boolean",
         default: false,
       },
       pressure: {
-        type: "array",
+        description: "Pressure map `[{t, p}]` (overrides per-point pressure).",
+        type: [
+          "array",
+          "null",
+        ],
         items: {
-          type: "object",
-          properties: {
-            t: {
-              type: "number",
-            },
-            p: {
-              type: "number",
-            },
-          },
-          required: [
-            "t",
-            "p",
-          ],
-          additionalProperties: false,
+          $ref: "#/$defs/draw.stroke.add.PressureIn",
         },
+        minItems: 1,
         maxItems: 100000,
+        default: null,
       },
       fit: {
+        description: "Fit Béziers to `points` (§3.3); `false` joins them with straight segments.",
         type: "boolean",
         default: true,
       },
       smoothness: {
-        type: "number",
+        description: "Smoothness 0–10 (default: the pen's).",
+        type: [
+          "number",
+          "null",
+        ],
+        default: null,
         minimum: 0,
         maximum: 10,
-        description: "Default: pen's.",
       },
       penId: {
-        type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3) Default: current pen.",
+        description: "The brush pen (default: the current brush pen).",
+        type: [
+          "string",
+          "null",
+        ],
+        default: null,
       },
       pen: {
-        type: "object",
-        properties: {
-          tipShape: {
-            type: "string",
-            maxLength: 65536,
+        description: "An explicit pen (overrides the pen's shape and sizes).",
+        anyOf: [
+          {
+            $ref: "#/$defs/draw.stroke.add.PenIn",
           },
-          minSize: {
-            type: "number",
+          {
+            type: "null",
           },
-          maxSize: {
-            type: "number",
-          },
-          tipAngle: {
-            type: "number",
-          },
-        },
-        required: [
-          "tipShape",
-          "minSize",
-          "maxSize",
-          "tipAngle",
         ],
-        additionalProperties: false,
       },
       colourId: {
-        type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3) Default: current colour.",
+        description: "Colour (default: the pen's colour, else the current colour).",
+        type: [
+          "string",
+          "null",
+        ],
+        default: null,
       },
       thickness: {
-        type: "number",
+        description: "Pencil thickness 0–100 du (default: the pen's maximum size).",
+        type: [
+          "number",
+          "null",
+        ],
+        default: null,
         minimum: 0,
         maximum: 100,
-        description: "Default: pen max.",
       },
       layer: {
+        description: "`auto`, `new`, `top`, `behind` or a layer ID.",
         type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3) or \"auto\" | \"new\" | \"top\" | \"behind\"",
         default: "auto",
       },
       symmetry: {
+        description: "Apply the current symmetry setting (02 §6.2).",
         type: "boolean",
         default: true,
       },
       expectRev: {
-        type: "integer",
+        description: "The drawing revision the caller read (02 §3.12; `drawing.staleRevision` when it changed).",
+        type: [
+          "integer",
+          "null",
+        ],
+        maximum: 18446744073709551615n,
+        minimum: 0,
+        default: null,
       },
     },
     additionalProperties: false,
-    "x-spec": "`drawingId?: id; elementId?: id; frame?: int; createDrawing: bool = true; kind: enum \"brush\"|\"pencil\"|\"invisible\" = \"brush\"; points?: [{x,y,pressure?}]; bezier?: [point]; closed: bool = false; pressure?: [{t,p}]; fit: bool = true; smoothness?: number (0–10) = pen's; penId?: id = current pen; pen?: object {tipShape,minSize,maxSize,tipAngle}; colourId?: id = current colour; thickness?: number (0–100) = pen max; layer: enum \"auto\"|\"new\"|\"top\"|\"behind\" | id = \"auto\"; symmetry: bool = true; expectRev?: int`",
   },
   "draw.stroke.add.result": {
-    title: "draw.stroke.add result",
+    title: "StrokeAddResult",
+    description: "`draw.stroke.add` result (02 §13.5).",
     type: "object",
     properties: {
       drawingId: {
+        description: "The drawing.",
         type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
       },
       createdDrawing: {
+        description: "A drawing was created in the empty cell.",
         type: "boolean",
       },
       strokeIds: {
+        description: "The new strokes (symmetry copies included), back to front.",
         type: "array",
         items: {
           type: "string",
-          minLength: 1,
-          maxLength: 4096,
-          description: "object ID or path reference (10 §3)",
         },
-        maxItems: 100000,
       },
       zoneIds: {
+        description: "Zones created or changed (planar map, M2 C2.2: empty until then).",
         type: "array",
         items: {
           type: "string",
-          minLength: 1,
-          maxLength: 4096,
-          description: "object ID or path reference (10 §3)",
         },
-        maxItems: 100000,
       },
       layerId: {
+        description: "The layer holding the strokes.",
         type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
       },
       removedIds: {
+        description: "Strokes removed by re-noding (M2 C2.2: empty until then).",
         type: "array",
         items: {
           type: "string",
-          minLength: 1,
-          maxLength: 4096,
-          description: "object ID or path reference (10 §3)",
         },
-        maxItems: 100000,
       },
       rev: {
-        type: "number",
+        description: "The drawing revision after the change.",
+        type: "integer",
+        maximum: 18446744073709551615n,
+        minimum: 0,
       },
       hints: {
+        description: "Hint codes (`drawing.strokesHidden` for invisible strokes while Show Strokes is off).",
         type: "array",
         items: {
           type: "string",
-          maxLength: 256,
         },
-        maxItems: 100000,
       },
     },
     required: [
@@ -32407,110 +33957,176 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
       "rev",
       "hints",
     ],
-    "x-spec": "`{drawingId, createdDrawing: bool, strokeIds: [id], zoneIds: [id], layerId, removedIds: [id], rev, hints: [code]}`",
+  },
+  "draw.stroke.set.Point": {
+    description: "A point `{x, y}` in drawing units.",
+    type: "object",
+    properties: {
+      x: {
+        description: "X (du).",
+        type: "number",
+      },
+      y: {
+        description: "Y (du, up).",
+        type: "number",
+      },
+    },
     additionalProperties: false,
+    required: [
+      "x",
+      "y",
+    ],
+  },
+  "draw.stroke.set.PressureIn": {
+    description: "A pressure sample `{t, p}` (02 §3.2).",
+    type: "object",
+    properties: {
+      t: {
+        description: "Normalised arc-length position 0–1.",
+        type: "number",
+        maximum: 1,
+        minimum: 0,
+      },
+      p: {
+        description: "Pressure 0–1.",
+        type: "number",
+        maximum: 1,
+        minimum: 0,
+      },
+    },
+    additionalProperties: false,
+    required: [
+      "t",
+      "p",
+    ],
+  },
+  "draw.stroke.set.LineKind": {
+    description: "Kind conversion of `draw.stroke.set`.",
+    oneOf: [
+      {
+        description: "A visible centre line.",
+        type: "string",
+        const: "pencil",
+      },
+      {
+        description: "An invisible stroke (an unpainted line, 02 §7.3.2).",
+        type: "string",
+        const: "invisible",
+      },
+    ],
   },
   "draw.stroke.set.params": {
-    title: "draw.stroke.set parameters",
+    title: "StrokeSetParams",
+    description: "`draw.stroke.set` parameters (02 §13.5).",
     type: "object",
     properties: {
       strokeId: {
+        description: "The stroke (`<drawingId>/<localId>`, or local with `drawingId` / the current drawing).",
         type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
+      },
+      drawingId: {
+        description: "The drawing holding a local stroke ID (default: the current drawing).",
+        type: [
+          "string",
+          "null",
+        ],
+        default: null,
       },
       bezier: {
-        type: "array",
+        description: "New geometry (02 §13.4 Bézier list): a brush stroke's spine (the outline is swept again), or its outline when\nthe spine was discarded; a pencil or invisible stroke's path.",
+        type: [
+          "array",
+          "null",
+        ],
         items: {
-          type: "object",
-          properties: {
-            x: {
-              type: "number",
-            },
-            y: {
-              type: "number",
-            },
-          },
-          required: [
-            "x",
-            "y",
-          ],
-          additionalProperties: false,
+          $ref: "#/$defs/draw.stroke.set.Point",
         },
-        maxItems: 100000,
+        minItems: 1,
+        maxItems: 300001,
+        default: null,
       },
       closed: {
-        type: "boolean",
+        description: "Closed path (with `bezier`).",
+        type: [
+          "boolean",
+          "null",
+        ],
+        default: null,
       },
       pressure: {
-        type: "array",
+        description: "New pressure map of a brush stroke's spine.",
+        type: [
+          "array",
+          "null",
+        ],
         items: {
-          type: "object",
-          properties: {
-            t: {
-              type: "number",
-            },
-            p: {
-              type: "number",
-            },
-          },
-          required: [
-            "t",
-            "p",
-          ],
-          additionalProperties: false,
+          $ref: "#/$defs/draw.stroke.set.PressureIn",
         },
+        minItems: 1,
         maxItems: 100000,
+        default: null,
       },
       thickness: {
-        type: "number",
+        description: "New line thickness of a pencil line (du).",
+        type: [
+          "number",
+          "null",
+        ],
+        default: null,
         minimum: 0,
         maximum: 100,
       },
       kind: {
-        type: "string",
-        enum: [
-          "pencil",
-          "invisible",
+        description: "Make a pencil line invisible or an invisible stroke a pencil line.",
+        anyOf: [
+          {
+            $ref: "#/$defs/draw.stroke.set.LineKind",
+          },
+          {
+            type: "null",
+          },
         ],
       },
       expectRev: {
-        type: "integer",
+        description: "The drawing revision the caller read (02 §3.12; `drawing.staleRevision` when it changed).",
+        type: [
+          "integer",
+          "null",
+        ],
+        maximum: 18446744073709551615n,
+        minimum: 0,
+        default: null,
       },
     },
+    additionalProperties: false,
     required: [
       "strokeId",
     ],
-    additionalProperties: false,
-    "x-spec": "`strokeId: id; bezier?: [point]; closed?: bool; pressure?: [{t,p}]; thickness?: number (0–100); kind?: enum \"pencil\"|\"invisible\"; expectRev?: int`",
   },
   "draw.stroke.set.result": {
-    title: "draw.stroke.set result",
+    title: "StrokeSetResult",
+    description: "`{strokeIds, removedIds, rev}`.",
     type: "object",
     properties: {
       strokeIds: {
+        description: "The edited stroke (its ID is kept, 02 §3.12 item 4).",
         type: "array",
         items: {
           type: "string",
-          minLength: 1,
-          maxLength: 4096,
-          description: "object ID or path reference (10 §3)",
         },
-        maxItems: 100000,
       },
       removedIds: {
+        description: "Strokes removed by re-noding (M2 C2.2: empty until then).",
         type: "array",
         items: {
           type: "string",
-          minLength: 1,
-          maxLength: 4096,
-          description: "object ID or path reference (10 §3)",
         },
-        maxItems: 100000,
       },
       rev: {
-        type: "number",
+        description: "The drawing revision after the change.",
+        type: "integer",
+        maximum: 18446744073709551615n,
+        minimum: 0,
       },
     },
     required: [
@@ -32518,361 +34134,853 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
       "removedIds",
       "rev",
     ],
-    "x-spec": "`{strokeIds: [id], removedIds: [id], rev}`",
-    additionalProperties: false,
   },
-  "draw.text.add.params": {
-    title: "draw.text.add parameters",
+  "draw.text.add.Point": {
+    description: "A point `{x, y}` in drawing units.",
     type: "object",
     properties: {
-      drawingId: {
-        type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
-      },
-      position: {
-        type: "object",
-        properties: {
-          x: {
-            type: "number",
-          },
-          y: {
-            type: "number",
-          },
-        },
-        required: [
-          "x",
-          "y",
-        ],
-        additionalProperties: false,
-      },
-      text: {
-        type: "string",
-        maxLength: 65536,
-      },
-      width: {
+      x: {
+        description: "X (du).",
         type: "number",
-        description: "(fixed width; omit = auto)",
       },
-      format: {
-        type: "object",
-        properties: {},
-        additionalProperties: false,
-        "x-placeholder": true,
-        description: "(Text panel fields) — shape not defined by the owning section (spec issue); only {} is accepted until it is",
-        "x-specIssue": "SI-026",
-      },
-      colourId: {
-        type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
-      },
-    },
-    required: [
-      "position",
-      "text",
-    ],
-    additionalProperties: false,
-    "x-spec": "`drawingId?: id; position: point; text: string; width?: number (fixed width; omit = auto); format?: object (Text panel fields); colourId?: id`",
-  },
-  "draw.text.add.result": {
-    title: "draw.text.add result",
-    type: "object",
-    properties: {
-      textId: {
-        type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
-      },
-      bounds: {
-        type: "object",
-        properties: {
-          x: {
-            type: "number",
-          },
-          y: {
-            type: "number",
-          },
-          width: {
-            type: "number",
-          },
-          height: {
-            type: "number",
-          },
-        },
-        required: [
-          "x",
-          "y",
-          "width",
-          "height",
-        ],
-        additionalProperties: false,
-      },
-      rev: {
+      y: {
+        description: "Y (du, up).",
         type: "number",
       },
     },
-    required: [
-      "textId",
-      "bounds",
-      "rev",
-    ],
-    "x-spec": "`{textId, bounds, rev}`",
     additionalProperties: false,
+    required: [
+      "x",
+      "y",
+    ],
   },
-  "draw.text.set.params": {
-    title: "draw.text.set parameters",
+  "draw.text.add.TextFormat": {
+    description: "The Text panel fields (02 §7.6.1; SI-026 `format`).",
     type: "object",
     properties: {
-      textId: {
-        type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
-      },
-      text: {
-        type: "string",
-        maxLength: 65536,
-      },
-      insert: {
-        type: "object",
-        properties: {
-          at: {
-            type: "integer",
-          },
-          text: {
-            type: "string",
-            maxLength: 65536,
-          },
-        },
-        required: [
-          "at",
-          "text",
-        ],
-        additionalProperties: false,
-      },
-      delete: {
-        type: "object",
-        properties: {
-          start: {
-            type: "integer",
-          },
-          length: {
-            type: "integer",
-          },
-        },
-        required: [
-          "start",
-          "length",
-        ],
-        additionalProperties: false,
-      },
-      widthMode: {
-        type: "string",
-        enum: [
-          "auto",
-          "fixed",
-        ],
-      },
-      width: {
-        type: "number",
-      },
-      position: {
-        type: "object",
-        properties: {
-          x: {
-            type: "number",
-          },
-          y: {
-            type: "number",
-          },
-        },
-        required: [
-          "x",
-          "y",
-        ],
-        additionalProperties: false,
-      },
-    },
-    required: [
-      "textId",
-    ],
-    additionalProperties: false,
-    "x-spec": "`textId: id; text?: string; insert?: {at: int, text: string}; delete?: {start: int, length: int}; widthMode?: enum \"auto\"|\"fixed\"; width?: number; position?: point`",
-  },
-  "draw.text.set.result": {
-    title: "draw.text.set result",
-    type: "object",
-    properties: {
-      textId: {
-        type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
-      },
-      bounds: {
-        type: "object",
-        properties: {
-          x: {
-            type: "number",
-          },
-          y: {
-            type: "number",
-          },
-          width: {
-            type: "number",
-          },
-          height: {
-            type: "number",
-          },
-        },
-        required: [
-          "x",
-          "y",
-          "width",
-          "height",
-        ],
-        additionalProperties: false,
-      },
-      rev: {
-        type: "number",
-      },
-    },
-    required: [
-      "textId",
-      "bounds",
-      "rev",
-    ],
-    "x-spec": "`{textId, bounds, rev}`",
-    additionalProperties: false,
-  },
-  "draw.textFormat.set.params": {
-    title: "draw.textFormat.set parameters",
-    type: "object",
-    properties: {
-      textId: {
-        type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
-      },
-      start: {
-        type: "integer",
-        default: 0,
-      },
-      length: {
-        type: "integer",
-        description: "(default to end)",
-      },
       font: {
-        type: "string",
-        maxLength: 65536,
+        description: "Font family (kept when missing).",
+        type: [
+          "string",
+          "null",
+        ],
+        minLength: 1,
+        maxLength: 256,
+        default: null,
       },
       size: {
-        type: "number",
+        description: "Size (du).",
+        type: [
+          "number",
+          "null",
+        ],
+        default: null,
         minimum: 1,
         maximum: 512,
       },
       bold: {
-        type: "boolean",
+        description: "Bold.",
+        type: [
+          "boolean",
+          "null",
+        ],
+        default: null,
       },
       italic: {
-        type: "boolean",
+        description: "Italic.",
+        type: [
+          "boolean",
+          "null",
+        ],
+        default: null,
       },
       baseline: {
-        type: "string",
-        enum: [
-          "normal",
-          "subscript",
-          "superscript",
-        ],
-      },
-      kerning: {
-        type: "integer",
-        minimum: -60,
-        maximum: 60,
-      },
-      autoKern: {
-        type: "boolean",
-      },
-      align: {
-        type: "string",
-        enum: [
-          "left",
-          "centre",
-          "right",
-          "justify",
-        ],
-      },
-      leftMargin: {
-        type: "number",
-        minimum: 0,
-        maximum: 1000,
-      },
-      rightMargin: {
-        type: "number",
-        minimum: 0,
-        maximum: 1000,
-      },
-      indent: {
-        type: "number",
-        minimum: -99,
-        maximum: 1000,
-      },
-      lineSpacing: {
-        type: "number",
-        minimum: -99,
-        maximum: 1000,
-      },
-      colourId: {
-        type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
-      },
-      outlineColourId: {
+        description: "Baseline.",
         anyOf: [
           {
-            type: "string",
-            minLength: 1,
-            maxLength: 4096,
-            description: "object ID or path reference (10 §3)",
+            $ref: "#/$defs/draw.text.add.Baseline",
           },
           {
             type: "null",
           },
         ],
       },
+      kerning: {
+        description: "Manual kerning (1/100 em).",
+        type: [
+          "integer",
+          "null",
+        ],
+        default: null,
+        minimum: -60,
+        maximum: 60,
+      },
+      autoKern: {
+        description: "Font kerning pairs.",
+        type: [
+          "boolean",
+          "null",
+        ],
+        default: null,
+      },
+      align: {
+        description: "Alignment.",
+        anyOf: [
+          {
+            $ref: "#/$defs/draw.text.add.Align",
+          },
+          {
+            type: "null",
+          },
+        ],
+      },
+      leftMargin: {
+        description: "Left margin (du).",
+        type: [
+          "number",
+          "null",
+        ],
+        default: null,
+        minimum: 0,
+        maximum: 1000,
+      },
+      rightMargin: {
+        description: "Right margin (du).",
+        type: [
+          "number",
+          "null",
+        ],
+        default: null,
+        minimum: 0,
+        maximum: 1000,
+      },
+      indent: {
+        description: "First-line indent (du).",
+        type: [
+          "number",
+          "null",
+        ],
+        default: null,
+        minimum: -99,
+        maximum: 1000,
+      },
+      lineSpacing: {
+        description: "Additional line spacing (du).",
+        type: [
+          "number",
+          "null",
+        ],
+        default: null,
+        minimum: -99,
+        maximum: 1000,
+      },
+      outlineColourId: {
+        description: "Outline colour: only `null` (10 §4.9 runs store no outline colour; SI-055).",
+        type: [
+          "string",
+          "null",
+        ],
+        default: null,
+      },
     },
-    required: [
-      "textId",
-    ],
     additionalProperties: false,
-    "x-spec": "`textId: id; start: int = 0; length?: int (default to end); font?: string; size?: number (1–512); bold?: bool; italic?: bool; baseline?: enum \"normal\"|\"subscript\"|\"superscript\"; kerning?: int (−60–60); autoKern?: bool; align?: enum \"left\"|\"centre\"|\"right\"|\"justify\"; leftMargin?: number (0–1000); rightMargin?: number (0–1000); indent?: number (−99–1000); lineSpacing?: number (−99–1000); colourId?: id; outlineColourId?: id|null`",
   },
-  "draw.textFormat.set.result": {
-    title: "draw.textFormat.set result",
+  "draw.text.add.Baseline": {
+    description: "Baseline (`script` in the project format).",
+    oneOf: [
+      {
+        description: "Normal.",
+        type: "string",
+        const: "normal",
+      },
+      {
+        description: "Subscript (60 % size).",
+        type: "string",
+        const: "subscript",
+      },
+      {
+        description: "Superscript (60 % size).",
+        type: "string",
+        const: "superscript",
+      },
+    ],
+  },
+  "draw.text.add.Align": {
+    description: "Paragraph alignment.",
+    oneOf: [
+      {
+        description: "Left.",
+        type: "string",
+        const: "left",
+      },
+      {
+        description: "Centre.",
+        type: "string",
+        const: "centre",
+      },
+      {
+        description: "Right.",
+        type: "string",
+        const: "right",
+      },
+      {
+        description: "Justify.",
+        type: "string",
+        const: "justify",
+      },
+    ],
+  },
+  "draw.text.add.params": {
+    title: "TextAddParams",
+    description: "`draw.text.add` parameters (02 §13.5).",
     type: "object",
     properties: {
-      textId: {
-        type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
+      drawingId: {
+        description: "The drawing (default: `elementId` + `frame`, else the current drawing).",
+        type: [
+          "string",
+          "null",
+        ],
+        default: null,
       },
-      rev: {
+      elementId: {
+        description: "The element whose cell receives the text.",
+        type: [
+          "string",
+          "null",
+        ],
+        default: null,
+      },
+      frame: {
+        description: "The frame of that cell.",
+        type: [
+          "integer",
+          "null",
+        ],
+        default: null,
+        minimum: 1,
+        maximum: 2147483647,
+      },
+      createDrawing: {
+        description: "Create a drawing in an empty addressed cell.",
+        type: "boolean",
+        default: true,
+      },
+      position: {
+        description: "Top-left corner of the text box (du).",
+        $ref: "#/$defs/draw.text.add.Point",
+      },
+      text: {
+        description: "The characters (`\\n` starts a paragraph).",
+        type: "string",
+        maxLength: 100000,
+      },
+      width: {
+        description: "Fixed width with word wrap (du); omitted = auto width.",
+        type: [
+          "number",
+          "null",
+        ],
+        default: null,
+      },
+      format: {
+        description: "Text panel fields (default: the Text panel defaults, 02 §7.6.1).",
+        anyOf: [
+          {
+            $ref: "#/$defs/draw.text.add.TextFormat",
+          },
+          {
+            type: "null",
+          },
+        ],
+      },
+      colourId: {
+        description: "Text colour (default: the current colour).",
+        type: [
+          "string",
+          "null",
+        ],
+        default: null,
+      },
+    },
+    additionalProperties: false,
+    required: [
+      "position",
+      "text",
+    ],
+  },
+  "draw.text.add.Bounds": {
+    description: "`{x, y, width, height}`.",
+    type: "object",
+    properties: {
+      x: {
+        description: "Minimum x (du).",
+        type: "number",
+      },
+      y: {
+        description: "Minimum y (du).",
+        type: "number",
+      },
+      width: {
+        description: "Width (du).",
+        type: "number",
+      },
+      height: {
+        description: "Height (du).",
         type: "number",
       },
     },
     required: [
+      "x",
+      "y",
+      "width",
+      "height",
+    ],
+  },
+  "draw.text.add.result": {
+    title: "TextResult",
+    description: "`{textId, bounds, rev}`.",
+    type: "object",
+    properties: {
+      drawingId: {
+        description: "The drawing.",
+        type: "string",
+      },
+      textId: {
+        description: "The text object.",
+        type: "string",
+      },
+      bounds: {
+        description: "Its bounds in drawing space (laid out with the installed fonts).",
+        $ref: "#/$defs/draw.text.add.Bounds",
+      },
+      rev: {
+        description: "The drawing revision after the change.",
+        type: "integer",
+        maximum: 18446744073709551615n,
+        minimum: 0,
+      },
+    },
+    required: [
+      "drawingId",
       "textId",
+      "bounds",
       "rev",
     ],
-    "x-spec": "`{textId, rev}`",
+  },
+  "draw.text.set.Insert": {
+    description: "`{at, text}` of an insertion.",
+    type: "object",
+    properties: {
+      at: {
+        description: "Code-point position.",
+        type: "integer",
+        maximum: 100000,
+        minimum: 0,
+      },
+      text: {
+        description: "The characters.",
+        type: "string",
+        maxLength: 100000,
+      },
+    },
     additionalProperties: false,
+    required: [
+      "at",
+      "text",
+    ],
+  },
+  "draw.text.set.Delete": {
+    description: "`{start, length}` of a deletion.",
+    type: "object",
+    properties: {
+      start: {
+        description: "First code point.",
+        type: "integer",
+        maximum: 100000,
+        minimum: 0,
+      },
+      length: {
+        description: "Number of code points.",
+        type: "integer",
+        maximum: 100000,
+        minimum: 0,
+      },
+    },
+    additionalProperties: false,
+    required: [
+      "start",
+      "length",
+    ],
+  },
+  "draw.text.set.WidthModeParam": {
+    description: "Width mode parameter.",
+    oneOf: [
+      {
+        description: "No wrapping.",
+        type: "string",
+        const: "auto",
+      },
+      {
+        description: "Word wrap at `width`.",
+        type: "string",
+        const: "fixed",
+      },
+    ],
+  },
+  "draw.text.set.Point": {
+    description: "A point `{x, y}` in drawing units.",
+    type: "object",
+    properties: {
+      x: {
+        description: "X (du).",
+        type: "number",
+      },
+      y: {
+        description: "Y (du, up).",
+        type: "number",
+      },
+    },
+    additionalProperties: false,
+    required: [
+      "x",
+      "y",
+    ],
+  },
+  "draw.text.set.params": {
+    title: "TextSetParams",
+    description: "`draw.text.set` parameters (02 §13.5).",
+    type: "object",
+    properties: {
+      textId: {
+        description: "The text object (`<drawingId>/<localId>`, or local with `drawingId` / the current drawing).",
+        type: "string",
+      },
+      drawingId: {
+        description: "The drawing holding a local ID.",
+        type: [
+          "string",
+          "null",
+        ],
+        default: null,
+      },
+      text: {
+        description: "Replace the whole text (the first run's and paragraph's format is kept).",
+        type: [
+          "string",
+          "null",
+        ],
+        maxLength: 100000,
+        default: null,
+      },
+      insert: {
+        description: "Insert characters.",
+        anyOf: [
+          {
+            $ref: "#/$defs/draw.text.set.Insert",
+          },
+          {
+            type: "null",
+          },
+        ],
+      },
+      delete: {
+        description: "Delete characters.",
+        anyOf: [
+          {
+            $ref: "#/$defs/draw.text.set.Delete",
+          },
+          {
+            type: "null",
+          },
+        ],
+      },
+      widthMode: {
+        description: "Auto or fixed width.",
+        anyOf: [
+          {
+            $ref: "#/$defs/draw.text.set.WidthModeParam",
+          },
+          {
+            type: "null",
+          },
+        ],
+      },
+      width: {
+        description: "Fixed width (du); switches to fixed width (02 §7.6).",
+        type: [
+          "number",
+          "null",
+        ],
+        default: null,
+      },
+      position: {
+        description: "New top-left corner (du).",
+        anyOf: [
+          {
+            $ref: "#/$defs/draw.text.set.Point",
+          },
+          {
+            type: "null",
+          },
+        ],
+        default: null,
+      },
+      expectRev: {
+        description: "The drawing revision the caller read (02 §3.12).",
+        type: [
+          "integer",
+          "null",
+        ],
+        maximum: 18446744073709551615n,
+        minimum: 0,
+        default: null,
+      },
+    },
+    additionalProperties: false,
+    required: [
+      "textId",
+    ],
+  },
+  "draw.text.set.Bounds": {
+    description: "`{x, y, width, height}`.",
+    type: "object",
+    properties: {
+      x: {
+        description: "Minimum x (du).",
+        type: "number",
+      },
+      y: {
+        description: "Minimum y (du).",
+        type: "number",
+      },
+      width: {
+        description: "Width (du).",
+        type: "number",
+      },
+      height: {
+        description: "Height (du).",
+        type: "number",
+      },
+    },
+    required: [
+      "x",
+      "y",
+      "width",
+      "height",
+    ],
+  },
+  "draw.text.set.result": {
+    title: "TextResult",
+    description: "`{textId, bounds, rev}`.",
+    type: "object",
+    properties: {
+      drawingId: {
+        description: "The drawing.",
+        type: "string",
+      },
+      textId: {
+        description: "The text object.",
+        type: "string",
+      },
+      bounds: {
+        description: "Its bounds in drawing space (laid out with the installed fonts).",
+        $ref: "#/$defs/draw.text.set.Bounds",
+      },
+      rev: {
+        description: "The drawing revision after the change.",
+        type: "integer",
+        maximum: 18446744073709551615n,
+        minimum: 0,
+      },
+    },
+    required: [
+      "drawingId",
+      "textId",
+      "bounds",
+      "rev",
+    ],
+  },
+  "draw.textFormat.set.Baseline": {
+    description: "Baseline (`script` in the project format).",
+    oneOf: [
+      {
+        description: "Normal.",
+        type: "string",
+        const: "normal",
+      },
+      {
+        description: "Subscript (60 % size).",
+        type: "string",
+        const: "subscript",
+      },
+      {
+        description: "Superscript (60 % size).",
+        type: "string",
+        const: "superscript",
+      },
+    ],
+  },
+  "draw.textFormat.set.Align": {
+    description: "Paragraph alignment.",
+    oneOf: [
+      {
+        description: "Left.",
+        type: "string",
+        const: "left",
+      },
+      {
+        description: "Centre.",
+        type: "string",
+        const: "centre",
+      },
+      {
+        description: "Right.",
+        type: "string",
+        const: "right",
+      },
+      {
+        description: "Justify.",
+        type: "string",
+        const: "justify",
+      },
+    ],
+  },
+  "draw.textFormat.set.params": {
+    title: "TextFormatParams",
+    description: "`draw.textFormat.set` parameters (02 §13.5).",
+    type: "object",
+    properties: {
+      textId: {
+        description: "The text object.",
+        type: "string",
+      },
+      drawingId: {
+        description: "The drawing holding a local ID.",
+        type: [
+          "string",
+          "null",
+        ],
+        default: null,
+      },
+      start: {
+        description: "First code point.",
+        type: "integer",
+        default: 0,
+        minimum: 0,
+        maximum: 100000,
+      },
+      length: {
+        description: "Number of code points (default: to the end).",
+        type: [
+          "integer",
+          "null",
+        ],
+        default: null,
+        minimum: 0,
+        maximum: 100000,
+      },
+      font: {
+        description: "Font family.",
+        type: [
+          "string",
+          "null",
+        ],
+        minLength: 1,
+        maxLength: 256,
+        default: null,
+      },
+      size: {
+        description: "Size (du).",
+        type: [
+          "number",
+          "null",
+        ],
+        default: null,
+        minimum: 1,
+        maximum: 512,
+      },
+      bold: {
+        description: "Bold.",
+        type: [
+          "boolean",
+          "null",
+        ],
+        default: null,
+      },
+      italic: {
+        description: "Italic.",
+        type: [
+          "boolean",
+          "null",
+        ],
+        default: null,
+      },
+      baseline: {
+        description: "Baseline.",
+        anyOf: [
+          {
+            $ref: "#/$defs/draw.textFormat.set.Baseline",
+          },
+          {
+            type: "null",
+          },
+        ],
+      },
+      kerning: {
+        description: "Manual kerning (1/100 em).",
+        type: [
+          "integer",
+          "null",
+        ],
+        default: null,
+        minimum: -60,
+        maximum: 60,
+      },
+      autoKern: {
+        description: "Font kerning pairs.",
+        type: [
+          "boolean",
+          "null",
+        ],
+        default: null,
+      },
+      align: {
+        description: "Alignment.",
+        anyOf: [
+          {
+            $ref: "#/$defs/draw.textFormat.set.Align",
+          },
+          {
+            type: "null",
+          },
+        ],
+      },
+      leftMargin: {
+        description: "Left margin (du).",
+        type: [
+          "number",
+          "null",
+        ],
+        default: null,
+        minimum: 0,
+        maximum: 1000,
+      },
+      rightMargin: {
+        description: "Right margin (du).",
+        type: [
+          "number",
+          "null",
+        ],
+        default: null,
+        minimum: 0,
+        maximum: 1000,
+      },
+      indent: {
+        description: "First-line indent (du).",
+        type: [
+          "number",
+          "null",
+        ],
+        default: null,
+        minimum: -99,
+        maximum: 1000,
+      },
+      lineSpacing: {
+        description: "Additional line spacing (du).",
+        type: [
+          "number",
+          "null",
+        ],
+        default: null,
+        minimum: -99,
+        maximum: 1000,
+      },
+      colourId: {
+        description: "Fill colour.",
+        type: [
+          "string",
+          "null",
+        ],
+        default: null,
+      },
+      outlineColourId: {
+        description: "Outline colour: only `null` (SI-055).",
+        type: [
+          "string",
+          "null",
+        ],
+        default: null,
+      },
+      expectRev: {
+        description: "The drawing revision the caller read (02 §3.12).",
+        type: [
+          "integer",
+          "null",
+        ],
+        maximum: 18446744073709551615n,
+        minimum: 0,
+        default: null,
+      },
+    },
+    additionalProperties: false,
+    required: [
+      "textId",
+    ],
+  },
+  "draw.textFormat.set.Bounds": {
+    description: "`{x, y, width, height}`.",
+    type: "object",
+    properties: {
+      x: {
+        description: "Minimum x (du).",
+        type: "number",
+      },
+      y: {
+        description: "Minimum y (du).",
+        type: "number",
+      },
+      width: {
+        description: "Width (du).",
+        type: "number",
+      },
+      height: {
+        description: "Height (du).",
+        type: "number",
+      },
+    },
+    required: [
+      "x",
+      "y",
+      "width",
+      "height",
+    ],
+  },
+  "draw.textFormat.set.result": {
+    title: "TextFormatResult",
+    description: "`{textId, rev}`.",
+    type: "object",
+    properties: {
+      textId: {
+        description: "The text object.",
+        type: "string",
+      },
+      bounds: {
+        description: "Its bounds after the change.",
+        $ref: "#/$defs/draw.textFormat.set.Bounds",
+      },
+      rev: {
+        description: "The drawing revision after the change.",
+        type: "integer",
+        maximum: 18446744073709551615n,
+        minimum: 0,
+      },
+    },
+    required: [
+      "textId",
+      "bounds",
+      "rev",
+    ],
   },
   "draw.transform.apply.params": {
     title: "draw.transform.apply parameters",
@@ -79500,41 +81608,336 @@ export interface draw_centreLine_apply_result {
   rev: number;
 }
 
+/** Content to insert: `{nodes}` (a whole `draw.drawing.get` result is accepted). */
+export interface draw_content_add_ContentIn {
+  /** Nodes, back to front. */
+  nodes: draw_content_add_NodeIn[];
+  /** Read-only (ignored). */
+  drawingId?: string | null;
+  /** Read-only (ignored). */
+  elementId?: string | null;
+  /** Read-only (ignored). */
+  name?: string | null;
+  /** Read-only (ignored). */
+  rev?: number | bigint | null;
+  /** Read-only (ignored). */
+  locked?: boolean | null;
+  /** Read-only (ignored). */
+  space?: draw_content_add_SpaceIn | null;
+  /** Read-only (ignored; the target drawing keeps its pivot). */
+  pivot?: draw_content_add_PointIn | null;
+  /** Read-only (ignored). */
+  bounds?: draw_content_add_BoundsIn | null;
+}
+
+/** A node of the 02 §13.4 shape. */
+export type draw_content_add_NodeIn = {
+  type: 'layer';
+  /** ID (replaced). */
+  id: string;
+  /** Optional name. */
+  name?: string | null;
+  /** Type hint. */
+  layerKind: draw_content_add_LayerKindIn;
+  /** Strokes. */
+  strokes: draw_content_add_StrokeIn[];
+  /** Read-only (ignored). */
+  bounds?: draw_content_add_BoundsIn | null;
+} | {
+  type: 'group';
+  /** ID (replaced). */
+  id: string;
+  /** Optional name. */
+  name?: string | null;
+  /** Children, back to front. */
+  children: draw_content_add_NodeIn[];
+  /** Read-only (ignored). */
+  bounds?: draw_content_add_BoundsIn | null;
+} | {
+  type: 'text';
+  /** ID (replaced). */
+  id: string;
+  /** Optional name. */
+  name?: string | null;
+  /** The characters. */
+  text: string;
+  /** Placement (origin = top-left of the box). */
+  transform: number[];
+  /** Auto or fixed width. */
+  widthMode: draw_content_add_WidthModeIn;
+  /** Wrap width (fixed mode). */
+  width?: number | null;
+  /** Runs covering the text. */
+  runs: draw_content_add_RunIn[];
+  /** Paragraphs. */
+  paragraphs: draw_content_add_ParaIn[];
+  /** Read-only (ignored). */
+  bounds?: draw_content_add_BoundsIn | null;
+} | {
+  type: 'bitmap';
+  /** ID (replaced). */
+  id: string;
+  /** Optional name. */
+  name?: string | null;
+  /** The package entry of an image the document holds. */
+  mediaId: string;
+  /** Pixel width (1–16384). */
+  pixelWidth: number;
+  /** Pixel height (1–16384). */
+  pixelHeight: number;
+  /** Pixel space → drawing space. */
+  transform: number[];
+  /** The image blob as read back (must match `mediaId`). */
+  image?: draw_content_add_Blob | null;
+  /** Read-only (ignored). */
+  bounds?: draw_content_add_BoundsIn | null;
+};
+
+/** Layer type hint. */
+export type draw_content_add_LayerKindIn = 'brush' | 'pencil';
+
+/** A stroke of the 02 §13.4 shape. */
+export interface draw_content_add_StrokeIn {
+  /** `stroke` (optional). */
+  type?: draw_content_add_StrokeTypeIn | null;
+  /** ID (replaced). */
+  id: string;
+  /** Kind. */
+  kind: draw_content_add_StrokeKindIn;
+  /** Whether `bezier` is closed. */
+  closed?: boolean;
+  /** Centre line (pencil, invisible) or spine (brush; `null` once the outline was edited). */
+  bezier?: draw_content_add_PointIn[] | null;
+  /** Colour (kept as given, ID-05). */
+  colourId?: string | null;
+  /** Pencil line style. */
+  lineStyle?: draw_content_add_LineStyleIn | null;
+  /** Brush pen ID (kept when the pen exists in this project). */
+  penId?: string | null;
+  /** Brush pen. */
+  pen?: draw_content_add_PenIn | null;
+  /** Brush spine pressure. */
+  pressure?: draw_content_add_PressureIn[] | null;
+  /** Gradient/texture placement of a brush fill. */
+  textureMatrix?: number[] | null;
+  /** Brush outline contours (closed Bézier lists; one contour, SI-053). */
+  outline?: draw_content_add_PointIn[][] | null;
+  /** Read-only (ignored). */
+  bounds?: draw_content_add_BoundsIn | null;
+}
+
+/** `stroke` (the `type` of a stroke in a read-back). */
+export type draw_content_add_StrokeTypeIn = 'stroke';
+
+/** Stroke kind. */
+export type draw_content_add_StrokeKindIn = 'brush' | 'pencil' | 'invisible';
+
+/** A point `{x, y}`. */
+export interface draw_content_add_PointIn {
+  /** X (du). */
+  x: number;
+  /** Y (du). */
+  y: number;
+}
+
+/** Line style. */
+export interface draw_content_add_LineStyleIn {
+  /** Thickness (du). */
+  thickness: number;
+  /** `solid`. */
+  lineType: draw_content_add_LineTypeIn;
+}
+
+/** Line type. */
+export type draw_content_add_LineTypeIn = 'solid';
+
+/** A brush pen. */
+export interface draw_content_add_PenIn {
+  /** Tip shape. */
+  tipShape: draw_content_add_TipIn;
+  /** Minimum size (du). */
+  minSize: number;
+  /** Maximum size (du). */
+  maxSize: number;
+  /** Tip angle (degrees). */
+  tipAngle?: number;
+}
+
+/** Tip shape. */
+export type draw_content_add_TipIn = 'round' | 'oval' | 'square' | 'flat';
+
+/** A pressure sample. */
+export interface draw_content_add_PressureIn {
+  /** Position 0–1. */
+  t: number;
+  /** Pressure 0–1. */
+  p: number;
+}
+
+/** `{x, y, width, height}` (read-only; ignored). */
+export interface draw_content_add_BoundsIn {
+  /** X. */
+  x: number;
+  /** Y. */
+  y: number;
+  /** Width. */
+  width: number;
+  /** Height. */
+  height: number;
+}
+
+/** Width mode. */
+export type draw_content_add_WidthModeIn = 'auto' | 'fixed';
+
+/** A character run of the 02 §13.4 shape. */
+export interface draw_content_add_RunIn {
+  /** First code point. */
+  start: number;
+  /** Number of code points. */
+  length: number;
+  /** Font family. */
+  font: string;
+  /** Size (du). */
+  size: number;
+  /** Bold. */
+  bold: boolean;
+  /** Italic. */
+  italic: boolean;
+  /** Baseline. */
+  baseline: draw_content_add_BaselineIn;
+  /** Kerning (1/100 em). */
+  kerning: number;
+  /** Automatic kerning. */
+  autoKern: boolean;
+  /** Fill colour. */
+  colourId?: string | null;
+  /** Outline colour (must be `null`: 10 §4.9 runs have no outline colour, SI-055). */
+  outlineColourId?: string | null;
+}
+
+/** Baseline. */
+export type draw_content_add_BaselineIn = 'normal' | 'subscript' | 'superscript';
+
+/** A paragraph of the 02 §13.4 shape. */
+export interface draw_content_add_ParaIn {
+  /** First code point. */
+  start: number;
+  /** Number of code points. */
+  length: number;
+  /** Alignment. */
+  align: draw_content_add_AlignIn;
+  /** Left margin (du). */
+  leftMargin: number;
+  /** Right margin (du). */
+  rightMargin: number;
+  /** First-line indent (du). */
+  indent: number;
+  /** Line spacing (du). */
+  lineSpacing: number;
+}
+
+/** Alignment. */
+export type draw_content_add_AlignIn = 'left' | 'centre' | 'right' | 'justify';
+
+/** A binary payload stored as a package entry (10 §1.1). Never inlined in object JSON. */
+export interface draw_content_add_Blob {
+  /** Package entry path. */
+  entry: string;
+  /** IANA media type. */
+  mediaType: string;
+  /** Size in bytes (64-bit: entries larger than 4 GiB are supported, 10 §5). */
+  size: number | bigint;
+  /** Lower-case hex SHA-256 of the bytes. */
+  sha256: string;
+}
+
+/** The drawing space description of a read-back (ignored). */
+export interface draw_content_add_SpaceIn {
+  /** `du`. */
+  units: string;
+  /** 100. */
+  duPerField: number;
+  /** `up`. */
+  yAxis: string;
+  /** `drawingCentre`. */
+  origin: string;
+}
+
+/** A point `{x, y}` in drawing units. */
+export interface draw_content_add_Point {
+  /** X (du). */
+  x: number;
+  /** Y (du, up). */
+  y: number;
+}
+
+/** Where inserted content goes. */
+export type draw_content_add_ContentLayer = 'top' | 'behind';
+
+/** `draw.content.add` parameters (02 §13.5). */
 export interface draw_content_add_params {
-  /** object ID or path reference (10 §3) */
-  drawingId?: string;
-  /** shape not defined by the owning section (spec issue); only {} is accepted until it is */
-  content: Record<string, unknown>;
-  /** Default: {0,0}. */
-  offset?: {
-    x: number;
-    y: number;
-  };
-  layer?: 'top' | 'behind';
+  /** The drawing (default: `elementId` + `frame`, else the current drawing). */
+  drawingId?: string | null;
+  /** The element whose cell receives the content. */
+  elementId?: string | null;
+  /** The frame of that cell. */
+  frame?: number | null;
+  /** Create a drawing in an empty addressed cell. */
+  createDrawing?: boolean;
+  /** Drawing content in the 02 §13.4 shape: `{nodes: [...]}`, a `draw.drawing.get` result as returned. */
+  content: draw_content_add_ContentIn;
+  /** Offset added to all geometry (du). */
+  offset?: draw_content_add_Point | null;
+  /** Insert on top or behind. */
+  layer?: draw_content_add_ContentLayer;
+  /** Make the inserted objects the drawing selection. */
   select?: boolean;
 }
 
+/** `{idMap, rev}`. */
 export interface draw_content_add_result {
-  /** shape not defined by the owning section (spec issue); only {} is accepted until it is */
-  idMap: Record<string, unknown>;
-  rev: number;
+  /** The drawing. */
+  drawingId: string;
+  /** A drawing was created in the empty cell. */
+  createdDrawing: boolean;
+  /** Old ID → new ID of every inserted node and stroke (SI-026 `idMap`). */
+  idMap: Record<string, string>;
+  /** The drawing revision after the change. */
+  rev: number | bigint;
 }
 
+/** `draw.current.get` parameters. */
 export interface draw_current_get_params {
-  view?: string;
+  /** A view id (default: the active view, the central view of the arrangement in use). */
+  view?: string | null;
 }
 
+/** The view a drawing is edited in (SI-026 `activeView`, the `AppState.activeView` shape). */
+export interface draw_current_get_ViewRef {
+  /** View id. */
+  viewId: string;
+  /** Panel id. */
+  panelId: string;
+  /** `camera`, `drawing`, `top` or `side`. */
+  type: string;
+}
+
+/** `draw.current.get` result (02 §13.5). */
 export interface draw_current_get_result {
-  drawingId: string | null;
-  /** object ID or path reference (10 §3) */
-  elementId: string;
-  /** object ID or path reference (10 §3) */
-  sceneId: string;
+  /** The current drawing, `null` for an empty cell. */
+  drawingId?: string | null;
+  /** The current element. */
+  elementId?: string | null;
+  /** The current scene. */
+  sceneId?: string | null;
+  /** The current frame. */
   frame: number;
+  /** The current cell is empty. */
   cellEmpty: boolean;
+  /** The current drawing is locked. */
   locked: boolean;
-  /** type not stated by the owning section (spec issue); a scalar */
-  activeView: string | number | boolean | null;
+  /** The active view. */
+  activeView: draw_current_get_ViewRef;
 }
 
 export interface draw_cut_apply_params {
@@ -79574,148 +81977,171 @@ export interface draw_drawing_changed_result {
   removedIds: string[];
 }
 
+/** What `draw.drawing.get` includes. */
+export type draw_drawing_get_IncludePart = 'zones' | 'pressure' | 'outline' | 'bounds';
+
+/** `draw.drawing.get` parameters (02 §13.5). */
 export interface draw_drawing_get_params {
-  /** object ID or path reference (10 §3) */
-  drawingId?: string;
-  /** object ID or path reference (10 §3) */
-  elementId?: string;
-  frame?: number | bigint;
-  include?: ('zones' | 'pressure' | 'outline' | 'bounds')[];
+  /** The drawing (default: `elementId` + `frame`, else the current drawing). */
+  drawingId?: string | null;
+  /** The element whose cell exposes the drawing. */
+  elementId?: string | null;
+  /** The frame of that cell (default: current frame). */
+  frame?: number | null;
+  /** Parts to include (default: all). */
+  include?: draw_drawing_get_IncludePart[] | null;
+  /** A flat object list with `parentId` instead of nesting. */
   flatten?: boolean;
-  ids?: string[];
+  /** Return only these objects (flat list). */
+  ids?: string[] | null;
 }
 
-export interface draw_drawing_get_spec_DrawingReadback {
-  /** object ID or path reference (10 §3) */
+export interface draw_drawing_get_point {
+  x: number;
+  y: number;
+}
+
+export interface draw_drawing_get_bounds {
+  x: number;
+  y: number;
+  width: number;
+  height: number;
+}
+
+export type draw_drawing_get_bezier = draw_drawing_get_point[];
+
+export type draw_drawing_get_matrix = number[];
+
+export type draw_drawing_get_colour = string | null;
+
+export type draw_drawing_get_parentId = string | null;
+
+export type draw_drawing_get_item = draw_drawing_get_layer | draw_drawing_get_group | draw_drawing_get_text | draw_drawing_get_bitmap | draw_drawing_get_stroke;
+
+export interface draw_drawing_get_layer {
+  type: 'layer';
+  id: string;
+  name?: string;
+  layerKind: 'brush' | 'pencil';
+  strokes?: draw_drawing_get_stroke[];
+  parentId?: draw_drawing_get_parentId;
+}
+
+export interface draw_drawing_get_group {
+  type: 'group';
+  id: string;
+  name?: string;
+  children?: draw_drawing_get_item[];
+  bounds?: draw_drawing_get_bounds | null;
+  parentId?: draw_drawing_get_parentId;
+}
+
+export interface draw_drawing_get_run {
+  start: number | bigint;
+  length: number | bigint;
+  font: string;
+  size: number;
+  bold: boolean;
+  italic: boolean;
+  baseline: 'normal' | 'subscript' | 'superscript';
+  kerning: number;
+  autoKern: boolean;
+  colourId: draw_drawing_get_colour;
+  outlineColourId: null;
+}
+
+export interface draw_drawing_get_paragraph {
+  start: number | bigint;
+  length: number | bigint;
+  align: 'left' | 'centre' | 'right' | 'justify';
+  leftMargin: number;
+  rightMargin: number;
+  indent: number;
+  lineSpacing: number;
+}
+
+export interface draw_drawing_get_text {
+  type: 'text';
+  id: string;
+  name?: string;
+  text: string;
+  transform: draw_drawing_get_matrix;
+  widthMode: 'auto' | 'fixed';
+  width: number | null;
+  runs: draw_drawing_get_run[];
+  paragraphs: draw_drawing_get_paragraph[];
+  bounds?: draw_drawing_get_bounds | null;
+  parentId?: draw_drawing_get_parentId;
+}
+
+export interface draw_drawing_get_blob {
+  entry: string;
+  mediaType: string;
+  size: number | bigint;
+  sha256: string;
+}
+
+export interface draw_drawing_get_bitmap {
+  type: 'bitmap';
+  id: string;
+  name?: string;
+  mediaId: string | null;
+  pixelWidth: number | null;
+  pixelHeight: number | null;
+  transform: draw_drawing_get_matrix | null;
+  image: draw_drawing_get_blob | null;
+  bounds?: draw_drawing_get_bounds | null;
+  parentId?: draw_drawing_get_parentId;
+}
+
+export type draw_drawing_get_pressure = ({
+  t: number;
+  p: number;
+})[] | null;
+
+export type draw_drawing_get_pen = {
+  tipShape: 'round' | 'oval' | 'square' | 'flat';
+  minSize: number;
+  maxSize: number;
+  tipAngle: number;
+} | null;
+
+export interface draw_drawing_get_stroke {
+  type: 'stroke';
+  id: string;
+  kind: 'brush' | 'pencil' | 'invisible';
+  closed: boolean;
+  bezier: draw_drawing_get_bezier | null;
+  colourId: draw_drawing_get_colour;
+  lineStyle?: {
+    thickness: number;
+    lineType: 'solid';
+  };
+  penId?: string | null;
+  pen?: draw_drawing_get_pen;
+  pressure?: draw_drawing_get_pressure;
+  textureMatrix?: draw_drawing_get_matrix | null;
+  outline?: draw_drawing_get_bezier[];
+  bounds?: draw_drawing_get_bounds | null;
+  parentId?: draw_drawing_get_parentId;
+}
+
+export interface draw_drawing_get_result {
   drawingId: string;
-  /** object ID or path reference (10 §3) */
-  elementId: string;
+  elementId: string | null;
   name: string;
   rev: number | bigint;
   locked: boolean;
   space: {
-    units: string;
-    duPerField: number;
-    yAxis: string;
-    origin: string;
+    units: 'du';
+    duPerField: 100;
+    yAxis: 'up';
+    origin: 'drawingCentre';
   };
-  pivot: {
-    x: number;
-    y: number;
-  };
-  bounds: {
-    x: number;
-    y: number;
-    width: number;
-    height: number;
-  };
-  nodes: ({
-    type: string;
-    /** object ID or path reference (10 §3) */
-    id: string;
-    layerKind?: string;
-    strokes?: ({
-      /** object ID or path reference (10 §3) */
-      id: string;
-      kind: string;
-      closed: boolean;
-      bezier: ({
-        x: number;
-        y: number;
-      } | string)[];
-      colourId: string | null;
-      lineStyle?: {
-        thickness: number;
-        lineType: string;
-      };
-      /** object ID or path reference (10 §3) */
-      penId?: string;
-      pressure?: ({
-        t: number;
-        p: number;
-      })[] | null;
-      /** object ID or path reference (10 §3) */
-      leftZoneId?: string;
-      /** object ID or path reference (10 §3) */
-      rightZoneId?: string;
-      pen?: {
-        tipShape: string;
-        minSize: number;
-        maxSize: number | bigint;
-        tipAngle: number;
-      };
-      /** type not stated by the owning section (spec issue); a scalar */
-      textureMatrix?: string | number | boolean | null;
-      outline?: string[][];
-    })[];
-    zones?: ({
-      /** object ID or path reference (10 §3) */
-      id: string;
-      /** object ID or path reference (10 §3) */
-      colourId: string;
-      /** type not stated by the owning section (spec issue); a scalar */
-      textureMatrix: string | number | boolean | null;
-      boundaryStrokeIds: string[];
-      holes: ({
-        boundaryStrokeIds: string[];
-        /** object ID or path reference (10 §3) */
-        zoneId: string;
-      })[];
-      parentZoneId: string | null;
-      area: number;
-      bounds: {
-        x: number;
-        y: number;
-        width: number | bigint;
-        height: number | bigint;
-      };
-      interiorPoint: {
-        x: number;
-        y: number;
-      };
-    })[];
-    children?: string[];
-    text?: string;
-    transform?: number[];
-    widthMode?: string;
-    width?: number | bigint | null;
-    runs?: ({
-      start: number | bigint;
-      length: number | bigint;
-      font: string;
-      size: number | bigint;
-      bold: boolean;
-      italic: boolean;
-      baseline: string;
-      kerning: number;
-      autoKern: boolean;
-      /** object ID or path reference (10 §3) */
-      colourId: string;
-      outlineColourId: string | null;
-    })[];
-    paragraphs?: ({
-      start: number | bigint;
-      length: number | bigint;
-      align: string;
-      leftMargin: number;
-      rightMargin: number;
-      indent: number;
-      lineSpacing: number;
-    })[];
-    bounds?: {
-      x: number;
-      y: number;
-      width: number | bigint;
-      height: number | bigint;
-    };
-    /** object ID or path reference (10 §3) */
-    mediaId?: string;
-    pixelWidth?: number | bigint;
-    pixelHeight?: number | bigint;
-  })[];
+  pivot: draw_drawing_get_point;
+  bounds: draw_drawing_get_bounds | null;
+  nodes: draw_drawing_get_item[];
 }
-
-export type draw_drawing_get_result = draw_drawing_get_spec_DrawingReadback;
 
 export interface draw_drawing_rename_params {
   /** object ID or path reference (10 §3) */
@@ -79878,29 +82304,50 @@ export interface draw_flip_apply_result {
   rev: number;
 }
 
+/** `draw.group.create` parameters. */
 export interface draw_group_create_params {
-  /** object ID or path reference (10 §3) */
-  drawingId?: string;
-  /** Default: selection. */
-  ids?: string[];
+  /** The drawing (default: `elementId` + `frame`, else the current drawing). */
+  drawingId?: string | null;
+  /** The element whose cell exposes the drawing. */
+  elementId?: string | null;
+  /** The frame of that cell. */
+  frame?: number | null;
+  /** Objects to group (default: the drawing selection). */
+  ids?: string[] | null;
+  /** The drawing revision the caller read (02 §3.12). */
+  expectRev?: number | bigint | null;
 }
 
+/** `{groupId, rev}`. */
 export interface draw_group_create_result {
-  /** object ID or path reference (10 §3) */
+  /** The new group. */
   groupId: string;
-  rev: number;
+  /** New layers holding grouped strokes (strokes are grouped in their own layer, 02 §8.4). */
+  createdIds: string[];
+  /** The drawing revision after the change. */
+  rev: number | bigint;
 }
 
+/** `draw.group.delete` parameters. */
 export interface draw_group_delete_params {
-  /** object ID or path reference (10 §3) */
-  drawingId?: string;
-  /** Default: selected groups. */
-  groupIds?: string[];
+  /** The drawing (default: `elementId` + `frame`, else the current drawing). */
+  drawingId?: string | null;
+  /** The element whose cell exposes the drawing. */
+  elementId?: string | null;
+  /** The frame of that cell. */
+  frame?: number | null;
+  /** Groups to dissolve (default: the selected groups). */
+  groupIds?: string[] | null;
+  /** The drawing revision the caller read (02 §3.12). */
+  expectRev?: number | bigint | null;
 }
 
+/** `{memberIds, rev}`. */
 export interface draw_group_delete_result {
+  /** The former members, in order. */
   memberIds: string[];
-  rev: number;
+  /** The drawing revision after the change. */
+  rev: number | bigint;
 }
 
 export interface draw_hitTest_get_params {
@@ -79985,16 +82432,26 @@ export interface draw_lock_set_result {
   locked: boolean;
 }
 
+/** `draw.object.delete` parameters. */
 export interface draw_object_delete_params {
-  /** object ID or path reference (10 §3) */
-  drawingId?: string;
-  /** Default: selection. */
-  ids?: string[];
+  /** The drawing (default: `elementId` + `frame`, else the current drawing). */
+  drawingId?: string | null;
+  /** The element whose cell exposes the drawing. */
+  elementId?: string | null;
+  /** The frame of that cell. */
+  frame?: number | null;
+  /** Objects to delete (default: the drawing selection). */
+  ids?: string[] | null;
+  /** The drawing revision the caller read (02 §3.12). */
+  expectRev?: number | bigint | null;
 }
 
+/** `{removedIds, rev}`. */
 export interface draw_object_delete_result {
+  /** Removed objects (their descendants included, and layers left empty). */
   removedIds: string[];
-  rev: number;
+  /** The drawing revision after the change. */
+  rev: number | bigint;
 }
 
 export interface draw_optimize_apply_params {
@@ -80010,21 +82467,34 @@ export interface draw_optimize_apply_result {
   rev: number;
 }
 
-export interface draw_pivot_set_params {
-  /** object ID or path reference (10 §3) */
-  drawingId?: string;
-  point: {
-    x: number;
-    y: number;
-  };
+/** A point `{x, y}` in drawing units. */
+export interface draw_pivot_set_Point {
+  /** X (du). */
+  x: number;
+  /** Y (du, up). */
+  y: number;
 }
 
+/** `draw.pivot.set` parameters. */
+export interface draw_pivot_set_params {
+  /** The drawing (default: `elementId` + `frame`, else the current drawing). */
+  drawingId?: string | null;
+  /** The element whose cell exposes the drawing. */
+  elementId?: string | null;
+  /** The frame of that cell. */
+  frame?: number | null;
+  /** The new pivot (du). */
+  point: draw_pivot_set_Point;
+  /** The drawing revision the caller read (02 §3.12; `drawing.staleRevision` when it changed). */
+  expectRev?: number | bigint | null;
+}
+
+/** `{pivot, rev}`. */
 export interface draw_pivot_set_result {
-  pivot: {
-    x: number;
-    y: number;
-  };
-  rev: number;
+  /** The pivot. */
+  pivot: draw_pivot_set_Point;
+  /** The drawing revision after the change. */
+  rev: number | bigint;
 }
 
 export interface draw_point_add_params {
@@ -80351,175 +82821,390 @@ export interface draw_smooth_apply_result {
   rev: number;
 }
 
-export interface draw_stroke_add_params {
-  /** object ID or path reference (10 §3) */
-  drawingId?: string;
-  /** object ID or path reference (10 §3) */
-  elementId?: string;
-  frame?: number | bigint;
-  createDrawing?: boolean;
-  kind?: 'brush' | 'pencil' | 'invisible';
-  points?: ({
-    x: number;
-    y: number;
-    pressure?: ({
-      t: number;
-      p: number;
-    })[];
-  })[];
-  bezier?: ({
-    x: number;
-    y: number;
-  })[];
-  closed?: boolean;
-  pressure?: ({
-    t: number;
-    p: number;
-  })[];
-  fit?: boolean;
-  /** Default: pen's. */
-  smoothness?: number;
-  /** object ID or path reference (10 §3) Default: current pen. */
-  penId?: string;
-  pen?: {
-    tipShape: string;
-    minSize: number;
-    maxSize: number;
-    tipAngle: number;
-  };
-  /** object ID or path reference (10 §3) Default: current colour. */
-  colourId?: string;
-  /** Default: pen max. */
-  thickness?: number;
-  /** object ID or path reference (10 §3) or "auto" | "new" | "top" | "behind" */
-  layer?: string;
-  symmetry?: boolean;
-  expectRev?: number | bigint;
+/** Stroke kind parameter. */
+export type draw_stroke_add_KindParam = 'brush' | 'pencil' | 'invisible';
+
+/** A sample `{x, y, pressure?}`. */
+export interface draw_stroke_add_PointIn {
+  /** X (du). */
+  x: number;
+  /** Y (du). */
+  y: number;
+  /** Pressure 0–1 (default 1: a mouse, 02 §3.4). */
+  pressure?: number | null;
 }
 
+/** A point `{x, y}` in drawing units. */
+export interface draw_stroke_add_Point {
+  /** X (du). */
+  x: number;
+  /** Y (du, up). */
+  y: number;
+}
+
+/** A pressure sample `{t, p}` (02 §3.2). */
+export interface draw_stroke_add_PressureIn {
+  /** Normalised arc-length position 0–1. */
+  t: number;
+  /** Pressure 0–1. */
+  p: number;
+}
+
+/** An explicit pen `{tipShape, minSize, maxSize, tipAngle}` (02 §13.4 `pen`). */
+export interface draw_stroke_add_PenIn {
+  /** Tip shape. */
+  tipShape: draw_stroke_add_TipParam;
+  /** Width at lowest pressure (du). */
+  minSize: number;
+  /** Width at full pressure (du). */
+  maxSize: number;
+  /** Orientation of non-round tips (degrees). */
+  tipAngle?: number;
+}
+
+/** Tip shape parameter. */
+export type draw_stroke_add_TipParam = 'round' | 'oval' | 'square' | 'flat';
+
+/** `draw.stroke.add` parameters (02 §13.5). */
+export interface draw_stroke_add_params {
+  /** The drawing (default: `elementId` + `frame`, else the current drawing). */
+  drawingId?: string | null;
+  /** The element whose cell receives the stroke. */
+  elementId?: string | null;
+  /** The frame of that cell (default: current frame). */
+  frame?: number | null;
+  /** Create a drawing in an empty addressed cell (same undo step, 02 §1.1). */
+  createDrawing?: boolean;
+  /** Stroke kind. */
+  kind?: draw_stroke_add_KindParam;
+  /** Samples (curve-fitted when `fit`). */
+  points?: draw_stroke_add_PointIn[] | null;
+  /** Bézier control points used verbatim (02 §13.4 Bézier list). */
+  bezier?: draw_stroke_add_Point[] | null;
+  /** Closed path. */
+  closed?: boolean;
+  /** Pressure map `[{t, p}]` (overrides per-point pressure). */
+  pressure?: draw_stroke_add_PressureIn[] | null;
+  /** Fit Béziers to `points` (§3.3); `false` joins them with straight segments. */
+  fit?: boolean;
+  /** Smoothness 0–10 (default: the pen's). */
+  smoothness?: number | null;
+  /** The brush pen (default: the current brush pen). */
+  penId?: string | null;
+  /** An explicit pen (overrides the pen's shape and sizes). */
+  pen?: draw_stroke_add_PenIn | null;
+  /** Colour (default: the pen's colour, else the current colour). */
+  colourId?: string | null;
+  /** Pencil thickness 0–100 du (default: the pen's maximum size). */
+  thickness?: number | null;
+  /** `auto`, `new`, `top`, `behind` or a layer ID. */
+  layer?: string;
+  /** Apply the current symmetry setting (02 §6.2). */
+  symmetry?: boolean;
+  /** The drawing revision the caller read (02 §3.12; `drawing.staleRevision` when it changed). */
+  expectRev?: number | bigint | null;
+}
+
+/** `draw.stroke.add` result (02 §13.5). */
 export interface draw_stroke_add_result {
-  /** object ID or path reference (10 §3) */
+  /** The drawing. */
   drawingId: string;
+  /** A drawing was created in the empty cell. */
   createdDrawing: boolean;
+  /** The new strokes (symmetry copies included), back to front. */
   strokeIds: string[];
+  /** Zones created or changed (planar map, M2 C2.2: empty until then). */
   zoneIds: string[];
-  /** object ID or path reference (10 §3) */
+  /** The layer holding the strokes. */
   layerId: string;
+  /** Strokes removed by re-noding (M2 C2.2: empty until then). */
   removedIds: string[];
-  rev: number;
+  /** The drawing revision after the change. */
+  rev: number | bigint;
+  /** Hint codes (`drawing.strokesHidden` for invisible strokes while Show Strokes is off). */
   hints: string[];
 }
 
+/** A point `{x, y}` in drawing units. */
+export interface draw_stroke_set_Point {
+  /** X (du). */
+  x: number;
+  /** Y (du, up). */
+  y: number;
+}
+
+/** A pressure sample `{t, p}` (02 §3.2). */
+export interface draw_stroke_set_PressureIn {
+  /** Normalised arc-length position 0–1. */
+  t: number;
+  /** Pressure 0–1. */
+  p: number;
+}
+
+/** Kind conversion of `draw.stroke.set`. */
+export type draw_stroke_set_LineKind = 'pencil' | 'invisible';
+
+/** `draw.stroke.set` parameters (02 §13.5). */
 export interface draw_stroke_set_params {
-  /** object ID or path reference (10 §3) */
+  /** The stroke (`<drawingId>/<localId>`, or local with `drawingId` / the current drawing). */
   strokeId: string;
-  bezier?: ({
-    x: number;
-    y: number;
-  })[];
-  closed?: boolean;
-  pressure?: ({
-    t: number;
-    p: number;
-  })[];
-  thickness?: number;
-  kind?: 'pencil' | 'invisible';
-  expectRev?: number | bigint;
+  /** The drawing holding a local stroke ID (default: the current drawing). */
+  drawingId?: string | null;
+  /** New geometry (02 §13.4 Bézier list): a brush stroke's spine (the outline is swept again), or its outline when the spine was discarded; a pencil or invisible stroke's path. */
+  bezier?: draw_stroke_set_Point[] | null;
+  /** Closed path (with `bezier`). */
+  closed?: boolean | null;
+  /** New pressure map of a brush stroke's spine. */
+  pressure?: draw_stroke_set_PressureIn[] | null;
+  /** New line thickness of a pencil line (du). */
+  thickness?: number | null;
+  /** Make a pencil line invisible or an invisible stroke a pencil line. */
+  kind?: draw_stroke_set_LineKind | null;
+  /** The drawing revision the caller read (02 §3.12; `drawing.staleRevision` when it changed). */
+  expectRev?: number | bigint | null;
 }
 
+/** `{strokeIds, removedIds, rev}`. */
 export interface draw_stroke_set_result {
+  /** The edited stroke (its ID is kept, 02 §3.12 item 4). */
   strokeIds: string[];
+  /** Strokes removed by re-noding (M2 C2.2: empty until then). */
   removedIds: string[];
-  rev: number;
+  /** The drawing revision after the change. */
+  rev: number | bigint;
 }
 
-export interface draw_text_add_params {
-  /** object ID or path reference (10 §3) */
-  drawingId?: string;
-  position: {
-    x: number;
-    y: number;
-  };
-  text: string;
-  /** (fixed width; omit = auto) */
-  width?: number;
-  /** (Text panel fields) — shape not defined by the owning section (spec issue); only {} is accepted until it is */
-  format?: Record<string, unknown>;
-  /** object ID or path reference (10 §3) */
-  colourId?: string;
+/** A point `{x, y}` in drawing units. */
+export interface draw_text_add_Point {
+  /** X (du). */
+  x: number;
+  /** Y (du, up). */
+  y: number;
 }
 
-export interface draw_text_add_result {
-  /** object ID or path reference (10 §3) */
-  textId: string;
-  bounds: {
-    x: number;
-    y: number;
-    width: number;
-    height: number;
-  };
-  rev: number;
-}
-
-export interface draw_text_set_params {
-  /** object ID or path reference (10 §3) */
-  textId: string;
-  text?: string;
-  insert?: {
-    at: number | bigint;
-    text: string;
-  };
-  delete?: {
-    start: number | bigint;
-    length: number | bigint;
-  };
-  widthMode?: 'auto' | 'fixed';
-  width?: number;
-  position?: {
-    x: number;
-    y: number;
-  };
-}
-
-export interface draw_text_set_result {
-  /** object ID or path reference (10 §3) */
-  textId: string;
-  bounds: {
-    x: number;
-    y: number;
-    width: number;
-    height: number;
-  };
-  rev: number;
-}
-
-export interface draw_textFormat_set_params {
-  /** object ID or path reference (10 §3) */
-  textId: string;
-  start?: number | bigint;
-  /** (default to end) */
-  length?: number | bigint;
-  font?: string;
-  size?: number;
-  bold?: boolean;
-  italic?: boolean;
-  baseline?: 'normal' | 'subscript' | 'superscript';
-  kerning?: number;
-  autoKern?: boolean;
-  align?: 'left' | 'centre' | 'right' | 'justify';
-  leftMargin?: number;
-  rightMargin?: number;
-  indent?: number;
-  lineSpacing?: number;
-  /** object ID or path reference (10 §3) */
-  colourId?: string;
+/** The Text panel fields (02 §7.6.1; SI-026 `format`). */
+export interface draw_text_add_TextFormat {
+  /** Font family (kept when missing). */
+  font?: string | null;
+  /** Size (du). */
+  size?: number | null;
+  /** Bold. */
+  bold?: boolean | null;
+  /** Italic. */
+  italic?: boolean | null;
+  /** Baseline. */
+  baseline?: draw_text_add_Baseline | null;
+  /** Manual kerning (1/100 em). */
+  kerning?: number | null;
+  /** Font kerning pairs. */
+  autoKern?: boolean | null;
+  /** Alignment. */
+  align?: draw_text_add_Align | null;
+  /** Left margin (du). */
+  leftMargin?: number | null;
+  /** Right margin (du). */
+  rightMargin?: number | null;
+  /** First-line indent (du). */
+  indent?: number | null;
+  /** Additional line spacing (du). */
+  lineSpacing?: number | null;
+  /** Outline colour: only `null` (10 §4.9 runs store no outline colour; SI-055). */
   outlineColourId?: string | null;
 }
 
-export interface draw_textFormat_set_result {
-  /** object ID or path reference (10 §3) */
+/** Baseline (`script` in the project format). */
+export type draw_text_add_Baseline = 'normal' | 'subscript' | 'superscript';
+
+/** Paragraph alignment. */
+export type draw_text_add_Align = 'left' | 'centre' | 'right' | 'justify';
+
+/** `draw.text.add` parameters (02 §13.5). */
+export interface draw_text_add_params {
+  /** The drawing (default: `elementId` + `frame`, else the current drawing). */
+  drawingId?: string | null;
+  /** The element whose cell receives the text. */
+  elementId?: string | null;
+  /** The frame of that cell. */
+  frame?: number | null;
+  /** Create a drawing in an empty addressed cell. */
+  createDrawing?: boolean;
+  /** Top-left corner of the text box (du). */
+  position: draw_text_add_Point;
+  /** The characters (`\n` starts a paragraph). */
+  text: string;
+  /** Fixed width with word wrap (du); omitted = auto width. */
+  width?: number | null;
+  /** Text panel fields (default: the Text panel defaults, 02 §7.6.1). */
+  format?: draw_text_add_TextFormat | null;
+  /** Text colour (default: the current colour). */
+  colourId?: string | null;
+}
+
+/** `{x, y, width, height}`. */
+export interface draw_text_add_Bounds {
+  /** Minimum x (du). */
+  x: number;
+  /** Minimum y (du). */
+  y: number;
+  /** Width (du). */
+  width: number;
+  /** Height (du). */
+  height: number;
+}
+
+/** `{textId, bounds, rev}`. */
+export interface draw_text_add_result {
+  /** The drawing. */
+  drawingId: string;
+  /** The text object. */
   textId: string;
-  rev: number;
+  /** Its bounds in drawing space (laid out with the installed fonts). */
+  bounds: draw_text_add_Bounds;
+  /** The drawing revision after the change. */
+  rev: number | bigint;
+}
+
+/** `{at, text}` of an insertion. */
+export interface draw_text_set_Insert {
+  /** Code-point position. */
+  at: number;
+  /** The characters. */
+  text: string;
+}
+
+/** `{start, length}` of a deletion. */
+export interface draw_text_set_Delete {
+  /** First code point. */
+  start: number;
+  /** Number of code points. */
+  length: number;
+}
+
+/** Width mode parameter. */
+export type draw_text_set_WidthModeParam = 'auto' | 'fixed';
+
+/** A point `{x, y}` in drawing units. */
+export interface draw_text_set_Point {
+  /** X (du). */
+  x: number;
+  /** Y (du, up). */
+  y: number;
+}
+
+/** `draw.text.set` parameters (02 §13.5). */
+export interface draw_text_set_params {
+  /** The text object (`<drawingId>/<localId>`, or local with `drawingId` / the current drawing). */
+  textId: string;
+  /** The drawing holding a local ID. */
+  drawingId?: string | null;
+  /** Replace the whole text (the first run's and paragraph's format is kept). */
+  text?: string | null;
+  /** Insert characters. */
+  insert?: draw_text_set_Insert | null;
+  /** Delete characters. */
+  delete?: draw_text_set_Delete | null;
+  /** Auto or fixed width. */
+  widthMode?: draw_text_set_WidthModeParam | null;
+  /** Fixed width (du); switches to fixed width (02 §7.6). */
+  width?: number | null;
+  /** New top-left corner (du). */
+  position?: draw_text_set_Point | null;
+  /** The drawing revision the caller read (02 §3.12). */
+  expectRev?: number | bigint | null;
+}
+
+/** `{x, y, width, height}`. */
+export interface draw_text_set_Bounds {
+  /** Minimum x (du). */
+  x: number;
+  /** Minimum y (du). */
+  y: number;
+  /** Width (du). */
+  width: number;
+  /** Height (du). */
+  height: number;
+}
+
+/** `{textId, bounds, rev}`. */
+export interface draw_text_set_result {
+  /** The drawing. */
+  drawingId: string;
+  /** The text object. */
+  textId: string;
+  /** Its bounds in drawing space (laid out with the installed fonts). */
+  bounds: draw_text_set_Bounds;
+  /** The drawing revision after the change. */
+  rev: number | bigint;
+}
+
+/** Baseline (`script` in the project format). */
+export type draw_textFormat_set_Baseline = 'normal' | 'subscript' | 'superscript';
+
+/** Paragraph alignment. */
+export type draw_textFormat_set_Align = 'left' | 'centre' | 'right' | 'justify';
+
+/** `draw.textFormat.set` parameters (02 §13.5). */
+export interface draw_textFormat_set_params {
+  /** The text object. */
+  textId: string;
+  /** The drawing holding a local ID. */
+  drawingId?: string | null;
+  /** First code point. */
+  start?: number;
+  /** Number of code points (default: to the end). */
+  length?: number | null;
+  /** Font family. */
+  font?: string | null;
+  /** Size (du). */
+  size?: number | null;
+  /** Bold. */
+  bold?: boolean | null;
+  /** Italic. */
+  italic?: boolean | null;
+  /** Baseline. */
+  baseline?: draw_textFormat_set_Baseline | null;
+  /** Manual kerning (1/100 em). */
+  kerning?: number | null;
+  /** Font kerning pairs. */
+  autoKern?: boolean | null;
+  /** Alignment. */
+  align?: draw_textFormat_set_Align | null;
+  /** Left margin (du). */
+  leftMargin?: number | null;
+  /** Right margin (du). */
+  rightMargin?: number | null;
+  /** First-line indent (du). */
+  indent?: number | null;
+  /** Additional line spacing (du). */
+  lineSpacing?: number | null;
+  /** Fill colour. */
+  colourId?: string | null;
+  /** Outline colour: only `null` (SI-055). */
+  outlineColourId?: string | null;
+  /** The drawing revision the caller read (02 §3.12). */
+  expectRev?: number | bigint | null;
+}
+
+/** `{x, y, width, height}`. */
+export interface draw_textFormat_set_Bounds {
+  /** Minimum x (du). */
+  x: number;
+  /** Minimum y (du). */
+  y: number;
+  /** Width (du). */
+  width: number;
+  /** Height (du). */
+  height: number;
+}
+
+/** `{textId, rev}`. */
+export interface draw_textFormat_set_result {
+  /** The text object. */
+  textId: string;
+  /** Its bounds after the change. */
+  bounds: draw_textFormat_set_Bounds;
+  /** The drawing revision after the change. */
+  rev: number | bigint;
 }
 
 export interface draw_transform_apply_params {

@@ -83,6 +83,7 @@ pub fn varying(a: &Value, b: &Value) -> Vec<String> {
     let mut out = Vec::new();
     differences(a, b, "", &mut out);
     times(a, "", &mut out);
+    font_dependent(a, "", &mut out);
     out.sort();
     out.dedup();
     out
@@ -102,6 +103,34 @@ fn times(v: &Value, at: &str, out: &mut Vec<String>) {
         }
         Value::Array(a) => a.iter().enumerate().for_each(|(i, x)| times(x, &format!("{at}/{i}"), out)),
         _ => {}
+    }
+}
+
+/// Pointers whose values depend on the machine's installed fonts: the `bounds` of text objects (laid out with the
+/// installed face, or the platform's default sans-serif face for a missing font, 02 §3.7) and of every object or
+/// drawing that contains text. They are derived data, so they are recorded as varying; the persisted text is not.
+pub fn font_dependent(v: &Value, at: &str, out: &mut Vec<String>) -> bool {
+    match v {
+        Value::Object(m) => {
+            let mut has_text = m.get("type").and_then(Value::as_str) == Some("text") || m.contains_key("textId");
+            for (k, x) in m {
+                if k != "bounds" {
+                    has_text |= font_dependent(x, &format!("{at}/{}", escape(k)), out);
+                }
+            }
+            if has_text && m.contains_key("bounds") {
+                out.push(format!("{at}/bounds"));
+            }
+            has_text
+        }
+        Value::Array(a) => {
+            let mut any = false;
+            for (i, x) in a.iter().enumerate() {
+                any |= font_dependent(x, &format!("{at}/{i}"), out);
+            }
+            any
+        }
+        _ => false,
     }
 }
 

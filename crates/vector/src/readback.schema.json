@@ -1,0 +1,222 @@
+{
+  "$comment": "draw.drawing.get result (02 §13.4), closed. Zones (and the leftZoneId/rightZoneId of strokes) are the planar map's, M2 C2.2; they are absent until then.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["drawingId", "elementId", "name", "rev", "locked", "space", "pivot", "bounds", "nodes"],
+  "properties": {
+    "drawingId": { "type": "string", "minLength": 1, "maxLength": 64 },
+    "elementId": { "type": ["string", "null"] },
+    "name": { "type": "string" },
+    "rev": { "type": "integer", "minimum": 0, "maximum": 18446744073709551615 },
+    "locked": { "type": "boolean" },
+    "space": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["units", "duPerField", "yAxis", "origin"],
+      "properties": {
+        "units": { "const": "du" },
+        "duPerField": { "const": 100 },
+        "yAxis": { "const": "up" },
+        "origin": { "const": "drawingCentre" }
+      }
+    },
+    "pivot": { "$ref": "#/$defs/point" },
+    "bounds": { "oneOf": [{ "$ref": "#/$defs/bounds" }, { "type": "null" }] },
+    "nodes": { "type": "array", "items": { "$ref": "#/$defs/item" } }
+  },
+  "$defs": {
+    "point": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["x", "y"],
+      "properties": { "x": { "type": "number" }, "y": { "type": "number" } }
+    },
+    "bounds": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["x", "y", "width", "height"],
+      "properties": {
+        "x": { "type": "number" },
+        "y": { "type": "number" },
+        "width": { "type": "number", "minimum": 0 },
+        "height": { "type": "number", "minimum": 0 }
+      }
+    },
+    "bezier": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/point" } },
+    "matrix": { "type": "array", "minItems": 6, "maxItems": 6, "items": { "type": "number" } },
+    "colour": { "type": ["string", "null"] },
+    "parentId": { "type": ["string", "null"] },
+    "item": {
+      "oneOf": [
+        { "$ref": "#/$defs/layer" },
+        { "$ref": "#/$defs/group" },
+        { "$ref": "#/$defs/text" },
+        { "$ref": "#/$defs/bitmap" },
+        { "$ref": "#/$defs/stroke" }
+      ]
+    },
+    "layer": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["type", "id", "layerKind"],
+      "properties": {
+        "type": { "const": "layer" },
+        "id": { "type": "string" },
+        "name": { "type": "string" },
+        "layerKind": { "enum": ["brush", "pencil"] },
+        "strokes": { "type": "array", "items": { "$ref": "#/$defs/stroke" } },
+        "parentId": { "$ref": "#/$defs/parentId" }
+      }
+    },
+    "group": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["type", "id"],
+      "properties": {
+        "type": { "const": "group" },
+        "id": { "type": "string" },
+        "name": { "type": "string" },
+        "children": { "type": "array", "items": { "$ref": "#/$defs/item" } },
+        "bounds": { "oneOf": [{ "$ref": "#/$defs/bounds" }, { "type": "null" }] },
+        "parentId": { "$ref": "#/$defs/parentId" }
+      }
+    },
+    "run": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["start", "length", "font", "size", "bold", "italic", "baseline", "kerning", "autoKern", "colourId", "outlineColourId"],
+      "properties": {
+        "start": { "type": "integer", "minimum": 0 },
+        "length": { "type": "integer", "minimum": 0 },
+        "font": { "type": "string" },
+        "size": { "type": "number", "minimum": 0 },
+        "bold": { "type": "boolean" },
+        "italic": { "type": "boolean" },
+        "baseline": { "enum": ["normal", "subscript", "superscript"] },
+        "kerning": { "type": "number" },
+        "autoKern": { "type": "boolean" },
+        "colourId": { "$ref": "#/$defs/colour" },
+        "outlineColourId": { "type": "null" }
+      }
+    },
+    "paragraph": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["start", "length", "align", "leftMargin", "rightMargin", "indent", "lineSpacing"],
+      "properties": {
+        "start": { "type": "integer", "minimum": 0 },
+        "length": { "type": "integer", "minimum": 0 },
+        "align": { "enum": ["left", "centre", "right", "justify"] },
+        "leftMargin": { "type": "number" },
+        "rightMargin": { "type": "number" },
+        "indent": { "type": "number" },
+        "lineSpacing": { "type": "number" }
+      }
+    },
+    "text": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["type", "id", "text", "transform", "widthMode", "width", "runs", "paragraphs"],
+      "properties": {
+        "type": { "const": "text" },
+        "id": { "type": "string" },
+        "name": { "type": "string" },
+        "text": { "type": "string" },
+        "transform": { "$ref": "#/$defs/matrix" },
+        "widthMode": { "enum": ["auto", "fixed"] },
+        "width": { "type": ["number", "null"] },
+        "runs": { "type": "array", "items": { "$ref": "#/$defs/run" } },
+        "paragraphs": { "type": "array", "items": { "$ref": "#/$defs/paragraph" } },
+        "bounds": { "oneOf": [{ "$ref": "#/$defs/bounds" }, { "type": "null" }] },
+        "parentId": { "$ref": "#/$defs/parentId" }
+      }
+    },
+    "blob": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["entry", "mediaType", "size", "sha256"],
+      "properties": {
+        "entry": { "type": "string" },
+        "mediaType": { "type": "string" },
+        "size": { "type": "integer", "minimum": 0 },
+        "sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" }
+      }
+    },
+    "bitmap": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["type", "id", "mediaId", "pixelWidth", "pixelHeight", "transform", "image"],
+      "properties": {
+        "type": { "const": "bitmap" },
+        "id": { "type": "string" },
+        "name": { "type": "string" },
+        "mediaId": { "type": ["string", "null"] },
+        "pixelWidth": { "type": ["number", "null"] },
+        "pixelHeight": { "type": ["number", "null"] },
+        "transform": { "oneOf": [{ "$ref": "#/$defs/matrix" }, { "type": "null" }] },
+        "image": { "oneOf": [{ "$ref": "#/$defs/blob" }, { "type": "null" }] },
+        "bounds": { "oneOf": [{ "$ref": "#/$defs/bounds" }, { "type": "null" }] },
+        "parentId": { "$ref": "#/$defs/parentId" }
+      }
+    },
+    "pressure": {
+      "oneOf": [
+        {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["t", "p"],
+            "properties": {
+              "t": { "type": "number", "minimum": 0, "maximum": 1 },
+              "p": { "type": "number", "minimum": 0, "maximum": 1 }
+            }
+          }
+        },
+        { "type": "null" }
+      ]
+    },
+    "pen": {
+      "oneOf": [
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["tipShape", "minSize", "maxSize", "tipAngle"],
+          "properties": {
+            "tipShape": { "enum": ["round", "oval", "square", "flat"] },
+            "minSize": { "type": "number", "minimum": 0, "maximum": 100 },
+            "maxSize": { "type": "number", "minimum": 0, "maximum": 100 },
+            "tipAngle": { "type": "number", "minimum": 0, "maximum": 360 }
+          }
+        },
+        { "type": "null" }
+      ]
+    },
+    "stroke": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["type", "id", "kind", "closed", "bezier", "colourId"],
+      "properties": {
+        "type": { "const": "stroke" },
+        "id": { "type": "string" },
+        "kind": { "enum": ["brush", "pencil", "invisible"] },
+        "closed": { "type": "boolean" },
+        "bezier": { "oneOf": [{ "$ref": "#/$defs/bezier" }, { "type": "null" }] },
+        "colourId": { "$ref": "#/$defs/colour" },
+        "lineStyle": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["thickness", "lineType"],
+          "properties": { "thickness": { "type": "number", "minimum": 0 }, "lineType": { "const": "solid" } }
+        },
+        "penId": { "type": ["string", "null"] },
+        "pen": { "$ref": "#/$defs/pen" },
+        "pressure": { "$ref": "#/$defs/pressure" },
+        "textureMatrix": { "oneOf": [{ "$ref": "#/$defs/matrix" }, { "type": "null" }] },
+        "outline": { "type": "array", "minItems": 1, "maxItems": 1, "items": { "$ref": "#/$defs/bezier" } },
+        "bounds": { "oneOf": [{ "$ref": "#/$defs/bounds" }, { "type": "null" }] },
+        "parentId": { "$ref": "#/$defs/parentId" }
+      }
+    }
+  }
+}

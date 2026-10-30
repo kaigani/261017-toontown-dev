@@ -13,6 +13,9 @@ pub(crate) mod derived;
 pub(crate) mod doc;
 pub(crate) mod doc_io;
 pub(crate) mod doc_lint;
+pub(crate) mod draw;
+pub(crate) mod draw_stroke;
+pub(crate) mod draw_text;
 pub(crate) mod edit;
 pub(crate) mod edit_ops;
 pub(crate) mod inspect;
@@ -106,6 +109,19 @@ pub(crate) static ALL: &[&Command] = &[
     &doc::DOC_CHANGED,
     &doc_io::DOC_ASSET_STATUS_CHANGED,
     &doc_io::DOC_PACKAGE_CHANGED_ON_DISK,
+    // draw (M2 C2.1)
+    &draw::DRAW_DRAWING_GET,
+    &draw::DRAW_CURRENT_GET,
+    &draw::DRAW_PIVOT_SET,
+    &draw::DRAW_OBJECT_DELETE,
+    &draw::DRAW_GROUP_CREATE,
+    &draw::DRAW_GROUP_DELETE,
+    &draw_stroke::DRAW_STROKE_ADD,
+    &draw_stroke::DRAW_STROKE_SET,
+    &draw_stroke::DRAW_CONTENT_ADD,
+    &draw_text::DRAW_TEXT_ADD,
+    &draw_text::DRAW_TEXT_SET,
+    &draw_text::DRAW_TEXT_FORMAT_SET,
     // agent
     &agent::AGENT_SERVER_SET,
     &agent::AGENT_SERVER_STATUS,

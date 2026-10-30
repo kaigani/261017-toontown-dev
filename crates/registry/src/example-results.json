@@ -30,7 +30,7 @@
     {
       "title": "Accept a request",
       "result": {
-        "confirmationId": "cf_27e3a52afbcb1003d6423c07",
+        "confirmationId": "cf_f328ab141eb2b241d36da8a3",
         "accepted": true
       },
       "varies": [
@@ -71,7 +71,7 @@
         "endpoint": null,
         "sessions": [
           {
-            "sessionId": "s1-2abb04",
+            "sessionId": "s1-7e5474",
             "client": "Example agent",
             "policy": "assist",
             "scopes": [
@@ -83,7 +83,7 @@
               "files.write",
               "library.global"
             ],
-            "connectedAt": "2026-10-30T19:28:58.679Z",
+            "connectedAt": "2026-10-30T20:12:54.988Z",
             "lastActivity": null,
             "paused": false,
             "transport": ""
@@ -91,8 +91,8 @@
         ],
         "pendingConfirmations": [
           {
-            "confirmationId": "cf_18dd70a49a48444ae8ecd41e",
-            "sessionId": "s1-2abb04",
+            "confirmationId": "cf_1734eb8d5bc72e3543c076dd",
+            "sessionId": "s1-7e5474",
             "commandId": "project.saveAs",
             "summary": "Overwrite `/tmp/Short.animpkg`",
             "consequences": [
@@ -108,10 +108,10 @@
         ]
       },
       "varies": [
-        "/sessions/0/sessionId",
-        "/sessions/0/connectedAt",
         "/pendingConfirmations/0/confirmationId",
-        "/pendingConfirmations/0/sessionId"
+        "/pendingConfirmations/0/sessionId",
+        "/sessions/0/connectedAt",
+        "/sessions/0/sessionId"
       ]
     }
   ],
@@ -126,7 +126,7 @@
     {
       "title": "Let a session edit",
       "result": {
-        "sessionId": "s1-d9afab",
+        "sessionId": "s1-d24a64",
         "policy": "assist",
         "scopes": [
           "read",
@@ -144,7 +144,7 @@
       "title": "Pause every session",
       "result": {
         "paused": [
-          "s1-f0caa1"
+          "s1-bb0873"
         ]
       },
       "varies": [
@@ -434,7 +434,7 @@
       "result": [
         {
           "name": "before-walk",
-          "createdAt": "2026-10-30T19:28:59.976Z",
+          "createdAt": "2026-10-30T20:12:56.207Z",
           "documentRev": 1,
           "origin": "user"
         }
@@ -558,7 +558,7 @@
             "version": "0.0.1",
             "platform": "windows-x64"
           },
-          "exportedAt": "2026-10-30T19:29:00.898Z",
+          "exportedAt": "2026-10-30T20:12:57.070Z",
           "sourceProjectId": "pr_01K742SG00BK0VXTWDM5JRXV37",
           "scope": {
             "kind": "scenes",
@@ -2586,7 +2586,33 @@
         "objectCount": 7
       },
       "varies": [
-        "/bundle/exportedAt"
+        "/bundle/drawingBanks/0/drawings/0/createdAt",
+        "/bundle/drawingBanks/0/drawings/1/createdAt",
+        "/bundle/drawingBanks/0/drawings/2/createdAt",
+        "/bundle/drawingBanks/1/drawings/0/createdAt",
+        "/bundle/exportedAt",
+        "/bundle/scenes/0/elements/0/createdAt",
+        "/bundle/scenes/0/elements/1/createdAt",
+        "/bundle/scenes/0/elements/10/createdAt",
+        "/bundle/scenes/0/elements/11/createdAt",
+        "/bundle/scenes/0/elements/12/createdAt",
+        "/bundle/scenes/0/elements/13/createdAt",
+        "/bundle/scenes/0/elements/14/createdAt",
+        "/bundle/scenes/0/elements/15/createdAt",
+        "/bundle/scenes/0/elements/16/createdAt",
+        "/bundle/scenes/0/elements/17/createdAt",
+        "/bundle/scenes/0/elements/18/createdAt",
+        "/bundle/scenes/0/elements/19/createdAt",
+        "/bundle/scenes/0/elements/2/createdAt",
+        "/bundle/scenes/0/elements/3/createdAt",
+        "/bundle/scenes/0/elements/4/createdAt",
+        "/bundle/scenes/0/elements/5/createdAt",
+        "/bundle/scenes/0/elements/5/placements/0/envelope/0/time",
+        "/bundle/scenes/0/elements/5/placements/0/envelope/1/time",
+        "/bundle/scenes/0/elements/6/createdAt",
+        "/bundle/scenes/0/elements/7/createdAt",
+        "/bundle/scenes/0/elements/8/createdAt",
+        "/bundle/scenes/0/elements/9/createdAt"
       ]
     }
   ],
@@ -2622,7 +2648,9 @@
         "issues": [],
         "repairedCount": 0
       },
-      "varies": []
+      "varies": [
+        "/durationMs"
+      ]
     }
   ],
   "doc.object.find": [
@@ -3016,7 +3044,9 @@
           "drawingCount": 0
         }
       },
-      "varies": []
+      "varies": [
+        "/object/createdAt"
+      ]
     },
     {
       "title": "Only names and types of two objects",
@@ -3269,7 +3299,9 @@
           }
         ]
       },
-      "varies": []
+      "varies": [
+        "/savedAt"
+      ]
     }
   ],
   "doc.repair": [
@@ -3290,7 +3322,10 @@
         "bytes": 133355,
         "sha256": "2cb7f6838655bd9ee4e50a509a1f41f299b64954b8e6b02703f6b092be1c3ade"
       },
-      "varies": []
+      "varies": [
+        "/schema/$defs/LibraryItem/then/allOf/0/else/properties/createdAt",
+        "/schema/$defs/LibraryItem/then/allOf/0/else/properties/modifiedAt"
+      ]
     },
     {
       "title": "The schema of a pen's tip",
@@ -3609,11 +3644,6 @@
             "reason": "storyline timing (08 §16.5)"
           },
           {
-            "check": "missingFonts",
-            "owner": "M2 C2.1",
-            "reason": "text nodes and font discovery"
-          },
-          {
             "check": "outdatedTemplateLinks",
             "owner": "M9 C9.1",
             "reason": "library template versions"
@@ -3621,6 +3651,727 @@
         ]
       },
       "varies": []
+    }
+  ],
+  "draw.content.add": [
+    {
+      "title": "Insert a pencil line and a text object",
+      "result": {
+        "drawingId": "dr_01K742SG0KKMCAP9X1E6Z5P4SW",
+        "createdDrawing": false,
+        "idMap": {
+          "l_1": "nd_01K7JJN800RXHD55052GG3NDRM",
+          "s_1": "st_01K7JJN801N0AE1Z0RRCTVH07Z",
+          "t_1": "nd_01K7JJN8023FJ8358KMGS10XYV"
+        },
+        "rev": 5
+      },
+      "varies": []
+    }
+  ],
+  "draw.current.get": [
+    {
+      "title": "What a drawing tool would edit now",
+      "result": {
+        "drawingId": null,
+        "elementId": "el_01K742SG0ZZYY8HE4MW501XMJV",
+        "sceneId": "sc_01K742SG0YSRA1305J7887BDVZ",
+        "frame": 1,
+        "cellEmpty": true,
+        "locked": false,
+        "activeView": {
+          "viewId": "cameraView",
+          "panelId": "cameraView",
+          "type": "camera"
+        }
+      },
+      "varies": []
+    }
+  ],
+  "draw.drawing.get": [
+    {
+      "title": "The drawing exposed by Bob at frame 1",
+      "result": {
+        "drawingId": "dr_01K742SG0KKMCAP9X1E6Z5P4SW",
+        "elementId": "el_01K742SG11W3SGB8Q1H50W74VB",
+        "name": "1",
+        "rev": 1,
+        "locked": false,
+        "space": {
+          "units": "du",
+          "duPerField": 100,
+          "yAxis": "up",
+          "origin": "drawingCentre"
+        },
+        "pivot": {
+          "x": 0.0,
+          "y": -50.0
+        },
+        "bounds": {
+          "x": -100.0,
+          "y": -50.75,
+          "width": 400.0,
+          "height": 250.75
+        },
+        "nodes": [
+          {
+            "type": "layer",
+            "id": "nd_01K742SG0PC20XDQKASM9CGZHR",
+            "name": "Body",
+            "layerKind": "brush",
+            "strokes": [
+              {
+                "type": "stroke",
+                "id": "st_01K742SG0QD1F2HFZSX8R4V7WP",
+                "kind": "brush",
+                "closed": false,
+                "bezier": [
+                  {
+                    "x": 10.0,
+                    "y": 50.0
+                  },
+                  {
+                    "x": 30.0,
+                    "y": 50.0
+                  },
+                  {
+                    "x": 70.0,
+                    "y": 50.0
+                  },
+                  {
+                    "x": 90.0,
+                    "y": 50.0
+                  }
+                ],
+                "pressure": [
+                  {
+                    "t": 0.0,
+                    "p": 0.2
+                  },
+                  {
+                    "t": 0.5,
+                    "p": 1.0
+                  },
+                  {
+                    "t": 1.0,
+                    "p": 0.4
+                  }
+                ],
+                "penId": null,
+                "pen": {
+                  "tipShape": "round",
+                  "minSize": 0.5,
+                  "maxSize": 2.0,
+                  "tipAngle": 0.0
+                },
+                "colourId": "col_01K742SG059XGSNZ6M9MACZ2ZY",
+                "textureMatrix": null,
+                "outline": [
+                  [
+                    {
+                      "x": 0.0,
+                      "y": 0.0
+                    },
+                    {
+                      "x": 10.5,
+                      "y": 0.0
+                    },
+                    {
+                      "x": 90.0,
+                      "y": 0.0
+                    },
+                    {
+                      "x": 100.0,
+                      "y": 0.0
+                    },
+                    {
+                      "x": 100.0,
+                      "y": 10.0
+                    },
+                    {
+                      "x": 100.0,
+                      "y": 90.0
+                    },
+                    {
+                      "x": 100.0,
+                      "y": 100.0
+                    },
+                    {
+                      "x": 100.0,
+                      "y": 100.0
+                    },
+                    {
+                      "x": 0.0,
+                      "y": 100.0
+                    },
+                    {
+                      "x": 0.0,
+                      "y": 100.0
+                    },
+                    {
+                      "x": 0.0,
+                      "y": 90.0
+                    },
+                    {
+                      "x": 0.0,
+                      "y": 0.0
+                    }
+                  ]
+                ],
+                "bounds": {
+                  "x": 0.0,
+                  "y": 0.0,
+                  "width": 100.0,
+                  "height": 100.0
+                }
+              },
+              {
+                "type": "stroke",
+                "id": "st_01K742SG0R61SYK9GG0HGYVNBT",
+                "kind": "pencil",
+                "closed": false,
+                "bezier": [
+                  {
+                    "x": -50.0,
+                    "y": -50.0
+                  },
+                  {
+                    "x": -50.0,
+                    "y": -50.0
+                  },
+                  {
+                    "x": 50.0,
+                    "y": 50.0
+                  },
+                  {
+                    "x": 50.0,
+                    "y": 50.0
+                  }
+                ],
+                "colourId": "col_01K742SG09H7QE4RRR6XSYYS88",
+                "lineStyle": {
+                  "thickness": 1.5,
+                  "lineType": "solid"
+                },
+                "pressure": null,
+                "bounds": {
+                  "x": -50.75,
+                  "y": -50.75,
+                  "width": 101.5,
+                  "height": 101.5
+                }
+              },
+              {
+                "type": "stroke",
+                "id": "st_01K742SG0S0NT23BWCZN64SFQ5",
+                "kind": "invisible",
+                "closed": false,
+                "bezier": [
+                  {
+                    "x": 0.0,
+                    "y": 0.0
+                  },
+                  {
+                    "x": 0.0,
+                    "y": 0.0
+                  },
+                  {
+                    "x": 0.0,
+                    "y": 100.0
+                  },
+                  {
+                    "x": 0.0,
+                    "y": 100.0
+                  }
+                ],
+                "colourId": null,
+                "pressure": null,
+                "bounds": {
+                  "x": 0.0,
+                  "y": 0.0,
+                  "width": 0.0,
+                  "height": 100.0
+                }
+              }
+            ]
+          },
+          {
+            "type": "group",
+            "id": "nd_01K742SG0TX3WF1BSWWGMWM5WG",
+            "children": [
+              {
+                "type": "layer",
+                "id": "nd_01K742SG0V9A7HCXC74WKN3V5F",
+                "layerKind": "pencil",
+                "strokes": []
+              }
+            ],
+            "bounds": null
+          },
+          {
+            "type": "text",
+            "id": "nd_01K742SG0WFAQJFKAZKV4CD56C",
+            "name": "Caption",
+            "text": "Héllo",
+            "transform": [
+              1.0,
+              0.0,
+              0.0,
+              1.0,
+              -100.0,
+              200.0
+            ],
+            "widthMode": "fixed",
+            "width": 400.0,
+            "runs": [
+              {
+                "start": 0,
+                "length": 5,
+                "font": "Inter",
+                "size": 24.0,
+                "bold": false,
+                "italic": true,
+                "baseline": "normal",
+                "kerning": 0.0,
+                "autoKern": true,
+                "colourId": "col_01K742SG09H7QE4RRR6XSYYS88",
+                "outlineColourId": null
+              }
+            ],
+            "paragraphs": [
+              {
+                "start": 0,
+                "length": 5,
+                "align": "centre",
+                "leftMargin": 0.0,
+                "rightMargin": 0.0,
+                "indent": 0.0,
+                "lineSpacing": 1.2
+              }
+            ],
+            "bounds": {
+              "x": -100.0,
+              "y": 171.20234375,
+              "width": 400.0,
+              "height": 28.79765624999999
+            }
+          }
+        ]
+      },
+      "varies": [
+        "/bounds",
+        "/nodes/2/bounds"
+      ]
+    },
+    {
+      "title": "Strokes only, flat, without outlines",
+      "result": {
+        "drawingId": "dr_01K742SG0KKMCAP9X1E6Z5P4SW",
+        "elementId": "el_01K742SG11W3SGB8Q1H50W74VB",
+        "name": "1",
+        "rev": 1,
+        "locked": false,
+        "space": {
+          "units": "du",
+          "duPerField": 100,
+          "yAxis": "up",
+          "origin": "drawingCentre"
+        },
+        "pivot": {
+          "x": 0.0,
+          "y": -50.0
+        },
+        "bounds": {
+          "x": -100.0,
+          "y": -50.75,
+          "width": 400.0,
+          "height": 250.75
+        },
+        "nodes": [
+          {
+            "type": "layer",
+            "id": "nd_01K742SG0PC20XDQKASM9CGZHR",
+            "name": "Body",
+            "layerKind": "brush",
+            "parentId": null
+          },
+          {
+            "type": "stroke",
+            "id": "st_01K742SG0QD1F2HFZSX8R4V7WP",
+            "kind": "brush",
+            "closed": false,
+            "bezier": [
+              {
+                "x": 10.0,
+                "y": 50.0
+              },
+              {
+                "x": 30.0,
+                "y": 50.0
+              },
+              {
+                "x": 70.0,
+                "y": 50.0
+              },
+              {
+                "x": 90.0,
+                "y": 50.0
+              }
+            ],
+            "pressure": [
+              {
+                "t": 0.0,
+                "p": 0.2
+              },
+              {
+                "t": 0.5,
+                "p": 1.0
+              },
+              {
+                "t": 1.0,
+                "p": 0.4
+              }
+            ],
+            "penId": null,
+            "pen": {
+              "tipShape": "round",
+              "minSize": 0.5,
+              "maxSize": 2.0,
+              "tipAngle": 0.0
+            },
+            "colourId": "col_01K742SG059XGSNZ6M9MACZ2ZY",
+            "textureMatrix": null,
+            "bounds": {
+              "x": 0.0,
+              "y": 0.0,
+              "width": 100.0,
+              "height": 100.0
+            },
+            "parentId": "nd_01K742SG0PC20XDQKASM9CGZHR"
+          },
+          {
+            "type": "stroke",
+            "id": "st_01K742SG0R61SYK9GG0HGYVNBT",
+            "kind": "pencil",
+            "closed": false,
+            "bezier": [
+              {
+                "x": -50.0,
+                "y": -50.0
+              },
+              {
+                "x": -50.0,
+                "y": -50.0
+              },
+              {
+                "x": 50.0,
+                "y": 50.0
+              },
+              {
+                "x": 50.0,
+                "y": 50.0
+              }
+            ],
+            "colourId": "col_01K742SG09H7QE4RRR6XSYYS88",
+            "lineStyle": {
+              "thickness": 1.5,
+              "lineType": "solid"
+            },
+            "pressure": null,
+            "bounds": {
+              "x": -50.75,
+              "y": -50.75,
+              "width": 101.5,
+              "height": 101.5
+            },
+            "parentId": "nd_01K742SG0PC20XDQKASM9CGZHR"
+          },
+          {
+            "type": "stroke",
+            "id": "st_01K742SG0S0NT23BWCZN64SFQ5",
+            "kind": "invisible",
+            "closed": false,
+            "bezier": [
+              {
+                "x": 0.0,
+                "y": 0.0
+              },
+              {
+                "x": 0.0,
+                "y": 0.0
+              },
+              {
+                "x": 0.0,
+                "y": 100.0
+              },
+              {
+                "x": 0.0,
+                "y": 100.0
+              }
+            ],
+            "colourId": null,
+            "pressure": null,
+            "bounds": {
+              "x": 0.0,
+              "y": 0.0,
+              "width": 0.0,
+              "height": 100.0
+            },
+            "parentId": "nd_01K742SG0PC20XDQKASM9CGZHR"
+          },
+          {
+            "type": "group",
+            "id": "nd_01K742SG0TX3WF1BSWWGMWM5WG",
+            "bounds": null,
+            "parentId": null
+          },
+          {
+            "type": "layer",
+            "id": "nd_01K742SG0V9A7HCXC74WKN3V5F",
+            "layerKind": "pencil",
+            "parentId": "nd_01K742SG0TX3WF1BSWWGMWM5WG"
+          },
+          {
+            "type": "text",
+            "id": "nd_01K742SG0WFAQJFKAZKV4CD56C",
+            "name": "Caption",
+            "text": "Héllo",
+            "transform": [
+              1.0,
+              0.0,
+              0.0,
+              1.0,
+              -100.0,
+              200.0
+            ],
+            "widthMode": "fixed",
+            "width": 400.0,
+            "runs": [
+              {
+                "start": 0,
+                "length": 5,
+                "font": "Inter",
+                "size": 24.0,
+                "bold": false,
+                "italic": true,
+                "baseline": "normal",
+                "kerning": 0.0,
+                "autoKern": true,
+                "colourId": "col_01K742SG09H7QE4RRR6XSYYS88",
+                "outlineColourId": null
+              }
+            ],
+            "paragraphs": [
+              {
+                "start": 0,
+                "length": 5,
+                "align": "centre",
+                "leftMargin": 0.0,
+                "rightMargin": 0.0,
+                "indent": 0.0,
+                "lineSpacing": 1.2
+              }
+            ],
+            "bounds": {
+              "x": -100.0,
+              "y": 171.20234375,
+              "width": 400.0,
+              "height": 28.79765624999999
+            },
+            "parentId": null
+          }
+        ]
+      },
+      "varies": [
+        "/bounds",
+        "/nodes/6/bounds"
+      ]
+    }
+  ],
+  "draw.group.create": [
+    {
+      "title": "Group the caption and the group of the first drawing",
+      "result": {
+        "groupId": "nd_01K7JJN800RXHD55052GG3NDRM",
+        "createdIds": [],
+        "rev": 5
+      },
+      "varies": []
+    }
+  ],
+  "draw.group.delete": [
+    {
+      "title": "Dissolve the first drawing's group",
+      "result": {
+        "memberIds": [
+          "nd_01K742SG0V9A7HCXC74WKN3V5F"
+        ],
+        "rev": 5
+      },
+      "varies": []
+    }
+  ],
+  "draw.object.delete": [
+    {
+      "title": "Delete the invisible stroke of Bob's first drawing",
+      "result": {
+        "removedIds": [
+          "st_01K742SG0S0NT23BWCZN64SFQ5"
+        ],
+        "rev": 5
+      },
+      "varies": []
+    }
+  ],
+  "draw.pivot.set": [
+    {
+      "title": "Pivot at the feet",
+      "result": {
+        "pivot": {
+          "x": 0.0,
+          "y": -120.0
+        },
+        "rev": 5
+      },
+      "varies": []
+    }
+  ],
+  "draw.stroke.add": [
+    {
+      "title": "A pressure brush stroke in Bob's drawing at frame 1",
+      "result": {
+        "drawingId": "dr_01K742SG0KKMCAP9X1E6Z5P4SW",
+        "createdDrawing": false,
+        "strokeIds": [
+          "st_01K7JJN800RXHD55052GG3NDRM"
+        ],
+        "zoneIds": [],
+        "layerId": "nd_01K7JJN801N0AE1Z0RRCTVH07Z",
+        "removedIds": [],
+        "rev": 5,
+        "hints": []
+      },
+      "varies": []
+    },
+    {
+      "title": "A pencil line given as Béziers, into a new layer",
+      "result": {
+        "drawingId": "dr_01K742SG0KKMCAP9X1E6Z5P4SW",
+        "createdDrawing": false,
+        "strokeIds": [
+          "st_01K7JJN800RXHD55052GG3NDRM"
+        ],
+        "zoneIds": [],
+        "layerId": "nd_01K7JJN801N0AE1Z0RRCTVH07Z",
+        "removedIds": [],
+        "rev": 5,
+        "hints": []
+      },
+      "varies": []
+    },
+    {
+      "title": "An invisible stroke closing a gap",
+      "result": {
+        "drawingId": "dr_01K742SG0KKMCAP9X1E6Z5P4SW",
+        "createdDrawing": false,
+        "strokeIds": [
+          "st_01K7JJN800RXHD55052GG3NDRM"
+        ],
+        "zoneIds": [],
+        "layerId": "nd_01K742SG0PC20XDQKASM9CGZHR",
+        "removedIds": [],
+        "rev": 5,
+        "hints": [
+          "drawing.strokesHidden"
+        ]
+      },
+      "varies": []
+    }
+  ],
+  "draw.stroke.set": [
+    {
+      "title": "Make the pencil line of the first drawing thicker",
+      "result": {
+        "strokeIds": [
+          "st_01K742SG0R61SYK9GG0HGYVNBT"
+        ],
+        "removedIds": [],
+        "rev": 5
+      },
+      "varies": []
+    }
+  ],
+  "draw.text.add": [
+    {
+      "title": "A caption above Bob",
+      "result": {
+        "drawingId": "dr_01K742SG0KKMCAP9X1E6Z5P4SW",
+        "textId": "nd_01K7JJN800RXHD55052GG3NDRM",
+        "bounds": {
+          "x": -100.0,
+          "y": 189.609375,
+          "width": 127.9921875,
+          "height": 110.390625
+        },
+        "rev": 5
+      },
+      "varies": [
+        "/bounds"
+      ]
+    },
+    {
+      "title": "Fixed-width wrapped text",
+      "result": {
+        "drawingId": "dr_01K742SG0KKMCAP9X1E6Z5P4SW",
+        "textId": "nd_01K7JJN800RXHD55052GG3NDRM",
+        "bounds": {
+          "x": -200.0,
+          "y": -124.189453125,
+          "width": 300.0,
+          "height": 124.189453125
+        },
+        "rev": 5
+      },
+      "varies": [
+        "/bounds"
+      ]
+    }
+  ],
+  "draw.text.set": [
+    {
+      "title": "Type at the end of the first drawing's caption",
+      "result": {
+        "drawingId": "dr_01K742SG0KKMCAP9X1E6Z5P4SW",
+        "textId": "nd_01K742SG0WFAQJFKAZKV4CD56C",
+        "bounds": {
+          "x": -100.0,
+          "y": 171.20234375,
+          "width": 400.0,
+          "height": 28.79765624999999
+        },
+        "rev": 5
+      },
+      "varies": [
+        "/bounds"
+      ]
+    }
+  ],
+  "draw.textFormat.set": [
+    {
+      "title": "Make the first two characters bold and larger",
+      "result": {
+        "textId": "nd_01K742SG0WFAQJFKAZKV4CD56C",
+        "bounds": {
+          "x": -100.0,
+          "y": 164.3029296875,
+          "width": 400.0,
+          "height": 35.69707031249999
+        },
+        "rev": 5
+      },
+      "varies": [
+        "/bounds"
+      ]
     }
   ],
   "edit.clipboard.get": [
@@ -3706,7 +4457,7 @@
             "stepId": "u-1",
             "label": "Set meta",
             "source": "user",
-            "time": "2026-10-30T19:29:02.335Z",
+            "time": "2026-10-30T20:12:59.099Z",
             "objectCount": 1
           },
           {
@@ -3714,7 +4465,7 @@
             "stepId": "u-2",
             "label": "Set meta",
             "source": "user",
-            "time": "2026-10-30T19:29:02.338Z",
+            "time": "2026-10-30T20:12:59.102Z",
             "objectCount": 1
           }
         ],
@@ -3859,7 +4610,7 @@
         "state": "succeeded",
         "progress": 1.0,
         "message": "",
-        "startedAt": "2026-10-30T19:29:02.738Z",
+        "startedAt": "2026-10-30T20:12:59.476Z",
         "result": {},
         "session": "user"
       },
@@ -3878,7 +4629,7 @@
           "state": "succeeded",
           "progress": 1.0,
           "message": "",
-          "startedAt": "2026-10-30T19:29:02.775Z",
+          "startedAt": "2026-10-30T20:12:59.511Z",
           "result": {},
           "session": "user"
         }
@@ -3897,7 +4648,7 @@
         "state": "succeeded",
         "progress": 1.0,
         "message": "",
-        "startedAt": "2026-10-30T19:29:02.813Z",
+        "startedAt": "2026-10-30T20:12:59.545Z",
         "result": {},
         "session": "user"
       },
@@ -3917,7 +4668,9 @@
           "documentRev": 1
         }
       ],
-      "varies": []
+      "varies": [
+        "/0/savedAt"
+      ]
     }
   ],
   "project.backup.open": [
@@ -3942,16 +4695,16 @@
     {
       "title": "A 1920×1080, 24 fps project",
       "result": {
-        "projectId": "pr_01M674JZGVBV8DJ8MPPH9QFDT9",
-        "sceneId": "sc_01M674JZGXWDHX6D6GQ6EH0KJH",
-        "cameraId": "el_01M674JZGXWDHX6D6GQ6EH0KJK",
-        "elementId": "el_01M674JZGXWDHX6D6GQ6EH0KJM"
+        "projectId": "pr_01M6773EDNHCJHJGNYT7MZFQ1N",
+        "sceneId": "sc_01M6773EDQ6E2Q3CKE498S5G0J",
+        "cameraId": "el_01M6773EDQ6E2Q3CKE498S5G0M",
+        "elementId": "el_01M6773EDQ6E2Q3CKE498S5G0N"
       },
       "varies": [
-        "/projectId",
-        "/sceneId",
         "/cameraId",
-        "/elementId"
+        "/elementId",
+        "/projectId",
+        "/sceneId"
       ]
     }
   ],
@@ -4201,7 +4954,7 @@
         {
           "path": "/tmp/Sample.animpkg",
           "name": "Sample",
-          "lastOpened": "2026-10-30T19:29:04.297Z",
+          "lastOpened": "2026-10-30T20:13:00.978Z",
           "exists": true
         }
       ],
@@ -4240,7 +4993,9 @@
           "usable": true
         }
       ],
-      "varies": []
+      "varies": [
+        "/0/savedAt"
+      ]
     }
   ],
   "project.recovery.open": [

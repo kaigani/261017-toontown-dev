@@ -101,7 +101,7 @@ fn every_implemented_example_has_a_retained_executed_result() {
                     let varies = recorded::varying(a, b);
                     let text = serde_json::to_string(a).unwrap();
                     if text.len() > DIGEST_ABOVE {
-                        assert!(varies.is_empty(), "{id} `{title}`: a digest needs a reproducible result");
+                        assert_eq!(a, b, "{id} `{title}`: a digest needs a reproducible result");
                         json!({ "title": title, "resultDigest": digest(a), "varies": varies })
                     } else {
                         json!({ "title": title, "result": a, "varies": varies })

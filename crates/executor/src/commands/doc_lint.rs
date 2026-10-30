@@ -491,7 +491,6 @@ pub(crate) const CHECKS: [&str; 19] = [
 fn unavailable_owner(check: &str) -> Option<(&'static str, &'static str)> {
     Some(match check {
         "unpaintedZones" => ("M2 C2.2", "zones are derived by the planar map"),
-        "missingFonts" => ("M2 C2.1", "text nodes and font discovery"),
         "staleLipSync" => ("M8 C8.2", "lip-sync tracks and their timing"),
         "transitionPadding" => ("M9 C9.2", "storyline timing (08 §16.5)"),
         "outdatedTemplateLinks" => ("M9 C9.1", "library template versions"),
@@ -556,6 +555,34 @@ fn run_checks(cx: &Cx, checks: &BTreeSet<&str>) -> Result<Vec<super::doc_io::Iss
         fx
     };
     let refs = super::doc_io::asset_refs(doc);
+    if checks.contains("missingFonts") {
+        // 02 §3.7: a text run whose font is not installed keeps its name and is displayed with a fallback font.
+        for d in doc.drawings() {
+            for o in tt_vector::drawing::objects(d) {
+                let Some(n) = tt_vector::drawing::node_at(d, &o.pointer) else { continue };
+                let mut seen: Vec<&str> = Vec::new();
+                for r in n.runs().iter().flatten() {
+                    if seen.contains(&r.font.as_str()) || tt_vector::fonts::is_installed(&r.font) {
+                        continue;
+                    }
+                    seen.push(&r.font);
+                    let object = format!("{}/{}", d.id().as_str(), o.id);
+                    l.push(
+                        "missingFonts",
+                        "warning",
+                        &object,
+                        format!(
+                            "font `{}` of a text object in drawing `{}` is not installed; a fallback font is used",
+                            r.font,
+                            d.name()
+                        ),
+                        json!({ "font": r.font, "drawingId": d.id().as_str(), "textId": o.id }),
+                        Vec::new(),
+                    );
+                }
+            }
+        }
+    }
     if checks.contains("missingMedia") {
         for (entry, owner, _, kind) in tt_persist::load::blob_refs(doc) {
             if !store.blobs.contains(&entry) && kind != "libraryFile" {
