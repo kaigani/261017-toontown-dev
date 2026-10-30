@@ -209,12 +209,39 @@ saved, reopened, read back identically.
     - **Unreadable locks.** A lock that cannot be read (empty while written, or damaged) counts as held until it is as
       old as a stale heartbeat (5 minutes, by modification time); then it is abandoned and taken over. The modification
       time detects only abandoned files; live writers are protected by the arbiter and the read-back.
-    - **Arbiter expiry.** An arbiter older than 10 s counts as left behind by a crashed process and is removed.
-    - **Left to C1.4** (`reviews/M1-C1.3-r3.md`, "Concrete C1.4 obligations" 1–2):
-      - an arbiter paused for longer than 10 s and then resuming;
-      - PID reuse (process identity is a PID without a start-time token);
-      - backward or forward clock jumps (heartbeat, arbiter and modification-time ages are wall-clock);
-      - deterministic suspension tests at each ownership boundary, on NTFS and APFS.
+    - **Arbiter expiry.** An arbiter nobody protects any more (below) and older than 10 s, in either clock direction,
+      counts as left behind by a crashed process and is removed.
+    - **11.4 Operating-system ownership (C1.4 obligations 1–2).** The C1.3 protocol trusted ages and process ids, so a
+      paused arbiter, a reused PID or a clock jump could misjudge a live holder. From C1.4 the holder keeps its lock
+      file, and every arbiter its arbitration file, open for its whole life with OS-enforced protection:
+      - Windows: a handle opened with share mode `FILE_SHARE_READ`. Others may read; nobody may write, rename or delete
+        the file while it is open. SMB enforces share modes across clients.
+      - macOS and Linux: an exclusive `flock` (`std::fs::File::try_lock`).
+
+      The kernel releases the protection when the process ends, however it ends. `lock::probe` asks for it: a
+      write-open (Windows) or a shared `flock` (elsewhere) that fails because of the holder means *held*. Hence:
+      - a protected lock whose probe answers *held* is never stale, whatever its heartbeat, the clocks or its process
+        id say, and on Windows it cannot even be removed or overwritten;
+      - a protected lock written on this host whose probe answers *free* was left by a dead process and is taken over
+        at once (PID reuse no longer matters);
+      - an arbiter whose probe answers *held* is never removed as abandoned, however old it looks;
+      - the heartbeat and process-id rules remain only where the probe cannot answer: another host on a file system
+        that does not carry locks, or a lock written without protection (`osProtection` absent). An unprotected lock
+        whose heartbeat lies in the future is stale once its file has not changed for 5 minutes.
+
+      The lock file is written in place through the protected handle (a rename would replace the protected file). A
+      reader that catches it mid-write sees an unreadable lock, which counts as held. The lock JSON gains
+      `osProtection: "shareMode" | "flock"` (SI-048). After writing, a heartbeat and a publication read the file back
+      and check that their arbiter is still theirs; a resumed participant that lost either fails closed and gives up
+      its handle. `process_alive` (the fallback) is bounded by 2 s.
+    - **11.5 Saves under lost ownership.** A save checks ownership before writing (C13-R1-02) and again when it
+      finishes: if the lock was lost meanwhile (possible only where the protection is not carried), the clean marker,
+      the saved revision and the stamp do not advance and the session continues read-only.
+    - **Evidence** (C1.4): `crates/executor/tests/c14_lock_races.rs` suspends a publisher (arbiter taken, file created,
+      file written), a heartbeat (checked, written), a release and a takeover through the `test-hooks` feature of
+      `tt-persist`, races eight openers against each, and checks at most one owner; it pauses an arbiter past its
+      abandonment age; it kills a holder process and measures the takeover. Results per OS are in
+      `reviews/evidence/M1-C1.4/measurements/lock-liveness-*.json`.
 
 12. **External changes (RO-02).**
     - For a package, maintenance compares the file's size and modification time.
@@ -229,6 +256,19 @@ saved, reopened, read back identically.
       - *keep mine*: `project.saveAs {path, onExists: "overwrite"}`.
     - RO-02 asks for a `needs_confirmation` result. The confirmation protocol is C1.4's (plan row M1), and this
       error is the kernel's pre-confirmation form; see SI-045.
+    - **From C1.4** (SI-045 closed): for an agent, `project.save` after an external change returns
+      `needs_confirmation` (category `externalChange`, every policy). The token is bound to the call, the
+      `documentRev`, the file's identity (stamp) and the session's lock; a file changed again refuses the token
+      (`confirmation.expired`), and ownership is checked again after the confirmation. Accepting keeps mine
+      (overwrites). Reloading discards unsaved work, which needs the `app` scope (11 §6.1): it is the user's choice,
+      offered as a consequence with `by: "user"`; the agent's other choice is `project.saveAs` elsewhere (SI-050).
+      Users keep the C1.3 error.
+    - **Blind spot** (C1.4 obligation 4): an edit that keeps a file's size and restores its modification time is not
+      detected (SI-047). Cost of the fingerprint at the 2 s interval with 10,000 files:
+      `reviews/evidence/M1-C1.4/measurements/fingerprint-*.json`.
+    - **Folder names** (C1.4 obligation 3): a folder-form save refuses, before writing anything, entry names that
+      Unicode normalisation (NFC) or case folding would merge (`project.saveFailed`, reason `nameCollision`). An
+      existing on-disk spelling of a kept entry is never scheduled for removal.
 
 13. **User folders and settings (01 §3.7, §11).**
     - `PersistOptions.user_dirs` names the settings, recovery and backups folders. Hosts pass

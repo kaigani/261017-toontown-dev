@@ -423,7 +423,7 @@ Reserved by the M0 closure for "measured deterministic-format incompatibility" (
   by closing without saving. Nothing is lost: every removed value is in the load report (REP-02).
 - **Question:** confirm, or define what undoing the repair step should produce.
 
-## SI-045 — the agent confirmation of RO-02 before the confirmation protocol exists (found in C1.3; decided)
+## SI-045 — the agent confirmation of RO-02 before the confirmation protocol exists (found in C1.3; closed in C1.4)
 
 - **Section:** 10 §8.5 RO-02: "Agents receive the same choice as a `needs_confirmation` result on the next save";
   11 §6.4 (the confirmation protocol, plan M1 C1.4).
@@ -434,6 +434,8 @@ Reserved by the M0 closure for "measured deterministic-format incompatibility" (
   `onUnsaved`) or keep mine (`project.saveAs {path, onExists: "overwrite"}`). C1.4 turns the error into the
   `needs_confirmation` result.
 - **Question:** none for the spec; recorded so the C1.4 change is traceable.
+- **C1.4:** done. Agents get `needs_confirmation` (category `externalChange`) bound to the file's identity and the
+  lock; see SI-050 for the reload choice.
 
 ## SI-046 — codes C1.3 needs that the spec does not list (found in C1.3; decided)
 
@@ -458,3 +460,51 @@ Reserved by the M0 closure for "measured deterministic-format incompatibility" (
     - `unrecoverableSave`: an interrupted folder save that left neither version complete;
     - `revisionExhausted`: repairs needed at `documentRev` 2^64 − 1.
 - **Question:** add them to 11 §10 and the owning sections.
+
+## SI-047 — RO-02 cannot see an edit that keeps size and modification time (found in C1.4; open)
+
+- **Section:** 10 §8.5 RO-02 ("the application detects that the open project file changed on disk").
+- **Problem:** detection compares sizes and modification times (a package; for a folder, every entry file's). An
+  external edit that keeps a file's size and restores its modification time is not detected. Measured with a
+  10,000-file folder (`reviews/evidence/M1-C1.4/measurements/fingerprint-*.json`: `sizeMtimePreservingEditDetected:
+  false`). Hashing contents at the 2 s watch interval would cost a full read of the project every 2 s.
+- **Decision taken:** none; the C1.3 behaviour stays (C1.3 review obligation 4 allows recording it).
+- **Question:** is size + modification time the intended contract (documented as a limit), or should RO-02 require
+  content hashes, for example at save time only?
+
+## SI-048 — codes, reasons and lock fields C1.4 adds (found in C1.4; decided)
+
+- **Sections:** 11 §6, §10, §15.1; 10 §8.6.
+- **Decision taken (ADR-0015, ADR-0014 §11.4):**
+  - `agent.sessionNotFound`: an `agent.*` command naming an unknown session.
+  - `agent.disconnected`: a call of a session the user disconnected.
+  - `agent.httpUnavailable` (warning): `agent.server.set {http: true}` before the HTTP transport (M4).
+  - `confirmation.expired`, `details.reason`: `expired`, `unknown or already used`, `bound to another call`, `the
+    document changed since the confirmation was requested`, `the condition changed since the confirmation was
+    requested`.
+  - `limit.exceeded`, `details.limit`: `maxBatchSteps`, `maxJobs`, `maxInlineBytes`.
+  - `project.saveFailed`, `details.reason: "nameCollision"` with `details.names`: a folder-form save of entry names
+    that NFC or case folding would merge.
+  - The lock file gains `osProtection: "shareMode" | "flock"`, which says that its holder protects it with an open
+    handle (readers that do not know the key ignore it).
+- **Question:** add them to 11 §10, 11 §15.1 and 10 §8.6.
+
+## SI-049 — MCP revision 2026-07-28 removes resource subscriptions and deprecates logging (found in C1.4; open)
+
+- **Section:** 11 §4: "target: the current stable protocol revision at implementation time; minimum 2025-06-18";
+  "MUST support ... resources (including resource templates and subscriptions) ... logging".
+- **Problem:** the official Python SDK 2.0 warns that `resources/subscribe` is removed as of revision 2026-07-28 (a
+  `listen` stream replaces it) and that the logging capability is deprecated (SEP-2577). The server speaks 2025-06-18
+  and 2025-11-25 and passes the SDK's checks there (`reviews/evidence/M1-C1.4/sdk-conformance-*.json`).
+- **Decision taken:** none; 11 §4's MUSTs are implemented as written.
+- **Question:** should the implementation follow 2026-07-28 (the subscription replacement), and with what
+  milestone? 11 §4 and §9.1 would need rewording.
+
+## SI-050 — RO-02's "same choice" for agents meets 11 §6.1's `app` scope (found in C1.4; decided)
+
+- **Sections:** 10 §8.5 RO-02 ("Agents receive the same choice as a `needs_confirmation` result"); 11 §6.1
+  (discarding unsaved work is the `app` scope's, never an agent's).
+- **Problem:** the user's choices are *reload* (discards unsaved work) and *keep mine*. An agent cannot discard.
+- **Decision taken (ADR-0014 §12):** the agent's `needs_confirmation` offers keep mine (accepting overwrites) and
+  names reload as the user's choice (`by: "user"`); its other choice is `project.saveAs` to another path.
+- **Question:** confirm, or let the confirmation itself authorise the discard of a reload.

@@ -243,3 +243,40 @@ pub fn render(p: &Prompt, args: &Map<String, Value>) -> Result<Value, String> {
         "messages": [{ "role": "user", "content": { "type": "text", "text": text } }],
     }))
 }
+
+#[cfg(test)]
+mod tests {
+    #![allow(clippy::unwrap_used, clippy::panic, reason = "test")]
+    use super::*;
+
+    #[test]
+    fn prompts_reference_only_registered_commands() {
+        let reg = tt_executor::registry().unwrap();
+        assert_eq!(PROMPTS.len(), 10, "11 §12 lists ten prompts");
+        for p in PROMPTS {
+            for c in p.commands {
+                assert!(reg.get(c).is_some(), "prompt `{}` names unregistered `{c}`", p.name);
+            }
+            // Every dotted command id quoted in a step is declared in `commands` (and so checked above).
+            for step in p.steps {
+                for quoted in step.split('`').skip(1).step_by(2) {
+                    let id = quoted.split_whitespace().next().unwrap_or_default();
+                    if id.contains('.') && id.chars().all(|ch| ch.is_ascii_alphanumeric() || ch == '.') {
+                        assert!(
+                            p.commands.contains(&id),
+                            "prompt `{}` step names `{id}` outside its command list",
+                            p.name
+                        );
+                    }
+                }
+            }
+            let args: Map<String, Value> =
+                p.arguments.iter().map(|(n, _, _)| ((*n).to_owned(), Value::String("x".into()))).collect();
+            let r = render(p, &args).unwrap();
+            let text = r["messages"][0]["content"]["text"].as_str().unwrap();
+            for (n, _, _) in p.arguments {
+                assert!(!text.contains(&format!("{{{n}}}")), "unfilled `{n}` in `{}`", p.name);
+            }
+        }
+    }
+}
