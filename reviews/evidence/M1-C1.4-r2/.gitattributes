@@ -1,3 +1,3 @@
-*.log -text
+*.log -text whitespace=-blank-at-eol,-blank-at-eof,cr-at-eol
 *.zip -text
 *.gz -text
