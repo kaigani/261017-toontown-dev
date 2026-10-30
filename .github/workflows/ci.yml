@@ -113,6 +113,20 @@ jobs:
           $PY scripts/check-headless-deps.py "$exe"
           mkdir -p out && cp "$exe" selftest-1.json out/
 
+      - name: MCP protocol conformance with the official Python SDK client (C1.4; 11 §14.7)
+        run: |
+          exe=target/release/toontown-headless
+          PY=python3
+          if [ "$RUNNER_OS" = "Windows" ]; then exe="$exe.exe"; PY=python; fi
+          # A virtual environment: system Pythons may refuse pip installs (PEP 668).
+          $PY -m venv .venv-mcp
+          VPY=.venv-mcp/bin/python
+          if [ "$RUNNER_OS" = "Windows" ]; then VPY=.venv-mcp/Scripts/python.exe; fi
+          $VPY -m pip install --quiet "mcp>=1.10"
+          PYTHONIOENCODING=utf-8 $VPY scripts/mcp-conformance.py "$exe" out/sdk-conformance.json
+          # The C1.4 measurements written by the test suite (lock liveness, cache, fingerprint, autosave, never-block).
+          if [ -d target/evidence/c14 ]; then cp -r target/evidence/c14 out/c14-measurements; fi
+
       - uses: actions/upload-artifact@v7
         with:
           name: headless-${{ runner.os }}
@@ -263,6 +277,11 @@ jobs:
           env -u DISPLAY -u WAYLAND_DISPLAY target/release/toontown-headless --selftest --json > selftest-2.json
           python3 -c "import json,sys; strip=lambda f:[(c['id'],c['ok']) for c in json.load(open(f))['checks']]; a,b=strip('selftest-1.json'),strip('selftest-2.json'); print(a); sys.exit(0 if a==b and all(ok for _,ok in a) else 1)"
           python3 scripts/check-headless-deps.py target/release/toontown-headless
+      - name: MCP over stdio with no display server (official Python SDK client)
+        run: |
+          python3 -m venv .venv-mcp
+          .venv-mcp/bin/python -m pip install --quiet "mcp>=1.10"
+          env -u DISPLAY -u WAYLAND_DISPLAY .venv-mcp/bin/python scripts/mcp-conformance.py target/release/toontown-headless
 
   # C0.3 rasteriser determinism (spike): every fixture scene, every rasteriser configuration, must reproduce the
   # committed SHA-256 hashes on all three OSes. The job FAILS on any difference. Run twice to compare processes.
