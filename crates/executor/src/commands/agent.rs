@@ -705,10 +705,14 @@ fn replay_batch(entries: &[crate::agents::ActivityEntry]) -> (Vec<Value>, Vec<Om
                 })
                 .collect();
             let label = e.params.get("label").cloned().unwrap_or_else(|| json!("Batch"));
-            steps.push(json!({
-                "id": "batch",
-                "params": { "label": label, "atomic": true, "steps": steps_of_group },
-            }));
+            let mut group = json!({ "label": label, "atomic": true, "steps": steps_of_group });
+            // The original call's precondition travels with it: replay reproduces revisions, so it holds again.
+            if let Some(expect) = e.params.get("expectRev").filter(|v| v.as_object().is_some_and(|m| !m.is_empty()))
+                && let Some(m) = group.as_object_mut()
+            {
+                m.insert("expectRev".into(), expect.clone());
+            }
+            steps.push(json!({ "id": "batch", "params": group }));
             continue;
         }
         let index: BTreeMap<usize, usize> =

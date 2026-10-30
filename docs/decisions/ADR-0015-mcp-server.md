@@ -203,6 +203,22 @@ transactions, idempotent requests and the never-block watchdog.
       arguments. `scripts/check-product-allows.py` (run by the recorder's `declarations` gate) compares every product
       `allow` attribute with the inventory `scripts/product-allows.json`, so a new one fails the gate.
 
+14. **Changes from the round-four closure check** (`reviews/M1-C1.4-r4-closure.md`; response
+    `reviews/M1-C1.4-r4-response.md`; C14-R4-01, the open part of C14-R3-02).
+    - **`expectRev` on a transaction.** §13 promised the group step `expectRev` "exactly like `batch {atomic: true}`",
+      but the batch itself had no `expectRev`, so the group refused it as an unknown field. A batch request now has an
+      optional `expectRev` (`{ref: rev}`), shared by the `batch` tool, `--run` scripts and group steps:
+      - an atomic batch or group checks it once, before its first step, against the state its transaction starts
+        from;
+      - a mismatch refuses the whole transaction with `rev.conflict` (`details.currentRev`, as for a single command).
+        No step runs, and nothing changes. Inside a sequential batch this is the group step's error, so the batch
+        reports `batch.stepFailed` with `details.error.code: "rev.conflict"`, and `stopOnError` applies;
+      - a match runs the steps as one transaction and one undo step, unchanged.
+    - **A sequential batch refuses `expectRev`** (`arg.invalid`, `pointer: /expectRev`). It commits step by step, so
+      one precondition would guard only its first commit. The hint points to an atomic group step.
+    - **Export.** A committed atomic batch whose call carried a non-empty `expectRev` is exported as a group with the
+      same `expectRev`. Replay reproduces revisions, so the precondition holds again on the same initial document.
+
 ## Consequences
 
 - A command added to the registry is reachable by agents at once (through `run_command`, the docs and the typed

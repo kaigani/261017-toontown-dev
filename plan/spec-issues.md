@@ -562,5 +562,9 @@ Reserved by the M0 closure for "measured deterministic-format incompatibility" (
     refused with `batch.nestedGroup` (ADR-0015 §13);
   - the export writes every committed atomic batch as one group, so replay reproduces revisions and undo boundaries
     byte for byte (`crates/mcp/tests/c14_r3_replay.rs`, `crates/mcp/tests/c14_r3_groups.rs`).
+- **Round 4 (C14-R4-01):** the group's `expectRev` is implemented. A batch request carries an optional `expectRev`,
+  checked once before an atomic batch's or group's first step; a mismatch refuses the whole transaction with
+  `rev.conflict`. The export keeps the original call's `expectRev` on its group. A sequential batch refuses
+  `expectRev` (ADR-0015 §14).
 - **Question:** confirm, or define the representation in 11 §11. The orchestrator's ruling (atomic group step) is the
   M1 representation until the spec owner decides otherwise.

@@ -134,6 +134,11 @@ pub struct BatchRequest {
     /// Report what would change; change nothing.
     #[serde(default)]
     pub dry_run: bool,
+    /// Optimistic concurrency for the whole transaction (atomic batches and atomic group steps; C14-R3-02): every
+    /// listed object must still have the expected `rev` when the batch starts, otherwise the batch is refused with
+    /// `rev.conflict` and no step runs.
+    #[serde(default, skip_serializing_if = "BTreeMap::is_empty")]
+    pub expect_rev: BTreeMap<String, u64>,
 }
 
 fn yes() -> bool {

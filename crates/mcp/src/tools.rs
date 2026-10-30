@@ -169,7 +169,8 @@ pub fn generic() -> Vec<ToolDef> {
             obj(
                 json!({ "label": { "type": "string" }, "steps": { "type": "array", "minItems": 1, "items": { "type": "object", "properties": {
               "id": { "type": "string" }, "params": { "type": "object" }, "as": { "type": "string" } }, "required": ["id"], "additionalProperties": false } },
-            "atomic": { "type": "boolean", "default": true }, "stopOnError": { "type": "boolean", "default": true }, "dryRun": { "type": "boolean", "default": false } }),
+            "atomic": { "type": "boolean", "default": true }, "stopOnError": { "type": "boolean", "default": true }, "dryRun": { "type": "boolean", "default": false },
+            "expectRev": { "type": "object", "additionalProperties": { "type": "integer", "minimum": 0 } } }),
                 &["label", "steps"],
             ),
             false,

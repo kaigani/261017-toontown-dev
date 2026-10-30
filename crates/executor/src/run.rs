@@ -1171,6 +1171,19 @@ impl Core {
                 self.rev(),
             );
         }
+        // `expectRev` guards one transaction: an atomic batch or group. A sequential batch commits step by step, so a
+        // single precondition would not hold for its later steps (ADR-0015 §13).
+        if !req.atomic && !req.expect_rev.is_empty() {
+            return Envelope::error(
+                CommandError::with_details(
+                    codes::ARG_INVALID,
+                    "expectRev applies to an atomic batch or an atomic group step, not to a sequential batch",
+                    json!({ "pointer": "/expectRev" }),
+                )
+                .hint("put the steps it guards in an atomic group step: {\"id\": \"batch\", \"params\": {label, steps, expectRev}}"),
+                self.rev(),
+            );
+        }
         if req.atomic { self.batch_atomic(req, origin) } else { self.batch_sequential(req, origin) }
     }
 
@@ -1304,7 +1317,12 @@ impl Core {
         let mut names: BTreeMap<String, usize> = BTreeMap::new();
         let mut failed: Option<(usize, CommandError)> = None;
         let opts = InvokeOptions { dry_run: req.dry_run, ..InvokeOptions::default() };
-        for (i, step) in req.steps.iter().enumerate() {
+        // The batch's `expectRev` is checked once, before its first step, against the state the transaction starts
+        // from; a mismatch refuses the whole batch with `rev.conflict` and runs nothing (C14-R3-02).
+        let expect: Vec<(String, u64)> = req.expect_rev.iter().map(|(k, v)| (k.clone(), *v)).collect();
+        let precondition = if expect.is_empty() { Ok(()) } else { check_expect_rev(&cx, &expect) };
+        let to_run = if precondition.is_ok() { req.steps.as_slice() } else { &[] };
+        for (i, step) in to_run.iter().enumerate() {
             cx.set_step(Some(i));
             let mut preview = false;
             let mut savepoint = None;
@@ -1349,15 +1367,17 @@ impl Core {
         // A save inside the batch stamps `modifiedAt` into the batch's own changes: one transaction, one undo step,
         // and the written file is the revision the batch commits (C13-R2-01).
         if failed.is_none()
+            && precondition.is_ok()
             && !req.dry_run
             && let Some(now) = cx.pending_batch_save()
             && let Err(e) = crate::persistence::stamp_staged(&mut cx, &now)
         {
             failed = Some((req.steps.len().saturating_sub(1), e));
         }
-        let committed = match failed {
-            Some((i, e)) => Err(step_failed(i, &req.steps[i].id, e)),
-            None => {
+        let committed = match (precondition, failed) {
+            (Err(e), _) => Err(e),
+            (Ok(()), Some((i, e))) => Err(step_failed(i, &req.steps[i].id, e)),
+            (Ok(()), None) => {
                 // Anything sealed during the batch belongs to its single commit.
                 let sealed = cx.take_txns();
                 if sealed.is_empty() {
