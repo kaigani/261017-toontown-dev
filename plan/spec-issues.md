@@ -562,3 +562,83 @@ Reserved by the M0 closure for "measured deterministic-format incompatibility" (
   `expectRev` (ADR-0015 §14).
 - **Question:** confirm, or define the representation in 11 §11. The orchestrator's ruling (atomic group step) is the
   M1 representation until the spec owner decides otherwise.
+
+## SI-052 — bitmaps in drawings: no `draw.bitmap.*` commands, and `mediaId` vs `image` (found in M2 C2.1; decided)
+
+- **Sections:** 02 §3.9 (embedded bitmaps), §13.4 bitmap node `{mediaId, pixelWidth, pixelHeight, transform}`, §13.5
+  (no `draw.bitmap.*` rows); 10 §4.9 bitmap node `{image: blob, width, height, transform}`; spec A.
+- **Problem:** spec A has no command that creates a bitmap node; 02's read-back names a `mediaId` that 10 does not
+  persist (10 stores the PNG as a blob entry).
+- **Decision taken (ADR-0016 §8):** bitmaps enter a drawing through `draw.content.add` (and `edit.paste`) in the
+  §13.4 shape; `mediaId` is the package entry of an image the document already holds (the read-back reports the
+  bitmap's blob entry as `mediaId` and the blob itself as `image`). New pixels arrive with image import (09, M10) and
+  vectorization "with texture" (M2 C2.4). Bitmaps are read back, bounded, deleted, grouped and saved like any node.
+- **Question:** confirm, or add a `draw.bitmap.add` command and a media reference to 10 §4.9.
+
+## SI-053 — brush outlines with holes in a one-path stroke (found in M2 C2.1; decided)
+
+- **Sections:** 02 §3.4 ("Self-overlaps of one stroke form a single clean outline"), §13.4 (`outline: [[outer],
+  [hole]]`); 10 §4.9 (a stroke has one `points` path).
+- **Problem:** a stroke that loops sweeps an outline with a hole (and a zero-width pressure section can split it into
+  pieces); 10 stores one closed path per stroke.
+- **Decision taken (ADR-0016 §4):** the outline is the union of the swept tips; its contours are joined into one closed
+  path by zero-width bridges (each hole or piece spliced in at its nearest vertex). Filled with the non-zero rule the
+  bridge edges cancel, so the shape renders as the union. `draw.drawing.get` reports `outline` with that one contour;
+  `draw.content.add` accepts one contour. The planar map (C2.2) treats a bridge as two coincident edges.
+- **Question:** amendment candidate for the spec owner: allow several contours per brush stroke in 10 §4.9.
+
+## SI-054 — the persisted brush spine: tip angle, tip proportions and closed spines (found in M2 C2.1; decided)
+
+- **Sections:** 02 §3.2 (spine keeps "the pen (tip shape, minimum/maximum size)"), §6.1 (tip shapes round, oval,
+  square, flat; tip angle), §13.4 (`pen: {tipShape, minSize, maxSize, tipAngle}`); 10 §4.9 (`spine: {points, pressure,
+  pen: {penId, tip, minSize, maxSize}}`, no `closed`).
+- **Problem:** (a) 10's spine pen has no tip angle, so a non-round outline could not be swept again after a spine or
+  pressure edit; (b) 02 does not give the proportions of oval and flat tips; (c) a spine has no `closed` flag.
+- **Decision taken (ADR-0016 §3–§5):** (a) a non-zero tip angle of a non-round tip is kept in the stroke's
+  `ext["dev.toontown.brush"].tipAngle` (the reverse-DNS extension slot of 10 §2.2, preserved by every reader) and read
+  back as `pen.tipAngle`; (b) oval tips are 2:1 ellipses and flat tips 5:1 rectangles with the long axis at the tip
+  angle, square tips have side = width; (c) a closed spine is stored open with its first anchor repeated at the end.
+- **Question:** add `tipAngle` (and `closed`) to 10 §4.9's spine; state the tip proportions in 02 §6.1.
+
+## SI-055 — text property names and units differ between 02 and 10 (found in M2 C2.1; decided)
+
+- **Sections:** 02 §7.6.1 (Text panel: kerning int 1/100 em; line spacing "Additional spacing between lines", du;
+  outline colour), §13.4 runs `{baseline, autoKern, colourId, outlineColourId}` and paragraphs `{align, leftMargin,
+  rightMargin}`; 10 §4.9 runs `{script, kerning, autoKerning, colourId}` and paragraphs `{alignment, marginLeft,
+  marginRight, indent, lineSpacing}`.
+- **Problem:** the read-back and the persisted form name the same fields differently; 10 has no outline colour; the
+  model's documentation called `lineSpacing` a factor.
+- **Decision taken (ADR-0016 §6):** 10 owns the persisted names, 02 the command and read-back names (mapped one to
+  one); units are 02's (sizes, margins, indent and line spacing in du, kerning 1/100 em, §14 decision 16).
+  `outlineColourId` is accepted only as `null` (`arg.invalid` otherwise) and read back as `null`. New text uses the
+  generic family `sans-serif` (resolved to the platform's default sans-serif face), so the persisted name is the same on
+  every OS.
+- **Question:** add `outlineColourId` to 10 §4.9 runs, or remove it from 02.
+
+## SI-056 — targeting, revisions and settings of the C2.1 drawing commands (found in M2 C2.1; decided)
+
+- **Sections:** 02 §13.1 items 4 and 5, §3.12 ("Commands that address objects by ID MAY pass the revision they
+  read"), §13.5 rows; 10 REV-05; 02 §6.1 (current pen), §6.2/§8.11 (symmetry, Draw Behind), §7.3.6 (Stroke tool
+  layer); 03 §2.4 (current colour).
+- **Problem:** the rows list `drawingId?` only on some commands and `expectRev` on two; the current pen, colour,
+  symmetry and Draw Behind settings have no setters before M4/M7; the Stroke tool's layer rule needs zones.
+- **Decision taken (ADR-0016 §2, §7):** every C2.1 drawing command accepts `drawingId`, `elementId` and `frame`
+  (§13.1 item 4); creation commands (`draw.stroke.add`, `draw.text.add`, `draw.content.add`) accept `createDrawing`;
+  commands that edit objects by ID accept `expectRev` (the drawing revision) and fail with `drawing.staleRevision`.
+  Until their commands exist: the current brush pen is the project's "Pen 3", else its first brush pen; the current
+  colour is the pen's colour, else the first swatch of the first visible palette; symmetry is none and Draw Behind
+  off (the engine applies both when set). `layer: "auto"` for an invisible stroke uses the top-most layer with a stroke
+  the new stroke crosses (zones arrive with C2.2). Point-taking parameters are in drawing space; `space: scene|view`
+  needs the M3 transforms and M4 views.
+- **Question:** confirm the parameter superset, or list the addressing parameters in each row.
+
+## SI-057 — zones in the C2.1 read-back (found in M2 C2.1; decided)
+
+- **Sections:** 02 §13.4 (`zones`, stroke `leftZoneId`/`rightZoneId`), §13.5 (`zoneIds` results), §3.12 item 1; 10
+  §4.8 (derived `zones`).
+- **Problem:** zones are derived by the planar map, which is M2 C2.2.
+- **Decision taken (ADR-0016 §9):** until C2.2, `draw.drawing.get` leaves `zones` and the side zone IDs out (the
+  closed result schema has no such members), commands report `zoneIds: []`, and every such result carries the warning
+  `doc.derivedUnavailable` naming M2 C2.2. Zone fills persisted on stroke sides are preserved untouched. Nothing
+  reports an empty zone list as computed.
+- **Question:** none; C2.2 replaces the warning with computed zones.
