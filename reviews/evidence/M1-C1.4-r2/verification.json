@@ -143,5 +143,5 @@
   },
   "reviewerOwnedBuilderDiffEmpty": true,
   "dependencyDiff": "",
-  "ticketBodiesUnchangedSinceIntroduction": false
+  "ticketBodiesUnchangedSinceIntroduction": true
 }

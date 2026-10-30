@@ -1,0 +1,36 @@
+{
+  "logs": [
+    "workspace-resumed.log",
+    "workspace-rest.log",
+    "executor-remaining.log",
+    "replay-final.log",
+    "effects-contracts-final.log"
+  ],
+  "baselineUniqueCases": 688,
+  "actualUniqueCases": 699,
+  "baselineCounts": {
+    "ok": 683,
+    "ignored": 5
+  },
+  "actualCounts": {
+    "ok": 688,
+    "ignored": 5,
+    "FAILED": 6
+  },
+  "missingBaselineCases": [],
+  "changedBaselineCases": {},
+  "newCases": {
+    "c14_r2_effects::discovery_token_file_does_not_change_when_atomic_batch_rolls_back": "FAILED",
+    "c14_r2::real_stdio_round_two_regressions": "FAILED",
+    "c14_r2_replay::partially_committed_batch_replays_canonically": "FAILED",
+    "c14_r2_replay::ordinary_edits_dry_runs_and_discovery_replay_canonically": "ok",
+    "c14_r2_replay::idempotent_retry_replays_canonically": "FAILED",
+    "c14_r2_contracts::downgrade_and_corrupt_preferences_have_explicit_restart_behaviour": "ok",
+    "c14_r2_contracts::recovered_project_records_original_content_and_autosave_preserves_it": "ok",
+    "c14_r2_contracts::quit_save_and_agent_save_as_current_preserve_external_content": "ok",
+    "c14_r2_effects::restart_does_not_publish_a_handcrafted_uncommitted_stage": "ok",
+    "c14_r2_effects::json_export_is_not_published_by_a_failed_atomic_batch": "FAILED",
+    "c14_r2_effects::media_export_is_not_published_by_a_failed_atomic_batch": "FAILED"
+  },
+  "note": "Counts are unique case lines, not sums of Cargo summaries or repeat runs. Ignored tickets are intentionally not executed here."
+}
