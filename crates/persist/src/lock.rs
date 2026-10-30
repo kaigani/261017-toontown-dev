@@ -10,11 +10,13 @@
 //! heartbeat fails closed (ADR-0014 §11; C13-R1-02, C13-R3-01).
 //!
 //! **Operating-system ownership (C1.4 obligations 1–2, ADR-0014 §11.4).** The holder keeps its lock file, and every
-//! arbiter keeps its arbitration file, open for its whole life with OS-enforced protection: on Windows a handle whose
-//! share mode lets others read but not write, rename or delete; elsewhere an exclusive `flock`. The kernel releases it
-//! when the process ends, however it ends. A [`probe`] therefore proves a live holder without trusting process ids
-//! (reuse), clocks (jumps, future modification times) or heartbeats (a paused holder): a protected lock whose probe
-//! answers "held" is never stale, and on Windows cannot even be removed. A protected lock on this host whose probe
+//! arbiter keeps its arbitration file, open for its whole life: on Windows a handle with write access (shared for
+//! reading, writing and deletion, so other sessions can still read the lock, and a foreign replacement is still caught
+//! by the token checks), elsewhere an exclusive `flock`. The kernel releases it when the process ends, however it
+//! ends. A [`probe`] (Windows: an open that refuses to share writing, which fails while any write handle is open;
+//! elsewhere: a shared `flock`) therefore proves a live holder without trusting process ids (reuse), clocks (jumps,
+//! future modification times) or heartbeats (a paused holder): a protected lock whose probe answers "held" is never
+//! stale and never removed by a taker. A protected lock on this host whose probe
 //! answers "free" was left by a dead process and is taken over at once. Heartbeat age and process ids remain the
 //! rule only where the probe cannot answer (another host on a file system that does not carry locks, or a lock written
 //! without protection). The lock file is written in place through the protected handle (a rename would replace the
@@ -159,8 +161,9 @@ fn create_protected(path: &Path) -> std::io::Result<File> {
     #[cfg(windows)]
     {
         use std::os::windows::fs::OpenOptionsExt;
-        // FILE_SHARE_READ: others may read; nobody may write, rename or delete while this handle is open.
-        o.share_mode(0x0000_0001);
+        // FILE_SHARE_READ | FILE_SHARE_WRITE | FILE_SHARE_DELETE: the open write handle is the protection (see
+        // `probe`); others may still read, replace or remove the file, which the token checks catch.
+        o.share_mode(0x0000_0007);
     }
     let f = o.open(path)?;
     #[cfg(not(windows))]
@@ -180,7 +183,9 @@ fn create_protected(path: &Path) -> std::io::Result<File> {
 pub fn probe(path: &Path) -> Option<bool> {
     #[cfg(windows)]
     {
-        match OpenOptions::new().write(true).open(path) {
+        use std::os::windows::fs::OpenOptionsExt;
+        // Read access, sharing reading and deletion but not writing: refused while any handle can write the file.
+        match OpenOptions::new().read(true).share_mode(0x0000_0001 | 0x0000_0004).open(path) {
             Ok(_) => Some(false),
             // ERROR_SHARING_VIOLATION
             Err(e) if e.raw_os_error() == Some(32) => Some(true),
@@ -616,12 +621,8 @@ mod tests {
         handle.refresh().unwrap();
         let (_, protected) = read_raw(handle.path()).unwrap();
         assert!(protected);
-        // Another writer cannot replace it (Windows: share mode); a heartbeat 26 years old (a clock jump, a paused
-        // holder) does not make a protected lock stale.
-        if cfg!(windows) {
-            assert!(fs::write(handle.path(), b"{}").is_err());
-            assert!(fs::remove_file(handle.path()).is_err());
-        }
+        // A heartbeat 26 years old or 74 years ahead (a clock jump, a paused holder) does not make a protected lock
+        // stale.
         for at in ["2000-01-01T00:00:00.000Z", "2100-01-01T00:00:00.000Z"] {
             let mut f = handle.file.lock().unwrap();
             let mut jumped = handle.info();
@@ -682,10 +683,8 @@ mod tests {
         let lock = lock_path(&project);
         let held = Arbiter::try_take(&lock).unwrap();
         let tk = takeover_path(&lock);
-        // Old-looking but protected (a paused arbiter): left alone.
-        if cfg!(windows) {
-            assert!(File::options().write(true).open(&tk).is_err());
-        }
+        // Protected (a paused arbiter, however old it looks): left alone.
+        assert_eq!(probe(&tk), Some(true));
         assert!(Arbiter::try_take(&lock).is_none());
         assert!(tk.exists());
         drop(held);

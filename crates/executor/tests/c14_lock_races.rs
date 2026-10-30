@@ -207,16 +207,10 @@ fn a_resumed_heartbeat_whose_lock_was_replaced_fails_closed() {
     let Locked::Acquired { handle, .. } = lock::acquire(&project) else { panic!("acquire") };
     let mut forged = handle.info();
     forged.lock_id = "someone-else".into();
-    if std::fs::write(handle.path(), serde_json::to_vec(&forged).unwrap()).is_err() {
-        // Windows: the live holder's share mode refuses every other writer: the scenario cannot arise locally.
-        if !cfg!(windows) {
-            panic!("only Windows share modes refuse the write");
-        }
-    } else {
-        assert!(handle.refresh().is_err());
-        assert!(!handle.held());
-        assert_eq!(lock::read(handle.path()).unwrap().lock_id, "someone-else", "nothing written over the new owner");
-    }
+    std::fs::write(handle.path(), serde_json::to_vec(&forged).unwrap()).unwrap();
+    assert!(handle.refresh().is_err());
+    assert!(!handle.held());
+    assert_eq!(lock::read(handle.path()).unwrap().lock_id, "someone-else", "nothing written over the new owner");
     drop(handle);
     let _ = std::fs::remove_dir_all(&dir);
 }

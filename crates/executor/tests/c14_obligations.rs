@@ -180,19 +180,14 @@ fn lock_ownership_is_rechecked_after_the_confirmation() {
     let lock = tt_persist::lock::lock_path(&pkg);
     let mut info: Value = serde_json::from_slice(&std::fs::read(&lock).unwrap()).unwrap();
     info["lockId"] = json!("someone-else");
-    if std::fs::write(&lock, serde_json::to_vec(&info).unwrap()).is_err() {
-        if !cfg!(windows) {
-            panic!("a live holder's share mode refuses the takeover itself");
-        }
-    } else {
-        let env = call(&h, &a, "project.save", json!({}), Some(&t));
-        let code = match (&env.error, &env.result) {
-            (Some(e), _) => e.code.clone(),
-            (None, Some(s)) => wait(&h, s)["error"]["code"].as_str().unwrap().to_owned(),
-            _ => panic!("{env:?}"),
-        };
-        assert_eq!(code, "project.saveFailed", "{env:?}");
-    }
+    std::fs::write(&lock, serde_json::to_vec(&info).unwrap()).unwrap();
+    let env = call(&h, &a, "project.save", json!({}), Some(&t));
+    let code = match (&env.error, &env.result) {
+        (Some(e), _) => e.code.clone(),
+        (None, Some(s)) => wait(&h, s)["error"]["code"].as_str().unwrap().to_owned(),
+        _ => panic!("{env:?}"),
+    };
+    assert_eq!(code, "project.saveFailed", "{env:?}");
     drop(h);
     let _ = std::fs::remove_dir_all(&dir);
 }

@@ -213,15 +213,17 @@ saved, reopened, read back identically.
       counts as left behind by a crashed process and is removed.
     - **11.4 Operating-system ownership (C1.4 obligations 1–2).** The C1.3 protocol trusted ages and process ids, so a
       paused arbiter, a reused PID or a clock jump could misjudge a live holder. From C1.4 the holder keeps its lock
-      file, and every arbiter its arbitration file, open for its whole life with OS-enforced protection:
-      - Windows: a handle opened with share mode `FILE_SHARE_READ`. Others may read; nobody may write, rename or delete
-        the file while it is open. SMB enforces share modes across clients.
+      file, and every arbiter its arbitration file, open for its whole life:
+      - Windows: a handle with write access, shared for reading, writing and deletion. Other sessions still read the
+        lock, and a foreign process can still replace or remove it, which the token checks catch (the C1.3 reviewer
+        regressions `c13_r3_format` and `c13_r4_lock` act as such a foreign writer).
       - macOS and Linux: an exclusive `flock` (`std::fs::File::try_lock`).
 
-      The kernel releases the protection when the process ends, however it ends. `lock::probe` asks for it: a
-      write-open (Windows) or a shared `flock` (elsewhere) that fails because of the holder means *held*. Hence:
-      - a protected lock whose probe answers *held* is never stale, whatever its heartbeat, the clocks or its process
-        id say, and on Windows it cannot even be removed or overwritten;
+      The kernel releases the handle or the `flock` when the process ends, however it ends. `lock::probe` asks for
+      it: on Windows an open with read access that refuses to share writing (it fails with a sharing violation while
+      any write handle is open; SMB carries share modes across clients), elsewhere a shared `flock`. Hence:
+      - a protected lock whose probe answers *held* is never stale and never removed by a taker, whatever its
+        heartbeat, the clocks or its process id say;
       - a protected lock written on this host whose probe answers *free* was left by a dead process and is taken over
         at once (PID reuse no longer matters);
       - an arbiter whose probe answers *held* is never removed as abandoned, however old it looks;
