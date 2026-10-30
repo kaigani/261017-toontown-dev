@@ -20,8 +20,12 @@ fn tmp() -> PathBuf {
     d
 }
 
+/// A per-process unique suffix: the clock alone repeats when two tests start in the same tick (it did on Windows).
 fn rand() -> u64 {
-    std::time::SystemTime::now().duration_since(std::time::UNIX_EPOCH).unwrap().as_nanos() as u64 % 1_000_000_007
+    static NEXT: std::sync::atomic::AtomicU64 = std::sync::atomic::AtomicU64::new(0);
+    let n = NEXT.fetch_add(1, std::sync::atomic::Ordering::Relaxed);
+    let t = std::time::SystemTime::now().duration_since(std::time::UNIX_EPOCH).unwrap().as_nanos() as u64;
+    (t % 1_000_000_007) * 1000 + n
 }
 
 fn p(path: &Path) -> String {
