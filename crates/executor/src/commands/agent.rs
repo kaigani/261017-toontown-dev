@@ -640,9 +640,10 @@ fn relocate(v: &mut Value, index: &BTreeMap<usize, usize>, names: &BTreeMap<Stri
     }
 }
 
-/// The replayable batch of an activity log (11 §11, §3; SI-051): every committed edit, in order. A batch contributes
-/// the steps it committed (all of an atomic batch that succeeded; each successful step of a sequential batch, which
-/// commits step by step; C14-R2-02), with references renumbered and clashing names renamed. Left out and reported:
+/// The replayable batch of an activity log (11 §11, §3; SI-051): every committed edit, in order. A committed atomic
+/// batch becomes one atomic group step (`{id: "batch", params: <the batch>}`; C14-R3-02), so replay keeps its single
+/// revision and undo step; a sequential batch contributes the steps it committed (C14-R2-02), with references
+/// renumbered and clashing names renamed. Left out and reported:
 /// cached `requestId` retries, which executed nothing (C14-R2-03), dry runs, queries, discovery tools, calls that
 /// committed nothing, and redacted parameters.
 fn replay_batch(entries: &[crate::agents::ActivityEntry]) -> (Vec<Value>, Vec<Omitted>) {
@@ -689,6 +690,27 @@ fn replay_batch(entries: &[crate::agents::ActivityEntry]) -> (Vec<Value>, Vec<Om
             continue;
         }
         let batch_steps = e.params.get("steps").and_then(Value::as_array).cloned().unwrap_or_default();
+        // A committed atomic batch replays as one atomic group (C14-R3-02, ADR-0015 §13): one transaction, the same
+        // revisions and the same undo step. Its references and names are its own.
+        if e.params.get("atomic").and_then(Value::as_bool).unwrap_or(true) {
+            let steps_of_group: Vec<Value> = batch_steps
+                .into_iter()
+                .map(|mut s| {
+                    if let Some(m) = s.as_object_mut()
+                        && m.get("as").is_some_and(Value::is_null)
+                    {
+                        m.remove("as");
+                    }
+                    s
+                })
+                .collect();
+            let label = e.params.get("label").cloned().unwrap_or_else(|| json!("Batch"));
+            steps.push(json!({
+                "id": "batch",
+                "params": { "label": label, "atomic": true, "steps": steps_of_group },
+            }));
+            continue;
+        }
         let index: BTreeMap<usize, usize> =
             committed.iter().enumerate().map(|(k, old)| (*old, steps.len() + k)).collect();
         let mut names = BTreeMap::new();

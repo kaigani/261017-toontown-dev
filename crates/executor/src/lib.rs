@@ -468,15 +468,17 @@ impl ExecutorHandle {
         let Origin::Agent { session, name, .. } = origin else { return };
         // Steps that committed: an atomic batch commits all of them or none; a sequential batch commits each
         // successful step on its own (11 §7.3). A dry run commits nothing.
+        // Commit facts come from the commits themselves, not from the answer's status (C14-R3-01): an atomic batch
+        // whose file could not be published still committed all its steps.
         let committed_steps = (command == "batch").then(|| {
             let atomic = params.get("atomic").and_then(Value::as_bool).unwrap_or(true);
             let steps = env.steps.as_deref().unwrap_or_default();
             if env.dry_run || params.get("dryRun").and_then(Value::as_bool) == Some(true) {
                 Vec::new()
             } else if atomic {
-                if env.status == Status::Ok { (0..steps.len()).collect() } else { Vec::new() }
+                if env.committed { (0..steps.len()).collect() } else { Vec::new() }
             } else {
-                steps.iter().enumerate().filter(|(_, s)| s.status == Status::Ok && !s.dry_run).map(|(i, _)| i).collect()
+                steps.iter().enumerate().filter(|(_, s)| s.committed && !s.dry_run).map(|(i, _)| i).collect()
             }
         });
         let entry = agents::ActivityEntry {

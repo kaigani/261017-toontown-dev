@@ -121,6 +121,9 @@ struct Shared {
     live: Mutex<HashSet<String>>,
     /// Live requests the client cancelled (a subset of `live`, so bounded by `MAX_INFLIGHT`).
     cancelled: Mutex<HashSet<String>>,
+    /// Live requests past their commit point: a confirmed effect has begun, so a cancellation is too late and is
+    /// ignored (C14-R3-03). Guarded by the `cancelled` lock's discipline: both sets change only under `cancelled`.
+    committed: Mutex<HashSet<String>>,
     closing: Arc<AtomicBool>,
 }
 
@@ -208,6 +211,19 @@ impl Shared {
         lock(&self.cancelled).contains(&id.to_string())
     }
 
+    /// The commit point of a request that acts on a client's answer (C14-R3-03): `false` when the request was
+    /// cancelled (it must do nothing more); otherwise it is marked committed and a later cancellation is ignored.
+    /// The check and the mark happen under the same lock as `notifications/cancelled`, so exactly one wins.
+    fn begin_effect(&self, id: &Value) -> bool {
+        let cancelled = lock(&self.cancelled);
+        let key = id.to_string();
+        if cancelled.contains(&key) {
+            return false;
+        }
+        lock(&self.committed).insert(key);
+        true
+    }
+
     /// Sends a request to the client and waits for its answer. `None` on timeout, when the session closes, or when the
     /// client cancels `owner`, the request this ask serves (C14-R2-04): the ask is then withdrawn with
     /// `notifications/cancelled`, so the call thread is free at once.
@@ -218,7 +234,8 @@ impl Shared {
         timeout: Duration,
         owner: Option<&Value>,
     ) -> Option<Result<Value, Value>> {
-        if self.closing() {
+        // Closing, or the owning request already cancelled: nothing is asked (C14-R3-03, before sending).
+        if self.closing() || owner.is_some_and(|o| self.is_cancelled(o)) {
             return None;
         }
         let id = self.next_id.fetch_add(1, Ordering::Relaxed);
@@ -229,8 +246,13 @@ impl Shared {
         let mut withdrawn = false;
         let r = loop {
             match rx.recv_timeout(Duration::from_millis(50)) {
-                // An answer that arrives while closing is the shutdown's wake-up, not the client's decision.
+                // An answer that arrives while closing is the shutdown's wake-up, not the client's decision; one that
+                // arrives after the owning request was cancelled is discarded (C14-R3-03).
                 Ok(_) if self.closing() => break None,
+                Ok(_) if owner.is_some_and(|o| self.is_cancelled(o)) => {
+                    withdrawn = true;
+                    break None;
+                }
                 Ok(r) => break Some(r),
                 Err(RecvTimeoutError::Disconnected) => break None,
                 Err(RecvTimeoutError::Timeout) if owner.is_some_and(|o| self.is_cancelled(o)) => {
@@ -370,6 +392,7 @@ where
         pending: Mutex::new(HashMap::new()),
         live: Mutex::new(HashSet::new()),
         cancelled: Mutex::new(HashSet::new()),
+        committed: Mutex::new(HashSet::new()),
         closing: closing.clone(),
     });
     // Reader: frames no longer than the session's maxInlineBytes.
@@ -522,7 +545,11 @@ fn answer(shared: &Arc<Shared>, id: &Value, method: &str, params: &Value) {
         shared.send(&r);
     }
     let key = id.to_string();
-    lock(&shared.cancelled).remove(&key);
+    {
+        let mut cancelled = lock(&shared.cancelled);
+        cancelled.remove(&key);
+        lock(&shared.committed).remove(&key);
+    }
     lock(&shared.live).remove(&key);
     lock(&shared.st).inflight -= 1;
 }
@@ -541,7 +568,11 @@ fn notification(shared: &Arc<Shared>, method: &str, params: &Value) {
                 let key = id.to_string();
                 let live = lock(&shared.live);
                 if live.contains(&key) {
-                    lock(&shared.cancelled).insert(key);
+                    // Past its commit point the request completes and answers (C14-R3-03).
+                    let mut cancelled = lock(&shared.cancelled);
+                    if !lock(&shared.committed).contains(&key) {
+                        cancelled.insert(key);
+                    }
                 }
             }
         }
@@ -939,6 +970,8 @@ fn call_tool(
                 && let Some(token) =
                     env.result.as_ref().and_then(|r| r.get("confirmToken")).and_then(Value::as_str).map(str::to_owned)
                 && let Some(accepted) = elicit(shared, &env, rid)
+                // A request cancelled before acting on the answer does nothing: the token stays pending, unused.
+                && shared.begin_effect(rid)
             {
                 if !accepted {
                     let _ = shared.handle.invoke(Invocation::user(

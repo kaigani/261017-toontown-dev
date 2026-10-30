@@ -235,6 +235,11 @@ pub struct Envelope {
     /// Batch step envelopes.
     #[serde(skip_serializing_if = "Option::is_none")]
     pub steps: Option<Vec<Envelope>>,
+    /// The call's transaction committed (whatever the answer says afterwards: a file that could not be published
+    /// still leaves the commit in place; C14-R3-01). Not part of the answer: the audit log reads it.
+    #[serde(skip)]
+    #[schemars(skip)]
+    pub committed: bool,
 }
 
 impl Envelope {
@@ -254,6 +259,7 @@ impl Envelope {
             error: Some(error),
             dry_run: false,
             steps: None,
+            committed: false,
         }
     }
 

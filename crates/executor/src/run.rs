@@ -623,6 +623,9 @@ fn discard_files(effects: &[Effect]) {
     }
 }
 
+/// The step id of an atomic group inside a sequential batch (C14-R3-02, ADR-0015 §13): its params are a batch.
+pub(crate) const GROUP_STEP: &str = "batch";
+
 /// Applies the deferred effects of a committed call. A simulation applies none. A file that cannot be published
 /// (moved from its stage onto its target) after the commit is the call's error (C14-R2-01, ADR-0015 §12): every
 /// other effect still applies, the target keeps what it had, and the stage is removed.
@@ -1084,6 +1087,7 @@ impl Core {
                         Ok(u) => {
                             env.undo = u;
                             env.document_rev = last_rev.or(rev_before);
+                            env.committed = !self.simulating;
                             if let Err(e) = apply_effects(&mut session, effects, self.simulating, &inv.origin) {
                                 env = publish_failed(env, e);
                             }
@@ -1136,6 +1140,21 @@ impl Core {
         if let Err(e) = self.admit(origin, Some(req.steps.len()), None) {
             return Envelope::error(e, self.rev());
         }
+        // Atomic groups (C14-R3-02) run as steps of a sequential batch only: an atomic batch (or a group) cannot
+        // contain one.
+        if req.atomic
+            && let Some((i, _)) = req.steps.iter().enumerate().find(|(_, s)| s.id == GROUP_STEP)
+        {
+            return Envelope::error(
+                CommandError::with_details(
+                    "batch.nestedGroup",
+                    format!("step {} is an atomic group; groups cannot be nested in an atomic batch or a group", i + 1),
+                    json!({ "stepIndex": i + 1, "pointer": format!("/steps/{i}") }),
+                )
+                .hint("make the outer batch sequential (atomic: false)"),
+                self.rev(),
+            );
+        }
         if req.atomic
             && let Some((i, s)) = req
                 .steps
@@ -1153,6 +1172,35 @@ impl Core {
             );
         }
         if req.atomic { self.batch_atomic(req, origin) } else { self.batch_sequential(req, origin) }
+    }
+
+    /// An atomic group step of a sequential batch (C14-R3-02): `params` is a batch (`label`, `steps`, `atomic`
+    /// absent or `true`) run as one transaction.
+    fn group_step(&mut self, params: &Value, origin: &Origin) -> Envelope {
+        let group: BatchRequest = match serde_json::from_value(params.clone()) {
+            Ok(g) => g,
+            Err(e) => {
+                return Envelope::error(
+                    CommandError::with_details(
+                        codes::ARG_INVALID,
+                        format!("an atomic group step needs a batch as its params: {e}"),
+                        json!({ "pointer": "/params" }),
+                    ),
+                    self.rev(),
+                );
+            }
+        };
+        if !group.atomic {
+            return Envelope::error(
+                CommandError::with_details(
+                    codes::ARG_INVALID,
+                    "a group step is atomic: its params cannot set atomic: false",
+                    json!({ "pointer": "/params/atomic" }),
+                ),
+                self.rev(),
+            );
+        }
+        self.batch(&group, origin)
     }
 
     fn batch_sequential(&mut self, req: &BatchRequest, origin: &Origin) -> Envelope {
@@ -1177,18 +1225,24 @@ impl Core {
         let mut names: BTreeMap<String, usize> = BTreeMap::new();
         let mut failed: Option<(usize, CommandError)> = None;
         for (i, step) in req.steps.iter().enumerate() {
-            let env = match resolve_refs(&step.params, &steps, &names) {
-                Ok(params) => {
-                    let inv = Invocation {
-                        command: step.id.clone(),
-                        params,
-                        options: InvokeOptions::default(),
-                        origin: origin.clone(),
-                    };
-                    let env = self.invoke(&inv);
-                    self.finish_batched_wait(&inv, env, started)
+            let env = if step.id == GROUP_STEP {
+                // An atomic group: one transaction and one undo step, exactly like `batch {atomic: true}`; its steps'
+                // references are relative to the group (C14-R3-02).
+                self.group_step(&step.params, origin)
+            } else {
+                match resolve_refs(&step.params, &steps, &names) {
+                    Ok(params) => {
+                        let inv = Invocation {
+                            command: step.id.clone(),
+                            params,
+                            options: InvokeOptions::default(),
+                            origin: origin.clone(),
+                        };
+                        let env = self.invoke(&inv);
+                        self.finish_batched_wait(&inv, env, started)
+                    }
+                    Err(e) => Envelope::error(e, self.rev()),
                 }
-                Err(e) => Envelope::error(e, self.rev()),
             };
             if let Some(n) = &step.name {
                 names.insert(n.clone(), i);
@@ -1351,6 +1405,7 @@ impl Core {
                         Ok(u) => {
                             env.undo = u;
                             env.document_rev = last_rev.or(rev_before);
+                            env.committed = !self.simulating;
                             if let Err(e) = apply_effects(&mut session, effects, self.simulating, origin) {
                                 env = publish_failed(env, e);
                             }
