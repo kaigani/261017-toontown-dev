@@ -53,6 +53,7 @@ pub use app::{AppState, Mode};
 pub use cx::Cx;
 pub use history::MAX_STEPS as MAX_UNDO_STEPS;
 pub use jobs::{JobNotifier, JobProgress, JobRecord, JobState, JobTable};
+pub use maintenance::Timings as MaintenanceTimings;
 pub use run::LoadGrant;
 pub use session::Event;
 pub use store::{Maintenance, PersistOptions};
@@ -122,7 +123,7 @@ enum Request {
     /// Background maintenance: autosave, heartbeats, external-change detection.
     Tick,
     /// Maintenance now (forcing autosave or not), answered after its events are delivered.
-    Maintenance(bool, Sender<()>),
+    Maintenance(bool, Sender<maintenance::Timings>),
     /// The last handle was dropped.
     Shutdown,
 }
@@ -306,6 +307,15 @@ impl ExecutorHandle {
     /// # Errors
     /// `command.timeout`, `internal`.
     pub fn run_maintenance(&self, force_autosave: bool) -> Result<(), CommandError> {
+        self.run_maintenance_timed(force_autosave).map(|_| ())
+    }
+
+    /// [`ExecutorHandle::run_maintenance`], reporting how long each part held the document thread (C1.4 obligations 4
+    /// and 5: the folder fingerprint and the autosave snapshot are measured where callers wait for them).
+    ///
+    /// # Errors
+    /// `command.timeout`, `internal`.
+    pub fn run_maintenance_timed(&self, force_autosave: bool) -> Result<MaintenanceTimings, CommandError> {
         self.call("maintenance", |r| Request::Maintenance(force_autosave, r))
     }
 
@@ -569,11 +579,13 @@ fn document_thread(mut core: run::Core, rx: &Receiver<Request>, subscribers: &Mu
                 let _ = reply.send(listed);
             }
             Request::Run(f) => f(&mut core),
-            Request::Tick => maintenance::tick(&mut core, false),
+            Request::Tick => {
+                let _ = maintenance::tick(&mut core, false);
+            }
             Request::Maintenance(force, reply) => {
-                maintenance::tick(&mut core, force);
+                let timings = maintenance::tick(&mut core, force);
                 flush(&mut core);
-                let _ = reply.send(());
+                let _ = reply.send(timings);
             }
             Request::Shutdown => break,
         }

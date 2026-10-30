@@ -37,19 +37,39 @@ pub(crate) fn start(s: &mut Session) {
 }
 
 /// Runs what is due; `force_autosave` writes a recovery copy now if the project is modified.
-pub(crate) fn tick(core: &mut Core, force_autosave: bool) {
-    let Some(s) = core.session_mut() else { return };
+/// How long each part of a maintenance pass held the document thread (`None`: not due).
+#[derive(Debug, Clone, Copy, Default, PartialEq, Eq)]
+pub struct Timings {
+    /// Lock and recovery heartbeat.
+    pub heartbeat: Option<std::time::Duration>,
+    /// External-change check (the folder fingerprint, RO-02).
+    pub watch: Option<std::time::Duration>,
+    /// The autosave snapshot taken on the document thread (AUTO-02); the copy is written on its own thread.
+    pub autosave_snapshot: Option<std::time::Duration>,
+}
+
+pub(crate) fn tick(core: &mut Core, force_autosave: bool) -> Timings {
+    let mut t = Timings::default();
+    let Some(s) = core.session_mut() else { return t };
     let now = Instant::now();
     let m = s.env.maintenance;
     if force_autosave || s.env.last_heartbeat.is_none_or(|t| now.duration_since(t) >= m.heartbeat) {
+        let start = Instant::now();
         heartbeat(s);
+        t.heartbeat = Some(start.elapsed());
         s.env.last_heartbeat = Some(now);
     }
     if force_autosave || s.env.last_watch.is_none_or(|t| now.duration_since(t) >= m.watch) {
+        let start = Instant::now();
         watch(s);
+        t.watch = Some(start.elapsed());
         s.env.last_watch = Some(now);
     }
-    autosave(s, force_autosave);
+    let start = Instant::now();
+    if autosave(s, force_autosave) {
+        t.autosave_snapshot = Some(start.elapsed());
+    }
+    t
 }
 
 fn heartbeat(s: &mut Session) {
@@ -120,20 +140,21 @@ fn watch(s: &mut Session) {
     }
 }
 
-fn autosave(s: &mut Session, force: bool) {
+/// Starts an autosave when one is due; `true` when it took a snapshot.
+fn autosave(s: &mut Session, force: bool) -> bool {
     if !s.env.pref_bool("files.autosave.enabled") && !force {
-        return;
+        return false;
     }
     let interval = s.env.maintenance.autosave.unwrap_or_else(|| {
         std::time::Duration::from_secs(s.env.pref_u64("files.autosave.intervalMinutes").max(1).saturating_mul(60))
     });
-    let Some(poster) = s.env.poster.clone() else { return };
+    let Some(poster) = s.env.poster.clone() else { return false };
     let root = s.env.dirs.recovery.clone();
-    let Some(p) = s.project.as_mut() else { return };
+    let Some(p) = s.project.as_mut() else { return false };
     let rev = p.doc.document_rev();
     let due = force || p.store.last_autosave.elapsed() >= interval;
     if !due || !p.dirty() || p.store.autosaving || p.store.saving || p.store.autosaved_rev == Some(rev) {
-        return;
+        return false;
     }
     p.store.autosaving = true;
     p.store.last_autosave = Instant::now();
@@ -204,6 +225,7 @@ fn autosave(s: &mut Session, force: bool) {
     {
         p.store.autosaving = false;
     }
+    true
 }
 
 /// The executor stops: the project is closed without deleting its recovery data (a stop is not a clean quit), its

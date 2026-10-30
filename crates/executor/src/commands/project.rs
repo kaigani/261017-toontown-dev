@@ -700,8 +700,11 @@ pub(crate) fn project_save(cx: &mut Cx, p: SaveParams) -> Result<Job<SaveResult>
             format!("`{path}` was changed by another program since it was opened; saving overwrites those changes"),
             vec![
                 json!({ "kind": "overwriteExternalChange", "path": path, "detectedAt": at }),
-                json!({ "kind": "alternative", "choice": "reload", "commandId": "project.open",
+                // Reloading discards unsaved work: the `app` scope's, so the user's choice (11 §6.1).
+                json!({ "kind": "alternative", "choice": "reload", "by": "user", "commandId": "project.open",
                         "params": { "path": path, "onUnsaved": "discard" } }),
+                json!({ "kind": "alternative", "choice": "keepBoth", "commandId": "project.saveAs",
+                        "params": { "path": "<another path>" } }),
             ],
             Some(binding),
         )?;
