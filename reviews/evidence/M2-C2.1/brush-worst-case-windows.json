@@ -8,19 +8,19 @@
       "pressureKnots": 99000,
       "runs": [
         {
-          "wallMs": 924.8720000000001,
+          "wallMs": 932.8461,
           "outcome": "ok",
           "units": 425651220,
           "anchors": 20
         },
         {
-          "wallMs": 928.8146,
+          "wallMs": 943.3493,
           "outcome": "ok",
           "units": 425651220,
           "anchors": 20
         },
         {
-          "wallMs": 935.5641999999999,
+          "wallMs": 943.6501000000001,
           "outcome": "ok",
           "units": 425651220,
           "anchors": 20
@@ -33,19 +33,19 @@
       "pressureKnots": 99000,
       "runs": [
         {
-          "wallMs": 387.3825,
+          "wallMs": 389.0424,
           "outcome": "ok",
           "units": 27103868,
           "anchors": 4
         },
         {
-          "wallMs": 382.5328,
+          "wallMs": 384.5705,
           "outcome": "ok",
           "units": 27103868,
           "anchors": 4
         },
         {
-          "wallMs": 376.802,
+          "wallMs": 379.669,
           "outcome": "ok",
           "units": 27103868,
           "anchors": 4
@@ -58,19 +58,19 @@
       "pressureKnots": 99000,
       "runs": [
         {
-          "wallMs": 955.0594,
+          "wallMs": 948.5038999999999,
           "outcome": "ok",
           "units": 425524500,
           "anchors": 18
         },
         {
-          "wallMs": 955.3445,
+          "wallMs": 957.0436,
           "outcome": "ok",
           "units": 425524500,
           "anchors": 18
         },
         {
-          "wallMs": 954.2799,
+          "wallMs": 949.2948,
           "outcome": "ok",
           "units": 425524500,
           "anchors": 18
@@ -83,19 +83,19 @@
       "pressureKnots": 2,
       "runs": [
         {
-          "wallMs": 677.7109999999999,
+          "wallMs": 670.2384999999999,
           "outcome": "ok",
           "units": 185214801,
           "anchors": 45
         },
         {
-          "wallMs": 669.3765000000001,
+          "wallMs": 665.5569,
           "outcome": "ok",
           "units": 185214801,
           "anchors": 45
         },
         {
-          "wallMs": 661.7088,
+          "wallMs": 664.8444,
           "outcome": "ok",
           "units": 185214801,
           "anchors": 45
@@ -108,19 +108,19 @@
       "pressureKnots": 2,
       "runs": [
         {
-          "wallMs": 255.91960000000003,
+          "wallMs": 262.8773,
           "outcome": "ok",
           "units": 109929858,
           "anchors": 30010
         },
         {
-          "wallMs": 252.7933,
+          "wallMs": 264.6892,
           "outcome": "ok",
           "units": 109929858,
           "anchors": 30010
         },
         {
-          "wallMs": 250.5658,
+          "wallMs": 265.3069,
           "outcome": "ok",
           "units": 109929858,
           "anchors": 30010
@@ -133,19 +133,19 @@
       "pressureKnots": 2,
       "runs": [
         {
-          "wallMs": 396.67560000000003,
+          "wallMs": 396.7259,
           "outcome": "ok",
           "units": 47345410,
           "anchors": 308
         },
         {
-          "wallMs": 396.4277,
+          "wallMs": 398.6055,
           "outcome": "ok",
           "units": 47345410,
           "anchors": 308
         },
         {
-          "wallMs": 396.9356,
+          "wallMs": 393.94689999999997,
           "outcome": "ok",
           "units": 47345410,
           "anchors": 308
@@ -158,19 +158,19 @@
       "pressureKnots": 2,
       "runs": [
         {
-          "wallMs": 1503.4029,
+          "wallMs": 1508.2914,
           "outcome": "limit.exceeded: sweeping this brush stroke needs more than 1200000000 units of work",
           "units": 1200000000,
           "anchors": 0
         },
         {
-          "wallMs": 1501.5381,
+          "wallMs": 1507.4839,
           "outcome": "limit.exceeded: sweeping this brush stroke needs more than 1200000000 units of work",
           "units": 1200000000,
           "anchors": 0
         },
         {
-          "wallMs": 1506.6215,
+          "wallMs": 1517.1364,
           "outcome": "limit.exceeded: sweeping this brush stroke needs more than 1200000000 units of work",
           "units": 1200000000,
           "anchors": 0
@@ -183,19 +183,19 @@
       "pressureKnots": 2,
       "runs": [
         {
-          "wallMs": 1528.3115,
+          "wallMs": 1502.3137,
           "outcome": "limit.exceeded: sweeping this brush stroke needs more than 1200000000 units of work",
           "units": 1200000000,
           "anchors": 0
         },
         {
-          "wallMs": 1513.4180000000001,
+          "wallMs": 1502.4161000000001,
           "outcome": "limit.exceeded: sweeping this brush stroke needs more than 1200000000 units of work",
           "units": 1200000000,
           "anchors": 0
         },
         {
-          "wallMs": 1514.5567,
+          "wallMs": 1499.692,
           "outcome": "limit.exceeded: sweeping this brush stroke needs more than 1200000000 units of work",
           "units": 1200000000,
           "anchors": 0
@@ -208,19 +208,19 @@
       "pressureKnots": 2,
       "runs": [
         {
-          "wallMs": 848.008,
+          "wallMs": 834.6489,
           "outcome": "ok",
           "units": 81521168,
           "anchors": 58
         },
         {
-          "wallMs": 838.6534,
+          "wallMs": 843.3607,
           "outcome": "ok",
           "units": 81521168,
           "anchors": 58
         },
         {
-          "wallMs": 839.7957,
+          "wallMs": 836.8812,
           "outcome": "ok",
           "units": 81521168,
           "anchors": 58
@@ -233,19 +233,19 @@
       "pressureKnots": 90000,
       "runs": [
         {
-          "wallMs": 1796.9009,
+          "wallMs": 1768.8381,
           "outcome": "limit.exceeded: sweeping this brush stroke needs more than 1200000000 units of work",
           "units": 1200000000,
           "anchors": 0
         },
         {
-          "wallMs": 1804.7204,
+          "wallMs": 1791.8639999999998,
           "outcome": "limit.exceeded: sweeping this brush stroke needs more than 1200000000 units of work",
           "units": 1200000000,
           "anchors": 0
         },
         {
-          "wallMs": 1811.0629000000001,
+          "wallMs": 1785.674,
           "outcome": "limit.exceeded: sweeping this brush stroke needs more than 1200000000 units of work",
           "units": 1200000000,
           "anchors": 0
@@ -256,6 +256,6 @@
   "worst": {
     "name": "long-line-tiny-tip",
     "units": 1200000000,
-    "wallMs": 1811.0629000000001
+    "wallMs": 1791.8639999999998
   }
 }

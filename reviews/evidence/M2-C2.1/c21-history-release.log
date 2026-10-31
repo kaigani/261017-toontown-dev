@@ -1,7 +1,7 @@
 
 running 2 tests
-geometry-history-r3: {"seed":"0xc12320261019b683","operations":10000,"replayOperations":10000,"strokeSetUndoRedoCreateRestoreDryRun":[5494,3902,470,1,1724,511],"documentRev":11180,"durationSeconds":24.1334234,"oracle":"independent stroke geometry/thickness/revision stack; exact canonical all-entry byte checks every 100 operations; full fresh executor replay"}
-.geometry-history-r1: {"seed":"0xc12020261019a571","operations":10000,"replayOperations":10000,"strokeSetUndoRedoCreateRestoreDryRun":[5472,3911,528,1,1690,534],"documentRev":11234,"durationSeconds":24.330847,"oracle":"independent stroke geometry/thickness/revision stack; exact canonical all-entry byte checks every 100 operations; full fresh executor replay"}
+geometry-history-r3: {"seed":"0xc12320261019b683","operations":10000,"replayOperations":10000,"strokeSetUndoRedoCreateRestoreDryRun":[5494,3902,470,1,1724,511],"documentRev":11180,"durationSeconds":24.1437564,"oracle":"independent stroke geometry/thickness/revision stack; exact canonical all-entry byte checks every 100 operations; full fresh executor replay"}
+.geometry-history-r1: {"seed":"0xc12020261019a571","operations":10000,"replayOperations":10000,"strokeSetUndoRedoCreateRestoreDryRun":[5472,3911,528,1,1690,534],"documentRev":11234,"durationSeconds":24.3161582,"oracle":"independent stroke geometry/thickness/revision stack; exact canonical all-entry byte checks every 100 operations; full fresh executor replay"}
 .
-test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 24.46s
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 24.48s
 
