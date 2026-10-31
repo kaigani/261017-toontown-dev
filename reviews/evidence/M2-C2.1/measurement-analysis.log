@@ -1,24 +1,24 @@
 ok   strokes-100k-windows.json (series)
-       brushAdd.allocatedBytes: n=10 p50=3234736047.0 p99=3235380525.0 max=3235380525.0 bytes
-       brushAdd.retainedBytes: n=10 p50=38247.0 p99=49184.0 max=49184.0 bytes
-       brushAdd.wallMs: n=10 p50=4604.365 p99=4803.385 max=4803.385 ms
-       patchProperty.allocatedBytes: n=10 p50=2456581126.0 p99=2457069821.0 max=2457069821.0 bytes
+       brushAdd.allocatedBytes: n=10 p50=3234737415.0 p99=3235381893.0 max=3235381893.0 bytes
+       brushAdd.retainedBytes: n=10 p50=38247.0 p99=49177.0 max=49177.0 bytes
+       brushAdd.wallMs: n=10 p50=4563.298900000001 p99=4769.2833 max=4769.2833 ms
+       patchProperty.allocatedBytes: n=10 p50=2456581500.0 p99=2457067190.0 max=2457067190.0 bytes
        patchProperty.retainedBytes: n=10 p50=6174.0 p99=33019.0 max=33019.0 bytes
-       patchProperty.wallMs: n=10 p50=3360.0094 p99=3611.2012999999997 max=3611.2012999999997 ms
-       process.liveBytes: n=70 p50=495603119.0 p99=510170210.0 max=510173935.0 bytes
+       patchProperty.wallMs: n=10 p50=3343.2661000000003 p99=3576.6902 max=3576.6902 ms
+       process.liveBytes: n=70 p50=495607215.0 p99=510174306.0 max=510178031.0 bytes
        redo.allocatedBytes: n=10 p50=3310111853.0 p99=3310742059.0 max=3310742059.0 bytes
-       redo.retainedBytes: n=10 p50=13656.0 p99=121233111.0 max=121233111.0 bytes
-       redo.wallMs: n=10 p50=4663.7379 p99=4923.4340999999995 max=4923.4340999999995 ms
-       strokeAdd.allocatedBytes: n=10 p50=3338443075.0 p99=3339088107.0 max=3339088107.0 bytes
-       strokeAdd.retainedBytes: n=10 p50=16851.0 p99=121353591.0 max=121353591.0 bytes
-       strokeAdd.wallMs: n=10 p50=4753.799499999999 p99=5455.287399999999 max=5455.287399999999 ms
-       strokeAddDryRun.allocatedBytes: n=10 p50=3338309986.0 p99=4409459273.0 max=4409459273.0 bytes
-       strokeAddDryRun.retainedBytes: n=10 p50=1558.0 p99=12520.0 max=12520.0 bytes
-       strokeAddDryRun.wallMs: n=10 p50=4816.8763 p99=5319.332 max=5319.332 ms
-       strokeSet.allocatedBytes: n=10 p50=3255501097.0 p99=3256142605.0 max=3256142605.0 bytes
+       redo.retainedBytes: n=10 p50=13594.0 p99=121233111.0 max=121233111.0 bytes
+       redo.wallMs: n=10 p50=4715.844 p99=4942.0737 max=4942.0737 ms
+       strokeAdd.allocatedBytes: n=10 p50=3338443449.0 p99=3339088169.0 max=3339088169.0 bytes
+       strokeAdd.retainedBytes: n=10 p50=15315.0 p99=121353591.0 max=121353591.0 bytes
+       strokeAdd.wallMs: n=10 p50=4816.340099999999 p99=5104.5851999999995 max=5104.5851999999995 ms
+       strokeAddDryRun.allocatedBytes: n=10 p50=3338299066.0 p99=4409459300.0 max=4409459300.0 bytes
+       strokeAddDryRun.retainedBytes: n=10 p50=1558.0 p99=22451.0 max=22451.0 bytes
+       strokeAddDryRun.wallMs: n=10 p50=4808.2445 p99=5351.4339 max=5351.4339 ms
+       strokeSet.allocatedBytes: n=10 p50=3255512391.0 p99=3256142282.0 max=3256142282.0 bytes
        strokeSet.retainedBytes: n=10 p50=5860.0 p99=16780.0 max=16780.0 bytes
-       strokeSet.wallMs: n=10 p50=4564.4206 p99=5233.7925 max=5233.7925 ms
+       strokeSet.wallMs: n=10 p50=4557.8141 p99=4848.2126 max=4848.2126 ms
        undo.allocatedBytes: n=10 p50=3963297483.0 p99=3964085929.0 max=3964085929.0 bytes
-       undo.retainedBytes: n=10 p50=13038.0 p99=121237127.0 max=121237127.0 bytes
-       undo.wallMs: n=10 p50=5396.040400000001 p99=5623.8044 max=5623.8044 ms
+       undo.retainedBytes: n=10 p50=13038.0 p99=121237094.0 max=121237094.0 bytes
+       undo.wallMs: n=10 p50=5414.4471 p99=5496.6786 max=5496.6786 ms
 1 file(s), 0 rejected
