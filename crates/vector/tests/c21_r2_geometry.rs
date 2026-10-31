@@ -78,6 +78,12 @@ fn dense_bidirectional_fitting_corpus() {
                     }
                 }
                 let error = forward.max(reverse);
+                if !name.starts_with("walk-") {
+                    eprintln!(
+                        "case {name} smooth={smooth} closed={closed} forward={forward:.9} reverse={reverse:.9} anchors={}",
+                        f.path.anchors.len()
+                    );
+                }
                 let ratio = error / tolerance(smooth);
                 if ratio > worst_ratio {
                     worst_ratio = ratio;
@@ -99,18 +105,18 @@ fn dense_bidirectional_fitting_corpus() {
 fn nfc_composition_preserves_unaffected_character_formats() {
     use tt_vector::text::{Content, default_para, default_run};
     let mut a = default_run(None);
-    a.length = 1;
+    a.length = 2;
     let mut b = a.clone();
-    b.start = 1;
+    b.start = 2;
     b.length = 2;
     b.bold = true;
     // Bengali spacing vowel signs have CCC=0 yet compose across that boundary.
     // The following ASCII Z is unrelated to the composition and must stay bold.
-    let c = Content::from_parts("\u{09c7}\u{09be}Z", vec![a, b], vec![default_para()]);
-    assert_eq!(c.text(), "\u{09cb}Z");
+    let c = Content::from_parts("\u{0995}\u{09c7}\u{09be}Z", vec![a, b], vec![default_para()]);
+    assert_eq!(c.text(), "\u{0995}\u{09cb}Z");
     eprintln!("Bengali NFC runs: {:?}", c.runs);
     assert!(
-        c.runs.iter().any(|r| r.start <= 1 && r.start + r.length > 1 && r.bold),
+        c.runs.iter().any(|r| r.start <= 2 && r.start + r.length > 2 && r.bold),
         "NFC composition must preserve Z's format"
     );
 }
@@ -142,7 +148,7 @@ fn alternating_pressure_fitting_respects_watchdog() {
             child.kill().unwrap();
             child.wait().unwrap();
             assert!(
-                false,
+                start.elapsed() <= Duration::from_secs(30),
                 "100k collinear samples with alternating pressure exceed the 30s watchdog; pressure simplification must be budgeted"
             );
         }
@@ -196,8 +202,163 @@ fn many_pressure_knots_brush_respects_watchdog() {
         if start.elapsed() > Duration::from_secs(30) {
             child.kill().unwrap();
             child.wait().unwrap();
-            assert!(false, "accepted 99000 pressure knots hold the brush worker beyond the 30s document watchdog");
+            assert!(
+                start.elapsed() <= Duration::from_secs(30),
+                "accepted 99000 pressure knots hold the brush worker beyond the 30s document watchdog"
+            );
         }
         std::thread::sleep(Duration::from_millis(20));
     }
+}
+
+fn contains(poly: &[P], p: P) -> bool {
+    let mut winding = 0;
+    for w in poly.windows(2) {
+        let a = w[0];
+        let b = w[1];
+        if a.y <= p.y && b.y > p.y && (b - a).cross(p - a) > 0.0 {
+            winding += 1;
+        }
+        if a.y > p.y && b.y <= p.y && (b - a).cross(p - a) < 0.0 {
+            winding -= 1;
+        }
+    }
+    winding != 0
+}
+
+#[test]
+fn swept_tip_containment_matrix_at_and_between_knots() {
+    use tt_model::entities::pen::Tip;
+    use tt_vector::{
+        brush::{BrushPen, outline},
+        path::{Anchor, Path},
+    };
+    let points = [P::new(0.0, 0.0), P::new(20.0, 0.0), P::new(20.0, 0.0), P::new(20.0, 20.0), P::new(20.0, 0.0)];
+    let spine = Path { anchors: points.into_iter().map(Anchor::corner).collect(), closed: false };
+    for tip in [Tip::Round, Tip::Oval, Tip::Square, Tip::Flat] {
+        for angle in [0.0, 45.0, 90.0] {
+            for min in [0.0, 12.0] {
+                let pen = BrushPen { tip, min_size: min, max_size: 12.0, tip_angle: angle };
+                let pressure = [[0.0, 0.0], [0.2, 1.0], [0.35, 0.0], [0.35, 1.0], [0.8, 0.2], [1.0, 1.0]];
+                let path = outline(&spine, &pressure, &pen).unwrap();
+                assert!(path.closed);
+                assert!(path.check("/outline").is_ok());
+                assert!(Path::from_bezier_list(&path.to_bezier_list(), true, "/bezier").is_ok());
+                let poly = path.flatten(0.001);
+                let mut probes = pressure.to_vec();
+                for w in pressure.windows(2) {
+                    for k in 1..10 {
+                        let u = f64::from(k) / 10.0;
+                        probes.push([w[0][0] + (w[1][0] - w[0][0]) * u, w[0][1] + (w[1][1] - w[0][1]) * u]);
+                    }
+                }
+                for [t, p] in probes {
+                    let d = t * 60.0;
+                    let center = if d <= 20.0 {
+                        P::new(d, 0.0)
+                    } else if d <= 40.0 {
+                        P::new(20.0, d - 20.0)
+                    } else {
+                        P::new(20.0, 60.0 - d)
+                    };
+                    let r = (min + p * (12.0 - min)) / 2.0;
+                    if r < 0.4 {
+                        continue;
+                    }
+                    for k in 0..32 {
+                        let u = tt_vector::num::dir(f64::from(k) * 360.0 / 32.0);
+                        let q = match tip {
+                            Tip::Round => u * (r - 0.3),
+                            Tip::Oval => P::new(u.x * (r - 0.3), u.y * (r / 2.0 - 0.3).max(0.0)),
+                            Tip::Square => P::new(u.x.signum() * (r - 0.3), u.y.signum() * (r - 0.3)),
+                            Tip::Flat => P::new(u.x.signum() * (r - 0.3), u.y.signum() * (r / 5.0 - 0.3).max(0.0)),
+                        };
+                        let q = if tip == Tip::Round { q } else { tt_vector::num::rotation(angle).apply(q) };
+                        assert!(
+                            contains(&poly, center + q),
+                            "tip={tip:?} angle={angle} min={min} t={t} pressure={p} probe={:?}",
+                            center + q
+                        );
+                    }
+                }
+            }
+        }
+    }
+}
+
+#[test]
+fn open_and_closed_anchor_limit_boundaries() {
+    use tt_vector::path::{Anchor, MAX_ANCHORS, Path};
+    for closed in [false, true] {
+        for count in [MAX_ANCHORS, MAX_ANCHORS + 1] {
+            let path = Path {
+                anchors: (0..count).map(|i| Anchor::corner(P::new(i as f64, (i % 2) as f64))).collect(),
+                closed,
+            };
+            assert_eq!(path.check("/path").is_ok(), count == MAX_ANCHORS);
+            assert_eq!(Path::from_bezier_list(&path.to_bezier_list(), closed, "/bezier").is_ok(), count == MAX_ANCHORS);
+        }
+    }
+}
+
+#[test]
+fn hundred_thousand_collinear_samples_respect_polyline_tolerance() {
+    let samples: Vec<_> = (0..100_000).map(|i| Sample { p: P::new(f64::from(i), 0.0), pressure: 1.0 }).collect();
+    for smooth in [0.0, 1.0, 2.0, 3.0] {
+        for closed in [false, true] {
+            let start = std::time::Instant::now();
+            let (f, visits) = fit_bounded(&samples, smooth, closed, FIT_WORK_BUDGET).unwrap();
+            for s in f.path.segments() {
+                for i in 0..=10000 {
+                    let p = s.eval(f64::from(i) / 10000.0);
+                    let e = distance(p, P::new(0.0, 0.0), P::new(99999.0, 0.0));
+                    assert!(e <= tolerance(smooth) + 1e-6, "smooth={smooth} closed={closed} error={e}");
+                }
+            }
+            // Continuous output joins both extrema, so its reverse distance from every input point is also zero.
+            assert!(f.path.anchors.iter().any(|a| a.p.x.abs() < 1e-6));
+            assert!(f.path.anchors.iter().any(|a| (a.p.x - 99999.0).abs() < 1e-6));
+            eprintln!(
+                "100k straight smooth={smooth} closed={closed} anchors={} visits={visits} elapsed={:?}",
+                f.path.anchors.len(),
+                start.elapsed()
+            );
+        }
+    }
+}
+
+#[test]
+fn round_loop_union_grid_error_is_within_outline_tolerance() {
+    use tt_model::entities::pen::Tip;
+    use tt_vector::{
+        brush::{BrushPen, outline},
+        path::{Anchor, Path},
+    };
+    let points = [P::new(0.0, 0.0), P::new(30.0, 0.0), P::new(30.0, 30.0), P::new(0.0, 30.0), P::new(0.0, 0.0)];
+    let spine = Path { anchors: points[..4].iter().copied().map(Anchor::corner).collect(), closed: true };
+    let out = outline(
+        &spine,
+        &[[0.0, 1.0], [1.0, 1.0]],
+        &BrushPen { tip: Tip::Round, min_size: 4.0, max_size: 4.0, tip_angle: 0.0 },
+    )
+    .unwrap();
+    let poly = out.flatten(0.001);
+    let mut worst = 0.0f64;
+    let mut mismatches = 0;
+    // Independent exact capsule-union oracle on a 1/8-du grid, including the hole and bridge.
+    for x in -24..=264 {
+        for y in -24..=264 {
+            let p = P::new(f64::from(x) / 8.0, f64::from(y) / 8.0);
+            let d = to_poly(p, &points);
+            if contains(&poly, p) != (d < 2.0) {
+                mismatches += 1;
+                worst = worst.max((d - 2.0).abs());
+            }
+        }
+    }
+    eprintln!(
+        "round loop grid: {} points, {mismatches} boundary disagreements, worst boundary distance={worst:.9} du",
+        289 * 289
+    );
+    assert!(worst <= 0.1 + 1.0 / 64.0 + 0.025, "union/fitting/grid error {worst}");
 }
