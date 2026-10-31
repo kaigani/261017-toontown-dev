@@ -178,7 +178,9 @@ impl Path {
                 },
             ));
         }
-        if n / 3 + 1 > MAX_ANCHORS {
+        // An open list of n points has (n - 1) / 3 + 1 anchors, a closed one n / 3 (no repeated end point).
+        let anchors = if closed { n.div_ceil(3) } else { (n - 1) / 3 + 1 };
+        if anchors > MAX_ANCHORS {
             return Err(GeomError::invalid(pointer, format!("at most {MAX_ANCHORS} anchors per stroke")));
         }
         if n == 1 {

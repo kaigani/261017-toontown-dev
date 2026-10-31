@@ -8,6 +8,7 @@
 //! Layout: the transform's origin is the top-left corner of the box; lines run downwards (−y in drawing space).
 
 use serde::{Deserialize, Serialize};
+use unicode_normalization::UnicodeNormalization;
 
 use crate::fonts;
 use crate::geom::{Affine, P, Rect};
@@ -240,8 +241,9 @@ impl Content {
     }
 
     /// Recomputes run starts, drops empty runs (keeping one), merges equal neighbours, and recomputes paragraph
-    /// ranges from the lines.
+    /// ranges from the lines. The text is first put in NFC (10 §1.1), with run lengths following the composition.
     pub fn normalize(&mut self) {
+        self.compose();
         let template = self.runs_template();
         let mut runs: Vec<Run> = Vec::with_capacity(self.runs.len());
         for r in self.runs.drain(..) {
@@ -282,6 +284,58 @@ impl Content {
             }
         }
         self.paras.truncate(line);
+    }
+
+    /// Puts the text in NFC (10 §1.1: strings are NFC) and remaps the runs across every change of length. The text is
+    /// cut before each starter (canonical combining class 0, except Hangul medial and final jamo, which compose with
+    /// the syllable before them); each piece is normalised on its own and belongs to the run of its first code point,
+    /// so a combining mark typed after a base character joins the base character's run. If normalising the pieces
+    /// separately differs from normalising the whole text (a composition across a starter), the whole text is one
+    /// piece and keeps the first run's format.
+    fn compose(&mut self) {
+        let text: String = self.chars.iter().collect();
+        if unicode_normalization::is_nfc(&text) {
+            return;
+        }
+        // The run of every code point.
+        let mut owner: Vec<usize> = Vec::with_capacity(self.chars.len());
+        for (i, r) in self.runs.iter().enumerate() {
+            owner.extend(std::iter::repeat_n(i, r.length as usize));
+        }
+        owner.resize(self.chars.len(), self.runs.len().saturating_sub(1));
+        let starter = |c: char| {
+            unicode_normalization::char::canonical_combining_class(c) == 0
+                && !matches!(u32::from(c), 0x1161..=0x1175 | 0x11A8..=0x11C2)
+        };
+        let mut pieces: Vec<(usize, usize)> = Vec::new();
+        let mut begin = 0usize;
+        for (i, c) in self.chars.iter().enumerate() {
+            if i > begin && starter(*c) {
+                pieces.push((begin, i));
+                begin = i;
+            }
+        }
+        pieces.push((begin, self.chars.len()));
+        let whole: Vec<char> = text.nfc().collect();
+        let mut out: Vec<char> = Vec::with_capacity(whole.len());
+        let mut lengths = vec![0u32; self.runs.len().max(1)];
+        for (a, b) in &pieces {
+            let piece: String = self.chars[*a..*b].iter().collect();
+            let norm: Vec<char> = piece.nfc().collect();
+            if let Some(l) = lengths.get_mut(owner.get(*a).copied().unwrap_or(0)) {
+                *l += u(norm.len());
+            }
+            out.extend(norm);
+        }
+        if out != whole {
+            lengths = vec![0; self.runs.len().max(1)];
+            lengths[0] = u(whole.len());
+            out = whole;
+        }
+        for (r, l) in self.runs.iter_mut().zip(lengths) {
+            r.length = l;
+        }
+        self.chars = out;
     }
 
     fn runs_template(&self) -> Run {
@@ -609,5 +663,50 @@ mod tests {
         let fixed = layout(&c, Some(auto.width / 3.0));
         assert!(fixed.lines >= 3, "{fixed:?}");
         assert!(fixed.height > auto.height);
+    }
+}
+
+#[cfg(test)]
+mod nfc_tests {
+    use super::*;
+
+    #[test]
+    fn decomposed_input_is_composed_and_runs_follow() {
+        let c = Content::new("e\u{301}x", default_run(None), default_para());
+        assert_eq!(c.text(), "\u{e9}x");
+        assert_eq!(c.runs[0].length, 2);
+        assert_eq!(c.paras[0].length, 2);
+    }
+
+    #[test]
+    fn a_combining_mark_typed_after_a_base_joins_the_base_and_its_run() {
+        let mut c = Content::new("ab", default_run(None), default_para());
+        c.format(0, 1, &Format { bold: Some(true), ..Format::default() });
+        c.insert(1, "\u{301}");
+        assert_eq!(c.text(), "\u{e1}b");
+        assert_eq!(c.runs.iter().map(|r| (r.length, r.bold)).collect::<Vec<_>>(), vec![(1, true), (1, false)]);
+        // At a run boundary: a mark inserted at the start of the second run composes with the first run's character.
+        let mut d = Content::new("ab", default_run(None), default_para());
+        d.format(1, 1, &Format { italic: Some(true), ..Format::default() });
+        d.insert(1, "\u{308}");
+        assert_eq!(d.text(), "\u{e4}b");
+        assert_eq!(d.runs.iter().map(|r| (r.length, r.italic)).collect::<Vec<_>>(), vec![(1, false), (1, true)]);
+    }
+
+    #[test]
+    fn deleting_between_a_base_and_a_mark_composes_them() {
+        let mut c = Content::new("ex", default_run(None), default_para());
+        c.insert(2, "\u{301}");
+        assert_eq!(c.text(), "ex\u{301}");
+        c.delete(1, 1);
+        assert_eq!(c.text(), "\u{e9}");
+        assert_eq!(c.runs[0].length, 1);
+    }
+
+    #[test]
+    fn hangul_jamo_compose_into_one_syllable() {
+        let c = Content::new("\u{1100}\u{1161}\u{11A8}", default_run(None), default_para());
+        assert_eq!(c.chars.len(), 1);
+        assert_eq!(c.runs[0].length, 1);
     }
 }

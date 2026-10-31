@@ -306,7 +306,10 @@ fn c21_drawing_commands_write_no_files_and_ask_no_confirmation() {
     let implemented: Vec<&str> = registry
         .entries()
         .filter(|e| e.id().starts_with("draw.") && e.status() == tt_registry::Status::Implemented)
+        .filter(|e| e.spec.kind != tt_registry::Kind::Event)
         .map(|e| e.id())
         .collect();
     assert_eq!(implemented.len(), c21.len(), "{implemented:?}");
+    // The drawing event is produced by the commit path (C21-R1-07) and is not invocable.
+    assert_eq!(registry.get("draw.drawing.changed").unwrap().status(), tt_registry::Status::Implemented);
 }

@@ -176,7 +176,10 @@ jobs:
           cargo test --release --locked -p tt-executor --test c21_measurements -- --ignored --nocapture
           # Both seeded 10 000-operation history oracles with drawing geometry on a saved/reopened fixture (MCP).
           cargo test --release --locked -p tt-mcp --test c21_history -- --ignored --nocapture
+          # Worst-case fitting work on the adversarial 100 000-sample corpus (C21-R1-06; every run kept).
+          cargo test --release --locked -p tt-vector --test c21_worst_case -- --ignored --nocapture
           mkdir -p out
+          cp -r target/evidence/c21-fit out/c21-fit-worst-case
           $PY scripts/analyse-measurements.py target/evidence/c21 --out out/c21-measurement-analysis.json
           cp -r target/evidence/c21 out/c21-measurements
 

@@ -62,7 +62,7 @@ pub struct Spec {
 pub fn centre(spec: &Spec) -> Result<(Path, Vec<[f64; 2]>), GeomError> {
     let (path, pressure) = match &spec.geometry {
         Geometry::Samples { samples, fit: true } => {
-            let f = fit::fit(samples, spec.smoothness, spec.closed);
+            let (f, _) = fit::fit_bounded(samples, spec.smoothness, spec.closed, fit::FIT_WORK_BUDGET)?;
             (f.path, f.pressure)
         }
         Geometry::Samples { samples, fit: false } => {

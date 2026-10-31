@@ -26,8 +26,9 @@ pub const GRID: f64 = 64.0;
 /// Fitting tolerance of outline contours (du).
 pub const OUTLINE_TOLERANCE: f64 = 0.1;
 
-/// Most tip placements along one spine (the step grows for very long strokes).
-pub const MAX_PLACEMENTS: usize = 20_000;
+/// Most tip placements along one spine; a spine that needs more is refused with `limit.exceeded` (bounded work,
+/// M2 C2.1 obligation 11).
+pub const MAX_PLACEMENTS: usize = 100_000;
 
 /// The pen a brush stroke is swept with (02 §6.1, §13.4 `pen`).
 #[derive(Debug, Clone, Copy, PartialEq)]
@@ -61,9 +62,12 @@ pub fn tip_polygon(pen: &BrushPen, w: f64) -> Vec<P> {
     match pen.tip {
         Tip::Round | Tip::Oval => {
             let (a, b) = if pen.tip == Tip::Round { (r, r) } else { (r, r / 2.0) };
-            // Enough sides that the polygon deviates from the ellipse by at most 1/40 du (8–64 sides).
+            // Enough sides that the polygon deviates from the ellipse by at most 1/40 du (8–64 sides); the polygon is
+            // circumscribed (vertices at r / cos(pi / sides)), so the tip polygon contains the exact tip.
             let err = 0.025_f64.min(a / 4.0);
             let sides = (num::PI / num::acos(1.0 - err / a)).ceil().clamp(8.0, 64.0) as u32;
+            let grow = 1.0 / num::cos(num::PI / f64::from(sides));
+            let (a, b) = (a * grow, b * grow);
             let rot = if pen.tip == Tip::Oval { num::rotation(pen.tip_angle) } else { crate::geom::Affine::IDENTITY };
             (0..sides)
                 .map(|k| {
@@ -120,43 +124,105 @@ fn from_int(p: IntPoint<i32>) -> P {
     P::new(f64::from(p.x) / GRID, f64::from(p.y) / GRID)
 }
 
-/// Tip placements along the spine: positions with their normalised arc-length positions.
-fn placements(spine: &Path, max_size: f64) -> Vec<(P, f64)> {
+/// Flattening tolerance of the spine for tip placements: one grid step (1/64 du).
+pub const PLACEMENT_TOLERANCE: f64 = 1.0 / GRID;
+
+/// The arc-length position `target` (du) on a segment of length `len`: the parameter (bisection, 48 steps).
+fn param_at_length(s: &crate::geom::Cubic, target: f64, len: f64) -> f64 {
+    if target <= 0.0 {
+        return 0.0;
+    }
+    if target >= len {
+        return 1.0;
+    }
+    let (mut lo, mut hi) = (0.0, 1.0);
+    for _ in 0..48 {
+        let mid = (lo + hi) / 2.0;
+        if s.length_to(mid) < target {
+            lo = mid;
+        } else {
+            hi = mid;
+        }
+    }
+    (lo + hi) / 2.0
+}
+
+/// Tip placements along the spine with their normalised arc-length positions: every vertex of the spine flattened
+/// within [`PLACEMENT_TOLERANCE`] (curvature) and every knot of the pressure map. Between two consecutive placements
+/// the spine is a chord and the width is linear, so the swept tip is exactly the convex hull of the two placed tips
+/// (a convex tip scaled linearly along a segment); their union is the sweep.
+///
+/// # Errors
+/// `limit.exceeded` when the spine needs more than [`MAX_PLACEMENTS`] placements (bounded work).
+fn placements(spine: &Path, pressure: &[[f64; 2]]) -> Result<Vec<(P, f64, f64)>, GeomError> {
     let segs = spine.segments();
     let lens: Vec<f64> = segs.iter().map(crate::geom::Cubic::length).collect();
     let total: f64 = lens.iter().sum();
     let first = spine.anchors.first().map(|a| a.p).unwrap_or_default();
     if segs.is_empty() || total <= 0.0 {
-        return vec![(first, 0.0)];
+        // A dab: the widest pressure of the map.
+        let p = pressure.iter().map(|k| k[1]).fold(pressure_at(pressure, 0.0), f64::max);
+        return Ok(vec![(first, 0.0, p)]);
     }
-    let mut step = (max_size / 4.0).clamp(0.25, 8.0);
-    if total / step > MAX_PLACEMENTS as f64 {
-        step = total / MAX_PLACEMENTS as f64;
-    }
-    let mut out = vec![(first, 0.0)];
+    // Curvature: uniform parameter steps from Wang's bound for the placement tolerance.
+    let mut out: Vec<(P, f64, f64)> = vec![(first, 0.0, pressure_at(pressure, 0.0))];
     let mut acc = 0.0;
     for (s, len) in segs.iter().zip(&lens) {
-        let n = (len / step).ceil().clamp(1.0, MAX_PLACEMENTS as f64) as u32;
-        for i in 1..=n {
-            let u = f64::from(i) / f64::from(n);
+        let dd1 = (s.p2 - s.p1 * 2.0 + s.p0).len();
+        let dd2 = (s.p3 - s.p2 * 2.0 + s.p1).len();
+        let m = dd1.max(dd2) * 6.0;
+        let n = if m <= 0.0 { 1.0 } else { (m / (8.0 * PLACEMENT_TOLERANCE)).sqrt().ceil().max(1.0) };
+        if out.len() as f64 + n > MAX_PLACEMENTS as f64 {
+            return Err(too_many());
+        }
+        let steps = n as u32;
+        for i in 1..=steps {
+            let u = f64::from(i) / n;
             let t = ((acc + s.length_to(u)) / total).clamp(0.0, 1.0);
-            out.push((s.eval(u), t));
+            out.push((s.eval(u), t, pressure_at(pressure, t)));
         }
         acc += len;
     }
-    out
+    // Pressure knots strictly inside the spine, at their arc-length positions.
+    let mut starts = Vec::with_capacity(segs.len());
+    let mut a = 0.0;
+    for len in &lens {
+        starts.push(a);
+        a += len;
+    }
+    // Every knot is placed with its own pressure, so a step (several knots at one position) places both widths.
+    for [t, p] in pressure {
+        let target = t.clamp(0.0, 1.0) * total;
+        let k = starts.partition_point(|s| *s <= target).saturating_sub(1);
+        let u = param_at_length(&segs[k], target - starts[k], lens[k]);
+        out.push((segs[k].eval(u), t.clamp(0.0, 1.0), *p));
+    }
+    if out.len() > MAX_PLACEMENTS {
+        return Err(too_many());
+    }
+    // In order of arc length (stable: equal positions keep their order), consecutive duplicates removed.
+    out.sort_by(|x, y| x.1.total_cmp(&y.1));
+    out.dedup_by(|b, a| a.0 == b.0 && a.1 == b.1 && a.2 == b.2);
+    Ok(out)
+}
+
+fn too_many() -> GeomError {
+    GeomError {
+        code: "limit.exceeded",
+        message: format!("the brush stroke needs more than {MAX_PLACEMENTS} tip placements"),
+        pointer: "/points".to_owned(),
+    }
 }
 
 /// The outline of a brush stroke: one closed path (02 §3.4; SI-053 for holes).
 ///
 /// # Errors
-/// `drawing.invalidGeometry` when the swept area is empty (zero width throughout).
+/// `drawing.invalidGeometry` when the swept area is empty (zero width throughout); `limit.exceeded` beyond
+/// [`MAX_PLACEMENTS`] tip placements.
 pub fn outline(spine: &Path, pressure: &[[f64; 2]], pen: &BrushPen) -> Result<Path, GeomError> {
-    let places = placements(spine, pen.max_size);
-    let tips: Vec<Vec<P>> = places
-        .iter()
-        .map(|(q, t)| tip_polygon(pen, pen.width(pressure_at(pressure, *t))).into_iter().map(|v| v + *q).collect())
-        .collect();
+    let places = placements(spine, pressure)?;
+    let tips: Vec<Vec<P>> =
+        places.iter().map(|(q, _, p)| tip_polygon(pen, pen.width(*p)).into_iter().map(|v| v + *q).collect()).collect();
     let mut overlay: Overlay<i32> = Overlay::new(tips.len() * 16);
     let mut add = |poly: Vec<P>| {
         let mut ints: Vec<IntPoint<i32>> = poly.into_iter().map(to_int).collect();

@@ -1,10 +1,16 @@
 //! Curve fitting of freehand samples (02 §3.3).
 //!
-//! 1. Consecutive duplicate positions are dropped.
+//! 1. Consecutive duplicate positions are dropped; then consecutive samples closer than 1/16 of the tolerance to the
+//!    last kept one are merged into it (their pressures averaged), so dense input costs linear work. The fit then uses
+//!    15/16 of the tolerance, so the result stays within the tolerance of the original polyline.
 //! 2. Corners (direction changes sharper than [`CORNER_TURN_DEGREES`], measured between neighbours at least one
-//!    tolerance away) split the samples into runs.
-//! 3. Each run is fitted by least squares with chord-length parameters improved by Newton steps; when the largest
-//!    error exceeds the tolerance the run is split at that sample and both halves are fitted recursively.
+//!    tolerance away, searched within [`CORNER_WINDOW`] samples) split the samples into runs.
+//! 3. Each run is fitted by least squares with chord-length parameters improved by Newton steps. The error is the
+//!    largest distance between the cubic and the **input polyline** in both directions: every sample to the curve,
+//!    the curve between consecutive samples to their segment, and every segment midpoint to the curve. When it exceeds
+//!    the tolerance the run is split and both halves are fitted recursively; a two-sample run keeps its tangents only
+//!    while it stays within the tolerance of its segment (its handles shrink, down to a straight segment), and a run
+//!    that reaches the recursion limit becomes straight segments through its samples.
 //! 4. The tolerance is `0.25 du + 0.5 du × smoothness` (§3.3 recommendation).
 //! 5. Pressures are smoothed with a centred moving average of half-width `round(smoothness)` samples and stored as
 //!    `(t, p)` with `t` the normalised arc length along the fitted spine.
@@ -16,6 +22,39 @@ use crate::path::{Anchor, GeomError, MAX_ANCHORS, Path, check_coord};
 
 /// Turns sharper than this make a corner.
 pub const CORNER_TURN_DEGREES: f64 = 60.0;
+
+/// How many samples the corner search looks back and ahead for a neighbour one tolerance away (bounded work).
+pub const CORNER_WINDOW: usize = 64;
+
+/// Curve points checked between two consecutive samples of a run.
+const INTERVAL_SAMPLES: u32 = 4;
+
+/// Recursion limit of the fit; deeper runs become straight segments through their samples.
+const MAX_DEPTH: u32 = 40;
+
+/// The work a product fit may do, in sample visits (each about one cubic evaluation): far above the structural bound
+/// of the algorithm (`MAX_DEPTH` levels, each visiting every sample a fixed number of times), so it only stops input
+/// that would hold the document worker for longer than the watchdog allows (M2 C2.1 obligation 11, C21-R1-06).
+pub const FIT_WORK_BUDGET: u64 = 400_000_000;
+
+/// Sample visits charged per sample each time a run is fitted (least squares, error, four Newton passes).
+const VISITS_PER_SAMPLE: u64 = 48;
+
+/// A fit's tolerance and work account.
+struct Budget {
+    tol: f64,
+    used: std::cell::Cell<u64>,
+    limit: u64,
+}
+
+impl Budget {
+    /// Charges `n` visits; `false` once the limit is passed.
+    fn spend(&self, n: u64) -> bool {
+        let used = self.used.get().saturating_add(n);
+        self.used.set(used);
+        used <= self.limit
+    }
+}
 
 /// The pressure-map simplification tolerance: samples whose pressure is within this of the linear interpolation of
 /// their kept neighbours are dropped (Douglas–Peucker on `(t, p)`).
@@ -80,19 +119,54 @@ pub fn fit(samples: &[Sample], smoothness: f64, closed: bool) -> Fitted {
 /// Fits cleaned samples with an explicit tolerance (du); `smoothness` sets the pressure smoothing window.
 #[must_use]
 pub fn fit_with(samples: &[Sample], tol: f64, smoothness: f64, closed: bool) -> Fitted {
+    fit_inner(samples, tol, smoothness, closed, u64::MAX).0
+}
+
+/// [`fit`] within a work budget in sample visits (the product passes [`FIT_WORK_BUDGET`]): the fit and the visits it
+/// used.
+///
+/// # Errors
+/// `limit.exceeded` when the input needs more work than the budget allows (the document worker is never held for
+/// longer; C21-R1-06).
+pub fn fit_bounded(samples: &[Sample], smoothness: f64, closed: bool, budget: u64) -> Result<(Fitted, u64), GeomError> {
+    let (f, used) = fit_inner(samples, tolerance(smoothness), smoothness, closed, budget);
+    if used > budget {
+        return Err(GeomError {
+            code: "limit.exceeded",
+            message: format!("fitting these points needs more than {budget} sample visits"),
+            pointer: "/points".to_owned(),
+        });
+    }
+    Ok((f, used))
+}
+
+fn fit_inner(samples: &[Sample], tol: f64, smoothness: f64, closed: bool, limit: u64) -> (Fitted, u64) {
+    let eps = tol / 16.0;
+    let reduced = collapse(samples, eps, closed);
+    let samples = &reduced[..];
+    let tol = tol - eps;
     let pts: Vec<P> = samples.iter().map(|s| s.p).collect();
     if pts.len() <= 1 {
         let p = pts.first().copied().unwrap_or_default();
         let pr = samples.first().map_or(1.0, |s| s.pressure);
-        return Fitted {
-            path: Path { anchors: vec![Anchor::corner(p)], closed: true },
-            pressure: vec![[0.0, pr], [1.0, pr]],
-        };
+        return (
+            Fitted {
+                path: Path { anchors: vec![Anchor::corner(p)], closed: true },
+                pressure: vec![[0.0, pr], [1.0, pr]],
+            },
+            0,
+        );
     }
     let closed = closed && pts.len() >= 3;
     // The chain to fit, as indices into `pts` (a loop repeats its start; it starts at a corner when it has one).
+    let budget = Budget { tol, used: std::cell::Cell::new(0), limit };
+    budget.spend((pts.len() as u64).saturating_mul(2 * CORNER_WINDOW as u64));
     let corners = corners(&pts, tol, closed);
     let n = pts.len();
+    let mut is_corner = vec![false; n];
+    for &c in &corners {
+        is_corner[c] = true;
+    }
     let chain: Vec<usize> = if closed {
         let start = corners.first().copied().unwrap_or(0);
         (0..=n).map(|k| (start + k) % n).collect()
@@ -102,7 +176,7 @@ pub fn fit_with(samples: &[Sample], tol: f64, smoothness: f64, closed: bool) -> 
     let chain_pts: Vec<P> = chain.iter().map(|&i| pts[i]).collect();
     let mut breaks: Vec<usize> = vec![0];
     for (k, i) in chain.iter().enumerate().skip(1).take(chain.len().saturating_sub(2)) {
-        if corners.contains(i) {
+        if is_corner[*i] {
             breaks.push(k);
         }
     }
@@ -121,14 +195,40 @@ pub fn fit_with(samples: &[Sample], tol: f64, smoothness: f64, closed: bool) -> 
             (left_tangent(run), right_tangent(run))
         };
         let mut local: Vec<(usize, f64)> = vec![(0, 0.0); run.len()];
-        fit_run(run, t1, t2, tol, 0, &mut segs, &mut local);
+        fit_run(run, t1, t2, &budget, 0, &mut segs, &mut local);
         for (k, l) in local.iter().enumerate() {
             params[a + k] = *l;
         }
     }
     let path = path_of(&segs, closed);
     let pressure = pressure_map(samples, &chain, &params, &segs, smoothness);
-    Fitted { path, pressure }
+    (Fitted { path, pressure }, budget.used.get())
+}
+
+/// Merges consecutive samples closer than `eps` to the last kept sample into it (pressures averaged); for a loop, a
+/// last sample within `eps` of the first is dropped.
+fn collapse(samples: &[Sample], eps: f64, closed: bool) -> Vec<Sample> {
+    let mut out: Vec<Sample> = Vec::with_capacity(samples.len());
+    let mut sum = 0.0;
+    let mut count = 0.0;
+    for s in samples {
+        match out.last_mut() {
+            Some(last) if last.p.dist(s.p) < eps => {
+                sum += s.pressure;
+                count += 1.0;
+                last.pressure = sum / count;
+            }
+            _ => {
+                out.push(*s);
+                sum = s.pressure;
+                count = 1.0;
+            }
+        }
+    }
+    if closed && out.len() >= 2 && out[out.len() - 1].p.dist(out[0].p) < eps {
+        out.pop();
+    }
+    out
 }
 
 /// Joins samples with straight segments (`fit: false`, 02 §13.1 item 6).
@@ -178,7 +278,7 @@ fn corners(pts: &[P], tol: f64, closed: bool) -> Vec<usize> {
     let reach = |i: usize, back: bool| -> Option<P> {
         // The nearest sample at least `tol` away in one direction (wrapping for loops), else the farthest one.
         let mut last = None;
-        for step in 1..n {
+        for step in 1..n.min(CORNER_WINDOW + 1) {
             let j = if back {
                 if closed {
                     (i + n - step) % n
@@ -285,17 +385,57 @@ fn generate(run: &[P], u: &[f64], t1: P, t2: P) -> Cubic {
     Cubic { p0: first, p1: first + t1 * al, p2: last + t2 * ar, p3: last }
 }
 
+/// Distance from `p` to the segment `a`-`b`.
+fn seg_dist(p: P, a: P, b: P) -> f64 {
+    let ab = b - a;
+    let l = ab.dot(ab);
+    let t = if l > 0.0 { ((p - a).dot(ab) / l).clamp(0.0, 1.0) } else { 0.0 };
+    p.dist(a + ab * t)
+}
+
+/// The largest distance between the cubic and the run's polyline in both directions (see the module
+/// documentation), and the sample to split at.
 fn max_error(run: &[P], c: &Cubic, u: &[f64]) -> (f64, usize) {
+    let n = run.len();
     let mut worst = 0.0;
-    let mut at = run.len() / 2;
-    for i in 1..run.len() - 1 {
-        let d = c.eval(u[i]).dist(run[i]);
+    let mut at = n / 2;
+    let mut note = |d: f64, i: usize| {
         if d > worst {
             worst = d;
-            at = i;
+            at = i.clamp(1, n - 2);
         }
+    };
+    for i in 0..n {
+        // Each sample to the curve (at its parameter: an upper bound of its distance to the curve).
+        note(c.eval(u[i]).dist(run[i]), i);
+        if i + 1 == n {
+            break;
+        }
+        let (a, b) = (run[i], run[i + 1]);
+        let split = if i == 0 { 1 } else { i };
+        // The curve between the two samples to their segment (an upper bound of its distance to the polyline).
+        for k in 1..INTERVAL_SAMPLES {
+            let t = u[i] + (u[i + 1] - u[i]) * f64::from(k) / f64::from(INTERVAL_SAMPLES);
+            note(seg_dist(c.eval(t), a, b), split);
+        }
+        // The segment's midpoint to the curve.
+        note(c.eval((u[i] + u[i + 1]) / 2.0).dist(a.lerp(b, 0.5)), split);
     }
     (worst, at)
+}
+
+/// The largest distance between a cubic and the segment between its end points (sampled at 1/32 steps).
+fn chord_error(c: &Cubic) -> f64 {
+    (1..32).map(|k| seg_dist(c.eval(f64::from(k) / 32.0), c.p0, c.p3)).fold(0.0, f64::max)
+}
+
+/// Straight segments through every sample of a run.
+fn straight(run: &[P], segs: &mut Vec<Cubic>, params: &mut [(usize, f64)]) {
+    for i in 0..run.len() - 1 {
+        params[i] = (segs.len(), 0.0);
+        segs.push(Cubic::line(run[i], run[i + 1]));
+    }
+    params[run.len() - 1] = (segs.len() - 1, 1.0);
 }
 
 fn reparameterize(run: &[P], c: &Cubic, u: &[f64]) -> Vec<f64> {
@@ -320,13 +460,30 @@ fn reparameterize(run: &[P], c: &Cubic, u: &[f64]) -> Vec<f64> {
     out
 }
 
-fn fit_run(run: &[P], t1: P, t2: P, tol: f64, depth: u32, segs: &mut Vec<Cubic>, params: &mut [(usize, f64)]) {
+fn fit_run(run: &[P], t1: P, t2: P, budget: &Budget, depth: u32, segs: &mut Vec<Cubic>, params: &mut [(usize, f64)]) {
+    let tol = budget.tol;
     if run.len() == 2 {
-        let d = run[0].dist(run[1]) / 3.0;
-        let c = Cubic { p0: run[0], p1: run[0] + t1 * d, p2: run[1] + t2 * d, p3: run[1] };
+        // Tangent-controlled handles bend the curve away from the segment; they shrink until it is within the
+        // tolerance (down to a straight segment).
+        let mut d = run[0].dist(run[1]) / 3.0;
+        let mut c = Cubic { p0: run[0], p1: run[0] + t1 * d, p2: run[1] + t2 * d, p3: run[1] };
+        while chord_error(&c) > tol {
+            d /= 2.0;
+            if d < tol / 1024.0 {
+                c = Cubic::line(run[0], run[1]);
+                break;
+            }
+            c = Cubic { p0: run[0], p1: run[0] + t1 * d, p2: run[1] + t2 * d, p3: run[1] };
+        }
         params[0] = (segs.len(), 0.0);
         params[1] = (segs.len(), 1.0);
         segs.push(c);
+        return;
+    }
+    // Past the recursion limit, or past the work budget (then the whole fit is refused by `fit_bounded`), a run is
+    // straight segments through its samples.
+    if depth >= MAX_DEPTH || !budget.spend((run.len() as u64).saturating_mul(VISITS_PER_SAMPLE)) {
+        straight(run, segs, params);
         return;
     }
     let mut u = chord_params(run);
@@ -346,7 +503,7 @@ fn fit_run(run: &[P], t1: P, t2: P, tol: f64, depth: u32, segs: &mut Vec<Cubic>,
             }
         }
     }
-    if err <= tol || depth >= 40 {
+    if err <= tol {
         for (i, t) in u.iter().enumerate() {
             params[i] = (segs.len(), *t);
         }
@@ -358,9 +515,9 @@ fn fit_run(run: &[P], t1: P, t2: P, tol: f64, depth: u32, segs: &mut Vec<Cubic>,
         (run[split - 1] - run[split + 1]).unit().unwrap_or_else(|| (run[split - 1] - run[split]).unit().unwrap_or(t2));
     let (left, right) = params.split_at_mut(split);
     let mut lp = vec![(0, 0.0); split + 1];
-    fit_run(&run[..=split], t1, center, tol, depth + 1, segs, &mut lp);
+    fit_run(&run[..=split], t1, center, budget, depth + 1, segs, &mut lp);
     left.copy_from_slice(&lp[..split]);
-    fit_run(&run[split..], -center, t2, tol, depth + 1, segs, right);
+    fit_run(&run[split..], -center, t2, budget, depth + 1, segs, right);
 }
 
 /// The pressure map: smoothed pressures at the normalised arc length of each sample along the fitted spine.

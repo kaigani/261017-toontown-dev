@@ -191,8 +191,10 @@ pub(crate) struct StrokeAddResult {
     zone_ids: Vec<String>,
     /// The layer holding the strokes.
     layer_id: String,
-    /// Strokes removed by re-noding (M2 C2.2: empty until then).
-    removed_ids: Vec<String>,
+    /// Changed objects: `createdIds` the new strokes (and a new layer or drawing), `modifiedIds` an existing layer
+    /// that received them, `removedIds` strokes removed by re-noding (M2 C2.2: empty until then).
+    #[serde(flatten)]
+    changed: super::draw::Changed,
     /// The drawing revision after the change.
     rev: u64,
     /// Hint codes (`drawing.strokesHidden` for invisible strokes while Show Strokes is off).
@@ -442,6 +444,7 @@ pub(crate) fn draw_stroke_add(cx: &mut Cx, p: StrokeAddParams) -> Result<StrokeA
     let lt = vd::layer_target(&d, &policy, kind, place_behind, &first_poly)
         .map_err(|(code, m)| err(code, m, json!({ "pointer": "/layer", "layer": p.layer })))?;
     let hint = if kind == StrokeKind::Brush { LayerHint::Brush } else { LayerHint::Pencil };
+    let new_layer = !matches!(lt, LayerTarget::Existing { .. });
     let (layer_id, mut ops) = match lt {
         LayerTarget::Existing { id, strokes: at } => {
             let ops: Vec<_> = strokes.into_iter().map(|s| op("add", &format!("{at}/-"), Some(s))).collect();
@@ -474,13 +477,21 @@ pub(crate) fn draw_stroke_add(cx: &mut Cx, p: StrokeAddParams) -> Result<StrokeA
     cx.set_label(label_of(kind));
     warn_zones(cx, &t.id);
     let hints = if kind == StrokeKind::Invisible { vec!["drawing.strokesHidden".to_owned()] } else { Vec::new() };
+    let mut created_ids = ids.clone();
+    if new_layer {
+        created_ids.push(layer_id.clone());
+    }
+    if t.created {
+        created_ids.push(t.id.as_str().to_owned());
+    }
+    let modified_ids = if new_layer { Vec::new() } else { vec![layer_id.clone()] };
     Ok(StrokeAddResult {
         drawing_id: t.id.as_str().to_owned(),
         created_drawing: t.created,
         stroke_ids: ids,
         zone_ids: Vec::new(),
         layer_id,
-        removed_ids: Vec::new(),
+        changed: super::draw::Changed { created_ids, modified_ids, removed_ids: Vec::new() },
         rev: committed_rev(cx)?,
         hints,
     })
@@ -504,9 +515,16 @@ pub(crate) enum LineKind {
 pub(crate) struct StrokeSetParams {
     /// The stroke (`<drawingId>/<localId>`, or local with `drawingId` / the current drawing).
     stroke_id: String,
-    /// The drawing holding a local stroke ID (default: the current drawing).
+    /// The drawing holding a local stroke ID (default: `elementId` + `frame`, else the current drawing).
     #[serde(default)]
     drawing_id: Option<String>,
+    /// The element whose cell exposes the drawing (02 §13.1 item 4; with a local ID).
+    #[serde(default)]
+    element_id: Option<String>,
+    /// The frame of that cell (default: the current frame).
+    #[serde(default)]
+    #[schemars(range(min = 1, max = 2_147_483_647))]
+    frame: Option<u32>,
     /// New geometry (02 §13.4 Bézier list): a brush stroke's spine (the outline is swept again), or its outline when
     /// the spine was discarded; a pencil or invisible stroke's path.
     #[serde(default)]
@@ -535,32 +553,68 @@ pub(crate) struct StrokeSetParams {
 #[derive(Debug, Serialize, JsonSchema)]
 #[serde(rename_all = "camelCase")]
 pub(crate) struct StrokeSetResult {
+    /// The drawing.
+    drawing_id: String,
     /// The edited stroke (its ID is kept, 02 §3.12 item 4).
     stroke_ids: Vec<String>,
-    /// Strokes removed by re-noding (M2 C2.2: empty until then).
-    removed_ids: Vec<String>,
+    /// Changed objects: the edited stroke is modified; `removedIds` are strokes removed by re-noding (M2 C2.2:
+    /// empty until then).
+    #[serde(flatten)]
+    changed: super::draw::Changed,
     /// The drawing revision after the change.
     rev: u64,
 }
 
-/// The document, drawing and object a `strokeId` (or text ID) names: `<drawingId>/<localId>`, or a local ID in
-/// `drawingId` or the current drawing. The document is the transaction's (a cheap copy-on-write clone).
+/// The common drawing addressing of a command that names an object by ID (02 §13.1 item 4).
+#[derive(Debug, Clone, Copy, Default)]
+pub(crate) struct Addr<'a> {
+    /// `drawingId`.
+    pub drawing_id: Option<&'a str>,
+    /// `elementId`.
+    pub element_id: Option<&'a str>,
+    /// `frame`.
+    pub frame: Option<u32>,
+}
+
+/// The document, drawing and object an object ID names: `<drawingId>/<localId>` (whose drawing must agree with any
+/// addressing also given), or a local ID in the drawing that `drawingId`, `elementId` + `frame` or the current drawing
+/// resolves to (the common target resolution of 02 §13.1 item 4). The document is the transaction's (a cheap
+/// copy-on-write clone).
 pub(crate) fn stroke_target(
-    cx: &Cx,
+    cx: &mut Cx,
     stroke_id: &str,
-    drawing_id: Option<&str>,
+    addr: Addr<'_>,
 ) -> Result<(Document, tt_model::Id, vd::Located), CommandError> {
+    let given = addr.drawing_id.is_some() || addr.element_id.is_some() || addr.frame.is_some();
+    let addressed = if given {
+        let mut none = Vec::new();
+        Some(target(cx, addr.drawing_id, addr.element_id, addr.frame, false, &mut none)?.id)
+    } else {
+        None
+    };
     let doc = cx.document()?.clone();
-    let drawing = match (stroke_id.split_once('/'), drawing_id) {
-        (Some((d, _)), _) => Some(tt_model::Id::parse(d)?),
-        (None, Some(d)) => Some(tt_model::Id::parse(&cx.resolve_as(d, ObjectType::Drawing)?)?),
+    let drawing = match (stroke_id.split_once('/'), addressed) {
+        (Some((d, _)), a) => {
+            let d = tt_model::Id::parse(d)?;
+            if let Some(a) = a
+                && a != d
+            {
+                return Err(err(
+                    codes::ARG_INVALID,
+                    format!("`{stroke_id}` belongs to drawing `{d}`, not to the addressed drawing `{a}`"),
+                    json!({ "pointer": "/drawingId", "drawingId": a.as_str() }),
+                ));
+            }
+            Some(d)
+        }
+        (None, Some(a)) => Some(a),
         (None, None) => cx.app().current_drawing(&doc),
     };
     let Some(did) = drawing else {
         return Err(err(
             "drawing.noTarget",
-            "a local stroke ID needs drawingId or a current drawing",
-            json!({ "strokeId": stroke_id }),
+            "a local object ID needs drawingId, elementId and frame, or a current drawing",
+            json!({ "id": stroke_id }),
         ));
     };
     let d = doc.drawing(&did).ok_or_else(|| super::draw::not_found(did.as_str()))?;
@@ -592,7 +646,8 @@ pub(crate) fn draw_stroke_set(cx: &mut Cx, p: StrokeSetParams) -> Result<StrokeS
             json!({ "pointer": "/bezier" }),
         ));
     }
-    let (doc, did, l) = stroke_target(cx, &p.stroke_id, p.drawing_id.as_deref())?;
+    let addr = Addr { drawing_id: p.drawing_id.as_deref(), element_id: p.element_id.as_deref(), frame: p.frame };
+    let (doc, did, l) = stroke_target(cx, &p.stroke_id, addr)?;
     let d = drawing_in(&doc, &did)?;
     if l.kind != ObjectKind::Stroke {
         return Err(err(
@@ -636,7 +691,13 @@ pub(crate) fn draw_stroke_set(cx: &mut Cx, p: StrokeSetParams) -> Result<StrokeS
     }
     cx.patch_entries(vec![(EntryKey::Drawing(d.id().clone()), vec![op("replace", &l.pointer, Some(next))])])?;
     warn_zones(cx, d.id());
-    Ok(StrokeSetResult { stroke_ids: vec![l.id], removed_ids: Vec::new(), rev: committed_rev(cx)? })
+    let changed = super::draw::Changed { modified_ids: vec![l.id.clone()], ..super::draw::Changed::default() };
+    Ok(StrokeSetResult {
+        drawing_id: did.as_str().to_owned(),
+        stroke_ids: vec![l.id],
+        changed,
+        rev: committed_rev(cx)?,
+    })
 }
 
 // ----- draw.content.add --------------------------------------------------------------------------------------------
@@ -692,6 +753,9 @@ pub(crate) struct ContentAddResult {
     created_drawing: bool,
     /// Old ID → new ID of every inserted node and stroke (SI-026 `idMap`).
     id_map: std::collections::BTreeMap<String, String>,
+    /// Changed objects: every inserted node and stroke (and a created drawing) is created.
+    #[serde(flatten)]
+    changed: super::draw::Changed,
     /// The drawing revision after the change.
     rev: u64,
 }
@@ -771,10 +835,16 @@ pub(crate) fn draw_content_add(cx: &mut Cx, p: ContentAddParams) -> Result<Conte
         cx.app_mut().set_selection("drawing", keys);
     }
     warn_zones(cx, &t.id);
+    let mut created_ids: Vec<String> = built.id_map.values().cloned().collect();
+    created_ids.sort();
+    if t.created {
+        created_ids.push(t.id.as_str().to_owned());
+    }
     Ok(ContentAddResult {
         drawing_id: t.id.as_str().to_owned(),
         created_drawing: t.created,
         id_map: built.id_map,
+        changed: super::draw::Changed { created_ids, ..super::draw::Changed::default() },
         rev: committed_rev(cx)?,
     })
 }
@@ -821,6 +891,22 @@ pub(crate) fn normalise_patched_strokes(cx: &mut Cx, before: &Document, keys: &[
                 fixes.push((key.clone(), vec![op("replace", "/points", Some(swept.points_json()))]));
             }
             (Some(_), false, true) => fixes.push((key.clone(), vec![op("replace", "/spine", Some(Value::Null))])),
+            // A direct outline edit makes the outline authoritative and discards the spine (02 §3.2, §14 decision
+            // 2); editing the spine in the same patch contradicts that, so the patch is refused (orchestrator ruling
+            // on C21-R1-04). Removing the spine together with an outline edit is consistent and allowed.
+            (Some(_), true, true) => {
+                return Err(err(
+                    codes::ARG_INVALID,
+                    format!("`{key}`: one patch edits both the brush outline and its spine"),
+                    json!({
+                        "pointer": "/points",
+                        "pointers": ["/points", "/spine"],
+                        "reason": "outlineAndSpine",
+                        "id": key,
+                    }),
+                )
+                .hint("edit the outline (the spine is then discarded) or the spine (the outline is swept again), not both"));
+            }
             _ => {}
         }
     }

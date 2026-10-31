@@ -11,6 +11,8 @@ tt-model.workspace = true
 serde.workspace = true
 serde_json.workspace = true
 schemars.workspace = true
+# NFC of text content (10 §1.1), the same crate the model normalises with.
+unicode-normalization.workspace = true
 # Pure-software transcendental functions (ADR-0004 rule 3: no platform libm in persisted geometry).
 libm = { version = "0.2.16", default-features = false, features = ["force-soft-floats"] }
 # Boolean union of brush sweep polygons on an integer grid (deterministic; MIT OR Apache-2.0).

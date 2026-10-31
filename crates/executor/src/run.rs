@@ -516,7 +516,7 @@ fn needs_confirmation(session: &mut Session, e: CommandError, rev: Option<u64>) 
 
 /// Commits transactions: installs each stamped snapshot, records undo steps or moves the history position, logs
 /// the revision and emits `doc.changed`.
-fn commit(s: &mut Session, txns: Vec<Txn>, origin: &Origin) -> Result<Option<UndoRef>, CommandError> {
+fn commit(s: &mut Session, txns: Vec<Txn>, origin: &Origin, command: &str) -> Result<Option<UndoRef>, CommandError> {
     if txns.is_empty() {
         return Ok(None);
     }
@@ -557,19 +557,55 @@ fn commit(s: &mut Session, txns: Vec<Txn>, origin: &Origin) -> Result<Option<Und
             p.doc = t.after;
             let step_value = if t.kind == TxnKind::System { Value::Null } else { Value::String(step_id) };
             let origin_label = if t.kind == TxnKind::System { "system".to_owned() } else { origin.label() };
-            events.push(json!({
-                "undoStepId": step_value,
-                "documentRev": t.rev,
-                "label": t.label,
-                "origin": origin_label,
-                "changes": elide(&t.changes),
-            }));
+            events.push((
+                "doc.changed",
+                json!({
+                    "undoStepId": step_value,
+                    "documentRev": t.rev,
+                    "label": t.label,
+                    "origin": origin_label,
+                    "changes": elide(&t.changes),
+                }),
+            ));
+            events.extend(drawing_events(&t.changes, t.rev, command).into_iter().map(|e| ("draw.drawing.changed", e)));
         }
     }
-    for e in events {
-        s.emit("doc.changed", e);
+    for (name, e) in events {
+        s.emit(name, e);
     }
     Ok(undo_ref)
+}
+
+/// `draw.drawing.changed` payloads (02 §13.5, §13.6; spec A): one per drawing whose content a committed transaction
+/// changed — every command, batch, undo, redo and checkpoint restore commits here — with the drawing's new revision,
+/// the command and the local IDs of the nodes and strokes it created, modified and removed. Drawings are those the
+/// change records report as modified or created (content decides, ADR-0013 §4); deleted drawings have no content
+/// event.
+fn drawing_events(changes: &[ChangeRecord], rev: u64, command: &str) -> Vec<Value> {
+    let mut out = Vec::new();
+    for d in changes.iter().filter(|c| c.ty == "drawing" && c.op != "deleted") {
+        let prefix = format!("{}/", d.id);
+        let mut created: Vec<&str> = Vec::new();
+        let mut modified: Vec<&str> = Vec::new();
+        let mut removed: Vec<&str> = Vec::new();
+        for c in changes {
+            let Some(local) = c.id.strip_prefix(&prefix) else { continue };
+            match c.op.as_str() {
+                "created" => created.push(local),
+                "deleted" => removed.push(local),
+                _ => modified.push(local),
+            }
+        }
+        out.push(json!({
+            "drawingId": d.id,
+            "rev": rev,
+            "commandId": command,
+            "createdIds": created,
+            "modifiedIds": modified,
+            "removedIds": removed,
+        }));
+    }
+    out
 }
 
 /// Stages the file writes of a call about to commit: each is written to a temporary sibling of its target (C14-R1-03).
@@ -1083,7 +1119,7 @@ impl Core {
                     // failed write rolls the invocation back (C13-R1-01).
                     let pre = frozen_guard(&session, &txns)
                         .and_then(|()| self.write_pending(&session, txns.last().map(|t| &t.after), &mut effects));
-                    match pre.and_then(|()| commit(&mut session, txns, &inv.origin)) {
+                    match pre.and_then(|()| commit(&mut session, txns, &inv.origin, &inv.command)) {
                         Ok(u) => {
                             env.undo = u;
                             env.document_rev = last_rev.or(rev_before);
@@ -1418,7 +1454,7 @@ impl Core {
                         .map_or(Ok(()), |t| frozen_guard(&session, std::slice::from_ref(t)))
                         .and_then(|()| self.write_pending(&session, txn.as_ref().map(|t| &t.after), &mut effects));
                     let committed = pre.and_then(|()| match txn {
-                        Some(t) => commit(&mut session, vec![t], origin),
+                        Some(t) => commit(&mut session, vec![t], origin, "batch"),
                         None => Ok(None),
                     });
                     match committed {
@@ -1566,7 +1602,7 @@ impl Core {
         let mut session = cx.into_session();
         let committed = outcome
             .and_then(|()| self.write_pending(&session, txns.last().map(|t| &t.after), &mut effects))
-            .and_then(|()| commit(&mut session, txns, origin).map(|_| ()));
+            .and_then(|()| commit(&mut session, txns, origin, "project.save").map(|_| ()));
         let committed = match committed {
             Ok(()) => apply_effects(&mut session, effects, self.simulating, origin),
             Err(e) => {
@@ -1745,7 +1781,7 @@ mod tests {
         let txn = cx.finish_staged("Add Stroke".into()).unwrap().unwrap();
         let changes = txn.changes.clone();
         let mut session = cx.into_session();
-        commit(&mut session, vec![txn], &Origin::User).unwrap();
+        commit(&mut session, vec![txn], &Origin::User, "draw.stroke.add").unwrap();
         core.session = Some(session);
         changes
     }

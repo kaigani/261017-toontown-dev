@@ -35,6 +35,19 @@ pub(crate) struct Point {
     pub y: f64,
 }
 
+/// The objects an edit created, modified and removed (02 §13.1 item 11): local node and stroke IDs, and the drawing's
+/// ID when the edit changed a drawing-level property or created the drawing.
+#[derive(Debug, Clone, Default, Serialize, JsonSchema)]
+#[serde(rename_all = "camelCase")]
+pub(crate) struct Changed {
+    /// Created objects.
+    pub created_ids: Vec<String>,
+    /// Modified objects (content, membership or position changed; IDs kept).
+    pub modified_ids: Vec<String>,
+    /// Removed objects (descendants included).
+    pub removed_ids: Vec<String>,
+}
+
 /// `{x, y, width, height}`.
 #[derive(Debug, Clone, Copy, Serialize, JsonSchema)]
 pub(crate) struct Bounds {
@@ -506,11 +519,17 @@ pub(crate) struct PivotParams {
     expect_rev: Option<u64>,
 }
 
-/// `{pivot, rev}`.
+/// `{drawingId, pivot, rev}` and the changed IDs.
 #[derive(Debug, Serialize, JsonSchema)]
+#[serde(rename_all = "camelCase")]
 pub(crate) struct PivotResult {
+    /// The drawing.
+    drawing_id: String,
     /// The pivot.
     pivot: Point,
+    /// Changed objects (the drawing itself is modified).
+    #[serde(flatten)]
+    changed: Changed,
     /// The drawing revision after the change.
     rev: u64,
 }
@@ -539,7 +558,8 @@ pub(crate) fn draw_pivot_set(cx: &mut Cx, p: PivotParams) -> Result<PivotResult,
         vec![op("replace", "/pivot", Some(json!({ "x": p.point.x, "y": p.point.y })))],
     ));
     cx.patch_entries(changes)?;
-    Ok(PivotResult { pivot: p.point, rev: committed_rev(cx)? })
+    let changed = Changed { modified_ids: vec![t.id.as_str().to_owned()], ..Changed::default() };
+    Ok(PivotResult { drawing_id: t.id.as_str().to_owned(), pivot: p.point, changed, rev: committed_rev(cx)? })
 }
 
 // ----- draw.object.delete ------------------------------------------------------------------------------------------
@@ -570,8 +590,12 @@ pub(crate) struct DeleteParams {
 #[derive(Debug, Serialize, JsonSchema)]
 #[serde(rename_all = "camelCase")]
 pub(crate) struct DeleteResult {
-    /// Removed objects (their descendants included, and layers left empty).
-    removed_ids: Vec<String>,
+    /// The drawing.
+    drawing_id: String,
+    /// Changed objects: `removedIds` are the removed objects (their descendants included, and layers left empty),
+    /// `modifiedIds` the remaining layers and groups that lost members.
+    #[serde(flatten)]
+    changed: Changed,
     /// The drawing revision after the change.
     rev: u64,
 }
@@ -638,10 +662,21 @@ pub(crate) fn draw_object_delete(cx: &mut Cx, p: DeleteParams) -> Result<DeleteR
     }
     let found = locate_all(&d, &ids, "/ids")?;
     let (ops, removed) = removal_ops(&d, &found);
+    let mut parents: Vec<String> = Vec::new();
+    for o in vd::objects(&d) {
+        if removed.contains(&o.id)
+            && let Some(p) = o.parent
+            && !removed.contains(&p)
+            && !parents.contains(&p)
+        {
+            parents.push(p);
+        }
+    }
     changes.push((EntryKey::Drawing(t.id.clone()), ops));
     cx.patch_entries(changes)?;
     warn_zones(cx, &t.id);
-    Ok(DeleteResult { removed_ids: removed, rev: committed_rev(cx)? })
+    let changed = Changed { created_ids: Vec::new(), modified_ids: parents, removed_ids: removed };
+    Ok(DeleteResult { drawing_id: t.id.as_str().to_owned(), changed, rev: committed_rev(cx)? })
 }
 
 // ----- draw.group.create / draw.group.delete -----------------------------------------------------------------------
@@ -672,10 +707,14 @@ pub(crate) struct GroupCreateParams {
 #[derive(Debug, Serialize, JsonSchema)]
 #[serde(rename_all = "camelCase")]
 pub(crate) struct GroupCreateResult {
+    /// The drawing.
+    drawing_id: String,
     /// The new group.
     group_id: String,
-    /// New layers holding grouped strokes (strokes are grouped in their own layer, 02 §8.4).
-    created_ids: Vec<String>,
+    /// Changed objects: `createdIds` are the group and the new layers holding grouped strokes (strokes are grouped in
+    /// their own layer, 02 §8.4); `modifiedIds` the moved members and the layers that gave up strokes.
+    #[serde(flatten)]
+    changed: Changed,
     /// The drawing revision after the change.
     rev: u64,
 }
@@ -796,7 +835,17 @@ pub(crate) fn draw_group_create(cx: &mut Cx, p: GroupCreateParams) -> Result<Gro
     if !created.is_empty() {
         warn_zones(cx, &t.id);
     }
-    Ok(GroupCreateResult { group_id: group_id.as_str().to_owned(), created_ids: created, rev: committed_rev(cx)? })
+    let mut created_all = vec![group_id.as_str().to_owned()];
+    created_all.extend(created);
+    let mut modified: Vec<String> = items.iter().map(|i| i.id.clone()).collect();
+    modified.extend(found.iter().filter(|o| o.kind == ObjectKind::Stroke).map(|o| o.id.clone()));
+    let changed = Changed { created_ids: created_all, modified_ids: modified, removed_ids: Vec::new() };
+    Ok(GroupCreateResult {
+        drawing_id: t.id.as_str().to_owned(),
+        group_id: group_id.as_str().to_owned(),
+        changed,
+        rev: committed_rev(cx)?,
+    })
 }
 
 /// `draw.group.delete` parameters.
@@ -825,8 +874,13 @@ pub(crate) struct GroupDeleteParams {
 #[derive(Debug, Serialize, JsonSchema)]
 #[serde(rename_all = "camelCase")]
 pub(crate) struct GroupDeleteResult {
+    /// The drawing.
+    drawing_id: String,
     /// The former members, in order.
     member_ids: Vec<String>,
+    /// Changed objects: the groups removed, their members moved (modified).
+    #[serde(flatten)]
+    changed: Changed,
     /// The drawing revision after the change.
     rev: u64,
 }
@@ -891,5 +945,50 @@ pub(crate) fn draw_group_delete(cx: &mut Cx, p: GroupDeleteParams) -> Result<Gro
     }
     changes.push((EntryKey::Drawing(t.id.clone()), ops));
     cx.patch_entries(changes)?;
-    Ok(GroupDeleteResult { member_ids: members, rev: committed_rev(cx)? })
+    let changed = Changed {
+        created_ids: Vec::new(),
+        modified_ids: members.clone(),
+        removed_ids: found.iter().map(|g| g.id.clone()).collect(),
+    };
+    Ok(GroupDeleteResult {
+        drawing_id: t.id.as_str().to_owned(),
+        member_ids: members,
+        changed,
+        rev: committed_rev(cx)?,
+    })
+}
+
+// ----- draw.drawing.changed -----------------------------------------------------------------------------------------
+
+/// `draw.drawing.changed` payload (02 §13.5, spec A).
+#[derive(Debug, Serialize, JsonSchema)]
+#[serde(rename_all = "camelCase")]
+pub(crate) struct DrawingChangedEvent {
+    /// The drawing whose content changed.
+    drawing_id: String,
+    /// Its revision after the change.
+    rev: u64,
+    /// The command that committed the change (`edit.undo`, `edit.redo`, `checkpoint.restore`, `batch`, …).
+    command_id: String,
+    /// Local IDs of the nodes and strokes created.
+    created_ids: Vec<String>,
+    /// Local IDs of the nodes and strokes modified.
+    modified_ids: Vec<String>,
+    /// Local IDs of the nodes and strokes removed.
+    removed_ids: Vec<String>,
+}
+
+#[command(
+    id = "draw.drawing.changed",
+    kind = event,
+    label = "Drawing changed",
+    scopes = [read],
+    example(title = "Subscribe (events take no parameters)", params = "{}"),
+    agent_only = "an event delivered to subscribers (emitted for every drawing-content commit, undo and redo included)",
+)]
+pub(crate) fn draw_drawing_changed(
+    _cx: &mut Cx,
+    _p: super::common::NoParams,
+) -> Result<DrawingChangedEvent, CommandError> {
+    Err(super::common::event_not_invocable("draw.drawing.changed"))
 }

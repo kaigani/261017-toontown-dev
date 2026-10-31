@@ -4698,6 +4698,7 @@ dependencies = [
  "serde_json",
  "skrifa",
  "tt-model",
+ "unicode-normalization",
 ]
 
 [[package]]

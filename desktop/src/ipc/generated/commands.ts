@@ -2927,7 +2927,6 @@ export const COMMAND_INDEX = {
     examples: [
       {},
     ],
-    milestone: "M2 C2.3",
     event: true,
   },
   "draw.drawing.get": {
@@ -29737,6 +29736,27 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
           type: "string",
         },
       },
+      createdIds: {
+        description: "Created objects.",
+        type: "array",
+        items: {
+          type: "string",
+        },
+      },
+      modifiedIds: {
+        description: "Modified objects (content, membership or position changed; IDs kept).",
+        type: "array",
+        items: {
+          type: "string",
+        },
+      },
+      removedIds: {
+        description: "Removed objects (descendants included).",
+        type: "array",
+        items: {
+          type: "string",
+        },
+      },
       rev: {
         description: "The drawing revision after the change.",
         type: "integer",
@@ -29748,6 +29768,9 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
       "drawingId",
       "createdDrawing",
       "idMap",
+      "createdIds",
+      "modifiedIds",
+      "removedIds",
       "rev",
     ],
   },
@@ -29945,61 +29968,50 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
     additionalProperties: false,
   },
   "draw.drawing.changed.params": {
-    title: "draw.drawing.changed parameters",
+    title: "NoParams",
+    description: "No parameters.",
     type: "object",
-    properties: {},
     additionalProperties: false,
-    description: "Events take no parameters; subscribe to them (11 §9).",
-    "x-spec": "—",
   },
   "draw.drawing.changed.result": {
-    title: "draw.drawing.changed result",
+    title: "DrawingChangedEvent",
+    description: "`draw.drawing.changed` payload (02 §13.5, spec A).",
     type: "object",
     properties: {
       drawingId: {
+        description: "The drawing whose content changed.",
         type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
       },
       rev: {
-        type: "number",
+        description: "Its revision after the change.",
+        type: "integer",
+        maximum: 18446744073709551615n,
+        minimum: 0,
       },
       commandId: {
+        description: "The command that committed the change (`edit.undo`, `edit.redo`, `checkpoint.restore`, `batch`, …).",
         type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
       },
       createdIds: {
+        description: "Local IDs of the nodes and strokes created.",
         type: "array",
         items: {
           type: "string",
-          minLength: 1,
-          maxLength: 4096,
-          description: "object ID or path reference (10 §3)",
         },
-        maxItems: 100000,
       },
       modifiedIds: {
+        description: "Local IDs of the nodes and strokes modified.",
         type: "array",
         items: {
           type: "string",
-          minLength: 1,
-          maxLength: 4096,
-          description: "object ID or path reference (10 §3)",
         },
-        maxItems: 100000,
       },
       removedIds: {
+        description: "Local IDs of the nodes and strokes removed.",
         type: "array",
         items: {
           type: "string",
-          minLength: 1,
-          maxLength: 4096,
-          description: "object ID or path reference (10 §3)",
         },
-        maxItems: 100000,
       },
     },
     required: [
@@ -30010,9 +30022,6 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
       "modifiedIds",
       "removedIds",
     ],
-    description: "Event payload (delivered to subscribers).",
-    "x-spec": "`{drawingId, rev, commandId, createdIds: [id], modifiedIds: [id], removedIds: [id]}`",
-    additionalProperties: false,
   },
   "draw.drawing.get.IncludePart": {
     description: "What `draw.drawing.get` includes.",
@@ -31577,12 +31586,30 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
     description: "`{groupId, rev}`.",
     type: "object",
     properties: {
+      drawingId: {
+        description: "The drawing.",
+        type: "string",
+      },
       groupId: {
         description: "The new group.",
         type: "string",
       },
       createdIds: {
-        description: "New layers holding grouped strokes (strokes are grouped in their own layer, 02 §8.4).",
+        description: "Created objects.",
+        type: "array",
+        items: {
+          type: "string",
+        },
+      },
+      modifiedIds: {
+        description: "Modified objects (content, membership or position changed; IDs kept).",
+        type: "array",
+        items: {
+          type: "string",
+        },
+      },
+      removedIds: {
+        description: "Removed objects (descendants included).",
         type: "array",
         items: {
           type: "string",
@@ -31596,8 +31623,11 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
       },
     },
     required: [
+      "drawingId",
       "groupId",
       "createdIds",
+      "modifiedIds",
+      "removedIds",
       "rev",
     ],
   },
@@ -31661,8 +31691,33 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
     description: "`{memberIds, rev}`.",
     type: "object",
     properties: {
+      drawingId: {
+        description: "The drawing.",
+        type: "string",
+      },
       memberIds: {
         description: "The former members, in order.",
+        type: "array",
+        items: {
+          type: "string",
+        },
+      },
+      createdIds: {
+        description: "Created objects.",
+        type: "array",
+        items: {
+          type: "string",
+        },
+      },
+      modifiedIds: {
+        description: "Modified objects (content, membership or position changed; IDs kept).",
+        type: "array",
+        items: {
+          type: "string",
+        },
+      },
+      removedIds: {
+        description: "Removed objects (descendants included).",
         type: "array",
         items: {
           type: "string",
@@ -31676,7 +31731,11 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
       },
     },
     required: [
+      "drawingId",
       "memberIds",
+      "createdIds",
+      "modifiedIds",
+      "removedIds",
       "rev",
     ],
   },
@@ -32073,8 +32132,26 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
     description: "`{removedIds, rev}`.",
     type: "object",
     properties: {
+      drawingId: {
+        description: "The drawing.",
+        type: "string",
+      },
+      createdIds: {
+        description: "Created objects.",
+        type: "array",
+        items: {
+          type: "string",
+        },
+      },
+      modifiedIds: {
+        description: "Modified objects (content, membership or position changed; IDs kept).",
+        type: "array",
+        items: {
+          type: "string",
+        },
+      },
       removedIds: {
-        description: "Removed objects (their descendants included, and layers left empty).",
+        description: "Removed objects (descendants included).",
         type: "array",
         items: {
           type: "string",
@@ -32088,6 +32165,9 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
       },
     },
     required: [
+      "drawingId",
+      "createdIds",
+      "modifiedIds",
       "removedIds",
       "rev",
     ],
@@ -32218,12 +32298,37 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
   },
   "draw.pivot.set.result": {
     title: "PivotResult",
-    description: "`{pivot, rev}`.",
+    description: "`{drawingId, pivot, rev}` and the changed IDs.",
     type: "object",
     properties: {
+      drawingId: {
+        description: "The drawing.",
+        type: "string",
+      },
       pivot: {
         description: "The pivot.",
         $ref: "#/$defs/draw.pivot.set.Point",
+      },
+      createdIds: {
+        description: "Created objects.",
+        type: "array",
+        items: {
+          type: "string",
+        },
+      },
+      modifiedIds: {
+        description: "Modified objects (content, membership or position changed; IDs kept).",
+        type: "array",
+        items: {
+          type: "string",
+        },
+      },
+      removedIds: {
+        description: "Removed objects (descendants included).",
+        type: "array",
+        items: {
+          type: "string",
+        },
       },
       rev: {
         description: "The drawing revision after the change.",
@@ -32233,7 +32338,11 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
       },
     },
     required: [
+      "drawingId",
       "pivot",
+      "createdIds",
+      "modifiedIds",
+      "removedIds",
       "rev",
     ],
   },
@@ -33926,8 +34035,22 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
         description: "The layer holding the strokes.",
         type: "string",
       },
+      createdIds: {
+        description: "Created objects.",
+        type: "array",
+        items: {
+          type: "string",
+        },
+      },
+      modifiedIds: {
+        description: "Modified objects (content, membership or position changed; IDs kept).",
+        type: "array",
+        items: {
+          type: "string",
+        },
+      },
       removedIds: {
-        description: "Strokes removed by re-noding (M2 C2.2: empty until then).",
+        description: "Removed objects (descendants included).",
         type: "array",
         items: {
           type: "string",
@@ -33953,6 +34076,8 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
       "strokeIds",
       "zoneIds",
       "layerId",
+      "createdIds",
+      "modifiedIds",
       "removedIds",
       "rev",
       "hints",
@@ -34025,12 +34150,30 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
         type: "string",
       },
       drawingId: {
-        description: "The drawing holding a local stroke ID (default: the current drawing).",
+        description: "The drawing holding a local stroke ID (default: `elementId` + `frame`, else the current drawing).",
         type: [
           "string",
           "null",
         ],
         default: null,
+      },
+      elementId: {
+        description: "The element whose cell exposes the drawing (02 §13.1 item 4; with a local ID).",
+        type: [
+          "string",
+          "null",
+        ],
+        default: null,
+      },
+      frame: {
+        description: "The frame of that cell (default: the current frame).",
+        type: [
+          "integer",
+          "null",
+        ],
+        default: null,
+        minimum: 1,
+        maximum: 2147483647,
       },
       bezier: {
         description: "New geometry (02 §13.4 Bézier list): a brush stroke's spine (the outline is swept again), or its outline when\nthe spine was discarded; a pencil or invisible stroke's path.",
@@ -34108,6 +34251,10 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
     description: "`{strokeIds, removedIds, rev}`.",
     type: "object",
     properties: {
+      drawingId: {
+        description: "The drawing.",
+        type: "string",
+      },
       strokeIds: {
         description: "The edited stroke (its ID is kept, 02 §3.12 item 4).",
         type: "array",
@@ -34115,8 +34262,22 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
           type: "string",
         },
       },
+      createdIds: {
+        description: "Created objects.",
+        type: "array",
+        items: {
+          type: "string",
+        },
+      },
+      modifiedIds: {
+        description: "Modified objects (content, membership or position changed; IDs kept).",
+        type: "array",
+        items: {
+          type: "string",
+        },
+      },
       removedIds: {
-        description: "Strokes removed by re-noding (M2 C2.2: empty until then).",
+        description: "Removed objects (descendants included).",
         type: "array",
         items: {
           type: "string",
@@ -34130,7 +34291,10 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
       },
     },
     required: [
+      "drawingId",
       "strokeIds",
+      "createdIds",
+      "modifiedIds",
       "removedIds",
       "rev",
     ],
@@ -34454,6 +34618,27 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
         description: "Its bounds in drawing space (laid out with the installed fonts).",
         $ref: "#/$defs/draw.text.add.Bounds",
       },
+      createdIds: {
+        description: "Created objects.",
+        type: "array",
+        items: {
+          type: "string",
+        },
+      },
+      modifiedIds: {
+        description: "Modified objects (content, membership or position changed; IDs kept).",
+        type: "array",
+        items: {
+          type: "string",
+        },
+      },
+      removedIds: {
+        description: "Removed objects (descendants included).",
+        type: "array",
+        items: {
+          type: "string",
+        },
+      },
       rev: {
         description: "The drawing revision after the change.",
         type: "integer",
@@ -34465,6 +34650,9 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
       "drawingId",
       "textId",
       "bounds",
+      "createdIds",
+      "modifiedIds",
+      "removedIds",
       "rev",
     ],
   },
@@ -34557,12 +34745,30 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
         type: "string",
       },
       drawingId: {
-        description: "The drawing holding a local ID.",
+        description: "The drawing holding a local ID (default: `elementId` + `frame`, else the current drawing).",
         type: [
           "string",
           "null",
         ],
         default: null,
+      },
+      elementId: {
+        description: "The element whose cell exposes the drawing (02 §13.1 item 4; with a local ID).",
+        type: [
+          "string",
+          "null",
+        ],
+        default: null,
+      },
+      frame: {
+        description: "The frame of that cell (default: the current frame).",
+        type: [
+          "integer",
+          "null",
+        ],
+        default: null,
+        minimum: 1,
+        maximum: 2147483647,
       },
       text: {
         description: "Replace the whole text (the first run's and paragraph's format is kept).",
@@ -34687,6 +34893,27 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
         description: "Its bounds in drawing space (laid out with the installed fonts).",
         $ref: "#/$defs/draw.text.set.Bounds",
       },
+      createdIds: {
+        description: "Created objects.",
+        type: "array",
+        items: {
+          type: "string",
+        },
+      },
+      modifiedIds: {
+        description: "Modified objects (content, membership or position changed; IDs kept).",
+        type: "array",
+        items: {
+          type: "string",
+        },
+      },
+      removedIds: {
+        description: "Removed objects (descendants included).",
+        type: "array",
+        items: {
+          type: "string",
+        },
+      },
       rev: {
         description: "The drawing revision after the change.",
         type: "integer",
@@ -34698,6 +34925,9 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
       "drawingId",
       "textId",
       "bounds",
+      "createdIds",
+      "modifiedIds",
+      "removedIds",
       "rev",
     ],
   },
@@ -34756,12 +34986,30 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
         type: "string",
       },
       drawingId: {
-        description: "The drawing holding a local ID.",
+        description: "The drawing holding a local ID (default: `elementId` + `frame`, else the current drawing).",
         type: [
           "string",
           "null",
         ],
         default: null,
+      },
+      elementId: {
+        description: "The element whose cell exposes the drawing (02 §13.1 item 4; with a local ID).",
+        type: [
+          "string",
+          "null",
+        ],
+        default: null,
+      },
+      frame: {
+        description: "The frame of that cell (default: the current frame).",
+        type: [
+          "integer",
+          "null",
+        ],
+        default: null,
+        minimum: 1,
+        maximum: 2147483647,
       },
       start: {
         description: "First code point.",
@@ -34961,9 +35209,34 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
     description: "`{textId, rev}`.",
     type: "object",
     properties: {
+      drawingId: {
+        description: "The drawing.",
+        type: "string",
+      },
       textId: {
         description: "The text object.",
         type: "string",
+      },
+      createdIds: {
+        description: "Created objects.",
+        type: "array",
+        items: {
+          type: "string",
+        },
+      },
+      modifiedIds: {
+        description: "Modified objects (content, membership or position changed; IDs kept).",
+        type: "array",
+        items: {
+          type: "string",
+        },
+      },
+      removedIds: {
+        description: "Removed objects (descendants included).",
+        type: "array",
+        items: {
+          type: "string",
+        },
       },
       bounds: {
         description: "Its bounds after the change.",
@@ -34977,7 +35250,11 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
       },
     },
     required: [
+      "drawingId",
       "textId",
+      "createdIds",
+      "modifiedIds",
+      "removedIds",
       "bounds",
       "rev",
     ],
@@ -81902,6 +82179,12 @@ export interface draw_content_add_result {
   createdDrawing: boolean;
   /** Old ID → new ID of every inserted node and stroke (SI-026 `idMap`). */
   idMap: Record<string, string>;
+  /** Created objects. */
+  createdIds: string[];
+  /** Modified objects (content, membership or position changed; IDs kept). */
+  modifiedIds: string[];
+  /** Removed objects (descendants included). */
+  removedIds: string[];
   /** The drawing revision after the change. */
   rev: number | bigint;
 }
@@ -81962,18 +82245,22 @@ export interface draw_cut_apply_result {
   rev: number;
 }
 
-/** Events take no parameters; subscribe to them (11 §9). */
+/** No parameters. */
 export type draw_drawing_changed_params = Record<string, unknown>;
 
-/** Event payload (delivered to subscribers). */
+/** `draw.drawing.changed` payload (02 §13.5, spec A). */
 export interface draw_drawing_changed_result {
-  /** object ID or path reference (10 §3) */
+  /** The drawing whose content changed. */
   drawingId: string;
-  rev: number;
-  /** object ID or path reference (10 §3) */
+  /** Its revision after the change. */
+  rev: number | bigint;
+  /** The command that committed the change (`edit.undo`, `edit.redo`, `checkpoint.restore`, `batch`, …). */
   commandId: string;
+  /** Local IDs of the nodes and strokes created. */
   createdIds: string[];
+  /** Local IDs of the nodes and strokes modified. */
   modifiedIds: string[];
+  /** Local IDs of the nodes and strokes removed. */
   removedIds: string[];
 }
 
@@ -82321,10 +82608,16 @@ export interface draw_group_create_params {
 
 /** `{groupId, rev}`. */
 export interface draw_group_create_result {
+  /** The drawing. */
+  drawingId: string;
   /** The new group. */
   groupId: string;
-  /** New layers holding grouped strokes (strokes are grouped in their own layer, 02 §8.4). */
+  /** Created objects. */
   createdIds: string[];
+  /** Modified objects (content, membership or position changed; IDs kept). */
+  modifiedIds: string[];
+  /** Removed objects (descendants included). */
+  removedIds: string[];
   /** The drawing revision after the change. */
   rev: number | bigint;
 }
@@ -82345,8 +82638,16 @@ export interface draw_group_delete_params {
 
 /** `{memberIds, rev}`. */
 export interface draw_group_delete_result {
+  /** The drawing. */
+  drawingId: string;
   /** The former members, in order. */
   memberIds: string[];
+  /** Created objects. */
+  createdIds: string[];
+  /** Modified objects (content, membership or position changed; IDs kept). */
+  modifiedIds: string[];
+  /** Removed objects (descendants included). */
+  removedIds: string[];
   /** The drawing revision after the change. */
   rev: number | bigint;
 }
@@ -82449,7 +82750,13 @@ export interface draw_object_delete_params {
 
 /** `{removedIds, rev}`. */
 export interface draw_object_delete_result {
-  /** Removed objects (their descendants included, and layers left empty). */
+  /** The drawing. */
+  drawingId: string;
+  /** Created objects. */
+  createdIds: string[];
+  /** Modified objects (content, membership or position changed; IDs kept). */
+  modifiedIds: string[];
+  /** Removed objects (descendants included). */
   removedIds: string[];
   /** The drawing revision after the change. */
   rev: number | bigint;
@@ -82490,10 +82797,18 @@ export interface draw_pivot_set_params {
   expectRev?: number | bigint | null;
 }
 
-/** `{pivot, rev}`. */
+/** `{drawingId, pivot, rev}` and the changed IDs. */
 export interface draw_pivot_set_result {
+  /** The drawing. */
+  drawingId: string;
   /** The pivot. */
   pivot: draw_pivot_set_Point;
+  /** Created objects. */
+  createdIds: string[];
+  /** Modified objects (content, membership or position changed; IDs kept). */
+  modifiedIds: string[];
+  /** Removed objects (descendants included). */
+  removedIds: string[];
   /** The drawing revision after the change. */
   rev: number | bigint;
 }
@@ -82918,7 +83233,11 @@ export interface draw_stroke_add_result {
   zoneIds: string[];
   /** The layer holding the strokes. */
   layerId: string;
-  /** Strokes removed by re-noding (M2 C2.2: empty until then). */
+  /** Created objects. */
+  createdIds: string[];
+  /** Modified objects (content, membership or position changed; IDs kept). */
+  modifiedIds: string[];
+  /** Removed objects (descendants included). */
   removedIds: string[];
   /** The drawing revision after the change. */
   rev: number | bigint;
@@ -82949,8 +83268,12 @@ export type draw_stroke_set_LineKind = 'pencil' | 'invisible';
 export interface draw_stroke_set_params {
   /** The stroke (`<drawingId>/<localId>`, or local with `drawingId` / the current drawing). */
   strokeId: string;
-  /** The drawing holding a local stroke ID (default: the current drawing). */
+  /** The drawing holding a local stroke ID (default: `elementId` + `frame`, else the current drawing). */
   drawingId?: string | null;
+  /** The element whose cell exposes the drawing (02 §13.1 item 4; with a local ID). */
+  elementId?: string | null;
+  /** The frame of that cell (default: the current frame). */
+  frame?: number | null;
   /** New geometry (02 §13.4 Bézier list): a brush stroke's spine (the outline is swept again), or its outline when the spine was discarded; a pencil or invisible stroke's path. */
   bezier?: draw_stroke_set_Point[] | null;
   /** Closed path (with `bezier`). */
@@ -82967,9 +83290,15 @@ export interface draw_stroke_set_params {
 
 /** `{strokeIds, removedIds, rev}`. */
 export interface draw_stroke_set_result {
+  /** The drawing. */
+  drawingId: string;
   /** The edited stroke (its ID is kept, 02 §3.12 item 4). */
   strokeIds: string[];
-  /** Strokes removed by re-noding (M2 C2.2: empty until then). */
+  /** Created objects. */
+  createdIds: string[];
+  /** Modified objects (content, membership or position changed; IDs kept). */
+  modifiedIds: string[];
+  /** Removed objects (descendants included). */
   removedIds: string[];
   /** The drawing revision after the change. */
   rev: number | bigint;
@@ -83061,6 +83390,12 @@ export interface draw_text_add_result {
   textId: string;
   /** Its bounds in drawing space (laid out with the installed fonts). */
   bounds: draw_text_add_Bounds;
+  /** Created objects. */
+  createdIds: string[];
+  /** Modified objects (content, membership or position changed; IDs kept). */
+  modifiedIds: string[];
+  /** Removed objects (descendants included). */
+  removedIds: string[];
   /** The drawing revision after the change. */
   rev: number | bigint;
 }
@@ -83096,8 +83431,12 @@ export interface draw_text_set_Point {
 export interface draw_text_set_params {
   /** The text object (`<drawingId>/<localId>`, or local with `drawingId` / the current drawing). */
   textId: string;
-  /** The drawing holding a local ID. */
+  /** The drawing holding a local ID (default: `elementId` + `frame`, else the current drawing). */
   drawingId?: string | null;
+  /** The element whose cell exposes the drawing (02 §13.1 item 4; with a local ID). */
+  elementId?: string | null;
+  /** The frame of that cell (default: the current frame). */
+  frame?: number | null;
   /** Replace the whole text (the first run's and paragraph's format is kept). */
   text?: string | null;
   /** Insert characters. */
@@ -83134,6 +83473,12 @@ export interface draw_text_set_result {
   textId: string;
   /** Its bounds in drawing space (laid out with the installed fonts). */
   bounds: draw_text_set_Bounds;
+  /** Created objects. */
+  createdIds: string[];
+  /** Modified objects (content, membership or position changed; IDs kept). */
+  modifiedIds: string[];
+  /** Removed objects (descendants included). */
+  removedIds: string[];
   /** The drawing revision after the change. */
   rev: number | bigint;
 }
@@ -83148,8 +83493,12 @@ export type draw_textFormat_set_Align = 'left' | 'centre' | 'right' | 'justify';
 export interface draw_textFormat_set_params {
   /** The text object. */
   textId: string;
-  /** The drawing holding a local ID. */
+  /** The drawing holding a local ID (default: `elementId` + `frame`, else the current drawing). */
   drawingId?: string | null;
+  /** The element whose cell exposes the drawing (02 §13.1 item 4; with a local ID). */
+  elementId?: string | null;
+  /** The frame of that cell (default: the current frame). */
+  frame?: number | null;
   /** First code point. */
   start?: number;
   /** Number of code points (default: to the end). */
@@ -83200,8 +83549,16 @@ export interface draw_textFormat_set_Bounds {
 
 /** `{textId, rev}`. */
 export interface draw_textFormat_set_result {
+  /** The drawing. */
+  drawingId: string;
   /** The text object. */
   textId: string;
+  /** Created objects. */
+  createdIds: string[];
+  /** Modified objects (content, membership or position changed; IDs kept). */
+  modifiedIds: string[];
+  /** Removed objects (descendants included). */
+  removedIds: string[];
   /** Its bounds after the change. */
   bounds: draw_textFormat_set_Bounds;
   /** The drawing revision after the change. */

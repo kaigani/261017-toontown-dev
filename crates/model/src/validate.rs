@@ -432,6 +432,40 @@ impl Check for DrawingNode {
                 out.push(&ptr(at, "runs"), "runsCover", "runs cover the whole text");
             }
         }
+        // 10 §4.9 / 02 §3.7: one paragraph per line of the text, in order; paragraph i covers line i with its
+        // terminating newline (M2 C2.1, C21-R1-05). Empty text may have no paragraph, like it may have no run.
+        if let (Some(text), Some(paras)) = (&self.text, &self.paragraphs)
+            && !(text.is_empty() && paras.is_empty())
+        {
+            let mut lines: Vec<(u32, u32)> = Vec::new();
+            let mut start = 0u32;
+            let mut n = 0u32;
+            for c in text.chars() {
+                n = n.saturating_add(1);
+                if c == '\n' {
+                    lines.push((start, n - start));
+                    start = n;
+                }
+            }
+            lines.push((start, n - start));
+            if paras.len() != lines.len() {
+                out.push(
+                    &ptr(at, "paragraphs"),
+                    "paragraphsCover",
+                    format!("{} paragraphs for {} lines: one paragraph per line of the text", paras.len(), lines.len()),
+                );
+            } else {
+                for (i, (p, (s, l))) in paras.iter().zip(&lines).enumerate() {
+                    if p.start != *s || p.length != *l {
+                        out.push(
+                            &format!("{at}/paragraphs/{i}"),
+                            "paragraphsCover",
+                            format!("paragraph {i} covers line {i} at {s} with {l} code points (its newline included)"),
+                        );
+                    }
+                }
+            }
+        }
         if let Some(strokes) = &self.strokes {
             for (i, s) in strokes.iter().enumerate() {
                 s.check(&format!("{at}/strokes/{i}"), out);

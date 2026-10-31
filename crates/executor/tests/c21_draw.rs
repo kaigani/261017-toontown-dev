@@ -356,7 +356,10 @@ fn groups_delete_and_pivot() {
     assert_eq!(drawing(&h, D1)["nodes"], before["nodes"], "ungroup restores the members in place and order");
     // Grouping strokes separates them into their own layer inside the group.
     let g2 = okv(&h, "draw.group.create", json!({ "drawingId": D1, "ids": [PENCIL] }));
-    assert_eq!(g2["createdIds"].as_array().unwrap().len(), 1);
+    // The group and the new layer holding the stroke are created (02 §13.1 item 11, C21-R1-08).
+    assert_eq!(g2["createdIds"].as_array().unwrap().len(), 2);
+    assert_eq!(g2["createdIds"][0], g2["groupId"]);
+    assert_eq!(g2["drawingId"], D1);
     let d = drawing(&h, D1);
     assert!(strokes_of(&d).iter().any(|s| s["id"] == PENCIL), "the stroke keeps its ID");
     // Deleting every stroke of a layer removes the layer too.
@@ -444,4 +447,51 @@ fn read_back_options_flatten_ids_and_include() {
     assert_eq!(cur["drawingId"], D1);
     // With a current drawing, commands need no target.
     okv(&h, "draw.stroke.add", json!({ "kind": "invisible", "points": [{"x": 0, "y": 0}, {"x": 9, "y": 9}] }));
+}
+
+#[test]
+fn drawing_events_come_from_the_commit_path_for_patches_batches_and_checkpoint_restore() {
+    // 02 §13.6, spec A `draw.drawing.changed` (C21-R1-07): every commit that changes drawing content reports the
+    // drawing, its revision, the committing command and the changed local IDs.
+    let h = fixture();
+    let rx = h.subscribe();
+    let drawing_events = |rx: &std::sync::mpsc::Receiver<tt_executor::Event>| -> Vec<Value> {
+        rx.try_iter().filter(|e| e.name == "draw.drawing.changed").map(|e| e.payload).collect()
+    };
+    ok(&h, "checkpoint.create", json!({"name":"before-strokes"}));
+    let made = okv(&h, "draw.stroke.add", json!({"drawingId":D1,"points":pts(&[(0.0, 0.0, 1.0), (30.0, 0.0, 1.0)])}));
+    let sid = made["strokeIds"][0].as_str().unwrap().to_owned();
+    let added = drawing_events(&rx);
+    assert_eq!(added.len(), 1, "{added:?}");
+    assert_eq!(added[0]["drawingId"], D1);
+    assert_eq!(added[0]["commandId"], "draw.stroke.add");
+    assert_eq!(added[0]["rev"], made["rev"]);
+    assert!(added[0]["createdIds"].as_array().unwrap().contains(&json!(sid)), "{added:?}");
+
+    let key = format!("{D1}/{PENCIL}");
+    ok(&h, "doc.object.patch", json!({"targets":[key],"ops":[{"op":"replace","path":"/lineStyle/thickness","value":2}]}));
+    let patched = drawing_events(&rx);
+    assert_eq!(patched.len(), 1, "{patched:?}");
+    assert_eq!(patched[0]["commandId"], "doc.object.patch");
+    assert_eq!(patched[0]["modifiedIds"], json!([PENCIL]));
+
+    let env = batch(
+        &h,
+        json!({"label":"pivot and delete", "steps":[
+            {"id":"draw.pivot.set","params":{"drawingId":D1,"point":{"x":1,"y":2}}},
+            {"id":"draw.object.delete","params":{"drawingId":D1,"ids":[sid]}}
+        ]}),
+    );
+    assert!(env.is_ok(), "{env:?}");
+    let batched = drawing_events(&rx);
+    assert_eq!(batched.len(), 1, "one atomic commit, one event: {batched:?}");
+    assert_eq!(batched[0]["commandId"], "batch");
+    assert!(batched[0]["removedIds"].as_array().unwrap().contains(&json!(sid)), "{batched:?}");
+
+    ok(&h, "checkpoint.restore", json!({"name":"before-strokes"}));
+    let restored = drawing_events(&rx);
+    assert_eq!(restored.len(), 1, "{restored:?}");
+    assert_eq!(restored[0]["drawingId"], D1);
+    assert_eq!(restored[0]["commandId"], "checkpoint.restore");
+    assert_eq!(restored[0]["modifiedIds"], json!([PENCIL]), "{restored:?}");
 }

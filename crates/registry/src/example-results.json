@@ -30,7 +30,7 @@
     {
       "title": "Accept a request",
       "result": {
-        "confirmationId": "cf_fe37af40923a530ea6a4b72d",
+        "confirmationId": "cf_46781d39f66bd2af421d4943",
         "accepted": true
       },
       "varies": [
@@ -71,7 +71,7 @@
         "endpoint": null,
         "sessions": [
           {
-            "sessionId": "s1-871f51",
+            "sessionId": "s1-163a2a",
             "client": "Example agent",
             "policy": "assist",
             "scopes": [
@@ -83,7 +83,7 @@
               "files.write",
               "library.global"
             ],
-            "connectedAt": "2026-10-30T22:00:35.804Z",
+            "connectedAt": "2026-10-31T02:33:52.050Z",
             "lastActivity": null,
             "paused": false,
             "transport": ""
@@ -91,8 +91,8 @@
         ],
         "pendingConfirmations": [
           {
-            "confirmationId": "cf_dbd93bccfa43dd10808e09b9",
-            "sessionId": "s1-871f51",
+            "confirmationId": "cf_8374ec71a4767778febf0977",
+            "sessionId": "s1-163a2a",
             "commandId": "project.saveAs",
             "summary": "Overwrite `/tmp/Short.animpkg`",
             "consequences": [
@@ -127,7 +127,7 @@
     {
       "title": "Let a session edit",
       "result": {
-        "sessionId": "s1-cfa98e",
+        "sessionId": "s1-016ca8",
         "policy": "assist",
         "scopes": [
           "read",
@@ -145,7 +145,7 @@
       "title": "Pause every session",
       "result": {
         "paused": [
-          "s1-edaf2f"
+          "s1-0adfd3"
         ]
       },
       "varies": [
@@ -438,7 +438,7 @@
       "result": [
         {
           "name": "before-walk",
-          "createdAt": "2026-10-30T22:00:37.005Z",
+          "createdAt": "2026-10-31T02:33:52.799Z",
           "documentRev": 1,
           "origin": "user"
         }
@@ -562,7 +562,7 @@
             "version": "0.0.1",
             "platform": "windows-x64"
           },
-          "exportedAt": "2026-10-30T22:00:37.851Z",
+          "exportedAt": "2026-10-31T02:33:53.315Z",
           "sourceProjectId": "pr_01K742SG00BK0VXTWDM5JRXV37",
           "scope": {
             "kind": "scenes",
@@ -3669,6 +3669,13 @@
           "s_1": "st_01K7JJN801N0AE1Z0RRCTVH07Z",
           "t_1": "nd_01K7JJN8023FJ8358KMGS10XYV"
         },
+        "createdIds": [
+          "nd_01K7JJN800RXHD55052GG3NDRM",
+          "nd_01K7JJN8023FJ8358KMGS10XYV",
+          "st_01K7JJN801N0AE1Z0RRCTVH07Z"
+        ],
+        "modifiedIds": [],
+        "removedIds": [],
         "rev": 5
       },
       "varies": []
@@ -4197,8 +4204,16 @@
     {
       "title": "Group the caption and the group of the first drawing",
       "result": {
+        "drawingId": "dr_01K742SG0KKMCAP9X1E6Z5P4SW",
         "groupId": "nd_01K7JJN800RXHD55052GG3NDRM",
-        "createdIds": [],
+        "createdIds": [
+          "nd_01K7JJN800RXHD55052GG3NDRM"
+        ],
+        "modifiedIds": [
+          "nd_01K742SG0TX3WF1BSWWGMWM5WG",
+          "nd_01K742SG0WFAQJFKAZKV4CD56C"
+        ],
+        "removedIds": [],
         "rev": 5
       },
       "varies": []
@@ -4208,8 +4223,16 @@
     {
       "title": "Dissolve the first drawing's group",
       "result": {
+        "drawingId": "dr_01K742SG0KKMCAP9X1E6Z5P4SW",
         "memberIds": [
           "nd_01K742SG0V9A7HCXC74WKN3V5F"
+        ],
+        "createdIds": [],
+        "modifiedIds": [
+          "nd_01K742SG0V9A7HCXC74WKN3V5F"
+        ],
+        "removedIds": [
+          "nd_01K742SG0TX3WF1BSWWGMWM5WG"
         ],
         "rev": 5
       },
@@ -4220,6 +4243,11 @@
     {
       "title": "Delete the invisible stroke of Bob's first drawing",
       "result": {
+        "drawingId": "dr_01K742SG0KKMCAP9X1E6Z5P4SW",
+        "createdIds": [],
+        "modifiedIds": [
+          "nd_01K742SG0PC20XDQKASM9CGZHR"
+        ],
         "removedIds": [
           "st_01K742SG0S0NT23BWCZN64SFQ5"
         ],
@@ -4232,10 +4260,16 @@
     {
       "title": "Pivot at the feet",
       "result": {
+        "drawingId": "dr_01K742SG0KKMCAP9X1E6Z5P4SW",
         "pivot": {
           "x": 0.0,
           "y": -120.0
         },
+        "createdIds": [],
+        "modifiedIds": [
+          "dr_01K742SG0KKMCAP9X1E6Z5P4SW"
+        ],
+        "removedIds": [],
         "rev": 5
       },
       "varies": []
@@ -4252,6 +4286,11 @@
         ],
         "zoneIds": [],
         "layerId": "nd_01K7JJN801N0AE1Z0RRCTVH07Z",
+        "createdIds": [
+          "st_01K7JJN800RXHD55052GG3NDRM",
+          "nd_01K7JJN801N0AE1Z0RRCTVH07Z"
+        ],
+        "modifiedIds": [],
         "removedIds": [],
         "rev": 5,
         "hints": []
@@ -4268,6 +4307,11 @@
         ],
         "zoneIds": [],
         "layerId": "nd_01K7JJN801N0AE1Z0RRCTVH07Z",
+        "createdIds": [
+          "st_01K7JJN800RXHD55052GG3NDRM",
+          "nd_01K7JJN801N0AE1Z0RRCTVH07Z"
+        ],
+        "modifiedIds": [],
         "removedIds": [],
         "rev": 5,
         "hints": []
@@ -4284,6 +4328,12 @@
         ],
         "zoneIds": [],
         "layerId": "nd_01K742SG0PC20XDQKASM9CGZHR",
+        "createdIds": [
+          "st_01K7JJN800RXHD55052GG3NDRM"
+        ],
+        "modifiedIds": [
+          "nd_01K742SG0PC20XDQKASM9CGZHR"
+        ],
         "removedIds": [],
         "rev": 5,
         "hints": [
@@ -4297,7 +4347,12 @@
     {
       "title": "Make the pencil line of the first drawing thicker",
       "result": {
+        "drawingId": "dr_01K742SG0KKMCAP9X1E6Z5P4SW",
         "strokeIds": [
+          "st_01K742SG0R61SYK9GG0HGYVNBT"
+        ],
+        "createdIds": [],
+        "modifiedIds": [
           "st_01K742SG0R61SYK9GG0HGYVNBT"
         ],
         "removedIds": [],
@@ -4318,6 +4373,11 @@
           "width": 127.9921875,
           "height": 110.390625
         },
+        "createdIds": [
+          "nd_01K7JJN800RXHD55052GG3NDRM"
+        ],
+        "modifiedIds": [],
+        "removedIds": [],
         "rev": 5
       },
       "varies": [
@@ -4335,6 +4395,11 @@
           "width": 300.0,
           "height": 124.189453125
         },
+        "createdIds": [
+          "nd_01K7JJN800RXHD55052GG3NDRM"
+        ],
+        "modifiedIds": [],
+        "removedIds": [],
         "rev": 5
       },
       "varies": [
@@ -4354,6 +4419,11 @@
           "width": 400.0,
           "height": 28.79765624999999
         },
+        "createdIds": [],
+        "modifiedIds": [
+          "nd_01K742SG0WFAQJFKAZKV4CD56C"
+        ],
+        "removedIds": [],
         "rev": 5
       },
       "varies": [
@@ -4365,7 +4435,13 @@
     {
       "title": "Make the first two characters bold and larger",
       "result": {
+        "drawingId": "dr_01K742SG0KKMCAP9X1E6Z5P4SW",
         "textId": "nd_01K742SG0WFAQJFKAZKV4CD56C",
+        "createdIds": [],
+        "modifiedIds": [
+          "nd_01K742SG0WFAQJFKAZKV4CD56C"
+        ],
+        "removedIds": [],
         "bounds": {
           "x": -100.0,
           "y": 164.3029296875,
@@ -4462,7 +4538,7 @@
             "stepId": "u-1",
             "label": "Set meta",
             "source": "user",
-            "time": "2026-10-30T22:00:39.771Z",
+            "time": "2026-10-31T02:33:54.581Z",
             "objectCount": 1
           },
           {
@@ -4470,7 +4546,7 @@
             "stepId": "u-2",
             "label": "Set meta",
             "source": "user",
-            "time": "2026-10-30T22:00:39.773Z",
+            "time": "2026-10-31T02:33:54.583Z",
             "objectCount": 1
           }
         ],
@@ -4615,7 +4691,7 @@
         "state": "succeeded",
         "progress": 1.0,
         "message": "",
-        "startedAt": "2026-10-30T22:00:40.152Z",
+        "startedAt": "2026-10-31T02:33:54.838Z",
         "result": {},
         "session": "user"
       },
@@ -4634,7 +4710,7 @@
           "state": "succeeded",
           "progress": 1.0,
           "message": "",
-          "startedAt": "2026-10-30T22:00:40.188Z",
+          "startedAt": "2026-10-31T02:33:54.878Z",
           "result": {},
           "session": "user"
         }
@@ -4653,7 +4729,7 @@
         "state": "succeeded",
         "progress": 1.0,
         "message": "",
-        "startedAt": "2026-10-30T22:00:40.222Z",
+        "startedAt": "2026-10-31T02:33:54.903Z",
         "result": {},
         "session": "user"
       },
@@ -4700,10 +4776,10 @@
     {
       "title": "A 1920×1080, 24 fps project",
       "result": {
-        "projectId": "pr_01M67D8KNKTPHC2QXT48D5FC9M",
-        "sceneId": "sc_01M67D8KNN7Y0E73K0AC6HT1RV",
-        "cameraId": "el_01M67D8KNN7Y0E73K0AC6HT1RX",
-        "elementId": "el_01M67D8KNN7Y0E73K0AC6HT1RY"
+        "projectId": "pr_01M67WWXV8DNSBFHRPXZAQT914",
+        "sceneId": "sc_01M67WWXV9TM1ES6TW2SX2ASJM",
+        "cameraId": "el_01M67WWXV9TM1ES6TW2SX2ASJP",
+        "elementId": "el_01M67WWXV9TM1ES6TW2SX2ASJQ"
       },
       "varies": [
         "/cameraId",
@@ -4959,7 +5035,7 @@
         {
           "path": "/tmp/Sample.animpkg",
           "name": "Sample",
-          "lastOpened": "2026-10-30T22:00:41.645Z",
+          "lastOpened": "2026-10-31T02:33:55.753Z",
           "exists": true
         }
       ],

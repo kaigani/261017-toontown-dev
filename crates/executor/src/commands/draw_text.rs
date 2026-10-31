@@ -14,7 +14,7 @@ use tt_vector::geom::Affine;
 use tt_vector::text::{self, Content, Format};
 
 use super::draw::{Bounds, Point, check_editable, committed_rev, err, op, target};
-use super::draw_stroke::{colour_of, drawing_in, stroke_target};
+use super::draw_stroke::{Addr, colour_of, drawing_in, stroke_target};
 use crate::cx::Cx;
 
 /// Baseline (`script` in the project format).
@@ -238,6 +238,9 @@ pub(crate) struct TextResult {
     text_id: String,
     /// Its bounds in drawing space (laid out with the installed fonts).
     bounds: Bounds,
+    /// Changed objects: a new text object (and a created drawing) is created, an edited one modified.
+    #[serde(flatten)]
+    changed: super::draw::Changed,
     /// The drawing revision after the change.
     rev: u64,
 }
@@ -289,10 +292,15 @@ pub(crate) fn draw_text_add(cx: &mut Cx, p: TextAddParams) -> Result<TextResult,
     cx.patch_entries(changes)?;
     let object = format!("{}/{}", t.id.as_str(), id.as_str());
     let bounds = bounds_and_fonts(cx, &c, p.width, transform, &object);
+    let mut created_ids = vec![id.as_str().to_owned()];
+    if t.created {
+        created_ids.push(t.id.as_str().to_owned());
+    }
     Ok(TextResult {
         drawing_id: t.id.as_str().to_owned(),
         text_id: id.as_str().to_owned(),
         bounds,
+        changed: super::draw::Changed { created_ids, ..super::draw::Changed::default() },
         rev: committed_rev(cx)?,
     })
 }
@@ -337,9 +345,16 @@ pub(crate) enum WidthModeParam {
 pub(crate) struct TextSetParams {
     /// The text object (`<drawingId>/<localId>`, or local with `drawingId` / the current drawing).
     text_id: String,
-    /// The drawing holding a local ID.
+    /// The drawing holding a local ID (default: `elementId` + `frame`, else the current drawing).
     #[serde(default)]
     drawing_id: Option<String>,
+    /// The element whose cell exposes the drawing (02 §13.1 item 4; with a local ID).
+    #[serde(default)]
+    element_id: Option<String>,
+    /// The frame of that cell (default: the current frame).
+    #[serde(default)]
+    #[schemars(range(min = 1, max = 2_147_483_647))]
+    frame: Option<u32>,
     /// Replace the whole text (the first run's and paragraph's format is kept).
     #[serde(default)]
     #[schemars(length(max = 100_000))]
@@ -365,11 +380,11 @@ pub(crate) struct TextSetParams {
 }
 
 fn text_node(
-    cx: &Cx,
+    cx: &mut Cx,
     text_id: &str,
-    drawing_id: Option<&str>,
+    addr: Addr<'_>,
 ) -> Result<(Document, tt_model::Id, vd::Located, DrawingNode), CommandError> {
-    let (doc, did, l) = stroke_target(cx, text_id, drawing_id).map_err(|mut e| {
+    let (doc, did, l) = stroke_target(cx, text_id, addr).map_err(|mut e| {
         if let Some(m) = e.details.as_object_mut()
             && m.contains_key("pointer")
         {
@@ -417,7 +432,8 @@ pub(crate) fn draw_text_set(cx: &mut Cx, p: TextSetParams) -> Result<TextResult,
             json!({ "pointer": "/text" }),
         ));
     }
-    let (doc, did, l, n) = text_node(cx, &p.text_id, p.drawing_id.as_deref())?;
+    let addr = Addr { drawing_id: p.drawing_id.as_deref(), element_id: p.element_id.as_deref(), frame: p.frame };
+    let (doc, did, l, n) = text_node(cx, &p.text_id, addr)?;
     let d = drawing_in(&doc, &did)?;
     check_editable(d, p.expect_rev)?;
     let mut c = vd::text_content(&n).ok_or_else(|| CommandError::internal("text node without content"))?;
@@ -501,7 +517,8 @@ pub(crate) fn draw_text_set(cx: &mut Cx, p: TextSetParams) -> Result<TextResult,
     });
     let object = format!("{}/{}", d.id().as_str(), l.id);
     let bounds = bounds_and_fonts(cx, &c, width, transform, &object);
-    Ok(TextResult { drawing_id: d.id().as_str().to_owned(), text_id: l.id, bounds, rev: committed_rev(cx)? })
+    let changed = super::draw::Changed { modified_ids: vec![l.id.clone()], ..super::draw::Changed::default() };
+    Ok(TextResult { drawing_id: d.id().as_str().to_owned(), text_id: l.id, bounds, changed, rev: committed_rev(cx)? })
 }
 
 /// `draw.textFormat.set` parameters (02 §13.5).
@@ -510,9 +527,16 @@ pub(crate) fn draw_text_set(cx: &mut Cx, p: TextSetParams) -> Result<TextResult,
 pub(crate) struct TextFormatParams {
     /// The text object.
     text_id: String,
-    /// The drawing holding a local ID.
+    /// The drawing holding a local ID (default: `elementId` + `frame`, else the current drawing).
     #[serde(default)]
     drawing_id: Option<String>,
+    /// The element whose cell exposes the drawing (02 §13.1 item 4; with a local ID).
+    #[serde(default)]
+    element_id: Option<String>,
+    /// The frame of that cell (default: the current frame).
+    #[serde(default)]
+    #[schemars(range(min = 1, max = 2_147_483_647))]
+    frame: Option<u32>,
     /// First code point.
     #[serde(default)]
     #[schemars(range(min = 0, max = 100_000))]
@@ -579,8 +603,13 @@ pub(crate) struct TextFormatParams {
 #[derive(Debug, Serialize, JsonSchema)]
 #[serde(rename_all = "camelCase")]
 pub(crate) struct TextFormatResult {
+    /// The drawing.
+    drawing_id: String,
     /// The text object.
     text_id: String,
+    /// Changed objects: the text object is modified.
+    #[serde(flatten)]
+    changed: super::draw::Changed,
     /// Its bounds after the change.
     bounds: Bounds,
     /// The drawing revision after the change.
@@ -598,7 +627,8 @@ pub(crate) struct TextFormatResult {
     gui = "Text panel (M4 C4.2)",
 )]
 pub(crate) fn draw_text_format_set(cx: &mut Cx, p: TextFormatParams) -> Result<TextFormatResult, CommandError> {
-    let (doc, did, l, n) = text_node(cx, &p.text_id, p.drawing_id.as_deref())?;
+    let addr = Addr { drawing_id: p.drawing_id.as_deref(), element_id: p.element_id.as_deref(), frame: p.frame };
+    let (doc, did, l, n) = text_node(cx, &p.text_id, addr)?;
     let d = drawing_in(&doc, &did)?;
     check_editable(d, p.expect_rev)?;
     let colour = match &p.colour_id {
@@ -644,5 +674,12 @@ pub(crate) fn draw_text_format_set(cx: &mut Cx, p: TextFormatParams) -> Result<T
     let transform = n.transform().unwrap_or(tt_model::value::IDENTITY);
     let object = format!("{}/{}", d.id().as_str(), l.id);
     let bounds = bounds_and_fonts(cx, &c, width, transform, &object);
-    Ok(TextFormatResult { text_id: l.id, bounds, rev: committed_rev(cx)? })
+    let changed = super::draw::Changed { modified_ids: vec![l.id.clone()], ..super::draw::Changed::default() };
+    Ok(TextFormatResult {
+        drawing_id: d.id().as_str().to_owned(),
+        text_id: l.id,
+        changed,
+        bounds,
+        rev: committed_rev(cx)?,
+    })
 }

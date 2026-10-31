@@ -116,6 +116,7 @@ pub(crate) static ALL: &[&Command] = &[
     &draw::DRAW_OBJECT_DELETE,
     &draw::DRAW_GROUP_CREATE,
     &draw::DRAW_GROUP_DELETE,
+    &draw::DRAW_DRAWING_CHANGED,
     &draw_stroke::DRAW_STROKE_ADD,
     &draw_stroke::DRAW_STROKE_SET,
     &draw_stroke::DRAW_CONTENT_ADD,
