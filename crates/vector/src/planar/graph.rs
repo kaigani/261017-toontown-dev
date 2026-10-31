@@ -29,6 +29,14 @@ pub const GRID: f64 = 64.0;
 /// A grid point.
 pub type Ip = [i64; 2];
 
+/// Units charged per snapped edge piece, merged edge, half-edge and zone (the work of building, sorting, tracing and
+/// describing them; calibrated so a unit is about one to three nanoseconds of release time, as for brush outlines).
+const UNITS_PER_PIECE: usize = 256;
+const UNITS_PER_EDGE: usize = 256;
+const UNITS_PER_HALF_EDGE: usize = 32;
+const UNITS_PER_ZONE: usize = 2048;
+const UNITS_PER_HOLE_TEST: usize = 64;
+
 /// The kind of stroke an edge comes from.
 #[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord)]
 pub enum EdgeKind {
@@ -395,7 +403,8 @@ pub fn build(strokes: &[StrokeIn], work: &mut Work) -> Result<LayerMap, GeomErro
         }
     }
     for (&(cx, cy), list) in &grid {
-        work.spend_n(list.len().saturating_mul(list.len()) / 2)?;
+        // Every pair of the cell is tested (about one bounding-box comparison each, a few nanoseconds).
+        work.spend_n(list.len().saturating_mul(list.len()).saturating_mul(3) / 2)?;
         for (n, &i) in list.iter().enumerate() {
             let bi = bbox_of(segs[i].a, segs[i].b);
             for &j in &list[n + 1..] {
@@ -455,6 +464,7 @@ pub fn build(strokes: &[StrokeIn], work: &mut Work) -> Result<LayerMap, GeomErro
         }
     }
     drop(hot_cells);
+    work.spend_n(pieces.len().saturating_mul(UNITS_PER_PIECE))?;
     // 4. Vertices and merged edges.
     let verts: Vec<Ip> = vertex_set.into_iter().collect();
     let index: BTreeMap<Ip, usize> = verts.iter().enumerate().map(|(i, v)| (*v, i)).collect();
@@ -473,7 +483,7 @@ pub fn build(strokes: &[StrokeIn], work: &mut Work) -> Result<LayerMap, GeomErro
         });
         edges[e].srcs.push(src);
     }
-    work.spend_n(edges.len())?;
+    work.spend_n(edges.len().saturating_mul(UNITS_PER_EDGE))?;
     let origin = |h: usize| if h.is_multiple_of(2) { edges[h / 2].u } else { edges[h / 2].v };
     let dest = |h: usize| if h.is_multiple_of(2) { edges[h / 2].v } else { edges[h / 2].u };
     // 5. Half-edges around each vertex, counter-clockwise.
@@ -522,7 +532,7 @@ pub fn build(strokes: &[StrokeIn], work: &mut Work) -> Result<LayerMap, GeomErro
                 break;
             }
         }
-        work.spend_n(half.len())?;
+        work.spend_n(half.len().saturating_mul(UNITS_PER_HALF_EDGE))?;
         cycles.push(Cycle { half, area2, comp: 0, bbox });
     }
     // 7. Connected components.
@@ -569,7 +579,7 @@ pub fn build(strokes: &[StrokeIn], work: &mut Work) -> Result<LayerMap, GeomErro
         // The smallest containing face of another component: candidates from the index, smallest first.
         let mut cands: Vec<usize> =
             face_index.query(probe[0], probe[1]).into_iter().filter_map(|f| faces[f].outer).collect();
-        work.spend_n(cands.len())?;
+        work.spend_n(cands.len().saturating_mul(UNITS_PER_HOLE_TEST))?;
         cands.sort_by(|&a, &b| cycles[a].area2.cmp(&cycles[b].area2).then(a.cmp(&b)));
         for &c in &cands {
             let cy = &cycles[c];
@@ -885,7 +895,9 @@ impl LayerMap {
                 continue;
             }
             let cycles: Vec<usize> = std::iter::once(outer).chain(face.holes.iter().copied()).collect();
-            work.spend_n(cycles.iter().map(|&c| self.cycles[c].half.len()).sum())?;
+            work.spend_n(
+                cycles.iter().map(|&c| self.cycles[c].half.len()).sum::<usize>().saturating_add(UNITS_PER_ZONE),
+            )?;
             let pieces = self.pieces_of(&cycles);
             let mut tokens: Vec<String> = pieces
                 .iter()

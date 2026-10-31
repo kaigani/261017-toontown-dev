@@ -178,8 +178,11 @@ jobs:
           cargo test --release --locked -p tt-mcp --test c21_history -- --ignored --nocapture
           # Worst-case fitting work on the adversarial 100 000-sample corpus (C21-R1-06; every run kept).
           cargo test --release --locked -p tt-vector --test c21_worst_case -- --ignored --nocapture
+          # Worst-case planar-map work on the adversarial layer corpus (M2 C2.2 readiness items 3 and 9; every run kept).
+          cargo test --release --locked -p tt-vector --test c22_worst_case -- --ignored --nocapture
           mkdir -p out
           cp -r target/evidence/c21-fit out/c21-fit-worst-case
+          cp -r target/evidence/c22-planar out/c22-planar-worst-case
           $PY scripts/analyse-measurements.py target/evidence/c21 --out out/c21-measurement-analysis.json
           cp -r target/evidence/c21 out/c21-measurements
 

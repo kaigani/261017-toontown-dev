@@ -272,6 +272,8 @@ pub fn settle<E>(
             fills[z] = f.clone().filter(Fill::painted);
         }
     }
+    // Writing the stored fills touches every stroke's JSON.
+    work.spend_n(strokes.len().saturating_mul(2048))?;
     let st = fill::write(&map, &fills, &stored(&strokes));
     apply_stored(&mut strokes, &st);
     let changed = strokes.as_slice() != after;

@@ -132,7 +132,8 @@ pub fn node(strokes: &[NodeStroke], work: &mut Work) -> Result<Noding, GeomError
     let mut cells: Vec<(&(i64, i64), &Vec<usize>)> = grid.iter().collect();
     cells.sort_by_key(|(k, _)| **k);
     for (&(cx, cy), list) in cells {
-        work.spend_n(list.len().saturating_mul(list.len()) / 2)?;
+        // Every pair of the cell is tested (about one bounding-box comparison each, a few nanoseconds).
+        work.spend_n(list.len().saturating_mul(list.len()).saturating_mul(3) / 2)?;
         for (n, &i) in list.iter().enumerate() {
             for &j in &list[n + 1..] {
                 let (e, f) = (&edges[i], &edges[j]);
@@ -201,7 +202,8 @@ pub fn node(strokes: &[NodeStroke], work: &mut Work) -> Result<Noding, GeomError
         if !splittable(s.kind) || junctions[i].is_empty() {
             continue;
         }
-        work.spend_n(junctions[i].len())?;
+        // Each junction is resolved and may become a piece (a split and a new stroke of a few anchors).
+        work.spend_n(junctions[i].len().saturating_mul(256))?;
         if let Some(o) = apply(s, &junctions[i]) {
             outcomes.insert(i, o);
         }
@@ -210,18 +212,29 @@ pub fn node(strokes: &[NodeStroke], work: &mut Work) -> Result<Noding, GeomError
 }
 
 /// The anchor parameter (and point) within the junction tolerance of `j`, if any.
-fn near_anchor(path: &Path, j: &Junction) -> Option<(f64, P)> {
+/// The anchor at either end of the segment holding `j` (parameter), when within the junction tolerance of it: a
+/// junction coincides with an existing anchor only along the path, so these two are the only candidates (constant
+/// work per junction).
+fn near_anchor(path: &Path, segs: usize, j: &Junction) -> Option<(f64, P)> {
     let n = path.anchors.len();
+    if n == 0 {
+        return None;
+    }
+    let base = (j.s.floor().max(0.0) as usize).min(segs);
     let mut best: Option<(f64, f64, P)> = None;
-    for (k, a) in path.anchors.iter().enumerate() {
+    for k in [base, base + 1] {
+        if k > segs {
+            continue;
+        }
+        let a = path.anchors[k % n];
         let d = a.p.dist(j.at);
         if d <= JUNCTION_TOLERANCE && best.is_none_or(|b| d < b.0) {
-            best = Some((d, k as f64, a.p));
+            // The end of an open path is the last anchor (parameter = segment count); a closed path's end is its start.
+            let param = if path.closed && k == segs { 0.0 } else { k as f64 };
+            best = Some((d, param, a.p));
         }
     }
-    // The end of an open path is the last anchor (parameter = segment count).
-    let segs = path.segments().len();
-    best.map(|(_, k, p)| if !path.closed && n >= 2 && k as usize == n - 1 { (segs as f64, p) } else { (k, p) })
+    best.map(|(_, k, p)| (k, p))
 }
 
 /// Splits or moves a stroke at its junctions; `None` when nothing changes.
@@ -235,7 +248,7 @@ fn apply(s: &NodeStroke, js: &[Junction]) -> Option<Outcome> {
     let mut cuts: Vec<Junction> = Vec::new();
     let mut moves: Vec<(f64, P)> = Vec::new();
     for j in js {
-        let resolved = match near_anchor(&s.path, j) {
+        let resolved = match near_anchor(&s.path, segs.len(), j) {
             Some((k, p)) => {
                 let at = if s.changed { j.at } else { p };
                 Junction { s: k, at }
