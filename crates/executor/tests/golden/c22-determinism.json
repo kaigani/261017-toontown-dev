@@ -1,0 +1,1434 @@
+{
+  "sha256": "622630302809a7c7c95863a44c6f1882c8f158e80ef9b34752219344bd39c362",
+  "bytes": 116408,
+  "nodes": [
+    {
+      "type": "layer",
+      "id": "nd_01K742SG0PC20XDQKASM9CGZHR",
+      "name": "Body",
+      "layerKind": "brush",
+      "strokes": [
+        {
+          "type": "stroke",
+          "id": "st_01K742SG0QD1F2HFZSX8R4V7WP",
+          "kind": "brush",
+          "closed": false,
+          "bezier": [
+            {
+              "x": 10.0,
+              "y": 50.0
+            },
+            {
+              "x": 30.0,
+              "y": 50.0
+            },
+            {
+              "x": 70.0,
+              "y": 50.0
+            },
+            {
+              "x": 90.0,
+              "y": 50.0
+            }
+          ],
+          "penId": null,
+          "pen": {
+            "tipShape": "round",
+            "minSize": 0.5,
+            "maxSize": 2.0,
+            "tipAngle": 0.0
+          },
+          "colourId": "col_01K742SG059XGSNZ6M9MACZ2ZY",
+          "textureMatrix": null
+        },
+        {
+          "type": "stroke",
+          "id": "st_01K742SG0R61SYK9GG0HGYVNBT",
+          "kind": "pencil",
+          "closed": false,
+          "bezier": [
+            {
+              "x": -50.0,
+              "y": -50.0
+            },
+            {
+              "x": -50.0,
+              "y": -50.0
+            },
+            {
+              "x": 50.0,
+              "y": 50.0
+            },
+            {
+              "x": 50.0,
+              "y": 50.0
+            }
+          ],
+          "colourId": "col_01K742SG09H7QE4RRR6XSYYS88",
+          "lineStyle": {
+            "thickness": 1.5,
+            "lineType": "solid"
+          },
+          "leftZoneId": null,
+          "rightZoneId": null
+        },
+        {
+          "type": "stroke",
+          "id": "st_01K742SG0S0NT23BWCZN64SFQ5",
+          "kind": "invisible",
+          "closed": false,
+          "bezier": [
+            {
+              "x": 0.0,
+              "y": 0.0
+            },
+            {
+              "x": 0.0,
+              "y": 0.0
+            },
+            {
+              "x": 0.0,
+              "y": 100.0
+            },
+            {
+              "x": 0.0,
+              "y": 100.0
+            }
+          ],
+          "colourId": null,
+          "leftZoneId": null,
+          "rightZoneId": null
+        }
+      ],
+      "zones": []
+    },
+    {
+      "type": "group",
+      "id": "nd_01K742SG0TX3WF1BSWWGMWM5WG",
+      "children": [
+        {
+          "type": "layer",
+          "id": "nd_01K742SG0V9A7HCXC74WKN3V5F",
+          "layerKind": "pencil",
+          "strokes": [],
+          "zones": []
+        }
+      ]
+    },
+    {
+      "type": "text",
+      "id": "nd_01K742SG0WFAQJFKAZKV4CD56C",
+      "name": "Caption",
+      "text": "Héllo",
+      "transform": [
+        1.0,
+        0.0,
+        0.0,
+        1.0,
+        -100.0,
+        200.0
+      ],
+      "widthMode": "fixed",
+      "width": 400.0,
+      "runs": [
+        {
+          "start": 0,
+          "length": 5,
+          "font": "Inter",
+          "size": 24.0,
+          "bold": false,
+          "italic": true,
+          "baseline": "normal",
+          "kerning": 0.0,
+          "autoKern": true,
+          "colourId": "col_01K742SG09H7QE4RRR6XSYYS88",
+          "outlineColourId": null
+        }
+      ],
+      "paragraphs": [
+        {
+          "start": 0,
+          "length": 5,
+          "align": "centre",
+          "leftMargin": 0.0,
+          "rightMargin": 0.0,
+          "indent": 0.0,
+          "lineSpacing": 1.2
+        }
+      ]
+    },
+    {
+      "type": "layer",
+      "id": "nd_01K7JJN801R8A796ZFD2MC9VCK",
+      "layerKind": "pencil",
+      "strokes": [
+        {
+          "type": "stroke",
+          "id": "st_01K7JJN801N0AE1Z0RRCTVH07Z",
+          "kind": "pencil",
+          "closed": false,
+          "bezier": [
+            {
+              "x": 340.0,
+              "y": 300.0
+            },
+            {
+              "x": 375.5555555555556,
+              "y": 300.0
+            },
+            {
+              "x": 420.0,
+              "y": 300.0
+            },
+            {
+              "x": 420.0,
+              "y": 300.0
+            },
+            {
+              "x": 420.0,
+              "y": 300.0
+            },
+            {
+              "x": 420.0,
+              "y": 340.2009628355276
+            },
+            {
+              "x": 420.0,
+              "y": 369.6475782151275
+            }
+          ],
+          "colourId": "col_01K742SG059XGSNZ6M9MACZ2ZY",
+          "lineStyle": {
+            "thickness": 2.0,
+            "lineType": "solid"
+          },
+          "leftZoneId": "zn_427HWPKD9HK0ERKBSMGHWGQ9N1",
+          "rightZoneId": null
+        },
+        {
+          "type": "stroke",
+          "id": "st_01K7JJN8023FJ8358KMGS10XYV",
+          "kind": "pencil",
+          "closed": false,
+          "bezier": [
+            {
+              "x": 420.0,
+              "y": 369.6475782151275
+            },
+            {
+              "x": 420.0,
+              "y": 382.48041624113654
+            },
+            {
+              "x": 420.0,
+              "y": 400.0
+            },
+            {
+              "x": 420.0,
+              "y": 400.0
+            },
+            {
+              "x": 420.0,
+              "y": 400.0
+            },
+            {
+              "x": 375.5555555555556,
+              "y": 400.0
+            },
+            {
+              "x": 340.0,
+              "y": 400.0
+            }
+          ],
+          "colourId": "col_01K742SG059XGSNZ6M9MACZ2ZY",
+          "lineStyle": {
+            "thickness": 2.0,
+            "lineType": "solid"
+          },
+          "leftZoneId": "zn_P9Z4174300XSH1SCDQGD66QRT0",
+          "rightZoneId": null
+        },
+        {
+          "type": "stroke",
+          "id": "st_01K7JJN803WXFN4379NATC3KT1",
+          "kind": "pencil",
+          "closed": false,
+          "bezier": [
+            {
+              "x": 340.0,
+              "y": 400.0
+            },
+            {
+              "x": 322.22222222222223,
+              "y": 400.0
+            },
+            {
+              "x": 300.0,
+              "y": 400.0
+            },
+            {
+              "x": 300.0,
+              "y": 400.0
+            },
+            {
+              "x": 300.0,
+              "y": 400.0
+            },
+            {
+              "x": 300.0,
+              "y": 363.454959687249
+            },
+            {
+              "x": 300.0,
+              "y": 333.8302439208128
+            }
+          ],
+          "colourId": "col_01K742SG059XGSNZ6M9MACZ2ZY",
+          "lineStyle": {
+            "thickness": 2.0,
+            "lineType": "solid"
+          },
+          "leftZoneId": "zn_P9Z4174300XSH1SCDQGD66QRT0",
+          "rightZoneId": null
+        },
+        {
+          "type": "stroke",
+          "id": "st_01K7JJN804FRNW3BHK5CAYE8V5",
+          "kind": "pencil",
+          "closed": false,
+          "bezier": [
+            {
+              "x": 300.0,
+              "y": 333.8302439208128
+            },
+            {
+              "x": 300.0,
+              "y": 318.68417992045727
+            },
+            {
+              "x": 300.0,
+              "y": 300.0
+            },
+            {
+              "x": 300.0,
+              "y": 300.0
+            },
+            {
+              "x": 300.0,
+              "y": 300.0
+            },
+            {
+              "x": 322.22222222222223,
+              "y": 300.0
+            },
+            {
+              "x": 340.0,
+              "y": 300.0
+            }
+          ],
+          "colourId": "col_01K742SG059XGSNZ6M9MACZ2ZY",
+          "lineStyle": {
+            "thickness": 2.0,
+            "lineType": "solid"
+          },
+          "leftZoneId": "zn_SMJ3A7W03TVTAE0S9M67Y63H97",
+          "rightZoneId": null
+        },
+        {
+          "type": "stroke",
+          "id": "st_01K7JJN8035DYXA2PGNY8NJ2YK",
+          "kind": "invisible",
+          "closed": false,
+          "bezier": [
+            {
+              "x": 340.0,
+              "y": 280.0
+            },
+            {
+              "x": 340.0,
+              "y": 280.0
+            },
+            {
+              "x": 340.0,
+              "y": 295.1020408163265
+            },
+            {
+              "x": 340.0,
+              "y": 300.0
+            }
+          ],
+          "colourId": null,
+          "leftZoneId": null,
+          "rightZoneId": null
+        },
+        {
+          "type": "stroke",
+          "id": "st_01K7JJN805MQM5FRFJBVZJXSRD",
+          "kind": "invisible",
+          "closed": false,
+          "bezier": [
+            {
+              "x": 340.0,
+              "y": 300.0
+            },
+            {
+              "x": 340.0,
+              "y": 311.81747861379125
+            },
+            {
+              "x": 340.0,
+              "y": 330.043890764486
+            },
+            {
+              "x": 340.0,
+              "y": 348.2547043396475
+            }
+          ],
+          "colourId": null,
+          "leftZoneId": "zn_SMJ3A7W03TVTAE0S9M67Y63H97",
+          "rightZoneId": "zn_427HWPKD9HK0ERKBSMGHWGQ9N1"
+        },
+        {
+          "type": "stroke",
+          "id": "st_01K7JJN805FYY39WB0TRMKCRPT",
+          "kind": "invisible",
+          "closed": false,
+          "bezier": [
+            {
+              "x": 340.0,
+              "y": 400.0
+            },
+            {
+              "x": 340.0,
+              "y": 404.8979591836735
+            },
+            {
+              "x": 340.0,
+              "y": 420.0
+            },
+            {
+              "x": 340.0,
+              "y": 420.0
+            }
+          ],
+          "colourId": null,
+          "leftZoneId": null,
+          "rightZoneId": null
+        },
+        {
+          "type": "stroke",
+          "id": "st_01K7JJN80765PGSX3B8WR1ZB1R",
+          "kind": "pencil",
+          "closed": false,
+          "bezier": [
+            {
+              "x": 290.0,
+              "y": 330.0
+            },
+            {
+              "x": 293.34169307208,
+              "y": 331.25313490203
+            },
+            {
+              "x": 296.6720991318633,
+              "y": 332.5381513062572
+            },
+            {
+              "x": 300.0,
+              "y": 333.8302439208128
+            }
+          ],
+          "colourId": "col_01K742SG059XGSNZ6M9MACZ2ZY",
+          "lineStyle": {
+            "thickness": 2.0,
+            "lineType": "solid"
+          },
+          "leftZoneId": null,
+          "rightZoneId": null
+        },
+        {
+          "type": "stroke",
+          "id": "st_01K7JJN8087KFRR3WJWESD4770",
+          "kind": "pencil",
+          "closed": false,
+          "bezier": [
+            {
+              "x": 300.0,
+              "y": 333.8302439208128
+            },
+            {
+              "x": 309.9504016623637,
+              "y": 337.6935923224738
+            },
+            {
+              "x": 319.8765279742859,
+              "y": 341.62550932476194
+            },
+            {
+              "x": 330.0,
+              "y": 345.0
+            },
+            {
+              "x": 333.3253761874144,
+              "y": 346.10845872913814
+            },
+            {
+              "x": 336.6601939024978,
+              "y": 347.18919678040015
+            },
+            {
+              "x": 340.0,
+              "y": 348.2547043396475
+            }
+          ],
+          "colourId": "col_01K742SG059XGSNZ6M9MACZ2ZY",
+          "lineStyle": {
+            "thickness": 2.0,
+            "lineType": "solid"
+          },
+          "leftZoneId": "zn_P9Z4174300XSH1SCDQGD66QRT0",
+          "rightZoneId": "zn_SMJ3A7W03TVTAE0S9M67Y63H97"
+        },
+        {
+          "type": "stroke",
+          "id": "st_01K7JJN809A7R9WYK18D17791C",
+          "kind": "pencil",
+          "closed": false,
+          "bezier": [
+            {
+              "x": 340.0,
+              "y": 348.2547043396475
+            },
+            {
+              "x": 353.2393997598733,
+              "y": 352.4785065940934
+            },
+            {
+              "x": 366.58511519596203,
+              "y": 356.37798110290976
+            },
+            {
+              "x": 380.0,
+              "y": 360.0
+            },
+            {
+              "x": 393.24170542117605,
+              "y": 363.57526046371754
+            },
+            {
+              "x": 406.6361513140247,
+              "y": 366.55141214137626
+            },
+            {
+              "x": 420.0,
+              "y": 369.6475782151275
+            }
+          ],
+          "colourId": "col_01K742SG059XGSNZ6M9MACZ2ZY",
+          "lineStyle": {
+            "thickness": 2.0,
+            "lineType": "solid"
+          },
+          "leftZoneId": "zn_P9Z4174300XSH1SCDQGD66QRT0",
+          "rightZoneId": "zn_427HWPKD9HK0ERKBSMGHWGQ9N1"
+        },
+        {
+          "type": "stroke",
+          "id": "st_01K7JJN80AYX2Q1KEMKRTSFHPW",
+          "kind": "pencil",
+          "closed": false,
+          "bezier": [
+            {
+              "x": 420.0,
+              "y": 369.6475782151275
+            },
+            {
+              "x": 423.3361899332419,
+              "y": 370.4205140908333
+            },
+            {
+              "x": 426.6704768281166,
+              "y": 371.200914438748
+            },
+            {
+              "x": 430.0,
+              "y": 372.0
+            }
+          ],
+          "colourId": "col_01K742SG059XGSNZ6M9MACZ2ZY",
+          "lineStyle": {
+            "thickness": 2.0,
+            "lineType": "solid"
+          },
+          "leftZoneId": null,
+          "rightZoneId": null
+        }
+      ],
+      "zones": [
+        {
+          "type": "zone",
+          "id": "zn_427HWPKD9HK0ERKBSMGHWGQ9N1",
+          "colourId": "col_01K742SG06BQ08FCT1TT8DF8MA",
+          "textureMatrix": [
+            120.0,
+            0.0,
+            0.0,
+            100.0,
+            300.0,
+            300.0
+          ],
+          "boundaryStrokeIds": [
+            "st_01K7JJN801N0AE1Z0RRCTVH07Z",
+            "st_01K7JJN805MQM5FRFJBVZJXSRD",
+            "st_01K7JJN809A7R9WYK18D17791C"
+          ],
+          "holes": [],
+          "parentZoneId": null,
+          "area": 4769.4500732421875,
+          "bounds": {
+            "x": 340.0,
+            "y": 300.0,
+            "width": 80.0,
+            "height": 69.640625
+          },
+          "interiorPoint": {
+            "x": 380.0,
+            "y": 304.9765625
+          }
+        },
+        {
+          "type": "zone",
+          "id": "zn_P9Z4174300XSH1SCDQGD66QRT0",
+          "colourId": "col_01K742SG06BQ08FCT1TT8DF8MA",
+          "textureMatrix": [
+            120.0,
+            0.0,
+            0.0,
+            100.0,
+            300.0,
+            300.0
+          ],
+          "boundaryStrokeIds": [
+            "st_01K7JJN8023FJ8358KMGS10XYV",
+            "st_01K7JJN803WXFN4379NATC3KT1",
+            "st_01K7JJN8087KFRR3WJWESD4770",
+            "st_01K7JJN809A7R9WYK18D17791C"
+          ],
+          "holes": [],
+          "parentZoneId": null,
+          "area": 5577.7607421875,
+          "bounds": {
+            "x": 300.0,
+            "y": 333.828125,
+            "width": 120.0,
+            "height": 66.171875
+          },
+          "interiorPoint": {
+            "x": 360.0,
+            "y": 376.3671875
+          }
+        },
+        {
+          "type": "zone",
+          "id": "zn_SMJ3A7W03TVTAE0S9M67Y63H97",
+          "colourId": "col_01K742SG07AYM2NGPE2YJQJJHV",
+          "textureMatrix": [
+            62.674257075772346,
+            0.0,
+            0.0,
+            62.674257075772346,
+            288.6628714621138,
+            292.7878714621138
+          ],
+          "boundaryStrokeIds": [
+            "st_01K7JJN804FRNW3BHK5CAYE8V5",
+            "st_01K7JJN805MQM5FRFJBVZJXSRD",
+            "st_01K7JJN8087KFRR3WJWESD4770"
+          ],
+          "holes": [],
+          "parentZoneId": null,
+          "area": 1652.7891845703125,
+          "bounds": {
+            "x": 300.0,
+            "y": 300.0,
+            "width": 40.0,
+            "height": 48.25
+          },
+          "interiorPoint": {
+            "x": 320.0,
+            "y": 303.4453125
+          }
+        }
+      ]
+    },
+    {
+      "type": "layer",
+      "id": "nd_01K7JJN801B0SGM09PS989S19V",
+      "layerKind": "brush",
+      "strokes": [
+        {
+          "type": "stroke",
+          "id": "st_01K7JJN80098TAFQQKZYAWNCYJ",
+          "kind": "brush",
+          "closed": false,
+          "bezier": [
+            {
+              "x": 500.0,
+              "y": 300.0
+            },
+            {
+              "x": 500.0,
+              "y": 300.0
+            },
+            {
+              "x": 560.0,
+              "y": 300.0
+            },
+            {
+              "x": 560.0,
+              "y": 300.0
+            },
+            {
+              "x": 560.0,
+              "y": 300.0
+            },
+            {
+              "x": 560.0,
+              "y": 360.0
+            },
+            {
+              "x": 560.0,
+              "y": 360.0
+            },
+            {
+              "x": 560.0,
+              "y": 360.0
+            },
+            {
+              "x": 500.0,
+              "y": 360.0
+            },
+            {
+              "x": 500.0,
+              "y": 360.0
+            },
+            {
+              "x": 500.0,
+              "y": 360.0
+            },
+            {
+              "x": 500.0,
+              "y": 300.0
+            },
+            {
+              "x": 500.0,
+              "y": 300.0
+            }
+          ],
+          "penId": null,
+          "pen": {
+            "tipShape": "round",
+            "minSize": 6.0,
+            "maxSize": 6.0,
+            "tipAngle": 0.0
+          },
+          "colourId": "col_01K742SG059XGSNZ6M9MACZ2ZY",
+          "textureMatrix": null
+        }
+      ],
+      "zones": [
+        {
+          "type": "zone",
+          "id": "zn_G80481TXJM8AXNZB6FED1E7BM6",
+          "colourId": "col_01K742SG081DHX1EPGV9BJQAQH",
+          "textureMatrix": [
+            53.96875,
+            0.0,
+            0.0,
+            53.96875,
+            503.03125,
+            303.015625
+          ],
+          "boundaryStrokeIds": [
+            "st_01K7JJN80098TAFQQKZYAWNCYJ"
+          ],
+          "holes": [],
+          "parentZoneId": null,
+          "area": 2912.6065673828125,
+          "bounds": {
+            "x": 503.03125,
+            "y": 303.015625,
+            "width": 53.96875,
+            "height": 53.96875
+          },
+          "interiorPoint": {
+            "x": 530.015625,
+            "y": 306.8671875
+          }
+        }
+      ]
+    },
+    {
+      "type": "layer",
+      "id": "nd_01K7JJN801EV411HA76FA86TMN",
+      "layerKind": "pencil",
+      "strokes": [
+        {
+          "type": "stroke",
+          "id": "st_01K7JJN800Z50CS5SGKCY8H63G",
+          "kind": "pencil",
+          "closed": false,
+          "bezier": [
+            {
+              "x": 650.0,
+              "y": 360.0
+            },
+            {
+              "x": 650.0,
+              "y": 360.0
+            },
+            {
+              "x": 650.0,
+              "y": 300.0
+            },
+            {
+              "x": 650.0,
+              "y": 300.0
+            },
+            {
+              "x": 650.0,
+              "y": 300.0
+            },
+            {
+              "x": 710.0,
+              "y": 300.0
+            },
+            {
+              "x": 710.0,
+              "y": 300.0
+            },
+            {
+              "x": 710.0,
+              "y": 300.0
+            },
+            {
+              "x": 710.0,
+              "y": 360.0
+            },
+            {
+              "x": 710.0,
+              "y": 360.0
+            },
+            {
+              "x": 710.0,
+              "y": 360.0
+            },
+            {
+              "x": 681.0,
+              "y": 360.0
+            },
+            {
+              "x": 681.0,
+              "y": 360.0
+            }
+          ],
+          "colourId": "col_01K742SG059XGSNZ6M9MACZ2ZY",
+          "lineStyle": {
+            "thickness": 2.0,
+            "lineType": "solid"
+          },
+          "leftZoneId": "zn_JB9TF9C47S9WNY9J06A89CKHC3",
+          "rightZoneId": null
+        },
+        {
+          "type": "stroke",
+          "id": "st_01K7JJN800SCXNWQAY0EK0ZMSX",
+          "kind": "pencil",
+          "closed": false,
+          "bezier": [
+            {
+              "x": 679.0,
+              "y": 360.0
+            },
+            {
+              "x": 679.0,
+              "y": 360.0
+            },
+            {
+              "x": 650.0,
+              "y": 360.0
+            },
+            {
+              "x": 650.0,
+              "y": 360.0
+            }
+          ],
+          "colourId": "col_01K742SG059XGSNZ6M9MACZ2ZY",
+          "lineStyle": {
+            "thickness": 2.0,
+            "lineType": "solid"
+          },
+          "leftZoneId": "zn_JB9TF9C47S9WNY9J06A89CKHC3",
+          "rightZoneId": null
+        },
+        {
+          "type": "stroke",
+          "id": "st_01K7JJN8008FDQN97QKWJXFP1W",
+          "kind": "invisible",
+          "closed": false,
+          "bezier": [
+            {
+              "x": 681.0,
+              "y": 360.0
+            },
+            {
+              "x": 681.0,
+              "y": 360.0
+            },
+            {
+              "x": 679.0,
+              "y": 360.0
+            },
+            {
+              "x": 679.0,
+              "y": 360.0
+            }
+          ],
+          "colourId": null,
+          "leftZoneId": "zn_JB9TF9C47S9WNY9J06A89CKHC3",
+          "rightZoneId": null
+        }
+      ],
+      "zones": [
+        {
+          "type": "zone",
+          "id": "zn_JB9TF9C47S9WNY9J06A89CKHC3",
+          "colourId": "col_01K742SG0CQ6FGRGT0FQ0QFDQQ",
+          "textureMatrix": null,
+          "boundaryStrokeIds": [
+            "st_01K7JJN8008FDQN97QKWJXFP1W",
+            "st_01K7JJN800SCXNWQAY0EK0ZMSX",
+            "st_01K7JJN800Z50CS5SGKCY8H63G"
+          ],
+          "holes": [],
+          "parentZoneId": null,
+          "area": 3600.0,
+          "bounds": {
+            "x": 650.0,
+            "y": 300.0,
+            "width": 60.0,
+            "height": 60.0
+          },
+          "interiorPoint": {
+            "x": 680.0,
+            "y": 304.2890625
+          }
+        }
+      ]
+    },
+    {
+      "type": "layer",
+      "id": "nd_01K7JJN800P0ATHE13XV5VW2ZH",
+      "layerKind": "pencil",
+      "strokes": [
+        {
+          "type": "stroke",
+          "id": "st_01K7JJN8011RAW6N8N8R21KNC2",
+          "kind": "pencil",
+          "closed": false,
+          "bezier": [
+            {
+              "x": 340.0,
+              "y": 100.0
+            },
+            {
+              "x": 375.5555555555556,
+              "y": 100.0
+            },
+            {
+              "x": 420.0,
+              "y": 100.0
+            },
+            {
+              "x": 420.0,
+              "y": 100.0
+            },
+            {
+              "x": 420.0,
+              "y": 100.0
+            },
+            {
+              "x": 420.0,
+              "y": 140.2009628355276
+            },
+            {
+              "x": 420.0,
+              "y": 169.6475782151275
+            }
+          ],
+          "colourId": "col_01K742SG059XGSNZ6M9MACZ2ZY",
+          "lineStyle": {
+            "thickness": 2.0,
+            "lineType": "solid"
+          },
+          "leftZoneId": "zn_7R67MARTXTCY094KT260ZF1Y4Z",
+          "rightZoneId": null
+        },
+        {
+          "type": "stroke",
+          "id": "st_01K7JJN802QC6A57YJ37X5BQ29",
+          "kind": "pencil",
+          "closed": false,
+          "bezier": [
+            {
+              "x": 420.0,
+              "y": 169.6475782151275
+            },
+            {
+              "x": 420.0,
+              "y": 182.48041624113654
+            },
+            {
+              "x": 420.0,
+              "y": 200.0
+            },
+            {
+              "x": 420.0,
+              "y": 200.0
+            },
+            {
+              "x": 420.0,
+              "y": 200.0
+            },
+            {
+              "x": 375.5555555555556,
+              "y": 200.0
+            },
+            {
+              "x": 340.0,
+              "y": 200.0
+            }
+          ],
+          "colourId": "col_01K742SG059XGSNZ6M9MACZ2ZY",
+          "lineStyle": {
+            "thickness": 2.0,
+            "lineType": "solid"
+          },
+          "leftZoneId": "zn_CD30BF1CTXBW4NBTP664RF3XDY",
+          "rightZoneId": null
+        },
+        {
+          "type": "stroke",
+          "id": "st_01K7JJN803BABC8B5HCB6XT21X",
+          "kind": "pencil",
+          "closed": false,
+          "bezier": [
+            {
+              "x": 340.0,
+              "y": 200.0
+            },
+            {
+              "x": 322.22222222222223,
+              "y": 200.0
+            },
+            {
+              "x": 300.0,
+              "y": 200.0
+            },
+            {
+              "x": 300.0,
+              "y": 200.0
+            },
+            {
+              "x": 300.0,
+              "y": 200.0
+            },
+            {
+              "x": 300.0,
+              "y": 163.45495968724902
+            },
+            {
+              "x": 300.0,
+              "y": 133.8302439208128
+            }
+          ],
+          "colourId": "col_01K742SG059XGSNZ6M9MACZ2ZY",
+          "lineStyle": {
+            "thickness": 2.0,
+            "lineType": "solid"
+          },
+          "leftZoneId": "zn_CD30BF1CTXBW4NBTP664RF3XDY",
+          "rightZoneId": null
+        },
+        {
+          "type": "stroke",
+          "id": "st_01K7JJN804CFCQMSNXVF173370",
+          "kind": "pencil",
+          "closed": false,
+          "bezier": [
+            {
+              "x": 300.0,
+              "y": 133.8302439208128
+            },
+            {
+              "x": 300.0,
+              "y": 118.68417992045727
+            },
+            {
+              "x": 300.0,
+              "y": 100.0
+            },
+            {
+              "x": 300.0,
+              "y": 100.0
+            },
+            {
+              "x": 300.0,
+              "y": 100.0
+            },
+            {
+              "x": 322.22222222222223,
+              "y": 100.0
+            },
+            {
+              "x": 340.0,
+              "y": 100.0
+            }
+          ],
+          "colourId": "col_01K742SG059XGSNZ6M9MACZ2ZY",
+          "lineStyle": {
+            "thickness": 2.0,
+            "lineType": "solid"
+          },
+          "leftZoneId": "zn_9CK9A8491X750HF2N29DTP7BWZ",
+          "rightZoneId": null
+        },
+        {
+          "type": "stroke",
+          "id": "st_01K7JJN805P1K449N604RA56WN",
+          "kind": "invisible",
+          "closed": false,
+          "bezier": [
+            {
+              "x": 340.0,
+              "y": 80.0
+            },
+            {
+              "x": 340.0,
+              "y": 80.0
+            },
+            {
+              "x": 340.0,
+              "y": 95.10204081632651
+            },
+            {
+              "x": 340.0,
+              "y": 100.0
+            }
+          ],
+          "colourId": null,
+          "leftZoneId": null,
+          "rightZoneId": null
+        },
+        {
+          "type": "stroke",
+          "id": "st_01K7JJN80667JE20M7G50ED6K7",
+          "kind": "invisible",
+          "closed": false,
+          "bezier": [
+            {
+              "x": 340.0,
+              "y": 100.0
+            },
+            {
+              "x": 340.0,
+              "y": 111.81747861379125
+            },
+            {
+              "x": 340.0,
+              "y": 130.04389076448598
+            },
+            {
+              "x": 340.0,
+              "y": 148.2547043396475
+            }
+          ],
+          "colourId": null,
+          "leftZoneId": "zn_9CK9A8491X750HF2N29DTP7BWZ",
+          "rightZoneId": "zn_7R67MARTXTCY094KT260ZF1Y4Z"
+        },
+        {
+          "type": "stroke",
+          "id": "st_01K7JJN807ZVNS20TCPKEFTXS9",
+          "kind": "invisible",
+          "closed": false,
+          "bezier": [
+            {
+              "x": 340.0,
+              "y": 200.0
+            },
+            {
+              "x": 340.0,
+              "y": 204.8979591836735
+            },
+            {
+              "x": 340.0,
+              "y": 220.0
+            },
+            {
+              "x": 340.0,
+              "y": 220.0
+            }
+          ],
+          "colourId": null,
+          "leftZoneId": null,
+          "rightZoneId": null
+        },
+        {
+          "type": "stroke",
+          "id": "st_01K7JJN80805XXD3WEST3C7Z1A",
+          "kind": "pencil",
+          "closed": false,
+          "bezier": [
+            {
+              "x": 290.0,
+              "y": 130.0
+            },
+            {
+              "x": 293.34169307208,
+              "y": 131.25313490203
+            },
+            {
+              "x": 296.6720991318633,
+              "y": 132.5381513062572
+            },
+            {
+              "x": 300.0,
+              "y": 133.8302439208128
+            }
+          ],
+          "colourId": "col_01K742SG059XGSNZ6M9MACZ2ZY",
+          "lineStyle": {
+            "thickness": 2.0,
+            "lineType": "solid"
+          },
+          "leftZoneId": null,
+          "rightZoneId": null
+        },
+        {
+          "type": "stroke",
+          "id": "st_01K7JJN809KVT1JB1SNVXZA03N",
+          "kind": "pencil",
+          "closed": false,
+          "bezier": [
+            {
+              "x": 300.0,
+              "y": 133.8302439208128
+            },
+            {
+              "x": 309.9504016623637,
+              "y": 137.69359232247382
+            },
+            {
+              "x": 319.8765279742859,
+              "y": 141.62550932476194
+            },
+            {
+              "x": 330.0,
+              "y": 145.0
+            },
+            {
+              "x": 333.3253761874144,
+              "y": 146.10845872913814
+            },
+            {
+              "x": 336.6601939024978,
+              "y": 147.18919678040015
+            },
+            {
+              "x": 340.0,
+              "y": 148.2547043396475
+            }
+          ],
+          "colourId": "col_01K742SG059XGSNZ6M9MACZ2ZY",
+          "lineStyle": {
+            "thickness": 2.0,
+            "lineType": "solid"
+          },
+          "leftZoneId": "zn_CD30BF1CTXBW4NBTP664RF3XDY",
+          "rightZoneId": "zn_9CK9A8491X750HF2N29DTP7BWZ"
+        },
+        {
+          "type": "stroke",
+          "id": "st_01K7JJN80AY6Y365VJZ6DNCHGR",
+          "kind": "pencil",
+          "closed": false,
+          "bezier": [
+            {
+              "x": 340.0,
+              "y": 148.2547043396475
+            },
+            {
+              "x": 353.2393997598733,
+              "y": 152.4785065940934
+            },
+            {
+              "x": 366.58511519596203,
+              "y": 156.37798110290976
+            },
+            {
+              "x": 380.0,
+              "y": 160.0
+            },
+            {
+              "x": 393.24170542117605,
+              "y": 163.57526046371754
+            },
+            {
+              "x": 406.6361513140247,
+              "y": 166.55141214137626
+            },
+            {
+              "x": 420.0,
+              "y": 169.6475782151275
+            }
+          ],
+          "colourId": "col_01K742SG059XGSNZ6M9MACZ2ZY",
+          "lineStyle": {
+            "thickness": 2.0,
+            "lineType": "solid"
+          },
+          "leftZoneId": "zn_CD30BF1CTXBW4NBTP664RF3XDY",
+          "rightZoneId": "zn_7R67MARTXTCY094KT260ZF1Y4Z"
+        },
+        {
+          "type": "stroke",
+          "id": "st_01K7JJN80BKHWYB2HE6R526BJX",
+          "kind": "pencil",
+          "closed": false,
+          "bezier": [
+            {
+              "x": 420.0,
+              "y": 169.6475782151275
+            },
+            {
+              "x": 423.3361899332419,
+              "y": 170.4205140908333
+            },
+            {
+              "x": 426.6704768281166,
+              "y": 171.200914438748
+            },
+            {
+              "x": 430.0,
+              "y": 172.0
+            }
+          ],
+          "colourId": "col_01K742SG059XGSNZ6M9MACZ2ZY",
+          "lineStyle": {
+            "thickness": 2.0,
+            "lineType": "solid"
+          },
+          "leftZoneId": null,
+          "rightZoneId": null
+        }
+      ],
+      "zones": [
+        {
+          "type": "zone",
+          "id": "zn_7R67MARTXTCY094KT260ZF1Y4Z",
+          "colourId": "col_01K742SG06BQ08FCT1TT8DF8MA",
+          "textureMatrix": [
+            120.0,
+            0.0,
+            0.0,
+            100.0,
+            300.0,
+            100.0
+          ],
+          "boundaryStrokeIds": [
+            "st_01K7JJN8011RAW6N8N8R21KNC2",
+            "st_01K7JJN80667JE20M7G50ED6K7",
+            "st_01K7JJN80AY6Y365VJZ6DNCHGR"
+          ],
+          "holes": [],
+          "parentZoneId": null,
+          "area": 4769.4500732421875,
+          "bounds": {
+            "x": 340.0,
+            "y": 100.0,
+            "width": 80.0,
+            "height": 69.640625
+          },
+          "interiorPoint": {
+            "x": 380.0,
+            "y": 104.9765625
+          }
+        },
+        {
+          "type": "zone",
+          "id": "zn_CD30BF1CTXBW4NBTP664RF3XDY",
+          "colourId": "col_01K742SG06BQ08FCT1TT8DF8MA",
+          "textureMatrix": [
+            120.0,
+            0.0,
+            0.0,
+            100.0,
+            300.0,
+            100.0
+          ],
+          "boundaryStrokeIds": [
+            "st_01K7JJN802QC6A57YJ37X5BQ29",
+            "st_01K7JJN803BABC8B5HCB6XT21X",
+            "st_01K7JJN809KVT1JB1SNVXZA03N",
+            "st_01K7JJN80AY6Y365VJZ6DNCHGR"
+          ],
+          "holes": [],
+          "parentZoneId": null,
+          "area": 5577.7607421875,
+          "bounds": {
+            "x": 300.0,
+            "y": 133.828125,
+            "width": 120.0,
+            "height": 66.171875
+          },
+          "interiorPoint": {
+            "x": 360.0,
+            "y": 176.3671875
+          }
+        },
+        {
+          "type": "zone",
+          "id": "zn_9CK9A8491X750HF2N29DTP7BWZ",
+          "colourId": "col_01K742SG07AYM2NGPE2YJQJJHV",
+          "textureMatrix": [
+            62.674257075772346,
+            0.0,
+            0.0,
+            62.674257075772346,
+            288.6628714621138,
+            92.7878714621138
+          ],
+          "boundaryStrokeIds": [
+            "st_01K7JJN804CFCQMSNXVF173370",
+            "st_01K7JJN80667JE20M7G50ED6K7",
+            "st_01K7JJN809KVT1JB1SNVXZA03N"
+          ],
+          "holes": [],
+          "parentZoneId": null,
+          "area": 1652.7891845703125,
+          "bounds": {
+            "x": 300.0,
+            "y": 100.0,
+            "width": 40.0,
+            "height": 48.25
+          },
+          "interiorPoint": {
+            "x": 320.0,
+            "y": 103.4453125
+          }
+        }
+      ]
+    }
+  ]
+}
