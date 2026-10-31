@@ -153,6 +153,16 @@ fn brush_corpus() -> Vec<(&'static str, Path, Vec<[f64; 2]>, BrushPen)> {
         closed: false,
     };
     let full = vec![[0.0, 1.0], [1.0, 1.0]];
+    // A closed decagon of radius 30 under a 100 du tip: every tip covers the centre, so all hulls overlap.
+    let decagon = Path {
+        anchors: (0..10)
+            .map(|i| {
+                let a = std::f64::consts::TAU * f64::from(i) / 10.0;
+                Anchor::corner(P::new(30.0 * a.cos(), 30.0 * a.sin()))
+            })
+            .collect(),
+        closed: true,
+    };
     vec![
         ("99000-alternating-knots-round-100", line(100.0), alternating(99_000), round(100.0)),
         (
@@ -179,6 +189,7 @@ fn brush_corpus() -> Vec<(&'static str, Path, Vec<[f64; 2]>, BrushPen)> {
         ("coil-3500-loops-round-1", coil(3500, 12, 5.0, 4.0), full.clone(), round(1.0)),
         ("coil-1500-overlapping-loops-round-8", coil(1500, 24, 20.0, 0.5), full.clone(), round(8.0)),
         ("long-line-tiny-tip", line(1_000_000.0), alternating(90_000), round(0.05)),
+        ("closed-decagon-99000-alternating-knots-round-100", decagon, alternating(99_000), round(100.0)),
     ]
 }
 

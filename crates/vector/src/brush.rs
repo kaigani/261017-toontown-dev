@@ -33,19 +33,22 @@ pub const OUTLINE_TOLERANCE: f64 = 0.1;
 /// M2 C2.1 obligation 11).
 pub const MAX_PLACEMENTS: usize = 100_000;
 
-/// Shapes united per overlay call (the union is hierarchical: chunks, then chunks of their results).
-pub const UNION_CHUNK: usize = 64;
+/// Shapes united per overlay call (the union is hierarchical: chunks, then chunks of their results). Small, because
+/// the work of one call grows with its vertices times how many of its shapes cross each other: 64 nearly coincident
+/// disks per call took 14 s for 99 000 alternating knots on a closed spine, 4 per call take 1.8 s (C21-R3 CI).
+pub const UNION_CHUNK: usize = 4;
 
 /// The work one complete brush geometry call may do (centre fit, placements, hulls, unions, bridges, densification
 /// and the outline fit), in units of about one point operation: sample visits of both fits, placements, hull points,
-/// overlay input vertices (charged [`OVERLAY_COST`] each per call, before the call), bridge vertex pairs and densified
-/// points. Calibrated on the adversarial corpus of `crates/vector/tests/c21_worst_case.rs` (1.6–2.3 ns per unit in
-/// release), so an accepted call returns in about 3 s at most, far inside the 30 s document watchdog; the corpus
-/// records every observation.
+/// overlay input vertices (charged [`OVERLAY_COST`] per vertex and shape of each call, before the call), bridge vertex
+/// pairs and densified points. Calibrated on the adversarial corpus of `crates/vector/tests/c21_worst_case.rs`
+/// (1.4–3.5 ns per unit in release, the upper end when all tips overlap), so an accepted call returns in a few
+/// seconds at most, far inside the 30 s document watchdog; the corpus records every observation.
 pub const OUTLINE_WORK_BUDGET: u64 = 1_200_000_000;
 
-/// Units charged per input vertex of one overlay call (sorting and sweeping it).
-const OVERLAY_COST: u64 = 64;
+/// Units charged per input vertex and per shape of one overlay call (sorting and sweeping the vertices, and the
+/// crossings of up to that many overlapping shapes).
+const OVERLAY_COST: u64 = 16;
 
 /// One outline's work account.
 struct Work {
@@ -322,7 +325,7 @@ pub fn outline_within(
     let united = union(hulls, &mut work)?;
     let mut contours: Vec<Vec<P>> = Vec::new();
     for contour in united {
-        let c: Vec<P> = contour.into_iter().map(from_int).collect();
+        let c: Vec<P> = straightened(contour).into_iter().map(from_int).collect();
         if c.len() >= 3 && signed_area(&c) != 0.0 {
             contours.push(c);
         }
@@ -366,7 +369,7 @@ fn union(mut level: Vec<Vec<Vec<IntPoint<i32>>>>, work: &mut Work) -> Result<Vec
         let mut next: Vec<Vec<Vec<IntPoint<i32>>>> = Vec::with_capacity(level.len().div_ceil(UNION_CHUNK));
         for chunk in level.chunks(UNION_CHUNK) {
             let vertices: usize = chunk.iter().flatten().map(Vec::len).sum();
-            work.spend((vertices as u64).saturating_mul(OVERLAY_COST))?;
+            work.spend((vertices as u64).saturating_mul(chunk.len() as u64).saturating_mul(OVERLAY_COST))?;
             let mut overlay: Overlay<i32> = Overlay::new(vertices);
             for contour in chunk.iter().flatten() {
                 if contour.len() >= 3 {
@@ -380,6 +383,31 @@ fn union(mut level: Vec<Vec<Vec<IntPoint<i32>>>>, work: &mut Work) -> Result<Vec
             return Ok(next.into_iter().flatten().collect());
         }
         level = next;
+    }
+}
+
+/// A contour without its exactly collinear vertices (integer cross product zero, same direction): a vertex where an
+/// intermediate union split a boundary edge. So the outline depends only on the united point set, not on how the
+/// hierarchical union grouped the shapes.
+fn straightened(contour: Vec<IntPoint<i32>>) -> Vec<IntPoint<i32>> {
+    let mut c = contour;
+    loop {
+        let n = c.len();
+        if n < 4 {
+            return c;
+        }
+        let keep: Vec<bool> = (0..n)
+            .map(|i| {
+                let (a, b, d) = (c[(i + n - 1) % n], c[i], c[(i + 1) % n]);
+                let (ux, uy) = (i64::from(b.x) - i64::from(a.x), i64::from(b.y) - i64::from(a.y));
+                let (vx, vy) = (i64::from(d.x) - i64::from(b.x), i64::from(d.y) - i64::from(b.y));
+                !(ux * vy - uy * vx == 0 && ux * vx + uy * vy > 0)
+            })
+            .collect();
+        if keep.iter().all(|k| *k) {
+            return c;
+        }
+        c = c.into_iter().zip(keep).filter(|(_, k)| *k).map(|(p, _)| p).collect();
     }
 }
 

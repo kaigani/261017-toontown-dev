@@ -74,17 +74,22 @@ of these a command. The planar map (zones) is C2.2, drawing operations and rende
    linearly along the chord). Round tips are polygons circumscribing the circle (so the union contains every swept
    disk); oval tips 2:1 ellipses (also circumscribed) and flat tips 5:1 rectangles at the tip angle; square tips
    squares. The hulls are united by `i_overlay` (MIT OR Apache-2.0) with integer arithmetic on a 1/64 du
-   grid (coordinates are bounded to ±10⁷ du so the engine's i32 range holds), hierarchically: 64 shapes per overlay
-   call, then 64 results per call, until one remains (the same point set as one call; heavily overlapping tips no
-   longer meet in one call — 99 000 alternating pressure knots took 96 s in one call and take 0.9 s so). Contours are
+   grid (coordinates are bounded to ±10⁷ du so the engine's i32 range holds), hierarchically: 4 shapes per overlay
+   call, then 4 results per call, until one remains. The work of one call grows with its vertices times how many of its
+   shapes cross, so heavily overlapping tips must not meet in large calls: 99 000 alternating pressure knots took 96 s
+   in one call; 64 per call still took 14 s on a closed spine whose tips all overlap (CI run 41191607130); 4 per call
+   take 0.9 s and 1.9 s. Each call snaps its new intersection vertices to the grid, so the united boundary can differ
+   from a single call's by about one grid step (1/64 du) — within the union's resolution; exactly collinear vertices
+   that an intermediate union leaves on a boundary edge are removed. Contours are
    joined by zero-width bridges into the one closed path 10 §4.9 stores, then fitted within min(0.1 du, max/16).
    **The complete brush geometry call has one work budget** (`OUTLINE_WORK_BUDGET`, 1.2 × 10⁹ units of about one
-   point operation): the centre fit's sample visits, placements, hull points, overlay input vertices (64 units each,
-   charged before each call), bridge vertex pairs, densified points and the outline fit (through the budgeted fit,
+   point operation): the centre fit's sample visits, placements, hull points, overlay input vertices (16 units per vertex
+   and shape of the call, charged before each call), bridge vertex pairs, densified points and the outline fit (through the budgeted fit,
    with what remains). Past it — or past 100 000 outline anchors — the stroke is refused with `limit.exceeded` before
    the next step starts; nothing is committed and the document worker is free. Calibrated on the adversarial brush
-   corpus of `crates/vector/tests/c21_worst_case.rs` (1.6–2.3 ns per unit in release; worst accepted 0.95 s, worst
-   refusal 1.8 s; every observation kept, both OSes in CI's headless job). A scribble with more than about a
+   corpus of `crates/vector/tests/c21_worst_case.rs` (1.4–3.5 ns per unit in release, the upper end for tips
+   that all overlap; worst accepted 1.9 s, the closed decagon; worst refusal 1.8 s; every observation kept, both OSes
+   in CI's headless job). A scribble with more than about a
    thousand separate holes is refused by the quadratic bridge step; the bridge corpus for C2.2 (SI-053) owns a
    faster splice (C21-R2-03). The spine, its pressure map and
    pen are kept (a closed spine stored open with its first anchor repeated); a non-zero tip angle of a non-round tip
