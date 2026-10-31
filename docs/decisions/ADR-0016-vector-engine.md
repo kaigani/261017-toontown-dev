@@ -81,7 +81,7 @@ of these a command. The planar map (zones) is C2.2, drawing operations and rende
    Layout: the transform's origin is the box's top-left corner and lines run downwards; advances and `kern` pairs come
    from the font (`skrifa`; `ttf-parser` was declared unmaintained, RUSTSEC-2026-0192), line height from ascender, descender and line gap plus the paragraph's line spacing;
    fixed width wraps greedily at spaces. System fonts are listed once per process (`fontdb`, read on a background thread
-   at start). A missing font keeps its name and is laid out with the platform's default sans-serif face (warning
+   at start; files are memory-mapped while listed, so the scan touches only their tables, not whole files). A missing font keeps its name and is laid out with the platform's default sans-serif face (warning
    `drawing.fontMissing`); `doc.validate` reports it as `missingFonts`. New text uses the generic family `sans-serif`.
 
 7. **Layer policies and settings (02 §3.1, §7.3.6, §8.11; SI-056).** `layer: auto` puts brush, pencil and shape strokes

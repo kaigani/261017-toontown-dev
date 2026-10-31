@@ -18,9 +18,11 @@ libm = { version = "0.2.16", default-features = false, features = ["force-soft-f
 # Boolean union of brush sweep polygons on an integer grid (deterministic; MIT OR Apache-2.0).
 i_overlay = { version = "9.1.0", default-features = false }
 # Font metrics for text layout and the missingFonts lint: skrifa (fontations; MIT OR Apache-2.0) parses faces,
-# fontdb (MIT) lists the system fonts.
+# fontdb (MIT) lists the system fonts. `memmap` (memmap2, MIT OR Apache-2.0): font files are mapped while their
+# names are read, so listing the fonts touches only their tables instead of reading every file whole (the macOS emoji
+# font alone is larger than the process memory bound of the M1 C1.3 probes).
 skrifa = "0.44.0"
-fontdb = { version = "0.24.0", default-features = false, features = ["std", "fs"] }
+fontdb = { version = "0.24.0", default-features = false, features = ["std", "fs", "memmap"] }
 
 [dev-dependencies]
 proptest.workspace = true

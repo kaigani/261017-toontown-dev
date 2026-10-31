@@ -169,6 +169,7 @@ fn load(db: &fontdb::Database, name: &str, bold: bool, italic: bool) -> Option<F
     let bytes: Vec<u8> = match source {
         fontdb::Source::Binary(b) => (*b).as_ref().to_vec(),
         fontdb::Source::File(path) => std::fs::read(path).ok()?,
+        fontdb::Source::SharedFile(_, data) => (*data).as_ref().to_vec(),
     };
     let m = {
         use skrifa::MetadataProvider;
