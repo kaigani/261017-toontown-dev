@@ -68,3 +68,38 @@ fn nfc_reference_and_origin_coverage_corpus() {
         }
     }
 }
+
+#[test]
+#[ignore = "bounded subprocess worker"]
+fn maximum_spine_and_pressure_worker() {
+    use tt_model::entities::pen::Tip;
+    use tt_vector::{brush::{outline_measured, BrushPen}, path::{Anchor, Path}};
+    let spine = Path { anchors: (0..99_998).map(|i| Anchor::corner(P::new(f64::from(i), 0.0))).collect(), closed: false };
+    let pressure: Vec<_> = (0..100_000).map(|i| [f64::from(i)/99_999.0, f64::from(i%2)]).collect();
+    let started = std::time::Instant::now();
+    let result = outline_measured(&spine, &pressure,
+        &BrushPen { tip: Tip::Round, min_size: 0.0, max_size: 100.0, tip_angle: 0.0 });
+    eprintln!("maximum spine + pressure complete outline {:?}: {:?}", started.elapsed(), result.map(|(p,w)|(p.anchors.len(),w)));
+}
+
+#[test]
+fn maximum_spine_and_pressure_return_within_watchdog() {
+    use std::time::{Duration, Instant};
+    let mut child = std::process::Command::new(std::env::current_exe().unwrap())
+        .args(["--exact","maximum_spine_and_pressure_worker","--ignored","--nocapture"])
+        .spawn().unwrap();
+    let started=Instant::now();
+    loop {
+        if let Some(status)=child.try_wait().unwrap() {
+            assert!(status.success());
+            break;
+        }
+        if started.elapsed()>Duration::from_secs(30) {
+            child.kill().unwrap();
+            child.wait().unwrap();
+            assert!(started.elapsed()<=Duration::from_secs(30),
+                "placement pressure lookups must return/refuse within the complete work watchdog");
+        }
+        std::thread::sleep(Duration::from_millis(20));
+    }
+}
