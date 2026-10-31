@@ -55,6 +55,12 @@ struct Junction {
     at: P,
 }
 
+/// A crossing or T-junction before resolution: where it was found and the two strokes meeting there.
+struct Record {
+    at: P,
+    parts: [(usize, f64); 2],
+}
+
 struct EdgeRef {
     stroke: usize,
     a: P,
@@ -127,7 +133,8 @@ pub fn node(strokes: &[NodeStroke], work: &mut Work) -> Result<Noding, GeomError
             }
         }
     }
-    let mut junctions: Vec<Vec<Junction>> = vec![Vec::new(); strokes.len()];
+    // Junction records: one per crossing or T-junction, with its two participants (stroke, parameter).
+    let mut records: Vec<Record> = Vec::new();
     // Crossings (each pair tested once, in the cell of the low corner of the boxes' overlap).
     let mut cells: Vec<(&(i64, i64), &Vec<usize>)> = grid.iter().collect();
     cells.sort_by_key(|(k, _)| **k);
@@ -158,9 +165,13 @@ pub fn node(strokes: &[NodeStroke], work: &mut Work) -> Result<Noding, GeomError
                     continue;
                 }
                 if let Some((t, u)) = crossing(e.a, e.b, f.a, f.b) {
-                    let at = e.a.lerp(e.b, t);
-                    junctions[e.stroke].push(Junction { s: flat::param_between(e.sa, e.sb, t), at });
-                    junctions[f.stroke].push(Junction { s: flat::param_between(f.sa, f.sb, u), at });
+                    records.push(Record {
+                        at: e.a.lerp(e.b, t),
+                        parts: [
+                            (e.stroke, flat::param_between(e.sa, e.sb, t)),
+                            (f.stroke, flat::param_between(f.sa, f.sb, u)),
+                        ],
+                    });
                 }
             }
         }
@@ -193,10 +204,10 @@ pub fn node(strokes: &[NodeStroke], work: &mut Work) -> Result<Noding, GeomError
             let s_other = flat::param_between(e.sa, e.sb, t);
             // Where they meet: the changed stroke moves onto the other one; an unchanged end stays put.
             let at = if strokes[i].changed { q } else { p };
-            junctions[i].push(Junction { s: s_end, at });
-            junctions[e.stroke].push(Junction { s: s_other, at });
+            records.push(Record { at, parts: [(i, s_end), (e.stroke, s_other)] });
         }
     }
+    let junctions = resolve(strokes, &records, work)?;
     let mut outcomes = BTreeMap::new();
     for (i, s) in strokes.iter().enumerate() {
         if !splittable(s.kind) || junctions[i].is_empty() {
@@ -211,7 +222,73 @@ pub fn node(strokes: &[NodeStroke], work: &mut Work) -> Result<Noding, GeomError
     Ok(Noding { outcomes })
 }
 
-/// The anchor parameter (and point) within the junction tolerance of `j`, if any.
+fn root(parent: &mut [usize], mut i: usize) -> usize {
+    while parent[i] != i {
+        parent[i] = parent[parent[i]];
+        i = parent[i];
+    }
+    i
+}
+
+/// Resolves every junction once for all of its participants (C22-R1-01): records within [`JUNCTION_TOLERANCE`] of
+/// each other (transitively) are one junction. Its coordinate is the nearest existing anchor of an unchanged pencil or
+/// invisible participant (then lowest stroke index and parameter), else the point of the junction's first record.
+/// Every participant gets that exact coordinate, so the pieces meeting there share their junction anchor.
+fn resolve(strokes: &[NodeStroke], records: &[Record], work: &mut Work) -> Result<Vec<Vec<Junction>>, GeomError> {
+    work.spend_n(records.len().saturating_mul(16))?;
+    // Union-find over a grid of tolerance-sized cells, records in order; a cluster's root is its lowest record.
+    let mut parent: Vec<usize> = (0..records.len()).collect();
+    let cell = |p: P| ((p.x / JUNCTION_TOLERANCE).floor() as i64, (p.y / JUNCTION_TOLERANCE).floor() as i64);
+    let mut grid: BTreeMap<(i64, i64), Vec<usize>> = BTreeMap::new();
+    for (i, r) in records.iter().enumerate() {
+        let (cx, cy) = cell(r.at);
+        for dx in -1..=1 {
+            for dy in -1..=1 {
+                let Some(list) = grid.get(&(cx + dx, cy + dy)) else { continue };
+                work.spend_n(list.len())?;
+                for &j in list {
+                    if records[j].at.dist(r.at) <= JUNCTION_TOLERANCE {
+                        let (a, b) = (root(&mut parent, i), root(&mut parent, j));
+                        parent[a.max(b)] = a.min(b);
+                    }
+                }
+            }
+        }
+        grid.entry((cx, cy)).or_default().push(i);
+    }
+    let mut clusters: BTreeMap<usize, Vec<usize>> = BTreeMap::new();
+    for i in 0..records.len() {
+        let r = root(&mut parent, i);
+        clusters.entry(r).or_default().push(i);
+    }
+    let mut junctions: Vec<Vec<Junction>> = vec![Vec::new(); strokes.len()];
+    for (first, members) in clusters {
+        let mut best: Option<(f64, usize, f64, P)> = None;
+        for &m in &members {
+            let r = &records[m];
+            for &(k, sk) in &r.parts {
+                let st = &strokes[k];
+                if st.changed || !splittable(st.kind) {
+                    continue;
+                }
+                let probe = Junction { s: sk, at: r.at };
+                let Some((param, p)) = near_anchor(&st.path, st.path.segments().len(), &probe) else { continue };
+                let key = (p.dist(r.at), k, param);
+                if best.is_none_or(|b| key.partial_cmp(&(b.0, b.1, b.2)) == Some(std::cmp::Ordering::Less)) {
+                    best = Some((key.0, k, param, p));
+                }
+            }
+        }
+        let at = best.map_or(records[first].at, |b| b.3);
+        for &m in &members {
+            for &(k, sk) in &records[m].parts {
+                junctions[k].push(Junction { s: sk, at });
+            }
+        }
+    }
+    Ok(junctions)
+}
+
 /// The anchor at either end of the segment holding `j` (parameter), when within the junction tolerance of it: a
 /// junction coincides with an existing anchor only along the path, so these two are the only candidates (constant
 /// work per junction).
@@ -248,16 +325,15 @@ fn apply(s: &NodeStroke, js: &[Junction]) -> Option<Outcome> {
     let mut cuts: Vec<Junction> = Vec::new();
     let mut moves: Vec<(f64, P)> = Vec::new();
     for j in js {
+        // The coordinate is already resolved for every participant: an anchor near it moves onto it (a no-op for the
+        // authoritative anchor of an unchanged stroke).
         let resolved = match near_anchor(&s.path, segs.len(), j) {
-            Some((k, p)) => {
-                let at = if s.changed { j.at } else { p };
-                Junction { s: k, at }
-            }
+            Some((k, _)) => Junction { s: k, at: j.at },
             None => *j,
         };
         let is_end = !s.path.closed && (resolved.s <= 0.0 || resolved.s >= count);
         if is_end {
-            if s.changed && resolved.at != anchor_at(&s.path, resolved.s) {
+            if resolved.at != anchor_at(&s.path, resolved.s) && moved_end(&moves, resolved.s).is_none() {
                 moves.push((resolved.s, resolved.at));
             }
             continue;
@@ -269,13 +345,13 @@ fn apply(s: &NodeStroke, js: &[Junction]) -> Option<Outcome> {
     let mut merged: Vec<Junction> = Vec::new();
     for c in cuts {
         match merged.last() {
-            Some(m) if m.at.dist(c.at) <= JUNCTION_TOLERANCE || (c.s - m.s).abs() < 1e-9 => {}
+            Some(m) if same_place(&segs, m, &c, s.path.closed) => {}
             _ => merged.push(c),
         }
     }
     if s.path.closed && merged.len() >= 2 {
         let (first, last) = (merged[0], merged[merged.len() - 1]);
-        if first.at.dist(last.at) <= JUNCTION_TOLERANCE {
+        if same_place(&segs, &last, &Junction { s: first.s + count, at: first.at }, true) {
             merged.pop();
         }
     }
@@ -310,6 +386,24 @@ fn apply(s: &NodeStroke, js: &[Junction]) -> Option<Outcome> {
     }
     pieces.retain(|p| p.anchors.len() >= 2);
     Some(Outcome::Split(pieces))
+}
+
+/// Whether two cuts (in parameter order) are one: the same junction, with the path between them staying near it (a
+/// loop through one junction keeps both of its cuts).
+fn same_place(segs: &[Cubic], a: &Junction, b: &Junction, closed: bool) -> bool {
+    if (b.s - a.s).abs() < 1e-9 {
+        return true;
+    }
+    if a.at.dist(b.at) > JUNCTION_TOLERANCE {
+        return false;
+    }
+    let n = segs.len();
+    let eval = |t: f64| {
+        let t = if closed { t.rem_euclid(n as f64) } else { t.clamp(0.0, n as f64) };
+        let j = (t.floor() as usize).min(n - 1);
+        segs[j].eval(t - j as f64)
+    };
+    (1..8).all(|k| eval(a.s + (b.s - a.s) * f64::from(k) / 8.0).dist(a.at) <= 2.0 * JUNCTION_TOLERANCE)
 }
 
 fn moved_end(moves: &[(f64, P)], k: f64) -> Option<P> {
@@ -445,6 +539,46 @@ mod tests {
         let Some(Outcome::Split(ps)) = n.outcomes.get(&0) else { panic!("{n:?}") };
         assert_eq!(ps.len(), 2);
         assert!(ps.iter().all(|p| !p.closed));
+    }
+
+    #[test]
+    fn three_lines_crossing_near_one_point_share_one_junction() {
+        // Pairwise crossings within the junction tolerance of each other are one junction for all three strokes.
+        let n = run(&[
+            line("h", &[(0.0, 0.0), (10.0, 0.0)], true),
+            line("v", &[(5.0, -5.0), (5.0, 5.0)], true),
+            line("d", &[(0.01, -4.99), (10.01, 5.01)], true),
+        ]);
+        let mut ends = Vec::new();
+        for k in 0..3 {
+            let Some(Outcome::Split(ps)) = n.outcomes.get(&k) else { panic!("{k}: {n:?}") };
+            assert_eq!(ps.len(), 2, "{k}");
+            ends.push(ps[0].anchors[ps[0].anchors.len() - 1].p);
+            assert_eq!(ps[1].anchors[0].p, ends[k]);
+        }
+        assert!(ends.iter().all(|p| *p == ends[0]), "{ends:?}");
+    }
+
+    #[test]
+    fn an_unchanged_anchor_near_a_crossing_is_the_junction_for_every_stroke() {
+        let n = run(&[
+            line("old", &[(0.0, 0.0), (5.0, 0.0), (10.0, 0.0)], false),
+            line("new", &[(5.01, -5.0), (5.01, 5.0)], true),
+        ]);
+        let (Some(Outcome::Split(a)), Some(Outcome::Split(b))) = (n.outcomes.get(&0), n.outcomes.get(&1)) else {
+            panic!("{n:?}")
+        };
+        assert_eq!(a[0].anchors[a[0].anchors.len() - 1].p, P::new(5.0, 0.0), "the unchanged anchor stays");
+        assert_eq!(b[0].anchors[b[0].anchors.len() - 1].p, P::new(5.0, 0.0), "the changed line meets it");
+        assert_eq!(b[1].anchors[0].p, P::new(5.0, 0.0));
+    }
+
+    #[test]
+    fn a_line_looping_through_its_own_crossing_is_cut_on_both_passes() {
+        let n = run(&[line("loop", &[(0.0, 0.0), (10.0, 0.0), (10.0, 10.0), (5.0, 10.0), (5.0, -5.0)], true)]);
+        let Some(Outcome::Split(ps)) = n.outcomes.get(&0) else { panic!("{n:?}") };
+        assert_eq!(ps.len(), 3, "{ps:?}");
+        assert_eq!(ps[0].anchors[ps[0].anchors.len() - 1].p, ps[2].anchors[0].p);
     }
 
     #[test]

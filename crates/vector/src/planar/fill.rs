@@ -11,7 +11,7 @@
 //! overlaps most (exact polygon intersection on the grid; ties to the lower old zone ID): a split zone gives both
 //! parts its fill, merged zones take the larger part's.
 
-use std::collections::BTreeMap;
+use std::collections::{BTreeMap, BTreeSet};
 
 use i_overlay::core::fill_rule::FillRule;
 use i_overlay::core::overlay::{Overlay, ShapeType};
@@ -226,6 +226,77 @@ fn overlap2(a: &[Vec<Ip>], b: &[Vec<Ip>], work: &mut Work) -> Result<i128, GeomE
     Ok(area2.abs())
 }
 
+/// A grid index of boxes (grid units) for positive-area overlap queries; boxes spanning too many cells, and queries
+/// spanning too many cells, fall back to a list scanned in full.
+struct Boxes {
+    size: i64,
+    boxes: Vec<(usize, [i64; 4])>,
+    cells: BTreeMap<(i64, i64), Vec<usize>>,
+    large: Vec<usize>,
+}
+
+impl Boxes {
+    const MAX_CELLS: i64 = 256;
+
+    fn new(boxes: &[(usize, [i64; 4])], work: &mut Work) -> Result<Self, GeomError> {
+        let extent: i128 = if boxes.is_empty() {
+            64
+        } else {
+            boxes.iter().map(|(_, b)| i128::from((b[2] - b[0]).max(b[3] - b[1]))).sum::<i128>() / boxes.len() as i128
+        };
+        let size = i64::try_from(extent.clamp(64, 1 << 26)).unwrap_or(64);
+        let mut idx = Boxes { size, boxes: boxes.to_vec(), cells: BTreeMap::new(), large: Vec::new() };
+        for (k, &(_, b)) in boxes.iter().enumerate() {
+            let (x0, y0, x1, y1) = idx.range(b);
+            let n = (x1 - x0 + 1).saturating_mul(y1 - y0 + 1);
+            if n > Self::MAX_CELLS {
+                idx.large.push(k);
+                continue;
+            }
+            work.spend(u64::try_from(n).unwrap_or(u64::MAX))?;
+            for cx in x0..=x1 {
+                for cy in y0..=y1 {
+                    idx.cells.entry((cx, cy)).or_default().push(k);
+                }
+            }
+        }
+        Ok(idx)
+    }
+
+    fn range(&self, b: [i64; 4]) -> (i64, i64, i64, i64) {
+        let s = self.size.max(1);
+        (b[0].div_euclid(s), b[1].div_euclid(s), b[2].div_euclid(s), b[3].div_euclid(s))
+    }
+
+    /// The IDs of the boxes overlapping `q` with positive area, ascending.
+    fn overlapping(&self, q: [i64; 4], work: &mut Work) -> Result<Vec<usize>, GeomError> {
+        let (x0, y0, x1, y1) = self.range(q);
+        let mut ks: Vec<usize> = self.large.clone();
+        if (x1 - x0 + 1).saturating_mul(y1 - y0 + 1) > Self::MAX_CELLS {
+            ks = (0..self.boxes.len()).collect();
+        } else {
+            for cx in x0..=x1 {
+                for cy in y0..=y1 {
+                    if let Some(list) = self.cells.get(&(cx, cy)) {
+                        ks.extend_from_slice(list);
+                    }
+                }
+            }
+        }
+        work.spend_n(ks.len())?;
+        let mut out: Vec<usize> = ks
+            .into_iter()
+            .filter_map(|k| {
+                let (id, b) = self.boxes[k];
+                (b[0] < q[2] && q[0] < b[2] && b[1] < q[3] && q[1] < b[3]).then_some(id)
+            })
+            .collect();
+        out.sort_unstable();
+        out.dedup();
+        Ok(out)
+    }
+}
+
 /// The fills of a new map's zones carried over from an old map and its fills.
 ///
 /// # Errors
@@ -237,27 +308,21 @@ pub fn carry(
     work: &mut Work,
 ) -> Result<Vec<Option<Fill>>, GeomError> {
     let by_id: BTreeMap<&str, usize> = old.zones.iter().enumerate().map(|(i, z)| (z.id.as_str(), i)).collect();
-    // Old zones whose interior point lies in each new zone.
-    let mut inside: Vec<Vec<usize>> = vec![Vec::new(); new.zones.len()];
-    for (i, z) in old.zones.iter().enumerate() {
-        work.spend_n(new.faces.len())?;
-        if let Some(n) = new.zone_at(z.interior) {
-            inside[n].push(i);
-        }
-    }
+    // A zone ID is a hash of the zone's whole boundary (geometry, strokes, sides), so an old zone with the ID of a new
+    // one has the same polygon: its overlap with that zone is its whole area and with every other new zone nothing.
+    // Those pairs are settled without overlays; every other old zone is a candidate for each new zone whose bounding
+    // box it overlaps with positive area (C22-R1-02), scored by exact polygon intersection.
+    let matched: BTreeSet<usize> = new.zones.iter().filter_map(|z| by_id.get(z.id.as_str()).copied()).collect();
+    let rest: Vec<(usize, [i64; 4])> =
+        (0..old.zones.len()).filter(|i| !matched.contains(i)).map(|i| (i, old.zone_box(i))).collect();
+    let index = Boxes::new(&rest, work)?;
     let mut out = Vec::with_capacity(new.zones.len());
     for (n, zone) in new.zones.iter().enumerate() {
         if let Some(&i) = by_id.get(zone.id.as_str()) {
             out.push(old_fills.get(i).cloned().flatten());
             continue;
         }
-        let mut cands = inside[n].clone();
-        work.spend_n(old.faces.len())?;
-        if let Some(i) = old.zone_at(zone.interior) {
-            cands.push(i);
-        }
-        cands.sort_unstable();
-        cands.dedup();
+        let cands = index.overlapping(new.zone_box(n), work)?;
         let new_rings = new.zone_rings_grid(n);
         let mut best: Option<(i128, usize)> = None;
         for i in cands {
@@ -339,6 +404,25 @@ mod tests {
         split_fills[1 - left] = paint("blue");
         let merged = carry(&new, &split_fills, &old, &mut Work::unlimited("t")).unwrap_or_default();
         assert_eq!(merged, vec![paint("blue")]);
+    }
+
+    #[test]
+    fn the_largest_overlap_wins_even_when_no_interior_point_lies_in_the_other_zone() {
+        // Two old bars crossing the new bar where neither old interior point lies in it nor its interior in them:
+        // red overlaps 6 du², blue 4 du²; with equal overlaps the lower old zone ID wins.
+        let old = build_map(&[
+            line("r", &[(0.0, 4.0), (10.0, 4.0), (10.0, 6.0), (0.0, 6.0)], true),
+            line("b", &[(20.0, 4.0), (30.0, 4.0), (30.0, 6.0), (20.0, 6.0)], true),
+        ]);
+        let red = old.zone_at(P::new(5.0, 5.0)).unwrap_or(0);
+        let mut fills = vec![None, None];
+        fills[red] = paint("red");
+        fills[1 - red] = paint("blue");
+        let wide = build_map(&[line("n", &[(7.0, 0.0), (22.0, 0.0), (22.0, 100.0), (7.0, 100.0)], true)]);
+        assert_eq!(carry(&old, &fills, &wide, &mut Work::unlimited("t")).unwrap_or_default(), vec![paint("red")]);
+        let even = build_map(&[line("n", &[(8.0, 0.0), (22.0, 0.0), (22.0, 100.0), (8.0, 100.0)], true)]);
+        let lower = if old.zones[red].id < old.zones[1 - red].id { "red" } else { "blue" };
+        assert_eq!(carry(&old, &fills, &even, &mut Work::unlimited("t")).unwrap_or_default(), vec![paint(lower)]);
     }
 
     #[test]

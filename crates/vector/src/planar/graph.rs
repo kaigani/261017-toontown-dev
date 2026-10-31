@@ -885,6 +885,55 @@ impl LayerMap {
         out
     }
 
+    /// The canonical text of a boundary cycle for zone identity (C22-R1-03 ruling): in traversal order, each vertex's
+    /// snapped integer coordinate followed by the stroke IDs and sides of the edge leaving it. A vertex where the
+    /// boundary goes straight on along the same strokes is left out (a vertex an unrelated stroke adds without changing
+    /// the shape changes nothing), and the cycle starts at its smallest token sequence, so the text depends on the
+    /// boundary alone: its geometry, its strokes and their sides, identical on every OS.
+    fn canonical_cycle(&self, c: usize) -> String {
+        let half = &self.cycles[c].half;
+        let n = half.len();
+        let srcs = |h: usize| -> String {
+            let e = &self.edges[h / 2];
+            let mut t: Vec<String> = e
+                .srcs
+                .iter()
+                .map(|s| {
+                    let side = if h.is_multiple_of(2) == s.forward { 'L' } else { 'R' };
+                    format!("{}:{side}", self.strokes[s.stroke].0)
+                })
+                .collect();
+            t.sort();
+            t.dedup();
+            t.join(",")
+        };
+        let labels: Vec<String> = half.iter().map(|&h| srcs(h)).collect();
+        let mut tokens: Vec<String> = Vec::with_capacity(n);
+        for k in 0..n {
+            let prev = (k + n - 1) % n;
+            let (a, v, b) =
+                (self.verts[self.origin(half[prev])], self.verts[self.origin(half[k])], self.verts[self.dest(half[k])]);
+            let straight = n > 2 && labels[prev] == labels[k] && orient(a, v, b) == 0 && {
+                let (d0, d1) = ([v[0] - a[0], v[1] - a[1]], [b[0] - v[0], b[1] - v[1]]);
+                i128::from(d0[0]) * i128::from(d1[0]) + i128::from(d0[1]) * i128::from(d1[1]) > 0
+            };
+            if !straight {
+                tokens.push(format!("{},{};{}", v[0], v[1], labels[k]));
+            }
+        }
+        if tokens.is_empty() {
+            return String::new();
+        }
+        // Tokens carry coordinates, so the smallest one repeats only at pinch vertices: only those starts are compared.
+        let m = tokens.len();
+        let first = tokens.iter().min().cloned().unwrap_or_default();
+        let best = (0..m)
+            .filter(|&x| tokens[x] == first)
+            .min_by(|&x, &y| (0..m).map(|i| &tokens[(x + i) % m]).cmp((0..m).map(|i| &tokens[(y + i) % m])))
+            .unwrap_or(0);
+        (0..m).map(|i| tokens[(best + i) % m].as_str()).collect::<Vec<_>>().join("|")
+    }
+
     fn make_zones(&mut self, work: &mut Work) -> Result<(), GeomError> {
         let mut zones: Vec<Zone> = Vec::new();
         let mut seen: BTreeMap<String, usize> = BTreeMap::new();
@@ -899,20 +948,13 @@ impl LayerMap {
                 cycles.iter().map(|&c| self.cycles[c].half.len()).sum::<usize>().saturating_add(UNITS_PER_ZONE),
             )?;
             let pieces = self.pieces_of(&cycles);
-            let mut tokens: Vec<String> = pieces
-                .iter()
-                .map(|p| {
-                    let (id, kind) = &self.strokes[p.stroke];
-                    let side = if p.left { 'L' } else { 'R' };
-                    if *kind == EdgeKind::Brush {
-                        format!("{id}:{side}:{}:{}", key_param(p.s0), key_param(p.s1))
-                    } else {
-                        format!("{id}:{side}")
-                    }
-                })
-                .collect();
-            tokens.sort();
-            let mut text = tokens.join("|");
+            let mut text = self.canonical_cycle(outer);
+            let mut holes: Vec<String> = face.holes.iter().map(|&c| self.canonical_cycle(c)).collect();
+            holes.sort();
+            for h in holes {
+                text.push('/');
+                text.push_str(&h);
+            }
             let mut id;
             let mut round = 0u32;
             loop {
@@ -1062,6 +1104,12 @@ impl LayerMap {
     #[must_use]
     pub fn zone_rings_grid(&self, z: usize) -> Vec<Vec<Ip>> {
         self.rings(self.zones[z].face)
+    }
+
+    /// The bounding box of a zone on the grid (`[min x, min y, max x, max y]` of its outer boundary).
+    #[must_use]
+    pub fn zone_box(&self, z: usize) -> [i64; 4] {
+        self.faces[self.zones[z].face].outer.map_or([0; 4], |c| self.cycles[c].bbox)
     }
 
     /// The index of a zone by ID.

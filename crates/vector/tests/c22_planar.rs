@@ -146,13 +146,33 @@ fn zone_ids_follow_the_boundary_only_and_are_reproducible() {
     let a = map(&[square("s", 0.0, 0.0, 100.0)]);
     let b = map(&[square("s", 0.0, 0.0, 100.0), square("far", 1000.0, 1000.0, 10.0)]);
     let c = map(&[square("t", 0.0, 0.0, 100.0)]);
+    // A stroke outside the square ending on its edge adds a vertex there without changing the zone's shape.
+    let d = map(&[square("s", 0.0, 0.0, 100.0), poly("spur", EdgeKind::Pencil, &[(50.0, -30.0), (50.0, 0.0)], false)]);
+    let e = map(&[square("s", 0.0, 0.0, 120.0)]);
+    let shifted = map(&[square("s", 0.0, 0.0, 100.0 + 1.0 / 64.0)]);
     assert_eq!(a, map(&[square("s", 0.0, 0.0, 100.0)]));
-    let za = &a.zones[a.zone_at(P::new(50.0, 50.0)).unwrap()].id;
-    let zb = &b.zones[b.zone_at(P::new(50.0, 50.0)).unwrap()].id;
-    let zc = &c.zones[c.zone_at(P::new(50.0, 50.0)).unwrap()].id;
-    assert_eq!(za, zb, "an unrelated stroke leaves the zone's ID alone");
-    assert_ne!(za, zc, "a different boundary stroke gives another ID");
-    assert!(za.starts_with("zn_") && za.len() == 29);
+    let id = |m: &LayerMap| m.zones[m.zone_at(P::new(50.0, 50.0)).unwrap()].id.clone();
+    assert_eq!(id(&a), id(&b), "an unrelated stroke leaves the zone's ID alone");
+    assert_eq!(id(&a), id(&d), "so does one ending on its edge from outside");
+    assert_ne!(id(&a), id(&c), "a different boundary stroke gives another ID");
+    assert_ne!(id(&a), id(&e), "a reshaped boundary gives another ID (C22-R1-03)");
+    assert_ne!(id(&a), id(&shifted), "even by one grid step");
+    assert!(id(&a).starts_with("zn_") && id(&a).len() == 29);
+}
+
+#[test]
+fn zone_ids_do_not_depend_on_where_tracing_starts_or_on_stroke_order() {
+    let pieces = [
+        poly("a", EdgeKind::Pencil, &[(0.0, 0.0), (100.0, 0.0)], false),
+        poly("b", EdgeKind::Pencil, &[(100.0, 0.0), (100.0, 100.0)], false),
+        poly("c", EdgeKind::Invisible, &[(100.0, 100.0), (0.0, 100.0)], false),
+        poly("d", EdgeKind::Pencil, &[(0.0, 100.0), (0.0, 0.0)], false),
+    ];
+    let forward = map(&pieces);
+    let mut reversed = pieces.to_vec();
+    reversed.reverse();
+    let backward = map(&reversed);
+    assert_eq!(forward.zones[0].id, backward.zones[0].id);
 }
 
 #[test]
