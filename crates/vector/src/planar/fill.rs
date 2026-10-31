@@ -312,6 +312,7 @@ mod tests {
             faces: vec![],
             zones: vec![],
             stroke_edges: vec![],
+            face_index: crate::planar::graph::BoxIndex::default(),
         }
     }
 

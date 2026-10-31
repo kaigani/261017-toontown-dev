@@ -187,6 +187,63 @@ pub struct LayerMap {
     pub zones: Vec<Zone>,
     /// The edges of each stroke as `(edge, forward)`, in stroke order.
     pub stroke_edges: Vec<Vec<(usize, bool)>>,
+    /// Bounded faces by the box of their outer cycle (point location).
+    pub face_index: BoxIndex,
+}
+
+/// A grid index of boxes (grid units): each box is listed in the cells it covers; boxes covering more than
+/// [`BoxIndex::MAX_CELLS`] cells are kept in a list every query checks. Point location and hole assignment look only
+/// at the boxes of the query's cell.
+#[derive(Debug, Clone, PartialEq, Default)]
+pub struct BoxIndex {
+    size: i64,
+    cells: BTreeMap<(i64, i64), Vec<usize>>,
+    large: Vec<usize>,
+}
+
+impl BoxIndex {
+    /// Most cells one box is listed in.
+    pub const MAX_CELLS: i64 = 256;
+
+    fn new(boxes: &[(usize, [i64; 4])], work: &mut Work) -> Result<Self, GeomError> {
+        let extent: i128 = if boxes.is_empty() {
+            64
+        } else {
+            boxes.iter().map(|(_, b)| i128::from((b[2] - b[0]).max(b[3] - b[1]))).sum::<i128>() / boxes.len() as i128
+        };
+        let size = i64::try_from(
+            u64::try_from(i64::try_from(extent).unwrap_or(64).clamp(64, 1 << 26)).unwrap_or(64).next_power_of_two(),
+        )
+        .unwrap_or(64);
+        let mut idx = BoxIndex { size, cells: BTreeMap::new(), large: Vec::new() };
+        for &(id, b) in boxes {
+            let (x0, y0, x1, y1) =
+                (b[0].div_euclid(size), b[1].div_euclid(size), b[2].div_euclid(size), b[3].div_euclid(size));
+            let n = (x1 - x0 + 1).saturating_mul(y1 - y0 + 1);
+            if n > Self::MAX_CELLS {
+                idx.large.push(id);
+                continue;
+            }
+            work.spend(u64::try_from(n).unwrap_or(u64::MAX))?;
+            for cx in x0..=x1 {
+                for cy in y0..=y1 {
+                    idx.cells.entry((cx, cy)).or_default().push(id);
+                }
+            }
+        }
+        Ok(idx)
+    }
+
+    /// The boxes that may contain a point (grid units).
+    fn query(&self, x: i64, y: i64) -> Vec<usize> {
+        let mut out: Vec<usize> = self
+            .cells
+            .get(&(x.div_euclid(self.size.max(1)), y.div_euclid(self.size.max(1))))
+            .cloned()
+            .unwrap_or_default();
+        out.extend(self.large.iter().copied());
+        out
+    }
 }
 
 /// The grid point of `p`.
@@ -500,7 +557,7 @@ pub fn build(strokes: &[StrokeIn], work: &mut Work) -> Result<LayerMap, GeomErro
             ccw.push(i);
         }
     }
-    ccw.sort_by(|&a, &b| cycles[a].area2.cmp(&cycles[b].area2).then(a.cmp(&b)));
+    let face_index = BoxIndex::new(&ccw.iter().map(|&c| (face_of_cycle[c], cycles[c].bbox)).collect::<Vec<_>>(), work)?;
     let poly_of = |c: &Cycle| -> Vec<Ip> { c.half.iter().map(|&h| verts[origin(h)]).collect() };
     for i in 0..cycles.len() {
         if cycles[i].area2 > 0 {
@@ -509,7 +566,12 @@ pub fn build(strokes: &[StrokeIn], work: &mut Work) -> Result<LayerMap, GeomErro
         let Some(&h0) = cycles[i].half.first() else { continue };
         let probe = verts[origin(h0)];
         let mut host = 0;
-        for &c in &ccw {
+        // The smallest containing face of another component: candidates from the index, smallest first.
+        let mut cands: Vec<usize> =
+            face_index.query(probe[0], probe[1]).into_iter().filter_map(|f| faces[f].outer).collect();
+        work.spend_n(cands.len())?;
+        cands.sort_by(|&a, &b| cycles[a].area2.cmp(&cycles[b].area2).then(a.cmp(&b)));
+        for &c in &cands {
             let cy = &cycles[c];
             if cy.comp == cycles[i].comp
                 || probe[0] < cy.bbox[0]
@@ -596,6 +658,7 @@ pub fn build(strokes: &[StrokeIn], work: &mut Work) -> Result<LayerMap, GeomErro
         faces,
         zones: Vec::new(),
         stroke_edges,
+        face_index,
     };
     map.make_zones(work)?;
     Ok(map)
@@ -919,7 +982,7 @@ impl LayerMap {
     pub fn face_at(&self, p: P) -> Option<usize> {
         let q = [(p.x * GRID * 4.0).round() as i64, (p.y * GRID * 4.0).round() as i64];
         let mut best: Option<(i128, usize)> = None;
-        for f in 1..self.faces.len() {
+        for f in self.face_index.query(q[0].div_euclid(4), q[1].div_euclid(4)) {
             let Some(outer) = self.faces[f].outer else { continue };
             let c = &self.cycles[outer];
             if q[0] < c.bbox[0] * 4 || q[0] > c.bbox[2] * 4 || q[1] < c.bbox[1] * 4 || q[1] > c.bbox[3] * 4 {

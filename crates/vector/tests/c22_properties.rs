@@ -27,11 +27,13 @@ fn runner(cases: u32) -> TestRunner {
 }
 
 /// One stroke: kind (0 pencil, 1 invisible, 2 brush), closed, points on a 1 du lattice (exact, reproducible).
-fn strokes() -> impl Strategy<Value = Vec<(u8, bool, Vec<(i32, i32)>)>> {
+type Spec = (u8, bool, Vec<(i32, i32)>);
+
+fn strokes() -> impl Strategy<Value = Vec<Spec>> {
     prop::collection::vec((0u8..3, any::<bool>(), prop::collection::vec((-40i32..40, -40i32..40), 2..7)), 1..7)
 }
 
-fn to_json(list: &[(u8, bool, Vec<(i32, i32)>)]) -> Vec<Value> {
+fn to_json(list: &[Spec]) -> Vec<Value> {
     let mut out = Vec::new();
     for (i, (kind, closed, pts)) in list.iter().enumerate() {
         let path = Path {
