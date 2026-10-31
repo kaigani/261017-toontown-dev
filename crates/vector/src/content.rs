@@ -494,6 +494,9 @@ pub enum ContentError<E> {
     Id(E),
 }
 
+/// A zone fill of inserted content: new layer ID, interior point (offset applied), colour, mapping matrix.
+pub type ZoneFillIn = (String, P, Option<String>, Option<[f64; 6]>);
+
 /// The converted content.
 #[derive(Debug, Clone, PartialEq)]
 pub struct Built {
@@ -504,7 +507,7 @@ pub struct Built {
     /// Colour IDs the content uses, sorted.
     pub colours: Vec<String>,
     /// Zone fills to paint after insertion: new layer ID, interior point (offset applied), colour, matrix.
-    pub zone_fills: Vec<(String, P, Option<String>, Option<[f64; 6]>)>,
+    pub zone_fills: Vec<ZoneFillIn>,
 }
 
 struct Ctx<'a, F> {
@@ -514,7 +517,7 @@ struct Ctx<'a, F> {
     fresh: F,
     id_map: BTreeMap<String, String>,
     colours: Vec<String>,
-    zone_fills: Vec<(String, P, Option<String>, Option<[f64; 6]>)>,
+    zone_fills: Vec<ZoneFillIn>,
 }
 
 fn inv<E>(at: &str, m: impl Into<String>) -> ContentError<E> {

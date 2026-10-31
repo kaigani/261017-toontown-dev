@@ -4,6 +4,7 @@
 
 pub mod fill;
 pub mod flat;
+pub mod gap;
 pub mod graph;
 pub mod layer;
 pub mod node;
