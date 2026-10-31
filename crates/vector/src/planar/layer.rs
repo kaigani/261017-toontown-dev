@@ -39,6 +39,8 @@ pub struct Settled {
     pub created: Vec<String>,
     /// IDs of strokes replaced by their pieces.
     pub removed: Vec<String>,
+    /// Each split stroke with its pieces in stroke order.
+    pub splits: Vec<(String, Vec<String>)>,
     /// The derived map of the settled layer.
     pub map: LayerMap,
     /// Zone fills of the settled layer, aligned with `map.zones`.
@@ -205,6 +207,7 @@ pub fn settle<E>(
     let mut strokes: Vec<Value> = after.to_vec();
     let mut created = Vec::new();
     let mut removed = Vec::new();
+    let mut splits: Vec<(String, Vec<String>)> = Vec::new();
     if geometry_changed {
         let input: Vec<NodeStroke> = after
             .iter()
@@ -229,6 +232,7 @@ pub fn settle<E>(
                 }
                 Some(Outcome::Split(pieces)) => {
                     removed.push(id_of(s));
+                    splits.push((id_of(s), Vec::new()));
                     for p in pieces {
                         let id = fresh().map_err(SettleError::Id)?;
                         let mut v = s.clone();
@@ -236,6 +240,9 @@ pub fn settle<E>(
                             o.insert("id".into(), json!(id));
                             o.insert("closed".into(), json!(false));
                             o.insert("points".into(), p.points_json());
+                        }
+                        if let Some(last) = splits.last_mut() {
+                            last.1.push(id.clone());
                         }
                         created.push(id);
                         out.push(v);
@@ -275,6 +282,7 @@ pub fn settle<E>(
         changed,
         created,
         removed,
+        splits,
         map,
         fills,
         zones_before,

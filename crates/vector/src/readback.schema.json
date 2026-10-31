@@ -1,5 +1,5 @@
 {
-  "description": "draw.drawing.get result (02 §13.4), closed. Zones (and the leftZoneId/rightZoneId of strokes) are the planar map's, M2 C2.2; they are absent until then.",
+  "description": "draw.drawing.get result (02 §13.4), closed. Zones (and the leftZoneId/rightZoneId of pencil and invisible strokes) are the planar map's (M2 C2.2): derived, IDs transient (02 §3.12 item 4).",
   "type": "object",
   "additionalProperties": false,
   "required": ["drawingId", "elementId", "name", "rev", "locked", "space", "pivot", "bounds", "nodes"],
@@ -52,7 +52,8 @@
         { "$ref": "#/$defs/group" },
         { "$ref": "#/$defs/text" },
         { "$ref": "#/$defs/bitmap" },
-        { "$ref": "#/$defs/stroke" }
+        { "$ref": "#/$defs/stroke" },
+        { "$ref": "#/$defs/zone" }
       ]
     },
     "layer": {
@@ -65,7 +66,8 @@
         "name": { "type": "string" },
         "layerKind": { "enum": ["brush", "pencil"] },
         "strokes": { "type": "array", "items": { "$ref": "#/$defs/stroke" } },
-        "parentId": { "$ref": "#/$defs/parentId" }
+        "parentId": { "$ref": "#/$defs/parentId" },
+        "zones": { "type": "array", "items": { "$ref": "#/$defs/zone" } }
       }
     },
     "group": {
@@ -215,6 +217,37 @@
         "textureMatrix": { "oneOf": [{ "$ref": "#/$defs/matrix" }, { "type": "null" }] },
         "outline": { "type": "array", "minItems": 1, "maxItems": 1, "items": { "$ref": "#/$defs/bezier" } },
         "bounds": { "oneOf": [{ "$ref": "#/$defs/bounds" }, { "type": "null" }] },
+        "parentId": { "$ref": "#/$defs/parentId" },
+        "leftZoneId": { "type": ["string", "null"] },
+        "rightZoneId": { "type": ["string", "null"] }
+      }
+    },
+    "zone": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["type", "id", "colourId", "textureMatrix", "boundaryStrokeIds", "holes", "parentZoneId", "area", "bounds", "interiorPoint"],
+      "properties": {
+        "type": { "const": "zone" },
+        "id": { "type": "string" },
+        "colourId": { "$ref": "#/$defs/colour" },
+        "textureMatrix": { "oneOf": [{ "$ref": "#/$defs/matrix" }, { "type": "null" }] },
+        "boundaryStrokeIds": { "type": "array", "items": { "type": "string" } },
+        "holes": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["boundaryStrokeIds", "zoneId"],
+            "properties": {
+              "boundaryStrokeIds": { "type": "array", "items": { "type": "string" } },
+              "zoneId": { "type": ["string", "null"] }
+            }
+          }
+        },
+        "parentZoneId": { "type": ["string", "null"] },
+        "area": { "type": "number", "minimum": 0 },
+        "bounds": { "$ref": "#/$defs/bounds" },
+        "interiorPoint": { "$ref": "#/$defs/point" },
         "parentId": { "$ref": "#/$defs/parentId" }
       }
     }

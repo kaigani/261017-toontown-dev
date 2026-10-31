@@ -10,7 +10,7 @@
 use std::collections::BTreeMap;
 use std::sync::{Arc, Mutex, PoisonError};
 
-use serde_json::Value;
+use serde_json::{Value, json};
 use sha2::{Digest, Sha256};
 use tt_model::entities::drawing::{Drawing, DrawingNode, NodeKind};
 use tt_registry::CommandError;
@@ -189,4 +189,164 @@ pub(crate) fn zone_delta(cache: &SharedCache, before: Option<&Drawing>, after: O
     }
     delta.removed = b.keys().filter(|k| !a.contains_key(*k)).cloned().collect();
     delta
+}
+
+/// A zone in the 02 §13.4 shape.
+pub(crate) fn zone_json(lz: &LayerZones, z: usize) -> Value {
+    let zone = &lz.map.zones[z];
+    let fill = lz.fills.get(z).cloned().flatten();
+    let ids = |list: &[Option<usize>]| -> Vec<Value> {
+        list.iter().map(|o| o.map_or(Value::Null, |k| json!(lz.map.zones[k].id))).collect()
+    };
+    let holes: Vec<Value> = zone
+        .holes
+        .iter()
+        .map(|h| json!({ "boundaryStrokeIds": h.boundary, "zoneId": ids(&[h.zone])[0] }))
+        .collect();
+    json!({
+        "type": "zone",
+        "id": zone.id,
+        "colourId": fill.as_ref().and_then(|f| f.colour_id.clone()),
+        "textureMatrix": fill.as_ref().and_then(|f| f.matrix),
+        "boundaryStrokeIds": zone.boundary,
+        "holes": holes,
+        "parentZoneId": ids(&[zone.parent])[0],
+        "area": zone.area,
+        "bounds": zone.bounds.to_json(),
+        "interiorPoint": { "x": zone.interior.x, "y": zone.interior.y },
+    })
+}
+
+/// The zones on the left and right of a stroke, by ID.
+pub(crate) fn side_zone_ids(lz: &LayerZones, stroke: &str) -> (Value, Value) {
+    let Some(k) = lz.map.strokes.iter().position(|(id, _)| id == stroke) else { return (Value::Null, Value::Null) };
+    let (l, r) = lz.map.stroke_sides(k);
+    let id = |z: Option<usize>| z.map_or(Value::Null, |z| json!(lz.map.zones[z].id));
+    (id(l), id(r))
+}
+
+/// Adds zones to the layers and side zone IDs to the pencil and invisible strokes of read-back nodes (nested or
+/// flat).
+pub(crate) fn annotate(nodes: &mut [Value], zones: &BTreeMap<String, LayerZones>) {
+    for n in nodes.iter_mut() {
+        let Some(obj) = n.as_object_mut() else { continue };
+        match obj.get("type").and_then(Value::as_str) {
+            Some("layer") => {
+                let id = obj.get("id").and_then(Value::as_str).unwrap_or_default().to_owned();
+                if let Some(lz) = zones.get(&id) {
+                    let list: Vec<Value> = (0..lz.map.zones.len()).map(|z| zone_json(lz, z)).collect();
+                    obj.insert("zones".into(), Value::Array(list));
+                    if let Some(strokes) = obj.get_mut("strokes").and_then(Value::as_array_mut) {
+                        for s in strokes {
+                            side_ids(s, lz);
+                        }
+                    }
+                }
+            }
+            Some("stroke") => {
+                let parent = obj.get("parentId").and_then(Value::as_str).unwrap_or_default().to_owned();
+                if let Some(lz) = zones.get(&parent) {
+                    side_ids(n, lz);
+                }
+            }
+            _ => {}
+        }
+        if let Some(children) = n.get_mut("children").and_then(Value::as_array_mut) {
+            annotate(children, zones);
+        }
+    }
+}
+
+fn side_ids(s: &mut Value, lz: &LayerZones) {
+    let kind = s.get("kind").and_then(Value::as_str).unwrap_or_default();
+    if kind == "brush" {
+        return;
+    }
+    let id = s.get("id").and_then(Value::as_str).unwrap_or_default().to_owned();
+    let (l, r) = side_zone_ids(lz, &id);
+    if let Some(o) = s.as_object_mut() {
+        o.insert("leftZoneId".into(), l);
+        o.insert("rightZoneId".into(), r);
+    }
+}
+
+/// What settling an edit of one drawing did, for its result (02 §13.1 item 11, §3.12 item 4): the strokes the added
+/// strokes became, strokes split by noding (all, and those that existed before the call), and zones created, removed
+/// and repainted.
+#[derive(Debug, Clone, Default)]
+pub(crate) struct Settled {
+    pub added: Vec<String>,
+    pub split_all: Vec<String>,
+    pub split_existing: Vec<String>,
+    pub zones: ZoneDelta,
+}
+
+/// Settles the transaction and reports what it did to `drawing` relative to `before` (the document before the call);
+/// `added` are the IDs of strokes the call added.
+pub(crate) fn settled(
+    cx: &mut crate::cx::Cx,
+    before: &tt_model::document::Document,
+    drawing: &tt_model::Id,
+    added: &[String],
+) -> Result<Settled, CommandError> {
+    cx.settle()?;
+    let after = cx.stamped_document()?;
+    let added_final: Vec<String> = added.iter().flat_map(|a| cx.pieces_of(drawing, a)).collect();
+    let split_all = cx.split_strokes(drawing);
+    let existed = |s: &String| before.drawing(drawing).is_some_and(|d| tt_vector::drawing::locate(d, s).is_some());
+    let split_existing: Vec<String> = split_all.iter().filter(|s| existed(s)).cloned().collect();
+    let zones = zone_delta(&cx.planar_cache(), before.drawing(drawing), after.drawing(drawing));
+    Ok(Settled { added: added_final, split_all, split_existing, zones })
+}
+
+impl Settled {
+    /// Adds the outcome to a result's changed IDs.
+    pub(crate) fn report(&self, changed: &mut crate::commands::draw::Changed) {
+        changed.created_ids.retain(|c| !self.split_all.contains(c));
+        for a in &self.added {
+            if !changed.created_ids.contains(a) {
+                changed.created_ids.push(a.clone());
+            }
+        }
+        changed.created_ids.extend(self.zones.created.iter().cloned());
+        changed.modified_ids.retain(|m| !self.split_all.contains(m));
+        changed.modified_ids.extend(self.zones.modified.iter().cloned());
+        for s in &self.split_existing {
+            if !changed.removed_ids.contains(s) {
+                changed.removed_ids.push(s.clone());
+            }
+        }
+        changed.removed_ids.extend(self.zones.removed.iter().cloned());
+    }
+}
+
+/// Paints the zones containing given points of given layers of a drawing as it stands staged (settling first), and
+/// settles again so the fills are stored; returns the painted zone IDs.
+pub(crate) fn paint_at(
+    cx: &mut crate::cx::Cx,
+    drawing: &tt_model::Id,
+    targets: &[(String, tt_vector::geom::P, Fill)],
+) -> Result<Vec<String>, CommandError> {
+    if targets.is_empty() {
+        return Ok(Vec::new());
+    }
+    cx.settle()?;
+    let doc = cx.stamped_document()?;
+    let Some(d) = doc.drawing(drawing) else { return Ok(Vec::new()) };
+    let layers = drawing_zones(&cx.planar_cache(), d)?;
+    let mut painted = Vec::new();
+    let mut by_layer: BTreeMap<String, BTreeMap<String, Option<Fill>>> = BTreeMap::new();
+    for (layer, p, fill) in targets {
+        let Some(lz) = layers.iter().find(|l| &l.layer.id == layer) else { continue };
+        if let Some(z) = lz.map.zone_at(*p) {
+            let id = lz.map.zones[z].id.clone();
+            by_layer.entry(layer.clone()).or_default().insert(id.clone(), Some(fill.clone()));
+            painted.push(id);
+        }
+    }
+    for (layer, fills) in by_layer {
+        cx.paint_zones(drawing, &layer, fills);
+    }
+    cx.settle()?;
+    Ok(painted)
 }

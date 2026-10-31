@@ -128,9 +128,52 @@ pub struct LayerIn {
     /// Strokes.
     #[schemars(length(max = 100_000))]
     pub strokes: Vec<StrokeIn>,
+    /// Zones as read back (02 §13.4): their fills are painted onto the zones of the inserted layer that contain their
+    /// interior points; everything else about them is derived and ignored.
+    #[serde(default)]
+    #[schemars(length(max = 1_000_000))]
+    pub zones: Option<Vec<ZoneIn>>,
     /// Read-only (ignored).
     #[serde(default)]
     pub bounds: Option<BoundsIn>,
+}
+
+/// A zone of read-back content (only `colourId`, `textureMatrix` and `interiorPoint` are used).
+#[derive(Debug, Clone, Deserialize, JsonSchema)]
+#[serde(deny_unknown_fields, rename_all = "camelCase")]
+pub struct ZoneIn {
+    /// `zone` (optional).
+    #[serde(default, rename = "type")]
+    pub ty: Option<String>,
+    /// Derived ID (ignored).
+    #[serde(default)]
+    pub id: Option<String>,
+    /// Fill colour (`null` = unpainted).
+    #[serde(default)]
+    pub colour_id: Option<String>,
+    /// Gradient/texture placement.
+    #[serde(default)]
+    pub texture_matrix: Option<[f64; 6]>,
+    /// A point inside the zone.
+    pub interior_point: PointIn,
+    /// Derived (ignored).
+    #[serde(default)]
+    pub boundary_stroke_ids: Option<Vec<String>>,
+    /// Derived (ignored).
+    #[serde(default)]
+    pub holes: Option<Vec<Value>>,
+    /// Derived (ignored).
+    #[serde(default)]
+    pub parent_zone_id: Option<String>,
+    /// Derived (ignored).
+    #[serde(default)]
+    pub area: Option<f64>,
+    /// Derived (ignored).
+    #[serde(default)]
+    pub bounds: Option<BoundsIn>,
+    /// Flat read-back parent (ignored).
+    #[serde(default)]
+    pub parent_id: Option<String>,
 }
 
 /// A group.
@@ -270,6 +313,12 @@ pub struct StrokeIn {
     /// Brush outline contours (closed Bézier lists; one contour, SI-053).
     #[serde(default)]
     pub outline: Option<Vec<Vec<PointIn>>>,
+    /// Derived side zone (ignored).
+    #[serde(default)]
+    pub left_zone_id: Option<String>,
+    /// Derived side zone (ignored).
+    #[serde(default)]
+    pub right_zone_id: Option<String>,
     /// Read-only (ignored).
     #[serde(default)]
     pub bounds: Option<BoundsIn>,
@@ -454,6 +503,8 @@ pub struct Built {
     pub id_map: BTreeMap<String, String>,
     /// Colour IDs the content uses, sorted.
     pub colours: Vec<String>,
+    /// Zone fills to paint after insertion: new layer ID, interior point (offset applied), colour, matrix.
+    pub zone_fills: Vec<(String, P, Option<String>, Option<[f64; 6]>)>,
 }
 
 struct Ctx<'a, F> {
@@ -463,6 +514,7 @@ struct Ctx<'a, F> {
     fresh: F,
     id_map: BTreeMap<String, String>,
     colours: Vec<String>,
+    zone_fills: Vec<(String, P, Option<String>, Option<[f64; 6]>)>,
 }
 
 fn inv<E>(at: &str, m: impl Into<String>) -> ContentError<E> {
@@ -533,6 +585,20 @@ impl<E, F: FnMut(ObjectType) -> Result<String, E>> Ctx<'_, F> {
                     "strokes": strokes,
                 });
                 name(&mut v, l.name.as_ref());
+                for (k, z) in l.zones.iter().flatten().enumerate() {
+                    let at_z = format!("{at}/zones/{k}");
+                    let p = pts(std::slice::from_ref(&z.interior_point), &format!("{at_z}/interiorPoint"))?;
+                    if let Some(c) = &z.colour_id {
+                        if !self.colours.contains(c) {
+                            self.colours.push(c.clone());
+                        }
+                        let q = self.offset.apply(p[0]);
+                        // The fill mapping moves with the content (03 §7.2).
+                        let (dx, dy) = (self.offset.0[4], self.offset.0[5]);
+                        let m = z.texture_matrix.map(|m| [m[0], m[1], m[2], m[3], m[4] + dx, m[5] + dy]);
+                        self.zone_fills.push((id.clone(), q, Some(c.clone()), m));
+                    }
+                }
                 Ok(v)
             }
             NodeIn::Group(g) => {
@@ -761,6 +827,7 @@ where
         fresh,
         id_map: BTreeMap::new(),
         colours: Vec::new(),
+        zone_fills: Vec::new(),
     };
     let mut nodes = Vec::with_capacity(c.nodes.len());
     for (i, n) in c.nodes.iter().enumerate() {
@@ -768,5 +835,5 @@ where
     }
     let mut colours = ctx.colours;
     colours.sort();
-    Ok(Built { nodes, id_map: ctx.id_map, colours })
+    Ok(Built { nodes, id_map: ctx.id_map, colours, zone_fills: ctx.zone_fills })
 }

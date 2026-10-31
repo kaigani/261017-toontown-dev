@@ -124,6 +124,7 @@ pub(crate) struct Savepoint {
     checkpoints: Option<Vec<Checkpoint>>,
     painted: BTreeMap<(Id, String), BTreeMap<String, Option<Fill>>>,
     settled_doc: Option<Document>,
+    lineage: BTreeMap<String, Vec<String>>,
 }
 
 /// The invocation context; see the module documentation.
@@ -152,6 +153,8 @@ pub struct Cx {
     painted: BTreeMap<(Id, String), BTreeMap<String, Option<Fill>>>,
     /// The document as last settled in this transaction (the pre-state of the next settle pass).
     settled_doc: Option<Document>,
+    /// Strokes split by noding in this transaction, with their pieces (`<drawingId>/<strokeId>` keys).
+    lineage: BTreeMap<String, Vec<String>>,
 }
 
 /// Millisecond base of the ULID time part of transaction IDs (2025-10-15T00:00:00Z); the time part is a logical
@@ -206,6 +209,7 @@ impl Cx {
             fingerprint: String::new(),
             painted: BTreeMap::new(),
             settled_doc: None,
+            lineage: BTreeMap::new(),
         }
     }
 
@@ -336,6 +340,7 @@ impl Cx {
             checkpoints: self.session.project.as_ref().map(|p| p.checkpoints.clone()),
             painted: self.painted.clone(),
             settled_doc: self.settled_doc.clone(),
+            lineage: self.lineage.clone(),
         }
     }
 
@@ -343,6 +348,7 @@ impl Cx {
         self.staged = sp.staged;
         self.painted = sp.painted;
         self.settled_doc = sp.settled_doc;
+        self.lineage = sp.lineage;
         self.txns.truncate(sp.txns);
         self.effects.truncate(sp.effects);
         self.ids_drawn = sp.ids_drawn;
@@ -651,6 +657,20 @@ impl Cx {
         }
     }
 
+    /// The strokes a stroke of this transaction became through noding (itself when it was not split), in order.
+    pub(crate) fn pieces_of(&self, drawing: &Id, stroke: &str) -> Vec<String> {
+        match self.lineage.get(&format!("{drawing}/{stroke}")) {
+            None => vec![stroke.to_owned()],
+            Some(pieces) => pieces.iter().flat_map(|p| self.pieces_of(drawing, p)).collect(),
+        }
+    }
+
+    /// Strokes of a drawing split by noding in this transaction.
+    pub(crate) fn split_strokes(&self, drawing: &Id) -> Vec<String> {
+        let prefix = format!("{drawing}/");
+        self.lineage.keys().filter_map(|k| k.strip_prefix(&prefix).map(str::to_owned)).collect()
+    }
+
     /// The session's derived-map cache.
     pub(crate) fn planar_cache(&self) -> crate::planar::SharedCache {
         self.session.planar.clone()
@@ -733,6 +753,9 @@ impl Cx {
                         ),
                         vec![format!("{id}/{}", l.id)],
                     );
+                }
+                for (old, pieces) in &settled.splits {
+                    self.lineage.insert(format!("{id}/{old}"), pieces.clone());
                 }
                 let key = crate::planar::geometry_key(&settled.strokes);
                 crate::planar::lock(&cache).insert(key, std::sync::Arc::new(settled.map));

@@ -22,9 +22,6 @@ use tt_vector::drawing::{self as vd, Include, Located, ObjectKind};
 use crate::app::AppContext;
 use crate::cx::Cx;
 
-/// The owner of zones and topology (warnings name it).
-pub(crate) const ZONES_OWNER: &str = "M2 C2.2";
-
 /// A point `{x, y}` in drawing units.
 #[derive(Debug, Clone, Copy, Deserialize, Serialize, JsonSchema)]
 #[serde(deny_unknown_fields)]
@@ -284,15 +281,6 @@ pub(crate) fn committed_rev(cx: &mut Cx) -> Result<u64, CommandError> {
     cx.predicted_rev()
 }
 
-/// The `doc.derivedUnavailable` warning for zones (planar map, M2 C2.2).
-pub(crate) fn warn_zones(cx: &mut Cx, drawing: &Id) {
-    cx.warn(
-        "doc.derivedUnavailable",
-        format!("zones and side assignments are computed by the planar map ({ZONES_OWNER}); zoneIds is empty"),
-        vec![drawing.as_str().to_owned()],
-    );
-}
-
 // ----- draw.drawing.get --------------------------------------------------------------------------------------------
 
 /// What `draw.drawing.get` includes.
@@ -385,19 +373,45 @@ pub(crate) fn draw_drawing_get(cx: &mut Cx, p: DrawingGetParams) -> Result<Drawi
         outline: parts.contains(&IncludePart::Outline),
         bounds: parts.contains(&IncludePart::Bounds),
     };
-    if parts.contains(&IncludePart::Zones) {
-        warn_zones(cx, d.id());
-    }
-    let element = t.element.or_else(|| doc.bank_of(d.id()).and_then(|b| doc.bank_users(b).first().cloned()));
-    let nodes = match (&p.ids, p.flatten) {
-        (Some(ids), _) => {
-            let found = locate_all(&d, ids, "/ids")?;
-            let wanted: Vec<String> = found.into_iter().map(|l| l.id).collect();
-            Value::Array(vd::select_ids(vd::flat_json(&d, inc), &wanted))
-        }
-        (None, true) => Value::Array(vd::flat_json(&d, inc)),
-        (None, false) => Value::Array(d.nodes().iter().map(|n| vd::node_json(n, inc)).collect()),
+    let with_zones = parts.contains(&IncludePart::Zones);
+    // Zones of every layer (02 §13.4; the planar map, M2 C2.2): derived from the cached maps.
+    let zones: BTreeMap<String, crate::planar::LayerZones> = if with_zones || p.ids.is_some() {
+        crate::planar::drawing_zones(&cx.planar_cache(), &d)?.into_iter().map(|l| (l.layer.id.clone(), l)).collect()
+    } else {
+        BTreeMap::new()
     };
+    let element = t.element.or_else(|| doc.bank_of(d.id()).and_then(|b| doc.bank_users(b).first().cloned()));
+    let mut list = match (&p.ids, p.flatten) {
+        (Some(ids), _) => {
+            // Zone IDs select zones (with their layer as `parentId`); the other IDs select drawing objects.
+            let mut zone_objects = Vec::new();
+            let mut objects = Vec::new();
+            for id in ids {
+                let local = vd::local_id(d.id().as_str(), id).unwrap_or(id);
+                let hit = zones.values().find_map(|lz| lz.map.zone_by_id(local).map(|z| (lz, z)));
+                match hit {
+                    Some((lz, z)) => {
+                        let mut v = crate::planar::zone_json(lz, z);
+                        v["parentId"] = json!(lz.layer.id);
+                        zone_objects.push(v);
+                    }
+                    None => objects.push(id.clone()),
+                }
+            }
+            let found = locate_all(&d, &objects, "/ids")?;
+            let wanted: Vec<String> = found.into_iter().map(|l| l.id).collect();
+            let mut list = vd::select_ids(vd::flat_json(&d, inc), &wanted);
+            list.extend(zone_objects);
+            list
+        }
+        (None, true) => vd::flat_json(&d, inc),
+        (None, false) => d.nodes().iter().map(|n| vd::node_json(n, inc)).collect(),
+    };
+    if with_zones {
+        let only_objects: BTreeMap<String, crate::planar::LayerZones> = zones;
+        crate::planar::annotate(&mut list, &only_objects);
+    }
+    let nodes = Value::Array(list);
     let bounds =
         if inc.bounds { vd::drawing_bounds(&d, false).map_or(Value::Null, |r| r.to_json()) } else { Value::Null };
     let out = json!({
@@ -674,8 +688,8 @@ pub(crate) fn draw_object_delete(cx: &mut Cx, p: DeleteParams) -> Result<DeleteR
     }
     changes.push((EntryKey::Drawing(t.id.clone()), ops));
     cx.patch_entries(changes)?;
-    warn_zones(cx, &t.id);
-    let changed = Changed { created_ids: Vec::new(), modified_ids: parents, removed_ids: removed };
+    let mut changed = Changed { created_ids: Vec::new(), modified_ids: parents, removed_ids: removed };
+    crate::planar::settled(cx, &doc, &t.id, &[])?.report(&mut changed);
     Ok(DeleteResult { drawing_id: t.id.as_str().to_owned(), changed, rev: committed_rev(cx)? })
 }
 
@@ -833,13 +847,13 @@ pub(crate) fn draw_group_create(cx: &mut Cx, p: GroupCreateParams) -> Result<Gro
     changes.push((EntryKey::Drawing(t.id.clone()), ops));
     cx.patch_entries(changes)?;
     if !created.is_empty() {
-        warn_zones(cx, &t.id);
-    }
+        }
     let mut created_all = vec![group_id.as_str().to_owned()];
     created_all.extend(created);
     let mut modified: Vec<String> = items.iter().map(|i| i.id.clone()).collect();
     modified.extend(found.iter().filter(|o| o.kind == ObjectKind::Stroke).map(|o| o.id.clone()));
-    let changed = Changed { created_ids: created_all, modified_ids: modified, removed_ids: Vec::new() };
+    let mut changed = Changed { created_ids: created_all, modified_ids: modified, removed_ids: Vec::new() };
+    crate::planar::settled(cx, &doc, &t.id, &[])?.report(&mut changed);
     Ok(GroupCreateResult {
         drawing_id: t.id.as_str().to_owned(),
         group_id: group_id.as_str().to_owned(),
@@ -945,11 +959,12 @@ pub(crate) fn draw_group_delete(cx: &mut Cx, p: GroupDeleteParams) -> Result<Gro
     }
     changes.push((EntryKey::Drawing(t.id.clone()), ops));
     cx.patch_entries(changes)?;
-    let changed = Changed {
+    let mut changed = Changed {
         created_ids: Vec::new(),
         modified_ids: members.clone(),
         removed_ids: found.iter().map(|g| g.id.clone()).collect(),
     };
+    crate::planar::settled(cx, &doc, &t.id, &[])?.report(&mut changed);
     Ok(GroupDeleteResult {
         drawing_id: t.id.as_str().to_owned(),
         member_ids: members,

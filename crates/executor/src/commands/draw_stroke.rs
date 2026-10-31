@@ -18,7 +18,7 @@ use tt_vector::path::Path;
 use tt_vector::stroke::{Geometry, Spec};
 use tt_vector::symmetry::Symmetry;
 
-use super::draw::{Point, check_editable, committed_rev, err, invalid_geometry, locate_all, op, target, warn_zones};
+use super::draw::{Point, check_editable, committed_rev, err, invalid_geometry, locate_all, op, target};
 use crate::cx::Cx;
 
 /// Stroke kind parameter.
@@ -187,12 +187,13 @@ pub(crate) struct StrokeAddResult {
     created_drawing: bool,
     /// The new strokes (symmetry copies included), back to front.
     stroke_ids: Vec<String>,
-    /// Zones created or changed (planar map, M2 C2.2: empty until then).
+    /// Zones the stroke created (02 §3.12 item 4: derived from their boundaries).
     zone_ids: Vec<String>,
     /// The layer holding the strokes.
     layer_id: String,
-    /// Changed objects: `createdIds` the new strokes (and a new layer or drawing), `modifiedIds` an existing layer
-    /// that received them, `removedIds` strokes removed by re-noding (M2 C2.2: empty until then).
+    /// Changed objects: `createdIds` the new strokes (their pieces when noding split them), a new layer or drawing and
+    /// the zones created; `modifiedIds` an existing layer that received them and repainted zones; `removedIds`
+    /// existing strokes split by re-noding and zones that ceased to exist (02 §3.12).
     #[serde(flatten)]
     changed: super::draw::Changed,
     /// The drawing revision after the change.
@@ -475,7 +476,6 @@ pub(crate) fn draw_stroke_add(cx: &mut Cx, p: StrokeAddParams) -> Result<StrokeA
     }
     cx.patch_entries(changes)?;
     cx.set_label(label_of(kind));
-    warn_zones(cx, &t.id);
     let hints = if kind == StrokeKind::Invisible { vec!["drawing.strokesHidden".to_owned()] } else { Vec::new() };
     let mut created_ids = ids.clone();
     if new_layer {
@@ -485,13 +485,17 @@ pub(crate) fn draw_stroke_add(cx: &mut Cx, p: StrokeAddParams) -> Result<StrokeA
         created_ids.push(t.id.as_str().to_owned());
     }
     let modified_ids = if new_layer { Vec::new() } else { vec![layer_id.clone()] };
+    // 02 §3.12: the layer is re-noded and its zones recomputed; the result names what that created and removed.
+    let settled = crate::planar::settled(cx, &doc, &t.id, &ids)?;
+    let mut changed = super::draw::Changed { created_ids, modified_ids, removed_ids: Vec::new() };
+    settled.report(&mut changed);
     Ok(StrokeAddResult {
         drawing_id: t.id.as_str().to_owned(),
         created_drawing: t.created,
-        stroke_ids: ids,
-        zone_ids: Vec::new(),
+        stroke_ids: settled.added.clone(),
+        zone_ids: settled.zones.created.clone(),
         layer_id,
-        changed: super::draw::Changed { created_ids, modified_ids, removed_ids: Vec::new() },
+        changed,
         rev: committed_rev(cx)?,
         hints,
     })
@@ -690,11 +694,17 @@ pub(crate) fn draw_stroke_set(cx: &mut Cx, p: StrokeSetParams) -> Result<StrokeS
         m.insert("colourId".into(), json!(c));
     }
     cx.patch_entries(vec![(EntryKey::Drawing(d.id().clone()), vec![op("replace", &l.pointer, Some(next))])])?;
-    warn_zones(cx, d.id());
-    let changed = super::draw::Changed { modified_ids: vec![l.id.clone()], ..super::draw::Changed::default() };
+    let mut changed = super::draw::Changed { modified_ids: vec![l.id.clone()], ..super::draw::Changed::default() };
+    // An edited stroke that now crosses others is split by re-noding (02 §3.12): its pieces are reported.
+    let settled = crate::planar::settled(cx, &doc, &did, std::slice::from_ref(&l.id))?;
+    settled.report(&mut changed);
+    if settled.split_all.contains(&l.id) {
+        changed.removed_ids.push(l.id.clone());
+        changed.created_ids.retain(|c| *c != l.id);
+    }
     Ok(StrokeSetResult {
         drawing_id: did.as_str().to_owned(),
-        stroke_ids: vec![l.id],
+        stroke_ids: settled.added.clone(),
         changed,
         rev: committed_rev(cx)?,
     })
@@ -834,17 +844,27 @@ pub(crate) fn draw_content_add(cx: &mut Cx, p: ContentAddParams) -> Result<Conte
         let keys: Vec<String> = top.iter().map(|i| format!("{}/{i}", t.id.as_str())).collect();
         cx.app_mut().set_selection("drawing", keys);
     }
-    warn_zones(cx, &t.id);
     let mut created_ids: Vec<String> = built.id_map.values().cloned().collect();
     created_ids.sort();
+    let added = created_ids.clone();
     if t.created {
         created_ids.push(t.id.as_str().to_owned());
     }
+    // Zone fills travel with the content: each painted zone's fill goes to the inserted layer's zone at its interior
+    // point (03 §11.1).
+    let fills: Vec<(String, tt_vector::geom::P, tt_vector::planar::fill::Fill)> = built
+        .zone_fills
+        .iter()
+        .map(|(l, p, c, m)| (l.clone(), *p, tt_vector::planar::fill::Fill { colour_id: c.clone(), matrix: *m }))
+        .collect();
+    crate::planar::paint_at(cx, &t.id, &fills)?;
+    let mut changed = super::draw::Changed { created_ids, ..super::draw::Changed::default() };
+    crate::planar::settled(cx, &doc, &t.id, &added)?.report(&mut changed);
     Ok(ContentAddResult {
         drawing_id: t.id.as_str().to_owned(),
         created_drawing: t.created,
         id_map: built.id_map,
-        changed: super::draw::Changed { created_ids, ..super::draw::Changed::default() },
+        changed,
         rev: committed_rev(cx)?,
     })
 }

@@ -436,10 +436,10 @@ fn read_back_options_flatten_ids_and_include() {
     let lean = okv(&h, "draw.drawing.get", json!({ "drawingId": D1, "include": ["bounds"] }));
     let s = &lean["nodes"][0]["strokes"][0];
     assert!(s.get("outline").is_none() && s.get("pressure").is_none());
-    // Zones are reported as unavailable until the planar map (M2 C2.2), never as an empty success.
+    // Zones are computed by the planar map (M2 C2.2): every layer lists them, without an unavailability warning.
     let env = run(&h, "draw.drawing.get", json!({ "drawingId": D1 }));
-    assert!(env.warnings.iter().any(|w| w.code == "doc.derivedUnavailable"));
-    assert!(env.result.unwrap()["nodes"][0].get("zones").is_none());
+    assert!(!env.warnings.iter().any(|w| w.code == "doc.derivedUnavailable"));
+    assert!(env.result.unwrap()["nodes"][0]["zones"].is_array());
     let cur = okv(&h, "draw.current.get", json!({}));
     assert_eq!(cur["cellEmpty"], true, "the camera is current in the fixture");
     ok(&h, "app.context.set", json!({ "elementId": BOB, "frame": 2 }));
