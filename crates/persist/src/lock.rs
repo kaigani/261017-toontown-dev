@@ -674,6 +674,13 @@ mod tests {
         let token = handle.info().lock_id;
         // The holder's process "ends": its handle closes, the file stays (a crash leaves it behind).
         handle.release_handle();
+        // A `flock` belongs to the open file description, which a process spawned at that instant by another thread
+        // (the parallel tests' liveness probes) shares until its close-on-exec runs: the lock is free once that
+        // reference is gone, so wait for it (bounded; macOS CI run 41191607130).
+        let freed = std::time::Instant::now();
+        while probe(handle.path()) != Some(false) && freed.elapsed() < std::time::Duration::from_secs(2) {
+            std::thread::sleep(std::time::Duration::from_millis(5));
+        }
         assert_eq!(probe(handle.path()), Some(false));
         let Locked::Acquired { handle: h2, took_over: Some(old) } = acquire(&project) else {
             panic!("a protected lock of this host that nobody protects is stale at once")
