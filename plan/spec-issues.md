@@ -586,6 +586,11 @@ Reserved by the M0 closure for "measured deterministic-format incompatibility" (
   bridge edges cancel, so the shape renders as the union. `draw.drawing.get` reports `outline` with that one contour;
   `draw.content.add` accepts one contour. The planar map (C2.2) treats a bridge as two coincident edges.
 - **Question:** amendment candidate for the spec owner: allow several contours per brush stroke in 10 §4.9.
+- **Round 1 adjudication (`reviews/M2-C2.1-r1.md`):** accepted as an interim representation, but C2.2 may not rely on
+  it before a larger corpus of holes, disconnected pieces and bridges is retained. C2.1 round 1 adds the property
+  `outlines_contain_every_swept_tip_including_holes_and_separate_pieces` (loops and zero-pressure gaps, winding
+  containment of every swept tip); the larger bridge corpus that the planar map consumes is ticketed to M2 C2.2 in
+  `plan/traceability.csv` (SI-053 row).
 
 ## SI-054 — the persisted brush spine: tip angle, tip proportions and closed spines (found in M2 C2.1; decided)
 
@@ -631,6 +636,10 @@ Reserved by the M0 closure for "measured deterministic-format incompatibility" (
   the new stroke crosses (zones arrive with C2.2). Point-taking parameters are in drawing space; `space: scene|view`
   needs the M3 transforms and M4 views.
 - **Question:** confirm the parameter superset, or list the addressing parameters in each row.
+- **Round 1 adjudication (`reviews/M2-C2.1-r1.md`):** common addressing is a reading of the explicit 02 §13.1 item 4,
+  not an ambiguity that permits omission. Round 1 applies it to the three object setters that lacked it
+  (`draw.stroke.set`, `draw.text.set`, `draw.textFormat.set`; C21-R1-03); the revision check runs on the resolved
+  drawing. The scene/view deferral (M3 C3.2 / M4 C4.2) and the settings deferral (M4 C4.2 / M7 C7.1) stand.
 
 ## SI-057 — zones in the C2.1 read-back (found in M2 C2.1; decided)
 
@@ -642,3 +651,20 @@ Reserved by the M0 closure for "measured deterministic-format incompatibility" (
   `doc.derivedUnavailable` naming M2 C2.2. Zone fills persisted on stroke sides are preserved untouched. Nothing
   reports an empty zone list as computed.
 - **Question:** none; C2.2 replaces the warning with computed zones.
+
+## SI-058 — edit results and the drawing event: §13.1 item 11 against the shorter §13.5 rows (found in M2 C2.1 round 1; decided)
+
+- **Sections:** 02 §13.1 item 11 ("every edit result includes `{drawingId, rev}`" and the changed IDs), §13.5 result
+  columns (e.g. `draw.stroke.set → {strokeIds, removedIds, rev}`), §13.6 and spec A `draw.drawing.changed`
+  (`{drawingId, rev, commandId, createdIds, modifiedIds, removedIds}`); 02 §3.2 and §14 decision 2 (outline edit
+  discards the spine).
+- **Problem:** the §13.5 rows list shorter results than the common rule; the event row names fields but not which
+  commits produce it; §3.2 does not say what one edit of both the outline and the spine means.
+- **Decision taken (ADR-0016 §2, §5; C21-R1-04, -07, -08):** every edit result is the row's members plus `drawingId`,
+  `rev`, `createdIds`, `modifiedIds` and `removedIds` (local IDs; the rows' own `strokeIds`/`removedIds` keep their
+  meaning). `draw.drawing.changed` is emitted by the common commit path for every commit that changes drawing content
+  (commands, generic patches, batches, undo, redo, checkpoint restore) with `commandId` the committing command
+  (`batch` for a batch). An edit that changes both a stroke's outline and its spine is refused (`arg.invalid`,
+  `details.pointers: ["/points", "/spine"]`) by orchestrator ruling; an outline edit alone discards the spine.
+- **Question:** state in §13.5 that the rows extend §13.1 item 11's common members, and add the both-authorities
+  rejection to §3.2.

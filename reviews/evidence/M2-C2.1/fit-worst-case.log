@@ -1,0 +1,16 @@
+
+running 1 test
+dense-straight-closed: [Object {"wallMs": Number(0.2163), "visits": Number(0), "anchors": Number(1)}, Object {"wallMs": Number(0.2037), "visits": Number(0), "anchors": Number(1)}, Object {"wallMs": Number(0.1999), "visits": Number(0), "anchors": Number(1)}]
+dense-circle-closed: [Object {"wallMs": Number(0.231), "visits": Number(0), "anchors": Number(1)}, Object {"wallMs": Number(0.2152), "visits": Number(0), "anchors": Number(1)}, Object {"wallMs": Number(0.21359999999999998), "visits": Number(0), "anchors": Number(1)}]
+straight-open: [Object {"wallMs": Number(11.5345), "visits": Number(17600000), "anchors": Number(2)}, Object {"wallMs": Number(11.7225), "visits": Number(17600000), "anchors": Number(2)}, Object {"wallMs": Number(11.7768), "visits": Number(17600000), "anchors": Number(2)}]
+zigzag-above-tolerance: [Object {"wallMs": Number(504.76719999999995), "visits": Number(201441152), "anchors": Number(100000)}, Object {"wallMs": Number(498.5487), "visits": Number(201441152), "anchors": Number(100000)}, Object {"wallMs": Number(502.9819), "visits": Number(201441152), "anchors": Number(100000)}]
+wiggle-near-tolerance: [Object {"wallMs": Number(62.9976), "visits": Number(64014992), "anchors": Number(551)}, Object {"wallMs": Number(62.88399999999999), "visits": Number(64014992), "anchors": Number(551)}, Object {"wallMs": Number(63.68169999999999), "visits": Number(64014992), "anchors": Number(551)}]
+spiral-closed: [Object {"wallMs": Number(128.2228), "visits": Number(195314384), "anchors": Number(88870)}, Object {"wallMs": Number(127.87570000000001), "visits": Number(195314384), "anchors": Number(88870)}, Object {"wallMs": Number(129.63569999999999), "visits": Number(195314384), "anchors": Number(88870)}]
+random-walk-open: [Object {"wallMs": Number(49.8244), "visits": Number(48117424), "anchors": Number(4809)}, Object {"wallMs": Number(50.738400000000006), "visits": Number(48117424), "anchors": Number(4809)}, Object {"wallMs": Number(50.3555), "visits": Number(48117424), "anchors": Number(4809)}]
+random-walk-closed: [Object {"wallMs": Number(49.422599999999996), "visits": Number(48117376), "anchors": Number(4810)}, Object {"wallMs": Number(48.9004), "visits": Number(48117376), "anchors": Number(4810)}, Object {"wallMs": Number(50.567), "visits": Number(48117376), "anchors": Number(4810)}]
+uniform-noise-open: [Object {"wallMs": Number(104.14489999999999), "visits": Number(36405296), "anchors": Number(100000)}, Object {"wallMs": Number(104.3419), "visits": Number(36405296), "anchors": Number(100000)}, Object {"wallMs": Number(105.6002), "visits": Number(36405296), "anchors": Number(100000)}]
+uniform-noise-closed: [Object {"wallMs": Number(103.437), "visits": Number(36405776), "anchors": Number(100000)}, Object {"wallMs": Number(105.3817), "visits": Number(36405776), "anchors": Number(100000)}, Object {"wallMs": Number(101.8119), "visits": Number(36405776), "anchors": Number(100000)}]
+worst ("zigzag-above-tolerance", 201441152, 504.76719999999995); observations in C:\Users\kaiga\.t3\worktrees\261017-toontown-dev\m2-vector-engine\crates\vector\../../target/evidence/c21-fit\fit-worst-case-windows.json
+.
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 1 filtered out; finished in 3.21s
+
