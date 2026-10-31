@@ -1,7 +1,7 @@
 """Recompute final-round receipts, CI observations, ownership and source-row register."""
 from pathlib import Path
 from collections import Counter
-import difflib, hashlib, json, re, subprocess
+import difflib, gzip, hashlib, json, re, subprocess
 ROOT=Path(__file__).resolve().parents[3]
 HERE=Path(__file__).resolve().parent
 TMP=ROOT/'.review-r3-scratch'
@@ -32,24 +32,36 @@ for label,run in [('first',41181900335),('second',41184912211)]:
     assert receipt['conclusion']=='success' and all(j['conclusion']=='success' for j in receipt['jobs'])
     ci.append({'run':run,**receipt})
     log=TMP/f'ci-{label}.log'
-    excerpts=[l for l in read(log).splitlines() if any(s in l for s in ['c21_determinism','golden digest','SDK conformance','c21_history','c21_r2_geometry'])]
+    compressed=HERE/f'ci-{run}.log.gz'
+    if log.exists():
+        compressed.write_bytes(gzip.compress(log.read_bytes(),mtime=0))
+    raw=gzip.decompress(compressed.read_bytes())
+    lines=raw.decode('utf-16' if raw.startswith((b'\xff\xfe',b'\xfe\xff')) else 'utf-8-sig').splitlines()
+    selected=set()
+    for i,line in enumerate(lines):
+        if any(s in line for s in ['c21_determinism','golden digest','SDK conformance','c21_history','c21_r2_geometry']):
+            selected.update(range(max(0,i-1),min(len(lines),i+9)))
+    excerpts=[lines[i] for i in sorted(selected)]
     (HERE/f'ci-{run}-excerpts.txt').write_text('\n'.join(excerpts)+'\n',encoding='utf8')
-    for path in sorted((TMP/f'ci-{label}-artifacts').rglob('*worst-case-*.json')):
+    downloaded=sorted((TMP/f'ci-{label}-artifacts').rglob('*worst-case-*.json'))
+    for path in downloaded or sorted(HERE.glob(f'ci-{run}-*worst-case-*.json')):
         d=json.loads(path.read_text(encoding='utf8'))
+        filename=path.name.removeprefix(f'ci-{run}-')
         allruns=[(c['name'],r) for c in d['cases'] for r in c['runs']]
         name,worst=max(allruns,key=lambda item:item[1]['wallMs'])
         assert abs(worst['wallMs']-d['worst']['wallMs'])<1e-6
-        fact={'run':run,'file':path.name,'runs':len(allruns),'worstCase':name,'worstMs':worst['wallMs'],
+        fact={'run':run,'file':filename,'runs':len(allruns),'worstCase':name,'worstMs':worst['wallMs'],
               'sha256':hashlib.sha256(path.read_bytes()).hexdigest()}
-        if path.name.startswith('brush'):
+        if filename.startswith('brush'):
             accepted=[(n,r) for n,r in allruns if r['outcome']=='ok']
             refused=[(n,r) for n,r in allruns if r['outcome']!='ok']
             fact['acceptedWorstMs']=max(r['wallMs'] for n,r in accepted)
             fact['refusedWorstMs']=max(r['wallMs'] for n,r in refused)
             assert all(r['units']<=d['budgetUnits'] for n,r in accepted)
         observations.append(fact)
-        (HERE/f'ci-{run}-{path.name}').write_bytes(path.read_bytes())
-        retained=ROOT/'reviews/evidence/M2-C2.1'/f'ci-{run}-{path.name}'
+        destination=HERE/f'ci-{run}-{filename}'
+        if destination != path: destination.write_bytes(path.read_bytes())
+        retained=ROOT/'reviews/evidence/M2-C2.1'/f'ci-{run}-{filename}'
         if retained.exists():assert json.loads(retained.read_text(encoding='utf8'))==d
 assert len(observations)==8,observations
 out={'base':git('rev-parse',base).strip(),'builderHead':git('rev-parse',head).strip(),
@@ -60,7 +72,7 @@ out={'base':git('rev-parse',base).strip(),'builderHead':git('rev-parse',head).st
      'builderGateTotals':totals(ROOT/'reviews/evidence/M2-C2.1/workspace-tests.log'),
      'ci':ci,'observations':observations}
 assert out['builderGateTotals']==[826,0,12]
-for name in ['workspace-tests','geometry','geometry-release','contracts-final','history-release','worst-case-release']:
+for name in ['workspace-tests','geometry','geometry-release','contracts-final','contracts-release','history-release','history-oracles-release','worst-case-release','malformed-mcp','closed-command-release']:
     path=HERE/f'{name}.log'
     if path.exists():out[name]=totals(path)
 (HERE/'audit.json').write_text(json.dumps(out,indent=2)+'\n',encoding='utf8')
@@ -69,6 +81,7 @@ for name in ['workspace-tests','geometry','geometry-release','contracts-final','
 source=(HERE.parent/'M2-C2.1-r2/build-register.py').read_text(encoding='utf8')
 exec(compile(source,'round2-register','exec'),{'__file__':str(HERE/'build-register.py'),'__name__':'inventory'})
 rows=json.loads((HERE/'conformance.json').read_text(encoding='utf8'))['rows']
+plan=(ROOT/'plan/IMPLEMENTATION_PLAN.md').read_text(encoding='utf8')
 for row in rows:
     if row['status']=='divergent':
         if '`draw.stroke.set`' in row['requirement']:
@@ -82,6 +95,7 @@ for row in rows:
         assert re.search(r'c\d|test',row['evidence']),row
     if row['status']=='deferred-with-owner':
         assert re.search(r'C\d\.\d',row['evidence']),row
+        for checkpoint in re.findall(r'C\d+\.\d+',row['evidence']):assert checkpoint in plan,checkpoint
 counts=dict(Counter(r['status'] for r in rows))
 assert len(rows)==365
 (HERE/'conformance.json').write_text(json.dumps({'counts':counts,'rows':rows},indent=2,ensure_ascii=False)+'\n',encoding='utf8')

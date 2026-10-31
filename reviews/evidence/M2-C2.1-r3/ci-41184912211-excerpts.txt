@@ -1,0 +1,108 @@
+check (macos-latest)	Run cargo test --workspace --locked	2026-10-31T08:50:36.7005610Z 
+check (macos-latest)	Run cargo test --workspace --locked	2026-10-31T08:50:36.7008760Z ^[[1m^[[92m     Running^[[0m tests/c21_determinism.rs (target/debug/deps/c21_determinism-829d7a346ad9843e)
+check (macos-latest)	Run cargo test --workspace --locked	2026-10-31T08:50:36.7146360Z 
+check (macos-latest)	Run cargo test --workspace --locked	2026-10-31T08:50:36.7146790Z running 1 test
+check (macos-latest)	Run cargo test --workspace --locked	2026-10-31T08:50:37.3950180Z test command_created_geometry_is_identical_across_runs_and_platforms ... ok
+check (macos-latest)	Run cargo test --workspace --locked	2026-10-31T08:50:37.3950590Z 
+check (macos-latest)	Run cargo test --workspace --locked	2026-10-31T08:50:37.3951020Z test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.68s
+check (macos-latest)	Run cargo test --workspace --locked	2026-10-31T08:50:37.3951420Z 
+check (macos-latest)	Run cargo test --workspace --locked	2026-10-31T08:50:37.3956400Z ^[[1m^[[92m     Running^[[0m tests/c21_draw.rs (target/debug/deps/c21_draw-c640756958968a3f)
+check (macos-latest)	Run cargo test --workspace --locked	2026-10-31T08:50:37.4138470Z 
+check (macos-latest)	Run cargo test --workspace --locked	2026-10-31T08:57:50.3484070Z 
+check (macos-latest)	Run cargo test --workspace --locked	2026-10-31T08:57:50.3489960Z ^[[1m^[[92m     Running^[[0m tests/c21_history.rs (target/debug/deps/c21_history-11a2939674e31224)
+check (macos-latest)	Run cargo test --workspace --locked	2026-10-31T08:57:50.3923980Z 
+check (macos-latest)	Run cargo test --workspace --locked	2026-10-31T08:57:50.3924740Z running 2 tests
+check (macos-latest)	Run cargo test --workspace --locked	2026-10-31T08:57:50.3928630Z test geometry_oracle_seed_a571_matches_and_replays ... ignored, 10 000-operation oracle (about 5 minutes per seed in a debug build on the Windows runner); CI runs both             seeds in release in the headless job: `cargo test --release -p tt-mcp --test c21_history -- --ignored`             (M2 C2.1 obligation 4)
+check (macos-latest)	Run cargo test --workspace --locked	2026-10-31T08:57:50.3933820Z test geometry_oracle_seed_b683_matches_and_replays ... ignored, 10 000-operation oracle (about 5 minutes per seed in a debug build on the Windows runner); CI runs both             seeds in release in the headless job: `cargo test --release -p tt-mcp --test c21_history -- --ignored`             (M2 C2.1 obligation 4)
+check (macos-latest)	Run cargo test --workspace --locked	2026-10-31T08:57:50.3935800Z 
+check (macos-latest)	Run cargo test --workspace --locked	2026-10-31T08:57:50.3936760Z test result: ok. 0 passed; 0 failed; 2 ignored; 0 measured; 0 filtered out; finished in 0.00s
+check (macos-latest)	Run cargo test --workspace --locked	2026-10-31T08:57:50.3937550Z 
+check (macos-latest)	Run cargo test --workspace --locked	2026-10-31T08:57:50.3938930Z ^[[1m^[[92m     Running^[[0m tests/c21_r1_surfaces.rs (target/debug/deps/c21_r1_surfaces-8d88060e5cca98d7)
+check (macos-latest)	Run cargo test --workspace --locked	2026-10-31T08:57:50.4121080Z 
+check (macos-latest)	Run cargo test --workspace --locked	2026-10-31T08:57:50.4121750Z running 2 tests
+check (macos-latest)	Run cargo test --workspace --locked	2026-10-31T08:57:51.8802140Z test ingress_payload_limit_is_distinct_from_32_mib_readback_limit ... ok
+check (macos-latest)	Run cargo test --workspace --locked	2026-10-31T08:58:04.3257260Z test typed_generic_batches_scripts_and_both_container_forms ... ok
+check (macos-latest)	Run cargo test --workspace --locked	2026-10-31T08:59:28.2259260Z 
+check (macos-latest)	Run cargo test --workspace --locked	2026-10-31T08:59:28.2264390Z ^[[1m^[[92m     Running^[[0m tests/c21_r2_geometry.rs (target/debug/deps/c21_r2_geometry-84e2dc0449ecd3aa)
+check (macos-latest)	Run cargo test --workspace --locked	2026-10-31T08:59:28.2364320Z 
+check (macos-latest)	Run cargo test --workspace --locked	2026-10-31T08:59:28.2365170Z running 11 tests
+check (macos-latest)	Run cargo test --workspace --locked	2026-10-31T08:59:28.2365710Z test alternating_pressure_worker ... ignored, subprocess worker run by the bounded parent
+check (macos-latest)	Run cargo test --workspace --locked	2026-10-31T08:59:28.2439400Z 
+check (macos-latest)	Run cargo test --workspace --locked	2026-10-31T08:59:28.2545570Z running 1 test
+check (macos-latest)	Run cargo test --workspace --locked	2026-10-31T08:59:28.3033120Z alternating pressure: 60.49ms, charged visits=20787858, knots=100000
+check (macos-latest)	Run cargo test --workspace --locked	2026-10-31T08:59:28.3033560Z test alternating_pressure_worker ... ok
+check (macos-latest)	Run cargo test --workspace --locked	2026-10-31T08:59:28.3038470Z 
+headless release (macos-latest)	100k-stroke drawing measurements and geometry history oracles (M2 C2.1 obligation 4; release)	2026-10-31T08:33:11.0573070Z ^[[36;1m# Both seeded 10 000-operation history oracles with drawing geometry on a saved/reopened fixture (MCP).^[[0m
+headless release (macos-latest)	100k-stroke drawing measurements and geometry history oracles (M2 C2.1 obligation 4; release)	2026-10-31T08:33:11.0573720Z ^[[36;1mcargo test --release --locked -p tt-mcp --test c21_history -- --ignored --nocapture^[[0m
+headless release (macos-latest)	100k-stroke drawing measurements and geometry history oracles (M2 C2.1 obligation 4; release)	2026-10-31T08:33:11.0574350Z ^[[36;1m# Worst-case fitting work on the adversarial 100 000-sample corpus (C21-R1-06; every run kept).^[[0m
+headless release (macos-latest)	100k-stroke drawing measurements and geometry history oracles (M2 C2.1 obligation 4; release)	2026-10-31T08:33:11.0574920Z ^[[36;1mcargo test --release --locked -p tt-vector --test c21_worst_case -- --ignored --nocapture^[[0m
+headless release (macos-latest)	100k-stroke drawing measurements and geometry history oracles (M2 C2.1 obligation 4; release)	2026-10-31T08:33:11.0575420Z ^[[36;1mmkdir -p out^[[0m
+headless release (macos-latest)	100k-stroke drawing measurements and geometry history oracles (M2 C2.1 obligation 4; release)	2026-10-31T08:33:11.0575770Z ^[[36;1mcp -r target/evidence/c21-fit out/c21-fit-worst-case^[[0m
+headless release (macos-latest)	100k-stroke drawing measurements and geometry history oracles (M2 C2.1 obligation 4; release)	2026-10-31T08:33:11.0576290Z ^[[36;1m$PY scripts/analyse-measurements.py target/evidence/c21 --out out/c21-measurement-analysis.json^[[0m
+headless release (macos-latest)	100k-stroke drawing measurements and geometry history oracles (M2 C2.1 obligation 4; release)	2026-10-31T08:33:11.0576860Z ^[[36;1mcp -r target/evidence/c21 out/c21-measurements^[[0m
+headless release (macos-latest)	100k-stroke drawing measurements and geometry history oracles (M2 C2.1 obligation 4; release)	2026-10-31T08:33:11.0715750Z shell: /bin/bash --noprofile --norc -e -o pipefail {0}
+headless release (macos-latest)	100k-stroke drawing measurements and geometry history oracles (M2 C2.1 obligation 4; release)	2026-10-31T08:33:11.0716070Z env:
+headless release (macos-latest)	100k-stroke drawing measurements and geometry history oracles (M2 C2.1 obligation 4; release)	2026-10-31T08:39:47.4210560Z ^[[1m^[[92m    Finished^[[0m `release` profile [optimized + debuginfo] target(s) in 1m 43s
+headless release (macos-latest)	100k-stroke drawing measurements and geometry history oracles (M2 C2.1 obligation 4; release)	2026-10-31T08:39:47.4454950Z ^[[1m^[[92m     Running^[[0m tests/c21_history.rs (target/release/deps/c21_history-7b7ec83f4f767f2b)
+headless release (macos-latest)	100k-stroke drawing measurements and geometry history oracles (M2 C2.1 obligation 4; release)	2026-10-31T08:39:47.4504600Z 
+headless release (macos-latest)	100k-stroke drawing measurements and geometry history oracles (M2 C2.1 obligation 4; release)	2026-10-31T08:39:47.4508980Z running 2 tests
+headless release (macos-latest)	100k-stroke drawing measurements and geometry history oracles (M2 C2.1 obligation 4; release)	2026-10-31T08:40:14.1777510Z geometry-history-r3: {"seed":"0xc12320261019b683","operations":10000,"replayOperations":10000,"strokeSetUndoRedoCreateRestoreDryRun":[5494,3902,470,1,1724,511],"documentRev":11180,"durationSeconds":26.7268175,"oracle":"independent stroke geometry/thickness/revision stack; exact canonical all-entry byte checks every 100 operations; full fresh executor replay"}
+headless release (macos-latest)	100k-stroke drawing measurements and geometry history oracles (M2 C2.1 obligation 4; release)	2026-10-31T08:40:14.2127780Z geometry-history-r1: {"seed":"0xc12020261019a571","operations":10000,"replayOperations":10000,"strokeSetUndoRedoCreateRestoreDryRun":[5472,3911,528,1,1690,534],"documentRev":11234,"durationSeconds":26.762151667,"oracle":"independent stroke geometry/thickness/revision stack; exact canonical all-entry byte checks every 100 operations; full fresh executor replay"}
+headless release (macos-latest)	100k-stroke drawing measurements and geometry history oracles (M2 C2.1 obligation 4; release)	2026-10-31T08:40:14.6136150Z test geometry_oracle_seed_b683_matches_and_replays ... ok
+headless release (macos-latest)	100k-stroke drawing measurements and geometry history oracles (M2 C2.1 obligation 4; release)	2026-10-31T08:40:14.6915380Z test geometry_oracle_seed_a571_matches_and_replays ... ok
+headless release (macos-latest)	100k-stroke drawing measurements and geometry history oracles (M2 C2.1 obligation 4; release)	2026-10-31T08:40:14.6915750Z 
+headless release (macos-latest)	100k-stroke drawing measurements and geometry history oracles (M2 C2.1 obligation 4; release)	2026-10-31T08:40:14.6916110Z test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 27.24s
+headless release (windows-latest)	100k-stroke drawing measurements and geometry history oracles (M2 C2.1 obligation 4; release)	2026-10-31T08:36:05.3086436Z ^[[36;1m# Both seeded 10 000-operation history oracles with drawing geometry on a saved/reopened fixture (MCP).^[[0m
+headless release (windows-latest)	100k-stroke drawing measurements and geometry history oracles (M2 C2.1 obligation 4; release)	2026-10-31T08:36:05.3087190Z ^[[36;1mcargo test --release --locked -p tt-mcp --test c21_history -- --ignored --nocapture^[[0m
+headless release (windows-latest)	100k-stroke drawing measurements and geometry history oracles (M2 C2.1 obligation 4; release)	2026-10-31T08:36:05.3087903Z ^[[36;1m# Worst-case fitting work on the adversarial 100 000-sample corpus (C21-R1-06; every run kept).^[[0m
+headless release (windows-latest)	100k-stroke drawing measurements and geometry history oracles (M2 C2.1 obligation 4; release)	2026-10-31T08:36:05.3088609Z ^[[36;1mcargo test --release --locked -p tt-vector --test c21_worst_case -- --ignored --nocapture^[[0m
+headless release (windows-latest)	100k-stroke drawing measurements and geometry history oracles (M2 C2.1 obligation 4; release)	2026-10-31T08:36:05.3089138Z ^[[36;1mmkdir -p out^[[0m
+headless release (windows-latest)	100k-stroke drawing measurements and geometry history oracles (M2 C2.1 obligation 4; release)	2026-10-31T08:36:05.3089485Z ^[[36;1mcp -r target/evidence/c21-fit out/c21-fit-worst-case^[[0m
+headless release (windows-latest)	100k-stroke drawing measurements and geometry history oracles (M2 C2.1 obligation 4; release)	2026-10-31T08:36:05.3090094Z ^[[36;1m$PY scripts/analyse-measurements.py target/evidence/c21 --out out/c21-measurement-analysis.json^[[0m
+headless release (windows-latest)	100k-stroke drawing measurements and geometry history oracles (M2 C2.1 obligation 4; release)	2026-10-31T08:36:05.3199736Z ^[[36;1mcp -r target/evidence/c21 out/c21-measurements^[[0m
+headless release (windows-latest)	100k-stroke drawing measurements and geometry history oracles (M2 C2.1 obligation 4; release)	2026-10-31T08:36:05.3219960Z shell: C:\Program Files\Git\bin\bash.EXE --noprofile --norc -e -o pipefail {0}
+headless release (windows-latest)	100k-stroke drawing measurements and geometry history oracles (M2 C2.1 obligation 4; release)	2026-10-31T08:36:05.3220407Z env:
+headless release (windows-latest)	100k-stroke drawing measurements and geometry history oracles (M2 C2.1 obligation 4; release)	2026-10-31T08:55:54.9506514Z ^[[1m^[[92m    Finished^[[0m `release` profile [optimized + debuginfo] target(s) in 4m 03s
+headless release (windows-latest)	100k-stroke drawing measurements and geometry history oracles (M2 C2.1 obligation 4; release)	2026-10-31T08:55:54.9786854Z ^[[1m^[[92m     Running^[[0m tests\c21_history.rs (target\release\deps\c21_history-5f2ab3088faa9c79.exe)
+headless release (windows-latest)	100k-stroke drawing measurements and geometry history oracles (M2 C2.1 obligation 4; release)	2026-10-31T08:55:54.9915830Z 
+headless release (windows-latest)	100k-stroke drawing measurements and geometry history oracles (M2 C2.1 obligation 4; release)	2026-10-31T08:55:54.9916336Z running 2 tests
+headless release (windows-latest)	100k-stroke drawing measurements and geometry history oracles (M2 C2.1 obligation 4; release)	2026-10-31T08:56:54.9664779Z geometry-history-r3: {"seed":"0xc12320261019b683","operations":10000,"replayOperations":10000,"strokeSetUndoRedoCreateRestoreDryRun":[5494,3902,470,1,1724,511],"documentRev":11180,"durationSeconds":59.9745367,"oracle":"independent stroke geometry/thickness/revision stack; exact canonical all-entry byte checks every 100 operations; full fresh executor replay"}
+headless release (windows-latest)	100k-stroke drawing measurements and geometry history oracles (M2 C2.1 obligation 4; release)	2026-10-31T08:56:54.9912987Z geometry-history-r1: {"seed":"0xc12020261019a571","operations":10000,"replayOperations":10000,"strokeSetUndoRedoCreateRestoreDryRun":[5472,3911,528,1,1690,534],"documentRev":11234,"durationSeconds":59.9995924,"oracle":"independent stroke geometry/thickness/revision stack; exact canonical all-entry byte checks every 100 operations; full fresh executor replay"}
+headless release (windows-latest)	100k-stroke drawing measurements and geometry history oracles (M2 C2.1 obligation 4; release)	2026-10-31T08:56:54.9958593Z test geometry_oracle_seed_a571_matches_and_replays has been running for over 60 seconds
+headless release (windows-latest)	100k-stroke drawing measurements and geometry history oracles (M2 C2.1 obligation 4; release)	2026-10-31T08:56:54.9959537Z test geometry_oracle_seed_b683_matches_and_replays has been running for over 60 seconds
+headless release (windows-latest)	100k-stroke drawing measurements and geometry history oracles (M2 C2.1 obligation 4; release)	2026-10-31T08:56:55.1302677Z test geometry_oracle_seed_b683_matches_and_replays ... ok
+headless release (windows-latest)	100k-stroke drawing measurements and geometry history oracles (M2 C2.1 obligation 4; release)	2026-10-31T08:56:55.1957699Z test geometry_oracle_seed_a571_matches_and_replays ... ok
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T08:57:01.3269320Z 
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T08:57:01.3323624Z ^[[1m^[[92m     Running^[[0m tests\c21_determinism.rs (target\debug\deps\c21_determinism-527170c1ec2ea5c6.exe)
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T08:57:01.3583893Z 
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T08:57:01.3584286Z running 1 test
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T08:57:02.2900998Z test command_created_geometry_is_identical_across_runs_and_platforms ... ok
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T08:57:02.2902350Z 
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T08:57:02.2903079Z test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.93s
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T08:57:02.2903803Z 
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T08:57:02.2981652Z ^[[1m^[[92m     Running^[[0m tests\c21_draw.rs (target\debug\deps\c21_draw-1f3b156ccac92ac2.exe)
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T08:57:02.3185862Z 
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T09:07:54.5829730Z 
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T09:07:54.5867274Z ^[[1m^[[92m     Running^[[0m tests\c21_history.rs (target\debug\deps\c21_history-3ff2bc7e1fff59be.exe)
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T09:07:54.6086194Z 
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T09:07:54.6086661Z running 2 tests
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T09:07:54.6091300Z test geometry_oracle_seed_a571_matches_and_replays ... ignored, 10 000-operation oracle (about 5 minutes per seed in a debug build on the Windows runner); CI runs both             seeds in release in the headless job: `cargo test --release -p tt-mcp --test c21_history -- --ignored`             (M2 C2.1 obligation 4)
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T09:07:54.6094834Z test geometry_oracle_seed_b683_matches_and_replays ... ignored, 10 000-operation oracle (about 5 minutes per seed in a debug build on the Windows runner); CI runs both             seeds in release in the headless job: `cargo test --release -p tt-mcp --test c21_history -- --ignored`             (M2 C2.1 obligation 4)
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T09:07:54.6096392Z 
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T09:07:54.6097021Z test result: ok. 0 passed; 0 failed; 2 ignored; 0 measured; 0 filtered out; finished in 0.00s
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T09:07:54.6097518Z 
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T09:07:54.6117302Z ^[[1m^[[92m     Running^[[0m tests\c21_r1_surfaces.rs (target\debug\deps\c21_r1_surfaces-9bd6e709cd736213.exe)
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T09:07:54.6317094Z 
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T09:07:54.6317765Z running 2 tests
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T09:07:56.5030219Z test ingress_payload_limit_is_distinct_from_32_mib_readback_limit ... ok
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T09:07:58.0288936Z test typed_generic_batches_scripts_and_both_container_forms ... ok
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T09:10:23.1680670Z 
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T09:10:23.1704108Z ^[[1m^[[92m     Running^[[0m tests\c21_r2_geometry.rs (target\debug\deps\c21_r2_geometry-3298b96c4cec1279.exe)
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T09:10:23.1818520Z 
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T09:10:23.1819432Z running 11 tests
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T09:10:23.1822780Z test alternating_pressure_worker ... ignored, subprocess worker run by the bounded parent
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T09:10:23.1909414Z 
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T09:10:23.1911215Z running 1 test
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T09:10:23.1921796Z 
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T09:10:23.1922507Z running 1 test
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T09:10:23.3397853Z alternating pressure: 144.925ms, charged visits=20787858, knots=100000

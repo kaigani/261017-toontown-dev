@@ -7,6 +7,51 @@ use serde_json::json;
 const D: &str = "dr_01K742SG0KKMCAP9X1E6Z5P4SW";
 
 #[test]
+#[ignore = "bounded subprocess worker"]
+fn closed_step_pressure_command_worker() {
+    let h = fixture();
+    let pressure: Vec<_> = (0..99_000).map(|i| json!({"t":f64::from(i)/98_999.0,"p":i%2})).collect();
+    let points: Vec<_> = (0..10)
+        .map(|i| {
+            let a = std::f64::consts::TAU * f64::from(i) / 10.0;
+            json!({"x":30.0*a.cos(),"y":30.0*a.sin()})
+        })
+        .collect();
+    let started = std::time::Instant::now();
+    let env = run(
+        &h,
+        "draw.stroke.add",
+        json!({"drawingId":D,"kind":"brush","pressure":pressure,
+        "closed":true,"fit":false,"smoothness":0,
+        "pen":{"tipShape":"round","minSize":0,"maxSize":100},"points":points}),
+    );
+    eprintln!("complete closed-decagon 99000-knot command {:?}: {:?}", started.elapsed(), env.error);
+    assert!(env.is_ok() || env.error.as_ref().is_some_and(|e| e.code == "limit.exceeded"));
+}
+
+#[test]
+fn closed_step_pressure_command_returns_within_watchdog() {
+    use std::time::{Duration, Instant};
+    let mut child = std::process::Command::new(std::env::current_exe().unwrap())
+        .args(["--exact", "closed_step_pressure_command_worker", "--ignored", "--nocapture"])
+        .spawn()
+        .unwrap();
+    let started = Instant::now();
+    loop {
+        if let Some(status) = child.try_wait().unwrap() {
+            assert!(status.success());
+            break;
+        }
+        if started.elapsed() > Duration::from_secs(30) {
+            child.kill().unwrap();
+            child.wait().unwrap();
+            assert!(started.elapsed() <= Duration::from_secs(30), "complete closed-spine command exceeded watchdog");
+        }
+        std::thread::sleep(Duration::from_millis(20));
+    }
+}
+
+#[test]
 fn deleting_a_separator_keeps_formats_on_reordered_hebrew_points() {
     let h = fixture();
     let result =
