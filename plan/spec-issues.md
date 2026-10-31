@@ -667,3 +667,89 @@ Reserved by the M0 closure for "measured deterministic-format incompatibility" (
   `details.pointers: ["/points", "/spine"]`) by orchestrator ruling; an outline edit alone discards the spine.
 - **Question:** state in §13.5 that the rows extend §13.1 item 11's common members, and add the both-authorities
   rejection to §3.2.
+
+## SI-059 — brush outlines and persistent noding (found in M2 C2.2; ruled)
+
+- **Sections:** 02 §3.2 ("Within a layer, strokes are split at intersections and junctions"), §3.12 item 1; 10 §4.9 (a
+  brush stroke has one closed outline path); SI-053, SI-054.
+- **Problem:** splitting a brush outline would break its single closed path and stale its spine.
+- **Decision (orchestrator ruling, ADR-0017 §1):** brush outlines are never split or moved by noding; their crossings
+  are vertices of the derived graph only. Pencil and invisible strokes are split at the outline. Tests:
+  `c22_settle::a_pencil_crossing_a_brush_splits_at_the_outline_and_leaves_the_brush_byte_identical`,
+  `c22_planar::a_pencil_line_across_a_brush_stroke_splits_and_the_brush_entry_is_untouched`.
+- **Question:** state in 02 §3.2 that brush outlines take part in topology without being split.
+
+## SI-060 — fills of zones bounded only by brush-outline stretches (found in M2 C2.2; ruled, interim)
+
+- **Sections:** 10 §4.9 (fills on stroke sides; zones derived), 02 §3.5; SI-059.
+- **Problem:** one brush outline may border several zones (the hole of a ring and the space outside it); its two sides
+  cannot hold their different fills.
+- **Decision (orchestrator ruling, ADR-0017 §4):** such fills are kept in the brush stroke's
+  `ext["dev.toontown.zones"].exterior` = `[{side, from, to, fill}]` (path-parameter ranges), rewritten deterministically
+  on every re-node (same input → same bytes, `c22_settle`, `c22_properties`), round-tripping through both container
+  forms (`ext` is preserved by every reader) and `draw.content.add` (fills travel at interior points), and listed in
+  the drawing's `colourRecovery` like any fill (`colour_recovery::used_colours`).
+- **Question (amendment proposal for the spec owner):** add a zone-fill side table to the drawing in 10 §4.9 (e.g.
+  `zoneFills: [{layerId, boundary, fill}]`), from which the `ext` key would be migrated.
+
+## SI-061 — region targets, repaint, protected colours (found in M2 C2.2; ruled)
+
+- **Sections:** 03 §8.2, §8.4, §16.3 (`colour.paint.apply` parameters), §1.4 (swatch fields).
+- **Decision (orchestrator ruling, ADR-0017 §8):** `colour.paint.apply` also takes `lasso` and `rect` (zones whose
+  interior point lies inside), `onlyPainted` (repaint), and `respectProtected` (default true); a swatch is protected by
+  `ext["dev.toontown.paint"].protected: true`; refusals are reported per target with `colour.protected`.
+- **Question (amendment proposal):** add a `protected` flag to 03 §1.4 swatches and these parameters to the §16.3 row.
+
+## SI-062 — per-drawing gap-closing setting (found in M2 C2.2; ruled)
+
+- **Sections:** 03 §8.8 (a persisted user setting), §16.3 (`gapClosing` per command).
+- **Decision (orchestrator ruling):** the spec as written — user setting (`paint.gapClosing` preference) plus the
+  per-command override; no per-drawing field.
+- **Question (amendment proposal, owner M4 C4.2):** whether the paint tools' UI wants a per-drawing setting.
+
+## SI-063 — view pixels at 100 % zoom (found in M2 C2.2; decided)
+
+- **Sections:** 03 §8.8 ("tolerance at 100 % zoom"), 02 §13.1 item 5; 03 §7.2 ("1 image pixel = 1 drawing unit at
+  100 %").
+- **Decision (accepted by ruling):** at 100 % zoom one view pixel is one drawing unit; gap tolerances are 3/8/16 du and
+  the hit-test tolerance is in du for commands without a view.
+
+## SI-064 — the unit space of fill mappings (found in M2 C2.2; decided)
+
+- **Sections:** 03 §7.2 (default and drag mappings), §16.3 (`Mapping`).
+- **Problem:** the unit space the 2×3 matrix maps from is not stated.
+- **Decision (ADR-0017 §8):** unit square `[0, 1]²`: linear axis along x (0 → 1), radial centred at (½, ½) with radius ½,
+  texture image over the square. Default mapping: the square onto the object's bounds (radial: radius to the corner);
+  drag: linear 0 at the press and 1 at the release, radial centre at the press with the drag as radius, texture origin
+  at the press, width = drag length, rotated to the drag.
+- **Question:** confirm, or define the unit space in 03 §7.2.
+
+## SI-065 — `colour.pick` before the renderer and the views (found in M2 C2.2; decided)
+
+- **Sections:** 03 §16.3 (`colour.pick`: `space` defaults to `view`, `rgba` is the rendered pixel).
+- **Decision:** until the desktop views (M4 C4.2) and the renderer (C2.3/M3), points are given in drawing space
+  (`space: "drawing"`; `scene`/`view` are `arg.invalid` with a hint, in every paint command), and `rgba` is the swatch's
+  value for the palette's first style (first stop of a gradient; `#00000000` for textures, unpainted and empty canvas).
+- **Question:** none; M4 C4.2 and C2.3 complete the view space and the composited pixel.
+
+## SI-066 — zone reporting (found in M2 C2.2; decided)
+
+- **Sections:** 02 §13.4 (zones), §13.5 (`zoneIds`), §13.6 (`draw.drawing.changed`); 10 §10.3 (`unpaintedZones`).
+- **Decision (ADR-0017 §3, §11):** zone IDs are `zn_` + 26 base-32 characters of a SHA-256 of the canonical boundary;
+  `draw.drawing.changed` and edit results list zones as derived objects (new IDs created, vanished ones removed,
+  repainted ones modified); `zoneIds` of `draw.stroke.add` are the zones the edit created; a hole's `zoneId` is the zone
+  across its longest boundary stretch; `unpaintedZones` reports zones with at least one visible bounding stroke and no
+  fill (a zone closed only by invisible strokes is not line art to paint).
+- **Question:** confirm the event semantics for derived objects in 02 §13.6.
+
+## SI-067 — noding and recovery details (found in M2 C2.2; decided)
+
+- **Sections:** 02 §3.12 item 1, §3.11; 03 §11.2; 10 §4.11.
+- **Decision (ADR-0017 §1, §10):** junction tolerance 1/32 du; pieces are not merged back after a delete; recovered
+  swatches without a recorded palette name and placeholders go to one palette `Recovered` (created once, reused);
+  missing styles are added by name with every swatch receiving its first style's value; recovery lists are refreshed on
+  save (10 §4.11's "on save"), not on every edit; texture images referenced by recovered swatches keep their package
+  entry (a missing image is reported by `missingMedia`).
+- **Question:** confirm where recovered swatches go when the recorded palette exists but is hidden (C2.2: a visible
+  palette of that name, else a new one).
+

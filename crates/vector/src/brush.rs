@@ -428,9 +428,26 @@ fn bridge(mut contours: Vec<Vec<P>>, work: &mut Work) -> Result<Option<Vec<P>>, 
     let mut it = contours.into_iter();
     let Some(mut merged) = it.next() else { return Ok(None) };
     for c in it {
-        work.spend((merged.len() as u64).saturating_mul(c.len() as u64))?;
+        // The nearest pair (merged vertex, contour vertex), first in merged order then contour order on ties. Only
+        // merged vertices within d0 — the distance from the contour's first vertex to the merged polygon's nearest
+        // vertex, an upper bound of the minimum — of the contour's box can take part, so the exact search runs over
+        // those candidates only (C2.2: the splice is linear in the merged polygon per contour, not quadratic).
+        work.spend((merged.len() as u64).saturating_mul(2))?;
+        let d0 = merged.iter().map(|m| m.dist(c[0])).fold(f64::INFINITY, f64::min);
+        let (bx0, by0, bx1, by1) =
+            c.iter().fold((f64::INFINITY, f64::INFINITY, f64::NEG_INFINITY, f64::NEG_INFINITY), |b, p| {
+                (b.0.min(p.x), b.1.min(p.y), b.2.max(p.x), b.3.max(p.y))
+            });
+        let near = |m: &P| {
+            let dx = (bx0 - m.x).max(0.0).max(m.x - bx1);
+            let dy = (by0 - m.y).max(0.0).max(m.y - by1);
+            (dx * dx + dy * dy).sqrt() <= d0
+        };
+        let candidates: Vec<usize> = (0..merged.len()).filter(|&i| near(&merged[i])).collect();
+        work.spend((candidates.len() as u64).saturating_mul(c.len() as u64))?;
         let mut best = (f64::INFINITY, 0, 0);
-        for (i, m) in merged.iter().enumerate() {
+        for &i in &candidates {
+            let m = merged[i];
             for (j, p) in c.iter().enumerate() {
                 let d = m.dist(*p);
                 if d < best.0 {
