@@ -16,6 +16,8 @@ unicode-normalization.workspace = true
 # Pure-software transcendental functions (ADR-0004 rule 3: no platform libm in persisted geometry).
 libm = { version = "0.2.16", default-features = false, features = ["force-soft-floats"] }
 # Boolean union of brush sweep polygons on an integer grid (deterministic; MIT OR Apache-2.0).
+# Derived zone IDs: SHA-256 of a zone's canonical boundary (02 §3.12 item 4; MIT OR Apache-2.0).
+sha2.workspace = true
 i_overlay = { version = "9.1.0", default-features = false }
 # Font metrics for text layout and the missingFonts lint: skrifa (fontations; MIT OR Apache-2.0) parses faces,
 # fontdb (MIT) lists the system fonts. `memmap` (memmap2, MIT OR Apache-2.0): font files are mapped while their

@@ -7,8 +7,8 @@
 //! correctly rounded IEEE-754 operations in a fixed order, transcendental functions from the pure-software `libm`
 //! port, unions on an integer grid (ADR-0004, ADR-0016).
 //!
-//! The planar map (noding, zones, sides, gap closing, paint by point) arrives with M2 C2.2; drawing operations and
-//! rendering with C2.3; vectorization with C2.4.
+//! The planar map (noding, zones, sides, fills, gap closing, paint by point) is [`planar`] (M2 C2.2); drawing operations
+//! and rendering arrive with C2.3; vectorization with C2.4.
 //!
 //! Spec sections: 02 §2–§3, §6 (pens, pressure, symmetry), §13.4; 10 §4.8–§4.11. Milestone: M2.
 
@@ -21,9 +21,11 @@ pub mod geom;
 pub mod invariants;
 pub mod num;
 pub mod path;
+pub mod planar;
 pub mod stroke;
 pub mod symmetry;
 pub mod text;
+pub mod work;
 
 /// Crate name as linked into the engine (the headless self-test lists it to prove the crate is present).
 pub const NAME: &str = env!("CARGO_PKG_NAME");
