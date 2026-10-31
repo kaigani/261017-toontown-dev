@@ -1957,17 +1957,17 @@ export const COMMAND_INDEX = {
     result: "colour.gap.close.result",
     examples: [
       {
+        drawingId: "drawingBank:#1/drawing:#1",
         from: {
-          x: 1,
-          y: 1,
+          x: -48,
+          y: -50,
         },
         to: {
-          x: 1,
-          y: 1,
+          x: 2,
+          y: 2,
         },
       },
     ],
-    milestone: "M2 C2.3",
   },
   "colour.gapClosing.get": {
     kind: "query",
@@ -1976,7 +1976,6 @@ export const COMMAND_INDEX = {
     examples: [
       {},
     ],
-    milestone: "M2 C2.3",
   },
   "colour.gapClosing.set": {
     kind: "ui",
@@ -1984,10 +1983,9 @@ export const COMMAND_INDEX = {
     result: "colour.gapClosing.set.result",
     examples: [
       {
-        mode: "off",
+        mode: "small",
       },
     ],
-    milestone: "M2 C2.3",
   },
   "colour.missing.list": {
     kind: "query",
@@ -1996,34 +1994,52 @@ export const COMMAND_INDEX = {
     examples: [
       {},
     ],
-    milestone: "M7 C7.1",
   },
   "colour.paint.apply": {
     kind: "action",
     params: "colour.paint.apply.params",
     result: "colour.paint.apply.result",
     examples: [
-      {},
+      {
+        drawingId: "drawingBank:#1/drawing:#1",
+        points: [
+          {
+            x: 50,
+            y: 50,
+          },
+        ],
+      },
+      {
+        drawingId: "drawingBank:#1/drawing:#1",
+        objectIds: [
+          "st_01K742SG0R61SYK9GG0HGYVNBT",
+        ],
+      },
     ],
-    milestone: "M2 C2.3",
   },
   "colour.paint.remove": {
     kind: "action",
     params: "colour.paint.remove.params",
     result: "colour.paint.remove.result",
     examples: [
-      {},
+      {
+        drawingId: "drawingBank:#1/drawing:#1",
+        objectIds: [
+          "st_01K742SG0R61SYK9GG0HGYVNBT",
+        ],
+      },
     ],
-    milestone: "M2 C2.3",
   },
   "colour.paintUnpainted.apply": {
     kind: "action",
     params: "colour.paintUnpainted.apply.params",
     result: "colour.paintUnpainted.apply.result",
     examples: [
-      {},
+      {
+        drawingId: "drawingBank:#1/drawing:#1",
+        all: true,
+      },
     ],
-    milestone: "M2 C2.3",
   },
   "colour.palette.changed": {
     kind: "event",
@@ -2151,12 +2167,13 @@ export const COMMAND_INDEX = {
     examples: [
       {
         point: {
-          x: 1,
-          y: 1,
+          x: 0,
+          y: 0,
         },
+        space: "drawing",
+        drawingId: "drawingBank:#1/drawing:#1",
       },
     ],
-    milestone: "M7 C7.1",
   },
   "colour.recolour.apply": {
     kind: "action",
@@ -2174,7 +2191,6 @@ export const COMMAND_INDEX = {
     examples: [
       {},
     ],
-    milestone: "M7 C7.1",
     event: true,
   },
   "colour.recovery.run": {
@@ -2182,9 +2198,10 @@ export const COMMAND_INDEX = {
     params: "colour.recovery.run.params",
     result: "colour.recovery.run.result",
     examples: [
-      {},
+      {
+        all: true,
+      },
     ],
-    milestone: "M7 C7.1",
   },
   "colour.sceneStyle.changed": {
     kind: "event",
@@ -3070,13 +3087,14 @@ export const COMMAND_INDEX = {
     result: "draw.hitTest.get.result",
     examples: [
       {
+        drawingId: "drawingBank:#1/drawing:#1",
         point: {
-          x: 1,
-          y: 1,
+          x: 0,
+          y: 0,
         },
+        includeInvisible: true,
       },
     ],
-    milestone: "M2 C2.3",
   },
   "draw.inspectorPreview.set": {
     kind: "ui",
@@ -22072,840 +22090,1373 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
     "x-spec": "`{changed: [id], skipped: [{objectId, reason}], rev}`",
     additionalProperties: false,
   },
+  "colour.gap.close.Point": {
+    description: "A point `{x, y}` in drawing units.",
+    type: "object",
+    properties: {
+      x: {
+        description: "X (du).",
+        type: "number",
+      },
+      y: {
+        description: "Y (du, up).",
+        type: "number",
+      },
+    },
+    additionalProperties: false,
+    required: [
+      "x",
+      "y",
+    ],
+  },
+  "colour.gap.close.Space": {
+    description: "Coordinate space of point targets (03 §16.2).",
+    oneOf: [
+      {
+        description: "Drawing space of the target drawing.",
+        type: "string",
+        const: "drawing",
+      },
+      {
+        description: "Scene space at a frame (M3 C3.2).",
+        type: "string",
+        const: "scene",
+      },
+      {
+        description: "A view's pixels (M4 C4.2).",
+        type: "string",
+        const: "view",
+      },
+    ],
+  },
   "colour.gap.close.params": {
-    title: "colour.gap.close parameters",
+    title: "GapCloseParams",
+    description: "`colour.gap.close` parameters (03 §16.3).",
     type: "object",
     properties: {
       drawingId: {
-        type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
+        description: "The drawing (default: the current drawing).",
+        type: [
+          "string",
+          "null",
+        ],
+        default: null,
       },
       from: {
-        type: "object",
-        properties: {
-          x: {
-            type: "number",
-          },
-          y: {
-            type: "number",
-          },
-        },
-        required: [
-          "x",
-          "y",
-        ],
-        additionalProperties: false,
+        description: "Start of the drag.",
+        $ref: "#/$defs/colour.gap.close.Point",
       },
       to: {
-        type: "object",
-        properties: {
-          x: {
-            type: "number",
-          },
-          y: {
-            type: "number",
-          },
-        },
-        required: [
-          "x",
-          "y",
-        ],
-        additionalProperties: false,
+        description: "End of the drag.",
+        $ref: "#/$defs/colour.gap.close.Point",
       },
       space: {
-        type: "string",
-        enum: [
-          "drawing",
-          "scene",
-          "view",
-        ],
-        default: "drawing",
+        description: "Coordinate space (only `drawing` until M3/M4).",
+        $ref: "#/$defs/colour.gap.close.Space",
       },
       sceneId: {
-        type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
+        description: "Scene of `scene` points.",
+        type: [
+          "string",
+          "null",
+        ],
+        default: null,
       },
       frame: {
-        type: "integer",
+        description: "Frame of `scene` points.",
+        type: [
+          "integer",
+          "null",
+        ],
+        default: null,
+        minimum: 1,
+        maximum: 2147483647,
       },
       view: {
-        type: "string",
-        maxLength: 65536,
+        description: "View of `view` points.",
+        type: [
+          "string",
+          "null",
+        ],
+        default: null,
       },
     },
+    additionalProperties: false,
     required: [
       "from",
       "to",
     ],
-    additionalProperties: false,
-    "x-spec": "`drawingId?: id; from: point; to: point; space: enum \"drawing\"|\"scene\"|\"view\" = \"drawing\"; sceneId?: id; frame?: int; view?: string`",
   },
   "colour.gap.close.result": {
-    title: "colour.gap.close result",
+    title: "GapCloseResult",
+    description: "`colour.gap.close` result (03 §16.3 plus the common edit members, SI-058).",
     type: "object",
     properties: {
+      drawingId: {
+        description: "The drawing.",
+        type: "string",
+      },
       strokeId: {
-        anyOf: [
-          {
-            type: "string",
-            minLength: 1,
-            maxLength: 4096,
-            description: "object ID or path reference (10 §3)",
-          },
-          {
-            type: "null",
-          },
+        description: "The invisible stroke added (its first piece when noding split it).",
+        type: [
+          "string",
+          "null",
         ],
       },
+      strokeIds: {
+        description: "All strokes it became.",
+        type: "array",
+        items: {
+          type: "string",
+        },
+      },
+      hints: {
+        description: "Hint codes (`drawing.strokesHidden`).",
+        type: "array",
+        items: {
+          type: "string",
+        },
+      },
+      createdIds: {
+        description: "Created objects.",
+        type: "array",
+        items: {
+          type: "string",
+        },
+      },
+      modifiedIds: {
+        description: "Modified objects (content, membership or position changed; IDs kept).",
+        type: "array",
+        items: {
+          type: "string",
+        },
+      },
+      removedIds: {
+        description: "Removed objects (descendants included).",
+        type: "array",
+        items: {
+          type: "string",
+        },
+      },
       rev: {
+        description: "The drawing revision after the change.",
+        type: "integer",
+        maximum: 18446744073709551615n,
+        minimum: 0,
+      },
+    },
+    required: [
+      "drawingId",
+      "strokeIds",
+      "hints",
+      "createdIds",
+      "modifiedIds",
+      "removedIds",
+      "rev",
+    ],
+  },
+  "colour.gapClosing.get.params": {
+    title: "NoParams",
+    description: "No parameters.",
+    type: "object",
+    additionalProperties: false,
+  },
+  "colour.gapClosing.get.GapMode": {
+    description: "The automatic gap-closing mode (03 §8.8).",
+    oneOf: [
+      {
+        description: "Off (default).",
+        type: "string",
+        const: "off",
+      },
+      {
+        description: "Small.",
+        type: "string",
+        const: "small",
+      },
+      {
+        description: "Medium.",
+        type: "string",
+        const: "medium",
+      },
+      {
+        description: "Large.",
+        type: "string",
+        const: "large",
+      },
+    ],
+  },
+  "colour.gapClosing.get.Tolerances": {
+    description: "Tolerances in view pixels.",
+    type: "object",
+    properties: {
+      small: {
+        description: "Small.",
+        type: "number",
+      },
+      medium: {
+        description: "Medium.",
+        type: "number",
+      },
+      large: {
+        description: "Large.",
         type: "number",
       },
     },
     required: [
-      "strokeId",
-      "rev",
+      "small",
+      "medium",
+      "large",
     ],
-    "x-spec": "`{strokeId|null, rev}`",
-    additionalProperties: false,
-  },
-  "colour.gapClosing.get.params": {
-    title: "colour.gapClosing.get parameters",
-    type: "object",
-    properties: {},
-    additionalProperties: false,
-    "x-spec": "—",
   },
   "colour.gapClosing.get.result": {
-    title: "colour.gapClosing.get result",
+    title: "GapClosingGetResult",
+    description: "`colour.gapClosing.get` result.",
     type: "object",
     properties: {
       mode: {
-        type: "string",
+        description: "The mode.",
+        $ref: "#/$defs/colour.gapClosing.get.GapMode",
       },
       tolerancesPx: {
-        type: "object",
-        properties: {
-          small: {
-            type: "string",
-            maxLength: 65536,
-          },
-          medium: {
-            type: "string",
-            maxLength: 65536,
-          },
-          large: {
-            type: "string",
-            maxLength: 65536,
-          },
-        },
-        required: [
-          "small",
-          "medium",
-          "large",
-        ],
-        additionalProperties: false,
+        description: "Tolerances (view px; 1 px = 1 du at 100 % zoom, SI-063).",
+        $ref: "#/$defs/colour.gapClosing.get.Tolerances",
       },
     },
     required: [
       "mode",
       "tolerancesPx",
     ],
-    "x-spec": "`{mode, tolerancesPx: {small, medium, large}}`",
-    additionalProperties: false,
+  },
+  "colour.gapClosing.set.GapMode": {
+    description: "The automatic gap-closing mode (03 §8.8).",
+    oneOf: [
+      {
+        description: "Off (default).",
+        type: "string",
+        const: "off",
+      },
+      {
+        description: "Small.",
+        type: "string",
+        const: "small",
+      },
+      {
+        description: "Medium.",
+        type: "string",
+        const: "medium",
+      },
+      {
+        description: "Large.",
+        type: "string",
+        const: "large",
+      },
+    ],
   },
   "colour.gapClosing.set.params": {
-    title: "colour.gapClosing.set parameters",
+    title: "GapClosingSetParams",
+    description: "`colour.gapClosing.set` parameters.",
     type: "object",
     properties: {
       mode: {
-        type: "string",
-        enum: [
-          "off",
-          "small",
-          "medium",
-          "large",
-        ],
+        description: "The mode.",
+        $ref: "#/$defs/colour.gapClosing.set.GapMode",
       },
     },
+    additionalProperties: false,
     required: [
       "mode",
     ],
-    additionalProperties: false,
-    "x-spec": "`mode: enum \"off\"|\"small\"|\"medium\"|\"large\"`",
   },
   "colour.gapClosing.set.result": {
-    title: "colour.gapClosing.set result",
+    title: "GapClosingSetResult",
+    description: "`{mode}`.",
     type: "object",
     properties: {
       mode: {
-        type: "string",
+        description: "The mode now.",
+        $ref: "#/$defs/colour.gapClosing.set.GapMode",
       },
     },
     required: [
       "mode",
     ],
-    "x-spec": "`{mode}`",
-    additionalProperties: false,
+  },
+  "colour.missing.list.Scope": {
+    description: "Scope of colour queries (03 §16.3).",
+    oneOf: [
+      {
+        description: "Every drawing of the project.",
+        type: "string",
+        const: "project",
+      },
+      {
+        description: "Drawings of the elements of a scene.",
+        type: "string",
+        const: "scene",
+      },
+      {
+        description: "Drawings of given elements.",
+        type: "string",
+        const: "element",
+      },
+      {
+        description: "Given drawings.",
+        type: "string",
+        const: "drawing",
+      },
+    ],
   },
   "colour.missing.list.params": {
-    title: "colour.missing.list parameters",
+    title: "MissingParams",
+    description: "`colour.missing.list` parameters (03 §16.3).",
     type: "object",
     properties: {
       scope: {
-        type: "string",
-        enum: [
-          "project",
-          "scene",
-          "element",
-          "drawing",
-        ],
-        default: "project",
+        description: "Scope.",
+        $ref: "#/$defs/colour.missing.list.Scope",
       },
       sceneId: {
-        type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
+        description: "Scene of `scene` scope (default: current).",
+        type: [
+          "string",
+          "null",
+        ],
+        default: null,
       },
       elementIds: {
-        type: "array",
+        description: "Elements of `element` scope.",
+        type: [
+          "array",
+          "null",
+        ],
         items: {
           type: "string",
-          minLength: 1,
-          maxLength: 4096,
-          description: "object ID or path reference (10 §3)",
         },
-        maxItems: 100000,
+        default: null,
       },
       drawingIds: {
-        type: "array",
+        description: "Drawings of `drawing` scope.",
+        type: [
+          "array",
+          "null",
+        ],
         items: {
           type: "string",
-          minLength: 1,
-          maxLength: 4096,
-          description: "object ID or path reference (10 §3)",
         },
-        maxItems: 100000,
+        default: null,
       },
     },
     additionalProperties: false,
-    "x-spec": "`scope: enum \"project\"|\"scene\"|\"element\"|\"drawing\" = \"project\"; sceneId?: id; elementIds?: [id]; drawingIds?: [id]`",
+  },
+  "colour.missing.list.Missing": {
+    description: "One missing colour.",
+    type: "object",
+    properties: {
+      colourId: {
+        description: "The colour ID.",
+        type: "string",
+      },
+      drawingIds: {
+        description: "Drawings using it.",
+        type: "array",
+        items: {
+          type: "string",
+        },
+      },
+      recoverable: {
+        description: "A recovery copy exists.",
+        type: "boolean",
+      },
+      recordedPaletteName: {
+        description: "The palette name the copy records.",
+        type: [
+          "string",
+          "null",
+        ],
+      },
+    },
+    required: [
+      "colourId",
+      "drawingIds",
+      "recoverable",
+    ],
   },
   "colour.missing.list.result": {
-    title: "colour.missing.list result",
+    title: "MissingResult",
+    description: "`colour.missing.list` result.",
     type: "object",
     properties: {
       missing: {
+        description: "Missing colours.",
         type: "array",
         items: {
-          type: "object",
-          properties: {
-            colourId: {
-              type: "string",
-              minLength: 1,
-              maxLength: 4096,
-              description: "object ID or path reference (10 §3)",
-            },
-            drawingIds: {
-              type: "array",
-              items: {
-                type: "string",
-                minLength: 1,
-                maxLength: 4096,
-                description: "object ID or path reference (10 §3)",
-              },
-              maxItems: 100000,
-            },
-            recoverable: {
-              type: "boolean",
-            },
-            recordedPaletteName: {
-              type: "string",
-              maxLength: 65536,
-            },
-          },
-          required: [
-            "colourId",
-            "drawingIds",
-            "recoverable",
-            "recordedPaletteName",
-          ],
-          additionalProperties: false,
+          $ref: "#/$defs/colour.missing.list.Missing",
         },
-        maxItems: 100000,
       },
     },
     required: [
       "missing",
     ],
-    "x-spec": "`{missing: [{colourId, drawingIds[], recoverable: bool, recordedPaletteName}]}`",
+  },
+  "colour.paint.apply.Point": {
+    description: "A point `{x, y}` in drawing units.",
+    type: "object",
+    properties: {
+      x: {
+        description: "X (du).",
+        type: "number",
+      },
+      y: {
+        description: "Y (du, up).",
+        type: "number",
+      },
+    },
     additionalProperties: false,
+    required: [
+      "x",
+      "y",
+    ],
+  },
+  "colour.paint.apply.RectIn": {
+    description: "A rectangle `{x, y, width, height}` (drawing space).",
+    type: "object",
+    properties: {
+      x: {
+        description: "Minimum x.",
+        type: "number",
+      },
+      y: {
+        description: "Minimum y.",
+        type: "number",
+      },
+      width: {
+        description: "Width.",
+        type: "number",
+        minimum: 0,
+      },
+      height: {
+        description: "Height.",
+        type: "number",
+        minimum: 0,
+      },
+    },
+    additionalProperties: false,
+    required: [
+      "x",
+      "y",
+      "width",
+      "height",
+    ],
+  },
+  "colour.paint.apply.Space": {
+    description: "Coordinate space of point targets (03 §16.2).",
+    oneOf: [
+      {
+        description: "Drawing space of the target drawing.",
+        type: "string",
+        const: "drawing",
+      },
+      {
+        description: "Scene space at a frame (M3 C3.2).",
+        type: "string",
+        const: "scene",
+      },
+      {
+        description: "A view's pixels (M4 C4.2).",
+        type: "string",
+        const: "view",
+      },
+    ],
+  },
+  "colour.paint.apply.MappingDrag": {
+    description: "`{from, to}` of a press–drag (gradient or texture mapping).",
+    type: "object",
+    properties: {
+      from: {
+        description: "Press point.",
+        $ref: "#/$defs/colour.paint.apply.Point",
+      },
+      to: {
+        description: "Release point.",
+        $ref: "#/$defs/colour.paint.apply.Point",
+      },
+    },
+    additionalProperties: false,
+    required: [
+      "from",
+      "to",
+    ],
+  },
+  "colour.paint.apply.GapChoice": {
+    description: "Gap-closing choice of a paint command (03 §8.8).",
+    oneOf: [
+      {
+        description: "The user setting.",
+        type: "string",
+        const: "current",
+      },
+      {
+        description: "No gap closing.",
+        type: "string",
+        const: "off",
+      },
+      {
+        description: "Small (3 view px).",
+        type: "string",
+        const: "small",
+      },
+      {
+        description: "Medium (8 view px).",
+        type: "string",
+        const: "medium",
+      },
+      {
+        description: "Large (16 view px).",
+        type: "string",
+        const: "large",
+      },
+    ],
   },
   "colour.paint.apply.params": {
-    title: "colour.paint.apply parameters",
+    title: "PaintParams",
+    description: "`colour.paint.apply` parameters (03 §16.3; `onlyPainted`, `lasso`, `rect`, `respectProtected`: SI-061).",
     type: "object",
     properties: {
       drawingId: {
-        type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
+        description: "The drawing (default: the current drawing).",
+        type: [
+          "string",
+          "null",
+        ],
+        default: null,
       },
       objectIds: {
-        type: "array",
+        description: "Zones, lines, brush strokes or text to paint.",
+        type: [
+          "array",
+          "null",
+        ],
         items: {
           type: "string",
-          minLength: 1,
-          maxLength: 4096,
-          description: "object ID or path reference (10 §3)",
         },
         maxItems: 100000,
+        default: null,
       },
       points: {
-        type: "array",
+        description: "Points: the front-most object under each is painted.",
+        type: [
+          "array",
+          "null",
+        ],
         items: {
-          type: "object",
-          properties: {
-            x: {
-              type: "number",
-            },
-            y: {
-              type: "number",
-            },
-          },
-          required: [
-            "x",
-            "y",
-          ],
-          additionalProperties: false,
+          $ref: "#/$defs/colour.paint.apply.Point",
         },
-        maxItems: 100000,
+        maxItems: 10000,
+        default: null,
       },
       path: {
-        type: "array",
-        items: {
-          type: "object",
-          properties: {
-            x: {
-              type: "number",
-            },
-            y: {
-              type: "number",
-            },
-          },
-          required: [
-            "x",
-            "y",
-          ],
-          additionalProperties: false,
-        },
-        maxItems: 100000,
-      },
-      space: {
-        type: "string",
-        enum: [
-          "drawing",
-          "scene",
-          "view",
+        description: "A crossing path: every zone and line it passes over is painted.",
+        type: [
+          "array",
+          "null",
         ],
-        default: "drawing",
-      },
-      sceneId: {
-        type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
-      },
-      frame: {
-        type: "integer",
-      },
-      elementId: {
-        type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
-      },
-      view: {
-        type: "string",
-        maxLength: 65536,
-      },
-      colourId: {
-        type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
-      },
-      onlyUnpainted: {
-        type: "boolean",
-        default: false,
-      },
-      mapping: {
-        type: "object",
-        properties: {
-          from: {
-            type: "object",
-            properties: {
-              x: {
-                type: "number",
-              },
-              y: {
-                type: "number",
-              },
-            },
-            required: [
-              "x",
-              "y",
-            ],
-            additionalProperties: false,
-          },
-          to: {
-            type: "object",
-            properties: {
-              x: {
-                type: "number",
-              },
-              y: {
-                type: "number",
-              },
-            },
-            required: [
-              "x",
-              "y",
-            ],
-            additionalProperties: false,
-          },
-        },
-        required: [
-          "from",
-          "to",
-        ],
-        additionalProperties: false,
-      },
-      gapClosing: {
-        type: "string",
-        enum: [
-          "current",
-          "off",
-          "small",
-          "medium",
-          "large",
-        ],
-        default: "current",
-      },
-      expectRev: {
-        type: "integer",
-      },
-    },
-    additionalProperties: false,
-    "x-spec": "`drawingId?: id; objectIds?: [id]; points?: [point]; path?: [point]; space: enum \"drawing\"|\"scene\"|\"view\" = \"drawing\"; sceneId?: id; frame?: int; elementId?: id; view?: string; colourId?: id; onlyUnpainted: bool = false; mapping?: {from: point, to: point}; gapClosing: enum \"current\"|\"off\"|\"small\"|\"medium\"|\"large\" = \"current\"; expectRev?: int`",
-  },
-  "colour.paint.apply.result": {
-    title: "colour.paint.apply result",
-    type: "object",
-    properties: {
-      painted: {
-        type: "array",
         items: {
-          type: "object",
-          properties: {
-            drawingId: {
-              type: "string",
-              minLength: 1,
-              maxLength: 4096,
-              description: "object ID or path reference (10 §3)",
-            },
-            objectId: {
-              type: "string",
-              minLength: 1,
-              maxLength: 4096,
-              description: "object ID or path reference (10 §3)",
-            },
-            objectKind: {
-              type: "string",
-              maxLength: 65536,
-            },
-            previousColourId: {
-              type: "string",
-              minLength: 1,
-              maxLength: 4096,
-              description: "object ID or path reference (10 §3)",
-            },
-          },
-          required: [
-            "drawingId",
-            "objectId",
-            "objectKind",
-            "previousColourId",
-          ],
-          additionalProperties: false,
+          $ref: "#/$defs/colour.paint.apply.Point",
         },
         maxItems: 100000,
-      },
-      skipped: {
-        type: "array",
-        items: {
-          type: "object",
-          properties: {
-            target: {
-              type: "string",
-              maxLength: 65536,
-            },
-            reason: {
-              type: "string",
-              maxLength: 65536,
-            },
-          },
-          required: [
-            "target",
-            "reason",
-          ],
-          additionalProperties: false,
-        },
-        maxItems: 100000,
-      },
-      addedStrokeIds: {
-        type: "array",
-        items: {
-          type: "string",
-          minLength: 1,
-          maxLength: 4096,
-          description: "object ID or path reference (10 §3)",
-        },
-        maxItems: 100000,
-      },
-      rev: {
-        type: "number",
-      },
-    },
-    required: [
-      "painted",
-      "skipped",
-      "addedStrokeIds",
-      "rev",
-    ],
-    "x-spec": "`{painted: [{drawingId, objectId, objectKind, previousColourId}], skipped: [{target, reason}], addedStrokeIds: [id], rev}`",
-    additionalProperties: false,
-  },
-  "colour.paint.remove.params": {
-    title: "colour.paint.remove parameters",
-    type: "object",
-    properties: {
-      drawingId: {
-        type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
-      },
-      objectIds: {
-        type: "array",
-        items: {
-          type: "string",
-          minLength: 1,
-          maxLength: 4096,
-          description: "object ID or path reference (10 §3)",
-        },
-        maxItems: 100000,
-      },
-      points: {
-        type: "array",
-        items: {
-          type: "object",
-          properties: {
-            x: {
-              type: "number",
-            },
-            y: {
-              type: "number",
-            },
-          },
-          required: [
-            "x",
-            "y",
-          ],
-          additionalProperties: false,
-        },
-        maxItems: 100000,
-      },
-      space: {
-        type: "string",
-        enum: [
-          "drawing",
-          "scene",
-          "view",
-        ],
-        default: "drawing",
-      },
-      sceneId: {
-        type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
-      },
-      frame: {
-        type: "integer",
-      },
-      view: {
-        type: "string",
-        maxLength: 65536,
-      },
-      gapClosing: {
-        type: "string",
-        enum: [
-          "current",
-          "off",
-          "small",
-          "medium",
-          "large",
-        ],
-        default: "current",
-      },
-      expectRev: {
-        type: "integer",
-      },
-    },
-    additionalProperties: false,
-    "x-spec": "`drawingId?: id; objectIds?: [id]; points?: [point]; space: enum \"drawing\"|\"scene\"|\"view\" = \"drawing\"; sceneId?: id; frame?: int; view?: string; gapClosing: enum \"current\"|\"off\"|\"small\"|\"medium\"|\"large\" = \"current\"; expectRev?: int`",
-  },
-  "colour.paint.remove.result": {
-    title: "colour.paint.remove result",
-    type: "object",
-    properties: {
-      unpainted: {
-        type: "array",
-        items: {
-          type: "object",
-          properties: {
-            drawingId: {
-              type: "string",
-              minLength: 1,
-              maxLength: 4096,
-              description: "object ID or path reference (10 §3)",
-            },
-            objectId: {
-              type: "string",
-              minLength: 1,
-              maxLength: 4096,
-              description: "object ID or path reference (10 §3)",
-            },
-            previousColourId: {
-              type: "string",
-              minLength: 1,
-              maxLength: 4096,
-              description: "object ID or path reference (10 §3)",
-            },
-          },
-          required: [
-            "drawingId",
-            "objectId",
-            "previousColourId",
-          ],
-          additionalProperties: false,
-        },
-        maxItems: 100000,
-      },
-      skipped: {
-        type: "array",
-        items: {
-          type: "object",
-          properties: {
-            target: {
-              type: "string",
-              maxLength: 65536,
-            },
-            reason: {
-              type: "string",
-              maxLength: 65536,
-            },
-          },
-          required: [
-            "target",
-            "reason",
-          ],
-          additionalProperties: false,
-        },
-        maxItems: 100000,
-      },
-      rev: {
-        type: "number",
-      },
-    },
-    required: [
-      "unpainted",
-      "skipped",
-      "rev",
-    ],
-    "x-spec": "`{unpainted: [{drawingId, objectId, previousColourId}], skipped: [{target, reason}], rev}`",
-    additionalProperties: false,
-  },
-  "colour.paintUnpainted.apply.params": {
-    title: "colour.paintUnpainted.apply parameters",
-    type: "object",
-    properties: {
-      drawingId: {
-        type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
-      },
-      objectIds: {
-        type: "array",
-        items: {
-          type: "string",
-          minLength: 1,
-          maxLength: 4096,
-          description: "object ID or path reference (10 §3)",
-        },
-        maxItems: 100000,
-      },
-      points: {
-        type: "array",
-        items: {
-          type: "object",
-          properties: {
-            x: {
-              type: "number",
-            },
-            y: {
-              type: "number",
-            },
-          },
-          required: [
-            "x",
-            "y",
-          ],
-          additionalProperties: false,
-        },
-        maxItems: 100000,
+        default: null,
       },
       lasso: {
-        type: "array",
+        description: "A lasso: every zone whose interior point lies inside is painted (SI-061).",
+        type: [
+          "array",
+          "null",
+        ],
         items: {
-          type: "object",
-          properties: {
-            x: {
-              type: "number",
-            },
-            y: {
-              type: "number",
-            },
-          },
-          required: [
-            "x",
-            "y",
-          ],
-          additionalProperties: false,
+          $ref: "#/$defs/colour.paint.apply.Point",
         },
         maxItems: 100000,
+        default: null,
+      },
+      rect: {
+        description: "A marquee: every zone whose interior point lies inside is painted (SI-061).",
+        anyOf: [
+          {
+            $ref: "#/$defs/colour.paint.apply.RectIn",
+          },
+          {
+            type: "null",
+          },
+        ],
+      },
+      space: {
+        description: "Coordinate space of points (only `drawing` until M3/M4).",
+        $ref: "#/$defs/colour.paint.apply.Space",
+      },
+      sceneId: {
+        description: "Scene of `scene` points (M3 C3.2).",
+        type: [
+          "string",
+          "null",
+        ],
+        default: null,
+      },
+      frame: {
+        description: "Frame of `scene` points.",
+        type: [
+          "integer",
+          "null",
+        ],
+        default: null,
+        minimum: 1,
+        maximum: 2147483647,
+      },
+      elementId: {
+        description: "The element of the drawing (default: current).",
+        type: [
+          "string",
+          "null",
+        ],
+        default: null,
+      },
+      view: {
+        description: "View of `view` points (M4 C4.2).",
+        type: [
+          "string",
+          "null",
+        ],
+        default: null,
+      },
+      colourId: {
+        description: "The colour (default: the current fill colour).",
+        type: [
+          "string",
+          "null",
+        ],
+        default: null,
+      },
+      onlyUnpainted: {
+        description: "Paint unpainted zones only.",
+        type: "boolean",
+        default: false,
+      },
+      onlyPainted: {
+        description: "Repaint: painted zones only (SI-061).",
+        type: "boolean",
+        default: false,
+      },
+      respectProtected: {
+        description: "Respect protected colours (SI-061).",
+        type: "boolean",
+        default: true,
+      },
+      mapping: {
+        description: "Gradient/texture mapping of a press–drag.",
+        anyOf: [
+          {
+            $ref: "#/$defs/colour.paint.apply.MappingDrag",
+          },
+          {
+            type: "null",
+          },
+        ],
+      },
+      gapClosing: {
+        description: "Automatic gap closing for point targets.",
+        $ref: "#/$defs/colour.paint.apply.GapChoice",
+        default: "current",
+      },
+      expectRev: {
+        description: "The drawing revision the caller read.",
+        type: [
+          "integer",
+          "null",
+        ],
+        maximum: 18446744073709551615n,
+        minimum: 0,
+        default: null,
+      },
+    },
+    additionalProperties: false,
+  },
+  "colour.paint.apply.Painted": {
+    description: "One painted object.",
+    type: "object",
+    properties: {
+      drawingId: {
+        description: "The drawing.",
+        type: "string",
+      },
+      objectId: {
+        description: "The object (zone IDs are those of the drawing after the paint).",
+        type: "string",
+      },
+      objectKind: {
+        description: "`zone`, `pencil`, `brush` or `text`.",
+        type: "string",
+      },
+      previousColourId: {
+        description: "Its colour before (`null` = unpainted).",
+        type: [
+          "string",
+          "null",
+        ],
+      },
+    },
+    required: [
+      "drawingId",
+      "objectId",
+      "objectKind",
+    ],
+  },
+  "colour.paint.apply.Skipped": {
+    description: "One target left alone.",
+    type: "object",
+    properties: {
+      target: {
+        description: "The target: an object ID, or `point:<i>` / `path` / `lasso` / `rect`.",
+        type: "string",
+      },
+      reason: {
+        description: "A `colour.*` code: `colour.noTarget`, `colour.zoneNotClosed`, `colour.protected`, `colour.alreadyPainted`,\n`colour.notPainted`, `colour.cannotUnpaint`, `colour.invisibleTarget`, `colour.notPaintable`.",
+        type: "string",
+      },
+    },
+    required: [
+      "target",
+      "reason",
+    ],
+  },
+  "colour.paint.apply.result": {
+    title: "PaintResult",
+    description: "`colour.paint.apply` result (03 §16.3, plus the common edit members of 02 §13.1 item 11, SI-058).",
+    type: "object",
+    properties: {
+      drawingId: {
+        description: "The drawing.",
+        type: "string",
+      },
+      painted: {
+        description: "Painted objects.",
+        type: "array",
+        items: {
+          $ref: "#/$defs/colour.paint.apply.Painted",
+        },
+      },
+      skipped: {
+        description: "Targets left alone, with the reason.",
+        type: "array",
+        items: {
+          $ref: "#/$defs/colour.paint.apply.Skipped",
+        },
+      },
+      addedStrokeIds: {
+        description: "Invisible strokes added by gap closing (kept so the zones stay closed, 03 §8.8).",
+        type: "array",
+        items: {
+          type: "string",
+        },
+      },
+      createdIds: {
+        description: "Created objects.",
+        type: "array",
+        items: {
+          type: "string",
+        },
+      },
+      modifiedIds: {
+        description: "Modified objects (content, membership or position changed; IDs kept).",
+        type: "array",
+        items: {
+          type: "string",
+        },
+      },
+      removedIds: {
+        description: "Removed objects (descendants included).",
+        type: "array",
+        items: {
+          type: "string",
+        },
+      },
+      rev: {
+        description: "The drawing revision after the change.",
+        type: "integer",
+        maximum: 18446744073709551615n,
+        minimum: 0,
+      },
+    },
+    required: [
+      "drawingId",
+      "painted",
+      "skipped",
+      "addedStrokeIds",
+      "createdIds",
+      "modifiedIds",
+      "removedIds",
+      "rev",
+    ],
+  },
+  "colour.paint.remove.Point": {
+    description: "A point `{x, y}` in drawing units.",
+    type: "object",
+    properties: {
+      x: {
+        description: "X (du).",
+        type: "number",
+      },
+      y: {
+        description: "Y (du, up).",
+        type: "number",
+      },
+    },
+    additionalProperties: false,
+    required: [
+      "x",
+      "y",
+    ],
+  },
+  "colour.paint.remove.Space": {
+    description: "Coordinate space of point targets (03 §16.2).",
+    oneOf: [
+      {
+        description: "Drawing space of the target drawing.",
+        type: "string",
+        const: "drawing",
+      },
+      {
+        description: "Scene space at a frame (M3 C3.2).",
+        type: "string",
+        const: "scene",
+      },
+      {
+        description: "A view's pixels (M4 C4.2).",
+        type: "string",
+        const: "view",
+      },
+    ],
+  },
+  "colour.paint.remove.GapChoice": {
+    description: "Gap-closing choice of a paint command (03 §8.8).",
+    oneOf: [
+      {
+        description: "The user setting.",
+        type: "string",
+        const: "current",
+      },
+      {
+        description: "No gap closing.",
+        type: "string",
+        const: "off",
+      },
+      {
+        description: "Small (3 view px).",
+        type: "string",
+        const: "small",
+      },
+      {
+        description: "Medium (8 view px).",
+        type: "string",
+        const: "medium",
+      },
+      {
+        description: "Large (16 view px).",
+        type: "string",
+        const: "large",
+      },
+    ],
+  },
+  "colour.paint.remove.params": {
+    title: "UnpaintParams",
+    description: "`colour.paint.remove` parameters (03 §16.3).",
+    type: "object",
+    properties: {
+      drawingId: {
+        description: "The drawing (default: the current drawing).",
+        type: [
+          "string",
+          "null",
+        ],
+        default: null,
+      },
+      objectIds: {
+        description: "Zones or lines to unpaint.",
+        type: [
+          "array",
+          "null",
+        ],
+        items: {
+          type: "string",
+        },
+        maxItems: 100000,
+        default: null,
+      },
+      points: {
+        description: "Points: the front-most object under each.",
+        type: [
+          "array",
+          "null",
+        ],
+        items: {
+          $ref: "#/$defs/colour.paint.remove.Point",
+        },
+        maxItems: 10000,
+        default: null,
+      },
+      space: {
+        description: "Coordinate space of points (only `drawing` until M3/M4).",
+        $ref: "#/$defs/colour.paint.remove.Space",
+      },
+      sceneId: {
+        description: "Scene of `scene` points (M3 C3.2).",
+        type: [
+          "string",
+          "null",
+        ],
+        default: null,
+      },
+      frame: {
+        description: "Frame of `scene` points.",
+        type: [
+          "integer",
+          "null",
+        ],
+        default: null,
+        minimum: 1,
+        maximum: 2147483647,
+      },
+      view: {
+        description: "View of `view` points (M4 C4.2).",
+        type: [
+          "string",
+          "null",
+        ],
+        default: null,
+      },
+      gapClosing: {
+        description: "Automatic gap closing for point targets.",
+        $ref: "#/$defs/colour.paint.remove.GapChoice",
+        default: "current",
+      },
+      expectRev: {
+        description: "The drawing revision the caller read.",
+        type: [
+          "integer",
+          "null",
+        ],
+        maximum: 18446744073709551615n,
+        minimum: 0,
+        default: null,
+      },
+    },
+    additionalProperties: false,
+  },
+  "colour.paint.remove.Unpainted": {
+    description: "One unpainted object.",
+    type: "object",
+    properties: {
+      drawingId: {
+        description: "The drawing.",
+        type: "string",
+      },
+      objectId: {
+        description: "The object.",
+        type: "string",
+      },
+      previousColourId: {
+        description: "Its colour before.",
+        type: [
+          "string",
+          "null",
+        ],
+      },
+    },
+    required: [
+      "drawingId",
+      "objectId",
+    ],
+  },
+  "colour.paint.remove.Skipped": {
+    description: "One target left alone.",
+    type: "object",
+    properties: {
+      target: {
+        description: "The target: an object ID, or `point:<i>` / `path` / `lasso` / `rect`.",
+        type: "string",
+      },
+      reason: {
+        description: "A `colour.*` code: `colour.noTarget`, `colour.zoneNotClosed`, `colour.protected`, `colour.alreadyPainted`,\n`colour.notPainted`, `colour.cannotUnpaint`, `colour.invisibleTarget`, `colour.notPaintable`.",
+        type: "string",
+      },
+    },
+    required: [
+      "target",
+      "reason",
+    ],
+  },
+  "colour.paint.remove.result": {
+    title: "UnpaintResult",
+    description: "`colour.paint.remove` result (03 §16.3 plus the common edit members, SI-058).",
+    type: "object",
+    properties: {
+      drawingId: {
+        description: "The drawing.",
+        type: "string",
+      },
+      unpainted: {
+        description: "Unpainted objects (lines became invisible strokes).",
+        type: "array",
+        items: {
+          $ref: "#/$defs/colour.paint.remove.Unpainted",
+        },
+      },
+      skipped: {
+        description: "Targets left alone, with the reason.",
+        type: "array",
+        items: {
+          $ref: "#/$defs/colour.paint.remove.Skipped",
+        },
+      },
+      createdIds: {
+        description: "Created objects.",
+        type: "array",
+        items: {
+          type: "string",
+        },
+      },
+      modifiedIds: {
+        description: "Modified objects (content, membership or position changed; IDs kept).",
+        type: "array",
+        items: {
+          type: "string",
+        },
+      },
+      removedIds: {
+        description: "Removed objects (descendants included).",
+        type: "array",
+        items: {
+          type: "string",
+        },
+      },
+      rev: {
+        description: "The drawing revision after the change.",
+        type: "integer",
+        maximum: 18446744073709551615n,
+        minimum: 0,
+      },
+    },
+    required: [
+      "drawingId",
+      "unpainted",
+      "skipped",
+      "createdIds",
+      "modifiedIds",
+      "removedIds",
+      "rev",
+    ],
+  },
+  "colour.paintUnpainted.apply.Point": {
+    description: "A point `{x, y}` in drawing units.",
+    type: "object",
+    properties: {
+      x: {
+        description: "X (du).",
+        type: "number",
+      },
+      y: {
+        description: "Y (du, up).",
+        type: "number",
+      },
+    },
+    additionalProperties: false,
+    required: [
+      "x",
+      "y",
+    ],
+  },
+  "colour.paintUnpainted.apply.Space": {
+    description: "Coordinate space of point targets (03 §16.2).",
+    oneOf: [
+      {
+        description: "Drawing space of the target drawing.",
+        type: "string",
+        const: "drawing",
+      },
+      {
+        description: "Scene space at a frame (M3 C3.2).",
+        type: "string",
+        const: "scene",
+      },
+      {
+        description: "A view's pixels (M4 C4.2).",
+        type: "string",
+        const: "view",
+      },
+    ],
+  },
+  "colour.paintUnpainted.apply.GapChoice": {
+    description: "Gap-closing choice of a paint command (03 §8.8).",
+    oneOf: [
+      {
+        description: "The user setting.",
+        type: "string",
+        const: "current",
+      },
+      {
+        description: "No gap closing.",
+        type: "string",
+        const: "off",
+      },
+      {
+        description: "Small (3 view px).",
+        type: "string",
+        const: "small",
+      },
+      {
+        description: "Medium (8 view px).",
+        type: "string",
+        const: "medium",
+      },
+      {
+        description: "Large (16 view px).",
+        type: "string",
+        const: "large",
+      },
+    ],
+  },
+  "colour.paintUnpainted.apply.params": {
+    title: "PaintUnpaintedParams",
+    description: "`colour.paintUnpainted.apply` parameters (03 §16.3).",
+    type: "object",
+    properties: {
+      drawingId: {
+        description: "The drawing (default: the current drawing).",
+        type: [
+          "string",
+          "null",
+        ],
+        default: null,
+      },
+      objectIds: {
+        description: "Zones to fill when unpainted.",
+        type: [
+          "array",
+          "null",
+        ],
+        items: {
+          type: "string",
+        },
+        maxItems: 100000,
+        default: null,
+      },
+      points: {
+        description: "Points: the zone under each, when unpainted.",
+        type: [
+          "array",
+          "null",
+        ],
+        items: {
+          $ref: "#/$defs/colour.paintUnpainted.apply.Point",
+        },
+        maxItems: 10000,
+        default: null,
+      },
+      lasso: {
+        description: "A lasso: every unpainted zone whose interior point lies inside.",
+        type: [
+          "array",
+          "null",
+        ],
+        items: {
+          $ref: "#/$defs/colour.paintUnpainted.apply.Point",
+        },
+        maxItems: 100000,
+        default: null,
       },
       all: {
+        description: "Every unpainted zone of the drawing.",
         type: "boolean",
         default: false,
       },
       space: {
-        type: "string",
-        enum: [
-          "drawing",
-          "scene",
-          "view",
-        ],
-        default: "drawing",
+        description: "Coordinate space of points (only `drawing` until M3/M4).",
+        $ref: "#/$defs/colour.paintUnpainted.apply.Space",
       },
       sceneId: {
-        type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
+        description: "Scene of `scene` points (M3 C3.2).",
+        type: [
+          "string",
+          "null",
+        ],
+        default: null,
       },
       frame: {
-        type: "integer",
+        description: "Frame of `scene` points.",
+        type: [
+          "integer",
+          "null",
+        ],
+        default: null,
+        minimum: 1,
+        maximum: 2147483647,
       },
       view: {
-        type: "string",
-        maxLength: 65536,
+        description: "View of `view` points (M4 C4.2).",
+        type: [
+          "string",
+          "null",
+        ],
+        default: null,
       },
       colourId: {
-        type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
+        description: "The colour (default: the current fill colour).",
+        type: [
+          "string",
+          "null",
+        ],
+        default: null,
       },
       gapClosing: {
-        type: "string",
-        enum: [
-          "current",
-          "off",
-          "small",
-          "medium",
-          "large",
-        ],
+        description: "Automatic gap closing for point targets.",
+        $ref: "#/$defs/colour.paintUnpainted.apply.GapChoice",
         default: "current",
       },
       expectRev: {
-        type: "integer",
+        description: "The drawing revision the caller read.",
+        type: [
+          "integer",
+          "null",
+        ],
+        maximum: 18446744073709551615n,
+        minimum: 0,
+        default: null,
       },
     },
     additionalProperties: false,
-    "x-spec": "`drawingId?: id; objectIds?: [id]; points?: [point]; lasso?: [point]; all: bool = false; space: enum \"drawing\"|\"scene\"|\"view\" = \"drawing\"; sceneId?: id; frame?: int; view?: string; colourId?: id; gapClosing: enum \"current\"|\"off\"|\"small\"|\"medium\"|\"large\" = \"current\"; expectRev?: int`",
   },
-  "colour.paintUnpainted.apply.result": {
-    title: "colour.paintUnpainted.apply result",
+  "colour.paintUnpainted.apply.Painted": {
+    description: "One painted object.",
     type: "object",
     properties: {
-      painted: {
-        type: "array",
-        items: {
-          type: "object",
-          properties: {
-            drawingId: {
-              type: "string",
-              minLength: 1,
-              maxLength: 4096,
-              description: "object ID or path reference (10 §3)",
-            },
-            objectId: {
-              type: "string",
-              minLength: 1,
-              maxLength: 4096,
-              description: "object ID or path reference (10 §3)",
-            },
-          },
-          required: [
-            "drawingId",
-            "objectId",
-          ],
-          additionalProperties: false,
-        },
-        maxItems: 100000,
+      drawingId: {
+        description: "The drawing.",
+        type: "string",
       },
-      skippedPainted: {
-        type: "integer",
+      objectId: {
+        description: "The object (zone IDs are those of the drawing after the paint).",
+        type: "string",
       },
-      addedStrokeIds: {
-        type: "array",
-        items: {
-          type: "string",
-          minLength: 1,
-          maxLength: 4096,
-          description: "object ID or path reference (10 §3)",
-        },
-        maxItems: 100000,
+      objectKind: {
+        description: "`zone`, `pencil`, `brush` or `text`.",
+        type: "string",
       },
-      rev: {
-        type: "number",
+      previousColourId: {
+        description: "Its colour before (`null` = unpainted).",
+        type: [
+          "string",
+          "null",
+        ],
       },
     },
     required: [
+      "drawingId",
+      "objectId",
+      "objectKind",
+    ],
+  },
+  "colour.paintUnpainted.apply.Skipped": {
+    description: "One target left alone.",
+    type: "object",
+    properties: {
+      target: {
+        description: "The target: an object ID, or `point:<i>` / `path` / `lasso` / `rect`.",
+        type: "string",
+      },
+      reason: {
+        description: "A `colour.*` code: `colour.noTarget`, `colour.zoneNotClosed`, `colour.protected`, `colour.alreadyPainted`,\n`colour.notPainted`, `colour.cannotUnpaint`, `colour.invisibleTarget`, `colour.notPaintable`.",
+        type: "string",
+      },
+    },
+    required: [
+      "target",
+      "reason",
+    ],
+  },
+  "colour.paintUnpainted.apply.result": {
+    title: "PaintUnpaintedResult",
+    description: "`colour.paintUnpainted.apply` result (03 §16.3 plus the common edit members, SI-058).",
+    type: "object",
+    properties: {
+      drawingId: {
+        description: "The drawing.",
+        type: "string",
+      },
+      painted: {
+        description: "Filled zones.",
+        type: "array",
+        items: {
+          $ref: "#/$defs/colour.paintUnpainted.apply.Painted",
+        },
+      },
+      skippedPainted: {
+        description: "Targets already painted (left unchanged).",
+        type: "integer",
+        format: "uint",
+        minimum: 0,
+      },
+      skipped: {
+        description: "Targets left alone for other reasons.",
+        type: "array",
+        items: {
+          $ref: "#/$defs/colour.paintUnpainted.apply.Skipped",
+        },
+      },
+      addedStrokeIds: {
+        description: "Invisible strokes added by gap closing.",
+        type: "array",
+        items: {
+          type: "string",
+        },
+      },
+      createdIds: {
+        description: "Created objects.",
+        type: "array",
+        items: {
+          type: "string",
+        },
+      },
+      modifiedIds: {
+        description: "Modified objects (content, membership or position changed; IDs kept).",
+        type: "array",
+        items: {
+          type: "string",
+        },
+      },
+      removedIds: {
+        description: "Removed objects (descendants included).",
+        type: "array",
+        items: {
+          type: "string",
+        },
+      },
+      rev: {
+        description: "The drawing revision after the change.",
+        type: "integer",
+        maximum: 18446744073709551615n,
+        minimum: 0,
+      },
+    },
+    required: [
+      "drawingId",
       "painted",
       "skippedPainted",
+      "skipped",
       "addedStrokeIds",
+      "createdIds",
+      "modifiedIds",
+      "removedIds",
       "rev",
     ],
-    "x-spec": "`{painted: [{drawingId, objectId}], skippedPainted: int, addedStrokeIds: [id], rev}`",
-    additionalProperties: false,
   },
   "colour.palette.changed.params": {
     title: "colour.palette.changed parameters",
@@ -23738,141 +24289,183 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
     "x-spec": "`{paletteId, created: [id], updated: [id], removed: [id]}`",
     additionalProperties: false,
   },
+  "colour.pick.Point": {
+    description: "A point `{x, y}` in drawing units.",
+    type: "object",
+    properties: {
+      x: {
+        description: "X (du).",
+        type: "number",
+      },
+      y: {
+        description: "Y (du, up).",
+        type: "number",
+      },
+    },
+    additionalProperties: false,
+    required: [
+      "x",
+      "y",
+    ],
+  },
+  "colour.pick.Space": {
+    description: "Coordinate space of point targets (03 §16.2).",
+    oneOf: [
+      {
+        description: "Drawing space of the target drawing.",
+        type: "string",
+        const: "drawing",
+      },
+      {
+        description: "Scene space at a frame (M3 C3.2).",
+        type: "string",
+        const: "scene",
+      },
+      {
+        description: "A view's pixels (M4 C4.2).",
+        type: "string",
+        const: "view",
+      },
+    ],
+  },
   "colour.pick.params": {
-    title: "colour.pick parameters",
+    title: "PickParams",
+    description: "`colour.pick` parameters (03 §16.3).",
     type: "object",
     properties: {
       point: {
-        type: "object",
-        properties: {
-          x: {
-            type: "number",
-          },
-          y: {
-            type: "number",
-          },
-        },
-        required: [
-          "x",
-          "y",
-        ],
-        additionalProperties: false,
+        description: "The point.",
+        $ref: "#/$defs/colour.pick.Point",
       },
       space: {
-        type: "string",
-        enum: [
-          "drawing",
-          "scene",
-          "view",
-        ],
-        default: "view",
+        description: "Its space (`drawing` until M3/M4; the spec's default `view` needs the desktop views).",
+        $ref: "#/$defs/colour.pick.Space",
       },
       drawingId: {
-        type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
+        description: "The drawing of a `drawing` point (default: current).",
+        type: [
+          "string",
+          "null",
+        ],
+        default: null,
       },
       sceneId: {
-        type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
+        description: "Scene of a `scene` point.",
+        type: [
+          "string",
+          "null",
+        ],
+        default: null,
       },
       frame: {
-        type: "integer",
+        description: "Frame of a `scene` point.",
+        type: [
+          "integer",
+          "null",
+        ],
+        default: null,
+        minimum: 1,
+        maximum: 2147483647,
       },
       elementId: {
-        type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
+        description: "Element restriction.",
+        type: [
+          "string",
+          "null",
+        ],
+        default: null,
       },
       view: {
-        type: "string",
-        maxLength: 65536,
+        description: "View of a `view` point.",
+        type: [
+          "string",
+          "null",
+        ],
+        default: null,
       },
     },
+    additionalProperties: false,
     required: [
       "point",
     ],
-    additionalProperties: false,
-    "x-spec": "`point: point; space: enum \"drawing\"|\"scene\"|\"view\" = \"view\"; drawingId?: id; sceneId?: id; frame?: int; elementId?: id; view?: string`",
+  },
+  "colour.pick.PickedObject": {
+    description: "The object a pick found.",
+    type: "object",
+    properties: {
+      drawingId: {
+        description: "The drawing.",
+        type: "string",
+      },
+      elementId: {
+        description: "An element exposing it.",
+        type: [
+          "string",
+          "null",
+        ],
+      },
+      objectId: {
+        description: "The object.",
+        type: "string",
+      },
+      objectKind: {
+        description: "`zone`, `pencil`, `brush` or `text`.",
+        type: "string",
+      },
+    },
+    required: [
+      "drawingId",
+      "objectId",
+      "objectKind",
+    ],
   },
   "colour.pick.result": {
-    title: "colour.pick result",
+    title: "PickResult",
+    description: "`colour.pick` result (03 §16.3).",
     type: "object",
     properties: {
       colourId: {
-        anyOf: [
-          {
-            type: "string",
-            minLength: 1,
-            maxLength: 4096,
-            description: "object ID or path reference (10 §3)",
-          },
-          {
-            type: "null",
-          },
+        description: "The colour (`null`: unpainted or nothing).",
+        type: [
+          "string",
+          "null",
         ],
       },
       paletteId: {
-        anyOf: [
-          {
-            type: "string",
-            minLength: 1,
-            maxLength: 4096,
-            description: "object ID or path reference (10 §3)",
-          },
-          {
-            type: "null",
-          },
+        description: "Its palette.",
+        type: [
+          "string",
+          "null",
         ],
       },
       swatchName: {
-        type: "string",
-        maxLength: 65536,
+        description: "Its swatch name.",
+        type: [
+          "string",
+          "null",
+        ],
       },
       rgba: {
+        description: "The swatch's value for the scene's style as `#RRGGBBAA` (first stop of a gradient; `#00000000` for textures,\nunpainted and empty canvas) until the renderer composites (SI-065).",
         type: "string",
-        pattern: "^#[0-9A-Fa-f]{6}([0-9A-Fa-f]{2})?$",
-        description: "#RRGGBB or #RRGGBBAA",
+      },
+      matrix: {
+        description: "The fill mapping of a gradient or texture fill.",
+        type: [
+          "array",
+          "null",
+        ],
+        items: {
+          type: "number",
+        },
+        minItems: 6,
+        maxItems: 6,
       },
       object: {
+        description: "The object picked.",
         anyOf: [
           {
-            type: "object",
-            properties: {
-              drawingId: {
-                type: "string",
-                minLength: 1,
-                maxLength: 4096,
-                description: "object ID or path reference (10 §3)",
-              },
-              elementId: {
-                type: "string",
-                minLength: 1,
-                maxLength: 4096,
-                description: "object ID or path reference (10 §3)",
-              },
-              objectId: {
-                type: "string",
-                minLength: 1,
-                maxLength: 4096,
-                description: "object ID or path reference (10 §3)",
-              },
-              objectKind: {
-                type: "string",
-                maxLength: 65536,
-              },
-            },
-            required: [
-              "drawingId",
-              "elementId",
-              "objectId",
-              "objectKind",
-            ],
-            additionalProperties: false,
+            $ref: "#/$defs/colour.pick.PickedObject",
           },
           {
             type: "null",
@@ -23880,19 +24473,14 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
         ],
       },
       missing: {
+        description: "The colour ID is in no palette.",
         type: "boolean",
       },
     },
     required: [
-      "colourId",
-      "paletteId",
-      "swatchName",
       "rgba",
-      "object",
       "missing",
     ],
-    "x-spec": "`{colourId|null, paletteId|null, swatchName, rgba: colour, object: {drawingId, elementId, objectId, objectKind}|null, missing: bool}`",
-    additionalProperties: false,
   },
   "colour.recolour.apply.params": {
     title: "colour.recolour.apply parameters",
@@ -24056,117 +24644,103 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
     additionalProperties: false,
   },
   "colour.recovery.performed.params": {
-    title: "colour.recovery.performed parameters",
+    title: "NoParams",
+    description: "No parameters.",
     type: "object",
-    properties: {},
     additionalProperties: false,
-    description: "Events take no parameters; subscribe to them (11 §9).",
-    "x-spec": "—",
   },
   "colour.recovery.performed.result": {
-    title: "colour.recovery.performed result",
+    title: "RecoveryEvent",
+    description: "`colour.recovery.performed` payload.",
     type: "object",
     properties: {
       colourIds: {
+        description: "Colours recreated (placeholders included).",
         type: "array",
         items: {
           type: "string",
-          minLength: 1,
-          maxLength: 4096,
-          description: "object ID or path reference (10 §3)",
         },
-        maxItems: 100000,
       },
       paletteIds: {
+        description: "Palettes that received them.",
         type: "array",
         items: {
           type: "string",
-          minLength: 1,
-          maxLength: 4096,
-          description: "object ID or path reference (10 §3)",
         },
-        maxItems: 100000,
       },
     },
     required: [
       "colourIds",
       "paletteIds",
     ],
-    description: "Event payload (delivered to subscribers).",
-    "x-spec": "`{colourIds[], paletteIds[]}`",
-    additionalProperties: false,
   },
   "colour.recovery.run.params": {
-    title: "colour.recovery.run parameters",
+    title: "RecoveryParams",
+    description: "`colour.recovery.run` parameters (03 §16.3).",
     type: "object",
     properties: {
       drawingIds: {
-        type: "array",
+        description: "Drawings whose missing colours are recovered.",
+        type: [
+          "array",
+          "null",
+        ],
         items: {
           type: "string",
-          minLength: 1,
-          maxLength: 4096,
-          description: "object ID or path reference (10 §3)",
         },
-        maxItems: 100000,
+        default: null,
       },
       all: {
+        description: "Every drawing of the project.",
         type: "boolean",
         default: false,
       },
     },
     additionalProperties: false,
-    "x-spec": "`drawingIds?: [id]; all: bool = false`",
+  },
+  "colour.recovery.run.RecoveredColour": {
+    description: "One recreated swatch.",
+    type: "object",
+    properties: {
+      colourId: {
+        description: "The colour ID (unchanged).",
+        type: "string",
+      },
+      paletteId: {
+        description: "The palette it went into.",
+        type: "string",
+      },
+    },
+    required: [
+      "colourId",
+      "paletteId",
+    ],
   },
   "colour.recovery.run.result": {
-    title: "colour.recovery.run result",
+    title: "RecoveryResult",
+    description: "What a recovery did.",
     type: "object",
     properties: {
       recovered: {
+        description: "Swatches recreated from recovery copies, with the palette that received each.",
         type: "array",
         items: {
-          type: "object",
-          properties: {
-            colourId: {
-              type: "string",
-              minLength: 1,
-              maxLength: 4096,
-              description: "object ID or path reference (10 §3)",
-            },
-            paletteId: {
-              type: "string",
-              minLength: 1,
-              maxLength: 4096,
-              description: "object ID or path reference (10 §3)",
-            },
-          },
-          required: [
-            "colourId",
-            "paletteId",
-          ],
-          additionalProperties: false,
+          $ref: "#/$defs/colour.recovery.run.RecoveredColour",
         },
-        maxItems: 100000,
       },
       placeholders: {
+        description: "Placeholder swatches created for colours without a recovery copy.",
         type: "array",
         items: {
           type: "string",
-          minLength: 1,
-          maxLength: 4096,
-          description: "object ID or path reference (10 §3)",
         },
-        maxItems: 100000,
       },
       createdPaletteIds: {
+        description: "Palettes created.",
         type: "array",
         items: {
           type: "string",
-          minLength: 1,
-          maxLength: 4096,
-          description: "object ID or path reference (10 §3)",
         },
-        maxItems: 100000,
       },
     },
     required: [
@@ -24174,8 +24748,6 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
       "placeholders",
       "createdPaletteIds",
     ],
-    "x-spec": "`{recovered: [{colourId, paletteId}], placeholders: [id], createdPaletteIds: [id]}`",
-    additionalProperties: false,
   },
   "colour.sceneStyle.changed.params": {
     title: "colour.sceneStyle.changed parameters",
@@ -28746,6 +29318,16 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
           },
         ],
       },
+      colourRecovery: {
+        description: "Recovery copies of the colours the content uses (10 §4.11 entries; the clipboard's colour map, 03 §11.1):\ncolours the target project lacks are recreated from them (03 §11.2).",
+        type: [
+          "array",
+          "null",
+        ],
+        items: true,
+        maxItems: 100000,
+        default: null,
+      },
     },
     additionalProperties: false,
     required: [
@@ -28786,6 +29368,17 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
               $ref: "#/$defs/draw.content.add.StrokeIn",
             },
             maxItems: 100000,
+          },
+          zones: {
+            description: "Zones as read back (02 §13.4): their fills are painted onto the zones of the inserted layer that contain their\ninterior points; everything else about them is derived and ignored.",
+            type: [
+              "array",
+              "null",
+            ],
+            items: {
+              $ref: "#/$defs/draw.content.add.ZoneIn",
+            },
+            maxItems: 1000000,
           },
           bounds: {
             description: "Read-only (ignored).",
@@ -29144,6 +29737,22 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
           },
         },
       },
+      leftZoneId: {
+        description: "Derived side zone (ignored).",
+        type: [
+          "string",
+          "null",
+        ],
+        default: null,
+      },
+      rightZoneId: {
+        description: "Derived side zone (ignored).",
+        type: [
+          "string",
+          "null",
+        ],
+        default: null,
+      },
       bounds: {
         description: "Read-only (ignored).",
         anyOf: [
@@ -29352,6 +29961,112 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
       "y",
       "width",
       "height",
+    ],
+  },
+  "draw.content.add.ZoneIn": {
+    description: "A zone of read-back content (only `colourId`, `textureMatrix` and `interiorPoint` are used).",
+    type: "object",
+    properties: {
+      type: {
+        description: "`zone` (optional).",
+        type: [
+          "string",
+          "null",
+        ],
+        default: null,
+      },
+      id: {
+        description: "Derived ID (ignored).",
+        type: [
+          "string",
+          "null",
+        ],
+        default: null,
+      },
+      colourId: {
+        description: "Fill colour (`null` = unpainted).",
+        type: [
+          "string",
+          "null",
+        ],
+        default: null,
+      },
+      textureMatrix: {
+        description: "Gradient/texture placement.",
+        type: [
+          "array",
+          "null",
+        ],
+        items: {
+          type: "number",
+        },
+        minItems: 6,
+        maxItems: 6,
+        default: null,
+      },
+      interiorPoint: {
+        description: "A point inside the zone.",
+        $ref: "#/$defs/draw.content.add.PointIn",
+      },
+      boundaryStrokeIds: {
+        description: "Derived (ignored).",
+        type: [
+          "array",
+          "null",
+        ],
+        items: {
+          type: "string",
+        },
+        default: null,
+      },
+      holes: {
+        description: "Derived (ignored).",
+        type: [
+          "array",
+          "null",
+        ],
+        items: true,
+        default: null,
+      },
+      parentZoneId: {
+        description: "Derived (ignored).",
+        type: [
+          "string",
+          "null",
+        ],
+        default: null,
+      },
+      area: {
+        description: "Derived (ignored).",
+        type: [
+          "number",
+          "null",
+        ],
+        default: null,
+      },
+      bounds: {
+        description: "Derived (ignored).",
+        anyOf: [
+          {
+            $ref: "#/$defs/draw.content.add.BoundsIn",
+          },
+          {
+            type: "null",
+          },
+        ],
+      },
+      parentId: {
+        description: "Flat read-back parent (ignored).",
+        type: [
+          "string",
+          "null",
+        ],
+        default: null,
+      },
+    },
+    additionalProperties: false,
+    required: [
+      "interiorPoint",
     ],
   },
   "draw.content.add.WidthModeIn": {
@@ -30194,6 +30909,9 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
       {
         $ref: "#/$defs/draw.drawing.get.stroke",
       },
+      {
+        $ref: "#/$defs/draw.drawing.get.zone",
+      },
     ],
   },
   "draw.drawing.get.layer": {
@@ -30222,6 +30940,12 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
       },
       parentId: {
         $ref: "#/$defs/draw.drawing.get.parentId",
+      },
+      zones: {
+        type: "array",
+        items: {
+          $ref: "#/$defs/draw.drawing.get.zone",
+        },
       },
     },
     additionalProperties: false,
@@ -30704,6 +31428,18 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
       parentId: {
         $ref: "#/$defs/draw.drawing.get.parentId",
       },
+      leftZoneId: {
+        type: [
+          "string",
+          "null",
+        ],
+      },
+      rightZoneId: {
+        type: [
+          "string",
+          "null",
+        ],
+      },
     },
     additionalProperties: false,
     required: [
@@ -30715,9 +31451,96 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
       "colourId",
     ],
   },
+  "draw.drawing.get.zone": {
+    type: "object",
+    properties: {
+      type: {
+        const: "zone",
+      },
+      id: {
+        type: "string",
+      },
+      colourId: {
+        $ref: "#/$defs/draw.drawing.get.colour",
+      },
+      textureMatrix: {
+        oneOf: [
+          {
+            $ref: "#/$defs/draw.drawing.get.matrix",
+          },
+          {
+            type: "null",
+          },
+        ],
+      },
+      boundaryStrokeIds: {
+        type: "array",
+        items: {
+          type: "string",
+        },
+      },
+      holes: {
+        type: "array",
+        items: {
+          type: "object",
+          properties: {
+            boundaryStrokeIds: {
+              type: "array",
+              items: {
+                type: "string",
+              },
+            },
+            zoneId: {
+              type: [
+                "string",
+                "null",
+              ],
+            },
+          },
+          additionalProperties: false,
+          required: [
+            "boundaryStrokeIds",
+            "zoneId",
+          ],
+        },
+      },
+      parentZoneId: {
+        type: [
+          "string",
+          "null",
+        ],
+      },
+      area: {
+        type: "number",
+        minimum: 0,
+      },
+      bounds: {
+        $ref: "#/$defs/draw.drawing.get.bounds",
+      },
+      interiorPoint: {
+        $ref: "#/$defs/draw.drawing.get.point",
+      },
+      parentId: {
+        $ref: "#/$defs/draw.drawing.get.parentId",
+      },
+    },
+    additionalProperties: false,
+    required: [
+      "type",
+      "id",
+      "colourId",
+      "textureMatrix",
+      "boundaryStrokeIds",
+      "holes",
+      "parentZoneId",
+      "area",
+      "bounds",
+      "interiorPoint",
+    ],
+  },
   "draw.drawing.get.result": {
     title: "DrawingReadback",
-    description: "draw.drawing.get result (02 §13.4), closed. Zones (and the leftZoneId/rightZoneId of strokes) are the planar map's, M2 C2.2; they are absent until then.",
+    description: "draw.drawing.get result (02 §13.4), closed. Zones (and the leftZoneId/rightZoneId of pencil and invisible strokes) are the planar map's (M2 C2.2): derived, IDs transient (02 §3.12 item 4).",
     type: "object",
     properties: {
       drawingId: {
@@ -31739,87 +32562,153 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
       "rev",
     ],
   },
+  "draw.hitTest.get.Point": {
+    description: "A point `{x, y}` in drawing units.",
+    type: "object",
+    properties: {
+      x: {
+        description: "X (du).",
+        type: "number",
+      },
+      y: {
+        description: "Y (du, up).",
+        type: "number",
+      },
+    },
+    additionalProperties: false,
+    required: [
+      "x",
+      "y",
+    ],
+  },
   "draw.hitTest.get.params": {
-    title: "draw.hitTest.get parameters",
+    title: "HitTestParams",
+    description: "`draw.hitTest.get` parameters (02 §13.5).",
     type: "object",
     properties: {
       drawingId: {
-        type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
+        description: "The drawing (default: `elementId` + `frame`, else the current drawing).",
+        type: [
+          "string",
+          "null",
+        ],
+        default: null,
+      },
+      elementId: {
+        description: "The element whose cell exposes the drawing.",
+        type: [
+          "string",
+          "null",
+        ],
+        default: null,
+      },
+      frame: {
+        description: "The frame of that cell.",
+        type: [
+          "integer",
+          "null",
+        ],
+        default: null,
+        minimum: 1,
+        maximum: 2147483647,
       },
       point: {
-        type: "object",
-        properties: {
-          x: {
-            type: "number",
-          },
-          y: {
-            type: "number",
-          },
-        },
-        required: [
-          "x",
-          "y",
-        ],
-        additionalProperties: false,
+        description: "The point (drawing space).",
+        $ref: "#/$defs/draw.hitTest.get.Point",
       },
       tolerance: {
+        description: "Extra reach of line hits in view pixels (1 px = 1 du at 100 % zoom, SI-063).",
         type: "number",
         default: 3,
+        minimum: 0,
+        maximum: 1000,
       },
       includeInvisible: {
+        description: "Report invisible strokes.",
         type: "boolean",
         default: false,
       },
     },
+    additionalProperties: false,
     required: [
       "point",
     ],
-    additionalProperties: false,
-    "x-spec": "`drawingId?: id; point: point; tolerance: number = 3 (view px); includeInvisible: bool = false`",
   },
-  "draw.hitTest.get.result": {
-    title: "draw.hitTest.get result",
+  "draw.hitTest.get.HitOut": {
+    description: "One hit.",
     type: "object",
     properties: {
-      hits: {
-        type: "array",
-        items: {
-          type: "object",
-          properties: {},
-          additionalProperties: false,
-          "x-placeholder": true,
-          description: "shape not defined by the owning section (spec issue); only {} is accepted until it is",
-          "x-specIssue": "SI-026",
-        },
-        maxItems: 100000,
+      objectId: {
+        description: "The object.",
+        type: "string",
       },
-      zoneId: {
-        anyOf: [
-          {
-            type: "string",
-            minLength: 1,
-            maxLength: 4096,
-            description: "object ID or path reference (10 §3)",
-          },
-          {
-            type: "null",
-          },
+      objectKind: {
+        description: "`pencil`, `brush`, `invisible`, `zone`, `text` or `bitmap`.",
+        type: "string",
+      },
+      layerId: {
+        description: "Its layer.",
+        type: [
+          "string",
+          "null",
         ],
       },
-      rev: {
-        type: "number",
+      groupPath: {
+        description: "Enclosing groups, outermost first.",
+        type: "array",
+        items: {
+          type: "string",
+        },
+      },
+      colourId: {
+        description: "Its colour.",
+        type: [
+          "string",
+          "null",
+        ],
       },
     },
     required: [
+      "objectId",
+      "objectKind",
+      "groupPath",
+    ],
+  },
+  "draw.hitTest.get.result": {
+    title: "HitTestResult",
+    description: "`draw.hitTest.get` result (02 §13.4).",
+    type: "object",
+    properties: {
+      point: {
+        description: "The point.",
+        $ref: "#/$defs/draw.hitTest.get.Point",
+      },
+      hits: {
+        description: "Hits, front to back.",
+        type: "array",
+        items: {
+          $ref: "#/$defs/draw.hitTest.get.HitOut",
+        },
+      },
+      zoneId: {
+        description: "The front-most zone under the point.",
+        type: [
+          "string",
+          "null",
+        ],
+      },
+      rev: {
+        description: "The drawing revision.",
+        type: "integer",
+        maximum: 18446744073709551615n,
+        minimum: 0,
+      },
+    },
+    required: [
+      "point",
       "hits",
-      "zoneId",
       "rev",
     ],
-    "x-spec": "`{hits: [object], zoneId|null, rev}`",
-    additionalProperties: false,
   },
   "draw.inspectorPreview.set.params": {
     title: "draw.inspectorPreview.set parameters",
@@ -34025,7 +34914,7 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
         },
       },
       zoneIds: {
-        description: "Zones created or changed (planar map, M2 C2.2: empty until then).",
+        description: "Zones the stroke created (02 §3.12 item 4: derived from their boundaries).",
         type: "array",
         items: {
           type: "string",
@@ -80123,187 +81012,395 @@ export interface colour_fillMapping_set_result {
   rev: number;
 }
 
+/** A point `{x, y}` in drawing units. */
+export interface colour_gap_close_Point {
+  /** X (du). */
+  x: number;
+  /** Y (du, up). */
+  y: number;
+}
+
+/** Coordinate space of point targets (03 §16.2). */
+export type colour_gap_close_Space = 'drawing' | 'scene' | 'view';
+
+/** `colour.gap.close` parameters (03 §16.3). */
 export interface colour_gap_close_params {
-  /** object ID or path reference (10 §3) */
-  drawingId?: string;
-  from: {
-    x: number;
-    y: number;
-  };
-  to: {
-    x: number;
-    y: number;
-  };
-  space?: 'drawing' | 'scene' | 'view';
-  /** object ID or path reference (10 §3) */
-  sceneId?: string;
-  frame?: number | bigint;
-  view?: string;
+  /** The drawing (default: the current drawing). */
+  drawingId?: string | null;
+  /** Start of the drag. */
+  from: colour_gap_close_Point;
+  /** End of the drag. */
+  to: colour_gap_close_Point;
+  /** Coordinate space (only `drawing` until M3/M4). */
+  space?: colour_gap_close_Space;
+  /** Scene of `scene` points. */
+  sceneId?: string | null;
+  /** Frame of `scene` points. */
+  frame?: number | null;
+  /** View of `view` points. */
+  view?: string | null;
 }
 
+/** `colour.gap.close` result (03 §16.3 plus the common edit members, SI-058). */
 export interface colour_gap_close_result {
-  strokeId: string | null;
-  rev: number;
+  /** The drawing. */
+  drawingId: string;
+  /** The invisible stroke added (its first piece when noding split it). */
+  strokeId?: string | null;
+  /** All strokes it became. */
+  strokeIds: string[];
+  /** Hint codes (`drawing.strokesHidden`). */
+  hints: string[];
+  /** Created objects. */
+  createdIds: string[];
+  /** Modified objects (content, membership or position changed; IDs kept). */
+  modifiedIds: string[];
+  /** Removed objects (descendants included). */
+  removedIds: string[];
+  /** The drawing revision after the change. */
+  rev: number | bigint;
 }
 
+/** No parameters. */
 export type colour_gapClosing_get_params = Record<string, unknown>;
 
+/** The automatic gap-closing mode (03 §8.8). */
+export type colour_gapClosing_get_GapMode = 'off' | 'small' | 'medium' | 'large';
+
+/** Tolerances in view pixels. */
+export interface colour_gapClosing_get_Tolerances {
+  /** Small. */
+  small: number;
+  /** Medium. */
+  medium: number;
+  /** Large. */
+  large: number;
+}
+
+/** `colour.gapClosing.get` result. */
 export interface colour_gapClosing_get_result {
-  mode: string;
-  tolerancesPx: {
-    small: string;
-    medium: string;
-    large: string;
-  };
+  /** The mode. */
+  mode: colour_gapClosing_get_GapMode;
+  /** Tolerances (view px; 1 px = 1 du at 100 % zoom, SI-063). */
+  tolerancesPx: colour_gapClosing_get_Tolerances;
 }
 
+/** The automatic gap-closing mode (03 §8.8). */
+export type colour_gapClosing_set_GapMode = 'off' | 'small' | 'medium' | 'large';
+
+/** `colour.gapClosing.set` parameters. */
 export interface colour_gapClosing_set_params {
-  mode: 'off' | 'small' | 'medium' | 'large';
+  /** The mode. */
+  mode: colour_gapClosing_set_GapMode;
 }
 
+/** `{mode}`. */
 export interface colour_gapClosing_set_result {
-  mode: string;
+  /** The mode now. */
+  mode: colour_gapClosing_set_GapMode;
 }
 
+/** Scope of colour queries (03 §16.3). */
+export type colour_missing_list_Scope = 'project' | 'scene' | 'element' | 'drawing';
+
+/** `colour.missing.list` parameters (03 §16.3). */
 export interface colour_missing_list_params {
-  scope?: 'project' | 'scene' | 'element' | 'drawing';
-  /** object ID or path reference (10 §3) */
-  sceneId?: string;
-  elementIds?: string[];
-  drawingIds?: string[];
+  /** Scope. */
+  scope?: colour_missing_list_Scope;
+  /** Scene of `scene` scope (default: current). */
+  sceneId?: string | null;
+  /** Elements of `element` scope. */
+  elementIds?: string[] | null;
+  /** Drawings of `drawing` scope. */
+  drawingIds?: string[] | null;
 }
 
+/** One missing colour. */
+export interface colour_missing_list_Missing {
+  /** The colour ID. */
+  colourId: string;
+  /** Drawings using it. */
+  drawingIds: string[];
+  /** A recovery copy exists. */
+  recoverable: boolean;
+  /** The palette name the copy records. */
+  recordedPaletteName?: string | null;
+}
+
+/** `colour.missing.list` result. */
 export interface colour_missing_list_result {
-  missing: ({
-    /** object ID or path reference (10 §3) */
-    colourId: string;
-    drawingIds: string[];
-    recoverable: boolean;
-    recordedPaletteName: string;
-  })[];
+  /** Missing colours. */
+  missing: colour_missing_list_Missing[];
 }
 
+/** A point `{x, y}` in drawing units. */
+export interface colour_paint_apply_Point {
+  /** X (du). */
+  x: number;
+  /** Y (du, up). */
+  y: number;
+}
+
+/** A rectangle `{x, y, width, height}` (drawing space). */
+export interface colour_paint_apply_RectIn {
+  /** Minimum x. */
+  x: number;
+  /** Minimum y. */
+  y: number;
+  /** Width. */
+  width: number;
+  /** Height. */
+  height: number;
+}
+
+/** Coordinate space of point targets (03 §16.2). */
+export type colour_paint_apply_Space = 'drawing' | 'scene' | 'view';
+
+/** `{from, to}` of a press–drag (gradient or texture mapping). */
+export interface colour_paint_apply_MappingDrag {
+  /** Press point. */
+  from: colour_paint_apply_Point;
+  /** Release point. */
+  to: colour_paint_apply_Point;
+}
+
+/** Gap-closing choice of a paint command (03 §8.8). */
+export type colour_paint_apply_GapChoice = 'current' | 'off' | 'small' | 'medium' | 'large';
+
+/** `colour.paint.apply` parameters (03 §16.3; `onlyPainted`, `lasso`, `rect`, `respectProtected`: SI-061). */
 export interface colour_paint_apply_params {
-  /** object ID or path reference (10 §3) */
-  drawingId?: string;
-  objectIds?: string[];
-  points?: ({
-    x: number;
-    y: number;
-  })[];
-  path?: ({
-    x: number;
-    y: number;
-  })[];
-  space?: 'drawing' | 'scene' | 'view';
-  /** object ID or path reference (10 §3) */
-  sceneId?: string;
-  frame?: number | bigint;
-  /** object ID or path reference (10 §3) */
-  elementId?: string;
-  view?: string;
-  /** object ID or path reference (10 §3) */
-  colourId?: string;
+  /** The drawing (default: the current drawing). */
+  drawingId?: string | null;
+  /** Zones, lines, brush strokes or text to paint. */
+  objectIds?: string[] | null;
+  /** Points: the front-most object under each is painted. */
+  points?: colour_paint_apply_Point[] | null;
+  /** A crossing path: every zone and line it passes over is painted. */
+  path?: colour_paint_apply_Point[] | null;
+  /** A lasso: every zone whose interior point lies inside is painted (SI-061). */
+  lasso?: colour_paint_apply_Point[] | null;
+  /** A marquee: every zone whose interior point lies inside is painted (SI-061). */
+  rect?: colour_paint_apply_RectIn | null;
+  /** Coordinate space of points (only `drawing` until M3/M4). */
+  space?: colour_paint_apply_Space;
+  /** Scene of `scene` points (M3 C3.2). */
+  sceneId?: string | null;
+  /** Frame of `scene` points. */
+  frame?: number | null;
+  /** The element of the drawing (default: current). */
+  elementId?: string | null;
+  /** View of `view` points (M4 C4.2). */
+  view?: string | null;
+  /** The colour (default: the current fill colour). */
+  colourId?: string | null;
+  /** Paint unpainted zones only. */
   onlyUnpainted?: boolean;
-  mapping?: {
-    from: {
-      x: number;
-      y: number;
-    };
-    to: {
-      x: number;
-      y: number;
-    };
-  };
-  gapClosing?: 'current' | 'off' | 'small' | 'medium' | 'large';
-  expectRev?: number | bigint;
+  /** Repaint: painted zones only (SI-061). */
+  onlyPainted?: boolean;
+  /** Respect protected colours (SI-061). */
+  respectProtected?: boolean;
+  /** Gradient/texture mapping of a press–drag. */
+  mapping?: colour_paint_apply_MappingDrag | null;
+  /** Automatic gap closing for point targets. */
+  gapClosing?: colour_paint_apply_GapChoice;
+  /** The drawing revision the caller read. */
+  expectRev?: number | bigint | null;
 }
 
+/** One painted object. */
+export interface colour_paint_apply_Painted {
+  /** The drawing. */
+  drawingId: string;
+  /** The object (zone IDs are those of the drawing after the paint). */
+  objectId: string;
+  /** `zone`, `pencil`, `brush` or `text`. */
+  objectKind: string;
+  /** Its colour before (`null` = unpainted). */
+  previousColourId?: string | null;
+}
+
+/** One target left alone. */
+export interface colour_paint_apply_Skipped {
+  /** The target: an object ID, or `point:<i>` / `path` / `lasso` / `rect`. */
+  target: string;
+  /** A `colour.*` code: `colour.noTarget`, `colour.zoneNotClosed`, `colour.protected`, `colour.alreadyPainted`, `colour.notPainted`, `colour.cannotUnpaint`, `colour.invisibleTarget`, `colour.notPaintable`. */
+  reason: string;
+}
+
+/** `colour.paint.apply` result (03 §16.3, plus the common edit members of 02 §13.1 item 11, SI-058). */
 export interface colour_paint_apply_result {
-  painted: ({
-    /** object ID or path reference (10 §3) */
-    drawingId: string;
-    /** object ID or path reference (10 §3) */
-    objectId: string;
-    objectKind: string;
-    /** object ID or path reference (10 §3) */
-    previousColourId: string;
-  })[];
-  skipped: ({
-    target: string;
-    reason: string;
-  })[];
+  /** The drawing. */
+  drawingId: string;
+  /** Painted objects. */
+  painted: colour_paint_apply_Painted[];
+  /** Targets left alone, with the reason. */
+  skipped: colour_paint_apply_Skipped[];
+  /** Invisible strokes added by gap closing (kept so the zones stay closed, 03 §8.8). */
   addedStrokeIds: string[];
-  rev: number;
+  /** Created objects. */
+  createdIds: string[];
+  /** Modified objects (content, membership or position changed; IDs kept). */
+  modifiedIds: string[];
+  /** Removed objects (descendants included). */
+  removedIds: string[];
+  /** The drawing revision after the change. */
+  rev: number | bigint;
 }
 
+/** A point `{x, y}` in drawing units. */
+export interface colour_paint_remove_Point {
+  /** X (du). */
+  x: number;
+  /** Y (du, up). */
+  y: number;
+}
+
+/** Coordinate space of point targets (03 §16.2). */
+export type colour_paint_remove_Space = 'drawing' | 'scene' | 'view';
+
+/** Gap-closing choice of a paint command (03 §8.8). */
+export type colour_paint_remove_GapChoice = 'current' | 'off' | 'small' | 'medium' | 'large';
+
+/** `colour.paint.remove` parameters (03 §16.3). */
 export interface colour_paint_remove_params {
-  /** object ID or path reference (10 §3) */
-  drawingId?: string;
-  objectIds?: string[];
-  points?: ({
-    x: number;
-    y: number;
-  })[];
-  space?: 'drawing' | 'scene' | 'view';
-  /** object ID or path reference (10 §3) */
-  sceneId?: string;
-  frame?: number | bigint;
-  view?: string;
-  gapClosing?: 'current' | 'off' | 'small' | 'medium' | 'large';
-  expectRev?: number | bigint;
+  /** The drawing (default: the current drawing). */
+  drawingId?: string | null;
+  /** Zones or lines to unpaint. */
+  objectIds?: string[] | null;
+  /** Points: the front-most object under each. */
+  points?: colour_paint_remove_Point[] | null;
+  /** Coordinate space of points (only `drawing` until M3/M4). */
+  space?: colour_paint_remove_Space;
+  /** Scene of `scene` points (M3 C3.2). */
+  sceneId?: string | null;
+  /** Frame of `scene` points. */
+  frame?: number | null;
+  /** View of `view` points (M4 C4.2). */
+  view?: string | null;
+  /** Automatic gap closing for point targets. */
+  gapClosing?: colour_paint_remove_GapChoice;
+  /** The drawing revision the caller read. */
+  expectRev?: number | bigint | null;
 }
 
+/** One unpainted object. */
+export interface colour_paint_remove_Unpainted {
+  /** The drawing. */
+  drawingId: string;
+  /** The object. */
+  objectId: string;
+  /** Its colour before. */
+  previousColourId?: string | null;
+}
+
+/** One target left alone. */
+export interface colour_paint_remove_Skipped {
+  /** The target: an object ID, or `point:<i>` / `path` / `lasso` / `rect`. */
+  target: string;
+  /** A `colour.*` code: `colour.noTarget`, `colour.zoneNotClosed`, `colour.protected`, `colour.alreadyPainted`, `colour.notPainted`, `colour.cannotUnpaint`, `colour.invisibleTarget`, `colour.notPaintable`. */
+  reason: string;
+}
+
+/** `colour.paint.remove` result (03 §16.3 plus the common edit members, SI-058). */
 export interface colour_paint_remove_result {
-  unpainted: ({
-    /** object ID or path reference (10 §3) */
-    drawingId: string;
-    /** object ID or path reference (10 §3) */
-    objectId: string;
-    /** object ID or path reference (10 §3) */
-    previousColourId: string;
-  })[];
-  skipped: ({
-    target: string;
-    reason: string;
-  })[];
-  rev: number;
+  /** The drawing. */
+  drawingId: string;
+  /** Unpainted objects (lines became invisible strokes). */
+  unpainted: colour_paint_remove_Unpainted[];
+  /** Targets left alone, with the reason. */
+  skipped: colour_paint_remove_Skipped[];
+  /** Created objects. */
+  createdIds: string[];
+  /** Modified objects (content, membership or position changed; IDs kept). */
+  modifiedIds: string[];
+  /** Removed objects (descendants included). */
+  removedIds: string[];
+  /** The drawing revision after the change. */
+  rev: number | bigint;
 }
 
+/** A point `{x, y}` in drawing units. */
+export interface colour_paintUnpainted_apply_Point {
+  /** X (du). */
+  x: number;
+  /** Y (du, up). */
+  y: number;
+}
+
+/** Coordinate space of point targets (03 §16.2). */
+export type colour_paintUnpainted_apply_Space = 'drawing' | 'scene' | 'view';
+
+/** Gap-closing choice of a paint command (03 §8.8). */
+export type colour_paintUnpainted_apply_GapChoice = 'current' | 'off' | 'small' | 'medium' | 'large';
+
+/** `colour.paintUnpainted.apply` parameters (03 §16.3). */
 export interface colour_paintUnpainted_apply_params {
-  /** object ID or path reference (10 §3) */
-  drawingId?: string;
-  objectIds?: string[];
-  points?: ({
-    x: number;
-    y: number;
-  })[];
-  lasso?: ({
-    x: number;
-    y: number;
-  })[];
+  /** The drawing (default: the current drawing). */
+  drawingId?: string | null;
+  /** Zones to fill when unpainted. */
+  objectIds?: string[] | null;
+  /** Points: the zone under each, when unpainted. */
+  points?: colour_paintUnpainted_apply_Point[] | null;
+  /** A lasso: every unpainted zone whose interior point lies inside. */
+  lasso?: colour_paintUnpainted_apply_Point[] | null;
+  /** Every unpainted zone of the drawing. */
   all?: boolean;
-  space?: 'drawing' | 'scene' | 'view';
-  /** object ID or path reference (10 §3) */
-  sceneId?: string;
-  frame?: number | bigint;
-  view?: string;
-  /** object ID or path reference (10 §3) */
-  colourId?: string;
-  gapClosing?: 'current' | 'off' | 'small' | 'medium' | 'large';
-  expectRev?: number | bigint;
+  /** Coordinate space of points (only `drawing` until M3/M4). */
+  space?: colour_paintUnpainted_apply_Space;
+  /** Scene of `scene` points (M3 C3.2). */
+  sceneId?: string | null;
+  /** Frame of `scene` points. */
+  frame?: number | null;
+  /** View of `view` points (M4 C4.2). */
+  view?: string | null;
+  /** The colour (default: the current fill colour). */
+  colourId?: string | null;
+  /** Automatic gap closing for point targets. */
+  gapClosing?: colour_paintUnpainted_apply_GapChoice;
+  /** The drawing revision the caller read. */
+  expectRev?: number | bigint | null;
 }
 
+/** One painted object. */
+export interface colour_paintUnpainted_apply_Painted {
+  /** The drawing. */
+  drawingId: string;
+  /** The object (zone IDs are those of the drawing after the paint). */
+  objectId: string;
+  /** `zone`, `pencil`, `brush` or `text`. */
+  objectKind: string;
+  /** Its colour before (`null` = unpainted). */
+  previousColourId?: string | null;
+}
+
+/** One target left alone. */
+export interface colour_paintUnpainted_apply_Skipped {
+  /** The target: an object ID, or `point:<i>` / `path` / `lasso` / `rect`. */
+  target: string;
+  /** A `colour.*` code: `colour.noTarget`, `colour.zoneNotClosed`, `colour.protected`, `colour.alreadyPainted`, `colour.notPainted`, `colour.cannotUnpaint`, `colour.invisibleTarget`, `colour.notPaintable`. */
+  reason: string;
+}
+
+/** `colour.paintUnpainted.apply` result (03 §16.3 plus the common edit members, SI-058). */
 export interface colour_paintUnpainted_apply_result {
-  painted: ({
-    /** object ID or path reference (10 §3) */
-    drawingId: string;
-    /** object ID or path reference (10 §3) */
-    objectId: string;
-  })[];
+  /** The drawing. */
+  drawingId: string;
+  /** Filled zones. */
+  painted: colour_paintUnpainted_apply_Painted[];
+  /** Targets already painted (left unchanged). */
   skippedPainted: number | bigint;
+  /** Targets left alone for other reasons. */
+  skipped: colour_paintUnpainted_apply_Skipped[];
+  /** Invisible strokes added by gap closing. */
   addedStrokeIds: string[];
-  rev: number;
+  /** Created objects. */
+  createdIds: string[];
+  /** Modified objects (content, membership or position changed; IDs kept). */
+  modifiedIds: string[];
+  /** Removed objects (descendants included). */
+  removedIds: string[];
+  /** The drawing revision after the change. */
+  rev: number | bigint;
 }
 
 /** Events take no parameters; subscribe to them (11 §9). */
@@ -80494,37 +81591,62 @@ export interface colour_palette_set_result {
   removed: string[];
 }
 
-export interface colour_pick_params {
-  point: {
-    x: number;
-    y: number;
-  };
-  space?: 'drawing' | 'scene' | 'view';
-  /** object ID or path reference (10 §3) */
-  drawingId?: string;
-  /** object ID or path reference (10 §3) */
-  sceneId?: string;
-  frame?: number | bigint;
-  /** object ID or path reference (10 §3) */
-  elementId?: string;
-  view?: string;
+/** A point `{x, y}` in drawing units. */
+export interface colour_pick_Point {
+  /** X (du). */
+  x: number;
+  /** Y (du, up). */
+  y: number;
 }
 
+/** Coordinate space of point targets (03 §16.2). */
+export type colour_pick_Space = 'drawing' | 'scene' | 'view';
+
+/** `colour.pick` parameters (03 §16.3). */
+export interface colour_pick_params {
+  /** The point. */
+  point: colour_pick_Point;
+  /** Its space (`drawing` until M3/M4; the spec's default `view` needs the desktop views). */
+  space?: colour_pick_Space;
+  /** The drawing of a `drawing` point (default: current). */
+  drawingId?: string | null;
+  /** Scene of a `scene` point. */
+  sceneId?: string | null;
+  /** Frame of a `scene` point. */
+  frame?: number | null;
+  /** Element restriction. */
+  elementId?: string | null;
+  /** View of a `view` point. */
+  view?: string | null;
+}
+
+/** The object a pick found. */
+export interface colour_pick_PickedObject {
+  /** The drawing. */
+  drawingId: string;
+  /** An element exposing it. */
+  elementId?: string | null;
+  /** The object. */
+  objectId: string;
+  /** `zone`, `pencil`, `brush` or `text`. */
+  objectKind: string;
+}
+
+/** `colour.pick` result (03 §16.3). */
 export interface colour_pick_result {
-  colourId: string | null;
-  paletteId: string | null;
-  swatchName: string;
-  /** #RRGGBB or #RRGGBBAA */
+  /** The colour (`null`: unpainted or nothing). */
+  colourId?: string | null;
+  /** Its palette. */
+  paletteId?: string | null;
+  /** Its swatch name. */
+  swatchName?: string | null;
+  /** The swatch's value for the scene's style as `#RRGGBBAA` (first stop of a gradient; `#00000000` for textures, unpainted and empty canvas) until the renderer composites (SI-065). */
   rgba: string;
-  object: {
-    /** object ID or path reference (10 §3) */
-    drawingId: string;
-    /** object ID or path reference (10 §3) */
-    elementId: string;
-    /** object ID or path reference (10 §3) */
-    objectId: string;
-    objectKind: string;
-  } | null;
+  /** The fill mapping of a gradient or texture fill. */
+  matrix?: number[] | null;
+  /** The object picked. */
+  object?: colour_pick_PickedObject | null;
+  /** The colour ID is in no palette. */
   missing: boolean;
 }
 
@@ -80558,28 +81680,40 @@ export interface colour_recolour_apply_result {
   skippedLocked: string[];
 }
 
-/** Events take no parameters; subscribe to them (11 §9). */
+/** No parameters. */
 export type colour_recovery_performed_params = Record<string, unknown>;
 
-/** Event payload (delivered to subscribers). */
+/** `colour.recovery.performed` payload. */
 export interface colour_recovery_performed_result {
+  /** Colours recreated (placeholders included). */
   colourIds: string[];
+  /** Palettes that received them. */
   paletteIds: string[];
 }
 
+/** `colour.recovery.run` parameters (03 §16.3). */
 export interface colour_recovery_run_params {
-  drawingIds?: string[];
+  /** Drawings whose missing colours are recovered. */
+  drawingIds?: string[] | null;
+  /** Every drawing of the project. */
   all?: boolean;
 }
 
+/** One recreated swatch. */
+export interface colour_recovery_run_RecoveredColour {
+  /** The colour ID (unchanged). */
+  colourId: string;
+  /** The palette it went into. */
+  paletteId: string;
+}
+
+/** What a recovery did. */
 export interface colour_recovery_run_result {
-  recovered: ({
-    /** object ID or path reference (10 §3) */
-    colourId: string;
-    /** object ID or path reference (10 §3) */
-    paletteId: string;
-  })[];
+  /** Swatches recreated from recovery copies, with the palette that received each. */
+  recovered: colour_recovery_run_RecoveredColour[];
+  /** Placeholder swatches created for colours without a recovery copy. */
   placeholders: string[];
+  /** Palettes created. */
   createdPaletteIds: string[];
 }
 
@@ -81905,6 +83039,8 @@ export interface draw_content_add_ContentIn {
   pivot?: draw_content_add_PointIn | null;
   /** Read-only (ignored). */
   bounds?: draw_content_add_BoundsIn | null;
+  /** Recovery copies of the colours the content uses (10 §4.11 entries; the clipboard's colour map, 03 §11.1): colours the target project lacks are recreated from them (03 §11.2). */
+  colourRecovery?: unknown[] | null;
 }
 
 /** A node of the 02 §13.4 shape. */
@@ -81918,6 +83054,8 @@ export type draw_content_add_NodeIn = {
   layerKind: draw_content_add_LayerKindIn;
   /** Strokes. */
   strokes: draw_content_add_StrokeIn[];
+  /** Zones as read back (02 §13.4): their fills are painted onto the zones of the inserted layer that contain their interior points; everything else about them is derived and ignored. */
+  zones?: draw_content_add_ZoneIn[] | null;
   /** Read-only (ignored). */
   bounds?: draw_content_add_BoundsIn | null;
 } | {
@@ -81999,6 +83137,10 @@ export interface draw_content_add_StrokeIn {
   textureMatrix?: number[] | null;
   /** Brush outline contours (closed Bézier lists; one contour, SI-053). */
   outline?: draw_content_add_PointIn[][] | null;
+  /** Derived side zone (ignored). */
+  leftZoneId?: string | null;
+  /** Derived side zone (ignored). */
+  rightZoneId?: string | null;
   /** Read-only (ignored). */
   bounds?: draw_content_add_BoundsIn | null;
 }
@@ -82061,6 +83203,32 @@ export interface draw_content_add_BoundsIn {
   width: number;
   /** Height. */
   height: number;
+}
+
+/** A zone of read-back content (only `colourId`, `textureMatrix` and `interiorPoint` are used). */
+export interface draw_content_add_ZoneIn {
+  /** `zone` (optional). */
+  type?: string | null;
+  /** Derived ID (ignored). */
+  id?: string | null;
+  /** Fill colour (`null` = unpainted). */
+  colourId?: string | null;
+  /** Gradient/texture placement. */
+  textureMatrix?: number[] | null;
+  /** A point inside the zone. */
+  interiorPoint: draw_content_add_PointIn;
+  /** Derived (ignored). */
+  boundaryStrokeIds?: string[] | null;
+  /** Derived (ignored). */
+  holes?: unknown[] | null;
+  /** Derived (ignored). */
+  parentZoneId?: string | null;
+  /** Derived (ignored). */
+  area?: number | null;
+  /** Derived (ignored). */
+  bounds?: draw_content_add_BoundsIn | null;
+  /** Flat read-back parent (ignored). */
+  parentId?: string | null;
 }
 
 /** Width mode. */
@@ -82303,7 +83471,7 @@ export type draw_drawing_get_colour = string | null;
 
 export type draw_drawing_get_parentId = string | null;
 
-export type draw_drawing_get_item = draw_drawing_get_layer | draw_drawing_get_group | draw_drawing_get_text | draw_drawing_get_bitmap | draw_drawing_get_stroke;
+export type draw_drawing_get_item = draw_drawing_get_layer | draw_drawing_get_group | draw_drawing_get_text | draw_drawing_get_bitmap | draw_drawing_get_stroke | draw_drawing_get_zone;
 
 export interface draw_drawing_get_layer {
   type: 'layer';
@@ -82312,6 +83480,7 @@ export interface draw_drawing_get_layer {
   layerKind: 'brush' | 'pencil';
   strokes?: draw_drawing_get_stroke[];
   parentId?: draw_drawing_get_parentId;
+  zones?: draw_drawing_get_zone[];
 }
 
 export interface draw_drawing_get_group {
@@ -82411,9 +83580,28 @@ export interface draw_drawing_get_stroke {
   outline?: draw_drawing_get_bezier[];
   bounds?: draw_drawing_get_bounds | null;
   parentId?: draw_drawing_get_parentId;
+  leftZoneId?: string | null;
+  rightZoneId?: string | null;
 }
 
-/** draw.drawing.get result (02 §13.4), closed. Zones (and the leftZoneId/rightZoneId of strokes) are the planar map's, M2 C2.2; they are absent until then. */
+export interface draw_drawing_get_zone {
+  type: 'zone';
+  id: string;
+  colourId: draw_drawing_get_colour;
+  textureMatrix: draw_drawing_get_matrix | null;
+  boundaryStrokeIds: string[];
+  holes: ({
+    boundaryStrokeIds: string[];
+    zoneId: string | null;
+  })[];
+  parentZoneId: string | null;
+  area: number;
+  bounds: draw_drawing_get_bounds;
+  interiorPoint: draw_drawing_get_point;
+  parentId?: draw_drawing_get_parentId;
+}
+
+/** draw.drawing.get result (02 §13.4), closed. Zones (and the leftZoneId/rightZoneId of pencil and invisible strokes) are the planar map's (M2 C2.2): derived, IDs transient (02 §3.12 item 4). */
 export interface draw_drawing_get_result {
   drawingId: string;
   elementId: string | null;
@@ -82652,21 +83840,54 @@ export interface draw_group_delete_result {
   rev: number | bigint;
 }
 
+/** A point `{x, y}` in drawing units. */
+export interface draw_hitTest_get_Point {
+  /** X (du). */
+  x: number;
+  /** Y (du, up). */
+  y: number;
+}
+
+/** `draw.hitTest.get` parameters (02 §13.5). */
 export interface draw_hitTest_get_params {
-  /** object ID or path reference (10 §3) */
-  drawingId?: string;
-  point: {
-    x: number;
-    y: number;
-  };
+  /** The drawing (default: `elementId` + `frame`, else the current drawing). */
+  drawingId?: string | null;
+  /** The element whose cell exposes the drawing. */
+  elementId?: string | null;
+  /** The frame of that cell. */
+  frame?: number | null;
+  /** The point (drawing space). */
+  point: draw_hitTest_get_Point;
+  /** Extra reach of line hits in view pixels (1 px = 1 du at 100 % zoom, SI-063). */
   tolerance?: number;
+  /** Report invisible strokes. */
   includeInvisible?: boolean;
 }
 
+/** One hit. */
+export interface draw_hitTest_get_HitOut {
+  /** The object. */
+  objectId: string;
+  /** `pencil`, `brush`, `invisible`, `zone`, `text` or `bitmap`. */
+  objectKind: string;
+  /** Its layer. */
+  layerId?: string | null;
+  /** Enclosing groups, outermost first. */
+  groupPath: string[];
+  /** Its colour. */
+  colourId?: string | null;
+}
+
+/** `draw.hitTest.get` result (02 §13.4). */
 export interface draw_hitTest_get_result {
-  hits: (Record<string, unknown>)[];
-  zoneId: string | null;
-  rev: number;
+  /** The point. */
+  point: draw_hitTest_get_Point;
+  /** Hits, front to back. */
+  hits: draw_hitTest_get_HitOut[];
+  /** The front-most zone under the point. */
+  zoneId?: string | null;
+  /** The drawing revision. */
+  rev: number | bigint;
 }
 
 export interface draw_inspectorPreview_set_params {
@@ -83229,7 +84450,7 @@ export interface draw_stroke_add_result {
   createdDrawing: boolean;
   /** The new strokes (symmetry copies included), back to front. */
   strokeIds: string[];
-  /** Zones created or changed (planar map, M2 C2.2: empty until then). */
+  /** Zones the stroke created (02 §3.12 item 4: derived from their boundaries). */
   zoneIds: string[];
   /** The layer holding the strokes. */
   layerId: string;
