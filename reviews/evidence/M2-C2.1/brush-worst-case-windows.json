@@ -8,21 +8,21 @@
       "pressureKnots": 99000,
       "runs": [
         {
-          "wallMs": 932.8461,
+          "wallMs": 854.3687,
           "outcome": "ok",
-          "units": 425651220,
+          "units": 555554356,
           "anchors": 20
         },
         {
-          "wallMs": 943.3493,
+          "wallMs": 853.2645,
           "outcome": "ok",
-          "units": 425651220,
+          "units": 555554356,
           "anchors": 20
         },
         {
-          "wallMs": 943.6501000000001,
+          "wallMs": 868.019,
           "outcome": "ok",
-          "units": 425651220,
+          "units": 555554356,
           "anchors": 20
         }
       ]
@@ -33,21 +33,21 @@
       "pressureKnots": 99000,
       "runs": [
         {
-          "wallMs": 389.0424,
+          "wallMs": 401.6685,
           "outcome": "ok",
-          "units": 27103868,
+          "units": 35148540,
           "anchors": 4
         },
         {
-          "wallMs": 384.5705,
+          "wallMs": 400.2806,
           "outcome": "ok",
-          "units": 27103868,
+          "units": 35148540,
           "anchors": 4
         },
         {
-          "wallMs": 379.669,
+          "wallMs": 389.4088,
           "outcome": "ok",
-          "units": 27103868,
+          "units": 35148540,
           "anchors": 4
         }
       ]
@@ -58,21 +58,21 @@
       "pressureKnots": 99000,
       "runs": [
         {
-          "wallMs": 948.5038999999999,
+          "wallMs": 886.8658,
           "outcome": "ok",
-          "units": 425524500,
+          "units": 555428084,
           "anchors": 18
         },
         {
-          "wallMs": 957.0436,
+          "wallMs": 902.8104999999999,
           "outcome": "ok",
-          "units": 425524500,
+          "units": 555428084,
           "anchors": 18
         },
         {
-          "wallMs": 949.2948,
+          "wallMs": 898.593,
           "outcome": "ok",
-          "units": 425524500,
+          "units": 555428084,
           "anchors": 18
         }
       ]
@@ -83,21 +83,21 @@
       "pressureKnots": 2,
       "runs": [
         {
-          "wallMs": 670.2384999999999,
+          "wallMs": 369.07669999999996,
           "outcome": "ok",
-          "units": 185214801,
+          "units": 241379857,
           "anchors": 45
         },
         {
-          "wallMs": 665.5569,
+          "wallMs": 369.3805,
           "outcome": "ok",
-          "units": 185214801,
+          "units": 241379857,
           "anchors": 45
         },
         {
-          "wallMs": 664.8444,
+          "wallMs": 368.7351,
           "outcome": "ok",
-          "units": 185214801,
+          "units": 241379857,
           "anchors": 45
         }
       ]
@@ -108,21 +108,21 @@
       "pressureKnots": 2,
       "runs": [
         {
-          "wallMs": 262.8773,
+          "wallMs": 391.3702,
           "outcome": "ok",
-          "units": 109929858,
+          "units": 184090018,
           "anchors": 30010
         },
         {
-          "wallMs": 264.6892,
+          "wallMs": 394.11109999999996,
           "outcome": "ok",
-          "units": 109929858,
+          "units": 184090018,
           "anchors": 30010
         },
         {
-          "wallMs": 265.3069,
+          "wallMs": 395.08520000000004,
           "outcome": "ok",
-          "units": 109929858,
+          "units": 184090018,
           "anchors": 30010
         }
       ]
@@ -133,21 +133,21 @@
       "pressureKnots": 2,
       "runs": [
         {
-          "wallMs": 396.7259,
+          "wallMs": 127.44120000000001,
           "outcome": "ok",
-          "units": 47345410,
+          "units": 64192770,
           "anchors": 308
         },
         {
-          "wallMs": 398.6055,
+          "wallMs": 123.679,
           "outcome": "ok",
-          "units": 47345410,
+          "units": 64192770,
           "anchors": 308
         },
         {
-          "wallMs": 393.94689999999997,
+          "wallMs": 122.3674,
           "outcome": "ok",
-          "units": 47345410,
+          "units": 64192770,
           "anchors": 308
         }
       ]
@@ -158,19 +158,19 @@
       "pressureKnots": 2,
       "runs": [
         {
-          "wallMs": 1508.2914,
+          "wallMs": 1450.7224,
           "outcome": "limit.exceeded: sweeping this brush stroke needs more than 1200000000 units of work",
           "units": 1200000000,
           "anchors": 0
         },
         {
-          "wallMs": 1507.4839,
+          "wallMs": 1446.027,
           "outcome": "limit.exceeded: sweeping this brush stroke needs more than 1200000000 units of work",
           "units": 1200000000,
           "anchors": 0
         },
         {
-          "wallMs": 1517.1364,
+          "wallMs": 1455.5371,
           "outcome": "limit.exceeded: sweeping this brush stroke needs more than 1200000000 units of work",
           "units": 1200000000,
           "anchors": 0
@@ -183,19 +183,19 @@
       "pressureKnots": 2,
       "runs": [
         {
-          "wallMs": 1502.3137,
+          "wallMs": 1493.7787,
           "outcome": "limit.exceeded: sweeping this brush stroke needs more than 1200000000 units of work",
           "units": 1200000000,
           "anchors": 0
         },
         {
-          "wallMs": 1502.4161000000001,
+          "wallMs": 1493.6810999999998,
           "outcome": "limit.exceeded: sweeping this brush stroke needs more than 1200000000 units of work",
           "units": 1200000000,
           "anchors": 0
         },
         {
-          "wallMs": 1499.692,
+          "wallMs": 1493.2332999999999,
           "outcome": "limit.exceeded: sweeping this brush stroke needs more than 1200000000 units of work",
           "units": 1200000000,
           "anchors": 0
@@ -208,21 +208,21 @@
       "pressureKnots": 2,
       "runs": [
         {
-          "wallMs": 834.6489,
+          "wallMs": 252.76979999999998,
           "outcome": "ok",
-          "units": 81521168,
+          "units": 118445152,
           "anchors": 58
         },
         {
-          "wallMs": 843.3607,
+          "wallMs": 254.84230000000002,
           "outcome": "ok",
-          "units": 81521168,
+          "units": 118445152,
           "anchors": 58
         },
         {
-          "wallMs": 836.8812,
+          "wallMs": 250.24580000000003,
           "outcome": "ok",
-          "units": 81521168,
+          "units": 118445152,
           "anchors": 58
         }
       ]
@@ -233,22 +233,47 @@
       "pressureKnots": 90000,
       "runs": [
         {
-          "wallMs": 1768.8381,
+          "wallMs": 1855.0874,
           "outcome": "limit.exceeded: sweeping this brush stroke needs more than 1200000000 units of work",
           "units": 1200000000,
           "anchors": 0
         },
         {
-          "wallMs": 1791.8639999999998,
+          "wallMs": 1830.5956,
           "outcome": "limit.exceeded: sweeping this brush stroke needs more than 1200000000 units of work",
           "units": 1200000000,
           "anchors": 0
         },
         {
-          "wallMs": 1785.674,
+          "wallMs": 1826.1175999999998,
           "outcome": "limit.exceeded: sweeping this brush stroke needs more than 1200000000 units of work",
           "units": 1200000000,
           "anchors": 0
+        }
+      ]
+    },
+    {
+      "name": "closed-decagon-99000-alternating-knots-round-100",
+      "spineAnchors": 10,
+      "pressureKnots": 99000,
+      "runs": [
+        {
+          "wallMs": 1765.0099,
+          "outcome": "ok",
+          "units": 574126571,
+          "anchors": 39
+        },
+        {
+          "wallMs": 1753.4719,
+          "outcome": "ok",
+          "units": 574126571,
+          "anchors": 39
+        },
+        {
+          "wallMs": 1761.8492999999999,
+          "outcome": "ok",
+          "units": 574126571,
+          "anchors": 39
         }
       ]
     }
@@ -256,6 +281,6 @@
   "worst": {
     "name": "long-line-tiny-tip",
     "units": 1200000000,
-    "wallMs": 1791.8639999999998
+    "wallMs": 1855.0874
   }
 }
