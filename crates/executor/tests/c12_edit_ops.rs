@@ -218,8 +218,18 @@ fn drawing_objects_cut_copy_paste_and_new_element() {
     assert_eq!(r["clipboard"], json!({ "kind": "drawingObjects", "itemCount": 1 }));
     assert_eq!(clipboard(&h)["items"][0]["type"], "stroke", "full vector content (01 §12.4)");
     let r = ok(&h, "edit.paste", json!({ "context": "drawing", "destination": { "drawingId": BOB_1 } }));
-    assert_eq!(r["createdIds"].as_array().unwrap().len(), 1);
-    assert_eq!(get(&h, &body)["strokes"].as_array().unwrap().len(), strokes + 1);
+    // The paste is the first edit of the fixture's layer, which nodes it (02 §3.12 item 1): the result names the
+    // pieces the pasted stroke became, and the layer holds them.
+    let created: Vec<String> = r["createdIds"]
+        .as_array()
+        .unwrap()
+        .iter()
+        .map(|c| c.as_str().unwrap().rsplit('/').next().unwrap().to_owned())
+        .collect();
+    assert!(!created.is_empty());
+    let now = get(&h, &body)["strokes"].as_array().unwrap().clone();
+    assert!(created.iter().all(|c| now.iter().any(|s| s["id"] == c.as_str())), "{created:?}");
+    assert!(now.len() > strokes);
     // Cutting the layer cuts its strokes with it.
     ok(&h, "edit.cut", json!({ "context": "drawing", "objectIds": [body.clone(), stroke.clone()] }));
     assert!(run(&h, "doc.object.get", json!({ "ref": body })).is_error());

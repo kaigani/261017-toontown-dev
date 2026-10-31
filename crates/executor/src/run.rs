@@ -1832,6 +1832,8 @@ mod tests {
         let (_, mut stroke) = d0.object_raw_json(&stroke_key).unwrap();
         stroke["id"] = json!("s_c12_new");
         stroke["rev"] = json!(1);
+        // Away from the layer's other strokes, so re-noding (02 §3.12 item 1) leaves the new stroke whole.
+        stroke["points"] = json!([[1000, 1000, 0, 0, 0, 0], [1100, 1000, 0, 0, 0, 0]]);
         let strokes = at.rsplit_once('/').unwrap().0.to_owned();
         let changes =
             structural(&mut core, vec![(entry.clone(), vec![op("add", &format!("{strokes}/-"), Some(stroke))])]);

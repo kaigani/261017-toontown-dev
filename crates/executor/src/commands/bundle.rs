@@ -1428,6 +1428,8 @@ fn import(cx: &mut Cx, p: ImportJsonParams) -> Result<ImportResult, CommandError
     if changes.is_empty() {
         return Ok(result);
     }
+    // Imported drawings are persisted content: taken as they are, not re-noded (as on load; C1.3 import fidelity).
+    cx.keep_verbatim(result.created.drawings.iter().filter_map(|d| Id::parse(d).ok()));
     cx.patch_entries(changes)?;
     // Colour recovery in the import's own transaction (10 §4.11; 03 §11.2; C22-R1-05): the colours the imported content
     // uses that nothing defines are recreated from the imported drawings' recovery copies, else as placeholders.

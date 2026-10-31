@@ -88,6 +88,35 @@ fn crossing(a: P, b: P, c: P, d: P) -> Option<(f64, f64)> {
     if t > 0.0 && t < 1.0 && u > 0.0 && u < 1.0 { Some((t, u)) } else { None }
 }
 
+/// Where two non-parallel segments meet at an end of either (a stroke passing through another's vertex, or two vertices
+/// touching): the fractions (0 or 1 at the vertex) and the vertex itself, exactly. Fractions within 1e-12 outside the
+/// segments count (rounding at a vertex); crossings strictly inside both are [`crossing`]'s.
+fn at_vertex(a: P, b: P, c: P, d: P) -> Option<(f64, f64, P)> {
+    const EPS: f64 = 1e-12;
+    let (r, s) = (b - a, d - c);
+    let den = cross(r, s);
+    if den == 0.0 {
+        return None;
+    }
+    let (t, u) = (cross(c - a, s) / den, cross(c - a, r) / den);
+    let inside = |x: f64| x > 0.0 && x < 1.0;
+    if (inside(t) && inside(u)) || !(-EPS..=1.0 + EPS).contains(&t) || !(-EPS..=1.0 + EPS).contains(&u) {
+        return None;
+    }
+    let (t, u) = (t.clamp(0.0, 1.0), u.clamp(0.0, 1.0));
+    // At least one fraction is at an end: that vertex is the point.
+    let at = if u == 0.0 {
+        c
+    } else if u == 1.0 {
+        d
+    } else if t == 0.0 {
+        a
+    } else {
+        b
+    };
+    Some((t, u, at))
+}
+
 /// The closest point of a segment to `p`: fraction and point.
 fn closest(p: P, a: P, b: P) -> (f64, P) {
     let ab = b - a;
@@ -167,6 +196,15 @@ pub fn node(strokes: &[NodeStroke], work: &mut Work) -> Result<Noding, GeomError
                 if let Some((t, u)) = crossing(e.a, e.b, f.a, f.b) {
                     records.push(Record {
                         at: e.a.lerp(e.b, t),
+                        parts: [
+                            (e.stroke, flat::param_between(e.sa, e.sb, t)),
+                            (f.stroke, flat::param_between(f.sa, f.sb, u)),
+                        ],
+                    });
+                } else if let Some((t, u, at)) = at_vertex(e.a, e.b, f.a, f.b) {
+                    // A stroke through another's vertex crosses (or touches) it there (02 §3.12 item 1).
+                    records.push(Record {
+                        at,
                         parts: [
                             (e.stroke, flat::param_between(e.sa, e.sb, t)),
                             (f.stroke, flat::param_between(f.sa, f.sb, u)),
@@ -619,6 +657,20 @@ mod tests {
         assert_eq!(x.len(), 2);
         assert_eq!(x[0].anchors[x[0].anchors.len() - 1].p, P::new(5.0, 0.0));
         assert!(!n.outcomes.contains_key(&0) && !n.outcomes.contains_key(&1), "the pieces stay as they are");
+    }
+
+    #[test]
+    fn a_line_through_another_lines_anchor_splits_both_there() {
+        let n = run(&[
+            line("a", &[(0.0, 0.0), (5.0, 0.0), (10.0, 0.0)], false),
+            line("x", &[(5.0, -5.0), (5.0, 5.0)], true),
+        ]);
+        let (Some(Outcome::Split(a)), Some(Outcome::Split(x))) = (n.outcomes.get(&0), n.outcomes.get(&1)) else {
+            panic!("{n:?}")
+        };
+        assert_eq!((a.len(), x.len()), (2, 2));
+        assert_eq!(a[0].anchors[a[0].anchors.len() - 1].p, P::new(5.0, 0.0));
+        assert_eq!(x[0].anchors[x[0].anchors.len() - 1].p, P::new(5.0, 0.0), "exactly the shared vertex");
     }
 
     #[test]

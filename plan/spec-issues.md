@@ -752,4 +752,32 @@ Reserved by the M0 closure for "measured deterministic-format incompatibility" (
   entry (a missing image is reported by `missingMedia`).
 - **Question:** confirm where recovered swatches go when the recorded palette exists but is hidden (C2.2: a visible
   palette of that name, else a new one).
+- **Round 1 (C22-R1-01, R1-03, R1-05, R1-06; orchestrator rulings):**
+  - *Junction rule.* Every crossing and T-junction is resolved once for all participants. A record within the
+    tolerance of a junction's first record belongs to it (no chaining). Its coordinate is the nearest existing anchor
+    of an unchanged pencil or invisible participant, else the first record's point, and every participant meets that
+    exact coordinate. An open end is a junction with the nearest stroke and with every stroke as near (ties). A
+    stroke passing through another's anchor (or touching it there) is a junction at exactly that vertex; collinear
+    overlaps are not. A cut at the same place as an open path's end becomes that end's junction.
+  - *Imports.* Drawings `doc.import.json` creates are persisted content, taken as they are like a load: their fills
+    are read and repaired, but they are not re-noded. Their first edit nodes them. This keeps C1.3's import fidelity
+    and `idPolicy: preserve`.
+  - *Zone-ID input (ruling).* A zone ID is SHA-256 over each boundary cycle in traversal order: the snapped integer
+    coordinate of each vertex with the stroke IDs and sides of the edge leaving it. A vertex where the boundary goes
+    straight on along the same strokes is left out, the cycle starts at its smallest token sequence, and hole cycles
+    are sorted. Carry-over scores by exact overlap. An old zone with a new zone's ID has the same polygon and keeps its
+    fill directly.
+  - *Recovery.* Recovery and side-fill repair run on load as part of the repair step (C22-T1 withdrawn). Placeholder
+    recovery entries are written on save for used colours without a definition or a copy, in the `Recovered` palette.
+
+## SI-068 — mappings of lines (found in M2 C2.2 round 1; decided)
+
+- **Sections:** 03 §7.2, §1.6; 10 §4.9 (stroke `fillMatrix`).
+- **Issue:** 03 §7.2 says each painted zone, brush stroke **or line** that uses a gradient or texture stores its mapping
+  matrix. The note on `fillMatrix` in the 10 §4.9 stroke table names only brush strokes, and C2.1's schema rule kept
+  `fillMatrix` null for pencils.
+- **Decision (C22-R1-09 ruling):** pencil strokes store `fillMatrix` when painted with a gradient or texture (drag
+  mapping or the default box). Invisible strokes keep it null. A solid colour ignores but preserves the stored matrix
+  (03 §1.6). Stored matrices serialise integral entries as integers.
+- **Proposal:** amend the 10 §4.9 note to "brush strokes and lines with gradient or texture colours".
 

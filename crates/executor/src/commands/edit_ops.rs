@@ -1447,6 +1447,18 @@ fn paste(
         }
     }
     cx.patch_entries(changes)?;
+    if clip.kind == ClipboardKind::DrawingObjects {
+        // Pasted strokes are noded with the drawing's layer (02 §3.12 item 1): report the pieces they became.
+        cx.settle()?;
+        let mut created = Vec::with_capacity(out.created_ids.len());
+        for c in std::mem::take(&mut out.created_ids) {
+            match c.split_once('/').and_then(|(d, local)| Id::parse(d).ok().map(|d| (d, local.to_owned()))) {
+                Some((d, local)) => created.extend(cx.pieces_of(&d, &local).into_iter().map(|p| format!("{d}/{p}"))),
+                None => created.push(c),
+            }
+        }
+        out.created_ids = created;
+    }
     Ok(out)
 }
 

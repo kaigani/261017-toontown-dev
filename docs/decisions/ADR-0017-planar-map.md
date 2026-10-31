@@ -16,9 +16,14 @@ C2.1 delivered strokes, text, groups and bitmaps as validated, persisted geometr
 
 1. **Persistent noding (`tt_vector::planar::node`; SI-059).** Within a layer, pencil and invisible strokes are split
    where they cross any stroke (themselves included) and where an open stroke's end meets another stroke within the
-   junction tolerance (1/32 du). Pieces meet at one shared coordinate (shared anchors) and get new IDs. A junction
-   within the tolerance of an existing anchor uses it, so a noded layer stays noded and unchanged strokes keep their
-   IDs; only strokes the edit changed have their ends moved. **Brush outlines are never split or moved**: their
+   junction tolerance (1/32 du): with the nearest stroke and every stroke as near (an end where a split stroke's pieces
+   meet and a line passes through is a junction with all of them). A stroke passing exactly through another's anchor is
+   a junction at that vertex (no proper crossing would be found there); collinear overlaps are not junctions. **Each junction is resolved once for all of its
+   participants** (round 1, C22-R1-01): a crossing or T-junction within the tolerance of a junction's first record
+   belongs to that junction (no chaining). Its coordinate is the nearest existing anchor of an unchanged participant,
+   else the first record's point, and every participant's pieces meet exactly there. A junction within the tolerance
+   of an existing anchor therefore uses it, so a noded layer stays noded and unchanged strokes keep their IDs. A cut at
+   the same place as an open path's end becomes that end's junction, so no piece has zero length. **Brush outlines are never split or moved**: their
    crossings are vertices of the derived graph only, so a spine never goes stale through noding (SI-053/SI-054
    intact). Pieces are not merged back when a crossing stroke is deleted.
 
@@ -31,9 +36,12 @@ C2.1 delivered strokes, text, groups and bitmaps as validated, persisted geometr
    outline (non-zero winding of its edges) is that stroke's fill; every other bounded face is a **zone** with area,
    bounds, holes (with the zone inside each), parent zone, an exactly verified interior point and its boundary pieces.
 
-3. **Zone IDs** are `zn_` + 26 Crockford base-32 characters of a SHA-256 of the zone's canonical boundary (bounding
-   stroke IDs with sides, and for brush outlines the bounding stretches by path parameter). They change exactly when the
-   boundary changes (02 §3.12 item 4) and are identical across OSes (`c22_determinism`).
+3. **Zone IDs** are `zn_` + 26 Crockford base-32 characters of a SHA-256 of the zone's canonical boundary. Each boundary
+   cycle is read in traversal order: the snapped integer coordinate of each vertex, followed by the stroke IDs and sides
+   of the edge leaving it. A vertex where the boundary goes straight on along the same strokes is left out, the cycle
+   starts at its smallest token sequence, and hole cycles follow sorted (round 1 ruling, C22-R1-03). IDs change
+   whenever the boundary's geometry or strokes change (02 §3.12 item 4, 03 §16.1 item 5), not under unrelated edits.
+   They are identical across OSes (`c22_determinism`, the history oracles' independent computation).
 
 4. **Fills (`planar::fill`; SI-060).** A zone's fill (colour ID + mapping matrix, never baked RGBA) is stored on the
    matching side of every pencil and invisible piece bounding it; disagreement resolves to the longest bounding length
@@ -42,15 +50,18 @@ C2.1 delivered strokes, text, groups and bitmaps as validated, persisted geometr
    the brush stroke's `ext["dev.toontown.zones"].exterior` records (side, parameter range, fill), rewritten
    deterministically on every update and absent when not needed; without that key a brush stroke's own side fills are
    read (other writers). **Carry-over:** a zone keeping its ID keeps its fill; any other new zone takes the fill of the
-   old zone it overlaps most (exact grid polygon intersection), ties to the lower old zone ID — splits keep the colour
-   on both parts, merges take the larger part's.
+   old zone it overlaps most (exact grid polygon intersection), ties to the lower old zone ID. Splits keep the colour
+   on both parts; merges take the larger part's. Candidates are every old zone whose box overlaps the new zone's with
+   positive area (C22-R1-02). An old zone with a new zone's ID has the same polygon and keeps its fill without an
+   overlay.
 
 5. **Settling (`planar::layer`, `Cx::settle`).** Every transaction runs the settle pass before any preview or commit
    (and handlers call it before reporting IDs): each layer whose stroke identity, kind, closed flag, points, sides or
    exterior records changed since the last pass (compared as model values, so untouched layers are never serialised)
    — or that a command painted — is noded, its map built, fills carried
    (or read from the staged sides when only fills changed) and painted fills applied; the result is staged in the same
-   transaction. Undo, redo and checkpoint restore install already settled states. Paint commands register fills by zone
+   transaction. Undo, redo and checkpoint restore install already settled states. Drawings an import creates are taken
+   as they stand, like a load (no noding until their first edit; C1.3 import fidelity). Paint commands register fills by zone
    ID; the pass stores them. The pass of an atomic batch starts from the previous pass's result.
 
 6. **One work budget (`work::PLANAR_WORK_BUDGET`, 1.2 × 10⁹ units)** covers noding, the graph, carry-over and gap
@@ -68,7 +79,11 @@ C2.1 delivered strokes, text, groups and bitmaps as validated, persisted geometr
    object: layers front to back, lines before brush strokes before zones), crossing paths, and (SI-061) lassos and rects
    (zones whose interior point lies inside); `onlyUnpainted`, repaint `onlyPainted`, protected colours (swatch
    `ext["dev.toontown.paint"].protected`, refused per target with `colour.protected` unless `respectProtected: false`),
-   explicit `colourId` defaulting to the current colour, gradient/texture mapping by drag or default box (SI-064).
+   explicit `colourId` defaulting to the current colour, gradient/texture mapping by drag or default box (SI-064) for
+   zones, brush strokes and lines (SI-068). A solid colour preserves the stored matrix (C22-R1-09). A crossing path is
+   traversed continuously through each layer's map (`LayerMap::along`: cut at every edge crossing, the face between
+   crossings). All targets of one call share one work account (C22-R1-04). When gap closing changes the topology,
+   every earlier target is resolved again and applied with the closed ones in the same transaction (C22-R1-08).
    `colour.paintUnpainted.apply` (IDs, points, lasso, all) and `colour.paint.remove` (zones unpainted; lines become
    invisible strokes; brush strokes and text `colour.cannotUnpaint`). A call that paints nothing fails with its first
    refusal; partial success lists the rest in `skipped`. Zone-ID targets with a stale `expectRev` →
@@ -76,7 +91,8 @@ C2.1 delivered strokes, text, groups and bitmaps as validated, persisted geometr
    `draw.hitTest.get` lists hits front to back with the zone.
 
 9. **Gap closing (03 §8.6, §8.8; SI-062, SI-063).** The mode is the persisted user setting `paint.gapClosing`
-   (`colour.gapClosing.set/get`) with the per-command `gapClosing` override; tolerances 3/8/16 view px, 1 px = 1 du at
+   (`colour.gapClosing.set/get`; the `prefs` scope, written as a staged preference effect, C22-R1-07) with the
+   per-command `gapClosing` override; tolerances 3/8/16 view px, 1 px = 1 du at
    100 % zoom. Candidates join open stroke ends to the nearest end and the nearest stroke point within the tolerance;
    the region under the point must become a zone of at least 4 × tolerance²; only candidates on its boundary are kept
    as invisible strokes (`addedStrokeIds`). `colour.gap.close` joins the end (else stroke point) nearest each end of a
@@ -87,9 +103,13 @@ C2.1 delivered strokes, text, groups and bitmaps as validated, persisted geometr
     palette of that name (shown in every scene with its first style), or `Recovered` — else as `Deleted colour`
     placeholders (opaque mid-grey). `draw.content.add` recovers in the paste's own transaction from the content's
     `colourRecovery` copies (else the project's); `colour.recovery.run` on demand ("Colour Recovery"),
-    `colour.missing.list` reports, `colour.recovery.performed` announces. Zone fills travel with pasted content (each
-    zone's fill painted at its interior point). Each drawing's recovery list is refreshed on save to one entry per
-    colour it uses.
+    `colour.missing.list` reports, `colour.recovery.performed` announces. `doc.import.json` recovers in the import's
+    own transaction. **On open** (C22-R1-05), recovery and the repair of disagreeing side fills are part of the repair
+    step: one "Repair on Open" step and a new revision; `colour.recovered`, `colour.placeholderCreated` and
+    `drawing.fillInconsistent` appear in the load report; IDs come from a content-seeded generator (`load_repair.rs`).
+    Zone fills travel with pasted content (each zone's fill painted at its interior point). Each drawing's recovery list
+    is refreshed on save to exactly one entry per colour it uses. A colour with neither a definition nor a copy gets a
+    `Deleted colour` placeholder entry (C22-R1-06).
 
 11. **Read-back and events.** `draw.drawing.get` lists each layer's zones in the §13.4 shape and pencil/invisible
     strokes' `leftZoneId`/`rightZoneId`; zone IDs select zones in `ids`; `doc.object.get` derives drawing `zones`
@@ -104,6 +124,5 @@ C2.1 delivered strokes, text, groups and bitmaps as validated, persisted geometr
   faster graph building at hundreds of thousands of strokes (R1-12 budgets).
 - The spec owner may add a zone-fill side table to 10 §4.9 (replacing SI-060's extension key), a protected flag to
   03 §1.4 (SI-061), and decide a per-drawing gap setting (SI-062, M4 C4.2).
-- Recovery while loading (03 §11.2 "loading drawings") and the load-time `drawing.fillInconsistent` repair run on
-  paste, on demand, on save and on the first edit of a layer in C2.2; automatic recovery inside persistence's load
-  repair is ticketed (handoff §6).
+- Recovery and side-fill repair run on load, paste, import, on demand and on the first edit of a layer (round 1 ruling
+  withdrew ticket C22-T1).

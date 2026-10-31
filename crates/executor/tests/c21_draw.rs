@@ -197,12 +197,21 @@ fn locked_drawings_refuse_every_edit_and_stale_revisions_refuse_id_edits() {
 #[test]
 fn stroke_set_edits_geometry_and_kind_and_keeps_the_id() {
     let h = fixture();
-    let r = okv(&h, "draw.stroke.set", json!({ "strokeId": format!("{D1}/{PENCIL}"), "kind": "invisible" }));
-    assert_eq!(r["strokeIds"], json!([PENCIL]));
-    let s = strokes_of(&drawing(&h, D1)).into_iter().find(|s| s["id"] == PENCIL).unwrap();
+    // A pencil alone in a layer of its own: re-noding (02 §3.12 item 1) leaves it whole, so its ID is kept. (The
+    // fixture's pencil meets the brush outline's corner and the invisible stroke's end, so its first edit splits it.)
+    let add = okv(
+        &h,
+        "draw.stroke.add",
+        json!({ "drawingId": D1, "kind": "pencil", "layer": "new", "fit": false,
+                "points": [{"x": -300, "y": -300}, {"x": -250, "y": -260}] }),
+    );
+    let pencil = add["strokeIds"][0].as_str().unwrap().to_owned();
+    let r = okv(&h, "draw.stroke.set", json!({ "strokeId": format!("{D1}/{pencil}"), "kind": "invisible" }));
+    assert_eq!(r["strokeIds"], json!([pencil]));
+    let s = strokes_of(&drawing(&h, D1)).into_iter().find(|s| s["id"] == pencil.as_str()).unwrap();
     assert_eq!((s["kind"].clone(), s["colourId"].clone()), (json!("invisible"), Value::Null));
-    okv(&h, "draw.stroke.set", json!({ "drawingId": D1, "strokeId": PENCIL, "kind": "pencil", "thickness": 5 }));
-    let s = strokes_of(&drawing(&h, D1)).into_iter().find(|s| s["id"] == PENCIL).unwrap();
+    okv(&h, "draw.stroke.set", json!({ "drawingId": D1, "strokeId": pencil, "kind": "pencil", "thickness": 5 }));
+    let s = strokes_of(&drawing(&h, D1)).into_iter().find(|s| s["id"] == pencil.as_str()).unwrap();
     assert_eq!(s["lineStyle"]["thickness"], 5.0);
     assert!(s["colourId"].is_string(), "made visible with the current colour");
     // A brush spine edit sweeps the outline again; pressure edits too.
@@ -374,12 +383,15 @@ fn groups_delete_and_pivot() {
 #[test]
 fn content_round_trips_through_read_back_with_new_ids() {
     let h = fixture();
+    // Node the fixture's layer first (its pencil meets the brush outline's corner and the invisible stroke's end, 02
+    // §3.12 item 1): the copied content is then noded already and pastes unchanged.
+    okv(&h, "draw.object.delete", json!({ "drawingId": D1, "ids": [INVISIBLE] }));
     let src = drawing(&h, D1);
     // Into the empty cell at frame 7: a new drawing gets the content, IDs reassigned, colours kept.
     let r = okv(&h, "draw.content.add", json!({ "elementId": BOB, "frame": 7, "content": src.clone() }));
     assert_eq!(r["createdDrawing"], true);
     let map = r["idMap"].as_object().unwrap();
-    assert!(map.contains_key(PENCIL) && map.contains_key(CAPTION));
+    assert!(map.contains_key(BRUSH) && map.contains_key(CAPTION));
     let copy = drawing(&h, r["drawingId"].as_str().unwrap());
     let mut s = serde_json::to_string(&src["nodes"]).unwrap();
     for (old, new) in map {

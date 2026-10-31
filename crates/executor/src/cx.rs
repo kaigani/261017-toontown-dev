@@ -155,6 +155,8 @@ pub struct Cx {
     settled_doc: Option<Document>,
     /// Strokes split by noding in this transaction, with their pieces (`<drawingId>/<strokeId>` keys).
     lineage: BTreeMap<String, Vec<String>>,
+    /// Drawings an import created: taken as they are (no noding), as on load.
+    verbatim: BTreeSet<Id>,
 }
 
 /// Millisecond base of the ULID time part of transaction IDs (2025-10-15T00:00:00Z); the time part is a logical
@@ -210,6 +212,7 @@ impl Cx {
             painted: BTreeMap::new(),
             settled_doc: None,
             lineage: BTreeMap::new(),
+            verbatim: BTreeSet::new(),
         }
     }
 
@@ -665,6 +668,11 @@ impl Cx {
         }
     }
 
+    /// Marks drawings an import created: the settle pass takes them as they are (persisted content, like a load).
+    pub(crate) fn keep_verbatim(&mut self, drawings: impl IntoIterator<Item = Id>) {
+        self.verbatim.extend(drawings);
+    }
+
     /// Strokes of a drawing split by noding in this transaction.
     pub(crate) fn split_strokes(&self, drawing: &Id) -> Vec<String> {
         let prefix = format!("{drawing}/");
@@ -710,7 +718,9 @@ impl Cx {
         let mut changes: Vec<(EntryKey, Vec<PatchOp>)> = Vec::new();
         for id in ids {
             let Some(ad) = after.drawing(&id) else { continue };
-            let bd = before.drawing(&id);
+            // A drawing an import created is settled as it stands: its strokes are compared with themselves, so
+            // nothing is re-noded and only paint passes change it.
+            let bd = before.drawing(&id).or_else(|| self.verbatim.contains(&id).then_some(ad));
             let has_paint = self.painted.keys().any(|(d, _)| *d == id);
             if bd == Some(ad) && !has_paint {
                 continue;
