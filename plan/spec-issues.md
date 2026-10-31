@@ -757,8 +757,8 @@ Reserved by the M0 closure for "measured deterministic-format incompatibility" (
     tolerance of a junction's first record belongs to it (no chaining). Its coordinate is the nearest existing anchor
     of an unchanged pencil or invisible participant, else the first record's point, and every participant meets that
     exact coordinate. An open end is a junction with the nearest stroke and with every stroke as near (ties). A
-    stroke passing through another's anchor (or touching it there) is a junction at exactly that vertex; collinear
-    overlaps are not. A cut at the same place as an open path's end becomes that end's junction.
+    stroke crossing another exactly at a vertex of either is a junction at exactly that vertex. A touch, retracing, or
+    any shared direction (collinear overlap) is not a crossing. A cut at the same place as an open path's end becomes that end's junction.
   - *Imports.* Drawings `doc.import.json` creates are persisted content, taken as they are like a load: their fills
     are read and repaired, but they are not re-noded. Their first edit nodes them. This keeps C1.3's import fidelity
     and `idPolicy: preserve`.

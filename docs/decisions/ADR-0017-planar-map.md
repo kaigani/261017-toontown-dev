@@ -17,8 +17,9 @@ C2.1 delivered strokes, text, groups and bitmaps as validated, persisted geometr
 1. **Persistent noding (`tt_vector::planar::node`; SI-059).** Within a layer, pencil and invisible strokes are split
    where they cross any stroke (themselves included) and where an open stroke's end meets another stroke within the
    junction tolerance (1/32 du): with the nearest stroke and every stroke as near (an end where a split stroke's pieces
-   meet and a line passes through is a junction with all of them). A stroke passing exactly through another's anchor is
-   a junction at that vertex (no proper crossing would be found there); collinear overlaps are not junctions. **Each junction is resolved once for all of its
+   meet and a line passes through is a junction with all of them). A stroke crossing another exactly at a vertex of either is
+   a junction at that vertex: the second's two directions lie strictly on different sides of the first (exact
+   orientation tests). Touches, retracing and collinear overlaps are not junctions. **Each junction is resolved once for all of its
    participants** (round 1, C22-R1-01): a crossing or T-junction within the tolerance of a junction's first record
    belongs to that junction (no chaining). Its coordinate is the nearest existing anchor of an unchanged participant,
    else the first record's point, and every participant's pieces meet exactly there. A junction within the tolerance

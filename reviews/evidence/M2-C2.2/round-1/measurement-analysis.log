@@ -1,0 +1,24 @@
+ok   strokes-100k-windows.json (series)
+       brushAdd.allocatedBytes: n=10 p50=3378501072.0 p99=3379167176.0 max=3379167176.0 bytes
+       brushAdd.retainedBytes: n=10 p50=91799.0 p99=91851.0 max=91851.0 bytes
+       brushAdd.wallMs: n=10 p50=4660.920499999999 p99=4825.3294000000005 max=4825.3294000000005 ms
+       patchProperty.allocatedBytes: n=10 p50=2456591577.0 p99=2457078735.0 max=2457078735.0 bytes
+       patchProperty.retainedBytes: n=10 p50=6112.0 p99=32957.0 max=32957.0 bytes
+       patchProperty.wallMs: n=10 p50=3318.6811000000002 p99=4085.6342999999997 max=4085.6342999999997 ms
+       process.liveBytes: n=70 p50=1425600419.0 p99=1426064538.0 max=1426118444.0 bytes
+       redo.allocatedBytes: n=10 p50=4004100212.0 p99=4004758477.0 max=4004758477.0 bytes
+       redo.retainedBytes: n=10 p50=10264.0 p99=121233111.0 max=121233111.0 bytes
+       redo.wallMs: n=10 p50=5424.2811 p99=5668.124 max=5668.124 ms
+       strokeAdd.allocatedBytes: n=10 p50=7424906639.0 p99=8495463141.0 max=8495463141.0 bytes
+       strokeAdd.retainedBytes: n=10 p50=31563.0 p99=586290489.0 max=586290489.0 bytes
+       strokeAdd.wallMs: n=10 p50=10096.14 p99=10842.818899999998 max=10842.818899999998 ms
+       strokeAddDryRun.allocatedBytes: n=10 p50=6730596610.0 p99=6731396530.0 max=6731396530.0 bytes
+       strokeAddDryRun.retainedBytes: n=10 p50=-45939.0 p99=232482467.0 max=232482467.0 bytes
+       strokeAddDryRun.wallMs: n=10 p50=9284.4731 p99=9542.4109 max=9542.4109 ms
+       strokeSet.allocatedBytes: n=10 p50=3398895370.0 p99=3399567554.0 max=3399567554.0 bytes
+       strokeSet.retainedBytes: n=10 p50=5415.0 p99=5415.0 max=5415.0 bytes
+       strokeSet.wallMs: n=10 p50=4724.2849 p99=5062.6822999999995 max=5062.6822999999995 ms
+       undo.allocatedBytes: n=10 p50=4657286229.0 p99=4658103024.0 max=4658103024.0 bytes
+       undo.retainedBytes: n=10 p50=13038.0 p99=121237094.0 max=121237094.0 bytes
+       undo.wallMs: n=10 p50=6217.847299999999 p99=6386.349499999999 max=6386.349499999999 ms
+1 file(s), 0 rejected
