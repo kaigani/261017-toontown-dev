@@ -67,7 +67,7 @@ fn dense_input_worker() {
         p:P::new(f64::from(i)*1e-9,0.0),pressure:1.0
     }).collect();
     let start = std::time::Instant::now();
-    let result = fit(&clean(&samples,"/points").unwrap(),3.0,false);
+    let result = fit(&clean(&samples,"/points").unwrap(),3.0,true);
     eprintln!("100000 dense straight samples: {:?}, {} anchors",start.elapsed(),result.path.anchors.len());
     assert!(result.path.anchors.len()<=100_000);
 }
@@ -82,8 +82,35 @@ fn dense_100k_input_finishes_within_document_watchdog_budget() {
         if let Some(status) = child.try_wait().unwrap() { assert!(status.success()); break; }
         if start.elapsed()>Duration::from_secs(30) {
             child.kill().unwrap(); child.wait().unwrap();
-            assert!(false,"100000 distinct points on a .0001 du straight line exceeded 30 s; corners reach scans quadratically");
+            assert!(start.elapsed()<=Duration::from_secs(30),"100000 distinct points on a .0001 du closed path exceeded 30 s; corners reach scans quadratically");
         }
         std::thread::sleep(Duration::from_millis(20));
+    }
+}
+
+#[test]
+fn looping_brush_preserves_hole_and_clean_swept_area() {
+    let corners = [P::new(0.0,0.0),P::new(100.0,0.0),P::new(100.0,100.0),P::new(0.0,100.0)];
+    let spine = Path { anchors:corners.iter().copied().map(Anchor::corner).collect(),closed:true };
+    let pen = BrushPen {tip:Tip::Round,min_size:4.0,max_size:4.0,tip_angle:0.0};
+    let out = outline(&spine,&[[0.0,1.0],[1.0,1.0]],&pen).unwrap();
+    let poly = out.flatten(0.001);
+    for x in -4..=104 { for y in -4..=104 {
+        let p = P::new(f64::from(x),f64::from(y));
+        let d = (0..4).map(|i|distance(p,corners[i],corners[(i+1)%4])).fold(f64::INFINITY,f64::min);
+        if (d-2.0).abs()>0.3 { assert_eq!(contains(&poly,p),d<2.0,"swept-area mismatch at {p:?}, distance {d}"); }
+    }}
+}
+
+#[test]
+fn text_edge_cases_are_finite_and_bounded() {
+    use tt_vector::text::{Content,default_run,default_para,layout};
+    for s in [String::new(),"AV To\nمرحبا e\u{301}\nאבג".into(),"W".repeat(100_000)] {
+        let c = Content::new(&s,default_run(None),default_para());
+        for width in [None,Some(1.0),Some(100.0)] {
+            let l = layout(&c,width);
+            assert!(l.width.is_finite() && l.height.is_finite());
+            assert!(l.lines<=100_003);
+        }
     }
 }

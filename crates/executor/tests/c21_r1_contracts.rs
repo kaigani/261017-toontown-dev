@@ -50,3 +50,37 @@ fn generic_patch_enforces_one_paragraph_per_line() {
         assert_eq!(get(&h,&key)["paragraphs"].as_array().unwrap().len(),2,"02 3.7 / 13.6");
     }
 }
+
+#[test]
+fn content_changes_emit_drawing_event_including_undo_redo() {
+    let h = fixture();
+    let rx = h.subscribe();
+    let mut failures = Vec::new();
+    for (id,p) in [
+        ("draw.pivot.set",json!({"drawingId":D,"point":{"x":5,"y":6}})),
+        ("edit.undo",json!({})),("edit.redo",json!({}))
+    ] {
+        ok(&h,id,p);
+        let events:Vec<_> = rx.try_iter().collect();
+        if !events.iter().any(|e| e.name=="draw.drawing.changed" && e.payload["drawingId"]==D) {
+            failures.push(format!("{id}: {:?}",events.iter().map(|e|&e.name).collect::<Vec<_>>()));
+        }
+    }
+    assert!(failures.is_empty(),"02 13.6 requires a drawing event on every content change: {failures:?}");
+}
+
+#[test]
+fn edit_results_report_the_resolved_drawing() {
+    let h = fixture();
+    let r = ok(&h,"draw.stroke.set",json!({"drawingId":D,"strokeId":"st_01K742SG0R61SYK9GG0HGYVNBT","thickness":3}));
+    assert_eq!(r["drawingId"],D,"02 13.1(11): edit result includes drawingId and rev");
+}
+
+#[test]
+fn decomposed_unicode_text_is_accepted_and_ranges_follow_normalization() {
+    let h = fixture();
+    let created = run(&h,"draw.text.add",json!({"drawingId":D,"position":{"x":0,"y":0},"text":"e\u{301}"}));
+    let base = ok(&h,"draw.text.add",json!({"drawingId":D,"position":{"x":0,"y":0},"text":"e"}));
+    let inserted = run(&h,"draw.text.set",json!({"drawingId":D,"textId":base["textId"],"insert":{"at":1,"text":"\u{301}"}}));
+    assert!(created.is_ok() && inserted.is_ok(),"02 3.7 / 10 1.1 NFC text must keep valid codepoint ranges; add {:?}, insert {:?}",created.error,inserted.error);
+}
