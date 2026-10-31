@@ -184,7 +184,9 @@ pub fn node(strokes: &[NodeStroke], work: &mut Work) -> Result<Noding, GeomError
         let count = s.path.segments().len() as f64;
         let ends = [(0.0, flats[i].pts[0]), (count, flats[i].pts[flats[i].pts.len() - 1])];
         for (s_end, p) in ends {
-            let mut best: Option<(f64, usize, f64, P)> = None;
+            // The nearest point of every other stroke within the tolerance: an end where several strokes meet (the
+            // neighbouring piece of a split stroke and a line through the junction) is a junction with each of them.
+            let mut best: BTreeMap<usize, (f64, usize, f64, P)> = BTreeMap::new();
             let key = (cell(p.x), cell(p.y));
             let Some(list) = grid.get(&key) else { continue };
             work.spend_n(list.len())?;
@@ -195,16 +197,20 @@ pub fn node(strokes: &[NodeStroke], work: &mut Work) -> Result<Noding, GeomError
                 }
                 let (t, q) = closest(p, e.a, e.b);
                 let d = p.dist(q);
-                if d <= JUNCTION_TOLERANCE && best.is_none_or(|b| d < b.0) {
-                    best = Some((d, n, t, q));
+                if d <= JUNCTION_TOLERANCE && best.get(&e.stroke).is_none_or(|b| d < b.0) {
+                    best.insert(e.stroke, (d, n, t, q));
                 }
             }
-            let Some((_, n, t, q)) = best else { continue };
-            let e = &edges[n];
-            let s_other = flat::param_between(e.sa, e.sb, t);
-            // Where they meet: the changed stroke moves onto the other one; an unchanged end stays put.
-            let at = if strokes[i].changed { q } else { p };
-            records.push(Record { at, parts: [(i, s_end), (e.stroke, s_other)] });
+            // The nearest stroke, and every other stroke as near (ties: the end-to-end neighbour and a line through
+            // the same point); strokes merely passing within the tolerance are not pulled onto the junction.
+            let nearest = best.values().map(|b| b.0).fold(f64::INFINITY, f64::min);
+            for (_, n, t, q) in best.into_values().filter(|b| b.0 <= nearest + 1e-9) {
+                let e = &edges[n];
+                let s_other = flat::param_between(e.sa, e.sb, t);
+                // Where they meet: the changed stroke moves onto the other one; an unchanged end stays put.
+                let at = if strokes[i].changed { q } else { p };
+                records.push(Record { at, parts: [(i, s_end), (e.stroke, s_other)] });
+            }
         }
     }
     let junctions = resolve(strokes, &records, work)?;
@@ -222,44 +228,39 @@ pub fn node(strokes: &[NodeStroke], work: &mut Work) -> Result<Noding, GeomError
     Ok(Noding { outcomes })
 }
 
-fn root(parent: &mut [usize], mut i: usize) -> usize {
-    while parent[i] != i {
-        parent[i] = parent[parent[i]];
-        i = parent[i];
-    }
-    i
-}
-
-/// Resolves every junction once for all of its participants (C22-R1-01): records within [`JUNCTION_TOLERANCE`] of
-/// each other (transitively) are one junction. Its coordinate is the nearest existing anchor of an unchanged pencil or
+/// Resolves every junction once for all of its participants (C22-R1-01): a record within [`JUNCTION_TOLERANCE`] of a
+/// junction's first record belongs to that junction. Its coordinate is the nearest existing anchor of an unchanged pencil or
 /// invisible participant (then lowest stroke index and parameter), else the point of the junction's first record.
 /// Every participant gets that exact coordinate, so the pieces meeting there share their junction anchor.
 fn resolve(strokes: &[NodeStroke], records: &[Record], work: &mut Work) -> Result<Vec<Vec<Junction>>, GeomError> {
     work.spend_n(records.len().saturating_mul(16))?;
-    // Union-find over a grid of tolerance-sized cells, records in order; a cluster's root is its lowest record.
-    let mut parent: Vec<usize> = (0..records.len()).collect();
+    // Records in order: each joins the lowest-numbered junction whose first record lies within the tolerance, else
+    // starts a junction of its own (no chaining, so no participant moves by more than the tolerance plus the distance
+    // to an authoritative anchor).
     let cell = |p: P| ((p.x / JUNCTION_TOLERANCE).floor() as i64, (p.y / JUNCTION_TOLERANCE).floor() as i64);
-    let mut grid: BTreeMap<(i64, i64), Vec<usize>> = BTreeMap::new();
+    let mut firsts: BTreeMap<(i64, i64), Vec<usize>> = BTreeMap::new();
+    let mut clusters: BTreeMap<usize, Vec<usize>> = BTreeMap::new();
     for (i, r) in records.iter().enumerate() {
         let (cx, cy) = cell(r.at);
+        let mut joined: Option<usize> = None;
         for dx in -1..=1 {
             for dy in -1..=1 {
-                let Some(list) = grid.get(&(cx + dx, cy + dy)) else { continue };
+                let Some(list) = firsts.get(&(cx + dx, cy + dy)) else { continue };
                 work.spend_n(list.len())?;
-                for &j in list {
-                    if records[j].at.dist(r.at) <= JUNCTION_TOLERANCE {
-                        let (a, b) = (root(&mut parent, i), root(&mut parent, j));
-                        parent[a.max(b)] = a.min(b);
+                for &f in list {
+                    if records[f].at.dist(r.at) <= JUNCTION_TOLERANCE && joined.is_none_or(|j| f < j) {
+                        joined = Some(f);
                     }
                 }
             }
         }
-        grid.entry((cx, cy)).or_default().push(i);
-    }
-    let mut clusters: BTreeMap<usize, Vec<usize>> = BTreeMap::new();
-    for i in 0..records.len() {
-        let r = root(&mut parent, i);
-        clusters.entry(r).or_default().push(i);
+        match joined {
+            Some(f) => clusters.entry(f).or_default().push(i),
+            None => {
+                firsts.entry((cx, cy)).or_default().push(i);
+                clusters.entry(i).or_default().push(i);
+            }
+        }
     }
     let mut junctions: Vec<Vec<Junction>> = vec![Vec::new(); strokes.len()];
     for (first, members) in clusters {
@@ -353,6 +354,31 @@ fn apply(s: &NodeStroke, js: &[Junction]) -> Option<Outcome> {
         let (first, last) = (merged[0], merged[merged.len() - 1]);
         if same_place(&segs, &last, &Junction { s: first.s + count, at: first.at }, true) {
             merged.pop();
+        }
+    }
+    // A cut at the same place as an open path's end is that end's junction: the end moves onto it and no piece of
+    // zero length is left between them.
+    if !s.path.closed {
+        let start = Junction { s: 0.0, at: moved_end(&moves, 0.0).unwrap_or(s.path.anchors[0].p) };
+        if let Some(first) = merged.first().copied()
+            && same_place(&segs, &start, &first, false)
+        {
+            merged.remove(0);
+            moves.retain(|m| m.0 > 0.0);
+            if first.at != s.path.anchors[0].p {
+                moves.push((0.0, first.at));
+            }
+        }
+        let finish =
+            Junction { s: count, at: moved_end(&moves, count).unwrap_or(s.path.anchors[s.path.anchors.len() - 1].p) };
+        if let Some(last) = merged.last().copied()
+            && same_place(&segs, &last, &finish, false)
+        {
+            merged.pop();
+            moves.retain(|m| m.0 < count);
+            if last.at != s.path.anchors[s.path.anchors.len() - 1].p {
+                moves.push((count, last.at));
+            }
         }
     }
     if merged.is_empty() {
@@ -579,6 +605,20 @@ mod tests {
         let Some(Outcome::Split(ps)) = n.outcomes.get(&0) else { panic!("{n:?}") };
         assert_eq!(ps.len(), 3, "{ps:?}");
         assert_eq!(ps[0].anchors[ps[0].anchors.len() - 1].p, ps[2].anchors[0].p);
+    }
+
+    #[test]
+    fn a_line_through_the_meeting_point_of_two_pieces_is_split_there() {
+        // Two pieces of a split line meet at (5, 0); a new line through that point touches both piece ends only.
+        let n = run(&[
+            line("a", &[(0.0, 0.0), (5.0, 0.0)], false),
+            line("b", &[(5.0, 0.0), (10.0, 0.0)], false),
+            line("x", &[(5.0, -5.0), (5.0, 5.0)], true),
+        ]);
+        let Some(Outcome::Split(x)) = n.outcomes.get(&2) else { panic!("{n:?}") };
+        assert_eq!(x.len(), 2);
+        assert_eq!(x[0].anchors[x[0].anchors.len() - 1].p, P::new(5.0, 0.0));
+        assert!(!n.outcomes.contains_key(&0) && !n.outcomes.contains_key(&1), "the pieces stay as they are");
     }
 
     #[test]

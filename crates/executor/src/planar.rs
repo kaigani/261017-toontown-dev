@@ -320,6 +320,8 @@ pub(crate) struct Settled {
     pub added: Vec<String>,
     pub split_all: Vec<String>,
     pub split_existing: Vec<String>,
+    /// The pieces existing strokes were split into (created by the call).
+    pub pieces: Vec<String>,
     pub zones: ZoneDelta,
 }
 
@@ -337,15 +339,19 @@ pub(crate) fn settled(
     let split_all = cx.split_strokes(drawing);
     let existed = |s: &String| before.drawing(drawing).is_some_and(|d| tt_vector::drawing::locate(d, s).is_some());
     let split_existing: Vec<String> = split_all.iter().filter(|s| existed(s)).cloned().collect();
+    let present = |s: &String| after.drawing(drawing).is_some_and(|d| tt_vector::drawing::locate(d, s).is_some());
+    let pieces: Vec<String> =
+        split_existing.iter().flat_map(|s| cx.pieces_of(drawing, s)).filter(|p| present(p)).collect();
     let zones = zone_delta(&cx.planar_cache(), before.drawing(drawing), after.drawing(drawing));
-    Ok(Settled { added: added_final, split_all, split_existing, zones })
+    Ok(Settled { added: added_final, split_all, split_existing, pieces, zones })
 }
 
 impl Settled {
     /// Adds the outcome to a result's changed IDs.
     pub(crate) fn report(&self, changed: &mut crate::commands::draw::Changed) {
         changed.created_ids.retain(|c| !self.split_all.contains(c));
-        for a in &self.added {
+        // New strokes (their pieces when noding split them) and the pieces of existing strokes noding split.
+        for a in self.added.iter().chain(&self.pieces) {
             if !changed.created_ids.contains(a) {
                 changed.created_ids.push(a.clone());
             }
