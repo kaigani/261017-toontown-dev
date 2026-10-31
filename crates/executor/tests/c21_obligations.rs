@@ -57,9 +57,12 @@ fn reopened() -> (ExecutorHandle, std::path::PathBuf) {
     );
     let path = dir.join("Geometry.animpkg");
     job_ok(&h, "project.saveAs", json!({ "path": path.to_string_lossy() }));
+    // Close (releasing the project lock synchronously) before another executor opens the file.
+    ok(&h, "project.close", json!({}));
     drop(h);
     let h = spawn(&dir.join("user2"));
     job_ok(&h, "project.open", json!({ "path": path.to_string_lossy() }));
+    assert_eq!(ok(&h, "doc.state.get", json!({}))["readOnly"], false, "opened writable");
     (h, dir)
 }
 
@@ -227,6 +230,7 @@ fn opaque_data_ids_and_revisions_survive_edits_save_and_reopen() {
     job_ok(&h, "project.save", json!({}));
     let before = canonical(&snap(&h));
     let path = dir.join("Geometry.animpkg").to_string_lossy().into_owned();
+    ok(&h, "project.close", json!({}));
     drop(h);
     let h2 = spawn(&dir.join("user3"));
     job_ok(&h2, "project.open", json!({ "path": path }));
