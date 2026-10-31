@@ -1,0 +1,6578 @@
+[
+  {
+    "id": "colour.autoColourUpdate.set",
+    "kind": "toggle",
+    "label": "Project flag: template colours overwrite existing swatch values",
+    "summary": "Project flag: template colours overwrite existing swatch values",
+    "section": "03",
+    "scopes": [
+      "edit"
+    ],
+    "undoable": true,
+    "undoLabel": "Project flag: template colours overwrite existing swatch val",
+    "confirmation": [],
+    "enablement": "Enabled when a project is open (01 §1.3).",
+    "needsProject": true,
+    "paramsSchema": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "title": "colour.autoColourUpdate.set parameters",
+      "type": "object",
+      "properties": {
+        "enabled": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "enabled"
+      ],
+      "additionalProperties": false,
+      "x-spec": "`enabled: bool`"
+    },
+    "resultSchema": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "title": "colour.autoColourUpdate.set result",
+      "type": "object",
+      "properties": {
+        "enabled": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "enabled"
+      ],
+      "x-spec": "`{enabled}`",
+      "additionalProperties": false
+    },
+    "examples": [
+      {
+        "title": "Required parameters only: Project flag: template colours overwrite existing swatch values",
+        "params": {
+          "enabled": true
+        }
+      }
+    ],
+    "status": "notImplemented",
+    "agentOnly": null,
+    "guiLocations": "the Palette panel and the colour editor (03); wired in M7 C7.1",
+    "spec": {
+      "params": "`enabled: bool`",
+      "result": "`{enabled}`",
+      "undo": "yes"
+    },
+    "milestone": "M7 C7.1"
+  },
+  {
+    "id": "colour.current.changed",
+    "kind": "event",
+    "label": "Current palette or colour changed",
+    "summary": "Current palette or colour changed",
+    "section": "03",
+    "scopes": [
+      "read"
+    ],
+    "undoable": false,
+    "undoLabel": null,
+    "confirmation": [],
+    "enablement": "Never invoked: an event delivered to subscribers (11 §9).",
+    "needsProject": false,
+    "paramsSchema": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "title": "colour.current.changed parameters",
+      "type": "object",
+      "properties": {},
+      "additionalProperties": false,
+      "description": "Events take no parameters; subscribe to them (11 §9).",
+      "x-spec": "—"
+    },
+    "resultSchema": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "title": "colour.current.changed result",
+      "type": "object",
+      "properties": {
+        "paletteId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4096,
+          "description": "object ID or path reference (10 §3)"
+        },
+        "colourId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4096,
+          "description": "object ID or path reference (10 §3)"
+        }
+      },
+      "required": [
+        "paletteId",
+        "colourId"
+      ],
+      "description": "Event payload (delivered to subscribers).",
+      "x-spec": "`{paletteId, colourId}`",
+      "additionalProperties": false
+    },
+    "examples": [
+      {
+        "title": "Subscribe (events take no parameters)",
+        "params": {}
+      }
+    ],
+    "status": "notImplemented",
+    "agentOnly": "an event delivered to subscribers",
+    "guiLocations": null,
+    "spec": {
+      "params": "—",
+      "result": "`{paletteId, colourId}`",
+      "undo": "n/a"
+    },
+    "milestone": "M7 C7.1"
+  },
+  {
+    "id": "colour.current.get",
+    "kind": "query",
+    "label": "Current palette, swatch and style",
+    "summary": "Current palette, swatch and style",
+    "section": "03",
+    "scopes": [
+      "read"
+    ],
+    "undoable": false,
+    "undoLabel": null,
+    "confirmation": [],
+    "enablement": "Enabled when a project is open (01 §1.3).",
+    "needsProject": true,
+    "paramsSchema": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "title": "colour.current.get parameters",
+      "type": "object",
+      "properties": {},
+      "additionalProperties": false,
+      "x-spec": "—"
+    },
+    "resultSchema": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "title": "colour.current.get result",
+      "type": "object",
+      "properties": {
+        "paletteId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4096,
+          "description": "object ID or path reference (10 §3)"
+        },
+        "colourId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4096,
+          "description": "object ID or path reference (10 §3)"
+        },
+        "styleId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4096,
+          "description": "object ID or path reference (10 §3)"
+        },
+        "swatch": {
+          "type": "string",
+          "maxLength": 65536
+        }
+      },
+      "required": [
+        "paletteId",
+        "colourId",
+        "styleId",
+        "swatch"
+      ],
+      "x-spec": "`{paletteId, colourId, styleId, swatch}`",
+      "additionalProperties": false
+    },
+    "examples": [
+      {
+        "title": "No parameters: Current palette, swatch and style",
+        "params": {}
+      }
+    ],
+    "status": "notImplemented",
+    "agentOnly": null,
+    "guiLocations": "the Palette panel and the colour editor (03); wired in M7 C7.1",
+    "spec": {
+      "params": "—",
+      "result": "`{paletteId, colourId, styleId, swatch}`",
+      "undo": "n/a"
+    },
+    "milestone": "M7 C7.1"
+  },
+  {
+    "id": "colour.current.set",
+    "kind": "ui",
+    "label": "Set the current colour",
+    "summary": "Set the current colour (switches current palette if needed)",
+    "section": "03",
+    "scopes": [
+      "ui"
+    ],
+    "undoable": false,
+    "undoLabel": null,
+    "confirmation": [],
+    "enablement": "Enabled when a project is open (01 §1.3); `colourId` names an existing colour.",
+    "needsProject": true,
+    "paramsSchema": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "title": "colour.current.set parameters",
+      "type": "object",
+      "properties": {
+        "colourId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4096,
+          "description": "object ID or path reference (10 §3)"
+        }
+      },
+      "required": [
+        "colourId"
+      ],
+      "additionalProperties": false,
+      "x-spec": "`colourId: id`"
+    },
+    "resultSchema": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "title": "colour.current.set result",
+      "type": "object",
+      "properties": {
+        "paletteId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4096,
+          "description": "object ID or path reference (10 §3)"
+        },
+        "colourId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4096,
+          "description": "object ID or path reference (10 §3)"
+        }
+      },
+      "required": [
+        "paletteId",
+        "colourId"
+      ],
+      "x-spec": "`{paletteId, colourId}`",
+      "additionalProperties": false
+    },
+    "examples": [
+      {
+        "title": "Required parameters only: Set the current colour (switches current palette if needed)",
+        "params": {
+          "colourId": "scene:#1"
+        }
+      }
+    ],
+    "status": "notImplemented",
+    "agentOnly": null,
+    "guiLocations": "the Palette panel and the colour editor (03); wired in M7 C7.1",
+    "spec": {
+      "params": "`colourId: id`",
+      "result": "`{paletteId, colourId}`",
+      "undo": "no"
+    },
+    "milestone": "M7 C7.1"
+  },
+  {
+    "id": "colour.editor.close",
+    "kind": "ui",
+    "label": "Close the editor, committing or discarding the pending edit",
+    "summary": "Close the editor, committing or discarding the pending edit",
+    "section": "03",
+    "scopes": [
+      "ui"
+    ],
+    "undoable": false,
+    "undoLabel": null,
+    "confirmation": [],
+    "enablement": "Enabled when a project is open (01 §1.3).",
+    "needsProject": true,
+    "paramsSchema": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "title": "colour.editor.close parameters",
+      "type": "object",
+      "properties": {
+        "commit": {
+          "type": "boolean",
+          "default": true
+        }
+      },
+      "additionalProperties": false,
+      "x-spec": "`commit: bool = true`"
+    },
+    "resultSchema": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "title": "colour.editor.close result",
+      "type": "object",
+      "properties": {},
+      "additionalProperties": false,
+      "x-spec": "`{}`"
+    },
+    "examples": [
+      {
+        "title": "No parameters: Close the editor, committing or discarding the pending edit",
+        "params": {}
+      }
+    ],
+    "status": "notImplemented",
+    "agentOnly": null,
+    "guiLocations": "the Palette panel and the colour editor (03); wired in M7 C7.1",
+    "spec": {
+      "params": "`commit: bool = true`",
+      "result": "`{}`",
+      "undo": "n/a"
+    },
+    "milestone": "M7 C7.1"
+  },
+  {
+    "id": "colour.editor.open",
+    "kind": "ui",
+    "label": "Open the colour editor / texture properties for a swatch",
+    "summary": "Open the colour editor / texture properties for a swatch",
+    "section": "03",
+    "scopes": [
+      "ui"
+    ],
+    "undoable": false,
+    "undoLabel": null,
+    "confirmation": [],
+    "enablement": "Enabled when a project is open (01 §1.3).",
+    "needsProject": true,
+    "paramsSchema": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "title": "colour.editor.open parameters",
+      "type": "object",
+      "properties": {
+        "colourId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4096,
+          "description": "object ID or path reference (10 §3)"
+        }
+      },
+      "additionalProperties": false,
+      "x-spec": "`colourId?: id`"
+    },
+    "resultSchema": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "title": "colour.editor.open result",
+      "type": "object",
+      "properties": {},
+      "additionalProperties": false,
+      "x-spec": "`{}`"
+    },
+    "examples": [
+      {
+        "title": "No parameters: Open the colour editor / texture properties for a swatch",
+        "params": {}
+      }
+    ],
+    "status": "notImplemented",
+    "agentOnly": null,
+    "guiLocations": "the Palette panel and the colour editor (03); wired in M7 C7.1",
+    "spec": {
+      "params": "`colourId?: id`",
+      "result": "`{}`",
+      "undo": "no"
+    },
+    "milestone": "M7 C7.1"
+  },
+  {
+    "id": "colour.fillMapping.get",
+    "kind": "query",
+    "label": "Fill mapping of a gradient/texture-filled object",
+    "summary": "Fill mapping of a gradient/texture-filled object (optionally copy to clipboard)",
+    "section": "03",
+    "scopes": [
+      "read"
+    ],
+    "undoable": false,
+    "undoLabel": null,
+    "confirmation": [],
+    "enablement": "Enabled when a project is open (01 §1.3); a current drawing exists or `drawingId` is given; `objectId` names an existing object.",
+    "needsProject": true,
+    "paramsSchema": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "title": "colour.fillMapping.get parameters",
+      "type": "object",
+      "properties": {
+        "drawingId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4096,
+          "description": "object ID or path reference (10 §3)"
+        },
+        "objectId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4096,
+          "description": "object ID or path reference (10 §3)"
+        },
+        "toClipboard": {
+          "type": "boolean",
+          "default": false
+        }
+      },
+      "required": [
+        "objectId"
+      ],
+      "additionalProperties": false,
+      "x-spec": "`drawingId?: id; objectId: id; toClipboard: bool = false`"
+    },
+    "resultSchema": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "title": "colour.fillMapping.get result",
+      "type": "object",
+      "properties": {
+        "colourId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4096,
+          "description": "object ID or path reference (10 §3)"
+        },
+        "kind": {
+          "type": "string",
+          "maxLength": 65536
+        },
+        "matrix": {
+          "type": "array",
+          "items": {
+            "type": "number"
+          },
+          "maxItems": 100000
+        },
+        "linear": {
+          "type": "string",
+          "maxLength": 65536
+        },
+        "radial": {
+          "type": "string",
+          "maxLength": 65536
+        },
+        "texture": {
+          "type": "string",
+          "maxLength": 65536
+        }
+      },
+      "required": [
+        "colourId",
+        "kind",
+        "matrix"
+      ],
+      "x-spec": "`{colourId, kind, matrix: [number], linear?, radial?, texture?}`",
+      "additionalProperties": false
+    },
+    "examples": [
+      {
+        "title": "Required parameters only: Fill mapping of a gradient/texture-filled object (optionally copy to clipboard)",
+        "params": {
+          "objectId": "scene:#1"
+        }
+      }
+    ],
+    "status": "notImplemented",
+    "agentOnly": null,
+    "guiLocations": "the Palette panel and the colour editor (03); wired in M7 C7.1",
+    "spec": {
+      "params": "`drawingId?: id; objectId: id; toClipboard: bool = false`",
+      "result": "`{colourId, kind, matrix: [number], linear?, radial?, texture?}`",
+      "undo": "n/a"
+    },
+    "milestone": "M7 C7.1"
+  },
+  {
+    "id": "colour.fillMapping.set",
+    "kind": "action",
+    "label": "Edit Fill Mapping",
+    "summary": "Set fill mapping on objects: explicit, default fit, or from clipboard (\"Edit Fill Mapping\")",
+    "section": "03",
+    "scopes": [
+      "edit"
+    ],
+    "undoable": true,
+    "undoLabel": "Edit Fill Mapping",
+    "confirmation": [],
+    "enablement": "Enabled when a project is open (01 §1.3); a current drawing exists or `drawingId` is given; every `objectIds` entry names an existing object.",
+    "needsProject": true,
+    "paramsSchema": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "title": "colour.fillMapping.set parameters",
+      "type": "object",
+      "properties": {
+        "drawingId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4096,
+          "description": "object ID or path reference (10 §3)"
+        },
+        "objectIds": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 4096,
+            "description": "object ID or path reference (10 §3)"
+          },
+          "maxItems": 100000
+        },
+        "mapping": {
+          "anyOf": [
+            {
+              "type": "string",
+              "enum": [
+                "default",
+                "clipboard"
+              ]
+            },
+            {
+              "type": "object",
+              "properties": {},
+              "additionalProperties": false,
+              "x-placeholder": true,
+              "description": "shape not defined by the owning section (spec issue); only {} is accepted until it is",
+              "x-specIssue": "SI-025"
+            }
+          ]
+        }
+      },
+      "required": [
+        "objectIds",
+        "mapping"
+      ],
+      "additionalProperties": false,
+      "x-spec": "`drawingId?: id; objectIds: [id]; mapping: object|\"default\"|\"clipboard\"`"
+    },
+    "resultSchema": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "title": "colour.fillMapping.set result",
+      "type": "object",
+      "properties": {
+        "changed": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 4096,
+            "description": "object ID or path reference (10 §3)"
+          },
+          "maxItems": 100000
+        },
+        "skipped": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "objectId": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 4096,
+                "description": "object ID or path reference (10 §3)"
+              },
+              "reason": {
+                "type": "string",
+                "maxLength": 65536
+              }
+            },
+            "required": [
+              "objectId",
+              "reason"
+            ],
+            "additionalProperties": false
+          },
+          "maxItems": 100000
+        },
+        "rev": {
+          "type": "number"
+        }
+      },
+      "required": [
+        "changed",
+        "skipped",
+        "rev"
+      ],
+      "x-spec": "`{changed: [id], skipped: [{objectId, reason}], rev}`",
+      "additionalProperties": false
+    },
+    "examples": [
+      {
+        "title": "Required parameters only: Set fill mapping on objects: explicit, default fit, or from clipboard (\"Edit Fil",
+        "params": {
+          "objectIds": [],
+          "mapping": "default"
+        }
+      }
+    ],
+    "status": "notImplemented",
+    "agentOnly": null,
+    "guiLocations": "the Palette panel and the colour editor (03); wired in M7 C7.1",
+    "spec": {
+      "params": "`drawingId?: id; objectIds: [id]; mapping: object|\"default\"|\"clipboard\"`",
+      "result": "`{changed: [id], skipped: [{objectId, reason}], rev}`",
+      "undo": "yes"
+    },
+    "milestone": "M7 C7.1"
+  },
+  {
+    "id": "colour.gap.close",
+    "kind": "action",
+    "label": "Close Gap",
+    "summary": "Close a gap by adding an invisible stroke between the nearest stroke ends (\"Close Gap\")",
+    "section": "03",
+    "scopes": [
+      "edit"
+    ],
+    "undoable": true,
+    "undoLabel": "Close Gap",
+    "confirmation": [],
+    "enablement": "always enabled",
+    "needsProject": true,
+    "paramsSchema": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "title": "GapCloseParams",
+      "description": "`colour.gap.close` parameters (03 §16.3).",
+      "type": "object",
+      "properties": {
+        "drawingId": {
+          "description": "The drawing (default: the current drawing).",
+          "type": [
+            "string",
+            "null"
+          ],
+          "default": null
+        },
+        "from": {
+          "description": "Start of the drag.",
+          "$ref": "#/$defs/Point"
+        },
+        "to": {
+          "description": "End of the drag.",
+          "$ref": "#/$defs/Point"
+        },
+        "space": {
+          "description": "Coordinate space (only `drawing` until M3/M4).",
+          "$ref": "#/$defs/Space"
+        },
+        "sceneId": {
+          "description": "Scene of `scene` points.",
+          "type": [
+            "string",
+            "null"
+          ],
+          "default": null
+        },
+        "frame": {
+          "description": "Frame of `scene` points.",
+          "type": [
+            "integer",
+            "null"
+          ],
+          "default": null,
+          "minimum": 1,
+          "maximum": 2147483647
+        },
+        "view": {
+          "description": "View of `view` points.",
+          "type": [
+            "string",
+            "null"
+          ],
+          "default": null
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "from",
+        "to"
+      ],
+      "$defs": {
+        "Point": {
+          "description": "A point `{x, y}` in drawing units.",
+          "type": "object",
+          "properties": {
+            "x": {
+              "description": "X (du).",
+              "type": "number"
+            },
+            "y": {
+              "description": "Y (du, up).",
+              "type": "number"
+            }
+          },
+          "additionalProperties": false,
+          "required": [
+            "x",
+            "y"
+          ]
+        },
+        "Space": {
+          "description": "Coordinate space of point targets (03 §16.2).",
+          "oneOf": [
+            {
+              "description": "Drawing space of the target drawing.",
+              "type": "string",
+              "const": "drawing"
+            },
+            {
+              "description": "Scene space at a frame (M3 C3.2).",
+              "type": "string",
+              "const": "scene"
+            },
+            {
+              "description": "A view's pixels (M4 C4.2).",
+              "type": "string",
+              "const": "view"
+            }
+          ]
+        }
+      }
+    },
+    "resultSchema": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "title": "GapCloseResult",
+      "description": "`colour.gap.close` result (03 §16.3 plus the common edit members, SI-058).",
+      "type": "object",
+      "properties": {
+        "drawingId": {
+          "description": "The drawing.",
+          "type": "string"
+        },
+        "strokeId": {
+          "description": "The invisible stroke added (its first piece when noding split it).",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "strokeIds": {
+          "description": "All strokes it became.",
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "hints": {
+          "description": "Hint codes (`drawing.strokesHidden`).",
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "createdIds": {
+          "description": "Created objects.",
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "modifiedIds": {
+          "description": "Modified objects (content, membership or position changed; IDs kept).",
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "removedIds": {
+          "description": "Removed objects (descendants included).",
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "rev": {
+          "description": "The drawing revision after the change.",
+          "type": "integer",
+          "maximum": 18446744073709551615,
+          "minimum": 0
+        }
+      },
+      "required": [
+        "drawingId",
+        "strokeIds",
+        "hints",
+        "createdIds",
+        "modifiedIds",
+        "removedIds",
+        "rev"
+      ]
+    },
+    "examples": [
+      {
+        "title": "Join the ends of two strokes",
+        "params": {
+          "drawingId": "drawingBank:#1/drawing:#1",
+          "from": {
+            "x": -48,
+            "y": -50
+          },
+          "to": {
+            "x": 2,
+            "y": 2
+          }
+        },
+        "result": {
+          "drawingId": "dr_01K742SG0KKMCAP9X1E6Z5P4SW",
+          "strokeId": "st_01K7JJN800RXHD55052GG3NDRM",
+          "strokeIds": [
+            "st_01K7JJN800RXHD55052GG3NDRM"
+          ],
+          "hints": [
+            "drawing.strokesHidden"
+          ],
+          "createdIds": [
+            "st_01K7JJN800RXHD55052GG3NDRM"
+          ],
+          "modifiedIds": [
+            "nd_01K742SG0PC20XDQKASM9CGZHR"
+          ],
+          "removedIds": [],
+          "rev": 5
+        },
+        "resultVaries": []
+      }
+    ],
+    "status": "implemented",
+    "agentOnly": null,
+    "guiLocations": "Drawing and Camera views: Close Gap tool (M4 C4.2)",
+    "spec": {
+      "params": "`drawingId?: id; from: point; to: point; space: enum \"drawing\"|\"scene\"|\"view\" = \"drawing\"; sceneId?: id; frame?: int; view?: string`",
+      "result": "`{strokeId|null, rev}`",
+      "undo": "yes"
+    }
+  },
+  {
+    "id": "colour.gapClosing.get",
+    "kind": "query",
+    "label": "Get automatic gap closing",
+    "summary": "Current gap closing mode and tolerances",
+    "section": "03",
+    "scopes": [
+      "read"
+    ],
+    "undoable": false,
+    "undoLabel": null,
+    "confirmation": [],
+    "enablement": "always enabled",
+    "needsProject": false,
+    "paramsSchema": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "title": "NoParams",
+      "description": "No parameters.",
+      "type": "object",
+      "additionalProperties": false
+    },
+    "resultSchema": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "title": "GapClosingGetResult",
+      "description": "`colour.gapClosing.get` result.",
+      "type": "object",
+      "properties": {
+        "mode": {
+          "description": "The mode.",
+          "$ref": "#/$defs/GapMode"
+        },
+        "tolerancesPx": {
+          "description": "Tolerances (view px; 1 px = 1 du at 100 % zoom, SI-063).",
+          "$ref": "#/$defs/Tolerances"
+        }
+      },
+      "required": [
+        "mode",
+        "tolerancesPx"
+      ],
+      "$defs": {
+        "GapMode": {
+          "description": "The automatic gap-closing mode (03 §8.8).",
+          "oneOf": [
+            {
+              "description": "Off (default).",
+              "type": "string",
+              "const": "off"
+            },
+            {
+              "description": "Small.",
+              "type": "string",
+              "const": "small"
+            },
+            {
+              "description": "Medium.",
+              "type": "string",
+              "const": "medium"
+            },
+            {
+              "description": "Large.",
+              "type": "string",
+              "const": "large"
+            }
+          ]
+        },
+        "Tolerances": {
+          "description": "Tolerances in view pixels.",
+          "type": "object",
+          "properties": {
+            "small": {
+              "description": "Small.",
+              "type": "number"
+            },
+            "medium": {
+              "description": "Medium.",
+              "type": "number"
+            },
+            "large": {
+              "description": "Large.",
+              "type": "number"
+            }
+          },
+          "required": [
+            "small",
+            "medium",
+            "large"
+          ]
+        }
+      }
+    },
+    "examples": [
+      {
+        "title": "Current gap closing mode",
+        "params": {},
+        "result": {
+          "mode": "off",
+          "tolerancesPx": {
+            "small": 3.0,
+            "medium": 8.0,
+            "large": 16.0
+          }
+        },
+        "resultVaries": []
+      }
+    ],
+    "status": "implemented",
+    "agentOnly": "the GUI shows the mode in the paint tool options",
+    "guiLocations": null,
+    "spec": {
+      "params": "—",
+      "result": "`{mode, tolerancesPx: {small, medium, large}}`",
+      "undo": "n/a"
+    }
+  },
+  {
+    "id": "colour.gapClosing.set",
+    "kind": "ui",
+    "label": "Automatic gap closing",
+    "summary": "Set the automatic gap closing mode (persisted user setting)",
+    "section": "03",
+    "scopes": [
+      "app"
+    ],
+    "undoable": false,
+    "undoLabel": null,
+    "confirmation": [],
+    "enablement": "always enabled",
+    "needsProject": false,
+    "paramsSchema": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "title": "GapClosingSetParams",
+      "description": "`colour.gapClosing.set` parameters.",
+      "type": "object",
+      "properties": {
+        "mode": {
+          "description": "The mode.",
+          "$ref": "#/$defs/GapMode"
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "mode"
+      ],
+      "$defs": {
+        "GapMode": {
+          "description": "The automatic gap-closing mode (03 §8.8).",
+          "oneOf": [
+            {
+              "description": "Off (default).",
+              "type": "string",
+              "const": "off"
+            },
+            {
+              "description": "Small.",
+              "type": "string",
+              "const": "small"
+            },
+            {
+              "description": "Medium.",
+              "type": "string",
+              "const": "medium"
+            },
+            {
+              "description": "Large.",
+              "type": "string",
+              "const": "large"
+            }
+          ]
+        }
+      }
+    },
+    "resultSchema": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "title": "GapClosingSetResult",
+      "description": "`{mode}`.",
+      "type": "object",
+      "properties": {
+        "mode": {
+          "description": "The mode now.",
+          "$ref": "#/$defs/GapMode"
+        }
+      },
+      "required": [
+        "mode"
+      ],
+      "$defs": {
+        "GapMode": {
+          "description": "The automatic gap-closing mode (03 §8.8).",
+          "oneOf": [
+            {
+              "description": "Off (default).",
+              "type": "string",
+              "const": "off"
+            },
+            {
+              "description": "Small.",
+              "type": "string",
+              "const": "small"
+            },
+            {
+              "description": "Medium.",
+              "type": "string",
+              "const": "medium"
+            },
+            {
+              "description": "Large.",
+              "type": "string",
+              "const": "large"
+            }
+          ]
+        }
+      }
+    },
+    "examples": [
+      {
+        "title": "Close small gaps while painting",
+        "params": {
+          "mode": "small"
+        },
+        "result": {
+          "mode": "small"
+        },
+        "resultVaries": []
+      }
+    ],
+    "status": "implemented",
+    "agentOnly": null,
+    "guiLocations": "Main menu and paint tool options: Auto Close Gap (M4 C4.2)",
+    "spec": {
+      "params": "`mode: enum \"off\"|\"small\"|\"medium\"|\"large\"`",
+      "result": "`{mode}`",
+      "undo": "no"
+    }
+  },
+  {
+    "id": "colour.missing.list",
+    "kind": "query",
+    "label": "List missing colours",
+    "summary": "Colour IDs referenced by artwork but not found in any palette",
+    "section": "03",
+    "scopes": [
+      "read"
+    ],
+    "undoable": false,
+    "undoLabel": null,
+    "confirmation": [],
+    "enablement": "always enabled",
+    "needsProject": true,
+    "paramsSchema": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "title": "MissingParams",
+      "description": "`colour.missing.list` parameters (03 §16.3).",
+      "type": "object",
+      "properties": {
+        "scope": {
+          "description": "Scope.",
+          "$ref": "#/$defs/Scope"
+        },
+        "sceneId": {
+          "description": "Scene of `scene` scope (default: current).",
+          "type": [
+            "string",
+            "null"
+          ],
+          "default": null
+        },
+        "elementIds": {
+          "description": "Elements of `element` scope.",
+          "type": [
+            "array",
+            "null"
+          ],
+          "items": {
+            "type": "string"
+          },
+          "default": null
+        },
+        "drawingIds": {
+          "description": "Drawings of `drawing` scope.",
+          "type": [
+            "array",
+            "null"
+          ],
+          "items": {
+            "type": "string"
+          },
+          "default": null
+        }
+      },
+      "additionalProperties": false,
+      "$defs": {
+        "Scope": {
+          "description": "Scope of colour queries (03 §16.3).",
+          "oneOf": [
+            {
+              "description": "Every drawing of the project.",
+              "type": "string",
+              "const": "project"
+            },
+            {
+              "description": "Drawings of the elements of a scene.",
+              "type": "string",
+              "const": "scene"
+            },
+            {
+              "description": "Drawings of given elements.",
+              "type": "string",
+              "const": "element"
+            },
+            {
+              "description": "Given drawings.",
+              "type": "string",
+              "const": "drawing"
+            }
+          ]
+        }
+      }
+    },
+    "resultSchema": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "title": "MissingResult",
+      "description": "`colour.missing.list` result.",
+      "type": "object",
+      "properties": {
+        "missing": {
+          "description": "Missing colours.",
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Missing"
+          }
+        }
+      },
+      "required": [
+        "missing"
+      ],
+      "$defs": {
+        "Missing": {
+          "description": "One missing colour.",
+          "type": "object",
+          "properties": {
+            "colourId": {
+              "description": "The colour ID.",
+              "type": "string"
+            },
+            "drawingIds": {
+              "description": "Drawings using it.",
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "recoverable": {
+              "description": "A recovery copy exists.",
+              "type": "boolean"
+            },
+            "recordedPaletteName": {
+              "description": "The palette name the copy records.",
+              "type": [
+                "string",
+                "null"
+              ]
+            }
+          },
+          "required": [
+            "colourId",
+            "drawingIds",
+            "recoverable"
+          ]
+        }
+      }
+    },
+    "examples": [
+      {
+        "title": "Colours artwork uses that no palette defines",
+        "params": {},
+        "result": {
+          "missing": []
+        },
+        "resultVaries": []
+      }
+    ],
+    "status": "implemented",
+    "agentOnly": null,
+    "guiLocations": "Colour palette view: missing colours (M7 C7.1)",
+    "spec": {
+      "params": "`scope: enum \"project\"|\"scene\"|\"element\"|\"drawing\" = \"project\"; sceneId?: id; elementIds?: [id]; drawingIds?: [id]`",
+      "result": "`{missing: [{colourId, drawingIds[], recoverable: bool, recordedPaletteName}]}`",
+      "undo": "n/a"
+    }
+  },
+  {
+    "id": "colour.paint.apply",
+    "kind": "action",
+    "label": "Paint",
+    "summary": "Paint zones, lines, brush strokes or text by ID, point or crossing path (\"Paint\")",
+    "section": "03",
+    "scopes": [
+      "edit"
+    ],
+    "undoable": true,
+    "undoLabel": "Paint",
+    "confirmation": [],
+    "enablement": "always enabled",
+    "needsProject": true,
+    "paramsSchema": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "title": "PaintParams",
+      "description": "`colour.paint.apply` parameters (03 §16.3; `onlyPainted`, `lasso`, `rect`, `respectProtected`: SI-061).",
+      "type": "object",
+      "properties": {
+        "drawingId": {
+          "description": "The drawing (default: the current drawing).",
+          "type": [
+            "string",
+            "null"
+          ],
+          "default": null
+        },
+        "objectIds": {
+          "description": "Zones, lines, brush strokes or text to paint.",
+          "type": [
+            "array",
+            "null"
+          ],
+          "items": {
+            "type": "string"
+          },
+          "maxItems": 100000,
+          "default": null
+        },
+        "points": {
+          "description": "Points: the front-most object under each is painted.",
+          "type": [
+            "array",
+            "null"
+          ],
+          "items": {
+            "$ref": "#/$defs/Point"
+          },
+          "maxItems": 10000,
+          "default": null
+        },
+        "path": {
+          "description": "A crossing path: every zone and line it passes over is painted.",
+          "type": [
+            "array",
+            "null"
+          ],
+          "items": {
+            "$ref": "#/$defs/Point"
+          },
+          "maxItems": 100000,
+          "default": null
+        },
+        "lasso": {
+          "description": "A lasso: every zone whose interior point lies inside is painted (SI-061).",
+          "type": [
+            "array",
+            "null"
+          ],
+          "items": {
+            "$ref": "#/$defs/Point"
+          },
+          "maxItems": 100000,
+          "default": null
+        },
+        "rect": {
+          "description": "A marquee: every zone whose interior point lies inside is painted (SI-061).",
+          "anyOf": [
+            {
+              "$ref": "#/$defs/RectIn"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "space": {
+          "description": "Coordinate space of points (only `drawing` until M3/M4).",
+          "$ref": "#/$defs/Space"
+        },
+        "sceneId": {
+          "description": "Scene of `scene` points (M3 C3.2).",
+          "type": [
+            "string",
+            "null"
+          ],
+          "default": null
+        },
+        "frame": {
+          "description": "Frame of `scene` points.",
+          "type": [
+            "integer",
+            "null"
+          ],
+          "default": null,
+          "minimum": 1,
+          "maximum": 2147483647
+        },
+        "elementId": {
+          "description": "The element of the drawing (default: current).",
+          "type": [
+            "string",
+            "null"
+          ],
+          "default": null
+        },
+        "view": {
+          "description": "View of `view` points (M4 C4.2).",
+          "type": [
+            "string",
+            "null"
+          ],
+          "default": null
+        },
+        "colourId": {
+          "description": "The colour (default: the current fill colour).",
+          "type": [
+            "string",
+            "null"
+          ],
+          "default": null
+        },
+        "onlyUnpainted": {
+          "description": "Paint unpainted zones only.",
+          "type": "boolean",
+          "default": false
+        },
+        "onlyPainted": {
+          "description": "Repaint: painted zones only (SI-061).",
+          "type": "boolean",
+          "default": false
+        },
+        "respectProtected": {
+          "description": "Respect protected colours (SI-061).",
+          "type": "boolean",
+          "default": true
+        },
+        "mapping": {
+          "description": "Gradient/texture mapping of a press–drag.",
+          "anyOf": [
+            {
+              "$ref": "#/$defs/MappingDrag"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "gapClosing": {
+          "description": "Automatic gap closing for point targets.",
+          "$ref": "#/$defs/GapChoice",
+          "default": "current"
+        },
+        "expectRev": {
+          "description": "The drawing revision the caller read.",
+          "type": [
+            "integer",
+            "null"
+          ],
+          "maximum": 18446744073709551615,
+          "minimum": 0,
+          "default": null
+        }
+      },
+      "additionalProperties": false,
+      "$defs": {
+        "Point": {
+          "description": "A point `{x, y}` in drawing units.",
+          "type": "object",
+          "properties": {
+            "x": {
+              "description": "X (du).",
+              "type": "number"
+            },
+            "y": {
+              "description": "Y (du, up).",
+              "type": "number"
+            }
+          },
+          "additionalProperties": false,
+          "required": [
+            "x",
+            "y"
+          ]
+        },
+        "RectIn": {
+          "description": "A rectangle `{x, y, width, height}` (drawing space).",
+          "type": "object",
+          "properties": {
+            "x": {
+              "description": "Minimum x.",
+              "type": "number"
+            },
+            "y": {
+              "description": "Minimum y.",
+              "type": "number"
+            },
+            "width": {
+              "description": "Width.",
+              "type": "number",
+              "minimum": 0.0
+            },
+            "height": {
+              "description": "Height.",
+              "type": "number",
+              "minimum": 0.0
+            }
+          },
+          "additionalProperties": false,
+          "required": [
+            "x",
+            "y",
+            "width",
+            "height"
+          ]
+        },
+        "Space": {
+          "description": "Coordinate space of point targets (03 §16.2).",
+          "oneOf": [
+            {
+              "description": "Drawing space of the target drawing.",
+              "type": "string",
+              "const": "drawing"
+            },
+            {
+              "description": "Scene space at a frame (M3 C3.2).",
+              "type": "string",
+              "const": "scene"
+            },
+            {
+              "description": "A view's pixels (M4 C4.2).",
+              "type": "string",
+              "const": "view"
+            }
+          ]
+        },
+        "MappingDrag": {
+          "description": "`{from, to}` of a press–drag (gradient or texture mapping).",
+          "type": "object",
+          "properties": {
+            "from": {
+              "description": "Press point.",
+              "$ref": "#/$defs/Point"
+            },
+            "to": {
+              "description": "Release point.",
+              "$ref": "#/$defs/Point"
+            }
+          },
+          "additionalProperties": false,
+          "required": [
+            "from",
+            "to"
+          ]
+        },
+        "GapChoice": {
+          "description": "Gap-closing choice of a paint command (03 §8.8).",
+          "oneOf": [
+            {
+              "description": "The user setting.",
+              "type": "string",
+              "const": "current"
+            },
+            {
+              "description": "No gap closing.",
+              "type": "string",
+              "const": "off"
+            },
+            {
+              "description": "Small (3 view px).",
+              "type": "string",
+              "const": "small"
+            },
+            {
+              "description": "Medium (8 view px).",
+              "type": "string",
+              "const": "medium"
+            },
+            {
+              "description": "Large (16 view px).",
+              "type": "string",
+              "const": "large"
+            }
+          ]
+        }
+      }
+    },
+    "resultSchema": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "title": "PaintResult",
+      "description": "`colour.paint.apply` result (03 §16.3, plus the common edit members of 02 §13.1 item 11, SI-058).",
+      "type": "object",
+      "properties": {
+        "drawingId": {
+          "description": "The drawing.",
+          "type": "string"
+        },
+        "painted": {
+          "description": "Painted objects.",
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Painted"
+          }
+        },
+        "skipped": {
+          "description": "Targets left alone, with the reason.",
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Skipped"
+          }
+        },
+        "addedStrokeIds": {
+          "description": "Invisible strokes added by gap closing (kept so the zones stay closed, 03 §8.8).",
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "createdIds": {
+          "description": "Created objects.",
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "modifiedIds": {
+          "description": "Modified objects (content, membership or position changed; IDs kept).",
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "removedIds": {
+          "description": "Removed objects (descendants included).",
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "rev": {
+          "description": "The drawing revision after the change.",
+          "type": "integer",
+          "maximum": 18446744073709551615,
+          "minimum": 0
+        }
+      },
+      "required": [
+        "drawingId",
+        "painted",
+        "skipped",
+        "addedStrokeIds",
+        "createdIds",
+        "modifiedIds",
+        "removedIds",
+        "rev"
+      ],
+      "$defs": {
+        "Painted": {
+          "description": "One painted object.",
+          "type": "object",
+          "properties": {
+            "drawingId": {
+              "description": "The drawing.",
+              "type": "string"
+            },
+            "objectId": {
+              "description": "The object (zone IDs are those of the drawing after the paint).",
+              "type": "string"
+            },
+            "objectKind": {
+              "description": "`zone`, `pencil`, `brush` or `text`.",
+              "type": "string"
+            },
+            "previousColourId": {
+              "description": "Its colour before (`null` = unpainted).",
+              "type": [
+                "string",
+                "null"
+              ]
+            }
+          },
+          "required": [
+            "drawingId",
+            "objectId",
+            "objectKind"
+          ]
+        },
+        "Skipped": {
+          "description": "One target left alone.",
+          "type": "object",
+          "properties": {
+            "target": {
+              "description": "The target: an object ID, or `point:<i>` / `path` / `lasso` / `rect`.",
+              "type": "string"
+            },
+            "reason": {
+              "description": "A `colour.*` code: `colour.noTarget`, `colour.zoneNotClosed`, `colour.protected`, `colour.alreadyPainted`,\n`colour.notPainted`, `colour.cannotUnpaint`, `colour.invisibleTarget`, `colour.notPaintable`.",
+              "type": "string"
+            }
+          },
+          "required": [
+            "target",
+            "reason"
+          ]
+        }
+      }
+    },
+    "examples": [
+      {
+        "title": "Paint a closed zone by point",
+        "params": {
+          "drawingId": "drawingBank:#1/drawing:#1",
+          "points": [
+            {
+              "x": 50,
+              "y": 50
+            }
+          ]
+        },
+        "result": {
+          "drawingId": "dr_01K742SG0KKMCAP9X1E6Z5P4SW",
+          "painted": [
+            {
+              "drawingId": "dr_01K742SG0KKMCAP9X1E6Z5P4SW",
+              "objectId": "st_01K742SG0R61SYK9GG0HGYVNBT",
+              "objectKind": "pencil",
+              "previousColourId": "col_01K742SG09H7QE4RRR6XSYYS88"
+            }
+          ],
+          "skipped": [],
+          "addedStrokeIds": [],
+          "createdIds": [],
+          "modifiedIds": [
+            "st_01K742SG0R61SYK9GG0HGYVNBT"
+          ],
+          "removedIds": [],
+          "rev": 5
+        },
+        "resultVaries": []
+      },
+      {
+        "title": "Repaint a pencil line by ID",
+        "params": {
+          "drawingId": "drawingBank:#1/drawing:#1",
+          "objectIds": [
+            "st_01K742SG0R61SYK9GG0HGYVNBT"
+          ]
+        },
+        "result": {
+          "drawingId": "dr_01K742SG0KKMCAP9X1E6Z5P4SW",
+          "painted": [
+            {
+              "drawingId": "dr_01K742SG0KKMCAP9X1E6Z5P4SW",
+              "objectId": "st_01K742SG0R61SYK9GG0HGYVNBT",
+              "objectKind": "pencil",
+              "previousColourId": "col_01K742SG09H7QE4RRR6XSYYS88"
+            }
+          ],
+          "skipped": [],
+          "addedStrokeIds": [],
+          "createdIds": [],
+          "modifiedIds": [
+            "st_01K742SG0R61SYK9GG0HGYVNBT"
+          ],
+          "removedIds": [],
+          "rev": 5
+        },
+        "resultVaries": []
+      }
+    ],
+    "status": "implemented",
+    "agentOnly": null,
+    "guiLocations": "Drawing and Camera views: Paint tool (M4 C4.2)",
+    "spec": {
+      "params": "`drawingId?: id; objectIds?: [id]; points?: [point]; path?: [point]; space: enum \"drawing\"|\"scene\"|\"view\" = \"drawing\"; sceneId?: id; frame?: int; elementId?: id; view?: string; colourId?: id; onlyUnpainted: bool = false; mapping?: {from: point, to: point}; gapClosing: enum \"current\"|\"off\"|\"small\"|\"medium\"|\"large\" = \"current\"; expectRev?: int`",
+      "result": "`{painted: [{drawingId, objectId, objectKind, previousColourId}], skipped: [{target, reason}], addedStrokeIds: [id], rev}`",
+      "undo": "yes"
+    }
+  },
+  {
+    "id": "colour.paint.remove",
+    "kind": "action",
+    "label": "Unpaint",
+    "summary": "Unpaint zones or lines by ID or point (\"Unpaint\")",
+    "section": "03",
+    "scopes": [
+      "edit"
+    ],
+    "undoable": true,
+    "undoLabel": "Unpaint",
+    "confirmation": [],
+    "enablement": "always enabled",
+    "needsProject": true,
+    "paramsSchema": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "title": "UnpaintParams",
+      "description": "`colour.paint.remove` parameters (03 §16.3).",
+      "type": "object",
+      "properties": {
+        "drawingId": {
+          "description": "The drawing (default: the current drawing).",
+          "type": [
+            "string",
+            "null"
+          ],
+          "default": null
+        },
+        "objectIds": {
+          "description": "Zones or lines to unpaint.",
+          "type": [
+            "array",
+            "null"
+          ],
+          "items": {
+            "type": "string"
+          },
+          "maxItems": 100000,
+          "default": null
+        },
+        "points": {
+          "description": "Points: the front-most object under each.",
+          "type": [
+            "array",
+            "null"
+          ],
+          "items": {
+            "$ref": "#/$defs/Point"
+          },
+          "maxItems": 10000,
+          "default": null
+        },
+        "space": {
+          "description": "Coordinate space of points (only `drawing` until M3/M4).",
+          "$ref": "#/$defs/Space"
+        },
+        "sceneId": {
+          "description": "Scene of `scene` points (M3 C3.2).",
+          "type": [
+            "string",
+            "null"
+          ],
+          "default": null
+        },
+        "frame": {
+          "description": "Frame of `scene` points.",
+          "type": [
+            "integer",
+            "null"
+          ],
+          "default": null,
+          "minimum": 1,
+          "maximum": 2147483647
+        },
+        "view": {
+          "description": "View of `view` points (M4 C4.2).",
+          "type": [
+            "string",
+            "null"
+          ],
+          "default": null
+        },
+        "gapClosing": {
+          "description": "Automatic gap closing for point targets.",
+          "$ref": "#/$defs/GapChoice",
+          "default": "current"
+        },
+        "expectRev": {
+          "description": "The drawing revision the caller read.",
+          "type": [
+            "integer",
+            "null"
+          ],
+          "maximum": 18446744073709551615,
+          "minimum": 0,
+          "default": null
+        }
+      },
+      "additionalProperties": false,
+      "$defs": {
+        "Point": {
+          "description": "A point `{x, y}` in drawing units.",
+          "type": "object",
+          "properties": {
+            "x": {
+              "description": "X (du).",
+              "type": "number"
+            },
+            "y": {
+              "description": "Y (du, up).",
+              "type": "number"
+            }
+          },
+          "additionalProperties": false,
+          "required": [
+            "x",
+            "y"
+          ]
+        },
+        "Space": {
+          "description": "Coordinate space of point targets (03 §16.2).",
+          "oneOf": [
+            {
+              "description": "Drawing space of the target drawing.",
+              "type": "string",
+              "const": "drawing"
+            },
+            {
+              "description": "Scene space at a frame (M3 C3.2).",
+              "type": "string",
+              "const": "scene"
+            },
+            {
+              "description": "A view's pixels (M4 C4.2).",
+              "type": "string",
+              "const": "view"
+            }
+          ]
+        },
+        "GapChoice": {
+          "description": "Gap-closing choice of a paint command (03 §8.8).",
+          "oneOf": [
+            {
+              "description": "The user setting.",
+              "type": "string",
+              "const": "current"
+            },
+            {
+              "description": "No gap closing.",
+              "type": "string",
+              "const": "off"
+            },
+            {
+              "description": "Small (3 view px).",
+              "type": "string",
+              "const": "small"
+            },
+            {
+              "description": "Medium (8 view px).",
+              "type": "string",
+              "const": "medium"
+            },
+            {
+              "description": "Large (16 view px).",
+              "type": "string",
+              "const": "large"
+            }
+          ]
+        }
+      }
+    },
+    "resultSchema": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "title": "UnpaintResult",
+      "description": "`colour.paint.remove` result (03 §16.3 plus the common edit members, SI-058).",
+      "type": "object",
+      "properties": {
+        "drawingId": {
+          "description": "The drawing.",
+          "type": "string"
+        },
+        "unpainted": {
+          "description": "Unpainted objects (lines became invisible strokes).",
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Unpainted"
+          }
+        },
+        "skipped": {
+          "description": "Targets left alone, with the reason.",
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Skipped"
+          }
+        },
+        "createdIds": {
+          "description": "Created objects.",
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "modifiedIds": {
+          "description": "Modified objects (content, membership or position changed; IDs kept).",
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "removedIds": {
+          "description": "Removed objects (descendants included).",
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "rev": {
+          "description": "The drawing revision after the change.",
+          "type": "integer",
+          "maximum": 18446744073709551615,
+          "minimum": 0
+        }
+      },
+      "required": [
+        "drawingId",
+        "unpainted",
+        "skipped",
+        "createdIds",
+        "modifiedIds",
+        "removedIds",
+        "rev"
+      ],
+      "$defs": {
+        "Unpainted": {
+          "description": "One unpainted object.",
+          "type": "object",
+          "properties": {
+            "drawingId": {
+              "description": "The drawing.",
+              "type": "string"
+            },
+            "objectId": {
+              "description": "The object.",
+              "type": "string"
+            },
+            "previousColourId": {
+              "description": "Its colour before.",
+              "type": [
+                "string",
+                "null"
+              ]
+            }
+          },
+          "required": [
+            "drawingId",
+            "objectId"
+          ]
+        },
+        "Skipped": {
+          "description": "One target left alone.",
+          "type": "object",
+          "properties": {
+            "target": {
+              "description": "The target: an object ID, or `point:<i>` / `path` / `lasso` / `rect`.",
+              "type": "string"
+            },
+            "reason": {
+              "description": "A `colour.*` code: `colour.noTarget`, `colour.zoneNotClosed`, `colour.protected`, `colour.alreadyPainted`,\n`colour.notPainted`, `colour.cannotUnpaint`, `colour.invisibleTarget`, `colour.notPaintable`.",
+              "type": "string"
+            }
+          },
+          "required": [
+            "target",
+            "reason"
+          ]
+        }
+      }
+    },
+    "examples": [
+      {
+        "title": "Turn a pencil line into an invisible stroke",
+        "params": {
+          "drawingId": "drawingBank:#1/drawing:#1",
+          "objectIds": [
+            "st_01K742SG0R61SYK9GG0HGYVNBT"
+          ]
+        },
+        "result": {
+          "drawingId": "dr_01K742SG0KKMCAP9X1E6Z5P4SW",
+          "unpainted": [
+            {
+              "drawingId": "dr_01K742SG0KKMCAP9X1E6Z5P4SW",
+              "objectId": "st_01K742SG0R61SYK9GG0HGYVNBT",
+              "previousColourId": "col_01K742SG09H7QE4RRR6XSYYS88"
+            }
+          ],
+          "skipped": [],
+          "createdIds": [],
+          "modifiedIds": [
+            "st_01K742SG0R61SYK9GG0HGYVNBT"
+          ],
+          "removedIds": [],
+          "rev": 5
+        },
+        "resultVaries": []
+      }
+    ],
+    "status": "implemented",
+    "agentOnly": null,
+    "guiLocations": "Drawing and Camera views: Unpaint tool (M4 C4.2)",
+    "spec": {
+      "params": "`drawingId?: id; objectIds?: [id]; points?: [point]; space: enum \"drawing\"|\"scene\"|\"view\" = \"drawing\"; sceneId?: id; frame?: int; view?: string; gapClosing: enum \"current\"|\"off\"|\"small\"|\"medium\"|\"large\" = \"current\"; expectRev?: int`",
+      "result": "`{unpainted: [{drawingId, objectId, previousColourId}], skipped: [{target, reason}], rev}`",
+      "undo": "yes"
+    }
+  },
+  {
+    "id": "colour.paintUnpainted.apply",
+    "kind": "action",
+    "label": "Paint Unpainted",
+    "summary": "Fill unpainted zones only, by ID, point, lasso or all (\"Paint Unpainted\")",
+    "section": "03",
+    "scopes": [
+      "edit"
+    ],
+    "undoable": true,
+    "undoLabel": "Paint Unpainted",
+    "confirmation": [],
+    "enablement": "always enabled",
+    "needsProject": true,
+    "paramsSchema": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "title": "PaintUnpaintedParams",
+      "description": "`colour.paintUnpainted.apply` parameters (03 §16.3).",
+      "type": "object",
+      "properties": {
+        "drawingId": {
+          "description": "The drawing (default: the current drawing).",
+          "type": [
+            "string",
+            "null"
+          ],
+          "default": null
+        },
+        "objectIds": {
+          "description": "Zones to fill when unpainted.",
+          "type": [
+            "array",
+            "null"
+          ],
+          "items": {
+            "type": "string"
+          },
+          "maxItems": 100000,
+          "default": null
+        },
+        "points": {
+          "description": "Points: the zone under each, when unpainted.",
+          "type": [
+            "array",
+            "null"
+          ],
+          "items": {
+            "$ref": "#/$defs/Point"
+          },
+          "maxItems": 10000,
+          "default": null
+        },
+        "lasso": {
+          "description": "A lasso: every unpainted zone whose interior point lies inside.",
+          "type": [
+            "array",
+            "null"
+          ],
+          "items": {
+            "$ref": "#/$defs/Point"
+          },
+          "maxItems": 100000,
+          "default": null
+        },
+        "all": {
+          "description": "Every unpainted zone of the drawing.",
+          "type": "boolean",
+          "default": false
+        },
+        "space": {
+          "description": "Coordinate space of points (only `drawing` until M3/M4).",
+          "$ref": "#/$defs/Space"
+        },
+        "sceneId": {
+          "description": "Scene of `scene` points (M3 C3.2).",
+          "type": [
+            "string",
+            "null"
+          ],
+          "default": null
+        },
+        "frame": {
+          "description": "Frame of `scene` points.",
+          "type": [
+            "integer",
+            "null"
+          ],
+          "default": null,
+          "minimum": 1,
+          "maximum": 2147483647
+        },
+        "view": {
+          "description": "View of `view` points (M4 C4.2).",
+          "type": [
+            "string",
+            "null"
+          ],
+          "default": null
+        },
+        "colourId": {
+          "description": "The colour (default: the current fill colour).",
+          "type": [
+            "string",
+            "null"
+          ],
+          "default": null
+        },
+        "gapClosing": {
+          "description": "Automatic gap closing for point targets.",
+          "$ref": "#/$defs/GapChoice",
+          "default": "current"
+        },
+        "expectRev": {
+          "description": "The drawing revision the caller read.",
+          "type": [
+            "integer",
+            "null"
+          ],
+          "maximum": 18446744073709551615,
+          "minimum": 0,
+          "default": null
+        }
+      },
+      "additionalProperties": false,
+      "$defs": {
+        "Point": {
+          "description": "A point `{x, y}` in drawing units.",
+          "type": "object",
+          "properties": {
+            "x": {
+              "description": "X (du).",
+              "type": "number"
+            },
+            "y": {
+              "description": "Y (du, up).",
+              "type": "number"
+            }
+          },
+          "additionalProperties": false,
+          "required": [
+            "x",
+            "y"
+          ]
+        },
+        "Space": {
+          "description": "Coordinate space of point targets (03 §16.2).",
+          "oneOf": [
+            {
+              "description": "Drawing space of the target drawing.",
+              "type": "string",
+              "const": "drawing"
+            },
+            {
+              "description": "Scene space at a frame (M3 C3.2).",
+              "type": "string",
+              "const": "scene"
+            },
+            {
+              "description": "A view's pixels (M4 C4.2).",
+              "type": "string",
+              "const": "view"
+            }
+          ]
+        },
+        "GapChoice": {
+          "description": "Gap-closing choice of a paint command (03 §8.8).",
+          "oneOf": [
+            {
+              "description": "The user setting.",
+              "type": "string",
+              "const": "current"
+            },
+            {
+              "description": "No gap closing.",
+              "type": "string",
+              "const": "off"
+            },
+            {
+              "description": "Small (3 view px).",
+              "type": "string",
+              "const": "small"
+            },
+            {
+              "description": "Medium (8 view px).",
+              "type": "string",
+              "const": "medium"
+            },
+            {
+              "description": "Large (16 view px).",
+              "type": "string",
+              "const": "large"
+            }
+          ]
+        }
+      }
+    },
+    "resultSchema": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "title": "PaintUnpaintedResult",
+      "description": "`colour.paintUnpainted.apply` result (03 §16.3 plus the common edit members, SI-058).",
+      "type": "object",
+      "properties": {
+        "drawingId": {
+          "description": "The drawing.",
+          "type": "string"
+        },
+        "painted": {
+          "description": "Filled zones.",
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Painted"
+          }
+        },
+        "skippedPainted": {
+          "description": "Targets already painted (left unchanged).",
+          "type": "integer",
+          "format": "uint",
+          "minimum": 0
+        },
+        "skipped": {
+          "description": "Targets left alone for other reasons.",
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Skipped"
+          }
+        },
+        "addedStrokeIds": {
+          "description": "Invisible strokes added by gap closing.",
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "createdIds": {
+          "description": "Created objects.",
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "modifiedIds": {
+          "description": "Modified objects (content, membership or position changed; IDs kept).",
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "removedIds": {
+          "description": "Removed objects (descendants included).",
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "rev": {
+          "description": "The drawing revision after the change.",
+          "type": "integer",
+          "maximum": 18446744073709551615,
+          "minimum": 0
+        }
+      },
+      "required": [
+        "drawingId",
+        "painted",
+        "skippedPainted",
+        "skipped",
+        "addedStrokeIds",
+        "createdIds",
+        "modifiedIds",
+        "removedIds",
+        "rev"
+      ],
+      "$defs": {
+        "Painted": {
+          "description": "One painted object.",
+          "type": "object",
+          "properties": {
+            "drawingId": {
+              "description": "The drawing.",
+              "type": "string"
+            },
+            "objectId": {
+              "description": "The object (zone IDs are those of the drawing after the paint).",
+              "type": "string"
+            },
+            "objectKind": {
+              "description": "`zone`, `pencil`, `brush` or `text`.",
+              "type": "string"
+            },
+            "previousColourId": {
+              "description": "Its colour before (`null` = unpainted).",
+              "type": [
+                "string",
+                "null"
+              ]
+            }
+          },
+          "required": [
+            "drawingId",
+            "objectId",
+            "objectKind"
+          ]
+        },
+        "Skipped": {
+          "description": "One target left alone.",
+          "type": "object",
+          "properties": {
+            "target": {
+              "description": "The target: an object ID, or `point:<i>` / `path` / `lasso` / `rect`.",
+              "type": "string"
+            },
+            "reason": {
+              "description": "A `colour.*` code: `colour.noTarget`, `colour.zoneNotClosed`, `colour.protected`, `colour.alreadyPainted`,\n`colour.notPainted`, `colour.cannotUnpaint`, `colour.invisibleTarget`, `colour.notPaintable`.",
+              "type": "string"
+            }
+          },
+          "required": [
+            "target",
+            "reason"
+          ]
+        }
+      }
+    },
+    "examples": [
+      {
+        "title": "Fill every unpainted zone",
+        "params": {
+          "drawingId": "drawingBank:#1/drawing:#1",
+          "all": true
+        },
+        "result": {
+          "drawingId": "dr_01K742SG0KKMCAP9X1E6Z5P4SW",
+          "painted": [],
+          "skippedPainted": 0,
+          "skipped": [],
+          "addedStrokeIds": [],
+          "createdIds": [],
+          "modifiedIds": [],
+          "removedIds": [],
+          "rev": 4
+        },
+        "resultVaries": []
+      }
+    ],
+    "status": "implemented",
+    "agentOnly": null,
+    "guiLocations": "Drawing and Camera views: Paint Unpainted tool (M4 C4.2)",
+    "spec": {
+      "params": "`drawingId?: id; objectIds?: [id]; points?: [point]; lasso?: [point]; all: bool = false; space: enum \"drawing\"|\"scene\"|\"view\" = \"drawing\"; sceneId?: id; frame?: int; view?: string; colourId?: id; gapClosing: enum \"current\"|\"off\"|\"small\"|\"medium\"|\"large\" = \"current\"; expectRev?: int`",
+      "result": "`{painted: [{drawingId, objectId}], skippedPainted: int, addedStrokeIds: [id], rev}`",
+      "undo": "yes"
+    }
+  },
+  {
+    "id": "colour.palette.changed",
+    "kind": "event",
+    "label": "Palette created, deleted, renamed, reordered, imported or edited",
+    "summary": "Palette created, deleted, renamed, reordered, imported or edited",
+    "section": "03",
+    "scopes": [
+      "read"
+    ],
+    "undoable": false,
+    "undoLabel": null,
+    "confirmation": [],
+    "enablement": "Never invoked: an event delivered to subscribers (11 §9).",
+    "needsProject": false,
+    "paramsSchema": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "title": "colour.palette.changed parameters",
+      "type": "object",
+      "properties": {},
+      "additionalProperties": false,
+      "description": "Events take no parameters; subscribe to them (11 §9).",
+      "x-spec": "—"
+    },
+    "resultSchema": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "title": "colour.palette.changed result",
+      "type": "object",
+      "properties": {
+        "paletteId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4096,
+          "description": "object ID or path reference (10 §3)"
+        },
+        "change": {
+          "type": "string",
+          "enum": [
+            "created",
+            "deleted",
+            "renamed",
+            "imported",
+            "edited"
+          ]
+        }
+      },
+      "required": [
+        "paletteId",
+        "change"
+      ],
+      "description": "Event payload (delivered to subscribers).",
+      "x-spec": "`{paletteId, change: enum \"created\"|\"deleted\"|\"renamed\"|\"imported\"|\"edited\"}`",
+      "additionalProperties": false
+    },
+    "examples": [
+      {
+        "title": "Subscribe (events take no parameters)",
+        "params": {}
+      }
+    ],
+    "status": "notImplemented",
+    "agentOnly": "an event delivered to subscribers",
+    "guiLocations": null,
+    "spec": {
+      "params": "—",
+      "result": "`{paletteId, change: enum \"created\"|\"deleted\"|\"renamed\"|\"imported\"|\"edited\"}`",
+      "undo": "n/a"
+    },
+    "milestone": "M7 C7.1"
+  },
+  {
+    "id": "colour.palette.create",
+    "kind": "action",
+    "label": "Add Palette",
+    "summary": "Create a palette (\"Add Palette\")",
+    "section": "03",
+    "scopes": [
+      "edit"
+    ],
+    "undoable": true,
+    "undoLabel": "Add Palette",
+    "confirmation": [],
+    "enablement": "Enabled when a project is open (01 §1.3).",
+    "needsProject": true,
+    "paramsSchema": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "title": "colour.palette.create parameters",
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "maxLength": 65536
+        },
+        "preset": {
+          "type": "string",
+          "enum": [
+            "blank",
+            "default"
+          ],
+          "default": "blank"
+        },
+        "styles": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "maxLength": 65536
+          },
+          "maxItems": 100000
+        },
+        "swatches": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {},
+            "additionalProperties": false,
+            "x-placeholder": true,
+            "description": "shape not defined by the owning section (spec issue); only {} is accepted until it is",
+            "x-specIssue": "SI-025"
+          },
+          "maxItems": 100000
+        },
+        "makeCurrent": {
+          "type": "boolean",
+          "default": true
+        }
+      },
+      "additionalProperties": false,
+      "x-spec": "`name?: string; preset: enum \"blank\"|\"default\" = \"blank\"; styles?: [string]; swatches?: [object]; makeCurrent: bool = true`"
+    },
+    "resultSchema": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "title": "colour.palette.create result",
+      "type": "object",
+      "properties": {
+        "paletteId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4096,
+          "description": "object ID or path reference (10 §3)"
+        },
+        "styleIds": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 4096,
+            "description": "object ID or path reference (10 §3)"
+          },
+          "maxItems": 100000
+        },
+        "colourIds": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 4096,
+            "description": "object ID or path reference (10 §3)"
+          },
+          "maxItems": 100000
+        }
+      },
+      "required": [
+        "paletteId",
+        "styleIds",
+        "colourIds"
+      ],
+      "x-spec": "`{paletteId, styleIds[], colourIds[]}`",
+      "additionalProperties": false
+    },
+    "examples": [
+      {
+        "title": "No parameters: Create a palette (\"Add Palette\")",
+        "params": {}
+      }
+    ],
+    "status": "notImplemented",
+    "agentOnly": null,
+    "guiLocations": "the Palette panel and the colour editor (03); wired in M7 C7.1",
+    "spec": {
+      "params": "`name?: string; preset: enum \"blank\"|\"default\" = \"blank\"; styles?: [string]; swatches?: [object]; makeCurrent: bool = true`",
+      "result": "`{paletteId, styleIds[], colourIds[]}`",
+      "undo": "yes"
+    },
+    "milestone": "M7 C7.1"
+  },
+  {
+    "id": "colour.palette.delete",
+    "kind": "action",
+    "label": "Remove Palette",
+    "summary": "Delete a palette and all its styles (\"Remove Palette\")",
+    "section": "03",
+    "scopes": [
+      "edit"
+    ],
+    "undoable": true,
+    "undoLabel": "Remove Palette",
+    "confirmation": [
+      "a destructive change the owning section lists (returns needs_confirmation)"
+    ],
+    "enablement": "Enabled when a project is open (01 §1.3); `paletteId` names an existing palette; the palette is not the last visible palette (03 §1.2).",
+    "needsProject": true,
+    "paramsSchema": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "title": "colour.palette.delete parameters",
+      "type": "object",
+      "properties": {
+        "paletteId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4096,
+          "description": "object ID or path reference (10 §3)"
+        },
+        "confirm": {
+          "type": "boolean",
+          "default": false
+        }
+      },
+      "required": [
+        "paletteId"
+      ],
+      "additionalProperties": false,
+      "x-spec": "`paletteId: id; confirm: bool = false`"
+    },
+    "resultSchema": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "title": "colour.palette.delete result",
+      "type": "object",
+      "properties": {
+        "deleted": {
+          "type": "boolean"
+        },
+        "orphanedReferences": {
+          "type": "integer"
+        }
+      },
+      "required": [
+        "deleted",
+        "orphanedReferences"
+      ],
+      "x-spec": "`{deleted: bool, orphanedReferences: int}` or `needs_confirmation {usageCount}`",
+      "additionalProperties": false
+    },
+    "examples": [
+      {
+        "title": "Required parameters only: Delete a palette and all its styles (\"Remove Palette\")",
+        "params": {
+          "paletteId": "scene:#1"
+        }
+      }
+    ],
+    "status": "notImplemented",
+    "agentOnly": null,
+    "guiLocations": "the Palette panel and the colour editor (03); wired in M7 C7.1",
+    "spec": {
+      "params": "`paletteId: id; confirm: bool = false`",
+      "result": "`{deleted: bool, orphanedReferences: int}` or `needs_confirmation {usageCount}`",
+      "undo": "yes"
+    },
+    "milestone": "M7 C7.1"
+  },
+  {
+    "id": "colour.palette.duplicate",
+    "kind": "action",
+    "label": "Duplicate Palette",
+    "summary": "Duplicate a palette with new IDs (\"Duplicate Palette\")",
+    "section": "03",
+    "scopes": [
+      "edit"
+    ],
+    "undoable": true,
+    "undoLabel": "Duplicate Palette",
+    "confirmation": [],
+    "enablement": "Enabled when a project is open (01 §1.3); `paletteId` names an existing palette.",
+    "needsProject": true,
+    "paramsSchema": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "title": "colour.palette.duplicate parameters",
+      "type": "object",
+      "properties": {
+        "paletteId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4096,
+          "description": "object ID or path reference (10 §3)"
+        },
+        "name": {
+          "type": "string",
+          "maxLength": 65536
+        }
+      },
+      "required": [
+        "paletteId"
+      ],
+      "additionalProperties": false,
+      "x-spec": "`paletteId: id; name?: string`"
+    },
+    "resultSchema": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "title": "colour.palette.duplicate result",
+      "type": "object",
+      "properties": {
+        "paletteId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4096,
+          "description": "object ID or path reference (10 §3)"
+        },
+        "idMap": {
+          "type": "object",
+          "properties": {},
+          "additionalProperties": false,
+          "x-placeholder": true,
+          "description": "shape not defined by the owning section (spec issue); only {} is accepted until it is",
+          "x-specIssue": "SI-025"
+        }
+      },
+      "required": [
+        "paletteId",
+        "idMap"
+      ],
+      "x-spec": "`{paletteId, idMap: object}`",
+      "additionalProperties": false
+    },
+    "examples": [
+      {
+        "title": "Required parameters only: Duplicate a palette with new IDs (\"Duplicate Palette\")",
+        "params": {
+          "paletteId": "scene:#1"
+        }
+      }
+    ],
+    "status": "notImplemented",
+    "agentOnly": null,
+    "guiLocations": "the Palette panel and the colour editor (03); wired in M7 C7.1",
+    "spec": {
+      "params": "`paletteId: id; name?: string`",
+      "result": "`{paletteId, idMap: object}`",
+      "undo": "yes"
+    },
+    "milestone": "M7 C7.1"
+  },
+  {
+    "id": "colour.palette.export",
+    "kind": "action",
+    "label": "Write palettes to an `.animpal` file",
+    "summary": "Write palettes to an `.animpal` file",
+    "section": "03",
+    "scopes": [
+      "ui",
+      "files.write"
+    ],
+    "undoable": false,
+    "undoLabel": null,
+    "confirmation": [
+      "overwriting an existing file"
+    ],
+    "enablement": "Enabled when a project is open (01 §1.3); every `paletteIds` entry names an existing palette; at least one visible palette exists (03 §2.5).",
+    "needsProject": true,
+    "paramsSchema": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "title": "colour.palette.export parameters",
+      "type": "object",
+      "properties": {
+        "paletteIds": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 4096,
+            "description": "object ID or path reference (10 §3)"
+          },
+          "maxItems": 100000
+        },
+        "path": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4096,
+          "description": "file-system path (11 §6.2)"
+        },
+        "overwrite": {
+          "type": "boolean",
+          "default": false
+        }
+      },
+      "required": [
+        "paletteIds",
+        "path"
+      ],
+      "additionalProperties": false,
+      "x-spec": "`paletteIds: [id]; path: path; overwrite: bool = false`"
+    },
+    "resultSchema": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "title": "colour.palette.export result",
+      "type": "object",
+      "properties": {
+        "path": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4096,
+          "description": "file-system path (11 §6.2)"
+        },
+        "paletteCount": {
+          "type": "number"
+        },
+        "textureCount": {
+          "type": "number"
+        }
+      },
+      "required": [
+        "path",
+        "paletteCount",
+        "textureCount"
+      ],
+      "x-spec": "`{path, paletteCount, textureCount}`",
+      "additionalProperties": false
+    },
+    "examples": [
+      {
+        "title": "Required parameters only: Write palettes to an `.animpal` file",
+        "params": {
+          "paletteIds": [],
+          "path": "review/example.out"
+        }
+      }
+    ],
+    "status": "notImplemented",
+    "agentOnly": null,
+    "guiLocations": "the Palette panel and the colour editor (03); wired in M7 C7.1",
+    "spec": {
+      "params": "`paletteIds: [id]; path: path; overwrite: bool = false`",
+      "result": "`{path, paletteCount, textureCount}`",
+      "undo": "n/a"
+    },
+    "milestone": "M7 C7.1"
+  },
+  {
+    "id": "colour.palette.get",
+    "kind": "query",
+    "label": "Full palette as JSON",
+    "summary": "Full palette as JSON (§12.3)",
+    "section": "03",
+    "scopes": [
+      "read"
+    ],
+    "undoable": false,
+    "undoLabel": null,
+    "confirmation": [],
+    "enablement": "Enabled when a project is open (01 §1.3); `paletteId` names an existing palette.",
+    "needsProject": true,
+    "paramsSchema": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "title": "colour.palette.get parameters",
+      "type": "object",
+      "properties": {
+        "paletteId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4096,
+          "description": "object ID or path reference (10 §3)"
+        },
+        "includeUsage": {
+          "type": "boolean",
+          "default": false
+        },
+        "thumbnails": {
+          "type": "boolean",
+          "default": false
+        },
+        "thumbnailSize": {
+          "type": "integer",
+          "minimum": 8,
+          "maximum": 256,
+          "default": 32
+        }
+      },
+      "required": [
+        "paletteId"
+      ],
+      "additionalProperties": false,
+      "x-spec": "`paletteId: id; includeUsage: bool = false; thumbnails: bool = false; thumbnailSize: int = 32 (8..256)`"
+    },
+    "resultSchema": {
+      "$ref": "#/$defs/spec.PaletteObject",
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "title": "colour.palette.get result",
+      "x-spec": "Palette object (+ `usageCount` and base64 PNG `thumbnail` per swatch when requested)",
+      "$defs": {
+        "spec.PaletteObject": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "id",
+            "name",
+            "styles",
+            "swatches"
+          ],
+          "x-specSection": "03",
+          "properties": {
+            "id": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 4096,
+              "description": "object ID or path reference (10 §3)"
+            },
+            "name": {
+              "type": "string",
+              "maxLength": 65536
+            },
+            "styles": {
+              "type": "array",
+              "minItems": 1,
+              "maxItems": 100000,
+              "items": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 4096,
+                    "description": "object ID or path reference (10 §3)"
+                  },
+                  "name": {
+                    "type": "string",
+                    "maxLength": 65536
+                  }
+                },
+                "required": [
+                  "id",
+                  "name"
+                ],
+                "additionalProperties": false
+              }
+            },
+            "swatches": {
+              "type": "array",
+              "maxItems": 100000,
+              "items": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "colourId",
+                  "name",
+                  "kind",
+                  "deformable",
+                  "values"
+                ],
+                "properties": {
+                  "colourId": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 4096,
+                    "description": "object ID or path reference (10 §3)"
+                  },
+                  "name": {
+                    "type": "string",
+                    "maxLength": 65536
+                  },
+                  "kind": {
+                    "type": "string",
+                    "enum": [
+                      "solid",
+                      "linearGradient",
+                      "radialGradient",
+                      "texture"
+                    ]
+                  },
+                  "deformable": {
+                    "type": "boolean"
+                  },
+                  "values": {
+                    "type": "object",
+                    "properties": {},
+                    "additionalProperties": {
+                      "anyOf": [
+                        {
+                          "type": "object",
+                          "properties": {
+                            "rgba": {
+                              "type": "string",
+                              "pattern": "^#[0-9A-Fa-f]{6}([0-9A-Fa-f]{2})?$",
+                              "description": "#RRGGBB or #RRGGBBAA"
+                            }
+                          },
+                          "required": [
+                            "rgba"
+                          ],
+                          "additionalProperties": false
+                        },
+                        {
+                          "type": "object",
+                          "properties": {
+                            "stops": {
+                              "type": "array",
+                              "minItems": 2,
+                              "maxItems": 256,
+                              "items": {
+                                "type": "object",
+                                "properties": {
+                                  "position": {
+                                    "type": "number",
+                                    "minimum": 0,
+                                    "maximum": 1
+                                  },
+                                  "rgba": {
+                                    "type": "string",
+                                    "pattern": "^#[0-9A-Fa-f]{6}([0-9A-Fa-f]{2})?$",
+                                    "description": "#RRGGBB or #RRGGBBAA"
+                                  }
+                                },
+                                "required": [
+                                  "position",
+                                  "rgba"
+                                ],
+                                "additionalProperties": false
+                              }
+                            }
+                          },
+                          "required": [
+                            "stops"
+                          ],
+                          "additionalProperties": false
+                        },
+                        {
+                          "type": "object",
+                          "properties": {
+                            "image": {
+                              "type": "string",
+                              "minLength": 1,
+                              "maxLength": 4096,
+                              "description": "file-system path (11 §6.2)"
+                            },
+                            "tile": {
+                              "type": "boolean"
+                            },
+                            "width": {
+                              "type": "integer"
+                            },
+                            "height": {
+                              "type": "integer"
+                            }
+                          },
+                          "required": [
+                            "image",
+                            "tile"
+                          ],
+                          "additionalProperties": false
+                        }
+                      ]
+                    },
+                    "propertyNames": {
+                      "minLength": 1,
+                      "maxLength": 4096
+                    }
+                  },
+                  "usageCount": {
+                    "type": "integer",
+                    "minimum": 0
+                  },
+                  "thumbnail": {
+                    "type": "string",
+                    "description": "base64 PNG"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "examples": [
+      {
+        "title": "Required parameters only: Full palette as JSON (§12.3)",
+        "params": {
+          "paletteId": "scene:#1"
+        }
+      }
+    ],
+    "status": "notImplemented",
+    "agentOnly": null,
+    "guiLocations": "the Palette panel and the colour editor (03); wired in M7 C7.1",
+    "spec": {
+      "params": "`paletteId: id; includeUsage: bool = false; thumbnails: bool = false; thumbnailSize: int = 32 (8..256)`",
+      "result": "Palette object (+ `usageCount` and base64 PNG `thumbnail` per swatch when requested)",
+      "undo": "n/a"
+    },
+    "milestone": "M7 C7.1"
+  },
+  {
+    "id": "colour.palette.import",
+    "kind": "action",
+    "label": "Import Palette",
+    "summary": "Import palettes from an `.animpal` file (\"Import Palette\")",
+    "section": "03",
+    "scopes": [
+      "edit",
+      "files.read"
+    ],
+    "undoable": true,
+    "undoLabel": "Import Palette",
+    "confirmation": [],
+    "enablement": "Enabled when a project is open (01 §1.3).",
+    "needsProject": true,
+    "paramsSchema": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "title": "colour.palette.import parameters",
+      "type": "object",
+      "properties": {
+        "path": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4096,
+          "description": "file-system path (11 §6.2)"
+        },
+        "onIdConflict": {
+          "type": "string",
+          "enum": [
+            "copy",
+            "replace",
+            "skip"
+          ],
+          "default": "copy"
+        },
+        "paletteNames": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "maxLength": 65536
+          },
+          "maxItems": 100000
+        }
+      },
+      "required": [
+        "path"
+      ],
+      "additionalProperties": false,
+      "x-spec": "`path: path; onIdConflict: enum \"copy\"|\"replace\"|\"skip\" = \"copy\"; paletteNames?: [string]`"
+    },
+    "resultSchema": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "title": "colour.palette.import result",
+      "type": "object",
+      "properties": {
+        "paletteIds": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 4096,
+            "description": "object ID or path reference (10 §3)"
+          },
+          "maxItems": 100000
+        },
+        "renamed": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "from": {
+                "type": "number"
+              },
+              "to": {
+                "type": "number"
+              }
+            },
+            "required": [
+              "from",
+              "to"
+            ],
+            "additionalProperties": false
+          },
+          "maxItems": 100000
+        },
+        "reIdentified": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 4096,
+            "description": "object ID or path reference (10 §3)"
+          },
+          "maxItems": 100000
+        },
+        "missingTextures": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "maxLength": 65536
+          },
+          "maxItems": 100000
+        }
+      },
+      "required": [
+        "paletteIds",
+        "renamed",
+        "reIdentified",
+        "missingTextures"
+      ],
+      "x-spec": "`{paletteIds[], renamed: [{from, to}], reIdentified: [id], missingTextures: [string]}`",
+      "additionalProperties": false
+    },
+    "examples": [
+      {
+        "title": "Required parameters only: Import palettes from an `.animpal` file (\"Import Palette\")",
+        "params": {
+          "path": "review/example.out"
+        }
+      }
+    ],
+    "status": "notImplemented",
+    "agentOnly": null,
+    "guiLocations": "the Palette panel and the colour editor (03); wired in M7 C7.1",
+    "spec": {
+      "params": "`path: path; onIdConflict: enum \"copy\"|\"replace\"|\"skip\" = \"copy\"; paletteNames?: [string]`",
+      "result": "`{paletteIds[], renamed: [{from, to}], reIdentified: [id], missingTextures: [string]}`",
+      "undo": "yes"
+    },
+    "milestone": "M7 C7.1"
+  },
+  {
+    "id": "colour.palette.list",
+    "kind": "query",
+    "label": "List palettes in order",
+    "summary": "List palettes in order",
+    "section": "03",
+    "scopes": [
+      "read"
+    ],
+    "undoable": false,
+    "undoLabel": null,
+    "confirmation": [],
+    "enablement": "Enabled when a project is open (01 §1.3).",
+    "needsProject": true,
+    "paramsSchema": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "title": "colour.palette.list parameters",
+      "type": "object",
+      "properties": {
+        "includeHidden": {
+          "type": "boolean",
+          "default": false
+        }
+      },
+      "additionalProperties": false,
+      "x-spec": "`includeHidden: bool = false`"
+    },
+    "resultSchema": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "title": "colour.palette.list result",
+      "type": "object",
+      "properties": {
+        "palettes": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 4096,
+                "description": "object ID or path reference (10 §3)"
+              },
+              "name": {
+                "type": "string",
+                "maxLength": 65536
+              },
+              "hidden": {
+                "type": "boolean"
+              },
+              "styles": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 4096,
+                      "description": "object ID or path reference (10 §3)"
+                    },
+                    "name": {
+                      "type": "string",
+                      "maxLength": 65536
+                    }
+                  },
+                  "required": [
+                    "id",
+                    "name"
+                  ],
+                  "additionalProperties": false
+                },
+                "maxItems": 100000
+              },
+              "swatchCount": {
+                "type": "number"
+              }
+            },
+            "required": [
+              "id",
+              "name",
+              "hidden",
+              "styles",
+              "swatchCount"
+            ],
+            "additionalProperties": false
+          },
+          "maxItems": 100000
+        },
+        "currentPaletteId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4096,
+          "description": "object ID or path reference (10 §3)"
+        }
+      },
+      "required": [
+        "palettes",
+        "currentPaletteId"
+      ],
+      "x-spec": "`{palettes: [{id, name, hidden, styles: [{id, name}], swatchCount}], currentPaletteId}`",
+      "additionalProperties": false
+    },
+    "examples": [
+      {
+        "title": "No parameters: List palettes in order",
+        "params": {}
+      }
+    ],
+    "status": "notImplemented",
+    "agentOnly": null,
+    "guiLocations": "the Palette panel and the colour editor (03); wired in M7 C7.1",
+    "spec": {
+      "params": "`includeHidden: bool = false`",
+      "result": "`{palettes: [{id, name, hidden, styles: [{id, name}], swatchCount}], currentPaletteId}`",
+      "undo": "n/a"
+    },
+    "milestone": "M7 C7.1"
+  },
+  {
+    "id": "colour.palette.rename",
+    "kind": "action",
+    "label": "Rename Palette",
+    "summary": "Rename a palette (\"Rename Palette\")",
+    "section": "03",
+    "scopes": [
+      "edit"
+    ],
+    "undoable": true,
+    "undoLabel": "Rename Palette",
+    "confirmation": [],
+    "enablement": "Enabled when a project is open (01 §1.3); `paletteId` names an existing palette.",
+    "needsProject": true,
+    "paramsSchema": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "title": "colour.palette.rename parameters",
+      "type": "object",
+      "properties": {
+        "paletteId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4096,
+          "description": "object ID or path reference (10 §3)"
+        },
+        "name": {
+          "type": "string",
+          "maxLength": 65536
+        }
+      },
+      "required": [
+        "paletteId",
+        "name"
+      ],
+      "additionalProperties": false,
+      "x-spec": "`paletteId: id; name: string`"
+    },
+    "resultSchema": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "title": "colour.palette.rename result",
+      "type": "object",
+      "properties": {
+        "paletteId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4096,
+          "description": "object ID or path reference (10 §3)"
+        },
+        "name": {
+          "type": "string",
+          "maxLength": 65536
+        }
+      },
+      "required": [
+        "paletteId",
+        "name"
+      ],
+      "x-spec": "`{paletteId, name}`",
+      "additionalProperties": false
+    },
+    "examples": [
+      {
+        "title": "Required parameters only: Rename a palette (\"Rename Palette\")",
+        "params": {
+          "paletteId": "scene:#1",
+          "name": "example"
+        }
+      }
+    ],
+    "status": "notImplemented",
+    "agentOnly": null,
+    "guiLocations": "the Palette panel and the colour editor (03); wired in M7 C7.1",
+    "spec": {
+      "params": "`paletteId: id; name: string`",
+      "result": "`{paletteId, name}`",
+      "undo": "yes"
+    },
+    "milestone": "M7 C7.1"
+  },
+  {
+    "id": "colour.palette.select",
+    "kind": "ui",
+    "label": "Make a palette current",
+    "summary": "Make a palette current (selects its first swatch)",
+    "section": "03",
+    "scopes": [
+      "ui"
+    ],
+    "undoable": false,
+    "undoLabel": null,
+    "confirmation": [],
+    "enablement": "Enabled when a project is open (01 §1.3); `paletteId` names an existing palette.",
+    "needsProject": true,
+    "paramsSchema": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "title": "colour.palette.select parameters",
+      "type": "object",
+      "properties": {
+        "paletteId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4096,
+          "description": "object ID or path reference (10 §3)"
+        }
+      },
+      "required": [
+        "paletteId"
+      ],
+      "additionalProperties": false,
+      "x-spec": "`paletteId: id`"
+    },
+    "resultSchema": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "title": "colour.palette.select result",
+      "type": "object",
+      "properties": {
+        "paletteId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4096,
+          "description": "object ID or path reference (10 §3)"
+        },
+        "currentColourId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4096,
+          "description": "object ID or path reference (10 §3)"
+        }
+      },
+      "required": [
+        "paletteId",
+        "currentColourId"
+      ],
+      "x-spec": "`{paletteId, currentColourId}`",
+      "additionalProperties": false
+    },
+    "examples": [
+      {
+        "title": "Required parameters only: Make a palette current (selects its first swatch)",
+        "params": {
+          "paletteId": "scene:#1"
+        }
+      }
+    ],
+    "status": "notImplemented",
+    "agentOnly": null,
+    "guiLocations": "the Palette panel and the colour editor (03); wired in M7 C7.1",
+    "spec": {
+      "params": "`paletteId: id`",
+      "result": "`{paletteId, currentColourId}`",
+      "undo": "no"
+    },
+    "milestone": "M7 C7.1"
+  },
+  {
+    "id": "colour.palette.set",
+    "kind": "action",
+    "label": "Replace or merge a palette's styles and swatches from a palette JSON object",
+    "summary": "Replace or merge a palette's styles and swatches from a palette JSON object",
+    "section": "03",
+    "scopes": [
+      "edit"
+    ],
+    "undoable": true,
+    "undoLabel": "Replace or merge a palette's styles and swatches from a pale",
+    "confirmation": [],
+    "enablement": "Enabled when a project is open (01 §1.3); `paletteId` names an existing palette.",
+    "needsProject": true,
+    "paramsSchema": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "title": "colour.palette.set parameters",
+      "type": "object",
+      "properties": {
+        "paletteId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4096,
+          "description": "object ID or path reference (10 §3)"
+        },
+        "palette": {
+          "type": "object",
+          "properties": {},
+          "additionalProperties": false,
+          "x-placeholder": true,
+          "description": "shape not defined by the owning section (spec issue); only {} is accepted until it is",
+          "x-specIssue": "SI-025"
+        },
+        "mode": {
+          "type": "string",
+          "enum": [
+            "merge",
+            "replace"
+          ],
+          "default": "merge"
+        }
+      },
+      "required": [
+        "paletteId",
+        "palette"
+      ],
+      "additionalProperties": false,
+      "x-spec": "`paletteId: id; palette: object; mode: enum \"merge\"|\"replace\" = \"merge\"`"
+    },
+    "resultSchema": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "title": "colour.palette.set result",
+      "type": "object",
+      "properties": {
+        "paletteId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4096,
+          "description": "object ID or path reference (10 §3)"
+        },
+        "created": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 4096,
+            "description": "object ID or path reference (10 §3)"
+          },
+          "maxItems": 100000
+        },
+        "updated": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 4096,
+            "description": "object ID or path reference (10 §3)"
+          },
+          "maxItems": 100000
+        },
+        "removed": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 4096,
+            "description": "object ID or path reference (10 §3)"
+          },
+          "maxItems": 100000
+        }
+      },
+      "required": [
+        "paletteId",
+        "created",
+        "updated",
+        "removed"
+      ],
+      "x-spec": "`{paletteId, created: [id], updated: [id], removed: [id]}`",
+      "additionalProperties": false
+    },
+    "examples": [
+      {
+        "title": "Required parameters only: Replace or merge a palette's styles and swatches from a palette JSON object",
+        "params": {
+          "paletteId": "scene:#1",
+          "palette": {}
+        }
+      }
+    ],
+    "status": "notImplemented",
+    "agentOnly": null,
+    "guiLocations": "the Palette panel and the colour editor (03); wired in M7 C7.1",
+    "spec": {
+      "params": "`paletteId: id; palette: object; mode: enum \"merge\"|\"replace\" = \"merge\"`",
+      "result": "`{paletteId, created: [id], updated: [id], removed: [id]}`",
+      "undo": "yes"
+    },
+    "milestone": "M7 C7.1"
+  },
+  {
+    "id": "colour.pick",
+    "kind": "query",
+    "label": "Pick colour",
+    "summary": "Colour at a rendered point (dropper read-back)",
+    "section": "03",
+    "scopes": [
+      "read"
+    ],
+    "undoable": false,
+    "undoLabel": null,
+    "confirmation": [],
+    "enablement": "always enabled",
+    "needsProject": true,
+    "paramsSchema": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "title": "PickParams",
+      "description": "`colour.pick` parameters (03 §16.3).",
+      "type": "object",
+      "properties": {
+        "point": {
+          "description": "The point.",
+          "$ref": "#/$defs/Point"
+        },
+        "space": {
+          "description": "Its space (`drawing` until M3/M4; the spec's default `view` needs the desktop views).",
+          "$ref": "#/$defs/Space"
+        },
+        "drawingId": {
+          "description": "The drawing of a `drawing` point (default: current).",
+          "type": [
+            "string",
+            "null"
+          ],
+          "default": null
+        },
+        "sceneId": {
+          "description": "Scene of a `scene` point.",
+          "type": [
+            "string",
+            "null"
+          ],
+          "default": null
+        },
+        "frame": {
+          "description": "Frame of a `scene` point.",
+          "type": [
+            "integer",
+            "null"
+          ],
+          "default": null,
+          "minimum": 1,
+          "maximum": 2147483647
+        },
+        "elementId": {
+          "description": "Element restriction.",
+          "type": [
+            "string",
+            "null"
+          ],
+          "default": null
+        },
+        "view": {
+          "description": "View of a `view` point.",
+          "type": [
+            "string",
+            "null"
+          ],
+          "default": null
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "point"
+      ],
+      "$defs": {
+        "Point": {
+          "description": "A point `{x, y}` in drawing units.",
+          "type": "object",
+          "properties": {
+            "x": {
+              "description": "X (du).",
+              "type": "number"
+            },
+            "y": {
+              "description": "Y (du, up).",
+              "type": "number"
+            }
+          },
+          "additionalProperties": false,
+          "required": [
+            "x",
+            "y"
+          ]
+        },
+        "Space": {
+          "description": "Coordinate space of point targets (03 §16.2).",
+          "oneOf": [
+            {
+              "description": "Drawing space of the target drawing.",
+              "type": "string",
+              "const": "drawing"
+            },
+            {
+              "description": "Scene space at a frame (M3 C3.2).",
+              "type": "string",
+              "const": "scene"
+            },
+            {
+              "description": "A view's pixels (M4 C4.2).",
+              "type": "string",
+              "const": "view"
+            }
+          ]
+        }
+      }
+    },
+    "resultSchema": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "title": "PickResult",
+      "description": "`colour.pick` result (03 §16.3).",
+      "type": "object",
+      "properties": {
+        "colourId": {
+          "description": "The colour (`null`: unpainted or nothing).",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "paletteId": {
+          "description": "Its palette.",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "swatchName": {
+          "description": "Its swatch name.",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "rgba": {
+          "description": "The swatch's value for the scene's style as `#RRGGBBAA` (first stop of a gradient; `#00000000` for textures,\nunpainted and empty canvas) until the renderer composites (SI-065).",
+          "type": "string"
+        },
+        "matrix": {
+          "description": "The fill mapping of a gradient or texture fill.",
+          "type": [
+            "array",
+            "null"
+          ],
+          "items": {
+            "type": "number"
+          },
+          "minItems": 6,
+          "maxItems": 6
+        },
+        "object": {
+          "description": "The object picked.",
+          "anyOf": [
+            {
+              "$ref": "#/$defs/PickedObject"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "missing": {
+          "description": "The colour ID is in no palette.",
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "rgba",
+        "missing"
+      ],
+      "$defs": {
+        "PickedObject": {
+          "description": "The object a pick found.",
+          "type": "object",
+          "properties": {
+            "drawingId": {
+              "description": "The drawing.",
+              "type": "string"
+            },
+            "elementId": {
+              "description": "An element exposing it.",
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "objectId": {
+              "description": "The object.",
+              "type": "string"
+            },
+            "objectKind": {
+              "description": "`zone`, `pencil`, `brush` or `text`.",
+              "type": "string"
+            }
+          },
+          "required": [
+            "drawingId",
+            "objectId",
+            "objectKind"
+          ]
+        }
+      }
+    },
+    "examples": [
+      {
+        "title": "The colour under a point of a drawing",
+        "params": {
+          "point": {
+            "x": 0,
+            "y": 0
+          },
+          "space": "drawing",
+          "drawingId": "drawingBank:#1/drawing:#1"
+        },
+        "result": {
+          "colourId": "col_01K742SG09H7QE4RRR6XSYYS88",
+          "paletteId": "pal_01K742SG02PPWW6K8BZY81A0M0",
+          "swatchName": "Ink",
+          "rgba": "#000000FF",
+          "matrix": null,
+          "object": {
+            "drawingId": "dr_01K742SG0KKMCAP9X1E6Z5P4SW",
+            "elementId": "el_01K742SG11W3SGB8Q1H50W74VB",
+            "objectId": "st_01K742SG0R61SYK9GG0HGYVNBT",
+            "objectKind": "pencil"
+          },
+          "missing": false
+        },
+        "resultVaries": []
+      }
+    ],
+    "status": "implemented",
+    "agentOnly": null,
+    "guiLocations": "Drawing and Camera views: Dropper tool (M4 C4.2)",
+    "spec": {
+      "params": "`point: point; space: enum \"drawing\"|\"scene\"|\"view\" = \"view\"; drawingId?: id; sceneId?: id; frame?: int; elementId?: id; view?: string`",
+      "result": "`{colourId|null, paletteId|null, swatchName, rgba: colour, object: {drawingId, elementId, objectId, objectKind}|null, missing: bool}`",
+      "undo": "n/a"
+    }
+  },
+  {
+    "id": "colour.recolour.apply",
+    "kind": "action",
+    "label": "Replace Colour",
+    "summary": "Replace colour A with colour B across drawings/elements/scene/project (\"Replace Colour\")",
+    "section": "03",
+    "scopes": [
+      "edit"
+    ],
+    "undoable": true,
+    "undoLabel": "Replace Colour",
+    "confirmation": [],
+    "enablement": "Enabled when a project is open (01 §1.3); a current scene exists or `sceneId` is given.",
+    "needsProject": true,
+    "paramsSchema": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "title": "colour.recolour.apply parameters",
+      "type": "object",
+      "properties": {
+        "fromColourId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4096,
+          "description": "object ID or path reference (10 §3)"
+        },
+        "toColourId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4096,
+          "description": "object ID or path reference (10 §3)"
+        },
+        "map": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "from": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 4096,
+                "description": "object ID or path reference (10 §3)"
+              },
+              "to": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 4096,
+                "description": "object ID or path reference (10 §3)"
+              }
+            },
+            "required": [
+              "from",
+              "to"
+            ],
+            "additionalProperties": false
+          },
+          "maxItems": 100000
+        },
+        "scope": {
+          "type": "string",
+          "enum": [
+            "project",
+            "scene",
+            "element",
+            "drawing"
+          ],
+          "default": "project"
+        },
+        "sceneId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4096,
+          "description": "object ID or path reference (10 §3)"
+        },
+        "elementIds": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 4096,
+            "description": "object ID or path reference (10 §3)"
+          },
+          "maxItems": 100000
+        },
+        "drawingIds": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 4096,
+            "description": "object ID or path reference (10 §3)"
+          },
+          "maxItems": 100000
+        },
+        "targets": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": [
+              "zones",
+              "lines",
+              "brushStrokes",
+              "text"
+            ]
+          },
+          "maxItems": 100000,
+          "default": [
+            "zones",
+            "lines",
+            "brushStrokes",
+            "text"
+          ]
+        },
+        "includePens": {
+          "type": "boolean",
+          "default": false
+        }
+      },
+      "additionalProperties": false,
+      "x-spec": "`fromColourId?: id; toColourId?: id; map?: [{from: id, to: id}]; scope: enum \"project\"|\"scene\"|\"element\"|\"drawing\" = \"project\"; sceneId?: id; elementIds?: [id]; drawingIds?: [id]; targets: [enum \"zones\"|\"lines\"|\"brushStrokes\"|\"text\"] = [\"zones\",\"lines\",\"brushStrokes\",\"text\"]; includePens: bool = false`"
+    },
+    "resultSchema": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "title": "colour.recolour.apply result",
+      "type": "object",
+      "properties": {
+        "changed": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "drawingId": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 4096,
+                "description": "object ID or path reference (10 §3)"
+              },
+              "count": {
+                "type": "number"
+              }
+            },
+            "required": [
+              "drawingId",
+              "count"
+            ],
+            "additionalProperties": false
+          },
+          "maxItems": 100000
+        },
+        "pensChanged": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 4096,
+            "description": "object ID or path reference (10 §3)"
+          },
+          "maxItems": 100000
+        },
+        "skippedLocked": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 4096,
+            "description": "object ID or path reference (10 §3)"
+          },
+          "maxItems": 100000
+        }
+      },
+      "required": [
+        "changed",
+        "pensChanged",
+        "skippedLocked"
+      ],
+      "x-spec": "`{changed: [{drawingId, count}], pensChanged: [id], skippedLocked: [id]}`",
+      "additionalProperties": false
+    },
+    "examples": [
+      {
+        "title": "No parameters: Replace colour A with colour B across drawings/elements/scene/project (\"Replace ",
+        "params": {}
+      }
+    ],
+    "status": "notImplemented",
+    "agentOnly": null,
+    "guiLocations": "the Palette panel and the colour editor (03); wired in M7 C7.1",
+    "spec": {
+      "params": "`fromColourId?: id; toColourId?: id; map?: [{from: id, to: id}]; scope: enum \"project\"|\"scene\"|\"element\"|\"drawing\" = \"project\"; sceneId?: id; elementIds?: [id]; drawingIds?: [id]; targets: [enum \"zones\"|\"lines\"|\"brushStrokes\"|\"text\"] = [\"zones\",\"lines\",\"brushStrokes\",\"text\"]; includePens: bool = false`",
+      "result": "`{changed: [{drawingId, count}], pensChanged: [id], skippedLocked: [id]}`",
+      "undo": "yes"
+    },
+    "milestone": "M7 C7.1"
+  },
+  {
+    "id": "colour.recovery.performed",
+    "kind": "event",
+    "label": "Colour recovery performed",
+    "summary": "Colour recovery added swatches",
+    "section": "03",
+    "scopes": [
+      "read"
+    ],
+    "undoable": false,
+    "undoLabel": null,
+    "confirmation": [],
+    "enablement": "always enabled",
+    "needsProject": false,
+    "paramsSchema": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "title": "NoParams",
+      "description": "No parameters.",
+      "type": "object",
+      "additionalProperties": false
+    },
+    "resultSchema": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "title": "RecoveryEvent",
+      "description": "`colour.recovery.performed` payload.",
+      "type": "object",
+      "properties": {
+        "colourIds": {
+          "description": "Colours recreated (placeholders included).",
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "paletteIds": {
+          "description": "Palettes that received them.",
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "required": [
+        "colourIds",
+        "paletteIds"
+      ]
+    },
+    "examples": [
+      {
+        "title": "Subscribe (events take no parameters)",
+        "params": {}
+      }
+    ],
+    "status": "implemented",
+    "agentOnly": "an event delivered to subscribers (emitted when recovery adds swatches)",
+    "guiLocations": null,
+    "spec": {
+      "params": "—",
+      "result": "`{colourIds[], paletteIds[]}`",
+      "undo": "n/a"
+    }
+  },
+  {
+    "id": "colour.recovery.run",
+    "kind": "action",
+    "label": "Colour Recovery",
+    "summary": "Recreate missing swatches from recovery copies (\"Colour Recovery\")",
+    "section": "03",
+    "scopes": [
+      "edit"
+    ],
+    "undoable": true,
+    "undoLabel": "Colour Recovery",
+    "confirmation": [],
+    "enablement": "always enabled",
+    "needsProject": true,
+    "paramsSchema": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "title": "RecoveryParams",
+      "description": "`colour.recovery.run` parameters (03 §16.3).",
+      "type": "object",
+      "properties": {
+        "drawingIds": {
+          "description": "Drawings whose missing colours are recovered.",
+          "type": [
+            "array",
+            "null"
+          ],
+          "items": {
+            "type": "string"
+          },
+          "default": null
+        },
+        "all": {
+          "description": "Every drawing of the project.",
+          "type": "boolean",
+          "default": false
+        }
+      },
+      "additionalProperties": false
+    },
+    "resultSchema": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "title": "RecoveryResult",
+      "description": "What a recovery did.",
+      "type": "object",
+      "properties": {
+        "recovered": {
+          "description": "Swatches recreated from recovery copies, with the palette that received each.",
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/RecoveredColour"
+          }
+        },
+        "placeholders": {
+          "description": "Placeholder swatches created for colours without a recovery copy.",
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "createdPaletteIds": {
+          "description": "Palettes created.",
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "required": [
+        "recovered",
+        "placeholders",
+        "createdPaletteIds"
+      ],
+      "$defs": {
+        "RecoveredColour": {
+          "description": "One recreated swatch.",
+          "type": "object",
+          "properties": {
+            "colourId": {
+              "description": "The colour ID (unchanged).",
+              "type": "string"
+            },
+            "paletteId": {
+              "description": "The palette it went into.",
+              "type": "string"
+            }
+          },
+          "required": [
+            "colourId",
+            "paletteId"
+          ]
+        }
+      }
+    },
+    "examples": [
+      {
+        "title": "Recover every missing colour of the project",
+        "params": {
+          "all": true
+        },
+        "result": {
+          "recovered": [],
+          "placeholders": [],
+          "createdPaletteIds": []
+        },
+        "resultVaries": []
+      }
+    ],
+    "status": "implemented",
+    "agentOnly": null,
+    "guiLocations": "Colour palette view: Recover Colours (M7 C7.1)",
+    "spec": {
+      "params": "`drawingIds?: [id]; all: bool = false`",
+      "result": "`{recovered: [{colourId, paletteId}], placeholders: [id], createdPaletteIds: [id]}`",
+      "undo": "yes"
+    }
+  },
+  {
+    "id": "colour.sceneStyle.changed",
+    "kind": "event",
+    "label": "A scene's style selection changed",
+    "summary": "A scene's style selection changed",
+    "section": "03",
+    "scopes": [
+      "read"
+    ],
+    "undoable": false,
+    "undoLabel": null,
+    "confirmation": [],
+    "enablement": "Never invoked: an event delivered to subscribers (11 §9).",
+    "needsProject": false,
+    "paramsSchema": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "title": "colour.sceneStyle.changed parameters",
+      "type": "object",
+      "properties": {},
+      "additionalProperties": false,
+      "description": "Events take no parameters; subscribe to them (11 §9).",
+      "x-spec": "—"
+    },
+    "resultSchema": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "title": "colour.sceneStyle.changed result",
+      "type": "object",
+      "properties": {
+        "sceneId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4096,
+          "description": "object ID or path reference (10 §3)"
+        },
+        "paletteId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4096,
+          "description": "object ID or path reference (10 §3)"
+        },
+        "styleId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4096,
+          "description": "object ID or path reference (10 §3)"
+        }
+      },
+      "required": [
+        "sceneId",
+        "paletteId",
+        "styleId"
+      ],
+      "description": "Event payload (delivered to subscribers).",
+      "x-spec": "`{sceneId, paletteId, styleId}`",
+      "additionalProperties": false
+    },
+    "examples": [
+      {
+        "title": "Subscribe (events take no parameters)",
+        "params": {}
+      }
+    ],
+    "status": "notImplemented",
+    "agentOnly": "an event delivered to subscribers",
+    "guiLocations": null,
+    "spec": {
+      "params": "—",
+      "result": "`{sceneId, paletteId, styleId}`",
+      "undo": "n/a"
+    },
+    "milestone": "M7 C7.1"
+  },
+  {
+    "id": "colour.sceneStyles.get",
+    "kind": "query",
+    "label": "Style selected for every palette in a scene",
+    "summary": "Style selected for every palette in a scene",
+    "section": "03",
+    "scopes": [
+      "read"
+    ],
+    "undoable": false,
+    "undoLabel": null,
+    "confirmation": [],
+    "enablement": "Enabled when a project is open (01 §1.3); a current scene exists or `sceneId` is given; the context has a selection, or the objects are given.",
+    "needsProject": true,
+    "paramsSchema": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "title": "colour.sceneStyles.get parameters",
+      "type": "object",
+      "properties": {
+        "sceneId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4096,
+          "description": "object ID or path reference (10 §3)"
+        }
+      },
+      "additionalProperties": false,
+      "x-spec": "`sceneId?: id`"
+    },
+    "resultSchema": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "title": "colour.sceneStyles.get result",
+      "type": "object",
+      "properties": {
+        "sceneId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4096,
+          "description": "object ID or path reference (10 §3)"
+        },
+        "styles": {
+          "type": "object",
+          "description": "(paletteId → styleId)",
+          "additionalProperties": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 4096,
+            "description": "object ID or path reference (10 §3)"
+          },
+          "properties": {},
+          "propertyNames": {
+            "minLength": 1,
+            "maxLength": 4096
+          }
+        }
+      },
+      "required": [
+        "sceneId",
+        "styles"
+      ],
+      "x-spec": "`{sceneId, styles: object}` (paletteId → styleId)",
+      "additionalProperties": false
+    },
+    "examples": [
+      {
+        "title": "No parameters: Style selected for every palette in a scene",
+        "params": {}
+      }
+    ],
+    "status": "notImplemented",
+    "agentOnly": null,
+    "guiLocations": "the Palette panel and the colour editor (03); wired in M7 C7.1",
+    "spec": {
+      "params": "`sceneId?: id`",
+      "result": "`{sceneId, styles: object}` (paletteId → styleId)",
+      "undo": "n/a"
+    },
+    "milestone": "M7 C7.1"
+  },
+  {
+    "id": "colour.selection.apply",
+    "kind": "action",
+    "label": "Set Colour",
+    "summary": "Recolour selected drawing objects (\"Set Colour\")",
+    "section": "03",
+    "scopes": [
+      "edit"
+    ],
+    "undoable": true,
+    "undoLabel": "Set Colour",
+    "confirmation": [],
+    "enablement": "Enabled when a project is open (01 §1.3); a current drawing exists or `drawingId` is given; the context has a selection, or the objects are given.",
+    "needsProject": true,
+    "paramsSchema": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "title": "colour.selection.apply parameters",
+      "type": "object",
+      "properties": {
+        "colourId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4096,
+          "description": "object ID or path reference (10 §3)"
+        },
+        "drawingId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4096,
+          "description": "object ID or path reference (10 §3)"
+        },
+        "objectIds": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 4096,
+            "description": "object ID or path reference (10 §3)"
+          },
+          "maxItems": 100000
+        }
+      },
+      "additionalProperties": false,
+      "x-spec": "`colourId?: id; drawingId?: id; objectIds?: [id]`"
+    },
+    "resultSchema": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "title": "colour.selection.apply result",
+      "type": "object",
+      "properties": {
+        "changed": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 4096,
+            "description": "object ID or path reference (10 §3)"
+          },
+          "maxItems": 100000
+        },
+        "rev": {
+          "type": "number"
+        }
+      },
+      "required": [
+        "changed",
+        "rev"
+      ],
+      "x-spec": "`{changed: [id], rev}`",
+      "additionalProperties": false
+    },
+    "examples": [
+      {
+        "title": "No parameters: Recolour selected drawing objects (\"Set Colour\")",
+        "params": {}
+      }
+    ],
+    "status": "notImplemented",
+    "agentOnly": null,
+    "guiLocations": "the Palette panel and the colour editor (03); wired in M7 C7.1",
+    "spec": {
+      "params": "`colourId?: id; drawingId?: id; objectIds?: [id]`",
+      "result": "`{changed: [id], rev}`",
+      "undo": "yes"
+    },
+    "milestone": "M7 C7.1"
+  },
+  {
+    "id": "colour.style.changed",
+    "kind": "event",
+    "label": "Style created, renamed, deleted or tinted",
+    "summary": "Style created, renamed, deleted or tinted",
+    "section": "03",
+    "scopes": [
+      "read"
+    ],
+    "undoable": false,
+    "undoLabel": null,
+    "confirmation": [],
+    "enablement": "Never invoked: an event delivered to subscribers (11 §9).",
+    "needsProject": false,
+    "paramsSchema": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "title": "colour.style.changed parameters",
+      "type": "object",
+      "properties": {},
+      "additionalProperties": false,
+      "description": "Events take no parameters; subscribe to them (11 §9).",
+      "x-spec": "—"
+    },
+    "resultSchema": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "title": "colour.style.changed result",
+      "type": "object",
+      "properties": {
+        "paletteId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4096,
+          "description": "object ID or path reference (10 §3)"
+        },
+        "styleId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4096,
+          "description": "object ID or path reference (10 §3)"
+        },
+        "change": {
+          "type": "string",
+          "maxLength": 65536
+        }
+      },
+      "required": [
+        "paletteId",
+        "styleId",
+        "change"
+      ],
+      "description": "Event payload (delivered to subscribers).",
+      "x-spec": "`{paletteId, styleId, change}`",
+      "additionalProperties": false
+    },
+    "examples": [
+      {
+        "title": "Subscribe (events take no parameters)",
+        "params": {}
+      }
+    ],
+    "status": "notImplemented",
+    "agentOnly": "an event delivered to subscribers",
+    "guiLocations": null,
+    "spec": {
+      "params": "—",
+      "result": "`{paletteId, styleId, change}`",
+      "undo": "n/a"
+    },
+    "milestone": "M7 C7.1"
+  },
+  {
+    "id": "colour.style.delete",
+    "kind": "action",
+    "label": "Delete Style",
+    "summary": "Delete a style (\"Delete Style\")",
+    "section": "03",
+    "scopes": [
+      "edit"
+    ],
+    "undoable": true,
+    "undoLabel": "Delete Style",
+    "confirmation": [],
+    "enablement": "Enabled when a project is open (01 §1.3); `paletteId` names an existing palette; `styleId` names an existing style.",
+    "needsProject": true,
+    "paramsSchema": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "title": "colour.style.delete parameters",
+      "type": "object",
+      "properties": {
+        "paletteId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4096,
+          "description": "object ID or path reference (10 §3)"
+        },
+        "styleId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4096,
+          "description": "object ID or path reference (10 §3)"
+        },
+        "replacementStyleId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4096,
+          "description": "object ID or path reference (10 §3)"
+        }
+      },
+      "required": [
+        "paletteId",
+        "styleId"
+      ],
+      "additionalProperties": false,
+      "x-spec": "`paletteId: id; styleId: id; replacementStyleId?: id`"
+    },
+    "resultSchema": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "title": "colour.style.delete result",
+      "type": "object",
+      "properties": {
+        "reassignedSceneIds": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 4096,
+            "description": "object ID or path reference (10 §3)"
+          },
+          "maxItems": 100000
+        }
+      },
+      "required": [
+        "reassignedSceneIds"
+      ],
+      "x-spec": "`{reassignedSceneIds[]}`",
+      "additionalProperties": false
+    },
+    "examples": [
+      {
+        "title": "Required parameters only: Delete a style (\"Delete Style\")",
+        "params": {
+          "paletteId": "scene:#1",
+          "styleId": "scene:#1"
+        }
+      }
+    ],
+    "status": "notImplemented",
+    "agentOnly": null,
+    "guiLocations": "the Palette panel and the colour editor (03); wired in M7 C7.1",
+    "spec": {
+      "params": "`paletteId: id; styleId: id; replacementStyleId?: id`",
+      "result": "`{reassignedSceneIds[]}`",
+      "undo": "yes"
+    },
+    "milestone": "M7 C7.1"
+  },
+  {
+    "id": "colour.style.duplicate",
+    "kind": "action",
+    "label": "Duplicate Style",
+    "summary": "Duplicate a style, same colour IDs (\"Duplicate Style\")",
+    "section": "03",
+    "scopes": [
+      "edit"
+    ],
+    "undoable": true,
+    "undoLabel": "Duplicate Style",
+    "confirmation": [],
+    "enablement": "Enabled when a project is open (01 §1.3); a current scene exists or `sceneId` is given; `paletteId` names an existing palette.",
+    "needsProject": true,
+    "paramsSchema": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "title": "colour.style.duplicate parameters",
+      "type": "object",
+      "properties": {
+        "paletteId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4096,
+          "description": "object ID or path reference (10 §3)"
+        },
+        "styleId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4096,
+          "description": "object ID or path reference (10 §3)"
+        },
+        "name": {
+          "type": "string",
+          "maxLength": 65536
+        },
+        "selectForScene": {
+          "type": "boolean",
+          "default": true
+        },
+        "sceneId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4096,
+          "description": "object ID or path reference (10 §3)"
+        }
+      },
+      "required": [
+        "paletteId"
+      ],
+      "additionalProperties": false,
+      "x-spec": "`paletteId: id; styleId?: id; name?: string; selectForScene: bool = true; sceneId?: id`"
+    },
+    "resultSchema": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "title": "colour.style.duplicate result",
+      "type": "object",
+      "properties": {
+        "styleId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4096,
+          "description": "object ID or path reference (10 §3)"
+        },
+        "name": {
+          "type": "string",
+          "maxLength": 65536
+        }
+      },
+      "required": [
+        "styleId",
+        "name"
+      ],
+      "x-spec": "`{styleId, name}`",
+      "additionalProperties": false
+    },
+    "examples": [
+      {
+        "title": "Required parameters only: Duplicate a style, same colour IDs (\"Duplicate Style\")",
+        "params": {
+          "paletteId": "scene:#1"
+        }
+      }
+    ],
+    "status": "notImplemented",
+    "agentOnly": null,
+    "guiLocations": "the Palette panel and the colour editor (03); wired in M7 C7.1",
+    "spec": {
+      "params": "`paletteId: id; styleId?: id; name?: string; selectForScene: bool = true; sceneId?: id`",
+      "result": "`{styleId, name}`",
+      "undo": "yes"
+    },
+    "milestone": "M7 C7.1"
+  },
+  {
+    "id": "colour.style.list",
+    "kind": "query",
+    "label": "List a palette's styles and which scenes use each",
+    "summary": "List a palette's styles and which scenes use each",
+    "section": "03",
+    "scopes": [
+      "read"
+    ],
+    "undoable": false,
+    "undoLabel": null,
+    "confirmation": [],
+    "enablement": "Enabled when a project is open (01 §1.3); `paletteId` names an existing palette.",
+    "needsProject": true,
+    "paramsSchema": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "title": "colour.style.list parameters",
+      "type": "object",
+      "properties": {
+        "paletteId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4096,
+          "description": "object ID or path reference (10 §3)"
+        }
+      },
+      "required": [
+        "paletteId"
+      ],
+      "additionalProperties": false,
+      "x-spec": "`paletteId: id`"
+    },
+    "resultSchema": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "title": "colour.style.list result",
+      "type": "object",
+      "properties": {
+        "styles": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 4096,
+                "description": "object ID or path reference (10 §3)"
+              },
+              "name": {
+                "type": "string",
+                "maxLength": 65536
+              },
+              "index": {
+                "type": "number"
+              },
+              "sceneIds": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 4096,
+                  "description": "object ID or path reference (10 §3)"
+                },
+                "maxItems": 100000
+              }
+            },
+            "required": [
+              "id",
+              "name",
+              "index",
+              "sceneIds"
+            ],
+            "additionalProperties": false
+          },
+          "maxItems": 100000
+        }
+      },
+      "required": [
+        "styles"
+      ],
+      "x-spec": "`{styles: [{id, name, index, sceneIds[]}]}`",
+      "additionalProperties": false
+    },
+    "examples": [
+      {
+        "title": "Required parameters only: List a palette's styles and which scenes use each",
+        "params": {
+          "paletteId": "scene:#1"
+        }
+      }
+    ],
+    "status": "notImplemented",
+    "agentOnly": null,
+    "guiLocations": "the Palette panel and the colour editor (03); wired in M7 C7.1",
+    "spec": {
+      "params": "`paletteId: id`",
+      "result": "`{styles: [{id, name, index, sceneIds[]}]}`",
+      "undo": "n/a"
+    },
+    "milestone": "M7 C7.1"
+  },
+  {
+    "id": "colour.style.rename",
+    "kind": "action",
+    "label": "Rename Style",
+    "summary": "Rename a style (\"Rename Style\")",
+    "section": "03",
+    "scopes": [
+      "edit"
+    ],
+    "undoable": true,
+    "undoLabel": "Rename Style",
+    "confirmation": [],
+    "enablement": "Enabled when a project is open (01 §1.3); `paletteId` names an existing palette; `styleId` names an existing style.",
+    "needsProject": true,
+    "paramsSchema": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "title": "colour.style.rename parameters",
+      "type": "object",
+      "properties": {
+        "paletteId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4096,
+          "description": "object ID or path reference (10 §3)"
+        },
+        "styleId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4096,
+          "description": "object ID or path reference (10 §3)"
+        },
+        "name": {
+          "type": "string",
+          "maxLength": 65536
+        }
+      },
+      "required": [
+        "paletteId",
+        "styleId",
+        "name"
+      ],
+      "additionalProperties": false,
+      "x-spec": "`paletteId: id; styleId: id; name: string`"
+    },
+    "resultSchema": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "title": "colour.style.rename result",
+      "type": "object",
+      "properties": {
+        "styleId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4096,
+          "description": "object ID or path reference (10 §3)"
+        },
+        "name": {
+          "type": "string",
+          "maxLength": 65536
+        }
+      },
+      "required": [
+        "styleId",
+        "name"
+      ],
+      "x-spec": "`{styleId, name}`",
+      "additionalProperties": false
+    },
+    "examples": [
+      {
+        "title": "Required parameters only: Rename a style (\"Rename Style\")",
+        "params": {
+          "paletteId": "scene:#1",
+          "styleId": "scene:#1",
+          "name": "example"
+        }
+      }
+    ],
+    "status": "notImplemented",
+    "agentOnly": null,
+    "guiLocations": "the Palette panel and the colour editor (03); wired in M7 C7.1",
+    "spec": {
+      "params": "`paletteId: id; styleId: id; name: string`",
+      "result": "`{styleId, name}`",
+      "undo": "yes"
+    },
+    "milestone": "M7 C7.1"
+  },
+  {
+    "id": "colour.style.select",
+    "kind": "action",
+    "label": "Style Change",
+    "summary": "Set the style of a palette for a scene (\"Style Change\")",
+    "section": "03",
+    "scopes": [
+      "edit"
+    ],
+    "undoable": true,
+    "undoLabel": "Style Change",
+    "confirmation": [],
+    "enablement": "Enabled when a project is open (01 §1.3); a current scene exists or `sceneId` is given; `paletteId` names an existing palette; `styleId` names an existing style.",
+    "needsProject": true,
+    "paramsSchema": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "title": "colour.style.select parameters",
+      "type": "object",
+      "properties": {
+        "paletteId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4096,
+          "description": "object ID or path reference (10 §3)"
+        },
+        "styleId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4096,
+          "description": "object ID or path reference (10 §3)"
+        },
+        "sceneId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4096,
+          "description": "object ID or path reference (10 §3)"
+        }
+      },
+      "required": [
+        "paletteId",
+        "styleId"
+      ],
+      "additionalProperties": false,
+      "x-spec": "`paletteId: id; styleId: id; sceneId?: id`"
+    },
+    "resultSchema": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "title": "colour.style.select result",
+      "type": "object",
+      "properties": {
+        "sceneId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4096,
+          "description": "object ID or path reference (10 §3)"
+        },
+        "paletteId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4096,
+          "description": "object ID or path reference (10 §3)"
+        },
+        "styleId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4096,
+          "description": "object ID or path reference (10 §3)"
+        }
+      },
+      "required": [
+        "sceneId",
+        "paletteId",
+        "styleId"
+      ],
+      "x-spec": "`{sceneId, paletteId, styleId}`",
+      "additionalProperties": false
+    },
+    "examples": [
+      {
+        "title": "Required parameters only: Set the style of a palette for a scene (\"Style Change\")",
+        "params": {
+          "paletteId": "scene:#1",
+          "styleId": "scene:#1"
+        }
+      }
+    ],
+    "status": "notImplemented",
+    "agentOnly": null,
+    "guiLocations": "the Palette panel and the colour editor (03); wired in M7 C7.1",
+    "spec": {
+      "params": "`paletteId: id; styleId: id; sceneId?: id`",
+      "result": "`{sceneId, paletteId, styleId}`",
+      "undo": "yes"
+    },
+    "milestone": "M7 C7.1"
+  },
+  {
+    "id": "colour.swatch.changed",
+    "kind": "event",
+    "label": "Swatch created, edited, moved or deleted",
+    "summary": "Swatch created, edited, moved or deleted",
+    "section": "03",
+    "scopes": [
+      "read"
+    ],
+    "undoable": false,
+    "undoLabel": null,
+    "confirmation": [],
+    "enablement": "Never invoked: an event delivered to subscribers (11 §9).",
+    "needsProject": false,
+    "paramsSchema": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "title": "colour.swatch.changed parameters",
+      "type": "object",
+      "properties": {},
+      "additionalProperties": false,
+      "description": "Events take no parameters; subscribe to them (11 §9).",
+      "x-spec": "—"
+    },
+    "resultSchema": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "title": "colour.swatch.changed result",
+      "type": "object",
+      "properties": {
+        "paletteId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4096,
+          "description": "object ID or path reference (10 §3)"
+        },
+        "colourId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4096,
+          "description": "object ID or path reference (10 §3)"
+        },
+        "styleId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4096,
+          "description": "object ID or path reference (10 §3)"
+        },
+        "change": {
+          "type": "string",
+          "maxLength": 65536
+        }
+      },
+      "required": [
+        "paletteId",
+        "colourId",
+        "change"
+      ],
+      "description": "Event payload (delivered to subscribers).",
+      "x-spec": "`{paletteId, colourId, styleId?, change}`",
+      "additionalProperties": false
+    },
+    "examples": [
+      {
+        "title": "Subscribe (events take no parameters)",
+        "params": {}
+      }
+    ],
+    "status": "notImplemented",
+    "agentOnly": "an event delivered to subscribers",
+    "guiLocations": null,
+    "spec": {
+      "params": "—",
+      "result": "`{paletteId, colourId, styleId?, change}`",
+      "undo": "n/a"
+    },
+    "milestone": "M7 C7.1"
+  },
+  {
+    "id": "colour.swatch.create",
+    "kind": "action",
+    "label": "Add a colour or texture swatch",
+    "summary": "Add a colour or texture swatch (\"Add Colour\" / \"Add Texture\")",
+    "section": "03",
+    "scopes": [
+      "edit"
+    ],
+    "undoable": true,
+    "undoLabel": "Add a colour or texture swatch",
+    "confirmation": [],
+    "enablement": "Enabled when a project is open (01 §1.3).",
+    "needsProject": true,
+    "paramsSchema": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "title": "colour.swatch.create parameters",
+      "type": "object",
+      "properties": {
+        "paletteId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4096,
+          "description": "object ID or path reference (10 §3)"
+        },
+        "name": {
+          "type": "string",
+          "maxLength": 65536
+        },
+        "kind": {
+          "type": "string",
+          "enum": [
+            "solid",
+            "linearGradient",
+            "radialGradient",
+            "texture"
+          ],
+          "default": "solid"
+        },
+        "value": {
+          "type": "object",
+          "properties": {},
+          "additionalProperties": false,
+          "x-placeholder": true,
+          "description": "shape not defined by the owning section (spec issue); only {} is accepted until it is",
+          "x-specIssue": "SI-025"
+        },
+        "values": {
+          "type": "object",
+          "properties": {},
+          "additionalProperties": false,
+          "x-placeholder": true,
+          "description": "shape not defined by the owning section (spec issue); only {} is accepted until it is",
+          "x-specIssue": "SI-025"
+        },
+        "copyFrom": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4096,
+          "description": "object ID or path reference (10 §3)"
+        },
+        "deformable": {
+          "type": "boolean",
+          "default": false
+        },
+        "index": {
+          "type": "integer"
+        },
+        "makeCurrent": {
+          "type": "boolean",
+          "default": true
+        }
+      },
+      "additionalProperties": false,
+      "x-spec": "`paletteId?: id; name?: string; kind: enum \"solid\"|\"linearGradient\"|\"radialGradient\"|\"texture\" = \"solid\"; value?: object; values?: object; copyFrom?: id; deformable: bool = false; index?: int; makeCurrent: bool = true`"
+    },
+    "resultSchema": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "title": "colour.swatch.create result",
+      "type": "object",
+      "properties": {
+        "colourId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4096,
+          "description": "object ID or path reference (10 §3)"
+        },
+        "paletteId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4096,
+          "description": "object ID or path reference (10 §3)"
+        },
+        "index": {
+          "type": "integer"
+        }
+      },
+      "required": [
+        "colourId",
+        "paletteId",
+        "index"
+      ],
+      "x-spec": "`{colourId, paletteId, index}`",
+      "additionalProperties": false
+    },
+    "examples": [
+      {
+        "title": "No parameters: Add a colour or texture swatch (\"Add Colour\" / \"Add Texture\")",
+        "params": {}
+      }
+    ],
+    "status": "notImplemented",
+    "agentOnly": null,
+    "guiLocations": "the Palette panel and the colour editor (03); wired in M7 C7.1",
+    "spec": {
+      "params": "`paletteId?: id; name?: string; kind: enum \"solid\"|\"linearGradient\"|\"radialGradient\"|\"texture\" = \"solid\"; value?: object; values?: object; copyFrom?: id; deformable: bool = false; index?: int; makeCurrent: bool = true`",
+      "result": "`{colourId, paletteId, index}`",
+      "undo": "yes"
+    },
+    "milestone": "M7 C7.1"
+  },
+  {
+    "id": "colour.swatch.delete",
+    "kind": "action",
+    "label": "Remove Colour",
+    "summary": "Delete a swatch, optionally recolouring its uses (\"Remove Colour\")",
+    "section": "03",
+    "scopes": [
+      "edit"
+    ],
+    "undoable": true,
+    "undoLabel": "Remove Colour",
+    "confirmation": [],
+    "enablement": "Enabled when a project is open (01 §1.3); `colourId` names an existing colour.",
+    "needsProject": true,
+    "paramsSchema": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "title": "colour.swatch.delete parameters",
+      "type": "object",
+      "properties": {
+        "colourId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4096,
+          "description": "object ID or path reference (10 §3)"
+        },
+        "replaceWith": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4096,
+          "description": "object ID or path reference (10 §3)"
+        }
+      },
+      "required": [
+        "colourId"
+      ],
+      "additionalProperties": false,
+      "x-spec": "`colourId: id; replaceWith?: id`"
+    },
+    "resultSchema": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "title": "colour.swatch.delete result",
+      "type": "object",
+      "properties": {
+        "orphanedReferences": {
+          "type": "integer"
+        },
+        "replaced": {
+          "type": "integer"
+        }
+      },
+      "required": [
+        "orphanedReferences",
+        "replaced"
+      ],
+      "x-spec": "`{orphanedReferences: int, replaced: int}`",
+      "additionalProperties": false
+    },
+    "examples": [
+      {
+        "title": "Required parameters only: Delete a swatch, optionally recolouring its uses (\"Remove Colour\")",
+        "params": {
+          "colourId": "scene:#1"
+        }
+      }
+    ],
+    "status": "notImplemented",
+    "agentOnly": null,
+    "guiLocations": "the Palette panel and the colour editor (03); wired in M7 C7.1",
+    "spec": {
+      "params": "`colourId: id; replaceWith?: id`",
+      "result": "`{orphanedReferences: int, replaced: int}`",
+      "undo": "yes"
+    },
+    "milestone": "M7 C7.1"
+  },
+  {
+    "id": "colour.swatch.get",
+    "kind": "query",
+    "label": "One swatch, all styles, plus value resolved for a scene",
+    "summary": "One swatch, all styles, plus value resolved for a scene",
+    "section": "03",
+    "scopes": [
+      "read"
+    ],
+    "undoable": false,
+    "undoLabel": null,
+    "confirmation": [],
+    "enablement": "Enabled when a project is open (01 §1.3); a current scene exists or `sceneId` is given; `colourId` names an existing colour.",
+    "needsProject": true,
+    "paramsSchema": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "title": "colour.swatch.get parameters",
+      "type": "object",
+      "properties": {
+        "colourId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4096,
+          "description": "object ID or path reference (10 §3)"
+        },
+        "sceneId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4096,
+          "description": "object ID or path reference (10 §3)"
+        },
+        "thumbnail": {
+          "type": "boolean",
+          "default": false
+        },
+        "thumbnailSize": {
+          "type": "integer",
+          "minimum": 8,
+          "maximum": 512,
+          "default": 64
+        }
+      },
+      "required": [
+        "colourId"
+      ],
+      "additionalProperties": false,
+      "x-spec": "`colourId: id; sceneId?: id; thumbnail: bool = false; thumbnailSize: int = 64 (8..512)`"
+    },
+    "resultSchema": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "title": "colour.swatch.get result",
+      "type": "object",
+      "properties": {
+        "paletteId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4096,
+          "description": "object ID or path reference (10 §3)"
+        },
+        "index": {
+          "type": "integer"
+        },
+        "swatch": {
+          "type": "string",
+          "maxLength": 65536
+        },
+        "resolved": {
+          "type": "string",
+          "maxLength": 65536,
+          "description": "any JSON value of the property's type"
+        },
+        "width": {
+          "type": "number"
+        },
+        "height": {
+          "type": "number"
+        },
+        "thumbnail": {
+          "type": "boolean",
+          "default": false
+        }
+      },
+      "required": [
+        "paletteId",
+        "index",
+        "swatch",
+        "resolved"
+      ],
+      "x-spec": "`{paletteId, index, swatch (§12.3), resolved: value, width?, height?, thumbnail?}`",
+      "additionalProperties": false
+    },
+    "examples": [
+      {
+        "title": "Required parameters only: One swatch, all styles, plus value resolved for a scene",
+        "params": {
+          "colourId": "scene:#1"
+        }
+      }
+    ],
+    "status": "notImplemented",
+    "agentOnly": null,
+    "guiLocations": "the Palette panel and the colour editor (03); wired in M7 C7.1",
+    "spec": {
+      "params": "`colourId: id; sceneId?: id; thumbnail: bool = false; thumbnailSize: int = 64 (8..512)`",
+      "result": "`{paletteId, index, swatch (§12.3), resolved: value, width?, height?, thumbnail?}`",
+      "undo": "n/a"
+    },
+    "milestone": "M7 C7.1"
+  },
+  {
+    "id": "colour.swatch.list",
+    "kind": "query",
+    "label": "List swatches of a palette with values for a style",
+    "summary": "List swatches of a palette with values for a style",
+    "section": "03",
+    "scopes": [
+      "read"
+    ],
+    "undoable": false,
+    "undoLabel": null,
+    "confirmation": [],
+    "enablement": "Enabled when a project is open (01 §1.3); a current scene exists or `sceneId` is given.",
+    "needsProject": true,
+    "paramsSchema": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "title": "colour.swatch.list parameters",
+      "type": "object",
+      "properties": {
+        "paletteId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4096,
+          "description": "object ID or path reference (10 §3)"
+        },
+        "styleId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4096,
+          "description": "object ID or path reference (10 §3)"
+        },
+        "sceneId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4096,
+          "description": "object ID or path reference (10 §3)"
+        },
+        "kind": {
+          "type": "string",
+          "enum": [
+            "solid",
+            "linearGradient",
+            "radialGradient",
+            "texture"
+          ]
+        },
+        "includeUsage": {
+          "type": "boolean",
+          "default": false
+        }
+      },
+      "additionalProperties": false,
+      "x-spec": "`paletteId?: id; styleId?: id; sceneId?: id; kind?: enum \"solid\"|\"linearGradient\"|\"radialGradient\"|\"texture\"; includeUsage: bool = false`"
+    },
+    "resultSchema": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "title": "colour.swatch.list result",
+      "type": "object",
+      "properties": {
+        "paletteId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4096,
+          "description": "object ID or path reference (10 §3)"
+        },
+        "styleId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4096,
+          "description": "object ID or path reference (10 §3)"
+        },
+        "swatches": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "colourId": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 4096,
+                "description": "object ID or path reference (10 §3)"
+              },
+              "name": {
+                "type": "string",
+                "maxLength": 65536
+              },
+              "kind": {
+                "type": "string"
+              },
+              "index": {
+                "type": "integer"
+              },
+              "deformable": {
+                "type": "boolean",
+                "default": false
+              },
+              "value": {
+                "type": "object",
+                "properties": {},
+                "additionalProperties": false,
+                "x-placeholder": true,
+                "description": "shape not defined by the owning section (spec issue); only {} is accepted until it is",
+                "x-specIssue": "SI-025"
+              },
+              "usageCount": {
+                "type": "number"
+              }
+            },
+            "required": [
+              "colourId",
+              "name",
+              "kind",
+              "index",
+              "deformable",
+              "value"
+            ],
+            "additionalProperties": false
+          },
+          "maxItems": 100000
+        }
+      },
+      "required": [
+        "paletteId",
+        "styleId",
+        "swatches"
+      ],
+      "x-spec": "`{paletteId, styleId, swatches: [{colourId, name, kind, index, deformable, value, usageCount?}]}`",
+      "additionalProperties": false
+    },
+    "examples": [
+      {
+        "title": "No parameters: List swatches of a palette with values for a style",
+        "params": {}
+      }
+    ],
+    "status": "notImplemented",
+    "agentOnly": null,
+    "guiLocations": "the Palette panel and the colour editor (03); wired in M7 C7.1",
+    "spec": {
+      "params": "`paletteId?: id; styleId?: id; sceneId?: id; kind?: enum \"solid\"|\"linearGradient\"|\"radialGradient\"|\"texture\"; includeUsage: bool = false`",
+      "result": "`{paletteId, styleId, swatches: [{colourId, name, kind, index, deformable, value, usageCount?}]}`",
+      "undo": "n/a"
+    },
+    "milestone": "M7 C7.1"
+  },
+  {
+    "id": "colour.swatch.move",
+    "kind": "action",
+    "label": "Move Colour",
+    "summary": "Reorder a swatch within its palette (\"Move Colour\")",
+    "section": "03",
+    "scopes": [
+      "edit"
+    ],
+    "undoable": true,
+    "undoLabel": "Move Colour",
+    "confirmation": [],
+    "enablement": "Enabled when a project is open (01 §1.3); `colourId` names an existing colour.",
+    "needsProject": true,
+    "paramsSchema": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "title": "colour.swatch.move parameters",
+      "type": "object",
+      "properties": {
+        "colourId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4096,
+          "description": "object ID or path reference (10 §3)"
+        },
+        "index": {
+          "type": "integer"
+        }
+      },
+      "required": [
+        "colourId",
+        "index"
+      ],
+      "additionalProperties": false,
+      "x-spec": "`colourId: id; index: int`"
+    },
+    "resultSchema": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "title": "colour.swatch.move result",
+      "type": "object",
+      "properties": {
+        "colourId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4096,
+          "description": "object ID or path reference (10 §3)"
+        },
+        "index": {
+          "type": "integer"
+        }
+      },
+      "required": [
+        "colourId",
+        "index"
+      ],
+      "x-spec": "`{colourId, index}`",
+      "additionalProperties": false
+    },
+    "examples": [
+      {
+        "title": "Required parameters only: Reorder a swatch within its palette (\"Move Colour\")",
+        "params": {
+          "colourId": "scene:#1",
+          "index": 1
+        }
+      }
+    ],
+    "status": "notImplemented",
+    "agentOnly": null,
+    "guiLocations": "the Palette panel and the colour editor (03); wired in M7 C7.1",
+    "spec": {
+      "params": "`colourId: id; index: int`",
+      "result": "`{colourId, index}`",
+      "undo": "yes"
+    },
+    "milestone": "M7 C7.1"
+  },
+  {
+    "id": "colour.swatch.set",
+    "kind": "action",
+    "label": "Edit Colour",
+    "summary": "Edit a swatch's name, kind, value(s) or flags (\"Edit Colour\")",
+    "section": "03",
+    "scopes": [
+      "edit",
+      "files.read"
+    ],
+    "undoable": true,
+    "undoLabel": "Edit Colour",
+    "confirmation": [],
+    "enablement": "Enabled when a project is open (01 §1.3); `colourId` names an existing colour.",
+    "needsProject": true,
+    "paramsSchema": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "title": "colour.swatch.set parameters",
+      "type": "object",
+      "properties": {
+        "colourId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4096,
+          "description": "object ID or path reference (10 §3)"
+        },
+        "styleId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4096,
+          "description": "object ID or path reference (10 §3) or \"all\""
+        },
+        "name": {
+          "type": "string",
+          "maxLength": 65536
+        },
+        "kind": {
+          "type": "string",
+          "enum": [
+            "solid",
+            "linearGradient",
+            "radialGradient"
+          ]
+        },
+        "rgba": {
+          "type": "string",
+          "pattern": "^#[0-9A-Fa-f]{6}([0-9A-Fa-f]{2})?$",
+          "description": "#RRGGBB or #RRGGBBAA"
+        },
+        "stops": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "position": {
+                "type": "number"
+              },
+              "rgba": {
+                "type": "string",
+                "pattern": "^#[0-9A-Fa-f]{6}([0-9A-Fa-f]{2})?$",
+                "description": "#RRGGBB or #RRGGBBAA"
+              }
+            },
+            "required": [
+              "position",
+              "rgba"
+            ],
+            "additionalProperties": false
+          },
+          "maxItems": 100000
+        },
+        "image": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4096,
+          "description": "file-system path (11 §6.2)"
+        },
+        "tile": {
+          "type": "boolean"
+        },
+        "deformable": {
+          "type": "boolean"
+        },
+        "values": {
+          "type": "object",
+          "properties": {},
+          "additionalProperties": false,
+          "x-placeholder": true,
+          "description": "shape not defined by the owning section (spec issue); only {} is accepted until it is",
+          "x-specIssue": "SI-025"
+        }
+      },
+      "required": [
+        "colourId"
+      ],
+      "additionalProperties": false,
+      "x-spec": "`colourId: id; styleId?: id|\"all\"; name?: string; kind?: enum \"solid\"|\"linearGradient\"|\"radialGradient\"; rgba?: colour; stops?: [{position: number, rgba: colour}]; image?: path; tile?: bool; deformable?: bool; values?: object`"
+    },
+    "resultSchema": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "title": "colour.swatch.set result",
+      "type": "object",
+      "properties": {
+        "swatch": {
+          "type": "string",
+          "maxLength": 65536
+        }
+      },
+      "required": [
+        "swatch"
+      ],
+      "x-spec": "`{swatch}`",
+      "additionalProperties": false
+    },
+    "examples": [
+      {
+        "title": "Required parameters only: Edit a swatch's name, kind, value(s) or flags (\"Edit Colour\")",
+        "params": {
+          "colourId": "scene:#1"
+        }
+      }
+    ],
+    "status": "notImplemented",
+    "agentOnly": null,
+    "guiLocations": "the Palette panel and the colour editor (03); wired in M7 C7.1",
+    "spec": {
+      "params": "`colourId: id; styleId?: id|\"all\"; name?: string; kind?: enum \"solid\"|\"linearGradient\"|\"radialGradient\"; rgba?: colour; stops?: [{position: number, rgba: colour}]; image?: path; tile?: bool; deformable?: bool; values?: object`",
+      "result": "`{swatch}`",
+      "undo": "yes"
+    },
+    "milestone": "M7 C7.1"
+  },
+  {
+    "id": "colour.swatchNames.set",
+    "kind": "toggle",
+    "label": "Show or hide swatch names in the palette view",
+    "summary": "Show or hide swatch names in the palette view",
+    "section": "03",
+    "scopes": [
+      "ui"
+    ],
+    "undoable": false,
+    "undoLabel": null,
+    "confirmation": [],
+    "enablement": "Enabled when a project is open (01 §1.3).",
+    "needsProject": true,
+    "paramsSchema": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "title": "colour.swatchNames.set parameters",
+      "type": "object",
+      "properties": {
+        "visible": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "visible"
+      ],
+      "additionalProperties": false,
+      "x-spec": "`visible: bool`"
+    },
+    "resultSchema": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "title": "colour.swatchNames.set result",
+      "type": "object",
+      "properties": {
+        "visible": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "visible"
+      ],
+      "x-spec": "`{visible}`",
+      "additionalProperties": false
+    },
+    "examples": [
+      {
+        "title": "Required parameters only: Show or hide swatch names in the palette view",
+        "params": {
+          "visible": true
+        }
+      }
+    ],
+    "status": "notImplemented",
+    "agentOnly": null,
+    "guiLocations": "the Palette panel and the colour editor (03); wired in M7 C7.1",
+    "spec": {
+      "params": "`visible: bool`",
+      "result": "`{visible}`",
+      "undo": "no"
+    },
+    "milestone": "M7 C7.1"
+  },
+  {
+    "id": "colour.tintBlend.apply",
+    "kind": "action",
+    "label": "Blend Style",
+    "summary": "Blend a colour into all colours of a style (\"Blend Style\")",
+    "section": "03",
+    "scopes": [
+      "edit"
+    ],
+    "undoable": true,
+    "undoLabel": "Blend Style",
+    "confirmation": [],
+    "enablement": "Enabled when a project is open (01 §1.3).",
+    "needsProject": true,
+    "paramsSchema": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "title": "colour.tintBlend.apply parameters",
+      "type": "object",
+      "properties": {
+        "paletteId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4096,
+          "description": "object ID or path reference (10 §3)"
+        },
+        "styleId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4096,
+          "description": "object ID or path reference (10 §3)"
+        },
+        "colour": {
+          "type": "string",
+          "pattern": "^#[0-9A-Fa-f]{6}([0-9A-Fa-f]{2})?$",
+          "description": "#RRGGBB or #RRGGBBAA Default: #000000FF."
+        },
+        "blending": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 100,
+          "default": 50
+        },
+        "dryRun": {
+          "type": "boolean",
+          "default": false
+        }
+      },
+      "additionalProperties": false,
+      "x-spec": "`paletteId?: id; styleId?: id; colour: colour = #000000FF; blending: number = 50 (0..100); dryRun: bool = false`"
+    },
+    "resultSchema": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "title": "colour.tintBlend.apply result",
+      "type": "object",
+      "properties": {
+        "changed": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "colourId": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 4096,
+                "description": "object ID or path reference (10 §3)"
+              },
+              "before": {
+                "type": "string",
+                "maxLength": 65536
+              },
+              "after": {
+                "type": "string",
+                "maxLength": 65536
+              }
+            },
+            "required": [
+              "colourId",
+              "before",
+              "after"
+            ],
+            "additionalProperties": false
+          },
+          "maxItems": 100000
+        }
+      },
+      "required": [
+        "changed"
+      ],
+      "x-spec": "`{changed: [{colourId, before, after}]}`",
+      "additionalProperties": false
+    },
+    "examples": [
+      {
+        "title": "No parameters: Blend a colour into all colours of a style (\"Blend Style\")",
+        "params": {}
+      }
+    ],
+    "status": "notImplemented",
+    "agentOnly": null,
+    "guiLocations": "the Palette panel and the colour editor (03); wired in M7 C7.1",
+    "spec": {
+      "params": "`paletteId?: id; styleId?: id; colour: colour = #000000FF; blending: number = 50 (0..100); dryRun: bool = false`",
+      "result": "`{changed: [{colourId, before, after}]}`",
+      "undo": "yes"
+    },
+    "milestone": "M7 C7.1"
+  },
+  {
+    "id": "colour.tintDialog.open",
+    "kind": "ui",
+    "label": "Open the tint offset or tint blend UI for a style",
+    "summary": "Open the tint offset or tint blend UI for a style",
+    "section": "03",
+    "scopes": [
+      "ui"
+    ],
+    "undoable": false,
+    "undoLabel": null,
+    "confirmation": [],
+    "enablement": "Enabled when a project is open (01 §1.3).",
+    "needsProject": true,
+    "paramsSchema": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "title": "colour.tintDialog.open parameters",
+      "type": "object",
+      "properties": {
+        "mode": {
+          "type": "string",
+          "enum": [
+            "offset",
+            "blend"
+          ]
+        },
+        "paletteId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4096,
+          "description": "object ID or path reference (10 §3)"
+        },
+        "styleId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4096,
+          "description": "object ID or path reference (10 §3)"
+        }
+      },
+      "required": [
+        "mode"
+      ],
+      "additionalProperties": false,
+      "x-spec": "`mode: enum \"offset\"|\"blend\"; paletteId?: id; styleId?: id`"
+    },
+    "resultSchema": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "title": "colour.tintDialog.open result",
+      "type": "object",
+      "properties": {},
+      "additionalProperties": false,
+      "x-spec": "`{}`"
+    },
+    "examples": [
+      {
+        "title": "Required parameters only: Open the tint offset or tint blend UI for a style",
+        "params": {
+          "mode": "offset"
+        }
+      }
+    ],
+    "status": "notImplemented",
+    "agentOnly": null,
+    "guiLocations": "the Palette panel and the colour editor (03); wired in M7 C7.1",
+    "spec": {
+      "params": "`mode: enum \"offset\"|\"blend\"; paletteId?: id; styleId?: id`",
+      "result": "`{}`",
+      "undo": "no"
+    },
+    "milestone": "M7 C7.1"
+  },
+  {
+    "id": "colour.tintOffset.apply",
+    "kind": "action",
+    "label": "Offset Style",
+    "summary": "Offset all colours of a style (\"Offset Style\")",
+    "section": "03",
+    "scopes": [
+      "edit"
+    ],
+    "undoable": true,
+    "undoLabel": "Offset Style",
+    "confirmation": [],
+    "enablement": "Enabled when a project is open (01 §1.3).",
+    "needsProject": true,
+    "paramsSchema": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "title": "colour.tintOffset.apply parameters",
+      "type": "object",
+      "properties": {
+        "paletteId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4096,
+          "description": "object ID or path reference (10 §3)"
+        },
+        "styleId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4096,
+          "description": "object ID or path reference (10 §3)"
+        },
+        "mode": {
+          "type": "string",
+          "enum": [
+            "rgb",
+            "hsb"
+          ],
+          "default": "rgb"
+        },
+        "red": {
+          "type": "integer",
+          "minimum": -255,
+          "maximum": 255,
+          "default": 0
+        },
+        "green": {
+          "type": "integer",
+          "minimum": -255,
+          "maximum": 255,
+          "default": 0
+        },
+        "blue": {
+          "type": "integer",
+          "minimum": -255,
+          "maximum": 255,
+          "default": 0
+        },
+        "hue": {
+          "type": "number",
+          "minimum": -360,
+          "maximum": 360,
+          "default": 0
+        },
+        "saturation": {
+          "type": "number",
+          "minimum": -100,
+          "maximum": 100,
+          "default": 0
+        },
+        "brightness": {
+          "type": "number",
+          "minimum": -100,
+          "maximum": 100,
+          "default": 0
+        },
+        "alpha": {
+          "type": "integer",
+          "minimum": -255,
+          "maximum": 255,
+          "default": 0
+        },
+        "blending": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 100,
+          "default": 100
+        },
+        "dryRun": {
+          "type": "boolean",
+          "default": false
+        }
+      },
+      "additionalProperties": false,
+      "x-spec": "`paletteId?: id; styleId?: id; mode: enum \"rgb\"|\"hsb\" = \"rgb\"; red: int = 0 (-255..255); green: int = 0 (-255..255); blue: int = 0 (-255..255); hue: number = 0 (-360..360); saturation: number = 0 (-100..100); brightness: number = 0 (-100..100); alpha: int = 0 (-255..255); blending: number = 100 (0..100); dryRun: bool = false`"
+    },
+    "resultSchema": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "title": "colour.tintOffset.apply result",
+      "type": "object",
+      "properties": {
+        "changed": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "colourId": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 4096,
+                "description": "object ID or path reference (10 §3)"
+              },
+              "before": {
+                "type": "string",
+                "maxLength": 65536
+              },
+              "after": {
+                "type": "string",
+                "maxLength": 65536
+              }
+            },
+            "required": [
+              "colourId",
+              "before",
+              "after"
+            ],
+            "additionalProperties": false
+          },
+          "maxItems": 100000
+        }
+      },
+      "required": [
+        "changed"
+      ],
+      "x-spec": "`{changed: [{colourId, before, after}]}`",
+      "additionalProperties": false
+    },
+    "examples": [
+      {
+        "title": "No parameters: Offset all colours of a style (\"Offset Style\")",
+        "params": {}
+      }
+    ],
+    "status": "notImplemented",
+    "agentOnly": null,
+    "guiLocations": "the Palette panel and the colour editor (03); wired in M7 C7.1",
+    "spec": {
+      "params": "`paletteId?: id; styleId?: id; mode: enum \"rgb\"|\"hsb\" = \"rgb\"; red: int = 0 (-255..255); green: int = 0 (-255..255); blue: int = 0 (-255..255); hue: number = 0 (-360..360); saturation: number = 0 (-100..100); brightness: number = 0 (-100..100); alpha: int = 0 (-255..255); blending: number = 100 (0..100); dryRun: bool = false`",
+      "result": "`{changed: [{colourId, before, after}]}`",
+      "undo": "yes"
+    },
+    "milestone": "M7 C7.1"
+  },
+  {
+    "id": "colour.usage.list",
+    "kind": "query",
+    "label": "Where colours are used",
+    "summary": "Where colours are used (by swatch or palette)",
+    "section": "03",
+    "scopes": [
+      "read"
+    ],
+    "undoable": false,
+    "undoLabel": null,
+    "confirmation": [],
+    "enablement": "Enabled when a project is open (01 §1.3); a current scene exists or `sceneId` is given.",
+    "needsProject": true,
+    "paramsSchema": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "title": "colour.usage.list parameters",
+      "type": "object",
+      "properties": {
+        "colourId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4096,
+          "description": "object ID or path reference (10 §3)"
+        },
+        "paletteId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4096,
+          "description": "object ID or path reference (10 §3)"
+        },
+        "scope": {
+          "type": "string",
+          "enum": [
+            "project",
+            "scene",
+            "element",
+            "drawing"
+          ],
+          "default": "project"
+        },
+        "sceneId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4096,
+          "description": "object ID or path reference (10 §3)"
+        },
+        "elementIds": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 4096,
+            "description": "object ID or path reference (10 §3)"
+          },
+          "maxItems": 100000
+        },
+        "drawingIds": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 4096,
+            "description": "object ID or path reference (10 §3)"
+          },
+          "maxItems": 100000
+        },
+        "includePens": {
+          "type": "boolean",
+          "default": true
+        },
+        "includeObjectIds": {
+          "type": "boolean",
+          "default": false
+        }
+      },
+      "additionalProperties": false,
+      "x-spec": "`colourId?: id; paletteId?: id; scope: enum \"project\"|\"scene\"|\"element\"|\"drawing\" = \"project\"; sceneId?: id; elementIds?: [id]; drawingIds?: [id]; includePens: bool = true; includeObjectIds: bool = false`"
+    },
+    "resultSchema": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "title": "colour.usage.list result",
+      "type": "object",
+      "properties": {
+        "uses": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "colourId": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 4096,
+                "description": "object ID or path reference (10 §3)"
+              },
+              "elementId": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 4096,
+                "description": "object ID or path reference (10 §3)"
+              },
+              "drawingId": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 4096,
+                "description": "object ID or path reference (10 §3)"
+              },
+              "sceneIds": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 4096,
+                  "description": "object ID or path reference (10 §3)"
+                },
+                "maxItems": 100000
+              },
+              "zones": {
+                "type": "boolean"
+              },
+              "lines": {
+                "type": "boolean"
+              },
+              "brushStrokes": {
+                "type": "boolean"
+              },
+              "texts": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "maxLength": 65536
+                },
+                "maxItems": 100000
+              },
+              "objectIds": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 4096,
+                  "description": "object ID or path reference (10 §3)"
+                },
+                "maxItems": 100000
+              }
+            },
+            "required": [
+              "colourId",
+              "elementId",
+              "drawingId",
+              "sceneIds",
+              "zones",
+              "lines",
+              "brushStrokes",
+              "texts"
+            ],
+            "additionalProperties": false
+          },
+          "maxItems": 100000
+        },
+        "pens": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "penId": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 4096,
+                "description": "object ID or path reference (10 §3)"
+              },
+              "colourId": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 4096,
+                "description": "object ID or path reference (10 §3)"
+              }
+            },
+            "required": [
+              "penId",
+              "colourId"
+            ],
+            "additionalProperties": false
+          },
+          "maxItems": 100000
+        },
+        "total": {
+          "type": "number"
+        }
+      },
+      "required": [
+        "uses",
+        "pens",
+        "total"
+      ],
+      "x-spec": "`{uses: [{colourId, elementId, drawingId, sceneIds[], zones, lines, brushStrokes, texts, objectIds?}], pens: [{penId, colourId}], total}`",
+      "additionalProperties": false
+    },
+    "examples": [
+      {
+        "title": "No parameters: Where colours are used (by swatch or palette)",
+        "params": {}
+      }
+    ],
+    "status": "notImplemented",
+    "agentOnly": null,
+    "guiLocations": "the Palette panel and the colour editor (03); wired in M7 C7.1",
+    "spec": {
+      "params": "`colourId?: id; paletteId?: id; scope: enum \"project\"|\"scene\"|\"element\"|\"drawing\" = \"project\"; sceneId?: id; elementIds?: [id]; drawingIds?: [id]; includePens: bool = true; includeObjectIds: bool = false`",
+      "result": "`{uses: [{colourId, elementId, drawingId, sceneIds[], zones, lines, brushStrokes, texts, objectIds?}], pens: [{penId, colourId}], total}`",
+      "undo": "n/a"
+    },
+    "milestone": "M7 C7.1"
+  },
+  {
+    "id": "draw.hitTest.get",
+    "kind": "query",
+    "label": "Hit test",
+    "summary": "Objects and zone under a point, front to back",
+    "section": "02",
+    "scopes": [
+      "read"
+    ],
+    "undoable": false,
+    "undoLabel": null,
+    "confirmation": [],
+    "enablement": "always enabled",
+    "needsProject": true,
+    "paramsSchema": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "title": "HitTestParams",
+      "description": "`draw.hitTest.get` parameters (02 §13.5).",
+      "type": "object",
+      "properties": {
+        "drawingId": {
+          "description": "The drawing (default: `elementId` + `frame`, else the current drawing).",
+          "type": [
+            "string",
+            "null"
+          ],
+          "default": null
+        },
+        "elementId": {
+          "description": "The element whose cell exposes the drawing.",
+          "type": [
+            "string",
+            "null"
+          ],
+          "default": null
+        },
+        "frame": {
+          "description": "The frame of that cell.",
+          "type": [
+            "integer",
+            "null"
+          ],
+          "default": null,
+          "minimum": 1,
+          "maximum": 2147483647
+        },
+        "point": {
+          "description": "The point (drawing space).",
+          "$ref": "#/$defs/Point"
+        },
+        "tolerance": {
+          "description": "Extra reach of line hits in view pixels (1 px = 1 du at 100 % zoom, SI-063).",
+          "type": "number",
+          "default": 3.0,
+          "minimum": 0.0,
+          "maximum": 1000.0
+        },
+        "includeInvisible": {
+          "description": "Report invisible strokes.",
+          "type": "boolean",
+          "default": false
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "point"
+      ],
+      "$defs": {
+        "Point": {
+          "description": "A point `{x, y}` in drawing units.",
+          "type": "object",
+          "properties": {
+            "x": {
+              "description": "X (du).",
+              "type": "number"
+            },
+            "y": {
+              "description": "Y (du, up).",
+              "type": "number"
+            }
+          },
+          "additionalProperties": false,
+          "required": [
+            "x",
+            "y"
+          ]
+        }
+      }
+    },
+    "resultSchema": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "title": "HitTestResult",
+      "description": "`draw.hitTest.get` result (02 §13.4).",
+      "type": "object",
+      "properties": {
+        "point": {
+          "description": "The point.",
+          "$ref": "#/$defs/Point"
+        },
+        "hits": {
+          "description": "Hits, front to back.",
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/HitOut"
+          }
+        },
+        "zoneId": {
+          "description": "The front-most zone under the point.",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "rev": {
+          "description": "The drawing revision.",
+          "type": "integer",
+          "maximum": 18446744073709551615,
+          "minimum": 0
+        }
+      },
+      "required": [
+        "point",
+        "hits",
+        "rev"
+      ],
+      "$defs": {
+        "Point": {
+          "description": "A point `{x, y}` in drawing units.",
+          "type": "object",
+          "properties": {
+            "x": {
+              "description": "X (du).",
+              "type": "number"
+            },
+            "y": {
+              "description": "Y (du, up).",
+              "type": "number"
+            }
+          },
+          "additionalProperties": false,
+          "required": [
+            "x",
+            "y"
+          ]
+        },
+        "HitOut": {
+          "description": "One hit.",
+          "type": "object",
+          "properties": {
+            "objectId": {
+              "description": "The object.",
+              "type": "string"
+            },
+            "objectKind": {
+              "description": "`pencil`, `brush`, `invisible`, `zone`, `text` or `bitmap`.",
+              "type": "string"
+            },
+            "layerId": {
+              "description": "Its layer.",
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "groupPath": {
+              "description": "Enclosing groups, outermost first.",
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "colourId": {
+              "description": "Its colour.",
+              "type": [
+                "string",
+                "null"
+              ]
+            }
+          },
+          "required": [
+            "objectId",
+            "objectKind",
+            "groupPath"
+          ]
+        }
+      }
+    },
+    "examples": [
+      {
+        "title": "What lies under a point",
+        "params": {
+          "drawingId": "drawingBank:#1/drawing:#1",
+          "point": {
+            "x": 0,
+            "y": 0
+          },
+          "includeInvisible": true
+        },
+        "result": {
+          "point": {
+            "x": 0.0,
+            "y": 0.0
+          },
+          "hits": [
+            {
+              "objectId": "st_01K742SG0S0NT23BWCZN64SFQ5",
+              "objectKind": "invisible",
+              "layerId": "nd_01K742SG0PC20XDQKASM9CGZHR",
+              "groupPath": [],
+              "colourId": null
+            },
+            {
+              "objectId": "st_01K742SG0R61SYK9GG0HGYVNBT",
+              "objectKind": "pencil",
+              "layerId": "nd_01K742SG0PC20XDQKASM9CGZHR",
+              "groupPath": [],
+              "colourId": "col_01K742SG09H7QE4RRR6XSYYS88"
+            },
+            {
+              "objectId": "st_01K742SG0QD1F2HFZSX8R4V7WP",
+              "objectKind": "brush",
+              "layerId": "nd_01K742SG0PC20XDQKASM9CGZHR",
+              "groupPath": [],
+              "colourId": "col_01K742SG059XGSNZ6M9MACZ2ZY"
+            }
+          ],
+          "zoneId": null,
+          "rev": 1
+        },
+        "resultVaries": []
+      }
+    ],
+    "status": "implemented",
+    "agentOnly": "verification and targeting for agents (02 §13.1 item 10); the GUI hit-tests in the views",
+    "guiLocations": null,
+    "spec": {
+      "params": "`drawingId?: id; point: point; tolerance: number = 3 (view px); includeInvisible: bool = false`",
+      "result": "`{hits: [object], zoneId|null, rev}`",
+      "undo": "n/a"
+    }
+  }
+]

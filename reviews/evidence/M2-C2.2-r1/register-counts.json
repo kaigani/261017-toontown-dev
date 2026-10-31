@@ -1,0 +1,11 @@
+{
+  "rules": {
+    "implemented": 154,
+    "divergent": 36,
+    "deferred-with-owner": 155
+  },
+  "totalRules": 345,
+  "commands": 52,
+  "implementedCommands": 11,
+  "placeholderCommands": 41
+}
