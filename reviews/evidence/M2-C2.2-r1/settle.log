@@ -1,0 +1,16 @@
+cargo :     Finished `test` profile [unoptimized + debuginfo] target(s) in 0.16s
+At line:2 char:1
++ cargo test -p tt-vector --test c22_settle --locked > .review-c22-temp ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (    Finished `t...get(s) in 0.16s:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+
+     Running tests\c22_settle.rs (target\debug\deps\c22_settle-a15ed10746729362.exe)
+
+running 4 tests
+test painting_a_zone_writes_its_fill_on_the_bounding_sides ... ok
+test a_crossing_line_splits_strokes_and_both_zone_parts_keep_the_fill ... ok
+test a_pencil_crossing_a_brush_splits_at_the_outline_and_leaves_the_brush_byte_identical ... ok
+test a_brush_only_zone_keeps_its_fill_in_exterior_records ... ok
+
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s

@@ -1,0 +1,16 @@
+cargo :     Finished `test` profile [unoptimized + debuginfo] target(s) in 0.16s
+At line:3 char:1
++ cargo test -p tt-executor --test c22_recovery --locked > .review-c22- ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (    Finished `t...get(s) in 0.16s:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+
+     Running tests\c22_recovery.rs (target\debug\deps\c22_recovery-a486bf771a20e619.exe)
+
+running 4 tests
+test a_colour_without_a_copy_gets_a_placeholder_in_recovered ... ok
+test pasted_content_recovers_its_colours_into_the_recorded_palette_in_the_same_step ... ok
+test missing_colours_are_listed_and_recovered_on_demand_as_one_undoable_step ... ok
+test saving_refreshes_each_drawings_recovery_list_to_one_entry_per_used_colour ... ok
+
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.12s

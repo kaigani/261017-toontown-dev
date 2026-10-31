@@ -96,8 +96,13 @@ fn typed_generic_atomic_sequential_and_script_paints_preserve_commit_contracts()
     std::fs::remove_dir_all(dir).unwrap();
 }
 #[test]
-fn retain_a_baseline_bundle_for_the_headless_paint_probe(){
- let h=tt_executor::ExecutorHandle::spawn(Default::default()).unwrap();assert!(h.open_document(tt_model::fixture::sample_document(1).unwrap(),None,false).is_ok());
- let e=h.invoke(tt_executor::Invocation::user("doc.export.json",json!({"scope":"project","binaries":"embed"})));assert!(e.is_ok());
- let out=std::path::Path::new(env!("CARGO_MANIFEST_DIR")).join("../../target/evidence/review-c22");std::fs::create_dir_all(&out).unwrap();std::fs::write(out.join("fixture-bundle.json"),serde_json::to_vec_pretty(&e.result.unwrap()["bundle"]).unwrap()).unwrap();
+fn retain_a_baseline_bundle_for_the_headless_paint_probe() {
+    let h = tt_executor::ExecutorHandle::spawn(Default::default()).unwrap();
+    assert!(h.open_document(tt_model::fixture::sample_document(1).unwrap(), None, false).is_ok());
+    let e = h.invoke(tt_executor::Invocation::user("doc.export.json", json!({"scope":"project","binaries":"embed"})));
+    assert!(e.is_ok());
+    let out = std::path::Path::new(env!("CARGO_MANIFEST_DIR")).join("../../target/evidence/review-c22");
+    std::fs::create_dir_all(&out).unwrap();
+    std::fs::write(out.join("fixture-bundle.json"), serde_json::to_vec_pretty(&e.result.unwrap()["bundle"]).unwrap())
+        .unwrap();
 }

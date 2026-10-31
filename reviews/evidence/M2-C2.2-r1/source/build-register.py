@@ -1,4 +1,4 @@
-﻿"""Line-addressed review register; run at repository root. Classification is reviewer-authored, extraction only mechanical."""
+"""Line-addressed review register; run at repository root. Classification is reviewer-authored, extraction only mechanical."""
 import pathlib,re,json,collections
 R=pathlib.Path('.')
 O=R/'reviews/evidence/M2-C2.2-r1'
@@ -46,6 +46,7 @@ def classify(file,sec,text):
   if sec=='11.1':return 'implemented','draw.rs content_add; colour_recovery.rs:245/397; c22_recovery, c22_planar content roundtrip'
   return 'deferred-with-owner','M9 C9.1 templates; M10 C10.2 vector import; M2 C2.4 vectorization; SWF excluded by plan 6'
  if sec=='15.1' and any(w in text for w in ['nameEmpty','nameExists','lastPalette','lastStyle','paletteHidden','invalidValue','inUse','needsConfirmation','imageMissing']):return 'deferred-with-owner','M7 C7.1 palette/style/editor errors; strict generated declarations'
+ if sec=='15.2':return 'deferred-with-owner','Paint/Unpaint/Paint Unpainted/Close Gap/Colour Recovery labels implemented and verified in command-contracts.json; remaining listed actions M2 C2.3 or M7 C7.1'
  if sec.startswith('15.'):
   return 'implemented','colour.rs error/refusal paths, command undo labels; colour_recovery.rs; c22_planar, c22_recovery; unused palette codes M7 C7.1'
  if sec.startswith('16.'):
@@ -115,5 +116,3 @@ for id,c in sorted(C.items()):
 (O/'conformance.md').write_text('\n'.join(out)+'\n',encoding='utf-8')
 (O/'register-counts.json').write_text(json.dumps({'rules':dict(counts),'totalRules':len(rows),'commands':len(C),'implementedCommands':sum(c['status']=='implemented' for c in C.values()),'placeholderCommands':sum(c['status']!='implemented' for c in C.values())},indent=2)+'\n',encoding='utf-8')
 print((O/'register-counts.json').read_text())
-
-

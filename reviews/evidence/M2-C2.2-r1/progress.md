@@ -1,5 +1,3 @@
-﻿# M2 C2.2 round 1 — review in progress
+# M2 C2.2 round 1 — completed
 
-Review target: 648e22d, base: 812554b. Product code is unchanged.
-Dependencies installed with pnpm install --frozen-lockfile. CI receipts are retained alongside this note.
-Independent regression candidates cover exact fill-overlap candidate selection and shared noding coordinates near an existing anchor. These are assertions of required behaviour, not accepted product outcomes; build/test results follow in the completed report.
+Final verdict and findings: ../../M2-C2.2-r1.md. Product code and spec unchanged. Review tests retain 12 failing assertions across nine P1 findings, with independent passing controls. See the report for checked scope, residual risks and evidence interpretation.

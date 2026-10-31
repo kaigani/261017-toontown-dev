@@ -18,7 +18,7 @@ fn overlapping_zones_carry_fill_even_when_neither_interior_point_is_in_the_other
     assert_eq!(old.zones.len(), 1);
     assert_eq!(new.zones.len(), 1);
     let red = Some(Fill { colour_id: Some("col_red".into()), matrix: None });
-    let fills = carry(&old, &[red.clone()], &new, &mut Work::unlimited("review")).unwrap();
+    let fills = carry(&old, std::slice::from_ref(&red), &new, &mut Work::unlimited("review")).unwrap();
     assert_eq!(
         fills,
         vec![red],
