@@ -2,6 +2,7 @@
 //! graph with zones and sides, zone fills read from and written to stroke sides, fill carry-over across edits, gap
 //! closing and point location. Pure functions over stroke geometry; the executor stages what they return.
 
+pub mod fill;
 pub mod flat;
 pub mod graph;
 pub mod node;
