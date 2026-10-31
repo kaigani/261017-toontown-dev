@@ -1,0 +1,178 @@
+=== c02-r1-tooling.py
+test_C02_R1_02_native_timestamp_association (__main__.ToolingTests.test_C02_R1_02_native_timestamp_association) ... ok
+test_C02_R1_03_native_pose_only_contact_boundaries (__main__.ToolingTests.test_C02_R1_03_native_pose_only_contact_boundaries) ... ok
+test_C02_R1_07_nearest_rank_percentile_matches_frontend (__main__.ToolingTests.test_C02_R1_07_nearest_rank_percentile_matches_frontend) ... ok
+test_C02_R1_08_macos_accessor_contracts (__main__.ToolingTests.test_C02_R1_08_macos_accessor_contracts) ... ok
+
+----------------------------------------------------------------------
+Ran 4 tests in 0.672s
+
+OK
+=== c02-r2-tooling.py
+test_C02_R2_01_empty_report_does_not_fabricate_zero_frame_success (__main__.AnalyzerAttacks.test_C02_R2_01_empty_report_does_not_fabricate_zero_frame_success) ... ok
+test_C02_R2_01_explicit_v1_is_rejected (__main__.AnalyzerAttacks.test_C02_R2_01_explicit_v1_is_rejected) ... ok
+test_C02_R2_01_successful_v2_run_without_raw_report_fails_loudly (__main__.AnalyzerAttacks.test_C02_R2_01_successful_v2_run_without_raw_report_fails_loudly) ... ok
+test_C02_R2_02_achieved_rate_is_recomputed_or_rejected (__main__.AnalyzerAttacks.test_C02_R2_02_achieved_rate_is_recomputed_or_rejected) ... ok
+test_C02_R2_04_offline_stroke_ranges_support_manual_tilt_threshold (__main__.AnalyzerAttacks.test_C02_R2_04_offline_stroke_ranges_support_manual_tilt_threshold) ... ok
+test_explicit_failure_without_report_remains_analyzable (__main__.AnalyzerAttacks.test_explicit_failure_without_report_remains_analyzable) ... ok
+test_lossless_stationary_including_down_has_zero_missing (__main__.AnalyzerAttacks.test_lossless_stationary_including_down_has_zero_missing) ... ok
+test_macos_extended_accessor_contracts (__main__.AnalyzerAttacks.test_macos_extended_accessor_contracts) ... ok
+test_pause_segmentation_and_pose_only_native_reference_unknown (__main__.AnalyzerAttacks.test_pause_segmentation_and_pose_only_native_reference_unknown) ... ok
+
+----------------------------------------------------------------------
+Ran 9 tests in 0.542s
+
+OK
+=== c02-r3-tooling.py
+test_C02_R3_01_orphaned_synthetic_reports_are_not_manual_hardware_logs (__main__.EvidenceClassification.test_C02_R3_01_orphaned_synthetic_reports_are_not_manual_hardware_logs) ... ok
+
+----------------------------------------------------------------------
+Ran 1 test in 0.241s
+
+OK
+=== c03-r1-tooling.py
+............
+----------------------------------------------------------------------
+Ran 12 tests in 2.414s
+
+OK
+=== c03-r2-tooling.py
+.........
+----------------------------------------------------------------------
+Ran 9 tests in 0.544s
+
+OK
+=== c04-r2-decisions.py
+test_C04_R2_01_rate_intervals_cover_fractional_hz (__main__.DecisionContracts.test_C04_R2_01_rate_intervals_cover_fractional_hz) ... ok
+test_C04_R2_02_stationary_instruction_identifies_an_existing_contact_row (__main__.DecisionContracts.test_C04_R2_02_stationary_instruction_identifies_an_existing_contact_row) ... ok
+test_C04_R2_03_canvas_has_a_guard_for_analyzer_accepted_missing_scenes (__main__.DecisionContracts.test_C04_R2_03_canvas_has_a_guard_for_analyzer_accepted_missing_scenes) ... ok
+
+----------------------------------------------------------------------
+Ran 3 tests in 0.050s
+
+OK
+=== c04-r3-decisions.py
+test_C04_R3_01_outside_contact_must_not_flip_candidate (__main__.Regressions.test_C04_R3_01_outside_contact_must_not_flip_candidate) ... ok
+test_C04_R3_03_overlapping_native_marker_spans_must_be_rejected (__main__.Regressions.test_C04_R3_03_overlapping_native_marker_spans_must_be_rejected) ... ok
+test_C04_R3_04_binding_score_rule_has_no_unruled_core_filter (__main__.Regressions.test_C04_R3_04_binding_score_rule_has_no_unruled_core_filter) ... ok
+
+----------------------------------------------------------------------
+Ran 3 tests in 0.081s
+
+OK
+=== c04-r3-page.py
+
+ RUN  v5.0.5 C:/Users/kaiga/.t3/worktrees/261017-toontown-dev/m2-vector-engine/desktop
+
+
+ Test Files  1 passed (1)
+      Tests  5 passed (5)
+   Start at  08:55:36
+   Duration  1.51s (environment 66%, setup 14%, transform 9%, tests 8%, import 2%)
+
+=== c04-r5-decisions.py
+test_outside_packets_cannot_change_action_rate_or_platform_decision (__main__.OutsideNativeClock.test_outside_packets_cannot_change_action_rate_or_platform_decision) ... ok
+
+----------------------------------------------------------------------
+Ran 1 test in 0.052s
+
+OK
+=== c11-r2-review-policy.py
+..
+----------------------------------------------------------------------
+Ran 2 tests in 0.033s
+
+OK
+=== c14-r1-mcp.py
+test_accepted_elicitation_preserves_request_id_result (__main__.Protocol.test_accepted_elicitation_preserves_request_id_result) ... skipped 'runtime cases are wired through cargo test -p tt-headless --test c14_r1'
+test_activity_batch_export_does_not_turn_dry_runs_into_edits (__main__.Protocol.test_activity_batch_export_does_not_turn_dry_runs_into_edits) ... skipped 'runtime cases are wired through cargo test -p tt-headless --test c14_r1'
+test_activity_batch_export_keeps_committed_batch_operations (__main__.Protocol.test_activity_batch_export_keeps_committed_batch_operations) ... skipped 'runtime cases are wired through cargo test -p tt-headless --test c14_r1'
+test_atomic_failure_has_no_activity_export_effect (__main__.Protocol.test_atomic_failure_has_no_activity_export_effect) ... skipped 'runtime cases are wired through cargo test -p tt-headless --test c14_r1'
+test_closed_stdout_ends_the_unusable_session (__main__.Protocol.test_closed_stdout_ends_the_unusable_session) ... skipped 'runtime cases are wired through cargo test -p tt-headless --test c14_r1'
+test_elicitation_is_one_audit_entry_per_tool_call (__main__.Protocol.test_elicitation_is_one_audit_entry_per_tool_call) ... skipped 'runtime cases are wired through cargo test -p tt-headless --test c14_r1'
+test_eof_while_eliciting_ends_the_session (__main__.Protocol.test_eof_while_eliciting_ends_the_session) ... skipped 'runtime cases are wired through cargo test -p tt-headless --test c14_r1'
+test_filter_has_bounded_runtime (__main__.Protocol.test_filter_has_bounded_runtime) ... skipped 'runtime cases are wired through cargo test -p tt-headless --test c14_r1'
+test_get_state_matches_the_command_envelope (__main__.Protocol.test_get_state_matches_the_command_envelope) ... skipped 'runtime cases are wired through cargo test -p tt-headless --test c14_r1'
+test_invalid_utf8_frame_does_not_destroy_stream (__main__.Protocol.test_invalid_utf8_frame_does_not_destroy_stream) ... skipped 'runtime cases are wired through cargo test -p tt-headless --test c14_r1'
+test_malformed_elicitation_does_not_overwrite (__main__.Protocol.test_malformed_elicitation_does_not_overwrite) ... skipped 'runtime cases are wired through cargo test -p tt-headless --test c14_r1'
+test_non_object_tool_arguments_are_rejected (__main__.Protocol.test_non_object_tool_arguments_are_rejected) ... skipped 'runtime cases are wired through cargo test -p tt-headless --test c14_r1'
+test_nonreading_client_with_eof_does_not_pin_the_session (__main__.Protocol.test_nonreading_client_with_eof_does_not_pin_the_session) ... skipped 'runtime cases are wired through cargo test -p tt-headless --test c14_r1'
+test_project_resource_is_readable (__main__.Protocol.test_project_resource_is_readable) ... skipped 'runtime cases are wired through cargo test -p tt-headless --test c14_r1'
+test_second_initialize_is_rejected (__main__.Protocol.test_second_initialize_is_rejected) ... skipped 'runtime cases are wired through cargo test -p tt-headless --test c14_r1'
+test_size_and_mtime_preserving_edit_requires_confirmation (__main__.Protocol.test_size_and_mtime_preserving_edit_requires_confirmation) ... skipped 'runtime cases are wired through cargo test -p tt-headless --test c14_r1'
+test_undo_and_redo_emit_the_declared_events (__main__.Protocol.test_undo_and_redo_emit_the_declared_events) ... skipped 'runtime cases are wired through cargo test -p tt-headless --test c14_r1'
+test_unknown_cancellation_does_not_cancel_a_future_request (__main__.Protocol.test_unknown_cancellation_does_not_cancel_a_future_request) ... skipped 'runtime cases are wired through cargo test -p tt-headless --test c14_r1'
+test_unknown_tool_argument_is_rejected (__main__.Protocol.test_unknown_tool_argument_is_rejected) ... skipped 'runtime cases are wired through cargo test -p tt-headless --test c14_r1'
+test_wrong_dry_run_type_does_not_commit (__main__.Protocol.test_wrong_dry_run_type_does_not_commit) ... skipped 'runtime cases are wired through cargo test -p tt-headless --test c14_r1'
+test_wrong_expect_rev_type_does_not_commit (__main__.Protocol.test_wrong_expect_rev_type_does_not_commit) ... skipped 'runtime cases are wired through cargo test -p tt-headless --test c14_r1'
+test_percentile_evidence_retains_observations (__main__.ReleaseFeature.test_percentile_evidence_retains_observations) ... ok
+test_suspension_hooks_are_not_a_normal_dependency_feature (__main__.ReleaseFeature.test_suspension_hooks_are_not_a_normal_dependency_feature) ... ok
+
+----------------------------------------------------------------------
+Ran 23 tests in 0.010s
+
+OK (skipped=21)
+=== c14-r2-mcp.py
+test_analyzer_rejects_backwards_time_nonfinite_and_empty_series (__main__.MeasurementValidation.test_analyzer_rejects_backwards_time_nonfinite_and_empty_series) ... ok
+test_all_state_include_combinations_are_command_projections (__main__.Protocol.test_all_state_include_combinations_are_command_projections) ... skipped 'real binary supplied by bins/headless/tests/c14_r2.rs'
+test_cancel_live_elicitation_releases_the_call_worker (__main__.Protocol.test_cancel_live_elicitation_releases_the_call_worker) ... skipped 'real binary supplied by bins/headless/tests/c14_r2.rs'
+test_close_with_save_offers_external_change_confirmation (__main__.Protocol.test_close_with_save_offers_external_change_confirmation) ... skipped 'real binary supplied by bins/headless/tests/c14_r2.rs'
+test_decline_cancel_and_invalid_accept_settle_request_id_and_audit_once (__main__.Protocol.test_decline_cancel_and_invalid_accept_settle_request_id_and_audit_once) ... skipped 'real binary supplied by bins/headless/tests/c14_r2.rs'
+test_export_publication_failure_is_not_a_successful_audit_record (__main__.Protocol.test_export_publication_failure_is_not_a_successful_audit_record) ... skipped 'real binary supplied by bins/headless/tests/c14_r2.rs'
+test_idempotent_retry_is_not_a_second_replay_operation (__main__.Protocol.test_idempotent_retry_is_not_a_second_replay_operation) ... skipped 'real binary supplied by bins/headless/tests/c14_r2.rs'
+test_invalid_utf8_at_eof_is_a_parse_error_and_shutdown_is_bounded (__main__.Protocol.test_invalid_utf8_at_eof_is_a_parse_error_and_shutdown_is_bounded) ... skipped 'real binary supplied by bins/headless/tests/c14_r2.rs'
+test_invalid_utf8_mid_frame_and_oversized_frames_resynchronize (__main__.Protocol.test_invalid_utf8_mid_frame_and_oversized_frames_resynchronize) ... skipped 'real binary supplied by bins/headless/tests/c14_r2.rs'
+test_long_unicode_and_nested_globs_keep_the_server_usable (__main__.Protocol.test_long_unicode_and_nested_globs_keep_the_server_usable) ... skipped 'real binary supplied by bins/headless/tests/c14_r2.rs'
+test_nested_wrapper_validation_never_edits (__main__.Protocol.test_nested_wrapper_validation_never_edits) ... skipped 'real binary supplied by bins/headless/tests/c14_r2.rs'
+test_nonreading_client_without_eof_is_closed_by_pressure_timeout (__main__.Protocol.test_nonreading_client_without_eof_is_closed_by_pressure_timeout) ... skipped 'real binary supplied by bins/headless/tests/c14_r2.rs'
+test_partial_sequential_batch_keeps_its_committed_edits_in_replay (__main__.Protocol.test_partial_sequential_batch_keeps_its_committed_edits_in_replay) ... skipped 'real binary supplied by bins/headless/tests/c14_r2.rs'
+test_typed_tools_reject_nested_types_and_extra_options (__main__.Protocol.test_typed_tools_reject_nested_types_and_extra_options) ... skipped 'real binary supplied by bins/headless/tests/c14_r2.rs'
+
+----------------------------------------------------------------------
+Ran 14 tests in 0.007s
+
+OK (skipped=13)
+=== c14-r3-mcp.py
+test_cancelled_elicitation_does_not_authorize_a_late_accept (__main__.Protocol.test_cancelled_elicitation_does_not_authorize_a_late_accept) ... skipped 'set TT_REVIEW_BINARY to a built headless binary'
+test_close_keep_mine_completes_for_package_and_folder_and_quit_stays_scoped (__main__.Protocol.test_close_keep_mine_completes_for_package_and_folder_and_quit_stays_scoped) ... skipped 'set TT_REVIEW_BINARY to a built headless binary'
+test_every_registered_command_rejects_malformed_params_within_watchdog (__main__.Protocol.test_every_registered_command_rejects_malformed_params_within_watchdog) ... skipped 'set TT_REVIEW_BINARY to a built headless binary'
+test_generic_typed_and_atomic_exports_preserve_targets_on_later_failure (__main__.Protocol.test_generic_typed_and_atomic_exports_preserve_targets_on_later_failure) ... skipped 'set TT_REVIEW_BINARY to a built headless binary'
+test_headless_run_rolls_back_export_on_later_failure (__main__.Protocol.test_headless_run_rolls_back_export_on_later_failure) ... skipped 'set TT_REVIEW_BINARY to a built headless binary'
+
+----------------------------------------------------------------------
+Ran 5 tests in 0.000s
+
+OK (skipped=5)
+=== c14-r3-measurements.py
+test_boolean_summary_fields_are_not_valid_numeric_evidence (__main__.Measurements.test_boolean_summary_fields_are_not_valid_numeric_evidence) ... ok
+test_malformed_shapes_are_rejected (__main__.Measurements.test_malformed_shapes_are_rejected) ... ok
+test_no_new_product_allow_attributes_since_round_two (__main__.Measurements.test_no_new_product_allow_attributes_since_round_two) ... ok
+
+----------------------------------------------------------------------
+Ran 3 tests in 0.143s
+
+OK
+skip collect_runtime_evidence.py: M0 evidence collector, not a test: needs a release build and writes reviews/evidence/M0-C0.1-r1/
+=== headless_guard.py
+...
+----------------------------------------------------------------------
+Ran 3 tests in 0.000s
+
+OK
+=== summary
+ok   c02-r1-tooling.py (0.8 s)
+ok   c02-r2-tooling.py (0.6 s)
+ok   c02-r3-tooling.py (0.3 s)
+ok   c03-r1-tooling.py (2.5 s)
+ok   c03-r2-tooling.py (0.7 s)
+ok   c04-r2-decisions.py (0.1 s)
+ok   c04-r3-decisions.py (0.2 s)
+ok   c04-r3-page.py (2.1 s)
+ok   c04-r5-decisions.py (0.1 s)
+ok   c11-r2-review-policy.py (0.1 s)
+ok   c14-r1-mcp.py (0.1 s)
+ok   c14-r2-mcp.py (0.1 s)
+ok   c14-r3-mcp.py (0.1 s)
+ok   c14-r3-measurements.py (0.2 s)
+ok   headless_guard.py (0.2 s)
+15/15 reviewer Python suites passed
