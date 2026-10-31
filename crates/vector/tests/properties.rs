@@ -115,7 +115,9 @@ fn fitting_is_deterministic_and_within_tolerance() {
 #[test]
 fn fitting_ignores_timing_only_positions_and_pressures_matter() {
     // The same samples delivered with different "timing" (duplicated consecutive samples, as a slow pointer would
-    // produce) fit identically: duplicates are dropped before fitting (02 §3.3 step 1).
+    // produce) fit the same path: duplicate positions merge before fitting (02 §3.3 step 1). Each sample keeps its
+    // pressure (C21-R3-01) and smoothing averages over the input samples (step 5), so the pressure map is the same
+    // without smoothing; with smoothing a repeated sample weighs as often as it was delivered.
     runner(100)
         .run(&walk(), |raw| {
             let mut slow = Vec::new();
@@ -125,7 +127,10 @@ fn fitting_ignores_timing_only_positions_and_pressures_matter() {
             }
             let a = fit(&clean(&raw, "/p").unwrap(), 3.0, false);
             let b = fit(&clean(&slow, "/p").unwrap(), 3.0, false);
-            prop_assert_eq!(a, b);
+            prop_assert_eq!(&a.path, &b.path);
+            let a0 = fit(&clean(&raw, "/p").unwrap(), 0.0, false);
+            let b0 = fit(&clean(&slow, "/p").unwrap(), 0.0, false);
+            prop_assert_eq!(a0, b0);
             Ok(())
         })
         .unwrap();

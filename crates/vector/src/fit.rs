@@ -1,7 +1,6 @@
 //! Curve fitting of freehand samples (02 §3.3).
 //!
-//! 1. Consecutive duplicate positions are dropped; then consecutive samples closer than 1/16 of the tolerance to the
-//!    last kept position are merged into it (positions only: every sample keeps its pressure), so dense input costs
+//! 1. Consecutive samples at, or closer than 1/16 of the tolerance to, the last kept position are merged into it (positions only: every sample keeps its pressure), so dense input costs
 //!    linear work. The fit then uses
 //!    15/16 of the tolerance, so the result stays within the tolerance of the original polyline.
 //! 2. Corners (direction changes sharper than [`CORNER_TURN_DEGREES`], measured between neighbours at least one
@@ -86,7 +85,8 @@ pub struct Fitted {
     pub pressure: Vec<[f64; 2]>,
 }
 
-/// Validates samples (finite, bounded, pressure 0–1, count) and drops consecutive duplicates.
+/// Validates samples (finite, bounded, pressure 0–1, count). Nothing is dropped: samples at one position are
+/// positional duplicates but carry their own pressures, which the fit keeps (C21-R3-01).
 ///
 /// # Errors
 /// `drawing.invalidGeometry` at `pointer/<i>/…`.
@@ -103,9 +103,6 @@ pub fn clean(samples: &[Sample], pointer: &str) -> Result<Vec<Sample>, GeomError
         check_coord(s.p.y, &format!("{pointer}/{i}/y"))?;
         if !(0.0..=1.0).contains(&s.pressure) {
             return Err(GeomError::invalid(format!("{pointer}/{i}/pressure"), "pressure is in [0, 1]"));
-        }
-        if out.last().is_some_and(|l| l.p == s.p) {
-            continue;
         }
         out.push(*s);
     }
@@ -161,14 +158,14 @@ fn fit_inner(samples: &[Sample], tol: f64, smoothness: f64, closed: bool, limit:
     let eps = tol / 16.0;
     // Positions only: the merged samples keep their pressures (02 §3.3 step 1 drops positional duplicates; pressure
     // is smoothed by Smoothness alone, step 5; C21-R2-01).
-    let (pts, groups) = collapse(samples, eps, closed);
+    let (pts, groups, tail) = collapse(samples, eps, closed);
     let tol = tol - eps;
     let budget = Budget { tol, used: std::cell::Cell::new(0), limit };
     if pts.len() <= 1 {
         let p = pts.first().copied().unwrap_or_default();
         // A dab: every sample's pressure at the one position (the brush sweeps the widest).
         let chain = vec![0usize];
-        let pressure = pressure_map(samples, &groups, &chain, &[0.0], smoothness, &budget);
+        let pressure = pressure_map(samples, &groups, &tail, &chain, &[0.0], smoothness, &budget);
         let pressure = if pressure.len() < 2 {
             let pr = pressure.first().map_or(1.0, |k| k[1]);
             vec![[0.0, pr], [1.0, pr]]
@@ -221,56 +218,67 @@ fn fit_inner(samples: &[Sample], tol: f64, smoothness: f64, closed: bool, limit:
     }
     let path = path_of(&segs, closed);
     let ts = chain_positions(&params, &segs);
-    let pressure = pressure_map(samples, &groups, &chain, &ts, smoothness, &budget);
+    let pressure = pressure_map(samples, &groups, &tail, &chain, &ts, smoothness, &budget);
     (Fitted { path, pressure }, budget.used.get())
 }
 
-/// Merges consecutive samples closer than `eps` to the last kept position into it; for a loop, trailing samples
-/// within `eps` of the first position join the first. Returns the kept positions and, per kept position, the indices of
-/// the samples it stands for (in input order), so no sample's pressure is lost (C21-R2-01).
-fn collapse(samples: &[Sample], eps: f64, closed: bool) -> (Vec<P>, Vec<Vec<usize>>) {
+/// Merges consecutive samples at the last kept position (equal, or closer than `eps`) into it. Returns the kept
+/// positions, per kept position the indices of the samples it stands for (in input order), and, for a loop, the
+/// trailing samples that return to the first position (`tail`): they are the end of the loop, not its start
+/// (C21-R3-02). No sample's pressure is lost (C21-R2-01, C21-R3-01).
+fn collapse(samples: &[Sample], eps: f64, closed: bool) -> (Vec<P>, Vec<Vec<usize>>, Vec<usize>) {
+    let same = |a: P, b: P| a == b || a.dist(b) < eps;
     let mut pts: Vec<P> = Vec::with_capacity(samples.len());
     let mut groups: Vec<Vec<usize>> = Vec::with_capacity(samples.len());
     for (i, s) in samples.iter().enumerate() {
         match (pts.last(), groups.last_mut()) {
-            (Some(last), Some(g)) if last.dist(s.p) < eps => g.push(i),
+            (Some(last), Some(g)) if same(*last, s.p) => g.push(i),
             _ => {
                 pts.push(s.p);
                 groups.push(vec![i]);
             }
         }
     }
-    if closed && pts.len() >= 2 && pts[pts.len() - 1].dist(pts[0]) < eps {
+    let mut tail = Vec::new();
+    if closed && pts.len() >= 2 && same(pts[pts.len() - 1], pts[0]) {
         pts.pop();
-        if let Some(tail) = groups.pop()
-            && let Some(first) = groups.first_mut()
-        {
-            first.extend(tail);
-        }
+        tail = groups.pop().unwrap_or_default();
     }
-    (pts, groups)
+    (pts, groups, tail)
 }
 
 /// Joins samples with straight segments (`fit: false`, 02 §13.1 item 6).
 #[must_use]
 pub fn polyline(samples: &[Sample], closed: bool, smoothness: f64) -> Fitted {
-    let pts: Vec<P> = samples.iter().map(|s| s.p).collect();
+    // Equal positions merge (their pressures stay, C21-R3-01); a loop's closing samples are its end (C21-R3-02).
+    let (pts, groups, tail) = collapse(samples, 0.0, closed);
     if pts.len() <= 1 {
         return fit(samples, smoothness, closed);
     }
     let closed = closed && pts.len() >= 3;
+    let (groups, tail) = if closed || tail.is_empty() {
+        (groups, tail)
+    } else {
+        // Too short to close: the returning samples are an ordinary last point.
+        let mut g = groups;
+        g.push(tail);
+        (g, Vec::new())
+    };
+    let pts: Vec<P> = if pts.len() < groups.len() { groups.iter().map(|g| samples[g[0]].p).collect() } else { pts };
+    let n = pts.len();
     let mut segs: Vec<Cubic> = pts.windows(2).map(|w| Cubic::line(w[0], w[1])).collect();
     if closed {
-        segs.push(Cubic::line(pts[pts.len() - 1], pts[0]));
+        segs.push(Cubic::line(pts[n - 1], pts[0]));
     }
-    let chain: Vec<usize> = (0..pts.len()).collect();
-    let params: Vec<(usize, f64)> =
-        (0..pts.len()).map(|i| if i + 1 == pts.len() && !closed { (i - 1, 1.0) } else { (i, 0.0) }).collect();
+    // As for a fitted loop, a closed chain repeats its start at the end (t = 1).
+    let chain: Vec<usize> = if closed { (0..=n).map(|k| k % n).collect() } else { (0..n).collect() };
+    let params: Vec<(usize, f64)> = (0..chain.len())
+        .map(|k| if k + 1 == chain.len() && k > 0 { (segs.len() - 1, 1.0) } else { (k, 0.0) })
+        .collect();
     let path = Path { anchors: pts.iter().map(|p| Anchor::corner(*p)).collect(), closed };
-    let groups: Vec<Vec<usize>> = (0..samples.len()).map(|i| vec![i]).collect();
     let ts = chain_positions(&params, &segs);
     let budget = Budget { tol: 0.0, used: std::cell::Cell::new(0), limit: u64::MAX };
-    let pressure = pressure_map(samples, &groups, &chain, &ts, smoothness, &budget);
+    let pressure = pressure_map(samples, &groups, &tail, &chain, &ts, smoothness, &budget);
     Fitted { path, pressure }
 }
 
@@ -569,6 +577,7 @@ fn chain_positions(params: &[(usize, f64)], segs: &[Cubic]) -> Vec<f64> {
 fn pressure_map(
     samples: &[Sample],
     groups: &[Vec<usize>],
+    tail: &[usize],
     chain: &[usize],
     ts: &[f64],
     smoothness: f64,
@@ -593,13 +602,34 @@ fn pressure_map(
         .collect();
     let mut map: Vec<[f64; 2]> = Vec::with_capacity(samples.len() + 1);
     let last = chain.len().saturating_sub(1);
+    let mut tail_done = tail.is_empty();
     for (k, &r) in chain.iter().enumerate() {
         let t = ts.get(k).copied().unwrap_or(0.0);
+        // A loop's closing chain point repeats its start.
+        let closing = k == last && k > 0 && chain[0] == r;
+        // The samples that returned to the first position arrive there from the last one: at the closing point
+        // (t = 1) of a loop that starts at its first sample, or just before the first sample's own pressures when
+        // the loop was rotated to start at a corner (the pressure map turns with the geometry).
+        if r == 0 && k > 0 && !tail_done {
+            for &i in tail {
+                map.push([t, smooth[i].clamp(0.0, 1.0)]);
+            }
+            tail_done = true;
+            if closing {
+                continue;
+            }
+        }
         let Some(members) = groups.get(r) else { continue };
-        // A loop's closing chain point repeats its start: only the first sample's pressure closes the map.
-        let members = if k == last && k > 0 && chain[0] == r { &members[..members.len().min(1)] } else { &members[..] };
+        // Otherwise the closing point repeats the start's first pressure.
+        let members = if closing { &members[..members.len().min(1)] } else { &members[..] };
         for &i in members {
             map.push([t, smooth[i].clamp(0.0, 1.0)]);
+        }
+    }
+    if !tail_done {
+        // A dab: the returning samples are at its one position too.
+        for &i in tail {
+            map.push([1.0, smooth[i].clamp(0.0, 1.0)]);
         }
     }
     if let Some(f) = map.first_mut() {
@@ -780,6 +810,76 @@ mod tests {
         let f = fit(&clean(&samples(&[(5.0, 5.0), (5.0, 5.0)]), "/p").unwrap(), 3.0, false);
         assert_eq!(f.path.anchors.len(), 1);
         assert!(f.path.closed);
+    }
+
+    fn sp(x: f64, y: f64, pressure: f64) -> Sample {
+        Sample { p: P::new(x, y), pressure }
+    }
+
+    fn peak(f: &Fitted) -> f64 {
+        f.pressure.iter().map(|k| k[1]).fold(0.0, f64::max)
+    }
+
+    #[test]
+    fn stationary_pressure_peaks_survive_cleaning_at_the_start_middle_and_end() {
+        // C21-R3-01: equal positions are duplicates, their pressures are not.
+        let line = |at: usize| -> Vec<Sample> {
+            let mut v: Vec<Sample> = (0..=10).map(|i| sp(f64::from(i as u32) * 10.0, 0.0, 0.0)).collect();
+            let p = v[at].p;
+            v.splice(at..=at, [sp(p.x, p.y, 0.0), sp(p.x, p.y, 1.0), sp(p.x, p.y, 0.0)]);
+            v
+        };
+        for (at, t) in [(0usize, 0.0), (5, 0.5), (10, 1.0)] {
+            let raw = line(at);
+            for fitted in [true, false] {
+                let c = clean(&raw, "/p").unwrap();
+                assert_eq!(c.len(), raw.len(), "nothing is dropped by cleaning");
+                let f = if fitted { fit(&c, 0.0, false) } else { polyline(&c, false, 0.0) };
+                assert_eq!(peak(&f), 1.0, "at={at} fit={fitted}: {:?}", f.pressure);
+                assert!(f.pressure.iter().any(|k| (k[0] - t).abs() < 1e-9 && k[1] == 1.0), "{:?}", f.pressure);
+            }
+        }
+        // All samples at one position: a dab of the largest pressure, fitted or not.
+        let still = [sp(3.0, 4.0, 0.0), sp(3.0, 4.0, 1.0), sp(3.0, 4.0, 0.0)];
+        for f in [fit(&clean(&still, "/p").unwrap(), 0.0, false), polyline(&still, false, 0.0)] {
+            assert_eq!(f.path.anchors.len(), 1);
+            assert_eq!(peak(&f), 1.0, "{:?}", f.pressure);
+        }
+    }
+
+    #[test]
+    fn a_rotated_loop_keeps_its_closing_pressure_before_the_first_sample() {
+        // C21-R3-02: the loop starts mid-edge, so the fitted chain is rotated to the corner at (100, 0). The
+        // closing sample (pressure 0) belongs where the loop returns to the first position, at t = 350/400.
+        let raw = [
+            sp(50.0, 0.0, 1.0),
+            sp(100.0, 0.0, 1.0),
+            sp(100.0, 100.0, 1.0),
+            sp(0.0, 100.0, 1.0),
+            sp(0.0, 0.0, 1.0),
+            sp(50.001, 0.0, 0.0),
+        ];
+        let f = fit(&raw, 0.0, true);
+        assert!(pressure_at(&f.pressure, 0.9375) > 0.999, "{:?}", f.pressure);
+        assert!((pressure_at(&f.pressure, 0.8125) - 0.5).abs() < 0.05, "{:?}", f.pressure);
+        assert!(pressure_at(&f.pressure, 0.375) > 0.999, "{:?}", f.pressure);
+    }
+
+    #[test]
+    fn a_closed_polyline_keeps_its_last_vertex_at_its_own_position() {
+        // C21-R3-02 for `fit: false`: the last vertex is at t = 0.75 and the loop closes at t = 1 with the first
+        // sample's pressure.
+        let raw = [sp(0.0, 0.0, 1.0), sp(100.0, 0.0, 1.0), sp(100.0, 100.0, 1.0), sp(0.0, 100.0, 0.0)];
+        let f = polyline(&raw, true, 0.0);
+        assert!(pressure_at(&f.pressure, 0.75).abs() < 1e-9, "{:?}", f.pressure);
+        assert!((pressure_at(&f.pressure, 0.875) - 0.5).abs() < 1e-9, "{:?}", f.pressure);
+        assert!((pressure_at(&f.pressure, 1.0) - 1.0).abs() < 1e-9, "{:?}", f.pressure);
+        // A returning closing sample is the loop's end.
+        let back = [sp(0.0, 0.0, 1.0), sp(100.0, 0.0, 1.0), sp(100.0, 100.0, 1.0), sp(0.0, 0.0, 0.0)];
+        let g = polyline(&back, true, 0.0);
+        assert_eq!(g.path.anchors.len(), 3);
+        assert!(pressure_at(&g.pressure, 0.25) > 0.999, "{:?}", g.pressure);
+        assert!(pressure_at(&g.pressure, 1.0).abs() < 1e-9, "{:?}", g.pressure);
     }
 
     #[test]

@@ -1,6 +1,6 @@
 # ADR-0016 — Vector engine: strokes, fitting, brush outlines, text and the C2.1 drawing commands
 
-Status: accepted (M2 C2.1, 2026-10-30; revised in C2.1 rounds 1 and 2, `reviews/M2-C2.1-r1-response.md`, `reviews/M2-C2.1-r2-response.md`). Scope: plan §4 row M2, checkpoint C2.1; the twelve C2.1 obligations of
+Status: accepted (M2 C2.1, 2026-10-30; revised in C2.1 rounds 1–3, `reviews/M2-C2.1-r1-response.md`, `-r2-response.md`, `-r3-response.md`). Scope: plan §4 row M2, checkpoint C2.1; the twelve C2.1 obligations of
 `reviews/M1-C1.4-r4-closure.md`. Spec: 02 §2–§3, §6, §13; 10 §4.8–§4.11; 03 §2.4.
 
 ## Context
@@ -39,8 +39,10 @@ of these a command. The planar map (zones) is C2.2, drawing operations and rende
    committed golden digest on Windows and macOS (`c21_determinism`). Text layout bounds depend on the installed font
    files and are derived data; persisted text is identical everywhere.
 
-4. **Curve fitting (02 §3.3).** Consecutive samples within tolerance/16 of the last kept one are merged first
-   (spatial dedupe of positions only: the merged samples keep their own pressures, C21-R2-01); corners (turns sharper than 60° between neighbours at least one tolerance
+4. **Curve fitting (02 §3.3).** Input validation drops nothing: samples at one position are positional duplicates,
+   not duplicate samples, and keep their pressures (C21-R3-01). Consecutive samples at, or within tolerance/16 of, the
+   last kept position are merged first (spatial dedupe of positions only: the merged samples keep their own
+   pressures, C21-R2-01; `fit: false` merges equal positions the same way); corners (turns sharper than 60° between neighbours at least one tolerance
    away, searched within 64 samples each way, so the search is linear) split the samples; each run is fitted by least
    squares on chord-length parameters with up to four Newton reparameterisations, and split at the worst point when
    the error exceeds the tolerance `0.25 du + 0.5 du × smoothness` (less the merge distance). The error is measured
@@ -52,7 +54,12 @@ of these a command. The planar map (zones) is C2.2, drawing operations and rende
    document worker is never held past the watchdog (obligation 11, C21-R1-06). Every input sample's pressure is smoothed with a centred moving average
    of half-width `round(smoothness)` over the input samples (02 §3.3 step 5; Smoothness alone smooths) and stored as
    `(t, p)` at the normalised arc length of the fitted point the sample stands for — samples merged into one position
-   share it, so a pressure step or extremum there stays at its position as knots of equal `t` (C21-R2-01) — then
+   share it, so a pressure step or extremum there stays at its position as knots of equal `t` (C21-R2-01); a
+   stationary stroke is a dab of its largest pressure. On a loop, trailing samples that return to the first position
+   are the loop's end: their pressures sit where the loop arrives back there — at `t = 1` (the seam step), or, when
+   the chain is rotated to start at a corner, just before the first sample's own pressures, so the pressure map
+   turns with the geometry; a closed `fit: false` chain likewise repeats its start at `t = 1` and its last vertex
+   keeps its own position (C21-R3-02) — then
    simplified within 0.001 (Douglas–Peucker; among equally bad knots the one nearest the middle splits the span, and
    the work is charged to the fit's budget). `fit: false` joins the samples with straight segments; `bezier` is used
    verbatim. A single sample is a dab.
@@ -91,8 +98,10 @@ of these a command. The planar map (zones) is C2.2, drawing operations and rende
    After every edit the text is normalised to NFC first (10 §1.1) and the runs and paragraphs are then remapped onto
    the composed code points through a mapping-preserving NFC (`text::nfc_with_origins`: per-code-point canonical
    decomposition, canonical ordering, canonical composition with the blocking rule; equal to `unicode-normalization`'s
-   NFC on a 20 000-string corpus): every output code point comes from one input code point and takes its run, a
-   composite its starter's. So a combining mark — or a class-0 vowel sign that composes, as in Bengali — joins the
+   NFC on a 20 000-string corpus): every output code point comes from one input code point and takes that code
+   point's own run, a composite its starter's. The runs are rebuilt in output order from those source runs,
+   splitting and revisiting a source run as needed, so a mark moved by canonical ordering keeps its own format
+   (C21-R3-03). So a combining mark — or a class-0 vowel sign that composes, as in Bengali — joins the
    run of the code point it composes with, also across a run boundary or an insertion, and unrelated characters keep
    their formats; there is no whole-text fallback (C21-R1-09, C21-R2-02). The model's integrity gate requires the paragraphs to cover the text, one per line, in order, for
    every writer including `doc.object.patch` (C21-R1-05).

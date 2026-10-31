@@ -286,11 +286,11 @@ impl Content {
     }
 
     /// Normalises the text to NFC (10 §1.1) and keeps every code point's format: each code point of the normalised
-    /// text comes from one code point of the input (see [`nfc_with_origins`]) and takes that code point's run. A
+    /// text comes from one code point of the input (see [`nfc_with_origins`]) and takes that code point's own run. A
     /// composite takes the run of its starter, so a combining mark (or a vowel sign of class 0, as in Bengali) typed
-    /// after a base joins the base's run while unrelated characters keep theirs (C21-R1-09, C21-R2-02). Canonical
-    /// reordering can move a mark of a later run before one of an earlier run; such a mark keeps the later run (runs
-    /// stay contiguous).
+    /// after a base joins the base's run while unrelated characters keep theirs (C21-R1-09, C21-R2-02). The runs are
+    /// rebuilt in output order from each code point's source run, so a mark that canonical ordering moves keeps its
+    /// own format: a source run is split, and revisited, as often as needed (C21-R3-03).
     fn compose(&mut self) {
         let text: String = self.chars.iter().collect();
         if unicode_normalization::is_nfc(&text) {
@@ -303,17 +303,23 @@ impl Content {
         }
         owner.resize(self.chars.len(), self.runs.len().saturating_sub(1));
         let mapped = nfc_with_origins(&self.chars);
-        let mut lengths = vec![0u32; self.runs.len().max(1)];
-        let mut run = 0usize;
+        let template = self.runs_template();
+        let mut runs: Vec<Run> = Vec::with_capacity(self.runs.len() + 2);
+        let mut current: Option<usize> = None;
         for (_, origin) in &mapped {
-            run = run.max(owner.get(*origin).copied().unwrap_or(0));
-            if let Some(l) = lengths.get_mut(run) {
-                *l += 1;
+            let source = owner.get(*origin).copied().unwrap_or(0);
+            match (current, runs.last_mut()) {
+                (Some(c), Some(last)) if c == source => last.length += 1,
+                _ => {
+                    let mut r = self.runs.get(source).cloned().unwrap_or_else(|| template.clone());
+                    r.length = 1;
+                    runs.push(r);
+                    current = Some(source);
+                }
             }
         }
-        for (r, l) in self.runs.iter_mut().zip(lengths) {
-            r.length = l;
-        }
+        // `normalize` merges neighbours of equal format and recomputes the starts.
+        self.runs = runs;
         self.chars = mapped.into_iter().map(|(c, _)| c).collect();
     }
 
