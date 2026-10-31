@@ -521,42 +521,42 @@
       "section": "6.2",
       "requirement": "Hidden by default behind a show/hide-advanced-options control.",
       "status": "deferred-with-owner",
-      "evidence": "M4 C4.2 setters; crates/vector/src/symmetry.rs:37 maps and tests; command setting currently fixed None/false at draw_stroke.rs:319; coverage risk P2-09"
+      "evidence": "M4 C4.2 setters; crates/vector/src/symmetry.rs:37 maps and tests; command setting currently fixed None/false at draw_stroke.rs:319; C21-R1-11: nonidentity cross-OS corpus and aggregate work, M2 C2.3 before M4 C4.2"
     },
     {
       "source": "spec/02_drawing.md:392",
       "section": "6.2",
       "requirement": "| Symmetry mode | exclusive: **None** / **Mirror** / **Kaleidoscope** | default None | None: strokes drawn normally. Mirror: each new stroke is also drawn reflected about an axis through the drawing origin. Kaleidoscope: each new stroke is replicated with dihedral symmetry about the drawing origin. |",
       "status": "deferred-with-owner",
-      "evidence": "M4 C4.2 setters; crates/vector/src/symmetry.rs:37 maps and tests; command setting currently fixed None/false at draw_stroke.rs:319; coverage risk P2-09"
+      "evidence": "M4 C4.2 setters; crates/vector/src/symmetry.rs:37 maps and tests; command setting currently fixed None/false at draw_stroke.rs:319; C21-R1-11: nonidentity cross-OS corpus and aggregate work, M2 C2.3 before M4 C4.2"
     },
     {
       "source": "spec/02_drawing.md:393",
       "section": "6.2",
       "requirement": "| Angle | number (degrees) | 0 – 360, default 0 | Mirror: orientation of the axis, measured counter-clockwise from the +y axis (0 = vertical axis, left/right mirror). Kaleidoscope: orientation of the first mirror line. |",
       "status": "deferred-with-owner",
-      "evidence": "M4 C4.2 setters; crates/vector/src/symmetry.rs:37 maps and tests; command setting currently fixed None/false at draw_stroke.rs:319; coverage risk P2-09"
+      "evidence": "M4 C4.2 setters; crates/vector/src/symmetry.rs:37 maps and tests; command setting currently fixed None/false at draw_stroke.rs:319; C21-R1-11: nonidentity cross-OS corpus and aggregate work, M2 C2.3 before M4 C4.2"
     },
     {
       "source": "spec/02_drawing.md:394",
       "section": "6.2",
       "requirement": "| Number of mirrors | int | 2 – 16, default 6; enabled only for Kaleidoscope | n mirror lines through the origin at Angle + k × 180°/n; each stroke produces 2n images (n rotations by 360°/n and their reflections). |",
       "status": "deferred-with-owner",
-      "evidence": "M4 C4.2 setters; crates/vector/src/symmetry.rs:37 maps and tests; command setting currently fixed None/false at draw_stroke.rs:319; coverage risk P2-09"
+      "evidence": "M4 C4.2 setters; crates/vector/src/symmetry.rs:37 maps and tests; command setting currently fixed None/false at draw_stroke.rs:319; C21-R1-11: nonidentity cross-OS corpus and aggregate work, M2 C2.3 before M4 C4.2"
     },
     {
       "source": "spec/02_drawing.md:395",
       "section": "6.2",
       "requirement": "| **Draw Behind** | toggle | off | New strokes are placed behind existing artwork (§8.11). |",
       "status": "deferred-with-owner",
-      "evidence": "M4 C4.2 setters; crates/vector/src/symmetry.rs:37 maps and tests; command setting currently fixed None/false at draw_stroke.rs:319; coverage risk P2-09"
+      "evidence": "M4 C4.2 setters; crates/vector/src/symmetry.rs:37 maps and tests; command setting currently fixed None/false at draw_stroke.rs:319; C21-R1-11: nonidentity cross-OS corpus and aggregate work, M2 C2.3 before M4 C4.2"
     },
     {
       "source": "spec/02_drawing.md:397",
       "section": "6.2",
       "requirement": "All copies produced by symmetry are created in the same undo step as the original stroke. Symmetry applies to Brush, Pencil, Stroke and the shape tools.",
       "status": "deferred-with-owner",
-      "evidence": "M4 C4.2 setters; crates/vector/src/symmetry.rs:37 maps and tests; command setting currently fixed None/false at draw_stroke.rs:319; coverage risk P2-09"
+      "evidence": "M4 C4.2 setters; crates/vector/src/symmetry.rs:37 maps and tests; command setting currently fixed None/false at draw_stroke.rs:319; C21-R1-11: nonidentity cross-OS corpus and aggregate work, M2 C2.3 before M4 C4.2"
     },
     {
       "source": "spec/02_drawing.md:1064",

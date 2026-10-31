@@ -18,6 +18,7 @@ paths=git('ls-tree','-r','--name-only',base).splitlines()
 reviewer=[p for p in paths if p.startswith('tests/adversarial/') or re.search(r'/tests/(?:c\d+_r\d|c21_r[12]_)',p)]
 changed=[p for p in reviewer if git('diff',base,head,'--',p)]
 assert not changed,changed
+assert not git('diff',base,'--',*reviewer),'pre-existing reviewer-owned paths changed in the review worktree'
 prohibited=[]
 for p in git('diff','--name-only',base,head).splitlines():
     if not p.endswith('.rs') or '/src/' not in p:continue
@@ -72,7 +73,7 @@ out={'base':git('rev-parse',base).strip(),'builderHead':git('rev-parse',head).st
      'builderGateTotals':totals(ROOT/'reviews/evidence/M2-C2.1/workspace-tests.log'),
      'ci':ci,'observations':observations}
 assert out['builderGateTotals']==[826,0,12]
-for name in ['workspace-tests','geometry','geometry-release','contracts-final','contracts-release','history-release','history-oracles-release','worst-case-release','malformed-mcp','closed-command-release']:
+for name in ['workspace-tests','geometry','geometry-all-final','geometry-release','contracts-final','contracts-all-final','contracts-release','history-release','history-oracles-release','mcp-history-oracles-release','worst-case-release','malformed-mcp','closed-command-release']:
     path=HERE/f'{name}.log'
     if path.exists():out[name]=totals(path)
 (HERE/'audit.json').write_text(json.dumps(out,indent=2)+'\n',encoding='utf8')
@@ -83,6 +84,8 @@ exec(compile(source,'round2-register','exec'),{'__file__':str(HERE/'build-regist
 rows=json.loads((HERE/'conformance.json').read_text(encoding='utf8'))['rows']
 plan=(ROOT/'plan/IMPLEMENTATION_PLAN.md').read_text(encoding='utf8')
 for row in rows:
+    if 'coverage risk P2-09' in row['evidence']:
+        row['evidence']=row['evidence'].replace('coverage risk P2-09','C21-R1-11: nonidentity cross-OS corpus and aggregate work, M2 C2.3 before M4 C4.2')
     if row['status']=='divergent':
         if '`draw.stroke.set`' in row['requirement']:
             row.update(status='implemented',evidence='c21_r2_contracts; c21_r1_contracts; c21_r3_contracts::over_limit_brush_refuses_atomically_and_worker_accepts_next_edit; c21_worst_case (R2-03 closed)')

@@ -2661,14 +2661,6 @@
     },
     {
       "run": 41181900335,
-      "file": "fit-worst-case-macos.json",
-      "runs": 30,
-      "worstCase": "zigzag-above-tolerance",
-      "worstMs": 901.439084,
-      "sha256": "9f795512c3302f73f928cf8828d994c5cc9a2f7d0f99f96e74e65716a6d8ca87"
-    },
-    {
-      "run": 41181900335,
       "file": "brush-worst-case-windows.json",
       "runs": 30,
       "worstCase": "long-line-tiny-tip",
@@ -2676,6 +2668,14 @@
       "sha256": "11b186644bd5b638f51677e20dffe4f7ffa64c1b4b37771ea560e5223d72fb64",
       "acceptedWorstMs": 2011.4592999999998,
       "refusedWorstMs": 4336.140399999999
+    },
+    {
+      "run": 41181900335,
+      "file": "fit-worst-case-macos.json",
+      "runs": 30,
+      "worstCase": "zigzag-above-tolerance",
+      "worstMs": 901.439084,
+      "sha256": "9f795512c3302f73f928cf8828d994c5cc9a2f7d0f99f96e74e65716a6d8ca87"
     },
     {
       "run": 41181900335,
@@ -2697,14 +2697,6 @@
     },
     {
       "run": 41184912211,
-      "file": "fit-worst-case-macos.json",
-      "runs": 30,
-      "worstCase": "zigzag-above-tolerance",
-      "worstMs": 571.052958,
-      "sha256": "48e336e64b10cea0e72bb0f9e8c778d1d0fe399c2d9167b887f88f079c471f27"
-    },
-    {
-      "run": 41184912211,
       "file": "brush-worst-case-windows.json",
       "runs": 30,
       "worstCase": "long-line-tiny-tip",
@@ -2715,6 +2707,14 @@
     },
     {
       "run": 41184912211,
+      "file": "fit-worst-case-macos.json",
+      "runs": 30,
+      "worstCase": "zigzag-above-tolerance",
+      "worstMs": 571.052958,
+      "sha256": "48e336e64b10cea0e72bb0f9e8c778d1d0fe399c2d9167b887f88f079c471f27"
+    },
+    {
+      "run": 41184912211,
       "file": "fit-worst-case-windows.json",
       "runs": 30,
       "worstCase": "zigzag-above-tolerance",
@@ -2722,10 +2722,20 @@
       "sha256": "ab932afad90a4b1a592a91951544f650182d1b277d7efc7b80a2c1891aa571b0"
     }
   ],
+  "workspace-tests": [
+    826,
+    0,
+    12
+  ],
   "geometry": [
     4,
     3,
     1
+  ],
+  "geometry-all-final": [
+    4,
+    3,
+    2
   ],
   "geometry-release": [
     25,
@@ -2736,6 +2746,11 @@
     3,
     2,
     0
+  ],
+  "contracts-all-final": [
+    5,
+    2,
+    1
   ],
   "contracts-release": [
     3,
@@ -2748,6 +2763,11 @@
     0
   ],
   "history-oracles-release": [
+    2,
+    0,
+    0
+  ],
+  "mcp-history-oracles-release": [
     2,
     0,
     0
