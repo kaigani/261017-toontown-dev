@@ -100,9 +100,58 @@ fn entry_of(pal: &Value, swatch: &Value) -> Value {
     })
 }
 
-/// The recovery list a drawing should hold: one entry per used colour, current definitions for defined colours and the
-/// drawing's own copies for missing ones; `None` when the stored list already is that.
-pub(crate) fn refreshed(doc: &Document, d: &Drawing) -> Option<Value> {
+/// Where placeholder recovery entries point (03 §11.2): the visible `Recovered` palette and its styles, or IDs made
+/// once for it.
+#[derive(Debug, Clone)]
+pub(crate) struct Placeholder {
+    palette_id: String,
+    styles: Vec<(String, String)>,
+}
+
+impl Placeholder {
+    /// The visible `Recovered` palette, else a new palette ID with one `Default` style.
+    ///
+    /// # Errors
+    /// The ID source's errors.
+    pub(crate) fn for_document(doc: &Document, ids: &mut Ids<'_>) -> Result<Self, CommandError> {
+        if let Some(p) = doc.palettes().find(|p| !*p.hidden() && p.name() == "Recovered") {
+            let styles = p.styles().iter().map(|s| (s.id().as_str().to_owned(), s.name().clone())).collect();
+            return Ok(Placeholder { palette_id: p.id().as_str().to_owned(), styles });
+        }
+        let palette_id = ids(ObjectType::Palette)?.as_str().to_owned();
+        let style = ids(ObjectType::PaletteStyle)?.as_str().to_owned();
+        Ok(Placeholder { palette_id, styles: vec![(style, "Default".to_owned())] })
+    }
+
+    /// The placeholder entry of a colour (03 §11.2: `Deleted colour`, the fallback value for every style).
+    fn entry(&self, colour: &str) -> Value {
+        let values: serde_json::Map<String, Value> =
+            self.styles.iter().map(|(id, _)| (id.clone(), json!({ "rgba": FALLBACK_RGBA }))).collect();
+        json!({
+            "colourId": colour,
+            "paletteId": self.palette_id,
+            "paletteName": "Recovered",
+            "styles": self.styles.iter().map(|(id, name)| json!({ "styleId": id, "styleName": name })).collect::<Vec<_>>(),
+            "swatch": { "colourId": colour, "type": "swatch", "rev": 0, "name": "Deleted colour", "kind": "solid",
+                        "deformable": false, "values": values },
+        })
+    }
+}
+
+/// Whether some drawing uses a colour that is neither defined nor in its recovery list (then save writes placeholder
+/// entries, C22-R1-06).
+pub(crate) fn needs_placeholder(doc: &Document) -> bool {
+    let defs = defined(doc);
+    doc.drawings().any(|d| {
+        let stored: BTreeSet<&str> = d.colour_recovery().iter().map(|e| e.colour_id.as_str()).collect();
+        used_colours(d).iter().any(|c| !defs.contains_key(c) && !stored.contains(c.as_str()))
+    })
+}
+
+/// The recovery list a drawing should hold (10 §4.11): exactly one entry per used colour, the current definition for
+/// defined colours, the drawing's own copy for missing ones, else a placeholder entry (C22-R1-06); `None` when the
+/// stored list already is that.
+pub(crate) fn refreshed(doc: &Document, d: &Drawing, placeholder: Option<&Placeholder>) -> Option<Value> {
     let defs = defined(doc);
     let stored: BTreeMap<String, Value> = d
         .colour_recovery()
@@ -113,7 +162,7 @@ pub(crate) fn refreshed(doc: &Document, d: &Drawing) -> Option<Value> {
         .into_iter()
         .filter_map(|c| match defs.get(&c) {
             Some((pal, sw)) => Some(entry_of(pal, sw)),
-            None => stored.get(&c).cloned(),
+            None => stored.get(&c).cloned().or_else(|| placeholder.map(|p| p.entry(&c))),
         })
         .collect();
     let current: Vec<Value> = stored.into_values().collect();
@@ -174,8 +223,11 @@ fn palette_json(doc: &Document, plan: &Plan, id: &str) -> Option<Value> {
     })
 }
 
+/// A source of new object IDs (the transaction's, or a load repair's deterministic one).
+pub(crate) type Ids<'a> = dyn FnMut(ObjectType) -> Result<Id, CommandError> + 'a;
+
 fn new_palette(
-    cx: &mut Cx,
+    ids: &mut Ids<'_>,
     doc: &Document,
     plan: &mut Plan,
     name: &str,
@@ -191,11 +243,11 @@ fn new_palette(
     } else {
         name.to_owned()
     };
-    let id = cx.new_id(ObjectType::Palette)?.as_str().to_owned();
+    let id = ids(ObjectType::Palette)?.as_str().to_owned();
     let mut style_list = Vec::new();
     let names: Vec<String> = if styles.is_empty() { vec!["Default".into()] } else { styles.to_vec() };
     for s in names {
-        let sid = cx.new_id(ObjectType::PaletteStyle)?;
+        let sid = ids(ObjectType::PaletteStyle)?;
         style_list.push(json!({ "id": sid.as_str(), "type": "paletteStyle", "rev": 0, "name": s }));
     }
     plan.palettes.insert(
@@ -207,7 +259,7 @@ fn new_palette(
 }
 
 /// Adds styles a palette lacks (by name); every existing swatch gets its first style's value for them.
-fn ensure_styles(cx: &mut Cx, pal: &mut Value, names: &[String]) -> Result<(), CommandError> {
+fn ensure_styles(ids: &mut Ids<'_>, pal: &mut Value, names: &[String]) -> Result<(), CommandError> {
     let have: BTreeSet<String> = pal
         .get("styles")
         .and_then(Value::as_array)
@@ -219,7 +271,7 @@ fn ensure_styles(cx: &mut Cx, pal: &mut Value, names: &[String]) -> Result<(), C
         if have.contains(n) {
             continue;
         }
-        let sid = cx.new_id(ObjectType::PaletteStyle)?.as_str().to_owned();
+        let sid = ids(ObjectType::PaletteStyle)?.as_str().to_owned();
         if let Some(list) = pal.get_mut("styles").and_then(Value::as_array_mut) {
             list.push(json!({ "id": sid, "type": "paletteStyle", "rev": 0, "name": n }));
         }
@@ -241,6 +293,15 @@ pub(crate) fn recover(
     doc: &Document,
     missing: &[(String, Option<Value>)],
 ) -> Result<(RecoveryResult, Changes), CommandError> {
+    recover_with(&mut |t| cx.new_id(t), doc, missing)
+}
+
+/// [`recover`] with a given ID source.
+pub(crate) fn recover_with(
+    ids: &mut Ids<'_>,
+    doc: &Document,
+    missing: &[(String, Option<Value>)],
+) -> Result<(RecoveryResult, Changes), CommandError> {
     let mut plan = Plan { palettes: BTreeMap::new(), created: Vec::new() };
     let mut result = RecoveryResult::default();
     for (colour, entry) in missing {
@@ -257,10 +318,10 @@ pub(crate) fn recover(
                 let name = if recorded.is_empty() { "Recovered".to_owned() } else { recorded };
                 let pid = match find_palette(doc, &plan, &name) {
                     Some(p) => p,
-                    None => new_palette(cx, doc, &mut plan, &name, &style_names)?,
+                    None => new_palette(ids, doc, &mut plan, &name, &style_names)?,
                 };
                 let mut pal = palette_json(doc, &plan, &pid).unwrap_or(Value::Null);
-                ensure_styles(cx, &mut pal, &style_names)?;
+                ensure_styles(ids, &mut pal, &style_names)?;
                 // Values by style name, the recovery copy's first value for styles it has no value for.
                 let by_name: BTreeMap<String, Value> = e
                     .get("styles")
@@ -303,7 +364,7 @@ pub(crate) fn recover(
             None => {
                 let pid = match find_palette(doc, &plan, "Recovered") {
                     Some(p) => p,
-                    None => new_palette(cx, doc, &mut plan, "Recovered", &[])?,
+                    None => new_palette(ids, doc, &mut plan, "Recovered", &[])?,
                 };
                 let mut pal = palette_json(doc, &plan, &pid).unwrap_or(Value::Null);
                 let mut values = serde_json::Map::new();
@@ -387,6 +448,25 @@ fn missing_in(doc: &Document, drawings: &[Id]) -> BTreeMap<String, Vec<String>> 
         }
     }
     out
+}
+
+/// Every colour the project's drawings use that no palette defines, with its recovery copy (the using drawings' own
+/// first, then any drawing's).
+pub(crate) fn missing_with_copies(doc: &Document) -> Vec<(String, Option<Value>)> {
+    let all: Vec<Id> = doc.drawings().map(|d| d.id().clone()).collect();
+    missing_in(doc, &all)
+        .into_iter()
+        .map(|(c, users)| {
+            let users: Vec<Id> = users.iter().filter_map(|u| Id::parse(u).ok()).collect();
+            let e = copy_of(doc, &users, &c);
+            (c, e)
+        })
+        .collect()
+}
+
+/// The colours a recovery recreated: `(colour ID, palette ID)` from copies, and placeholders.
+pub(crate) fn recovered_colours(r: &RecoveryResult) -> (Vec<(String, String)>, Vec<String>) {
+    (r.recovered.iter().map(|x| (x.colour_id.clone(), x.palette_id.clone())).collect(), r.placeholders.clone())
 }
 
 /// Scope of colour queries (03 §16.3).

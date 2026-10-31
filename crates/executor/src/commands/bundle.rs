@@ -1429,6 +1429,20 @@ fn import(cx: &mut Cx, p: ImportJsonParams) -> Result<ImportResult, CommandError
         return Ok(result);
     }
     cx.patch_entries(changes)?;
+    // Colour recovery in the import's own transaction (10 §4.11; 03 §11.2; C22-R1-05): the colours the imported content
+    // uses that nothing defines are recreated from the imported drawings' recovery copies, else as placeholders.
+    if !result.recovered_colour_ids.is_empty() {
+        let doc = cx.stamped_document()?;
+        let missing: Vec<(String, Option<Value>)> = super::colour_recovery::missing_with_copies(&doc)
+            .into_iter()
+            .filter(|(c, _)| result.recovered_colour_ids.contains(c))
+            .collect();
+        let (recovered, recovery) = super::colour_recovery::recover(cx, &doc, &missing)?;
+        if !recovery.is_empty() {
+            cx.patch_entries(recovery)?;
+            super::colour_recovery::performed(cx, &recovered);
+        }
+    }
     if !cx.dry_run()
         && let Ok(proj) = cx.project_mut()
     {

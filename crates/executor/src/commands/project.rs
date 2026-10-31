@@ -386,6 +386,8 @@ pub(crate) fn project_from_loaded(
     lock: Option<Arc<lock::LockHandle>>,
     locked_by: Option<Value>,
 ) -> (Install, Vec<ResultWarning>) {
+    // Colour recovery and zone-fill repair on open (C22-R1-05), part of the repair step.
+    let loaded = crate::load_repair::repair(loaded);
     let mut warnings: Vec<ResultWarning> = loaded
         .report
         .issues

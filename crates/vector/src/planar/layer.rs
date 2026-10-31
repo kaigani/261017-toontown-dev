@@ -142,6 +142,27 @@ pub fn stored(strokes: &[Value]) -> Stored {
     out
 }
 
+/// Repairs a layer whose bounding strokes disagree about a zone's fill (10 §4.9 load rule, §7.2
+/// `drawing.fillInconsistent`; C22-R1-05): every disagreeing zone takes the fill held by its longest bounding length and
+/// the sides are rewritten to agree. `None` when the layer is consistent; else the repaired strokes and the number of
+/// zones repaired. Geometry is not touched (no noding).
+///
+/// # Errors
+/// `limit.exceeded` past the work budget.
+pub fn repair_sides(strokes: &[Value], work: &mut Work) -> Result<Option<(Vec<Value>, usize)>, GeomError> {
+    let map = graph::build(&inputs(strokes), work)?;
+    let stored = stored(strokes);
+    let read = fill::read(&map, &stored);
+    if read.inconsistent.is_empty() {
+        return Ok(None);
+    }
+    work.spend_n(strokes.len().saturating_mul(2048))?;
+    let st = fill::write(&map, &read.fills, &stored);
+    let mut out = strokes.to_vec();
+    apply_stored(&mut out, &st);
+    Ok(Some((out, read.inconsistent.len())))
+}
+
 /// Writes stored fills into stroke JSON (sides of every stroke; exterior records of brush strokes, the extension key
 /// removed when there are none).
 fn apply_stored(strokes: &mut [Value], st: &Stored) {

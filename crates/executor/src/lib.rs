@@ -31,6 +31,7 @@ pub mod commands;
 mod cx;
 mod history;
 mod jobs;
+mod load_repair;
 mod maintenance;
 mod persistence;
 mod planar;
