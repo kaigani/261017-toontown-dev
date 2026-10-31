@@ -192,7 +192,7 @@ pub(crate) fn doc_object_get(cx: &mut Cx, p: GetParams) -> Result<GetResult, Com
         }
         let Value::Object(mut m) = v else { return Err(CommandError::internal("object JSON is not an object")) };
         if p.include.contains(&Include::Derived) && depth != Some(0) {
-            for (name, owner) in derived::add(&doc, *ty, key, &mut m) {
+            for (name, owner) in derived::add(&doc, *ty, key, &mut m, &cx.planar_cache()) {
                 missing.insert(format!("{}.{name} ({owner})", ty.as_str()));
             }
         }

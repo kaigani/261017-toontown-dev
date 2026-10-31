@@ -527,9 +527,11 @@ fn commit(s: &mut Session, txns: Vec<Txn>, origin: &Origin, command: &str) -> Re
     frozen_guard(s, &txns)?;
     let mut undo_ref = None;
     let mut events = Vec::new();
+    let cache = s.planar.clone();
     {
         let p = s.project.as_mut().ok_or_else(no_project)?;
         for t in txns {
+            let drawing = drawing_events(&t.changes, t.rev, command, &t.before, &t.after, &cache);
             p.log_commit(t.rev, back_of(&t), t.before.clone(), &t.after, earlier_revs(&t));
             let step_id = match t.kind {
                 TxnKind::Step => {
@@ -571,7 +573,7 @@ fn commit(s: &mut Session, txns: Vec<Txn>, origin: &Origin, command: &str) -> Re
                     "changes": elide(&t.changes),
                 }),
             ));
-            events.extend(drawing_events(&t.changes, t.rev, command).into_iter().map(|e| ("draw.drawing.changed", e)));
+            events.extend(drawing.into_iter().map(|e| ("draw.drawing.changed", e)));
         }
     }
     for (name, e) in events {
@@ -585,20 +587,35 @@ fn commit(s: &mut Session, txns: Vec<Txn>, origin: &Origin, command: &str) -> Re
 /// the command and the local IDs of the nodes and strokes it created, modified and removed. Drawings are those the
 /// change records report as modified or created (content decides, ADR-0013 §4); deleted drawings have no content
 /// event.
-fn drawing_events(changes: &[ChangeRecord], rev: u64, command: &str) -> Vec<Value> {
+fn drawing_events(
+    changes: &[ChangeRecord],
+    rev: u64,
+    command: &str,
+    before: &tt_model::document::Document,
+    after: &tt_model::document::Document,
+    cache: &crate::planar::SharedCache,
+) -> Vec<Value> {
     let mut out = Vec::new();
     for d in changes.iter().filter(|c| c.ty == "drawing" && c.op != "deleted") {
         let prefix = format!("{}/", d.id);
-        let mut created: Vec<&str> = Vec::new();
-        let mut modified: Vec<&str> = Vec::new();
-        let mut removed: Vec<&str> = Vec::new();
+        let mut created: Vec<String> = Vec::new();
+        let mut modified: Vec<String> = Vec::new();
+        let mut removed: Vec<String> = Vec::new();
         for c in changes {
             let Some(local) = c.id.strip_prefix(&prefix) else { continue };
             match c.op.as_str() {
-                "created" => created.push(local),
-                "deleted" => removed.push(local),
-                _ => modified.push(local),
+                "created" => created.push(local.to_owned()),
+                "deleted" => removed.push(local.to_owned()),
+                _ => modified.push(local.to_owned()),
             }
+        }
+        // Derived zones (02 §3.12 item 4; C2.2 readiness item 4): new zone IDs are created, vanished ones removed, and
+        // zones whose fill changed (same boundary, same ID) modified.
+        if let Ok(id) = tt_model::Id::parse(&d.id) {
+            let delta = crate::planar::zone_delta(cache, before.drawing(&id), after.drawing(&id));
+            created.extend(delta.created);
+            removed.extend(delta.removed);
+            modified.extend(delta.modified);
         }
         out.push(json!({
             "drawingId": d.id,

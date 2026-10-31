@@ -20,7 +20,7 @@ pub(crate) fn unavailable(ty: ObjectType) -> &'static [(&'static str, &'static s
         ],
         ObjectType::Scene => &[("paddedLength", "M9 (storyline timing)")],
         ObjectType::Element => &[("effectiveMarkerColour", "M4 C4.1 (preferences)")],
-        ObjectType::Drawing => &[("thumbnail", "M3 C3.3"), ("zones", "M2 C2.2")],
+        ObjectType::Drawing => &[("thumbnail", "M3 C3.3")],
         ObjectType::Asset => &[("info", "M8"), ("refs", "M1 C1.3"), ("status", "M1 C1.3")],
         ObjectType::SoundPlacement => &[("naturalEndFrame", "M8")],
         ObjectType::MediaSequence => &[("sourceLength", "M10"), ("missing", "M10")],
@@ -102,6 +102,7 @@ pub(crate) fn add(
     ty: ObjectType,
     key: &str,
     obj: &mut Map<String, Value>,
+    cache: &crate::planar::SharedCache,
 ) -> Vec<(&'static str, &'static str)> {
     match ty {
         ObjectType::Scene => {
@@ -160,6 +161,25 @@ pub(crate) fn add(
                     .collect();
                 obj.insert("usage".into(), Value::Array(usage));
                 obj.insert("isEmpty".into(), json!(!node_has_content(d.nodes())));
+                // 10 §4.8: the zones of every layer (IDs transient, ID-03), from the planar map (M2 C2.2).
+                if let Ok(layers) = crate::planar::drawing_zones(cache, d) {
+                    let zones: Vec<Value> = layers
+                        .iter()
+                        .flat_map(|lz| {
+                            lz.map.zones.iter().enumerate().map(move |(z, zone)| {
+                                let fill = lz.fills.get(z).cloned().flatten();
+                                json!({
+                                    "zoneId": zone.id, "layerId": lz.layer.id,
+                                    "colourId": fill.as_ref().and_then(|f| f.colour_id.clone()),
+                                    "matrix": fill.as_ref().and_then(|f| f.matrix),
+                                    "bounds": zone.bounds.to_json(), "area": zone.area,
+                                    "boundingStrokeIds": zone.boundary,
+                                })
+                            })
+                        })
+                        .collect();
+                    obj.insert("zones".into(), Value::Array(zones));
+                }
             }
         }
         ObjectType::ParticleBlock => {
