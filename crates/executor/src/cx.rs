@@ -715,20 +715,24 @@ impl Cx {
             if bd == Some(ad) && !has_paint {
                 continue;
             }
-            let old_layers: BTreeMap<String, Vec<Value>> = bd
-                .map(|d| crate::planar::layers(d).into_iter().map(|l| (l.id, l.strokes)).collect())
-                .unwrap_or_default();
+            let old_layers: BTreeMap<&str, &tt_model::entities::drawing::DrawingNode> = bd
+                .map(crate::planar::layer_nodes)
+                .unwrap_or_default()
+                .into_iter()
+                .map(|(_, n)| (n.id().as_str(), n))
+                .collect();
             let mut ops: Vec<PatchOp> = Vec::new();
-            for l in crate::planar::layers(ad) {
-                let painted = self.painted.remove(&(id.clone(), l.id.clone())).unwrap_or_default();
-                let old = old_layers.get(&l.id);
+            for (pointer, node) in crate::planar::layer_nodes(ad) {
+                let painted = self.painted.remove(&(id.clone(), node.id().as_str().to_owned())).unwrap_or_default();
+                let old_node = old_layers.get(node.id().as_str());
                 // Only geometry, stroke identity and stored fills can change zones and fills: other edits (metadata,
-                // line thickness, colours of lines) leave the layer as it is.
-                if painted.is_empty()
-                    && old.is_some_and(|o| crate::planar::planar_view(o) == crate::planar::planar_view(&l.strokes))
-                {
+                // line thickness, colours of lines) leave the layer as it is, compared as model values first.
+                if painted.is_empty() && old_node.is_some_and(|o| crate::planar::same_planar(o, node)) {
                     continue;
                 }
+                let l = crate::planar::layer_ref(pointer, node);
+                let old_strokes = old_node.map(|o| crate::planar::strokes_json(o));
+                let old = old_strokes.as_ref();
                 let old_map = match old {
                     Some(o) => {
                         Some(crate::planar::lock(&cache).map(o, &mut work).map_err(|e| crate::planar::geom_error(&e))?)

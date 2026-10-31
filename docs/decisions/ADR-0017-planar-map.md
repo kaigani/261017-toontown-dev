@@ -47,7 +47,8 @@ C2.1 delivered strokes, text, groups and bitmaps as validated, persisted geometr
 
 5. **Settling (`planar::layer`, `Cx::settle`).** Every transaction runs the settle pass before any preview or commit
    (and handlers call it before reporting IDs): each layer whose stroke identity, kind, closed flag, points, sides or
-   exterior records changed since the last pass — or that a command painted — is noded, its map built, fills carried
+   exterior records changed since the last pass (compared as model values, so untouched layers are never serialised)
+   — or that a command painted — is noded, its map built, fills carried
    (or read from the staged sides when only fills changed) and painted fills applied; the result is staged in the same
    transaction. Undo, redo and checkpoint restore install already settled states. Paint commands register fills by zone
    ID; the pass stores them. The pass of an atomic batch starts from the previous pass's result.

@@ -43,24 +43,6 @@ pub(crate) struct Cache {
 /// A cache shared by the invocations of a session.
 pub(crate) type SharedCache = Arc<Mutex<Cache>>;
 
-/// What of a layer's strokes the planar map depends on: identity, kind, closed flag, points, sides and the stored
-/// brush exterior records.
-pub(crate) fn planar_view(strokes: &[Value]) -> Vec<[Option<&Value>; 6]> {
-    strokes
-        .iter()
-        .map(|s| {
-            [
-                s.get("id"),
-                s.get("kind"),
-                s.get("closed"),
-                s.get("points"),
-                s.get("sides"),
-                s.pointer(&format!("/ext/{}", tt_vector::planar::fill::EXT_NAMESPACE)),
-            ]
-        })
-        .collect()
-}
-
 /// The geometry key of a layer's strokes.
 pub(crate) fn geometry_key(strokes: &[Value]) -> [u8; 32] {
     let mut h = Sha256::new();
@@ -120,13 +102,11 @@ pub(crate) struct LayerRef {
     pub strokes: Vec<Value>,
 }
 
-fn walk(nodes: &[DrawingNode], at: &str, out: &mut Vec<LayerRef>) {
+fn walk<'a>(nodes: &'a [DrawingNode], at: &str, out: &mut Vec<(String, &'a DrawingNode)>) {
     for (i, n) in nodes.iter().enumerate() {
         let p = format!("{at}/{i}");
         if *n.kind() == NodeKind::Layer {
-            let strokes: Vec<Value> =
-                n.strokes().iter().flatten().filter_map(|s| serde_json::to_value(s).ok()).collect();
-            out.push(LayerRef { id: n.id().as_str().to_owned(), pointer: p.clone(), strokes });
+            out.push((p.clone(), n));
         }
         if let Some(children) = n.children() {
             walk(children, &format!("{p}/children"), out);
@@ -134,11 +114,43 @@ fn walk(nodes: &[DrawingNode], at: &str, out: &mut Vec<LayerRef>) {
     }
 }
 
-/// The layers of a drawing, back to front.
-pub(crate) fn layers(d: &Drawing) -> Vec<LayerRef> {
+/// The layer nodes of a drawing with their JSON Pointers, back to front (nothing serialised).
+pub(crate) fn layer_nodes(d: &Drawing) -> Vec<(String, &DrawingNode)> {
     let mut out = Vec::new();
     walk(d.nodes(), "/nodes", &mut out);
     out
+}
+
+/// A layer node's strokes as stored.
+pub(crate) fn strokes_json(n: &DrawingNode) -> Vec<Value> {
+    n.strokes().iter().flatten().filter_map(|s| serde_json::to_value(s).ok()).collect()
+}
+
+/// A layer node as a [`LayerRef`].
+pub(crate) fn layer_ref(pointer: String, n: &DrawingNode) -> LayerRef {
+    LayerRef { id: n.id().as_str().to_owned(), pointer, strokes: strokes_json(n) }
+}
+
+/// Whether two layer nodes are the same for the planar map and its fills (stroke identity, kind, closed flag, points,
+/// sides and the stored brush exterior records), compared as model values: a 100 000-stroke layer an edit left alone is
+/// never serialised or hashed.
+pub(crate) fn same_planar(a: &DrawingNode, b: &DrawingNode) -> bool {
+    let (a, b) = (a.strokes().as_deref().unwrap_or_default(), b.strokes().as_deref().unwrap_or_default());
+    let ns = tt_vector::planar::fill::EXT_NAMESPACE;
+    a.len() == b.len()
+        && a.iter().zip(b).all(|(x, y)| {
+            x.id() == y.id()
+                && x.kind() == y.kind()
+                && x.closed() == y.closed()
+                && x.points() == y.points()
+                && x.sides() == y.sides()
+                && x.ext().as_map().get(ns) == y.ext().as_map().get(ns)
+        })
+}
+
+/// The layers of a drawing, back to front.
+pub(crate) fn layers(d: &Drawing) -> Vec<LayerRef> {
+    layer_nodes(d).into_iter().map(|(p, n)| layer_ref(p, n)).collect()
 }
 
 /// A layer's derived map with its zone fills.
@@ -180,18 +192,35 @@ pub(crate) struct ZoneDelta {
 
 /// The zone changes between two versions of a drawing (`None` = absent).
 pub(crate) fn zone_delta(cache: &SharedCache, before: Option<&Drawing>, after: Option<&Drawing>) -> ZoneDelta {
-    let fills = |d: Option<&Drawing>| -> BTreeMap<String, Option<Fill>> {
-        let Some(d) = d else { return BTreeMap::new() };
-        drawing_zones(cache, d)
-            .map(|layers| {
-                layers
-                    .into_iter()
-                    .flat_map(|l| l.map.zones.iter().map(|z| z.id.clone()).zip(l.fills.clone()).collect::<Vec<_>>())
-                    .collect()
-            })
-            .unwrap_or_default()
+    // Only layers whose planar view changed can change zones: the others are skipped without being serialised.
+    let mut work = Work::new(tt_vector::work::PLANAR_WORK_BUDGET, "computing the zones of this drawing");
+    let mut fills_of = |n: &DrawingNode, out: &mut BTreeMap<String, Option<Fill>>| {
+        let strokes = strokes_json(n);
+        if let Ok(map) = lock(cache).map(&strokes, &mut work) {
+            let fills = fill::read(&map, &layer::stored(&strokes)).fills;
+            out.extend(map.zones.iter().map(|z| z.id.clone()).zip(fills));
+        }
     };
-    let (b, a) = (fills(before), fills(after));
+    let old: BTreeMap<&str, &DrawingNode> =
+        before.map(layer_nodes).unwrap_or_default().into_iter().map(|(_, n)| (n.id().as_str(), n)).collect();
+    let new: BTreeMap<&str, &DrawingNode> =
+        after.map(layer_nodes).unwrap_or_default().into_iter().map(|(_, n)| (n.id().as_str(), n)).collect();
+    let (mut b, mut a) = (BTreeMap::new(), BTreeMap::new());
+    for (id, n) in &new {
+        match old.get(id) {
+            Some(o) if same_planar(o, n) => {}
+            Some(o) => {
+                fills_of(o, &mut b);
+                fills_of(n, &mut a);
+            }
+            None => fills_of(n, &mut a),
+        }
+    }
+    for (id, o) in &old {
+        if !new.contains_key(id) {
+            fills_of(o, &mut b);
+        }
+    }
     let mut delta = ZoneDelta::default();
     for (id, f) in &a {
         match b.get(id) {
