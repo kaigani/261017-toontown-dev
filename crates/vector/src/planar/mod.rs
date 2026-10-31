@@ -4,5 +4,6 @@
 
 pub mod flat;
 pub mod graph;
+pub mod node;
 
 pub use graph::{EdgeKind, LayerMap, StrokeIn, Zone, build};
