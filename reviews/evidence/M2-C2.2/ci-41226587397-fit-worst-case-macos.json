@@ -1,0 +1,231 @@
+{
+  "budgetVisits": 400000000,
+  "os": "macos",
+  "cases": [
+    {
+      "name": "dense-straight-closed",
+      "samples": 100000,
+      "closed": true,
+      "runs": [
+        {
+          "wallMs": 1.581209,
+          "visits": 799999,
+          "anchors": 1
+        },
+        {
+          "wallMs": 1.111834,
+          "visits": 799999,
+          "anchors": 1
+        },
+        {
+          "wallMs": 1.14175,
+          "visits": 799999,
+          "anchors": 1
+        }
+      ]
+    },
+    {
+      "name": "dense-circle-closed",
+      "samples": 100000,
+      "closed": true,
+      "runs": [
+        {
+          "wallMs": 1.200375,
+          "visits": 799999,
+          "anchors": 1
+        },
+        {
+          "wallMs": 1.145042,
+          "visits": 799999,
+          "anchors": 1
+        },
+        {
+          "wallMs": 1.156167,
+          "visits": 799999,
+          "anchors": 1
+        }
+      ]
+    },
+    {
+      "name": "straight-open",
+      "samples": 100000,
+      "closed": false,
+      "runs": [
+        {
+          "wallMs": 15.994375000000002,
+          "visits": 18399999,
+          "anchors": 2
+        },
+        {
+          "wallMs": 15.74925,
+          "visits": 18399999,
+          "anchors": 2
+        },
+        {
+          "wallMs": 15.51,
+          "visits": 18399999,
+          "anchors": 2
+        }
+      ]
+    },
+    {
+      "name": "zigzag-above-tolerance",
+      "samples": 100000,
+      "closed": false,
+      "runs": [
+        {
+          "wallMs": 595.678625,
+          "visits": 202241151,
+          "anchors": 100000
+        },
+        {
+          "wallMs": 589.053292,
+          "visits": 202241151,
+          "anchors": 100000
+        },
+        {
+          "wallMs": 586.094,
+          "visits": 202241151,
+          "anchors": 100000
+        }
+      ]
+    },
+    {
+      "name": "wiggle-near-tolerance",
+      "samples": 100000,
+      "closed": false,
+      "runs": [
+        {
+          "wallMs": 70.19737500000001,
+          "visits": 64814991,
+          "anchors": 551
+        },
+        {
+          "wallMs": 69.792959,
+          "visits": 64814991,
+          "anchors": 551
+        },
+        {
+          "wallMs": 69.947042,
+          "visits": 64814991,
+          "anchors": 551
+        }
+      ]
+    },
+    {
+      "name": "spiral-closed",
+      "samples": 100000,
+      "closed": true,
+      "runs": [
+        {
+          "wallMs": 135.22324999999998,
+          "visits": 196114384,
+          "anchors": 88870
+        },
+        {
+          "wallMs": 133.147292,
+          "visits": 196114384,
+          "anchors": 88870
+        },
+        {
+          "wallMs": 134.073833,
+          "visits": 196114384,
+          "anchors": 88870
+        }
+      ]
+    },
+    {
+      "name": "random-walk-open",
+      "samples": 100000,
+      "closed": false,
+      "runs": [
+        {
+          "wallMs": 62.294291,
+          "visits": 51826825,
+          "anchors": 4809
+        },
+        {
+          "wallMs": 61.429125,
+          "visits": 51826825,
+          "anchors": 4809
+        },
+        {
+          "wallMs": 61.60775,
+          "visits": 51826825,
+          "anchors": 4809
+        }
+      ]
+    },
+    {
+      "name": "random-walk-closed",
+      "samples": 100000,
+      "closed": true,
+      "runs": [
+        {
+          "wallMs": 61.4145,
+          "visits": 51964993,
+          "anchors": 4810
+        },
+        {
+          "wallMs": 62.296416,
+          "visits": 51964993,
+          "anchors": 4810
+        },
+        {
+          "wallMs": 62.075834,
+          "visits": 51964993,
+          "anchors": 4810
+        }
+      ]
+    },
+    {
+      "name": "uniform-noise-open",
+      "samples": 100000,
+      "closed": false,
+      "runs": [
+        {
+          "wallMs": 125.042125,
+          "visits": 40532873,
+          "anchors": 100000
+        },
+        {
+          "wallMs": 125.460084,
+          "visits": 40532873,
+          "anchors": 100000
+        },
+        {
+          "wallMs": 123.374583,
+          "visits": 40532873,
+          "anchors": 100000
+        }
+      ]
+    },
+    {
+      "name": "uniform-noise-closed",
+      "samples": 100000,
+      "closed": true,
+      "runs": [
+        {
+          "wallMs": 125.075583,
+          "visits": 40339805,
+          "anchors": 100000
+        },
+        {
+          "wallMs": 123.841916,
+          "visits": 40339805,
+          "anchors": 100000
+        },
+        {
+          "wallMs": 130.73624999999998,
+          "visits": 40339805,
+          "anchors": 100000
+        }
+      ]
+    }
+  ],
+  "worst": {
+    "name": "zigzag-above-tolerance",
+    "visits": 202241151,
+    "wallMs": 595.678625
+  }
+}
