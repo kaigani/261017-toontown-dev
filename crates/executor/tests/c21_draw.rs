@@ -469,7 +469,11 @@ fn drawing_events_come_from_the_commit_path_for_patches_batches_and_checkpoint_r
     assert!(added[0]["createdIds"].as_array().unwrap().contains(&json!(sid)), "{added:?}");
 
     let key = format!("{D1}/{PENCIL}");
-    ok(&h, "doc.object.patch", json!({"targets":[key],"ops":[{"op":"replace","path":"/lineStyle/thickness","value":2}]}));
+    ok(
+        &h,
+        "doc.object.patch",
+        json!({"targets":[key],"ops":[{"op":"replace","path":"/lineStyle/thickness","value":2}]}),
+    );
     let patched = drawing_events(&rx);
     assert_eq!(patched.len(), 1, "{patched:?}");
     assert_eq!(patched[0]["commandId"], "doc.object.patch");
