@@ -8,17 +8,17 @@
       "closed": true,
       "runs": [
         {
-          "wallMs": 1.3599,
+          "wallMs": 1.1894,
           "visits": 799999,
           "anchors": 1
         },
         {
-          "wallMs": 1.302,
+          "wallMs": 1.2198,
           "visits": 799999,
           "anchors": 1
         },
         {
-          "wallMs": 1.2376,
+          "wallMs": 1.2812999999999999,
           "visits": 799999,
           "anchors": 1
         }
@@ -30,17 +30,17 @@
       "closed": true,
       "runs": [
         {
-          "wallMs": 1.2671,
+          "wallMs": 1.1271,
           "visits": 799999,
           "anchors": 1
         },
         {
-          "wallMs": 1.1885999999999999,
+          "wallMs": 1.0693,
           "visits": 799999,
           "anchors": 1
         },
         {
-          "wallMs": 1.2048,
+          "wallMs": 1.0947,
           "visits": 799999,
           "anchors": 1
         }
@@ -52,17 +52,17 @@
       "closed": false,
       "runs": [
         {
-          "wallMs": 14.725999999999999,
+          "wallMs": 14.864,
           "visits": 18399999,
           "anchors": 2
         },
         {
-          "wallMs": 14.6662,
+          "wallMs": 14.5602,
           "visits": 18399999,
           "anchors": 2
         },
         {
-          "wallMs": 14.761700000000001,
+          "wallMs": 14.485,
           "visits": 18399999,
           "anchors": 2
         }
@@ -74,17 +74,17 @@
       "closed": false,
       "runs": [
         {
-          "wallMs": 501.40189999999996,
+          "wallMs": 503.84110000000004,
           "visits": 202241151,
           "anchors": 100000
         },
         {
-          "wallMs": 510.0329,
+          "wallMs": 510.6429,
           "visits": 202241151,
           "anchors": 100000
         },
         {
-          "wallMs": 507.56199999999995,
+          "wallMs": 500.763,
           "visits": 202241151,
           "anchors": 100000
         }
@@ -96,17 +96,17 @@
       "closed": false,
       "runs": [
         {
-          "wallMs": 67.18979999999999,
+          "wallMs": 69.5528,
           "visits": 64814991,
           "anchors": 551
         },
         {
-          "wallMs": 65.0954,
+          "wallMs": 66.6105,
           "visits": 64814991,
           "anchors": 551
         },
         {
-          "wallMs": 65.1918,
+          "wallMs": 65.7655,
           "visits": 64814991,
           "anchors": 551
         }
@@ -118,17 +118,17 @@
       "closed": true,
       "runs": [
         {
-          "wallMs": 130.1475,
+          "wallMs": 134.27020000000002,
           "visits": 196114384,
           "anchors": 88870
         },
         {
-          "wallMs": 130.1784,
+          "wallMs": 132.1824,
           "visits": 196114384,
           "anchors": 88870
         },
         {
-          "wallMs": 130.9471,
+          "wallMs": 132.1935,
           "visits": 196114384,
           "anchors": 88870
         }
@@ -140,17 +140,17 @@
       "closed": false,
       "runs": [
         {
-          "wallMs": 52.0947,
+          "wallMs": 52.608799999999995,
           "visits": 51826825,
           "anchors": 4809
         },
         {
-          "wallMs": 50.8685,
+          "wallMs": 52.1692,
           "visits": 51826825,
           "anchors": 4809
         },
         {
-          "wallMs": 57.2836,
+          "wallMs": 57.267199999999995,
           "visits": 51826825,
           "anchors": 4809
         }
@@ -162,17 +162,17 @@
       "closed": true,
       "runs": [
         {
-          "wallMs": 55.175000000000004,
+          "wallMs": 54.9381,
           "visits": 51964993,
           "anchors": 4810
         },
         {
-          "wallMs": 57.2375,
+          "wallMs": 57.619499999999995,
           "visits": 51964993,
           "anchors": 4810
         },
         {
-          "wallMs": 54.0789,
+          "wallMs": 54.9903,
           "visits": 51964993,
           "anchors": 4810
         }
@@ -184,17 +184,17 @@
       "closed": false,
       "runs": [
         {
-          "wallMs": 107.31930000000001,
+          "wallMs": 107.7133,
           "visits": 40532873,
           "anchors": 100000
         },
         {
-          "wallMs": 107.6167,
+          "wallMs": 108.1945,
           "visits": 40532873,
           "anchors": 100000
         },
         {
-          "wallMs": 109.2375,
+          "wallMs": 106.9255,
           "visits": 40532873,
           "anchors": 100000
         }
@@ -206,17 +206,17 @@
       "closed": true,
       "runs": [
         {
-          "wallMs": 106.161,
+          "wallMs": 107.9956,
           "visits": 40339805,
           "anchors": 100000
         },
         {
-          "wallMs": 105.9766,
+          "wallMs": 107.83080000000001,
           "visits": 40339805,
           "anchors": 100000
         },
         {
-          "wallMs": 107.981,
+          "wallMs": 108.46409999999999,
           "visits": 40339805,
           "anchors": 100000
         }
@@ -226,6 +226,6 @@
   "worst": {
     "name": "zigzag-above-tolerance",
     "visits": 202241151,
-    "wallMs": 510.0329
+    "wallMs": 510.6429
   }
 }
