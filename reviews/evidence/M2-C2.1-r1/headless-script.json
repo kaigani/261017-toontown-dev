@@ -1,0 +1,48 @@
+{
+  "label": "C2.1 review CLI",
+  "atomic": false,
+  "steps": [
+    {
+      "id": "batch",
+      "params": {
+        "label": "CLI atomic drawing group",
+        "atomic": true,
+        "steps": [
+          {
+            "id": "draw.stroke.add",
+            "params": {
+              "drawingId": "dr_01K742SG0KKMCAP9X1E6Z5P4SW",
+              "kind": "invisible",
+              "points": [
+                {
+                  "x": -20,
+                  "y": 0
+                },
+                {
+                  "x": 20,
+                  "y": 0
+                }
+              ]
+            }
+          },
+          {
+            "id": "draw.pivot.set",
+            "params": {
+              "drawingId": "dr_01K742SG0KKMCAP9X1E6Z5P4SW",
+              "point": {
+                "x": 9,
+                "y": 2
+              }
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "draw.drawing.get",
+      "params": {
+        "drawingId": "dr_01K742SG0KKMCAP9X1E6Z5P4SW"
+      }
+    }
+  ]
+}

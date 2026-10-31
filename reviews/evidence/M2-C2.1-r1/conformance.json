@@ -1,11 +1,18 @@
 {
   "counts": {
-    "implemented": 77,
-    "deferred-with-owner": 212,
-    "divergent": 46,
+    "implemented": 71,
+    "deferred-with-owner": 229,
+    "divergent": 63,
     "missing": 2
   },
   "rows": [
+    {
+      "source": "spec/02_drawing.md:84",
+      "section": "2.1",
+      "requirement": "All drawing content and all `draw.*` command parameters use **drawing space**:",
+      "status": "implemented",
+      "evidence": "crates/vector/src/geom.rs:1; drawing.rs::read-back space; c21_draw::read_back_options_flatten_ids_and_include; field guide/camera projection M3 C3.2"
+    },
     {
       "source": "spec/02_drawing.md:88",
       "section": "2.1",
@@ -52,6 +59,13 @@
       "source": "spec/02_drawing.md:94",
       "section": "2.1",
       "requirement": "| Sizes | Pen sizes, line thickness, text size, margins and feather widths are all in du. (Gap-closing and snap tolerances are in view pixels, converted at the current zoom.) |",
+      "status": "implemented",
+      "evidence": "crates/vector/src/geom.rs:1; drawing.rs::read-back space; c21_draw::read_back_options_flatten_ids_and_include; field guide/camera projection M3 C3.2"
+    },
+    {
+      "source": "spec/02_drawing.md:96",
+      "section": "2.1",
+      "requirement": "Drawing content is resolution independent; pixels only appear when rendering.",
       "status": "implemented",
       "evidence": "crates/vector/src/geom.rs:1; drawing.rs::read-back space; c21_draw::read_back_options_flatten_ids_and_include; field guide/camera projection M3 C3.2"
     },
@@ -112,6 +126,13 @@
       "evidence": "crates/vector/src/drawing.rs:191 layer_target; c21_draw layers; planar-map subrules C2.2, Draw on Top C2.3/M4 C4.2"
     },
     {
+      "source": "spec/02_drawing.md:138",
+      "section": "3.2",
+      "requirement": "A **stroke** is a piecewise cubic Bézier path (open or closed) inside a layer.",
+      "status": "divergent",
+      "evidence": "crates/vector/src/stroke.rs:109; draw_stroke.rs:789; C21-R1-04; sides/intersections deferred C2.2"
+    },
+    {
       "source": "spec/02_drawing.md:140",
       "section": "3.2",
       "requirement": "| Stroke kind | Created by | Rendering |",
@@ -168,6 +189,13 @@
       "evidence": "crates/vector/src/stroke.rs:109; draw_stroke.rs:789; C21-R1-04; sides/intersections deferred C2.2"
     },
     {
+      "source": "spec/02_drawing.md:159",
+      "section": "3.3",
+      "requirement": "Freehand input (Brush, Pencil, Stroke, Eraser, Close Gap and lasso paths) is converted to Béziers as follows:",
+      "status": "divergent",
+      "evidence": "crates/vector/src/fit.rs:318; C21-R1-01/06; c21_r1_geometry independent max-polyline-distance and bounded dense input"
+    },
+    {
       "source": "spec/02_drawing.md:161",
       "section": "3.3",
       "requirement": "1. Collect samples (x, y, pressure) in drawing space; drop consecutive duplicates.",
@@ -199,6 +227,13 @@
       "source": "spec/02_drawing.md:167",
       "section": "3.3",
       "requirement": "5. Pressure samples are smoothed with a moving average whose window grows with Smoothness, then stored as the pressure map.",
+      "status": "divergent",
+      "evidence": "crates/vector/src/fit.rs:318; C21-R1-01/06; c21_r1_geometry independent max-polyline-distance and bounded dense input"
+    },
+    {
+      "source": "spec/02_drawing.md:170",
+      "section": "3.3",
+      "requirement": "Fitting MUST depend only on the sample positions, pressures and settings — never on timing or velocity — so that a replayed or structured input produces identical geometry (§13.3).",
       "status": "divergent",
       "evidence": "crates/vector/src/fit.rs:318; C21-R1-01/06; c21_r1_geometry independent max-polyline-distance and bounded dense input"
     },
@@ -291,28 +326,56 @@
       "section": "3.7",
       "requirement": "- Created with the Text tool (§7.6). A text object is rich text with per-character formatting (font, size, bold, italic, normal/subscript/superscript, manual kerning, automatic kerning, fill colour ID) and per-paragraph formatting (alignment left/centre/right/justify, left and right margins, first-line indent, line spacing), an affine transform, and either **auto width** (no wrapping) or a **fixed width** (word wrap).",
       "status": "divergent",
-      "evidence": "crates/vector/src/text.rs:1; C21-R1-05 generic patch; c21_draw text/font lint; c21_r1_geometry text edge cases; glyph rendering C2.3/M3 C3.3"
+      "evidence": "crates/vector/src/text.rs:1; C21-R1-05 generic patch; c21_draw text/font lint; c21_r1_geometry text edge cases; glyph rendering C2.3/M3 C3.3; C21-R1-09 NFC run offsets"
     },
     {
       "source": "spec/02_drawing.md:212",
       "section": "3.7",
       "requirement": "- Glyphs are rendered from the font outlines. Text objects keep their transform (they are not baked into geometry when moved/rotated/scaled).",
       "status": "divergent",
-      "evidence": "crates/vector/src/text.rs:1; C21-R1-05 generic patch; c21_draw text/font lint; c21_r1_geometry text edge cases; glyph rendering C2.3/M3 C3.3"
+      "evidence": "crates/vector/src/text.rs:1; C21-R1-05 generic patch; c21_draw text/font lint; c21_r1_geometry text edge cases; glyph rendering C2.3/M3 C3.3; C21-R1-09 NFC run offsets"
     },
     {
       "source": "spec/02_drawing.md:214",
       "section": "3.7",
       "requirement": "- **Break Text Apart** turns text into ordinary vector artwork (§8.7).",
       "status": "divergent",
-      "evidence": "crates/vector/src/text.rs:1; C21-R1-05 generic patch; c21_draw text/font lint; c21_r1_geometry text edge cases; glyph rendering C2.3/M3 C3.3"
+      "evidence": "crates/vector/src/text.rs:1; C21-R1-05 generic patch; c21_draw text/font lint; c21_r1_geometry text edge cases; glyph rendering C2.3/M3 C3.3; C21-R1-09 NFC run offsets"
     },
     {
       "source": "spec/02_drawing.md:215",
       "section": "3.7",
       "requirement": "- When a font is missing on the machine, a fallback font MUST be used for display and the text object MUST keep the requested font name.",
       "status": "divergent",
-      "evidence": "crates/vector/src/text.rs:1; C21-R1-05 generic patch; c21_draw text/font lint; c21_r1_geometry text edge cases; glyph rendering C2.3/M3 C3.3"
+      "evidence": "crates/vector/src/text.rs:1; C21-R1-05 generic patch; c21_draw text/font lint; c21_r1_geometry text edge cases; glyph rendering C2.3/M3 C3.3; C21-R1-09 NFC run offsets"
+    },
+    {
+      "source": "spec/02_drawing.md:220",
+      "section": "3.8",
+      "requirement": "Each drawing has a pivot point that the Select tool can display and move (undo: \"Change Drawing Pivot\"). It is the default rotation/scale centre of the drawing when it is transformed in scene planning (section 05).",
+      "status": "implemented",
+      "evidence": "crates/executor/src/commands/draw.rs:520; c21_draw::groups_delete_and_pivot"
+    },
+    {
+      "source": "spec/02_drawing.md:225",
+      "section": "3.9",
+      "requirement": "A drawing can contain raster images as drawing objects (pasted or dropped images, or the texture source kept by vectorization \"with texture\"). They are selectable, transformable (they keep an affine transform), arrangeable and deletable, but their pixels are not editable with drawing tools.",
+      "status": "implemented",
+      "evidence": "crates/vector/src/content.rs:548; c21_r1_surfaces bitmap insertion and both forms; transform/arrange C2.3"
+    },
+    {
+      "source": "spec/02_drawing.md:231",
+      "section": "3.10",
+      "requirement": "Within a drawing: nodes back-to-front; within a layer, zone fills (including brush stroke fills) are drawn first, then pencil lines on top of the layer's fills. Invisible strokes are never rendered except as a display aid.",
+      "status": "deferred-with-owner",
+      "evidence": "M2 C2.3 / M3 C3.3 rendering; persisted ordered arrays are available now"
+    },
+    {
+      "source": "spec/02_drawing.md:236",
+      "section": "3.11",
+      "requirement": "When drawing objects are pasted or imported from another project or a template and reference colour IDs missing from the current palettes, the colours MUST be recovered into the palette list (undo: \"Colour Recovery\"); when the source colour is unavailable, a clearly marked placeholder colour/texture is created. Rules: section 03.",
+      "status": "deferred-with-owner",
+      "evidence": "M2 C2.2 recovery; colour.unresolved retained and tested in c21_draw"
     },
     {
       "source": "spec/02_drawing.md:242",
@@ -343,6 +406,13 @@
       "evidence": "crates/model/src/document/; executor run.rs; c21_obligations rollback/revisions/inverse/redo; geometry/paragraph divergences recorded separately; noding C2.2"
     },
     {
+      "source": "spec/02_drawing.md:356",
+      "section": "6.1",
+      "requirement": "A **pen** is a named size/shape preset used by the Brush (brush pens) and the Eraser (eraser pens); Pencil and the shape tools take their line thickness from the current brush pen. The pen list is stored **in the project**, so pens travel with it. The Pen panel (also available as a tab of the Properties view) lists the pens and edits the selected pen.",
+      "status": "deferred-with-owner",
+      "evidence": "M4 C4.2 pen-panel operations; C2.1 consumes explicit pen/penId in draw_stroke.rs:224; c21_draw / properties"
+    },
+    {
       "source": "spec/02_drawing.md:362",
       "section": "6.1",
       "requirement": "| Name | string | unique within the project, non-empty | Display name. Duplicate names are refused (`pen.nameExists`). |",
@@ -360,34 +430,41 @@
       "source": "spec/02_drawing.md:364",
       "section": "6.1",
       "requirement": "| **Tip shape** | enum `round` \\| `oval` \\| `square` \\| `flat` | default `round` | Shape of the nib swept along the path. |",
-      "status": "deferred-with-owner",
-      "evidence": "M4 C4.2 pen-panel operations; C2.1 consumes explicit pen/penId in draw_stroke.rs:224; c21_draw / properties"
+      "status": "implemented",
+      "evidence": "crates/executor/src/commands/draw_stroke.rs:106 PenIn and pen resolution; c21_draw / c21_determinism four tips; setters deferred M4 C4.2"
     },
     {
       "source": "spec/02_drawing.md:365",
       "section": "6.1",
       "requirement": "| **Minimum size** | number (du) | 0 – 100 | Width at lowest pressure. |",
-      "status": "deferred-with-owner",
-      "evidence": "M4 C4.2 pen-panel operations; C2.1 consumes explicit pen/penId in draw_stroke.rs:224; c21_draw / properties"
+      "status": "implemented",
+      "evidence": "crates/executor/src/commands/draw_stroke.rs:106 PenIn and pen resolution; c21_draw / c21_determinism four tips; setters deferred M4 C4.2"
     },
     {
       "source": "spec/02_drawing.md:366",
       "section": "6.1",
       "requirement": "| **Maximum size** | number (du) | 0 – 100 | Width at full pressure, and with a mouse. |",
-      "status": "deferred-with-owner",
-      "evidence": "M4 C4.2 pen-panel operations; C2.1 consumes explicit pen/penId in draw_stroke.rs:224; c21_draw / properties"
+      "status": "implemented",
+      "evidence": "crates/executor/src/commands/draw_stroke.rs:106 PenIn and pen resolution; c21_draw / c21_determinism four tips; setters deferred M4 C4.2"
     },
     {
       "source": "spec/02_drawing.md:367",
       "section": "6.1",
       "requirement": "| **Smoothness** | number | 0 – 10 | Curve-fitting tolerance and pressure smoothing (§3.3); higher = smoother, fewer points. |",
-      "status": "deferred-with-owner",
-      "evidence": "M4 C4.2 pen-panel operations; C2.1 consumes explicit pen/penId in draw_stroke.rs:224; c21_draw / properties"
+      "status": "implemented",
+      "evidence": "crates/executor/src/commands/draw_stroke.rs:106 PenIn and pen resolution; c21_draw / c21_determinism four tips; setters deferred M4 C4.2"
     },
     {
       "source": "spec/02_drawing.md:368",
       "section": "6.1",
       "requirement": "| Tip angle | number (degrees) | 0 – 360, default 0 | Orientation of non-round tips. |",
+      "status": "implemented",
+      "evidence": "crates/executor/src/commands/draw_stroke.rs:106 PenIn and pen resolution; c21_draw / c21_determinism four tips; setters deferred M4 C4.2"
+    },
+    {
+      "source": "spec/02_drawing.md:370",
+      "section": "6.1",
+      "requirement": "Rules:",
       "status": "deferred-with-owner",
       "evidence": "M4 C4.2 pen-panel operations; C2.1 consumes explicit pen/penId in draw_stroke.rs:224; c21_draw / properties"
     },
@@ -441,6 +518,13 @@
       "evidence": "M4 C4.2 pen-panel operations; C2.1 consumes explicit pen/penId in draw_stroke.rs:224; c21_draw / properties"
     },
     {
+      "source": "spec/02_drawing.md:388",
+      "section": "6.2",
+      "requirement": "Hidden by default behind a show/hide-advanced-options control.",
+      "status": "deferred-with-owner",
+      "evidence": "M4 C4.2 setters; crates/vector/src/symmetry.rs:37 maps and tests; command setting currently fixed None/false at draw_stroke.rs:319; coverage risk P2-09"
+    },
+    {
       "source": "spec/02_drawing.md:392",
       "section": "6.2",
       "requirement": "| Symmetry mode | exclusive: **None** / **Mirror** / **Kaleidoscope** | default None | None: strokes drawn normally. Mirror: each new stroke is also drawn reflected about an axis through the drawing origin. Kaleidoscope: each new stroke is replicated with dihedral symmetry about the drawing origin. |",
@@ -465,6 +549,13 @@
       "source": "spec/02_drawing.md:395",
       "section": "6.2",
       "requirement": "| **Draw Behind** | toggle | off | New strokes are placed behind existing artwork (§8.11). |",
+      "status": "deferred-with-owner",
+      "evidence": "M4 C4.2 setters; crates/vector/src/symmetry.rs:37 maps and tests; command setting currently fixed None/false at draw_stroke.rs:319; coverage risk P2-09"
+    },
+    {
+      "source": "spec/02_drawing.md:397",
+      "section": "6.2",
+      "requirement": "All copies produced by symmetry are created in the same undo step as the original stroke. Symmetry applies to Brush, Pencil, Stroke and the shape tools.",
       "status": "deferred-with-owner",
       "evidence": "M4 C4.2 setters; crates/vector/src/symmetry.rs:37 maps and tests; command setting currently fixed None/false at draw_stroke.rs:319; coverage risk P2-09"
     },
@@ -549,15 +640,15 @@
       "source": "spec/02_drawing.md:1083",
       "section": "12.2",
       "requirement": "| `drawing.nameExists` / `drawing.nameInvalid` | error | Drawing rename conflicts or invalid characters. |",
-      "status": "implemented",
-      "evidence": "crates/executor/src/commands/draw.rs:61, invalid_geometry; c21_draw errors; table rows outside implemented scope retain C2.2/C2.3/M4/M10 owners"
+      "status": "deferred-with-owner",
+      "evidence": "C2.3 drawing operations / M3 C3.1 drawing naming / M4 C4.2 tool and pen UI / C2.4 vectorize / M10 C10.2 vector import"
     },
     {
       "source": "spec/02_drawing.md:1084",
       "section": "12.2",
       "requirement": "| `drawing.pasteIncompatible` | error | Clipboard content cannot be pasted into a drawing. |",
-      "status": "implemented",
-      "evidence": "crates/executor/src/commands/draw.rs:61, invalid_geometry; c21_draw errors; table rows outside implemented scope retain C2.2/C2.3/M4/M10 owners"
+      "status": "deferred-with-owner",
+      "evidence": "C2.3 drawing operations / M3 C3.1 drawing naming / M4 C4.2 tool and pen UI / C2.4 vectorize / M10 C10.2 vector import"
     },
     {
       "source": "spec/02_drawing.md:1085",
@@ -591,76 +682,83 @@
       "source": "spec/02_drawing.md:1089",
       "section": "12.2",
       "requirement": "| `drawing.centreLineOnFill` | warning | Extract Centre Line applied to painted fills. |",
-      "status": "implemented",
-      "evidence": "crates/executor/src/commands/draw.rs:61, invalid_geometry; c21_draw errors; table rows outside implemented scope retain C2.2/C2.3/M4/M10 owners"
+      "status": "deferred-with-owner",
+      "evidence": "C2.3 drawing operations / M3 C3.1 drawing naming / M4 C4.2 tool and pen UI / C2.4 vectorize / M10 C10.2 vector import"
     },
     {
       "source": "spec/02_drawing.md:1090",
       "section": "12.2",
       "requirement": "| `drawing.featherStepsHigh` | confirmation | Feather Edges with more than 30 steps. |",
-      "status": "implemented",
-      "evidence": "crates/executor/src/commands/draw.rs:61, invalid_geometry; c21_draw errors; table rows outside implemented scope retain C2.2/C2.3/M4/M10 owners"
+      "status": "deferred-with-owner",
+      "evidence": "C2.3 drawing operations / M3 C3.1 drawing naming / M4 C4.2 tool and pen UI / C2.4 vectorize / M10 C10.2 vector import"
     },
     {
       "source": "spec/02_drawing.md:1091",
       "section": "12.2",
       "requirement": "| `drawing.featherTexturesIgnored` | warning | Feather Edges skipped texture-filled shapes. |",
-      "status": "implemented",
-      "evidence": "crates/executor/src/commands/draw.rs:61, invalid_geometry; c21_draw errors; table rows outside implemented scope retain C2.2/C2.3/M4/M10 owners"
+      "status": "deferred-with-owner",
+      "evidence": "C2.3 drawing operations / M3 C3.1 drawing naming / M4 C4.2 tool and pen UI / C2.4 vectorize / M10 C10.2 vector import"
     },
     {
       "source": "spec/02_drawing.md:1092",
       "section": "12.2",
       "requirement": "| `drawing.elementNotVisibleInDrawingMode` | warning | Elements added in drawing mode that drawing mode cannot show. |",
-      "status": "implemented",
-      "evidence": "crates/executor/src/commands/draw.rs:61, invalid_geometry; c21_draw errors; table rows outside implemented scope retain C2.2/C2.3/M4/M10 owners"
+      "status": "deferred-with-owner",
+      "evidence": "C2.3 drawing operations / M3 C3.1 drawing naming / M4 C4.2 tool and pen UI / C2.4 vectorize / M10 C10.2 vector import"
     },
     {
       "source": "spec/02_drawing.md:1093",
       "section": "12.2",
       "requirement": "| `drawing.cellOccupied` | confirmation | Vectorization would replace drawings in occupied cells. |",
-      "status": "implemented",
-      "evidence": "crates/executor/src/commands/draw.rs:61, invalid_geometry; c21_draw errors; table rows outside implemented scope retain C2.2/C2.3/M4/M10 owners"
+      "status": "deferred-with-owner",
+      "evidence": "C2.3 drawing operations / M3 C3.1 drawing naming / M4 C4.2 tool and pen UI / C2.4 vectorize / M10 C10.2 vector import"
     },
     {
       "source": "spec/02_drawing.md:1094",
       "section": "12.2",
       "requirement": "| `tool.notApplicable` | error | Tool used on an element type it cannot edit, or an option the tool does not have. |",
-      "status": "implemented",
-      "evidence": "crates/executor/src/commands/draw.rs:61, invalid_geometry; c21_draw errors; table rows outside implemented scope retain C2.2/C2.3/M4/M10 owners"
+      "status": "deferred-with-owner",
+      "evidence": "C2.3 drawing operations / M3 C3.1 drawing naming / M4 C4.2 tool and pen UI / C2.4 vectorize / M10 C10.2 vector import"
     },
     {
       "source": "spec/02_drawing.md:1095",
       "section": "12.2",
       "requirement": "| `tool.valueOutOfRange` | error | A tool option or pen value outside its range. |",
-      "status": "implemented",
-      "evidence": "crates/executor/src/commands/draw.rs:61, invalid_geometry; c21_draw errors; table rows outside implemented scope retain C2.2/C2.3/M4/M10 owners"
+      "status": "deferred-with-owner",
+      "evidence": "C2.3 drawing operations / M3 C3.1 drawing naming / M4 C4.2 tool and pen UI / C2.4 vectorize / M10 C10.2 vector import"
     },
     {
       "source": "spec/02_drawing.md:1096",
       "section": "12.2",
       "requirement": "| `pen.nameExists` / `pen.lastPen` / `pen.notFound` | error | Pen list edits. |",
-      "status": "implemented",
-      "evidence": "crates/executor/src/commands/draw.rs:61, invalid_geometry; c21_draw errors; table rows outside implemented scope retain C2.2/C2.3/M4/M10 owners"
+      "status": "deferred-with-owner",
+      "evidence": "C2.3 drawing operations / M3 C3.1 drawing naming / M4 C4.2 tool and pen UI / C2.4 vectorize / M10 C10.2 vector import"
     },
     {
       "source": "spec/02_drawing.md:1097",
       "section": "12.2",
       "requirement": "| `vectorize.thresholdOutOfRange` / `vectorize.unsupportedFile` | error | Import and vectorize. |",
-      "status": "implemented",
-      "evidence": "crates/executor/src/commands/draw.rs:61, invalid_geometry; c21_draw errors; table rows outside implemented scope retain C2.2/C2.3/M4/M10 owners"
+      "status": "deferred-with-owner",
+      "evidence": "C2.3 drawing operations / M3 C3.1 drawing naming / M4 C4.2 tool and pen UI / C2.4 vectorize / M10 C10.2 vector import"
     },
     {
       "source": "spec/02_drawing.md:1098",
       "section": "12.2",
       "requirement": "| `import.notVectorFile` / `import.versionUnreadable` | error | Vector file import. |",
-      "status": "implemented",
-      "evidence": "crates/executor/src/commands/draw.rs:61, invalid_geometry; c21_draw errors; table rows outside implemented scope retain C2.2/C2.3/M4/M10 owners"
+      "status": "deferred-with-owner",
+      "evidence": "C2.3 drawing operations / M3 C3.1 drawing naming / M4 C4.2 tool and pen UI / C2.4 vectorize / M10 C10.2 vector import"
     },
     {
       "source": "spec/02_drawing.md:1099",
       "section": "12.2",
       "requirement": "| `import.warnings` | warning | Parser warnings after vector import (list attached). |",
+      "status": "deferred-with-owner",
+      "evidence": "C2.3 drawing operations / M3 C3.1 drawing naming / M4 C4.2 tool and pen UI / C2.4 vectorize / M10 C10.2 vector import"
+    },
+    {
+      "source": "spec/02_drawing.md:1101",
+      "section": "12.2",
+      "requirement": "Paint-tool messages (`colour.zoneNotClosed`, `colour.noGapFound`, `colour.cannotUnpaint`, `colour.missing`, `colour.staleZoneId`) are defined in section 03. Message wording is a UX-writing task; every message shown to the user MUST correspond to a code.",
       "status": "implemented",
       "evidence": "crates/executor/src/commands/draw.rs:61, invalid_geometry; c21_draw errors; table rows outside implemented scope retain C2.2/C2.3/M4/M10 owners"
     },
@@ -759,6 +857,13 @@
       "source": "spec/02_drawing.md:1122",
       "section": "12.3",
       "requirement": "| Vectorization settings (last used) | user | §11.2 |",
+      "status": "deferred-with-owner",
+      "evidence": "M4 C4.2 user tool settings / M7 C7.1 colour; persisted model pen list M1 and c21_r1_surfaces package/folder content"
+    },
+    {
+      "source": "spec/02_drawing.md:1124",
+      "section": "12.3",
+      "requirement": "Every command, tool and tool-group selection MUST be bindable to keys (section 01); apart from platform-standard shortcuts, default bindings are a UX decision (recommended: single-key bindings for the tool groups, tools and the most common drawing aids).",
       "status": "deferred-with-owner",
       "evidence": "M4 C4.2 user tool settings / M7 C7.1 colour; persisted model pen list M1 and c21_r1_surfaces package/folder content"
     },
@@ -915,6 +1020,13 @@
       "requirement": "| Context menu of the Drawing View | the corresponding `draw.*` commands and `edit.*` (section 01) |",
       "status": "deferred-with-owner",
       "evidence": "M4 C4.2 UI/panels; M2 C2.3 operations, M2 C2.4 vectorize, M10 C10.2 import; draw.textFormat.set available now"
+    },
+    {
+      "source": "spec/02_drawing.md:1194",
+      "section": "13.3",
+      "requirement": "**Rules.**",
+      "status": "deferred-with-owner",
+      "evidence": "M2 C2.3 / M4 C4.2 gesture equivalence, M3 C3.2 mappings; no fake gesture success claimed"
     },
     {
       "source": "spec/02_drawing.md:1195",
@@ -1113,9 +1225,23 @@
       "evidence": "M2 C2.3 / M4 C4.2 gesture equivalence, M3 C3.2 mappings; no fake gesture success claimed"
     },
     {
+      "source": "spec/02_drawing.md:1234",
+      "section": "13.4",
+      "requirement": "**Conventions.** Points are `{x, y}` in du. Affine matrices are `[a, b, c, d, e, f]` mapping (x, y) to (a·x + c·y + e, b·x + d·y + f). A **Bézier list** is a flat list of control points: an open path of n segments has 3n + 1 points (anchor, control, control, anchor, …); a closed path has 3n points and its last segment returns to point",
+      "status": "divergent",
+      "evidence": "crates/vector/src/path.rs:182; C21-R1-10 closed-path anchor boundary; c21_r1_geometry::closed_path_at_anchor_limit_reimports_its_own_bezier_list"
+    },
+    {
       "source": "spec/02_drawing.md:1237",
       "section": "13.4",
       "requirement": "0. Anchors are at indices 0, 3, 6, …; an **anchor index** k refers to point 3k. A pressure map is `[{t, p}]` (§3.2).",
+      "status": "implemented",
+      "evidence": "crates/vector/src/readback.schema.json:1 / drawing.rs / content.rs; c21_draw read-back and content round-trip; SI-053/054/055/057 qualifications in report"
+    },
+    {
+      "source": "spec/02_drawing.md:1239",
+      "section": "13.4",
+      "requirement": "**`draw.drawing.get` result:**",
       "status": "implemented",
       "evidence": "crates/vector/src/readback.schema.json:1 / drawing.rs / content.rs; c21_draw read-back and content round-trip; SI-053/054/055/057 qualifications in report"
     },
@@ -1148,6 +1274,20 @@
       "evidence": "crates/vector/src/readback.schema.json:1 / drawing.rs / content.rs; c21_draw read-back and content round-trip; SI-053/054/055/057 qualifications in report"
     },
     {
+      "source": "spec/02_drawing.md:1299",
+      "section": "13.4",
+      "requirement": "**Hit-test result** (`draw.hitTest.get`): `{point, hits: [{objectId, objectKind: \"pencil\"|\"brush\"|\"invisible\"|\"zone\"| \"text\"|\"bitmap\", layerId, groupPath: [id], colourId}] (front to back), zoneId|null, revision}`. Invisible strokes are reported only with `includeInvisible: true`.",
+      "status": "implemented",
+      "evidence": "crates/vector/src/readback.schema.json:1 / drawing.rs / content.rs; c21_draw read-back and content round-trip; SI-053/054/055/057 qualifications in report"
+    },
+    {
+      "source": "spec/02_drawing.md:1303",
+      "section": "13.4",
+      "requirement": "**Render result** (`draw.drawing.render`): `{png: base64 | path, width, height, drawingToPixel: [6], rev}`.",
+      "status": "implemented",
+      "evidence": "crates/vector/src/readback.schema.json:1 / drawing.rs / content.rs; c21_draw read-back and content round-trip; SI-053/054/055/057 qualifications in report"
+    },
+    {
       "source": "spec/02_drawing.md:1307",
       "section": "13.5",
       "requirement": "| Command ID | Kind | Summary | Parameters | Result | Undo |",
@@ -1173,49 +1313,49 @@
       "section": "13.5",
       "requirement": "| `draw.drawing.render` | query | Render a drawing to PNG at a requested size | `drawingId?: id; width: int (1–8192); height?: int (1–8192); region: enum \"bounds\"\\|\"field12\"\\|\"field16\"\\|\"camera\" \\| object {x,y,width,height} = \"bounds\"; padding: number = 0; background: colour = #00000000; styleId?: id; showStrokes: bool = false; showSelection: bool = false; path?: path` | `{png?, path?, width, height, drawingToPixel: [number], rev}` | n/a |",
       "status": "deferred-with-owner",
-      "evidence": "M2 C2.3; generated declaration / SI-026; plan section 4"
+      "evidence": "M2 C2.3; closed generated declaration; placeholders: []; delegation aliases, if any, per ADR-0013 section 10"
     },
     {
       "source": "spec/02_drawing.md:1312",
       "section": "13.5",
       "requirement": "| `draw.bounds.get` | query | Bounding box of the drawing or of given objects | `drawingId?: id; ids?: [id]; includeInvisible: bool = false` | `{bounds: {x,y,width,height}\\|null}` | n/a |",
       "status": "deferred-with-owner",
-      "evidence": "M2 C2.3; generated declaration / SI-026; plan section 4"
+      "evidence": "M2 C2.3; closed generated declaration; placeholders: []; delegation aliases, if any, per ADR-0013 section 10"
     },
     {
       "source": "spec/02_drawing.md:1313",
       "section": "13.5",
       "requirement": "| `draw.hitTest.get` | query | Objects and zone under a point, front to back | `drawingId?: id; point: point; tolerance: number = 3 (view px); includeInvisible: bool = false` | `{hits: [object], zoneId\\|null, rev}` | n/a |",
       "status": "deferred-with-owner",
-      "evidence": "M2 C2.3; generated declaration / SI-026; plan section 4"
+      "evidence": "M2 C2.3; closed generated declaration; placeholders: [{'pointer': '/result/hits/*', 'kind': 'object without fields', 'side': 'result', 'issue': 'SI-026'}]; delegation aliases, if any, per ADR-0013 section 10"
     },
     {
       "source": "spec/02_drawing.md:1314",
       "section": "13.5",
       "requirement": "| `draw.viewMapping.get` | query | Mapping between a view's pixels and drawing space | `view: string = \"drawing\"` | `{drawingId, drawingToView: [number], viewToDrawing: [number], zoom, rotation, viewSize: {width,height}}` | n/a |",
       "status": "deferred-with-owner",
-      "evidence": "M4 C4.2 (M7 C7.1 current colour); generated closed SI-tagged declarations in crates/registry/src/declared.json; plan section 4"
+      "evidence": "M2 C2.3; closed generated declaration; placeholders: []; delegation aliases, if any, per ADR-0013 section 10"
     },
     {
       "source": "spec/02_drawing.md:1315",
       "section": "13.5",
       "requirement": "| `draw.drawing.rename` | action | Rename a drawing (\"Rename Drawing\") | `drawingId?: id; name: string` | `{drawingId, name}` | yes |",
       "status": "deferred-with-owner",
-      "evidence": "M3 C3.1; delegation to element.drawing.rename / element.drawingLock.set per ADR-0013 section 10"
+      "evidence": "M2 C2.3; closed generated declaration; placeholders: []; delegation aliases, if any, per ADR-0013 section 10"
     },
     {
       "source": "spec/02_drawing.md:1316",
       "section": "13.5",
       "requirement": "| `draw.lock.set` | toggle | Lock or unlock a drawing (\"Lock Drawing\"/\"Unlock Drawing\") | `drawingId?: id; locked: bool` | `{drawingId, locked}` | yes |",
       "status": "deferred-with-owner",
-      "evidence": "M3 C3.1; delegation to element.drawing.rename / element.drawingLock.set per ADR-0013 section 10"
+      "evidence": "M2 C2.3; closed generated declaration; placeholders: []; delegation aliases, if any, per ADR-0013 section 10"
     },
     {
       "source": "spec/02_drawing.md:1317",
       "section": "13.5",
       "requirement": "| `draw.pivot.set` | action | Move the drawing pivot (\"Change Drawing Pivot\") | `drawingId?: id; point: point` | `{pivot, rev}` | yes |",
-      "status": "implemented",
-      "evidence": "crates/executor/src/commands/draw.rs:528; c21_draw / c21_example_results; Implemented subset; event/result omissions C21-R1-07/08 apply to edits"
+      "status": "divergent",
+      "evidence": "crates/executor/src/commands/draw.rs:528; c21_draw / c21_example_results; Divergent C21-R1-08"
     },
     {
       "source": "spec/02_drawing.md:1318",
@@ -1229,42 +1369,42 @@
       "section": "13.5",
       "requirement": "| `draw.rectangle.add` | action | Add a rectangle as a closed pencil path (\"Rectangle Tool\") | `drawingId?: id; from: point; to: point; square: bool = false; fromCentre: bool = false; colourId?: id; thickness?: number; penId?: id; layer: enum \"auto\"\\|\"new\"\\|\"top\"\\|\"behind\" \\| id = \"auto\"; symmetry: bool = true` | `{strokeIds: [id], zoneIds: [id], layerId, rev}` | yes |",
       "status": "deferred-with-owner",
-      "evidence": "M2 C2.3; generated declaration / SI-026; plan section 4"
+      "evidence": "M2 C2.3; closed generated declaration; placeholders: []; delegation aliases, if any, per ADR-0013 section 10"
     },
     {
       "source": "spec/02_drawing.md:1320",
       "section": "13.5",
       "requirement": "| `draw.ellipse.add` | action | Add an ellipse as a closed pencil path (\"Ellipse Tool\") | `drawingId?: id; from: point; to: point; circle: bool = false; fromCentre: bool = false; colourId?: id; thickness?: number; penId?: id; layer: enum \"auto\"\\|\"new\"\\|\"top\"\\|\"behind\" \\| id = \"auto\"; symmetry: bool = true` | `{strokeIds: [id], zoneIds: [id], layerId, rev}` | yes |",
       "status": "deferred-with-owner",
-      "evidence": "M2 C2.3; generated declaration / SI-026; plan section 4"
+      "evidence": "M2 C2.3; closed generated declaration; placeholders: []; delegation aliases, if any, per ADR-0013 section 10"
     },
     {
       "source": "spec/02_drawing.md:1321",
       "section": "13.5",
       "requirement": "| `draw.line.add` | action | Add a straight pencil line (\"Line Tool\") | `drawingId?: id; from?: point; to: point; continuePrevious: bool = false; constrainAngle: bool = false; colourId?: id; thickness?: number; penId?: id; layer: enum \"auto\"\\|\"new\"\\|\"top\"\\|\"behind\" \\| id = \"auto\"; symmetry: bool = true` | `{strokeIds: [id], zoneIds: [id], layerId, rev}` | yes |",
       "status": "deferred-with-owner",
-      "evidence": "M2 C2.3; generated declaration / SI-026; plan section 4"
+      "evidence": "M2 C2.3; closed generated declaration; placeholders: []; delegation aliases, if any, per ADR-0013 section 10"
     },
     {
       "source": "spec/02_drawing.md:1322",
       "section": "13.5",
       "requirement": "| `draw.polyline.add` | action | Add a polyline of straight/curved segments (\"Polyline Tool\") | `drawingId?: id; points: [{x,y,inHandle?: point,outHandle?: point}]; closed: bool = false; snap: bool = true; snapRadius: number = 8 (view px); colourId?: id; thickness?: number; penId?: id; layer: enum \"auto\"\\|\"new\"\\|\"top\"\\|\"behind\" \\| id = \"auto\"; symmetry: bool = true` | `{strokeIds: [id], zoneIds: [id], layerId, rev}` | yes |",
       "status": "deferred-with-owner",
-      "evidence": "M2 C2.3; generated declaration / SI-026; plan section 4"
+      "evidence": "M2 C2.3; closed generated declaration; placeholders: []; delegation aliases, if any, per ADR-0013 section 10"
     },
     {
       "source": "spec/02_drawing.md:1323",
       "section": "13.5",
       "requirement": "| `draw.text.add` | action | Add a text object (\"New Text Object\") | `drawingId?: id; position: point; text: string; width?: number (fixed width; omit = auto); format?: object (Text panel fields); colourId?: id` | `{textId, bounds, rev}` | yes |",
-      "status": "implemented",
-      "evidence": "crates/executor/src/commands/draw_text.rs:256; c21_draw / c21_example_results; Implemented subset; event/result omissions C21-R1-07/08 apply to edits"
+      "status": "divergent",
+      "evidence": "crates/executor/src/commands/draw_text.rs:256; c21_draw / c21_example_results; Divergent C21-R1-09"
     },
     {
       "source": "spec/02_drawing.md:1324",
       "section": "13.5",
       "requirement": "| `draw.text.set` | action | Replace or edit text content, width mode or position (\"Typing\"/\"Set Text Width\"/\"Move Text Object\") | `textId: id; text?: string; insert?: {at: int, text: string}; delete?: {start: int, length: int}; widthMode?: enum \"auto\"\\|\"fixed\"; width?: number; position?: point` | `{textId, bounds, rev}` | yes |",
       "status": "divergent",
-      "evidence": "crates/executor/src/commands/draw_text.rs:403; c21_draw / c21_example_results; Divergent C21-R1-03, 08"
+      "evidence": "crates/executor/src/commands/draw_text.rs:403; c21_draw / c21_example_results; Divergent C21-R1-03, 08, 09"
     },
     {
       "source": "spec/02_drawing.md:1325",
@@ -1291,211 +1431,211 @@
       "source": "spec/02_drawing.md:1328",
       "section": "13.5",
       "requirement": "| `draw.object.delete` | action | Delete objects (\"Delete Object\") | `drawingId?: id; ids?: [id] = selection` | `{removedIds: [id], rev}` | yes |",
-      "status": "implemented",
-      "evidence": "crates/executor/src/commands/draw.rs:629; c21_draw / c21_example_results; Implemented subset; event/result omissions C21-R1-07/08 apply to edits"
+      "status": "divergent",
+      "evidence": "crates/executor/src/commands/draw.rs:629; c21_draw / c21_example_results; Divergent C21-R1-08"
     },
     {
       "source": "spec/02_drawing.md:1329",
       "section": "13.5",
       "requirement": "| `draw.selection.set` | ui | Select drawing objects by IDs, point, rectangle, lasso, all or none | `drawingId?: id; by: enum \"ids\"\\|\"point\"\\|\"rect\"\\|\"lasso\"\\|\"all\"\\|\"none\" = \"ids\"; ids?: [id]; point?: point; rect?: {x,y,width,height}; polygon?: [point]; rectRule: enum \"inside\"\\|\"intersect\" = \"inside\"; mode: enum \"replace\"\\|\"add\"\\|\"toggle\"\\|\"remove\" = \"replace\"` | `{selectedIds: [id], bounds}` | no |",
       "status": "deferred-with-owner",
-      "evidence": "M2 C2.3; generated declaration / SI-026; plan section 4"
+      "evidence": "M2 C2.3; closed generated declaration; placeholders: []; delegation aliases, if any, per ADR-0013 section 10"
     },
     {
       "source": "spec/02_drawing.md:1330",
       "section": "13.5",
       "requirement": "| `draw.selection.get` | query | Current drawing selection | `drawingId?: id` | `{selectedIds: [id], bounds, selectedPoints: [{strokeId, anchor}]}` | n/a |",
       "status": "deferred-with-owner",
-      "evidence": "M2 C2.3; generated declaration / SI-026; plan section 4"
+      "evidence": "M2 C2.3; closed generated declaration; placeholders: []; delegation aliases, if any, per ADR-0013 section 10"
     },
     {
       "source": "spec/02_drawing.md:1331",
       "section": "13.5",
       "requirement": "| `draw.pointSelection.set` | ui | Select anchor points (Contour Editor selection) | `drawingId?: id; points?: [{strokeId, anchor: int}]; rect?: {x,y,width,height}; mode: enum \"replace\"\\|\"add\"\\|\"toggle\"\\|\"remove\" = \"replace\"` | `{selectedPoints: [{strokeId, anchor}]}` | no |",
       "status": "deferred-with-owner",
-      "evidence": "M2 C2.3; generated declaration / SI-026; plan section 4"
+      "evidence": "M2 C2.3; closed generated declaration; placeholders: []; delegation aliases, if any, per ADR-0013 section 10"
     },
     {
       "source": "spec/02_drawing.md:1332",
       "section": "13.5",
       "requirement": "| `draw.transform.apply` | action | Move/scale/rotate/skew objects numerically, optionally as a copy (\"Move/Scale/Rotate Object\", \"Copy Object\") | `drawingId?: id; ids?: [id] = selection; translate?: point; scale?: {x,y}; rotate?: number (degrees, CCW); skew?: {x,y} (degrees); pivot?: point = selection bounds centre; matrix?: [number] (overrides the others); copy: bool = false` | `{ids: [id], removedIds: [id], rev}` | yes |",
       "status": "deferred-with-owner",
-      "evidence": "M2 C2.3; generated declaration / SI-026; plan section 4"
+      "evidence": "M2 C2.3; closed generated declaration; placeholders: []; delegation aliases, if any, per ADR-0013 section 10"
     },
     {
       "source": "spec/02_drawing.md:1333",
       "section": "13.5",
       "requirement": "| `draw.flip.apply` | action | Flip selection (\"Flip Horizontal\"/\"Flip Vertical\") | `drawingId?: id; ids?: [id] = selection; axis: enum \"horizontal\"\\|\"vertical\"` | `{ids: [id], rev}` | yes |",
       "status": "deferred-with-owner",
-      "evidence": "M2 C2.3; generated declaration / SI-026; plan section 4"
+      "evidence": "M2 C2.3; closed generated declaration; placeholders: []; delegation aliases, if any, per ADR-0013 section 10"
     },
     {
       "source": "spec/02_drawing.md:1334",
       "section": "13.5",
       "requirement": "| `draw.rotate.apply` | action | Rotate selection by a fixed step (\"Rotate 90° CW\"/\"Rotate 90° CCW\"/\"Rotate 180°\") | `drawingId?: id; ids?: [id] = selection; by: enum \"90cw\"\\|\"90ccw\"\\|\"180\"` | `{ids: [id], rev}` | yes |",
       "status": "deferred-with-owner",
-      "evidence": "M2 C2.3; generated declaration / SI-026; plan section 4"
+      "evidence": "M2 C2.3; closed generated declaration; placeholders: []; delegation aliases, if any, per ADR-0013 section 10"
     },
     {
       "source": "spec/02_drawing.md:1335",
       "section": "13.5",
       "requirement": "| `draw.envelope.apply` | action | Perspective/envelope distortion of the selection (\"Perspective Tool\") | `drawingId?: id; ids?: [id] = selection; corners: [point] (4 targets for the bounds corners: bottom-left, bottom-right, top-right, top-left); mapping: enum \"auto\"\\|\"projective\"\\|\"bilinear\" = \"auto\"` | `{ids: [id], rev}` | yes |",
       "status": "deferred-with-owner",
-      "evidence": "M2 C2.3; generated declaration / SI-026; plan section 4"
+      "evidence": "M2 C2.3; closed generated declaration; placeholders: []; delegation aliases, if any, per ADR-0013 section 10"
     },
     {
       "source": "spec/02_drawing.md:1336",
       "section": "13.5",
       "requirement": "| `draw.repositionAll.apply` | action | Apply one transform to every drawing of an element (\"Reposition All Drawings\") | `elementId?: id = current; translate?: point; scale?: {x,y}; rotate?: number; pivot?: point = {0,0}; matrix?: [number]; corners?: [point]` | `{drawingIds: [id]}` | yes |",
       "status": "deferred-with-owner",
-      "evidence": "M2 C2.3; generated declaration / SI-026; plan section 4"
+      "evidence": "M2 C2.3; closed generated declaration; placeholders: []; delegation aliases, if any, per ADR-0013 section 10"
     },
     {
       "source": "spec/02_drawing.md:1337",
       "section": "13.5",
       "requirement": "| `draw.point.add` | action | Add an anchor on a stroke without changing its shape (\"Contour Editing\") | `strokeId: id; at?: point (nearest location); segment?: int; t?: number (0–1)` | `{strokeId, anchor: int, rev}` | yes |",
       "status": "deferred-with-owner",
-      "evidence": "M2 C2.3; generated declaration / SI-026; plan section 4"
+      "evidence": "M2 C2.3; closed generated declaration; placeholders: []; delegation aliases, if any, per ADR-0013 section 10"
     },
     {
       "source": "spec/02_drawing.md:1338",
       "section": "13.5",
       "requirement": "| `draw.point.move` | action | Move anchors (shared junction anchors move together) (\"Contour Editing\") | `points?: [{strokeId, anchor: int}] = point selection; delta: point; snap?: bool = Snap to Contour setting` | `{modifiedIds: [id], rev}` | yes |",
       "status": "deferred-with-owner",
-      "evidence": "M2 C2.3; generated declaration / SI-026; plan section 4"
+      "evidence": "M2 C2.3; closed generated declaration; placeholders: []; delegation aliases, if any, per ADR-0013 section 10"
     },
     {
       "source": "spec/02_drawing.md:1339",
       "section": "13.5",
       "requirement": "| `draw.point.set` | action | Set an anchor's position and handles (\"Contour Editing\") | `strokeId: id; anchor: int; position?: point; inHandle?: point; outHandle?: point; handleMode?: enum \"symmetric\"\\|\"broken\"\\|\"reset\"` | `{strokeId, rev}` | yes |",
       "status": "deferred-with-owner",
-      "evidence": "M2 C2.3; generated declaration / SI-026; plan section 4"
+      "evidence": "M2 C2.3; closed generated declaration; placeholders: []; delegation aliases, if any, per ADR-0013 section 10"
     },
     {
       "source": "spec/02_drawing.md:1340",
       "section": "13.5",
       "requirement": "| `draw.point.delete` | action | Delete anchors; strokes rebuilt or removed (\"Contour Editing\") | `points?: [{strokeId, anchor: int}] = point selection` | `{modifiedIds: [id], removedIds: [id], rev}` | yes |",
       "status": "deferred-with-owner",
-      "evidence": "M2 C2.3; generated declaration / SI-026; plan section 4"
+      "evidence": "M2 C2.3; closed generated declaration; placeholders: []; delegation aliases, if any, per ADR-0013 section 10"
     },
     {
       "source": "spec/02_drawing.md:1341",
       "section": "13.5",
       "requirement": "| `draw.segment.move` | action | Reshape a segment so its point at t moves by delta (\"Contour Editing\") | `strokeId: id; segment: int; t: number = 0.5 (0–1); delta: point` | `{strokeId, rev}` | yes |",
       "status": "deferred-with-owner",
-      "evidence": "M2 C2.3; generated declaration / SI-026; plan section 4"
+      "evidence": "M2 C2.3; closed generated declaration; placeholders: []; delegation aliases, if any, per ADR-0013 section 10"
     },
     {
       "source": "spec/02_drawing.md:1342",
       "section": "13.5",
       "requirement": "| `draw.erase.apply` | action | Erase along a path with the eraser tip, or everything inside a region (\"Eraser Tool\") | `drawingId?: id; path?: [{x,y,pressure?}]; penId?: id = current eraser pen; pen?: object; region?: [point] (closed polygon); layers: enum \"all\" \\| [id] = \"all\"` | `{removedIds: [id], createdIds: [id], rev}` | yes |",
       "status": "deferred-with-owner",
-      "evidence": "M2 C2.3; generated declaration / SI-026; plan section 4"
+      "evidence": "M2 C2.3; closed generated declaration; placeholders: [{'pointer': '/params/pen', 'kind': 'object without fields', 'side': 'params', 'issue': 'SI-026'}]; delegation aliases, if any, per ADR-0013 section 10"
     },
     {
       "source": "spec/02_drawing.md:1343",
       "section": "13.5",
       "requirement": "| `draw.cut.apply` | action | Cut artwork along a polygon or rectangle; inside part selected or deleted (\"Cutter Tool\"/\"Scissor Tool\") | `drawingId?: id; polygon?: [point]; rect?: {x,y,width,height}; then: enum \"select\"\\|\"delete\" = \"select\"` | `{insideIds: [id], removedIds: [id], rev}` | yes |",
       "status": "deferred-with-owner",
-      "evidence": "M2 C2.3; generated declaration / SI-026; plan section 4"
+      "evidence": "M2 C2.3; closed generated declaration; placeholders: []; delegation aliases, if any, per ADR-0013 section 10"
     },
     {
       "source": "spec/02_drawing.md:1344",
       "section": "13.5",
       "requirement": "| `draw.group.create` | action | Group objects (\"Group Selection\") | `drawingId?: id; ids?: [id] = selection` | `{groupId, rev}` | yes |",
-      "status": "implemented",
-      "evidence": "crates/executor/src/commands/draw.rs:693; c21_draw / c21_example_results; Implemented subset; event/result omissions C21-R1-07/08 apply to edits"
+      "status": "divergent",
+      "evidence": "crates/executor/src/commands/draw.rs:693; c21_draw / c21_example_results; Divergent C21-R1-08"
     },
     {
       "source": "spec/02_drawing.md:1345",
       "section": "13.5",
       "requirement": "| `draw.group.delete` | action | Ungroup: dissolve groups, keep members (\"Ungroup Selection\") | `drawingId?: id; groupIds?: [id] = selected groups` | `{memberIds: [id], rev}` | yes |",
-      "status": "implemented",
-      "evidence": "crates/executor/src/commands/draw.rs:844; c21_draw / c21_example_results; Implemented subset; event/result omissions C21-R1-07/08 apply to edits"
+      "status": "divergent",
+      "evidence": "crates/executor/src/commands/draw.rs:844; c21_draw / c21_example_results; Divergent C21-R1-08"
     },
     {
       "source": "spec/02_drawing.md:1346",
       "section": "13.5",
       "requirement": "| `draw.arrange.apply` | action | Change stacking order (\"Bring to Front\", \"Bring Forward\", \"Send Backward\", \"Send to Back\") | `drawingId?: id; ids?: [id] = selection; to: enum \"front\"\\|\"forward\"\\|\"backward\"\\|\"back\"` | `{order: [id], rev}` | yes |",
       "status": "deferred-with-owner",
-      "evidence": "M2 C2.3; generated declaration / SI-026; plan section 4"
+      "evidence": "M2 C2.3; closed generated declaration; placeholders: []; delegation aliases, if any, per ADR-0013 section 10"
     },
     {
       "source": "spec/02_drawing.md:1347",
       "section": "13.5",
       "requirement": "| `draw.flatten.apply` | action | Merge selected layers into one (\"Flatten Drawing\") | `drawingId?: id; ids?: [id] = selection` | `{layerId, removedIds: [id], rev}` | yes |",
       "status": "deferred-with-owner",
-      "evidence": "M2 C2.3; generated declaration / SI-026; plan section 4"
+      "evidence": "M2 C2.3; closed generated declaration; placeholders: []; delegation aliases, if any, per ADR-0013 section 10"
     },
     {
       "source": "spec/02_drawing.md:1348",
       "section": "13.5",
       "requirement": "| `draw.optimize.apply` | action | Merge layers only where appearance is unchanged (\"Optimize Drawing\") | `drawingId?: id; ids?: [id] = selection` | `{layerIds: [id], merged: int, rev}` | yes |",
       "status": "deferred-with-owner",
-      "evidence": "M2 C2.3; generated declaration / SI-026; plan section 4"
+      "evidence": "M2 C2.3; closed generated declaration; placeholders: []; delegation aliases, if any, per ADR-0013 section 10"
     },
     {
       "source": "spec/02_drawing.md:1349",
       "section": "13.5",
       "requirement": "| `draw.smooth.apply` | action | Remove unnecessary points (\"Smooth Selection\") | `drawingId?: id; ids?: [id] = selection; points?: [{strokeId, anchor}]; tolerance: number = 1 (du)` | `{removedPointCount: int, rev}` | yes |",
       "status": "deferred-with-owner",
-      "evidence": "M2 C2.3; generated declaration / SI-026; plan section 4"
+      "evidence": "M2 C2.3; closed generated declaration; placeholders: []; delegation aliases, if any, per ADR-0013 section 10"
     },
     {
       "source": "spec/02_drawing.md:1350",
       "section": "13.5",
       "requirement": "| `draw.centreLine.apply` | action | Convert brush strokes to pencil lines (\"Extract Centre Line\") | `drawingId?: id; ids?: [id] = selection; thickness?: number (default: average source width)` | `{strokeIds: [id], removedIds: [id], warnings: [code], rev}` | yes |",
       "status": "deferred-with-owner",
-      "evidence": "M2 C2.3; generated declaration / SI-026; plan section 4"
+      "evidence": "M2 C2.3; closed generated declaration; placeholders: []; delegation aliases, if any, per ADR-0013 section 10"
     },
     {
       "source": "spec/02_drawing.md:1351",
       "section": "13.5",
       "requirement": "| `draw.linesToBrush.apply` | action | Convert centre lines to brush strokes (\"Convert Lines to Brush\") | `drawingId?: id; ids?: [id] = selection; penId?: id = current brush pen` | `{strokeIds: [id], rev}` | yes |",
       "status": "deferred-with-owner",
-      "evidence": "M2 C2.3; generated declaration / SI-026; plan section 4"
+      "evidence": "M2 C2.3; closed generated declaration; placeholders: []; delegation aliases, if any, per ADR-0013 section 10"
     },
     {
       "source": "spec/02_drawing.md:1352",
       "section": "13.5",
       "requirement": "| `draw.breakApart.apply` | action | Convert text to per-character vector groups (\"Break Text Apart\") | `drawingId?: id; textIds?: [id] = selected text` | `{groupIds: [id], rev}` | yes |",
       "status": "deferred-with-owner",
-      "evidence": "M2 C2.3; generated declaration / SI-026; plan section 4"
+      "evidence": "M2 C2.3; closed generated declaration; placeholders: []; delegation aliases, if any, per ADR-0013 section 10"
     },
     {
       "source": "spec/02_drawing.md:1353",
       "section": "13.5",
       "requirement": "| `draw.feather.apply` | job | Feather edges of filled shapes (\"Feather Edges\") | `drawingId?: id; ids?: [id] = selection; stepWidth: int = 10 (5–100); steps: int = 5 (3–100); confirm: bool = false` | `{jobId}` → `{layerIds: [id], skippedTextured: int, warnings: [code], rev}` or `{needs_confirmation}` | yes |",
       "status": "deferred-with-owner",
-      "evidence": "M2 C2.3; generated declaration / SI-026; plan section 4"
+      "evidence": "M2 C2.3; closed generated declaration; placeholders: []; delegation aliases, if any, per ADR-0013 section 10"
     },
     {
       "source": "spec/02_drawing.md:1354",
       "section": "13.5",
       "requirement": "| `draw.vectorize.run` | job | Import and vectorize image files, or convert an image element, into drawings (\"Import and Vectorize\"); omitted options default to `import.vectorize.settings.get` (09) | `files?: [path]; imageElementId?: id; targetElementId?: id (default: selected; new element if none); startFrame?: int = selected cell; type: enum \"blackAndWhite\"\\|\"withTexture\" = \"blackAndWhite\"; filter: enum \"none\"\\|\"smooth\"\\|\"smoothMore\"\\|\"edgeEnhance\"\\|\"sharpen\" = \"none\"; threshold: int = 70 (0–100); onConflict: enum \"ask\"\\|\"replace\"\\|\"skip\" = \"ask\"` | `{jobId}` → `{elementId, drawingIds: [id], completed: int, cancelled: bool}` | yes |",
       "status": "deferred-with-owner",
-      "evidence": "M2 C2.4; generated declaration / SI-026; plan section 4"
+      "evidence": "M2 C2.4; closed generated declaration; placeholders: []; delegation aliases, if any, per ADR-0013 section 10"
     },
     {
       "source": "spec/02_drawing.md:1355",
       "section": "13.5",
       "requirement": "| `draw.vectorize.preview` | query | Preview vectorization of one image as PNG | `file?: path; imageElementId?: id; frame?: int; type: enum \"blackAndWhite\"\\|\"withTexture\" = \"blackAndWhite\"; filter: enum \"none\"\\|\"smooth\"\\|\"smoothMore\"\\|\"edgeEnhance\"\\|\"sharpen\" = \"none\"; threshold: int = 70 (0–100); width: int = 512` | `{png, strokeCount: int}` | n/a |",
       "status": "deferred-with-owner",
-      "evidence": "M2 C2.4; generated declaration / SI-026; plan section 4"
+      "evidence": "M2 C2.4; closed generated declaration; placeholders: []; delegation aliases, if any, per ADR-0013 section 10"
     },
     {
       "source": "spec/02_drawing.md:1356",
       "section": "13.5",
       "requirement": "| `draw.vectorFile.import` | job | Import an Illustrator/PDF file into a drawing (\"Import Vector File\") | `file: path; drawingId?: id; elementId?: id; frame?: int; page: int = 1` | `{jobId}` → `{drawingId, objectIds: [id], addedColourIds: [id], warnings: [string], rev}` | yes |",
       "status": "deferred-with-owner",
-      "evidence": "M10 C10.2; generated declaration / SI-026; plan section 4"
+      "evidence": "M2 C2.4; closed generated declaration; placeholders: []; delegation aliases, if any, per ADR-0013 section 10"
     },
     {
       "source": "spec/02_drawing.md:1357",
       "section": "13.5",
       "requirement": "| `draw.inspectorPreview.set` | ui | Show/hide the drawing thumbnail in the inspector | `visible: bool` | `{visible}` | no |",
       "status": "deferred-with-owner",
-      "evidence": "M4 C4.2 (M7 C7.1 current colour); generated closed SI-tagged declarations in crates/registry/src/declared.json; plan section 4"
+      "evidence": "M2 C2.3; closed generated declaration; placeholders: []; delegation aliases, if any, per ADR-0013 section 10"
     },
     {
       "source": "spec/02_drawing.md:1358",
@@ -1509,7 +1649,7 @@
       "section": "13.5",
       "requirement": "| `draw.selection.changed` | event | Drawing selection changed | — | `{drawingId, selectedIds: [id], selectedPoints: [object]}` | n/a |",
       "status": "deferred-with-owner",
-      "evidence": "M4 C4.2 (M7 C7.1 current colour); generated closed SI-tagged declarations in crates/registry/src/declared.json; plan section 4"
+      "evidence": "M2 C2.3; closed generated declaration; placeholders: []; delegation aliases, if any, per ADR-0013 section 10"
     },
     {
       "source": "spec/02_drawing.md:1360",
@@ -1862,6 +2002,20 @@
       "evidence": "crates/vector/src/readback.schema.json:1 / drawing.rs / content.rs; c21_draw read-back and content round-trip; SI-053/054/055/057 qualifications in report"
     },
     {
+      "source": "spec/10_data_model_project_format.md:477",
+      "section": "4.8",
+      "requirement": "**drawingBank**: `drawings: [drawing]` (unordered; displayed in natural name order). Derived: `elementIds` (the clone group). A bank is created with its first element; clones share it (04 §8.1); when the last element using a bank is deleted, the bank and its drawings are deleted in the same transaction.",
+      "status": "implemented",
+      "evidence": "crates/model/src/entities/drawing.rs:435 and validate.rs; c21_obligations saved/reopened; c21_r1_surfaces both forms; zones C2.2"
+    },
+    {
+      "source": "spec/10_data_model_project_format.md:481",
+      "section": "4.8",
+      "requirement": "**drawing**",
+      "status": "implemented",
+      "evidence": "crates/model/src/entities/drawing.rs:435 and validate.rs; c21_obligations saved/reopened; c21_r1_surfaces both forms; zones C2.2"
+    },
+    {
       "source": "spec/10_data_model_project_format.md:485",
       "section": "4.8",
       "requirement": "| `name` | string | next unused integer | Unique in bank; §1.3. Shared by all clones. |",
@@ -1911,6 +2065,20 @@
       "evidence": "crates/model/src/entities/drawing.rs:435 and validate.rs; c21_obligations saved/reopened; c21_r1_surfaces both forms; zones C2.2"
     },
     {
+      "source": "spec/10_data_model_project_format.md:493",
+      "section": "4.8",
+      "requirement": "Derived: `thumbnail` (blob), `usage` (`[{elementId, ranges: [{from, to}]}]`), `isEmpty`, and with `include: [\"derived\"]`, `zones` per layer: `[{zoneId, layerId, colourId | null, matrix | null, bounds, area, boundingStrokeIds}]` (zone IDs transient, ID-03).",
+      "status": "implemented",
+      "evidence": "crates/model/src/entities/drawing.rs:435 and validate.rs; c21_obligations saved/reopened; c21_r1_surfaces both forms; zones C2.2"
+    },
+    {
+      "source": "spec/10_data_model_project_format.md:499",
+      "section": "4.9",
+      "requirement": "Every node has a local `id`, a `kind` and an optional `name`. Semantics in section 02 §3.",
+      "status": "divergent",
+      "evidence": "crates/model/src/entities/drawing.rs:1; C21-R1-04/05; c21_r1_surfaces types round-trip; brush contours SI-053 and text outline SI-055 qualified"
+    },
+    {
       "source": "spec/10_data_model_project_format.md:503",
       "section": "4.9",
       "requirement": "| `layer` | `hint`: `brush` \\| `pencil`; `strokes`: [stroke] |",
@@ -1935,6 +2103,13 @@
       "source": "spec/10_data_model_project_format.md:506",
       "section": "4.9",
       "requirement": "| `bitmap` | `image`: blob (PNG, 8-bit RGBA, straight alpha); `width`, `height` (pixels, 1–16384); `transform`: matrix2d mapping pixel space (origin top-left, y down) to drawing space |",
+      "status": "divergent",
+      "evidence": "crates/model/src/entities/drawing.rs:1; C21-R1-04/05; c21_r1_surfaces types round-trip; brush contours SI-053 and text outline SI-055 qualified"
+    },
+    {
+      "source": "spec/10_data_model_project_format.md:508",
+      "section": "4.9",
+      "requirement": "**stroke**",
       "status": "divergent",
       "evidence": "crates/model/src/entities/drawing.rs:1; C21-R1-04/05; c21_r1_surfaces types round-trip; brush contours SI-053 and text outline SI-055 qualified"
     },
@@ -1995,6 +2170,27 @@
       "evidence": "crates/model/src/entities/drawing.rs:1; C21-R1-04/05; c21_r1_surfaces types round-trip; brush contours SI-053 and text outline SI-055 qualified"
     },
     {
+      "source": "spec/10_data_model_project_format.md:521",
+      "section": "4.9",
+      "requirement": "Zone fills are persisted on the bounding strokes' sides; zones themselves are derived on load. All strokes bounding the same zone MUST carry the same fill for that side; on load, disagreement is resolved in favour of the fill held by the longest bounding length and reported (`drawing.fillInconsistent`, repaired).",
+      "status": "divergent",
+      "evidence": "crates/model/src/entities/drawing.rs:1; C21-R1-04/05; c21_r1_surfaces types round-trip; brush contours SI-053 and text outline SI-055 qualified"
+    },
+    {
+      "source": "spec/10_data_model_project_format.md:527",
+      "section": "4.10",
+      "requirement": "A drawing of an `image` element contains exactly one `bitmap` node (pixels plus placement). Import placement rules are in section 09; conversion to vector replaces the node by vector layers (04 §2.3).",
+      "status": "implemented",
+      "evidence": "crates/model/src/validate.rs and document/; retained c11_r1_adversarial::image_element_bank_requires_exactly_one_bitmap_per_drawing; image import M10 C10.2"
+    },
+    {
+      "source": "spec/10_data_model_project_format.md:532",
+      "section": "4.11",
+      "requirement": "`colourRecovery` = `[{ \"colourId\", \"paletteId\", \"paletteName\", \"styles\": [{ \"styleId\", \"styleName\" }], \"swatch\": {…} }]` where `swatch` is the full swatch object of section 03 §12.3 (all style values; texture images referenced as entries of the containing package).",
+      "status": "deferred-with-owner",
+      "evidence": "M2 C2.2 colour recovery/save population; colour.unresolved and opaque extension preservation retained, c21_obligations"
+    },
+    {
       "source": "spec/10_data_model_project_format.md:536",
       "section": "4.11",
       "requirement": "- On save, each drawing's list MUST hold exactly one entry for every colour ID its strokes, sides and text use, reflecting the current definitions.",
@@ -2013,28 +2209,28 @@
       "section": "A",
       "requirement": "| `draw.arrange.apply` | action | Change stacking order (\"Bring to Front\", \"Bring Forward\", \"Send Backward\", \"Send to Back\") | `drawingId?: id; ids?: [id] = selection; to: enum \"front\"\\|\"forward\"\\|\"backward\"\\|\"back\"` | `{order: [id], rev}` | yes |",
       "status": "deferred-with-owner",
-      "evidence": "M2 C2.3; generated declaration / SI-026; plan section 4"
+      "evidence": "M2 C2.3; closed generated declaration; placeholders: []; delegation aliases, if any, per ADR-0013 section 10"
     },
     {
       "source": "spec/A_command_registry.md:228",
       "section": "A",
       "requirement": "| `draw.bounds.get` | query | Bounding box of the drawing or of given objects | `drawingId?: id; ids?: [id]; includeInvisible: bool = false` | `{bounds: {x,y,width,height}\\|null}` | n/a |",
       "status": "deferred-with-owner",
-      "evidence": "M2 C2.3; generated declaration / SI-026; plan section 4"
+      "evidence": "M2 C2.3; closed generated declaration; placeholders: []; delegation aliases, if any, per ADR-0013 section 10"
     },
     {
       "source": "spec/A_command_registry.md:229",
       "section": "A",
       "requirement": "| `draw.breakApart.apply` | action | Convert text to per-character vector groups (\"Break Text Apart\") | `drawingId?: id; textIds?: [id] = selected text` | `{groupIds: [id], rev}` | yes |",
       "status": "deferred-with-owner",
-      "evidence": "M2 C2.3; generated declaration / SI-026; plan section 4"
+      "evidence": "M2 C2.3; closed generated declaration; placeholders: []; delegation aliases, if any, per ADR-0013 section 10"
     },
     {
       "source": "spec/A_command_registry.md:230",
       "section": "A",
       "requirement": "| `draw.centreLine.apply` | action | Convert brush strokes to pencil lines (\"Extract Centre Line\") | `drawingId?: id; ids?: [id] = selection; thickness?: number (default: average source width)` | `{strokeIds: [id], removedIds: [id], warnings: [code], rev}` | yes |",
       "status": "deferred-with-owner",
-      "evidence": "M2 C2.3; generated declaration / SI-026; plan section 4"
+      "evidence": "M2 C2.3; closed generated declaration; placeholders: []; delegation aliases, if any, per ADR-0013 section 10"
     },
     {
       "source": "spec/A_command_registry.md:231",
@@ -2055,7 +2251,7 @@
       "section": "A",
       "requirement": "| `draw.cut.apply` | action | Cut artwork along a polygon or rectangle; inside part selected or deleted (\"Cutter Tool\"/\"Scissor Tool\") | `drawingId?: id; polygon?: [point]; rect?: {x,y,width,height}; then: enum \"select\"\\|\"delete\" = \"select\"` | `{insideIds: [id], removedIds: [id], rev}` | yes |",
       "status": "deferred-with-owner",
-      "evidence": "M2 C2.3; generated declaration / SI-026; plan section 4"
+      "evidence": "M2 C2.3; closed generated declaration; placeholders: []; delegation aliases, if any, per ADR-0013 section 10"
     },
     {
       "source": "spec/A_command_registry.md:234",
@@ -2076,224 +2272,224 @@
       "section": "A",
       "requirement": "| `draw.drawing.rename` | action | Rename a drawing (\"Rename Drawing\") | `drawingId?: id; name: string` | `{drawingId, name}` | yes |",
       "status": "deferred-with-owner",
-      "evidence": "M3 C3.1; delegation to element.drawing.rename / element.drawingLock.set per ADR-0013 section 10"
+      "evidence": "M2 C2.3; closed generated declaration; placeholders: []; delegation aliases, if any, per ADR-0013 section 10"
     },
     {
       "source": "spec/A_command_registry.md:237",
       "section": "A",
       "requirement": "| `draw.drawing.render` | query | Render a drawing to PNG at a requested size | `drawingId?: id; width: int (1–8192); height?: int (1–8192); region: enum \"bounds\"\\|\"field12\"\\|\"field16\"\\|\"camera\" \\| object {x,y,width,height} = \"bounds\"; padding: number = 0; background: colour = #00000000; styleId?: id; showStrokes: bool = false; showSelection: bool = false; path?: path` | `{png?, path?, width, height, drawingToPixel: [number], rev}` | n/a |",
       "status": "deferred-with-owner",
-      "evidence": "M2 C2.3; generated declaration / SI-026; plan section 4"
+      "evidence": "M2 C2.3; closed generated declaration; placeholders: []; delegation aliases, if any, per ADR-0013 section 10"
     },
     {
       "source": "spec/A_command_registry.md:238",
       "section": "A",
       "requirement": "| `draw.ellipse.add` | action | Add an ellipse as a closed pencil path (\"Ellipse Tool\") | `drawingId?: id; from: point; to: point; circle: bool = false; fromCentre: bool = false; colourId?: id; thickness?: number; penId?: id; layer: enum \"auto\"\\|\"new\"\\|\"top\"\\|\"behind\" \\| id = \"auto\"; symmetry: bool = true` | `{strokeIds: [id], zoneIds: [id], layerId, rev}` | yes |",
       "status": "deferred-with-owner",
-      "evidence": "M2 C2.3; generated declaration / SI-026; plan section 4"
+      "evidence": "M2 C2.3; closed generated declaration; placeholders: []; delegation aliases, if any, per ADR-0013 section 10"
     },
     {
       "source": "spec/A_command_registry.md:239",
       "section": "A",
       "requirement": "| `draw.envelope.apply` | action | Perspective/envelope distortion of the selection (\"Perspective Tool\") | `drawingId?: id; ids?: [id] = selection; corners: [point] (4 targets for the bounds corners: bottom-left, bottom-right, top-right, top-left); mapping: enum \"auto\"\\|\"projective\"\\|\"bilinear\" = \"auto\"` | `{ids: [id], rev}` | yes |",
       "status": "deferred-with-owner",
-      "evidence": "M2 C2.3; generated declaration / SI-026; plan section 4"
+      "evidence": "M2 C2.3; closed generated declaration; placeholders: []; delegation aliases, if any, per ADR-0013 section 10"
     },
     {
       "source": "spec/A_command_registry.md:240",
       "section": "A",
       "requirement": "| `draw.erase.apply` | action | Erase along a path with the eraser tip, or everything inside a region (\"Eraser Tool\") | `drawingId?: id; path?: [{x,y,pressure?}]; penId?: id = current eraser pen; pen?: object; region?: [point] (closed polygon); layers: enum \"all\" \\| [id] = \"all\"` | `{removedIds: [id], createdIds: [id], rev}` | yes |",
       "status": "deferred-with-owner",
-      "evidence": "M2 C2.3; generated declaration / SI-026; plan section 4"
+      "evidence": "M2 C2.3; closed generated declaration; placeholders: [{'pointer': '/params/pen', 'kind': 'object without fields', 'side': 'params', 'issue': 'SI-026'}]; delegation aliases, if any, per ADR-0013 section 10"
     },
     {
       "source": "spec/A_command_registry.md:241",
       "section": "A",
       "requirement": "| `draw.feather.apply` | job | Feather edges of filled shapes (\"Feather Edges\") | `drawingId?: id; ids?: [id] = selection; stepWidth: int = 10 (5–100); steps: int = 5 (3–100); confirm: bool = false` | `{jobId}` → `{layerIds: [id], skippedTextured: int, warnings: [code], rev}` or `{needs_confirmation}` | yes |",
       "status": "deferred-with-owner",
-      "evidence": "M2 C2.3; generated declaration / SI-026; plan section 4"
+      "evidence": "M2 C2.3; closed generated declaration; placeholders: []; delegation aliases, if any, per ADR-0013 section 10"
     },
     {
       "source": "spec/A_command_registry.md:242",
       "section": "A",
       "requirement": "| `draw.flatten.apply` | action | Merge selected layers into one (\"Flatten Drawing\") | `drawingId?: id; ids?: [id] = selection` | `{layerId, removedIds: [id], rev}` | yes |",
       "status": "deferred-with-owner",
-      "evidence": "M2 C2.3; generated declaration / SI-026; plan section 4"
+      "evidence": "M2 C2.3; closed generated declaration; placeholders: []; delegation aliases, if any, per ADR-0013 section 10"
     },
     {
       "source": "spec/A_command_registry.md:243",
       "section": "A",
       "requirement": "| `draw.flip.apply` | action | Flip selection (\"Flip Horizontal\"/\"Flip Vertical\") | `drawingId?: id; ids?: [id] = selection; axis: enum \"horizontal\"\\|\"vertical\"` | `{ids: [id], rev}` | yes |",
       "status": "deferred-with-owner",
-      "evidence": "M2 C2.3; generated declaration / SI-026; plan section 4"
+      "evidence": "M2 C2.3; closed generated declaration; placeholders: []; delegation aliases, if any, per ADR-0013 section 10"
     },
     {
       "source": "spec/A_command_registry.md:244",
       "section": "A",
       "requirement": "| `draw.group.create` | action | Group objects (\"Group Selection\") | `drawingId?: id; ids?: [id] = selection` | `{groupId, rev}` | yes |",
-      "status": "implemented",
-      "evidence": "crates/executor/src/commands/draw.rs:693; c21_draw / c21_example_results; Implemented subset; event/result omissions C21-R1-07/08 apply to edits"
+      "status": "divergent",
+      "evidence": "crates/executor/src/commands/draw.rs:693; c21_draw / c21_example_results; Divergent C21-R1-08"
     },
     {
       "source": "spec/A_command_registry.md:245",
       "section": "A",
       "requirement": "| `draw.group.delete` | action | Ungroup: dissolve groups, keep members (\"Ungroup Selection\") | `drawingId?: id; groupIds?: [id] = selected groups` | `{memberIds: [id], rev}` | yes |",
-      "status": "implemented",
-      "evidence": "crates/executor/src/commands/draw.rs:844; c21_draw / c21_example_results; Implemented subset; event/result omissions C21-R1-07/08 apply to edits"
+      "status": "divergent",
+      "evidence": "crates/executor/src/commands/draw.rs:844; c21_draw / c21_example_results; Divergent C21-R1-08"
     },
     {
       "source": "spec/A_command_registry.md:246",
       "section": "A",
       "requirement": "| `draw.hitTest.get` | query | Objects and zone under a point, front to back | `drawingId?: id; point: point; tolerance: number = 3 (view px); includeInvisible: bool = false` | `{hits: [object], zoneId\\|null, rev}` | n/a |",
       "status": "deferred-with-owner",
-      "evidence": "M2 C2.3; generated declaration / SI-026; plan section 4"
+      "evidence": "M2 C2.3; closed generated declaration; placeholders: [{'pointer': '/result/hits/*', 'kind': 'object without fields', 'side': 'result', 'issue': 'SI-026'}]; delegation aliases, if any, per ADR-0013 section 10"
     },
     {
       "source": "spec/A_command_registry.md:247",
       "section": "A",
       "requirement": "| `draw.inspectorPreview.set` | ui | Show/hide the drawing thumbnail in the inspector | `visible: bool` | `{visible}` | no |",
       "status": "deferred-with-owner",
-      "evidence": "M4 C4.2 (M7 C7.1 current colour); generated closed SI-tagged declarations in crates/registry/src/declared.json; plan section 4"
+      "evidence": "M2 C2.3; closed generated declaration; placeholders: []; delegation aliases, if any, per ADR-0013 section 10"
     },
     {
       "source": "spec/A_command_registry.md:248",
       "section": "A",
       "requirement": "| `draw.line.add` | action | Add a straight pencil line (\"Line Tool\") | `drawingId?: id; from?: point; to: point; continuePrevious: bool = false; constrainAngle: bool = false; colourId?: id; thickness?: number; penId?: id; layer: enum \"auto\"\\|\"new\"\\|\"top\"\\|\"behind\" \\| id = \"auto\"; symmetry: bool = true` | `{strokeIds: [id], zoneIds: [id], layerId, rev}` | yes |",
       "status": "deferred-with-owner",
-      "evidence": "M2 C2.3; generated declaration / SI-026; plan section 4"
+      "evidence": "M2 C2.3; closed generated declaration; placeholders: []; delegation aliases, if any, per ADR-0013 section 10"
     },
     {
       "source": "spec/A_command_registry.md:249",
       "section": "A",
       "requirement": "| `draw.linesToBrush.apply` | action | Convert centre lines to brush strokes (\"Convert Lines to Brush\") | `drawingId?: id; ids?: [id] = selection; penId?: id = current brush pen` | `{strokeIds: [id], rev}` | yes |",
       "status": "deferred-with-owner",
-      "evidence": "M2 C2.3; generated declaration / SI-026; plan section 4"
+      "evidence": "M2 C2.3; closed generated declaration; placeholders: []; delegation aliases, if any, per ADR-0013 section 10"
     },
     {
       "source": "spec/A_command_registry.md:250",
       "section": "A",
       "requirement": "| `draw.lock.set` | toggle | Lock or unlock a drawing (\"Lock Drawing\"/\"Unlock Drawing\") | `drawingId?: id; locked: bool` | `{drawingId, locked}` | yes |",
       "status": "deferred-with-owner",
-      "evidence": "M3 C3.1; delegation to element.drawing.rename / element.drawingLock.set per ADR-0013 section 10"
+      "evidence": "M2 C2.3; closed generated declaration; placeholders: []; delegation aliases, if any, per ADR-0013 section 10"
     },
     {
       "source": "spec/A_command_registry.md:251",
       "section": "A",
       "requirement": "| `draw.object.delete` | action | Delete objects (\"Delete Object\") | `drawingId?: id; ids?: [id] = selection` | `{removedIds: [id], rev}` | yes |",
-      "status": "implemented",
-      "evidence": "crates/executor/src/commands/draw.rs:629; c21_draw / c21_example_results; Implemented subset; event/result omissions C21-R1-07/08 apply to edits"
+      "status": "divergent",
+      "evidence": "crates/executor/src/commands/draw.rs:629; c21_draw / c21_example_results; Divergent C21-R1-08"
     },
     {
       "source": "spec/A_command_registry.md:252",
       "section": "A",
       "requirement": "| `draw.optimize.apply` | action | Merge layers only where appearance is unchanged (\"Optimize Drawing\") | `drawingId?: id; ids?: [id] = selection` | `{layerIds: [id], merged: int, rev}` | yes |",
       "status": "deferred-with-owner",
-      "evidence": "M2 C2.3; generated declaration / SI-026; plan section 4"
+      "evidence": "M2 C2.3; closed generated declaration; placeholders: []; delegation aliases, if any, per ADR-0013 section 10"
     },
     {
       "source": "spec/A_command_registry.md:253",
       "section": "A",
       "requirement": "| `draw.pivot.set` | action | Move the drawing pivot (\"Change Drawing Pivot\") | `drawingId?: id; point: point` | `{pivot, rev}` | yes |",
-      "status": "implemented",
-      "evidence": "crates/executor/src/commands/draw.rs:528; c21_draw / c21_example_results; Implemented subset; event/result omissions C21-R1-07/08 apply to edits"
+      "status": "divergent",
+      "evidence": "crates/executor/src/commands/draw.rs:528; c21_draw / c21_example_results; Divergent C21-R1-08"
     },
     {
       "source": "spec/A_command_registry.md:254",
       "section": "A",
       "requirement": "| `draw.point.add` | action | Add an anchor on a stroke without changing its shape (\"Contour Editing\") | `strokeId: id; at?: point (nearest location); segment?: int; t?: number (0–1)` | `{strokeId, anchor: int, rev}` | yes |",
       "status": "deferred-with-owner",
-      "evidence": "M2 C2.3; generated declaration / SI-026; plan section 4"
+      "evidence": "M2 C2.3; closed generated declaration; placeholders: []; delegation aliases, if any, per ADR-0013 section 10"
     },
     {
       "source": "spec/A_command_registry.md:255",
       "section": "A",
       "requirement": "| `draw.point.delete` | action | Delete anchors; strokes rebuilt or removed (\"Contour Editing\") | `points?: [{strokeId, anchor: int}] = point selection` | `{modifiedIds: [id], removedIds: [id], rev}` | yes |",
       "status": "deferred-with-owner",
-      "evidence": "M2 C2.3; generated declaration / SI-026; plan section 4"
+      "evidence": "M2 C2.3; closed generated declaration; placeholders: []; delegation aliases, if any, per ADR-0013 section 10"
     },
     {
       "source": "spec/A_command_registry.md:256",
       "section": "A",
       "requirement": "| `draw.point.move` | action | Move anchors (shared junction anchors move together) (\"Contour Editing\") | `points?: [{strokeId, anchor: int}] = point selection; delta: point; snap?: bool = Snap to Contour setting` | `{modifiedIds: [id], rev}` | yes |",
       "status": "deferred-with-owner",
-      "evidence": "M2 C2.3; generated declaration / SI-026; plan section 4"
+      "evidence": "M2 C2.3; closed generated declaration; placeholders: []; delegation aliases, if any, per ADR-0013 section 10"
     },
     {
       "source": "spec/A_command_registry.md:257",
       "section": "A",
       "requirement": "| `draw.point.set` | action | Set an anchor's position and handles (\"Contour Editing\") | `strokeId: id; anchor: int; position?: point; inHandle?: point; outHandle?: point; handleMode?: enum \"symmetric\"\\|\"broken\"\\|\"reset\"` | `{strokeId, rev}` | yes |",
       "status": "deferred-with-owner",
-      "evidence": "M2 C2.3; generated declaration / SI-026; plan section 4"
+      "evidence": "M2 C2.3; closed generated declaration; placeholders: []; delegation aliases, if any, per ADR-0013 section 10"
     },
     {
       "source": "spec/A_command_registry.md:258",
       "section": "A",
       "requirement": "| `draw.pointSelection.set` | ui | Select anchor points (Contour Editor selection) | `drawingId?: id; points?: [{strokeId, anchor: int}]; rect?: {x,y,width,height}; mode: enum \"replace\"\\|\"add\"\\|\"toggle\"\\|\"remove\" = \"replace\"` | `{selectedPoints: [{strokeId, anchor}]}` | no |",
       "status": "deferred-with-owner",
-      "evidence": "M2 C2.3; generated declaration / SI-026; plan section 4"
+      "evidence": "M2 C2.3; closed generated declaration; placeholders: []; delegation aliases, if any, per ADR-0013 section 10"
     },
     {
       "source": "spec/A_command_registry.md:259",
       "section": "A",
       "requirement": "| `draw.polyline.add` | action | Add a polyline of straight/curved segments (\"Polyline Tool\") | `drawingId?: id; points: [{x,y,inHandle?: point,outHandle?: point}]; closed: bool = false; snap: bool = true; snapRadius: number = 8 (view px); colourId?: id; thickness?: number; penId?: id; layer: enum \"auto\"\\|\"new\"\\|\"top\"\\|\"behind\" \\| id = \"auto\"; symmetry: bool = true` | `{strokeIds: [id], zoneIds: [id], layerId, rev}` | yes |",
       "status": "deferred-with-owner",
-      "evidence": "M2 C2.3; generated declaration / SI-026; plan section 4"
+      "evidence": "M2 C2.3; closed generated declaration; placeholders: []; delegation aliases, if any, per ADR-0013 section 10"
     },
     {
       "source": "spec/A_command_registry.md:260",
       "section": "A",
       "requirement": "| `draw.rectangle.add` | action | Add a rectangle as a closed pencil path (\"Rectangle Tool\") | `drawingId?: id; from: point; to: point; square: bool = false; fromCentre: bool = false; colourId?: id; thickness?: number; penId?: id; layer: enum \"auto\"\\|\"new\"\\|\"top\"\\|\"behind\" \\| id = \"auto\"; symmetry: bool = true` | `{strokeIds: [id], zoneIds: [id], layerId, rev}` | yes |",
       "status": "deferred-with-owner",
-      "evidence": "M2 C2.3; generated declaration / SI-026; plan section 4"
+      "evidence": "M2 C2.3; closed generated declaration; placeholders: []; delegation aliases, if any, per ADR-0013 section 10"
     },
     {
       "source": "spec/A_command_registry.md:261",
       "section": "A",
       "requirement": "| `draw.repositionAll.apply` | action | Apply one transform to every drawing of an element (\"Reposition All Drawings\") | `elementId?: id = current; translate?: point; scale?: {x,y}; rotate?: number; pivot?: point = {0,0}; matrix?: [number]; corners?: [point]` | `{drawingIds: [id]}` | yes |",
       "status": "deferred-with-owner",
-      "evidence": "M2 C2.3; generated declaration / SI-026; plan section 4"
+      "evidence": "M2 C2.3; closed generated declaration; placeholders: []; delegation aliases, if any, per ADR-0013 section 10"
     },
     {
       "source": "spec/A_command_registry.md:262",
       "section": "A",
       "requirement": "| `draw.rotate.apply` | action | Rotate selection by a fixed step (\"Rotate 90° CW\"/\"Rotate 90° CCW\"/\"Rotate 180°\") | `drawingId?: id; ids?: [id] = selection; by: enum \"90cw\"\\|\"90ccw\"\\|\"180\"` | `{ids: [id], rev}` | yes |",
       "status": "deferred-with-owner",
-      "evidence": "M2 C2.3; generated declaration / SI-026; plan section 4"
+      "evidence": "M2 C2.3; closed generated declaration; placeholders: []; delegation aliases, if any, per ADR-0013 section 10"
     },
     {
       "source": "spec/A_command_registry.md:263",
       "section": "A",
       "requirement": "| `draw.segment.move` | action | Reshape a segment so its point at t moves by delta (\"Contour Editing\") | `strokeId: id; segment: int; t: number = 0.5 (0–1); delta: point` | `{strokeId, rev}` | yes |",
       "status": "deferred-with-owner",
-      "evidence": "M2 C2.3; generated declaration / SI-026; plan section 4"
+      "evidence": "M2 C2.3; closed generated declaration; placeholders: []; delegation aliases, if any, per ADR-0013 section 10"
     },
     {
       "source": "spec/A_command_registry.md:264",
       "section": "A",
       "requirement": "| `draw.selection.changed` | event | Drawing selection changed | — | `{drawingId, selectedIds: [id], selectedPoints: [object]}` | n/a |",
       "status": "deferred-with-owner",
-      "evidence": "M4 C4.2 (M7 C7.1 current colour); generated closed SI-tagged declarations in crates/registry/src/declared.json; plan section 4"
+      "evidence": "M2 C2.3; closed generated declaration; placeholders: []; delegation aliases, if any, per ADR-0013 section 10"
     },
     {
       "source": "spec/A_command_registry.md:265",
       "section": "A",
       "requirement": "| `draw.selection.get` | query | Current drawing selection | `drawingId?: id` | `{selectedIds: [id], bounds, selectedPoints: [{strokeId, anchor}]}` | n/a |",
       "status": "deferred-with-owner",
-      "evidence": "M2 C2.3; generated declaration / SI-026; plan section 4"
+      "evidence": "M2 C2.3; closed generated declaration; placeholders: []; delegation aliases, if any, per ADR-0013 section 10"
     },
     {
       "source": "spec/A_command_registry.md:266",
       "section": "A",
       "requirement": "| `draw.selection.set` | ui | Select drawing objects by IDs, point, rectangle, lasso, all or none | `drawingId?: id; by: enum \"ids\"\\|\"point\"\\|\"rect\"\\|\"lasso\"\\|\"all\"\\|\"none\" = \"ids\"; ids?: [id]; point?: point; rect?: {x,y,width,height}; polygon?: [point]; rectRule: enum \"inside\"\\|\"intersect\" = \"inside\"; mode: enum \"replace\"\\|\"add\"\\|\"toggle\"\\|\"remove\" = \"replace\"` | `{selectedIds: [id], bounds}` | no |",
       "status": "deferred-with-owner",
-      "evidence": "M2 C2.3; generated declaration / SI-026; plan section 4"
+      "evidence": "M2 C2.3; closed generated declaration; placeholders: []; delegation aliases, if any, per ADR-0013 section 10"
     },
     {
       "source": "spec/A_command_registry.md:267",
       "section": "A",
       "requirement": "| `draw.smooth.apply` | action | Remove unnecessary points (\"Smooth Selection\") | `drawingId?: id; ids?: [id] = selection; points?: [{strokeId, anchor}]; tolerance: number = 1 (du)` | `{removedPointCount: int, rev}` | yes |",
       "status": "deferred-with-owner",
-      "evidence": "M2 C2.3; generated declaration / SI-026; plan section 4"
+      "evidence": "M2 C2.3; closed generated declaration; placeholders: []; delegation aliases, if any, per ADR-0013 section 10"
     },
     {
       "source": "spec/A_command_registry.md:268",
@@ -2313,15 +2509,15 @@
       "source": "spec/A_command_registry.md:270",
       "section": "A",
       "requirement": "| `draw.text.add` | action | Add a text object (\"New Text Object\") | `drawingId?: id; position: point; text: string; width?: number (fixed width; omit = auto); format?: object (Text panel fields); colourId?: id` | `{textId, bounds, rev}` | yes |",
-      "status": "implemented",
-      "evidence": "crates/executor/src/commands/draw_text.rs:256; c21_draw / c21_example_results; Implemented subset; event/result omissions C21-R1-07/08 apply to edits"
+      "status": "divergent",
+      "evidence": "crates/executor/src/commands/draw_text.rs:256; c21_draw / c21_example_results; Divergent C21-R1-09"
     },
     {
       "source": "spec/A_command_registry.md:271",
       "section": "A",
       "requirement": "| `draw.text.set` | action | Replace or edit text content, width mode or position (\"Typing\"/\"Set Text Width\"/\"Move Text Object\") | `textId: id; text?: string; insert?: {at: int, text: string}; delete?: {start: int, length: int}; widthMode?: enum \"auto\"\\|\"fixed\"; width?: number; position?: point` | `{textId, bounds, rev}` | yes |",
       "status": "divergent",
-      "evidence": "crates/executor/src/commands/draw_text.rs:403; c21_draw / c21_example_results; Divergent C21-R1-03, 08"
+      "evidence": "crates/executor/src/commands/draw_text.rs:403; c21_draw / c21_example_results; Divergent C21-R1-03, 08, 09"
     },
     {
       "source": "spec/A_command_registry.md:272",
@@ -2335,35 +2531,35 @@
       "section": "A",
       "requirement": "| `draw.transform.apply` | action | Move/scale/rotate/skew objects numerically, optionally as a copy (\"Move/Scale/Rotate Object\", \"Copy Object\") | `drawingId?: id; ids?: [id] = selection; translate?: point; scale?: {x,y}; rotate?: number (degrees, CCW); skew?: {x,y} (degrees); pivot?: point = selection bounds centre; matrix?: [number] (overrides the others); copy: bool = false` | `{ids: [id], removedIds: [id], rev}` | yes |",
       "status": "deferred-with-owner",
-      "evidence": "M2 C2.3; generated declaration / SI-026; plan section 4"
+      "evidence": "M2 C2.3; closed generated declaration; placeholders: []; delegation aliases, if any, per ADR-0013 section 10"
     },
     {
       "source": "spec/A_command_registry.md:274",
       "section": "A",
       "requirement": "| `draw.vectorFile.import` | job | Import an Illustrator/PDF file into a drawing (\"Import Vector File\") | `file: path; drawingId?: id; elementId?: id; frame?: int; page: int = 1` | `{jobId}` → `{drawingId, objectIds: [id], addedColourIds: [id], warnings: [string], rev}` | yes |",
       "status": "deferred-with-owner",
-      "evidence": "M10 C10.2; generated declaration / SI-026; plan section 4"
+      "evidence": "M2 C2.4; closed generated declaration; placeholders: []; delegation aliases, if any, per ADR-0013 section 10"
     },
     {
       "source": "spec/A_command_registry.md:275",
       "section": "A",
       "requirement": "| `draw.vectorize.preview` | query | Preview vectorization of one image as PNG | `file?: path; imageElementId?: id; frame?: int; type: enum \"blackAndWhite\"\\|\"withTexture\" = \"blackAndWhite\"; filter: enum \"none\"\\|\"smooth\"\\|\"smoothMore\"\\|\"edgeEnhance\"\\|\"sharpen\" = \"none\"; threshold: int = 70 (0–100); width: int = 512` | `{png, strokeCount: int}` | n/a |",
       "status": "deferred-with-owner",
-      "evidence": "M2 C2.4; generated declaration / SI-026; plan section 4"
+      "evidence": "M2 C2.4; closed generated declaration; placeholders: []; delegation aliases, if any, per ADR-0013 section 10"
     },
     {
       "source": "spec/A_command_registry.md:276",
       "section": "A",
       "requirement": "| `draw.vectorize.run` | job | Import and vectorize image files, or convert an image element, into drawings (\"Import and Vectorize\"); omitted options default to `import.vectorize.settings.get` (09) | `files?: [path]; imageElementId?: id; targetElementId?: id (default: selected; new element if none); startFrame?: int = selected cell; type: enum \"blackAndWhite\"\\|\"withTexture\" = \"blackAndWhite\"; filter: enum \"none\"\\|\"smooth\"\\|\"smoothMore\"\\|\"edgeEnhance\"\\|\"sharpen\" = \"none\"; threshold: int = 70 (0–100); onConflict: enum \"ask\"\\|\"replace\"\\|\"skip\" = \"ask\"` | `{jobId}` → `{elementId, drawingIds: [id], completed: int, cancelled: bool}` | yes |",
       "status": "deferred-with-owner",
-      "evidence": "M2 C2.4; generated declaration / SI-026; plan section 4"
+      "evidence": "M2 C2.4; closed generated declaration; placeholders: []; delegation aliases, if any, per ADR-0013 section 10"
     },
     {
       "source": "spec/A_command_registry.md:277",
       "section": "A",
       "requirement": "| `draw.viewMapping.get` | query | Mapping between a view's pixels and drawing space | `view: string = \"drawing\"` | `{drawingId, drawingToView: [number], viewToDrawing: [number], zoom, rotation, viewSize: {width,height}}` | n/a |",
       "status": "deferred-with-owner",
-      "evidence": "M4 C4.2 (M7 C7.1 current colour); generated closed SI-tagged declarations in crates/registry/src/declared.json; plan section 4"
+      "evidence": "M2 C2.3; closed generated declaration; placeholders: []; delegation aliases, if any, per ADR-0013 section 10"
     }
   ]
 }

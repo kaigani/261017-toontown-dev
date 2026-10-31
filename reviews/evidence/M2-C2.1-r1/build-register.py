@@ -9,6 +9,8 @@ import re
 
 ROOT = Path(__file__).resolve().parents[3]
 HERE = Path(__file__).resolve().parent
+DECLARED = json.loads((ROOT/'crates/registry/src/declared.json').read_text(encoding='utf8'))
+DECL_META = (ROOT/'crates/registry/src/declared.rs').read_text(encoding='utf8')
 IMPLEMENTED = {
     'draw.drawing.get': ('draw.rs', 'draw_drawing_get'),
     'draw.current.get': ('draw.rs', 'draw_current_get'),
@@ -32,13 +34,16 @@ def command_disposition(cmd):
         f, token = IMPLEMENTED[cmd]
         loc = location('crates/executor/src/commands/'+f, 'fn '+token+'(')
         findings = {'draw.stroke.add':'01, 02, 06', 'draw.stroke.set':'03, 04, 08',
-                    'draw.text.set':'03, 08', 'draw.textFormat.set':'03, 08'}
+                    'draw.text.add':'09', 'draw.text.set':'03, 08, 09', 'draw.textFormat.set':'03, 08',
+                    'draw.pivot.set':'08','draw.object.delete':'08','draw.group.create':'08','draw.group.delete':'08'}
         note = ('Divergent C21-R1-'+findings[cmd] if cmd in findings else 'Implemented subset; event/result omissions C21-R1-07/08 apply to edits')
         return ('divergent' if cmd in findings else 'implemented', f'{loc}; c21_draw / c21_example_results; {note}')
     if cmd == 'draw.drawing.changed':
         return 'missing', 'C21-R1-07; only doc.changed emitted by crates/executor/src/run.rs; c21_r1_contracts::content_changes_emit_drawing_event_including_undo_redo'
-    if cmd in ('draw.drawing.rename','draw.lock.set'):
-        return 'deferred-with-owner','M3 C3.1; delegation to element.drawing.rename / element.drawingLock.set per ADR-0013 section 10'
+    m=re.search(r'id: "'+re.escape(cmd)+r'".*?Status::NotImplemented \{ owner: "([^"]+)"',DECL_META,re.S)
+    if m:
+        d=next(x for x in DECLARED if x['id']==cmd)
+        return 'deferred-with-owner',f"{m[1]}; closed generated declaration; placeholders: {d['placeholders']}; delegation aliases, if any, per ADR-0013 section 10"
     if cmd.startswith('tool.') or cmd.startswith('drawAid.') or cmd in ('draw.selection.changed','draw.inspectorPreview.set','draw.viewMapping.get'):
         return 'deferred-with-owner','M4 C4.2 (M7 C7.1 current colour); generated closed SI-tagged declarations in crates/registry/src/declared.json; plan section 4'
     if cmd.startswith('draw.vectorFile.'):
@@ -94,6 +99,11 @@ for source, allowed in [('02_drawing.md',{'2','3','6.1','6.2','12','13'}),('10_d
             current=[source,i,section,line.strip()]; rows.append(current)
         elif current and line.startswith('  ') and line.strip(): current[3]+=' '+line.strip()
         elif not line.strip(): current=None
+        elif not line.startswith(('#','---','|')):
+            if current and current[2]==section:
+                current[3]+=' '+line.strip()
+            else:
+                current=[source,i,section,line.strip()]; rows.append(current)
     # JSON-shape blocks and structural ASCII tree remain explicit inventory rows.
     if source.startswith('02'):
         for sec,line,label in [('3.1',115,'Drawing node tree, layer/group/text/bitmap, pivot and metadata'),('13.4',1239,'Full draw.drawing.get JSON example, including all object fields'),('13.4',1299,'Hit-test and render JSON shapes')]:
@@ -110,6 +120,13 @@ for source,line,sec,requirement in rows:
         elif n and int(n.group(1)) in (1,3,5,7,10,12): status,note='deferred-with-owner','C2.2 paint / C2.3 operations/render / C2.4 vectorize / M3 C3.2 mappings / M4 C4.2 UI; implemented read-back exists'
     if sec=='3.12' and requirement.startswith(('1.','2.')): status,note='deferred-with-owner','M2 C2.2 planar map and C2.3/M3 C3.3 rendering; SI-057 warning'
     if sec=='2.1' and ('Field guide' in requirement or 'Relation to camera' in requirement): status,note='deferred-with-owner','M3 C3.2 camera / M4 C4.2 guide rendering'
+    if sec=='12.2' and any(x in requirement for x in ['nameExists','pasteIncompatible','centreLineOnFill','feather','elementNotVisible','cellOccupied','tool.','pen.','vectorize.','import.']):
+        status,note='deferred-with-owner','C2.3 drawing operations / M3 C3.1 drawing naming / M4 C4.2 tool and pen UI / C2.4 vectorize / M10 C10.2 vector import'
+    if sec=='6.1' and any(requirement.startswith('| '+x) for x in ['**Tip shape**','**Minimum size**','**Maximum size**','**Smoothness**','Tip angle']):
+        status,note='implemented','crates/executor/src/commands/draw_stroke.rs:106 PenIn and pen resolution; c21_draw / c21_determinism four tips; setters deferred M4 C4.2'
+    if sec=='3.7': note+='; C21-R1-09 NFC run offsets'
+    if sec=='13.4' and requirement.startswith('**Conventions.'):
+        status,note='divergent','crates/vector/src/path.rs:182; C21-R1-10 closed-path anchor boundary; c21_r1_geometry::closed_path_at_anchor_limit_reimports_its_own_bezier_list'
     out.append({'source':f'spec/{source}:{line}','section':sec,'requirement':requirement,'status':status,'evidence':note})
 
 for i,line in enumerate((ROOT/'spec/A_command_registry.md').read_text(encoding='utf8').splitlines(),1):
@@ -120,7 +137,7 @@ for i,line in enumerate((ROOT/'spec/A_command_registry.md').read_text(encoding='
 counts=dict(Counter(r['status'] for r in out))
 (HERE/'conformance.json').write_text(json.dumps({'counts':counts,'rows':out},ensure_ascii=False,indent=2)+'\n',encoding='utf8')
 md=['# C2.1 round 1 conformance register','',
-    'Inventory unit: one numbered rule, bullet, or non-header table row in the requested sections; multiline prose is joined. Three additional rows inventory the structural tree and JSON examples. Spec A repeats command rows intentionally: its declarations are a separate requested source. Counts are clause dispositions, not numbers of defects or passing tests.',
+    'Inventory unit: one numbered rule, bullet, prose paragraph, or non-header table row in the requested sections; multiline prose is joined. Three additional rows inventory the structural tree and JSON examples. Spec A repeats command rows intentionally: its declarations are a separate requested source. Counts are clause dispositions, not numbers of defects or passing tests.',
     '', 'A mixed-scope row records its divergence when present; otherwise the implemented subset or deferred computation is named. “Implemented” is code/test correspondence, not a claim that every future UI behavior ships in C2.1. Deferred owners must complete the entire rule before the owning milestone closes.',
     '',f'Counts: {counts}; total {len(out)}.','',
     '| # | Requirement / source | Disposition | Implementation, test, finding or owner |','|---|---|---|---|']
