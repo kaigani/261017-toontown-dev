@@ -59,3 +59,31 @@ fn invalid_sample_values_are_rejected_before_fitting() {
         assert!(clean(&[Sample {p:P::new(x,0.0),pressure:1.0}],"/points").is_err());
     }
 }
+
+#[test]
+#[ignore = "subprocess worker; the parent runs this with a bounded timeout"]
+fn dense_input_worker() {
+    let samples: Vec<Sample> = (0..100_000).map(|i| Sample {
+        p:P::new(f64::from(i)*1e-9,0.0),pressure:1.0
+    }).collect();
+    let start = std::time::Instant::now();
+    let result = fit(&clean(&samples,"/points").unwrap(),3.0,false);
+    eprintln!("100000 dense straight samples: {:?}, {} anchors",start.elapsed(),result.path.anchors.len());
+    assert!(result.path.anchors.len()<=100_000);
+}
+
+#[test]
+fn dense_100k_input_finishes_within_document_watchdog_budget() {
+    use std::time::{Duration,Instant};
+    let mut child = std::process::Command::new(std::env::current_exe().unwrap())
+        .args(["--exact","dense_input_worker","--ignored","--nocapture"]).spawn().unwrap();
+    let start = Instant::now();
+    loop {
+        if let Some(status) = child.try_wait().unwrap() { assert!(status.success()); break; }
+        if start.elapsed()>Duration::from_secs(30) {
+            child.kill().unwrap(); child.wait().unwrap();
+            assert!(false,"100000 distinct points on a .0001 du straight line exceeded 30 s; corners reach scans quadratically");
+        }
+        std::thread::sleep(Duration::from_millis(20));
+    }
+}

@@ -1,0 +1,13 @@
+{
+  "obligation": "C1.4 obligation 8",
+  "platform": "windows",
+  "fixture": "sample_document(901), every embedded medium 60 KiB",
+  "cacheBytes": {
+    "afterFirstExport": 61440,
+    "afterFiveExportsFiveFailures": 61440,
+    "beforeClose": 61440,
+    "afterProjectSwitch": 0,
+    "afterClose": 0,
+    "afterExecutorStopExists": false
+  }
+}

@@ -1,0 +1,10 @@
+$ cargo tree --locked -p tt-headless -e normal,build,features --prefix none  (exit 0)
+  tt-persist feature "default"
+  tt-persist feature "default" [33m[2m(*)[39m[22m
+  tt-persist v0.0.1 (D:\a\261017-toontown-dev\261017-toontown-dev\crates\persist)
+  ok: no test-only feature (test-hooks) in the tt-headless product graph
+$ cargo tree --locked -p tt-desktop -e normal,build,features --prefix none  (exit 0)
+  tt-persist feature "default"
+  tt-persist feature "default" [33m[2m(*)[39m[22m
+  tt-persist v0.0.1 (D:\a\261017-toontown-dev\261017-toontown-dev\crates\persist)
+  ok: no test-only feature (test-hooks) in the tt-desktop product graph
