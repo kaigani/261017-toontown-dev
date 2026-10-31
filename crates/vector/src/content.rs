@@ -88,6 +88,11 @@ pub struct ContentIn {
     /// Read-only (ignored).
     #[serde(default)]
     pub bounds: Option<BoundsIn>,
+    /// Recovery copies of the colours the content uses (10 §4.11 entries; the clipboard's colour map, 03 §11.1):
+    /// colours the target project lacks are recreated from them (03 §11.2).
+    #[serde(default)]
+    #[schemars(length(max = 100_000))]
+    pub colour_recovery: Option<Vec<Value>>,
 }
 
 /// A node of the 02 §13.4 shape.

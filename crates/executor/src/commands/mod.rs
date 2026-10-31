@@ -9,6 +9,7 @@ pub(crate) mod app;
 pub(crate) mod bundle;
 pub(crate) mod checkpoint;
 pub(crate) mod colour;
+pub(crate) mod colour_recovery;
 pub(crate) mod common;
 pub(crate) mod derived;
 pub(crate) mod doc;
@@ -126,6 +127,9 @@ pub(crate) static ALL: &[&Command] = &[
     &colour::COLOUR_GAP_CLOSING_SET,
     &colour::COLOUR_GAP_CLOSING_GET,
     &colour::DRAW_HIT_TEST_GET,
+    &colour_recovery::COLOUR_MISSING_LIST,
+    &colour_recovery::COLOUR_RECOVERY_RUN,
+    &colour_recovery::COLOUR_RECOVERY_PERFORMED,
     &draw_stroke::DRAW_STROKE_ADD,
     &draw_stroke::DRAW_STROKE_SET,
     &draw_stroke::DRAW_CONTENT_ADD,

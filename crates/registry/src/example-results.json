@@ -30,7 +30,7 @@
     {
       "title": "Accept a request",
       "result": {
-        "confirmationId": "cf_f27da6e17593d46819b2d537",
+        "confirmationId": "cf_cc5463c8fdc54ae589b5701a",
         "accepted": true
       },
       "varies": [
@@ -71,7 +71,7 @@
         "endpoint": null,
         "sessions": [
           {
-            "sessionId": "s1-700344",
+            "sessionId": "s1-483c6e",
             "client": "Example agent",
             "policy": "assist",
             "scopes": [
@@ -83,7 +83,7 @@
               "files.write",
               "library.global"
             ],
-            "connectedAt": "2026-10-31T14:06:17.729Z",
+            "connectedAt": "2026-10-31T14:24:01.377Z",
             "lastActivity": null,
             "paused": false,
             "transport": ""
@@ -91,8 +91,8 @@
         ],
         "pendingConfirmations": [
           {
-            "confirmationId": "cf_9927499ca50890befe3daf9c",
-            "sessionId": "s1-700344",
+            "confirmationId": "cf_1577aaecb239cc6ce90b19d3",
+            "sessionId": "s1-483c6e",
             "commandId": "project.saveAs",
             "summary": "Overwrite `/tmp/Short.animpkg`",
             "consequences": [
@@ -127,7 +127,7 @@
     {
       "title": "Let a session edit",
       "result": {
-        "sessionId": "s1-84e774",
+        "sessionId": "s1-d50e76",
         "policy": "assist",
         "scopes": [
           "read",
@@ -145,7 +145,7 @@
       "title": "Pause every session",
       "result": {
         "paused": [
-          "s1-12ff33"
+          "s1-4476d6"
         ]
       },
       "varies": [
@@ -438,7 +438,7 @@
       "result": [
         {
           "name": "before-walk",
-          "createdAt": "2026-10-31T14:06:18.491Z",
+          "createdAt": "2026-10-31T14:24:02.756Z",
           "documentRev": 1,
           "origin": "user"
         }
@@ -501,6 +501,15 @@
       "title": "Close small gaps while painting",
       "result": {
         "mode": "small"
+      },
+      "varies": []
+    }
+  ],
+  "colour.missing.list": [
+    {
+      "title": "Colours artwork uses that no palette defines",
+      "result": {
+        "missing": []
       },
       "varies": []
     }
@@ -613,6 +622,17 @@
       "varies": []
     }
   ],
+  "colour.recovery.run": [
+    {
+      "title": "Recover every missing colour of the project",
+      "result": {
+        "recovered": [],
+        "placeholders": [],
+        "createdPaletteIds": []
+      },
+      "varies": []
+    }
+  ],
   "doc.asset.embed": [
     {
       "title": "Embed every linked file",
@@ -717,7 +737,7 @@
             "version": "0.0.1",
             "platform": "windows-x64"
           },
-          "exportedAt": "2026-10-31T14:06:19.215Z",
+          "exportedAt": "2026-10-31T14:24:04.074Z",
           "sourceProjectId": "pr_01K742SG00BK0VXTWDM5JRXV37",
           "scope": {
             "kind": "scenes",
@@ -3789,11 +3809,6 @@
         "truncated": false,
         "unavailable": [
           {
-            "check": "unpaintedZones",
-            "owner": "M2 C2.2",
-            "reason": "zones are derived by the planar map"
-          },
-          {
             "check": "staleLipSync",
             "owner": "M8 C8.2",
             "reason": "lip-sync tracks and their timing"
@@ -4738,7 +4753,7 @@
             "stepId": "u-1",
             "label": "Set meta",
             "source": "user",
-            "time": "2026-10-31T14:06:20.523Z",
+            "time": "2026-10-31T14:24:05.967Z",
             "objectCount": 1
           },
           {
@@ -4746,7 +4761,7 @@
             "stepId": "u-2",
             "label": "Set meta",
             "source": "user",
-            "time": "2026-10-31T14:06:20.525Z",
+            "time": "2026-10-31T14:24:05.969Z",
             "objectCount": 1
           }
         ],
@@ -4891,7 +4906,7 @@
         "state": "succeeded",
         "progress": 1.0,
         "message": "",
-        "startedAt": "2026-10-31T14:06:20.780Z",
+        "startedAt": "2026-10-31T14:24:06.320Z",
         "result": {},
         "session": "user"
       },
@@ -4910,7 +4925,7 @@
           "state": "succeeded",
           "progress": 1.0,
           "message": "",
-          "startedAt": "2026-10-31T14:06:20.804Z",
+          "startedAt": "2026-10-31T14:24:06.353Z",
           "result": {},
           "session": "user"
         }
@@ -4929,7 +4944,7 @@
         "state": "succeeded",
         "progress": 1.0,
         "message": "",
-        "startedAt": "2026-10-31T14:06:20.828Z",
+        "startedAt": "2026-10-31T14:24:06.382Z",
         "result": {},
         "session": "user"
       },
@@ -4976,10 +4991,10 @@
     {
       "title": "A 1920×1080, 24 fps project",
       "result": {
-        "projectId": "pr_01M694GT1HXK089D2H0GJWHSNC",
-        "sceneId": "sc_01M694GT1JJ73ANYVHVH5WC4M4",
-        "cameraId": "el_01M694GT1JJ73ANYVHVH5WC4M6",
-        "elementId": "el_01M694GT1JJ73ANYVHVH5WC4M7"
+        "projectId": "pr_01M695HB5HYD3TBHZ0FFPGARJE",
+        "sceneId": "sc_01M695HB5J8SFGVAB48PHZ5E0S",
+        "cameraId": "el_01M695HB5J8SFGVAB48PHZ5E0V",
+        "elementId": "el_01M695HB5J8SFGVAB48PHZ5E0W"
       },
       "varies": [
         "/cameraId",
@@ -5235,7 +5250,7 @@
         {
           "path": "/tmp/Sample.animpkg",
           "name": "Sample",
-          "lastOpened": "2026-10-31T14:06:21.689Z",
+          "lastOpened": "2026-10-31T14:24:08.376Z",
           "exists": true
         }
       ],

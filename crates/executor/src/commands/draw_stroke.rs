@@ -810,15 +810,30 @@ pub(crate) fn draw_content_add(cx: &mut Cx, p: ContentAddParams) -> Result<Conte
         }
         tt_vector::content::ContentError::Id(e) => e,
     })?;
-    // Colour IDs are kept (ID-05); unknown ones are reported until colour recovery (M2 C2.2).
-    for c in &built.colours {
-        if !colour_exists(&doc, c) {
-            cx.warn(
-                "colour.unresolved",
-                format!("colour `{c}` is not in any palette (recovered with M2 C2.2)"),
-                vec![c.clone()],
-            );
-        }
+    // Colour IDs are kept (ID-05); colours the project lacks are recovered in the same transaction (03 §11.2): from
+    // the content's recovery copies, else the project's own copies, else as placeholders.
+    let copies: Vec<serde_json::Value> = p.content.colour_recovery.clone().unwrap_or_default();
+    let missing: Vec<(String, Option<serde_json::Value>)> = built
+        .colours
+        .iter()
+        .filter(|c| !colour_exists(&doc, c))
+        .map(|c| {
+            let own = copies
+                .iter()
+                .find(|e| e.get("colourId").and_then(serde_json::Value::as_str) == Some(c.as_str()))
+                .cloned();
+            let project = doc
+                .drawings()
+                .flat_map(|d| d.colour_recovery().iter())
+                .find(|e| e.colour_id.as_str() == c)
+                .and_then(|e| serde_json::to_value(e).ok());
+            (c.clone(), own.or(project))
+        })
+        .collect();
+    if !missing.is_empty() {
+        let (recovered, recovery_changes) = super::colour_recovery::recover(cx, &doc, &missing)?;
+        cx.patch_entries(recovery_changes)?;
+        super::colour_recovery::performed(cx, &recovered);
     }
     let top: Vec<String> =
         built.nodes.iter().filter_map(|n| n.get("id").and_then(Value::as_str).map(str::to_owned)).collect();

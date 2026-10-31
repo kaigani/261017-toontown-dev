@@ -133,7 +133,19 @@ pub(crate) fn stamp_modified(cx: &mut Cx, now: &str) -> Result<(), CommandError>
         old_value: None,
         elided: false,
     };
-    cx.patch_entries(vec![(tt_model::document::EntryKey::Project, vec![op])])?;
+    let mut changes = vec![(tt_model::document::EntryKey::Project, vec![op])];
+    // 10 §4.11: on save each drawing's recovery list holds exactly one entry per colour ID it uses, with the current
+    // definitions (the drawing's own copies for colours no palette defines).
+    let doc = cx.document()?.clone();
+    for d in doc.drawings() {
+        if let Some(list) = crate::commands::colour_recovery::refreshed(&doc, d) {
+            changes.push((
+                tt_model::document::EntryKey::Drawing(d.id().clone()),
+                vec![crate::commands::draw::op("replace", "/colourRecovery", Some(list))],
+            ));
+        }
+    }
+    cx.patch_entries(changes)?;
     let _ = project;
     cx.seal_system("Save")
 }

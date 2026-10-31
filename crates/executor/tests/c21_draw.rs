@@ -400,7 +400,7 @@ fn content_round_trips_through_read_back_with_new_ids() {
     let first = drawing(&h, D1)["nodes"][0].clone();
     assert_eq!(first["id"], r2["idMap"][CAPTION]);
     assert_eq!(first["transform"], json!([1.0, 0.0, 0.0, 1.0, -90.0, 190.0]));
-    // Unknown colours are kept and reported until recovery (M2 C2.2).
+    // Unknown colours are kept and recovered in the same step (03 §11.2, M2 C2.2): a placeholder without a copy.
     let env = run(
         &h,
         "draw.content.add",
@@ -409,7 +409,9 @@ fn content_round_trips_through_read_back_with_new_ids() {
                        "colourId": "col_from_elsewhere", "lineStyle": {"thickness": 1, "lineType": "solid"} } ] } ] } }),
     );
     assert_eq!(env.status, Status::Ok, "{:?}", env.error);
-    assert!(env.warnings.iter().any(|w| w.code == "colour.unresolved"));
+    assert!(!env.warnings.iter().any(|w| w.code == "colour.unresolved"));
+    let doc = h.snapshot().unwrap().unwrap();
+    assert!(doc.palettes().any(|p| p.swatches().iter().any(|s| s.colour_id().as_str() == "col_from_elsewhere")));
     // Bitmaps must name an image the document holds.
     let e = err(
         &h,
