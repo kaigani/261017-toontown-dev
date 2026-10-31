@@ -1,6 +1,6 @@
 # ADR-0016 — Vector engine: strokes, fitting, brush outlines, text and the C2.1 drawing commands
 
-Status: accepted (M2 C2.1, 2026-10-30; revised in C2.1 round 1, `reviews/M2-C2.1-r1-response.md`). Scope: plan §4 row M2, checkpoint C2.1; the twelve C2.1 obligations of
+Status: accepted (M2 C2.1, 2026-10-30; revised in C2.1 rounds 1 and 2, `reviews/M2-C2.1-r1-response.md`, `reviews/M2-C2.1-r2-response.md`). Scope: plan §4 row M2, checkpoint C2.1; the twelve C2.1 obligations of
 `reviews/M1-C1.4-r4-closure.md`. Spec: 02 §2–§3, §6, §13; 10 §4.8–§4.11; 03 §2.4.
 
 ## Context
@@ -40,7 +40,7 @@ of these a command. The planar map (zones) is C2.2, drawing operations and rende
    files and are derived data; persisted text is identical everywhere.
 
 4. **Curve fitting (02 §3.3).** Consecutive samples within tolerance/16 of the last kept one are merged first
-   (spatial dedupe; pressures averaged); corners (turns sharper than 60° between neighbours at least one tolerance
+   (spatial dedupe of positions only: the merged samples keep their own pressures, C21-R2-01); corners (turns sharper than 60° between neighbours at least one tolerance
    away, searched within 64 samples each way, so the search is linear) split the samples; each run is fitted by least
    squares on chord-length parameters with up to four Newton reparameterisations, and split at the worst point when
    the error exceeds the tolerance `0.25 du + 0.5 du × smoothness` (less the merge distance). The error is measured
@@ -49,22 +49,37 @@ of these a command. The planar map (zones) is C2.2, drawing operations and rende
    chord (C21-R1-01). Runs deeper than 40 splits become straight segments. A product fit is bounded to 400 million
    sample visits (each about one cubic evaluation; the adversarial 100 000-sample corpus needs at most 201 million
    and 0.5 s in release, `crates/vector/tests/c21_worst_case.rs`); input that needs more is `limit.exceeded`, so the
-   document worker is never held past the watchdog (obligation 11, C21-R1-06). Pressures are smoothed with a centred moving average of half-width
-   `round(smoothness)` and stored as `(t, p)` at each sample's normalised arc length along the fitted spine, then
-   simplified within 0.001 (Douglas–Peucker). `fit: false` joins the samples with straight segments; `bezier` is used
+   document worker is never held past the watchdog (obligation 11, C21-R1-06). Every input sample's pressure is smoothed with a centred moving average
+   of half-width `round(smoothness)` over the input samples (02 §3.3 step 5; Smoothness alone smooths) and stored as
+   `(t, p)` at the normalised arc length of the fitted point the sample stands for — samples merged into one position
+   share it, so a pressure step or extremum there stays at its position as knots of equal `t` (C21-R2-01) — then
+   simplified within 0.001 (Douglas–Peucker; among equally bad knots the one nearest the middle splits the span, and
+   the work is charged to the fit's budget). `fit: false` joins the samples with straight segments; `bezier` is used
    verbatim. A single sample is a dab.
 
 5. **Brush outlines (02 §3.4; SI-053, SI-054).** The tip is placed at every pressure-map knot (with that knot's
    pressure; a step in pressure places both sides) and adaptively along the spine: each segment is flattened by its
-   curvature (Wang's bound) within 1/64 du, one grid step. Between consecutive placements the spine is then a chord
-   and the width linear in arc length, so no pressure extremum or bend falls between two tips; at most 100 000
-   placements, else `limit.exceeded` (C21-R1-02). Width is `min + p × (max − min)`; each pair
+   curvature (Wang's bound) within 1/64 du, one grid step; a segment whose control points lie within that distance
+   of its chord (corner anchors have zero handles) is the chord and needs only its ends. Between consecutive
+   placements the spine is then a chord and the width linear in arc length, so no pressure extremum or bend falls
+   between two tips; at most 100 000 placements, else `limit.exceeded` (C21-R1-02). Width is `min + p × (max − min)`; each pair
    of consecutive placements contributes the convex hull of the two tips (the exact sweep of a convex tip scaled
    linearly along the chord). Round tips are polygons circumscribing the circle (so the union contains every swept
    disk); oval tips 2:1 ellipses (also circumscribed) and flat tips 5:1 rectangles at the tip angle; square tips
    squares. The hulls are united by `i_overlay` (MIT OR Apache-2.0) with integer arithmetic on a 1/64 du
-   grid (coordinates are bounded to ±10⁷ du so the engine's i32 range holds). Contours are joined by zero-width bridges
-   into the one closed path 10 §4.9 stores, then fitted within min(0.1 du, max/16). The spine, its pressure map and
+   grid (coordinates are bounded to ±10⁷ du so the engine's i32 range holds), hierarchically: 64 shapes per overlay
+   call, then 64 results per call, until one remains (the same point set as one call; heavily overlapping tips no
+   longer meet in one call — 99 000 alternating pressure knots took 96 s in one call and take 0.9 s so). Contours are
+   joined by zero-width bridges into the one closed path 10 §4.9 stores, then fitted within min(0.1 du, max/16).
+   **The complete brush geometry call has one work budget** (`OUTLINE_WORK_BUDGET`, 1.2 × 10⁹ units of about one
+   point operation): the centre fit's sample visits, placements, hull points, overlay input vertices (64 units each,
+   charged before each call), bridge vertex pairs, densified points and the outline fit (through the budgeted fit,
+   with what remains). Past it — or past 100 000 outline anchors — the stroke is refused with `limit.exceeded` before
+   the next step starts; nothing is committed and the document worker is free. Calibrated on the adversarial brush
+   corpus of `crates/vector/tests/c21_worst_case.rs` (1.6–2.3 ns per unit in release; worst accepted 0.95 s, worst
+   refusal 1.8 s; every observation kept, both OSes in CI's headless job). A scribble with more than about a
+   thousand separate holes is refused by the quadratic bridge step; the bridge corpus for C2.2 (SI-053) owns a
+   faster splice (C21-R2-03). The spine, its pressure map and
    pen are kept (a closed spine stored open with its first anchor repeated); a non-zero tip angle of a non-round tip
    goes to `ext["dev.toontown.brush"].tipAngle`. A spine or pressure edit sweeps the outline again; an outline edit
    discards the spine (§3.2) — through `draw.stroke.set` and through `doc.object.patch` alike (§13.6). One edit that
@@ -74,9 +89,12 @@ of these a command. The planar map (zones) is C2.2, drawing operations and rende
 6. **Text (02 §3.7, §7.6; SI-055).** Content edits work on code points: typing continues the run before the cursor,
    deletions merge paragraphs into the first, formats split and merge runs, and there is one paragraph per line.
    After every edit the text is normalised to NFC first (10 §1.1) and the runs and paragraphs are then remapped onto
-   the composed code points: a combining mark joins the run of the code point it composes with, also across a run
-   boundary or an insertion, and an insertion that composes with the code point before it extends that code point's
-   run (C21-R1-09). The model's integrity gate requires the paragraphs to cover the text, one per line, in order, for
+   the composed code points through a mapping-preserving NFC (`text::nfc_with_origins`: per-code-point canonical
+   decomposition, canonical ordering, canonical composition with the blocking rule; equal to `unicode-normalization`'s
+   NFC on a 20 000-string corpus): every output code point comes from one input code point and takes its run, a
+   composite its starter's. So a combining mark — or a class-0 vowel sign that composes, as in Bengali — joins the
+   run of the code point it composes with, also across a run boundary or an insertion, and unrelated characters keep
+   their formats; there is no whole-text fallback (C21-R1-09, C21-R2-02). The model's integrity gate requires the paragraphs to cover the text, one per line, in order, for
    every writer including `doc.object.patch` (C21-R1-05).
    Layout: the transform's origin is the box's top-left corner and lines run downwards; advances and `kern` pairs come
    from the font (`skrifa`; `ttf-parser` was declared unmaintained, RUSTSEC-2026-0192), line height from ascender, descender and line gap plus the paragraph's line spacing;

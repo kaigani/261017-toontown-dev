@@ -1,7 +1,8 @@
 //! Curve fitting of freehand samples (02 §3.3).
 //!
 //! 1. Consecutive duplicate positions are dropped; then consecutive samples closer than 1/16 of the tolerance to the
-//!    last kept one are merged into it (their pressures averaged), so dense input costs linear work. The fit then uses
+//!    last kept position are merged into it (positions only: every sample keeps its pressure), so dense input costs
+//!    linear work. The fit then uses
 //!    15/16 of the tolerance, so the result stays within the tolerance of the original polyline.
 //! 2. Corners (direction changes sharper than [`CORNER_TURN_DEGREES`], measured between neighbours at least one
 //!    tolerance away, searched within [`CORNER_WINDOW`] samples) split the samples into runs.
@@ -12,8 +13,9 @@
 //!    while it stays within the tolerance of its segment (its handles shrink, down to a straight segment), and a run
 //!    that reaches the recursion limit becomes straight segments through its samples.
 //! 4. The tolerance is `0.25 du + 0.5 du × smoothness` (§3.3 recommendation).
-//! 5. Pressures are smoothed with a centred moving average of half-width `round(smoothness)` samples and stored as
-//!    `(t, p)` with `t` the normalised arc length along the fitted spine.
+//! 5. Every sample's pressure is smoothed with a centred moving average of half-width `round(smoothness)` samples and
+//!    stored as `(t, p)` with `t` the normalised arc length of its fitted point along the spine (merged samples share
+//!    it, so a pressure step there stays a step; C21-R2-01).
 //!
 //! The result depends only on sample positions, pressures and settings (never timing), with a fixed operation order.
 
@@ -129,7 +131,22 @@ pub fn fit_with(samples: &[Sample], tol: f64, smoothness: f64, closed: bool) -> 
 /// `limit.exceeded` when the input needs more work than the budget allows (the document worker is never held for
 /// longer; C21-R1-06).
 pub fn fit_bounded(samples: &[Sample], smoothness: f64, closed: bool, budget: u64) -> Result<(Fitted, u64), GeomError> {
-    let (f, used) = fit_inner(samples, tolerance(smoothness), smoothness, closed, budget);
+    fit_with_bounded(samples, tolerance(smoothness), smoothness, closed, budget)
+}
+
+/// [`fit_with`] within a work budget in sample visits: the fit and the visits it used (brush outlines fit their
+/// contours with what remains of the outline's budget, C21-R2-03).
+///
+/// # Errors
+/// `limit.exceeded` when the input needs more work than the budget allows.
+pub fn fit_with_bounded(
+    samples: &[Sample],
+    tol: f64,
+    smoothness: f64,
+    closed: bool,
+    budget: u64,
+) -> Result<(Fitted, u64), GeomError> {
+    let (f, used) = fit_inner(samples, tol, smoothness, closed, budget);
     if used > budget {
         return Err(GeomError {
             code: "limit.exceeded",
@@ -142,24 +159,26 @@ pub fn fit_bounded(samples: &[Sample], smoothness: f64, closed: bool, budget: u6
 
 fn fit_inner(samples: &[Sample], tol: f64, smoothness: f64, closed: bool, limit: u64) -> (Fitted, u64) {
     let eps = tol / 16.0;
-    let reduced = collapse(samples, eps, closed);
-    let samples = &reduced[..];
+    // Positions only: the merged samples keep their pressures (02 §3.3 step 1 drops positional duplicates; pressure
+    // is smoothed by Smoothness alone, step 5; C21-R2-01).
+    let (pts, groups) = collapse(samples, eps, closed);
     let tol = tol - eps;
-    let pts: Vec<P> = samples.iter().map(|s| s.p).collect();
+    let budget = Budget { tol, used: std::cell::Cell::new(0), limit };
     if pts.len() <= 1 {
         let p = pts.first().copied().unwrap_or_default();
-        let pr = samples.first().map_or(1.0, |s| s.pressure);
-        return (
-            Fitted {
-                path: Path { anchors: vec![Anchor::corner(p)], closed: true },
-                pressure: vec![[0.0, pr], [1.0, pr]],
-            },
-            0,
-        );
+        // A dab: every sample's pressure at the one position (the brush sweeps the widest).
+        let chain = vec![0usize];
+        let pressure = pressure_map(samples, &groups, &chain, &[0.0], smoothness, &budget);
+        let pressure = if pressure.len() < 2 {
+            let pr = pressure.first().map_or(1.0, |k| k[1]);
+            vec![[0.0, pr], [1.0, pr]]
+        } else {
+            pressure
+        };
+        return (Fitted { path: Path { anchors: vec![Anchor::corner(p)], closed: true }, pressure }, budget.used.get());
     }
     let closed = closed && pts.len() >= 3;
     // The chain to fit, as indices into `pts` (a loop repeats its start; it starts at a corner when it has one).
-    let budget = Budget { tol, used: std::cell::Cell::new(0), limit };
     budget.spend((pts.len() as u64).saturating_mul(2 * CORNER_WINDOW as u64));
     let corners = corners(&pts, tol, closed);
     let n = pts.len();
@@ -201,34 +220,35 @@ fn fit_inner(samples: &[Sample], tol: f64, smoothness: f64, closed: bool, limit:
         }
     }
     let path = path_of(&segs, closed);
-    let pressure = pressure_map(samples, &chain, &params, &segs, smoothness);
+    let ts = chain_positions(&params, &segs);
+    let pressure = pressure_map(samples, &groups, &chain, &ts, smoothness, &budget);
     (Fitted { path, pressure }, budget.used.get())
 }
 
-/// Merges consecutive samples closer than `eps` to the last kept sample into it (pressures averaged); for a loop, a
-/// last sample within `eps` of the first is dropped.
-fn collapse(samples: &[Sample], eps: f64, closed: bool) -> Vec<Sample> {
-    let mut out: Vec<Sample> = Vec::with_capacity(samples.len());
-    let mut sum = 0.0;
-    let mut count = 0.0;
-    for s in samples {
-        match out.last_mut() {
-            Some(last) if last.p.dist(s.p) < eps => {
-                sum += s.pressure;
-                count += 1.0;
-                last.pressure = sum / count;
-            }
+/// Merges consecutive samples closer than `eps` to the last kept position into it; for a loop, trailing samples
+/// within `eps` of the first position join the first. Returns the kept positions and, per kept position, the indices of
+/// the samples it stands for (in input order), so no sample's pressure is lost (C21-R2-01).
+fn collapse(samples: &[Sample], eps: f64, closed: bool) -> (Vec<P>, Vec<Vec<usize>>) {
+    let mut pts: Vec<P> = Vec::with_capacity(samples.len());
+    let mut groups: Vec<Vec<usize>> = Vec::with_capacity(samples.len());
+    for (i, s) in samples.iter().enumerate() {
+        match (pts.last(), groups.last_mut()) {
+            (Some(last), Some(g)) if last.dist(s.p) < eps => g.push(i),
             _ => {
-                out.push(*s);
-                sum = s.pressure;
-                count = 1.0;
+                pts.push(s.p);
+                groups.push(vec![i]);
             }
         }
     }
-    if closed && out.len() >= 2 && out[out.len() - 1].p.dist(out[0].p) < eps {
-        out.pop();
+    if closed && pts.len() >= 2 && pts[pts.len() - 1].dist(pts[0]) < eps {
+        pts.pop();
+        if let Some(tail) = groups.pop()
+            && let Some(first) = groups.first_mut()
+        {
+            first.extend(tail);
+        }
     }
-    out
+    (pts, groups)
 }
 
 /// Joins samples with straight segments (`fit: false`, 02 §13.1 item 6).
@@ -247,7 +267,10 @@ pub fn polyline(samples: &[Sample], closed: bool, smoothness: f64) -> Fitted {
     let params: Vec<(usize, f64)> =
         (0..pts.len()).map(|i| if i + 1 == pts.len() && !closed { (i - 1, 1.0) } else { (i, 0.0) }).collect();
     let path = Path { anchors: pts.iter().map(|p| Anchor::corner(*p)).collect(), closed };
-    let pressure = pressure_map(samples, &chain, &params, &segs, smoothness);
+    let groups: Vec<Vec<usize>> = (0..samples.len()).map(|i| vec![i]).collect();
+    let ts = chain_positions(&params, &segs);
+    let budget = Budget { tol: 0.0, used: std::cell::Cell::new(0), limit: u64::MAX };
+    let pressure = pressure_map(samples, &groups, &chain, &ts, smoothness, &budget);
     Fitted { path, pressure }
 }
 
@@ -520,16 +543,43 @@ fn fit_run(run: &[P], t1: P, t2: P, budget: &Budget, depth: u32, segs: &mut Vec<
     fit_run(&run[split..], -center, t2, budget, depth + 1, segs, right);
 }
 
-/// The pressure map: smoothed pressures at the normalised arc length of each sample along the fitted spine.
+/// The normalised arc-length position of every chain point on the fitted segments (non-decreasing).
+fn chain_positions(params: &[(usize, f64)], segs: &[Cubic]) -> Vec<f64> {
+    let mut start = vec![0.0; segs.len() + 1];
+    for (i, s) in segs.iter().enumerate() {
+        start[i + 1] = start[i] + s.length();
+    }
+    let total = start[segs.len()];
+    let mut last_t = 0.0;
+    params
+        .iter()
+        .map(|&(s, u)| {
+            let t = if total > 0.0 { ((start[s] + segs[s].length_to(u)) / total).clamp(0.0, 1.0) } else { 0.0 };
+            let t = if t < last_t { last_t } else { t };
+            last_t = t;
+            t
+        })
+        .collect()
+}
+
+/// The pressure map (02 §3.2, §3.3 step 5): every input sample's pressure, smoothed by a centred moving average of
+/// half-width `round(smoothness)` over the input samples, at the arc position of the fitted point it stands for
+/// (samples merged into one position share it, so a pressure step there stays a step); simplified within
+/// [`PRESSURE_TOLERANCE`] with its work charged to the fit's budget.
 fn pressure_map(
     samples: &[Sample],
+    groups: &[Vec<usize>],
     chain: &[usize],
-    params: &[(usize, f64)],
-    segs: &[Cubic],
+    ts: &[f64],
     smoothness: f64,
+    budget: &Budget,
 ) -> Vec<[f64; 2]> {
     let half = (smoothness + 0.5).floor().clamp(0.0, 10.0) as usize;
     let raw: Vec<f64> = samples.iter().map(|s| s.pressure).collect();
+    if raw.is_empty() {
+        return vec![[0.0, 1.0], [1.0, 1.0]];
+    }
+    budget.spend((raw.len() as u64).saturating_mul(half as u64 * 2 + 1));
     let smooth: Vec<f64> = (0..raw.len())
         .map(|i| {
             let lo = i.saturating_sub(half);
@@ -541,32 +591,40 @@ fn pressure_map(
             sum / ((hi - lo + 1) as f64)
         })
         .collect();
-    let mut start = vec![0.0; segs.len() + 1];
-    for (i, s) in segs.iter().enumerate() {
-        start[i + 1] = start[i] + s.length();
-    }
-    let total = start[segs.len()];
-    let mut map: Vec<[f64; 2]> = Vec::with_capacity(chain.len());
-    let mut last_t = 0.0;
-    for (k, &i) in chain.iter().enumerate() {
-        let (s, u) = params[k];
-        let t = if total > 0.0 { ((start[s] + segs[s].length_to(u)) / total).clamp(0.0, 1.0) } else { 0.0 };
-        let t = if t < last_t { last_t } else { t };
-        last_t = t;
-        map.push([t, smooth[i].clamp(0.0, 1.0)]);
+    let mut map: Vec<[f64; 2]> = Vec::with_capacity(samples.len() + 1);
+    let last = chain.len().saturating_sub(1);
+    for (k, &r) in chain.iter().enumerate() {
+        let t = ts.get(k).copied().unwrap_or(0.0);
+        let Some(members) = groups.get(r) else { continue };
+        // A loop's closing chain point repeats its start: only the first sample's pressure closes the map.
+        let members = if k == last && k > 0 && chain[0] == r { &members[..members.len().min(1)] } else { &members[..] };
+        for &i in members {
+            map.push([t, smooth[i].clamp(0.0, 1.0)]);
+        }
     }
     if let Some(f) = map.first_mut() {
         f[0] = 0.0;
     }
+    if map.len() == 1 {
+        let p = map[0][1];
+        map.push([1.0, p]);
+    }
     if let Some(l) = map.last_mut() {
         l[0] = 1.0;
     }
-    simplify_pressure(&map)
+    simplify_within(&map, budget)
 }
 
 /// Douglas–Peucker on `(t, p)` with [`PRESSURE_TOLERANCE`] on `p` (iterative; fixed order).
 #[must_use]
 pub fn simplify_pressure(map: &[[f64; 2]]) -> Vec<[f64; 2]> {
+    simplify_within(map, &Budget { tol: 0.0, used: std::cell::Cell::new(0), limit: u64::MAX })
+}
+
+/// [`simplify_pressure`] charging every visited knot to `budget`; past the budget the remaining knots are kept as
+/// they are (the fit is then refused by `fit_bounded`). Among equally bad knots the one nearest the middle of the
+/// span splits it, so alternating pressures halve their spans instead of peeling one knot at a time.
+fn simplify_within(map: &[[f64; 2]], budget: &Budget) -> Vec<[f64; 2]> {
     if map.len() <= 2 {
         return map.to_vec();
     }
@@ -575,14 +633,19 @@ pub fn simplify_pressure(map: &[[f64; 2]]) -> Vec<[f64; 2]> {
     keep[map.len() - 1] = true;
     let mut stack = vec![(0usize, map.len() - 1)];
     while let Some((a, b)) = stack.pop() {
+        if !budget.spend((b - a) as u64) {
+            keep[a..=b].fill(true);
+            continue;
+        }
         let (ta, pa) = (map[a][0], map[a][1]);
         let (tb, pb) = (map[b][0], map[b][1]);
+        let mid = (a + b) / 2;
         let mut worst = 0.0;
-        let mut at = 0;
+        let mut at: usize = 0;
         for (i, m) in map.iter().enumerate().take(b).skip(a + 1) {
             let lin = if tb > ta { pa + (pb - pa) * ((m[0] - ta) / (tb - ta)) } else { pa };
             let d = (m[1] - lin).abs();
-            if d > worst {
+            if d > worst || (d >= worst && d > 0.0 && i.abs_diff(mid) < at.abs_diff(mid)) {
                 worst = d;
                 at = i;
             }

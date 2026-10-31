@@ -60,16 +60,21 @@ pub struct Spec {
 /// # Errors
 /// `drawing.invalidGeometry`.
 pub fn centre(spec: &Spec) -> Result<(Path, Vec<[f64; 2]>), GeomError> {
-    let (path, pressure) = match &spec.geometry {
+    centre_measured(spec).map(|(path, pressure, _)| (path, pressure))
+}
+
+/// [`centre`] with the fit's work (sample visits), which a brush stroke deducts from its outline budget.
+fn centre_measured(spec: &Spec) -> Result<(Path, Vec<[f64; 2]>, u64), GeomError> {
+    let (path, pressure, used) = match &spec.geometry {
         Geometry::Samples { samples, fit: true } => {
-            let (f, _) = fit::fit_bounded(samples, spec.smoothness, spec.closed, fit::FIT_WORK_BUDGET)?;
-            (f.path, f.pressure)
+            let (f, used) = fit::fit_bounded(samples, spec.smoothness, spec.closed, fit::FIT_WORK_BUDGET)?;
+            (f.path, f.pressure, used)
         }
         Geometry::Samples { samples, fit: false } => {
             let f = fit::polyline(samples, spec.closed, spec.smoothness);
-            (f.path, f.pressure)
+            (f.path, f.pressure, samples.len() as u64)
         }
-        Geometry::Bezier(p) => (p.clone(), vec![[0.0, 1.0], [1.0, 1.0]]),
+        Geometry::Bezier(p) => (p.clone(), vec![[0.0, 1.0], [1.0, 1.0]], p.anchors.len() as u64),
     };
     path.check("/bezier")?;
     let pressure = match &spec.pressure {
@@ -79,7 +84,7 @@ pub fn centre(spec: &Spec) -> Result<(Path, Vec<[f64; 2]>), GeomError> {
         }
         None => pressure,
     };
-    Ok((path, pressure))
+    Ok((path, pressure, used))
 }
 
 /// A closed spine stored open: its first anchor repeated at the end.
@@ -111,7 +116,7 @@ pub fn tip_name(t: Tip) -> &'static str {
 /// # Errors
 /// `drawing.invalidGeometry`.
 pub fn build(spec: &Spec, id: &str) -> Result<Value, GeomError> {
-    let (path, pressure) = centre(spec)?;
+    let (path, pressure, used) = centre_measured(spec)?;
     let mut m = Map::new();
     m.insert("id".into(), json!(id));
     m.insert("type".into(), json!("stroke"));
@@ -120,7 +125,9 @@ pub fn build(spec: &Spec, id: &str) -> Result<Value, GeomError> {
         StrokeKind::Brush => {
             let spine =
                 if path.anchors.len() == 1 { Path { anchors: path.anchors.clone(), closed: true } } else { path };
-            let outline = brush::outline(&spine, &pressure, &spec.pen)?;
+            // One account for the complete geometry call: the outline gets what the centre fit left (C21-R2-03).
+            let budget = brush::OUTLINE_WORK_BUDGET.saturating_sub(used);
+            let (outline, _) = brush::outline_within(&spine, &pressure, &spec.pen, budget)?;
             let stored = if spine.anchors.len() == 1 { spine.clone() } else { open_spine(&spine) };
             m.insert("kind".into(), json!("brush"));
             m.insert("closed".into(), json!(true));

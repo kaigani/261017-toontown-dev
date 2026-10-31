@@ -8,7 +8,6 @@
 //! Layout: the transform's origin is the top-left corner of the box; lines run downwards (−y in drawing space).
 
 use serde::{Deserialize, Serialize};
-use unicode_normalization::UnicodeNormalization;
 
 use crate::fonts;
 use crate::geom::{Affine, P, Rect};
@@ -286,12 +285,12 @@ impl Content {
         self.paras.truncate(line);
     }
 
-    /// Puts the text in NFC (10 §1.1: strings are NFC) and remaps the runs across every change of length. The text is
-    /// cut before each starter (canonical combining class 0, except Hangul medial and final jamo, which compose with
-    /// the syllable before them); each piece is normalised on its own and belongs to the run of its first code point,
-    /// so a combining mark typed after a base character joins the base character's run. If normalising the pieces
-    /// separately differs from normalising the whole text (a composition across a starter), the whole text is one
-    /// piece and keeps the first run's format.
+    /// Normalises the text to NFC (10 §1.1) and keeps every code point's format: each code point of the normalised
+    /// text comes from one code point of the input (see [`nfc_with_origins`]) and takes that code point's run. A
+    /// composite takes the run of its starter, so a combining mark (or a vowel sign of class 0, as in Bengali) typed
+    /// after a base joins the base's run while unrelated characters keep theirs (C21-R1-09, C21-R2-02). Canonical
+    /// reordering can move a mark of a later run before one of an earlier run; such a mark keeps the later run (runs
+    /// stay contiguous).
     fn compose(&mut self) {
         let text: String = self.chars.iter().collect();
         if unicode_normalization::is_nfc(&text) {
@@ -303,39 +302,19 @@ impl Content {
             owner.extend(std::iter::repeat_n(i, r.length as usize));
         }
         owner.resize(self.chars.len(), self.runs.len().saturating_sub(1));
-        let starter = |c: char| {
-            unicode_normalization::char::canonical_combining_class(c) == 0
-                && !matches!(u32::from(c), 0x1161..=0x1175 | 0x11A8..=0x11C2)
-        };
-        let mut pieces: Vec<(usize, usize)> = Vec::new();
-        let mut begin = 0usize;
-        for (i, c) in self.chars.iter().enumerate() {
-            if i > begin && starter(*c) {
-                pieces.push((begin, i));
-                begin = i;
-            }
-        }
-        pieces.push((begin, self.chars.len()));
-        let whole: Vec<char> = text.nfc().collect();
-        let mut out: Vec<char> = Vec::with_capacity(whole.len());
+        let mapped = nfc_with_origins(&self.chars);
         let mut lengths = vec![0u32; self.runs.len().max(1)];
-        for (a, b) in &pieces {
-            let piece: String = self.chars[*a..*b].iter().collect();
-            let norm: Vec<char> = piece.nfc().collect();
-            if let Some(l) = lengths.get_mut(owner.get(*a).copied().unwrap_or(0)) {
-                *l += u(norm.len());
+        let mut run = 0usize;
+        for (_, origin) in &mapped {
+            run = run.max(owner.get(*origin).copied().unwrap_or(0));
+            if let Some(l) = lengths.get_mut(run) {
+                *l += 1;
             }
-            out.extend(norm);
-        }
-        if out != whole {
-            lengths = vec![0; self.runs.len().max(1)];
-            lengths[0] = u(whole.len());
-            out = whole;
         }
         for (r, l) in self.runs.iter_mut().zip(lengths) {
             r.length = l;
         }
-        self.chars = out;
+        self.chars = mapped.into_iter().map(|(c, _)| c).collect();
     }
 
     fn runs_template(&self) -> Run {
@@ -666,9 +645,61 @@ mod tests {
     }
 }
 
+/// NFC with the origin of every output code point (UAX #15: canonical decomposition, canonical ordering, canonical
+/// composition). Each input code point is decomposed on its own (canonical decomposition is per code point), the
+/// non-starter sequences are stably ordered by combining class, and each code point is composed into the last
+/// starter when it is not blocked; a composite keeps its starter's origin. The output equals
+/// `unicode_normalization`'s NFC of the same text (property-tested), and every output code point names the input
+/// code point it came from.
+#[must_use]
+pub fn nfc_with_origins(chars: &[char]) -> Vec<(char, usize)> {
+    use unicode_normalization::char::{canonical_combining_class as ccc, compose, decompose_canonical};
+    let mut d: Vec<(char, usize)> = Vec::with_capacity(chars.len());
+    for (i, c) in chars.iter().enumerate() {
+        decompose_canonical(*c, |x| d.push((x, i)));
+    }
+    // Canonical ordering: every maximal run of non-starters, stably by combining class.
+    let mut i = 0;
+    while i < d.len() {
+        if ccc(d[i].0) == 0 {
+            i += 1;
+            continue;
+        }
+        let start = i;
+        while i < d.len() && ccc(d[i].0) != 0 {
+            i += 1;
+        }
+        d[start..i].sort_by_key(|(c, _)| ccc(*c));
+    }
+    // Canonical composition.
+    let mut out: Vec<(char, usize)> = Vec::with_capacity(d.len());
+    let mut starter: Option<usize> = None;
+    // Combining class of the last code point appended after the starter (`None`: adjacent to it).
+    let mut last: Option<u8> = None;
+    for (c, origin) in d {
+        let class = ccc(c);
+        if let Some(sp) = starter {
+            let blocked = last.is_some_and(|l| l == 0 || l >= class);
+            if !blocked && let Some(composite) = compose(out[sp].0, c) {
+                out[sp].0 = composite;
+                continue;
+            }
+        }
+        if class == 0 {
+            starter = Some(out.len());
+            last = None;
+        } else {
+            last = Some(class);
+        }
+        out.push((c, origin));
+    }
+    out
+}
+
 #[cfg(test)]
 mod nfc_tests {
     use super::*;
+    use unicode_normalization::UnicodeNormalization;
 
     #[test]
     fn decomposed_input_is_composed_and_runs_follow() {
@@ -701,6 +732,51 @@ mod nfc_tests {
         c.delete(1, 1);
         assert_eq!(c.text(), "\u{e9}");
         assert_eq!(c.runs[0].length, 1);
+    }
+
+    #[test]
+    fn a_class_zero_composition_keeps_unrelated_formats() {
+        // KA + vowel sign E (run 1) + vowel sign AA + Z (run 2, bold): E + AA compose to O in E's run; Z stays bold.
+        let mut a = default_run(None);
+        a.length = 2;
+        let mut b = a.clone();
+        b.start = 2;
+        b.bold = true;
+        let c = Content::from_parts("\u{995}\u{9c7}\u{9be}Z", vec![a, b], vec![default_para()]);
+        assert_eq!(c.text(), "\u{995}\u{9cb}Z");
+        assert_eq!(c.runs.iter().map(|r| (r.length, r.bold)).collect::<Vec<_>>(), vec![(2, false), (1, true)]);
+    }
+
+    #[test]
+    fn origins_follow_reordering_and_blocking() {
+        // a + dot below (220) after acute (230): reordered, then a + dot below composes, acute stays.
+        let v = nfc_with_origins(&['a', '\u{301}', '\u{323}']);
+        let s: String = v.iter().map(|(c, _)| *c).collect();
+        assert_eq!(s, "a\u{301}\u{323}".nfc().collect::<String>());
+        assert_eq!(v[0].1, 0);
+        assert_eq!(v[1], ('\u{301}', 1));
+    }
+
+    #[test]
+    fn nfc_with_origins_matches_the_library_on_random_text() {
+        // A fixed-seed corpus over the code points that compose, reorder or block.
+        let pool: Vec<char> = "aeouAEOUnZ\n \u{300}\u{301}\u{302}\u{308}\u{323}\u{327}\u{328}\u{345}\u{1100}\u{1161}\u{11a8}\u{ac00}\u{995}\u{9c7}\u{9be}\u{9d7}\u{9bc}\u{b47}\u{b3e}\u{b56}\u{1b05}\u{1b35}\u{3099}\u{304b}\u{fb1d}\u{5b4}\u{e9}\u{1e0b}\u{212b}\u{f900}"
+            .chars()
+            .collect();
+        let mut seed: u64 = 0x7474_6332_315f_7232;
+        for _ in 0..20_000 {
+            seed = seed.wrapping_mul(6_364_136_223_846_793_005).wrapping_add(1_442_695_040_888_963_407);
+            let n = 1 + (seed >> 59) as usize;
+            let mut chars = Vec::with_capacity(n);
+            let mut k = seed;
+            for _ in 0..n {
+                k = k.wrapping_mul(6_364_136_223_846_793_005).wrapping_add(1_442_695_040_888_963_407);
+                chars.push(pool[(k >> 33) as usize % pool.len()]);
+            }
+            let ours: String = nfc_with_origins(&chars).iter().map(|(c, _)| *c).collect();
+            let theirs: String = chars.iter().collect::<String>().nfc().collect();
+            assert_eq!(ours, theirs, "{chars:?}");
+        }
     }
 
     #[test]

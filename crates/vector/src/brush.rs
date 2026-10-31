@@ -4,9 +4,12 @@
 //!
 //! The sweep places the tip at samples along the spine and takes, for each pair of consecutive samples, the convex
 //! hull of the two placed tips (the exact Minkowski sweep of a convex tip along a chord). The hulls are united on an
-//! integer grid of 1/[`GRID`] du with `i_overlay` (integer arithmetic, so the union is identical on every platform),
-//! and the resulting contours are fitted back to Béziers within [`OUTLINE_TOLERANCE`] (or 1/16 of the pen width when
-//! that is finer). 10 §4.9 stores one closed path per stroke, so holes (a stroke that loops) and separate pieces are
+//! integer grid of 1/[`GRID`] du with `i_overlay` (integer arithmetic, so the union is identical on every platform)
+//! hierarchically, [`UNION_CHUNK`] shapes per overlay call, so heavily overlapping tips never meet in one call; the
+//! resulting contours are fitted back to Béziers within [`OUTLINE_TOLERANCE`] (or 1/16 of the pen width when that is
+//! finer). The complete operation — placements, hulls, unions, bridges, densification and the final fit — is charged
+//! to one work budget, [`OUTLINE_WORK_BUDGET`]; past it the outline is refused with `limit.exceeded` before any
+//! further step starts (M2 C2.1 obligation 11, C21-R2-03). 10 §4.9 stores one closed path per stroke, so holes (a stroke that loops) and separate pieces are
 //! joined to the outer contour by zero-width bridges; filled with the non-zero rule the bridge edges cancel (SI-053).
 
 use i_overlay::core::fill_rule::FillRule;
@@ -18,7 +21,7 @@ use tt_model::entities::pen::Tip;
 use crate::fit::{self, Sample, pressure_at};
 use crate::geom::{P, signed_area};
 use crate::num;
-use crate::path::{GeomError, Path};
+use crate::path::{GeomError, MAX_ANCHORS, Path};
 
 /// Grid of the union: 1/64 du (coordinates up to ±10^7 du stay inside the engine's i32 range).
 pub const GRID: f64 = 64.0;
@@ -29,6 +32,45 @@ pub const OUTLINE_TOLERANCE: f64 = 0.1;
 /// Most tip placements along one spine; a spine that needs more is refused with `limit.exceeded` (bounded work,
 /// M2 C2.1 obligation 11).
 pub const MAX_PLACEMENTS: usize = 100_000;
+
+/// Shapes united per overlay call (the union is hierarchical: chunks, then chunks of their results).
+pub const UNION_CHUNK: usize = 64;
+
+/// The work one complete brush geometry call may do (centre fit, placements, hulls, unions, bridges, densification
+/// and the outline fit), in units of about one point operation: sample visits of both fits, placements, hull points,
+/// overlay input vertices (charged [`OVERLAY_COST`] each per call, before the call), bridge vertex pairs and densified
+/// points. Calibrated on the adversarial corpus of `crates/vector/tests/c21_worst_case.rs` (1.6–2.3 ns per unit in
+/// release), so an accepted call returns in about 3 s at most, far inside the 30 s document watchdog; the corpus
+/// records every observation.
+pub const OUTLINE_WORK_BUDGET: u64 = 1_200_000_000;
+
+/// Units charged per input vertex of one overlay call (sorting and sweeping it).
+const OVERLAY_COST: u64 = 64;
+
+/// One outline's work account.
+struct Work {
+    used: u64,
+    limit: u64,
+}
+
+impl Work {
+    /// Charges `n` units, refusing once the budget is passed.
+    fn spend(&mut self, n: u64) -> Result<(), GeomError> {
+        self.used = self.used.saturating_add(n);
+        if self.used > self.limit {
+            return Err(Work::exceeded());
+        }
+        Ok(())
+    }
+
+    fn exceeded() -> GeomError {
+        GeomError {
+            code: "limit.exceeded",
+            message: format!("sweeping this brush stroke needs more than {OUTLINE_WORK_BUDGET} units of work"),
+            pointer: "/points".to_owned(),
+        }
+    }
+}
 
 /// The pen a brush stroke is swept with (02 §6.1, §13.4 `pen`).
 #[derive(Debug, Clone, Copy, PartialEq)]
@@ -171,7 +213,12 @@ fn placements(spine: &Path, pressure: &[[f64; 2]]) -> Result<Vec<(P, f64, f64)>,
         let dd1 = (s.p2 - s.p1 * 2.0 + s.p0).len();
         let dd2 = (s.p3 - s.p2 * 2.0 + s.p1).len();
         let m = dd1.max(dd2) * 6.0;
-        let n = if m <= 0.0 { 1.0 } else { (m / (8.0 * PLACEMENT_TOLERANCE)).sqrt().ceil().max(1.0) };
+        // A segment whose control points lie within the tolerance of its chord is that chord within the tolerance
+        // (convex hull property): its ends suffice, however its parameter speed varies (corner anchors have zero
+        // handles, which Wang's bound would flatten into dozens of placements).
+        let straight = chord_distance(s.p1, s.p0, s.p3) <= PLACEMENT_TOLERANCE
+            && chord_distance(s.p2, s.p0, s.p3) <= PLACEMENT_TOLERANCE;
+        let n = if m <= 0.0 || straight { 1.0 } else { (m / (8.0 * PLACEMENT_TOLERANCE)).sqrt().ceil().max(1.0) };
         if out.len() as f64 + n > MAX_PLACEMENTS as f64 {
             return Err(too_many());
         }
@@ -206,6 +253,14 @@ fn placements(spine: &Path, pressure: &[[f64; 2]]) -> Result<Vec<(P, f64, f64)>,
     Ok(out)
 }
 
+/// Distance from `p` to the segment `a`–`b`.
+fn chord_distance(p: P, a: P, b: P) -> f64 {
+    let ab = b - a;
+    let len2 = ab.dot(ab);
+    let t = if len2 > 0.0 { ((p - a).dot(ab) / len2).clamp(0.0, 1.0) } else { 0.0 };
+    p.dist(a + ab * t)
+}
+
 fn too_many() -> GeomError {
     GeomError {
         code: "limit.exceeded",
@@ -218,39 +273,61 @@ fn too_many() -> GeomError {
 ///
 /// # Errors
 /// `drawing.invalidGeometry` when the swept area is empty (zero width throughout); `limit.exceeded` beyond
-/// [`MAX_PLACEMENTS`] tip placements.
+/// [`MAX_PLACEMENTS`] tip placements or [`OUTLINE_WORK_BUDGET`] units of work.
 pub fn outline(spine: &Path, pressure: &[[f64; 2]], pen: &BrushPen) -> Result<Path, GeomError> {
+    outline_within(spine, pressure, pen, OUTLINE_WORK_BUDGET).map(|(p, _)| p)
+}
+
+/// [`outline`] and the units of work it used (the worst-case corpus records them).
+///
+/// # Errors
+/// As [`outline`].
+pub fn outline_measured(spine: &Path, pressure: &[[f64; 2]], pen: &BrushPen) -> Result<(Path, u64), GeomError> {
+    outline_within(spine, pressure, pen, OUTLINE_WORK_BUDGET)
+}
+
+/// [`outline`] within `budget` units (a brush stroke passes what its centre fit left of [`OUTLINE_WORK_BUDGET`]),
+/// with the units used.
+///
+/// # Errors
+/// As [`outline`]; `limit.exceeded` past `budget`, before the step that would pass it starts, or when the outline
+/// needs more than [`MAX_ANCHORS`] anchors.
+pub fn outline_within(
+    spine: &Path,
+    pressure: &[[f64; 2]],
+    pen: &BrushPen,
+    budget: u64,
+) -> Result<(Path, u64), GeomError> {
+    let mut work = Work { used: 0, limit: budget };
     let places = placements(spine, pressure)?;
+    work.spend(places.len() as u64)?;
     let tips: Vec<Vec<P>> =
         places.iter().map(|(q, _, p)| tip_polygon(pen, pen.width(*p)).into_iter().map(|v| v + *q).collect()).collect();
-    let mut overlay: Overlay<i32> = Overlay::new(tips.len() * 16);
-    let mut add = |poly: Vec<P>| {
+    work.spend(tips.iter().map(|t| t.len() as u64).sum::<u64>().saturating_mul(4))?;
+    let to_ints = |poly: Vec<P>| {
         let mut ints: Vec<IntPoint<i32>> = poly.into_iter().map(to_int).collect();
         ints.dedup();
-        if ints.len() >= 3 {
-            overlay.add_contour(&ints, ShapeType::Subject);
-        }
+        ints
     };
+    let mut hulls: Vec<Vec<Vec<IntPoint<i32>>>> = Vec::with_capacity(tips.len());
     if tips.len() == 1 {
-        add(hull(tips[0].clone()));
+        hulls.push(vec![to_ints(hull(tips[0].clone()))]);
     } else {
         for w in tips.windows(2) {
             let mut both = w[0].clone();
             both.extend_from_slice(&w[1]);
-            add(hull(both));
+            hulls.push(vec![to_ints(hull(both))]);
         }
     }
-    let shapes = overlay.overlay(OverlayRule::Subject, FillRule::NonZero);
+    let united = union(hulls, &mut work)?;
     let mut contours: Vec<Vec<P>> = Vec::new();
-    for shape in shapes {
-        for contour in shape {
-            let c: Vec<P> = contour.into_iter().map(from_int).collect();
-            if c.len() >= 3 && signed_area(&c) != 0.0 {
-                contours.push(c);
-            }
+    for contour in united {
+        let c: Vec<P> = contour.into_iter().map(from_int).collect();
+        if c.len() >= 3 && signed_area(&c) != 0.0 {
+            contours.push(c);
         }
     }
-    let Some(merged) = bridge(contours) else {
+    let Some(merged) = bridge(contours, &mut work)? else {
         return Err(GeomError::invalid("/pen", "the brush sweeps no area (zero width)"));
     };
     let tol = OUTLINE_TOLERANCE.min(pen.max_size / 16.0).max(1.0 / GRID);
@@ -260,22 +337,57 @@ pub fn outline(spine: &Path, pressure: &[[f64; 2]], pen: &BrushPen) -> Result<Pa
     let mut dense: Vec<P> = Vec::with_capacity(merged.len());
     for (i, a) in merged.iter().enumerate() {
         let b = merged[(i + 1) % merged.len()];
-        dense.push(*a);
         let n = (a.dist(b) / step).floor().min(4096.0) as u32;
+        work.spend(u64::from(n.max(1)))?;
+        dense.push(*a);
         for k in 1..n {
             dense.push(a.lerp(b, f64::from(k) / f64::from(n)));
         }
     }
     let samples: Vec<Sample> = dense.iter().map(|p| Sample { p: *p, pressure: 1.0 }).collect();
-    let f = fit::fit_with(&samples, tol, 0.0, true);
-    Ok(f.path)
+    let left = work.limit.saturating_sub(work.used);
+    let (f, used) = fit::fit_with_bounded(&samples, tol, 0.0, true, left).map_err(|_| Work::exceeded())?;
+    work.spend(used)?;
+    if f.path.anchors.len() > MAX_ANCHORS {
+        return Err(GeomError {
+            code: "limit.exceeded",
+            message: format!("the brush outline needs more than {MAX_ANCHORS} anchors"),
+            pointer: "/points".to_owned(),
+        });
+    }
+    Ok((f.path, work.used))
+}
+
+/// The non-zero union of shapes (each a list of contours with the overlay's orientation: holes reversed), united
+/// [`UNION_CHUNK`] at a time and then the results again until one remains; every call is charged before it runs.
+/// The point set is the same as one call over all shapes (union is associative and exact on the integer grid).
+fn union(mut level: Vec<Vec<Vec<IntPoint<i32>>>>, work: &mut Work) -> Result<Vec<Vec<IntPoint<i32>>>, GeomError> {
+    loop {
+        let mut next: Vec<Vec<Vec<IntPoint<i32>>>> = Vec::with_capacity(level.len().div_ceil(UNION_CHUNK));
+        for chunk in level.chunks(UNION_CHUNK) {
+            let vertices: usize = chunk.iter().flatten().map(Vec::len).sum();
+            work.spend((vertices as u64).saturating_mul(OVERLAY_COST))?;
+            let mut overlay: Overlay<i32> = Overlay::new(vertices);
+            for contour in chunk.iter().flatten() {
+                if contour.len() >= 3 {
+                    overlay.add_contour(contour, ShapeType::Subject);
+                }
+            }
+            let shapes = overlay.overlay(OverlayRule::Subject, FillRule::NonZero);
+            next.push(shapes.into_iter().flatten().collect());
+        }
+        if next.len() <= 1 {
+            return Ok(next.into_iter().flatten().collect());
+        }
+        level = next;
+    }
 }
 
 /// Joins contours into one closed polygon with zero-width bridges (largest contour first; each further contour is
 /// spliced in at its vertex nearest to the merged polygon).
-fn bridge(mut contours: Vec<Vec<P>>) -> Option<Vec<P>> {
+fn bridge(mut contours: Vec<Vec<P>>, work: &mut Work) -> Result<Option<Vec<P>>, GeomError> {
     if contours.is_empty() {
-        return None;
+        return Ok(None);
     }
     // Largest |area| first; ties broken by the first vertex so the order is a pure function of the geometry.
     contours.sort_by(|a, b| {
@@ -286,8 +398,9 @@ fn bridge(mut contours: Vec<Vec<P>>) -> Option<Vec<P>> {
             .then(a[0].y.total_cmp(&b[0].y))
     });
     let mut it = contours.into_iter();
-    let mut merged = it.next()?;
+    let Some(mut merged) = it.next() else { return Ok(None) };
     for c in it {
+        work.spend((merged.len() as u64).saturating_mul(c.len() as u64))?;
         let mut best = (f64::INFINITY, 0, 0);
         for (i, m) in merged.iter().enumerate() {
             for (j, p) in c.iter().enumerate() {
@@ -306,7 +419,7 @@ fn bridge(mut contours: Vec<Vec<P>>) -> Option<Vec<P>> {
         next.extend_from_slice(&merged[i + 1..]);
         merged = next;
     }
-    Some(merged)
+    Ok(Some(merged))
 }
 
 #[cfg(test)]

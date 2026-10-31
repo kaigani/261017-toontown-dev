@@ -4,8 +4,11 @@
 #![allow(clippy::unwrap_used, missing_docs, reason = "test")]
 
 use serde_json::{Value, json};
+use tt_model::entities::pen::Tip;
+use tt_vector::brush::{BrushPen, OUTLINE_WORK_BUDGET, outline_measured};
 use tt_vector::fit::{FIT_WORK_BUDGET, Sample, clean, fit_bounded};
 use tt_vector::geom::P;
+use tt_vector::path::{Anchor, Path};
 
 /// A seeded linear congruential generator (no clock, no OS entropy).
 struct Lcg(u64);
@@ -122,4 +125,102 @@ fn input_needing_more_work_than_the_budget_is_refused_with_limit_exceeded() {
     assert_eq!(e.code, "limit.exceeded");
     assert_eq!(e.pointer, "/points");
     assert!(fit_bounded(&samples, 3.0, false, used).is_ok());
+}
+
+/// The adversarial brush corpus: (name, spine, pressure map, pen).
+fn brush_corpus() -> Vec<(&'static str, Path, Vec<[f64; 2]>, BrushPen)> {
+    let round = |max: f64| BrushPen { tip: Tip::Round, min_size: 0.0, max_size: max, tip_angle: 0.0 };
+    let line = |len: f64| Path {
+        anchors: vec![Anchor::corner(P::new(0.0, 0.0)), Anchor::corner(P::new(len, 0.0))],
+        closed: false,
+    };
+    let alternating =
+        |n: u32| -> Vec<[f64; 2]> { (0..n).map(|i| [f64::from(i) / f64::from(n - 1), f64::from(i % 2)]).collect() };
+    let zigzag = |n: u32, step: f64, amp: f64| Path {
+        anchors: (0..n)
+            .map(|i| Anchor::corner(P::new(f64::from(i) * step, if i % 2 == 0 { 0.0 } else { amp })))
+            .collect(),
+        closed: false,
+    };
+    // A coil: small loops advancing slowly, each loop leaves a hole.
+    let coil = |loops: u32, per: u32, r: f64, advance: f64| Path {
+        anchors: (0..loops * per)
+            .map(|i| {
+                let a = std::f64::consts::TAU * f64::from(i) / f64::from(per);
+                Anchor::corner(P::new(f64::from(i) / f64::from(per) * advance + r * a.cos(), r * a.sin()))
+            })
+            .collect(),
+        closed: false,
+    };
+    let full = vec![[0.0, 1.0], [1.0, 1.0]];
+    vec![
+        ("99000-alternating-knots-round-100", line(100.0), alternating(99_000), round(100.0)),
+        (
+            "99000-alternating-knots-square-100",
+            line(100.0),
+            alternating(99_000),
+            BrushPen { tip: Tip::Square, min_size: 0.0, max_size: 100.0, tip_angle: 0.0 },
+        ),
+        (
+            "99000-alternating-knots-oval-100-angled",
+            line(100.0),
+            alternating(99_000),
+            BrushPen { tip: Tip::Oval, min_size: 0.0, max_size: 100.0, tip_angle: 30.0 },
+        ),
+        ("30000-anchor-zigzag-round-100", zigzag(30_000, 1.0, 40.0), full.clone(), round(100.0)),
+        ("30000-anchor-zigzag-round-2", zigzag(30_000, 1.0, 40.0), full.clone(), round(2.0)),
+        (
+            "45000-anchor-dense-zigzag-flat-50",
+            zigzag(45_000, 0.01, 0.5),
+            full.clone(),
+            BrushPen { tip: Tip::Flat, min_size: 0.0, max_size: 50.0, tip_angle: 45.0 },
+        ),
+        ("coil-1500-loops-round-1", coil(1500, 24, 5.0, 4.0), full.clone(), round(1.0)),
+        ("coil-3500-loops-round-1", coil(3500, 12, 5.0, 4.0), full.clone(), round(1.0)),
+        ("coil-1500-overlapping-loops-round-8", coil(1500, 24, 20.0, 0.5), full.clone(), round(8.0)),
+        ("long-line-tiny-tip", line(1_000_000.0), alternating(90_000), round(0.05)),
+    ]
+}
+
+#[test]
+#[ignore = "release-only measurement (about a minute); CI runs it in the headless job with the fitting corpus"]
+fn adversarial_brush_outlines_finish_or_are_refused_within_the_work_budget() {
+    let mut cases = Vec::new();
+    let mut worst = (String::new(), 0u64, 0.0f64);
+    for (name, spine, pressure, pen) in brush_corpus() {
+        let mut runs = Vec::new();
+        for _ in 0..3 {
+            let start = std::time::Instant::now();
+            let result = outline_measured(&spine, &pressure, &pen);
+            let ms = start.elapsed().as_secs_f64() * 1000.0;
+            let (outcome, units, anchors) = match &result {
+                Ok((p, used)) => ("ok".to_owned(), *used, p.anchors.len()),
+                Err(e) => {
+                    assert_eq!(e.code, "limit.exceeded", "{name}: {e:?}");
+                    (format!("limit.exceeded: {}", e.message), OUTLINE_WORK_BUDGET, 0)
+                }
+            };
+            if ms > worst.2 {
+                worst = (name.to_owned(), units, ms);
+            }
+            runs.push(json!({"wallMs": ms, "outcome": outcome, "units": units, "anchors": anchors}));
+        }
+        eprintln!("{name}: {runs:?}");
+        cases.push(
+            json!({"name": name, "spineAnchors": spine.anchors.len(), "pressureKnots": pressure.len(), "runs": runs}),
+        );
+    }
+    let doc: Value = json!({
+        "budgetUnits": OUTLINE_WORK_BUDGET,
+        "os": std::env::consts::OS,
+        "cases": cases,
+        "worst": {"name": worst.0, "units": worst.1, "wallMs": worst.2},
+    });
+    let out = std::path::Path::new(env!("CARGO_MANIFEST_DIR")).join("../../target/evidence/c21-fit");
+    std::fs::create_dir_all(&out).unwrap();
+    let file = out.join(format!("brush-worst-case-{}.json", std::env::consts::OS));
+    std::fs::write(&file, serde_json::to_string_pretty(&doc).unwrap()).unwrap();
+    eprintln!("worst {worst:?}; observations in {}", file.display());
+    // Accepted or refused, every outline returns far inside the 30 s document watchdog.
+    assert!(worst.2 < 10_000.0, "{worst:?}");
 }
