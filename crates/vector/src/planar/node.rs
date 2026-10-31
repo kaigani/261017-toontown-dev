@@ -117,6 +117,75 @@ fn at_vertex(a: P, b: P, c: P, d: P) -> Option<(f64, f64, P)> {
     Some((t, u, at))
 }
 
+/// The directions of a stroke's polyline away from a point on edge `k` at fraction `t`: both ways along the edge for an
+/// interior point, towards the nearest distinct neighbouring vertices at a vertex; `None` at an open path's end.
+fn directions(f: &Flat, k: usize, t: f64) -> Option<(P, P)> {
+    let n = f.pts.len();
+    let next_of = |v: usize| {
+        if v + 1 < n {
+            Some(v + 1)
+        } else if f.closed {
+            Some(0)
+        } else {
+            None
+        }
+    };
+    let prev_of = |v: usize| {
+        if v > 0 {
+            Some(v - 1)
+        } else if f.closed {
+            Some(n - 1)
+        } else {
+            None
+        }
+    };
+    let (a, b) = (f.pts[k], f.pts[next_of(k)?]);
+    if t > 0.0 && t < 1.0 {
+        let p = a.lerp(b, t);
+        return Some((a - p, b - p));
+    }
+    let v = if t <= 0.0 { k } else { next_of(k)? };
+    let at = f.pts[v];
+    let (mut p, mut q) = (prev_of(v)?, next_of(v)?);
+    for _ in 0..n {
+        if f.pts[p] != at {
+            break;
+        }
+        p = prev_of(p)?;
+    }
+    for _ in 0..n {
+        if f.pts[q] != at {
+            break;
+        }
+        q = next_of(q)?;
+    }
+    Some((f.pts[p] - at, f.pts[q] - at))
+}
+
+/// Whether `x` lies strictly inside the counter-clockwise arc of directions from `u` to `w` (exact orientation tests).
+fn inside_arc(u: P, w: P, x: P) -> bool {
+    let c = cross(u, w);
+    if c > 0.0 {
+        cross(u, x) > 0.0 && cross(x, w) > 0.0
+    } else if c < 0.0 {
+        !(cross(w, x) >= 0.0 && cross(x, u) >= 0.0)
+    } else if u.dot(w) < 0.0 {
+        cross(u, x) > 0.0
+    } else {
+        false
+    }
+}
+
+/// Whether two polylines through one point cross there: the second's two directions lie strictly on different sides of
+/// the first. A touch, or a direction shared by both (overlap, retracing), is not a crossing.
+fn crosses_at(a: (P, P), b: (P, P)) -> bool {
+    let same = |x: P, y: P| cross(x, y) == 0.0 && x.dot(y) > 0.0;
+    if [a.0, a.1].iter().any(|x| same(*x, b.0) || same(*x, b.1)) {
+        return false;
+    }
+    inside_arc(a.1, a.0, b.0) != inside_arc(a.1, a.0, b.1)
+}
+
 /// The closest point of a segment to `p`: fraction and point.
 fn closest(p: P, a: P, b: P) -> (f64, P) {
     let ab = b - a;
@@ -201,8 +270,13 @@ pub fn node(strokes: &[NodeStroke], work: &mut Work) -> Result<Noding, GeomError
                             (f.stroke, flat::param_between(f.sa, f.sb, u)),
                         ],
                     });
-                } else if let Some((t, u, at)) = at_vertex(e.a, e.b, f.a, f.b) {
-                    // A stroke through another's vertex crosses (or touches) it there (02 §3.12 item 1).
+                } else if let Some((t, u, at)) = at_vertex(e.a, e.b, f.a, f.b)
+                    && let (Some(da), Some(db)) =
+                        (directions(&flats[e.stroke], e.k, t), directions(&flats[f.stroke], f.k, u))
+                    && crosses_at(da, db)
+                {
+                    // A stroke crossing another exactly at a vertex of either (02 §3.12 item 1); touches, shared
+                    // directions (retracing) and path ends (the T-junction rule's) are not crossings.
                     records.push(Record {
                         at,
                         parts: [
@@ -251,14 +325,16 @@ pub fn node(strokes: &[NodeStroke], work: &mut Work) -> Result<Noding, GeomError
             }
         }
     }
+    // Each junction of a pencil or invisible stroke is resolved and may become a piece (a split and a new stroke of a
+    // few anchors): charged before the records are clustered, so a layer with too many crossings is refused first.
+    let splits = records.iter().flat_map(|r| r.parts).filter(|(k, _)| splittable(strokes[*k].kind)).count();
+    work.spend_n(splits.saturating_mul(256))?;
     let junctions = resolve(strokes, &records, work)?;
     let mut outcomes = BTreeMap::new();
     for (i, s) in strokes.iter().enumerate() {
         if !splittable(s.kind) || junctions[i].is_empty() {
             continue;
         }
-        // Each junction is resolved and may become a piece (a split and a new stroke of a few anchors).
-        work.spend_n(junctions[i].len().saturating_mul(256))?;
         if let Some(o) = apply(s, &junctions[i]) {
             outcomes.insert(i, o);
         }
@@ -671,6 +747,21 @@ mod tests {
         assert_eq!((a.len(), x.len()), (2, 2));
         assert_eq!(a[0].anchors[a[0].anchors.len() - 1].p, P::new(5.0, 0.0));
         assert_eq!(x[0].anchors[x[0].anchors.len() - 1].p, P::new(5.0, 0.0), "exactly the shared vertex");
+    }
+
+    #[test]
+    fn touching_or_retracing_at_a_vertex_is_not_a_crossing() {
+        // A line touching another's anchor from one side, and a line retracing another exactly.
+        let touch = run(&[
+            line("a", &[(0.0, 0.0), (5.0, 0.0), (10.0, 0.0)], false),
+            line("t", &[(3.0, 5.0), (5.0, 0.0), (7.0, 5.0)], true),
+        ]);
+        assert!(touch.outcomes.is_empty(), "{touch:?}");
+        let retrace = run(&[
+            line("a", &[(0.0, 0.0), (5.0, 2.0), (10.0, 0.0)], false),
+            line("b", &[(0.0, 0.0), (5.0, 2.0), (10.0, 0.0)], true),
+        ]);
+        assert!(retrace.outcomes.is_empty(), "{retrace:?}");
     }
 
     #[test]
