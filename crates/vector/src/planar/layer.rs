@@ -252,6 +252,9 @@ pub fn settle<E>(
         }
         strokes = out;
     }
+    // Writing the stored fills touches every stroke's JSON: charged as soon as the stroke count is known, so a layer
+    // noded into too many pieces is refused before its graph is built (same total, earlier refusal).
+    work.spend_n(strokes.len().saturating_mul(2048))?;
     let map = graph::build(&inputs(&strokes), work)?;
     let owned: Option<LayerMap> = match (before, before_map) {
         (Some(b), None) => Some(graph::build(&inputs(b), work)?),
@@ -272,8 +275,6 @@ pub fn settle<E>(
             fills[z] = f.clone().filter(Fill::painted);
         }
     }
-    // Writing the stored fills touches every stroke's JSON.
-    work.spend_n(strokes.len().saturating_mul(2048))?;
     let st = fill::write(&map, &fills, &stored(&strokes));
     apply_stored(&mut strokes, &st);
     let changed = strokes.as_slice() != after;

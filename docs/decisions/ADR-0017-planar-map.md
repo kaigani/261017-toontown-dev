@@ -57,7 +57,8 @@ C2.1 delivered strokes, text, groups and bitmaps as validated, persisted geometr
    closing of all layers of a pass, charged before each step (pair tests, pieces, edges, half-edges, zones, hole tests,
    stored strokes). Past it the call fails with `limit.exceeded` and a hint; nothing is staged, no revision, undo step or
    event. Calibrated on `crates/vector/tests/c22_worst_case.rs`: worst accepted ≈ 2.5 s (one stroke added to a
-   100 000-stroke layer), worst refusal ≈ 5 s (a 600 × 600 grid of crossing lines, 360 000 zones) in local release;
+   100 000-stroke layer), worst refusal ≈ 2.3 s (a 600 × 600 grid of crossing lines, refused once noding has fixed its
+   720 000 pieces, before the graph) in local release;
    every observation retained, both OSes in CI's headless job.
 
 7. **Derived-map cache.** Maps are cached per session by the SHA-256 of a layer's geometry (fills do not change a map),
