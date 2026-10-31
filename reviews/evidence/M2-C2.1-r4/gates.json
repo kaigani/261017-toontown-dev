@@ -1,0 +1,56 @@
+[
+  {
+    "name": "workspace",
+    "command": "cargo test --workspace --locked --no-fail-fast",
+    "exit": 0,
+    "wallSeconds": 1238.5815584000666
+  },
+  {
+    "name": "frontend",
+    "command": "pnpm test",
+    "exit": 0,
+    "wallSeconds": 81.24885570001788
+  },
+  {
+    "name": "release-review",
+    "command": "cargo test --release --locked -p tt-vector --test c21_r3_geometry --test c21_r2_geometry -- --nocapture",
+    "exit": 0,
+    "wallSeconds": 13.165097499964759
+  },
+  {
+    "name": "release-contracts",
+    "command": "cargo test --release --locked -p tt-executor --test c21_r3_contracts -- --nocapture",
+    "exit": 0,
+    "wallSeconds": 46.11409469996579
+  },
+  {
+    "name": "brush-debug",
+    "command": "cargo test --locked -p tt-vector --test c21_worst_case adversarial_brush -- --ignored --nocapture",
+    "exit": 0,
+    "wallSeconds": 42.6862536999397
+  },
+  {
+    "name": "brush-release",
+    "command": "cargo test --release --locked -p tt-vector --test c21_worst_case adversarial_brush -- --ignored --nocapture",
+    "exit": 0,
+    "wallSeconds": 30.703264700016007
+  },
+  {
+    "name": "allows",
+    "command": "python scripts/check-product-allows.py",
+    "exit": 0,
+    "wallSeconds": 0.5955342999659479
+  },
+  {
+    "name": "generation",
+    "command": "python scripts/gen-command-declarations.py",
+    "exit": 0,
+    "wallSeconds": 0.6622259002178907
+  },
+  {
+    "name": "python",
+    "command": "python scripts/run-reviewer-python-suites.py",
+    "exit": 0,
+    "wallSeconds": 6.851875599939376
+  }
+]

@@ -1,0 +1,43 @@
+   Compiling tt-vector v0.0.1 (C:\Users\kaiga\work\review\m2-c21-r4\crates\vector)
+    Finished `release` profile [optimized + debuginfo] target(s) in 3.58s
+     Running unittests src\lib.rs (target\release\deps\tt_vector-3678441d920da78d.exe)
+
+running 36 tests
+test brush::tests::a_dab_is_one_tip ... ok
+test brush::tests::zero_width_is_invalid_geometry ... ok
+test geom::tests::affine_composition ... ok
+test fit::tests::a_click_is_a_dab ... ok
+test fit::tests::a_closed_polyline_keeps_its_last_vertex_at_its_own_position ... ok
+test fit::tests::a_rotated_loop_keeps_its_closing_pressure_before_the_first_sample ... ok
+test text::nfc_tests::deleting_between_a_base_and_a_mark_composes_them ... ok
+test geom::tests::bounds_cover_bulging_curves ... ok
+test geom::tests::line_length_and_bounds ... ok
+test brush::tests::a_straight_stroke_outlines_a_capsule ... ok
+test num::tests::golden_values_are_platform_independent ... ok
+test fit::tests::stationary_pressure_peaks_survive_cleaning_at_the_start_middle_and_end ... ok
+test num::tests::reflection_about_the_y_axis ... ok
+test path::tests::malformed_lists_are_invalid_geometry ... ok
+test symmetry::tests::mirror_at_zero_is_left_right ... ok
+test text::nfc_tests::a_class_zero_composition_keeps_unrelated_formats ... ok
+test text::nfc_tests::a_combining_mark_typed_after_a_base_joins_the_base_and_its_run ... ok
+test path::tests::bezier_lists_round_trip_open_and_closed ... ok
+test brush::tests::pressure_varies_the_width ... ok
+test text::nfc_tests::decomposed_input_is_composed_and_runs_follow ... ok
+test fit::tests::a_straight_drag_fits_one_segment ... ok
+test fit::tests::a_square_keeps_its_corners ... ok
+test text::nfc_tests::origins_follow_reordering_and_blocking ... ok
+test text::tests::format_splits_and_merges_runs ... ok
+test fit::tests::fitting_error_is_within_tolerance ... ok
+test fit::tests::pressure_maps_are_ordered_and_span_the_spine ... ok
+test symmetry::tests::kaleidoscope_gives_two_n_images ... ok
+test text::tests::paragraph_format_follows_split_lines ... ok
+test fit::tests::closed_loops_return_to_the_start ... ok
+test text::nfc_tests::hangul_jamo_compose_into_one_syllable ... ok
+test text::tests::new_text_has_one_run_and_one_paragraph_per_line ... ok
+test brush::tests::outlines_are_reproducible ... ok
+test text::tests::typing_and_deleting_keep_runs_covering_the_text ... ok
+test brush::tests::a_looping_stroke_is_one_clean_closed_path ... ok
+test text::tests::layout_wraps_at_a_fixed_width ... ok
+test text::nfc_tests::nfc_with_origins_matches_the_library_on_random_text ... ok
+
+test result: ok. 36 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.03s

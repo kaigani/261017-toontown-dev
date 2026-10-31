@@ -1,5 +1,32 @@
 {
   "reviewerPaths": 282,
+  "unchangedExamplePaths": 249,
+  "builderChangedPaths": [
+    "crates/executor/tests/golden/c21-determinism.json",
+    "crates/persist/src/lock.rs",
+    "crates/vector/src/brush.rs",
+    "crates/vector/src/fit.rs",
+    "crates/vector/src/text.rs",
+    "crates/vector/tests/c21_worst_case.rs",
+    "crates/vector/tests/properties.rs",
+    "docs/decisions/ADR-0016-vector-engine.md",
+    "reviews/M2-C2.1-r3-response.md",
+    "reviews/evidence/M2-C2.1/brush-worst-case-windows.json",
+    "reviews/evidence/M2-C2.1/c21-history-release.log",
+    "reviews/evidence/M2-C2.1/ci-41196211322-brush-worst-case-macos.json",
+    "reviews/evidence/M2-C2.1/ci-41196211322-brush-worst-case-windows.json",
+    "reviews/evidence/M2-C2.1/ci-41196211322-fit-worst-case-macos.json",
+    "reviews/evidence/M2-C2.1/ci-41196211322-fit-worst-case-windows.json",
+    "reviews/evidence/M2-C2.1/ci-41196211322.txt",
+    "reviews/evidence/M2-C2.1/fit-worst-case-windows.json",
+    "reviews/evidence/M2-C2.1/fit-worst-case.log",
+    "reviews/evidence/M2-C2.1/measurement-analysis.json",
+    "reviews/evidence/M2-C2.1/measurement-analysis.log",
+    "reviews/evidence/M2-C2.1/reviewer-python-suites.log",
+    "reviews/evidence/M2-C2.1/strokes-100k-windows.json",
+    "reviews/evidence/M2-C2.1/workspace-tests.log"
+  ],
+  "generatedFresh": true,
   "prohibited": [],
   "goldenDelta": [
     [

@@ -1,0 +1,135 @@
+   Compiling tt-vector v0.0.1 (C:\Users\kaiga\work\review\m2-c21-r4\crates\vector)
+    Finished `release` profile [optimized + debuginfo] target(s) in 1.05s
+     Running tests\c21_r2_geometry.rs (target\release\deps\c21_r2_geometry-cee51beb71a59869.exe)
+
+running 11 tests
+test alternating_pressure_worker ... ignored, subprocess worker run by the bounded parent
+test many_pressure_knots_brush_worker ... ignored, subprocess worker run by the bounded parent
+Bengali NFC runs: [Run { start: 0, length: 2, font: "sans-serif", size: 36.0, bold: false, italic: false, script: "normal", kerning: 0.0, auto_kerning: true, colour_id: None }, Run { start: 2, length: 1, font: "sans-serif", size: 36.0, bold: true, italic: false, script: "normal", kerning: 0.0, auto_kerning: true, colour_id: None }]
+case two smooth=0 closed=false forward=0.000000000 reverse=0.000000000 anchors=2
+worst two smooth=0 closed=false forward=0.000000000 reverse=0.000000000test nfc_composition_preserves_unaffected_character_formats ... ok anchors=2 ratio=0.000000000
+dense pressure peak: fitted pressure=[[0.0, 1.0], [1
+.0, 0.0]], bounds=Rect { min_x: -50.03448127062704, min_y: -49.9860488854267, max_x: 50.03448127062704, max_y: 49.9860488854267 }
+case two smooth=0 closed=true forward=0.000000000 reverse=0.000000000 anchors=2
+test spatial_dedupe_preserves_pressure_extrema_for_the_brush_sweep ... ok
+case two smooth=1 closed=false forward=0.000000000 reverse=0.000000000 anchors=2
+case two smooth=1 closed=true forward=0.000000000 reverse=0.000000000 anchors=2
+case two smooth=2 closed=false forward=0.000000000 reverse=0.000000000 anchors=2
+case two smooth=2 closed=true forward=0.000000000 reverse=0.000000000 anchors=2
+case two smooth=3 closed=false forward=0.000000000 reverse=0.000000000 anchors=2
+case two smooth=3 closed=true forward=0.000000000 reverse=0.000000000 anchors=2
+case three smooth=0 closed=false forward=0.231480820 reverse=0.231461807 anchors=3
+worst three smooth=0 closed=false forward=0.231480820 reverse=0.231461807 anchors=3 ratio=0.925923279
+case three smooth=0 closed=true forward=0.231480820 reverse=0.231461807 anchors=3
+case three smooth=1 closed=false forward=0.462961639 reverse=0.462947305 anchors=3
+case three smooth=1 closed=true forward=0.462961639 reverse=0.462947305 anchors=3
+case three smooth=2 closed=false forward=0.925923279 reverse=0.925917658 anchors=3
+case three smooth=2 closed=true forward=0.925923279 reverse=0.925917658 anchors=3
+case three smooth=3 closed=false forward=0.925923279 reverse=0.925917658 anchors=3
+case three smooth=3 closed=true forward=0.925923279 reverse=0.925917658 anchors=3
+case four-cusp smooth=0 closed=false forward=0.000000000 reverse=0.000000000 anchors=3
+
+running 1 test
+case four-cusp smooth=0 closed=true forward=0.000000000 reverse=0.000000000 anchors=2
+case four-cusp smooth=1 closed=false forward=0.000000000 reverse=0.000000000 anchors=3
+case four-cusp smooth=1 closed=true forward=0.000000000 reverse=0.000000000 anchors=2
+case four-cusp smooth=2 closed=false forward=0.000000000 reverse=0.000000000 anchors=3
+case four-cusp smooth=2 closed=true forward=0.000000000 reverse=0.000000000 anchors=2
+test swept_tip_containment_matrix_at_and_between_knots ... ok
+case four-cusp smooth=3 closed=false forward=0.000000000 reverse=0.000000000 anchors=3
+case four-cusp smooth=3 closed=true forward=0.000000000 reverse=0.000000000 anchors=2
+
+running 1 test
+100k straight smooth=0 closed=false anchors=2 visits=17799999 elapsed=15.7841ms
+case straight smooth=0 closed=false forward=0.000000000 reverse=0.000000000 anchors=2
+round loop grid: 83521 points, 1808 boundary disagreements, worst boundary distance=0.023576462 du
+test round_loop_union_grid_error_is_within_outline_tolerance ... ok
+case straight smooth=0 closed=true forward=0.000000000 reverse=0.000000000 anchors=2
+alternating pressure: 20.3339ms, charged visits=20787858, knots=100000
+test alternating_pressure_worker ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 10 filtered out; finished in 0.02s
+
+100k straight smooth=0 closed=true anchors=2 visits=17800000 elapsed=16.1734ms
+case straight smooth=1 closed=false forward=0.000000000 reverse=0.000000000 anchors=2
+test alternating_pressure_fitting_respects_watchdog ... ok
+100k straight smooth=1 closed=false anchors=2 visits=17999999 elapsed=15.4352ms
+case straight smooth=1 closed=true forward=0.000000000 reverse=0.000000000 anchors=2
+case straight smooth=2 closed=false forward=0.000000000 reverse=0.000000000 anchors=2
+100k straight smooth=1 closed=true anchors=2 visits=18000000 elapsed=15.6325ms
+case straight smooth=2 closed=true forward=0.067085609 reverse=0.000000000 anchors=3
+case straight smooth=3 closed=false forward=0.000000000 reverse=0.000000000 anchors=2
+100k straight smooth=2 closed=false anchors=2 visits=18199999 elapsed=15.3051ms
+case straight smooth=3 closed=true forward=0.067085609 reverse=0.000000000 anchors=3
+case circle smooth=0 closed=false forward=0.165393352 reverse=0.166524781 anchors=5
+100k straight smooth=2 closed=true anchors=3 visits=18200096 elapsed=15.6616ms
+case circle smooth=0 closed=true forward=0.123847488 reverse=0.124230449 anchors=4
+100k straight smooth=3 closed=false anchors=2 visits=18399999 elapsed=15.2906ms
+case circle smooth=1 closed=false forward=0.397065777 reverse=0.397026840 anchors=3
+case circle smooth=1 closed=true forward=0.323021493 reverse=0.324020339 anchors=2
+100k straight smooth=3 closed=true anchors=3 visits=18400096 elapsed=15.7789ms
+test hundred_thousand_collinear_samples_respect_polyline_tolerance ... ok
+case circle smooth=2 closed=false forward=0.397065777 reverse=0.397026840 anchors=3
+case circle smooth=2 closed=true forward=0.647006906 reverse=0.649007580 anchors=2
+case circle smooth=3 closed=false forward=0.833408021 reverse=0.836256403 anchors=3
+case circle smooth=3 closed=true forward=0.647006906 reverse=0.649007580 anchors=2
+case zigzag smooth=0 closed=false forward=0.222221587 reverse=0.222199223 anchors=40
+test open_and_closed_anchor_limit_boundaries ... ok
+case zigzag smooth=0 closed=true forward=0.222221587 reverse=0.222199509 anchors=40
+case zigzag smooth=1 closed=false forward=0.444443174 reverse=0.444419795 anchors=40
+case zigzag smooth=1 closed=true forward=0.444443174 reverse=0.444419795 anchors=40
+case zigzag smooth=2 closed=false forward=0.444443174 reverse=0.444419795 anchors=40
+99000-knot brush: 906.3383ms, result anchors/error=Ok(20)
+test many_pressure_knots_brush_worker ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 10 filtered out; finished in 0.91s
+
+test many_pressure_knots_brush_respects_watchdog ... ok
+case zigzag smooth=2 closed=true forward=0.750000000 reverse=0.749995789 anchors=40
+case zigzag smooth=3 closed=false forward=0.444443174 reverse=0.444419795 anchors=40
+case zigzag smooth=3 closed=true forward=0.750000000 reverse=0.749995789 anchors=40
+case s-curve smooth=0 closed=false forward=0.199853673 reverse=0.199850468 anchors=7
+case s-curve smooth=0 closed=true forward=0.199853673 reverse=0.199850468 anchors=7
+case s-curve smooth=1 closed=false forward=0.366055823 reverse=0.366043378 anchors=4
+case s-curve smooth=1 closed=true forward=0.366055823 reverse=0.366043378 anchors=4
+case s-curve smooth=2 closed=false forward=0.711173375 reverse=0.711171145 anchors=3
+case s-curve smooth=2 closed=true forward=0.711173375 reverse=0.711171145 anchors=3
+case s-curve smooth=3 closed=false forward=0.711173375 reverse=0.711171145 anchors=3
+case s-curve smooth=3 closed=true forward=0.711173375 reverse=0.711171145 anchors=3
+case outlier smooth=0 closed=false forward=0.137547914 reverse=0.137540615 anchors=9
+case outlier smooth=0 closed=true forward=0.137547914 reverse=0.137540615 anchors=9
+case outlier smooth=1 closed=false forward=0.275095827 reverse=0.275086472 anchors=7
+case outlier smooth=1 closed=true forward=0.275095827 reverse=0.137540615 anchors=7
+case outlier smooth=2 closed=false forward=0.275095827 reverse=0.275086472 anchors=6
+case outlier smooth=2 closed=true forward=0.168664696 reverse=0.137540615 anchors=7
+case outlier smooth=3 closed=false forward=1.263451459 reverse=1.637125672 anchors=4
+worst outlier smooth=3 closed=false forward=1.263451459 reverse=1.637125672 anchors=4 ratio=0.935500384
+case outlier smooth=3 closed=true forward=1.235472658 reverse=1.015260008 anchors=5
+worst walk-7 smooth=0 closed=false forward=0.234290213 reverse=0.234290122 anchors=10 ratio=0.937160853
+worst walk-14 smooth=1 closed=false forward=0.702904950 reverse=0.702726872 anchors=17 ratio=0.937206599
+worst walk-59 smooth=3 closed=false forward=1.644451092 reverse=1.643944080 anchors=8 ratio=0.939686338
+test dense_bidirectional_fitting_corpus ... ok
+
+test result: ok. 9 passed; 0 failed; 2 ignored; 0 measured; 0 filtered out; finished in 10.15s
+
+     Running tests\c21_r3_geometry.rs (target\release\deps\c21_r3_geometry-2b5372e55366b430.exe)
+
+running 8 tests
+test bridge_threshold_closed_spine_and_symmetry_work_variants ... ignored, release-only bridge and symmetry work observations
+closed seam pressure [[test maximum_spine_and_pressure_worker ... ignored, bounded subprocess worker
+0.0, 1.0], [0.7499982435790358, 1.0], [1.0, 0.0]]
+test exact_stationary_samples_keep_pressure_extrema_after_command_cleaning ... ok
+test canonical_reordering_preserves_each_marks_own_format ... ok
+test closing_near_duplicate_pressure_stays_at_the_end_of_the_loop ... ok
+test nfc_reference_and_origin_coverage_corpus ... ok
+test merged_pressure_moving_average_matches_input_window_at_every_smoothness ... ok
+
+running 1 test
+maximum spine + pressure complete outline 1.704858s: Err(GeomError { code: "limit.exceeded", message: "the brush stroke needs more than 100000 tip placements", pointer: "/points" })
+test maximum_spine_and_pressure_worker ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 7 filtered out; finished in 1.71s
+
+test maximum_spine_and_pressure_return_within_watchdog ... ok
+
+test result: ok. 6 passed; 0 failed; 2 ignored; 0 measured; 0 filtered out; finished in 1.73s

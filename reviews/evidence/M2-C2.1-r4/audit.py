@@ -8,6 +8,9 @@ paths=git('ls-tree','-r','--name-only','b81904c').splitlines()
 owned=[p for p in paths if p.startswith('tests/adversarial/') or re.search(r'/tests/(?:c\d+_r\d|c21_r[123]_)',p) or p.startswith('reviews/evidence/M2-C2.1-r') or re.fullmatch(r'reviews/M2-C2.1-r[123].md',p)]
 assert not git('diff','b81904c','4e304cf','--',*owned)
 assert not git('diff','b81904c','4e304cf','--','Cargo.lock','deny.toml')
+assert not git('diff','b81904c','4e304cf','--','spec')
+examples=[p for p in paths if 'example' in p.lower() and not p.startswith('reviews/')]
+assert not git('diff','b81904c','4e304cf','--',*examples)
 prohibited=[]
 for p in git('diff','--name-only','b81904c','4e304cf').splitlines():
  if not p.endswith('.rs') or '/src/' not in p: continue
@@ -50,6 +53,6 @@ assert all(re.fullmatch(r'/drawing1/nodes/[46]/strokes/0/points/\d+/[2345]',d[0]
 assert len(delta)==26
 max_coord=max(abs(d[1]-d[2]) for d in coords)
 max_handle=max(math.hypot(coords[i][1]-coords[i][2],coords[i+1][1]-coords[i+1][2]) for i in range(0,len(coords),2))
-out=dict(reviewerPaths=len(owned),prohibited=prohibited,goldenDelta=delta,goldenMaxCoordinateDu=max_coord,goldenMaxHandleDu=max_handle,registerCounts=counts,promoted=promoted,builderLogRawTotals=totals)
+out=dict(reviewerPaths=len(owned),unchangedExamplePaths=len(examples),builderChangedPaths=git('diff','--name-only','b81904c','4e304cf').splitlines(),generatedFresh=not git('diff','--','crates/registry/src/declared.rs','crates/registry/src/declared.json'),prohibited=prohibited,goldenDelta=delta,goldenMaxCoordinateDu=max_coord,goldenMaxHandleDu=max_handle,registerCounts=counts,promoted=promoted,builderLogRawTotals=totals)
 (HERE/'audit.json').write_text(json.dumps(out,indent=2)+'\n')
 print(json.dumps(out,indent=2))
