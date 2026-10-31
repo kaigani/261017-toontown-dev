@@ -307,6 +307,8 @@ fn c21_drawing_commands_write_no_files_and_ask_no_confirmation() {
         .entries()
         .filter(|e| e.id().starts_with("draw.") && e.status() == tt_registry::Status::Implemented)
         .filter(|e| e.spec.kind != tt_registry::Kind::Event)
+        // `draw.hitTest.get` is the planar map's (M2 C2.2 ruling), not a C2.1 command.
+        .filter(|e| e.id() != "draw.hitTest.get")
         .map(|e| e.id())
         .collect();
     assert_eq!(implemented.len(), c21.len(), "{implemented:?}");

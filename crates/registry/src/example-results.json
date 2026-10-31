@@ -30,7 +30,7 @@
     {
       "title": "Accept a request",
       "result": {
-        "confirmationId": "cf_46781d39f66bd2af421d4943",
+        "confirmationId": "cf_f27da6e17593d46819b2d537",
         "accepted": true
       },
       "varies": [
@@ -71,7 +71,7 @@
         "endpoint": null,
         "sessions": [
           {
-            "sessionId": "s1-163a2a",
+            "sessionId": "s1-700344",
             "client": "Example agent",
             "policy": "assist",
             "scopes": [
@@ -83,7 +83,7 @@
               "files.write",
               "library.global"
             ],
-            "connectedAt": "2026-10-31T02:33:52.050Z",
+            "connectedAt": "2026-10-31T14:06:17.729Z",
             "lastActivity": null,
             "paused": false,
             "transport": ""
@@ -91,8 +91,8 @@
         ],
         "pendingConfirmations": [
           {
-            "confirmationId": "cf_8374ec71a4767778febf0977",
-            "sessionId": "s1-163a2a",
+            "confirmationId": "cf_9927499ca50890befe3daf9c",
+            "sessionId": "s1-700344",
             "commandId": "project.saveAs",
             "summary": "Overwrite `/tmp/Short.animpkg`",
             "consequences": [
@@ -127,7 +127,7 @@
     {
       "title": "Let a session edit",
       "result": {
-        "sessionId": "s1-016ca8",
+        "sessionId": "s1-84e774",
         "policy": "assist",
         "scopes": [
           "read",
@@ -145,7 +145,7 @@
       "title": "Pause every session",
       "result": {
         "paused": [
-          "s1-0adfd3"
+          "s1-12ff33"
         ]
       },
       "varies": [
@@ -438,7 +438,7 @@
       "result": [
         {
           "name": "before-walk",
-          "createdAt": "2026-10-31T02:33:52.799Z",
+          "createdAt": "2026-10-31T14:06:18.491Z",
           "documentRev": 1,
           "origin": "user"
         }
@@ -454,6 +454,161 @@
       "result": {
         "name": "before-walk",
         "documentRev": 5
+      },
+      "varies": []
+    }
+  ],
+  "colour.gap.close": [
+    {
+      "title": "Join the ends of two strokes",
+      "result": {
+        "drawingId": "dr_01K742SG0KKMCAP9X1E6Z5P4SW",
+        "strokeId": "st_01K7JJN800RXHD55052GG3NDRM",
+        "strokeIds": [
+          "st_01K7JJN800RXHD55052GG3NDRM"
+        ],
+        "hints": [
+          "drawing.strokesHidden"
+        ],
+        "createdIds": [
+          "st_01K7JJN800RXHD55052GG3NDRM"
+        ],
+        "modifiedIds": [
+          "nd_01K742SG0PC20XDQKASM9CGZHR"
+        ],
+        "removedIds": [],
+        "rev": 5
+      },
+      "varies": []
+    }
+  ],
+  "colour.gapClosing.get": [
+    {
+      "title": "Current gap closing mode",
+      "result": {
+        "mode": "off",
+        "tolerancesPx": {
+          "small": 3.0,
+          "medium": 8.0,
+          "large": 16.0
+        }
+      },
+      "varies": []
+    }
+  ],
+  "colour.gapClosing.set": [
+    {
+      "title": "Close small gaps while painting",
+      "result": {
+        "mode": "small"
+      },
+      "varies": []
+    }
+  ],
+  "colour.paint.apply": [
+    {
+      "title": "Paint a closed zone by point",
+      "result": {
+        "drawingId": "dr_01K742SG0KKMCAP9X1E6Z5P4SW",
+        "painted": [
+          {
+            "drawingId": "dr_01K742SG0KKMCAP9X1E6Z5P4SW",
+            "objectId": "st_01K742SG0R61SYK9GG0HGYVNBT",
+            "objectKind": "pencil",
+            "previousColourId": "col_01K742SG09H7QE4RRR6XSYYS88"
+          }
+        ],
+        "skipped": [],
+        "addedStrokeIds": [],
+        "createdIds": [],
+        "modifiedIds": [
+          "st_01K742SG0R61SYK9GG0HGYVNBT"
+        ],
+        "removedIds": [],
+        "rev": 5
+      },
+      "varies": []
+    },
+    {
+      "title": "Repaint a pencil line by ID",
+      "result": {
+        "drawingId": "dr_01K742SG0KKMCAP9X1E6Z5P4SW",
+        "painted": [
+          {
+            "drawingId": "dr_01K742SG0KKMCAP9X1E6Z5P4SW",
+            "objectId": "st_01K742SG0R61SYK9GG0HGYVNBT",
+            "objectKind": "pencil",
+            "previousColourId": "col_01K742SG09H7QE4RRR6XSYYS88"
+          }
+        ],
+        "skipped": [],
+        "addedStrokeIds": [],
+        "createdIds": [],
+        "modifiedIds": [
+          "st_01K742SG0R61SYK9GG0HGYVNBT"
+        ],
+        "removedIds": [],
+        "rev": 5
+      },
+      "varies": []
+    }
+  ],
+  "colour.paint.remove": [
+    {
+      "title": "Turn a pencil line into an invisible stroke",
+      "result": {
+        "drawingId": "dr_01K742SG0KKMCAP9X1E6Z5P4SW",
+        "unpainted": [
+          {
+            "drawingId": "dr_01K742SG0KKMCAP9X1E6Z5P4SW",
+            "objectId": "st_01K742SG0R61SYK9GG0HGYVNBT",
+            "previousColourId": "col_01K742SG09H7QE4RRR6XSYYS88"
+          }
+        ],
+        "skipped": [],
+        "createdIds": [],
+        "modifiedIds": [
+          "st_01K742SG0R61SYK9GG0HGYVNBT"
+        ],
+        "removedIds": [],
+        "rev": 5
+      },
+      "varies": []
+    }
+  ],
+  "colour.paintUnpainted.apply": [
+    {
+      "title": "Fill every unpainted zone",
+      "result": {
+        "drawingId": "dr_01K742SG0KKMCAP9X1E6Z5P4SW",
+        "painted": [],
+        "skippedPainted": 0,
+        "skipped": [],
+        "addedStrokeIds": [],
+        "createdIds": [],
+        "modifiedIds": [],
+        "removedIds": [],
+        "rev": 4
+      },
+      "varies": []
+    }
+  ],
+  "colour.pick": [
+    {
+      "title": "The colour under a point of a drawing",
+      "result": {
+        "colourId": "col_01K742SG09H7QE4RRR6XSYYS88",
+        "paletteId": "pal_01K742SG02PPWW6K8BZY81A0M0",
+        "swatchName": "Ink",
+        "rgba": "#000000FF",
+        "matrix": null,
+        "object": {
+          "drawingId": "dr_01K742SG0KKMCAP9X1E6Z5P4SW",
+          "elementId": "el_01K742SG11W3SGB8Q1H50W74VB",
+          "objectId": "st_01K742SG0R61SYK9GG0HGYVNBT",
+          "objectKind": "pencil"
+        },
+        "missing": false
       },
       "varies": []
     }
@@ -562,7 +717,7 @@
             "version": "0.0.1",
             "platform": "windows-x64"
           },
-          "exportedAt": "2026-10-31T02:33:53.315Z",
+          "exportedAt": "2026-10-31T14:06:19.215Z",
           "sourceProjectId": "pr_01K742SG00BK0VXTWDM5JRXV37",
           "scope": {
             "kind": "scenes",
@@ -3871,7 +4026,9 @@
                   "y": -50.75,
                   "width": 101.5,
                   "height": 101.5
-                }
+                },
+                "leftZoneId": null,
+                "rightZoneId": null
               },
               {
                 "type": "stroke",
@@ -3903,9 +4060,12 @@
                   "y": 0.0,
                   "width": 0.0,
                   "height": 100.0
-                }
+                },
+                "leftZoneId": null,
+                "rightZoneId": null
               }
-            ]
+            ],
+            "zones": []
           },
           {
             "type": "group",
@@ -3915,7 +4075,8 @@
                 "type": "layer",
                 "id": "nd_01K742SG0V9A7HCXC74WKN3V5F",
                 "layerKind": "pencil",
-                "strokes": []
+                "strokes": [],
+                "zones": []
               }
             ],
             "bounds": null
@@ -4239,6 +4400,43 @@
       "varies": []
     }
   ],
+  "draw.hitTest.get": [
+    {
+      "title": "What lies under a point",
+      "result": {
+        "point": {
+          "x": 0.0,
+          "y": 0.0
+        },
+        "hits": [
+          {
+            "objectId": "st_01K742SG0S0NT23BWCZN64SFQ5",
+            "objectKind": "invisible",
+            "layerId": "nd_01K742SG0PC20XDQKASM9CGZHR",
+            "groupPath": [],
+            "colourId": null
+          },
+          {
+            "objectId": "st_01K742SG0R61SYK9GG0HGYVNBT",
+            "objectKind": "pencil",
+            "layerId": "nd_01K742SG0PC20XDQKASM9CGZHR",
+            "groupPath": [],
+            "colourId": "col_01K742SG09H7QE4RRR6XSYYS88"
+          },
+          {
+            "objectId": "st_01K742SG0QD1F2HFZSX8R4V7WP",
+            "objectKind": "brush",
+            "layerId": "nd_01K742SG0PC20XDQKASM9CGZHR",
+            "groupPath": [],
+            "colourId": "col_01K742SG059XGSNZ6M9MACZ2ZY"
+          }
+        ],
+        "zoneId": null,
+        "rev": 1
+      },
+      "varies": []
+    }
+  ],
   "draw.object.delete": [
     {
       "title": "Delete the invisible stroke of Bob's first drawing",
@@ -4351,7 +4549,9 @@
         "strokeIds": [
           "st_01K742SG0R61SYK9GG0HGYVNBT"
         ],
-        "createdIds": [],
+        "createdIds": [
+          "st_01K742SG0R61SYK9GG0HGYVNBT"
+        ],
         "modifiedIds": [
           "st_01K742SG0R61SYK9GG0HGYVNBT"
         ],
@@ -4538,7 +4738,7 @@
             "stepId": "u-1",
             "label": "Set meta",
             "source": "user",
-            "time": "2026-10-31T02:33:54.581Z",
+            "time": "2026-10-31T14:06:20.523Z",
             "objectCount": 1
           },
           {
@@ -4546,7 +4746,7 @@
             "stepId": "u-2",
             "label": "Set meta",
             "source": "user",
-            "time": "2026-10-31T02:33:54.583Z",
+            "time": "2026-10-31T14:06:20.525Z",
             "objectCount": 1
           }
         ],
@@ -4691,7 +4891,7 @@
         "state": "succeeded",
         "progress": 1.0,
         "message": "",
-        "startedAt": "2026-10-31T02:33:54.838Z",
+        "startedAt": "2026-10-31T14:06:20.780Z",
         "result": {},
         "session": "user"
       },
@@ -4710,7 +4910,7 @@
           "state": "succeeded",
           "progress": 1.0,
           "message": "",
-          "startedAt": "2026-10-31T02:33:54.878Z",
+          "startedAt": "2026-10-31T14:06:20.804Z",
           "result": {},
           "session": "user"
         }
@@ -4729,7 +4929,7 @@
         "state": "succeeded",
         "progress": 1.0,
         "message": "",
-        "startedAt": "2026-10-31T02:33:54.903Z",
+        "startedAt": "2026-10-31T14:06:20.828Z",
         "result": {},
         "session": "user"
       },
@@ -4776,10 +4976,10 @@
     {
       "title": "A 1920×1080, 24 fps project",
       "result": {
-        "projectId": "pr_01M67WWXV8DNSBFHRPXZAQT914",
-        "sceneId": "sc_01M67WWXV9TM1ES6TW2SX2ASJM",
-        "cameraId": "el_01M67WWXV9TM1ES6TW2SX2ASJP",
-        "elementId": "el_01M67WWXV9TM1ES6TW2SX2ASJQ"
+        "projectId": "pr_01M694GT1HXK089D2H0GJWHSNC",
+        "sceneId": "sc_01M694GT1JJ73ANYVHVH5WC4M4",
+        "cameraId": "el_01M694GT1JJ73ANYVHVH5WC4M6",
+        "elementId": "el_01M694GT1JJ73ANYVHVH5WC4M7"
       },
       "varies": [
         "/cameraId",
@@ -5035,7 +5235,7 @@
         {
           "path": "/tmp/Sample.animpkg",
           "name": "Sample",
-          "lastOpened": "2026-10-31T02:33:55.753Z",
+          "lastOpened": "2026-10-31T14:06:21.689Z",
           "exists": true
         }
       ],

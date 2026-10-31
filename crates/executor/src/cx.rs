@@ -722,7 +722,11 @@ impl Cx {
             for l in crate::planar::layers(ad) {
                 let painted = self.painted.remove(&(id.clone(), l.id.clone())).unwrap_or_default();
                 let old = old_layers.get(&l.id);
-                if old == Some(&l.strokes) && painted.is_empty() {
+                // Only geometry, stroke identity and stored fills can change zones and fills: other edits (metadata,
+                // line thickness, colours of lines) leave the layer as it is.
+                if painted.is_empty()
+                    && old.is_some_and(|o| crate::planar::planar_view(o) == crate::planar::planar_view(&l.strokes))
+                {
                     continue;
                 }
                 let old_map = match old {

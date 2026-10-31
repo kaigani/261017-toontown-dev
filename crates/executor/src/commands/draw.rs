@@ -846,8 +846,6 @@ pub(crate) fn draw_group_create(cx: &mut Cx, p: GroupCreateParams) -> Result<Gro
     ops.push(op("add", &format!("{list}/{at}"), Some(group)));
     changes.push((EntryKey::Drawing(t.id.clone()), ops));
     cx.patch_entries(changes)?;
-    if !created.is_empty() {
-        }
     let mut created_all = vec![group_id.as_str().to_owned()];
     created_all.extend(created);
     let mut modified: Vec<String> = items.iter().map(|i| i.id.clone()).collect();

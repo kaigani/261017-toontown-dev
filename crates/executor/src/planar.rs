@@ -43,6 +43,24 @@ pub(crate) struct Cache {
 /// A cache shared by the invocations of a session.
 pub(crate) type SharedCache = Arc<Mutex<Cache>>;
 
+/// What of a layer's strokes the planar map depends on: identity, kind, closed flag, points, sides and the stored
+/// brush exterior records.
+pub(crate) fn planar_view(strokes: &[Value]) -> Vec<[Option<&Value>; 6]> {
+    strokes
+        .iter()
+        .map(|s| {
+            [
+                s.get("id"),
+                s.get("kind"),
+                s.get("closed"),
+                s.get("points"),
+                s.get("sides"),
+                s.pointer(&format!("/ext/{}", tt_vector::planar::fill::EXT_NAMESPACE)),
+            ]
+        })
+        .collect()
+}
+
 /// The geometry key of a layer's strokes.
 pub(crate) fn geometry_key(strokes: &[Value]) -> [u8; 32] {
     let mut h = Sha256::new();
@@ -86,11 +104,6 @@ impl Cache {
                 self.evictions += 1;
             }
         }
-    }
-
-    /// Entries and total cost held.
-    pub(crate) fn size(&self) -> (usize, usize) {
-        (self.entries.len(), self.cost)
     }
 }
 
@@ -198,11 +211,8 @@ pub(crate) fn zone_json(lz: &LayerZones, z: usize) -> Value {
     let ids = |list: &[Option<usize>]| -> Vec<Value> {
         list.iter().map(|o| o.map_or(Value::Null, |k| json!(lz.map.zones[k].id))).collect()
     };
-    let holes: Vec<Value> = zone
-        .holes
-        .iter()
-        .map(|h| json!({ "boundaryStrokeIds": h.boundary, "zoneId": ids(&[h.zone])[0] }))
-        .collect();
+    let holes: Vec<Value> =
+        zone.holes.iter().map(|h| json!({ "boundaryStrokeIds": h.boundary, "zoneId": ids(&[h.zone])[0] })).collect();
     json!({
         "type": "zone",
         "id": zone.id,

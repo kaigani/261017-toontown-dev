@@ -8,6 +8,7 @@ pub(crate) mod agent;
 pub(crate) mod app;
 pub(crate) mod bundle;
 pub(crate) mod checkpoint;
+pub(crate) mod colour;
 pub(crate) mod common;
 pub(crate) mod derived;
 pub(crate) mod doc;
@@ -117,6 +118,14 @@ pub(crate) static ALL: &[&Command] = &[
     &draw::DRAW_GROUP_CREATE,
     &draw::DRAW_GROUP_DELETE,
     &draw::DRAW_DRAWING_CHANGED,
+    &colour::COLOUR_PAINT_APPLY,
+    &colour::COLOUR_PAINT_UNPAINTED_APPLY,
+    &colour::COLOUR_PAINT_REMOVE,
+    &colour::COLOUR_PICK,
+    &colour::COLOUR_GAP_CLOSE,
+    &colour::COLOUR_GAP_CLOSING_SET,
+    &colour::COLOUR_GAP_CLOSING_GET,
+    &colour::DRAW_HIT_TEST_GET,
     &draw_stroke::DRAW_STROKE_ADD,
     &draw_stroke::DRAW_STROKE_SET,
     &draw_stroke::DRAW_CONTENT_ADD,

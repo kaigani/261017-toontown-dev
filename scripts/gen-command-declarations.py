@@ -123,10 +123,12 @@ def owner_of(cid: str) -> str:
             return "M6 C6.3"
         return "M6 C6.1"  # views, display options, animation tools, peg-only mode, flips, hierarchy commands
     if ns == "colour":
-        if rest.startswith(("paint", "gap")):
-            return "M2 C2.3"  # `colour.paint.*` with `draw.*`; gap closing is a paint operation (C2.2 engine)
+        if rest.startswith(("paint", "gap", "pick", "recovery", "missing")):
+            return "M2 C2.2"  # painting, gap closing, the dropper read-back and colour recovery (C2.2 ruling)
         return "M7 C7.1"
     if ns == "draw":
+        if rest == "hitTest.get":
+            return "M2 C2.2"  # zones under a point (C2.2 ruling)
         return "M2 C2.4" if rest.startswith(("vectorize", "vectorFile")) else "M2 C2.3"
     if ns == "drawAid":
         return "M5 C5.2" if rest.startswith("staticLightTable") else "M4 C4.2"
