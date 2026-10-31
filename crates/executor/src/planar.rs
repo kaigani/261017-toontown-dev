@@ -242,7 +242,8 @@ pub(crate) fn zone_json(lz: &LayerZones, z: usize) -> Value {
     };
     let holes: Vec<Value> =
         zone.holes.iter().map(|h| json!({ "boundaryStrokeIds": h.boundary, "zoneId": ids(&[h.zone])[0] })).collect();
-    json!({
+    // Numbers as everywhere in read-back: integral values are integers (10 §2.1 canonical form).
+    let mut v = json!({
         "type": "zone",
         "id": zone.id,
         "colourId": fill.as_ref().and_then(|f| f.colour_id.clone()),
@@ -253,7 +254,9 @@ pub(crate) fn zone_json(lz: &LayerZones, z: usize) -> Value {
         "area": zone.area,
         "bounds": zone.bounds.to_json(),
         "interiorPoint": { "x": zone.interior.x, "y": zone.interior.y },
-    })
+    });
+    tt_model::canonical::normalize_numbers(&mut v);
+    v
 }
 
 /// The zones on the left and right of a stroke, by ID.

@@ -1937,7 +1937,7 @@ export const COMMAND_INDEX = {
         objectId: "scene:#1",
       },
     ],
-    milestone: "M7 C7.1",
+    milestone: "M2 C2.3",
   },
   "colour.fillMapping.set": {
     kind: "action",
@@ -1949,7 +1949,7 @@ export const COMMAND_INDEX = {
         mapping: "default",
       },
     ],
-    milestone: "M7 C7.1",
+    milestone: "M2 C2.3",
   },
   "colour.gap.close": {
     kind: "action",
@@ -2182,7 +2182,7 @@ export const COMMAND_INDEX = {
     examples: [
       {},
     ],
-    milestone: "M7 C7.1",
+    milestone: "M2 C2.3",
   },
   "colour.recovery.performed": {
     kind: "event",
@@ -2229,7 +2229,7 @@ export const COMMAND_INDEX = {
     examples: [
       {},
     ],
-    milestone: "M7 C7.1",
+    milestone: "M2 C2.3",
   },
   "colour.style.changed": {
     kind: "event",

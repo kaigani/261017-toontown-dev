@@ -125,6 +125,8 @@ def owner_of(cid: str) -> str:
     if ns == "colour":
         if rest.startswith(("paint", "gap", "pick", "recovery", "missing")):
             return "M2 C2.2"  # painting, gap closing, the dropper read-back and colour recovery (C2.2 ruling)
+        if rest.startswith(("fillMapping", "selection", "recolour")):
+            return "M2 C2.3"  # fill mapping edits and recolouring of drawing content (C22-R1-10)
         return "M7 C7.1"
     if ns == "draw":
         if rest == "hitTest.get":

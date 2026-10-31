@@ -175,6 +175,24 @@ pub(crate) fn drag_matrix(kind: SwatchKind, from: P, to: P) -> Option<[f64; 6]> 
     }
 }
 
+/// The mapping a paint stores (03 §1.6, §7.2; C22-R1-09): a solid colour ignores the matrix but preserves the one the
+/// object has; a gradient or texture takes the drag's mapping, or after a single click the default mapping from the
+/// object's bounding box and the swatch kind.
+fn paint_matrix(
+    kind: SwatchKind,
+    drag: Option<(P, P)>,
+    existing: Option<[f64; 6]>,
+    b: Option<&Rect>,
+) -> Option<[f64; 6]> {
+    let m = match (kind, drag) {
+        (SwatchKind::Solid, _) => existing,
+        (_, Some((a, z))) => drag_matrix(kind, a, z),
+        (_, None) => b.and_then(|b| default_matrix(kind, b)),
+    };
+    // No negative zeros in stored matrices.
+    m.map(|m| m.map(|v| v + 0.0))
+}
+
 // ----- hit testing ------------------------------------------------------------------------------------------------
 
 /// What a point hits.
@@ -237,6 +255,18 @@ pub(crate) fn hits(
     include_invisible: bool,
 ) -> Result<Vec<Hit>, CommandError> {
     let mut work = Work::new(tt_vector::work::PLANAR_WORK_BUDGET, "hit testing this drawing");
+    hits_in(d, zones, p, tolerance, include_invisible, &mut work)
+}
+
+/// [`hits`] charged to a caller's account (one account for every target of a paint command, C22-R1-04).
+fn hits_in(
+    d: &Drawing,
+    zones: &[LayerZones],
+    p: P,
+    tolerance: f64,
+    include_invisible: bool,
+    work: &mut Work,
+) -> Result<Vec<Hit>, CommandError> {
     let mut ordered = Vec::new();
     walk_nodes(d.nodes(), &[], &mut ordered);
     let mut out = Vec::new();
@@ -259,7 +289,7 @@ pub(crate) fn hits(
                     };
                     match s.kind() {
                         tt_model::entities::drawing::StrokeKind::Brush => {
-                            if gap::inside(&path_s, p, &mut work).map_err(|e| crate::planar::geom_error(&e))? {
+                            if gap::inside(&path_s, p, work).map_err(|e| crate::planar::geom_error(&e))? {
                                 brushes.push(hit(HitKind::Brush));
                             }
                         }
@@ -269,8 +299,7 @@ pub(crate) fn hits(
                                 continue;
                             }
                             let half = s.line_style().as_ref().map_or(0.0, |l| l.thickness / 2.0);
-                            let dist =
-                                gap::distance_to(&path_s, p, &mut work).map_err(|e| crate::planar::geom_error(&e))?;
+                            let dist = gap::distance_to(&path_s, p, work).map_err(|e| crate::planar::geom_error(&e))?;
                             if dist <= half + tolerance {
                                 lines.push(hit(if invisible { HitKind::Invisible } else { HitKind::Pencil }));
                             }
@@ -467,16 +496,14 @@ fn apply(
                 let fill = match pass.mode {
                     Mode::Remove => None,
                     Mode::Paint { .. } => {
-                        let matrix = match pass.mapping {
-                            Some((a, b)) => drag_matrix(pass.kind, a, b),
-                            None => default_matrix(pass.kind, &z.bounds),
-                        };
+                        let existing = zones[*layer].fills.get(*zone).cloned().flatten().and_then(|f| f.matrix);
+                        let matrix = paint_matrix(pass.kind, pass.mapping, existing, Some(&z.bounds));
                         Some(Fill { colour_id: pass.colour.clone(), matrix })
                     }
                 };
                 zone_fills.entry(zones[*layer].layer.id.clone()).or_default().insert(z.id.clone(), fill);
             }
-            Resolved::Stroke { id, pencil, .. } => {
+            Resolved::Stroke { id, .. } => {
                 let Some(l) = tt_vector::drawing::locate(d, id) else { continue };
                 match pass.mode {
                     Mode::Remove => {
@@ -484,19 +511,17 @@ fn apply(
                         ops.push(op("replace", &format!("{}/kind", l.pointer), Some(json!("invisible"))));
                         ops.push(op("replace", &format!("{}/colourId", l.pointer), Some(Value::Null)));
                         ops.push(op("replace", &format!("{}/lineStyle", l.pointer), Some(Value::Null)));
+                        ops.push(op("replace", &format!("{}/fillMatrix", l.pointer), Some(Value::Null)));
                     }
                     Mode::Paint { .. } => {
+                        // Lines take mappings as zones and brush strokes do (03 §7.2).
                         ops.push(op("replace", &format!("{}/colourId", l.pointer), Some(json!(pass.colour))));
-                        if !pencil {
-                            let s = tt_vector::drawing::stroke_at(d, &l.pointer);
-                            let bounds = s.and_then(tt_vector::drawing::stroke_bounds);
-                            let matrix = match (pass.mapping, bounds) {
-                                (Some((a, b)), _) => drag_matrix(pass.kind, a, b),
-                                (None, Some(b)) => default_matrix(pass.kind, &b),
-                                (None, None) => None,
-                            };
-                            ops.push(op("replace", &format!("{}/fillMatrix", l.pointer), Some(json!(matrix))));
-                        }
+                        let s = tt_vector::drawing::stroke_at(d, &l.pointer);
+                        let bounds = s.and_then(tt_vector::drawing::stroke_bounds);
+                        let existing = s.and_then(|s| *s.fill_matrix());
+                        let mut matrix = json!(paint_matrix(pass.kind, pass.mapping, existing, bounds.as_ref()));
+                        tt_model::canonical::normalize_numbers(&mut matrix);
+                        ops.push(op("replace", &format!("{}/fillMatrix", l.pointer), Some(matrix)));
                     }
                 }
             }
@@ -531,6 +556,8 @@ struct Located {
     skipped: Vec<Skipped>,
     /// Points that hit nothing closed: `(label, point)`.
     open: Vec<(String, P)>,
+    /// Points gap closing closed: `(label, layer ID, point)`, resolved against the final settled drawing.
+    closed: Vec<(String, String, P)>,
 }
 
 fn resolve_ids(d: &Drawing, zones: &[LayerZones], ids: &[String], out: &mut Located) -> Result<(), CommandError> {
@@ -595,11 +622,12 @@ fn resolve_points(
     zones: &[LayerZones],
     pts: &[P],
     zones_only: bool,
+    work: &mut Work,
     out: &mut Located,
 ) -> Result<(), CommandError> {
     for (i, p) in pts.iter().enumerate() {
         let label = format!("point:{i}");
-        let hs = hits(d, zones, *p, 0.0, false)?;
+        let hs = hits_in(d, zones, *p, 0.0, false, work)?;
         let first = if zones_only { hs.iter().find(|h| matches!(h.kind, HitKind::Zone(..))) } else { hs.first() };
         match first.and_then(resolved_of) {
             Some(r) => out.targets.push((label, r)),
@@ -637,17 +665,96 @@ fn resolve_region(zones: &[LayerZones], poly: &[P], label: &str, out: &mut Locat
     }
 }
 
-/// The objects a crossing path paints: every zone and line it passes over (03 §8.2 design decision).
-fn resolve_path(d: &Drawing, zones: &[LayerZones], path: &[P], out: &mut Located) -> Result<(), CommandError> {
-    for w in path.windows(2) {
-        let n = ((w[1].dist(w[0]) / 0.5).ceil() as usize).clamp(1, 10_000);
-        for k in 0..=n {
-            let p = w[0].lerp(w[1], k as f64 / n as f64);
-            for h in hits(d, zones, p, 0.0, false)? {
-                if let Some(r) = resolved_of(&h) {
-                    out.targets.push(("path".into(), r));
+/// Whether a segment meets an axis-aligned box.
+fn segment_meets_box(a: P, b: P, r: &Rect) -> bool {
+    // Liang-Barsky clipping of the segment against the box.
+    let (mut t0, mut t1) = (0.0f64, 1.0f64);
+    let d = b - a;
+    for (p, q) in [(-d.x, a.x - r.min_x), (d.x, r.max_x - a.x), (-d.y, a.y - r.min_y), (d.y, r.max_y - a.y)] {
+        if p == 0.0 {
+            if q < 0.0 {
+                return false;
+            }
+        } else {
+            let t = q / p;
+            if p < 0.0 {
+                t0 = t0.max(t);
+            } else {
+                t1 = t1.min(t);
+            }
+            if t0 > t1 {
+                return false;
+            }
+        }
+    }
+    true
+}
+
+/// The objects a crossing path paints: every zone, line, brush stroke and text it passes over (03 §8.2 solid-drag
+/// rule). The path is traversed continuously through each layer's planar map (C22-R1-04), front to back, all charged
+/// to the command's one account.
+fn resolve_path(
+    d: &Drawing,
+    zones: &[LayerZones],
+    path: &[P],
+    work: &mut Work,
+    out: &mut Located,
+) -> Result<(), CommandError> {
+    let mut ordered = Vec::new();
+    walk_nodes(d.nodes(), &[], &mut ordered);
+    for (n, _) in ordered.into_iter().rev() {
+        match n.kind() {
+            NodeKind::Layer => {
+                let Some(li) = zones.iter().position(|z| z.layer.id == n.id().as_str()) else { continue };
+                let lz = &zones[li];
+                let strokes = n.strokes().as_deref().unwrap_or_default();
+                let half = |id: &str| -> Option<f64> {
+                    strokes.iter().find(|s| s.id().as_str() == id).and_then(|s| {
+                        (*s.kind() == tt_model::entities::drawing::StrokeKind::Pencil)
+                            .then(|| s.line_style().as_ref().map_or(0.0, |l| l.thickness / 2.0))
+                    })
+                };
+                let reach = strokes
+                    .iter()
+                    .filter(|s| *s.kind() == tt_model::entities::drawing::StrokeKind::Pencil)
+                    .map(|s| s.line_style().as_ref().map_or(0.0, |l| l.thickness / 2.0))
+                    .fold(0.0, f64::max);
+                let h = lz.map.along(path, reach, work).map_err(|e| crate::planar::geom_error(&e))?;
+                // Lines in front of brush strokes in front of zones, as for point hits.
+                let mut lines: Vec<(usize, &str)> = h
+                    .near
+                    .iter()
+                    .filter_map(|(&k, &dist)| {
+                        let id = lz.map.strokes.get(k)?.0.as_str();
+                        half(id).is_some_and(|w| dist <= w).then_some((k, id))
+                    })
+                    .collect();
+                lines.sort_by_key(|(k, _)| std::cmp::Reverse(*k));
+                for (_, id) in lines {
+                    out.targets
+                        .push(("path".into(), Resolved::Stroke { id: id.to_owned(), pencil: true, invisible: false }));
+                }
+                for b in h.brushes {
+                    if let Some((id, _)) = lz.map.strokes.get(b) {
+                        out.targets.push((
+                            "path".into(),
+                            Resolved::Stroke { id: id.clone(), pencil: false, invisible: false },
+                        ));
+                    }
+                }
+                for z in h.zones {
+                    out.targets.push(("path".into(), Resolved::Zone { layer: li, zone: z }));
                 }
             }
+            NodeKind::Text => {
+                work.spend_n(path.len()).map_err(|e| crate::planar::geom_error(&e))?;
+                if let Some(b) = tt_vector::drawing::node_bounds(n, false)
+                    && path.windows(2).any(|w| segment_meets_box(w[0], w[1], &b))
+                {
+                    out.targets.push(("path".into(), Resolved::Text { id: n.id().as_str().to_owned() }));
+                }
+            }
+            NodeKind::Bitmap | NodeKind::Group => {}
         }
     }
     Ok(())
@@ -697,18 +804,9 @@ fn close_open(
             for id in &ids {
                 added.extend(cx.pieces_of(drawing, id));
             }
-            let doc = cx.stamped_document()?;
-            if let Some(d2) = doc.drawing(drawing) {
-                let zones = drawing_zones(&cx.planar_cache(), d2)?;
-                if let Some((li, z)) = zones
-                    .iter()
-                    .enumerate()
-                    .find_map(|(li, lz)| (lz.layer.id == l.id).then(|| lz.map.zone_at(*p).map(|z| (li, z))).flatten())
-                {
-                    out.targets.push((label.clone(), Resolved::Zone { layer: li, zone: z }));
-                    closed = true;
-                }
-            }
+            // `close_around` only returns segments that close the region under the point into a zone.
+            out.closed.push((label.clone(), l.id.clone(), *p));
+            closed = true;
             break;
         }
         if !closed {
@@ -913,7 +1011,9 @@ fn paint_common(cx: &mut Cx, call: Call<'_>) -> Result<PaintResult, CommandError
     check_editable(&d, None)?;
     check_rev(&d, targets.expect_rev, targets.object_ids)?;
     let zones = drawing_zones(&cx.planar_cache(), &d)?;
-    let mut loc = Located { targets: Vec::new(), skipped: Vec::new(), open: Vec::new() };
+    // One account for every point, path and region target of the call (C22-R1-04).
+    let mut work = Work::new(tt_vector::work::PLANAR_WORK_BUDGET, "finding the targets of this paint");
+    let mut loc = Located { targets: Vec::new(), skipped: Vec::new(), open: Vec::new(), closed: Vec::new() };
     if let Some(ids) = targets.object_ids {
         resolve_ids(&d, &zones, ids, &mut loc)?;
     }
@@ -922,11 +1022,11 @@ fn paint_common(cx: &mut Cx, call: Call<'_>) -> Result<PaintResult, CommandError
         .map(|v| v.iter().enumerate().map(|(i, p)| point(*p, &format!("/points/{i}"))).collect::<Result<Vec<_>, _>>())
         .transpose()?
         .unwrap_or_default();
-    resolve_points(&d, &zones, &pts, targets.zones_only, &mut loc)?;
+    resolve_points(&d, &zones, &pts, targets.zones_only, &mut work, &mut loc)?;
     if let Some(path) = targets.path {
         let path: Vec<P> =
             path.iter().enumerate().map(|(i, p)| point(*p, &format!("/path/{i}"))).collect::<Result<_, _>>()?;
-        resolve_path(&d, &zones, &path, &mut loc)?;
+        resolve_path(&d, &zones, &path, &mut work, &mut loc)?;
     }
     if let Some(lasso) = targets.lasso {
         let poly: Vec<P> =
@@ -952,28 +1052,33 @@ fn paint_common(cx: &mut Cx, call: Call<'_>) -> Result<PaintResult, CommandError
     // Gap closing for points in open regions (03 §8.8).
     let mut added = Vec::new();
     let open = std::mem::take(&mut loc.open);
+    let (mut d, mut zones) = (d, zones);
     if !open.is_empty() {
         match gap_tolerance(cx, gap_choice) {
             Some(tol) => {
-                let mut closing = Located { targets: Vec::new(), skipped: Vec::new(), open: Vec::new() };
+                let mut closing =
+                    Located { targets: Vec::new(), skipped: Vec::new(), open: Vec::new(), closed: Vec::new() };
                 added = close_open(cx, &t.id, tol, &open, &mut closing)?;
                 loc.skipped.extend(closing.skipped);
-                if !closing.targets.is_empty() {
-                    // Zones were recomputed: resolve the other targets again against the settled drawing.
+                if !added.is_empty() || !closing.closed.is_empty() {
+                    // The closing strokes changed the topology: every target resolved before is resolved again
+                    // against the settled drawing and applied with the closed ones in this one transaction
+                    // (C22-R1-08).
                     let doc = cx.stamped_document()?;
                     let d2 = doc.drawing(&t.id).cloned().ok_or_else(|| super::draw::not_found(t.id.as_str()))?;
                     let zones2 = drawing_zones(&cx.planar_cache(), &d2)?;
-                    let pass = Pass {
-                        drawing: t.id.clone(),
-                        colour: colour.0.clone(),
-                        kind: colour.1,
-                        mapping: targets.mapping,
-                        respect_protected: targets.respect_protected,
-                        mode,
-                        doc: &doc,
-                    };
-                    let (p1, s1) = apply(cx, &pass, &d2, &zones2, closing.targets)?;
-                    return finish(cx, &before, &t.id, (p1, s1), loc.skipped, &added);
+                    let earlier = std::mem::take(&mut loc.targets);
+                    loc.targets = reresolve(cx, &t.id, &zones, &zones2, &d2, earlier, &mut loc.skipped);
+                    for (label, layer, p) in closing.closed {
+                        let z = zones2.iter().enumerate().find_map(|(li, lz)| {
+                            (lz.layer.id == layer).then(|| lz.map.zone_at(p).map(|z| (li, z))).flatten()
+                        });
+                        match z {
+                            Some((li, z)) => loc.targets.push((label, Resolved::Zone { layer: li, zone: z })),
+                            None => loc.skipped.push(Skipped { target: label, reason: "colour.zoneNotClosed".into() }),
+                        }
+                    }
+                    (d, zones) = (d2, zones2);
                 }
             }
             None => loc.skipped.extend(
@@ -996,7 +1101,7 @@ fn paint_common(cx: &mut Cx, call: Call<'_>) -> Result<PaintResult, CommandError
     if painted.is_empty() {
         return Err(nothing_painted(&all_skipped));
     }
-    let settled = crate::planar::settled(cx, &before, &t.id, &[])?;
+    let settled = crate::planar::settled(cx, &before, &t.id, &added)?;
     let mut changed = Changed::default();
     settled.report(&mut changed);
     for p in &painted {
@@ -1015,33 +1120,42 @@ fn paint_common(cx: &mut Cx, call: Call<'_>) -> Result<PaintResult, CommandError
     })
 }
 
-/// Completes a call whose point targets were closed by gap closing (the other targets were resolved against the
-/// same settled drawing).
-fn finish(
-    cx: &mut Cx,
-    before: &Document,
+/// Paint targets resolved before gap closing, resolved again against the settled drawing (C22-R1-08): a zone by its ID
+/// while its boundary is unchanged, else the zone of its layer at its old interior point; a stroke by its ID, else the
+/// pieces noding split it into; text as it was. A target that no longer exists is reported as skipped.
+fn reresolve(
+    cx: &Cx,
     drawing: &Id,
-    first: (Vec<Painted>, Vec<Skipped>),
-    earlier: Vec<Skipped>,
-    added: &[String],
-) -> Result<PaintResult, CommandError> {
-    let (painted, skipped) = first;
-    let mut all_skipped = earlier;
-    all_skipped.extend(skipped);
-    if painted.is_empty() {
-        return Err(nothing_painted(&all_skipped));
+    old: &[LayerZones],
+    new: &[LayerZones],
+    d: &Drawing,
+    targets: Vec<(String, Resolved)>,
+    skipped: &mut Vec<Skipped>,
+) -> Vec<(String, Resolved)> {
+    let mut out = Vec::new();
+    for (label, r) in targets {
+        match r {
+            Resolved::Zone { layer, zone } => {
+                let z = &old[layer].map.zones[zone];
+                let found = new.iter().position(|l| l.layer.id == old[layer].layer.id).and_then(|nl| {
+                    new[nl].map.zone_by_id(&z.id).or_else(|| new[nl].map.zone_at(z.interior)).map(|nz| (nl, nz))
+                });
+                match found {
+                    Some((nl, nz)) => out.push((label, Resolved::Zone { layer: nl, zone: nz })),
+                    None => skipped.push(Skipped { target: label, reason: "colour.noTarget".into() }),
+                }
+            }
+            Resolved::Stroke { id, pencil, invisible } => {
+                for piece in cx.pieces_of(drawing, &id) {
+                    if tt_vector::drawing::locate(d, &piece).is_some() {
+                        out.push((label.clone(), Resolved::Stroke { id: piece, pencil, invisible }));
+                    }
+                }
+            }
+            Resolved::Text { id } => out.push((label, Resolved::Text { id })),
+        }
     }
-    let settled = crate::planar::settled(cx, before, drawing, added)?;
-    let mut changed = Changed::default();
-    settled.report(&mut changed);
-    Ok(PaintResult {
-        drawing_id: drawing.as_str().to_owned(),
-        painted,
-        skipped: all_skipped,
-        added_stroke_ids: added.to_vec(),
-        changed,
-        rev: committed_rev(cx)?,
-    })
+    out
 }
 
 /// The targets of a call.
@@ -1732,11 +1846,13 @@ pub(crate) struct GapClosingSetResult {
     id = "colour.gapClosing.set",
     kind = ui,
     label = "Automatic gap closing",
-    scopes = [app],
+    scopes = [prefs],
     example(title = "Close small gaps while painting", params = r#"{"mode": "small"}"#),
     gui = "Main menu and paint tool options: Auto Close Gap (M4 C4.2)",
 )]
 pub(crate) fn colour_gap_closing_set(cx: &mut Cx, p: GapClosingSetParams) -> Result<GapClosingSetResult, CommandError> {
+    // A persisted user preference (03 §8.8; C22-R1-07 ruling): the `prefs` scope, written as a staged effect after the
+    // invocation succeeds (nothing is written by a dry run or a failed batch).
     let mut prefs = serde_json::Map::new();
     prefs.insert(GAP_PREF.into(), json!(p.mode));
     cx.defer(crate::cx::Effect::Prefs(prefs));

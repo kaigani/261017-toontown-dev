@@ -50,6 +50,10 @@ pub fn owner_of(id: &str) -> &'static str {
     {
         return "M2 C2.2";
     }
+    // Fill-mapping edits and recolouring of drawing content come with the drawing commands (C22-R1-10).
+    if ["colour.fillMapping", "colour.selection", "colour.recolour"].iter().any(|p| id.starts_with(p)) {
+        return "M2 C2.3";
+    }
     let namespace = id.split('.').next().unwrap_or_default();
     match namespace {
         // Section 01 shell commands not delivered at kernel level in C1.2 belong to the desktop shell (C4.1).
@@ -85,6 +89,8 @@ mod tests {
         }
         assert_eq!(owner_of("colour.paint.apply"), "M2 C2.2");
         assert_eq!(owner_of("colour.swatch.add"), "M7 C7.1");
+        assert_eq!(owner_of("colour.fillMapping.set"), "M2 C2.3");
+        assert_eq!(owner_of("colour.recolour.apply"), "M2 C2.3");
         assert_eq!(owner_of("import.movie.run"), "M8 C8.3");
         assert_eq!(owner_of("anim.key.add"), "M3 C3.2");
         assert_eq!(owner_of("anim.bone.create"), "M6 C6.3");

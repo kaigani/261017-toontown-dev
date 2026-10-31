@@ -5826,7 +5826,7 @@
           },
           "minItems": 6,
           "maxItems": 6,
-          "description": "Placement of a gradient/texture colour space for brush strokes.",
+          "description": "Placement of a gradient/texture colour space (brush strokes and lines, 03 §7.2; SI-068).",
           "x-since": "1.0"
         },
         "lineStyle": {
@@ -5916,9 +5916,6 @@
                   "$ref": "#/$defs/LineStyle"
                 },
                 "spine": {
-                  "type": "null"
-                },
-                "fillMatrix": {
                   "type": "null"
                 }
               }

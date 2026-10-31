@@ -526,7 +526,7 @@ fn add_stroke_rules(def: &mut Value) {
         kind_rule(
             "kind",
             "pencil",
-            json!({"properties": {"lineStyle": {"$ref": "#/$defs/LineStyle"}, "spine": {"type": "null"}, "fillMatrix": {"type": "null"}}}),
+            json!({"properties": {"lineStyle": {"$ref": "#/$defs/LineStyle"}, "spine": {"type": "null"}}}),
         ),
         kind_rule(
             "kind",

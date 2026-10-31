@@ -1,5 +1,5 @@
 {
-  "sha256": "622630302809a7c7c95863a44c6f1882c8f158e80ef9b34752219344bd39c362",
+  "sha256": "1b76885cca72a4c58c2a609a828f3432ab5d0e921e21ccf3e2c4770015ca12fe",
   "bytes": 116408,
   "nodes": [
     {
@@ -202,7 +202,7 @@
             "thickness": 2.0,
             "lineType": "solid"
           },
-          "leftZoneId": "zn_427HWPKD9HK0ERKBSMGHWGQ9N1",
+          "leftZoneId": "zn_SM0180BMWC826XGDCB1NFK33ZG",
           "rightZoneId": null
         },
         {
@@ -245,7 +245,7 @@
             "thickness": 2.0,
             "lineType": "solid"
           },
-          "leftZoneId": "zn_P9Z4174300XSH1SCDQGD66QRT0",
+          "leftZoneId": "zn_TCEANC6S6Z635JP7JHGG8J9S3Y",
           "rightZoneId": null
         },
         {
@@ -288,7 +288,7 @@
             "thickness": 2.0,
             "lineType": "solid"
           },
-          "leftZoneId": "zn_P9Z4174300XSH1SCDQGD66QRT0",
+          "leftZoneId": "zn_TCEANC6S6Z635JP7JHGG8J9S3Y",
           "rightZoneId": null
         },
         {
@@ -331,7 +331,7 @@
             "thickness": 2.0,
             "lineType": "solid"
           },
-          "leftZoneId": "zn_SMJ3A7W03TVTAE0S9M67Y63H97",
+          "leftZoneId": "zn_Y3H672NPNTHM15A0GY4WZCNQ0M",
           "rightZoneId": null
         },
         {
@@ -385,8 +385,8 @@
             }
           ],
           "colourId": null,
-          "leftZoneId": "zn_SMJ3A7W03TVTAE0S9M67Y63H97",
-          "rightZoneId": "zn_427HWPKD9HK0ERKBSMGHWGQ9N1"
+          "leftZoneId": "zn_Y3H672NPNTHM15A0GY4WZCNQ0M",
+          "rightZoneId": "zn_SM0180BMWC826XGDCB1NFK33ZG"
         },
         {
           "type": "stroke",
@@ -486,8 +486,8 @@
             "thickness": 2.0,
             "lineType": "solid"
           },
-          "leftZoneId": "zn_P9Z4174300XSH1SCDQGD66QRT0",
-          "rightZoneId": "zn_SMJ3A7W03TVTAE0S9M67Y63H97"
+          "leftZoneId": "zn_TCEANC6S6Z635JP7JHGG8J9S3Y",
+          "rightZoneId": "zn_Y3H672NPNTHM15A0GY4WZCNQ0M"
         },
         {
           "type": "stroke",
@@ -529,8 +529,8 @@
             "thickness": 2.0,
             "lineType": "solid"
           },
-          "leftZoneId": "zn_P9Z4174300XSH1SCDQGD66QRT0",
-          "rightZoneId": "zn_427HWPKD9HK0ERKBSMGHWGQ9N1"
+          "leftZoneId": "zn_TCEANC6S6Z635JP7JHGG8J9S3Y",
+          "rightZoneId": "zn_SM0180BMWC826XGDCB1NFK33ZG"
         },
         {
           "type": "stroke",
@@ -567,15 +567,15 @@
       "zones": [
         {
           "type": "zone",
-          "id": "zn_427HWPKD9HK0ERKBSMGHWGQ9N1",
+          "id": "zn_SM0180BMWC826XGDCB1NFK33ZG",
           "colourId": "col_01K742SG06BQ08FCT1TT8DF8MA",
           "textureMatrix": [
-            120.0,
-            0.0,
-            0.0,
-            100.0,
-            300.0,
-            300.0
+            120,
+            0,
+            0,
+            100,
+            300,
+            300
           ],
           "boundaryStrokeIds": [
             "st_01K7JJN801N0AE1Z0RRCTVH07Z",
@@ -586,27 +586,27 @@
           "parentZoneId": null,
           "area": 4769.4500732421875,
           "bounds": {
-            "x": 340.0,
-            "y": 300.0,
-            "width": 80.0,
+            "x": 340,
+            "y": 300,
+            "width": 80,
             "height": 69.640625
           },
           "interiorPoint": {
-            "x": 380.0,
+            "x": 380,
             "y": 304.9765625
           }
         },
         {
           "type": "zone",
-          "id": "zn_P9Z4174300XSH1SCDQGD66QRT0",
+          "id": "zn_TCEANC6S6Z635JP7JHGG8J9S3Y",
           "colourId": "col_01K742SG06BQ08FCT1TT8DF8MA",
           "textureMatrix": [
-            120.0,
-            0.0,
-            0.0,
-            100.0,
-            300.0,
-            300.0
+            120,
+            0,
+            0,
+            100,
+            300,
+            300
           ],
           "boundaryStrokeIds": [
             "st_01K7JJN8023FJ8358KMGS10XYV",
@@ -618,24 +618,24 @@
           "parentZoneId": null,
           "area": 5577.7607421875,
           "bounds": {
-            "x": 300.0,
+            "x": 300,
             "y": 333.828125,
-            "width": 120.0,
+            "width": 120,
             "height": 66.171875
           },
           "interiorPoint": {
-            "x": 360.0,
+            "x": 360,
             "y": 376.3671875
           }
         },
         {
           "type": "zone",
-          "id": "zn_SMJ3A7W03TVTAE0S9M67Y63H97",
+          "id": "zn_Y3H672NPNTHM15A0GY4WZCNQ0M",
           "colourId": "col_01K742SG07AYM2NGPE2YJQJJHV",
           "textureMatrix": [
             62.674257075772346,
-            0.0,
-            0.0,
+            0,
+            0,
             62.674257075772346,
             288.6628714621138,
             292.7878714621138
@@ -649,13 +649,13 @@
           "parentZoneId": null,
           "area": 1652.7891845703125,
           "bounds": {
-            "x": 300.0,
-            "y": 300.0,
-            "width": 40.0,
+            "x": 300,
+            "y": 300,
+            "width": 40,
             "height": 48.25
           },
           "interiorPoint": {
-            "x": 320.0,
+            "x": 320,
             "y": 303.4453125
           }
         }
@@ -739,12 +739,12 @@
       "zones": [
         {
           "type": "zone",
-          "id": "zn_G80481TXJM8AXNZB6FED1E7BM6",
+          "id": "zn_JEPB54T2P0W6J321HJYRT4T7VB",
           "colourId": "col_01K742SG081DHX1EPGV9BJQAQH",
           "textureMatrix": [
             53.96875,
-            0.0,
-            0.0,
+            0,
+            0,
             53.96875,
             503.03125,
             303.015625
@@ -837,7 +837,7 @@
             "thickness": 2.0,
             "lineType": "solid"
           },
-          "leftZoneId": "zn_JB9TF9C47S9WNY9J06A89CKHC3",
+          "leftZoneId": "zn_D8Z5G7BNSTQCNTWB4Z0APK51H6",
           "rightZoneId": null
         },
         {
@@ -868,7 +868,7 @@
             "thickness": 2.0,
             "lineType": "solid"
           },
-          "leftZoneId": "zn_JB9TF9C47S9WNY9J06A89CKHC3",
+          "leftZoneId": "zn_D8Z5G7BNSTQCNTWB4Z0APK51H6",
           "rightZoneId": null
         },
         {
@@ -895,14 +895,14 @@
             }
           ],
           "colourId": null,
-          "leftZoneId": "zn_JB9TF9C47S9WNY9J06A89CKHC3",
+          "leftZoneId": "zn_D8Z5G7BNSTQCNTWB4Z0APK51H6",
           "rightZoneId": null
         }
       ],
       "zones": [
         {
           "type": "zone",
-          "id": "zn_JB9TF9C47S9WNY9J06A89CKHC3",
+          "id": "zn_D8Z5G7BNSTQCNTWB4Z0APK51H6",
           "colourId": "col_01K742SG0CQ6FGRGT0FQ0QFDQQ",
           "textureMatrix": null,
           "boundaryStrokeIds": [
@@ -912,15 +912,15 @@
           ],
           "holes": [],
           "parentZoneId": null,
-          "area": 3600.0,
+          "area": 3600,
           "bounds": {
-            "x": 650.0,
-            "y": 300.0,
-            "width": 60.0,
-            "height": 60.0
+            "x": 650,
+            "y": 300,
+            "width": 60,
+            "height": 60
           },
           "interiorPoint": {
-            "x": 680.0,
+            "x": 680,
             "y": 304.2890625
           }
         }
@@ -971,7 +971,7 @@
             "thickness": 2.0,
             "lineType": "solid"
           },
-          "leftZoneId": "zn_7R67MARTXTCY094KT260ZF1Y4Z",
+          "leftZoneId": "zn_3N3RK6TVXZFYAX7S7T0FYX68AD",
           "rightZoneId": null
         },
         {
@@ -1014,7 +1014,7 @@
             "thickness": 2.0,
             "lineType": "solid"
           },
-          "leftZoneId": "zn_CD30BF1CTXBW4NBTP664RF3XDY",
+          "leftZoneId": "zn_48J1DC1C2X3PD52YVG4H4528CY",
           "rightZoneId": null
         },
         {
@@ -1057,7 +1057,7 @@
             "thickness": 2.0,
             "lineType": "solid"
           },
-          "leftZoneId": "zn_CD30BF1CTXBW4NBTP664RF3XDY",
+          "leftZoneId": "zn_48J1DC1C2X3PD52YVG4H4528CY",
           "rightZoneId": null
         },
         {
@@ -1100,7 +1100,7 @@
             "thickness": 2.0,
             "lineType": "solid"
           },
-          "leftZoneId": "zn_9CK9A8491X750HF2N29DTP7BWZ",
+          "leftZoneId": "zn_CYNF0VN5XEHDA5D5X31HH76WDG",
           "rightZoneId": null
         },
         {
@@ -1154,8 +1154,8 @@
             }
           ],
           "colourId": null,
-          "leftZoneId": "zn_9CK9A8491X750HF2N29DTP7BWZ",
-          "rightZoneId": "zn_7R67MARTXTCY094KT260ZF1Y4Z"
+          "leftZoneId": "zn_CYNF0VN5XEHDA5D5X31HH76WDG",
+          "rightZoneId": "zn_3N3RK6TVXZFYAX7S7T0FYX68AD"
         },
         {
           "type": "stroke",
@@ -1255,8 +1255,8 @@
             "thickness": 2.0,
             "lineType": "solid"
           },
-          "leftZoneId": "zn_CD30BF1CTXBW4NBTP664RF3XDY",
-          "rightZoneId": "zn_9CK9A8491X750HF2N29DTP7BWZ"
+          "leftZoneId": "zn_48J1DC1C2X3PD52YVG4H4528CY",
+          "rightZoneId": "zn_CYNF0VN5XEHDA5D5X31HH76WDG"
         },
         {
           "type": "stroke",
@@ -1298,8 +1298,8 @@
             "thickness": 2.0,
             "lineType": "solid"
           },
-          "leftZoneId": "zn_CD30BF1CTXBW4NBTP664RF3XDY",
-          "rightZoneId": "zn_7R67MARTXTCY094KT260ZF1Y4Z"
+          "leftZoneId": "zn_48J1DC1C2X3PD52YVG4H4528CY",
+          "rightZoneId": "zn_3N3RK6TVXZFYAX7S7T0FYX68AD"
         },
         {
           "type": "stroke",
@@ -1336,15 +1336,15 @@
       "zones": [
         {
           "type": "zone",
-          "id": "zn_7R67MARTXTCY094KT260ZF1Y4Z",
+          "id": "zn_3N3RK6TVXZFYAX7S7T0FYX68AD",
           "colourId": "col_01K742SG06BQ08FCT1TT8DF8MA",
           "textureMatrix": [
-            120.0,
-            0.0,
-            0.0,
-            100.0,
-            300.0,
-            100.0
+            120,
+            0,
+            0,
+            100,
+            300,
+            100
           ],
           "boundaryStrokeIds": [
             "st_01K7JJN8011RAW6N8N8R21KNC2",
@@ -1355,27 +1355,27 @@
           "parentZoneId": null,
           "area": 4769.4500732421875,
           "bounds": {
-            "x": 340.0,
-            "y": 100.0,
-            "width": 80.0,
+            "x": 340,
+            "y": 100,
+            "width": 80,
             "height": 69.640625
           },
           "interiorPoint": {
-            "x": 380.0,
+            "x": 380,
             "y": 104.9765625
           }
         },
         {
           "type": "zone",
-          "id": "zn_CD30BF1CTXBW4NBTP664RF3XDY",
+          "id": "zn_48J1DC1C2X3PD52YVG4H4528CY",
           "colourId": "col_01K742SG06BQ08FCT1TT8DF8MA",
           "textureMatrix": [
-            120.0,
-            0.0,
-            0.0,
-            100.0,
-            300.0,
-            100.0
+            120,
+            0,
+            0,
+            100,
+            300,
+            100
           ],
           "boundaryStrokeIds": [
             "st_01K7JJN802QC6A57YJ37X5BQ29",
@@ -1387,24 +1387,24 @@
           "parentZoneId": null,
           "area": 5577.7607421875,
           "bounds": {
-            "x": 300.0,
+            "x": 300,
             "y": 133.828125,
-            "width": 120.0,
+            "width": 120,
             "height": 66.171875
           },
           "interiorPoint": {
-            "x": 360.0,
+            "x": 360,
             "y": 176.3671875
           }
         },
         {
           "type": "zone",
-          "id": "zn_9CK9A8491X750HF2N29DTP7BWZ",
+          "id": "zn_CYNF0VN5XEHDA5D5X31HH76WDG",
           "colourId": "col_01K742SG07AYM2NGPE2YJQJJHV",
           "textureMatrix": [
             62.674257075772346,
-            0.0,
-            0.0,
+            0,
+            0,
             62.674257075772346,
             288.6628714621138,
             92.7878714621138
@@ -1418,13 +1418,13 @@
           "parentZoneId": null,
           "area": 1652.7891845703125,
           "bounds": {
-            "x": 300.0,
-            "y": 100.0,
-            "width": 40.0,
+            "x": 300,
+            "y": 100,
+            "width": 40,
             "height": 48.25
           },
           "interiorPoint": {
-            "x": 320.0,
+            "x": 320,
             "y": 103.4453125
           }
         }

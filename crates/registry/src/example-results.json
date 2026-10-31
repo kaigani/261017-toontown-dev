@@ -30,7 +30,7 @@
     {
       "title": "Accept a request",
       "result": {
-        "confirmationId": "cf_cc5463c8fdc54ae589b5701a",
+        "confirmationId": "cf_a0aa052d822a79386e468c70",
         "accepted": true
       },
       "varies": [
@@ -71,7 +71,7 @@
         "endpoint": null,
         "sessions": [
           {
-            "sessionId": "s1-483c6e",
+            "sessionId": "s1-9851ad",
             "client": "Example agent",
             "policy": "assist",
             "scopes": [
@@ -83,7 +83,7 @@
               "files.write",
               "library.global"
             ],
-            "connectedAt": "2026-10-31T14:24:01.377Z",
+            "connectedAt": "2026-10-31T20:37:58.069Z",
             "lastActivity": null,
             "paused": false,
             "transport": ""
@@ -91,8 +91,8 @@
         ],
         "pendingConfirmations": [
           {
-            "confirmationId": "cf_1577aaecb239cc6ce90b19d3",
-            "sessionId": "s1-483c6e",
+            "confirmationId": "cf_ab7e71824ab8a8f9b3a4a327",
+            "sessionId": "s1-9851ad",
             "commandId": "project.saveAs",
             "summary": "Overwrite `/tmp/Short.animpkg`",
             "consequences": [
@@ -127,7 +127,7 @@
     {
       "title": "Let a session edit",
       "result": {
-        "sessionId": "s1-d50e76",
+        "sessionId": "s1-a79d3b",
         "policy": "assist",
         "scopes": [
           "read",
@@ -145,7 +145,7 @@
       "title": "Pause every session",
       "result": {
         "paused": [
-          "s1-4476d6"
+          "s1-8f3917"
         ]
       },
       "varies": [
@@ -438,7 +438,7 @@
       "result": [
         {
           "name": "before-walk",
-          "createdAt": "2026-10-31T14:24:02.756Z",
+          "createdAt": "2026-10-31T20:37:58.880Z",
           "documentRev": 1,
           "origin": "user"
         }
@@ -737,7 +737,7 @@
             "version": "0.0.1",
             "platform": "windows-x64"
           },
-          "exportedAt": "2026-10-31T14:24:04.074Z",
+          "exportedAt": "2026-10-31T20:37:59.700Z",
           "sourceProjectId": "pr_01K742SG00BK0VXTWDM5JRXV37",
           "scope": {
             "kind": "scenes",
@@ -2401,12 +2401,12 @@
                             "left": {
                               "colourId": "col_01K742SG06BQ08FCT1TT8DF8MA",
                               "matrix": [
-                                1.0,
-                                0.0,
-                                0.0,
-                                1.0,
-                                0.0,
-                                0.0
+                                1,
+                                0,
+                                0,
+                                1,
+                                0,
+                                0
                               ]
                             },
                             "right": {
@@ -3499,8 +3499,8 @@
     {
       "title": "The element schema",
       "resultDigest": {
-        "bytes": 133355,
-        "sha256": "2cb7f6838655bd9ee4e50a509a1f41f299b64954b8e6b02703f6b092be1c3ade"
+        "bytes": 133352,
+        "sha256": "e6245882c810eb810bb858ad62062ef7167f011210294c0bfe7ff0607f66e47f"
       },
       "varies": [
         "/schema/$defs/LibraryItem/then/allOf/0/else/properties/createdAt",
@@ -4753,7 +4753,7 @@
             "stepId": "u-1",
             "label": "Set meta",
             "source": "user",
-            "time": "2026-10-31T14:24:05.967Z",
+            "time": "2026-10-31T20:38:01.128Z",
             "objectCount": 1
           },
           {
@@ -4761,7 +4761,7 @@
             "stepId": "u-2",
             "label": "Set meta",
             "source": "user",
-            "time": "2026-10-31T14:24:05.969Z",
+            "time": "2026-10-31T20:38:01.130Z",
             "objectCount": 1
           }
         ],
@@ -4906,7 +4906,7 @@
         "state": "succeeded",
         "progress": 1.0,
         "message": "",
-        "startedAt": "2026-10-31T14:24:06.320Z",
+        "startedAt": "2026-10-31T20:38:01.407Z",
         "result": {},
         "session": "user"
       },
@@ -4925,7 +4925,7 @@
           "state": "succeeded",
           "progress": 1.0,
           "message": "",
-          "startedAt": "2026-10-31T14:24:06.353Z",
+          "startedAt": "2026-10-31T20:38:01.433Z",
           "result": {},
           "session": "user"
         }
@@ -4944,7 +4944,7 @@
         "state": "succeeded",
         "progress": 1.0,
         "message": "",
-        "startedAt": "2026-10-31T14:24:06.382Z",
+        "startedAt": "2026-10-31T20:38:01.459Z",
         "result": {},
         "session": "user"
       },
@@ -4991,10 +4991,10 @@
     {
       "title": "A 1920×1080, 24 fps project",
       "result": {
-        "projectId": "pr_01M695HB5HYD3TBHZ0FFPGARJE",
-        "sceneId": "sc_01M695HB5J8SFGVAB48PHZ5E0S",
-        "cameraId": "el_01M695HB5J8SFGVAB48PHZ5E0V",
-        "elementId": "el_01M695HB5J8SFGVAB48PHZ5E0W"
+        "projectId": "pr_01M69TXZWS1HGFYQT2ZB3KZTCQ",
+        "sceneId": "sc_01M69TXZWTGWM31K2T2NVS48PY",
+        "cameraId": "el_01M69TXZWTGWM31K2T2NVS48Q0",
+        "elementId": "el_01M69TXZWTGWM31K2T2NVS48Q1"
       },
       "varies": [
         "/cameraId",
@@ -5250,7 +5250,7 @@
         {
           "path": "/tmp/Sample.animpkg",
           "name": "Sample",
-          "lastOpened": "2026-10-31T14:24:08.376Z",
+          "lastOpened": "2026-10-31T20:38:02.355Z",
           "exists": true
         }
       ],

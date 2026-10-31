@@ -322,8 +322,9 @@ impl Check for Stroke {
                 if self.line_style.is_none() {
                     out.push(&ptr(at, "lineStyle"), "kind", "pencil strokes have a line style");
                 }
-                if self.spine.is_some() || self.fill_matrix.is_some() {
-                    out.push(at, "kind", "pencil strokes have no spine and no fill matrix");
+                // A line painted with a gradient or texture keeps its mapping (03 §7.2; SI-068).
+                if self.spine.is_some() {
+                    out.push(at, "kind", "pencil strokes have no spine");
                 }
             }
             StrokeKind::Brush => {
