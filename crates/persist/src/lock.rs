@@ -172,13 +172,25 @@ fn create_protected(path: &Path) -> std::io::Result<File> {
         o.share_mode(0x0000_0007);
     }
     let f = o.open(path)?;
+    // The file was created exclusively, so a conflicting lock can only be a `probe`'s momentary shared lock: it is
+    // waited out. Giving up removes the file just created, so no empty, unprotected file is left behind for every
+    // opener to read as an unreadable holder (macOS CI run 41170158603).
     #[cfg(not(windows))]
-    match f.try_lock() {
-        Ok(()) => {}
-        Err(std::fs::TryLockError::WouldBlock) => {
-            return Err(std::io::Error::new(std::io::ErrorKind::AlreadyExists, "locked by another holder"));
+    for attempt in 0..=200 {
+        match f.try_lock() {
+            Ok(()) => break,
+            Err(std::fs::TryLockError::WouldBlock) if attempt < 200 => std::thread::sleep(Duration::from_millis(1)),
+            Err(e) => {
+                drop(f);
+                let _ = fs::remove_file(path);
+                return Err(match e {
+                    std::fs::TryLockError::WouldBlock => {
+                        std::io::Error::new(std::io::ErrorKind::AlreadyExists, "locked by another holder")
+                    }
+                    std::fs::TryLockError::Error(e) => e,
+                });
+            }
         }
-        Err(std::fs::TryLockError::Error(e)) => return Err(e),
     }
     Ok(f)
 }
