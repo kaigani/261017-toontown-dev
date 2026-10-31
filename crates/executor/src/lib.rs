@@ -33,6 +33,7 @@ mod history;
 mod jobs;
 mod maintenance;
 mod persistence;
+mod planar;
 mod rules;
 mod run;
 mod session;

@@ -71,6 +71,9 @@ pub struct Stored {
     pub sides: Vec<SideFills>,
     /// Exterior records of each stroke (brush strokes only).
     pub exterior: Vec<Vec<Exterior>>,
+    /// Whether each stroke carries the exterior-record key (then its records, even none, are authoritative; without
+    /// it a brush stroke's own side fills are read, as other writers may store them).
+    pub managed: Vec<bool>,
 }
 
 /// The fills of a layer's zones as read back.
@@ -96,6 +99,14 @@ pub fn read(map: &LayerMap, stored: &Stored) -> Read {
         let lines: Vec<_> = zone.pieces.iter().filter(|p| map.strokes[p.stroke].1 != EdgeKind::Brush).collect();
         if lines.is_empty() {
             for p in &zone.pieces {
+                if !stored.managed.get(p.stroke).copied().unwrap_or(false) {
+                    let side =
+                        stored.sides.get(p.stroke).and_then(|s| if p.left { s.left.clone() } else { s.right.clone() });
+                    if let Some(f) = side.filter(Fill::painted) {
+                        votes.push((Some(f), p.length));
+                    }
+                    continue;
+                }
                 for r in stored.exterior.get(p.stroke).into_iter().flatten() {
                     let overlap = (r.s1.min(p.s1) - r.s0.max(p.s0)).max(0.0);
                     if r.left == p.left && overlap > 0.0 {
@@ -130,26 +141,49 @@ pub fn read(map: &LayerMap, stored: &Stored) -> Read {
     out
 }
 
-/// The fills to store for given zone fills: side fills of every stroke and exterior records of brush strokes
-/// bounding brush-only zones (sorted; same input → same records).
+/// The fills to store for given zone fills: side fills of the pencil and invisible strokes bounding zones, and exterior records of
+/// brush strokes bounding brush-only zones (sorted; same input → same records). A brush stroke's own sides are kept
+/// as `previous` holds them (noding and painting never rewrite a brush stroke's sides); its exterior key is written
+/// when it has records, or to override side fills it carries, and is absent otherwise.
 #[must_use]
-pub fn write(map: &LayerMap, fills: &[Option<Fill>]) -> Stored {
+pub fn write(map: &LayerMap, fills: &[Option<Fill>], previous: &Stored) -> Stored {
+    let n = map.strokes.len();
     let mut stored =
-        Stored { sides: vec![SideFills::default(); map.strokes.len()], exterior: vec![Vec::new(); map.strokes.len()] };
+        Stored { sides: vec![SideFills::default(); n], exterior: vec![Vec::new(); n], managed: vec![false; n] };
     let painted = |z: Option<usize>| z.and_then(|z| fills.get(z).cloned().flatten()).filter(Fill::painted);
     for (k, (_, kind)) in map.strokes.iter().enumerate() {
         if *kind == EdgeKind::Brush {
+            stored.sides[k] = previous.sides.get(k).cloned().unwrap_or_default();
             continue;
         }
+        // A side bounding a zone carries that zone's fill; a side bounding none keeps what it holds.
         let (l, r) = map.stroke_sides(k);
-        stored.sides[k] = SideFills { left: painted(l), right: painted(r) };
+        let prev = previous.sides.get(k).cloned().unwrap_or_default();
+        // An unchanged meaning keeps its stored form (`null` and an unpainted fill object both mean unpainted).
+        let keep = |zone: Option<usize>, prev: Option<Fill>| -> Option<Fill> {
+            if zone.is_none() {
+                return prev;
+            }
+            let want = painted(zone);
+            if same(&want, &prev) { prev } else { want }
+        };
+        stored.sides[k] = SideFills { left: keep(l, prev.left), right: keep(r, prev.right) };
     }
     for (z, zone) in map.zones.iter().enumerate() {
         if zone.pieces.iter().any(|p| map.strokes[p.stroke].1 != EdgeKind::Brush) {
             continue;
         }
+        for p in &zone.pieces {
+            let legacy = previous.sides.get(p.stroke).is_some_and(|s| {
+                s.left.as_ref().is_some_and(Fill::painted) || s.right.as_ref().is_some_and(Fill::painted)
+            });
+            if legacy || previous.managed.get(p.stroke).copied().unwrap_or(false) {
+                stored.managed[p.stroke] = true;
+            }
+        }
         let Some(fill) = painted(Some(z)) else { continue };
         for p in &zone.pieces {
+            stored.managed[p.stroke] = true;
             stored.exterior[p.stroke].push(Exterior { left: p.left, s0: p.s0, s1: p.s1, fill: fill.clone() });
         }
     }
@@ -284,7 +318,7 @@ mod tests {
     #[test]
     fn written_fills_read_back() {
         let m = build_map(&[line("s", &[(0.0, 0.0), (10.0, 0.0), (10.0, 10.0), (0.0, 10.0)], true)]);
-        let stored = write(&m, &[paint("red")]);
+        let stored = write(&m, &[paint("red")], &Stored::default());
         assert_eq!(stored.sides[0].left, paint("red"));
         assert_eq!(read(&m, &stored).fills, vec![paint("red")]);
     }
@@ -312,7 +346,7 @@ mod tests {
             line("long", &[(0.0, 0.0), (100.0, 0.0), (100.0, 10.0)], false),
             line("short", &[(100.0, 10.0), (0.0, 10.0), (0.0, 0.0)], false),
         ]);
-        let mut stored = write(&m, &[paint("red")]);
+        let mut stored = write(&m, &[paint("red")], &Stored::default());
         stored.sides[1].left = paint("blue");
         let r = read(&m, &stored);
         assert_eq!(r.fills, vec![paint("red")]);

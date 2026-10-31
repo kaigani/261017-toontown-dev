@@ -103,8 +103,8 @@ fn fill_of(v: &Value) -> Option<Fill> {
 
 fn fill_json(f: &Option<Fill>) -> Value {
     match f {
-        Some(f) if f.painted() => json!({ "colourId": f.colour_id, "matrix": f.matrix }),
-        _ => Value::Null,
+        Some(f) => json!({ "colourId": f.colour_id, "matrix": f.matrix }),
+        None => Value::Null,
     }
 }
 
@@ -118,8 +118,9 @@ pub fn stored(strokes: &[Value]) -> Stored {
             left: sides.and_then(|x| x.get("left")).and_then(fill_of),
             right: sides.and_then(|x| x.get("right")).and_then(fill_of),
         });
-        let ext: Vec<Exterior> = s
-            .pointer(&format!("/ext/{EXT_NAMESPACE}/exterior"))
+        let key = s.pointer(&format!("/ext/{EXT_NAMESPACE}/exterior"));
+        out.managed.push(key.is_some());
+        let ext: Vec<Exterior> = key
             .and_then(Value::as_array)
             .map(|a| {
                 a.iter()
@@ -143,9 +144,12 @@ pub fn stored(strokes: &[Value]) -> Stored {
 /// removed when there are none).
 fn apply_stored(strokes: &mut [Value], st: &Stored) {
     for (k, s) in strokes.iter_mut().enumerate() {
+        let brush = kind_of(s) == EdgeKind::Brush;
         let Some(obj) = s.as_object_mut() else { continue };
-        let sides = st.sides.get(k).cloned().unwrap_or_default();
-        obj.insert("sides".into(), json!({ "left": fill_json(&sides.left), "right": fill_json(&sides.right) }));
+        if !brush {
+            let sides = st.sides.get(k).cloned().unwrap_or_default();
+            obj.insert("sides".into(), json!({ "left": fill_json(&sides.left), "right": fill_json(&sides.right) }));
+        }
         let records: Vec<Value> = st
             .exterior
             .get(k)
@@ -164,7 +168,7 @@ fn apply_stored(strokes: &mut [Value], st: &Stored) {
             .unwrap_or_default();
         let ext = obj.entry("ext").or_insert_with(|| Value::Object(Map::new()));
         if let Some(e) = ext.as_object_mut() {
-            if records.is_empty() {
+            if !st.managed.get(k).copied().unwrap_or(false) {
                 e.remove(EXT_NAMESPACE);
             } else {
                 e.insert(EXT_NAMESPACE.into(), json!({ "exterior": records }));
@@ -261,7 +265,7 @@ pub fn settle<E>(
             fills[z] = f.clone().filter(Fill::painted);
         }
     }
-    let st = fill::write(&map, &fills);
+    let st = fill::write(&map, &fills, &stored(&strokes));
     apply_stored(&mut strokes, &st);
     let changed = strokes.as_slice() != after;
     let zones_before =

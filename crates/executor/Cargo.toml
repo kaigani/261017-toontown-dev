@@ -11,6 +11,8 @@ tt-model.workspace = true
 tt-persist.workspace = true
 tt-registry.workspace = true
 tt-vector.workspace = true
+# Geometry keys of the derived planar-map cache (M2 C2.2).
+sha2.workspace = true
 serde.workspace = true
 serde_json.workspace = true
 schemars.workspace = true

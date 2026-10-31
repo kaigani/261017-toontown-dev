@@ -361,7 +361,11 @@ pub(crate) fn run_step(cx: &mut Cx, entry: &Entry, params: Value, opts: &InvokeO
         check_expect_rev(cx, &pairs)?;
     }
     let Some(command) = entry.command else { return Err(CommandError::internal("implemented entry without handler")) };
-    (command.handler)(cx, params)
+    let result = (command.handler)(cx, params)?;
+    // 02 §3.12 item 1: the layers the call changed are settled (re-noded, zones and fills updated) before the next
+    // step of a batch reads them; handlers that report stroke or zone IDs settle earlier themselves.
+    cx.settle()?;
+    Ok(result)
 }
 
 /// REV-05 (C12-R1-07): every listed object must still have the expected `rev`; a mismatch is `rev.conflict` with

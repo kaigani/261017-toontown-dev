@@ -7,7 +7,7 @@
 //! transaction; documents handed out to other threads are immutable snapshots. `tests/ui/*.rs` prove these
 //! properties at compile time (trybuild).
 
-use std::collections::BTreeSet;
+use std::collections::{BTreeMap, BTreeSet};
 
 use serde_json::{Value, json};
 use tt_model::ModelError;
@@ -16,6 +16,9 @@ use tt_model::document::{Document, EntryCommit, EntryKey, Target};
 use tt_model::path::Ref;
 use tt_model::{Id, ObjectType, codes as model_codes};
 use tt_registry::{CommandError, codes};
+
+use tt_vector::planar::fill::Fill;
+use tt_vector::work::Work;
 
 use crate::align::prepare;
 use crate::app::{AppContext, SpecialContext};
@@ -62,6 +65,8 @@ struct Staged {
     structural: bool,
     /// Change records computed for the current staged state (reused when the transaction commits).
     cached: Option<(Vec<ChangeRecord>, Vec<String>)>,
+    /// Whether the planar settle pass ran on the current staged state (02 §3.12 item 1).
+    settled: bool,
 }
 
 /// An effect a command has outside the document, applied only when its transaction commits (never for a dry run or
@@ -117,6 +122,8 @@ pub(crate) struct Savepoint {
     clipboard: Option<Value>,
     edit_options: std::collections::BTreeMap<String, serde_json::Map<String, Value>>,
     checkpoints: Option<Vec<Checkpoint>>,
+    painted: BTreeMap<(Id, String), BTreeMap<String, Option<Fill>>>,
+    settled_doc: Option<Document>,
 }
 
 /// The invocation context; see the module documentation.
@@ -140,6 +147,11 @@ pub struct Cx {
     confirm_token: Option<String>,
     confirm_flag: bool,
     fingerprint: String,
+    /// Zone fills a command painted, by drawing and layer, keyed by zone ID of the settled layer (applied by
+    /// [`Cx::settle`]).
+    painted: BTreeMap<(Id, String), BTreeMap<String, Option<Fill>>>,
+    /// The document as last settled in this transaction (the pre-state of the next settle pass).
+    settled_doc: Option<Document>,
 }
 
 /// Millisecond base of the ULID time part of transaction IDs (2025-10-15T00:00:00Z); the time part is a logical
@@ -192,6 +204,8 @@ impl Cx {
             confirm_token: None,
             confirm_flag: false,
             fingerprint: String::new(),
+            painted: BTreeMap::new(),
+            settled_doc: None,
         }
     }
 
@@ -320,11 +334,15 @@ impl Cx {
             clipboard: self.session.clipboard.clone(),
             edit_options: self.session.edit_options.clone(),
             checkpoints: self.session.project.as_ref().map(|p| p.checkpoints.clone()),
+            painted: self.painted.clone(),
+            settled_doc: self.settled_doc.clone(),
         }
     }
 
     pub(crate) fn rollback_to(&mut self, sp: Savepoint) {
         self.staged = sp.staged;
+        self.painted = sp.painted;
+        self.settled_doc = sp.settled_doc;
         self.txns.truncate(sp.txns);
         self.effects.truncate(sp.effects);
         self.ids_drawn = sp.ids_drawn;
@@ -575,8 +593,10 @@ impl Cx {
             touched: BTreeSet::new(),
             structural: false,
             cached: None,
+            settled: false,
         });
         staged.cached = None;
+        staged.settled = false;
         staged.doc = next;
         staged.commits.extend(commits);
         staged.touched.extend(touched);
@@ -622,6 +642,123 @@ impl Cx {
         self.stage(&changes, Vec::new(), true)
     }
 
+    /// Registers zone fills painted by a command: `fills` by zone ID of the layer as settled (02 §3.12; 03 §8). The
+    /// next [`Cx::settle`] stores them on the bounding strokes.
+    pub(crate) fn paint_zones(&mut self, drawing: &Id, layer: &str, fills: BTreeMap<String, Option<Fill>>) {
+        self.painted.entry((drawing.clone(), layer.to_owned())).or_default().extend(fills);
+        if let Some(s) = self.staged.as_mut() {
+            s.settled = false;
+        }
+    }
+
+    /// The session's derived-map cache.
+    pub(crate) fn planar_cache(&self) -> crate::planar::SharedCache {
+        self.session.planar.clone()
+    }
+
+    /// The planar settle pass (02 §3.12 item 1): every layer the staged changes (or registered paint) touched since
+    /// the last pass is re-noded, its zones recomputed, colours carried over and painted fills applied, and the result
+    /// is staged. All layers of the pass share one work budget; past it the call fails with `limit.exceeded` and
+    /// nothing of the transaction commits. Idempotent; handlers call it before reporting stroke and zone IDs, and it
+    /// runs before any preview or commit.
+    ///
+    /// # Errors
+    /// `limit.exceeded`; the model's integrity errors.
+    pub(crate) fn settle(&mut self) -> Result<(), CommandError> {
+        let pending = !self.painted.is_empty();
+        match &self.staged {
+            None if !pending => return Ok(()),
+            Some(st) if st.settled && !pending => return Ok(()),
+            _ => {}
+        }
+        let before = match &self.settled_doc {
+            Some(d) => d.clone(),
+            None => self.base_doc()?,
+        };
+        let after = self.staging_doc()?;
+        let mut ids: BTreeSet<Id> = BTreeSet::new();
+        if let Some(st) = &self.staged {
+            for c in &st.commits {
+                if let EntryKey::Drawing(id) = &c.key {
+                    ids.insert(id.clone());
+                }
+            }
+        }
+        ids.extend(self.painted.keys().map(|(d, _)| d.clone()));
+        let cache = self.planar_cache();
+        let mut work = Work::new(tt_vector::work::PLANAR_WORK_BUDGET, "updating the planar map of this edit");
+        let mut changes: Vec<(EntryKey, Vec<PatchOp>)> = Vec::new();
+        for id in ids {
+            let Some(ad) = after.drawing(&id) else { continue };
+            let bd = before.drawing(&id);
+            let has_paint = self.painted.keys().any(|(d, _)| *d == id);
+            if bd == Some(ad) && !has_paint {
+                continue;
+            }
+            let old_layers: BTreeMap<String, Vec<Value>> = bd
+                .map(|d| crate::planar::layers(d).into_iter().map(|l| (l.id, l.strokes)).collect())
+                .unwrap_or_default();
+            let mut ops: Vec<PatchOp> = Vec::new();
+            for l in crate::planar::layers(ad) {
+                let painted = self.painted.remove(&(id.clone(), l.id.clone())).unwrap_or_default();
+                let old = old_layers.get(&l.id);
+                if old == Some(&l.strokes) && painted.is_empty() {
+                    continue;
+                }
+                let old_map = match old {
+                    Some(o) => {
+                        Some(crate::planar::lock(&cache).map(o, &mut work).map_err(|e| crate::planar::geom_error(&e))?)
+                    }
+                    None => None,
+                };
+                let mut fresh = || self.new_id(ObjectType::Stroke).map(|i| i.as_str().to_owned());
+                let settled = tt_vector::planar::layer::settle(
+                    old.map(Vec::as_slice),
+                    &l.strokes,
+                    old_map.as_deref(),
+                    &painted,
+                    &mut fresh,
+                    &mut work,
+                )
+                .map_err(|e| match e {
+                    tt_vector::planar::layer::SettleError::Geom(g) => crate::planar::geom_error(&g),
+                    tt_vector::planar::layer::SettleError::Id(e) => e,
+                })?;
+                if settled.inconsistent > 0 {
+                    self.warn(
+                        "drawing.fillInconsistent",
+                        format!(
+                            "{} zone(s) of layer `{}` had disagreeing fills (repaired)",
+                            settled.inconsistent, l.id
+                        ),
+                        vec![format!("{id}/{}", l.id)],
+                    );
+                }
+                let key = crate::planar::geometry_key(&settled.strokes);
+                crate::planar::lock(&cache).insert(key, std::sync::Arc::new(settled.map));
+                if settled.changed {
+                    ops.push(crate::commands::draw::op(
+                        "replace",
+                        &format!("{}/strokes", l.pointer),
+                        Some(Value::Array(settled.strokes)),
+                    ));
+                }
+            }
+            if !ops.is_empty() {
+                changes.push((EntryKey::Drawing(id), ops));
+            }
+        }
+        self.painted.clear();
+        if !changes.is_empty() {
+            self.stage(&changes, Vec::new(), true)?;
+        }
+        if let Some(st) = self.staged.as_mut() {
+            st.settled = true;
+        }
+        self.settled_doc = Some(self.staging_doc()?);
+        Ok(())
+    }
+
     /// Whether the transaction has staged document changes.
     #[must_use]
     pub fn has_staged(&self) -> bool {
@@ -653,6 +790,8 @@ impl Cx {
     }
 
     pub(crate) fn finish_staged(&mut self, label: String) -> Result<Option<Txn>, CommandError> {
+        self.settle()?;
+        self.settled_doc = None;
         let Some(staged) = self.staged.take() else { return Ok(None) };
         let before = self.base_doc()?;
         let rev = self.next_rev()?;
@@ -684,6 +823,7 @@ impl Cx {
     /// # Errors
     /// `project.none`; `internal` if serialisation fails.
     pub fn preview_changes(&mut self) -> Result<(Vec<ChangeRecord>, u64), CommandError> {
+        self.settle()?;
         let rev = self.next_rev()?;
         let Some(staged) = &self.staged else { return Ok((Vec::new(), rev)) };
         if let Some((c, _)) = &staged.cached {

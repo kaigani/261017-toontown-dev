@@ -195,6 +195,8 @@ pub(crate) struct Session {
     pub env: crate::store::Env,
     /// Agent sessions, confirmations and the activity log (C1.4). Not rolled back with a failed call.
     pub agents: crate::agents::AgentHub,
+    /// The derived planar-map cache (M2 C2.2), shared by the session's invocations.
+    pub planar: crate::planar::SharedCache,
 }
 
 impl Session {
