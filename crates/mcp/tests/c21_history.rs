@@ -2,11 +2,14 @@
 //! `0xc120_2026_1019_a571` and `0xc123_2026_1019_b683`) re-run through MCP with real drawing geometry and painting on a
 //! saved and reopened geometry fixture. 10 000 random operations each — `draw.stroke.set` geometry/thickness edits of a
 //! pencil line in a layer of its own (x-monotone control points, so re-noding never splits it), painting and
-//! unpainting the zone of a closed square in another layer by zone ID (topology and paint), multi-step undo and redo,
-//! checkpoint create/restore and dry runs — are checked against an independent oracle (the line's persisted anchors
-//! computed here from the Bézier list, its line style, the square's side fills, and the revisions of both strokes and
-//! their drawing) with exact canonical byte checks of every entry every 100 operations, then replayed in a fresh
-//! executor, which must reproduce every entry byte for byte, revisions included.
+//! unpainting the zone of a closed square in another layer by zone ID, **changing topology** in a third layer (C22-R1-11:
+//! pencil cuts added across a closed square split the cut, the square's pieces and a zone; deleting a cut merges two
+//! zones; zones painted by the IDs the oracle computes), multi-step undo and redo, checkpoint create/restore and dry
+//! runs — are checked against an independent oracle (the line's persisted anchors computed here from the Bézier list,
+//! its line style, the square's side fills; the topology layer's junctions, pieces, piece order, zone IDs, carried and
+//! painted side fills from `topology_oracle`; the revisions of every stroke and their drawing) with exact canonical
+//! byte checks of every entry every 100 operations, then replayed in a fresh executor, which must reproduce every entry
+//! byte for byte, revisions included.
 #![allow(
     clippy::unwrap_used,
     clippy::expect_used,
@@ -17,11 +20,15 @@
 )]
 
 mod support;
+mod topology_oracle;
 
 use std::cell::RefCell;
 use std::time::Instant;
 
+use std::collections::{BTreeMap, BTreeSet};
+
 use serde_json::{Value, json};
+use topology_oracle::{CUTS, Topo};
 use tt_model::document::{Document, EntryKey};
 
 const D1: &str = "dr_01K742SG0KKMCAP9X1E6Z5P4SW";
@@ -84,6 +91,11 @@ fn saved_geometry_fixture() -> Protocol {
             "bezier": [{"x": -150, "y": -150}, {"x": -140, "y": -140}, {"x": -130, "y": -150}, {"x": -120, "y": -150}] }));
         call("draw.stroke.add", json!({ "drawingId": D1, "kind": "pencil", "layer": "new", "fit": false, "closed": true,
             "points": [{"x": 300, "y": 300}, {"x": 400, "y": 300}, {"x": 400, "y": 400}, {"x": 300, "y": 400}] }));
+        // The topology layer: a closed square with anchors every 32 du along its bottom and top (C22-R1-11).
+        let square: Vec<Value> =
+            topology_oracle::square_anchors().iter().map(|(x, y)| json!({ "x": x, "y": y })).collect();
+        call("draw.stroke.add", json!({ "drawingId": D1, "kind": "pencil", "layer": "new", "fit": false, "closed": true,
+            "thickness": 1, "points": square }));
         let path = dir.join("Geometry.animpkg");
         let e = call("project.saveAs", json!({ "path": path }));
         let done = call("job.wait", json!({ "jobId": e["jobId"], "timeoutMs": 60000 }));
@@ -103,8 +115,9 @@ fn saved_geometry_fixture() -> Protocol {
     p
 }
 
-/// The oracle's state: the line's Bézier list and thickness, and the square zone's colour (`None` = unpainted).
-type State = (Vec<(f64, f64)>, f64, Option<String>);
+/// The oracle's state: the line's Bézier list and thickness, the square zone's colour (`None` = unpainted) and the
+/// topology layer.
+type State = (Vec<(f64, f64)>, f64, Option<String>, Topo);
 
 /// The persisted anchors of an open 4-point Bézier list (10 §4.9: handles are offsets), computed independently.
 fn anchors(b: &[(f64, f64)]) -> Value {
@@ -112,16 +125,23 @@ fn anchors(b: &[(f64, f64)]) -> Value {
     json!([[p0.0, p0.1, 0, 0, p1.0 - p0.0, p1.1 - p0.1], [p3.0, p3.1, p2.0 - p3.0, p2.1 - p3.1, 0, 0]])
 }
 
-/// Revisions the oracle predicts: the document, the line, the square and their drawing.
+/// Revisions the oracle predicts: the document, the line, the square, the topology layer's strokes and their drawing.
 struct Revs {
     doc: u64,
     line: u64,
     square: u64,
     drawing: u64,
+    /// Topology strokes by ID.
+    topo: BTreeMap<String, u64>,
+    /// The topology layer node (stamped when its list of strokes changes).
+    topo_node: u64,
+    /// The topology layer's stroke template (colour, line style).
+    template: Value,
 }
 
 impl Revs {
-    /// A committed change from `a` to `b`: the next revision stamps what changed and the drawing (REV-02/03).
+    /// A committed change from `a` to `b`: the next revision stamps what changed and the drawing (REV-02/03); a
+    /// topology stroke keeps its revision only when it exists in `a` with the same content.
     fn change(&mut self, a: &State, b: &State) {
         self.doc += 1;
         if a.0 != b.0 || a.1 != b.1 {
@@ -129,6 +149,16 @@ impl Revs {
         }
         if a.2 != b.2 {
             self.square = self.doc;
+        }
+        let (sa, sb) = (a.3.strokes(&self.template), b.3.strokes(&self.template));
+        if sa.iter().map(|x| &x.0).ne(sb.iter().map(|x| &x.0)) {
+            self.topo_node = self.doc;
+        }
+        let before: BTreeMap<String, Value> = sa.into_iter().collect();
+        for (id, v) in sb {
+            if before.get(&id) != Some(&v) {
+                self.topo.insert(id, self.doc);
+            }
         }
         self.drawing = self.doc;
     }
@@ -150,7 +180,13 @@ fn oracle(seed_value: u64, name: &str) {
                 .any(|s| s["bezier"][0]["x"] == -150.0 && s["bezier"][0]["y"] == -150.0)
         })
         .unwrap();
-    let square_layer = layers.iter().position(|l| l["zones"].as_array().is_some_and(|z| z.len() == 1)).unwrap();
+    let first_at = |l: &Value, x: f64, y: f64| {
+        l["strokes"].as_array().unwrap().iter().any(|s| s["bezier"][0]["x"] == x && s["bezier"][0]["y"] == y)
+    };
+    let square_layer = layers.iter().position(|l| first_at(l, 300.0, 300.0)).unwrap();
+    let topo_layer = layers.iter().position(|l| first_at(l, 512.0, 512.0)).unwrap();
+    let topo_layer_id = layers[topo_layer]["id"].as_str().unwrap().to_owned();
+    let topo_square = layers[topo_layer]["strokes"][0]["id"].as_str().unwrap().to_owned();
     let line = layers[line_layer]["strokes"][0]["id"].as_str().unwrap().to_owned();
     let square = layers[square_layer]["strokes"][0]["id"].as_str().unwrap().to_owned();
     let zone = layers[square_layer]["zones"][0]["id"].as_str().unwrap().to_owned();
@@ -174,6 +210,27 @@ fn oracle(seed_value: u64, name: &str) {
         panic!("{id} not found")
     };
     let (line_ptr, square_ptr) = (pointer_of(&line), pointer_of(&square));
+    let topo_ptr = pointer_of(&topo_square);
+    let topo_node_ptr = topo_ptr.rsplit_once("/strokes/").unwrap().0.to_owned();
+    let template = drawing_base.pointer(&topo_ptr).unwrap().clone();
+    let topo_ids = |doc: &Document| -> Vec<String> {
+        doc.entry_raw_json(&EntryKey::Drawing(tt_model::Id::parse(D1).unwrap()))
+            .unwrap()
+            .pointer(&topo_node_ptr)
+            .unwrap()["strokes"]
+            .as_array()
+            .unwrap()
+            .iter()
+            .map(|s| s["id"].as_str().unwrap().to_owned())
+            .collect()
+    };
+    let mut known: BTreeSet<String> = drawing_base["nodes"]
+        .as_array()
+        .unwrap()
+        .iter()
+        .flat_map(|n| n["strokes"].as_array().into_iter().flatten())
+        .map(|s| s["id"].as_str().unwrap().to_owned())
+        .collect();
     let stroke_base = drawing_base.pointer(&line_ptr).unwrap().clone();
     let pts = stroke_base["points"].as_array().unwrap();
     let to_list = |p: &Value| -> Vec<(f64, f64)> {
@@ -190,8 +247,12 @@ fn oracle(seed_value: u64, name: &str) {
                 .map(|s| s.colour_id().as_str().to_owned())
         })
         .collect();
-    let mut current: State =
-        (to_list(&Value::Array(pts.clone())), stroke_base["lineStyle"]["thickness"].as_f64().unwrap(), None);
+    let mut current: State = (
+        to_list(&Value::Array(pts.clone())),
+        stroke_base["lineStyle"]["thickness"].as_f64().unwrap(),
+        None,
+        Topo::new(&topo_square),
+    );
     let mut history: Vec<(State, State)> = Vec::new();
     let mut position = 0;
     let mut revs = Revs {
@@ -199,12 +260,16 @@ fn oracle(seed_value: u64, name: &str) {
         line: stroke_base["rev"].as_u64().unwrap(),
         square: drawing_base.pointer(&square_ptr).unwrap()["rev"].as_u64().unwrap(),
         drawing: drawing_base["rev"].as_u64().unwrap(),
+        topo: [(topo_square.clone(), template["rev"].as_u64().unwrap())].into_iter().collect(),
+        template: template.clone(),
+        topo_node: drawing_base.pointer(&topo_node_ptr).unwrap()["rev"].as_u64().unwrap(),
     };
     let mut seed = seed_value;
     let mut commands: Vec<(String, Value)> = Vec::new();
     let mut checkpoint = current.clone();
     let mut have_checkpoint = false;
-    let mut counts = [0_u64; 7];
+    let mut counts = [0_u64; 9];
+    let mut max_zones = 1;
     let step =
         |history: &mut Vec<(State, State)>, position: &mut usize, current: &mut State, next: State, revs: &mut Revs| {
             if next != *current {
@@ -224,7 +289,9 @@ fn oracle(seed_value: u64, name: &str) {
         seed ^= seed >> 7;
         seed ^= seed << 17;
         let choice = seed % 100;
-        let (id, params) = if choice < 47 {
+        // A cut whose new piece IDs are taken from the layer after the command.
+        let mut pending: Option<State> = None;
+        let (id, params) = if choice < 32 {
             let c = |k: u64| ((seed >> k) % 4001) as f64 / 20.0 - 100.0;
             // x-monotone control points: the cubic cannot cross itself, and its layer holds nothing else.
             let mut xs = [c(1), c(9), c(17), c(25)];
@@ -233,24 +300,65 @@ fn oracle(seed_value: u64, name: &str) {
                 vec![(xs[0], c(5)), (xs[1], c(13)), (xs[2], c(21)), (xs[3] + 0.05, c(29))],
                 ((seed >> 33) % 40) as f64 / 4.0,
                 current.2.clone(),
+                current.3.clone(),
             );
             counts[0] += 1;
             let bezier: Vec<Value> = next.0.iter().map(|(x, y)| json!({ "x": x, "y": y })).collect();
             let params = json!({ "drawingId": D1, "strokeId": line, "bezier": bezier, "thickness": next.1 });
             step(&mut history, &mut position, &mut current, next, &mut revs);
             ("draw.stroke.set", params)
+        } else if choice < 40 {
+            // Change the topology: add a cut at a free position (splits a zone) or delete a cut (merges two zones).
+            let free: Vec<usize> = (0..CUTS).filter(|k| !current.3.cuts.iter().any(|(c, _)| c == k)).collect();
+            counts[7] += 1;
+            if !free.is_empty() && (current.3.cuts.is_empty() || (seed >> 38).is_multiple_of(2)) {
+                let k = free[((seed >> 41) % free.len() as u64) as usize];
+                let mut next = current.clone();
+                next.3 = current.3.cut(k);
+                pending = Some(next);
+                let points: Vec<Value> =
+                    topology_oracle::cut_anchors(k).iter().map(|(x, y)| json!({ "x": x, "y": y })).collect();
+                let params = json!({ "drawingId": D1, "kind": "pencil", "layer": topo_layer_id, "fit": false,
+                    "points": points, "colourId": template["colourId"], "thickness": template["lineStyle"]["thickness"] });
+                ("draw.stroke.add", params)
+            } else {
+                let (k, ids) = current.3.cuts[((seed >> 41) % current.3.cuts.len() as u64) as usize].clone();
+                let mut next = current.clone();
+                next.3 = current.3.merge(k);
+                step(&mut history, &mut position, &mut current, next, &mut revs);
+                ("draw.object.delete", json!({ "drawingId": D1, "ids": ids }))
+            }
+        } else if choice < 47 {
+            // Paint a zone of the topology layer by the ID the oracle computes, or unpaint it.
+            let zones = current.3.zones();
+            let z = zones[((seed >> 43) % zones.len() as u64) as usize];
+            let zone_id = current.3.zone_id(z.0, z.1);
+            let painted = current.3.fills.get(&z).cloned().flatten();
+            counts[8] += 1;
+            let mut next = current.clone();
+            if painted.is_some() && (seed >> 45).is_multiple_of(3) {
+                next.3.fills.insert(z, None);
+                step(&mut history, &mut position, &mut current, next, &mut revs);
+                ("colour.paint.remove", json!({ "drawingId": D1, "objectIds": [zone_id] }))
+            } else {
+                let options: Vec<&String> = colours.iter().filter(|c| painted.as_ref() != Some(*c)).collect();
+                let colour = options[((seed >> 47) % options.len() as u64) as usize].clone();
+                next.3.fills.insert(z, Some(colour.clone()));
+                step(&mut history, &mut position, &mut current, next, &mut revs);
+                ("colour.paint.apply", json!({ "drawingId": D1, "objectIds": [zone_id], "colourId": colour }))
+            }
         } else if choice < 55 {
             // Paint the square's zone by ID with another colour, or unpaint it.
             let unpaint = current.2.is_some() && (seed >> 40).is_multiple_of(3);
             counts[6] += 1;
             if unpaint {
-                let next: State = (current.0.clone(), current.1, None);
+                let next: State = (current.0.clone(), current.1, None, current.3.clone());
                 step(&mut history, &mut position, &mut current, next, &mut revs);
                 ("colour.paint.remove", json!({ "drawingId": D1, "objectIds": [zone] }))
             } else {
                 let options: Vec<&String> = colours.iter().filter(|c| current.2.as_ref() != Some(*c)).collect();
                 let colour = options[((seed >> 44) % options.len() as u64) as usize].clone();
-                let next: State = (current.0.clone(), current.1, Some(colour.clone()));
+                let next: State = (current.0.clone(), current.1, Some(colour.clone()), current.3.clone());
                 step(&mut history, &mut position, &mut current, next, &mut revs);
                 ("colour.paint.apply", json!({ "drawingId": D1, "objectIds": [zone], "colourId": colour }))
             }
@@ -289,7 +397,24 @@ fn oracle(seed_value: u64, name: &str) {
         };
         let env = run(&h, id, params.clone());
         assert!(env["status"] == "ok", "seed {seed_value:x}, operation {i}: {id} {params}: {env:?}");
+        if let Some(mut next) = pending.take() {
+            // The engine allocated the new pieces' IDs: the oracle predicted where they are and that they are new.
+            let actual = topo_ids(&snapshot(&h));
+            assert!(
+                next.3.adopt(&actual, &known),
+                "seed {seed_value:x}, operation {i}: pieces {actual:?} vs {:?}",
+                next.3
+            );
+            let created: BTreeSet<&str> =
+                env["result"]["createdIds"].as_array().unwrap().iter().filter_map(Value::as_str).collect();
+            for id in actual.iter().filter(|a| !known.contains(*a)) {
+                assert!(created.contains(id.as_str()), "seed {seed_value:x}, operation {i}: {id} not reported created");
+            }
+            known.extend(actual);
+            step(&mut history, &mut position, &mut current, next, &mut revs);
+        }
         commands.push((id.into(), params));
+        max_zones = max_zones.max(current.3.zones().len());
         assert_eq!(snapshot(&h).document_rev(), revs.doc, "seed {seed_value:x}, operation {i}");
         if i % 100 == 0 || i == 9999 {
             let snap = snapshot(&h);
@@ -305,13 +430,45 @@ fn oracle(seed_value: u64, name: &str) {
                     q["sides"]["left"] =
                         current.2.as_ref().map_or(Value::Null, |c| json!({ "colourId": c, "matrix": null }));
                     q["rev"] = json!(revs.square);
+                    let node = want.pointer_mut(&topo_node_ptr).unwrap();
+                    node["strokes"] = Value::Array(
+                        current
+                            .3
+                            .strokes(&revs.template)
+                            .into_iter()
+                            .map(|(id, mut v)| {
+                                v["rev"] = json!(revs.topo[&id]);
+                                v
+                            })
+                            .collect(),
+                    );
+                    node["rev"] = json!(revs.topo_node);
                     want["rev"] = json!(revs.drawing);
                 }
-                assert_eq!(
+                let (got, exp) = (
                     tt_model::canonical::to_canonical_string(&snap.entry_raw_json(&k).unwrap()).unwrap(),
                     tt_model::canonical::to_canonical_string(&want).unwrap(),
-                    "seed {seed_value:x}, operation {i}, {k:?}"
                 );
+                if got != exp {
+                    // The first differing lines, with context.
+                    let (g, e): (Vec<&str>, Vec<&str>) = (got.lines().collect(), exp.lines().collect());
+                    let at = g.iter().zip(&e).position(|(a, b)| a != b).unwrap_or(g.len().min(e.len()));
+                    let lo = at.saturating_sub(12);
+                    panic!(
+                        "seed {seed_value:x}, operation {i}, {k:?}: engine
+{}
+--- oracle
+{}",
+                        g[lo..(at + 6).min(g.len())].join(
+                            "
+"
+                        ),
+                        e[lo..(at + 6).min(e.len())].join(
+                            "
+"
+                        )
+                    );
+                }
             }
         }
     }
@@ -331,8 +488,9 @@ fn oracle(seed_value: u64, name: &str) {
         "fresh replay is byte identical, revisions included"
     );
     let receipt = json!({ "seed": format!("0x{seed_value:x}"), "operations": 10000, "replayOperations": 10000,
-        "strokeSetUndoRedoCreateRestoreDryRunPaint": counts, "documentRev": revs.doc, "durationSeconds": start.elapsed().as_secs_f64(),
-        "oracle": "independent line geometry/thickness, square zone fill and revision stack; exact canonical all-entry byte checks every 100 operations; full fresh executor replay" });
+        "strokeSetUndoRedoCreateRestoreDryRunPaintCutOrMergePaintTopology": counts, "documentRev": revs.doc, "durationSeconds": start.elapsed().as_secs_f64(),
+        "zonesAtEnd": current.3.zones().len(), "maxZones": max_zones,
+        "oracle": "independent line geometry/thickness, square zone fill, topology layer (junctions, pieces, zone IDs, carried and painted fills) and revision stack; exact canonical all-entry byte checks every 100 operations; full fresh executor replay" });
     println!("{name}: {receipt}");
 }
 
