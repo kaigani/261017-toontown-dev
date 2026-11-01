@@ -795,7 +795,7 @@ const CHILD_SLOTS: [&str; 9] =
 /// Gives a copied model object, and the objects in its child slots, new IDs where their type is one of `types`
 /// (container-local types get local IDs). Only the containment slots are followed; opaque `meta`/`ext` and every
 /// other property are copied verbatim, whatever they look like (C12-R2-05).
-fn regenerate(
+pub(crate) fn regenerate(
     cx: &mut Cx,
     v: &mut Value,
     types: &[ObjectType],

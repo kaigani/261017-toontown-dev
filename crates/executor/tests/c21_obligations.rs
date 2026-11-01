@@ -303,15 +303,32 @@ fn c21_drawing_commands_write_no_files_and_ask_no_confirmation() {
         let params = e.params_schema().to_string();
         assert!(!params.contains("\"path\""), "{id} takes no file path");
     }
+    // Later checkpoints add drawing commands (M2 C2.2 `draw.hitTest.get`, M2 C2.3); every implemented one keeps the
+    // same obligations unless its owning section declares otherwise (named here with the reason).
+    let declared_exceptions = [
+        // A preference, not an edit (11 §6.1 prefs scope).
+        "draw.inspectorPreview.set",
+    ];
     let implemented: Vec<&str> = registry
         .entries()
         .filter(|e| e.id().starts_with("draw.") && e.status() == tt_registry::Status::Implemented)
         .filter(|e| e.spec.kind != tt_registry::Kind::Event)
-        // `draw.hitTest.get` is the planar map's (M2 C2.2 ruling), not a C2.1 command.
-        .filter(|e| e.id() != "draw.hitTest.get")
         .map(|e| e.id())
         .collect();
-    assert_eq!(implemented.len(), c21.len(), "{implemented:?}");
+    assert!(c21.iter().all(|id| implemented.contains(id)), "{implemented:?}");
+    for id in implemented.iter().filter(|id| !declared_exceptions.contains(id)) {
+        let e = registry.get(id).unwrap();
+        let c = e.command.unwrap();
+        assert!(c.decl.confirm.is_empty(), "{id} asks for confirmation");
+        // Selection and view state is UI scope (11 §6.1); everything else reads or edits the document.
+        let scopes = e.scopes();
+        let one = |s| scopes == [s];
+        assert!(
+            one(tt_registry::Scope::Read) || one(tt_registry::Scope::Edit) || one(tt_registry::Scope::Ui),
+            "{id}: {scopes:?}"
+        );
+        assert!(!e.params_schema().to_string().contains("\"path\""), "{id} takes no file path");
+    }
     // The drawing event is produced by the commit path (C21-R1-07) and is not invocable.
     assert_eq!(registry.get("draw.drawing.changed").unwrap().status(), tt_registry::Status::Implemented);
 }

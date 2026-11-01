@@ -20,6 +20,7 @@ pub mod fonts;
 pub mod geom;
 pub mod invariants;
 pub mod num;
+pub mod ops;
 pub mod path;
 pub mod planar;
 pub mod stroke;

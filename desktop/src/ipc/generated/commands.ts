@@ -3014,10 +3014,30 @@ export const COMMAND_INDEX = {
     result: "draw.envelope.apply.result",
     examples: [
       {
-        corners: [],
+        drawingId: "drawingBank:#1/drawing:#1",
+        ids: [
+          "st_01K742SG0R61SYK9GG0HGYVNBT",
+        ],
+        corners: [
+          {
+            x: -50,
+            y: -50,
+          },
+          {
+            x: 50,
+            y: -50,
+          },
+          {
+            x: 30,
+            y: 50,
+          },
+          {
+            x: -30,
+            y: 50,
+          },
+        ],
       },
     ],
-    milestone: "M2 C2.3",
   },
   "draw.erase.apply": {
     kind: "action",
@@ -3052,10 +3072,13 @@ export const COMMAND_INDEX = {
     result: "draw.flip.apply.result",
     examples: [
       {
+        drawingId: "drawingBank:#1/drawing:#1",
+        ids: [
+          "st_01K742SG0QD1F2HFZSX8R4V7WP",
+        ],
         axis: "horizontal",
       },
     ],
-    milestone: "M2 C2.3",
   },
   "draw.group.create": {
     kind: "action",
@@ -3191,19 +3214,27 @@ export const COMMAND_INDEX = {
     result: "draw.point.add.result",
     examples: [
       {
-        strokeId: "scene:#1",
+        strokeId: "dr_01K742SG0KKMCAP9X1E6Z5P4SW/st_01K742SG0R61SYK9GG0HGYVNBT",
+        segment: 0,
+        t: 0.5,
       },
     ],
-    milestone: "M2 C2.3",
   },
   "draw.point.delete": {
     kind: "action",
     params: "draw.point.delete.params",
     result: "draw.point.delete.result",
     examples: [
-      {},
+      {
+        drawingId: "drawingBank:#1/drawing:#1",
+        points: [
+          {
+            strokeId: "st_01K742SG0QD1F2HFZSX8R4V7WP",
+            anchor: 1,
+          },
+        ],
+      },
     ],
-    milestone: "M2 C2.3",
   },
   "draw.point.move": {
     kind: "action",
@@ -3211,13 +3242,19 @@ export const COMMAND_INDEX = {
     result: "draw.point.move.result",
     examples: [
       {
+        drawingId: "drawingBank:#1/drawing:#1",
+        points: [
+          {
+            strokeId: "st_01K742SG0R61SYK9GG0HGYVNBT",
+            anchor: 0,
+          },
+        ],
         delta: {
-          x: 1,
-          y: 1,
+          x: -5,
+          y: 0,
         },
       },
     ],
-    milestone: "M2 C2.3",
   },
   "draw.point.set": {
     kind: "action",
@@ -3225,11 +3262,15 @@ export const COMMAND_INDEX = {
     result: "draw.point.set.result",
     examples: [
       {
-        strokeId: "scene:#1",
+        strokeId: "dr_01K742SG0KKMCAP9X1E6Z5P4SW/st_01K742SG0R61SYK9GG0HGYVNBT",
         anchor: 1,
+        inHandle: {
+          x: -10,
+          y: 5,
+        },
+        handleMode: "symmetric",
       },
     ],
-    milestone: "M2 C2.3",
   },
   "draw.pointSelection.set": {
     kind: "ui",
@@ -3303,9 +3344,14 @@ export const COMMAND_INDEX = {
     params: "draw.repositionAll.apply.params",
     result: "draw.repositionAll.apply.result",
     examples: [
-      {},
+      {
+        elementId: "scene:#1/element:\"Bob\"",
+        translate: {
+          x: 0,
+          y: 20,
+        },
+      },
     ],
-    milestone: "M2 C2.3",
   },
   "draw.rotate.apply": {
     kind: "action",
@@ -3313,10 +3359,13 @@ export const COMMAND_INDEX = {
     result: "draw.rotate.apply.result",
     examples: [
       {
+        drawingId: "drawingBank:#1/drawing:#1",
+        ids: [
+          "nd_01K742SG0WFAQJFKAZKV4CD56C",
+        ],
         by: "90cw",
       },
     ],
-    milestone: "M2 C2.3",
   },
   "draw.segment.move": {
     kind: "action",
@@ -3324,15 +3373,14 @@ export const COMMAND_INDEX = {
     result: "draw.segment.move.result",
     examples: [
       {
-        strokeId: "scene:#1",
-        segment: 1,
+        strokeId: "dr_01K742SG0KKMCAP9X1E6Z5P4SW/st_01K742SG0R61SYK9GG0HGYVNBT",
+        segment: 0,
         delta: {
-          x: 1,
-          y: 1,
+          x: 0,
+          y: 20,
         },
       },
     ],
-    milestone: "M2 C2.3",
   },
   "draw.selection.changed": {
     kind: "event",
@@ -3538,9 +3586,25 @@ export const COMMAND_INDEX = {
     params: "draw.transform.apply.params",
     result: "draw.transform.apply.result",
     examples: [
-      {},
+      {
+        drawingId: "drawingBank:#1/drawing:#1",
+        ids: [
+          "st_01K742SG0R61SYK9GG0HGYVNBT",
+        ],
+        translate: {
+          x: 10,
+          y: 0,
+        },
+      },
+      {
+        drawingId: "drawingBank:#1/drawing:#1",
+        ids: [
+          "nd_01K742SG0WFAQJFKAZKV4CD56C",
+        ],
+        rotate: 15,
+        copy: true,
+      },
     ],
-    milestone: "M2 C2.3",
   },
   "draw.vectorFile.import": {
     kind: "job",
@@ -32048,88 +32112,140 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
       "rev",
     ],
   },
-  "draw.envelope.apply.params": {
-    title: "draw.envelope.apply parameters",
+  "draw.envelope.apply.Point": {
+    description: "A point `{x, y}` in drawing units.",
     type: "object",
     properties: {
-      drawingId: {
-        type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
+      x: {
+        description: "X (du).",
+        type: "number",
       },
-      ids: {
-        type: "array",
-        items: {
-          type: "string",
-          minLength: 1,
-          maxLength: 4096,
-          description: "object ID or path reference (10 §3)",
-        },
-        maxItems: 100000,
-        description: "Default: selection.",
-      },
-      corners: {
-        type: "array",
-        items: {
-          type: "object",
-          properties: {
-            x: {
-              type: "number",
-            },
-            y: {
-              type: "number",
-            },
-          },
-          required: [
-            "x",
-            "y",
-          ],
-          additionalProperties: false,
-        },
-        maxItems: 100000,
-        description: "(4 targets for the bounds corners: bottom-left, bottom-right, top-right, top-left)",
-      },
-      mapping: {
-        type: "string",
-        enum: [
-          "auto",
-          "projective",
-          "bilinear",
-        ],
-        default: "auto",
-      },
-    },
-    required: [
-      "corners",
-    ],
-    additionalProperties: false,
-    "x-spec": "`drawingId?: id; ids?: [id] = selection; corners: [point] (4 targets for the bounds corners: bottom-left, bottom-right, top-right, top-left); mapping: enum \"auto\"|\"projective\"|\"bilinear\" = \"auto\"`",
-  },
-  "draw.envelope.apply.result": {
-    title: "draw.envelope.apply result",
-    type: "object",
-    properties: {
-      ids: {
-        type: "array",
-        items: {
-          type: "string",
-          minLength: 1,
-          maxLength: 4096,
-          description: "object ID or path reference (10 §3)",
-        },
-        maxItems: 100000,
-      },
-      rev: {
+      y: {
+        description: "Y (du, up).",
         type: "number",
       },
     },
+    additionalProperties: false,
     required: [
+      "x",
+      "y",
+    ],
+  },
+  "draw.envelope.apply.Mapping": {
+    description: "Envelope mapping.",
+    oneOf: [
+      {
+        description: "Projective when the target quadrilateral is convex, else bilinear.",
+        type: "string",
+        const: "auto",
+      },
+      {
+        description: "Projective (perspective).",
+        type: "string",
+        const: "projective",
+      },
+      {
+        description: "Bilinear.",
+        type: "string",
+        const: "bilinear",
+      },
+    ],
+  },
+  "draw.envelope.apply.params": {
+    title: "EnvelopeParams",
+    description: "`draw.envelope.apply` parameters.",
+    type: "object",
+    properties: {
+      drawingId: {
+        description: "The drawing (default: current).",
+        type: [
+          "string",
+          "null",
+        ],
+        default: null,
+      },
+      ids: {
+        description: "Objects (default: the selection).",
+        type: [
+          "array",
+          "null",
+        ],
+        items: {
+          type: "string",
+        },
+        default: null,
+      },
+      corners: {
+        description: "Targets of the bounds' corners: bottom-left, bottom-right, top-right, top-left.",
+        type: "array",
+        items: {
+          $ref: "#/$defs/draw.envelope.apply.Point",
+        },
+        minItems: 4,
+        maxItems: 4,
+      },
+      mapping: {
+        description: "Mapping.",
+        $ref: "#/$defs/draw.envelope.apply.Mapping",
+      },
+    },
+    additionalProperties: false,
+    required: [
+      "corners",
+    ],
+  },
+  "draw.envelope.apply.result": {
+    title: "TransformResult",
+    description: "`{ids, removedIds, rev}` and the changed IDs.",
+    type: "object",
+    properties: {
+      drawingId: {
+        description: "The drawing.",
+        type: "string",
+      },
+      ids: {
+        description: "The transformed objects (the copies with `copy`; pieces where noding split them).",
+        type: "array",
+        items: {
+          type: "string",
+        },
+      },
+      createdIds: {
+        description: "Created objects.",
+        type: "array",
+        items: {
+          type: "string",
+        },
+      },
+      modifiedIds: {
+        description: "Modified objects (content, membership or position changed; IDs kept).",
+        type: "array",
+        items: {
+          type: "string",
+        },
+      },
+      removedIds: {
+        description: "Removed objects (descendants included).",
+        type: "array",
+        items: {
+          type: "string",
+        },
+      },
+      rev: {
+        description: "The drawing revision after the change.",
+        type: "integer",
+        maximum: 18446744073709551615n,
+        minimum: 0,
+      },
+    },
+    required: [
+      "drawingId",
       "ids",
+      "createdIds",
+      "modifiedIds",
+      "removedIds",
       "rev",
     ],
-    "x-spec": "`{ids: [id], rev}`",
-    additionalProperties: false,
   },
   "draw.erase.apply.params": {
     title: "draw.erase.apply parameters",
@@ -32411,65 +32527,107 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
     "x-spec": "`{layerId, removedIds: [id], rev}`",
     additionalProperties: false,
   },
+  "draw.flip.apply.Axis": {
+    description: "Flip axis.",
+    oneOf: [
+      {
+        description: "Left ↔ right.",
+        type: "string",
+        const: "horizontal",
+      },
+      {
+        description: "Top ↔ bottom.",
+        type: "string",
+        const: "vertical",
+      },
+    ],
+  },
   "draw.flip.apply.params": {
-    title: "draw.flip.apply parameters",
+    title: "FlipParams",
+    description: "`draw.flip.apply` parameters.",
     type: "object",
     properties: {
       drawingId: {
-        type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
+        description: "The drawing (default: current).",
+        type: [
+          "string",
+          "null",
+        ],
+        default: null,
       },
       ids: {
-        type: "array",
+        description: "Objects (default: the selection).",
+        type: [
+          "array",
+          "null",
+        ],
         items: {
           type: "string",
-          minLength: 1,
-          maxLength: 4096,
-          description: "object ID or path reference (10 §3)",
         },
-        maxItems: 100000,
-        description: "Default: selection.",
+        default: null,
       },
       axis: {
-        type: "string",
-        enum: [
-          "horizontal",
-          "vertical",
-        ],
+        description: "Axis.",
+        $ref: "#/$defs/draw.flip.apply.Axis",
       },
     },
+    additionalProperties: false,
     required: [
       "axis",
     ],
-    additionalProperties: false,
-    "x-spec": "`drawingId?: id; ids?: [id] = selection; axis: enum \"horizontal\"|\"vertical\"`",
   },
   "draw.flip.apply.result": {
-    title: "draw.flip.apply result",
+    title: "TransformResult",
+    description: "`{ids, removedIds, rev}` and the changed IDs.",
     type: "object",
     properties: {
+      drawingId: {
+        description: "The drawing.",
+        type: "string",
+      },
       ids: {
+        description: "The transformed objects (the copies with `copy`; pieces where noding split them).",
         type: "array",
         items: {
           type: "string",
-          minLength: 1,
-          maxLength: 4096,
-          description: "object ID or path reference (10 §3)",
         },
-        maxItems: 100000,
+      },
+      createdIds: {
+        description: "Created objects.",
+        type: "array",
+        items: {
+          type: "string",
+        },
+      },
+      modifiedIds: {
+        description: "Modified objects (content, membership or position changed; IDs kept).",
+        type: "array",
+        items: {
+          type: "string",
+        },
+      },
+      removedIds: {
+        description: "Removed objects (descendants included).",
+        type: "array",
+        items: {
+          type: "string",
+        },
       },
       rev: {
-        type: "number",
+        description: "The drawing revision after the change.",
+        type: "integer",
+        maximum: 18446744073709551615n,
+        minimum: 0,
       },
     },
     required: [
+      "drawingId",
       "ids",
+      "createdIds",
+      "modifiedIds",
+      "removedIds",
       "rev",
     ],
-    "x-spec": "`{ids: [id], rev}`",
-    additionalProperties: false,
   },
   "draw.group.create.params": {
     title: "GroupCreateParams",
@@ -33406,318 +33564,493 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
       "rev",
     ],
   },
+  "draw.point.add.Point": {
+    description: "A point `{x, y}` in drawing units.",
+    type: "object",
+    properties: {
+      x: {
+        description: "X (du).",
+        type: "number",
+      },
+      y: {
+        description: "Y (du, up).",
+        type: "number",
+      },
+    },
+    additionalProperties: false,
+    required: [
+      "x",
+      "y",
+    ],
+  },
   "draw.point.add.params": {
-    title: "draw.point.add parameters",
+    title: "PointAddParams",
+    description: "`draw.point.add` parameters.",
     type: "object",
     properties: {
       strokeId: {
+        description: "The stroke (local or `<drawingId>/<strokeId>`).",
         type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
       },
       at: {
-        type: "object",
-        properties: {
-          x: {
-            type: "number",
+        description: "Insert at the stroke location nearest to this point.",
+        anyOf: [
+          {
+            $ref: "#/$defs/draw.point.add.Point",
           },
-          y: {
-            type: "number",
+          {
+            type: "null",
           },
-        },
-        required: [
-          "x",
-          "y",
         ],
-        additionalProperties: false,
-        description: "(nearest location)",
+        default: null,
       },
       segment: {
-        type: "integer",
+        description: "Or: the segment index …",
+        type: [
+          "integer",
+          "null",
+        ],
+        maximum: 2147483647,
+        minimum: 0,
+        default: null,
       },
       t: {
-        type: "number",
+        description: "… and the parameter on it (0–1).",
+        type: [
+          "number",
+          "null",
+        ],
+        default: null,
         minimum: 0,
         maximum: 1,
       },
     },
+    additionalProperties: false,
     required: [
       "strokeId",
     ],
-    additionalProperties: false,
-    "x-spec": "`strokeId: id; at?: point (nearest location); segment?: int; t?: number (0–1)`",
   },
   "draw.point.add.result": {
-    title: "draw.point.add result",
+    title: "PointAddResult",
+    description: "`{strokeId, anchor, rev}`.",
     type: "object",
     properties: {
       strokeId: {
+        description: "The stroke.",
         type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
       },
       anchor: {
+        description: "The new anchor's index.",
         type: "integer",
+        maximum: 2147483647,
+        minimum: 0,
+      },
+      createdIds: {
+        description: "Created objects.",
+        type: "array",
+        items: {
+          type: "string",
+        },
+      },
+      modifiedIds: {
+        description: "Modified objects (content, membership or position changed; IDs kept).",
+        type: "array",
+        items: {
+          type: "string",
+        },
+      },
+      removedIds: {
+        description: "Removed objects (descendants included).",
+        type: "array",
+        items: {
+          type: "string",
+        },
       },
       rev: {
-        type: "number",
+        description: "The drawing revision after the change.",
+        type: "integer",
+        maximum: 18446744073709551615n,
+        minimum: 0,
       },
     },
     required: [
       "strokeId",
       "anchor",
-      "rev",
-    ],
-    "x-spec": "`{strokeId, anchor: int, rev}`",
-    additionalProperties: false,
-  },
-  "draw.point.delete.params": {
-    title: "draw.point.delete parameters",
-    type: "object",
-    properties: {
-      points: {
-        type: "array",
-        items: {
-          type: "object",
-          properties: {
-            strokeId: {
-              type: "string",
-              minLength: 1,
-              maxLength: 4096,
-              description: "object ID or path reference (10 §3)",
-            },
-            anchor: {
-              type: "integer",
-            },
-          },
-          required: [
-            "strokeId",
-            "anchor",
-          ],
-          additionalProperties: false,
-        },
-        maxItems: 100000,
-        description: "Default: point selection.",
-      },
-    },
-    additionalProperties: false,
-    "x-spec": "`points?: [{strokeId, anchor: int}] = point selection`",
-  },
-  "draw.point.delete.result": {
-    title: "draw.point.delete result",
-    type: "object",
-    properties: {
-      modifiedIds: {
-        type: "array",
-        items: {
-          type: "string",
-          minLength: 1,
-          maxLength: 4096,
-          description: "object ID or path reference (10 §3)",
-        },
-        maxItems: 100000,
-      },
-      removedIds: {
-        type: "array",
-        items: {
-          type: "string",
-          minLength: 1,
-          maxLength: 4096,
-          description: "object ID or path reference (10 §3)",
-        },
-        maxItems: 100000,
-      },
-      rev: {
-        type: "number",
-      },
-    },
-    required: [
+      "createdIds",
       "modifiedIds",
       "removedIds",
       "rev",
     ],
-    "x-spec": "`{modifiedIds: [id], removedIds: [id], rev}`",
-    additionalProperties: false,
   },
-  "draw.point.move.params": {
-    title: "draw.point.move parameters",
-    type: "object",
-    properties: {
-      points: {
-        type: "array",
-        items: {
-          type: "object",
-          properties: {
-            strokeId: {
-              type: "string",
-              minLength: 1,
-              maxLength: 4096,
-              description: "object ID or path reference (10 §3)",
-            },
-            anchor: {
-              type: "integer",
-            },
-          },
-          required: [
-            "strokeId",
-            "anchor",
-          ],
-          additionalProperties: false,
-        },
-        maxItems: 100000,
-        description: "Default: point selection.",
-      },
-      delta: {
-        type: "object",
-        properties: {
-          x: {
-            type: "number",
-          },
-          y: {
-            type: "number",
-          },
-        },
-        required: [
-          "x",
-          "y",
-        ],
-        additionalProperties: false,
-      },
-      snap: {
-        type: "boolean",
-        description: "Default: Snap to Contour setting.",
-      },
-    },
-    required: [
-      "delta",
-    ],
-    additionalProperties: false,
-    "x-spec": "`points?: [{strokeId, anchor: int}] = point selection; delta: point; snap?: bool = Snap to Contour setting`",
-  },
-  "draw.point.move.result": {
-    title: "draw.point.move result",
-    type: "object",
-    properties: {
-      modifiedIds: {
-        type: "array",
-        items: {
-          type: "string",
-          minLength: 1,
-          maxLength: 4096,
-          description: "object ID or path reference (10 §3)",
-        },
-        maxItems: 100000,
-      },
-      rev: {
-        type: "number",
-      },
-    },
-    required: [
-      "modifiedIds",
-      "rev",
-    ],
-    "x-spec": "`{modifiedIds: [id], rev}`",
-    additionalProperties: false,
-  },
-  "draw.point.set.params": {
-    title: "draw.point.set parameters",
+  "draw.point.delete.AnchorRef": {
+    description: "An anchor of a stroke.",
     type: "object",
     properties: {
       strokeId: {
+        description: "The stroke (local ID).",
         type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
       },
       anchor: {
+        description: "The anchor index.",
         type: "integer",
-      },
-      position: {
-        type: "object",
-        properties: {
-          x: {
-            type: "number",
-          },
-          y: {
-            type: "number",
-          },
-        },
-        required: [
-          "x",
-          "y",
-        ],
-        additionalProperties: false,
-      },
-      inHandle: {
-        type: "object",
-        properties: {
-          x: {
-            type: "number",
-          },
-          y: {
-            type: "number",
-          },
-        },
-        required: [
-          "x",
-          "y",
-        ],
-        additionalProperties: false,
-      },
-      outHandle: {
-        type: "object",
-        properties: {
-          x: {
-            type: "number",
-          },
-          y: {
-            type: "number",
-          },
-        },
-        required: [
-          "x",
-          "y",
-        ],
-        additionalProperties: false,
-      },
-      handleMode: {
-        type: "string",
-        enum: [
-          "symmetric",
-          "broken",
-          "reset",
-        ],
+        maximum: 2147483647,
+        minimum: 0,
       },
     },
+    additionalProperties: false,
     required: [
       "strokeId",
       "anchor",
     ],
-    additionalProperties: false,
-    "x-spec": "`strokeId: id; anchor: int; position?: point; inHandle?: point; outHandle?: point; handleMode?: enum \"symmetric\"|\"broken\"|\"reset\"`",
   },
-  "draw.point.set.result": {
-    title: "draw.point.set result",
+  "draw.point.delete.params": {
+    title: "PointDeleteParams",
+    description: "`draw.point.delete` parameters.",
+    type: "object",
+    properties: {
+      drawingId: {
+        description: "The drawing (default: current).",
+        type: [
+          "string",
+          "null",
+        ],
+        default: null,
+      },
+      points: {
+        description: "Anchors (default: the point selection).",
+        type: [
+          "array",
+          "null",
+        ],
+        items: {
+          $ref: "#/$defs/draw.point.delete.AnchorRef",
+        },
+        default: null,
+      },
+    },
+    additionalProperties: false,
+  },
+  "draw.point.delete.result": {
+    title: "ContourResult",
+    description: "`{modifiedIds, removedIds, rev}`.",
+    type: "object",
+    properties: {
+      drawingId: {
+        description: "The drawing.",
+        type: "string",
+      },
+      createdIds: {
+        description: "Created objects.",
+        type: "array",
+        items: {
+          type: "string",
+        },
+      },
+      modifiedIds: {
+        description: "Modified objects (content, membership or position changed; IDs kept).",
+        type: "array",
+        items: {
+          type: "string",
+        },
+      },
+      removedIds: {
+        description: "Removed objects (descendants included).",
+        type: "array",
+        items: {
+          type: "string",
+        },
+      },
+      rev: {
+        description: "The drawing revision after the change.",
+        type: "integer",
+        maximum: 18446744073709551615n,
+        minimum: 0,
+      },
+    },
+    required: [
+      "drawingId",
+      "createdIds",
+      "modifiedIds",
+      "removedIds",
+      "rev",
+    ],
+  },
+  "draw.point.move.AnchorRef": {
+    description: "An anchor of a stroke.",
     type: "object",
     properties: {
       strokeId: {
+        description: "The stroke (local ID).",
         type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
+      },
+      anchor: {
+        description: "The anchor index.",
+        type: "integer",
+        maximum: 2147483647,
+        minimum: 0,
+      },
+    },
+    additionalProperties: false,
+    required: [
+      "strokeId",
+      "anchor",
+    ],
+  },
+  "draw.point.move.Point": {
+    description: "A point `{x, y}` in drawing units.",
+    type: "object",
+    properties: {
+      x: {
+        description: "X (du).",
+        type: "number",
+      },
+      y: {
+        description: "Y (du, up).",
+        type: "number",
+      },
+    },
+    additionalProperties: false,
+    required: [
+      "x",
+      "y",
+    ],
+  },
+  "draw.point.move.params": {
+    title: "PointMoveParams",
+    description: "`draw.point.move` parameters.",
+    type: "object",
+    properties: {
+      drawingId: {
+        description: "The drawing (default: current).",
+        type: [
+          "string",
+          "null",
+        ],
+        default: null,
+      },
+      points: {
+        description: "Anchors (default: the point selection).",
+        type: [
+          "array",
+          "null",
+        ],
+        items: {
+          $ref: "#/$defs/draw.point.move.AnchorRef",
+        },
+        default: null,
+      },
+      delta: {
+        description: "Offset (du).",
+        $ref: "#/$defs/draw.point.move.Point",
+      },
+      snap: {
+        description: "Snap moved anchors to other strokes' anchors within 8 du (Snap to Contour, 02 §8.9; default off).",
+        type: "boolean",
+        default: false,
+      },
+    },
+    additionalProperties: false,
+    required: [
+      "delta",
+    ],
+  },
+  "draw.point.move.result": {
+    title: "ContourResult",
+    description: "`{modifiedIds, removedIds, rev}`.",
+    type: "object",
+    properties: {
+      drawingId: {
+        description: "The drawing.",
+        type: "string",
+      },
+      createdIds: {
+        description: "Created objects.",
+        type: "array",
+        items: {
+          type: "string",
+        },
+      },
+      modifiedIds: {
+        description: "Modified objects (content, membership or position changed; IDs kept).",
+        type: "array",
+        items: {
+          type: "string",
+        },
+      },
+      removedIds: {
+        description: "Removed objects (descendants included).",
+        type: "array",
+        items: {
+          type: "string",
+        },
       },
       rev: {
+        description: "The drawing revision after the change.",
+        type: "integer",
+        maximum: 18446744073709551615n,
+        minimum: 0,
+      },
+    },
+    required: [
+      "drawingId",
+      "createdIds",
+      "modifiedIds",
+      "removedIds",
+      "rev",
+    ],
+  },
+  "draw.point.set.Point": {
+    description: "A point `{x, y}` in drawing units.",
+    type: "object",
+    properties: {
+      x: {
+        description: "X (du).",
         type: "number",
+      },
+      y: {
+        description: "Y (du, up).",
+        type: "number",
+      },
+    },
+    additionalProperties: false,
+    required: [
+      "x",
+      "y",
+    ],
+  },
+  "draw.point.set.HandleMode": {
+    description: "Handle behaviour of `draw.point.set`.",
+    oneOf: [
+      {
+        description: "The handle not given mirrors the given one.",
+        type: "string",
+        const: "symmetric",
+      },
+      {
+        description: "Handles independent.",
+        type: "string",
+        const: "broken",
+      },
+      {
+        description: "Both handles removed (a corner).",
+        type: "string",
+        const: "reset",
+      },
+    ],
+  },
+  "draw.point.set.params": {
+    title: "PointSetParams",
+    description: "`draw.point.set` parameters.",
+    type: "object",
+    properties: {
+      strokeId: {
+        description: "The stroke.",
+        type: "string",
+      },
+      anchor: {
+        description: "The anchor.",
+        type: "integer",
+        maximum: 2147483647,
+        minimum: 0,
+      },
+      position: {
+        description: "New position.",
+        anyOf: [
+          {
+            $ref: "#/$defs/draw.point.set.Point",
+          },
+          {
+            type: "null",
+          },
+        ],
+        default: null,
+      },
+      inHandle: {
+        description: "Incoming handle (offset).",
+        anyOf: [
+          {
+            $ref: "#/$defs/draw.point.set.Point",
+          },
+          {
+            type: "null",
+          },
+        ],
+        default: null,
+      },
+      outHandle: {
+        description: "Outgoing handle (offset).",
+        anyOf: [
+          {
+            $ref: "#/$defs/draw.point.set.Point",
+          },
+          {
+            type: "null",
+          },
+        ],
+        default: null,
+      },
+      handleMode: {
+        description: "Handle mode.",
+        anyOf: [
+          {
+            $ref: "#/$defs/draw.point.set.HandleMode",
+          },
+          {
+            type: "null",
+          },
+        ],
+      },
+    },
+    additionalProperties: false,
+    required: [
+      "strokeId",
+      "anchor",
+    ],
+  },
+  "draw.point.set.result": {
+    title: "PointSetResult",
+    description: "`{strokeId, rev}`.",
+    type: "object",
+    properties: {
+      strokeId: {
+        description: "The stroke.",
+        type: "string",
+      },
+      createdIds: {
+        description: "Created objects.",
+        type: "array",
+        items: {
+          type: "string",
+        },
+      },
+      modifiedIds: {
+        description: "Modified objects (content, membership or position changed; IDs kept).",
+        type: "array",
+        items: {
+          type: "string",
+        },
+      },
+      removedIds: {
+        description: "Removed objects (descendants included).",
+        type: "array",
+        items: {
+          type: "string",
+        },
+      },
+      rev: {
+        description: "The drawing revision after the change.",
+        type: "integer",
+        maximum: 18446744073709551615n,
+        minimum: 0,
       },
     },
     required: [
       "strokeId",
+      "createdIds",
+      "modifiedIds",
+      "removedIds",
       "rev",
     ],
-    "x-spec": "`{strokeId, rev}`",
-    additionalProperties: false,
   },
   "draw.pointSelection.set.AnchorRef": {
     description: "An anchor of a stroke.",
@@ -34223,245 +34556,348 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
       "rev",
     ],
   },
-  "draw.repositionAll.apply.params": {
-    title: "draw.repositionAll.apply parameters",
+  "draw.repositionAll.apply.Point": {
+    description: "A point `{x, y}` in drawing units.",
     type: "object",
     properties: {
-      elementId: {
-        type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3) Default: current.",
-      },
-      translate: {
-        type: "object",
-        properties: {
-          x: {
-            type: "number",
-          },
-          y: {
-            type: "number",
-          },
-        },
-        required: [
-          "x",
-          "y",
-        ],
-        additionalProperties: false,
-      },
-      scale: {
-        type: "object",
-        properties: {
-          x: {
-            type: "number",
-          },
-          y: {
-            type: "number",
-          },
-        },
-        required: [
-          "x",
-          "y",
-        ],
-        additionalProperties: false,
-      },
-      rotate: {
+      x: {
+        description: "X (du).",
         type: "number",
       },
-      pivot: {
-        type: "object",
-        properties: {
-          x: {
-            type: "number",
-          },
-          y: {
-            type: "number",
-          },
-        },
-        required: [
-          "x",
-          "y",
-        ],
-        additionalProperties: false,
-        description: "Default: {0,0}.",
-      },
-      matrix: {
-        type: "array",
-        items: {
-          type: "number",
-        },
-        maxItems: 100000,
-      },
-      corners: {
-        type: "array",
-        items: {
-          type: "object",
-          properties: {
-            x: {
-              type: "number",
-            },
-            y: {
-              type: "number",
-            },
-          },
-          required: [
-            "x",
-            "y",
-          ],
-          additionalProperties: false,
-        },
-        maxItems: 100000,
+      y: {
+        description: "Y (du, up).",
+        type: "number",
       },
     },
     additionalProperties: false,
-    "x-spec": "`elementId?: id = current; translate?: point; scale?: {x,y}; rotate?: number; pivot?: point = {0,0}; matrix?: [number]; corners?: [point]`",
+    required: [
+      "x",
+      "y",
+    ],
+  },
+  "draw.repositionAll.apply.Xy": {
+    description: "`{x, y}` factors.",
+    type: "object",
+    properties: {
+      x: {
+        description: "x.",
+        type: "number",
+      },
+      y: {
+        description: "y.",
+        type: "number",
+      },
+    },
+    additionalProperties: false,
+    required: [
+      "x",
+      "y",
+    ],
+  },
+  "draw.repositionAll.apply.params": {
+    title: "RepositionParams",
+    description: "`draw.repositionAll.apply` parameters.",
+    type: "object",
+    properties: {
+      elementId: {
+        description: "The element (default: current).",
+        type: [
+          "string",
+          "null",
+        ],
+        default: null,
+      },
+      translate: {
+        description: "Translation.",
+        anyOf: [
+          {
+            $ref: "#/$defs/draw.repositionAll.apply.Point",
+          },
+          {
+            type: "null",
+          },
+        ],
+        default: null,
+      },
+      scale: {
+        description: "Scale.",
+        anyOf: [
+          {
+            $ref: "#/$defs/draw.repositionAll.apply.Xy",
+          },
+          {
+            type: "null",
+          },
+        ],
+      },
+      rotate: {
+        description: "Rotation (degrees CCW).",
+        type: [
+          "number",
+          "null",
+        ],
+        default: null,
+      },
+      pivot: {
+        description: "Pivot.",
+        anyOf: [
+          {
+            $ref: "#/$defs/draw.repositionAll.apply.Point",
+          },
+          {
+            type: "null",
+          },
+        ],
+        default: null,
+      },
+      matrix: {
+        description: "Matrix (overrides).",
+        type: [
+          "array",
+          "null",
+        ],
+        items: {
+          type: "number",
+        },
+        minItems: 6,
+        maxItems: 6,
+        default: null,
+      },
+      corners: {
+        description: "Envelope corners (of each drawing's bounds).",
+        type: [
+          "array",
+          "null",
+        ],
+        items: {
+          $ref: "#/$defs/draw.repositionAll.apply.Point",
+        },
+        default: null,
+      },
+    },
+    additionalProperties: false,
   },
   "draw.repositionAll.apply.result": {
-    title: "draw.repositionAll.apply result",
+    title: "RepositionResult",
+    description: "`{drawingIds}`.",
     type: "object",
     properties: {
       drawingIds: {
+        description: "The drawings changed.",
         type: "array",
         items: {
           type: "string",
-          minLength: 1,
-          maxLength: 4096,
-          description: "object ID or path reference (10 §3)",
         },
-        maxItems: 100000,
       },
     },
     required: [
       "drawingIds",
     ],
-    "x-spec": "`{drawingIds: [id]}`",
-    additionalProperties: false,
+  },
+  "draw.rotate.apply.Step": {
+    description: "A fixed rotation step.",
+    oneOf: [
+      {
+        description: "90° clockwise.",
+        type: "string",
+        const: "90cw",
+      },
+      {
+        description: "90° counter-clockwise.",
+        type: "string",
+        const: "90ccw",
+      },
+      {
+        description: "180°.",
+        type: "string",
+        const: "180",
+      },
+    ],
   },
   "draw.rotate.apply.params": {
-    title: "draw.rotate.apply parameters",
+    title: "RotateParams",
+    description: "`draw.rotate.apply` parameters.",
     type: "object",
     properties: {
       drawingId: {
-        type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
+        description: "The drawing (default: current).",
+        type: [
+          "string",
+          "null",
+        ],
+        default: null,
       },
       ids: {
-        type: "array",
+        description: "Objects (default: the selection).",
+        type: [
+          "array",
+          "null",
+        ],
         items: {
           type: "string",
-          minLength: 1,
-          maxLength: 4096,
-          description: "object ID or path reference (10 §3)",
         },
-        maxItems: 100000,
-        description: "Default: selection.",
+        default: null,
       },
       by: {
-        type: "string",
-        enum: [
-          "90cw",
-          "90ccw",
-          "180",
-        ],
+        description: "Step.",
+        $ref: "#/$defs/draw.rotate.apply.Step",
       },
     },
+    additionalProperties: false,
     required: [
       "by",
     ],
-    additionalProperties: false,
-    "x-spec": "`drawingId?: id; ids?: [id] = selection; by: enum \"90cw\"|\"90ccw\"|\"180\"`",
   },
   "draw.rotate.apply.result": {
-    title: "draw.rotate.apply result",
+    title: "TransformResult",
+    description: "`{ids, removedIds, rev}` and the changed IDs.",
     type: "object",
     properties: {
+      drawingId: {
+        description: "The drawing.",
+        type: "string",
+      },
       ids: {
+        description: "The transformed objects (the copies with `copy`; pieces where noding split them).",
         type: "array",
         items: {
           type: "string",
-          minLength: 1,
-          maxLength: 4096,
-          description: "object ID or path reference (10 §3)",
         },
-        maxItems: 100000,
+      },
+      createdIds: {
+        description: "Created objects.",
+        type: "array",
+        items: {
+          type: "string",
+        },
+      },
+      modifiedIds: {
+        description: "Modified objects (content, membership or position changed; IDs kept).",
+        type: "array",
+        items: {
+          type: "string",
+        },
+      },
+      removedIds: {
+        description: "Removed objects (descendants included).",
+        type: "array",
+        items: {
+          type: "string",
+        },
       },
       rev: {
-        type: "number",
+        description: "The drawing revision after the change.",
+        type: "integer",
+        maximum: 18446744073709551615n,
+        minimum: 0,
       },
     },
     required: [
+      "drawingId",
       "ids",
+      "createdIds",
+      "modifiedIds",
+      "removedIds",
       "rev",
     ],
-    "x-spec": "`{ids: [id], rev}`",
+  },
+  "draw.segment.move.Point": {
+    description: "A point `{x, y}` in drawing units.",
+    type: "object",
+    properties: {
+      x: {
+        description: "X (du).",
+        type: "number",
+      },
+      y: {
+        description: "Y (du, up).",
+        type: "number",
+      },
+    },
     additionalProperties: false,
+    required: [
+      "x",
+      "y",
+    ],
   },
   "draw.segment.move.params": {
-    title: "draw.segment.move parameters",
+    title: "SegmentMoveParams",
+    description: "`draw.segment.move` parameters.",
     type: "object",
     properties: {
       strokeId: {
+        description: "The stroke.",
         type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
       },
       segment: {
+        description: "The segment index.",
         type: "integer",
+        maximum: 2147483647,
+        minimum: 0,
       },
       t: {
+        description: "The parameter of the point that moves (0–1).",
         type: "number",
+        default: 0.5,
         minimum: 0,
         maximum: 1,
-        default: 0.5,
       },
       delta: {
-        type: "object",
-        properties: {
-          x: {
-            type: "number",
-          },
-          y: {
-            type: "number",
-          },
-        },
-        required: [
-          "x",
-          "y",
-        ],
-        additionalProperties: false,
+        description: "Offset of that point (du).",
+        $ref: "#/$defs/draw.segment.move.Point",
       },
     },
+    additionalProperties: false,
     required: [
       "strokeId",
       "segment",
       "delta",
     ],
-    additionalProperties: false,
-    "x-spec": "`strokeId: id; segment: int; t: number = 0.5 (0–1); delta: point`",
   },
   "draw.segment.move.result": {
-    title: "draw.segment.move result",
+    title: "PointSetResult",
+    description: "`{strokeId, rev}`.",
     type: "object",
     properties: {
       strokeId: {
+        description: "The stroke.",
         type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
+      },
+      createdIds: {
+        description: "Created objects.",
+        type: "array",
+        items: {
+          type: "string",
+        },
+      },
+      modifiedIds: {
+        description: "Modified objects (content, membership or position changed; IDs kept).",
+        type: "array",
+        items: {
+          type: "string",
+        },
+      },
+      removedIds: {
+        description: "Removed objects (descendants included).",
+        type: "array",
+        items: {
+          type: "string",
+        },
       },
       rev: {
-        type: "number",
+        description: "The drawing revision after the change.",
+        type: "integer",
+        maximum: 18446744073709551615n,
+        minimum: 0,
       },
     },
     required: [
       "strokeId",
+      "createdIds",
+      "modifiedIds",
+      "removedIds",
       "rev",
     ],
-    "x-spec": "`{strokeId, rev}`",
-    additionalProperties: false,
   },
   "draw.selection.changed.params": {
     title: "NoParams",
@@ -36522,148 +36958,237 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
       "rev",
     ],
   },
+  "draw.transform.apply.AnchorRef": {
+    description: "An anchor of a stroke.",
+    type: "object",
+    properties: {
+      strokeId: {
+        description: "The stroke (local ID).",
+        type: "string",
+      },
+      anchor: {
+        description: "The anchor index.",
+        type: "integer",
+        maximum: 2147483647,
+        minimum: 0,
+      },
+    },
+    additionalProperties: false,
+    required: [
+      "strokeId",
+      "anchor",
+    ],
+  },
+  "draw.transform.apply.Point": {
+    description: "A point `{x, y}` in drawing units.",
+    type: "object",
+    properties: {
+      x: {
+        description: "X (du).",
+        type: "number",
+      },
+      y: {
+        description: "Y (du, up).",
+        type: "number",
+      },
+    },
+    additionalProperties: false,
+    required: [
+      "x",
+      "y",
+    ],
+  },
+  "draw.transform.apply.Xy": {
+    description: "`{x, y}` factors.",
+    type: "object",
+    properties: {
+      x: {
+        description: "x.",
+        type: "number",
+      },
+      y: {
+        description: "y.",
+        type: "number",
+      },
+    },
+    additionalProperties: false,
+    required: [
+      "x",
+      "y",
+    ],
+  },
   "draw.transform.apply.params": {
-    title: "draw.transform.apply parameters",
+    title: "TransformParams",
+    description: "`draw.transform.apply` parameters.",
     type: "object",
     properties: {
       drawingId: {
-        type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
+        description: "The drawing (default: current).",
+        type: [
+          "string",
+          "null",
+        ],
+        default: null,
       },
       ids: {
-        type: "array",
+        description: "Objects (default: the selection).",
+        type: [
+          "array",
+          "null",
+        ],
         items: {
           type: "string",
-          minLength: 1,
-          maxLength: 4096,
-          description: "object ID or path reference (10 §3)",
         },
-        maxItems: 100000,
-        description: "Default: selection.",
+        default: null,
+      },
+      points: {
+        description: "Anchors to move instead of whole objects (default: the Contour Editor's point selection when no object is\nselected; SI-070).",
+        type: [
+          "array",
+          "null",
+        ],
+        items: {
+          $ref: "#/$defs/draw.transform.apply.AnchorRef",
+        },
+        default: null,
       },
       translate: {
-        type: "object",
-        properties: {
-          x: {
-            type: "number",
+        description: "Translation (du).",
+        anyOf: [
+          {
+            $ref: "#/$defs/draw.transform.apply.Point",
           },
-          y: {
-            type: "number",
+          {
+            type: "null",
           },
-        },
-        required: [
-          "x",
-          "y",
         ],
-        additionalProperties: false,
+        default: null,
       },
       scale: {
-        type: "object",
-        properties: {
-          x: {
-            type: "number",
+        description: "Scale factors.",
+        anyOf: [
+          {
+            $ref: "#/$defs/draw.transform.apply.Xy",
           },
-          y: {
-            type: "number",
+          {
+            type: "null",
           },
-        },
-        required: [
-          "x",
-          "y",
         ],
-        additionalProperties: false,
       },
       rotate: {
-        type: "number",
-        description: "(degrees, CCW)",
+        description: "Rotation (degrees, counter-clockwise).",
+        type: [
+          "number",
+          "null",
+        ],
+        default: null,
       },
       skew: {
-        type: "object",
-        properties: {
-          x: {
-            type: "number",
+        description: "Skew (degrees).",
+        anyOf: [
+          {
+            $ref: "#/$defs/draw.transform.apply.Xy",
           },
-          y: {
-            type: "number",
+          {
+            type: "null",
           },
-        },
-        required: [
-          "x",
-          "y",
         ],
-        additionalProperties: false,
-        description: "(degrees)",
       },
       pivot: {
-        type: "object",
-        properties: {
-          x: {
-            type: "number",
+        description: "Pivot (default: the centre of the selection's bounds).",
+        anyOf: [
+          {
+            $ref: "#/$defs/draw.transform.apply.Point",
           },
-          y: {
-            type: "number",
+          {
+            type: "null",
           },
-        },
-        required: [
-          "x",
-          "y",
         ],
-        additionalProperties: false,
-        description: "Default: selection bounds centre.",
+        default: null,
       },
       matrix: {
-        type: "array",
+        description: "A full matrix `[a, b, c, d, e, f]` (overrides the others).",
+        type: [
+          "array",
+          "null",
+        ],
         items: {
           type: "number",
         },
-        maxItems: 100000,
-        description: "(overrides the others)",
+        minItems: 6,
+        maxItems: 6,
+        default: null,
       },
       copy: {
+        description: "Transform copies, leaving the originals.",
         type: "boolean",
         default: false,
       },
+      expectRev: {
+        description: "The drawing revision the caller read.",
+        type: [
+          "integer",
+          "null",
+        ],
+        maximum: 18446744073709551615n,
+        minimum: 0,
+        default: null,
+      },
     },
     additionalProperties: false,
-    "x-spec": "`drawingId?: id; ids?: [id] = selection; translate?: point; scale?: {x,y}; rotate?: number (degrees, CCW); skew?: {x,y} (degrees); pivot?: point = selection bounds centre; matrix?: [number] (overrides the others); copy: bool = false`",
   },
   "draw.transform.apply.result": {
-    title: "draw.transform.apply result",
+    title: "TransformResult",
+    description: "`{ids, removedIds, rev}` and the changed IDs.",
     type: "object",
     properties: {
+      drawingId: {
+        description: "The drawing.",
+        type: "string",
+      },
       ids: {
+        description: "The transformed objects (the copies with `copy`; pieces where noding split them).",
         type: "array",
         items: {
           type: "string",
-          minLength: 1,
-          maxLength: 4096,
-          description: "object ID or path reference (10 §3)",
         },
-        maxItems: 100000,
+      },
+      createdIds: {
+        description: "Created objects.",
+        type: "array",
+        items: {
+          type: "string",
+        },
+      },
+      modifiedIds: {
+        description: "Modified objects (content, membership or position changed; IDs kept).",
+        type: "array",
+        items: {
+          type: "string",
+        },
       },
       removedIds: {
+        description: "Removed objects (descendants included).",
         type: "array",
         items: {
           type: "string",
-          minLength: 1,
-          maxLength: 4096,
-          description: "object ID or path reference (10 §3)",
         },
-        maxItems: 100000,
       },
       rev: {
-        type: "number",
+        description: "The drawing revision after the change.",
+        type: "integer",
+        maximum: 18446744073709551615n,
+        minimum: 0,
       },
     },
     required: [
+      "drawingId",
       "ids",
+      "createdIds",
+      "modifiedIds",
       "removedIds",
       "rev",
     ],
-    "x-spec": "`{ids: [id], removedIds: [id], rev}`",
-    additionalProperties: false,
   },
   "draw.vectorFile.import.params": {
     title: "draw.vectorFile.import parameters",
@@ -84128,22 +84653,43 @@ export interface draw_ellipse_add_result {
   rev: number | bigint;
 }
 
-export interface draw_envelope_apply_params {
-  /** object ID or path reference (10 §3) */
-  drawingId?: string;
-  /** Default: selection. */
-  ids?: string[];
-  /** (4 targets for the bounds corners: bottom-left, bottom-right, top-right, top-left) */
-  corners: ({
-    x: number;
-    y: number;
-  })[];
-  mapping?: 'auto' | 'projective' | 'bilinear';
+/** A point `{x, y}` in drawing units. */
+export interface draw_envelope_apply_Point {
+  /** X (du). */
+  x: number;
+  /** Y (du, up). */
+  y: number;
 }
 
+/** Envelope mapping. */
+export type draw_envelope_apply_Mapping = 'auto' | 'projective' | 'bilinear';
+
+/** `draw.envelope.apply` parameters. */
+export interface draw_envelope_apply_params {
+  /** The drawing (default: current). */
+  drawingId?: string | null;
+  /** Objects (default: the selection). */
+  ids?: string[] | null;
+  /** Targets of the bounds' corners: bottom-left, bottom-right, top-right, top-left. */
+  corners: draw_envelope_apply_Point[];
+  /** Mapping. */
+  mapping?: draw_envelope_apply_Mapping;
+}
+
+/** `{ids, removedIds, rev}` and the changed IDs. */
 export interface draw_envelope_apply_result {
+  /** The drawing. */
+  drawingId: string;
+  /** The transformed objects (the copies with `copy`; pieces where noding split them). */
   ids: string[];
-  rev: number;
+  /** Created objects. */
+  createdIds: string[];
+  /** Modified objects (content, membership or position changed; IDs kept). */
+  modifiedIds: string[];
+  /** Removed objects (descendants included). */
+  removedIds: string[];
+  /** The drawing revision after the change. */
+  rev: number | bigint;
 }
 
 export interface draw_erase_apply_params {
@@ -84201,17 +84747,33 @@ export interface draw_flatten_apply_result {
   rev: number;
 }
 
+/** Flip axis. */
+export type draw_flip_apply_Axis = 'horizontal' | 'vertical';
+
+/** `draw.flip.apply` parameters. */
 export interface draw_flip_apply_params {
-  /** object ID or path reference (10 §3) */
-  drawingId?: string;
-  /** Default: selection. */
-  ids?: string[];
-  axis: 'horizontal' | 'vertical';
+  /** The drawing (default: current). */
+  drawingId?: string | null;
+  /** Objects (default: the selection). */
+  ids?: string[] | null;
+  /** Axis. */
+  axis: draw_flip_apply_Axis;
 }
 
+/** `{ids, removedIds, rev}` and the changed IDs. */
 export interface draw_flip_apply_result {
+  /** The drawing. */
+  drawingId: string;
+  /** The transformed objects (the copies with `copy`; pieces where noding split them). */
   ids: string[];
-  rev: number;
+  /** Created objects. */
+  createdIds: string[];
+  /** Modified objects (content, membership or position changed; IDs kept). */
+  modifiedIds: string[];
+  /** Removed objects (descendants included). */
+  removedIds: string[];
+  /** The drawing revision after the change. */
+  rev: number | bigint;
 }
 
 /** `draw.group.create` parameters. */
@@ -84499,83 +85061,153 @@ export interface draw_pivot_set_result {
   rev: number | bigint;
 }
 
+/** A point `{x, y}` in drawing units. */
+export interface draw_point_add_Point {
+  /** X (du). */
+  x: number;
+  /** Y (du, up). */
+  y: number;
+}
+
+/** `draw.point.add` parameters. */
 export interface draw_point_add_params {
-  /** object ID or path reference (10 §3) */
+  /** The stroke (local or `<drawingId>/<strokeId>`). */
   strokeId: string;
-  /** (nearest location) */
-  at?: {
-    x: number;
-    y: number;
-  };
-  segment?: number | bigint;
-  t?: number;
+  /** Insert at the stroke location nearest to this point. */
+  at?: draw_point_add_Point | null;
+  /** Or: the segment index … */
+  segment?: number | null;
+  /** … and the parameter on it (0–1). */
+  t?: number | null;
 }
 
+/** `{strokeId, anchor, rev}`. */
 export interface draw_point_add_result {
-  /** object ID or path reference (10 §3) */
+  /** The stroke. */
   strokeId: string;
-  anchor: number | bigint;
-  rev: number;
-}
-
-export interface draw_point_delete_params {
-  /** Default: point selection. */
-  points?: ({
-    /** object ID or path reference (10 §3) */
-    strokeId: string;
-    anchor: number | bigint;
-  })[];
-}
-
-export interface draw_point_delete_result {
+  /** The new anchor's index. */
+  anchor: number;
+  /** Created objects. */
+  createdIds: string[];
+  /** Modified objects (content, membership or position changed; IDs kept). */
   modifiedIds: string[];
+  /** Removed objects (descendants included). */
   removedIds: string[];
-  rev: number;
+  /** The drawing revision after the change. */
+  rev: number | bigint;
 }
 
+/** An anchor of a stroke. */
+export interface draw_point_delete_AnchorRef {
+  /** The stroke (local ID). */
+  strokeId: string;
+  /** The anchor index. */
+  anchor: number;
+}
+
+/** `draw.point.delete` parameters. */
+export interface draw_point_delete_params {
+  /** The drawing (default: current). */
+  drawingId?: string | null;
+  /** Anchors (default: the point selection). */
+  points?: draw_point_delete_AnchorRef[] | null;
+}
+
+/** `{modifiedIds, removedIds, rev}`. */
+export interface draw_point_delete_result {
+  /** The drawing. */
+  drawingId: string;
+  /** Created objects. */
+  createdIds: string[];
+  /** Modified objects (content, membership or position changed; IDs kept). */
+  modifiedIds: string[];
+  /** Removed objects (descendants included). */
+  removedIds: string[];
+  /** The drawing revision after the change. */
+  rev: number | bigint;
+}
+
+/** An anchor of a stroke. */
+export interface draw_point_move_AnchorRef {
+  /** The stroke (local ID). */
+  strokeId: string;
+  /** The anchor index. */
+  anchor: number;
+}
+
+/** A point `{x, y}` in drawing units. */
+export interface draw_point_move_Point {
+  /** X (du). */
+  x: number;
+  /** Y (du, up). */
+  y: number;
+}
+
+/** `draw.point.move` parameters. */
 export interface draw_point_move_params {
-  /** Default: point selection. */
-  points?: ({
-    /** object ID or path reference (10 §3) */
-    strokeId: string;
-    anchor: number | bigint;
-  })[];
-  delta: {
-    x: number;
-    y: number;
-  };
-  /** Default: Snap to Contour setting. */
+  /** The drawing (default: current). */
+  drawingId?: string | null;
+  /** Anchors (default: the point selection). */
+  points?: draw_point_move_AnchorRef[] | null;
+  /** Offset (du). */
+  delta: draw_point_move_Point;
+  /** Snap moved anchors to other strokes' anchors within 8 du (Snap to Contour, 02 §8.9; default off). */
   snap?: boolean;
 }
 
+/** `{modifiedIds, removedIds, rev}`. */
 export interface draw_point_move_result {
+  /** The drawing. */
+  drawingId: string;
+  /** Created objects. */
+  createdIds: string[];
+  /** Modified objects (content, membership or position changed; IDs kept). */
   modifiedIds: string[];
-  rev: number;
+  /** Removed objects (descendants included). */
+  removedIds: string[];
+  /** The drawing revision after the change. */
+  rev: number | bigint;
 }
 
+/** A point `{x, y}` in drawing units. */
+export interface draw_point_set_Point {
+  /** X (du). */
+  x: number;
+  /** Y (du, up). */
+  y: number;
+}
+
+/** Handle behaviour of `draw.point.set`. */
+export type draw_point_set_HandleMode = 'symmetric' | 'broken' | 'reset';
+
+/** `draw.point.set` parameters. */
 export interface draw_point_set_params {
-  /** object ID or path reference (10 §3) */
+  /** The stroke. */
   strokeId: string;
-  anchor: number | bigint;
-  position?: {
-    x: number;
-    y: number;
-  };
-  inHandle?: {
-    x: number;
-    y: number;
-  };
-  outHandle?: {
-    x: number;
-    y: number;
-  };
-  handleMode?: 'symmetric' | 'broken' | 'reset';
+  /** The anchor. */
+  anchor: number;
+  /** New position. */
+  position?: draw_point_set_Point | null;
+  /** Incoming handle (offset). */
+  inHandle?: draw_point_set_Point | null;
+  /** Outgoing handle (offset). */
+  outHandle?: draw_point_set_Point | null;
+  /** Handle mode. */
+  handleMode?: draw_point_set_HandleMode | null;
 }
 
+/** `{strokeId, rev}`. */
 export interface draw_point_set_result {
-  /** object ID or path reference (10 §3) */
+  /** The stroke. */
   strokeId: string;
-  rev: number;
+  /** Created objects. */
+  createdIds: string[];
+  /** Modified objects (content, membership or position changed; IDs kept). */
+  modifiedIds: string[];
+  /** Removed objects (descendants included). */
+  removedIds: string[];
+  /** The drawing revision after the change. */
+  rev: number | bigint;
 }
 
 /** An anchor of a stroke. */
@@ -84735,62 +85367,107 @@ export interface draw_rectangle_add_result {
   rev: number | bigint;
 }
 
-export interface draw_repositionAll_apply_params {
-  /** object ID or path reference (10 §3) Default: current. */
-  elementId?: string;
-  translate?: {
-    x: number;
-    y: number;
-  };
-  scale?: {
-    x: number;
-    y: number;
-  };
-  rotate?: number;
-  /** Default: {0,0}. */
-  pivot?: {
-    x: number;
-    y: number;
-  };
-  matrix?: number[];
-  corners?: ({
-    x: number;
-    y: number;
-  })[];
+/** A point `{x, y}` in drawing units. */
+export interface draw_repositionAll_apply_Point {
+  /** X (du). */
+  x: number;
+  /** Y (du, up). */
+  y: number;
 }
 
+/** `{x, y}` factors. */
+export interface draw_repositionAll_apply_Xy {
+  /** x. */
+  x: number;
+  /** y. */
+  y: number;
+}
+
+/** `draw.repositionAll.apply` parameters. */
+export interface draw_repositionAll_apply_params {
+  /** The element (default: current). */
+  elementId?: string | null;
+  /** Translation. */
+  translate?: draw_repositionAll_apply_Point | null;
+  /** Scale. */
+  scale?: draw_repositionAll_apply_Xy | null;
+  /** Rotation (degrees CCW). */
+  rotate?: number | null;
+  /** Pivot. */
+  pivot?: draw_repositionAll_apply_Point | null;
+  /** Matrix (overrides). */
+  matrix?: number[] | null;
+  /** Envelope corners (of each drawing's bounds). */
+  corners?: draw_repositionAll_apply_Point[] | null;
+}
+
+/** `{drawingIds}`. */
 export interface draw_repositionAll_apply_result {
+  /** The drawings changed. */
   drawingIds: string[];
 }
 
+/** A fixed rotation step. */
+export type draw_rotate_apply_Step = '90cw' | '90ccw' | '180';
+
+/** `draw.rotate.apply` parameters. */
 export interface draw_rotate_apply_params {
-  /** object ID or path reference (10 §3) */
-  drawingId?: string;
-  /** Default: selection. */
-  ids?: string[];
-  by: '90cw' | '90ccw' | '180';
+  /** The drawing (default: current). */
+  drawingId?: string | null;
+  /** Objects (default: the selection). */
+  ids?: string[] | null;
+  /** Step. */
+  by: draw_rotate_apply_Step;
 }
 
+/** `{ids, removedIds, rev}` and the changed IDs. */
 export interface draw_rotate_apply_result {
+  /** The drawing. */
+  drawingId: string;
+  /** The transformed objects (the copies with `copy`; pieces where noding split them). */
   ids: string[];
-  rev: number;
+  /** Created objects. */
+  createdIds: string[];
+  /** Modified objects (content, membership or position changed; IDs kept). */
+  modifiedIds: string[];
+  /** Removed objects (descendants included). */
+  removedIds: string[];
+  /** The drawing revision after the change. */
+  rev: number | bigint;
 }
 
+/** A point `{x, y}` in drawing units. */
+export interface draw_segment_move_Point {
+  /** X (du). */
+  x: number;
+  /** Y (du, up). */
+  y: number;
+}
+
+/** `draw.segment.move` parameters. */
 export interface draw_segment_move_params {
-  /** object ID or path reference (10 §3) */
+  /** The stroke. */
   strokeId: string;
-  segment: number | bigint;
+  /** The segment index. */
+  segment: number;
+  /** The parameter of the point that moves (0–1). */
   t?: number;
-  delta: {
-    x: number;
-    y: number;
-  };
+  /** Offset of that point (du). */
+  delta: draw_segment_move_Point;
 }
 
+/** `{strokeId, rev}`. */
 export interface draw_segment_move_result {
-  /** object ID or path reference (10 §3) */
+  /** The stroke. */
   strokeId: string;
-  rev: number;
+  /** Created objects. */
+  createdIds: string[];
+  /** Modified objects (content, membership or position changed; IDs kept). */
+  modifiedIds: string[];
+  /** Removed objects (descendants included). */
+  removedIds: string[];
+  /** The drawing revision after the change. */
+  rev: number | bigint;
 }
 
 /** No parameters. */
@@ -85368,40 +86045,70 @@ export interface draw_textFormat_set_result {
   rev: number | bigint;
 }
 
-export interface draw_transform_apply_params {
-  /** object ID or path reference (10 §3) */
-  drawingId?: string;
-  /** Default: selection. */
-  ids?: string[];
-  translate?: {
-    x: number;
-    y: number;
-  };
-  scale?: {
-    x: number;
-    y: number;
-  };
-  /** (degrees, CCW) */
-  rotate?: number;
-  /** (degrees) */
-  skew?: {
-    x: number;
-    y: number;
-  };
-  /** Default: selection bounds centre. */
-  pivot?: {
-    x: number;
-    y: number;
-  };
-  /** (overrides the others) */
-  matrix?: number[];
-  copy?: boolean;
+/** An anchor of a stroke. */
+export interface draw_transform_apply_AnchorRef {
+  /** The stroke (local ID). */
+  strokeId: string;
+  /** The anchor index. */
+  anchor: number;
 }
 
+/** A point `{x, y}` in drawing units. */
+export interface draw_transform_apply_Point {
+  /** X (du). */
+  x: number;
+  /** Y (du, up). */
+  y: number;
+}
+
+/** `{x, y}` factors. */
+export interface draw_transform_apply_Xy {
+  /** x. */
+  x: number;
+  /** y. */
+  y: number;
+}
+
+/** `draw.transform.apply` parameters. */
+export interface draw_transform_apply_params {
+  /** The drawing (default: current). */
+  drawingId?: string | null;
+  /** Objects (default: the selection). */
+  ids?: string[] | null;
+  /** Anchors to move instead of whole objects (default: the Contour Editor's point selection when no object is selected; SI-070). */
+  points?: draw_transform_apply_AnchorRef[] | null;
+  /** Translation (du). */
+  translate?: draw_transform_apply_Point | null;
+  /** Scale factors. */
+  scale?: draw_transform_apply_Xy | null;
+  /** Rotation (degrees, counter-clockwise). */
+  rotate?: number | null;
+  /** Skew (degrees). */
+  skew?: draw_transform_apply_Xy | null;
+  /** Pivot (default: the centre of the selection's bounds). */
+  pivot?: draw_transform_apply_Point | null;
+  /** A full matrix `[a, b, c, d, e, f]` (overrides the others). */
+  matrix?: number[] | null;
+  /** Transform copies, leaving the originals. */
+  copy?: boolean;
+  /** The drawing revision the caller read. */
+  expectRev?: number | bigint | null;
+}
+
+/** `{ids, removedIds, rev}` and the changed IDs. */
 export interface draw_transform_apply_result {
+  /** The drawing. */
+  drawingId: string;
+  /** The transformed objects (the copies with `copy`; pieces where noding split them). */
   ids: string[];
+  /** Created objects. */
+  createdIds: string[];
+  /** Modified objects (content, membership or position changed; IDs kept). */
+  modifiedIds: string[];
+  /** Removed objects (descendants included). */
   removedIds: string[];
-  rev: number;
+  /** The drawing revision after the change. */
+  rev: number | bigint;
 }
 
 export interface draw_vectorFile_import_params {

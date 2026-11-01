@@ -20,6 +20,7 @@ pub(crate) mod draw_select;
 pub(crate) mod draw_shapes;
 pub(crate) mod draw_stroke;
 pub(crate) mod draw_text;
+pub(crate) mod draw_transform;
 pub(crate) mod edit;
 pub(crate) mod edit_ops;
 pub(crate) mod inspect;
@@ -134,6 +135,16 @@ pub(crate) static ALL: &[&Command] = &[
     &draw_shapes::DRAW_ELLIPSE_ADD,
     &draw_shapes::DRAW_LINE_ADD,
     &draw_shapes::DRAW_POLYLINE_ADD,
+    &draw_transform::DRAW_TRANSFORM_APPLY,
+    &draw_transform::DRAW_FLIP_APPLY,
+    &draw_transform::DRAW_ROTATE_APPLY,
+    &draw_transform::DRAW_ENVELOPE_APPLY,
+    &draw_transform::DRAW_REPOSITION_ALL_APPLY,
+    &draw_transform::DRAW_POINT_ADD,
+    &draw_transform::DRAW_POINT_MOVE,
+    &draw_transform::DRAW_POINT_SET,
+    &draw_transform::DRAW_POINT_DELETE,
+    &draw_transform::DRAW_SEGMENT_MOVE,
     &colour::COLOUR_PAINT_APPLY,
     &colour::COLOUR_PAINT_UNPAINTED_APPLY,
     &colour::COLOUR_PAINT_REMOVE,

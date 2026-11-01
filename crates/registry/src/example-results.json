@@ -30,7 +30,7 @@
     {
       "title": "Accept a request",
       "result": {
-        "confirmationId": "cf_9b82aa457dc9a231a30bd603",
+        "confirmationId": "cf_00346d49a8a7383c62d4d0dd",
         "accepted": true
       },
       "varies": [
@@ -71,7 +71,7 @@
         "endpoint": null,
         "sessions": [
           {
-            "sessionId": "s1-471c92",
+            "sessionId": "s1-bc487c",
             "client": "Example agent",
             "policy": "assist",
             "scopes": [
@@ -83,7 +83,7 @@
               "files.write",
               "library.global"
             ],
-            "connectedAt": "2026-11-01T06:11:54.874Z",
+            "connectedAt": "2026-11-01T06:22:27.147Z",
             "lastActivity": null,
             "paused": false,
             "transport": ""
@@ -91,8 +91,8 @@
         ],
         "pendingConfirmations": [
           {
-            "confirmationId": "cf_14948d987f2744a7f093684b",
-            "sessionId": "s1-471c92",
+            "confirmationId": "cf_a0f1c56491a45f8f2ba95b0c",
+            "sessionId": "s1-bc487c",
             "commandId": "project.saveAs",
             "summary": "Overwrite `/tmp/Short.animpkg`",
             "consequences": [
@@ -127,7 +127,7 @@
     {
       "title": "Let a session edit",
       "result": {
-        "sessionId": "s1-cde854",
+        "sessionId": "s1-7ae421",
         "policy": "assist",
         "scopes": [
           "read",
@@ -145,7 +145,7 @@
       "title": "Pause every session",
       "result": {
         "paused": [
-          "s1-0d63a5"
+          "s1-e104a3"
         ]
       },
       "varies": [
@@ -438,7 +438,7 @@
       "result": [
         {
           "name": "before-walk",
-          "createdAt": "2026-11-01T06:11:55.702Z",
+          "createdAt": "2026-11-01T06:22:27.973Z",
           "documentRev": 1,
           "origin": "user"
         }
@@ -746,7 +746,7 @@
             "version": "0.0.1",
             "platform": "windows-x64"
           },
-          "exportedAt": "2026-11-01T06:11:56.547Z",
+          "exportedAt": "2026-11-01T06:22:28.815Z",
           "sourceProjectId": "pr_01K742SG00BK0VXTWDM5JRXV37",
           "scope": {
             "kind": "scenes",
@@ -4439,6 +4439,54 @@
       "varies": []
     }
   ],
+  "draw.envelope.apply": [
+    {
+      "title": "Taper the pencil line's bounds",
+      "result": {
+        "drawingId": "dr_01K742SG0KKMCAP9X1E6Z5P4SW",
+        "ids": [
+          "st_01K7JJN800RXHD55052GG3NDRM",
+          "st_01K7JJN801N0AE1Z0RRCTVH07Z"
+        ],
+        "createdIds": [
+          "st_01K7JJN800RXHD55052GG3NDRM",
+          "st_01K7JJN801N0AE1Z0RRCTVH07Z",
+          "st_01K7JJN8023FJ8358KMGS10XYV",
+          "st_01K7JJN803WXFN4379NATC3KT1"
+        ],
+        "modifiedIds": [],
+        "removedIds": [
+          "st_01K742SG0R61SYK9GG0HGYVNBT",
+          "st_01K742SG0S0NT23BWCZN64SFQ5"
+        ],
+        "rev": 5
+      },
+      "varies": []
+    }
+  ],
+  "draw.flip.apply": [
+    {
+      "title": "Flip the brush stroke horizontally",
+      "result": {
+        "drawingId": "dr_01K742SG0KKMCAP9X1E6Z5P4SW",
+        "ids": [
+          "st_01K742SG0QD1F2HFZSX8R4V7WP"
+        ],
+        "createdIds": [
+          "st_01K7JJN800RXHD55052GG3NDRM",
+          "st_01K7JJN801N0AE1Z0RRCTVH07Z"
+        ],
+        "modifiedIds": [
+          "st_01K742SG0QD1F2HFZSX8R4V7WP"
+        ],
+        "removedIds": [
+          "st_01K742SG0R61SYK9GG0HGYVNBT"
+        ],
+        "rev": 5
+      },
+      "varies": []
+    }
+  ],
   "draw.group.create": [
     {
       "title": "Group the caption and the group of the first drawing",
@@ -4596,6 +4644,87 @@
       "varies": []
     }
   ],
+  "draw.point.add": [
+    {
+      "title": "Add an anchor at the middle of the pencil line",
+      "result": {
+        "strokeId": "st_01K742SG0R61SYK9GG0HGYVNBT",
+        "anchor": 1,
+        "createdIds": [
+          "st_01K7JJN800RXHD55052GG3NDRM",
+          "st_01K7JJN801N0AE1Z0RRCTVH07Z"
+        ],
+        "modifiedIds": [],
+        "removedIds": [
+          "st_01K742SG0R61SYK9GG0HGYVNBT"
+        ],
+        "rev": 5
+      },
+      "varies": []
+    }
+  ],
+  "draw.point.delete": [
+    {
+      "title": "Delete the middle anchor of the brush outline",
+      "result": {
+        "drawingId": "dr_01K742SG0KKMCAP9X1E6Z5P4SW",
+        "createdIds": [
+          "st_01K7JJN800RXHD55052GG3NDRM",
+          "st_01K7JJN801N0AE1Z0RRCTVH07Z"
+        ],
+        "modifiedIds": [
+          "st_01K742SG0QD1F2HFZSX8R4V7WP"
+        ],
+        "removedIds": [
+          "st_01K742SG0R61SYK9GG0HGYVNBT"
+        ],
+        "rev": 5
+      },
+      "varies": []
+    }
+  ],
+  "draw.point.move": [
+    {
+      "title": "Move the pencil line's first anchor",
+      "result": {
+        "drawingId": "dr_01K742SG0KKMCAP9X1E6Z5P4SW",
+        "createdIds": [
+          "st_01K7JJN800RXHD55052GG3NDRM",
+          "st_01K7JJN801N0AE1Z0RRCTVH07Z",
+          "st_01K7JJN8023FJ8358KMGS10XYV",
+          "st_01K7JJN803WXFN4379NATC3KT1"
+        ],
+        "modifiedIds": [],
+        "removedIds": [
+          "st_01K742SG0R61SYK9GG0HGYVNBT",
+          "st_01K742SG0S0NT23BWCZN64SFQ5"
+        ],
+        "rev": 5
+      },
+      "varies": []
+    }
+  ],
+  "draw.point.set": [
+    {
+      "title": "Pull out symmetric handles on the pencil line's end",
+      "result": {
+        "strokeId": "st_01K742SG0R61SYK9GG0HGYVNBT",
+        "createdIds": [
+          "st_01K7JJN800RXHD55052GG3NDRM",
+          "st_01K7JJN801N0AE1Z0RRCTVH07Z",
+          "st_01K7JJN8023FJ8358KMGS10XYV",
+          "st_01K7JJN803WXFN4379NATC3KT1"
+        ],
+        "modifiedIds": [],
+        "removedIds": [
+          "st_01K742SG0R61SYK9GG0HGYVNBT",
+          "st_01K742SG0S0NT23BWCZN64SFQ5"
+        ],
+        "rev": 5
+      },
+      "varies": []
+    }
+  ],
   "draw.pointSelection.set": [
     {
       "title": "Select the first anchor of the pencil line",
@@ -4650,6 +4779,56 @@
         ],
         "modifiedIds": [],
         "removedIds": [],
+        "rev": 5
+      },
+      "varies": []
+    }
+  ],
+  "draw.repositionAll.apply": [
+    {
+      "title": "Move every drawing of Bob up 20 du",
+      "result": {
+        "drawingIds": [
+          "dr_01K742SG0KKMCAP9X1E6Z5P4SW"
+        ]
+      },
+      "varies": []
+    }
+  ],
+  "draw.rotate.apply": [
+    {
+      "title": "Rotate the caption 90° clockwise",
+      "result": {
+        "drawingId": "dr_01K742SG0KKMCAP9X1E6Z5P4SW",
+        "ids": [
+          "nd_01K742SG0WFAQJFKAZKV4CD56C"
+        ],
+        "createdIds": [],
+        "modifiedIds": [
+          "nd_01K742SG0WFAQJFKAZKV4CD56C"
+        ],
+        "removedIds": [],
+        "rev": 5
+      },
+      "varies": []
+    }
+  ],
+  "draw.segment.move": [
+    {
+      "title": "Bend the pencil line's segment",
+      "result": {
+        "strokeId": "st_01K742SG0R61SYK9GG0HGYVNBT",
+        "createdIds": [
+          "st_01K7JJN800RXHD55052GG3NDRM",
+          "st_01K7JJN801N0AE1Z0RRCTVH07Z",
+          "st_01K7JJN8023FJ8358KMGS10XYV",
+          "st_01K7JJN803WXFN4379NATC3KT1"
+        ],
+        "modifiedIds": [],
+        "removedIds": [
+          "st_01K742SG0R61SYK9GG0HGYVNBT",
+          "st_01K742SG0S0NT23BWCZN64SFQ5"
+        ],
         "rev": 5
       },
       "varies": []
@@ -4886,6 +5065,44 @@
       ]
     }
   ],
+  "draw.transform.apply": [
+    {
+      "title": "Move the pencil line 10 du right",
+      "result": {
+        "drawingId": "dr_01K742SG0KKMCAP9X1E6Z5P4SW",
+        "ids": [
+          "st_01K7JJN800RXHD55052GG3NDRM",
+          "st_01K7JJN801N0AE1Z0RRCTVH07Z"
+        ],
+        "createdIds": [
+          "st_01K7JJN800RXHD55052GG3NDRM",
+          "st_01K7JJN801N0AE1Z0RRCTVH07Z"
+        ],
+        "modifiedIds": [],
+        "removedIds": [
+          "st_01K742SG0R61SYK9GG0HGYVNBT"
+        ],
+        "rev": 5
+      },
+      "varies": []
+    },
+    {
+      "title": "Rotate a copy of the caption by 15°",
+      "result": {
+        "drawingId": "dr_01K742SG0KKMCAP9X1E6Z5P4SW",
+        "ids": [
+          "nd_01K7JJN800RXHD55052GG3NDRM"
+        ],
+        "createdIds": [
+          "nd_01K7JJN800RXHD55052GG3NDRM"
+        ],
+        "modifiedIds": [],
+        "removedIds": [],
+        "rev": 5
+      },
+      "varies": []
+    }
+  ],
   "draw.viewMapping.get": [
     {
       "title": "The Drawing view's mapping",
@@ -5000,7 +5217,7 @@
             "stepId": "u-1",
             "label": "Set meta",
             "source": "user",
-            "time": "2026-11-01T06:11:58.354Z",
+            "time": "2026-11-01T06:22:30.957Z",
             "objectCount": 1
           },
           {
@@ -5008,7 +5225,7 @@
             "stepId": "u-2",
             "label": "Set meta",
             "source": "user",
-            "time": "2026-11-01T06:11:58.357Z",
+            "time": "2026-11-01T06:22:30.960Z",
             "objectCount": 1
           }
         ],
@@ -5153,7 +5370,7 @@
         "state": "succeeded",
         "progress": 1.0,
         "message": "",
-        "startedAt": "2026-11-01T06:11:58.640Z",
+        "startedAt": "2026-11-01T06:22:31.242Z",
         "result": {},
         "session": "user"
       },
@@ -5172,7 +5389,7 @@
           "state": "succeeded",
           "progress": 1.0,
           "message": "",
-          "startedAt": "2026-11-01T06:11:58.666Z",
+          "startedAt": "2026-11-01T06:22:31.268Z",
           "result": {},
           "session": "user"
         }
@@ -5191,7 +5408,7 @@
         "state": "succeeded",
         "progress": 1.0,
         "message": "",
-        "startedAt": "2026-11-01T06:11:58.692Z",
+        "startedAt": "2026-11-01T06:22:31.294Z",
         "result": {},
         "session": "user"
       },
@@ -5238,10 +5455,10 @@
     {
       "title": "A 1920×1080, 24 fps project",
       "result": {
-        "projectId": "pr_01M6AVRY0D35EN86D7VZ3EFQ7N",
-        "sceneId": "sc_01M6AVRY0E6NVRRE622Q8WESAS",
-        "cameraId": "el_01M6AVRY0E6NVRRE622Q8WESAV",
-        "elementId": "el_01M6AVRY0E6NVRRE622Q8WESAW"
+        "projectId": "pr_01M6AWC7SJG1QVT6MFYEPYRH42",
+        "sceneId": "sc_01M6AWC7SKNWVQ379JSNKM5B01",
+        "cameraId": "el_01M6AWC7SKNWVQ379JSNKM5B03",
+        "elementId": "el_01M6AWC7SKNWVQ379JSNKM5B04"
       },
       "varies": [
         "/cameraId",
@@ -5497,7 +5714,7 @@
         {
           "path": "/tmp/Sample.animpkg",
           "name": "Sample",
-          "lastOpened": "2026-11-01T06:11:59.607Z",
+          "lastOpened": "2026-11-01T06:22:32.218Z",
           "exists": true
         }
       ],
