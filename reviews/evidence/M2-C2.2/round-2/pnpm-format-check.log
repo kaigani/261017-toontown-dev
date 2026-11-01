@@ -1,0 +1,11 @@
+
+> toontown-workspace@ format:check C:\Users\kaiga\.t3\worktrees\261017-toontown-dev\m2-vector-engine
+> pnpm -r format:check
+
+
+> @toontown/desktop@0.0.1 format:check C:\Users\kaiga\.t3\worktrees\261017-toontown-dev\m2-vector-engine\desktop
+> prettier --check .
+
+Checking formatting...
+All matched files use Prettier code style!
+exit=0
