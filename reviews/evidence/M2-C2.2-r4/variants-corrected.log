@@ -1,0 +1,9 @@
+   Compiling tt-executor v0.0.1 (C:\Users\kaiga\work\review\m2-c22-r4\crates\executor)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 1.76s
+     Running tests\c22_r4_closure.rs (target\debug\deps\c22_r4_closure-202389510ad5e219.exe)
+
+running 2 tests
+test three_reverse_order_styles_share_pick_and_native_click_selection ... ok
+test schema_children_stamp_but_model_shaped_opaque_values_survive ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.17s
