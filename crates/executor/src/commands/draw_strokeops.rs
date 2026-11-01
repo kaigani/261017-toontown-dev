@@ -81,6 +81,10 @@ pub(crate) fn strokes_of(
     Ok(out)
 }
 
+/// Work units (point-to-segment distance evaluations) one Smooth call may spend: a few seconds of work, well before
+/// the 30 s watchdog (never-block rule; C23-R1-07).
+const SMOOTH_WORK_BUDGET: u64 = 150_000_000;
+
 /// `draw.smooth.apply` parameters.
 #[derive(Debug, Deserialize, JsonSchema)]
 #[serde(deny_unknown_fields, rename_all = "camelCase")]
@@ -174,6 +178,8 @@ pub(crate) fn draw_smooth_apply(cx: &mut Cx, p: SmoothParams) -> Result<SmoothRe
     let mut ops = Vec::new();
     let mut modified = Vec::new();
     let mut removed_points = 0usize;
+    // One work account for the whole call (never-block rule; C23-R1-07).
+    let mut work = tt_vector::work::Work::new(SMOOTH_WORK_BUDGET, "smoothing these strokes");
     for l in &targets {
         let Some(s) = vd::stroke_at(&d, &l.pointer) else { continue };
         let Some(mut v) = dj.pointer(&l.pointer).cloned() else { continue };
@@ -191,7 +197,8 @@ pub(crate) fn draw_smooth_apply(cx: &mut Cx, p: SmoothParams) -> Result<SmoothRe
             let a = path.anchors[i].p;
             others.contains(&(a.x.to_bits(), a.y.to_bits())) || allow.is_some_and(|set| !set.contains(&i))
         };
-        let (smoothed, n) = tt_vector::ops::smooth::smooth(&path, p.tolerance, &fixed);
+        let (smoothed, n) = tt_vector::ops::smooth::smooth_within(&path, p.tolerance, &fixed, &mut work)
+            .map_err(|e| crate::planar::geom_error(&e))?;
         if n == 0 {
             continue;
         }

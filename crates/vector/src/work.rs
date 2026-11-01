@@ -2,7 +2,65 @@
 //! units of about one point operation as it goes and is refused with `limit.exceeded` before the step that would pass
 //! its budget, so the document worker is never held past the watchdog and nothing is staged.
 
+use std::cell::RefCell;
+use std::sync::Arc;
+use std::sync::atomic::{AtomicU64, Ordering};
+
 use crate::path::GeomError;
+
+/// The watchdog's cancellation state of a worker thread (ADR-0015 history, C23-R1-07): the sequence number of the
+/// request the worker is running and the one a timed-out caller asked to cancel. Every work account checks it at each
+/// charge, so an overrunning operation stops at its next budget check and the worker answers the next request.
+#[derive(Debug, Default)]
+pub struct CancelState {
+    /// The request now running (0: none).
+    pub current: AtomicU64,
+    /// The request to cancel (0: none).
+    pub cancel: AtomicU64,
+}
+
+thread_local! {
+    static CANCEL: RefCell<Option<Arc<CancelState>>> = const { RefCell::new(None) };
+}
+
+/// Installs the cancellation state of the calling (worker) thread.
+pub fn set_cancel_state(state: Option<Arc<CancelState>>) {
+    CANCEL.with(|c| *c.borrow_mut() = state);
+}
+
+/// Whether the request the calling thread runs has been cancelled by the watchdog.
+#[must_use]
+pub fn cancel_requested() -> bool {
+    CANCEL.with(|c| {
+        c.borrow().as_ref().is_some_and(|s| {
+            let cur = s.current.load(Ordering::Acquire);
+            cur != 0 && s.cancel.load(Ordering::Acquire) == cur
+        })
+    })
+}
+
+/// Test hooks (never in products): make every work charge spin, so any work-charging command overruns on demand.
+#[cfg(feature = "test-hooks")]
+pub mod hooks {
+    use std::sync::atomic::{AtomicU64, Ordering};
+
+    static SPIN_MICROS: AtomicU64 = AtomicU64::new(0);
+
+    /// Each later charge spins this long (0: off).
+    pub fn set_spin_micros(us: u64) {
+        SPIN_MICROS.store(us, Ordering::Release);
+    }
+
+    pub(crate) fn spin() {
+        let us = SPIN_MICROS.load(Ordering::Acquire);
+        if us > 0 {
+            let start = std::time::Instant::now();
+            while start.elapsed() < std::time::Duration::from_micros(us) {
+                std::hint::spin_loop();
+            }
+        }
+    }
+}
 
 /// The work one planar-map update may do (persistent noding, the derived graph, fill carry-over and gap closing), in
 /// units of about one point operation. The adversarial planar corpus of `crates/vector/tests/c22_worst_case.rs`
@@ -38,6 +96,15 @@ impl Work {
         self.used = self.used.saturating_add(n);
         if self.used > self.limit {
             return Err(self.exceeded());
+        }
+        #[cfg(feature = "test-hooks")]
+        hooks::spin();
+        if cancel_requested() {
+            return Err(GeomError {
+                code: "command.timeout",
+                message: format!("{} was cancelled: the call overran its watchdog budget", self.what),
+                pointer: String::new(),
+            });
         }
         Ok(())
     }

@@ -21,6 +21,7 @@ regex.workspace = true
 
 [dev-dependencies]
 tt-persist = { workspace = true, features = ["test-hooks"] }
+tt-vector = { workspace = true, features = ["test-hooks"] }
 trybuild.workspace = true
 jsonschema.workspace = true
 proptest.workspace = true

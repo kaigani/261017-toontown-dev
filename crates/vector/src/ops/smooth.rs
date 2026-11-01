@@ -1,12 +1,16 @@
 //! Smooth (02 §8.3; M2 C2.3): removes anchors from a path while every point of the original stays within a tolerance
 //! of the result. Each candidate anchor's two segments are refitted as one cubic with the outer tangents kept (least
-//! squares on chord-length parameters); the anchor goes when the refit's deviation from the two segments, sampled at
-//! matched parameters both ways, is within the tolerance. Path ends and protected anchors (junctions shared with
-//! other strokes, unselected anchors of a point selection) never go, so topology is kept. Deterministic: candidates
-//! are tried in order, cheapest deviation first within a pass, and passes repeat until nothing changes.
+//! squares on chord-length parameters); the anchor goes when the refit's deviation from the original shape, measured
+//! both ways, is within the tolerance. Path ends and protected anchors (junctions shared with other strokes,
+//! unselected anchors of a point selection) never go, so topology is kept. Deterministic: removable anchors are ranked
+//! by deviation (ties: lower index), and the work is bounded per anchor (C23-R1-07).
+
+use std::cmp::Reverse;
+use std::collections::BinaryHeap;
 
 use crate::geom::{Cubic, P};
-use crate::path::{Anchor, Path};
+use crate::path::{Anchor, GeomError, Path};
+use crate::work::Work;
 
 const SAMPLES: usize = 16;
 
@@ -78,13 +82,53 @@ fn refit(a: &Cubic, b: &Cubic) -> Cubic {
     Cubic { p0, p1: p0 + t1 * l1, p2: p3 + t2 * l2, p3 }
 }
 
-/// The largest distance between a refit and the original points it replaces (`orig`: dense samples of the original
-/// segments spanned), measured both ways.
-fn deviation(r: &Cubic, orig: &[P]) -> f64 {
-    let fine: Vec<P> = (0..=8 * SAMPLES).map(|k| r.eval(k as f64 / (8 * SAMPLES) as f64)).collect();
-    let there = orig.iter().map(|q| to_polyline(*q, &fine)).fold(0.0f64, f64::max);
-    let back = fine.iter().step_by(4).map(|q| to_polyline(*q, orig)).fold(0.0f64, f64::max);
-    there.max(back)
+/// Original segments one refit may span: bounds the work of every evaluation (each invocation smooths further).
+pub const MAX_SPAN: usize = 32;
+
+/// Samples per original segment and per refit.
+const ORIG_SAMPLES: usize = 16;
+const FIT_SAMPLES: usize = 64;
+
+/// Distance from `q` to the polyline `line`, searched in a window around `hint` (both curves run the same way), with
+/// the nearest segment index; every examined segment is one unit of work.
+fn near_windowed(q: P, line: &[P], hint: usize, work: &mut u64) -> (f64, usize) {
+    if line.len() < 2 {
+        return (line.first().map_or(f64::INFINITY, |p| p.dist(q)), 0);
+    }
+    let last = line.len() - 2;
+    let lo = hint.saturating_sub(8);
+    let hi = (hint + 8).min(last);
+    let mut best = (f64::INFINITY, hint.min(last));
+    for k in lo..=hi {
+        *work += 1;
+        let d = to_polyline(q, &line[k..k + 2]);
+        if d < best.0 {
+            best = (d, k);
+        }
+    }
+    best
+}
+
+/// The largest distance between a refit and the original points it replaces, both ways; a windowed search can only
+/// overestimate, so the shape stays within the tolerance.
+fn deviation(r: &Cubic, orig: &[P], work: &mut u64) -> f64 {
+    let fine: Vec<P> = (0..=FIT_SAMPLES).map(|k| r.eval(k as f64 / FIT_SAMPLES as f64)).collect();
+    let mut worst = 0.0f64;
+    let mut hint = 0usize;
+    for (n, q) in orig.iter().enumerate() {
+        let guess = (n * FIT_SAMPLES / orig.len().max(1)).max(hint);
+        let (d, k) = near_windowed(*q, &fine, guess, work);
+        hint = k;
+        worst = worst.max(d);
+    }
+    let mut hint = 0usize;
+    for (n, q) in fine.iter().enumerate() {
+        let guess = (n * orig.len() / fine.len()).max(hint);
+        let (d, k) = near_windowed(*q, orig, guess, work);
+        hint = k;
+        worst = worst.max(d);
+    }
+    worst
 }
 
 /// The distance from `q` to a polyline.
@@ -104,62 +148,125 @@ pub fn to_polyline(q: P, line: &[P]) -> f64 {
         .fold(f64::INFINITY, f64::min)
 }
 
-/// Smooths `path`: anchors whose index `fixed` returns true never go. Returns the smoothed path and the number of
-/// anchors removed.
+/// [`smooth_within`] without a work limit (library callers that bound their input themselves).
 #[must_use]
 pub fn smooth(path: &Path, tolerance: f64, fixed: &dyn Fn(usize) -> bool) -> (Path, usize) {
-    // Track original indices so `fixed` keeps its meaning while anchors go.
-    let mut anchors: Vec<(usize, Anchor)> = path.anchors.iter().copied().enumerate().collect();
+    let mut work = Work::unlimited("smoothing");
+    smooth_within(path, tolerance, fixed, &mut work).unwrap_or_else(|_| (path.clone(), 0))
+}
+
+/// Smooths `path` (02 §8.3; C23-R1-07): anchors whose index `fixed` returns true never go. Removable anchors are
+/// ranked by the deviation of the refit that would replace them (measured against the original shape); the best goes,
+/// and only its two neighbours are evaluated again, so the work is bounded per anchor. A refit spans at most
+/// [`MAX_SPAN`] original segments; each invocation smooths further. Every distance evaluation is charged to `work`.
+///
+/// # Errors
+/// `limit.exceeded` from `work`; `command.timeout` when the watchdog cancels the call.
+pub fn smooth_within(
+    path: &Path,
+    tolerance: f64,
+    fixed: &dyn Fn(usize) -> bool,
+    work: &mut Work,
+) -> Result<(Path, usize), GeomError> {
+    let n = path.anchors.len();
     let min = if path.closed { 3 } else { 2 };
-    // Dense samples of each original segment: a refit is always measured against the original shape.
+    if n <= min {
+        return Ok((path.clone(), 0));
+    }
     let segs = path.segments();
     let orig: Vec<Vec<P>> =
-        segs.iter().map(|c| (0..=4 * SAMPLES).map(|k| c.eval(k as f64 / (4 * SAMPLES) as f64)).collect()).collect();
-    let total = path.anchors.len();
-    let span = |from: usize, to: usize| -> Vec<P> {
-        let mut out = Vec::new();
-        let mut k = from;
-        while k != to {
-            out.extend(orig.get(k).into_iter().flatten().copied());
-            k = (k + 1) % total;
+        segs.iter().map(|c| (0..=ORIG_SAMPLES).map(|k| c.eval(k as f64 / ORIG_SAMPLES as f64)).collect()).collect();
+    let mut anchors: Vec<Anchor> = path.anchors.clone();
+    let mut alive = vec![true; n];
+    let mut prev: Vec<usize> = (0..n).map(|i| (i + n - 1) % n).collect();
+    let mut next: Vec<usize> = (0..n).map(|i| (i + 1) % n).collect();
+    let mut version = vec![0u32; n];
+    let mut count = n;
+    let span_len = |a: usize, b: usize| if b > a { b - a } else { b + n - a };
+    // The refit and deviation of removing anchor `i` now, if allowed.
+    let evaluate = |i: usize,
+                    anchors: &[Anchor],
+                    prev: &[usize],
+                    next: &[usize],
+                    work: &mut Work|
+     -> Result<Option<(f64, Cubic)>, GeomError> {
+        if (!path.closed && (i == 0 || i == n - 1)) || fixed(i) {
+            return Ok(None);
         }
-        out
+        let (p, q) = (prev[i], next[i]);
+        if span_len(p, q) > MAX_SPAN {
+            return Ok(None);
+        }
+        let (ap, ai, aq) = (anchors[p], anchors[i], anchors[q]);
+        let a = Cubic { p0: ap.p, p1: ap.p + ap.outh, p2: ai.p + ai.inh, p3: ai.p };
+        let b = Cubic { p0: ai.p, p1: ai.p + ai.outh, p2: aq.p + aq.inh, p3: aq.p };
+        let r = refit(&a, &b);
+        let mut span: Vec<P> = Vec::new();
+        let mut k = p;
+        while k != q {
+            span.extend(orig.get(k).into_iter().flatten().copied());
+            k = (k + 1) % n;
+        }
+        let mut units = 0u64;
+        let dev = deviation(&r, &span, &mut units);
+        work.spend(units)?;
+        Ok((dev <= tolerance).then_some((dev, r)))
     };
+    // Min-heap on (deviation, index) with lazy invalidation by version.
+    let mut heap: BinaryHeap<Reverse<(OrdF64, usize, u32)>> = BinaryHeap::new();
+    let mut fits: Vec<Option<Cubic>> = vec![None; n];
+    for i in 0..n {
+        if let Some((dev, r)) = evaluate(i, &anchors, &prev, &next, work)? {
+            fits[i] = Some(r);
+            heap.push(Reverse((OrdF64(dev), i, version[i])));
+        }
+    }
     let mut removed = 0;
-    loop {
-        let n = anchors.len();
-        if n <= min {
+    while let Some(Reverse((_, i, v))) = heap.pop() {
+        if count <= min {
             break;
         }
-        let mut best: Option<(f64, usize, Cubic)> = None;
-        for i in 0..n {
-            if !path.closed && (i == 0 || i == n - 1) {
-                continue;
-            }
-            if fixed(anchors[i].0) {
-                continue;
-            }
-            let prev = (i + n - 1) % n;
-            let next = (i + 1) % n;
-            let (ap, ai, an) = (anchors[prev].1, anchors[i].1, anchors[next].1);
-            let a = Cubic { p0: ap.p, p1: ap.p + ap.outh, p2: ai.p + ai.inh, p3: ai.p };
-            let b = Cubic { p0: ai.p, p1: ai.p + ai.outh, p2: an.p + an.inh, p3: an.p };
-            let r = refit(&a, &b);
-            let dev = deviation(&r, &span(anchors[prev].0, anchors[next].0));
-            if dev <= tolerance && best.as_ref().is_none_or(|(d, _, _)| dev < *d) {
-                best = Some((dev, i, r));
+        if !alive[i] || v != version[i] {
+            continue;
+        }
+        let Some(r) = fits[i] else { continue };
+        let (p, q) = (prev[i], next[i]);
+        anchors[p].outh = r.p1 - r.p0;
+        anchors[q].inh = r.p2 - r.p3;
+        alive[i] = false;
+        next[p] = q;
+        prev[q] = p;
+        count -= 1;
+        removed += 1;
+        for j in [p, q] {
+            version[j] += 1;
+            fits[j] = None;
+            if let Some((dev, r)) = evaluate(j, &anchors, &prev, &next, work)? {
+                fits[j] = Some(r);
+                heap.push(Reverse((OrdF64(dev), j, version[j])));
             }
         }
-        let Some((_, i, r)) = best else { break };
-        let n = anchors.len();
-        let prev = (i + n - 1) % n;
-        let next = (i + 1) % n;
-        anchors[prev].1.outh = r.p1 - r.p0;
-        anchors[next].1.inh = r.p2 - r.p3;
-        anchors.remove(i);
-        removed += 1;
     }
-    (Path { anchors: anchors.into_iter().map(|(_, a)| a).collect(), closed: path.closed }, removed)
+    let kept: Vec<Anchor> = (0..n).filter(|i| alive[*i]).map(|i| anchors[i]).collect();
+    Ok((Path { anchors: kept, closed: path.closed }, removed))
+}
+
+/// A total order on deviations for the heap.
+#[derive(Debug, Clone, Copy, PartialEq)]
+struct OrdF64(f64);
+
+impl Eq for OrdF64 {}
+
+impl PartialOrd for OrdF64 {
+    fn partial_cmp(&self, other: &Self) -> Option<std::cmp::Ordering> {
+        Some(self.cmp(other))
+    }
+}
+
+impl Ord for OrdF64 {
+    fn cmp(&self, other: &Self) -> std::cmp::Ordering {
+        self.0.total_cmp(&other.0)
+    }
 }
 
 #[cfg(test)]

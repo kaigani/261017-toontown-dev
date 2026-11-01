@@ -379,8 +379,12 @@ fn golden_hashes_hold_on_every_platform() {
         let s = render(&h, json!({ "drawingId": D1, "width": 140, "region": reg }));
         got.insert("texture-stretch".into(), (s.sha, s.png));
         // Tile off with a drag mapping smaller than the zone: transparent outside the image (03 §7.4; C23-R1-06).
-        ok(&h, "colour.paint.apply", json!({ "drawingId": D1, "objectIds": [r["zoneIds"][0]], "colourId": stretch,
-            "mapping": {"from": {"x": 1003, "y": 1006}, "to": {"x": 1007, "y": 1006}} }));
+        ok(
+            &h,
+            "colour.paint.apply",
+            json!({ "drawingId": D1, "objectIds": [r["zoneIds"][0]], "colourId": stretch,
+            "mapping": {"from": {"x": 1003, "y": 1006}, "to": {"x": 1007, "y": 1006}} }),
+        );
         let t = render(&h, json!({ "drawingId": D1, "width": 140, "region": reg }));
         got.insert("texture-stretch-inset".into(), (t.sha, t.png));
     }

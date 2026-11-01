@@ -215,6 +215,8 @@ pub struct ExecutorHandle {
     jobs: Arc<JobTable>,
     subscribers: Arc<Mutex<Vec<Sender<Event>>>>,
     config: ExecutorConfig,
+    /// The document thread's watchdog cancellation state (C23-R1-07).
+    cancel: Arc<tt_vector::work::CancelState>,
     _guard: Arc<ShutdownGuard>,
 }
 
@@ -287,10 +289,12 @@ impl ExecutorHandle {
         maintenance::start(&mut session);
         let subs = subscribers.clone();
         let budget = config.budget;
+        let cancel = Arc::new(tt_vector::work::CancelState::default());
+        let worker_cancel = cancel.clone();
         let tick = persist.maintenance.tick;
         std::thread::Builder::new()
             .name("tt-document".to_owned())
-            .spawn(move || document_thread(run::Core::new(registry, session, budget), &rx, &subs))
+            .spawn(move || document_thread(run::Core::new(registry, session, budget), &rx, &subs, &worker_cancel))
             .map_err(|e| CommandError::internal(format!("cannot start the document thread: {e}")))?;
         if !tick.is_zero() {
             let ticker = tx.clone();
@@ -307,7 +311,7 @@ impl ExecutorHandle {
                 .map_err(|e| CommandError::internal(format!("cannot start the maintenance thread: {e}")))?;
         }
         let guard = Arc::new(ShutdownGuard(tx.clone()));
-        Ok(Self { tx, jobs, subscribers, config, _guard: guard })
+        Ok(Self { tx, jobs, subscribers, config, cancel, _guard: guard })
     }
 
     /// Grants an agent session file-system roots (11 §6.2): paths given by that session must lie inside one of them
@@ -351,7 +355,13 @@ impl ExecutorHandle {
         self.tx.send(make(reply)).map_err(|_| stopped())?;
         match rx.recv_timeout(self.config.budget) {
             Ok(v) => Ok(v),
-            Err(RecvTimeoutError::Timeout) => Err(timeout(what, self.config.budget)),
+            Err(RecvTimeoutError::Timeout) => {
+                // The request the worker is running overran: it stops at its next work-account check, so the
+                // worker answers what is queued behind it (C23-R1-07; ADR-0015 history).
+                let running = self.cancel.current.load(std::sync::atomic::Ordering::Acquire);
+                self.cancel.cancel.store(running, std::sync::atomic::Ordering::Release);
+                Err(timeout(what, self.config.budget))
+            }
             Err(RecvTimeoutError::Disconnected) => Err(stopped()),
         }
     }
@@ -516,11 +526,10 @@ impl ExecutorHandle {
             document_rev: env.document_rev,
             duration_ms: u64::try_from(took.as_millis()).unwrap_or(u64::MAX),
         };
-        let _ = self.call("agent.audit", |r| {
-            Request::Run(Box::new(move |core| {
-                let _ = r.send(core.audit(entry));
-            }))
-        });
+        // Queued behind the call it records, without waiting: the reply never blocks on a busy worker (C23-R1-07).
+        let _ = self.tx.send(Request::Run(Box::new(move |core| {
+            let _ = core.audit(entry);
+        })));
     }
 
     /// Opens a document as the project, as the user, refusing to discard unsaved changes of an open project
@@ -602,10 +611,20 @@ impl ExecutorHandle {
     }
 }
 
-fn document_thread(mut core: run::Core, rx: &Receiver<Request>, subscribers: &Mutex<Vec<Sender<Event>>>) {
+fn document_thread(
+    mut core: run::Core,
+    rx: &Receiver<Request>,
+    subscribers: &Mutex<Vec<Sender<Event>>>,
+    cancel: &Arc<tt_vector::work::CancelState>,
+) {
     // A call's events are broadcast before its reply is sent, so a subscriber has them when the caller has the result.
     let flush = |core: &mut run::Core| broadcast(subscribers, &core.take_events());
+    tt_vector::work::set_cancel_state(Some(cancel.clone()));
+    let mut seq: u64 = 0;
     while let Ok(req) = rx.recv() {
+        // Each request gets a fresh sequence number: a cancellation aimed at an earlier one never hits it.
+        seq = seq.wrapping_add(1).max(1);
+        cancel.current.store(seq, std::sync::atomic::Ordering::Release);
         match req {
             Request::Invoke(inv, reply) => {
                 let env = core.invoke(&inv);

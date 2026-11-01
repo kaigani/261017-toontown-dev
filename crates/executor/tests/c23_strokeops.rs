@@ -237,3 +237,24 @@ fn centre_line_follows_the_spine_with_the_average_width_and_reports_what_it_cann
     let r = ok(&h, "draw.centreLine.apply", json!({ "drawingId": D1, "ids": [zone, b2["strokeIds"][0]] }));
     assert!(r["warnings"].as_array().unwrap().contains(&json!("drawing.centreLineOnFill")), "{r}");
 }
+
+/// C23-R1-07 (a): 2 000 collinear anchors smooth with bounded work (each refit spans at most 32 segments, so one call
+/// removes most anchors and a repeat removes more), answering well inside the watchdog budget.
+#[test]
+fn smoothing_two_thousand_collinear_anchors_is_bounded() {
+    let h = fixture();
+    let pts: Vec<_> = (0..2000).map(|i| json!({ "x": 2000 + i, "y": 2000 })).collect();
+    let s = ok(
+        &h,
+        "draw.stroke.add",
+        json!({ "drawingId": D1, "kind": "invisible", "fit": false, "layer": "new", "points": pts }),
+    );
+    let t = std::time::Instant::now();
+    let r = ok(&h, "draw.smooth.apply", json!({ "drawingId": D1, "ids": s["strokeIds"], "tolerance": 1 }));
+    let first = t.elapsed();
+    let removed = r["removedPointCount"].as_u64().unwrap();
+    assert!(removed >= 1900, "{r}");
+    assert!(first < std::time::Duration::from_secs(20), "{first:?}");
+    let again = ok(&h, "draw.smooth.apply", json!({ "drawingId": D1, "ids": s["strokeIds"], "tolerance": 1 }));
+    assert!(again["removedPointCount"].as_u64().unwrap() > 0, "each invocation smooths further: {again}");
+}

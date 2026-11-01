@@ -500,7 +500,9 @@ pub(crate) fn draw_drawing_render(cx: &mut Cx, p: RenderParams) -> Result<Render
     let warnings = std::mem::take(&mut b.warnings);
     drop(b);
     let mut keep_going = |_: usize| {
-        if started.elapsed() > RENDER_TIME_LIMIT {
+        if tt_vector::work::cancel_requested() {
+            Err("the call overran its watchdog budget and was cancelled".to_owned())
+        } else if started.elapsed() > RENDER_TIME_LIMIT {
             Err(format!("the render took longer than {} s", RENDER_TIME_LIMIT.as_secs()))
         } else {
             Ok(())
