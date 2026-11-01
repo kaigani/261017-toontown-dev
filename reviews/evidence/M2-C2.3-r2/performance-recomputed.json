@@ -1,0 +1,608 @@
+{
+  "render-100k.json": {
+    "command": "draw.drawing.render",
+    "seconds": 0.9118801,
+    "under30Seconds": true,
+    "priorSeconds": 0.850467,
+    "ratio": 1.0722110322916703
+  },
+  "flatten-100k.json": {
+    "command": "draw.flatten.apply",
+    "seconds": 0.5867941,
+    "under30Seconds": true,
+    "priorSeconds": 0.5360976,
+    "ratio": 1.0945658029433447
+  },
+  "centre-line-large.json": {
+    "command": "draw.centreLine.apply",
+    "seconds": 4.0372229,
+    "under30Seconds": true,
+    "priorSeconds": 3.9192112,
+    "ratio": 1.0301110845978394
+  },
+  "c21": {
+    "priorValid": true,
+    "currentValid": true,
+    "series": [
+      {
+        "name": "brushAdd.allocatedBytes",
+        "prior": {
+          "unit": "bytes",
+          "n": 10,
+          "p50": 3434890284.0,
+          "p90": 3435391072.0,
+          "p99": 3435559320.0,
+          "max": 3435559320.0
+        },
+        "current": {
+          "unit": "bytes",
+          "n": 10,
+          "p50": 3434890288.0,
+          "p90": 3435391076.0,
+          "p99": 3435559255.0,
+          "max": 3435559255.0
+        },
+        "p50Ratio": 1.0000000011645205
+      },
+      {
+        "name": "brushAdd.wallMs",
+        "prior": {
+          "unit": "ms",
+          "n": 10,
+          "p50": 4917.8877999999995,
+          "p90": 5699.8471,
+          "p99": 6804.1208,
+          "max": 6804.1208
+        },
+        "current": {
+          "unit": "ms",
+          "n": 10,
+          "p50": 4713.8967999999995,
+          "p90": 4982.5134,
+          "p99": 5028.996700000001,
+          "max": 5028.996700000001
+        },
+        "p50Ratio": 0.9585206071598461
+      },
+      {
+        "name": "patchProperty.allocatedBytes",
+        "prior": {
+          "unit": "bytes",
+          "n": 10,
+          "p50": 2456591972.0,
+          "p90": 2456957545.0,
+          "p99": 2457079062.0,
+          "max": 2457079062.0
+        },
+        "current": {
+          "unit": "bytes",
+          "n": 10,
+          "p50": 2456591908.0,
+          "p90": 2456957550.0,
+          "p99": 2457079135.0,
+          "max": 2457079135.0
+        },
+        "p50Ratio": 0.9999999739476475
+      },
+      {
+        "name": "patchProperty.wallMs",
+        "prior": {
+          "unit": "ms",
+          "n": 10,
+          "p50": 3469.2728,
+          "p90": 3613.7340999999997,
+          "p99": 3815.6824,
+          "max": 3815.6824
+        },
+        "current": {
+          "unit": "ms",
+          "n": 10,
+          "p50": 3298.3343,
+          "p90": 3468.2931,
+          "p99": 3567.3603,
+          "max": 3567.3603
+        },
+        "p50Ratio": 0.9507278585875403
+      },
+      {
+        "name": "redo.allocatedBytes",
+        "prior": {
+          "unit": "bytes",
+          "n": 10,
+          "p50": 4003128103.0,
+          "p90": 4003618557.0,
+          "p99": 4003786943.0,
+          "max": 4003786943.0
+        },
+        "current": {
+          "unit": "bytes",
+          "n": 10,
+          "p50": 4003128109.0,
+          "p90": 4003629552.0,
+          "p99": 4003785996.0,
+          "max": 4003785996.0
+        },
+        "p50Ratio": 1.000000001498828
+      },
+      {
+        "name": "redo.wallMs",
+        "prior": {
+          "unit": "ms",
+          "n": 10,
+          "p50": 5559.939,
+          "p90": 5632.4818,
+          "p99": 6202.7475,
+          "max": 6202.7475
+        },
+        "current": {
+          "unit": "ms",
+          "n": 10,
+          "p50": 5329.3192,
+          "p90": 5526.7954,
+          "p99": 5540.7824,
+          "max": 5540.7824
+        },
+        "p50Ratio": 0.9585211636314714
+      },
+      {
+        "name": "strokeAdd.allocatedBytes",
+        "prior": {
+          "unit": "bytes",
+          "n": 10,
+          "p50": 7525061087.0,
+          "p90": 7525705813.0,
+          "p99": 8242407362.0,
+          "max": 8242407362.0
+        },
+        "current": {
+          "unit": "bytes",
+          "n": 10,
+          "p50": 7525072053.0,
+          "p90": 8242407362.0,
+          "p99": 8595629357.0,
+          "max": 8595629357.0
+        },
+        "p50Ratio": 1.0000014572639175
+      },
+      {
+        "name": "strokeAdd.wallMs",
+        "prior": {
+          "unit": "ms",
+          "n": 10,
+          "p50": 9890.3331,
+          "p90": 11044.044899999999,
+          "p99": 12550.610799999999,
+          "max": 12550.610799999999
+        },
+        "current": {
+          "unit": "ms",
+          "n": 10,
+          "p50": 10151.523,
+          "p90": 10527.6163,
+          "p99": 11122.3051,
+          "max": 11122.3051
+        },
+        "p50Ratio": 1.026408604984194
+      },
+      {
+        "name": "strokeAddDryRun.allocatedBytes",
+        "prior": {
+          "unit": "bytes",
+          "n": 10,
+          "p50": 6830749122.0,
+          "p90": 6831563788.0,
+          "p99": 7901253675.0,
+          "max": 7901253675.0
+        },
+        "current": {
+          "unit": "bytes",
+          "n": 10,
+          "p50": 6830760158.0,
+          "p90": 6831360891.0,
+          "p99": 6831574665.0,
+          "max": 6831574665.0
+        },
+        "p50Ratio": 1.0000016156353868
+      },
+      {
+        "name": "strokeAddDryRun.wallMs",
+        "prior": {
+          "unit": "ms",
+          "n": 10,
+          "p50": 9521.709700000001,
+          "p90": 10789.415200000001,
+          "p99": 23123.143,
+          "max": 23123.143
+        },
+        "current": {
+          "unit": "ms",
+          "n": 10,
+          "p50": 9582.9337,
+          "p90": 9933.355000000001,
+          "p99": 10119.7739,
+          "max": 10119.7739
+        },
+        "p50Ratio": 1.006429937682305
+      },
+      {
+        "name": "strokeSet.allocatedBytes",
+        "prior": {
+          "unit": "bytes",
+          "n": 10,
+          "p50": 3455287899.0,
+          "p90": 3455775369.0,
+          "p99": 3455952556.0,
+          "max": 3455952556.0
+        },
+        "current": {
+          "unit": "bytes",
+          "n": 10,
+          "p50": 3455277006.0,
+          "p90": 3455776602.0,
+          "p99": 3455941636.0,
+          "max": 3455941636.0
+        },
+        "p50Ratio": 0.9999968474407
+      },
+      {
+        "name": "strokeSet.wallMs",
+        "prior": {
+          "unit": "ms",
+          "n": 10,
+          "p50": 4846.646,
+          "p90": 4947.788100000001,
+          "p99": 4971.028600000001,
+          "max": 4971.028600000001
+        },
+        "current": {
+          "unit": "ms",
+          "n": 10,
+          "p50": 4777.1958,
+          "p90": 5054.275299999999,
+          "p99": 6113.4367999999995,
+          "max": 6113.4367999999995
+        },
+        "p50Ratio": 0.9856704615934402
+      },
+      {
+        "name": "undo.allocatedBytes",
+        "prior": {
+          "unit": "bytes",
+          "n": 10,
+          "p50": 4664315178.0,
+          "p90": 4664928100.0,
+          "p99": 4665132732.0,
+          "max": 4665132732.0
+        },
+        "current": {
+          "unit": "bytes",
+          "n": 10,
+          "p50": 4664315120.0,
+          "p90": 4664928042.0,
+          "p99": 4665132218.0,
+          "max": 4665132218.0
+        },
+        "p50Ratio": 0.9999999875651627
+      },
+      {
+        "name": "undo.wallMs",
+        "prior": {
+          "unit": "ms",
+          "n": 10,
+          "p50": 6281.447700000001,
+          "p90": 6745.209199999999,
+          "p99": 7591.3902,
+          "max": 7591.3902
+        },
+        "current": {
+          "unit": "ms",
+          "n": 10,
+          "p50": 6149.8850999999995,
+          "p90": 6362.945500000001,
+          "p99": 6416.5722,
+          "max": 6416.5722
+        },
+        "p50Ratio": 0.9790553696721854
+      }
+    ]
+  },
+  "c22": {
+    "prior": {
+      "cases": [
+        {
+          "name": "100000-small-curves-plus-one",
+          "maxWallMs": 2824.8480000000004,
+          "units": [
+            931042320,
+            931042320
+          ],
+          "outcomes": [
+            "ok",
+            "ok"
+          ]
+        },
+        {
+          "name": "grid-200x200-crossing-lines",
+          "maxWallMs": 580.3006,
+          "units": [
+            318410926,
+            318410926
+          ],
+          "outcomes": [
+            "ok",
+            "ok"
+          ]
+        },
+        {
+          "name": "grid-600x600-crossing-lines",
+          "maxWallMs": 2784.3682,
+          "units": [
+            1672507212,
+            1672507212
+          ],
+          "outcomes": [
+            "limit.exceeded: the planar map needs more than 1200000000 units of work",
+            "limit.exceeded: the planar map needs more than 1200000000 units of work"
+          ]
+        },
+        {
+          "name": "10000-concentric-squares",
+          "maxWallMs": 2905.2922,
+          "units": [
+            1200160000,
+            1200160000
+          ],
+          "outcomes": [
+            "limit.exceeded: the planar map needs more than 1200000000 units of work",
+            "limit.exceeded: the planar map needs more than 1200000000 units of work"
+          ]
+        },
+        {
+          "name": "20000-separate-closed-squares",
+          "maxWallMs": 318.2605,
+          "units": [
+            137183593,
+            137183593
+          ],
+          "outcomes": [
+            "ok",
+            "ok"
+          ]
+        },
+        {
+          "name": "1500-random-crossing-lines",
+          "maxWallMs": 2023.4608,
+          "units": [
+            1208823546,
+            1208823546
+          ],
+          "outcomes": [
+            "limit.exceeded: the planar map needs more than 1200000000 units of work",
+            "limit.exceeded: the planar map needs more than 1200000000 units of work"
+          ]
+        },
+        {
+          "name": "5000-point-random-scribble",
+          "maxWallMs": 300.66920000000005,
+          "units": [
+            1515542416,
+            1515542416
+          ],
+          "outcomes": [
+            "limit.exceeded: the planar map needs more than 1200000000 units of work",
+            "limit.exceeded: the planar map needs more than 1200000000 units of work"
+          ]
+        },
+        {
+          "name": "100000-point-dense-zigzag",
+          "maxWallMs": 46.0636,
+          "units": [
+            15000482029,
+            15000482029
+          ],
+          "outcomes": [
+            "limit.exceeded: the planar map needs more than 1200000000 units of work",
+            "limit.exceeded: the planar map needs more than 1200000000 units of work"
+          ]
+        },
+        {
+          "name": "100000-coincident-outlines-plus-one",
+          "maxWallMs": 465.5381,
+          "units": [
+            60003200026,
+            60003200026
+          ],
+          "outcomes": [
+            "limit.exceeded: the planar map needs more than 1200000000 units of work",
+            "limit.exceeded: the planar map needs more than 1200000000 units of work"
+          ]
+        }
+      ],
+      "worst": {
+        "name": "10000-concentric-squares",
+        "maxWallMs": 2905.2922,
+        "units": [
+          1200160000,
+          1200160000
+        ],
+        "outcomes": [
+          "limit.exceeded: the planar map needs more than 1200000000 units of work",
+          "limit.exceeded: the planar map needs more than 1200000000 units of work"
+        ]
+      },
+      "underTenSeconds": true
+    },
+    "current": {
+      "cases": [
+        {
+          "name": "100000-small-curves-plus-one",
+          "maxWallMs": 2716.3837,
+          "units": [
+            931042320,
+            931042320
+          ],
+          "outcomes": [
+            "ok",
+            "ok"
+          ]
+        },
+        {
+          "name": "grid-200x200-crossing-lines",
+          "maxWallMs": 567.9354,
+          "units": [
+            318410926,
+            318410926
+          ],
+          "outcomes": [
+            "ok",
+            "ok"
+          ]
+        },
+        {
+          "name": "grid-600x600-crossing-lines",
+          "maxWallMs": 2753.6586,
+          "units": [
+            1672507212,
+            1672507212
+          ],
+          "outcomes": [
+            "limit.exceeded: the planar map needs more than 1200000000 units of work",
+            "limit.exceeded: the planar map needs more than 1200000000 units of work"
+          ]
+        },
+        {
+          "name": "10000-concentric-squares",
+          "maxWallMs": 3508.8201,
+          "units": [
+            1200160000,
+            1200160000
+          ],
+          "outcomes": [
+            "limit.exceeded: the planar map needs more than 1200000000 units of work",
+            "limit.exceeded: the planar map needs more than 1200000000 units of work"
+          ]
+        },
+        {
+          "name": "20000-separate-closed-squares",
+          "maxWallMs": 309.1927,
+          "units": [
+            137183593,
+            137183593
+          ],
+          "outcomes": [
+            "ok",
+            "ok"
+          ]
+        },
+        {
+          "name": "1500-random-crossing-lines",
+          "maxWallMs": 1980.9742999999999,
+          "units": [
+            1208823546,
+            1208823546
+          ],
+          "outcomes": [
+            "limit.exceeded: the planar map needs more than 1200000000 units of work",
+            "limit.exceeded: the planar map needs more than 1200000000 units of work"
+          ]
+        },
+        {
+          "name": "5000-point-random-scribble",
+          "maxWallMs": 345.1685,
+          "units": [
+            1515542416,
+            1515542416
+          ],
+          "outcomes": [
+            "limit.exceeded: the planar map needs more than 1200000000 units of work",
+            "limit.exceeded: the planar map needs more than 1200000000 units of work"
+          ]
+        },
+        {
+          "name": "100000-point-dense-zigzag",
+          "maxWallMs": 43.3027,
+          "units": [
+            15000482029,
+            15000482029
+          ],
+          "outcomes": [
+            "limit.exceeded: the planar map needs more than 1200000000 units of work",
+            "limit.exceeded: the planar map needs more than 1200000000 units of work"
+          ]
+        },
+        {
+          "name": "100000-coincident-outlines-plus-one",
+          "maxWallMs": 433.94870000000003,
+          "units": [
+            60003200026,
+            60003200026
+          ],
+          "outcomes": [
+            "limit.exceeded: the planar map needs more than 1200000000 units of work",
+            "limit.exceeded: the planar map needs more than 1200000000 units of work"
+          ]
+        }
+      ],
+      "worst": {
+        "name": "10000-concentric-squares",
+        "maxWallMs": 3508.8201,
+        "units": [
+          1200160000,
+          1200160000
+        ],
+        "outcomes": [
+          "limit.exceeded: the planar map needs more than 1200000000 units of work",
+          "limit.exceeded: the planar map needs more than 1200000000 units of work"
+        ]
+      },
+      "underTenSeconds": true
+    },
+    "comparisons": [
+      {
+        "name": "100000-small-curves-plus-one",
+        "maxWallRatio": 0.9616034915860958,
+        "sameWorkAndOutcome": true
+      },
+      {
+        "name": "grid-200x200-crossing-lines",
+        "maxWallRatio": 0.9786917332155092,
+        "sameWorkAndOutcome": true
+      },
+      {
+        "name": "grid-600x600-crossing-lines",
+        "maxWallRatio": 0.9889707115603462,
+        "sameWorkAndOutcome": true
+      },
+      {
+        "name": "10000-concentric-squares",
+        "maxWallRatio": 1.2077339759491317,
+        "sameWorkAndOutcome": true
+      },
+      {
+        "name": "20000-separate-closed-squares",
+        "maxWallRatio": 0.9715082456038372,
+        "sameWorkAndOutcome": true
+      },
+      {
+        "name": "1500-random-crossing-lines",
+        "maxWallRatio": 0.9790030525918761,
+        "sameWorkAndOutcome": true
+      },
+      {
+        "name": "5000-point-random-scribble",
+        "maxWallRatio": 1.1480008594162618,
+        "sameWorkAndOutcome": true
+      },
+      {
+        "name": "100000-point-dense-zigzag",
+        "maxWallRatio": 0.9400633037799911,
+        "sameWorkAndOutcome": true
+      },
+      {
+        "name": "100000-coincident-outlines-plus-one",
+        "maxWallRatio": 0.9321443293255698,
+        "sameWorkAndOutcome": true
+      }
+    ]
+  }
+}

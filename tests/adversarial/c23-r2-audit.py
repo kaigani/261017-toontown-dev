@@ -9,6 +9,7 @@ import gzip
 import hashlib
 import importlib.util
 import json
+import os
 import pathlib
 import re
 import shutil
@@ -44,7 +45,18 @@ def coverage():
     spec = importlib.util.spec_from_file_location('r1_audit', ROOT/'tests/adversarial/c23-r1-audit.py')
     module = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(module)
-    return module.inventory()
+    v=module.inventory()
+    # Stop at the next function: the old audit's first-#[test] slice also includes the new BEFORE_C23 whitelist.
+    # Whitelist/prelude strings cannot count as executable contract cases.
+    cases=(ROOT/'crates/executor/tests/c23_contracts.rs').read_text(encoding='utf-8').split('fn cases()',1)[1].split('fn prelude',1)[0]
+    entries=re.findall(r'"((?:draw|colour)\.[a-zA-Z.]+)"\s*,',cases)
+    covered=set(entries)
+    v['commonContractCases']=len(entries)
+    v['commonContractUniqueCommands']=len(covered)
+    v['commonContractCommands']=sorted(covered)
+    v['missingFromCommonContract']=sorted(c['id'] for c in v['commands'] if c['kind'] in ['action','toggle'] and c['id'] not in covered)
+    v['independentCaseBoundary']='fn cases() through fn prelude; excludes setup and predecessor whitelist'
+    return v
 
 def declared():
     names = git('diff', '--name-only', BASE+'..'+HEAD).splitlines()
@@ -54,6 +66,7 @@ def declared():
             'normalFeatureDiff': git('diff', BASE+'..'+HEAD, '--', 'crates/executor/Cargo.toml', 'crates/vector/Cargo.toml')}
 
 def ci(out):
+    from PIL import Image
     run = json.loads(read(out/'ci-run.json'))
     log = read(ROOT/'target/c23-r2-ci/ci.log')
     results = []
@@ -74,8 +87,13 @@ def ci(out):
         manifests[os] = {'entries':len(manifest),'equalsCommitted':manifest==expected}
         for name in expected:
             a, b = folder/(name+'.png'), ROOT/'reviews/evidence/M2-C2.3/goldens'/(name+'.png')
-            comparisons.append({'os':os,'name':name,'bytes':a.stat().st_size,'sha256':hashlib.sha256(a.read_bytes()).hexdigest(),'equalsCommitted':a.read_bytes()==b.read_bytes()})
+            im=Image.open(a).convert('RGBA')
+            premul=bytes(round(c*px[3]/255) if k<3 else px[3] for px in im.getdata() for k,c in enumerate(px))
+            pixel_hash=hashlib.sha256(premul).hexdigest()
+            comparisons.append({'os':os,'name':name,'bytes':a.stat().st_size,'sha256':hashlib.sha256(a.read_bytes()).hexdigest(),'equalsCommitted':a.read_bytes()==b.read_bytes(),
+                                'recomputedPremultipliedPixelsSha256':pixel_hash,'pixelHashMatchesManifestAndCommitted':pixel_hash==manifest[name]==expected[name]})
     assert all(x['equalsCommitted'] for x in comparisons)
+    assert all(x['pixelHashMatchesManifestAndCommitted'] for x in comparisons)
     assert all(x['equalsCommitted'] for x in manifests.values())
     assert run['headSha'].startswith(HEAD)
     return {'run':41320596822,'head':run['headSha'],'successfulJobs':sum(x['conclusion']=='success' for x in results),'jobs':results,'manifests':manifests,'pngComparisons':comparisons}
@@ -105,14 +123,20 @@ def collect(out):
         if m:counts[p.name]={'summaries':len(m),**dict(zip(['passed','failed','ignored'],[sum(x[i] for x in m) for i in range(3)]))}
     write('gate-counts.json',counts)
     # Keep the independently downloaded outputs together with their receipts, not only under target/.
-    for os in ['Windows','macOS']:
-        source=ROOT/'target/c23-r2-ci'/('check-'+os)/'c23-render'
-        if source.exists():shutil.copytree(source,out/'ci-renders'/os,dirs_exist_ok=True)
+    for platform in ['Windows','macOS']:
+        source=ROOT/'target/c23-r2-ci'/('check-'+platform)/'c23-render'
+        if source.exists():shutil.copytree(source,out/'ci-renders'/platform,dirs_exist_ok=True)
     ci_log=ROOT/'target/c23-r2-ci/ci.log'
     if ci_log.exists():(out/'ci-all.log.gz').write_bytes(gzip.compress(ci_log.read_bytes(),mtime=0))
     headless=ROOT/'target/c23-r2-ci/headless-Windows'
     if headless.exists():
         write('headless-artifact-hashes.json',[{'path':str(p.relative_to(headless)),'bytes':p.stat().st_size,'sha256':hashlib.sha256(p.read_bytes()).hexdigest()} for p in headless.rglob('*') if p.is_file()])
+    for platform in ['Windows','macOS']:
+        source=ROOT/'target/c23-r2-ci'/('headless-'+platform)
+        if source.exists():
+            for p in source.rglob('*.json'):
+                target=out/'ci-observations'/platform/p.relative_to(source)
+                target.parent.mkdir(parents=True,exist_ok=True);shutil.copy2(p,target)
     module_spec=importlib.util.spec_from_file_location('r1_analyzers',ROOT/'tests/adversarial/c23-r1-audit.py')
     analyzers=importlib.util.module_from_spec(module_spec);module_spec.loader.exec_module(analyzers)
     series_spec=importlib.util.spec_from_file_location('measurement_series',ROOT/'scripts/analyse-measurements.py')
@@ -134,6 +158,28 @@ def collect(out):
         by={c['name']:c for c in b['cases']}
         results['c22']={'prior':a,'current':b,'comparisons':[{'name':c['name'],'maxWallRatio':by[c['name']]['maxWallMs']/c['maxWallMs'],'sameWorkAndOutcome':(c['units'],c['outcomes'])==(by[c['name']]['units'],by[c['name']]['outcomes'])} for c in a['cases']]}
     write('performance-recomputed.json',results)
+    base_files=set(git('ls-tree','-r','--name-only',HEAD).splitlines())
+    changed=git('diff','--name-only',HEAD,'--').splitlines()
+    legacy=[]
+    for p in ['reviews/evidence/M1-C1.3-r2/inspection-memory.json','reviews/evidence/M1-C1.3-r3/open-latency.json']:
+        actual=(ROOT/p).read_bytes();committed=subprocess.check_output(['git','show',HEAD+':'+p],cwd=ROOT)
+        legacy.append({'path':p,'sha256':hashlib.sha256(actual).hexdigest(),'exactCommittedBytes':actual==committed})
+    write('evidence-hygiene.json',{'reviewedHead':HEAD,'trackedAtReviewedHead':len(base_files),
+          'changedExistingFiles':sorted(set(changed)&base_files),'legacyReceipts':legacy,
+          'TT_COMMIT_REVIEW_RECEIPTS':os.environ.get('TT_COMMIT_REVIEW_RECEIPTS'),
+          'branch':git('branch','--show-current').strip(),'statusBeforeCommit':git('status','--short')})
+    if (out/'workspace.log').exists():
+        content=read(out/'workspace.log')
+        failures=sorted(set(re.findall(r'test\s+([A-Za-z0-9_]+)\s+\.\.\.\s+FAILED',content)))
+        expected=sorted(['r10_all_shapes_empty_cell_create_or_refuse_atomically','r10_each_shape_preserves_explicit_false_and_true_creates',
+                         'r12_painted_zone_warning_survives_drawing_selection','r12_zone_selection_readback_must_keep_a_valid_derived_id',
+                         'timed_out_queued_mutation_is_cancelled_instead_of_committing_later'])
+        write('final-validation.json',{'reviewedHead':HEAD,'workspaceCounts':counts.get('workspace.log'),
+              'intentionalC23FailingTests':expected,'observedFailingTests':failures,
+              'unexpectedFailingTests':sorted(set(failures)-set(expected)),
+              'missingExpectedFailures':sorted(set(expected)-set(failures)),
+              'allCountsByLog':counts,'hygieneChangedExistingFiles':sorted(set(changed)&base_files),
+              'note':'Do not sum targeted reruns into workspace counts. Cache sole-test and serialized-target observations are separate, retained evidence.'})
 
 class Audit(unittest.TestCase):
     def test_protected_files_are_unchanged(self):
@@ -144,6 +190,7 @@ class Audit(unittest.TestCase):
         v=coverage();self.assertEqual(v['missingFromCommonContract'],[])
         self.assertTrue(v['generatedDeltaExactlyMatchesNewHandlers'])
         self.assertEqual(len(v['commands']),37)
+        self.assertEqual(v['commonContractUniqueCommands'],28)
     def test_symmetry_owner_agrees_with_declaration_and_handoff(self):
         lines=(ROOT/'plan/traceability.csv').read_text(encoding='utf-8').splitlines()
         row=next(x for x in lines if x.startswith('C21-R1-11 '))
