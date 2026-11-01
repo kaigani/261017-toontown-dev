@@ -174,21 +174,9 @@ fn selectables(cx: &Cx, d: &Drawing, with_zones: bool) -> Result<Vec<(String, Op
     Ok(out)
 }
 
+/// Lasso containment, exact on the snapped grid (the shared planar predicates, C23-R1-08); the boundary counts.
 fn point_in_polygon(poly: &[P], q: P) -> bool {
-    let n = poly.len();
-    let mut w = 0i32;
-    for i in 0..n {
-        let (a, b) = (poly[i], poly[(i + 1) % n]);
-        let o = (b - a).cross(q - a);
-        if a.y <= q.y {
-            if b.y > q.y && o > 0.0 {
-                w += 1;
-            }
-        } else if b.y <= q.y && o < 0.0 {
-            w -= 1;
-        }
-    }
-    w != 0
+    tt_vector::planar::predicates::inside_polygon(poly, q, true)
 }
 
 fn corners(r: &Rect) -> [P; 4] {

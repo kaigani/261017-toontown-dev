@@ -79,11 +79,7 @@ fn cross(a: P, b: P) -> f64 {
 }
 
 /// Orientation of `c` relative to `a`→`b` on the grid: positive left, negative right, zero collinear (exact).
-fn orient(a: Ip, b: Ip, c: Ip) -> i128 {
-    let (ux, uy) = (i128::from(b[0] - a[0]), i128::from(b[1] - a[1]));
-    let (vx, vy) = (i128::from(c[0] - a[0]), i128::from(c[1] - a[1]));
-    ux * vy - uy * vx
-}
+use super::predicates::orient;
 
 fn on_segment(p: Ip, a: Ip, b: Ip) -> bool {
     orient(a, b, p) == 0

@@ -6,30 +6,20 @@ use serde_json::{Value, json};
 
 use crate::geom::P;
 use crate::path::{Anchor, Path};
+use crate::planar::predicates;
 
-/// Whether `q` is inside the closed polygon `poly` (non-zero winding).
+/// Whether `q` is inside the closed polygon `poly` (non-zero winding, exact on the snapped grid; a point on the
+/// boundary is not inside). Every decision here goes through `planar::predicates` (C23-R1-08).
 #[must_use]
 pub fn inside(poly: &[P], q: P) -> bool {
-    let n = poly.len();
-    let mut w = 0i32;
-    for i in 0..n {
-        let (a, b) = (poly[i], poly[(i + 1) % n]);
-        let o = (b - a).cross(q - a);
-        if a.y <= q.y {
-            if b.y > q.y && o > 0.0 {
-                w += 1;
-            }
-        } else if b.y <= q.y && o < 0.0 {
-            w -= 1;
-        }
-    }
-    w != 0
+    predicates::inside_polygon(poly, q, false)
 }
 
 /// Whether two closed polygons overlap (an edge crossing, or one containing a vertex of the other).
 #[must_use]
 pub fn polygons_meet(a: &[P], b: &[P]) -> bool {
-    if a.iter().any(|p| inside(b, *p)) || b.iter().any(|p| inside(a, *p)) {
+    let touches = |poly: &[P], q: P| predicates::inside_polygon(poly, q, true);
+    if a.iter().any(|p| touches(b, *p)) || b.iter().any(|p| touches(a, *p)) {
         return true;
     }
     let edges = |v: &[P]| -> Vec<(P, P)> { (0..v.len()).map(|i| (v[i], v[(i + 1) % v.len()])).collect() };
@@ -38,17 +28,13 @@ pub fn polygons_meet(a: &[P], b: &[P]) -> bool {
 }
 
 fn segments_cross(p: P, q: P, r: P, s: P) -> bool {
-    let d1 = (q - p).cross(r - p);
-    let d2 = (q - p).cross(s - p);
-    let d3 = (s - r).cross(p - r);
-    let d4 = (s - r).cross(q - r);
-    d1 * d2 < 0.0 && d3 * d4 < 0.0
+    predicates::segments_cross(p, q, r, s)
 }
 
 /// Whether an open polyline meets a closed polygon (a point inside, or an edge crossing).
 #[must_use]
 pub fn polyline_meets(line: &[P], poly: &[P]) -> bool {
-    if line.iter().any(|p| inside(poly, *p)) {
+    if line.iter().any(|p| predicates::inside_polygon(poly, *p, true)) {
         return true;
     }
     let n = poly.len();

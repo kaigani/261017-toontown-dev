@@ -266,10 +266,7 @@ pub fn unsnap(q: Ip) -> P {
     P::new(q[0] as f64 / GRID, q[1] as f64 / GRID)
 }
 
-fn orient(a: Ip, b: Ip, c: Ip) -> i128 {
-    let (ax, ay) = (i128::from(a[0]), i128::from(a[1]));
-    (i128::from(b[0]) - ax) * (i128::from(c[1]) - ay) - (i128::from(b[1]) - ay) * (i128::from(c[0]) - ax)
-}
+use super::predicates::orient;
 
 fn sign(v: i128) -> i8 {
     match v.cmp(&0) {

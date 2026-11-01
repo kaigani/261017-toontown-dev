@@ -10,5 +10,6 @@ pub mod gap;
 pub mod graph;
 pub mod layer;
 pub mod node;
+pub mod predicates;
 
 pub use graph::{EdgeKind, LayerMap, StrokeIn, Zone, build};

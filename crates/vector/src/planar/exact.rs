@@ -42,11 +42,7 @@ impl Param {
     }
 }
 
-fn orient(a: Ip, b: Ip, c: Ip) -> i128 {
-    let (ux, uy) = (i128::from(b[0] - a[0]), i128::from(b[1] - a[1]));
-    let (vx, vy) = (i128::from(c[0] - a[0]), i128::from(c[1] - a[1]));
-    ux * vy - uy * vx
-}
+use super::predicates::orient;
 
 fn dot(a: Ip, b: Ip, c: Ip, d: Ip) -> i128 {
     i128::from(b[0] - a[0]) * i128::from(d[0] - c[0]) + i128::from(b[1] - a[1]) * i128::from(d[1] - c[1])
