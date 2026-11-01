@@ -1,0 +1,1211 @@
+{
+  "target": "7a77138c6fb6531b67f4e840b765bd467bb76d28",
+  "scope": "Touched requirements of 02 sections 4-8 and 13; 03 sections 7-9 and 16. Normalized source units, not independent test counts. GUI/deferred work has an owner. Implemented means the exercised/inspected slice, not a proof over every input.",
+  "counts": {
+    "deferred-with-owner": 25,
+    "implemented": 81,
+    "divergent": 17
+  },
+  "commandCounts": {
+    "implemented": 22,
+    "divergent": 15
+  },
+  "units": [
+    {
+      "unit": "C23-U001",
+      "clause": "02 4.1",
+      "requirement": "Drawing canvas and workspace",
+      "status": "deferred-with-owner",
+      "evidenceOrOwner": "M4 C4.2"
+    },
+    {
+      "unit": "C23-U002",
+      "clause": "02 4.2",
+      "requirement": "Drawing-view aid and content stack",
+      "status": "deferred-with-owner",
+      "evidenceOrOwner": "M4 C4.2"
+    },
+    {
+      "unit": "C23-U003",
+      "clause": "02 4.3",
+      "requirement": "Zoom, rotation, pan and alternate view state",
+      "status": "deferred-with-owner",
+      "evidenceOrOwner": "M4 C4.2"
+    },
+    {
+      "unit": "C23-U004",
+      "clause": "02 4.4",
+      "requirement": "Context and main-menu command bindings",
+      "status": "deferred-with-owner",
+      "evidenceOrOwner": "M4 C4.2; registry GUI metadata exists"
+    },
+    {
+      "unit": "C23-U005",
+      "clause": "02 4.5",
+      "requirement": "Drawing clipboard structure and colour recovery",
+      "status": "implemented",
+      "evidenceOrOwner": "C2.1/C2.2 predecessor suites, workspace"
+    },
+    {
+      "unit": "C23-U006",
+      "clause": "02 4.5",
+      "requirement": "Delete and selection through the shared command layer",
+      "status": "implemented",
+      "evidenceOrOwner": "c21_draw; c23_select"
+    },
+    {
+      "unit": "C23-U007",
+      "clause": "02 4.5",
+      "requirement": "Point selection routes contour editing",
+      "status": "implemented",
+      "evidenceOrOwner": "c23_transform; c23_select"
+    },
+    {
+      "unit": "C23-U008",
+      "clause": "02 5.1",
+      "requirement": "Tool groups, activation and cycling",
+      "status": "deferred-with-owner",
+      "evidenceOrOwner": "M4 C4.2"
+    },
+    {
+      "unit": "C23-U009",
+      "clause": "02 5.2",
+      "requirement": "Temporary modifiers, pen-eraser override and gesture constraints",
+      "status": "deferred-with-owner",
+      "evidenceOrOwner": "M4 C4.2"
+    },
+    {
+      "unit": "C23-U010",
+      "clause": "02 6.1",
+      "requirement": "Interactive pen list, sliders and tool-family memory",
+      "status": "deferred-with-owner",
+      "evidenceOrOwner": "M4 C4.2"
+    },
+    {
+      "unit": "C23-U011",
+      "clause": "02 6.1",
+      "requirement": "Explicit pen in structural drawing and conversion commands",
+      "status": "implemented",
+      "evidenceOrOwner": "c23_strokeops; c23_cut"
+    },
+    {
+      "unit": "C23-U012",
+      "clause": "02 6.2",
+      "requirement": "Configured nonidentity symmetry and deterministic corpus",
+      "status": "deferred-with-owner",
+      "evidenceOrOwner": "C21-R1-11; handoff C2.4, traceability still C2.3 (R1-15)"
+    },
+    {
+      "unit": "C23-U013",
+      "clause": "02 6.2",
+      "requirement": "Explicit behind/new-layer placement",
+      "status": "implemented",
+      "evidenceOrOwner": "C2.1 suites; c23_layers"
+    },
+    {
+      "unit": "C23-U014",
+      "clause": "02 6.3",
+      "requirement": "Tablet preference controls",
+      "status": "deferred-with-owner",
+      "evidenceOrOwner": "M4 C4.2"
+    },
+    {
+      "unit": "C23-U015",
+      "clause": "02 7.1.1",
+      "requirement": "ID, point, rectangle and lasso selections",
+      "status": "implemented",
+      "evidenceOrOwner": "c23_select"
+    },
+    {
+      "unit": "C23-U016",
+      "clause": "02 7.1.1",
+      "requirement": "Selection combination and readable selected points",
+      "status": "implemented",
+      "evidenceOrOwner": "c23_select"
+    },
+    {
+      "unit": "C23-U017",
+      "clause": "02 7.1.1",
+      "requirement": "Translation, scale, rotation and skew matrices",
+      "status": "implemented",
+      "evidenceOrOwner": "c23_transform; c23_r1_contracts"
+    },
+    {
+      "unit": "C23-U018",
+      "clause": "02 7.1.1",
+      "requirement": "Text and bitmap transforms compose their stored matrices",
+      "status": "implemented",
+      "evidenceOrOwner": "c23_transform; ops/transform source"
+    },
+    {
+      "unit": "C23-U019",
+      "clause": "02 7.1.1",
+      "requirement": "Whole affine zone transforms carry fill matrices",
+      "status": "implemented",
+      "evidenceOrOwner": "c23_render upright rotation; c23_transform"
+    },
+    {
+      "unit": "C23-U020",
+      "clause": "02 7.1.1",
+      "requirement": "Copy transforms retain originals and regenerate copied IDs",
+      "status": "implemented",
+      "evidenceOrOwner": "c23_transform"
+    },
+    {
+      "unit": "C23-U021",
+      "clause": "02 7.1.1",
+      "requirement": "Gesture handles, lasso modifiers and pixel nudging",
+      "status": "deferred-with-owner",
+      "evidenceOrOwner": "M4 C4.2"
+    },
+    {
+      "unit": "C23-U022",
+      "clause": "02 7.1.2",
+      "requirement": "All incident anchors follow a selected shared junction",
+      "status": "divergent",
+      "evidenceOrOwner": "C23-R1-02; c23_r1_commands"
+    },
+    {
+      "unit": "C23-U023",
+      "clause": "02 7.1.2",
+      "requirement": "Contour snap considers segment interiors",
+      "status": "divergent",
+      "evidenceOrOwner": "C23-R1-03; c23_r1_commands"
+    },
+    {
+      "unit": "C23-U024",
+      "clause": "02 7.1.2",
+      "requirement": "Add anchor without changing curve geometry",
+      "status": "implemented",
+      "evidenceOrOwner": "c23_transform"
+    },
+    {
+      "unit": "C23-U025",
+      "clause": "02 7.1.2",
+      "requirement": "Symmetric, broken and reset handle operations",
+      "status": "implemented",
+      "evidenceOrOwner": "c23_transform"
+    },
+    {
+      "unit": "C23-U026",
+      "clause": "02 7.1.2",
+      "requirement": "Point deletion, segment reshaping and direct-outline spine discard",
+      "status": "implemented",
+      "evidenceOrOwner": "c23_transform"
+    },
+    {
+      "unit": "C23-U027",
+      "clause": "02 7.1.2",
+      "requirement": "Smooth supports selected anchor subsets",
+      "status": "implemented",
+      "evidenceOrOwner": "c23_r1_geometry; c23_strokeops"
+    },
+    {
+      "unit": "C23-U028",
+      "clause": "02 7.1.3",
+      "requirement": "Convex projective and nonconvex bilinear envelope geometry",
+      "status": "implemented",
+      "evidenceOrOwner": "c23_transform; vector transform unit tests"
+    },
+    {
+      "unit": "C23-U029",
+      "clause": "02 7.1.3",
+      "requirement": "Envelope keeps painted zones and mapping attachment",
+      "status": "divergent",
+      "evidenceOrOwner": "C23-R1-01; c23_r1_commands"
+    },
+    {
+      "unit": "C23-U030",
+      "clause": "02 7.1.4",
+      "requirement": "Reposition applies the same affine transform across an element",
+      "status": "implemented",
+      "evidenceOrOwner": "c23_transform geometry tests"
+    },
+    {
+      "unit": "C23-U031",
+      "clause": "02 7.1.4",
+      "requirement": "Reposition preserves zone paint and matrices",
+      "status": "divergent",
+      "evidenceOrOwner": "C23-R1-01; c23_r1_commands"
+    },
+    {
+      "unit": "C23-U032",
+      "clause": "02 7.2.1",
+      "requirement": "Brush pens, spines and rigid-motion preservation",
+      "status": "implemented",
+      "evidenceOrOwner": "C2.1 suites; c23_transform"
+    },
+    {
+      "unit": "C23-U033",
+      "clause": "02 7.2.2",
+      "requirement": "Pencil/invisible paths re-node through common settle",
+      "status": "implemented",
+      "evidenceOrOwner": "C2.2 suites; c23_cut"
+    },
+    {
+      "unit": "C23-U034",
+      "clause": "02 7.2.3",
+      "requirement": "Rectangle closure and square/centre constraints",
+      "status": "implemented",
+      "evidenceOrOwner": "c23_select"
+    },
+    {
+      "unit": "C23-U035",
+      "clause": "02 7.2.4",
+      "requirement": "Four-cubic ellipse and circle/centre constraints",
+      "status": "implemented",
+      "evidenceOrOwner": "c23_select"
+    },
+    {
+      "unit": "C23-U036",
+      "clause": "02 7.2.5",
+      "requirement": "Polyline handles and structured closure",
+      "status": "implemented",
+      "evidenceOrOwner": "c23_select; SI-069"
+    },
+    {
+      "unit": "C23-U037",
+      "clause": "02 7.2.5",
+      "requirement": "Interactive continue/add/delete and modifier feedback",
+      "status": "deferred-with-owner",
+      "evidenceOrOwner": "M4 C4.2"
+    },
+    {
+      "unit": "C23-U038",
+      "clause": "02 7.2.6",
+      "requirement": "Line and constrained/continued endpoints",
+      "status": "implemented",
+      "evidenceOrOwner": "c23_select"
+    },
+    {
+      "unit": "C23-U039",
+      "clause": "02 7.3",
+      "requirement": "Paint, unpaint, gap close and invisible boundaries",
+      "status": "implemented",
+      "evidenceOrOwner": "C2.2 suites retained"
+    },
+    {
+      "unit": "C23-U040",
+      "clause": "02 7.3.7",
+      "requirement": "Structured fill-mapping operations",
+      "status": "implemented",
+      "evidenceOrOwner": "c23_colour; c23_r1_colour"
+    },
+    {
+      "unit": "C23-U041",
+      "clause": "02 7.4.1",
+      "requirement": "Eraser path is geometry, not a file path",
+      "status": "implemented",
+      "evidenceOrOwner": "c21_obligations; c23_cut"
+    },
+    {
+      "unit": "C23-U042",
+      "clause": "02 7.4.1",
+      "requirement": "Eraser line subtraction and zone edges",
+      "status": "implemented",
+      "evidenceOrOwner": "c23_cut"
+    },
+    {
+      "unit": "C23-U043",
+      "clause": "02 7.4.1",
+      "requirement": "Brushes kept whole under the accepted interim cut ruling",
+      "status": "implemented",
+      "evidenceOrOwner": "SI-059/SI-071; c23_cut"
+    },
+    {
+      "unit": "C23-U044",
+      "clause": "02 7.4.2",
+      "requirement": "Polygon, rectangle and segment cuts with fill carry-over",
+      "status": "implemented",
+      "evidenceOrOwner": "c23_cut"
+    },
+    {
+      "unit": "C23-U045",
+      "clause": "02 7.4.2",
+      "requirement": "Wholly enclosed text participates in Cutter selection",
+      "status": "divergent",
+      "evidenceOrOwner": "C23-R1-11; c23_r1_commands"
+    },
+    {
+      "unit": "C23-U046",
+      "clause": "02 7.4.3",
+      "requirement": "Scissor rectangle uses the shared Cutter primitive",
+      "status": "implemented",
+      "evidenceOrOwner": "SI-071; c23_cut"
+    },
+    {
+      "unit": "C23-U047",
+      "clause": "02 7.5",
+      "requirement": "Navigation tools and gestures",
+      "status": "deferred-with-owner",
+      "evidenceOrOwner": "M4 C4.2"
+    },
+    {
+      "unit": "C23-U048",
+      "clause": "02 7.6",
+      "requirement": "Text creation, edit and run formatting",
+      "status": "implemented",
+      "evidenceOrOwner": "C2.1 text suites"
+    },
+    {
+      "unit": "C23-U049",
+      "clause": "02 7.6",
+      "requirement": "Interactive text editing and panel",
+      "status": "deferred-with-owner",
+      "evidenceOrOwner": "M4 C4.2"
+    },
+    {
+      "unit": "C23-U050",
+      "clause": "02 7.7",
+      "requirement": "Interactive remembered tool defaults",
+      "status": "deferred-with-owner",
+      "evidenceOrOwner": "M4 C4.2"
+    },
+    {
+      "unit": "C23-U051",
+      "clause": "02 8.1",
+      "requirement": "Flatten upper/lower precedence and top/bottom position",
+      "status": "implemented",
+      "evidenceOrOwner": "c23_layers; SI-073; policy source inspection"
+    },
+    {
+      "unit": "C23-U052",
+      "clause": "02 8.1",
+      "requirement": "Hidden lower pencil removal and single-layer no-op",
+      "status": "implemented",
+      "evidenceOrOwner": "c23_layers"
+    },
+    {
+      "unit": "C23-U053",
+      "clause": "02 8.1",
+      "requirement": "Flatten work-limit refusal is atomic",
+      "status": "implemented",
+      "evidenceOrOwner": "c23_r1_measure; 0.5360976 seconds"
+    },
+    {
+      "unit": "C23-U054",
+      "clause": "02 8.2",
+      "requirement": "Optimize preserves appearance for thick pencils and upper brushes",
+      "status": "divergent",
+      "evidenceOrOwner": "C23-R1-04; c23_r1_commands"
+    },
+    {
+      "unit": "C23-U055",
+      "clause": "02 8.2",
+      "requirement": "Alpha, gradient and texture overlap stacks stay separate",
+      "status": "implemented",
+      "evidenceOrOwner": "c23_layers"
+    },
+    {
+      "unit": "C23-U056",
+      "clause": "02 8.2",
+      "requirement": "Overlap and point-side decisions use exact ruled grid predicates",
+      "status": "divergent",
+      "evidenceOrOwner": "C23-R1-08; c23_r1_geometry"
+    },
+    {
+      "unit": "C23-U057",
+      "clause": "02 8.3",
+      "requirement": "Smooth tolerance measured in both directions against original",
+      "status": "implemented",
+      "evidenceOrOwner": "c23_r1_geometry dense independent distances"
+    },
+    {
+      "unit": "C23-U058",
+      "clause": "02 8.3",
+      "requirement": "Smooth respects pen/pressure and brush spine authority",
+      "status": "implemented",
+      "evidenceOrOwner": "c23_strokeops"
+    },
+    {
+      "unit": "C23-U059",
+      "clause": "02 8.3",
+      "requirement": "Smooth stays within a charged aggregate work budget",
+      "status": "divergent",
+      "evidenceOrOwner": "C23-R1-07; real release binary 40-second timeout"
+    },
+    {
+      "unit": "C23-U060",
+      "clause": "02 8.4",
+      "requirement": "Arrange preserves stacking order and separates partial layers",
+      "status": "implemented",
+      "evidenceOrOwner": "c23_layers; c23_r1_contracts"
+    },
+    {
+      "unit": "C23-U061",
+      "clause": "02 8.5",
+      "requirement": "Spine-based centre line and no-spine retention",
+      "status": "implemented",
+      "evidenceOrOwner": "c23_strokeops; SI-076"
+    },
+    {
+      "unit": "C23-U062",
+      "clause": "02 8.5",
+      "requirement": "Medial-axis pruning, branches, colour splitting for spineless outlines",
+      "status": "deferred-with-owner",
+      "evidenceOrOwner": "C23-T1; M2 C2.4"
+    },
+    {
+      "unit": "C23-U063",
+      "clause": "02 8.5",
+      "requirement": "Paint-only selection reports centreLineOnFill",
+      "status": "divergent",
+      "evidenceOrOwner": "C23-R1-12; c23_r1_commands"
+    },
+    {
+      "unit": "C23-U064",
+      "clause": "02 8.6",
+      "requirement": "Invisible centre paths preserve zone closure and fills",
+      "status": "implemented",
+      "evidenceOrOwner": "c23_strokeops"
+    },
+    {
+      "unit": "C23-U065",
+      "clause": "02 8.6",
+      "requirement": "Gradient/texture line conversion succeeds and retains mapping",
+      "status": "divergent",
+      "evidenceOrOwner": "C23-R1-05; c23_r1_commands"
+    },
+    {
+      "unit": "C23-U066",
+      "clause": "02 8.7",
+      "requirement": "Per-character groups use layout_placed positions and source runs",
+      "status": "implemented",
+      "evidenceOrOwner": "c23_contracts; c23_r1_geometry"
+    },
+    {
+      "unit": "C23-U067",
+      "clause": "02 8.7",
+      "requirement": "Glyph counter holes use curve-preserving SI-053 bridges",
+      "status": "implemented",
+      "evidenceOrOwner": "ops/glyphs unit tests; renderer uses nonzero fill"
+    },
+    {
+      "unit": "C23-U068",
+      "clause": "02 8.8",
+      "requirement": "Automatic gap closure and retained invisible segments",
+      "status": "implemented",
+      "evidenceOrOwner": "C2.2 suites and SI-062"
+    },
+    {
+      "unit": "C23-U069",
+      "clause": "02 8.9",
+      "requirement": "Snap preference and gestures",
+      "status": "deferred-with-owner",
+      "evidenceOrOwner": "M4 C4.2; explicit snap flag is delivered"
+    },
+    {
+      "unit": "C23-U070",
+      "clause": "02 8.10",
+      "requirement": "Draw-on-top matching-colour fusion primitive",
+      "status": "implemented",
+      "evidenceOrOwner": "C2.1 brush suites; SI-073"
+    },
+    {
+      "unit": "C23-U071",
+      "clause": "02 8.11",
+      "requirement": "Draw Behind explicit placement",
+      "status": "implemented",
+      "evidenceOrOwner": "C2.1 drawing suites"
+    },
+    {
+      "unit": "C23-U072",
+      "clause": "02 8.12",
+      "requirement": "Show-strokes render aid and open-end markers",
+      "status": "implemented",
+      "evidenceOrOwner": "c23_render"
+    },
+    {
+      "unit": "C23-U073",
+      "clause": "02 8.13",
+      "requirement": "Fixed rotation and reflection pivots at selection bounds",
+      "status": "implemented",
+      "evidenceOrOwner": "c23_transform"
+    },
+    {
+      "unit": "C23-U074",
+      "clause": "02 8.14",
+      "requirement": "Group/ungroup preserve members and ordering",
+      "status": "implemented",
+      "evidenceOrOwner": "C2.1/C2.2 group suites"
+    },
+    {
+      "unit": "C23-U075",
+      "clause": "02 8.15",
+      "requirement": "Feather bands, step confirmation, texture skips and job cancellation",
+      "status": "deferred-with-owner",
+      "evidenceOrOwner": "C23-T2; M2 C2.4 after SI-077 spec-owner ruling"
+    },
+    {
+      "unit": "C23-U076",
+      "clause": "02 13.1.1",
+      "requirement": "Commands declare schemas, examples and GUI ownership",
+      "status": "implemented",
+      "evidenceOrOwner": "registry gates; 601 generated declarations current"
+    },
+    {
+      "unit": "C23-U077",
+      "clause": "02 13.1.2",
+      "requirement": "Structural drawing does not require changing tools",
+      "status": "implemented",
+      "evidenceOrOwner": "c21_obligations; source review"
+    },
+    {
+      "unit": "C23-U078",
+      "clause": "02 13.1.4",
+      "requirement": "New shape commands accept element/frame/createDrawing addressing",
+      "status": "divergent",
+      "evidenceOrOwner": "C23-R1-10; c23_r1_commands"
+    },
+    {
+      "unit": "C23-U079",
+      "clause": "02 13.1.5",
+      "requirement": "Scene/view geometry targets and gesture equivalence",
+      "status": "deferred-with-owner",
+      "evidenceOrOwner": "M3 C3.2 / M4 C4.2"
+    },
+    {
+      "unit": "C23-U080",
+      "clause": "02 13.1.8",
+      "requirement": "Agent operations use typed nonmodal refusals",
+      "status": "implemented",
+      "evidenceOrOwner": "executor gates; bounded exceptions identified separately"
+    },
+    {
+      "unit": "C23-U081",
+      "clause": "02 13.1.9",
+      "requirement": "Seeded IDs and geometry determinism",
+      "status": "implemented",
+      "evidenceOrOwner": "C2.1/C2.2 goldens; c23_render"
+    },
+    {
+      "unit": "C23-U082",
+      "clause": "02 13.1.10",
+      "requirement": "Readable drawing, bounds, selection and virtual view mapping",
+      "status": "implemented",
+      "evidenceOrOwner": "c23_select; SI-069"
+    },
+    {
+      "unit": "C23-U083",
+      "clause": "02 13.1.11",
+      "requirement": "Results and exact changed-ID events for sampled mutations",
+      "status": "implemented",
+      "evidenceOrOwner": "c23_r1_contracts five-command variants"
+    },
+    {
+      "unit": "C23-U084",
+      "clause": "02 13.1.11",
+      "requirement": "Every new mutation has the claimed full common contract",
+      "status": "divergent",
+      "evidenceOrOwner": "C23-R1-14; c23-r1-audit.py"
+    },
+    {
+      "unit": "C23-U085",
+      "clause": "02 13.1.12",
+      "requirement": "Long-work never-block guarantee for Smooth",
+      "status": "divergent",
+      "evidenceOrOwner": "C23-R1-07"
+    },
+    {
+      "unit": "C23-U086",
+      "clause": "02 13.1.13",
+      "requirement": "Batch failure rolls back drawing mutations and render files",
+      "status": "implemented",
+      "evidenceOrOwner": "c23_r1_contracts"
+    },
+    {
+      "unit": "C23-U087",
+      "clause": "02 13.5",
+      "requirement": "Drawing render regions, padding, camera and dimensions",
+      "status": "implemented",
+      "evidenceOrOwner": "c23_render; SI-069/SI-074"
+    },
+    {
+      "unit": "C23-U088",
+      "clause": "02 13.5",
+      "requirement": "Drawing render file output is staged and scope checked",
+      "status": "implemented",
+      "evidenceOrOwner": "c23_r1_contracts; Effect::WriteFile source"
+    },
+    {
+      "unit": "C23-U089",
+      "clause": "02 13.5",
+      "requirement": "Drawing render warnings and pixelsSha256",
+      "status": "implemented",
+      "evidenceOrOwner": "c23_render; SDK envelopes"
+    },
+    {
+      "unit": "C23-U090",
+      "clause": "02 13.5",
+      "requirement": "No machine-font dependency in cross-OS render goldens",
+      "status": "implemented",
+      "evidenceOrOwner": "c23_render fixture source; both CI equality tests"
+    },
+    {
+      "unit": "C23-U091",
+      "clause": "02 13.5",
+      "requirement": "Bitmap-node drawing rendering",
+      "status": "deferred-with-owner",
+      "evidenceOrOwner": "M3 C3.3; render.bitmapSkipped warning"
+    },
+    {
+      "unit": "C23-U092",
+      "clause": "02 13.6",
+      "requirement": "One drawing event per committed sampled mutation",
+      "status": "implemented",
+      "evidenceOrOwner": "c23_contracts; c23_r1_contracts"
+    },
+    {
+      "unit": "C23-U093",
+      "clause": "03 7.1",
+      "requirement": "Solid alpha compositing",
+      "status": "implemented",
+      "evidenceOrOwner": "render adapter; c23_render gradients/content"
+    },
+    {
+      "unit": "C23-U094",
+      "clause": "03 7.2",
+      "requirement": "Click and drag mapping with the upright texture convention",
+      "status": "implemented",
+      "evidenceOrOwner": "SI-074; c23_render asymmetric 3x2 fixture"
+    },
+    {
+      "unit": "C23-U095",
+      "clause": "03 7.2",
+      "requirement": "Palette first style controls native tile dimensions",
+      "status": "implemented",
+      "evidenceOrOwner": "c22_r3_commands; c22_r4_closure; c23_render"
+    },
+    {
+      "unit": "C23-U096",
+      "clause": "03 7.2",
+      "requirement": "Gradient and texture mappings move with every whole transform",
+      "status": "divergent",
+      "evidenceOrOwner": "C23-R1-01 envelope/reposition exceptions"
+    },
+    {
+      "unit": "C23-U097",
+      "clause": "03 7.2",
+      "requirement": "Split/merge inherits matrices and exact overlap tie-breaking",
+      "status": "implemented",
+      "evidenceOrOwner": "C2.2 rational-overlap suites retained"
+    },
+    {
+      "unit": "C23-U098",
+      "clause": "03 7.3",
+      "requirement": "Linear/radial interpolation and mapped axes",
+      "status": "implemented",
+      "evidenceOrOwner": "c23_render; c23_r1_colour"
+    },
+    {
+      "unit": "C23-U099",
+      "clause": "03 7.4",
+      "requirement": "Tile-on repeat and texture alpha",
+      "status": "implemented",
+      "evidenceOrOwner": "c23_render; render adapter"
+    },
+    {
+      "unit": "C23-U100",
+      "clause": "03 7.4",
+      "requirement": "Tile-off transparency outside mapped image",
+      "status": "divergent",
+      "evidenceOrOwner": "C23-R1-06; c23_r1_texture"
+    },
+    {
+      "unit": "C23-U101",
+      "clause": "03 7.5",
+      "requirement": "Bone-deformable fill behavior",
+      "status": "deferred-with-owner",
+      "evidenceOrOwner": "M6 C6.3"
+    },
+    {
+      "unit": "C23-U102",
+      "clause": "03 8.1",
+      "requirement": "Painting order, locks and shared transaction layer",
+      "status": "implemented",
+      "evidenceOrOwner": "C2.2 suites; c23_r1_contracts"
+    },
+    {
+      "unit": "C23-U103",
+      "clause": "03 8.2-8.6",
+      "requirement": "Paint/unpaint/dropper/gap closure retained regression surface",
+      "status": "implemented",
+      "evidenceOrOwner": "C2.2 suites; E2 SDK slice"
+    },
+    {
+      "unit": "C23-U104",
+      "clause": "03 8.7",
+      "requirement": "Get matrix and kind-specific handles; typed unmappable results",
+      "status": "implemented",
+      "evidenceOrOwner": "c23_colour; SI-075"
+    },
+    {
+      "unit": "C23-U105",
+      "clause": "03 8.7",
+      "requirement": "Set default/clipboard/matrix/linear/radial/texture mappings",
+      "status": "implemented",
+      "evidenceOrOwner": "c23_colour; c23_r1_colour"
+    },
+    {
+      "unit": "C23-U106",
+      "clause": "03 8.7",
+      "requirement": "Per-object kind skips and session-only clipboard",
+      "status": "implemented",
+      "evidenceOrOwner": "c23_colour; source tool_memory review"
+    },
+    {
+      "unit": "C23-U107",
+      "clause": "03 8.7",
+      "requirement": "Interactive fill handles and context-menu copy/paste",
+      "status": "deferred-with-owner",
+      "evidenceOrOwner": "M4 C4.2 / M7 C7.1"
+    },
+    {
+      "unit": "C23-U108",
+      "clause": "03 8.8-8.9",
+      "requirement": "Gap-closing persistence and invisible zone boundaries",
+      "status": "implemented",
+      "evidenceOrOwner": "C2.2 suites"
+    },
+    {
+      "unit": "C23-U109",
+      "clause": "03 9.1",
+      "requirement": "Set Colour changes painted selections and leaves unpainted zones",
+      "status": "implemented",
+      "evidenceOrOwner": "c23_colour"
+    },
+    {
+      "unit": "C23-U110",
+      "clause": "03 9.2",
+      "requirement": "Swatch editing, style switching, tints and effects",
+      "status": "deferred-with-owner",
+      "evidenceOrOwner": "M7 C7.1/C7.2"
+    },
+    {
+      "unit": "C23-U111",
+      "clause": "03 9.3",
+      "requirement": "Drawing/element/scene/project scope and optional pen filters",
+      "status": "implemented",
+      "evidenceOrOwner": "c23_colour; source scope traversal review"
+    },
+    {
+      "unit": "C23-U112",
+      "clause": "03 9.3",
+      "requirement": "Locked skips and changed-reference counts",
+      "status": "implemented",
+      "evidenceOrOwner": "c23_colour"
+    },
+    {
+      "unit": "C23-U113",
+      "clause": "03 9.3",
+      "requirement": "Keep mappable-to-mappable matrices; otherwise default new mapping",
+      "status": "implemented",
+      "evidenceOrOwner": "c23_colour"
+    },
+    {
+      "unit": "C23-U114",
+      "clause": "03 9.3",
+      "requirement": "Protected effective targets with no changes return refusal",
+      "status": "divergent",
+      "evidenceOrOwner": "C23-R1-13; c23_r1_colour"
+    },
+    {
+      "unit": "C23-U115",
+      "clause": "03 9.3",
+      "requirement": "Protection override and mixed protected/free changes",
+      "status": "implemented",
+      "evidenceOrOwner": "c23_colour; SI-061"
+    },
+    {
+      "unit": "C23-U116",
+      "clause": "03 9.4",
+      "requirement": "Draw-top-layer setting UI",
+      "status": "deferred-with-owner",
+      "evidenceOrOwner": "M4 C4.2"
+    },
+    {
+      "unit": "C23-U117",
+      "clause": "03 16.1.1",
+      "requirement": "Shared command entrypoint and explicit targets",
+      "status": "implemented",
+      "evidenceOrOwner": "SDK run_command and render_drawing"
+    },
+    {
+      "unit": "C23-U118",
+      "clause": "03 16.1.5",
+      "requirement": "Stale zone IDs refuse rather than being silently ignored",
+      "status": "divergent",
+      "evidenceOrOwner": "C23-R1-09 mixed transform target"
+    },
+    {
+      "unit": "C23-U119",
+      "clause": "03 16.1.6",
+      "requirement": "Deterministic repeated render and colour results",
+      "status": "implemented",
+      "evidenceOrOwner": "SDK E2; c23_render"
+    },
+    {
+      "unit": "C23-U120",
+      "clause": "03 16.1.7",
+      "requirement": "Composited dropper pixel in scene/view space",
+      "status": "deferred-with-owner",
+      "evidenceOrOwner": "M3 C3.2 / M4 C4.2"
+    },
+    {
+      "unit": "C23-U121",
+      "clause": "03 16.1.8",
+      "requirement": "Atomic colour edits, dry-run, undo and persistence",
+      "status": "implemented",
+      "evidenceOrOwner": "c23_contracts; c23_r1_contracts"
+    },
+    {
+      "unit": "C23-U122",
+      "clause": "03 16.3",
+      "requirement": "Remaining palette/style/editor/current/usage commands",
+      "status": "deferred-with-owner",
+      "evidenceOrOwner": "M7 C7.1"
+    },
+    {
+      "unit": "C23-U123",
+      "clause": "03 16.4",
+      "requirement": "Drawing read-back reflects mapping and recolour commits",
+      "status": "implemented",
+      "evidenceOrOwner": "c23_colour; SDK envelopes"
+    }
+  ],
+  "commands": [
+    {
+      "id": "draw.selection.set",
+      "kind": "ui",
+      "source": "crates/executor/src/commands/draw_select.rs",
+      "examples": 2,
+      "status": "implemented",
+      "finding": null,
+      "scopeNote": "Semantic disposition; shared addressing and full-contract coverage are audited as separate source units."
+    },
+    {
+      "id": "draw.selection.get",
+      "kind": "query",
+      "source": "crates/executor/src/commands/draw_select.rs",
+      "examples": 1,
+      "status": "implemented",
+      "finding": null,
+      "scopeNote": "Semantic disposition; shared addressing and full-contract coverage are audited as separate source units."
+    },
+    {
+      "id": "draw.pointSelection.set",
+      "kind": "ui",
+      "source": "crates/executor/src/commands/draw_select.rs",
+      "examples": 1,
+      "status": "implemented",
+      "finding": null,
+      "scopeNote": "Semantic disposition; shared addressing and full-contract coverage are audited as separate source units."
+    },
+    {
+      "id": "draw.selection.changed",
+      "kind": "event",
+      "source": "crates/executor/src/commands/draw_select.rs",
+      "examples": 1,
+      "status": "implemented",
+      "finding": null,
+      "scopeNote": "Semantic disposition; shared addressing and full-contract coverage are audited as separate source units."
+    },
+    {
+      "id": "draw.bounds.get",
+      "kind": "query",
+      "source": "crates/executor/src/commands/draw_select.rs",
+      "examples": 1,
+      "status": "implemented",
+      "finding": null,
+      "scopeNote": "Semantic disposition; shared addressing and full-contract coverage are audited as separate source units."
+    },
+    {
+      "id": "draw.viewMapping.get",
+      "kind": "query",
+      "source": "crates/executor/src/commands/draw_select.rs",
+      "examples": 1,
+      "status": "implemented",
+      "finding": null,
+      "scopeNote": "Semantic disposition; shared addressing and full-contract coverage are audited as separate source units."
+    },
+    {
+      "id": "draw.inspectorPreview.set",
+      "kind": "ui",
+      "source": "crates/executor/src/commands/draw_select.rs",
+      "examples": 1,
+      "status": "implemented",
+      "finding": null,
+      "scopeNote": "Semantic disposition; shared addressing and full-contract coverage are audited as separate source units."
+    },
+    {
+      "id": "draw.drawing.rename",
+      "kind": "action",
+      "source": "crates/executor/src/commands/draw_select.rs",
+      "examples": 1,
+      "status": "implemented",
+      "finding": null,
+      "scopeNote": "Semantic disposition; shared addressing and full-contract coverage are audited as separate source units."
+    },
+    {
+      "id": "draw.lock.set",
+      "kind": "toggle",
+      "source": "crates/executor/src/commands/draw_select.rs",
+      "examples": 1,
+      "status": "implemented",
+      "finding": null,
+      "scopeNote": "Semantic disposition; shared addressing and full-contract coverage are audited as separate source units."
+    },
+    {
+      "id": "draw.rectangle.add",
+      "kind": "action",
+      "source": "crates/executor/src/commands/draw_shapes.rs",
+      "examples": 1,
+      "status": "divergent",
+      "finding": "10",
+      "scopeNote": "Semantic disposition; shared addressing and full-contract coverage are audited as separate source units."
+    },
+    {
+      "id": "draw.ellipse.add",
+      "kind": "action",
+      "source": "crates/executor/src/commands/draw_shapes.rs",
+      "examples": 1,
+      "status": "divergent",
+      "finding": "10",
+      "scopeNote": "Semantic disposition; shared addressing and full-contract coverage are audited as separate source units."
+    },
+    {
+      "id": "draw.line.add",
+      "kind": "action",
+      "source": "crates/executor/src/commands/draw_shapes.rs",
+      "examples": 1,
+      "status": "divergent",
+      "finding": "10",
+      "scopeNote": "Semantic disposition; shared addressing and full-contract coverage are audited as separate source units."
+    },
+    {
+      "id": "draw.polyline.add",
+      "kind": "action",
+      "source": "crates/executor/src/commands/draw_shapes.rs",
+      "examples": 1,
+      "status": "divergent",
+      "finding": "10",
+      "scopeNote": "Semantic disposition; shared addressing and full-contract coverage are audited as separate source units."
+    },
+    {
+      "id": "draw.transform.apply",
+      "kind": "action",
+      "source": "crates/executor/src/commands/draw_transform.rs",
+      "examples": 2,
+      "status": "divergent",
+      "finding": "02/09",
+      "scopeNote": "Semantic disposition; shared addressing and full-contract coverage are audited as separate source units."
+    },
+    {
+      "id": "draw.flip.apply",
+      "kind": "action",
+      "source": "crates/executor/src/commands/draw_transform.rs",
+      "examples": 1,
+      "status": "implemented",
+      "finding": null,
+      "scopeNote": "Semantic disposition; shared addressing and full-contract coverage are audited as separate source units."
+    },
+    {
+      "id": "draw.rotate.apply",
+      "kind": "action",
+      "source": "crates/executor/src/commands/draw_transform.rs",
+      "examples": 1,
+      "status": "implemented",
+      "finding": null,
+      "scopeNote": "Semantic disposition; shared addressing and full-contract coverage are audited as separate source units."
+    },
+    {
+      "id": "draw.envelope.apply",
+      "kind": "action",
+      "source": "crates/executor/src/commands/draw_transform.rs",
+      "examples": 1,
+      "status": "divergent",
+      "finding": "01",
+      "scopeNote": "Semantic disposition; shared addressing and full-contract coverage are audited as separate source units."
+    },
+    {
+      "id": "draw.repositionAll.apply",
+      "kind": "action",
+      "source": "crates/executor/src/commands/draw_transform.rs",
+      "examples": 1,
+      "status": "divergent",
+      "finding": "01",
+      "scopeNote": "Semantic disposition; shared addressing and full-contract coverage are audited as separate source units."
+    },
+    {
+      "id": "draw.point.add",
+      "kind": "action",
+      "source": "crates/executor/src/commands/draw_transform.rs",
+      "examples": 1,
+      "status": "implemented",
+      "finding": null,
+      "scopeNote": "Semantic disposition; shared addressing and full-contract coverage are audited as separate source units."
+    },
+    {
+      "id": "draw.point.move",
+      "kind": "action",
+      "source": "crates/executor/src/commands/draw_transform.rs",
+      "examples": 1,
+      "status": "divergent",
+      "finding": "03",
+      "scopeNote": "Semantic disposition; shared addressing and full-contract coverage are audited as separate source units."
+    },
+    {
+      "id": "draw.point.set",
+      "kind": "action",
+      "source": "crates/executor/src/commands/draw_transform.rs",
+      "examples": 1,
+      "status": "implemented",
+      "finding": null,
+      "scopeNote": "Semantic disposition; shared addressing and full-contract coverage are audited as separate source units."
+    },
+    {
+      "id": "draw.point.delete",
+      "kind": "action",
+      "source": "crates/executor/src/commands/draw_transform.rs",
+      "examples": 1,
+      "status": "implemented",
+      "finding": null,
+      "scopeNote": "Semantic disposition; shared addressing and full-contract coverage are audited as separate source units."
+    },
+    {
+      "id": "draw.segment.move",
+      "kind": "action",
+      "source": "crates/executor/src/commands/draw_transform.rs",
+      "examples": 1,
+      "status": "implemented",
+      "finding": null,
+      "scopeNote": "Semantic disposition; shared addressing and full-contract coverage are audited as separate source units."
+    },
+    {
+      "id": "draw.cut.apply",
+      "kind": "action",
+      "source": "crates/executor/src/commands/draw_cut.rs",
+      "examples": 3,
+      "status": "divergent",
+      "finding": "11",
+      "scopeNote": "Semantic disposition; shared addressing and full-contract coverage are audited as separate source units."
+    },
+    {
+      "id": "draw.erase.apply",
+      "kind": "action",
+      "source": "crates/executor/src/commands/draw_cut.rs",
+      "examples": 2,
+      "status": "implemented",
+      "finding": null,
+      "scopeNote": "Semantic disposition; shared addressing and full-contract coverage are audited as separate source units."
+    },
+    {
+      "id": "draw.flatten.apply",
+      "kind": "action",
+      "source": "crates/executor/src/commands/draw_layers.rs",
+      "examples": 2,
+      "status": "implemented",
+      "finding": null,
+      "scopeNote": "Semantic disposition; shared addressing and full-contract coverage are audited as separate source units."
+    },
+    {
+      "id": "draw.optimize.apply",
+      "kind": "action",
+      "source": "crates/executor/src/commands/draw_layers.rs",
+      "examples": 1,
+      "status": "divergent",
+      "finding": "04/08",
+      "scopeNote": "Semantic disposition; shared addressing and full-contract coverage are audited as separate source units."
+    },
+    {
+      "id": "draw.arrange.apply",
+      "kind": "action",
+      "source": "crates/executor/src/commands/draw_layers.rs",
+      "examples": 2,
+      "status": "implemented",
+      "finding": null,
+      "scopeNote": "Semantic disposition; shared addressing and full-contract coverage are audited as separate source units."
+    },
+    {
+      "id": "draw.smooth.apply",
+      "kind": "action",
+      "source": "crates/executor/src/commands/draw_strokeops.rs",
+      "examples": 1,
+      "status": "divergent",
+      "finding": "07",
+      "scopeNote": "Semantic disposition; shared addressing and full-contract coverage are audited as separate source units."
+    },
+    {
+      "id": "draw.linesToBrush.apply",
+      "kind": "action",
+      "source": "crates/executor/src/commands/draw_strokeops.rs",
+      "examples": 1,
+      "status": "divergent",
+      "finding": "05",
+      "scopeNote": "Semantic disposition; shared addressing and full-contract coverage are audited as separate source units."
+    },
+    {
+      "id": "draw.breakApart.apply",
+      "kind": "action",
+      "source": "crates/executor/src/commands/draw_strokeops.rs",
+      "examples": 1,
+      "status": "implemented",
+      "finding": null,
+      "scopeNote": "Semantic disposition; shared addressing and full-contract coverage are audited as separate source units."
+    },
+    {
+      "id": "draw.centreLine.apply",
+      "kind": "action",
+      "source": "crates/executor/src/commands/draw_strokeops.rs",
+      "examples": 1,
+      "status": "divergent",
+      "finding": "12; medial axis deferred C23-T1",
+      "scopeNote": "Semantic disposition; shared addressing and full-contract coverage are audited as separate source units."
+    },
+    {
+      "id": "colour.fillMapping.get",
+      "kind": "query",
+      "source": "crates/executor/src/commands/colour_edit.rs",
+      "examples": 1,
+      "status": "implemented",
+      "finding": null,
+      "scopeNote": "Semantic disposition; shared addressing and full-contract coverage are audited as separate source units."
+    },
+    {
+      "id": "colour.fillMapping.set",
+      "kind": "action",
+      "source": "crates/executor/src/commands/colour_edit.rs",
+      "examples": 2,
+      "status": "implemented",
+      "finding": null,
+      "scopeNote": "Semantic disposition; shared addressing and full-contract coverage are audited as separate source units."
+    },
+    {
+      "id": "colour.selection.apply",
+      "kind": "action",
+      "source": "crates/executor/src/commands/colour_edit.rs",
+      "examples": 2,
+      "status": "implemented",
+      "finding": null,
+      "scopeNote": "Semantic disposition; shared addressing and full-contract coverage are audited as separate source units."
+    },
+    {
+      "id": "colour.recolour.apply",
+      "kind": "action",
+      "source": "crates/executor/src/commands/colour_edit.rs",
+      "examples": 2,
+      "status": "divergent",
+      "finding": "13",
+      "scopeNote": "Semantic disposition; shared addressing and full-contract coverage are audited as separate source units."
+    },
+    {
+      "id": "draw.drawing.render",
+      "kind": "query",
+      "source": "crates/executor/src/commands/draw_render.rs",
+      "examples": 2,
+      "status": "divergent",
+      "finding": "06",
+      "scopeNote": "Semantic disposition; shared addressing and full-contract coverage are audited as separate source units."
+    }
+  ]
+}

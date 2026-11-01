@@ -38,7 +38,7 @@ fn linear_radial_and_texture_forms_map_strokes_with_kind_skips() {
         (
             1,
             json!({"linear":{"start":{"x":1000,"y":1000},"end":{"x":1020,"y":1040}}}),
-            json!([20.0, 40.0, -40.0, 20.0, 1000.0, 1000.0]),
+            json!([20.0, 40.0, -40.0, 20.0, 1020.0, 990.0]),
         ),
         (2, json!({"radial":{"centre":{"x":1030,"y":1010},"radius":20}}), json!([40.0, 0.0, 0.0, 40.0, 1010.0, 990.0])),
         (

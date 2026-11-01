@@ -1,0 +1,8 @@
+[
+  {
+    "file": "crates/vector/src/ops/transform.rs",
+    "line": 410,
+    "text": "            let Some(e) = Envelope::new(min, max, corners, proj) else { panic!(\"envelope\") };",
+    "cfgTest": true
+  }
+]

@@ -32,11 +32,24 @@ def c23_measurement(v):
         if isinstance(n,bool) or not isinstance(n,(int,float)) or not math.isfinite(n) or n<0:raise ValueError(key)
     if v.get('profile')!='release' or not isinstance(v.get('params'),dict):raise ValueError('profile/params')
     if v.get('command') not in ['draw.drawing.render','draw.flatten.apply','draw.centreLine.apply']:raise ValueError('command')
-    if not isinstance(v.get('status'),str):raise ValueError('status')
+    if v.get('status') not in ['Ok','Error']:raise ValueError('status')
     if v['command']=='draw.flatten.apply':
-        if v.get('error',{}).get('code')!='limit.exceeded':raise ValueError('flatten outcome')
-    elif v.get('error') is not None:raise ValueError('unexpected refusal')
+        if v['status']!='Error' or not isinstance(v.get('error'),dict) or v['error'].get('code')!='limit.exceeded':raise ValueError('flatten outcome')
+    elif v.get('error') is not None or v['status']!='Ok':raise ValueError('unexpected refusal')
     return {'command':v['command'],'seconds':v['seconds'],'under30Seconds':v['seconds']<30}
+def planar(v):
+    def number(x):return isinstance(x,(int,float)) and not isinstance(x,bool) and math.isfinite(x) and x>=0
+    if not isinstance(v,dict) or not number(v.get('budgetUnits')) or not isinstance(v.get('cases'),list) or not v['cases']:raise ValueError('planar root')
+    cases=[]
+    for c in v['cases']:
+        if not isinstance(c,dict) or not isinstance(c.get('name'),str) or not isinstance(c.get('runs'),list) or len(c['runs'])!=2:raise ValueError('planar case')
+        for r in c['runs']:
+            if not isinstance(r,dict) or not number(r.get('wallMs')) or not number(r.get('units')):raise ValueError('planar observation')
+            if r.get('outcome')!='ok' and not str(r.get('outcome')).startswith('limit.exceeded:'):raise ValueError('planar outcome')
+        cases.append({'name':c['name'],'maxWallMs':max(r['wallMs'] for r in c['runs']),'units':[r['units'] for r in c['runs']],'outcomes':[r['outcome'] for r in c['runs']]})
+    worst=max(cases,key=lambda c:c['maxWallMs'])
+    if v.get('worst')!={'name':worst['name'],'wallMs':worst['maxWallMs']}:raise ValueError('stored worst mismatch')
+    return {'cases':cases,'worst':worst,'underTenSeconds':worst['maxWallMs']<10000}
 def ci(out):
     jobs=json.loads(read(out/'ci-jobs.json'))['jobs'];log=read(out/'ci-all.log');result=[]
     for j in jobs:
@@ -75,10 +88,23 @@ def collect(out):
     write('added-constructs.json',found)
     (out/'lockfile.diff').write_text(git('diff',BASE+'..'+HEAD,'--','Cargo.lock'),encoding='utf-8')
     measurements={}
+    module=__import__('importlib.util',fromlist=['util'])
+    spec=module.spec_from_file_location('c23_measurement_series',ROOT/'scripts/analyse-measurements.py');series=module.module_from_spec(spec);spec.loader.exec_module(series)
     for p in (out/'measurements').glob('*.json'):
-        try:measurements[p.name]=c23_measurement(json.loads(p.read_bytes()))
+        try:
+            if p.name.startswith('c21-'):measurements[p.name]=series.check_file(p)
+            elif p.name.startswith('c22-'):measurements[p.name]=planar(json.loads(p.read_bytes()))
+            else:measurements[p.name]=c23_measurement(json.loads(p.read_bytes()))
         except ValueError as e:measurements[p.name]={'error':str(e)}
     write('performance-recomputed.json',measurements)
+    current=out/'measurements/c21-strokes-100k-windows.json';prior=ROOT/'reviews/evidence/M2-C2.2/round-2/strokes-100k-windows.json'
+    if current.exists():
+        a,b=series.check_file(prior),series.check_file(current)
+        write('c21-regression-comparison.json',{'prior':str(prior.relative_to(ROOT)),'current':str(current.relative_to(ROOT)),'valid':[a['ok'],b['ok']],'wallSeries':[{'name':k,'prior':v,'current':b['series'][k],'p50Ratio':b['series'][k]['p50']/v['p50']} for k,v in a['series'].items() if k.endswith('.wallMs')],'allocationSeries':[{'name':k,'prior':v['p50'],'current':b['series'][k]['p50'],'ratio':b['series'][k]['p50']/v['p50']} for k,v in a['series'].items() if k.endswith('.allocatedBytes')]})
+    current=out/'measurements/c22-planar-worst-case-windows.json';prior=ROOT/'reviews/evidence/M2-C2.2/round-2/planar-worst-case-windows.json'
+    if current.exists():
+        a,b=planar(json.loads(prior.read_bytes())),planar(json.loads(current.read_bytes()));by={c['name']:c for c in b['cases']}
+        write('c22-regression-comparison.json',{'prior':a,'current':b,'cases':[{'name':c['name'],'maxWallRatio':by[c['name']]['maxWallMs']/c['maxWallMs'],'sameWorkAndOutcome':(c['units'],c['outcomes'])==(by[c['name']]['units'],by[c['name']]['outcomes'])} for c in a['cases']]})
     gate={}
     for p in out.glob('*.log'):
         matches=[tuple(map(int,m)) for m in re.findall(r'test result: \w+\. (\d+) passed; (\d+) failed; (\d+) ignored',read(p))]
@@ -96,6 +122,13 @@ class Audit(unittest.TestCase):
         p='crates/executor/tests/golden/c22-determinism.json';delta=changes(json.loads(git('show',BASE+':'+p)),json.loads((ROOT/p).read_bytes()))
         content=[d for d in delta if d['path'] not in ['/sha256','/bytes']]
         self.assertEqual(len(content),1,content);self.assertEqual(content[0]['old'],53.96875);self.assertEqual(content[0]['new'],-53.96875)
+    def test_planar_analyzer_rejects_bad_observations(self):
+        v=json.loads((ROOT/'reviews/evidence/M2-C2.2/round-2/planar-worst-case-windows.json').read_bytes());self.assertTrue(planar(v)['underTenSeconds'])
+        for bad in [None,True,-1,float('inf'),'1',{}]:
+            d=copy.deepcopy(v);d['cases'][0]['runs'][0]['wallMs']=bad
+            with self.assertRaises(ValueError):planar(d)
+        d=copy.deepcopy(v);d['worst']['wallMs']+=1
+        with self.assertRaises(ValueError):planar(d)
     def test_all_implemented_mutations_are_in_the_claimed_common_contract(self):
         self.assertEqual(inventory()['missingFromCommonContract'],[],'C23-R1 coverage finding: 27 cases do not cover every mutation')
 if __name__=='__main__':

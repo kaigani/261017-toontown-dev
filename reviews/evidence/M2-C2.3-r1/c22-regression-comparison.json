@@ -1,0 +1,299 @@
+{
+  "prior": {
+    "cases": [
+      {
+        "name": "100000-small-curves-plus-one",
+        "maxWallMs": 2520.2581,
+        "units": [
+          931042320,
+          931042320
+        ],
+        "outcomes": [
+          "ok",
+          "ok"
+        ]
+      },
+      {
+        "name": "grid-200x200-crossing-lines",
+        "maxWallMs": 570.1662,
+        "units": [
+          318410926,
+          318410926
+        ],
+        "outcomes": [
+          "ok",
+          "ok"
+        ]
+      },
+      {
+        "name": "grid-600x600-crossing-lines",
+        "maxWallMs": 2721.1013,
+        "units": [
+          1672507212,
+          1672507212
+        ],
+        "outcomes": [
+          "limit.exceeded: the planar map needs more than 1200000000 units of work",
+          "limit.exceeded: the planar map needs more than 1200000000 units of work"
+        ]
+      },
+      {
+        "name": "10000-concentric-squares",
+        "maxWallMs": 2781.8862,
+        "units": [
+          1200160000,
+          1200160000
+        ],
+        "outcomes": [
+          "limit.exceeded: the planar map needs more than 1200000000 units of work",
+          "limit.exceeded: the planar map needs more than 1200000000 units of work"
+        ]
+      },
+      {
+        "name": "20000-separate-closed-squares",
+        "maxWallMs": 313.2295,
+        "units": [
+          137183593,
+          137183593
+        ],
+        "outcomes": [
+          "ok",
+          "ok"
+        ]
+      },
+      {
+        "name": "1500-random-crossing-lines",
+        "maxWallMs": 1929.9982,
+        "units": [
+          1208823546,
+          1208823546
+        ],
+        "outcomes": [
+          "limit.exceeded: the planar map needs more than 1200000000 units of work",
+          "limit.exceeded: the planar map needs more than 1200000000 units of work"
+        ]
+      },
+      {
+        "name": "5000-point-random-scribble",
+        "maxWallMs": 294.2276,
+        "units": [
+          1515542416,
+          1515542416
+        ],
+        "outcomes": [
+          "limit.exceeded: the planar map needs more than 1200000000 units of work",
+          "limit.exceeded: the planar map needs more than 1200000000 units of work"
+        ]
+      },
+      {
+        "name": "100000-point-dense-zigzag",
+        "maxWallMs": 40.8343,
+        "units": [
+          15000482029,
+          15000482029
+        ],
+        "outcomes": [
+          "limit.exceeded: the planar map needs more than 1200000000 units of work",
+          "limit.exceeded: the planar map needs more than 1200000000 units of work"
+        ]
+      },
+      {
+        "name": "100000-coincident-outlines-plus-one",
+        "maxWallMs": 435.459,
+        "units": [
+          60003200026,
+          60003200026
+        ],
+        "outcomes": [
+          "limit.exceeded: the planar map needs more than 1200000000 units of work",
+          "limit.exceeded: the planar map needs more than 1200000000 units of work"
+        ]
+      }
+    ],
+    "worst": {
+      "name": "10000-concentric-squares",
+      "maxWallMs": 2781.8862,
+      "units": [
+        1200160000,
+        1200160000
+      ],
+      "outcomes": [
+        "limit.exceeded: the planar map needs more than 1200000000 units of work",
+        "limit.exceeded: the planar map needs more than 1200000000 units of work"
+      ]
+    },
+    "underTenSeconds": true
+  },
+  "current": {
+    "cases": [
+      {
+        "name": "100000-small-curves-plus-one",
+        "maxWallMs": 2824.8480000000004,
+        "units": [
+          931042320,
+          931042320
+        ],
+        "outcomes": [
+          "ok",
+          "ok"
+        ]
+      },
+      {
+        "name": "grid-200x200-crossing-lines",
+        "maxWallMs": 580.3006,
+        "units": [
+          318410926,
+          318410926
+        ],
+        "outcomes": [
+          "ok",
+          "ok"
+        ]
+      },
+      {
+        "name": "grid-600x600-crossing-lines",
+        "maxWallMs": 2784.3682,
+        "units": [
+          1672507212,
+          1672507212
+        ],
+        "outcomes": [
+          "limit.exceeded: the planar map needs more than 1200000000 units of work",
+          "limit.exceeded: the planar map needs more than 1200000000 units of work"
+        ]
+      },
+      {
+        "name": "10000-concentric-squares",
+        "maxWallMs": 2905.2922,
+        "units": [
+          1200160000,
+          1200160000
+        ],
+        "outcomes": [
+          "limit.exceeded: the planar map needs more than 1200000000 units of work",
+          "limit.exceeded: the planar map needs more than 1200000000 units of work"
+        ]
+      },
+      {
+        "name": "20000-separate-closed-squares",
+        "maxWallMs": 318.2605,
+        "units": [
+          137183593,
+          137183593
+        ],
+        "outcomes": [
+          "ok",
+          "ok"
+        ]
+      },
+      {
+        "name": "1500-random-crossing-lines",
+        "maxWallMs": 2023.4608,
+        "units": [
+          1208823546,
+          1208823546
+        ],
+        "outcomes": [
+          "limit.exceeded: the planar map needs more than 1200000000 units of work",
+          "limit.exceeded: the planar map needs more than 1200000000 units of work"
+        ]
+      },
+      {
+        "name": "5000-point-random-scribble",
+        "maxWallMs": 300.66920000000005,
+        "units": [
+          1515542416,
+          1515542416
+        ],
+        "outcomes": [
+          "limit.exceeded: the planar map needs more than 1200000000 units of work",
+          "limit.exceeded: the planar map needs more than 1200000000 units of work"
+        ]
+      },
+      {
+        "name": "100000-point-dense-zigzag",
+        "maxWallMs": 46.0636,
+        "units": [
+          15000482029,
+          15000482029
+        ],
+        "outcomes": [
+          "limit.exceeded: the planar map needs more than 1200000000 units of work",
+          "limit.exceeded: the planar map needs more than 1200000000 units of work"
+        ]
+      },
+      {
+        "name": "100000-coincident-outlines-plus-one",
+        "maxWallMs": 465.5381,
+        "units": [
+          60003200026,
+          60003200026
+        ],
+        "outcomes": [
+          "limit.exceeded: the planar map needs more than 1200000000 units of work",
+          "limit.exceeded: the planar map needs more than 1200000000 units of work"
+        ]
+      }
+    ],
+    "worst": {
+      "name": "10000-concentric-squares",
+      "maxWallMs": 2905.2922,
+      "units": [
+        1200160000,
+        1200160000
+      ],
+      "outcomes": [
+        "limit.exceeded: the planar map needs more than 1200000000 units of work",
+        "limit.exceeded: the planar map needs more than 1200000000 units of work"
+      ]
+    },
+    "underTenSeconds": true
+  },
+  "cases": [
+    {
+      "name": "100000-small-curves-plus-one",
+      "maxWallRatio": 1.1208566297237574,
+      "sameWorkAndOutcome": true
+    },
+    {
+      "name": "grid-200x200-crossing-lines",
+      "maxWallRatio": 1.0177744664625858,
+      "sameWorkAndOutcome": true
+    },
+    {
+      "name": "grid-600x600-crossing-lines",
+      "maxWallRatio": 1.023250475827563,
+      "sameWorkAndOutcome": true
+    },
+    {
+      "name": "10000-concentric-squares",
+      "maxWallRatio": 1.0443605493280064,
+      "sameWorkAndOutcome": true
+    },
+    {
+      "name": "20000-separate-closed-squares",
+      "maxWallRatio": 1.0160617055545536,
+      "sameWorkAndOutcome": true
+    },
+    {
+      "name": "1500-random-crossing-lines",
+      "maxWallRatio": 1.0484262627809704,
+      "sameWorkAndOutcome": true
+    },
+    {
+      "name": "5000-point-random-scribble",
+      "maxWallRatio": 1.0218932554253919,
+      "sameWorkAndOutcome": true
+    },
+    {
+      "name": "100000-point-dense-zigzag",
+      "maxWallRatio": 1.1280614581369095,
+      "sameWorkAndOutcome": true
+    },
+    {
+      "name": "100000-coincident-outlines-plus-one",
+      "maxWallRatio": 1.0690744708457054,
+      "sameWorkAndOutcome": true
+    }
+  ]
+}

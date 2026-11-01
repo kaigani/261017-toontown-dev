@@ -1,0 +1,79 @@
+{
+  "samples": 2000,
+  "observations": [
+    {
+      "command": "draw.stroke.add",
+      "envelope": {
+        "status": "ok",
+        "result": {
+          "drawingId": "dr_01K742SG0KKMCAP9X1E6Z5P4SW",
+          "createdDrawing": false,
+          "strokeIds": [
+            "st_01K7JJN8007GWTQF9M83GDMNCF"
+          ],
+          "zoneIds": [],
+          "layerId": "nd_01K7JJN801VXVB0NJPYF8VRHWH",
+          "createdIds": [
+            "st_01K7JJN8007GWTQF9M83GDMNCF",
+            "nd_01K7JJN801VXVB0NJPYF8VRHWH"
+          ],
+          "modifiedIds": [],
+          "removedIds": [],
+          "rev": 4,
+          "hints": [
+            "drawing.strokesHidden"
+          ]
+        },
+        "changes": [
+          {
+            "id": "dr_01K742SG0KKMCAP9X1E6Z5P4SW/st_01K7JJN8007GWTQF9M83GDMNCF",
+            "type": "stroke",
+            "op": "created",
+            "rev": 4,
+            "parentId": "dr_01K742SG0KKMCAP9X1E6Z5P4SW/nd_01K7JJN801VXVB0NJPYF8VRHWH",
+            "index": 0
+          },
+          {
+            "id": "dr_01K742SG0KKMCAP9X1E6Z5P4SW/nd_01K7JJN801VXVB0NJPYF8VRHWH",
+            "type": "drawingNode",
+            "op": "created",
+            "rev": 4,
+            "parentId": "dr_01K742SG0KKMCAP9X1E6Z5P4SW",
+            "index": 3
+          },
+          {
+            "id": "dr_01K742SG0KKMCAP9X1E6Z5P4SW",
+            "type": "drawing",
+            "op": "modified",
+            "rev": 4,
+            "patch": [
+              {
+                "op": "add",
+                "path": "/nodes/3",
+                "value": {
+                  "id": "nd_01K7JJN801VXVB0NJPYF8VRHWH",
+                  "type": "drawingNode"
+                }
+              }
+            ]
+          }
+        ],
+        "undo": {
+          "stepId": "u-1",
+          "label": "Stroke Tool"
+        },
+        "warnings": [],
+        "documentRev": 4
+      }
+    }
+  ],
+  "params": {
+    "drawingId": "dr_01K742SG0KKMCAP9X1E6Z5P4SW",
+    "ids": [
+      "st_01K7JJN8007GWTQF9M83GDMNCF"
+    ],
+    "tolerance": 1
+  },
+  "externalTimeoutSeconds": 40,
+  "wallSeconds": 40.00191119988449
+}

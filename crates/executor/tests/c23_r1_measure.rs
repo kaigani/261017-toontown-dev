@@ -1,7 +1,7 @@
 //! Independent round-one replay of the builder measurement with the product 30-second watchdog and refusal atomicity.
 //! M2 C2.3 readiness item 18: one raw measurement per heavy command (flatten of a 100 000-stroke drawing, render of
-//! it, centre line of a large brush stroke). Ignored by default; `TT_MEASURE=1 cargo test -p tt-executor --test
-//! c23_measure -- --ignored` writes the raw observations to `reviews/evidence/M2-C2.3/measurements/`. Performance
+//! it, centre line of a large brush stroke). Ignored by default; `cargo test --release -p tt-executor --test
+//! c23_r1_measure -- --ignored` runs the replay. Set TT_REVIEW_OUT for durable raw observations; the default is temporary. Performance
 //! budgets stay with C22-T2 and C22-R1-12 (open); these files are observations, not pass/fail gates.
 #![allow(
     clippy::unwrap_used,
