@@ -213,7 +213,30 @@ fn set_paint(ctx: &mut RenderContext, paint: &Paint) -> Result<(), RenderError> 
     Ok(())
 }
 
-/// Renders a scene: premultiplied RGBA8 rows, top first. `keep_going` is asked between items (cancellation and the
+/// A non-repeating image covers only its unit square (03 §7.4: transparent outside the once-stretched image;
+/// C23-R1-06): the paint is clipped to the unit square mapped to pixels, rotated or skewed as the mapping is. Returns
+/// whether a clip layer was pushed.
+fn push_unit_clip(ctx: &mut RenderContext, paint: &Paint) -> bool {
+    let Paint::Image { unit_to_pixel, repeat: false, .. } = paint else { return false };
+    let m = kurbo::Affine::new(*unit_to_pixel);
+    let mut quad = BezPath::new();
+    let corners = [(0.0, 0.0), (1.0, 0.0), (1.0, 1.0), (0.0, 1.0)];
+    for (i, c) in corners.iter().enumerate() {
+        let p = m * kurbo::Point::new(c.0, c.1);
+        if i == 0 {
+            quad.move_to(p);
+        } else {
+            quad.line_to(p);
+        }
+    }
+    quad.close_path();
+    ctx.reset_paint_transform();
+    ctx.set_fill_rule(PenikoFill::NonZero);
+    ctx.push_clip_layer(&quad);
+    true
+}
+
+/// Renders a scene:/// Renders a scene: premultiplied RGBA8 rows, top first. `keep_going` is asked between items (cancellation and the
 /// caller's watchdog); it returns an error message to stop.
 ///
 /// # Errors
@@ -233,17 +256,25 @@ pub fn render(scene: &Scene, keep_going: &mut dyn FnMut(usize) -> Result<(), Str
         keep_going(i).map_err(RenderError::Stopped)?;
         match item {
             Item::Fill { path, rule, paint } => {
+                let clip = push_unit_clip(&mut ctx, paint);
                 set_paint(&mut ctx, paint)?;
                 ctx.set_fill_rule(match rule {
                     Rule::NonZero => PenikoFill::NonZero,
                     Rule::EvenOdd => PenikoFill::EvenOdd,
                 });
                 ctx.fill_path(&bez(path));
+                if clip {
+                    ctx.pop_layer();
+                }
             }
             Item::Stroke { path, width, paint } => {
+                let clip = push_unit_clip(&mut ctx, paint);
                 set_paint(&mut ctx, paint)?;
                 ctx.set_stroke(kurbo::Stroke::new(*width).with_join(Join::Round).with_caps(Cap::Round));
                 ctx.stroke_path(&bez(path));
+                if clip {
+                    ctx.pop_layer();
+                }
             }
         }
     }

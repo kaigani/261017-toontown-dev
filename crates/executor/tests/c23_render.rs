@@ -378,6 +378,11 @@ fn golden_hashes_hold_on_every_platform() {
         let reg = json!({"x": 999, "y": 999, "width": 14, "height": 10});
         let s = render(&h, json!({ "drawingId": D1, "width": 140, "region": reg }));
         got.insert("texture-stretch".into(), (s.sha, s.png));
+        // Tile off with a drag mapping smaller than the zone: transparent outside the image (03 §7.4; C23-R1-06).
+        ok(&h, "colour.paint.apply", json!({ "drawingId": D1, "objectIds": [r["zoneIds"][0]], "colourId": stretch,
+            "mapping": {"from": {"x": 1003, "y": 1006}, "to": {"x": 1007, "y": 1006}} }));
+        let t = render(&h, json!({ "drawingId": D1, "width": 140, "region": reg }));
+        got.insert("texture-stretch-inset".into(), (t.sha, t.png));
     }
     let hashes: BTreeMap<String, String> = got.iter().map(|(k, (s, _))| (k.clone(), s.clone())).collect();
     if std::env::var("TT_UPDATE_GOLDEN").as_deref() == Ok("1") {
