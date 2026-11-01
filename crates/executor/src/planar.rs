@@ -7,7 +7,7 @@
 //! maps and [`CACHE_COST`] vertices plus half-edges in total, least recently used first out (the order of use is a
 //! function of the command sequence, so eviction is deterministic). It never changes results, only their cost.
 
-use std::collections::BTreeMap;
+use std::collections::{BTreeMap, BTreeSet};
 use std::sync::{Arc, Mutex, PoisonError};
 
 use serde_json::{Value, json};
@@ -337,9 +337,16 @@ pub(crate) fn settled(
     let after = cx.stamped_document()?;
     let added_final: Vec<String> = added.iter().flat_map(|a| cx.pieces_of(drawing, a)).collect();
     let split_all = cx.split_strokes(drawing);
-    let existed = |s: &String| before.drawing(drawing).is_some_and(|d| tt_vector::drawing::locate(d, s).is_some());
+    // One ID set per side: lookups stay linear in the drawing size however many strokes the pass split.
+    let ids = |doc: &tt_model::document::Document| -> BTreeSet<String> {
+        doc.drawing(drawing)
+            .map(|d| tt_vector::drawing::objects(d).into_iter().map(|o| o.id).collect())
+            .unwrap_or_default()
+    };
+    let (before_ids, after_ids) = (ids(before), ids(&after));
+    let existed = |s: &String| before_ids.contains(s);
     let split_existing: Vec<String> = split_all.iter().filter(|s| existed(s)).cloned().collect();
-    let present = |s: &String| after.drawing(drawing).is_some_and(|d| tt_vector::drawing::locate(d, s).is_some());
+    let present = |s: &String| after_ids.contains(s);
     let pieces: Vec<String> =
         split_existing.iter().flat_map(|s| cx.pieces_of(drawing, s)).filter(|p| present(p)).collect();
     let zones = zone_delta(&cx.planar_cache(), before.drawing(drawing), after.drawing(drawing));

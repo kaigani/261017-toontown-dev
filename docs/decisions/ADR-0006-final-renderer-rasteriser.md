@@ -137,3 +137,6 @@ is yet a spec-complete final renderer."
   excluded from them because its pixels depend on the machine's fonts (SI-074). The texture orientation question for
   positive-determinant mappings is recorded in SI-074 for a ruling. Images are sampled with `ImageQuality::Medium`
   (bilinear).
+- **M2 C2.3 ruling (2026-11-01): texture orientation.** Image row 0 sits at unit y = 0; stored texture mappings show the
+  image upright in y-up drawing space (tile-on and tile-off defaults `[w, 0, 0, -h, minX, maxY]`, drags
+  `[dx, dy, dy, -dx, fromX, fromY]`); the `texture-tile`, `texture-stretch` and `texture-drag` goldens pin it (SI-074).

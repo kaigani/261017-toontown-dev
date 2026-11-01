@@ -1115,13 +1115,17 @@ pub(crate) fn changes_between(
 /// drawing, so the drawing is reported too: `modified` with an empty own-view patch, because its own view (children
 /// as stubs) did not change.
 fn add_drawing_records(after: &Document, records: &mut Vec<ChangeRecord>, keys: &mut Vec<String>, rev: u64) {
+    // Sets, not scans: a flatten or import can touch 100 000 strokes (C2.3 never-block measurement).
+    let listed: BTreeSet<&str> = keys.iter().map(String::as_str).collect();
+    let mut seen: BTreeSet<&str> = BTreeSet::new();
     let mut drawings: Vec<String> = Vec::new();
     for k in keys.iter() {
         if let Some((container, _)) = k.split_once('/')
+            && !listed.contains(container)
+            && !seen.contains(container)
             && after.locate(container).is_some_and(|l| l.ty == ObjectType::Drawing)
-            && !drawings.iter().any(|d| d == container)
-            && !keys.iter().any(|x| x == container)
         {
+            seen.insert(container);
             drawings.push(container.to_owned());
         }
     }

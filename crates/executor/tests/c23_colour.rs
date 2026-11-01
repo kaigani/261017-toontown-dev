@@ -226,3 +226,69 @@ fn replace_colour_by_scope_with_locks_pens_counts_and_the_matrix_rule() {
     let e = err(&h, "colour.recolour.apply", json!({ "fromColourId": skin }));
     assert_eq!(e.code, "arg.invalid");
 }
+
+/// SI-061 in Set Colour and Replace Colour: a target whose current colour is protected is skipped and reported, and
+/// refused when nothing else changes, unless `respectProtected: false` is given (as paint does).
+#[test]
+fn protected_colours_are_skipped_unless_overridden() {
+    let h = fixture();
+    let c = colours(&h);
+    let (skin, sky, ink) = (c[0].clone(), c[1].clone(), c[4].clone());
+    let (_, protected_stroke, _) = painted(&h, 300.0, &skin);
+    ok(&h, "colour.selection.apply", json!({ "drawingId": D1, "colourId": skin, "objectIds": [protected_stroke] }));
+    let (_, free_stroke, _) = painted(&h, 500.0, &sky);
+    ok(&h, "colour.selection.apply", json!({ "drawingId": D1, "colourId": sky, "objectIds": [free_stroke] }));
+    ok(
+        &h,
+        "doc.object.patch",
+        json!({ "targets": [skin], "ops": [{"op": "add", "path": "/ext", "value": {"dev.toontown.paint": {"protected": true}}}] }),
+    );
+    let r = ok(
+        &h,
+        "colour.selection.apply",
+        json!({ "drawingId": D1, "colourId": ink, "objectIds": [protected_stroke, free_stroke] }),
+    );
+    assert!(r["changed"].as_array().unwrap().contains(&json!(free_stroke)), "{r}");
+    assert!(
+        r["skipped"]
+            .as_array()
+            .unwrap()
+            .iter()
+            .any(|k| k["objectId"] == json!(protected_stroke) && k["reason"] == "colour.protected"),
+        "{r}"
+    );
+    assert_eq!(node(&h, &protected_stroke)["colourId"], json!(skin));
+    let start = rev(&h);
+    let e =
+        err(&h, "colour.selection.apply", json!({ "drawingId": D1, "colourId": ink, "objectIds": [protected_stroke] }));
+    assert_eq!(e.code, "colour.protected");
+    assert_eq!(rev(&h), start);
+    ok(
+        &h,
+        "colour.selection.apply",
+        json!({ "drawingId": D1, "colourId": ink, "objectIds": [protected_stroke], "respectProtected": false }),
+    );
+    assert_eq!(node(&h, &protected_stroke)["colourId"], json!(ink));
+    // Replace Colour: references to a protected colour stay unless overridden.
+    let e = err(
+        &h,
+        "colour.recolour.apply",
+        json!({ "fromColourId": skin, "toColourId": sky, "scope": "drawing", "drawingIds": [D1] }),
+    );
+    assert_eq!((e.code.as_str(), e.details["colourIds"].clone()), ("colour.protected", json!([skin])));
+    let r = ok(
+        &h,
+        "colour.recolour.apply",
+        json!({ "map": [{"from": skin, "to": sky}, {"from": sky, "to": ink}], "scope": "drawing", "drawingIds": [D1] }),
+    );
+    assert_eq!(r["skippedProtected"], json!([skin]));
+    let r = ok(
+        &h,
+        "colour.recolour.apply",
+        json!({ "fromColourId": skin, "toColourId": sky, "scope": "drawing", "drawingIds": [D1], "respectProtected": false }),
+    );
+    assert!(
+        r["skippedProtected"].as_array().unwrap().is_empty() && !r["changed"].as_array().unwrap().is_empty(),
+        "{r}"
+    );
+}

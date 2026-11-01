@@ -81,6 +81,15 @@ fn find(cx: &Cx, d: &Drawing, id: &str, pointer: &str) -> Result<(String, Target
     Ok((local, t))
 }
 
+fn yes() -> bool {
+    true
+}
+
+/// Whether a colour is protected (SI-061): its swatch carries `dev.toontown.paint.protected`.
+fn protected(doc: &Document, colour: &str) -> bool {
+    super::colour::swatch_info(doc, colour).is_some_and(|(_, p)| p)
+}
+
 fn kind_name(k: SwatchKind) -> &'static str {
     match k {
         SwatchKind::Solid => "solid",
@@ -495,6 +504,9 @@ pub(crate) struct SelectionApplyParams {
     /// Objects (default: the drawing selection).
     #[serde(default)]
     object_ids: Option<Vec<String>>,
+    /// Leave objects whose current colour is protected (SI-061); `false` overrides.
+    #[serde(default = "yes")]
+    respect_protected: bool,
 }
 
 /// `{changed, rev}`.
@@ -503,6 +515,8 @@ pub(crate) struct SelectionApplyParams {
 pub(crate) struct SelectionApplyResult {
     /// Objects recoloured (zones by their ID after the change).
     changed: Vec<String>,
+    /// Objects left alone and why (`colour.protected`).
+    skipped: Vec<SkippedObject>,
     /// The drawing revision after the change.
     rev: u64,
 }
@@ -528,6 +542,7 @@ fn recolour_text(v: &mut Value, colour: &str) -> usize {
     undo = "Set Colour",
     needs_project,
     example(title = "Recolour the pencil line and the caption with the current colour", params = r#"{"drawingId": "drawingBank:#1/drawing:#1", "objectIds": ["st_01K742SG0R61SYK9GG0HGYVNBT", "nd_01K742SG0WFAQJFKAZKV4CD56C"]}"#),
+    example(title = "Recolour even where the current colour is protected", params = r#"{"drawingId": "drawingBank:#1/drawing:#1", "colourId": "col_01K742SG06BQ08FCT1TT8DF8MA", "objectIds": ["st_01K742SG0R61SYK9GG0HGYVNBT"], "respectProtected": false}"#),
     gui = "Colour view: click a swatch with drawing objects selected (M4 C4.2)",
 )]
 pub(crate) fn colour_selection_apply(
@@ -554,8 +569,33 @@ pub(crate) fn colour_selection_apply(
     let mut ops = Vec::new();
     let mut zone_fills: BTreeMap<String, BTreeMap<String, Option<Fill>>> = BTreeMap::new();
     let mut selected_strokes: BTreeSet<String> = BTreeSet::new();
+    let mut skipped: Vec<SkippedObject> = Vec::new();
+    // A target whose current colour is protected is left alone unless overridden (SI-061, as paint does).
+    let refused = |current: Option<&str>| -> bool {
+        p.respect_protected && current.is_some_and(|c| c != colour && protected(&doc, c))
+    };
     for (i, id) in ids.iter().enumerate() {
         let (local, tg) = find(cx, &d, id, &format!("/objectIds/{i}"))?;
+        let current: Vec<String> = match &tg {
+            Target::Zone { fill: Some(f), .. } => f.colour_id.iter().cloned().collect(),
+            Target::Stroke { colour: Some(c), .. } => vec![c.clone()],
+            Target::Text { pointer } => dj
+                .pointer(pointer)
+                .and_then(|v| v.get("runs"))
+                .and_then(Value::as_array)
+                .into_iter()
+                .flatten()
+                .filter_map(|r| r.get("colourId").and_then(Value::as_str).map(str::to_owned))
+                .collect(),
+            _ => Vec::new(),
+        };
+        if current.iter().any(|c| refused(Some(c))) {
+            if let Target::Stroke { .. } = tg {
+                selected_strokes.insert(local.clone());
+            }
+            skipped.push(SkippedObject { object_id: local, reason: "colour.protected".into() });
+            continue;
+        }
         match tg {
             Target::Zone { layer, zone, fill: Some(f), bounds } => {
                 let matrix = super::colour::paint_matrix(
@@ -613,6 +653,10 @@ pub(crate) fn colour_selection_apply(
                 {
                     continue;
                 }
+                if refused(f.colour_id.as_deref()) {
+                    skipped.push(SkippedObject { object_id: zone.id.clone(), reason: "colour.protected".into() });
+                    continue;
+                }
                 let matrix = super::colour::paint_matrix(
                     kind,
                     None,
@@ -629,7 +673,16 @@ pub(crate) fn colour_selection_apply(
         }
     }
     if changed.is_empty() {
-        return Ok(SelectionApplyResult { changed, rev: *d.rev() });
+        if !skipped.is_empty() {
+            let list: Vec<Value> =
+                skipped.iter().map(|k| json!({ "objectId": k.object_id, "reason": k.reason })).collect();
+            return Err(err(
+                "colour.protected",
+                "every target has a protected colour (pass respectProtected: false to override)",
+                json!({ "skipped": list }),
+            ));
+        }
+        return Ok(SelectionApplyResult { changed, skipped, rev: *d.rev() });
     }
     if !ops.is_empty() {
         cx.patch_entries(vec![(EntryKey::Drawing(t.id.clone()), ops)])?;
@@ -639,7 +692,7 @@ pub(crate) fn colour_selection_apply(
     }
     let mut ch = super::draw::Changed::default();
     crate::planar::settled(cx, &doc, &t.id, &[])?.report(&mut ch);
-    Ok(SelectionApplyResult { changed, rev: committed_rev(cx)? })
+    Ok(SelectionApplyResult { changed, skipped, rev: committed_rev(cx)? })
 }
 
 // ----- Replace Colour ------------------------------------------------------------------------------------------------
@@ -718,6 +771,9 @@ pub(crate) struct RecolourParams {
     /// Also pens using a replaced colour.
     #[serde(default)]
     include_pens: bool,
+    /// Leave references to protected colours (SI-061); `false` overrides.
+    #[serde(default = "yes")]
+    respect_protected: bool,
 }
 
 /// References changed in one drawing.
@@ -740,6 +796,8 @@ pub(crate) struct RecolourResult {
     pens_changed: Vec<String>,
     /// Locked drawings left alone.
     skipped_locked: Vec<String>,
+    /// Protected colours whose references were left alone (SI-061).
+    skipped_protected: Vec<String>,
 }
 
 #[command(
@@ -750,6 +808,7 @@ pub(crate) struct RecolourResult {
     undo = "Replace Colour",
     needs_project,
     example(title = "Replace Skin with Ink in every drawing", params = r#"{"fromColourId": "col_01K742SG059XGSNZ6M9MACZ2ZY", "toColourId": "col_01K742SG09H7QE4RRR6XSYYS88"}"#),
+    example(title = "Replace Ink with Skin, overriding protection", params = r#"{"fromColourId": "col_01K742SG09H7QE4RRR6XSYYS88", "toColourId": "col_01K742SG059XGSNZ6M9MACZ2ZY", "respectProtected": false}"#),
     gui = "Colour view: swatch context menu > Replace uses of this colour with... (M7)",
 )]
 pub(crate) fn colour_recolour_apply(cx: &mut Cx, p: RecolourParams) -> Result<RecolourResult, CommandError> {
@@ -767,7 +826,14 @@ pub(crate) fn colour_recolour_apply(cx: &mut Cx, p: RecolourParams) -> Result<Re
         }
     }
     let mut map: BTreeMap<String, (String, SwatchKind, SwatchKind)> = BTreeMap::new();
+    let mut skipped_protected: Vec<String> = Vec::new();
     for (i, (a, b)) in pairs.iter().enumerate() {
+        if p.respect_protected && a != b && protected(&doc, a) {
+            if !skipped_protected.contains(a) {
+                skipped_protected.push(a.clone());
+            }
+            continue;
+        }
         let ka = super::colour::swatch_info(&doc, a).map(|s| s.0);
         let kb = super::colour::swatch_info(&doc, b).map(|s| s.0);
         let (Some(ka), Some(kb)) = (ka, kb) else {
@@ -940,7 +1006,14 @@ pub(crate) fn colour_recolour_apply(cx: &mut Cx, p: RecolourParams) -> Result<Re
         }
     }
     if changes.is_empty() && paints.is_empty() {
-        return Ok(RecolourResult { changed, pens_changed, skipped_locked });
+        if map.is_empty() && !skipped_protected.is_empty() {
+            return Err(err(
+                "colour.protected",
+                "every replaced colour is protected (pass respectProtected: false to override)",
+                json!({ "colourIds": skipped_protected }),
+            ));
+        }
+        return Ok(RecolourResult { changed, pens_changed, skipped_locked, skipped_protected });
     }
     if !changes.is_empty() {
         cx.patch_entries(changes)?;
@@ -949,5 +1022,5 @@ pub(crate) fn colour_recolour_apply(cx: &mut Cx, p: RecolourParams) -> Result<Re
         cx.paint_zones(&d, &layer, fills);
     }
     cx.settle()?;
-    Ok(RecolourResult { changed, pens_changed, skipped_locked })
+    Ok(RecolourResult { changed, pens_changed, skipped_locked, skipped_protected })
 }

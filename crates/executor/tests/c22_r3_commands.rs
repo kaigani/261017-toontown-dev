@@ -188,8 +188,8 @@ fn texture_click_uses_palette_first_style_and_drag_and_tile_off_stay_unchanged()
             "colour.paint.apply",
             json!({"drawingId":D,"objectIds":[a["zoneIds"][0]],"colourId":c,"mapping":{"from":{"x":1000,"y":1000},"to":{"x":1030,"y":1040}}}),
         );
-        assert_eq!(layer(&h, &a["layerId"])["zones"][0]["textureMatrix"], json!([30, 40, -40, 30, 1000, 1000]));
-        assert_eq!(got, if tile { json!([17, 0, 0, -9, 1000, 1050]) } else { json!([100, 0, 0, 50, 1000, 1000]) });
+        assert_eq!(layer(&h, &a["layerId"])["zones"][0]["textureMatrix"], json!([30, 40, 40, -30, 1000, 1000]));
+        assert_eq!(got, if tile { json!([17, 0, 0, -9, 1000, 1050]) } else { json!([100, 0, 0, -50, 1000, 1050]) });
     }
 }
 

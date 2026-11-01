@@ -828,20 +828,21 @@ Reserved by the M0 closure for "measured deterministic-format incompatibility" (
   adjacent siblings only; it also declines when an upper painted zone covers a lower line or brush stroke (the merged
   layer would draw it above the fill). Overlap is tested on zone outer rings, outlines and centre paths.
 
-## SI-074 — drawing renders: region, text, texture orientation (found in M2 C2.3; open for a ruling)
+## SI-074 — drawing renders: region, text, texture orientation (found in M2 C2.3; decided)
 
 - **Sections:** 02 §13.5 `draw.drawing.render`; 03 §7.2; ADR-0006.
 - **Decisions:** `padding` is in drawing units; without `height` the region keeps its aspect, with both it is fitted and
   centred; `camera` is 12 fields wide at the project aspect; an empty drawing's `bounds` is the 12-field guide. Results
   add `pixelsSha256` and `warnings`. Text pixels come from the machine's fonts, so cross-platform goldens avoid text.
   Superscripts rise a third of the run size, subscripts drop a sixth; `centre`/`right` alignments shift lines.
-- **Texture orientation (readiness item 14):** the renderer places image row 0 at unit y = 0. The tile-on default
-  `[w,0,0,-h,minX,maxY]` then draws the image upright with its top-left at the zone's top-left (verified by the
-  asymmetric 3 x 2 fixture and goldens); the tile-off default `[w,0,0,h,minX,minY]` and drag mappings (positive
-  determinant) draw it mirrored vertically. **Proposal:** change the tile-off default to `[w,0,0,-h,minX,maxY]` and add
-  the flip to texture drag mappings. Both values are pinned by the reviewer-owned
-  `c22_r3_commands::texture_click_uses_palette_first_style_and_drag_and_tile_off_stay_unchanged`, so the change needs
-  a ruling.
+- **Texture orientation (orchestrator ruling on the C2.3 handoff): the upright convention everywhere.** The renderer
+  keeps image row 0 at unit y = 0 (the standard texture convention). Stored mappings therefore show the image upright
+  in drawing space: the tile-off click default is `[w, 0, 0, -h, minX, maxY]` like tile-on (`[W, 0, 0, -H, minX,
+  maxY]` at native size); a texture drag mapping takes the image's x axis along the drag and its y axis as the x axis
+  turned clockwise, `[dx, dy, dy, -dx, fromX, fromY]` (negative determinant in y-up drawing space); gradients are
+  unaffected. `c22_r3_commands::texture_click_uses_palette_first_style_and_drag_and_tile_off_stay_unchanged` carries
+  the new tile-off and drag values (declared edit under the ruling); the `c23_render` goldens show the asymmetric
+  3 x 2 fixture upright under tile-on, tile-off and a drag.
 
 ## SI-075 — fill mapping objects (found in M2 C2.3; decided)
 
@@ -852,17 +853,30 @@ Reserved by the M0 closure for "measured deterministic-format incompatibility" (
   with `colour.notMappable` and a reason. `set` skips solid, unpainted, invisible, text and mismatched-kind objects with
   a reason. The fill-mapping clipboard is session state.
 
-## SI-076 — centre line without a spine (found in M2 C2.3; open, owner M2 C2.4)
+## SI-076 — centre line without a spine (found in M2 C2.3; interim accepted, ticket C23-T1, owner M2 C2.4)
 
 - **Sections:** 02 §8.5.
-- **Decision (interim):** brush strokes that keep their spine become pencil lines along it at the pressure-average
-  width; outlines edited directly (no spine) are kept and reported (`drawing.centreLineNoSpine`). The triangulated
-  medial axis with branch pruning and colour splitting for spineless outlines is ticketed to M2 C2.4.
+- **Decision (orchestrator ruling: accepted as interim):** brush strokes that keep their spine become pencil lines
+  along it at the pressure-average width; outlines edited directly (no spine) are kept and reported
+  (`drawing.centreLineNoSpine`). The triangulated medial axis with branch pruning and colour splitting for spineless
+  outlines is ticket **C23-T1**, owner M2 C2.4.
 
-## SI-077 — feather colours (found in M2 C2.3; open, proposed owner M2 C2.4)
+## SI-077 — feather colours (found in M2 C2.3; open for the spec owner; ticket C23-T2, owner M2 C2.4)
 
-- **Sections:** 02 §8 (Feather), 03 §1.1 (indirect colour).
-- **Problem:** feather bands need the source colours at decreasing opacity, but artwork references colour IDs only;
-  there is no object opacity. Creating one swatch per band and colour pollutes palettes; a band style needs a model
-  amendment. `draw.feather.apply` stays declared (plan owner C2.3); the builder proposes moving it to M2 C2.4 with
-  this decision.
+- **Sections:** 02 §8 (Feather Edges), 03 §1.1 (indirect colour), 10 §4.9.
+- **Problem:** feather bands need each source colour at decreasing opacity ((N-1)/N down to 1/N), but artwork
+  references colour IDs only and has no object opacity.
+- **Ruling:** `draw.feather.apply` moves to M2 C2.4 (generated declaration owner M2 C2.4, ticket **C23-T2**); the colour
+  question goes to the spec owner; neither design is implemented.
+- **Design A — per-band swatches in a dedicated system palette.** Feather creates (or reuses) swatches
+  `<source name> 1/N … N-1/N` in a hidden system palette (like the hidden palette of 03 §1.2), one per source colour and
+  band, holding the source's value in every style with the alpha scaled. *For:* no model change; renders, exports and
+  recolouring work today. *Against:* palette growth (colours × steps, up to 100 per colour); editing the source swatch
+  does not update the bands unless a link is added; Replace Colour must learn the family.
+- **Design B — band-opacity model amendment.** A stroke or zone fill gains an opacity factor (`fill.opacity`, 0–1) applied
+  on top of the referenced colour; feather bands reference the source colour ID with opacity k/N. *For:* bands follow
+  swatch edits, style switches and Replace Colour automatically; no palette growth; reusable for other effects.
+  *Against:* a 10 §4.9 schema amendment (migration, renderer and paint semantics, `colour.pick` reporting).
+- **Recommendation:** Design B. Feather bands are derived appearance of the source colour, and indirect colour (03 §1.1)
+  is the reason colours are IDs; a per-object opacity keeps that property, where Design A copies colour values and
+  would drift on the first swatch edit.

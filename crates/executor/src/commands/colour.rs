@@ -190,7 +190,10 @@ pub(crate) fn default_matrix(kind: SwatchKind, b: &Rect) -> Option<[f64; 6]> {
     let (w, h) = (b.max_x - b.min_x, b.max_y - b.min_y);
     match kind {
         SwatchKind::Solid => None,
-        SwatchKind::LinearGradient | SwatchKind::Texture => Some([w, 0.0, 0.0, h, b.min_x, b.min_y]),
+        SwatchKind::LinearGradient => Some([w, 0.0, 0.0, h, b.min_x, b.min_y]),
+        // Image row 0 at unit y = 0 (the renderer's convention): the image upright, its top-left at the box's
+        // top-left, like the tile-on mapping (SI-074).
+        SwatchKind::Texture => Some([w, 0.0, 0.0, -h, b.min_x, b.max_y]),
         SwatchKind::RadialGradient => {
             let r = (w * w + h * h).sqrt() / 2.0;
             let (cx, cy) = ((b.min_x + b.max_x) / 2.0, (b.min_y + b.max_y) / 2.0);
@@ -210,7 +213,9 @@ pub(crate) fn drag_matrix(kind: SwatchKind, from: P, to: P) -> Option<[f64; 6]> 
             let r = d.len();
             Some([2.0 * r, 0.0, 0.0, 2.0 * r, from.x - r, from.y - r])
         }
-        SwatchKind::Texture => Some([d.x, d.y, -d.y, d.x, from.x, from.y]),
+        // The image's x axis along the drag, its y axis the x axis turned clockwise: upright in y-up drawing space
+        // (negative determinant; SI-074).
+        SwatchKind::Texture => Some([d.x, d.y, d.y, -d.x, from.x, from.y]),
     }
 }
 

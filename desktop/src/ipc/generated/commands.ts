@@ -2202,6 +2202,11 @@ export const COMMAND_INDEX = {
         fromColourId: "col_01K742SG059XGSNZ6M9MACZ2ZY",
         toColourId: "col_01K742SG09H7QE4RRR6XSYYS88",
       },
+      {
+        fromColourId: "col_01K742SG09H7QE4RRR6XSYYS88",
+        toColourId: "col_01K742SG059XGSNZ6M9MACZ2ZY",
+        respectProtected: false,
+      },
     ],
   },
   "colour.recovery.performed": {
@@ -2253,6 +2258,14 @@ export const COMMAND_INDEX = {
           "st_01K742SG0R61SYK9GG0HGYVNBT",
           "nd_01K742SG0WFAQJFKAZKV4CD56C",
         ],
+      },
+      {
+        drawingId: "drawingBank:#1/drawing:#1",
+        colourId: "col_01K742SG06BQ08FCT1TT8DF8MA",
+        objectIds: [
+          "st_01K742SG0R61SYK9GG0HGYVNBT",
+        ],
+        respectProtected: false,
       },
     ],
   },
@@ -3187,7 +3200,7 @@ export const COMMAND_INDEX = {
     examples: [
       {},
     ],
-    milestone: "M2 C2.3",
+    milestone: "M2 C2.4",
   },
   "draw.flatten.apply": {
     kind: "action",
@@ -25048,6 +25061,11 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
         type: "boolean",
         default: false,
       },
+      respectProtected: {
+        description: "Leave references to protected colours (SI-061); `false` overrides.",
+        type: "boolean",
+        default: true,
+      },
     },
     additionalProperties: false,
   },
@@ -25097,11 +25115,19 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
           type: "string",
         },
       },
+      skippedProtected: {
+        description: "Protected colours whose references were left alone (SI-061).",
+        type: "array",
+        items: {
+          type: "string",
+        },
+      },
     },
     required: [
       "changed",
       "pensChanged",
       "skippedLocked",
+      "skippedProtected",
     ],
   },
   "colour.recovery.performed.params": {
@@ -25329,8 +25355,31 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
         },
         default: null,
       },
+      respectProtected: {
+        description: "Leave objects whose current colour is protected (SI-061); `false` overrides.",
+        type: "boolean",
+        default: true,
+      },
     },
     additionalProperties: false,
+  },
+  "colour.selection.apply.SkippedObject": {
+    description: "A skipped object.",
+    type: "object",
+    properties: {
+      objectId: {
+        description: "The object.",
+        type: "string",
+      },
+      reason: {
+        description: "Why (`solid`, `unpainted`, `invisible`, `text`, `notPaintable`, `kindMismatch`, `colourMissing`).",
+        type: "string",
+      },
+    },
+    required: [
+      "objectId",
+      "reason",
+    ],
   },
   "colour.selection.apply.result": {
     title: "SelectionApplyResult",
@@ -25344,6 +25393,13 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
           type: "string",
         },
       },
+      skipped: {
+        description: "Objects left alone and why (`colour.protected`).",
+        type: "array",
+        items: {
+          $ref: "#/$defs/colour.selection.apply.SkippedObject",
+        },
+      },
       rev: {
         description: "The drawing revision after the change.",
         type: "integer",
@@ -25353,6 +25409,7 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
     },
     required: [
       "changed",
+      "skipped",
       "rev",
     ],
   },
@@ -83571,6 +83628,8 @@ export interface colour_recolour_apply_params {
   targets?: colour_recolour_apply_RecolourTarget[];
   /** Also pens using a replaced colour. */
   includePens?: boolean;
+  /** Leave references to protected colours (SI-061); `false` overrides. */
+  respectProtected?: boolean;
 }
 
 /** References changed in one drawing. */
@@ -83589,6 +83648,8 @@ export interface colour_recolour_apply_result {
   pensChanged: string[];
   /** Locked drawings left alone. */
   skippedLocked: string[];
+  /** Protected colours whose references were left alone (SI-061). */
+  skippedProtected: string[];
 }
 
 /** No parameters. */
@@ -83661,12 +83722,24 @@ export interface colour_selection_apply_params {
   drawingId?: string | null;
   /** Objects (default: the drawing selection). */
   objectIds?: string[] | null;
+  /** Leave objects whose current colour is protected (SI-061); `false` overrides. */
+  respectProtected?: boolean;
+}
+
+/** A skipped object. */
+export interface colour_selection_apply_SkippedObject {
+  /** The object. */
+  objectId: string;
+  /** Why (`solid`, `unpainted`, `invisible`, `text`, `notPaintable`, `kindMismatch`, `colourMissing`). */
+  reason: string;
 }
 
 /** `{changed, rev}`. */
 export interface colour_selection_apply_result {
   /** Objects recoloured (zones by their ID after the change). */
   changed: string[];
+  /** Objects left alone and why (`colour.protected`). */
+  skipped: colour_selection_apply_SkippedObject[];
   /** The drawing revision after the change. */
   rev: number | bigint;
 }

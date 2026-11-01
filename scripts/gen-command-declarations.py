@@ -131,7 +131,8 @@ def owner_of(cid: str) -> str:
     if ns == "draw":
         if rest == "hitTest.get":
             return "M2 C2.2"  # zones under a point (C2.2 ruling)
-        return "M2 C2.4" if rest.startswith(("vectorize", "vectorFile")) else "M2 C2.3"
+        # Feather moved to C2.4 (orchestrator ruling on the C2.3 handoff, ticket C23-T2, SI-077).
+        return "M2 C2.4" if rest.startswith(("vectorize", "vectorFile", "feather")) else "M2 C2.3"
     if ns == "drawAid":
         return "M5 C5.2" if rest.startswith("staticLightTable") else "M4 C4.2"
     if ns in ("element",):

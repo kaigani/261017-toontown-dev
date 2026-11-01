@@ -28,7 +28,7 @@ fn record_checkpoint_command_contracts_and_deferred_owners() {
         .filter(|e| e.id().starts_with("colour.") || e.id() == "draw.hitTest.get")
         .map(|e| e.describe())
         .collect();
-    assert_eq!(entries.iter().filter(|e| e["status"] == "implemented").count(), 11);
+    assert_eq!(entries.iter().filter(|e| e["status"] == "implemented").count(), 15);
     for e in entries.iter().filter(|e| e["status"] != "implemented") {
         assert!(e["milestone"].as_str().unwrap().starts_with('M'), "{e}");
     }

@@ -26,7 +26,8 @@ fn all_four_deferred_contracts_and_generated_types_name_c23() {
     let root = std::path::Path::new(env!("CARGO_MANIFEST_DIR")).join("../..");
     for id in ["colour.fillMapping.get", "colour.fillMapping.set", "colour.selection.apply", "colour.recolour.apply"] {
         let d = registry.entries().find(|e| e.id() == id).unwrap().describe();
-        assert_eq!(d["milestone"], "M2 C2.3", "{d}");
+        assert_eq!(d["status"], "implemented", "{d}");
+        assert!(d.get("milestone").is_none(), "{d}");
     }
     let generated = std::fs::read_to_string(root.join("desktop/src/ipc/generated/commands.ts")).unwrap();
     assert!(generated.contains("colour.fillMapping.get"));

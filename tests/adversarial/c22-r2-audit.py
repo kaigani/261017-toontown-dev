@@ -31,6 +31,21 @@ def mask(v):
         return re.sub(r'zn_[0-9A-Z]{26}', 'ZONE', v)
     return v
 
+def si074(old, new):
+    """Orchestrator ruling SI-074 (M2 C2.3): a texture drag mapping's y axis is the x axis turned clockwise, so a
+    recorded [a, b, -b, a, e, f] becomes [a, b, b, -a, e, f]. Only that exact transformation is carried over."""
+    if isinstance(old, dict) and isinstance(new, dict):
+        return {k: si074(v, new.get(k)) for k, v in old.items()}
+    if isinstance(old, list) and isinstance(new, list):
+        nums = lambda xs: len(xs) == 6 and all(isinstance(x, (int, float)) and not isinstance(x, bool) for x in xs)
+        if nums(old) and nums(new):
+            a, b, c, d, e, f = old
+            if c == -b and d == a and new == [a, b, b, -a, e, f]:
+                return list(new)
+            return old
+        return [si074(o, n) for o, n in zip(old, new)] + old[len(new):]
+    return old
+
 def planar_receipt(d):
     """Reject malformed raw facts and recompute every maximum, rather than accepting the stored worst field."""
     def number(x):
@@ -75,7 +90,7 @@ class Audit(unittest.TestCase):
         p='crates/executor/tests/golden/c22-determinism.json'
         old=json.loads(git('show','648e22d:'+p))
         new=json.loads((ROOT/p).read_bytes())
-        self.assertEqual(mask(old),mask(new))
+        self.assertEqual(mask(si074(old,new)),mask(new))
 
     def test_reviewer_tests_unchanged_after_merge(self):
         paths=['tests/adversarial/','crates/*/tests/c0*_r*','crates/*/tests/c1*_r*',

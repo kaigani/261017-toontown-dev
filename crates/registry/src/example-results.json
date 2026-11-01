@@ -30,7 +30,7 @@
     {
       "title": "Accept a request",
       "result": {
-        "confirmationId": "cf_362901bfee8f5f9c2099dad0",
+        "confirmationId": "cf_8937886d59dc8c52ee1bbc1d",
         "accepted": true
       },
       "varies": [
@@ -71,7 +71,7 @@
         "endpoint": null,
         "sessions": [
           {
-            "sessionId": "s1-13e765",
+            "sessionId": "s1-708639",
             "client": "Example agent",
             "policy": "assist",
             "scopes": [
@@ -83,7 +83,7 @@
               "files.write",
               "library.global"
             ],
-            "connectedAt": "2026-11-01T08:00:35.122Z",
+            "connectedAt": "2026-11-01T10:13:34.191Z",
             "lastActivity": null,
             "paused": false,
             "transport": ""
@@ -91,8 +91,8 @@
         ],
         "pendingConfirmations": [
           {
-            "confirmationId": "cf_bae069894b24ce16c19038bf",
-            "sessionId": "s1-13e765",
+            "confirmationId": "cf_9dd03d6f8c226c2f80f236f9",
+            "sessionId": "s1-708639",
             "commandId": "project.saveAs",
             "summary": "Overwrite `/tmp/Short.animpkg`",
             "consequences": [
@@ -127,7 +127,7 @@
     {
       "title": "Let a session edit",
       "result": {
-        "sessionId": "s1-ff7d55",
+        "sessionId": "s1-e54903",
         "policy": "assist",
         "scopes": [
           "read",
@@ -145,7 +145,7 @@
       "title": "Pause every session",
       "result": {
         "paused": [
-          "s1-aff93f"
+          "s1-7d58a1"
         ]
       },
       "varies": [
@@ -438,7 +438,7 @@
       "result": [
         {
           "name": "before-walk",
-          "createdAt": "2026-11-01T08:00:35.955Z",
+          "createdAt": "2026-11-01T10:13:35.018Z",
           "documentRev": 1,
           "origin": "user"
         }
@@ -690,7 +690,23 @@
           }
         ],
         "pensChanged": [],
-        "skippedLocked": []
+        "skippedLocked": [],
+        "skippedProtected": []
+      },
+      "varies": []
+    },
+    {
+      "title": "Replace Ink with Skin, overriding protection",
+      "result": {
+        "changed": [
+          {
+            "drawingId": "dr_01K742SG0KKMCAP9X1E6Z5P4SW",
+            "count": 2
+          }
+        ],
+        "pensChanged": [],
+        "skippedLocked": [],
+        "skippedProtected": []
       },
       "varies": []
     }
@@ -714,6 +730,18 @@
           "st_01K742SG0R61SYK9GG0HGYVNBT",
           "nd_01K742SG0WFAQJFKAZKV4CD56C"
         ],
+        "skipped": [],
+        "rev": 5
+      },
+      "varies": []
+    },
+    {
+      "title": "Recolour even where the current colour is protected",
+      "result": {
+        "changed": [
+          "st_01K742SG0R61SYK9GG0HGYVNBT"
+        ],
+        "skipped": [],
         "rev": 5
       },
       "varies": []
@@ -823,7 +851,7 @@
             "version": "0.0.1",
             "platform": "windows-x64"
           },
-          "exportedAt": "2026-11-01T08:00:36.941Z",
+          "exportedAt": "2026-11-01T10:13:36.073Z",
           "sourceProjectId": "pr_01K742SG00BK0VXTWDM5JRXV37",
           "scope": {
             "kind": "scenes",
@@ -5666,7 +5694,7 @@
             "stepId": "u-1",
             "label": "Set meta",
             "source": "user",
-            "time": "2026-11-01T08:00:39.561Z",
+            "time": "2026-11-01T10:13:38.712Z",
             "objectCount": 1
           },
           {
@@ -5674,7 +5702,7 @@
             "stepId": "u-2",
             "label": "Set meta",
             "source": "user",
-            "time": "2026-11-01T08:00:39.564Z",
+            "time": "2026-11-01T10:13:38.714Z",
             "objectCount": 1
           }
         ],
@@ -5819,7 +5847,7 @@
         "state": "succeeded",
         "progress": 1.0,
         "message": "",
-        "startedAt": "2026-11-01T08:00:39.850Z",
+        "startedAt": "2026-11-01T10:13:38.999Z",
         "result": {},
         "session": "user"
       },
@@ -5838,7 +5866,7 @@
           "state": "succeeded",
           "progress": 1.0,
           "message": "",
-          "startedAt": "2026-11-01T08:00:39.876Z",
+          "startedAt": "2026-11-01T10:13:39.026Z",
           "result": {},
           "session": "user"
         }
@@ -5857,7 +5885,7 @@
         "state": "succeeded",
         "progress": 1.0,
         "message": "",
-        "startedAt": "2026-11-01T08:00:39.902Z",
+        "startedAt": "2026-11-01T10:13:39.051Z",
         "result": {},
         "session": "user"
       },
@@ -5904,10 +5932,10 @@
     {
       "title": "A 1920×1080, 24 fps project",
       "result": {
-        "projectId": "pr_01M6B1ZYC7FSYBC6V7985XQPKK",
-        "sceneId": "sc_01M6B1ZYC9ZR5RS03681XNZN6Y",
-        "cameraId": "el_01M6B1ZYC9ZR5RS03681XNZN70",
-        "elementId": "el_01M6B1ZYC9ZR5RS03681XNZN71"
+        "projectId": "pr_01M6B9KEGV18EHWEBGAXX4XKPE",
+        "sceneId": "sc_01M6B9KEGW4DJG6AT0KX456EWW",
+        "cameraId": "el_01M6B9KEGW4DJG6AT0KX456EWY",
+        "elementId": "el_01M6B9KEGW4DJG6AT0KX456EWZ"
       },
       "varies": [
         "/cameraId",
@@ -6163,7 +6191,7 @@
         {
           "path": "/tmp/Sample.animpkg",
           "name": "Sample",
-          "lastOpened": "2026-11-01T08:00:40.815Z",
+          "lastOpened": "2026-11-01T10:13:39.984Z",
           "exists": true
         }
       ],

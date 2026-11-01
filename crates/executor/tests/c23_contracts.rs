@@ -101,6 +101,15 @@ fn cases() -> Vec<(&'static str, Value)> {
             "colour.recolour.apply",
             json!({ "fromColourId": colours[0], "toColourId": colours[4], "scope": "drawing", "drawingIds": [D1] }),
         ),
+        // The SI-061 override, explicit (the protection itself: c23_colour::protected_colours_are_skipped_unless_overridden).
+        (
+            "colour.selection.apply",
+            q(json!({ "colourId": colours[4], "objectIds": [BRUSH], "respectProtected": false })),
+        ),
+        (
+            "colour.recolour.apply",
+            json!({ "fromColourId": colours[4], "toColourId": colours[0], "scope": "drawing", "drawingIds": [D1], "respectProtected": false }),
+        ),
     ]
 }
 

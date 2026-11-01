@@ -254,16 +254,56 @@ fn the_tile_axis_style_order_drag_and_transforms() {
         assert!(near(*a, *b), "the texture turns with the zone: {samples:?} vs {before:?}");
     }
     assert!(samples.iter().all(|s| px.iter().any(|p| near(*s, *p))), "texture pixels after the turn: {samples:?}");
-    // A drag mapping rotates the texture: from → to along +y makes image x run up the drawing.
+    // A drag along +x of 3 du: unit space is 3 x 3 du from the drag start, the image upright (first row at the top),
+    // each image pixel 1 du wide and 1.5 du tall, repeated (SI-074).
     ok(&h, "edit.undo", json!({}));
     ok(
         &h,
         "colour.paint.apply",
         json!({ "drawingId": D1, "objectIds": [zone], "colourId": fabric,
-        "mapping": {"from": {"x": 1000, "y": 1000}, "to": {"x": 1000, "y": 1003}} }),
+        "mapping": {"from": {"x": 1000, "y": 1016}, "to": {"x": 1003, "y": 1016}} }),
     );
     let dragged = render(&h, json!({ "drawingId": D1, "width": 240, "region": reg }));
-    assert_ne!(dragged.sha, img.sha);
+    for (k, want) in px.iter().enumerate() {
+        let (i, j) = ((k % 3) as f64, (k / 3) as f64);
+        let got = dragged.at(1006.5 + i, 1010.0 - 1.5 * j - 0.75);
+        assert!(near(got, *want), "dragged image pixel ({i}, {j}): got {got:?} want {want:?}");
+    }
+    // Tile off: a swatch whose first style stretches; the default box mapping [24, 0, 0, -16, minX, maxY] shows the
+    // image upright over the zone, each image pixel 8 x 8 du.
+    let h2 = fixture();
+    let stretch = texture_project_first_stretching(&h2);
+    let r2 = ok(
+        &h2,
+        "draw.rectangle.add",
+        json!({ "drawingId": D1, "from": {"x": 1000, "y": 1000}, "to": {"x": 1024, "y": 1016}, "layer": "new" }),
+    );
+    ok(&h2, "colour.paint.apply", json!({ "drawingId": D1, "objectIds": [r2["zoneIds"][0]], "colourId": stretch }));
+    let off = render(&h2, json!({ "drawingId": D1, "width": 240, "region": reg }));
+    for (k, want) in px.iter().enumerate() {
+        let (i, j) = ((k % 3) as f64, (k / 3) as f64);
+        let got = off.at(1004.0 + 8.0 * i, 1012.0 - 8.0 * j);
+        assert!(near(got, *want), "stretched image pixel ({i}, {j}): got {got:?} want {want:?}");
+    }
+}
+
+/// [`texture_project`] with a second palette whose only style stretches the same image (tile off): its colour.
+fn texture_project_first_stretching(h: &ExecutorHandle) -> String {
+    let (_, px, _, _) = texture_project(h);
+    let png = tt_render::encode_png(&px.concat(), 3, 2).unwrap();
+    let colour = "col_01K9ZZZZZZZZZZZZZZZZZZZZZ7".to_owned();
+    let palette = json!({
+        "id": "pal_01K9ZZZZZZZZZZZZZZZZZZZZZ5", "type": "palette", "rev": 1, "name": "Axis stretched", "hidden": false,
+        "styles": [{"id": "sty_01K9ZZZZZZZZZZZZZZZZZZZZZ6", "type": "paletteStyle", "rev": 1, "name": "Stretched"}],
+        "swatches": [{"colourId": colour, "type": "swatch", "rev": 1, "name": "Axis stretched", "kind": "texture", "deformable": true,
+            "values": { "sty_01K9ZZZZZZZZZZZZZZZZZZZZZ6": {"image": "textures/axis.png", "tile": false, "width": 3, "height": 2} }}]
+    });
+    let bundle = json!({ "format": "animjson", "formatVersion": "1.0", "scenes": [], "elements": [], "drawingBanks": [],
+        "palettes": [palette], "pens": [], "assets": [],
+        "blobs": { "textures/axis.png": { "mediaType": "image/png", "base64": tt_persist::b64::encode(&png) } } });
+    let imp = ok(h, "doc.import.json", json!({ "source": bundle, "idPolicy": "preserve", "onConflict": "fail" }));
+    assert!(imp["issues"].as_array().unwrap().is_empty(), "{imp}");
+    colour
 }
 
 /// The committed pixel hashes: the same on every OS (ADR-0006 §3).
@@ -314,7 +354,29 @@ fn golden_hashes_hold_on_every_platform() {
         let reg = json!({"x": 999, "y": 999, "width": 14, "height": 10});
         let t = render(&h, json!({ "drawingId": D1, "width": 140, "region": reg }));
         got.insert("texture-tile".into(), (t.sha, t.png));
-        let s = render(&h, json!({ "drawingId": D1, "width": 140, "region": reg, "styleId": second }));
+        // A drag along +x of 3 du: the image upright, repeated (SI-074).
+        ok(
+            &h,
+            "colour.paint.apply",
+            json!({ "drawingId": D1, "objectIds": [r["zoneIds"][0]], "colourId": fabric,
+            "mapping": {"from": {"x": 1000, "y": 1008}, "to": {"x": 1003, "y": 1008}} }),
+        );
+        let g = render(&h, json!({ "drawingId": D1, "width": 140, "region": reg }));
+        got.insert("texture-drag".into(), (g.sha, g.png));
+        let _ = second;
+    }
+    {
+        // Tile off: the default box mapping stretches the image over the zone, upright (SI-074).
+        let h = fixture();
+        let stretch = texture_project_first_stretching(&h);
+        let r = ok(
+            &h,
+            "draw.rectangle.add",
+            json!({ "drawingId": D1, "from": {"x": 1000, "y": 1000}, "to": {"x": 1012, "y": 1008}, "layer": "new" }),
+        );
+        ok(&h, "colour.paint.apply", json!({ "drawingId": D1, "objectIds": [r["zoneIds"][0]], "colourId": stretch }));
+        let reg = json!({"x": 999, "y": 999, "width": 14, "height": 10});
+        let s = render(&h, json!({ "drawingId": D1, "width": 140, "region": reg }));
         got.insert("texture-stretch".into(), (s.sha, s.png));
     }
     let hashes: BTreeMap<String, String> = got.iter().map(|(k, (s, _))| (k.clone(), s.clone())).collect();

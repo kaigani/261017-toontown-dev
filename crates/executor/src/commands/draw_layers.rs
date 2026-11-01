@@ -172,6 +172,15 @@ fn emptied_groups(d: &Drawing, gone: &BTreeSet<String>) -> Vec<Located> {
         .collect()
 }
 
+/// Settle passes one merge runs (re-noding, after dropping covered pieces, after repainting).
+const MERGE_PASSES: u64 = 3;
+
+/// Work units one merge may spend: derived-map elements per settle pass plus sampled points. Calibrated on the C2.3
+/// measurement (a 100 000-stroke merge charges about 1.8 M units and took 23 s in a release build, about 13 µs per
+/// unit), so a merge refuses with `limit.exceeded` within about 13 s of work, well before the 30 s watchdog
+/// (never-block rule). Speeding the merge up (incremental re-noding) is C22-T2.
+const MERGE_WORK_BUDGET: u64 = 1_000_000;
+
 /// Merges `layers` (back to front, at least two) of `drawing` into one; returns the kept layer and the removed IDs
 /// that existed before.
 fn merge(
@@ -189,6 +198,12 @@ fn merge(
         return Err(nothing_to_do("flatten"));
     }
     let n = order.len();
+    // The merge's own work is charged to a work account like the settle pass's (never-block rule): every derived-map
+    // element of the source layers once per settle pass the merge runs (three), up front so an oversized merge
+    // refuses before staging anything, then every sampled point of every source stroke.
+    let mut work = tt_vector::work::Work::new(MERGE_WORK_BUDGET, "flattening these layers");
+    let map_cost: u64 = order.iter().map(|l| l.map.cost() as u64).sum();
+    work.spend(map_cost.saturating_mul(MERGE_PASSES)).map_err(|e| crate::planar::geom_error(&e))?;
     let rank = |i: usize| if upper_wins { i } else { n - 1 - i };
     let covered = |i: usize, p: P| order.iter().enumerate().any(|(j, l)| rank(j) > rank(i) && l.covers(&before, p));
     let dj = before.entry_raw_json(&EntryKey::Drawing(drawing.clone()))?;
@@ -205,6 +220,7 @@ fn merge(
             let (pts, closed) = points_of(&s);
             let brush = s.get("kind").and_then(Value::as_str) == Some("brush");
             let samples = Path::from_points(&pts, closed || brush).flatten(0.5);
+            work.spend_n(samples.len().saturating_mul(n)).map_err(|e| crate::planar::geom_error(&e))?;
             if !samples.is_empty() && samples.iter().all(|p| covered(i, *p)) {
                 hidden.push(id);
                 continue;
