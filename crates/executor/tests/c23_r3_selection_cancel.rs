@@ -1,4 +1,4 @@
-//! C23-R3-01 ? intentionally failing proving test: a UI-only drawing selection must not apply after its caller timed out.
+//! C23-R3-01 - intentionally failing proving test: a UI-only drawing selection must not apply after its caller timed out.
 #![allow(clippy::unwrap_used, clippy::expect_used, clippy::panic, missing_docs, reason = "review tests")]
 mod common;
 use common::*;

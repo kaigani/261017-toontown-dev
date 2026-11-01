@@ -39,13 +39,19 @@ def audit(out):
  write('gate-counts.json',counts)
  changed=git('diff','--name-only',HEAD).splitlines();write('hygiene.json',{'changedPreexistingFiles':changed,'status':git('status','--short'),'m1ReceiptDiff':git('diff',HEAD,'--','reviews/evidence/M1-C1.3*'),'specDiff':git('diff',HEAD,'--','spec/')})
  # Preserve register identity and deferred owners, closing only the four round-two divergent units.
- prior=json.loads((ROOT/'reviews/evidence/M2-C2.3-r2/register.json').read_bytes());v=json.loads(json.dumps(prior));deltas=[]
+ prior=json.loads((ROOT/'reviews/evidence/M2-C2.3-r2/register.json').read_bytes());v=json.loads(json.dumps(prior))
  for u in v['units']:
-  if u['status']=='divergent':
-   before=dict(u);u['status']='implemented';u['evidenceOrOwner']='Round-3 closure variants and preserved round-2 regressions; see M2-C2.3-r3.md';deltas.append({'before':before,'after':dict(u)})
+  if u['status']=='divergent':u['status']='implemented';u['evidenceOrOwner']='Round-3 closure variants; see M2-C2.3-r3.md'
+  if u['unit']=='C23-U085':u['status']='divergent';u['evidenceOrOwner']='C23-R3-01: UI-only selection applies after caller timeout'
  for c in v['commands']:
   if c['status']=='divergent':c['status']='implemented';c['finding']=None
- v['target']=run['headSha'];v['counts']=dict(collections.Counter(x['status'] for x in v['units']));v['commandCounts']=dict(collections.Counter(x['status'] for x in v['commands']));write('register.json',v);write('register-deltas.json',{'priorCounts':prior['counts'],'counts':v['counts'],'priorCommandCounts':prior['commandCounts'],'commandCounts':v['commandCounts'],'unitDeltas':deltas})
+  if c['id']=='draw.selection.set':c['status']='divergent';c['finding']='C23-R3-01'
+ deltas=[{'before':a,'after':b} for a,b in zip(prior['units'],v['units']) if a!=b]
+ command_deltas=[{'before':a,'after':b} for a,b in zip(prior['commands'],v['commands']) if a!=b]
+ v['target']=run['headSha'];v['scope']='Final full C2.3 round: original 123 units/deferred owners; generic cancellation partial as C23-R3-01'
+ v['counts']=dict(collections.Counter(x['status'] for x in v['units']));v['commandCounts']=dict(collections.Counter(x['status'] for x in v['commands']))
+ write('register.json',v);write('register-deltas.json',{'priorCounts':prior['counts'],'counts':v['counts'],'priorCommandCounts':prior['commandCounts'],'commandCounts':v['commandCounts'],'unitDeltas':deltas,'commandDeltas':command_deltas})
+
 class Audit(unittest.TestCase):
  def test_protected_diff_and_golden(self):
   self.assertEqual(git('diff',BASE+'..'+HEAD,'--','tests/adversarial','crates/*/tests/c23_r[0-9]*','spec/'),'')

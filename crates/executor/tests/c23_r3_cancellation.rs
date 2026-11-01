@@ -33,11 +33,17 @@ fn cancellation_during_running_queued_call_batch_and_planar_settle() {
     );
     assert!(run(&h, "doc.state.get", json!({})).is_ok());
     assert_eq!(rev(&h), initial);
+    let agent = h
+        .connect_agent(tt_executor::agents::AgentConnect {
+            policy: Some(tt_executor::agents::Policy::Autonomous),
+            ..Default::default()
+        })
+        .unwrap();
+    let origin = tt_executor::Origin::Agent { session: agent.session_id, name: agent.client, scopes: agent.scopes };
     tt_vector::work::hooks::set_spin_micros(3000);
     let t = Instant::now();
-    let b = batch(
-        &h,
-        json!({"label":"cancel after first step","steps":[{"id":"draw.drawing.rename","params":{"drawingId":D,"name":"must not commit"}},{"id":"draw.smooth.apply","params":{"drawingId":D,"ids":s["strokeIds"]}}]}),
+    let b = h.batch_audited(
+        serde_json::from_value(json!({"label":"cancel after first step","steps":[{"id":"draw.drawing.rename","params":{"drawingId":D,"name":"must not commit"}},{"id":"draw.smooth.apply","params":{"drawingId":D,"ids":s["strokeIds"]}}]})).unwrap(),origin,"batch",
     );
     tt_vector::work::hooks::set_spin_micros(0);
     assert_eq!(b.error.unwrap().code, "command.timeout");
@@ -45,6 +51,12 @@ fn cancellation_during_running_queued_call_batch_and_planar_settle() {
     assert_eq!(rev(&h), initial);
     assert_eq!(get(&h, D)["name"], name);
     println!("atomic batch raw seconds={}", t.elapsed().as_secs_f64());
+    let path = std::env::temp_dir().join(format!("tt-c23-r3-cancelled-replay-{}.json", std::process::id()));
+    let export =
+        ok(&h, "agent.activity.export", json!({"path":path.to_string_lossy(),"format":"batch","onExists":"overwrite"}));
+    let replay: serde_json::Value = serde_json::from_slice(&std::fs::read(&path).unwrap()).unwrap();
+    assert_eq!(replay["steps"], json!([]), "cancelled atomic batch must add no replay step: {export}");
+    std::fs::remove_file(path).unwrap();
     // New geometry reaches planar work, times out, and leaves no stroke or revision behind.
     let before = get(&h, D);
     tt_vector::work::hooks::set_spin_micros(1_000_000);
