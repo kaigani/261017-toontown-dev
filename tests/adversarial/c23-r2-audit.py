@@ -5,11 +5,13 @@ No historical receipt writes. --out explicitly opts into a new evidence director
 import argparse
 import collections
 import datetime
+import gzip
 import hashlib
 import importlib.util
 import json
 import pathlib
 import re
+import shutil
 import subprocess
 import unittest
 
@@ -102,6 +104,36 @@ def collect(out):
         m=[tuple(map(int,m)) for m in re.findall(r'test result: \w+\. (\d+) passed; (\d+) failed; (\d+) ignored',read(p))]
         if m:counts[p.name]={'summaries':len(m),**dict(zip(['passed','failed','ignored'],[sum(x[i] for x in m) for i in range(3)]))}
     write('gate-counts.json',counts)
+    # Keep the independently downloaded outputs together with their receipts, not only under target/.
+    for os in ['Windows','macOS']:
+        source=ROOT/'target/c23-r2-ci'/('check-'+os)/'c23-render'
+        if source.exists():shutil.copytree(source,out/'ci-renders'/os,dirs_exist_ok=True)
+    ci_log=ROOT/'target/c23-r2-ci/ci.log'
+    if ci_log.exists():(out/'ci-all.log.gz').write_bytes(gzip.compress(ci_log.read_bytes(),mtime=0))
+    headless=ROOT/'target/c23-r2-ci/headless-Windows'
+    if headless.exists():
+        write('headless-artifact-hashes.json',[{'path':str(p.relative_to(headless)),'bytes':p.stat().st_size,'sha256':hashlib.sha256(p.read_bytes()).hexdigest()} for p in headless.rglob('*') if p.is_file()])
+    module_spec=importlib.util.spec_from_file_location('r1_analyzers',ROOT/'tests/adversarial/c23-r1-audit.py')
+    analyzers=importlib.util.module_from_spec(module_spec);module_spec.loader.exec_module(analyzers)
+    series_spec=importlib.util.spec_from_file_location('measurement_series',ROOT/'scripts/analyse-measurements.py')
+    series=importlib.util.module_from_spec(series_spec);series_spec.loader.exec_module(series)
+    measurements=out/'measurements';previous=ROOT/'reviews/evidence/M2-C2.3-r1/measurements'
+    results={}
+    for name in ['render-100k.json','flatten-100k.json','centre-line-large.json']:
+        p=measurements/name
+        if p.exists():
+            a,b=json.loads((previous/name).read_bytes()),json.loads(p.read_bytes())
+            results[name]={**analyzers.c23_measurement(b),'priorSeconds':a['seconds'],'ratio':b['seconds']/a['seconds']}
+    name='c21-strokes-100k-windows.json'
+    if (measurements/name).exists():
+        a,b=series.check_file(previous/name),series.check_file(measurements/name)
+        results['c21']={'priorValid':a['ok'],'currentValid':b['ok'],'series':[{'name':k,'prior':v,'current':b['series'][k],'p50Ratio':b['series'][k]['p50']/v['p50']} for k,v in a['series'].items() if k.endswith(('.wallMs','.allocatedBytes'))]}
+    name='c22-planar-worst-case-windows.json'
+    if (measurements/name).exists():
+        a,b=analyzers.planar(json.loads((previous/name).read_bytes())),analyzers.planar(json.loads((measurements/name).read_bytes()))
+        by={c['name']:c for c in b['cases']}
+        results['c22']={'prior':a,'current':b,'comparisons':[{'name':c['name'],'maxWallRatio':by[c['name']]['maxWallMs']/c['maxWallMs'],'sameWorkAndOutcome':(c['units'],c['outcomes'])==(by[c['name']]['units'],by[c['name']]['outcomes'])} for c in a['cases']]}
+    write('performance-recomputed.json',results)
 
 class Audit(unittest.TestCase):
     def test_protected_files_are_unchanged(self):

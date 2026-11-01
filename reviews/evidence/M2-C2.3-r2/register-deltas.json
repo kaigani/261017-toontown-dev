@@ -1,0 +1,689 @@
+{
+  "priorCounts": {
+    "deferred-with-owner": 25,
+    "implemented": 80,
+    "divergent": 18
+  },
+  "currentCounts": {
+    "deferred-with-owner": 25,
+    "implemented": 94,
+    "divergent": 4
+  },
+  "priorCommandCounts": {
+    "implemented": 22,
+    "divergent": 15
+  },
+  "currentCommandCounts": {
+    "divergent": 5,
+    "implemented": 32
+  },
+  "unitDeltas": [
+    {
+      "unit": "C23-U015",
+      "before": {
+        "unit": "C23-U015",
+        "clause": "02 7.1.1",
+        "requirement": "ID, point, rectangle and lasso selections",
+        "status": "implemented",
+        "evidenceOrOwner": "c23_select"
+      },
+      "after": {
+        "unit": "C23-U015",
+        "clause": "02 7.1.1",
+        "requirement": "ID, point, rectangle and lasso selections",
+        "status": "divergent",
+        "evidenceOrOwner": "C23-R2-03; valid derived zone pruned after selection.set"
+      }
+    },
+    {
+      "unit": "C23-U022",
+      "before": {
+        "unit": "C23-U022",
+        "clause": "02 7.1.2",
+        "requirement": "All incident anchors follow a selected shared junction",
+        "status": "divergent",
+        "evidenceOrOwner": "C23-R1-02; c23_r1_commands"
+      },
+      "after": {
+        "unit": "C23-U022",
+        "clause": "02 7.1.2",
+        "requirement": "All incident anchors follow a selected shared junction",
+        "status": "implemented",
+        "evidenceOrOwner": "C23-R1-02; c23_r1_commands; round-two original proving test passes; closure table/new variants in M2-C2.3-r2.md"
+      }
+    },
+    {
+      "unit": "C23-U023",
+      "before": {
+        "unit": "C23-U023",
+        "clause": "02 7.1.2",
+        "requirement": "Contour snap considers segment interiors",
+        "status": "divergent",
+        "evidenceOrOwner": "C23-R1-03; c23_r1_commands"
+      },
+      "after": {
+        "unit": "C23-U023",
+        "clause": "02 7.1.2",
+        "requirement": "Contour snap considers segment interiors",
+        "status": "implemented",
+        "evidenceOrOwner": "C23-R1-03; c23_r1_commands; round-two original proving test passes; closure table/new variants in M2-C2.3-r2.md"
+      }
+    },
+    {
+      "unit": "C23-U029",
+      "before": {
+        "unit": "C23-U029",
+        "clause": "02 7.1.3",
+        "requirement": "Envelope keeps painted zones and mapping attachment",
+        "status": "divergent",
+        "evidenceOrOwner": "C23-R1-01; c23_r1_commands"
+      },
+      "after": {
+        "unit": "C23-U029",
+        "clause": "02 7.1.3",
+        "requirement": "Envelope keeps painted zones and mapping attachment",
+        "status": "implemented",
+        "evidenceOrOwner": "C23-R1-01; c23_r1_commands; round-two original proving test passes; closure table/new variants in M2-C2.3-r2.md"
+      }
+    },
+    {
+      "unit": "C23-U031",
+      "before": {
+        "unit": "C23-U031",
+        "clause": "02 7.1.4",
+        "requirement": "Reposition preserves zone paint and matrices",
+        "status": "divergent",
+        "evidenceOrOwner": "C23-R1-01; c23_r1_commands"
+      },
+      "after": {
+        "unit": "C23-U031",
+        "clause": "02 7.1.4",
+        "requirement": "Reposition preserves zone paint and matrices",
+        "status": "implemented",
+        "evidenceOrOwner": "C23-R1-01; c23_r1_commands; round-two original proving test passes; closure table/new variants in M2-C2.3-r2.md"
+      }
+    },
+    {
+      "unit": "C23-U045",
+      "before": {
+        "unit": "C23-U045",
+        "clause": "02 7.4.2",
+        "requirement": "Wholly enclosed text participates in Cutter selection",
+        "status": "divergent",
+        "evidenceOrOwner": "C23-R1-11; c23_r1_commands"
+      },
+      "after": {
+        "unit": "C23-U045",
+        "clause": "02 7.4.2",
+        "requirement": "Wholly enclosed text participates in Cutter selection",
+        "status": "implemented",
+        "evidenceOrOwner": "C23-R1-11; c23_r1_commands; round-two original proving test passes; closure table/new variants in M2-C2.3-r2.md"
+      }
+    },
+    {
+      "unit": "C23-U054",
+      "before": {
+        "unit": "C23-U054",
+        "clause": "02 8.2",
+        "requirement": "Optimize preserves appearance for thick pencils and upper brushes",
+        "status": "divergent",
+        "evidenceOrOwner": "C23-R1-04; c23_r1_commands"
+      },
+      "after": {
+        "unit": "C23-U054",
+        "clause": "02 8.2",
+        "requirement": "Optimize preserves appearance for thick pencils and upper brushes",
+        "status": "implemented",
+        "evidenceOrOwner": "C23-R1-04; c23_r1_commands; round-two original proving test passes; closure table/new variants in M2-C2.3-r2.md"
+      }
+    },
+    {
+      "unit": "C23-U056",
+      "before": {
+        "unit": "C23-U056",
+        "clause": "02 8.2",
+        "requirement": "Overlap and point-side decisions use exact ruled grid predicates",
+        "status": "divergent",
+        "evidenceOrOwner": "C23-R1-08; c23_r1_geometry"
+      },
+      "after": {
+        "unit": "C23-U056",
+        "clause": "02 8.2",
+        "requirement": "Overlap and point-side decisions use exact ruled grid predicates",
+        "status": "implemented",
+        "evidenceOrOwner": "C23-R1-08; c23_r1_geometry; round-two original proving test passes; closure table/new variants in M2-C2.3-r2.md"
+      }
+    },
+    {
+      "unit": "C23-U059",
+      "before": {
+        "unit": "C23-U059",
+        "clause": "02 8.3",
+        "requirement": "Smooth stays within a charged aggregate work budget",
+        "status": "divergent",
+        "evidenceOrOwner": "C23-R1-07; real release binary 40-second timeout"
+      },
+      "after": {
+        "unit": "C23-U059",
+        "clause": "02 8.3",
+        "requirement": "Smooth stays within a charged aggregate work budget",
+        "status": "implemented",
+        "evidenceOrOwner": "C23-R1-07; real release binary 40-second timeout; round-two original proving test passes; closure table/new variants in M2-C2.3-r2.md"
+      }
+    },
+    {
+      "unit": "C23-U063",
+      "before": {
+        "unit": "C23-U063",
+        "clause": "02 8.5",
+        "requirement": "Paint-only selection reports centreLineOnFill",
+        "status": "divergent",
+        "evidenceOrOwner": "C23-R1-12; c23_r1_commands"
+      },
+      "after": {
+        "unit": "C23-U063",
+        "clause": "02 8.5",
+        "requirement": "Paint-only selection reports centreLineOnFill",
+        "status": "divergent",
+        "evidenceOrOwner": "C23-R2-03; explicit-ID warning fixed, selected-zone flow still fails"
+      }
+    },
+    {
+      "unit": "C23-U065",
+      "before": {
+        "unit": "C23-U065",
+        "clause": "02 8.6",
+        "requirement": "Gradient/texture line conversion succeeds and retains mapping",
+        "status": "divergent",
+        "evidenceOrOwner": "C23-R1-05; c23_r1_commands"
+      },
+      "after": {
+        "unit": "C23-U065",
+        "clause": "02 8.6",
+        "requirement": "Gradient/texture line conversion succeeds and retains mapping",
+        "status": "implemented",
+        "evidenceOrOwner": "C23-R1-05; c23_r1_commands; round-two original proving test passes; closure table/new variants in M2-C2.3-r2.md"
+      }
+    },
+    {
+      "unit": "C23-U078",
+      "before": {
+        "unit": "C23-U078",
+        "clause": "02 13.1.4",
+        "requirement": "New shape commands accept element/frame/createDrawing addressing",
+        "status": "divergent",
+        "evidenceOrOwner": "C23-R1-10; c23_r1_commands"
+      },
+      "after": {
+        "unit": "C23-U078",
+        "clause": "02 13.1.4",
+        "requirement": "New shape commands accept element/frame/createDrawing addressing",
+        "status": "divergent",
+        "evidenceOrOwner": "C23-R2-02; explicit false dropped by four shape wrappers"
+      }
+    },
+    {
+      "unit": "C23-U084",
+      "before": {
+        "unit": "C23-U084",
+        "clause": "02 13.1.11",
+        "requirement": "Every new mutation has the claimed full common contract",
+        "status": "divergent",
+        "evidenceOrOwner": "C23-R1-14; c23-r1-audit.py"
+      },
+      "after": {
+        "unit": "C23-U084",
+        "clause": "02 13.1.11",
+        "requirement": "Every new mutation has the claimed full common contract",
+        "status": "implemented",
+        "evidenceOrOwner": "C23-R1-14; c23-r1-audit.py; round-two original proving test passes; closure table/new variants in M2-C2.3-r2.md"
+      }
+    },
+    {
+      "unit": "C23-U085",
+      "before": {
+        "unit": "C23-U085",
+        "clause": "02 13.1.12",
+        "requirement": "Long-work never-block guarantee for Smooth",
+        "status": "divergent",
+        "evidenceOrOwner": "C23-R1-07"
+      },
+      "after": {
+        "unit": "C23-U085",
+        "clause": "02 13.1.12",
+        "requirement": "Long-work never-block guarantee for Smooth",
+        "status": "divergent",
+        "evidenceOrOwner": "C23-R2-01; bounded Smooth and MCP timeout pass, queued caller still commits"
+      }
+    },
+    {
+      "unit": "C23-U096",
+      "before": {
+        "unit": "C23-U096",
+        "clause": "03 7.2",
+        "requirement": "Gradient and texture mappings move with every whole transform",
+        "status": "divergent",
+        "evidenceOrOwner": "C23-R1-01 envelope/reposition exceptions"
+      },
+      "after": {
+        "unit": "C23-U096",
+        "clause": "03 7.2",
+        "requirement": "Gradient and texture mappings move with every whole transform",
+        "status": "implemented",
+        "evidenceOrOwner": "C23-R1-01 envelope/reposition exceptions; round-two original proving test passes; closure table/new variants in M2-C2.3-r2.md"
+      }
+    },
+    {
+      "unit": "C23-U100",
+      "before": {
+        "unit": "C23-U100",
+        "clause": "03 7.4",
+        "requirement": "Tile-off transparency outside mapped image",
+        "status": "divergent",
+        "evidenceOrOwner": "C23-R1-06; c23_r1_texture"
+      },
+      "after": {
+        "unit": "C23-U100",
+        "clause": "03 7.4",
+        "requirement": "Tile-off transparency outside mapped image",
+        "status": "implemented",
+        "evidenceOrOwner": "C23-R1-06; c23_r1_texture; round-two original proving test passes; closure table/new variants in M2-C2.3-r2.md"
+      }
+    },
+    {
+      "unit": "C23-U111",
+      "before": {
+        "unit": "C23-U111",
+        "clause": "03 9.3",
+        "requirement": "Drawing/element/scene/project scope and optional pen filters",
+        "status": "divergent",
+        "evidenceOrOwner": "C23-R1-16 scene scope reaches an unexposed bank drawing; c23_r1_colour"
+      },
+      "after": {
+        "unit": "C23-U111",
+        "clause": "03 9.3",
+        "requirement": "Drawing/element/scene/project scope and optional pen filters",
+        "status": "implemented",
+        "evidenceOrOwner": "C23-R1-16 scene scope reaches an unexposed bank drawing; c23_r1_colour; round-two original proving test passes; closure table/new variants in M2-C2.3-r2.md"
+      }
+    },
+    {
+      "unit": "C23-U114",
+      "before": {
+        "unit": "C23-U114",
+        "clause": "03 9.3",
+        "requirement": "Protected effective targets with no changes return refusal",
+        "status": "divergent",
+        "evidenceOrOwner": "C23-R1-13; c23_r1_colour"
+      },
+      "after": {
+        "unit": "C23-U114",
+        "clause": "03 9.3",
+        "requirement": "Protected effective targets with no changes return refusal",
+        "status": "implemented",
+        "evidenceOrOwner": "C23-R1-13; c23_r1_colour; round-two original proving test passes; closure table/new variants in M2-C2.3-r2.md"
+      }
+    },
+    {
+      "unit": "C23-U118",
+      "before": {
+        "unit": "C23-U118",
+        "clause": "03 16.1.5",
+        "requirement": "Stale zone IDs refuse rather than being silently ignored",
+        "status": "divergent",
+        "evidenceOrOwner": "C23-R1-09 mixed transform target"
+      },
+      "after": {
+        "unit": "C23-U118",
+        "clause": "03 16.1.5",
+        "requirement": "Stale zone IDs refuse rather than being silently ignored",
+        "status": "implemented",
+        "evidenceOrOwner": "C23-R1-09 mixed transform target; round-two original proving test passes; closure table/new variants in M2-C2.3-r2.md"
+      }
+    }
+  ],
+  "commandDeltas": [
+    {
+      "id": "draw.selection.set",
+      "before": {
+        "id": "draw.selection.set",
+        "kind": "ui",
+        "source": "crates/executor/src/commands/draw_select.rs",
+        "examples": 2,
+        "status": "implemented",
+        "finding": null,
+        "scopeNote": "Semantic disposition; shared addressing and full-contract coverage are audited as separate source units."
+      },
+      "after": {
+        "id": "draw.selection.set",
+        "kind": "ui",
+        "source": "crates/executor/src/commands/draw_select.rs",
+        "examples": 2,
+        "status": "divergent",
+        "finding": "C23-R2-03",
+        "scopeNote": "Semantic disposition; shared addressing and full-contract coverage are audited as separate source units."
+      }
+    },
+    {
+      "id": "draw.rectangle.add",
+      "before": {
+        "id": "draw.rectangle.add",
+        "kind": "action",
+        "source": "crates/executor/src/commands/draw_shapes.rs",
+        "examples": 1,
+        "status": "divergent",
+        "finding": "10",
+        "scopeNote": "Semantic disposition; shared addressing and full-contract coverage are audited as separate source units."
+      },
+      "after": {
+        "id": "draw.rectangle.add",
+        "kind": "action",
+        "source": "crates/executor/src/commands/draw_shapes.rs",
+        "examples": 1,
+        "status": "divergent",
+        "finding": "C23-R2-02",
+        "scopeNote": "Semantic disposition; shared addressing and full-contract coverage are audited as separate source units."
+      }
+    },
+    {
+      "id": "draw.ellipse.add",
+      "before": {
+        "id": "draw.ellipse.add",
+        "kind": "action",
+        "source": "crates/executor/src/commands/draw_shapes.rs",
+        "examples": 1,
+        "status": "divergent",
+        "finding": "10",
+        "scopeNote": "Semantic disposition; shared addressing and full-contract coverage are audited as separate source units."
+      },
+      "after": {
+        "id": "draw.ellipse.add",
+        "kind": "action",
+        "source": "crates/executor/src/commands/draw_shapes.rs",
+        "examples": 1,
+        "status": "divergent",
+        "finding": "C23-R2-02",
+        "scopeNote": "Semantic disposition; shared addressing and full-contract coverage are audited as separate source units."
+      }
+    },
+    {
+      "id": "draw.line.add",
+      "before": {
+        "id": "draw.line.add",
+        "kind": "action",
+        "source": "crates/executor/src/commands/draw_shapes.rs",
+        "examples": 1,
+        "status": "divergent",
+        "finding": "10",
+        "scopeNote": "Semantic disposition; shared addressing and full-contract coverage are audited as separate source units."
+      },
+      "after": {
+        "id": "draw.line.add",
+        "kind": "action",
+        "source": "crates/executor/src/commands/draw_shapes.rs",
+        "examples": 1,
+        "status": "divergent",
+        "finding": "C23-R2-02",
+        "scopeNote": "Semantic disposition; shared addressing and full-contract coverage are audited as separate source units."
+      }
+    },
+    {
+      "id": "draw.polyline.add",
+      "before": {
+        "id": "draw.polyline.add",
+        "kind": "action",
+        "source": "crates/executor/src/commands/draw_shapes.rs",
+        "examples": 1,
+        "status": "divergent",
+        "finding": "10",
+        "scopeNote": "Semantic disposition; shared addressing and full-contract coverage are audited as separate source units."
+      },
+      "after": {
+        "id": "draw.polyline.add",
+        "kind": "action",
+        "source": "crates/executor/src/commands/draw_shapes.rs",
+        "examples": 1,
+        "status": "divergent",
+        "finding": "C23-R2-02",
+        "scopeNote": "Semantic disposition; shared addressing and full-contract coverage are audited as separate source units."
+      }
+    },
+    {
+      "id": "draw.transform.apply",
+      "before": {
+        "id": "draw.transform.apply",
+        "kind": "action",
+        "source": "crates/executor/src/commands/draw_transform.rs",
+        "examples": 2,
+        "status": "divergent",
+        "finding": "02/09",
+        "scopeNote": "Semantic disposition; shared addressing and full-contract coverage are audited as separate source units."
+      },
+      "after": {
+        "id": "draw.transform.apply",
+        "kind": "action",
+        "source": "crates/executor/src/commands/draw_transform.rs",
+        "examples": 2,
+        "status": "implemented",
+        "finding": null,
+        "scopeNote": "Semantic disposition; shared addressing and full-contract coverage are audited as separate source units."
+      }
+    },
+    {
+      "id": "draw.envelope.apply",
+      "before": {
+        "id": "draw.envelope.apply",
+        "kind": "action",
+        "source": "crates/executor/src/commands/draw_transform.rs",
+        "examples": 1,
+        "status": "divergent",
+        "finding": "01",
+        "scopeNote": "Semantic disposition; shared addressing and full-contract coverage are audited as separate source units."
+      },
+      "after": {
+        "id": "draw.envelope.apply",
+        "kind": "action",
+        "source": "crates/executor/src/commands/draw_transform.rs",
+        "examples": 1,
+        "status": "implemented",
+        "finding": null,
+        "scopeNote": "Semantic disposition; shared addressing and full-contract coverage are audited as separate source units."
+      }
+    },
+    {
+      "id": "draw.repositionAll.apply",
+      "before": {
+        "id": "draw.repositionAll.apply",
+        "kind": "action",
+        "source": "crates/executor/src/commands/draw_transform.rs",
+        "examples": 1,
+        "status": "divergent",
+        "finding": "01",
+        "scopeNote": "Semantic disposition; shared addressing and full-contract coverage are audited as separate source units."
+      },
+      "after": {
+        "id": "draw.repositionAll.apply",
+        "kind": "action",
+        "source": "crates/executor/src/commands/draw_transform.rs",
+        "examples": 1,
+        "status": "implemented",
+        "finding": null,
+        "scopeNote": "Semantic disposition; shared addressing and full-contract coverage are audited as separate source units."
+      }
+    },
+    {
+      "id": "draw.point.move",
+      "before": {
+        "id": "draw.point.move",
+        "kind": "action",
+        "source": "crates/executor/src/commands/draw_transform.rs",
+        "examples": 1,
+        "status": "divergent",
+        "finding": "03",
+        "scopeNote": "Semantic disposition; shared addressing and full-contract coverage are audited as separate source units."
+      },
+      "after": {
+        "id": "draw.point.move",
+        "kind": "action",
+        "source": "crates/executor/src/commands/draw_transform.rs",
+        "examples": 1,
+        "status": "implemented",
+        "finding": null,
+        "scopeNote": "Semantic disposition; shared addressing and full-contract coverage are audited as separate source units."
+      }
+    },
+    {
+      "id": "draw.cut.apply",
+      "before": {
+        "id": "draw.cut.apply",
+        "kind": "action",
+        "source": "crates/executor/src/commands/draw_cut.rs",
+        "examples": 3,
+        "status": "divergent",
+        "finding": "11",
+        "scopeNote": "Semantic disposition; shared addressing and full-contract coverage are audited as separate source units."
+      },
+      "after": {
+        "id": "draw.cut.apply",
+        "kind": "action",
+        "source": "crates/executor/src/commands/draw_cut.rs",
+        "examples": 3,
+        "status": "implemented",
+        "finding": null,
+        "scopeNote": "Semantic disposition; shared addressing and full-contract coverage are audited as separate source units."
+      }
+    },
+    {
+      "id": "draw.optimize.apply",
+      "before": {
+        "id": "draw.optimize.apply",
+        "kind": "action",
+        "source": "crates/executor/src/commands/draw_layers.rs",
+        "examples": 1,
+        "status": "divergent",
+        "finding": "04/08",
+        "scopeNote": "Semantic disposition; shared addressing and full-contract coverage are audited as separate source units."
+      },
+      "after": {
+        "id": "draw.optimize.apply",
+        "kind": "action",
+        "source": "crates/executor/src/commands/draw_layers.rs",
+        "examples": 1,
+        "status": "implemented",
+        "finding": null,
+        "scopeNote": "Semantic disposition; shared addressing and full-contract coverage are audited as separate source units."
+      }
+    },
+    {
+      "id": "draw.smooth.apply",
+      "before": {
+        "id": "draw.smooth.apply",
+        "kind": "action",
+        "source": "crates/executor/src/commands/draw_strokeops.rs",
+        "examples": 1,
+        "status": "divergent",
+        "finding": "07",
+        "scopeNote": "Semantic disposition; shared addressing and full-contract coverage are audited as separate source units."
+      },
+      "after": {
+        "id": "draw.smooth.apply",
+        "kind": "action",
+        "source": "crates/executor/src/commands/draw_strokeops.rs",
+        "examples": 1,
+        "status": "implemented",
+        "finding": null,
+        "scopeNote": "Semantic disposition; shared addressing and full-contract coverage are audited as separate source units."
+      }
+    },
+    {
+      "id": "draw.linesToBrush.apply",
+      "before": {
+        "id": "draw.linesToBrush.apply",
+        "kind": "action",
+        "source": "crates/executor/src/commands/draw_strokeops.rs",
+        "examples": 1,
+        "status": "divergent",
+        "finding": "05",
+        "scopeNote": "Semantic disposition; shared addressing and full-contract coverage are audited as separate source units."
+      },
+      "after": {
+        "id": "draw.linesToBrush.apply",
+        "kind": "action",
+        "source": "crates/executor/src/commands/draw_strokeops.rs",
+        "examples": 1,
+        "status": "implemented",
+        "finding": null,
+        "scopeNote": "Semantic disposition; shared addressing and full-contract coverage are audited as separate source units."
+      }
+    },
+    {
+      "id": "draw.centreLine.apply",
+      "before": {
+        "id": "draw.centreLine.apply",
+        "kind": "action",
+        "source": "crates/executor/src/commands/draw_strokeops.rs",
+        "examples": 1,
+        "status": "divergent",
+        "finding": "12; medial axis deferred C23-T1",
+        "scopeNote": "Semantic disposition; shared addressing and full-contract coverage are audited as separate source units."
+      },
+      "after": {
+        "id": "draw.centreLine.apply",
+        "kind": "action",
+        "source": "crates/executor/src/commands/draw_strokeops.rs",
+        "examples": 1,
+        "status": "implemented",
+        "finding": null,
+        "scopeNote": "Semantic disposition; shared addressing and full-contract coverage are audited as separate source units."
+      }
+    },
+    {
+      "id": "colour.recolour.apply",
+      "before": {
+        "id": "colour.recolour.apply",
+        "kind": "action",
+        "source": "crates/executor/src/commands/colour_edit.rs",
+        "examples": 2,
+        "status": "divergent",
+        "finding": "13/16",
+        "scopeNote": "Semantic disposition; shared addressing and full-contract coverage are audited as separate source units."
+      },
+      "after": {
+        "id": "colour.recolour.apply",
+        "kind": "action",
+        "source": "crates/executor/src/commands/colour_edit.rs",
+        "examples": 2,
+        "status": "implemented",
+        "finding": null,
+        "scopeNote": "Semantic disposition; shared addressing and full-contract coverage are audited as separate source units."
+      }
+    },
+    {
+      "id": "draw.drawing.render",
+      "before": {
+        "id": "draw.drawing.render",
+        "kind": "query",
+        "source": "crates/executor/src/commands/draw_render.rs",
+        "examples": 2,
+        "status": "divergent",
+        "finding": "06",
+        "scopeNote": "Semantic disposition; shared addressing and full-contract coverage are audited as separate source units."
+      },
+      "after": {
+        "id": "draw.drawing.render",
+        "kind": "query",
+        "source": "crates/executor/src/commands/draw_render.rs",
+        "examples": 2,
+        "status": "implemented",
+        "finding": null,
+        "scopeNote": "Semantic disposition; shared addressing and full-contract coverage are audited as separate source units."
+      }
+    }
+  ],
+  "closureCounts": {
+    "closed": 13,
+    "partial": 3,
+    "reopened": 0
+  },
+  "note": "C23-U059 is now implemented: aggregate Smooth work refusal passes. U085 retains the generic cancellation obligation under R1-07. Shared defects are not copied into every otherwise-correct primary command row. Centre Line explicit-ID behavior closes; its default-selection warning failure is retained in U063 and selection.set."
+}

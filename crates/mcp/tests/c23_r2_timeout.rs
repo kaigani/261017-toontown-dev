@@ -15,6 +15,7 @@ fn smooth_watchdog_reaches_mcp_and_next_read_answers() {
     let add=h.invoke(Invocation::user("draw.stroke.add",json!({"drawingId":"dr_01K742SG0KKMCAP9X1E6Z5P4SW","kind":"invisible","fit":false,"layer":"new","points":points})));
     assert!(add.is_ok(), "{add:?}");
     let ids = add.result.unwrap()["strokeIds"].clone();
+    let revision_before = h.snapshot().unwrap().unwrap().document_rev();
     let start = Instant::now();
     let r = c.run("draw.smooth.apply", json!({"drawingId":"dr_01K742SG0KKMCAP9X1E6Z5P4SW","ids":ids,"tolerance":1}));
     let elapsed = start.elapsed();
@@ -25,6 +26,11 @@ fn smooth_watchdog_reaches_mcp_and_next_read_answers() {
     let r = c.run("doc.state.get", json!({}));
     assert_eq!(r["status"], "ok", "{r}");
     assert!(start.elapsed() < Duration::from_secs(1));
+    assert_eq!(
+        h.snapshot().unwrap().unwrap().document_rev(),
+        revision_before,
+        "the MCP-timed-out Smooth must commit nothing"
+    );
     c.close().unwrap();
     drop(h);
     let _ = std::fs::remove_dir_all(dir);
