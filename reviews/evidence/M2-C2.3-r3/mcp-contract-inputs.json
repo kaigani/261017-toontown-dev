@@ -1,0 +1,496 @@
+[
+  {
+    "id": "draw.transform.apply",
+    "params": {
+      "ids": [
+        "st_01K742SG0R61SYK9GG0HGYVNBT"
+      ],
+      "translate": {
+        "x": 7,
+        "y": -3
+      },
+      "rotate": 10,
+      "drawingId": "dr_01K742SG0KKMCAP9X1E6Z5P4SW"
+    },
+    "prelude": []
+  },
+  {
+    "id": "draw.flip.apply",
+    "params": {
+      "ids": [
+        "st_01K742SG0QD1F2HFZSX8R4V7WP"
+      ],
+      "axis": "vertical",
+      "drawingId": "dr_01K742SG0KKMCAP9X1E6Z5P4SW"
+    },
+    "prelude": []
+  },
+  {
+    "id": "draw.rotate.apply",
+    "params": {
+      "ids": [
+        "nd_01K742SG0WFAQJFKAZKV4CD56C"
+      ],
+      "by": "90cw",
+      "drawingId": "dr_01K742SG0KKMCAP9X1E6Z5P4SW"
+    },
+    "prelude": []
+  },
+  {
+    "id": "draw.envelope.apply",
+    "params": {
+      "ids": [
+        "st_01K742SG0R61SYK9GG0HGYVNBT"
+      ],
+      "corners": [
+        {
+          "x": -60,
+          "y": -60
+        },
+        {
+          "x": 60,
+          "y": -50
+        },
+        {
+          "x": 40,
+          "y": 60
+        },
+        {
+          "x": -40,
+          "y": 50
+        }
+      ],
+      "drawingId": "dr_01K742SG0KKMCAP9X1E6Z5P4SW"
+    },
+    "prelude": []
+  },
+  {
+    "id": "draw.point.add",
+    "params": {
+      "strokeId": "dr_01K742SG0KKMCAP9X1E6Z5P4SW/st_01K742SG0R61SYK9GG0HGYVNBT",
+      "segment": 0,
+      "t": 0.25
+    },
+    "prelude": []
+  },
+  {
+    "id": "draw.point.move",
+    "params": {
+      "points": [
+        {
+          "strokeId": "st_01K742SG0R61SYK9GG0HGYVNBT",
+          "anchor": 0
+        }
+      ],
+      "delta": {
+        "x": -5,
+        "y": 2
+      },
+      "drawingId": "dr_01K742SG0KKMCAP9X1E6Z5P4SW"
+    },
+    "prelude": []
+  },
+  {
+    "id": "draw.point.set",
+    "params": {
+      "strokeId": "dr_01K742SG0KKMCAP9X1E6Z5P4SW/st_01K742SG0R61SYK9GG0HGYVNBT",
+      "anchor": 1,
+      "inHandle": {
+        "x": -10,
+        "y": 4
+      },
+      "handleMode": "symmetric"
+    },
+    "prelude": []
+  },
+  {
+    "id": "draw.point.delete",
+    "params": {
+      "points": [
+        {
+          "strokeId": "st_01K742SG0QD1F2HFZSX8R4V7WP",
+          "anchor": 1
+        }
+      ],
+      "drawingId": "dr_01K742SG0KKMCAP9X1E6Z5P4SW"
+    },
+    "prelude": []
+  },
+  {
+    "id": "draw.segment.move",
+    "params": {
+      "strokeId": "dr_01K742SG0KKMCAP9X1E6Z5P4SW/st_01K742SG0R61SYK9GG0HGYVNBT",
+      "segment": 0,
+      "delta": {
+        "x": 0,
+        "y": 12
+      }
+    },
+    "prelude": []
+  },
+  {
+    "id": "draw.cut.apply",
+    "params": {
+      "rect": {
+        "x": -20,
+        "y": -20,
+        "width": 40,
+        "height": 40
+      },
+      "drawingId": "dr_01K742SG0KKMCAP9X1E6Z5P4SW"
+    },
+    "prelude": []
+  },
+  {
+    "id": "draw.cut.apply",
+    "params": {
+      "polygon": [
+        {
+          "x": -30,
+          "y": -30
+        },
+        {
+          "x": 30,
+          "y": -30
+        },
+        {
+          "x": 0,
+          "y": 30
+        }
+      ],
+      "then": "delete",
+      "drawingId": "dr_01K742SG0KKMCAP9X1E6Z5P4SW"
+    },
+    "prelude": []
+  },
+  {
+    "id": "draw.cut.apply",
+    "params": {
+      "segment": {
+        "from": {
+          "x": -100,
+          "y": 10
+        },
+        "to": {
+          "x": 100,
+          "y": 10
+        }
+      },
+      "drawingId": "dr_01K742SG0KKMCAP9X1E6Z5P4SW"
+    },
+    "prelude": []
+  },
+  {
+    "id": "draw.erase.apply",
+    "params": {
+      "path": [
+        {
+          "x": -60,
+          "y": 5
+        },
+        {
+          "x": 60,
+          "y": 5
+        }
+      ],
+      "pen": {
+        "minSize": 6,
+        "maxSize": 6
+      },
+      "drawingId": "dr_01K742SG0KKMCAP9X1E6Z5P4SW"
+    },
+    "prelude": []
+  },
+  {
+    "id": "draw.arrange.apply",
+    "params": {
+      "ids": [
+        "nd_01K742SG0WFAQJFKAZKV4CD56C"
+      ],
+      "to": "back",
+      "drawingId": "dr_01K742SG0KKMCAP9X1E6Z5P4SW"
+    },
+    "prelude": []
+  },
+  {
+    "id": "draw.arrange.apply",
+    "params": {
+      "ids": [
+        "st_01K742SG0R61SYK9GG0HGYVNBT"
+      ],
+      "to": "front",
+      "drawingId": "dr_01K742SG0KKMCAP9X1E6Z5P4SW"
+    },
+    "prelude": []
+  },
+  {
+    "id": "draw.flatten.apply",
+    "params": {
+      "ids": [
+        "nd_01K742SG0TX3WF1BSWWGMWM5WG",
+        "st_01K742SG0R61SYK9GG0HGYVNBT"
+      ],
+      "drawingId": "dr_01K742SG0KKMCAP9X1E6Z5P4SW"
+    },
+    "prelude": []
+  },
+  {
+    "id": "draw.smooth.apply",
+    "params": {
+      "ids": [
+        "st_01K742SG0QD1F2HFZSX8R4V7WP"
+      ],
+      "tolerance": 8,
+      "drawingId": "dr_01K742SG0KKMCAP9X1E6Z5P4SW"
+    },
+    "prelude": []
+  },
+  {
+    "id": "draw.linesToBrush.apply",
+    "params": {
+      "ids": [
+        "st_01K742SG0R61SYK9GG0HGYVNBT"
+      ],
+      "drawingId": "dr_01K742SG0KKMCAP9X1E6Z5P4SW"
+    },
+    "prelude": []
+  },
+  {
+    "id": "draw.centreLine.apply",
+    "params": {
+      "ids": [
+        "st_01K742SG0QD1F2HFZSX8R4V7WP"
+      ],
+      "drawingId": "dr_01K742SG0KKMCAP9X1E6Z5P4SW"
+    },
+    "prelude": []
+  },
+  {
+    "id": "draw.rectangle.add",
+    "params": {
+      "from": {
+        "x": 300,
+        "y": 300
+      },
+      "to": {
+        "x": 360,
+        "y": 340
+      },
+      "drawingId": "dr_01K742SG0KKMCAP9X1E6Z5P4SW"
+    },
+    "prelude": []
+  },
+  {
+    "id": "draw.ellipse.add",
+    "params": {
+      "from": {
+        "x": 400,
+        "y": 300
+      },
+      "to": {
+        "x": 460,
+        "y": 340
+      },
+      "drawingId": "dr_01K742SG0KKMCAP9X1E6Z5P4SW"
+    },
+    "prelude": []
+  },
+  {
+    "id": "draw.line.add",
+    "params": {
+      "from": {
+        "x": 300,
+        "y": 400
+      },
+      "to": {
+        "x": 380,
+        "y": 420
+      },
+      "drawingId": "dr_01K742SG0KKMCAP9X1E6Z5P4SW"
+    },
+    "prelude": []
+  },
+  {
+    "id": "draw.polyline.add",
+    "params": {
+      "points": [
+        {
+          "x": 300,
+          "y": 500
+        },
+        {
+          "x": 340,
+          "y": 540
+        },
+        {
+          "x": 380,
+          "y": 500
+        }
+      ],
+      "drawingId": "dr_01K742SG0KKMCAP9X1E6Z5P4SW"
+    },
+    "prelude": []
+  },
+  {
+    "id": "colour.selection.apply",
+    "params": {
+      "colourId": "col_01K742SG06BQ08FCT1TT8DF8MA",
+      "objectIds": [
+        "st_01K742SG0R61SYK9GG0HGYVNBT",
+        "st_01K742SG0QD1F2HFZSX8R4V7WP"
+      ],
+      "drawingId": "dr_01K742SG0KKMCAP9X1E6Z5P4SW"
+    },
+    "prelude": []
+  },
+  {
+    "id": "colour.recolour.apply",
+    "params": {
+      "fromColourId": "col_01K742SG059XGSNZ6M9MACZ2ZY",
+      "toColourId": "col_01K742SG09H7QE4RRR6XSYYS88",
+      "scope": "drawing",
+      "drawingIds": [
+        "dr_01K742SG0KKMCAP9X1E6Z5P4SW"
+      ]
+    },
+    "prelude": []
+  },
+  {
+    "id": "colour.fillMapping.set",
+    "params": {
+      "objectIds": [
+        "st_01K742SG0R61SYK9GG0HGYVNBT"
+      ],
+      "mapping": {
+        "matrix": [
+          40,
+          0,
+          0,
+          20,
+          -40,
+          -10
+        ]
+      },
+      "drawingId": "dr_01K742SG0KKMCAP9X1E6Z5P4SW"
+    },
+    "prelude": [
+      {
+        "id": "colour.paint.apply",
+        "params": {
+          "drawingId": "dr_01K742SG0KKMCAP9X1E6Z5P4SW",
+          "objectIds": [
+            "st_01K742SG0R61SYK9GG0HGYVNBT"
+          ],
+          "colourId": "col_01K742SG06BQ08FCT1TT8DF8MA"
+        }
+      }
+    ]
+  },
+  {
+    "id": "draw.breakApart.apply",
+    "params": {
+      "textIds": [
+        "nd_01K742SG0WFAQJFKAZKV4CD56C"
+      ],
+      "drawingId": "dr_01K742SG0KKMCAP9X1E6Z5P4SW"
+    },
+    "prelude": []
+  },
+  {
+    "id": "draw.drawing.rename",
+    "params": {
+      "name": "renamed",
+      "drawingId": "dr_01K742SG0KKMCAP9X1E6Z5P4SW"
+    },
+    "prelude": []
+  },
+  {
+    "id": "draw.lock.set",
+    "params": {
+      "locked": true,
+      "drawingId": "dr_01K742SG0KKMCAP9X1E6Z5P4SW"
+    },
+    "prelude": []
+  },
+  {
+    "id": "draw.optimize.apply",
+    "params": {
+      "drawingId": "dr_01K742SG0KKMCAP9X1E6Z5P4SW"
+    },
+    "prelude": [
+      {
+        "id": "draw.rectangle.add",
+        "params": {
+          "drawingId": "dr_01K742SG0KKMCAP9X1E6Z5P4SW",
+          "from": {
+            "x": 1000,
+            "y": 1000
+          },
+          "to": {
+            "x": 1050,
+            "y": 1050
+          },
+          "layer": "new"
+        }
+      },
+      {
+        "id": "draw.rectangle.add",
+        "params": {
+          "drawingId": "dr_01K742SG0KKMCAP9X1E6Z5P4SW",
+          "from": {
+            "x": 1200,
+            "y": 1000
+          },
+          "to": {
+            "x": 1250,
+            "y": 1050
+          },
+          "layer": "new"
+        }
+      },
+      {
+        "id": "draw.selection.set",
+        "params": {
+          "drawingId": "dr_01K742SG0KKMCAP9X1E6Z5P4SW",
+          "by": "all"
+        }
+      }
+    ]
+  },
+  {
+    "id": "draw.repositionAll.apply",
+    "params": {
+      "elementId": "scene:#1/element:\"Bob\"",
+      "translate": {
+        "x": 0,
+        "y": 20
+      }
+    },
+    "prelude": []
+  },
+  {
+    "id": "colour.selection.apply",
+    "params": {
+      "colourId": "col_01K742SG09H7QE4RRR6XSYYS88",
+      "objectIds": [
+        "st_01K742SG0QD1F2HFZSX8R4V7WP"
+      ],
+      "respectProtected": false,
+      "drawingId": "dr_01K742SG0KKMCAP9X1E6Z5P4SW"
+    },
+    "prelude": []
+  },
+  {
+    "id": "colour.recolour.apply",
+    "params": {
+      "fromColourId": "col_01K742SG09H7QE4RRR6XSYYS88",
+      "toColourId": "col_01K742SG059XGSNZ6M9MACZ2ZY",
+      "scope": "drawing",
+      "drawingIds": [
+        "dr_01K742SG0KKMCAP9X1E6Z5P4SW"
+      ],
+      "respectProtected": false
+    },
+    "prelude": []
+  }
+]
