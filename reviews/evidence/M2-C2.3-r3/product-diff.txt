@@ -1,0 +1,318 @@
+diff --git a/crates/executor/src/app.rs b/crates/executor/src/app.rs
+index 2b7d331..57d02cc 100644
+--- a/crates/executor/src/app.rs
++++ b/crates/executor/src/app.rs
+@@ -283 +283,10 @@ fn anchor_exists(doc: &Document, k: &str, anchor: u32) -> bool {
+-fn selectable_exists(doc: &Document, k: &str) -> bool {
++/// Whether a zone of a drawing exists, by its derived ID: `(drawing ID, zone ID)`.
++pub type ZoneCheck<'a> = &'a dyn Fn(&str, &str) -> bool;
++
++fn selectable_exists(doc: &Document, k: &str, zones: Option<ZoneCheck<'_>>) -> bool {
++    // Derived zone IDs are not document objects: they are checked against the current planar maps (C23-R2-03).
++    if let Some((d, z)) = k.split_once('/')
++        && z.starts_with("zn_")
++    {
++        return zones.is_some_and(|check| check(d, z));
++    }
+@@ -314,0 +324,6 @@ impl AppContext {
++        self.repair_with(doc, None)
++    }
++
++    /// [`AppContext::repair`], keeping selected zones that still exist in the current planar maps (`zones`; without
++    /// it, zone references are dropped).
++    pub fn repair_with(&mut self, doc: &Document, zones: Option<ZoneCheck<'_>>) -> bool {
+@@ -334 +349 @@ impl AppContext {
+-        self.selection.ids.retain(|k| selectable_exists(doc, k));
++        self.selection.ids.retain(|k| selectable_exists(doc, k, zones));
+@@ -336 +351 @@ impl AppContext {
+-            ids.retain(|k| selectable_exists(doc, k));
++            ids.retain(|k| selectable_exists(doc, k, zones));
+diff --git a/crates/executor/src/commands/draw_shapes.rs b/crates/executor/src/commands/draw_shapes.rs
+index 0c14fac..7bd76d4 100644
+--- a/crates/executor/src/commands/draw_shapes.rs
++++ b/crates/executor/src/commands/draw_shapes.rs
+@@ -68,3 +68,2 @@ fn add(cx: &mut Cx, c: &Common<'_>, geometry: Value, closed: bool) -> Result<Sha
+-        if c.create_drawing {
+-            o.insert("createDrawing".into(), json!(true));
+-        }
++        // Forwarded either way: an explicit false refuses an empty cell (C23-R2-02).
++        o.insert("createDrawing".into(), json!(c.create_drawing));
+@@ -137,2 +136,2 @@ pub(crate) struct BoxShapeParams {
+-    /// Create the cell's drawing when it has none.
+-    #[serde(default)]
++    /// Create the cell's drawing when it has none (default true, as `draw.stroke.add`).
++    #[serde(default = "yes")]
+@@ -221,2 +220,2 @@ pub(crate) struct EllipseParams {
+-    /// Create the cell's drawing when it has none.
+-    #[serde(default)]
++    /// Create the cell's drawing when it has none (default true, as `draw.stroke.add`).
++    #[serde(default = "yes")]
+@@ -317,2 +316,2 @@ pub(crate) struct LineParams {
+-    /// Create the cell's drawing when it has none.
+-    #[serde(default)]
++    /// Create the cell's drawing when it has none (default true, as `draw.stroke.add`).
++    #[serde(default = "yes")]
+@@ -461,2 +460,2 @@ pub(crate) struct PolylineParams {
+-    /// Create the cell's drawing when it has none.
+-    #[serde(default)]
++    /// Create the cell's drawing when it has none (default true, as `draw.stroke.add`).
++    #[serde(default = "yes")]
+diff --git a/crates/executor/src/lib.rs b/crates/executor/src/lib.rs
+index 875ad0f..1aa4aae 100644
+--- a/crates/executor/src/lib.rs
++++ b/crates/executor/src/lib.rs
+@@ -124,0 +125,2 @@ enum Request {
++    /// A caller's request with its cancellation token, allocated before enqueueing (C23-R2-01).
++    Tagged(u64, Box<Request>),
+@@ -369 +371,3 @@ impl ExecutorHandle {
+-        self.tx.send(make(reply)).map_err(|_| stopped())?;
++        // The token travels with the request: a timeout cancels exactly this request, queued or running (C23-R2-01).
++        let token = self.cancel.token();
++        self.tx.send(Request::Tagged(token, Box::new(make(reply)))).map_err(|_| stopped())?;
+@@ -373,4 +377,3 @@ impl ExecutorHandle {
+-                // The request the worker is running overran: it stops at its next work-account check, so the
+-                // worker answers what is queued behind it (C23-R1-07; ADR-0015 history).
+-                let running = self.cancel.current.load(std::sync::atomic::Ordering::Acquire);
+-                self.cancel.cancel.store(running, std::sync::atomic::Ordering::Release);
++                // Queued: the worker drops it at dequeue. Running: it stops at its next work-account check and before
++                // any commit. Either way it never begins or commits after this answer (ADR-0015 history).
++                self.cancel.mark(token);
+@@ -637 +639,0 @@ fn document_thread(
+-    let mut seq: u64 = 0;
+@@ -639,3 +641,11 @@ fn document_thread(
+-        // Each request gets a fresh sequence number: a cancellation aimed at an earlier one never hits it.
+-        seq = seq.wrapping_add(1).max(1);
+-        cancel.current.store(seq, std::sync::atomic::Ordering::Release);
++        let (token, req) = match req {
++            Request::Tagged(t, r) => (t, *r),
++            r => (0, r),
++        };
++        // A request whose caller already timed out never begins (C23-R2-01).
++        if token != 0 && cancel.is_cancelled(token) {
++            cancel.forget(token);
++            continue;
++        }
++        cancel.current.store(token, std::sync::atomic::Ordering::Release);
++        let shutdown = matches!(req, Request::Shutdown);
+@@ -687 +697,8 @@ fn document_thread(
+-            Request::Shutdown => break,
++            Request::Shutdown | Request::Tagged(..) => {}
++        }
++        cancel.current.store(0, std::sync::atomic::Ordering::Release);
++        if token != 0 {
++            cancel.forget(token);
++        }
++        if shutdown {
++            break;
+diff --git a/crates/executor/src/planar.rs b/crates/executor/src/planar.rs
+index 6706f48..d043c6f 100644
+--- a/crates/executor/src/planar.rs
++++ b/crates/executor/src/planar.rs
+@@ -163,0 +164,8 @@ pub(crate) struct LayerZones {
++/// Whether drawing `drawing` has a zone with ID `zone` in its current planar maps (through the derived-map cache;
++/// selection repair, C23-R2-03).
++pub(crate) fn zone_exists(cache: &SharedCache, doc: &tt_model::document::Document, drawing: &str, zone: &str) -> bool {
++    let Ok(id) = tt_model::Id::parse(drawing) else { return false };
++    let Some(d) = doc.drawing(&id) else { return false };
++    drawing_zones(cache, d).is_ok_and(|zs| zs.iter().any(|lz| lz.map.zone_by_id(zone).is_some()))
++}
++
+diff --git a/crates/executor/src/run.rs b/crates/executor/src/run.rs
+index 5503035..8b8cf78 100644
+--- a/crates/executor/src/run.rs
++++ b/crates/executor/src/run.rs
+@@ -522,0 +523,12 @@ fn needs_confirmation(session: &mut Session, e: CommandError, rev: Option<u64>)
++/// A request whose caller timed out commits nothing (C23-R2-01): checked before the transaction and before effects.
++fn cancelled_check(what: &str) -> Result<(), CommandError> {
++    if tt_vector::work::cancel_requested() {
++        return Err(CommandError::with_details(
++            tt_registry::codes::COMMAND_TIMEOUT,
++            format!("`{what}` was cancelled: its caller's watchdog budget passed"),
++            serde_json::json!({ "commandId": what }),
++        ));
++    }
++    Ok(())
++}
++
+@@ -526,0 +539 @@ fn commit(s: &mut Session, txns: Vec<Txn>, origin: &Origin, command: &str) -> Re
++    cancelled_check(command)?;
+@@ -692,0 +706,3 @@ fn apply_effects(s: &mut Session, effects: Vec<Effect>, simulating: bool, origin
++    if !effects.is_empty() {
++        cancelled_check("effects")?;
++    }
+@@ -957 +973,3 @@ impl Core {
+-            s.app.repair(&doc);
++            let cache = s.planar.clone();
++            let zones = |d: &str, z: &str| crate::planar::zone_exists(&cache, &doc, d, z);
++            s.app.repair_with(&doc, Some(&zones));
+diff --git a/crates/registry/src/example-results.json b/crates/registry/src/example-results.json
+index 0b15744..d7d2f33 100644
+--- a/crates/registry/src/example-results.json
++++ b/crates/registry/src/example-results.json
+@@ -33 +33 @@
+-        "confirmationId": "cf_f82f6d07de3ff32e370d8b29",
++        "confirmationId": "cf_3cabfdbed4ab0c5bc404d618",
+@@ -74 +74 @@
+-            "sessionId": "s1-c24467",
++            "sessionId": "s1-a637ef",
+@@ -86 +86 @@
+-            "connectedAt": "2026-11-01T14:08:41.389Z",
++            "connectedAt": "2026-11-01T17:30:27.849Z",
+@@ -94,2 +94,2 @@
+-            "confirmationId": "cf_a736744525548f7992f360a8",
+-            "sessionId": "s1-c24467",
++            "confirmationId": "cf_bfe066f5d6f8eab5a2867d4c",
++            "sessionId": "s1-a637ef",
+@@ -130 +130 @@
+-        "sessionId": "s1-6c056a",
++        "sessionId": "s1-c570e7",
+@@ -148 +148 @@
+-          "s1-71f439"
++          "s1-66cf6a"
+@@ -441 +441 @@
+-          "createdAt": "2026-11-01T14:08:42.222Z",
++          "createdAt": "2026-11-01T17:30:28.708Z",
+@@ -854 +854 @@
+-          "exportedAt": "2026-11-01T14:08:43.270Z",
++          "exportedAt": "2026-11-01T17:30:29.788Z",
+@@ -5698 +5698 @@
+-            "time": "2026-11-01T14:08:45.885Z",
++            "time": "2026-11-01T17:30:32.431Z",
+@@ -5706 +5706 @@
+-            "time": "2026-11-01T14:08:45.887Z",
++            "time": "2026-11-01T17:30:32.433Z",
+@@ -5851 +5851 @@
+-        "startedAt": "2026-11-01T14:08:46.171Z",
++        "startedAt": "2026-11-01T17:30:32.720Z",
+@@ -5870 +5870 @@
+-          "startedAt": "2026-11-01T14:08:46.197Z",
++          "startedAt": "2026-11-01T17:30:32.746Z",
+@@ -5889 +5889 @@
+-        "startedAt": "2026-11-01T14:08:46.223Z",
++        "startedAt": "2026-11-01T17:30:32.772Z",
+@@ -5936,4 +5936,4 @@
+-        "projectId": "pr_01M6BQ1Z1TNPP781STFCM1G12E",
+-        "sceneId": "sc_01M6BQ1Z1VHV3DGFPVPFCE36N2",
+-        "cameraId": "el_01M6BQ1Z1VHV3DGFPVPFCE36N4",
+-        "elementId": "el_01M6BQ1Z1VHV3DGFPVPFCE36N5"
++        "projectId": "pr_01M6C2KDVRKAXAWK541G0PRFXM",
++        "sceneId": "sc_01M6C2KDVSB3TN729JZDX6VTTG",
++        "cameraId": "el_01M6C2KDVSB3TN729JZDX6VTTJ",
++        "elementId": "el_01M6C2KDVSB3TN729JZDX6VTTK"
+@@ -6195 +6195 @@
+-          "lastOpened": "2026-11-01T14:08:47.131Z",
++          "lastOpened": "2026-11-01T17:30:33.702Z",
+diff --git a/crates/vector/src/work.rs b/crates/vector/src/work.rs
+index 7c1b4f6..ae4bd6f 100644
+--- a/crates/vector/src/work.rs
++++ b/crates/vector/src/work.rs
+@@ -16 +16 @@ pub struct CancelState {
+-    /// The request now running (0: none).
++    /// The request now running (0: none, or not cancellable).
+@@ -18 +18 @@ pub struct CancelState {
+-    /// The request to cancel (0: none).
++    /// The running request a timed-out caller cancelled (0: none).
+@@ -19,0 +20,37 @@ pub struct CancelState {
++    /// Request tokens handed out before enqueueing (C23-R2-01).
++    pub next: AtomicU64,
++    /// Whether `queued` holds any token (the fast path of every work charge).
++    pending: std::sync::atomic::AtomicBool,
++    /// Tokens whose callers timed out, still queued or running.
++    queued: std::sync::Mutex<std::collections::BTreeSet<u64>>,
++}
++
++impl CancelState {
++    /// A fresh request token (never 0).
++    pub fn token(&self) -> u64 {
++        self.next.fetch_add(1, Ordering::AcqRel).wrapping_add(1).max(1)
++    }
++
++    /// Marks exactly `token` cancelled: its caller has been answered. Another caller's request is never affected.
++    pub fn mark(&self, token: u64) {
++        if let Ok(mut q) = self.queued.lock() {
++            q.insert(token);
++            self.pending.store(true, Ordering::Release);
++        }
++        self.cancel.store(token, Ordering::Release);
++    }
++
++    /// Whether `token` was cancelled.
++    pub fn is_cancelled(&self, token: u64) -> bool {
++        token != 0
++            && (self.cancel.load(Ordering::Acquire) == token
++                || (self.pending.load(Ordering::Acquire) && self.queued.lock().is_ok_and(|q| q.contains(&token))))
++    }
++
++    /// Forgets `token` once the worker is done with it.
++    pub fn forget(&self, token: u64) {
++        if let Ok(mut q) = self.queued.lock() {
++            q.remove(&token);
++            self.pending.store(!q.is_empty(), Ordering::Release);
++        }
++    }
+@@ -34,6 +71 @@ pub fn cancel_requested() -> bool {
+-    CANCEL.with(|c| {
+-        c.borrow().as_ref().is_some_and(|s| {
+-            let cur = s.current.load(Ordering::Acquire);
+-            cur != 0 && s.cancel.load(Ordering::Acquire) == cur
+-        })
+-    })
++    CANCEL.with(|c| c.borrow().as_ref().is_some_and(|s| s.is_cancelled(s.current.load(Ordering::Acquire))))
+@@ -135,0 +168,17 @@ impl Work {
++
++#[cfg(test)]
++mod tests {
++    use super::*;
++
++    #[test]
++    fn a_mark_cancels_exactly_its_own_token() {
++        let s = CancelState::default();
++        let (a, b) = (s.token(), s.token());
++        assert_ne!(a, b);
++        s.mark(a);
++        assert!(s.is_cancelled(a) && !s.is_cancelled(b));
++        s.forget(a);
++        // The atomic slot still names `a` (it never matches another token); the queued set is empty.
++        assert!(!s.is_cancelled(b) && !s.is_cancelled(0));
++    }
++}
+diff --git a/desktop/src/ipc/generated/commands.ts b/desktop/src/ipc/generated/commands.ts
+index d445edf..f2d14c1 100644
+--- a/desktop/src/ipc/generated/commands.ts
++++ b/desktop/src/ipc/generated/commands.ts
+@@ -32734 +32734 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
+-        description: "Create the cell's drawing when it has none.",
++        description: "Create the cell's drawing when it has none (default true, as `draw.stroke.add`).",
+@@ -32736 +32736 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
+-        default: false,
++        default: true,
+@@ -33973 +33973 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
+-        description: "Create the cell's drawing when it has none.",
++        description: "Create the cell's drawing when it has none (default true, as `draw.stroke.add`).",
+@@ -33975 +33975 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
+-        default: false,
++        default: true,
+@@ -35281 +35281 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
+-        description: "Create the cell's drawing when it has none.",
++        description: "Create the cell's drawing when it has none (default true, as `draw.stroke.add`).",
+@@ -35283 +35283 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
+-        default: false,
++        default: true,
+@@ -35470 +35470 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
+-        description: "Create the cell's drawing when it has none.",
++        description: "Create the cell's drawing when it has none (default true, as `draw.stroke.add`).",
+@@ -35472 +35472 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
+-        default: false,
++        default: true,
+@@ -85938 +85938 @@ export interface draw_ellipse_add_params {
+-  /** Create the cell's drawing when it has none. */
++  /** Create the cell's drawing when it has none (default true, as `draw.stroke.add`). */
+@@ -86305 +86305 @@ export interface draw_line_add_params {
+-  /** Create the cell's drawing when it has none. */
++  /** Create the cell's drawing when it has none (default true, as `draw.stroke.add`). */
+@@ -86703 +86703 @@ export interface draw_polyline_add_params {
+-  /** Create the cell's drawing when it has none. */
++  /** Create the cell's drawing when it has none (default true, as `draw.stroke.add`). */
+@@ -86761 +86761 @@ export interface draw_rectangle_add_params {
+-  /** Create the cell's drawing when it has none. */
++  /** Create the cell's drawing when it has none (default true, as `draw.stroke.add`). */

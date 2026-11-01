@@ -1,0 +1,20 @@
+{
+  "reviewedHead": "989233ec83b78d37f41052b57bf12ee17d132940",
+  "changedPreexistingFiles": [],
+  "m1Receipts": [
+    {
+      "path": "reviews/evidence/M1-C1.3-r3/open-latency.json",
+      "rawSha256": "48f2c6c9fa4b19cf4b13e3bbd40b65f49fa781ce213b167d7358470738570f29",
+      "originalBlobSha256": "48f2c6c9fa4b19cf4b13e3bbd40b65f49fa781ce213b167d7358470738570f29",
+      "byteIdentical": true
+    },
+    {
+      "path": "reviews/evidence/M1-C1.3-r2/inspection-memory.json",
+      "rawSha256": "cf68973d1c801acc70b78e2796c68e40a4536ed2b80e0abf62cb565abe4af1bd",
+      "originalBlobSha256": "cf68973d1c801acc70b78e2796c68e40a4536ed2b80e0abf62cb565abe4af1bd",
+      "byteIdentical": true
+    }
+  ],
+  "status": "?? reviews/M2-C2.3-r3.md\n?? reviews/evidence/M2-C2.3-r3/added-constructs.json\n?? reviews/evidence/M2-C2.3-r3/allows.log\n?? reviews/evidence/M2-C2.3-r3/audit-closure.log\n?? reviews/evidence/M2-C2.3-r3/audit-final.log\n?? reviews/evidence/M2-C2.3-r3/audit.log\n?? reviews/evidence/M2-C2.3-r3/clippy.log\n?? reviews/evidence/M2-C2.3-r3/deny.log\n?? reviews/evidence/M2-C2.3-r3/executor.log\n?? reviews/evidence/M2-C2.3-r3/final-collector.log\n?? reviews/evidence/M2-C2.3-r3/final-fmt.log\n?? reviews/evidence/M2-C2.3-r3/final-python.log\n?? reviews/evidence/M2-C2.3-r3/final-rustfmt.log\n?? reviews/evidence/M2-C2.3-r3/final/\n?? reviews/evidence/M2-C2.3-r3/finalizer-selftest.log\n?? reviews/evidence/M2-C2.3-r3/fmt-closure.log\n?? reviews/evidence/M2-C2.3-r3/fmt-final-after-probe.log\n?? reviews/evidence/M2-C2.3-r3/fmt.log\n?? reviews/evidence/M2-C2.3-r3/frontend.log\n?? reviews/evidence/M2-C2.3-r3/gate-counts.json\n?? reviews/evidence/M2-C2.3-r3/generator.log\n?? reviews/evidence/M2-C2.3-r3/headless-artifact-hashes.json\n?? reviews/evidence/M2-C2.3-r3/hygiene.json\n?? reviews/evidence/M2-C2.3-r3/mcp.log\n?? reviews/evidence/M2-C2.3-r3/performance-analyzer.log\n?? reviews/evidence/M2-C2.3-r3/performance-final.log\n?? reviews/evidence/M2-C2.3-r3/pnpm-install.log\n?? reviews/evidence/M2-C2.3-r3/product-diff.txt\n?? reviews/evidence/M2-C2.3-r3/python-complete.log\n?? reviews/evidence/M2-C2.3-r3/python-suites.log\n?? reviews/evidence/M2-C2.3-r3/release-features.log\n?? reviews/evidence/M2-C2.3-r3/render.log\n?? reviews/evidence/M2-C2.3-r3/scoped-clippy.log\n?? reviews/evidence/M2-C2.3-r3/sdk-attempt2.log\n?? reviews/evidence/M2-C2.3-r3/sdk-complete.log\n?? reviews/evidence/M2-C2.3-r3/sdk-environment.json\n?? reviews/evidence/M2-C2.3-r3/sdk-final.log\n?? reviews/evidence/M2-C2.3-r3/sdk-final2.log\n?? reviews/evidence/M2-C2.3-r3/sdk.log\n?? reviews/evidence/M2-C2.3-r3/texture-diagnostic.log\n?? reviews/evidence/M2-C2.3-r3/texture.log\n?? reviews/evidence/M2-C2.3-r3/topology-canonical.log\n?? reviews/evidence/M2-C2.3-r3/topology-diagnostic.log\n?? reviews/evidence/M2-C2.3-r3/topology-difference.json\n?? reviews/evidence/M2-C2.3-r3/topology-difference.log\n?? reviews/evidence/M2-C2.3-r3/topology-final.log\n?? reviews/evidence/M2-C2.3-r3/topology-raw.log\n?? reviews/evidence/M2-C2.3-r3/topology-renode.log\n?? reviews/evidence/M2-C2.3-r3/topology.log\n?? reviews/evidence/M2-C2.3-r3/vector.log\n?? reviews/evidence/M2-C2.3-r3/workspace-run.json\n?? reviews/evidence/M2-C2.3-r3/workspace.log\n?? tests/adversarial/c23-r3-finalize.py\n",
+  "specDiff": ""
+}

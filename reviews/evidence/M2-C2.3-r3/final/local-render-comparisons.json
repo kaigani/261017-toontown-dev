@@ -1,0 +1,86 @@
+[
+  {
+    "os": "Windows",
+    "name": "content-strokes.png",
+    "byteIdenticalToLocal": true,
+    "sha256": "54499132741323384cfc0e7a5a9bde7173c6266a8a4febb8a1f74142077476ed"
+  },
+  {
+    "os": "Windows",
+    "name": "content.png",
+    "byteIdenticalToLocal": true,
+    "sha256": "eca3e9ae26b092903a9f4a2a1f3b66e12a62089aa1e9fd67364058ea3bdcf4ca"
+  },
+  {
+    "os": "Windows",
+    "name": "gradients.png",
+    "byteIdenticalToLocal": true,
+    "sha256": "82c0486c5d3669fc4644628719ef481d950b576d4a63d95e85cad7cd8f306bf6"
+  },
+  {
+    "os": "Windows",
+    "name": "texture-drag.png",
+    "byteIdenticalToLocal": true,
+    "sha256": "382050bb7c4eda0794a853d52e5b35593e9d8a65dc23dc476039d6ecffeee5e4"
+  },
+  {
+    "os": "Windows",
+    "name": "texture-stretch-inset.png",
+    "byteIdenticalToLocal": true,
+    "sha256": "603ab81fdd5902323abdfe254f8512965072295dea30750ae4f8003934da9719"
+  },
+  {
+    "os": "Windows",
+    "name": "texture-stretch.png",
+    "byteIdenticalToLocal": true,
+    "sha256": "ac0361e991e38cb0e24edc3e0d8cdda3d0d89848e0ed968968595565c6f9b8b1"
+  },
+  {
+    "os": "Windows",
+    "name": "texture-tile.png",
+    "byteIdenticalToLocal": true,
+    "sha256": "96c56276060e90288774835f9c7f09ef7ff3406c346ad90cb3658581a21ea9de"
+  },
+  {
+    "os": "macOS",
+    "name": "content-strokes.png",
+    "byteIdenticalToLocal": true,
+    "sha256": "54499132741323384cfc0e7a5a9bde7173c6266a8a4febb8a1f74142077476ed"
+  },
+  {
+    "os": "macOS",
+    "name": "content.png",
+    "byteIdenticalToLocal": true,
+    "sha256": "eca3e9ae26b092903a9f4a2a1f3b66e12a62089aa1e9fd67364058ea3bdcf4ca"
+  },
+  {
+    "os": "macOS",
+    "name": "gradients.png",
+    "byteIdenticalToLocal": true,
+    "sha256": "82c0486c5d3669fc4644628719ef481d950b576d4a63d95e85cad7cd8f306bf6"
+  },
+  {
+    "os": "macOS",
+    "name": "texture-drag.png",
+    "byteIdenticalToLocal": true,
+    "sha256": "382050bb7c4eda0794a853d52e5b35593e9d8a65dc23dc476039d6ecffeee5e4"
+  },
+  {
+    "os": "macOS",
+    "name": "texture-stretch-inset.png",
+    "byteIdenticalToLocal": true,
+    "sha256": "603ab81fdd5902323abdfe254f8512965072295dea30750ae4f8003934da9719"
+  },
+  {
+    "os": "macOS",
+    "name": "texture-stretch.png",
+    "byteIdenticalToLocal": true,
+    "sha256": "ac0361e991e38cb0e24edc3e0d8cdda3d0d89848e0ed968968595565c6f9b8b1"
+  },
+  {
+    "os": "macOS",
+    "name": "texture-tile.png",
+    "byteIdenticalToLocal": true,
+    "sha256": "96c56276060e90288774835f9c7f09ef7ff3406c346ad90cb3658581a21ea9de"
+  }
+]
