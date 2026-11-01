@@ -91,6 +91,100 @@ impl FaceMetrics {
     }
 }
 
+/// Collects a glyph outline as cubic contours (quadratics raised exactly to cubics), in em units, y up.
+#[derive(Default)]
+struct Contours {
+    done: Vec<Vec<[f64; 8]>>,
+    open: Vec<[f64; 8]>,
+    at: (f64, f64),
+    start: (f64, f64),
+    scale: f64,
+}
+
+impl Contours {
+    fn finish(&mut self) {
+        if self.at != self.start && !self.open.is_empty() {
+            let (a, b) = (self.at, self.start);
+            self.open.push([a.0, a.1, a.0, a.1, b.0, b.1, b.0, b.1]);
+        }
+        if !self.open.is_empty() {
+            self.done.push(std::mem::take(&mut self.open));
+        }
+    }
+}
+
+impl skrifa::outline::OutlinePen for Contours {
+    fn move_to(&mut self, x: f32, y: f32) {
+        self.finish();
+        let p = (f64::from(x) * self.scale, f64::from(y) * self.scale);
+        self.at = p;
+        self.start = p;
+    }
+
+    fn line_to(&mut self, x: f32, y: f32) {
+        let (a, b) = (self.at, (f64::from(x) * self.scale, f64::from(y) * self.scale));
+        if a != b {
+            self.open.push([a.0, a.1, a.0, a.1, b.0, b.1, b.0, b.1]);
+        }
+        self.at = b;
+    }
+
+    fn quad_to(&mut self, cx0: f32, cy0: f32, x: f32, y: f32) {
+        let a = self.at;
+        let c = (f64::from(cx0) * self.scale, f64::from(cy0) * self.scale);
+        let b = (f64::from(x) * self.scale, f64::from(y) * self.scale);
+        let c1 = (a.0 + 2.0 / 3.0 * (c.0 - a.0), a.1 + 2.0 / 3.0 * (c.1 - a.1));
+        let c2 = (b.0 + 2.0 / 3.0 * (c.0 - b.0), b.1 + 2.0 / 3.0 * (c.1 - b.1));
+        self.open.push([a.0, a.1, c1.0, c1.1, c2.0, c2.1, b.0, b.1]);
+        self.at = b;
+    }
+
+    fn curve_to(&mut self, cx0: f32, cy0: f32, cx1: f32, cy1: f32, x: f32, y: f32) {
+        let a = self.at;
+        let s = self.scale;
+        let b = (f64::from(x) * s, f64::from(y) * s);
+        self.open.push([
+            a.0,
+            a.1,
+            f64::from(cx0) * s,
+            f64::from(cy0) * s,
+            f64::from(cx1) * s,
+            f64::from(cy1) * s,
+            b.0,
+            b.1,
+        ]);
+        self.at = b;
+    }
+
+    fn close(&mut self) {
+        self.finish();
+    }
+}
+
+impl FaceMetrics {
+    /// The outline of a character's glyph as closed contours of cubic segments `[x0, y0, x1, y1, x2, y2, x3, y3]` in
+    /// em units (y up, origin on the baseline), unhinted at the default location. `None` without a readable face or a
+    /// glyph for the character; an empty list for a blank glyph (space).
+    #[must_use]
+    pub fn outline(&self, ch: char) -> Option<Vec<Vec<[f64; 8]>>> {
+        use skrifa::MetadataProvider;
+        let upem = self.units_per_em;
+        self.with_face(|face| {
+            let gid = face.charmap().map(ch)?;
+            let glyph = face.outline_glyphs().get(gid)?;
+            let mut pen = Contours { scale: 1.0 / upem, ..Contours::default() };
+            let settings = skrifa::outline::DrawSettings::unhinted(
+                skrifa::prelude::Size::unscaled(),
+                skrifa::prelude::LocationRef::default(),
+            );
+            glyph.draw(settings, &mut pen).ok()?;
+            pen.finish();
+            Some(pen.done)
+        })
+        .flatten()
+    }
+}
+
 struct Fonts {
     db: fontdb::Database,
     cache: Mutex<BTreeMap<(String, bool, bool), Arc<FaceMetrics>>>,

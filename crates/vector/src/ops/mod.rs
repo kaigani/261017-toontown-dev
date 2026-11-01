@@ -2,5 +2,6 @@
 //! caller's work account where their cost depends on the input.
 
 pub mod cut;
+pub mod glyphs;
 pub mod smooth;
 pub mod transform;

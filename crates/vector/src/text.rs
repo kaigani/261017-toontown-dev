@@ -477,9 +477,34 @@ pub struct Layout {
     pub missing_fonts: Vec<String>,
 }
 
+/// A laid-out character (M2 C2.3): code point index, position of its origin on the baseline in the text box's local
+/// frame (origin at the top-left corner, y up, so baselines are negative), and the size it is drawn at.
+#[derive(Debug, Clone, PartialEq)]
+pub struct Placed {
+    /// Code point index in the content.
+    pub index: usize,
+    /// The character.
+    pub ch: char,
+    /// Origin x (du, local).
+    pub x: f64,
+    /// Baseline y (du, local).
+    pub y: f64,
+    /// Drawn size (du per em; superscript and subscript at 60 %).
+    pub size: f64,
+}
+
 /// Lays out the content: `width = Some(w)` wraps at `w` (fixed width), `None` is auto width.
 #[must_use]
 pub fn layout(c: &Content, fixed_width: Option<f64>) -> Layout {
+    layout_placed(c, fixed_width).0
+}
+
+/// [`layout`] with every visible character's placement. Lines start at the paragraph's left margin (plus the first
+/// line's indent) and are shifted by the paragraph alignment within the box (`centre`, `right`; `justify` and `left`
+/// stay left-aligned); a line's baseline sits its tallest ascender below the line top; superscripts rise by a third
+/// of the run size and subscripts drop by a sixth (SI-074).
+#[must_use]
+pub fn layout_placed(c: &Content, fixed_width: Option<f64>) -> (Layout, Vec<Placed>) {
     let mut missing: Vec<String> = Vec::new();
     // Per character: advance (du) and line height contribution.
     let n = c.chars.len();
@@ -487,6 +512,9 @@ pub fn layout(c: &Content, fixed_width: Option<f64>) -> Layout {
     let mut height = vec![0.0; n];
     let mut i = 0;
     let mut kern_prev: Vec<f64> = vec![0.0; n];
+    let mut asc = vec![0.0; n];
+    let mut shift = vec![0.0; n];
+    let mut drawn = vec![0.0; n];
     for r in &c.runs {
         let len = r.length as usize;
         let res = fonts::resolve(&r.font, r.bold, r.italic);
@@ -500,6 +528,13 @@ pub fn layout(c: &Content, fixed_width: Option<f64>) -> Layout {
         for j in 0..slice.len() {
             adv[i + j] = a[j] * size + r.kerning / 100.0 * size;
             height[i + j] = lh;
+            asc[i + j] = res.face.ascender * size;
+            drawn[i + j] = size;
+            shift[i + j] = match r.script.as_str() {
+                "superscript" => r.size / 3.0,
+                "subscript" => -r.size / 6.0,
+                _ => 0.0,
+            };
             if r.auto_kerning && j > 0 {
                 kern_prev[i + j] = k[j - 1] * size;
             }
@@ -510,7 +545,9 @@ pub fn layout(c: &Content, fixed_width: Option<f64>) -> Layout {
     let mut box_w: f64 = 0.0;
     let mut box_h = 0.0;
     let mut lines = 0usize;
-    for p in &c.paras {
+    // Laid-out lines: (paragraph, body indices, top, left offset, content width).
+    let mut laid: Vec<(usize, Vec<usize>, f64, f64, f64)> = Vec::new();
+    for (pi, p) in c.paras.iter().enumerate() {
         let s = p.start as usize;
         let e = (p.start + p.length) as usize;
         let body: Vec<usize> = (s..e.min(n)).filter(|k| c.chars[*k] != '\n').collect();
@@ -560,6 +597,12 @@ pub fn layout(c: &Content, fixed_width: Option<f64>) -> Layout {
             }
             let line_w = w + p.margin_left + p.margin_right + indent;
             box_w = box_w.max(line_w);
+            if end > line_start {
+                let idx: Vec<usize> = body[line_start..end].to_vec();
+                let width: f64 =
+                    idx.iter().enumerate().map(|(q, k)| adv[*k] + if q > 0 { kern_prev[*k] } else { 0.0 }).sum();
+                laid.push((pi, idx, box_h, p.margin_left + indent, width));
+            }
             box_h += h.max(if body.is_empty() { empty_h } else { 0.0 }) + p.line_spacing;
             lines += 1;
             first = false;
@@ -570,7 +613,27 @@ pub fn layout(c: &Content, fixed_width: Option<f64>) -> Layout {
         }
     }
     let width = fixed_width.unwrap_or(box_w).max(0.0);
-    Layout { width, height: box_h.max(0.0), lines, missing_fonts: missing }
+    let mut placed = Vec::new();
+    for (pi, idx, top, left, line_w) in laid {
+        let p = &c.paras[pi];
+        let room = width - p.margin_right - left - line_w;
+        let x0 = left
+            + match p.alignment.as_str() {
+                "centre" => room / 2.0,
+                "right" => room,
+                _ => 0.0,
+            };
+        let baseline = -(top + idx.iter().map(|k| asc[*k]).fold(0.0, f64::max));
+        let mut x = x0;
+        for (q, k) in idx.iter().enumerate() {
+            if q > 0 {
+                x += kern_prev[*k];
+            }
+            placed.push(Placed { index: *k, ch: c.chars[*k], x, y: baseline + shift[*k], size: drawn[*k] });
+            x += adv[*k];
+        }
+    }
+    (Layout { width, height: box_h.max(0.0), lines, missing_fonts: missing }, placed)
 }
 
 /// The drawing-space bounds of a text box laid out as `l` under `transform` (origin = top-left corner).
