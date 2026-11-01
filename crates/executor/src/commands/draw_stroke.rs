@@ -204,14 +204,14 @@ pub(crate) struct StrokeAddResult {
 
 /// The pen a stroke uses: `penId`, else the current brush pen (the project's "Pen 3", else its first brush pen; the
 /// current-pen selection of 02 §6.1 is `tool.pen.select`, M4 C4.2).
-struct PenChoice {
-    pen: BrushPen,
-    pen_id: Option<String>,
-    smoothness: f64,
-    colour: Option<String>,
+pub(crate) struct PenChoice {
+    pub(crate) pen: BrushPen,
+    pub(crate) pen_id: Option<String>,
+    pub(crate) smoothness: f64,
+    pub(crate) colour: Option<String>,
 }
 
-fn pen_choice(cx: &Cx, pen_id: Option<&str>, explicit: Option<PenIn>) -> Result<PenChoice, CommandError> {
+pub(crate) fn pen_choice(cx: &Cx, pen_id: Option<&str>, explicit: Option<PenIn>) -> Result<PenChoice, CommandError> {
     let doc = cx.document()?;
     let pens = doc.project().pens();
     let chosen = match pen_id {

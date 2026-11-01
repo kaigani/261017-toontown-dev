@@ -3153,8 +3153,8 @@ export const COMMAND_INDEX = {
       {
         drawingId: "drawingBank:#1/drawing:#1",
         ids: [
+          "nd_01K742SG0TX3WF1BSWWGMWM5WG",
           "st_01K742SG0R61SYK9GG0HGYVNBT",
-          "st_01K742SG0QD1F2HFZSX8R4V7WP",
         ],
         policy: {
           precedence: "lower",
@@ -3252,9 +3252,13 @@ export const COMMAND_INDEX = {
     params: "draw.linesToBrush.apply.params",
     result: "draw.linesToBrush.apply.result",
     examples: [
-      {},
+      {
+        drawingId: "drawingBank:#1/drawing:#1",
+        ids: [
+          "st_01K742SG0R61SYK9GG0HGYVNBT",
+        ],
+      },
     ],
-    milestone: "M2 C2.3",
   },
   "draw.lock.set": {
     kind: "toggle",
@@ -3289,8 +3293,8 @@ export const COMMAND_INDEX = {
       {
         drawingId: "drawingBank:#1/drawing:#1",
         ids: [
+          "nd_01K742SG0TX3WF1BSWWGMWM5WG",
           "st_01K742SG0R61SYK9GG0HGYVNBT",
-          "st_01K742SG0QD1F2HFZSX8R4V7WP",
         ],
       },
     ],
@@ -3531,9 +3535,13 @@ export const COMMAND_INDEX = {
     params: "draw.smooth.apply.params",
     result: "draw.smooth.apply.result",
     examples: [
-      {},
+      {
+        drawingId: "drawingBank:#1/drawing:#1",
+        ids: [
+          "st_01K742SG0QD1F2HFZSX8R4V7WP",
+        ],
+      },
     ],
-    milestone: "M2 C2.3",
   },
   "draw.stroke.add": {
     kind: "action",
@@ -33592,60 +33600,100 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
     ],
   },
   "draw.linesToBrush.apply.params": {
-    title: "draw.linesToBrush.apply parameters",
+    title: "LinesToBrushParams",
+    description: "`draw.linesToBrush.apply` parameters.",
     type: "object",
     properties: {
       drawingId: {
-        type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
+        description: "The drawing (default: current).",
+        type: [
+          "string",
+          "null",
+        ],
+        default: null,
       },
       ids: {
-        type: "array",
+        description: "Pencil lines, or layers and groups holding them (default: the selection).",
+        type: [
+          "array",
+          "null",
+        ],
         items: {
           type: "string",
-          minLength: 1,
-          maxLength: 4096,
-          description: "object ID or path reference (10 §3)",
         },
-        maxItems: 100000,
-        description: "Default: selection.",
+        default: null,
       },
       penId: {
-        type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3) Default: current brush pen.",
+        description: "The brush pen (default: the current brush pen).",
+        type: [
+          "string",
+          "null",
+        ],
+        default: null,
       },
     },
     additionalProperties: false,
-    "x-spec": "`drawingId?: id; ids?: [id] = selection; penId?: id = current brush pen`",
   },
   "draw.linesToBrush.apply.result": {
-    title: "draw.linesToBrush.apply result",
+    title: "LinesToBrushResult",
+    description: "`{strokeIds, rev}`.",
     type: "object",
     properties: {
+      drawingId: {
+        description: "The drawing.",
+        type: "string",
+      },
       strokeIds: {
+        description: "The new brush strokes.",
         type: "array",
         items: {
           type: "string",
-          minLength: 1,
-          maxLength: 4096,
-          description: "object ID or path reference (10 §3)",
         },
-        maxItems: 100000,
+      },
+      centreIds: {
+        description: "The invisible centre paths the lines became (their pieces where the new outlines split them).",
+        type: "array",
+        items: {
+          type: "string",
+        },
+      },
+      createdIds: {
+        description: "Created objects.",
+        type: "array",
+        items: {
+          type: "string",
+        },
+      },
+      modifiedIds: {
+        description: "Modified objects (content, membership or position changed; IDs kept).",
+        type: "array",
+        items: {
+          type: "string",
+        },
+      },
+      removedIds: {
+        description: "Removed objects (descendants included).",
+        type: "array",
+        items: {
+          type: "string",
+        },
       },
       rev: {
-        type: "number",
+        description: "The drawing revision after the change.",
+        type: "integer",
+        maximum: 18446744073709551615n,
+        minimum: 0,
       },
     },
     required: [
+      "drawingId",
       "strokeIds",
+      "centreIds",
+      "createdIds",
+      "modifiedIds",
+      "removedIds",
       "rev",
     ],
-    "x-spec": "`{strokeIds: [id], rev}`",
-    additionalProperties: false,
   },
   "draw.lock.set.params": {
     title: "LockParams",
@@ -35750,88 +35798,123 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
       "selectedIds",
     ],
   },
+  "draw.smooth.apply.AnchorRef": {
+    description: "An anchor of a stroke.",
+    type: "object",
+    properties: {
+      strokeId: {
+        description: "The stroke (local ID).",
+        type: "string",
+      },
+      anchor: {
+        description: "The anchor index.",
+        type: "integer",
+        maximum: 2147483647,
+        minimum: 0,
+      },
+    },
+    additionalProperties: false,
+    required: [
+      "strokeId",
+      "anchor",
+    ],
+  },
   "draw.smooth.apply.params": {
-    title: "draw.smooth.apply parameters",
+    title: "SmoothParams",
+    description: "`draw.smooth.apply` parameters.",
     type: "object",
     properties: {
       drawingId: {
-        type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
+        description: "The drawing (default: current).",
+        type: [
+          "string",
+          "null",
+        ],
+        default: null,
       },
       ids: {
+        description: "Strokes, layers or groups (default: the selection).",
+        type: [
+          "array",
+          "null",
+        ],
+        items: {
+          type: "string",
+        },
+        default: null,
+      },
+      points: {
+        description: "Anchors that may go (default: the Contour Editor's point selection when no object is selected).",
+        type: [
+          "array",
+          "null",
+        ],
+        items: {
+          $ref: "#/$defs/draw.smooth.apply.AnchorRef",
+        },
+        default: null,
+      },
+      tolerance: {
+        description: "Tolerance (du).",
+        type: "number",
+        default: 1,
+        minimum: 0,
+        maximum: 100,
+      },
+    },
+    additionalProperties: false,
+  },
+  "draw.smooth.apply.result": {
+    title: "SmoothResult",
+    description: "`{removedPointCount, rev}`.",
+    type: "object",
+    properties: {
+      drawingId: {
+        description: "The drawing.",
+        type: "string",
+      },
+      removedPointCount: {
+        description: "Anchors removed.",
+        type: "integer",
+        maximum: 2147483647,
+        minimum: 0,
+      },
+      createdIds: {
+        description: "Created objects.",
         type: "array",
         items: {
           type: "string",
-          minLength: 1,
-          maxLength: 4096,
-          description: "object ID or path reference (10 §3)",
         },
-        maxItems: 100000,
-        description: "Default: selection.",
       },
-      points: {
+      modifiedIds: {
+        description: "Modified objects (content, membership or position changed; IDs kept).",
         type: "array",
         items: {
-          type: "object",
-          properties: {
-            strokeId: {
-              type: "string",
-              minLength: 1,
-              maxLength: 4096,
-              description: "object ID or path reference (10 §3)",
-            },
-            anchor: {
-              type: "object",
-              properties: {
-                x: {
-                  type: "number",
-                },
-                y: {
-                  type: "number",
-                },
-              },
-              required: [
-                "x",
-                "y",
-              ],
-              additionalProperties: false,
-            },
-          },
-          required: [
-            "strokeId",
-            "anchor",
-          ],
-          additionalProperties: false,
+          type: "string",
         },
-        maxItems: 100000,
       },
-      tolerance: {
-        type: "number",
-        default: 1,
-      },
-    },
-    additionalProperties: false,
-    "x-spec": "`drawingId?: id; ids?: [id] = selection; points?: [{strokeId, anchor}]; tolerance: number = 1 (du)`",
-  },
-  "draw.smooth.apply.result": {
-    title: "draw.smooth.apply result",
-    type: "object",
-    properties: {
-      removedPointCount: {
-        type: "integer",
+      removedIds: {
+        description: "Removed objects (descendants included).",
+        type: "array",
+        items: {
+          type: "string",
+        },
       },
       rev: {
-        type: "number",
+        description: "The drawing revision after the change.",
+        type: "integer",
+        maximum: 18446744073709551615n,
+        minimum: 0,
       },
     },
     required: [
+      "drawingId",
       "removedPointCount",
+      "createdIds",
+      "modifiedIds",
+      "removedIds",
       "rev",
     ],
-    "x-spec": "`{removedPointCount: int, rev}`",
-    additionalProperties: false,
   },
   "draw.stroke.add.KindParam": {
     description: "Stroke kind parameter.",
@@ -85512,18 +85595,32 @@ export interface draw_line_add_result {
   rev: number | bigint;
 }
 
+/** `draw.linesToBrush.apply` parameters. */
 export interface draw_linesToBrush_apply_params {
-  /** object ID or path reference (10 §3) */
-  drawingId?: string;
-  /** Default: selection. */
-  ids?: string[];
-  /** object ID or path reference (10 §3) Default: current brush pen. */
-  penId?: string;
+  /** The drawing (default: current). */
+  drawingId?: string | null;
+  /** Pencil lines, or layers and groups holding them (default: the selection). */
+  ids?: string[] | null;
+  /** The brush pen (default: the current brush pen). */
+  penId?: string | null;
 }
 
+/** `{strokeIds, rev}`. */
 export interface draw_linesToBrush_apply_result {
+  /** The drawing. */
+  drawingId: string;
+  /** The new brush strokes. */
   strokeIds: string[];
-  rev: number;
+  /** The invisible centre paths the lines became (their pieces where the new outlines split them). */
+  centreIds: string[];
+  /** Created objects. */
+  createdIds: string[];
+  /** Modified objects (content, membership or position changed; IDs kept). */
+  modifiedIds: string[];
+  /** Removed objects (descendants included). */
+  removedIds: string[];
+  /** The drawing revision after the change. */
+  rev: number | bigint;
 }
 
 /** `draw.lock.set` parameters. */
@@ -86171,25 +86268,40 @@ export interface draw_selection_set_result {
   bounds?: draw_selection_set_Bounds | null;
 }
 
+/** An anchor of a stroke. */
+export interface draw_smooth_apply_AnchorRef {
+  /** The stroke (local ID). */
+  strokeId: string;
+  /** The anchor index. */
+  anchor: number;
+}
+
+/** `draw.smooth.apply` parameters. */
 export interface draw_smooth_apply_params {
-  /** object ID or path reference (10 §3) */
-  drawingId?: string;
-  /** Default: selection. */
-  ids?: string[];
-  points?: ({
-    /** object ID or path reference (10 §3) */
-    strokeId: string;
-    anchor: {
-      x: number;
-      y: number;
-    };
-  })[];
+  /** The drawing (default: current). */
+  drawingId?: string | null;
+  /** Strokes, layers or groups (default: the selection). */
+  ids?: string[] | null;
+  /** Anchors that may go (default: the Contour Editor's point selection when no object is selected). */
+  points?: draw_smooth_apply_AnchorRef[] | null;
+  /** Tolerance (du). */
   tolerance?: number;
 }
 
+/** `{removedPointCount, rev}`. */
 export interface draw_smooth_apply_result {
-  removedPointCount: number | bigint;
-  rev: number;
+  /** The drawing. */
+  drawingId: string;
+  /** Anchors removed. */
+  removedPointCount: number;
+  /** Created objects. */
+  createdIds: string[];
+  /** Modified objects (content, membership or position changed; IDs kept). */
+  modifiedIds: string[];
+  /** Removed objects (descendants included). */
+  removedIds: string[];
+  /** The drawing revision after the change. */
+  rev: number | bigint;
 }
 
 /** Stroke kind parameter. */

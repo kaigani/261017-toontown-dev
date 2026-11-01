@@ -30,7 +30,7 @@
     {
       "title": "Accept a request",
       "result": {
-        "confirmationId": "cf_842d5a7db8911a6eae1a5bc8",
+        "confirmationId": "cf_b70982777a4602324d197793",
         "accepted": true
       },
       "varies": [
@@ -71,7 +71,7 @@
         "endpoint": null,
         "sessions": [
           {
-            "sessionId": "s1-49d18c",
+            "sessionId": "s1-4aff93",
             "client": "Example agent",
             "policy": "assist",
             "scopes": [
@@ -83,7 +83,7 @@
               "files.write",
               "library.global"
             ],
-            "connectedAt": "2026-11-01T07:13:31.835Z",
+            "connectedAt": "2026-11-01T07:19:18.671Z",
             "lastActivity": null,
             "paused": false,
             "transport": ""
@@ -91,8 +91,8 @@
         ],
         "pendingConfirmations": [
           {
-            "confirmationId": "cf_9ef9d7df9be2ce3c5063229d",
-            "sessionId": "s1-49d18c",
+            "confirmationId": "cf_db0ed70f8255f6e82b4d2792",
+            "sessionId": "s1-4aff93",
             "commandId": "project.saveAs",
             "summary": "Overwrite `/tmp/Short.animpkg`",
             "consequences": [
@@ -127,7 +127,7 @@
     {
       "title": "Let a session edit",
       "result": {
-        "sessionId": "s1-af1f93",
+        "sessionId": "s1-8f37fe",
         "policy": "assist",
         "scopes": [
           "read",
@@ -145,7 +145,7 @@
       "title": "Pause every session",
       "result": {
         "paused": [
-          "s1-8cd642"
+          "s1-c5bfdf"
         ]
       },
       "varies": [
@@ -438,7 +438,7 @@
       "result": [
         {
           "name": "before-walk",
-          "createdAt": "2026-11-01T07:13:32.667Z",
+          "createdAt": "2026-11-01T07:19:19.505Z",
           "documentRev": 1,
           "origin": "user"
         }
@@ -746,7 +746,7 @@
             "version": "0.0.1",
             "platform": "windows-x64"
           },
-          "exportedAt": "2026-11-01T07:13:33.511Z",
+          "exportedAt": "2026-11-01T07:19:20.360Z",
           "sourceProjectId": "pr_01K742SG00BK0VXTWDM5JRXV37",
           "scope": {
             "kind": "scenes",
@@ -4795,6 +4795,35 @@
       "varies": []
     }
   ],
+  "draw.linesToBrush.apply": [
+    {
+      "title": "Convert the pencil line to a brush stroke",
+      "result": {
+        "drawingId": "dr_01K742SG0KKMCAP9X1E6Z5P4SW",
+        "strokeIds": [
+          "st_01K7JJN800RXHD55052GG3NDRM"
+        ],
+        "centreIds": [
+          "st_01K7JJN801N0AE1Z0RRCTVH07Z",
+          "st_01K7JJN8023FJ8358KMGS10XYV"
+        ],
+        "createdIds": [
+          "st_01K7JJN800RXHD55052GG3NDRM",
+          "st_01K7JJN801N0AE1Z0RRCTVH07Z",
+          "st_01K7JJN8023FJ8358KMGS10XYV",
+          "st_01K7JJN803WXFN4379NATC3KT1",
+          "st_01K7JJN804FRNW3BHK5CAYE8V5"
+        ],
+        "modifiedIds": [],
+        "removedIds": [
+          "st_01K742SG0R61SYK9GG0HGYVNBT",
+          "st_01K742SG0S0NT23BWCZN64SFQ5"
+        ],
+        "rev": 5
+      },
+      "varies": []
+    }
+  ],
   "draw.lock.set": [
     {
       "title": "Lock Bob's first drawing",
@@ -5095,6 +5124,20 @@
           "width": 150.75,
           "height": 150.75
         }
+      },
+      "varies": []
+    }
+  ],
+  "draw.smooth.apply": [
+    {
+      "title": "Smooth the brush stroke with the recommended tolerance",
+      "result": {
+        "drawingId": "dr_01K742SG0KKMCAP9X1E6Z5P4SW",
+        "removedPointCount": 0,
+        "createdIds": [],
+        "modifiedIds": [],
+        "removedIds": [],
+        "rev": 1
       },
       "varies": []
     }
@@ -5437,7 +5480,7 @@
             "stepId": "u-1",
             "label": "Set meta",
             "source": "user",
-            "time": "2026-11-01T07:13:35.956Z",
+            "time": "2026-11-01T07:19:22.885Z",
             "objectCount": 1
           },
           {
@@ -5445,7 +5488,7 @@
             "stepId": "u-2",
             "label": "Set meta",
             "source": "user",
-            "time": "2026-11-01T07:13:35.959Z",
+            "time": "2026-11-01T07:19:22.888Z",
             "objectCount": 1
           }
         ],
@@ -5590,7 +5633,7 @@
         "state": "succeeded",
         "progress": 1.0,
         "message": "",
-        "startedAt": "2026-11-01T07:13:36.242Z",
+        "startedAt": "2026-11-01T07:19:23.171Z",
         "result": {},
         "session": "user"
       },
@@ -5609,7 +5652,7 @@
           "state": "succeeded",
           "progress": 1.0,
           "message": "",
-          "startedAt": "2026-11-01T07:13:36.268Z",
+          "startedAt": "2026-11-01T07:19:23.198Z",
           "result": {},
           "session": "user"
         }
@@ -5628,7 +5671,7 @@
         "state": "succeeded",
         "progress": 1.0,
         "message": "",
-        "startedAt": "2026-11-01T07:13:36.294Z",
+        "startedAt": "2026-11-01T07:19:23.225Z",
         "result": {},
         "session": "user"
       },
@@ -5675,10 +5718,10 @@
     {
       "title": "A 1920×1080, 24 fps project",
       "result": {
-        "projectId": "pr_01M6AZ9RYKRCJV4JHR6C493TRF",
-        "sceneId": "sc_01M6AZ9RYMFDC0902KQ1GRN7Q9",
-        "cameraId": "el_01M6AZ9RYMFDC0902KQ1GRN7QB",
-        "elementId": "el_01M6AZ9RYMFDC0902KQ1GRN7QC"
+        "projectId": "pr_01M6AZMBRCSF8DFBPBR3C229DT",
+        "sceneId": "sc_01M6AZMBRD83XN23V4SQCYDE6H",
+        "cameraId": "el_01M6AZMBRD83XN23V4SQCYDE6K",
+        "elementId": "el_01M6AZMBRD83XN23V4SQCYDE6M"
       },
       "varies": [
         "/cameraId",
@@ -5934,7 +5977,7 @@
         {
           "path": "/tmp/Sample.animpkg",
           "name": "Sample",
-          "lastOpened": "2026-11-01T07:13:37.219Z",
+          "lastOpened": "2026-11-01T07:19:24.153Z",
           "exists": true
         }
       ],
