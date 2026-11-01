@@ -327,7 +327,12 @@ fn c21_drawing_commands_write_no_files_and_ask_no_confirmation() {
             one(tt_registry::Scope::Read) || one(tt_registry::Scope::Edit) || one(tt_registry::Scope::Ui),
             "{id}: {scopes:?}"
         );
-        assert!(!e.params_schema().to_string().contains("\"path\""), "{id} takes no file path");
+        // A file path is a string `path` (11 §6.2); `draw.erase.apply`'s `path` is the eraser's point list.
+        let schema = e.params_schema();
+        let path = &schema["properties"]["path"];
+        let ty = &path["type"];
+        let list = *ty == "array" || ty.as_array().is_some_and(|t| t.contains(&json!("array")));
+        assert!(path.is_null() || list, "{id} takes no file path: {path}");
     }
     // The drawing event is produced by the commit path (C21-R1-07) and is not invocable.
     assert_eq!(registry.get("draw.drawing.changed").unwrap().status(), tt_registry::Status::Implemented);
