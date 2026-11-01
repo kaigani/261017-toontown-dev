@@ -17,9 +17,18 @@ C2.1 delivered strokes, text, groups and bitmaps as validated, persisted geometr
 1. **Persistent noding (`tt_vector::planar::node`; SI-059).** Within a layer, pencil and invisible strokes are split
    where they cross any stroke (themselves included) and where an open stroke's end meets another stroke within the
    junction tolerance (1/32 du): with the nearest stroke and every stroke as near (an end where a split stroke's pieces
-   meet and a line passes through is a junction with all of them). A stroke crossing another exactly at a vertex of either is
-   a junction at that vertex: the second's two directions lie strictly on different sides of the first (exact
-   orientation tests). Touches, retracing and collinear overlaps are not junctions. **Each junction is resolved once for all of its
+   meet and a line passes through is a junction with all of them). **Every crossing decision is exact on the snapped
+   1/64 du grid** (round 2, C22-R2-01). Segment ends are snapped and classified by `i128` orientation signs:
+   - strictly opposite signs on both segments: a proper crossing;
+   - an end lying on the other segment: a vertex case;
+   - both ends of one segment on the other's line: collinear, never a junction.
+
+   A vertex case is a junction only when the second stroke's two directions away from the point lie strictly on
+   different sides of the first's (exact sector tests on grid directions). A touch, a turn-back or any shared direction
+   (overlap, retracing) is not a junction. Segments that are collinear on the grid are merged by the derived graph's
+   snap rounding as well, so persistent noding and the graph agree. Floating point is used only to place a proper
+   crossing's point on the stored geometry, with the exact grid fractions where floating point degenerates; there is no
+   epsilon. **Each junction is resolved once for all of its
    participants** (round 1, C22-R1-01): a crossing or T-junction within the tolerance of a junction's first record
    belongs to that junction (no chaining). Its coordinate is the nearest existing anchor of an unchanged participant,
    else the first record's point, and every participant's pieces meet exactly there. A junction within the tolerance
@@ -51,10 +60,17 @@ C2.1 delivered strokes, text, groups and bitmaps as validated, persisted geometr
    the brush stroke's `ext["dev.toontown.zones"].exterior` records (side, parameter range, fill), rewritten
    deterministically on every update and absent when not needed; without that key a brush stroke's own side fills are
    read (other writers). **Carry-over:** a zone keeping its ID keeps its fill; any other new zone takes the fill of the
-   old zone it overlaps most (exact grid polygon intersection), ties to the lower old zone ID. Splits keep the colour
+   old zone it overlaps most, ties to the lower old zone ID only on mathematically equal areas. Splits keep the colour
    on both parts; merges take the larger part's. Candidates are every old zone whose box overlaps the new zone's with
    positive area (C22-R1-02). An old zone with a new zone's ID has the same polygon and keeps its fill without an
-   overlay.
+   overlay. **Overlap areas are exact rationals** (round 2, C22-R2-04; `planar::exact`). By Green's theorem, twice
+   the area of `A ∩ B` is the sum over the cut boundary of `(t₂ − t₁)·cross(p, q)`, where p → q is an edge and
+   `[t₁, t₂]` a piece of it. Each edge of A is cut where it meets B's boundary, and its pieces count when they lie
+   inside B, or along B's boundary with B's interior on the same side. Each edge of B is cut the same way, and its
+   pieces count when they lie strictly inside A. Segment tests and cut parameters are `i128` ratios (they fit for
+   coordinates within ±10⁷ du); midpoint inside-tests and sums use `num-bigint`/`num-rational`, charged to the pass's
+   account. Holes and non-convex zones are handled by the same rule. A property test checks the areas against an
+   exact Sutherland–Hodgman reference.
 
 5. **Settling (`planar::layer`, `Cx::settle`).** Every transaction runs the settle pass before any preview or commit
    (and handlers call it before reporting IDs): each layer whose stroke identity, kind, closed flag, points, sides or

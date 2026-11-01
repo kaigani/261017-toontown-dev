@@ -758,9 +758,12 @@ Reserved by the M0 closure for "measured deterministic-format incompatibility" (
     of an unchanged pencil or invisible participant, else the first record's point, and every participant meets that
     exact coordinate. An open end is a junction with the nearest stroke and with every stroke as near (ties). A
     stroke crossing another exactly at a vertex of either is a junction at exactly that vertex. A touch, retracing, or
-    any shared direction (collinear overlap) is not a crossing. A cut at the same place as an open path's end becomes that end's junction.
+    any shared direction (collinear overlap) is not a crossing. Round 2 (C22-R2-01 ruling): every crossing,
+    vertex, collinear, touch and turn-back decision uses `i128` orientation signs on the snapped 1/64 du grid, with no
+    epsilon. Floating point only places a proper crossing's point. A cut at the same place as an open path's end becomes that end's junction.
   - *Imports.* Drawings `doc.import.json` creates are persisted content, taken as they are like a load: their fills
-    are read and repaired, but they are not re-noded. Their first edit nodes them. This keeps C1.3's import fidelity
+    are read and repaired (round 2, C22-R2-02: `repair_drawing_sides` in the import's own transaction, reported as
+    `drawing.fillInconsistent`), but they are not re-noded. Their first edit nodes them. This keeps C1.3's import fidelity
     and `idPolicy: preserve`.
   - *Zone-ID input (ruling).* A zone ID is SHA-256 over each boundary cycle in traversal order: the snapped integer
     coordinate of each vertex with the stroke IDs and sides of the edge leaving it. A vertex where the boundary goes

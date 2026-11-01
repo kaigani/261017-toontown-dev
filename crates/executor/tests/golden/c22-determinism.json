@@ -1,6 +1,6 @@
 {
-  "sha256": "3b2ffb3d66fe13f6c010acc74037fe9e4667a7d0b2ee553aa58bf9716f488192",
-  "bytes": 116386,
+  "sha256": "1b76885cca72a4c58c2a609a828f3432ab5d0e921e21ccf3e2c4770015ca12fe",
+  "bytes": 116408,
   "nodes": [
     {
       "type": "layer",
@@ -742,12 +742,12 @@
           "id": "zn_JEPB54T2P0W6J321HJYRT4T7VB",
           "colourId": "col_01K742SG081DHX1EPGV9BJQAQH",
           "textureMatrix": [
-            64,
+            53.96875,
             0,
             0,
-            -64,
+            53.96875,
             503.03125,
-            356.984375
+            303.015625
           ],
           "boundaryStrokeIds": [
             "st_01K7JJN80098TAFQQKZYAWNCYJ"

@@ -65,7 +65,15 @@ fn script(h: &ExecutorHandle) {
                 "pen": {"tipShape": "round", "minSize": 6, "maxSize": 6},
                 "points": [{"x": 500, "y": 300}, {"x": 560, "y": 300}, {"x": 560, "y": 360}, {"x": 500, "y": 360}] }),
     );
-    ok(h, "colour.paint.apply", json!({ "drawingId": D1, "points": [{"x": 530, "y": 330}], "colourId": c[3] }));
+    // c[3] is the fixture's tile-on texture: an explicit drag mapping (origin at the hole's box corner, width its width)
+    // keeps this recording independent of the click default, which C22-R2-05 changed and the reviewer test
+    // `c22_r2_commands::tiled_texture_click_uses_native_pixel_dimensions` covers.
+    ok(
+        h,
+        "colour.paint.apply",
+        json!({ "drawingId": D1, "points": [{"x": 530, "y": 330}], "colourId": c[3],
+                "mapping": {"from": {"x": 503.03125, "y": 303.015625}, "to": {"x": 557.0, "y": 303.015625}} }),
+    );
     // An open square closed by gap closing while painting.
     let g = ok(
         h,

@@ -3,14 +3,14 @@
 //!
 //! Zones are rings on the 1/64 du grid (integer coordinates, the interior on the left of every edge: outer rings
 //! counter-clockwise, holes clockwise). By Green's theorem, twice the area of `A ∩ B` is the sum of `cross(p, q)` over
-//! the boundary of the intersection, and a piece `p + t·(q − p)`, `t ∈ [t₁, t₂]`, of a straight edge contributes
-//! `(t₂ − t₁) · cross(p, q)`. So each edge of `A` is cut at every point where it meets `B`'s boundary. A piece
+//! the boundary of the intersection, and a piece `p + t·(q − p)`, `t ∈ [t1, t2]`, of a straight edge contributes
+//! `(t2 − t1) · cross(p, q)`. So each edge of `A` is cut at every point where it meets `B`'s boundary. A piece
 //! counts when it lies inside `B`, or along `B`'s boundary with `B`'s interior on the same side (shared boundary is
 //! counted once). Each edge of `B` is cut the same way, and a piece counts when it lies strictly inside `A`.
 //!
-//! Every predicate is exact. Segment tests and cut parameters are `i128` ratios: grid coordinates within ±10⁷ du are at
-//! most 6.4 × 10⁸, so orientations stay below 3.3 × 10¹⁸ and the cross-multiplied comparisons of parameters below
-//! 1.1 × 10³⁷. Inside tests of a piece's midpoint and the sums are arbitrary-precision rationals (`num-bigint`). All
+//! Every predicate is exact. Segment tests and cut parameters are `i128` ratios: grid coordinates within ±10^7 du are at
+//! most 6.4 × 10^8, so orientations stay below 3.3 × 10^18 and the cross-multiplied comparisons of parameters below
+//! 1.1 × 10^37. Inside tests of a piece's midpoint and the sums are arbitrary-precision rationals (`num-bigint`). All
 //! work is charged to the caller's account.
 
 use num_bigint::BigInt;
