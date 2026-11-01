@@ -2,7 +2,7 @@
 
 Touched requirements of 02 sections 4-8 and 13; 03 sections 7-9 and 16. Normalized source units, not independent test counts. GUI/deferred work has an owner. Implemented means the exercised/inspected slice, not a proof over every input.
 
-{'deferred-with-owner': 25, 'implemented': 81, 'divergent': 17}
+{'deferred-with-owner': 25, 'implemented': 80, 'divergent': 18}
 
 | Unit | Clause | Requirement | Status | Evidence / owner |
 |---|---|---|---|---|
@@ -116,7 +116,7 @@ Touched requirements of 02 sections 4-8 and 13; 03 sections 7-9 and 16. Normaliz
 | C23-U108 | 03 8.8-8.9 | Gap-closing persistence and invisible zone boundaries | implemented | C2.2 suites |
 | C23-U109 | 03 9.1 | Set Colour changes painted selections and leaves unpainted zones | implemented | c23_colour |
 | C23-U110 | 03 9.2 | Swatch editing, style switching, tints and effects | deferred-with-owner | M7 C7.1/C7.2 |
-| C23-U111 | 03 9.3 | Drawing/element/scene/project scope and optional pen filters | implemented | c23_colour; source scope traversal review |
+| C23-U111 | 03 9.3 | Drawing/element/scene/project scope and optional pen filters | divergent | C23-R1-16 scene scope reaches an unexposed bank drawing; c23_r1_colour |
 | C23-U112 | 03 9.3 | Locked skips and changed-reference counts | implemented | c23_colour |
 | C23-U113 | 03 9.3 | Keep mappable-to-mappable matrices; otherwise default new mapping | implemented | c23_colour |
 | C23-U114 | 03 9.3 | Protected effective targets with no changes return refusal | divergent | C23-R1-13; c23_r1_colour |

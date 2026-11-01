@@ -113,7 +113,7 @@ DATA='''02 4.1|Drawing canvas and workspace|F|M4 C4.2
 03 8.8-8.9|Gap-closing persistence and invisible zone boundaries|I|C2.2 suites
 03 9.1|Set Colour changes painted selections and leaves unpainted zones|I|c23_colour
 03 9.2|Swatch editing, style switching, tints and effects|F|M7 C7.1/C7.2
-03 9.3|Drawing/element/scene/project scope and optional pen filters|I|c23_colour; source scope traversal review
+03 9.3|Drawing/element/scene/project scope and optional pen filters|D|C23-R1-16 scene scope reaches an unexposed bank drawing; c23_r1_colour
 03 9.3|Locked skips and changed-reference counts|I|c23_colour
 03 9.3|Keep mappable-to-mappable matrices; otherwise default new mapping|I|c23_colour
 03 9.3|Protected effective targets with no changes return refusal|D|C23-R1-13; c23_r1_colour
@@ -132,7 +132,7 @@ def main(out):
     for line in DATA.splitlines():
         clause,requirement,state,evidence=line.split('|');units.append({'unit':f'C23-U{len(units)+1:03}','clause':clause,'requirement':requirement,'status':states[state],'evidenceOrOwner':evidence})
     spec=importlib.util.spec_from_file_location('audit',pathlib.Path(__file__).with_name('c23-r1-audit.py'));a=importlib.util.module_from_spec(spec);spec.loader.exec_module(a)
-    commands=a.inventory()['commands'];divergent={'draw.transform.apply':'02/09','draw.envelope.apply':'01','draw.repositionAll.apply':'01','draw.point.move':'03','draw.cut.apply':'11','draw.optimize.apply':'04/08','draw.smooth.apply':'07','draw.linesToBrush.apply':'05','draw.centreLine.apply':'12; medial axis deferred C23-T1','draw.rectangle.add':'10','draw.ellipse.add':'10','draw.line.add':'10','draw.polyline.add':'10','colour.recolour.apply':'13','draw.drawing.render':'06'}
+    commands=a.inventory()['commands'];divergent={'draw.transform.apply':'02/09','draw.envelope.apply':'01','draw.repositionAll.apply':'01','draw.point.move':'03','draw.cut.apply':'11','draw.optimize.apply':'04/08','draw.smooth.apply':'07','draw.linesToBrush.apply':'05','draw.centreLine.apply':'12; medial axis deferred C23-T1','draw.rectangle.add':'10','draw.ellipse.add':'10','draw.line.add':'10','draw.polyline.add':'10','colour.recolour.apply':'13/16','draw.drawing.render':'06'}
     for c in commands:
         c['status']='divergent' if c['id'] in divergent else 'implemented';c['finding']=divergent.get(c['id']);c['scopeNote']='Semantic disposition; shared addressing and full-contract coverage are audited as separate source units.'
     result={'target':'7a77138c6fb6531b67f4e840b765bd467bb76d28','scope':'Touched requirements of 02 sections 4-8 and 13; 03 sections 7-9 and 16. Normalized source units, not independent test counts. GUI/deferred work has an owner. Implemented means the exercised/inspected slice, not a proof over every input.','counts':dict(collections.Counter(u['status'] for u in units)),'commandCounts':dict(collections.Counter(c['status'] for c in commands)),'units':units,'commands':commands}

@@ -24,7 +24,8 @@ def inventory():
     contracts=(ROOT/'crates/executor/tests/c23_contracts.rs').read_text().split('fn cases()')[1].split('#[test]')[0]
     covered=set(re.findall(r'"((?:draw|colour)\.[a-zA-Z.]+)"\s*,',contracts))
     missing=[c['id'] for c in commands if c['kind'] in ['action','toggle'] and c['id'] not in covered]
-    return {'commands':commands,'newMutations':sum(c['kind'] in ['action','toggle'] for c in commands),'commonContractUniqueCommands':len(covered),'missingFromCommonContract':sorted(missing)}
+    p='crates/registry/src/declared.json';before={c['id'] for c in json.loads(git('show',BASE+':'+p))};after={c['id'] for c in json.loads((ROOT/p).read_bytes())};delivered=before-after
+    return {'commands':commands,'generatedBefore':len(before),'generatedAfter':len(after),'newlyImplementedFromGeneratedDelta':sorted(delivered),'generatedDeltaExactlyMatchesNewHandlers':delivered=={c['id'] for c in commands},'newMutations':sum(c['kind'] in ['action','toggle'] for c in commands),'commonContractUniqueCommands':len(covered),'missingFromCommonContract':sorted(missing)}
 def c23_measurement(v):
     if not isinstance(v,dict):raise ValueError('root')
     for key in ['seconds','openSeconds','strokes']:
@@ -131,6 +132,8 @@ class Audit(unittest.TestCase):
         with self.assertRaises(ValueError):planar(d)
     def test_all_implemented_mutations_are_in_the_claimed_common_contract(self):
         self.assertEqual(inventory()['missingFromCommonContract'],[],'C23-R1 coverage finding: 27 cases do not cover every mutation')
+    def test_generated_declaration_delta_matches_the_reviewed_handler_inventory(self):
+        self.assertTrue(inventory()['generatedDeltaExactlyMatchesNewHandlers'])
 if __name__=='__main__':
     p=argparse.ArgumentParser();p.add_argument('--out',type=pathlib.Path);a,rest=p.parse_known_args()
     if a.out:collect(a.out.resolve())

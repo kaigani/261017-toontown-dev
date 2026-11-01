@@ -95,6 +95,11 @@ fn five_independent_mutations_are_atomic_reversible_and_persistent() {
         let dry = with(&h, cmd, p.clone(), InvokeOptions { dry_run: true, ..Default::default() });
         assert!(dry.is_ok(), "{cmd}: {dry:?}");
         assert_eq!((rev(&h), normalized(&h)), (start, before.clone()));
+        let mut stale = InvokeOptions::default();
+        stale.expect_rev.insert(D.to_owned(), 0);
+        let refused = with(&h, cmd, p.clone(), stale);
+        assert_eq!(refused.error.unwrap().code, "rev.conflict", "{cmd}: stale envelope revision");
+        assert_eq!((rev(&h), normalized(&h)), (start, before.clone()));
         let failed = batch(
             &h,
             json!({"label":"review rollback","steps":[{"id":cmd,"params":p},{"id":"draw.transform.apply","params":{"drawingId":D,"ids":["st_missing"],"translate":{"x":1,"y":0}}}]}),

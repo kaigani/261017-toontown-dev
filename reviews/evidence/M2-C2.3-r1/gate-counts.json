@@ -17,10 +17,22 @@
     "failed": 0,
     "ignored": 34
   },
+  "colour-final.log": {
+    "summaries": 1,
+    "passed": 1,
+    "failed": 2,
+    "ignored": 0
+  },
   "commands.log": {
     "summaries": 1,
     "passed": 0,
     "failed": 6,
+    "ignored": 0
+  },
+  "contracts-final.log": {
+    "summaries": 1,
+    "passed": 2,
+    "failed": 0,
     "ignored": 0
   },
   "contracts.log": {
@@ -100,5 +112,11 @@
     "passed": 151,
     "failed": 0,
     "ignored": 8
+  },
+  "workspace.log": {
+    "summaries": 189,
+    "passed": 1028,
+    "failed": 13,
+    "ignored": 18
   }
 }

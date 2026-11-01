@@ -3,8 +3,8 @@
   "scope": "Touched requirements of 02 sections 4-8 and 13; 03 sections 7-9 and 16. Normalized source units, not independent test counts. GUI/deferred work has an owner. Implemented means the exercised/inspected slice, not a proof over every input.",
   "counts": {
     "deferred-with-owner": 25,
-    "implemented": 81,
-    "divergent": 17
+    "implemented": 80,
+    "divergent": 18
   },
   "commandCounts": {
     "implemented": 22,
@@ -785,8 +785,8 @@
       "unit": "C23-U111",
       "clause": "03 9.3",
       "requirement": "Drawing/element/scene/project scope and optional pen filters",
-      "status": "implemented",
-      "evidenceOrOwner": "c23_colour; source scope traversal review"
+      "status": "divergent",
+      "evidenceOrOwner": "C23-R1-16 scene scope reaches an unexposed bank drawing; c23_r1_colour"
     },
     {
       "unit": "C23-U112",
@@ -1195,7 +1195,7 @@
       "source": "crates/executor/src/commands/colour_edit.rs",
       "examples": 2,
       "status": "divergent",
-      "finding": "13",
+      "finding": "13/16",
       "scopeNote": "Semantic disposition; shared addressing and full-contract coverage are audited as separate source units."
     },
     {

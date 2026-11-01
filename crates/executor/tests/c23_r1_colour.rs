@@ -4,6 +4,34 @@ mod common;
 use common::*;
 use serde_json::json;
 const D: &str = "dr_01K742SG0KKMCAP9X1E6Z5P4SW";
+
+#[test]
+fn scene_recolour_leaves_unexposed_bank_drawings_unchanged() {
+    let h = fixture();
+    let unused = "dr_01K742SG0NG5HTFZRD7238FZXJ";
+    let scene = "sc_01K742SG0YSRA1305J7887BDVZ";
+    let skin = "col_01K742SG059XGSNZ6M9MACZ2ZY";
+    let sky = "col_01K742SG06BQ08FCT1TT8DF8MA";
+    let bob = get(&h, "scene:#1/element:\"Bob\"");
+    assert!(
+        !bob["exposure"].as_array().unwrap().iter().any(|run| run[0] == unused),
+        "fixture control: drawing 10 is not exposed"
+    );
+    ok(
+        &h,
+        "draw.line.add",
+        json!({"drawingId":unused,"from":{"x":1000,"y":1000},"to":{"x":1100,"y":1020},"colourId":skin,"layer":"new"}),
+    );
+    let before = ok(&h, "draw.drawing.get", json!({"drawingId":unused}));
+    let r = ok(
+        &h,
+        "colour.recolour.apply",
+        json!({"fromColourId":skin,"toColourId":sky,"scope":"scene","sceneId":scene,"targets":["lines"]}),
+    );
+    let after = ok(&h, "draw.drawing.get", json!({"drawingId":unused}));
+    println!("scene recolour: {r}; unexposed before: {before}; after: {after}");
+    assert_eq!(after, before, "03 section 9.3 restricts scene scope to drawings exposed in that scene");
+}
 #[test]
 fn a_bulk_map_with_only_protected_effective_targets_refuses() {
     let h = fixture();
