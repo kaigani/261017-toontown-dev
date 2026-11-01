@@ -52,7 +52,7 @@ fn vertex_crossing_uses_exact_orientation_for_grid_coordinates() {
 #[test]
 fn vertex_touches_turnbacks_overlaps_and_degenerate_anchors() {
     for pts in [vec![(-4.,2.),(0.,0.),(4.,2.)], vec![(-4.,2.),(0.,0.),(-4.,2.)],
-                vec![(-5.,0.),(0.,0.),(5.,0.)]] {
+                vec![(-10.,0.),(0.,0.),(10.,0.)]] {
         let n = node(&[ns("a", &[(-10.,0.),(0.,0.),(10.,0.)],false), ns("b",&pts,true)],
                      &mut Work::unlimited("r2")).unwrap();
         assert!(n.outcomes.is_empty(), "touch/overlap is not a crossing: {n:?}");

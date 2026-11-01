@@ -1,0 +1,30 @@
+[
+  {
+    "file": "crates/vector/src/planar/along.rs",
+    "line": "+            panic!(\"build\");"
+  },
+  {
+    "file": "crates/vector/src/planar/along.rs",
+    "line": "+            panic!(\"build\");"
+  },
+  {
+    "file": "crates/vector/src/planar/node.rs",
+    "line": "+            let Some(Outcome::Split(ps)) = n.outcomes.get(&k) else { panic!(\"{k}: {n:?}\") };"
+  },
+  {
+    "file": "crates/vector/src/planar/node.rs",
+    "line": "+            panic!(\"{n:?}\")"
+  },
+  {
+    "file": "crates/vector/src/planar/node.rs",
+    "line": "+        let Some(Outcome::Split(ps)) = n.outcomes.get(&0) else { panic!(\"{n:?}\") };"
+  },
+  {
+    "file": "crates/vector/src/planar/node.rs",
+    "line": "+        let Some(Outcome::Split(x)) = n.outcomes.get(&2) else { panic!(\"{n:?}\") };"
+  },
+  {
+    "file": "crates/vector/src/planar/node.rs",
+    "line": "+            panic!(\"{n:?}\")"
+  }
+]
