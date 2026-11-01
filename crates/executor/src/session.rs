@@ -193,7 +193,8 @@ pub(crate) struct Session {
     pub edit_options: std::collections::BTreeMap<String, serde_json::Map<String, Value>>,
     /// The persistence environment (C1.3).
     pub env: crate::store::Env,
-    /// Agent sessions, confirmations and the activity log (C1.4). Not rolled back with a failed call.
+    /// Agent sessions, confirmations and the activity log (C1.4). A refused call restores its sessions and policy
+    /// (C23-R3-01); its confirmation requests and activity entries are kept.
     pub agents: crate::agents::AgentHub,
     /// The derived planar-map cache (M2 C2.2), shared by the session's invocations.
     pub planar: crate::planar::SharedCache,

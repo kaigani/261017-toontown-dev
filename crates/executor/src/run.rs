@@ -205,6 +205,9 @@ struct Rollback {
     checkpoints: Option<Vec<Checkpoint>>,
     clipboard: Option<Value>,
     edit_options: std::collections::BTreeMap<String, serde_json::Map<String, Value>>,
+    /// The agent hub's sessions, grants and policy (C23-R3-01). Its confirmation requests and activity log are
+    /// records a refused call makes on purpose (11 §6.3, §11) and are kept.
+    agents: crate::agents::AgentHub,
     events: usize,
 }
 
@@ -216,6 +219,7 @@ impl Rollback {
             checkpoints: s.project.as_ref().map(|p| p.checkpoints.clone()),
             clipboard: s.clipboard.clone(),
             edit_options: s.edit_options.clone(),
+            agents: crate::agents::AgentHub { pending: BTreeMap::new(), activity: Vec::new(), ..s.agents.clone() },
             events: s.events.len(),
         }
     }
@@ -225,6 +229,10 @@ impl Rollback {
         s.ui = self.ui;
         s.clipboard = self.clipboard;
         s.edit_options = self.edit_options;
+        let pending = std::mem::take(&mut s.agents.pending);
+        let activity = std::mem::take(&mut s.agents.activity);
+        let next_seq = s.agents.next_seq;
+        s.agents = crate::agents::AgentHub { pending, activity, next_seq, ..self.agents };
         s.events.truncate(self.events);
         if let (Some(p), Some(c)) = (s.project.as_mut(), self.checkpoints) {
             p.checkpoints = c;
@@ -518,9 +526,8 @@ fn needs_confirmation(session: &mut Session, e: CommandError, rev: Option<u64>) 
     env
 }
 
-/// Commits transactions: installs each stamped snapshot, records undo steps or moves the history position, logs
-/// the revision and emits `doc.changed`.
-/// A request whose caller timed out commits nothing (C23-R2-01): checked before the transaction and before effects.
+/// A request whose caller timed out is not accepted (C23-R2-01, C23-R3-01): checked at the acceptance boundary, before
+/// any session state, document transaction or effect is kept, and again by `commit` before it installs anything.
 fn cancelled_check(what: &str) -> Result<(), CommandError> {
     if tt_vector::work::cancel_requested() {
         return Err(CommandError::with_details(
@@ -532,6 +539,8 @@ fn cancelled_check(what: &str) -> Result<(), CommandError> {
     Ok(())
 }
 
+/// Commits transactions: installs each stamped snapshot, records undo steps or moves the history position, logs
+/// the revision and emits `doc.changed`.
 fn commit(s: &mut Session, txns: Vec<Txn>, origin: &Origin, command: &str) -> Result<Option<UndoRef>, CommandError> {
     if txns.is_empty() {
         return Ok(None);
@@ -703,9 +712,6 @@ fn apply_effects(s: &mut Session, effects: Vec<Effect>, simulating: bool, origin
     if simulating {
         return Ok(());
     }
-    if !effects.is_empty() {
-        cancelled_check("effects")?;
-    }
     let mut failure: Option<CommandError> = None;
     for e in effects {
         match e {
@@ -744,6 +750,7 @@ fn apply_effects(s: &mut Session, effects: Vec<Effect>, simulating: bool, origin
                     }
                 }
             }
+            Effect::Settings(change) => s.env.apply(change),
             Effect::Prefs(values) => {
                 // Only values that differ from the defaults are stored (01 §11; C13-R1-15).
                 for (k, v) in values {
@@ -1126,7 +1133,7 @@ impl Core {
         });
         let warnings = cx.take_warnings();
         let targets = cx.take_targets();
-        let mut effects = cx.take_effects();
+        let effects = cx.take_effects();
         let mut session = cx.into_session();
         let rev_before = session.project.as_ref().map(|p| p.doc.document_rev());
         let env = match outcome {
@@ -1154,24 +1161,16 @@ impl Core {
                         env = Envelope::error(e, rev_before);
                     }
                 } else {
-                    // Pending saves are written only now that every step succeeded, and before anything commits; a
-                    // failed write rolls the invocation back (C13-R1-01).
-                    let pre = frozen_guard(&session, &txns)
-                        .and_then(|()| self.write_pending(&session, txns.last().map(|t| &t.after), &mut effects));
-                    match pre.and_then(|()| commit(&mut session, txns, &inv.origin, &inv.command)) {
-                        Ok(u) => {
+                    match self.accept(&mut session, rollback, txns, effects, &inv.origin, &inv.command) {
+                        Ok((u, published)) => {
                             env.undo = u;
                             env.document_rev = last_rev.or(rev_before);
                             env.committed = !self.simulating;
-                            if let Err(e) = apply_effects(&mut session, effects, self.simulating, &inv.origin) {
+                            if let Err(e) = published {
                                 env = publish_failed(env, e);
                             }
                         }
-                        Err(e) => {
-                            discard_files(&effects);
-                            rollback.apply(&mut session);
-                            env = Envelope::error(e, rev_before);
-                        }
+                        Err(e) => env = Envelope::error(e, rev_before),
                     }
                 }
                 if env.document_rev.is_none() {
@@ -1462,7 +1461,7 @@ impl Core {
                 }
             }
         };
-        let mut effects = cx.take_effects();
+        let effects = cx.take_effects();
         let mut session = cx.into_session();
         let env = match committed {
             Err(e) => {
@@ -1488,28 +1487,16 @@ impl Core {
                         env = Envelope::error(e, rev_before);
                     }
                 } else {
-                    let pre = txn
-                        .as_ref()
-                        .map_or(Ok(()), |t| frozen_guard(&session, std::slice::from_ref(t)))
-                        .and_then(|()| self.write_pending(&session, txn.as_ref().map(|t| &t.after), &mut effects));
-                    let committed = pre.and_then(|()| match txn {
-                        Some(t) => commit(&mut session, vec![t], origin, "batch"),
-                        None => Ok(None),
-                    });
-                    match committed {
-                        Ok(u) => {
+                    match self.accept(&mut session, rollback, txn.into_iter().collect(), effects, origin, "batch") {
+                        Ok((u, published)) => {
                             env.undo = u;
                             env.document_rev = last_rev.or(rev_before);
                             env.committed = !self.simulating;
-                            if let Err(e) = apply_effects(&mut session, effects, self.simulating, origin) {
+                            if let Err(e) = published {
                                 env = publish_failed(env, e);
                             }
                         }
-                        Err(e) => {
-                            discard_files(&effects);
-                            rollback.apply(&mut session);
-                            env = Envelope::error(e, rev_before);
-                        }
+                        Err(e) => env = Envelope::error(e, rev_before),
                     }
                 }
                 env.steps = Some(steps);
@@ -1608,6 +1595,40 @@ impl Core {
 
     /// Writes the pending saves of an invocation about to commit `final_doc` (`None`: nothing to commit, the live
     /// document is saved); none while simulating.
+    /// The acceptance boundary of every invocation and atomic batch (C23-R3-01; ADR-0015 history). A handler changes
+    /// only the invocation's working session: the staged document, its deferred effects, and the session and UI state
+    /// it writes (selection, point selection, tool memory, panels, clipboard, remembered options, checkpoints, queued
+    /// events). Nothing of it is accepted before this point, and here, in order: the caller's cancellation (a request
+    /// whose caller timed out is refused whether or not it changes the document), the frozen guard, pending saves, the
+    /// document commit (which checks the cancellation again before installing anything). Any refusal restores the
+    /// saved session state in full and removes staged files. After the document commit the call is accepted: its
+    /// effects apply, and a file that cannot be published is the call's post-commit error (ADR-0015 §12), returned
+    /// beside the undo reference.
+    fn accept(
+        &self,
+        session: &mut Session,
+        rollback: Rollback,
+        txns: Vec<Txn>,
+        mut effects: Vec<Effect>,
+        origin: &Origin,
+        command: &str,
+    ) -> Result<(Option<UndoRef>, Result<(), CommandError>), CommandError> {
+        // Pending saves are written only now that every step succeeded, and before anything commits; a failed write
+        // rolls the invocation back (C13-R1-01).
+        let committed = cancelled_check(command)
+            .and_then(|()| frozen_guard(session, &txns))
+            .and_then(|()| self.write_pending(session, txns.last().map(|t| &t.after), &mut effects))
+            .and_then(|()| commit(session, txns, origin, command));
+        match committed {
+            Ok(u) => Ok((u, apply_effects(session, effects, self.simulating, origin))),
+            Err(e) => {
+                discard_files(&effects);
+                rollback.apply(session);
+                Err(e)
+            }
+        }
+    }
+
     fn write_pending(
         &self,
         s: &Session,
@@ -1917,5 +1938,79 @@ mod tests {
         // doc.diff reconstructs earlier revisions through the same replay.
         let env = core.invoke(&Invocation::user("doc.diff", json!({ "sinceRev": r1 - 1 })));
         assert!(env.is_ok(), "{:?}", env.error);
+    }
+
+    /// The session state a cancelled call must leave as it was: app context (selections, point selection, tool memory,
+    /// frame, mode), UI, clipboard, remembered options, the agent policy, queued events, the revision.
+    fn accepted_state(core: &Core) -> String {
+        let s = core.session().unwrap();
+        let rev = s.project.as_ref().map(|p| p.doc.document_rev());
+        format!(
+            "{:?}|{:?}|{:?}|{:?}|{:?}|{}|{rev:?}",
+            s.app,
+            s.ui,
+            s.clipboard,
+            s.edit_options,
+            s.agents.limits,
+            s.events.len()
+        )
+    }
+
+    /// C23-R3-01: the acceptance boundary refuses a request whose caller timed out, whatever the request changes:
+    /// session/UI state only, through handlers that charge no work account (so nothing but the boundary sees the
+    /// cancellation), agent policy, or a document transaction. The saved state is restored in full; once the
+    /// cancellation is gone the same calls are accepted.
+    #[test]
+    fn the_acceptance_boundary_refuses_a_cancelled_request_and_restores_the_session() {
+        let mut core = core();
+        let d = "dr_01K742SG0KKMCAP9X1E6Z5P4SW";
+        let all = core.invoke(&Invocation::user("draw.selection.set", json!({ "drawingId": d, "by": "all" })));
+        assert!(all.is_ok(), "{:?}", all.error);
+        let first = all.result.unwrap()["selectedIds"][0].as_str().unwrap().to_owned();
+        // A previous non-empty selection, a point selection, a frame and a mode.
+        for (cmd, params) in [
+            ("draw.selection.set", json!({ "drawingId": d, "ids": [first] })),
+            ("draw.pointSelection.set", json!({ "drawingId": d, "points": [{ "strokeId": first, "anchor": 0 }] })),
+            ("app.frame.set", json!({ "frame": 2 })),
+            ("app.mode.set", json!({ "mode": "drawing" })),
+        ] {
+            let env = core.invoke(&Invocation::user(cmd, params));
+            assert!(env.is_ok(), "{cmd}: {:?}", env.error);
+        }
+        let before = accepted_state(&core);
+        let calls = [
+            ("draw.selection.set", json!({ "drawingId": d, "by": "none" })),
+            ("draw.pointSelection.set", json!({ "drawingId": d, "points": [] })),
+            ("edit.selection.set", json!({ "context": "drawing", "ids": [] })),
+            ("app.frame.set", json!({ "frame": 3 })),
+            ("agent.policy.defaults.set", json!({ "maxJobs": 1 })),
+            ("draw.drawing.rename", json!({ "drawingId": d, "name": "cancelled" })),
+        ];
+        let cancel = std::sync::Arc::new(tt_vector::work::CancelState::default());
+        tt_vector::work::set_cancel_state(Some(cancel.clone()));
+        let token = cancel.token();
+        cancel.current.store(token, std::sync::atomic::Ordering::Release);
+        cancel.mark(token);
+        for (cmd, params) in &calls {
+            let env = core.invoke(&Invocation::user(cmd, params.clone()));
+            assert_eq!(env.error.as_ref().map(|e| e.code.as_str()), Some("command.timeout"), "{cmd}: {env:?}");
+            assert!(!env.committed, "{cmd}");
+            assert_eq!(accepted_state(&core), before, "{cmd}: the session is as it was");
+        }
+        // An atomic batch of the calls that charge no work account is refused at its boundary the same way.
+        let steps: Vec<Value> = calls[1..5].iter().map(|(c, p)| json!({ "id": c, "params": p })).collect();
+        let req: BatchRequest =
+            serde_json::from_value(json!({ "label": "cancelled", "steps": steps, "atomic": true })).unwrap();
+        let env = core.batch(&req, &Origin::User);
+        assert_eq!(env.error.as_ref().map(|e| e.code.as_str()), Some("command.timeout"), "{env:?}");
+        assert_eq!(accepted_state(&core), before, "batch: the session is as it was");
+        // Not cancelled: the same calls are accepted.
+        cancel.current.store(0, std::sync::atomic::Ordering::Release);
+        for (cmd, params) in &calls {
+            let env = core.invoke(&Invocation::user(cmd, params.clone()));
+            assert!(env.is_ok(), "{cmd}: {:?}", env.error);
+        }
+        assert_ne!(accepted_state(&core), before);
+        tt_vector::work::set_cancel_state(None);
     }
 }

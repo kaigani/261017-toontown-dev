@@ -117,7 +117,10 @@ pub fn errors() -> String {
         ("command.unknown", "No such command id"),
         ("command.disabled", "Not enabled in the current context (`details.reason`)"),
         ("command.notImplemented", "Registered, implemented by a later milestone (`details.milestone`)"),
-        ("command.timeout", "The call exceeded its budget; it may still complete — read `get_state` before retrying"),
+        (
+            "command.timeout",
+            "The call exceeded its budget and was cancelled; unless it had already committed it changed nothing — read `get_state` before retrying",
+        ),
         ("arg.missing / arg.unknown / arg.invalid", "Parameter validation (`details.pointer`, `details.allowed`)"),
         ("ref.notFound / ref.ambiguous / ref.wrongType", "Object references (`details.candidates`)"),
         ("rev.conflict", "`expectRev` mismatch (`details.currentRev`)"),

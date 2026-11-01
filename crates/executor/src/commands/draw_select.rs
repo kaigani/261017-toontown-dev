@@ -18,7 +18,17 @@ use tt_vector::geom::{P, Rect};
 
 use super::draw::{Bounds, Changed, Point, committed_rev, err, op, target};
 use crate::cx::Cx;
-use crate::planar::drawing_zones;
+use crate::planar::{drawing_zones, geom_error};
+
+/// The work account of a selection scan (C23-R3-01): every object, zone and lookup it visits is charged, so a scan that
+/// overruns its caller's watchdog budget stops at its next charge instead of running on after the caller's timeout.
+fn scan_work() -> tt_vector::work::Work {
+    tt_vector::work::Work::new(tt_vector::work::PLANAR_WORK_BUDGET, "selecting objects of this drawing")
+}
+
+fn charge(work: &mut tt_vector::work::Work, n: usize) -> Result<(), CommandError> {
+    work.spend_n(n).map_err(|e| geom_error(&e))
+}
 
 /// `{x, y, width, height}` input.
 #[derive(Debug, Clone, Copy, Deserialize, JsonSchema)]
@@ -151,8 +161,10 @@ pub(crate) struct SelectionSetResult {
 
 /// A selectable object of a drawing: local ID and bounds.
 fn selectables(cx: &Cx, d: &Drawing, with_zones: bool) -> Result<Vec<(String, Option<Rect>)>, CommandError> {
+    let mut work = scan_work();
     let mut out = Vec::new();
     for o in tt_vector::drawing::objects(d) {
+        charge(&mut work, 1)?;
         let b = match o.kind {
             tt_vector::drawing::ObjectKind::Stroke => {
                 tt_vector::drawing::stroke_at(d, &o.pointer).and_then(tt_vector::drawing::stroke_bounds)
@@ -166,6 +178,7 @@ fn selectables(cx: &Cx, d: &Drawing, with_zones: bool) -> Result<Vec<(String, Op
     }
     if with_zones {
         for lz in drawing_zones(&cx.planar_cache(), d)? {
+            charge(&mut work, lz.map.zones.len())?;
             for z in &lz.map.zones {
                 out.push((z.id.clone(), Some(z.bounds)));
             }
@@ -186,8 +199,10 @@ fn corners(r: &Rect) -> [P; 4] {
 /// The bounds of selected objects (local IDs), zones included.
 pub(crate) fn selection_bounds(cx: &Cx, d: &Drawing, ids: &[String]) -> Result<Option<Rect>, CommandError> {
     let all = selectables(cx, d, ids.iter().any(|i| i.starts_with("zn_")))?;
+    let mut work = scan_work();
     let mut acc: Option<Rect> = None;
     for (id, b) in all {
+        charge(&mut work, ids.len())?;
         if ids.contains(&id)
             && let Some(b) = b
         {
@@ -197,8 +212,10 @@ pub(crate) fn selection_bounds(cx: &Cx, d: &Drawing, ids: &[String]) -> Result<O
             });
         }
     }
-    // Layers and groups: the bounds of their contents.
+    // Layers and groups: the bounds of their contents. Each lookup walks the drawing's objects.
+    let objects = tt_vector::drawing::objects(d).len();
     for id in ids {
+        charge(&mut work, objects)?;
         if let Some(l) = tt_vector::drawing::locate(d, id)
             && matches!(l.kind, tt_vector::drawing::ObjectKind::Layer | tt_vector::drawing::ObjectKind::Group)
             && let Some(b) =
@@ -266,8 +283,10 @@ pub(crate) fn draw_selection_set(cx: &mut Cx, p: SelectionSetParams) -> Result<S
         SelectBy::Ids => {
             let ids = p.ids.clone().ok_or_else(|| need("ids"))?;
             let zones = selectables(cx, &d, true)?;
+            let (mut work, objects) = (scan_work(), tt_vector::drawing::objects(&d).len());
             let mut out = Vec::new();
             for (i, id) in ids.iter().enumerate() {
+                charge(&mut work, objects + zones.len())?;
                 let local = tt_vector::drawing::local_id(d.id().as_str(), id).unwrap_or(id).to_owned();
                 let ok = tt_vector::drawing::locate(&d, &local).is_some() || zones.iter().any(|(z, _)| *z == local);
                 if !ok {
@@ -302,7 +321,14 @@ pub(crate) fn draw_selection_set(cx: &mut Cx, p: SelectionSetParams) -> Result<S
                 poly.iter().map(|q| P::new(q.x, q.y)).collect()
             };
             let region = poly.iter().skip(1).fold(Rect::of(poly[0]), |r, q| r.with(*q));
-            selectables(cx, &d, true)?
+            let mut work = scan_work();
+            let mut candidates = Vec::new();
+            for c in selectables(cx, &d, true)? {
+                // Each containment test walks the polygon.
+                charge(&mut work, poly.len())?;
+                candidates.push(c);
+            }
+            candidates
                 .into_iter()
                 .filter(|(_, b)| {
                     let Some(b) = b else { return false };
@@ -451,8 +477,11 @@ pub(crate) fn draw_point_selection_set(
     }
     if let Some(r) = p.rect {
         let r = r.rect();
+        let mut work = scan_work();
         for o in tt_vector::drawing::objects(&d) {
+            charge(&mut work, 1)?;
             let Some(s) = tt_vector::drawing::stroke_at(&d, &o.pointer) else { continue };
+            charge(&mut work, s.points().len())?;
             for (k, pt) in s.points().iter().enumerate() {
                 if pt[0] >= r.min_x && pt[0] <= r.max_x && pt[1] >= r.min_y && pt[1] <= r.max_y {
                     keys.push(AnchorRef { stroke_id: o.id.clone(), anchor: k as u32 });

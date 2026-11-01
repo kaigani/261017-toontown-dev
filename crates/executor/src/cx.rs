@@ -83,12 +83,23 @@ pub(crate) enum Effect {
     Install(Box<crate::run::Install>),
     /// Merge preference values and write the preferences file (01 §11; C1.3).
     Prefs(serde_json::Map<String, Value>),
+    /// Change the remembered settings (last-used values, the recent list) and write them (01 §11; C23-R3-01).
+    Settings(SettingsChange),
     /// A save of the open project (`onUnsaved: "save"`): written after every step succeeded and before the commit,
     /// applied to the project after it (C13-R1-01).
     Save(Box<crate::persistence::PendingSave>),
     /// A file the call writes outside the project (`agent.activity.export`; C14-R1-03): staged next to its target
     /// only when every step succeeded, moved into place after the commit, discarded when the call rolls back.
     WriteFile(Box<FileWrite>),
+}
+
+/// A settings change a call makes (see [`Effect::Settings`]), accepted with the call or not at all.
+#[derive(Debug, Clone)]
+pub(crate) enum SettingsChange {
+    /// `project.create`: the new-project values it used, and its file at the top of the recent list.
+    NewProject { last_used: Value, recent: Option<(std::path::PathBuf, String)> },
+    /// `project.recent.remove`: one path (normalised comparison), or every entry.
+    RemoveRecent(Option<String>),
 }
 
 /// A staged file write (see [`Effect::WriteFile`]).

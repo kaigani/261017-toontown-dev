@@ -161,7 +161,7 @@ Reserved by the M0 closure for "measured deterministic-format incompatibility" (
 
 - **Section:** 11 §10 (generic codes), 11 §7.7 (checkpoints, jobs), 11 §14.6 (never-block watchdog).
 - **Decision taken (ADR-0013):** `command.notImplemented` (registered command implemented by a later milestone;
-  `details.milestone`), `command.timeout` (watchdog budget exceeded; the outcome is indeterminate: the call may still complete, nothing is rolled back or cancelled, and the caller reads `doc.state.get` before retrying),
+  `details.milestone`), `command.timeout` (watchdog budget exceeded; the outcome is indeterminate: the call may still complete, nothing is rolled back or cancelled, and the caller reads `doc.state.get` before retrying; superseded in M2 C2.3 by ADR-0015 history C23-R2-01/C23-R3-01: the timed-out request is cancelled and not accepted unless it had already committed),
   `history.diverged` (a replayed undo step does not match the document; nothing applied), `checkpoint.exists`,
   `checkpoint.notFound`, `job.notFound`; round 1 (ruling R1-22): `request.conflict` (a `requestId` reused with a
   different command, parameters or options; `{requestId, originalCommand}`; never executed) and `request.unknownId`

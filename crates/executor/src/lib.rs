@@ -244,7 +244,7 @@ fn timeout(what: &str, budget: Duration) -> CommandError {
         format!("`{what}` did not answer within {} ms", budget.as_millis()),
         json!({ "commandId": what, "budgetMs": u64::try_from(budget.as_millis()).unwrap_or(u64::MAX) }),
     )
-    .hint("the document thread is busy; the call may still complete — read doc.state.get before retrying")
+    .hint("the call was cancelled: unless it had already committed, it changed nothing; read doc.state.get before retrying")
 }
 
 fn stopped() -> CommandError {

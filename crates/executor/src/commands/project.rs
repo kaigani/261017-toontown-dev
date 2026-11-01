@@ -325,15 +325,10 @@ pub(crate) fn project_create(cx: &mut Cx, p: CreateParams) -> Result<CreateResul
         project.store.content = crate::store::content_of(path, w.form);
     }
     if !cx.dry_run() {
-        let env = &mut cx.session_mut().env;
-        env.settings.last_used.insert(
-            "newProject".into(),
-            json!({ "frameRate": frame_rate, "cameraWidth": camera_width, "cameraHeight": camera_height }),
-        );
-        let _ = env.write("state");
-        if let Some(path) = &path {
-            env.add_recent(path, doc.project().name());
-        }
+        cx.defer(Effect::Settings(crate::cx::SettingsChange::NewProject {
+            last_used: json!({ "frameRate": frame_rate, "cameraWidth": camera_width, "cameraHeight": camera_height }),
+            recent: path.clone().map(|p| (p, doc.project().name().to_owned())),
+        }));
     }
     if cx.has_project() {
         cx.defer(Effect::Close);
@@ -1109,17 +1104,12 @@ pub(crate) fn project_recent_remove(cx: &mut Cx, p: RecentRemoveParams) -> Resul
     if p.path.is_none() && !p.all {
         return Err(invalid("/path", "give `path` or `all: true`"));
     }
+    let path = if p.all { None } else { p.path.clone() };
+    let remaining = crate::store::recent_after_removal(&cx.session().env.settings.recent, path.as_deref()).len();
     if !cx.dry_run() {
-        let env = &mut cx.session_mut().env;
-        if p.all {
-            env.settings.recent.clear();
-        } else if let Some(path) = &p.path {
-            let norm = crate::store::normalize(path);
-            env.settings.recent.retain(|r| crate::store::normalize(&r.path) != norm);
-        }
-        let _ = env.write("recent");
+        cx.defer(Effect::Settings(crate::cx::SettingsChange::RemoveRecent(path)));
     }
-    Ok(Remaining { remaining: u32::try_from(cx.session().env.settings.recent.len()).unwrap_or(u32::MAX) })
+    Ok(Remaining { remaining: u32::try_from(remaining).unwrap_or(u32::MAX) })
 }
 
 // ----- recovery ----------------------------------------------------------------------------------------------------

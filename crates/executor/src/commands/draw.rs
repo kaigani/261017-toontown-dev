@@ -73,8 +73,12 @@ pub(crate) fn err(code: &str, message: impl Into<String>, details: Value) -> Com
 }
 
 pub(crate) fn invalid_geometry(e: &tt_vector::path::GeomError) -> CommandError {
-    err(e.code, e.message.clone(), json!({ "pointer": e.pointer }))
-        .hint("give finite coordinates within ±10 000 000 du and complete Bézier lists (02 §13.4)")
+    let error = err(e.code, e.message.clone(), json!({ "pointer": e.pointer }));
+    // A work account that observed its caller's timeout (C23-R3-01): not a geometry problem.
+    if e.code == tt_registry::codes::COMMAND_TIMEOUT {
+        return error.hint("the caller's watchdog budget passed: the call was cancelled and changed nothing");
+    }
+    error.hint("give finite coordinates within ±10 000 000 du and complete Bézier lists (02 §13.4)")
 }
 
 /// The resolved target drawing of a command (02 §13.1 item 4).
