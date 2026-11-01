@@ -32731,9 +32731,9 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
         default: null,
       },
       createDrawing: {
-        description: "Create the cell's drawing when it has none.",
+        description: "Create the cell's drawing when it has none (default true, as `draw.stroke.add`).",
         type: "boolean",
-        default: false,
+        default: true,
       },
       from: {
         description: "Press point.",
@@ -33970,9 +33970,9 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
         default: null,
       },
       createDrawing: {
-        description: "Create the cell's drawing when it has none.",
+        description: "Create the cell's drawing when it has none (default true, as `draw.stroke.add`).",
         type: "boolean",
-        default: false,
+        default: true,
       },
       from: {
         description: "Start (required unless `continuePrevious`).",
@@ -35278,9 +35278,9 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
         default: null,
       },
       createDrawing: {
-        description: "Create the cell's drawing when it has none.",
+        description: "Create the cell's drawing when it has none (default true, as `draw.stroke.add`).",
         type: "boolean",
-        default: false,
+        default: true,
       },
       points: {
         description: "Anchors (at least 2).",
@@ -35467,9 +35467,9 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
         default: null,
       },
       createDrawing: {
-        description: "Create the cell's drawing when it has none.",
+        description: "Create the cell's drawing when it has none (default true, as `draw.stroke.add`).",
         type: "boolean",
-        default: false,
+        default: true,
       },
       from: {
         description: "Press point.",
@@ -85935,7 +85935,7 @@ export interface draw_ellipse_add_params {
   elementId?: string | null;
   /** The frame of that cell (default: current frame). */
   frame?: number | null;
-  /** Create the cell's drawing when it has none. */
+  /** Create the cell's drawing when it has none (default true, as `draw.stroke.add`). */
   createDrawing?: boolean;
   /** Press point. */
   from: draw_ellipse_add_Point;
@@ -86302,7 +86302,7 @@ export interface draw_line_add_params {
   elementId?: string | null;
   /** The frame of that cell (default: current frame). */
   frame?: number | null;
-  /** Create the cell's drawing when it has none. */
+  /** Create the cell's drawing when it has none (default true, as `draw.stroke.add`). */
   createDrawing?: boolean;
   /** Start (required unless `continuePrevious`). */
   from?: draw_line_add_Point | null;
@@ -86700,7 +86700,7 @@ export interface draw_polyline_add_params {
   elementId?: string | null;
   /** The frame of that cell (default: current frame). */
   frame?: number | null;
-  /** Create the cell's drawing when it has none. */
+  /** Create the cell's drawing when it has none (default true, as `draw.stroke.add`). */
   createDrawing?: boolean;
   /** Anchors (at least 2). */
   points: draw_polyline_add_PolyPoint[];
@@ -86758,7 +86758,7 @@ export interface draw_rectangle_add_params {
   elementId?: string | null;
   /** The frame of that cell (default: current frame). */
   frame?: number | null;
-  /** Create the cell's drawing when it has none. */
+  /** Create the cell's drawing when it has none (default true, as `draw.stroke.add`). */
   createDrawing?: boolean;
   /** Press point. */
   from: draw_rectangle_add_Point;

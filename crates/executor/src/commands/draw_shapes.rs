@@ -65,9 +65,8 @@ fn add(cx: &mut Cx, c: &Common<'_>, geometry: Value, closed: bool) -> Result<Sha
         if let Some(f) = c.frame {
             o.insert("frame".into(), json!(f));
         }
-        if c.create_drawing {
-            o.insert("createDrawing".into(), json!(true));
-        }
+        // Forwarded either way: an explicit false refuses an empty cell (C23-R2-02).
+        o.insert("createDrawing".into(), json!(c.create_drawing));
         for (k, val) in
             [("drawingId", c.drawing_id), ("elementId", c.element_id), ("colourId", c.colour_id), ("penId", c.pen_id)]
         {
@@ -134,8 +133,8 @@ pub(crate) struct BoxShapeParams {
     /// The frame of that cell (default: current frame).
     #[serde(default)]
     frame: Option<u32>,
-    /// Create the cell's drawing when it has none.
-    #[serde(default)]
+    /// Create the cell's drawing when it has none (default true, as `draw.stroke.add`).
+    #[serde(default = "yes")]
     create_drawing: bool,
     /// Press point.
     from: Point,
@@ -218,8 +217,8 @@ pub(crate) struct EllipseParams {
     /// The frame of that cell (default: current frame).
     #[serde(default)]
     frame: Option<u32>,
-    /// Create the cell's drawing when it has none.
-    #[serde(default)]
+    /// Create the cell's drawing when it has none (default true, as `draw.stroke.add`).
+    #[serde(default = "yes")]
     create_drawing: bool,
     /// Press point.
     from: Point,
@@ -314,8 +313,8 @@ pub(crate) struct LineParams {
     /// The frame of that cell (default: current frame).
     #[serde(default)]
     frame: Option<u32>,
-    /// Create the cell's drawing when it has none.
-    #[serde(default)]
+    /// Create the cell's drawing when it has none (default true, as `draw.stroke.add`).
+    #[serde(default = "yes")]
     create_drawing: bool,
     /// Start (required unless `continuePrevious`).
     #[serde(default)]
@@ -458,8 +457,8 @@ pub(crate) struct PolylineParams {
     /// The frame of that cell (default: current frame).
     #[serde(default)]
     frame: Option<u32>,
-    /// Create the cell's drawing when it has none.
-    #[serde(default)]
+    /// Create the cell's drawing when it has none (default true, as `draw.stroke.add`).
+    #[serde(default = "yes")]
     create_drawing: bool,
     /// Anchors (at least 2).
     #[schemars(length(min = 2, max = 10000))]

@@ -280,7 +280,16 @@ fn anchor_exists(doc: &Document, k: &str, anchor: u32) -> bool {
     })
 }
 
-fn selectable_exists(doc: &Document, k: &str) -> bool {
+/// Whether a zone of a drawing exists, by its derived ID: `(drawing ID, zone ID)`.
+pub type ZoneCheck<'a> = &'a dyn Fn(&str, &str) -> bool;
+
+fn selectable_exists(doc: &Document, k: &str, zones: Option<ZoneCheck<'_>>) -> bool {
+    // Derived zone IDs are not document objects: they are checked against the current planar maps (C23-R2-03).
+    if let Some((d, z)) = k.split_once('/')
+        && z.starts_with("zn_")
+    {
+        return zones.is_some_and(|check| check(d, z));
+    }
     match parse_cell_ref(k) {
         Some((element, _)) => doc.locate(&element).is_some(),
         None => doc.locate(k).is_some(),
@@ -312,6 +321,12 @@ impl AppContext {
     /// foreign element to the scene's first element, a drawing outside the element's bank is cleared, selected
     /// objects that no longer exist are dropped. Returns whether anything changed.
     pub fn repair(&mut self, doc: &Document) -> bool {
+        self.repair_with(doc, None)
+    }
+
+    /// [`AppContext::repair`], keeping selected zones that still exist in the current planar maps (`zones`; without
+    /// it, zone references are dropped).
+    pub fn repair_with(&mut self, doc: &Document, zones: Option<ZoneCheck<'_>>) -> bool {
         let before = self.clone();
         if self.scene.as_ref().is_none_or(|s| doc.scene(s).is_none()) {
             self.scene = doc.project().scenes().ids().first().cloned();
@@ -331,9 +346,9 @@ impl AppContext {
             self.drawing = None;
         }
         self.frame = self.frame.max(1);
-        self.selection.ids.retain(|k| selectable_exists(doc, k));
+        self.selection.ids.retain(|k| selectable_exists(doc, k, zones));
         for ids in self.selections.values_mut() {
-            ids.retain(|k| selectable_exists(doc, k));
+            ids.retain(|k| selectable_exists(doc, k, zones));
         }
         self.points.retain(|(k, anchor)| anchor_exists(doc, k, *anchor));
         *self != before

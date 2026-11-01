@@ -520,10 +520,23 @@ fn needs_confirmation(session: &mut Session, e: CommandError, rev: Option<u64>) 
 
 /// Commits transactions: installs each stamped snapshot, records undo steps or moves the history position, logs
 /// the revision and emits `doc.changed`.
+/// A request whose caller timed out commits nothing (C23-R2-01): checked before the transaction and before effects.
+fn cancelled_check(what: &str) -> Result<(), CommandError> {
+    if tt_vector::work::cancel_requested() {
+        return Err(CommandError::with_details(
+            tt_registry::codes::COMMAND_TIMEOUT,
+            format!("`{what}` was cancelled: its caller's watchdog budget passed"),
+            serde_json::json!({ "commandId": what }),
+        ));
+    }
+    Ok(())
+}
+
 fn commit(s: &mut Session, txns: Vec<Txn>, origin: &Origin, command: &str) -> Result<Option<UndoRef>, CommandError> {
     if txns.is_empty() {
         return Ok(None);
     }
+    cancelled_check(command)?;
     frozen_guard(s, &txns)?;
     let mut undo_ref = None;
     let mut events = Vec::new();
@@ -689,6 +702,9 @@ pub(crate) const GROUP_STEP: &str = "batch";
 fn apply_effects(s: &mut Session, effects: Vec<Effect>, simulating: bool, origin: &Origin) -> Result<(), CommandError> {
     if simulating {
         return Ok(());
+    }
+    if !effects.is_empty() {
+        cancelled_check("effects")?;
     }
     let mut failure: Option<CommandError> = None;
     for e in effects {
@@ -954,7 +970,9 @@ impl Core {
     fn settle(s: &mut Session, before: &Observed) {
         if let Some(p) = &s.project {
             let doc = p.doc.clone();
-            s.app.repair(&doc);
+            let cache = s.planar.clone();
+            let zones = |d: &str, z: &str| crate::planar::zone_exists(&cache, &doc, d, z);
+            s.app.repair_with(&doc, Some(&zones));
         }
         let after = observe(s);
         let changed = changed_fields(&before.state, &after.state);

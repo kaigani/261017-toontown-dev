@@ -122,6 +122,8 @@ enum Request {
     List(Origin, Sender<Vec<Value>>),
     /// Work posted by a job thread (installing a loaded project, finishing a save; C1.3).
     Run(Box<dyn FnOnce(&mut run::Core) + Send>),
+    /// A caller's request with its cancellation token, allocated before enqueueing (C23-R2-01).
+    Tagged(u64, Box<Request>),
     /// Background maintenance: autosave, heartbeats, external-change detection.
     Tick,
     /// Maintenance now (forcing autosave or not), answered after its events are delivered.
@@ -366,14 +368,15 @@ impl ExecutorHandle {
 
     fn call<T>(&self, what: &str, make: impl FnOnce(Sender<T>) -> Request) -> Result<T, CommandError> {
         let (reply, rx) = mpsc::channel();
-        self.tx.send(make(reply)).map_err(|_| stopped())?;
+        // The token travels with the request: a timeout cancels exactly this request, queued or running (C23-R2-01).
+        let token = self.cancel.token();
+        self.tx.send(Request::Tagged(token, Box::new(make(reply)))).map_err(|_| stopped())?;
         match rx.recv_timeout(self.config.budget) {
             Ok(v) => Ok(v),
             Err(RecvTimeoutError::Timeout) => {
-                // The request the worker is running overran: it stops at its next work-account check, so the
-                // worker answers what is queued behind it (C23-R1-07; ADR-0015 history).
-                let running = self.cancel.current.load(std::sync::atomic::Ordering::Acquire);
-                self.cancel.cancel.store(running, std::sync::atomic::Ordering::Release);
+                // Queued: the worker drops it at dequeue. Running: it stops at its next work-account check and before
+                // any commit. Either way it never begins or commits after this answer (ADR-0015 history).
+                self.cancel.mark(token);
                 Err(timeout(what, self.config.budget))
             }
             Err(RecvTimeoutError::Disconnected) => Err(stopped()),
@@ -634,11 +637,18 @@ fn document_thread(
     // A call's events are broadcast before its reply is sent, so a subscriber has them when the caller has the result.
     let flush = |core: &mut run::Core| broadcast(subscribers, &core.take_events());
     tt_vector::work::set_cancel_state(Some(cancel.clone()));
-    let mut seq: u64 = 0;
     while let Ok(req) = rx.recv() {
-        // Each request gets a fresh sequence number: a cancellation aimed at an earlier one never hits it.
-        seq = seq.wrapping_add(1).max(1);
-        cancel.current.store(seq, std::sync::atomic::Ordering::Release);
+        let (token, req) = match req {
+            Request::Tagged(t, r) => (t, *r),
+            r => (0, r),
+        };
+        // A request whose caller already timed out never begins (C23-R2-01).
+        if token != 0 && cancel.is_cancelled(token) {
+            cancel.forget(token);
+            continue;
+        }
+        cancel.current.store(token, std::sync::atomic::Ordering::Release);
+        let shutdown = matches!(req, Request::Shutdown);
         match req {
             Request::Invoke(inv, reply) => {
                 let env = core.invoke(&inv);
@@ -684,7 +694,14 @@ fn document_thread(
                 flush(&mut core);
                 let _ = reply.send(timings);
             }
-            Request::Shutdown => break,
+            Request::Shutdown | Request::Tagged(..) => {}
+        }
+        cancel.current.store(0, std::sync::atomic::Ordering::Release);
+        if token != 0 {
+            cancel.forget(token);
+        }
+        if shutdown {
+            break;
         }
         flush(&mut core);
     }

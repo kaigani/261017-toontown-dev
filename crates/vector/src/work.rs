@@ -13,10 +13,47 @@ use crate::path::GeomError;
 /// charge, so an overrunning operation stops at its next budget check and the worker answers the next request.
 #[derive(Debug, Default)]
 pub struct CancelState {
-    /// The request now running (0: none).
+    /// The request now running (0: none, or not cancellable).
     pub current: AtomicU64,
-    /// The request to cancel (0: none).
+    /// The running request a timed-out caller cancelled (0: none).
     pub cancel: AtomicU64,
+    /// Request tokens handed out before enqueueing (C23-R2-01).
+    pub next: AtomicU64,
+    /// Whether `queued` holds any token (the fast path of every work charge).
+    pending: std::sync::atomic::AtomicBool,
+    /// Tokens whose callers timed out, still queued or running.
+    queued: std::sync::Mutex<std::collections::BTreeSet<u64>>,
+}
+
+impl CancelState {
+    /// A fresh request token (never 0).
+    pub fn token(&self) -> u64 {
+        self.next.fetch_add(1, Ordering::AcqRel).wrapping_add(1).max(1)
+    }
+
+    /// Marks exactly `token` cancelled: its caller has been answered. Another caller's request is never affected.
+    pub fn mark(&self, token: u64) {
+        if let Ok(mut q) = self.queued.lock() {
+            q.insert(token);
+            self.pending.store(true, Ordering::Release);
+        }
+        self.cancel.store(token, Ordering::Release);
+    }
+
+    /// Whether `token` was cancelled.
+    pub fn is_cancelled(&self, token: u64) -> bool {
+        token != 0
+            && (self.cancel.load(Ordering::Acquire) == token
+                || (self.pending.load(Ordering::Acquire) && self.queued.lock().is_ok_and(|q| q.contains(&token))))
+    }
+
+    /// Forgets `token` once the worker is done with it.
+    pub fn forget(&self, token: u64) {
+        if let Ok(mut q) = self.queued.lock() {
+            q.remove(&token);
+            self.pending.store(!q.is_empty(), Ordering::Release);
+        }
+    }
 }
 
 thread_local! {
@@ -31,12 +68,7 @@ pub fn set_cancel_state(state: Option<Arc<CancelState>>) {
 /// Whether the request the calling thread runs has been cancelled by the watchdog.
 #[must_use]
 pub fn cancel_requested() -> bool {
-    CANCEL.with(|c| {
-        c.borrow().as_ref().is_some_and(|s| {
-            let cur = s.current.load(Ordering::Acquire);
-            cur != 0 && s.cancel.load(Ordering::Acquire) == cur
-        })
-    })
+    CANCEL.with(|c| c.borrow().as_ref().is_some_and(|s| s.is_cancelled(s.current.load(Ordering::Acquire))))
 }
 
 /// Test hooks (never in products): make every work charge spin, so any work-charging command overruns on demand.
@@ -131,5 +163,22 @@ impl Work {
             message: format!("{} needs more than {} units of work", self.what, self.limit),
             pointer: "/points".to_owned(),
         }
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn a_mark_cancels_exactly_its_own_token() {
+        let s = CancelState::default();
+        let (a, b) = (s.token(), s.token());
+        assert_ne!(a, b);
+        s.mark(a);
+        assert!(s.is_cancelled(a) && !s.is_cancelled(b));
+        s.forget(a);
+        // The atomic slot still names `a` (it never matches another token); the queued set is empty.
+        assert!(!s.is_cancelled(b) && !s.is_cancelled(0));
     }
 }

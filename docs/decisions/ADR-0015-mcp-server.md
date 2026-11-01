@@ -237,3 +237,9 @@ transactions, idempotent requests and the never-block watchdog.
   next step and fail the call, which commits nothing; the worker then answers what is queued behind it. The MCP route
   records its activity entry by queueing it without waiting, so a reply never blocks on a busy worker. Verified with
   the dev-only `tt-vector/test-hooks` spin (`crates/executor/tests/c23_watchdog.rs`).
+- **M2 C2.3 round 2 (C23-R2-01): request tokens.** Each caller's request carries a cancellation token allocated
+  before it is queued. A caller that times out marks exactly that token: a queued request is dropped when the worker
+  dequeues it; a running one stops at its next work-account check, and the transaction commit and the effect commit
+  re-check the token, so a cancelled request never begins or commits after its caller has been answered. One
+  caller's timeout never cancels another caller's request (`crates/executor/tests/c23_watchdog.rs`,
+  `c23_r2_watchdog.rs`).

@@ -161,6 +161,14 @@ pub(crate) struct LayerZones {
     pub fills: Vec<Option<Fill>>,
 }
 
+/// Whether drawing `drawing` has a zone with ID `zone` in its current planar maps (through the derived-map cache;
+/// selection repair, C23-R2-03).
+pub(crate) fn zone_exists(cache: &SharedCache, doc: &tt_model::document::Document, drawing: &str, zone: &str) -> bool {
+    let Ok(id) = tt_model::Id::parse(drawing) else { return false };
+    let Some(d) = doc.drawing(&id) else { return false };
+    drawing_zones(cache, d).is_ok_and(|zs| zs.iter().any(|lz| lz.map.zone_by_id(zone).is_some()))
+}
+
 /// The zones of every layer of a drawing.
 pub(crate) fn drawing_zones(cache: &SharedCache, d: &Drawing) -> Result<Vec<LayerZones>, CommandError> {
     let mut work = Work::new(tt_vector::work::PLANAR_WORK_BUDGET, "computing the zones of this drawing");
