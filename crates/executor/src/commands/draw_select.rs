@@ -234,7 +234,7 @@ pub(crate) fn selected(cx: &Cx, d: &Drawing) -> Vec<String> {
     super::draw::selection_ids(cx, d)
 }
 
-fn set_drawing_selection(cx: &mut Cx, d: &Drawing, local: Vec<String>) {
+pub(crate) fn set_drawing_selection(cx: &mut Cx, d: &Drawing, local: Vec<String>) {
     let prefix = d.id().as_str();
     let others: Vec<String> =
         cx.app().selection_of("drawing").into_iter().filter(|k| !k.starts_with(&format!("{prefix}/"))).collect();

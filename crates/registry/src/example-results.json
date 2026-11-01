@@ -30,7 +30,7 @@
     {
       "title": "Accept a request",
       "result": {
-        "confirmationId": "cf_00346d49a8a7383c62d4d0dd",
+        "confirmationId": "cf_bf6c8faa98523e300189f418",
         "accepted": true
       },
       "varies": [
@@ -71,7 +71,7 @@
         "endpoint": null,
         "sessions": [
           {
-            "sessionId": "s1-bc487c",
+            "sessionId": "s1-8a8deb",
             "client": "Example agent",
             "policy": "assist",
             "scopes": [
@@ -83,7 +83,7 @@
               "files.write",
               "library.global"
             ],
-            "connectedAt": "2026-11-01T06:22:27.147Z",
+            "connectedAt": "2026-11-01T07:03:24.404Z",
             "lastActivity": null,
             "paused": false,
             "transport": ""
@@ -91,8 +91,8 @@
         ],
         "pendingConfirmations": [
           {
-            "confirmationId": "cf_a0f1c56491a45f8f2ba95b0c",
-            "sessionId": "s1-bc487c",
+            "confirmationId": "cf_00a110f3565b07bb8c8656d3",
+            "sessionId": "s1-8a8deb",
             "commandId": "project.saveAs",
             "summary": "Overwrite `/tmp/Short.animpkg`",
             "consequences": [
@@ -127,7 +127,7 @@
     {
       "title": "Let a session edit",
       "result": {
-        "sessionId": "s1-7ae421",
+        "sessionId": "s1-faf7e7",
         "policy": "assist",
         "scopes": [
           "read",
@@ -145,7 +145,7 @@
       "title": "Pause every session",
       "result": {
         "paused": [
-          "s1-e104a3"
+          "s1-538aff"
         ]
       },
       "varies": [
@@ -438,7 +438,7 @@
       "result": [
         {
           "name": "before-walk",
-          "createdAt": "2026-11-01T06:22:27.973Z",
+          "createdAt": "2026-11-01T07:03:25.803Z",
           "documentRev": 1,
           "origin": "user"
         }
@@ -746,7 +746,7 @@
             "version": "0.0.1",
             "platform": "windows-x64"
           },
-          "exportedAt": "2026-11-01T06:22:28.815Z",
+          "exportedAt": "2026-11-01T07:03:27.303Z",
           "sourceProjectId": "pr_01K742SG00BK0VXTWDM5JRXV37",
           "scope": {
             "kind": "scenes",
@@ -3893,6 +3893,80 @@
       "varies": []
     }
   ],
+  "draw.cut.apply": [
+    {
+      "title": "Cut around the middle of the drawing and select the inside",
+      "result": {
+        "drawingId": "dr_01K742SG0KKMCAP9X1E6Z5P4SW",
+        "insideIds": [
+          "st_01K7JJN8023FJ8358KMGS10XYV",
+          "st_01K7JJN803WXFN4379NATC3KT1",
+          "st_01K7JJN805MQM5FRFJBVZJXSRD"
+        ],
+        "keptBrushIds": [
+          "st_01K742SG0QD1F2HFZSX8R4V7WP"
+        ],
+        "createdIds": [
+          "st_01K7JJN801N0AE1Z0RRCTVH07Z",
+          "st_01K7JJN8023FJ8358KMGS10XYV",
+          "st_01K7JJN803WXFN4379NATC3KT1",
+          "st_01K7JJN804FRNW3BHK5CAYE8V5",
+          "st_01K7JJN805MQM5FRFJBVZJXSRD",
+          "st_01K7JJN806RRWXPJBK1E91HMNC"
+        ],
+        "modifiedIds": [],
+        "removedIds": [
+          "st_01K742SG0R61SYK9GG0HGYVNBT",
+          "st_01K742SG0S0NT23BWCZN64SFQ5"
+        ],
+        "rev": 5
+      },
+      "varies": []
+    },
+    {
+      "title": "Cut a lasso out and delete it",
+      "result": {
+        "drawingId": "dr_01K742SG0KKMCAP9X1E6Z5P4SW",
+        "insideIds": [],
+        "keptBrushIds": [
+          "st_01K742SG0QD1F2HFZSX8R4V7WP"
+        ],
+        "createdIds": [
+          "st_01K7JJN801N0AE1Z0RRCTVH07Z",
+          "st_01K7JJN804FRNW3BHK5CAYE8V5",
+          "st_01K7JJN806RRWXPJBK1E91HMNC"
+        ],
+        "modifiedIds": [],
+        "removedIds": [
+          "st_01K742SG0R61SYK9GG0HGYVNBT",
+          "st_01K742SG0S0NT23BWCZN64SFQ5"
+        ],
+        "rev": 5
+      },
+      "varies": []
+    },
+    {
+      "title": "Split the lines and zones along a segment",
+      "result": {
+        "drawingId": "dr_01K742SG0KKMCAP9X1E6Z5P4SW",
+        "insideIds": [
+          "st_01K7JJN801N0AE1Z0RRCTVH07Z",
+          "st_01K7JJN8023FJ8358KMGS10XYV"
+        ],
+        "keptBrushIds": [],
+        "createdIds": [
+          "st_01K7JJN801N0AE1Z0RRCTVH07Z",
+          "st_01K7JJN8023FJ8358KMGS10XYV"
+        ],
+        "modifiedIds": [],
+        "removedIds": [
+          "st_01K742SG0R61SYK9GG0HGYVNBT"
+        ],
+        "rev": 5
+      },
+      "varies": []
+    }
+  ],
   "draw.drawing.get": [
     {
       "title": "The drawing exposed by Bob at frame 1",
@@ -4453,6 +4527,50 @@
           "st_01K7JJN801N0AE1Z0RRCTVH07Z",
           "st_01K7JJN8023FJ8358KMGS10XYV",
           "st_01K7JJN803WXFN4379NATC3KT1"
+        ],
+        "modifiedIds": [],
+        "removedIds": [
+          "st_01K742SG0R61SYK9GG0HGYVNBT",
+          "st_01K742SG0S0NT23BWCZN64SFQ5"
+        ],
+        "rev": 5
+      },
+      "varies": []
+    }
+  ],
+  "draw.erase.apply": [
+    {
+      "title": "Erase along a short path with the default eraser",
+      "result": {
+        "drawingId": "dr_01K742SG0KKMCAP9X1E6Z5P4SW",
+        "keptBrushIds": [
+          "st_01K742SG0QD1F2HFZSX8R4V7WP"
+        ],
+        "createdIds": [
+          "st_01K7JJN801N0AE1Z0RRCTVH07Z",
+          "st_01K7JJN804FRNW3BHK5CAYE8V5",
+          "st_01K7JJN806RRWXPJBK1E91HMNC"
+        ],
+        "modifiedIds": [],
+        "removedIds": [
+          "st_01K742SG0R61SYK9GG0HGYVNBT",
+          "st_01K742SG0S0NT23BWCZN64SFQ5"
+        ],
+        "rev": 5
+      },
+      "varies": []
+    },
+    {
+      "title": "Erase a closed region",
+      "result": {
+        "drawingId": "dr_01K742SG0KKMCAP9X1E6Z5P4SW",
+        "keptBrushIds": [
+          "st_01K742SG0QD1F2HFZSX8R4V7WP"
+        ],
+        "createdIds": [
+          "st_01K7JJN801N0AE1Z0RRCTVH07Z",
+          "st_01K7JJN804FRNW3BHK5CAYE8V5",
+          "st_01K7JJN806RRWXPJBK1E91HMNC"
         ],
         "modifiedIds": [],
         "removedIds": [
@@ -5217,7 +5335,7 @@
             "stepId": "u-1",
             "label": "Set meta",
             "source": "user",
-            "time": "2026-11-01T06:22:30.957Z",
+            "time": "2026-11-01T07:03:29.763Z",
             "objectCount": 1
           },
           {
@@ -5225,7 +5343,7 @@
             "stepId": "u-2",
             "label": "Set meta",
             "source": "user",
-            "time": "2026-11-01T06:22:30.960Z",
+            "time": "2026-11-01T07:03:29.766Z",
             "objectCount": 1
           }
         ],
@@ -5370,7 +5488,7 @@
         "state": "succeeded",
         "progress": 1.0,
         "message": "",
-        "startedAt": "2026-11-01T06:22:31.242Z",
+        "startedAt": "2026-11-01T07:03:30.048Z",
         "result": {},
         "session": "user"
       },
@@ -5389,7 +5507,7 @@
           "state": "succeeded",
           "progress": 1.0,
           "message": "",
-          "startedAt": "2026-11-01T06:22:31.268Z",
+          "startedAt": "2026-11-01T07:03:30.075Z",
           "result": {},
           "session": "user"
         }
@@ -5408,7 +5526,7 @@
         "state": "succeeded",
         "progress": 1.0,
         "message": "",
-        "startedAt": "2026-11-01T06:22:31.294Z",
+        "startedAt": "2026-11-01T07:03:30.101Z",
         "result": {},
         "session": "user"
       },
@@ -5455,10 +5573,10 @@
     {
       "title": "A 1920×1080, 24 fps project",
       "result": {
-        "projectId": "pr_01M6AWC7SJG1QVT6MFYEPYRH42",
-        "sceneId": "sc_01M6AWC7SKNWVQ379JSNKM5B01",
-        "cameraId": "el_01M6AWC7SKNWVQ379JSNKM5B03",
-        "elementId": "el_01M6AWC7SKNWVQ379JSNKM5B04"
+        "projectId": "pr_01M6AYQ8YXE5JXWEBYPBWC69N1",
+        "sceneId": "sc_01M6AYQ8YZ5CAK3M64S55X01Q5",
+        "cameraId": "el_01M6AYQ8YZ5CAK3M64S55X01Q7",
+        "elementId": "el_01M6AYQ8YZ5CAK3M64S55X01Q8"
       },
       "varies": [
         "/cameraId",
@@ -5714,7 +5832,7 @@
         {
           "path": "/tmp/Sample.animpkg",
           "name": "Sample",
-          "lastOpened": "2026-11-01T06:22:32.218Z",
+          "lastOpened": "2026-11-01T07:03:31.012Z",
           "exists": true
         }
       ],

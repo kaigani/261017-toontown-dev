@@ -2934,9 +2934,47 @@ export const COMMAND_INDEX = {
     params: "draw.cut.apply.params",
     result: "draw.cut.apply.result",
     examples: [
-      {},
+      {
+        drawingId: "drawingBank:#1/drawing:#1",
+        rect: {
+          x: -20,
+          y: -20,
+          width: 40,
+          height: 40,
+        },
+      },
+      {
+        drawingId: "drawingBank:#1/drawing:#1",
+        polygon: [
+          {
+            x: -30,
+            y: -30,
+          },
+          {
+            x: 30,
+            y: -30,
+          },
+          {
+            x: 0,
+            y: 30,
+          },
+        ],
+        then: "delete",
+      },
+      {
+        drawingId: "drawingBank:#1/drawing:#1",
+        segment: {
+          from: {
+            x: -100,
+            y: 0,
+          },
+          to: {
+            x: 100,
+            y: 0,
+          },
+        },
+      },
     ],
-    milestone: "M2 C2.3",
   },
   "draw.drawing.changed": {
     kind: "event",
@@ -3044,9 +3082,41 @@ export const COMMAND_INDEX = {
     params: "draw.erase.apply.params",
     result: "draw.erase.apply.result",
     examples: [
-      {},
+      {
+        drawingId: "drawingBank:#1/drawing:#1",
+        path: [
+          {
+            x: -60,
+            y: 0,
+          },
+          {
+            x: 60,
+            y: 0,
+          },
+        ],
+      },
+      {
+        drawingId: "drawingBank:#1/drawing:#1",
+        region: [
+          {
+            x: -10,
+            y: -10,
+          },
+          {
+            x: 10,
+            y: -10,
+          },
+          {
+            x: 10,
+            y: 10,
+          },
+          {
+            x: -10,
+            y: 10,
+          },
+        ],
+      },
     ],
-    milestone: "M2 C2.3",
   },
   "draw.feather.apply": {
     kind: "job",
@@ -30702,107 +30772,203 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
       "activeView",
     ],
   },
-  "draw.cut.apply.params": {
-    title: "draw.cut.apply parameters",
+  "draw.cut.apply.Point": {
+    description: "A point `{x, y}` in drawing units.",
     type: "object",
     properties: {
-      drawingId: {
-        type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
+      x: {
+        description: "X (du).",
+        type: "number",
       },
-      polygon: {
-        type: "array",
-        items: {
-          type: "object",
-          properties: {
-            x: {
-              type: "number",
-            },
-            y: {
-              type: "number",
-            },
-          },
-          required: [
-            "x",
-            "y",
-          ],
-          additionalProperties: false,
-        },
-        maxItems: 100000,
-      },
-      rect: {
-        type: "object",
-        properties: {
-          x: {
-            type: "number",
-          },
-          y: {
-            type: "number",
-          },
-          width: {
-            type: "number",
-          },
-          height: {
-            type: "number",
-          },
-        },
-        required: [
-          "x",
-          "y",
-          "width",
-          "height",
-        ],
-        additionalProperties: false,
-      },
-      then: {
-        type: "string",
-        enum: [
-          "select",
-          "delete",
-        ],
-        default: "select",
-      },
-    },
-    additionalProperties: false,
-    "x-spec": "`drawingId?: id; polygon?: [point]; rect?: {x,y,width,height}; then: enum \"select\"|\"delete\" = \"select\"`",
-  },
-  "draw.cut.apply.result": {
-    title: "draw.cut.apply result",
-    type: "object",
-    properties: {
-      insideIds: {
-        type: "array",
-        items: {
-          type: "string",
-          minLength: 1,
-          maxLength: 4096,
-          description: "object ID or path reference (10 §3)",
-        },
-        maxItems: 100000,
-      },
-      removedIds: {
-        type: "array",
-        items: {
-          type: "string",
-          minLength: 1,
-          maxLength: 4096,
-          description: "object ID or path reference (10 §3)",
-        },
-        maxItems: 100000,
-      },
-      rev: {
+      y: {
+        description: "Y (du, up).",
         type: "number",
       },
     },
+    additionalProperties: false,
     required: [
+      "x",
+      "y",
+    ],
+  },
+  "draw.cut.apply.RectArea": {
+    description: "A rectangle `{x, y, width, height}`.",
+    type: "object",
+    properties: {
+      x: {
+        description: "Minimum x.",
+        type: "number",
+      },
+      y: {
+        description: "Minimum y.",
+        type: "number",
+      },
+      width: {
+        description: "Width.",
+        type: "number",
+        minimum: 0,
+      },
+      height: {
+        description: "Height.",
+        type: "number",
+        minimum: 0,
+      },
+    },
+    additionalProperties: false,
+    required: [
+      "x",
+      "y",
+      "width",
+      "height",
+    ],
+  },
+  "draw.cut.apply.SegmentIn": {
+    description: "A segment `{from, to}`.",
+    type: "object",
+    properties: {
+      from: {
+        description: "Start.",
+        $ref: "#/$defs/draw.cut.apply.Point",
+      },
+      to: {
+        description: "End.",
+        $ref: "#/$defs/draw.cut.apply.Point",
+      },
+    },
+    additionalProperties: false,
+    required: [
+      "from",
+      "to",
+    ],
+  },
+  "draw.cut.apply.Then": {
+    description: "What happens to the inside of a cut.",
+    oneOf: [
+      {
+        description: "Select it.",
+        type: "string",
+        const: "select",
+      },
+      {
+        description: "Delete it.",
+        type: "string",
+        const: "delete",
+      },
+    ],
+  },
+  "draw.cut.apply.params": {
+    title: "CutParams",
+    description: "`draw.cut.apply` parameters (`segment`: SI-071).",
+    type: "object",
+    properties: {
+      drawingId: {
+        description: "The drawing (default: current).",
+        type: [
+          "string",
+          "null",
+        ],
+        default: null,
+      },
+      polygon: {
+        description: "A closed lasso.",
+        type: [
+          "array",
+          "null",
+        ],
+        items: {
+          $ref: "#/$defs/draw.cut.apply.Point",
+        },
+        default: null,
+      },
+      rect: {
+        description: "A rectangle.",
+        anyOf: [
+          {
+            $ref: "#/$defs/draw.cut.apply.RectArea",
+          },
+          {
+            type: "null",
+          },
+        ],
+      },
+      segment: {
+        description: "An open segment to cut along (splits lines and zones; SI-071).",
+        anyOf: [
+          {
+            $ref: "#/$defs/draw.cut.apply.SegmentIn",
+          },
+          {
+            type: "null",
+          },
+        ],
+      },
+      then: {
+        description: "What happens to the inside.",
+        $ref: "#/$defs/draw.cut.apply.Then",
+      },
+    },
+    additionalProperties: false,
+  },
+  "draw.cut.apply.result": {
+    title: "CutResult",
+    description: "`{insideIds, removedIds, rev}`.",
+    type: "object",
+    properties: {
+      drawingId: {
+        description: "The drawing.",
+        type: "string",
+      },
+      insideIds: {
+        description: "The inside objects (now selected) with `then: \"select\"`; the new pieces of a segment cut.",
+        type: "array",
+        items: {
+          type: "string",
+        },
+      },
+      keptBrushIds: {
+        description: "Brush strokes crossing the boundary, kept whole (SI-059, SI-071).",
+        type: "array",
+        items: {
+          type: "string",
+        },
+      },
+      createdIds: {
+        description: "Created objects.",
+        type: "array",
+        items: {
+          type: "string",
+        },
+      },
+      modifiedIds: {
+        description: "Modified objects (content, membership or position changed; IDs kept).",
+        type: "array",
+        items: {
+          type: "string",
+        },
+      },
+      removedIds: {
+        description: "Removed objects (descendants included).",
+        type: "array",
+        items: {
+          type: "string",
+        },
+      },
+      rev: {
+        description: "The drawing revision after the change.",
+        type: "integer",
+        maximum: 18446744073709551615n,
+        minimum: 0,
+      },
+    },
+    required: [
+      "drawingId",
       "insideIds",
+      "keptBrushIds",
+      "createdIds",
+      "modifiedIds",
       "removedIds",
       "rev",
     ],
-    "x-spec": "`{insideIds: [id], removedIds: [id], rev}`",
-    additionalProperties: false,
   },
   "draw.drawing.changed.params": {
     title: "NoParams",
@@ -32247,134 +32413,215 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
       "rev",
     ],
   },
-  "draw.erase.apply.params": {
-    title: "draw.erase.apply parameters",
+  "draw.erase.apply.ErasePoint": {
+    description: "An eraser path point.",
     type: "object",
     properties: {
-      drawingId: {
-        type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
+      x: {
+        description: "x (du).",
+        type: "number",
       },
-      path: {
-        type: "array",
-        items: {
-          type: "object",
-          properties: {
-            x: {
-              type: "number",
-            },
-            y: {
-              type: "number",
-            },
-            pressure: {
-              type: "number",
-            },
-          },
-          required: [
-            "x",
-            "y",
-          ],
-          additionalProperties: false,
-        },
-        maxItems: 100000,
+      y: {
+        description: "y (du).",
+        type: "number",
       },
-      penId: {
-        type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3) Default: current eraser pen.",
-      },
-      pen: {
-        type: "object",
-        properties: {},
-        additionalProperties: false,
-        "x-placeholder": true,
-        description: "shape not defined by the owning section (spec issue); only {} is accepted until it is",
-        "x-specIssue": "SI-026",
-      },
-      region: {
-        type: "array",
-        items: {
-          type: "object",
-          properties: {
-            x: {
-              type: "number",
-            },
-            y: {
-              type: "number",
-            },
-          },
-          required: [
-            "x",
-            "y",
-          ],
-          additionalProperties: false,
-        },
-        maxItems: 100000,
-        description: "(closed polygon)",
-      },
-      layers: {
-        anyOf: [
-          {
-            type: "string",
-            enum: [
-              "all",
-            ],
-          },
-          {
-            type: "array",
-            items: {
-              type: "string",
-              minLength: 1,
-              maxLength: 4096,
-              description: "object ID or path reference (10 §3)",
-            },
-            maxItems: 100000,
-          },
+      pressure: {
+        description: "Pressure (0–1, default 1).",
+        type: [
+          "number",
+          "null",
         ],
-        default: "all",
+        default: null,
+        minimum: 0,
+        maximum: 1,
       },
     },
     additionalProperties: false,
-    "x-spec": "`drawingId?: id; path?: [{x,y,pressure?}]; penId?: id = current eraser pen; pen?: object; region?: [point] (closed polygon); layers: enum \"all\" | [id] = \"all\"`",
+    required: [
+      "x",
+      "y",
+    ],
   },
-  "draw.erase.apply.result": {
-    title: "draw.erase.apply result",
+  "draw.erase.apply.EraserPen": {
+    description: "An explicit round eraser `{minSize, maxSize}` (SI-072).",
     type: "object",
     properties: {
-      removedIds: {
-        type: "array",
-        items: {
-          type: "string",
-          minLength: 1,
-          maxLength: 4096,
-          description: "object ID or path reference (10 §3)",
-        },
-        maxItems: 100000,
+      minSize: {
+        description: "Width at lowest pressure (du).",
+        type: "number",
+        maximum: 100,
+        minimum: 0,
       },
-      createdIds: {
-        type: "array",
-        items: {
-          type: "string",
-          minLength: 1,
-          maxLength: 4096,
-          description: "object ID or path reference (10 §3)",
-        },
-        maxItems: 100000,
+      maxSize: {
+        description: "Width at full pressure (du).",
+        type: "number",
+        maximum: 100,
+        minimum: 0.1,
       },
-      rev: {
+    },
+    additionalProperties: false,
+    required: [
+      "minSize",
+      "maxSize",
+    ],
+  },
+  "draw.erase.apply.Point": {
+    description: "A point `{x, y}` in drawing units.",
+    type: "object",
+    properties: {
+      x: {
+        description: "X (du).",
+        type: "number",
+      },
+      y: {
+        description: "Y (du, up).",
         type: "number",
       },
     },
+    additionalProperties: false,
     required: [
-      "removedIds",
+      "x",
+      "y",
+    ],
+  },
+  "draw.erase.apply.LayersIn": {
+    description: "Layers an erase reaches.",
+    anyOf: [
+      {
+        description: "Every layer.",
+        $ref: "#/$defs/draw.erase.apply.AllLayers",
+      },
+      {
+        description: "These layers.",
+        type: "array",
+        items: {
+          type: "string",
+        },
+      },
+    ],
+  },
+  "draw.erase.apply.AllLayers": {
+    description: "`\"all\"`.",
+    oneOf: [
+      {
+        description: "Every layer.",
+        type: "string",
+        const: "all",
+      },
+    ],
+  },
+  "draw.erase.apply.params": {
+    title: "EraseParams",
+    description: "`draw.erase.apply` parameters.",
+    type: "object",
+    properties: {
+      drawingId: {
+        description: "The drawing (default: current).",
+        type: [
+          "string",
+          "null",
+        ],
+        default: null,
+      },
+      path: {
+        description: "The eraser's path (swept with the eraser pen).",
+        type: [
+          "array",
+          "null",
+        ],
+        items: {
+          $ref: "#/$defs/draw.erase.apply.ErasePoint",
+        },
+      },
+      penId: {
+        description: "The eraser pen (default: the project's first eraser pen, \"Eraser 1\").",
+        type: [
+          "string",
+          "null",
+        ],
+        default: null,
+      },
+      pen: {
+        description: "An explicit eraser (SI-072).",
+        anyOf: [
+          {
+            $ref: "#/$defs/draw.erase.apply.EraserPen",
+          },
+          {
+            type: "null",
+          },
+        ],
+      },
+      region: {
+        description: "Or: a closed region to erase.",
+        type: [
+          "array",
+          "null",
+        ],
+        items: {
+          $ref: "#/$defs/draw.erase.apply.Point",
+        },
+        default: null,
+      },
+      layers: {
+        description: "Layers to erase.",
+        $ref: "#/$defs/draw.erase.apply.LayersIn",
+      },
+    },
+    additionalProperties: false,
+  },
+  "draw.erase.apply.result": {
+    title: "EraseResult",
+    description: "`{removedIds, createdIds, rev}`.",
+    type: "object",
+    properties: {
+      drawingId: {
+        description: "The drawing.",
+        type: "string",
+      },
+      keptBrushIds: {
+        description: "Brush strokes crossing the erased area, kept whole (SI-059, SI-071).",
+        type: "array",
+        items: {
+          type: "string",
+        },
+      },
+      createdIds: {
+        description: "Created objects.",
+        type: "array",
+        items: {
+          type: "string",
+        },
+      },
+      modifiedIds: {
+        description: "Modified objects (content, membership or position changed; IDs kept).",
+        type: "array",
+        items: {
+          type: "string",
+        },
+      },
+      removedIds: {
+        description: "Removed objects (descendants included).",
+        type: "array",
+        items: {
+          type: "string",
+        },
+      },
+      rev: {
+        description: "The drawing revision after the change.",
+        type: "integer",
+        maximum: 18446744073709551615n,
+        minimum: 0,
+      },
+    },
+    required: [
+      "drawingId",
+      "keptBrushIds",
       "createdIds",
+      "modifiedIds",
+      "removedIds",
       "rev",
     ],
-    "x-spec": "`{removedIds: [id], createdIds: [id], rev}`",
-    additionalProperties: false,
   },
   "draw.feather.apply.params": {
     title: "draw.feather.apply parameters",
@@ -84317,26 +84564,67 @@ export interface draw_current_get_result {
   activeView: draw_current_get_ViewRef;
 }
 
-export interface draw_cut_apply_params {
-  /** object ID or path reference (10 §3) */
-  drawingId?: string;
-  polygon?: ({
-    x: number;
-    y: number;
-  })[];
-  rect?: {
-    x: number;
-    y: number;
-    width: number;
-    height: number;
-  };
-  then?: 'select' | 'delete';
+/** A point `{x, y}` in drawing units. */
+export interface draw_cut_apply_Point {
+  /** X (du). */
+  x: number;
+  /** Y (du, up). */
+  y: number;
 }
 
+/** A rectangle `{x, y, width, height}`. */
+export interface draw_cut_apply_RectArea {
+  /** Minimum x. */
+  x: number;
+  /** Minimum y. */
+  y: number;
+  /** Width. */
+  width: number;
+  /** Height. */
+  height: number;
+}
+
+/** A segment `{from, to}`. */
+export interface draw_cut_apply_SegmentIn {
+  /** Start. */
+  from: draw_cut_apply_Point;
+  /** End. */
+  to: draw_cut_apply_Point;
+}
+
+/** What happens to the inside of a cut. */
+export type draw_cut_apply_Then = 'select' | 'delete';
+
+/** `draw.cut.apply` parameters (`segment`: SI-071). */
+export interface draw_cut_apply_params {
+  /** The drawing (default: current). */
+  drawingId?: string | null;
+  /** A closed lasso. */
+  polygon?: draw_cut_apply_Point[] | null;
+  /** A rectangle. */
+  rect?: draw_cut_apply_RectArea | null;
+  /** An open segment to cut along (splits lines and zones; SI-071). */
+  segment?: draw_cut_apply_SegmentIn | null;
+  /** What happens to the inside. */
+  then?: draw_cut_apply_Then;
+}
+
+/** `{insideIds, removedIds, rev}`. */
 export interface draw_cut_apply_result {
+  /** The drawing. */
+  drawingId: string;
+  /** The inside objects (now selected) with `then: "select"`; the new pieces of a segment cut. */
   insideIds: string[];
+  /** Brush strokes crossing the boundary, kept whole (SI-059, SI-071). */
+  keptBrushIds: string[];
+  /** Created objects. */
+  createdIds: string[];
+  /** Modified objects (content, membership or position changed; IDs kept). */
+  modifiedIds: string[];
+  /** Removed objects (descendants included). */
   removedIds: string[];
-  rev: number;
+  /** The drawing revision after the change. */
+  rev: number | bigint;
 }
 
 /** No parameters. */
@@ -84692,30 +84980,68 @@ export interface draw_envelope_apply_result {
   rev: number | bigint;
 }
 
-export interface draw_erase_apply_params {
-  /** object ID or path reference (10 §3) */
-  drawingId?: string;
-  path?: ({
-    x: number;
-    y: number;
-    pressure?: number;
-  })[];
-  /** object ID or path reference (10 §3) Default: current eraser pen. */
-  penId?: string;
-  /** shape not defined by the owning section (spec issue); only {} is accepted until it is */
-  pen?: Record<string, unknown>;
-  /** (closed polygon) */
-  region?: ({
-    x: number;
-    y: number;
-  })[];
-  layers?: 'all' | string[];
+/** An eraser path point. */
+export interface draw_erase_apply_ErasePoint {
+  /** x (du). */
+  x: number;
+  /** y (du). */
+  y: number;
+  /** Pressure (0–1, default 1). */
+  pressure?: number | null;
 }
 
+/** An explicit round eraser `{minSize, maxSize}` (SI-072). */
+export interface draw_erase_apply_EraserPen {
+  /** Width at lowest pressure (du). */
+  minSize: number;
+  /** Width at full pressure (du). */
+  maxSize: number;
+}
+
+/** A point `{x, y}` in drawing units. */
+export interface draw_erase_apply_Point {
+  /** X (du). */
+  x: number;
+  /** Y (du, up). */
+  y: number;
+}
+
+/** Layers an erase reaches. */
+export type draw_erase_apply_LayersIn = draw_erase_apply_AllLayers | string[];
+
+/** `"all"`. */
+export type draw_erase_apply_AllLayers = 'all';
+
+/** `draw.erase.apply` parameters. */
+export interface draw_erase_apply_params {
+  /** The drawing (default: current). */
+  drawingId?: string | null;
+  /** The eraser's path (swept with the eraser pen). */
+  path?: draw_erase_apply_ErasePoint[] | null;
+  /** The eraser pen (default: the project's first eraser pen, "Eraser 1"). */
+  penId?: string | null;
+  /** An explicit eraser (SI-072). */
+  pen?: draw_erase_apply_EraserPen | null;
+  /** Or: a closed region to erase. */
+  region?: draw_erase_apply_Point[] | null;
+  /** Layers to erase. */
+  layers?: draw_erase_apply_LayersIn;
+}
+
+/** `{removedIds, createdIds, rev}`. */
 export interface draw_erase_apply_result {
-  removedIds: string[];
+  /** The drawing. */
+  drawingId: string;
+  /** Brush strokes crossing the erased area, kept whole (SI-059, SI-071). */
+  keptBrushIds: string[];
+  /** Created objects. */
   createdIds: string[];
-  rev: number;
+  /** Modified objects (content, membership or position changed; IDs kept). */
+  modifiedIds: string[];
+  /** Removed objects (descendants included). */
+  removedIds: string[];
+  /** The drawing revision after the change. */
+  rev: number | bigint;
 }
 
 export interface draw_feather_apply_params {
