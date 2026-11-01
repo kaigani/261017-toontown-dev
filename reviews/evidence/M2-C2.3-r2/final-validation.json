@@ -1,0 +1,175 @@
+{
+  "reviewedHead": "797beff",
+  "workspaceCounts": {
+    "summaries": 198,
+    "passed": 1067,
+    "failed": 5,
+    "ignored": 18
+  },
+  "workspaceRun": {
+    "startUtc": "2026-11-01T16:50:28.3410526Z",
+    "endUtc": "2026-11-01T17:21:36.7115219Z",
+    "seconds": 1868.370469,
+    "exitCode": 101,
+    "command": "cargo test --workspace --locked --no-fail-fast -j 4",
+    "CARGO_BUILD_JOBS": "4"
+  },
+  "intentionalC23FailingTests": [
+    "r10_all_shapes_empty_cell_create_or_refuse_atomically",
+    "r10_each_shape_preserves_explicit_false_and_true_creates",
+    "r12_painted_zone_warning_survives_drawing_selection",
+    "r12_zone_selection_readback_must_keep_a_valid_derived_id",
+    "timed_out_queued_mutation_is_cancelled_instead_of_committing_later"
+  ],
+  "observedFailingTests": [
+    "r10_all_shapes_empty_cell_create_or_refuse_atomically",
+    "r10_each_shape_preserves_explicit_false_and_true_creates",
+    "r12_painted_zone_warning_survives_drawing_selection",
+    "r12_zone_selection_readback_must_keep_a_valid_derived_id",
+    "timed_out_queued_mutation_is_cancelled_instead_of_committing_later"
+  ],
+  "unexpectedFailingTests": [],
+  "missingExpectedFailures": [],
+  "allCountsByLog": {
+    "c21-measure.log": {
+      "summaries": 1,
+      "passed": 1,
+      "failed": 0,
+      "ignored": 0
+    },
+    "c22-measure-quiet.log": {
+      "summaries": 1,
+      "passed": 1,
+      "failed": 0,
+      "ignored": 0
+    },
+    "c22-measure.log": {
+      "summaries": 1,
+      "passed": 1,
+      "failed": 0,
+      "ignored": 0
+    },
+    "c23-measure.log": {
+      "summaries": 1,
+      "passed": 1,
+      "failed": 0,
+      "ignored": 0
+    },
+    "cache-isolated.log": {
+      "summaries": 1,
+      "passed": 6,
+      "failed": 1,
+      "ignored": 0
+    },
+    "cache-single-test.log": {
+      "summaries": 1,
+      "passed": 1,
+      "failed": 0,
+      "ignored": 0
+    },
+    "closure-final.log": {
+      "summaries": 3,
+      "passed": 11,
+      "failed": 4,
+      "ignored": 0
+    },
+    "closure-first.log": {
+      "summaries": 1,
+      "passed": 8,
+      "failed": 5,
+      "ignored": 0
+    },
+    "closure-verified.log": {
+      "summaries": 3,
+      "passed": 12,
+      "failed": 5,
+      "ignored": 0
+    },
+    "executor-baseline.log": {
+      "summaries": 31,
+      "passed": 276,
+      "failed": 1,
+      "ignored": 1
+    },
+    "executor-doc.log": {
+      "summaries": 1,
+      "passed": 0,
+      "failed": 0,
+      "ignored": 0
+    },
+    "executor-supplement.log": {
+      "summaries": 41,
+      "passed": 170,
+      "failed": 5,
+      "ignored": 4
+    },
+    "mcp-baseline.log": {
+      "summaries": 28,
+      "passed": 70,
+      "failed": 0,
+      "ignored": 3
+    },
+    "mcp-timeout-verified.log": {
+      "summaries": 1,
+      "passed": 1,
+      "failed": 0,
+      "ignored": 0
+    },
+    "mcp-timeout.log": {
+      "summaries": 1,
+      "passed": 1,
+      "failed": 0,
+      "ignored": 0
+    },
+    "predicate-variants.log": {
+      "summaries": 1,
+      "passed": 2,
+      "failed": 0,
+      "ignored": 0
+    },
+    "render-baseline.log": {
+      "summaries": 7,
+      "passed": 10,
+      "failed": 0,
+      "ignored": 1
+    },
+    "smooth-20k-release-receipt.log": {
+      "summaries": 1,
+      "passed": 1,
+      "failed": 0,
+      "ignored": 0
+    },
+    "smooth-20k-release.log": {
+      "summaries": 1,
+      "passed": 1,
+      "failed": 0,
+      "ignored": 0
+    },
+    "smooth-work.log": {
+      "summaries": 1,
+      "passed": 1,
+      "failed": 0,
+      "ignored": 0
+    },
+    "texture-variants.log": {
+      "summaries": 1,
+      "passed": 2,
+      "failed": 0,
+      "ignored": 0
+    },
+    "vector-baseline.log": {
+      "summaries": 26,
+      "passed": 161,
+      "failed": 0,
+      "ignored": 8
+    },
+    "workspace.log": {
+      "summaries": 198,
+      "passed": 1067,
+      "failed": 5,
+      "ignored": 18
+    }
+  },
+  "hygieneChangedExistingFiles": [],
+  "note": "Do not sum targeted reruns into workspace counts. Cache sole-test and serialized-target observations are separate, retained evidence."
+}

@@ -20,6 +20,21 @@
     "priorSeconds": 3.9192112,
     "ratio": 1.0301110845978394
   },
+  "smooth-20k-release": {
+    "anchors": 20000,
+    "seconds": 0.5521856,
+    "queuedReadSeconds": 0.0003529,
+    "error": {
+      "code": "limit.exceeded",
+      "message": "smoothing these strokes needs more than 150000000 units of work",
+      "details": {
+        "pointer": "/points"
+      },
+      "hint": "split the edit into smaller ones, or simplify the strokes of the layer"
+    },
+    "revisionUnchanged": true,
+    "profile": "release"
+  },
   "c21": {
     "priorValid": true,
     "currentValid": true,

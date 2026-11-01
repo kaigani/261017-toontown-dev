@@ -63,6 +63,7 @@ def declared():
     return {'base': BASE, 'head': HEAD, 'changedPaths': names, 'protectedPaths': protected(),
             'protectedDiff': git('diff', BASE+'..'+HEAD, '--', *protected()), 'goldenDelta': golden_delta(),
             'builderTestDiff': git('diff', BASE+'..'+HEAD, '--', 'crates/executor/tests/c23_*.rs'),
+            'exampleResultsDiff': git('diff', BASE+'..'+HEAD, '--', 'crates/registry/src/example-results.json'),
             'normalFeatureDiff': git('diff', BASE+'..'+HEAD, '--', 'crates/executor/Cargo.toml', 'crates/vector/Cargo.toml')}
 
 def ci(out):
@@ -148,6 +149,14 @@ def collect(out):
         if p.exists():
             a,b=json.loads((previous/name).read_bytes()),json.loads(p.read_bytes())
             results[name]={**analyzers.c23_measurement(b),'priorSeconds':a['seconds'],'ratio':b['seconds']/a['seconds']}
+    smooth=measurements/'release-smooth/smooth-20k.json'
+    if smooth.exists():
+        value=json.loads(smooth.read_bytes())
+        assert value['anchors']==20000 and value['profile']=='release'
+        assert value['error']['code']=='limit.exceeded' and value['revisionUnchanged'] is True
+        assert isinstance(value['seconds'],(float,int)) and not isinstance(value['seconds'],bool) and 0<=value['seconds']<20
+        assert 0<=value['queuedReadSeconds']<1
+        results['smooth-20k-release']=value
     name='c21-strokes-100k-windows.json'
     if (measurements/name).exists():
         a,b=series.check_file(previous/name),series.check_file(measurements/name)
@@ -170,11 +179,16 @@ def collect(out):
           'branch':git('branch','--show-current').strip(),'statusBeforeCommit':git('status','--short')})
     if (out/'workspace.log').exists():
         content=read(out/'workspace.log')
-        failures=sorted(set(re.findall(r'test\s+([A-Za-z0-9_]+)\s+\.\.\.\s+FAILED',content)))
+        failures=sorted(set(re.findall(r'test\s+([A-Za-z0-9_:]+)\s+\.\.\.\s+FAILED',content)))
         expected=sorted(['r10_all_shapes_empty_cell_create_or_refuse_atomically','r10_each_shape_preserves_explicit_false_and_true_creates',
                          'r12_painted_zone_warning_survives_drawing_selection','r12_zone_selection_readback_must_keep_a_valid_derived_id',
                          'timed_out_queued_mutation_is_cancelled_instead_of_committing_later'])
-        write('final-validation.json',{'reviewedHead':HEAD,'workspaceCounts':counts.get('workspace.log'),
+        timing={}
+        if (out/'workspace-end.txt').exists():
+            start=read(out/'workspace-start.txt').strip();end=read(out/'workspace-end.txt').strip()
+            timing={'startUtc':start,'endUtc':end,'seconds':(datetime.datetime.fromisoformat(end.replace('Z','+00:00'))-datetime.datetime.fromisoformat(start.replace('Z','+00:00'))).total_seconds(),
+                    'exitCode':int(read(out/'workspace-exit.txt').strip()),'command':'cargo test --workspace --locked --no-fail-fast -j 4','CARGO_BUILD_JOBS':'4'}
+        write('final-validation.json',{'reviewedHead':HEAD,'workspaceCounts':counts.get('workspace.log'),'workspaceRun':timing,
               'intentionalC23FailingTests':expected,'observedFailingTests':failures,
               'unexpectedFailingTests':sorted(set(failures)-set(expected)),
               'missingExpectedFailures':sorted(set(expected)-set(failures)),

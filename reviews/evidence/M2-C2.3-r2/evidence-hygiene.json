@@ -1,0 +1,20 @@
+{
+  "reviewedHead": "797beff",
+  "trackedAtReviewedHead": 6975,
+  "changedExistingFiles": [],
+  "legacyReceipts": [
+    {
+      "path": "reviews/evidence/M1-C1.3-r2/inspection-memory.json",
+      "sha256": "cf68973d1c801acc70b78e2796c68e40a4536ed2b80e0abf62cb565abe4af1bd",
+      "exactCommittedBytes": true
+    },
+    {
+      "path": "reviews/evidence/M1-C1.3-r3/open-latency.json",
+      "sha256": "48f2c6c9fa4b19cf4b13e3bbd40b65f49fa781ce213b167d7358470738570f29",
+      "exactCommittedBytes": true
+    }
+  ],
+  "TT_COMMIT_REVIEW_RECEIPTS": null,
+  "branch": "review/m2-c23-r2",
+  "statusBeforeCommit": " M reviews/M2-C2.3-r2.md\n M reviews/evidence/M2-C2.3-r2/audit.log\n M reviews/evidence/M2-C2.3-r2/declared-edits.json\n M reviews/evidence/M2-C2.3-r2/performance-recomputed.json\n M reviews/evidence/M2-C2.3-r2/python-suites-final.log\n M reviews/evidence/M2-C2.3-r2/register.log\n M tests/adversarial/c23-r2-audit.py\n?? reviews/evidence/M2-C2.3-r2/evidence-hygiene.json\n?? reviews/evidence/M2-C2.3-r2/final-validation.json\n?? reviews/evidence/M2-C2.3-r2/gate-counts.json\n?? reviews/evidence/M2-C2.3-r2/workspace-end.txt\n?? reviews/evidence/M2-C2.3-r2/workspace-exit.txt\n?? reviews/evidence/M2-C2.3-r2/workspace-start.txt\n?? reviews/evidence/M2-C2.3-r2/workspace.log\n"
+}
