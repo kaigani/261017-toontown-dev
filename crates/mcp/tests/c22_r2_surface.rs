@@ -36,6 +36,7 @@ fn all_four_deferred_contracts_and_generated_types_name_c23() {
 fn topology_oracle_checks_every_step_of_full_cut_stack_and_reverse_merge() {
     use std::collections::BTreeSet;
     use topology_oracle::Topo;
+    assert_eq!(topology_oracle::CUTS, 4);
     let dir = tmp();
     let h = executor(&dir.join("prefs"));
     assert!(h.open_document(tt_model::fixture::sample_document(1).unwrap(), None, false).is_ok());

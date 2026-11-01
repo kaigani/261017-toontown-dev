@@ -119,6 +119,24 @@ fn path_reentry_across_two_layers_is_one_transaction_and_respects_only_painted()
     ok(&h, "edit.undo", json!({}));
     ok(&h, "edit.redo", json!({}));
     assert_eq!(read(&h, a["layerId"].as_str().unwrap())["zones"][0]["colourId"], colors[2]);
+    ok(
+        &h,
+        "doc.object.patch",
+        json!({"targets":[colors[2]],"props":{"ext":{"dev.toontown.paint":{"protected":true}}}}),
+    );
+    let r = ok(
+        &h,
+        "colour.paint.apply",
+        json!({"drawingId":D,"path":[{"x":999,"y":1005},{"x":1021,"y":1005}],"colourId":colors[1]}),
+    );
+    assert!(r["skipped"].as_array().unwrap().iter().any(|s| s["reason"] == "colour.protected"));
+    assert_eq!(read(&h, a["layerId"].as_str().unwrap())["zones"][0]["colourId"], colors[2]);
+    ok(
+        &h,
+        "colour.paint.apply",
+        json!({"drawingId":D,"path":[{"x":999,"y":1005},{"x":1021,"y":1005}],"colourId":colors[1],"respectProtected":false}),
+    );
+    assert_eq!(read(&h, a["layerId"].as_str().unwrap())["zones"][0]["colourId"], colors[1]);
 }
 #[test]
 fn gap_closing_preserves_id_point_line_and_text_targets_and_undo_redo() {
@@ -143,6 +161,21 @@ fn gap_closing_preserves_id_point_line_and_text_targets_and_undo_redo() {
         json!({"drawingId":D,"kind":"pencil","layer":lid,"fit":false,"points":[{"x":2049,"y":2100},{"x":2000,"y":2100}]}),
     );
     let colors = cols(&h);
+    ok(&h, "colour.gapClosing.set", json!({"mode":"small"}));
+    let before = h.snapshot().unwrap().unwrap().document_rev();
+    let refused =
+        run(&h, "colour.paint.apply", json!({"drawingId":D,"points":[{"x":2050,"y":2050}],"gapClosing":"off"}));
+    assert!(!refused.is_ok(), "command off overrides prefs small");
+    assert_eq!(h.snapshot().unwrap().unwrap().document_rev(), before);
+    let dry = h.invoke(Invocation {
+        command: "colour.paint.apply".into(),
+        params: json!({"drawingId":D,"points":[{"x":2050,"y":2050}],"gapClosing":"small"}),
+        options: InvokeOptions { dry_run: true, ..Default::default() },
+        origin: Origin::User,
+    });
+    assert!(dry.is_ok());
+    assert_eq!(h.snapshot().unwrap().unwrap().document_rev(), before);
+    ok(&h, "colour.gapClosing.set", json!({"mode":"off"}));
     let rx = h.subscribe();
     let r = ok(
         &h,
@@ -333,22 +366,80 @@ fn recovery_preserves_full_swatch_extensions_including_paint_protection() {
 
 #[test]
 fn tiled_texture_click_uses_native_pixel_dimensions() {
-    let mut parts=tt_model::fixture::sample_parts(1).unwrap();
+    let mut parts = tt_model::fixture::sample_parts(1).unwrap();
     let palette = &parts.palettes[0];
     let colour = palette.swatches()[0].colour_id().as_str().to_owned();
-    let values: serde_json::Map<String, Value> = palette.styles().iter().map(|s| {
-        (s.id().as_str().to_owned(), json!({"image":"textures/r2-native.png","tile":true,"width":16,"height":8}))
-    }).collect();
-    let mut pal=serde_json::to_value(palette).unwrap();pal["swatches"][0]["kind"]=json!("texture");pal["swatches"][0]["values"]=json!(values);
-    parts.palettes[0]=tt_model::object::from_json(&pal).unwrap();
-    let h=ExecutorHandle::spawn(Default::default()).unwrap();
-    assert!(h.open_document(tt_model::document::Document::from_parts(parts).unwrap(),None,false).is_ok());
-    let r=rect(&h,"new",1000.,1000.,100.,100.);
-    ok(&h,"colour.paint.apply",json!({"drawingId":D,"objectIds":[r["zoneIds"][0]],"colourId":colour}));
-    let layer=read(&h,r["layerId"].as_str().unwrap());let m=&layer["zones"][0]["textureMatrix"];
+    let values: serde_json::Map<String, Value> = palette
+        .styles()
+        .iter()
+        .map(|s| {
+            (s.id().as_str().to_owned(), json!({"image":"textures/r2-native.png","tile":true,"width":16,"height":8}))
+        })
+        .collect();
+    let mut pal = serde_json::to_value(palette).unwrap();
+    pal["swatches"][0]["kind"] = json!("texture");
+    pal["swatches"][0]["values"] = json!(values);
+    parts.palettes[0] = tt_model::object::from_json(&pal).unwrap();
+    let h = ExecutorHandle::spawn(Default::default()).unwrap();
+    assert!(h.open_document(tt_model::document::Document::from_parts(parts).unwrap(), None, false).is_ok());
+    let r = rect(&h, "new", 1000., 1000., 100., 100.);
+    ok(&h, "colour.paint.apply", json!({"drawingId":D,"objectIds":[r["zoneIds"][0]],"colourId":colour}));
+    let layer = read(&h, r["layerId"].as_str().unwrap());
+    let m = &layer["zones"][0]["textureMatrix"];
     eprintln!("16x8 tiled texture click on 100x100 box: {m}");
-    assert_eq!(m[0].as_f64().unwrap().abs(),16.,"03 7.2 tile-on means native size, not box stretch");
-    assert_eq!(m[3].as_f64().unwrap().abs(),8.);
+    assert_eq!(m[0].as_f64().unwrap().abs(), 16., "03 7.2 tile-on means native size, not box stretch");
+    assert_eq!(m[3].as_f64().unwrap().abs(), 8.);
+}
+
+#[test]
+fn conflicting_recovery_copies_choose_the_first_using_drawing_deterministically() {
+    let mut parts = tt_model::fixture::sample_parts(1).unwrap();
+    let donor =
+        serde_json::to_value(parts.drawings.iter().find(|d| d.id().as_str() == D).unwrap()).unwrap()["nodes"].clone();
+    let mut indices: Vec<_> = (0..parts.drawings.len()).collect();
+    indices.sort_by_key(|&i| parts.drawings[i].id().as_str().to_owned());
+    let mut users = 0;
+    for i in indices {
+        let mut d = serde_json::to_value(&parts.drawings[i]).unwrap();
+        if !d["nodes"][0]["strokes"].is_array() {
+            if d["name"] == "10" {
+                d["nodes"] = donor.clone();
+            } else {
+                continue;
+            }
+        }
+        d["nodes"][0]["strokes"][1]["colourId"] = json!(M);
+        let rgba = if users == 0 { "#102030FF" } else { "#A0B0C0FF" };
+        d["colourRecovery"] = json!([{"colourId":M,"paletteId":"pal_r2","paletteName":"Recovered","styles":[{"styleId":"sty_r2","styleName":"Default"}],
+            "swatch":{"colourId":M,"type":"swatch","rev":3,"name":"Copy","kind":"solid","deformable":false,"values":{"sty_r2":{"rgba":rgba}}}}]);
+        parts.drawings[i] = tt_model::object::from_json(&d).unwrap();
+        users += 1;
+        if users == 2 {
+            break;
+        }
+    }
+    assert_eq!(users, 2);
+    let doc = tt_model::document::Document::from_parts(parts).unwrap();
+    let dir = c13_support::tmp();
+    let package = dir.join("conflict.animpkg");
+    let input = tt_persist::save::SaveInput {
+        doc: &doc,
+        preserved: &Default::default(),
+        blobs: &Default::default(),
+        session: None,
+        saved_at: "2000-01-01T00:00:00.000Z".into(),
+    };
+    tt_persist::save::save(&package, tt_persist::container::Form::Package, &input, None, false).unwrap();
+    for k in 0..2 {
+        let h = c13_support::spawn(&dir.join(format!("user{k}")));
+        c13_support::job_ok(&h, "project.open", json!({"path":package}));
+        let doc = h.snapshot().unwrap().unwrap();
+        let found: Vec<_> = doc.palettes().flat_map(|p| p.swatches()).filter(|s| s.colour_id().as_str() == M).collect();
+        assert_eq!(found.len(), 1);
+        let v = serde_json::to_value(found[0]).unwrap();
+        assert!(v["values"].as_object().unwrap().values().all(|v| v["rgba"] == "#102030FF"), "{v}");
+    }
+    let _ = std::fs::remove_dir_all(dir);
 }
 
 #[test]

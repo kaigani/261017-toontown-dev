@@ -159,3 +159,67 @@ fn junction_clusters_do_not_chain_and_a_cut_can_end_at_a_shared_junction() {
     assert!(!n.outcomes.contains_key(&3), "cut already ends at junction: {n:?}");
     assert!(matches!(n.outcomes.get(&2),Some(Outcome::Split(p)) if p.len()==2));
 }
+
+#[test]
+fn overlap_ranking_keeps_rational_intersection_area_before_grid_rounding() {
+    let g = 1.;
+    // Triangle y=(65/64)*(1-x/100). A is fully covered (area 1 du^2).
+    // B loses a corner of width 6/13 and height 3/640: overlap = 1-9/8320 = 8311/8320.
+    let new = map(&[line("triangle", &[(0., 0.), (100., 0.), (0., 65. / 64.)], true)]);
+    for k in 0..32 {
+        let old = map(&[rect(&format!("a{k}"), 0., 0., g, g), rect("b", g, 0., g, g)]);
+        let ai = old.zone_at(P::new(g / 2., g / 2.)).unwrap();
+        let bi = old.zone_at(P::new(1.5 * g, g / 2.)).unwrap();
+        if old.zones[ai].id < old.zones[bi].id {
+            continue;
+        }
+        let fills: Vec<_> = (0..old.zones.len()).map(|i| paint(if i == ai { "larger" } else { "smaller" })).collect();
+        let got = carry(&old, &fills, &new, &mut Work::unlimited("r2")).unwrap();
+        eprintln!("exact overlap A=1 B=8311/8320 du^2; A={} B={}; got={got:?}", old.zones[ai].id, old.zones[bi].id);
+        assert_eq!(got, vec![paint("larger")], "unequal rational overlaps must not become a lower-ID tie");
+        return;
+    }
+    panic!("no lower-ID control case");
+}
+
+#[test]
+fn brush_exterior_fill_survives_split_to_sides_and_merge_back() {
+    use tt_vector::planar::fill::{Stored, read, write};
+    let mut ring = line(
+        "ring",
+        &[
+            (0., 0.),
+            (10., 0.),
+            (10., 10.),
+            (0., 10.),
+            (0., 0.),
+            (2., 2.),
+            (2., 8.),
+            (8., 8.),
+            (8., 2.),
+            (2., 2.),
+            (0., 0.),
+        ],
+        true,
+    );
+    ring.kind = EdgeKind::Brush;
+    let a = map(&[ring.clone()]);
+    assert_eq!(a.zones.len(), 1);
+    let red = paint("red");
+    let stored = write(&a, std::slice::from_ref(&red), &Stored::default());
+    assert!(!stored.exterior[0].is_empty());
+    assert_eq!(read(&a, &stored).fills, vec![red.clone()]);
+    // Two separately stored invisible pieces keep both zones' distinct side fills available.
+    let b =
+        map(&[ring.clone(), line("left", &[(2., 5.), (5., 5.)], false), line("right", &[(5., 5.), (8., 5.)], false)]);
+    assert_eq!(b.zones.len(), 2);
+    let fills = carry(&a, &[red.clone()], &b, &mut Work::unlimited("r2")).unwrap();
+    assert_eq!(fills, vec![red.clone(); 2]);
+    let sides = write(&b, &fills, &Stored::default());
+    assert_eq!(read(&b, &sides).fills, fills);
+    let c = map(&[ring]);
+    let merged = carry(&b, &fills, &c, &mut Work::unlimited("r2")).unwrap();
+    let exterior = write(&c, &merged, &Stored::default());
+    assert_eq!(read(&c, &exterior).fills, vec![red]);
+    assert!(!exterior.exterior[0].is_empty());
+}
