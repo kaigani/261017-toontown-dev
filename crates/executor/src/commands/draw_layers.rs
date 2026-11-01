@@ -310,6 +310,16 @@ fn merge(
     Ok((keep, removed))
 }
 
+/// Strokes a merge moved into the kept layer keep their IDs: they are not removed (C23-R1-14).
+fn still_present(cx: &Cx, drawing: &Id, changed: &mut Changed) -> Result<(), CommandError> {
+    let doc = cx.document()?;
+    let present: BTreeSet<String> =
+        doc.drawing(drawing).map(|d| vd::objects(d).into_iter().map(|o| o.id).collect()).unwrap_or_default();
+    changed.removed_ids.retain(|r| !present.contains(r));
+    changed.modified_ids.retain(|m| present.contains(m) || m.starts_with("zn_"));
+    Ok(())
+}
+
 /// Which layer's colour wins where merged content overlaps.
 #[derive(Debug, Clone, Copy, Default, PartialEq, Eq, Deserialize, JsonSchema)]
 #[serde(rename_all = "camelCase")]
@@ -411,6 +421,7 @@ pub(crate) fn draw_flatten_apply(cx: &mut Cx, p: FlattenParams) -> Result<Flatte
             )?;
             let mut changed = Changed { modified_ids: vec![keep.clone()], removed_ids: removed, ..Changed::default() };
             crate::planar::settled(cx, &before, &t.id, &[])?.report(&mut changed);
+            still_present(cx, &t.id, &mut changed)?;
             Ok(FlattenResult { drawing_id: t.id.as_str().to_owned(), layer_id: keep, changed, rev: committed_rev(cx)? })
         }
     }
@@ -551,6 +562,7 @@ pub(crate) fn draw_optimize_apply(cx: &mut Cx, p: OptimizeParams) -> Result<Opti
         });
     }
     crate::planar::settled(cx, &doc, &t.id, &[])?.report(&mut changed);
+    still_present(cx, &t.id, &mut changed)?;
     Ok(OptimizeResult {
         drawing_id: t.id.as_str().to_owned(),
         layer_ids: kept,
