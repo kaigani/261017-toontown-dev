@@ -2,7 +2,14 @@
 //! it, centre line of a large brush stroke). Ignored by default; `TT_MEASURE=1 cargo test -p tt-executor --test
 //! c23_measure -- --ignored` writes the raw observations to `reviews/evidence/M2-C2.3/measurements/`. Performance
 //! budgets stay with C22-T2 and C22-R1-12 (open); these files are observations, not pass/fail gates.
-#![allow(clippy::unwrap_used, clippy::expect_used, clippy::panic, clippy::print_stderr, missing_docs, reason = "measurement")]
+#![allow(
+    clippy::unwrap_used,
+    clippy::expect_used,
+    clippy::panic,
+    clippy::print_stderr,
+    missing_docs,
+    reason = "measurement"
+)]
 
 mod common;
 
