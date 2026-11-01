@@ -9,7 +9,8 @@ const D: &str = "dr_01K742SG0KKMCAP9X1E6Z5P4SW";
 #[test]
 fn smooth_twenty_thousand_anchors_refuses_within_budget_and_commits_nothing() {
     let h = fixture_with(ExecutorConfig { budget: Duration::from_secs(30) });
-    let pts: Vec<_> = (0..20_000).map(|i| json!({"x":2000+i,"y":2000})).collect();
+    // A shallow 32-anchor sawtooth consumes the aggregate budget; a collinear 20k path completes at 142.45 M units.
+    let pts: Vec<_> = (0..20_000).map(|i| json!({"x":2000+i,"y":2000.0+(i%32) as f64*0.01})).collect();
     let s = ok(&h, "draw.stroke.add", json!({"drawingId":D,"kind":"invisible","fit":false,"layer":"new","points":pts}));
     let before = ok(&h, "draw.drawing.get", json!({"drawingId":D}));
     let v = rev(&h);
