@@ -205,8 +205,13 @@ fn the_watchdog_answers_within_its_budget() {
     let mut timed_out = false;
     for _ in 0..50 {
         let t = Instant::now();
-        // A whole-project export: well over 1 ms even with the model optimised in test builds (M2 C2.3 round 2).
-        let env = h.invoke(Invocation::user("doc.export.json", json!({ "scope": "project", "binaries": "omit" })));
+        // A 2048-pixel drawing render: well over 1 ms on every runner. (M2 C2.3 round 2 used a whole-project export,
+        // which the macOS runner finished inside 1 ms in round 3.)
+        let env = h.invoke(Invocation::user(
+            "draw.drawing.render",
+            json!({ "drawingId": "drawingBank:#1/drawing:#1", "width": 2048,
+                    "region": {"x": -60, "y": -60, "width": 170, "height": 170} }),
+        ));
         assert!(t.elapsed() < Duration::from_millis(500));
         if env.error.as_ref().is_some_and(|e| e.code == "command.timeout") {
             timed_out = true;
@@ -214,7 +219,7 @@ fn the_watchdog_answers_within_its_budget() {
             break;
         }
     }
-    assert!(timed_out, "a 1 ms budget times out a whole-project export");
+    assert!(timed_out, "a 1 ms budget times out a 2048-pixel render");
 }
 
 /// The state every example expects: one checkpoint, a user workspace, a job, undo and redo steps.
