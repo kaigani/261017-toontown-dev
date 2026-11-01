@@ -1,0 +1,12 @@
+{
+  "layers": 600,
+  "capacity": 512,
+  "liveBytes": [
+    14615271,
+    16697776,
+    16698344,
+    16695080,
+    16696168
+  ],
+  "meaning": "counting allocator process live bytes after each dropped query result; includes model and session; not RSS or a cache byte ceiling"
+}

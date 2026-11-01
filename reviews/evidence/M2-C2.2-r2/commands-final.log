@@ -1,0 +1,71 @@
+cargo :    Compiling tt-executor v0.0.1 (C:\Users\kaiga\work\review\m2-c22-r2\crates\executor)
+At line:2 char:123
++ ... -final.log; cargo test -p tt-executor --test c22_r2_commands --locked ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (   Compiling tt...rates\executor):String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 2.24s
+     Running tests\c22_r2_commands.rs (target\debug\deps\c22_r2_commands-ac075e2a55a9422f.exe)
+
+running 12 tests
+paste into crossing layer {"createdIds":["dr_01K742SG0KKMCAP9X1E6Z5P4SW/st_01K7JJN8031K62JK902FWFBCGV","dr_01K742SG0KKM
+CAP9X1E6Z5P4SW/st_01K7JJN804ACR6Q0S0JWX7GFQ3"],"modifiedIds":[],"warnings":[]}
+test gap_preference_dry_run_writes_nothing ... ok
+16x8 tiled texture click on 100x100 box: [100,0,0,100,1000,1000]
+
+thread 'tiled_texture_click_uses_native_pixel_dimensions' (34348) panicked at 
+crates\executor\tests\c22_r2_commands.rs:390:5:
+assertion `left == right` failed: 03 7.2 tile-on means native size, not box stretch
+  left: 100.0
+ right: 16.0
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+test tiled_texture_click_uses_native_pixel_dimensions ... FAILED
+recovered full swatch {"colourId":"col_01K9YYYYYYYYYYYYYYYYYYYYYY","type":"swatch","rev":2,"name":"Protected 
+recovered","kind":"solid","deformable":false,"values":{"sty_01K7JJN8031K62JK902FWFBCGV":{"rgba":"#102030FF"}}}
+
+thread 'recovery_preserves_full_swatch_extensions_including_paint_protection' (33528) panicked at 
+crates\executor\tests\c22_r2_commands.rs:364:5:
+assertion `left == right` failed: 10 4.11 full swatch copy and SI-061 paint protection must survive recovery
+  left: Null
+ right: Object {"dev.toontown.paint": Object {"protected": Bool(true)}, "org.review.swatch": Object {"tag": 
+String("retain")}}
+test recovery_preserves_full_swatch_extensions_including_paint_protection ... FAILED
+test pencil_solid_keeps_matrix_click_gradient_defaults_and_invisible_rejects_matrix ... ok
+test paste_splits_existing_stroke_reports_pieces_and_cut_copy_piece_survives_redo ... ok
+imported right side fills [String("col_01K742SG06BQ08FCT1TT8DF8MA"), String("col_01K742SG07AYM2NGPE2YJQJJHV"), 
+String("col_01K742SG06BQ08FCT1TT8DF8MA"), String("col_01K742SG07AYM2NGPE2YJQJJHV")]
+
+thread 'json_import_repairs_clockwise_side_disagreement_without_renoding' (26556) panicked at 
+crates\executor\tests\c22_r2_commands.rs:75:5:
+import must repair inconsistent sides to longest boundary: [String("col_01K742SG06BQ08FCT1TT8DF8MA"), 
+String("col_01K742SG07AYM2NGPE2YJQJJHV"), String("col_01K742SG06BQ08FCT1TT8DF8MA"), 
+String("col_01K742SG07AYM2NGPE2YJQJJHV")]
+test json_import_repairs_clockwise_side_disagreement_without_renoding ... FAILED
+test path_reentry_across_two_layers_is_one_transaction_and_respects_only_painted ... ok
+test saving_repeated_missing_usage_writes_exactly_one_placeholder ... ok
+mixed gap targets {"drawingId":"dr_01K742SG0KKMCAP9X1E6Z5P4SW","painted":[{"drawingId":"dr_01K742SG0KKMCAP9X1E6Z5P4SW",
+"objectId":"zn_VW0GEY0FT1XM3TESWYV8DDNK71","objectKind":"zone","previousColourId":null},{"drawingId":"dr_01K742SG0KKMCA
+P9X1E6Z5P4SW","objectId":"st_01K7JJN800DDW44SJVC40KANBT","objectKind":"pencil","previousColourId":"col_01K742SG059XGSNZ
+6M9MACZ2ZY"},{"drawingId":"dr_01K742SG0KKMCAP9X1E6Z5P4SW","objectId":"nd_01K7JJN800RXHD55052GG3NDRM","objectKind":"text
+","previousColourId":"col_01K742SG059XGSNZ6M9MACZ2ZY"},{"drawingId":"dr_01K742SG0KKMCAP9X1E6Z5P4SW","objectId":"zn_BMJ6
+6Z76CXFBVHDW3B3W9DG29V","objectKind":"zone","previousColourId":null},{"drawingId":"dr_01K742SG0KKMCAP9X1E6Z5P4SW","obje
+ctId":"zn_8217S3VGAVTWMMCXNABM4RVFF3","objectKind":"zone","previousColourId":null}],"skipped":[],"addedStrokeIds":["st_
+01K7JJN80098TAFQQKZYAWNCYJ"],"createdIds":["st_01K7JJN80098TAFQQKZYAWNCYJ","zn_8217S3VGAVTWMMCXNABM4RVFF3"],"modifiedId
+s":["zn_BMJ66Z76CXFBVHDW3B3W9DG29V","zn_VW0GEY0FT1XM3TESWYV8DDNK71","st_01K7JJN800DDW44SJVC40KANBT","nd_01K7JJN800RXHD5
+5052GG3NDRM"],"removedIds":[],"rev":8}
+test gap_closing_preserves_id_point_line_and_text_targets_and_undo_redo ... ok
+test conflicting_recovery_copies_choose_the_first_using_drawing_deterministically ... ok
+test loading_clockwise_sides_is_deterministic_and_a_base ... ok
+test backup_and_recovery_folder_open_recover_missing_colour ... ok
+
+failures:
+
+failures:
+    json_import_repairs_clockwise_side_disagreement_without_renoding
+    recovery_preserves_full_swatch_extensions_including_paint_protection
+    tiled_texture_click_uses_native_pixel_dimensions
+
+test result: FAILED. 9 passed; 3 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.26s
+
+error: test failed, to rerun pass `-p tt-executor --test c22_r2_commands`

@@ -1,0 +1,30 @@
+cargo :    Compiling tt-vector v0.0.1 (C:\Users\kaiga\work\review\m2-c22-r2\crates\vector)
+At line:2 char:1
++ cargo test -p tt-vector --test c22_r2_geometry overlap_ranking_keeps_ ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (   Compiling tt...\crates\vector):String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 1.45s
+     Running tests\c22_r2_geometry.rs (target\debug\deps\c22_r2_geometry-b3bd142b592c841d.exe)
+
+running 1 test
+exact overlap A=1 B=8311/8320 du^2; A=zn_G7NPBYZKSM3Q0VVE9CXP9RWGTR B=zn_CDXFVTQNDPQVQHBDTAG4KR36RP; got=[Some(Fill { 
+colour_id: Some("smaller"), matrix: None })]
+
+thread 'overlap_ranking_keeps_rational_intersection_area_before_grid_rounding' (12800) panicked at 
+crates\vector\tests\c22_r2_geometry.rs:177:9:
+assertion `left == right` failed: unequal rational overlaps must not become a lower-ID tie
+  left: [Some(Fill { colour_id: Some("smaller"), matrix: None })]
+ right: [Some(Fill { colour_id: Some("larger"), matrix: None })]
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+test overlap_ranking_keeps_rational_intersection_area_before_grid_rounding ... FAILED
+
+failures:
+
+failures:
+    overlap_ranking_keeps_rational_intersection_area_before_grid_rounding
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 7 filtered out; finished in 0.00s
+
+error: test failed, to rerun pass `-p tt-vector --test c22_r2_geometry`

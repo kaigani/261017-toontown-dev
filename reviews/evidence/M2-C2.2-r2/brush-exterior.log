@@ -1,0 +1,15 @@
+cargo :    Compiling tt-vector v0.0.1 (C:\Users\kaiga\work\review\m2-c22-r2\crates\vector)
+At line:2 char:194
++ ... clippy.log; cargo test -p tt-vector --test c22_r2_geometry brush_exte ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (   Compiling tt...\crates\vector):String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 1.62s
+     Running tests\c22_r2_geometry.rs (target\debug\deps\c22_r2_geometry-b3bd142b592c841d.exe)
+
+running 1 test
+test brush_exterior_fill_survives_split_to_sides_and_merge_back ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 8 filtered out; finished in 0.00s
+

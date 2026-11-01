@@ -1,0 +1,39 @@
+cargo :     Blocking waiting for file lock on build directory
+At line:2 char:1
++ cargo test -p tt-vector --test c22_r2_geometry --locked -- --nocaptur ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (    Blocking wa...build directory:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+   Compiling tt-vector v0.0.1 (C:\Users\kaiga\work\review\m2-c22-r2\crates\vector)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 13.93s
+     Running tests\c22_r2_geometry.rs (target\debug\deps\c22_r2_geometry-b3bd142b592c841d.exe)
+
+running 6 tests
+test shared_anchor_rotated_reversed_and_at_tolerance ... ok
+test vertex_touches_turnbacks_overlaps_and_degenerate_anchors ... ok
+test along_edge_vertex_reentry_and_brush ... ok
+test zone_identity_hole_spur_straight_elision_and_nonboundary_edits ... ok
+test overlap_equal_merge_three_way_split_sliver_and_holes ... ok
+exact grid determinant=-1; floating determinant=0; result=Noding { outcomes: {1: Moved(Path { anchors: [Anchor { p: P 
+{ x: -7812500.0, y: -7812499.984375 }, inh: P { x: 0.0, y: 0.0 }, outh: P { x: 0.0, y: 0.0 } }, Anchor { p: P { x: 
+0.0, y: 0.0 }, inh: P { x: 0.0, y: 0.0 }, outh: P { x: 0.0, y: 0.0 } }, Anchor { p: P { x: 7812500.0, y: 
+7812499.984375 }, inh: P { x: 0.0, y: 0.0 }, outh: P { x: 0.0, y: 0.0 } }], closed: false })} }
+
+thread 'vertex_crossing_uses_exact_orientation_for_grid_coordinates' (29312) panicked at 
+crates\vector\tests\c22_r2_geometry.rs:47:9:
+strictly crossing grid directions must split both at zero: Noding { outcomes: {1: Moved(Path { anchors: [Anchor { p: P 
+{ x: -7812500.0, y: -7812499.984375 }, inh: P { x: 0.0, y: 0.0 }, outh: P { x: 0.0, y: 0.0 } }, Anchor { p: P { x: 
+0.0, y: 0.0 }, inh: P { x: 0.0, y: 0.0 }, outh: P { x: 0.0, y: 0.0 } }, Anchor { p: P { x: 7812500.0, y: 
+7812499.984375 }, inh: P { x: 0.0, y: 0.0 }, outh: P { x: 0.0, y: 0.0 } }], closed: false })} }
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+test vertex_crossing_uses_exact_orientation_for_grid_coordinates ... FAILED
+
+failures:
+
+failures:
+    vertex_crossing_uses_exact_orientation_for_grid_coordinates
+
+test result: FAILED. 5 passed; 1 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+error: test failed, to rerun pass `-p tt-vector --test c22_r2_geometry`

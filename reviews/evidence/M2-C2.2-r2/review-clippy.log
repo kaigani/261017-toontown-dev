@@ -1,0 +1,8 @@
+cargo :     Checking tt-vector v0.0.1 (C:\Users\kaiga\work\review\m2-c22-r2\crates\vector)
+At line:2 char:1
++ cargo clippy -p tt-vector --test c22_r2_geometry -p tt-executor --tes ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (    Checking tt...\crates\vector):String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.27s

@@ -213,7 +213,7 @@ fn brush_exterior_fill_survives_split_to_sides_and_merge_back() {
     let b =
         map(&[ring.clone(), line("left", &[(2., 5.), (5., 5.)], false), line("right", &[(5., 5.), (8., 5.)], false)]);
     assert_eq!(b.zones.len(), 2);
-    let fills = carry(&a, &[red.clone()], &b, &mut Work::unlimited("r2")).unwrap();
+    let fills = carry(&a, std::slice::from_ref(&red), &b, &mut Work::unlimited("r2")).unwrap();
     assert_eq!(fills, vec![red.clone(); 2]);
     let sides = write(&b, &fills, &Stored::default());
     assert_eq!(read(&b, &sides).fills, fills);

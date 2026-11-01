@@ -1,0 +1,171 @@
+cargo :    Compiling proc-macro2 v1.0.107
+At line:2 char:1
++ cargo test --release -p tt-vector --test c22_worst_case --locked -- - ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (   Compiling proc-macro2 v1.0.107:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+   Compiling unicode-ident v1.0.27
+   Compiling quote v1.0.47
+   Compiling cfg-if v1.0.5
+   Compiling autocfg v1.5.1
+   Compiling serde_core v1.0.229
+   Compiling version_check v0.9.5
+   Compiling memchr v2.8.3
+   Compiling once_cell v1.21.4
+   Compiling serde v1.0.229
+   Compiling windows-link v0.2.1
+   Compiling rand_core v0.10.1
+   Compiling foldhash v0.2.0
+   Compiling equivalent v1.0.3
+   Compiling zmij v1.0.23
+   Compiling allocator-api2 v0.2.21
+   Compiling regex-syntax v0.8.11
+   Compiling ref-cast v1.0.27
+   Compiling zerocopy v0.8.63
+   Compiling getrandom v0.3.4
+   Compiling getrandom v0.4.3
+   Compiling serde_json v1.0.154
+   Compiling itoa v1.0.18
+   Compiling parking_lot_core v0.9.12
+   Compiling smallvec v1.16.3
+   Compiling libm v0.2.16
+   Compiling scopeguard v1.2.0
+   Compiling typenum v1.20.1
+   Compiling bit-vec v0.8.0
+   Compiling unicode-general-category v1.1.0
+   Compiling borrow-or-share v0.2.4
+   Compiling jsonschema-value v0.59.0
+   Compiling hashbrown v0.17.1
+   Compiling aho-corasick v1.1.5
+   Compiling lock_api v0.4.14
+   Compiling heck v0.5.0
+   Compiling bit-set v0.8.0
+   Compiling outref v0.5.2
+   Compiling thiserror v2.0.21
+   Compiling ahash v0.8.12
+   Compiling slotmap v1.1.1
+   Compiling cpufeatures v0.3.1
+   Compiling hybrid-array v0.4.15
+   Compiling bytecount v0.6.9
+   Compiling num-traits v0.2.19
+   Compiling vsimd v0.8.0
+   Compiling num-cmp v0.1.0
+   Compiling percent-encoding v2.3.2
+   Compiling micromap v0.3.0
+   Compiling tinyvec v1.13.3
+   Compiling block-buffer v0.12.1
+   Compiling crypto-common v0.2.2
+   Compiling jsonschema-regex v0.59.0
+   Compiling regex-automata v0.4.18
+   Compiling uuid-simd v0.8.0
+   Compiling windows-sys v0.61.2
+   Compiling fastrand v2.5.0
+   Compiling dyn-clone v1.0.20
+   Compiling const-oid v0.10.2
+   Compiling data-encoding v2.11.1
+   Compiling unicode-normalization v0.1.26
+   Compiling fnv v1.0.7
+   Compiling bit-vec v0.10.1
+   Compiling log v0.4.34
+   Compiling memmap2 v0.9.11
+   Compiling wait-timeout v0.2.1
+   Compiling quick-error v1.2.3
+   Compiling i_key_sort v0.12.0
+   Compiling i_tree v0.20.0
+   Compiling ryu v1.0.23
+   Compiling chacha20 v0.10.2
+   Compiling rand_xorshift v0.5.0
+   Compiling core_detect v1.0.0
+   Compiling bitflags v2.13.2
+   Compiling unarray v0.1.4
+   Compiling digest v0.11.3
+   Compiling tempfile v3.27.0
+   Compiling parking_lot v0.12.5
+   Compiling fontdb v0.24.0
+   Compiling sha2 v0.11.1
+   Compiling indexmap v2.14.2
+   Compiling fancy-regex v0.19.2
+   Compiling regex v1.13.1
+   Compiling rusty-fork v0.3.1
+   Compiling rand v0.10.3
+   Compiling bit-set v0.11.1
+   Compiling syn v3.0.9
+   Compiling syn v2.0.119
+   Compiling num-integer v0.1.47
+   Compiling num-complex v0.4.6
+   Compiling num-bigint v0.4.8
+   Compiling num-iter v0.1.46
+   Compiling proptest v1.12.0
+   Compiling i_float v5.0.0
+   Compiling serde_derive_internals v0.30.0
+   Compiling num-rational v0.4.2
+   Compiling i_shape v5.0.0
+   Compiling serde_derive v1.0.229
+   Compiling ref-cast-impl v1.0.27
+   Compiling bytemuck_derive v1.12.1
+   Compiling thiserror-impl v2.0.21
+   Compiling strum_macros v0.28.0
+   Compiling num v0.4.3
+   Compiling schemars_derive v1.2.3
+   Compiling fraction v0.17.0
+   Compiling i_overlay v9.1.0
+   Compiling bytemuck v1.25.2
+   Compiling font-types v0.12.7
+   Compiling strum v0.28.0
+   Compiling read-fonts v0.41.0
+   Compiling fluent-uri v0.4.1
+   Compiling email_address v0.2.9
+   Compiling schemars v1.2.3
+   Compiling skrifa v0.44.0
+   Compiling referencing v0.59.0
+   Compiling jsonschema v0.59.0
+   Compiling tt-model v0.0.1 (C:\Users\kaiga\work\review\m2-c22-r2\crates\model)
+   Compiling tt-vector v0.0.1 (C:\Users\kaiga\work\review\m2-c22-r2\crates\vector)
+    Finished `release` profile [optimized + debuginfo] target(s) in 3m 15s
+     Running tests\c22_worst_case.rs (target\release\deps\c22_worst_case-842b9c35c3e37cf8.exe)
+
+running 1 test
+100000-small-curves-plus-one: [Object {"wallMs": Number(3374.049), "units": Number(931042320), "outcome": 
+String("ok"), "zones": Number(0), "strokes": Number(100001)}, Object {"wallMs": Number(2674.5039), "units": 
+Number(931042320), "outcome": String("ok"), "zones": Number(0), "strokes": Number(100001)}]
+grid-200x200-crossing-lines: [Object {"wallMs": Number(655.4502), "units": Number(318410926), "outcome": String("ok"), 
+"zones": Number(39601), "strokes": Number(80400)}, Object {"wallMs": Number(663.1571), "units": Number(318410926), 
+"outcome": String("ok"), "zones": Number(39601), "strokes": Number(80400)}]
+grid-600x600-crossing-lines: [Object {"wallMs": Number(3015.7882), "units": Number(1672507212), "outcome": 
+String("limit.exceeded: the planar map needs more than 1200000000 units of work"), "zones": Number(0), "strokes": 
+Number(0)}, Object {"wallMs": Number(3070.0214), "units": Number(1672507212), "outcome": String("limit.exceeded: the 
+planar map needs more than 1200000000 units of work"), "zones": Number(0), "strokes": Number(0)}]
+10000-concentric-squares: [Object {"wallMs": Number(1818.6741), "units": Number(1200160000), "outcome": 
+String("limit.exceeded: the planar map needs more than 1200000000 units of work"), "zones": Number(0), "strokes": 
+Number(0)}, Object {"wallMs": Number(1708.9552999999999), "units": Number(1200160000), "outcome": 
+String("limit.exceeded: the planar map needs more than 1200000000 units of work"), "zones": Number(0), "strokes": 
+Number(0)}]
+20000-separate-closed-squares: [Object {"wallMs": Number(326.82959999999997), "units": Number(137183593), "outcome": 
+String("ok"), "zones": Number(20000), "strokes": Number(20000)}, Object {"wallMs": Number(334.0017), "units": 
+Number(137183593), "outcome": String("ok"), "zones": Number(20000), "strokes": Number(20000)}]
+1500-random-crossing-lines: [Object {"wallMs": Number(2451.0081), "units": Number(1208806567), "outcome": 
+String("limit.exceeded: the planar map needs more than 1200000000 units of work"), "zones": Number(0), "strokes": 
+Number(0)}, Object {"wallMs": Number(1971.6328999999998), "units": Number(1208806567), "outcome": 
+String("limit.exceeded: the planar map needs more than 1200000000 units of work"), "zones": Number(0), "strokes": 
+Number(0)}]
+5000-point-random-scribble: [Object {"wallMs": Number(266.5813), "units": Number(1515558800), "outcome": 
+String("limit.exceeded: the planar map needs more than 1200000000 units of work"), "zones": Number(0), "strokes": 
+Number(0)}, Object {"wallMs": Number(272.81460000000004), "units": Number(1515558800), "outcome": 
+String("limit.exceeded: the planar map needs more than 1200000000 units of work"), "zones": Number(0), "strokes": 
+Number(0)}]
+100000-point-dense-zigzag: [Object {"wallMs": Number(43.201499999999996), "units": Number(15000482029), "outcome": 
+String("limit.exceeded: the planar map needs more than 1200000000 units of work"), "zones": Number(0), "strokes": 
+Number(0)}, Object {"wallMs": Number(36.928000000000004), "units": Number(15000482029), "outcome": 
+String("limit.exceeded: the planar map needs more than 1200000000 units of work"), "zones": Number(0), "strokes": 
+Number(0)}]
+100000-coincident-outlines-plus-one: [Object {"wallMs": Number(474.5312), "units": Number(60003200026), "outcome": 
+String("limit.exceeded: the planar map needs more than 1200000000 units of work"), "zones": Number(0), "strokes": 
+Number(0)}, Object {"wallMs": Number(416.2693), "units": Number(60003200026), "outcome": String("limit.exceeded: the 
+planar map needs more than 1200000000 units of work"), "zones": Number(0), "strokes": Number(0)}]
+worst ("100000-small-curves-plus-one", 3374.049); observations in 
+C:\Users\kaiga\work\review\m2-c22-r2\crates\vector\../../target/evidence/c22-planar\planar-worst-case-windows.json
+test adversarial_layers_settle_or_are_refused_within_the_planar_budget ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 26.51s
+

@@ -1,0 +1,29 @@
+cargo :    Compiling tt-executor v0.0.1 (C:\Users\kaiga\work\review\m2-c22-r2\crates\executor)
+At line:2 char:431
++ ... vector.log; cargo test -p tt-executor --test c22_r1_commands --test c ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (   Compiling tt...rates\executor):String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 1.81s
+     Running tests\c22_r1_cache.rs (target\debug\deps\c22_r1_cache-a138c73c192038ac.exe)
+
+running 1 test
+test repeated_reads_past_the_512_map_capacity_have_stable_retained_memory ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.59s
+
+     Running tests\c22_r1_commands.rs (target\debug\deps\c22_r1_commands-1fb5b96b05266c99.exe)
+
+running 8 tests
+test painting_a_pencil_with_a_gradient_stores_the_drag_mapping ... ok
+test crossing_path_paints_a_zone_between_sample_positions ... ok
+test repainting_with_solid_preserves_the_existing_fill_matrix ... ok
+test painting_closed_and_gap_closed_points_paints_both_targets ... ok
+test save_has_a_recovery_entry_for_every_used_colour_even_without_prior_copy ... ok
+test loading_a_drawing_recovers_its_missing_colour ... ok
+test loading_repairs_inconsistent_boundary_sides_and_reports_it ... ok
+test json_import_recovers_missing_colour_references_in_the_same_transaction ... ok
+
+test result: ok. 8 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.21s
+

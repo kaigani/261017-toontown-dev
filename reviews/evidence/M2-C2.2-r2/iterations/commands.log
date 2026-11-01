@@ -1,0 +1,46 @@
+cargo :    Compiling tt-executor v0.0.1 (C:\Users\kaiga\work\review\m2-c22-r2\crates\executor)
+At line:2 char:117
++ ... ometry.log; cargo test -p tt-executor --test c22_r2_commands --locked ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (   Compiling tt...rates\executor):String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 1.92s
+     Running tests\c22_r2_commands.rs (target\debug\deps\c22_r2_commands-ac075e2a55a9422f.exe)
+
+running 7 tests
+test gap_preference_dry_run_writes_nothing ... ok
+test pencil_solid_keeps_matrix_click_gradient_defaults_and_invisible_rejects_matrix ... ok
+test path_reentry_across_two_layers_is_one_transaction_and_respects_only_painted ... ok
+mixed gap targets {"drawingId":"dr_01K742SG0KKMCAP9X1E6Z5P4SW","painted":[{"drawingId":"dr_01K742SG0KKMCAP9X1E6Z5P4SW",
+"objectId":"zn_VW0GEY0FT1XM3TESWYV8DDNK71","objectKind":"zone","previousColourId":null},{"drawingId":"dr_01K742SG0KKMCA
+P9X1E6Z5P4SW","objectId":"st_01K7JJN800DDW44SJVC40KANBT","objectKind":"pencil","previousColourId":"col_01K742SG059XGSNZ
+6M9MACZ2ZY"},{"drawingId":"dr_01K742SG0KKMCAP9X1E6Z5P4SW","objectId":"nd_01K7JJN800RXHD55052GG3NDRM","objectKind":"text
+","previousColourId":"col_01K742SG059XGSNZ6M9MACZ2ZY"},{"drawingId":"dr_01K742SG0KKMCAP9X1E6Z5P4SW","objectId":"zn_BMJ6
+6Z76CXFBVHDW3B3W9DG29V","objectKind":"zone","previousColourId":null},{"drawingId":"dr_01K742SG0KKMCAP9X1E6Z5P4SW","obje
+ctId":"zn_8217S3VGAVTWMMCXNABM4RVFF3","objectKind":"zone","previousColourId":null}],"skipped":[],"addedStrokeIds":["st_
+01K7JJN80098TAFQQKZYAWNCYJ"],"createdIds":["st_01K7JJN80098TAFQQKZYAWNCYJ","zn_8217S3VGAVTWMMCXNABM4RVFF3"],"modifiedId
+s":["zn_BMJ66Z76CXFBVHDW3B3W9DG29V","zn_VW0GEY0FT1XM3TESWYV8DDNK71","st_01K7JJN800DDW44SJVC40KANBT","nd_01K7JJN800RXHD5
+5052GG3NDRM"],"removedIds":[],"rev":8}
+imported right side fills [String("col_01K742SG06BQ08FCT1TT8DF8MA"), String("col_01K742SG07AYM2NGPE2YJQJJHV"), 
+String("col_01K742SG06BQ08FCT1TT8DF8MA"), String("col_01K742SG07AYM2NGPE2YJQJJHV")]
+
+thread 'json_import_repairs_clockwise_side_disagreement_without_renoding' (21592) panicked at 
+crates\executor\tests\c22_r2_commands.rs:49:5:
+import must repair inconsistent sides to longest boundary: [String("col_01K742SG06BQ08FCT1TT8DF8MA"), 
+String("col_01K742SG07AYM2NGPE2YJQJJHV"), String("col_01K742SG06BQ08FCT1TT8DF8MA"), 
+String("col_01K742SG07AYM2NGPE2YJQJJHV")]
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+test json_import_repairs_clockwise_side_disagreement_without_renoding ... FAILED
+test gap_closing_preserves_id_point_line_and_text_targets_and_undo_redo ... ok
+test saving_repeated_missing_usage_writes_exactly_one_placeholder ... ok
+test loading_clockwise_sides_is_deterministic_and_a_base ... ok
+
+failures:
+
+failures:
+    json_import_repairs_clockwise_side_disagreement_without_renoding
+
+test result: FAILED. 6 passed; 1 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.24s
+
+error: test failed, to rerun pass `-p tt-executor --test c22_r2_commands`

@@ -1,0 +1,26 @@
+Scope: all 2 workspace projects
+Lockfile is up to date, resolution step is skipped
+Progress: resolved 1, reused 0, downloaded 0, added 0
+Packages: +240
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+   ╭──────────────────────────────────────────╮
+   │                                          │
+   │   Update available! 10.12.1 → 12.16.1.   │
+   │   Changelog: https://pnpm.io/v/12.16.1   │
+   │     To update, run: pnpm add -g pnpm     │
+   │                                          │
+   ╰──────────────────────────────────────────╯
+
+Progress: resolved 240, reused 240, downloaded 0, added 24
+Progress: resolved 240, reused 240, downloaded 0, added 108
+Progress: resolved 240, reused 240, downloaded 0, added 171
+Progress: resolved 240, reused 240, downloaded 0, added 194
+Progress: resolved 240, reused 240, downloaded 0, added 236
+Progress: resolved 240, reused 240, downloaded 0, added 240, done
+
+devDependencies:
++ spdx-exceptions 2.5.0
++ spdx-license-ids 3.0.24
+
+Done in 6s using pnpm v10.12.1

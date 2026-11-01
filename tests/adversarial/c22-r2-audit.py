@@ -1,6 +1,7 @@
 """Read-only change/evidence audit; output raw determinations for the review."""
 import importlib.util
 import json
+import math
 import pathlib
 import re
 import subprocess
@@ -22,7 +23,46 @@ def mask(v):
         return re.sub(r'zn_[0-9A-Z]{26}', 'ZONE', v)
     return v
 
+def planar_receipt(d):
+    """Reject malformed raw facts and recompute every maximum, rather than accepting the stored worst field."""
+    def number(x):
+        return isinstance(x, (int, float)) and not isinstance(x, bool) and math.isfinite(x) and x >= 0
+    if not isinstance(d, dict) or not number(d.get('budgetUnits')) or not isinstance(d.get('cases'), list) or not d['cases']:
+        raise ValueError('invalid root')
+    cases = []
+    for c in d['cases']:
+        if not isinstance(c, dict) or not isinstance(c.get('name'), str) or not isinstance(c.get('runs'), list) or len(c['runs']) != 2:
+            raise ValueError('invalid case')
+        for r in c['runs']:
+            if not isinstance(r, dict) or not number(r.get('wallMs')) or not number(r.get('units')):
+                raise ValueError('invalid observation')
+            if r.get('outcome') != 'ok' and not str(r.get('outcome')).startswith('limit.exceeded:'):
+                raise ValueError('invalid outcome')
+            # spend() records the attempted charge before refusing that step. Refused observations may exceed budget.
+            if r['outcome'] == 'ok' and r['units'] > d['budgetUnits']:
+                raise ValueError('successful operation exceeded budget')
+        cases.append({'name': c['name'], 'maxWallMs': max(r['wallMs'] for r in c['runs']),
+                      'maxUnits': max(r['units'] for r in c['runs'])})
+    worst = max(cases, key=lambda c: c['maxWallMs'])
+    if d.get('worst') != {'name': worst['name'], 'wallMs': worst['maxWallMs']}:
+        raise ValueError('stored worst differs from observations')
+    return {'cases': cases, 'maxWallMs': worst['maxWallMs'], 'underTenSeconds': worst['maxWallMs'] < 10000}
+
 class Audit(unittest.TestCase):
+    def test_planar_raw_observations_and_malformed_rejection(self):
+        files = ['planar-worst-case-windows.json', 'ci-planar-worst-case-windows.json', 'ci-planar-worst-case-macos.json']
+        receipts = {p: planar_receipt(json.loads((OUT/p).read_bytes())) for p in files}
+        self.assertTrue(all(r['underTenSeconds'] for r in receipts.values()))
+        (OUT/'planar-analysis.json').write_text(json.dumps(receipts, indent=2)+'\n', encoding='utf-8')
+        raw = json.loads((OUT/files[0]).read_bytes())
+        for bad in [True, float('inf'), -1, '1']:
+            d = json.loads(json.dumps(raw));d['cases'][0]['runs'][0]['wallMs'] = bad
+            with self.assertRaises(ValueError):planar_receipt(d)
+        for d in [{}, {'budgetUnits': 1, 'cases': []}, {'budgetUnits': 1, 'cases': [None]}]:
+            with self.assertRaises(ValueError):planar_receipt(d)
+        raw['worst']['wallMs'] += 1
+        with self.assertRaises(ValueError):planar_receipt(raw)
+
     def test_c22_golden_only_zone_ids_and_number_representation(self):
         p='crates/executor/tests/golden/c22-determinism.json'
         old=json.loads(git('show','648e22d:'+p))

@@ -1,0 +1,31 @@
+cargo :    Compiling tt-executor v0.0.1 (C:\Users\kaiga\work\review\m2-c22-r2\crates\executor)
+At line:2 char:1
++ cargo test -p tt-executor --test c22_r2_commands recovery_preserves_f ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (   Compiling tt...rates\executor):String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 2.31s
+     Running tests\c22_r2_commands.rs (target\debug\deps\c22_r2_commands-ac075e2a55a9422f.exe)
+
+running 1 test
+recovered full swatch {"colourId":"col_01K9YYYYYYYYYYYYYYYYYYYYYY","type":"swatch","rev":2,"name":"Protected 
+recovered","kind":"solid","deformable":false,"values":{"sty_01K7JJN8031K62JK902FWFBCGV":{"rgba":"#102030FF"}}}
+
+thread 'recovery_preserves_full_swatch_extensions_including_paint_protection' (20676) panicked at 
+crates\executor\tests\c22_r2_commands.rs:176:5:
+assertion `left == right` failed: 10 4.11 full swatch copy and SI-061 paint protection must survive recovery
+  left: Null
+ right: Object {"dev.toontown.paint": Object {"protected": Bool(true)}, "org.review.swatch": Object {"tag": 
+String("retain")}}
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+test recovery_preserves_full_swatch_extensions_including_paint_protection ... FAILED
+
+failures:
+
+failures:
+    recovery_preserves_full_swatch_extensions_including_paint_protection
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 9 filtered out; finished in 0.09s
+
+error: test failed, to rerun pass `-p tt-executor --test c22_r2_commands`
