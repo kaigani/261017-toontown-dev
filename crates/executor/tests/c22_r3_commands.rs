@@ -185,7 +185,7 @@ fn load_and_import_recovery_keep_nested_extensions_meta_deformable_and_path_prot
     let i = p.drawings.iter().position(|d| d.id().as_str() == D).unwrap();
     let mut d = serde_json::to_value(&p.drawings[i]).unwrap();
     d["nodes"][0]["strokes"][1]["colourId"] = json!(M);
-    let ext = json!({"dev.toontown.paint":{"protected":true},"org.review":{"nested":{"arr":[1,{"more":[null,true,"kept"]}]}}});
+    let ext = json!({"dev.toontown.paint":{"protected":true},"org.review":{"nested":{"arr":[1,{"more":[null,true,"kept"],"type":"foreign","rev":321}]}}});
     let meta = json!({"note":{"text":"full copy","numbers":[1,2,3]}});
     d["colourRecovery"] = json!([{"colourId":M,"paletteId":"pal_r3","paletteName":"Kept","styles":[{"styleId":"sty_r3","styleName":"Default"}],"swatch":{"colourId":M,"type":"swatch","rev":7,"name":"Protected","kind":"solid","deformable":true,"values":{"sty_r3":{"rgba":"#102030FF"}},"ext":ext,"meta":meta}}]);
     p.drawings[i] = tt_model::object::from_json(&d).unwrap();

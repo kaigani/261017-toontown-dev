@@ -58,9 +58,14 @@ fn exact_interior_endpoint_and_snapped_collinear_controls() {
     assert!(matches!(r.outcomes.get(&0),Some(Outcome::Split(p)) if p.len()==2));
     assert!(!matches!(r.outcomes.get(&1), Some(Outcome::Split(_))));
     // Both endpoints lie on the other infinite line; then a raw crossing whose endpoints snap onto that line.
+    let mut observations = Vec::new();
     for p in [vec![(-5., 0.), (5., 0.)], vec![(-5., 0.001), (5., -0.001)]] {
         let r =
             node(&[ns("a", &[(-10., 0.), (10., 0.)], false), ns("b", &p, true)], &mut Work::unlimited("r3")).unwrap();
+        eprintln!("collinear raw points={p:?}, result={r:?}");
+        observations.push(r);
+    }
+    for r in observations {
         assert!(!r.outcomes.values().any(|v| matches!(v, Outcome::Split(_))), "collinear after snapping: {r:?}");
     }
 }
