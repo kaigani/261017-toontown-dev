@@ -45,6 +45,15 @@ pub(crate) fn strokes_of(
     for (i, id) in list.iter().enumerate() {
         let local = vd::local_id(d.id().as_str(), id).unwrap_or(id);
         if local.starts_with("zn_") {
+            // A zone stands for its bounding strokes; a stale zone ID refuses the call (C23-R1-09).
+            let (_, strokes) = super::draw::zone_target(cx, d, local, &format!("/ids/{i}"))?;
+            for s in strokes {
+                if let Some(l) = vd::locate(d, &s)
+                    && seen.insert(l.id.clone())
+                {
+                    out.push(l);
+                }
+            }
             continue;
         }
         let Some(l) = vd::locate(d, local) else {
@@ -527,6 +536,14 @@ pub(crate) fn draw_centre_line_apply(cx: &mut Cx, p: CentreLineParams) -> Result
         .filter(|l| vd::stroke_at(&d, &l.pointer).is_some_and(|s| *s.kind() == StrokeKind::Brush))
         .collect();
     if brushes.is_empty() {
+        // Only painted zones that are not brush strokes: the typed reason (02 §8.5; C23-R1-12).
+        if warnings.iter().any(|w| w == "drawing.centreLineOnFill") {
+            return Err(err(
+                "drawing.centreLineOnFill",
+                "the selection holds painted zones but no brush strokes; extract centre lines before filling",
+                json!({ "pointer": "/ids" }),
+            ));
+        }
         return Err(nothing_to_do("extract"));
     }
     let mut order: Vec<&Located> = brushes.iter().collect();

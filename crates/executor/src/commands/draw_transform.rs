@@ -37,6 +37,15 @@ fn objects_of(cx: &Cx, d: &Drawing, ids: Option<&Vec<String>>, what: &str) -> Re
     for (i, id) in list.iter().enumerate() {
         let local = vd::local_id(d.id().as_str(), id).unwrap_or(id);
         if local.starts_with("zn_") {
+            // A zone stands for its bounding strokes; a stale zone ID refuses the call (C23-R1-09).
+            let (_, strokes) = super::draw::zone_target(cx, d, local, &format!("/ids/{i}"))?;
+            for s in strokes {
+                if let Some(l) = vd::locate(d, &s)
+                    && !found.iter().any(|f| f.id == l.id)
+                {
+                    found.push(l);
+                }
+            }
             continue;
         }
         let Some(l) = vd::locate(d, local) else {

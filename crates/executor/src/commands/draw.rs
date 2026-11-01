@@ -271,6 +271,31 @@ pub(crate) fn selection_ids(cx: &Cx, d: &Drawing) -> Vec<String> {
     cx.app().selection_of("drawing").into_iter().filter_map(|k| k.strip_prefix(&prefix).map(str::to_owned)).collect()
 }
 
+/// What an explicit zone ID names (C23-R1-09): its layer and its bounding strokes, or `colour.staleZoneId` when no
+/// zone of the drawing has that ID (zone IDs are re-derived when their boundary changes, 02 §3.12). Every caller
+/// resolves all explicit targets before staging anything, so a stale ID refuses the whole call.
+pub(crate) fn zone_target(
+    cx: &Cx,
+    d: &Drawing,
+    local: &str,
+    pointer: &str,
+) -> Result<(String, Vec<String>), CommandError> {
+    for lz in crate::planar::drawing_zones(&cx.planar_cache(), d)? {
+        if let Some(z) = lz.map.zone_by_id(local) {
+            let zone = &lz.map.zones[z];
+            return Ok((lz.layer.id.clone(), zone.boundary.clone()));
+        }
+    }
+    Err(err(
+        "colour.staleZoneId",
+        format!(
+            "zone `{local}` does not exist in drawing `{}` (zones are re-identified when their boundary changes)",
+            d.name()
+        ),
+        json!({ "pointer": pointer, "id": local }),
+    ))
+}
+
 pub(crate) fn nothing_to_do(what: &str) -> CommandError {
     err("drawing.nothingToDo", format!("there is nothing to {what}"), json!({}))
         .hint("pass ids, or select drawing objects first (edit.selection.set {context: \"drawing\"})")

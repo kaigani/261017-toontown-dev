@@ -47,7 +47,7 @@ fn find(cx: &Cx, d: &Drawing, id: &str, pointer: &str) -> Result<(String, Target
             }
         }
         return Err(err(
-            "drawing.staleZoneId",
+            "colour.staleZoneId",
             format!(
                 "zone `{id}` does not exist in drawing `{}` (zones are re-identified when their boundary changes)",
                 d.name()
@@ -862,9 +862,10 @@ pub(crate) fn colour_recolour_apply(cx: &mut Cx, p: RecolourParams) -> Result<Re
                     err("scene.noTarget", "there is no current scene", json!({ "pointer": "/sceneId" }))
                 })?,
             };
+            // The drawings exposed in the scene: those its elements' exposure runs reference (03 §9.3; C23-R1-16).
             for e in doc.elements() {
                 if doc.scene_of(e.id()) == Some(&scene) {
-                    drawings.extend(bank_drawings(&doc, e.id()));
+                    drawings.extend(e.exposure().iter().flatten().filter_map(|(d, _)| d.clone()));
                 }
             }
         }
@@ -889,6 +890,53 @@ pub(crate) fn colour_recolour_apply(cx: &mut Cx, p: RecolourParams) -> Result<Re
     drawings.sort();
     drawings.dedup();
     let want = |t: RecolourTarget| p.targets.contains(&t);
+    // A protected colour counts as skipped only where it is used in scope by the chosen targets (C23-R1-13).
+    if !skipped_protected.is_empty() {
+        let mut used: BTreeSet<String> = BTreeSet::new();
+        for id in &drawings {
+            let Some(d) = doc.drawing(id) else { continue };
+            if *d.locked() {
+                continue;
+            }
+            for o in vd::objects(d) {
+                if let Some(s) = vd::stroke_at(d, &o.pointer) {
+                    let wanted = match s.kind() {
+                        StrokeKind::Pencil => want(RecolourTarget::Lines),
+                        StrokeKind::Brush => want(RecolourTarget::BrushStrokes),
+                        StrokeKind::Invisible => false,
+                    };
+                    if let Some(c) = s.colour_id().as_ref().map(|c| c.as_str())
+                        && wanted
+                        && skipped_protected.iter().any(|x| x == c)
+                    {
+                        used.insert(c.to_owned());
+                    }
+                } else if want(RecolourTarget::Text)
+                    && let Some(content) = vd::node_at(d, &o.pointer).and_then(vd::text_content)
+                {
+                    for r in &content.runs {
+                        if let Some(c) = r.colour_id.as_deref()
+                            && skipped_protected.iter().any(|x| x == c)
+                        {
+                            used.insert(c.to_owned());
+                        }
+                    }
+                }
+            }
+            if want(RecolourTarget::Zones) {
+                for lz in crate::planar::drawing_zones(&cx.planar_cache(), d)? {
+                    for f in lz.fills.iter().flatten() {
+                        if let Some(c) = f.colour_id.as_deref()
+                            && skipped_protected.iter().any(|x| x == c)
+                        {
+                            used.insert(c.to_owned());
+                        }
+                    }
+                }
+            }
+        }
+        skipped_protected.retain(|c| used.contains(c));
+    }
     // Matrix rule (03 §9.3): kept when both colours are gradients or textures, else the default for the new colour.
     let new_matrix =
         |from_k: SwatchKind, to: &str, to_k: SwatchKind, old: Option<[f64; 6]>, b: Option<&Rect>| -> Option<[f64; 6]> {
@@ -1006,7 +1054,7 @@ pub(crate) fn colour_recolour_apply(cx: &mut Cx, p: RecolourParams) -> Result<Re
         }
     }
     if changes.is_empty() && paints.is_empty() {
-        if map.is_empty() && !skipped_protected.is_empty() {
+        if !skipped_protected.is_empty() {
             return Err(err(
                 "colour.protected",
                 "every replaced colour is protected (pass respectProtected: false to override)",

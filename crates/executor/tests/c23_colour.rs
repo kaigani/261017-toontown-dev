@@ -76,7 +76,7 @@ fn fill_mapping_get_reads_handles_and_refuses_unmappable_objects() {
         assert_eq!((e.code.as_str(), e.details["reason"].as_str()), ("colour.notMappable", Some(reason)), "{id}");
     }
     let e = err(&h, "colour.fillMapping.get", json!({ "drawingId": D1, "objectId": "zn_0000000000000000000000000Z" }));
-    assert_eq!(e.code, "drawing.staleZoneId");
+    assert_eq!(e.code, "colour.staleZoneId");
 }
 
 #[test]
@@ -279,7 +279,7 @@ fn protected_colours_are_skipped_unless_overridden() {
     let r = ok(
         &h,
         "colour.recolour.apply",
-        json!({ "map": [{"from": skin, "to": sky}, {"from": sky, "to": ink}], "scope": "drawing", "drawingIds": [D1] }),
+        json!({ "map": [{"from": skin, "to": sky}, {"from": ink, "to": sky}], "scope": "drawing", "drawingIds": [D1] }),
     );
     assert_eq!(r["skippedProtected"], json!([skin]));
     let r = ok(

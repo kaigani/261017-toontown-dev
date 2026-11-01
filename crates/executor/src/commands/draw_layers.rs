@@ -59,6 +59,9 @@ fn selected_layers(cx: &Cx, d: &Drawing, ids: Option<&Vec<String>>) -> Result<Ve
     for (i, id) in list.iter().enumerate() {
         let local = vd::local_id(d.id().as_str(), id).unwrap_or(id);
         if local.starts_with("zn_") {
+            // A zone stands for its layer; a stale zone ID refuses the call (C23-R1-09).
+            let (layer, _) = super::draw::zone_target(cx, d, local, &format!("/ids/{i}"))?;
+            want.insert(layer);
             continue;
         }
         let l = vd::locate(d, local).ok_or_else(|| not_found(d, id, i))?;
@@ -654,10 +657,13 @@ pub(crate) fn draw_arrange_apply(cx: &mut Cx, p: ArrangeParams) -> Result<Arrang
     let mut objs: Vec<Located> = Vec::new();
     for (i, id) in list.iter().enumerate() {
         let local = vd::local_id(d.id().as_str(), id).unwrap_or(id);
-        if local.starts_with("zn_") {
-            continue;
-        }
-        let l = vd::locate(&d, local).ok_or_else(|| not_found(&d, id, i))?;
+        let l = if local.starts_with("zn_") {
+            // A zone stands for its layer; a stale zone ID refuses the call (C23-R1-09).
+            let (layer, _) = super::draw::zone_target(cx, &d, local, &format!("/ids/{i}"))?;
+            vd::locate(&d, &layer).ok_or_else(|| not_found(&d, id, i))?
+        } else {
+            vd::locate(&d, local).ok_or_else(|| not_found(&d, id, i))?
+        };
         if !objs.iter().any(|o| o.id == l.id) {
             objs.push(l);
         }

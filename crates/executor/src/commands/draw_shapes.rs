@@ -45,6 +45,9 @@ pub(crate) struct ShapeResult {
 /// Common shape options.
 struct Common<'a> {
     drawing_id: Option<&'a str>,
+    element_id: Option<&'a str>,
+    frame: Option<u32>,
+    create_drawing: bool,
     colour_id: Option<&'a str>,
     thickness: Option<f64>,
     pen_id: Option<&'a str>,
@@ -59,7 +62,15 @@ fn add(cx: &mut Cx, c: &Common<'_>, geometry: Value, closed: bool) -> Result<Sha
         if let Some(m) = geometry.as_object() {
             o.extend(m.clone());
         }
-        for (k, val) in [("drawingId", c.drawing_id), ("colourId", c.colour_id), ("penId", c.pen_id)] {
+        if let Some(f) = c.frame {
+            o.insert("frame".into(), json!(f));
+        }
+        if c.create_drawing {
+            o.insert("createDrawing".into(), json!(true));
+        }
+        for (k, val) in
+            [("drawingId", c.drawing_id), ("elementId", c.element_id), ("colourId", c.colour_id), ("penId", c.pen_id)]
+        {
             if let Some(x) = val {
                 o.insert(k.into(), json!(x));
             }
@@ -117,6 +128,15 @@ pub(crate) struct BoxShapeParams {
     /// The drawing (default: current).
     #[serde(default)]
     drawing_id: Option<String>,
+    /// Or the cell of this element (02 §13.1 item 4; ADR-0016 common addressing).
+    #[serde(default)]
+    element_id: Option<String>,
+    /// The frame of that cell (default: current frame).
+    #[serde(default)]
+    frame: Option<u32>,
+    /// Create the cell's drawing when it has none.
+    #[serde(default)]
+    create_drawing: bool,
     /// Press point.
     from: Point,
     /// Release point.
@@ -149,6 +169,9 @@ impl BoxShapeParams {
     fn common(&self) -> Common<'_> {
         Common {
             drawing_id: self.drawing_id.as_deref(),
+            element_id: self.element_id.as_deref(),
+            frame: self.frame,
+            create_drawing: self.create_drawing,
             colour_id: self.colour_id.as_deref(),
             thickness: self.thickness,
             pen_id: self.pen_id.as_deref(),
@@ -189,6 +212,15 @@ pub(crate) struct EllipseParams {
     /// The drawing (default: current).
     #[serde(default)]
     drawing_id: Option<String>,
+    /// Or the cell of this element (02 §13.1 item 4; ADR-0016 common addressing).
+    #[serde(default)]
+    element_id: Option<String>,
+    /// The frame of that cell (default: current frame).
+    #[serde(default)]
+    frame: Option<u32>,
+    /// Create the cell's drawing when it has none.
+    #[serde(default)]
+    create_drawing: bool,
     /// Press point.
     from: Point,
     /// Release point.
@@ -230,6 +262,9 @@ pub(crate) struct EllipseParams {
 pub(crate) fn draw_ellipse_add(cx: &mut Cx, p: EllipseParams) -> Result<ShapeResult, CommandError> {
     let p = BoxShapeParams {
         drawing_id: p.drawing_id,
+        element_id: p.element_id,
+        frame: p.frame,
+        create_drawing: p.create_drawing,
         from: p.from,
         to: p.to,
         square: p.circle,
@@ -273,6 +308,15 @@ pub(crate) struct LineParams {
     /// The drawing (default: current).
     #[serde(default)]
     drawing_id: Option<String>,
+    /// Or the cell of this element (02 §13.1 item 4; ADR-0016 common addressing).
+    #[serde(default)]
+    element_id: Option<String>,
+    /// The frame of that cell (default: current frame).
+    #[serde(default)]
+    frame: Option<u32>,
+    /// Create the cell's drawing when it has none.
+    #[serde(default)]
+    create_drawing: bool,
     /// Start (required unless `continuePrevious`).
     #[serde(default)]
     from: Option<Point>,
@@ -315,13 +359,15 @@ pub(crate) struct LineParams {
 pub(crate) fn draw_line_add(cx: &mut Cx, p: LineParams) -> Result<ShapeResult, CommandError> {
     let from = match (p.from, p.continue_previous) {
         (Some(f), false) => P::new(f.x, f.y),
-        (_, true) => previous_line_end(cx, p.drawing_id.as_deref())?.ok_or_else(|| {
-            err(
-                "drawing.nothingToDo",
-                "there is no previous line to continue",
-                json!({ "pointer": "/continuePrevious" }),
-            )
-        })?,
+        (_, true) => {
+            previous_line_end(cx, p.drawing_id.as_deref(), p.element_id.as_deref(), p.frame)?.ok_or_else(|| {
+                err(
+                    "drawing.nothingToDo",
+                    "there is no previous line to continue",
+                    json!({ "pointer": "/continuePrevious" }),
+                )
+            })?
+        }
         (None, false) => {
             return Err(err(
                 "arg.invalid",
@@ -349,6 +395,9 @@ pub(crate) fn draw_line_add(cx: &mut Cx, p: LineParams) -> Result<ShapeResult, C
     }
     let c = Common {
         drawing_id: p.drawing_id.as_deref(),
+        element_id: p.element_id.as_deref(),
+        frame: p.frame,
+        create_drawing: p.create_drawing,
         colour_id: p.colour_id.as_deref(),
         thickness: p.thickness,
         pen_id: p.pen_id.as_deref(),
@@ -365,9 +414,14 @@ fn remember_line_end(cx: &mut Cx, drawing: &str, to: P) {
     cx.app_mut().tool_memory.insert(format!("line.end:{drawing}"), format!("{},{}", to.x, to.y));
 }
 
-fn previous_line_end(cx: &mut Cx, drawing: Option<&str>) -> Result<Option<P>, CommandError> {
+fn previous_line_end(
+    cx: &mut Cx,
+    drawing: Option<&str>,
+    element: Option<&str>,
+    frame: Option<u32>,
+) -> Result<Option<P>, CommandError> {
     let mut none = Vec::new();
-    let t = super::draw::target(cx, drawing, None, None, false, &mut none)?;
+    let t = super::draw::target(cx, drawing, element, frame, false, &mut none)?;
     let v = cx.app().tool_memory.get(&format!("line.end:{}", t.id.as_str())).cloned();
     Ok(v.as_deref().and_then(|s| {
         let (x, y) = s.split_once(',')?;
@@ -398,6 +452,15 @@ pub(crate) struct PolylineParams {
     /// The drawing (default: current).
     #[serde(default)]
     drawing_id: Option<String>,
+    /// Or the cell of this element (02 §13.1 item 4; ADR-0016 common addressing).
+    #[serde(default)]
+    element_id: Option<String>,
+    /// The frame of that cell (default: current frame).
+    #[serde(default)]
+    frame: Option<u32>,
+    /// Create the cell's drawing when it has none.
+    #[serde(default)]
+    create_drawing: bool,
     /// Anchors (at least 2).
     #[schemars(length(min = 2, max = 10000))]
     points: Vec<PolyPoint>,
@@ -454,9 +517,12 @@ pub(crate) fn draw_polyline_add(cx: &mut Cx, p: PolylineParams) -> Result<ShapeR
         .collect();
     if p.snap && p.snap_radius > 0.0 {
         let mut none = Vec::new();
-        let t = super::draw::target(cx, p.drawing_id.as_deref(), None, None, false, &mut none)?;
+        let t = super::draw::target(cx, p.drawing_id.as_deref(), p.element_id.as_deref(), p.frame, false, &mut none);
+        // A cell without a drawing yet (createDrawing) has nothing to snap to.
         let doc = cx.document()?.clone();
-        if let Ok(d) = t.drawing(&doc) {
+        if let Ok(t) = t
+            && let Ok(d) = t.drawing(&doc)
+        {
             let existing: Vec<P> = tt_vector::drawing::objects(&d)
                 .iter()
                 .filter_map(|o| tt_vector::drawing::stroke_at(&d, &o.pointer))
@@ -491,6 +557,9 @@ pub(crate) fn draw_polyline_add(cx: &mut Cx, p: PolylineParams) -> Result<ShapeR
     let bezier = json!({ "bezier": list.iter().map(|q| json!({ "x": q.x, "y": q.y })).collect::<Vec<_>>() });
     let c = Common {
         drawing_id: p.drawing_id.as_deref(),
+        element_id: p.element_id.as_deref(),
+        frame: p.frame,
+        create_drawing: p.create_drawing,
         colour_id: p.colour_id.as_deref(),
         thickness: p.thickness,
         pen_id: p.pen_id.as_deref(),
