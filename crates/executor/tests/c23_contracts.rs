@@ -210,17 +210,13 @@ fn the_contract_covers_every_new_mutation() {
 
 #[test]
 fn every_new_mutation_keeps_the_common_contract() {
-    let colours: Vec<String> = {
-        let h = fixture();
-        let v = h
-            .snapshot()
-            .unwrap()
-            .unwrap()
-            .palettes()
-            .flat_map(|p| p.swatches().iter().map(|s| s.colour_id().as_str().to_owned()))
-            .collect();
-        v
-    };
+    let colours: Vec<String> = fixture()
+        .snapshot()
+        .unwrap()
+        .unwrap()
+        .palettes()
+        .flat_map(|p| p.swatches().iter().map(|s| s.colour_id().as_str().to_owned()))
+        .collect();
     let mut no_change = Vec::new();
     for (i, (cmd, params)) in cases().into_iter().enumerate() {
         let h = fixture();
