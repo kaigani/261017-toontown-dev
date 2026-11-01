@@ -3031,10 +3031,17 @@ export const COMMAND_INDEX = {
     result: "draw.drawing.render.result",
     examples: [
       {
-        width: 1,
+        drawingId: "drawingBank:#1/drawing:#1",
+        width: 256,
+      },
+      {
+        drawingId: "drawingBank:#1/drawing:#1",
+        width: 320,
+        region: "field12",
+        background: "#FFFFFFFF",
+        showStrokes: true,
       },
     ],
-    milestone: "M2 C2.3",
   },
   "draw.ellipse.add": {
     kind: "action",
@@ -32083,129 +32090,206 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
       "rev",
     ],
   },
+  "draw.drawing.render.RegionIn": {
+    description: "The region to render.",
+    anyOf: [
+      {
+        description: "A named region.",
+        $ref: "#/$defs/draw.drawing.render.RegionName",
+      },
+      {
+        description: "A rectangle.",
+        $ref: "#/$defs/draw.drawing.render.RegionRect",
+      },
+    ],
+  },
+  "draw.drawing.render.RegionName": {
+    description: "A named region.",
+    oneOf: [
+      {
+        description: "The drawing's visible bounds.",
+        type: "string",
+        const: "bounds",
+      },
+      {
+        description: "The 12-field guide (x ±600, y ±450).",
+        type: "string",
+        const: "field12",
+      },
+      {
+        description: "The 16-field guide (x ±800, y ±600).",
+        type: "string",
+        const: "field16",
+      },
+      {
+        description: "The default camera frame (12 fields wide, the project's aspect).",
+        type: "string",
+        const: "camera",
+      },
+    ],
+  },
+  "draw.drawing.render.RegionRect": {
+    description: "A rectangle `{x, y, width, height}` (du).",
+    type: "object",
+    properties: {
+      x: {
+        description: "Minimum x.",
+        type: "number",
+      },
+      y: {
+        description: "Minimum y.",
+        type: "number",
+      },
+      width: {
+        description: "Width.",
+        type: "number",
+        minimum: 0,
+      },
+      height: {
+        description: "Height.",
+        type: "number",
+        minimum: 0,
+      },
+    },
+    additionalProperties: false,
+    required: [
+      "x",
+      "y",
+      "width",
+      "height",
+    ],
+  },
   "draw.drawing.render.params": {
-    title: "draw.drawing.render parameters",
+    title: "RenderParams",
+    description: "`draw.drawing.render` parameters.",
     type: "object",
     properties: {
       drawingId: {
-        type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
+        description: "The drawing (default: current).",
+        type: [
+          "string",
+          "null",
+        ],
+        default: null,
       },
       width: {
+        description: "Image width (px).",
         type: "integer",
-        minimum: 1,
         maximum: 8192,
+        minimum: 1,
       },
       height: {
-        type: "integer",
+        description: "Image height (px; default: the region's aspect).",
+        type: [
+          "integer",
+          "null",
+        ],
+        default: null,
         minimum: 1,
         maximum: 8192,
       },
       region: {
-        anyOf: [
-          {
-            type: "string",
-            enum: [
-              "bounds",
-              "field12",
-              "field16",
-              "camera",
-            ],
-          },
-          {
-            type: "object",
-            properties: {
-              x: {
-                type: "number",
-              },
-              y: {
-                type: "number",
-              },
-              width: {
-                type: "number",
-              },
-              height: {
-                type: "number",
-              },
-            },
-            required: [
-              "x",
-              "y",
-              "width",
-              "height",
-            ],
-            additionalProperties: false,
-          },
-        ],
-        default: "bounds",
+        description: "Region.",
+        $ref: "#/$defs/draw.drawing.render.RegionIn",
       },
       padding: {
+        description: "Margin around the region (du).",
         type: "number",
         default: 0,
+        minimum: 0,
+        maximum: 100000,
       },
       background: {
+        description: "Background (#RRGGBB or #RRGGBBAA).",
         type: "string",
-        pattern: "^#[0-9A-Fa-f]{6}([0-9A-Fa-f]{2})?$",
-        description: "#RRGGBB or #RRGGBBAA Default: #00000000.",
+        default: "#00000000",
       },
       styleId: {
-        type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
+        description: "Palette style (default: each palette's first style).",
+        type: [
+          "string",
+          "null",
+        ],
+        default: null,
       },
       showStrokes: {
+        description: "Draw every stroke's centre path (invisible ones included) and mark open ends.",
         type: "boolean",
         default: false,
       },
       showSelection: {
+        description: "Outline the drawing selection's bounds.",
         type: "boolean",
         default: false,
       },
       path: {
-        type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "file-system path (11 §6.2)",
+        description: "Write the PNG here instead of returning it.",
+        type: [
+          "string",
+          "null",
+        ],
+        default: null,
       },
     },
+    additionalProperties: false,
     required: [
       "width",
     ],
-    additionalProperties: false,
-    "x-spec": "`drawingId?: id; width: int (1–8192); height?: int (1–8192); region: enum \"bounds\"|\"field12\"|\"field16\"|\"camera\" | object {x,y,width,height} = \"bounds\"; padding: number = 0; background: colour = #00000000; styleId?: id; showStrokes: bool = false; showSelection: bool = false; path?: path`",
   },
   "draw.drawing.render.result": {
-    title: "draw.drawing.render result",
+    title: "RenderResult",
+    description: "`{png?, path?, width, height, drawingToPixel, rev}`.",
     type: "object",
     properties: {
       png: {
-        type: "string",
-        maxLength: 65536,
+        description: "The PNG, base64 (without `path`).",
+        type: [
+          "string",
+          "null",
+        ],
       },
       path: {
-        type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "file-system path (11 §6.2)",
+        description: "The written file (with `path`).",
+        type: [
+          "string",
+          "null",
+        ],
       },
       width: {
-        type: "number",
+        description: "Width (px).",
+        type: "integer",
+        maximum: 2147483647,
+        minimum: 0,
       },
       height: {
-        type: "number",
+        description: "Height (px).",
+        type: "integer",
+        maximum: 2147483647,
+        minimum: 0,
       },
       drawingToPixel: {
+        description: "Drawing space → pixel space `[a, b, c, d, e, f]`.",
         type: "array",
         items: {
           type: "number",
         },
-        maxItems: 100000,
+        minItems: 6,
+        maxItems: 6,
       },
       rev: {
-        type: "number",
+        description: "The drawing revision rendered.",
+        type: "integer",
+        maximum: 18446744073709551615n,
+        minimum: 0,
+      },
+      pixelsSha256: {
+        description: "SHA-256 of the premultiplied RGBA8 buffer (hex), for determinism checks.",
+        type: "string",
+      },
+      warnings: {
+        description: "Objects not drawn and why (`render.colourMissing`, `render.textureMissing`, `render.bitmapSkipped`).",
+        type: "array",
+        items: true,
       },
     },
     required: [
@@ -32213,9 +32297,9 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
       "height",
       "drawingToPixel",
       "rev",
+      "pixelsSha256",
+      "warnings",
     ],
-    "x-spec": "`{png?, path?, width, height, drawingToPixel: [number], rev}`",
-    additionalProperties: false,
   },
   "draw.ellipse.add.Point": {
     description: "A point `{x, y}` in drawing units.",
@@ -85150,36 +85234,66 @@ export interface draw_drawing_rename_result {
   rev: number | bigint;
 }
 
-export interface draw_drawing_render_params {
-  /** object ID or path reference (10 §3) */
-  drawingId?: string;
+/** The region to render. */
+export type draw_drawing_render_RegionIn = draw_drawing_render_RegionName | draw_drawing_render_RegionRect;
+
+/** A named region. */
+export type draw_drawing_render_RegionName = 'bounds' | 'field12' | 'field16' | 'camera';
+
+/** A rectangle `{x, y, width, height}` (du). */
+export interface draw_drawing_render_RegionRect {
+  /** Minimum x. */
+  x: number;
+  /** Minimum y. */
+  y: number;
+  /** Width. */
   width: number;
-  height?: number;
-  region?: 'bounds' | 'field12' | 'field16' | 'camera' | {
-    x: number;
-    y: number;
-    width: number;
-    height: number;
-  };
-  padding?: number;
-  /** #RRGGBB or #RRGGBBAA Default: #00000000. */
-  background?: string;
-  /** object ID or path reference (10 §3) */
-  styleId?: string;
-  showStrokes?: boolean;
-  showSelection?: boolean;
-  /** file-system path (11 §6.2) */
-  path?: string;
+  /** Height. */
+  height: number;
 }
 
-export interface draw_drawing_render_result {
-  png?: string;
-  /** file-system path (11 §6.2) */
-  path?: string;
+/** `draw.drawing.render` parameters. */
+export interface draw_drawing_render_params {
+  /** The drawing (default: current). */
+  drawingId?: string | null;
+  /** Image width (px). */
   width: number;
+  /** Image height (px; default: the region's aspect). */
+  height?: number | null;
+  /** Region. */
+  region?: draw_drawing_render_RegionIn;
+  /** Margin around the region (du). */
+  padding?: number;
+  /** Background (#RRGGBB or #RRGGBBAA). */
+  background?: string;
+  /** Palette style (default: each palette's first style). */
+  styleId?: string | null;
+  /** Draw every stroke's centre path (invisible ones included) and mark open ends. */
+  showStrokes?: boolean;
+  /** Outline the drawing selection's bounds. */
+  showSelection?: boolean;
+  /** Write the PNG here instead of returning it. */
+  path?: string | null;
+}
+
+/** `{png?, path?, width, height, drawingToPixel, rev}`. */
+export interface draw_drawing_render_result {
+  /** The PNG, base64 (without `path`). */
+  png?: string | null;
+  /** The written file (with `path`). */
+  path?: string | null;
+  /** Width (px). */
+  width: number;
+  /** Height (px). */
   height: number;
+  /** Drawing space → pixel space `[a, b, c, d, e, f]`. */
   drawingToPixel: number[];
-  rev: number;
+  /** The drawing revision rendered. */
+  rev: number | bigint;
+  /** SHA-256 of the premultiplied RGBA8 buffer (hex), for determinism checks. */
+  pixelsSha256: string;
+  /** Objects not drawn and why (`render.colourMissing`, `render.textureMissing`, `render.bitmapSkipped`). */
+  warnings: unknown[];
 }
 
 /** A point `{x, y}` in drawing units. */

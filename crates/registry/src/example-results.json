@@ -30,7 +30,7 @@
     {
       "title": "Accept a request",
       "result": {
-        "confirmationId": "cf_b70982777a4602324d197793",
+        "confirmationId": "cf_cd4a38d80510580a51124da7",
         "accepted": true
       },
       "varies": [
@@ -71,7 +71,7 @@
         "endpoint": null,
         "sessions": [
           {
-            "sessionId": "s1-4aff93",
+            "sessionId": "s1-a14071",
             "client": "Example agent",
             "policy": "assist",
             "scopes": [
@@ -83,7 +83,7 @@
               "files.write",
               "library.global"
             ],
-            "connectedAt": "2026-11-01T07:19:18.671Z",
+            "connectedAt": "2026-11-01T07:46:16.536Z",
             "lastActivity": null,
             "paused": false,
             "transport": ""
@@ -91,8 +91,8 @@
         ],
         "pendingConfirmations": [
           {
-            "confirmationId": "cf_db0ed70f8255f6e82b4d2792",
-            "sessionId": "s1-4aff93",
+            "confirmationId": "cf_bcfbe3de645ad608a5fc45b8",
+            "sessionId": "s1-a14071",
             "commandId": "project.saveAs",
             "summary": "Overwrite `/tmp/Short.animpkg`",
             "consequences": [
@@ -127,7 +127,7 @@
     {
       "title": "Let a session edit",
       "result": {
-        "sessionId": "s1-8f37fe",
+        "sessionId": "s1-2f1dba",
         "policy": "assist",
         "scopes": [
           "read",
@@ -145,7 +145,7 @@
       "title": "Pause every session",
       "result": {
         "paused": [
-          "s1-c5bfdf"
+          "s1-7a75f3"
         ]
       },
       "varies": [
@@ -438,7 +438,7 @@
       "result": [
         {
           "name": "before-walk",
-          "createdAt": "2026-11-01T07:19:19.505Z",
+          "createdAt": "2026-11-01T07:46:17.547Z",
           "documentRev": 1,
           "origin": "user"
         }
@@ -746,7 +746,7 @@
             "version": "0.0.1",
             "platform": "windows-x64"
           },
-          "exportedAt": "2026-11-01T07:19:20.360Z",
+          "exportedAt": "2026-11-01T07:46:18.505Z",
           "sourceProjectId": "pr_01K742SG00BK0VXTWDM5JRXV37",
           "scope": {
             "kind": "scenes",
@@ -4532,6 +4532,48 @@
       "varies": []
     }
   ],
+  "draw.drawing.render": [
+    {
+      "title": "A 256-pixel-wide render of the first drawing's strokes",
+      "result": {
+        "png": "iVBORw0KGgoAAAANSUhEUgAAAQAAAAEACAYAAABccqhmAAAF1ElEQVR4nO3XPc/kUxzG8TN3NpGssCuhtSQocFdaHR2ikiglGi9ARKJWKLwC0XgL29qKiqgWjS1oNCTsik00xuzaZR/uh5n5P51zrs8n+SUzxZTXN2cOChDroACxBACCCQAEEwAIJgAQTAAgmABAMAGAYAIAwQQAggkABBMACCYAEEwAINiZwiyuXb74SSmrNwqMaF1W184dvvJ42ZMAzGS1KmfX63KuwIhWmwQM4S8ABBMACCYAEEwAIJgAQDABgGACAMEEAIIJAAQTAAgmABBMACCYAEAwAYBgAgDBBACCCQAEEwAIJgAQTAAgmABAMAGAYAIAwQQAggkABBMACCYAEEwAIJgAQDABgGACAMEEAIIJAAQTAAgmABBMACCYAEAwAYBgAgDBBACCCQAEEwAIJgAQTAAgmABAMAGAYAIAwQQAggkABBMACCYAEEwAIJgAQDABgGACAMEEAIIJAAQTAAgmABBMACCYAEAwAYBgAgDBBACCCQAEEwAIJgAQTAAgmABAMAGAYAIAwQQAggkAVfn+yk/lrXc/Kp9/+U1hemcKVOK7H34sr739Qfn1t6s3v7/84guFaQkAVbhz/I8+cq68986bhekJAIu7d/wXP/2wPPvUhcL0BIBFHTX+555+ojAPAWAxxr88AWARxl8HAWB2xl8PAWBWxl8XAWA2xl8fAWAWxl8nAWByxl8vAWBSxl83AWAyxl8/AWASxt8GAWB0xt8OAWBUxt8WAWA0xt8eAWAUxt8mAWAw42+XADCI8bdNANib8bdPANiL8fdBANiZ8fdDANiJ8fdFANia8fdHANiK8fdJADiV8fdLADiR8fdNADiW8fdPADiS8WcQAO5j/DkEgLsYfxYB4D/Gn0cAuMn4MwkAxh9MAMIZfzYBCGb8CEAo4+cGAQhk/NwmAGGMnzsJQBDj514CEML4OYoABDB+jiMAnTN+TiIAHTN+TiMAnTJ+tiEAHTJ+tiUAnTF+diEAHTF+diUAnTB+9iEAHTB+9iUAjTN+hhCAhhk/QwlAo4yfMQhAg4yfsQhAY4yfMQlAQ4yfsQlAI4yfKQhAA4yfqQhA5YyfKQlAxYyfqQlApYyfOQhAhYyfuQhAZYyfOQlARYyfuQlAJYyfJQhABYyfpQjAwoyfJQnAgoyfpQnAQoyfGgjAAoyfWgjAzIyfmgjAjIyf2hwUZvHFV9+eN35qsyrM4fChB89+/cef1x8wfkZ29eHDV8+XPfkLML3DzV26Mf5NBP767OP3Lz3/zIXfS1kXGGq9LtfLAF4A07o5/s09trlfNvfS5i4XqIQXwHSMn+oJwDSMnyYIwPiMn2YIwLiMn6YIwHiMn+YIwDiMnyYJwHDGT7MEYBjjp2kCsD/jp3kCsB/jpwsCsDvjpxsCsBvjpysCsD3jpzsCsB3jp0sCcDrjp1sCcDLjp2sCcDzjp3sCcDTjJ4IA3M/4iSEAdzN+ogjA/4yfOALwL+MnkgAYP8HSA2D8REsOgPETLzUAxg8lMwDGD7ekBcD44Q5JATB+uEdKAIwfjpAQAOOHY/QeAOOHE/QcAOOHU/QaAOOHLfQYAOOHLfUWAOOHHfQUAOOHHfUSAOOHPfQQAOOHPbUeAOOHAVoOgPHDQK0GwPhhBC0GwPhhJK0FwPhhRC0FwPhhZK0EwPhhAi0EwPhhIrUHwPhhQjUHwPhhYrUGwPhhBjUGwPhhJrUFwPhhRjUFwPhhZrUEwPhhATUEwPhhIUsHwPhhQUsGwPhhYUsFwPihAksEwPihEnMHwPihInMGwPihMnMFwPihQnMEwPihUlMHwPihYlMGwPihclMFwPihAVMEwPihEWMHwPihIWMGwPihMWMFwPihQWMEwPihUUMDYPzQsCEBMH5o3Krs52BzVzb3ZDF+aNa+L4D15n6+9fn1YvzQpH1fALd/e+P+LkCThgQAaNxBAWIJAAQTAAgmABBMACCYAEAwAYBgAgDBBACCCQAEEwAIJgAQ7B8BV6NdkJoZtAAAAABJRU5ErkJggg==",
+        "width": 256,
+        "height": 256,
+        "drawingToPixel": [
+          1.5058823529411764,
+          0.0,
+          0.0,
+          -1.5058823529411764,
+          90.35294117647058,
+          165.64705882352942
+        ],
+        "rev": 1,
+        "pixelsSha256": "4d0463352d720ab8e0ea5324708fc45b9325d863ef0b49866a6682a21899bbcb",
+        "warnings": []
+      },
+      "varies": []
+    },
+    {
+      "title": "The same area on white with strokes shown",
+      "result": {
+        "png": "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",
+        "width": 320,
+        "height": 320,
+        "drawingToPixel": [
+          1.6842105263157894,
+          0.0,
+          0.0,
+          -1.6842105263157894,
+          117.89473684210526,
+          202.10526315789474
+        ],
+        "rev": 1,
+        "pixelsSha256": "689d1068e305bb431dea8d1fc04862627e302b66e53ed4d1e51830dba0a30829",
+        "warnings": []
+      },
+      "varies": []
+    }
+  ],
   "draw.ellipse.add": [
     {
       "title": "A circle of radius 50",
@@ -5480,7 +5522,7 @@
             "stepId": "u-1",
             "label": "Set meta",
             "source": "user",
-            "time": "2026-11-01T07:19:22.885Z",
+            "time": "2026-11-01T07:46:24.196Z",
             "objectCount": 1
           },
           {
@@ -5488,7 +5530,7 @@
             "stepId": "u-2",
             "label": "Set meta",
             "source": "user",
-            "time": "2026-11-01T07:19:22.888Z",
+            "time": "2026-11-01T07:46:24.198Z",
             "objectCount": 1
           }
         ],
@@ -5633,7 +5675,7 @@
         "state": "succeeded",
         "progress": 1.0,
         "message": "",
-        "startedAt": "2026-11-01T07:19:23.171Z",
+        "startedAt": "2026-11-01T07:46:24.582Z",
         "result": {},
         "session": "user"
       },
@@ -5652,7 +5694,7 @@
           "state": "succeeded",
           "progress": 1.0,
           "message": "",
-          "startedAt": "2026-11-01T07:19:23.198Z",
+          "startedAt": "2026-11-01T07:46:24.622Z",
           "result": {},
           "session": "user"
         }
@@ -5671,7 +5713,7 @@
         "state": "succeeded",
         "progress": 1.0,
         "message": "",
-        "startedAt": "2026-11-01T07:19:23.225Z",
+        "startedAt": "2026-11-01T07:46:24.658Z",
         "result": {},
         "session": "user"
       },
@@ -5718,10 +5760,10 @@
     {
       "title": "A 1920×1080, 24 fps project",
       "result": {
-        "projectId": "pr_01M6AZMBRCSF8DFBPBR3C229DT",
-        "sceneId": "sc_01M6AZMBRD83XN23V4SQCYDE6H",
-        "cameraId": "el_01M6AZMBRD83XN23V4SQCYDE6K",
-        "elementId": "el_01M6AZMBRD83XN23V4SQCYDE6M"
+        "projectId": "pr_01M6B15VGTN6SJTFKB6VNPKXNE",
+        "sceneId": "sc_01M6B15VGWT4RPJFSK893KGCQV",
+        "cameraId": "el_01M6B15VGWT4RPJFSK893KGCQX",
+        "elementId": "el_01M6B15VGWT4RPJFSK893KGCQY"
       },
       "varies": [
         "/cameraId",
@@ -5977,7 +6019,7 @@
         {
           "path": "/tmp/Sample.animpkg",
           "name": "Sample",
-          "lastOpened": "2026-11-01T07:19:24.153Z",
+          "lastOpened": "2026-11-01T07:46:26.312Z",
           "exists": true
         }
       ],

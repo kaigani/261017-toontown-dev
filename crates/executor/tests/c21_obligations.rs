@@ -308,6 +308,8 @@ fn c21_drawing_commands_write_no_files_and_ask_no_confirmation() {
     let declared_exceptions = [
         // A preference, not an edit (11 §6.1 prefs scope).
         "draw.inspectorPreview.set",
+        // Writes its PNG to `path` when given, with the files.write scope checked at call time (02 §13.5).
+        "draw.drawing.render",
     ];
     let implemented: Vec<&str> = registry
         .entries()

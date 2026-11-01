@@ -18,6 +18,7 @@ pub(crate) mod doc_lint;
 pub(crate) mod draw;
 pub(crate) mod draw_cut;
 pub(crate) mod draw_layers;
+pub(crate) mod draw_render;
 pub(crate) mod draw_select;
 pub(crate) mod draw_shapes;
 pub(crate) mod draw_stroke;
@@ -155,6 +156,7 @@ pub(crate) static ALL: &[&Command] = &[
     &draw_layers::DRAW_OPTIMIZE_APPLY,
     &draw_strokeops::DRAW_SMOOTH_APPLY,
     &draw_strokeops::DRAW_LINES_TO_BRUSH_APPLY,
+    &draw_render::DRAW_DRAWING_RENDER,
     &colour::COLOUR_PAINT_APPLY,
     &colour::COLOUR_PAINT_UNPAINTED_APPLY,
     &colour::COLOUR_PAINT_REMOVE,

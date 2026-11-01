@@ -8,7 +8,7 @@
 //! settle pass leaves (pieces of split strokes). `draw.transform.apply` also moves a subset of anchors (`points`, or
 //! the Contour Editor's point selection) for the M4 contour and selection tools.
 
-use std::collections::BTreeSet;
+use std::collections::{BTreeMap, BTreeSet};
 
 use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
@@ -128,8 +128,46 @@ fn map_objects(
         }
     }
     ids.reverse();
+    // Layers moved as a whole keep each zone's fill with its matrix mapped (the settle pass alone would carry fills
+    // by overlap with the old geometry, leaving gradient and texture mappings behind).
+    let whole = if copy { Vec::new() } else { whole_layers(&before, drawing, objs) };
+    let cache = cx.planar_cache();
+    let sources: BTreeMap<String, crate::planar::LayerZones> = match (whole.is_empty(), before.drawing(drawing)) {
+        (false, Some(d)) => crate::planar::drawing_zones(&cache, d)?
+            .into_iter()
+            .filter(|lz| whole.contains(&lz.layer.id))
+            .map(|lz| (lz.layer.id.clone(), lz))
+            .collect(),
+        _ => BTreeMap::new(),
+    };
     changes.push((EntryKey::Drawing(drawing.clone()), ops));
     cx.patch_entries(std::mem::take(changes))?;
+    if let (false, Map::Affine(a)) = (sources.is_empty(), m)
+        && let Some(inv) = inverse(a)
+    {
+        cx.settle()?;
+        let now = cx.document()?.clone();
+        if let Some(dn) = now.drawing(drawing) {
+            for lz in crate::planar::drawing_zones(&cache, dn)? {
+                let Some(src) = sources.get(&lz.layer.id) else { continue };
+                let fills: BTreeMap<String, Option<tt_vector::planar::fill::Fill>> = lz
+                    .map
+                    .zones
+                    .iter()
+                    .map(|z| {
+                        let q = inv.apply(z.interior);
+                        let f = src.map.zone_at(q).and_then(|k| src.fills.get(k).cloned().flatten());
+                        let f = f.map(|f| tt_vector::planar::fill::Fill {
+                            colour_id: f.colour_id,
+                            matrix: f.matrix.map(|mm| a.then_after(&Affine(mm)).0.map(|v| v + 0.0)),
+                        });
+                        (z.id.clone(), f)
+                    })
+                    .collect();
+                cx.paint_zones(drawing, &lz.layer.id, fills);
+            }
+        }
+    }
     let mut changed = Changed { created_ids: created_ids.clone(), modified_ids: Vec::new(), removed_ids: Vec::new() };
     if !copy {
         changed.modified_ids = ids.clone();
@@ -140,6 +178,46 @@ fn map_objects(
     // IDs after noding: an object noding split is reported by its pieces.
     let ids: Vec<String> = ids.iter().flat_map(|i| cx.pieces_of(drawing, i)).collect();
     Ok(Applied { ids, changed, rev: committed_rev(cx)? })
+}
+
+fn inverse(m: &Affine) -> Option<Affine> {
+    let [a, b, c, d, e, f] = m.0;
+    let det = a * d - b * c;
+    if det == 0.0 || !det.is_finite() {
+        return None;
+    }
+    Some(Affine([d / det, -b / det, -c / det, a / det, (c * f - d * e) / det, (b * e - a * f) / det]))
+}
+
+/// Layers every stroke of which the objects cover (listed layers, layers inside listed groups, layers all of whose
+/// strokes are listed).
+fn whole_layers(doc: &tt_model::document::Document, drawing: &Id, objs: &[Located]) -> Vec<String> {
+    let Some(d) = doc.drawing(drawing) else { return Vec::new() };
+    let layers = crate::planar::layer_nodes(d);
+    let mut out: Vec<String> = Vec::new();
+    let mut strokes: BTreeMap<String, usize> = BTreeMap::new();
+    for o in objs {
+        match o.kind {
+            ObjectKind::Stroke => *strokes.entry(o.parent.clone().unwrap_or_default()).or_default() += 1,
+            _ => {
+                let prefix = format!("{}/", o.pointer);
+                for (p, n) in &layers {
+                    if *p == o.pointer || p.starts_with(&prefix) {
+                        out.push(n.id().as_str().to_owned());
+                    }
+                }
+            }
+        }
+    }
+    for (_, n) in &layers {
+        let total = n.strokes().iter().flatten().count();
+        if total > 0 && strokes.get(n.id().as_str()) == Some(&total) {
+            out.push(n.id().as_str().to_owned());
+        }
+    }
+    out.sort();
+    out.dedup();
+    out
 }
 
 /// `{ids, removedIds, rev}` and the changed IDs.

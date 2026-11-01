@@ -67,7 +67,7 @@ its revisions and undo boundary.\n\
 `requestId` to make a retry safe.\n\n\
 ## Verify\n\n\
 Read back with `get_object` / `find_objects`, compare revisions with `doc_diff {{sinceRev}}`, and check `doc.validate`. \
-Renders (`render_frame`, `render_drawing`, contact sheets) arrive with the renderer milestone (M3).\n\n\
+`render_drawing` renders one drawing to a PNG; scene renders (`render_frame`, contact sheets) arrive with M3.\n\n\
 ## Safety\n\n\
 Your session holds scopes (`read`, `edit`, `files.write`, …); a missing scope is `permission.denied`. Some actions \
 need confirmation under your policy: the call then returns `status: \"needs_confirmation\"` with a `confirmToken`, a \

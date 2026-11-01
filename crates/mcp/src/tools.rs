@@ -246,7 +246,7 @@ pub fn generic() -> Vec<ToolDef> {
         t(
             "render_drawing",
             "Render drawing",
-            "One drawing rendered in drawing space (`draw.drawing.render`).",
+            "One drawing rendered in drawing space to a PNG (`draw.drawing.render`; width 512 unless given).",
             obj(
                 json!({ "drawing": { "type": "string" }, "width": { "type": "integer", "minimum": 1 }, "background": { "type": "string" },
             "showStrokes": { "type": "boolean" } }),
@@ -583,9 +583,8 @@ pub fn plan(name: &str, args: &Map<String, Value>) -> Result<Plan, String> {
             }
             command("render.frame.run", p)
         }
-        "render_drawing" => command(
-            "draw.drawing.render",
-            pick(
+        "render_drawing" => {
+            let mut p = pick(
                 args,
                 &[
                     ("drawing", "drawingId"),
@@ -593,8 +592,15 @@ pub fn plan(name: &str, args: &Map<String, Value>) -> Result<Plan, String> {
                     ("background", "background"),
                     ("showStrokes", "showStrokes"),
                 ],
-            ),
-        ),
+            );
+            // `draw.drawing.render` requires a width; the tool defaults it.
+            if let Some(m) = p.as_object_mut()
+                && !m.contains_key("width")
+            {
+                m.insert("width".into(), json!(512));
+            }
+            command("draw.drawing.render", p)
+        }
         "render_contact_sheet" => command(
             "inspect.contactSheet.render",
             pick(

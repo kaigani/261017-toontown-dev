@@ -232,13 +232,9 @@ Reserved by the M0 closure for "measured deterministic-format incompatibility" (
 - **Decision taken (ADR-0013 §1, C12-R2-02):** each position is a strict placeholder: an object accepts only `{}`, a member accepts only a scalar (never an object or a list), so nothing undefined is accepted silently. The implementing checkpoint replaces it with the shape the section gives.
 - **Question:** define these shapes in the owning section (field names and types).
 
-## SI-026 — `draw.*`: shapes the owning section leaves undefined (found in C1.2 r2; decided)
+## SI-026 — `draw.*`: shapes the owning section leaves undefined (found in C1.2 r2; resolved)
 
-- **Section:** 02 and spec A (`draw.*` command rows).
-- **Positions** (in `crates/registry/src/declared.json`, `placeholders`):
-  - `draw.erase.apply` `/params/pen`: an object whose fields are not listed
-- **Decision taken (ADR-0013 §1, C12-R2-02):** each position is a strict placeholder: an object accepts only `{}`, a member accepts only a scalar (never an object or a list), so nothing undefined is accepted silently. The implementing checkpoint replaces it with the shape the section gives.
-- **Question:** define these shapes in the owning section (field names and types).
+- **Resolved in C1.2 r3 (C12-R3-01):** every position of `draw.*` is now typed from its owning section or its sibling commands; no placeholder remains.
 
 ## SI-027 — `drawAid.*`: shapes the owning section leaves undefined (found in C1.2 r2; decided)
 

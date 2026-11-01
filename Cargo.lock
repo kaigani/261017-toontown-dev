@@ -4573,6 +4573,7 @@ dependencies = [
  "tt-model",
  "tt-persist",
  "tt-registry",
+ "tt-render",
  "tt-vector",
 ]
 
