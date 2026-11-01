@@ -1,0 +1,34 @@
+=== tests\adversarial\c22-r2-audit.py
+test_analyzer_rejects_malformed_and_recomputes (__main__.Audit.test_analyzer_rejects_malformed_and_recomputes) ... ok
+test_c22_golden_only_zone_ids_and_number_representation (__main__.Audit.test_c22_golden_only_zone_ids_and_number_representation) ... ok
+test_no_forbidden_new_product_constructs (__main__.Audit.test_no_forbidden_new_product_constructs) ... ok
+test_planar_raw_observations_and_malformed_rejection (__main__.Audit.test_planar_raw_observations_and_malformed_rejection) ... ok
+test_reviewer_tests_unchanged_after_merge (__main__.Audit.test_reviewer_tests_unchanged_after_merge) ... ok
+
+----------------------------------------------------------------------
+Ran 5 tests in 0.170s
+
+OK
+EXIT 0
+=== tests\adversarial\c22-r2-register.py
+{'implemented': 176, 'divergent': 11, 'missing': 0, 'deferred-with-owner': 158} disposition changes 25
+EXIT 0
+=== tests\adversarial\c22-r3-audit.py
+test_c21_masks_only_explained_piece_list_and_digest (__main__.Audit.test_c21_masks_only_explained_piece_list_and_digest) ... ok
+test_measurement_analyzer_rejects_bad_shape_types_and_quantiles (__main__.Audit.test_measurement_analyzer_rejects_bad_shape_types_and_quantiles) ... ok
+test_planar_analyzer_recomputes_and_rejects_malformed (__main__.Audit.test_planar_analyzer_recomputes_and_rejects_malformed) ... ok
+test_predecessor_tests_unchanged_at_response_head (__main__.Audit.test_predecessor_tests_unchanged_at_response_head) ... ok
+
+----------------------------------------------------------------------
+Ran 4 tests in 0.095s
+
+OK
+EXIT 0
+=== tests\adversarial\c22-r3-headless.py
+test_square_is_closed_and_explicitly_targeted (__main__.FormatTest.test_square_is_closed_and_explicitly_targeted) ... ok
+
+----------------------------------------------------------------------
+Ran 1 test in 0.000s
+
+OK
+EXIT 0

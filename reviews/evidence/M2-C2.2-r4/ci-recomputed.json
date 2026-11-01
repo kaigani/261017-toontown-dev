@@ -1,0 +1,96 @@
+{
+  "headSha": "62c428d78a418e203211b0ea41b3e1c73fc46166",
+  "conclusion": "success",
+  "jobs": [
+    {
+      "name": "raster determinism (macos-latest)",
+      "conclusion": "success",
+      "seconds": 129.0,
+      "summaries": 0,
+      "passed": 0,
+      "failed": 0,
+      "ignored": 0
+    },
+    {
+      "name": "raster determinism (windows-latest)",
+      "conclusion": "success",
+      "seconds": 179.0,
+      "summaries": 0,
+      "passed": 0,
+      "failed": 0,
+      "ignored": 0
+    },
+    {
+      "name": "check (windows-latest)",
+      "conclusion": "success",
+      "seconds": 2857.0,
+      "summaries": 171,
+      "passed": 965,
+      "failed": 0,
+      "ignored": 16
+    },
+    {
+      "name": "check (macos-latest)",
+      "conclusion": "success",
+      "seconds": 2294.0,
+      "summaries": 171,
+      "passed": 960,
+      "failed": 0,
+      "ignored": 16
+    },
+    {
+      "name": "bundle (macos-latest)",
+      "conclusion": "success",
+      "seconds": 386.0,
+      "summaries": 0,
+      "passed": 0,
+      "failed": 0,
+      "ignored": 0
+    },
+    {
+      "name": "headless without a display (ubuntu)",
+      "conclusion": "success",
+      "seconds": 172.0,
+      "summaries": 0,
+      "passed": 0,
+      "failed": 0,
+      "ignored": 0
+    },
+    {
+      "name": "raster determinism (ubuntu-latest)",
+      "conclusion": "success",
+      "seconds": 68.0,
+      "summaries": 0,
+      "passed": 0,
+      "failed": 0,
+      "ignored": 0
+    },
+    {
+      "name": "bundle (windows-latest)",
+      "conclusion": "success",
+      "seconds": 550.0,
+      "summaries": 0,
+      "passed": 0,
+      "failed": 0,
+      "ignored": 0
+    },
+    {
+      "name": "headless release (macos-latest)",
+      "conclusion": "success",
+      "seconds": 1130.0,
+      "summaries": 0,
+      "passed": 0,
+      "failed": 0,
+      "ignored": 0
+    },
+    {
+      "name": "headless release (windows-latest)",
+      "conclusion": "success",
+      "seconds": 1296.0,
+      "summaries": 0,
+      "passed": 0,
+      "failed": 0,
+      "ignored": 0
+    }
+  ]
+}

@@ -1,0 +1,12 @@
+{
+  "import": "reset_revs follows only slots_of with entry declared kinds and inline declared types; no meta/ext traversal",
+  "style": "tile_size and colour_pick call the single first_style_value helper; no values().next() selection in colour.rs",
+  "noding": "end_direction uses snapped nonzero direction; i128 cross_i==0 filters endpoint candidates before nearest/tie selection",
+  "documentation": [
+    "handoff head import normalization note",
+    "traceability REV-01 import row",
+    "ADR-0017 section 1 endpoint sentence",
+    "SI-067 endpoint sentence"
+  ],
+  "productEdits": false
+}

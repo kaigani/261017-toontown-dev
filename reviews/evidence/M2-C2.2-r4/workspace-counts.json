@@ -1,0 +1,14 @@
+{
+  "command": "cargo test --workspace --locked -j 2",
+  "exitCode": 0,
+  "resultSummaries": 173,
+  "passed": 969,
+  "failed": 0,
+  "ignored": 16,
+  "reviewHeadBaseline": {
+    "passed": 965,
+    "failed": 0,
+    "ignored": 16
+  },
+  "newRound4Tests": 4
+}
