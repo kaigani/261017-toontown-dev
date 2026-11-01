@@ -88,7 +88,10 @@ jobs:
           git diff --exit-code -- crates/registry/src/declared.rs crates/registry/src/declared.json plan/spec-issues.md
 
       - run: cargo clippy --workspace --all-targets --locked -- -D warnings
-      - run: cargo test --workspace --locked
+      # The six 10 000-operation history oracles (C1.2-C1.4) run in release in `headless` (moved in M2 C2.3 round 1:
+      # Windows `check` reached 55 min 02 s in run 41320596822); everything else in their binaries runs here.
+      - name: Run cargo test --workspace --locked
+        run: cargo test --workspace --locked -- --skip ten_thousand_history_operations_match_independent_content_oracle_and_replay
 
       - name: Desktop host with the M0 diagnostics feature (C0.4 gating) — clippy and tests
         run: |
@@ -178,6 +181,9 @@ jobs:
           cargo test --release --locked -p tt-executor --test c21_measurements -- --ignored --nocapture
           # Both seeded 10 000-operation history oracles with drawing geometry on a saved/reopened fixture (MCP).
           cargo test --release --locked -p tt-mcp --test c21_history -- --ignored --nocapture
+          # The C1.2-C1.4 10 000-operation history oracles (moved from `check` in M2 C2.3 round 1; same assertions).
+          cargo test --release --locked -p tt-executor --test c12_r1_stress --test c12_r3_stress --test c13_r3_history_r1 --test c13_r3_history_r3 -- ten_thousand_history_operations_match_independent_content_oracle_and_replay --exact
+          cargo test --release --locked -p tt-mcp --test c14_r3_history_r1 --test c14_r3_history_r3 -- ten_thousand_history_operations_match_independent_content_oracle_and_replay --exact
           # Worst-case fitting work on the adversarial 100 000-sample corpus (C21-R1-06; every run kept).
           cargo test --release --locked -p tt-vector --test c21_worst_case -- --ignored --nocapture
           # Worst-case planar-map work on the adversarial layer corpus (M2 C2.2 readiness items 3 and 9; every run kept).
