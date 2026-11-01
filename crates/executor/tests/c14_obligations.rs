@@ -259,7 +259,11 @@ fn session_cache_is_bounded_kept_while_needed_and_released_on_close_and_stop() {
     for i in 0..5 {
         job_ok(&h, "doc.package.export", json!({ "path": path(&dir.join("e.animpkg")), "onExists": "overwrite" }));
         let bad = dir.join("missing-folder").join(format!("{i}")).join("x.animpkg");
-        let _ = run(&h, "doc.package.export", json!({ "path": path(&bad) }));
+        // The failing export is a job: wait for it, so no temporary copy is in flight when the cache is measured.
+        let failed = run(&h, "doc.package.export", json!({ "path": path(&bad) }));
+        if let Some(job) = failed.result.as_ref().and_then(|r| r["jobId"].as_str()) {
+            let _ = run(&h, "job.wait", json!({ "jobId": job }));
+        }
     }
     let after_exports = size(&cache);
     assert_eq!(after_exports, once, "exports and failures reuse the content-addressed copy");

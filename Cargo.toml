@@ -84,10 +84,15 @@ debug = "line-tables-only"
 
 # Test builds optimise their dependencies (JSON, schema validation, compression, polygon unions; M2 C2.1): the suites
 # spend much of their time there and the Windows check job must fit its 60-minute budget. Workspace crates stay
-# unoptimised (their timing-based watchdog tests keep their margins) except the vector engine's geometry; debug
-# assertions and overflow checks stay on everywhere; release builds are unaffected.
+# unoptimised (their timing-based watchdog tests keep their margins) except the vector engine's geometry and the model
+# (M2 C2.3 round 2: staging a 20 000-anchor stroke took over 600 ms unoptimised on the Windows runner, beyond the
+# budget of the reviewer's MCP watchdog test setup); debug assertions and overflow checks stay on everywhere; release
+# builds are unaffected.
 [profile.dev.package."*"]
 opt-level = 2
 
 [profile.dev.package.tt-vector]
+opt-level = 1
+
+[profile.dev.package.tt-model]
 opt-level = 1

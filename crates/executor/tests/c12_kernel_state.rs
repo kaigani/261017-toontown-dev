@@ -205,10 +205,8 @@ fn the_watchdog_answers_within_its_budget() {
     let mut timed_out = false;
     for _ in 0..50 {
         let t = Instant::now();
-        let env = h.invoke(Invocation::user(
-            "doc.object.find",
-            json!({ "where": { "meta": { "op": "exists", "value": false } }, "limit": 1000 }),
-        ));
+        // A whole-project export: well over 1 ms even with the model optimised in test builds (M2 C2.3 round 2).
+        let env = h.invoke(Invocation::user("doc.export.json", json!({ "scope": "project", "binaries": "omit" })));
         assert!(t.elapsed() < Duration::from_millis(500));
         if env.error.as_ref().is_some_and(|e| e.code == "command.timeout") {
             timed_out = true;
@@ -216,7 +214,7 @@ fn the_watchdog_answers_within_its_budget() {
             break;
         }
     }
-    assert!(timed_out, "a 1 ms budget times out a full-document find");
+    assert!(timed_out, "a 1 ms budget times out a whole-project export");
 }
 
 /// The state every example expects: one checkpoint, a user workspace, a job, undo and redo steps.
