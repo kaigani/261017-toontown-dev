@@ -1,0 +1,16 @@
+   Compiling tt-registry v0.0.1 (C:\Users\kaiga\.t3\worktrees\261017-toontown-dev\m2-vector-engine\crates\registry)
+   Compiling tt-executor v0.0.1 (C:\Users\kaiga\.t3\worktrees\261017-toontown-dev\m2-vector-engine\crates\executor)
+   Compiling tt-engine v0.0.1 (C:\Users\kaiga\.t3\worktrees\261017-toontown-dev\m2-vector-engine\crates\engine)
+   Compiling tt-mcp v0.0.1 (C:\Users\kaiga\.t3\worktrees\261017-toontown-dev\m2-vector-engine\crates\mcp)
+    Finished `release` profile [optimized + debuginfo] target(s) in 30.92s
+     Running tests\c21_history.rs (target\release\deps\c21_history-af32518631b6228e.exe)
+
+running 2 tests
+geometry-history-r1: {"seed":"0xc12020261019a571","operations":10000,"replayOperations":10000,"strokeSetUndoRedoCreateRestoreDryRunPaintCutOrMergePaintTopology":[3199,3538,456,1,1823,637,814,760,699],"documentRev":10883,"durationSeconds":33.8208161,"zonesAtEnd":1,"maxZones":5,"oracle":"independent line geometry/thickness, square zone fill, topology layer (junctions, pieces, zone IDs, carried and painted fills) and revision stack; exact canonical all-entry byte checks every 100 operations; full fresh executor replay"}
+test geometry_oracle_seed_a571_matches_and_replays ... ok
+geometry-history-r3: {"seed":"0xc12320261019b683","operations":10000,"replayOperations":10000,"strokeSetUndoRedoCreateRestoreDryRunPaintCutOrMergePaintTopology":[3204,3496,423,1,1873,599,786,822,682],"documentRev":10817,"durationSeconds":35.9252724,"zonesAtEnd":1,"maxZones":5,"oracle":"independent line geometry/thickness, square zone fill, topology layer (junctions, pieces, zone IDs, carried and painted fills) and revision stack; exact canonical all-entry byte checks every 100 operations; full fresh executor replay"}
+test geometry_oracle_seed_b683_matches_and_replays ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 36.15s
+
+exit=0

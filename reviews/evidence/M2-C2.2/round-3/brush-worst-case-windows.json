@@ -1,0 +1,286 @@
+{
+  "budgetUnits": 1200000000,
+  "os": "windows",
+  "cases": [
+    {
+      "name": "99000-alternating-knots-round-100",
+      "spineAnchors": 2,
+      "pressureKnots": 99000,
+      "runs": [
+        {
+          "wallMs": 879.3319,
+          "outcome": "ok",
+          "units": 555554356,
+          "anchors": 20
+        },
+        {
+          "wallMs": 874.362,
+          "outcome": "ok",
+          "units": 555554356,
+          "anchors": 20
+        },
+        {
+          "wallMs": 891.5705,
+          "outcome": "ok",
+          "units": 555554356,
+          "anchors": 20
+        }
+      ]
+    },
+    {
+      "name": "99000-alternating-knots-square-100",
+      "spineAnchors": 2,
+      "pressureKnots": 99000,
+      "runs": [
+        {
+          "wallMs": 405.6837,
+          "outcome": "ok",
+          "units": 35148540,
+          "anchors": 4
+        },
+        {
+          "wallMs": 401.9815,
+          "outcome": "ok",
+          "units": 35148540,
+          "anchors": 4
+        },
+        {
+          "wallMs": 400.0603,
+          "outcome": "ok",
+          "units": 35148540,
+          "anchors": 4
+        }
+      ]
+    },
+    {
+      "name": "99000-alternating-knots-oval-100-angled",
+      "spineAnchors": 2,
+      "pressureKnots": 99000,
+      "runs": [
+        {
+          "wallMs": 910.9097,
+          "outcome": "ok",
+          "units": 555428084,
+          "anchors": 18
+        },
+        {
+          "wallMs": 914.2304,
+          "outcome": "ok",
+          "units": 555428084,
+          "anchors": 18
+        },
+        {
+          "wallMs": 918.9544,
+          "outcome": "ok",
+          "units": 555428084,
+          "anchors": 18
+        }
+      ]
+    },
+    {
+      "name": "30000-anchor-zigzag-round-100",
+      "spineAnchors": 30000,
+      "pressureKnots": 2,
+      "runs": [
+        {
+          "wallMs": 371.1023,
+          "outcome": "ok",
+          "units": 241379857,
+          "anchors": 45
+        },
+        {
+          "wallMs": 372.5655,
+          "outcome": "ok",
+          "units": 241379857,
+          "anchors": 45
+        },
+        {
+          "wallMs": 368.9616,
+          "outcome": "ok",
+          "units": 241379857,
+          "anchors": 45
+        }
+      ]
+    },
+    {
+      "name": "30000-anchor-zigzag-round-2",
+      "spineAnchors": 30000,
+      "pressureKnots": 2,
+      "runs": [
+        {
+          "wallMs": 416.8524,
+          "outcome": "ok",
+          "units": 184090018,
+          "anchors": 30010
+        },
+        {
+          "wallMs": 415.3966,
+          "outcome": "ok",
+          "units": 184090018,
+          "anchors": 30010
+        },
+        {
+          "wallMs": 413.2868,
+          "outcome": "ok",
+          "units": 184090018,
+          "anchors": 30010
+        }
+      ]
+    },
+    {
+      "name": "45000-anchor-dense-zigzag-flat-50",
+      "spineAnchors": 45000,
+      "pressureKnots": 2,
+      "runs": [
+        {
+          "wallMs": 131.9284,
+          "outcome": "ok",
+          "units": 64192770,
+          "anchors": 308
+        },
+        {
+          "wallMs": 132.2817,
+          "outcome": "ok",
+          "units": 64192770,
+          "anchors": 308
+        },
+        {
+          "wallMs": 129.8527,
+          "outcome": "ok",
+          "units": 64192770,
+          "anchors": 308
+        }
+      ]
+    },
+    {
+      "name": "coil-1500-loops-round-1",
+      "spineAnchors": 36000,
+      "pressureKnots": 2,
+      "runs": [
+        {
+          "wallMs": 1308.5118,
+          "outcome": "ok",
+          "units": 746532353,
+          "anchors": 51545
+        },
+        {
+          "wallMs": 1301.7332,
+          "outcome": "ok",
+          "units": 746532353,
+          "anchors": 51545
+        },
+        {
+          "wallMs": 1298.8989,
+          "outcome": "ok",
+          "units": 746532353,
+          "anchors": 51545
+        }
+      ]
+    },
+    {
+      "name": "coil-3500-loops-round-1",
+      "spineAnchors": 42000,
+      "pressureKnots": 2,
+      "runs": [
+        {
+          "wallMs": 2449.7064,
+          "outcome": "limit.exceeded: sweeping this brush stroke needs more than 1200000000 units of work",
+          "units": 1200000000,
+          "anchors": 0
+        },
+        {
+          "wallMs": 2428.2915,
+          "outcome": "limit.exceeded: sweeping this brush stroke needs more than 1200000000 units of work",
+          "units": 1200000000,
+          "anchors": 0
+        },
+        {
+          "wallMs": 2433.3017,
+          "outcome": "limit.exceeded: sweeping this brush stroke needs more than 1200000000 units of work",
+          "units": 1200000000,
+          "anchors": 0
+        }
+      ]
+    },
+    {
+      "name": "coil-1500-overlapping-loops-round-8",
+      "spineAnchors": 36000,
+      "pressureKnots": 2,
+      "runs": [
+        {
+          "wallMs": 269.8553,
+          "outcome": "ok",
+          "units": 118445152,
+          "anchors": 58
+        },
+        {
+          "wallMs": 264.39570000000003,
+          "outcome": "ok",
+          "units": 118445152,
+          "anchors": 58
+        },
+        {
+          "wallMs": 258.1785,
+          "outcome": "ok",
+          "units": 118445152,
+          "anchors": 58
+        }
+      ]
+    },
+    {
+      "name": "long-line-tiny-tip",
+      "spineAnchors": 2,
+      "pressureKnots": 90000,
+      "runs": [
+        {
+          "wallMs": 2243.8659,
+          "outcome": "limit.exceeded: sweeping this brush stroke needs more than 1200000000 units of work",
+          "units": 1200000000,
+          "anchors": 0
+        },
+        {
+          "wallMs": 2263.8384,
+          "outcome": "limit.exceeded: sweeping this brush stroke needs more than 1200000000 units of work",
+          "units": 1200000000,
+          "anchors": 0
+        },
+        {
+          "wallMs": 2282.0369,
+          "outcome": "limit.exceeded: sweeping this brush stroke needs more than 1200000000 units of work",
+          "units": 1200000000,
+          "anchors": 0
+        }
+      ]
+    },
+    {
+      "name": "closed-decagon-99000-alternating-knots-round-100",
+      "spineAnchors": 10,
+      "pressureKnots": 99000,
+      "runs": [
+        {
+          "wallMs": 1838.5593999999999,
+          "outcome": "ok",
+          "units": 574126571,
+          "anchors": 39
+        },
+        {
+          "wallMs": 1820.4193,
+          "outcome": "ok",
+          "units": 574126571,
+          "anchors": 39
+        },
+        {
+          "wallMs": 1813.7246999999998,
+          "outcome": "ok",
+          "units": 574126571,
+          "anchors": 39
+        }
+      ]
+    }
+  ],
+  "worst": {
+    "name": "coil-3500-loops-round-1",
+    "units": 1200000000,
+    "wallMs": 2449.7064
+  }
+}
