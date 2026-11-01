@@ -233,10 +233,12 @@ fn merge(
     // Lower pencil and invisible pieces left under cover go.
     let now = cx.document()?.clone();
     let dn = now.drawing(drawing).ok_or_else(|| super::draw::not_found(drawing.as_str()))?.clone();
+    // One index of the merged drawing's objects: lookups stay linear in the drawing size (100 000-stroke layers).
+    let index: BTreeMap<String, Located> = vd::objects(&dn).into_iter().map(|o| (o.id.clone(), o)).collect();
     let mut drop: Vec<Located> = Vec::new();
     for (orig, i) in &origin {
         for piece in cx.pieces_of(drawing, orig) {
-            let Some(l) = vd::locate(&dn, &piece) else { continue };
+            let Some(l) = index.get(&piece).cloned() else { continue };
             let Some(s) = vd::stroke_at(&dn, &l.pointer) else { continue };
             if *s.kind() != StrokeKind::Brush && cut::middle(s.points(), *s.closed()).is_some_and(|m| covered(*i, m)) {
                 drop.push(l);
@@ -265,7 +267,8 @@ fn merge(
             .collect();
         cx.paint_zones(drawing, &keep, fills);
     }
-    let existed = |s: &String| vd::locate(&d, s).is_some();
+    let before_ids: BTreeSet<String> = vd::objects(&d).into_iter().map(|o| o.id).collect();
+    let existed = |s: &String| before_ids.contains(s);
     removed.extend(hidden.into_iter().filter(existed));
     removed.extend(drop.into_iter().map(|l| l.id).filter(existed));
     Ok((keep, removed))

@@ -109,8 +109,8 @@ fn stubs_and_declarations_name_their_owners() {
         .collect();
     assert!(c13.is_empty(), "C1.3 stubs left: {c13:?}");
     assert_eq!(
-        registry().get("draw.flatten.apply").map(|e| e.status()),
-        Some(Status::NotImplemented { owner: "M2 C2.3" })
+        registry().get("draw.vectorize.preview").map(|e| e.status()),
+        Some(Status::NotImplemented { owner: "M2 C2.4" })
     );
 }
 

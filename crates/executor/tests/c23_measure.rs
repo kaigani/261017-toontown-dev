@@ -2,7 +2,7 @@
 //! it, centre line of a large brush stroke). Ignored by default; `TT_MEASURE=1 cargo test -p tt-executor --test
 //! c23_measure -- --ignored` writes the raw observations to `reviews/evidence/M2-C2.3/measurements/`. Performance
 //! budgets stay with C22-T2 and C22-R1-12 (open); these files are observations, not pass/fail gates.
-#![allow(clippy::unwrap_used, clippy::expect_used, clippy::panic, missing_docs, reason = "measurement")]
+#![allow(clippy::unwrap_used, clippy::expect_used, clippy::panic, clippy::print_stderr, missing_docs, reason = "measurement")]
 
 mod common;
 
@@ -45,6 +45,7 @@ fn large() -> tt_model::document::Document {
 }
 
 fn measure(h: &ExecutorHandle, command: &str, params: Value) -> Value {
+    eprintln!("start {command}");
     let t = Instant::now();
     let env = run(h, command, params.clone());
     let seconds = t.elapsed().as_secs_f64();
@@ -63,21 +64,37 @@ fn heavy_commands_raw_measurements() {
     let write = std::env::var("TT_MEASURE").as_deref() == Ok("1");
     let h = ExecutorHandle::spawn(ExecutorConfig { budget: Duration::from_secs(600) }).unwrap();
     let t = Instant::now();
-    let env = h.open_document(large(), None, false);
+    let doc = large();
+    eprintln!("built document in {:?}", t.elapsed());
+    let env = h.open_document(doc, None, false);
+    eprintln!("opened in {:?}", t.elapsed());
     let open = t.elapsed().as_secs_f64();
     assert!(env.is_ok(), "{env:?}");
+    let render = measure(&h, "draw.drawing.render", json!({ "drawingId": D1, "width": 1024 }));
+    eprintln!("render-100k: {render}");
     let mut results = vec![
-        ("render-100k", measure(&h, "draw.drawing.render", json!({ "drawingId": D1, "width": 1024 }))),
+        ("render-100k", render),
         (
             "flatten-100k",
-            measure(&h, "draw.flatten.apply", json!({ "drawingId": D1, "ids": ["nd_01K9MEASURE00000000000001", "nd_01K9MEASURE00000000000002"] })),
+            measure(
+                &h,
+                "draw.flatten.apply",
+                json!({ "drawingId": D1, "ids": ["nd_01K9MEASURE00000000000001", "nd_01K9MEASURE00000000000002"] }),
+            ),
         ),
     ];
     // Centre line of a large brush stroke: a 2 000-sample spine.
-    let pts: Vec<Value> = (0..2000).map(|k| json!({ "x": f64::from(k), "y": 3000.0 + 40.0 * libm_free_sin(f64::from(k) / 50.0), "pressure": 0.7 })).collect();
-    let b = run(&h, "draw.stroke.add", json!({ "drawingId": D1, "kind": "brush", "layer": "new", "points": pts, "pen": { "tipShape": "round", "minSize": 4, "maxSize": 12, "tipAngle": 0 } }));
+    let pts: Vec<Value> = (0..2000)
+        .map(|k| json!({ "x": f64::from(k), "y": 3000.0 + 40.0 * libm_free_sin(f64::from(k) / 50.0), "pressure": 0.7 }))
+        .collect();
+    let b = run(
+        &h,
+        "draw.stroke.add",
+        json!({ "drawingId": D1, "kind": "brush", "layer": "new", "points": pts, "pen": { "tipShape": "round", "minSize": 4, "maxSize": 12, "tipAngle": 0 } }),
+    );
     if let Some(id) = b.result.as_ref().and_then(|r| r["strokeIds"][0].as_str()) {
-        results.push(("centre-line-large", measure(&h, "draw.centreLine.apply", json!({ "drawingId": D1, "ids": [id] }))));
+        results
+            .push(("centre-line-large", measure(&h, "draw.centreLine.apply", json!({ "drawingId": D1, "ids": [id] }))));
     }
     for (name, mut v) in results {
         v["openSeconds"] = json!(open);
