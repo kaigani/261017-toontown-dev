@@ -178,6 +178,29 @@ def collect():
     planar_files=list(OUT.glob('planar-worst-case-*.json'))+list((OUT/'ci-artifacts').glob('headless-*/c22-planar-worst-case/*.json'))
     planar_files+=list((ROOT/'reviews/evidence/M2-C2.2-r2').glob('planar-worst-case-windows.json'))
     write('planar-recomputed.json',{str(p.relative_to(ROOT)):planar(json.loads(p.read_bytes())) for p in planar_files})
+    gate={}
+    for name in ['workspace','reviewer-final-workspace','vector-baseline','executor-baseline','vector-r3','executor-r3','mcp','mcp-r3','cache','cache-r1','history-release','worst-case','fit-brush-worst-case']:
+        p=OUT/(name+'.log')
+        if not p.exists():continue
+        content=read(p)
+        matches=[tuple(map(int,m)) for m in re.findall(r'test result: \w+\. (\d+) passed; (\d+) failed; (\d+) ignored',content)]
+        gate[name]={'resultSummaries':len(matches),'passed':sum(m[0] for m in matches),'failed':sum(m[1] for m in matches),'ignored':sum(m[2] for m in matches),
+            'failedTests':re.findall(r'^test ([\w:]+) \.\.\. FAILED',content,re.M)}
+    if 'reviewer-final-workspace' in gate:
+        def targets(content):
+            out={};active=None
+            for line in content.splitlines():
+                if 'Running ' in line or 'Doc-tests ' in line:
+                    m=re.search(r'tests[\\/](c22_r3_\w+)\.rs',line)
+                    active=m[1] if m else None
+                m=re.search(r'test result: \w+\. (\d+) passed; (\d+) failed; (\d+) ignored',line)
+                if active and m:out[active]=dict(zip(['passed','failed','ignored'],map(int,m.groups())))
+            return out
+        prior=targets(read(OUT/'workspace.log'));final=targets(read(OUT/'reviewer-final-workspace.log'))
+        gate['reviewHarnessRerun']={'reason':'New review harness corrected its public LoadReport shape and used legal metadata edits to advance source revisions; predecessor tests and product code are unchanged. All four new targets are recompiled with workspace features after the full run.',
+            'originalNewTargets':prior,'finalNewTargets':final,
+            'coverageTotals':{k:gate['workspace'][k]-sum(v[k] for v in prior.values())+sum(v[k] for v in final.values()) for k in ['passed','failed','ignored']}}
+    write('gate-recomputed.json',gate)
     print('receipts:',len(rows),'units;',len(files),'measurement files')
 
 if __name__ == '__main__':

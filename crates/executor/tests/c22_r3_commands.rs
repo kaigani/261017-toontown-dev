@@ -219,7 +219,6 @@ fn load_and_import_recovery_keep_nested_extensions_meta_deformable_and_path_prot
         let doc = h.snapshot().unwrap().unwrap();
         let s = doc.palettes().flat_map(|p| p.swatches()).find(|s| s.colour_id().as_str() == M).unwrap();
         let sw = serde_json::to_value(s).unwrap();
-        assert_eq!(sw["ext"], ext);
         assert_eq!(sw["meta"], meta);
         assert_eq!(sw["deformable"], true);
         let colour = doc
@@ -243,6 +242,8 @@ fn load_and_import_recovery_keep_nested_extensions_meta_deformable_and_path_prot
         );
         assert_eq!(r.error.as_ref().unwrap().code, "colour.protected", "{r:?}");
         assert_eq!(drawing(&h, D)["nodes"][0]["strokes"][1]["colourId"], M);
+        eprintln!("import={import}: protected path refused; recovered ext={}", sw["ext"]);
+        assert_eq!(sw["ext"], ext, "import={import}: full copied extension must survive");
     }
     drop(src);
     let _ = std::fs::remove_dir_all(dir);

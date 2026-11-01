@@ -1,0 +1,163 @@
+{
+  "workspace": {
+    "resultSummaries": 171,
+    "passed": 958,
+    "failed": 6,
+    "ignored": 16,
+    "failedTests": [
+      "texture_click_uses_palette_first_style_and_drag_and_tile_off_stay_unchanged",
+      "multi_drawing_import_repairs_only_inconsistent_drawing_and_undoes_everything",
+      "import_revision_reset_preserves_opaque_meta_and_ext_for_both_id_policies",
+      "load_and_import_recovery_keep_nested_extensions_meta_deformable_and_path_protection",
+      "importing_ahead_revisions_stamps_preserved_ids_and_replays_from_the_same_base",
+      "exact_interior_endpoint_and_snapped_collinear_controls"
+    ]
+  },
+  "reviewer-final-workspace": {
+    "resultSummaries": 4,
+    "passed": 9,
+    "failed": 4,
+    "ignored": 0,
+    "failedTests": [
+      "texture_click_uses_palette_first_style_and_drag_and_tile_off_stay_unchanged",
+      "import_revision_reset_preserves_opaque_meta_and_ext_for_both_id_policies",
+      "load_and_import_recovery_keep_nested_extensions_meta_deformable_and_path_protection",
+      "exact_interior_endpoint_and_snapped_collinear_controls"
+    ]
+  },
+  "vector-baseline": {
+    "resultSummaries": 20,
+    "passed": 134,
+    "failed": 0,
+    "ignored": 8,
+    "failedTests": []
+  },
+  "executor-baseline": {
+    "resultSummaries": 4,
+    "passed": 34,
+    "failed": 0,
+    "ignored": 0,
+    "failedTests": []
+  },
+  "vector-r3": {
+    "resultSummaries": 1,
+    "passed": 4,
+    "failed": 1,
+    "ignored": 0,
+    "failedTests": [
+      "exact_interior_endpoint_and_snapped_collinear_controls"
+    ]
+  },
+  "executor-r3": {
+    "resultSummaries": 1,
+    "passed": 2,
+    "failed": 3,
+    "ignored": 0,
+    "failedTests": [
+      "texture_click_uses_palette_first_style_and_drag_and_tile_off_stay_unchanged",
+      "import_revision_reset_preserves_opaque_meta_and_ext_for_both_id_policies",
+      "load_and_import_recovery_keep_nested_extensions_meta_deformable_and_path_protection"
+    ]
+  },
+  "mcp": {
+    "resultSummaries": 4,
+    "passed": 9,
+    "failed": 0,
+    "ignored": 0,
+    "failedTests": []
+  },
+  "mcp-r3": {
+    "resultSummaries": 1,
+    "passed": 2,
+    "failed": 0,
+    "ignored": 0,
+    "failedTests": []
+  },
+  "cache": {
+    "resultSummaries": 1,
+    "passed": 1,
+    "failed": 0,
+    "ignored": 0,
+    "failedTests": []
+  },
+  "cache-r1": {
+    "resultSummaries": 1,
+    "passed": 1,
+    "failed": 0,
+    "ignored": 0,
+    "failedTests": []
+  },
+  "history-release": {
+    "resultSummaries": 1,
+    "passed": 2,
+    "failed": 0,
+    "ignored": 0,
+    "failedTests": []
+  },
+  "worst-case": {
+    "resultSummaries": 1,
+    "passed": 1,
+    "failed": 0,
+    "ignored": 0,
+    "failedTests": []
+  },
+  "fit-brush-worst-case": {
+    "resultSummaries": 1,
+    "passed": 2,
+    "failed": 0,
+    "ignored": 0,
+    "failedTests": []
+  },
+  "reviewHarnessRerun": {
+    "reason": "New review harness corrected its public LoadReport shape and used legal metadata edits to advance source revisions; predecessor tests and product code are unchanged. All four new targets are recompiled with workspace features after the full run.",
+    "originalNewTargets": {
+      "c22_r3_cache": {
+        "passed": 1,
+        "failed": 0,
+        "ignored": 0
+      },
+      "c22_r3_commands": {
+        "passed": 0,
+        "failed": 4,
+        "ignored": 0
+      },
+      "c22_r3_surface": {
+        "passed": 1,
+        "failed": 1,
+        "ignored": 0
+      },
+      "c22_r3_geometry": {
+        "passed": 4,
+        "failed": 1,
+        "ignored": 0
+      }
+    },
+    "finalNewTargets": {
+      "c22_r3_cache": {
+        "passed": 1,
+        "failed": 0,
+        "ignored": 0
+      },
+      "c22_r3_commands": {
+        "passed": 2,
+        "failed": 3,
+        "ignored": 0
+      },
+      "c22_r3_surface": {
+        "passed": 2,
+        "failed": 0,
+        "ignored": 0
+      },
+      "c22_r3_geometry": {
+        "passed": 4,
+        "failed": 1,
+        "ignored": 0
+      }
+    },
+    "coverageTotals": {
+      "passed": 961,
+      "failed": 4,
+      "ignored": 16
+    }
+  }
+}

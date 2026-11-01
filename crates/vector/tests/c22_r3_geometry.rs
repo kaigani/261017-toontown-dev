@@ -96,6 +96,14 @@ fn three_subcell_differences_and_exact_ties_rank_before_ids() {
         })
         .collect::<Vec<_>>();
     let old = map(&cells);
+    for i in 0..3 {
+        let index = old.zone_at(P::new(i as f64 + 0.5, 0.5)).unwrap();
+        let got =
+            overlap_area2(&old.zone_rings_grid(index), &new.zone_rings_grid(0), &mut Work::unlimited("r3")).unwrap();
+        let want = BigRational::new((8320i64 * (2_000_000 - (2 * i + 1))).into(), 2_000_000.into());
+        eprintln!("candidate {i}: exact twice-area grid units {got}, expected {want}");
+        assert_eq!(got, want);
+    }
     let first = old.zone_at(P::new(0.5, 0.5)).unwrap();
     let f = old
         .zones
