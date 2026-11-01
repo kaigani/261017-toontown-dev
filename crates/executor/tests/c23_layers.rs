@@ -148,33 +148,41 @@ fn flatten_keeps_gradient_matrices() {
 
 #[test]
 fn optimize_merges_only_where_appearance_cannot_change() {
+    // Only content that does not meet merges (C23-R1-04); every accepted merge renders identically.
     let h = fixture();
     let c = c(&h);
-    // Opaque gradient inside a painted zone, clear of the lower lines: merges.
-    rect(&h, 300.0, 300.0, 200.0, 200.0, &c.skin);
+    let pixels = |h: &ExecutorHandle, x: f64, y: f64, w: f64, hg: f64| -> String {
+        ok(h, "draw.drawing.render", json!({ "drawingId": D1, "width": 400, "region": {"x": x, "y": y, "width": w, "height": hg}, "background": "#FFFFFFFF" }))
+            ["pixelsSha256"].as_str().unwrap().to_owned()
+    };
+    // An opaque fill inside a painted zone: the zone would split along a seam, so it stays separate.
+    let (a, _) = rect(&h, 300.0, 300.0, 200.0, 200.0, &c.skin);
     rect(&h, 350.0, 350.0, 50.0, 50.0, &c.sky);
-    // Partly transparent gradient and texture over painted zones: stay separate.
+    // A disjoint opaque layer merges with it; the transparent gradient and the texture over painted zones stay.
     let (e, _) = rect(&h, 800.0, 300.0, 200.0, 200.0, &c.skin);
     let (f, _) = rect(&h, 850.0, 350.0, 50.0, 50.0, &c.glow);
     let (g, _) = rect(&h, 860.0, 360.0, 20.0, 20.0, &c.fabric);
     let all = layer_ids(&h);
     let considered = &all[all.len() - 5..];
+    let before = pixels(&h, 280.0, 280.0, 760.0, 240.0);
     let r = ok(&h, "draw.optimize.apply", json!({ "drawingId": D1, "ids": considered }));
-    // The disjoint opaque layer e merges too; the transparent gradient f and the texture g over painted zones stay.
-    assert_eq!(r["merged"], 2, "{r}");
-    assert_eq!(r["layerIds"], json!([e, f, g]));
+    assert_eq!(r["merged"], 1, "{r}");
+    assert_eq!(r["layerIds"], json!([a, e, f, g]));
+    assert_eq!(pixels(&h, 280.0, 280.0, 760.0, 240.0), before, "the accepted merge renders identically");
     assert_eq!(zone_colour(&h, 375.0, 375.0), json!(c.sky));
     assert_eq!(zone_colour(&h, 320.0, 320.0), json!(c.skin));
-    // An upper painted zone over a lower line would cover it after the merge: stays separate.
+    // Overlapping shapes stay separate.
     let (x, _) = rect(&h, 300.0, 700.0, 100.0, 60.0, &c.skin);
     let (y, _) = rect(&h, 350.0, 720.0, 100.0, 60.0, &c.sky);
     let r = ok(&h, "draw.optimize.apply", json!({ "drawingId": D1, "ids": [x, y] }));
     assert_eq!(r["merged"], 0);
-    // Disjoint layers merge.
+    // Disjoint layers merge and render identically.
     let (p, _) = rect(&h, 300.0, 900.0, 50.0, 50.0, &c.skin);
     let (q, _) = rect(&h, 500.0, 900.0, 50.0, 50.0, &c.glow);
+    let before = pixels(&h, 280.0, 880.0, 300.0, 90.0);
     let r = ok(&h, "draw.optimize.apply", json!({ "drawingId": D1, "ids": [p, q] }));
     assert_eq!((r["merged"].as_u64(), r["layerIds"].clone()), (Some(1), json!([q])));
+    assert_eq!(pixels(&h, 280.0, 880.0, 300.0, 90.0), before, "the accepted merge renders identically");
     assert_eq!(zone_colour(&h, 325.0, 925.0), json!(c.skin));
     assert_eq!(zone_colour(&h, 525.0, 925.0), json!(c.glow));
 }

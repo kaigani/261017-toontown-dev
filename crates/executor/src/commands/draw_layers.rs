@@ -30,7 +30,7 @@ use tt_model::entities::drawing::{Drawing, LayerHint, NodeKind, StrokeKind};
 use tt_model::{Id, ObjectType};
 use tt_registry::{CommandError, command};
 use tt_vector::drawing::{self as vd, Located, ObjectKind};
-use tt_vector::geom::P;
+use tt_vector::geom::{P, Rect};
 use tt_vector::ops::cut;
 use tt_vector::path::Path;
 use tt_vector::planar::fill::Fill;
@@ -90,10 +90,12 @@ struct Info {
     fills: Vec<Option<Fill>>,
     /// Painted zones: outer ring, opaque.
     zones: Vec<(Vec<P>, bool)>,
-    /// Pencil lines: centre path, opaque.
-    lines: Vec<(Vec<P>, bool)>,
     /// Brush strokes: outline, opaque.
     brushes: Vec<(Vec<P>, bool)>,
+    /// Rendered or noded extent of every stroke (C23-R1-04): pencil lines as their bounding box grown by half the
+    /// line thickness (round caps and joins stay inside), invisible strokes as their box grown by one grid unit,
+    /// brush strokes as their outline.
+    extents: Vec<Vec<P>>,
 }
 
 impl Info {
@@ -113,10 +115,29 @@ fn infos(cx: &Cx, d: &Drawing) -> Result<BTreeMap<String, Info>, CommandError> {
     let is_opaque = |c: Option<&Id>| c.is_some_and(|c| super::colour::opaque(doc, c.as_str()));
     let mut out = BTreeMap::new();
     for lz in crate::planar::drawing_zones(&cx.planar_cache(), d)? {
-        let mut lines = Vec::new();
         let mut brushes = Vec::new();
+        let mut extents = Vec::new();
         if let Some(n) = vd::locate(d, &lz.layer.id).and_then(|l| vd::node_at(d, &l.pointer)) {
             for s in n.strokes().iter().flatten() {
+                let path = Path::from_points(s.points(), *s.closed() || *s.kind() == StrokeKind::Brush);
+                match s.kind() {
+                    StrokeKind::Brush => extents.push(path.flatten(0.5)),
+                    StrokeKind::Pencil | StrokeKind::Invisible => {
+                        let grow = if *s.kind() == StrokeKind::Pencil {
+                            s.line_style().as_ref().map_or(0.0, |l| l.thickness) / 2.0 + GRID_UNIT
+                        } else {
+                            GRID_UNIT
+                        };
+                        if let Some(b) = path.bounds() {
+                            extents.push(vec![
+                                P::new(b.min_x - grow, b.min_y - grow),
+                                P::new(b.max_x + grow, b.min_y - grow),
+                                P::new(b.max_x + grow, b.max_y + grow),
+                                P::new(b.min_x - grow, b.max_y + grow),
+                            ]);
+                        }
+                    }
+                }
                 match s.kind() {
                     StrokeKind::Brush => {
                         brushes.push((
@@ -124,11 +145,7 @@ fn infos(cx: &Cx, d: &Drawing) -> Result<BTreeMap<String, Info>, CommandError> {
                             is_opaque(s.colour_id().as_ref()),
                         ));
                     }
-                    StrokeKind::Pencil => lines.push((
-                        Path::from_points(s.points(), *s.closed()).flatten(0.5),
-                        is_opaque(s.colour_id().as_ref()),
-                    )),
-                    StrokeKind::Invisible => {}
+                    StrokeKind::Pencil | StrokeKind::Invisible => {}
                 }
             }
         }
@@ -143,7 +160,7 @@ fn infos(cx: &Cx, d: &Drawing) -> Result<BTreeMap<String, Info>, CommandError> {
                 Some((ring, f.colour_id.as_deref().is_some_and(|c| super::colour::opaque(doc, c))))
             })
             .collect();
-        out.insert(lz.layer.id.clone(), Info { map: lz.map, fills: lz.fills, zones, lines, brushes });
+        out.insert(lz.layer.id.clone(), Info { map: lz.map, fills: lz.fills, zones, brushes, extents });
     }
     Ok(out)
 }
@@ -399,39 +416,41 @@ pub(crate) fn draw_flatten_apply(cx: &mut Cx, p: FlattenParams) -> Result<Flatte
     }
 }
 
-/// Whether merging `upper` onto the `lower` layers leaves the composited appearance unchanged (02 §8.2).
-fn mergeable(lower: &[&Info], upper: &Info) -> bool {
-    let painted_or_drawn = |l: &Info| -> Vec<Vec<P>> {
-        l.zones.iter().map(|z| z.0.clone()).chain(l.brushes.iter().map(|b| b.0.clone())).collect()
+/// One grid unit (du): the snap-rounding resolution of the planar map.
+const GRID_UNIT: f64 = 1.0 / 64.0;
+
+/// Pairwise overlap tests one Optimize call may make before it declines the remaining merges.
+const OPTIMIZE_PAIR_BUDGET: u64 = 2_000_000;
+
+/// Whether merging `upper` onto the `lower` layers provably leaves the composited appearance unchanged (02 §8.2;
+/// C23-R1-04): no extent of the upper layer (strokes as rendered or noded, painted zones) meets any extent of the lower
+/// ones (exact predicates). Content that does not meet draws the same in one layer as in two (source-over is
+/// associative, and nothing is re-noded); any overlap — a transparent fill, a lower line the merged layer would draw
+/// above an upper brush or fill, a seam where a zone splits — is not provably unchanged, so the merge declines. Past
+/// `budget` pair tests the merge also declines.
+fn mergeable(lower: &[&Info], upper: &Info, budget: &mut u64) -> bool {
+    let up: Vec<&Vec<P>> = upper.extents.iter().chain(upper.zones.iter().map(|z| &z.0)).collect();
+    let boxed = |v: &[&Vec<P>]| -> Option<Rect> {
+        let mut pts = v.iter().flat_map(|p| p.iter());
+        let first = *pts.next()?;
+        Some(pts.fold(Rect::of(first), |r, p| r.with(*p)))
     };
+    let Some(ub) = boxed(&up) else { return true };
     for low in lower {
-        let areas = painted_or_drawn(low);
-        let low_lines: Vec<&Vec<P>> = low.lines.iter().map(|l| &l.0).collect();
-        let low_brushes: Vec<&Vec<P>> = low.brushes.iter().map(|b| &b.0).collect();
-        // Partially transparent upper areas over anything painted or drawn below.
-        for (area, opaque) in upper.zones.iter().chain(upper.brushes.iter()) {
-            if !opaque
-                && (areas.iter().any(|a| cut::polygons_meet(area, a))
-                    || low_lines.iter().any(|l| cut::polyline_meets(l, area)))
-            {
-                return false;
-            }
+        let lo: Vec<&Vec<P>> = low.extents.iter().chain(low.zones.iter().map(|z| &z.0)).collect();
+        let Some(lb) = boxed(&lo) else { continue };
+        if ub.max_x < lb.min_x || lb.max_x < ub.min_x || ub.max_y < lb.min_y || lb.max_y < ub.min_y {
+            continue;
         }
-        // Partially transparent upper lines over anything painted or drawn below.
-        for (line, opaque) in &upper.lines {
-            if !opaque
-                && (areas.iter().any(|a| cut::polyline_meets(line, a))
-                    || low_lines.iter().any(|l| cut::polylines_cross(line, l)))
-            {
-                return false;
-            }
-        }
-        // Upper painted zones over lower lines or brush strokes (the merged layer would draw those above the fill).
-        for (zone, _) in &upper.zones {
-            if low_lines.iter().any(|l| cut::polyline_meets(l, zone))
-                || low_brushes.iter().any(|b| cut::polygons_meet(b, zone))
-            {
-                return false;
+        for u in &up {
+            for l in &lo {
+                if *budget == 0 {
+                    return false;
+                }
+                *budget -= 1;
+                if cut::polygons_meet(u, l) {
+                    return false;
+                }
             }
         }
     }
@@ -495,12 +514,13 @@ pub(crate) fn draw_optimize_apply(cx: &mut Cx, p: OptimizeParams) -> Result<Opti
         return Err(nothing_to_do("optimize"));
     }
     let info = infos(cx, &d)?;
+    let mut budget = OPTIMIZE_PAIR_BUDGET;
     let mut groups: Vec<Vec<String>> = Vec::new();
     for l in &layers {
         let extend = groups.last().is_some_and(|g| {
             let last = g.last().map(String::as_str).unwrap_or_default();
             let lower: Vec<&Info> = g.iter().filter_map(|x| info.get(x)).collect();
-            siblings_adjacent(&d, last, l) && info.get(l).is_some_and(|u| mergeable(&lower, u))
+            siblings_adjacent(&d, last, l) && info.get(l).is_some_and(|u| mergeable(&lower, u, &mut budget))
         });
         match groups.last_mut() {
             Some(g) if extend => g.push(l.clone()),
