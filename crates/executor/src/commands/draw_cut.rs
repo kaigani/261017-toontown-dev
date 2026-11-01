@@ -31,6 +31,7 @@ use crate::cx::Cx;
 struct Outcome {
     inside: Vec<String>,
     kept_brush: Vec<String>,
+    skipped: Vec<SkippedNode>,
     changed: Changed,
     rev: u64,
 }
@@ -48,9 +49,30 @@ fn run_cut(
     closed: bool,
     delete: bool,
     layers: Option<&[String]>,
+    nodes: bool,
 ) -> Result<Outcome, CommandError> {
     let before = cx.document()?.clone();
     let d = before.drawing(drawing).ok_or_else(|| super::draw::not_found(drawing.as_str()))?.clone();
+    // Text and bitmap nodes (Cutter only; C23-R1-11, SI-078): wholly enclosed ones are inside, partly enclosed ones
+    // are left whole and reported (no glyph or bitmap clipping in M2).
+    let mut node_inside: Vec<String> = Vec::new();
+    let mut skipped: Vec<SkippedNode> = Vec::new();
+    if nodes && closed {
+        for o in vd::objects(&d).into_iter().filter(|o| matches!(o.kind, ObjectKind::Text | ObjectKind::Bitmap)) {
+            let Some(b) = vd::node_at(&d, &o.pointer).and_then(|n| vd::node_bounds(n, true)) else { continue };
+            let corners = [
+                P::new(b.min_x, b.min_y),
+                P::new(b.max_x, b.min_y),
+                P::new(b.max_x, b.max_y),
+                P::new(b.min_x, b.max_y),
+            ];
+            if corners.iter().all(|c| cut::inside(boundary, *c)) {
+                node_inside.push(o.id);
+            } else if cut::polygons_meet(&corners, boundary) {
+                skipped.push(SkippedNode { object_id: o.id, reason: "notClippable".into() });
+            }
+        }
+    }
     let cache = cx.planar_cache();
     let zones_before: BTreeMap<String, std::sync::Arc<tt_vector::planar::graph::LayerMap>> =
         crate::planar::drawing_zones(&cache, &d)?.into_iter().map(|lz| (lz.layer.id.clone(), lz.map)).collect();
@@ -70,11 +92,13 @@ fn run_cut(
         ops.push(op("add", &format!("{pointer}/strokes/-"), Some(cut::boundary_stroke(&bid, boundary, closed))));
         boundaries.push((lid, bid));
     }
-    if boundaries.is_empty() {
+    if boundaries.is_empty() && node_inside.is_empty() && skipped.is_empty() {
         return Err(nothing_to_do("cut"));
     }
-    cx.patch_entries(vec![(EntryKey::Drawing(drawing.clone()), ops)])?;
-    cx.settle()?;
+    if !ops.is_empty() {
+        cx.patch_entries(vec![(EntryKey::Drawing(drawing.clone()), ops)])?;
+        cx.settle()?;
+    }
     // 2. Sort the pieces.
     let noded = cx.document()?.clone();
     let dn = noded.drawing(drawing).ok_or_else(|| super::draw::not_found(drawing.as_str()))?.clone();
@@ -143,6 +167,7 @@ fn run_cut(
     }
     let now = cx.document()?.clone();
     let dnow = now.drawing(drawing).ok_or_else(|| super::draw::not_found(drawing.as_str()))?.clone();
+    inside.extend(node_inside);
     let mut gone: Vec<String> = drop.clone();
     if delete {
         gone.extend(inside.iter().cloned());
@@ -170,7 +195,17 @@ fn run_cut(
         }
     }
     let inside = if delete { Vec::new() } else { inside.into_iter().filter(present).collect() };
-    Ok(Outcome { inside, kept_brush, changed, rev: committed_rev(cx)? })
+    Ok(Outcome { inside, kept_brush, skipped, changed, rev: committed_rev(cx)? })
+}
+
+/// A node a cut leaves whole.
+#[derive(Debug, Clone, Serialize, JsonSchema)]
+#[serde(rename_all = "camelCase")]
+pub(crate) struct SkippedNode {
+    /// The text or bitmap node.
+    object_id: String,
+    /// Why (`notClippable`: partly enclosed text or bitmap, SI-078).
+    reason: String,
 }
 
 /// What happens to the inside of a cut.
@@ -241,6 +276,8 @@ pub(crate) struct CutResult {
     inside_ids: Vec<String>,
     /// Brush strokes crossing the boundary, kept whole (SI-059, SI-071).
     kept_brush_ids: Vec<String>,
+    /// Text and bitmap nodes partly enclosed, left whole (SI-078).
+    skipped: Vec<SkippedNode>,
     /// Changed objects.
     #[serde(flatten)]
     changed: Changed,
@@ -308,7 +345,7 @@ pub(crate) fn draw_cut_apply(cx: &mut Cx, p: CutParams) -> Result<CutResult, Com
     let doc = cx.document()?.clone();
     let d = t.drawing(&doc)?.into_owned();
     check_editable(&d, None)?;
-    let o = run_cut(cx, &t.id, &boundary, closed, p.then == Then::Delete, None)?;
+    let o = run_cut(cx, &t.id, &boundary, closed, p.then == Then::Delete, None, true)?;
     if p.then == Then::Select {
         let now = cx.document()?.clone();
         if let Some(dn) = now.drawing(&t.id) {
@@ -319,6 +356,7 @@ pub(crate) fn draw_cut_apply(cx: &mut Cx, p: CutParams) -> Result<CutResult, Com
         drawing_id: t.id.as_str().to_owned(),
         inside_ids: o.inside,
         kept_brush_ids: o.kept_brush,
+        skipped: o.skipped,
         changed: o.changed,
         rev: o.rev,
     })
@@ -523,7 +561,7 @@ pub(crate) fn draw_erase_apply(cx: &mut Cx, p: EraseParams) -> Result<EraseResul
             Some(out)
         }
     };
-    let o = run_cut(cx, &t.id, &area, true, true, layers.as_deref())?;
+    let o = run_cut(cx, &t.id, &area, true, true, layers.as_deref(), false)?;
     Ok(EraseResult {
         drawing_id: t.id.as_str().to_owned(),
         kept_brush_ids: o.kept_brush,

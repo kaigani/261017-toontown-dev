@@ -309,11 +309,15 @@ pub(crate) fn draw_lines_to_brush_apply(
             thickness: 0.0,
         };
         let id = cx.new_id(ObjectType::Stroke)?;
-        let brush = tt_vector::stroke::build(&spec, id.as_str()).map_err(|e| super::draw::invalid_geometry(&e))?;
+        let mut brush = tt_vector::stroke::build(&spec, id.as_str()).map_err(|e| super::draw::invalid_geometry(&e))?;
+        // The line's gradient or texture mapping moves to the brush (SI-068); the invisible centre keeps no paint
+        // fields (C23-R1-05).
+        brush["fillMatrix"] = centre.get("fillMatrix").cloned().unwrap_or(Value::Null);
         if let Some(o) = centre.as_object_mut() {
             o.insert("kind".into(), json!("invisible"));
             o.insert("colourId".into(), Value::Null);
             o.insert("lineStyle".into(), Value::Null);
+            o.insert("fillMatrix".into(), Value::Null);
         }
         ops.push(op("replace", &l.pointer, Some(centre)));
         ops.push(op("add", &format!("{}/{}", l.list, l.index + 1), Some(brush)));

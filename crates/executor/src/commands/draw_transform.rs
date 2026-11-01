@@ -137,46 +137,13 @@ fn map_objects(
         }
     }
     ids.reverse();
-    // Layers moved as a whole keep each zone's fill with its matrix mapped (the settle pass alone would carry fills
-    // by overlap with the old geometry, leaving gradient and texture mappings behind).
+    // Layers moved as a whole keep each zone's fill with its matrix mapped (C23-R1-01: one repaint path for every
+    // transform route).
     let whole = if copy { Vec::new() } else { whole_layers(&before, drawing, objs) };
-    let cache = cx.planar_cache();
-    let sources: BTreeMap<String, crate::planar::LayerZones> = match (whole.is_empty(), before.drawing(drawing)) {
-        (false, Some(d)) => crate::planar::drawing_zones(&cache, d)?
-            .into_iter()
-            .filter(|lz| whole.contains(&lz.layer.id))
-            .map(|lz| (lz.layer.id.clone(), lz))
-            .collect(),
-        _ => BTreeMap::new(),
-    };
+    let sources = mapped_sources(cx, &before, drawing, &whole)?;
     changes.push((EntryKey::Drawing(drawing.clone()), ops));
     cx.patch_entries(std::mem::take(changes))?;
-    if let (false, Map::Affine(a)) = (sources.is_empty(), m)
-        && let Some(inv) = inverse(a)
-    {
-        cx.settle()?;
-        let now = cx.document()?.clone();
-        if let Some(dn) = now.drawing(drawing) {
-            for lz in crate::planar::drawing_zones(&cache, dn)? {
-                let Some(src) = sources.get(&lz.layer.id) else { continue };
-                let fills: BTreeMap<String, Option<tt_vector::planar::fill::Fill>> = lz
-                    .map
-                    .zones
-                    .iter()
-                    .map(|z| {
-                        let q = inv.apply(z.interior);
-                        let f = src.map.zone_at(q).and_then(|k| src.fills.get(k).cloned().flatten());
-                        let f = f.map(|f| tt_vector::planar::fill::Fill {
-                            colour_id: f.colour_id,
-                            matrix: f.matrix.map(|mm| a.then_after(&Affine(mm)).0.map(|v| v + 0.0)),
-                        });
-                        (z.id.clone(), f)
-                    })
-                    .collect();
-                cx.paint_zones(drawing, &lz.layer.id, fills);
-            }
-        }
-    }
+    repaint_mapped(cx, &[(drawing.clone(), map_affine(m), sources)])?;
     let mut changed = Changed { created_ids: created_ids.clone(), modified_ids: Vec::new(), removed_ids: Vec::new() };
     if !copy {
         changed.modified_ids = ids.clone();
@@ -187,6 +154,61 @@ fn map_objects(
     // IDs after noding: an object noding split is reported by its pieces.
     let ids: Vec<String> = ids.iter().flat_map(|i| cx.pieces_of(drawing, i)).collect();
     Ok(Applied { ids, changed, rev: committed_rev(cx)? })
+}
+
+/// The affine part of a map: the map itself, or an envelope's three-corner fit (SI-070).
+fn map_affine(m: &Map) -> Affine {
+    match m {
+        Map::Affine(a) | Map::Envelope(_, a) => *a,
+    }
+}
+
+/// The zones (with fills) of the layers a transform moves as a whole, before the change.
+fn mapped_sources(
+    cx: &Cx,
+    doc: &tt_model::document::Document,
+    drawing: &Id,
+    layers: &[String],
+) -> Result<BTreeMap<String, crate::planar::LayerZones>, CommandError> {
+    let Some(d) = doc.drawing(drawing).filter(|_| !layers.is_empty()) else { return Ok(BTreeMap::new()) };
+    Ok(crate::planar::drawing_zones(&cx.planar_cache(), d)?
+        .into_iter()
+        .filter(|lz| layers.contains(&lz.layer.id))
+        .map(|lz| (lz.layer.id.clone(), lz))
+        .collect())
+}
+
+/// After staging a transform: settles, then gives every zone of each moved layer the fill of the source zone at its
+/// interior point mapped back through the map's affine part, with the fill matrix mapped forward (C23-R1-01). The
+/// settle pass alone carries fills by overlap with the old geometry, which a disjoint move does not have. A zone
+/// whose mapped-back point lies in no source zone keeps what the settle pass gave it.
+fn repaint_mapped(
+    cx: &mut Cx,
+    moves: &[(Id, Affine, BTreeMap<String, crate::planar::LayerZones>)],
+) -> Result<(), CommandError> {
+    if moves.iter().all(|m| m.2.is_empty()) {
+        return Ok(());
+    }
+    cx.settle()?;
+    let now = cx.document()?.clone();
+    let cache = cx.planar_cache();
+    for (drawing, a, sources) in moves {
+        let (Some(inv), Some(dn)) = (inverse(a), now.drawing(drawing)) else { continue };
+        for lz in crate::planar::drawing_zones(&cache, dn)? {
+            let Some(src) = sources.get(&lz.layer.id) else { continue };
+            let mut fills: BTreeMap<String, Option<tt_vector::planar::fill::Fill>> = BTreeMap::new();
+            for z in &lz.map.zones {
+                let Some(k) = src.map.zone_at(inv.apply(z.interior)) else { continue };
+                let f = src.fills.get(k).cloned().flatten().map(|f| tt_vector::planar::fill::Fill {
+                    colour_id: f.colour_id,
+                    matrix: f.matrix.map(|mm| a.then_after(&Affine(mm)).0.map(|v| v + 0.0)),
+                });
+                fills.insert(z.id.clone(), f);
+            }
+            cx.paint_zones(drawing, &lz.layer.id, fills);
+        }
+    }
+    Ok(())
 }
 
 fn inverse(m: &Affine) -> Option<Affine> {
@@ -402,6 +424,27 @@ fn move_anchors(
         by_stroke.entry(a.stroke_id.clone()).or_default().push(a.anchor as usize);
     }
     let pivot = pivot.map(|q| P::new(q.x, q.y)).or_else(|| acc.map(|b| centre(&b))).unwrap_or_default();
+    // Every anchor of the same layer at a requested anchor's exact position moves with it (the junction class,
+    // as `draw.point.move`; C23-R1-02); the pivot stays that of the requested subset.
+    let mut at: Vec<(String, (u64, u64))> = Vec::new();
+    for a in pts {
+        if let Some(l) = vd::locate(d, &a.stroke_id)
+            && let Some(q) = vd::stroke_at(d, &l.pointer).and_then(|s| s.points().get(a.anchor as usize))
+        {
+            at.push((l.list.clone(), (q[0].to_bits(), q[1].to_bits())));
+        }
+    }
+    for o in vd::objects(d).iter().filter(|o| o.kind == ObjectKind::Stroke) {
+        let Some(s) = vd::stroke_at(d, &o.pointer) else { continue };
+        for (k, q) in s.points().iter().enumerate() {
+            if at.iter().any(|(list, xy)| *list == o.list && *xy == (q[0].to_bits(), q[1].to_bits())) {
+                let e = by_stroke.entry(o.id.clone()).or_default();
+                if !e.contains(&k) {
+                    e.push(k);
+                }
+            }
+        }
+    }
     let m = Map::Affine(make(pivot)?);
     let mut ops = Vec::new();
     let mut modified = Vec::new();
@@ -583,6 +626,16 @@ fn envelope_of(b: &Rect, corners: &[Point], mapping: Mapping) -> Result<Map, Com
         Mapping::Bilinear => Some(false),
     };
     let quad = [c[0], c[1], c[2], c[3]];
+    // The affine fit through three corners, from the targets themselves (exact for exact inputs).
+    let (w, h) = ((max.x - min.x).max(1e-12), (max.y - min.y).max(1e-12));
+    let (ex, ey) = ((quad[1] - quad[0]) * (1.0 / w), (quad[3] - quad[0]) * (1.0 / h));
+    let lin = Affine([ex.x, ex.y, ey.x, ey.y, 0.0, 0.0]);
+    let t = quad[0] - lin.apply(min);
+    let fit = Affine([ex.x, ex.y, ey.x, ey.y, t.x, t.y]);
+    // A parallelogram target is an affine image of the box: map it exactly (SI-070).
+    if quad[2] == quad[1] + quad[3] - quad[0] && mapping == Mapping::Auto {
+        return Ok(Map::Affine(fit));
+    }
     let e = Envelope::new(min, max, quad, proj).ok_or_else(|| {
         err(
             "drawing.invalidGeometry",
@@ -590,8 +643,7 @@ fn envelope_of(b: &Rect, corners: &[Point], mapping: Mapping) -> Result<Map, Com
             json!({ "pointer": "/corners" }),
         )
     })?;
-    let a = e.affine(min, max);
-    Ok(Map::Envelope(e, a))
+    Ok(Map::Envelope(e, fit))
 }
 
 #[command(
@@ -692,6 +744,7 @@ pub(crate) fn draw_reposition_all_apply(cx: &mut Cx, p: RepositionParams) -> Res
     };
     let mut changes = Vec::new();
     let mut changed_ids = Vec::new();
+    let mut moves = Vec::new();
     for id in &ids {
         let Some(d) = doc.drawing(id) else { continue };
         if *d.locked() {
@@ -715,6 +768,9 @@ pub(crate) fn draw_reposition_all_apply(cx: &mut Cx, p: RepositionParams) -> Res
             ops.push(op("replace", &format!("/nodes/{k}"), Some(v)));
         }
         if !ops.is_empty() {
+            let layers: Vec<String> =
+                crate::planar::layer_nodes(d).iter().map(|(_, n)| n.id().as_str().to_owned()).collect();
+            moves.push((id.clone(), map_affine(&m), mapped_sources(cx, &doc, id, &layers)?));
             changes.push((EntryKey::Drawing(id.clone()), ops));
             changed_ids.push(id.as_str().to_owned());
         }
@@ -723,6 +779,8 @@ pub(crate) fn draw_reposition_all_apply(cx: &mut Cx, p: RepositionParams) -> Res
         return Err(nothing_to_do("reposition"));
     }
     cx.patch_entries(changes)?;
+    // Every drawing moves whole: its zones keep their fills with mapped matrices (C23-R1-01).
+    repaint_mapped(cx, &moves)?;
     Ok(RepositionResult { drawing_ids: changed_ids })
 }
 
@@ -911,6 +969,56 @@ pub(crate) struct ContourResult {
     rev: u64,
 }
 
+/// The Snap to Contour radius (02 §8.9: 8 view pixels; 100 % zoom headless, SI-063).
+const SNAP_RADIUS: f64 = 8.0;
+
+/// The point of a path nearest to `q`: `(distance, segment, parameter, point)`. Straight segments project exactly;
+/// curved ones are searched by sampling and bisection.
+fn nearest_on(path: &tt_vector::path::Path, q: P) -> Option<(f64, usize, f64, P)> {
+    let mut best: Option<(f64, usize, f64, P)> = None;
+    let mut keep = |cand: (f64, usize, f64, P)| {
+        if best.as_ref().is_none_or(|b| cand.0 < b.0) {
+            best = Some(cand);
+        }
+    };
+    let segs = path.segments();
+    if segs.is_empty() {
+        let a = path.anchors.first()?.p;
+        return Some((a.dist(q), 0, 0.0, a));
+    }
+    for (i, c) in segs.iter().enumerate() {
+        if c.p1 == c.p0 && c.p2 == c.p3 {
+            let ab = c.p3 - c.p0;
+            let l2 = ab.dot(ab);
+            let t = if l2 > 0.0 { ((q - c.p0).dot(ab) / l2).clamp(0.0, 1.0) } else { 0.0 };
+            let at = if t == 0.0 {
+                c.p0
+            } else if t == 1.0 {
+                c.p3
+            } else {
+                c.p0 + ab * t
+            };
+            keep((at.dist(q), i, t, at));
+        } else {
+            let mut t = (0..=64)
+                .map(|k| f64::from(k) / 64.0)
+                .min_by(|a, b| c.eval(*a).dist(q).total_cmp(&c.eval(*b).dist(q)))?;
+            let mut step = 1.0 / 64.0;
+            for _ in 0..40 {
+                step /= 2.0;
+                let (lo, hi) = ((t - step).max(0.0), (t + step).min(1.0));
+                t = [lo, t, hi]
+                    .into_iter()
+                    .min_by(|a, b| c.eval(*a).dist(q).total_cmp(&c.eval(*b).dist(q)))
+                    .unwrap_or(t);
+            }
+            let at = c.eval(t);
+            keep((at.dist(q), i, t, at));
+        }
+    }
+    best
+}
+
 #[command(
     id = "draw.point.move",
     kind = action,
@@ -960,12 +1068,17 @@ pub(crate) fn draw_point_move(cx: &mut Cx, p: PointMoveParams) -> Result<Contour
     }
     let delta = P::new(p.delta.x, p.delta.y);
     let dj = drawing_json(&doc, &t.id)?;
-    let others: Vec<P> = if p.snap {
+    // Snap to Contour (02 §8.9; C23-R1-03): the other strokes of the moved stroke's own layer, by their whole
+    // contour (anchors and segment interiors, curves included); cross-layer contours are not candidates (SI-070).
+    let contours: Vec<(String, String, tt_vector::path::Path)> = if p.snap {
         vd::objects(&d)
             .iter()
-            .filter(|o| !moved.iter().any(|(s, _)| *s == o.id))
-            .filter_map(|o| vd::stroke_at(&d, &o.pointer))
-            .flat_map(|s| s.points().iter().map(|a| P::new(a[0], a[1])).collect::<Vec<_>>())
+            .filter(|o| o.kind == ObjectKind::Stroke && !moved.iter().any(|(s, _)| *s == o.id))
+            .filter_map(|o| {
+                let s = vd::stroke_at(&d, &o.pointer)?;
+                let closed = *s.closed() || *s.kind() == tt_model::entities::drawing::StrokeKind::Brush;
+                Some((o.list.clone(), o.id.clone(), tt_vector::path::Path::from_points(s.points(), closed)))
+            })
             .collect()
     } else {
         Vec::new()
@@ -983,10 +1096,17 @@ pub(crate) fn draw_point_move(cx: &mut Cx, p: PointMoveParams) -> Result<Contour
                 }
                 let (x, y) = (a[0].as_f64().unwrap_or(0.0) + delta.x, a[1].as_f64().unwrap_or(0.0) + delta.y);
                 let mut q = P::new(x, y);
-                if let Some(s) =
-                    others.iter().filter(|o| o.dist(q) <= 8.0).min_by(|a, b| a.dist(q).total_cmp(&b.dist(q)))
-                {
-                    q = *s;
+                // Nearest within the radius; ties: lower stroke ID, then lower segment and parameter.
+                let best = contours
+                    .iter()
+                    .filter(|(list, _, _)| *list == l.list)
+                    .filter_map(|(_, id, path)| nearest_on(path, q).map(|(dist, seg, t, at)| (dist, id, seg, t, at)))
+                    .filter(|c| c.0 <= SNAP_RADIUS)
+                    .min_by(|a, b| {
+                        a.0.total_cmp(&b.0).then_with(|| a.1.cmp(b.1)).then(a.2.cmp(&b.2)).then(a.3.total_cmp(&b.3))
+                    });
+                if let Some(c) = best {
+                    q = c.4;
                 }
                 a[0] = json!(q.x);
                 a[1] = json!(q.y);
