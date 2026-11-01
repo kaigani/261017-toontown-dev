@@ -70,9 +70,14 @@ fn fixture_open_latency_twenty_samples() {
         assert!(h.open_document(doc, None, false).is_ok());
         samples.push(start.elapsed().as_secs_f64() * 1000.0);
     }
-    let path =
-        std::path::Path::new(env!("CARGO_MANIFEST_DIR")).join("../../reviews/evidence/M1-C1.3-r3/open-latency.json");
-    std::fs::write(path, serde_json::to_vec_pretty(&json!({"milliseconds":samples,"method":"same in-memory fixture open_document as watchdog setup; default budget; excludes fixture construction"})).unwrap()).unwrap();
+    // Routine runs write the receipt to a temporary directory; the committed receipt changes only when
+    // TT_COMMIT_REVIEW_RECEIPTS=1 (M2 C2.3 reviewer-tooling ruling).
+    let path = if std::env::var("TT_COMMIT_REVIEW_RECEIPTS").as_deref() == Ok("1") {
+        std::path::Path::new(env!("CARGO_MANIFEST_DIR")).join("../../reviews/evidence/M1-C1.3-r3/open-latency.json")
+    } else {
+        std::env::temp_dir().join(format!("tt-c13-r3-open-latency-{}.json", std::process::id()))
+    };
+    std::fs::write(&path, serde_json::to_vec_pretty(&json!({"milliseconds":samples,"method":"same in-memory fixture open_document as watchdog setup; default budget; excludes fixture construction"})).unwrap()).unwrap();
 }
 
 #[test]

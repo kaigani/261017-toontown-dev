@@ -1,0 +1,54 @@
+diff --git a/crates/executor/tests/c13_r2_persistence.rs b/crates/executor/tests/c13_r2_persistence.rs
+index ebe03a2..eb30887 100644
+--- a/crates/executor/tests/c13_r2_persistence.rs
++++ b/crates/executor/tests/c13_r2_persistence.rs
+@@ -187,14 +187,26 @@ fn gigabyte_package_inspection_is_bounded_with_and_without_validation() {
+         std::fs::remove_dir_all(dir).unwrap();
+         return;
+     }
+-    let script =
++    let committed =
+         std::path::Path::new(env!("CARGO_MANIFEST_DIR")).join("../../reviews/evidence/M1-C1.3-r2/memory-probe.py");
++    // The probe writes its receipt beside itself. Routine runs execute a copy in a temporary directory, so the
++    // committed receipt changes only when TT_COMMIT_REVIEW_RECEIPTS=1 (M2 C2.3 reviewer-tooling ruling).
++    let receipts = std::env::temp_dir().join(format!("tt-c13-r2-receipt-{}", std::process::id()));
++    let script = if std::env::var("TT_COMMIT_REVIEW_RECEIPTS").as_deref() == Ok("1") {
++        committed
++    } else {
++        std::fs::create_dir_all(&receipts).unwrap();
++        let copy = receipts.join("memory-probe.py");
++        std::fs::copy(&committed, &copy).unwrap();
++        copy
++    };
+     let result = std::process::Command::new(if cfg!(windows) { "python" } else { "python3" })
+         .arg(script)
+         .arg(std::env::current_exe().unwrap())
+         .arg("gigabyte_package_inspection_is_bounded_with_and_without_validation")
+         .output()
+         .unwrap();
++    let _ = std::fs::remove_dir_all(&receipts);
+     assert!(result.status.success(), "{}", String::from_utf8_lossy(&result.stdout));
+ }
+ 
+diff --git a/crates/executor/tests/c13_r3_persistence.rs b/crates/executor/tests/c13_r3_persistence.rs
+index 586f489..d491f6a 100644
+--- a/crates/executor/tests/c13_r3_persistence.rs
++++ b/crates/executor/tests/c13_r3_persistence.rs
+@@ -70,9 +70,14 @@ fn fixture_open_latency_twenty_samples() {
+         assert!(h.open_document(doc, None, false).is_ok());
+         samples.push(start.elapsed().as_secs_f64() * 1000.0);
+     }
+-    let path =
+-        std::path::Path::new(env!("CARGO_MANIFEST_DIR")).join("../../reviews/evidence/M1-C1.3-r3/open-latency.json");
+-    std::fs::write(path, serde_json::to_vec_pretty(&json!({"milliseconds":samples,"method":"same in-memory fixture open_document as watchdog setup; default budget; excludes fixture construction"})).unwrap()).unwrap();
++    // Routine runs write the receipt to a temporary directory; the committed receipt changes only when
++    // TT_COMMIT_REVIEW_RECEIPTS=1 (M2 C2.3 reviewer-tooling ruling).
++    let path = if std::env::var("TT_COMMIT_REVIEW_RECEIPTS").as_deref() == Ok("1") {
++        std::path::Path::new(env!("CARGO_MANIFEST_DIR")).join("../../reviews/evidence/M1-C1.3-r3/open-latency.json")
++    } else {
++        std::env::temp_dir().join(format!("tt-c13-r3-open-latency-{}.json", std::process::id()))
++    };
++    std::fs::write(&path, serde_json::to_vec_pretty(&json!({"milliseconds":samples,"method":"same in-memory fixture open_document as watchdog setup; default budget; excludes fixture construction"})).unwrap()).unwrap();
+ }
+ 
+ #[test]
