@@ -161,6 +161,18 @@ fn first_style_value<'a>(
     Some((pal, s, value))
 }
 
+/// Whether a colour paints fully opaque in the interim style (SI-065): a solid colour or a gradient all of whose
+/// stops have alpha 255. Textures (whose images may carry alpha) and unknown colours count as not opaque, so merges
+/// that depend on opacity decline them (02 §8.1, §8.2).
+pub(crate) fn opaque(doc: &Document, colour: &str) -> bool {
+    use tt_model::entities::palette::SwatchValue;
+    match first_style_value(doc, colour).map(|v| v.2) {
+        Some(SwatchValue::Solid(s)) => s.rgba.channels()[3] == 255,
+        Some(SwatchValue::Gradient(g)) => g.stops.iter().all(|st| st.rgba.channels()[3] == 255),
+        _ => false,
+    }
+}
+
 /// A swatch's kind and whether it is protected (SI-061), by colour ID.
 fn swatch_info(doc: &Document, colour: &str) -> Option<(SwatchKind, bool)> {
     doc.palettes().flat_map(|p| p.swatches().iter()).find(|s| s.colour_id().as_str() == colour).map(|s| {

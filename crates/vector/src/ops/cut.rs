@@ -33,15 +33,32 @@ pub fn polygons_meet(a: &[P], b: &[P]) -> bool {
         return true;
     }
     let edges = |v: &[P]| -> Vec<(P, P)> { (0..v.len()).map(|i| (v[i], v[(i + 1) % v.len()])).collect() };
-    let cross = |(p, q): (P, P), (r, s): (P, P)| {
-        let d1 = (q - p).cross(r - p);
-        let d2 = (q - p).cross(s - p);
-        let d3 = (s - r).cross(p - r);
-        let d4 = (s - r).cross(q - r);
-        d1 * d2 < 0.0 && d3 * d4 < 0.0
-    };
     let (ea, eb) = (edges(a), edges(b));
-    ea.iter().any(|x| eb.iter().any(|y| cross(*x, *y)))
+    ea.iter().any(|x| eb.iter().any(|y| segments_cross(x.0, x.1, y.0, y.1)))
+}
+
+fn segments_cross(p: P, q: P, r: P, s: P) -> bool {
+    let d1 = (q - p).cross(r - p);
+    let d2 = (q - p).cross(s - p);
+    let d3 = (s - r).cross(p - r);
+    let d4 = (s - r).cross(q - r);
+    d1 * d2 < 0.0 && d3 * d4 < 0.0
+}
+
+/// Whether an open polyline meets a closed polygon (a point inside, or an edge crossing).
+#[must_use]
+pub fn polyline_meets(line: &[P], poly: &[P]) -> bool {
+    if line.iter().any(|p| inside(poly, *p)) {
+        return true;
+    }
+    let n = poly.len();
+    line.windows(2).any(|w| (0..n).any(|i| segments_cross(w[0], w[1], poly[i], poly[(i + 1) % n])))
+}
+
+/// Whether two open polylines cross.
+#[must_use]
+pub fn polylines_cross(a: &[P], b: &[P]) -> bool {
+    a.windows(2).any(|x| b.windows(2).any(|y| segments_cross(x[0], x[1], y[0], y[1])))
 }
 
 /// An invisible stroke (10 §4.9) through `pts` with corner anchors; `closed` for a polygon.

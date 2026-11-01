@@ -2793,10 +2793,20 @@ export const COMMAND_INDEX = {
     result: "draw.arrange.apply.result",
     examples: [
       {
+        drawingId: "drawingBank:#1/drawing:#1",
+        ids: [
+          "nd_01K742SG0WFAQJFKAZKV4CD56C",
+        ],
+        to: "back",
+      },
+      {
+        drawingId: "drawingBank:#1/drawing:#1",
+        ids: [
+          "st_01K742SG0R61SYK9GG0HGYVNBT",
+        ],
         to: "front",
       },
     ],
-    milestone: "M2 C2.3",
   },
   "draw.bounds.get": {
     kind: "query",
@@ -3132,9 +3142,26 @@ export const COMMAND_INDEX = {
     params: "draw.flatten.apply.params",
     result: "draw.flatten.apply.result",
     examples: [
-      {},
+      {
+        drawingId: "drawingBank:#1/drawing:#1",
+        ids: [
+          "nd_01K742SG0TX3WF1BSWWGMWM5WG",
+          "st_01K742SG0R61SYK9GG0HGYVNBT",
+          "st_01K742SG0QD1F2HFZSX8R4V7WP",
+        ],
+      },
+      {
+        drawingId: "drawingBank:#1/drawing:#1",
+        ids: [
+          "st_01K742SG0R61SYK9GG0HGYVNBT",
+          "st_01K742SG0QD1F2HFZSX8R4V7WP",
+        ],
+        policy: {
+          precedence: "lower",
+          position: "bottom",
+        },
+      },
     ],
-    milestone: "M2 C2.3",
   },
   "draw.flip.apply": {
     kind: "action",
@@ -3259,9 +3286,14 @@ export const COMMAND_INDEX = {
     params: "draw.optimize.apply.params",
     result: "draw.optimize.apply.result",
     examples: [
-      {},
+      {
+        drawingId: "drawingBank:#1/drawing:#1",
+        ids: [
+          "st_01K742SG0R61SYK9GG0HGYVNBT",
+          "st_01K742SG0QD1F2HFZSX8R4V7WP",
+        ],
+      },
     ],
-    milestone: "M2 C2.3",
   },
   "draw.pivot.set": {
     kind: "action",
@@ -29159,67 +29191,125 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
       "unavailable",
     ],
   },
+  "draw.arrange.apply.ArrangeTo": {
+    description: "Arrange direction.",
+    oneOf: [
+      {
+        description: "Above everything.",
+        type: "string",
+        const: "front",
+      },
+      {
+        description: "One position up.",
+        type: "string",
+        const: "forward",
+      },
+      {
+        description: "One position down.",
+        type: "string",
+        const: "backward",
+      },
+      {
+        description: "Behind everything.",
+        type: "string",
+        const: "back",
+      },
+    ],
+  },
   "draw.arrange.apply.params": {
-    title: "draw.arrange.apply parameters",
+    title: "ArrangeParams",
+    description: "`draw.arrange.apply` parameters.",
     type: "object",
     properties: {
       drawingId: {
-        type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
+        description: "The drawing (default: current).",
+        type: [
+          "string",
+          "null",
+        ],
+        default: null,
       },
       ids: {
-        type: "array",
+        description: "Objects (default: the selection).",
+        type: [
+          "array",
+          "null",
+        ],
         items: {
           type: "string",
-          minLength: 1,
-          maxLength: 4096,
-          description: "object ID or path reference (10 §3)",
         },
-        maxItems: 100000,
-        description: "Default: selection.",
+        default: null,
       },
       to: {
-        type: "string",
-        enum: [
-          "front",
-          "forward",
-          "backward",
-          "back",
-        ],
+        description: "Direction.",
+        $ref: "#/$defs/draw.arrange.apply.ArrangeTo",
       },
     },
+    additionalProperties: false,
     required: [
       "to",
     ],
-    additionalProperties: false,
-    "x-spec": "`drawingId?: id; ids?: [id] = selection; to: enum \"front\"|\"forward\"|\"backward\"|\"back\"`",
   },
   "draw.arrange.apply.result": {
-    title: "draw.arrange.apply result",
+    title: "ArrangeResult",
+    description: "`{order, rev}`.",
     type: "object",
     properties: {
+      drawingId: {
+        description: "The drawing.",
+        type: "string",
+      },
       order: {
+        description: "The drawing's top-level node IDs after the change, back to front.",
         type: "array",
         items: {
           type: "string",
-          minLength: 1,
-          maxLength: 4096,
-          description: "object ID or path reference (10 §3)",
         },
-        maxItems: 100000,
+      },
+      createdLayerIds: {
+        description: "Layers created by separating part of a layer.",
+        type: "array",
+        items: {
+          type: "string",
+        },
+      },
+      createdIds: {
+        description: "Created objects.",
+        type: "array",
+        items: {
+          type: "string",
+        },
+      },
+      modifiedIds: {
+        description: "Modified objects (content, membership or position changed; IDs kept).",
+        type: "array",
+        items: {
+          type: "string",
+        },
+      },
+      removedIds: {
+        description: "Removed objects (descendants included).",
+        type: "array",
+        items: {
+          type: "string",
+        },
       },
       rev: {
-        type: "number",
+        description: "The drawing revision after the change.",
+        type: "integer",
+        maximum: 18446744073709551615n,
+        minimum: 0,
       },
     },
     required: [
+      "drawingId",
       "order",
+      "createdLayerIds",
+      "createdIds",
+      "modifiedIds",
+      "removedIds",
       "rev",
     ],
-    "x-spec": "`{order: [id], rev}`",
-    additionalProperties: false,
   },
   "draw.bounds.get.params": {
     title: "BoundsParams",
@@ -32717,62 +32807,131 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
     "x-spec": "`{jobId}` → `{layerIds: [id], skippedTextured: int, warnings: [code], rev}` or `{needs_confirmation}`",
     additionalProperties: false,
   },
+  "draw.flatten.apply.FlattenPolicy": {
+    description: "A flatten policy (SI-073).",
+    type: "object",
+    properties: {
+      precedence: {
+        description: "Which colour wins where content overlaps.",
+        $ref: "#/$defs/draw.flatten.apply.Precedence",
+      },
+      position: {
+        description: "Where the merged layer goes.",
+        $ref: "#/$defs/draw.flatten.apply.Position",
+      },
+    },
+    additionalProperties: false,
+  },
+  "draw.flatten.apply.Precedence": {
+    description: "Which layer's colour wins where merged content overlaps.",
+    oneOf: [
+      {
+        description: "The upper layer's colour replaces the lower one (02 §8.1).",
+        type: "string",
+        const: "upper",
+      },
+      {
+        description: "The lower layer's colour wins (Draw Behind merges, SI-073).",
+        type: "string",
+        const: "lower",
+      },
+    ],
+  },
+  "draw.flatten.apply.Position": {
+    description: "Where the merged layer goes.",
+    oneOf: [
+      {
+        description: "The top-most selected layer's position (02 §8.1).",
+        type: "string",
+        const: "top",
+      },
+      {
+        description: "The bottom-most selected layer's position.",
+        type: "string",
+        const: "bottom",
+      },
+    ],
+  },
   "draw.flatten.apply.params": {
-    title: "draw.flatten.apply parameters",
+    title: "FlattenParams",
+    description: "`draw.flatten.apply` parameters.",
     type: "object",
     properties: {
       drawingId: {
-        type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
+        description: "The drawing (default: current).",
+        type: [
+          "string",
+          "null",
+        ],
+        default: null,
       },
       ids: {
-        type: "array",
+        description: "Layers, groups or strokes whose layers merge (default: the selection).",
+        type: [
+          "array",
+          "null",
+        ],
         items: {
           type: "string",
-          minLength: 1,
-          maxLength: 4096,
-          description: "object ID or path reference (10 §3)",
         },
-        maxItems: 100000,
-        description: "Default: selection.",
+        default: null,
+      },
+      policy: {
+        description: "Merge policy (SI-073; default: upper colour wins, merged layer at the top-most position).",
+        $ref: "#/$defs/draw.flatten.apply.FlattenPolicy",
       },
     },
     additionalProperties: false,
-    "x-spec": "`drawingId?: id; ids?: [id] = selection`",
   },
   "draw.flatten.apply.result": {
-    title: "draw.flatten.apply result",
+    title: "FlattenResult",
+    description: "`{layerId, removedIds, rev}`.",
     type: "object",
     properties: {
-      layerId: {
+      drawingId: {
+        description: "The drawing.",
         type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
       },
-      removedIds: {
+      layerId: {
+        description: "The merged layer.",
+        type: "string",
+      },
+      createdIds: {
+        description: "Created objects.",
         type: "array",
         items: {
           type: "string",
-          minLength: 1,
-          maxLength: 4096,
-          description: "object ID or path reference (10 §3)",
         },
-        maxItems: 100000,
+      },
+      modifiedIds: {
+        description: "Modified objects (content, membership or position changed; IDs kept).",
+        type: "array",
+        items: {
+          type: "string",
+        },
+      },
+      removedIds: {
+        description: "Removed objects (descendants included).",
+        type: "array",
+        items: {
+          type: "string",
+        },
       },
       rev: {
-        type: "number",
+        description: "The drawing revision after the change.",
+        type: "integer",
+        maximum: 18446744073709551615n,
+        minimum: 0,
       },
     },
     required: [
+      "drawingId",
       "layerId",
+      "createdIds",
+      "modifiedIds",
       "removedIds",
       "rev",
     ],
-    "x-spec": "`{layerId, removedIds: [id], rev}`",
-    additionalProperties: false,
   },
   "draw.flip.apply.Axis": {
     description: "Flip axis.",
@@ -33638,58 +33797,91 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
     ],
   },
   "draw.optimize.apply.params": {
-    title: "draw.optimize.apply parameters",
+    title: "OptimizeParams",
+    description: "`draw.optimize.apply` parameters.",
     type: "object",
     properties: {
       drawingId: {
-        type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
+        description: "The drawing (default: current).",
+        type: [
+          "string",
+          "null",
+        ],
+        default: null,
       },
       ids: {
-        type: "array",
+        description: "Layers, groups or strokes whose layers are considered (default: the selection).",
+        type: [
+          "array",
+          "null",
+        ],
         items: {
           type: "string",
-          minLength: 1,
-          maxLength: 4096,
-          description: "object ID or path reference (10 §3)",
         },
-        maxItems: 100000,
-        description: "Default: selection.",
+        default: null,
       },
     },
     additionalProperties: false,
-    "x-spec": "`drawingId?: id; ids?: [id] = selection`",
   },
   "draw.optimize.apply.result": {
-    title: "draw.optimize.apply result",
+    title: "OptimizeResult",
+    description: "`{layerIds, merged, rev}`.",
     type: "object",
     properties: {
+      drawingId: {
+        description: "The drawing.",
+        type: "string",
+      },
       layerIds: {
+        description: "The considered layers that remain, back to front.",
         type: "array",
         items: {
           type: "string",
-          minLength: 1,
-          maxLength: 4096,
-          description: "object ID or path reference (10 §3)",
         },
-        maxItems: 100000,
       },
       merged: {
+        description: "Layers merged away.",
         type: "integer",
+        maximum: 2147483647,
+        minimum: 0,
+      },
+      createdIds: {
+        description: "Created objects.",
+        type: "array",
+        items: {
+          type: "string",
+        },
+      },
+      modifiedIds: {
+        description: "Modified objects (content, membership or position changed; IDs kept).",
+        type: "array",
+        items: {
+          type: "string",
+        },
+      },
+      removedIds: {
+        description: "Removed objects (descendants included).",
+        type: "array",
+        items: {
+          type: "string",
+        },
       },
       rev: {
-        type: "number",
+        description: "The drawing revision after the change.",
+        type: "integer",
+        maximum: 18446744073709551615n,
+        minimum: 0,
       },
     },
     required: [
+      "drawingId",
       "layerIds",
       "merged",
+      "createdIds",
+      "modifiedIds",
+      "removedIds",
       "rev",
     ],
-    "x-spec": "`{layerIds: [id], merged: int, rev}`",
-    additionalProperties: false,
   },
   "draw.pivot.set.Point": {
     description: "A point `{x, y}` in drawing units.",
@@ -84123,17 +84315,35 @@ export interface doc_validate_result {
   unavailable: doc_validate_Unavailable[];
 }
 
+/** Arrange direction. */
+export type draw_arrange_apply_ArrangeTo = 'front' | 'forward' | 'backward' | 'back';
+
+/** `draw.arrange.apply` parameters. */
 export interface draw_arrange_apply_params {
-  /** object ID or path reference (10 §3) */
-  drawingId?: string;
-  /** Default: selection. */
-  ids?: string[];
-  to: 'front' | 'forward' | 'backward' | 'back';
+  /** The drawing (default: current). */
+  drawingId?: string | null;
+  /** Objects (default: the selection). */
+  ids?: string[] | null;
+  /** Direction. */
+  to: draw_arrange_apply_ArrangeTo;
 }
 
+/** `{order, rev}`. */
 export interface draw_arrange_apply_result {
+  /** The drawing. */
+  drawingId: string;
+  /** The drawing's top-level node IDs after the change, back to front. */
   order: string[];
-  rev: number;
+  /** Layers created by separating part of a layer. */
+  createdLayerIds: string[];
+  /** Created objects. */
+  createdIds: string[];
+  /** Modified objects (content, membership or position changed; IDs kept). */
+  modifiedIds: string[];
+  /** Removed objects (descendants included). */
+  removedIds: string[];
+  /** The drawing revision after the change. */
+  rev: number | bigint;
 }
 
 /** `draw.bounds.get` parameters. */
@@ -85059,18 +85269,44 @@ export interface draw_feather_apply_result {
   jobId: string;
 }
 
-export interface draw_flatten_apply_params {
-  /** object ID or path reference (10 §3) */
-  drawingId?: string;
-  /** Default: selection. */
-  ids?: string[];
+/** A flatten policy (SI-073). */
+export interface draw_flatten_apply_FlattenPolicy {
+  /** Which colour wins where content overlaps. */
+  precedence?: draw_flatten_apply_Precedence;
+  /** Where the merged layer goes. */
+  position?: draw_flatten_apply_Position;
 }
 
+/** Which layer's colour wins where merged content overlaps. */
+export type draw_flatten_apply_Precedence = 'upper' | 'lower';
+
+/** Where the merged layer goes. */
+export type draw_flatten_apply_Position = 'top' | 'bottom';
+
+/** `draw.flatten.apply` parameters. */
+export interface draw_flatten_apply_params {
+  /** The drawing (default: current). */
+  drawingId?: string | null;
+  /** Layers, groups or strokes whose layers merge (default: the selection). */
+  ids?: string[] | null;
+  /** Merge policy (SI-073; default: upper colour wins, merged layer at the top-most position). */
+  policy?: draw_flatten_apply_FlattenPolicy;
+}
+
+/** `{layerId, removedIds, rev}`. */
 export interface draw_flatten_apply_result {
-  /** object ID or path reference (10 §3) */
+  /** The drawing. */
+  drawingId: string;
+  /** The merged layer. */
   layerId: string;
+  /** Created objects. */
+  createdIds: string[];
+  /** Modified objects (content, membership or position changed; IDs kept). */
+  modifiedIds: string[];
+  /** Removed objects (descendants included). */
   removedIds: string[];
-  rev: number;
+  /** The drawing revision after the change. */
+  rev: number | bigint;
 }
 
 /** Flip axis. */
@@ -85336,17 +85572,30 @@ export interface draw_object_delete_result {
   rev: number | bigint;
 }
 
+/** `draw.optimize.apply` parameters. */
 export interface draw_optimize_apply_params {
-  /** object ID or path reference (10 §3) */
-  drawingId?: string;
-  /** Default: selection. */
-  ids?: string[];
+  /** The drawing (default: current). */
+  drawingId?: string | null;
+  /** Layers, groups or strokes whose layers are considered (default: the selection). */
+  ids?: string[] | null;
 }
 
+/** `{layerIds, merged, rev}`. */
 export interface draw_optimize_apply_result {
+  /** The drawing. */
+  drawingId: string;
+  /** The considered layers that remain, back to front. */
   layerIds: string[];
-  merged: number | bigint;
-  rev: number;
+  /** Layers merged away. */
+  merged: number;
+  /** Created objects. */
+  createdIds: string[];
+  /** Modified objects (content, membership or position changed; IDs kept). */
+  modifiedIds: string[];
+  /** Removed objects (descendants included). */
+  removedIds: string[];
+  /** The drawing revision after the change. */
+  rev: number | bigint;
 }
 
 /** A point `{x, y}` in drawing units. */
