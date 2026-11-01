@@ -2848,9 +2848,13 @@ export const COMMAND_INDEX = {
     params: "draw.breakApart.apply.params",
     result: "draw.breakApart.apply.result",
     examples: [
-      {},
+      {
+        drawingId: "drawingBank:#1/drawing:#1",
+        textIds: [
+          "nd_01K742SG0WFAQJFKAZKV4CD56C",
+        ],
+      },
     ],
-    milestone: "M2 C2.3",
   },
   "draw.centreLine.apply": {
     kind: "action",
@@ -29631,54 +29635,84 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
     },
   },
   "draw.breakApart.apply.params": {
-    title: "draw.breakApart.apply parameters",
+    title: "BreakApartParams",
+    description: "`draw.breakApart.apply` parameters.",
     type: "object",
     properties: {
       drawingId: {
-        type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
+        description: "The drawing (default: current).",
+        type: [
+          "string",
+          "null",
+        ],
+        default: null,
       },
       textIds: {
-        type: "array",
+        description: "Text objects (default: the selected text objects).",
+        type: [
+          "array",
+          "null",
+        ],
         items: {
           type: "string",
-          minLength: 1,
-          maxLength: 4096,
-          description: "object ID or path reference (10 §3)",
         },
-        maxItems: 100000,
-        description: "Default: selected text.",
+        default: null,
       },
     },
     additionalProperties: false,
-    "x-spec": "`drawingId?: id; textIds?: [id] = selected text`",
   },
   "draw.breakApart.apply.result": {
-    title: "draw.breakApart.apply result",
+    title: "BreakApartResult",
+    description: "`{groupIds, rev}`.",
     type: "object",
     properties: {
+      drawingId: {
+        description: "The drawing.",
+        type: "string",
+      },
       groupIds: {
+        description: "One group per character, in text order.",
         type: "array",
         items: {
           type: "string",
-          minLength: 1,
-          maxLength: 4096,
-          description: "object ID or path reference (10 §3)",
         },
-        maxItems: 100000,
+      },
+      createdIds: {
+        description: "Created objects.",
+        type: "array",
+        items: {
+          type: "string",
+        },
+      },
+      modifiedIds: {
+        description: "Modified objects (content, membership or position changed; IDs kept).",
+        type: "array",
+        items: {
+          type: "string",
+        },
+      },
+      removedIds: {
+        description: "Removed objects (descendants included).",
+        type: "array",
+        items: {
+          type: "string",
+        },
       },
       rev: {
-        type: "number",
+        description: "The drawing revision after the change.",
+        type: "integer",
+        maximum: 18446744073709551615n,
+        minimum: 0,
       },
     },
     required: [
+      "drawingId",
       "groupIds",
+      "createdIds",
+      "modifiedIds",
+      "removedIds",
       "rev",
     ],
-    "x-spec": "`{groupIds: [id], rev}`",
-    additionalProperties: false,
   },
   "draw.centreLine.apply.params": {
     title: "draw.centreLine.apply parameters",
@@ -84867,16 +84901,28 @@ export interface draw_bounds_get_result {
   bounds?: draw_bounds_get_Bounds | null;
 }
 
+/** `draw.breakApart.apply` parameters. */
 export interface draw_breakApart_apply_params {
-  /** object ID or path reference (10 §3) */
-  drawingId?: string;
-  /** Default: selected text. */
-  textIds?: string[];
+  /** The drawing (default: current). */
+  drawingId?: string | null;
+  /** Text objects (default: the selected text objects). */
+  textIds?: string[] | null;
 }
 
+/** `{groupIds, rev}`. */
 export interface draw_breakApart_apply_result {
+  /** The drawing. */
+  drawingId: string;
+  /** One group per character, in text order. */
   groupIds: string[];
-  rev: number;
+  /** Created objects. */
+  createdIds: string[];
+  /** Modified objects (content, membership or position changed; IDs kept). */
+  modifiedIds: string[];
+  /** Removed objects (descendants included). */
+  removedIds: string[];
+  /** The drawing revision after the change. */
+  rev: number | bigint;
 }
 
 export interface draw_centreLine_apply_params {

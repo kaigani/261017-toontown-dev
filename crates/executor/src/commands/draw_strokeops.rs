@@ -330,3 +330,125 @@ pub(crate) fn draw_lines_to_brush_apply(
         rev: committed_rev(cx)?,
     })
 }
+
+/// `draw.breakApart.apply` parameters.
+#[derive(Debug, Deserialize, JsonSchema)]
+#[serde(deny_unknown_fields, rename_all = "camelCase")]
+pub(crate) struct BreakApartParams {
+    /// The drawing (default: current).
+    #[serde(default)]
+    drawing_id: Option<String>,
+    /// Text objects (default: the selected text objects).
+    #[serde(default)]
+    text_ids: Option<Vec<String>>,
+}
+
+/// `{groupIds, rev}`.
+#[derive(Debug, Serialize, JsonSchema)]
+#[serde(rename_all = "camelCase")]
+pub(crate) struct BreakApartResult {
+    /// The drawing.
+    drawing_id: String,
+    /// One group per character, in text order.
+    group_ids: Vec<String>,
+    /// Changed objects.
+    #[serde(flatten)]
+    changed: Changed,
+    /// The drawing revision after the change.
+    rev: u64,
+}
+
+#[command(
+    id = "draw.breakApart.apply",
+    kind = action,
+    label = "Break Text Apart",
+    scopes = [edit],
+    undo = "Break Text Apart",
+    needs_project,
+    example(title = "Break the caption into glyph shapes", params = r#"{"drawingId": "drawingBank:#1/drawing:#1", "textIds": ["nd_01K742SG0WFAQJFKAZKV4CD56C"]}"#),
+    gui = "Drawing view: Break Text Apart (M4 C4.2)",
+)]
+pub(crate) fn draw_break_apart_apply(cx: &mut Cx, p: BreakApartParams) -> Result<BreakApartResult, CommandError> {
+    use tt_model::entities::drawing::{LayerHint, NodeKind};
+    let mut none = Vec::new();
+    let t = target(cx, p.drawing_id.as_deref(), None, None, false, &mut none)?;
+    let doc = cx.document()?.clone();
+    let d = t.drawing(&doc)?.into_owned();
+    check_editable(&d, None)?;
+    let list = match &p.text_ids {
+        Some(v) => v.clone(),
+        None => super::draw::selection_ids(cx, &d),
+    };
+    let mut texts: Vec<Located> = Vec::new();
+    for (i, id) in list.iter().enumerate() {
+        let local = vd::local_id(d.id().as_str(), id).unwrap_or(id);
+        let l =
+            vd::locate(&d, local).filter(|l| vd::node_at(&d, &l.pointer).is_some_and(|n| *n.kind() == NodeKind::Text));
+        match l {
+            Some(l) => texts.push(l),
+            None if p.text_ids.is_some() => {
+                return Err(err(
+                    "drawing.objectNotFound",
+                    format!("`{id}` is not a text object of drawing `{}`", d.name()),
+                    json!({ "pointer": format!("/textIds/{i}") }),
+                ));
+            }
+            None => {}
+        }
+    }
+    if texts.is_empty() {
+        return Err(nothing_to_do("break apart"));
+    }
+    // Replace from the end of each list first so earlier indices stay valid.
+    texts.sort_by(|a, b| b.list.cmp(&a.list).then(b.index.cmp(&a.index)));
+    let mut ops = Vec::new();
+    let mut groups_all: Vec<Vec<String>> = Vec::new();
+    let mut created = Vec::new();
+    for l in &texts {
+        let Some(n) = vd::node_at(&d, &l.pointer) else { continue };
+        let Some(content) = vd::text_content(n) else { continue };
+        let fixed = (n.width_mode().as_ref().map(|w| format!("{w:?}").to_lowercase()).as_deref() == Some("fixed"))
+            .then(|| n.width().unwrap_or(0.0));
+        let shapes = tt_vector::ops::glyphs::shapes(&content, fixed);
+        let visible = content.chars.iter().filter(|c| !c.is_whitespace()).count();
+        if shapes.len() < visible {
+            return Err(err(
+                "text.glyphsUnavailable",
+                "the text's font has no outlines for every character on this machine",
+                json!({ "id": l.id, "missingFonts": vd::text_layout(n).map(|l| l.missing_fonts).unwrap_or_default() }),
+            ));
+        }
+        let m = n.transform().map_or(tt_vector::geom::Affine::IDENTITY, tt_vector::geom::Affine);
+        let mut nodes = Vec::new();
+        let mut gids = Vec::new();
+        for g in shapes {
+            let Some(path) = tt_vector::ops::glyphs::bridge_paths(&g.contours) else { continue };
+            let path = path.transformed(&m);
+            let sid = cx.new_id(ObjectType::Stroke)?.as_str().to_owned();
+            let lid = cx.new_id(ObjectType::DrawingNode)?.as_str().to_owned();
+            let gid = cx.new_id(ObjectType::DrawingNode)?.as_str().to_owned();
+            let stroke = json!({
+                "id": sid, "type": "stroke", "rev": 0, "kind": "brush", "closed": true, "points": path.points_json(),
+                "colourId": g.colour_id, "fillMatrix": null, "lineStyle": null, "spine": null,
+                "sides": { "left": null, "right": null },
+            });
+            let mut layer = vd::layer_json(&lid, LayerHint::Brush);
+            layer["strokes"] = json!([stroke]);
+            nodes.push(json!({ "id": gid, "type": "drawingNode", "rev": 0, "kind": "group", "children": [layer] }));
+            created.extend([gid.clone(), lid, sid]);
+            gids.push(gid);
+        }
+        ops.push(op("remove", &l.pointer, None));
+        for (k, node) in nodes.into_iter().enumerate() {
+            ops.push(op("add", &format!("{}/{}", l.list, l.index + k), Some(node)));
+        }
+        groups_all.push(gids);
+    }
+    groups_all.reverse();
+    let group_ids: Vec<String> = groups_all.into_iter().flatten().collect();
+    cx.patch_entries(vec![(EntryKey::Drawing(t.id.clone()), ops)])?;
+    let removed: Vec<String> = texts.iter().map(|l| l.id.clone()).collect();
+    let mut changed = Changed { created_ids: created.clone(), removed_ids: removed, ..Changed::default() };
+    crate::planar::settled(cx, &doc, &t.id, &created)?.report(&mut changed);
+    Ok(BreakApartResult { drawing_id: t.id.as_str().to_owned(), group_ids, changed, rev: committed_rev(cx)? })
+}

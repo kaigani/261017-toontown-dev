@@ -30,7 +30,7 @@
     {
       "title": "Accept a request",
       "result": {
-        "confirmationId": "cf_7cc17cf52c66073f12ee9780",
+        "confirmationId": "cf_377de297f41ad7777c45f5cf",
         "accepted": true
       },
       "varies": [
@@ -71,7 +71,7 @@
         "endpoint": null,
         "sessions": [
           {
-            "sessionId": "s1-775265",
+            "sessionId": "s1-c425f4",
             "client": "Example agent",
             "policy": "assist",
             "scopes": [
@@ -83,7 +83,7 @@
               "files.write",
               "library.global"
             ],
-            "connectedAt": "2026-11-01T07:53:46.537Z",
+            "connectedAt": "2026-11-01T07:58:11.582Z",
             "lastActivity": null,
             "paused": false,
             "transport": ""
@@ -91,8 +91,8 @@
         ],
         "pendingConfirmations": [
           {
-            "confirmationId": "cf_1d03cf4a648d8bec1f6cef39",
-            "sessionId": "s1-775265",
+            "confirmationId": "cf_a8190a0c26f83d31f1ed181b",
+            "sessionId": "s1-c425f4",
             "commandId": "project.saveAs",
             "summary": "Overwrite `/tmp/Short.animpkg`",
             "consequences": [
@@ -127,7 +127,7 @@
     {
       "title": "Let a session edit",
       "result": {
-        "sessionId": "s1-158a10",
+        "sessionId": "s1-bb50f1",
         "policy": "assist",
         "scopes": [
           "read",
@@ -145,7 +145,7 @@
       "title": "Pause every session",
       "result": {
         "paused": [
-          "s1-3da4f6"
+          "s1-359e0b"
         ]
       },
       "varies": [
@@ -438,7 +438,7 @@
       "result": [
         {
           "name": "before-walk",
-          "createdAt": "2026-11-01T07:53:47.367Z",
+          "createdAt": "2026-11-01T07:58:12.419Z",
           "documentRev": 1,
           "origin": "user"
         }
@@ -823,7 +823,7 @@
             "version": "0.0.1",
             "platform": "windows-x64"
           },
-          "exportedAt": "2026-11-01T07:53:48.351Z",
+          "exportedAt": "2026-11-01T07:58:13.400Z",
           "sourceProjectId": "pr_01K742SG00BK0VXTWDM5JRXV37",
           "scope": {
             "kind": "scenes",
@@ -3971,6 +3971,46 @@
       "varies": []
     }
   ],
+  "draw.breakApart.apply": [
+    {
+      "title": "Break the caption into glyph shapes",
+      "result": {
+        "drawingId": "dr_01K742SG0KKMCAP9X1E6Z5P4SW",
+        "groupIds": [
+          "nd_01K7JJN8023FJ8358KMGS10XYV",
+          "nd_01K7JJN805MQM5FRFJBVZJXSRD",
+          "nd_01K7JJN8087KFRR3WJWESD4770",
+          "nd_01K7JJN80BF9ME9PQM0878KV5J",
+          "nd_01K7JJN80E52177WWF50A81GZ5"
+        ],
+        "createdIds": [
+          "nd_01K7JJN8023FJ8358KMGS10XYV",
+          "nd_01K7JJN801N0AE1Z0RRCTVH07Z",
+          "st_01K7JJN800RXHD55052GG3NDRM",
+          "nd_01K7JJN805MQM5FRFJBVZJXSRD",
+          "nd_01K7JJN804FRNW3BHK5CAYE8V5",
+          "st_01K7JJN803WXFN4379NATC3KT1",
+          "nd_01K7JJN8087KFRR3WJWESD4770",
+          "nd_01K7JJN80765PGSX3B8WR1ZB1R",
+          "st_01K7JJN806RRWXPJBK1E91HMNC",
+          "nd_01K7JJN80BF9ME9PQM0878KV5J",
+          "nd_01K7JJN80AYX2Q1KEMKRTSFHPW",
+          "st_01K7JJN809A7R9WYK18D17791C",
+          "nd_01K7JJN80E52177WWF50A81GZ5",
+          "nd_01K7JJN80DHWM9BMHFBZ7RF6YS",
+          "st_01K7JJN80CP2EEV4WP8TTZETQV",
+          "zn_PE0V5NMZQ0R4EBMHM4YDJ9YHF1",
+          "zn_X16NC5KBYKZ9TMF6VFFX0FMKZT"
+        ],
+        "modifiedIds": [],
+        "removedIds": [
+          "nd_01K742SG0WFAQJFKAZKV4CD56C"
+        ],
+        "rev": 5
+      },
+      "varies": []
+    }
+  ],
   "draw.content.add": [
     {
       "title": "Insert a pencil line and a text object",
@@ -5599,7 +5639,7 @@
             "stepId": "u-1",
             "label": "Set meta",
             "source": "user",
-            "time": "2026-11-01T07:53:50.947Z",
+            "time": "2026-11-01T07:58:15.979Z",
             "objectCount": 1
           },
           {
@@ -5607,7 +5647,7 @@
             "stepId": "u-2",
             "label": "Set meta",
             "source": "user",
-            "time": "2026-11-01T07:53:50.949Z",
+            "time": "2026-11-01T07:58:15.981Z",
             "objectCount": 1
           }
         ],
@@ -5752,7 +5792,7 @@
         "state": "succeeded",
         "progress": 1.0,
         "message": "",
-        "startedAt": "2026-11-01T07:53:51.236Z",
+        "startedAt": "2026-11-01T07:58:16.264Z",
         "result": {},
         "session": "user"
       },
@@ -5771,7 +5811,7 @@
           "state": "succeeded",
           "progress": 1.0,
           "message": "",
-          "startedAt": "2026-11-01T07:53:51.263Z",
+          "startedAt": "2026-11-01T07:58:16.290Z",
           "result": {},
           "session": "user"
         }
@@ -5790,7 +5830,7 @@
         "state": "succeeded",
         "progress": 1.0,
         "message": "",
-        "startedAt": "2026-11-01T07:53:51.289Z",
+        "startedAt": "2026-11-01T07:58:16.315Z",
         "result": {},
         "session": "user"
       },
@@ -5837,10 +5877,10 @@
     {
       "title": "A 1920×1080, 24 fps project",
       "result": {
-        "projectId": "pr_01M6B1KFBGYASSMY3VJYAJ6F27",
-        "sceneId": "sc_01M6B1KFBHC77X2D2G96GWD0PW",
-        "cameraId": "el_01M6B1KFBHC77X2D2G96GWD0PY",
-        "elementId": "el_01M6B1KFBHC77X2D2G96GWD0PZ"
+        "projectId": "pr_01M6B1VJ5EVR8EK4MP2ST2HQDN",
+        "sceneId": "sc_01M6B1VJ5FA5F2C10WC48T58HY",
+        "cameraId": "el_01M6B1VJ5FA5F2C10WC48T58J0",
+        "elementId": "el_01M6B1VJ5FA5F2C10WC48T58J1"
       },
       "varies": [
         "/cameraId",
@@ -6096,7 +6136,7 @@
         {
           "path": "/tmp/Sample.animpkg",
           "name": "Sample",
-          "lastOpened": "2026-11-01T07:53:52.228Z",
+          "lastOpened": "2026-11-01T07:58:17.243Z",
           "exists": true
         }
       ],

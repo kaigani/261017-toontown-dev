@@ -157,6 +157,7 @@ pub(crate) static ALL: &[&Command] = &[
     &draw_layers::DRAW_OPTIMIZE_APPLY,
     &draw_strokeops::DRAW_SMOOTH_APPLY,
     &draw_strokeops::DRAW_LINES_TO_BRUSH_APPLY,
+    &draw_strokeops::DRAW_BREAK_APART_APPLY,
     &draw_render::DRAW_DRAWING_RENDER,
     &colour_edit::COLOUR_FILL_MAPPING_GET,
     &colour_edit::COLOUR_FILL_MAPPING_SET,
