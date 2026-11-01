@@ -30,7 +30,7 @@
     {
       "title": "Accept a request",
       "result": {
-        "confirmationId": "cf_4a486053c9ea1ad8dcc9f830",
+        "confirmationId": "cf_9b82aa457dc9a231a30bd603",
         "accepted": true
       },
       "varies": [
@@ -71,7 +71,7 @@
         "endpoint": null,
         "sessions": [
           {
-            "sessionId": "s1-203252",
+            "sessionId": "s1-471c92",
             "client": "Example agent",
             "policy": "assist",
             "scopes": [
@@ -83,7 +83,7 @@
               "files.write",
               "library.global"
             ],
-            "connectedAt": "2026-10-31T21:21:16.381Z",
+            "connectedAt": "2026-11-01T06:11:54.874Z",
             "lastActivity": null,
             "paused": false,
             "transport": ""
@@ -91,8 +91,8 @@
         ],
         "pendingConfirmations": [
           {
-            "confirmationId": "cf_08ee9912cb3fe2bab837dcd1",
-            "sessionId": "s1-203252",
+            "confirmationId": "cf_14948d987f2744a7f093684b",
+            "sessionId": "s1-471c92",
             "commandId": "project.saveAs",
             "summary": "Overwrite `/tmp/Short.animpkg`",
             "consequences": [
@@ -127,7 +127,7 @@
     {
       "title": "Let a session edit",
       "result": {
-        "sessionId": "s1-836e95",
+        "sessionId": "s1-cde854",
         "policy": "assist",
         "scopes": [
           "read",
@@ -145,7 +145,7 @@
       "title": "Pause every session",
       "result": {
         "paused": [
-          "s1-0fa1e0"
+          "s1-0d63a5"
         ]
       },
       "varies": [
@@ -438,7 +438,7 @@
       "result": [
         {
           "name": "before-walk",
-          "createdAt": "2026-10-31T21:21:17.206Z",
+          "createdAt": "2026-11-01T06:11:55.702Z",
           "documentRev": 1,
           "origin": "user"
         }
@@ -746,7 +746,7 @@
             "version": "0.0.1",
             "platform": "windows-x64"
           },
-          "exportedAt": "2026-10-31T21:21:18.040Z",
+          "exportedAt": "2026-11-01T06:11:56.547Z",
           "sourceProjectId": "pr_01K742SG00BK0VXTWDM5JRXV37",
           "scope": {
             "kind": "scenes",
@@ -3837,6 +3837,20 @@
       "varies": []
     }
   ],
+  "draw.bounds.get": [
+    {
+      "title": "Bounds of Bob's first drawing",
+      "result": {
+        "bounds": {
+          "x": -100.0,
+          "y": -50.75,
+          "width": 400.0,
+          "height": 250.75
+        }
+      },
+      "varies": []
+    }
+  ],
   "draw.content.add": [
     {
       "title": "Insert a pencil line and a text object",
@@ -4385,6 +4399,46 @@
       ]
     }
   ],
+  "draw.drawing.rename": [
+    {
+      "title": "Rename Bob's first drawing",
+      "result": {
+        "drawingId": "dr_01K742SG0KKMCAP9X1E6Z5P4SW",
+        "name": "key-1",
+        "createdIds": [],
+        "modifiedIds": [
+          "dr_01K742SG0KKMCAP9X1E6Z5P4SW"
+        ],
+        "removedIds": [],
+        "rev": 5
+      },
+      "varies": []
+    }
+  ],
+  "draw.ellipse.add": [
+    {
+      "title": "A circle of radius 50",
+      "result": {
+        "drawingId": "dr_01K742SG0KKMCAP9X1E6Z5P4SW",
+        "strokeIds": [
+          "st_01K7JJN800RXHD55052GG3NDRM"
+        ],
+        "zoneIds": [
+          "zn_CNR6WN2H0M6ABBRCAVN9TGHA0K"
+        ],
+        "layerId": "nd_01K7JJN801N0AE1Z0RRCTVH07Z",
+        "createdIds": [
+          "st_01K7JJN800RXHD55052GG3NDRM",
+          "nd_01K7JJN801N0AE1Z0RRCTVH07Z",
+          "zn_CNR6WN2H0M6ABBRCAVN9TGHA0K"
+        ],
+        "modifiedIds": [],
+        "removedIds": [],
+        "rev": 5
+      },
+      "varies": []
+    }
+  ],
   "draw.group.create": [
     {
       "title": "Group the caption and the group of the first drawing",
@@ -4461,6 +4515,47 @@
       "varies": []
     }
   ],
+  "draw.inspectorPreview.set": [
+    {
+      "title": "Show the thumbnail",
+      "result": {
+        "visible": true
+      },
+      "varies": []
+    }
+  ],
+  "draw.line.add": [
+    {
+      "title": "A straight line",
+      "result": {
+        "drawingId": "dr_01K742SG0KKMCAP9X1E6Z5P4SW",
+        "strokeIds": [
+          "st_01K7JJN800RXHD55052GG3NDRM"
+        ],
+        "zoneIds": [],
+        "layerId": "nd_01K7JJN801N0AE1Z0RRCTVH07Z",
+        "createdIds": [
+          "st_01K7JJN800RXHD55052GG3NDRM",
+          "nd_01K7JJN801N0AE1Z0RRCTVH07Z"
+        ],
+        "modifiedIds": [],
+        "removedIds": [],
+        "rev": 5
+      },
+      "varies": []
+    }
+  ],
+  "draw.lock.set": [
+    {
+      "title": "Lock Bob's first drawing",
+      "result": {
+        "drawingId": "dr_01K742SG0KKMCAP9X1E6Z5P4SW",
+        "locked": true,
+        "rev": 5
+      },
+      "varies": []
+    }
+  ],
   "draw.object.delete": [
     {
       "title": "Delete the invisible stroke of Bob's first drawing",
@@ -4497,6 +4592,110 @@
         ],
         "removedIds": [],
         "rev": 5
+      },
+      "varies": []
+    }
+  ],
+  "draw.pointSelection.set": [
+    {
+      "title": "Select the first anchor of the pencil line",
+      "result": {
+        "selectedPoints": [
+          {
+            "strokeId": "st_01K742SG0R61SYK9GG0HGYVNBT",
+            "anchor": 0
+          }
+        ]
+      },
+      "varies": []
+    }
+  ],
+  "draw.polyline.add": [
+    {
+      "title": "An open polyline with a curved segment",
+      "result": {
+        "drawingId": "dr_01K742SG0KKMCAP9X1E6Z5P4SW",
+        "strokeIds": [
+          "st_01K7JJN800RXHD55052GG3NDRM"
+        ],
+        "zoneIds": [],
+        "layerId": "nd_01K7JJN801N0AE1Z0RRCTVH07Z",
+        "createdIds": [
+          "st_01K7JJN800RXHD55052GG3NDRM",
+          "nd_01K7JJN801N0AE1Z0RRCTVH07Z"
+        ],
+        "modifiedIds": [],
+        "removedIds": [],
+        "rev": 5
+      },
+      "varies": []
+    }
+  ],
+  "draw.rectangle.add": [
+    {
+      "title": "A 100 × 60 rectangle",
+      "result": {
+        "drawingId": "dr_01K742SG0KKMCAP9X1E6Z5P4SW",
+        "strokeIds": [
+          "st_01K7JJN800RXHD55052GG3NDRM"
+        ],
+        "zoneIds": [
+          "zn_DVA8EKA6VB1K1HS100YQWBXGFN"
+        ],
+        "layerId": "nd_01K7JJN801N0AE1Z0RRCTVH07Z",
+        "createdIds": [
+          "st_01K7JJN800RXHD55052GG3NDRM",
+          "nd_01K7JJN801N0AE1Z0RRCTVH07Z",
+          "zn_DVA8EKA6VB1K1HS100YQWBXGFN"
+        ],
+        "modifiedIds": [],
+        "removedIds": [],
+        "rev": 5
+      },
+      "varies": []
+    }
+  ],
+  "draw.selection.get": [
+    {
+      "title": "The current drawing's selection",
+      "result": {
+        "selectedIds": [],
+        "bounds": null,
+        "selectedPoints": []
+      },
+      "varies": []
+    }
+  ],
+  "draw.selection.set": [
+    {
+      "title": "Select the pencil line of Bob's first drawing",
+      "result": {
+        "selectedIds": [
+          "st_01K742SG0R61SYK9GG0HGYVNBT"
+        ],
+        "bounds": {
+          "x": -50.75,
+          "y": -50.75,
+          "width": 101.5,
+          "height": 101.5
+        }
+      },
+      "varies": []
+    },
+    {
+      "title": "Select everything inside a rectangle",
+      "result": {
+        "selectedIds": [
+          "st_01K742SG0QD1F2HFZSX8R4V7WP",
+          "st_01K742SG0R61SYK9GG0HGYVNBT",
+          "st_01K742SG0S0NT23BWCZN64SFQ5"
+        ],
+        "bounds": {
+          "x": -50.75,
+          "y": -50.75,
+          "width": 150.75,
+          "height": 150.75
+        }
       },
       "varies": []
     }
@@ -4687,6 +4886,37 @@
       ]
     }
   ],
+  "draw.viewMapping.get": [
+    {
+      "title": "The Drawing view's mapping",
+      "result": {
+        "drawingId": null,
+        "drawingToView": [
+          1.0,
+          0.0,
+          0.0,
+          -1.0,
+          960.0,
+          540.0
+        ],
+        "viewToDrawing": [
+          1.0,
+          0.0,
+          0.0,
+          -1.0,
+          -960.0,
+          540.0
+        ],
+        "zoom": 1.0,
+        "rotation": 0.0,
+        "viewSize": {
+          "width": 1920,
+          "height": 1080
+        }
+      },
+      "varies": []
+    }
+  ],
   "edit.clipboard.get": [
     {
       "title": "Kind and item count",
@@ -4770,7 +5000,7 @@
             "stepId": "u-1",
             "label": "Set meta",
             "source": "user",
-            "time": "2026-10-31T21:21:19.476Z",
+            "time": "2026-11-01T06:11:58.354Z",
             "objectCount": 1
           },
           {
@@ -4778,7 +5008,7 @@
             "stepId": "u-2",
             "label": "Set meta",
             "source": "user",
-            "time": "2026-10-31T21:21:19.479Z",
+            "time": "2026-11-01T06:11:58.357Z",
             "objectCount": 1
           }
         ],
@@ -4923,7 +5153,7 @@
         "state": "succeeded",
         "progress": 1.0,
         "message": "",
-        "startedAt": "2026-10-31T21:21:19.820Z",
+        "startedAt": "2026-11-01T06:11:58.640Z",
         "result": {},
         "session": "user"
       },
@@ -4942,7 +5172,7 @@
           "state": "succeeded",
           "progress": 1.0,
           "message": "",
-          "startedAt": "2026-10-31T21:21:19.846Z",
+          "startedAt": "2026-11-01T06:11:58.666Z",
           "result": {},
           "session": "user"
         }
@@ -4961,7 +5191,7 @@
         "state": "succeeded",
         "progress": 1.0,
         "message": "",
-        "startedAt": "2026-10-31T21:21:19.872Z",
+        "startedAt": "2026-11-01T06:11:58.692Z",
         "result": {},
         "session": "user"
       },
@@ -5008,10 +5238,10 @@
     {
       "title": "A 1920×1080, 24 fps project",
       "result": {
-        "projectId": "pr_01M69XD9DE3C3WG9DFS6X0KH5K",
-        "sceneId": "sc_01M69XD9DGASYMZMWG9PNHKF0D",
-        "cameraId": "el_01M69XD9DGASYMZMWG9PNHKF0F",
-        "elementId": "el_01M69XD9DGASYMZMWG9PNHKF0G"
+        "projectId": "pr_01M6AVRY0D35EN86D7VZ3EFQ7N",
+        "sceneId": "sc_01M6AVRY0E6NVRRE622Q8WESAS",
+        "cameraId": "el_01M6AVRY0E6NVRRE622Q8WESAV",
+        "elementId": "el_01M6AVRY0E6NVRRE622Q8WESAW"
       },
       "varies": [
         "/cameraId",
@@ -5267,7 +5497,7 @@
         {
           "path": "/tmp/Sample.animpkg",
           "name": "Sample",
-          "lastOpened": "2026-10-31T21:21:20.827Z",
+          "lastOpened": "2026-11-01T06:11:59.607Z",
           "exists": true
         }
       ],

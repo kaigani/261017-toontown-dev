@@ -49,6 +49,11 @@ pub(crate) struct AppContext {
     pub selection: Selection,
     /// The selection of every context (01 §6.4: each context keeps its own; switching focus clears none).
     pub selections: std::collections::BTreeMap<String, Vec<String>>,
+    /// The Contour Editor's anchor selection (02 §7.1.2; `draw.pointSelection.set`): compound stroke keys
+    /// (`<drawingId>/<strokeId>`) with anchor indices, in selection order.
+    pub points: Vec<(String, u32)>,
+    /// Tool memory of the session that is not document content (the Line tool's last end per drawing: `x,y`).
+    pub tool_memory: std::collections::BTreeMap<String, String>,
 }
 
 impl Default for AppContext {
@@ -60,6 +65,8 @@ impl Default for AppContext {
             drawing: None,
             selection: Selection { context: "staging".to_owned(), ids: Vec::new() },
             selections: std::collections::BTreeMap::new(),
+            points: Vec::new(),
+            tool_memory: std::collections::BTreeMap::new(),
         }
     }
 }
@@ -262,6 +269,17 @@ pub fn parse_cell_ref(k: &str) -> Option<(String, u32)> {
 }
 
 /// Whether a selection entry (an object key or a cell reference) still exists.
+/// Whether a stroke (compound key) exists and has the anchor.
+fn anchor_exists(doc: &Document, k: &str, anchor: u32) -> bool {
+    let Some((d, s)) = k.split_once('/') else { return false };
+    let Ok(id) = Id::parse(d) else { return false };
+    doc.drawing(&id).is_some_and(|dr| {
+        tt_vector::drawing::locate(dr, s)
+            .and_then(|l| tt_vector::drawing::stroke_at(dr, &l.pointer))
+            .is_some_and(|st| (anchor as usize) < st.points().len())
+    })
+}
+
 fn selectable_exists(doc: &Document, k: &str) -> bool {
     match parse_cell_ref(k) {
         Some((element, _)) => doc.locate(&element).is_some(),
@@ -317,6 +335,7 @@ impl AppContext {
         for ids in self.selections.values_mut() {
             ids.retain(|k| selectable_exists(doc, k));
         }
+        self.points.retain(|(k, anchor)| anchor_exists(doc, k, *anchor));
         *self != before
     }
 

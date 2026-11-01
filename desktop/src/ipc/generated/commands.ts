@@ -2803,9 +2803,10 @@ export const COMMAND_INDEX = {
     params: "draw.bounds.get.params",
     result: "draw.bounds.get.result",
     examples: [
-      {},
+      {
+        drawingId: "drawingBank:#1/drawing:#1",
+      },
     ],
-    milestone: "M2 C2.3",
   },
   "draw.breakApart.apply": {
     kind: "action",
@@ -2971,10 +2972,10 @@ export const COMMAND_INDEX = {
     result: "draw.drawing.rename.result",
     examples: [
       {
-        name: "example",
+        drawingId: "drawingBank:#1/drawing:#1",
+        name: "key-1",
       },
     ],
-    milestone: "M2 C2.3",
   },
   "draw.drawing.render": {
     kind: "query",
@@ -2993,17 +2994,19 @@ export const COMMAND_INDEX = {
     result: "draw.ellipse.add.result",
     examples: [
       {
+        drawingId: "drawingBank:#1/drawing:#1",
         from: {
-          x: 1,
-          y: 1,
+          x: 500,
+          y: 300,
         },
         to: {
-          x: 1,
-          y: 1,
+          x: 550,
+          y: 350,
         },
+        circle: true,
+        fromCentre: true,
       },
     ],
-    milestone: "M2 C2.3",
   },
   "draw.envelope.apply": {
     kind: "action",
@@ -3105,7 +3108,6 @@ export const COMMAND_INDEX = {
         visible: true,
       },
     ],
-    milestone: "M2 C2.3",
   },
   "draw.line.add": {
     kind: "action",
@@ -3113,13 +3115,17 @@ export const COMMAND_INDEX = {
     result: "draw.line.add.result",
     examples: [
       {
+        drawingId: "drawingBank:#1/drawing:#1",
+        from: {
+          x: 300,
+          y: 500,
+        },
         to: {
-          x: 1,
-          y: 1,
+          x: 420,
+          y: 540,
         },
       },
     ],
-    milestone: "M2 C2.3",
   },
   "draw.linesToBrush.apply": {
     kind: "action",
@@ -3136,10 +3142,10 @@ export const COMMAND_INDEX = {
     result: "draw.lock.set.result",
     examples: [
       {
+        drawingId: "drawingBank:#1/drawing:#1",
         locked: true,
       },
     ],
-    milestone: "M2 C2.3",
   },
   "draw.object.delete": {
     kind: "action",
@@ -3230,9 +3236,16 @@ export const COMMAND_INDEX = {
     params: "draw.pointSelection.set.params",
     result: "draw.pointSelection.set.result",
     examples: [
-      {},
+      {
+        drawingId: "drawingBank:#1/drawing:#1",
+        points: [
+          {
+            strokeId: "st_01K742SG0R61SYK9GG0HGYVNBT",
+            anchor: 0,
+          },
+        ],
+      },
     ],
-    milestone: "M2 C2.3",
   },
   "draw.polyline.add": {
     kind: "action",
@@ -3240,10 +3253,32 @@ export const COMMAND_INDEX = {
     result: "draw.polyline.add.result",
     examples: [
       {
-        points: [],
+        drawingId: "drawingBank:#1/drawing:#1",
+        points: [
+          {
+            x: 300,
+            y: 600,
+          },
+          {
+            x: 360,
+            y: 640,
+            inHandle: {
+              x: -20,
+              y: 0,
+            },
+            outHandle: {
+              x: 20,
+              y: 0,
+            },
+          },
+          {
+            x: 420,
+            y: 600,
+          },
+        ],
+        snap: false,
       },
     ],
-    milestone: "M2 C2.3",
   },
   "draw.rectangle.add": {
     kind: "action",
@@ -3251,17 +3286,17 @@ export const COMMAND_INDEX = {
     result: "draw.rectangle.add.result",
     examples: [
       {
+        drawingId: "drawingBank:#1/drawing:#1",
         from: {
-          x: 1,
-          y: 1,
+          x: 300,
+          y: 300,
         },
         to: {
-          x: 1,
-          y: 1,
+          x: 400,
+          y: 360,
         },
       },
     ],
-    milestone: "M2 C2.3",
   },
   "draw.repositionAll.apply": {
     kind: "action",
@@ -3306,7 +3341,6 @@ export const COMMAND_INDEX = {
     examples: [
       {},
     ],
-    milestone: "M2 C2.3",
     event: true,
   },
   "draw.selection.get": {
@@ -3314,18 +3348,33 @@ export const COMMAND_INDEX = {
     params: "draw.selection.get.params",
     result: "draw.selection.get.result",
     examples: [
-      {},
+      {
+        drawingId: "drawingBank:#1/drawing:#1",
+      },
     ],
-    milestone: "M2 C2.3",
   },
   "draw.selection.set": {
     kind: "ui",
     params: "draw.selection.set.params",
     result: "draw.selection.set.result",
     examples: [
-      {},
+      {
+        drawingId: "drawingBank:#1/drawing:#1",
+        ids: [
+          "st_01K742SG0R61SYK9GG0HGYVNBT",
+        ],
+      },
+      {
+        drawingId: "drawingBank:#1/drawing:#1",
+        by: "rect",
+        rect: {
+          x: -200,
+          y: -200,
+          width: 400,
+          height: 400,
+        },
+      },
     ],
-    milestone: "M2 C2.3",
   },
   "draw.smooth.apply": {
     kind: "action",
@@ -3527,9 +3576,10 @@ export const COMMAND_INDEX = {
     params: "draw.viewMapping.get.params",
     result: "draw.viewMapping.get.result",
     examples: [
-      {},
+      {
+        view: "drawing",
+      },
     ],
-    milestone: "M2 C2.3",
   },
   "drawAid.autoLightTable.set": {
     kind: "ui",
@@ -29038,62 +29088,75 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
     additionalProperties: false,
   },
   "draw.bounds.get.params": {
-    title: "draw.bounds.get parameters",
+    title: "BoundsParams",
+    description: "`draw.bounds.get` parameters.",
     type: "object",
     properties: {
       drawingId: {
-        type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
+        description: "The drawing (default: current).",
+        type: [
+          "string",
+          "null",
+        ],
+        default: null,
       },
       ids: {
-        type: "array",
+        description: "Objects (default: the whole drawing).",
+        type: [
+          "array",
+          "null",
+        ],
         items: {
           type: "string",
-          minLength: 1,
-          maxLength: 4096,
-          description: "object ID or path reference (10 §3)",
         },
-        maxItems: 100000,
+        default: null,
       },
       includeInvisible: {
+        description: "Include invisible strokes.",
         type: "boolean",
         default: false,
       },
     },
     additionalProperties: false,
-    "x-spec": "`drawingId?: id; ids?: [id]; includeInvisible: bool = false`",
+  },
+  "draw.bounds.get.Bounds": {
+    description: "`{x, y, width, height}`.",
+    type: "object",
+    properties: {
+      x: {
+        description: "Minimum x (du).",
+        type: "number",
+      },
+      y: {
+        description: "Minimum y (du).",
+        type: "number",
+      },
+      width: {
+        description: "Width (du).",
+        type: "number",
+      },
+      height: {
+        description: "Height (du).",
+        type: "number",
+      },
+    },
+    required: [
+      "x",
+      "y",
+      "width",
+      "height",
+    ],
   },
   "draw.bounds.get.result": {
-    title: "draw.bounds.get result",
+    title: "BoundsResult",
+    description: "`{bounds}`.",
     type: "object",
     properties: {
       bounds: {
+        description: "The bounding box (`null` for an empty drawing or selection).",
         anyOf: [
           {
-            type: "object",
-            properties: {
-              x: {
-                type: "number",
-              },
-              y: {
-                type: "number",
-              },
-              width: {
-                type: "number",
-              },
-              height: {
-                type: "number",
-              },
-            },
-            required: [
-              "x",
-              "y",
-              "width",
-              "height",
-            ],
-            additionalProperties: false,
+            $ref: "#/$defs/draw.bounds.get.Bounds",
           },
           {
             type: "null",
@@ -29101,11 +29164,6 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
         ],
       },
     },
-    required: [
-      "bounds",
-    ],
-    "x-spec": "`{bounds: {x,y,width,height}|null}`",
-    additionalProperties: false,
   },
   "draw.breakApart.apply.params": {
     title: "draw.breakApart.apply parameters",
@@ -31623,47 +31681,79 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
     ],
   },
   "draw.drawing.rename.params": {
-    title: "draw.drawing.rename parameters",
+    title: "RenameParams",
+    description: "`draw.drawing.rename` parameters.",
     type: "object",
     properties: {
       drawingId: {
-        type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
+        description: "The drawing (default: current).",
+        type: [
+          "string",
+          "null",
+        ],
+        default: null,
       },
       name: {
+        description: "The new name (02 §9).",
         type: "string",
-        maxLength: 65536,
+        minLength: 1,
+        maxLength: 256,
       },
     },
+    additionalProperties: false,
     required: [
       "name",
     ],
-    additionalProperties: false,
-    "x-spec": "`drawingId?: id; name: string`",
   },
   "draw.drawing.rename.result": {
-    title: "draw.drawing.rename result",
+    title: "RenameResult",
+    description: "`{drawingId, name}`.",
     type: "object",
     properties: {
       drawingId: {
+        description: "The drawing.",
         type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
       },
       name: {
+        description: "Its name.",
         type: "string",
-        maxLength: 65536,
+      },
+      createdIds: {
+        description: "Created objects.",
+        type: "array",
+        items: {
+          type: "string",
+        },
+      },
+      modifiedIds: {
+        description: "Modified objects (content, membership or position changed; IDs kept).",
+        type: "array",
+        items: {
+          type: "string",
+        },
+      },
+      removedIds: {
+        description: "Removed objects (descendants included).",
+        type: "array",
+        items: {
+          type: "string",
+        },
+      },
+      rev: {
+        description: "The drawing revision after the change.",
+        type: "integer",
+        maximum: 18446744073709551615n,
+        minimum: 0,
       },
     },
     required: [
       "drawingId",
       "name",
+      "createdIds",
+      "modifiedIds",
+      "removedIds",
+      "rev",
     ],
-    "x-spec": "`{drawingId, name}`",
-    additionalProperties: false,
   },
   "draw.drawing.render.params": {
     title: "draw.drawing.render parameters",
@@ -31799,132 +31889,164 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
     "x-spec": "`{png?, path?, width, height, drawingToPixel: [number], rev}`",
     additionalProperties: false,
   },
+  "draw.ellipse.add.Point": {
+    description: "A point `{x, y}` in drawing units.",
+    type: "object",
+    properties: {
+      x: {
+        description: "X (du).",
+        type: "number",
+      },
+      y: {
+        description: "Y (du, up).",
+        type: "number",
+      },
+    },
+    additionalProperties: false,
+    required: [
+      "x",
+      "y",
+    ],
+  },
   "draw.ellipse.add.params": {
-    title: "draw.ellipse.add parameters",
+    title: "EllipseParams",
+    description: "`draw.ellipse.add` parameters.",
     type: "object",
     properties: {
       drawingId: {
-        type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
+        description: "The drawing (default: current).",
+        type: [
+          "string",
+          "null",
+        ],
+        default: null,
       },
       from: {
-        type: "object",
-        properties: {
-          x: {
-            type: "number",
-          },
-          y: {
-            type: "number",
-          },
-        },
-        required: [
-          "x",
-          "y",
-        ],
-        additionalProperties: false,
+        description: "Press point.",
+        $ref: "#/$defs/draw.ellipse.add.Point",
       },
       to: {
-        type: "object",
-        properties: {
-          x: {
-            type: "number",
-          },
-          y: {
-            type: "number",
-          },
-        },
-        required: [
-          "x",
-          "y",
-        ],
-        additionalProperties: false,
+        description: "Release point.",
+        $ref: "#/$defs/draw.ellipse.add.Point",
       },
       circle: {
+        description: "Circle constraint.",
         type: "boolean",
         default: false,
       },
       fromCentre: {
+        description: "`from` is the centre.",
         type: "boolean",
         default: false,
       },
       colourId: {
-        type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
+        description: "Line colour (default: current colour).",
+        type: [
+          "string",
+          "null",
+        ],
+        default: null,
       },
       thickness: {
-        type: "number",
+        description: "Line thickness (default: the pen's).",
+        type: [
+          "number",
+          "null",
+        ],
+        default: null,
+        minimum: 0,
+        maximum: 100,
       },
       penId: {
-        type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
+        description: "Pen (default: current pencil pen).",
+        type: [
+          "string",
+          "null",
+        ],
+        default: null,
       },
       layer: {
+        description: "Layer rule (as `draw.stroke.add`).",
         type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3) or \"auto\" | \"new\" | \"top\" | \"behind\"",
         default: "auto",
       },
       symmetry: {
+        description: "Symmetry copies (02 §6.2).",
         type: "boolean",
         default: true,
       },
     },
+    additionalProperties: false,
     required: [
       "from",
       "to",
     ],
-    additionalProperties: false,
-    "x-spec": "`drawingId?: id; from: point; to: point; circle: bool = false; fromCentre: bool = false; colourId?: id; thickness?: number; penId?: id; layer: enum \"auto\"|\"new\"|\"top\"|\"behind\" | id = \"auto\"; symmetry: bool = true`",
   },
   "draw.ellipse.add.result": {
-    title: "draw.ellipse.add result",
+    title: "ShapeResult",
+    description: "The result of a shape tool.",
     type: "object",
     properties: {
+      drawingId: {
+        description: "The drawing.",
+        type: "string",
+      },
       strokeIds: {
+        description: "New strokes (the pieces noding made of them, symmetry copies included).",
         type: "array",
         items: {
           type: "string",
-          minLength: 1,
-          maxLength: 4096,
-          description: "object ID or path reference (10 §3)",
         },
-        maxItems: 100000,
       },
       zoneIds: {
+        description: "Zones the shape created.",
         type: "array",
         items: {
           type: "string",
-          minLength: 1,
-          maxLength: 4096,
-          description: "object ID or path reference (10 §3)",
         },
-        maxItems: 100000,
       },
       layerId: {
+        description: "The layer holding them.",
         type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
+      },
+      createdIds: {
+        description: "Created objects.",
+        type: "array",
+        items: {
+          type: "string",
+        },
+      },
+      modifiedIds: {
+        description: "Modified objects.",
+        type: "array",
+        items: {
+          type: "string",
+        },
+      },
+      removedIds: {
+        description: "Removed objects (strokes split by noding, zones that ceased to exist).",
+        type: "array",
+        items: {
+          type: "string",
+        },
       },
       rev: {
-        type: "number",
+        description: "The drawing revision after the change.",
+        type: "integer",
+        maximum: 18446744073709551615n,
+        minimum: 0,
       },
     },
     required: [
+      "drawingId",
       "strokeIds",
       "zoneIds",
       "layerId",
+      "createdIds",
+      "modifiedIds",
+      "removedIds",
       "rev",
     ],
-    "x-spec": "`{strokeIds: [id], zoneIds: [id], layerId, rev}`",
-    additionalProperties: false,
   },
   "draw.envelope.apply.params": {
     title: "draw.envelope.apply parameters",
@@ -32711,158 +32833,199 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
     ],
   },
   "draw.inspectorPreview.set.params": {
-    title: "draw.inspectorPreview.set parameters",
+    title: "PreviewParams",
+    description: "`{visible}`.",
     type: "object",
     properties: {
       visible: {
+        description: "Show the drawing thumbnail in the inspector.",
         type: "boolean",
       },
     },
+    additionalProperties: false,
     required: [
       "visible",
     ],
-    additionalProperties: false,
-    "x-spec": "`visible: bool`",
   },
   "draw.inspectorPreview.set.result": {
-    title: "draw.inspectorPreview.set result",
+    title: "PreviewResult",
+    description: "`{visible}`.",
     type: "object",
     properties: {
       visible: {
+        description: "Shown.",
         type: "boolean",
       },
     },
     required: [
       "visible",
     ],
-    "x-spec": "`{visible}`",
+  },
+  "draw.line.add.Point": {
+    description: "A point `{x, y}` in drawing units.",
+    type: "object",
+    properties: {
+      x: {
+        description: "X (du).",
+        type: "number",
+      },
+      y: {
+        description: "Y (du, up).",
+        type: "number",
+      },
+    },
     additionalProperties: false,
+    required: [
+      "x",
+      "y",
+    ],
   },
   "draw.line.add.params": {
-    title: "draw.line.add parameters",
+    title: "LineParams",
+    description: "`draw.line.add` parameters.",
     type: "object",
     properties: {
       drawingId: {
-        type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
+        description: "The drawing (default: current).",
+        type: [
+          "string",
+          "null",
+        ],
+        default: null,
       },
       from: {
-        type: "object",
-        properties: {
-          x: {
-            type: "number",
+        description: "Start (required unless `continuePrevious`).",
+        anyOf: [
+          {
+            $ref: "#/$defs/draw.line.add.Point",
           },
-          y: {
-            type: "number",
+          {
+            type: "null",
           },
-        },
-        required: [
-          "x",
-          "y",
         ],
-        additionalProperties: false,
+        default: null,
       },
       to: {
-        type: "object",
-        properties: {
-          x: {
-            type: "number",
-          },
-          y: {
-            type: "number",
-          },
-        },
-        required: [
-          "x",
-          "y",
-        ],
-        additionalProperties: false,
+        description: "End.",
+        $ref: "#/$defs/draw.line.add.Point",
       },
       continuePrevious: {
+        description: "Start at the end of the line this tool added last in the drawing.",
         type: "boolean",
         default: false,
       },
       constrainAngle: {
+        description: "Constrain the angle to multiples of 45°.",
         type: "boolean",
         default: false,
       },
       colourId: {
-        type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
+        description: "Line colour.",
+        type: [
+          "string",
+          "null",
+        ],
+        default: null,
       },
       thickness: {
-        type: "number",
+        description: "Thickness.",
+        type: [
+          "number",
+          "null",
+        ],
+        default: null,
+        minimum: 0,
+        maximum: 100,
       },
       penId: {
-        type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
+        description: "Pen.",
+        type: [
+          "string",
+          "null",
+        ],
+        default: null,
       },
       layer: {
+        description: "Layer rule.",
         type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3) or \"auto\" | \"new\" | \"top\" | \"behind\"",
         default: "auto",
       },
       symmetry: {
+        description: "Symmetry copies.",
         type: "boolean",
         default: true,
       },
     },
+    additionalProperties: false,
     required: [
       "to",
     ],
-    additionalProperties: false,
-    "x-spec": "`drawingId?: id; from?: point; to: point; continuePrevious: bool = false; constrainAngle: bool = false; colourId?: id; thickness?: number; penId?: id; layer: enum \"auto\"|\"new\"|\"top\"|\"behind\" | id = \"auto\"; symmetry: bool = true`",
   },
   "draw.line.add.result": {
-    title: "draw.line.add result",
+    title: "ShapeResult",
+    description: "The result of a shape tool.",
     type: "object",
     properties: {
+      drawingId: {
+        description: "The drawing.",
+        type: "string",
+      },
       strokeIds: {
+        description: "New strokes (the pieces noding made of them, symmetry copies included).",
         type: "array",
         items: {
           type: "string",
-          minLength: 1,
-          maxLength: 4096,
-          description: "object ID or path reference (10 §3)",
         },
-        maxItems: 100000,
       },
       zoneIds: {
+        description: "Zones the shape created.",
         type: "array",
         items: {
           type: "string",
-          minLength: 1,
-          maxLength: 4096,
-          description: "object ID or path reference (10 §3)",
         },
-        maxItems: 100000,
       },
       layerId: {
+        description: "The layer holding them.",
         type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
+      },
+      createdIds: {
+        description: "Created objects.",
+        type: "array",
+        items: {
+          type: "string",
+        },
+      },
+      modifiedIds: {
+        description: "Modified objects.",
+        type: "array",
+        items: {
+          type: "string",
+        },
+      },
+      removedIds: {
+        description: "Removed objects (strokes split by noding, zones that ceased to exist).",
+        type: "array",
+        items: {
+          type: "string",
+        },
       },
       rev: {
-        type: "number",
+        description: "The drawing revision after the change.",
+        type: "integer",
+        maximum: 18446744073709551615n,
+        minimum: 0,
       },
     },
     required: [
+      "drawingId",
       "strokeIds",
       "zoneIds",
       "layerId",
+      "createdIds",
+      "modifiedIds",
+      "removedIds",
       "rev",
     ],
-    "x-spec": "`{strokeIds: [id], zoneIds: [id], layerId, rev}`",
-    additionalProperties: false,
   },
   "draw.linesToBrush.apply.params": {
     title: "draw.linesToBrush.apply parameters",
@@ -32921,45 +33084,53 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
     additionalProperties: false,
   },
   "draw.lock.set.params": {
-    title: "draw.lock.set parameters",
+    title: "LockParams",
+    description: "`draw.lock.set` parameters.",
     type: "object",
     properties: {
       drawingId: {
-        type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
+        description: "The drawing (default: current).",
+        type: [
+          "string",
+          "null",
+        ],
+        default: null,
       },
       locked: {
+        description: "Locked.",
         type: "boolean",
       },
     },
+    additionalProperties: false,
     required: [
       "locked",
     ],
-    additionalProperties: false,
-    "x-spec": "`drawingId?: id; locked: bool`",
   },
   "draw.lock.set.result": {
-    title: "draw.lock.set result",
+    title: "LockResult",
+    description: "`{drawingId, locked}`.",
     type: "object",
     properties: {
       drawingId: {
+        description: "The drawing.",
         type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
       },
       locked: {
+        description: "Locked.",
         type: "boolean",
+      },
+      rev: {
+        description: "The drawing revision after the change.",
+        type: "integer",
+        maximum: 18446744073709551615n,
+        minimum: 0,
       },
     },
     required: [
       "drawingId",
       "locked",
+      "rev",
     ],
-    "x-spec": "`{drawingId, locked}`",
-    additionalProperties: false,
   },
   "draw.object.delete.params": {
     title: "DeleteParams",
@@ -33548,387 +33719,509 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
     "x-spec": "`{strokeId, rev}`",
     additionalProperties: false,
   },
-  "draw.pointSelection.set.params": {
-    title: "draw.pointSelection.set parameters",
+  "draw.pointSelection.set.AnchorRef": {
+    description: "An anchor of a stroke.",
     type: "object",
     properties: {
-      drawingId: {
+      strokeId: {
+        description: "The stroke (local ID).",
         type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
       },
-      points: {
-        type: "array",
-        items: {
-          type: "object",
-          properties: {
-            strokeId: {
-              type: "string",
-              minLength: 1,
-              maxLength: 4096,
-              description: "object ID or path reference (10 §3)",
-            },
-            anchor: {
-              type: "integer",
-            },
-          },
-          required: [
-            "strokeId",
-            "anchor",
-          ],
-          additionalProperties: false,
-        },
-        maxItems: 100000,
-      },
-      rect: {
-        type: "object",
-        properties: {
-          x: {
-            type: "number",
-          },
-          y: {
-            type: "number",
-          },
-          width: {
-            type: "number",
-          },
-          height: {
-            type: "number",
-          },
-        },
-        required: [
-          "x",
-          "y",
-          "width",
-          "height",
-        ],
-        additionalProperties: false,
-      },
-      mode: {
-        type: "string",
-        enum: [
-          "replace",
-          "add",
-          "toggle",
-          "remove",
-        ],
-        default: "replace",
+      anchor: {
+        description: "The anchor index.",
+        type: "integer",
+        maximum: 2147483647,
+        minimum: 0,
       },
     },
     additionalProperties: false,
-    "x-spec": "`drawingId?: id; points?: [{strokeId, anchor: int}]; rect?: {x,y,width,height}; mode: enum \"replace\"|\"add\"|\"toggle\"|\"remove\" = \"replace\"`",
+    required: [
+      "strokeId",
+      "anchor",
+    ],
+  },
+  "draw.pointSelection.set.RectIn": {
+    description: "`{x, y, width, height}` input.",
+    type: "object",
+    properties: {
+      x: {
+        description: "Left.",
+        type: "number",
+      },
+      y: {
+        description: "Bottom.",
+        type: "number",
+      },
+      width: {
+        description: "Width (≥ 0).",
+        type: "number",
+        minimum: 0,
+      },
+      height: {
+        description: "Height (≥ 0).",
+        type: "number",
+        minimum: 0,
+      },
+    },
+    additionalProperties: false,
+    required: [
+      "x",
+      "y",
+      "width",
+      "height",
+    ],
+  },
+  "draw.pointSelection.set.Mode": {
+    description: "How a selection combines with the current one.",
+    oneOf: [
+      {
+        description: "Replace it.",
+        type: "string",
+        const: "replace",
+      },
+      {
+        description: "Add to it.",
+        type: "string",
+        const: "add",
+      },
+      {
+        description: "Toggle membership.",
+        type: "string",
+        const: "toggle",
+      },
+      {
+        description: "Remove from it.",
+        type: "string",
+        const: "remove",
+      },
+    ],
+  },
+  "draw.pointSelection.set.params": {
+    title: "PointSelectionParams",
+    description: "`draw.pointSelection.set` parameters.",
+    type: "object",
+    properties: {
+      drawingId: {
+        description: "The drawing (default: current).",
+        type: [
+          "string",
+          "null",
+        ],
+        default: null,
+      },
+      points: {
+        description: "Anchors.",
+        type: [
+          "array",
+          "null",
+        ],
+        items: {
+          $ref: "#/$defs/draw.pointSelection.set.AnchorRef",
+        },
+        default: null,
+      },
+      rect: {
+        description: "Every anchor inside a rectangle.",
+        anyOf: [
+          {
+            $ref: "#/$defs/draw.pointSelection.set.RectIn",
+          },
+          {
+            type: "null",
+          },
+        ],
+      },
+      mode: {
+        description: "How to combine.",
+        $ref: "#/$defs/draw.pointSelection.set.Mode",
+      },
+    },
+    additionalProperties: false,
   },
   "draw.pointSelection.set.result": {
-    title: "draw.pointSelection.set result",
+    title: "PointSelectionResult",
+    description: "`{selectedPoints}`.",
     type: "object",
     properties: {
       selectedPoints: {
+        description: "Selected anchors.",
         type: "array",
         items: {
-          type: "object",
-          properties: {
-            strokeId: {
-              type: "string",
-              minLength: 1,
-              maxLength: 4096,
-              description: "object ID or path reference (10 §3)",
-            },
-            anchor: {
-              type: "integer",
-            },
-          },
-          required: [
-            "strokeId",
-            "anchor",
-          ],
-          additionalProperties: false,
+          $ref: "#/$defs/draw.pointSelection.set.AnchorRef",
         },
-        maxItems: 100000,
       },
     },
     required: [
       "selectedPoints",
     ],
-    "x-spec": "`{selectedPoints: [{strokeId, anchor}]}`",
+  },
+  "draw.polyline.add.PolyPoint": {
+    description: "A polyline anchor: position and optional handle offsets.",
+    type: "object",
+    properties: {
+      x: {
+        description: "x (du).",
+        type: "number",
+      },
+      y: {
+        description: "y (du).",
+        type: "number",
+      },
+      inHandle: {
+        description: "Incoming handle, as an offset from the anchor (10 §4.9 convention; SI-069).",
+        anyOf: [
+          {
+            $ref: "#/$defs/draw.polyline.add.Point",
+          },
+          {
+            type: "null",
+          },
+        ],
+        default: null,
+      },
+      outHandle: {
+        description: "Outgoing handle, as an offset from the anchor.",
+        anyOf: [
+          {
+            $ref: "#/$defs/draw.polyline.add.Point",
+          },
+          {
+            type: "null",
+          },
+        ],
+        default: null,
+      },
+    },
     additionalProperties: false,
+    required: [
+      "x",
+      "y",
+    ],
+  },
+  "draw.polyline.add.Point": {
+    description: "A point `{x, y}` in drawing units.",
+    type: "object",
+    properties: {
+      x: {
+        description: "X (du).",
+        type: "number",
+      },
+      y: {
+        description: "Y (du, up).",
+        type: "number",
+      },
+    },
+    additionalProperties: false,
+    required: [
+      "x",
+      "y",
+    ],
   },
   "draw.polyline.add.params": {
-    title: "draw.polyline.add parameters",
+    title: "PolylineParams",
+    description: "`draw.polyline.add` parameters.",
     type: "object",
     properties: {
       drawingId: {
-        type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
+        description: "The drawing (default: current).",
+        type: [
+          "string",
+          "null",
+        ],
+        default: null,
       },
       points: {
+        description: "Anchors (at least 2).",
         type: "array",
         items: {
-          type: "object",
-          properties: {
-            x: {
-              type: "number",
-            },
-            y: {
-              type: "number",
-            },
-            inHandle: {
-              type: "object",
-              properties: {
-                x: {
-                  type: "number",
-                },
-                y: {
-                  type: "number",
-                },
-              },
-              required: [
-                "x",
-                "y",
-              ],
-              additionalProperties: false,
-            },
-            outHandle: {
-              type: "object",
-              properties: {
-                x: {
-                  type: "number",
-                },
-                y: {
-                  type: "number",
-                },
-              },
-              required: [
-                "x",
-                "y",
-              ],
-              additionalProperties: false,
-            },
-          },
-          required: [
-            "x",
-            "y",
-          ],
-          additionalProperties: false,
+          $ref: "#/$defs/draw.polyline.add.PolyPoint",
         },
-        maxItems: 100000,
+        minItems: 2,
+        maxItems: 10000,
       },
       closed: {
+        description: "Closed.",
         type: "boolean",
         default: false,
       },
       snap: {
+        description: "Snap anchors to existing anchors within `snapRadius`.",
         type: "boolean",
         default: true,
       },
       snapRadius: {
+        description: "Snap radius (view px; 1 px = 1 du at 100 %, SI-063).",
         type: "number",
         default: 8,
+        minimum: 0,
+        maximum: 1000,
       },
       colourId: {
-        type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
+        description: "Line colour.",
+        type: [
+          "string",
+          "null",
+        ],
+        default: null,
       },
       thickness: {
-        type: "number",
+        description: "Thickness.",
+        type: [
+          "number",
+          "null",
+        ],
+        default: null,
+        minimum: 0,
+        maximum: 100,
       },
       penId: {
-        type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
+        description: "Pen.",
+        type: [
+          "string",
+          "null",
+        ],
+        default: null,
       },
       layer: {
+        description: "Layer rule.",
         type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3) or \"auto\" | \"new\" | \"top\" | \"behind\"",
         default: "auto",
       },
       symmetry: {
+        description: "Symmetry copies.",
         type: "boolean",
         default: true,
       },
     },
+    additionalProperties: false,
     required: [
       "points",
     ],
-    additionalProperties: false,
-    "x-spec": "`drawingId?: id; points: [{x,y,inHandle?: point,outHandle?: point}]; closed: bool = false; snap: bool = true; snapRadius: number = 8 (view px); colourId?: id; thickness?: number; penId?: id; layer: enum \"auto\"|\"new\"|\"top\"|\"behind\" | id = \"auto\"; symmetry: bool = true`",
   },
   "draw.polyline.add.result": {
-    title: "draw.polyline.add result",
-    type: "object",
-    properties: {
-      strokeIds: {
-        type: "array",
-        items: {
-          type: "string",
-          minLength: 1,
-          maxLength: 4096,
-          description: "object ID or path reference (10 §3)",
-        },
-        maxItems: 100000,
-      },
-      zoneIds: {
-        type: "array",
-        items: {
-          type: "string",
-          minLength: 1,
-          maxLength: 4096,
-          description: "object ID or path reference (10 §3)",
-        },
-        maxItems: 100000,
-      },
-      layerId: {
-        type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
-      },
-      rev: {
-        type: "number",
-      },
-    },
-    required: [
-      "strokeIds",
-      "zoneIds",
-      "layerId",
-      "rev",
-    ],
-    "x-spec": "`{strokeIds: [id], zoneIds: [id], layerId, rev}`",
-    additionalProperties: false,
-  },
-  "draw.rectangle.add.params": {
-    title: "draw.rectangle.add parameters",
+    title: "ShapeResult",
+    description: "The result of a shape tool.",
     type: "object",
     properties: {
       drawingId: {
+        description: "The drawing.",
         type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
+      },
+      strokeIds: {
+        description: "New strokes (the pieces noding made of them, symmetry copies included).",
+        type: "array",
+        items: {
+          type: "string",
+        },
+      },
+      zoneIds: {
+        description: "Zones the shape created.",
+        type: "array",
+        items: {
+          type: "string",
+        },
+      },
+      layerId: {
+        description: "The layer holding them.",
+        type: "string",
+      },
+      createdIds: {
+        description: "Created objects.",
+        type: "array",
+        items: {
+          type: "string",
+        },
+      },
+      modifiedIds: {
+        description: "Modified objects.",
+        type: "array",
+        items: {
+          type: "string",
+        },
+      },
+      removedIds: {
+        description: "Removed objects (strokes split by noding, zones that ceased to exist).",
+        type: "array",
+        items: {
+          type: "string",
+        },
+      },
+      rev: {
+        description: "The drawing revision after the change.",
+        type: "integer",
+        maximum: 18446744073709551615n,
+        minimum: 0,
+      },
+    },
+    required: [
+      "drawingId",
+      "strokeIds",
+      "zoneIds",
+      "layerId",
+      "createdIds",
+      "modifiedIds",
+      "removedIds",
+      "rev",
+    ],
+  },
+  "draw.rectangle.add.Point": {
+    description: "A point `{x, y}` in drawing units.",
+    type: "object",
+    properties: {
+      x: {
+        description: "X (du).",
+        type: "number",
+      },
+      y: {
+        description: "Y (du, up).",
+        type: "number",
+      },
+    },
+    additionalProperties: false,
+    required: [
+      "x",
+      "y",
+    ],
+  },
+  "draw.rectangle.add.params": {
+    title: "BoxShapeParams",
+    description: "`draw.rectangle.add` / `draw.ellipse.add` parameters.",
+    type: "object",
+    properties: {
+      drawingId: {
+        description: "The drawing (default: current).",
+        type: [
+          "string",
+          "null",
+        ],
+        default: null,
       },
       from: {
-        type: "object",
-        properties: {
-          x: {
-            type: "number",
-          },
-          y: {
-            type: "number",
-          },
-        },
-        required: [
-          "x",
-          "y",
-        ],
-        additionalProperties: false,
+        description: "Press point.",
+        $ref: "#/$defs/draw.rectangle.add.Point",
       },
       to: {
-        type: "object",
-        properties: {
-          x: {
-            type: "number",
-          },
-          y: {
-            type: "number",
-          },
-        },
-        required: [
-          "x",
-          "y",
-        ],
-        additionalProperties: false,
+        description: "Release point.",
+        $ref: "#/$defs/draw.rectangle.add.Point",
       },
       square: {
+        description: "Square constraint.",
         type: "boolean",
         default: false,
       },
       fromCentre: {
+        description: "`from` is the centre.",
         type: "boolean",
         default: false,
       },
       colourId: {
-        type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
+        description: "Line colour (default: current colour).",
+        type: [
+          "string",
+          "null",
+        ],
+        default: null,
       },
       thickness: {
-        type: "number",
+        description: "Line thickness (default: the pen's).",
+        type: [
+          "number",
+          "null",
+        ],
+        default: null,
+        minimum: 0,
+        maximum: 100,
       },
       penId: {
-        type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
+        description: "Pen (default: current pencil pen).",
+        type: [
+          "string",
+          "null",
+        ],
+        default: null,
       },
       layer: {
+        description: "Layer rule (as `draw.stroke.add`).",
         type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3) or \"auto\" | \"new\" | \"top\" | \"behind\"",
         default: "auto",
       },
       symmetry: {
+        description: "Symmetry copies (02 §6.2).",
         type: "boolean",
         default: true,
       },
     },
+    additionalProperties: false,
     required: [
       "from",
       "to",
     ],
-    additionalProperties: false,
-    "x-spec": "`drawingId?: id; from: point; to: point; square: bool = false; fromCentre: bool = false; colourId?: id; thickness?: number; penId?: id; layer: enum \"auto\"|\"new\"|\"top\"|\"behind\" | id = \"auto\"; symmetry: bool = true`",
   },
   "draw.rectangle.add.result": {
-    title: "draw.rectangle.add result",
+    title: "ShapeResult",
+    description: "The result of a shape tool.",
     type: "object",
     properties: {
+      drawingId: {
+        description: "The drawing.",
+        type: "string",
+      },
       strokeIds: {
+        description: "New strokes (the pieces noding made of them, symmetry copies included).",
         type: "array",
         items: {
           type: "string",
-          minLength: 1,
-          maxLength: 4096,
-          description: "object ID or path reference (10 §3)",
         },
-        maxItems: 100000,
       },
       zoneIds: {
+        description: "Zones the shape created.",
         type: "array",
         items: {
           type: "string",
-          minLength: 1,
-          maxLength: 4096,
-          description: "object ID or path reference (10 §3)",
         },
-        maxItems: 100000,
       },
       layerId: {
+        description: "The layer holding them.",
         type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
+      },
+      createdIds: {
+        description: "Created objects.",
+        type: "array",
+        items: {
+          type: "string",
+        },
+      },
+      modifiedIds: {
+        description: "Modified objects.",
+        type: "array",
+        items: {
+          type: "string",
+        },
+      },
+      removedIds: {
+        description: "Removed objects (strokes split by noding, zones that ceased to exist).",
+        type: "array",
+        items: {
+          type: "string",
+        },
       },
       rev: {
-        type: "number",
+        description: "The drawing revision after the change.",
+        type: "integer",
+        maximum: 18446744073709551615n,
+        minimum: 0,
       },
     },
     required: [
+      "drawingId",
       "strokeIds",
       "zoneIds",
       "layerId",
+      "createdIds",
+      "modifiedIds",
+      "removedIds",
       "rev",
     ],
-    "x-spec": "`{strokeIds: [id], zoneIds: [id], layerId, rev}`",
-    additionalProperties: false,
   },
   "draw.repositionAll.apply.params": {
     title: "draw.repositionAll.apply parameters",
@@ -34171,68 +34464,54 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
     additionalProperties: false,
   },
   "draw.selection.changed.params": {
-    title: "draw.selection.changed parameters",
+    title: "NoParams",
+    description: "No parameters.",
     type: "object",
-    properties: {},
     additionalProperties: false,
-    description: "Events take no parameters; subscribe to them (11 §9).",
-    "x-spec": "—",
+  },
+  "draw.selection.changed.AnchorRef": {
+    description: "An anchor of a stroke.",
+    type: "object",
+    properties: {
+      strokeId: {
+        description: "The stroke (local ID).",
+        type: "string",
+      },
+      anchor: {
+        description: "The anchor index.",
+        type: "integer",
+        maximum: 2147483647,
+        minimum: 0,
+      },
+    },
+    additionalProperties: false,
+    required: [
+      "strokeId",
+      "anchor",
+    ],
   },
   "draw.selection.changed.result": {
-    title: "draw.selection.changed result",
+    title: "SelectionChanged",
+    description: "`draw.selection.changed` payload.",
     type: "object",
     properties: {
       drawingId: {
+        description: "The drawing.",
         type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
       },
       selectedIds: {
+        description: "Selected objects.",
         type: "array",
         items: {
           type: "string",
-          minLength: 1,
-          maxLength: 4096,
-          description: "object ID or path reference (10 §3)",
         },
-        maxItems: 100000,
       },
       selectedPoints: {
+        description: "Selected anchors.",
         type: "array",
         items: {
-          type: "object",
-          properties: {
-            strokeId: {
-              type: "string",
-              minLength: 1,
-              maxLength: 4096,
-              description: "object ID or path reference (10 §3)",
-            },
-            anchor: {
-              type: "object",
-              properties: {
-                x: {
-                  type: "number",
-                },
-                y: {
-                  type: "number",
-                },
-              },
-              required: [
-                "x",
-                "y",
-              ],
-              additionalProperties: false,
-            },
-          },
-          required: [
-            "strokeId",
-            "anchor",
-          ],
-          additionalProperties: false,
+          $ref: "#/$defs/draw.selection.changed.AnchorRef",
         },
-        maxItems: 100000,
       },
     },
     required: [
@@ -34240,266 +34519,361 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
       "selectedIds",
       "selectedPoints",
     ],
-    description: "Event payload (delivered to subscribers).",
-    "x-spec": "`{drawingId, selectedIds: [id], selectedPoints: [object]}`",
-    additionalProperties: false,
   },
   "draw.selection.get.params": {
-    title: "draw.selection.get parameters",
+    title: "SelectionGetParams",
+    description: "`draw.selection.get` parameters.",
     type: "object",
     properties: {
       drawingId: {
-        type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
+        description: "The drawing (default: current).",
+        type: [
+          "string",
+          "null",
+        ],
+        default: null,
       },
     },
     additionalProperties: false,
-    "x-spec": "`drawingId?: id`",
+  },
+  "draw.selection.get.Bounds": {
+    description: "`{x, y, width, height}`.",
+    type: "object",
+    properties: {
+      x: {
+        description: "Minimum x (du).",
+        type: "number",
+      },
+      y: {
+        description: "Minimum y (du).",
+        type: "number",
+      },
+      width: {
+        description: "Width (du).",
+        type: "number",
+      },
+      height: {
+        description: "Height (du).",
+        type: "number",
+      },
+    },
+    required: [
+      "x",
+      "y",
+      "width",
+      "height",
+    ],
+  },
+  "draw.selection.get.AnchorRef": {
+    description: "An anchor of a stroke.",
+    type: "object",
+    properties: {
+      strokeId: {
+        description: "The stroke (local ID).",
+        type: "string",
+      },
+      anchor: {
+        description: "The anchor index.",
+        type: "integer",
+        maximum: 2147483647,
+        minimum: 0,
+      },
+    },
+    additionalProperties: false,
+    required: [
+      "strokeId",
+      "anchor",
+    ],
   },
   "draw.selection.get.result": {
-    title: "draw.selection.get result",
+    title: "SelectionGetResult",
+    description: "`{selectedIds, bounds, selectedPoints}`.",
     type: "object",
     properties: {
       selectedIds: {
+        description: "Selected objects (local IDs).",
         type: "array",
         items: {
           type: "string",
-          minLength: 1,
-          maxLength: 4096,
-          description: "object ID or path reference (10 §3)",
         },
-        maxItems: 100000,
       },
       bounds: {
-        type: "object",
-        properties: {
-          x: {
-            type: "number",
+        description: "Their bounds.",
+        anyOf: [
+          {
+            $ref: "#/$defs/draw.selection.get.Bounds",
           },
-          y: {
-            type: "number",
+          {
+            type: "null",
           },
-          width: {
-            type: "number",
-          },
-          height: {
-            type: "number",
-          },
-        },
-        required: [
-          "x",
-          "y",
-          "width",
-          "height",
         ],
-        additionalProperties: false,
       },
       selectedPoints: {
+        description: "Selected anchors (Contour Editor).",
         type: "array",
         items: {
-          type: "object",
-          properties: {
-            strokeId: {
-              type: "string",
-              minLength: 1,
-              maxLength: 4096,
-              description: "object ID or path reference (10 §3)",
-            },
-            anchor: {
-              type: "object",
-              properties: {
-                x: {
-                  type: "number",
-                },
-                y: {
-                  type: "number",
-                },
-              },
-              required: [
-                "x",
-                "y",
-              ],
-              additionalProperties: false,
-            },
-          },
-          required: [
-            "strokeId",
-            "anchor",
-          ],
-          additionalProperties: false,
+          $ref: "#/$defs/draw.selection.get.AnchorRef",
         },
-        maxItems: 100000,
       },
     },
     required: [
       "selectedIds",
-      "bounds",
       "selectedPoints",
     ],
-    "x-spec": "`{selectedIds: [id], bounds, selectedPoints: [{strokeId, anchor}]}`",
+  },
+  "draw.selection.set.SelectBy": {
+    description: "How `draw.selection.set` selects.",
+    oneOf: [
+      {
+        description: "The given IDs.",
+        type: "string",
+        const: "ids",
+      },
+      {
+        description: "The front-most object under a point (02 §8.1 hit order).",
+        type: "string",
+        const: "point",
+      },
+      {
+        description: "Objects in a rectangle (`rectRule`).",
+        type: "string",
+        const: "rect",
+      },
+      {
+        description: "Objects in a closed polygon (`rectRule`).",
+        type: "string",
+        const: "lasso",
+      },
+      {
+        description: "Every stroke, text and bitmap.",
+        type: "string",
+        const: "all",
+      },
+      {
+        description: "Nothing.",
+        type: "string",
+        const: "none",
+      },
+    ],
+  },
+  "draw.selection.set.Point": {
+    description: "A point `{x, y}` in drawing units.",
+    type: "object",
+    properties: {
+      x: {
+        description: "X (du).",
+        type: "number",
+      },
+      y: {
+        description: "Y (du, up).",
+        type: "number",
+      },
+    },
     additionalProperties: false,
+    required: [
+      "x",
+      "y",
+    ],
+  },
+  "draw.selection.set.RectIn": {
+    description: "`{x, y, width, height}` input.",
+    type: "object",
+    properties: {
+      x: {
+        description: "Left.",
+        type: "number",
+      },
+      y: {
+        description: "Bottom.",
+        type: "number",
+      },
+      width: {
+        description: "Width (≥ 0).",
+        type: "number",
+        minimum: 0,
+      },
+      height: {
+        description: "Height (≥ 0).",
+        type: "number",
+        minimum: 0,
+      },
+    },
+    additionalProperties: false,
+    required: [
+      "x",
+      "y",
+      "width",
+      "height",
+    ],
+  },
+  "draw.selection.set.RectRule": {
+    description: "Inside or intersecting.",
+    oneOf: [
+      {
+        description: "The object's bounds lie wholly inside.",
+        type: "string",
+        const: "inside",
+      },
+      {
+        description: "The object's bounds meet the region.",
+        type: "string",
+        const: "intersect",
+      },
+    ],
+  },
+  "draw.selection.set.Mode": {
+    description: "How a selection combines with the current one.",
+    oneOf: [
+      {
+        description: "Replace it.",
+        type: "string",
+        const: "replace",
+      },
+      {
+        description: "Add to it.",
+        type: "string",
+        const: "add",
+      },
+      {
+        description: "Toggle membership.",
+        type: "string",
+        const: "toggle",
+      },
+      {
+        description: "Remove from it.",
+        type: "string",
+        const: "remove",
+      },
+    ],
   },
   "draw.selection.set.params": {
-    title: "draw.selection.set parameters",
+    title: "SelectionSetParams",
+    description: "`draw.selection.set` parameters.",
     type: "object",
     properties: {
       drawingId: {
-        type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
+        description: "The drawing (default: current).",
+        type: [
+          "string",
+          "null",
+        ],
+        default: null,
       },
       by: {
-        type: "string",
-        enum: [
-          "ids",
-          "point",
-          "rect",
-          "lasso",
-          "all",
-          "none",
-        ],
-        default: "ids",
+        description: "How to select.",
+        $ref: "#/$defs/draw.selection.set.SelectBy",
       },
       ids: {
-        type: "array",
+        description: "IDs (`by: \"ids\"`; local or compound; zone IDs select zones).",
+        type: [
+          "array",
+          "null",
+        ],
         items: {
           type: "string",
-          minLength: 1,
-          maxLength: 4096,
-          description: "object ID or path reference (10 §3)",
         },
-        maxItems: 100000,
+        default: null,
       },
       point: {
-        type: "object",
-        properties: {
-          x: {
-            type: "number",
+        description: "The point (`by: \"point\"`).",
+        anyOf: [
+          {
+            $ref: "#/$defs/draw.selection.set.Point",
           },
-          y: {
-            type: "number",
+          {
+            type: "null",
           },
-        },
-        required: [
-          "x",
-          "y",
         ],
-        additionalProperties: false,
+        default: null,
       },
       rect: {
-        type: "object",
-        properties: {
-          x: {
-            type: "number",
+        description: "The rectangle (`by: \"rect\"`).",
+        anyOf: [
+          {
+            $ref: "#/$defs/draw.selection.set.RectIn",
           },
-          y: {
-            type: "number",
+          {
+            type: "null",
           },
-          width: {
-            type: "number",
-          },
-          height: {
-            type: "number",
-          },
-        },
-        required: [
-          "x",
-          "y",
-          "width",
-          "height",
         ],
-        additionalProperties: false,
       },
       polygon: {
-        type: "array",
+        description: "The polygon (`by: \"lasso\"`).",
+        type: [
+          "array",
+          "null",
+        ],
         items: {
-          type: "object",
-          properties: {
-            x: {
-              type: "number",
-            },
-            y: {
-              type: "number",
-            },
-          },
-          required: [
-            "x",
-            "y",
-          ],
-          additionalProperties: false,
+          $ref: "#/$defs/draw.selection.set.Point",
         },
-        maxItems: 100000,
+        default: null,
       },
       rectRule: {
-        type: "string",
-        enum: [
-          "inside",
-          "intersect",
-        ],
-        default: "inside",
+        description: "Region rule for `rect` and `lasso`.",
+        $ref: "#/$defs/draw.selection.set.RectRule",
       },
       mode: {
-        type: "string",
-        enum: [
-          "replace",
-          "add",
-          "toggle",
-          "remove",
-        ],
-        default: "replace",
+        description: "How to combine with the current selection.",
+        $ref: "#/$defs/draw.selection.set.Mode",
       },
     },
     additionalProperties: false,
-    "x-spec": "`drawingId?: id; by: enum \"ids\"|\"point\"|\"rect\"|\"lasso\"|\"all\"|\"none\" = \"ids\"; ids?: [id]; point?: point; rect?: {x,y,width,height}; polygon?: [point]; rectRule: enum \"inside\"|\"intersect\" = \"inside\"; mode: enum \"replace\"|\"add\"|\"toggle\"|\"remove\" = \"replace\"`",
+  },
+  "draw.selection.set.Bounds": {
+    description: "`{x, y, width, height}`.",
+    type: "object",
+    properties: {
+      x: {
+        description: "Minimum x (du).",
+        type: "number",
+      },
+      y: {
+        description: "Minimum y (du).",
+        type: "number",
+      },
+      width: {
+        description: "Width (du).",
+        type: "number",
+      },
+      height: {
+        description: "Height (du).",
+        type: "number",
+      },
+    },
+    required: [
+      "x",
+      "y",
+      "width",
+      "height",
+    ],
   },
   "draw.selection.set.result": {
-    title: "draw.selection.set result",
+    title: "SelectionSetResult",
+    description: "`{selectedIds, bounds}`.",
     type: "object",
     properties: {
       selectedIds: {
+        description: "Selected objects (local IDs), in selection order.",
         type: "array",
         items: {
           type: "string",
-          minLength: 1,
-          maxLength: 4096,
-          description: "object ID or path reference (10 §3)",
         },
-        maxItems: 100000,
       },
       bounds: {
-        type: "object",
-        properties: {
-          x: {
-            type: "number",
+        description: "Their bounds (`null` when nothing is selected).",
+        anyOf: [
+          {
+            $ref: "#/$defs/draw.selection.set.Bounds",
           },
-          y: {
-            type: "number",
+          {
+            type: "null",
           },
-          width: {
-            type: "number",
-          },
-          height: {
-            type: "number",
-          },
-        },
-        required: [
-          "x",
-          "y",
-          "width",
-          "height",
         ],
-        additionalProperties: false,
       },
     },
     required: [
       "selectedIds",
-      "bounds",
     ],
-    "x-spec": "`{selectedIds: [id], bounds}`",
-    additionalProperties: false,
   },
   "draw.smooth.apply.params": {
     title: "draw.smooth.apply parameters",
@@ -36585,75 +36959,90 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
     additionalProperties: false,
   },
   "draw.viewMapping.get.params": {
-    title: "draw.viewMapping.get parameters",
+    title: "ViewMappingParams",
+    description: "`draw.viewMapping.get` parameters.",
     type: "object",
     properties: {
       view: {
+        description: "The view (`drawing`; views arrive with M4 C4.2).",
         type: "string",
-        maxLength: 65536,
         default: "drawing",
       },
     },
     additionalProperties: false,
-    "x-spec": "`view: string = \"drawing\"`",
   },
-  "draw.viewMapping.get.result": {
-    title: "draw.viewMapping.get result",
+  "draw.viewMapping.get.ViewSize": {
+    description: "`{width, height}`.",
     type: "object",
     properties: {
-      drawingId: {
-        type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
+      width: {
+        description: "Width.",
+        type: "integer",
+        maximum: 2147483647,
+        minimum: 0,
       },
-      drawingToView: {
-        type: "array",
-        items: {
-          type: "number",
-        },
-        maxItems: 100000,
-      },
-      viewToDrawing: {
-        type: "array",
-        items: {
-          type: "number",
-        },
-        maxItems: 100000,
-      },
-      zoom: {
-        type: "number",
-      },
-      rotation: {
-        type: "number",
-      },
-      viewSize: {
-        type: "object",
-        properties: {
-          width: {
-            type: "number",
-          },
-          height: {
-            type: "number",
-          },
-        },
-        required: [
-          "width",
-          "height",
-        ],
-        additionalProperties: false,
+      height: {
+        description: "Height.",
+        type: "integer",
+        maximum: 2147483647,
+        minimum: 0,
       },
     },
     required: [
-      "drawingId",
+      "width",
+      "height",
+    ],
+  },
+  "draw.viewMapping.get.result": {
+    title: "ViewMappingResult",
+    description: "The mapping between a view's pixels and drawing space.",
+    type: "object",
+    properties: {
+      drawingId: {
+        description: "The view's drawing (`null` without a current drawing).",
+        type: [
+          "string",
+          "null",
+        ],
+      },
+      drawingToView: {
+        description: "Drawing space → view pixels.",
+        type: "array",
+        items: {
+          type: "number",
+        },
+        minItems: 6,
+        maxItems: 6,
+      },
+      viewToDrawing: {
+        description: "View pixels → drawing space.",
+        type: "array",
+        items: {
+          type: "number",
+        },
+        minItems: 6,
+        maxItems: 6,
+      },
+      zoom: {
+        description: "Zoom (1 = 100 %).",
+        type: "number",
+      },
+      rotation: {
+        description: "Rotation (degrees).",
+        type: "number",
+      },
+      viewSize: {
+        description: "The view's size in pixels.",
+        $ref: "#/$defs/draw.viewMapping.get.ViewSize",
+      },
+    },
+    required: [
       "drawingToView",
       "viewToDrawing",
       "zoom",
       "rotation",
       "viewSize",
     ],
-    "x-spec": "`{drawingId, drawingToView: [number], viewToDrawing: [number], zoom, rotation, viewSize: {width,height}}`",
-    additionalProperties: false,
   },
   "drawAid.autoLightTable.set.params": {
     title: "drawAid.autoLightTable.set parameters",
@@ -82975,20 +83364,32 @@ export interface draw_arrange_apply_result {
   rev: number;
 }
 
+/** `draw.bounds.get` parameters. */
 export interface draw_bounds_get_params {
-  /** object ID or path reference (10 §3) */
-  drawingId?: string;
-  ids?: string[];
+  /** The drawing (default: current). */
+  drawingId?: string | null;
+  /** Objects (default: the whole drawing). */
+  ids?: string[] | null;
+  /** Include invisible strokes. */
   includeInvisible?: boolean;
 }
 
+/** `{x, y, width, height}`. */
+export interface draw_bounds_get_Bounds {
+  /** Minimum x (du). */
+  x: number;
+  /** Minimum y (du). */
+  y: number;
+  /** Width (du). */
+  width: number;
+  /** Height (du). */
+  height: number;
+}
+
+/** `{bounds}`. */
 export interface draw_bounds_get_result {
-  bounds: {
-    x: number;
-    y: number;
-    width: number;
-    height: number;
-  } | null;
+  /** The bounding box (`null` for an empty drawing or selection). */
+  bounds?: draw_bounds_get_Bounds | null;
 }
 
 export interface draw_breakApart_apply_params {
@@ -83619,16 +84020,28 @@ export interface draw_drawing_get_result {
   nodes: draw_drawing_get_item[];
 }
 
+/** `draw.drawing.rename` parameters. */
 export interface draw_drawing_rename_params {
-  /** object ID or path reference (10 §3) */
-  drawingId?: string;
+  /** The drawing (default: current). */
+  drawingId?: string | null;
+  /** The new name (02 §9). */
   name: string;
 }
 
+/** `{drawingId, name}`. */
 export interface draw_drawing_rename_result {
-  /** object ID or path reference (10 §3) */
+  /** The drawing. */
   drawingId: string;
+  /** Its name. */
   name: string;
+  /** Created objects. */
+  createdIds: string[];
+  /** Modified objects (content, membership or position changed; IDs kept). */
+  modifiedIds: string[];
+  /** Removed objects (descendants included). */
+  removedIds: string[];
+  /** The drawing revision after the change. */
+  rev: number | bigint;
 }
 
 export interface draw_drawing_render_params {
@@ -83663,35 +84076,56 @@ export interface draw_drawing_render_result {
   rev: number;
 }
 
+/** A point `{x, y}` in drawing units. */
+export interface draw_ellipse_add_Point {
+  /** X (du). */
+  x: number;
+  /** Y (du, up). */
+  y: number;
+}
+
+/** `draw.ellipse.add` parameters. */
 export interface draw_ellipse_add_params {
-  /** object ID or path reference (10 §3) */
-  drawingId?: string;
-  from: {
-    x: number;
-    y: number;
-  };
-  to: {
-    x: number;
-    y: number;
-  };
+  /** The drawing (default: current). */
+  drawingId?: string | null;
+  /** Press point. */
+  from: draw_ellipse_add_Point;
+  /** Release point. */
+  to: draw_ellipse_add_Point;
+  /** Circle constraint. */
   circle?: boolean;
+  /** `from` is the centre. */
   fromCentre?: boolean;
-  /** object ID or path reference (10 §3) */
-  colourId?: string;
-  thickness?: number;
-  /** object ID or path reference (10 §3) */
-  penId?: string;
-  /** object ID or path reference (10 §3) or "auto" | "new" | "top" | "behind" */
+  /** Line colour (default: current colour). */
+  colourId?: string | null;
+  /** Line thickness (default: the pen's). */
+  thickness?: number | null;
+  /** Pen (default: current pencil pen). */
+  penId?: string | null;
+  /** Layer rule (as `draw.stroke.add`). */
   layer?: string;
+  /** Symmetry copies (02 §6.2). */
   symmetry?: boolean;
 }
 
+/** The result of a shape tool. */
 export interface draw_ellipse_add_result {
+  /** The drawing. */
+  drawingId: string;
+  /** New strokes (the pieces noding made of them, symmetry copies included). */
   strokeIds: string[];
+  /** Zones the shape created. */
   zoneIds: string[];
-  /** object ID or path reference (10 §3) */
+  /** The layer holding them. */
   layerId: string;
-  rev: number;
+  /** Created objects. */
+  createdIds: string[];
+  /** Modified objects. */
+  modifiedIds: string[];
+  /** Removed objects (strokes split by noding, zones that ceased to exist). */
+  removedIds: string[];
+  /** The drawing revision after the change. */
+  rev: number | bigint;
 }
 
 export interface draw_envelope_apply_params {
@@ -83890,43 +84324,68 @@ export interface draw_hitTest_get_result {
   rev: number | bigint;
 }
 
+/** `{visible}`. */
 export interface draw_inspectorPreview_set_params {
+  /** Show the drawing thumbnail in the inspector. */
   visible: boolean;
 }
 
+/** `{visible}`. */
 export interface draw_inspectorPreview_set_result {
+  /** Shown. */
   visible: boolean;
 }
 
+/** A point `{x, y}` in drawing units. */
+export interface draw_line_add_Point {
+  /** X (du). */
+  x: number;
+  /** Y (du, up). */
+  y: number;
+}
+
+/** `draw.line.add` parameters. */
 export interface draw_line_add_params {
-  /** object ID or path reference (10 §3) */
-  drawingId?: string;
-  from?: {
-    x: number;
-    y: number;
-  };
-  to: {
-    x: number;
-    y: number;
-  };
+  /** The drawing (default: current). */
+  drawingId?: string | null;
+  /** Start (required unless `continuePrevious`). */
+  from?: draw_line_add_Point | null;
+  /** End. */
+  to: draw_line_add_Point;
+  /** Start at the end of the line this tool added last in the drawing. */
   continuePrevious?: boolean;
+  /** Constrain the angle to multiples of 45°. */
   constrainAngle?: boolean;
-  /** object ID or path reference (10 §3) */
-  colourId?: string;
-  thickness?: number;
-  /** object ID or path reference (10 §3) */
-  penId?: string;
-  /** object ID or path reference (10 §3) or "auto" | "new" | "top" | "behind" */
+  /** Line colour. */
+  colourId?: string | null;
+  /** Thickness. */
+  thickness?: number | null;
+  /** Pen. */
+  penId?: string | null;
+  /** Layer rule. */
   layer?: string;
+  /** Symmetry copies. */
   symmetry?: boolean;
 }
 
+/** The result of a shape tool. */
 export interface draw_line_add_result {
+  /** The drawing. */
+  drawingId: string;
+  /** New strokes (the pieces noding made of them, symmetry copies included). */
   strokeIds: string[];
+  /** Zones the shape created. */
   zoneIds: string[];
-  /** object ID or path reference (10 §3) */
+  /** The layer holding them. */
   layerId: string;
-  rev: number;
+  /** Created objects. */
+  createdIds: string[];
+  /** Modified objects. */
+  modifiedIds: string[];
+  /** Removed objects (strokes split by noding, zones that ceased to exist). */
+  removedIds: string[];
+  /** The drawing revision after the change. */
+  rev: number | bigint;
 }
 
 export interface draw_linesToBrush_apply_params {
@@ -83943,16 +84402,22 @@ export interface draw_linesToBrush_apply_result {
   rev: number;
 }
 
+/** `draw.lock.set` parameters. */
 export interface draw_lock_set_params {
-  /** object ID or path reference (10 §3) */
-  drawingId?: string;
+  /** The drawing (default: current). */
+  drawingId?: string | null;
+  /** Locked. */
   locked: boolean;
 }
 
+/** `{drawingId, locked}`. */
 export interface draw_lock_set_result {
-  /** object ID or path reference (10 §3) */
+  /** The drawing. */
   drawingId: string;
+  /** Locked. */
   locked: boolean;
+  /** The drawing revision after the change. */
+  rev: number | bigint;
 }
 
 /** `draw.object.delete` parameters. */
@@ -84113,96 +84578,161 @@ export interface draw_point_set_result {
   rev: number;
 }
 
+/** An anchor of a stroke. */
+export interface draw_pointSelection_set_AnchorRef {
+  /** The stroke (local ID). */
+  strokeId: string;
+  /** The anchor index. */
+  anchor: number;
+}
+
+/** `{x, y, width, height}` input. */
+export interface draw_pointSelection_set_RectIn {
+  /** Left. */
+  x: number;
+  /** Bottom. */
+  y: number;
+  /** Width (≥ 0). */
+  width: number;
+  /** Height (≥ 0). */
+  height: number;
+}
+
+/** How a selection combines with the current one. */
+export type draw_pointSelection_set_Mode = 'replace' | 'add' | 'toggle' | 'remove';
+
+/** `draw.pointSelection.set` parameters. */
 export interface draw_pointSelection_set_params {
-  /** object ID or path reference (10 §3) */
-  drawingId?: string;
-  points?: ({
-    /** object ID or path reference (10 §3) */
-    strokeId: string;
-    anchor: number | bigint;
-  })[];
-  rect?: {
-    x: number;
-    y: number;
-    width: number;
-    height: number;
-  };
-  mode?: 'replace' | 'add' | 'toggle' | 'remove';
+  /** The drawing (default: current). */
+  drawingId?: string | null;
+  /** Anchors. */
+  points?: draw_pointSelection_set_AnchorRef[] | null;
+  /** Every anchor inside a rectangle. */
+  rect?: draw_pointSelection_set_RectIn | null;
+  /** How to combine. */
+  mode?: draw_pointSelection_set_Mode;
 }
 
+/** `{selectedPoints}`. */
 export interface draw_pointSelection_set_result {
-  selectedPoints: ({
-    /** object ID or path reference (10 §3) */
-    strokeId: string;
-    anchor: number | bigint;
-  })[];
+  /** Selected anchors. */
+  selectedPoints: draw_pointSelection_set_AnchorRef[];
 }
 
+/** A polyline anchor: position and optional handle offsets. */
+export interface draw_polyline_add_PolyPoint {
+  /** x (du). */
+  x: number;
+  /** y (du). */
+  y: number;
+  /** Incoming handle, as an offset from the anchor (10 §4.9 convention; SI-069). */
+  inHandle?: draw_polyline_add_Point | null;
+  /** Outgoing handle, as an offset from the anchor. */
+  outHandle?: draw_polyline_add_Point | null;
+}
+
+/** A point `{x, y}` in drawing units. */
+export interface draw_polyline_add_Point {
+  /** X (du). */
+  x: number;
+  /** Y (du, up). */
+  y: number;
+}
+
+/** `draw.polyline.add` parameters. */
 export interface draw_polyline_add_params {
-  /** object ID or path reference (10 §3) */
-  drawingId?: string;
-  points: ({
-    x: number;
-    y: number;
-    inHandle?: {
-      x: number;
-      y: number;
-    };
-    outHandle?: {
-      x: number;
-      y: number;
-    };
-  })[];
+  /** The drawing (default: current). */
+  drawingId?: string | null;
+  /** Anchors (at least 2). */
+  points: draw_polyline_add_PolyPoint[];
+  /** Closed. */
   closed?: boolean;
+  /** Snap anchors to existing anchors within `snapRadius`. */
   snap?: boolean;
+  /** Snap radius (view px; 1 px = 1 du at 100 %, SI-063). */
   snapRadius?: number;
-  /** object ID or path reference (10 §3) */
-  colourId?: string;
-  thickness?: number;
-  /** object ID or path reference (10 §3) */
-  penId?: string;
-  /** object ID or path reference (10 §3) or "auto" | "new" | "top" | "behind" */
+  /** Line colour. */
+  colourId?: string | null;
+  /** Thickness. */
+  thickness?: number | null;
+  /** Pen. */
+  penId?: string | null;
+  /** Layer rule. */
   layer?: string;
+  /** Symmetry copies. */
   symmetry?: boolean;
 }
 
+/** The result of a shape tool. */
 export interface draw_polyline_add_result {
+  /** The drawing. */
+  drawingId: string;
+  /** New strokes (the pieces noding made of them, symmetry copies included). */
   strokeIds: string[];
+  /** Zones the shape created. */
   zoneIds: string[];
-  /** object ID or path reference (10 §3) */
+  /** The layer holding them. */
   layerId: string;
-  rev: number;
+  /** Created objects. */
+  createdIds: string[];
+  /** Modified objects. */
+  modifiedIds: string[];
+  /** Removed objects (strokes split by noding, zones that ceased to exist). */
+  removedIds: string[];
+  /** The drawing revision after the change. */
+  rev: number | bigint;
 }
 
+/** A point `{x, y}` in drawing units. */
+export interface draw_rectangle_add_Point {
+  /** X (du). */
+  x: number;
+  /** Y (du, up). */
+  y: number;
+}
+
+/** `draw.rectangle.add` / `draw.ellipse.add` parameters. */
 export interface draw_rectangle_add_params {
-  /** object ID or path reference (10 §3) */
-  drawingId?: string;
-  from: {
-    x: number;
-    y: number;
-  };
-  to: {
-    x: number;
-    y: number;
-  };
+  /** The drawing (default: current). */
+  drawingId?: string | null;
+  /** Press point. */
+  from: draw_rectangle_add_Point;
+  /** Release point. */
+  to: draw_rectangle_add_Point;
+  /** Square constraint. */
   square?: boolean;
+  /** `from` is the centre. */
   fromCentre?: boolean;
-  /** object ID or path reference (10 §3) */
-  colourId?: string;
-  thickness?: number;
-  /** object ID or path reference (10 §3) */
-  penId?: string;
-  /** object ID or path reference (10 §3) or "auto" | "new" | "top" | "behind" */
+  /** Line colour (default: current colour). */
+  colourId?: string | null;
+  /** Line thickness (default: the pen's). */
+  thickness?: number | null;
+  /** Pen (default: current pencil pen). */
+  penId?: string | null;
+  /** Layer rule (as `draw.stroke.add`). */
   layer?: string;
+  /** Symmetry copies (02 §6.2). */
   symmetry?: boolean;
 }
 
+/** The result of a shape tool. */
 export interface draw_rectangle_add_result {
+  /** The drawing. */
+  drawingId: string;
+  /** New strokes (the pieces noding made of them, symmetry copies included). */
   strokeIds: string[];
+  /** Zones the shape created. */
   zoneIds: string[];
-  /** object ID or path reference (10 §3) */
+  /** The layer holding them. */
   layerId: string;
-  rev: number;
+  /** Created objects. */
+  createdIds: string[];
+  /** Modified objects. */
+  modifiedIds: string[];
+  /** Removed objects (strokes split by noding, zones that ceased to exist). */
+  removedIds: string[];
+  /** The drawing revision after the change. */
+  rev: number | bigint;
 }
 
 export interface draw_repositionAll_apply_params {
@@ -84263,78 +84793,130 @@ export interface draw_segment_move_result {
   rev: number;
 }
 
-/** Events take no parameters; subscribe to them (11 §9). */
+/** No parameters. */
 export type draw_selection_changed_params = Record<string, unknown>;
 
-/** Event payload (delivered to subscribers). */
+/** An anchor of a stroke. */
+export interface draw_selection_changed_AnchorRef {
+  /** The stroke (local ID). */
+  strokeId: string;
+  /** The anchor index. */
+  anchor: number;
+}
+
+/** `draw.selection.changed` payload. */
 export interface draw_selection_changed_result {
-  /** object ID or path reference (10 §3) */
+  /** The drawing. */
   drawingId: string;
+  /** Selected objects. */
   selectedIds: string[];
-  selectedPoints: ({
-    /** object ID or path reference (10 §3) */
-    strokeId: string;
-    anchor: {
-      x: number;
-      y: number;
-    };
-  })[];
+  /** Selected anchors. */
+  selectedPoints: draw_selection_changed_AnchorRef[];
 }
 
+/** `draw.selection.get` parameters. */
 export interface draw_selection_get_params {
-  /** object ID or path reference (10 §3) */
-  drawingId?: string;
+  /** The drawing (default: current). */
+  drawingId?: string | null;
 }
 
+/** `{x, y, width, height}`. */
+export interface draw_selection_get_Bounds {
+  /** Minimum x (du). */
+  x: number;
+  /** Minimum y (du). */
+  y: number;
+  /** Width (du). */
+  width: number;
+  /** Height (du). */
+  height: number;
+}
+
+/** An anchor of a stroke. */
+export interface draw_selection_get_AnchorRef {
+  /** The stroke (local ID). */
+  strokeId: string;
+  /** The anchor index. */
+  anchor: number;
+}
+
+/** `{selectedIds, bounds, selectedPoints}`. */
 export interface draw_selection_get_result {
+  /** Selected objects (local IDs). */
   selectedIds: string[];
-  bounds: {
-    x: number;
-    y: number;
-    width: number;
-    height: number;
-  };
-  selectedPoints: ({
-    /** object ID or path reference (10 §3) */
-    strokeId: string;
-    anchor: {
-      x: number;
-      y: number;
-    };
-  })[];
+  /** Their bounds. */
+  bounds?: draw_selection_get_Bounds | null;
+  /** Selected anchors (Contour Editor). */
+  selectedPoints: draw_selection_get_AnchorRef[];
 }
 
+/** How `draw.selection.set` selects. */
+export type draw_selection_set_SelectBy = 'ids' | 'point' | 'rect' | 'lasso' | 'all' | 'none';
+
+/** A point `{x, y}` in drawing units. */
+export interface draw_selection_set_Point {
+  /** X (du). */
+  x: number;
+  /** Y (du, up). */
+  y: number;
+}
+
+/** `{x, y, width, height}` input. */
+export interface draw_selection_set_RectIn {
+  /** Left. */
+  x: number;
+  /** Bottom. */
+  y: number;
+  /** Width (≥ 0). */
+  width: number;
+  /** Height (≥ 0). */
+  height: number;
+}
+
+/** Inside or intersecting. */
+export type draw_selection_set_RectRule = 'inside' | 'intersect';
+
+/** How a selection combines with the current one. */
+export type draw_selection_set_Mode = 'replace' | 'add' | 'toggle' | 'remove';
+
+/** `draw.selection.set` parameters. */
 export interface draw_selection_set_params {
-  /** object ID or path reference (10 §3) */
-  drawingId?: string;
-  by?: 'ids' | 'point' | 'rect' | 'lasso' | 'all' | 'none';
-  ids?: string[];
-  point?: {
-    x: number;
-    y: number;
-  };
-  rect?: {
-    x: number;
-    y: number;
-    width: number;
-    height: number;
-  };
-  polygon?: ({
-    x: number;
-    y: number;
-  })[];
-  rectRule?: 'inside' | 'intersect';
-  mode?: 'replace' | 'add' | 'toggle' | 'remove';
+  /** The drawing (default: current). */
+  drawingId?: string | null;
+  /** How to select. */
+  by?: draw_selection_set_SelectBy;
+  /** IDs (`by: "ids"`; local or compound; zone IDs select zones). */
+  ids?: string[] | null;
+  /** The point (`by: "point"`). */
+  point?: draw_selection_set_Point | null;
+  /** The rectangle (`by: "rect"`). */
+  rect?: draw_selection_set_RectIn | null;
+  /** The polygon (`by: "lasso"`). */
+  polygon?: draw_selection_set_Point[] | null;
+  /** Region rule for `rect` and `lasso`. */
+  rectRule?: draw_selection_set_RectRule;
+  /** How to combine with the current selection. */
+  mode?: draw_selection_set_Mode;
 }
 
+/** `{x, y, width, height}`. */
+export interface draw_selection_set_Bounds {
+  /** Minimum x (du). */
+  x: number;
+  /** Minimum y (du). */
+  y: number;
+  /** Width (du). */
+  width: number;
+  /** Height (du). */
+  height: number;
+}
+
+/** `{selectedIds, bounds}`. */
 export interface draw_selection_set_result {
+  /** Selected objects (local IDs), in selection order. */
   selectedIds: string[];
-  bounds: {
-    x: number;
-    y: number;
-    width: number;
-    height: number;
-  };
+  /** Their bounds (`null` when nothing is selected). */
+  bounds?: draw_selection_set_Bounds | null;
 }
 
 export interface draw_smooth_apply_params {
@@ -84874,21 +85456,34 @@ export interface draw_vectorize_run_result {
   jobId: string;
 }
 
+/** `draw.viewMapping.get` parameters. */
 export interface draw_viewMapping_get_params {
+  /** The view (`drawing`; views arrive with M4 C4.2). */
   view?: string;
 }
 
+/** `{width, height}`. */
+export interface draw_viewMapping_get_ViewSize {
+  /** Width. */
+  width: number;
+  /** Height. */
+  height: number;
+}
+
+/** The mapping between a view's pixels and drawing space. */
 export interface draw_viewMapping_get_result {
-  /** object ID or path reference (10 §3) */
-  drawingId: string;
+  /** The view's drawing (`null` without a current drawing). */
+  drawingId?: string | null;
+  /** Drawing space → view pixels. */
   drawingToView: number[];
+  /** View pixels → drawing space. */
   viewToDrawing: number[];
+  /** Zoom (1 = 100 %). */
   zoom: number;
+  /** Rotation (degrees). */
   rotation: number;
-  viewSize: {
-    width: number;
-    height: number;
-  };
+  /** The view's size in pixels. */
+  viewSize: draw_viewMapping_get_ViewSize;
 }
 
 export interface drawAid_autoLightTable_set_params {

@@ -16,6 +16,8 @@ pub(crate) mod doc;
 pub(crate) mod doc_io;
 pub(crate) mod doc_lint;
 pub(crate) mod draw;
+pub(crate) mod draw_select;
+pub(crate) mod draw_shapes;
 pub(crate) mod draw_stroke;
 pub(crate) mod draw_text;
 pub(crate) mod edit;
@@ -119,6 +121,19 @@ pub(crate) static ALL: &[&Command] = &[
     &draw::DRAW_GROUP_CREATE,
     &draw::DRAW_GROUP_DELETE,
     &draw::DRAW_DRAWING_CHANGED,
+    &draw_select::DRAW_SELECTION_SET,
+    &draw_select::DRAW_SELECTION_GET,
+    &draw_select::DRAW_POINT_SELECTION_SET,
+    &draw_select::DRAW_SELECTION_CHANGED,
+    &draw_select::DRAW_BOUNDS_GET,
+    &draw_select::DRAW_VIEW_MAPPING_GET,
+    &draw_select::DRAW_INSPECTOR_PREVIEW_SET,
+    &draw_select::DRAW_DRAWING_RENAME,
+    &draw_select::DRAW_LOCK_SET,
+    &draw_shapes::DRAW_RECTANGLE_ADD,
+    &draw_shapes::DRAW_ELLIPSE_ADD,
+    &draw_shapes::DRAW_LINE_ADD,
+    &draw_shapes::DRAW_POLYLINE_ADD,
     &colour::COLOUR_PAINT_APPLY,
     &colour::COLOUR_PAINT_UNPAINTED_APPLY,
     &colour::COLOUR_PAINT_REMOVE,
