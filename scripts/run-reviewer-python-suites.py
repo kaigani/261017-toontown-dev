@@ -22,6 +22,8 @@ SUITES = ROOT / "tests" / "adversarial"
 NOT_SUITES = {
     "collect_runtime_evidence.py": "M0 evidence collector, not a test: needs a release build and writes "
     "reviews/evidence/M0-C0.1-r1/",
+    # Orchestrator ruling, M2 C2.3 round 3: a round receipt, not a product invariant.
+    "c23-r3-finalize.py": "round-3 collector pinned to 989233e; receipts retained under reviews/evidence/M2-C2.3-r3",
 }
 
 

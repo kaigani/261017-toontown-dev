@@ -898,3 +898,12 @@ Reserved by the M0 closure for "measured deterministic-format incompatibility" (
   and reported in `skipped` with reason `notClippable` (no glyph or bitmap clipping in M2). Brush strokes keep the
   SI-071 treatment. The Eraser leaves text and bitmap nodes alone.
 - **Candidate:** clipping bitmaps (and glyph outlines) for M3/M4.
+
+## SI-079 — selection and document history (found in M2 C2.3 round 3; decided)
+
+- **Sections:** 02 §7.1, §13.1.10; 10 §2.7.
+- **Decision (reviewer interpretation adopted as the ruling, M2-C2.3-r3):** the drawing selection (zones included) is
+  transient session state, not part of document history. Undo and redo restore document geometry and zone identity;
+  a selection pruned because its zone was re-identified stays pruned when undo brings the zone back, and the restored
+  zone can be selected again by its original ID. Selection readback returns only valid IDs (§13.1.10). A call whose
+  caller timed out leaves the selection as it was (ADR-0015 history, C23-R3-01).

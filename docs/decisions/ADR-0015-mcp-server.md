@@ -243,3 +243,18 @@ transactions, idempotent requests and the never-block watchdog.
   re-check the token, so a cancelled request never begins or commits after its caller has been answered. One
   caller's timeout never cancels another caller's request (`crates/executor/tests/c23_watchdog.rs`,
   `c23_r2_watchdog.rs`).
+- **M2 C2.3 round 3 (C23-R3-01): the session-state acceptance rule.** A command changes nothing but its
+  invocation's working state: the staged document, its deferred effects, and the session and UI state it writes
+  (drawing and point selection, tool memory, current frame and mode, panels and workspaces, clipboard, remembered
+  options, checkpoints, queued events, agent sessions and policy). Settings changes are deferred effects too. All of
+  it is accepted at one boundary, shared by single invocations and atomic batches (`run::Core::accept`), in this
+  order: the caller's cancellation (whether or not the call changes the document), the frozen guard, pending saves,
+  the document commit (which re-checks the cancellation before installing anything), then the effects. A refusal
+  at any of these restores the saved session state in full (`Rollback`) and removes staged files; a cancelled call
+  answers `command.timeout`. After the document commit the call is accepted: its effects apply, and a file that
+  cannot be published stays the call's post-commit error (§12). The agent hub's confirmation requests and activity
+  entries are records a refused call makes on purpose (11 §6.3, §11) and are kept. Selection, bounds and
+  point-selection scans charge a work account, so they stop at their caller's timeout. The watchdog hint says the
+  call was cancelled. Verified by `c23_r3_selection_cancel` (reviewer), `c23_round3.rs` and
+  `run::tests::the_acceptance_boundary_refuses_a_cancelled_request_and_restores_the_session` (handlers that charge no
+  work, an atomic batch, and the same calls accepted once not cancelled).
