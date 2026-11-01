@@ -161,11 +161,21 @@ impl Poster {
 }
 
 /// Stops the document thread when the last handle is dropped.
-struct ShutdownGuard(Sender<Request>);
+struct ShutdownGuard(Sender<Request>, Mutex<Option<Receiver<()>>>);
+
+/// How long dropping the last handle waits for the document thread to release the project (its lock and files).
+const SHUTDOWN_WAIT: Duration = Duration::from_secs(10);
 
 impl Drop for ShutdownGuard {
     fn drop(&mut self) {
         let _ = self.0.send(Request::Shutdown);
+        // Deterministic shutdown: once the last handle is gone, the project's lock and files are released (a caller
+        // may remove the folder next). Bounded, so a stuck worker never blocks the dropper for long.
+        if let Ok(mut done) = self.1.lock()
+            && let Some(rx) = done.take()
+        {
+            let _ = rx.recv_timeout(SHUTDOWN_WAIT);
+        }
     }
 }
 
@@ -291,10 +301,14 @@ impl ExecutorHandle {
         let budget = config.budget;
         let cancel = Arc::new(tt_vector::work::CancelState::default());
         let worker_cancel = cancel.clone();
+        let (done_tx, done_rx) = mpsc::channel::<()>();
         let tick = persist.maintenance.tick;
         std::thread::Builder::new()
             .name("tt-document".to_owned())
-            .spawn(move || document_thread(run::Core::new(registry, session, budget), &rx, &subs, &worker_cancel))
+            .spawn(move || {
+                document_thread(run::Core::new(registry, session, budget), &rx, &subs, &worker_cancel);
+                let _ = done_tx.send(());
+            })
             .map_err(|e| CommandError::internal(format!("cannot start the document thread: {e}")))?;
         if !tick.is_zero() {
             let ticker = tx.clone();
@@ -310,7 +324,7 @@ impl ExecutorHandle {
                 })
                 .map_err(|e| CommandError::internal(format!("cannot start the maintenance thread: {e}")))?;
         }
-        let guard = Arc::new(ShutdownGuard(tx.clone()));
+        let guard = Arc::new(ShutdownGuard(tx.clone(), Mutex::new(Some(done_rx))));
         Ok(Self { tx, jobs, subscribers, config, cancel, _guard: guard })
     }
 
@@ -675,6 +689,8 @@ fn document_thread(
         flush(&mut core);
     }
     maintenance::stop(&mut core);
+    // The project (lock, recovery files) is released before the dropper is told the thread is done.
+    drop(core);
 }
 
 /// Delivers events to every live subscriber (dropping closed ones).
