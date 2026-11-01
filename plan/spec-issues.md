@@ -802,6 +802,15 @@ Reserved by the M0 closure for "measured deterministic-format incompatibility" (
   selection) to move anchors only (orchestrator ruling: point-subset transforms for M4). Layers moved as a whole repaint
   their zones with the old fills and mapped matrices, so gradients and textures stay attached.
 
+- **Round 1 additions (C23-R1-01/02/03):** every geometric transform route repaints moved layers the same way: each
+  zone takes the fill of the source zone at its interior point mapped back through the map's affine part (envelopes:
+  their three-corner fit; a parallelogram target is mapped exactly as an affine map), the matrix mapped forward;
+  Reposition All does the same for every drawing. Point-subset transforms move the whole same-layer junction class of
+  each requested anchor, with the pivot from the requested subset. **Snap to Contour reading:** candidates are the
+  other strokes of the moved stroke's own layer (layers are independent planar maps, 02 §3.1), by their whole contour
+  — anchors and segment interiors, curved segments included — within 8 du; ties go to the lower stroke ID, then the
+  lower segment and parameter.
+
 ## SI-071 — the Cutter's segment primitive and brush strokes (found in M2 C2.3; decided)
 
 - **Sections:** 02 §7.2.2, §7.2.7, §13.5 (`draw.cut.apply`, `draw.erase.apply`); spec A (closed command list).
@@ -880,3 +889,12 @@ Reserved by the M0 closure for "measured deterministic-format incompatibility" (
 - **Recommendation:** Design B. Feather bands are derived appearance of the source colour, and indirect colour (03 §1.1)
   is the reason colours are IDs; a per-object opacity keeps that property, where Design A copies colour values and
   would drift on the first swatch edit.
+
+## SI-078 — the Cutter and text or bitmap nodes (found in M2 C2.3 round 1; decided)
+
+- **Sections:** 02 §7.2.7 ("everything enclosed becomes selected"), §3.7, §3.9.
+- **Decision (orchestrator ruling C23-R1-11):** text and bitmap nodes wholly enclosed by the cut boundary (their
+  bounds' corners inside) are selected or deleted with the rest and reported by ID; partly enclosed ones are left whole
+  and reported in `skipped` with reason `notClippable` (no glyph or bitmap clipping in M2). Brush strokes keep the
+  SI-071 treatment. The Eraser leaves text and bitmap nodes alone.
+- **Candidate:** clipping bitmaps (and glyph outlines) for M3/M4.

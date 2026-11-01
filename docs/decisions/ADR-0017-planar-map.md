@@ -146,3 +146,12 @@ C2.1 delivered strokes, text, groups and bitmaps as validated, persisted geometr
   03 §1.4 (SI-061), and decide a per-drawing gap setting (SI-062, M4 C4.2).
 - Recovery and side-fill repair run on load, paste, import, on demand and on the first edit of a layer (round 1 ruling
   withdrew ticket C22-T1).
+
+## History
+
+- **M2 C2.3 round 1 (C23-R1-08): one exact predicate module.** `tt_vector::planar::predicates` holds orientation,
+  proper crossing and containment on the snapped grid in i128; the planar graph, noding and exact overlap use it
+  instead of private copies, and the drawing operations that classify geometry against the map — the Cutter and
+  Eraser (`ops::cut`), Optimize's overlap tests and lasso selection — decide through it too. Corpus:
+  `crates/vector/tests/c23_predicates.rs` (determinant ±1 far from the origin, endpoint contact, collinear overlap,
+  containment on and off the boundary).

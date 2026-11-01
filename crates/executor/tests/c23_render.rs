@@ -389,6 +389,14 @@ fn golden_hashes_hold_on_every_platform() {
         got.insert("texture-stretch-inset".into(), (t.sha, t.png));
     }
     let hashes: BTreeMap<String, String> = got.iter().map(|(k, (s, _))| (k.clone(), s.clone())).collect();
+    // What this platform rendered, for the CI artifact (both check jobs upload it; C23-R1 residual risk 7).
+    let artifacts = std::path::Path::new(env!("CARGO_MANIFEST_DIR")).join("../../target/evidence/c23-render");
+    std::fs::create_dir_all(&artifacts).unwrap();
+    std::fs::write(artifacts.join("hashes.json"), serde_json::to_string_pretty(&hashes).unwrap() + "
+").unwrap();
+    for (k, (_, png)) in &got {
+        std::fs::write(artifacts.join(format!("{k}.png")), png).unwrap();
+    }
     if std::env::var("TT_UPDATE_GOLDEN").as_deref() == Ok("1") {
         std::fs::create_dir_all(golden_path.parent().unwrap()).unwrap();
         std::fs::write(&golden_path, serde_json::to_string_pretty(&hashes).unwrap() + "\n").unwrap();

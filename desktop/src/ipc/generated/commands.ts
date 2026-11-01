@@ -31367,6 +31367,24 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
     },
     additionalProperties: false,
   },
+  "draw.cut.apply.SkippedNode": {
+    description: "A node a cut leaves whole.",
+    type: "object",
+    properties: {
+      objectId: {
+        description: "The text or bitmap node.",
+        type: "string",
+      },
+      reason: {
+        description: "Why (`notClippable`: partly enclosed text or bitmap, SI-078).",
+        type: "string",
+      },
+    },
+    required: [
+      "objectId",
+      "reason",
+    ],
+  },
   "draw.cut.apply.result": {
     title: "CutResult",
     description: "`{insideIds, removedIds, rev}`.",
@@ -31388,6 +31406,13 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
         type: "array",
         items: {
           type: "string",
+        },
+      },
+      skipped: {
+        description: "Text and bitmap nodes partly enclosed, left whole (SI-078).",
+        type: "array",
+        items: {
+          $ref: "#/$defs/draw.cut.apply.SkippedNode",
         },
       },
       createdIds: {
@@ -31422,6 +31447,7 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
       "drawingId",
       "insideIds",
       "keptBrushIds",
+      "skipped",
       "createdIds",
       "modifiedIds",
       "removedIds",
@@ -32686,6 +32712,29 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
         ],
         default: null,
       },
+      elementId: {
+        description: "Or the cell of this element (02 §13.1 item 4; ADR-0016 common addressing).",
+        type: [
+          "string",
+          "null",
+        ],
+        default: null,
+      },
+      frame: {
+        description: "The frame of that cell (default: current frame).",
+        type: [
+          "integer",
+          "null",
+        ],
+        maximum: 2147483647,
+        minimum: 0,
+        default: null,
+      },
+      createDrawing: {
+        description: "Create the cell's drawing when it has none.",
+        type: "boolean",
+        default: false,
+      },
       from: {
         description: "Press point.",
         $ref: "#/$defs/draw.ellipse.add.Point",
@@ -33901,6 +33950,29 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
           "null",
         ],
         default: null,
+      },
+      elementId: {
+        description: "Or the cell of this element (02 §13.1 item 4; ADR-0016 common addressing).",
+        type: [
+          "string",
+          "null",
+        ],
+        default: null,
+      },
+      frame: {
+        description: "The frame of that cell (default: current frame).",
+        type: [
+          "integer",
+          "null",
+        ],
+        maximum: 2147483647,
+        minimum: 0,
+        default: null,
+      },
+      createDrawing: {
+        description: "Create the cell's drawing when it has none.",
+        type: "boolean",
+        default: false,
       },
       from: {
         description: "Start (required unless `continuePrevious`).",
@@ -35187,6 +35259,29 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
         ],
         default: null,
       },
+      elementId: {
+        description: "Or the cell of this element (02 §13.1 item 4; ADR-0016 common addressing).",
+        type: [
+          "string",
+          "null",
+        ],
+        default: null,
+      },
+      frame: {
+        description: "The frame of that cell (default: current frame).",
+        type: [
+          "integer",
+          "null",
+        ],
+        maximum: 2147483647,
+        minimum: 0,
+        default: null,
+      },
+      createDrawing: {
+        description: "Create the cell's drawing when it has none.",
+        type: "boolean",
+        default: false,
+      },
       points: {
         description: "Anchors (at least 2).",
         type: "array",
@@ -35352,6 +35447,29 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
           "null",
         ],
         default: null,
+      },
+      elementId: {
+        description: "Or the cell of this element (02 §13.1 item 4; ADR-0016 common addressing).",
+        type: [
+          "string",
+          "null",
+        ],
+        default: null,
+      },
+      frame: {
+        description: "The frame of that cell (default: current frame).",
+        type: [
+          "integer",
+          "null",
+        ],
+        maximum: 2147483647,
+        minimum: 0,
+        default: null,
+      },
+      createDrawing: {
+        description: "Create the cell's drawing when it has none.",
+        type: "boolean",
+        default: false,
       },
       from: {
         description: "Press point.",
@@ -85481,6 +85599,14 @@ export interface draw_cut_apply_params {
   then?: draw_cut_apply_Then;
 }
 
+/** A node a cut leaves whole. */
+export interface draw_cut_apply_SkippedNode {
+  /** The text or bitmap node. */
+  objectId: string;
+  /** Why (`notClippable`: partly enclosed text or bitmap, SI-078). */
+  reason: string;
+}
+
 /** `{insideIds, removedIds, rev}`. */
 export interface draw_cut_apply_result {
   /** The drawing. */
@@ -85489,6 +85615,8 @@ export interface draw_cut_apply_result {
   insideIds: string[];
   /** Brush strokes crossing the boundary, kept whole (SI-059, SI-071). */
   keptBrushIds: string[];
+  /** Text and bitmap nodes partly enclosed, left whole (SI-078). */
+  skipped: draw_cut_apply_SkippedNode[];
   /** Created objects. */
   createdIds: string[];
   /** Modified objects (content, membership or position changed; IDs kept). */
@@ -85803,6 +85931,12 @@ export interface draw_ellipse_add_Point {
 export interface draw_ellipse_add_params {
   /** The drawing (default: current). */
   drawingId?: string | null;
+  /** Or the cell of this element (02 §13.1 item 4; ADR-0016 common addressing). */
+  elementId?: string | null;
+  /** The frame of that cell (default: current frame). */
+  frame?: number | null;
+  /** Create the cell's drawing when it has none. */
+  createDrawing?: boolean;
   /** Press point. */
   from: draw_ellipse_add_Point;
   /** Release point. */
@@ -86164,6 +86298,12 @@ export interface draw_line_add_Point {
 export interface draw_line_add_params {
   /** The drawing (default: current). */
   drawingId?: string | null;
+  /** Or the cell of this element (02 §13.1 item 4; ADR-0016 common addressing). */
+  elementId?: string | null;
+  /** The frame of that cell (default: current frame). */
+  frame?: number | null;
+  /** Create the cell's drawing when it has none. */
+  createDrawing?: boolean;
   /** Start (required unless `continuePrevious`). */
   from?: draw_line_add_Point | null;
   /** End. */
@@ -86556,6 +86696,12 @@ export interface draw_polyline_add_Point {
 export interface draw_polyline_add_params {
   /** The drawing (default: current). */
   drawingId?: string | null;
+  /** Or the cell of this element (02 §13.1 item 4; ADR-0016 common addressing). */
+  elementId?: string | null;
+  /** The frame of that cell (default: current frame). */
+  frame?: number | null;
+  /** Create the cell's drawing when it has none. */
+  createDrawing?: boolean;
   /** Anchors (at least 2). */
   points: draw_polyline_add_PolyPoint[];
   /** Closed. */
@@ -86608,6 +86754,12 @@ export interface draw_rectangle_add_Point {
 export interface draw_rectangle_add_params {
   /** The drawing (default: current). */
   drawingId?: string | null;
+  /** Or the cell of this element (02 §13.1 item 4; ADR-0016 common addressing). */
+  elementId?: string | null;
+  /** The frame of that cell (default: current frame). */
+  frame?: number | null;
+  /** Create the cell's drawing when it has none. */
+  createDrawing?: boolean;
   /** Press point. */
   from: draw_rectangle_add_Point;
   /** Release point. */

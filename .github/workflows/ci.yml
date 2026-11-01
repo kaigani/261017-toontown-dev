@@ -120,6 +120,8 @@ jobs:
           # recomputed from their observations (C14-R1-07), and the release-feature proof (C14-R1-10).
           $PY scripts/analyse-measurements.py target/evidence/c14 --out out/measurement-analysis.json
           cp -r target/evidence/c14 out/c14-measurements
+          # The C2.3 drawing renders as this platform produced them, with their hash manifest (C23-R1).
+          cp -r target/evidence/c23-render out/c23-render
           $PY scripts/check-release-features.py > out/release-features.log || { cat out/release-features.log; exit 1; }
           cat out/release-features.log
 

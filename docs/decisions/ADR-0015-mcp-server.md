@@ -227,3 +227,13 @@ transactions, idempotent requests and the never-block watchdog.
 - The server speaks 2025-06-18 and 2025-11-25. The SDK's newer revision (2026-07-28) replaces resource subscriptions
   and deprecates the logging capability. Following it is an open question for the spec owner (SI-049), because
   11 §4 requires both.
+
+## History
+
+- **M2 C2.3 round 1 (C23-R1-07): watchdog cancellation.** When a caller's wait passes the never-block budget, the
+  executor answers it with the typed `command.timeout` and marks the request the document thread is running as
+  cancelled (a per-request sequence number, so the mark never hits the next request). Every work account
+  (`tt_vector::work::Work`: planar settle, merge, Smooth) and the renderer's progress check observe the mark at their
+  next step and fail the call, which commits nothing; the worker then answers what is queued behind it. The MCP route
+  records its activity entry by queueing it without waiting, so a reply never blocks on a busy worker. Verified with
+  the dev-only `tt-vector/test-hooks` spin (`crates/executor/tests/c23_watchdog.rs`).
