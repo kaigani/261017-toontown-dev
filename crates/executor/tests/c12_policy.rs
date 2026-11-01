@@ -297,9 +297,9 @@ fn permissions_validation_and_availability() {
     assert_eq!(e.code, "arg.invalid");
     let e = err(&h, "app.state.changed", json!({}));
     assert_eq!(e.code, "command.disabled", "events are not invocable");
-    let e = err(&h, "draw.flatten.apply", json!({}));
+    let e = err(&h, "draw.vectorize.preview", json!({}));
     assert_eq!(e.code, "command.notImplemented");
-    assert_eq!(e.details["milestone"], "M2 C2.3");
+    assert_eq!(e.details["milestone"], "M2 C2.4");
     // Without a project (01 §1.3).
     let empty = ExecutorHandle::spawn(ExecutorConfig::default()).unwrap();
     assert_eq!(err(&empty, "doc.object.get", json!({ "ref": "scene:#1" })).code, "project.none");

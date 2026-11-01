@@ -781,3 +781,88 @@ Reserved by the M0 closure for "measured deterministic-format incompatibility" (
   (03 §1.6). Stored matrices serialise integral entries as integers.
 - **Proposal:** amend the 10 §4.9 note to "brush strokes and lines with gradient or texture colours".
 
+
+## SI-069 — headless view, rename and polyline handles (found in M2 C2.3; decided)
+
+- **Sections:** 02 §9, §7.2.6, §13.5 (`draw.viewMapping.get`, `draw.drawing.rename`, `draw.polyline.add`).
+- **Decisions:** headless runs have one virtual Drawing view of 1920 x 1080 px at zoom 1 with the drawing origin at its
+  centre (`drawingToView [1,0,0,-1,960,540]`); any other view is `view.notFound` until M4 C4.2 owns views. Drawing names
+  refuse `\ / : * ? < > " | .` (`drawing.nameInvalid`) and duplicates within the bank (`drawing.nameExists`); rename
+  and lock are allowed on a locked drawing (metadata, not artwork). Polyline `inHandle`/`outHandle` are offsets from
+  the point; snapping joins existing anchors within `snapRadius`.
+
+## SI-070 — transforms: spines, envelopes, point subsets (found in M2 C2.3; decided)
+
+- **Sections:** 02 §3.2, §7.1.1–§7.1.4, §8.13, §13.5.
+- **Decisions:** rigid motions (translation, rotation, reflection) move a brush spine with its outline and turn a
+  non-round tip angle; scale, skew and envelopes drop the spine (the outline becomes authoritative, as for a direct
+  outline edit). Envelopes map control points as points (projective when the target quadrilateral is convex, else
+  bilinear); fill matrices, text and bitmap transforms take the affine fit through three corners. Reflections swap side
+  fills and brush exterior records. `draw.transform.apply` also takes `points` (or the Contour Editor's point
+  selection) to move anchors only (orchestrator ruling: point-subset transforms for M4). Layers moved as a whole repaint
+  their zones with the old fills and mapped matrices, so gradients and textures stay attached.
+
+## SI-071 — the Cutter's segment primitive and brush strokes (found in M2 C2.3; decided)
+
+- **Sections:** 02 §7.2.2, §7.2.7, §13.5 (`draw.cut.apply`, `draw.erase.apply`); spec A (closed command list).
+- **Decisions:** the cut-by-polygon and cut-by-segment primitives (orchestrator ruling) are `draw.cut.apply` with
+  `polygon`/`rect` or the extension `segment` (spec A admits no new command ID). A cut stages its boundary as an
+  invisible stroke; pieces through a pre-existing zone stay as cut edges. Brush strokes are never split (SI-059): one
+  wholly inside is inside, one crossing is kept whole and reported in `keptBrushIds`.
+- **Question:** amendment candidate: a boolean outline cut for brush strokes.
+
+## SI-072 — explicit eraser pen (found in M2 C2.3; decided)
+
+- **Sections:** 02 §13.5 `draw.erase.apply` `pen?: object` (SI-026 placeholder).
+- **Decision:** `pen` is a round eraser `{minSize, maxSize}`; `penId` must name an eraser pen; the default is the
+  project's first eraser pen.
+
+## SI-073 — flatten and optimize details (found in M2 C2.3; decided)
+
+- **Sections:** 02 §3.5, §8.1, §8.2, §8.10, §8.11.
+- **Decisions:** after re-noding, lower pencil and invisible pieces under opaque upper cover (opaque zone fills, opaque
+  brush strokes) are discarded like wholly hidden strokes; partly covered lower brush strokes stay whole (SI-059).
+  "Opaque" means a solid colour or gradient with alpha 255 in the interim style; textures count as not opaque. Zones of
+  the result take the fill of the winning source layer painting their interior. `policy {precedence: upper|lower,
+  position: top|bottom}` (orchestrator ruling: one command for M4 auto-flatten and Draw Behind). Optimize merges
+  adjacent siblings only; it also declines when an upper painted zone covers a lower line or brush stroke (the merged
+  layer would draw it above the fill). Overlap is tested on zone outer rings, outlines and centre paths.
+
+## SI-074 — drawing renders: region, text, texture orientation (found in M2 C2.3; open for a ruling)
+
+- **Sections:** 02 §13.5 `draw.drawing.render`; 03 §7.2; ADR-0006.
+- **Decisions:** `padding` is in drawing units; without `height` the region keeps its aspect, with both it is fitted and
+  centred; `camera` is 12 fields wide at the project aspect; an empty drawing's `bounds` is the 12-field guide. Results
+  add `pixelsSha256` and `warnings`. Text pixels come from the machine's fonts, so cross-platform goldens avoid text.
+  Superscripts rise a third of the run size, subscripts drop a sixth; `centre`/`right` alignments shift lines.
+- **Texture orientation (readiness item 14):** the renderer places image row 0 at unit y = 0. The tile-on default
+  `[w,0,0,-h,minX,maxY]` then draws the image upright with its top-left at the zone's top-left (verified by the
+  asymmetric 3 x 2 fixture and goldens); the tile-off default `[w,0,0,h,minX,minY]` and drag mappings (positive
+  determinant) draw it mirrored vertically. **Proposal:** change the tile-off default to `[w,0,0,-h,minX,maxY]` and add
+  the flip to texture drag mappings. Both values are pinned by the reviewer-owned
+  `c22_r3_commands::texture_click_uses_palette_first_style_and_drag_and_tile_off_stay_unchanged`, so the change needs
+  a ruling.
+
+## SI-075 — fill mapping objects (found in M2 C2.3; decided)
+
+- **Sections:** 03 §8.7, §13 (`colour.fillMapping.get/set`; SI-025 placeholder).
+- **Decisions:** `mapping` is `"default"`, `"clipboard"` or exactly one of `{matrix}`, `{linear: {start, end}}`,
+  `{radial: {centre, radius}}`, `{texture: {origin, xAxis, yAxis}}`. `get` reports handles for gradients and textures
+  and, for a solid colour, the matrix it keeps (or the box mapping); unpainted zones, invisible strokes and text refuse
+  with `colour.notMappable` and a reason. `set` skips solid, unpainted, invisible, text and mismatched-kind objects with
+  a reason. The fill-mapping clipboard is session state.
+
+## SI-076 — centre line without a spine (found in M2 C2.3; open, owner M2 C2.4)
+
+- **Sections:** 02 §8.5.
+- **Decision (interim):** brush strokes that keep their spine become pencil lines along it at the pressure-average
+  width; outlines edited directly (no spine) are kept and reported (`drawing.centreLineNoSpine`). The triangulated
+  medial axis with branch pruning and colour splitting for spineless outlines is ticketed to M2 C2.4.
+
+## SI-077 — feather colours (found in M2 C2.3; open, proposed owner M2 C2.4)
+
+- **Sections:** 02 §8 (Feather), 03 §1.1 (indirect colour).
+- **Problem:** feather bands need the source colours at decreasing opacity, but artwork references colour IDs only;
+  there is no object opacity. Creating one swatch per band and colour pollutes palettes; a band style needs a model
+  amendment. `draw.feather.apply` stays declared (plan owner C2.3); the builder proposes moving it to M2 C2.4 with
+  this decision.
