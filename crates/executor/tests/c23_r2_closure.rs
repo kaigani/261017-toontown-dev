@@ -59,10 +59,12 @@ fn r01_reposition_two_drawings_reflection_and_undo_redo() {
     let before_a = layer(&h, D, &a["layerId"])["zones"][0].clone();
     let before_b = layer(&h, UNUSED, &b["layerId"])["zones"][0].clone();
     ok(&h, "draw.repositionAll.apply", json!({"elementId":BOB,"matrix":[-1,0,0,1,5000,0]}));
-    for (d, r, want) in [(D, &a, &c[1]), (UNUSED, &b, &c[2])] {
+    for (d, r, want, old) in [(D, &a, &c[1], &before_a), (UNUSED, &b, &c[2], &before_b)] {
         let z = layer(&h, d, &r["layerId"])["zones"][0].clone();
         assert_eq!(z["colourId"], *want);
-        assert_eq!(z["textureMatrix"], json!([-100, 0, 0, 60, 3000, 2000]));
+        let m: Vec<f64> = old["textureMatrix"].as_array().unwrap().iter().map(|v| v.as_f64().unwrap()).collect();
+        let actual: Vec<f64> = z["textureMatrix"].as_array().unwrap().iter().map(|v| v.as_f64().unwrap()).collect();
+        assert_eq!(actual, vec![-m[0], m[1], -m[2], m[3], 5000.0 - m[4], m[5]]);
     }
     ok(&h, "edit.undo", json!({}));
     assert_eq!(layer(&h, D, &a["layerId"])["zones"][0], before_a);
@@ -93,7 +95,9 @@ fn r02_rotation_pivot_is_requested_subset_and_other_layer_stays() {
     let other = line(&h, [2050, 2000], [2100, 2000], json!("new"));
     let outside = layer(&h, D, &other["layerId"]);
     let l = layer(&h, D, &a["layerId"]);
-    let sid = l["strokes"].as_array().unwrap().iter().find(|s| s["bezier"][0]["x"] == 2000).unwrap()["id"].clone();
+    let sid =
+        l["strokes"].as_array().unwrap().iter().find(|s| s["bezier"][0]["x"].as_f64() == Some(2000.0)).unwrap()["id"]
+            .clone();
     // Two requested endpoints give pivot (2025,2000). The incident vertical endpoint must follow to (2025,2025).
     ok(
         &h,
@@ -158,7 +162,7 @@ fn r05_closed_texture_pencil_conversion_clears_centre_and_keeps_mapping() {
     let c = colours(&h);
     let r = rect(&h, D, &c[0]);
     ok(&h, "colour.selection.apply", json!({"drawingId":D,"objectIds":r["strokeIds"],"colourId":c[3]}));
-    let m = json!([100, 10, 20, -60, 2000, 2060]);
+    let m = json!([100.0, 10.0, 20.0, -60.0, 2000.0, 2060.0]);
     ok(&h, "colour.fillMapping.set", json!({"drawingId":D,"objectIds":r["strokeIds"],"mapping":{"matrix":m}}));
     let out = ok(&h, "draw.linesToBrush.apply", json!({"drawingId":D,"ids":r["strokeIds"]}));
     let l = layer(&h, D, &r["layerId"]);
@@ -257,7 +261,8 @@ fn r12_painted_zone_warning_survives_drawing_selection() {
     let h = fixture();
     let c = colours(&h);
     let r = rect(&h, D, &c[0]);
-    ok(&h, "draw.selection.set", json!({"drawingId":D,"ids":[r["zoneIds"][0]]}));
+    let selected = ok(&h, "draw.selection.set", json!({"drawingId":D,"ids":[r["zoneIds"][0]]}));
+    println!("selection result {selected}; subsequent read {}", ok(&h, "draw.selection.get", json!({"drawingId":D})));
     let v = rev(&h);
     assert_eq!(err(&h, "draw.centreLine.apply", json!({"drawingId":D})).code, "drawing.centreLineOnFill");
     assert_eq!(rev(&h), v);
@@ -311,4 +316,49 @@ fn r16_locked_exposed_is_skipped_but_element_reaches_unexposed() {
     assert!(r["changed"].as_array().unwrap().iter().any(|x| x["drawingId"] == UNUSED));
     assert_eq!(drawing(&h, D), before);
     assert_ne!(drawing(&h, UNUSED), unexposed);
+}
+
+#[test]
+fn r10_each_shape_preserves_explicit_false_and_true_creates() {
+    let mut failures = Vec::new();
+    for cmd in ["draw.rectangle.add", "draw.ellipse.add", "draw.line.add", "draw.polyline.add"] {
+        for create in [true, false] {
+            let h = fixture();
+            ok(
+                &h,
+                "doc.object.patch",
+                json!({"targets":[BOB],"ops":[{"op":"replace","path":"/exposure","value":[[null,24]]}]}),
+            );
+            let mut p = if cmd == "draw.polyline.add" {
+                json!({"points":[{"x":2000,"y":2000},{"x":2100,"y":2060}],"snap":true})
+            } else {
+                json!({"from":{"x":2000,"y":2000},"to":{"x":2100,"y":2060}})
+            };
+            p["elementId"] = json!(BOB);
+            p["frame"] = json!(1);
+            p["createDrawing"] = json!(create);
+            let v = rev(&h);
+            let r = run(&h, cmd, p);
+            println!("{cmd} createDrawing={create}: status {:?}, revision {v} -> {}", r.status, rev(&h));
+            if create {
+                assert!(r.is_ok(), "{cmd}: {r:?}");
+                assert_eq!(rev(&h), v + 1);
+            } else if r.is_ok() || rev(&h) != v {
+                failures.push(cmd);
+            }
+        }
+    }
+    assert!(failures.is_empty(), "commands that created despite explicit false: {failures:?}");
+}
+
+#[test]
+fn r12_zone_selection_readback_must_keep_a_valid_derived_id() {
+    let h = fixture();
+    let c = colours(&h);
+    let r = rect(&h, D, &c[0]);
+    let requested = json!([r["zoneIds"][0]]);
+    let set = ok(&h, "draw.selection.set", json!({"drawingId":D,"ids":requested}));
+    assert_eq!(set["selectedIds"], requested);
+    let read = ok(&h, "draw.selection.get", json!({"drawingId":D}));
+    assert_eq!(read["selectedIds"], requested, "the selection must survive the call that sets it");
 }
