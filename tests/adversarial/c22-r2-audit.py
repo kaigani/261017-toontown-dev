@@ -5,11 +5,19 @@ import math
 import pathlib
 import re
 import subprocess
+import sys
 import tempfile
 import unittest
 
 ROOT = pathlib.Path(__file__).resolve().parents[2]
 OUT = ROOT / 'reviews/evidence/M2-C2.2-r2'
+# Receipts: a temporary directory on routine runs; durable evidence only with an explicit `--out PATH` (C22-R3-04).
+if '--out' in sys.argv:
+    _i = sys.argv.index('--out')
+    RECEIPTS = pathlib.Path(sys.argv[_i + 1])
+    del sys.argv[_i:_i + 2]
+else:
+    RECEIPTS = pathlib.Path(tempfile.mkdtemp(prefix='c22-r2-audit-'))
 
 def git(*args):
     return subprocess.check_output(['git', *args], cwd=ROOT).decode('utf-8')
@@ -53,7 +61,7 @@ class Audit(unittest.TestCase):
         files = ['planar-worst-case-windows.json', 'ci-planar-worst-case-windows.json', 'ci-planar-worst-case-macos.json']
         receipts = {p: planar_receipt(json.loads((OUT/p).read_bytes())) for p in files}
         self.assertTrue(all(r['underTenSeconds'] for r in receipts.values()))
-        (OUT/'planar-analysis.json').write_text(json.dumps(receipts, indent=2)+'\n', encoding='utf-8')
+        (RECEIPTS/'planar-analysis.json').write_text(json.dumps(receipts, indent=2)+'\n', encoding='utf-8')
         raw = json.loads((OUT/files[0]).read_bytes())
         for bad in [True, float('inf'), -1, '1']:
             d = json.loads(json.dumps(raw));d['cases'][0]['runs'][0]['wallMs'] = bad
@@ -73,7 +81,7 @@ class Audit(unittest.TestCase):
         paths=['tests/adversarial/','crates/*/tests/c0*_r*','crates/*/tests/c1*_r*',
                'crates/*/tests/c21_r*','crates/*/tests/c22_r1_*','desktop/src/test/']
         delta=git('diff','--stat','c902cb9..7ccea58','--',*paths)
-        (OUT/'reviewer-tests-diff.txt').write_text(delta or 'Empty: no changes after review merge.\n')
+        (RECEIPTS/'reviewer-tests-diff.txt').write_text(delta or 'Empty: no changes after review merge.\n')
         self.assertEqual(delta,'')
 
     def test_no_forbidden_new_product_constructs(self):
@@ -85,7 +93,7 @@ class Audit(unittest.TestCase):
             if line.startswith('+++ b/'):file=line[6:]
             elif line.startswith('+') and re.search(r'\b(?:unwrap|expect)\s*\(|\bpanic!|\bunsafe\b|#\[allow',line):
                 matches.append({'file':file,'line':line})
-        (OUT/'added-constructs.json').write_text(json.dumps(matches,indent=2)+'\n')
+        (RECEIPTS/'added-constructs.json').write_text(json.dumps(matches,indent=2)+'\n')
         self.assertFalse(any('#[allow' in x['line'] or 'unsafe ' in x['line'] for x in matches))
 
     def test_analyzer_rejects_malformed_and_recomputes(self):

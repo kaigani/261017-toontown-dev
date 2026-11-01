@@ -28,7 +28,10 @@ C2.1 delivered strokes, text, groups and bitmaps as validated, persisted geometr
    (overlap, retracing) is not a junction. Segments that are collinear on the grid are merged by the derived graph's
    snap rounding as well, so persistent noding and the graph agree. Floating point is used only to place a proper
    crossing's point on the stored geometry, with the exact grid fractions where floating point degenerates; there is no
-   epsilon. **Each junction is resolved once for all of its
+   epsilon. The endpoint (T-junction) pass applies the same classification (round 3, C22-R3-03): an open end lying on
+   another stroke within the tolerance is a junction only when its grid direction is not parallel to that stroke's
+   segment there (exact `i128` sign). Collinear overlap, retracing and continuation never create junctions, from
+   either pass. **Each junction is resolved once for all of its
    participants** (round 1, C22-R1-01): a crossing or T-junction within the tolerance of a junction's first record
    belongs to that junction (no chaining). Its coordinate is the nearest existing anchor of an unchanged participant,
    else the first record's point, and every participant's pieces meet exactly there. A junction within the tolerance

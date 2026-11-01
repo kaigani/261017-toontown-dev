@@ -136,13 +136,29 @@ fn point(p: Point, pointer: &str) -> Result<P, CommandError> {
 
 /// The native pixel size of a tile-on texture (its first style's value, as `colour.pick` reads it, SI-065), by colour ID.
 fn tile_size(doc: &Document, colour: &str) -> Option<(f64, f64)> {
-    let s = doc.palettes().flat_map(|p| p.swatches().iter()).find(|s| s.colour_id().as_str() == colour)?;
-    match s.values().values().next()? {
+    match first_style_value(doc, colour)?.2 {
         tt_model::entities::palette::SwatchValue::Texture(t) if t.tile => {
             Some((f64::from(t.width?), f64::from(t.height?)))
         }
         _ => None,
     }
+}
+
+/// A colour's palette, swatch and value for the palette's first style: the interim style of every read-back made
+/// before scenes and views choose one (SI-065). `colour.pick` and the tile-on click mapping both use it (C22-R3-02).
+fn first_style_value<'a>(
+    doc: &'a Document,
+    colour: &str,
+) -> Option<(
+    &'a tt_model::entities::palette::Palette,
+    &'a tt_model::entities::palette::Swatch,
+    &'a tt_model::entities::palette::SwatchValue,
+)> {
+    let (pal, s) = doc
+        .palettes()
+        .find_map(|pal| pal.swatches().iter().find(|s| s.colour_id().as_str() == colour).map(|s| (pal, s)))?;
+    let value = s.values().get(pal.styles().first()?.id())?;
+    Some((pal, s, value))
 }
 
 /// A swatch's kind and whether it is protected (SI-061), by colour ID.
@@ -1613,13 +1629,10 @@ pub(crate) fn colour_pick(cx: &mut Cx, p: PickParams) -> Result<PickResult, Comm
     let swatch = h.colour.as_ref().and_then(|c| {
         doc.palettes().find_map(|pal| pal.swatches().iter().find(|s| s.colour_id().as_str() == c).map(|s| (pal, s)))
     });
-    let rgba = swatch.and_then(|(pal, s)| {
-        let style = pal.styles().first()?.id().clone();
-        match s.values().get(&style)? {
-            tt_model::entities::palette::SwatchValue::Solid(v) => Some(v.rgba.to_string()),
-            tt_model::entities::palette::SwatchValue::Gradient(g) => g.stops.first().map(|s| s.rgba.to_string()),
-            tt_model::entities::palette::SwatchValue::Texture(_) => None,
-        }
+    let rgba = h.colour.as_ref().and_then(|c| first_style_value(&doc, c)).and_then(|(_, _, value)| match value {
+        tt_model::entities::palette::SwatchValue::Solid(v) => Some(v.rgba.to_string()),
+        tt_model::entities::palette::SwatchValue::Gradient(g) => g.stops.first().map(|s| s.rgba.to_string()),
+        tt_model::entities::palette::SwatchValue::Texture(_) => None,
     });
     Ok(PickResult {
         colour_id: h.colour.clone(),

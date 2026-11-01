@@ -203,6 +203,16 @@ fn directions(f: &Flat, k: usize, t: f64, at: P) -> Option<(Dir, Dir)> {
     (dp != [0, 0] && dq != [0, 0]).then_some((dp, dq))
 }
 
+/// The grid direction of an open path at its start (`at_end` false) or end, away from the end towards the nearest
+/// vertex that snaps elsewhere; `None` when every vertex snaps onto the end.
+fn end_direction(f: &Flat, at_end: bool) -> Option<Dir> {
+    let n = f.pts.len();
+    let order: Vec<usize> = if at_end { (0..n).rev().collect() } else { (0..n).collect() };
+    let v = snap(f.pts[*order.first()?]);
+    let w = order.iter().map(|&k| snap(f.pts[k])).find(|w| *w != v)?;
+    Some([i128::from(w[0] - v[0]), i128::from(w[1] - v[1])])
+}
+
 fn cross_i(a: Dir, b: Dir) -> i128 {
     a[0] * b[1] - a[1] * b[0]
 }
@@ -348,6 +358,10 @@ pub fn node(strokes: &[NodeStroke], work: &mut Work) -> Result<Noding, GeomError
         let count = s.path.segments().len() as f64;
         let ends = [(0.0, flats[i].pts[0]), (count, flats[i].pts[flats[i].pts.len() - 1])];
         for (s_end, p) in ends {
+            // The end's own direction on the grid (towards the nearest vertex that snaps elsewhere): an end running
+            // along another stroke (overlap, retracing, continuation) is no junction with it, by the same exact
+            // collinearity test as crossings (C22-R3-03); only a non-parallel end makes a T-junction.
+            let Some(dir) = end_direction(&flats[i], s_end > 0.0) else { continue };
             // The nearest point of every other stroke within the tolerance: an end where several strokes meet (the
             // neighbouring piece of a split stroke and a line through the junction) is a junction with each of them.
             let mut best: BTreeMap<usize, (f64, usize, f64, P)> = BTreeMap::new();
@@ -357,6 +371,10 @@ pub fn node(strokes: &[NodeStroke], work: &mut Work) -> Result<Noding, GeomError
             for &n in list {
                 let e = &edges[n];
                 if e.stroke == i {
+                    continue;
+                }
+                let along = [i128::from(e.ib[0] - e.ia[0]), i128::from(e.ib[1] - e.ia[1])];
+                if along == [0, 0] || cross_i(dir, along) == 0 {
                     continue;
                 }
                 let (t, q) = closest(p, e.a, e.b);

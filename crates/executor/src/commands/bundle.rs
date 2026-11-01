@@ -952,26 +952,53 @@ fn read_source(cx: &Cx, source: ImportSource) -> Result<(Value, Option<PathBuf>)
     }
 }
 
-#[allow(clippy::too_many_lines)]
-/// Sets the `rev` of every model object (an object with `type` and `rev` members) in a bundle value to 0.
-fn reset_revs(v: &mut Value, depth: usize) {
+/// Sets the `rev` of the genuine model objects of a bundle entry of type `ty` to 0, found by the schema's child slots
+/// (`slots_of`, the positions the model indexes; 10 §3). Nothing else is visited: `meta`, `ext` and colour-recovery
+/// copies are opaque and kept byte for byte (C22-R3-01). Split children appear in full in a bundle and are followed
+/// with their declared type; inline children carry their own `type`.
+fn reset_revs(v: &mut Value, ty: ObjectType, depth: usize) {
+    use tt_model::document::SlotKind;
     if depth > tt_model::MAX_JSON_DEPTH {
         return;
     }
-    match v {
-        Value::Object(m) => {
-            if m.contains_key("type") && m.get("rev").is_some_and(Value::is_u64) {
-                m.insert("rev".into(), json!(0));
+    let Some(m) = v.as_object_mut() else { return };
+    if m.get("rev").is_some_and(Value::is_u64) {
+        m.insert("rev".into(), json!(0));
+    }
+    let child_ty = |c: &Value| c.get("type").and_then(Value::as_str).and_then(ObjectType::parse);
+    for (field, slot) in tt_model::document::slots_of(ty) {
+        let Some(child) = m.get_mut(*field) else { continue };
+        match *slot {
+            SlotKind::Split(t) => {
+                for c in child.as_array_mut().into_iter().flatten() {
+                    reset_revs(c, t, depth + 1);
+                }
             }
-            for x in m.values_mut() {
-                reset_revs(x, depth + 1);
+            SlotKind::SplitOne(t) => reset_revs(child, t, depth + 1),
+            SlotKind::Inline => {
+                for c in child.as_array_mut().into_iter().flatten() {
+                    if let Some(t) = child_ty(c) {
+                        reset_revs(c, t, depth + 1);
+                    }
+                }
+            }
+            SlotKind::InlineOne => {
+                if let Some(t) = child_ty(child) {
+                    reset_revs(child, t, depth + 1);
+                }
+            }
+            SlotKind::InlineMap => {
+                for c in child.as_object_mut().into_iter().flat_map(|o| o.values_mut()) {
+                    if let Some(t) = child_ty(c) {
+                        reset_revs(c, t, depth + 1);
+                    }
+                }
             }
         }
-        Value::Array(a) => a.iter_mut().for_each(|x| reset_revs(x, depth + 1)),
-        _ => {}
     }
 }
 
+#[allow(clippy::too_many_lines)]
 fn import(cx: &mut Cx, p: ImportJsonParams) -> Result<ImportResult, CommandError> {
     let (mut bundle, folder) = read_source(cx, p.source)?;
     if bundle.get("format").and_then(Value::as_str) != Some("animjson") {
@@ -987,10 +1014,17 @@ fn import(cx: &mut Cx, p: ImportJsonParams) -> Result<ImportResult, CommandError
     }
     // Revisions are the source project's bookkeeping (REV-01): imported objects are stamped with the import's revision
     // when it commits, so the bundle's are reset, or a bundle from a project further along would be refused.
-    for k in ["scenes", "elements", "drawingBanks", "palettes", "pens", "assets"] {
+    for (k, ty) in [
+        ("scenes", ObjectType::Scene),
+        ("elements", ObjectType::Element),
+        ("drawingBanks", ObjectType::DrawingBank),
+        ("palettes", ObjectType::Palette),
+        ("pens", ObjectType::Pen),
+        ("assets", ObjectType::Asset),
+    ] {
         if let Some(list) = bundle.get_mut(k).and_then(Value::as_array_mut) {
             for v in list {
-                reset_revs(v, 0);
+                reset_revs(v, ty, 0);
             }
         }
     }

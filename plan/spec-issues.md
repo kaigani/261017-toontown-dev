@@ -760,7 +760,9 @@ Reserved by the M0 closure for "measured deterministic-format incompatibility" (
     stroke crossing another exactly at a vertex of either is a junction at exactly that vertex. A touch, retracing, or
     any shared direction (collinear overlap) is not a crossing. Round 2 (C22-R2-01 ruling): every crossing,
     vertex, collinear, touch and turn-back decision uses `i128` orientation signs on the snapped 1/64 du grid, with no
-    epsilon. Floating point only places a proper crossing's point. A cut at the same place as an open path's end becomes that end's junction.
+    epsilon. Floating point only places a proper crossing's point. Round 3 (C22-R3-03 ruling): the endpoint pass uses the
+    same classification. An open end on another stroke is a junction only when its grid direction is not parallel to
+    that stroke's segment (exact sign), so collinear overlap is excluded by both passes alike. A cut at the same place as an open path's end becomes that end's junction.
   - *Imports.* Drawings `doc.import.json` creates are persisted content, taken as they are like a load: their fills
     are read and repaired (round 2, C22-R2-02: `repair_drawing_sides` in the import's own transaction, reported as
     `drawing.fillInconsistent`), but they are not re-noded. Their first edit nodes them. This keeps C1.3's import fidelity

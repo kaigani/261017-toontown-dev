@@ -2,9 +2,13 @@
 import collections
 import json
 import pathlib
+import sys
+import tempfile
 
 ROOT = pathlib.Path(__file__).resolve().parents[2]
-OUT = ROOT / 'reviews/evidence/M2-C2.2-r2'
+# Receipts: a temporary directory on routine runs; durable evidence only with an explicit `--out PATH` (C22-R3-04).
+OUT = (pathlib.Path(sys.argv[sys.argv.index('--out') + 1]) if '--out' in sys.argv
+       else pathlib.Path(tempfile.mkdtemp(prefix='c22-r2-register-')))
 src = (ROOT / 'reviews/evidence/M2-C2.2-r1/conformance.md').read_text(encoding='utf-8')
 rows = []
 counts = collections.Counter()
