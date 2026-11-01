@@ -125,3 +125,56 @@ fn saving_refreshes_each_drawings_recovery_list_to_one_entry_per_used_colour() {
     }
     let _ = std::fs::remove_dir_all(dir);
 }
+
+/// The sample project where drawing 1's pencil uses a colour no palette defines and the drawing's recovery copy of it
+/// is a protected swatch (SI-061) with an extension namespace of another writer.
+fn protected_missing() -> tt_model::document::Document {
+    let mut parts = tt_model::fixture::sample_parts(1).unwrap();
+    let i = parts.drawings.iter().position(|d| d.id().as_str() == D1).unwrap();
+    let mut d = serde_json::to_value(&parts.drawings[i]).unwrap();
+    d["nodes"][0]["strokes"][1]["colourId"] = json!(MISSING);
+    d["colourRecovery"] = json!([{
+        "colourId": MISSING, "paletteId": "pal_01K9XXXXXXXXXXXXXXXXXXXXXX", "paletteName": "Kept",
+        "styles": [{"styleId": "sty_01K9XXXXXXXXXXXXXXXXXXXXXX", "styleName": "Default"}],
+        "swatch": {"colourId": MISSING, "type": "swatch", "rev": 3, "name": "Guarded", "kind": "solid", "deformable": false,
+                   "values": {"sty_01K9XXXXXXXXXXXXXXXXXXXXXX": {"rgba": "#102030FF"}}, "ext": protected_ext()}
+    }]);
+    parts.drawings[i] = tt_model::object::from_json(&d).unwrap();
+    tt_model::document::Document::from_parts(parts).unwrap()
+}
+
+fn protected_ext() -> Value {
+    json!({"dev.toontown.paint": {"protected": true}, "org.example.swatch": {"tag": "kept"}})
+}
+
+fn assert_recovered_with_ext(h: &tt_executor::ExecutorHandle, path: &str) {
+    let (_, swatch) = swatch_palette(h, MISSING).unwrap_or_else(|| panic!("{path}: not recovered"));
+    assert_eq!(swatch["ext"], protected_ext(), "{path}: the full swatch copy, ext included (C22-R2-03)");
+    assert_eq!(swatch["name"], "Guarded", "{path}");
+}
+
+#[test]
+fn recovery_keeps_the_protection_flag_and_every_extension_on_demand_on_load_and_on_import() {
+    // On demand.
+    let h = tt_executor::ExecutorHandle::spawn(Default::default()).unwrap();
+    assert!(h.open_document(protected_missing(), None, false).is_ok());
+    ok(&h, "colour.recovery.run", json!({ "all": true }));
+    assert_recovered_with_ext(&h, "on demand");
+    // On load: saved with the copy, reopened (the repair step recovers it).
+    let dir = c13_support::tmp();
+    let src = c13_support::spawn(&dir.join("src"));
+    assert!(src.open_document(protected_missing(), None, false).is_ok());
+    let package = dir.join("Protected.animpkg");
+    c13_support::job_ok(&src, "project.saveAs", json!({ "path": package.to_string_lossy() }));
+    let loaded = c13_support::spawn(&dir.join("load"));
+    c13_support::job_ok(&loaded, "project.open", json!({ "path": package.to_string_lossy() }));
+    assert_recovered_with_ext(&loaded, "on load");
+    // On import (doc.import.json recovers in its own transaction).
+    let bundle = ok(&src, "doc.export.json", json!({ "scope": "project", "binaries": "embed" }))["bundle"].clone();
+    let dest = tt_executor::ExecutorHandle::spawn(Default::default()).unwrap();
+    ok(&dest, "project.create", json!({ "name": "Import" }));
+    ok(&dest, "doc.import.json", json!({ "source": bundle, "idPolicy": "preserve" }));
+    assert_recovered_with_ext(&dest, "on import");
+    drop((src, loaded));
+    let _ = std::fs::remove_dir_all(dir);
+}

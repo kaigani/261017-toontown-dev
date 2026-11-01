@@ -953,6 +953,25 @@ fn read_source(cx: &Cx, source: ImportSource) -> Result<(Value, Option<PathBuf>)
 }
 
 #[allow(clippy::too_many_lines)]
+/// Sets the `rev` of every model object (an object with `type` and `rev` members) in a bundle value to 0.
+fn reset_revs(v: &mut Value, depth: usize) {
+    if depth > tt_model::MAX_JSON_DEPTH {
+        return;
+    }
+    match v {
+        Value::Object(m) => {
+            if m.contains_key("type") && m.get("rev").is_some_and(Value::is_u64) {
+                m.insert("rev".into(), json!(0));
+            }
+            for x in m.values_mut() {
+                reset_revs(x, depth + 1);
+            }
+        }
+        Value::Array(a) => a.iter_mut().for_each(|x| reset_revs(x, depth + 1)),
+        _ => {}
+    }
+}
+
 fn import(cx: &mut Cx, p: ImportJsonParams) -> Result<ImportResult, CommandError> {
     let (mut bundle, folder) = read_source(cx, p.source)?;
     if bundle.get("format").and_then(Value::as_str) != Some("animjson") {
@@ -965,6 +984,15 @@ fn import(cx: &mut Cx, p: ImportJsonParams) -> Result<ImportResult, CommandError
             "the bundle's format version is not readable",
             json!({ "formatVersion": bundle.get("formatVersion") }),
         ));
+    }
+    // Revisions are the source project's bookkeeping (REV-01): imported objects are stamped with the import's revision
+    // when it commits, so the bundle's are reset, or a bundle from a project further along would be refused.
+    for k in ["scenes", "elements", "drawingBanks", "palettes", "pens", "assets"] {
+        if let Some(list) = bundle.get_mut(k).and_then(Value::as_array_mut) {
+            for v in list {
+                reset_revs(v, 0);
+            }
+        }
     }
     // `replace` (C13-R1-11): the existing objects the imported ones conflict with by name go first, in this same
     // transaction; the import then meets no name conflict.
@@ -1431,10 +1459,35 @@ fn import(cx: &mut Cx, p: ImportJsonParams) -> Result<ImportResult, CommandError
     // Imported drawings are persisted content: taken as they are, not re-noded (as on load; C1.3 import fidelity).
     cx.keep_verbatim(result.created.drawings.iter().filter_map(|d| Id::parse(d).ok()));
     cx.patch_entries(changes)?;
+    // Fill-consistency repair of the imported drawings, as on load (10 §4.9, §7.2; C22-R2-02): disagreeing sides are
+    // rewritten to the longest bounding length, without re-noding (geometry and IDs stay verbatim), in this
+    // transaction, and each repaired drawing is reported.
+    if !result.created.drawings.is_empty() {
+        let doc = cx.document()?.clone();
+        let mut repairs = Vec::new();
+        for did in &result.created.drawings {
+            let Ok(id) = Id::parse(did) else { continue };
+            let Some(d) = doc.drawing(&id) else { continue };
+            let (ops, layers) = crate::load_repair::repair_drawing_sides(d);
+            if ops.is_empty() {
+                continue;
+            }
+            for (layer, zones) in layers {
+                result.issues.push(json!({
+                    "code": "drawing.fillInconsistent", "objectId": did, "layerId": layer, "zones": zones,
+                    "message": format!("{zones} zone(s) of layer `{layer}` had disagreeing fills on their bounding strokes; the fill of the longest bounding length was kept"),
+                }));
+            }
+            repairs.push((EntryKey::Drawing(id), ops));
+        }
+        if !repairs.is_empty() {
+            cx.patch_entries(repairs)?;
+        }
+    }
     // Colour recovery in the import's own transaction (10 §4.11; 03 §11.2; C22-R1-05): the colours the imported content
     // uses that nothing defines are recreated from the imported drawings' recovery copies, else as placeholders.
     if !result.recovered_colour_ids.is_empty() {
-        let doc = cx.stamped_document()?;
+        let doc = cx.document()?.clone();
         let missing: Vec<(String, Option<Value>)> = super::colour_recovery::missing_with_copies(&doc)
             .into_iter()
             .filter(|(c, _)| result.recovered_colour_ids.contains(c))

@@ -347,14 +347,22 @@ pub(crate) fn recover_with(
                         values.insert(sid.to_owned(), v);
                     }
                 }
+                // The complete copied swatch (10 §4.11): only identity, revision and the style values remapped onto
+                // the receiving palette's styles change; `meta` and every `ext` namespace (the SI-061 protection flag
+                // included) are kept verbatim (10 §2.2; C22-R2-03).
                 let sw = e.get("swatch").cloned().unwrap_or(Value::Null);
-                let swatch = json!({
+                let mut swatch = json!({
                     "colourId": colour, "type": "swatch", "rev": 0,
                     "name": sw.get("name").cloned().unwrap_or(json!("Recovered")),
                     "kind": sw.get("kind").cloned().unwrap_or(json!("solid")),
                     "deformable": sw.get("deformable").cloned().unwrap_or(json!(false)),
                     "values": values,
                 });
+                for key in ["meta", "ext"] {
+                    if let (Some(v), Some(o)) = (sw.get(key), swatch.as_object_mut()) {
+                        o.insert(key.to_owned(), v.clone());
+                    }
+                }
                 if let Some(list) = pal.get_mut("swatches").and_then(Value::as_array_mut) {
                     list.push(swatch);
                 }

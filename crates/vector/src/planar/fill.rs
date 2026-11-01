@@ -13,12 +13,7 @@
 
 use std::collections::{BTreeMap, BTreeSet};
 
-use i_overlay::core::fill_rule::FillRule;
-use i_overlay::core::overlay::{Overlay, ShapeType};
-use i_overlay::core::overlay_rule::OverlayRule;
-use i_overlay::i_float::int::point::IntPoint;
-
-use super::graph::{EdgeKind, Ip, LayerMap, key_param};
+use super::graph::{EdgeKind, LayerMap, key_param};
 use crate::path::GeomError;
 use crate::work::Work;
 
@@ -195,37 +190,6 @@ pub fn write(map: &LayerMap, fills: &[Option<Fill>], previous: &Stored) -> Store
     stored
 }
 
-fn int_point(q: Ip) -> IntPoint<i32> {
-    IntPoint::new(i32::try_from(q[0]).unwrap_or(i32::MAX), i32::try_from(q[1]).unwrap_or(i32::MAX))
-}
-
-/// Twice the exact area of the intersection of two zones given as grid rings (outer first, holes reversed).
-fn overlap2(a: &[Vec<Ip>], b: &[Vec<Ip>], work: &mut Work) -> Result<i128, GeomError> {
-    let count: usize = a.iter().chain(b.iter()).map(Vec::len).sum();
-    work.spend_n(count.saturating_mul(32))?;
-    let mut overlay: Overlay<i32> = Overlay::new(count);
-    for r in a {
-        let ring: Vec<IntPoint<i32>> = r.iter().map(|q| int_point(*q)).collect();
-        overlay.add_contour(&ring, ShapeType::Subject);
-    }
-    for r in b {
-        let ring: Vec<IntPoint<i32>> = r.iter().map(|q| int_point(*q)).collect();
-        overlay.add_contour(&ring, ShapeType::Clip);
-    }
-    let shapes = overlay.overlay(OverlayRule::Intersect, FillRule::NonZero);
-    let mut area2: i128 = 0;
-    for shape in shapes {
-        for contour in shape {
-            let n = contour.len();
-            for i in 0..n {
-                let (p, q) = (contour[i], contour[(i + 1) % n]);
-                area2 += i128::from(p.x) * i128::from(q.y) - i128::from(p.y) * i128::from(q.x);
-            }
-        }
-    }
-    Ok(area2.abs())
-}
-
 /// A grid index of boxes (grid units) for positive-area overlap queries; boxes spanning too many cells, and queries
 /// spanning too many cells, fall back to a list scanned in full.
 struct Boxes {
@@ -324,12 +288,14 @@ pub fn carry(
         }
         let cands = index.overlapping(new.zone_box(n), work)?;
         let new_rings = new.zone_rings_grid(n);
-        let mut best: Option<(i128, usize)> = None;
+        // Exact rational overlap areas (no rounding to the grid, C22-R2-04): the largest wins, the lower old zone ID
+        // only on mathematically equal areas.
+        let mut best: Option<(num_rational::BigRational, usize)> = None;
         for i in cands {
-            let area = overlap2(&old.zone_rings_grid(i), &new_rings, work)?;
-            let better = match best {
-                None => area > 0,
-                Some((ba, bi)) => area > ba || (area == ba && old.zones[i].id < old.zones[bi].id),
+            let area = super::exact::overlap_area2(&old.zone_rings_grid(i), &new_rings, work)?;
+            let better = match &best {
+                None => area > num_rational::BigRational::from_integer(0.into()),
+                Some((ba, bi)) => area > *ba || (area == *ba && old.zones[i].id < old.zones[*bi].id),
             };
             if better {
                 best = Some((area, i));

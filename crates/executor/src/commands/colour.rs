@@ -134,6 +134,17 @@ fn point(p: Point, pointer: &str) -> Result<P, CommandError> {
     Ok(P::new(p.x, p.y))
 }
 
+/// The native pixel size of a tile-on texture (its first style's value, as `colour.pick` reads it, SI-065), by colour ID.
+fn tile_size(doc: &Document, colour: &str) -> Option<(f64, f64)> {
+    let s = doc.palettes().flat_map(|p| p.swatches().iter()).find(|s| s.colour_id().as_str() == colour)?;
+    match s.values().values().next()? {
+        tt_model::entities::palette::SwatchValue::Texture(t) if t.tile => {
+            Some((f64::from(t.width?), f64::from(t.height?)))
+        }
+        _ => None,
+    }
+}
+
 /// A swatch's kind and whether it is protected (SI-061), by colour ID.
 fn swatch_info(doc: &Document, colour: &str) -> Option<(SwatchKind, bool)> {
     doc.palettes().flat_map(|p| p.swatches().iter()).find(|s| s.colour_id().as_str() == colour).map(|s| {
@@ -178,16 +189,20 @@ pub(crate) fn drag_matrix(kind: SwatchKind, from: P, to: P) -> Option<[f64; 6]> 
 /// The mapping a paint stores (03 §1.6, §7.2; C22-R1-09): a solid colour ignores the matrix but preserves the one the
 /// object has; a gradient or texture takes the drag's mapping, or after a single click the default mapping from the
 /// object's bounding box and the swatch kind.
+/// A tile-on texture after a single click keeps its native size, one image pixel per drawing unit, anchored at the
+/// box's top-left corner (03 §7.2; C22-R2-05; the axis convention against rendering is confirmed in C2.3).
 fn paint_matrix(
     kind: SwatchKind,
     drag: Option<(P, P)>,
     existing: Option<[f64; 6]>,
     b: Option<&Rect>,
+    tile: Option<(f64, f64)>,
 ) -> Option<[f64; 6]> {
-    let m = match (kind, drag) {
-        (SwatchKind::Solid, _) => existing,
-        (_, Some((a, z))) => drag_matrix(kind, a, z),
-        (_, None) => b.and_then(|b| default_matrix(kind, b)),
+    let m = match (kind, drag, tile) {
+        (SwatchKind::Solid, _, _) => existing,
+        (_, Some((a, z)), _) => drag_matrix(kind, a, z),
+        (SwatchKind::Texture, None, Some((w, h))) => b.map(|b| [w, 0.0, 0.0, -h, b.min_x, b.max_y]),
+        (_, None, _) => b.and_then(|b| default_matrix(kind, b)),
     };
     // No negative zeros in stored matrices.
     m.map(|m| m.map(|v| v + 0.0))
@@ -401,6 +416,8 @@ struct Pass<'a> {
     colour: Option<String>,
     kind: SwatchKind,
     mapping: Option<(P, P)>,
+    /// The native size of a tile-on texture.
+    tile: Option<(f64, f64)>,
     respect_protected: bool,
     mode: Mode,
     doc: &'a Document,
@@ -497,7 +514,7 @@ fn apply(
                     Mode::Remove => None,
                     Mode::Paint { .. } => {
                         let existing = zones[*layer].fills.get(*zone).cloned().flatten().and_then(|f| f.matrix);
-                        let matrix = paint_matrix(pass.kind, pass.mapping, existing, Some(&z.bounds));
+                        let matrix = paint_matrix(pass.kind, pass.mapping, existing, Some(&z.bounds), pass.tile);
                         Some(Fill { colour_id: pass.colour.clone(), matrix })
                     }
                 };
@@ -519,7 +536,8 @@ fn apply(
                         let s = tt_vector::drawing::stroke_at(d, &l.pointer);
                         let bounds = s.and_then(tt_vector::drawing::stroke_bounds);
                         let existing = s.and_then(|s| *s.fill_matrix());
-                        let mut matrix = json!(paint_matrix(pass.kind, pass.mapping, existing, bounds.as_ref()));
+                        let mut matrix =
+                            json!(paint_matrix(pass.kind, pass.mapping, existing, bounds.as_ref(), pass.tile));
                         tt_model::canonical::normalize_numbers(&mut matrix);
                         ops.push(op("replace", &format!("{}/fillMatrix", l.pointer), Some(matrix)));
                     }
@@ -1091,6 +1109,7 @@ fn paint_common(cx: &mut Cx, call: Call<'_>) -> Result<PaintResult, CommandError
         colour: colour.0.clone(),
         kind: colour.1,
         mapping: targets.mapping,
+        tile: colour.0.as_deref().and_then(|c| tile_size(&before, c)),
         respect_protected: targets.respect_protected,
         mode,
         doc: &before,

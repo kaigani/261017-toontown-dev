@@ -3,6 +3,7 @@
 //! closing and point location. Pure functions over stroke geometry; the executor stages what they return.
 
 pub mod along;
+pub mod exact;
 pub mod fill;
 pub mod flat;
 pub mod gap;

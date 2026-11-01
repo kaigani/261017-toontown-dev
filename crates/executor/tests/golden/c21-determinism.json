@@ -1,6 +1,6 @@
 {
-  "sha256": "a3b43bf207b65dd3e488f9bf27307c28bc03accb687cb59a65a8e21fe178d6e7",
-  "bytes": 221372,
+  "sha256": "0d49d78c3559d605ac908a23e4aad25384c020b29b83324a2f8d6ad93ef169e8",
+  "bytes": 213816,
   "drawing1": {
     "id": "dr_01K742SG0KKMCAP9X1E6Z5P4SW",
     "type": "drawing",
@@ -3080,34 +3080,6 @@
                     -45.682,
                     -11.15427757967857,
                     1.4142689323738011,
-                    0.0,
-                    0.0
-                  ]
-                ],
-                "colourId": "col_01K742SG059XGSNZ6M9MACZ2ZY",
-                "fillMatrix": null,
-                "lineStyle": {
-                  "thickness": 2.5,
-                  "lineType": "solid"
-                },
-                "spine": null,
-                "sides": {
-                  "left": null,
-                  "right": null
-                }
-              },
-              {
-                "id": "st_01K7JJN8086DGF4RXGSV54E157",
-                "type": "stroke",
-                "rev": 7,
-                "kind": "pencil",
-                "closed": false,
-                "points": [
-                  [
-                    -17.46,
-                    -45.682,
-                    0.0,
-                    0.0,
                     9.063406286294416,
                     -1.1491639723526532
                   ],
@@ -3133,7 +3105,7 @@
                 }
               },
               {
-                "id": "st_01K7JJN809AB8ZABTHN9KMZFYT",
+                "id": "st_01K7JJN8086DGF4RXGSV54E157",
                 "type": "stroke",
                 "rev": 7,
                 "kind": "pencil",
@@ -3152,34 +3124,6 @@
                     -26.529,
                     -0.23485232129105338,
                     -0.27823527764922673,
-                    0.0,
-                    0.0
-                  ]
-                ],
-                "colourId": "col_01K742SG059XGSNZ6M9MACZ2ZY",
-                "fillMatrix": null,
-                "lineStyle": {
-                  "thickness": 2.5,
-                  "lineType": "solid"
-                },
-                "spine": null,
-                "sides": {
-                  "left": null,
-                  "right": null
-                }
-              },
-              {
-                "id": "st_01K7JJN80ARRX43XXFBNE1QC3C",
-                "type": "stroke",
-                "rev": 7,
-                "kind": "pencil",
-                "closed": false,
-                "points": [
-                  [
-                    4.762,
-                    -26.529,
-                    0.0,
-                    0.0,
                     0.3668080973676453,
                     0.434566506534928
                   ],
@@ -3205,7 +3149,7 @@
                 }
               },
               {
-                "id": "st_01K7JJN80BNFQ47KZGCGJBSRE3",
+                "id": "st_01K7JJN809AB8ZABTHN9KMZFYT",
                 "type": "stroke",
                 "rev": 7,
                 "kind": "pencil",
@@ -3241,7 +3185,7 @@
                 }
               },
               {
-                "id": "st_01K7JJN80CD6RAVAVMTT7SF1PR",
+                "id": "st_01K7JJN80ARRX43XXFBNE1QC3C",
                 "type": "stroke",
                 "rev": 7,
                 "kind": "pencil",
@@ -3357,7 +3301,7 @@
                 }
               },
               {
-                "id": "st_01K7JJN80EB5TPC6TNHE0H64JV",
+                "id": "st_01K7JJN80CD6RAVAVMTT7SF1PR",
                 "type": "stroke",
                 "rev": 7,
                 "kind": "pencil",
@@ -3393,9 +3337,9 @@
                 }
               },
               {
-                "id": "st_01K7JJN805QSH86948W7RV6SHM",
+                "id": "st_01K7JJN80DW9WV0CXQ8DFE3WCV",
                 "type": "stroke",
-                "rev": 8,
+                "rev": 7,
                 "kind": "pencil",
                 "closed": false,
                 "points": [
@@ -3412,34 +3356,6 @@
                     43.148,
                     -5.782371007540235,
                     -2.4444611410045596,
-                    0.0,
-                    0.0
-                  ]
-                ],
-                "colourId": "col_01K742SG059XGSNZ6M9MACZ2ZY",
-                "fillMatrix": null,
-                "lineStyle": {
-                  "thickness": 2.5,
-                  "lineType": "solid"
-                },
-                "spine": null,
-                "sides": {
-                  "left": null,
-                  "right": null
-                }
-              },
-              {
-                "id": "st_01K7JJN806YDG07T7ZB8SGZSJB",
-                "type": "stroke",
-                "rev": 8,
-                "kind": "pencil",
-                "closed": false,
-                "points": [
-                  [
-                    65.079,
-                    43.148,
-                    0.0,
-                    0.0,
                     0.9107397158916655,
                     0.38500951290804863
                   ],
@@ -3465,7 +3381,7 @@
                 }
               },
               {
-                "id": "st_01K7JJN80G0SJZJJEQ48QXP2D7",
+                "id": "st_01K7JJN80EB5TPC6TNHE0H64JV",
                 "type": "stroke",
                 "rev": 7,
                 "kind": "pencil",
@@ -3501,7 +3417,7 @@
                 }
               },
               {
-                "id": "st_01K7JJN80H4Z5ZDTNM3JAN1ZQF",
+                "id": "st_01K7JJN80F7MQ761HZFMRSV9AQ",
                 "type": "stroke",
                 "rev": 7,
                 "kind": "pencil",
@@ -3537,7 +3453,7 @@
                 }
               },
               {
-                "id": "st_01K7JJN80JFCT4PYCV0D08VG3E",
+                "id": "st_01K7JJN80G0SJZJJEQ48QXP2D7",
                 "type": "stroke",
                 "rev": 7,
                 "kind": "pencil",
@@ -3573,7 +3489,7 @@
                 }
               },
               {
-                "id": "st_01K7JJN80K45JEKQV44XWTG7QX",
+                "id": "st_01K7JJN80H4Z5ZDTNM3JAN1ZQF",
                 "type": "stroke",
                 "rev": 7,
                 "kind": "pencil",
@@ -3609,7 +3525,7 @@
                 }
               },
               {
-                "id": "st_01K7JJN80M3GXA8TBA8BSFDE0V",
+                "id": "st_01K7JJN80JFCT4PYCV0D08VG3E",
                 "type": "stroke",
                 "rev": 7,
                 "kind": "pencil",
@@ -3661,7 +3577,7 @@
                 }
               },
               {
-                "id": "st_01K7JJN80NWSCFPKZXQSMBMQAM",
+                "id": "st_01K7JJN80K45JEKQV44XWTG7QX",
                 "type": "stroke",
                 "rev": 7,
                 "kind": "pencil",
@@ -3745,7 +3661,7 @@
                 }
               },
               {
-                "id": "st_01K7JJN80PM06VD5GWN267CD5K",
+                "id": "st_01K7JJN80M3GXA8TBA8BSFDE0V",
                 "type": "stroke",
                 "rev": 7,
                 "kind": "pencil",
@@ -3789,7 +3705,7 @@
                 }
               },
               {
-                "id": "st_01K7JJN80QAFGVM09JCDHYM1K1",
+                "id": "st_01K7JJN80NWSCFPKZXQSMBMQAM",
                 "type": "stroke",
                 "rev": 7,
                 "kind": "pencil",
@@ -3833,7 +3749,7 @@
                 }
               },
               {
-                "id": "st_01K7JJN807R7FA7RPKTKJZCZPM",
+                "id": "st_01K7JJN805QSH86948W7RV6SHM",
                 "type": "stroke",
                 "rev": 8,
                 "kind": "pencil",
@@ -3893,7 +3809,7 @@
                 }
               },
               {
-                "id": "st_01K7JJN808KCHJNABPMKPG0A0B",
+                "id": "st_01K7JJN806YDG07T7ZB8SGZSJB",
                 "type": "stroke",
                 "rev": 8,
                 "kind": "pencil",
@@ -3961,7 +3877,7 @@
                 }
               },
               {
-                "id": "st_01K7JJN80S2TS8M3XZ1K2YF75R",
+                "id": "st_01K7JJN80QAFGVM09JCDHYM1K1",
                 "type": "stroke",
                 "rev": 7,
                 "kind": "pencil",
@@ -4005,7 +3921,7 @@
                 }
               },
               {
-                "id": "st_01K7JJN80TJ3WCNPVT99ZW9CKN",
+                "id": "st_01K7JJN80RQHFBEHACZT76MA2B",
                 "type": "stroke",
                 "rev": 7,
                 "kind": "pencil",
@@ -4075,34 +3991,6 @@
                     0.0,
                     0.0
                   ],
-                  [
-                    -17.46,
-                    -45.682,
-                    0.0,
-                    0.0,
-                    0.0,
-                    0.0
-                  ]
-                ],
-                "colourId": "col_01K742SG059XGSNZ6M9MACZ2ZY",
-                "fillMatrix": null,
-                "lineStyle": {
-                  "thickness": 2.0,
-                  "lineType": "solid"
-                },
-                "spine": null,
-                "sides": {
-                  "left": null,
-                  "right": null
-                }
-              },
-              {
-                "id": "st_01K7JJN80VTME9AG7AKTWNA7N8",
-                "type": "stroke",
-                "rev": 7,
-                "kind": "pencil",
-                "closed": false,
-                "points": [
                   [
                     -17.46,
                     -45.682,
@@ -4181,7 +4069,7 @@
                 }
               },
               {
-                "id": "st_01K7JJN80W2AD941B20HYQQG8B",
+                "id": "st_01K7JJN80S2TS8M3XZ1K2YF75R",
                 "type": "stroke",
                 "rev": 7,
                 "kind": "pencil",
@@ -4195,34 +4083,6 @@
                     0.25408149005061986,
                     0.3128203290103535
                   ],
-                  [
-                    4.762,
-                    -26.529,
-                    0.0,
-                    0.0,
-                    0.0,
-                    0.0
-                  ]
-                ],
-                "colourId": "col_01K742SG059XGSNZ6M9MACZ2ZY",
-                "fillMatrix": null,
-                "lineStyle": {
-                  "thickness": 2.0,
-                  "lineType": "solid"
-                },
-                "spine": null,
-                "sides": {
-                  "left": null,
-                  "right": null
-                }
-              },
-              {
-                "id": "st_01K7JJN80XPB8QPPFMVNEQSMGQ",
-                "type": "stroke",
-                "rev": 7,
-                "kind": "pencil",
-                "closed": false,
-                "points": [
                   [
                     4.762,
                     -26.529,
@@ -4253,7 +4113,7 @@
                 }
               },
               {
-                "id": "st_01K7JJN80Y7NVRNND9FNAAZTBV",
+                "id": "st_01K7JJN80TJ3WCNPVT99ZW9CKN",
                 "type": "stroke",
                 "rev": 7,
                 "kind": "pencil",
@@ -4329,7 +4189,7 @@
                 }
               },
               {
-                "id": "st_01K7JJN80ZVSQBVT02EC4KZKZ3",
+                "id": "st_01K7JJN80VTME9AG7AKTWNA7N8",
                 "type": "stroke",
                 "rev": 7,
                 "kind": "pencil",
@@ -4397,7 +4257,7 @@
                 }
               },
               {
-                "id": "st_01K7JJN809H9M0N0JWNYEAMT27",
+                "id": "st_01K7JJN807R7FA7RPKTKJZCZPM",
                 "type": "stroke",
                 "rev": 8,
                 "kind": "pencil",
@@ -4433,7 +4293,7 @@
                 }
               },
               {
-                "id": "st_01K7JJN80AR3CKG4YCFMFA9C2W",
+                "id": "st_01K7JJN808KCHJNABPMKPG0A0B",
                 "type": "stroke",
                 "rev": 8,
                 "kind": "pencil",
@@ -4477,7 +4337,7 @@
                 }
               },
               {
-                "id": "st_01K7JJN811MM76GVV5ZEWPRQY8",
+                "id": "st_01K7JJN80XPB8QPPFMVNEQSMGQ",
                 "type": "stroke",
                 "rev": 7,
                 "kind": "pencil",
@@ -4545,9 +4405,9 @@
                 }
               },
               {
-                "id": "st_01K7JJN80BBZBT8DEQ93AXMTG4",
+                "id": "st_01K7JJN80Y7NVRNND9FNAAZTBV",
                 "type": "stroke",
-                "rev": 8,
+                "rev": 7,
                 "kind": "pencil",
                 "closed": false,
                 "points": [
@@ -4598,34 +4458,6 @@
                     0.0,
                     0.0,
                     0.0
-                  ]
-                ],
-                "colourId": "col_01K742SG059XGSNZ6M9MACZ2ZY",
-                "fillMatrix": null,
-                "lineStyle": {
-                  "thickness": 2.0,
-                  "lineType": "solid"
-                },
-                "spine": null,
-                "sides": {
-                  "left": null,
-                  "right": null
-                }
-              },
-              {
-                "id": "st_01K7JJN80C0KEKSXQTAPG330XK",
-                "type": "stroke",
-                "rev": 8,
-                "kind": "pencil",
-                "closed": false,
-                "points": [
-                  [
-                    65.079,
-                    43.148,
-                    0.0,
-                    0.0,
-                    0.0,
-                    0.0
                   ],
                   [
                     67.90415775039175,
@@ -4649,7 +4481,7 @@
                 }
               },
               {
-                "id": "st_01K7JJN8138Z75G2JV904SC6EQ",
+                "id": "st_01K7JJN80ZVSQBVT02EC4KZKZ3",
                 "type": "stroke",
                 "rev": 7,
                 "kind": "pencil",
@@ -4693,7 +4525,7 @@
                 }
               },
               {
-                "id": "st_01K7JJN814VTWKHE2MM4T0SYGN",
+                "id": "st_01K7JJN810KQYKZ8BN6J0DZ40Y",
                 "type": "stroke",
                 "rev": 7,
                 "kind": "pencil",
@@ -4729,7 +4561,7 @@
                 }
               },
               {
-                "id": "st_01K7JJN815293W1TJSJ50H29X3",
+                "id": "st_01K7JJN811MM76GVV5ZEWPRQY8",
                 "type": "stroke",
                 "rev": 7,
                 "kind": "pencil",
@@ -4773,7 +4605,7 @@
                 }
               },
               {
-                "id": "st_01K7JJN816F4PCV1F6FK79Y9HN",
+                "id": "st_01K7JJN812WC10KW4S38DD1FAR",
                 "type": "stroke",
                 "rev": 7,
                 "kind": "pencil",
@@ -4873,7 +4705,7 @@
                 }
               },
               {
-                "id": "st_01K7JJN81797HATBGZBXW5TM2R",
+                "id": "st_01K7JJN8138Z75G2JV904SC6EQ",
                 "type": "stroke",
                 "rev": 7,
                 "kind": "pencil",
@@ -4909,7 +4741,7 @@
                 }
               },
               {
-                "id": "st_01K7JJN8189KGXWP039C91H3TV",
+                "id": "st_01K7JJN814VTWKHE2MM4T0SYGN",
                 "type": "stroke",
                 "rev": 7,
                 "kind": "pencil",
@@ -4945,7 +4777,7 @@
                 }
               },
               {
-                "id": "st_01K7JJN819R83T259ASE1BBE9R",
+                "id": "st_01K7JJN815293W1TJSJ50H29X3",
                 "type": "stroke",
                 "rev": 7,
                 "kind": "pencil",
@@ -4981,7 +4813,7 @@
                 }
               },
               {
-                "id": "st_01K7JJN80DBWN2CHYNSJCY60BV",
+                "id": "st_01K7JJN809H9M0N0JWNYEAMT27",
                 "type": "stroke",
                 "rev": 8,
                 "kind": "invisible",
@@ -5014,7 +4846,7 @@
                 }
               },
               {
-                "id": "st_01K7JJN80E0ENQHKYG842K3XCM",
+                "id": "st_01K7JJN80AR3CKG4YCFMFA9C2W",
                 "type": "stroke",
                 "rev": 8,
                 "kind": "invisible",
@@ -5047,7 +4879,7 @@
                 }
               },
               {
-                "id": "st_01K7JJN80FAC61NXQ90QE6CH59",
+                "id": "st_01K7JJN80BBZBT8DEQ93AXMTG4",
                 "type": "stroke",
                 "rev": 8,
                 "kind": "invisible",
@@ -5080,7 +4912,7 @@
                 }
               },
               {
-                "id": "st_01K7JJN80GQA4TQBCADFHXEYY9",
+                "id": "st_01K7JJN80C0KEKSXQTAPG330XK",
                 "type": "stroke",
                 "rev": 8,
                 "kind": "invisible",
@@ -5113,7 +4945,7 @@
                 }
               },
               {
-                "id": "st_01K7JJN80H6RTRHKQZJRBF8HEC",
+                "id": "st_01K7JJN80DBWN2CHYNSJCY60BV",
                 "type": "stroke",
                 "rev": 8,
                 "kind": "invisible",

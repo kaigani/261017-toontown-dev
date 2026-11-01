@@ -90,27 +90,15 @@ fn repaired(loaded: &Loaded) -> Result<Option<(Document, Vec<Found>)>, CommandEr
     }
     // Side fills that disagree.
     for d in doc.drawings() {
-        let mut ops = Vec::new();
-        for l in crate::planar::layers(d) {
-            let mut work = Work::new(tt_vector::work::PLANAR_WORK_BUDGET, "repairing the zone fills of a layer");
-            // A layer too large to map within the budget is left as stored (its fills are read the same way).
-            let Ok(Some((strokes, zones))) = tt_vector::planar::layer::repair_sides(&l.strokes, &mut work) else {
-                continue;
-            };
-            ops.push(crate::commands::draw::op(
-                "replace",
-                &format!("{}/strokes", l.pointer),
-                Some(Value::Array(strokes)),
-            ));
+        let (ops, layers) = repair_drawing_sides(d);
+        for (layer, zones) in layers {
             found.push(Found {
                 code: "drawing.fillInconsistent",
                 object_id: d.id().as_str().to_owned(),
                 message: format!(
-                    "{zones} zone(s) of layer `{}` had disagreeing fills on their bounding strokes; the fill of the \
-                     longest bounding length was kept",
-                    l.id
+                    "{zones} zone(s) of layer `{layer}` had disagreeing fills on their bounding strokes; the fill of                      the longest bounding length was kept"
                 ),
-                details: json!({ "layerId": l.id, "zones": zones }),
+                details: json!({ "layerId": layer, "zones": zones }),
             });
         }
         if !ops.is_empty() {
@@ -132,4 +120,24 @@ fn repaired(loaded: &Loaded) -> Result<Option<(Document, Vec<Found>)>, CommandEr
     let stamps: Vec<String> = keys.into_iter().filter(|k| next.locate(k).is_some()).collect();
     let stamped = next.with_revisions(rev, &stamps)?;
     Ok(Some((stamped, found)))
+}
+
+/// The side-fill repair of one drawing (load and `doc.import.json`; 10 §4.9, §7.2): for each layer whose bounding
+/// strokes disagree about a zone's fill, the patch rewriting its strokes' sides to the longest bounding length (no
+/// noding: geometry and IDs stay as they are), and the layers repaired with their number of zones. A layer too large to
+/// map within the budget is left as stored (its fills are read the same way).
+pub(crate) fn repair_drawing_sides(
+    d: &tt_model::entities::drawing::Drawing,
+) -> (Vec<tt_model::change::PatchOp>, Vec<(String, usize)>) {
+    let mut ops = Vec::new();
+    let mut layers = Vec::new();
+    for l in crate::planar::layers(d) {
+        let mut work = Work::new(tt_vector::work::PLANAR_WORK_BUDGET, "repairing the zone fills of a layer");
+        let Ok(Some((strokes, zones))) = tt_vector::planar::layer::repair_sides(&l.strokes, &mut work) else {
+            continue;
+        };
+        ops.push(crate::commands::draw::op("replace", &format!("{}/strokes", l.pointer), Some(Value::Array(strokes))));
+        layers.push((l.id, zones));
+    }
+    (ops, layers)
 }

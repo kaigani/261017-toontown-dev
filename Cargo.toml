@@ -48,6 +48,11 @@ trybuild = "1.0"
 # `doc.object.find` regex predicates (10 §10.3); linear-time engine.
 regex = "1"
 sha2 = "0.11"
+# Exact rational areas of zone intersections for carry-over (C22-R2-04; already resolved through jsonschema's
+# `fraction`, MIT OR Apache-2.0).
+num-bigint = "0.4"
+num-rational = { version = "0.4", default-features = false, features = ["num-bigint", "std"] }
+num-traits = "0.2"
 # Package containers (10 §6.2): deflate for JSON entries, CRC-32 of zip entries. Our own zip reader/writer (tt-persist)
 # applies the hostile-input rules of ZIP-01/ZIP-06 itself; these crates only compress and checksum.
 flate2 = { version = "1.1", default-features = false, features = ["rust_backend"] }

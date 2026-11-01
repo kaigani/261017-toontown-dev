@@ -11,7 +11,7 @@
 use std::collections::{BTreeMap, HashMap};
 
 use super::flat::{self, Flat};
-use super::graph::EdgeKind;
+use super::graph::{EdgeKind, Ip, snap};
 use crate::geom::{Cubic, P};
 use crate::path::{Anchor, GeomError, Path};
 use crate::work::Work;
@@ -65,6 +65,9 @@ struct EdgeRef {
     stroke: usize,
     a: P,
     b: P,
+    /// The ends on the 1/64 du grid (exact predicates, C22-R2-01).
+    ia: Ip,
+    ib: Ip,
     sa: f64,
     sb: f64,
     /// Index of the edge within its stroke's polyline.
@@ -75,51 +78,92 @@ fn cross(a: P, b: P) -> f64 {
     a.x * b.y - a.y * b.x
 }
 
-/// Proper crossing of two segments: the fractions along each.
-fn crossing(a: P, b: P, c: P, d: P) -> Option<(f64, f64)> {
-    let r = b - a;
-    let s = d - c;
-    let den = cross(r, s);
-    if den == 0.0 {
-        return None;
-    }
-    let t = cross(c - a, s) / den;
-    let u = cross(c - a, r) / den;
-    if t > 0.0 && t < 1.0 && u > 0.0 && u < 1.0 { Some((t, u)) } else { None }
+/// Orientation of `c` relative to `a`→`b` on the grid: positive left, negative right, zero collinear (exact).
+fn orient(a: Ip, b: Ip, c: Ip) -> i128 {
+    let (ux, uy) = (i128::from(b[0] - a[0]), i128::from(b[1] - a[1]));
+    let (vx, vy) = (i128::from(c[0] - a[0]), i128::from(c[1] - a[1]));
+    ux * vy - uy * vx
 }
 
-/// Where two non-parallel segments meet at an end of either (a stroke passing through another's vertex, or two vertices
-/// touching): the fractions (0 or 1 at the vertex) and the vertex itself, exactly. Fractions within 1e-12 outside the
-/// segments count (rounding at a vertex); crossings strictly inside both are [`crossing`]'s.
-fn at_vertex(a: P, b: P, c: P, d: P) -> Option<(f64, f64, P)> {
-    const EPS: f64 = 1e-12;
-    let (r, s) = (b - a, d - c);
-    let den = cross(r, s);
-    if den == 0.0 {
+fn on_segment(p: Ip, a: Ip, b: Ip) -> bool {
+    orient(a, b, p) == 0
+        && p[0] >= a[0].min(b[0])
+        && p[0] <= a[0].max(b[0])
+        && p[1] >= a[1].min(b[1])
+        && p[1] <= a[1].max(b[1])
+}
+
+/// The fraction of `p`'s projection along `a`→`b` (only used to place a junction's path parameter).
+fn fraction(p: P, a: P, b: P) -> f64 {
+    let ab = b - a;
+    let len2 = ab.dot(ab);
+    if len2 > 0.0 { ((p - a).dot(ab) / len2).clamp(0.0, 1.0) } else { 0.0 }
+}
+
+/// How two segments meet, decided by exact orientation signs on the snapped 1/64 du grid (ADR-0017 §1; C22-R2-01).
+enum Meet {
+    /// A crossing strictly inside both: the fractions along each.
+    Proper(f64, f64),
+    /// An end of either lies on the other: the fractions (0 or 1 at an end) and the point (that end).
+    Vertex(f64, f64, P),
+}
+
+/// How two flattened edges meet on the grid; `None` when they do not, or are collinear (an overlap is never a junction).
+fn meet(e: &EdgeRef, f: &EdgeRef) -> Option<Meet> {
+    let (o1, o2) = (orient(e.ia, e.ib, f.ia), orient(e.ia, e.ib, f.ib));
+    let (o3, o4) = (orient(f.ia, f.ib, e.ia), orient(f.ia, f.ib, e.ib));
+    if o1 == 0 && o2 == 0 {
         return None;
     }
-    let (t, u) = (cross(c - a, s) / den, cross(c - a, r) / den);
-    let inside = |x: f64| x > 0.0 && x < 1.0;
-    if (inside(t) && inside(u)) || !(-EPS..=1.0 + EPS).contains(&t) || !(-EPS..=1.0 + EPS).contains(&u) {
-        return None;
+    if o1.signum() * o2.signum() < 0 && o3.signum() * o4.signum() < 0 {
+        // The crossing point in floating point from the stored geometry (unchanged coordinates for ordinary input),
+        // else, where floating point degenerates, from the exact grid fractions.
+        let (r, sd) = (e.b - e.a, f.b - f.a);
+        let den = cross(r, sd);
+        let inside = |x: f64| x > 0.0 && x < 1.0;
+        if den != 0.0 {
+            let (t, u) = (cross(f.a - e.a, sd) / den, cross(f.a - e.a, r) / den);
+            if inside(t) && inside(u) {
+                return Some(Meet::Proper(t, u));
+            }
+        }
+        let den = o3 - o4;
+        let t = (o3 as f64 / den as f64).clamp(f64::MIN_POSITIVE, 1.0 - f64::EPSILON);
+        let du = o1 - o2;
+        let u = (o1 as f64 / du as f64).clamp(f64::MIN_POSITIVE, 1.0 - f64::EPSILON);
+        return Some(Meet::Proper(t, u));
     }
-    let (t, u) = (t.clamp(0.0, 1.0), u.clamp(0.0, 1.0));
-    // At least one fraction is at an end: that vertex is the point.
-    let at = if u == 0.0 {
-        c
-    } else if u == 1.0 {
-        d
-    } else if t == 0.0 {
-        a
+    if on_segment(f.ia, e.ia, e.ib) {
+        return Some(Meet::Vertex(end_fraction(f.ia, e, f.a), 0.0, f.a));
+    }
+    if on_segment(f.ib, e.ia, e.ib) {
+        return Some(Meet::Vertex(end_fraction(f.ib, e, f.b), 1.0, f.b));
+    }
+    if on_segment(e.ia, f.ia, f.ib) {
+        return Some(Meet::Vertex(0.0, end_fraction(e.ia, f, e.a), e.a));
+    }
+    if on_segment(e.ib, f.ia, f.ib) {
+        return Some(Meet::Vertex(1.0, end_fraction(e.ib, f, e.b), e.b));
+    }
+    None
+}
+
+/// The fraction along `e` of a grid point on it: exactly 0 or 1 at its ends.
+fn end_fraction(p: Ip, e: &EdgeRef, at: P) -> f64 {
+    if p == e.ia {
+        0.0
+    } else if p == e.ib {
+        1.0
     } else {
-        b
-    };
-    Some((t, u, at))
+        fraction(at, e.a, e.b).clamp(f64::MIN_POSITIVE, 1.0 - f64::EPSILON)
+    }
 }
 
-/// The directions of a stroke's polyline away from a point on edge `k` at fraction `t`: both ways along the edge for an
-/// interior point, towards the nearest distinct neighbouring vertices at a vertex; `None` at an open path's end.
-fn directions(f: &Flat, k: usize, t: f64) -> Option<(P, P)> {
+type Dir = [i128; 2];
+
+/// The grid directions of a stroke's polyline away from a point on edge `k` at fraction `t` (0 or 1 at a vertex), to
+/// the nearest vertices on either side that snap elsewhere; `None` at an open path's end.
+fn directions(f: &Flat, k: usize, t: f64, at: P) -> Option<(Dir, Dir)> {
     let n = f.pts.len();
     let next_of = |v: usize| {
         if v + 1 < n {
@@ -139,48 +183,54 @@ fn directions(f: &Flat, k: usize, t: f64) -> Option<(P, P)> {
             None
         }
     };
-    let (a, b) = (f.pts[k], f.pts[next_of(k)?]);
-    if t > 0.0 && t < 1.0 {
-        let p = a.lerp(b, t);
-        return Some((a - p, b - p));
-    }
-    let v = if t <= 0.0 { k } else { next_of(k)? };
-    let at = f.pts[v];
-    let (mut p, mut q) = (prev_of(v)?, next_of(v)?);
+    let v = snap(at);
+    let mut p = if t <= 0.0 { prev_of(k)? } else { k };
+    let mut q = if t >= 1.0 { next_of(next_of(k)?)? } else { next_of(k)? };
     for _ in 0..n {
-        if f.pts[p] != at {
+        if snap(f.pts[p]) != v {
             break;
         }
         p = prev_of(p)?;
     }
     for _ in 0..n {
-        if f.pts[q] != at {
+        if snap(f.pts[q]) != v {
             break;
         }
         q = next_of(q)?;
     }
-    Some((f.pts[p] - at, f.pts[q] - at))
+    let d = |w: Ip| [i128::from(w[0] - v[0]), i128::from(w[1] - v[1])];
+    let (dp, dq) = (d(snap(f.pts[p])), d(snap(f.pts[q])));
+    (dp != [0, 0] && dq != [0, 0]).then_some((dp, dq))
 }
 
-/// Whether `x` lies strictly inside the counter-clockwise arc of directions from `u` to `w` (exact orientation tests).
-fn inside_arc(u: P, w: P, x: P) -> bool {
-    let c = cross(u, w);
-    if c > 0.0 {
-        cross(u, x) > 0.0 && cross(x, w) > 0.0
-    } else if c < 0.0 {
-        !(cross(w, x) >= 0.0 && cross(x, u) >= 0.0)
-    } else if u.dot(w) < 0.0 {
-        cross(u, x) > 0.0
+fn cross_i(a: Dir, b: Dir) -> i128 {
+    a[0] * b[1] - a[1] * b[0]
+}
+
+fn dot_i(a: Dir, b: Dir) -> i128 {
+    a[0] * b[0] + a[1] * b[1]
+}
+
+/// Whether `x` lies strictly inside the counter-clockwise arc of directions from `u` to `w` (exact).
+fn inside_arc(u: Dir, w: Dir, x: Dir) -> bool {
+    let c = cross_i(u, w);
+    if c > 0 {
+        cross_i(u, x) > 0 && cross_i(x, w) > 0
+    } else if c < 0 {
+        !(cross_i(w, x) >= 0 && cross_i(x, u) >= 0)
+    } else if dot_i(u, w) < 0 {
+        cross_i(u, x) > 0
     } else {
         false
     }
 }
 
 /// Whether two polylines through one point cross there: the second's two directions lie strictly on different sides of
-/// the first. A touch, or a direction shared by both (overlap, retracing), is not a crossing.
-fn crosses_at(a: (P, P), b: (P, P)) -> bool {
-    let same = |x: P, y: P| cross(x, y) == 0.0 && x.dot(y) > 0.0;
-    if [a.0, a.1].iter().any(|x| same(*x, b.0) || same(*x, b.1)) {
+/// the first (exact signs on the grid). A touch, a turn-back, or a direction shared by both (overlap, retracing) is not
+/// a crossing.
+fn crosses_at(a: (Dir, Dir), b: (Dir, Dir)) -> bool {
+    let same = |x: Dir, y: Dir| cross_i(x, y) == 0 && dot_i(x, y) > 0;
+    if [a.0, a.1].iter().any(|x| same(*x, b.0) || same(*x, b.1)) || same(a.0, a.1) || same(b.0, b.1) {
         return false;
     }
     inside_arc(a.1, a.0, b.0) != inside_arc(a.1, a.0, b.1)
@@ -209,7 +259,7 @@ pub fn node(strokes: &[NodeStroke], work: &mut Work) -> Result<Noding, GeomError
     for (i, f) in flats.iter().enumerate() {
         for (k, (a, b, sa, sb)) in f.edges(strokes[i].path.segments().len()).into_iter().enumerate() {
             if a != b {
-                edges.push(EdgeRef { stroke: i, a, b, sa, sb, k });
+                edges.push(EdgeRef { stroke: i, a, b, ia: snap(a), ib: snap(b), sa, sb, k });
             }
         }
     }
@@ -262,28 +312,30 @@ pub fn node(strokes: &[NodeStroke], work: &mut Work) -> Result<Noding, GeomError
                 if !splittable(strokes[e.stroke].kind) && !splittable(strokes[f.stroke].kind) {
                     continue;
                 }
-                if let Some((t, u)) = crossing(e.a, e.b, f.a, f.b) {
-                    records.push(Record {
+                match meet(e, f) {
+                    Some(Meet::Proper(t, u)) => records.push(Record {
                         at: e.a.lerp(e.b, t),
                         parts: [
                             (e.stroke, flat::param_between(e.sa, e.sb, t)),
                             (f.stroke, flat::param_between(f.sa, f.sb, u)),
                         ],
-                    });
-                } else if let Some((t, u, at)) = at_vertex(e.a, e.b, f.a, f.b)
-                    && let (Some(da), Some(db)) =
-                        (directions(&flats[e.stroke], e.k, t), directions(&flats[f.stroke], f.k, u))
-                    && crosses_at(da, db)
-                {
-                    // A stroke crossing another exactly at a vertex of either (02 §3.12 item 1); touches, shared
-                    // directions (retracing) and path ends (the T-junction rule's) are not crossings.
-                    records.push(Record {
-                        at,
-                        parts: [
-                            (e.stroke, flat::param_between(e.sa, e.sb, t)),
-                            (f.stroke, flat::param_between(f.sa, f.sb, u)),
-                        ],
-                    });
+                    }),
+                    Some(Meet::Vertex(t, u, at))
+                        if let (Some(da), Some(db)) =
+                            (directions(&flats[e.stroke], e.k, t, at), directions(&flats[f.stroke], f.k, u, at))
+                            && crosses_at(da, db) =>
+                    {
+                        // A stroke crossing another exactly at a vertex of either (02 §3.12 item 1); touches,
+                        // turn-backs, shared directions (retracing) and path ends (the T-junction rule's) are not.
+                        records.push(Record {
+                            at,
+                            parts: [
+                                (e.stroke, flat::param_between(e.sa, e.sb, t)),
+                                (f.stroke, flat::param_between(f.sa, f.sb, u)),
+                            ],
+                        });
+                    }
+                    _ => {}
                 }
             }
         }
