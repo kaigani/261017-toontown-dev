@@ -1934,10 +1934,10 @@ export const COMMAND_INDEX = {
     result: "colour.fillMapping.get.result",
     examples: [
       {
-        objectId: "scene:#1",
+        drawingId: "drawingBank:#1/drawing:#1",
+        objectId: "st_01K742SG0QD1F2HFZSX8R4V7WP",
       },
     ],
-    milestone: "M2 C2.3",
   },
   "colour.fillMapping.set": {
     kind: "action",
@@ -1945,11 +1945,29 @@ export const COMMAND_INDEX = {
     result: "colour.fillMapping.set.result",
     examples: [
       {
-        objectIds: [],
+        drawingId: "drawingBank:#1/drawing:#1",
+        objectIds: [
+          "st_01K742SG0QD1F2HFZSX8R4V7WP",
+        ],
         mapping: "default",
       },
+      {
+        drawingId: "drawingBank:#1/drawing:#1",
+        objectIds: [
+          "st_01K742SG0QD1F2HFZSX8R4V7WP",
+        ],
+        mapping: {
+          matrix: [
+            50,
+            0,
+            0,
+            50,
+            0,
+            0,
+          ],
+        },
+      },
     ],
-    milestone: "M2 C2.3",
   },
   "colour.gap.close": {
     kind: "action",
@@ -2180,9 +2198,11 @@ export const COMMAND_INDEX = {
     params: "colour.recolour.apply.params",
     result: "colour.recolour.apply.result",
     examples: [
-      {},
+      {
+        fromColourId: "col_01K742SG059XGSNZ6M9MACZ2ZY",
+        toColourId: "col_01K742SG09H7QE4RRR6XSYYS88",
+      },
     ],
-    milestone: "M2 C2.3",
   },
   "colour.recovery.performed": {
     kind: "event",
@@ -2227,9 +2247,14 @@ export const COMMAND_INDEX = {
     params: "colour.selection.apply.params",
     result: "colour.selection.apply.result",
     examples: [
-      {},
+      {
+        drawingId: "drawingBank:#1/drawing:#1",
+        objectIds: [
+          "st_01K742SG0R61SYK9GG0HGYVNBT",
+          "nd_01K742SG0WFAQJFKAZKV4CD56C",
+        ],
+      },
     ],
-    milestone: "M2 C2.3",
   },
   "colour.style.changed": {
     kind: "event",
@@ -3033,11 +3058,23 @@ export const COMMAND_INDEX = {
       {
         drawingId: "drawingBank:#1/drawing:#1",
         width: 256,
+        region: {
+          x: -60,
+          y: -60,
+          width: 170,
+          height: 170,
+        },
       },
       {
         drawingId: "drawingBank:#1/drawing:#1",
         width: 320,
-        region: "field12",
+        region: {
+          x: -60,
+          y: -60,
+          width: 170,
+          height: 170,
+        },
+        padding: 10,
         background: "#FFFFFFFF",
         showStrokes: true,
       },
@@ -22156,64 +22193,63 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
     "x-spec": "`{}`",
   },
   "colour.fillMapping.get.params": {
-    title: "colour.fillMapping.get parameters",
+    title: "FillMappingGetParams",
+    description: "`colour.fillMapping.get` parameters.",
     type: "object",
     properties: {
       drawingId: {
-        type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
+        description: "The drawing (default: current).",
+        type: [
+          "string",
+          "null",
+        ],
+        default: null,
       },
       objectId: {
+        description: "A painted zone, brush stroke or pencil line.",
         type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
       },
       toClipboard: {
+        description: "Copy the mapping to the fill-mapping clipboard.",
         type: "boolean",
         default: false,
       },
     },
+    additionalProperties: false,
     required: [
       "objectId",
     ],
-    additionalProperties: false,
-    "x-spec": "`drawingId?: id; objectId: id; toClipboard: bool = false`",
   },
   "colour.fillMapping.get.result": {
-    title: "colour.fillMapping.get result",
+    title: "FillMappingResult",
+    description: "`{colourId, kind, matrix, linear?, radial?, texture?}`.",
     type: "object",
     properties: {
       colourId: {
+        description: "The colour.",
         type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
       },
       kind: {
+        description: "The swatch kind (`solid`: the kept matrix, which a solid colour ignores; SI-075).",
         type: "string",
-        maxLength: 65536,
       },
       matrix: {
+        description: "Unit space → drawing space.",
         type: "array",
         items: {
           type: "number",
         },
-        maxItems: 100000,
+        minItems: 6,
+        maxItems: 6,
       },
       linear: {
-        type: "string",
-        maxLength: 65536,
+        description: "Linear gradient handles `{start, end}`.",
       },
       radial: {
-        type: "string",
-        maxLength: 65536,
+        description: "Radial gradient handles `{centre, radius, secondAxis}`.",
       },
       texture: {
-        type: "string",
-        maxLength: 65536,
+        description: "Texture frame `{origin, xAxis, yAxis, tile}`.",
       },
     },
     required: [
@@ -22221,96 +22257,243 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
       "kind",
       "matrix",
     ],
-    "x-spec": "`{colourId, kind, matrix: [number], linear?, radial?, texture?}`",
-    additionalProperties: false,
   },
-  "colour.fillMapping.set.params": {
-    title: "colour.fillMapping.set parameters",
+  "colour.fillMapping.set.MappingIn": {
+    description: "`mapping`.",
+    anyOf: [
+      {
+        description: "Named.",
+        $ref: "#/$defs/colour.fillMapping.set.MappingName",
+      },
+      {
+        description: "Explicit.",
+        $ref: "#/$defs/colour.fillMapping.set.MappingObject",
+      },
+    ],
+  },
+  "colour.fillMapping.set.MappingName": {
+    description: "`\"default\"` or `\"clipboard\"`.",
+    oneOf: [
+      {
+        description: "Refit to the object's bounds (03 §7.2).",
+        type: "string",
+        const: "default",
+      },
+      {
+        description: "The mapping copied with `toClipboard`.",
+        type: "string",
+        const: "clipboard",
+      },
+    ],
+  },
+  "colour.fillMapping.set.MappingObject": {
+    description: "An explicit mapping (SI-025 placeholder filled, SI-075): exactly one member.",
     type: "object",
     properties: {
-      drawingId: {
-        type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
-      },
-      objectIds: {
-        type: "array",
+      matrix: {
+        description: "A full unit → drawing matrix (any mappable kind).",
+        type: [
+          "array",
+          "null",
+        ],
         items: {
-          type: "string",
-          minLength: 1,
-          maxLength: 4096,
-          description: "object ID or path reference (10 §3)",
+          type: "number",
         },
-        maxItems: 100000,
+        minItems: 6,
+        maxItems: 6,
+        default: null,
       },
-      mapping: {
+      linear: {
+        description: "Linear gradient handles.",
         anyOf: [
           {
-            type: "string",
-            enum: [
-              "default",
-              "clipboard",
-            ],
+            $ref: "#/$defs/colour.fillMapping.set.LinearIn",
           },
           {
-            type: "object",
-            properties: {},
-            additionalProperties: false,
-            "x-placeholder": true,
-            description: "shape not defined by the owning section (spec issue); only {} is accepted until it is",
-            "x-specIssue": "SI-025",
+            type: "null",
+          },
+        ],
+      },
+      radial: {
+        description: "Radial gradient handles.",
+        anyOf: [
+          {
+            $ref: "#/$defs/colour.fillMapping.set.RadialIn",
+          },
+          {
+            type: "null",
+          },
+        ],
+      },
+      texture: {
+        description: "Texture frame.",
+        anyOf: [
+          {
+            $ref: "#/$defs/colour.fillMapping.set.TextureIn",
+          },
+          {
+            type: "null",
           },
         ],
       },
     },
+    additionalProperties: false,
+  },
+  "colour.fillMapping.set.LinearIn": {
+    description: "Linear gradient handles.",
+    type: "object",
+    properties: {
+      start: {
+        description: "Where the gradient starts.",
+        $ref: "#/$defs/colour.fillMapping.set.Point",
+      },
+      end: {
+        description: "Where it ends.",
+        $ref: "#/$defs/colour.fillMapping.set.Point",
+      },
+    },
+    additionalProperties: false,
+    required: [
+      "start",
+      "end",
+    ],
+  },
+  "colour.fillMapping.set.Point": {
+    description: "A point `{x, y}` in drawing units.",
+    type: "object",
+    properties: {
+      x: {
+        description: "X (du).",
+        type: "number",
+      },
+      y: {
+        description: "Y (du, up).",
+        type: "number",
+      },
+    },
+    additionalProperties: false,
+    required: [
+      "x",
+      "y",
+    ],
+  },
+  "colour.fillMapping.set.RadialIn": {
+    description: "Radial gradient handles.",
+    type: "object",
+    properties: {
+      centre: {
+        description: "Centre.",
+        $ref: "#/$defs/colour.fillMapping.set.Point",
+      },
+      radius: {
+        description: "Radius (du).",
+        type: "number",
+        minimum: 0,
+      },
+    },
+    additionalProperties: false,
+    required: [
+      "centre",
+      "radius",
+    ],
+  },
+  "colour.fillMapping.set.TextureIn": {
+    description: "A texture frame.",
+    type: "object",
+    properties: {
+      origin: {
+        description: "Where the image's unit origin goes.",
+        $ref: "#/$defs/colour.fillMapping.set.Point",
+      },
+      xAxis: {
+        description: "The image's unit x axis (du).",
+        $ref: "#/$defs/colour.fillMapping.set.Point",
+      },
+      yAxis: {
+        description: "The image's unit y axis (du).",
+        $ref: "#/$defs/colour.fillMapping.set.Point",
+      },
+    },
+    additionalProperties: false,
+    required: [
+      "origin",
+      "xAxis",
+      "yAxis",
+    ],
+  },
+  "colour.fillMapping.set.params": {
+    title: "FillMappingSetParams",
+    description: "`colour.fillMapping.set` parameters.",
+    type: "object",
+    properties: {
+      drawingId: {
+        description: "The drawing (default: current).",
+        type: [
+          "string",
+          "null",
+        ],
+        default: null,
+      },
+      objectIds: {
+        description: "Painted zones, brush strokes and pencil lines.",
+        type: "array",
+        items: {
+          type: "string",
+        },
+      },
+      mapping: {
+        description: "The mapping.",
+        $ref: "#/$defs/colour.fillMapping.set.MappingIn",
+      },
+    },
+    additionalProperties: false,
     required: [
       "objectIds",
       "mapping",
     ],
-    additionalProperties: false,
-    "x-spec": "`drawingId?: id; objectIds: [id]; mapping: object|\"default\"|\"clipboard\"`",
+  },
+  "colour.fillMapping.set.SkippedObject": {
+    description: "A skipped object.",
+    type: "object",
+    properties: {
+      objectId: {
+        description: "The object.",
+        type: "string",
+      },
+      reason: {
+        description: "Why (`solid`, `unpainted`, `invisible`, `text`, `notPaintable`, `kindMismatch`, `colourMissing`).",
+        type: "string",
+      },
+    },
+    required: [
+      "objectId",
+      "reason",
+    ],
   },
   "colour.fillMapping.set.result": {
-    title: "colour.fillMapping.set result",
+    title: "FillMappingSetResult",
+    description: "`{changed, skipped, rev}`.",
     type: "object",
     properties: {
       changed: {
+        description: "Objects whose mapping changed (zones by their ID after the change).",
         type: "array",
         items: {
           type: "string",
-          minLength: 1,
-          maxLength: 4096,
-          description: "object ID or path reference (10 §3)",
         },
-        maxItems: 100000,
       },
       skipped: {
+        description: "Objects left alone and why.",
         type: "array",
         items: {
-          type: "object",
-          properties: {
-            objectId: {
-              type: "string",
-              minLength: 1,
-              maxLength: 4096,
-              description: "object ID or path reference (10 §3)",
-            },
-            reason: {
-              type: "string",
-              maxLength: 65536,
-            },
-          },
-          required: [
-            "objectId",
-            "reason",
-          ],
-          additionalProperties: false,
+          $ref: "#/$defs/colour.fillMapping.set.SkippedObject",
         },
-        maxItems: 100000,
       },
       rev: {
-        type: "number",
+        description: "The drawing revision after the change.",
+        type: "integer",
+        maximum: 18446744073709551615n,
+        minimum: 0,
       },
     },
     required: [
@@ -22318,8 +22501,6 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
       "skipped",
       "rev",
     ],
-    "x-spec": "`{changed: [id], skipped: [{objectId, reason}], rev}`",
-    additionalProperties: false,
   },
   "colour.gap.close.Point": {
     description: "A point `{x, y}` in drawing units.",
@@ -24713,157 +24894,200 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
       "missing",
     ],
   },
+  "colour.recolour.apply.Pair": {
+    description: "A colour replacement.",
+    type: "object",
+    properties: {
+      from: {
+        description: "Replaced colour.",
+        type: "string",
+      },
+      to: {
+        description: "Replacement.",
+        type: "string",
+      },
+    },
+    additionalProperties: false,
+    required: [
+      "from",
+      "to",
+    ],
+  },
+  "colour.recolour.apply.RecolourScope": {
+    description: "Scope of a replacement.",
+    oneOf: [
+      {
+        description: "Every drawing.",
+        type: "string",
+        const: "project",
+      },
+      {
+        description: "Drawings of the scene's elements.",
+        type: "string",
+        const: "scene",
+      },
+      {
+        description: "Drawings of the elements.",
+        type: "string",
+        const: "element",
+      },
+      {
+        description: "The drawings.",
+        type: "string",
+        const: "drawing",
+      },
+    ],
+  },
+  "colour.recolour.apply.RecolourTarget": {
+    description: "Reference kinds.",
+    oneOf: [
+      {
+        description: "Zone fills.",
+        type: "string",
+        const: "zones",
+      },
+      {
+        description: "Pencil lines.",
+        type: "string",
+        const: "lines",
+      },
+      {
+        description: "Brush strokes.",
+        type: "string",
+        const: "brushStrokes",
+      },
+      {
+        description: "Text runs.",
+        type: "string",
+        const: "text",
+      },
+    ],
+  },
   "colour.recolour.apply.params": {
-    title: "colour.recolour.apply parameters",
+    title: "RecolourParams",
+    description: "`colour.recolour.apply` parameters.",
     type: "object",
     properties: {
       fromColourId: {
-        type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
+        description: "Replaced colour (with `toColourId`).",
+        type: [
+          "string",
+          "null",
+        ],
+        default: null,
       },
       toColourId: {
-        type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
+        description: "Replacement.",
+        type: [
+          "string",
+          "null",
+        ],
+        default: null,
       },
       map: {
-        type: "array",
+        description: "Or several replacements.",
+        type: [
+          "array",
+          "null",
+        ],
         items: {
-          type: "object",
-          properties: {
-            from: {
-              type: "string",
-              minLength: 1,
-              maxLength: 4096,
-              description: "object ID or path reference (10 §3)",
-            },
-            to: {
-              type: "string",
-              minLength: 1,
-              maxLength: 4096,
-              description: "object ID or path reference (10 §3)",
-            },
-          },
-          required: [
-            "from",
-            "to",
-          ],
-          additionalProperties: false,
+          $ref: "#/$defs/colour.recolour.apply.Pair",
         },
-        maxItems: 100000,
       },
       scope: {
-        type: "string",
-        enum: [
-          "project",
-          "scene",
-          "element",
-          "drawing",
-        ],
-        default: "project",
+        description: "Scope.",
+        $ref: "#/$defs/colour.recolour.apply.RecolourScope",
       },
       sceneId: {
-        type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
+        description: "The scene (scope `scene`; default: current).",
+        type: [
+          "string",
+          "null",
+        ],
+        default: null,
       },
       elementIds: {
-        type: "array",
+        description: "The elements (scope `element`).",
+        type: [
+          "array",
+          "null",
+        ],
         items: {
           type: "string",
-          minLength: 1,
-          maxLength: 4096,
-          description: "object ID or path reference (10 §3)",
         },
-        maxItems: 100000,
+        default: null,
       },
       drawingIds: {
-        type: "array",
+        description: "The drawings (scope `drawing`).",
+        type: [
+          "array",
+          "null",
+        ],
         items: {
           type: "string",
-          minLength: 1,
-          maxLength: 4096,
-          description: "object ID or path reference (10 §3)",
         },
-        maxItems: 100000,
+        default: null,
       },
       targets: {
+        description: "Reference kinds.",
         type: "array",
         items: {
-          type: "string",
-          enum: [
-            "zones",
-            "lines",
-            "brushStrokes",
-            "text",
-          ],
+          $ref: "#/$defs/colour.recolour.apply.RecolourTarget",
         },
-        maxItems: 100000,
-        default: [
-          "zones",
-          "lines",
-          "brushStrokes",
-          "text",
-        ],
       },
       includePens: {
+        description: "Also pens using a replaced colour.",
         type: "boolean",
         default: false,
       },
     },
     additionalProperties: false,
-    "x-spec": "`fromColourId?: id; toColourId?: id; map?: [{from: id, to: id}]; scope: enum \"project\"|\"scene\"|\"element\"|\"drawing\" = \"project\"; sceneId?: id; elementIds?: [id]; drawingIds?: [id]; targets: [enum \"zones\"|\"lines\"|\"brushStrokes\"|\"text\"] = [\"zones\",\"lines\",\"brushStrokes\",\"text\"]; includePens: bool = false`",
+  },
+  "colour.recolour.apply.DrawingCount": {
+    description: "References changed in one drawing.",
+    type: "object",
+    properties: {
+      drawingId: {
+        description: "The drawing.",
+        type: "string",
+      },
+      count: {
+        description: "References changed.",
+        type: "integer",
+        maximum: 2147483647,
+        minimum: 0,
+      },
+    },
+    required: [
+      "drawingId",
+      "count",
+    ],
   },
   "colour.recolour.apply.result": {
-    title: "colour.recolour.apply result",
+    title: "RecolourResult",
+    description: "`{changed, pensChanged, skippedLocked}`.",
     type: "object",
     properties: {
       changed: {
+        description: "Per drawing, the references changed.",
         type: "array",
         items: {
-          type: "object",
-          properties: {
-            drawingId: {
-              type: "string",
-              minLength: 1,
-              maxLength: 4096,
-              description: "object ID or path reference (10 §3)",
-            },
-            count: {
-              type: "number",
-            },
-          },
-          required: [
-            "drawingId",
-            "count",
-          ],
-          additionalProperties: false,
+          $ref: "#/$defs/colour.recolour.apply.DrawingCount",
         },
-        maxItems: 100000,
       },
       pensChanged: {
+        description: "Pens recoloured.",
         type: "array",
         items: {
           type: "string",
-          minLength: 1,
-          maxLength: 4096,
-          description: "object ID or path reference (10 §3)",
         },
-        maxItems: 100000,
       },
       skippedLocked: {
+        description: "Locked drawings left alone.",
         type: "array",
         items: {
           type: "string",
-          minLength: 1,
-          maxLength: 4096,
-          description: "object ID or path reference (10 §3)",
         },
-        maxItems: 100000,
       },
     },
     required: [
@@ -24871,8 +25095,6 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
       "pensChanged",
       "skippedLocked",
     ],
-    "x-spec": "`{changed: [{drawingId, count}], pensChanged: [id], skippedLocked: [id]}`",
-    additionalProperties: false,
   },
   "colour.recovery.performed.params": {
     title: "NoParams",
@@ -25068,59 +25290,63 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
     additionalProperties: false,
   },
   "colour.selection.apply.params": {
-    title: "colour.selection.apply parameters",
+    title: "SelectionApplyParams",
+    description: "`colour.selection.apply` parameters.",
     type: "object",
     properties: {
       colourId: {
-        type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
+        description: "The colour (default: the current colour).",
+        type: [
+          "string",
+          "null",
+        ],
+        default: null,
       },
       drawingId: {
-        type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
+        description: "The drawing (default: current).",
+        type: [
+          "string",
+          "null",
+        ],
+        default: null,
       },
       objectIds: {
-        type: "array",
+        description: "Objects (default: the drawing selection).",
+        type: [
+          "array",
+          "null",
+        ],
         items: {
           type: "string",
-          minLength: 1,
-          maxLength: 4096,
-          description: "object ID or path reference (10 §3)",
         },
-        maxItems: 100000,
+        default: null,
       },
     },
     additionalProperties: false,
-    "x-spec": "`colourId?: id; drawingId?: id; objectIds?: [id]`",
   },
   "colour.selection.apply.result": {
-    title: "colour.selection.apply result",
+    title: "SelectionApplyResult",
+    description: "`{changed, rev}`.",
     type: "object",
     properties: {
       changed: {
+        description: "Objects recoloured (zones by their ID after the change).",
         type: "array",
         items: {
           type: "string",
-          minLength: 1,
-          maxLength: 4096,
-          description: "object ID or path reference (10 §3)",
         },
-        maxItems: 100000,
       },
       rev: {
-        type: "number",
+        description: "The drawing revision after the change.",
+        type: "integer",
+        maximum: 18446744073709551615n,
+        minimum: 0,
       },
     },
     required: [
       "changed",
       "rev",
     ],
-    "x-spec": "`{changed: [id], rev}`",
-    additionalProperties: false,
   },
   "colour.style.changed.params": {
     title: "colour.style.changed parameters",
@@ -82497,39 +82723,110 @@ export interface colour_editor_open_params {
 
 export type colour_editor_open_result = Record<string, unknown>;
 
+/** `colour.fillMapping.get` parameters. */
 export interface colour_fillMapping_get_params {
-  /** object ID or path reference (10 §3) */
-  drawingId?: string;
-  /** object ID or path reference (10 §3) */
+  /** The drawing (default: current). */
+  drawingId?: string | null;
+  /** A painted zone, brush stroke or pencil line. */
   objectId: string;
+  /** Copy the mapping to the fill-mapping clipboard. */
   toClipboard?: boolean;
 }
 
+/** `{colourId, kind, matrix, linear?, radial?, texture?}`. */
 export interface colour_fillMapping_get_result {
-  /** object ID or path reference (10 §3) */
+  /** The colour. */
   colourId: string;
+  /** The swatch kind (`solid`: the kept matrix, which a solid colour ignores; SI-075). */
   kind: string;
+  /** Unit space → drawing space. */
   matrix: number[];
-  linear?: string;
-  radial?: string;
-  texture?: string;
+  /** Linear gradient handles `{start, end}`. */
+  linear?: unknown;
+  /** Radial gradient handles `{centre, radius, secondAxis}`. */
+  radial?: unknown;
+  /** Texture frame `{origin, xAxis, yAxis, tile}`. */
+  texture?: unknown;
 }
 
+/** `mapping`. */
+export type colour_fillMapping_set_MappingIn = colour_fillMapping_set_MappingName | colour_fillMapping_set_MappingObject;
+
+/** `"default"` or `"clipboard"`. */
+export type colour_fillMapping_set_MappingName = 'default' | 'clipboard';
+
+/** An explicit mapping (SI-025 placeholder filled, SI-075): exactly one member. */
+export interface colour_fillMapping_set_MappingObject {
+  /** A full unit → drawing matrix (any mappable kind). */
+  matrix?: number[] | null;
+  /** Linear gradient handles. */
+  linear?: colour_fillMapping_set_LinearIn | null;
+  /** Radial gradient handles. */
+  radial?: colour_fillMapping_set_RadialIn | null;
+  /** Texture frame. */
+  texture?: colour_fillMapping_set_TextureIn | null;
+}
+
+/** Linear gradient handles. */
+export interface colour_fillMapping_set_LinearIn {
+  /** Where the gradient starts. */
+  start: colour_fillMapping_set_Point;
+  /** Where it ends. */
+  end: colour_fillMapping_set_Point;
+}
+
+/** A point `{x, y}` in drawing units. */
+export interface colour_fillMapping_set_Point {
+  /** X (du). */
+  x: number;
+  /** Y (du, up). */
+  y: number;
+}
+
+/** Radial gradient handles. */
+export interface colour_fillMapping_set_RadialIn {
+  /** Centre. */
+  centre: colour_fillMapping_set_Point;
+  /** Radius (du). */
+  radius: number;
+}
+
+/** A texture frame. */
+export interface colour_fillMapping_set_TextureIn {
+  /** Where the image's unit origin goes. */
+  origin: colour_fillMapping_set_Point;
+  /** The image's unit x axis (du). */
+  xAxis: colour_fillMapping_set_Point;
+  /** The image's unit y axis (du). */
+  yAxis: colour_fillMapping_set_Point;
+}
+
+/** `colour.fillMapping.set` parameters. */
 export interface colour_fillMapping_set_params {
-  /** object ID or path reference (10 §3) */
-  drawingId?: string;
+  /** The drawing (default: current). */
+  drawingId?: string | null;
+  /** Painted zones, brush strokes and pencil lines. */
   objectIds: string[];
-  mapping: 'default' | 'clipboard' | Record<string, unknown>;
+  /** The mapping. */
+  mapping: colour_fillMapping_set_MappingIn;
 }
 
+/** A skipped object. */
+export interface colour_fillMapping_set_SkippedObject {
+  /** The object. */
+  objectId: string;
+  /** Why (`solid`, `unpainted`, `invisible`, `text`, `notPaintable`, `kindMismatch`, `colourMissing`). */
+  reason: string;
+}
+
+/** `{changed, skipped, rev}`. */
 export interface colour_fillMapping_set_result {
+  /** Objects whose mapping changed (zones by their ID after the change). */
   changed: string[];
-  skipped: ({
-    /** object ID or path reference (10 §3) */
-    objectId: string;
-    reason: string;
-  })[];
-  rev: number;
+  /** Objects left alone and why. */
+  skipped: colour_fillMapping_set_SkippedObject[];
+  /** The drawing revision after the change. */
+  rev: number | bigint;
 }
 
 /** A point `{x, y}` in drawing units. */
@@ -83170,33 +83467,57 @@ export interface colour_pick_result {
   missing: boolean;
 }
 
+/** A colour replacement. */
+export interface colour_recolour_apply_Pair {
+  /** Replaced colour. */
+  from: string;
+  /** Replacement. */
+  to: string;
+}
+
+/** Scope of a replacement. */
+export type colour_recolour_apply_RecolourScope = 'project' | 'scene' | 'element' | 'drawing';
+
+/** Reference kinds. */
+export type colour_recolour_apply_RecolourTarget = 'zones' | 'lines' | 'brushStrokes' | 'text';
+
+/** `colour.recolour.apply` parameters. */
 export interface colour_recolour_apply_params {
-  /** object ID or path reference (10 §3) */
-  fromColourId?: string;
-  /** object ID or path reference (10 §3) */
-  toColourId?: string;
-  map?: ({
-    /** object ID or path reference (10 §3) */
-    from: string;
-    /** object ID or path reference (10 §3) */
-    to: string;
-  })[];
-  scope?: 'project' | 'scene' | 'element' | 'drawing';
-  /** object ID or path reference (10 §3) */
-  sceneId?: string;
-  elementIds?: string[];
-  drawingIds?: string[];
-  targets?: ('zones' | 'lines' | 'brushStrokes' | 'text')[];
+  /** Replaced colour (with `toColourId`). */
+  fromColourId?: string | null;
+  /** Replacement. */
+  toColourId?: string | null;
+  /** Or several replacements. */
+  map?: colour_recolour_apply_Pair[] | null;
+  /** Scope. */
+  scope?: colour_recolour_apply_RecolourScope;
+  /** The scene (scope `scene`; default: current). */
+  sceneId?: string | null;
+  /** The elements (scope `element`). */
+  elementIds?: string[] | null;
+  /** The drawings (scope `drawing`). */
+  drawingIds?: string[] | null;
+  /** Reference kinds. */
+  targets?: colour_recolour_apply_RecolourTarget[];
+  /** Also pens using a replaced colour. */
   includePens?: boolean;
 }
 
+/** References changed in one drawing. */
+export interface colour_recolour_apply_DrawingCount {
+  /** The drawing. */
+  drawingId: string;
+  /** References changed. */
+  count: number;
+}
+
+/** `{changed, pensChanged, skippedLocked}`. */
 export interface colour_recolour_apply_result {
-  changed: ({
-    /** object ID or path reference (10 §3) */
-    drawingId: string;
-    count: number;
-  })[];
+  /** Per drawing, the references changed. */
+  changed: colour_recolour_apply_DrawingCount[];
+  /** Pens recoloured. */
   pensChanged: string[];
+  /** Locked drawings left alone. */
   skippedLocked: string[];
 }
 
@@ -83262,17 +83583,22 @@ export interface colour_sceneStyles_get_result {
   styles: Record<string, string>;
 }
 
+/** `colour.selection.apply` parameters. */
 export interface colour_selection_apply_params {
-  /** object ID or path reference (10 §3) */
-  colourId?: string;
-  /** object ID or path reference (10 §3) */
-  drawingId?: string;
-  objectIds?: string[];
+  /** The colour (default: the current colour). */
+  colourId?: string | null;
+  /** The drawing (default: current). */
+  drawingId?: string | null;
+  /** Objects (default: the drawing selection). */
+  objectIds?: string[] | null;
 }
 
+/** `{changed, rev}`. */
 export interface colour_selection_apply_result {
+  /** Objects recoloured (zones by their ID after the change). */
   changed: string[];
-  rev: number;
+  /** The drawing revision after the change. */
+  rev: number | bigint;
 }
 
 /** Events take no parameters; subscribe to them (11 §9). */

@@ -9,6 +9,7 @@ pub(crate) mod app;
 pub(crate) mod bundle;
 pub(crate) mod checkpoint;
 pub(crate) mod colour;
+pub(crate) mod colour_edit;
 pub(crate) mod colour_recovery;
 pub(crate) mod common;
 pub(crate) mod derived;
@@ -157,6 +158,10 @@ pub(crate) static ALL: &[&Command] = &[
     &draw_strokeops::DRAW_SMOOTH_APPLY,
     &draw_strokeops::DRAW_LINES_TO_BRUSH_APPLY,
     &draw_render::DRAW_DRAWING_RENDER,
+    &colour_edit::COLOUR_FILL_MAPPING_GET,
+    &colour_edit::COLOUR_FILL_MAPPING_SET,
+    &colour_edit::COLOUR_SELECTION_APPLY,
+    &colour_edit::COLOUR_RECOLOUR_APPLY,
     &colour::COLOUR_PAINT_APPLY,
     &colour::COLOUR_PAINT_UNPAINTED_APPLY,
     &colour::COLOUR_PAINT_REMOVE,

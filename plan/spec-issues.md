@@ -221,7 +221,6 @@ Reserved by the M0 closure for "measured deterministic-format incompatibility" (
 
 - **Section:** 03 and spec A (`colour.*` command rows).
 - **Positions** (in `crates/registry/src/declared.json`, `placeholders`):
-  - `colour.fillMapping.set` `/params/mapping`: an object whose fields are not listed
   - `colour.palette.create` `/params/swatches/*`: an object whose fields are not listed
   - `colour.palette.duplicate` `/result/idMap`: an object whose fields are not listed
   - `colour.palette.set` `/params/palette`: an object whose fields are not listed

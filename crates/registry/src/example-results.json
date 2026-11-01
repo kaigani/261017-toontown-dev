@@ -30,7 +30,7 @@
     {
       "title": "Accept a request",
       "result": {
-        "confirmationId": "cf_cd4a38d80510580a51124da7",
+        "confirmationId": "cf_7cc17cf52c66073f12ee9780",
         "accepted": true
       },
       "varies": [
@@ -71,7 +71,7 @@
         "endpoint": null,
         "sessions": [
           {
-            "sessionId": "s1-a14071",
+            "sessionId": "s1-775265",
             "client": "Example agent",
             "policy": "assist",
             "scopes": [
@@ -83,7 +83,7 @@
               "files.write",
               "library.global"
             ],
-            "connectedAt": "2026-11-01T07:46:16.536Z",
+            "connectedAt": "2026-11-01T07:53:46.537Z",
             "lastActivity": null,
             "paused": false,
             "transport": ""
@@ -91,8 +91,8 @@
         ],
         "pendingConfirmations": [
           {
-            "confirmationId": "cf_bcfbe3de645ad608a5fc45b8",
-            "sessionId": "s1-a14071",
+            "confirmationId": "cf_1d03cf4a648d8bec1f6cef39",
+            "sessionId": "s1-775265",
             "commandId": "project.saveAs",
             "summary": "Overwrite `/tmp/Short.animpkg`",
             "consequences": [
@@ -127,7 +127,7 @@
     {
       "title": "Let a session edit",
       "result": {
-        "sessionId": "s1-2f1dba",
+        "sessionId": "s1-158a10",
         "policy": "assist",
         "scopes": [
           "read",
@@ -145,7 +145,7 @@
       "title": "Pause every session",
       "result": {
         "paused": [
-          "s1-7a75f3"
+          "s1-3da4f6"
         ]
       },
       "varies": [
@@ -438,7 +438,7 @@
       "result": [
         {
           "name": "before-walk",
-          "createdAt": "2026-11-01T07:46:17.547Z",
+          "createdAt": "2026-11-01T07:53:47.367Z",
           "documentRev": 1,
           "origin": "user"
         }
@@ -454,6 +454,54 @@
       "result": {
         "name": "before-walk",
         "documentRev": 5
+      },
+      "varies": []
+    }
+  ],
+  "colour.fillMapping.get": [
+    {
+      "title": "The brush stroke's fill mapping",
+      "result": {
+        "colourId": "col_01K742SG059XGSNZ6M9MACZ2ZY",
+        "kind": "solid",
+        "matrix": [
+          100.0,
+          0.0,
+          0.0,
+          100.0,
+          0.0,
+          0.0
+        ]
+      },
+      "varies": []
+    }
+  ],
+  "colour.fillMapping.set": [
+    {
+      "title": "Refit the brush stroke's mapping to its bounds",
+      "result": {
+        "changed": [],
+        "skipped": [
+          {
+            "objectId": "st_01K742SG0QD1F2HFZSX8R4V7WP",
+            "reason": "solid"
+          }
+        ],
+        "rev": 1
+      },
+      "varies": []
+    },
+    {
+      "title": "Set an explicit matrix",
+      "result": {
+        "changed": [],
+        "skipped": [
+          {
+            "objectId": "st_01K742SG0QD1F2HFZSX8R4V7WP",
+            "reason": "solid"
+          }
+        ],
+        "rev": 1
       },
       "varies": []
     }
@@ -631,6 +679,22 @@
       "varies": []
     }
   ],
+  "colour.recolour.apply": [
+    {
+      "title": "Replace Skin with Ink in every drawing",
+      "result": {
+        "changed": [
+          {
+            "drawingId": "dr_01K742SG0KKMCAP9X1E6Z5P4SW",
+            "count": 1
+          }
+        ],
+        "pensChanged": [],
+        "skippedLocked": []
+      },
+      "varies": []
+    }
+  ],
   "colour.recovery.run": [
     {
       "title": "Recover every missing colour of the project",
@@ -638,6 +702,19 @@
         "recovered": [],
         "placeholders": [],
         "createdPaletteIds": []
+      },
+      "varies": []
+    }
+  ],
+  "colour.selection.apply": [
+    {
+      "title": "Recolour the pencil line and the caption with the current colour",
+      "result": {
+        "changed": [
+          "st_01K742SG0R61SYK9GG0HGYVNBT",
+          "nd_01K742SG0WFAQJFKAZKV4CD56C"
+        ],
+        "rev": 5
       },
       "varies": []
     }
@@ -746,7 +823,7 @@
             "version": "0.0.1",
             "platform": "windows-x64"
           },
-          "exportedAt": "2026-11-01T07:46:18.505Z",
+          "exportedAt": "2026-11-01T07:53:48.351Z",
           "sourceProjectId": "pr_01K742SG00BK0VXTWDM5JRXV37",
           "scope": {
             "kind": "scenes",
@@ -5522,7 +5599,7 @@
             "stepId": "u-1",
             "label": "Set meta",
             "source": "user",
-            "time": "2026-11-01T07:46:24.196Z",
+            "time": "2026-11-01T07:53:50.947Z",
             "objectCount": 1
           },
           {
@@ -5530,7 +5607,7 @@
             "stepId": "u-2",
             "label": "Set meta",
             "source": "user",
-            "time": "2026-11-01T07:46:24.198Z",
+            "time": "2026-11-01T07:53:50.949Z",
             "objectCount": 1
           }
         ],
@@ -5675,7 +5752,7 @@
         "state": "succeeded",
         "progress": 1.0,
         "message": "",
-        "startedAt": "2026-11-01T07:46:24.582Z",
+        "startedAt": "2026-11-01T07:53:51.236Z",
         "result": {},
         "session": "user"
       },
@@ -5694,7 +5771,7 @@
           "state": "succeeded",
           "progress": 1.0,
           "message": "",
-          "startedAt": "2026-11-01T07:46:24.622Z",
+          "startedAt": "2026-11-01T07:53:51.263Z",
           "result": {},
           "session": "user"
         }
@@ -5713,7 +5790,7 @@
         "state": "succeeded",
         "progress": 1.0,
         "message": "",
-        "startedAt": "2026-11-01T07:46:24.658Z",
+        "startedAt": "2026-11-01T07:53:51.289Z",
         "result": {},
         "session": "user"
       },
@@ -5760,10 +5837,10 @@
     {
       "title": "A 1920×1080, 24 fps project",
       "result": {
-        "projectId": "pr_01M6B15VGTN6SJTFKB6VNPKXNE",
-        "sceneId": "sc_01M6B15VGWT4RPJFSK893KGCQV",
-        "cameraId": "el_01M6B15VGWT4RPJFSK893KGCQX",
-        "elementId": "el_01M6B15VGWT4RPJFSK893KGCQY"
+        "projectId": "pr_01M6B1KFBGYASSMY3VJYAJ6F27",
+        "sceneId": "sc_01M6B1KFBHC77X2D2G96GWD0PW",
+        "cameraId": "el_01M6B1KFBHC77X2D2G96GWD0PY",
+        "elementId": "el_01M6B1KFBHC77X2D2G96GWD0PZ"
       },
       "varies": [
         "/cameraId",
@@ -6019,7 +6096,7 @@
         {
           "path": "/tmp/Sample.animpkg",
           "name": "Sample",
-          "lastOpened": "2026-11-01T07:46:26.312Z",
+          "lastOpened": "2026-11-01T07:53:52.228Z",
           "exists": true
         }
       ],

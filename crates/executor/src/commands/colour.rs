@@ -135,7 +135,7 @@ fn point(p: Point, pointer: &str) -> Result<P, CommandError> {
 }
 
 /// The native pixel size of a tile-on texture (its first style's value, as `colour.pick` reads it, SI-065), by colour ID.
-fn tile_size(doc: &Document, colour: &str) -> Option<(f64, f64)> {
+pub(crate) fn tile_size(doc: &Document, colour: &str) -> Option<(f64, f64)> {
     match first_style_value(doc, colour)?.2 {
         tt_model::entities::palette::SwatchValue::Texture(t) if t.tile => {
             Some((f64::from(t.width?), f64::from(t.height?)))
@@ -174,7 +174,7 @@ pub(crate) fn opaque(doc: &Document, colour: &str) -> bool {
 }
 
 /// A swatch's kind and whether it is protected (SI-061), by colour ID.
-fn swatch_info(doc: &Document, colour: &str) -> Option<(SwatchKind, bool)> {
+pub(crate) fn swatch_info(doc: &Document, colour: &str) -> Option<(SwatchKind, bool)> {
     doc.palettes().flat_map(|p| p.swatches().iter()).find(|s| s.colour_id().as_str() == colour).map(|s| {
         let protected = serde_json::to_value(s)
             .ok()
@@ -219,7 +219,7 @@ pub(crate) fn drag_matrix(kind: SwatchKind, from: P, to: P) -> Option<[f64; 6]> 
 /// object's bounding box and the swatch kind.
 /// A tile-on texture after a single click keeps its native size, one image pixel per drawing unit, anchored at the
 /// box's top-left corner (03 §7.2; C22-R2-05; the axis convention against rendering is confirmed in C2.3).
-fn paint_matrix(
+pub(crate) fn paint_matrix(
     kind: SwatchKind,
     drag: Option<(P, P)>,
     existing: Option<[f64; 6]>,
@@ -1013,7 +1013,7 @@ pub(crate) struct PaintResult {
     rev: u64,
 }
 
-fn resolve_colour(cx: &Cx, given: Option<&str>) -> Result<(Option<String>, SwatchKind), CommandError> {
+pub(crate) fn resolve_colour(cx: &Cx, given: Option<&str>) -> Result<(Option<String>, SwatchKind), CommandError> {
     let doc = cx.document()?;
     let colour = match given {
         Some(c) => Some(c.to_owned()),
