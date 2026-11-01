@@ -2861,9 +2861,13 @@ export const COMMAND_INDEX = {
     params: "draw.centreLine.apply.params",
     result: "draw.centreLine.apply.result",
     examples: [
-      {},
+      {
+        drawingId: "drawingBank:#1/drawing:#1",
+        ids: [
+          "st_01K742SG0QD1F2HFZSX8R4V7WP",
+        ],
+      },
     ],
-    milestone: "M2 C2.3",
   },
   "draw.content.add": {
     kind: "action",
@@ -29715,78 +29719,110 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
     ],
   },
   "draw.centreLine.apply.params": {
-    title: "draw.centreLine.apply parameters",
+    title: "CentreLineParams",
+    description: "`draw.centreLine.apply` parameters.",
     type: "object",
     properties: {
       drawingId: {
-        type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
+        description: "The drawing (default: current).",
+        type: [
+          "string",
+          "null",
+        ],
+        default: null,
       },
       ids: {
-        type: "array",
+        description: "Brush strokes, or layers and groups holding them (default: the selection).",
+        type: [
+          "array",
+          "null",
+        ],
         items: {
           type: "string",
-          minLength: 1,
-          maxLength: 4096,
-          description: "object ID or path reference (10 §3)",
         },
-        maxItems: 100000,
-        description: "Default: selection.",
+        default: null,
       },
       thickness: {
-        type: "number",
-        description: "(default: average source width)",
+        description: "Line thickness (du; default: the source's average width).",
+        type: [
+          "number",
+          "null",
+        ],
+        default: null,
+        minimum: 0,
+        maximum: 1000,
       },
     },
     additionalProperties: false,
-    "x-spec": "`drawingId?: id; ids?: [id] = selection; thickness?: number (default: average source width)`",
   },
   "draw.centreLine.apply.result": {
-    title: "draw.centreLine.apply result",
+    title: "CentreLineResult",
+    description: "`{strokeIds, removedIds, warnings, rev}`.",
     type: "object",
     properties: {
-      strokeIds: {
-        type: "array",
-        items: {
-          type: "string",
-          minLength: 1,
-          maxLength: 4096,
-          description: "object ID or path reference (10 §3)",
-        },
-        maxItems: 100000,
+      drawingId: {
+        description: "The drawing.",
+        type: "string",
       },
-      removedIds: {
+      strokeIds: {
+        description: "The new pencil lines.",
         type: "array",
         items: {
           type: "string",
-          minLength: 1,
-          maxLength: 4096,
-          description: "object ID or path reference (10 §3)",
         },
-        maxItems: 100000,
       },
       warnings: {
+        description: "`drawing.centreLineOnFill` (painted zones that are not brush strokes selected), `drawing.centreLineNoSpine`\n(outlines edited directly, kept; SI-076).",
         type: "array",
         items: {
           type: "string",
-          maxLength: 256,
         },
-        maxItems: 100000,
+      },
+      skippedIds: {
+        description: "Brush strokes left as they were (no spine).",
+        type: "array",
+        items: {
+          type: "string",
+        },
+      },
+      createdIds: {
+        description: "Created objects.",
+        type: "array",
+        items: {
+          type: "string",
+        },
+      },
+      modifiedIds: {
+        description: "Modified objects (content, membership or position changed; IDs kept).",
+        type: "array",
+        items: {
+          type: "string",
+        },
+      },
+      removedIds: {
+        description: "Removed objects (descendants included).",
+        type: "array",
+        items: {
+          type: "string",
+        },
       },
       rev: {
-        type: "number",
+        description: "The drawing revision after the change.",
+        type: "integer",
+        maximum: 18446744073709551615n,
+        minimum: 0,
       },
     },
     required: [
+      "drawingId",
       "strokeIds",
-      "removedIds",
       "warnings",
+      "skippedIds",
+      "createdIds",
+      "modifiedIds",
+      "removedIds",
       "rev",
     ],
-    "x-spec": "`{strokeIds: [id], removedIds: [id], warnings: [code], rev}`",
-    additionalProperties: false,
   },
   "draw.content.add.ContentIn": {
     description: "Content to insert: `{nodes}` (a whole `draw.drawing.get` result is accepted).",
@@ -84925,20 +84961,34 @@ export interface draw_breakApart_apply_result {
   rev: number | bigint;
 }
 
+/** `draw.centreLine.apply` parameters. */
 export interface draw_centreLine_apply_params {
-  /** object ID or path reference (10 §3) */
-  drawingId?: string;
-  /** Default: selection. */
-  ids?: string[];
-  /** (default: average source width) */
-  thickness?: number;
+  /** The drawing (default: current). */
+  drawingId?: string | null;
+  /** Brush strokes, or layers and groups holding them (default: the selection). */
+  ids?: string[] | null;
+  /** Line thickness (du; default: the source's average width). */
+  thickness?: number | null;
 }
 
+/** `{strokeIds, removedIds, warnings, rev}`. */
 export interface draw_centreLine_apply_result {
+  /** The drawing. */
+  drawingId: string;
+  /** The new pencil lines. */
   strokeIds: string[];
-  removedIds: string[];
+  /** `drawing.centreLineOnFill` (painted zones that are not brush strokes selected), `drawing.centreLineNoSpine` (outlines edited directly, kept; SI-076). */
   warnings: string[];
-  rev: number;
+  /** Brush strokes left as they were (no spine). */
+  skippedIds: string[];
+  /** Created objects. */
+  createdIds: string[];
+  /** Modified objects (content, membership or position changed; IDs kept). */
+  modifiedIds: string[];
+  /** Removed objects (descendants included). */
+  removedIds: string[];
+  /** The drawing revision after the change. */
+  rev: number | bigint;
 }
 
 /** Content to insert: `{nodes}` (a whole `draw.drawing.get` result is accepted). */

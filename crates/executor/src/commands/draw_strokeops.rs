@@ -452,3 +452,142 @@ pub(crate) fn draw_break_apart_apply(cx: &mut Cx, p: BreakApartParams) -> Result
     crate::planar::settled(cx, &doc, &t.id, &created)?.report(&mut changed);
     Ok(BreakApartResult { drawing_id: t.id.as_str().to_owned(), group_ids, changed, rev: committed_rev(cx)? })
 }
+
+/// `draw.centreLine.apply` parameters.
+#[derive(Debug, Deserialize, JsonSchema)]
+#[serde(deny_unknown_fields, rename_all = "camelCase")]
+pub(crate) struct CentreLineParams {
+    /// The drawing (default: current).
+    #[serde(default)]
+    drawing_id: Option<String>,
+    /// Brush strokes, or layers and groups holding them (default: the selection).
+    #[serde(default)]
+    ids: Option<Vec<String>>,
+    /// Line thickness (du; default: the source's average width).
+    #[serde(default)]
+    #[schemars(range(min = 0.0, max = 1000.0))]
+    thickness: Option<f64>,
+}
+
+/// `{strokeIds, removedIds, warnings, rev}`.
+#[derive(Debug, Serialize, JsonSchema)]
+#[serde(rename_all = "camelCase")]
+pub(crate) struct CentreLineResult {
+    /// The drawing.
+    drawing_id: String,
+    /// The new pencil lines.
+    stroke_ids: Vec<String>,
+    /// `drawing.centreLineOnFill` (painted zones that are not brush strokes selected), `drawing.centreLineNoSpine`
+    /// (outlines edited directly, kept; SI-076).
+    warnings: Vec<String>,
+    /// Brush strokes left as they were (no spine).
+    skipped_ids: Vec<String>,
+    /// Changed objects.
+    #[serde(flatten)]
+    changed: Changed,
+    /// The drawing revision after the change.
+    rev: u64,
+}
+
+#[command(
+    id = "draw.centreLine.apply",
+    kind = action,
+    label = "Extract Centre Line",
+    scopes = [edit],
+    undo = "Extract Centre Line",
+    needs_project,
+    example(title = "Turn the brush stroke into a pencil line", params = r#"{"drawingId": "drawingBank:#1/drawing:#1", "ids": ["st_01K742SG0QD1F2HFZSX8R4V7WP"]}"#),
+    gui = "Drawing view: Extract Centre Line (M4 C4.2)",
+)]
+pub(crate) fn draw_centre_line_apply(cx: &mut Cx, p: CentreLineParams) -> Result<CentreLineResult, CommandError> {
+    let mut none = Vec::new();
+    let t = target(cx, p.drawing_id.as_deref(), None, None, false, &mut none)?;
+    let doc = cx.document()?.clone();
+    let d = t.drawing(&doc)?.into_owned();
+    check_editable(&d, None)?;
+    let list = p.ids.clone().unwrap_or_else(|| super::draw::selection_ids(cx, &d));
+    let mut warnings = Vec::new();
+    // Painted zones in the selection that are not brush strokes would give unwanted centre lines (02 §8.5).
+    if list.iter().any(|i| i.starts_with("zn_") || i.contains("/zn_")) {
+        let zones = crate::planar::drawing_zones(&cx.planar_cache(), &d)?;
+        let painted = list.iter().any(|i| {
+            let local = vd::local_id(d.id().as_str(), i).unwrap_or(i);
+            zones.iter().any(|lz| {
+                lz.map
+                    .zone_by_id(local)
+                    .is_some_and(|z| lz.fills.get(z).cloned().flatten().is_some_and(|f| f.painted()))
+            })
+        });
+        if painted {
+            warnings.push("drawing.centreLineOnFill".to_owned());
+        }
+    }
+    let brushes: Vec<Located> = strokes_of(cx, &d, Some(&list), "extract")?
+        .into_iter()
+        .filter(|l| vd::stroke_at(&d, &l.pointer).is_some_and(|s| *s.kind() == StrokeKind::Brush))
+        .collect();
+    if brushes.is_empty() {
+        return Err(nothing_to_do("extract"));
+    }
+    let mut order: Vec<&Located> = brushes.iter().collect();
+    order.sort_by(|a, b| b.list.cmp(&a.list).then(b.index.cmp(&a.index)));
+    let mut ops = Vec::new();
+    let mut made: Vec<(String, String)> = Vec::new();
+    let mut skipped = Vec::new();
+    for l in order {
+        let Some(s) = vd::stroke_at(&d, &l.pointer) else { continue };
+        let Some(spine) = s.spine().as_ref() else {
+            skipped.push(l.id.clone());
+            continue;
+        };
+        let pen = &spine.pen;
+        // Average width over the pressure profile (pen width at pressure q: min + (max - min) q).
+        let mean_p = if spine.pressure.is_empty() {
+            1.0
+        } else {
+            spine.pressure.iter().map(|q| q[1]).sum::<f64>() / spine.pressure.len() as f64
+        };
+        let width = p.thickness.unwrap_or(pen.min_size + (pen.max_size - pen.min_size) * mean_p).max(0.1);
+        let path = tt_vector::path::Path::from_points(&spine.points, false);
+        let id = cx.new_id(ObjectType::Stroke)?.as_str().to_owned();
+        let line = json!({
+            "id": id, "type": "stroke", "rev": 0, "kind": "pencil", "closed": false, "points": path.points_json(),
+            "colourId": s.colour_id().as_ref().map(|c| c.as_str()), "fillMatrix": s.fill_matrix(),
+            "lineStyle": { "thickness": width, "lineType": "solid" }, "spine": null,
+            "sides": { "left": null, "right": null },
+        });
+        ops.push(op("replace", &l.pointer, Some(line)));
+        made.push((l.id.clone(), id));
+    }
+    if !skipped.is_empty() {
+        warnings.push("drawing.centreLineNoSpine".to_owned());
+    }
+    if ops.is_empty() {
+        return Ok(CentreLineResult {
+            drawing_id: t.id.as_str().to_owned(),
+            stroke_ids: Vec::new(),
+            warnings,
+            skipped_ids: skipped,
+            changed: Changed::default(),
+            rev: *d.rev(),
+        });
+    }
+    made.reverse();
+    cx.patch_entries(vec![(EntryKey::Drawing(t.id.clone()), ops)])?;
+    let created: Vec<String> = made.iter().map(|m| m.1.clone()).collect();
+    let mut changed = Changed {
+        created_ids: created.clone(),
+        removed_ids: made.iter().map(|m| m.0.clone()).collect(),
+        ..Changed::default()
+    };
+    crate::planar::settled(cx, &doc, &t.id, &created)?.report(&mut changed);
+    let stroke_ids = created.iter().flat_map(|c| cx.pieces_of(&t.id, c)).collect();
+    Ok(CentreLineResult {
+        drawing_id: t.id.as_str().to_owned(),
+        stroke_ids,
+        warnings,
+        skipped_ids: skipped,
+        changed,
+        rev: committed_rev(cx)?,
+    })
+}

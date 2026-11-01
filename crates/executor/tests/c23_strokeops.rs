@@ -192,3 +192,48 @@ fn lines_to_brush_sweeps_the_current_pen_and_keeps_an_invisible_centre() {
     assert_eq!(node(&h, &sid)["kind"], "pencil");
     assert!(node(&h, &bid).is_null());
 }
+
+#[test]
+fn centre_line_follows_the_spine_with_the_average_width_and_reports_what_it_cannot_do() {
+    let h = fixture();
+    let b = ok(
+        &h,
+        "draw.stroke.add",
+        json!({ "elementId": BOB, "frame": 1, "kind": "brush",
+                "points": [{"x": 0, "y": 700, "pressure": 0.5}, {"x": 60, "y": 700, "pressure": 0.5}],
+                "pen": { "tipShape": "round", "minSize": 2, "maxSize": 10, "tipAngle": 0 } }),
+    );
+    let bid = b["strokeIds"][0].as_str().unwrap().to_owned();
+    let colour = node(&h, &bid)["colourId"].clone();
+    let r = ok(&h, "draw.centreLine.apply", json!({ "drawingId": D1, "ids": [bid] }));
+    assert!(r["removedIds"].as_array().unwrap().contains(&json!(bid)));
+    let line = node(&h, r["strokeIds"][0].as_str().unwrap());
+    assert_eq!((line["kind"].as_str(), line["colourId"].clone()), (Some("pencil"), colour));
+    assert_eq!(line["lineStyle"]["thickness"], 6.0, "average width at pressure 0.5");
+    assert_eq!(
+        (line["bezier"][0]["x"].as_f64(), line["bezier"].as_array().unwrap().last().unwrap()["x"].as_f64()),
+        (Some(0.0), Some(60.0))
+    );
+    ok(&h, "edit.undo", json!({}));
+    // A brush outline edited directly has no spine: kept and reported.
+    ok(&h, "draw.transform.apply", json!({ "drawingId": D1, "ids": [bid], "scale": {"x": 2, "y": 1} }));
+    let r = ok(&h, "draw.centreLine.apply", json!({ "drawingId": D1, "ids": [bid] }));
+    assert_eq!((r["skippedIds"].clone(), r["warnings"].clone()), (json!([bid]), json!(["drawing.centreLineNoSpine"])));
+    // Painted zones that are not brush strokes are warned about.
+    let c = colours(&h);
+    let rect = ok(
+        &h,
+        "draw.rectangle.add",
+        json!({ "drawingId": D1, "from": {"x": 300, "y": 300}, "to": {"x": 360, "y": 340}, "layer": "new" }),
+    );
+    ok(&h, "colour.paint.apply", json!({ "drawingId": D1, "objectIds": [rect["zoneIds"][0]], "colourId": c[0] }));
+    let zone = layer(&h, rect["layerId"].as_str().unwrap())["zones"][0]["id"].clone();
+    let b2 = ok(
+        &h,
+        "draw.stroke.add",
+        json!({ "elementId": BOB, "frame": 1, "kind": "brush", "points": [{"x": 0, "y": 800}, {"x": 40, "y": 800}],
+        "pen": { "tipShape": "round", "minSize": 4, "maxSize": 4, "tipAngle": 0 } }),
+    );
+    let r = ok(&h, "draw.centreLine.apply", json!({ "drawingId": D1, "ids": [zone, b2["strokeIds"][0]] }));
+    assert!(r["warnings"].as_array().unwrap().contains(&json!("drawing.centreLineOnFill")), "{r}");
+}

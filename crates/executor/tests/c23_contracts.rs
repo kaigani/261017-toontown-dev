@@ -88,6 +88,7 @@ fn cases() -> Vec<(&'static str, Value)> {
         ("draw.flatten.apply", q(json!({ "ids": [GROUP, PENCIL] }))),
         ("draw.smooth.apply", q(json!({ "ids": [BRUSH], "tolerance": 8 }))),
         ("draw.linesToBrush.apply", q(json!({ "ids": [PENCIL] }))),
+        ("draw.centreLine.apply", q(json!({ "ids": [BRUSH] }))),
         ("draw.rectangle.add", q(json!({ "from": {"x": 300, "y": 300}, "to": {"x": 360, "y": 340} }))),
         ("draw.ellipse.add", q(json!({ "from": {"x": 400, "y": 300}, "to": {"x": 460, "y": 340} }))),
         ("draw.line.add", q(json!({ "from": {"x": 300, "y": 400}, "to": {"x": 380, "y": 420} }))),
