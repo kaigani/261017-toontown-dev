@@ -7,6 +7,7 @@ import argparse
 import asyncio
 import json
 import pathlib
+import shutil
 import subprocess
 import sys
 import tempfile
@@ -75,6 +76,7 @@ async def exercise(binary, out, work):
     (out/'headless-batch.json').write_text(json.dumps(batch,indent=2),encoding='utf-8')
     command=[str(binary),'--run',str(work/'replay.json'),'--project',str(base),'--policy','autonomous','--allow-path',str(work),'--user-dir',str(work/'replay-user')]
     result=subprocess.run(command,capture_output=True,timeout=120)
+    shutil.copy2(base,out/'headless-base.animpkg')
     (out/'headless-replay.stdout').write_bytes(result.stdout)
     (out/'headless-replay.stderr').write_bytes(result.stderr)
     assert result.returncode==0,(result.returncode,result.stdout.decode(errors='replace'),result.stderr.decode(errors='replace'))

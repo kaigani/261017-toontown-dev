@@ -1,0 +1,72 @@
+{
+  "label": "Agent activity",
+  "atomic": false,
+  "stopOnError": true,
+  "steps": [
+    {
+      "id": "draw.stroke.add",
+      "params": {
+        "drawingId": "dr_01K742SG0KKMCAP9X1E6Z5P4SW",
+        "kind": "pencil",
+        "layer": "new",
+        "fit": false,
+        "closed": true,
+        "points": [
+          {
+            "x": 1000,
+            "y": 1000
+          },
+          {
+            "x": 1100,
+            "y": 1000
+          },
+          {
+            "x": 1100,
+            "y": 1100
+          },
+          {
+            "x": 1000,
+            "y": 1100
+          }
+        ]
+      }
+    },
+    {
+      "id": "draw.stroke.add",
+      "params": {
+        "drawingId": "dr_01K742SG0KKMCAP9X1E6Z5P4SW",
+        "kind": "invisible",
+        "layer": "nd_01K7JJN801VXVB0NJPYF8VRHWH",
+        "fit": false,
+        "points": [
+          {
+            "x": 1040,
+            "y": 990
+          },
+          {
+            "x": 1040,
+            "y": 1110
+          }
+        ]
+      }
+    },
+    {
+      "id": "colour.paint.apply",
+      "params": {
+        "drawingId": "dr_01K742SG0KKMCAP9X1E6Z5P4SW",
+        "objectIds": [
+          "zn_N6TSWERCFDJJQ6CC6G3SG9K100",
+          "zn_36YDPB3QAQ3NBGNKVRQ1NHKSMP"
+        ]
+      }
+    },
+    {
+      "id": "edit.undo",
+      "params": {}
+    },
+    {
+      "id": "edit.redo",
+      "params": {}
+    }
+  ]
+}

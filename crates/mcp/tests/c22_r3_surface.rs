@@ -75,6 +75,8 @@ fn e2_split_stale_fresh_ids_events_inspect_and_saved_readback() {
     assert_eq!(rx.try_iter().filter(|e| e.name == "draw.drawing.changed").count(), 1);
     let painted = zones(&mut c, &layer);
     assert!(painted.as_array().unwrap().iter().all(|z| z["colourId"] == colours[2]));
+    let hit = run(&mut c, "draw.hitTest.get", json!({"drawingId":D,"point":{"x":1020,"y":1050},"tolerance":0}));
+    assert!(ids.contains(&hit["zoneId"]), "{hit}");
     run(&mut c, "edit.undo", json!({}));
     assert_eq!(zones(&mut c, &layer), z);
     run(&mut c, "edit.redo", json!({}));
@@ -101,5 +103,60 @@ fn e2_split_stale_fresh_ids_events_inspect_and_saved_readback() {
     eprintln!("split event {}; saved zones {}", events[0].payload, painted);
     c.close().unwrap();
     drop(h);
+    let _ = std::fs::remove_dir_all(dir);
+}
+
+#[test]
+fn importing_ahead_revisions_stamps_preserved_ids_and_replays_from_the_same_base() {
+    let dir = tmp();
+    let source = executor(&dir.join("source"));
+    assert!(source.open_document(tt_model::fixture::sample_document(1).unwrap(), None, false).is_ok());
+    for i in 0..5 {
+        assert!(
+            source
+                .invoke(tt_executor::Invocation::user(
+                    "doc.object.patch",
+                    json!({"targets":[D],"props":{"meta":{"sourceGeneration":i}}})
+                ))
+                .is_ok()
+        );
+    }
+    let bundle = source
+        .invoke(tt_executor::Invocation::user("doc.export.json", json!({"scope":"project","binaries":"embed"})))
+        .result
+        .unwrap()["bundle"]
+        .clone();
+    let h = executor(&dir.join("target"));
+    assert!(h.invoke(tt_executor::Invocation::user("project.create", json!({"name":"Target"}))).is_ok());
+    let initial = h.snapshot().unwrap().unwrap();
+    let mut o = opts(&dir);
+    o.policy = Some(tt_executor::agents::Policy::Autonomous);
+    let (mut c, _) = Client::connect(&h, o.clone(), json!({}));
+    let before = initial.document_rev();
+    let r = run(&mut c, "doc.import.json", json!({"source":bundle,"idPolicy":"preserve"}));
+    assert!(r["created"]["drawings"].as_array().unwrap().contains(&json!(D)));
+    let imported = run(&mut c, "doc.object.get", json!({"ref":D,"depth":-1}))["object"].clone();
+    assert_eq!(imported["rev"], before + 1);
+    let path = dir.join("import-replay.json");
+    run(&mut c, "agent.activity.export", json!({"path":path,"format":"batch"}));
+    let fresh = executor(&dir.join("fresh"));
+    assert!(fresh.open_document(initial, None, false).is_ok());
+    let result = tt_mcp::script::run(&fresh, &o, tt_mcp::script::load(&path).unwrap(), None).unwrap();
+    assert!(result.ok, "{:?}", result.envelope);
+    let canonical = |h: &tt_executor::ExecutorHandle| {
+        let doc = h.snapshot().unwrap().unwrap();
+        doc.entry_keys()
+            .iter()
+            .map(|k| tt_model::canonical::to_canonical_string(&doc.entry_raw_json(k).unwrap()).unwrap())
+            .collect::<Vec<_>>()
+    };
+    assert_eq!(canonical(&fresh), canonical(&h));
+    run(&mut c, "edit.undo", json!({}));
+    assert!(h.snapshot().unwrap().unwrap().drawing(&tt_model::Id::parse(D).unwrap()).is_none());
+    run(&mut c, "edit.redo", json!({}));
+    assert!(run(&mut c, "doc.object.get", json!({"ref":D}))["object"]["rev"].as_u64().unwrap() > before + 1);
+    eprintln!("source rev ahead of target; import rev={}, canonical replay equal", before + 1);
+    c.close().unwrap();
+    drop((h, fresh, source));
     let _ = std::fs::remove_dir_all(dir);
 }

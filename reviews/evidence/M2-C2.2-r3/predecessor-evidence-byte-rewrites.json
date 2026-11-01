@@ -1,0 +1,32 @@
+[
+  {
+    "path": "reviews/evidence/M2-C2.2-r2/added-constructs.json",
+    "committedSha256": "bda60b51ec591f5621bb95a6bd0bd20e94733a7d6607148e6baf90cedb54b6bd",
+    "afterSuiteSha256": "9da623e0ebf505f62e4a3e40504fa50eaf3b3ca1c75a0fa748f4c43a2c407f0b",
+    "equalAfterCRLFNormalization": true
+  },
+  {
+    "path": "reviews/evidence/M2-C2.2-r2/conformance.md",
+    "committedSha256": "293997848a763839d55054036a137a9c90b2520bf156f0944fbeade6ce5bf7d4",
+    "afterSuiteSha256": "56351f0bcdc6a56d001d6028b3f7eea018e8186c8e5ce4771f90b358432cc975",
+    "equalAfterCRLFNormalization": true
+  },
+  {
+    "path": "reviews/evidence/M2-C2.2-r2/planar-analysis.json",
+    "committedSha256": "7a3654ade416e55597fa916058493723941f65c25df208432a46fc20991bb509",
+    "afterSuiteSha256": "8b48c05fd7b59a6087a54f6b8bab24fd4880a2a69d95c8d58f32a57b4db08d6f",
+    "equalAfterCRLFNormalization": true
+  },
+  {
+    "path": "reviews/evidence/M2-C2.2-r2/register-deltas.json",
+    "committedSha256": "531f57109edfff4c8959890ca5d82b101012c76a6fdb32d179b461a414c8ccb5",
+    "afterSuiteSha256": "e2c31e03ec442bda2d15fc866b2e2db3089b3827abe0e8aae48f532eb5b1e0a7",
+    "equalAfterCRLFNormalization": true
+  },
+  {
+    "path": "reviews/evidence/M2-C2.2-r2/reviewer-tests-diff.txt",
+    "committedSha256": "375bb303880867866f5cdb48991bba8781ed4296d492de7d2fd785169c14478e",
+    "afterSuiteSha256": "186caf0ab42a90030d6558e8ba2f3524ed7854ebc1472ea58328d9ba503a2efa",
+    "equalAfterCRLFNormalization": true
+  }
+]

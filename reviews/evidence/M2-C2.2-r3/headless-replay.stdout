@@ -1,0 +1,837 @@
+{
+  "status": "ok",
+  "result": {
+    "stepCount": 5
+  },
+  "changes": [
+    {
+      "id": "dr_01K742SG0KKMCAP9X1E6Z5P4SW/st_01K7JJN8007GWTQF9M83GDMNCF",
+      "type": "stroke",
+      "op": "created",
+      "rev": 4,
+      "parentId": "dr_01K742SG0KKMCAP9X1E6Z5P4SW/nd_01K7JJN801VXVB0NJPYF8VRHWH",
+      "index": 0
+    },
+    {
+      "id": "dr_01K742SG0KKMCAP9X1E6Z5P4SW/nd_01K7JJN801VXVB0NJPYF8VRHWH",
+      "type": "drawingNode",
+      "op": "created",
+      "rev": 4,
+      "parentId": "dr_01K742SG0KKMCAP9X1E6Z5P4SW",
+      "index": 3
+    },
+    {
+      "id": "dr_01K742SG0KKMCAP9X1E6Z5P4SW",
+      "type": "drawing",
+      "op": "modified",
+      "rev": 4,
+      "patch": [
+        {
+          "op": "add",
+          "path": "/nodes/3",
+          "value": {
+            "id": "nd_01K7JJN801VXVB0NJPYF8VRHWH",
+            "type": "drawingNode"
+          }
+        }
+      ]
+    },
+    {
+      "id": "dr_01K742SG0KKMCAP9X1E6Z5P4SW/st_01K7JJN801Z1CRNSC8EP3EGFR6",
+      "type": "stroke",
+      "op": "created",
+      "rev": 5,
+      "parentId": "dr_01K742SG0KKMCAP9X1E6Z5P4SW/nd_01K7JJN801VXVB0NJPYF8VRHWH",
+      "index": 0
+    },
+    {
+      "id": "dr_01K742SG0KKMCAP9X1E6Z5P4SW/st_01K7JJN8028BQ4938FFYSX322J",
+      "type": "stroke",
+      "op": "created",
+      "rev": 5,
+      "parentId": "dr_01K742SG0KKMCAP9X1E6Z5P4SW/nd_01K7JJN801VXVB0NJPYF8VRHWH",
+      "index": 1
+    },
+    {
+      "id": "dr_01K742SG0KKMCAP9X1E6Z5P4SW/st_01K7JJN803XCWDSV8HP1WSMVFB",
+      "type": "stroke",
+      "op": "created",
+      "rev": 5,
+      "parentId": "dr_01K742SG0KKMCAP9X1E6Z5P4SW/nd_01K7JJN801VXVB0NJPYF8VRHWH",
+      "index": 2
+    },
+    {
+      "id": "dr_01K742SG0KKMCAP9X1E6Z5P4SW/st_01K7JJN804ZHV88J18DV0C3A5J",
+      "type": "stroke",
+      "op": "created",
+      "rev": 5,
+      "parentId": "dr_01K742SG0KKMCAP9X1E6Z5P4SW/nd_01K7JJN801VXVB0NJPYF8VRHWH",
+      "index": 3
+    },
+    {
+      "id": "dr_01K742SG0KKMCAP9X1E6Z5P4SW/st_01K7JJN8050XB7KB5FB25SS87A",
+      "type": "stroke",
+      "op": "created",
+      "rev": 5,
+      "parentId": "dr_01K742SG0KKMCAP9X1E6Z5P4SW/nd_01K7JJN801VXVB0NJPYF8VRHWH",
+      "index": 4
+    },
+    {
+      "id": "dr_01K742SG0KKMCAP9X1E6Z5P4SW/nd_01K7JJN801VXVB0NJPYF8VRHWH",
+      "type": "drawingNode",
+      "op": "modified",
+      "rev": 5,
+      "patch": [
+        {
+          "op": "remove",
+          "path": "/strokes/0",
+          "oldValue": {
+            "id": "st_01K7JJN8007GWTQF9M83GDMNCF",
+            "type": "stroke"
+          }
+        },
+        {
+          "op": "add",
+          "path": "/strokes/0",
+          "value": {
+            "id": "st_01K7JJN801Z1CRNSC8EP3EGFR6",
+            "type": "stroke"
+          }
+        },
+        {
+          "op": "add",
+          "path": "/strokes/1",
+          "value": {
+            "id": "st_01K7JJN8028BQ4938FFYSX322J",
+            "type": "stroke"
+          }
+        },
+        {
+          "op": "add",
+          "path": "/strokes/2",
+          "value": {
+            "id": "st_01K7JJN803XCWDSV8HP1WSMVFB",
+            "type": "stroke"
+          }
+        },
+        {
+          "op": "add",
+          "path": "/strokes/3",
+          "value": {
+            "id": "st_01K7JJN804ZHV88J18DV0C3A5J",
+            "type": "stroke"
+          }
+        },
+        {
+          "op": "add",
+          "path": "/strokes/4",
+          "value": {
+            "id": "st_01K7JJN8050XB7KB5FB25SS87A",
+            "type": "stroke"
+          }
+        }
+      ]
+    },
+    {
+      "id": "dr_01K742SG0KKMCAP9X1E6Z5P4SW/st_01K7JJN8007GWTQF9M83GDMNCF",
+      "type": "stroke",
+      "op": "deleted",
+      "rev": 5,
+      "parentId": "dr_01K742SG0KKMCAP9X1E6Z5P4SW/nd_01K7JJN801VXVB0NJPYF8VRHWH"
+    },
+    {
+      "id": "dr_01K742SG0KKMCAP9X1E6Z5P4SW",
+      "type": "drawing",
+      "op": "modified",
+      "rev": 5,
+      "patch": []
+    },
+    {
+      "id": "dr_01K742SG0KKMCAP9X1E6Z5P4SW/st_01K7JJN801Z1CRNSC8EP3EGFR6",
+      "type": "stroke",
+      "op": "modified",
+      "rev": 6,
+      "patch": [
+        {
+          "op": "replace",
+          "path": "/sides/left",
+          "value": {
+            "colourId": "col_01M6AH8V46GZGJG9MERT7HBZ45",
+            "matrix": null
+          },
+          "oldValue": null
+        }
+      ]
+    },
+    {
+      "id": "dr_01K742SG0KKMCAP9X1E6Z5P4SW/st_01K7JJN8028BQ4938FFYSX322J",
+      "type": "stroke",
+      "op": "modified",
+      "rev": 6,
+      "patch": [
+        {
+          "op": "replace",
+          "path": "/sides/left",
+          "value": {
+            "colourId": "col_01M6AH8V46GZGJG9MERT7HBZ45",
+            "matrix": null
+          },
+          "oldValue": null
+        }
+      ]
+    },
+    {
+      "id": "dr_01K742SG0KKMCAP9X1E6Z5P4SW/st_01K7JJN804ZHV88J18DV0C3A5J",
+      "type": "stroke",
+      "op": "modified",
+      "rev": 6,
+      "patch": [
+        {
+          "op": "replace",
+          "path": "/sides/left",
+          "value": {
+            "colourId": "col_01M6AH8V46GZGJG9MERT7HBZ45",
+            "matrix": null
+          },
+          "oldValue": null
+        },
+        {
+          "op": "replace",
+          "path": "/sides/right",
+          "value": {
+            "colourId": "col_01M6AH8V46GZGJG9MERT7HBZ45",
+            "matrix": null
+          },
+          "oldValue": null
+        }
+      ]
+    },
+    {
+      "id": "dr_01K742SG0KKMCAP9X1E6Z5P4SW",
+      "type": "drawing",
+      "op": "modified",
+      "rev": 6,
+      "patch": []
+    },
+    {
+      "id": "dr_01K742SG0KKMCAP9X1E6Z5P4SW/st_01K7JJN801Z1CRNSC8EP3EGFR6",
+      "type": "stroke",
+      "op": "modified",
+      "rev": 7,
+      "patch": [
+        {
+          "op": "replace",
+          "path": "/sides/left",
+          "value": null,
+          "oldValue": {
+            "colourId": "col_01M6AH8V46GZGJG9MERT7HBZ45",
+            "matrix": null
+          }
+        }
+      ]
+    },
+    {
+      "id": "dr_01K742SG0KKMCAP9X1E6Z5P4SW/st_01K7JJN8028BQ4938FFYSX322J",
+      "type": "stroke",
+      "op": "modified",
+      "rev": 7,
+      "patch": [
+        {
+          "op": "replace",
+          "path": "/sides/left",
+          "value": null,
+          "oldValue": {
+            "colourId": "col_01M6AH8V46GZGJG9MERT7HBZ45",
+            "matrix": null
+          }
+        }
+      ]
+    },
+    {
+      "id": "dr_01K742SG0KKMCAP9X1E6Z5P4SW/st_01K7JJN804ZHV88J18DV0C3A5J",
+      "type": "stroke",
+      "op": "modified",
+      "rev": 7,
+      "patch": [
+        {
+          "op": "replace",
+          "path": "/sides/left",
+          "value": null,
+          "oldValue": {
+            "colourId": "col_01M6AH8V46GZGJG9MERT7HBZ45",
+            "matrix": null
+          }
+        },
+        {
+          "op": "replace",
+          "path": "/sides/right",
+          "value": null,
+          "oldValue": {
+            "colourId": "col_01M6AH8V46GZGJG9MERT7HBZ45",
+            "matrix": null
+          }
+        }
+      ]
+    },
+    {
+      "id": "dr_01K742SG0KKMCAP9X1E6Z5P4SW",
+      "type": "drawing",
+      "op": "modified",
+      "rev": 7,
+      "patch": []
+    },
+    {
+      "id": "dr_01K742SG0KKMCAP9X1E6Z5P4SW/st_01K7JJN801Z1CRNSC8EP3EGFR6",
+      "type": "stroke",
+      "op": "modified",
+      "rev": 8,
+      "patch": [
+        {
+          "op": "replace",
+          "path": "/sides/left",
+          "value": {
+            "colourId": "col_01M6AH8V46GZGJG9MERT7HBZ45",
+            "matrix": null
+          },
+          "oldValue": null
+        }
+      ]
+    },
+    {
+      "id": "dr_01K742SG0KKMCAP9X1E6Z5P4SW/st_01K7JJN8028BQ4938FFYSX322J",
+      "type": "stroke",
+      "op": "modified",
+      "rev": 8,
+      "patch": [
+        {
+          "op": "replace",
+          "path": "/sides/left",
+          "value": {
+            "colourId": "col_01M6AH8V46GZGJG9MERT7HBZ45",
+            "matrix": null
+          },
+          "oldValue": null
+        }
+      ]
+    },
+    {
+      "id": "dr_01K742SG0KKMCAP9X1E6Z5P4SW/st_01K7JJN804ZHV88J18DV0C3A5J",
+      "type": "stroke",
+      "op": "modified",
+      "rev": 8,
+      "patch": [
+        {
+          "op": "replace",
+          "path": "/sides/left",
+          "value": {
+            "colourId": "col_01M6AH8V46GZGJG9MERT7HBZ45",
+            "matrix": null
+          },
+          "oldValue": null
+        },
+        {
+          "op": "replace",
+          "path": "/sides/right",
+          "value": {
+            "colourId": "col_01M6AH8V46GZGJG9MERT7HBZ45",
+            "matrix": null
+          },
+          "oldValue": null
+        }
+      ]
+    },
+    {
+      "id": "dr_01K742SG0KKMCAP9X1E6Z5P4SW",
+      "type": "drawing",
+      "op": "modified",
+      "rev": 8,
+      "patch": []
+    }
+  ],
+  "warnings": [],
+  "documentRev": 8,
+  "steps": [
+    {
+      "status": "ok",
+      "result": {
+        "drawingId": "dr_01K742SG0KKMCAP9X1E6Z5P4SW",
+        "createdDrawing": false,
+        "strokeIds": [
+          "st_01K7JJN8007GWTQF9M83GDMNCF"
+        ],
+        "zoneIds": [
+          "zn_YZQJQTXDKKQ4N0KDXDYR8JN6QR"
+        ],
+        "layerId": "nd_01K7JJN801VXVB0NJPYF8VRHWH",
+        "createdIds": [
+          "st_01K7JJN8007GWTQF9M83GDMNCF",
+          "nd_01K7JJN801VXVB0NJPYF8VRHWH",
+          "zn_YZQJQTXDKKQ4N0KDXDYR8JN6QR"
+        ],
+        "modifiedIds": [],
+        "removedIds": [],
+        "rev": 4,
+        "hints": []
+      },
+      "changes": [
+        {
+          "id": "dr_01K742SG0KKMCAP9X1E6Z5P4SW/st_01K7JJN8007GWTQF9M83GDMNCF",
+          "type": "stroke",
+          "op": "created",
+          "rev": 4,
+          "parentId": "dr_01K742SG0KKMCAP9X1E6Z5P4SW/nd_01K7JJN801VXVB0NJPYF8VRHWH",
+          "index": 0
+        },
+        {
+          "id": "dr_01K742SG0KKMCAP9X1E6Z5P4SW/nd_01K7JJN801VXVB0NJPYF8VRHWH",
+          "type": "drawingNode",
+          "op": "created",
+          "rev": 4,
+          "parentId": "dr_01K742SG0KKMCAP9X1E6Z5P4SW",
+          "index": 3
+        },
+        {
+          "id": "dr_01K742SG0KKMCAP9X1E6Z5P4SW",
+          "type": "drawing",
+          "op": "modified",
+          "rev": 4,
+          "patch": [
+            {
+              "op": "add",
+              "path": "/nodes/3",
+              "value": {
+                "id": "nd_01K7JJN801VXVB0NJPYF8VRHWH",
+                "type": "drawingNode"
+              }
+            }
+          ]
+        }
+      ],
+      "undo": {
+        "stepId": "u-1",
+        "label": "Pencil Tool"
+      },
+      "warnings": [],
+      "documentRev": 4
+    },
+    {
+      "status": "ok",
+      "result": {
+        "drawingId": "dr_01K742SG0KKMCAP9X1E6Z5P4SW",
+        "createdDrawing": false,
+        "strokeIds": [
+          "st_01K7JJN803XCWDSV8HP1WSMVFB",
+          "st_01K7JJN804ZHV88J18DV0C3A5J",
+          "st_01K7JJN8050XB7KB5FB25SS87A"
+        ],
+        "zoneIds": [
+          "zn_36YDPB3QAQ3NBGNKVRQ1NHKSMP",
+          "zn_N6TSWERCFDJJQ6CC6G3SG9K100"
+        ],
+        "layerId": "nd_01K7JJN801VXVB0NJPYF8VRHWH",
+        "createdIds": [
+          "st_01K7JJN803XCWDSV8HP1WSMVFB",
+          "st_01K7JJN804ZHV88J18DV0C3A5J",
+          "st_01K7JJN8050XB7KB5FB25SS87A",
+          "st_01K7JJN801Z1CRNSC8EP3EGFR6",
+          "st_01K7JJN8028BQ4938FFYSX322J",
+          "zn_36YDPB3QAQ3NBGNKVRQ1NHKSMP",
+          "zn_N6TSWERCFDJJQ6CC6G3SG9K100"
+        ],
+        "modifiedIds": [
+          "nd_01K7JJN801VXVB0NJPYF8VRHWH"
+        ],
+        "removedIds": [
+          "st_01K7JJN8007GWTQF9M83GDMNCF",
+          "zn_YZQJQTXDKKQ4N0KDXDYR8JN6QR"
+        ],
+        "rev": 5,
+        "hints": [
+          "drawing.strokesHidden"
+        ]
+      },
+      "changes": [
+        {
+          "id": "dr_01K742SG0KKMCAP9X1E6Z5P4SW/st_01K7JJN801Z1CRNSC8EP3EGFR6",
+          "type": "stroke",
+          "op": "created",
+          "rev": 5,
+          "parentId": "dr_01K742SG0KKMCAP9X1E6Z5P4SW/nd_01K7JJN801VXVB0NJPYF8VRHWH",
+          "index": 0
+        },
+        {
+          "id": "dr_01K742SG0KKMCAP9X1E6Z5P4SW/st_01K7JJN8028BQ4938FFYSX322J",
+          "type": "stroke",
+          "op": "created",
+          "rev": 5,
+          "parentId": "dr_01K742SG0KKMCAP9X1E6Z5P4SW/nd_01K7JJN801VXVB0NJPYF8VRHWH",
+          "index": 1
+        },
+        {
+          "id": "dr_01K742SG0KKMCAP9X1E6Z5P4SW/st_01K7JJN803XCWDSV8HP1WSMVFB",
+          "type": "stroke",
+          "op": "created",
+          "rev": 5,
+          "parentId": "dr_01K742SG0KKMCAP9X1E6Z5P4SW/nd_01K7JJN801VXVB0NJPYF8VRHWH",
+          "index": 2
+        },
+        {
+          "id": "dr_01K742SG0KKMCAP9X1E6Z5P4SW/st_01K7JJN804ZHV88J18DV0C3A5J",
+          "type": "stroke",
+          "op": "created",
+          "rev": 5,
+          "parentId": "dr_01K742SG0KKMCAP9X1E6Z5P4SW/nd_01K7JJN801VXVB0NJPYF8VRHWH",
+          "index": 3
+        },
+        {
+          "id": "dr_01K742SG0KKMCAP9X1E6Z5P4SW/st_01K7JJN8050XB7KB5FB25SS87A",
+          "type": "stroke",
+          "op": "created",
+          "rev": 5,
+          "parentId": "dr_01K742SG0KKMCAP9X1E6Z5P4SW/nd_01K7JJN801VXVB0NJPYF8VRHWH",
+          "index": 4
+        },
+        {
+          "id": "dr_01K742SG0KKMCAP9X1E6Z5P4SW/nd_01K7JJN801VXVB0NJPYF8VRHWH",
+          "type": "drawingNode",
+          "op": "modified",
+          "rev": 5,
+          "patch": [
+            {
+              "op": "remove",
+              "path": "/strokes/0",
+              "oldValue": {
+                "id": "st_01K7JJN8007GWTQF9M83GDMNCF",
+                "type": "stroke"
+              }
+            },
+            {
+              "op": "add",
+              "path": "/strokes/0",
+              "value": {
+                "id": "st_01K7JJN801Z1CRNSC8EP3EGFR6",
+                "type": "stroke"
+              }
+            },
+            {
+              "op": "add",
+              "path": "/strokes/1",
+              "value": {
+                "id": "st_01K7JJN8028BQ4938FFYSX322J",
+                "type": "stroke"
+              }
+            },
+            {
+              "op": "add",
+              "path": "/strokes/2",
+              "value": {
+                "id": "st_01K7JJN803XCWDSV8HP1WSMVFB",
+                "type": "stroke"
+              }
+            },
+            {
+              "op": "add",
+              "path": "/strokes/3",
+              "value": {
+                "id": "st_01K7JJN804ZHV88J18DV0C3A5J",
+                "type": "stroke"
+              }
+            },
+            {
+              "op": "add",
+              "path": "/strokes/4",
+              "value": {
+                "id": "st_01K7JJN8050XB7KB5FB25SS87A",
+                "type": "stroke"
+              }
+            }
+          ]
+        },
+        {
+          "id": "dr_01K742SG0KKMCAP9X1E6Z5P4SW/st_01K7JJN8007GWTQF9M83GDMNCF",
+          "type": "stroke",
+          "op": "deleted",
+          "rev": 5,
+          "parentId": "dr_01K742SG0KKMCAP9X1E6Z5P4SW/nd_01K7JJN801VXVB0NJPYF8VRHWH"
+        },
+        {
+          "id": "dr_01K742SG0KKMCAP9X1E6Z5P4SW",
+          "type": "drawing",
+          "op": "modified",
+          "rev": 5,
+          "patch": []
+        }
+      ],
+      "undo": {
+        "stepId": "u-2",
+        "label": "Stroke Tool"
+      },
+      "warnings": [],
+      "documentRev": 5
+    },
+    {
+      "status": "ok",
+      "result": {
+        "drawingId": "dr_01K742SG0KKMCAP9X1E6Z5P4SW",
+        "painted": [
+          {
+            "drawingId": "dr_01K742SG0KKMCAP9X1E6Z5P4SW",
+            "objectId": "zn_N6TSWERCFDJJQ6CC6G3SG9K100",
+            "objectKind": "zone",
+            "previousColourId": null
+          },
+          {
+            "drawingId": "dr_01K742SG0KKMCAP9X1E6Z5P4SW",
+            "objectId": "zn_36YDPB3QAQ3NBGNKVRQ1NHKSMP",
+            "objectKind": "zone",
+            "previousColourId": null
+          }
+        ],
+        "skipped": [],
+        "addedStrokeIds": [],
+        "createdIds": [],
+        "modifiedIds": [
+          "zn_36YDPB3QAQ3NBGNKVRQ1NHKSMP",
+          "zn_N6TSWERCFDJJQ6CC6G3SG9K100"
+        ],
+        "removedIds": [],
+        "rev": 6
+      },
+      "changes": [
+        {
+          "id": "dr_01K742SG0KKMCAP9X1E6Z5P4SW/st_01K7JJN801Z1CRNSC8EP3EGFR6",
+          "type": "stroke",
+          "op": "modified",
+          "rev": 6,
+          "patch": [
+            {
+              "op": "replace",
+              "path": "/sides/left",
+              "value": {
+                "colourId": "col_01M6AH8V46GZGJG9MERT7HBZ45",
+                "matrix": null
+              },
+              "oldValue": null
+            }
+          ]
+        },
+        {
+          "id": "dr_01K742SG0KKMCAP9X1E6Z5P4SW/st_01K7JJN8028BQ4938FFYSX322J",
+          "type": "stroke",
+          "op": "modified",
+          "rev": 6,
+          "patch": [
+            {
+              "op": "replace",
+              "path": "/sides/left",
+              "value": {
+                "colourId": "col_01M6AH8V46GZGJG9MERT7HBZ45",
+                "matrix": null
+              },
+              "oldValue": null
+            }
+          ]
+        },
+        {
+          "id": "dr_01K742SG0KKMCAP9X1E6Z5P4SW/st_01K7JJN804ZHV88J18DV0C3A5J",
+          "type": "stroke",
+          "op": "modified",
+          "rev": 6,
+          "patch": [
+            {
+              "op": "replace",
+              "path": "/sides/left",
+              "value": {
+                "colourId": "col_01M6AH8V46GZGJG9MERT7HBZ45",
+                "matrix": null
+              },
+              "oldValue": null
+            },
+            {
+              "op": "replace",
+              "path": "/sides/right",
+              "value": {
+                "colourId": "col_01M6AH8V46GZGJG9MERT7HBZ45",
+                "matrix": null
+              },
+              "oldValue": null
+            }
+          ]
+        },
+        {
+          "id": "dr_01K742SG0KKMCAP9X1E6Z5P4SW",
+          "type": "drawing",
+          "op": "modified",
+          "rev": 6,
+          "patch": []
+        }
+      ],
+      "undo": {
+        "stepId": "u-3",
+        "label": "Paint"
+      },
+      "warnings": [],
+      "documentRev": 6
+    },
+    {
+      "status": "ok",
+      "result": {
+        "undone": [
+          "Paint"
+        ],
+        "position": 2
+      },
+      "changes": [
+        {
+          "id": "dr_01K742SG0KKMCAP9X1E6Z5P4SW/st_01K7JJN801Z1CRNSC8EP3EGFR6",
+          "type": "stroke",
+          "op": "modified",
+          "rev": 7,
+          "patch": [
+            {
+              "op": "replace",
+              "path": "/sides/left",
+              "value": null,
+              "oldValue": {
+                "colourId": "col_01M6AH8V46GZGJG9MERT7HBZ45",
+                "matrix": null
+              }
+            }
+          ]
+        },
+        {
+          "id": "dr_01K742SG0KKMCAP9X1E6Z5P4SW/st_01K7JJN8028BQ4938FFYSX322J",
+          "type": "stroke",
+          "op": "modified",
+          "rev": 7,
+          "patch": [
+            {
+              "op": "replace",
+              "path": "/sides/left",
+              "value": null,
+              "oldValue": {
+                "colourId": "col_01M6AH8V46GZGJG9MERT7HBZ45",
+                "matrix": null
+              }
+            }
+          ]
+        },
+        {
+          "id": "dr_01K742SG0KKMCAP9X1E6Z5P4SW/st_01K7JJN804ZHV88J18DV0C3A5J",
+          "type": "stroke",
+          "op": "modified",
+          "rev": 7,
+          "patch": [
+            {
+              "op": "replace",
+              "path": "/sides/left",
+              "value": null,
+              "oldValue": {
+                "colourId": "col_01M6AH8V46GZGJG9MERT7HBZ45",
+                "matrix": null
+              }
+            },
+            {
+              "op": "replace",
+              "path": "/sides/right",
+              "value": null,
+              "oldValue": {
+                "colourId": "col_01M6AH8V46GZGJG9MERT7HBZ45",
+                "matrix": null
+              }
+            }
+          ]
+        },
+        {
+          "id": "dr_01K742SG0KKMCAP9X1E6Z5P4SW",
+          "type": "drawing",
+          "op": "modified",
+          "rev": 7,
+          "patch": []
+        }
+      ],
+      "warnings": [],
+      "documentRev": 7
+    },
+    {
+      "status": "ok",
+      "result": {
+        "redone": [
+          "Paint"
+        ],
+        "position": 3
+      },
+      "changes": [
+        {
+          "id": "dr_01K742SG0KKMCAP9X1E6Z5P4SW/st_01K7JJN801Z1CRNSC8EP3EGFR6",
+          "type": "stroke",
+          "op": "modified",
+          "rev": 8,
+          "patch": [
+            {
+              "op": "replace",
+              "path": "/sides/left",
+              "value": {
+                "colourId": "col_01M6AH8V46GZGJG9MERT7HBZ45",
+                "matrix": null
+              },
+              "oldValue": null
+            }
+          ]
+        },
+        {
+          "id": "dr_01K742SG0KKMCAP9X1E6Z5P4SW/st_01K7JJN8028BQ4938FFYSX322J",
+          "type": "stroke",
+          "op": "modified",
+          "rev": 8,
+          "patch": [
+            {
+              "op": "replace",
+              "path": "/sides/left",
+              "value": {
+                "colourId": "col_01M6AH8V46GZGJG9MERT7HBZ45",
+                "matrix": null
+              },
+              "oldValue": null
+            }
+          ]
+        },
+        {
+          "id": "dr_01K742SG0KKMCAP9X1E6Z5P4SW/st_01K7JJN804ZHV88J18DV0C3A5J",
+          "type": "stroke",
+          "op": "modified",
+          "rev": 8,
+          "patch": [
+            {
+              "op": "replace",
+              "path": "/sides/left",
+              "value": {
+                "colourId": "col_01M6AH8V46GZGJG9MERT7HBZ45",
+                "matrix": null
+              },
+              "oldValue": null
+            },
+            {
+              "op": "replace",
+              "path": "/sides/right",
+              "value": {
+                "colourId": "col_01M6AH8V46GZGJG9MERT7HBZ45",
+                "matrix": null
+              },
+              "oldValue": null
+            }
+          ]
+        },
+        {
+          "id": "dr_01K742SG0KKMCAP9X1E6Z5P4SW",
+          "type": "drawing",
+          "op": "modified",
+          "rev": 8,
+          "patch": []
+        }
+      ],
+      "warnings": [],
+      "documentRev": 8
+    }
+  ]
+}

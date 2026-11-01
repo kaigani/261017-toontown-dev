@@ -1,0 +1,1301 @@
+{
+  "binary": "C:\\Users\\kaiga\\work\\review\\m2-c22-r3\\target\\debug\\toontown-headless.exe",
+  "commands": [
+    {
+      "command": "draw.stroke.add",
+      "params": {
+        "drawingId": "dr_01K742SG0KKMCAP9X1E6Z5P4SW",
+        "kind": "pencil",
+        "layer": "new",
+        "fit": false,
+        "closed": true,
+        "points": [
+          {
+            "x": 1000,
+            "y": 1000
+          },
+          {
+            "x": 1100,
+            "y": 1000
+          },
+          {
+            "x": 1100,
+            "y": 1100
+          },
+          {
+            "x": 1000,
+            "y": 1100
+          }
+        ]
+      },
+      "envelope": {
+        "status": "ok",
+        "result": {
+          "drawingId": "dr_01K742SG0KKMCAP9X1E6Z5P4SW",
+          "createdDrawing": false,
+          "strokeIds": [
+            "st_01K7JJN8007GWTQF9M83GDMNCF"
+          ],
+          "zoneIds": [
+            "zn_YZQJQTXDKKQ4N0KDXDYR8JN6QR"
+          ],
+          "layerId": "nd_01K7JJN801VXVB0NJPYF8VRHWH",
+          "createdIds": [
+            "st_01K7JJN8007GWTQF9M83GDMNCF",
+            "nd_01K7JJN801VXVB0NJPYF8VRHWH",
+            "zn_YZQJQTXDKKQ4N0KDXDYR8JN6QR"
+          ],
+          "modifiedIds": [],
+          "removedIds": [],
+          "rev": 4,
+          "hints": []
+        },
+        "changes": [
+          {
+            "id": "dr_01K742SG0KKMCAP9X1E6Z5P4SW/st_01K7JJN8007GWTQF9M83GDMNCF",
+            "type": "stroke",
+            "op": "created",
+            "rev": 4,
+            "parentId": "dr_01K742SG0KKMCAP9X1E6Z5P4SW/nd_01K7JJN801VXVB0NJPYF8VRHWH",
+            "index": 0
+          },
+          {
+            "id": "dr_01K742SG0KKMCAP9X1E6Z5P4SW/nd_01K7JJN801VXVB0NJPYF8VRHWH",
+            "type": "drawingNode",
+            "op": "created",
+            "rev": 4,
+            "parentId": "dr_01K742SG0KKMCAP9X1E6Z5P4SW",
+            "index": 3
+          },
+          {
+            "id": "dr_01K742SG0KKMCAP9X1E6Z5P4SW",
+            "type": "drawing",
+            "op": "modified",
+            "rev": 4,
+            "patch": [
+              {
+                "op": "add",
+                "path": "/nodes/3",
+                "value": {
+                  "id": "nd_01K7JJN801VXVB0NJPYF8VRHWH",
+                  "type": "drawingNode"
+                }
+              }
+            ]
+          }
+        ],
+        "undo": {
+          "stepId": "u-1",
+          "label": "Pencil Tool"
+        },
+        "warnings": [],
+        "documentRev": 4
+      }
+    },
+    {
+      "command": "draw.stroke.add",
+      "params": {
+        "drawingId": "dr_01K742SG0KKMCAP9X1E6Z5P4SW",
+        "kind": "invisible",
+        "layer": "nd_01K7JJN801VXVB0NJPYF8VRHWH",
+        "fit": false,
+        "points": [
+          {
+            "x": 1040,
+            "y": 990
+          },
+          {
+            "x": 1040,
+            "y": 1110
+          }
+        ]
+      },
+      "envelope": {
+        "status": "ok",
+        "result": {
+          "drawingId": "dr_01K742SG0KKMCAP9X1E6Z5P4SW",
+          "createdDrawing": false,
+          "strokeIds": [
+            "st_01K7JJN803XCWDSV8HP1WSMVFB",
+            "st_01K7JJN804ZHV88J18DV0C3A5J",
+            "st_01K7JJN8050XB7KB5FB25SS87A"
+          ],
+          "zoneIds": [
+            "zn_36YDPB3QAQ3NBGNKVRQ1NHKSMP",
+            "zn_N6TSWERCFDJJQ6CC6G3SG9K100"
+          ],
+          "layerId": "nd_01K7JJN801VXVB0NJPYF8VRHWH",
+          "createdIds": [
+            "st_01K7JJN803XCWDSV8HP1WSMVFB",
+            "st_01K7JJN804ZHV88J18DV0C3A5J",
+            "st_01K7JJN8050XB7KB5FB25SS87A",
+            "st_01K7JJN801Z1CRNSC8EP3EGFR6",
+            "st_01K7JJN8028BQ4938FFYSX322J",
+            "zn_36YDPB3QAQ3NBGNKVRQ1NHKSMP",
+            "zn_N6TSWERCFDJJQ6CC6G3SG9K100"
+          ],
+          "modifiedIds": [
+            "nd_01K7JJN801VXVB0NJPYF8VRHWH"
+          ],
+          "removedIds": [
+            "st_01K7JJN8007GWTQF9M83GDMNCF",
+            "zn_YZQJQTXDKKQ4N0KDXDYR8JN6QR"
+          ],
+          "rev": 5,
+          "hints": [
+            "drawing.strokesHidden"
+          ]
+        },
+        "changes": [
+          {
+            "id": "dr_01K742SG0KKMCAP9X1E6Z5P4SW/st_01K7JJN801Z1CRNSC8EP3EGFR6",
+            "type": "stroke",
+            "op": "created",
+            "rev": 5,
+            "parentId": "dr_01K742SG0KKMCAP9X1E6Z5P4SW/nd_01K7JJN801VXVB0NJPYF8VRHWH",
+            "index": 0
+          },
+          {
+            "id": "dr_01K742SG0KKMCAP9X1E6Z5P4SW/st_01K7JJN8028BQ4938FFYSX322J",
+            "type": "stroke",
+            "op": "created",
+            "rev": 5,
+            "parentId": "dr_01K742SG0KKMCAP9X1E6Z5P4SW/nd_01K7JJN801VXVB0NJPYF8VRHWH",
+            "index": 1
+          },
+          {
+            "id": "dr_01K742SG0KKMCAP9X1E6Z5P4SW/st_01K7JJN803XCWDSV8HP1WSMVFB",
+            "type": "stroke",
+            "op": "created",
+            "rev": 5,
+            "parentId": "dr_01K742SG0KKMCAP9X1E6Z5P4SW/nd_01K7JJN801VXVB0NJPYF8VRHWH",
+            "index": 2
+          },
+          {
+            "id": "dr_01K742SG0KKMCAP9X1E6Z5P4SW/st_01K7JJN804ZHV88J18DV0C3A5J",
+            "type": "stroke",
+            "op": "created",
+            "rev": 5,
+            "parentId": "dr_01K742SG0KKMCAP9X1E6Z5P4SW/nd_01K7JJN801VXVB0NJPYF8VRHWH",
+            "index": 3
+          },
+          {
+            "id": "dr_01K742SG0KKMCAP9X1E6Z5P4SW/st_01K7JJN8050XB7KB5FB25SS87A",
+            "type": "stroke",
+            "op": "created",
+            "rev": 5,
+            "parentId": "dr_01K742SG0KKMCAP9X1E6Z5P4SW/nd_01K7JJN801VXVB0NJPYF8VRHWH",
+            "index": 4
+          },
+          {
+            "id": "dr_01K742SG0KKMCAP9X1E6Z5P4SW/nd_01K7JJN801VXVB0NJPYF8VRHWH",
+            "type": "drawingNode",
+            "op": "modified",
+            "rev": 5,
+            "patch": [
+              {
+                "op": "remove",
+                "path": "/strokes/0",
+                "oldValue": {
+                  "id": "st_01K7JJN8007GWTQF9M83GDMNCF",
+                  "type": "stroke"
+                }
+              },
+              {
+                "op": "add",
+                "path": "/strokes/0",
+                "value": {
+                  "id": "st_01K7JJN801Z1CRNSC8EP3EGFR6",
+                  "type": "stroke"
+                }
+              },
+              {
+                "op": "add",
+                "path": "/strokes/1",
+                "value": {
+                  "id": "st_01K7JJN8028BQ4938FFYSX322J",
+                  "type": "stroke"
+                }
+              },
+              {
+                "op": "add",
+                "path": "/strokes/2",
+                "value": {
+                  "id": "st_01K7JJN803XCWDSV8HP1WSMVFB",
+                  "type": "stroke"
+                }
+              },
+              {
+                "op": "add",
+                "path": "/strokes/3",
+                "value": {
+                  "id": "st_01K7JJN804ZHV88J18DV0C3A5J",
+                  "type": "stroke"
+                }
+              },
+              {
+                "op": "add",
+                "path": "/strokes/4",
+                "value": {
+                  "id": "st_01K7JJN8050XB7KB5FB25SS87A",
+                  "type": "stroke"
+                }
+              }
+            ]
+          },
+          {
+            "id": "dr_01K742SG0KKMCAP9X1E6Z5P4SW/st_01K7JJN8007GWTQF9M83GDMNCF",
+            "type": "stroke",
+            "op": "deleted",
+            "rev": 5,
+            "parentId": "dr_01K742SG0KKMCAP9X1E6Z5P4SW/nd_01K7JJN801VXVB0NJPYF8VRHWH"
+          },
+          {
+            "id": "dr_01K742SG0KKMCAP9X1E6Z5P4SW",
+            "type": "drawing",
+            "op": "modified",
+            "rev": 5,
+            "patch": []
+          }
+        ],
+        "undo": {
+          "stepId": "u-2",
+          "label": "Stroke Tool"
+        },
+        "warnings": [],
+        "documentRev": 5
+      }
+    },
+    {
+      "command": "colour.paint.apply",
+      "params": {
+        "drawingId": "dr_01K742SG0KKMCAP9X1E6Z5P4SW",
+        "objectIds": [
+          "zn_YZQJQTXDKKQ4N0KDXDYR8JN6QR"
+        ]
+      },
+      "envelope": {
+        "status": "error",
+        "changes": [],
+        "warnings": [],
+        "documentRev": 5,
+        "error": {
+          "code": "colour.staleZoneId",
+          "message": "zone `zn_YZQJQTXDKKQ4N0KDXDYR8JN6QR` is not a zone of the drawing's current revision",
+          "details": {
+            "zoneId": "zn_YZQJQTXDKKQ4N0KDXDYR8JN6QR",
+            "rev": 5
+          },
+          "hint": "read the zones again with draw.drawing.get, or paint by point"
+        }
+      }
+    },
+    {
+      "command": "draw.drawing.get",
+      "params": {
+        "drawingId": "dr_01K742SG0KKMCAP9X1E6Z5P4SW"
+      },
+      "envelope": {
+        "status": "ok",
+        "result": {
+          "drawingId": "dr_01K742SG0KKMCAP9X1E6Z5P4SW",
+          "elementId": "el_01K742SG11W3SGB8Q1H50W74VB",
+          "name": "1",
+          "rev": 5,
+          "locked": false,
+          "space": {
+            "units": "du",
+            "duPerField": 100,
+            "yAxis": "up",
+            "origin": "drawingCentre"
+          },
+          "pivot": {
+            "x": 0.0,
+            "y": -50.0
+          },
+          "bounds": {
+            "x": -100.0,
+            "y": -50.75,
+            "width": 1204.0,
+            "height": 1154.75
+          },
+          "nodes": [
+            {
+              "type": "layer",
+              "id": "nd_01K742SG0PC20XDQKASM9CGZHR",
+              "name": "Body",
+              "layerKind": "brush",
+              "strokes": [
+                {
+                  "type": "stroke",
+                  "id": "st_01K742SG0QD1F2HFZSX8R4V7WP",
+                  "kind": "brush",
+                  "closed": false,
+                  "bezier": [
+                    {
+                      "x": 10.0,
+                      "y": 50.0
+                    },
+                    {
+                      "x": 30.0,
+                      "y": 50.0
+                    },
+                    {
+                      "x": 70.0,
+                      "y": 50.0
+                    },
+                    {
+                      "x": 90.0,
+                      "y": 50.0
+                    }
+                  ],
+                  "pressure": [
+                    {
+                      "t": 0.0,
+                      "p": 0.2
+                    },
+                    {
+                      "t": 0.5,
+                      "p": 1.0
+                    },
+                    {
+                      "t": 1.0,
+                      "p": 0.4
+                    }
+                  ],
+                  "penId": null,
+                  "pen": {
+                    "tipShape": "round",
+                    "minSize": 0.5,
+                    "maxSize": 2.0,
+                    "tipAngle": 0.0
+                  },
+                  "colourId": "col_01K742SG059XGSNZ6M9MACZ2ZY",
+                  "textureMatrix": null,
+                  "outline": [
+                    [
+                      {
+                        "x": 0.0,
+                        "y": 0.0
+                      },
+                      {
+                        "x": 10.5,
+                        "y": 0.0
+                      },
+                      {
+                        "x": 90.0,
+                        "y": 0.0
+                      },
+                      {
+                        "x": 100.0,
+                        "y": 0.0
+                      },
+                      {
+                        "x": 100.0,
+                        "y": 10.0
+                      },
+                      {
+                        "x": 100.0,
+                        "y": 90.0
+                      },
+                      {
+                        "x": 100.0,
+                        "y": 100.0
+                      },
+                      {
+                        "x": 100.0,
+                        "y": 100.0
+                      },
+                      {
+                        "x": 0.0,
+                        "y": 100.0
+                      },
+                      {
+                        "x": 0.0,
+                        "y": 100.0
+                      },
+                      {
+                        "x": 0.0,
+                        "y": 90.0
+                      },
+                      {
+                        "x": 0.0,
+                        "y": 0.0
+                      }
+                    ]
+                  ],
+                  "bounds": {
+                    "x": 0.0,
+                    "y": 0.0,
+                    "width": 100.0,
+                    "height": 100.0
+                  }
+                },
+                {
+                  "type": "stroke",
+                  "id": "st_01K742SG0R61SYK9GG0HGYVNBT",
+                  "kind": "pencil",
+                  "closed": false,
+                  "bezier": [
+                    {
+                      "x": -50.0,
+                      "y": -50.0
+                    },
+                    {
+                      "x": -50.0,
+                      "y": -50.0
+                    },
+                    {
+                      "x": 50.0,
+                      "y": 50.0
+                    },
+                    {
+                      "x": 50.0,
+                      "y": 50.0
+                    }
+                  ],
+                  "colourId": "col_01K742SG09H7QE4RRR6XSYYS88",
+                  "lineStyle": {
+                    "thickness": 1.5,
+                    "lineType": "solid"
+                  },
+                  "pressure": null,
+                  "bounds": {
+                    "x": -50.75,
+                    "y": -50.75,
+                    "width": 101.5,
+                    "height": 101.5
+                  },
+                  "leftZoneId": null,
+                  "rightZoneId": null
+                },
+                {
+                  "type": "stroke",
+                  "id": "st_01K742SG0S0NT23BWCZN64SFQ5",
+                  "kind": "invisible",
+                  "closed": false,
+                  "bezier": [
+                    {
+                      "x": 0.0,
+                      "y": 0.0
+                    },
+                    {
+                      "x": 0.0,
+                      "y": 0.0
+                    },
+                    {
+                      "x": 0.0,
+                      "y": 100.0
+                    },
+                    {
+                      "x": 0.0,
+                      "y": 100.0
+                    }
+                  ],
+                  "colourId": null,
+                  "pressure": null,
+                  "bounds": {
+                    "x": 0.0,
+                    "y": 0.0,
+                    "width": 0.0,
+                    "height": 100.0
+                  },
+                  "leftZoneId": null,
+                  "rightZoneId": null
+                }
+              ],
+              "zones": []
+            },
+            {
+              "type": "group",
+              "id": "nd_01K742SG0TX3WF1BSWWGMWM5WG",
+              "children": [
+                {
+                  "type": "layer",
+                  "id": "nd_01K742SG0V9A7HCXC74WKN3V5F",
+                  "layerKind": "pencil",
+                  "strokes": [],
+                  "zones": []
+                }
+              ],
+              "bounds": null
+            },
+            {
+              "type": "text",
+              "id": "nd_01K742SG0WFAQJFKAZKV4CD56C",
+              "name": "Caption",
+              "text": "H\u00e9llo",
+              "transform": [
+                1.0,
+                0.0,
+                0.0,
+                1.0,
+                -100.0,
+                200.0
+              ],
+              "widthMode": "fixed",
+              "width": 400.0,
+              "runs": [
+                {
+                  "start": 0,
+                  "length": 5,
+                  "font": "Inter",
+                  "size": 24.0,
+                  "bold": false,
+                  "italic": true,
+                  "baseline": "normal",
+                  "kerning": 0.0,
+                  "autoKern": true,
+                  "colourId": "col_01K742SG09H7QE4RRR6XSYYS88",
+                  "outlineColourId": null
+                }
+              ],
+              "paragraphs": [
+                {
+                  "start": 0,
+                  "length": 5,
+                  "align": "centre",
+                  "leftMargin": 0.0,
+                  "rightMargin": 0.0,
+                  "indent": 0.0,
+                  "lineSpacing": 1.2
+                }
+              ],
+              "bounds": {
+                "x": -100.0,
+                "y": 171.20234375,
+                "width": 400.0,
+                "height": 28.79765624999999
+              }
+            },
+            {
+              "type": "layer",
+              "id": "nd_01K7JJN801VXVB0NJPYF8VRHWH",
+              "layerKind": "pencil",
+              "strokes": [
+                {
+                  "type": "stroke",
+                  "id": "st_01K7JJN801Z1CRNSC8EP3EGFR6",
+                  "kind": "pencil",
+                  "closed": false,
+                  "bezier": [
+                    {
+                      "x": 1040.0,
+                      "y": 1000.0
+                    },
+                    {
+                      "x": 1068.8,
+                      "y": 1000.0
+                    },
+                    {
+                      "x": 1100.0,
+                      "y": 1000.0
+                    },
+                    {
+                      "x": 1100.0,
+                      "y": 1000.0
+                    },
+                    {
+                      "x": 1100.0,
+                      "y": 1000.0
+                    },
+                    {
+                      "x": 1100.0,
+                      "y": 1100.0
+                    },
+                    {
+                      "x": 1100.0,
+                      "y": 1100.0
+                    },
+                    {
+                      "x": 1100.0,
+                      "y": 1100.0
+                    },
+                    {
+                      "x": 1068.8,
+                      "y": 1100.0
+                    },
+                    {
+                      "x": 1040.0,
+                      "y": 1100.0
+                    }
+                  ],
+                  "colourId": "col_01M6AH8V46GZGJG9MERT7HBZ45",
+                  "lineStyle": {
+                    "thickness": 8.0,
+                    "lineType": "solid"
+                  },
+                  "pressure": null,
+                  "bounds": {
+                    "x": 1036.0,
+                    "y": 996.0,
+                    "width": 68.0,
+                    "height": 108.0
+                  },
+                  "leftZoneId": "zn_N6TSWERCFDJJQ6CC6G3SG9K100",
+                  "rightZoneId": null
+                },
+                {
+                  "type": "stroke",
+                  "id": "st_01K7JJN8028BQ4938FFYSX322J",
+                  "kind": "pencil",
+                  "closed": false,
+                  "bezier": [
+                    {
+                      "x": 1040.0,
+                      "y": 1100.0
+                    },
+                    {
+                      "x": 1020.8,
+                      "y": 1100.0
+                    },
+                    {
+                      "x": 1000.0,
+                      "y": 1100.0
+                    },
+                    {
+                      "x": 1000.0,
+                      "y": 1100.0
+                    },
+                    {
+                      "x": 1000.0,
+                      "y": 1100.0
+                    },
+                    {
+                      "x": 1000.0,
+                      "y": 1000.0
+                    },
+                    {
+                      "x": 1000.0,
+                      "y": 1000.0
+                    },
+                    {
+                      "x": 1000.0,
+                      "y": 1000.0
+                    },
+                    {
+                      "x": 1020.8,
+                      "y": 1000.0
+                    },
+                    {
+                      "x": 1040.0,
+                      "y": 1000.0
+                    }
+                  ],
+                  "colourId": "col_01M6AH8V46GZGJG9MERT7HBZ45",
+                  "lineStyle": {
+                    "thickness": 8.0,
+                    "lineType": "solid"
+                  },
+                  "pressure": null,
+                  "bounds": {
+                    "x": 996.0,
+                    "y": 996.0,
+                    "width": 48.0,
+                    "height": 108.0
+                  },
+                  "leftZoneId": "zn_36YDPB3QAQ3NBGNKVRQ1NHKSMP",
+                  "rightZoneId": null
+                },
+                {
+                  "type": "stroke",
+                  "id": "st_01K7JJN803XCWDSV8HP1WSMVFB",
+                  "kind": "invisible",
+                  "closed": false,
+                  "bezier": [
+                    {
+                      "x": 1040.0,
+                      "y": 990.0
+                    },
+                    {
+                      "x": 1040.0,
+                      "y": 990.0
+                    },
+                    {
+                      "x": 1040.0,
+                      "y": 998.4722222222223
+                    },
+                    {
+                      "x": 1040.0,
+                      "y": 1000.0
+                    }
+                  ],
+                  "colourId": null,
+                  "pressure": null,
+                  "bounds": {
+                    "x": 1040.0,
+                    "y": 990.0,
+                    "width": 0.0,
+                    "height": 10.0
+                  },
+                  "leftZoneId": null,
+                  "rightZoneId": null
+                },
+                {
+                  "type": "stroke",
+                  "id": "st_01K7JJN804ZHV88J18DV0C3A5J",
+                  "kind": "invisible",
+                  "closed": false,
+                  "bezier": [
+                    {
+                      "x": 1040.0,
+                      "y": 1000.0
+                    },
+                    {
+                      "x": 1040.0,
+                      "y": 1015.2777777777777
+                    },
+                    {
+                      "x": 1040.0,
+                      "y": 1084.7222222222222
+                    },
+                    {
+                      "x": 1040.0,
+                      "y": 1100.0
+                    }
+                  ],
+                  "colourId": null,
+                  "pressure": null,
+                  "bounds": {
+                    "x": 1040.0,
+                    "y": 1000.0,
+                    "width": 0.0,
+                    "height": 100.0
+                  },
+                  "leftZoneId": "zn_36YDPB3QAQ3NBGNKVRQ1NHKSMP",
+                  "rightZoneId": "zn_N6TSWERCFDJJQ6CC6G3SG9K100"
+                },
+                {
+                  "type": "stroke",
+                  "id": "st_01K7JJN8050XB7KB5FB25SS87A",
+                  "kind": "invisible",
+                  "closed": false,
+                  "bezier": [
+                    {
+                      "x": 1040.0,
+                      "y": 1100.0
+                    },
+                    {
+                      "x": 1040.0,
+                      "y": 1101.5277777777778
+                    },
+                    {
+                      "x": 1040.0,
+                      "y": 1110.0
+                    },
+                    {
+                      "x": 1040.0,
+                      "y": 1110.0
+                    }
+                  ],
+                  "colourId": null,
+                  "pressure": null,
+                  "bounds": {
+                    "x": 1040.0,
+                    "y": 1100.0,
+                    "width": 0.0,
+                    "height": 10.0
+                  },
+                  "leftZoneId": null,
+                  "rightZoneId": null
+                }
+              ],
+              "zones": [
+                {
+                  "type": "zone",
+                  "id": "zn_N6TSWERCFDJJQ6CC6G3SG9K100",
+                  "colourId": null,
+                  "textureMatrix": null,
+                  "boundaryStrokeIds": [
+                    "st_01K7JJN801Z1CRNSC8EP3EGFR6",
+                    "st_01K7JJN804ZHV88J18DV0C3A5J"
+                  ],
+                  "holes": [],
+                  "parentZoneId": null,
+                  "area": 6000,
+                  "bounds": {
+                    "x": 1040,
+                    "y": 1000,
+                    "width": 60,
+                    "height": 100
+                  },
+                  "interiorPoint": {
+                    "x": 1070,
+                    "y": 1007.1484375
+                  }
+                },
+                {
+                  "type": "zone",
+                  "id": "zn_36YDPB3QAQ3NBGNKVRQ1NHKSMP",
+                  "colourId": null,
+                  "textureMatrix": null,
+                  "boundaryStrokeIds": [
+                    "st_01K7JJN8028BQ4938FFYSX322J",
+                    "st_01K7JJN804ZHV88J18DV0C3A5J"
+                  ],
+                  "holes": [],
+                  "parentZoneId": null,
+                  "area": 4000,
+                  "bounds": {
+                    "x": 1000,
+                    "y": 1000,
+                    "width": 40,
+                    "height": 100
+                  },
+                  "interiorPoint": {
+                    "x": 1020,
+                    "y": 1007.1484375
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        "changes": [],
+        "warnings": [],
+        "documentRev": 5
+      }
+    },
+    {
+      "command": "doc.validate",
+      "params": {
+        "checks": [
+          "unpaintedZones"
+        ]
+      },
+      "envelope": {
+        "status": "ok",
+        "result": {
+          "documentRev": 4,
+          "issues": [
+            {
+              "issueId": "is_1",
+              "code": "unpaintedZones",
+              "severity": "info",
+              "objectId": "dr_01K742SG0KKMCAP9X1E6Z5P4SW/zn_N6TSWERCFDJJQ6CC6G3SG9K100",
+              "path": null,
+              "message": "a zone of 6000.0 du\u00b2 in drawing `1` is unpainted",
+              "details": {
+                "drawingId": "dr_01K742SG0KKMCAP9X1E6Z5P4SW",
+                "layerId": "nd_01K7JJN801VXVB0NJPYF8VRHWH",
+                "zoneId": "zn_N6TSWERCFDJJQ6CC6G3SG9K100",
+                "area": 6000.0,
+                "interiorPoint": {
+                  "x": 1070.0,
+                  "y": 1007.1484375
+                }
+              },
+              "fixes": [
+                {
+                  "fixId": "fx_1",
+                  "description": "Paint the zone (choose a colourId)",
+                  "command": "colour.paint.apply",
+                  "params": {
+                    "drawingId": "dr_01K742SG0KKMCAP9X1E6Z5P4SW",
+                    "objectIds": [
+                      "zn_N6TSWERCFDJJQ6CC6G3SG9K100"
+                    ]
+                  },
+                  "default": false
+                }
+              ]
+            },
+            {
+              "issueId": "is_2",
+              "code": "unpaintedZones",
+              "severity": "info",
+              "objectId": "dr_01K742SG0KKMCAP9X1E6Z5P4SW/zn_36YDPB3QAQ3NBGNKVRQ1NHKSMP",
+              "path": null,
+              "message": "a zone of 4000.0 du\u00b2 in drawing `1` is unpainted",
+              "details": {
+                "drawingId": "dr_01K742SG0KKMCAP9X1E6Z5P4SW",
+                "layerId": "nd_01K7JJN801VXVB0NJPYF8VRHWH",
+                "zoneId": "zn_36YDPB3QAQ3NBGNKVRQ1NHKSMP",
+                "area": 4000.0,
+                "interiorPoint": {
+                  "x": 1020.0,
+                  "y": 1007.1484375
+                }
+              },
+              "fixes": [
+                {
+                  "fixId": "fx_2",
+                  "description": "Paint the zone (choose a colourId)",
+                  "command": "colour.paint.apply",
+                  "params": {
+                    "drawingId": "dr_01K742SG0KKMCAP9X1E6Z5P4SW",
+                    "objectIds": [
+                      "zn_36YDPB3QAQ3NBGNKVRQ1NHKSMP"
+                    ]
+                  },
+                  "default": false
+                }
+              ]
+            }
+          ],
+          "counts": {
+            "error": 0,
+            "info": 2,
+            "warning": 0
+          },
+          "truncated": false,
+          "unavailable": []
+        },
+        "changes": [],
+        "warnings": [],
+        "documentRev": 5
+      }
+    },
+    {
+      "command": "colour.paint.apply",
+      "params": {
+        "drawingId": "dr_01K742SG0KKMCAP9X1E6Z5P4SW",
+        "objectIds": [
+          "zn_N6TSWERCFDJJQ6CC6G3SG9K100",
+          "zn_36YDPB3QAQ3NBGNKVRQ1NHKSMP"
+        ]
+      },
+      "envelope": {
+        "status": "ok",
+        "result": {
+          "drawingId": "dr_01K742SG0KKMCAP9X1E6Z5P4SW",
+          "painted": [
+            {
+              "drawingId": "dr_01K742SG0KKMCAP9X1E6Z5P4SW",
+              "objectId": "zn_N6TSWERCFDJJQ6CC6G3SG9K100",
+              "objectKind": "zone",
+              "previousColourId": null
+            },
+            {
+              "drawingId": "dr_01K742SG0KKMCAP9X1E6Z5P4SW",
+              "objectId": "zn_36YDPB3QAQ3NBGNKVRQ1NHKSMP",
+              "objectKind": "zone",
+              "previousColourId": null
+            }
+          ],
+          "skipped": [],
+          "addedStrokeIds": [],
+          "createdIds": [],
+          "modifiedIds": [
+            "zn_36YDPB3QAQ3NBGNKVRQ1NHKSMP",
+            "zn_N6TSWERCFDJJQ6CC6G3SG9K100"
+          ],
+          "removedIds": [],
+          "rev": 6
+        },
+        "changes": [
+          {
+            "id": "dr_01K742SG0KKMCAP9X1E6Z5P4SW/st_01K7JJN801Z1CRNSC8EP3EGFR6",
+            "type": "stroke",
+            "op": "modified",
+            "rev": 6,
+            "patch": [
+              {
+                "op": "replace",
+                "path": "/sides/left",
+                "value": {
+                  "colourId": "col_01M6AH8V46GZGJG9MERT7HBZ45",
+                  "matrix": null
+                },
+                "oldValue": null
+              }
+            ]
+          },
+          {
+            "id": "dr_01K742SG0KKMCAP9X1E6Z5P4SW/st_01K7JJN8028BQ4938FFYSX322J",
+            "type": "stroke",
+            "op": "modified",
+            "rev": 6,
+            "patch": [
+              {
+                "op": "replace",
+                "path": "/sides/left",
+                "value": {
+                  "colourId": "col_01M6AH8V46GZGJG9MERT7HBZ45",
+                  "matrix": null
+                },
+                "oldValue": null
+              }
+            ]
+          },
+          {
+            "id": "dr_01K742SG0KKMCAP9X1E6Z5P4SW/st_01K7JJN804ZHV88J18DV0C3A5J",
+            "type": "stroke",
+            "op": "modified",
+            "rev": 6,
+            "patch": [
+              {
+                "op": "replace",
+                "path": "/sides/left",
+                "value": {
+                  "colourId": "col_01M6AH8V46GZGJG9MERT7HBZ45",
+                  "matrix": null
+                },
+                "oldValue": null
+              },
+              {
+                "op": "replace",
+                "path": "/sides/right",
+                "value": {
+                  "colourId": "col_01M6AH8V46GZGJG9MERT7HBZ45",
+                  "matrix": null
+                },
+                "oldValue": null
+              }
+            ]
+          },
+          {
+            "id": "dr_01K742SG0KKMCAP9X1E6Z5P4SW",
+            "type": "drawing",
+            "op": "modified",
+            "rev": 6,
+            "patch": []
+          }
+        ],
+        "undo": {
+          "stepId": "u-3",
+          "label": "Paint"
+        },
+        "warnings": [],
+        "documentRev": 6
+      }
+    },
+    {
+      "command": "doc.validate",
+      "params": {
+        "checks": [
+          "unpaintedZones"
+        ]
+      },
+      "envelope": {
+        "status": "ok",
+        "result": {
+          "documentRev": 5,
+          "issues": [],
+          "counts": {
+            "error": 0,
+            "info": 0,
+            "warning": 0
+          },
+          "truncated": false,
+          "unavailable": []
+        },
+        "changes": [],
+        "warnings": [],
+        "documentRev": 6
+      }
+    },
+    {
+      "command": "edit.undo",
+      "params": {},
+      "envelope": {
+        "status": "ok",
+        "result": {
+          "undone": [
+            "Paint"
+          ],
+          "position": 2
+        },
+        "changes": [
+          {
+            "id": "dr_01K742SG0KKMCAP9X1E6Z5P4SW/st_01K7JJN801Z1CRNSC8EP3EGFR6",
+            "type": "stroke",
+            "op": "modified",
+            "rev": 7,
+            "patch": [
+              {
+                "op": "replace",
+                "path": "/sides/left",
+                "value": null,
+                "oldValue": {
+                  "colourId": "col_01M6AH8V46GZGJG9MERT7HBZ45",
+                  "matrix": null
+                }
+              }
+            ]
+          },
+          {
+            "id": "dr_01K742SG0KKMCAP9X1E6Z5P4SW/st_01K7JJN8028BQ4938FFYSX322J",
+            "type": "stroke",
+            "op": "modified",
+            "rev": 7,
+            "patch": [
+              {
+                "op": "replace",
+                "path": "/sides/left",
+                "value": null,
+                "oldValue": {
+                  "colourId": "col_01M6AH8V46GZGJG9MERT7HBZ45",
+                  "matrix": null
+                }
+              }
+            ]
+          },
+          {
+            "id": "dr_01K742SG0KKMCAP9X1E6Z5P4SW/st_01K7JJN804ZHV88J18DV0C3A5J",
+            "type": "stroke",
+            "op": "modified",
+            "rev": 7,
+            "patch": [
+              {
+                "op": "replace",
+                "path": "/sides/left",
+                "value": null,
+                "oldValue": {
+                  "colourId": "col_01M6AH8V46GZGJG9MERT7HBZ45",
+                  "matrix": null
+                }
+              },
+              {
+                "op": "replace",
+                "path": "/sides/right",
+                "value": null,
+                "oldValue": {
+                  "colourId": "col_01M6AH8V46GZGJG9MERT7HBZ45",
+                  "matrix": null
+                }
+              }
+            ]
+          },
+          {
+            "id": "dr_01K742SG0KKMCAP9X1E6Z5P4SW",
+            "type": "drawing",
+            "op": "modified",
+            "rev": 7,
+            "patch": []
+          }
+        ],
+        "warnings": [],
+        "documentRev": 7
+      }
+    },
+    {
+      "command": "edit.redo",
+      "params": {},
+      "envelope": {
+        "status": "ok",
+        "result": {
+          "redone": [
+            "Paint"
+          ],
+          "position": 3
+        },
+        "changes": [
+          {
+            "id": "dr_01K742SG0KKMCAP9X1E6Z5P4SW/st_01K7JJN801Z1CRNSC8EP3EGFR6",
+            "type": "stroke",
+            "op": "modified",
+            "rev": 8,
+            "patch": [
+              {
+                "op": "replace",
+                "path": "/sides/left",
+                "value": {
+                  "colourId": "col_01M6AH8V46GZGJG9MERT7HBZ45",
+                  "matrix": null
+                },
+                "oldValue": null
+              }
+            ]
+          },
+          {
+            "id": "dr_01K742SG0KKMCAP9X1E6Z5P4SW/st_01K7JJN8028BQ4938FFYSX322J",
+            "type": "stroke",
+            "op": "modified",
+            "rev": 8,
+            "patch": [
+              {
+                "op": "replace",
+                "path": "/sides/left",
+                "value": {
+                  "colourId": "col_01M6AH8V46GZGJG9MERT7HBZ45",
+                  "matrix": null
+                },
+                "oldValue": null
+              }
+            ]
+          },
+          {
+            "id": "dr_01K742SG0KKMCAP9X1E6Z5P4SW/st_01K7JJN804ZHV88J18DV0C3A5J",
+            "type": "stroke",
+            "op": "modified",
+            "rev": 8,
+            "patch": [
+              {
+                "op": "replace",
+                "path": "/sides/left",
+                "value": {
+                  "colourId": "col_01M6AH8V46GZGJG9MERT7HBZ45",
+                  "matrix": null
+                },
+                "oldValue": null
+              },
+              {
+                "op": "replace",
+                "path": "/sides/right",
+                "value": {
+                  "colourId": "col_01M6AH8V46GZGJG9MERT7HBZ45",
+                  "matrix": null
+                },
+                "oldValue": null
+              }
+            ]
+          },
+          {
+            "id": "dr_01K742SG0KKMCAP9X1E6Z5P4SW",
+            "type": "drawing",
+            "op": "modified",
+            "rev": 8,
+            "patch": []
+          }
+        ],
+        "warnings": [],
+        "documentRev": 8
+      }
+    },
+    {
+      "command": "agent.activity.export",
+      "params": {
+        "path": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-c22-r3-sdk-eq_efo9y\\replay.json",
+        "format": "batch"
+      },
+      "envelope": {
+        "status": "ok",
+        "result": {
+          "path": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-c22-r3-sdk-eq_efo9y\\replay.json",
+          "entries": 9,
+          "omitted": [
+            {
+              "seq": 3,
+              "tool": "run_command",
+              "command_id": "colour.paint.apply",
+              "reason": "notCompleted"
+            },
+            {
+              "seq": 4,
+              "tool": "run_command",
+              "command_id": "draw.drawing.get",
+              "reason": "readOnly"
+            },
+            {
+              "seq": 5,
+              "tool": "run_command",
+              "command_id": "doc.validate",
+              "reason": "readOnly"
+            },
+            {
+              "seq": 7,
+              "tool": "run_command",
+              "command_id": "doc.validate",
+              "reason": "readOnly"
+            }
+          ]
+        },
+        "changes": [],
+        "warnings": [],
+        "documentRev": 8
+      }
+    }
+  ],
+  "replayExit": 0
+}

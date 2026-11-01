@@ -109,6 +109,19 @@ fn mixed_document() -> tt_model::document::Document {
 }
 #[test]
 fn multi_drawing_import_repairs_only_inconsistent_drawing_and_undoes_everything() {
+    let dir = c13_support::tmp();
+    let src = c13_support::spawn(&dir.join("report-source"));
+    assert!(src.open_document(mixed_document(), None, false).is_ok());
+    c13_support::job_ok(&src, "project.saveAs", json!({"path":dir.join("mixed.animpkg")}));
+    let loaded = c13_support::spawn(&dir.join("report-load"));
+    c13_support::job_ok(&loaded, "project.open", json!({"path":dir.join("mixed.animpkg")}));
+    let report = ok(&loaded, "doc.loadReport.get", json!({}));
+    let load_issue =
+        report["issues"].as_array().unwrap().iter().find(|i| i["code"] == "drawing.fillInconsistent").unwrap();
+    assert_eq!(load_issue["details"]["zones"], 1);
+    assert!(report["repairedCount"].as_u64().unwrap() >= 1);
+    assert_eq!(load_issue["severity"], "warning");
+    eprintln!("load issue shape={load_issue}");
     for policy in ["preserve", "new"] {
         let src = ExecutorHandle::spawn(Default::default()).unwrap();
         assert!(src.open_document(mixed_document(), None, false).is_ok());
@@ -143,6 +156,8 @@ fn multi_drawing_import_repairs_only_inconsistent_drawing_and_undoes_everything(
             4
         );
     }
+    drop((src, loaded));
+    let _ = std::fs::remove_dir_all(dir);
 }
 
 #[test]
@@ -231,4 +246,46 @@ fn load_and_import_recovery_keep_nested_extensions_meta_deformable_and_path_prot
     }
     drop(src);
     let _ = std::fs::remove_dir_all(dir);
+}
+
+#[test]
+fn pasted_piece_event_reports_all_new_pieces_and_removed_original_once() {
+    let mut parts = tt_model::fixture::sample_parts(1).unwrap();
+    let i = parts.drawings.iter().position(|d| d.id().as_str() == D).unwrap();
+    let mut d = serde_json::to_value(&parts.drawings[i]).unwrap();
+    let mut existing = d["nodes"][0]["strokes"][1].clone();
+    existing["points"] = json!([[-10, 0, 0, 0, 0, 0], [10, 0, 0, 0, 0, 0]]);
+    let old = existing["id"].clone();
+    let mut pasted = existing.clone();
+    pasted["id"] = json!("st_r3_paste");
+    pasted["points"] = json!([[0, -10, 0, 0, 0, 0], [0, 10, 0, 0, 0, 0]]);
+    d["nodes"][0]["strokes"] = json!([existing]);
+    d["nodes"].as_array_mut().unwrap().truncate(1);
+    parts.drawings[i] = tt_model::object::from_json(&d).unwrap();
+    let h = ExecutorHandle::spawn(Default::default()).unwrap();
+    assert!(h.open_document(tt_model::document::Document::from_parts(parts).unwrap(), None, false).is_ok());
+    ok(
+        &h,
+        "edit.clipboard.set",
+        json!({"content":{"kind":"drawingObjects","sourceContext":"drawing","itemCount":1,"items":[pasted],"options":null}}),
+    );
+    let rx = h.subscribe();
+    let r = ok(&h, "edit.paste", json!({"context":"drawing","destination":{"drawingId":D}}));
+    let events = rx.try_iter().filter(|e| e.name == "draw.drawing.changed").collect::<Vec<_>>();
+    assert_eq!(events.len(), 1);
+    let raw = drawing(&h, D);
+    let strokes = raw["nodes"][0]["strokes"].as_array().unwrap();
+    assert_eq!(strokes.len(), 4);
+    assert_eq!(r["createdIds"].as_array().unwrap().len(), 2);
+    let event = &events[0].payload;
+    assert_eq!(event["createdIds"].as_array().unwrap().len(), 4);
+    assert_eq!(event["removedIds"], json!([old]));
+    for s in strokes {
+        assert!(event["createdIds"].as_array().unwrap().contains(&s["id"]));
+    }
+    eprintln!("pasted piece event={event}; paste's own created IDs={}", r["createdIds"]);
+    ok(&h, "edit.undo", json!({}));
+    assert_eq!(drawing(&h, D)["nodes"][0]["strokes"].as_array().unwrap().len(), 1);
+    ok(&h, "edit.redo", json!({}));
+    assert_eq!(drawing(&h, D)["nodes"][0]["strokes"].as_array().unwrap().len(), 4);
 }

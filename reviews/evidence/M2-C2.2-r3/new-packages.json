@@ -1,0 +1,1 @@
+"diff --git a/Cargo.lock b/Cargo.lock\nindex 6910a98..9a84da2 100644\n--- a/Cargo.lock\n+++ b/Cargo.lock\n@@ -4704,6 +4704,9 @@ dependencies = [\n  \"fontdb\",\n  \"i_overlay\",\n  \"libm\",\n+ \"num-bigint\",\n+ \"num-rational\",\n+ \"num-traits\",\n  \"proptest\",\n  \"schemars 1.2.3\",\n  \"serde\",\n"

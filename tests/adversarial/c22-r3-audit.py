@@ -47,7 +47,33 @@ def analyzer():
     spec.loader.exec_module(mod)
     return mod
 
+def planar(raw):
+    import math
+    def number(v): return isinstance(v,(int,float)) and not isinstance(v,bool) and math.isfinite(v) and v>=0
+    if not isinstance(raw,dict) or not number(raw.get('budgetUnits')) or not isinstance(raw.get('cases'),list) or not raw['cases']:
+        raise ValueError('invalid planar root')
+    cases=[]
+    for case in raw['cases']:
+        if not isinstance(case,dict) or not isinstance(case.get('name'),str) or not isinstance(case.get('runs'),list) or len(case['runs'])!=2:
+            raise ValueError('invalid planar case')
+        for r in case['runs']:
+            if not isinstance(r,dict) or not number(r.get('wallMs')) or not number(r.get('units')): raise ValueError('invalid planar observation')
+            if r.get('outcome')!='ok' and not str(r.get('outcome')).startswith('limit.exceeded:'): raise ValueError('invalid outcome')
+            if r['outcome']=='ok' and r['units']>raw['budgetUnits']: raise ValueError('accepted over budget')
+        cases.append({'name':case['name'],'maxWallMs':max(r['wallMs'] for r in case['runs']),'maxUnits':max(r['units'] for r in case['runs'])})
+    worst=max(cases,key=lambda c:c['maxWallMs'])
+    if raw.get('worst')!={'name':worst['name'],'wallMs':worst['maxWallMs']}: raise ValueError('bad stored worst')
+    return {'cases':cases,'maxWallMs':worst['maxWallMs'],'underTenSeconds':worst['maxWallMs']<10000}
+
 class Audit(unittest.TestCase):
+    def test_planar_analyzer_recomputes_and_rejects_malformed(self):
+        raw=json.loads((ROOT/'reviews/evidence/M2-C2.2/round-2/planar-worst-case-windows.json').read_bytes())
+        self.assertTrue(planar(raw)['underTenSeconds'])
+        for v in [None,True,'1',float('inf'),-1]:
+            d=copy.deepcopy(raw);d['cases'][0]['runs'][0]['wallMs']=v
+            with self.assertRaises(ValueError):planar(d)
+        d=copy.deepcopy(raw);d['worst']['wallMs']+=1
+        with self.assertRaises(ValueError):planar(d)
     def test_c21_masks_only_explained_piece_list_and_digest(self):
         r = structural()
         self.assertEqual((r['oldPieces'], r['newPieces']), (52, 46))
@@ -128,6 +154,9 @@ def collect():
     write('register.json', {'target':'02feb53','counts':{k:counts[k] for k in ['implemented','divergent','missing','deferred-with-owner']},
         'previous':{'implemented':176,'divergent':11,'missing':0,'deferred-with-owner':158},
         'deltas':[{'unit':r['unit'],'from':r['round2'],'to':r['round3']} for r in rows if r['round2']!=r['round3']], 'units':rows})
+    header='# M2 C2.2 round 3: 345-unit conformance register\n\nTarget `02feb53`. Unchanged units inherit the predecessor source audit; this is not 345 independently executed tests.\n\n'
+    header+='| Unit | Requirement | Text / field | Round 2 | Round 3 | Evidence / owner | Prior audit |\n|---|---|---|---|---|---|---|\n'
+    (OUT/'conformance.md').write_text(header+'\n'.join('| '+' | '.join(r[k] for k in ['unit','requirement','text','round2','round3','evidenceOrOwner','priorAudit'])+' |' for r in rows)+'\n',encoding='utf-8')
     log = read(OUT / 'ci.log')
     jobs = json.loads(read(OUT / 'ci-jobs.json'))
     ci = {'headSha': jobs['headSha'], 'conclusion': jobs['conclusion'], 'jobs': []}
@@ -146,6 +175,9 @@ def collect():
     files = list((OUT / 'ci-artifacts').glob('headless-*/c21-measurements/*.json'))
     files += list(OUT.glob('strokes-100k-*.json'))
     write('measurement-recomputed.json',[analyzer().check_file(p) | {'source':str(p.relative_to(ROOT))} for p in files])
+    planar_files=list(OUT.glob('planar-worst-case-*.json'))+list((OUT/'ci-artifacts').glob('headless-*/c22-planar-worst-case/*.json'))
+    planar_files+=list((ROOT/'reviews/evidence/M2-C2.2-r2').glob('planar-worst-case-windows.json'))
+    write('planar-recomputed.json',{str(p.relative_to(ROOT)):planar(json.loads(p.read_bytes())) for p in planar_files})
     print('receipts:',len(rows),'units;',len(files),'measurement files')
 
 if __name__ == '__main__':
