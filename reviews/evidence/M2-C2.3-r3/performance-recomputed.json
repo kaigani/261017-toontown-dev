@@ -1,0 +1,401 @@
+{
+  "render-100k": {
+    "seconds": 0.882339,
+    "priorSeconds": 0.9118801,
+    "ratio": 0.967604183927251,
+    "error": null
+  },
+  "flatten-100k": {
+    "seconds": 0.5506676,
+    "priorSeconds": 0.5867941,
+    "ratio": 0.938434111726754,
+    "error": {
+      "code": "limit.exceeded",
+      "message": "flattening these layers needs more than 1000000 units of work"
+    }
+  },
+  "centre-line-large": {
+    "seconds": 3.9248547,
+    "priorSeconds": 4.0372229,
+    "ratio": 0.9721669566473529,
+    "error": null
+  },
+  "100k": {
+    "series": [
+      {
+        "name": "brushAdd.allocatedBytes",
+        "prior": {
+          "n": 10,
+          "p50": 3434890288.0,
+          "max": 3435559255.0
+        },
+        "current": {
+          "n": 10,
+          "p50": 3434890327.0,
+          "max": 3435559363.0
+        },
+        "p50Ratio": 1.0000000113540743
+      },
+      {
+        "name": "brushAdd.retainedBytes",
+        "prior": {
+          "n": 10,
+          "p50": 91789.0,
+          "max": 91799.0
+        },
+        "current": {
+          "n": 10,
+          "p50": 91799.0,
+          "max": 102709.0
+        },
+        "p50Ratio": 1.0001089455163472
+      },
+      {
+        "name": "brushAdd.wallMs",
+        "prior": {
+          "n": 10,
+          "p50": 4713.8967999999995,
+          "max": 5028.996700000001
+        },
+        "current": {
+          "n": 10,
+          "p50": 4867.0118999999995,
+          "max": 5505.0221
+        },
+        "p50Ratio": 1.0324816402429515
+      },
+      {
+        "name": "patchProperty.allocatedBytes",
+        "prior": {
+          "n": 10,
+          "p50": 2456591908.0,
+          "max": 2457079135.0
+        },
+        "current": {
+          "n": 10,
+          "p50": 2456592557.0,
+          "max": 2457090704.0
+        },
+        "p50Ratio": 1.000000264187144
+      },
+      {
+        "name": "patchProperty.retainedBytes",
+        "prior": {
+          "n": 10,
+          "p50": 6172.0,
+          "max": 32957.0
+        },
+        "current": {
+          "n": 10,
+          "p50": 6174.0,
+          "max": 32957.0
+        },
+        "p50Ratio": 1.0003240440699934
+      },
+      {
+        "name": "patchProperty.wallMs",
+        "prior": {
+          "n": 10,
+          "p50": 3298.3343,
+          "max": 3567.3603
+        },
+        "current": {
+          "n": 10,
+          "p50": 3437.5962,
+          "max": 3762.4281
+        },
+        "p50Ratio": 1.042221887575192
+      },
+      {
+        "name": "process.liveBytes",
+        "prior": {
+          "n": 70,
+          "p50": 1425601030.0,
+          "max": 1426119055.0
+        },
+        "current": {
+          "n": 70,
+          "p50": 1425601078.0,
+          "max": 1426119103.0
+        },
+        "p50Ratio": 1.0000000336700094
+      },
+      {
+        "name": "redo.allocatedBytes",
+        "prior": {
+          "n": 10,
+          "p50": 4003128109.0,
+          "max": 4003785996.0
+        },
+        "current": {
+          "n": 10,
+          "p50": 4003128010.0,
+          "max": 4003786340.0
+        },
+        "p50Ratio": 0.99999997526934
+      },
+      {
+        "name": "redo.retainedBytes",
+        "prior": {
+          "n": 10,
+          "p50": 13594.0,
+          "max": 121233111.0
+        },
+        "current": {
+          "n": 10,
+          "p50": 13594.0,
+          "max": 121233049.0
+        },
+        "p50Ratio": 1.0
+      },
+      {
+        "name": "redo.wallMs",
+        "prior": {
+          "n": 10,
+          "p50": 5329.3192,
+          "max": 5540.7824
+        },
+        "current": {
+          "n": 10,
+          "p50": 5552.2754,
+          "max": 5805.6846000000005
+        },
+        "p50Ratio": 1.0418357751962015
+      },
+      {
+        "name": "strokeAdd.allocatedBytes",
+        "prior": {
+          "n": 10,
+          "p50": 7525072053.0,
+          "max": 8595629357.0
+        },
+        "current": {
+          "n": 10,
+          "p50": 7525061546.0,
+          "max": 8242407664.0
+        },
+        "p50Ratio": 0.9999986037342997
+      },
+      {
+        "name": "strokeAdd.retainedBytes",
+        "prior": {
+          "n": 10,
+          "p50": 31563.0,
+          "max": 586290489.0
+        },
+        "current": {
+          "n": 10,
+          "p50": 22967.0,
+          "max": 586290447.0
+        },
+        "p50Ratio": 0.7276557995120869
+      },
+      {
+        "name": "strokeAdd.wallMs",
+        "prior": {
+          "n": 10,
+          "p50": 10151.523,
+          "max": 11122.3051
+        },
+        "current": {
+          "n": 10,
+          "p50": 10346.2398,
+          "max": 11686.9665
+        },
+        "p50Ratio": 1.019181043080925
+      },
+      {
+        "name": "strokeAddDryRun.allocatedBytes",
+        "prior": {
+          "n": 10,
+          "p50": 6830760158.0,
+          "max": 6831574665.0
+        },
+        "current": {
+          "n": 10,
+          "p50": 6830749582.0,
+          "max": 7901256236.0
+        },
+        "p50Ratio": 0.9999984517096553
+      },
+      {
+        "name": "strokeAddDryRun.retainedBytes",
+        "prior": {
+          "n": 10,
+          "p50": -45365.0,
+          "max": 232482509.0
+        },
+        "current": {
+          "n": 10,
+          "p50": -45365.0,
+          "max": 232482447.0
+        },
+        "p50Ratio": 1.0
+      },
+      {
+        "name": "strokeAddDryRun.wallMs",
+        "prior": {
+          "n": 10,
+          "p50": 9582.9337,
+          "max": 10119.7739
+        },
+        "current": {
+          "n": 10,
+          "p50": 9622.2745,
+          "max": 11834.102700000001
+        },
+        "p50Ratio": 1.0041052981510246
+      },
+      {
+        "name": "strokeSet.allocatedBytes",
+        "prior": {
+          "n": 10,
+          "p50": 3455277006.0,
+          "max": 3455941636.0
+        },
+        "current": {
+          "n": 10,
+          "p50": 3455288243.0,
+          "max": 3455943144.0
+        },
+        "p50Ratio": 1.0000032521271032
+      },
+      {
+        "name": "strokeSet.retainedBytes",
+        "prior": {
+          "n": 10,
+          "p50": 5415.0,
+          "max": 16335.0
+        },
+        "current": {
+          "n": 10,
+          "p50": 5415.0,
+          "max": 5415.0
+        },
+        "p50Ratio": 1.0
+      },
+      {
+        "name": "strokeSet.wallMs",
+        "prior": {
+          "n": 10,
+          "p50": 4777.1958,
+          "max": 6113.4367999999995
+        },
+        "current": {
+          "n": 10,
+          "p50": 4864.0393,
+          "max": 5722.22
+        },
+        "p50Ratio": 1.0181787608538047
+      },
+      {
+        "name": "undo.allocatedBytes",
+        "prior": {
+          "n": 10,
+          "p50": 4664315120.0,
+          "max": 4665132218.0
+        },
+        "current": {
+          "n": 10,
+          "p50": 4664316045.0,
+          "max": 4665143551.0
+        },
+        "p50Ratio": 1.0000001983142168
+      },
+      {
+        "name": "undo.retainedBytes",
+        "prior": {
+          "n": 10,
+          "p50": 13038.0,
+          "max": 121237094.0
+        },
+        "current": {
+          "n": 10,
+          "p50": 13038.0,
+          "max": 121237094.0
+        },
+        "p50Ratio": 1.0
+      },
+      {
+        "name": "undo.wallMs",
+        "prior": {
+          "n": 10,
+          "p50": 6149.8850999999995,
+          "max": 6416.5722
+        },
+        "current": {
+          "n": 10,
+          "p50": 6304.838,
+          "max": 6789.0125
+        },
+        "p50Ratio": 1.0251960642321594
+      }
+    ],
+    "inputsValidated": true
+  },
+  "planar": [
+    {
+      "name": "100000-small-curves-plus-one",
+      "priorMaxMs": 2716.3837,
+      "currentMaxMs": 2913.8598,
+      "ratio": 1.0726981611618418,
+      "workAndOutcomeUnchanged": true
+    },
+    {
+      "name": "grid-200x200-crossing-lines",
+      "priorMaxMs": 567.9354,
+      "currentMaxMs": 591.4677,
+      "ratio": 1.0414348181148774,
+      "workAndOutcomeUnchanged": true
+    },
+    {
+      "name": "grid-600x600-crossing-lines",
+      "priorMaxMs": 2753.6586,
+      "currentMaxMs": 2860.8249,
+      "ratio": 1.0389177874119906,
+      "workAndOutcomeUnchanged": true
+    },
+    {
+      "name": "10000-concentric-squares",
+      "priorMaxMs": 3508.8201,
+      "currentMaxMs": 3501.8364,
+      "ratio": 0.9980096728242067,
+      "workAndOutcomeUnchanged": true
+    },
+    {
+      "name": "20000-separate-closed-squares",
+      "priorMaxMs": 309.1927,
+      "currentMaxMs": 327.6282,
+      "ratio": 1.059624628912649,
+      "workAndOutcomeUnchanged": true
+    },
+    {
+      "name": "1500-random-crossing-lines",
+      "priorMaxMs": 1980.9742999999999,
+      "currentMaxMs": 2046.9417999999998,
+      "ratio": 1.0333005329751124,
+      "workAndOutcomeUnchanged": true
+    },
+    {
+      "name": "5000-point-random-scribble",
+      "priorMaxMs": 345.1685,
+      "currentMaxMs": 339.3554,
+      "ratio": 0.9831586601906025,
+      "workAndOutcomeUnchanged": true
+    },
+    {
+      "name": "100000-point-dense-zigzag",
+      "priorMaxMs": 43.3027,
+      "currentMaxMs": 41.3589,
+      "ratio": 0.9551113440963265,
+      "workAndOutcomeUnchanged": true
+    },
+    {
+      "name": "100000-coincident-outlines-plus-one",
+      "priorMaxMs": 433.94870000000003,
+      "currentMaxMs": 435.6395,
+      "ratio": 1.0038963130895426,
+      "workAndOutcomeUnchanged": true
+    }
+  ]
+}

@@ -1,9 +1,9 @@
-﻿"""Recompute final-round timing deltas from observations, retaining the input files."""
+"""Recompute final-round timing deltas from observations, retaining the input files."""
 import argparse,importlib.util,json,math,pathlib,shutil,statistics,unittest
 ROOT=pathlib.Path(__file__).resolve().parents[2]
 def load(p):return json.loads(p.read_bytes())
-def finite(values):
- if not values or any(isinstance(x,bool) or not isinstance(x,(int,float)) or not math.isfinite(x) or x<0 for x in values):raise ValueError('expected nonempty finite nonnegative numeric observations')
+def finite(values,nonnegative=False):
+ if not values or any(isinstance(x,bool) or not isinstance(x,(int,float)) or not math.isfinite(x) or (nonnegative and x<0) for x in values):raise ValueError('expected nonempty finite nonnegative numeric observations')
  return values
 def summarize(values):
  values=sorted(finite(values));return {'n':len(values),'p50':values[math.floor((len(values)-1)*0.5+0.5)],'max':max(values)}
@@ -33,8 +33,11 @@ def collect(out):
  (out/'performance-recomputed.json').write_text(json.dumps(results,indent=2)+'\n',encoding='utf-8')
 class InputValidation(unittest.TestCase):
  def test_rejects_bad_observations(self):
-  for value in [[],[True],[float('inf')],[float('nan')],['1'],[-1]]:
+  for value in [[],[True],[float('inf')],[float('nan')],['1']]:
    with self.assertRaises(ValueError):summarize(value)
+ def test_signed_allocation_delta_and_nonnegative_time(self):
+  self.assertEqual(summarize([-1,0,1])['p50'],0)
+  with self.assertRaises(ValueError):finite([-1],nonnegative=True)
  def test_nearest_rank(self):self.assertEqual(summarize([4,1,3,2])['p50'],3)
 if __name__=='__main__':
  p=argparse.ArgumentParser();p.add_argument('--out',type=pathlib.Path);a,rest=p.parse_known_args()
