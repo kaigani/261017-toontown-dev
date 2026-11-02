@@ -168,6 +168,9 @@ fn the_cutter_area_change_on_the_reviewers_counterexample_is_the_snapping_of_its
     assert!((sa - sb).abs() <= b_before + b_after);
 }
 
+/// An exact vertex, where it snaps (du) and its displacement (du).
+type Vertex = ((f64, f64), (f64, f64), f64);
+
 /// The cut's junctions, printed for the record: the exact crossings and where they snap.
 #[test]
 fn the_counterexample_junctions_are_the_snapped_exact_crossings() {
@@ -175,7 +178,7 @@ fn the_counterexample_junctions_are_the_snapped_exact_crossings() {
     let exact: Vec<Pt> = after.vertices().into_iter().collect();
     let snapped: Vec<(i64, i64)> = exact.iter().map(oracle::snap_pt).collect();
     let fmt = |p: &Pt| (p.0.clone().f64() / GRID as f64, p.1.clone().f64() / GRID as f64);
-    let shown: Vec<((f64, f64), (f64, f64), f64)> = exact
+    let shown: Vec<Vertex> = exact
         .iter()
         .zip(&snapped)
         .map(|(p, s)| (fmt(p), (s.0 as f64 / GRID as f64, s.1 as f64 / GRID as f64), displacement(p)))
@@ -183,7 +186,7 @@ fn the_counterexample_junctions_are_the_snapped_exact_crossings() {
     println!("exact vertex, snapped vertex, displacement (du): {shown:#?}");
     // The two crossings of the triangle's sides off the grid: (160/9, 320/9) of the line with itself and (560/13,
     // 420/13) of the cut with (20,40)–(80,20); the cut meets (80,20)–(0,40) on the grid at (40, 30).
-    let off: Vec<&((f64, f64), (f64, f64), f64)> = shown.iter().filter(|v| v.2 > 0.0).collect();
+    let off: Vec<&Vertex> = shown.iter().filter(|v| v.2 > 0.0).collect();
     assert_eq!(off.len(), 2);
     assert!(shown.iter().any(|v| v.0 == (40.0, 30.0) && v.2 == 0.0));
 }

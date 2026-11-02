@@ -53,7 +53,7 @@ fn large() -> tt_model::document::Document {
     tt_model::document::Document::from_parts(parts).unwrap()
 }
 
-fn flatten_once(budget: Option<u64>) -> Value {
+fn flatten_once(budget: Option<u64>, sample: usize) -> Value {
     tt_executor::hooks::set_merge_work_budget(budget.unwrap_or(0));
     let h = ExecutorHandle::spawn(ExecutorConfig { budget: Duration::from_secs(600) }).unwrap();
     let t = Instant::now();
@@ -66,10 +66,15 @@ fn flatten_once(budget: Option<u64>) -> Value {
     let seconds = t.elapsed().as_secs_f64();
     tt_executor::hooks::set_merge_work_budget(0);
     json!({
-        "seconds": seconds, "openSeconds": open, "status": format!("{:?}", env.status),
+        "sampleId": sample, "seconds": seconds, "openSeconds": open, "status": format!("{:?}", env.status),
         "error": env.error.as_ref().map(|e| json!({ "code": e.code })),
         "committed": rev(&h) == v + 1, "unchangedOnRefusal": env.error.is_none() || rev(&h) == v,
     })
+}
+
+/// The measurement run's identity, as `c14_evidence::run_id` (C24-R2-03): `TT_MEASURE_RUN_ID`, else unique to this process.
+fn run_id(started_at: &str) -> String {
+    std::env::var("TT_MEASURE_RUN_ID").ok().filter(|v| !v.is_empty()).unwrap_or_else(|| format!("local-{started_at}"))
 }
 
 fn p50(v: &[f64]) -> f64 {
@@ -81,7 +86,8 @@ fn p50(v: &[f64]) -> f64 {
 #[test]
 #[ignore = "measurement; run with TT_MEASURE=1 and --ignored in release with --features test-hooks"]
 fn flatten_100k_raw_observations() {
-    let budgeted: Vec<Value> = (0..REPETITIONS).map(|_| flatten_once(None)).collect();
+    let started_at = tt_persist::time::now_iso();
+    let budgeted: Vec<Value> = (0..REPETITIONS).map(|i| flatten_once(None, i)).collect();
     for b in &budgeted {
         // The product never holds the worker past the watchdog: a refusal is atomic and quick, never a completion.
         if b["error"].is_object() {
@@ -90,10 +96,11 @@ fn flatten_100k_raw_observations() {
             assert!(b["seconds"].as_f64().unwrap() < 30.0, "{b}");
         }
     }
-    let unbudgeted: Vec<Value> = (0..REPETITIONS).map(|_| flatten_once(Some(u64::MAX))).collect();
+    let unbudgeted: Vec<Value> = (0..REPETITIONS).map(|i| flatten_once(Some(u64::MAX), REPETITIONS + i)).collect();
     let secs = |v: &[Value]| v.iter().map(|x| x["seconds"].as_f64().unwrap()).collect::<Vec<_>>();
     let out = json!({
         "strokes": 100_000, "repetitions": REPETITIONS,
+        "runId": run_id(&started_at), "startedAt": started_at,
         "os": std::env::consts::OS, "arch": std::env::consts::ARCH,
         "profile": if cfg!(debug_assertions) { "debug" } else { "release" },
         "budgeted": budgeted, "budgetedP50Seconds": p50(&secs(&budgeted)),

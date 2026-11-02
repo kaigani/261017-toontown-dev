@@ -106,6 +106,7 @@ impl Recorder {
                 "cpus": std::thread::available_parallelism().map_or(0, std::num::NonZeroUsize::get),
                 "profile": if cfg!(debug_assertions) { "debug" } else { "release" },
                 "startedAt": self.started_at,
+                "runId": run_id(&self.started_at),
                 "timeOrigin": "tMs: milliseconds since startedAt on a monotonic clock",
                 "summaryRule": "nearest rank: sorted[round((n - 1) * q)]",
             },
@@ -113,6 +114,13 @@ impl Recorder {
             "facts": facts,
         })
     }
+}
+
+/// The measurement run's identity (C24-R2-03): `TT_MEASURE_RUN_ID` (CI: `<GITHUB_RUN_ID>-<attempt>-<os>`, shared by every
+/// measurement of the job), else `local-<startedAt>` (unique to this process).
+#[must_use]
+pub fn run_id(started_at: &str) -> String {
+    std::env::var("TT_MEASURE_RUN_ID").ok().filter(|v| !v.is_empty()).unwrap_or_else(|| format!("local-{started_at}"))
 }
 
 /// Writes a report to `target/evidence/c14/<name>-<os>.json`.
