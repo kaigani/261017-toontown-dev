@@ -1801,3 +1801,32 @@ fn snapping_onto_a_curved_contour_reaches_its_nearest_point() {
         },
     );
 }
+
+/// Shrunk from `flatten_of_pencil_and_polygonal_brush_layers_is_exact` (seed `c24-r2-domain-mixflat`, 4096 cases): a
+/// pencil triangle (40,0)-(40,80)-(60,0) closed along the x-axis, and a brush rectangle (40,50)-(50,80) whose left edge
+/// runs along the triangle's and whose corner only touches it (no junction there). Flatten discarded the whole piece
+/// (40,0)-(40,80)-(47.5,50) because its middle segment's middle lies under the brush, its visible part included, and the
+/// triangle's zone was lost. A piece now goes only when every segment's middle is under cover (product fix, ADR-0017
+/// history 16).
+#[test]
+fn flatten_keeps_a_pencil_piece_that_a_brush_only_partly_covers() {
+    let h = fresh();
+    let c = json!(palette(&h)[4]);
+    let pencils = vec![(vec![(40.0, 0.0), (40.0, 80.0), (60.0, 0.0), (0.0, 0.0)], false)];
+    let b = brush_contour(&(4, 5, 1, 3));
+    let strokes: Vec<Value> = pencils.iter().enumerate().map(|(i, (p, cl))| pencil(&format!("p{i}"), p, *cl)).collect();
+    let (d, ids) = create(
+        &h,
+        vec![layer_json("l_p", "pencil", strokes), layer_json("l_q", "brush", vec![brush("b0", &[b.clone()], &c)])],
+    );
+    let before = paint(&h, &d, &ids[0]);
+    let old = old_state(&before).unwrap();
+    let r = ok(&h, "draw.flatten.apply", json!({ "drawingId": d, "ids": [ids[0], ids[1]] }));
+    let after = layer(&h, &d, r["layerId"].as_str().unwrap());
+    let emap = SnapMap::build(expected_inputs(&pieces_of(&before), &[b]));
+    let labels = SnapMap::build(inputs(&after));
+    verify_expected(&after, &emap, &labels, &|f, z| carried(&old, &emap, f, z), "after Flatten").unwrap();
+    assert_eq!(after.zones.len(), 1);
+    assert_eq!(after.zones[0].area, 687.5);
+    assert_eq!(after.zones[0].colour, before.zones[0].colour);
+}

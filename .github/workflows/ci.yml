@@ -71,6 +71,8 @@ jobs:
           PY=python3
           if [ "$RUNNER_OS" = "Windows" ]; then PY=python; fi
           $PY scripts/run-reviewer-python-suites.py
+          # Reviewer-owned C2.4 files differ only by the ruled, declared edits (M2 C2.4 round 2, edit 57).
+          $PY scripts/check-reviewer-ownership.py
 
       - name: Front end — build, diagnostics variant then default (frontendDist is embedded by the Tauri host)
         run: |

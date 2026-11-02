@@ -300,7 +300,7 @@ fn flatten_contour(bez: &[Value]) -> Vec<Pt> {
 }
 
 /// The stretch of the grid segment `p`–`q` that the grid segment `a`–`b` runs along (grid units from `p`), if longer
-/// than one unit: the points of `p`–`q` within one grid unit of `a`–`b`'s line and projecting inside `a`–`b` (a split
+/// than two units (a short piece meeting `p`–`q` at a vertex comes within a unit of it over 1/sin of their angle): the points of `p`–`q` within one grid unit of `a`–`b`'s line and projecting inside `a`–`b` (a split
 /// leaves its junction rounded onto the grid, so pieces of one line lie up to a unit off each other's snapped
 /// segments), for segments parallel within that unit over the shorter one's length (a shallow crossing is not a
 /// stretch).
@@ -332,7 +332,7 @@ fn stretch(p: (i64, i64), q: (i64, i64), a: (i64, i64), b: (i64, i64)) -> Option
             hi = hi.min(t0.max(t1));
         }
     }
-    (hi > lo && (hi - lo) * l > 1.0).then_some((lo * l, hi * l))
+    (hi > lo && (hi - lo) * l > 2.0).then_some((lo * l, hi * l))
 }
 
 /// The non-zero winding number of a closed polygon around `p` (exact; `p` never on the polygon).
@@ -492,7 +492,7 @@ fn check(
         let mut cuts: Vec<f64> = vec![0.0, l];
         cuts.extend(on.iter().flat_map(|&(t0, t1)| [t0, t1]));
         cuts.sort_by(f64::total_cmp);
-        for w in cuts.windows(2).filter(|w| w[1] - w[0] > 1.0) {
+        for w in cuts.windows(2).filter(|w| w[1] - w[0] > 2.0) {
             let m = (w[0] + w[1]) / 2.0;
             let have = on.iter().filter(|&&(t0, t1)| t0 < m && m < t1).count();
             prop_assert_eq!(have, want, "stroke segments on oracle edge {:?} -> {:?} at {} of {}", sp, sq, m, l);

@@ -264,3 +264,12 @@ C2.1 delivered strokes, text, groups and bitmaps as validated, persisted geometr
   and the cuts, segments and handles of a translated layer are the translated ones. Evidence: unit test
   `a_t_junction_is_on_the_grid_and_translates_exactly` (offsets up to 65 536 du), the 4096-case translation property
   in `c24_r1_properties.rs` and the C21/C22/symmetry goldens (unchanged by this step).
+- **M2 C2.4 round 2 (C24-R2-01; found by the mixed-kind Flatten route property): (16) Flatten discards only pieces
+  wholly under cover.** After the merged layer is settled, lower pencil and invisible pieces under an upper layer's opaque
+  cover are discarded (SI-073). The test was the middle of a piece's middle segment, so a piece the settle pass did not
+  split where a brush outline only touches it and runs along it (no junction: a touch is no crossing) went as a whole,
+  its visible part included; a pencil triangle lost its zone. A piece now goes only when the middle of every segment is
+  under cover (a piece that crosses into cover is split there, so it is wholly in or out; a single-segment piece is
+  judged as before); the extra points are charged to the merge's work account. Evidence:
+  `crates/executor/tests/c24_route_domains.rs` `flatten_keeps_a_pencil_piece_that_a_brush_only_partly_covers` and the
+  4096-case Flatten property.

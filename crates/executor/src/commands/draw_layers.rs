@@ -274,7 +274,10 @@ fn merge(
     ops.extend(removals);
     cx.patch_entries(vec![(EntryKey::Drawing(drawing.clone()), ops)])?;
     cx.settle()?;
-    // Lower pencil and invisible pieces left under cover go.
+    // Lower pencil and invisible pieces left under cover go: every segment's middle under cover (M2 C2.4 round 2,
+    // found by the mixed-kind Flatten route property: a piece the settle pass did not split where a brush outline
+    // only touches and runs along it lay partly outside the cover, and its middle segment's middle alone discarded its
+    // visible part too).
     let now = cx.document()?.clone();
     let dn = now.drawing(drawing).ok_or_else(|| super::draw::not_found(drawing.as_str()))?.clone();
     // One index of the merged drawing's objects: lookups stay linear in the drawing size (100 000-stroke layers).
@@ -284,7 +287,17 @@ fn merge(
         for piece in cx.pieces_of(drawing, orig) {
             let Some(l) = index.get(&piece).cloned() else { continue };
             let Some(s) = vd::stroke_at(&dn, &l.pointer) else { continue };
-            if *s.kind() != StrokeKind::Brush && cut::middle(s.points(), *s.closed()).is_some_and(|m| covered(*i, m)) {
+            if *s.kind() == StrokeKind::Brush {
+                continue;
+            }
+            let segs = Path::from_points(s.points(), *s.closed()).segments();
+            work.spend_n(segs.len().saturating_mul(n)).map_err(|e| crate::planar::geom_error(&e))?;
+            let under = if segs.is_empty() {
+                cut::middle(s.points(), *s.closed()).is_some_and(|m| covered(*i, m))
+            } else {
+                segs.iter().all(|c| covered(*i, c.eval(0.5)))
+            };
+            if under {
                 drop.push(l);
             }
         }
