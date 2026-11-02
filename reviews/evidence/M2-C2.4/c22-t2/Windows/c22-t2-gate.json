@@ -1,0 +1,40 @@
+{
+  "gate": "C22-T2: 100k Flatten completes within the same run's 100k strokeAdd p50 and under the 30 s watchdog",
+  "os": "windows",
+  "strokeAddP50Seconds": 20.4594033,
+  "flattenUnbudgetedP50Seconds": 38.0706564,
+  "flattenUnbudgetedSeconds": [
+    36.0581453,
+    37.5813478,
+    38.0706564,
+    38.9214859,
+    38.9257669
+  ],
+  "flattenBudgetedSeconds": [
+    1.667073,
+    1.6576791,
+    1.6361324000000002,
+    1.6770801,
+    1.5247237999999999
+  ],
+  "flattenBudgetedOutcomes": [
+    {
+      "code": "limit.exceeded"
+    },
+    {
+      "code": "limit.exceeded"
+    },
+    {
+      "code": "limit.exceeded"
+    },
+    {
+      "code": "limit.exceeded"
+    },
+    {
+      "code": "limit.exceeded"
+    }
+  ],
+  "met": false,
+  "gapSeconds": 17.611253099999995,
+  "note": "the interactive latency budget (R1-12) is the separate M11 C11.1 scale gate"
+}
