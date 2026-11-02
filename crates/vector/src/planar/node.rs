@@ -249,12 +249,56 @@ fn crosses_at(a: (Dir, Dir), b: (Dir, Dir)) -> bool {
     inside_arc(a.1, a.0, b.0) != inside_arc(a.1, a.0, b.1)
 }
 
-/// The closest point of a segment to `p`: fraction and point.
-fn closest(p: P, a: P, b: P) -> (f64, P) {
-    let ab = b - a;
-    let len2 = ab.dot(ab);
-    let t = if len2 > 0.0 { ((p - a).dot(ab) / len2).clamp(0.0, 1.0) } else { 0.0 };
-    (t, a + ab * t)
+/// The squared distance of a T-junction end from an edge, exactly, as `num / den` in grid units squared.
+#[derive(Debug, Clone, Copy)]
+struct Dist2 {
+    num: i128,
+    den: i128,
+}
+
+impl Dist2 {
+    /// Whether `self < other` (both within the tolerance, so the cross products fit in `i128`).
+    fn less(self, other: Dist2) -> bool {
+        self.num * other.den < other.num * self.den
+    }
+
+    fn same(self, other: Dist2) -> bool {
+        self.num * other.den == other.num * self.den
+    }
+}
+
+/// The closest point of the grid segment `a`→`b` (not a point) to the grid point `p`, exactly (C24-R2 ruling on the
+/// f64 steps): the squared distance, the fraction along the segment (a path parameter only: it orders cuts and picks the
+/// Bézier segment) and the point, the rational projection rounded half to even onto the grid like a proper crossing.
+/// `None` when farther than [`JUNCTION_TOLERANCE`] (2 grid units) or out of `i128` range. Only integer arithmetic
+/// decides the junction and places it, so an integer-du translation translates it exactly on every platform.
+fn closest(p: Ip, a: Ip, b: Ip) -> Option<(Dist2, f64, Ip)> {
+    let v = [i128::from(b[0] - a[0]), i128::from(b[1] - a[1])];
+    let w = [i128::from(p[0] - a[0]), i128::from(p[1] - a[1])];
+    let len2 = v[0].checked_mul(v[0])?.checked_add(v[1].checked_mul(v[1])?)?;
+    let dot = w[0].checked_mul(v[0])?.checked_add(w[1].checked_mul(v[1])?)?;
+    let tol2 = 4;
+    let end = |q: Ip| -> Option<(Dist2, f64, Ip)> {
+        let (dx, dy) = (i128::from(p[0] - q[0]), i128::from(p[1] - q[1]));
+        let d2 = dx.checked_mul(dx)?.checked_add(dy.checked_mul(dy)?)?;
+        (d2 <= tol2).then_some((Dist2 { num: d2, den: 1 }, if q == a { 0.0 } else { 1.0 }, q))
+    };
+    if len2 == 0 || dot <= 0 {
+        return end(a);
+    }
+    if dot >= len2 {
+        return end(b);
+    }
+    let cross = w[0].checked_mul(v[1])?.checked_sub(w[1].checked_mul(v[0])?)?;
+    let num = cross.checked_mul(cross)?;
+    if num > tol2.checked_mul(len2)? {
+        return None;
+    }
+    let at = |k: usize| -> Option<i64> {
+        let n = i128::from(a[k]).checked_mul(len2)?.checked_add(v[k].checked_mul(dot)?)?;
+        i64::try_from(round_half_even(n, len2)).ok()
+    };
+    Some((Dist2 { num, den: len2 }, dot as f64 / len2 as f64, [at(0)?, at(1)?]))
 }
 
 /// Whether a stroke kind is split by noding.
@@ -447,7 +491,8 @@ fn node_once(strokes: &[NodeStroke], work: &mut Work) -> Result<Noding, GeomErro
             // neighbouring piece of a split stroke and a line through the junction) is a junction with each of them.
             // Per stroke and Bézier segment, so a stroke passing the end more than once (a fold, a retrace) is cut at
             // every pass (C24-R1-01: cutting one pass left the other to cross it at a shallow angle once rounded).
-            let mut best: BTreeMap<(usize, i64), (f64, usize, f64, P)> = BTreeMap::new();
+            let mut best: BTreeMap<(usize, i64), (Dist2, usize, f64, Ip)> = BTreeMap::new();
+            let ip = snap(p);
             let key = (cell(p.x), cell(p.y));
             let Some(list) = grid.get(&key) else { continue };
             work.spend_n(list.len())?;
@@ -465,21 +510,22 @@ fn node_once(strokes: &[NodeStroke], work: &mut Work) -> Result<Noding, GeomErro
                 if along == [0, 0] || cross_i(dir, along) == 0 {
                     continue;
                 }
-                let (t, q) = closest(p, e.a, e.b);
-                let d = p.dist(q);
+                let Some((d, t, q)) = closest(ip, e.ia, e.ib) else { continue };
                 let pass = (e.stroke, e.sa.min(e.sb).floor() as i64);
-                if d <= JUNCTION_TOLERANCE && best.get(&pass).is_none_or(|b| d < b.0) {
+                if best.get(&pass).is_none_or(|b| d.less(b.0)) {
                     best.insert(pass, (d, n, t, q));
                 }
             }
             // The nearest stroke, and every other stroke as near (ties: the end-to-end neighbour and a line through
             // the same point); strokes merely passing within the tolerance are not pulled onto the junction.
-            let nearest = best.values().map(|b| b.0).fold(f64::INFINITY, f64::min);
-            for (_, n, t, q) in best.into_values().filter(|b| b.0 <= nearest + 1e-9) {
+            let Some(nearest) = best.values().map(|b| b.0).reduce(|m, d| if d.less(m) { d } else { m }) else {
+                continue;
+            };
+            for (_, n, t, q) in best.into_values().filter(|b| b.0.same(nearest)) {
                 let e = &edges[n];
                 let s_other = flat::param_between(e.sa, e.sb, t);
                 // Where they meet: the changed stroke moves onto the other one; an unchanged end stays put.
-                let at = if strokes[i].changed { q } else { p };
+                let at = if strokes[i].changed { unsnap(q) } else { p };
                 records.push(Record { at, parts: [(i, s_end), (e.stroke, s_other)] });
             }
         }
@@ -920,6 +966,28 @@ mod tests {
         let Some(Outcome::Moved(t)) = n.outcomes.get(&1) else { panic!("{n:?}") };
         assert_eq!(a[0].anchors[1].p, t.anchors[1].p);
         assert!(t.anchors[1].p.dist(P::new(4.0, 0.0)) < 1e-9);
+    }
+
+    /// The C24-R2 ruling on the f64 steps: a changed end within the tolerance of a slanted line lands on the exact
+    /// projection rounded onto the grid, and an integer-du translation (here by large offsets, where floating-point
+    /// sums of the translated coordinates would round differently) translates that junction exactly.
+    #[test]
+    fn a_t_junction_is_on_the_grid_and_translates_exactly() {
+        let at = |dx: f64, dy: f64| {
+            let n = run(&[
+                line("a", &[(dx, dy), (dx + 30.0, dy + 7.0)], false),
+                line("t", &[(dx + 11.0, dy + 9.0), (dx + 11.0, dy + 2.58)], true),
+            ]);
+            let Some(Outcome::Moved(t)) = n.outcomes.get(&1) else { panic!("{n:?}") };
+            t.anchors[1].p
+        };
+        let base = at(0.0, 0.0);
+        // The end (704, 165) in grid units projects onto (1920, 448)·1425600/3887104 = (704.16…, 164.30…): (704, 164).
+        assert_eq!(base, P::new(11.0, 2.5625));
+        for (dx, dy) in [(1.0, -3.0), (37.0, -11.0), (-4096.0, 8191.0), (65_536.0, -65_536.0)] {
+            let moved = at(dx, dy);
+            assert_eq!((moved.x - dx, moved.y - dy), (base.x, base.y), "translation by ({dx}, {dy})");
+        }
     }
 
     #[test]

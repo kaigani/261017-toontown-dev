@@ -243,3 +243,24 @@ C2.1 delivered strokes, text, groups and bitmaps as validated, persisted geometr
   its own probe. Evidence: `c24_r2_routes.rs` `point_moves_with_and_without_snapping_match_the_oracle` (4096 cases,
   unchanged) and `collapsed_other_contour_is_a_valid_snap_target_product_control`; builder seed
   `c24_oracle_routes.rs` `a_snapping_sliver_below_the_documented_bound_carries_no_fill`.
+- **M2 C2.4 round 2 (ruling on the f64 steps of edits 32-33): (15) T-junctions exact; why the remaining f64 steps
+  cannot break covariance or determinism.** The T-junction projection was floating point (`a + (b - a)·t` on the
+  unsnapped geometry, its distance compared with the tolerance): under an integer-du translation `(a + d) + w` and
+  `(a + w) + d` can differ in the last bit, so a changed end's junction anchor was not translated exactly. It is now
+  exact: the end and the edge on the 1/64 du grid, the closest point as the rational projection rounded half to even
+  onto the grid (as a proper crossing, SI-067), the tolerance test and the nearest-stroke choice by exact squared
+  distances (`i128`, overflow refuses the candidate). Every junction coordinate is therefore integer arithmetic on
+  grid coordinates. The f64 left in noding is the path parameter: the fraction along an edge of a crossing (a ratio of
+  two exact orientations), of a vertex meet (0, 1, or a projection of a grid point) or of a T-junction (an integer ratio),
+  mapped onto the flattened edge's parameter range (`s_a + (s_b - s_a)·f`, flattening parameters `k + i/n` with `n` from
+  Wang's bound on control-point differences). It only orders the cuts along a stroke, picks the Bézier segment of a cut
+  and places the handles of a cut curve piece; it never decides whether two strokes meet nor where a junction is.
+  (a) Cross-OS determinism: every one of these steps uses only ADR-0004 rule-3 operations (`+ - × ÷ sqrt`, integer to
+  float conversion, `floor`, `clamp`, comparisons) in a fixed order, no library transcendental and no fused multiply-add,
+  so each is correctly rounded and identical on every target. (b) Integer-translation covariance: each parameter is a
+  function of coordinate differences only (orientations, projections, second differences), and a translation by an
+  integer number of du changes no difference wherever the translated coordinates are exact in f64 (all grid
+  coordinates below 2^47 grid units, so every lattice and every persisted junction): the parameters are bit-identical
+  and the cuts, segments and handles of a translated layer are the translated ones. Evidence: unit test
+  `a_t_junction_is_on_the_grid_and_translates_exactly` (offsets up to 65 536 du), the 4096-case translation property
+  in `c24_r1_properties.rs` and the C21/C22/symmetry goldens (unchanged by this step).
