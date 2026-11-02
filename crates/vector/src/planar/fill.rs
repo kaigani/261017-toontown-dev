@@ -10,10 +10,19 @@
 //! Across an edit, a zone with the same ID keeps its fill; any other new zone takes the fill of the old zone it
 //! overlaps most (exact polygon intersection on the grid; ties to the lower old zone ID): a split zone gives both
 //! parts its fill, merged zones take the larger part's.
+//!
+//! **Overlapping and touching strokes (C24-T1 ruling).** Collinearly overlapping, retracing and folded segments are not
+//! split (C22-R3-03), nor is a stroke at a vertex another stroke only touches, so several pieces may lie on one edge and
+//! one stroke side may face different zones along its length. The side fill of an overlapped edge is owned by one
+//! deterministic member: the piece of the stroke with the lowest stroke ID, then the lowest segment index ([`owner`]).
+//! Every read of a side fill on an overlapped edge resolves through the owner; every write (paint, repair, recovery,
+//! carry-over, all through [`write`]) gives every piece's stretch the zone's fill, the owner's and the mirrored
+//! members' alike: as the stroke's side fill (the zone along its longest stretch), or, where the stretch faces a zone
+//! with another fill, as a stretch record in the same extension key as brush stretches (`{side, from, to, fill}`).
 
 use std::collections::{BTreeMap, BTreeSet};
 
-use super::graph::{EdgeKind, LayerMap, key_param};
+use super::graph::{EdgeKind, LayerMap, Src, key_param, unsnap};
 use crate::path::GeomError;
 use crate::work::Work;
 
@@ -85,6 +94,41 @@ fn same(a: &Option<Fill>, b: &Option<Fill>) -> bool {
     norm(a) == norm(b)
 }
 
+/// The parameter range of a piece (ascending).
+fn range(s: &Src) -> (f64, f64) {
+    if s.s_u <= s.s_v { (s.s_u, s.s_v) } else { (s.s_v, s.s_u) }
+}
+
+/// The pencil and invisible pieces on an edge (brush outlines keep their own records, SI-060).
+fn line_srcs(map: &LayerMap, e: usize) -> Vec<&Src> {
+    map.edges[e].srcs.iter().filter(|s| map.strokes[s.stroke].1 != EdgeKind::Brush).collect()
+}
+
+/// The owner of an overlapped edge's side fills (C24-T1 ruling): the piece of the stroke with the lowest stroke ID,
+/// then the lowest segment index (then stroke position and parameter, so duplicates resolve deterministically).
+#[must_use]
+pub fn owner<'a>(map: &LayerMap, srcs: &[&'a Src]) -> Option<&'a Src> {
+    let key = |s: &Src| {
+        let lo = range(s).0;
+        (lo.floor() as i64, s.stroke, key_param(lo))
+    };
+    srcs.iter().copied().min_by(|a, b| map.strokes[a.stroke].0.cmp(&map.strokes[b.stroke].0).then(key(a).cmp(&key(b))))
+}
+
+/// The side fill a piece holds over its stretch: a stretch record of that side covering most of it, else the stroke's
+/// side fill.
+fn piece_fill(stored: &Stored, s: &Src, left: bool) -> Option<Fill> {
+    let (lo, hi) = range(s);
+    let record = stored.exterior.get(s.stroke).into_iter().flatten().find(|r| {
+        let overlap = (r.s1.min(hi) - r.s0.max(lo)).max(0.0);
+        r.left == left && overlap * 2.0 > hi - lo
+    });
+    match record {
+        Some(r) => Some(r.fill.clone()),
+        None => stored.sides.get(s.stroke).and_then(|x| if left { x.left.clone() } else { x.right.clone() }),
+    }
+}
+
 /// Reads the zone fills of a layer.
 #[must_use]
 pub fn read(map: &LayerMap, stored: &Stored) -> Read {
@@ -111,10 +155,20 @@ pub fn read(map: &LayerMap, stored: &Stored) -> Read {
                 }
             }
         } else {
-            for p in lines {
-                let side =
-                    stored.sides.get(p.stroke).and_then(|s| if p.left { s.left.clone() } else { s.right.clone() });
-                votes.push((side.filter(Fill::painted), p.length));
+            // Edge by edge along the zone's cycles: a single piece votes with its side fill, an overlapped edge with
+            // its owner's (C24-T1).
+            let face = &map.faces[zone.face];
+            for &c in face.outer.iter().chain(&face.holes) {
+                for &h in &map.cycles[c].half {
+                    let e = h / 2;
+                    let srcs = line_srcs(map, e);
+                    let piece = if srcs.len() == 1 { srcs.first().copied() } else { owner(map, &srcs) };
+                    let Some(src) = piece else { continue };
+                    let edge = &map.edges[e];
+                    let length = unsnap(map.verts[edge.u]).dist(unsnap(map.verts[edge.v]));
+                    let left = h.is_multiple_of(2) == src.forward;
+                    votes.push((piece_fill(stored, src, left).filter(Fill::painted), length));
+                }
             }
         }
         let mut tally: Vec<(Option<Fill>, f64)> = Vec::new();
@@ -164,6 +218,25 @@ pub fn write(map: &LayerMap, fills: &[Option<Fill>], previous: &Stored) -> Store
         };
         stored.sides[k] = SideFills { left: keep(l, prev.left), right: keep(r, prev.right) };
     }
+    // Every piece's stretch carries the zone on its side (on an overlapped edge the owner's fill, mirrored to the other
+    // members); a stretch whose zone fill differs from the stroke's side fill becomes a stretch record (C24-T1).
+    for e in 0..map.edges.len() {
+        for src in line_srcs(map, e) {
+            let (lo, hi) = range(src);
+            let h = e * 2 + usize::from(!src.forward);
+            for (left, half) in [(true, h), (false, h ^ 1)] {
+                let Some(z) = map.faces[map.face_of_half(half)].zone else { continue };
+                let want = painted(Some(z));
+                let side = if left { &stored.sides[src.stroke].left } else { &stored.sides[src.stroke].right };
+                if same(&want, side) {
+                    continue;
+                }
+                stored.managed[src.stroke] = true;
+                let fill = want.unwrap_or(Fill { colour_id: None, matrix: None });
+                stored.exterior[src.stroke].push(Exterior { left, s0: lo, s1: hi, fill });
+            }
+        }
+    }
     for (z, zone) in map.zones.iter().enumerate() {
         if zone.pieces.iter().any(|p| map.strokes[p.stroke].1 != EdgeKind::Brush) {
             continue;
@@ -182,7 +255,21 @@ pub fn write(map: &LayerMap, fills: &[Option<Fill>], previous: &Stored) -> Store
             stored.exterior[p.stroke].push(Exterior { left: p.left, s0: p.s0, s1: p.s1, fill: fill.clone() });
         }
     }
-    for list in &mut stored.exterior {
+    for (k, list) in stored.exterior.iter_mut().enumerate() {
+        // A pencil or invisible stroke's adjoining stretch records of one side and fill merge into one.
+        if map.strokes[k].1 != EdgeKind::Brush && list.len() > 1 {
+            list.sort_by(|a, b| a.left.cmp(&b.left).then(key_param(a.s0).cmp(&key_param(b.s0))));
+            let mut merged: Vec<Exterior> = Vec::with_capacity(list.len());
+            for r in list.drain(..) {
+                match merged.last_mut() {
+                    Some(m) if m.left == r.left && key_param(m.s1) == key_param(r.s0) && m.fill == r.fill => {
+                        m.s1 = r.s1;
+                    }
+                    _ => merged.push(r),
+                }
+            }
+            *list = merged;
+        }
         list.sort_by(|a, b| {
             key_param(a.s0).cmp(&key_param(b.s0)).then(a.left.cmp(&b.left)).then(key_param(a.s1).cmp(&key_param(b.s1)))
         });

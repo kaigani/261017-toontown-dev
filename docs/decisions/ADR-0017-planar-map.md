@@ -166,9 +166,9 @@ C2.1 delivered strokes, text, groups and bitmaps as validated, persisted geometr
   cut at every pass. (5) Fill carry-over ignores an overlap no larger than the snapping bound — twice the length of
   the new zone's boundary inside the old zone's box, in grid units — so a sliver created by snapping a new junction
   never carries a neighbour's fill; a zone with no overlap above the bound takes the fill of the old zone holding its
-  interior point. Larger overlaps are still compared exactly (C22-R2-04). Open: ticket C24-T1 — side fills of zones
-  bounded by collinearly overlapping or retracing strokes (not split there, C22-R3-03) can read back differently after
-  an unrelated edit. Evidence: `crates/vector/tests/c24_properties.rs`, `crates/executor/tests/c24_topology.rs`.
+  interior point. Larger overlaps are still compared exactly (C22-R2-04). Ticket C24-T1 — side fills of zones
+  bounded by collinearly overlapping or retracing strokes (not split there, C22-R3-03) could read back differently after
+  an unrelated edit — is resolved below (7, 8). Evidence: `crates/vector/tests/c24_properties.rs`, `crates/executor/tests/c24_topology.rs`.
 - **M2 C2.4 (readiness item 4, C22-T2): self T-junctions; incremental noding not shipped.** (6) An open stroke's end
   touching its own path (outside the Bézier segment the end belongs to) is a junction like an end touching another
   stroke: before, the touch was found only after another crossing had split the stroke, so settling was not a fixpoint.
@@ -177,3 +177,26 @@ C2.1 delivered strokes, text, groups and bitmaps as validated, persisted geometr
   settled layer is not always a fixpoint of full noding when its pieces are re-noded as edited strokes (end-to-vertex
   and end-to-piece touches resolve again), so the two disagree on such content. Making settled layers fixpoints is the
   remaining C22-T2 prerequisite; the seeds are in the C2.4 handoff.
+- **M2 C2.4 (ticket C24-T1, orchestrator ruling): one owner per overlapped edge; stretch records for split sides.**
+  Collinearly overlapping, retracing and folded segments stay unsplit (C22-R3-03 stands), and a stroke is not split at a
+  vertex another stroke only touches (a fold's turn point on it), so one stored side could face two zones and a zone's
+  fill read back differently after an unrelated edit. Now: (7) for every set of pieces on one edge, the side fill is
+  owned by the piece of the stroke with the lowest stroke ID, then the lowest segment index (`fill::owner`), and every
+  read of a side fill on that edge resolves through the owner; (8) every write — paint, repair, recovery, carry-over,
+  all through `fill::write` — gives every piece's stretch its zone's fill, the owner's and the mirrored members' alike:
+  as the stroke's side fill (the zone along its longest stretch, as before) or, where a stretch faces a zone with
+  another fill, as a stretch record `{side, from, to, fill}` in the stroke's `ext["dev.toontown.zones"].exterior` (the
+  SI-060 key, now on pencil and invisible strokes too; adjoining records of one side and fill merge). Strokes whose
+  sides face one zone each carry no record, so content without overlaps or touches is unchanged. Folds are covered by
+  the owner rule, not by splitting. Evidence: `crates/vector/tests/c24_properties.rs` —
+  `side_fills_read_back_after_adding_strokes` (seeded property, 256 cases in `check`; 4096 run locally) and
+  `side_fills_read_back_beside_collinear_overlaps` (the shrunk seed, now permanent, with retrace and fold variants).
+- **M2 C2.4 (readiness item 4, C22-T2 bounded pass): settled layers are fixpoints of noding.** (9) A noding pass's
+  splits create piece ends at its junctions, and an end resting on another stroke is itself a junction — e.g. two
+  lines crossing exactly at a vertex of a third stroke that retraces both: the crossing was a junction of the two only,
+  and the third was split at that vertex by the next edit's noding. `node::node` now repeats the pass on the pieces
+  until a pass changes nothing (at most `MAX_PASSES` = 8, each charged to the work account; in the corpus a second
+  pass finds the new ends and a third nothing), composing the outcomes per input stroke. A settled layer is therefore
+  a fixpoint of noding with its strokes marked changed or unchanged. Evidence: `crates/vector/tests/c24_properties.rs`
+  `a_settled_layer_is_a_fixpoint_of_noding` (seeded property, 512 cases in `check`; 2048 run locally) with the
+  shrunk seed.

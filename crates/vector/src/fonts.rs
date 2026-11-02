@@ -5,7 +5,8 @@
 //! and `kern`-table pairs. A run whose font is not installed keeps its requested name (§3.7) and is laid out with the
 //! platform's default sans-serif face; when no face can be read at all, a fixed fallback metric (advance 0.5 em,
 //! ascender 0.8 em, descender 0.2 em) keeps layout defined. Layout bounds are derived data: they depend on the font
-//! files of the machine, never the persisted text (ADR-0016).
+//! files of the machine, never the persisted text (ADR-0016). Same-font layout controls (C21-R1-11) register a fixture
+//! font file through the dev-only `test-hooks` feature ([`register_test_font`]); products never have it.
 
 use std::collections::BTreeMap;
 use std::sync::{Arc, Mutex, OnceLock};
@@ -190,11 +191,31 @@ struct Fonts {
     cache: Mutex<BTreeMap<(String, bool, bool), Arc<FaceMetrics>>>,
 }
 
+/// Font files registered by tests before the font list is first read (dev-only).
+#[cfg(feature = "test-hooks")]
+static TEST_FONTS: Mutex<Vec<Vec<u8>>> = Mutex::new(Vec::new());
+
+/// Registers a font file for same-font layout tests (dev-only `test-hooks`; C21-R1-11). It joins the font list when the
+/// list is first read, so a test registers it before any text is laid out in its process ([`is_installed`] then
+/// confirms it).
+#[cfg(feature = "test-hooks")]
+pub fn register_test_font(data: Vec<u8>) {
+    if let Ok(mut list) = TEST_FONTS.lock() {
+        list.push(data);
+    }
+}
+
 fn fonts() -> &'static Fonts {
     static F: OnceLock<Fonts> = OnceLock::new();
     F.get_or_init(|| {
         let mut db = fontdb::Database::new();
         db.load_system_fonts();
+        #[cfg(feature = "test-hooks")]
+        if let Ok(list) = TEST_FONTS.lock() {
+            for data in list.iter() {
+                db.load_font_data(data.clone());
+            }
+        }
         Fonts { db, cache: Mutex::new(BTreeMap::new()) }
     })
 }

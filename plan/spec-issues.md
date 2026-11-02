@@ -769,6 +769,15 @@ Reserved by the M0 closure for "measured deterministic-format incompatibility" (
     fill directly.
   - *Recovery.* Recovery and side-fill repair run on load as part of the repair step (C22-T1 withdrawn). Placeholder
     recovery entries are written on save for used colours without a definition or a copy, in the `Recovered` palette.
+- **M2 C2.4 (ticket C24-T1, orchestrator ruling): side fills on overlapped edges.** Overlapping or retracing collinear
+  segments stay unsplit (C22-R3-03 stands). For any set of mutually overlapping segments the side fill is owned by one
+  deterministic owner: the segment of the stroke with the lowest stroke ID, then the lowest segment index. Every read of
+  a side fill on an overlapped segment resolves through the owner; every write (paint, repair, recovery, carry-over)
+  writes through to the owner and mirrors to the other members. Folds are covered by the owner rule, not by splitting.
+  Where a stroke side faces zones with different fills along its length (an overlap, a fold, or a vertex another stroke
+  only touches), the stretches that differ from its side fill are stored as `{side, from, to, fill}` records in the
+  SI-060 extension key (ADR-0017 history 7–8). The shrunk property case is a permanent regression with retrace and
+  fold variants.
 
 ## SI-068 — mappings of lines (found in M2 C2.2 round 1; decided)
 

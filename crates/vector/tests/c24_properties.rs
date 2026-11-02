@@ -3,8 +3,9 @@
 //! shared end points, T-junctions, collinear overlaps, coincident strokes and shared edges between closed shapes are
 //! common. Properties: the zones are the oracle's bounded faces (exact areas within the snapping bound); maps with
 //! determinant ±1 (quarter turns, reflections, whole-unit translations) keep the face areas; zone IDs and areas do not
-//! depend on stroke order; adding strokes carries every fill into the zones it splits; interior points locate their
-//! zones; settling is idempotent.
+//! depend on stroke order; adding strokes carries every fill into the zones it splits; side fills read back as written
+//! after adding strokes, beside overlapping, retracing and folded strokes too (C24-T1); a settled layer is a fixpoint of
+//! noding (C22-T2); interior points locate their zones; settling is idempotent.
 //!
 //! Every failing seed found during development is kept below as a fixed regression case (see the C2.4 handoff).
 #![allow(clippy::unwrap_used, clippy::panic, missing_docs, reason = "test")]
@@ -18,8 +19,10 @@ use proptest::test_runner::{Config, RngAlgorithm, TestRng, TestRunner};
 use serde_json::{Value, json};
 use tt_vector::geom::P;
 use tt_vector::path::{Anchor, Path};
+use tt_vector::planar::EdgeKind;
 use tt_vector::planar::fill::Fill;
-use tt_vector::planar::layer::{inputs, settle};
+use tt_vector::planar::layer::{inputs, path_of, settle};
+use tt_vector::planar::node::{NodeStroke, node};
 use tt_vector::planar::{LayerMap, build};
 use tt_vector::work::Work;
 
@@ -201,19 +204,10 @@ fn adding_strokes_carries_each_fill_into_the_zones_it_splits() {
         .unwrap();
 }
 
-/// Side fills read back as written after adding strokes — failing when a zone is bounded by strokes overlapping
-/// collinearly (retracing): such strokes are not split at the overlap's ends (C22-R3-03), so one stored side faces two
-/// zones. Ticket C24-T1 (owner M2 C2.4); the shrunk seed is kept here.
-#[test]
-#[ignore = "known defect, ticket C24-T1: side fills of zones bounded by collinearly overlapping strokes"]
-fn side_fills_read_back_beside_collinear_overlaps() {
-    let first: Vec<Spec> = vec![
-        (false, vec![(0, 0), (2, 3), (0, 3)]),
-        (false, vec![(3, 2), (1, 3), (2, 3)]),
-        (true, vec![(0, 3), (2, 3), (0, 3), (0, 1)]),
-    ];
-    let extra: Vec<Spec> = vec![(false, vec![(0, 1), (0, 0)])];
-    let base = settle_all(None, &stroke_json(&first, &|p| p, 0), &BTreeMap::new());
+/// Paints every zone of `first` with its own colour, adds `extra`, and checks that every zone reads back the fill of the
+/// old zone holding its interior point (none outside them).
+fn side_fills_read_back(first: &[Spec], extra: &[Spec]) -> Result<(), TestCaseError> {
+    let base = settle_all(None, &stroke_json(first, &|p| p, 0), &BTreeMap::new());
     let old = map_of(&base);
     let painted: BTreeMap<String, Option<Fill>> = old
         .zones
@@ -222,16 +216,112 @@ fn side_fills_read_back_beside_collinear_overlaps() {
         .map(|(i, z)| (z.id.clone(), Some(Fill { colour_id: Some(format!("col_{i:04}")), matrix: None })))
         .collect();
     let painted_strokes = settle_all(Some(&base), &base, &painted);
+    // Painting reads back as painted, and settling again changes nothing.
+    let old_read = tt_vector::planar::fill::read(&old, &tt_vector::planar::layer::stored(&painted_strokes));
+    for (i, zone) in old.zones.iter().enumerate() {
+        prop_assert_eq!(&old_read.fills[i], &painted[&zone.id], "painted zone {}", zone.id);
+    }
+    prop_assert_eq!(&settle_all(Some(&painted_strokes), &painted_strokes, &BTreeMap::new()), &painted_strokes);
     let mut after = painted_strokes.clone();
-    after.extend(stroke_json(&extra, &|p| p, 100));
+    after.extend(stroke_json(extra, &|p| p, 100));
     let settled = settle_all(Some(&painted_strokes), &after, &BTreeMap::new());
     let new = map_of(&settled);
     let read = tt_vector::planar::fill::read(&new, &tt_vector::planar::layer::stored(&settled));
-    let old_read = tt_vector::planar::fill::read(&old, &tt_vector::planar::layer::stored(&painted_strokes));
+    prop_assert!(read.inconsistent.is_empty(), "inconsistent zones {:?}", read.inconsistent);
     for (z, zone) in new.zones.iter().enumerate() {
         let expect = old.zone_at(zone.interior).and_then(|i| old_read.fills[i].clone());
-        assert_eq!(read.fills[z], expect, "zone {}", zone.id);
+        prop_assert_eq!(&read.fills[z], &expect, "zone {} at {:?}", zone.id, zone.interior);
     }
+    Ok(())
+}
+
+/// Side fills read back as written after adding strokes, also beside collinearly overlapping, retracing and folded
+/// strokes (not split there, C22-R3-03): the owner rule (C24-T1 ruling, `fill::owner`) resolves every overlapped edge.
+#[test]
+fn side_fills_read_back_after_adding_strokes() {
+    let pair = (arrangement(), arrangement());
+    runner(b"toontown-m2-c24-topology-props-5", 256)
+        .run(&pair, |(first, extra)| side_fills_read_back(&first, &extra))
+        .unwrap();
+}
+
+/// Ticket C24-T1: the shrunk seed (a closed stroke retracing an edge another stroke overlaps; the added stroke closes a
+/// new zone below the overlap) and retrace and fold variants, kept as permanent regressions.
+#[test]
+fn side_fills_read_back_beside_collinear_overlaps() {
+    let cases: Vec<(Vec<Spec>, Vec<Spec>)> = vec![
+        // The shrunk seed.
+        (
+            vec![
+                (false, vec![(0, 0), (2, 3), (0, 3)]),
+                (false, vec![(3, 2), (1, 3), (2, 3)]),
+                (true, vec![(0, 3), (2, 3), (0, 3), (0, 1)]),
+            ],
+            vec![(false, vec![(0, 1), (0, 0)])],
+        ),
+        // Retrace: a stroke running back over another stroke's edge, partly (the overlap ends inside both).
+        (
+            vec![(true, vec![(0, 0), (4, 0), (4, 4), (0, 4)]), (false, vec![(1, 0), (3, 0), (3, 2), (1, 2), (1, 0)])],
+            vec![(false, vec![(2, 0), (2, 4)])],
+        ),
+        // Retrace: two strokes overlapping in opposite directions along one edge of two squares.
+        (
+            vec![
+                (true, vec![(0, 0), (2, 0), (2, 2), (0, 2)]),
+                (true, vec![(4, 0), (4, 2), (2, 2), (2, 0)]),
+                (false, vec![(2, 4), (2, 0)]),
+            ],
+            vec![(false, vec![(0, 1), (4, 1)])],
+        ),
+        // Fold: one open stroke turning back on itself at 180° along a square's edge.
+        (
+            vec![(true, vec![(0, 0), (3, 0), (3, 3), (0, 3)]), (false, vec![(0, 0), (3, 0), (1, 0), (1, 2)])],
+            vec![(false, vec![(2, 0), (2, 3)])],
+        ),
+        // Fold inside a closed stroke (it retraces its own edge), split by an added stroke.
+        (vec![(true, vec![(0, 2), (3, 2), (0, 2), (0, 0), (3, 0)])], vec![(false, vec![(3, 0), (3, 2)])]),
+        // A fold whose two passes border different zones after the edit.
+        (
+            vec![(false, vec![(0, 2), (4, 2), (0, 2)]), (true, vec![(0, 0), (4, 0), (4, 4), (0, 4)])],
+            vec![(false, vec![(2, 0), (2, 4)])],
+        ),
+    ];
+    for (i, (first, extra)) in cases.iter().enumerate() {
+        side_fills_read_back(first, extra).unwrap_or_else(|e| panic!("case {i}: {e}"));
+    }
+}
+
+/// A settled layer is a fixpoint of noding (C22-T2): noding it again, its strokes marked changed or not, changes
+/// nothing.
+fn settled_is_a_fixpoint(list: &[Spec]) -> Result<(), TestCaseError> {
+    let settled = settle_all(None, &stroke_json(list, &|p| p, 0), &BTreeMap::new());
+    for changed in [false, true] {
+        let input: Vec<NodeStroke> = settled
+            .iter()
+            .map(|v| NodeStroke {
+                id: v["id"].as_str().unwrap().to_owned(),
+                kind: EdgeKind::Pencil,
+                path: path_of(v),
+                changed,
+            })
+            .collect();
+        let out = node(&input, &mut Work::unlimited("t")).unwrap();
+        prop_assert!(out.outcomes.is_empty(), "changed = {}: {:?}", changed, out.outcomes);
+    }
+    Ok(())
+}
+
+#[test]
+fn a_settled_layer_is_a_fixpoint_of_noding() {
+    runner(b"toontown-m2-c24-topology-props-6", 512).run(&arrangement(), |list| settled_is_a_fixpoint(&list)).unwrap();
+    // Shrunk seed (C22-T2): a crossing of two lines at a vertex of a third stroke retracing both was a junction of
+    // the two only; the third was split at that vertex by the next noding (the new piece ends rest on it).
+    settled_is_a_fixpoint(&[
+        (false, vec![(1, 4), (1, 3), (0, 4)]),
+        (false, vec![(1, 4), (1, 0)]),
+        (false, vec![(0, 4), (2, 2)]),
+    ])
+    .unwrap();
 }
 
 /// Regression cases found during development (shrunk), kept as fixed tests.

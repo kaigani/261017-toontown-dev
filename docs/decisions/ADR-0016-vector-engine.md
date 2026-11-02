@@ -168,3 +168,15 @@ of these a command. The planar map (zones) is C2.2, drawing operations and rende
   watchdog. Evidence: `crates/vector/tests/c24_centre.rs` (bar, plus, frame with a split, bridged ring, refusals,
   determinism), `crates/executor/tests/c24_centre_line.rs` (vectorized E2 line art: widths, junctions, closed lines,
   fill carry-over, undo/redo, save/open, explicit thickness, budget refusal), `crates/executor/tests/c23_strokeops.rs`.
+- **M2 C2.4 (readiness item 9): Break Text Apart pre-charges its aggregate.** Glyph preparation and result staging are
+  charged before either starts (`UNITS_PER_GLYPH` = 50 000 units per visible character against
+  `BREAK_APART_WORK_BUDGET` = 1 000 000 000, about 20 000 glyphs per call): the schema-limit 100 000-character text
+  is refused with `limit.exceeded` at once, atomically, instead of after preparing every glyph and staging 300 000
+  objects (C2.3 round 3: refused by planar settling after 17.8 s, following read 5.5 s). Evidence:
+  `crates/executor/tests/c24_aggregate.rs` (refusal before any glyph in `check`; raw caller-refusal, following-read
+  and queued-read times of the 100k case and the 8192 × 8192 render in the CI `measurements` job).
+- **M2 C2.4 (readiness item 7, C21-R1-11): same-font layout controls.** `fonts::register_test_font` (dev-only
+  `tt-vector/test-hooks`) adds a fixture font file to the font list before it is first read; the OFL fixture
+  `tests/fixtures/fonts/B612-Regular.ttf` (ADR-0003 rule 7) gives text bounds and Break Apart placements that are
+  compared with a golden digest on Windows and macOS (`c24_text_layout.rs`) and joins the symmetry corpus
+  (`c24_symmetry.rs`).

@@ -7,3 +7,5 @@
 *.onnx binary
 *.ttrl binary
 *.gz binary
+*.ttf binary
+*.otf binary

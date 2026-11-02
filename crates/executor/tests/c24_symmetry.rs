@@ -2,8 +2,10 @@
 //! symmetry. For mirrors at several axis angles and kaleidoscopes of 2–16 mirrors at several angles, `tool.symmetry.set`
 //! configures the mode and pencil lines, brush strokes, rectangles and lines are drawn with `symmetry: true`. Each copy
 //! is checked against the exact map of the original (independent trigonometry), and the canonical drawing state of the
-//! whole corpus is compared with the committed golden digest on every OS (CI: Windows and macOS `check`).
-//! `TT_UPDATE_GOLDEN=1` re-records it.
+//! whole corpus is compared with the committed golden digest on every OS (CI: Windows and macOS `check`). Each
+//! configuration also lays out a text object in the test-only fixture font (`tests/fixtures/fonts/B612-Regular.ttf`,
+//! OFL; same-font layout controls, `c24_text_layout.rs`) and breaks it apart, so text bounds and glyph placements are
+//! in the digest. `TT_UPDATE_GOLDEN=1` re-records it.
 #![allow(clippy::unwrap_used, clippy::expect_used, clippy::panic, missing_docs, reason = "test")]
 
 mod common;
@@ -12,6 +14,15 @@ use common::*;
 use serde_json::{Value, json};
 
 const BOB: &str = "scene:#1/element:\"Bob\"";
+
+/// Registers the fixture font (before the process first reads its font list).
+fn register_fixture_font() {
+    static ONCE: std::sync::Once = std::sync::Once::new();
+    ONCE.call_once(|| {
+        let path = std::path::Path::new(env!("CARGO_MANIFEST_DIR")).join("../../tests/fixtures/fonts/B612-Regular.ttf");
+        tt_vector::fonts::register_test_font(std::fs::read(path).unwrap());
+    });
+}
 
 /// The configurations: mirrors at angles, kaleidoscopes with 2–16 mirrors.
 fn configs() -> Vec<Value> {
@@ -74,6 +85,8 @@ fn first_points(h: &tt_executor::ExecutorHandle, drawing: &str, ids: &[Value]) -
 
 #[test]
 fn command_created_mirrors_and_kaleidoscopes_are_exact_and_identical_across_platforms() {
+    register_fixture_font();
+    assert!(tt_vector::fonts::is_installed("B612"));
     let mut state = Vec::new();
     for c in configs() {
         let h = fixture();
@@ -123,6 +136,13 @@ fn command_created_mirrors_and_kaleidoscopes_are_exact_and_identical_across_plat
             "draw.line.add",
             json!({ "drawingId": d, "from": {"x": 20, "y": 300}, "to": {"x": 80, "y": 360}, "layer": "new" }),
         );
+        let text = ok(
+            &h,
+            "draw.text.add",
+            json!({ "drawingId": d, "position": {"x": -200, "y": -150}, "text": "Sym AV",
+            "format": {"font": "B612", "size": 32, "kerning": 8} }),
+        );
+        ok(&h, "draw.breakApart.apply", json!({ "drawingId": d, "textIds": [text["textId"]] }));
         let drawing = ok(&h, "draw.drawing.get", json!({ "drawingId": d, "include": ["zones"] }));
         state.push(json!({ "config": c, "drawing": drawing["nodes"] }));
     }
@@ -150,6 +170,8 @@ fn command_created_mirrors_and_kaleidoscopes_are_exact_and_identical_across_plat
 
 #[test]
 fn symmetry_values_out_of_range_are_refused_and_none_draws_once() {
+    // Tests of this binary share one font list: register before any executor reads it.
+    register_fixture_font();
     let h = fixture();
     assert_eq!(
         err(&h, "tool.symmetry.set", json!({ "mode": "kaleidoscope", "mirrors": 17 })).code,
