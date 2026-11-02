@@ -137,6 +137,15 @@ fn persisted_activity_log_beside_the_project() {
     for i in 0..3 {
         c.call("set_properties", json!({ "targets": [scene], "props": { "meta": { "i": i } } }));
     }
+    // Each entry is queued on the document thread behind its call, without waiting (C23-R1-07): a later request is
+    // answered only after the queued entries are written (M2 C2.3 round 3, CI run 41369919298).
+    let read = tt_executor::Invocation {
+        command: "app.state.get".into(),
+        params: json!({}),
+        options: tt_executor::InvokeOptions::default(),
+        origin: tt_executor::Origin::User,
+    };
+    assert!(h.invoke(read).is_ok());
     let file = dir.join("agent-activity.jsonl");
     let text = std::fs::read_to_string(&file).unwrap_or_default();
     assert_eq!(text.lines().count(), 3, "{}: {text}", file.display());
