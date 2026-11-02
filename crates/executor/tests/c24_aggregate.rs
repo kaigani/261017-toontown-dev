@@ -98,6 +98,10 @@ fn aggregate_break_apart_and_size_limit_render_raw_observations() {
         assert_eq!(b["error"], "limit.exceeded", "{b}");
         assert_eq!(b["committed"], false, "{b}");
     }
+    // The size-limit render on the fixture's drawing as it is (a fresh executor: the 100 000-character text is not
+    // part of the render case).
+    let h = ExecutorHandle::spawn(ExecutorConfig { budget: Duration::from_secs(30) }).unwrap();
+    assert!(h.open_document(tt_model::fixture::sample_document(1).unwrap(), None, false).is_ok());
     let render = json!({ "drawingId": D1, "width": 8192, "height": 8192, "background": "#ffffff" });
     let renders: Vec<Value> = (0..REPETITIONS).map(|_| observe(&h, "draw.drawing.render", &render)).collect();
     let out = json!({

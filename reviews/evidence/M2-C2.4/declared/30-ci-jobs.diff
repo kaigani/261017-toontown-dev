@@ -1,0 +1,82 @@
+diff --git a/.github/workflows/ci.yml b/.github/workflows/ci.yml
+index 9802633..6019ead 100644
+--- a/.github/workflows/ci.yml
++++ b/.github/workflows/ci.yml
+@@ -102,6 +102,10 @@ jobs:
+         with:
+           tool: cargo-deny@0.20.2
+       - run: cargo deny --locked check
++      # ADR-0003 rule 7: test-only assets (the OFL fixture font) are listed with their licences and named by no product
++      # source; the bundle job scans the built products for them.
++      - name: Test-only assets stay out of the product
++        run: python scripts/check-test-only-assets.py || python3 scripts/check-test-only-assets.py
+ 
+       - name: MCP protocol conformance with the official Python SDK client (C1.4; 11 §14.7), measurements
+         run: |
+@@ -189,6 +193,8 @@ jobs:
+           # The C22-T2 gate (M2 C2.4 ruling): 100k Flatten, five budgeted and five unbudgeted repetitions (dev-only hook
+           # lifts the budget), against this run's 100k strokeAdd p50.
+           TT_MEASURE=1 cargo test --release --locked -p tt-executor --features test-hooks --test c24_measure -- --ignored --nocapture
++          # Where the merged layer's settling time goes (C22-T2 bounded pass: the noding an incremental pass could skip).
++          TT_MEASURE=1 cargo test --release --locked -p tt-vector --test c24_flatten_phases -- --ignored --nocapture
+           mkdir -p out
+           os=$(echo "$RUNNER_OS" | tr "[:upper:]" "[:lower:]")
+           $PY scripts/c22-t2-gate.py target/evidence/c21/strokes-100k-$os.json target/evidence/c24/flatten-100k-$os.json out/c22-t2-gate.json
+@@ -253,6 +259,44 @@ jobs:
+           path: out/
+           if-no-files-found: error
+ 
++  # M2 C2.4 readiness items 8 and 9 (R1-12 budget baselines; large aggregates in the queue/cancellation corpus), in
++  # release, raw observations kept as artifacts. A job of its own so `headless` stays inside its budget (CI rule: add
++  # jobs, not minutes).
++  measurements:
++    name: measurements release (${{ matrix.os }})
++    strategy:
++      fail-fast: false
++      matrix:
++        os: [windows-latest, macos-latest]
++    runs-on: ${{ matrix.os }}
++    timeout-minutes: 45
++    steps:
++      - uses: actions/checkout@v7
++
++      - name: Rust toolchain (pinned in rust-toolchain.toml)
++        run: |
++          tc=$(sed -n 's/^channel = "\(.*\)"/\1/p' rust-toolchain.toml)
++          rustup toolchain install "$tc" --profile minimal
++          rustup override set "$tc"
++          rustc --version
++
++      - uses: Swatinem/rust-cache@v2
++        with:
++          key: measurements
++
++      - name: R1-12 baselines (memory, queued reads, maintenance) and large aggregates (Break Apart 100k, 8192 render)
++        run: |
++          mkdir -p out
++          TT_MEASURE=1 cargo test --release --locked -p tt-executor --test c24_budgets --test c24_aggregate -- --ignored --nocapture
++          cp -r target/evidence/c24 out/c24-measurements
++
++      - uses: actions/upload-artifact@v7
++        if: always()
++        with:
++          name: measurements-${{ runner.os }}
++          path: out/
++          if-no-files-found: error
++
+   # End-to-end scenario E2 (paint by id, 11 §14.8; M2 C2.4 readiness item 3) through the official Python SDK against the
+   # release binary: vectorize, validate, paint by ID, recolour, render, undo/redo, save/open, `--run` replay from the
+   # saved base. The seven PNGs and their hashes are kept as artifacts.
+@@ -336,6 +380,12 @@ jobs:
+       - name: Tauri build, default (unsigned; no M0 diagnostics)
+         run: pnpm --dir desktop tauri build --bundles ${{ matrix.bundles }} -- --locked
+ 
++      - name: The default build carries no test-only asset (ADR-0003 rule 7)
++        run: |
++          if [ "$RUNNER_OS" = "Windows" ]; then PY=python; else PY=python3; fi
++          $PY scripts/check-test-only-assets.py --bundle target/release/bundle
++          if [ "$RUNNER_OS" = "Windows" ]; then $PY scripts/check-test-only-assets.py --bundle target/release/toontown.exe; fi
++
+       - name: Default build registers no M0 diagnostic command and refuses the flags
+         run: |
+           mkdir -p out/default-build

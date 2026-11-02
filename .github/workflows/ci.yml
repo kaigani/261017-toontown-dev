@@ -287,8 +287,11 @@ jobs:
       - name: R1-12 baselines (memory, queued reads, maintenance) and large aggregates (Break Apart 100k, 8192 render)
         run: |
           mkdir -p out
-          TT_MEASURE=1 cargo test --release --locked -p tt-executor --test c24_budgets --test c24_aggregate -- --ignored --nocapture
-          cp -r target/evidence/c24 out/c24-measurements
+          status=0
+          TT_MEASURE=1 cargo test --release --locked --no-fail-fast -p tt-executor --test c24_budgets --test c24_aggregate -- --ignored --nocapture || status=1
+          # The raw observations are kept even when an assertion fails.
+          cp -r target/evidence/c24 out/c24-measurements || true
+          exit $status
 
       - uses: actions/upload-artifact@v7
         if: always()

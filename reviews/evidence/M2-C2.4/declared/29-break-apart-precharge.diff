@@ -1,0 +1,36 @@
+diff --git a/crates/executor/src/commands/draw_strokeops.rs b/crates/executor/src/commands/draw_strokeops.rs
+index 1c8a295..90660f4 100644
+--- a/crates/executor/src/commands/draw_strokeops.rs
++++ b/crates/executor/src/commands/draw_strokeops.rs
+@@ -351,6 +351,15 @@ pub(crate) fn draw_lines_to_brush_apply(
+     })
+ }
+ 
++/// The work one Break Text Apart may do (M2 C2.4 readiness item 9).
++const BREAK_APART_WORK_BUDGET: u64 = 1_000_000_000;
++
++/// Units charged for each visible character before any glyph is prepared: its outline and bridges, the three nodes and
++/// IDs staged for it, and the planar settling of its layer. With the budget this bounds one call at 20 000 glyphs
++/// (about 16 s in release on the slowest CI runner at C2.3's observed rate), so the schema-limit 100 000-character text
++/// is refused at once, before anything is prepared or staged.
++const UNITS_PER_GLYPH: u64 = 50_000;
++
+ /// `draw.breakApart.apply` parameters.
+ #[derive(Debug, Deserialize, JsonSchema)]
+ #[serde(deny_unknown_fields, rename_all = "camelCase")]
+@@ -419,6 +428,15 @@ pub(crate) fn draw_break_apart_apply(cx: &mut Cx, p: BreakApartParams) -> Result
+     if texts.is_empty() {
+         return Err(nothing_to_do("break apart"));
+     }
++    // Glyph preparation and result staging are pre-charged: an aggregate too large is refused before either starts.
++    let mut work = tt_vector::work::Work::new(BREAK_APART_WORK_BUDGET, "breaking this text apart");
++    let visible: usize = texts
++        .iter()
++        .filter_map(|l| vd::node_at(&d, &l.pointer).and_then(vd::text_content))
++        .map(|c| c.chars.iter().filter(|c| !c.is_whitespace()).count())
++        .sum();
++    work.spend(u64::try_from(visible).unwrap_or(u64::MAX).saturating_mul(UNITS_PER_GLYPH))
++        .map_err(|e| crate::planar::geom_error(&e))?;
+     // Replace from the end of each list first so earlier indices stay valid.
+     texts.sort_by(|a, b| b.list.cmp(&a.list).then(b.index.cmp(&a.index)));
+     let mut ops = Vec::new();
