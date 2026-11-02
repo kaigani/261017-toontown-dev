@@ -6,6 +6,10 @@ edition.workspace = true
 rust-version.workspace = true
 publish.workspace = true
 
+[features]
+# Dev-only measurement hooks (never in a product build; the product feature proofs check headless and desktop).
+test-hooks = []
+
 [dependencies]
 tt-model.workspace = true
 tt-persist.workspace = true

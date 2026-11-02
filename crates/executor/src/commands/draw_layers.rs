@@ -201,6 +201,14 @@ const MERGE_PASSES: u64 = 3;
 /// (never-block rule). Speeding the merge up (incremental re-noding) is C22-T2.
 const MERGE_WORK_BUDGET: u64 = 1_000_000;
 
+fn merge_work_budget() -> u64 {
+    #[cfg(feature = "test-hooks")]
+    if let Some(b) = crate::hooks::merge_work_budget() {
+        return b;
+    }
+    MERGE_WORK_BUDGET
+}
+
 /// Merges `layers` (back to front, at least two) of `drawing` into one; returns the kept layer and the removed IDs
 /// that existed before.
 fn merge(
@@ -221,7 +229,7 @@ fn merge(
     // The merge's own work is charged to a work account like the settle pass's (never-block rule): every derived-map
     // element of the source layers once per settle pass the merge runs (three), up front so an oversized merge
     // refuses before staging anything, then every sampled point of every source stroke.
-    let mut work = tt_vector::work::Work::new(MERGE_WORK_BUDGET, "flattening these layers");
+    let mut work = tt_vector::work::Work::new(merge_work_budget(), "flattening these layers");
     let map_cost: u64 = order.iter().map(|l| l.map.cost() as u64).sum();
     work.spend(map_cost.saturating_mul(MERGE_PASSES)).map_err(|e| crate::planar::geom_error(&e))?;
     let rank = |i: usize| if upper_wins { i } else { n - 1 - i };

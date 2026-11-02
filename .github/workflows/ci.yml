@@ -186,7 +186,13 @@ jobs:
           cargo test --release --locked -p tt-vector --test c21_worst_case -- --ignored --nocapture
           # Worst-case planar-map work on the adversarial layer corpus (M2 C2.2 readiness items 3 and 9; every run kept).
           cargo test --release --locked -p tt-vector --test c22_worst_case -- --ignored --nocapture
+          # The C22-T2 gate (M2 C2.4 ruling): 100k Flatten, five budgeted and five unbudgeted repetitions (dev-only hook
+          # lifts the budget), against this run's 100k strokeAdd p50.
+          TT_MEASURE=1 cargo test --release --locked -p tt-executor --features test-hooks --test c24_measure -- --ignored --nocapture
           mkdir -p out
+          os=$(echo "$RUNNER_OS" | tr "[:upper:]" "[:lower:]")
+          $PY scripts/c22-t2-gate.py target/evidence/c21/strokes-100k-$os.json target/evidence/c24/flatten-100k-$os.json out/c22-t2-gate.json
+          cp -r target/evidence/c24 out/c24-measurements
           cp -r target/evidence/c21-fit out/c21-fit-worst-case
           cp -r target/evidence/c22-planar out/c22-planar-worst-case
           $PY scripts/analyse-measurements.py target/evidence/c21 --out out/c21-measurement-analysis.json

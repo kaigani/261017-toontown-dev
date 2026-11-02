@@ -761,3 +761,22 @@ fn list(core: &mut run::Core, origin: Origin) -> Vec<Value> {
     }
     out
 }
+
+/// Measurement hooks (dev-only feature `test-hooks`; never in a product build): lift Flatten's work budget so the
+/// C22-T2 measurement can time a 100 000-stroke merge to completion (M2 C2.4).
+#[cfg(feature = "test-hooks")]
+pub mod hooks {
+    use std::sync::atomic::{AtomicU64, Ordering};
+
+    static MERGE_BUDGET: AtomicU64 = AtomicU64::new(0);
+
+    /// Flatten's work budget from now on (0: the product's).
+    pub fn set_merge_work_budget(units: u64) {
+        MERGE_BUDGET.store(units, Ordering::Release);
+    }
+
+    pub(crate) fn merge_work_budget() -> Option<u64> {
+        let b = MERGE_BUDGET.load(Ordering::Acquire);
+        (b > 0).then_some(b)
+    }
+}
