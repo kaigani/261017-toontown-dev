@@ -398,8 +398,9 @@ pub fn carry(
         let new_rings = new.zone_rings_grid(n);
         // Snapping a new junction to the grid moves the new zone's boundary by at most about one grid unit, which can give
         // it a sliver of overlap with an old zone it does not lie in (M2 C2.4, found by the topology properties). Such a
-        // sliver lies along the part of the new zone's boundary inside that old zone's box, so an overlap no larger than
-        // twice that length (in grid units, twice-area units) does not count; larger overlaps are compared exactly.
+        // sliver lies along the part of the new zone's boundary inside that old zone's box, so an overlap whose area is no
+        // larger than twice that length (grid units; four times it in the twice-area units of `overlap_area2`, C24-R2
+        // property seed) does not count; larger overlaps are compared exactly.
         let boundary_in = |b: [i64; 4]| -> f64 {
             new_rings
                 .iter()
@@ -412,9 +413,8 @@ pub fn carry(
         let mut best: Option<(num_rational::BigRational, usize)> = None;
         for &i in &cands {
             let area = super::exact::overlap_area2(&old.zone_rings_grid(i), &new_rings, work)?;
-            let noise = num_rational::BigRational::from_integer(num_bigint::BigInt::from(
-                (2.0 * boundary_in(old.zone_box(i))).ceil() as i64,
-            ));
+            let noise = num_rational::BigRational::from_float(4.0 * boundary_in(old.zone_box(i)))
+                .unwrap_or_else(|| num_rational::BigRational::from_integer(num_bigint::BigInt::from(0)));
             if area <= noise {
                 continue;
             }

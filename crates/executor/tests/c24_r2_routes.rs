@@ -344,8 +344,14 @@ fn check(
     expected: &[(Pt, Pt)],
     fill: &FillRule<'_>,
 ) -> Result<(Arrangement, Vec<String>), TestCaseError> {
-    let arr = oracle::arrangement(expected);
+    let mut arr = oracle::arrangement(expected);
     let zone_of = match_zones(&arr, zones)?;
+    // Each face's probe becomes its zone's published interior point (just checked to lie in that face): the carry
+    // rule's fallback is the old zone holding the zone's interior point, which can lie in a snapping sliver beside the
+    // oracle's own probe (C24-R2, XOR-5D point-move seed).
+    for (f, &z) in zone_of.iter().enumerate() {
+        arr.faces[f].probe = zones[z].interior.clone();
+    }
     let label_of = |p: &Pt, q: &Pt| label(strokes, p, q).0;
     let ids: Vec<String> = arr.faces.iter().map(|f| oracle::zone_id(f, &label_of)).collect();
     for (f, face) in arr.faces.iter().enumerate() {
@@ -441,6 +447,8 @@ fn carried<'a>(old: &'a Old, new_segs: &[(Pt, Pt)]) -> impl Fn(&Arrangement, &[S
             std::iter::once(&face.outer).chain(&face.holes).flatten().map(oracle::snap_pt).collect()
         };
         let want = key(&arr.faces[f]);
+        // With no overlap above the bound, the old zone holding the zone's interior point (the face's probe: `check`
+        // sets it to the zone's published interior point).
         let Some(g) = grid_arr.faces.iter().position(|gf| key(gf) == want) else {
             return old.arr.locate(&arr.faces[f].probe).and_then(|o| old.fills[o].clone());
         };
@@ -926,7 +934,9 @@ fn point_moves_with_and_without_snapping_match_the_oracle() {
             let moving: Vec<&Stroke> = strokes.iter().filter(|s| anchors_of(s).0.contains(&at)).collect();
             // With snapping the move lands 3 du short of a whole step; Snap to Contour takes the nearest point of a
             // stroke that does not move (its segments, interiors included) within 8 du; ties to the lower stroke ID,
-            // then segment, then parameter (02 §8.9). Snaps onto anchors are checked exactly (see below).
+            // then segment, then parameter (02 §8.9). Every persisted segment is a candidate, zero-length ones
+            // (a collapsed contour's retained anchors, C24-R2-06) included as points; they stay out of the faces.
+            // Snaps onto anchors are checked exactly (see below).
             let step = |v: i64| if *snap { v * STEP * GRID - v.signum() * 3 * GRID } else { v * STEP * GRID };
             let off = (step(*dx), step(*dy));
             let q = to_pt((at.0 + off.0, at.1 + off.1));
@@ -934,11 +944,20 @@ fn point_moves_with_and_without_snapping_match_the_oracle() {
             if *snap {
                 let mut best: Option<(Q, String, usize, Q, Pt)> = None;
                 for s in strokes.iter().filter(|s| !moving.iter().any(|m| m.id == s.id)) {
-                    for (j, &(a, b)) in s.segs.iter().enumerate() {
+                    let (ring, ring_closed) = anchors_of(s);
+                    let mut candidates: Vec<((i64, i64), (i64, i64))> = ring.windows(2).map(|w| (w[0], w[1])).collect();
+                    if ring_closed && ring.len() > 1 {
+                        candidates.push((ring[ring.len() - 1], ring[0]));
+                    }
+                    for (j, &(a, b)) in candidates.iter().enumerate() {
                         let (pa, pb) = (to_pt(a), to_pt(b));
                         let (ddx, ddy) = (pb.0.minus(&pa.0), pb.1.minus(&pa.1));
                         let len2 = ddx.times(&ddx).plus(&ddy.times(&ddy));
-                        let t = q.0.minus(&pa.0).times(&ddx).plus(&q.1.minus(&pa.1).times(&ddy)).over(&len2);
+                        let t = if len2.signum() == 0 {
+                            Q::int(0)
+                        } else {
+                            q.0.minus(&pa.0).times(&ddx).plus(&q.1.minus(&pa.1).times(&ddy)).over(&len2)
+                        };
                         let t = if t.signum() < 0 {
                             Q::int(0)
                         } else if t.cmp_to(&Q::int(1)).is_gt() {
@@ -981,10 +1000,10 @@ fn point_moves_with_and_without_snapping_match_the_oracle() {
                 after = without(&after, &segments_of(std::slice::from_ref(*m)));
                 let (ring, ring_closed) = anchors_of(m);
                 let ring: Vec<Pt> = ring.iter().map(|&a| if a == at { moved_pt.clone() } else { to_pt(a) }).collect();
-                for w in ring.windows(2) {
+                for w in ring.windows(2).filter(|w| w[0] != w[1]) {
                     after.push((w[0].clone(), w[1].clone()));
                 }
-                if ring_closed {
+                if ring_closed && ring[ring.len() - 1] != ring[0] {
                     after.push((ring[ring.len() - 1].clone(), ring[0].clone()));
                 }
             }

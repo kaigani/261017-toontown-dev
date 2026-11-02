@@ -233,3 +233,13 @@ C2.1 delivered strokes, text, groups and bitmaps as validated, persisted geometr
   its junction (on the chord of a straight segment, within twice the junction tolerance, the flattening tolerance and
   a grid cell). Evidence: `crates/vector/tests/c24_r2_noding.rs` (reviewer, unchanged, both controls) and unit test
   `a_repeated_closing_anchor_keeps_the_closing_edge_parameter`.
+- **M2 C2.4 round 2 (C24-R2-06; found by the reviewer's XOR-5D point-move seed): (14) the carry-over bound as
+  documented.** The snapping bound of (5) is twice the boundary length inside the old zone's box, in area; the product
+  compared twice the overlap area (`overlap_area2`) with twice that length, half the documented bound, so an overlap
+  between the length and twice it carried a neighbour's fill. The bound is now four times the length in twice-area
+  units, compared exactly. The route oracle now offers a collapsed contour's retained anchors (zero-length segments) as
+  snap candidates with the stroke, segment, parameter tie order while keeping zero-length edges out of the faces, and
+  its interior-point fallback uses the zone's published interior point (checked to lie in the oracle face) rather than
+  its own probe. Evidence: `c24_r2_routes.rs` `point_moves_with_and_without_snapping_match_the_oracle` (4096 cases,
+  unchanged) and `collapsed_other_contour_is_a_valid_snap_target_product_control`; builder seed
+  `c24_oracle_routes.rs` `a_snapping_sliver_below_the_documented_bound_carries_no_fill`.
