@@ -3200,7 +3200,7 @@ export const COMMAND_INDEX = {
     examples: [
       {},
     ],
-    milestone: "M2 C2.4 — blocked on SI-077",
+    milestone: "M2 C2.4 (blocked on SI-077)",
   },
   "draw.flatten.apply": {
     kind: "action",
@@ -8348,9 +8348,15 @@ export const COMMAND_INDEX = {
     params: "tool.symmetry.set.params",
     result: "tool.symmetry.set.result",
     examples: [
-      {},
+      {
+        mode: "kaleidoscope",
+        angle: 15,
+        mirrors: 8,
+      },
+      {
+        mode: "mirror",
+      },
     ],
-    milestone: "M4 C4.2",
   },
   "tool.tablet.set": {
     kind: "ui",
@@ -74632,54 +74638,69 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
     "x-spec": "`{enabled}`",
     additionalProperties: false,
   },
+  "tool.symmetry.set.Mode": {
+    description: "Symmetry mode.",
+    oneOf: [
+      {
+        description: "No copies.",
+        type: "string",
+        const: "none",
+      },
+      {
+        description: "One mirror axis.",
+        type: "string",
+        const: "mirror",
+      },
+      {
+        description: "Dihedral symmetry.",
+        type: "string",
+        const: "kaleidoscope",
+      },
+    ],
+  },
   "tool.symmetry.set.params": {
-    title: "tool.symmetry.set parameters",
+    title: "SymmetryParams",
+    description: "`tool.symmetry.set` parameters.",
     type: "object",
     properties: {
       mode: {
-        type: "string",
-        enum: [
-          "none",
-          "mirror",
-          "kaleidoscope",
-        ],
+        description: "Mode.",
+        $ref: "#/$defs/tool.symmetry.set.Mode",
         default: "none",
       },
       angle: {
+        description: "Axis angle from +y, counter-clockwise, degrees (0–360).",
         type: "number",
-        minimum: 0,
-        maximum: 360,
         default: 0,
       },
       mirrors: {
+        description: "Mirror lines of a kaleidoscope (2–16).",
         type: "integer",
-        minimum: 2,
-        maximum: 16,
+        maximum: 9223372036854775807n,
         default: 6,
+        minimum: -9223372036854775808n,
       },
     },
     additionalProperties: false,
-    "x-spec": "`mode: enum \"none\"|\"mirror\"|\"kaleidoscope\" = \"none\"; angle?: number (0–360) = 0; mirrors?: int (2–16) = 6`",
   },
   "tool.symmetry.set.result": {
-    title: "tool.symmetry.set result",
+    title: "SymmetryResult",
+    description: "`{mode, angle, mirrors}`.",
     type: "object",
     properties: {
       mode: {
-        type: "string",
-        default: "none",
+        description: "Mode.",
+        $ref: "#/$defs/tool.symmetry.set.Mode",
       },
       angle: {
+        description: "Axis angle (degrees).",
         type: "number",
-        minimum: 0,
-        maximum: 360,
-        default: 0,
       },
       mirrors: {
+        description: "Mirror lines.",
         type: "integer",
-        minimum: 2,
-        maximum: 16,
-        default: 6,
+        maximum: 9223372036854775807n,
+        minimum: -9223372036854775808n,
       },
     },
     required: [
@@ -74687,8 +74708,6 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
       "angle",
       "mirrors",
     ],
-    "x-spec": "`{mode, angle, mirrors}`",
-    additionalProperties: false,
   },
   "tool.tablet.set.params": {
     title: "tool.tablet.set parameters",
@@ -96563,16 +96582,27 @@ export interface tool_snapToContour_set_result {
   enabled: boolean;
 }
 
+/** Symmetry mode. */
+export type tool_symmetry_set_Mode = 'none' | 'mirror' | 'kaleidoscope';
+
+/** `tool.symmetry.set` parameters. */
 export interface tool_symmetry_set_params {
-  mode?: 'none' | 'mirror' | 'kaleidoscope';
+  /** Mode. */
+  mode?: tool_symmetry_set_Mode;
+  /** Axis angle from +y, counter-clockwise, degrees (0–360). */
   angle?: number;
-  mirrors?: number;
+  /** Mirror lines of a kaleidoscope (2–16). */
+  mirrors?: number | bigint;
 }
 
+/** `{mode, angle, mirrors}`. */
 export interface tool_symmetry_set_result {
-  mode: string;
+  /** Mode. */
+  mode: tool_symmetry_set_Mode;
+  /** Axis angle (degrees). */
   angle: number;
-  mirrors: number;
+  /** Mirror lines. */
+  mirrors: number | bigint;
 }
 
 export interface tool_tablet_set_params {

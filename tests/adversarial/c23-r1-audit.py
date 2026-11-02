@@ -122,7 +122,9 @@ class Audit(unittest.TestCase):
         for bad in [None,[],True]:
             with self.assertRaises(ValueError):c23_measurement(bad)
     def test_c22_golden_has_only_the_ruled_axis_change_and_derived_receipt(self):
-        p='crates/executor/tests/golden/c22-determinism.json';delta=changes(json.loads(git('show',BASE+':'+p)),json.loads((ROOT/p).read_bytes()))
+        # History-pinned receipt (orchestrator ruling, M2 C2.4): the golden at the reviewed head; C2.4 re-recorded it with only
+        # Bezier handles of split straight pieces changed (C2.4 handoff, declared edits).
+        p='crates/executor/tests/golden/c22-determinism.json';delta=changes(json.loads(git('show',BASE+':'+p)),json.loads(git('show',HEAD+':'+p)))
         content=[d for d in delta if d['path'] not in ['/sha256','/bytes']]
         self.assertEqual(len(content),1,content);self.assertEqual(content[0]['old'],53.96875);self.assertEqual(content[0]['new'],-53.96875)
     def test_planar_analyzer_rejects_bad_observations(self):

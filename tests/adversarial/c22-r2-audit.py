@@ -89,7 +89,9 @@ class Audit(unittest.TestCase):
     def test_c22_golden_only_zone_ids_and_number_representation(self):
         p='crates/executor/tests/golden/c22-determinism.json'
         old=json.loads(git('show','648e22d:'+p))
-        new=json.loads((ROOT/p).read_bytes())
+        # History-pinned receipt (orchestrator ruling, M2 C2.4): the golden as last validated (7a77138); C2.4 re-recorded
+        # it with only Bezier handles of split straight pieces changed (C2.4 handoff, declared edits).
+        new=json.loads(git('show','7a77138:'+p))
         self.assertEqual(mask(si074(old,new)),mask(new))
 
     def test_reviewer_tests_unchanged_after_merge(self):

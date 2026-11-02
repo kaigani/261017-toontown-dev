@@ -30,7 +30,7 @@
     {
       "title": "Accept a request",
       "result": {
-        "confirmationId": "cf_7c4506e3f30bd1eb6879ed76",
+        "confirmationId": "cf_f1c05226903f8e89ad08e8db",
         "accepted": true
       },
       "varies": [
@@ -71,7 +71,7 @@
         "endpoint": null,
         "sessions": [
           {
-            "sessionId": "s1-8e1366",
+            "sessionId": "s1-a6f3d5",
             "client": "Example agent",
             "policy": "assist",
             "scopes": [
@@ -83,7 +83,7 @@
               "files.write",
               "library.global"
             ],
-            "connectedAt": "2026-11-02T06:28:58.343Z",
+            "connectedAt": "2026-11-02T07:29:50.172Z",
             "lastActivity": null,
             "paused": false,
             "transport": ""
@@ -91,8 +91,8 @@
         ],
         "pendingConfirmations": [
           {
-            "confirmationId": "cf_4f26f0f6eff89dfee0d55dcf",
-            "sessionId": "s1-8e1366",
+            "confirmationId": "cf_374de05cb75b658aeac904d8",
+            "sessionId": "s1-a6f3d5",
             "commandId": "project.saveAs",
             "summary": "Overwrite `/tmp/Short.animpkg`",
             "consequences": [
@@ -127,7 +127,7 @@
     {
       "title": "Let a session edit",
       "result": {
-        "sessionId": "s1-966454",
+        "sessionId": "s1-7b6069",
         "policy": "assist",
         "scopes": [
           "read",
@@ -145,7 +145,7 @@
       "title": "Pause every session",
       "result": {
         "paused": [
-          "s1-014adc"
+          "s1-341fc0"
         ]
       },
       "varies": [
@@ -438,7 +438,7 @@
       "result": [
         {
           "name": "before-walk",
-          "createdAt": "2026-11-02T06:28:58.801Z",
+          "createdAt": "2026-11-02T07:29:50.643Z",
           "documentRev": 1,
           "origin": "user"
         }
@@ -851,7 +851,7 @@
             "version": "0.0.1",
             "platform": "windows-x64"
           },
-          "exportedAt": "2026-11-02T06:28:59.349Z",
+          "exportedAt": "2026-11-02T07:29:51.201Z",
           "sourceProjectId": "pr_01K742SG00BK0VXTWDM5JRXV37",
           "scope": {
             "kind": "scenes",
@@ -5721,7 +5721,7 @@
             "stepId": "u-1",
             "label": "Set meta",
             "source": "user",
-            "time": "2026-11-02T06:29:00.704Z",
+            "time": "2026-11-02T07:29:52.582Z",
             "objectCount": 1
           },
           {
@@ -5729,7 +5729,7 @@
             "stepId": "u-2",
             "label": "Set meta",
             "source": "user",
-            "time": "2026-11-02T06:29:00.705Z",
+            "time": "2026-11-02T07:29:52.583Z",
             "objectCount": 1
           }
         ],
@@ -5874,7 +5874,7 @@
         "state": "succeeded",
         "progress": 1.0,
         "message": "",
-        "startedAt": "2026-11-02T06:29:00.826Z",
+        "startedAt": "2026-11-02T07:29:52.707Z",
         "result": {},
         "session": "user"
       },
@@ -5893,7 +5893,7 @@
           "state": "succeeded",
           "progress": 1.0,
           "message": "",
-          "startedAt": "2026-11-02T06:29:00.838Z",
+          "startedAt": "2026-11-02T07:29:52.719Z",
           "result": {},
           "session": "user"
         }
@@ -5912,7 +5912,7 @@
         "state": "succeeded",
         "progress": 1.0,
         "message": "",
-        "startedAt": "2026-11-02T06:29:00.849Z",
+        "startedAt": "2026-11-02T07:29:52.730Z",
         "result": {},
         "session": "user"
       },
@@ -5959,10 +5959,10 @@
     {
       "title": "A 1920×1080, 24 fps project",
       "result": {
-        "projectId": "pr_01M6DF4V23EY1R5XZZEFV9ZHS6",
-        "sceneId": "sc_01M6DF4V246Q61TAFPA7SK23EP",
-        "cameraId": "el_01M6DF4V246Q61TAFPA7SK23ER",
-        "elementId": "el_01M6DF4V246Q61TAFPA7SK23ES"
+        "projectId": "pr_01M6DJM9BGP63P6X5VP7Q750YC",
+        "sceneId": "sc_01M6DJM9BGP63P6X5VP7Q7512G",
+        "cameraId": "el_01M6DJM9BGP63P6X5VP7Q7512J",
+        "elementId": "el_01M6DJM9BGP63P6X5VP7Q7512K"
       },
       "varies": [
         "/cameraId",
@@ -6218,7 +6218,7 @@
         {
           "path": "/tmp/Sample.animpkg",
           "name": "Sample",
-          "lastOpened": "2026-11-02T06:29:01.443Z",
+          "lastOpened": "2026-11-02T07:29:53.323Z",
           "exists": true
         }
       ],
@@ -6285,6 +6285,26 @@
       "title": "Save a copy",
       "result": {
         "jobId": "job-3"
+      },
+      "varies": []
+    }
+  ],
+  "tool.symmetry.set": [
+    {
+      "title": "A kaleidoscope of 8 mirrors at 15°",
+      "result": {
+        "mode": "kaleidoscope",
+        "angle": 15.0,
+        "mirrors": 8
+      },
+      "varies": []
+    },
+    {
+      "title": "Mirror about the vertical axis",
+      "result": {
+        "mode": "mirror",
+        "angle": 0.0,
+        "mirrors": 6
       },
       "varies": []
     }

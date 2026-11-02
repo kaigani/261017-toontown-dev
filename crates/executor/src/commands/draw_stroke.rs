@@ -317,10 +317,10 @@ pub(crate) fn colour_of(
     }
 }
 
-/// Symmetry and Draw Behind settings (02 §6.2, §8.11): user settings whose commands (`tool.symmetry.set`,
-/// `tool.placeBehind.set`) arrive with the tools in M4 C4.2; until then both are at their defaults (none, off).
-fn symmetry_setting(_cx: &Cx) -> (Symmetry, bool) {
-    (Symmetry::None, false)
+/// Symmetry and Draw Behind settings (02 §6.2, §8.11): symmetry is set by `tool.symmetry.set` (M2 C2.4, ticket
+/// C21-R1-11); Draw Behind's command (`tool.placeBehind.set`) arrives with the tools in M4 C4.2, until then off.
+fn symmetry_setting(cx: &Cx) -> (Symmetry, bool) {
+    (super::tool_symmetry::setting(cx), false)
 }
 
 fn layer_policy(s: &str) -> LayerPolicy {

@@ -32,6 +32,7 @@ pub(crate) mod edit_ops;
 pub(crate) mod inspect;
 pub(crate) mod job;
 pub(crate) mod project;
+pub(crate) mod tool_symmetry;
 pub(crate) mod window;
 pub(crate) mod workspace;
 
@@ -128,6 +129,7 @@ pub(crate) static ALL: &[&Command] = &[
     &draw::DRAW_GROUP_CREATE,
     &draw::DRAW_GROUP_DELETE,
     &draw::DRAW_DRAWING_CHANGED,
+    &tool_symmetry::TOOL_SYMMETRY_SET,
     &draw_vectorize::DRAW_VECTORIZE_PREVIEW,
     &draw_vectorize::DRAW_VECTORIZE_RUN,
     &draw_select::DRAW_SELECTION_SET,

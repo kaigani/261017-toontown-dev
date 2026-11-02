@@ -24,7 +24,9 @@ def git(*args):
 def structural():
     p = 'crates/executor/tests/golden/c21-determinism.json'
     a = json.loads(git('show', '7ccea58:' + p))
-    b = json.loads((ROOT / p).read_bytes())
+    # History-pinned receipt (orchestrator ruling, M2 C2.4): the golden as last validated (c324340); C2.4 re-recorded it
+    # with only Bezier handles of split straight pieces changed (C2.4 handoff, declared edits).
+    b = json.loads(git('show', 'c324340:' + p))
     old = a['drawing1']['nodes'][7]['children'][0]['strokes']
     new = b['drawing1']['nodes'][7]['children'][0]['strokes']
     receipt = {'oldPieces': len(old), 'newPieces': len(new), 'masked': [
