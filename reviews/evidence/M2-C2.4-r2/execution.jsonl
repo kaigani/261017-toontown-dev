@@ -1,0 +1,41 @@
+{"name": "crate-vector", "argv": ["cargo", "test", "-p", "tt-vector", "--locked", "-j", "4"], "exit": 0, "seconds": 243.40598220005631}
+{"name": "audit-initial", "argv": ["python", "tests/adversarial/c24-r2-audit.py"], "exit": 1, "seconds": 0.5953534999862313}
+{"name": "python-suites", "argv": ["python", "scripts/run-reviewer-python-suites.py"], "exit": 1, "seconds": 16.877106599975377}
+{"name": "allow-inventory", "argv": ["python", "scripts/check-product-allows.py"], "exit": 0, "seconds": 1.6029930000659078}
+{"name": "test-only-assets", "argv": ["python", "scripts/check-test-only-assets.py"], "exit": 0, "seconds": 0.18254259997047484}
+{"name": "frontend-build", "argv": ["cmd", "/c", "pnpm", "--dir", "desktop", "build"], "exit": 0, "seconds": 1.8486831998452544}
+{"name": "frontend-typecheck", "argv": ["cmd", "/c", "pnpm", "--dir", "desktop", "typecheck"], "exit": 0, "seconds": 3.504622200038284}
+{"name": "e2-local-ci-binary", "argv": ["python", "scripts/e2-paint-by-id.py", "target/review-ci-headless/toontown-headless.exe", "reviews/evidence/M2-C2.4-r2/e2-local"], "exit": 0, "seconds": 11.696610599989071}
+{"name": "generator-freshness", "argv": ["python", "tests/adversarial/c24-r2-audit.py", "--freshness"], "exit": 0, "seconds": 0.7606796999461949}
+{"name": "release-features", "argv": ["python", "scripts/check-release-features.py"], "exit": 0, "seconds": 4.039263000013307}
+{"name": "cargo-deny", "argv": ["cargo", "deny", "--locked", "check"], "exit": 0, "seconds": 7.947666199877858}
+{"name": "builder-gate-validation", "argv": ["python", "scripts/test_c22_t2_gate.py"], "exit": 0, "seconds": 1.0268069000449032}
+{"name": "frontend-frozen-install", "argv": ["cmd", "/c", "pnpm", "install", "--frozen-lockfile"], "exit": 0, "seconds": 0.5225681001320481}
+{"name": "frontend-lint", "argv": ["cmd", "/c", "pnpm", "lint"], "exit": 0, "seconds": 17.626498400000855}
+{"name": "frontend-format-check", "argv": ["cmd", "/c", "pnpm", "format:check"], "exit": 0, "seconds": 1.5856625998858362}
+{"name": "frontend-licenses-check", "argv": ["cmd", "/c", "pnpm", "licenses:check"], "exit": 0, "seconds": 1.0062651000916958}
+{"name": "frontend-test", "argv": ["cmd", "/c", "pnpm", "test"], "exit": 0, "seconds": 83.29720629984513}
+{"name": "frontend-format:check", "argv": ["cmd", "/c", "pnpm", "format:check"], "exit": 0, "seconds": 1.4867254998534918}
+{"name": "frontend-licenses:check", "argv": ["cmd", "/c", "pnpm", "licenses:check"], "exit": 0, "seconds": 0.8154174999799579}
+{"name": "crate-executor", "argv": ["cargo", "test", "-p", "tt-executor", "--locked", "-j", "4"], "exit": 101, "seconds": 1187.4170512999408}
+{"name": "crate-io", "argv": ["cargo", "test", "-p", "tt-io", "--locked", "-j", "4"], "exit": 0, "seconds": 71.48035339987837}
+{"name": "crate-mcp", "argv": ["cargo", "test", "-p", "tt-mcp", "--locked", "-j", "4"], "exit": 0, "seconds": 177.92086729989387}
+{"name": "current-ci-series-validator", "argv": ["python", "scripts/analyse-measurements.py", "reviews/evidence/M2-C2.4-r2/ci/headless-raw-Windows/c21-measurements", "reviews/evidence/M2-C2.4-r2/ci/headless-raw-macOS/c21-measurements", "--out", "reviews/evidence/M2-C2.4-r2/current-ci-series-validation.json"], "exit": 0, "seconds": 0.04006120003759861}
+{"name": "r2-variants", "argv": ["cargo", "test", "--release", "-p", "tt-executor", "--locked", "-j", "4", "--test", "c24_r2_variants", "--", "--nocapture"], "exit": 101, "seconds": 175.79200559994206}
+{"name": "snap-sdk-control", "argv": ["python", "tests/adversarial/c24-r2-audit.py", "--snap-probe", "target/review-ci-headless/toontown-headless.exe", "reviews/evidence/M2-C2.4-r2/snap-sdk-control.json"], "exit": 0, "seconds": 2.514928200049326}
+{"name": "routes-4096", "argv": ["cargo", "test", "--release", "-p", "tt-executor", "--locked", "-j", "4", "--test", "c24_r2_routes", "--", "--nocapture"], "exit": 101, "seconds": 937.7870479000267}
+{"name": "vector-properties-4096", "argv": ["cargo", "test", "--release", "-p", "tt-vector", "--locked", "-j", "4", "--test", "c24_r2_properties", "--", "--nocapture"], "exit": 0, "seconds": 112.58010490005836}
+{"name": "executor-properties-4096", "argv": ["cargo", "test", "--release", "-p", "tt-executor", "--locked", "-j", "4", "--test", "c24_r2_topology", "--", "--nocapture"], "exit": 101, "seconds": 49.644460699986666}
+{"name": "flatten-sdk-control", "argv": ["python", "tests/adversarial/c24-r2-audit.py", "--flatten-probe", "target/review-ci-headless/toontown-headless.exe", "reviews/evidence/M2-C2.4-r2/flatten-sdk-control.json"], "exit": 0, "seconds": 1.5951557999942452}
+{"name": "geometry-histories-10k", "argv": ["cargo", "test", "--release", "-p", "tt-mcp", "--locked", "-j", "4", "--test", "c21_history", "--", "--ignored", "--nocapture"], "exit": 0, "seconds": 151.4990094001405}
+{"name": "headless-release-build", "argv": ["cargo", "build", "--release", "-p", "tt-headless", "--locked", "-j", "4"], "exit": 0, "seconds": 142.61727970000356}
+{"name": "e2-local-build", "argv": ["C:\\Python313\\python.exe", "scripts/e2-paint-by-id.py", "target/release/toontown-headless.exe", "C:\\Users\\kaiga\\work\\review\\m2-c24-r2\\reviews\\evidence\\M2-C2.4-r2\\e2-local-build"], "exit": 0, "seconds": 2.730042500188574}
+{"name": "r2-variants-corrected", "argv": ["cargo", "test", "--release", "-p", "tt-executor", "--locked", "-j", "4", "--test", "c24_r2_variants", "--", "--nocapture"], "exit": 0, "seconds": 3.244007699890062}
+{"name": "closed-fold-noding", "argv": ["cargo", "test", "--release", "-p", "tt-vector", "--locked", "-j", "4", "--test", "c24_r2_noding", "--", "--nocapture"], "exit": 101, "seconds": 0.8136273000854999}
+{"name": "collapsed-snap-rust-control", "argv": ["cargo", "test", "--release", "-p", "tt-executor", "--locked", "-j", "4", "--test", "c24_r2_routes", "collapsed_other_contour", "--", "--nocapture"], "exit": 0, "seconds": 5.438521600095555}
+{"name": "closed-fold-parameter", "argv": ["cargo", "test", "--release", "-p", "tt-vector", "--locked", "-j", "4", "--test", "c24_r2_noding", "a_closed_zero_length", "--", "--nocapture"], "exit": 101, "seconds": 0.8903487999923527}
+{"name": "fmt-final", "argv": ["cargo", "fmt", "--all", "--check"], "exit": 0, "seconds": 2.6711907000280917}
+{"name": "clippy-final", "argv": ["cargo", "clippy", "--workspace", "--all-targets", "--locked", "-j", "4", "--", "-D", "warnings"], "exit": 0, "seconds": 185.8318851001095}
+{"name": "python-suites-final", "argv": ["python", "scripts/run-reviewer-python-suites.py"], "exit": 1, "seconds": 12.44037889991887}
+{"name": "headless-no-test-font", "argv": ["python", "scripts/check-test-only-assets.py", "--bundle", "target/release/toontown-headless.exe"], "exit": 0, "seconds": 0.14274329994805157}
+{"name": "workspace-final", "argv": ["cargo", "test", "--workspace", "--locked", "-j", "4", "--no-fail-fast"], "exit": 101, "seconds": 2128.9864346999675}
