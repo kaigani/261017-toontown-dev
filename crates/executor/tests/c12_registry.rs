@@ -108,9 +108,11 @@ fn stubs_and_declarations_name_their_owners() {
         .map(|e| e.id())
         .collect();
     assert!(c13.is_empty(), "C1.3 stubs left: {c13:?}");
+    // A later checkpoint's command stays a declared stub until it is implemented (`draw.vectorize.preview` was the
+    // example until M2 C2.4 implemented it).
     assert_eq!(
-        registry().get("draw.vectorize.preview").map(|e| e.status()),
-        Some(Status::NotImplemented { owner: "M2 C2.4" })
+        registry().get("element.create").map(|e| e.status()),
+        Some(Status::NotImplemented { owner: tt_registry::owner_of("element.create") })
     );
 }
 

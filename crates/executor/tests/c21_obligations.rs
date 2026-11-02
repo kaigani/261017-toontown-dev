@@ -310,6 +310,10 @@ fn c21_drawing_commands_write_no_files_and_ask_no_confirmation() {
         "draw.inspectorPreview.set",
         // Writes its PNG to `path` when given, with the files.write scope checked at call time (02 §13.5).
         "draw.drawing.render",
+        // Read image files (files.read scope, 02 §11.2; M2 C2.4).
+        "draw.vectorize.preview",
+        // Reads image files and replaces occupied cells only after confirmation (02 §11.2 `drawing.cellOccupied`).
+        "draw.vectorize.run",
     ];
     let implemented: Vec<&str> = registry
         .entries()
