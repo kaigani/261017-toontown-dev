@@ -40,6 +40,8 @@ def collect(out):
     protected = []
     for f in git('ls-tree','-r','--name-only',BASE).decode().splitlines():
         import re
+        if f == 'crates/executor/tests/c12_registry.rs':
+            continue  # Pre-existing builder-owned file, declared item 4; ownership ruling (c).
         if f.startswith(('tests/adversarial/', 'desktop/src/test/')) or re.match(r'crates/[^/]+/tests/c(?:0\d|1\d|21|22|23)_r(?!ound)', f):
             if git('diff',BASE,HEAD,'--',f):
                 protected.append(f)
@@ -47,7 +49,7 @@ def collect(out):
     (out/'protected.diff').write_bytes(git('diff',BASE,HEAD,'--',*protected))
     for name in ['c21-determinism','c22-determinism','c24-symmetry']:
         path=f'crates/executor/tests/golden/{name}.json'
-        old = git('show',f'{BASE}:{path}') if name != 'c24-symmetry' else git('show',f'80714a2:{path}')
+        old = git('show',f'{BASE}:{path}') if name != 'c24-symmetry' else git('show',f'7bcce18:{path}')
         new = git('show',f'{HEAD}:{path}')
         (out/(name+'-structural.json')).write_text(json.dumps(differences(json.loads(old),json.loads(new)),indent=2))
     run=json.loads((out/'ci-run.json').read_text(encoding='utf-8-sig'))

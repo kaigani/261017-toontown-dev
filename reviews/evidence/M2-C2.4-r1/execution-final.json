@@ -1,0 +1,100 @@
+{
+  "vector-tests": {
+    "emittedSummaryCount": 31,
+    "passed": 186,
+    "failed": 0,
+    "ignored": 9,
+    "failedTests": [],
+    "rawSha256": "d9d0a17e6c9c7c6961323e1e9b0d4b434dc763c44246d7b6ab546628ec1e5f4a"
+  },
+  "executor-tests": {
+    "emittedSummaryCount": 89,
+    "passed": 481,
+    "failed": 1,
+    "ignored": 7,
+    "failedTests": [
+      "the_cutter_splits_along_its_segment_like_the_oracle"
+    ],
+    "rawSha256": "d0c0866ac4f1e8c734b5ede27874d82e6e5c469d406fca492b0d8066046aae4d"
+  },
+  "io-tests": {
+    "emittedSummaryCount": 5,
+    "passed": 7,
+    "failed": 0,
+    "ignored": 1,
+    "failedTests": [],
+    "rawSha256": "eab92601032be0e08078b8e44482e442182e3be8128c28a1d30dbc5b9e545e74"
+  },
+  "mcp-tests": {
+    "emittedSummaryCount": 28,
+    "passed": 70,
+    "failed": 0,
+    "ignored": 3,
+    "failedTests": [],
+    "rawSha256": "b9fed5bb68d6c089e3022382de975c15938c48aca08ba2e937a1969bbf1a5ee5"
+  },
+  "vector-review-tests": {
+    "emittedSummaryCount": 2,
+    "passed": 9,
+    "failed": 1,
+    "ignored": 0,
+    "failedTests": [
+      "determinant_plus_and_minus_one_maps_keep_the_faces"
+    ],
+    "rawSha256": "ea0ddc2730b4b2b2e481f78b9654e3b0fde9c42878b6a91e1ca81c71b270467d"
+  },
+  "executor-review-topology": {
+    "emittedSummaryCount": 1,
+    "passed": 3,
+    "failed": 1,
+    "ignored": 0,
+    "failedTests": [
+      "the_cutter_splits_along_its_segment_like_the_oracle"
+    ],
+    "rawSha256": "f8239c417a5289710510150df9c3be24c47e6952ebf7cab8aaa03455652db512"
+  },
+  "decoder-review": {
+    "emittedSummaryCount": 1,
+    "passed": 1,
+    "failed": 0,
+    "ignored": 0,
+    "failedTests": [],
+    "rawSha256": "e4aabecb160a7074b06c4c6137348ced0fa7344a1a27b65dc345a158327faf80"
+  },
+  "lifecycle-complete": {
+    "emittedSummaryCount": 1,
+    "passed": 3,
+    "failed": 0,
+    "ignored": 0,
+    "failedTests": [],
+    "rawSha256": "b3105f578a0372485ec33fce6f32b2d9c8d547382fbfd646569b0329d1209527"
+  },
+  "workspace": {
+    "emittedSummaryCount": 232,
+    "passed": 1166,
+    "failed": 4,
+    "ignored": 22,
+    "failedTests": [
+      "shrunk_cutter_area_bound",
+      "the_cutter_splits_along_its_segment_like_the_oracle",
+      "shrunk_determinant_case",
+      "determinant_plus_and_minus_one_maps_keep_the_faces"
+    ],
+    "rawSha256": "64e288135ad34f7a284c600cb857698999e649ce56448c6f23e3162a94ee1e10",
+    "cargoExit": 101,
+    "expectedFailureTargets": [
+      "tt-executor/c24_r1_topology",
+      "tt-vector/c24_r1_properties"
+    ],
+    "note": "Sum of emitted Rust summaries, including subprocess worker summaries, consistent with historical receipt convention. No product/pre-existing test failed; four enabled reviewer assertions failed in two targets."
+  },
+  "gates": {
+    "clippy": "cargo clippy --workspace --all-targets --locked -j 4 -- -D warnings: exit 0",
+    "fmt": "cargo fmt --all --check: exit 0",
+    "pythonReviewerSuites": "32/33 suites passed, 5 intentional assertions fail only in c24-r1-audit.py; all 29 pre-existing suites pass",
+    "e2": "26/26; seven PNGs byte-identical local/Windows/macOS",
+    "e2Variants": "6/6; final corrected-schema run",
+    "generator": "598, unchanged generated surfaces",
+    "deny": "advisories/bans/licenses/sources ok"
+  }
+}

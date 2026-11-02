@@ -1,21 +1,3 @@
-diff --git a/crates/executor/tests/c12_registry.rs b/crates/executor/tests/c12_registry.rs
-index 880f4b4..2ca89e5 100644
---- a/crates/executor/tests/c12_registry.rs
-+++ b/crates/executor/tests/c12_registry.rs
-@@ -108,9 +108,11 @@ fn stubs_and_declarations_name_their_owners() {
-         .map(|e| e.id())
-         .collect();
-     assert!(c13.is_empty(), "C1.3 stubs left: {c13:?}");
-+    // A later checkpoint's command stays a declared stub until it is implemented (`draw.vectorize.preview` was the
-+    // example until M2 C2.4 implemented it).
-     assert_eq!(
--        registry().get("draw.vectorize.preview").map(|e| e.status()),
--        Some(Status::NotImplemented { owner: "M2 C2.4" })
-+        registry().get("element.create").map(|e| e.status()),
-+        Some(Status::NotImplemented { owner: tt_registry::owner_of("element.create") })
-     );
- }
- 
 diff --git a/tests/adversarial/c22-r2-audit.py b/tests/adversarial/c22-r2-audit.py
 index 4b0934c..f4dcab8 100644
 --- a/tests/adversarial/c22-r2-audit.py
