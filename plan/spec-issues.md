@@ -778,6 +778,16 @@ Reserved by the M0 closure for "measured deterministic-format incompatibility" (
   only touches), the stretches that differ from its side fill are stored as `{side, from, to, fill}` records in the
   SI-060 extension key (ADR-0017 history 7–8). The shrunk property case is a permanent regression with retrace and
   fold variants.
+- **M2 C2.4 round 1 (C24-R1-04, confirmed ruling): the junction coordinate has three steps.** A junction's coordinate
+  is the nearest existing anchor of an unchanged pencil or invisible participant; **else the one point where every
+  participant already has an anchor**; else the first record's point. The middle step keeps re-noding settled pieces
+  that are marked changed from moving them (C22-T2 fixpoint; ADR-0017 history 9). This supersedes the two-step wording
+  of the round-1 junction rule above.
+- **M2 C2.4 round 1 (C24-R1-02 ruling): a proper crossing's point is exact.** The fractions along both snapped edges
+  are ratios of the exact grid orientations, and the crossing point is the rational crossing of the snapped edges
+  rounded half to even onto the 1/64-du grid. Floating point no longer places it (this supersedes "Floating point only
+  places a proper crossing's point" in round 2), so an integer-du translation of the input translates the snapped
+  arrangement exactly (ADR-0017 history 10).
 
 ## SI-068 — mappings of lines (found in M2 C2.2 round 1; decided)
 
@@ -949,3 +959,15 @@ Reserved by the M0 closure for "measured deterministic-format incompatibility" (
   committed, `skipped: [{index, source, reason: "occupied" | "cancelled"}]`, beside the spec's fields.
 - **Question:** add `skipped` to the A result column.
 
+## SI-084 — vectorization colours and palettes: 02 §11.2 versus 03 §11.6 and §7.4 (found in M2 C2.4 round 1; decided, amendment candidate)
+
+- **Sections:** 02 §11.2 (Vectorize); 03 §11.6 (vectorization colours), §7.4 (texture swatch names); ADR-0018.
+- **Problem:** 02 §11.2 gives black-and-white vectorization generated black in a reused palette named `Vectorization`,
+  and texture vectorization swatches named from the file. 03 §11.6 instead uses the current colour for
+  black-and-white and a new uniquely suffixed `Vectorization Palette` per import for texture, and 03 §7.4 names texture
+  swatches `1`, `2`, ….
+- **Decision (orchestrator ruling, C24-R1-05): 02 §11.2 takes precedence, as implemented** — generated black in the
+  reused `Vectorization` palette; texture swatches named from the file (`draw_vectorize.rs::{black, texture}`;
+  `c24_vectorize.rs` palette assertions). No behaviour change.
+- **Question (amendment candidate for the spec owner):** align 03 §11.6 and §7.4 with 02 §11.2 (colour choice, palette
+  naming and lifetime, swatch naming), or rule the other way.

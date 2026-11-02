@@ -58,3 +58,7 @@ The vectorize corpus and fuzzing (`tests/fixtures/vectorize/`, `crates/io/tests/
   Each run of contour edges between bridges is now fitted open with its ends pinned, and the bridges stay straight
   segments with their two passes exactly reversed (SI-053). The `draw.vectorize.preview` example result was re-recorded
   (its PNG only). Evidence: `crates/executor/tests/c24_centre_line.rs`.
+- **M2 C2.4 round 1 (C24-R1-05): colour policy recorded as SI-084.** The colours and palettes follow 02 §11.2
+  (generated black in the reused `Vectorization` palette; texture swatches named from the file); 03 §11.6 and §7.4
+  disagree, and that disagreement and the adopted precedence are SI-084 (the 03 wording is the amendment candidate).
+  No behaviour change.

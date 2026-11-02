@@ -200,3 +200,25 @@ C2.1 delivered strokes, text, groups and bitmaps as validated, persisted geometr
   a fixpoint of noding with its strokes marked changed or unchanged. Evidence: `crates/vector/tests/c24_properties.rs`
   `a_settled_layer_is_a_fixpoint_of_noding` (seeded property, 512 cases in `check`; 2048 run locally) with the
   shrunk seed.
+- **M2 C2.4 round 1 (C24-R1-04, accepted ruling): C22-T2 moves to M11 C11.1.** The C22-T2 gate missed on both OSes
+  after the bounded pass (raw files `reviews/evidence/M2-C2.4/c22-t2/`, phase breakdown `c24_flatten_phases.rs`), so
+  C22-T2 is owned by M11 C11.1 and merged into the R1-12 scale gate there. Kept in M2: the atomic, work-charged refusal
+  before the watchdog, the fixpoint property (9), the phase breakdown and the gate (`c24_measure.rs`,
+  `scripts/c22-t2-gate.py`) on every CI run, reporting `met: false` until C11.1 closes it.
+- **M2 C2.4 round 1 (C24-R1-02 ruling): (10) exact crossing points.** A proper crossing's fractions along the snapped
+  edges are ratios of exact grid orientations and its point is the rational crossing of the snapped edges rounded half
+  to even onto the grid (SI-067). Before, floating-point fractions of the unsnapped geometry placed it; where snapped
+  pieces of near-collinear strokes cross at a shallow angle they cancel differently once translated, so an integer-du
+  translation moved a junction (reviewer seed: translation by (37, −11) changed two face areas). Persisted junction
+  anchors of proper crossings are now grid points; the C21/C22 determinism goldens and the symmetry golden were
+  re-recorded for that reason only (declared). Evidence: `crates/vector/tests/c24_r1_properties.rs`
+  `shrunk_determinant_case` and the 4096-case translation property pass unchanged.
+- **M2 C2.4 round 1 (C24-R1-01): defects found by the command-route properties, fixed.** (11) An open end resting on a
+  stroke that passes the end more than once (a fold, a retrace) was a T-junction with one pass only (one record per
+  stroke), so the other pass ran on between two rounded junctions and crossed the first at a shallow angle — a spurious
+  junction and a 0.08 du² area error. The end now makes one record per stroke and Bézier segment, cutting every pass
+  (`crates/vector/tests/c24_noding_regressions.rs`). (12) Exact overlap areas (`exact::overlap_area2`) counted a dangling
+  stroke inside a zone (an antenna of its boundary, or a two-vertex hole ring) as boundary, so a merged zone sharing such a
+  hole with an old zone scored the wrong overlap and took the smaller part's fill. Edges traversed both ways now cancel
+  before the overlap is computed (unit test `a_dangling_edge_inside_both_zones_bounds_no_area`). Both were found by
+  `crates/executor/tests/c24_oracle_routes.rs` at 4096 cases and are kept there as permanent seeds.

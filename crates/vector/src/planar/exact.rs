@@ -48,15 +48,35 @@ fn dot(a: Ip, b: Ip, c: Ip, d: Ip) -> i128 {
     i128::from(b[0] - a[0]) * i128::from(d[0] - c[0]) + i128::from(b[1] - a[1]) * i128::from(d[1] - c[1])
 }
 
+/// The directed edges of some rings, without the pairs traversed both ways: a dangling stroke inside a zone is an
+/// antenna of its boundary (or a two-vertex hole ring), bounding no area; its two opposite edges cancel in the area and
+/// would otherwise count the zone's interior along them as boundary (C24-R1-01: a merged zone sharing such a hole with
+/// an old one scored the wrong overlap).
 fn edges(rings: &[Vec<Ip>]) -> Vec<(Ip, Ip)> {
-    let mut out = Vec::new();
+    let mut all = Vec::new();
     for r in rings {
         for k in 0..r.len() {
             let (p, q) = (r[k], r[(k + 1) % r.len()]);
             if p != q {
-                out.push((p, q));
+                all.push((p, q));
             }
         }
+    }
+    let mut count: std::collections::BTreeMap<(Ip, Ip), i64> = std::collections::BTreeMap::new();
+    for &(p, q) in &all {
+        *count.entry((p, q)).or_default() += 1;
+    }
+    let mut out = Vec::with_capacity(all.len());
+    let mut cancelled: std::collections::BTreeMap<(Ip, Ip), i64> = std::collections::BTreeMap::new();
+    for &(p, q) in &all {
+        // Each copy of an edge cancels one copy of its reverse.
+        let reverse = count.get(&(q, p)).copied().unwrap_or(0);
+        let used = cancelled.entry((p, q)).or_default();
+        if *used < reverse {
+            *used += 1;
+            continue;
+        }
+        out.push((p, q));
     }
     out
 }
@@ -174,6 +194,19 @@ mod tests {
 
     fn int(n: i64) -> BigRational {
         BigRational::from_integer(BigInt::from(n))
+    }
+
+    #[test]
+    fn a_dangling_edge_inside_both_zones_bounds_no_area() {
+        // A square with a dangling segment inside (a two-vertex hole ring), against itself and against the same square
+        // without it: the overlap is the square's whole area (C24-R1-01).
+        let with = vec![sq(0, 0, 100), vec![[20, 60], [60, 60]]];
+        let without = vec![sq(0, 0, 100)];
+        assert_eq!(area(&with, &with), int(20_000));
+        assert_eq!(area(&with, &without), int(20_000));
+        // An antenna inside the outer ring itself (out and back along one edge) cancels as well.
+        let antenna = vec![vec![[0, 0], [100, 0], [100, 50], [60, 50], [100, 50], [100, 100], [0, 100]]];
+        assert_eq!(area(&antenna, &without), int(20_000));
     }
 
     #[test]

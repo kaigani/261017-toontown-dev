@@ -177,7 +177,7 @@ fn the_cutter_splits_along_its_segment_like_the_oracle() {
             let union: f64 = oracle::face_areas(&segs).into_iter().map(oracle::Q::f64).sum();
             // Inside the original zones the cut's faces are the oracle's; faces it would close outside them are not
             // zones (the cut only splits existing zones).
-            prop_assert!(sa <= union + 1e-3 * union.max(1.0));
+            prop_assert!(sa <= union + oracle::snapping_envelope(&segs, 64));
             ran.fetch_add(1, Ordering::Relaxed);
             Ok(())
         })

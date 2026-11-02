@@ -11,7 +11,7 @@
 use std::collections::{BTreeMap, HashMap};
 
 use super::flat::{self, Flat};
-use super::graph::{EdgeKind, Ip, snap};
+use super::graph::{EdgeKind, Ip, snap, unsnap};
 use crate::geom::{Cubic, P};
 use crate::path::{Anchor, GeomError, Path};
 use crate::work::Work;
@@ -74,8 +74,15 @@ struct EdgeRef {
     k: usize,
 }
 
-fn cross(a: P, b: P) -> f64 {
-    a.x * b.y - a.y * b.x
+/// `n / d` rounded to the nearest integer, ties to even (exact; `d` may be negative).
+fn round_half_even(n: i128, d: i128) -> i128 {
+    let (n, d) = if d < 0 { (-n, -d) } else { (n, d) };
+    let (q, r) = (n.div_euclid(d), n.rem_euclid(d));
+    match (2 * r).cmp(&d) {
+        std::cmp::Ordering::Less => q,
+        std::cmp::Ordering::Greater => q + 1,
+        std::cmp::Ordering::Equal => q + (q & 1),
+    }
 }
 
 /// Orientation of `c` relative to `a`→`b` on the grid: positive left, negative right, zero collinear (exact).
@@ -98,8 +105,8 @@ fn fraction(p: P, a: P, b: P) -> f64 {
 
 /// How two segments meet, decided by exact orientation signs on the snapped 1/64 du grid (ADR-0017 §1; C22-R2-01).
 enum Meet {
-    /// A crossing strictly inside both: the fractions along each.
-    Proper(f64, f64),
+    /// A crossing strictly inside both: the fractions along each and the crossing point on the grid.
+    Proper(f64, f64, P),
     /// An end of either lies on the other: the fractions (0 or 1 at an end) and the point (that end).
     Vertex(f64, f64, P),
 }
@@ -112,22 +119,22 @@ fn meet(e: &EdgeRef, f: &EdgeRef) -> Option<Meet> {
         return None;
     }
     if o1.signum() * o2.signum() < 0 && o3.signum() * o4.signum() < 0 {
-        // The crossing point in floating point from the stored geometry (unchanged coordinates for ordinary input),
-        // else, where floating point degenerates, from the exact grid fractions.
-        let (r, sd) = (e.b - e.a, f.b - f.a);
-        let den = cross(r, sd);
-        let inside = |x: f64| x > 0.0 && x < 1.0;
-        if den != 0.0 {
-            let (t, u) = (cross(f.a - e.a, sd) / den, cross(f.a - e.a, r) / den);
-            if inside(t) && inside(u) {
-                return Some(Meet::Proper(t, u));
-            }
-        }
+        // Exact (C24-R1-02): the fractions along each snapped edge are ratios of exact grid orientations, and the
+        // crossing point is the rational crossing of the snapped edges rounded half to even onto the grid (the same
+        // point whichever edge is first), so an integer-du translation of the input translates every junction exactly. (Before, the
+        // point came from floating-point fractions of the unsnapped geometry, which cancel differently once
+        // translated where snapped pieces of near-collinear strokes cross at a shallow angle.)
         let den = o3 - o4;
         let t = (o3 as f64 / den as f64).clamp(f64::MIN_POSITIVE, 1.0 - f64::EPSILON);
         let du = o1 - o2;
         let u = (o1 as f64 / du as f64).clamp(f64::MIN_POSITIVE, 1.0 - f64::EPSILON);
-        return Some(Meet::Proper(t, u));
+        let at = |k: usize| {
+            let start = i128::from(e.ia[k]);
+            round_half_even(start * den + (i128::from(e.ib[k]) - start) * o3, den)
+        };
+        let (x, y) = (at(0), at(1));
+        let (Ok(x), Ok(y)) = (i64::try_from(x), i64::try_from(y)) else { return None };
+        return Some(Meet::Proper(t, u, unsnap([x, y])));
     }
     if on_segment(f.ia, e.ia, e.ib) {
         return Some(Meet::Vertex(end_fraction(f.ia, e, f.a), 0.0, f.a));
@@ -397,8 +404,8 @@ fn node_once(strokes: &[NodeStroke], work: &mut Work) -> Result<Noding, GeomErro
                     continue;
                 }
                 match meet(e, f) {
-                    Some(Meet::Proper(t, u)) => records.push(Record {
-                        at: e.a.lerp(e.b, t),
+                    Some(Meet::Proper(t, u, at)) => records.push(Record {
+                        at,
                         parts: [
                             (e.stroke, flat::param_between(e.sa, e.sb, t)),
                             (f.stroke, flat::param_between(f.sa, f.sb, u)),
@@ -438,7 +445,9 @@ fn node_once(strokes: &[NodeStroke], work: &mut Work) -> Result<Noding, GeomErro
             let Some(dir) = end_direction(&flats[i], s_end > 0.0) else { continue };
             // The nearest point of every other stroke within the tolerance: an end where several strokes meet (the
             // neighbouring piece of a split stroke and a line through the junction) is a junction with each of them.
-            let mut best: BTreeMap<usize, (f64, usize, f64, P)> = BTreeMap::new();
+            // Per stroke and Bézier segment, so a stroke passing the end more than once (a fold, a retrace) is cut at
+            // every pass (C24-R1-01: cutting one pass left the other to cross it at a shallow angle once rounded).
+            let mut best: BTreeMap<(usize, i64), (f64, usize, f64, P)> = BTreeMap::new();
             let key = (cell(p.x), cell(p.y));
             let Some(list) = grid.get(&key) else { continue };
             work.spend_n(list.len())?;
@@ -458,8 +467,9 @@ fn node_once(strokes: &[NodeStroke], work: &mut Work) -> Result<Noding, GeomErro
                 }
                 let (t, q) = closest(p, e.a, e.b);
                 let d = p.dist(q);
-                if d <= JUNCTION_TOLERANCE && best.get(&e.stroke).is_none_or(|b| d < b.0) {
-                    best.insert(e.stroke, (d, n, t, q));
+                let pass = (e.stroke, e.sa.min(e.sb).floor() as i64);
+                if d <= JUNCTION_TOLERANCE && best.get(&pass).is_none_or(|b| d < b.0) {
+                    best.insert(pass, (d, n, t, q));
                 }
             }
             // The nearest stroke, and every other stroke as near (ties: the end-to-end neighbour and a line through

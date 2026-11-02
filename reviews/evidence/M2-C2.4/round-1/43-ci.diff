@@ -1,0 +1,14 @@
+diff --git a/.github/workflows/ci.yml b/.github/workflows/ci.yml
+index 0afa664..40a2510 100644
+--- a/.github/workflows/ci.yml
++++ b/.github/workflows/ci.yml
+@@ -106,6 +106,9 @@ jobs:
+       # source; the bundle job scans the built products for them.
+       - name: Test-only assets stay out of the product
+         run: python scripts/check-test-only-assets.py || python3 scripts/check-test-only-assets.py
++      # C24-R1-03: the C22-T2 gate rejects malformed timing evidence (exit 2, nothing written).
++      - name: C22-T2 gate analyser rejects malformed evidence
++        run: python scripts/test_c22_t2_gate.py || python3 scripts/test_c22_t2_gate.py
+ 
+       - name: MCP protocol conformance with the official Python SDK client (C1.4; 11 §14.7), measurements
+         run: |

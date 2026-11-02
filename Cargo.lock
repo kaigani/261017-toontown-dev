@@ -4690,6 +4690,9 @@ name = "tt-executor"
 version = "0.0.1"
 dependencies = [
  "jsonschema",
+ "num-bigint",
+ "num-rational",
+ "num-traits",
  "proptest",
  "regex",
  "schemars 1.2.3",
