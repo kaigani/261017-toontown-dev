@@ -1,0 +1,707 @@
+commit 4fe871351053020cd4dde5970d3bc2abe7425e80
+Author: kaigani <kaigani@gmail.com>
+Date:   Sun Nov 1 13:31:47 2026 -0800
+
+    fix(c2.3 r3): one acceptance boundary for every invocation; selection scans charge work
+    
+    A request whose caller timed out is refused before any of its changes is kept:
+    the cancellation check now runs at the start of a single acceptance boundary
+    shared by single invocations and atomic batches, before the frozen guard,
+    pending saves, the document commit and effects, including the path with no
+    document transaction. A refusal restores the saved session state in full.
+    
+    - Rollback also restores the agent hub's sessions and policy (confirmation
+      requests and activity entries are kept, as before).
+    - Settings changes (project.create last-used values and recent list,
+      project.recent.remove) are deferred effects instead of handler writes.
+    - Selection, bounds and point-selection scans charge a work account.
+    - A cancelled work account's error no longer carries the geometry hint; the
+      watchdog hint no longer says the call may still complete.
+    
+    Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>
+
+diff --git a/crates/executor/src/commands/draw.rs b/crates/executor/src/commands/draw.rs
+index c19fe17..01b7676 100644
+--- a/crates/executor/src/commands/draw.rs
++++ b/crates/executor/src/commands/draw.rs
+@@ -73,8 +73,12 @@ pub(crate) fn err(code: &str, message: impl Into<String>, details: Value) -> Com
+ }
+ 
+ pub(crate) fn invalid_geometry(e: &tt_vector::path::GeomError) -> CommandError {
+-    err(e.code, e.message.clone(), json!({ "pointer": e.pointer }))
+-        .hint("give finite coordinates within ±10 000 000 du and complete Bézier lists (02 §13.4)")
++    let error = err(e.code, e.message.clone(), json!({ "pointer": e.pointer }));
++    // A work account that observed its caller's timeout (C23-R3-01): not a geometry problem.
++    if e.code == tt_registry::codes::COMMAND_TIMEOUT {
++        return error.hint("the caller's watchdog budget passed: the call was cancelled and changed nothing");
++    }
++    error.hint("give finite coordinates within ±10 000 000 du and complete Bézier lists (02 §13.4)")
+ }
+ 
+ /// The resolved target drawing of a command (02 §13.1 item 4).
+diff --git a/crates/executor/src/commands/draw_select.rs b/crates/executor/src/commands/draw_select.rs
+index 264efe6..71ede82 100644
+--- a/crates/executor/src/commands/draw_select.rs
++++ b/crates/executor/src/commands/draw_select.rs
+@@ -18,7 +18,17 @@ use tt_vector::geom::{P, Rect};
+ 
+ use super::draw::{Bounds, Changed, Point, committed_rev, err, op, target};
+ use crate::cx::Cx;
+-use crate::planar::drawing_zones;
++use crate::planar::{drawing_zones, geom_error};
++
++/// The work account of a selection scan (C23-R3-01): every object, zone and lookup it visits is charged, so a scan that
++/// overruns its caller's watchdog budget stops at its next charge instead of running on after the caller's timeout.
++fn scan_work() -> tt_vector::work::Work {
++    tt_vector::work::Work::new(tt_vector::work::PLANAR_WORK_BUDGET, "selecting objects of this drawing")
++}
++
++fn charge(work: &mut tt_vector::work::Work, n: usize) -> Result<(), CommandError> {
++    work.spend_n(n).map_err(|e| geom_error(&e))
++}
+ 
+ /// `{x, y, width, height}` input.
+ #[derive(Debug, Clone, Copy, Deserialize, JsonSchema)]
+@@ -151,8 +161,10 @@ pub(crate) struct SelectionSetResult {
+ 
+ /// A selectable object of a drawing: local ID and bounds.
+ fn selectables(cx: &Cx, d: &Drawing, with_zones: bool) -> Result<Vec<(String, Option<Rect>)>, CommandError> {
++    let mut work = scan_work();
+     let mut out = Vec::new();
+     for o in tt_vector::drawing::objects(d) {
++        charge(&mut work, 1)?;
+         let b = match o.kind {
+             tt_vector::drawing::ObjectKind::Stroke => {
+                 tt_vector::drawing::stroke_at(d, &o.pointer).and_then(tt_vector::drawing::stroke_bounds)
+@@ -166,6 +178,7 @@ fn selectables(cx: &Cx, d: &Drawing, with_zones: bool) -> Result<Vec<(String, Op
+     }
+     if with_zones {
+         for lz in drawing_zones(&cx.planar_cache(), d)? {
++            charge(&mut work, lz.map.zones.len())?;
+             for z in &lz.map.zones {
+                 out.push((z.id.clone(), Some(z.bounds)));
+             }
+@@ -186,8 +199,10 @@ fn corners(r: &Rect) -> [P; 4] {
+ /// The bounds of selected objects (local IDs), zones included.
+ pub(crate) fn selection_bounds(cx: &Cx, d: &Drawing, ids: &[String]) -> Result<Option<Rect>, CommandError> {
+     let all = selectables(cx, d, ids.iter().any(|i| i.starts_with("zn_")))?;
++    let mut work = scan_work();
+     let mut acc: Option<Rect> = None;
+     for (id, b) in all {
++        charge(&mut work, ids.len())?;
+         if ids.contains(&id)
+             && let Some(b) = b
+         {
+@@ -197,8 +212,10 @@ pub(crate) fn selection_bounds(cx: &Cx, d: &Drawing, ids: &[String]) -> Result<O
+             });
+         }
+     }
+-    // Layers and groups: the bounds of their contents.
++    // Layers and groups: the bounds of their contents. Each lookup walks the drawing's objects.
++    let objects = tt_vector::drawing::objects(d).len();
+     for id in ids {
++        charge(&mut work, objects)?;
+         if let Some(l) = tt_vector::drawing::locate(d, id)
+             && matches!(l.kind, tt_vector::drawing::ObjectKind::Layer | tt_vector::drawing::ObjectKind::Group)
+             && let Some(b) =
+@@ -266,8 +283,10 @@ pub(crate) fn draw_selection_set(cx: &mut Cx, p: SelectionSetParams) -> Result<S
+         SelectBy::Ids => {
+             let ids = p.ids.clone().ok_or_else(|| need("ids"))?;
+             let zones = selectables(cx, &d, true)?;
++            let (mut work, objects) = (scan_work(), tt_vector::drawing::objects(&d).len());
+             let mut out = Vec::new();
+             for (i, id) in ids.iter().enumerate() {
++                charge(&mut work, objects + zones.len())?;
+                 let local = tt_vector::drawing::local_id(d.id().as_str(), id).unwrap_or(id).to_owned();
+                 let ok = tt_vector::drawing::locate(&d, &local).is_some() || zones.iter().any(|(z, _)| *z == local);
+                 if !ok {
+@@ -302,7 +321,14 @@ pub(crate) fn draw_selection_set(cx: &mut Cx, p: SelectionSetParams) -> Result<S
+                 poly.iter().map(|q| P::new(q.x, q.y)).collect()
+             };
+             let region = poly.iter().skip(1).fold(Rect::of(poly[0]), |r, q| r.with(*q));
+-            selectables(cx, &d, true)?
++            let mut work = scan_work();
++            let mut candidates = Vec::new();
++            for c in selectables(cx, &d, true)? {
++                // Each containment test walks the polygon.
++                charge(&mut work, poly.len())?;
++                candidates.push(c);
++            }
++            candidates
+                 .into_iter()
+                 .filter(|(_, b)| {
+                     let Some(b) = b else { return false };
+@@ -451,8 +477,11 @@ pub(crate) fn draw_point_selection_set(
+     }
+     if let Some(r) = p.rect {
+         let r = r.rect();
++        let mut work = scan_work();
+         for o in tt_vector::drawing::objects(&d) {
++            charge(&mut work, 1)?;
+             let Some(s) = tt_vector::drawing::stroke_at(&d, &o.pointer) else { continue };
++            charge(&mut work, s.points().len())?;
+             for (k, pt) in s.points().iter().enumerate() {
+                 if pt[0] >= r.min_x && pt[0] <= r.max_x && pt[1] >= r.min_y && pt[1] <= r.max_y {
+                     keys.push(AnchorRef { stroke_id: o.id.clone(), anchor: k as u32 });
+diff --git a/crates/executor/src/commands/project.rs b/crates/executor/src/commands/project.rs
+index 736364c..c2e8a4c 100644
+--- a/crates/executor/src/commands/project.rs
++++ b/crates/executor/src/commands/project.rs
+@@ -325,15 +325,10 @@ pub(crate) fn project_create(cx: &mut Cx, p: CreateParams) -> Result<CreateResul
+         project.store.content = crate::store::content_of(path, w.form);
+     }
+     if !cx.dry_run() {
+-        let env = &mut cx.session_mut().env;
+-        env.settings.last_used.insert(
+-            "newProject".into(),
+-            json!({ "frameRate": frame_rate, "cameraWidth": camera_width, "cameraHeight": camera_height }),
+-        );
+-        let _ = env.write("state");
+-        if let Some(path) = &path {
+-            env.add_recent(path, doc.project().name());
+-        }
++        cx.defer(Effect::Settings(crate::cx::SettingsChange::NewProject {
++            last_used: json!({ "frameRate": frame_rate, "cameraWidth": camera_width, "cameraHeight": camera_height }),
++            recent: path.clone().map(|p| (p, doc.project().name().to_owned())),
++        }));
+     }
+     if cx.has_project() {
+         cx.defer(Effect::Close);
+@@ -1109,17 +1104,12 @@ pub(crate) fn project_recent_remove(cx: &mut Cx, p: RecentRemoveParams) -> Resul
+     if p.path.is_none() && !p.all {
+         return Err(invalid("/path", "give `path` or `all: true`"));
+     }
++    let path = if p.all { None } else { p.path.clone() };
++    let remaining = crate::store::recent_after_removal(&cx.session().env.settings.recent, path.as_deref()).len();
+     if !cx.dry_run() {
+-        let env = &mut cx.session_mut().env;
+-        if p.all {
+-            env.settings.recent.clear();
+-        } else if let Some(path) = &p.path {
+-            let norm = crate::store::normalize(path);
+-            env.settings.recent.retain(|r| crate::store::normalize(&r.path) != norm);
+-        }
+-        let _ = env.write("recent");
++        cx.defer(Effect::Settings(crate::cx::SettingsChange::RemoveRecent(path)));
+     }
+-    Ok(Remaining { remaining: u32::try_from(cx.session().env.settings.recent.len()).unwrap_or(u32::MAX) })
++    Ok(Remaining { remaining: u32::try_from(remaining).unwrap_or(u32::MAX) })
+ }
+ 
+ // ----- recovery ----------------------------------------------------------------------------------------------------
+diff --git a/crates/executor/src/cx.rs b/crates/executor/src/cx.rs
+index f1019c0..72cf620 100644
+--- a/crates/executor/src/cx.rs
++++ b/crates/executor/src/cx.rs
+@@ -83,6 +83,8 @@ pub(crate) enum Effect {
+     Install(Box<crate::run::Install>),
+     /// Merge preference values and write the preferences file (01 §11; C1.3).
+     Prefs(serde_json::Map<String, Value>),
++    /// Change the remembered settings (last-used values, the recent list) and write them (01 §11; C23-R3-01).
++    Settings(SettingsChange),
+     /// A save of the open project (`onUnsaved: "save"`): written after every step succeeded and before the commit,
+     /// applied to the project after it (C13-R1-01).
+     Save(Box<crate::persistence::PendingSave>),
+@@ -91,6 +93,15 @@ pub(crate) enum Effect {
+     WriteFile(Box<FileWrite>),
+ }
+ 
++/// A settings change a call makes (see [`Effect::Settings`]), accepted with the call or not at all.
++#[derive(Debug, Clone)]
++pub(crate) enum SettingsChange {
++    /// `project.create`: the new-project values it used, and its file at the top of the recent list.
++    NewProject { last_used: Value, recent: Option<(std::path::PathBuf, String)> },
++    /// `project.recent.remove`: one path (normalised comparison), or every entry.
++    RemoveRecent(Option<String>),
++}
++
+ /// A staged file write (see [`Effect::WriteFile`]).
+ #[derive(Debug, Clone)]
+ pub(crate) struct FileWrite {
+diff --git a/crates/executor/src/lib.rs b/crates/executor/src/lib.rs
+index 1aa4aae..6787219 100644
+--- a/crates/executor/src/lib.rs
++++ b/crates/executor/src/lib.rs
+@@ -244,7 +244,7 @@ fn timeout(what: &str, budget: Duration) -> CommandError {
+         format!("`{what}` did not answer within {} ms", budget.as_millis()),
+         json!({ "commandId": what, "budgetMs": u64::try_from(budget.as_millis()).unwrap_or(u64::MAX) }),
+     )
+-    .hint("the document thread is busy; the call may still complete — read doc.state.get before retrying")
++    .hint("the call was cancelled: unless it had already committed, it changed nothing; read doc.state.get before retrying")
+ }
+ 
+ fn stopped() -> CommandError {
+diff --git a/crates/executor/src/run.rs b/crates/executor/src/run.rs
+index 8b8cf78..e71be94 100644
+--- a/crates/executor/src/run.rs
++++ b/crates/executor/src/run.rs
+@@ -205,6 +205,9 @@ struct Rollback {
+     checkpoints: Option<Vec<Checkpoint>>,
+     clipboard: Option<Value>,
+     edit_options: std::collections::BTreeMap<String, serde_json::Map<String, Value>>,
++    /// The agent hub's sessions, grants and policy (C23-R3-01). Its confirmation requests and activity log are
++    /// records a refused call makes on purpose (11 §6.3, §11) and are kept.
++    agents: crate::agents::AgentHub,
+     events: usize,
+ }
+ 
+@@ -216,6 +219,7 @@ impl Rollback {
+             checkpoints: s.project.as_ref().map(|p| p.checkpoints.clone()),
+             clipboard: s.clipboard.clone(),
+             edit_options: s.edit_options.clone(),
++            agents: crate::agents::AgentHub { pending: BTreeMap::new(), activity: Vec::new(), ..s.agents.clone() },
+             events: s.events.len(),
+         }
+     }
+@@ -225,6 +229,10 @@ impl Rollback {
+         s.ui = self.ui;
+         s.clipboard = self.clipboard;
+         s.edit_options = self.edit_options;
++        let pending = std::mem::take(&mut s.agents.pending);
++        let activity = std::mem::take(&mut s.agents.activity);
++        let next_seq = s.agents.next_seq;
++        s.agents = crate::agents::AgentHub { pending, activity, next_seq, ..self.agents };
+         s.events.truncate(self.events);
+         if let (Some(p), Some(c)) = (s.project.as_mut(), self.checkpoints) {
+             p.checkpoints = c;
+@@ -518,9 +526,8 @@ fn needs_confirmation(session: &mut Session, e: CommandError, rev: Option<u64>)
+     env
+ }
+ 
+-/// Commits transactions: installs each stamped snapshot, records undo steps or moves the history position, logs
+-/// the revision and emits `doc.changed`.
+-/// A request whose caller timed out commits nothing (C23-R2-01): checked before the transaction and before effects.
++/// A request whose caller timed out is not accepted (C23-R2-01, C23-R3-01): checked at the acceptance boundary, before
++/// any session state, document transaction or effect is kept, and again by `commit` before it installs anything.
+ fn cancelled_check(what: &str) -> Result<(), CommandError> {
+     if tt_vector::work::cancel_requested() {
+         return Err(CommandError::with_details(
+@@ -532,6 +539,8 @@ fn cancelled_check(what: &str) -> Result<(), CommandError> {
+     Ok(())
+ }
+ 
++/// Commits transactions: installs each stamped snapshot, records undo steps or moves the history position, logs
++/// the revision and emits `doc.changed`.
+ fn commit(s: &mut Session, txns: Vec<Txn>, origin: &Origin, command: &str) -> Result<Option<UndoRef>, CommandError> {
+     if txns.is_empty() {
+         return Ok(None);
+@@ -703,9 +712,6 @@ fn apply_effects(s: &mut Session, effects: Vec<Effect>, simulating: bool, origin
+     if simulating {
+         return Ok(());
+     }
+-    if !effects.is_empty() {
+-        cancelled_check("effects")?;
+-    }
+     let mut failure: Option<CommandError> = None;
+     for e in effects {
+         match e {
+@@ -744,6 +750,7 @@ fn apply_effects(s: &mut Session, effects: Vec<Effect>, simulating: bool, origin
+                     }
+                 }
+             }
++            Effect::Settings(change) => s.env.apply(change),
+             Effect::Prefs(values) => {
+                 // Only values that differ from the defaults are stored (01 §11; C13-R1-15).
+                 for (k, v) in values {
+@@ -1126,7 +1133,7 @@ impl Core {
+         });
+         let warnings = cx.take_warnings();
+         let targets = cx.take_targets();
+-        let mut effects = cx.take_effects();
++        let effects = cx.take_effects();
+         let mut session = cx.into_session();
+         let rev_before = session.project.as_ref().map(|p| p.doc.document_rev());
+         let env = match outcome {
+@@ -1154,24 +1161,16 @@ impl Core {
+                         env = Envelope::error(e, rev_before);
+                     }
+                 } else {
+-                    // Pending saves are written only now that every step succeeded, and before anything commits; a
+-                    // failed write rolls the invocation back (C13-R1-01).
+-                    let pre = frozen_guard(&session, &txns)
+-                        .and_then(|()| self.write_pending(&session, txns.last().map(|t| &t.after), &mut effects));
+-                    match pre.and_then(|()| commit(&mut session, txns, &inv.origin, &inv.command)) {
+-                        Ok(u) => {
++                    match self.accept(&mut session, rollback, txns, effects, &inv.origin, &inv.command) {
++                        Ok((u, published)) => {
+                             env.undo = u;
+                             env.document_rev = last_rev.or(rev_before);
+                             env.committed = !self.simulating;
+-                            if let Err(e) = apply_effects(&mut session, effects, self.simulating, &inv.origin) {
++                            if let Err(e) = published {
+                                 env = publish_failed(env, e);
+                             }
+                         }
+-                        Err(e) => {
+-                            discard_files(&effects);
+-                            rollback.apply(&mut session);
+-                            env = Envelope::error(e, rev_before);
+-                        }
++                        Err(e) => env = Envelope::error(e, rev_before),
+                     }
+                 }
+                 if env.document_rev.is_none() {
+@@ -1462,7 +1461,7 @@ impl Core {
+                 }
+             }
+         };
+-        let mut effects = cx.take_effects();
++        let effects = cx.take_effects();
+         let mut session = cx.into_session();
+         let env = match committed {
+             Err(e) => {
+@@ -1488,28 +1487,16 @@ impl Core {
+                         env = Envelope::error(e, rev_before);
+                     }
+                 } else {
+-                    let pre = txn
+-                        .as_ref()
+-                        .map_or(Ok(()), |t| frozen_guard(&session, std::slice::from_ref(t)))
+-                        .and_then(|()| self.write_pending(&session, txn.as_ref().map(|t| &t.after), &mut effects));
+-                    let committed = pre.and_then(|()| match txn {
+-                        Some(t) => commit(&mut session, vec![t], origin, "batch"),
+-                        None => Ok(None),
+-                    });
+-                    match committed {
+-                        Ok(u) => {
++                    match self.accept(&mut session, rollback, txn.into_iter().collect(), effects, origin, "batch") {
++                        Ok((u, published)) => {
+                             env.undo = u;
+                             env.document_rev = last_rev.or(rev_before);
+                             env.committed = !self.simulating;
+-                            if let Err(e) = apply_effects(&mut session, effects, self.simulating, origin) {
++                            if let Err(e) = published {
+                                 env = publish_failed(env, e);
+                             }
+                         }
+-                        Err(e) => {
+-                            discard_files(&effects);
+-                            rollback.apply(&mut session);
+-                            env = Envelope::error(e, rev_before);
+-                        }
++                        Err(e) => env = Envelope::error(e, rev_before),
+                     }
+                 }
+                 env.steps = Some(steps);
+@@ -1608,6 +1595,40 @@ impl Core {
+ 
+     /// Writes the pending saves of an invocation about to commit `final_doc` (`None`: nothing to commit, the live
+     /// document is saved); none while simulating.
++    /// The acceptance boundary of every invocation and atomic batch (C23-R3-01; ADR-0015 history). A handler changes
++    /// only the invocation's working session: the staged document, its deferred effects, and the session and UI state
++    /// it writes (selection, point selection, tool memory, panels, clipboard, remembered options, checkpoints, queued
++    /// events). Nothing of it is accepted before this point, and here, in order: the caller's cancellation (a request
++    /// whose caller timed out is refused whether or not it changes the document), the frozen guard, pending saves, the
++    /// document commit (which checks the cancellation again before installing anything). Any refusal restores the
++    /// saved session state in full and removes staged files. After the document commit the call is accepted: its
++    /// effects apply, and a file that cannot be published is the call's post-commit error (ADR-0015 §12), returned
++    /// beside the undo reference.
++    fn accept(
++        &self,
++        session: &mut Session,
++        rollback: Rollback,
++        txns: Vec<Txn>,
++        mut effects: Vec<Effect>,
++        origin: &Origin,
++        command: &str,
++    ) -> Result<(Option<UndoRef>, Result<(), CommandError>), CommandError> {
++        // Pending saves are written only now that every step succeeded, and before anything commits; a failed write
++        // rolls the invocation back (C13-R1-01).
++        let committed = cancelled_check(command)
++            .and_then(|()| frozen_guard(session, &txns))
++            .and_then(|()| self.write_pending(session, txns.last().map(|t| &t.after), &mut effects))
++            .and_then(|()| commit(session, txns, origin, command));
++        match committed {
++            Ok(u) => Ok((u, apply_effects(session, effects, self.simulating, origin))),
++            Err(e) => {
++                discard_files(&effects);
++                rollback.apply(session);
++                Err(e)
++            }
++        }
++    }
++
+     fn write_pending(
+         &self,
+         s: &Session,
+@@ -1918,4 +1939,78 @@ mod tests {
+         let env = core.invoke(&Invocation::user("doc.diff", json!({ "sinceRev": r1 - 1 })));
+         assert!(env.is_ok(), "{:?}", env.error);
+     }
++
++    /// The session state a cancelled call must leave as it was: app context (selections, point selection, tool memory,
++    /// frame, mode), UI, clipboard, remembered options, the agent policy, queued events, the revision.
++    fn accepted_state(core: &Core) -> String {
++        let s = core.session().unwrap();
++        let rev = s.project.as_ref().map(|p| p.doc.document_rev());
++        format!(
++            "{:?}|{:?}|{:?}|{:?}|{:?}|{}|{rev:?}",
++            s.app,
++            s.ui,
++            s.clipboard,
++            s.edit_options,
++            s.agents.limits,
++            s.events.len()
++        )
++    }
++
++    /// C23-R3-01: the acceptance boundary refuses a request whose caller timed out, whatever the request changes:
++    /// session/UI state only, through handlers that charge no work account (so nothing but the boundary sees the
++    /// cancellation), agent policy, or a document transaction. The saved state is restored in full; once the
++    /// cancellation is gone the same calls are accepted.
++    #[test]
++    fn the_acceptance_boundary_refuses_a_cancelled_request_and_restores_the_session() {
++        let mut core = core();
++        let d = "dr_01K742SG0KKMCAP9X1E6Z5P4SW";
++        let all = core.invoke(&Invocation::user("draw.selection.set", json!({ "drawingId": d, "by": "all" })));
++        assert!(all.is_ok(), "{:?}", all.error);
++        let first = all.result.unwrap()["selectedIds"][0].as_str().unwrap().to_owned();
++        // A previous non-empty selection, a point selection, a frame and a mode.
++        for (cmd, params) in [
++            ("draw.selection.set", json!({ "drawingId": d, "ids": [first] })),
++            ("draw.pointSelection.set", json!({ "drawingId": d, "points": [{ "strokeId": first, "anchor": 0 }] })),
++            ("app.frame.set", json!({ "frame": 2 })),
++            ("app.mode.set", json!({ "mode": "drawing" })),
++        ] {
++            let env = core.invoke(&Invocation::user(cmd, params));
++            assert!(env.is_ok(), "{cmd}: {:?}", env.error);
++        }
++        let before = accepted_state(&core);
++        let calls = [
++            ("draw.selection.set", json!({ "drawingId": d, "by": "none" })),
++            ("draw.pointSelection.set", json!({ "drawingId": d, "points": [] })),
++            ("edit.selection.set", json!({ "context": "drawing", "ids": [] })),
++            ("app.frame.set", json!({ "frame": 3 })),
++            ("agent.policy.defaults.set", json!({ "maxJobs": 1 })),
++            ("draw.drawing.rename", json!({ "drawingId": d, "name": "cancelled" })),
++        ];
++        let cancel = std::sync::Arc::new(tt_vector::work::CancelState::default());
++        tt_vector::work::set_cancel_state(Some(cancel.clone()));
++        let token = cancel.token();
++        cancel.current.store(token, std::sync::atomic::Ordering::Release);
++        cancel.mark(token);
++        for (cmd, params) in &calls {
++            let env = core.invoke(&Invocation::user(cmd, params.clone()));
++            assert_eq!(env.error.as_ref().map(|e| e.code.as_str()), Some("command.timeout"), "{cmd}: {env:?}");
++            assert!(!env.committed, "{cmd}");
++            assert_eq!(accepted_state(&core), before, "{cmd}: the session is as it was");
++        }
++        // An atomic batch of the calls that charge no work account is refused at its boundary the same way.
++        let steps: Vec<Value> = calls[1..5].iter().map(|(c, p)| json!({ "id": c, "params": p })).collect();
++        let req: BatchRequest =
++            serde_json::from_value(json!({ "label": "cancelled", "steps": steps, "atomic": true })).unwrap();
++        let env = core.batch(&req, &Origin::User);
++        assert_eq!(env.error.as_ref().map(|e| e.code.as_str()), Some("command.timeout"), "{env:?}");
++        assert_eq!(accepted_state(&core), before, "batch: the session is as it was");
++        // Not cancelled: the same calls are accepted.
++        cancel.current.store(0, std::sync::atomic::Ordering::Release);
++        for (cmd, params) in &calls {
++            let env = core.invoke(&Invocation::user(cmd, params.clone()));
++            assert!(env.is_ok(), "{cmd}: {:?}", env.error);
++        }
++        assert_ne!(accepted_state(&core), before);
++        tt_vector::work::set_cancel_state(None);
++    }
+ }
+diff --git a/crates/executor/src/session.rs b/crates/executor/src/session.rs
+index 9ebf5a1..b7ad7cb 100644
+--- a/crates/executor/src/session.rs
++++ b/crates/executor/src/session.rs
+@@ -193,7 +193,8 @@ pub(crate) struct Session {
+     pub edit_options: std::collections::BTreeMap<String, serde_json::Map<String, Value>>,
+     /// The persistence environment (C1.3).
+     pub env: crate::store::Env,
+-    /// Agent sessions, confirmations and the activity log (C1.4). Not rolled back with a failed call.
++    /// Agent sessions, confirmations and the activity log (C1.4). A refused call restores its sessions and policy
++    /// (C23-R3-01); its confirmation requests and activity entries are kept.
+     pub agents: crate::agents::AgentHub,
+     /// The derived planar-map cache (M2 C2.2), shared by the session's invocations.
+     pub planar: crate::planar::SharedCache,
+diff --git a/crates/executor/src/store.rs b/crates/executor/src/store.rs
+index d47a63d..3afacc3 100644
+--- a/crates/executor/src/store.rs
++++ b/crates/executor/src/store.rs
+@@ -218,6 +218,23 @@ impl Env {
+         settings::write(&self.dirs.settings, kind, &data)
+     }
+ 
++    /// Applies an accepted settings change and writes what it changed (C23-R3-01).
++    pub(crate) fn apply(&mut self, change: crate::cx::SettingsChange) {
++        match change {
++            crate::cx::SettingsChange::NewProject { last_used, recent } => {
++                self.settings.last_used.insert("newProject".into(), last_used);
++                let _ = self.write("state");
++                if let Some((path, name)) = recent {
++                    self.add_recent(&path, &name);
++                }
++            }
++            crate::cx::SettingsChange::RemoveRecent(path) => {
++                self.settings.recent = recent_after_removal(&self.settings.recent, path.as_deref());
++                let _ = self.write("recent");
++            }
++        }
++    }
++
+     /// Puts a project at the top of the recent list (01 §3.3: no duplicates, paths compared after normalisation).
+     pub(crate) fn add_recent(&mut self, path: &Path, name: &str) {
+         let p = path.to_string_lossy().into_owned();
+@@ -397,3 +414,14 @@ impl Default for Store {
+         }
+     }
+ }
++
++/// The recent list without `path` (compared after normalisation), or empty when no path is given (remove all).
++pub(crate) fn recent_after_removal(recent: &[Recent], path: Option<&str>) -> Vec<Recent> {
++    match path {
++        None => Vec::new(),
++        Some(path) => {
++            let norm = normalize(path);
++            recent.iter().filter(|r| normalize(&r.path) != norm).cloned().collect()
++        }
++    }
++}
+diff --git a/crates/executor/tests/c23_round3.rs b/crates/executor/tests/c23_round3.rs
+new file mode 100644
+index 0000000..4cee0b8
+--- /dev/null
++++ b/crates/executor/tests/c23_round3.rs
+@@ -0,0 +1,97 @@
++//! M2 C2.3 round 3 (C23-R3-01): a call whose caller timed out is refused at the acceptance boundary whatever it
++//! changes, and the session state it had changed is restored in full. Controls beside the reviewer's proving test
++//! (`c23_r3_selection_cancel`): a previous non-empty selection, the point selection, the current frame and the mode
++//! survive a cancelled selection, alone and inside an atomic batch; the same work is accepted afterwards.
++#![allow(clippy::unwrap_used, clippy::expect_used, clippy::panic, missing_docs, reason = "test")]
++
++mod common;
++
++use std::time::Duration;
++
++use common::*;
++use serde_json::{Value, json};
++use tt_executor::{ExecutorConfig, ExecutorHandle};
++
++const D: &str = "dr_01K742SG0KKMCAP9X1E6Z5P4SW";
++
++/// The seed-1 fixture with `n` simple disjoint pencil strokes in one layer of `D` (selecting them all crosses a
++/// 200 ms budget through real work), under `budget`.
++fn crowded(n: usize, budget: Duration) -> ExecutorHandle {
++    let mut parts = tt_model::fixture::sample_parts(1).unwrap();
++    let index = parts.drawings.iter().position(|d| d.id().as_str() == D).unwrap();
++    let mut drawing = serde_json::to_value(&parts.drawings[index]).unwrap();
++    let template = drawing["nodes"][0]["strokes"][1].clone();
++    let mut layer = drawing["nodes"][0].clone();
++    layer["strokes"] = json!(
++        (0..n)
++            .map(|i| {
++                let mut s = template.clone();
++                s["id"] = json!(format!("st_round3_{i}"));
++                s["points"] = json!([[i * 3, 2000, 0, 0, 0, 0], [i * 3 + 1, 2001, 0, 0, 0, 0]]);
++                s
++            })
++            .collect::<Vec<_>>()
++    );
++    drawing["nodes"] = json!([layer]);
++    parts.drawings[index] = tt_model::object::from_json(&drawing).unwrap();
++    let doc = tt_model::document::Document::from_parts(parts).unwrap();
++    let h = ExecutorHandle::spawn(ExecutorConfig { budget }).unwrap();
++    assert!(h.open_document(doc, None, false).is_ok());
++    h
++}
++
++/// The session state a cancelled call must not change: the app state (selection, frame, mode, element), the drawing
++/// selection with the point selection, and the revision. Retried until the worker answers.
++fn session(h: &ExecutorHandle) -> Value {
++    for _ in 0..100 {
++        let a = run(h, "app.state.get", json!({}));
++        let s = run(h, "draw.selection.get", json!({ "drawingId": D }));
++        if let (Some(a), Some(s)) = (a.result, s.result) {
++            return json!({ "app": a, "points": s["selectedPoints"], "ids": s["selectedIds"], "rev": rev(h) });
++        }
++    }
++    panic!("the worker did not answer");
++}
++
++fn prepare(h: &ExecutorHandle) {
++    ok(h, "draw.selection.set", json!({ "drawingId": D, "ids": ["st_round3_7", "st_round3_8"] }));
++    ok(h, "draw.pointSelection.set", json!({ "drawingId": D, "points": [{ "strokeId": "st_round3_7", "anchor": 1 }] }));
++    ok(h, "app.frame.set", json!({ "frame": 2 }));
++    ok(h, "app.mode.set", json!({ "mode": "drawing" }));
++}
++
++#[test]
++fn a_cancelled_selection_keeps_the_previous_selection_points_frame_and_mode() {
++    let h = crowded(3000, Duration::from_millis(200));
++    prepare(&h);
++    let before = session(&h);
++    assert_eq!(before["ids"], json!(["st_round3_7", "st_round3_8"]));
++    assert_eq!(before["points"].as_array().map(Vec::len), Some(1));
++    for mode in ["replace", "add", "toggle"] {
++        let e = run(&h, "draw.selection.set", json!({ "drawingId": D, "by": "all", "mode": mode }));
++        assert_eq!(e.error.as_ref().map(|e| e.code.as_str()), Some("command.timeout"), "{mode}: {e:?}");
++        assert_eq!(session(&h), before, "{mode}: the cancelled selection changed nothing");
++    }
++    // A slow call that ends in a different mode and frame inside one atomic batch: refused as a whole.
++    let e = batch(
++        &h,
++        json!({ "label": "r3", "atomic": true, "steps": [
++            {"id": "app.frame.set", "params": {"frame": 5}},
++            {"id": "draw.pointSelection.set", "params": {"drawingId": D, "points": []}},
++            {"id": "draw.selection.set", "params": {"drawingId": D, "by": "all"}},
++        ] }),
++    );
++    assert_eq!(e.error.as_ref().map(|e| e.code.as_str()), Some("command.timeout"), "{e:?}");
++    assert_eq!(session(&h), before, "the cancelled batch changed nothing");
++}
++
++#[test]
++fn the_same_selection_is_accepted_within_its_budget() {
++    let h = crowded(3000, Duration::from_secs(60));
++    prepare(&h);
++    let r = ok(&h, "draw.selection.set", json!({ "drawingId": D, "by": "all" }));
++    assert_eq!(r["selectedIds"].as_array().map(Vec::len), Some(3000));
++    let after = session(&h);
++    assert_eq!(after["ids"].as_array().map(Vec::len), Some(3000));
++    assert_eq!(after["points"].as_array().map(Vec::len), Some(1), "the point selection is kept");
++}
+diff --git a/crates/mcp/src/docs.rs b/crates/mcp/src/docs.rs
+index 035e7cc..991aee0 100644
+--- a/crates/mcp/src/docs.rs
++++ b/crates/mcp/src/docs.rs
+@@ -117,7 +117,10 @@ pub fn errors() -> String {
+         ("command.unknown", "No such command id"),
+         ("command.disabled", "Not enabled in the current context (`details.reason`)"),
+         ("command.notImplemented", "Registered, implemented by a later milestone (`details.milestone`)"),
+-        ("command.timeout", "The call exceeded its budget; it may still complete — read `get_state` before retrying"),
++        (
++            "command.timeout",
++            "The call exceeded its budget and was cancelled; unless it had already committed it changed nothing — read `get_state` before retrying",
++        ),
+         ("arg.missing / arg.unknown / arg.invalid", "Parameter validation (`details.pointer`, `details.allowed`)"),
+         ("ref.notFound / ref.ambiguous / ref.wrongType", "Object references (`details.candidates`)"),
+         ("rev.conflict", "`expectRev` mismatch (`details.currentRev`)"),
+diff --git a/docs/decisions/ADR-0013-registry-and-executor.md b/docs/decisions/ADR-0013-registry-and-executor.md
+index 5eef63c..3ec4a6a 100644
+--- a/docs/decisions/ADR-0013-registry-and-executor.md
++++ b/docs/decisions/ADR-0013-registry-and-executor.md
+@@ -89,6 +89,8 @@ state commands (§5, §12).
+    checkpoints, revision log, application context, window/workspace state, clipboard). Every call is a message;
+    the caller waits at most the **watchdog budget** (default 30 s) and otherwise gets **`command.timeout`**
+    `{commandId, budgetMs}` — the work may still complete, and the hint says to read `doc.state.get` before retrying.
++   (Superseded in M2 C2.3, ADR-0015 history C23-R1-07, C23-R2-01, C23-R3-01: the caller's timeout cancels exactly
++   its request, which is not accepted unless its document commit had already happened; the hint says so.)
+    Handlers never wait for input (P5). A handler that does not return cannot block callers: each call still answers
+    with `command.timeout` within the budget, and the executor serves again when the handler returns
+    (`tests/c12_never_block.rs`); a handler that never returns cannot be preempted in-process (no safe thread
+diff --git a/plan/spec-issues.md b/plan/spec-issues.md
+index 73f23ab..c3ba706 100644
+--- a/plan/spec-issues.md
++++ b/plan/spec-issues.md
+@@ -161,7 +161,7 @@ Reserved by the M0 closure for "measured deterministic-format incompatibility" (
+ 
+ - **Section:** 11 §10 (generic codes), 11 §7.7 (checkpoints, jobs), 11 §14.6 (never-block watchdog).
+ - **Decision taken (ADR-0013):** `command.notImplemented` (registered command implemented by a later milestone;
+-  `details.milestone`), `command.timeout` (watchdog budget exceeded; the outcome is indeterminate: the call may still complete, nothing is rolled back or cancelled, and the caller reads `doc.state.get` before retrying),
++  `details.milestone`), `command.timeout` (watchdog budget exceeded; the outcome is indeterminate: the call may still complete, nothing is rolled back or cancelled, and the caller reads `doc.state.get` before retrying; superseded in M2 C2.3 by ADR-0015 history C23-R2-01/C23-R3-01: the timed-out request is cancelled and not accepted unless it had already committed),
+   `history.diverged` (a replayed undo step does not match the document; nothing applied), `checkpoint.exists`,
+   `checkpoint.notFound`, `job.notFound`; round 1 (ruling R1-22): `request.conflict` (a `requestId` reused with a
+   different command, parameters or options; `{requestId, originalCommand}`; never executed) and `request.unknownId`

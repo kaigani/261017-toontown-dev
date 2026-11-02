@@ -1,0 +1,60 @@
+commit 18c44b49912231c6026ec479adb0796e25fbafa0
+Author: kaigani <kaigani@gmail.com>
+Date:   Sun Nov 1 15:38:24 2026 -0800
+
+    test(c2.3 r3): probe the 1 ms watchdog with a drawing render
+    
+    The macOS runner finished the round-2 probe (a whole-project export) inside
+    1 ms in all 50 attempts (CI run 41361421261). A 2048-pixel drawing render is
+    well over 1 ms everywhere; the budget, the 500 ms caller ceiling, the typed
+    timeout and the attempt bound are unchanged. Declared in the r3 response.
+    
+    Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>
+
+diff --git a/crates/executor/tests/c12_kernel_state.rs b/crates/executor/tests/c12_kernel_state.rs
+index bb0dfb6..2831caa 100644
+--- a/crates/executor/tests/c12_kernel_state.rs
++++ b/crates/executor/tests/c12_kernel_state.rs
+@@ -205,8 +205,13 @@ fn the_watchdog_answers_within_its_budget() {
+     let mut timed_out = false;
+     for _ in 0..50 {
+         let t = Instant::now();
+-        // A whole-project export: well over 1 ms even with the model optimised in test builds (M2 C2.3 round 2).
+-        let env = h.invoke(Invocation::user("doc.export.json", json!({ "scope": "project", "binaries": "omit" })));
++        // A 2048-pixel drawing render: well over 1 ms on every runner. (M2 C2.3 round 2 used a whole-project export,
++        // which the macOS runner finished inside 1 ms in round 3.)
++        let env = h.invoke(Invocation::user(
++            "draw.drawing.render",
++            json!({ "drawingId": "drawingBank:#1/drawing:#1", "width": 2048,
++                    "region": {"x": -60, "y": -60, "width": 170, "height": 170} }),
++        ));
+         assert!(t.elapsed() < Duration::from_millis(500));
+         if env.error.as_ref().is_some_and(|e| e.code == "command.timeout") {
+             timed_out = true;
+@@ -214,7 +219,7 @@ fn the_watchdog_answers_within_its_budget() {
+             break;
+         }
+     }
+-    assert!(timed_out, "a 1 ms budget times out a whole-project export");
++    assert!(timed_out, "a 1 ms budget times out a 2048-pixel render");
+ }
+ 
+ /// The state every example expects: one checkpoint, a user workspace, a job, undo and redo steps.
+diff --git a/reviews/M2-C2.3-r3-response.md b/reviews/M2-C2.3-r3-response.md
+index 59072c0..fcabaad 100644
+--- a/reviews/M2-C2.3-r3-response.md
++++ b/reviews/M2-C2.3-r3-response.md
+@@ -24,8 +24,11 @@ replay exclusion and valid-zone selection; the MCP typed-timeout test. No budget
+ 
+ ## 2. Declared edits
+ 
+-1. **Builder tests:** new `crates/executor/tests/c23_round3.rs` (2 tests); new unit test in `run.rs`. No existing
+-   builder test changed.
++1. **Builder tests:** new `crates/executor/tests/c23_round3.rs` (2 tests); new unit test in `run.rs`. One existing
++   builder test changed, `c12_kernel_state::the_watchdog_answers_within_its_budget`. **Cause:** CI run 41361421261 on
++   macOS: the round-2 probe, a whole-project `doc.export.json`, finished inside the 1 ms budget in all 50 attempts. It
++   now probes with a 2048-pixel `draw.drawing.render`. The contract is unchanged: the 1 ms budget, the 500 ms caller
++   ceiling, the typed `command.timeout` with `budgetMs: 1`, and the 50-attempt bound.
+ 2. **Reviewer-suite runner (orchestrator ruling, C2.3 round 3):** `scripts/run-reviewer-python-suites.py` excludes
+    exactly `tests/adversarial/c23-r3-finalize.py` (`NOT_SUITES`, reason "round-3 collector pinned to 989233e; receipts
+    retained under reviews/evidence/M2-C2.3-r3", with a one-line comment). The script is a round receipt, not a product

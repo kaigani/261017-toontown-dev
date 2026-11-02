@@ -1,0 +1,23 @@
+{
+  "from": "29fa294 round-3 register",
+  "to": "fc25eae scoped closure",
+  "unitChanges": [
+    {
+      "unit": "C23-U085",
+      "from": "divergent",
+      "to": "implemented",
+      "finding": "C23-R3-01 closed"
+    }
+  ],
+  "commandChanges": [
+    {
+      "id": "draw.selection.set",
+      "from": "divergent",
+      "to": "implemented",
+      "finding": "C23-R3-01 closed"
+    }
+  ],
+  "otherRowsAndOwners": "unchanged",
+  "units": 123,
+  "commands": 37
+}

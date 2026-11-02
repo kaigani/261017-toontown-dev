@@ -1,0 +1,22 @@
+{
+  "base": "29fa294",
+  "head": "fc25eae",
+  "paths": [
+    "tests/adversarial",
+    "crates/*/tests/c0*_r*",
+    "crates/*/tests/c1*_r*",
+    "crates/*/tests/c21_r*",
+    "crates/*/tests/c22_r*",
+    "crates/*/tests/c23_r*",
+    "desktop/src/test"
+  ],
+  "diffBytes": 5039,
+  "sha256": "966f5782a33faa28da73fa30a490926d04d7361a26a135f173ddf122e6472113",
+  "receiptSwitchUnset": true,
+  "changedPaths": [
+    "A\tcrates/executor/tests/c23_round3.rs"
+  ],
+  "preExistingChanged": [],
+  "exactGateSatisfied": false,
+  "declaredNewBuilderFile": "crates/executor/tests/c23_round3.rs"
+}

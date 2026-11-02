@@ -1,0 +1,12 @@
+{
+  "statusAfterWorkspace": [
+    "?? crates/executor/tests/c23_r4_closure.rs",
+    "?? reviews/M2-C2.3-r4-closure.md",
+    "?? reviews/evidence/M2-C2.3-r4/"
+  ],
+  "trackedChangesAfterWorkspace": [],
+  "historicalFilesRewritten": false,
+  "TT_COMMIT_REVIEW_RECEIPTSUnset": true,
+  "head": "fc25eae2caf5bb17fdb7c785be97ac9f680e9a24",
+  "branch": "review/m2-c23-r4"
+}
