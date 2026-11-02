@@ -297,3 +297,21 @@ fn vectorized_shapes_enclose_one_unpainted_zone_per_paper_component() {
         })
         .unwrap();
 }
+
+/// Intentionally failing shrunk seed; inspect snapping tolerance independently.
+#[test]
+fn shrunk_cutter_area_bound() {
+    let list = vec![(false, vec![(1, 2), (3, 3), (3, 2)]), (false, vec![(4, 2), (1, 4)])];
+    let h = fresh();
+    let d = drawing_with(&h, vec![layer(&list, 0, "l_1")]);
+    let before = zone_areas(&h, &d);
+    let r = run(&h, "draw.cut.apply", json!({"drawingId":d,"segment":{"from":{"x":20,"y":0},"to":{"x":0,"y":40}}}));
+    assert!(r.is_ok(), "{r:?}");
+    let after = zone_areas(&h, &d);
+    let mut segs = segments(&list, 0);
+    segs.push(((20, 0), (0, 40)));
+    let union: f64 = oracle::face_areas(&segs).into_iter().map(oracle::Q::f64).sum();
+    println!("before={before:?}, after={after:?}, exact union={union}");
+    let sa: f64 = after.iter().sum();
+    assert!(sa <= union + 1e-3 * union.max(1.0));
+}

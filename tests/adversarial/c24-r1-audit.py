@@ -74,6 +74,25 @@ def collect(out):
         add=json.loads(other.read_text())
         gates.append({'path':str(path.relative_to(ROOT)), 'strokeAddP50Seconds':gate.p50(gate.values(add['series']['strokeAdd.wallMs']))/1000,'flattenP50Seconds':gate.p50([x['seconds'] for x in doc['unbudgeted']]),'budgeted':doc['budgeted']})
     (out/'recomputed-gates.json').write_text(json.dumps(gates,indent=2))
+    scalar=[]
+    def ranges(doc,prefix=''):
+        if isinstance(doc,dict):
+            return {k:v for key,value in doc.items() for k,v in ranges(value,prefix+'/'+key).items()}
+        if isinstance(doc,list) and doc and all(isinstance(x,dict) for x in doc):
+            keys=set().union(*(x.keys() for x in doc))
+            result={}
+            for key in sorted(keys):
+                values=[x.get(key) for x in doc]
+                if all(isinstance(x,(int,float)) and not isinstance(x,bool) for x in values):
+                    s=sorted(values)
+                    result[prefix+'/*/'+key]={'n':len(s),'min':min(s),'max':max(s),'p50NearestRank':s[int(math.floor((len(s)-1)*.5+.5))]}
+            return result
+        if isinstance(doc,(int,float)) and not isinstance(doc,bool): return {prefix:doc}
+        return {}
+    for path in (ROOT/'reviews/evidence/M2-C2.4/budgets').rglob('*.json'):
+        if path.name.startswith(('budgets-','aggregate-')):
+            scalar.append({'path':str(path.relative_to(ROOT)),'recomputed':ranges(json.loads(path.read_text()))})
+    (out/'recomputed-budget-ranges.json').write_text(json.dumps(scalar,indent=2))
     print('protected changes:', protected)
     print('series',len(reports),'rejected',sum(not r['ok'] for r in reports))
     print('jobs',len(jobs),'max minutes',max(j['minutes'] for j in jobs))
@@ -91,6 +110,27 @@ class GateValidation(unittest.TestCase):
     def test_negative_timing_is_rejected(self): self.run_bad(-1)
     def test_boolean_timing_is_rejected(self): self.run_bad(False)
     def test_infinite_timing_is_rejected(self): self.run_bad(float('inf'))
+
+class ReadinessCoverage(unittest.TestCase):
+    def test_every_topology_operation_has_a_seeded_independent_exact_oracle_route(self):
+        import re
+        required={'draw.stroke.add','draw.stroke.set','draw.object.delete','draw.cut.apply','draw.erase.apply',
+                  'draw.flatten.apply','draw.optimize.apply','draw.smooth.apply','draw.linesToBrush.apply',
+                  'draw.centreLine.apply','draw.breakApart.apply','draw.transform.apply','draw.envelope.apply',
+                  'draw.point.move','draw.vectorize.run'}
+        found=set(); routes=[]
+        for p in (ROOT/'crates').glob('*/tests/*.rs'):
+            if p.name.startswith('c24_r1_'): continue
+            s=p.read_text()
+            if ('vector/tests/oracle' in s or 'mod oracle;' in s) and 'TestRunner' in s:
+                commands=set(re.findall(r'"(draw\.[A-Za-z.]+)"',s))
+                found |= commands; routes.append(str(p.relative_to(ROOT)))
+        print('seeded independent oracle routes',routes,'missing',sorted(required-found))
+        self.assertEqual(sorted(required-found),[], 'C2.4 readiness item 2 and plan section 2 require every topology operation')
+
+    def test_accepted_flatten_deferral_is_synchronized_to_m11(self):
+        row=next(x for x in (ROOT/'plan/traceability.csv').read_text().splitlines() if x.startswith('C22-T2 '))
+        self.assertIn(',M11,C11.1,',row,'Binding R1 ruling (a) accepts the handoff re-scope; traceability must name the new owner')
 
 if __name__=='__main__':
     if len(sys.argv)>1 and sys.argv[1]=='--collect':

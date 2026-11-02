@@ -6,11 +6,11 @@ from pathlib import Path
 import random
 import struct
 import zlib
-from PIL import Image
 
 ROOT=Path(__file__).resolve().parents[2]
 
 def generate():
+    from PIL import Image
     out=ROOT/'tests/fixtures/vectorize/review-r1'
     out.mkdir(parents=True,exist_ok=True)
     rng=random.Random(0xC24A1102)

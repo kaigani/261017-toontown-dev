@@ -1,0 +1,807 @@
+[
+  {
+    "check": "two images complete as distinct drawings",
+    "ok": true,
+    "detail": {
+      "jobId": "job-1",
+      "commandId": "draw.vectorize.run",
+      "state": "succeeded",
+      "progress": 1.0,
+      "message": "vectorizing image 2 of 2",
+      "startedAt": "2026-11-02T13:07:41.641Z",
+      "result": {
+        "elementId": "el_01M6E5YTTF61A5X5RNXE5HEZEN",
+        "drawingIds": [
+          "dr_01K7JJN803ZK7E8281H8B1RRFV",
+          "dr_01K7JJN800A1RH1H0CQYER8E1D"
+        ],
+        "completed": 2,
+        "cancelled": false,
+        "skipped": []
+      },
+      "session": "agent:s1-ee1730"
+    }
+  },
+  {
+    "check": "stale vectorize expectRev refuses before job",
+    "ok": true,
+    "detail": {
+      "status": "error",
+      "changes": [],
+      "warnings": [],
+      "documentRev": 3,
+      "error": {
+        "code": "rev.conflict",
+        "message": "`scene:#1/element:\"Drawing\"` changed: rev 3, expected 0",
+        "details": {
+          "ref": "scene:#1/element:\"Drawing\"",
+          "id": "el_01M6E5YTTF61A5X5RNXE5HEZEN",
+          "expectedRev": 0,
+          "currentRev": 3,
+          "documentRev": 3,
+          "current": {
+            "id": "el_01M6E5YTTF61A5X5RNXE5HEZEN",
+            "type": "element",
+            "rev": 3,
+            "name": "Drawing",
+            "elementType": "drawing",
+            "loops": 1,
+            "loopType": "count",
+            "positionLoop": "cycle",
+            "role": "normal",
+            "deformable": false,
+            "visibleInScene": true,
+            "visibleInXsheet": true,
+            "locked": false,
+            "collapsed": false,
+            "markerColour": null,
+            "backgroundColour": null,
+            "columnWidth": 80,
+            "drawingBankId": "db_01M6E5YTTF61A5X5RNXE5HEZEH",
+            "exposure": [
+              [
+                "dr_01K7JJN803ZK7E8281H8B1RRFV",
+                1
+              ],
+              [
+                "dr_01K7JJN800A1RH1H0CQYER8E1D",
+                1
+              ]
+            ],
+            "transform": {
+              "offset": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+              },
+              "rotation": 0.0,
+              "skew": 0.0,
+              "scale": {
+                "x": 1.0,
+                "y": 1.0
+              },
+              "keepProportions": false,
+              "rotationPivot": {
+                "x": 0.0,
+                "y": 0.0
+              },
+              "scalePivot": {
+                "x": 0.0,
+                "y": 0.0
+              },
+              "rotateAboutPivot": false,
+              "lockDepth": false,
+              "orientToPath": false
+            },
+            "channels": {},
+            "createdAt": "2026-11-02T13:07:41.519Z"
+          }
+        },
+        "hint": "re-read the object and retry"
+      }
+    }
+  },
+  {
+    "check": "mid-job cancellation preserves a nonzero committed prefix",
+    "ok": true,
+    "detail": {
+      "jobId": "job-2",
+      "commandId": "draw.vectorize.run",
+      "state": "cancelled",
+      "progress": 0.015625,
+      "message": "vectorizing image 2 of 64",
+      "startedAt": "2026-11-02T13:07:41.686Z",
+      "result": {
+        "elementId": "el_01M6E5YTTF61A5X5RNXE5HEZEN",
+        "drawingIds": [
+          "dr_01K7JJN800BZZKXKC9CR195M3V"
+        ],
+        "completed": 1,
+        "cancelled": true,
+        "skipped": [
+          {
+            "index": 1,
+            "source": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-c24-r1-e2-x8nchss2\\lineart.png",
+            "reason": "cancelled"
+          },
+          {
+            "index": 2,
+            "source": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-c24-r1-e2-x8nchss2\\lineart.png",
+            "reason": "cancelled"
+          },
+          {
+            "index": 3,
+            "source": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-c24-r1-e2-x8nchss2\\lineart.png",
+            "reason": "cancelled"
+          },
+          {
+            "index": 4,
+            "source": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-c24-r1-e2-x8nchss2\\lineart.png",
+            "reason": "cancelled"
+          },
+          {
+            "index": 5,
+            "source": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-c24-r1-e2-x8nchss2\\lineart.png",
+            "reason": "cancelled"
+          },
+          {
+            "index": 6,
+            "source": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-c24-r1-e2-x8nchss2\\lineart.png",
+            "reason": "cancelled"
+          },
+          {
+            "index": 7,
+            "source": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-c24-r1-e2-x8nchss2\\lineart.png",
+            "reason": "cancelled"
+          },
+          {
+            "index": 8,
+            "source": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-c24-r1-e2-x8nchss2\\lineart.png",
+            "reason": "cancelled"
+          },
+          {
+            "index": 9,
+            "source": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-c24-r1-e2-x8nchss2\\lineart.png",
+            "reason": "cancelled"
+          },
+          {
+            "index": 10,
+            "source": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-c24-r1-e2-x8nchss2\\lineart.png",
+            "reason": "cancelled"
+          },
+          {
+            "index": 11,
+            "source": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-c24-r1-e2-x8nchss2\\lineart.png",
+            "reason": "cancelled"
+          },
+          {
+            "index": 12,
+            "source": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-c24-r1-e2-x8nchss2\\lineart.png",
+            "reason": "cancelled"
+          },
+          {
+            "index": 13,
+            "source": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-c24-r1-e2-x8nchss2\\lineart.png",
+            "reason": "cancelled"
+          },
+          {
+            "index": 14,
+            "source": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-c24-r1-e2-x8nchss2\\lineart.png",
+            "reason": "cancelled"
+          },
+          {
+            "index": 15,
+            "source": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-c24-r1-e2-x8nchss2\\lineart.png",
+            "reason": "cancelled"
+          },
+          {
+            "index": 16,
+            "source": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-c24-r1-e2-x8nchss2\\lineart.png",
+            "reason": "cancelled"
+          },
+          {
+            "index": 17,
+            "source": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-c24-r1-e2-x8nchss2\\lineart.png",
+            "reason": "cancelled"
+          },
+          {
+            "index": 18,
+            "source": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-c24-r1-e2-x8nchss2\\lineart.png",
+            "reason": "cancelled"
+          },
+          {
+            "index": 19,
+            "source": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-c24-r1-e2-x8nchss2\\lineart.png",
+            "reason": "cancelled"
+          },
+          {
+            "index": 20,
+            "source": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-c24-r1-e2-x8nchss2\\lineart.png",
+            "reason": "cancelled"
+          },
+          {
+            "index": 21,
+            "source": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-c24-r1-e2-x8nchss2\\lineart.png",
+            "reason": "cancelled"
+          },
+          {
+            "index": 22,
+            "source": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-c24-r1-e2-x8nchss2\\lineart.png",
+            "reason": "cancelled"
+          },
+          {
+            "index": 23,
+            "source": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-c24-r1-e2-x8nchss2\\lineart.png",
+            "reason": "cancelled"
+          },
+          {
+            "index": 24,
+            "source": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-c24-r1-e2-x8nchss2\\lineart.png",
+            "reason": "cancelled"
+          },
+          {
+            "index": 25,
+            "source": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-c24-r1-e2-x8nchss2\\lineart.png",
+            "reason": "cancelled"
+          },
+          {
+            "index": 26,
+            "source": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-c24-r1-e2-x8nchss2\\lineart.png",
+            "reason": "cancelled"
+          },
+          {
+            "index": 27,
+            "source": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-c24-r1-e2-x8nchss2\\lineart.png",
+            "reason": "cancelled"
+          },
+          {
+            "index": 28,
+            "source": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-c24-r1-e2-x8nchss2\\lineart.png",
+            "reason": "cancelled"
+          },
+          {
+            "index": 29,
+            "source": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-c24-r1-e2-x8nchss2\\lineart.png",
+            "reason": "cancelled"
+          },
+          {
+            "index": 30,
+            "source": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-c24-r1-e2-x8nchss2\\lineart.png",
+            "reason": "cancelled"
+          },
+          {
+            "index": 31,
+            "source": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-c24-r1-e2-x8nchss2\\lineart.png",
+            "reason": "cancelled"
+          },
+          {
+            "index": 32,
+            "source": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-c24-r1-e2-x8nchss2\\lineart.png",
+            "reason": "cancelled"
+          },
+          {
+            "index": 33,
+            "source": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-c24-r1-e2-x8nchss2\\lineart.png",
+            "reason": "cancelled"
+          },
+          {
+            "index": 34,
+            "source": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-c24-r1-e2-x8nchss2\\lineart.png",
+            "reason": "cancelled"
+          },
+          {
+            "index": 35,
+            "source": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-c24-r1-e2-x8nchss2\\lineart.png",
+            "reason": "cancelled"
+          },
+          {
+            "index": 36,
+            "source": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-c24-r1-e2-x8nchss2\\lineart.png",
+            "reason": "cancelled"
+          },
+          {
+            "index": 37,
+            "source": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-c24-r1-e2-x8nchss2\\lineart.png",
+            "reason": "cancelled"
+          },
+          {
+            "index": 38,
+            "source": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-c24-r1-e2-x8nchss2\\lineart.png",
+            "reason": "cancelled"
+          },
+          {
+            "index": 39,
+            "source": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-c24-r1-e2-x8nchss2\\lineart.png",
+            "reason": "cancelled"
+          },
+          {
+            "index": 40,
+            "source": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-c24-r1-e2-x8nchss2\\lineart.png",
+            "reason": "cancelled"
+          },
+          {
+            "index": 41,
+            "source": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-c24-r1-e2-x8nchss2\\lineart.png",
+            "reason": "cancelled"
+          },
+          {
+            "index": 42,
+            "source": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-c24-r1-e2-x8nchss2\\lineart.png",
+            "reason": "cancelled"
+          },
+          {
+            "index": 43,
+            "source": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-c24-r1-e2-x8nchss2\\lineart.png",
+            "reason": "cancelled"
+          },
+          {
+            "index": 44,
+            "source": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-c24-r1-e2-x8nchss2\\lineart.png",
+            "reason": "cancelled"
+          },
+          {
+            "index": 45,
+            "source": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-c24-r1-e2-x8nchss2\\lineart.png",
+            "reason": "cancelled"
+          },
+          {
+            "index": 46,
+            "source": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-c24-r1-e2-x8nchss2\\lineart.png",
+            "reason": "cancelled"
+          },
+          {
+            "index": 47,
+            "source": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-c24-r1-e2-x8nchss2\\lineart.png",
+            "reason": "cancelled"
+          },
+          {
+            "index": 48,
+            "source": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-c24-r1-e2-x8nchss2\\lineart.png",
+            "reason": "cancelled"
+          },
+          {
+            "index": 49,
+            "source": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-c24-r1-e2-x8nchss2\\lineart.png",
+            "reason": "cancelled"
+          },
+          {
+            "index": 50,
+            "source": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-c24-r1-e2-x8nchss2\\lineart.png",
+            "reason": "cancelled"
+          },
+          {
+            "index": 51,
+            "source": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-c24-r1-e2-x8nchss2\\lineart.png",
+            "reason": "cancelled"
+          },
+          {
+            "index": 52,
+            "source": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-c24-r1-e2-x8nchss2\\lineart.png",
+            "reason": "cancelled"
+          },
+          {
+            "index": 53,
+            "source": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-c24-r1-e2-x8nchss2\\lineart.png",
+            "reason": "cancelled"
+          },
+          {
+            "index": 54,
+            "source": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-c24-r1-e2-x8nchss2\\lineart.png",
+            "reason": "cancelled"
+          },
+          {
+            "index": 55,
+            "source": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-c24-r1-e2-x8nchss2\\lineart.png",
+            "reason": "cancelled"
+          },
+          {
+            "index": 56,
+            "source": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-c24-r1-e2-x8nchss2\\lineart.png",
+            "reason": "cancelled"
+          },
+          {
+            "index": 57,
+            "source": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-c24-r1-e2-x8nchss2\\lineart.png",
+            "reason": "cancelled"
+          },
+          {
+            "index": 58,
+            "source": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-c24-r1-e2-x8nchss2\\lineart.png",
+            "reason": "cancelled"
+          },
+          {
+            "index": 59,
+            "source": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-c24-r1-e2-x8nchss2\\lineart.png",
+            "reason": "cancelled"
+          },
+          {
+            "index": 60,
+            "source": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-c24-r1-e2-x8nchss2\\lineart.png",
+            "reason": "cancelled"
+          },
+          {
+            "index": 61,
+            "source": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-c24-r1-e2-x8nchss2\\lineart.png",
+            "reason": "cancelled"
+          },
+          {
+            "index": 62,
+            "source": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-c24-r1-e2-x8nchss2\\lineart.png",
+            "reason": "cancelled"
+          },
+          {
+            "index": 63,
+            "source": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-c24-r1-e2-x8nchss2\\lineart.png",
+            "reason": "cancelled"
+          }
+        ]
+      },
+      "session": "agent:s1-ee1730"
+    }
+  },
+  {
+    "check": "cancelled suffix uses SI-083 reasons and indices",
+    "ok": true,
+    "detail": {
+      "jobId": "job-2",
+      "commandId": "draw.vectorize.run",
+      "state": "cancelled",
+      "progress": 0.015625,
+      "message": "vectorizing image 2 of 64",
+      "startedAt": "2026-11-02T13:07:41.686Z",
+      "result": {
+        "elementId": "el_01M6E5YTTF61A5X5RNXE5HEZEN",
+        "drawingIds": [
+          "dr_01K7JJN800BZZKXKC9CR195M3V"
+        ],
+        "completed": 1,
+        "cancelled": true,
+        "skipped": [
+          {
+            "index": 1,
+            "source": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-c24-r1-e2-x8nchss2\\lineart.png",
+            "reason": "cancelled"
+          },
+          {
+            "index": 2,
+            "source": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-c24-r1-e2-x8nchss2\\lineart.png",
+            "reason": "cancelled"
+          },
+          {
+            "index": 3,
+            "source": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-c24-r1-e2-x8nchss2\\lineart.png",
+            "reason": "cancelled"
+          },
+          {
+            "index": 4,
+            "source": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-c24-r1-e2-x8nchss2\\lineart.png",
+            "reason": "cancelled"
+          },
+          {
+            "index": 5,
+            "source": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-c24-r1-e2-x8nchss2\\lineart.png",
+            "reason": "cancelled"
+          },
+          {
+            "index": 6,
+            "source": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-c24-r1-e2-x8nchss2\\lineart.png",
+            "reason": "cancelled"
+          },
+          {
+            "index": 7,
+            "source": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-c24-r1-e2-x8nchss2\\lineart.png",
+            "reason": "cancelled"
+          },
+          {
+            "index": 8,
+            "source": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-c24-r1-e2-x8nchss2\\lineart.png",
+            "reason": "cancelled"
+          },
+          {
+            "index": 9,
+            "source": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-c24-r1-e2-x8nchss2\\lineart.png",
+            "reason": "cancelled"
+          },
+          {
+            "index": 10,
+            "source": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-c24-r1-e2-x8nchss2\\lineart.png",
+            "reason": "cancelled"
+          },
+          {
+            "index": 11,
+            "source": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-c24-r1-e2-x8nchss2\\lineart.png",
+            "reason": "cancelled"
+          },
+          {
+            "index": 12,
+            "source": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-c24-r1-e2-x8nchss2\\lineart.png",
+            "reason": "cancelled"
+          },
+          {
+            "index": 13,
+            "source": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-c24-r1-e2-x8nchss2\\lineart.png",
+            "reason": "cancelled"
+          },
+          {
+            "index": 14,
+            "source": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-c24-r1-e2-x8nchss2\\lineart.png",
+            "reason": "cancelled"
+          },
+          {
+            "index": 15,
+            "source": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-c24-r1-e2-x8nchss2\\lineart.png",
+            "reason": "cancelled"
+          },
+          {
+            "index": 16,
+            "source": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-c24-r1-e2-x8nchss2\\lineart.png",
+            "reason": "cancelled"
+          },
+          {
+            "index": 17,
+            "source": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-c24-r1-e2-x8nchss2\\lineart.png",
+            "reason": "cancelled"
+          },
+          {
+            "index": 18,
+            "source": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-c24-r1-e2-x8nchss2\\lineart.png",
+            "reason": "cancelled"
+          },
+          {
+            "index": 19,
+            "source": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-c24-r1-e2-x8nchss2\\lineart.png",
+            "reason": "cancelled"
+          },
+          {
+            "index": 20,
+            "source": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-c24-r1-e2-x8nchss2\\lineart.png",
+            "reason": "cancelled"
+          },
+          {
+            "index": 21,
+            "source": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-c24-r1-e2-x8nchss2\\lineart.png",
+            "reason": "cancelled"
+          },
+          {
+            "index": 22,
+            "source": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-c24-r1-e2-x8nchss2\\lineart.png",
+            "reason": "cancelled"
+          },
+          {
+            "index": 23,
+            "source": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-c24-r1-e2-x8nchss2\\lineart.png",
+            "reason": "cancelled"
+          },
+          {
+            "index": 24,
+            "source": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-c24-r1-e2-x8nchss2\\lineart.png",
+            "reason": "cancelled"
+          },
+          {
+            "index": 25,
+            "source": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-c24-r1-e2-x8nchss2\\lineart.png",
+            "reason": "cancelled"
+          },
+          {
+            "index": 26,
+            "source": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-c24-r1-e2-x8nchss2\\lineart.png",
+            "reason": "cancelled"
+          },
+          {
+            "index": 27,
+            "source": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-c24-r1-e2-x8nchss2\\lineart.png",
+            "reason": "cancelled"
+          },
+          {
+            "index": 28,
+            "source": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-c24-r1-e2-x8nchss2\\lineart.png",
+            "reason": "cancelled"
+          },
+          {
+            "index": 29,
+            "source": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-c24-r1-e2-x8nchss2\\lineart.png",
+            "reason": "cancelled"
+          },
+          {
+            "index": 30,
+            "source": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-c24-r1-e2-x8nchss2\\lineart.png",
+            "reason": "cancelled"
+          },
+          {
+            "index": 31,
+            "source": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-c24-r1-e2-x8nchss2\\lineart.png",
+            "reason": "cancelled"
+          },
+          {
+            "index": 32,
+            "source": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-c24-r1-e2-x8nchss2\\lineart.png",
+            "reason": "cancelled"
+          },
+          {
+            "index": 33,
+            "source": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-c24-r1-e2-x8nchss2\\lineart.png",
+            "reason": "cancelled"
+          },
+          {
+            "index": 34,
+            "source": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-c24-r1-e2-x8nchss2\\lineart.png",
+            "reason": "cancelled"
+          },
+          {
+            "index": 35,
+            "source": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-c24-r1-e2-x8nchss2\\lineart.png",
+            "reason": "cancelled"
+          },
+          {
+            "index": 36,
+            "source": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-c24-r1-e2-x8nchss2\\lineart.png",
+            "reason": "cancelled"
+          },
+          {
+            "index": 37,
+            "source": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-c24-r1-e2-x8nchss2\\lineart.png",
+            "reason": "cancelled"
+          },
+          {
+            "index": 38,
+            "source": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-c24-r1-e2-x8nchss2\\lineart.png",
+            "reason": "cancelled"
+          },
+          {
+            "index": 39,
+            "source": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-c24-r1-e2-x8nchss2\\lineart.png",
+            "reason": "cancelled"
+          },
+          {
+            "index": 40,
+            "source": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-c24-r1-e2-x8nchss2\\lineart.png",
+            "reason": "cancelled"
+          },
+          {
+            "index": 41,
+            "source": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-c24-r1-e2-x8nchss2\\lineart.png",
+            "reason": "cancelled"
+          },
+          {
+            "index": 42,
+            "source": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-c24-r1-e2-x8nchss2\\lineart.png",
+            "reason": "cancelled"
+          },
+          {
+            "index": 43,
+            "source": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-c24-r1-e2-x8nchss2\\lineart.png",
+            "reason": "cancelled"
+          },
+          {
+            "index": 44,
+            "source": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-c24-r1-e2-x8nchss2\\lineart.png",
+            "reason": "cancelled"
+          },
+          {
+            "index": 45,
+            "source": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-c24-r1-e2-x8nchss2\\lineart.png",
+            "reason": "cancelled"
+          },
+          {
+            "index": 46,
+            "source": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-c24-r1-e2-x8nchss2\\lineart.png",
+            "reason": "cancelled"
+          },
+          {
+            "index": 47,
+            "source": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-c24-r1-e2-x8nchss2\\lineart.png",
+            "reason": "cancelled"
+          },
+          {
+            "index": 48,
+            "source": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-c24-r1-e2-x8nchss2\\lineart.png",
+            "reason": "cancelled"
+          },
+          {
+            "index": 49,
+            "source": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-c24-r1-e2-x8nchss2\\lineart.png",
+            "reason": "cancelled"
+          },
+          {
+            "index": 50,
+            "source": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-c24-r1-e2-x8nchss2\\lineart.png",
+            "reason": "cancelled"
+          },
+          {
+            "index": 51,
+            "source": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-c24-r1-e2-x8nchss2\\lineart.png",
+            "reason": "cancelled"
+          },
+          {
+            "index": 52,
+            "source": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-c24-r1-e2-x8nchss2\\lineart.png",
+            "reason": "cancelled"
+          },
+          {
+            "index": 53,
+            "source": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-c24-r1-e2-x8nchss2\\lineart.png",
+            "reason": "cancelled"
+          },
+          {
+            "index": 54,
+            "source": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-c24-r1-e2-x8nchss2\\lineart.png",
+            "reason": "cancelled"
+          },
+          {
+            "index": 55,
+            "source": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-c24-r1-e2-x8nchss2\\lineart.png",
+            "reason": "cancelled"
+          },
+          {
+            "index": 56,
+            "source": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-c24-r1-e2-x8nchss2\\lineart.png",
+            "reason": "cancelled"
+          },
+          {
+            "index": 57,
+            "source": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-c24-r1-e2-x8nchss2\\lineart.png",
+            "reason": "cancelled"
+          },
+          {
+            "index": 58,
+            "source": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-c24-r1-e2-x8nchss2\\lineart.png",
+            "reason": "cancelled"
+          },
+          {
+            "index": 59,
+            "source": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-c24-r1-e2-x8nchss2\\lineart.png",
+            "reason": "cancelled"
+          },
+          {
+            "index": 60,
+            "source": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-c24-r1-e2-x8nchss2\\lineart.png",
+            "reason": "cancelled"
+          },
+          {
+            "index": 61,
+            "source": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-c24-r1-e2-x8nchss2\\lineart.png",
+            "reason": "cancelled"
+          },
+          {
+            "index": 62,
+            "source": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-c24-r1-e2-x8nchss2\\lineart.png",
+            "reason": "cancelled"
+          },
+          {
+            "index": 63,
+            "source": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-c24-r1-e2-x8nchss2\\lineart.png",
+            "reason": "cancelled"
+          }
+        ]
+      },
+      "session": "agent:s1-ee1730"
+    }
+  },
+  {
+    "check": "extra edit saved",
+    "ok": true,
+    "detail": {
+      "jobId": "job-3",
+      "commandId": "project.saveAs",
+      "state": "succeeded",
+      "progress": 1.0,
+      "message": "Replace",
+      "startedAt": "2026-11-02T13:07:41.791Z",
+      "result": {
+        "path": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-c24-r1-e2-x8nchss2\\edited-base.animpkg",
+        "projectSaved": true,
+        "globalLibrarySaved": false
+      },
+      "session": "agent:s1-ee1730"
+    }
+  },
+  {
+    "check": "replay after extra edit fails with revision conflict",
+    "ok": true,
+    "detail": {
+      "exit": 5,
+      "log": "{\"record\":\"start\",\"time\":\"2026-11-02T13:07:42.036Z\",\"label\":\"Review guarded replay\",\"steps\":1,\"atomic\":true,\"dryRun\":false,\"sessionId\":\"s1-c81f0e\",\"policy\":\"assist\"}\n{\"record\":\"end\",\"status\":\"error\",\"ok\":false,\"error\":{\"code\":\"rev.conflict\",\"message\":\"`dr_01K7JJN803ZK7E8281H8B1RRFV` changed: rev 6, expected 2\",\"details\":{\"ref\":\"dr_01K7JJN803ZK7E8281H8B1RRFV\",\"id\":\"dr_01K7JJN803ZK7E8281H8B1RRFV\",\"expectedRev\":2,\"currentRev\":6,\"documentRev\":6,\"current\":{\"id\":\"dr_01K7JJN803ZK7E8281H8B1RRFV\",\"type\":\"drawing\",\"rev\":6,\"name\":\"1\",\"locked\":false,\"pivot\":{\"x\":0.0,\"y\":0.0},\"mouthShape\":null,\"nodes\":[{\"id\":\"nd_01K7JJN804A12MYPGRKCX0KCQJ\",\"type\":\"drawingNode\",\"rev\":2,\"name\":\"Vectorized\",\"kind\":\"layer\",\"hint\":\"brush\",\"strokes\":[{\"id\":\"st_01K7JJN805HY4EGD79VJJ6BGVP\",\"type\":\"stroke\",\"rev\":2,\"kind\":\"brush\",\"closed\":true,\"points\":[[-499.21875,351.5625,0.0,0.0,-5.971904790371866,-5.971904790371866],[-501.5625,316.40625,0.0,8.537683447538882,0.0,-34.37499999999994],[-501.5625,213.28125,0.0,34.37499999999994,0.0,-135.9375],[-501.5625,-194.53125,0.0,135.93750000000003,0.0,-39.06250000000003],[-501.5625,-311.71875,0.0,39.06250000000006,0.0,-5.577524950604584],[-499.21875,-351.5625,-3.505731089755784,1.1685770299185947,8.313016554236526,-2.771005518078823],[-419.53125,-351.5625,-13.29400285001475,0.0,64.0625,0.0],[-227.34375,-351.5625,-64.0625,0.0,53.125,0.0],[-67.96875,-351.5625,-53.125,0.0,9.948931810468423,0.0],[-9.375,-349.21875,-5.102564423124459,-5.102564423124477,0.0,0.0],[14.0625,-349.21875,0.0,0.0,5.102564423124491,-5.102564423124477],[72.65625,-351.5625,-9.948931810468444,0.0,59.37499999999997,0.0],[250.78125,-351.5625,-59.375,0.0,57.8125,0.0],[424.21875,-351.5625,-57.81249999999994,0.0,12.508955705000858,0.0],[499.21875,-351.5625,-7.821007365508535,-2.607002455169493,3.6334083110079973,1.2111361036693324],[501.5625,-316.40625,0.0,-5.131861313676723,0.0,42.1875],[501.5625,-189.84375,0.0,-42.1875,0.0,124.99999999999996],[501.5625,185.15625,0.0,-124.99999999999996,0.0,37.50000000000006],[501.5625,297.65625,0.0,-37.50000000000006,0.0,11.06639542719256],[501.5625,349.21875,2.9126941232395325,-8.738082369718654,-1.5993293253493448,4.7979879760479776],[480.46875,351.5625,4.062470585828521,0.0,-26.562499999999773,0.0],[400.78125,351.5625,26.562499999999886,0.0,-98.43749999999983,0.0],[105.46875,351.5625,98.4374999999998,0.0,-23.43750000000003,0.0],[35.15625,351.5625,23.437500000000014,0.0,-4.062470585828496,0.0],[14.0625,349.21875,1.5993293253493146,4.797987976047921,-2.7088945732817926,-8.126683719845403],[14.0625,288.28125,0.0,11.474078642317522,0.0,-48.4375],[14.0625,142.96875,0.0,48.43750000000003,0.0,-164.06249999999957],[14.0625,-349.21875,0.0,164.06249999999957,0.0,0.0],[-9.375,-349.21875,0.0,0.0,0.0,178.12499999999994],[-9.375,185.15625,0.0,-178.12499999999991,0.0,42.18749999999997],[-9.375,311.71875,0.0,-42.1875,0.0,5.577524950604527],[-11.71875,351.5625,3.505731089755802,-1.1685770299185947,-8.711417301035027,2.903805767011704],[-44.53125,351.5625,9.263958767683121,0.0,-37.50000000000006,0.0],[-157.03125,351.5625,37.50000000000004,0.0,-114.06250000000011,0.0],[-499.21875,351.5625,114.06250000000011,0.0,0.0,0.0],[-499.21875,375.0,0.0,0.0,237.50000000000045,0.0],[213.28125,375.0,-237.50000000000048,0.0,71.87500000000006,0.0],[428.90625,375.0,-71.87500000000006,0.0,23.43749999999983,0.0],[499.21875,375.0,-23.437499999999943,0.0,6.5924593005725,0.0],[522.65625,375.0,-6.200303361471015,2.066767787157005,3.6334083110078836,-1.2111361036692756],[525.0,339.84375,0.0,5.131861313676609,0.0,-40.62500000000006],[525.0,217.96875,0.0,40.625,0.0,-149.99999999999974],[525.0,-232.03125,0.0,149.99999999999977,0.0,-35.9375],[525.0,-339.84375,0.0,35.9375,0.0,-5.131861313676325],[522.65625,-375.0,3.6334083110078836,1.2111361036692756,-9.385466547691294,-3.1284888492304503],[452.34375,-375.0,13.248031300613945,0.0,-56.25000000000006,0.0],[283.59375,-375.0,56.25000000000006,0.0,-189.0624999999997,0.0],[-283.59375,-375.0,189.06249999999972,0.0,-60.9375,0.0],[-466.40625,-375.0,60.93749999999994,0.0,-8.058605677780292,0.0],[-525.0,-372.65625,1.224601520813053,-3.673804562439102,-2.9126941232394756,8.738082369718597],[-525.0,-321.09375,0.0,-11.066395427192617,0.0,40.62500000000006],[-525.0,-199.21875,0.0,-40.62500000000003,0.0,134.3749999999999],[-525.0,203.90625,0.0,-134.3749999999999,0.0,39.06250000000003],[-525.0,321.09375,0.0,-39.06250000000006,0.0,11.066395427192333],[-525.0,372.65625,-2.9126941232394756,-8.73808236971837,1.2787291517929589,3.8361874553789903],[-499.21875,375.0,-4.296765599417199,0.0,0.0,0.0]],\"colourId\":\"col_01K7JJN800HQ6FBWAXKYJHTMA9\",\"fillMatrix\":null,\"lineStyle\":null,\"spine\":null,\"sides\":{\"left\":null,\"right\":null}},{\"id\":\"st_01K7JJN806WD9VQ0BJQYB5M14B\",\"type\":\"stroke\",\"rev\":2,\"kind\":\"brush\",\"closed\":true,\"points\":[[98.4375,-189.84375,0.0,0.0,0.0,-2.5409789877294315],[100.78125,-196.875,-3.4486043456039823,1.1495347818679988,8.126683719845687,-2.7088945732818956],[161.71875,-196.875,-11.474078642317806,0.0,51.56249999999997,0.0],[316.40625,-196.875,-51.56249999999994,0.0,13.248031300613775,0.0],[386.71875,-196.875,-9.38546654769118,-3.1284888492303935,10.21626856402338,3.4054228546744696],[379.6875,-171.09375,0.9980067273870645,-2.9940201821612504,-0.4941058844013355,1.4823176532039213],[379.6875,-166.40625,0.4941058844013355,-1.4823176532039213,-1.6344118500775835,4.903235550232836],[370.3125,-152.34375,1.6344118500775835,-4.9032355502327505,-0.9882117688026142,2.9646353064078426],[370.3125,-142.96875,0.9882117688026142,-2.9646353064078426,-1.6344118500776403,4.903235550232864],[360.9375,-128.90625,1.6344118500775835,-4.9032355502327505,-1.6919417382415531,5.075825214724659],[356.25,-114.84375,1.6919417382415531,-5.075825214724716,-0.6987712429686894,2.096313728906054],[351.5625,-110.15625,0.6987712429686894,-2.096313728906054,-0.9882117688026142,2.9646353064078568],[351.5625,-100.78125,0.9882117688026142,-2.9646353064078568,-0.6987712429686894,2.096313728906054],[346.875,-96.09375,0.6987712429686894,-2.096313728906054,-0.4941058844013355,1.4823176532039213],[346.875,-91.40625,0.4941058844013355,-1.4823176532039213,-0.6987712429686894,2.096313728906054],[342.1875,-86.71875,0.6987712429686894,-2.096313728906054,-1.6919417382415531,5.075825214724716],[337.5,-72.65625,1.6919417382415531,-5.0758252147247305,-0.6987712429686894,2.096313728906054],[332.8125,-67.96875,0.6987712429686894,-2.096313728906054,-0.9882117688026142,2.9646353064078568],[332.8125,-58.59375,0.9882117688026142,-2.9646353064078568,-0.6987712429686894,2.096313728906054],[328.125,-53.90625,0.6987712429686894,-2.096313728906054,-2.724912994831868,8.174738984495683],[318.75,-30.46875,2.724912994831925,-8.174738984495704,-0.6987712429686894,2.096313728906054],[314.0625,-25.78125,0.6987712429686894,-2.096313728906054,-0.9882117688026142,2.9646353064078568],[314.0625,-16.40625,0.9882117688026142,-2.9646353064078568,-0.6987712429686894,2.0963137289060523],[309.375,-11.71875,0.6987712429686894,-2.0963137289060523,-2.724912994831868,8.174738984495683],[300.0,11.71875,2.724912994831925,-8.174738984495693,-0.6987712429686894,2.0963137289060523],[295.3125,16.40625,0.6987712429686894,-2.0963137289060523,-0.9882117688026142,2.9646353064078568],[295.3125,25.78125,0.9882117688026142,-2.9646353064078568,-0.6987712429686894,2.096313728906054],[290.625,30.46875,0.6987712429686894,-2.096313728906054,-2.724912994831925,8.174738984495704],[281.25,53.90625,2.724912994831925,-8.174738984495725,-0.6987712429686894,2.096313728906054],[276.5625,58.59375,0.6987712429686894,-2.096313728906054,-0.9882117688026142,2.9646353064078568],[276.5625,67.96875,0.9882117688026142,-2.9646353064078568,-0.6987712429686894,2.096313728906054],[271.875,72.65625,0.6987712429686894,-2.096313728906054,-2.724912994831925,8.174738984495704],[262.5,96.09375,2.724912994831925,-8.174738984495704,-0.6987712429686894,2.096313728906054],[257.8125,100.78125,0.6987712429686894,-2.096313728906054,-0.9882117688026142,2.9646353064078568],[257.8125,110.15625,0.9882117688026142,-2.9646353064078568,-0.6987712429686894,2.096313728906054],[253.125,114.84375,0.6987712429686894,-2.096313728906054,-1.6919417382415816,5.075825214724773],[248.4375,128.90625,1.6919417382415816,-5.075825214724773,-0.6987712429686894,2.09631372890604],[243.75,133.59375,0.6987712429686894,-2.09631372890604,-5.086101486102905,15.258304458308686],[222.65625,178.125,12.222385976755163,-12.222385976755163,-4.1909042894254185,-4.1909042894254185],[220.3125,166.40625,1.6724020357409302,5.017206107222819,-0.6987712429686894,-2.09631372890604],[215.625,161.71875,0.6987712429686894,2.09631372890604,-0.9882117688026142,-2.9646353064078426],[215.625,152.34375,0.9882117688026142,2.9646353064078426,-0.6987712429686894,-2.09631372890604],[210.9375,147.65625,0.6987712429686894,2.09631372890604,-0.9882117688026142,-2.9646353064078426],[210.9375,138.28125,0.9882117688026142,2.9646353064078426,-0.6987712429686894,-2.09631372890604],[206.25,133.59375,0.6987712429686894,2.09631372890604,-0.9882117688026142,-2.9646353064078426],[206.25,124.21875,0.9882117688026142,2.9646353064078568,-0.6987712429686894,-2.096313728906054],[201.5625,119.53125,0.6987712429686894,2.096313728906054,-0.9882117688026142,-2.9646353064078568],[201.5625,110.15625,0.9882117688026142,2.9646353064078568,-0.6987712429686894,-2.096313728906054],[196.875,105.46875,0.6987712429686894,2.096313728906054,-0.9882117688026142,-2.9646353064078568],[196.875,96.09375,0.9882117688026142,2.9646353064078568,-0.6987712429686894,-2.096313728906054],[192.1875,91.40625,0.6987712429686894,2.096313728906054,-0.9882117688026142,-2.9646353064078568],[192.1875,82.03125,0.9882117688026142,2.9646353064078568,-0.6987712429686894,-2.096313728906054],[187.5,77.34375,0.6987712429686894,2.096313728906054,-0.9882117688026142,-2.9646353064078568],[187.5,67.96875,0.9882117688026142,2.9646353064078568,-0.6987712429686894,-2.096313728906054],[182.8125,63.28125,0.6987712429686894,2.096313728906054,-0.9882117688026142,-2.9646353064078568],[182.8125,53.90625,0.9882117688026142,2.9646353064078568,-0.6987712429686894,-2.096313728906054],[178.125,49.21875,0.6987712429686894,2.096313728906054,-0.9882117688026142,-2.9646353064078568],[178.125,39.84375,0.9882117688026142,2.9646353064078568,-0.6987712429686894,-2.096313728906054],[173.4375,35.15625,0.6987712429686894,2.096313728906054,-0.9882117688026142,-2.9646353064078568],[173.4375,25.78125,0.9882117688026142,2.9646353064078568,-0.6987712429686894,-2.096313728906054],[168.75,21.09375,0.6987712429686894,2.096313728906054,-0.9882117688026142,-2.9646353064078568],[168.75,11.71875,0.9882117688026142,2.964635306407855,-0.6987712429686894,-2.0963137289060523],[164.0625,7.03125,0.6987712429686894,2.0963137289060523,-0.9882117688026142,-2.964635306407855],[164.0625,-2.34375,0.9882117688026142,2.9646353064078554,-0.6987712429686894,-2.0963137289060523],[159.375,-7.03125,0.6987712429686894,2.0963137289060523,-0.9882117688026142,-2.964635306407855],[159.375,-16.40625,0.9882117688026142,2.964635306407855,-0.6987712429686894,-2.096313728906054],[154.6875,-21.09375,0.6987712429686894,2.096313728906054,-0.9882117688026142,-2.9646353064078568],[154.6875,-30.46875,0.9882117688026142,2.9646353064078568,-0.6987712429686894,-2.096313728906054],[150.0,-35.15625,0.6987712429686894,2.096313728906054,-0.9882117688026142,-2.9646353064078568],[150.0,-44.53125,0.9882117688026142,2.9646353064078568,-0.6987712429686894,-2.096313728906054],[145.3125,-49.21875,0.6987712429686894,2.096313728906054,-0.9882117688026142,-2.9646353064078568],[145.3125,-58.59375,0.9882117688026142,2.9646353064078568,-0.6987712429686894,-2.096313728906054],[140.625,-63.28125,0.6987712429686894,2.096313728906054,-0.9882117688026142,-2.9646353064078568],[140.625,-72.65625,0.9882117688026142,2.9646353064078568,-0.6987712429686894,-2.096313728906054],[135.9375,-77.34375,0.6987712429686894,2.096313728906054,-0.9882117688026142,-2.9646353064078568],[135.9375,-86.71875,0.9882117688026142,2.9646353064078568,-0.6987712429686894,-2.096313728906054],[131.25,-91.40625,0.6987712429686894,2.096313728906054,-0.9882117688026142,-2.9646353064078568],[131.25,-100.78125,0.9882117688026142,2.9646353064078568,-0.6987712429686894,-2.096313728906054],[126.5625,-105.46875,0.6987712429686894,2.096313728906054,-0.9882117688026142,-2.9646353064078568],[126.5625,-114.84375,0.9882117688026142,2.9646353064078568,-0.6987712429686894,-2.096313728906054],[121.875,-119.53125,0.6987712429686894,2.096313728906054,-0.9882117688026142,-2.9646353064078568],[121.875,-128.90625,0.9882117688026142,2.9646353064078568,-0.6987712429686894,-2.09631372890604],[117.1875,-133.59375,0.6987712429686894,2.09631372890604,-0.9882117688026142,-2.9646353064078426],[117.1875,-142.96875,0.9882117688026142,2.9646353064078426,-0.6987712429686894,-2.09631372890604],[112.5,-147.65625,0.6987712429686894,2.09631372890604,-0.9882117688026142,-2.9646353064078426],[112.5,-157.03125,0.9882117688026142,2.9646353064078426,-0.6987712429686894,-2.09631372890604],[107.8125,-161.71875,0.6987712429686894,2.09631372890604,-0.9882117688026142,-2.9646353064078426],[107.8125,-171.09375,0.9882117688026142,2.9646353064078426,-0.6987712429686894,-2.09631372890604],[103.125,-175.78125,0.6987712429686894,2.09631372890604,-2.283832374875601,-6.851497124626832],[98.4375,-189.84375,5.659600941191087,5.659600941191087,0.0,0.0],[79.6875,-185.15625,0.0,0.0,0.0,12.112080824068045],[84.375,-171.09375,-2.3292130068444834,-6.987639020533464,0.9882117688026142,2.9646353064078426],[84.375,-161.71875,-0.9882117688026142,-2.9646353064078426,0.6987712429686894,2.09631372890604],[89.0625,-157.03125,-0.6987712429686894,-2.09631372890604,0.9882117688026142,2.9646353064078426],[89.0625,-147.65625,-0.9882117688026142,-2.9646353064078426,0.6987712429686894,2.09631372890604],[93.75,-142.96875,-0.6987712429686894,-2.09631372890604,0.9882117688026142,2.9646353064078426],[93.75,-133.59375,-0.9882117688026142,-2.9646353064078426,0.6987712429686894,2.09631372890604],[98.4375,-128.90625,-0.6987712429686894,-2.09631372890604,0.9882117688026142,2.9646353064078568],[98.4375,-119.53125,-0.9882117688026142,-2.9646353064078568,0.6987712429686894,2.096313728906054],[103.125,-114.84375,-0.6987712429686894,-2.096313728906054,0.9882117688026142,2.9646353064078568],[103.125,-105.46875,-0.9882117688026142,-2.9646353064078568,0.6987712429686894,2.096313728906054],[107.8125,-100.78125,-0.6987712429686894,-2.096313728906054,0.9882117688026142,2.9646353064078568],[107.8125,-91.40625,-0.9882117688026142,-2.9646353064078568,0.6987712429686894,2.096313728906054],[112.5,-86.71875,-0.6987712429686894,-2.096313728906054,0.9882117688026142,2.9646353064078568],[112.5,-77.34375,-0.9882117688026142,-2.9646353064078568,0.6987712429686894,2.096313728906054],[117.1875,-72.65625,-0.6987712429686894,-2.096313728906054,0.9882117688026142,2.9646353064078568],[117.1875,-63.28125,-0.9882117688026142,-2.9646353064078568,0.6987712429686894,2.096313728906054],[121.875,-58.59375,-0.6987712429686894,-2.096313728906054,0.9882117688026142,2.9646353064078568],[121.875,-49.21875,-0.9882117688026142,-2.9646353064078568,0.6987712429686894,2.096313728906054],[126.5625,-44.53125,-0.6987712429686894,-2.096313728906054,0.9882117688026142,2.9646353064078568],[126.5625,-35.15625,-0.9882117688026142,-2.9646353064078568,0.6987712429686894,2.096313728906054],[131.25,-30.46875,-0.6987712429686894,-2.096313728906054,0.9882117688026142,2.9646353064078568],[131.25,-21.09375,-0.9882117688026142,-2.9646353064078568,0.6987712429686894,2.096313728906054],[135.9375,-16.40625,-0.6987712429686894,-2.096313728906054,0.9882117688026142,2.964635306407855],[135.9375,-7.03125,-0.9882117688026142,-2.964635306407855,0.6987712429686894,2.0963137289060523],[140.625,-2.34375,-0.6987712429686894,-2.0963137289060523,0.9882117688026142,2.9646353064078554],[140.625,7.03125,-0.9882117688026142,-2.964635306407855,0.6987712429686894,2.0963137289060523],[145.3125,11.71875,-0.6987712429686894,-2.0963137289060523,0.9882117688026142,2.964635306407855],[145.3125,21.09375,-0.9882117688026142,-2.9646353064078568,0.6987712429686894,2.096313728906054],[150.0,25.78125,-0.6987712429686894,-2.096313728906054,0.9882117688026142,2.9646353064078568],[150.0,35.15625,-0.9882117688026142,-2.9646353064078568,0.6987712429686894,2.096313728906054],[154.6875,39.84375,-0.6987712429686894,-2.096313728906054,0.9882117688026142,2.9646353064078568],[154.6875,49.21875,-0.9882117688026142,-2.9646353064078568,0.6987712429686894,2.096313728906054],[159.375,53.90625,-0.6987712429686894,-2.096313728906054,0.9882117688026142,2.9646353064078568],[159.375,63.28125,-0.9882117688026142,-2.9646353064078568,0.6987712429686894,2.096313728906054],[164.0625,67.96875,-0.6987712429686894,-2.096313728906054,0.9882117688026142,2.9646353064078568],[164.0625,77.34375,-0.9882117688026142,-2.9646353064078568,0.6987712429686894,2.096313728906054],[168.75,82.03125,-0.6987712429686894,-2.096313728906054,0.9882117688026142,2.9646353064078568],[168.75,91.40625,-0.9882117688026142,-2.9646353064078568,0.6987712429686894,2.096313728906054],[173.4375,96.09375,-0.6987712429686894,-2.096313728906054,0.9882117688026142,2.9646353064078568],[173.4375,105.46875,-0.9882117688026142,-2.9646353064078568,0.6987712429686894,2.096313728906054],[178.125,110.15625,-0.6987712429686894,-2.096313728906054,0.9882117688026142,2.9646353064078568],[178.125,119.53125,-0.9882117688026142,-2.9646353064078568,0.6987712429686894,2.096313728906054],[182.8125,124.21875,-0.6987712429686894,-2.096313728906054,0.9882117688026142,2.9646353064078568],[182.8125,133.59375,-0.9882117688026142,-2.9646353064078426,0.6987712429686894,2.09631372890604],[187.5,138.28125,-0.6987712429686894,-2.09631372890604,0.9882117688026142,2.9646353064078426],[187.5,147.65625,-0.9882117688026142,-2.9646353064078426,0.6987712429686894,2.09631372890604],[192.1875,152.34375,-0.6987712429686894,-2.09631372890604,0.9882117688026142,2.9646353064078426],[192.1875,161.71875,-0.9882117688026142,-2.9646353064078426,0.6987712429686894,2.09631372890604],[196.875,166.40625,-0.6987712429686894,-2.09631372890604,0.9882117688026142,2.9646353064078426],[196.875,175.78125,-0.9882117688026142,-2.9646353064078426,0.6987712429686894,2.09631372890604],[201.5625,180.46875,-0.6987712429686894,-2.09631372890604,0.9882117688026142,2.9646353064078426],[201.5625,189.84375,-0.9882117688026142,-2.9646353064078426,0.6987712429686894,2.09631372890604],[206.25,194.53125,-0.6987712429686894,-2.09631372890604,0.9882117688026142,2.9646353064078426],[206.25,203.90625,-0.9882117688026142,-2.9646353064078426,0.6987712429686894,2.09631372890604],[210.9375,208.59375,-0.6987712429686894,-2.09631372890604,0.9882117688026142,2.9646353064078426],[210.9375,217.96875,-0.9882117688026142,-2.9646353064078426,1.9673704121017863,5.9021112363053305],[227.34375,225.0,-5.277209036142807,1.759069678714269,6.145596297701303,-2.0485320992337677],[239.0625,203.90625,-1.6065286327793729,4.81958589833809,0.6987712429686894,-2.09631372890604],[243.75,199.21875,-0.6987712429686894,2.09631372890604,0.9882117688026142,-2.9646353064078426],[243.75,189.84375,-0.9882117688026142,2.9646353064078426,0.6987712429686894,-2.09631372890604],[248.4375,185.15625,-0.6987712429686894,2.09631372890604,2.724912994831925,-8.174738984495718],[257.8125,161.71875,-2.7249129948318966,8.174738984495718,0.6987712429686894,-2.09631372890604],[262.5,157.03125,-0.6987712429686894,2.09631372890604,0.9882117688026142,-2.9646353064078426],[262.5,147.65625,-0.9882117688026142,2.9646353064078426,0.6987712429686894,-2.09631372890604],[267.1875,142.96875,-0.6987712429686894,2.09631372890604,2.724912994831925,-8.174738984495747],[276.5625,119.53125,-2.724912994831925,8.174738984495747,0.6987712429686894,-2.096313728906054],[281.25,114.84375,-0.6987712429686894,2.096313728906054,0.9882117688026142,-2.9646353064078568],[281.25,105.46875,-0.9882117688026142,2.9646353064078568,0.6987712429686894,-2.096313728906054],[285.9375,100.78125,-0.6987712429686894,2.096313728906054,2.724912994831925,-8.174738984495704],[295.3125,77.34375,-2.724912994831925,8.174738984495704,0.6987712429686894,-2.096313728906054],[300.0,72.65625,-0.6987712429686894,2.096313728906054,0.9882117688026142,-2.9646353064078568],[300.0,63.28125,-0.9882117688026142,2.9646353064078568,0.6987712429686894,-2.096313728906054],[304.6875,58.59375,-0.6987712429686894,2.096313728906054,2.724912994831925,-8.174738984495747],[314.0625,35.15625,-2.724912994831925,8.174738984495754,0.6987712429686894,-2.096313728906054],[318.75,30.46875,-0.6987712429686894,2.096313728906054,0.9882117688026142,-2.9646353064078568],[318.75,21.09375,-0.9882117688026142,2.9646353064078568,1.6344118500775835,-4.903235550232694],[328.125,7.03125,-1.6344118500775835,4.903235550232722,1.69194173824161,-5.075825214724829],[332.8125,-7.03125,-1.69194173824161,5.075825214724813,0.6987712429686894,-2.0963137289060523],[337.5,-11.71875,-0.6987712429686894,2.0963137289060523,0.9882117688026142,-2.964635306407855],[337.5,-21.09375,-0.9882117688026142,2.9646353064078568,0.6987712429686894,-2.096313728906054],[342.1875,-25.78125,-0.6987712429686894,2.096313728906054,0.4941058844013355,-1.4823176532039284],[342.1875,-30.46875,-0.4941058844013355,1.4823176532039284,0.6987712429686894,-2.096313728906054],[346.875,-35.15625,-0.6987712429686894,2.096313728906054,1.69194173824161,-5.075825214724837],[351.5625,-49.21875,-1.69194173824161,5.075825214724816,0.6987712429686894,-2.096313728906054],[356.25,-53.90625,-0.6987712429686894,2.096313728906054,0.9882117688026142,-2.9646353064078568],[356.25,-63.28125,-0.9882117688026142,2.9646353064078568,0.6987712429686894,-2.096313728906054],[360.9375,-67.96875,-0.6987712429686894,2.096313728906054,2.724912994831925,-8.174738984495761],[370.3125,-91.40625,-2.724912994831925,8.174738984495747,0.6987712429686894,-2.096313728906054],[375.0,-96.09375,-0.6987712429686894,2.096313728906054,0.9882117688026142,-2.9646353064078568],[375.0,-105.46875,-0.9882117688026142,2.9646353064078568,0.6987712429686894,-2.096313728906054],[379.6875,-110.15625,-0.6987712429686894,2.096313728906054,2.724912994831925,-8.174738984495818],[389.0625,-133.59375,-2.724912994831925,8.174738984495775,0.6987712429686894,-2.09631372890604],[393.75,-138.28125,-0.6987712429686894,2.09631372890604,0.9882117688026142,-2.9646353064078426],[393.75,-147.65625,-0.9882117688026142,2.9646353064078426,0.6987712429686894,-2.09631372890604],[398.4375,-152.34375,-0.6987712429686894,2.09631372890604,1.69194173824161,-5.075825214724887],[403.125,-166.40625,-1.69194173824161,5.07582521472483,0.6987712429686894,-2.09631372890604],[407.8125,-171.09375,-0.6987712429686894,2.09631372890604,0.4941058844013355,-1.4823176532039213],[407.8125,-175.78125,-0.4941058844013355,1.4823176532039213,0.6987712429686894,-2.09631372890604],[412.5,-180.46875,-0.6987712429686894,2.09631372890604,0.9882117688026142,-2.9646353064078426],[412.5,-189.84375,-0.9882117688026142,2.9646353064078426,0.6987712429686894,-2.09631372890604],[417.1875,-194.53125,-0.6987712429686894,2.09631372890604,0.4941058844013355,-1.4823176532039213],[417.1875,-199.21875,-0.4941058844013355,1.4823176532039213,0.6987712429686894,-2.09631372890604],[421.875,-203.90625,-0.6987712429686894,2.09631372890604,1.7590696787142406,-5.277209036142665],[414.84375,-220.3125,5.902111236305188,1.9673704121017295,-9.385466547691237,-3.128488849230422],[344.53125,-220.3125,13.248031300613945,0.0,-57.8125,0.0],[171.09375,-220.3125,57.81250000000003,0.0,-23.437500000000057,0.0],[100.78125,-220.3125,23.43750000000003,0.0,-6.592459300572813,0.0],[77.34375,-220.3125,6.200303361471171,-2.0667677871570618,-5.902111236305274,1.967370412101758],[70.3125,-203.90625,-1.759069678714269,-5.277209036142779,0.6987712429686894,2.09631372890604],[75.0,-199.21875,-0.6987712429686894,-2.09631372890604,2.2838323748755585,6.851497124626661],[79.6875,-185.15625,-5.65960094119103,-5.65960094119103,0.0,0.0]],\"colourId\":\"col_01K7JJN800HQ6FBWAXKYJHTMA9\",\"fillMatrix\":null,\"lineStyle\":null,\"spine\":null,\"sides\":{\"left\":null,\"right\":null}},{\"id\":\"st_01K7JJN807278B41A0RQ89YAHF\",\"type\":\"stroke\",\"rev\":2,\"kind\":\"brush\",\"closed\":true,\"points\":[[-236.71875,135.9375,0.0,0.0,-12.361424803281238,0.0],[-302.34375,135.9375,8.756431531774183,2.918810510591385,-2.0963137289060683,-0.6987712429686894],[-307.03125,131.25,2.0963137289060683,0.6987712429686894,-2.9646353064078426,-0.9882117688026142],[-316.40625,131.25,2.9646353064078426,0.9882117688026142,-2.0963137289060683,-0.6987712429686894],[-321.09375,126.5625,2.0963137289060683,0.6987712429686894,-2.9646353064078426,-0.9882117688026142],[-330.46875,126.5625,2.9646353064078426,0.9882117688026142,-6.309144833489597,-2.1030482778298705],[-353.90625,107.8125,6.309144833489597,2.1030482778298563,-1.4823176532039497,-0.4941058844013071],[-358.59375,107.8125,1.4823176532039497,0.4941058844013071,-0.7521101262854017,-0.250703375428472],[-379.6875,86.71875,0.25070337542842935,0.7521101262852739,-0.4941058844013355,-1.4823176532039213],[-379.6875,82.03125,0.4941058844013355,1.4823176532039213,-1.25,-3.75],[-389.0625,72.65625,1.25,3.75,-0.4941058844013355,-1.4823176532039213],[-389.0625,67.96875,0.4941058844013355,1.4823176532039213,-1.25,-3.75],[-398.4375,58.59375,1.25,3.75,-0.9882117688026142,-2.9646353064078568],[-398.4375,49.21875,0.9882117688026142,2.9646353064078568,-0.6987712429686894,-2.096313728906054],[-403.125,44.53125,0.6987712429686894,2.096313728906054,-0.9882117688026142,-2.9646353064078568],[-403.125,35.15625,0.9882117688026142,2.9646353064078568,-0.6987712429686894,-2.096313728906054],[-407.8125,30.46875,0.6987712429686894,2.096313728906054,-2.0667677871570618,-6.200303361471157],[-407.8125,7.03125,0.0,6.592459300572765,0.0,-10.378832705933075],[-407.8125,-35.15625,-3.0007311484507113,9.002193445352148,0.6987712429686894,-2.096313728906054],[-403.125,-39.84375,-0.6987712429686894,2.096313728906054,0.9882117688026142,-2.9646353064078568],[-403.125,-49.21875,-0.9882117688026142,2.9646353064078568,0.6987712429686894,-2.096313728906054],[-398.4375,-53.90625,-0.6987712429686894,2.096313728906054,0.9882117688026142,-2.9646353064078568],[-398.4375,-63.28125,-0.9882117688026142,2.9646353064078568,1.25,-3.75],[-389.0625,-72.65625,-1.25,3.75,0.4941058844013355,-1.4823176532039213],[-389.0625,-77.34375,-0.4941058844013355,1.4823176532039213,1.25,-3.75],[-379.6875,-86.71875,-1.25,3.75,0.4941058844013355,-1.4823176532039213],[-379.6875,-91.40625,-0.4941058844013355,1.4823176532039213,0.25070337542842935,-0.752110126285217],[-358.59375,-112.5,-0.7521101262853449,0.25070337542844356,1.4823176532039497,-0.4941058844013071],[-353.90625,-112.5,-1.4823176532039497,0.4941058844013071,3.75,-1.25],[-344.53125,-121.875,-3.75,1.25,1.4823176532039497,-0.4941058844013071],[-339.84375,-121.875,-1.4823176532039497,0.4941058844013071,3.75,-1.25],[-330.46875,-131.25,-3.75,1.25,2.9646353064078426,-0.9882117688026142],[-321.09375,-131.25,-2.9646353064078426,0.9882117688026142,2.0963137289060683,-0.6987712429686894],[-316.40625,-135.9375,-2.0963137289060683,0.6987712429686894,2.9646353064078426,-0.9882117688026142],[-307.03125,-135.9375,-2.9646353064078426,0.9882117688026142,2.0963137289060683,-0.6987712429686894],[-302.34375,-140.625,-2.0963137289060683,0.6987712429686894,3.210884599093731,-1.070294866364577],[-236.71875,-140.625,-3.210884599093731,-1.070294866364577,2.09631372890604,0.6987712429686894],[-232.03125,-135.9375,-2.09631372890604,-0.6987712429686894,2.9646353064078426,0.9882117688026142],[-222.65625,-135.9375,-2.9646353064078426,-0.9882117688026142,2.09631372890604,0.6987712429686894],[-217.96875,-131.25,-2.09631372890604,-0.6987712429686894,2.9646353064078426,0.9882117688026142],[-208.59375,-131.25,-2.9646353064078426,-0.9882117688026142,6.309144833489455,2.103048277829828],[-185.15625,-112.5,-6.3091448334894835,-2.103048277829828,1.4823176532039213,0.4941058844013071],[-180.46875,-112.5,-1.4823176532039213,-0.4941058844013071,0.7521101262851744,0.2507033754283867],[-159.375,-91.40625,-0.25070337542840093,-0.7521101262852312,0.4941058844013071,1.4823176532039213],[-159.375,-86.71875,-0.4941058844013071,-1.4823176532039213,2.1030482778298563,6.309144833489526],[-140.625,-63.28125,-2.103048277829828,-6.309144833489512,0.9882117688026142,2.9646353064078568],[-140.625,-53.90625,-0.9882117688026142,-2.9646353064078568,0.6987712429686894,2.096313728906054],[-135.9375,-49.21875,-0.6987712429686894,-2.096313728906054,0.9882117688026142,2.9646353064078568],[-135.9375,-39.84375,-0.9882117688026142,-2.9646353064078568,0.6987712429686894,2.096313728906054],[-131.25,-35.15625,-0.6987712429686894,-2.096313728906054,1.0702948663645486,3.2108845990936743],[-131.25,30.46875,1.0702948663645486,-3.2108845990936814,-0.6987712429686894,2.096313728906054],[-135.9375,35.15625,0.6987712429686894,-2.096313728906054,-0.9882117688026142,2.9646353064078568],[-135.9375,44.53125,0.9882117688026142,-2.9646353064078568,-0.6987712429686894,2.096313728906054],[-140.625,49.21875,0.6987712429686894,-2.096313728906054,-0.9882117688026142,2.9646353064078568],[-140.625,58.59375,0.9882117688026142,-2.9646353064078568,-1.25,3.75],[-150.0,67.96875,1.25,-3.75,-0.4941058844013071,1.4823176532039213],[-150.0,72.65625,0.4941058844013071,-1.4823176532039213,-1.25,3.75],[-159.375,82.03125,1.25,-3.75,-0.4941058844013071,1.4823176532039213],[-159.375,86.71875,0.4941058844013071,-1.4823176532039213,-0.25070337542842935,0.7521101262852596],[-180.46875,107.8125,0.7521101262852312,-0.25070337542841514,-1.4823176532039213,0.4941058844013071],[-185.15625,107.8125,1.4823176532039213,-0.4941058844013071,-3.75,1.25],[-194.53125,117.1875,3.75,-1.25,-1.4823176532039213,0.4941058844013071],[-199.21875,117.1875,1.4823176532039213,-0.4941058844013071,-3.75,1.25],[-208.59375,126.5625,3.75,-1.25,-2.9646353064078426,0.9882117688026142],[-217.96875,126.5625,2.9646353064078426,-0.9882117688026142,-2.09631372890604,0.6987712429686894],[-222.65625,131.25,2.09631372890604,-0.6987712429686894,-6.85149712462686,2.2838323748756295],[-236.71875,135.9375,5.659600941191087,-5.659600941191087,0.0,0.0],[-227.34375,154.6875,0.0,0.0,12.112080824068158,0.0],[-213.28125,150.0,-6.987639020533493,2.3292130068444976,2.9646353064078426,-0.9882117688026142],[-203.90625,150.0,-2.9646353064078426,0.9882117688026142,2.09631372890604,-0.6987712429686894],[-199.21875,145.3125,-2.09631372890604,0.6987712429686894,5.075825214724688,-1.6919417382415531],[-185.15625,140.625,-5.075825214724716,1.6919417382415816,5.624999999999915,-1.8749999999999716],[-171.09375,126.5625,-5.624999999999943,1.8749999999999716,1.4823176532039213,-0.4941058844013071],[-166.40625,126.5625,-1.4823176532039213,0.4941058844013071,0.9411708481694347,-0.31372361605647825],[-140.625,100.78125,-0.31372361605647825,0.9411708481693921,0.4941058844013071,-1.4823176532039213],[-140.625,96.09375,-0.4941058844013071,1.4823176532039213,1.8749999999999716,-5.624999999999943],[-126.5625,82.03125,-1.875,5.624999999999972,0.4941058844013071,-1.4823176532039213],[-126.5625,77.34375,-0.4941058844013071,1.4823176532039213,0.6987712429686894,-2.096313728906054],[-121.875,72.65625,-0.6987712429686894,2.096313728906054,0.4941058844013071,-1.4823176532039213],[-121.875,67.96875,-0.4941058844013071,1.4823176532039213,0.6987712429686894,-2.096313728906054],[-117.1875,63.28125,-0.6987712429686894,2.096313728906054,0.9882117688026142,-2.9646353064078568],[-117.1875,53.90625,-0.9882117688026142,2.9646353064078568,0.6987712429686894,-2.096313728906054],[-112.5,49.21875,-0.6987712429686894,2.096313728906054,0.9882117688026142,-2.9646353064078568],[-112.5,39.84375,-0.9882117688026142,2.9646353064078568,0.6987712429686894,-2.096313728906054],[-107.8125,35.15625,-0.6987712429686894,2.096313728906054,1.226380648728778,-3.6791419461863164],[-107.8125,-39.84375,1.226380648728778,3.679141946186313,-0.6987712429686894,-2.096313728906054],[-112.5,-44.53125,0.6987712429686894,2.096313728906054,-0.9882117688026142,-2.9646353064078568],[-112.5,-53.90625,0.9882117688026142,2.9646353064078568,-0.6987712429686894,-2.096313728906054],[-117.1875,-58.59375,0.6987712429686894,2.096313728906054,-0.9882117688026142,-2.9646353064078568],[-117.1875,-67.96875,0.9882117688026142,2.9646353064078568,-0.6987712429686894,-2.096313728906054],[-121.875,-72.65625,0.6987712429686894,2.096313728906054,-1.69194173824161,-5.075825214724816],[-126.5625,-86.71875,1.6919417382415958,5.0758252147248015,-1.8750000000000284,-5.625000000000057],[-140.625,-100.78125,1.875,5.625000000000043,-0.4941058844013071,-1.4823176532039213],[-140.625,-105.46875,0.4941058844013071,1.4823176532039213,-0.3137236160564498,-0.9411708481693637],[-166.40625,-131.25,0.9411708481693779,0.3137236160564498,-1.4823176532039213,-0.4941058844013071],[-171.09375,-131.25,1.4823176532039213,0.4941058844013071,-5.625000000000142,-1.8750000000000568],[-185.15625,-145.3125,5.625000000000114,1.8750000000000284,-5.075825214724858,-1.69194173824161],[-199.21875,-150.0,5.07582521472483,1.69194173824161,-2.09631372890604,-0.6987712429686894],[-203.90625,-154.6875,2.09631372890604,0.6987712429686894,-2.9646353064078426,-0.9882117688026142],[-213.28125,-154.6875,2.9646353064078426,0.9882117688026142,-2.09631372890604,-0.6987712429686894],[-217.96875,-159.375,2.09631372890604,0.6987712429686894,-2.9646353064078426,-0.9882117688026142],[-227.34375,-159.375,2.9646353064078426,0.9882117688026142,-2.09631372890604,-0.6987712429686894],[-232.03125,-164.0625,2.09631372890604,0.6987712429686894,-8.711417301035027,-2.9038057670116757],[-264.84375,-164.0625,9.26395876768305,0.0,-10.378832705933121,0.0],[-307.03125,-164.0625,9.002193445352134,-3.0007311484507113,-2.0963137289060683,0.6987712429686894],[-311.71875,-159.375,2.0963137289060683,-0.6987712429686894,-2.9646353064078426,0.9882117688026142],[-321.09375,-159.375,2.9646353064078426,-0.9882117688026142,-2.0963137289060683,0.6987712429686894],[-325.78125,-154.6875,2.0963137289060683,-0.6987712429686894,-2.9646353064078426,0.9882117688026142],[-335.15625,-154.6875,2.9646353064078426,-0.9882117688026142,-2.0963137289060683,0.6987712429686894],[-339.84375,-150.0,2.0963137289060683,-0.6987712429686894,-5.075825214724887,1.69194173824161],[-353.90625,-145.3125,5.075825214724887,-1.69194173824161,-5.625000000000057,1.8750000000000284],[-367.96875,-131.25,5.625000000000057,-1.8750000000000284,-1.4823176532039497,0.4941058844013071],[-372.65625,-131.25,1.4823176532039497,-0.4941058844013071,-0.9411708481692926,0.3137236160564498],[-398.4375,-105.46875,0.3137236160564498,-0.9411708481693921,-0.4941058844013355,1.4823176532039213],[-398.4375,-100.78125,0.4941058844013355,-1.4823176532039213,-1.875,5.625000000000028],[-412.5,-86.71875,1.875,-5.625000000000014,-1.69194173824161,5.07582521472483],[-417.1875,-72.65625,1.69194173824161,-5.075825214724816,-0.6987712429686894,2.096313728906054],[-421.875,-67.96875,0.6987712429686894,-2.096313728906054,-0.9882117688026142,2.9646353064078568],[-421.875,-58.59375,0.9882117688026142,-2.9646353064078568,-0.6987712429686894,2.096313728906054],[-426.5625,-53.90625,0.6987712429686894,-2.096313728906054,-0.9882117688026142,2.9646353064078568],[-426.5625,-44.53125,0.9882117688026142,-2.9646353064078568,-0.6987712429686894,2.096313728906054],[-431.25,-39.84375,0.6987712429686894,-2.096313728906054,-2.903805767011704,8.711417301035034],[-431.25,-7.03125,0.0,-9.263958767683128,0.0,10.37883270593311],[-431.25,35.15625,-3.0007311484507113,-9.00219344535219,0.6987712429686894,2.096313728906054],[-426.5625,39.84375,-0.6987712429686894,-2.096313728906054,0.9882117688026142,2.9646353064078568],[-426.5625,49.21875,-0.9882117688026142,-2.9646353064078568,0.6987712429686894,2.096313728906054],[-421.875,53.90625,-0.6987712429686894,-2.096313728906054,0.9882117688026142,2.9646353064078568],[-421.875,63.28125,-0.9882117688026142,-2.9646353064078568,0.6987712429686894,2.096313728906054],[-417.1875,67.96875,-0.6987712429686894,-2.096313728906054,1.69194173824161,5.075825214724745],[-412.5,82.03125,-1.69194173824161,-5.075825214724773,1.875,5.624999999999972],[-398.4375,96.09375,-1.875,-5.624999999999986,0.4941058844013355,1.4823176532039213],[-398.4375,100.78125,-0.4941058844013355,-1.4823176532039213,0.3137236160564498,0.9411708481694347],[-372.65625,126.5625,-0.94117084816952,-0.31372361605650667,1.4823176532039497,0.4941058844013071],[-367.96875,126.5625,-1.4823176532039497,-0.4941058844013071,5.6249999999998295,1.8749999999999432],[-353.90625,140.625,-5.624999999999773,-1.8749999999999147,5.075825214724659,1.6919417382415531],[-339.84375,145.3125,-5.075825214724716,-1.6919417382415816,2.0963137289060683,0.6987712429686894],[-335.15625,150.0,-2.0963137289060683,-0.6987712429686894,2.9646353064078426,0.9882117688026142],[-325.78125,150.0,-2.9646353064078426,-0.9882117688026142,2.0963137289060683,0.6987712429686894],[-321.09375,154.6875,-2.0963137289060683,-0.6987712429686894,2.9646353064078426,0.9882117688026142],[-311.71875,154.6875,-2.9646353064078426,-0.9882117688026142,2.0963137289060683,0.6987712429686894],[-307.03125,159.375,-2.0963137289060683,-0.6987712429686894,8.711417301035056,2.9038057670116757],[-274.21875,159.375,-9.26395876768322,0.0,13.268829837127385,0.0],[-227.34375,154.6875,-9.477104380183988,9.477104380183988,0.0,0.0]],\"colourId\":\"col_01K7JJN800HQ6FBWAXKYJHTMA9\",\"fillMatrix\":null,\"lineStyle\":null,\"spine\":null,\"sides\":{\"left\":null,\"right\":null}}]},{\"id\":\"nd_01K7JJN801ETE4R7XF1GBN03F5\",\"type\":\"drawingNode\",\"rev\":5,\"kind\":\"layer\",\"hint\":\"pencil\",\"strokes\":[{\"id\":\"st_01K7JJN8005KGH9BGDWT788SDN\",\"type\":\"stroke\",\"rev\":5,\"kind\":\"pencil\",\"closed\":false,\"points\":[[800.0,0.0,0.0,0.0,0.0,0.0],[820.0,0.0,0.0,0.0,0.0,0.0]],\"colourId\":\"col_01M6E5YTTF61A5X5RNXE5HEZAH\",\"fillMatrix\":null,\"lineStyle\":{\"thickness\":8.0,\"lineType\":\"solid\"},\"spine\":null,\"sides\":{\"left\":null,\"right\":null}}]}],\"colourRecovery\":[{\"colourId\":\"col_01K7JJN800HQ6FBWAXKYJHTMA9\",\"paletteId\":\"pal_01K7JJN80144AA3S4WWJ9TNCJ3\",\"paletteName\":\"Vectorization\",\"styles\":[{\"styleId\":\"sty_01K7JJN8024VHHGS7757JTETT5\",\"styleName\":\"Default\"}],\"swatch\":{\"colourId\":\"col_01K7JJN800HQ6FBWAXKYJHTMA9\",\"type\":\"swatch\",\"rev\":2,\"name\":\"Vectorization Black\",\"kind\":\"solid\",\"deformable\":false,\"values\":{\"sty_01K7JJN8024VHHGS7757JTETT5\":{\"rgba\":\"#000000FF\"}}}},{\"colourId\":\"col_01M6E5YTTF61A5X5RNXE5HEZAH\",\"paletteId\":\"pal_01M6E5YTTF61A5X5RNXE5HEZAF\",\"paletteName\":\"Default\",\"styles\":[{\"styleId\":\"sty_01M6E5YTTF61A5X5RNXE5HEZAG\",\"styleName\":\"Default\"}],\"swatch\":{\"colourId\":\"col_01M6E5YTTF61A5X5RNXE5HEZAH\",\"type\":\"swatch\",\"rev\":1,\"name\":\"Colour 1\",\"kind\":\"solid\",\"deformable\":false,\"values\":{\"sty_01M6E5YTTF61A5X5RNXE5HEZAG\":{\"rgba\":\"#00000000\"}}}}],\"createdAt\":\"2026-11-02T13:07:41.647Z\"}},\"hint\":\"re-read the object and retry\"},\"documentRev\":6,\"undo\":null,\"durationMs\":0}\n",
+      "stderr": ""
+    }
+  }
+]

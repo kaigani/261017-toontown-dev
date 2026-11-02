@@ -351,3 +351,29 @@ fn fixed_regressions() {
         check_against_oracle(c, &|p| p).unwrap();
     }
 }
+
+/// Intentionally failing fixed reproduction shrunk from reviewer seed XOR A7.
+#[test]
+fn shrunk_determinant_case() {
+    let list = vec![
+        (true, vec![(1, 1), (0, 0), (3, 4), (1, 1)]),
+        (false, vec![(4, 1), (1, 2), (0, 0)]),
+        (false, vec![(1, 4), (2, 1)]),
+    ];
+    let maps: [Map<'_>; 6] =
+        [&|(x, y)| (x, y), &|(x, y)| (-y, x), &|(x, y)| (-x, -y), &|(x, y)| (-x, y), &|(x, y)| (y, x), &|(x, y)| {
+            (x + 37, y - 11)
+        }];
+    let mut areas = Vec::new();
+    for (i, m) in maps.iter().enumerate() {
+        let s = settle_all(None, &stroke_json(&list, m, 0), &BTreeMap::new());
+        let map = map_of(&s);
+        let mut a: Vec<f64> = map.zones.iter().map(|z| z.area).collect();
+        a.sort_by(f64::total_cmp);
+        println!("map {i}: areas={a:?}; strokes={}", serde_json::to_string(&s).unwrap());
+        areas.push(a);
+    }
+    for a in &areas[1..] {
+        assert_eq!(a, &areas[0], "determinant ?1 and whole-grid translation preserve face area");
+    }
+}

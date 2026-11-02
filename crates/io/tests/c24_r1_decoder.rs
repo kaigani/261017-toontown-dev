@@ -1,18 +1,25 @@
 //! Independent reviewer decoder corpus and seeded mutations; no product changes.
 #![allow(clippy::unwrap_used, clippy::panic, missing_docs, reason = "review test")]
-use std::alloc::System;
 use stats_alloc::{INSTRUMENTED_SYSTEM, Region, StatsAlloc};
-use tt_io::image::{decode, LIMITS};
+use std::alloc::System;
+use tt_io::image::{LIMITS, decode};
 #[global_allocator]
 static GLOBAL: &StatsAlloc<System> = &INSTRUMENTED_SYSTEM;
 
 #[test]
 fn independent_corpus_and_seeded_mutations_stay_typed_and_bounded() {
     let root = std::path::Path::new(env!("CARGO_MANIFEST_DIR")).join("../../tests/fixtures/vectorize/review-r1");
-    let manifest: serde_json::Value = serde_json::from_slice(&std::fs::read(root.join("manifest.json")).unwrap()).unwrap();
-    let files: Vec<_> = manifest.as_object().unwrap().keys().map(|n| (n.clone(), std::fs::read(root.join(n)).unwrap())).collect();
+    let manifest: serde_json::Value =
+        serde_json::from_slice(&std::fs::read(root.join("manifest.json")).unwrap()).unwrap();
+    let files: Vec<_> =
+        manifest.as_object().unwrap().keys().map(|n| (n.clone(), std::fs::read(root.join(n)).unwrap())).collect();
     let mut seed = 0xc24a_1102_f00d_55aau64;
-    let mut next = || { seed ^= seed << 13; seed ^= seed >> 7; seed ^= seed << 17; seed };
+    let mut next = || {
+        seed ^= seed << 13;
+        seed ^= seed >> 7;
+        seed ^= seed << 17;
+        seed
+    };
     let mut accepted = 0;
     let mut max_alloc = 0;
     for i in 0..20_000usize {
@@ -20,7 +27,11 @@ fn independent_corpus_and_seeded_mutations_stay_typed_and_bounded() {
         let mut b = base.clone();
         if i >= files.len() && !b.is_empty() {
             let at = next() as usize % b.len();
-            if i % 3 == 0 { b.truncate(at); } else { b[at] ^= next() as u8; }
+            if i % 3 == 0 {
+                b.truncate(at);
+            } else {
+                b[at] ^= next() as u8;
+            }
         }
         let region = Region::new(GLOBAL);
         let result = decode(&b, name.rsplit('.').next(), &LIMITS);

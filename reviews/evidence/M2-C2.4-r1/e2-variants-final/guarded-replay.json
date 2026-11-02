@@ -1,0 +1,28 @@
+{
+  "label": "Review guarded replay",
+  "atomic": true,
+  "expectRev": {
+    "dr_01K7JJN803ZK7E8281H8B1RRFV": 2
+  },
+  "stopOnError": true,
+  "steps": [
+    {
+      "id": "draw.stroke.add",
+      "params": {
+        "drawingId": "dr_01K7JJN803ZK7E8281H8B1RRFV",
+        "kind": "pencil",
+        "fit": false,
+        "points": [
+          {
+            "x": 900,
+            "y": 0
+          },
+          {
+            "x": 920,
+            "y": 0
+          }
+        ]
+      }
+    }
+  ]
+}

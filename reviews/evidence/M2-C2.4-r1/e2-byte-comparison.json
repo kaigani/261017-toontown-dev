@@ -1,0 +1,65 @@
+[
+  {
+    "file": "1-preview.png",
+    "localWindowsMacOS": [
+      "1b6fcbba30dfb2985c8bb82aaa4998d6799f276b4e1e9855ccf31a5aedf35766",
+      "1b6fcbba30dfb2985c8bb82aaa4998d6799f276b4e1e9855ccf31a5aedf35766",
+      "1b6fcbba30dfb2985c8bb82aaa4998d6799f276b4e1e9855ccf31a5aedf35766"
+    ],
+    "byteIdentical": true
+  },
+  {
+    "file": "2-vectorized.png",
+    "localWindowsMacOS": [
+      "1b6fcbba30dfb2985c8bb82aaa4998d6799f276b4e1e9855ccf31a5aedf35766",
+      "1b6fcbba30dfb2985c8bb82aaa4998d6799f276b4e1e9855ccf31a5aedf35766",
+      "1b6fcbba30dfb2985c8bb82aaa4998d6799f276b4e1e9855ccf31a5aedf35766"
+    ],
+    "byteIdentical": true
+  },
+  {
+    "file": "3-painted.png",
+    "localWindowsMacOS": [
+      "a4124d1ce094e3dfc7249c22f57a6676a89adfd80b1434dc4a49e27a98ad1555",
+      "a4124d1ce094e3dfc7249c22f57a6676a89adfd80b1434dc4a49e27a98ad1555",
+      "a4124d1ce094e3dfc7249c22f57a6676a89adfd80b1434dc4a49e27a98ad1555"
+    ],
+    "byteIdentical": true
+  },
+  {
+    "file": "4-recoloured.png",
+    "localWindowsMacOS": [
+      "9732a6a246a95e902ba8ab76a1eb0f7c813fa3cd7f386545ae3d2545c691c60d",
+      "9732a6a246a95e902ba8ab76a1eb0f7c813fa3cd7f386545ae3d2545c691c60d",
+      "9732a6a246a95e902ba8ab76a1eb0f7c813fa3cd7f386545ae3d2545c691c60d"
+    ],
+    "byteIdentical": true
+  },
+  {
+    "file": "5-undone.png",
+    "localWindowsMacOS": [
+      "a4124d1ce094e3dfc7249c22f57a6676a89adfd80b1434dc4a49e27a98ad1555",
+      "a4124d1ce094e3dfc7249c22f57a6676a89adfd80b1434dc4a49e27a98ad1555",
+      "a4124d1ce094e3dfc7249c22f57a6676a89adfd80b1434dc4a49e27a98ad1555"
+    ],
+    "byteIdentical": true
+  },
+  {
+    "file": "6-redone.png",
+    "localWindowsMacOS": [
+      "9732a6a246a95e902ba8ab76a1eb0f7c813fa3cd7f386545ae3d2545c691c60d",
+      "9732a6a246a95e902ba8ab76a1eb0f7c813fa3cd7f386545ae3d2545c691c60d",
+      "9732a6a246a95e902ba8ab76a1eb0f7c813fa3cd7f386545ae3d2545c691c60d"
+    ],
+    "byteIdentical": true
+  },
+  {
+    "file": "7-reopened.png",
+    "localWindowsMacOS": [
+      "9732a6a246a95e902ba8ab76a1eb0f7c813fa3cd7f386545ae3d2545c691c60d",
+      "9732a6a246a95e902ba8ab76a1eb0f7c813fa3cd7f386545ae3d2545c691c60d",
+      "9732a6a246a95e902ba8ab76a1eb0f7c813fa3cd7f386545ae3d2545c691c60d"
+    ],
+    "byteIdentical": true
+  }
+]
