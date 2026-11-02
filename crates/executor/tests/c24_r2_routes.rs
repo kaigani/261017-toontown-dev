@@ -154,8 +154,13 @@ fn colours(h: &ExecutorHandle) -> Vec<String> {
 #[derive(Debug, Clone)]
 struct Stroke {
     id: String,
-    /// Grid-unit segments in stroke order (`from`, `to`; zero-length segments left out).
+    /// Grid-unit segments in stroke order (`from`, `to`; zero-length ones kept: a collapsed contour's anchors are snap
+    /// candidates, C24-R2-06; `segments_of` leaves them out of every arrangement); a brush stroke's straight outline
+    /// contours.
     segs: Segs,
+    /// A brush stroke's curved outline contours, flattened within 1/128 du (grid units): outside the exact oracle, so
+    /// `check` requires them to occupy no expected face (C24-R2-01).
+    curves: Vec<Vec<Pt>>,
     /// The persisted anchors (repeated ones included: anchor indices are the product's) and whether it is closed.
     anchors: Vec<(i64, i64)>,
     closed: bool,
@@ -208,34 +213,41 @@ fn try_straight(bez: &[Value], is_closed: bool) -> Option<Segs> {
                 return None;
             }
         }
-        if a != b {
-            out.push((a, b));
-        }
+        out.push((a, b));
         k += 3;
     }
     Some(out)
 }
 
 fn read(h: &ExecutorHandle, d: &str, layer: &str) -> (Vec<Stroke>, Vec<Zone>) {
-    let r = ok(h, "draw.drawing.get", json!({ "drawingId": d, "include": ["zones"] }));
+    let r = ok(h, "draw.drawing.get", json!({ "drawingId": d, "include": ["zones", "outline"] }));
     let node = r["nodes"].as_array().unwrap().iter().find(|n| n["id"] == layer).cloned().unwrap_or(Value::Null);
     let mut strokes = Vec::new();
     for s in node["strokes"].as_array().into_iter().flatten() {
+        let mut curves = Vec::new();
         let segs = if s["kind"] == "brush" {
-            // A brush outline is a fitted curve outside the exact oracle: its strokes may bound no expected face.
-            s["outline"]
-                .as_array()
-                .into_iter()
-                .flatten()
-                .filter_map(|c| try_straight(c.as_array()?, true))
-                .flatten()
-                .collect()
+            // A curved brush outline contour is outside the exact oracle: `check` requires it to occupy no expected
+            // face; a straight one is a polygon the oracle models.
+            let mut segs = Vec::new();
+            for c in s["outline"].as_array().into_iter().flatten().filter_map(Value::as_array) {
+                match try_straight(c, true) {
+                    Some(v) => segs.extend(v),
+                    None => curves.push(flatten_contour(c)),
+                }
+            }
+            segs
         } else {
             straight_segments(s["bezier"].as_array().unwrap(), s["closed"] == true)
         };
         let bez = s["bezier"].as_array().cloned().unwrap_or_default();
         let anchors: Vec<(i64, i64)> = bez.iter().step_by(3).map(grid).collect();
-        strokes.push(Stroke { id: s["id"].as_str().unwrap().to_owned(), segs, anchors, closed: s["closed"] == true });
+        strokes.push(Stroke {
+            id: s["id"].as_str().unwrap().to_owned(),
+            segs,
+            curves,
+            anchors,
+            closed: s["closed"] == true,
+        });
     }
     let zones = node["zones"]
         .as_array()
@@ -260,6 +272,86 @@ fn read(h: &ExecutorHandle, d: &str, layer: &str) -> (Vec<Stroke>, Vec<Zone>) {
     (strokes, zones)
 }
 
+/// A closed flat Bézier contour (`p0, c1, c2, p1, …`, closing back to `p0`) flattened in grid units: each cubic in
+/// uniform parameter steps, as many as Wang's bound needs for 1/128 du (half a grid unit), its vertices exact.
+fn flatten_contour(bez: &[Value]) -> Vec<Pt> {
+    let f = |v: &Value| (v["x"].as_f64().unwrap() * GRID as f64, v["y"].as_f64().unwrap() * GRID as f64);
+    let n = bez.len();
+    let mut out = Vec::new();
+    let mut k = 0;
+    while n >= 3 && k + 3 <= n {
+        let (p0, p1, p2) = (f(&bez[k]), f(&bez[k + 1]), f(&bez[k + 2]));
+        let p3 = f(&bez[if k + 3 < n { k + 3 } else { 0 }]);
+        let dd = |a: (f64, f64), b: (f64, f64), c: (f64, f64)| (a.0 - 2.0 * b.0 + c.0).hypot(a.1 - 2.0 * b.1 + c.1);
+        let m = 6.0 * dd(p0, p1, p2).max(dd(p1, p2, p3));
+        let pieces = (m / (8.0 * 0.5)).sqrt().ceil().clamp(1.0, 4096.0) as u32;
+        for i in 0..pieces {
+            let t = f64::from(i) / f64::from(pieces);
+            let u = 1.0 - t;
+            let (a, b, c, d) = (u * u * u, 3.0 * u * u * t, 3.0 * u * t * t, t * t * t);
+            let x = a * p0.0 + b * p1.0 + c * p2.0 + d * p3.0;
+            let y = a * p0.1 + b * p1.1 + c * p2.1 + d * p3.1;
+            out.push((Q::from_f64(x), Q::from_f64(y)));
+        }
+        k += 3;
+    }
+    out.dedup();
+    out
+}
+
+/// The stretch of the grid segment `p`–`q` that the grid segment `a`–`b` runs along (grid units from `p`), if longer
+/// than one unit: the points of `p`–`q` within one grid unit of `a`–`b`'s line and projecting inside `a`–`b` (a split
+/// leaves its junction rounded onto the grid, so pieces of one line lie up to a unit off each other's snapped
+/// segments), for segments parallel within that unit over the shorter one's length (a shallow crossing is not a
+/// stretch).
+fn stretch(p: (i64, i64), q: (i64, i64), a: (i64, i64), b: (i64, i64)) -> Option<(f64, f64)> {
+    let (dx, dy) = ((q.0 - p.0) as f64, (q.1 - p.1) as f64);
+    let (ex, ey) = ((b.0 - a.0) as f64, (b.1 - a.1) as f64);
+    let (l, m) = (dx.hypot(dy), ex.hypot(ey));
+    if l == 0.0 || m == 0.0 {
+        return None;
+    }
+    if (dx * ey - dy * ex).abs() / (l * m) > 2.0 / l.min(m) {
+        return None;
+    }
+    // Along p–q (parameter t in [0, 1]): the distance from a–b's line, and the position along a–b.
+    let (ux, uy) = (ex / m, ey / m);
+    let (px, py) = ((p.0 - a.0) as f64, (p.1 - a.1) as f64);
+    let perp = (px * uy - py * ux, dx * uy - dy * ux);
+    let along = (px * ux + py * uy, dx * ux + dy * uy);
+    let mut lo: f64 = 0.0;
+    let mut hi: f64 = 1.0;
+    for (c0, c1, min, max) in [(perp.0, perp.1, -1.0, 1.0), (along.0, along.1, 0.0, m)] {
+        if c1.abs() < 1e-12 {
+            if c0 < min || c0 > max {
+                return None;
+            }
+        } else {
+            let (t0, t1) = ((min - c0) / c1, (max - c0) / c1);
+            lo = lo.max(t0.min(t1));
+            hi = hi.min(t0.max(t1));
+        }
+    }
+    (hi > lo && (hi - lo) * l > 1.0).then_some((lo * l, hi * l))
+}
+
+/// The non-zero winding number of a closed polygon around `p` (exact; `p` never on the polygon).
+fn winding(poly: &[Pt], p: &Pt) -> i32 {
+    let mut w = 0;
+    for i in 0..poly.len() {
+        let (a, b) = (&poly[i], &poly[(i + 1) % poly.len()]);
+        let o = b.0.minus(&a.0).times(&p.1.minus(&a.1)).minus(&b.1.minus(&a.1).times(&p.0.minus(&a.0))).signum();
+        if a.1.cmp_to(&p.1).is_le() {
+            if b.1.cmp_to(&p.1).is_gt() && o > 0 {
+                w += 1;
+            }
+        } else if b.1.cmp_to(&p.1).is_le() && o < 0 {
+            w -= 1;
+        }
+    }
+    w
+}
+
 /// A handle within 1e-6 grid units of the chord between two stored anchors (a floating-point map's rounding).
 fn near_chord(c: &Value, ra: &Value, rb: &Value) -> bool {
     let f = |v: &Value| (v["x"].as_f64().unwrap() * GRID as f64, v["y"].as_f64().unwrap() * GRID as f64);
@@ -280,7 +372,8 @@ fn anchors_of(s: &Stroke) -> (Vec<(i64, i64)>, bool) {
 
 /// All segments of some strokes.
 fn segments_of(strokes: &[Stroke]) -> Vec<(Pt, Pt)> {
-    strokes.iter().flat_map(|s| s.segs.iter().map(|&(a, b)| (to_pt(a), to_pt(b)))).collect()
+    // Zero-length segments (a collapsed contour's retained anchors) are snap candidates but never edges (C24-R2-06).
+    strokes.iter().flat_map(|s| s.segs.iter().filter(|(a, b)| a != b).map(|&(a, b)| (to_pt(a), to_pt(b)))).collect()
 }
 
 /// The `strokeId:side` labels of the product strokes lying on the oracle edge `p → q` (snapped coordinates), and the
@@ -338,6 +431,17 @@ type FillRule<'a> = dyn Fn(&Arrangement, &[String], usize) -> Option<String> + '
 
 /// Checks a layer's read-back against the oracle's arrangement of `expected` and the expected fill of each face;
 /// returns the arrangement and the zone IDs per face.
+///
+/// Besides the faces (partition, areas, boundary strokes, IDs, fills), the strokes themselves are compared with the
+/// expectation (C24-R2-01: a command that changes strokes without changing faces must not pass as a no-op):
+/// - **multiplicity**: `expected` is a multiset of stroke segments; along every oracle edge (bounding a face or not),
+///   on each stretch between the ends of the product segments running along it (within a grid unit of its line: a
+///   split rounds its junction onto the grid), the number of product segments covering it equals the number of
+///   expected segments containing the edge;
+/// - **converse coverage**: every straight product segment is covered by oracle edges along it (no unexpected stroke);
+/// - **brush occupancy**: no expected face is occupied by a curved brush outline (none of its flattened vertices lies
+///   in a face, and no face's interior point has non-zero winding with respect to it): an unmodelled brush may only
+///   lie outside every expected face.
 fn check(
     strokes: &[Stroke],
     zones: &[Zone],
@@ -375,6 +479,52 @@ fn check(
         prop_assert_eq!(&zone.boundary, &members.into_iter().collect::<Vec<_>>(), "zone {} boundary strokes", zone.id);
         prop_assert_eq!(&zone.id, &ids[f], "zone ID of oracle face {}", f);
         prop_assert_eq!(&zone.colour, &fill(&arr, &ids, f), "fill of zone {}", zone.id);
+    }
+    for (p, q) in &arr.edges {
+        let (sp, sq) = (oracle::snap_pt(p), oracle::snap_pt(q));
+        let want = expected
+            .iter()
+            .filter(|(a, b)| oracle::point_on_segment(p, a, b) && oracle::point_on_segment(q, a, b))
+            .count();
+        let l = ((sq.0 - sp.0) as f64).hypot((sq.1 - sp.1) as f64);
+        let on: Vec<(f64, f64)> =
+            strokes.iter().flat_map(|s| &s.segs).filter_map(|&(a, b)| stretch(sp, sq, a, b)).collect();
+        let mut cuts: Vec<f64> = vec![0.0, l];
+        cuts.extend(on.iter().flat_map(|&(t0, t1)| [t0, t1]));
+        cuts.sort_by(f64::total_cmp);
+        for w in cuts.windows(2).filter(|w| w[1] - w[0] > 1.0) {
+            let m = (w[0] + w[1]) / 2.0;
+            let have = on.iter().filter(|&&(t0, t1)| t0 < m && m < t1).count();
+            prop_assert_eq!(have, want, "stroke segments on oracle edge {:?} -> {:?} at {} of {}", sp, sq, m, l);
+        }
+    }
+    for s in strokes {
+        for &(a, b) in &s.segs {
+            let covered: f64 = arr
+                .edges
+                .iter()
+                .filter_map(|(p, q)| stretch(oracle::snap_pt(p), oracle::snap_pt(q), a, b))
+                .map(|(t0, t1)| t1 - t0)
+                .sum();
+            let len = ((b.0 - a.0) as f64).hypot((b.1 - a.1) as f64);
+            prop_assert!(
+                (covered - len).abs() <= 2.0,
+                "stroke {} segment {:?} -> {:?} is not on the expected arrangement ({} of {} grid units covered)",
+                s.id,
+                a,
+                b,
+                covered,
+                len
+            );
+        }
+        for c in &s.curves {
+            for v in c {
+                prop_assert!(arr.locate(v).is_none(), "brush {} outline enters an expected face", s.id);
+            }
+            for face in &arr.faces {
+                prop_assert_eq!(winding(c, &face.probe), 0, "brush {} outline occupies an expected face", s.id);
+            }
+        }
     }
     Ok((arr, ids))
 }
@@ -934,9 +1084,7 @@ fn point_moves_with_and_without_snapping_match_the_oracle() {
             let moving: Vec<&Stroke> = strokes.iter().filter(|s| anchors_of(s).0.contains(&at)).collect();
             // With snapping the move lands 3 du short of a whole step; Snap to Contour takes the nearest point of a
             // stroke that does not move (its segments, interiors included) within 8 du; ties to the lower stroke ID,
-            // then segment, then parameter (02 §8.9). Every persisted segment is a candidate, zero-length ones
-            // (a collapsed contour's retained anchors, C24-R2-06) included as points; they stay out of the faces.
-            // Snaps onto anchors are checked exactly (see below).
+            // then segment, then parameter (02 §8.9). Snaps onto anchors are checked exactly (see below).
             let step = |v: i64| if *snap { v * STEP * GRID - v.signum() * 3 * GRID } else { v * STEP * GRID };
             let off = (step(*dx), step(*dy));
             let q = to_pt((at.0 + off.0, at.1 + off.1));
@@ -944,20 +1092,11 @@ fn point_moves_with_and_without_snapping_match_the_oracle() {
             if *snap {
                 let mut best: Option<(Q, String, usize, Q, Pt)> = None;
                 for s in strokes.iter().filter(|s| !moving.iter().any(|m| m.id == s.id)) {
-                    let (ring, ring_closed) = anchors_of(s);
-                    let mut candidates: Vec<((i64, i64), (i64, i64))> = ring.windows(2).map(|w| (w[0], w[1])).collect();
-                    if ring_closed && ring.len() > 1 {
-                        candidates.push((ring[ring.len() - 1], ring[0]));
-                    }
-                    for (j, &(a, b)) in candidates.iter().enumerate() {
+                    for (j, &(a, b)) in s.segs.iter().enumerate() {
                         let (pa, pb) = (to_pt(a), to_pt(b));
                         let (ddx, ddy) = (pb.0.minus(&pa.0), pb.1.minus(&pa.1));
                         let len2 = ddx.times(&ddx).plus(&ddy.times(&ddy));
-                        let t = if len2.signum() == 0 {
-                            Q::int(0)
-                        } else {
-                            q.0.minus(&pa.0).times(&ddx).plus(&q.1.minus(&pa.1).times(&ddy)).over(&len2)
-                        };
+                        let t = q.0.minus(&pa.0).times(&ddx).plus(&q.1.minus(&pa.1).times(&ddy)).over(&len2);
                         let t = if t.signum() < 0 {
                             Q::int(0)
                         } else if t.cmp_to(&Q::int(1)).is_gt() {
@@ -1000,10 +1139,10 @@ fn point_moves_with_and_without_snapping_match_the_oracle() {
                 after = without(&after, &segments_of(std::slice::from_ref(*m)));
                 let (ring, ring_closed) = anchors_of(m);
                 let ring: Vec<Pt> = ring.iter().map(|&a| if a == at { moved_pt.clone() } else { to_pt(a) }).collect();
-                for w in ring.windows(2).filter(|w| w[0] != w[1]) {
+                for w in ring.windows(2) {
                     after.push((w[0].clone(), w[1].clone()));
                 }
-                if ring_closed && ring[ring.len() - 1] != ring[0] {
+                if ring_closed {
                     after.push((ring[ring.len() - 1].clone(), ring[0].clone()));
                 }
             }

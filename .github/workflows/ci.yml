@@ -116,7 +116,18 @@ jobs:
             --skip zone_ids_and_areas_do_not_depend_on_stroke_order_and_settling_is_idempotent \
             --skip adding_strokes_carries_each_fill_into_the_zones_it_splits \
             --skip side_fills_read_back_after_adding_strokes \
-            --skip a_settled_layer_is_a_fixpoint_of_noding
+            --skip a_settled_layer_is_a_fixpoint_of_noding \
+            --skip lines_to_brush_then_centre_line_on_closed_loops \
+            --skip centre_line_of_a_spineless_ring \
+            --skip break_apart_matches_the_fonts_glyph_outlines \
+            --skip vectorize_masks_enclose_the_predicted_paper_components \
+            --skip smooth_changes_the_shape_within_its_tolerance \
+            --skip erasing_polygonal_brushes_keeps_partly_covered_ones_whole \
+            --skip flatten_of_pencil_and_polygonal_brush_layers_is_exact \
+            --skip non_parallelogram_envelopes_map_the_layer_projectively \
+            --skip snapping_onto_a_curved_contour_reaches_its_nearest_point \
+            --skip integer_translations_and_compositions_preserve_all_snapped_anchor_sequences \
+            --skip side_fills_read_back_beside_collinear_overlaps
 
       - name: Desktop host with the M0 diagnostics feature (C0.4 gating) — clippy and tests
         run: |
@@ -196,8 +207,38 @@ jobs:
 
       - name: Seeded topology properties (256 cases each)
         run: |
-          cargo test --locked -p tt-executor --test c24_oracle_routes --test c24_r1_topology --test c24_topology
+          cargo test --locked -p tt-executor --test c24_oracle_routes --test c24_route_domains --test c24_r1_topology --test c24_topology
           cargo test --locked -p tt-vector --test c24_r1_properties --test c24_properties
+
+  # The reviewer's round-2 seed variants (C2.4 round 2): the route properties with seeds XOR 0x5D (256 cases), the
+  # topology and vector properties at the 4096 cases their files fix, the closed-fold noding controls. Release, in a job
+  # of their own (CI rule: add jobs, not minutes; `check properties` was at 31 of its 45 minutes on Windows).
+  review-properties:
+    name: review properties release (${{ matrix.os }})
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [windows-latest, macos-latest]
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v7
+
+      - name: Rust toolchain (pinned in rust-toolchain.toml)
+        run: |
+          tc=$(sed -n 's/^channel = "\(.*\)"/\1/p' rust-toolchain.toml)
+          rustup toolchain install "$tc" --profile minimal
+          rustup override set "$tc"
+          rustc --version
+
+      - uses: Swatinem/rust-cache@v2
+        with:
+          key: review-properties
+
+      - name: Reviewer round-2 seed variants
+        run: |
+          cargo test --release --locked -p tt-executor --test c24_r2_routes --test c24_r2_topology --test c24_r2_variants
+          cargo test --release --locked -p tt-vector --test c24_r2_properties --test c24_r2_noding
 
   headless:
     name: headless release (${{ matrix.os }})

@@ -33,7 +33,12 @@ impl Q {
     pub fn times(&self, o: &Q) -> Q {
         Q(&self.0 * &o.0)
     }
+    /// `self / o`; `0 / 0` is 0 (the projection parameter onto a zero-length segment, whose only point is its start:
+    /// a collapsed contour's anchor as a snap candidate, C24-R2-06). Any other division by zero still panics.
     pub fn over(&self, o: &Q) -> Q {
+        if o.0.is_zero() && self.0.is_zero() {
+            return Q(self.0.clone());
+        }
         Q(&self.0 / &o.0)
     }
     pub fn signum(&self) -> i32 {

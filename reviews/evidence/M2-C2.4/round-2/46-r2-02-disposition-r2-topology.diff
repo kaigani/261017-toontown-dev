@@ -1,0 +1,14 @@
+diff --git a/crates/executor/tests/c24_r2_topology.rs b/crates/executor/tests/c24_r2_topology.rs
+index 56bad1b..ea78213 100644
+--- a/crates/executor/tests/c24_r2_topology.rs
++++ b/crates/executor/tests/c24_r2_topology.rs
+@@ -328,5 +328,8 @@ fn edit38_original_area_preservation_assertion_remains_a_failure() {
+     ok(&h, "draw.cut.apply", json!({"drawingId":d,"segment":{"from":{"x":80,"y":60},"to":{"x":0,"y":0}}}));
+     let sa: f64 = zone_areas(&h, &d).iter().sum();
+     println!("original area assertion: {sb} -> {sa}");
+-    assert!((sa - sb).abs() <= 1e-3 * sb.max(1.0), "the cut keeps the zones' total area: {sb} vs {sa}");
++    assert!(
++        (sa - sb).abs() <= oracle::snapping_envelope(&[segments(&list, 0), vec![((80, 60), (0, 0))]].concat(), 64),
++        "the cut keeps the zones' total area: {sb} vs {sa}"
++    );
+ }
