@@ -5,7 +5,7 @@
 //! overlaps). Operations: transforms with determinant ±1 (quarter turns, reflections, translation; face areas are
 //! invariant), the Cutter along a lattice segment (faces of inputs plus the cut line), Flatten of disjoint layers
 //! (faces of the union), and vectorize (one unpainted zone per enclosed paper component of the source mask).
-#![allow(clippy::unwrap_used, clippy::expect_used, clippy::panic, missing_docs, reason = "test")]
+#![allow(clippy::unwrap_used, clippy::print_stdout, clippy::expect_used, clippy::panic, missing_docs, reason = "test")]
 
 mod common;
 #[path = "../../vector/tests/oracle/mod.rs"]

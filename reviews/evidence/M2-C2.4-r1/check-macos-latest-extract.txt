@@ -1,0 +1,252 @@
+check (macos-latest)	Run cargo test --workspace --locked	2026-11-02T12:13:59.8728570Z test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+check (macos-latest)	Run cargo test --workspace --locked	2026-11-02T12:13:59.8841570Z test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+check (macos-latest)	Run cargo test --workspace --locked	2026-11-02T12:13:59.8960350Z test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+check (macos-latest)	Run cargo test --workspace --locked	2026-11-02T12:14:00.5792050Z test result: ok. 32 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.63s
+check (macos-latest)	Run cargo test --workspace --locked	2026-11-02T12:14:00.5794300Z test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+check (macos-latest)	Run cargo test --workspace --locked	2026-11-02T12:14:01.2653160Z test result: ok. 11 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.66s
+check (macos-latest)	Run cargo test --workspace --locked	2026-11-02T12:14:01.4836050Z test result: ok. 19 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.21s
+check (macos-latest)	Run cargo test --workspace --locked	2026-11-02T12:14:01.5390500Z test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.02s
+check (macos-latest)	Run cargo test --workspace --locked	2026-11-02T12:14:01.5564530Z test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+check (macos-latest)	Run cargo test --workspace --locked	2026-11-02T12:14:01.5710690Z test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+check (macos-latest)	Run cargo test --workspace --locked	2026-11-02T12:14:01.7343140Z test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.14s
+check (macos-latest)	Run cargo test --workspace --locked	2026-11-02T12:14:01.7560020Z test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+check (macos-latest)	Run cargo test --workspace --locked	2026-11-02T12:14:02.2021550Z test result: ok. 7 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.44s
+check (macos-latest)	Run cargo test --workspace --locked	2026-11-02T12:14:03.4237430Z test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.20s
+check (macos-latest)	Run cargo test --workspace --locked	2026-11-02T12:14:03.9724150Z test result: ok. 16 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.53s
+check (macos-latest)	Run cargo test --workspace --locked	2026-11-02T12:14:04.9583670Z test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.95s
+check (macos-latest)	Run cargo test --workspace --locked	2026-11-02T12:14:20.7174580Z test result: ok. 7 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 15.74s
+check (macos-latest)	Run cargo test --workspace --locked	2026-11-02T12:14:21.9025160Z test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.14s
+check (macos-latest)	Run cargo test --workspace --locked	2026-11-02T12:14:22.2289510Z test result: ok. 11 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.33s
+check (macos-latest)	Run cargo test --workspace --locked	2026-11-02T12:14:46.7991600Z test result: ok. 36 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 24.55s
+check (macos-latest)	Run cargo test --workspace --locked	2026-11-02T12:15:37.6684910Z test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 50.85s
+check (macos-latest)	Run cargo test --workspace --locked	2026-11-02T12:15:53.2162450Z test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 15.54s
+check (macos-latest)	Run cargo test --workspace --locked	2026-11-02T12:16:11.1587840Z test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 1 filtered out; finished in 17.88s
+check (macos-latest)	Run cargo test --workspace --locked	2026-11-02T12:16:14.3788380Z test result: ok. 40 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 3.19s
+check (macos-latest)	Run cargo test --workspace --locked	2026-11-02T12:16:14.6421500Z test result: ok. 7 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.23s
+check (macos-latest)	Run cargo test --workspace --locked	2026-11-02T12:16:43.3888410Z test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 28.71s
+check (macos-latest)	Run cargo test --workspace --locked	2026-11-02T12:16:45.1195050Z test result: ok. 15 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.65s
+check (macos-latest)	Run cargo test --workspace --locked	2026-11-02T12:16:45.3771760Z test result: ok. 12 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.23s
+check (macos-latest)	Run cargo test --workspace --locked	2026-11-02T12:16:58.3902060Z test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 1 filtered out; finished in 12.99s
+check (macos-latest)	Run cargo test --workspace --locked	2026-11-02T12:16:58.6989920Z test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.29s
+check (macos-latest)	Run cargo test --workspace --locked	2026-11-02T12:16:58.9202410Z test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.17s
+check (macos-latest)	Run cargo test --workspace --locked	2026-11-02T12:16:59.5735980Z test result: ok. 14 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.63s
+check (macos-latest)	Run cargo test --workspace --locked	2026-11-02T12:17:15.4039030Z test result: ok. 9 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 15.83s
+check (macos-latest)	Run cargo test --workspace --locked	2026-11-02T12:17:43.3702400Z test result: ok. 13 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 27.91s
+check (macos-latest)	Run cargo test --workspace --locked	2026-11-02T12:17:45.2740730Z test result: ok. 18 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.88s
+check (macos-latest)	Run cargo test --workspace --locked	2026-11-02T12:17:51.2991010Z test result: ok. 14 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 6.00s
+check (macos-latest)	Run cargo test --workspace --locked	2026-11-02T12:17:51.3224860Z test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 1 filtered out; finished in 0.00s
+check (macos-latest)	Run cargo test --workspace --locked	2026-11-02T12:17:51.3406800Z test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 1 filtered out; finished in 0.00s
+check (macos-latest)	Run cargo test --workspace --locked	2026-11-02T12:18:14.3042540Z test result: ok. 10 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 22.95s
+check (macos-latest)	Run cargo test --workspace --locked	2026-11-02T12:18:14.5873080Z test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.26s
+check (macos-latest)	Run cargo test --workspace --locked	2026-11-02T12:18:49.7335560Z test result: ok. 9 passed; 0 failed; 1 ignored; 0 measured; 0 filtered out; finished in 35.12s
+check (macos-latest)	Run cargo test --workspace --locked	2026-11-02T12:19:09.2051730Z test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 19.44s
+check (macos-latest)	Run cargo test --workspace --locked	2026-11-02T12:19:36.1968620Z test result: ok. 7 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 26.97s
+check (macos-latest)	Run cargo test --workspace --locked	2026-11-02T12:19:36.5717850Z test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.35s
+check (macos-latest)	Run cargo test --workspace --locked	2026-11-02T12:19:36.8558700Z test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.26s
+check (macos-latest)	Run cargo test --workspace --locked	2026-11-02T12:19:37.5838920Z test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.71s
+check (macos-latest)	Run cargo test --workspace --locked	2026-11-02T12:19:38.0422250Z test result: ok. 11 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.44s
+check (macos-latest)	Run cargo test --workspace --locked	2026-11-02T12:19:43.8284470Z test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 5.76s
+check (macos-latest)	Run cargo test --workspace --locked	2026-11-02T12:19:43.8620710Z test result: ok. 0 passed; 0 failed; 1 ignored; 0 measured; 0 filtered out; finished in 0.00s
+check (macos-latest)	Run cargo test --workspace --locked	2026-11-02T12:19:56.6190110Z test result: ok. 7 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 12.73s
+check (macos-latest)	Run cargo test --workspace --locked	2026-11-02T12:20:10.4178890Z test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 13.77s
+check (macos-latest)	Run cargo test --workspace --locked	2026-11-02T12:20:10.7205790Z test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.25s
+check (macos-latest)	Run cargo test --workspace --locked	2026-11-02T12:20:23.4780820Z test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 12.74s
+check (macos-latest)	Run cargo test --workspace --locked	2026-11-02T12:20:23.8774730Z test result: ok. 8 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.37s
+check (macos-latest)	Run cargo test --workspace --locked	2026-11-02T12:20:28.6993330Z test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 6 filtered out; finished in 4.78s
+check (macos-latest)	Run cargo test --workspace --locked	2026-11-02T12:20:28.7439500Z test result: ok. 6 passed; 0 failed; 1 ignored; 0 measured; 0 filtered out; finished in 4.85s
+check (macos-latest)	Run cargo test --workspace --locked	2026-11-02T12:20:31.8914510Z test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 3.11s
+check (macos-latest)	Run cargo test --workspace --locked	2026-11-02T12:20:32.8093470Z test result: ok. 11 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.90s
+check (macos-latest)	Run cargo test --workspace --locked	2026-11-02T12:20:33.2719070Z test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.44s
+check (macos-latest)	Run cargo test --workspace --locked	2026-11-02T12:20:33.5213170Z test result: ok. 8 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.23s
+check (macos-latest)	Run cargo test --workspace --locked	2026-11-02T12:20:33.8472850Z test result: ok. 12 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.31s
+check (macos-latest)	Run cargo test --workspace --locked	2026-11-02T12:20:52.0917210Z test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 18.23s
+check (macos-latest)	Run cargo test --workspace --locked	2026-11-02T12:20:52.7207090Z test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.57s
+check (macos-latest)	Run cargo test --workspace --locked	2026-11-02T12:20:53.0940840Z test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.35s
+check (macos-latest)	Run cargo test --workspace --locked	2026-11-02T12:21:00.2501460Z test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 7.13s
+check (macos-latest)	Run cargo test --workspace --locked	2026-11-02T12:21:00.5702570Z test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.29s
+check (macos-latest)	Run cargo test --workspace --locked	2026-11-02T12:21:02.7302530Z test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 2.14s
+check (macos-latest)	Run cargo test --workspace --locked	2026-11-02T12:21:02.9963580Z test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.25s
+check (macos-latest)	Run cargo test --workspace --locked	2026-11-02T12:21:03.4312260Z test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.42s
+check (macos-latest)	Run cargo test --workspace --locked	2026-11-02T12:21:03.4503760Z test result: ok. 0 passed; 0 failed; 1 ignored; 0 measured; 0 filtered out; finished in 0.00s
+check (macos-latest)	Run cargo test --workspace --locked	2026-11-02T12:21:03.7243490Z test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.26s
+check (macos-latest)	Run cargo test --workspace --locked	2026-11-02T12:21:04.0607810Z test result: ok. 10 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.31s
+check (macos-latest)	Run cargo test --workspace --locked	2026-11-02T12:21:04.6490830Z test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.57s
+check (macos-latest)	Run cargo test --workspace --locked	2026-11-02T12:21:04.9314140Z test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.27s
+check (macos-latest)	Run cargo test --workspace --locked	2026-11-02T12:21:04.9478740Z test result: ok. 0 passed; 0 failed; 1 ignored; 0 measured; 0 filtered out; finished in 0.00s
+check (macos-latest)	Run cargo test --workspace --locked	2026-11-02T12:21:05.3147790Z test result: ok. 15 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.35s
+check (macos-latest)	Run cargo test --workspace --locked	2026-11-02T12:21:06.8297810Z test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.50s
+check (macos-latest)	Run cargo test --workspace --locked	2026-11-02T12:21:09.6146360Z test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 2.76s
+check (macos-latest)	Run cargo test --workspace --locked	2026-11-02T12:21:15.9032170Z test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 6.27s
+check (macos-latest)	Run cargo test --workspace --locked	2026-11-02T12:21:19.5348010Z test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 3.62s
+check (macos-latest)	Run cargo test --workspace --locked	2026-11-02T12:21:19.7664760Z test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.22s
+check (macos-latest)	Run cargo test --workspace --locked	2026-11-02T12:21:19.7828470Z test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+check (macos-latest)	Run cargo test --workspace --locked	2026-11-02T12:21:20.8603520Z test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.06s
+check (macos-latest)	Run cargo test --workspace --locked	2026-11-02T12:21:21.3252040Z test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.45s
+check (macos-latest)	Run cargo test --workspace --locked	2026-11-02T12:21:21.5774800Z test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.23s
+check (macos-latest)	Run cargo test --workspace --locked	2026-11-02T12:21:23.0513630Z test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.46s
+check (macos-latest)	Run cargo test --workspace --locked	2026-11-02T12:21:23.3858800Z test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.32s
+check (macos-latest)	Run cargo test --workspace --locked	2026-11-02T12:21:25.5671200Z test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 2.17s
+check (macos-latest)	Run cargo test --workspace --locked	2026-11-02T12:21:25.8740480Z test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.29s
+check (macos-latest)	Run cargo test --workspace --locked	2026-11-02T12:21:26.1140720Z test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.23s
+check (macos-latest)	Run cargo test --workspace --locked	2026-11-02T12:21:31.3089020Z test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 5.18s
+check (macos-latest)	Run cargo test --workspace --locked	2026-11-02T12:21:31.5560860Z test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.23s
+check (macos-latest)	Run cargo test --workspace --locked	2026-11-02T12:21:31.9195280Z test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.35s
+check (macos-latest)	Run cargo test --workspace --locked	2026-11-02T12:21:32.1982830Z test result: ok. 9 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.26s
+check (macos-latest)	Run cargo test --workspace --locked	2026-11-02T12:21:34.0959980Z test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.88s
+check (macos-latest)	Run cargo test --workspace --locked	2026-11-02T12:21:34.0964850Z ^[[1m^[[92m     Running^[[0m tests/c24_aggregate.rs (target/debug/deps/c24_aggregate-f4d978702558901e)
+check (macos-latest)	Run cargo test --workspace --locked	2026-11-02T12:21:34.3240930Z test result: ok. 1 passed; 0 failed; 1 ignored; 0 measured; 0 filtered out; finished in 0.21s
+check (macos-latest)	Run cargo test --workspace --locked	2026-11-02T12:21:34.3244030Z ^[[1m^[[92m     Running^[[0m tests/c24_budgets.rs (target/debug/deps/c24_budgets-ca29281e41f53a34)
+check (macos-latest)	Run cargo test --workspace --locked	2026-11-02T12:21:34.3463950Z test result: ok. 0 passed; 0 failed; 1 ignored; 0 measured; 0 filtered out; finished in 0.00s
+check (macos-latest)	Run cargo test --workspace --locked	2026-11-02T12:21:34.3466590Z ^[[1m^[[92m     Running^[[0m tests/c24_centre_line.rs (target/debug/deps/c24_centre_line-23ed1d4d1e5fadc0)
+check (macos-latest)	Run cargo test --workspace --locked	2026-11-02T12:21:42.1181910Z test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 7.76s
+check (macos-latest)	Run cargo test --workspace --locked	2026-11-02T12:21:42.1250450Z ^[[1m^[[92m     Running^[[0m tests/c24_contracts.rs (target/debug/deps/c24_contracts-a180fe47646defb2)
+check (macos-latest)	Run cargo test --workspace --locked	2026-11-02T12:21:49.2658280Z ^[[1m^[[92m     Running^[[0m tests/c24_measure.rs (target/debug/deps/c24_measure-13dbebce02792756)
+check (macos-latest)	Run cargo test --workspace --locked	2026-11-02T12:21:49.2662230Z test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 7.12s
+check (macos-latest)	Run cargo test --workspace --locked	2026-11-02T12:21:49.2755900Z ^[[1m^[[92m     Running^[[0m tests/c24_symmetry.rs (target/debug/deps/c24_symmetry-72585cbd68d51fa5)
+check (macos-latest)	Run cargo test --workspace --locked	2026-11-02T12:21:49.2756740Z test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+check (macos-latest)	Run cargo test --workspace --locked	2026-11-02T12:21:50.0762470Z test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.79s
+check (macos-latest)	Run cargo test --workspace --locked	2026-11-02T12:21:50.0768020Z ^[[1m^[[92m     Running^[[0m tests/c24_text_layout.rs (target/debug/deps/c24_text_layout-8d95c2c7edcc071a)
+check (macos-latest)	Run cargo test --workspace --locked	2026-11-02T12:21:50.3685310Z test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.27s
+check (macos-latest)	Run cargo test --workspace --locked	2026-11-02T12:21:50.3691140Z ^[[1m^[[92m     Running^[[0m tests/c24_topology.rs (target/debug/deps/c24_topology-8ffa857c13cd0222)
+check (macos-latest)	Run cargo test --workspace --locked	2026-11-02T12:21:50.9919030Z test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.60s
+check (macos-latest)	Run cargo test --workspace --locked	2026-11-02T12:21:50.9924840Z ^[[1m^[[92m     Running^[[0m tests/c24_vectorize.rs (target/debug/deps/c24_vectorize-e7911015788ccfc9)
+check (macos-latest)	Run cargo test --workspace --locked	2026-11-02T12:21:57.6614830Z test result: ok. 11 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 6.65s
+check (macos-latest)	Run cargo test --workspace --locked	2026-11-02T12:23:11.8362930Z test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 74.15s
+check (macos-latest)	Run cargo test --workspace --locked	2026-11-02T12:23:11.8445960Z test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+check (macos-latest)	Run cargo test --workspace --locked	2026-11-02T12:23:12.0379380Z test result: ok. 8 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.18s
+check (macos-latest)	Run cargo test --workspace --locked	2026-11-02T12:23:15.3335190Z test result: ok. 7 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 3.28s
+check (macos-latest)	Run cargo test --workspace --locked	2026-11-02T12:23:17.3723160Z test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 2.03s
+check (macos-latest)	Run cargo test --workspace --locked	2026-11-02T12:23:31.5957370Z test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 14.21s
+check (macos-latest)	Run cargo test --workspace --locked	2026-11-02T12:23:33.7784140Z test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 2.17s
+check (macos-latest)	Run cargo test --workspace --locked	2026-11-02T12:24:15.0556450Z test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 41.26s
+check (macos-latest)	Run cargo test --workspace --locked	2026-11-02T12:24:15.3932700Z test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.32s
+check (macos-latest)	Run cargo test --workspace --locked	2026-11-02T12:24:18.8336700Z test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 3.42s
+check (macos-latest)	Run cargo test --workspace --locked	2026-11-02T12:24:19.4937090Z test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.55s
+check (macos-latest)	Run cargo test --workspace --locked	2026-11-02T12:24:19.5874430Z test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+check (macos-latest)	Run cargo test --workspace --locked	2026-11-02T12:24:19.5881760Z ^[[1m^[[92m     Running^[[0m tests/c24_decode_fuzz.rs (target/debug/deps/c24_decode_fuzz-342af915308b9314)
+check (macos-latest)	Run cargo test --workspace --locked	2026-11-02T12:24:19.7855680Z test result: ok. 2 passed; 0 failed; 1 ignored; 0 measured; 0 filtered out; finished in 0.18s
+check (macos-latest)	Run cargo test --workspace --locked	2026-11-02T12:24:19.7856750Z ^[[1m^[[92m     Running^[[0m tests/c24_image.rs (target/debug/deps/c24_image-04e136135378d037)
+check (macos-latest)	Run cargo test --workspace --locked	2026-11-02T12:24:19.9751260Z test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.06s
+check (macos-latest)	Run cargo test --workspace --locked	2026-11-02T12:24:19.9878920Z test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+check (macos-latest)	Run cargo test --workspace --locked	2026-11-02T12:24:20.3584830Z test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.14s
+check (macos-latest)	Run cargo test --workspace --locked	2026-11-02T12:24:27.7485940Z test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 7.24s
+check (macos-latest)	Run cargo test --workspace --locked	2026-11-02T12:24:31.0230350Z test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 3.24s
+check (macos-latest)	Run cargo test --workspace --locked	2026-11-02T12:24:31.1554090Z test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.11s
+check (macos-latest)	Run cargo test --workspace --locked	2026-11-02T12:24:31.5653690Z test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.39s
+check (macos-latest)	Run cargo test --workspace --locked	2026-11-02T12:24:32.0095340Z test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.42s
+check (macos-latest)	Run cargo test --workspace --locked	2026-11-02T12:24:32.0386310Z test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 1 filtered out; finished in 0.00s
+check (macos-latest)	Run cargo test --workspace --locked	2026-11-02T12:24:32.0598650Z test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 1 filtered out; finished in 0.00s
+check (macos-latest)	Run cargo test --workspace --locked	2026-11-02T12:24:32.6183650Z test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.54s
+check (macos-latest)	Run cargo test --workspace --locked	2026-11-02T12:24:32.9884930Z test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.35s
+check (macos-latest)	Run cargo test --workspace --locked	2026-11-02T12:24:33.4318350Z test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.43s
+check (macos-latest)	Run cargo test --workspace --locked	2026-11-02T12:24:33.8579330Z test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.40s
+check (macos-latest)	Run cargo test --workspace --locked	2026-11-02T12:24:34.2460910Z test result: ok. 1 passed; 0 failed; 1 ignored; 0 measured; 0 filtered out; finished in 0.36s
+check (macos-latest)	Run cargo test --workspace --locked	2026-11-02T12:24:34.2715770Z test result: ok. 0 passed; 0 failed; 2 ignored; 0 measured; 0 filtered out; finished in 0.00s
+check (macos-latest)	Run cargo test --workspace --locked	2026-11-02T12:24:48.1674660Z test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 13.88s
+check (macos-latest)	Run cargo test --workspace --locked	2026-11-02T12:24:49.0976820Z test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.89s
+check (macos-latest)	Run cargo test --workspace --locked	2026-11-02T12:24:50.8315000Z test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.70s
+check (macos-latest)	Run cargo test --workspace --locked	2026-11-02T12:24:51.3588610Z test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.50s
+check (macos-latest)	Run cargo test --workspace --locked	2026-11-02T12:24:53.1766790Z test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.80s
+check (macos-latest)	Run cargo test --workspace --locked	2026-11-02T12:24:53.5425100Z test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.34s
+check (macos-latest)	Run cargo test --workspace --locked	2026-11-02T12:24:54.0102090Z test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.45s
+check (macos-latest)	Run cargo test --workspace --locked	2026-11-02T12:24:54.7177060Z test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.69s
+check (macos-latest)	Run cargo test --workspace --locked	2026-11-02T12:24:55.2590590Z test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.52s
+check (macos-latest)	Run cargo test --workspace --locked	2026-11-02T12:24:56.6748990Z test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.39s
+check (macos-latest)	Run cargo test --workspace --locked	2026-11-02T12:25:03.8428230Z test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 7.15s
+check (macos-latest)	Run cargo test --workspace --locked	2026-11-02T12:25:11.4319150Z test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 7.56s
+check (macos-latest)	Run cargo test --workspace --locked	2026-11-02T12:25:38.5752960Z test result: ok. 14 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 27.11s
+check (macos-latest)	Run cargo test --workspace --locked	2026-11-02T12:25:38.7011830Z test result: ok. 43 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.10s
+check (macos-latest)	Run cargo test --workspace --locked	2026-11-02T12:25:39.9429950Z test result: ok. 39 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.23s
+check (macos-latest)	Run cargo test --workspace --locked	2026-11-02T12:25:43.8507570Z test result: ok. 39 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 3.88s
+check (macos-latest)	Run cargo test --workspace --locked	2026-11-02T12:25:43.9544210Z test result: ok. 11 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.09s
+check (macos-latest)	Run cargo test --workspace --locked	2026-11-02T12:25:44.4849590Z test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.52s
+check (macos-latest)	Run cargo test --workspace --locked	2026-11-02T12:25:44.6541620Z test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.16s
+check (macos-latest)	Run cargo test --workspace --locked	2026-11-02T12:25:44.6704470Z test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+check (macos-latest)	Run cargo test --workspace --locked	2026-11-02T12:25:44.6817090Z test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+check (macos-latest)	Run cargo test --workspace --locked	2026-11-02T12:25:44.7874690Z test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.10s
+check (macos-latest)	Run cargo test --workspace --locked	2026-11-02T12:25:44.9158470Z test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.12s
+check (macos-latest)	Run cargo test --workspace --locked	2026-11-02T12:25:45.0630860Z test result: ok. 15 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.13s
+check (macos-latest)	Run cargo test --workspace --locked	2026-11-02T12:25:45.2085080Z test result: ok. 18 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.13s
+check (macos-latest)	Run cargo test --workspace --locked	2026-11-02T12:25:51.4839340Z test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 6.26s
+check (macos-latest)	Run cargo test --workspace --locked	2026-11-02T12:25:55.5631730Z test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 4.06s
+check (macos-latest)	Run cargo test --workspace --locked	2026-11-02T12:25:55.6331020Z test result: ok. 19 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.06s
+check (macos-latest)	Run cargo test --workspace --locked	2026-11-02T12:25:56.0471760Z test result: ok. 8 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.40s
+check (macos-latest)	Run cargo test --workspace --locked	2026-11-02T12:25:56.7631980Z test result: ok. 7 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.70s
+check (macos-latest)	Run cargo test --workspace --locked	2026-11-02T12:25:58.9903790Z test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 2.21s
+check (macos-latest)	Run cargo test --workspace --locked	2026-11-02T12:26:05.5212130Z test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 6.52s
+check (macos-latest)	Run cargo test --workspace --locked	2026-11-02T12:26:06.6263860Z test result: ok. 14 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.08s
+check (macos-latest)	Run cargo test --workspace --locked	2026-11-02T12:26:08.1839560Z test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.54s
+check (macos-latest)	Run cargo test --workspace --locked	2026-11-02T12:26:08.1968370Z test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+check (macos-latest)	Run cargo test --workspace --locked	2026-11-02T12:26:08.5151540Z test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.31s
+check (macos-latest)	Run cargo test --workspace --locked	2026-11-02T12:26:09.5163500Z test result: ok. 1 passed; 0 failed; 1 ignored; 0 measured; 0 filtered out; finished in 0.99s
+check (macos-latest)	Run cargo test --workspace --locked	2026-11-02T12:26:09.5319010Z test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+check (macos-latest)	Run cargo test --workspace --locked	2026-11-02T12:26:09.8056060Z test result: ok. 9 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.26s
+check (macos-latest)	Run cargo test --workspace --locked	2026-11-02T12:26:09.8212600Z test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+check (macos-latest)	Run cargo test --workspace --locked	2026-11-02T12:26:09.8360730Z test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+check (macos-latest)	Run cargo test --workspace --locked	2026-11-02T12:26:09.8534940Z test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+check (macos-latest)	Run cargo test --workspace --locked	2026-11-02T12:26:11.1400000Z test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.27s
+check (macos-latest)	Run cargo test --workspace --locked	2026-11-02T12:26:12.6867950Z test result: ok. 2 passed; 0 failed; 1 ignored; 0 measured; 0 filtered out; finished in 1.53s
+check (macos-latest)	Run cargo test --workspace --locked	2026-11-02T12:26:13.7761050Z test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.08s
+check (macos-latest)	Run cargo test --workspace --locked	2026-11-02T12:26:13.7927040Z test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+check (macos-latest)	Run cargo test --workspace --locked	2026-11-02T12:26:13.8074870Z test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+check (macos-latest)	Run cargo test --workspace --locked	2026-11-02T12:26:13.8205140Z test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+check (macos-latest)	Run cargo test --workspace --locked	2026-11-02T12:26:13.8862710Z test result: ok. 71 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.05s
+check (macos-latest)	Run cargo test --workspace --locked	2026-11-02T12:26:13.9215300Z test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 9 filtered out; finished in 0.02s
+check (macos-latest)	Run cargo test --workspace --locked	2026-11-02T12:26:14.0367900Z test result: ok. 9 passed; 0 failed; 1 ignored; 0 measured; 0 filtered out; finished in 0.14s
+check (macos-latest)	Run cargo test --workspace --locked	2026-11-02T12:26:14.0788010Z test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 10 filtered out; finished in 0.03s
+check (macos-latest)	Run cargo test --workspace --locked	2026-11-02T12:26:15.4548000Z test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 10 filtered out; finished in 1.34s
+check (macos-latest)	Run cargo test --workspace --locked	2026-11-02T12:26:36.1183350Z test result: ok. 9 passed; 0 failed; 2 ignored; 0 measured; 0 filtered out; finished in 22.07s
+check (macos-latest)	Run cargo test --workspace --locked	2026-11-02T12:26:38.3822190Z test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 7 filtered out; finished in 2.25s
+check (macos-latest)	Run cargo test --workspace --locked	2026-11-02T12:26:38.5466850Z test result: ok. 6 passed; 0 failed; 2 ignored; 0 measured; 0 filtered out; finished in 2.42s
+check (macos-latest)	Run cargo test --workspace --locked	2026-11-02T12:26:38.5656920Z test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+check (macos-latest)	Run cargo test --workspace --locked	2026-11-02T12:26:38.6308490Z test result: ok. 1 passed; 0 failed; 2 ignored; 0 measured; 0 filtered out; finished in 0.05s
+check (macos-latest)	Run cargo test --workspace --locked	2026-11-02T12:26:38.9718970Z test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.33s
+check (macos-latest)	Run cargo test --workspace --locked	2026-11-02T12:26:39.1076320Z test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.12s
+check (macos-latest)	Run cargo test --workspace --locked	2026-11-02T12:26:39.3620500Z test result: ok. 11 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.24s
+check (macos-latest)	Run cargo test --workspace --locked	2026-11-02T12:26:40.4522640Z test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.08s
+check (macos-latest)	Run cargo test --workspace --locked	2026-11-02T12:26:40.4722340Z test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+check (macos-latest)	Run cargo test --workspace --locked	2026-11-02T12:26:40.4935500Z test result: ok. 9 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+check (macos-latest)	Run cargo test --workspace --locked	2026-11-02T12:26:40.5204780Z test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.02s
+check (macos-latest)	Run cargo test --workspace --locked	2026-11-02T12:26:40.5372710Z test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+check (macos-latest)	Run cargo test --workspace --locked	2026-11-02T12:26:40.5663980Z test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+check (macos-latest)	Run cargo test --workspace --locked	2026-11-02T12:26:40.5780000Z test result: ok. 0 passed; 0 failed; 1 ignored; 0 measured; 0 filtered out; finished in 0.00s
+check (macos-latest)	Run cargo test --workspace --locked	2026-11-02T12:26:40.5877680Z test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+check (macos-latest)	Run cargo test --workspace --locked	2026-11-02T12:26:40.6198020Z test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.02s
+check (macos-latest)	Run cargo test --workspace --locked	2026-11-02T12:26:40.6301500Z test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+check (macos-latest)	Run cargo test --workspace --locked	2026-11-02T12:26:45.0239100Z test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 4.38s
+check (macos-latest)	Run cargo test --workspace --locked	2026-11-02T12:26:45.0243470Z ^[[1m^[[92m     Running^[[0m tests/c24_centre.rs (target/debug/deps/c24_centre-1e770c51e5d24107)
+check (macos-latest)	Run cargo test --workspace --locked	2026-11-02T12:26:45.0408900Z test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+check (macos-latest)	Run cargo test --workspace --locked	2026-11-02T12:26:45.0411170Z ^[[1m^[[92m     Running^[[0m tests/c24_flatten_phases.rs (target/debug/deps/c24_flatten_phases-65f51606f00c6628)
+check (macos-latest)	Run cargo test --workspace --locked	2026-11-02T12:26:45.0511480Z test result: ok. 0 passed; 0 failed; 1 ignored; 0 measured; 0 filtered out; finished in 0.00s
+check (macos-latest)	Run cargo test --workspace --locked	2026-11-02T12:26:45.0515840Z ^[[1m^[[92m     Running^[[0m tests/c24_properties.rs (target/debug/deps/c24_properties-d0f2f815e066a90f)
+check (macos-latest)	Run cargo test --workspace --locked	2026-11-02T12:26:46.1854360Z test result: ok. 8 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.12s
+check (macos-latest)	Run cargo test --workspace --locked	2026-11-02T12:26:46.1859630Z ^[[1m^[[92m     Running^[[0m tests/c24_trace.rs (target/debug/deps/c24_trace-63edd1dd6999e3ba)
+check (macos-latest)	Run cargo test --workspace --locked	2026-11-02T12:26:46.2371750Z test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.04s
+check (macos-latest)	Run cargo test --workspace --locked	2026-11-02T12:26:46.2374530Z ^[[1m^[[92m     Running^[[0m tests/c24_vectorize_unit.rs (target/debug/deps/c24_vectorize_unit-da3834c956de743c)
+check (macos-latest)	Run cargo test --workspace --locked	2026-11-02T12:26:46.2519380Z test result: ok. 7 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+check (macos-latest)	Run cargo test --workspace --locked	2026-11-02T12:26:47.3953630Z test result: ok. 7 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.13s
+check (macos-latest)	Run cargo test --workspace --locked	2026-11-02T12:26:47.5975220Z test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+check (macos-latest)	Run cargo test --workspace --locked	2026-11-02T12:26:47.6634200Z test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+check (macos-latest)	Run cargo test --workspace --locked	2026-11-02T12:26:47.7172640Z test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+check (macos-latest)	Run cargo test --workspace --locked	2026-11-02T12:26:48.5023520Z test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+check (macos-latest)	Run cargo test --workspace --locked	2026-11-02T12:26:48.6927310Z test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+check (macos-latest)	Run cargo test --workspace --locked	2026-11-02T12:26:50.3894230Z test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+check (macos-latest)	Run cargo test --workspace --locked	2026-11-02T12:26:50.4372500Z test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+check (macos-latest)	Run cargo test --workspace --locked	2026-11-02T12:26:50.4998680Z test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+check (macos-latest)	Run cargo test --workspace --locked	2026-11-02T12:26:50.5504870Z test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+check (macos-latest)	Run cargo test --workspace --locked	2026-11-02T12:26:50.6793860Z test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+check (macos-latest)	Run cargo test --workspace --locked	2026-11-02T12:26:51.4446550Z test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+check (macos-latest)	Run cargo test --workspace --locked	2026-11-02T12:26:51.6107380Z test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+check (macos-latest)	Run cargo test --workspace --locked	2026-11-02T12:26:51.7376490Z test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+check (macos-latest)	Run cargo test --workspace --locked	2026-11-02T12:26:51.8192900Z test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+check (macos-latest)	Run cargo test --workspace --locked	2026-11-02T12:26:51.9079150Z test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+check (macos-latest)	Run cargo test --workspace --locked	2026-11-02T12:26:52.2337290Z test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+check (macos-latest)	Desktop host with the M0 diagnostics feature (C0.4 gating) — clippy and tests	2026-11-02T12:28:42.9777610Z test result: ok. 32 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.78s
+check (macos-latest)	Desktop host with the M0 diagnostics feature (C0.4 gating) — clippy and tests	2026-11-02T12:28:42.9973020Z test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+check (macos-latest)	Desktop host with the M0 diagnostics feature (C0.4 gating) — clippy and tests	2026-11-02T12:28:43.7646080Z test result: ok. 11 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.76s
+check (macos-latest)	Desktop host with the M0 diagnostics feature (C0.4 gating) — clippy and tests	2026-11-02T12:28:44.2028990Z test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+check (macos-latest)	Test-only assets stay out of the product	﻿2026-11-02T12:28:51.1959550Z ##[group]Run python scripts/check-test-only-assets.py || python3 scripts/check-test-only-assets.py
+check (macos-latest)	Test-only assets stay out of the product	2026-11-02T12:28:51.1960060Z ^[[36;1mpython scripts/check-test-only-assets.py || python3 scripts/check-test-only-assets.py^[[0m
+check (macos-latest)	Test-only assets stay out of the product	2026-11-02T12:28:51.6227600Z ok: 1 test-only asset(s), licences beside them, none in product sources
+check (macos-latest)	MCP protocol conformance with the official Python SDK client (C1.4; 11 §14.7), measurements	2026-11-02T12:30:49.5742480Z   ok: no test-only feature (test-hooks) in the tt-headless product graph
+check (macos-latest)	MCP protocol conformance with the official Python SDK client (C1.4; 11 §14.7), measurements	2026-11-02T12:30:49.5749310Z   ok: no test-only feature (test-hooks) in the tt-desktop product graph

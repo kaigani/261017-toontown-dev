@@ -1,0 +1,16 @@
+bundle (windows-latest)	The default build carries no test-only asset (ADR-0003 rule 7)	﻿2026-11-02T12:10:20.4369408Z ##[group]Run if [ "$RUNNER_OS" = "Windows" ]; then PY=python; else PY=python3; fi
+bundle (windows-latest)	The default build carries no test-only asset (ADR-0003 rule 7)	2026-11-02T12:10:20.4370234Z ^[[36;1mif [ "$RUNNER_OS" = "Windows" ]; then PY=python; else PY=python3; fi^[[0m
+bundle (windows-latest)	The default build carries no test-only asset (ADR-0003 rule 7)	2026-11-02T12:10:20.4370811Z ^[[36;1m$PY scripts/check-test-only-assets.py --bundle target/release/bundle^[[0m
+bundle (windows-latest)	The default build carries no test-only asset (ADR-0003 rule 7)	2026-11-02T12:10:20.4371542Z ^[[36;1mif [ "$RUNNER_OS" = "Windows" ]; then $PY scripts/check-test-only-assets.py --bundle target/release/toontown.exe; fi^[[0m
+bundle (windows-latest)	The default build carries no test-only asset (ADR-0003 rule 7)	2026-11-02T12:10:20.4390653Z shell: C:\Program Files\Git\bin\bash.EXE --noprofile --norc -e -o pipefail {0}
+bundle (windows-latest)	The default build carries no test-only asset (ADR-0003 rule 7)	2026-11-02T12:10:20.4391124Z env:
+bundle (windows-latest)	The default build carries no test-only asset (ADR-0003 rule 7)	2026-11-02T12:10:20.4391393Z   CARGO_TERM_COLOR: always
+bundle (windows-latest)	The default build carries no test-only asset (ADR-0003 rule 7)	2026-11-02T12:10:20.4391685Z   CARGO_INCREMENTAL: 0
+bundle (windows-latest)	The default build carries no test-only asset (ADR-0003 rule 7)	2026-11-02T12:10:20.4391980Z   RUST_BACKTRACE: 1
+bundle (windows-latest)	The default build carries no test-only asset (ADR-0003 rule 7)	2026-11-02T12:10:20.4392246Z   CACHE_ON_FAILURE: false
+bundle (windows-latest)	The default build carries no test-only asset (ADR-0003 rule 7)	2026-11-02T12:10:20.4392602Z   PNPM_HOME: C:\Users\runneradmin\setup-pnpm\node_modules\.bin
+bundle (windows-latest)	The default build carries no test-only asset (ADR-0003 rule 7)	2026-11-02T12:10:20.4393018Z ##[endgroup]
+bundle (windows-latest)	The default build carries no test-only asset (ADR-0003 rule 7)	2026-11-02T12:10:21.9205693Z scanned 1 product file(s) under target\release\bundle for 3 samples
+bundle (windows-latest)	The default build carries no test-only asset (ADR-0003 rule 7)	2026-11-02T12:10:21.9207307Z ok: 1 test-only asset(s), licences beside them, none in product sources or the bundle
+bundle (windows-latest)	The default build carries no test-only asset (ADR-0003 rule 7)	2026-11-02T12:10:22.0791693Z scanned 1 product file(s) under target\release\toontown.exe for 3 samples
+bundle (windows-latest)	The default build carries no test-only asset (ADR-0003 rule 7)	2026-11-02T12:10:22.0792973Z ok: 1 test-only asset(s), licences beside them, none in product sources or the bundle

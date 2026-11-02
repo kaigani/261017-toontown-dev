@@ -121,7 +121,7 @@ class ReadinessCoverage(unittest.TestCase):
         found=set(); routes=[]
         for p in (ROOT/'crates').glob('*/tests/*.rs'):
             if p.name.startswith('c24_r1_'): continue
-            s=p.read_text()
+            s=p.read_text(encoding='utf-8')
             if ('vector/tests/oracle' in s or 'mod oracle;' in s) and 'TestRunner' in s:
                 commands=set(re.findall(r'"(draw\.[A-Za-z.]+)"',s))
                 found |= commands; routes.append(str(p.relative_to(ROOT)))

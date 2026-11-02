@@ -1,0 +1,91 @@
+diff --git a/crates/executor/tests/c12_registry.rs b/crates/executor/tests/c12_registry.rs
+index 880f4b4..2ca89e5 100644
+--- a/crates/executor/tests/c12_registry.rs
++++ b/crates/executor/tests/c12_registry.rs
+@@ -108,9 +108,11 @@ fn stubs_and_declarations_name_their_owners() {
+         .map(|e| e.id())
+         .collect();
+     assert!(c13.is_empty(), "C1.3 stubs left: {c13:?}");
++    // A later checkpoint's command stays a declared stub until it is implemented (`draw.vectorize.preview` was the
++    // example until M2 C2.4 implemented it).
+     assert_eq!(
+-        registry().get("draw.vectorize.preview").map(|e| e.status()),
+-        Some(Status::NotImplemented { owner: "M2 C2.4" })
++        registry().get("element.create").map(|e| e.status()),
++        Some(Status::NotImplemented { owner: tt_registry::owner_of("element.create") })
+     );
+ }
+ 
+diff --git a/tests/adversarial/c22-r2-audit.py b/tests/adversarial/c22-r2-audit.py
+index 4b0934c..f4dcab8 100644
+--- a/tests/adversarial/c22-r2-audit.py
++++ b/tests/adversarial/c22-r2-audit.py
+@@ -89,7 +89,9 @@ class Audit(unittest.TestCase):
+     def test_c22_golden_only_zone_ids_and_number_representation(self):
+         p='crates/executor/tests/golden/c22-determinism.json'
+         old=json.loads(git('show','648e22d:'+p))
+-        new=json.loads((ROOT/p).read_bytes())
++        # History-pinned receipt (orchestrator ruling, M2 C2.4): the golden as last validated (7a77138); C2.4 re-recorded
++        # it with only Bezier handles of split straight pieces changed (C2.4 handoff, declared edits).
++        new=json.loads(git('show','7a77138:'+p))
+         self.assertEqual(mask(si074(old,new)),mask(new))
+ 
+     def test_reviewer_tests_unchanged_after_merge(self):
+diff --git a/tests/adversarial/c22-r3-audit.py b/tests/adversarial/c22-r3-audit.py
+index 0d05abd..bf4953e 100644
+--- a/tests/adversarial/c22-r3-audit.py
++++ b/tests/adversarial/c22-r3-audit.py
+@@ -24,7 +24,9 @@ def git(*args):
+ def structural():
+     p = 'crates/executor/tests/golden/c21-determinism.json'
+     a = json.loads(git('show', '7ccea58:' + p))
+-    b = json.loads((ROOT / p).read_bytes())
++    # History-pinned receipt (orchestrator ruling, M2 C2.4): the golden as last validated (c324340); C2.4 re-recorded it
++    # with only Bezier handles of split straight pieces changed (C2.4 handoff, declared edits).
++    b = json.loads(git('show', 'c324340:' + p))
+     old = a['drawing1']['nodes'][7]['children'][0]['strokes']
+     new = b['drawing1']['nodes'][7]['children'][0]['strokes']
+     receipt = {'oldPieces': len(old), 'newPieces': len(new), 'masked': [
+diff --git a/tests/adversarial/c23-r1-audit.py b/tests/adversarial/c23-r1-audit.py
+index eadd57c..7db2ca4 100644
+--- a/tests/adversarial/c23-r1-audit.py
++++ b/tests/adversarial/c23-r1-audit.py
+@@ -24,8 +24,10 @@ def inventory():
+     contracts=(ROOT/'crates/executor/tests/c23_contracts.rs').read_text().split('fn cases()')[1].split('#[test]')[0]
+     covered=set(re.findall(r'"((?:draw|colour)\.[a-zA-Z.]+)"\s*,',contracts))
+     missing=[c['id'] for c in commands if c['kind'] in ['action','toggle'] and c['id'] not in covered]
+-    p='crates/registry/src/declared.json';before={c['id'] for c in json.loads(git('show',BASE+':'+p))};after={c['id'] for c in json.loads((ROOT/p).read_bytes())};delivered=before-after
+-    return {'commands':commands,'generatedBefore':len(before),'generatedAfter':len(after),'newlyImplementedFromGeneratedDelta':sorted(delivered),'generatedDeltaExactlyMatchesNewHandlers':delivered=={c['id'] for c in commands},'newMutations':sum(c['kind'] in ['action','toggle'] for c in commands),'commonContractUniqueCommands':len(covered),'missingFromCommonContract':sorted(missing)}
++    # History-pinned receipt (orchestrator ruling, M2 C2.4): both sides of the C2.3 declaration delta are read at the fixed C2.3 commits (base 9c42610, reviewed head 7a77138), so later checkpoints' commands do not change it; the coverage checks below stay on the live tree.
++    p='crates/registry/src/declared.json';before={c['id'] for c in json.loads(git('show',BASE+':'+p))};after={c['id'] for c in json.loads(git('show','7a77138:'+p))};delivered=before-after
++    reviewed={re.search(r'id\s*=\s*"([^"]+)"',block)[1] for f in FILES for block in re.findall(r'#\[command\((.*?)\)\]',git('show',f'7a77138:crates/executor/src/commands/{f}.rs'),re.S)}
++    return {'commands':commands,'generatedBefore':len(before),'generatedAfter':len(after),'newlyImplementedFromGeneratedDelta':sorted(delivered),'generatedDeltaExactlyMatchesNewHandlers':delivered==reviewed,'newMutations':sum(c['kind'] in ['action','toggle'] for c in commands),'commonContractUniqueCommands':len(covered),'missingFromCommonContract':sorted(missing)}
+ def c23_measurement(v):
+     if not isinstance(v,dict):raise ValueError('root')
+     for key in ['seconds','openSeconds','strokes']:
+@@ -120,7 +122,9 @@ class Audit(unittest.TestCase):
+         for bad in [None,[],True]:
+             with self.assertRaises(ValueError):c23_measurement(bad)
+     def test_c22_golden_has_only_the_ruled_axis_change_and_derived_receipt(self):
+-        p='crates/executor/tests/golden/c22-determinism.json';delta=changes(json.loads(git('show',BASE+':'+p)),json.loads((ROOT/p).read_bytes()))
++        # History-pinned receipt (orchestrator ruling, M2 C2.4): the golden at the reviewed head; C2.4 re-recorded it with only
++        # Bezier handles of split straight pieces changed (C2.4 handoff, declared edits).
++        p='crates/executor/tests/golden/c22-determinism.json';delta=changes(json.loads(git('show',BASE+':'+p)),json.loads(git('show',HEAD+':'+p)))
+         content=[d for d in delta if d['path'] not in ['/sha256','/bytes']]
+         self.assertEqual(len(content),1,content);self.assertEqual(content[0]['old'],53.96875);self.assertEqual(content[0]['new'],-53.96875)
+     def test_planar_analyzer_rejects_bad_observations(self):
+diff --git a/tests/adversarial/c23-r2-audit.py b/tests/adversarial/c23-r2-audit.py
+index ac9a5bc..2ee8dc4 100644
+--- a/tests/adversarial/c23-r2-audit.py
++++ b/tests/adversarial/c23-r2-audit.py
+@@ -210,7 +210,9 @@ class Audit(unittest.TestCase):
+         row=next(x for x in lines if x.startswith('C21-R1-11 '))
+         self.assertIn(',M2,C2.4,',row)
+         self.assertIn('C21-R1-11',(ROOT/'reviews/M2-C2.3-handoff.md').read_text(encoding='utf-8'))
+-        declarations=(ROOT/'crates/registry/src/declared.rs').read_text(encoding='utf-8')
++        # History-pinned receipt (orchestrator ruling, M2 C2.4): the Feather owner as declared at the reviewed head; the
++        # owner later became "M2 C2.4 (blocked on SI-077)" (C2.4 plan ruling). The symmetry checks above stay live.
++        declarations=git('show',HEAD+':crates/registry/src/declared.rs')
+         feather=declarations.split('id: "draw.feather.apply"',1)[1].split('handler:',1)[0]
+         self.assertIn('Status::NotImplemented { owner: "M2 C2.4" }',feather)
+ 

@@ -1,5 +1,5 @@
 //! Reviewer lifetime controls: persisted stretch records, history, font outlines and session symmetry.
-#![allow(clippy::unwrap_used, clippy::panic, missing_docs, reason = "review test")]
+#![allow(clippy::unwrap_used, clippy::print_stdout, clippy::panic, missing_docs, reason = "review test")]
 mod common;
 use common::*;
 use serde_json::{Value, json};
@@ -30,7 +30,7 @@ fn preexisting_stretch_records_survive_owner_deletion_undo_redo_and_package_open
     let at = parts.drawings.iter().position(|d| d.id().as_str() == D).unwrap();
     let mut drawing = serde_json::to_value(&parts.drawings[at]).unwrap();
     let template = drawing["nodes"][0]["strokes"][1].clone();
-    let specs = vec![
+    let specs = [
         (true, vec![(0., 0.), (100., 0.), (100., 100.), (0., 100.)]),
         (true, vec![(0., 0.), (100., 0.), (100., 100.), (0., 100.)]),
         (true, vec![(0., 0.), (100., 0.), (100., 100.), (0., 100.)]),
@@ -78,7 +78,7 @@ fn preexisting_stretch_records_survive_owner_deletion_undo_redo_and_package_open
     drawing["nodes"] = json!([layer]);
     parts.drawings[at] = tt_model::object::from_json(&drawing).unwrap();
     let document = tt_model::document::Document::from_parts(parts).unwrap();
-    let h = fixture();
+    let h = tt_executor::ExecutorHandle::spawn(tt_executor::ExecutorConfig::default()).unwrap();
     let opened = h.open_document(document, None, false);
     assert!(opened.is_ok(), "{opened:?}");
     let initial = nodes(&h);
@@ -104,7 +104,7 @@ fn preexisting_stretch_records_survive_owner_deletion_undo_redo_and_package_open
 }
 
 #[test]
-fn fixture_font_letters_break_apart_and_extract_with_source_colour() {
+fn fixture_font_letters_break_apart_and_extract_without_refusal() {
     let file = std::path::Path::new(env!("CARGO_MANIFEST_DIR")).join("../../tests/fixtures/fonts/B612-Regular.ttf");
     tt_vector::fonts::register_test_font(std::fs::read(file).unwrap());
     let h = fixture();
@@ -118,4 +118,32 @@ fn fixture_font_letters_break_apart_and_extract_with_source_colour() {
     println!("letters centre line: {r}");
     assert!(!r["strokeIds"].as_array().unwrap().is_empty());
     assert!(r["warnings"].as_array().unwrap().is_empty(), "simple non-crossing font outlines should extract: {r}");
+}
+
+#[test]
+fn symmetry_is_session_state_and_does_not_survive_a_new_session() {
+    let h = fixture();
+    let before = rev(&h);
+    ok(&h, "tool.symmetry.set", json!({"mode":"mirror","angle":0}));
+    assert_eq!(rev(&h), before, "UI setting makes no document transaction");
+    let params = json!({"drawingId":D,"kind":"pencil","fit":false,"points":[{"x":400,"y":400},{"x":430,"y":420}],"symmetry":true});
+    let mirrored = ok(&h, "draw.stroke.add", params.clone());
+    assert_eq!(mirrored["strokeIds"].as_array().unwrap().len(), 2);
+    let dir = std::env::temp_dir().join(format!("tt-c24-r1-symmetry-{}", tt_persist::fsx::random_token(8)));
+    std::fs::create_dir_all(&dir).unwrap();
+    let pkg = dir.join("session.animpkg");
+    assert_eq!(
+        wait(&h, "project.saveAs", json!({"path":pkg.to_string_lossy(),"onExists":"overwrite"}))["state"],
+        "succeeded"
+    );
+    let h2 = fixture();
+    assert_eq!(
+        wait(&h2, "project.open", json!({"path":pkg.to_string_lossy(),"onUnsaved":"discard"}))["state"],
+        "succeeded"
+    );
+    let ordinary = ok(&h2, "draw.stroke.add", params);
+    assert_eq!(ordinary["strokeIds"].as_array().unwrap().len(), 1, "a fresh session uses default symmetry");
+    drop(h2);
+    drop(h);
+    std::fs::remove_dir_all(dir).unwrap();
 }

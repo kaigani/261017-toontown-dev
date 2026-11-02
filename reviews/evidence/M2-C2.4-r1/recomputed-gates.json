@@ -1,0 +1,230 @@
+[
+  {
+    "path": "reviews\\evidence\\M2-C2.4\\c22-t2\\macOS\\flatten-100k-macos.json",
+    "strokeAddP50Seconds": 11.965955792,
+    "flattenP50Seconds": 25.057293583,
+    "budgeted": [
+      {
+        "seconds": 1.049906625,
+        "openSeconds": 5.189717542,
+        "status": "Error",
+        "error": {
+          "code": "limit.exceeded"
+        },
+        "committed": false,
+        "unchangedOnRefusal": true
+      },
+      {
+        "seconds": 1.297724875,
+        "openSeconds": 4.508037167,
+        "status": "Error",
+        "error": {
+          "code": "limit.exceeded"
+        },
+        "committed": false,
+        "unchangedOnRefusal": true
+      },
+      {
+        "seconds": 1.077567625,
+        "openSeconds": 3.899546291,
+        "status": "Error",
+        "error": {
+          "code": "limit.exceeded"
+        },
+        "committed": false,
+        "unchangedOnRefusal": true
+      },
+      {
+        "seconds": 0.9125405,
+        "openSeconds": 3.226939333,
+        "status": "Error",
+        "error": {
+          "code": "limit.exceeded"
+        },
+        "committed": false,
+        "unchangedOnRefusal": true
+      },
+      {
+        "seconds": 0.952199375,
+        "openSeconds": 3.337350042,
+        "status": "Error",
+        "error": {
+          "code": "limit.exceeded"
+        },
+        "committed": false,
+        "unchangedOnRefusal": true
+      }
+    ]
+  },
+  {
+    "path": "reviews\\evidence\\M2-C2.4\\c22-t2\\Windows\\flatten-100k-windows.json",
+    "strokeAddP50Seconds": 20.4594033,
+    "flattenP50Seconds": 38.0706564,
+    "budgeted": [
+      {
+        "seconds": 1.667073,
+        "openSeconds": 5.7272988,
+        "status": "Error",
+        "error": {
+          "code": "limit.exceeded"
+        },
+        "committed": false,
+        "unchangedOnRefusal": true
+      },
+      {
+        "seconds": 1.6576791,
+        "openSeconds": 5.6774318,
+        "status": "Error",
+        "error": {
+          "code": "limit.exceeded"
+        },
+        "committed": false,
+        "unchangedOnRefusal": true
+      },
+      {
+        "seconds": 1.6361324000000002,
+        "openSeconds": 5.4883367,
+        "status": "Error",
+        "error": {
+          "code": "limit.exceeded"
+        },
+        "committed": false,
+        "unchangedOnRefusal": true
+      },
+      {
+        "seconds": 1.6770801,
+        "openSeconds": 5.3378458,
+        "status": "Error",
+        "error": {
+          "code": "limit.exceeded"
+        },
+        "committed": false,
+        "unchangedOnRefusal": true
+      },
+      {
+        "seconds": 1.5247237999999999,
+        "openSeconds": 5.3263505,
+        "status": "Error",
+        "error": {
+          "code": "limit.exceeded"
+        },
+        "committed": false,
+        "unchangedOnRefusal": true
+      }
+    ]
+  },
+  {
+    "path": "reviews\\evidence\\M2-C2.4\\c22-t2\\run-41425059602-80714a2\\macOS\\flatten-100k-macos.json",
+    "strokeAddP50Seconds": 9.387307333,
+    "flattenP50Seconds": 15.026856333,
+    "budgeted": [
+      {
+        "seconds": 0.651102416,
+        "openSeconds": 2.916370791,
+        "status": "Error",
+        "error": {
+          "code": "limit.exceeded"
+        },
+        "committed": false,
+        "unchangedOnRefusal": true
+      },
+      {
+        "seconds": 0.6654695,
+        "openSeconds": 2.069195958,
+        "status": "Error",
+        "error": {
+          "code": "limit.exceeded"
+        },
+        "committed": false,
+        "unchangedOnRefusal": true
+      },
+      {
+        "seconds": 0.603604833,
+        "openSeconds": 2.065599125,
+        "status": "Error",
+        "error": {
+          "code": "limit.exceeded"
+        },
+        "committed": false,
+        "unchangedOnRefusal": true
+      },
+      {
+        "seconds": 0.611699042,
+        "openSeconds": 1.904093625,
+        "status": "Error",
+        "error": {
+          "code": "limit.exceeded"
+        },
+        "committed": false,
+        "unchangedOnRefusal": true
+      },
+      {
+        "seconds": 0.573448,
+        "openSeconds": 1.86896475,
+        "status": "Error",
+        "error": {
+          "code": "limit.exceeded"
+        },
+        "committed": false,
+        "unchangedOnRefusal": true
+      }
+    ]
+  },
+  {
+    "path": "reviews\\evidence\\M2-C2.4\\c22-t2\\run-41425059602-80714a2\\Windows\\flatten-100k-windows.json",
+    "strokeAddP50Seconds": 21.078848,
+    "flattenP50Seconds": 38.4998972,
+    "budgeted": [
+      {
+        "seconds": 1.6462197,
+        "openSeconds": 5.872198,
+        "status": "Error",
+        "error": {
+          "code": "limit.exceeded"
+        },
+        "committed": false,
+        "unchangedOnRefusal": true
+      },
+      {
+        "seconds": 1.6733003,
+        "openSeconds": 5.6548339,
+        "status": "Error",
+        "error": {
+          "code": "limit.exceeded"
+        },
+        "committed": false,
+        "unchangedOnRefusal": true
+      },
+      {
+        "seconds": 1.6544915,
+        "openSeconds": 5.5559142,
+        "status": "Error",
+        "error": {
+          "code": "limit.exceeded"
+        },
+        "committed": false,
+        "unchangedOnRefusal": true
+      },
+      {
+        "seconds": 1.6412585,
+        "openSeconds": 5.4729581,
+        "status": "Error",
+        "error": {
+          "code": "limit.exceeded"
+        },
+        "committed": false,
+        "unchangedOnRefusal": true
+      },
+      {
+        "seconds": 1.5415299,
+        "openSeconds": 5.3682963,
+        "status": "Error",
+        "error": {
+          "code": "limit.exceeded"
+        },
+        "committed": false,
+        "unchangedOnRefusal": true
+      }
+    ]
+  }
+]

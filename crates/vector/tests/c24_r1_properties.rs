@@ -9,7 +9,7 @@
 //! noding (C22-T2); interior points locate their zones; settling is idempotent.
 //!
 //! Every failing seed found during development is kept below as a fixed regression case (see the C2.4 handoff).
-#![allow(clippy::unwrap_used, clippy::panic, missing_docs, reason = "test")]
+#![allow(clippy::unwrap_used, clippy::print_stdout, clippy::panic, missing_docs, reason = "test")]
 
 mod oracle;
 

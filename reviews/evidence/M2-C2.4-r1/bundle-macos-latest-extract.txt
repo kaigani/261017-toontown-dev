@@ -1,0 +1,14 @@
+bundle (macos-latest)	The default build carries no test-only asset (ADR-0003 rule 7)	﻿2026-11-02T12:13:03.0468470Z ##[group]Run if [ "$RUNNER_OS" = "Windows" ]; then PY=python; else PY=python3; fi
+bundle (macos-latest)	The default build carries no test-only asset (ADR-0003 rule 7)	2026-11-02T12:13:03.0486910Z ^[[36;1mif [ "$RUNNER_OS" = "Windows" ]; then PY=python; else PY=python3; fi^[[0m
+bundle (macos-latest)	The default build carries no test-only asset (ADR-0003 rule 7)	2026-11-02T12:13:03.0487530Z ^[[36;1m$PY scripts/check-test-only-assets.py --bundle target/release/bundle^[[0m
+bundle (macos-latest)	The default build carries no test-only asset (ADR-0003 rule 7)	2026-11-02T12:13:03.0488210Z ^[[36;1mif [ "$RUNNER_OS" = "Windows" ]; then $PY scripts/check-test-only-assets.py --bundle target/release/toontown.exe; fi^[[0m
+bundle (macos-latest)	The default build carries no test-only asset (ADR-0003 rule 7)	2026-11-02T12:13:03.1187450Z shell: /bin/bash --noprofile --norc -e -o pipefail {0}
+bundle (macos-latest)	The default build carries no test-only asset (ADR-0003 rule 7)	2026-11-02T12:13:03.1188990Z env:
+bundle (macos-latest)	The default build carries no test-only asset (ADR-0003 rule 7)	2026-11-02T12:13:03.1189540Z   CARGO_TERM_COLOR: always
+bundle (macos-latest)	The default build carries no test-only asset (ADR-0003 rule 7)	2026-11-02T12:13:03.1190430Z   CARGO_INCREMENTAL: 0
+bundle (macos-latest)	The default build carries no test-only asset (ADR-0003 rule 7)	2026-11-02T12:13:03.1191060Z   RUST_BACKTRACE: 1
+bundle (macos-latest)	The default build carries no test-only asset (ADR-0003 rule 7)	2026-11-02T12:13:03.1195970Z   CACHE_ON_FAILURE: false
+bundle (macos-latest)	The default build carries no test-only asset (ADR-0003 rule 7)	2026-11-02T12:13:03.1196380Z   PNPM_HOME: /Users/runner/setup-pnpm/node_modules/.bin
+bundle (macos-latest)	The default build carries no test-only asset (ADR-0003 rule 7)	2026-11-02T12:13:03.1196790Z ##[endgroup]
+bundle (macos-latest)	The default build carries no test-only asset (ADR-0003 rule 7)	2026-11-02T12:13:04.1015400Z scanned 3 product file(s) under target/release/bundle for 3 samples
+bundle (macos-latest)	The default build carries no test-only asset (ADR-0003 rule 7)	2026-11-02T12:13:04.1016850Z ok: 1 test-only asset(s), licences beside them, none in product sources or the bundle

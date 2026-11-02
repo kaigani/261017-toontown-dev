@@ -1,0 +1,338 @@
+[
+  {
+    "path": "reviews\\evidence\\M2-C2.4\\budgets\\macOS\\aggregate-macos.json",
+    "recomputed": {
+      "/watchdogSeconds": 30,
+      "/repetitions": 5,
+      "/breakApart/characters": 100000,
+      "/breakApart/textAddSeconds": 0.262799292,
+      "/breakApart/observations/*/answeredSeconds": {
+        "n": 5,
+        "min": 0.000705417,
+        "max": 0.003784416,
+        "p50NearestRank": 0.001301916
+      },
+      "/breakApart/observations/*/followingReadSeconds": {
+        "n": 5,
+        "min": 0.000431125,
+        "max": 0.00149675,
+        "p50NearestRank": 0.000747875
+      },
+      "/breakApart/observations/*/queuedCallSeconds": {
+        "n": 5,
+        "min": 0.000737833,
+        "max": 0.001022875,
+        "p50NearestRank": 0.000866334
+      },
+      "/breakApart/observations/*/queuedReadSeconds": {
+        "n": 5,
+        "min": 0.017515833,
+        "max": 0.022502167,
+        "p50NearestRank": 0.020692167
+      },
+      "/render/width": 8192,
+      "/render/height": 8192,
+      "/render/observations/*/answeredSeconds": {
+        "n": 5,
+        "min": 0.938538583,
+        "max": 1.124371916,
+        "p50NearestRank": 1.033828209
+      },
+      "/render/observations/*/followingReadSeconds": {
+        "n": 5,
+        "min": 0.000477208,
+        "max": 0.002463375,
+        "p50NearestRank": 0.00050975
+      },
+      "/render/observations/*/queuedCallSeconds": {
+        "n": 5,
+        "min": 0.937408875,
+        "max": 1.015848417,
+        "p50NearestRank": 0.957326
+      },
+      "/render/observations/*/queuedReadSeconds": {
+        "n": 5,
+        "min": 0.777925209,
+        "max": 0.969163292,
+        "p50NearestRank": 0.911619042
+      }
+    }
+  },
+  {
+    "path": "reviews\\evidence\\M2-C2.4\\budgets\\macOS\\budgets-macos.json",
+    "recomputed": {
+      "/strokes": 100000,
+      "/repetitions": 5,
+      "/memory/rssBytes/start": 1692991488.0,
+      "/memory/rssBytes/afterOpen": 2071314432.0,
+      "/memory/rssBytes/afterSeries": 2449997824.0,
+      "/memory/liveBytes/start": 146321824.0,
+      "/memory/liveBytes/afterOpen": 267728272.0,
+      "/memory/liveBytes/afterSeries": 1196822557.0,
+      "/series/*/dryRunSeconds": {
+        "n": 5,
+        "min": 8.644047625,
+        "max": 10.244627833,
+        "p50NearestRank": 10.160655083
+      },
+      "/series/*/liveBytes": {
+        "n": 5,
+        "min": 686474410.0,
+        "max": 1196825998.0,
+        "p50NearestRank": 941639480.0
+      },
+      "/series/*/redoSeconds": {
+        "n": 5,
+        "min": 5.344495167,
+        "max": 6.382017417,
+        "p50NearestRank": 5.579470083
+      },
+      "/series/*/rssBytes": {
+        "n": 5,
+        "min": 2449997824.0,
+        "max": 3041263616.0,
+        "p50NearestRank": 2774171648.0
+      },
+      "/series/*/strokeAddSeconds": {
+        "n": 5,
+        "min": 9.39811625,
+        "max": 12.207599334,
+        "p50NearestRank": 10.131482083
+      },
+      "/series/*/undoSeconds": {
+        "n": 5,
+        "min": 4.509118667,
+        "max": 7.254268792,
+        "p50NearestRank": 6.211111
+      },
+      "/queuedRead/*/longCommandSeconds": {
+        "n": 5,
+        "min": 9.311536583,
+        "max": 14.013835208,
+        "p50NearestRank": 11.5630145
+      },
+      "/queuedRead/*/readAnsweredAfterLongSeconds": {
+        "n": 5,
+        "min": 7.662500000016337e-05,
+        "max": 0.003955376000000399,
+        "p50NearestRank": 0.00041470899999929145
+      },
+      "/queuedRead/*/readSeconds": {
+        "n": 5,
+        "min": 9.136815958,
+        "max": 13.894061708,
+        "p50NearestRank": 11.442405833
+      },
+      "/queuedRead/*/readSentAtSeconds": {
+        "n": 5,
+        "min": 0.102794708,
+        "max": 0.174912958,
+        "p50NearestRank": 0.120685292
+      },
+      "/maintenance/*/autosaveSnapshotSeconds": {
+        "n": 5,
+        "min": 0.000165292,
+        "max": 0.000225958,
+        "p50NearestRank": 0.000172458
+      },
+      "/maintenance/*/behindLongSeconds": {
+        "n": 5,
+        "min": 7.388445208,
+        "max": 11.803606708,
+        "p50NearestRank": 8.436297791
+      },
+      "/maintenance/*/heartbeatSeconds": {
+        "n": 5,
+        "min": 0.01091575,
+        "max": 0.013800167,
+        "p50NearestRank": 0.012515708
+      },
+      "/maintenance/*/idleSeconds": {
+        "n": 5,
+        "min": 0.002217041,
+        "max": 0.037408584,
+        "p50NearestRank": 0.006580292
+      },
+      "/maintenance/*/longCommandSeconds": {
+        "n": 5,
+        "min": 7.483055625,
+        "max": 11.949400875,
+        "p50NearestRank": 8.625728041
+      },
+      "/maintenance/*/requestedAtSeconds": {
+        "n": 5,
+        "min": 0.086283333,
+        "max": 0.203420916,
+        "p50NearestRank": 0.156434541
+      }
+    }
+  },
+  {
+    "path": "reviews\\evidence\\M2-C2.4\\budgets\\Windows\\aggregate-windows.json",
+    "recomputed": {
+      "/watchdogSeconds": 30,
+      "/repetitions": 5,
+      "/breakApart/characters": 100000,
+      "/breakApart/textAddSeconds": 1.7500323,
+      "/breakApart/observations/*/answeredSeconds": {
+        "n": 5,
+        "min": 0.0007876,
+        "max": 0.0012868,
+        "p50NearestRank": 0.0008732
+      },
+      "/breakApart/observations/*/followingReadSeconds": {
+        "n": 5,
+        "min": 0.000572,
+        "max": 0.0011859,
+        "p50NearestRank": 0.0006282
+      },
+      "/breakApart/observations/*/queuedCallSeconds": {
+        "n": 5,
+        "min": 0.0009204,
+        "max": 0.0009967,
+        "p50NearestRank": 0.000974
+      },
+      "/breakApart/observations/*/queuedReadSeconds": {
+        "n": 5,
+        "min": 0.0183292,
+        "max": 0.028964,
+        "p50NearestRank": 0.0184675
+      },
+      "/render/width": 8192,
+      "/render/height": 8192,
+      "/render/observations/*/answeredSeconds": {
+        "n": 5,
+        "min": 1.1637494,
+        "max": 1.1865928000000001,
+        "p50NearestRank": 1.1738652
+      },
+      "/render/observations/*/followingReadSeconds": {
+        "n": 5,
+        "min": 0.0006579,
+        "max": 0.0007108,
+        "p50NearestRank": 0.0006737
+      },
+      "/render/observations/*/queuedCallSeconds": {
+        "n": 5,
+        "min": 1.16555,
+        "max": 1.1843042,
+        "p50NearestRank": 1.1706157
+      },
+      "/render/observations/*/queuedReadSeconds": {
+        "n": 5,
+        "min": 1.1462618,
+        "max": 1.1646396,
+        "p50NearestRank": 1.1511028
+      }
+    }
+  },
+  {
+    "path": "reviews\\evidence\\M2-C2.4\\budgets\\Windows\\budgets-windows.json",
+    "recomputed": {
+      "/strokes": 100000,
+      "/repetitions": 5,
+      "/memory/rssBytes/start": 175910912.0,
+      "/memory/rssBytes/afterOpen": 362164224.0,
+      "/memory/rssBytes/afterSeries": 2297282560.0,
+      "/memory/liveBytes/start": 146121735.0,
+      "/memory/liveBytes/afterOpen": 267527168.0,
+      "/memory/liveBytes/afterSeries": 1196622557.0,
+      "/series/*/dryRunSeconds": {
+        "n": 5,
+        "min": 14.9765898,
+        "max": 17.659339,
+        "p50NearestRank": 17.0049154
+      },
+      "/series/*/liveBytes": {
+        "n": 5,
+        "min": 686273922.0,
+        "max": 1196626022.0,
+        "p50NearestRank": 941439248.0
+      },
+      "/series/*/redoSeconds": {
+        "n": 5,
+        "min": 9.526208,
+        "max": 11.475912600000001,
+        "p50NearestRank": 11.2100755
+      },
+      "/series/*/rssBytes": {
+        "n": 5,
+        "min": 1155698688.0,
+        "max": 2318884864.0,
+        "p50NearestRank": 2159124480.0
+      },
+      "/series/*/strokeAddSeconds": {
+        "n": 5,
+        "min": 15.5627047,
+        "max": 19.2442534,
+        "p50NearestRank": 18.6212811
+      },
+      "/series/*/undoSeconds": {
+        "n": 5,
+        "min": 10.8191159,
+        "max": 13.2742139,
+        "p50NearestRank": 12.1176495
+      },
+      "/queuedRead/*/longCommandSeconds": {
+        "n": 5,
+        "min": 19.7013065,
+        "max": 21.1220509,
+        "p50NearestRank": 20.3553203
+      },
+      "/queuedRead/*/readAnsweredAfterLongSeconds": {
+        "n": 5,
+        "min": 0.0004649999999983834,
+        "max": 0.000872499999996279,
+        "p50NearestRank": 0.0007674000000008618
+      },
+      "/queuedRead/*/readSeconds": {
+        "n": 5,
+        "min": 19.6515645,
+        "max": 21.0724672,
+        "p50NearestRank": 20.3059527
+      },
+      "/queuedRead/*/readSentAtSeconds": {
+        "n": 5,
+        "min": 0.050135,
+        "max": 0.0506145,
+        "p50NearestRank": 0.0502886
+      },
+      "/maintenance/*/autosaveSnapshotSeconds": {
+        "n": 5,
+        "min": 7.94e-05,
+        "max": 0.0001106,
+        "p50NearestRank": 9.46e-05
+      },
+      "/maintenance/*/behindLongSeconds": {
+        "n": 5,
+        "min": 19.4548334,
+        "max": 21.2380493,
+        "p50NearestRank": 19.774376
+      },
+      "/maintenance/*/heartbeatSeconds": {
+        "n": 5,
+        "min": 0.0060671,
+        "max": 0.0632518,
+        "p50NearestRank": 0.0131953
+      },
+      "/maintenance/*/idleSeconds": {
+        "n": 5,
+        "min": 0.0049088,
+        "max": 0.0388984,
+        "p50NearestRank": 0.0152166
+      },
+      "/maintenance/*/longCommandSeconds": {
+        "n": 5,
+        "min": 19.4989696,
+        "max": 21.2671943,
+        "p50NearestRank": 19.8114922
+      },
+      "/maintenance/*/requestedAtSeconds": {
+        "n": 5,
+        "min": 0.0502127,
+        "max": 0.0504494,
+        "p50NearestRank": 0.05039
+      }
+    }
+  }
+]

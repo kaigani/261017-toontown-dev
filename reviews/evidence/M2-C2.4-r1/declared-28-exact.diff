@@ -1,0 +1,24 @@
+diff --git a/crates/executor/tests/golden/c24-symmetry.json b/crates/executor/tests/golden/c24-symmetry.json
+index b1eef4e..f3643ef 100644
+--- a/crates/executor/tests/golden/c24-symmetry.json
++++ b/crates/executor/tests/golden/c24-symmetry.json
+@@ -1,6 +1,6 @@
+ {
+-  "sha256": "e81e08cd57bbcb91e4311861552f4dca222c0da5364371f8ef02eca54965c49d",
+-  "bytes": 1037860,
++  "sha256": "fc3116b0a61936dbb16dcc786aca19313b4671183b8d5ccfdce3da5f05f96e36",
++  "bytes": 1088272,
+   "configs": [
+     {
+       "mode": "mirror",
+diff --git a/crates/executor/tests/golden/c24-text-layout.json b/crates/executor/tests/golden/c24-text-layout.json
+new file mode 100644
+index 0000000..849cac0
+--- /dev/null
++++ b/crates/executor/tests/golden/c24-text-layout.json
+@@ -0,0 +1,5 @@
++{
++  "sha256": "2e85bd870e04041ee66f517d2411adb25c48ccca443d91e2edc5d625d467c6f7",
++  "bytes": 807242,
++  "font": "tests/fixtures/fonts/B612-Regular.ttf"
++}

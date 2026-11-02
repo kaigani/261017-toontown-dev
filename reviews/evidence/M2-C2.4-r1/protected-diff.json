@@ -1,0 +1,7 @@
+[
+  "crates/executor/tests/c12_registry.rs",
+  "tests/adversarial/c22-r2-audit.py",
+  "tests/adversarial/c22-r3-audit.py",
+  "tests/adversarial/c23-r1-audit.py",
+  "tests/adversarial/c23-r2-audit.py"
+]

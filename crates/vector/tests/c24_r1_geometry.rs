@@ -1,5 +1,5 @@
 //! Independent overlap lifetime and medial geometry probes.
-#![allow(clippy::unwrap_used, clippy::panic, missing_docs, reason = "review test")]
+#![allow(clippy::unwrap_used, clippy::print_stdout, clippy::panic, missing_docs, reason = "review test")]
 use serde_json::{Value, json};
 use std::collections::BTreeMap;
 use tt_vector::ops::centre::{CENTRE_WORK_BUDGET, centre_line};
@@ -100,7 +100,7 @@ fn independent_area(points: &[(f64, f64)]) -> f64 {
 }
 #[test]
 fn thin_neck_t_and_subunit_bars_have_finite_axes_and_independent_average_width() {
-    let shapes = vec![
+    let shapes = [
         vec![(0., 0.), (100., 0.), (100., 0.25), (0., 0.25)],
         vec![(0., 0.), (100., 0.), (100., 0.75), (0., 0.75)],
         vec![(0., 0.), (80., 0.), (80., 10.), (45., 10.), (45., 80.), (35., 80.), (35., 10.), (0., 10.)],

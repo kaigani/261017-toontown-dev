@@ -1,5 +1,5 @@
 //! Independent reviewer decoder corpus and seeded mutations; no product changes.
-#![allow(clippy::unwrap_used, clippy::panic, missing_docs, reason = "review test")]
+#![allow(clippy::unwrap_used, clippy::print_stdout, clippy::panic, missing_docs, reason = "review test")]
 use stats_alloc::{INSTRUMENTED_SYSTEM, Region, StatsAlloc};
 use std::alloc::System;
 use tt_io::image::{LIMITS, decode};
@@ -27,7 +27,7 @@ fn independent_corpus_and_seeded_mutations_stay_typed_and_bounded() {
         let mut b = base.clone();
         if i >= files.len() && !b.is_empty() {
             let at = next() as usize % b.len();
-            if i % 3 == 0 {
+            if i.is_multiple_of(3) {
                 b.truncate(at);
             } else {
                 b[at] ^= next() as u8;
