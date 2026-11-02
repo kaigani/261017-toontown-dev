@@ -1,0 +1,207 @@
+commit 7f3643e37e82833a17cc4a03e56828beedddf834
+Author: kaigani <kaigani@gmail.com>
+Date:   Mon Nov 2 12:29:29 2026 -0800
+
+    test(executor): permanent Cutter counterexample regression with exact pre/post geometry (C24-R2-02)
+    
+    The oracle's exact faces, snapped half to even, give the product's areas to the bit
+    before (155.3125) and after (61.640625 + 93.984375) the cut; the change is within
+    perimeter x the actual vertex displacement (0.00776 du).
+    
+    Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>
+
+diff --git a/crates/executor/tests/c24_cutter_snapping.rs b/crates/executor/tests/c24_cutter_snapping.rs
+new file mode 100644
+index 0000000..6a94440
+--- /dev/null
++++ b/crates/executor/tests/c24_cutter_snapping.rs
+@@ -0,0 +1,189 @@
++//! M2 C2.4 round 2 (C24-R2-02 ruling): the Cutter counterexample to the reviewer's 1e-3 area-preservation tolerance,
++//! kept as a permanent regression. A self-crossing polyline encloses one zone; the cut from (80,60) to (0,0) splits
++//! it. Zone area goes from 155.3125 to 155.625 du² (0.3125 du², twice the 1e-3 allowance). This test records the exact
++//! pre- and post-cut geometry and shows that the whole change is the snapping of junctions to the 1/64-du grid: the
++//! independent exact oracle (`crates/vector/tests/oracle`) computes the exact faces, snaps their vertices half to even
++//! and gets the product's areas to the bit before and after the cut, and the change is within the face perimeter × δ
++//! bound for the actual largest vertex displacement δ.
++#![allow(clippy::unwrap_used, clippy::print_stdout, missing_docs, reason = "test")]
++
++mod common;
++#[path = "../../vector/tests/oracle/mod.rs"]
++mod oracle;
++
++use common::*;
++use oracle::{Pt, Q};
++use serde_json::json;
++use tt_executor::ExecutorHandle;
++
++const BOB: &str = "scene:#1/element:\"Bob\"";
++const GRID: i64 = 64;
++
++/// The polyline (0,0)–(20,40)–(80,20)–(0,40) (the reviewer's lattice spec (0,0),(1,2),(4,1),(0,2) × 20).
++const LINE: [(i64, i64); 4] = [(0, 0), (20, 40), (80, 20), (0, 40)];
++const CUT: ((i64, i64), (i64, i64)) = ((80, 60), (0, 0));
++
++fn setup() -> (ExecutorHandle, String) {
++    let h = fixture();
++    ok(
++        &h,
++        "doc.object.patch",
++        json!({ "targets": [BOB], "ops": [{"op": "replace", "path": "/exposure", "value": [[null, 24]]}] }),
++    );
++    let mut bez = Vec::new();
++    for (k, &(x, y)) in LINE.iter().enumerate() {
++        if k > 0 {
++            let (px, py) = LINE[k - 1];
++            bez.push(json!({ "x": px, "y": py }));
++            bez.push(json!({ "x": x, "y": y }));
++        }
++        bez.push(json!({ "x": x, "y": y }));
++    }
++    let stroke = json!({ "id": "l_s0", "kind": "pencil", "closed": false, "bezier": bez, "colourId": null,
++                         "lineStyle": { "thickness": 1, "lineType": "solid" } });
++    let layer = json!({ "type": "layer", "id": "l_1", "layerKind": "pencil", "strokes": [stroke] });
++    let r = ok(
++        &h,
++        "draw.content.add",
++        json!({ "elementId": BOB, "frame": 1, "createDrawing": true, "select": false, "content": { "nodes": [layer] } }),
++    );
++    let d = r["drawingId"].as_str().unwrap().to_owned();
++    (h, d)
++}
++
++/// The persisted strokes (anchor points of each Bézier, du) and zone areas of the drawing.
++fn state(h: &ExecutorHandle, d: &str) -> (Vec<Vec<(f64, f64)>>, Vec<f64>) {
++    let g = ok(h, "draw.drawing.get", json!({ "drawingId": d, "include": ["zones"] }));
++    let mut strokes = Vec::new();
++    let mut areas = Vec::new();
++    for n in g["nodes"].as_array().unwrap() {
++        for s in n["strokes"].as_array().into_iter().flatten() {
++            let b = s["bezier"].as_array().unwrap();
++            let pts = b.iter().step_by(3).map(|p| (p["x"].as_f64().unwrap(), p["y"].as_f64().unwrap())).collect();
++            strokes.push(pts);
++        }
++        for z in n["zones"].as_array().into_iter().flatten() {
++            areas.push(z["area"].as_f64().unwrap());
++        }
++    }
++    areas.sort_by(f64::total_cmp);
++    (strokes, areas)
++}
++
++fn grid_pt(p: (i64, i64)) -> Pt {
++    oracle::pt(p.0 * GRID, p.1 * GRID)
++}
++
++fn segments(with_cut: bool) -> Vec<(Pt, Pt)> {
++    let mut s: Vec<(Pt, Pt)> = LINE.windows(2).map(|w| (grid_pt(w[0]), grid_pt(w[1]))).collect();
++    if with_cut {
++        s.push((grid_pt(CUT.0), grid_pt(CUT.1)));
++    }
++    s
++}
++
++fn area_du(area2: &Q) -> f64 {
++    area2.clone().f64() / 2.0 / (GRID * GRID) as f64
++}
++
++fn ring_perimeter(c: &[Pt]) -> f64 {
++    (0..c.len())
++        .map(|k| {
++            let (a, b) = (&c[k], &c[(k + 1) % c.len()]);
++            b.0.minus(&a.0).f64().hypot(b.1.minus(&a.1).f64()) / GRID as f64
++        })
++        .sum()
++}
++
++/// A vertex's displacement in du when snapped half to even onto the grid.
++fn displacement(p: &Pt) -> f64 {
++    let (x, y) = oracle::snap_pt(p);
++    (Q::int(x).minus(&p.0).f64()).hypot(Q::int(y).minus(&p.1).f64()) / GRID as f64
++}
++
++#[test]
++fn the_cutter_area_change_on_the_reviewers_counterexample_is_the_snapping_of_its_junctions() {
++    let (h, d) = setup();
++    let (pre_strokes, pre) = state(&h, &d);
++    ok(
++        &h,
++        "draw.cut.apply",
++        json!({ "drawingId": d, "segment": { "from": { "x": 80, "y": 60 }, "to": { "x": 0, "y": 0 } } }),
++    );
++    let (post_strokes, post) = state(&h, &d);
++    println!(
++        "pre strokes {pre_strokes:?}\npre zone areas {pre:?}\npost strokes {post_strokes:?}\npost zone areas {post:?}"
++    );
++    assert_eq!(pre, vec![155.3125]);
++    assert_eq!(post.len(), 2);
++    let (sb, sa): (f64, f64) = (pre.iter().sum(), post.iter().sum());
++    assert_eq!(sa - sb, 0.3125);
++
++    // The oracle's exact faces. Before: one triangle. After: the cut splits it into two, and closes one more face
++    // outside it with the line's first and last segments, which is not a zone (the Cutter only splits zones).
++    let before = oracle::arrangement(&segments(false));
++    let after = oracle::arrangement(&segments(true));
++    assert_eq!(before.faces.len(), 1);
++    let inside: Vec<&oracle::Face> = after.faces.iter().filter(|f| before.locate(&f.probe).is_some()).collect();
++    assert_eq!((after.faces.len(), inside.len()), (3, 2));
++
++    let exact_before = area_du(&before.faces[0].area2);
++    let exact_after: f64 = inside.iter().map(|f| area_du(&f.area2)).sum();
++    // The exact areas agree: cutting a face exactly keeps its area (to rounding of the conversion to f64).
++    assert!((exact_before - exact_after).abs() < 1e-9, "{exact_before} vs {exact_after}");
++
++    // Snapped, the oracle's faces have the product's areas to the bit, before and after.
++    let snapped = |f: &oracle::Face| oracle::snapped_area2(f) as f64 / 2.0 / (GRID * GRID) as f64;
++    let mut oracle_post: Vec<f64> = inside.iter().map(|f| snapped(f)).collect();
++    oracle_post.sort_by(f64::total_cmp);
++    println!("exact area {exact_before}; oracle snapped before {} after {oracle_post:?}", snapped(&before.faces[0]));
++    assert_eq!(snapped(&before.faces[0]), sb);
++    assert_eq!(oracle_post, post);
++
++    // Attribution: each total departs from the exact area by at most the faces' perimeter × the actual largest vertex
++    // displacement δ (plus vertex count × δ²), so their difference does too.
++    let bound = |faces: &[&oracle::Face]| -> (f64, f64) {
++        let mut delta: f64 = 0.0;
++        let mut perimeter = 0.0;
++        let mut count = 0.0;
++        for f in faces {
++            for c in std::iter::once(&f.outer).chain(&f.holes) {
++                perimeter += ring_perimeter(c);
++                count += c.len() as f64;
++                delta = c.iter().map(displacement).fold(delta, f64::max);
++            }
++        }
++        (delta, perimeter * delta + count * delta * delta)
++    };
++    let (d_before, b_before) = bound(&[&before.faces[0]]);
++    let (d_after, b_after) = bound(&inside);
++    println!(
++        "δ before {d_before} du, bound {b_before} du²; δ after {d_after} du, bound {b_after} du²; \
++         errors {} and {}",
++        sb - exact_before,
++        sa - exact_after
++    );
++    assert!((sb - exact_before).abs() <= b_before);
++    assert!((sa - exact_after).abs() <= b_after);
++    assert!((sa - sb).abs() <= b_before + b_after);
++}
++
++/// The cut's junctions, printed for the record: the exact crossings and where they snap.
++#[test]
++fn the_counterexample_junctions_are_the_snapped_exact_crossings() {
++    let after = oracle::arrangement(&segments(true));
++    let exact: Vec<Pt> = after.vertices().into_iter().collect();
++    let snapped: Vec<(i64, i64)> = exact.iter().map(oracle::snap_pt).collect();
++    let fmt = |p: &Pt| (p.0.clone().f64() / GRID as f64, p.1.clone().f64() / GRID as f64);
++    let shown: Vec<((f64, f64), (f64, f64), f64)> = exact
++        .iter()
++        .zip(&snapped)
++        .map(|(p, s)| (fmt(p), (s.0 as f64 / GRID as f64, s.1 as f64 / GRID as f64), displacement(p)))
++        .collect();
++    println!("exact vertex, snapped vertex, displacement (du): {shown:#?}");
++    // The two crossings of the triangle's sides off the grid: (160/9, 320/9) of the line with itself and (560/13,
++    // 420/13) of the cut with (20,40)–(80,20); the cut meets (80,20)–(0,40) on the grid at (40, 30).
++    let off: Vec<&((f64, f64), (f64, f64), f64)> = shown.iter().filter(|v| v.2 > 0.0).collect();
++    assert_eq!(off.len(), 2);
++    assert!(shown.iter().any(|v| v.0 == (40.0, 30.0) && v.2 == 0.0));
++}

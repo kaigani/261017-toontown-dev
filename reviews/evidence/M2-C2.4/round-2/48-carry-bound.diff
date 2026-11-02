@@ -1,0 +1,43 @@
+commit 9d959198a5213d7b1a6e3de9865ecd21c854cdfd
+Author: kaigani <kaigani@gmail.com>
+Date:   Mon Nov 2 12:46:55 2026 -0800
+
+    fix(vector,oracle): collapsed-contour snap candidates; carry-over bound as documented (C24-R2-06)
+    
+    The route oracle offers retained anchors of zero-length contours as snap candidates
+    (stroke/segment/parameter ties; zero-length edges stay out of faces) and its
+    interior-point fallback uses the zone's published interior point. The product's carry
+    bound compared twice-areas with twice the length - half the documented bound - and now
+    uses four times it. Helper changes mirrored into the reviewer's c24_r2_routes.rs copy
+    (declared); property bodies unchanged.
+    
+    Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>
+
+diff --git a/crates/vector/src/planar/fill.rs b/crates/vector/src/planar/fill.rs
+index 97cefce..0ef73b4 100644
+--- a/crates/vector/src/planar/fill.rs
++++ b/crates/vector/src/planar/fill.rs
+@@ -398,8 +398,9 @@ pub fn carry(
+         let new_rings = new.zone_rings_grid(n);
+         // Snapping a new junction to the grid moves the new zone's boundary by at most about one grid unit, which can give
+         // it a sliver of overlap with an old zone it does not lie in (M2 C2.4, found by the topology properties). Such a
+-        // sliver lies along the part of the new zone's boundary inside that old zone's box, so an overlap no larger than
+-        // twice that length (in grid units, twice-area units) does not count; larger overlaps are compared exactly.
++        // sliver lies along the part of the new zone's boundary inside that old zone's box, so an overlap whose area is no
++        // larger than twice that length (grid units; four times it in the twice-area units of `overlap_area2`, C24-R2
++        // property seed) does not count; larger overlaps are compared exactly.
+         let boundary_in = |b: [i64; 4]| -> f64 {
+             new_rings
+                 .iter()
+@@ -412,9 +413,8 @@ pub fn carry(
+         let mut best: Option<(num_rational::BigRational, usize)> = None;
+         for &i in &cands {
+             let area = super::exact::overlap_area2(&old.zone_rings_grid(i), &new_rings, work)?;
+-            let noise = num_rational::BigRational::from_integer(num_bigint::BigInt::from(
+-                (2.0 * boundary_in(old.zone_box(i))).ceil() as i64,
+-            ));
++            let noise = num_rational::BigRational::from_float(4.0 * boundary_in(old.zone_box(i)))
++                .unwrap_or_else(|| num_rational::BigRational::from_integer(num_bigint::BigInt::from(0)));
+             if area <= noise {
+                 continue;
+             }
