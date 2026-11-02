@@ -88,7 +88,7 @@ jobs:
           git diff --exit-code -- crates/registry/src/declared.rs crates/registry/src/declared.json plan/spec-issues.md
 
       - run: cargo clippy --workspace --all-targets --locked -- -D warnings
-      # The six 10 000-operation history oracles (C1.2-C1.4) run in release in `headless` (moved in M2 C2.3 round 1:
+      # The six 10 000-operation history oracles (C1.2-C1.4) run in release in `history-oracles` (moved in M2 C2.3 round 1:
       # Windows `check` reached 55 min 02 s in run 41320596822); everything else in their binaries runs here.
       - name: Run cargo test --workspace --locked
         run: cargo test --workspace --locked -- --skip ten_thousand_history_operations_match_independent_content_oracle_and_replay
@@ -181,9 +181,7 @@ jobs:
           cargo test --release --locked -p tt-executor --test c21_measurements -- --ignored --nocapture
           # Both seeded 10 000-operation history oracles with drawing geometry on a saved/reopened fixture (MCP).
           cargo test --release --locked -p tt-mcp --test c21_history -- --ignored --nocapture
-          # The C1.2-C1.4 10 000-operation history oracles (moved from `check` in M2 C2.3 round 1; same assertions).
-          cargo test --release --locked -p tt-executor --test c12_r1_stress --test c12_r3_stress --test c13_r3_history_r1 --test c13_r3_history_r3 -- ten_thousand_history_operations_match_independent_content_oracle_and_replay --exact
-          cargo test --release --locked -p tt-mcp --test c14_r3_history_r1 --test c14_r3_history_r3 -- ten_thousand_history_operations_match_independent_content_oracle_and_replay --exact
+          # The C1.2-C1.4 10 000-operation history oracles run in `history-oracles` (split out in M2 C2.3 round 3).
           # Worst-case fitting work on the adversarial 100 000-sample corpus (C21-R1-06; every run kept).
           cargo test --release --locked -p tt-vector --test c21_worst_case -- --ignored --nocapture
           # Worst-case planar-map work on the adversarial layer corpus (M2 C2.2 readiness items 3 and 9; every run kept).
@@ -208,6 +206,44 @@ jobs:
       - uses: actions/upload-artifact@v7
         with:
           name: headless-${{ runner.os }}
+          path: out/
+          if-no-files-found: error
+
+  # The six C1.2-C1.4 10 000-operation history oracles in release (moved from `check` in M2 C2.3 round 1, split out of
+  # `headless` in round 3: Windows `headless` passed its 55-minute budget in run 41363091264). Same assertions; each
+  # oracle's output is kept as an artifact.
+  history-oracles:
+    name: history oracles release (${{ matrix.os }})
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [windows-latest, macos-latest]
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@v7
+
+      - name: Rust toolchain (pinned in rust-toolchain.toml)
+        run: |
+          tc=$(sed -n 's/^channel = "\(.*\)"/\1/p' rust-toolchain.toml)
+          rustup toolchain install "$tc" --profile minimal
+          rustup override set "$tc"
+          rustc --version
+
+      - uses: Swatinem/rust-cache@v2
+        with:
+          key: history-oracles
+
+      - name: C1.2-C1.4 10 000-operation history oracles (release; executor and MCP)
+        run: |
+          mkdir -p out
+          cargo test --release --locked -p tt-executor --test c12_r1_stress --test c12_r3_stress --test c13_r3_history_r1 --test c13_r3_history_r3 -- ten_thousand_history_operations_match_independent_content_oracle_and_replay --exact --nocapture 2>&1 | tee out/history-oracles-executor.log
+          cargo test --release --locked -p tt-mcp --test c14_r3_history_r1 --test c14_r3_history_r3 -- ten_thousand_history_operations_match_independent_content_oracle_and_replay --exact --nocapture 2>&1 | tee out/history-oracles-mcp.log
+
+      - uses: actions/upload-artifact@v7
+        if: always()
+        with:
+          name: history-oracles-${{ runner.os }}
           path: out/
           if-no-files-found: error
 
