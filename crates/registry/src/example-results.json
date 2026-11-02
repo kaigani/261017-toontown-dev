@@ -30,7 +30,7 @@
     {
       "title": "Accept a request",
       "result": {
-        "confirmationId": "cf_3cabfdbed4ab0c5bc404d618",
+        "confirmationId": "cf_4cc8fb64133f7fb24ccff4da",
         "accepted": true
       },
       "varies": [
@@ -71,7 +71,7 @@
         "endpoint": null,
         "sessions": [
           {
-            "sessionId": "s1-a637ef",
+            "sessionId": "s1-d8df3b",
             "client": "Example agent",
             "policy": "assist",
             "scopes": [
@@ -83,7 +83,7 @@
               "files.write",
               "library.global"
             ],
-            "connectedAt": "2026-11-01T17:30:27.849Z",
+            "connectedAt": "2026-11-02T03:16:25.493Z",
             "lastActivity": null,
             "paused": false,
             "transport": ""
@@ -91,8 +91,8 @@
         ],
         "pendingConfirmations": [
           {
-            "confirmationId": "cf_bfe066f5d6f8eab5a2867d4c",
-            "sessionId": "s1-a637ef",
+            "confirmationId": "cf_158d80ebc7401df64e7e34cd",
+            "sessionId": "s1-d8df3b",
             "commandId": "project.saveAs",
             "summary": "Overwrite `/tmp/Short.animpkg`",
             "consequences": [
@@ -127,7 +127,7 @@
     {
       "title": "Let a session edit",
       "result": {
-        "sessionId": "s1-c570e7",
+        "sessionId": "s1-4ff6ff",
         "policy": "assist",
         "scopes": [
           "read",
@@ -145,7 +145,7 @@
       "title": "Pause every session",
       "result": {
         "paused": [
-          "s1-66cf6a"
+          "s1-8e4678"
         ]
       },
       "varies": [
@@ -438,7 +438,7 @@
       "result": [
         {
           "name": "before-walk",
-          "createdAt": "2026-11-01T17:30:28.708Z",
+          "createdAt": "2026-11-02T03:16:25.977Z",
           "documentRev": 1,
           "origin": "user"
         }
@@ -851,7 +851,7 @@
             "version": "0.0.1",
             "platform": "windows-x64"
           },
-          "exportedAt": "2026-11-01T17:30:29.788Z",
+          "exportedAt": "2026-11-02T03:16:26.537Z",
           "sourceProjectId": "pr_01K742SG00BK0VXTWDM5JRXV37",
           "scope": {
             "kind": "scenes",
@@ -5581,6 +5581,25 @@
       "varies": []
     }
   ],
+  "draw.vectorize.preview": [
+    {
+      "title": "Preview the E2 line art",
+      "result": {
+        "png": "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",
+        "strokeCount": 3
+      },
+      "varies": []
+    }
+  ],
+  "draw.vectorize.run": [
+    {
+      "title": "Vectorize the E2 line art into Bob's frame 1",
+      "result": {
+        "jobId": "job-3"
+      },
+      "varies": []
+    }
+  ],
   "draw.viewMapping.get": [
     {
       "title": "The Drawing view's mapping",
@@ -5695,7 +5714,7 @@
             "stepId": "u-1",
             "label": "Set meta",
             "source": "user",
-            "time": "2026-11-01T17:30:32.431Z",
+            "time": "2026-11-02T03:16:27.813Z",
             "objectCount": 1
           },
           {
@@ -5703,7 +5722,7 @@
             "stepId": "u-2",
             "label": "Set meta",
             "source": "user",
-            "time": "2026-11-01T17:30:32.433Z",
+            "time": "2026-11-02T03:16:27.814Z",
             "objectCount": 1
           }
         ],
@@ -5848,7 +5867,7 @@
         "state": "succeeded",
         "progress": 1.0,
         "message": "",
-        "startedAt": "2026-11-01T17:30:32.720Z",
+        "startedAt": "2026-11-02T03:16:27.935Z",
         "result": {},
         "session": "user"
       },
@@ -5867,7 +5886,7 @@
           "state": "succeeded",
           "progress": 1.0,
           "message": "",
-          "startedAt": "2026-11-01T17:30:32.746Z",
+          "startedAt": "2026-11-02T03:16:27.946Z",
           "result": {},
           "session": "user"
         }
@@ -5886,7 +5905,7 @@
         "state": "succeeded",
         "progress": 1.0,
         "message": "",
-        "startedAt": "2026-11-01T17:30:32.772Z",
+        "startedAt": "2026-11-02T03:16:27.957Z",
         "result": {},
         "session": "user"
       },
@@ -5933,10 +5952,10 @@
     {
       "title": "A 1920×1080, 24 fps project",
       "result": {
-        "projectId": "pr_01M6C2KDVRKAXAWK541G0PRFXM",
-        "sceneId": "sc_01M6C2KDVSB3TN729JZDX6VTTG",
-        "cameraId": "el_01M6C2KDVSB3TN729JZDX6VTTJ",
-        "elementId": "el_01M6C2KDVSB3TN729JZDX6VTTK"
+        "projectId": "pr_01M6D448Y5V6WMNTH9E4W9ZYZQ",
+        "sceneId": "sc_01M6D448Y5V6WMNTH9E4W9ZZ3V",
+        "cameraId": "el_01M6D448Y5V6WMNTH9E4W9ZZ3X",
+        "elementId": "el_01M6D448Y5V6WMNTH9E4W9ZZ3Y"
       },
       "varies": [
         "/cameraId",
@@ -6192,7 +6211,7 @@
         {
           "path": "/tmp/Sample.animpkg",
           "name": "Sample",
-          "lastOpened": "2026-11-01T17:30:33.702Z",
+          "lastOpened": "2026-11-02T03:16:28.542Z",
           "exists": true
         }
       ],

@@ -243,7 +243,9 @@ fn edits(h: &ExecutorHandle) {
 /// with a backup `bk_1a2b3c4d`, recovery data `rc_1a2b3c4d`, `Short.animpkg` and a `media` folder in a temporary folder
 /// that stands for the examples' `/tmp`.
 fn with_files(id: &str) -> bool {
-    ["project.", "doc.asset.", "doc.blob.", "doc.package.", "agent."].iter().any(|p| id.starts_with(p))
+    ["project.", "doc.asset.", "doc.blob.", "doc.package.", "agent.", "draw.vectorize."]
+        .iter()
+        .any(|p| id.starts_with(p))
 }
 
 fn wait_job(h: &ExecutorHandle, started: &Value) {
@@ -275,6 +277,12 @@ fn prepared_with_files(id: &str, dir: &std::path::Path) -> ExecutorHandle {
     let user = tt_persist::settings::UserDirs::under(&dir.join("user"));
     let project_id = doc.project().id().to_string();
     // Only the files an example uses are made (file creation is slow on CI runners).
+    if id.starts_with("draw.vectorize.") {
+        // The E2 line art (M2 C2.4) as the examples' `/tmp/lineart.png`.
+        let art =
+            std::path::Path::new(env!("CARGO_MANIFEST_DIR")).join("../../tests/fixtures/vectorize/e2-lineart.png");
+        std::fs::copy(art, dir.join("lineart.png")).unwrap();
+    }
     if id.starts_with("project.backup.") {
         let backups = user.backups.join(&project_id);
         std::fs::create_dir_all(&backups).unwrap();

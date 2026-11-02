@@ -3797,18 +3797,26 @@ export const COMMAND_INDEX = {
     params: "draw.vectorize.preview.params",
     result: "draw.vectorize.preview.result",
     examples: [
-      {},
+      {
+        file: "/tmp/lineart.png",
+        width: 256,
+      },
     ],
-    milestone: "M2 C2.4",
   },
   "draw.vectorize.run": {
     kind: "job",
     params: "draw.vectorize.run.params",
     result: "draw.vectorize.run.result",
     examples: [
-      {},
+      {
+        files: [
+          "/tmp/lineart.png",
+        ],
+        targetElementId: "scene:#1/element:\"Bob\"",
+        startFrame: 1,
+        onConflict: "replace",
+      },
     ],
-    milestone: "M2 C2.4",
   },
   "draw.viewMapping.get": {
     kind: "query",
@@ -38370,195 +38378,313 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
     "x-spec": "`{jobId}` → `{drawingId, objectIds: [id], addedColourIds: [id], warnings: [string], rev}`",
     additionalProperties: false,
   },
+  "draw.vectorize.preview.VectorizeType": {
+    description: "Vectorization type.",
+    oneOf: [
+      {
+        description: "Ink becomes black brush shapes.",
+        type: "string",
+        const: "blackAndWhite",
+      },
+      {
+        description: "Ink shapes are filled with the source bitmap as a texture colour.",
+        type: "string",
+        const: "withTexture",
+      },
+    ],
+  },
+  "draw.vectorize.preview.FilterIn": {
+    description: "Pre-filter.",
+    oneOf: [
+      {
+        description: "None.",
+        type: "string",
+        const: "none",
+      },
+      {
+        description: "Light mean blur.",
+        type: "string",
+        const: "smooth",
+      },
+      {
+        description: "Stronger 3×3 mean blur.",
+        type: "string",
+        const: "smoothMore",
+      },
+      {
+        description: "High-pass edge enhancement.",
+        type: "string",
+        const: "edgeEnhance",
+      },
+      {
+        description: "Sharpening.",
+        type: "string",
+        const: "sharpen",
+      },
+    ],
+  },
   "draw.vectorize.preview.params": {
-    title: "draw.vectorize.preview parameters",
+    title: "PreviewParams",
+    description: "`draw.vectorize.preview` parameters.",
     type: "object",
     properties: {
       file: {
-        type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "file-system path (11 §6.2)",
+        description: "An image file.",
+        type: [
+          "string",
+          "null",
+        ],
+        default: null,
       },
       imageElementId: {
-        type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
+        description: "An image element (its bitmap at `frame`).",
+        type: [
+          "string",
+          "null",
+        ],
+        default: null,
       },
       frame: {
-        type: "integer",
+        description: "The frame of the image element (default: current frame).",
+        type: [
+          "integer",
+          "null",
+        ],
+        maximum: 9223372036854775807n,
+        default: null,
+        minimum: -9223372036854775808n,
       },
       type: {
-        type: "string",
-        enum: [
-          "blackAndWhite",
-          "withTexture",
-        ],
+        description: "Vectorization type.",
+        $ref: "#/$defs/draw.vectorize.preview.VectorizeType",
         default: "blackAndWhite",
       },
       filter: {
-        type: "string",
-        enum: [
-          "none",
-          "smooth",
-          "smoothMore",
-          "edgeEnhance",
-          "sharpen",
-        ],
+        description: "Pre-filter.",
+        $ref: "#/$defs/draw.vectorize.preview.FilterIn",
         default: "none",
       },
       threshold: {
+        description: "Threshold, % of white (0–100; `vectorize.thresholdOutOfRange` outside).",
         type: "integer",
-        minimum: 0,
-        maximum: 100,
+        maximum: 9223372036854775807n,
         default: 70,
+        minimum: -9223372036854775808n,
       },
       width: {
+        description: "Preview width in pixels (1–4096).",
         type: "integer",
+        maximum: 9223372036854775807n,
         default: 512,
+        minimum: -9223372036854775808n,
       },
     },
     additionalProperties: false,
-    "x-spec": "`file?: path; imageElementId?: id; frame?: int; type: enum \"blackAndWhite\"|\"withTexture\" = \"blackAndWhite\"; filter: enum \"none\"|\"smooth\"|\"smoothMore\"|\"edgeEnhance\"|\"sharpen\" = \"none\"; threshold: int = 70 (0–100); width: int = 512`",
   },
   "draw.vectorize.preview.result": {
-    title: "draw.vectorize.preview result",
+    title: "PreviewResult",
+    description: "`{png, strokeCount}`.",
     type: "object",
     properties: {
       png: {
+        description: "The rendered result, base64 PNG.",
         type: "string",
-        maxLength: 65536,
       },
       strokeCount: {
+        description: "Shapes the vectorization creates.",
         type: "integer",
+        maximum: 18446744073709551615n,
+        minimum: 0,
       },
     },
     required: [
       "png",
       "strokeCount",
     ],
-    "x-spec": "`{png, strokeCount: int}`",
-    additionalProperties: false,
+  },
+  "draw.vectorize.run.VectorizeType": {
+    description: "Vectorization type.",
+    oneOf: [
+      {
+        description: "Ink becomes black brush shapes.",
+        type: "string",
+        const: "blackAndWhite",
+      },
+      {
+        description: "Ink shapes are filled with the source bitmap as a texture colour.",
+        type: "string",
+        const: "withTexture",
+      },
+    ],
+  },
+  "draw.vectorize.run.FilterIn": {
+    description: "Pre-filter.",
+    oneOf: [
+      {
+        description: "None.",
+        type: "string",
+        const: "none",
+      },
+      {
+        description: "Light mean blur.",
+        type: "string",
+        const: "smooth",
+      },
+      {
+        description: "Stronger 3×3 mean blur.",
+        type: "string",
+        const: "smoothMore",
+      },
+      {
+        description: "High-pass edge enhancement.",
+        type: "string",
+        const: "edgeEnhance",
+      },
+      {
+        description: "Sharpening.",
+        type: "string",
+        const: "sharpen",
+      },
+    ],
+  },
+  "draw.vectorize.run.OnConflict": {
+    description: "What to do with cells that already hold drawings.",
+    oneOf: [
+      {
+        description: "Ask (`needs_confirmation` with `drawing.cellOccupied`), then replace.",
+        type: "string",
+        const: "ask",
+      },
+      {
+        description: "Replace them.",
+        type: "string",
+        const: "replace",
+      },
+      {
+        description: "Leave them and skip their images.",
+        type: "string",
+        const: "skip",
+      },
+    ],
   },
   "draw.vectorize.run.params": {
-    title: "draw.vectorize.run parameters",
+    title: "RunParams",
+    description: "`draw.vectorize.run` parameters.",
     type: "object",
     properties: {
       files: {
-        type: "array",
+        description: "Image files, in order (one drawing each).",
+        type: [
+          "array",
+          "null",
+        ],
         items: {
           type: "string",
-          minLength: 1,
-          maxLength: 4096,
-          description: "file-system path (11 §6.2)",
         },
         maxItems: 100000,
+        default: null,
       },
       imageElementId: {
-        type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
+        description: "An image element to convert into a new drawing element with matching exposure (§11.3).",
+        type: [
+          "string",
+          "null",
+        ],
+        default: null,
       },
       targetElementId: {
-        type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3) (default: selected; new element if none)",
+        description: "The target drawing element (default: the selected element; a new element if none).",
+        type: [
+          "string",
+          "null",
+        ],
+        default: null,
       },
       startFrame: {
-        type: "integer",
-        description: "Default: selected cell.",
+        description: "The first cell (default: the current frame).",
+        type: [
+          "integer",
+          "null",
+        ],
+        maximum: 9223372036854775807n,
+        default: null,
+        minimum: -9223372036854775808n,
       },
       type: {
-        type: "string",
-        enum: [
-          "blackAndWhite",
-          "withTexture",
-        ],
+        description: "Vectorization type.",
+        $ref: "#/$defs/draw.vectorize.run.VectorizeType",
         default: "blackAndWhite",
       },
       filter: {
-        type: "string",
-        enum: [
-          "none",
-          "smooth",
-          "smoothMore",
-          "edgeEnhance",
-          "sharpen",
-        ],
+        description: "Pre-filter.",
+        $ref: "#/$defs/draw.vectorize.run.FilterIn",
         default: "none",
       },
       threshold: {
+        description: "Threshold, % of white (0–100; `vectorize.thresholdOutOfRange` outside).",
         type: "integer",
-        minimum: 0,
-        maximum: 100,
+        maximum: 9223372036854775807n,
         default: 70,
+        minimum: -9223372036854775808n,
       },
       onConflict: {
-        type: "string",
-        enum: [
-          "ask",
-          "replace",
-          "skip",
-        ],
+        description: "Occupied cells.",
+        $ref: "#/$defs/draw.vectorize.run.OnConflict",
         default: "ask",
       },
     },
     additionalProperties: false,
-    "x-spec": "`files?: [path]; imageElementId?: id; targetElementId?: id (default: selected; new element if none); startFrame?: int = selected cell; type: enum \"blackAndWhite\"|\"withTexture\" = \"blackAndWhite\"; filter: enum \"none\"|\"smooth\"|\"smoothMore\"|\"edgeEnhance\"|\"sharpen\" = \"none\"; threshold: int = 70 (0–100); onConflict: enum \"ask\"|\"replace\"|\"skip\" = \"ask\"`",
+  },
+  "draw.vectorize.run.RunResult": {
+    description: "The final result of `draw.vectorize.run`.",
+    type: "object",
+    properties: {
+      elementId: {
+        description: "The drawing element that received the drawings.",
+        type: "string",
+      },
+      drawingIds: {
+        description: "The drawings created, in order.",
+        type: "array",
+        items: {
+          type: "string",
+        },
+      },
+      completed: {
+        description: "Images completed.",
+        type: "integer",
+        maximum: 18446744073709551615n,
+        minimum: 0,
+      },
+      cancelled: {
+        description: "The job was cancelled after `completed` images.",
+        type: "boolean",
+      },
+    },
+    required: [
+      "elementId",
+      "drawingIds",
+      "completed",
+      "cancelled",
+    ],
   },
   "draw.vectorize.run.result": {
-    title: "draw.vectorize.run result",
+    title: "Job_RunResult",
     type: "object",
     properties: {
       jobId: {
+        description: "The job (11 §7.7).",
         type: "string",
         minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
       },
     },
     required: [
       "jobId",
     ],
-    "x-jobResult": {
-      type: "object",
-      properties: {
-        elementId: {
-          type: "string",
-          minLength: 1,
-          maxLength: 4096,
-          description: "object ID or path reference (10 §3)",
-        },
-        drawingIds: {
-          type: "array",
-          items: {
-            type: "string",
-            minLength: 1,
-            maxLength: 4096,
-            description: "object ID or path reference (10 §3)",
-          },
-          maxItems: 100000,
-        },
-        completed: {
-          type: "integer",
-        },
-        cancelled: {
-          type: "boolean",
-        },
-      },
-      required: [
-        "elementId",
-        "drawingIds",
-        "completed",
-        "cancelled",
-      ],
-      additionalProperties: false,
-    },
-    "x-spec": "`{jobId}` → `{elementId, drawingIds: [id], completed: int, cancelled: bool}`",
     additionalProperties: false,
+    "x-jobResult": {
+      $ref: "#/$defs/draw.vectorize.run.RunResult",
+    },
   },
   "draw.viewMapping.get.params": {
     title: "ViewMappingParams",
@@ -87575,39 +87701,81 @@ export interface draw_vectorFile_import_result {
   jobId: string;
 }
 
+/** Vectorization type. */
+export type draw_vectorize_preview_VectorizeType = 'blackAndWhite' | 'withTexture';
+
+/** Pre-filter. */
+export type draw_vectorize_preview_FilterIn = 'none' | 'smooth' | 'smoothMore' | 'edgeEnhance' | 'sharpen';
+
+/** `draw.vectorize.preview` parameters. */
 export interface draw_vectorize_preview_params {
-  /** file-system path (11 §6.2) */
-  file?: string;
-  /** object ID or path reference (10 §3) */
-  imageElementId?: string;
-  frame?: number | bigint;
-  type?: 'blackAndWhite' | 'withTexture';
-  filter?: 'none' | 'smooth' | 'smoothMore' | 'edgeEnhance' | 'sharpen';
-  threshold?: number;
+  /** An image file. */
+  file?: string | null;
+  /** An image element (its bitmap at `frame`). */
+  imageElementId?: string | null;
+  /** The frame of the image element (default: current frame). */
+  frame?: number | bigint | null;
+  /** Vectorization type. */
+  type?: draw_vectorize_preview_VectorizeType;
+  /** Pre-filter. */
+  filter?: draw_vectorize_preview_FilterIn;
+  /** Threshold, % of white (0–100; `vectorize.thresholdOutOfRange` outside). */
+  threshold?: number | bigint;
+  /** Preview width in pixels (1–4096). */
   width?: number | bigint;
 }
 
+/** `{png, strokeCount}`. */
 export interface draw_vectorize_preview_result {
+  /** The rendered result, base64 PNG. */
   png: string;
+  /** Shapes the vectorization creates. */
   strokeCount: number | bigint;
 }
 
+/** Vectorization type. */
+export type draw_vectorize_run_VectorizeType = 'blackAndWhite' | 'withTexture';
+
+/** Pre-filter. */
+export type draw_vectorize_run_FilterIn = 'none' | 'smooth' | 'smoothMore' | 'edgeEnhance' | 'sharpen';
+
+/** What to do with cells that already hold drawings. */
+export type draw_vectorize_run_OnConflict = 'ask' | 'replace' | 'skip';
+
+/** `draw.vectorize.run` parameters. */
 export interface draw_vectorize_run_params {
-  files?: string[];
-  /** object ID or path reference (10 §3) */
-  imageElementId?: string;
-  /** object ID or path reference (10 §3) (default: selected; new element if none) */
-  targetElementId?: string;
-  /** Default: selected cell. */
-  startFrame?: number | bigint;
-  type?: 'blackAndWhite' | 'withTexture';
-  filter?: 'none' | 'smooth' | 'smoothMore' | 'edgeEnhance' | 'sharpen';
-  threshold?: number;
-  onConflict?: 'ask' | 'replace' | 'skip';
+  /** Image files, in order (one drawing each). */
+  files?: string[] | null;
+  /** An image element to convert into a new drawing element with matching exposure (§11.3). */
+  imageElementId?: string | null;
+  /** The target drawing element (default: the selected element; a new element if none). */
+  targetElementId?: string | null;
+  /** The first cell (default: the current frame). */
+  startFrame?: number | bigint | null;
+  /** Vectorization type. */
+  type?: draw_vectorize_run_VectorizeType;
+  /** Pre-filter. */
+  filter?: draw_vectorize_run_FilterIn;
+  /** Threshold, % of white (0–100; `vectorize.thresholdOutOfRange` outside). */
+  threshold?: number | bigint;
+  /** Occupied cells. */
+  onConflict?: draw_vectorize_run_OnConflict;
+}
+
+/** The final result of `draw.vectorize.run`. */
+export interface draw_vectorize_run_RunResult {
+  /** The drawing element that received the drawings. */
+  elementId: string;
+  /** The drawings created, in order. */
+  drawingIds: string[];
+  /** Images completed. */
+  completed: number | bigint;
+  /** The job was cancelled after `completed` images. */
+  cancelled: boolean;
 }
 
 export interface draw_vectorize_run_result {
-  /** object ID or path reference (10 §3) */
+  /** The job (11 §7.7). */
   jobId: string;
 }
 

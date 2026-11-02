@@ -26,6 +26,7 @@ pub(crate) mod draw_stroke;
 pub(crate) mod draw_strokeops;
 pub(crate) mod draw_text;
 pub(crate) mod draw_transform;
+pub(crate) mod draw_vectorize;
 pub(crate) mod edit;
 pub(crate) mod edit_ops;
 pub(crate) mod inspect;
@@ -127,6 +128,8 @@ pub(crate) static ALL: &[&Command] = &[
     &draw::DRAW_GROUP_CREATE,
     &draw::DRAW_GROUP_DELETE,
     &draw::DRAW_DRAWING_CHANGED,
+    &draw_vectorize::DRAW_VECTORIZE_PREVIEW,
+    &draw_vectorize::DRAW_VECTORIZE_RUN,
     &draw_select::DRAW_SELECTION_SET,
     &draw_select::DRAW_SELECTION_GET,
     &draw_select::DRAW_POINT_SELECTION_SET,

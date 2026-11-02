@@ -25,7 +25,8 @@ fn key(k: &str) -> String {
 
 fn number_literal(n: &serde_json::Number, bigint_ok: bool) -> String {
     if let Some(i) = n.as_i64() {
-        if i.abs() > MAX_SAFE && bigint_ok {
+        // `unsigned_abs`: `i64::MIN` (the minimum of an unbounded integer schema) has no `i64` absolute value.
+        if i.unsigned_abs() > MAX_SAFE.unsigned_abs() && bigint_ok {
             return format!("{i}n");
         }
         return i.to_string();
@@ -79,7 +80,10 @@ fn type_name(def: &str) -> String {
 fn unsafe_integer(s: &Map<String, Value>) -> bool {
     let beyond = |k: &str| {
         s.get(k).and_then(Value::as_number).is_some_and(|n| {
-            n.as_i64().map_or_else(|| n.as_u64().is_some_and(|u| u > MAX_SAFE as u64), |i| i.abs() > MAX_SAFE)
+            n.as_i64().map_or_else(
+                || n.as_u64().is_some_and(|u| u > MAX_SAFE as u64),
+                |i| i.unsigned_abs() > MAX_SAFE.unsigned_abs(),
+            )
         })
     };
     beyond("minimum") || beyond("maximum") || (!s.contains_key("minimum") || !s.contains_key("maximum"))

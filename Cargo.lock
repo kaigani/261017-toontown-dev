@@ -4669,6 +4669,7 @@ dependencies = [
  "sha2 0.11.1",
  "stats_alloc",
  "trybuild",
+ "tt-io",
  "tt-model",
  "tt-persist",
  "tt-registry",
