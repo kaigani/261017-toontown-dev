@@ -10,6 +10,10 @@ publish.workspace = true
 tt-model.workspace = true
 tt-render.workspace = true
 tt-persist.workspace = true
+image.workspace = true
+
+[dev-dependencies]
+png = "=0.18.1"
 
 [lints]
 workspace = true
