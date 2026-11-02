@@ -208,17 +208,48 @@ fn centre_line_follows_the_spine_with_the_average_width_and_reports_what_it_cann
     let r = ok(&h, "draw.centreLine.apply", json!({ "drawingId": D1, "ids": [bid] }));
     assert!(r["removedIds"].as_array().unwrap().contains(&json!(bid)));
     let line = node(&h, r["strokeIds"][0].as_str().unwrap());
-    assert_eq!((line["kind"].as_str(), line["colourId"].clone()), (Some("pencil"), colour));
+    assert_eq!((line["kind"].as_str(), line["colourId"].clone()), (Some("pencil"), colour.clone()));
     assert_eq!(line["lineStyle"]["thickness"], 6.0, "average width at pressure 0.5");
     assert_eq!(
         (line["bezier"][0]["x"].as_f64(), line["bezier"].as_array().unwrap().last().unwrap()["x"].as_f64()),
         (Some(0.0), Some(60.0))
     );
     ok(&h, "edit.undo", json!({}));
-    // A brush outline edited directly has no spine: kept and reported.
+    // A brush outline edited directly has no spine: its chordal axis (M2 C2.4, C23-T1) runs along the middle of the
+    // scaled shape with the shape's average width.
     ok(&h, "draw.transform.apply", json!({ "drawingId": D1, "ids": [bid], "scale": {"x": 2, "y": 1} }));
     let r = ok(&h, "draw.centreLine.apply", json!({ "drawingId": D1, "ids": [bid] }));
-    assert_eq!((r["skippedIds"].clone(), r["warnings"].clone()), (json!([bid]), json!(["drawing.centreLineNoSpine"])));
+    assert!(r["skippedIds"].as_array().unwrap().is_empty(), "{r}");
+    assert!(r["removedIds"].as_array().unwrap().contains(&json!(bid)));
+    let line = node(&h, r["strokeIds"][0].as_str().unwrap());
+    assert_eq!(line["kind"], "pencil");
+    let w = line["lineStyle"]["thickness"].as_f64().unwrap();
+    assert!(w > 3.0 && w < 12.0, "average width {w}");
+    let xs: Vec<f64> = line["bezier"].as_array().unwrap().iter().map(|p| p["x"].as_f64().unwrap()).collect();
+    let ys: Vec<f64> = line["bezier"].as_array().unwrap().iter().map(|p| p["y"].as_f64().unwrap()).collect();
+    // Scaled 2× about its centre (x = 30): the shape spans about −36 to 96.
+    assert!(
+        xs.iter().copied().fold(f64::INFINITY, f64::min) < -25.0
+            && xs.iter().copied().fold(f64::NEG_INFINITY, f64::max) > 85.0,
+        "{xs:?}"
+    );
+    assert!(ys.iter().all(|y| (y - 700.0).abs() < 4.0), "along the middle: {ys:?}");
+    ok(&h, "edit.undo", json!({}));
+    // An outline the algorithm refuses (it crosses itself) is kept and reported.
+    let bow = ok(
+        &h,
+        "draw.content.add",
+        json!({ "drawingId": D1, "select": false, "content": { "nodes": [{ "type": "layer", "id": "l_b", "layerKind": "brush", "strokes": [{
+        "id": "s_b", "kind": "brush", "closed": true, "colourId": colour,
+        "outline": [[{"x": 0, "y": 900}, {"x": 0, "y": 900}, {"x": 100, "y": 1000}, {"x": 100, "y": 1000}, {"x": 100, "y": 1000}, {"x": 100, "y": 900},
+                     {"x": 100, "y": 900}, {"x": 100, "y": 900}, {"x": 0, "y": 1000}, {"x": 0, "y": 1000}, {"x": 0, "y": 1000}, {"x": 0, "y": 900}]] }] }] } }),
+    );
+    let bowid = bow["idMap"]["s_b"].as_str().unwrap().to_owned();
+    let r = ok(&h, "draw.centreLine.apply", json!({ "drawingId": D1, "ids": [bowid] }));
+    assert_eq!(
+        (r["skippedIds"].clone(), r["warnings"].clone()),
+        (json!([bowid]), json!(["drawing.centreLineNoSpine"]))
+    );
     // Painted zones that are not brush strokes are warned about.
     let c = colours(&h);
     let rect = ok(

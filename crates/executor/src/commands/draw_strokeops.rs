@@ -562,10 +562,33 @@ pub(crate) fn draw_centre_line_apply(cx: &mut Cx, p: CentreLineParams) -> Result
     let mut ops = Vec::new();
     let mut made: Vec<(String, String)> = Vec::new();
     let mut skipped = Vec::new();
+    // One work account for every outline of the call (the chordal axis of spineless outlines, C23-T1).
+    let mut work =
+        tt_vector::work::Work::new(tt_vector::ops::centre::CENTRE_WORK_BUDGET, "extracting these centre lines");
     for l in order {
         let Some(s) = vd::stroke_at(&d, &l.pointer) else { continue };
         let Some(spine) = s.spine().as_ref() else {
-            skipped.push(l.id.clone());
+            // A spineless outline (edited directly, vectorized): its chordal axis (02 §8.5; M2 C2.4, C23-T1). The
+            // outlines the algorithm refuses are kept and reported (`drawing.centreLineNoSpine`).
+            let outline = tt_vector::path::Path::from_points(s.points(), true);
+            match tt_vector::ops::centre::centre_line(&outline, &mut work) {
+                Ok(axis) => {
+                    let width = p.thickness.unwrap_or(axis.width).max(0.1);
+                    for (k, line) in axis.lines.iter().enumerate() {
+                        let id = cx.new_id(ObjectType::Stroke)?.as_str().to_owned();
+                        let v = json!({
+                            "id": id, "type": "stroke", "rev": 0, "kind": "pencil", "closed": line.closed,
+                            "points": line.points_json(), "colourId": s.colour_id().as_ref().map(|c| c.as_str()),
+                            "fillMatrix": s.fill_matrix(), "lineStyle": { "thickness": width, "lineType": "solid" },
+                            "spine": null, "sides": { "left": null, "right": null },
+                        });
+                        ops.push(op(if k == 0 { "replace" } else { "add" }, &l.pointer, Some(v)));
+                        made.push((l.id.clone(), id));
+                    }
+                }
+                Err(tt_vector::ops::centre::Refusal::NotSupported(_)) => skipped.push(l.id.clone()),
+                Err(tt_vector::ops::centre::Refusal::Geometry(e)) => return Err(crate::planar::geom_error(&e)),
+            }
             continue;
         };
         let pen = &spine.pen;
@@ -605,7 +628,7 @@ pub(crate) fn draw_centre_line_apply(cx: &mut Cx, p: CentreLineParams) -> Result
     let created: Vec<String> = made.iter().map(|m| m.1.clone()).collect();
     let mut changed = Changed {
         created_ids: created.clone(),
-        removed_ids: made.iter().map(|m| m.0.clone()).collect(),
+        removed_ids: made.iter().map(|m| m.0.clone()).collect::<std::collections::BTreeSet<_>>().into_iter().collect(),
         ..Changed::default()
     };
     crate::planar::settled(cx, &doc, &t.id, &created)?.report(&mut changed);

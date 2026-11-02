@@ -50,3 +50,11 @@ filter kernels, the connectivity of ink and paper, the limits, or how a job comm
 The vectorize corpus and fuzzing (`tests/fixtures/vectorize/`, `crates/io/tests/c24_decode_fuzz.rs`,
 `crates/vector/tests/c24_trace.rs`) keep the decoder and tracer panic-free and bounded. The remembered settings
 (`import.vectorize.settings.*`) stay M10 C10.2; until then omitted options take the spec defaults.
+
+## History
+
+- **M2 C2.4 (C23-T1): exact bridges.** The outline was fitted as one closed sequence, so a bridge's two passes were
+  fitted with different neighbours and no longer coincided (a hairline sliver, and a centre line cut at every bridge).
+  Each run of contour edges between bridges is now fitted open with its ends pinned, and the bridges stay straight
+  segments with their two passes exactly reversed (SI-053). The `draw.vectorize.preview` example result was re-recorded
+  (its PNG only). Evidence: `crates/executor/tests/c24_centre_line.rs`.

@@ -147,3 +147,24 @@ of these a command. The planar map (zones) is C2.2, drawing operations and rende
   equivalence of §13.3 on top of the same `tt-vector` builders.
 - The spec owner may amend 10 §4.9 (several outline contours, spine tip angle and `closed`, outline colours); the
   persisted form stays migratable through the C1.3 chain.
+
+## History
+
+- **M2 C2.4 (ticket C23-T1, SI-076): the medial-axis centre line.** `draw.centreLine.apply` keeps the spine-based
+  conversion for brush strokes with a spine; a spineless outline (edited directly, vectorized, merged) gets its chordal
+  axis (`tt_vector::ops::centre`): the outline flattened, zero-width bridges (an edge present in both directions)
+  dropped, the remaining contours subdivided about 1 du apart and triangulated by a constrained Delaunay triangulation
+  (`spade`, exact predicates); triangles inside by non-zero winding; the axis joins the midpoints of inner edges, with
+  a node at the centroid of each junction triangle. Free branches that reach less than the local width at their
+  junction (the junction triangle's circumcircle diameter, decision 12) or the shape's average width are pruned;
+  junctions closer than their local width merge; each chain is averaged over about one width along it, free ends run
+  straight on to the tip, and the chains are fitted (open, or closed around a hole). The lines take the source
+  stroke's colour (and fill matrix), so a multi-colour selection splits by source colour; the thickness is
+  `thickness`, else the outline's area divided by its axis length. **Refusal conditions** (`drawing.centreLineNoSpine`,
+  the stroke kept and listed in `skippedIds`): fewer than three distinct outline points; contours that cross (a
+  self-intersecting outline, `can_add_constraint` false); no inside triangle; no axis left after pruning. One work
+  account per call (`CENTRE_WORK_BUDGET` = 200 000 000 units, charging every flattening, subdivision, insertion, winding
+  test, pruning walk, smoothing and fit): an outline too large is refused with `limit.exceeded`, atomically, before the
+  watchdog. Evidence: `crates/vector/tests/c24_centre.rs` (bar, plus, frame with a split, bridged ring, refusals,
+  determinism), `crates/executor/tests/c24_centre_line.rs` (vectorized E2 line art: widths, junctions, closed lines,
+  fill carry-over, undo/redo, save/open, explicit thickness, budget refusal), `crates/executor/tests/c23_strokeops.rs`.

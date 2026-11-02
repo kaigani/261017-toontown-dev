@@ -43,6 +43,8 @@ unicode-normalization = "0.1"
 getrandom = "0.4"
 ryu = "1.0"
 proptest = "1.12"
+# Constrained Delaunay triangulation for the medial-axis centre line (M2 C2.4, C23-T1; robust predicates, no fast-math).
+spade = { version = "2.15", default-features = false, features = ["std"] }
 # Bitmap decoding for import and vectorize (M2 C2.4): only the formats 02 §11.2 requires (PSD is read by tt-io).
 image = { version = "0.25", default-features = false, features = ["png", "jpeg", "bmp", "gif", "tiff", "tga"] }
 # Compile-fail tests of the executor's exclusive mutation capability (C1.2).

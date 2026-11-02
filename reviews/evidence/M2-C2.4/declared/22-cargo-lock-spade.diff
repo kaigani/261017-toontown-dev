@@ -1,0 +1,87 @@
+diff --git a/Cargo.lock b/Cargo.lock
+index 2c20750..6a45f5e 100644
+--- a/Cargo.lock
++++ b/Cargo.lock
+@@ -1596,6 +1596,17 @@ version = "0.12.3"
+ source = "registry+https://github.com/rust-lang/crates.io-index"
+ checksum = "8a9ee70c43aaf417c914396645a0fa852624801b24ebb7ae78fe8272889ac888"
+ 
++[[package]]
++name = "hashbrown"
++version = "0.16.1"
++source = "registry+https://github.com/rust-lang/crates.io-index"
++checksum = "841d1cc9bed7f9236f321df977030373f4a4163ae1a7dbfe1a51a2c1a51d9100"
++dependencies = [
++ "allocator-api2",
++ "equivalent",
++ "foldhash",
++]
++
+ [[package]]
+ name = "hashbrown"
+ version = "0.17.1"
+@@ -3317,6 +3328,12 @@ dependencies = [
+  "web-sys",
+ ]
+ 
++[[package]]
++name = "robust"
++version = "1.2.0"
++source = "registry+https://github.com/rust-lang/crates.io-index"
++checksum = "4e27ee8bb91ca0adcf0ecb116293afa12d393f9c2b9b9cd54d33e8078fe19839"
++
+ [[package]]
+ name = "rustc-hash"
+ version = "2.1.3"
+@@ -3779,6 +3796,18 @@ dependencies = [
+  "system-deps",
+ ]
+ 
++[[package]]
++name = "spade"
++version = "2.15.1"
++source = "registry+https://github.com/rust-lang/crates.io-index"
++checksum = "9699399fd9349b00b184f5635b074f9ec93afffef30c853f8c875b32c0f8c7fa"
++dependencies = [
++ "hashbrown 0.16.1",
++ "num-traits",
++ "robust",
++ "smallvec",
++]
++
+ [[package]]
+ name = "stable_deref_trait"
+ version = "1.2.1"
+@@ -4819,6 +4848,7 @@ dependencies = [
+  "serde_json",
+  "sha2 0.11.1",
+  "skrifa",
++ "spade",
+  "tt-model",
+  "unicode-normalization",
+ ]
+diff --git a/Cargo.toml b/Cargo.toml
+index 125c568..2c55bf7 100644
+--- a/Cargo.toml
++++ b/Cargo.toml
+@@ -43,6 +43,8 @@ unicode-normalization = "0.1"
+ getrandom = "0.4"
+ ryu = "1.0"
+ proptest = "1.12"
++# Constrained Delaunay triangulation for the medial-axis centre line (M2 C2.4, C23-T1; robust predicates, no fast-math).
++spade = { version = "2.15", default-features = false, features = ["std"] }
+ # Bitmap decoding for import and vectorize (M2 C2.4): only the formats 02 §11.2 requires (PSD is read by tt-io).
+ image = { version = "0.25", default-features = false, features = ["png", "jpeg", "bmp", "gif", "tiff", "tga"] }
+ # Compile-fail tests of the executor's exclusive mutation capability (C1.2).
+diff --git a/crates/vector/Cargo.toml b/crates/vector/Cargo.toml
+index d2f1870..c797abd 100644
+--- a/crates/vector/Cargo.toml
++++ b/crates/vector/Cargo.toml
+@@ -7,6 +7,7 @@ rust-version.workspace = true
+ publish.workspace = true
+ 
+ [dependencies]
++spade.workspace = true
+ tt-model.workspace = true
+ serde.workspace = true
+ serde_json.workspace = true

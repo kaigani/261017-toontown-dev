@@ -862,13 +862,16 @@ Reserved by the M0 closure for "measured deterministic-format incompatibility" (
   with `colour.notMappable` and a reason. `set` skips solid, unpainted, invisible, text and mismatched-kind objects with
   a reason. The fill-mapping clipboard is session state.
 
-## SI-076 — centre line without a spine (found in M2 C2.3; interim accepted, ticket C23-T1, owner M2 C2.4)
+## SI-076 — centre line without a spine (found in M2 C2.3; resolved in M2 C2.4, ticket C23-T1)
 
 - **Sections:** 02 §8.5.
 - **Decision (orchestrator ruling: accepted as interim):** brush strokes that keep their spine become pencil lines
   along it at the pressure-average width; outlines edited directly (no spine) are kept and reported
   (`drawing.centreLineNoSpine`). The triangulated medial axis with branch pruning and colour splitting for spineless
   outlines is ticket **C23-T1**, owner M2 C2.4.
+- **Resolution (M2 C2.4, C23-T1):** spineless outlines get the chordal axis of a constrained Delaunay triangulation
+  (ADR-0016 history). `drawing.centreLineNoSpine` remains only for outlines the algorithm refuses: fewer than three
+  distinct points, crossing contours (self-intersection), no enclosed area, or no axis left after pruning.
 
 ## SI-077 — feather colours (found in M2 C2.3; open for the spec owner; ticket C23-T2, owner M2 C2.4)
 

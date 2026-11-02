@@ -17,9 +17,11 @@
 //! Every pass charges one work account ([`VECTORIZE_WORK_BUDGET`] per image), which also observes the watchdog's
 //! cancellation, so an image too large or too detailed is refused before the document worker is held too long.
 
+use std::collections::BTreeSet;
+
 use crate::fit::{self, Sample};
 use crate::geom::{P, signed_area};
-use crate::path::{GeomError, MAX_ANCHORS, Path};
+use crate::path::{Anchor, GeomError, MAX_ANCHORS, Path};
 use crate::work::Work;
 
 /// The work one image's vectorization may do, in units of about one pixel or vertex visit.
@@ -304,7 +306,9 @@ fn midpoints(poly: &[(u32, u32)], width: u32, height: u32) -> Vec<P> {
 }
 
 /// The closed outline of a region: its boundaries through their unit-edge midpoints, holes bridged to the outer
-/// boundary, fitted at [`SMOOTHNESS`].
+/// boundary, fitted at [`SMOOTHNESS`]. The contour runs between bridges are fitted separately and the bridges stay
+/// exact straight segments, so each bridge's two passes coincide and cancel (SI-053; the centre line and the fill
+/// rule rely on it).
 ///
 /// # Errors
 /// `limit.exceeded` past the work budget or [`MAX_ANCHORS`].
@@ -320,18 +324,60 @@ pub fn outline(region: &Region, width: u32, height: u32, work: &mut Work) -> Res
     let Some(merged) = crate::brush::bridge_charged(contours, &mut |n| work.spend(n))? else {
         return Err(GeomError::invalid("/image", "the region has no area"));
     };
-    let samples: Vec<Sample> = merged.iter().map(|p| Sample { p: *p, pressure: 1.0 }).collect();
-    let budget = VECTORIZE_WORK_BUDGET.saturating_sub(work.used());
-    let (f, used) = fit::fit_bounded(&samples, SMOOTHNESS, true, budget)?;
-    work.spend(used)?;
-    if f.path.anchors.len() > MAX_ANCHORS {
+    let path = fit_bridged(&merged, work)?;
+    if path.anchors.len() > MAX_ANCHORS {
         return Err(GeomError {
             code: "limit.exceeded",
             message: format!("a traced shape needs more than {MAX_ANCHORS} anchors"),
             pointer: "/image".to_owned(),
         });
     }
-    Ok(f.path)
+    Ok(path)
+}
+
+/// Fits a closed bridged polygon: one closed fit without bridges; otherwise each run of contour edges between bridge
+/// edges (an edge whose reverse is also an edge) is fitted open, its ends pinned to the run's end points, and the
+/// bridges join the runs as straight segments.
+fn fit_bridged(merged: &[P], work: &mut Work) -> Result<Path, GeomError> {
+    let n = merged.len();
+    let bits = |p: P| (p.x.to_bits(), p.y.to_bits());
+    let edges: BTreeSet<_> = (0..n).map(|i| (bits(merged[i]), bits(merged[(i + 1) % n]))).collect();
+    charge(work, n)?;
+    let bridge: Vec<bool> = (0..n).map(|i| edges.contains(&(bits(merged[(i + 1) % n]), bits(merged[i])))).collect();
+    let fit_run = |run: &[P], closed: bool, work: &mut Work| -> Result<Vec<Anchor>, GeomError> {
+        let samples: Vec<Sample> = run.iter().map(|p| Sample { p: *p, pressure: 1.0 }).collect();
+        let budget = VECTORIZE_WORK_BUDGET.saturating_sub(work.used());
+        let (f, used) = fit::fit_bounded(&samples, SMOOTHNESS, closed, budget)?;
+        work.spend(used)?;
+        Ok(f.path.anchors)
+    };
+    let Some(start) = (0..n).find(|&i| !bridge[i] && bridge[(i + n - 1) % n]) else {
+        return Ok(Path { anchors: fit_run(merged, true, work)?, closed: true });
+    };
+    let mut anchors: Vec<Anchor> = Vec::new();
+    let mut run: Vec<P> = vec![merged[start]];
+    for step in 0..n {
+        let i = (start + step) % n;
+        if bridge[i] {
+            // The run ends at this bridge's start; a bridge after a bridge leaves its one point as a corner.
+            if run.len() >= 2 {
+                let mut fitted = fit_run(&run, false, work)?;
+                if let (Some(first), Some(&p)) = (fitted.first_mut(), run.first()) {
+                    *first = Anchor { p, inh: P::default(), outh: first.outh };
+                }
+                if let (Some(last), Some(&p)) = (fitted.last_mut(), run.last()) {
+                    *last = Anchor { p, inh: last.inh, outh: P::default() };
+                }
+                anchors.extend(fitted);
+            } else {
+                anchors.extend(run.iter().map(|p| Anchor::corner(*p)));
+            }
+            run = vec![merged[(i + 1) % n]];
+        } else {
+            run.push(merged[(i + 1) % n]);
+        }
+    }
+    Ok(Path { anchors, closed: true })
 }
 
 /// Vectorizes straight-alpha RGBA pixels: one closed outline per ink region, in region order.
