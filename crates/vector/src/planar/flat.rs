@@ -17,8 +17,12 @@ const MAX_PIECES: f64 = 4096.0;
 pub struct Flat {
     /// Vertices (a closed path does not repeat its first vertex).
     pub pts: Vec<P>,
-    /// Path parameter of each vertex.
+    /// Path parameter where each vertex is first reached.
     pub params: Vec<f64>,
+    /// Path parameter where each vertex is last left: past zero-length segments (repeated anchors), so an edge's
+    /// parameters never span one and a junction on it is never placed inside it (M2 C2.4, found by the topology
+    /// properties).
+    pub out: Vec<f64>,
     /// Whether the polyline closes back to its first vertex.
     pub closed: bool,
 }
@@ -31,10 +35,10 @@ impl Flat {
         let n = self.pts.len();
         let mut out = Vec::with_capacity(n);
         for i in 0..n.saturating_sub(1) {
-            out.push((self.pts[i], self.pts[i + 1], self.params[i], self.params[i + 1]));
+            out.push((self.pts[i], self.pts[i + 1], self.out[i], self.params[i + 1]));
         }
         if self.closed && n >= 2 {
-            out.push((self.pts[n - 1], self.pts[0], self.params[n - 1], segment_count as f64));
+            out.push((self.pts[n - 1], self.pts[0], self.out[n - 1], segment_count as f64));
         }
         out
     }
@@ -71,17 +75,24 @@ pub fn flatten(path: &Path, work: &mut Work) -> Result<Flat, GeomError> {
     let segs = path.segments();
     let mut pts: Vec<P> = Vec::new();
     let mut params: Vec<f64> = Vec::new();
+    let mut out: Vec<f64> = Vec::new();
     if segs.is_empty() {
         if let Some(a) = path.anchors.first() {
             pts.push(a.p);
             params.push(0.0);
+            out.push(0.0);
         }
-        return Ok(Flat { pts, params, closed: false });
+        return Ok(Flat { pts, params, out, closed: false });
     }
-    let push = |pts: &mut Vec<P>, params: &mut Vec<f64>, p: P, s: f64| {
-        if pts.last() != Some(&p) {
+    let push = |pts: &mut Vec<P>, params: &mut Vec<f64>, out: &mut Vec<f64>, p: P, s: f64| {
+        if pts.last() == Some(&p) {
+            if let Some(o) = out.last_mut() {
+                *o = s;
+            }
+        } else {
             pts.push(p);
             params.push(s);
+            out.push(s);
         }
     };
     let last = segs.len() - 1;
@@ -92,18 +103,19 @@ pub fn flatten(path: &Path, work: &mut Work) -> Result<Flat, GeomError> {
         for i in 0..n {
             let t = f64::from(i) / f64::from(n);
             let p = if i == 0 { c.p0 } else { c.eval(t) };
-            push(&mut pts, &mut params, p, base + t);
+            push(&mut pts, &mut params, &mut out, p, base + t);
         }
         if j == last && !path.closed {
-            push(&mut pts, &mut params, c.p3, base + 1.0);
+            push(&mut pts, &mut params, &mut out, c.p3, base + 1.0);
         }
     }
     if path.closed && pts.len() >= 2 && pts.last() == pts.first() {
         pts.pop();
         params.pop();
+        out.pop();
     }
     let closed = path.closed && pts.len() >= 2;
-    Ok(Flat { pts, params, closed })
+    Ok(Flat { pts, params, out, closed })
 }
 
 /// The Bézier parameter of a point at fraction `f` along the polyline edge from `s_a` to `s_b` (linear within an
@@ -125,6 +137,7 @@ mod tests {
         let f = flatten(&line, &mut Work::unlimited("t")).unwrap_or_else(|_| Flat {
             pts: vec![],
             params: vec![],
+            out: vec![],
             closed: false,
         });
         assert_eq!(f.pts.len(), 2);
@@ -139,6 +152,7 @@ mod tests {
         let f = flatten(&arc, &mut Work::unlimited("t")).unwrap_or_else(|_| Flat {
             pts: vec![],
             params: vec![],
+            out: vec![],
             closed: false,
         });
         let c = arc.segments()[0];
@@ -163,6 +177,7 @@ mod tests {
         let f = flatten(&sq, &mut Work::unlimited("t")).unwrap_or_else(|_| Flat {
             pts: vec![],
             params: vec![],
+            out: vec![],
             closed: false,
         });
         assert_eq!(f.pts.len(), 4);

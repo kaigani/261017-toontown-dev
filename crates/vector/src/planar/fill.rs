@@ -261,6 +261,27 @@ impl Boxes {
     }
 }
 
+/// The length of the segment `a`–`c` (grid coordinates) inside the box `[min x, min y, max x, max y]`.
+fn clipped_length(a: [i64; 2], c: [i64; 2], b: [i64; 4]) -> f64 {
+    let (x0, y0, dx, dy) = (a[0] as f64, a[1] as f64, (c[0] - a[0]) as f64, (c[1] - a[1]) as f64);
+    let (mut t0, mut t1) = (0.0f64, 1.0f64);
+    for (p, q) in [(-dx, x0 - b[0] as f64), (dx, b[2] as f64 - x0), (-dy, y0 - b[1] as f64), (dy, b[3] as f64 - y0)] {
+        if p == 0.0 {
+            if q < 0.0 {
+                return 0.0;
+            }
+        } else {
+            let r = q / p;
+            if p < 0.0 {
+                t0 = t0.max(r);
+            } else {
+                t1 = t1.min(r);
+            }
+        }
+    }
+    if t1 <= t0 { 0.0 } else { (t1 - t0) * dx.hypot(dy) }
+}
+
 /// The fills of a new map's zones carried over from an old map and its fills.
 ///
 /// # Errors
@@ -288,20 +309,39 @@ pub fn carry(
         }
         let cands = index.overlapping(new.zone_box(n), work)?;
         let new_rings = new.zone_rings_grid(n);
+        // Snapping a new junction to the grid moves the new zone's boundary by at most about one grid unit, which can give
+        // it a sliver of overlap with an old zone it does not lie in (M2 C2.4, found by the topology properties). Such a
+        // sliver lies along the part of the new zone's boundary inside that old zone's box, so an overlap no larger than
+        // twice that length (in grid units, twice-area units) does not count; larger overlaps are compared exactly.
+        let boundary_in = |b: [i64; 4]| -> f64 {
+            new_rings
+                .iter()
+                .flat_map(|r| (0..r.len()).map(move |i| (r[i], r[(i + 1) % r.len()])))
+                .map(|(a, c)| clipped_length(a, c, b))
+                .sum()
+        };
         // Exact rational overlap areas (no rounding to the grid, C22-R2-04): the largest wins, the lower old zone ID
         // only on mathematically equal areas.
         let mut best: Option<(num_rational::BigRational, usize)> = None;
-        for i in cands {
+        for &i in &cands {
             let area = super::exact::overlap_area2(&old.zone_rings_grid(i), &new_rings, work)?;
+            let noise = num_rational::BigRational::from_integer(num_bigint::BigInt::from(
+                (2.0 * boundary_in(old.zone_box(i))).ceil() as i64,
+            ));
+            if area <= noise {
+                continue;
+            }
             let better = match &best {
-                None => area > num_rational::BigRational::from_integer(0.into()),
+                None => true,
                 Some((ba, bi)) => area > *ba || (area == *ba && old.zones[i].id < old.zones[*bi].id),
             };
             if better {
                 best = Some((area, i));
             }
         }
-        out.push(best.and_then(|(_, i)| old_fills.get(i).cloned().flatten()));
+        // A zone too small for any overlap to exceed the bound takes the fill of the old zone holding its interior point.
+        let best = best.map(|(_, i)| i).or_else(|| old.zone_at(zone.interior).filter(|i| cands.contains(i)));
+        out.push(best.and_then(|i| old_fills.get(i).cloned().flatten()));
     }
     Ok(out)
 }

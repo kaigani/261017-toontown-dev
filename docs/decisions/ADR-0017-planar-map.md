@@ -155,3 +155,17 @@ C2.1 delivered strokes, text, groups and bitmaps as validated, persisted geometr
   Eraser (`ops::cut`), Optimize's overlap tests and lasso selection — decide through it too. Corpus:
   `crates/vector/tests/c23_predicates.rs` (determinant ±1 far from the origin, endpoint contact, collinear overlap,
   containment on and off the boundary).
+- **M2 C2.4 (readiness item 2): defects found by the topology properties, fixed.** (1) A repeated anchor (zero-length
+  segment) made the flattened edge after it span that segment's parameters, so a junction on the edge was cut inside
+  the zero-length segment and the piece after it doubled back (a sliver zone): each flattened vertex now also records
+  where it is last left (`Flat::out`), and edges run from there. (2) A piece between two cuts that resolve to one
+  junction (a zero-length loop) is dropped; its neighbours meet at the junction. (3) A piece cut from a straight
+  segment stays straight between its junction ends (corner handles): the junction parameter is interpolated along the
+  flattened chord, which a straight cubic's parameter does not follow, so the de Casteljau handles overshot the moved
+  end and folded back (micro-zones beside coincident edges). (4) A path passing through a junction more than once is
+  cut at every pass. (5) Fill carry-over ignores an overlap no larger than the snapping bound — twice the length of
+  the new zone's boundary inside the old zone's box, in grid units — so a sliver created by snapping a new junction
+  never carries a neighbour's fill; a zone with no overlap above the bound takes the fill of the old zone holding its
+  interior point. Larger overlaps are still compared exactly (C22-R2-04). Open: ticket C24-T1 — side fills of zones
+  bounded by collinearly overlapping or retracing strokes (not split there, C22-R3-03) can read back differently after
+  an unrelated edit. Evidence: `crates/vector/tests/c24_properties.rs`, `crates/executor/tests/c24_topology.rs`.

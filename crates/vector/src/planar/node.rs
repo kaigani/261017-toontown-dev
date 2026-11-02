@@ -521,6 +521,20 @@ fn apply(s: &NodeStroke, js: &[Junction]) -> Option<Outcome> {
         }
         cuts.push(resolved);
     }
+    // A path that passes through a junction more than once is cut at every pass: each anchor exactly at a cut's point
+    // is cut too, so no piece runs through the junction (and faces two zones on one side; M2 C2.4, found by the
+    // topology properties). An open path's ends are its own junctions already.
+    let anchor_cuts: Vec<Junction> = cuts
+        .iter()
+        .flat_map(|c| {
+            s.path.anchors.iter().enumerate().filter_map(move |(k, a)| {
+                let param = k as f64;
+                let interior = s.path.closed || (k > 0 && k + 1 < s.path.anchors.len());
+                (interior && a.p == c.at && (param - c.s).abs() > 1e-9).then_some(Junction { s: param, at: c.at })
+            })
+        })
+        .collect();
+    cuts.extend(anchor_cuts);
     cuts.sort_by(|a, b| a.s.total_cmp(&b.s));
     // Merge cuts at one point.
     let mut merged: Vec<Junction> = Vec::new();
@@ -590,8 +604,22 @@ fn apply(s: &NodeStroke, js: &[Junction]) -> Option<Outcome> {
         }
         pieces.push(sub_path(&segs, prev, Junction { s: count, at: finish_at }));
     }
-    pieces.retain(|p| p.anchors.len() >= 2);
+    // A piece between two cuts that resolved to one junction starts and ends there and stays within the junction
+    // tolerance: it carries no geometry, and kept it would be a loop crossing its neighbours (micro-zones beside a
+    // coincident edge; M2 C2.4, found by the topology properties). Its neighbours meet at that junction.
+    pieces.retain(|p| p.anchors.len() >= 2 && !degenerate(p));
     Some(Outcome::Split(pieces))
+}
+
+/// Whether an open piece starts and ends at one point and every control point stays within the junction tolerance.
+fn degenerate(p: &Path) -> bool {
+    let (Some(first), Some(last)) = (p.anchors.first(), p.anchors.last()) else { return true };
+    first.p == last.p
+        && p.anchors.iter().all(|a| {
+            a.p.dist(first.p) <= JUNCTION_TOLERANCE
+                && (a.p + a.inh).dist(first.p) <= JUNCTION_TOLERANCE
+                && (a.p + a.outh).dist(first.p) <= JUNCTION_TOLERANCE
+        })
 }
 
 /// Whether two cuts (in parameter order) are one: the same junction, with the path between them staying near it (a
@@ -625,6 +653,7 @@ fn anchor_at(path: &Path, s: f64) -> P {
 fn sub_path(segs: &[Cubic], from: Junction, to: Junction) -> Path {
     let n = segs.len();
     let mut cubics: Vec<Cubic> = Vec::new();
+    let mut straight: Vec<bool> = Vec::new();
     let (mut s, end) = (from.s, to.s);
     while s < end - 1e-12 {
         let j = (s.floor() as usize).min(usize::MAX - 1);
@@ -633,6 +662,7 @@ fn sub_path(segs: &[Cubic], from: Junction, to: Junction) -> Path {
         let t1 = ((j + 1) as f64).min(end) - j as f64;
         let part = sub_cubic(&seg, t0, t1);
         cubics.push(part);
+        straight.push(is_straight(&seg));
         s = j as f64 + t1;
         if t1 >= 1.0 {
             s = (j + 1) as f64;
@@ -652,7 +682,23 @@ fn sub_path(segs: &[Cubic], from: Junction, to: Junction) -> Path {
     if let Some(a) = anchors.last_mut() {
         a.p = to.at;
     }
+    // A piece of a straight segment stays a straight segment between its (junction) ends. The junction parameter is
+    // interpolated along the flattened chord, which a straight cubic's parameter does not follow, so its de Casteljau
+    // handles would overshoot the moved end and fold back along the line (M2 C2.4, found by the topology properties).
+    for (i, st) in straight.iter().enumerate() {
+        if *st && i + 1 < anchors.len() {
+            anchors[i].outh = P::default();
+            anchors[i + 1].inh = P::default();
+        }
+    }
     Path { anchors, closed: false }
+}
+
+/// Whether a cubic's control points lie on its chord (a straight segment, however parameterised).
+fn is_straight(c: &Cubic) -> bool {
+    let len = c.p0.dist(c.p3);
+    let tol = 1e-9 * len.max(1.0);
+    len > 0.0 && flat::segment_distance(c.p1, c.p0, c.p3) <= tol && flat::segment_distance(c.p2, c.p0, c.p3) <= tol
 }
 
 /// The part of a cubic between two parameters.

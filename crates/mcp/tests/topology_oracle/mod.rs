@@ -1,8 +1,9 @@
 //! The independent topology oracle of the history tests (C22-R1-11): a layer holding a closed pencil square
 //! (512…640 du, anchors every 32 du along its bottom and top edges) and vertical pencil cuts through it at
 //! x = 528 + 32k (k = 0…3), each crossing one square segment at its midpoint and its own first and last segments at
-//! their midpoints. Every junction is therefore at an exactly representable point and every piece is an exact
-//! de Casteljau half or a whole straight segment, so this module predicts, without reading the engine's graph:
+//! their midpoints. Every junction is therefore at an exactly representable point and every piece is a straight
+//! segment (corner handles; ADR-0017 history, M2 C2.4) or a whole one, so this module predicts, without reading the
+//! engine's graph:
 //!
 //! - the persisted pieces of the square and of every cut (02 §3.12 item 1: split at the crossings, shared junction
 //!   anchors, pieces in place of the stroke they split, never merged back);
@@ -100,17 +101,14 @@ fn sub_path(anchors: &[(f64, f64)], closed: bool, from: f64, to: f64) -> Value {
         cubics.push(sub_cubic(&seg, t0, t1));
         s = if t1 >= 1.0 { (j + 1) as f64 } else { j as f64 + t1 };
     }
-    // [x, y, inX, inY, outX, outY] per anchor.
+    // [x, y, inX, inY, outX, outY] per anchor. Every segment here is straight, and a piece of a straight segment stays
+    // a straight segment with corner handles between its junction ends (ADR-0017 history, M2 C2.4 fix 3).
     let mut out: Vec<[f64; 6]> = Vec::new();
     for c in &cubics {
-        match out.last_mut() {
-            Some(last) => {
-                last[4] = c[1].0 - c[0].0;
-                last[5] = c[1].1 - c[0].1;
-            }
-            None => out.push([c[0].0, c[0].1, 0.0, 0.0, c[1].0 - c[0].0, c[1].1 - c[0].1]),
+        if out.is_empty() {
+            out.push([c[0].0, c[0].1, 0.0, 0.0, 0.0, 0.0]);
         }
-        out.push([c[3].0, c[3].1, c[2].0 - c[3].0, c[2].1 - c[3].1, 0.0, 0.0]);
+        out.push([c[3].0, c[3].1, 0.0, 0.0, 0.0, 0.0]);
     }
     json!(out)
 }
