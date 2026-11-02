@@ -219,7 +219,20 @@ impl Rollback {
             checkpoints: s.project.as_ref().map(|p| p.checkpoints.clone()),
             clipboard: s.clipboard.clone(),
             edit_options: s.edit_options.clone(),
-            agents: crate::agents::AgentHub { pending: BTreeMap::new(), activity: Vec::new(), ..s.agents.clone() },
+            // Field by field: the activity log grows with every agent call and is never copied here.
+            agents: crate::agents::AgentHub {
+                sessions: s.agents.sessions.clone(),
+                limits: s.agents.limits.clone(),
+                pending: BTreeMap::new(),
+                activity: Vec::new(),
+                next_seq: s.agents.next_seq,
+                next_session: s.agents.next_session,
+                persist: s.agents.persist,
+                typed_tools: s.agents.typed_tools.clone(),
+                typed_tools_version: s.agents.typed_tools_version,
+                ttl: s.agents.ttl,
+                server_enabled: s.agents.server_enabled,
+            },
             events: s.events.len(),
         }
     }
