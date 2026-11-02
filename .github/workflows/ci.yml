@@ -247,6 +247,50 @@ jobs:
           path: out/
           if-no-files-found: error
 
+  # End-to-end scenario E2 (paint by id, 11 §14.8; M2 C2.4 readiness item 3) through the official Python SDK against the
+  # release binary: vectorize, validate, paint by ID, recolour, render, undo/redo, save/open, `--run` replay from the
+  # saved base. The seven PNGs and their hashes are kept as artifacts.
+  e2:
+    name: e2 release (${{ matrix.os }})
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [windows-latest, macos-latest]
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v7
+
+      - name: Rust toolchain (pinned in rust-toolchain.toml)
+        run: |
+          tc=$(sed -n 's/^channel = "\(.*\)"/\1/p' rust-toolchain.toml)
+          rustup toolchain install "$tc" --profile minimal
+          rustup override set "$tc"
+          rustc --version
+
+      - uses: Swatinem/rust-cache@v2
+        with:
+          key: headless-release
+
+      - name: E2 paint by id (official Python SDK, release binary)
+        run: |
+          cargo build --release --locked -p tt-headless
+          exe=target/release/toontown-headless
+          PY=python3
+          if [ "$RUNNER_OS" = "Windows" ]; then exe="$exe.exe"; PY=python; fi
+          $PY -m venv .venv-e2
+          VPY=.venv-e2/bin/python
+          if [ "$RUNNER_OS" = "Windows" ]; then VPY=.venv-e2/Scripts/python.exe; fi
+          $VPY -m pip install --quiet "mcp==2.0.0"
+          PYTHONIOENCODING=utf-8 $VPY scripts/e2-paint-by-id.py "$exe" out/e2
+
+      - uses: actions/upload-artifact@v7
+        if: always()
+        with:
+          name: e2-${{ runner.os }}
+          path: out/e2/
+          if-no-files-found: error
+
   # Unsigned desktop bundles + automated IPC round-trip benchmark in the real webview.
   bundle:
     name: bundle (${{ matrix.os }})
