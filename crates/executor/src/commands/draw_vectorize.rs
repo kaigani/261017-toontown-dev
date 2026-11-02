@@ -179,6 +179,21 @@ pub(crate) struct RunResult {
     completed: u64,
     /// The job was cancelled after `completed` images.
     cancelled: bool,
+    /// Images not committed, in order: their cell was occupied (`onConflict: "skip"`) or the job was cancelled first
+    /// (SI-083: reported beside the spec's fields).
+    skipped: Vec<Skipped>,
+}
+
+/// An image a run did not commit.
+#[derive(Debug, Serialize, JsonSchema)]
+#[serde(rename_all = "camelCase")]
+pub(crate) struct Skipped {
+    /// Its position in `files` (or among the image element's drawings), from 0.
+    index: u64,
+    /// The file, or the image element's drawing.
+    source: String,
+    /// `occupied` or `cancelled`.
+    reason: String,
 }
 
 fn threshold(t: i64) -> Result<u8, CommandError> {
@@ -396,6 +411,8 @@ struct Item {
     skip: bool,
     /// A name for a texture colour (the file name).
     name: String,
+    /// The file path or source drawing, as reported.
+    label: String,
 }
 
 /// What a run creates.
@@ -422,6 +439,7 @@ struct Plan {
     undo = "Import and Vectorize",
     needs_project,
     example(title = "Vectorize the E2 line art into Bob's frame 1", params = r#"{"files": ["/tmp/lineart.png"], "targetElementId": "scene:#1/element:\"Bob\"", "startFrame": 1, "onConflict": "replace"}"#),
+    example(title = "Two images into frames 5 and 6: each is its own undo step, and cancelling keeps those already committed", params = r#"{"files": ["/tmp/lineart.png", "/tmp/lineart.png"], "targetElementId": "scene:#1/element:\"Bob\"", "startFrame": 5, "onConflict": "replace"}"#),
     gui = "File › Import › Import and Vectorize; cell context menu (M4 C4.1)",
 )]
 pub(crate) fn draw_vectorize_run(cx: &mut Cx, p: RunParams) -> Result<Job<RunResult>, CommandError> {
@@ -467,6 +485,7 @@ pub(crate) fn draw_vectorize_run(cx: &mut Cx, p: RunParams) -> Result<Job<RunRes
                 if i == 0 {
                     name.clone_into(&mut plan.new_name);
                 }
+                let label = path.to_string_lossy().into_owned();
                 plan.items.push(Item {
                     source: Source::File(path),
                     frame,
@@ -474,6 +493,7 @@ pub(crate) fn draw_vectorize_run(cx: &mut Cx, p: RunParams) -> Result<Job<RunRes
                     replace: false,
                     skip: false,
                     name,
+                    label,
                 });
             }
         }
@@ -504,6 +524,7 @@ pub(crate) fn draw_vectorize_run(cx: &mut Cx, p: RunParams) -> Result<Job<RunRes
                 // Drawings the element does not expose are converted too, after its last frame.
                 let frame = first.unwrap_or_else(|| exposure.iter().map(|(_, n)| *n).sum::<u32>().saturating_add(1));
                 let name = format!("{} {}", e.name(), d.as_str());
+                let label = d.as_str().to_owned();
                 plan.items.push(Item {
                     source: Source::Bitmap(bytes),
                     frame,
@@ -511,6 +532,7 @@ pub(crate) fn draw_vectorize_run(cx: &mut Cx, p: RunParams) -> Result<Job<RunRes
                     replace: false,
                     skip: false,
                     name,
+                    label,
                 });
             }
             if plan.items.is_empty() {
@@ -595,13 +617,21 @@ fn run_job(
     let mut element = plan.element.clone();
     let mut created: Vec<(Option<Id>, String)> = Vec::new();
     let mut cancelled = false;
+    let mut skipped: Vec<Skipped> = Vec::new();
+    let skip = |i: usize, it: &Item, reason: &str| Skipped {
+        index: i as u64,
+        source: it.label.clone(),
+        reason: reason.to_owned(),
+    };
     for (i, it) in plan.items.iter().enumerate() {
-        if progress.cancelled() {
+        if cancelled || progress.cancelled() {
             cancelled = true;
-            break;
+            skipped.push(skip(i, it, "cancelled"));
+            continue;
         }
         progress.report(i as f64 / n.max(1) as f64, &format!("vectorizing image {} of {n}", i + 1));
         if it.skip {
+            skipped.push(skip(i, it, "occupied"));
             continue;
         }
         let img = it.source.decode()?;
@@ -609,7 +639,8 @@ fn run_job(
         let paths = trace(&img, plan.filter, plan.threshold, &mut work)?;
         if progress.cancelled() {
             cancelled = true;
-            break;
+            skipped.push(skip(i, it, "cancelled"));
+            continue;
         }
         let commit = Commit {
             element: element.clone(),
@@ -645,6 +676,7 @@ fn run_job(
         drawing_ids: created.into_iter().map(|(_, d)| d).collect(),
         completed: 0,
         cancelled,
+        skipped,
     };
     let completed = result.drawing_ids.len() as u64;
     serde_json::to_value(RunResult { completed, ..result }).map_err(|e| CommandError::internal(e.to_string()))

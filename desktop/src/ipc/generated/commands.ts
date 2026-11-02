@@ -3200,7 +3200,7 @@ export const COMMAND_INDEX = {
     examples: [
       {},
     ],
-    milestone: "M2 C2.4",
+    milestone: "M2 C2.4 — blocked on SI-077",
   },
   "draw.flatten.apply": {
     kind: "action",
@@ -3790,7 +3790,7 @@ export const COMMAND_INDEX = {
         file: "review/example.out",
       },
     ],
-    milestone: "M2 C2.4",
+    milestone: "M10 C10.2",
   },
   "draw.vectorize.preview": {
     kind: "query",
@@ -3814,6 +3814,15 @@ export const COMMAND_INDEX = {
         ],
         targetElementId: "scene:#1/element:\"Bob\"",
         startFrame: 1,
+        onConflict: "replace",
+      },
+      {
+        files: [
+          "/tmp/lineart.png",
+          "/tmp/lineart.png",
+        ],
+        targetElementId: "scene:#1/element:\"Bob\"",
+        startFrame: 5,
         onConflict: "replace",
       },
     ],
@@ -38660,12 +38669,45 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
         description: "The job was cancelled after `completed` images.",
         type: "boolean",
       },
+      skipped: {
+        description: "Images not committed, in order: their cell was occupied (`onConflict: \"skip\"`) or the job was cancelled first\n(SI-083: reported beside the spec's fields).",
+        type: "array",
+        items: {
+          $ref: "#/$defs/draw.vectorize.run.Skipped",
+        },
+      },
     },
     required: [
       "elementId",
       "drawingIds",
       "completed",
       "cancelled",
+      "skipped",
+    ],
+  },
+  "draw.vectorize.run.Skipped": {
+    description: "An image a run did not commit.",
+    type: "object",
+    properties: {
+      index: {
+        description: "Its position in `files` (or among the image element's drawings), from 0.",
+        type: "integer",
+        maximum: 18446744073709551615n,
+        minimum: 0,
+      },
+      source: {
+        description: "The file, or the image element's drawing.",
+        type: "string",
+      },
+      reason: {
+        description: "`occupied` or `cancelled`.",
+        type: "string",
+      },
+    },
+    required: [
+      "index",
+      "source",
+      "reason",
     ],
   },
   "draw.vectorize.run.result": {
@@ -87772,6 +87814,18 @@ export interface draw_vectorize_run_RunResult {
   completed: number | bigint;
   /** The job was cancelled after `completed` images. */
   cancelled: boolean;
+  /** Images not committed, in order: their cell was occupied (`onConflict: "skip"`) or the job was cancelled first (SI-083: reported beside the spec's fields). */
+  skipped: draw_vectorize_run_Skipped[];
+}
+
+/** An image a run did not commit. */
+export interface draw_vectorize_run_Skipped {
+  /** Its position in `files` (or among the image element's drawings), from 0. */
+  index: number | bigint;
+  /** The file, or the image element's drawing. */
+  source: string;
+  /** `occupied` or `cancelled`. */
+  reason: string;
 }
 
 export interface draw_vectorize_run_result {

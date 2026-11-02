@@ -924,3 +924,16 @@ Reserved by the M0 closure for "measured deterministic-format incompatibility" (
   art exceeds 64 KiB of base64. The width parameter (1–4096) bounds the output.
 - **Question:** raise or remove the limit, or return a `path` like `draw.drawing.render`.
 
+## SI-082 — owner of `draw.vectorFile.import` (found in M2 C2.4; decided)
+
+- **Decision (orchestrator ruling, C2.4 plan):** the registry row's original owner (M2 C2.4) disagreed with plan §4,
+  which places vector import (PDF/AI/SVG) in M10 C10.2; plan §4 governs, and the declaration's owner is M10 C10.2.
+
+## SI-083 — the `draw.vectorize.run` result reports skipped images (found in M2 C2.4; decided)
+
+- **Sections:** A (`draw.vectorize.run` → `{elementId, drawingIds, completed, cancelled}`); 02 §11.2 (cancelling keeps
+  completed drawings).
+- **Decision (orchestrator ruling, C2.4 plan):** each image is its own undo step; the result also lists the images not
+  committed, `skipped: [{index, source, reason: "occupied" | "cancelled"}]`, beside the spec's fields.
+- **Question:** add `skipped` to the A result column.
+

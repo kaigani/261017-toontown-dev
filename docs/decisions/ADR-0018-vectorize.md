@@ -33,8 +33,10 @@ filter kernels, the connectivity of ink and paper, the limits, or how a job comm
    content-addressed entry `textures/vectorize-<hash>.png` and mapped by the shapes' fill matrix onto the image's
    extent. Like `doc.import.json`, the entry is stored with the call.
 4. **Run:** a job; each image commits as its own transaction and undo step "Import and Vectorize" through
-   `Core::run_staged` (the commands' staging and acceptance path), so cancelling keeps the finished images and the job
-   reports `{elementId, drawingIds, completed, cancelled}` (a job that stops at a cancellation keeps that report).
+   `Core::run_staged` (the commands' staging and acceptance path; confirmed by the orchestrator's ruling on the C2.4
+   plan), so cancelling keeps the finished images and the job reports `{elementId, drawingIds, completed, cancelled,
+   skipped}` — `skipped` lists the images not committed, with reason `occupied` or `cancelled` (SI-083) — and a job
+   that stops at a cancellation keeps that report. The command's second example shows two images as two undo steps.
    Images go to consecutive cells from `startFrame`; occupied cells: `ask` → `needs_confirmation` (category
    destructive, consequences coded `drawing.cellOccupied`), `replace` (a new drawing in the cell; the old one stays in
    the bank), `skip`. Target: `targetElementId`, else the current element — refused with `drawing.notVectorElement`

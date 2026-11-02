@@ -133,6 +133,7 @@ fn occupied_cells_ask_replace_or_skip() {
         json!({ "files": [art()], "targetElementId": BOB, "startFrame": 1, "onConflict": "skip" }),
     );
     assert_eq!(skipped["result"]["completed"], 0, "{skipped}");
+    assert_eq!(skipped["result"]["skipped"], json!([{ "index": 0, "source": art(), "reason": "occupied" }]));
     assert_eq!(rev(&h), v);
     // Replace puts a new drawing in the cell; the old one stays in the bank.
     let replaced = job(
@@ -374,6 +375,11 @@ fn cancelling_keeps_the_images_already_completed() {
     let done = result["completed"].as_u64().unwrap();
     assert!(done < 20);
     assert_eq!(result["drawingIds"].as_array().unwrap().len() as u64, done);
+    // The images not committed are reported, in order, as cancelled.
+    let skipped = result["skipped"].as_array().unwrap();
+    assert_eq!(skipped.len() as u64, 20 - done, "{rec}");
+    assert!(skipped.iter().all(|s| s["reason"] == "cancelled"));
+    assert_eq!(skipped[0]["index"].as_u64(), Some(done));
     assert_eq!(rev(&h), v + done, "each completed image is its own revision and stays");
     let _ = std::fs::remove_dir_all(dir);
 }

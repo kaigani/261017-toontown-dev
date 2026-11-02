@@ -30,7 +30,7 @@
     {
       "title": "Accept a request",
       "result": {
-        "confirmationId": "cf_4cc8fb64133f7fb24ccff4da",
+        "confirmationId": "cf_7c4506e3f30bd1eb6879ed76",
         "accepted": true
       },
       "varies": [
@@ -71,7 +71,7 @@
         "endpoint": null,
         "sessions": [
           {
-            "sessionId": "s1-d8df3b",
+            "sessionId": "s1-8e1366",
             "client": "Example agent",
             "policy": "assist",
             "scopes": [
@@ -83,7 +83,7 @@
               "files.write",
               "library.global"
             ],
-            "connectedAt": "2026-11-02T03:16:25.493Z",
+            "connectedAt": "2026-11-02T06:28:58.343Z",
             "lastActivity": null,
             "paused": false,
             "transport": ""
@@ -91,8 +91,8 @@
         ],
         "pendingConfirmations": [
           {
-            "confirmationId": "cf_158d80ebc7401df64e7e34cd",
-            "sessionId": "s1-d8df3b",
+            "confirmationId": "cf_4f26f0f6eff89dfee0d55dcf",
+            "sessionId": "s1-8e1366",
             "commandId": "project.saveAs",
             "summary": "Overwrite `/tmp/Short.animpkg`",
             "consequences": [
@@ -127,7 +127,7 @@
     {
       "title": "Let a session edit",
       "result": {
-        "sessionId": "s1-4ff6ff",
+        "sessionId": "s1-966454",
         "policy": "assist",
         "scopes": [
           "read",
@@ -145,7 +145,7 @@
       "title": "Pause every session",
       "result": {
         "paused": [
-          "s1-8e4678"
+          "s1-014adc"
         ]
       },
       "varies": [
@@ -438,7 +438,7 @@
       "result": [
         {
           "name": "before-walk",
-          "createdAt": "2026-11-02T03:16:25.977Z",
+          "createdAt": "2026-11-02T06:28:58.801Z",
           "documentRev": 1,
           "origin": "user"
         }
@@ -851,7 +851,7 @@
             "version": "0.0.1",
             "platform": "windows-x64"
           },
-          "exportedAt": "2026-11-02T03:16:26.537Z",
+          "exportedAt": "2026-11-02T06:28:59.349Z",
           "sourceProjectId": "pr_01K742SG00BK0VXTWDM5JRXV37",
           "scope": {
             "kind": "scenes",
@@ -5598,6 +5598,13 @@
         "jobId": "job-3"
       },
       "varies": []
+    },
+    {
+      "title": "Two images into frames 5 and 6: each is its own undo step, and cancelling keeps those already committed",
+      "result": {
+        "jobId": "job-3"
+      },
+      "varies": []
     }
   ],
   "draw.viewMapping.get": [
@@ -5714,7 +5721,7 @@
             "stepId": "u-1",
             "label": "Set meta",
             "source": "user",
-            "time": "2026-11-02T03:16:27.813Z",
+            "time": "2026-11-02T06:29:00.704Z",
             "objectCount": 1
           },
           {
@@ -5722,7 +5729,7 @@
             "stepId": "u-2",
             "label": "Set meta",
             "source": "user",
-            "time": "2026-11-02T03:16:27.814Z",
+            "time": "2026-11-02T06:29:00.705Z",
             "objectCount": 1
           }
         ],
@@ -5867,7 +5874,7 @@
         "state": "succeeded",
         "progress": 1.0,
         "message": "",
-        "startedAt": "2026-11-02T03:16:27.935Z",
+        "startedAt": "2026-11-02T06:29:00.826Z",
         "result": {},
         "session": "user"
       },
@@ -5886,7 +5893,7 @@
           "state": "succeeded",
           "progress": 1.0,
           "message": "",
-          "startedAt": "2026-11-02T03:16:27.946Z",
+          "startedAt": "2026-11-02T06:29:00.838Z",
           "result": {},
           "session": "user"
         }
@@ -5905,7 +5912,7 @@
         "state": "succeeded",
         "progress": 1.0,
         "message": "",
-        "startedAt": "2026-11-02T03:16:27.957Z",
+        "startedAt": "2026-11-02T06:29:00.849Z",
         "result": {},
         "session": "user"
       },
@@ -5952,10 +5959,10 @@
     {
       "title": "A 1920×1080, 24 fps project",
       "result": {
-        "projectId": "pr_01M6D448Y5V6WMNTH9E4W9ZYZQ",
-        "sceneId": "sc_01M6D448Y5V6WMNTH9E4W9ZZ3V",
-        "cameraId": "el_01M6D448Y5V6WMNTH9E4W9ZZ3X",
-        "elementId": "el_01M6D448Y5V6WMNTH9E4W9ZZ3Y"
+        "projectId": "pr_01M6DF4V23EY1R5XZZEFV9ZHS6",
+        "sceneId": "sc_01M6DF4V246Q61TAFPA7SK23EP",
+        "cameraId": "el_01M6DF4V246Q61TAFPA7SK23ER",
+        "elementId": "el_01M6DF4V246Q61TAFPA7SK23ES"
       },
       "varies": [
         "/cameraId",
@@ -6211,7 +6218,7 @@
         {
           "path": "/tmp/Sample.animpkg",
           "name": "Sample",
-          "lastOpened": "2026-11-02T03:16:28.542Z",
+          "lastOpened": "2026-11-02T06:29:01.443Z",
           "exists": true
         }
       ],

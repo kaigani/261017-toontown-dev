@@ -131,8 +131,13 @@ def owner_of(cid: str) -> str:
     if ns == "draw":
         if rest == "hitTest.get":
             return "M2 C2.2"  # zones under a point (C2.2 ruling)
-        # Feather moved to C2.4 (orchestrator ruling on the C2.3 handoff, ticket C23-T2, SI-077).
-        return "M2 C2.4" if rest.startswith(("vectorize", "vectorFile", "feather")) else "M2 C2.3"
+        # Feather moved to C2.4 (orchestrator ruling on the C2.3 handoff, ticket C23-T2), blocked on the spec owner's
+        # SI-077 decision (orchestrator ruling, C2.4 plan). Vector file import is M10 C10.2 (plan §4; ruling, SI-082).
+        if rest.startswith("feather"):
+            return "M2 C2.4 (blocked on SI-077)"
+        if rest.startswith("vectorFile"):
+            return "M10 C10.2"
+        return "M2 C2.4" if rest.startswith("vectorize") else "M2 C2.3"
     if ns == "drawAid":
         return "M5 C5.2" if rest.startswith("staticLightTable") else "M4 C4.2"
     if ns in ("element",):
