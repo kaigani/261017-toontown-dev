@@ -172,7 +172,7 @@ fn the_cutter_splits_along_its_segment_like_the_oracle() {
             let after = zone_areas(&h, &d);
             prop_assert!(after.len() >= before.len());
             let (sb, sa): (f64, f64) = (before.iter().sum(), after.iter().sum());
-            prop_assert!((sa - sb).abs() <= 1e-3 * sb.max(1.0), "the cut keeps the zones' total area: {} vs {}", sb, sa);
+            prop_assert!((sa - sb).abs() <= oracle::snapping_envelope(&[segments(&list, 0), vec![(from, to)]].concat(), 64), "the cut keeps the zones' total area: {} vs {}", sb, sa);
             let mut segs = segments(&list, 0);
             segs.push((from, to));
             let union: f64 = oracle::face_areas(&segs).into_iter().map(oracle::Q::f64).sum();
