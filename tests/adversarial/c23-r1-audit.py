@@ -24,8 +24,10 @@ def inventory():
     contracts=(ROOT/'crates/executor/tests/c23_contracts.rs').read_text().split('fn cases()')[1].split('#[test]')[0]
     covered=set(re.findall(r'"((?:draw|colour)\.[a-zA-Z.]+)"\s*,',contracts))
     missing=[c['id'] for c in commands if c['kind'] in ['action','toggle'] and c['id'] not in covered]
-    p='crates/registry/src/declared.json';before={c['id'] for c in json.loads(git('show',BASE+':'+p))};after={c['id'] for c in json.loads((ROOT/p).read_bytes())};delivered=before-after
-    return {'commands':commands,'generatedBefore':len(before),'generatedAfter':len(after),'newlyImplementedFromGeneratedDelta':sorted(delivered),'generatedDeltaExactlyMatchesNewHandlers':delivered=={c['id'] for c in commands},'newMutations':sum(c['kind'] in ['action','toggle'] for c in commands),'commonContractUniqueCommands':len(covered),'missingFromCommonContract':sorted(missing)}
+    # History-pinned receipt (orchestrator ruling, M2 C2.4): both sides of the C2.3 declaration delta are read at the fixed C2.3 commits (base 9c42610, reviewed head 7a77138), so later checkpoints' commands do not change it; the coverage checks below stay on the live tree.
+    p='crates/registry/src/declared.json';before={c['id'] for c in json.loads(git('show',BASE+':'+p))};after={c['id'] for c in json.loads(git('show','7a77138:'+p))};delivered=before-after
+    reviewed={re.search(r'id\s*=\s*"([^"]+)"',block)[1] for f in FILES for block in re.findall(r'#\[command\((.*?)\)\]',git('show',f'7a77138:crates/executor/src/commands/{f}.rs'),re.S)}
+    return {'commands':commands,'generatedBefore':len(before),'generatedAfter':len(after),'newlyImplementedFromGeneratedDelta':sorted(delivered),'generatedDeltaExactlyMatchesNewHandlers':delivered==reviewed,'newMutations':sum(c['kind'] in ['action','toggle'] for c in commands),'commonContractUniqueCommands':len(covered),'missingFromCommonContract':sorted(missing)}
 def c23_measurement(v):
     if not isinstance(v,dict):raise ValueError('root')
     for key in ['seconds','openSeconds','strokes']:

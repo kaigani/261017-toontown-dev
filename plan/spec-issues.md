@@ -907,3 +907,20 @@ Reserved by the M0 closure for "measured deterministic-format incompatibility" (
   a selection pruned because its zone was re-identified stays pruned when undo brings the zone back, and the restored
   zone can be selected again by its original ID. Selection readback returns only valid IDs (§13.1.10). A call whose
   caller timed out leaves the selection as it was (ADR-0015 history, C23-R3-01).
+
+## SI-080 — `VectorizeSettings` example versus the command rows (found in M2 C2.4; interim decided)
+
+- **Sections:** 09 §11.2 (`VectorizeSettings` example `{"type": "blackWhite", "filter": "none", "threshold": 50}`);
+  02 §11.2 and A (`draw.vectorize.*`: `type` `blackAndWhite` | `withTexture`, threshold default 70).
+- **Interim decision (builder, C2.4):** the command rows govern (`blackAndWhite`, default 70); the 09 example is read
+  as illustrative. `import.vectorize.settings.*` stay M10 C10.2 and will store the command-row values.
+- **Question:** align the 09 example with the command rows.
+
+## SI-081 — the `draw.vectorize.preview` PNG result limit (found in M2 C2.4; interim decided)
+
+- **Sections:** A (`draw.vectorize.preview` result `{png, strokeCount}`, generated schema `png` max 65 536
+  characters); 02 §11.2 (preview width default 512).
+- **Interim decision (builder, C2.4):** the implemented result does not cap `png`: a 512-px preview of detailed line
+  art exceeds 64 KiB of base64. The width parameter (1–4096) bounds the output.
+- **Question:** raise or remove the limit, or return a `path` like `draw.drawing.render`.
+
