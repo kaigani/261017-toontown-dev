@@ -1,8 +1,45 @@
 diff --git a/.github/workflows/ci.yml b/.github/workflows/ci.yml
-index 0afa664..40a2510 100644
+index 0afa664..345143e 100644
 --- a/.github/workflows/ci.yml
 +++ b/.github/workflows/ci.yml
-@@ -106,6 +106,9 @@ jobs:
+@@ -89,9 +89,34 @@ jobs:
+ 
+       - run: cargo clippy --workspace --all-targets --locked -- -D warnings
+       # The six 10 000-operation history oracles (C1.2-C1.4) run in release in `history-oracles` (moved in M2 C2.3 round 1:
+-      # Windows `check` reached 55 min 02 s in run 41320596822); everything else in their binaries runs here.
++      # Windows `check` reached 55 min 02 s in run 41320596822); everything else in their binaries runs here. The seeded
++      # topology properties (C24-R1-01: 256 cases each) run in `check-properties` (split in M2 C2.4 round 1: Windows
++      # `check` reached its 60-minute limit in run 41475164426); the rest of their binaries runs here too.
+       - name: Run cargo test --workspace --locked
+-        run: cargo test --workspace --locked -- --skip ten_thousand_history_operations_match_independent_content_oracle_and_replay
++        run: |
++          cargo test --workspace --locked -- --skip ten_thousand_history_operations_match_independent_content_oracle_and_replay \
++            --skip stroke_add_matches_the_oracle \
++            --skip stroke_set_and_delete_match_the_oracle \
++            --skip segment_cut_matches_the_oracle \
++            --skip region_erase_matches_the_oracle \
++            --skip flatten_of_overlapping_layers_matches_the_oracle \
++            --skip optimize_and_smooth_keep_the_oracles_partition \
++            --skip transforms_match_the_oracles_transformed_geometry \
++            --skip affine_envelopes_match_the_oracle \
++            --skip point_moves_with_and_without_snapping_match_the_oracle \
++            --skip lines_to_brush_and_centre_line_keep_the_oracles_partition \
++            --skip break_apart_leaves_the_line_layer_to_the_oracle \
++            --skip transforms_with_determinant_plus_and_minus_one_keep_the_oracles_faces \
++            --skip the_cutter_splits_along_its_segment_like_the_oracle \
++            --skip flatten_of_disjoint_layers_has_the_faces_of_their_union \
++            --skip vectorized_shapes_enclose_one_unpainted_zone_per_paper_component \
++            --skip shrunk_cutter_area_bound \
++            --skip zones_are_the_oracles_bounded_faces_on_degenerate_arrangements \
++            --skip determinant_plus_and_minus_one_maps_keep_the_faces \
++            --skip zone_ids_and_areas_do_not_depend_on_stroke_order_and_settling_is_idempotent \
++            --skip adding_strokes_carries_each_fill_into_the_zones_it_splits \
++            --skip side_fills_read_back_after_adding_strokes \
++            --skip a_settled_layer_is_a_fixpoint_of_noding
+ 
+       - name: Desktop host with the M0 diagnostics feature (C0.4 gating) — clippy and tests
+         run: |
+@@ -106,6 +131,9 @@ jobs:
        # source; the bundle job scans the built products for them.
        - name: Test-only assets stay out of the product
          run: python scripts/check-test-only-assets.py || python3 scripts/check-test-only-assets.py
@@ -12,3 +49,40 @@ index 0afa664..40a2510 100644
  
        - name: MCP protocol conformance with the official Python SDK client (C1.4; 11 §14.7), measurements
          run: |
+@@ -141,6 +169,36 @@ jobs:
+   # The headless release binary on both product platforms (moved out of `check` in M2 C2.1: on a cold cache the
+   # release build pushed `check` past its 60-minute budget, run 41105899189 on main). Its own budget, so neither job's
+   # time depends on cache warmth.
++  # The seeded topology properties against the independent oracle (C24-R1-01), 256 cases each in the same debug build as
++  # `check`: the command routes, the reviewer's round-1 variants and the C2.4 vector properties. A job of its own so
++  # `check` stays inside its budget (CI rule: add jobs, not minutes).
++  check-properties:
++    name: check properties (${{ matrix.os }})
++    strategy:
++      fail-fast: false
++      matrix:
++        os: [windows-latest, macos-latest]
++    runs-on: ${{ matrix.os }}
++    timeout-minutes: 45
++    steps:
++      - uses: actions/checkout@v7
++
++      - name: Rust toolchain (pinned in rust-toolchain.toml)
++        run: |
++          tc=$(sed -n 's/^channel = "\(.*\)"/\1/p' rust-toolchain.toml)
++          rustup toolchain install "$tc" --profile minimal
++          rustup override set "$tc"
++          rustc --version
++
++      - uses: Swatinem/rust-cache@v2
++        with:
++          key: check-properties
++
++      - name: Seeded topology properties (256 cases each)
++        run: |
++          cargo test --locked -p tt-executor --test c24_oracle_routes --test c24_r1_topology --test c24_topology
++          cargo test --locked -p tt-vector --test c24_r1_properties --test c24_properties
++
+   headless:
+     name: headless release (${{ matrix.os }})
+     strategy:
