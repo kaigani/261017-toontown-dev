@@ -147,6 +147,10 @@ fn command_created_mirrors_and_kaleidoscopes_are_exact_and_identical_across_plat
         state.push(json!({ "config": c, "drawing": drawing["nodes"] }));
     }
     let text = tt_model::canonical::to_canonical_string(&Value::Array(state)).unwrap();
+    // The corpus itself, for reviewing a golden change (C24-R2-05): `TT_DUMP_SYMMETRY=<file>`.
+    if let Ok(path) = std::env::var("TT_DUMP_SYMMETRY") {
+        std::fs::write(path, &text).unwrap();
+    }
     let digest = tt_persist::fsx::sha256(text.as_bytes());
     let golden = std::path::Path::new(env!("CARGO_MANIFEST_DIR")).join("tests/golden/c24-symmetry.json");
     if std::env::var("TT_UPDATE_GOLDEN").is_ok_and(|v| v == "1") {

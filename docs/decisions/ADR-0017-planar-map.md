@@ -260,7 +260,7 @@ C2.1 delivered strokes, text, groups and bitmaps as validated, persisted geometr
   so each is correctly rounded and identical on every target. (b) Integer-translation covariance: each parameter is a
   function of coordinate differences only (orientations, projections, second differences), and a translation by an
   integer number of du changes no difference wherever the translated coordinates are exact in f64 (all grid
-  coordinates below 2^47 grid units, so every lattice and every persisted junction): the parameters are bit-identical
+  coordinates of magnitude below 2^47 du, so every lattice and every persisted junction): the parameters are bit-identical
   and the cuts, segments and handles of a translated layer are the translated ones. Evidence: unit test
   `a_t_junction_is_on_the_grid_and_translates_exactly` (offsets up to 65 536 du), the 4096-case translation property
   in `c24_r1_properties.rs` and the C21/C22/symmetry goldens (unchanged by this step).
