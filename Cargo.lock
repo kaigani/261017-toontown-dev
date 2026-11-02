@@ -4703,6 +4703,8 @@ version = "0.0.1"
 dependencies = [
  "image",
  "png 0.18.1",
+ "serde_json",
+ "stats_alloc",
  "tt-model",
  "tt-persist",
  "tt-render",

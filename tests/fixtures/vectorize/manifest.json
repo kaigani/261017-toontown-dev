@@ -1,0 +1,129 @@
+{
+  "generator": "crates/io/tests/c24_decode_fuzz.rs::generate_corpus",
+  "files": [
+    {
+      "file": "card-rgb.png",
+      "expect": "ok"
+    },
+    {
+      "file": "card-rgba.png",
+      "expect": "ok"
+    },
+    {
+      "file": "card-grey.png",
+      "expect": "ok"
+    },
+    {
+      "file": "card-grey16.png",
+      "expect": "ok"
+    },
+    {
+      "file": "e2-lineart.png",
+      "expect": "ok"
+    },
+    {
+      "file": "card.jpg",
+      "expect": "ok"
+    },
+    {
+      "file": "card-grey.jpg",
+      "expect": "ok"
+    },
+    {
+      "file": "card.bmp",
+      "expect": "ok"
+    },
+    {
+      "file": "card-rgba.bmp",
+      "expect": "ok"
+    },
+    {
+      "file": "card.gif",
+      "expect": "ok"
+    },
+    {
+      "file": "card.tiff",
+      "expect": "ok"
+    },
+    {
+      "file": "card-grey16.tiff",
+      "expect": "ok"
+    },
+    {
+      "file": "card-rle.tga",
+      "expect": "ok"
+    },
+    {
+      "file": "card-raw.tga",
+      "expect": "ok"
+    },
+    {
+      "file": "card-rgb.psd",
+      "expect": "ok"
+    },
+    {
+      "file": "card-rgb-rle.psd",
+      "expect": "ok"
+    },
+    {
+      "file": "card-rgba-rle.psd",
+      "expect": "ok"
+    },
+    {
+      "file": "card-cmyk.psd",
+      "expect": "ok"
+    },
+    {
+      "file": "card-grey16.psd",
+      "expect": "ok"
+    },
+    {
+      "file": "card-bitmap.psd",
+      "expect": "ok"
+    },
+    {
+      "file": "card-indexed.psd",
+      "expect": "ok"
+    },
+    {
+      "file": "truncated.png",
+      "expect": "vectorize.unsupportedFile"
+    },
+    {
+      "file": "truncated.jpg",
+      "expect": "vectorize.unsupportedFile"
+    },
+    {
+      "file": "garbage.png",
+      "expect": "vectorize.unsupportedFile"
+    },
+    {
+      "file": "empty.bmp",
+      "expect": "vectorize.unsupportedFile"
+    },
+    {
+      "file": "psb-version.psd",
+      "expect": "vectorize.unsupportedFile"
+    },
+    {
+      "file": "huge-declared.psd",
+      "expect": "limit.exceeded"
+    },
+    {
+      "file": "huge-rle-lie.psd",
+      "expect": "vectorize.unsupportedFile"
+    },
+    {
+      "file": "zip-compressed.psd",
+      "expect": "vectorize.unsupportedFile"
+    },
+    {
+      "file": "lab-mode.psd",
+      "expect": "vectorize.unsupportedFile"
+    },
+    {
+      "file": "no-signature.tga",
+      "expect": "vectorize.unsupportedFile"
+    }
+  ]
+}
