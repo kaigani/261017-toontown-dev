@@ -169,3 +169,11 @@ C2.1 delivered strokes, text, groups and bitmaps as validated, persisted geometr
   interior point. Larger overlaps are still compared exactly (C22-R2-04). Open: ticket C24-T1 — side fills of zones
   bounded by collinearly overlapping or retracing strokes (not split there, C22-R3-03) can read back differently after
   an unrelated edit. Evidence: `crates/vector/tests/c24_properties.rs`, `crates/executor/tests/c24_topology.rs`.
+- **M2 C2.4 (readiness item 4, C22-T2): self T-junctions; incremental noding not shipped.** (6) An open stroke's end
+  touching its own path (outside the Bézier segment the end belongs to) is a junction like an end touching another
+  stroke: before, the touch was found only after another crossing had split the stroke, so settling was not a fixpoint.
+  Incremental noding (not re-testing pairs of strokes already noded together, e.g. the unchanged strokes of a layer or a
+  whole layer moved in by Flatten) was implemented and tested against full noding; it is **not shipped**, because a
+  settled layer is not always a fixpoint of full noding when its pieces are re-noded as edited strokes (end-to-vertex
+  and end-to-piece touches resolve again), so the two disagree on such content. Making settled layers fixpoints is the
+  remaining C22-T2 prerequisite; the seeds are in the C2.4 handoff.

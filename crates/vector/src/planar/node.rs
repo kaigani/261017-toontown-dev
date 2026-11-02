@@ -366,7 +366,12 @@ pub fn node(strokes: &[NodeStroke], work: &mut Work) -> Result<Noding, GeomError
             work.spend_n(list.len())?;
             for &n in list {
                 let e = &edges[n];
-                if e.stroke == i {
+                // The stroke's own interior counts too (an end touching its own path is a junction like any other;
+                // M2 C2.4, found while testing incremental noding: once split, the touch would be found as a
+                // piece-on-piece T-junction, so settling was not a fixpoint), but not the Bézier segment the end
+                // belongs to (its flattened edges all run from the end).
+                let own_end_segment = e.stroke == i && if s_end > 0.0 { e.sa >= count - 1.0 } else { e.sb <= 1.0 };
+                if own_end_segment {
                     continue;
                 }
                 let along = [i128::from(e.ib[0] - e.ia[0]), i128::from(e.ib[1] - e.ia[1])];
