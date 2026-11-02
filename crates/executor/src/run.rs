@@ -1120,24 +1120,40 @@ impl Core {
         {
             return Envelope::error(e, self.rev());
         }
-        let session = self.take_session();
-        let before = observe(&session);
-        let rollback = Rollback::take(&session);
         // A command that declares its own `dryRun` parameter (doc.object.patch, doc.import.json, doc.repair) is a dry
         // run when it is set, exactly as with the invocation option.
         let dry = inv.options.dry_run || param_dry_run(&entry, &inv.params);
-        let mut cx = Cx::new(session, inv.origin.clone(), entry.id(), dry);
-        cx.set_confirmation(
-            inv.options.confirm_token.clone(),
-            inv.options.confirm,
-            crate::agents::fingerprint(entry.id(), &inv.params),
-        );
-        let outcome = run_step(&mut cx, &entry, inv.params.clone(), &inv.options).and_then(|result| {
-            let label = cx
-                .label()
-                .map(str::to_owned)
-                .or_else(|| entry.command.and_then(|c| c.decl.undo).map(str::to_owned))
-                .unwrap_or_else(|| entry.spec.summary.to_owned());
+        let label =
+            entry.command.and_then(|c| c.decl.undo).map(str::to_owned).unwrap_or_else(|| entry.spec.summary.to_owned());
+        let fingerprint = crate::agents::fingerprint(entry.id(), &inv.params);
+        let (token, confirm) = (inv.options.confirm_token.clone(), inv.options.confirm);
+        let (params, opts) = (inv.params.clone(), inv.options.clone());
+        self.run_staged(&inv.origin, &inv.command, entry.id(), &label, dry, |cx| {
+            cx.set_confirmation(token, confirm, fingerprint);
+            run_step(cx, &entry, params, &opts)
+        })
+    }
+
+    /// One invocation's staging and acceptance: `step` runs on the invocation's working session (in a fresh [`Cx`]),
+    /// its staged document changes become one transaction labelled by the command (`default_label` unless the step
+    /// set one), and [`Core::accept`] keeps all of it or none. Commands come here through [`Core::run`]; a job that
+    /// commits an edit (`draw.vectorize.run`, M2 C2.4) posts a step here, so it has the same atomicity, undo step,
+    /// cancellation and event contracts as a command.
+    pub(crate) fn run_staged(
+        &mut self,
+        origin: &Origin,
+        command: &str,
+        id: &'static str,
+        default_label: &str,
+        dry: bool,
+        step: impl FnOnce(&mut Cx) -> Result<Value, CommandError>,
+    ) -> Envelope {
+        let session = self.take_session();
+        let before = observe(&session);
+        let rollback = Rollback::take(&session);
+        let mut cx = Cx::new(session, origin.clone(), id, dry);
+        let outcome = step(&mut cx).and_then(|result| {
+            let label = cx.label().map(str::to_owned).unwrap_or_else(|| default_label.to_owned());
             let mut txns = cx.take_txns();
             if let Some(t) = cx.finish_staged(label)? {
                 txns.push(t);
@@ -1174,7 +1190,7 @@ impl Core {
                         env = Envelope::error(e, rev_before);
                     }
                 } else {
-                    match self.accept(&mut session, rollback, txns, effects, &inv.origin, &inv.command) {
+                    match self.accept(&mut session, rollback, txns, effects, origin, command) {
                         Ok((u, published)) => {
                             env.undo = u;
                             env.document_rev = last_rev.or(rev_before);
