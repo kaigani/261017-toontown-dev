@@ -413,7 +413,15 @@ fn straightened(contour: Vec<IntPoint<i32>>) -> Vec<IntPoint<i32>> {
 
 /// Joins contours into one closed polygon with zero-width bridges (largest contour first; each further contour is
 /// spliced in at its vertex nearest to the merged polygon).
-fn bridge(mut contours: Vec<Vec<P>>, work: &mut Work) -> Result<Option<Vec<P>>, GeomError> {
+fn bridge(contours: Vec<Vec<P>>, work: &mut Work) -> Result<Option<Vec<P>>, GeomError> {
+    bridge_charged(contours, &mut |n| work.spend(n))
+}
+
+/// [`bridge`] charging its work through `spend` (vectorization joins traced holes the same way, M2 C2.4).
+pub(crate) fn bridge_charged(
+    mut contours: Vec<Vec<P>>,
+    spend: &mut dyn FnMut(u64) -> Result<(), GeomError>,
+) -> Result<Option<Vec<P>>, GeomError> {
     if contours.is_empty() {
         return Ok(None);
     }
@@ -432,7 +440,7 @@ fn bridge(mut contours: Vec<Vec<P>>, work: &mut Work) -> Result<Option<Vec<P>>, 
         // merged vertices within d0 — the distance from the contour's first vertex to the merged polygon's nearest
         // vertex, an upper bound of the minimum — of the contour's box can take part, so the exact search runs over
         // those candidates only (C2.2: the splice is linear in the merged polygon per contour, not quadratic).
-        work.spend((merged.len() as u64).saturating_mul(2))?;
+        spend((merged.len() as u64).saturating_mul(2))?;
         let d0 = merged.iter().map(|m| m.dist(c[0])).fold(f64::INFINITY, f64::min);
         let (bx0, by0, bx1, by1) =
             c.iter().fold((f64::INFINITY, f64::INFINITY, f64::NEG_INFINITY, f64::NEG_INFINITY), |b, p| {
@@ -444,7 +452,7 @@ fn bridge(mut contours: Vec<Vec<P>>, work: &mut Work) -> Result<Option<Vec<P>>, 
             (dx * dx + dy * dy).sqrt() <= d0
         };
         let candidates: Vec<usize> = (0..merged.len()).filter(|&i| near(&merged[i])).collect();
-        work.spend((candidates.len() as u64).saturating_mul(c.len() as u64))?;
+        spend((candidates.len() as u64).saturating_mul(c.len() as u64))?;
         let mut best = (f64::INFINITY, 0, 0);
         for &i in &candidates {
             let m = merged[i];

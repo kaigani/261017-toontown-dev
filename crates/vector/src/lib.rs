@@ -26,6 +26,7 @@ pub mod planar;
 pub mod stroke;
 pub mod symmetry;
 pub mod text;
+pub mod vectorize;
 pub mod work;
 
 /// Crate name as linked into the engine (the headless self-test lists it to prove the crate is present).
