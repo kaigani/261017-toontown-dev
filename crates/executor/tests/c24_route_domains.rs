@@ -389,6 +389,9 @@ fn carried(old: &Old, new: &SnapMap, f: usize, z: &Zn) -> Option<String> {
 // Building states.
 
 fn fresh() -> ExecutorHandle {
+    // The product's font database is built once per process on first use: the fixture font is registered before any
+    // handle exists (every property starts here), whichever property runs first.
+    font();
     let h = common::fixture();
     ok(
         &h,
@@ -1253,6 +1256,59 @@ fn pieces_of(ls: &Ls) -> Vec<(Vec<F2>, bool)> {
         .collect()
 }
 
+/// Pencil polylines split where they cross brush edges properly, at the exact crossing rounded half to even onto the
+/// grid (the merged layer's noding, SI-067: brush outlines are never split, the pencil pieces meet there), so the
+/// snap-safety check and the expected map see the pieces the merge produces.
+fn noded_against(pencils: &[(Vec<F2>, bool)], brushes: &[Vec<F2>]) -> Vec<(Vec<F2>, bool)> {
+    let g = |p: F2| route_oracle::snap(p);
+    let edges: Vec<(route_oracle::Ip, route_oracle::Ip)> =
+        brushes.iter().flat_map(|b| (0..b.len()).map(move |k| (g(b[k]), g(b[(k + 1) % b.len()])))).collect();
+    let o = |a: route_oracle::Ip, b: route_oracle::Ip, c: route_oracle::Ip| {
+        (i128::from(b.0 - a.0) * i128::from(c.1 - a.1) - i128::from(b.1 - a.1) * i128::from(c.0 - a.0)).signum()
+    };
+    let half_even = |n: i128, d: i128| {
+        let (n, d) = if d < 0 { (-n, -d) } else { (n, d) };
+        let (q, r) = (n.div_euclid(d), n.rem_euclid(d));
+        match (2 * r).cmp(&d) {
+            std::cmp::Ordering::Less => q,
+            std::cmp::Ordering::Greater => q + 1,
+            std::cmp::Ordering::Equal => q + (q & 1),
+        }
+    };
+    pencils
+        .iter()
+        .map(|(p, closed)| {
+            let n = p.len();
+            let m = if *closed { n } else { n - 1 };
+            let mut out: Vec<F2> = Vec::new();
+            for k in 0..m {
+                let (a, b) = (g(p[k]), g(p[(k + 1) % n]));
+                out.push(p[k]);
+                let mut cuts: Vec<(f64, F2)> = Vec::new();
+                for &(c, d) in &edges {
+                    if o(a, b, c) * o(a, b, d) >= 0 || o(c, d, a) * o(c, d, b) >= 0 {
+                        continue;
+                    }
+                    let r = (i128::from(b.0 - a.0), i128::from(b.1 - a.1));
+                    let sv = (i128::from(d.0 - c.0), i128::from(d.1 - c.1));
+                    let den = r.0 * sv.1 - r.1 * sv.0;
+                    let num = i128::from(c.0 - a.0) * sv.1 - i128::from(c.1 - a.1) * sv.0;
+                    let x = half_even(i128::from(a.0) * den + r.0 * num, den);
+                    let y = half_even(i128::from(a.1) * den + r.1 * num, den);
+                    cuts.push((num as f64 / den as f64, (x as f64 / GRID, y as f64 / GRID)));
+                }
+                cuts.sort_by(|u, v| u.0.total_cmp(&v.0));
+                out.extend(cuts.into_iter().map(|c| c.1));
+            }
+            if !*closed {
+                out.push(p[n - 1]);
+            }
+            out.dedup();
+            (out, *closed)
+        })
+        .collect()
+}
+
 /// Whether two edges of different inputs cross properly at a point exactly half a grid unit off the grid in a
 /// coordinate (a rounding tie).
 fn tie_crossing(inputs: &[Input]) -> bool {
@@ -1467,11 +1523,12 @@ fn flatten_of_pencil_and_polygonal_brush_layers_is_exact() {
             let target = r["layerId"].as_str().unwrap().to_owned();
             let after = layer(&h, &d, &target);
             prop_assert_eq!(after.strokes.iter().filter(|s| s.kind == "brush").count(), brushes.len());
-            // Expected: the pencil layer's persisted pieces (its junctions already on the grid) and the brushes; skipped
+            // Expected: the pencil layer's persisted pieces (its junctions already on the grid) split where they cross a
+            // brush edge (the merge's noding), and the brushes; skipped
             // when those are not snap-safe (a rounded junction within the junction tolerance of a brush vertex resolves
             // onto it, which pure snap rounding does not model; the round-1 oracle's rule), or when a proper crossing lies
             // exactly half a grid unit off the grid (noding rounds it half to even, the map's hot pixel half away).
-            let pre = expected_inputs(&pieces_of(&before), &brushes);
+            let pre = expected_inputs(&noded_against(&pieces_of(&before), &brushes), &brushes);
             if !safe(&pre) || tie_crossing(&pre) {
                 return Ok(());
             }
