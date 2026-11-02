@@ -1,0 +1,10 @@
+# cargo test --release --locked -p tt-mcp --test c14_r3_history_r1 -- ten_thousand_history_operations_match_independent_content_oracle_and_replay --exact
+# head 1df274b (product code as fc25eae), Windows x86-64, 2026-11-02T02:40:29Z
+    Finished `release` profile [optimized + debuginfo] target(s) in 2.83s
+     Running tests\c14_r3_history_r1.rs (target\release\deps\c14_r3_history_r1-727ea1d485f343bb.exe)
+
+running 1 test
+test ten_thousand_history_operations_match_independent_content_oracle_and_replay ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 20.55s
+
