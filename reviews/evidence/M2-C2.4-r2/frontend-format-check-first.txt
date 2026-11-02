@@ -1,0 +1,12 @@
+﻿{"argv": ["cmd", "/c", "pnpm", "format:check"], "cwd": "C:\\Users\\kaiga\\work\\review\\m2-c24-r2", "env": {}, "startedAt": "2026-11-02T18:49:17.047227+00:00"}
+
+> toontown-workspace@ format:check C:\Users\kaiga\work\review\m2-c24-r2
+> pnpm -r format:check
+
+
+> @toontown/desktop@0.0.1 format:check C:\Users\kaiga\work\review\m2-c24-r2\desktop
+> prettier --check .
+
+Checking formatting...
+All matched files use Prettier code style!
+

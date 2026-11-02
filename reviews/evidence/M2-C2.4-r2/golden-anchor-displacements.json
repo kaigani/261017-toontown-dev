@@ -1168,5 +1168,20 @@
       "distanceDu": 3.414511674293408e-05,
       "aboveDeclaredHalfCell": false
     }
-  ]
+  ],
+  "comparisonCaveat": "These are same-ID/index JSON differences, not all geometrically corresponding old/new junctions: a changed split count can assign later generated IDs to different pieces. Do not interpret maximumDu as a bound or a demonstrated 64-du displacement of one logical junction.",
+  "firstCorrespondingPieceExample": {
+    "sameId": true,
+    "id": "st_01K7JJN801RWSRW6CXWBWEKSD8",
+    "sameStart": true,
+    "oldEnd": [
+      -93.38380665603533,
+      41.732970953170096
+    ],
+    "newEnd": [
+      -93.40625,
+      41.765625
+    ],
+    "distanceDu": 0.039623105162088945
+  }
 }

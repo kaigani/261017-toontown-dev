@@ -1,0 +1,9 @@
+{"argv": ["cmd", "/c", "pnpm", "lint"], "cwd": "C:\\Users\\kaiga\\work\\review\\m2-c24-r2", "env": {}, "startedAt": "2026-11-02T18:47:36.121811+00:00"}
+
+> toontown-workspace@ lint C:\Users\kaiga\work\review\m2-c24-r2
+> pnpm -r --workspace-concurrency=1 lint
+
+
+> @toontown/desktop@0.0.1 lint C:\Users\kaiga\work\review\m2-c24-r2\desktop
+> eslint . --max-warnings 0
+

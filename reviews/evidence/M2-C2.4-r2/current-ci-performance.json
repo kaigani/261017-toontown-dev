@@ -1,0 +1,460 @@
+{
+  "Windows": {
+    "head": "3c74c3432f2a1895b5aaca83e6ddf914cf6b4281",
+    "run": 41486947308,
+    "strokeAddP50Seconds": 16.6272243,
+    "flattenP50Seconds": 26.7385784,
+    "flattenAllCompleted": true,
+    "gateMet": false,
+    "budgetedRefusals": [
+      {
+        "status": "Error",
+        "error": {
+          "code": "limit.exceeded"
+        },
+        "committed": false,
+        "unchanged": true
+      },
+      {
+        "status": "Error",
+        "error": {
+          "code": "limit.exceeded"
+        },
+        "committed": false,
+        "unchanged": true
+      },
+      {
+        "status": "Error",
+        "error": {
+          "code": "limit.exceeded"
+        },
+        "committed": false,
+        "unchanged": true
+      },
+      {
+        "status": "Error",
+        "error": {
+          "code": "limit.exceeded"
+        },
+        "committed": false,
+        "unchanged": true
+      },
+      {
+        "status": "Error",
+        "error": {
+          "code": "limit.exceeded"
+        },
+        "committed": false,
+        "unchanged": true
+      }
+    ],
+    "seriesP50OriginalUnits": {
+      "brushAdd.allocatedBytes": 3434894913.0,
+      "brushAdd.retainedBytes": 91789.0,
+      "brushAdd.wallMs": 7415.0064999999995,
+      "patchProperty.allocatedBytes": 2456603407.0,
+      "patchProperty.retainedBytes": 6112.0,
+      "patchProperty.wallMs": 5237.653899999999,
+      "process.liveBytes": 1425394825.0,
+      "redo.allocatedBytes": 4003283148.0,
+      "redo.retainedBytes": 10202.0,
+      "redo.wallMs": 8581.6092,
+      "strokeAdd.allocatedBytes": 7560212910.0,
+      "strokeAdd.retainedBytes": 31521.0,
+      "strokeAdd.wallMs": 16627.2243,
+      "strokeAddDryRun.allocatedBytes": 6865900618.0,
+      "strokeAddDryRun.retainedBytes": -35531.0,
+      "strokeAddDryRun.wallMs": 15397.968,
+      "strokeSet.allocatedBytes": 3455279021.0,
+      "strokeSet.retainedBytes": 4340.0,
+      "strokeSet.wallMs": 7494.358700000001,
+      "undo.allocatedBytes": 4664316210.0,
+      "undo.retainedBytes": 23958.0,
+      "undo.wallMs": 9912.5545
+    },
+    "queueMaintenanceRanges": {
+      "queuedRead/longCommandSeconds": {
+        "min": 21.7978771,
+        "max": 22.7542558
+      },
+      "queuedRead/readSentAtSeconds": {
+        "min": 0.0502304,
+        "max": 0.0505712
+      },
+      "queuedRead/readSeconds": {
+        "min": 21.7482115,
+        "max": 22.704259
+      },
+      "queuedRead/readAnsweredAfterLongSeconds": {
+        "min": 0.0005647999999993658,
+        "max": 0.0009783999999974924
+      },
+      "maintenance/longCommandSeconds": {
+        "min": 21.2632523,
+        "max": 22.1695827
+      },
+      "maintenance/requestedAtSeconds": {
+        "min": 0.050261,
+        "max": 0.0507072
+      },
+      "maintenance/behindLongSeconds": {
+        "min": 21.218761399999998,
+        "max": 22.1333901
+      },
+      "maintenance/autosaveSnapshotSeconds": {
+        "min": 7.41e-05,
+        "max": 9.78e-05
+      },
+      "maintenance/heartbeatSeconds": {
+        "min": 0.0055425,
+        "max": 0.0158991
+      },
+      "maintenance/idleSeconds": {
+        "min": 0.0052819,
+        "max": 0.0142209
+      }
+    },
+    "memoryBytes": {
+      "rssBytes": {
+        "start": 175812608.0,
+        "afterOpen": 370036736.0,
+        "afterSeries": 2259980288.0
+      },
+      "liveBytes": {
+        "start": 146121735.0,
+        "afterOpen": 267527168.0,
+        "afterSeries": 1196622557.0
+      }
+    },
+    "planarWorstCase": [
+      {
+        "name": "100000-small-curves-plus-one",
+        "minMs": 4677.8512,
+        "maxMs": 4765.4438,
+        "outcomes": [
+          "ok"
+        ],
+        "units": [
+          931042320
+        ]
+      },
+      {
+        "name": "grid-200x200-crossing-lines",
+        "minMs": 1266.938,
+        "maxMs": 1328.7996,
+        "outcomes": [
+          "ok"
+        ],
+        "units": [
+          500462214
+        ]
+      },
+      {
+        "name": "grid-600x600-crossing-lines",
+        "minMs": 2571.2027,
+        "maxMs": 2575.809,
+        "outcomes": [
+          "limit.exceeded: the planar map needs more than 1200000000 units of work"
+        ],
+        "units": [
+          1785763300
+        ]
+      },
+      {
+        "name": "10000-concentric-squares",
+        "minMs": 3943.7173,
+        "maxMs": 3970.2986,
+        "outcomes": [
+          "limit.exceeded: the planar map needs more than 1200000000 units of work"
+        ],
+        "units": [
+          1200160000
+        ]
+      },
+      {
+        "name": "20000-separate-closed-squares",
+        "minMs": 565.0690999999999,
+        "maxMs": 572.8863,
+        "outcomes": [
+          "ok"
+        ],
+        "units": [
+          137183593
+        ]
+      },
+      {
+        "name": "1500-random-crossing-lines",
+        "minMs": 2253.1359,
+        "maxMs": 2265.5993,
+        "outcomes": [
+          "limit.exceeded: the planar map needs more than 1200000000 units of work"
+        ],
+        "units": [
+          1782228838
+        ]
+      },
+      {
+        "name": "5000-point-random-scribble",
+        "minMs": 542.1685000000001,
+        "maxMs": 544.1594,
+        "outcomes": [
+          "limit.exceeded: the planar map needs more than 1200000000 units of work"
+        ],
+        "units": [
+          1515542416
+        ]
+      },
+      {
+        "name": "100000-point-dense-zigzag",
+        "minMs": 59.4423,
+        "maxMs": 62.028,
+        "outcomes": [
+          "limit.exceeded: the planar map needs more than 1200000000 units of work"
+        ],
+        "units": [
+          15000482029
+        ]
+      },
+      {
+        "name": "100000-coincident-outlines-plus-one",
+        "minMs": 871.5369,
+        "maxMs": 892.1573999999999,
+        "outcomes": [
+          "limit.exceeded: the planar map needs more than 1200000000 units of work"
+        ],
+        "units": [
+          60003200026
+        ]
+      }
+    ]
+  },
+  "macOS": {
+    "head": "3c74c3432f2a1895b5aaca83e6ddf914cf6b4281",
+    "run": 41486947308,
+    "strokeAddP50Seconds": 14.611063958,
+    "flattenP50Seconds": 27.046633459,
+    "flattenAllCompleted": true,
+    "gateMet": false,
+    "budgetedRefusals": [
+      {
+        "status": "Error",
+        "error": {
+          "code": "limit.exceeded"
+        },
+        "committed": false,
+        "unchanged": true
+      },
+      {
+        "status": "Error",
+        "error": {
+          "code": "limit.exceeded"
+        },
+        "committed": false,
+        "unchanged": true
+      },
+      {
+        "status": "Error",
+        "error": {
+          "code": "limit.exceeded"
+        },
+        "committed": false,
+        "unchanged": true
+      },
+      {
+        "status": "Error",
+        "error": {
+          "code": "limit.exceeded"
+        },
+        "committed": false,
+        "unchanged": true
+      },
+      {
+        "status": "Error",
+        "error": {
+          "code": "limit.exceeded"
+        },
+        "committed": false,
+        "unchanged": true
+      }
+    ],
+    "seriesP50OriginalUnits": {
+      "brushAdd.allocatedBytes": 3414093340.0,
+      "brushAdd.retainedBytes": 91719.0,
+      "brushAdd.wallMs": 5047.797042,
+      "patchProperty.allocatedBytes": 2442182940.0,
+      "patchProperty.retainedBytes": 6048.0,
+      "patchProperty.wallMs": 4460.719208,
+      "process.liveBytes": 1425592054.0,
+      "redo.allocatedBytes": 3976729547.0,
+      "redo.retainedBytes": 10154.0,
+      "redo.wallMs": 5794.306,
+      "strokeAdd.allocatedBytes": 7518598985.0,
+      "strokeAdd.retainedBytes": 25476.0,
+      "strokeAdd.wallMs": 14611.063958,
+      "strokeAddDryRun.allocatedBytes": 6829088827.0,
+      "strokeAddDryRun.retainedBytes": -44993.0,
+      "strokeAddDryRun.wallMs": 13014.706875,
+      "strokeSet.allocatedBytes": 3434468971.0,
+      "strokeSet.retainedBytes": 5345.0,
+      "strokeSet.wallMs": 5058.143083,
+      "undo.allocatedBytes": 4633307058.0,
+      "undo.retainedBytes": 12987.0,
+      "undo.wallMs": 7790.738042
+    },
+    "queueMaintenanceRanges": {
+      "queuedRead/longCommandSeconds": {
+        "min": 12.300124167,
+        "max": 17.506791208
+      },
+      "queuedRead/readSentAtSeconds": {
+        "min": 0.055931417,
+        "max": 0.195152542
+      },
+      "queuedRead/readSeconds": {
+        "min": 12.112116459,
+        "max": 17.359739167
+      },
+      "queuedRead/readAnsweredAfterLongSeconds": {
+        "min": 0.00017829200000107903,
+        "max": 0.005888458999999457
+      },
+      "maintenance/longCommandSeconds": {
+        "min": 12.31468825,
+        "max": 17.55918125
+      },
+      "maintenance/requestedAtSeconds": {
+        "min": 0.145515208,
+        "max": 0.168923875
+      },
+      "maintenance/behindLongSeconds": {
+        "min": 12.179980416,
+        "max": 17.420452459
+      },
+      "maintenance/autosaveSnapshotSeconds": {
+        "min": 0.00018,
+        "max": 0.000299916
+      },
+      "maintenance/heartbeatSeconds": {
+        "min": 0.013807541,
+        "max": 0.029520917
+      },
+      "maintenance/idleSeconds": {
+        "min": 0.003498584,
+        "max": 0.04452625
+      }
+    },
+    "memoryBytes": {
+      "rssBytes": {
+        "start": 1609187328.0,
+        "afterOpen": 2341650432.0,
+        "afterSeries": 2368831488.0
+      },
+      "liveBytes": {
+        "start": 146321824.0,
+        "afterOpen": 267728272.0,
+        "afterSeries": 1196822557.0
+      }
+    },
+    "planarWorstCase": [
+      {
+        "name": "100000-small-curves-plus-one",
+        "minMs": 3450.995417,
+        "maxMs": 4282.579958,
+        "outcomes": [
+          "ok"
+        ],
+        "units": [
+          931042320
+        ]
+      },
+      {
+        "name": "grid-200x200-crossing-lines",
+        "minMs": 811.2647079999999,
+        "maxMs": 879.340458,
+        "outcomes": [
+          "ok"
+        ],
+        "units": [
+          500462214
+        ]
+      },
+      {
+        "name": "grid-600x600-crossing-lines",
+        "minMs": 1832.993417,
+        "maxMs": 1864.2489580000001,
+        "outcomes": [
+          "limit.exceeded: the planar map needs more than 1200000000 units of work"
+        ],
+        "units": [
+          1785763300
+        ]
+      },
+      {
+        "name": "10000-concentric-squares",
+        "minMs": 2885.8710419999998,
+        "maxMs": 3070.490708,
+        "outcomes": [
+          "limit.exceeded: the planar map needs more than 1200000000 units of work"
+        ],
+        "units": [
+          1200160000
+        ]
+      },
+      {
+        "name": "20000-separate-closed-squares",
+        "minMs": 287.70658399999996,
+        "maxMs": 438.817084,
+        "outcomes": [
+          "ok"
+        ],
+        "units": [
+          137183593
+        ]
+      },
+      {
+        "name": "1500-random-crossing-lines",
+        "minMs": 1402.668834,
+        "maxMs": 1604.6760419999998,
+        "outcomes": [
+          "limit.exceeded: the planar map needs more than 1200000000 units of work"
+        ],
+        "units": [
+          1782228838
+        ]
+      },
+      {
+        "name": "5000-point-random-scribble",
+        "minMs": 480.938125,
+        "maxMs": 488.674916,
+        "outcomes": [
+          "limit.exceeded: the planar map needs more than 1200000000 units of work"
+        ],
+        "units": [
+          1515542416
+        ]
+      },
+      {
+        "name": "100000-point-dense-zigzag",
+        "minMs": 33.444167,
+        "maxMs": 69.79270799999999,
+        "outcomes": [
+          "limit.exceeded: the planar map needs more than 1200000000 units of work"
+        ],
+        "units": [
+          15000482029
+        ]
+      },
+      {
+        "name": "100000-coincident-outlines-plus-one",
+        "minMs": 363.43987500000003,
+        "maxMs": 1541.2715,
+        "outcomes": [
+          "limit.exceeded: the planar map needs more than 1200000000 units of work"
+        ],
+        "units": [
+          60003200026
+        ]
+      }
+    ]
+  }
+}

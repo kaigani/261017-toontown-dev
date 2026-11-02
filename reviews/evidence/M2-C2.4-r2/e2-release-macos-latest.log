@@ -1,0 +1,413 @@
+e2 release (macos-latest)	UNKNOWN STEP	﻿2026-11-02T17:01:26.3316200Z Current runner version: '2.338.2'
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:26.3347470Z ##[group]Runner Image Provisioner
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:26.3348120Z Hosted Compute Agent
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:26.3348510Z Version: 20261021.618
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:26.3348920Z Commit: 21505ad2541d5be6135ed84fc33697146cf75b8e
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:26.3349410Z Build Date: 2026-10-21T00:45:21Z
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:26.3349860Z Worker ID: {4afca743-b534-49d6-a134-440bdf0ae7dc}
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:26.3350340Z Region: westus
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:26.3350700Z Cloud: MacCloud
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:26.3351080Z ##[endgroup]
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:26.3352020Z ##[group]Operating System
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:26.3352450Z macOS
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:26.3352800Z 26.6.2
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:26.3353130Z 25G83
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:26.3353480Z ##[endgroup]
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:26.3353840Z ##[group]Runner Image
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:26.3354230Z Image: macos-26-arm64
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:26.3354610Z Version: 20261026.0455.2
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:26.3355520Z Included Software: https://github.com/actions/runner-images/blob/macos-26-arm64/20261026.0455/images/macos/macos-26-arm64-Readme.md
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:26.3356560Z Image Release: https://github.com/actions/runner-images/releases/tag/macos-26-arm64%2F20261026.0455
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:26.3357240Z ##[endgroup]
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:26.3358070Z ##[group]GITHUB_TOKEN Permissions
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:26.3359400Z Contents: read
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:26.3359760Z Metadata: read
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:26.3360130Z Packages: read
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:26.3360500Z ##[endgroup]
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:26.3362030Z Secret source: Actions
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:26.3362610Z Cache mode: write
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:26.3363100Z Prepare workflow directory
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:26.3814580Z Prepare all required actions
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:26.3886510Z Getting action download info
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:26.8515400Z Download action repository 'actions/checkout@v7' (SHA:3d3c42e5aac5ba805825da76410c181273ba90b1)
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:27.1812070Z Download action repository 'Swatinem/rust-cache@v2' (SHA:d1527c8f67ef9af357290475d4af4b0fab8f12e0)
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:27.6909910Z Download action repository 'actions/upload-artifact@v7' (SHA:cf430e030ddbb5b0abf93d22962f4752f3646cd9)
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:27.9038940Z Complete job name: e2 release (macos-latest)
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:27.9733780Z ##[group]Run actions/checkout@v7
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:27.9734390Z with:
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:27.9734740Z   repository: kaigani/261017-toontown-dev
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:27.9737570Z   token: ***
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:27.9737900Z   ssh-strict: true
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:27.9738230Z   ssh-user: git
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:27.9738560Z   persist-credentials: true
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:27.9738920Z   clean: true
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:27.9739260Z   sparse-checkout-cone-mode: true
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:27.9739640Z   fetch-depth: 1
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:27.9739960Z   fetch-tags: false
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:27.9740290Z   show-progress: true
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:27.9740620Z   lfs: false
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:27.9740940Z   submodules: false
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:27.9741280Z   set-safe-directory: true
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:27.9741650Z   allow-unsafe-pr-checkout: false
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:27.9742290Z env:
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:27.9742630Z   CARGO_TERM_COLOR: always
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:27.9742990Z   CARGO_INCREMENTAL: 0
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:27.9743320Z   RUST_BACKTRACE: 1
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:27.9743680Z ##[endgroup]
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:28.5985020Z Syncing repository: kaigani/261017-toontown-dev
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:28.5987040Z ##[group]Getting Git version info
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:28.5987720Z Working directory is '/Users/runner/work/261017-toontown-dev/261017-toontown-dev'
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:28.6000140Z [command]/opt/homebrew/bin/git version
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:28.6522670Z git version 2.56.0
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:28.6557780Z ##[endgroup]
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:28.6575060Z Copying '/Users/runner/.gitconfig' to '/Users/runner/work/_temp/391acac8-efbd-432d-bd88-68165e91cde4/.gitconfig'
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:28.6584860Z Temporarily overriding HOME='/Users/runner/work/_temp/391acac8-efbd-432d-bd88-68165e91cde4' before making global git config changes
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:28.6588300Z Adding repository directory to the temporary git global config as a safe directory
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:28.6595600Z [command]/opt/homebrew/bin/git config --global --add safe.directory /Users/runner/work/261017-toontown-dev/261017-toontown-dev
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:28.6757100Z Deleting the contents of '/Users/runner/work/261017-toontown-dev/261017-toontown-dev'
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:28.6759370Z ##[group]Determining repository object format
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:28.6760260Z ##[endgroup]
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:28.6760850Z ##[group]Initializing the repository
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:28.6764510Z [command]/opt/homebrew/bin/git init /Users/runner/work/261017-toontown-dev/261017-toontown-dev
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:28.7262900Z hint: Using 'master' as the name for the initial branch. This default branch name
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:28.7263980Z hint: will change to "main" in Git 3.0. To configure the initial branch name
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:28.7264900Z hint: to use in all of your new repositories, which will suppress this warning,
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:28.7265540Z hint: call:
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:28.7265880Z hint:
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:28.7266330Z hint: 	git config --global init.defaultBranch <name>
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:28.7267000Z hint:
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:28.7267490Z hint: Names commonly chosen instead of 'master' are 'main', 'trunk' and
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:28.7268290Z hint: 'development'. The just-created branch can be renamed via this command:
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:28.7268910Z hint:
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:28.7269270Z hint: 	git branch -m <name>
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:28.7269650Z hint:
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:28.7273690Z hint: Disable this message with "git config set advice.defaultBranchName false"
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:28.7288680Z Initialized empty Git repository in /Users/runner/work/261017-toontown-dev/261017-toontown-dev/.git/
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:28.7307030Z [command]/opt/homebrew/bin/git remote add origin https://github.com/kaigani/261017-toontown-dev
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:28.7434450Z ##[endgroup]
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:28.7436240Z ##[group]Disabling automatic garbage collection
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:28.7437850Z [command]/opt/homebrew/bin/git config --local gc.auto 0
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:28.7516760Z ##[endgroup]
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:28.7518750Z ##[group]Setting up auth
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:28.7519950Z Removing SSH command configuration
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:28.7523480Z [command]/opt/homebrew/bin/git config --local --name-only --get-regexp core\.sshCommand
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:28.7615500Z [command]/opt/homebrew/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:28.9498160Z Removing HTTP extra header
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:28.9500450Z [command]/opt/homebrew/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:28.9584920Z [command]/opt/homebrew/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:29.0977140Z Removing includeIf entries pointing to credentials config files
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:29.0990330Z [command]/opt/homebrew/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:29.1143430Z [command]/opt/homebrew/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:29.2902220Z [command]/opt/homebrew/bin/git config --file /Users/runner/work/_temp/git-credentials-998562eb-5b2f-45ec-ac41-568cc5c6bb33.config http.https://github.com/.extraheader AUTHORIZATION: basic ***
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:29.2968420Z [command]/opt/homebrew/bin/git config --local includeIf.gitdir:/Users/runner/work/261017-toontown-dev/261017-toontown-dev/.git.path /Users/runner/work/_temp/git-credentials-998562eb-5b2f-45ec-ac41-568cc5c6bb33.config
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:29.2975440Z [command]/opt/homebrew/bin/git config --local includeIf.gitdir:/Users/runner/work/261017-toontown-dev/261017-toontown-dev/.git/worktrees/*.path /Users/runner/work/_temp/git-credentials-998562eb-5b2f-45ec-ac41-568cc5c6bb33.config
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:29.3060630Z [command]/opt/homebrew/bin/git config --local includeIf.gitdir:/github/workspace/.git.path /github/runner_temp/git-credentials-998562eb-5b2f-45ec-ac41-568cc5c6bb33.config
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:29.3149710Z [command]/opt/homebrew/bin/git config --local includeIf.gitdir:/github/workspace/.git/worktrees/*.path /github/runner_temp/git-credentials-998562eb-5b2f-45ec-ac41-568cc5c6bb33.config
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:29.3288180Z ##[endgroup]
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:29.3292120Z ##[group]Fetching the repository
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:29.3294600Z [command]/opt/homebrew/bin/git -c protocol.version=2 fetch --no-tags --prune --no-recurse-submodules --depth=1 origin +3c74c3432f2a1895b5aaca83e6ddf914cf6b4281:refs/remotes/origin/m2-vector-engine
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:37.4616750Z From https://github.com/kaigani/261017-toontown-dev
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:37.4630450Z  * [new ref]         3c74c3432f2a1895b5aaca83e6ddf914cf6b4281 -> origin/m2-vector-engine
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:37.4690590Z [command]/opt/homebrew/bin/git branch --list --remote origin/m2-vector-engine
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:37.4816020Z   origin/m2-vector-engine
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:37.4825400Z [command]/opt/homebrew/bin/git rev-parse refs/remotes/origin/m2-vector-engine
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:37.4956980Z 3c74c3432f2a1895b5aaca83e6ddf914cf6b4281
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:37.4962760Z ##[endgroup]
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:37.4963640Z ##[group]Determining the checkout info
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:37.4964990Z ##[endgroup]
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:37.4977730Z [command]/opt/homebrew/bin/git sparse-checkout disable
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:37.5151300Z [command]/opt/homebrew/bin/git config --local --unset-all extensions.worktreeConfig
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:37.5249220Z ##[group]Checking out the ref
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:37.5255200Z [command]/opt/homebrew/bin/git checkout --progress --force -B m2-vector-engine refs/remotes/origin/m2-vector-engine
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:39.1352900Z Updating files:  40% (3184/7777)
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:39.2050460Z Updating files:  41% (3189/7777)
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:39.2307300Z Updating files:  42% (3267/7777)
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:39.2663750Z Updating files:  43% (3345/7777)
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:39.2792120Z Updating files:  44% (3422/7777)
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:39.3084740Z Updating files:  45% (3500/7777)
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:39.3261040Z Updating files:  46% (3578/7777)
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:39.3488500Z Updating files:  47% (3656/7777)
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:39.3628400Z Updating files:  48% (3733/7777)
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:39.3968940Z Updating files:  49% (3811/7777)
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:39.4493400Z Updating files:  50% (3889/7777)
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:39.4676800Z Updating files:  51% (3967/7777)
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:39.4996340Z Updating files:  52% (4045/7777)
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:39.5391010Z Updating files:  53% (4122/7777)
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:39.5566980Z Updating files:  54% (4200/7777)
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:39.5873610Z Updating files:  54% (4209/7777)
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:39.6151140Z Updating files:  55% (4278/7777)
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:39.6314200Z Updating files:  56% (4356/7777)
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:39.6488480Z Updating files:  57% (4433/7777)
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:39.6841500Z Updating files:  58% (4511/7777)
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:39.7097860Z Updating files:  59% (4589/7777)
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:39.7362670Z Updating files:  60% (4667/7777)
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:39.7525210Z Updating files:  61% (4744/7777)
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:39.7652890Z Updating files:  62% (4822/7777)
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:39.7929240Z Updating files:  63% (4900/7777)
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:39.8148590Z Updating files:  64% (4978/7777)
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:39.8378850Z Updating files:  65% (5056/7777)
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:39.8562010Z Updating files:  66% (5133/7777)
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:39.8787690Z Updating files:  67% (5211/7777)
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:39.9117630Z Updating files:  68% (5289/7777)
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:39.9336510Z Updating files:  69% (5367/7777)
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:39.9489230Z Updating files:  70% (5444/7777)
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:39.9700680Z Updating files:  71% (5522/7777)
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:40.0013580Z Updating files:  72% (5600/7777)
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:40.0319810Z Updating files:  73% (5678/7777)
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:40.0441920Z Updating files:  74% (5755/7777)
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:40.0813300Z Updating files:  75% (5833/7777)
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:40.1190000Z Updating files:  76% (5911/7777)
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:40.1576530Z Updating files:  77% (5989/7777)
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:40.5247940Z Updating files:  78% (6067/7777)
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:40.5546040Z Updating files:  79% (6144/7777)
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:40.5700730Z Updating files:  79% (6186/7777)
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:40.6040900Z Updating files:  80% (6222/7777)
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:40.6272610Z Updating files:  81% (6300/7777)
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:40.6671000Z Updating files:  82% (6378/7777)
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:40.6911890Z Updating files:  83% (6455/7777)
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:40.7048450Z Updating files:  84% (6533/7777)
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:40.7327120Z Updating files:  85% (6611/7777)
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:40.7635080Z Updating files:  86% (6689/7777)
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:40.7794210Z Updating files:  87% (6766/7777)
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:40.8104760Z Updating files:  88% (6844/7777)
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:40.8309150Z Updating files:  89% (6922/7777)
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:40.8505910Z Updating files:  90% (7000/7777)
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:40.8837270Z Updating files:  91% (7078/7777)
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:40.9067850Z Updating files:  92% (7155/7777)
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:40.9264490Z Updating files:  93% (7233/7777)
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:40.9439190Z Updating files:  94% (7311/7777)
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:40.9761080Z Updating files:  95% (7389/7777)
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:40.9993590Z Updating files:  96% (7466/7777)
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:41.0247580Z Updating files:  97% (7544/7777)
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:41.0281840Z Updating files:  98% (7622/7777)
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:41.0399830Z Updating files:  99% (7700/7777)
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:41.0401030Z Updating files: 100% (7777/7777)
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:41.0401960Z Updating files: 100% (7777/7777), done.
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:41.0550170Z Switched to a new branch 'm2-vector-engine'
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:41.0596070Z branch 'm2-vector-engine' set up to track 'origin/m2-vector-engine'.
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:41.0751730Z ##[endgroup]
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:41.1072220Z [command]/opt/homebrew/bin/git log -1 --format=%H
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:41.1216090Z 3c74c3432f2a1895b5aaca83e6ddf914cf6b4281
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:41.1707230Z ##[group]Run tc=$(sed -n 's/^channel = "\(.*\)"/\1/p' rust-toolchain.toml)
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:41.1708040Z ^[[36;1mtc=$(sed -n 's/^channel = "\(.*\)"/\1/p' rust-toolchain.toml)^[[0m
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:41.1708710Z ^[[36;1mrustup toolchain install "$tc" --profile minimal^[[0m
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:41.1709140Z ^[[36;1mrustup override set "$tc"^[[0m
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:41.1709640Z ^[[36;1mrustc --version^[[0m
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:41.1801250Z shell: /bin/bash --noprofile --norc -e -o pipefail {0}
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:41.1801600Z env:
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:41.1801870Z   CARGO_TERM_COLOR: always
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:41.1802110Z   CARGO_INCREMENTAL: 0
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:41.1802380Z   RUST_BACKTRACE: 1
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:41.1802580Z ##[endgroup]
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:41.4743750Z info: syncing channel updates for 1.98.1-aarch64-apple-darwin
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:41.7042200Z info: latest update on 2026-09-03 for version 1.98.1 (48a229cea 2026-09-01)
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:41.7050400Z info: downloading 3 components
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:49.1422110Z 
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:49.2226160Z   1.98.1-aarch64-apple-darwin installed - rustc 1.98.1 (48a229cea 2026-09-01)
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:49.2226770Z 
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:49.2227030Z info: self-update is disabled for this build of rustup
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:49.2227520Z info: any updates to rustup will need to be fetched with your system package manager
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:49.2678430Z info: override toolchain for /Users/runner/work/261017-toontown-dev/261017-toontown-dev set to 1.98.1-aarch64-apple-darwin
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:49.3211860Z rustc 1.98.1 (48a229cea 2026-09-01)
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:49.3406990Z ##[group]Run Swatinem/rust-cache@v2
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:49.3407430Z with:
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:49.3407640Z   key: headless-release
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:49.3407960Z   prefix-key: v0-rust
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:49.3408260Z   add-job-id-key: true
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:49.3408630Z   add-rust-environment-hash-key: true
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:49.3408980Z   cache-targets: true
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:49.3409210Z   cache-all-crates: false
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:49.3409540Z   cache-workspace-crates: false
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:49.3418690Z   save-if: true
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:49.3419010Z   cache-provider: github
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:49.3419320Z   cache-bin: true
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:49.3419640Z   lookup-only: false
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:49.3419890Z   cmd-format: {0}
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:49.3420190Z env:
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:49.3420420Z   CARGO_TERM_COLOR: always
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:49.3420830Z   CARGO_INCREMENTAL: 0
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:49.3421140Z   RUST_BACKTRACE: 1
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:49.3421350Z ##[endgroup]
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:51.0984520Z ##[group]Cache Configuration
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:51.0987190Z Cache Provider:
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:51.0988550Z     github
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:51.0989570Z Workspaces:
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:51.0990930Z     /Users/runner/work/261017-toontown-dev/261017-toontown-dev
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:51.0991990Z Cache Paths:
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:51.0992870Z     /Users/runner/.cargo/bin
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:51.0993920Z     /Users/runner/.cargo/.crates.toml
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:51.0994790Z     /Users/runner/.cargo/.crates2.json
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:51.0995790Z     /Users/runner/.cargo/registry
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:51.0996690Z     /Users/runner/.cargo/git
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:51.0998920Z     /Users/runner/work/261017-toontown-dev/261017-toontown-dev/target
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:51.1000410Z Restore Key:
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:51.1001070Z     v0-rust-headless-release-e2-Darwin-arm64-1ef279f7
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:51.1001490Z Cache Key:
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:51.1001990Z     v0-rust-headless-release-e2-Darwin-arm64-1ef279f7-7ca7b21e
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:51.1002690Z .. Prefix:
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:51.1003090Z   - v0-rust-headless-release-e2-Darwin-arm64
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:51.1003740Z .. Environment considered:
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:51.1004170Z   - Rust Versions:
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:51.1004750Z     - 1.98.1 aarch64-apple-darwin 48a229ceaefd4985c50990b14116b6d856af0985
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:51.1005560Z     - 1.99.1 aarch64-apple-darwin 58cf8f9c35b355199727627d07ae34a4e2846d67
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:51.1007400Z   - CARGO_INCREMENTAL
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:51.1008590Z   - CARGO_TERM_COLOR
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:51.1009100Z   - RUST_BACKTRACE
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:51.1009430Z .. Lockfiles considered:
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:51.1010170Z   - /Users/runner/work/261017-toontown-dev/261017-toontown-dev/bins/headless/Cargo.toml
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:51.1010760Z   - /Users/runner/work/261017-toontown-dev/261017-toontown-dev/Cargo.lock
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:51.1012490Z   - /Users/runner/work/261017-toontown-dev/261017-toontown-dev/crates/anim/Cargo.toml
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:51.1014090Z   - /Users/runner/work/261017-toontown-dev/261017-toontown-dev/crates/audio/Cargo.toml
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:51.1015300Z   - /Users/runner/work/261017-toontown-dev/261017-toontown-dev/crates/colour/Cargo.toml
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:51.1016530Z   - /Users/runner/work/261017-toontown-dev/261017-toontown-dev/crates/engine/Cargo.toml
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:51.1017740Z   - /Users/runner/work/261017-toontown-dev/261017-toontown-dev/crates/executor/Cargo.toml
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:51.1019080Z   - /Users/runner/work/261017-toontown-dev/261017-toontown-dev/crates/fx/Cargo.toml
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:51.1020400Z   - /Users/runner/work/261017-toontown-dev/261017-toontown-dev/crates/io/Cargo.toml
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:51.1021870Z   - /Users/runner/work/261017-toontown-dev/261017-toontown-dev/crates/lipsync/Cargo.toml
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:51.1023590Z   - /Users/runner/work/261017-toontown-dev/261017-toontown-dev/crates/mcp/Cargo.toml
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:51.1024940Z   - /Users/runner/work/261017-toontown-dev/261017-toontown-dev/crates/model/Cargo.toml
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:51.1026190Z   - /Users/runner/work/261017-toontown-dev/261017-toontown-dev/crates/persist/Cargo.toml
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:51.1029410Z   - /Users/runner/work/261017-toontown-dev/261017-toontown-dev/crates/registry-macros/Cargo.toml
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:51.1030870Z   - /Users/runner/work/261017-toontown-dev/261017-toontown-dev/crates/registry/Cargo.toml
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:51.1032410Z   - /Users/runner/work/261017-toontown-dev/261017-toontown-dev/crates/render/Cargo.toml
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:51.1033840Z   - /Users/runner/work/261017-toontown-dev/261017-toontown-dev/crates/vector/Cargo.toml
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:51.1035350Z   - /Users/runner/work/261017-toontown-dev/261017-toontown-dev/desktop/src-tauri/Cargo.toml
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:51.1038560Z   - /Users/runner/work/261017-toontown-dev/261017-toontown-dev/rust-toolchain.toml
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:51.1040310Z ##[endgroup]
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:51.1040550Z 
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:51.1040830Z ... Restoring cache ...
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:51.4076000Z Cache hit for: v0-rust-headless-release-e2-Darwin-arm64-1ef279f7-7ca7b21e
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:52.7191590Z Received 0 of 264225507 (0.0%), 0.0 MBs/sec
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:53.7211830Z Received 33554432 of 264225507 (12.7%), 16.0 MBs/sec
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:54.7338590Z Received 113246208 of 264225507 (42.9%), 35.9 MBs/sec
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:55.7248370Z Received 188743680 of 264225507 (71.4%), 44.9 MBs/sec
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:56.7833430Z Received 264225507 of 264225507 (100.0%), 49.7 MBs/sec
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:56.7886580Z Cache Size: ~252 MB (264225507 B)
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:56.7990870Z [command]/opt/homebrew/bin/gtar -xf /Users/runner/work/_temp/2a5ca332-d32f-4b72-b842-d1db253aec04/cache.tzst -P -C /Users/runner/work/261017-toontown-dev/261017-toontown-dev --delay-directory-restore --use-compress-program unzstd
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:02:00.5254030Z Cache restored successfully
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:02:00.5300210Z Restored from cache key "v0-rust-headless-release-e2-Darwin-arm64-1ef279f7-7ca7b21e" full match: true.
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:02:00.5608860Z ##[group]Run cargo build --release --locked -p tt-headless
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:02:00.5609430Z ^[[36;1mcargo build --release --locked -p tt-headless^[[0m
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:02:00.5609880Z ^[[36;1mexe=target/release/toontown-headless^[[0m
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:02:00.5610220Z ^[[36;1mPY=python3^[[0m
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:02:00.5610620Z ^[[36;1mif [ "$RUNNER_OS" = "Windows" ]; then exe="$exe.exe"; PY=python; fi^[[0m
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:02:00.5611000Z ^[[36;1m$PY -m venv .venv-e2^[[0m
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:02:00.5611340Z ^[[36;1mVPY=.venv-e2/bin/python^[[0m
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:02:00.5611800Z ^[[36;1mif [ "$RUNNER_OS" = "Windows" ]; then VPY=.venv-e2/Scripts/python.exe; fi^[[0m
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:02:00.5612400Z ^[[36;1m$VPY -m pip install --quiet "mcp==2.0.0"^[[0m
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:02:00.5612950Z ^[[36;1mPYTHONIOENCODING=utf-8 $VPY scripts/e2-paint-by-id.py "$exe" out/e2^[[0m
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:02:00.5659330Z shell: /bin/bash --noprofile --norc -e -o pipefail {0}
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:02:00.5659780Z env:
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:02:00.5660040Z   CARGO_TERM_COLOR: always
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:02:00.5660480Z   CARGO_INCREMENTAL: 0
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:02:00.5660710Z   RUST_BACKTRACE: 1
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:02:00.5661000Z   CACHE_ON_FAILURE: false
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:02:00.5661300Z ##[endgroup]
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:02:01.2466770Z ^[[1m^[[92m    Updating^[[0m crates.io index
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:02:04.3352420Z ^[[1m^[[92m   Compiling^[[0m tt-model v0.0.1 (/Users/runner/work/261017-toontown-dev/261017-toontown-dev/crates/model)
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:02:04.3491000Z ^[[1m^[[92m   Compiling^[[0m tt-registry-macros v0.0.1 (/Users/runner/work/261017-toontown-dev/261017-toontown-dev/crates/registry-macros)
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:02:17.6961100Z ^[[1m^[[92m   Compiling^[[0m tt-anim v0.0.1 (/Users/runner/work/261017-toontown-dev/261017-toontown-dev/crates/anim)
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:02:17.6974650Z ^[[1m^[[92m   Compiling^[[0m tt-colour v0.0.1 (/Users/runner/work/261017-toontown-dev/261017-toontown-dev/crates/colour)
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:02:17.9485230Z ^[[1m^[[92m   Compiling^[[0m tt-fx v0.0.1 (/Users/runner/work/261017-toontown-dev/261017-toontown-dev/crates/fx)
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:02:17.9507020Z ^[[1m^[[92m   Compiling^[[0m tt-vector v0.0.1 (/Users/runner/work/261017-toontown-dev/261017-toontown-dev/crates/vector)
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:02:18.0686120Z ^[[1m^[[92m   Compiling^[[0m tt-persist v0.0.1 (/Users/runner/work/261017-toontown-dev/261017-toontown-dev/crates/persist)
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:03:17.9481880Z ^[[1m^[[92m   Compiling^[[0m tt-render v0.0.1 (/Users/runner/work/261017-toontown-dev/261017-toontown-dev/crates/render)
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:03:20.8481050Z ^[[1m^[[92m   Compiling^[[0m tt-io v0.0.1 (/Users/runner/work/261017-toontown-dev/261017-toontown-dev/crates/io)
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:03:28.3181150Z ^[[1m^[[92m   Compiling^[[0m tt-audio v0.0.1 (/Users/runner/work/261017-toontown-dev/261017-toontown-dev/crates/audio)
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:03:28.5265580Z ^[[1m^[[92m   Compiling^[[0m tt-registry v0.0.1 (/Users/runner/work/261017-toontown-dev/261017-toontown-dev/crates/registry)
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:03:32.0337620Z ^[[1m^[[92m   Compiling^[[0m tt-executor v0.0.1 (/Users/runner/work/261017-toontown-dev/261017-toontown-dev/crates/executor)
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:04:13.0623340Z ^[[1m^[[92m   Compiling^[[0m tt-lipsync v0.0.1 (/Users/runner/work/261017-toontown-dev/261017-toontown-dev/crates/lipsync)
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:04:13.2516250Z ^[[1m^[[92m   Compiling^[[0m tt-engine v0.0.1 (/Users/runner/work/261017-toontown-dev/261017-toontown-dev/crates/engine)
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:04:19.6244110Z ^[[1m^[[92m   Compiling^[[0m tt-mcp v0.0.1 (/Users/runner/work/261017-toontown-dev/261017-toontown-dev/crates/mcp)
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:05:54.9634440Z ^[[1m^[[92m   Compiling^[[0m tt-headless v0.0.1 (/Users/runner/work/261017-toontown-dev/261017-toontown-dev/bins/headless)
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:06:03.0142420Z ^[[1m^[[92m    Finished^[[0m `release` profile [optimized + debuginfo] target(s) in 4m 02s
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:06:15.7537700Z ok   project.create
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:06:15.7739650Z ok   vectorize preview
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:06:15.7782790Z ok   vectorize run started
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:06:15.8102940Z ok   vectorize job succeeded
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:06:15.8103830Z ok   job progress
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:06:15.8673990Z ok   known pixel: the frame line is ink
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:06:15.9259750Z ok   known pixel: inside the ring is paper
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:06:15.9679170Z ok   save the base
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:06:15.9857160Z ok   doc.validate reports the unpainted zones
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:06:16.0013290Z ok   hit test finds the ring's inside zone
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:06:16.0921370Z ok   each zone painted by ID in one revision
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:06:16.0966820Z ok   validation clean after painting
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:06:16.1655690Z ok   known pixel: the ring's inside is red
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:06:16.1791350Z ok   render_drawing (generic tool) twice: identical hashes
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:06:16.2021690Z ok   recolour
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:06:16.2707260Z ok   known pixel: recoloured green
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:06:16.2729160Z ok   a stale zone ID is refused
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:06:16.2768090Z ok   a stale revision is refused
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:06:16.3436690Z ok   undo restores red
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:06:16.4169450Z ok   redo restores green
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:06:16.4612060Z ok   save
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:06:16.5322340Z ok   reopen
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:06:16.5480010Z ok   save/open: identical doc.export.json
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:06:16.5583550Z ok   reopened render equals the redone render
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:06:17.0680520Z ok   --run replay exits 0
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:06:17.0801320Z ok   replay from the saved base reproduces the document
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:06:17.0865710Z 26/26 checks passed
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:06:17.3246920Z ##[group]Run actions/upload-artifact@v7
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:06:17.3247900Z with:
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:06:17.3248660Z   name: e2-macOS
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:06:17.3250120Z   path: out/e2/
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:06:17.3250400Z   if-no-files-found: error
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:06:17.3250920Z   compression-level: 6
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:06:17.3251210Z   overwrite: false
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:06:17.3251800Z   include-hidden-files: false
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:06:17.3252170Z   archive: true
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:06:17.3252380Z env:
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:06:17.3252680Z   CARGO_TERM_COLOR: always
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:06:17.3253040Z   CARGO_INCREMENTAL: 0
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:06:17.3253260Z   RUST_BACKTRACE: 1
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:06:17.3253580Z   CACHE_ON_FAILURE: false
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:06:17.3253920Z ##[endgroup]
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:06:17.9731850Z With the provided path, there will be 11 files uploaded
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:06:17.9732880Z Artifact name is valid!
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:06:17.9733250Z Root directory input is valid!
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:06:18.4970410Z Uploading artifact: e2-macOS.zip
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:06:18.5149280Z Beginning upload of artifact content to blob storage
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:06:18.9147780Z Uploaded bytes 54351
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:06:18.9923260Z Finished uploading artifact content to blob storage!
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:06:18.9925160Z SHA256 digest of uploaded artifact is cb82081880c1bb9432a18bf6cebb761eef0c1b01d19200b1b0ccea8e7170845c
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:06:18.9925930Z Finalizing artifact upload
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:06:19.7198130Z Artifact e2-macOS successfully finalized. Artifact ID 13162509213
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:06:19.7523310Z Artifact e2-macOS has been successfully uploaded! Final size is 54351 bytes. Artifact ID is 13162509213
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:06:19.7524300Z Artifact download URL: https://github.com/kaigani/261017-toontown-dev/actions/runs/41486947308/artifacts/13162509213
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:06:19.8257650Z Post job cleanup.
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:06:20.0640830Z Cache up-to-date.
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:06:20.0866930Z Post job cleanup.
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:06:20.2906640Z [command]/opt/homebrew/bin/git version
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:06:20.3217840Z git version 2.56.0
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:06:20.3263400Z Copying '/Users/runner/.gitconfig' to '/Users/runner/work/_temp/3226ff96-262e-41f2-a124-b5c6df97a10c/.gitconfig'
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:06:20.3273950Z Temporarily overriding HOME='/Users/runner/work/_temp/3226ff96-262e-41f2-a124-b5c6df97a10c' before making global git config changes
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:06:20.3275790Z Adding repository directory to the temporary git global config as a safe directory
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:06:20.3282650Z [command]/opt/homebrew/bin/git config --global --add safe.directory /Users/runner/work/261017-toontown-dev/261017-toontown-dev
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:06:20.3532750Z Removing SSH command configuration
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:06:20.3537710Z [command]/opt/homebrew/bin/git config --local --name-only --get-regexp core\.sshCommand
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:06:20.3618270Z [command]/opt/homebrew/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:06:20.5339790Z Removing HTTP extra header
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:06:20.5353610Z [command]/opt/homebrew/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:06:20.5515850Z [command]/opt/homebrew/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:06:20.6979520Z Removing includeIf entries pointing to credentials config files
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:06:20.6983940Z [command]/opt/homebrew/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:06:20.7137660Z includeif.gitdir:/Users/runner/work/261017-toontown-dev/261017-toontown-dev/.git.path
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:06:20.7225880Z includeif.gitdir:/Users/runner/work/261017-toontown-dev/261017-toontown-dev/.git/worktrees/*.path
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:06:20.7262990Z includeif.gitdir:/github/workspace/.git.path
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:06:20.7364240Z includeif.gitdir:/github/workspace/.git/worktrees/*.path
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:06:20.7501630Z [command]/opt/homebrew/bin/git config --local --get-all includeif.gitdir:/Users/runner/work/261017-toontown-dev/261017-toontown-dev/.git.path
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:06:20.7550440Z /Users/runner/work/_temp/git-credentials-998562eb-5b2f-45ec-ac41-568cc5c6bb33.config
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:06:20.7579950Z [command]/opt/homebrew/bin/git config --local --unset includeif.gitdir:/Users/runner/work/261017-toontown-dev/261017-toontown-dev/.git.path \/Users\/runner\/work\/_temp\/git\-credentials\-998562eb\-5b2f\-45ec\-ac41\-568cc5c6bb33\.config
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:06:20.7598080Z [command]/opt/homebrew/bin/git config --local --get-all includeif.gitdir:/Users/runner/work/261017-toontown-dev/261017-toontown-dev/.git/worktrees/*.path
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:06:20.7602640Z /Users/runner/work/_temp/git-credentials-998562eb-5b2f-45ec-ac41-568cc5c6bb33.config
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:06:20.7609770Z [command]/opt/homebrew/bin/git config --local --unset includeif.gitdir:/Users/runner/work/261017-toontown-dev/261017-toontown-dev/.git/worktrees/*.path \/Users\/runner\/work\/_temp\/git\-credentials\-998562eb\-5b2f\-45ec\-ac41\-568cc5c6bb33\.config
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:06:20.7634590Z [command]/opt/homebrew/bin/git config --local --get-all includeif.gitdir:/github/workspace/.git.path
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:06:20.7728100Z /github/runner_temp/git-credentials-998562eb-5b2f-45ec-ac41-568cc5c6bb33.config
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:06:20.7741480Z [command]/opt/homebrew/bin/git config --local --unset includeif.gitdir:/github/workspace/.git.path \/github\/runner_temp\/git\-credentials\-998562eb\-5b2f\-45ec\-ac41\-568cc5c6bb33\.config
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:06:20.7817350Z [command]/opt/homebrew/bin/git config --local --get-all includeif.gitdir:/github/workspace/.git/worktrees/*.path
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:06:20.7881490Z /github/runner_temp/git-credentials-998562eb-5b2f-45ec-ac41-568cc5c6bb33.config
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:06:20.7887030Z [command]/opt/homebrew/bin/git config --local --unset includeif.gitdir:/github/workspace/.git/worktrees/*.path \/github\/runner_temp\/git\-credentials\-998562eb\-5b2f\-45ec\-ac41\-568cc5c6bb33\.config
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:06:20.7972300Z [command]/opt/homebrew/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:06:20.9412300Z Removing credentials config '/Users/runner/work/_temp/git-credentials-998562eb-5b2f-45ec-ac41-568cc5c6bb33.config'
+e2 release (macos-latest)	UNKNOWN STEP	2026-11-02T17:06:20.9471480Z Cleaning up orphan processes

@@ -13,6 +13,7 @@ OUT.mkdir(parents=True, exist_ok=True)
 
 
 def run(name, args, env=None, cwd=ROOT):
+    name = name.replace(':', '-')
     start = time.monotonic()
     print(f'START {name}', flush=True)
     with (OUT / (name + '.txt')).open('w', encoding='utf-8') as log:
@@ -33,11 +34,28 @@ if __name__ == '__main__' and len(sys.argv) > 1:
         for crate in ('vector', 'executor', 'io', 'mcp'):
             run('crate-' + crate, ['cargo', 'test', '-p', 'tt-' + crate, '--locked', '-j', '4'])
     elif sys.argv[1] == 'properties':
+        run('r2-variants', ['cargo', 'test', '--release', '-p', 'tt-executor', '--locked', '-j', '4',
+                            '--test', 'c24_r2_variants', '--', '--nocapture'])
         run('routes-4096', ['cargo', 'test', '--release', '-p', 'tt-executor', '--locked', '-j', '4',
                            '--test', 'c24_r2_routes', '--', '--nocapture'], {'TT_ROUTE_CASES': '4096'})
         run('vector-properties-4096', ['cargo', 'test', '--release', '-p', 'tt-vector', '--locked', '-j', '4',
                                       '--test', 'c24_r2_properties', '--', '--nocapture'])
         run('executor-properties-4096', ['cargo', 'test', '--release', '-p', 'tt-executor', '--locked', '-j', '4',
                                         '--test', 'c24_r2_topology', '--', '--nocapture'])
+        run('geometry-histories-10k', ['cargo', 'test', '--release', '-p', 'tt-mcp', '--locked', '-j', '4',
+                                      '--test', 'c21_history', '--', '--ignored', '--nocapture'])
+        run('headless-release-build', ['cargo', 'build', '--release', '-p', 'tt-headless', '--locked', '-j', '4'])
+        run('e2-local-build', [sys.executable, 'scripts/e2-paint-by-id.py', 'target/release/toontown-headless.exe',
+                             str(OUT / 'e2-local-build')], {'PYTHONIOENCODING': 'utf-8'})
+    elif sys.argv[1] == 'closure-probes':
+        run('r2-variants-corrected', ['cargo', 'test', '--release', '-p', 'tt-executor', '--locked', '-j', '4',
+                                      '--test', 'c24_r2_variants', '--', '--nocapture'])
+        run('closed-fold-noding', ['cargo', 'test', '--release', '-p', 'tt-vector', '--locked', '-j', '4',
+                                   '--test', 'c24_r2_noding', '--', '--nocapture'])
+        run('collapsed-snap-rust-control', ['cargo', 'test', '--release', '-p', 'tt-executor', '--locked', '-j', '4',
+                                           '--test', 'c24_r2_routes', 'collapsed_other_contour', '--', '--nocapture'])
+    elif sys.argv[1] == 'final-checks':
+        run('fmt-final', ['cargo', 'fmt', '--all', '--check'])
+        run('clippy-final', ['cargo', 'clippy', '--workspace', '--all-targets', '--locked', '-j', '4', '--', '-D', 'warnings'])
     elif sys.argv[1] == 'workspace':
         run('workspace-final', ['cargo', 'test', '--workspace', '--locked', '-j', '4', '--no-fail-fast'])

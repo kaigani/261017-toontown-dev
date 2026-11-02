@@ -1,0 +1,5 @@
+{"argv": ["cmd", "/c", "pnpm", "--dir", "desktop", "typecheck"], "cwd": "C:\\Users\\kaiga\\work\\review\\m2-c24-r2", "env": {}, "startedAt": "2026-11-02T18:33:17.775686+00:00"}
+
+> @toontown/desktop@0.0.1 typecheck C:\Users\kaiga\work\review\m2-c24-r2\desktop
+> tsc --noEmit -p tsconfig.json && tsc --noEmit -p tsconfig.node.json
+

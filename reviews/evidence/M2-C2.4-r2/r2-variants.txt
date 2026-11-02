@@ -1,0 +1,232 @@
+{"argv": ["cargo", "test", "--release", "-p", "tt-executor", "--locked", "-j", "4", "--test", "c24_r2_variants", "--", "--nocapture"], "cwd": "C:\\Users\\kaiga\\work\\review\\m2-c24-r2", "env": {}, "startedAt": "2026-11-02T18:55:40.248008+00:00"}
+   Compiling proc-macro2 v1.0.107
+   Compiling quote v1.0.47
+   Compiling unicode-ident v1.0.27
+   Compiling cfg-if v1.0.5
+   Compiling autocfg v1.5.1
+   Compiling serde_core v1.0.229
+   Compiling foldhash v0.2.0
+   Compiling num-traits v0.2.19
+   Compiling equivalent v1.0.3
+   Compiling allocator-api2 v0.2.21
+   Compiling windows-link v0.2.1
+   Compiling version_check v0.9.5
+   Compiling syn v3.0.9
+   Compiling syn v2.0.119
+   Compiling memchr v2.8.3
+   Compiling serde v1.0.229
+   Compiling once_cell v1.21.4
+   Compiling zerocopy v0.8.63
+   Compiling smallvec v1.16.3
+   Compiling hashbrown v0.17.1
+   Compiling serde_derive v1.0.229
+   Compiling zmij v1.0.23
+   Compiling num-integer v0.1.47
+   Compiling serde_json v1.0.154
+   Compiling rand_core v0.10.1
+   Compiling indexmap v2.14.2
+   Compiling zerocopy-derive v0.8.63
+   Compiling regex-syntax v0.8.11
+   Compiling getrandom v0.3.4
+   Compiling itoa v1.0.18
+   Compiling getrandom v0.4.3
+   Compiling ref-cast v1.0.27
+   Compiling num-bigint v0.4.8
+   Compiling ref-cast-impl v1.0.27
+   Compiling ahash v0.8.12
+   Compiling parking_lot_core v0.9.12
+   Compiling num-rational v0.4.2
+   Compiling num-iter v0.1.46
+   Compiling aho-corasick v1.1.5
+   Compiling num-complex v0.4.6
+   Compiling scopeguard v1.2.0
+   Compiling thiserror v2.0.21
+   Compiling num v0.4.3
+   Compiling lock_api v0.4.14
+   Compiling regex-automata v0.4.18
+   Compiling thiserror-impl v2.0.21
+   Compiling bytemuck_derive v1.12.1
+   Compiling heck v0.5.0
+   Compiling bit-vec v0.8.0
+   Compiling jsonschema-value v0.59.0
+   Compiling borrow-or-share v0.2.4
+   Compiling unicode-general-category v1.1.0
+   Compiling fluent-uri v0.4.1
+   Compiling bytemuck v1.25.2
+   Compiling bit-set v0.8.0
+   Compiling strum_macros v0.28.0
+   Compiling parking_lot v0.12.5
+   Compiling fraction v0.17.0
+   Compiling serde_derive_internals v0.30.0
+   Compiling percent-encoding v2.3.2
+   Compiling tinyvec v1.13.3
+   Compiling num-cmp v0.1.0
+   Compiling bytecount v0.6.9
+   Compiling outref v0.5.2
+   Compiling vsimd v0.8.0
+   Compiling crossbeam-utils v0.8.23
+   Compiling micromap v0.3.0
+   Compiling uuid-simd v0.8.0
+   Compiling referencing v0.59.0
+   Compiling schemars_derive v1.2.3
+   Compiling strum v0.28.0
+   Compiling fancy-regex v0.19.2
+   Compiling regex v1.13.1
+   Compiling email_address v0.2.9
+   Compiling jsonschema-regex v0.59.0
+   Compiling dyn-clone v1.0.20
+   Compiling simd-adler32 v0.3.10
+   Compiling data-encoding v2.11.1
+   Compiling jsonschema v0.59.0
+   Compiling schemars v1.2.3
+   Compiling unicode-normalization v0.1.26
+   Compiling adler2 v2.0.1
+   Compiling crc32fast v1.5.2
+   Compiling ryu v1.0.23
+   Compiling typenum v1.20.1
+   Compiling crossbeam-epoch v0.9.21
+   Compiling libm v0.2.16
+   Compiling hybrid-array v0.4.15
+   Compiling miniz_oxide v0.9.1
+   Compiling cpufeatures v0.3.1
+   Compiling arrayvec v0.7.8
+   Compiling crossbeam-deque v0.8.8
+   Compiling polycool v0.4.0
+   Compiling tt-model v0.0.1 (C:\Users\kaiga\work\review\m2-c24-r2\crates\model)
+   Compiling flate2 v1.1.10
+   Compiling block-buffer v0.12.1
+   Compiling crypto-common v0.2.2
+   Compiling slotmap v1.1.1
+   Compiling rayon-core v1.13.0
+   Compiling log v0.4.34
+   Compiling const-oid v0.10.2
+   Compiling digest v0.11.3
+   Compiling i_float v5.0.0
+   Compiling kurbo v0.13.1
+   Compiling color v0.3.3
+   Compiling font-types v0.12.7
+   Compiling euclid v0.22.14
+   Compiling windows-sys v0.61.2
+   Compiling linebender_resource_handle v0.1.1
+   Compiling bitflags v2.13.2
+   Compiling peniko v0.6.1
+   Compiling guillotiere v0.7.0
+   Compiling read-fonts v0.41.0
+   Compiling i_shape v5.0.0
+   Compiling sha2 v0.11.1
+   Compiling miniz_oxide v0.8.9
+   Compiling crossbeam-channel v0.5.17
+   Compiling fdeflate v0.3.7
+   Compiling hashbrown v0.16.1
+   Compiling fearless_simd v0.7.0
+   Compiling i_tree v0.20.0
+   Compiling weezl v0.1.12
+   Compiling robust v1.2.0
+   Compiling either v1.19.0
+   Compiling memmap2 v0.9.11
+   Compiling i_key_sort v0.12.0
+   Compiling zune-core v0.5.3
+   Compiling zune-jpeg v0.5.15
+   Compiling i_overlay v9.1.0
+   Compiling fontdb v0.24.0
+   Compiling rayon v1.12.0
+   Compiling spade v2.15.1
+   Compiling vello_common v0.3.0
+   Compiling png v0.18.1
+   Compiling ordered-channel v1.2.0
+   Compiling skrifa v0.44.0
+   Compiling tt-anim v0.0.1 (C:\Users\kaiga\work\review\m2-c24-r2\crates\anim)
+   Compiling half v2.7.1
+   Compiling thread_local v1.1.10
+   Compiling color_quant v1.1.0
+   Compiling pxfm v0.1.30
+   Compiling quick-error v2.0.1
+   Compiling fax v0.2.7
+   Compiling tiff v0.11.3
+   Compiling moxcms v0.8.1
+   Compiling gif v0.14.2
+   Compiling vello_cpu v0.3.0
+   Compiling tt-fx v0.0.1 (C:\Users\kaiga\work\review\m2-c24-r2\crates\fx)
+   Compiling tt-vector v0.0.1 (C:\Users\kaiga\work\review\m2-c24-r2\crates\vector)
+   Compiling tt-colour v0.0.1 (C:\Users\kaiga\work\review\m2-c24-r2\crates\colour)
+   Compiling byteorder-lite v0.1.0
+   Compiling target-tuple v1.0.2
+   Compiling winnow v1.0.4
+   Compiling fastrand v2.5.0
+   Compiling tempfile v3.27.0
+   Compiling toml_parser v1.1.5+spec-1.1.0
+   Compiling image v0.25.10
+   Compiling tt-render v0.0.1 (C:\Users\kaiga\work\review\m2-c24-r2\crates\render)
+   Compiling tt-persist v0.0.1 (C:\Users\kaiga\work\review\m2-c24-r2\crates\persist)
+   Compiling winapi-util v0.1.11
+   Compiling tt-registry-macros v0.0.1 (C:\Users\kaiga\work\review\m2-c24-r2\crates\registry-macros)
+   Compiling serde_spanned v1.1.2
+   Compiling toml_datetime v1.1.2+spec-1.1.0
+   Compiling toml_writer v1.1.3+spec-1.1.0
+   Compiling bit-vec v0.10.1
+   Compiling wait-timeout v0.2.1
+   Compiling fnv v1.0.7
+   Compiling quick-error v1.2.3
+   Compiling rusty-fork v0.3.1
+   Compiling bit-set v0.11.1
+   Compiling toml v1.1.8+spec-1.1.0
+   Compiling tt-registry v0.0.1 (C:\Users\kaiga\work\review\m2-c24-r2\crates\registry)
+   Compiling tt-io v0.0.1 (C:\Users\kaiga\work\review\m2-c24-r2\crates\io)
+   Compiling termcolor v1.4.1
+   Compiling chacha20 v0.10.2
+   Compiling rand v0.10.3
+   Compiling rand_xorshift v0.5.0
+   Compiling glob v0.3.4
+   Compiling unarray v0.1.4
+   Compiling core_detect v1.0.0
+   Compiling proptest v1.12.0
+   Compiling trybuild v1.0.122
+   Compiling tt-executor v0.0.1 (C:\Users\kaiga\work\review\m2-c24-r2\crates\executor)
+   Compiling stats_alloc v0.1.10
+    Finished `release` profile [optimized + debuginfo] target(s) in 2m 55s
+     Running tests\c24_r2_variants.rs (target\release\deps\c24_r2_variants-dbbba3e072d745e9.exe)
+
+running 9 tests
+
+thread 'erase_brush_outline_preserves_the_other_half_and_has_no_spurious_hole' (10860) panicked at crates\executor\tests\c24_r2_variants.rs:250:5:
+assertion `left != right` failed
+  left: Array [Object {"type": String("stroke"), "id": String("st_01K7JJN800J6GZ68MHS01HNTDM"), "kind": String("brush"), "closed": Bool(false), "bezier": Array [Object {"x": Number(2000.0), "y": Number(2000.0)}, Object {"x": Number(2000.0), "y": Number(2000.0)}, Object {"x": Number(2100.0), "y": Number(2000.0)}, Object {"x": Number(2100.0), "y": Number(2000.0)}], "penId": Null, "pen": Object {"tipShape": String("round"), "minSize": Number(10.0), "maxSize": Number(10.0), "tipAngle": Number(0.0)}, "colourId": String("col_01K742SG059XGSNZ6M9MACZ2ZY"), "textureMatrix": Null}]
+ right: Array [Object {"type": String("stroke"), "id": String("st_01K7JJN800J6GZ68MHS01HNTDM"), "kind": String("brush"), "closed": Bool(false), "bezier": Array [Object {"x": Number(2000.0), "y": Number(2000.0)}, Object {"x": Number(2000.0), "y": Number(2000.0)}, Object {"x": Number(2100.0), "y": Number(2000.0)}, Object {"x": Number(2100.0), "y": Number(2000.0)}], "penId": Null, "pen": Object {"tipShape": String("round"), "minSize": Number(10.0), "maxSize": Number(10.0), "tipAngle": Number(0.0)}, "colourId": String("col_01K742SG059XGSNZ6M9MACZ2ZY"), "textureMatrix": Null}]
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+test non_parallelogram_envelope_has_independently_predicted_corners_and_area ... ok
+test snap_to_a_curved_contour_reaches_its_analytic_midpoint ... ok
+test erase_brush_outline_preserves_the_other_half_and_has_no_spurious_hole ... FAILED
+test optimize_declines_overlapping_layers_without_changing_geometry_or_fill ... ok
+
+thread 'tiny_vectorized_ring_uses_generated_black_and_reuses_the_palette_after_current_colour_changes' (13940) panicked at crates\executor\tests\common\mod.rs:30:5:
+assertion `left == right` failed: colour.current.set {"colourId":"col_01K742SG06BQ08FCT1TT8DF8MA"}: Some(CommandError { code: "command.notImplemented", message: "`colour.current.set` is registered but implemented in M7 C7.1", details: Object {"commandId": String("colour.current.set"), "milestone": String("M7 C7.1")}, hint: None })
+  left: Error
+ right: Ok
+test smooth_noop_and_shape_changing_tolerances_have_distinct_history ... ok
+
+thread 'flatten_mixed_overlapping_pencil_and_brush_layers_has_two_exact_regions' (34176) panicked at crates\executor\tests\c24_r2_variants.rs:277:9:
+assertion `left == right` failed: 60 x 25 du independent expected area: {"type":"layer","id":"nd_01K7JJN801B70T5SD8N8D954M2","layerKind":"brush","strokes":[{"type":"stroke","id":"st_01K7JJN801N0AE1Z0RRCTVH07Z","kind":"pencil","closed":false,"bezier":[{"x":2080.0,"y":2055.03125},{"x":2080.0,"y":2055.03125},{"x":2080.0,"y":2080.0},{"x":2080.0,"y":2080.0},{"x":2080.0,"y":2080.0},{"x":2020.0,"y":2080.0},{"x":2020.0,"y":2080.0},{"x":2020.0,"y":2080.0},{"x":2020.0,"y":2055.03125},{"x":2020.0,"y":2055.03125}],"colourId":"col_01K742SG059XGSNZ6M9MACZ2ZY","lineStyle":{"thickness":2.0,"lineType":"solid"},"leftZoneId":"zn_H4XZ5WZBFPHA9AV7WN60W8ACYB","rightZoneId":null},{"type":"stroke","id":"st_01K7JJN803WXFN4379NATC3KT1","kind":"pencil","closed":false,"bezier":[{"x":2020.0,"y":2044.96875},{"x":2020.0,"y":2044.96875},{"x":2020.0,"y":2020.0},{"x":2020.0,"y":2020.0},{"x":2020.0,"y":2020.0},{"x":2080.0,"y":2020.0},{"x":2080.0,"y":2020.0},{"x":2080.0,"y":2020.0},{"x":2080.0,"y":2044.96875},{"x":2080.0,"y":2044.96875}],"colourId":"col_01K742SG059XGSNZ6M9MACZ2ZY","lineStyle":{"thickness":2.0,"lineType":"solid"},"leftZoneId":"zn_1MSNNDN6V9XHQEQPB9XRB0QQZ7","rightZoneId":null},{"type":"stroke","id":"st_01K7JJN800DDW44SJVC40KANBT","kind":"brush","closed":false,"bezier":[{"x":2000.0,"y":2050.0},{"x":2000.0,"y":2050.0},{"x":2100.0,"y":2050.0},{"x":2100.0,"y":2050.0}],"penId":null,"pen":{"tipShape":"round","minSize":10.0,"maxSize":10.0,"tipAngle":0.0},"colourId":"col_01K742SG059XGSNZ6M9MACZ2ZY","textureMatrix":null}],"zones":[{"type":"zone","id":"zn_H4XZ5WZBFPHA9AV7WN60W8ACYB","colourId":"col_01K742SG059XGSNZ6M9MACZ2ZY","textureMatrix":null,"boundaryStrokeIds":["st_01K7JJN800DDW44SJVC40KANBT","st_01K7JJN801N0AE1Z0RRCTVH07Z"],"holes":[],"parentZoneId":null,"area":1498.125,"bounds":{"x":2020,"y":2055.03125,"width":60,"height":24.96875},"interiorPoint":{"x":2050,"y":2056.8203125}},{"type":"zone","id":"zn_1MSNNDN6V9XHQEQPB9XRB0QQZ7","colourId":"col_01K742SG059XGSNZ6M9MACZ2ZY","textureMatrix":null,"boundaryStrokeIds":["st_01K7JJN800DDW44SJVC40KANBT","st_01K7JJN803WXFN4379NATC3KT1"],"holes":[],"parentZoneId":null,"area":1498.125,"bounds":{"x":2020,"y":2020,"width":60,"height":24.96875},"interiorPoint":{"x":2050,"y":2021.7890625}}]}
+  left: 1498.125
+ right: 1500.0
+test tiny_vectorized_ring_uses_generated_black_and_reuses_the_palette_after_current_colour_changes ... FAILED
+test flatten_mixed_overlapping_pencil_and_brush_layers_has_two_exact_regions ... FAILED
+
+thread 'closed_concentric_loops_keep_two_painted_regions_through_lines_to_brush' (34984) panicked at crates\executor\tests\c24_r2_variants.rs:113:5:
+assertion `left == right` failed
+  left: 4
+ right: 2
+test closed_concentric_loops_keep_two_painted_regions_through_lines_to_brush ... FAILED
+spineless BO8: {"drawingId":"dr_01K742SG0KKMCAP9X1E6Z5P4SW","strokeIds":["st_01K7JJN808KHA80G4520NDDDH3","st_01K7JJN8071H2QW6A7REWRQS3J","st_01K7JJN80667Q1CH7699KH7N9E","st_01K7JJN805FYY39WB0TRMKCRPT","st_01K7JJN804BQD4G9JF3248ZF1X","st_01K7JJN8035DYXA2PGNY8NJ2YK","st_01K7JJN802HZEJ5904KPDNSW4V","st_01K7JJN801B70T5SD8N8D954M2","st_01K7JJN800DDW44SJVC40KANBT"],"warnings":[],"skippedIds":[],"createdIds":["st_01K7JJN808KHA80G4520NDDDH3","st_01K7JJN8071H2QW6A7REWRQS3J","st_01K7JJN80667Q1CH7699KH7N9E","st_01K7JJN805FYY39WB0TRMKCRPT","st_01K7JJN804BQD4G9JF3248ZF1X","st_01K7JJN8035DYXA2PGNY8NJ2YK","st_01K7JJN802HZEJ5904KPDNSW4V","st_01K7JJN801B70T5SD8N8D954M2","st_01K7JJN800DDW44SJVC40KANBT","zn_C4SV82V261JKVH0BNBC011Q20Y","zn_DDGY1XQB9VBAFG30RPSM7QQ23H","zn_FQYYE4HCV7RF73XWESNX7Y6KMP","zn_FZ8WP1A7BZB3MN5NZQD2WKW1ZX","zn_W4RWP9513M2D2P9R8CSC940S48"],"modifiedIds":[],"removedIds":["st_01K7JJN800FJRWFM4KTPMG2Y8P","st_01K7JJN803N2HAQ4SXZVV8MYK2","st_01K7JJN806XA7ASEPAA7TP68D1","zn_88T0YX7E7DCT7FWK37814JX3BD","zn_9W4YMJPSC4A5NX1VZ0ZT01SN4F","zn_BDJBB3GFJ4Z0WTC6FJ7MNEV9YZ","zn_D4NQCAHP5RY35NQ61KH06HX632","zn_Z7JTY8CP6ARPCVRAMDV7NGN3HF"],"rev":4}
+test multiglyph_two_counter_text_and_spineless_centre_lines ... ok
+
+failures:
+
+failures:
+    closed_concentric_loops_keep_two_painted_regions_through_lines_to_brush
+    erase_brush_outline_preserves_the_other_half_and_has_no_spurious_hole
+    flatten_mixed_overlapping_pencil_and_brush_layers_has_two_exact_regions
+    tiny_vectorized_ring_uses_generated_black_and_reuses_the_palette_after_current_colour_changes
+
+test result: FAILED. 5 passed; 4 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.08s
+
+error: test failed, to rerun pass `-p tt-executor --test c24_r2_variants`

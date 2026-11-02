@@ -1,0 +1,85 @@
+{"argv": ["cmd", "/c", "pnpm", "test"], "cwd": "C:\\Users\\kaiga\\work\\review\\m2-c24-r2", "env": {}, "startedAt": "2026-11-02T18:47:53.748800+00:00"}
+
+> toontown-workspace@ test C:\Users\kaiga\work\review\m2-c24-r2
+> pnpm -r test && node --test scripts/check-npm-licenses.test.mjs
+
+
+> @toontown/desktop@0.0.1 test C:\Users\kaiga\work\review\m2-c24-r2\desktop
+> vitest run --config vite.config.ts
+
+
+ RUN  v5.0.5 C:/Users/kaiga/work/review/m2-c24-r2/desktop
+
+
+ Test Files  40 passed (40)
+      Tests  333 passed (333)
+   Start at  10:47:54
+   Duration  82.01s (tests 67%, environment 20%, setup 10%, import 2%, transform 1%)
+
+    Isolate  40 workers spawned · ~485ms startup each (spawn + environment, per file)
+             at least ~18.90s faster with isolate: false — reuses workers across files instead of one per file
+
+TAP version 13
+# Subtest: single identifiers
+ok 1 - single identifiers
+  ---
+  duration_ms: 0.8058
+  type: 'test'
+  ...
+# Subtest: OR needs one allowed alternative, AND needs all
+ok 2 - OR needs one allowed alternative, AND needs all
+  ---
+  duration_ms: 0.198
+  type: 'test'
+  ...
+# Subtest: precedence: AND binds tighter than OR
+ok 3 - precedence: AND binds tighter than OR
+  ---
+  duration_ms: 0.1089
+  type: 'test'
+  ...
+# Subtest: nested groups (C01-R1-01)
+ok 4 - nested groups (C01-R1-01)
+  ---
+  duration_ms: 0.8353
+  type: 'test'
+  ...
+# Subtest: WITH exceptions must be allowed as a whole
+ok 5 - WITH exceptions must be allowed as a whole
+  ---
+  duration_ms: 0.1647
+  type: 'test'
+  ...
+# Subtest: or-later suffix
+ok 6 - or-later suffix
+  ---
+  duration_ms: 0.0689
+  type: 'test'
+  ...
+# Subtest: malformed and non-SPDX strings fail closed
+ok 7 - malformed and non-SPDX strings fail closed
+  ---
+  duration_ms: 0.1064
+  type: 'test'
+  ...
+# Subtest: every operand is validated, even behind an allowed OR branch (C01-R2-03)
+ok 8 - every operand is validated, even behind an allowed OR branch (C01-R2-03)
+  ---
+  duration_ms: 0.1622
+  type: 'test'
+  ...
+# Subtest: allow-list is read from deny.toml
+ok 9 - allow-list is read from deny.toml
+  ---
+  duration_ms: 0.361
+  type: 'test'
+  ...
+1..9
+# tests 9
+# suites 0
+# pass 9
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 62.096

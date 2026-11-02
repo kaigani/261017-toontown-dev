@@ -1,0 +1,19 @@
+{"argv": ["cargo", "test", "--release", "-p", "tt-executor", "--locked", "-j", "4", "--test", "c24_r2_variants", "--", "--nocapture"], "cwd": "C:\\Users\\kaiga\\work\\review\\m2-c24-r2", "env": {}, "startedAt": "2026-11-02T19:23:28.773229+00:00"}
+   Compiling tt-executor v0.0.1 (C:\Users\kaiga\work\review\m2-c24-r2\crates\executor)
+    Finished `release` profile [optimized + debuginfo] target(s) in 2.71s
+     Running tests\c24_r2_variants.rs (target\release\deps\c24_r2_variants-dbbba3e072d745e9.exe)
+
+running 9 tests
+test non_parallelogram_envelope_has_independently_predicted_corners_and_area ... ok
+test snap_to_a_curved_contour_reaches_its_analytic_midpoint ... ok
+test smooth_noop_and_shape_changing_tolerances_have_distinct_history ... ok
+test optimize_declines_overlapping_layers_without_changing_geometry_or_fill ... ok
+test flatten_mixed_overlapping_pencil_and_brush_layers_has_two_exact_regions ... ok
+test si059_erase_keeps_a_partly_covered_brush_whole_then_removes_a_wholly_covered_brush ... ok
+test closed_concentric_loops_keep_two_painted_regions_through_lines_to_brush ... ok
+spineless BO8: {"drawingId":"dr_01K742SG0KKMCAP9X1E6Z5P4SW","strokeIds":["st_01K7JJN808KHA80G4520NDDDH3","st_01K7JJN8071H2QW6A7REWRQS3J","st_01K7JJN80667Q1CH7699KH7N9E","st_01K7JJN805FYY39WB0TRMKCRPT","st_01K7JJN804BQD4G9JF3248ZF1X","st_01K7JJN8035DYXA2PGNY8NJ2YK","st_01K7JJN802HZEJ5904KPDNSW4V","st_01K7JJN801B70T5SD8N8D954M2","st_01K7JJN800DDW44SJVC40KANBT"],"warnings":[],"skippedIds":[],"createdIds":["st_01K7JJN808KHA80G4520NDDDH3","st_01K7JJN8071H2QW6A7REWRQS3J","st_01K7JJN80667Q1CH7699KH7N9E","st_01K7JJN805FYY39WB0TRMKCRPT","st_01K7JJN804BQD4G9JF3248ZF1X","st_01K7JJN8035DYXA2PGNY8NJ2YK","st_01K7JJN802HZEJ5904KPDNSW4V","st_01K7JJN801B70T5SD8N8D954M2","st_01K7JJN800DDW44SJVC40KANBT","zn_C4SV82V261JKVH0BNBC011Q20Y","zn_DDGY1XQB9VBAFG30RPSM7QQ23H","zn_FQYYE4HCV7RF73XWESNX7Y6KMP","zn_FZ8WP1A7BZB3MN5NZQD2WKW1ZX","zn_W4RWP9513M2D2P9R8CSC940S48"],"modifiedIds":[],"removedIds":["st_01K7JJN800FJRWFM4KTPMG2Y8P","st_01K7JJN803N2HAQ4SXZVV8MYK2","st_01K7JJN806XA7ASEPAA7TP68D1","zn_88T0YX7E7DCT7FWK37814JX3BD","zn_9W4YMJPSC4A5NX1VZ0ZT01SN4F","zn_BDJBB3GFJ4Z0WTC6FJ7MNEV9YZ","zn_D4NQCAHP5RY35NQ61KH06HX632","zn_Z7JTY8CP6ARPCVRAMDV7NGN3HF"],"rev":4}
+test multiglyph_two_counter_text_and_spineless_centre_lines ... ok
+test tiny_vectorized_ring_uses_its_own_generated_black_and_reuses_the_palette ... ok
+
+test result: ok. 9 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.07s
+

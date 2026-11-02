@@ -14,7 +14,7 @@ use tt_executor::ExecutorHandle;
 const D: &str = "dr_01K742SG0KKMCAP9X1E6Z5P4SW";
 
 fn drawing(h: &ExecutorHandle) -> Value {
-    ok(h, "draw.drawing.get", json!({"drawingId": D, "include":["zones"]}))
+    ok(h, "draw.drawing.get", json!({"drawingId": D, "include":["zones","outline"]}))
 }
 fn layer(h: &ExecutorHandle, id: &Value) -> Value {
     drawing(h)["nodes"].as_array().unwrap().iter().find(|n| &n["id"] == id).unwrap().clone()
@@ -110,7 +110,33 @@ fn closed_concentric_loops_keep_two_painted_regions_through_lines_to_brush() {
     let mut want = cs[..2].to_vec();
     want.sort();
     assert_eq!(fills, want);
-    assert_eq!(after["strokes"].as_array().unwrap().iter().filter(|s| s["kind"] == "invisible").count(), 2);
+    // Noding may split each retained centre at the outline (the declared centreIds are its pieces).
+    // Independently require all of the original 480 + 160 du centre paths, without fixing a legal split count.
+    let mut total = 0.0;
+    for s in after["strokes"].as_array().unwrap().iter().filter(|s| s["kind"] == "invisible") {
+        let pts = s["bezier"]
+            .as_array()
+            .unwrap()
+            .iter()
+            .step_by(3)
+            .map(|p| (p["x"].as_f64().unwrap(), p["y"].as_f64().unwrap()))
+            .collect::<Vec<_>>();
+        for &(x, y) in &pts {
+            assert!(
+                ((x == 2000. || x == 2120.) && (2000. ..=2120.).contains(&y))
+                    || ((y == 2000. || y == 2120.) && (2000. ..=2120.).contains(&x))
+                    || ((x == 2040. || x == 2080.) && (2040. ..=2080.).contains(&y))
+                    || ((y == 2040. || y == 2080.) && (2040. ..=2080.).contains(&x))
+            );
+        }
+        total += pts.windows(2).map(|w| (w[0].0 - w[1].0).hypot(w[0].1 - w[1].1)).sum::<f64>();
+        if s["closed"] == true {
+            let a = pts[0];
+            let b = pts[pts.len() - 1];
+            total += (a.0 - b.0).hypot(a.1 - b.1);
+        }
+    }
+    assert!((total - 640.).abs() < 1e-9, "retained centre length {total}: {after}");
 }
 
 #[test]
@@ -230,7 +256,7 @@ fn non_parallelogram_envelope_has_independently_predicted_corners_and_area() {
 }
 
 #[test]
-fn erase_brush_outline_preserves_the_other_half_and_has_no_spurious_hole() {
+fn si059_erase_keeps_a_partly_covered_brush_whole_then_removes_a_wholly_covered_brush() {
     let h = fixture();
     let a = ok(
         &h,
@@ -240,17 +266,22 @@ fn erase_brush_outline_preserves_the_other_half_and_has_no_spurious_hole() {
         "pen":{"tipShape":"round","minSize":10,"maxSize":10,"tipAngle":0}}),
     );
     let before = layer(&h, &a["layerId"]);
-    ok(
+    let r = ok(
         &h,
         "draw.erase.apply",
         json!({"drawingId":D,"layers":[a["layerId"]],
         "region":[{"x":2040,"y":1980},{"x":2060,"y":1980},{"x":2060,"y":2020},{"x":2040,"y":2020}]}),
     );
     let after = layer(&h, &a["layerId"]);
-    assert_ne!(after["strokes"], before["strokes"]);
-    assert_eq!(after["strokes"].as_array().unwrap().len(), 2);
-    assert!(after["strokes"].as_array().unwrap().iter().all(|s| s["kind"] == "brush" && s["closed"] == true));
-    assert!(after["zones"].as_array().unwrap().is_empty(), "{after}");
+    assert_eq!(after, before, "SI-059/SI-071: a partly covered brush is kept whole, including its outline");
+    assert_eq!(r["keptBrushIds"], a["strokeIds"]);
+    ok(
+        &h,
+        "draw.erase.apply",
+        json!({"drawingId":D,"layers":[a["layerId"]],
+        "region":[{"x":1980,"y":1980},{"x":2120,"y":1980},{"x":2120,"y":2020},{"x":1980,"y":2020}]}),
+    );
+    assert!(!drawing(&h)["nodes"].as_array().unwrap().iter().any(|n| n["id"] == a["layerId"]));
     ok(&h, "edit.undo", json!({}));
     assert_eq!(layer(&h, &a["layerId"]), before);
 }
@@ -262,13 +293,19 @@ fn flatten_mixed_overlapping_pencil_and_brush_layers_has_two_exact_regions() {
     let c = palette(&h)[0].clone();
     let zid = layer(&h, &a["layerId"])["zones"][0]["id"].clone();
     ok(&h, "colour.paint.apply", json!({"drawingId":D,"objectIds":[zid],"colourId":c}));
-    let b = ok(
+    // Persist an exact rectangular brush outline: no assumption that a fitted round-pen sweep is an ideal band.
+    let bez = json!([{"x":2000,"y":2045},{"x":2000,"y":2045},{"x":2100,"y":2045},
+        {"x":2100,"y":2045},{"x":2100,"y":2045},{"x":2100,"y":2055},
+        {"x":2100,"y":2055},{"x":2100,"y":2055},{"x":2000,"y":2055},
+        {"x":2000,"y":2055},{"x":2000,"y":2055},{"x":2000,"y":2045}]);
+    let raw = ok(
         &h,
-        "draw.stroke.add",
-        json!({"drawingId":D,"kind":"brush","layer":"new","fit":false,
-        "points":[{"x":2000,"y":2050,"pressure":1},{"x":2100,"y":2050,"pressure":1}],
-        "pen":{"tipShape":"round","minSize":10,"maxSize":10,"tipAngle":0}}),
+        "draw.content.add",
+        json!({"drawingId":D,"select":false,"content":{"nodes":[
+        {"type":"layer","id":"l_mix","layerKind":"brush","strokes":[
+            {"id":"s_mix","kind":"brush","closed":true,"colourId":c,"outline":[bez]}]}]}}),
     );
+    let b = json!({"layerId":raw["idMap"]["l_mix"]});
     let r = ok(&h, "draw.flatten.apply", json!({"drawingId":D,"ids":[a["layerId"],b["layerId"]]}));
     let l = layer(&h, &r["layerId"]);
     let zones = l["zones"].as_array().unwrap();
@@ -281,10 +318,9 @@ fn flatten_mixed_overlapping_pencil_and_brush_layers_has_two_exact_regions() {
 }
 
 #[test]
-fn tiny_vectorized_ring_uses_generated_black_and_reuses_the_palette_after_current_colour_changes() {
+fn tiny_vectorized_ring_uses_its_own_generated_black_and_reuses_the_palette() {
     let h = fixture();
     let cs = palette(&h);
-    ok(&h, "colour.current.set", json!({"colourId":cs[1]}));
     let dir = std::env::temp_dir().join(format!("tt-c24-r2-tiny-{}", tt_persist::fsx::random_token(8)));
     std::fs::create_dir_all(&dir).unwrap();
     let file = dir.join("tiny-ring.png");
@@ -311,13 +347,13 @@ fn tiny_vectorized_ring_uses_generated_black_and_reuses_the_palette_after_curren
             black = Some(id.clone())
         }
         assert_ne!(id, cs[1]);
+        assert_ne!(id, cs[0]);
         drop(doc);
         let d = &rec["result"]["drawingIds"][0];
         let art = ok(&h, "draw.drawing.get", json!({"drawingId":d}));
         assert_eq!(art["nodes"][0]["zones"].as_array().unwrap().len(), 1, "single enclosed paper cell: {art}");
         assert_eq!(art["nodes"][0]["strokes"][0]["colourId"], id);
         assert!(art["nodes"][0]["zones"][0]["colourId"].is_null());
-        ok(&h, "colour.current.set", json!({"colourId":cs[0]}));
     }
     std::fs::remove_dir_all(dir).unwrap();
 }

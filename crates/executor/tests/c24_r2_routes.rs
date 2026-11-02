@@ -25,7 +25,7 @@
 //! combinatorics would differ from the exact ones (a vertex within 6 grid units of a non-incident edge, or two vertices
 //! snapping together) are skipped before the command runs. Cases: `TT_ROUTE_CASES` (default 256 in `check`; 4096 run
 //! locally). `c23_r3_topology.rs` stays the consistency check it is (it calls the product's own noding and map).
-#![allow(clippy::unwrap_used, clippy::expect_used, clippy::panic, missing_docs, reason = "test")]
+#![allow(clippy::unwrap_used, clippy::expect_used, clippy::panic, clippy::print_stdout, missing_docs, reason = "test")]
 
 mod common;
 #[path = "../../vector/tests/oracle/mod.rs"]
@@ -1101,4 +1101,44 @@ fn r1_01_route_oracle_rejects_a_noop_centre_line_mutant() {
     after.extend(segments_of(std::slice::from_ref(line)));
     let verdict = check(&unchanged_strokes, &unchanged_zones, &after, &carried(&old, &after));
     assert!(verdict.is_err(), "the claimed Centre Line oracle accepts doing nothing: {verdict:?}");
+}
+
+/// Fixed case shrunk by the XOR-5D point-move property. The product snaps to the collapsed contour's anchor;
+/// the shipped route oracle throws zero-length segments away and therefore predicts the unsnapped point instead.
+#[test]
+fn collapsed_other_contour_is_a_valid_snap_target_product_control() {
+    let h = fresh();
+    let list =
+        vec![(false, vec![(2, 0), (2, 2)]), (false, vec![(4, 1), (4, 1)]), (false, vec![(2, 0), (0, 0), (3, 3)])];
+    let (d, layer, old) = setup(&h, &list).unwrap().unwrap();
+    let (strokes, _) = read(&h, &d, &layer);
+    let at = (40 * GRID, 40 * GRID);
+    let target = strokes
+        .iter()
+        .find(|s| s.anchors.first() == Some(&at) && s.anchors.last() == Some(&(60 * GRID, 60 * GRID)))
+        .unwrap();
+    let moved = to_pt((80 * GRID, 20 * GRID));
+    let original = to_pt(at);
+    let after = old
+        .segs
+        .iter()
+        .map(|(a, b)| {
+            (
+                if *a == original { moved.clone() } else { a.clone() },
+                if *b == original { moved.clone() } else { b.clone() },
+            )
+        })
+        .collect::<Vec<_>>();
+    ok(
+        &h,
+        "draw.point.move",
+        json!({"drawingId":d,"points":[{"strokeId":target.id,"anchor":0}],
+        "delta":{"x":37,"y":-17},"snap":true}),
+    );
+    let (strokes, zones) = read(&h, &d, &layer);
+    check(&strokes, &zones, &after, &carried(&old, &after)).unwrap();
+    assert_eq!(zones.len(), 1);
+    assert_eq!(zones[0].area, 400.0);
+    assert!(strokes.iter().filter(|s| s.anchors.contains(&(80 * GRID, 20 * GRID))).count() >= 3);
+    println!("collapsed snap: requested (77,23), other contour at (80,20), distance sqrt(18) < 8; correct area=400");
 }

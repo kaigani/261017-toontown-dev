@@ -1,0 +1,2 @@
+# Preserve captured receipt bytes and their hashes across Windows/macOS checkouts.
+** -text

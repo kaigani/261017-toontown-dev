@@ -1,0 +1,139 @@
+{
+  "os": "windows",
+  "arch": "x86_64",
+  "profile": "release",
+  "watchdogSeconds": 30,
+  "repetitions": 5,
+  "breakApart": {
+    "characters": 100000,
+    "textAddSeconds": 2.0853224,
+    "observations": [
+      {
+        "answeredSeconds": 0.001489,
+        "status": "Error",
+        "error": "limit.exceeded",
+        "committed": false,
+        "followingReadSeconds": 0.0013729,
+        "followingReadOk": true,
+        "queuedCallSeconds": 0.0014638,
+        "queuedCallError": "limit.exceeded",
+        "queuedReadSeconds": 0.0292183,
+        "queuedReadOk": true
+      },
+      {
+        "answeredSeconds": 0.0010635,
+        "status": "Error",
+        "error": "limit.exceeded",
+        "committed": false,
+        "followingReadSeconds": 0.0007495,
+        "followingReadOk": true,
+        "queuedCallSeconds": 0.001267,
+        "queuedCallError": "limit.exceeded",
+        "queuedReadSeconds": 0.0208112,
+        "queuedReadOk": true
+      },
+      {
+        "answeredSeconds": 0.001065,
+        "status": "Error",
+        "error": "limit.exceeded",
+        "committed": false,
+        "followingReadSeconds": 0.0007544,
+        "followingReadOk": true,
+        "queuedCallSeconds": 0.0012808,
+        "queuedCallError": "limit.exceeded",
+        "queuedReadSeconds": 0.0211924,
+        "queuedReadOk": true
+      },
+      {
+        "answeredSeconds": 0.0010584,
+        "status": "Error",
+        "error": "limit.exceeded",
+        "committed": false,
+        "followingReadSeconds": 0.0007549,
+        "followingReadOk": true,
+        "queuedCallSeconds": 0.0012625,
+        "queuedCallError": "limit.exceeded",
+        "queuedReadSeconds": 0.0207544,
+        "queuedReadOk": true
+      },
+      {
+        "answeredSeconds": 0.0010514,
+        "status": "Error",
+        "error": "limit.exceeded",
+        "committed": false,
+        "followingReadSeconds": 0.0007745,
+        "followingReadOk": true,
+        "queuedCallSeconds": 0.0012747,
+        "queuedCallError": "limit.exceeded",
+        "queuedReadSeconds": 0.0205829,
+        "queuedReadOk": true
+      }
+    ]
+  },
+  "render": {
+    "width": 8192,
+    "height": 8192,
+    "observations": [
+      {
+        "answeredSeconds": 1.676734,
+        "status": "Ok",
+        "error": null,
+        "committed": false,
+        "followingReadSeconds": 0.0008399,
+        "followingReadOk": true,
+        "queuedCallSeconds": 1.6876951999999998,
+        "queuedCallError": null,
+        "queuedReadSeconds": 1.6678617999999998,
+        "queuedReadOk": true
+      },
+      {
+        "answeredSeconds": 1.6702919,
+        "status": "Ok",
+        "error": null,
+        "committed": false,
+        "followingReadSeconds": 0.0007797,
+        "followingReadOk": true,
+        "queuedCallSeconds": 1.6783557999999998,
+        "queuedCallError": null,
+        "queuedReadSeconds": 1.6593689,
+        "queuedReadOk": true
+      },
+      {
+        "answeredSeconds": 1.6841194000000002,
+        "status": "Ok",
+        "error": null,
+        "committed": false,
+        "followingReadSeconds": 0.0008735,
+        "followingReadOk": true,
+        "queuedCallSeconds": 1.6762619,
+        "queuedCallError": null,
+        "queuedReadSeconds": 1.6571875999999999,
+        "queuedReadOk": true
+      },
+      {
+        "answeredSeconds": 1.6823723,
+        "status": "Ok",
+        "error": null,
+        "committed": false,
+        "followingReadSeconds": 0.0007838,
+        "followingReadOk": true,
+        "queuedCallSeconds": 1.6652702000000001,
+        "queuedCallError": null,
+        "queuedReadSeconds": 1.6459495,
+        "queuedReadOk": true
+      },
+      {
+        "answeredSeconds": 1.6612054,
+        "status": "Ok",
+        "error": null,
+        "committed": false,
+        "followingReadSeconds": 0.0008601,
+        "followingReadOk": true,
+        "queuedCallSeconds": 1.6752042,
+        "queuedCallError": null,
+        "queuedReadSeconds": 1.6559751999999999,
+        "queuedReadOk": true
+      }
+    ]
+  }
+}

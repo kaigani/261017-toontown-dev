@@ -1,0 +1,17 @@
+{"argv": ["cmd", "/c", "pnpm", "--dir", "desktop", "build"], "cwd": "C:\\Users\\kaiga\\work\\review\\m2-c24-r2", "env": {}, "startedAt": "2026-11-02T18:33:15.926729+00:00"}
+
+> @toontown/desktop@0.0.1 build C:\Users\kaiga\work\review\m2-c24-r2\desktop
+> vite build --config vite.config.ts && node boundary/check-dist.mjs dist
+
+vite v8.3.4 building client environment for production...
+transforming...
+✓ 49 modules transformed.
+rendering chunks...
+computing gzip size...
+dist/index.html                            0.47 kB │ gzip:   0.29 kB
+dist/assets/index-B2rIT20y.css           137.08 kB │ gzip:  11.42 kB
+dist/assets/tauri-transport-CqPEAjyd.js    3.35 kB │ gzip:   1.45 kB │ map:    36.54 kB
+dist/assets/index-DqcFgMN1.js            632.42 kB │ gzip: 165.97 kB │ map: 2,489.83 kB
+
+✓ built in 1.02s
+IPC boundary (dist check): ok (dist; Tauri code only in tauri-transport)

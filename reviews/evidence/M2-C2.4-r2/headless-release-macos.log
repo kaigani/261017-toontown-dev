@@ -1,0 +1,743 @@
+headless release (macos-latest)	UNKNOWN STEP	﻿2026-11-02T17:01:26.6879690Z Current runner version: '2.338.2'
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:26.6909760Z ##[group]Runner Image Provisioner
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:26.6910430Z Hosted Compute Agent
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:26.6910810Z Version: 20261021.618
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:26.6911230Z Commit: 21505ad2541d5be6135ed84fc33697146cf75b8e
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:26.6911750Z Build Date: 2026-10-21T00:45:21Z
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:26.6912270Z Worker ID: {73f43aca-ef05-4ebd-bb3a-a4b43d1ea1a7}
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:26.6912730Z Region: westus
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:26.6913430Z Cloud: MacCloud
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:26.6913880Z ##[endgroup]
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:26.6917410Z ##[group]Operating System
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:26.6919250Z macOS
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:26.6920400Z 26.6.2
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:26.6921360Z 25G83
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:26.6922300Z ##[endgroup]
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:26.6923270Z ##[group]Runner Image
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:26.6924640Z Image: macos-26-arm64
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:26.6925870Z Version: 20261026.0455.2
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:26.6929320Z Included Software: https://github.com/actions/runner-images/blob/macos-26-arm64/20261026.0455/images/macos/macos-26-arm64-Readme.md
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:26.6933470Z Image Release: https://github.com/actions/runner-images/releases/tag/macos-26-arm64%2F20261026.0455
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:26.6936330Z ##[endgroup]
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:26.6939270Z ##[group]GITHUB_TOKEN Permissions
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:26.6946210Z Contents: read
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:26.6947320Z Metadata: read
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:26.6948290Z Packages: read
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:26.6949480Z ##[endgroup]
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:26.6955190Z Secret source: Actions
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:26.6957770Z Cache mode: write
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:26.6958800Z Prepare workflow directory
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:26.7642400Z Prepare all required actions
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:26.7704050Z Getting action download info
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:27.2682480Z Download action repository 'actions/checkout@v7' (SHA:3d3c42e5aac5ba805825da76410c181273ba90b1)
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:27.6987940Z Download action repository 'Swatinem/rust-cache@v2' (SHA:d1527c8f67ef9af357290475d4af4b0fab8f12e0)
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:28.3041370Z Download action repository 'actions/upload-artifact@v7' (SHA:cf430e030ddbb5b0abf93d22962f4752f3646cd9)
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:28.5695610Z Complete job name: headless release (macos-latest)
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:28.6867200Z ##[group]Run actions/checkout@v7
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:28.6868400Z with:
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:28.6868810Z   repository: kaigani/261017-toontown-dev
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:28.6871860Z   token: ***
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:28.6872290Z   ssh-strict: true
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:28.6872640Z   ssh-user: git
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:28.6872980Z   persist-credentials: true
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:28.6873360Z   clean: true
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:28.6873760Z   sparse-checkout-cone-mode: true
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:28.6874210Z   fetch-depth: 1
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:28.6874630Z   fetch-tags: false
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:28.6874970Z   show-progress: true
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:28.6900160Z   lfs: false
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:28.6900660Z   submodules: false
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:28.6901060Z   set-safe-directory: true
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:28.6901450Z   allow-unsafe-pr-checkout: false
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:28.6903400Z env:
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:28.6903840Z   CARGO_TERM_COLOR: always
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:28.6904210Z   CARGO_INCREMENTAL: 0
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:28.6904540Z   RUST_BACKTRACE: 1
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:28.6904920Z ##[endgroup]
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:29.4095410Z Syncing repository: kaigani/261017-toontown-dev
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:29.4097000Z ##[group]Getting Git version info
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:29.4097660Z Working directory is '/Users/runner/work/261017-toontown-dev/261017-toontown-dev'
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:29.4121990Z [command]/opt/homebrew/bin/git version
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:29.4624310Z git version 2.56.0
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:29.4645550Z ##[endgroup]
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:29.4654950Z Copying '/Users/runner/.gitconfig' to '/Users/runner/work/_temp/b0521efc-33fd-4c01-ac35-c8679a1fbfba/.gitconfig'
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:29.4683880Z Temporarily overriding HOME='/Users/runner/work/_temp/b0521efc-33fd-4c01-ac35-c8679a1fbfba' before making global git config changes
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:29.4685900Z Adding repository directory to the temporary git global config as a safe directory
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:29.4692200Z [command]/opt/homebrew/bin/git config --global --add safe.directory /Users/runner/work/261017-toontown-dev/261017-toontown-dev
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:29.4896410Z Deleting the contents of '/Users/runner/work/261017-toontown-dev/261017-toontown-dev'
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:29.4901990Z ##[group]Determining repository object format
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:29.4904110Z ##[endgroup]
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:29.4905950Z ##[group]Initializing the repository
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:29.4908780Z [command]/opt/homebrew/bin/git init /Users/runner/work/261017-toontown-dev/261017-toontown-dev
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:29.5309390Z hint: Using 'master' as the name for the initial branch. This default branch name
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:29.5312530Z hint: will change to "main" in Git 3.0. To configure the initial branch name
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:29.5314740Z hint: to use in all of your new repositories, which will suppress this warning,
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:29.5316450Z hint: call:
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:29.5317470Z hint:
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:29.5318700Z hint: 	git config --global init.defaultBranch <name>
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:29.5320060Z hint:
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:29.5321360Z hint: Names commonly chosen instead of 'master' are 'main', 'trunk' and
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:29.5323260Z hint: 'development'. The just-created branch can be renamed via this command:
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:29.5325060Z hint:
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:29.5326010Z hint: 	git branch -m <name>
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:29.5327150Z hint:
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:29.5328660Z hint: Disable this message with "git config set advice.defaultBranchName false"
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:29.5335480Z Initialized empty Git repository in /Users/runner/work/261017-toontown-dev/261017-toontown-dev/.git/
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:29.5340580Z [command]/opt/homebrew/bin/git remote add origin https://github.com/kaigani/261017-toontown-dev
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:29.5584540Z ##[endgroup]
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:29.5585630Z ##[group]Disabling automatic garbage collection
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:29.5589800Z [command]/opt/homebrew/bin/git config --local gc.auto 0
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:29.5684540Z ##[endgroup]
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:29.5686520Z ##[group]Setting up auth
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:29.5687770Z Removing SSH command configuration
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:29.5699470Z [command]/opt/homebrew/bin/git config --local --name-only --get-regexp core\.sshCommand
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:29.5861300Z [command]/opt/homebrew/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:29.8403480Z Removing HTTP extra header
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:29.8413550Z [command]/opt/homebrew/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:29.8618550Z [command]/opt/homebrew/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:30.0301340Z Removing includeIf entries pointing to credentials config files
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:30.0310610Z [command]/opt/homebrew/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:30.0414850Z [command]/opt/homebrew/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:30.2513180Z [command]/opt/homebrew/bin/git config --file /Users/runner/work/_temp/git-credentials-c606ee0c-8085-4a65-8485-29d99e7e6ffe.config http.https://github.com/.extraheader AUTHORIZATION: basic ***
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:30.2592290Z [command]/opt/homebrew/bin/git config --local includeIf.gitdir:/Users/runner/work/261017-toontown-dev/261017-toontown-dev/.git.path /Users/runner/work/_temp/git-credentials-c606ee0c-8085-4a65-8485-29d99e7e6ffe.config
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:30.2702950Z [command]/opt/homebrew/bin/git config --local includeIf.gitdir:/Users/runner/work/261017-toontown-dev/261017-toontown-dev/.git/worktrees/*.path /Users/runner/work/_temp/git-credentials-c606ee0c-8085-4a65-8485-29d99e7e6ffe.config
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:30.2790530Z [command]/opt/homebrew/bin/git config --local includeIf.gitdir:/github/workspace/.git.path /github/runner_temp/git-credentials-c606ee0c-8085-4a65-8485-29d99e7e6ffe.config
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:30.2918030Z [command]/opt/homebrew/bin/git config --local includeIf.gitdir:/github/workspace/.git/worktrees/*.path /github/runner_temp/git-credentials-c606ee0c-8085-4a65-8485-29d99e7e6ffe.config
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:30.3010970Z ##[endgroup]
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:30.3017200Z ##[group]Fetching the repository
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:30.3040750Z [command]/opt/homebrew/bin/git -c protocol.version=2 fetch --no-tags --prune --no-recurse-submodules --depth=1 origin +3c74c3432f2a1895b5aaca83e6ddf914cf6b4281:refs/remotes/origin/m2-vector-engine
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:37.1976900Z From https://github.com/kaigani/261017-toontown-dev
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:37.1978690Z  * [new ref]         3c74c3432f2a1895b5aaca83e6ddf914cf6b4281 -> origin/m2-vector-engine
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:37.2051780Z [command]/opt/homebrew/bin/git branch --list --remote origin/m2-vector-engine
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:37.2348170Z   origin/m2-vector-engine
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:37.2368510Z [command]/opt/homebrew/bin/git rev-parse refs/remotes/origin/m2-vector-engine
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:37.2481760Z 3c74c3432f2a1895b5aaca83e6ddf914cf6b4281
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:37.2489240Z ##[endgroup]
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:37.2491710Z ##[group]Determining the checkout info
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:37.2494080Z ##[endgroup]
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:37.2495920Z [command]/opt/homebrew/bin/git sparse-checkout disable
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:37.2626380Z [command]/opt/homebrew/bin/git config --local --unset-all extensions.worktreeConfig
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:37.2762960Z ##[group]Checking out the ref
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:37.2769440Z [command]/opt/homebrew/bin/git checkout --progress --force -B m2-vector-engine refs/remotes/origin/m2-vector-engine
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:38.8543920Z Updating files:  40% (3185/7777)
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:38.9365080Z Updating files:  41% (3189/7777)
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:38.9476270Z Updating files:  42% (3267/7777)
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:38.9763040Z Updating files:  43% (3345/7777)
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:39.0047090Z Updating files:  44% (3422/7777)
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:39.0337210Z Updating files:  45% (3500/7777)
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:39.0553370Z Updating files:  46% (3578/7777)
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:39.0987220Z Updating files:  47% (3656/7777)
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:39.1225670Z Updating files:  48% (3733/7777)
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:39.1436860Z Updating files:  49% (3811/7777)
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:39.1584080Z Updating files:  50% (3889/7777)
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:39.1782000Z Updating files:  51% (3967/7777)
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:39.2107870Z Updating files:  52% (4045/7777)
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:39.2533850Z Updating files:  53% (4122/7777)
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:39.2962220Z Updating files:  54% (4200/7777)
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:39.3182810Z Updating files:  55% (4278/7777)
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:39.3258190Z Updating files:  56% (4356/7777)
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:39.3365510Z Updating files:  56% (4384/7777)
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:39.3587820Z Updating files:  57% (4433/7777)
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:39.3959510Z Updating files:  58% (4511/7777)
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:39.4230270Z Updating files:  59% (4589/7777)
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:39.4478670Z Updating files:  60% (4667/7777)
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:39.5050810Z Updating files:  61% (4744/7777)
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:39.5231580Z Updating files:  62% (4822/7777)
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:39.5724580Z Updating files:  63% (4900/7777)
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:39.5980490Z Updating files:  64% (4978/7777)
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:39.6093510Z Updating files:  65% (5056/7777)
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:39.6344280Z Updating files:  66% (5133/7777)
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:39.6548270Z Updating files:  67% (5211/7777)
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:39.6934460Z Updating files:  68% (5289/7777)
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:39.7152780Z Updating files:  69% (5367/7777)
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:39.7412740Z Updating files:  70% (5444/7777)
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:39.7611490Z Updating files:  71% (5522/7777)
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:39.7882370Z Updating files:  72% (5600/7777)
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:39.8260380Z Updating files:  73% (5678/7777)
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:39.8483450Z Updating files:  74% (5755/7777)
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:39.8861000Z Updating files:  75% (5833/7777)
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:39.9305300Z Updating files:  76% (5911/7777)
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:39.9736650Z Updating files:  77% (5989/7777)
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:40.2752480Z Updating files:  78% (6067/7777)
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:40.3112540Z Updating files:  79% (6144/7777)
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:40.3251190Z Updating files:  80% (6222/7777)
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:40.3394380Z Updating files:  80% (6251/7777)
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:40.3694040Z Updating files:  81% (6300/7777)
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:40.4205550Z Updating files:  82% (6378/7777)
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:40.4462950Z Updating files:  83% (6455/7777)
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:40.4665690Z Updating files:  84% (6533/7777)
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:40.4970740Z Updating files:  85% (6611/7777)
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:40.5357540Z Updating files:  86% (6689/7777)
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:40.5519380Z Updating files:  87% (6766/7777)
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:40.5873140Z Updating files:  88% (6844/7777)
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:40.6112680Z Updating files:  89% (6922/7777)
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:40.6322560Z Updating files:  90% (7000/7777)
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:40.6913240Z Updating files:  91% (7078/7777)
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:40.7132940Z Updating files:  92% (7155/7777)
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:40.7272860Z Updating files:  93% (7233/7777)
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:40.7540010Z Updating files:  94% (7311/7777)
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:40.7784800Z Updating files:  95% (7389/7777)
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:40.8037390Z Updating files:  96% (7466/7777)
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:40.8145690Z Updating files:  97% (7544/7777)
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:40.8257990Z Updating files:  98% (7622/7777)
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:40.8391060Z Updating files:  99% (7700/7777)
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:40.8394700Z Updating files: 100% (7777/7777)
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:40.8395760Z Updating files: 100% (7777/7777), done.
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:40.8728960Z Switched to a new branch 'm2-vector-engine'
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:40.8750600Z branch 'm2-vector-engine' set up to track 'origin/m2-vector-engine'.
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:41.0707240Z ##[endgroup]
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:41.0987370Z [command]/opt/homebrew/bin/git log -1 --format=%H
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:41.1152950Z 3c74c3432f2a1895b5aaca83e6ddf914cf6b4281
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:41.1836760Z ##[group]Run tc=$(sed -n 's/^channel = "\(.*\)"/\1/p' rust-toolchain.toml)
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:41.1838270Z ^[[36;1mtc=$(sed -n 's/^channel = "\(.*\)"/\1/p' rust-toolchain.toml)^[[0m
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:41.1839320Z ^[[36;1mrustup toolchain install "$tc" --profile minimal^[[0m
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:41.1840040Z ^[[36;1mrustup override set "$tc"^[[0m
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:41.1840820Z ^[[36;1mrustc --version^[[0m
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:41.1964050Z shell: /bin/bash --noprofile --norc -e -o pipefail {0}
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:41.1964750Z env:
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:41.1965360Z   CARGO_TERM_COLOR: always
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:41.1965950Z   CARGO_INCREMENTAL: 0
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:41.1966570Z   RUST_BACKTRACE: 1
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:41.1967100Z ##[endgroup]
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:41.5114620Z info: syncing channel updates for 1.98.1-aarch64-apple-darwin
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:41.7907980Z info: latest update on 2026-09-03 for version 1.98.1 (48a229cea 2026-09-01)
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:41.7915890Z info: downloading 3 components
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:49.5211350Z 
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:49.6063940Z   1.98.1-aarch64-apple-darwin installed - rustc 1.98.1 (48a229cea 2026-09-01)
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:49.6066120Z info: self-update is disabled for this build of rustup
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:49.6066350Z 
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:49.6067000Z info: any updates to rustup will need to be fetched with your system package manager
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:49.6639340Z info: override toolchain for /Users/runner/work/261017-toontown-dev/261017-toontown-dev set to 1.98.1-aarch64-apple-darwin
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:49.7169270Z rustc 1.98.1 (48a229cea 2026-09-01)
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:49.7365070Z ##[group]Run Swatinem/rust-cache@v2
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:49.7365440Z with:
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:49.7365750Z   key: headless-release
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:49.7366020Z   prefix-key: v0-rust
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:49.7366340Z   add-job-id-key: true
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:49.7396140Z   add-rust-environment-hash-key: true
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:49.7396810Z   cache-targets: true
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:49.7397080Z   cache-all-crates: false
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:49.7397400Z   cache-workspace-crates: false
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:49.7405760Z   save-if: true
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:49.7406070Z   cache-provider: github
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:49.7406300Z   cache-bin: true
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:49.7406850Z   lookup-only: false
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:49.7407170Z   cmd-format: {0}
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:49.7407380Z env:
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:49.7407690Z   CARGO_TERM_COLOR: always
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:49.7407910Z   CARGO_INCREMENTAL: 0
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:49.7408180Z   RUST_BACKTRACE: 1
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:49.7408390Z ##[endgroup]
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:51.4708720Z ##[group]Cache Configuration
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:51.4741390Z Cache Provider:
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:51.4743290Z     github
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:51.4765720Z Workspaces:
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:51.4766430Z     /Users/runner/work/261017-toontown-dev/261017-toontown-dev
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:51.4767780Z Cache Paths:
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:51.4768450Z     /Users/runner/.cargo/bin
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:51.4768870Z     /Users/runner/.cargo/.crates.toml
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:51.4769370Z     /Users/runner/.cargo/.crates2.json
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:51.4769910Z     /Users/runner/.cargo/registry
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:51.4770550Z     /Users/runner/.cargo/git
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:51.4771810Z     /Users/runner/work/261017-toontown-dev/261017-toontown-dev/target
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:51.4772410Z Restore Key:
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:51.4772880Z     v0-rust-headless-release-headless-Darwin-arm64-1ef279f7
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:51.4773320Z Cache Key:
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:51.4773820Z     v0-rust-headless-release-headless-Darwin-arm64-1ef279f7-7ca7b21e
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:51.4774330Z .. Prefix:
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:51.4774730Z   - v0-rust-headless-release-headless-Darwin-arm64
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:51.4775330Z .. Environment considered:
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:51.4775710Z   - Rust Versions:
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:51.4776210Z     - 1.98.1 aarch64-apple-darwin 48a229ceaefd4985c50990b14116b6d856af0985
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:51.4778170Z     - 1.99.1 aarch64-apple-darwin 58cf8f9c35b355199727627d07ae34a4e2846d67
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:51.4794830Z   - CARGO_INCREMENTAL
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:51.4796490Z   - CARGO_TERM_COLOR
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:51.4797120Z   - RUST_BACKTRACE
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:51.4797640Z .. Lockfiles considered:
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:51.4798250Z   - /Users/runner/work/261017-toontown-dev/261017-toontown-dev/bins/headless/Cargo.toml
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:51.4799020Z   - /Users/runner/work/261017-toontown-dev/261017-toontown-dev/Cargo.lock
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:51.4800530Z   - /Users/runner/work/261017-toontown-dev/261017-toontown-dev/crates/anim/Cargo.toml
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:51.4802020Z   - /Users/runner/work/261017-toontown-dev/261017-toontown-dev/crates/audio/Cargo.toml
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:51.4803570Z   - /Users/runner/work/261017-toontown-dev/261017-toontown-dev/crates/colour/Cargo.toml
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:51.4805240Z   - /Users/runner/work/261017-toontown-dev/261017-toontown-dev/crates/engine/Cargo.toml
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:51.4806730Z   - /Users/runner/work/261017-toontown-dev/261017-toontown-dev/crates/executor/Cargo.toml
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:51.4807290Z   - /Users/runner/work/261017-toontown-dev/261017-toontown-dev/crates/fx/Cargo.toml
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:51.4807790Z   - /Users/runner/work/261017-toontown-dev/261017-toontown-dev/crates/io/Cargo.toml
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:51.4808350Z   - /Users/runner/work/261017-toontown-dev/261017-toontown-dev/crates/lipsync/Cargo.toml
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:51.4808950Z   - /Users/runner/work/261017-toontown-dev/261017-toontown-dev/crates/mcp/Cargo.toml
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:51.4809520Z   - /Users/runner/work/261017-toontown-dev/261017-toontown-dev/crates/model/Cargo.toml
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:51.4810710Z   - /Users/runner/work/261017-toontown-dev/261017-toontown-dev/crates/persist/Cargo.toml
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:51.4811270Z   - /Users/runner/work/261017-toontown-dev/261017-toontown-dev/crates/registry-macros/Cargo.toml
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:51.4813080Z   - /Users/runner/work/261017-toontown-dev/261017-toontown-dev/crates/registry/Cargo.toml
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:51.4814540Z   - /Users/runner/work/261017-toontown-dev/261017-toontown-dev/crates/render/Cargo.toml
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:51.4816620Z   - /Users/runner/work/261017-toontown-dev/261017-toontown-dev/crates/vector/Cargo.toml
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:51.4819460Z   - /Users/runner/work/261017-toontown-dev/261017-toontown-dev/desktop/src-tauri/Cargo.toml
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:51.4821980Z   - /Users/runner/work/261017-toontown-dev/261017-toontown-dev/rust-toolchain.toml
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:51.4823750Z ##[endgroup]
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:51.4824060Z 
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:51.4824240Z ... Restoring cache ...
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:51.7777580Z Cache hit for: v0-rust-headless-release-headless-Darwin-arm64-1ef279f7-7ca7b21e
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:53.0916990Z Received 0 of 520148281 (0.0%), 0.0 MBs/sec
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:54.0936040Z Received 41943040 of 520148281 (8.1%), 20.0 MBs/sec
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:55.0998360Z Received 125829120 of 520148281 (24.2%), 39.9 MBs/sec
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:56.0985690Z Received 134217728 of 520148281 (25.8%), 31.9 MBs/sec
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:57.1009420Z Received 213909504 of 520148281 (41.1%), 40.7 MBs/sec
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:58.1023550Z Received 268435456 of 520148281 (51.6%), 42.6 MBs/sec
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:59.1117510Z Received 335544320 of 520148281 (64.5%), 45.6 MBs/sec
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:02:00.1066310Z Received 402653184 of 520148281 (77.4%), 47.9 MBs/sec
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:02:01.1083690Z Received 469762048 of 520148281 (90.3%), 49.7 MBs/sec
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:02:01.9027880Z Received 520148281 of 520148281 (100.0%), 50.5 MBs/sec
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:02:01.9040730Z Cache Size: ~496 MB (520148281 B)
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:02:01.9701900Z [command]/opt/homebrew/bin/gtar -xf /Users/runner/work/_temp/6126340b-0718-40ce-87e6-6f31f0bfd43d/cache.tzst -P -C /Users/runner/work/261017-toontown-dev/261017-toontown-dev --delay-directory-restore --use-compress-program unzstd
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:02:08.6199140Z Cache restored successfully
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:02:08.6351680Z Restored from cache key "v0-rust-headless-release-headless-Darwin-arm64-1ef279f7-7ca7b21e" full match: true.
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:02:08.7106230Z ##[group]Run cargo build --release --locked -p tt-headless
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:02:08.7106770Z ^[[36;1mcargo build --release --locked -p tt-headless^[[0m
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:02:08.7107230Z ^[[36;1mexe=target/release/toontown-headless^[[0m
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:02:08.7107790Z ^[[36;1mPY=python3^[[0m
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:02:08.7108170Z ^[[36;1mif [ "$RUNNER_OS" = "Windows" ]; then exe="$exe.exe"; PY=python; fi^[[0m
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:02:08.7108630Z ^[[36;1m"$exe" --version^[[0m
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:02:08.7108950Z ^[[36;1menv -u DISPLAY -u WAYLAND_DISPLAY "$exe" --selftest^[[0m
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:02:08.7109380Z ^[[36;1m"$exe" --selftest --json > selftest-1.json^[[0m
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:02:08.7109740Z ^[[36;1m"$exe" --selftest --json > selftest-2.json^[[0m
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:02:08.7110440Z ^[[36;1m# Everything except timing must be identical between runs (determinism, ADR-0004).^[[0m
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:02:08.7111770Z ^[[36;1m$PY -c "import json,sys; strip=lambda f:[(c['id'],c['ok']) for c in json.load(open(f))['checks']]; a,b=strip('selftest-1.json'),strip('selftest-2.json'); print(a); sys.exit(0 if a==b and all(ok for _,ok in a) else 1)"^[[0m
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:02:08.7112590Z ^[[36;1m$PY scripts/check-headless-deps.py "$exe"^[[0m
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:02:08.7113340Z ^[[36;1mmkdir -p out && cp "$exe" selftest-1.json out/^[[0m
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:02:08.7179540Z shell: /bin/bash --noprofile --norc -e -o pipefail {0}
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:02:08.7180000Z env:
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:02:08.7180230Z   CARGO_TERM_COLOR: always
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:02:08.7180560Z   CARGO_INCREMENTAL: 0
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:02:08.7180840Z   RUST_BACKTRACE: 1
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:02:08.7181190Z   CACHE_ON_FAILURE: false
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:02:08.7181520Z ##[endgroup]
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:02:09.7896830Z ^[[1m^[[92m    Updating^[[0m crates.io index
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:02:12.2515050Z ^[[1m^[[92m   Compiling^[[0m tt-model v0.0.1 (/Users/runner/work/261017-toontown-dev/261017-toontown-dev/crates/model)
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:02:12.2657780Z ^[[1m^[[92m   Compiling^[[0m tt-registry-macros v0.0.1 (/Users/runner/work/261017-toontown-dev/261017-toontown-dev/crates/registry-macros)
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:02:27.6484700Z ^[[1m^[[92m   Compiling^[[0m tt-anim v0.0.1 (/Users/runner/work/261017-toontown-dev/261017-toontown-dev/crates/anim)
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:02:27.6505040Z ^[[1m^[[92m   Compiling^[[0m tt-colour v0.0.1 (/Users/runner/work/261017-toontown-dev/261017-toontown-dev/crates/colour)
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:02:27.9106530Z ^[[1m^[[92m   Compiling^[[0m tt-fx v0.0.1 (/Users/runner/work/261017-toontown-dev/261017-toontown-dev/crates/fx)
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:02:27.9111510Z ^[[1m^[[92m   Compiling^[[0m tt-vector v0.0.1 (/Users/runner/work/261017-toontown-dev/261017-toontown-dev/crates/vector)
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:02:28.0439680Z ^[[1m^[[92m   Compiling^[[0m tt-persist v0.0.1 (/Users/runner/work/261017-toontown-dev/261017-toontown-dev/crates/persist)
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:03:21.9785200Z ^[[1m^[[92m   Compiling^[[0m tt-render v0.0.1 (/Users/runner/work/261017-toontown-dev/261017-toontown-dev/crates/render)
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:03:24.3541690Z ^[[1m^[[92m   Compiling^[[0m tt-io v0.0.1 (/Users/runner/work/261017-toontown-dev/261017-toontown-dev/crates/io)
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:03:28.8240740Z ^[[1m^[[92m   Compiling^[[0m tt-registry v0.0.1 (/Users/runner/work/261017-toontown-dev/261017-toontown-dev/crates/registry)
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:03:31.5759020Z ^[[1m^[[92m   Compiling^[[0m tt-audio v0.0.1 (/Users/runner/work/261017-toontown-dev/261017-toontown-dev/crates/audio)
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:03:31.6818510Z ^[[1m^[[92m   Compiling^[[0m tt-lipsync v0.0.1 (/Users/runner/work/261017-toontown-dev/261017-toontown-dev/crates/lipsync)
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:03:31.7305840Z ^[[1m^[[92m   Compiling^[[0m tt-executor v0.0.1 (/Users/runner/work/261017-toontown-dev/261017-toontown-dev/crates/executor)
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:04:04.0064370Z ^[[1m^[[92m   Compiling^[[0m tt-engine v0.0.1 (/Users/runner/work/261017-toontown-dev/261017-toontown-dev/crates/engine)
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:04:12.6727260Z ^[[1m^[[92m   Compiling^[[0m tt-mcp v0.0.1 (/Users/runner/work/261017-toontown-dev/261017-toontown-dev/crates/mcp)
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:05:48.7372250Z ^[[1m^[[92m   Compiling^[[0m tt-headless v0.0.1 (/Users/runner/work/261017-toontown-dev/261017-toontown-dev/bins/headless)
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:05:58.4853710Z ^[[1m^[[92m    Finished^[[0m `release` profile [optimized + debuginfo] target(s) in 3m 49s
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:05:58.5910650Z toontown-headless 0.0.1 (Toontown 0.0.1; format 1.0; registry 0.1.0; macos-aarch64)
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:05:58.8260160Z Toontown 0.0.1 self-test (macos-aarch64, run mode headless)
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:05:58.8263880Z   [ok] engine.components      13 crates linked: tt-model, tt-registry, tt-executor, tt-vector, tt-colour, tt-anim, tt-fx, tt-render, tt-audio, tt-lipsync, tt-persist, tt-io, tt-engine
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:05:58.8267230Z   [ok] engine.versions        formatVersion 1.0 (MAJOR.MINOR), registryVersion 0.1.0 (semver)
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:05:58.8269180Z   [ok] engine.ping            echoed seq and 1024 payload bytes in 333 ns
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:05:58.8270980Z   [ok] determinism.ieee754    sha256 d22c8ec2eb9c269ed207f8421f83e96edcf58774894cfad3186b5e2169ad5a16 matches golden
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:05:58.8274170Z   [ok] kernel.executor        registry 796 entries (v0.1.0); patch rev Some(2), undo rev Some(3) from 1; stub answered Some("command.notImplemented")
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:05:58.8276200Z   [ok] headless.mcpLinked     tt-mcp linked (M1 (C1.4))
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:05:58.8277050Z self-test passed
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:05:59.4271800Z [('engine.components', True), ('engine.versions', True), ('engine.ping', True), ('determinism.ieee754', True), ('kernel.executor', True), ('headless.mcpLinked', True)]
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:06:04.9501040Z crate graph: 160 crates, forbidden: none
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:06:04.9502190Z linked libraries (darwin): /usr/lib/libiconv.2.dylib, /usr/lib/libSystem.B.dylib
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:06:04.9502900Z forbidden libraries: none
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:06:04.9503300Z headless dependency check passed
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:06:05.6983480Z ##[group]Run PY=python3
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:06:05.6984570Z ^[[36;1mPY=python3^[[0m
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:06:05.6986040Z ^[[36;1mif [ "$RUNNER_OS" = "Windows" ]; then PY=python; fi^[[0m
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:06:05.6989560Z ^[[36;1mcargo test --release --locked -p tt-executor --test c21_measurements -- --ignored --nocapture^[[0m
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:06:05.6992710Z ^[[36;1m# Both seeded 10 000-operation history oracles with drawing geometry on a saved/reopened fixture (MCP).^[[0m
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:06:05.6994330Z ^[[36;1mcargo test --release --locked -p tt-mcp --test c21_history -- --ignored --nocapture^[[0m
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:06:05.7120830Z ^[[36;1m# The C1.2-C1.4 10 000-operation history oracles run in `history-oracles` (split out in M2 C2.3 round 3).^[[0m
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:06:05.7123050Z ^[[36;1m# Worst-case fitting work on the adversarial 100 000-sample corpus (C21-R1-06; every run kept).^[[0m
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:06:05.7124760Z ^[[36;1mcargo test --release --locked -p tt-vector --test c21_worst_case -- --ignored --nocapture^[[0m
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:06:05.7127030Z ^[[36;1m# Worst-case planar-map work on the adversarial layer corpus (M2 C2.2 readiness items 3 and 9; every run kept).^[[0m
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:06:05.7128810Z ^[[36;1mcargo test --release --locked -p tt-vector --test c22_worst_case -- --ignored --nocapture^[[0m
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:06:05.7130740Z ^[[36;1m# The C22-T2 gate (M2 C2.4 ruling): 100k Flatten, five budgeted and five unbudgeted repetitions (dev-only hook^[[0m
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:06:05.7133390Z ^[[36;1m# lifts the budget), against this run's 100k strokeAdd p50.^[[0m
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:06:05.7135190Z ^[[36;1mTT_MEASURE=1 cargo test --release --locked -p tt-executor --features test-hooks --test c24_measure -- --ignored --nocapture^[[0m
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:06:05.7137930Z ^[[36;1m# Where the merged layer's settling time goes (C22-T2 bounded pass: the noding an incremental pass could skip).^[[0m
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:06:05.7139870Z ^[[36;1mTT_MEASURE=1 cargo test --release --locked -p tt-vector --test c24_flatten_phases -- --ignored --nocapture^[[0m
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:06:05.7141190Z ^[[36;1mmkdir -p out^[[0m
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:06:05.7142290Z ^[[36;1mos=$(echo "$RUNNER_OS" | tr "[:upper:]" "[:lower:]")^[[0m
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:06:05.7145560Z ^[[36;1m$PY scripts/c22-t2-gate.py target/evidence/c21/strokes-100k-$os.json target/evidence/c24/flatten-100k-$os.json out/c22-t2-gate.json^[[0m
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:06:05.7147900Z ^[[36;1mcp -r target/evidence/c24 out/c24-measurements^[[0m
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:06:05.7148670Z ^[[36;1mcp -r target/evidence/c21-fit out/c21-fit-worst-case^[[0m
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:06:05.7150230Z ^[[36;1mcp -r target/evidence/c22-planar out/c22-planar-worst-case^[[0m
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:06:05.7153660Z ^[[36;1m$PY scripts/analyse-measurements.py target/evidence/c21 --out out/c21-measurement-analysis.json^[[0m
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:06:05.7155860Z ^[[36;1mcp -r target/evidence/c21 out/c21-measurements^[[0m
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:06:06.0682070Z shell: /bin/bash --noprofile --norc -e -o pipefail {0}
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:06:06.0682430Z env:
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:06:06.0682710Z   CARGO_TERM_COLOR: always
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:06:06.0683400Z   CARGO_INCREMENTAL: 0
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:06:06.0683680Z   RUST_BACKTRACE: 1
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:06:06.0684040Z   CACHE_ON_FAILURE: false
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:06:06.0684390Z ##[endgroup]
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:06:09.3704680Z ^[[1m^[[92m   Compiling^[[0m tt-model v0.0.1 (/Users/runner/work/261017-toontown-dev/261017-toontown-dev/crates/model)
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:06:21.5068610Z ^[[1m^[[92m   Compiling^[[0m tt-anim v0.0.1 (/Users/runner/work/261017-toontown-dev/261017-toontown-dev/crates/anim)
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:06:21.5074650Z ^[[1m^[[92m   Compiling^[[0m tt-vector v0.0.1 (/Users/runner/work/261017-toontown-dev/261017-toontown-dev/crates/vector)
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:06:21.7418870Z ^[[1m^[[92m   Compiling^[[0m tt-fx v0.0.1 (/Users/runner/work/261017-toontown-dev/261017-toontown-dev/crates/fx)
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:06:21.8921620Z ^[[1m^[[92m   Compiling^[[0m tt-colour v0.0.1 (/Users/runner/work/261017-toontown-dev/261017-toontown-dev/crates/colour)
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:06:22.0063450Z ^[[1m^[[92m   Compiling^[[0m tt-persist v0.0.1 (/Users/runner/work/261017-toontown-dev/261017-toontown-dev/crates/persist)
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:17.7156290Z ^[[1m^[[92m   Compiling^[[0m tt-render v0.0.1 (/Users/runner/work/261017-toontown-dev/261017-toontown-dev/crates/render)
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:20.1450740Z ^[[1m^[[92m   Compiling^[[0m tt-io v0.0.1 (/Users/runner/work/261017-toontown-dev/261017-toontown-dev/crates/io)
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:25.2894240Z ^[[1m^[[92m   Compiling^[[0m tt-registry v0.0.1 (/Users/runner/work/261017-toontown-dev/261017-toontown-dev/crates/registry)
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:28.6024360Z ^[[1m^[[92m   Compiling^[[0m tt-executor v0.0.1 (/Users/runner/work/261017-toontown-dev/261017-toontown-dev/crates/executor)
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:09:49.6713410Z ^[[1m^[[92m    Finished^[[0m `release` profile [optimized + debuginfo] target(s) in 3m 43s
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:09:49.7320540Z ^[[1m^[[92m     Running^[[0m tests/c21_measurements.rs (target/release/deps/c21_measurements-69373e0b2e7db9b0)
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:09:49.7415040Z 
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:09:49.7415650Z running 1 test
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:10:49.8164170Z test hundred_thousand_stroke_edit_undo_redo_and_dry_run_are_measured has been running for over 60 seconds
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:19:06.8066430Z process live bytes: first 732632386 last 1426118607
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:19:06.8069410Z strokeAdd: 14611.063958 ms (p50), 25476.0 bytes retained (p50)
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:19:06.8072070Z undo: 7790.738042 ms (p50), 12987.0 bytes retained (p50)
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:19:06.8072750Z redo: 5794.306 ms (p50), 10154.0 bytes retained (p50)
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:19:06.8097680Z strokeAddDryRun: 13014.706875 ms (p50), -44993.0 bytes retained (p50)
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:19:06.8099080Z strokeSet: 5058.143083 ms (p50), 5345.0 bytes retained (p50)
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:19:06.8099800Z patchProperty: 4460.719208 ms (p50), 6048.0 bytes retained (p50)
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:19:06.8111210Z brushAdd: 5047.797042 ms (p50), 91719.0 bytes retained (p50)
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:19:08.7759900Z test hundred_thousand_stroke_edit_undo_redo_and_dry_run_are_measured ... ok
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:19:08.7761330Z 
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:19:08.7761620Z test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 558.90s
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:19:08.7762450Z 
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:19:10.5051050Z ^[[1m^[[92m   Compiling^[[0m tt-model v0.0.1 (/Users/runner/work/261017-toontown-dev/261017-toontown-dev/crates/model)
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:19:20.8882570Z ^[[1m^[[92m   Compiling^[[0m tt-anim v0.0.1 (/Users/runner/work/261017-toontown-dev/261017-toontown-dev/crates/anim)
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:19:20.8895260Z ^[[1m^[[92m   Compiling^[[0m tt-vector v0.0.1 (/Users/runner/work/261017-toontown-dev/261017-toontown-dev/crates/vector)
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:19:21.0872470Z ^[[1m^[[92m   Compiling^[[0m tt-fx v0.0.1 (/Users/runner/work/261017-toontown-dev/261017-toontown-dev/crates/fx)
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:19:21.2085910Z ^[[1m^[[92m   Compiling^[[0m tt-colour v0.0.1 (/Users/runner/work/261017-toontown-dev/261017-toontown-dev/crates/colour)
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:19:21.3162860Z ^[[1m^[[92m   Compiling^[[0m tt-persist v0.0.1 (/Users/runner/work/261017-toontown-dev/261017-toontown-dev/crates/persist)
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:20:23.8839690Z ^[[1m^[[92m   Compiling^[[0m tt-render v0.0.1 (/Users/runner/work/261017-toontown-dev/261017-toontown-dev/crates/render)
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:20:26.3659530Z ^[[1m^[[92m   Compiling^[[0m tt-io v0.0.1 (/Users/runner/work/261017-toontown-dev/261017-toontown-dev/crates/io)
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:20:31.8326400Z ^[[1m^[[92m   Compiling^[[0m tt-audio v0.0.1 (/Users/runner/work/261017-toontown-dev/261017-toontown-dev/crates/audio)
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:20:31.9226660Z ^[[1m^[[92m   Compiling^[[0m tt-registry v0.0.1 (/Users/runner/work/261017-toontown-dev/261017-toontown-dev/crates/registry)
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:20:35.3243180Z ^[[1m^[[92m   Compiling^[[0m tt-executor v0.0.1 (/Users/runner/work/261017-toontown-dev/261017-toontown-dev/crates/executor)
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:21:14.4339550Z ^[[1m^[[92m   Compiling^[[0m tt-lipsync v0.0.1 (/Users/runner/work/261017-toontown-dev/261017-toontown-dev/crates/lipsync)
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:21:14.5387270Z ^[[1m^[[92m   Compiling^[[0m tt-engine v0.0.1 (/Users/runner/work/261017-toontown-dev/261017-toontown-dev/crates/engine)
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:21:21.2416970Z ^[[1m^[[92m   Compiling^[[0m tt-mcp v0.0.1 (/Users/runner/work/261017-toontown-dev/261017-toontown-dev/crates/mcp)
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:22:58.9172360Z ^[[1m^[[92m    Finished^[[0m `release` profile [optimized + debuginfo] target(s) in 3m 49s
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:22:58.9643600Z ^[[1m^[[92m     Running^[[0m tests/c21_history.rs (target/release/deps/c21_history-e65c79122a2d21c3)
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:22:58.9789980Z 
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:22:58.9797550Z running 2 tests
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:23:59.1028670Z test geometry_oracle_seed_a571_matches_and_replays has been running for over 60 seconds
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:23:59.1030120Z test geometry_oracle_seed_b683_matches_and_replays has been running for over 60 seconds
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:24:01.9633510Z geometry-history-r1: {"seed":"0xc12020261019a571","operations":10000,"replayOperations":10000,"strokeSetUndoRedoCreateRestoreDryRunPaintCutOrMergePaintTopology":[3199,3538,456,1,1823,637,814,760,699],"documentRev":10883,"durationSeconds":62.98291075,"zonesAtEnd":1,"maxZones":5,"oracle":"independent line geometry/thickness, square zone fill, topology layer (junctions, pieces, zone IDs, carried and painted fills) and revision stack; exact canonical all-entry byte checks every 100 operations; full fresh executor replay"}
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:24:03.3644130Z test geometry_oracle_seed_a571_matches_and_replays ... ok
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:24:04.9060320Z geometry-history-r3: {"seed":"0xc12320261019b683","operations":10000,"replayOperations":10000,"strokeSetUndoRedoCreateRestoreDryRunPaintCutOrMergePaintTopology":[3204,3496,423,1,1873,599,786,822,682],"documentRev":10817,"durationSeconds":65.926185209,"zonesAtEnd":1,"maxZones":5,"oracle":"independent line geometry/thickness, square zone fill, topology layer (junctions, pieces, zone IDs, carried and painted fills) and revision stack; exact canonical all-entry byte checks every 100 operations; full fresh executor replay"}
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:24:06.1965170Z test geometry_oracle_seed_b683_matches_and_replays ... ok
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:24:06.1966120Z 
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:24:06.1966840Z test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 67.22s
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:24:06.1967550Z 
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:24:06.7441470Z ^[[1m^[[92m   Compiling^[[0m tt-model v0.0.1 (/Users/runner/work/261017-toontown-dev/261017-toontown-dev/crates/model)
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:24:16.5297260Z ^[[1m^[[92m   Compiling^[[0m tt-vector v0.0.1 (/Users/runner/work/261017-toontown-dev/261017-toontown-dev/crates/vector)
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:25:20.7087850Z ^[[1m^[[92m    Finished^[[0m `release` profile [optimized + debuginfo] target(s) in 1m 14s
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:25:20.8161880Z ^[[1m^[[92m     Running^[[0m tests/c21_worst_case.rs (target/release/deps/c21_worst_case-7ee16dca1f3f0b4d)
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:25:20.8390950Z 
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:25:20.8493660Z running 2 tests
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:25:20.9100830Z dense-straight-closed: [Object {"wallMs": Number(6.995167), "visits": Number(799999), "anchors": Number(1)}, Object {"wallMs": Number(1.492708), "visits": Number(799999), "anchors": Number(1)}, Object {"wallMs": Number(1.2409999999999999), "visits": Number(799999), "anchors": Number(1)}]
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:25:20.9625160Z dense-circle-closed: [Object {"wallMs": Number(4.132875), "visits": Number(799999), "anchors": Number(1)}, Object {"wallMs": Number(8.038917), "visits": Number(799999), "anchors": Number(1)}, Object {"wallMs": Number(4.928583000000001), "visits": Number(799999), "anchors": Number(1)}]
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:25:21.0787190Z straight-open: [Object {"wallMs": Number(47.156083), "visits": Number(18399999), "anchors": Number(2)}, Object {"wallMs": Number(26.691084), "visits": Number(18399999), "anchors": Number(2)}, Object {"wallMs": Number(18.29675), "visits": Number(18399999), "anchors": Number(2)}]
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:25:23.3012230Z zigzag-above-tolerance: [Object {"wallMs": Number(800.63725), "visits": Number(202241151), "anchors": Number(100000)}, Object {"wallMs": Number(684.284167), "visits": Number(202241151), "anchors": Number(100000)}, Object {"wallMs": Number(717.097417), "visits": Number(202241151), "anchors": Number(100000)}]
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:25:23.5945330Z wiggle-near-tolerance: [Object {"wallMs": Number(89.055958), "visits": Number(64814991), "anchors": Number(551)}, Object {"wallMs": Number(114.553792), "visits": Number(64814991), "anchors": Number(551)}, Object {"wallMs": Number(73.81958399999999), "visits": Number(64814991), "anchors": Number(551)}]
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:25:24.2205300Z spiral-closed: [Object {"wallMs": Number(269.39833400000003), "visits": Number(196114384), "anchors": Number(88870)}, Object {"wallMs": Number(167.354875), "visits": Number(196114384), "anchors": Number(88870)}, Object {"wallMs": Number(170.623958), "visits": Number(196114384), "anchors": Number(88870)}]
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:25:24.4797210Z random-walk-open: [Object {"wallMs": Number(80.65074999999999), "visits": Number(51826825), "anchors": Number(4809)}, Object {"wallMs": Number(86.650958), "visits": Number(51826825), "anchors": Number(4809)}, Object {"wallMs": Number(74.45670799999999), "visits": Number(51826825), "anchors": Number(4809)}]
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:25:24.7220210Z random-walk-closed: [Object {"wallMs": Number(73.492917), "visits": Number(51964993), "anchors": Number(4810)}, Object {"wallMs": Number(77.322458), "visits": Number(51964993), "anchors": Number(4810)}, Object {"wallMs": Number(75.145625), "visits": Number(51964993), "anchors": Number(4810)}]
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:25:24.8873960Z 99000-alternating-knots-round-100: [Object {"wallMs": Number(1468.699416), "outcome": String("ok"), "units": Number(555554356), "anchors": Number(20)}, Object {"wallMs": Number(1242.596792), "outcome": String("ok"), "units": Number(555554356), "anchors": Number(20)}, Object {"wallMs": Number(1328.561166), "outcome": String("ok"), "units": Number(555554356), "anchors": Number(20)}]
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:25:25.3063120Z uniform-noise-open: [Object {"wallMs": Number(169.81325), "visits": Number(40532873), "anchors": Number(100000)}, Object {"wallMs": Number(160.76195800000002), "visits": Number(40532873), "anchors": Number(100000)}, Object {"wallMs": Number(227.604042), "visits": Number(40532873), "anchors": Number(100000)}]
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:25:25.9866490Z uniform-noise-closed: [Object {"wallMs": Number(211.3485), "visits": Number(40339805), "anchors": Number(100000)}, Object {"wallMs": Number(231.3315), "visits": Number(40339805), "anchors": Number(100000)}, Object {"wallMs": Number(214.994791), "visits": Number(40339805), "anchors": Number(100000)}]
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:25:25.9880050Z worst ("zigzag-above-tolerance", 202241151, 800.63725); observations in /Users/runner/work/261017-toontown-dev/261017-toontown-dev/crates/vector/../../target/evidence/c21-fit/fit-worst-case-macos.json
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:25:25.9881630Z test adversarial_inputs_fit_within_the_work_budget ... ok
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:25:27.2486170Z 99000-alternating-knots-square-100: [Object {"wallMs": Number(836.299291), "outcome": String("ok"), "units": Number(35148540), "anchors": Number(4)}, Object {"wallMs": Number(799.607792), "outcome": String("ok"), "units": Number(35148540), "anchors": Number(4)}, Object {"wallMs": Number(724.8551669999999), "outcome": String("ok"), "units": Number(35148540), "anchors": Number(4)}]
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:25:30.6355770Z 99000-alternating-knots-oval-100-angled: [Object {"wallMs": Number(1213.469791), "outcome": String("ok"), "units": Number(555428084), "anchors": Number(18)}, Object {"wallMs": Number(1080.882834), "outcome": String("ok"), "units": Number(555428084), "anchors": Number(18)}, Object {"wallMs": Number(1092.588125), "outcome": String("ok"), "units": Number(555428084), "anchors": Number(18)}]
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:25:32.1449560Z 30000-anchor-zigzag-round-100: [Object {"wallMs": Number(512.716875), "outcome": String("ok"), "units": Number(241379857), "anchors": Number(45)}, Object {"wallMs": Number(485.721125), "outcome": String("ok"), "units": Number(241379857), "anchors": Number(45)}, Object {"wallMs": Number(510.75808300000006), "outcome": String("ok"), "units": Number(241379857), "anchors": Number(45)}]
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:25:33.5106970Z 30000-anchor-zigzag-round-2: [Object {"wallMs": Number(507.45441700000003), "outcome": String("ok"), "units": Number(184090018), "anchors": Number(30010)}, Object {"wallMs": Number(432.87025), "outcome": String("ok"), "units": Number(184090018), "anchors": Number(30010)}, Object {"wallMs": Number(424.661875), "outcome": String("ok"), "units": Number(184090018), "anchors": Number(30010)}]
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:25:33.9884410Z 45000-anchor-dense-zigzag-flat-50: [Object {"wallMs": Number(157.316541), "outcome": String("ok"), "units": Number(64192770), "anchors": Number(308)}, Object {"wallMs": Number(168.551167), "outcome": String("ok"), "units": Number(64192770), "anchors": Number(308)}, Object {"wallMs": Number(152.368792), "outcome": String("ok"), "units": Number(64192770), "anchors": Number(308)}]
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:25:38.1105400Z coil-1500-loops-round-1: [Object {"wallMs": Number(1318.148833), "outcome": String("ok"), "units": Number(746532353), "anchors": Number(51545)}, Object {"wallMs": Number(1513.4785829999998), "outcome": String("ok"), "units": Number(746532353), "anchors": Number(51545)}, Object {"wallMs": Number(1287.353709), "outcome": String("ok"), "units": Number(746532353), "anchors": Number(51545)}]
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:25:44.0621090Z coil-3500-loops-round-1: [Object {"wallMs": Number(2009.789917), "outcome": String("limit.exceeded: sweeping this brush stroke needs more than 1200000000 units of work"), "units": Number(1200000000), "anchors": Number(0)}, Object {"wallMs": Number(1992.031333), "outcome": String("limit.exceeded: sweeping this brush stroke needs more than 1200000000 units of work"), "units": Number(1200000000), "anchors": Number(0)}, Object {"wallMs": Number(1951.857833), "outcome": String("limit.exceeded: sweeping this brush stroke needs more than 1200000000 units of work"), "units": Number(1200000000), "anchors": Number(0)}]
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:25:45.0872700Z coil-1500-overlapping-loops-round-8: [Object {"wallMs": Number(383.41654200000005), "outcome": String("ok"), "units": Number(118445152), "anchors": Number(58)}, Object {"wallMs": Number(318.924625), "outcome": String("ok"), "units": Number(118445152), "anchors": Number(58)}, Object {"wallMs": Number(323.020666), "outcome": String("ok"), "units": Number(118445152), "anchors": Number(58)}]
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:25:52.0033060Z long-line-tiny-tip: [Object {"wallMs": Number(2241.626459), "outcome": String("limit.exceeded: sweeping this brush stroke needs more than 1200000000 units of work"), "units": Number(1200000000), "anchors": Number(0)}, Object {"wallMs": Number(2362.544584), "outcome": String("limit.exceeded: sweeping this brush stroke needs more than 1200000000 units of work"), "units": Number(1200000000), "anchors": Number(0)}, Object {"wallMs": Number(2310.291375), "outcome": String("limit.exceeded: sweeping this brush stroke needs more than 1200000000 units of work"), "units": Number(1200000000), "anchors": Number(0)}]
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:25:58.6966910Z closed-decagon-99000-alternating-knots-round-100: [Object {"wallMs": Number(2277.8766250000003), "outcome": String("ok"), "units": Number(574126571), "anchors": Number(39)}, Object {"wallMs": Number(2196.408125), "outcome": String("ok"), "units": Number(574126571), "anchors": Number(39)}, Object {"wallMs": Number(2219.9980410000003), "outcome": String("ok"), "units": Number(574126571), "anchors": Number(39)}]
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:25:58.6983800Z worst ("long-line-tiny-tip", 1200000000, 2362.544584); observations in /Users/runner/work/261017-toontown-dev/261017-toontown-dev/crates/vector/../../target/evidence/c21-fit/brush-worst-case-macos.json
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:25:58.6999780Z test adversarial_brush_outlines_finish_or_are_refused_within_the_work_budget ... ok
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:25:58.7001350Z 
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:25:58.7003110Z test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 1 filtered out; finished in 37.87s
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:25:58.7006620Z 
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:25:59.1489470Z ^[[1m^[[92m   Compiling^[[0m tt-vector v0.0.1 (/Users/runner/work/261017-toontown-dev/261017-toontown-dev/crates/vector)
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:26:01.2929060Z ^[[1m^[[92m    Finished^[[0m `release` profile [optimized + debuginfo] target(s) in 2.51s
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:26:01.3088420Z ^[[1m^[[92m     Running^[[0m tests/c22_worst_case.rs (target/release/deps/c22_worst_case-7d4be5ce437de08f)
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:26:01.3136550Z 
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:26:01.3138290Z running 1 test
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:26:10.9808810Z 100000-small-curves-plus-one: [Object {"wallMs": Number(4282.579958), "units": Number(931042320), "outcome": String("ok"), "zones": Number(0), "strokes": Number(100001)}, Object {"wallMs": Number(3450.995417), "units": Number(931042320), "outcome": String("ok"), "zones": Number(0), "strokes": Number(100001)}]
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:26:12.9739880Z grid-200x200-crossing-lines: [Object {"wallMs": Number(879.340458), "units": Number(500462214), "outcome": String("ok"), "zones": Number(39601), "strokes": Number(80400)}, Object {"wallMs": Number(811.2647079999999), "units": Number(500462214), "outcome": String("ok"), "zones": Number(39601), "strokes": Number(80400)}]
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:26:16.6713080Z grid-600x600-crossing-lines: [Object {"wallMs": Number(1832.993417), "units": Number(1785763300), "outcome": String("limit.exceeded: the planar map needs more than 1200000000 units of work"), "zones": Number(0), "strokes": Number(0)}, Object {"wallMs": Number(1864.2489580000001), "units": Number(1785763300), "outcome": String("limit.exceeded: the planar map needs more than 1200000000 units of work"), "zones": Number(0), "strokes": Number(0)}]
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:26:22.6294660Z 10000-concentric-squares: [Object {"wallMs": Number(3070.490708), "units": Number(1200160000), "outcome": String("limit.exceeded: the planar map needs more than 1200000000 units of work"), "zones": Number(0), "strokes": Number(0)}, Object {"wallMs": Number(2885.8710419999998), "units": Number(1200160000), "outcome": String("limit.exceeded: the planar map needs more than 1200000000 units of work"), "zones": Number(0), "strokes": Number(0)}]
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:26:23.3949840Z 20000-separate-closed-squares: [Object {"wallMs": Number(438.817084), "units": Number(137183593), "outcome": String("ok"), "zones": Number(20000), "strokes": Number(20000)}, Object {"wallMs": Number(287.70658399999996), "units": Number(137183593), "outcome": String("ok"), "zones": Number(20000), "strokes": Number(20000)}]
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:26:26.4201570Z 1500-random-crossing-lines: [Object {"wallMs": Number(1604.6760419999998), "units": Number(1782228838), "outcome": String("limit.exceeded: the planar map needs more than 1200000000 units of work"), "zones": Number(0), "strokes": Number(0)}, Object {"wallMs": Number(1402.668834), "units": Number(1782228838), "outcome": String("limit.exceeded: the planar map needs more than 1200000000 units of work"), "zones": Number(0), "strokes": Number(0)}]
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:26:27.3909470Z 5000-point-random-scribble: [Object {"wallMs": Number(480.938125), "units": Number(1515542416), "outcome": String("limit.exceeded: the planar map needs more than 1200000000 units of work"), "zones": Number(0), "strokes": Number(0)}, Object {"wallMs": Number(488.674916), "units": Number(1515542416), "outcome": String("limit.exceeded: the planar map needs more than 1200000000 units of work"), "zones": Number(0), "strokes": Number(0)}]
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:26:27.4948170Z 100000-point-dense-zigzag: [Object {"wallMs": Number(69.79270799999999), "units": Number(15000482029), "outcome": String("limit.exceeded: the planar map needs more than 1200000000 units of work"), "zones": Number(0), "strokes": Number(0)}, Object {"wallMs": Number(33.444167), "units": Number(15000482029), "outcome": String("limit.exceeded: the planar map needs more than 1200000000 units of work"), "zones": Number(0), "strokes": Number(0)}]
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:26:29.4074940Z 100000-coincident-outlines-plus-one: [Object {"wallMs": Number(1541.2715), "units": Number(60003200026), "outcome": String("limit.exceeded: the planar map needs more than 1200000000 units of work"), "zones": Number(0), "strokes": Number(0)}, Object {"wallMs": Number(363.43987500000003), "units": Number(60003200026), "outcome": String("limit.exceeded: the planar map needs more than 1200000000 units of work"), "zones": Number(0), "strokes": Number(0)}]
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:26:29.7585730Z worst ("100000-small-curves-plus-one", 4282.579958); observations in /Users/runner/work/261017-toontown-dev/261017-toontown-dev/crates/vector/../../target/evidence/c22-planar/planar-worst-case-macos.json
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:26:29.7608120Z test adversarial_layers_settle_or_are_refused_within_the_planar_budget ... ok
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:26:29.7622570Z 
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:26:29.7623050Z test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 28.45s
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:26:29.7623520Z 
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:26:30.7320240Z ^[[1m^[[92m   Compiling^[[0m tt-executor v0.0.1 (/Users/runner/work/261017-toontown-dev/261017-toontown-dev/crates/executor)
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:27:58.3589130Z ^[[1m^[[92m    Finished^[[0m `release` profile [optimized + debuginfo] target(s) in 1m 28s
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:27:58.3884530Z ^[[1m^[[92m     Running^[[0m tests/c24_measure.rs (target/release/deps/c24_measure-3ac684b4b121af75)
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:27:58.3942190Z 
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:27:58.3943150Z running 1 test
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:28:58.5066780Z test flatten_100k_raw_observations has been running for over 60 seconds
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:31:04.5889420Z {"strokes":100000,"repetitions":5,"os":"macos","arch":"aarch64","profile":"release","budgeted":[{"seconds":0.828197583,"openSeconds":3.757749208,"status":"Error","error":{"code":"limit.exceeded"},"committed":false,"unchangedOnRefusal":true},{"seconds":0.809745333,"openSeconds":2.400843875,"status":"Error","error":{"code":"limit.exceeded"},"committed":false,"unchangedOnRefusal":true},{"seconds":0.672852291,"openSeconds":2.086351167,"status":"Error","error":{"code":"limit.exceeded"},"committed":false,"unchangedOnRefusal":true},{"seconds":0.603125625,"openSeconds":1.948631625,"status":"Error","error":{"code":"limit.exceeded"},"committed":false,"unchangedOnRefusal":true},{"seconds":0.601373291,"openSeconds":2.028995792,"status":"Error","error":{"code":"limit.exceeded"},"committed":false,"unchangedOnRefusal":true}],"budgetedP50Seconds":0.672852291,"unbudgeted":[{"seconds":19.444531708,"openSeconds":2.069545833,"status":"Ok","error":null,"committed":true,"unchangedOnRefusal":true},{"seconds":39.064661042,"openSeconds":4.384146167,"status":"Ok","error":null,"committed":true,"unchangedOnRefusal":true},{"seconds":27.046633459,"openSeconds":3.174863709,"status":"Ok","error":null,"committed":true,"unchangedOnRefusal":true},{"seconds":35.301838125,"openSeconds":6.428797459,"status":"Ok","error":null,"committed":true,"unchangedOnRefusal":true},{"seconds":25.62440575,"openSeconds":3.678527458,"status":"Ok","error":null,"committed":true,"unchangedOnRefusal":true}],"unbudgetedP50Seconds":27.046633459,"unbudgetedAllCompleted":true}
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:31:04.5901770Z test flatten_100k_raw_observations ... ok
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:31:04.5902880Z 
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:31:04.5903650Z test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 186.19s
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:31:04.5904360Z 
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:31:05.8325980Z ^[[1m^[[92m   Compiling^[[0m tt-vector v0.0.1 (/Users/runner/work/261017-toontown-dev/261017-toontown-dev/crates/vector)
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:31:09.5615170Z ^[[1m^[[92m    Finished^[[0m `release` profile [optimized + debuginfo] target(s) in 4.42s
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:31:09.5715500Z ^[[1m^[[92m     Running^[[0m tests/c24_flatten_phases.rs (target/release/deps/c24_flatten_phases-6623e1ea173c5f69)
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:31:09.5758390Z 
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:31:09.5768370Z running 1 test
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:31:17.3516820Z {"os":"macos","profile":"release","strokes":100000,"runs":[{"nodeMergedSeconds":0.222671875,"nodeLayer1Seconds":0.098483042,"nodeLayer2Seconds":0.093117583,"mapMergedSeconds":0.396756875,"mapLayer1Seconds":0.150210042,"settleSeconds":1.8602815000000001,"skippableNodingCeilingSeconds":0.19160062500000002},{"nodeMergedSeconds":0.142742666,"nodeLayer1Seconds":0.079723208,"nodeLayer2Seconds":0.119485875,"mapMergedSeconds":0.321866542,"mapLayer1Seconds":0.152899125,"settleSeconds":1.403737042,"skippableNodingCeilingSeconds":0.199209083},{"nodeMergedSeconds":0.134957958,"nodeLayer1Seconds":0.081293584,"nodeLayer2Seconds":0.095845625,"mapMergedSeconds":0.280634834,"mapLayer1Seconds":0.139948417,"settleSeconds":1.409318667,"skippableNodingCeilingSeconds":0.17713920900000002}]}
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:31:17.5820070Z test flatten_settle_phases_raw_observations ... ok
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:31:17.5820650Z 
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:31:17.5835740Z test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 8.01s
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:31:17.5836430Z 
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:31:17.7669810Z {"gate": "C22-T2: 100k Flatten completes within the same run's 100k strokeAdd p50 and under the 30 s watchdog", "os": "macos", "arch": "aarch64", "runStartedAt": "2026-11-02T17:09:53.683Z", "percentileRule": "upper nearest rank, as scripts/analyse-measurements.py", "strokeAddP50Seconds": 14.611063958, "flattenUnbudgetedP50Seconds": 27.046633459, "flattenUnbudgetedSeconds": [19.444531708, 39.064661042, 27.046633459, 35.301838125, 25.62440575], "flattenUnbudgetedAllCompleted": true, "flattenBudgetedSeconds": [0.828197583, 0.809745333, 0.672852291, 0.603125625, 0.601373291], "flattenBudgetedOutcomes": [{"code": "limit.exceeded"}, {"code": "limit.exceeded"}, {"code": "limit.exceeded"}, {"code": "limit.exceeded"}, {"code": "limit.exceeded"}], "met": false, "gapSeconds": 12.435569500999998, "note": "C22-T2 and the interactive latency budget (R1-12) are the M11 C11.1 scale gate"}
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:31:17.8198030Z ok   strokes-100k-macos.json (series)
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:31:17.8201750Z        brushAdd.allocatedBytes: n=10 p50=3414093340.0 p99=3414759367.0 max=3414759367.0 bytes
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:31:17.8211000Z        brushAdd.retainedBytes: n=10 p50=91719.0 p99=105509.0 max=105509.0 bytes
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:31:17.8212100Z        brushAdd.wallMs: n=10 p50=5047.797042 p99=7607.982042 max=7607.982042 ms
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:31:17.8214860Z        patchProperty.allocatedBytes: n=10 p50=2442182940.0 p99=2442667921.0 max=2442667921.0 bytes
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:31:17.8217030Z        patchProperty.retainedBytes: n=10 p50=6048.0 p99=32801.0 max=32801.0 bytes
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:31:17.8217790Z        patchProperty.wallMs: n=10 p50=4460.719208 p99=6022.5912499999995 max=6022.5912499999995 ms
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:31:17.8218370Z        process.liveBytes: n=70 p50=1425592054.0 p99=1426053981.0 max=1426118607.0 bytes
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:31:17.8219050Z        redo.allocatedBytes: n=10 p50=3976729547.0 p99=3977373685.0 max=3977373685.0 bytes
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:31:17.8219700Z        redo.retainedBytes: n=10 p50=10154.0 p99=121243895.0 max=121243895.0 bytes
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:31:17.8220250Z        redo.wallMs: n=10 p50=5794.306 p99=8867.888541999999 max=8867.888541999999 ms
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:31:17.8220940Z        strokeAdd.allocatedBytes: n=10 p50=7518598985.0 p99=8242345359.0 max=8242345359.0 bytes
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:31:17.8221490Z        strokeAdd.retainedBytes: n=10 p50=25476.0 p99=586291015.0 max=586291015.0 bytes
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:31:17.8225090Z        strokeAdd.wallMs: n=10 p50=14611.063958 p99=18030.010416 max=18030.010416 ms
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:31:17.8226120Z        strokeAddDryRun.allocatedBytes: n=10 p50=6829088827.0 p99=6829914309.0 max=6829914309.0 bytes
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:31:17.8228570Z        strokeAddDryRun.retainedBytes: n=10 p50=-44993.0 p99=232471605.0 max=232471605.0 bytes
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:31:17.8229430Z        strokeAddDryRun.wallMs: n=10 p50=13014.706875 p99=18449.151125 max=18449.151125 ms
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:31:17.8230200Z        strokeSet.allocatedBytes: n=10 p50=3434468971.0 p99=3435131456.0 max=3435131456.0 bytes
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:31:17.8230870Z        strokeSet.retainedBytes: n=10 p50=5345.0 p99=5756.0 max=5756.0 bytes
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:31:17.8231670Z        strokeSet.wallMs: n=10 p50=5058.143083 p99=6998.018792 max=6998.018792 ms
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:31:17.8232410Z        undo.allocatedBytes: n=10 p50=4633307058.0 p99=5696038610.0 max=5696038610.0 bytes
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:31:17.8233040Z        undo.retainedBytes: n=10 p50=12987.0 p99=121236346.0 max=121236346.0 bytes
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:31:17.8233850Z        undo.wallMs: n=10 p50=7790.738042 p99=9104.843958 max=9104.843958 ms
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:31:17.8234580Z 1 file(s), 0 rejected
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:31:17.8723540Z ##[group]Run exe=target/release/toontown-headless
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:31:17.8724490Z ^[[36;1mexe=target/release/toontown-headless^[[0m
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:31:17.8724900Z ^[[36;1mPY=python3^[[0m
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:31:17.8725470Z ^[[36;1mif [ "$RUNNER_OS" = "Windows" ]; then exe="$exe.exe"; PY=python; fi^[[0m
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:31:17.8725920Z ^[[36;1m$PY -m venv .venv-mcp^[[0m
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:31:17.8726350Z ^[[36;1mVPY=.venv-mcp/bin/python^[[0m
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:31:17.8727140Z ^[[36;1mif [ "$RUNNER_OS" = "Windows" ]; then VPY=.venv-mcp/Scripts/python.exe; fi^[[0m
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:31:17.8727630Z ^[[36;1m$VPY -m pip install --quiet "mcp==2.0.0"^[[0m
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:31:17.8728460Z ^[[36;1mPYTHONIOENCODING=utf-8 $VPY scripts/mcp-conformance.py "$exe" out/sdk-conformance.json^[[0m
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:31:17.9018770Z shell: /bin/bash --noprofile --norc -e -o pipefail {0}
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:31:17.9019310Z env:
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:31:17.9019780Z   CARGO_TERM_COLOR: always
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:31:17.9020100Z   CARGO_INCREMENTAL: 0
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:31:17.9020850Z   RUST_BACKTRACE: 1
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:31:17.9021250Z   CACHE_ON_FAILURE: false
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:31:17.9021760Z ##[endgroup]
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:31:25.8686580Z /Users/runner/work/261017-toontown-dev/261017-toontown-dev/scripts/mcp-conformance.py:112: MCPDeprecationWarning: resources/subscribe is removed as of 2026-07-28; use Client.listen() instead.
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:31:25.8687830Z   await s.subscribe_resource(f"app://object/{scene}")
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:31:25.8696120Z /Users/runner/work/261017-toontown-dev/261017-toontown-dev/scripts/mcp-conformance.py:113: MCPDeprecationWarning: The logging capability is deprecated as of 2026-07-28 (SEP-2577).
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:31:25.8698320Z   await s.set_logging_level("info")
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:31:26.7604540Z {
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:31:26.7606130Z   "client": "mcp (Python SDK) 2.0.0",
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:31:26.7607220Z   "server": "target/release/toontown-headless",
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:31:26.7608320Z   "platform": "darwin",
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:31:26.7609170Z   "seconds": 1.69,
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:31:26.7610420Z   "passed": 24,
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:31:26.7616630Z   "failed": 0,
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:31:26.7617370Z   "checks": [
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:31:26.7618300Z     {
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:31:26.7619250Z       "check": "initialize.protocolVersion",
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:31:26.7620010Z       "ok": true,
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:31:26.7621030Z       "detail": "2025-11-25"
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:31:26.7621750Z     },
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:31:26.7622430Z     {
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:31:26.7623700Z       "check": "initialize.capabilities",
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:31:26.7624650Z       "ok": true,
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:31:26.7627450Z       "detail": "experimental=None logging=LoggingCapability() prompts=PromptsCapability(list_changed=False) resources=ResourcesCapability(subscribe=True, list_changed=False) tools=ToolsCapability(list_changed=True) completions=CompletionsCapability() extensions=None tasks=None"
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:31:26.7630570Z     },
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:31:26.7631440Z     {
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:31:26.7631860Z       "check": "initialize.instructions",
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:31:26.7632790Z       "ok": true,
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:31:26.7633470Z       "detail": ""
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:31:26.7635090Z     },
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:31:26.7636710Z     {
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:31:26.7637480Z       "check": "ping",
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:31:26.7638610Z       "ok": true,
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:31:26.7639390Z       "detail": ""
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:31:26.7640520Z     },
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:31:26.7641520Z     {
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:31:26.7642320Z       "check": "roots/list asked after initialized",
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:31:26.7643420Z       "ok": true,
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:31:26.7644970Z       "detail": "[True]"
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:31:26.7645580Z     },
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:31:26.7646340Z     {
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:31:26.7646770Z       "check": "tools/list 28 generic tools",
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:31:26.7647990Z       "ok": true,
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:31:26.7653760Z       "detail": "['batch', 'checkpoint', 'convert_coordinates', 'describe_command', 'describe_frame', 'doc_diff', 'find_objects', 'get_docs', 'get_object', 'get_state', 'history', 'hit_test', 'inspect_ui', 'job_cancel', 'job_status', 'job_wait', 'key', 'list_commands', 'pointer', 'redo', 'render_contact_sheet', 'render_drawing', 'render_frame', 'run_command', 'screenshot', 'set_properties', 'type_text', 'undo']"
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:31:26.7657610Z     },
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:31:26.7658730Z     {
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:31:26.7659750Z       "check": "tools carry outputSchema",
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:31:26.7660570Z       "ok": true,
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:31:26.7661570Z       "detail": ""
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:31:26.7662390Z     },
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:31:26.7663520Z     {
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:31:26.7664830Z       "check": "tools/call run_command project.create (inside client roots)",
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:31:26.7665870Z       "ok": true,
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:31:26.7669710Z       "detail": "{'status': 'ok', 'result': {'projectId': 'pr_01M6EN1R3V30VY9HMVBBJCYXAC', 'path': '/var/folders/n6/hn37q6pj7sj_9dmqqc2113800000gn/T/tt-c14-sdk-hk2hyg34/Conformance.animpkg', 'sceneId': 'sc_01M6EN1R3YVM2MM535GQJXEANV', 'cameraId': 'el_01M6EN1R3YVM2MM535GQJXEANX', 'elementId': 'el_01M6EN1R3YVM2MM535GQJXEANY'}, 'changes': [], 'warnings': [], 'documentRev': 1}"
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:31:26.7680190Z     },
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:31:26.7681050Z     {
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:31:26.7682250Z       "check": "tools/call get_state",
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:31:26.7683330Z       "ok": true,
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:31:26.7687240Z       "detail": "{'status': 'ok', 'result': {'project': {'id': 'pr_01M6EN1R3V30VY9HMVBBJCYXAC', 'name': 'Conformance', 'path': '/var/folders/n6/hn37q6pj7sj_9dmqqc2113800000gn/T/tt-c14-sdk-hk2hyg34/Conformance.animpkg', 'dirty': False, 'globalLibraryDirty': False, 'readOnly': False}, 'scene': {'id': 'sc_01M6EN1R3YVM2MM535GQJXEANV', 'name': 'Scene-1', 'frameCount': 1}, 'frame': 1, 'element': {'id': 'el_01M6EN1R3YVM2"
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:31:26.7692400Z     },
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:31:26.7693340Z     {
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:31:26.7694330Z       "check": "tools/call get_object",
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:31:26.7695690Z       "ok": true,
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:31:26.7698980Z       "detail": "{'status': 'ok', 'result': {'object': {'id': 'sc_01M6EN1R3YVM2MM535GQJXEANV', 'type': 'scene', 'rev': 1, 'name': 'Scene-1', 'path': 'scene:\"Scene-1\"', 'visible': True, 'backgroundColour': '#FFFFFFFF', 'currentCameraId': 'el_01M6EN1R3YVM2MM535GQJXEANX', 'paletteStyles': {'pal_01M6EN1R3V30VY9HMVBBJCYXAD': 'sty_01M6EN1R3V30VY9HMVBBJCYXAE'}, 'outTransition': {'id': 'tr_01M6EN1R3YVM2MM535GQJXEAP1', 'ty"
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:31:26.7703010Z     },
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:31:26.7704190Z     {
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:31:26.7704970Z       "check": "resources/list",
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:31:26.7706300Z       "ok": true,
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:31:26.7708360Z       "detail": "['app://state', 'app://project', 'app://docs/agent-guide', 'app://docs/object-model', 'app://docs/coordinates', 'app://docs/errors', 'app://events', 'app://activity']"
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:31:26.7710290Z     },
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:31:26.7711470Z     {
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:31:26.7712000Z       "check": "resources/templates/list",
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:31:26.7712880Z       "ok": true,
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:31:26.7713940Z       "detail": "10"
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:31:26.7714350Z     },
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:31:26.7714920Z     {
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:31:26.7715690Z       "check": "resources/read docs equals instructions",
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:31:26.7716460Z       "ok": true,
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:31:26.7716950Z       "detail": ""
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:31:26.7717570Z     },
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:31:26.7718040Z     {
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:31:26.7718760Z       "check": "resources/read object",
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:31:26.7722260Z       "ok": true,
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:31:26.7722820Z       "detail": ""
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:31:26.7723640Z     },
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:31:26.7724280Z     {
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:31:26.7725060Z       "check": "resources/subscribe -> notifications/resources/updated",
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:31:26.7726430Z       "ok": true,
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:31:26.7726940Z       "detail": "9"
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:31:26.7727430Z     },
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:31:26.7727800Z     {
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:31:26.7728310Z       "check": "logging/setLevel -> notifications/message",
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:31:26.7728980Z       "ok": true,
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:31:26.7729440Z       "detail": "4"
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:31:26.7729890Z     },
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:31:26.7730260Z     {
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:31:26.7730700Z       "check": "prompts/list",
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:31:26.7731210Z       "ok": true,
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:31:26.7734010Z       "detail": "['orient', 'draw_and_paint', 'traditional_animation', 'cutout_rig', 'animate_motion', 'lip_sync', 'storyboard_to_animatic', 'effects_pass', 'export_deliverable', 'review_and_fix']"
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:31:26.7735800Z     },
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:31:26.7736200Z     {
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:31:26.7736620Z       "check": "prompts/get",
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:31:26.7737220Z       "ok": true,
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:31:26.7737680Z       "detail": ""
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:31:26.7738110Z     },
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:31:26.7738510Z     {
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:31:26.7738940Z       "check": "completion/complete",
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:31:26.7739570Z       "ok": true,
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:31:26.7740060Z       "detail": "['doc.object.get']"
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:31:26.7740600Z     },
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:31:26.7741000Z     {
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:31:26.7741530Z       "check": "elicitation/create for a confirmation",
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:31:26.7742170Z       "ok": true,
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:31:26.7745450Z       "detail": "[ElicitRequestFormParams(meta=None, mode='form', message='Overwrite `/var/folders/n6/hn37q6pj7sj_9dmqqc2113800000gn/T/tt-c14-sdk-hk2hyg34/Existing.animpkg`\\n\\nConsequences: [{\"kind\":\"overwrite\",\"path\":\"/var/folders/n6/hn37q6pj7sj_9dmqqc2113800000gn/T/tt-c14-sdk-hk2hyg34/Existing.animpkg\",\"bytes\":8}]', requested_schema={'type': 'object', 'properties': {'confirm': {'type': 'boolean', 'title': 'Proce"
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:31:26.7750970Z     },
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:31:26.7751470Z     {
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:31:26.7751960Z       "check": "accepted elicitation proceeds",
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:31:26.7752560Z       "ok": true,
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:31:26.7754760Z       "detail": "{'status': 'ok', 'result': {'jobId': 'job-1'}, 'changes': [{'id': 'pr_01M6EN1R3V30VY9HMVBBJCYXAC', 'type': 'project', 'op': 'modified', 'rev': 3, 'patch': [{'op': 'replace', 'path': '/modifiedAt', 'value': '2026-11-02T17:31:26.502Z', 'oldValue': '2026-11-02T17:31:25.691Z'}]}], 'warnings': [], 'documentRev': 3}"
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:31:26.7757060Z     },
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:31:26.7757420Z     {
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:31:26.7757930Z       "check": "job_wait ok",
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:31:26.7758510Z       "ok": true,
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:31:26.7761400Z       "detail": "{'status': 'ok', 'result': {'jobId': 'job-2', 'commandId': 'doc.package.export', 'state': 'succeeded', 'progress': 1.0, 'message': 'Write', 'startedAt': '2026-11-02T17:31:26.538Z', 'result': {'path': '/var/folders/n6/hn37q6pj7sj_9dmqqc2113800000gn/T/tt-c14-sdk-hk2hyg34/Export.animpkg', 'form': 'package', 'bytes': 6727, 'entries': 11}, 'session': 'agent:s1-e17af5'}, 'changes': [], 'warnings': [], '"
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:31:26.7764410Z     },
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:31:26.7764830Z     {
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:31:26.7765240Z       "check": "notifications/progress",
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:31:26.7765840Z       "ok": true,
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:31:26.7766290Z       "detail": "[(1000.0, 1000.0, 'finished')]"
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:31:26.7766900Z     },
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:31:26.7767320Z     {
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:31:26.7767880Z       "check": "pointer answers notImplemented with its milestone",
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:31:26.7768630Z       "ok": true,
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:31:26.7771750Z       "detail": "{'status': 'error', 'changes': [], 'warnings': [], 'documentRev': None, 'error': {'code': 'command.notImplemented', 'message': 'the `pointer` tool is not available yet: pointer gestures produce the structured commands of the drawing tools (gesture equivalence, 11 \u00a77.6), which arrive with M2', 'details': {'tool': 'pointer', 'milestone': 'M2 C2.3'}, 'hint': 'use the structured commands (run_command)"
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:31:26.7775230Z     }
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:31:26.7776010Z   ]
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:31:26.7776400Z }
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:31:26.9778320Z ##[group]Run actions/upload-artifact@v7
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:31:26.9778570Z with:
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:31:26.9778710Z   name: headless-macOS
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:31:26.9778870Z   path: out/
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:31:26.9779020Z   if-no-files-found: error
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:31:26.9779210Z   compression-level: 6
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:31:26.9779370Z   overwrite: false
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:31:26.9779530Z   include-hidden-files: false
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:31:26.9779710Z   archive: true
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:31:26.9779840Z env:
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:31:26.9779990Z   CARGO_TERM_COLOR: always
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:31:26.9780160Z   CARGO_INCREMENTAL: 0
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:31:26.9780310Z   RUST_BACKTRACE: 1
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:31:26.9780470Z   CACHE_ON_FAILURE: false
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:31:26.9780630Z ##[endgroup]
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:31:27.4790890Z With the provided path, there will be 11 files uploaded
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:31:27.4791470Z Artifact name is valid!
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:31:27.4791680Z Root directory input is valid!
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:31:27.9205910Z Uploading artifact: headless-macOS.zip
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:31:27.9231970Z Beginning upload of artifact content to blob storage
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:31:29.5365600Z Uploaded bytes 8388608
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:31:29.6939920Z Uploaded bytes 12320934
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:31:29.7715420Z Finished uploading artifact content to blob storage!
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:31:29.7717550Z SHA256 digest of uploaded artifact is af7f4b64d82ad23ec81a263a27d6cd17b8d15671d3bd9660489e4a865a69232d
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:31:29.7718810Z Finalizing artifact upload
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:31:30.4319740Z Artifact headless-macOS successfully finalized. Artifact ID 13163434551
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:31:30.4322810Z Artifact headless-macOS has been successfully uploaded! Final size is 12320934 bytes. Artifact ID is 13163434551
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:31:30.4334070Z Artifact download URL: https://github.com/kaigani/261017-toontown-dev/actions/runs/41486947308/artifacts/13163434551
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:31:30.4666780Z Post job cleanup.
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:31:30.6487770Z Cache up-to-date.
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:31:30.6661250Z Post job cleanup.
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:31:30.8695510Z [command]/opt/homebrew/bin/git version
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:31:30.9058980Z git version 2.56.0
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:31:30.9092890Z Copying '/Users/runner/.gitconfig' to '/Users/runner/work/_temp/c487b33b-ef75-4fa6-9999-67537d997a60/.gitconfig'
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:31:30.9109660Z Temporarily overriding HOME='/Users/runner/work/_temp/c487b33b-ef75-4fa6-9999-67537d997a60' before making global git config changes
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:31:30.9111790Z Adding repository directory to the temporary git global config as a safe directory
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:31:30.9115160Z [command]/opt/homebrew/bin/git config --global --add safe.directory /Users/runner/work/261017-toontown-dev/261017-toontown-dev
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:31:30.9303420Z Removing SSH command configuration
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:31:30.9314020Z [command]/opt/homebrew/bin/git config --local --name-only --get-regexp core\.sshCommand
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:31:30.9442670Z [command]/opt/homebrew/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:31:31.1240750Z Removing HTTP extra header
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:31:31.1251680Z [command]/opt/homebrew/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:31:31.1391760Z [command]/opt/homebrew/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:31:31.5030540Z Removing includeIf entries pointing to credentials config files
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:31:31.5144660Z [command]/opt/homebrew/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:31:31.5267320Z includeif.gitdir:/Users/runner/work/261017-toontown-dev/261017-toontown-dev/.git.path
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:31:31.5370980Z includeif.gitdir:/Users/runner/work/261017-toontown-dev/261017-toontown-dev/.git/worktrees/*.path
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:31:31.5485870Z includeif.gitdir:/github/workspace/.git.path
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:31:31.5537860Z includeif.gitdir:/github/workspace/.git/worktrees/*.path
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:31:31.5549610Z [command]/opt/homebrew/bin/git config --local --get-all includeif.gitdir:/Users/runner/work/261017-toontown-dev/261017-toontown-dev/.git.path
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:31:31.5550460Z /Users/runner/work/_temp/git-credentials-c606ee0c-8085-4a65-8485-29d99e7e6ffe.config
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:31:31.5551980Z [command]/opt/homebrew/bin/git config --local --unset includeif.gitdir:/Users/runner/work/261017-toontown-dev/261017-toontown-dev/.git.path \/Users\/runner\/work\/_temp\/git\-credentials\-c606ee0c\-8085\-4a65\-8485\-29d99e7e6ffe\.config
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:31:31.5553670Z [command]/opt/homebrew/bin/git config --local --get-all includeif.gitdir:/Users/runner/work/261017-toontown-dev/261017-toontown-dev/.git/worktrees/*.path
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:31:31.5554490Z /Users/runner/work/_temp/git-credentials-c606ee0c-8085-4a65-8485-29d99e7e6ffe.config
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:31:31.5555840Z [command]/opt/homebrew/bin/git config --local --unset includeif.gitdir:/Users/runner/work/261017-toontown-dev/261017-toontown-dev/.git/worktrees/*.path \/Users\/runner\/work\/_temp\/git\-credentials\-c606ee0c\-8085\-4a65\-8485\-29d99e7e6ffe\.config
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:31:31.5630750Z [command]/opt/homebrew/bin/git config --local --get-all includeif.gitdir:/github/workspace/.git.path
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:31:31.5728490Z /github/runner_temp/git-credentials-c606ee0c-8085-4a65-8485-29d99e7e6ffe.config
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:31:31.5740690Z [command]/opt/homebrew/bin/git config --local --unset includeif.gitdir:/github/workspace/.git.path \/github\/runner_temp\/git\-credentials\-c606ee0c\-8085\-4a65\-8485\-29d99e7e6ffe\.config
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:31:31.5967490Z [command]/opt/homebrew/bin/git config --local --get-all includeif.gitdir:/github/workspace/.git/worktrees/*.path
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:31:31.6085900Z /github/runner_temp/git-credentials-c606ee0c-8085-4a65-8485-29d99e7e6ffe.config
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:31:31.6098230Z [command]/opt/homebrew/bin/git config --local --unset includeif.gitdir:/github/workspace/.git/worktrees/*.path \/github\/runner_temp\/git\-credentials\-c606ee0c\-8085\-4a65\-8485\-29d99e7e6ffe\.config
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:31:31.6277150Z [command]/opt/homebrew/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:31:31.8021740Z Removing credentials config '/Users/runner/work/_temp/git-credentials-c606ee0c-8085-4a65-8485-29d99e7e6ffe.config'
+headless release (macos-latest)	UNKNOWN STEP	2026-11-02T17:31:31.8365530Z Cleaning up orphan processes

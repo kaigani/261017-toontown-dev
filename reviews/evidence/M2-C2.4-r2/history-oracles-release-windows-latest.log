@@ -1,0 +1,422 @@
+history oracles release (windows-latest)	UNKNOWN STEP	﻿2026-11-02T17:01:15.8113454Z Current runner version: '2.338.2'
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:15.8133834Z ##[group]Runner Image Provisioner
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:15.8134463Z Hosted Compute Agent
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:15.8134913Z Version: 20261021.618
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:15.8135392Z Commit: 21505ad2541d5be6135ed84fc33697146cf75b8e
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:15.8135944Z Build Date: 2026-10-21T00:45:21Z
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:15.8136465Z Worker ID: {123452ba-b398-497a-a205-cea9dd0ca7bf}
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:15.8136993Z Region: westcentralus
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:15.8137417Z Cloud: Azure
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:15.8137806Z ##[endgroup]
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:15.8138742Z ##[group]Operating System
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:15.8139202Z Microsoft Windows Server 2025
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:15.8139643Z 10.0.26100
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:15.8140047Z Datacenter
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:15.8140461Z ##[endgroup]
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:15.8140867Z ##[group]Runner Image
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:15.8141299Z Image: windows-2025-vs2026
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:15.8141719Z Version: 20261021.278.1
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:15.8142872Z Included Software: https://github.com/actions/runner-images/blob/win25-vs2026/20261021.278/images/windows/Windows2025-VS2026-Readme.md
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:15.8144092Z Image Release: https://github.com/actions/runner-images/releases/tag/win25-vs2026%2F20261021.278
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:15.8144825Z ##[endgroup]
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:15.8145750Z ##[group]GITHUB_TOKEN Permissions
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:15.8147184Z Contents: read
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:15.8147608Z Metadata: read
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:15.8148046Z Packages: read
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:15.8148436Z ##[endgroup]
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:15.8150228Z Secret source: Actions
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:15.8150930Z Cache mode: write
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:15.8151455Z Prepare workflow directory
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:15.8549467Z Prepare all required actions
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:15.8597657Z Getting action download info
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:16.1243277Z Download action repository 'actions/checkout@v7' (SHA:3d3c42e5aac5ba805825da76410c181273ba90b1)
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:16.2272684Z Download action repository 'Swatinem/rust-cache@v2' (SHA:d1527c8f67ef9af357290475d4af4b0fab8f12e0)
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:16.7797909Z Download action repository 'actions/upload-artifact@v7' (SHA:cf430e030ddbb5b0abf93d22962f4752f3646cd9)
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:16.9917873Z Complete job name: history oracles release (windows-latest)
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:17.8422843Z ##[group]Run actions/checkout@v7
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:17.8424048Z with:
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:17.8424688Z   repository: kaigani/261017-toontown-dev
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:17.8431439Z   token: ***
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:17.8432048Z   ssh-strict: true
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:17.8432662Z   ssh-user: git
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:17.8433296Z   persist-credentials: true
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:17.8433992Z   clean: true
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:17.8434619Z   sparse-checkout-cone-mode: true
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:17.8435380Z   fetch-depth: 1
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:17.8435996Z   fetch-tags: false
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:17.8436620Z   show-progress: true
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:17.8437264Z   lfs: false
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:17.8437841Z   submodules: false
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:17.8438483Z   set-safe-directory: true
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:17.8439255Z   allow-unsafe-pr-checkout: false
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:17.8440201Z env:
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:17.8440765Z   CARGO_TERM_COLOR: always
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:17.8441464Z   CARGO_INCREMENTAL: 0
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:17.8442146Z   RUST_BACKTRACE: 1
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:17.8442750Z ##[endgroup]
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:17.9641457Z Syncing repository: kaigani/261017-toontown-dev
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:17.9643637Z ##[group]Getting Git version info
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:17.9644686Z Working directory is 'D:\a\261017-toontown-dev\261017-toontown-dev'
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:18.0263856Z [command]"C:\Program Files\Git\bin\git.exe" version
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:18.4836463Z git version 2.56.0.windows.2
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:18.4877358Z ##[endgroup]
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:18.4890107Z Temporarily overriding HOME='D:\a\_temp\e026caf9-b208-43f4-bc0a-6fa3e9d47b03' before making global git config changes
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:18.4890746Z Adding repository directory to the temporary git global config as a safe directory
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:18.4898167Z [command]"C:\Program Files\Git\bin\git.exe" config --global --add safe.directory D:\a\261017-toontown-dev\261017-toontown-dev
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:18.5517473Z Deleting the contents of 'D:\a\261017-toontown-dev\261017-toontown-dev'
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:18.5521260Z ##[group]Determining repository object format
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:18.5523159Z ##[endgroup]
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:18.5523813Z ##[group]Initializing the repository
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:18.5530109Z [command]"C:\Program Files\Git\bin\git.exe" init D:\a\261017-toontown-dev\261017-toontown-dev
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:18.6671275Z Initialized empty Git repository in D:/a/261017-toontown-dev/261017-toontown-dev/.git/
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:18.6714251Z [command]"C:\Program Files\Git\bin\git.exe" remote add origin https://github.com/kaigani/261017-toontown-dev
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:18.7385143Z ##[endgroup]
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:18.7385603Z ##[group]Disabling automatic garbage collection
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:18.7392516Z [command]"C:\Program Files\Git\bin\git.exe" config --local gc.auto 0
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:18.7683426Z ##[endgroup]
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:18.7683956Z ##[group]Setting up auth
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:18.7684404Z Removing SSH command configuration
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:18.7691954Z [command]"C:\Program Files\Git\bin\git.exe" config --local --name-only --get-regexp core\.sshCommand
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:18.7994031Z [command]"C:\Program Files\Git\bin\git.exe" submodule foreach --recursive "sh -c \"git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :\""
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:20.4720237Z Removing HTTP extra header
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:20.4727936Z [command]"C:\Program Files\Git\bin\git.exe" config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:20.5020972Z [command]"C:\Program Files\Git\bin\git.exe" submodule foreach --recursive "sh -c \"git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :\""
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:20.9246136Z Removing includeIf entries pointing to credentials config files
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:20.9256762Z [command]"C:\Program Files\Git\bin\git.exe" config --local --name-only --get-regexp ^includeIf\.gitdir:
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:20.9554983Z [command]"C:\Program Files\Git\bin\git.exe" submodule foreach --recursive "git config --local --show-origin --name-only --get-regexp remote.origin.url"
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:21.4044198Z [command]"C:\Program Files\Git\bin\git.exe" config --file D:\a\_temp\git-credentials-29474bf8-c3a1-466c-8d96-8ee4516f0eef.config http.https://github.com/.extraheader "AUTHORIZATION: basic ***"
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:21.4342042Z [command]"C:\Program Files\Git\bin\git.exe" config --local includeIf.gitdir:D:/a/261017-toontown-dev/261017-toontown-dev/.git.path D:\a\_temp\git-credentials-29474bf8-c3a1-466c-8d96-8ee4516f0eef.config
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:21.4626978Z [command]"C:\Program Files\Git\bin\git.exe" config --local includeIf.gitdir:D:/a/261017-toontown-dev/261017-toontown-dev/.git/worktrees/*.path D:\a\_temp\git-credentials-29474bf8-c3a1-466c-8d96-8ee4516f0eef.config
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:21.4967083Z [command]"C:\Program Files\Git\bin\git.exe" config --local includeIf.gitdir:/github/workspace/.git.path /github/runner_temp/git-credentials-29474bf8-c3a1-466c-8d96-8ee4516f0eef.config
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:21.5269003Z [command]"C:\Program Files\Git\bin\git.exe" config --local includeIf.gitdir:/github/workspace/.git/worktrees/*.path /github/runner_temp/git-credentials-29474bf8-c3a1-466c-8d96-8ee4516f0eef.config
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:21.5565179Z ##[endgroup]
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:21.5565835Z ##[group]Fetching the repository
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:21.5576858Z [command]"C:\Program Files\Git\bin\git.exe" -c protocol.version=2 fetch --no-tags --prune --no-recurse-submodules --depth=1 origin +3c74c3432f2a1895b5aaca83e6ddf914cf6b4281:refs/remotes/origin/m2-vector-engine
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:25.3784280Z From https://github.com/kaigani/261017-toontown-dev
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:25.3785147Z  * [new ref]         3c74c3432f2a1895b5aaca83e6ddf914cf6b4281 -> origin/m2-vector-engine
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:25.3828782Z [command]"C:\Program Files\Git\bin\git.exe" branch --list --remote origin/m2-vector-engine
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:25.4243279Z   origin/m2-vector-engine
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:25.4283506Z [command]"C:\Program Files\Git\bin\git.exe" rev-parse refs/remotes/origin/m2-vector-engine
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:25.4613743Z 3c74c3432f2a1895b5aaca83e6ddf914cf6b4281
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:25.4642004Z ##[endgroup]
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:25.4642429Z ##[group]Determining the checkout info
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:25.4643904Z ##[endgroup]
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:25.4651036Z [command]"C:\Program Files\Git\bin\git.exe" sparse-checkout disable
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:25.5090552Z [command]"C:\Program Files\Git\bin\git.exe" config --local --unset-all extensions.worktreeConfig
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:25.5377732Z ##[group]Checking out the ref
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:25.5385075Z [command]"C:\Program Files\Git\bin\git.exe" checkout --progress --force -B m2-vector-engine refs/remotes/origin/m2-vector-engine
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:26.6013263Z Updating files:  38% (3030/7777)
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:26.6335595Z Updating files:  39% (3034/7777)
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:26.9431341Z Updating files:  40% (3111/7777)
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:26.9871928Z Updating files:  41% (3189/7777)
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:27.0005787Z Updating files:  42% (3267/7777)
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:27.0215294Z Updating files:  43% (3345/7777)
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:27.0345062Z Updating files:  44% (3422/7777)
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:27.0521525Z Updating files:  45% (3500/7777)
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:27.0649793Z Updating files:  46% (3578/7777)
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:27.0835927Z Updating files:  47% (3656/7777)
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:27.0962946Z Updating files:  48% (3733/7777)
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:27.1122659Z Updating files:  49% (3811/7777)
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:27.1268889Z Updating files:  50% (3889/7777)
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:27.1412153Z Updating files:  51% (3967/7777)
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:27.1651031Z Updating files:  52% (4045/7777)
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:27.1889478Z Updating files:  53% (4122/7777)
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:27.2139921Z Updating files:  54% (4200/7777)
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:27.2294068Z Updating files:  55% (4278/7777)
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:27.2445583Z Updating files:  56% (4356/7777)
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:27.2606019Z Updating files:  57% (4433/7777)
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:27.2845473Z Updating files:  58% (4511/7777)
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:27.3030783Z Updating files:  59% (4589/7777)
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:27.3184481Z Updating files:  60% (4667/7777)
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:27.3341019Z Updating files:  61% (4744/7777)
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:27.3490978Z Updating files:  62% (4822/7777)
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:27.3742729Z Updating files:  63% (4900/7777)
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:27.3959702Z Updating files:  64% (4978/7777)
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:27.4148098Z Updating files:  65% (5056/7777)
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:27.4303320Z Updating files:  66% (5133/7777)
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:27.4479924Z Updating files:  67% (5211/7777)
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:27.4712883Z Updating files:  68% (5289/7777)
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:27.4889158Z Updating files:  69% (5367/7777)
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:27.5044342Z Updating files:  70% (5444/7777)
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:27.5197576Z Updating files:  71% (5522/7777)
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:27.6075492Z Updating files:  72% (5600/7777)
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:27.6124497Z Updating files:  73% (5678/7777)
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:27.6332135Z Updating files:  73% (5697/7777)
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:27.6486216Z Updating files:  74% (5755/7777)
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:27.6749021Z Updating files:  75% (5833/7777)
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:27.7087825Z Updating files:  76% (5911/7777)
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:27.7417193Z Updating files:  77% (5989/7777)
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:27.9500375Z Updating files:  78% (6067/7777)
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:27.9788435Z Updating files:  79% (6144/7777)
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:28.0047771Z Updating files:  80% (6222/7777)
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:28.0241034Z Updating files:  81% (6300/7777)
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:28.0524323Z Updating files:  82% (6378/7777)
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:28.0700937Z Updating files:  83% (6455/7777)
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:28.0853345Z Updating files:  84% (6533/7777)
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:28.1050947Z Updating files:  85% (6611/7777)
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:28.1308490Z Updating files:  86% (6689/7777)
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:28.1448300Z Updating files:  87% (6766/7777)
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:28.1686958Z Updating files:  88% (6844/7777)
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:28.1853806Z Updating files:  89% (6922/7777)
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:28.2025083Z Updating files:  90% (7000/7777)
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:28.2345983Z Updating files:  91% (7078/7777)
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:28.2513709Z Updating files:  92% (7155/7777)
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:28.2697462Z Updating files:  93% (7233/7777)
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:28.2867894Z Updating files:  94% (7311/7777)
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:28.3056881Z Updating files:  95% (7389/7777)
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:28.3226538Z Updating files:  96% (7466/7777)
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:28.3339876Z Updating files:  97% (7544/7777)
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:28.3450342Z Updating files:  98% (7622/7777)
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:28.3555803Z Updating files:  99% (7700/7777)
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:28.3556116Z Updating files: 100% (7777/7777)
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:28.3556390Z Updating files: 100% (7777/7777), done.
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:28.3730187Z Switched to a new branch 'm2-vector-engine'
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:28.3748273Z branch 'm2-vector-engine' set up to track 'origin/m2-vector-engine'.
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:28.3966952Z ##[endgroup]
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:28.4392134Z [command]"C:\Program Files\Git\bin\git.exe" log -1 --format=%H
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:28.4672522Z 3c74c3432f2a1895b5aaca83e6ddf914cf6b4281
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:28.5054758Z ##[group]Run tc=$(sed -n 's/^channel = "\(.*\)"/\1/p' rust-toolchain.toml)
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:28.5055232Z ^[[36;1mtc=$(sed -n 's/^channel = "\(.*\)"/\1/p' rust-toolchain.toml)^[[0m
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:28.5055582Z ^[[36;1mrustup toolchain install "$tc" --profile minimal^[[0m
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:28.5055850Z ^[[36;1mrustup override set "$tc"^[[0m
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:28.5056055Z ^[[36;1mrustc --version^[[0m
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:28.5070462Z shell: C:\Program Files\Git\bin\bash.EXE --noprofile --norc -e -o pipefail {0}
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:28.5070778Z env:
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:28.5070939Z   CARGO_TERM_COLOR: always
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:28.5071125Z   CARGO_INCREMENTAL: 0
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:28.5071289Z   RUST_BACKTRACE: 1
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:28.5071433Z ##[endgroup]
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:29.8527913Z info: syncing channel updates for 1.98.1-x86_64-pc-windows-msvc
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:30.7082931Z info: latest update on 2026-09-03 for version 1.98.1 (48a229cea 2026-09-01)
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:30.7212796Z info: downloading 3 components
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:37.9319148Z 
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:37.9582967Z   1.98.1-x86_64-pc-windows-msvc installed - rustc 1.98.1 (48a229cea 2026-09-01)
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:37.9583419Z 
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:37.9880479Z info: override toolchain for D:\a\261017-toontown-dev\261017-toontown-dev set to 1.98.1-x86_64-pc-windows-msvc
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:39.1185872Z rustc 1.98.1 (48a229cea 2026-09-01)
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:39.1584336Z ##[group]Run Swatinem/rust-cache@v2
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:39.1584597Z with:
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:39.1584786Z   key: history-oracles
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:39.1585286Z   prefix-key: v0-rust
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:39.1585520Z   add-job-id-key: true
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:39.1585768Z   add-rust-environment-hash-key: true
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:39.1586041Z   cache-targets: true
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:39.1586261Z   cache-all-crates: false
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:39.1586530Z   cache-workspace-crates: false
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:39.1586811Z   save-if: true
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:39.1587045Z   cache-provider: github
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:39.1587299Z   cache-bin: true
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:39.1587449Z   lookup-only: false
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:39.1587598Z   cmd-format: {0}
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:39.1587738Z env:
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:39.1587884Z   CARGO_TERM_COLOR: always
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:39.1588048Z   CARGO_INCREMENTAL: 0
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:39.1588196Z   RUST_BACKTRACE: 1
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:39.1588336Z ##[endgroup]
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:46.3704701Z ##[group]Cache Configuration
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:46.3707092Z Cache Provider:
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:46.3707332Z     github
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:46.3707554Z Workspaces:
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:46.3707825Z     D:\a\261017-toontown-dev\261017-toontown-dev
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:46.3708176Z Cache Paths:
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:46.3708900Z     C:\Users\runneradmin\.cargo\bin
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:46.3709242Z     C:\Users\runneradmin\.cargo\.crates.toml
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:46.3709603Z     C:\Users\runneradmin\.cargo\.crates2.json
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:46.3709966Z     C:\Users\runneradmin\.cargo\registry
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:46.3710302Z     C:\Users\runneradmin\.cargo\git
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:46.3710666Z     D:\a\261017-toontown-dev\261017-toontown-dev\target
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:46.3711026Z Restore Key:
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:46.3711401Z     v0-rust-history-oracles-history-oracles-Windows_NT-x64-c16cbc5d
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:46.3711860Z Cache Key:
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:46.3712252Z     v0-rust-history-oracles-history-oracles-Windows_NT-x64-c16cbc5d-7ca7b21e
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:46.3712856Z .. Prefix:
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:46.3713278Z   - v0-rust-history-oracles-history-oracles-Windows_NT-x64
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:46.3713597Z .. Environment considered:
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:46.3713846Z   - Rust Versions:
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:46.3714198Z     - 1.98.1 x86_64-pc-windows-msvc 48a229ceaefd4985c50990b14116b6d856af0985
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:46.3714734Z     - 1.99.1 x86_64-pc-windows-msvc 58cf8f9c35b355199727627d07ae34a4e2846d67
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:46.3715151Z   - CARGO_INCREMENTAL
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:46.3715388Z   - CARGO_TERM_COLOR
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:46.3715612Z   - RUST_BACKTRACE
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:46.3715845Z .. Lockfiles considered:
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:46.3716240Z   - D:\a\261017-toontown-dev\261017-toontown-dev\bins\headless\Cargo.toml
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:46.3716747Z   - D:\a\261017-toontown-dev\261017-toontown-dev\Cargo.lock
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:46.3717219Z   - D:\a\261017-toontown-dev\261017-toontown-dev\crates\anim\Cargo.toml
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:46.3717749Z   - D:\a\261017-toontown-dev\261017-toontown-dev\crates\audio\Cargo.toml
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:46.3718318Z   - D:\a\261017-toontown-dev\261017-toontown-dev\crates\colour\Cargo.toml
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:46.3718882Z   - D:\a\261017-toontown-dev\261017-toontown-dev\crates\engine\Cargo.toml
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:46.3719422Z   - D:\a\261017-toontown-dev\261017-toontown-dev\crates\executor\Cargo.toml
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:46.3719989Z   - D:\a\261017-toontown-dev\261017-toontown-dev\crates\fx\Cargo.toml
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:46.3720568Z   - D:\a\261017-toontown-dev\261017-toontown-dev\crates\io\Cargo.toml
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:46.3721100Z   - D:\a\261017-toontown-dev\261017-toontown-dev\crates\lipsync\Cargo.toml
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:46.3721636Z   - D:\a\261017-toontown-dev\261017-toontown-dev\crates\mcp\Cargo.toml
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:46.3722150Z   - D:\a\261017-toontown-dev\261017-toontown-dev\crates\model\Cargo.toml
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:46.3722694Z   - D:\a\261017-toontown-dev\261017-toontown-dev\crates\persist\Cargo.toml
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:46.3726350Z   - D:\a\261017-toontown-dev\261017-toontown-dev\crates\registry-macros\Cargo.toml
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:46.3727113Z   - D:\a\261017-toontown-dev\261017-toontown-dev\crates\registry\Cargo.toml
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:46.3727724Z   - D:\a\261017-toontown-dev\261017-toontown-dev\crates\render\Cargo.toml
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:46.3728269Z   - D:\a\261017-toontown-dev\261017-toontown-dev\crates\vector\Cargo.toml
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:46.3728898Z   - D:\a\261017-toontown-dev\261017-toontown-dev\desktop\src-tauri\Cargo.toml
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:46.3729484Z   - D:\a\261017-toontown-dev\261017-toontown-dev\rust-toolchain.toml
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:46.3730127Z ##[endgroup]
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:46.3730258Z 
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:46.3730361Z ... Restoring cache ...
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:46.7732314Z Cache hit for: v0-rust-history-oracles-history-oracles-Windows_NT-x64-c16cbc5d-7ca7b21e
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:47.9564078Z Received 92274688 of 310557167 (29.7%), 87.9 MBs/sec
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:48.9539597Z Received 155189248 of 310557167 (50.0%), 73.9 MBs/sec
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:50.1016073Z Received 268435456 of 310557167 (86.4%), 81.3 MBs/sec
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:50.6215488Z Received 310557167 of 310557167 (100.0%), 80.8 MBs/sec
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:50.6215935Z Cache Size: ~296 MB (310557167 B)
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:50.6274869Z [command]"C:\Program Files\Git\usr\bin\tar.exe" -xf D:/a/_temp/0f1c036a-d6dc-4bda-b764-516a424266c5/cache.tzst -P -C D:/a/261017-toontown-dev/261017-toontown-dev --force-local --use-compress-program "zstd -d"
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:04.0876287Z Cache restored successfully
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:04.1004730Z Restored from cache key "v0-rust-history-oracles-history-oracles-Windows_NT-x64-c16cbc5d-7ca7b21e" full match: true.
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:04.1238161Z ##[group]Run mkdir -p out
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:04.1238453Z ^[[36;1mmkdir -p out^[[0m
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:04.1239263Z ^[[36;1mcargo test --release --locked -p tt-executor --test c12_r1_stress --test c12_r3_stress --test c13_r3_history_r1 --test c13_r3_history_r3 -- ten_thousand_history_operations_match_independent_content_oracle_and_replay --exact --nocapture 2>&1 | tee out/history-oracles-executor.log^[[0m
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:04.1240563Z ^[[36;1mcargo test --release --locked -p tt-mcp --test c14_r3_history_r1 --test c14_r3_history_r3 -- ten_thousand_history_operations_match_independent_content_oracle_and_replay --exact --nocapture 2>&1 | tee out/history-oracles-mcp.log^[[0m
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:04.1250822Z shell: C:\Program Files\Git\bin\bash.EXE --noprofile --norc -e -o pipefail {0}
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:04.1251479Z env:
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:04.1251637Z   CARGO_TERM_COLOR: always
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:04.1251823Z   CARGO_INCREMENTAL: 0
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:04.1251999Z   RUST_BACKTRACE: 1
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:04.1252197Z   CACHE_ON_FAILURE: false
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:04.1252374Z ##[endgroup]
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:04.3075021Z ^[[1m^[[92m    Updating^[[0m crates.io index
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:15.6265823Z ^[[1m^[[92m   Compiling^[[0m tt-model v0.0.1 (D:\a\261017-toontown-dev\261017-toontown-dev\crates\model)
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:15.6267182Z ^[[1m^[[92m   Compiling^[[0m tt-registry-macros v0.0.1 (D:\a\261017-toontown-dev\261017-toontown-dev\crates\registry-macros)
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:23.9974997Z ^[[1m^[[92m   Compiling^[[0m tt-anim v0.0.1 (D:\a\261017-toontown-dev\261017-toontown-dev\crates\anim)
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:23.9976709Z ^[[1m^[[92m   Compiling^[[0m tt-colour v0.0.1 (D:\a\261017-toontown-dev\261017-toontown-dev\crates\colour)
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:23.9980664Z ^[[1m^[[92m   Compiling^[[0m tt-vector v0.0.1 (D:\a\261017-toontown-dev\261017-toontown-dev\crates\vector)
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:24.0793713Z ^[[1m^[[92m   Compiling^[[0m tt-fx v0.0.1 (D:\a\261017-toontown-dev\261017-toontown-dev\crates\fx)
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:24.0854493Z ^[[1m^[[92m   Compiling^[[0m tt-persist v0.0.1 (D:\a\261017-toontown-dev\261017-toontown-dev\crates\persist)
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:24.1403514Z ^[[1m^[[92m   Compiling^[[0m tt-registry v0.0.1 (D:\a\261017-toontown-dev\261017-toontown-dev\crates\registry)
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:03:16.6224243Z ^[[1m^[[92m   Compiling^[[0m tt-render v0.0.1 (D:\a\261017-toontown-dev\261017-toontown-dev\crates\render)
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:03:19.7781674Z ^[[1m^[[92m   Compiling^[[0m tt-io v0.0.1 (D:\a\261017-toontown-dev\261017-toontown-dev\crates\io)
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:03:32.4792725Z ^[[1m^[[92m   Compiling^[[0m tt-executor v0.0.1 (D:\a\261017-toontown-dev\261017-toontown-dev\crates\executor)
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:06:13.9204937Z ^[[1m^[[92m    Finished^[[0m `release` profile [optimized + debuginfo] target(s) in 4m 09s
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:06:13.9519891Z ^[[1m^[[92m     Running^[[0m tests\c12_r1_stress.rs (target\release\deps\c12_r1_stress-6ea757c01119dbe4.exe)
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:06:13.9520472Z 
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:06:13.9520587Z running 1 test
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:06:36.0327972Z {"seed":"0xc12020261019a571","operations":10000,"replayOperations":10000,"editsUndoRedoCreateRestoreDryRun":[5472,3911,528,1,1690,534],"documentRev":11230,"durationSeconds":22.0451535,"oracle":"independent before/after metadata stack; exact canonical all-entry byte checks every 100 operations; full fresh executor replay"}
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:06:36.3174683Z test ten_thousand_history_operations_match_independent_content_oracle_and_replay ... ok
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:06:36.3175030Z 
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:06:36.3175278Z test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 4 filtered out; finished in 22.36s
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:06:36.3175608Z 
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:06:36.3176203Z ^[[1m^[[92m     Running^[[0m tests\c12_r3_stress.rs (target\release\deps\c12_r3_stress-d09894a2bd605bfa.exe)
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:06:36.3332220Z 
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:06:36.3332721Z running 1 test
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:06:58.2057224Z {"seed":"0xc12320261019b683","operations":10000,"replayOperations":10000,"editsUndoRedoCreateRestoreDryRun":[5494,3902,470,1,1724,511],"documentRev":11176,"durationSeconds":21.8275206,"oracle":"independent before/after metadata stack; exact canonical all-entry byte checks every 100 operations; full fresh executor replay"}
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:06:58.4909217Z test ten_thousand_history_operations_match_independent_content_oracle_and_replay ... ok
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:06:58.4909769Z 
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:06:58.4910144Z test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 4 filtered out; finished in 22.16s
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:06:58.4910615Z 
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:06:58.4911455Z ^[[1m^[[92m     Running^[[0m tests\c13_r3_history_r1.rs (target\release\deps\c13_r3_history_r1-5db6593f19616819.exe)
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:06:58.5065666Z 
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:06:58.5066256Z running 1 test
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:07:20.9660759Z {"seed":"0xc12020261019a571","operations":10000,"replayOperations":10000,"editsUndoRedoCreateRestoreDryRun":[5472,3911,528,1,1690,534],"documentRev":11231,"durationSeconds":22.4271928,"oracle":"independent before/after metadata stack; exact canonical all-entry byte checks every 100 operations; full fresh executor replay"}
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:07:21.2826422Z test ten_thousand_history_operations_match_independent_content_oracle_and_replay ... ok
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:07:21.2826986Z 
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:07:21.2827323Z test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 22.78s
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:07:21.2827835Z 
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:07:21.2986042Z ^[[1m^[[92m     Running^[[0m tests\c13_r3_history_r3.rs (target\release\deps\c13_r3_history_r3-2ce6e94b81cfbf3c.exe)
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:07:21.2986668Z 
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:07:21.2986785Z running 1 test
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:07:43.2934747Z {"seed":"0xc12320261019b683","operations":10000,"replayOperations":10000,"editsUndoRedoCreateRestoreDryRun":[5494,3902,470,1,1724,511],"documentRev":11177,"durationSeconds":21.9510325,"oracle":"independent before/after metadata stack; exact canonical all-entry byte checks every 100 operations; full fresh executor replay"}
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:07:43.5944870Z test ten_thousand_history_operations_match_independent_content_oracle_and_replay ... ok
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:07:43.5945428Z 
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:07:43.5945946Z test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 22.28s
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:07:43.5946441Z 
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:07:44.0062276Z ^[[1m^[[92m   Compiling^[[0m tt-model v0.0.1 (D:\a\261017-toontown-dev\261017-toontown-dev\crates\model)
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:07:52.1356318Z ^[[1m^[[92m   Compiling^[[0m tt-anim v0.0.1 (D:\a\261017-toontown-dev\261017-toontown-dev\crates\anim)
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:07:52.1368083Z ^[[1m^[[92m   Compiling^[[0m tt-colour v0.0.1 (D:\a\261017-toontown-dev\261017-toontown-dev\crates\colour)
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:07:52.1377420Z ^[[1m^[[92m   Compiling^[[0m tt-vector v0.0.1 (D:\a\261017-toontown-dev\261017-toontown-dev\crates\vector)
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:07:52.1747803Z ^[[1m^[[92m   Compiling^[[0m tt-fx v0.0.1 (D:\a\261017-toontown-dev\261017-toontown-dev\crates\fx)
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:07:52.1759083Z ^[[1m^[[92m   Compiling^[[0m tt-persist v0.0.1 (D:\a\261017-toontown-dev\261017-toontown-dev\crates\persist)
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:07:52.2271673Z ^[[1m^[[92m   Compiling^[[0m tt-registry v0.0.1 (D:\a\261017-toontown-dev\261017-toontown-dev\crates\registry)
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:08:43.2114243Z ^[[1m^[[92m   Compiling^[[0m tt-render v0.0.1 (D:\a\261017-toontown-dev\261017-toontown-dev\crates\render)
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:08:46.2420158Z ^[[1m^[[92m   Compiling^[[0m tt-io v0.0.1 (D:\a\261017-toontown-dev\261017-toontown-dev\crates\io)
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:08:58.3730854Z ^[[1m^[[92m   Compiling^[[0m tt-audio v0.0.1 (D:\a\261017-toontown-dev\261017-toontown-dev\crates\audio)
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:08:58.4107238Z ^[[1m^[[92m   Compiling^[[0m tt-lipsync v0.0.1 (D:\a\261017-toontown-dev\261017-toontown-dev\crates\lipsync)
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:08:58.4896057Z ^[[1m^[[92m   Compiling^[[0m tt-executor v0.0.1 (D:\a\261017-toontown-dev\261017-toontown-dev\crates\executor)
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:09:41.5083953Z ^[[1m^[[92m   Compiling^[[0m tt-engine v0.0.1 (D:\a\261017-toontown-dev\261017-toontown-dev\crates\engine)
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:09:48.8637351Z ^[[1m^[[92m   Compiling^[[0m tt-mcp v0.0.1 (D:\a\261017-toontown-dev\261017-toontown-dev\crates\mcp)
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:11:39.6062215Z ^[[1m^[[92m    Finished^[[0m `release` profile [optimized + debuginfo] target(s) in 3m 55s
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:11:39.6217242Z ^[[1m^[[92m     Running^[[0m tests\c14_r3_history_r1.rs (target\release\deps\c14_r3_history_r1-3fa4028e7baddc07.exe)
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:11:39.6377993Z 
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:11:39.6378514Z running 1 test
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:12:13.4320026Z {"seed":"0xc12020261019a571","operations":10000,"replayOperations":10000,"editsUndoRedoCreateRestoreDryRun":[5472,3911,528,1,1690,534],"documentRev":11231,"durationSeconds":33.7499502,"oracle":"independent before/after metadata stack; exact canonical all-entry byte checks every 100 operations; full fresh executor replay"}
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:12:13.9218962Z test ten_thousand_history_operations_match_independent_content_oracle_and_replay ... ok
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:12:13.9219346Z 
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:12:13.9219609Z test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 34.29s
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:12:13.9219908Z 
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:12:13.9378414Z ^[[1m^[[92m     Running^[[0m tests\c14_r3_history_r3.rs (target\release\deps\c14_r3_history_r3-6c891009ef206aab.exe)
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:12:13.9379011Z 
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:12:13.9379130Z running 1 test
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:12:46.8476240Z {"seed":"0xc12320261019b683","operations":10000,"replayOperations":10000,"editsUndoRedoCreateRestoreDryRun":[5494,3902,470,1,1724,511],"documentRev":11177,"durationSeconds":32.8668237,"oracle":"independent before/after metadata stack; exact canonical all-entry byte checks every 100 operations; full fresh executor replay"}
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:12:47.3834849Z test ten_thousand_history_operations_match_independent_content_oracle_and_replay ... ok
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:12:47.3835388Z 
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:12:47.3835674Z test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 33.44s
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:12:47.3836143Z 
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:12:47.4220772Z ##[group]Run actions/upload-artifact@v7
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:12:47.4221138Z with:
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:12:47.4221394Z   name: history-oracles-Windows
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:12:47.4221647Z   path: out/
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:12:47.4221861Z   if-no-files-found: error
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:12:47.4222094Z   compression-level: 6
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:12:47.4222336Z   overwrite: false
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:12:47.4222561Z   include-hidden-files: false
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:12:47.4222794Z   archive: true
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:12:47.4222989Z env:
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:12:47.4223173Z   CARGO_TERM_COLOR: always
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:12:47.4223403Z   CARGO_INCREMENTAL: 0
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:12:47.4223620Z   RUST_BACKTRACE: 1
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:12:47.4223829Z   CACHE_ON_FAILURE: false
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:12:47.4224047Z ##[endgroup]
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:12:47.5662375Z With the provided path, there will be 2 files uploaded
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:12:47.5666343Z Artifact name is valid!
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:12:47.5667389Z Root directory input is valid!
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:12:47.8793046Z Uploading artifact: history-oracles-Windows.zip
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:12:47.8823165Z Beginning upload of artifact content to blob storage
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:12:48.1160168Z Uploaded bytes 1795
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:12:48.1709714Z Finished uploading artifact content to blob storage!
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:12:48.1710810Z SHA256 digest of uploaded artifact is 7236ca8c79bebd1087f760fb464e5ca587149c9464374066faf9e6a208c4f420
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:12:48.1711568Z Finalizing artifact upload
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:12:48.7742977Z Artifact history-oracles-Windows successfully finalized. Artifact ID 13162359991
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:12:48.7743626Z Artifact history-oracles-Windows has been successfully uploaded! Final size is 1795 bytes. Artifact ID is 13162359991
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:12:48.7749999Z Artifact download URL: https://github.com/kaigani/261017-toontown-dev/actions/runs/41486947308/artifacts/13162359991
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:12:48.8042093Z Post job cleanup.
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:12:48.9227419Z Cache up-to-date.
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:12:48.9482938Z Post job cleanup.
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:12:49.0799775Z [command]"C:\Program Files\Git\bin\git.exe" version
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:12:49.1079666Z git version 2.56.0.windows.2
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:12:49.1193626Z Temporarily overriding HOME='D:\a\_temp\c4f24088-30af-418f-a238-66ebe94bc917' before making global git config changes
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:12:49.1194515Z Adding repository directory to the temporary git global config as a safe directory
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:12:49.1195384Z [command]"C:\Program Files\Git\bin\git.exe" config --global --add safe.directory D:\a\261017-toontown-dev\261017-toontown-dev
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:12:49.1463433Z Removing SSH command configuration
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:12:49.1472035Z [command]"C:\Program Files\Git\bin\git.exe" config --local --name-only --get-regexp core\.sshCommand
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:12:49.1791357Z [command]"C:\Program Files\Git\bin\git.exe" submodule foreach --recursive "sh -c \"git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :\""
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:12:49.6203420Z Removing HTTP extra header
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:12:49.6211688Z [command]"C:\Program Files\Git\bin\git.exe" config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:12:49.6508843Z [command]"C:\Program Files\Git\bin\git.exe" submodule foreach --recursive "sh -c \"git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :\""
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:12:50.0834369Z Removing includeIf entries pointing to credentials config files
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:12:50.0843581Z [command]"C:\Program Files\Git\bin\git.exe" config --local --name-only --get-regexp ^includeIf\.gitdir:
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:12:50.1108122Z includeif.gitdir:D:/a/261017-toontown-dev/261017-toontown-dev/.git.path
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:12:50.1108981Z includeif.gitdir:D:/a/261017-toontown-dev/261017-toontown-dev/.git/worktrees/*.path
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:12:50.1110184Z includeif.gitdir:/github/workspace/.git.path
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:12:50.1110676Z includeif.gitdir:/github/workspace/.git/worktrees/*.path
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:12:50.1140432Z [command]"C:\Program Files\Git\bin\git.exe" config --local --get-all includeif.gitdir:D:/a/261017-toontown-dev/261017-toontown-dev/.git.path
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:12:50.1399854Z D:\a\_temp\git-credentials-29474bf8-c3a1-466c-8d96-8ee4516f0eef.config
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:12:50.1438010Z [command]"C:\Program Files\Git\bin\git.exe" config --local --unset includeif.gitdir:D:/a/261017-toontown-dev/261017-toontown-dev/.git.path D\:\\a\\_temp\\git\-credentials\-29474bf8\-c3a1\-466c\-8d96\-8ee4516f0eef\.config
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:12:50.1733597Z [command]"C:\Program Files\Git\bin\git.exe" config --local --get-all includeif.gitdir:D:/a/261017-toontown-dev/261017-toontown-dev/.git/worktrees/*.path
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:12:50.1991078Z D:\a\_temp\git-credentials-29474bf8-c3a1-466c-8d96-8ee4516f0eef.config
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:12:50.2022456Z [command]"C:\Program Files\Git\bin\git.exe" config --local --unset includeif.gitdir:D:/a/261017-toontown-dev/261017-toontown-dev/.git/worktrees/*.path D\:\\a\\_temp\\git\-credentials\-29474bf8\-c3a1\-466c\-8d96\-8ee4516f0eef\.config
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:12:50.2310966Z [command]"C:\Program Files\Git\bin\git.exe" config --local --get-all includeif.gitdir:/github/workspace/.git.path
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:12:50.2565402Z /github/runner_temp/git-credentials-29474bf8-c3a1-466c-8d96-8ee4516f0eef.config
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:12:50.2596713Z [command]"C:\Program Files\Git\bin\git.exe" config --local --unset includeif.gitdir:/github/workspace/.git.path \/github\/runner_temp\/git\-credentials\-29474bf8\-c3a1\-466c\-8d96\-8ee4516f0eef\.config
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:12:50.2918444Z [command]"C:\Program Files\Git\bin\git.exe" config --local --get-all includeif.gitdir:/github/workspace/.git/worktrees/*.path
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:12:50.3177235Z /github/runner_temp/git-credentials-29474bf8-c3a1-466c-8d96-8ee4516f0eef.config
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:12:50.3211169Z [command]"C:\Program Files\Git\bin\git.exe" config --local --unset includeif.gitdir:/github/workspace/.git/worktrees/*.path \/github\/runner_temp\/git\-credentials\-29474bf8\-c3a1\-466c\-8d96\-8ee4516f0eef\.config
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:12:50.3500633Z [command]"C:\Program Files\Git\bin\git.exe" submodule foreach --recursive "git config --local --show-origin --name-only --get-regexp remote.origin.url"
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:12:50.7762732Z Removing credentials config 'D:\a\_temp\git-credentials-29474bf8-c3a1-466c-8d96-8ee4516f0eef.config'
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:12:50.7927359Z Cleaning up orphan processes
+history oracles release (windows-latest)	UNKNOWN STEP	2026-11-02T17:12:50.8312680Z Terminate orphan process: pid (5444) (vctip)

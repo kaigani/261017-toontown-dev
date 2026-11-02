@@ -1,0 +1,101 @@
+{"argv": ["python", "tests/adversarial/c24-r2-audit.py"], "cwd": "C:\\Users\\kaiga\\work\\review\\m2-c24-r2", "env": {}, "startedAt": "2026-11-02T18:32:23.144961+00:00"}
+F.FFF..FF.
+======================================================================
+FAIL: test_handoff_merge_readiness_no_longer_claims_round1_is_next (__main__.Bookkeeping.test_handoff_merge_readiness_no_longer_claims_round1_is_next)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\kaiga\work\review\m2-c24-r2\tests\adversarial\c24-r2-audit.py", line 142, in test_handoff_merge_readiness_no_longer_claims_round1_is_next
+    self.assertNotIn('review round 1 next', section)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'review round 1 next' unexpectedly found in " M2 merge readiness (assessment)\n\n1. **One decision pending:** C22-T2 is deferred to M11 C11.1 under the accepted ruling (§6). Feather (C23-T2) stays\n   blocked on SI-077 with the spec owner and needs an explicit milestone-scope decision (or implementation) before M2\n   completes; every other readiness item is met.\n2. **Open:** C2.4 has not been reviewed (review round 1 next); no P0/P1 from earlier rounds is open. All original\n   proving tests, the C2.3 round-3 variants and closure tests are retained (no reviewer test body changed in C2.4; the\n   reviewer-owned edits are the ruled history pins of declared edits 1, 11 and 18).\n3. **Met for this head:** the merge candidate's own CI run is green on all jobs, including E2, the release oracles,\n   `measurements` and `bundle` with the test-only asset check (closing message: head SHA and run ID).\n4. **Met:** raw receipts and reviewer ownership preserved (diffs in `evidence/M2-C2.4/` and `evidence/M2-C2.4/declared/`),\n   M1-C1.3 receipts untouched, `spec/` unchanged, `TT_COMMIT_REVIEW_RECEIPTS` unset; C22-T2 and R1-12 are explicit\n   (§6, §6a); a safe refusal is never represented as completion.\n5. **Not yet** (orchestrator: merge, verify `main` on both OSes, tag `m2`).\n\n"
+
+======================================================================
+FAIL: test_duplicated_observation_records_are_rejected (__main__.GateValidation.test_duplicated_observation_records_are_rejected)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\kaiga\work\review\m2-c24-r2\tests\adversarial\c24-r2-audit.py", line 97, in test_duplicated_observation_records_are_rejected
+    self.reject(s, f)
+    ~~~~~~~~~~~^^^^^^
+  File "C:\Users\kaiga\work\review\m2-c24-r2\tests\adversarial\c24-r2-audit.py", line 66, in reject
+    self.assertEqual((code, exists), (2, False), (stdout, stderr))
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Tuples differ: (0, True) != (2, False)
+
+First differing element 0:
+0
+2
+
+- (0, True)
++ (2, False) : ('{"gate": "C22-T2: 100k Flatten completes within the same run\'s 100k strokeAdd p50 and under the 30 s watchdog", "os": "windows", "arch": "x86_64", "runStartedAt": "2026-11-02T10:00:00Z", "percentileRule": "upper nearest rank, as scripts/analyse-measurements.py", "strokeAddP50Seconds": 1.003, "flattenUnbudgetedP50Seconds": 0.9, "flattenUnbudgetedSeconds": [0.9, 0.9, 0.9, 0.9, 0.9], "flattenUnbudgetedAllCompleted": true, "flattenBudgetedSeconds": [0.5, 0.501, 0.502, 0.503, 0.504], "flattenBudgetedOutcomes": [{"code": "limit.exceeded"}, {"code": "limit.exceeded"}, {"code": "limit.exceeded"}, {"code": "limit.exceeded"}, {"code": "limit.exceeded"}], "met": true, "gapSeconds": 0.0, "note": "C22-T2 and the interactive latency budget (R1-12) are the M11 C11.1 scale gate"}\n', '')
+
+======================================================================
+FAIL: test_explicit_mismatched_run_ids_are_rejected (__main__.GateValidation.test_explicit_mismatched_run_ids_are_rejected)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\kaiga\work\review\m2-c24-r2\tests\adversarial\c24-r2-audit.py", line 92, in test_explicit_mismatched_run_ids_are_rejected
+    self.reject(s, f)
+    ~~~~~~~~~~~^^^^^^
+  File "C:\Users\kaiga\work\review\m2-c24-r2\tests\adversarial\c24-r2-audit.py", line 66, in reject
+    self.assertEqual((code, exists), (2, False), (stdout, stderr))
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Tuples differ: (0, True) != (2, False)
+
+First differing element 0:
+0
+2
+
+- (0, True)
++ (2, False) : ('{"gate": "C22-T2: 100k Flatten completes within the same run\'s 100k strokeAdd p50 and under the 30 s watchdog", "os": "windows", "arch": "x86_64", "runStartedAt": "2026-11-02T10:00:00Z", "percentileRule": "upper nearest rank, as scripts/analyse-measurements.py", "strokeAddP50Seconds": 1.003, "flattenUnbudgetedP50Seconds": 0.902, "flattenUnbudgetedSeconds": [0.9, 0.901, 0.902, 0.903, 0.904], "flattenUnbudgetedAllCompleted": true, "flattenBudgetedSeconds": [0.5, 0.501, 0.502, 0.503, 0.504], "flattenBudgetedOutcomes": [{"code": "limit.exceeded"}, {"code": "limit.exceeded"}, {"code": "limit.exceeded"}, {"code": "limit.exceeded"}, {"code": "limit.exceeded"}], "met": true, "gapSeconds": 0.0, "note": "C22-T2 and the interactive latency budget (R1-12) are the M11 C11.1 scale gate"}\n', '')
+
+======================================================================
+FAIL: test_missing_os_on_both_files_is_rejected (__main__.GateValidation.test_missing_os_on_both_files_is_rejected)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\kaiga\work\review\m2-c24-r2\tests\adversarial\c24-r2-audit.py", line 85, in test_missing_os_on_both_files_is_rejected
+    self.reject(s, f)
+    ~~~~~~~~~~~^^^^^^
+  File "C:\Users\kaiga\work\review\m2-c24-r2\tests\adversarial\c24-r2-audit.py", line 66, in reject
+    self.assertEqual((code, exists), (2, False), (stdout, stderr))
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Tuples differ: (0, True) != (2, False)
+
+First differing element 0:
+0
+2
+
+- (0, True)
++ (2, False) : ('{"gate": "C22-T2: 100k Flatten completes within the same run\'s 100k strokeAdd p50 and under the 30 s watchdog", "os": null, "arch": "x86_64", "runStartedAt": "2026-11-02T10:00:00Z", "percentileRule": "upper nearest rank, as scripts/analyse-measurements.py", "strokeAddP50Seconds": 1.003, "flattenUnbudgetedP50Seconds": 0.902, "flattenUnbudgetedSeconds": [0.9, 0.901, 0.902, 0.903, 0.904], "flattenUnbudgetedAllCompleted": true, "flattenBudgetedSeconds": [0.5, 0.501, 0.502, 0.503, 0.504], "flattenBudgetedOutcomes": [{"code": "limit.exceeded"}, {"code": "limit.exceeded"}, {"code": "limit.exceeded"}, {"code": "limit.exceeded"}, {"code": "limit.exceeded"}], "met": true, "gapSeconds": 0.0, "note": "C22-T2 and the interactive latency budget (R1-12) are the M11 C11.1 scale gate"}\n', '')
+
+======================================================================
+FAIL: test_refusal_record_with_status_ok_is_rejected (__main__.GateValidation.test_refusal_record_with_status_ok_is_rejected)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\kaiga\work\review\m2-c24-r2\tests\adversarial\c24-r2-audit.py", line 102, in test_refusal_record_with_status_ok_is_rejected
+    self.reject(s, f)
+    ~~~~~~~~~~~^^^^^^
+  File "C:\Users\kaiga\work\review\m2-c24-r2\tests\adversarial\c24-r2-audit.py", line 66, in reject
+    self.assertEqual((code, exists), (2, False), (stdout, stderr))
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Tuples differ: (0, True) != (2, False)
+
+First differing element 0:
+0
+2
+
+- (0, True)
++ (2, False) : ('{"gate": "C22-T2: 100k Flatten completes within the same run\'s 100k strokeAdd p50 and under the 30 s watchdog", "os": "windows", "arch": "x86_64", "runStartedAt": "2026-11-02T10:00:00Z", "percentileRule": "upper nearest rank, as scripts/analyse-measurements.py", "strokeAddP50Seconds": 1.003, "flattenUnbudgetedP50Seconds": 0.902, "flattenUnbudgetedSeconds": [0.9, 0.901, 0.902, 0.903, 0.904], "flattenUnbudgetedAllCompleted": true, "flattenBudgetedSeconds": [0.5, 0.501, 0.502, 0.503, 0.504], "flattenBudgetedOutcomes": [{"code": "limit.exceeded"}, {"code": "limit.exceeded"}, {"code": "limit.exceeded"}, {"code": "limit.exceeded"}, {"code": "limit.exceeded"}], "met": true, "gapSeconds": 0.0, "note": "C22-T2 and the interactive latency budget (R1-12) are the M11 C11.1 scale gate"}\n', '')
+
+======================================================================
+FAIL: test_edit38_changes_only_the_two_ruled_union_assertions (__main__.Ownership.test_edit38_changes_only_the_two_ruled_union_assertions)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\kaiga\work\review\m2-c24-r2\tests\adversarial\c24-r2-audit.py", line 119, in test_edit38_changes_only_the_two_ruled_union_assertions
+    self.assertEqual(new, expected, 'Ruling permits two union bounds only; area-preservation must remain intact')
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: '// R[7420 chars]     let mut segs = segments(&list, 0);\n     [6439 chars]n}\n' != '// R[7420 chars]     prop_assert!((sa - sb).abs() <= 1e-3 * sb[6395 chars]n}\n'
+Diff is 14347 characters long. Set self.maxDiff to None to see it. : Ruling permits two union bounds only; area-preservation must remain intact
+
+----------------------------------------------------------------------
+Ran 10 tests in 0.499s
+
+FAILED (failures=6)

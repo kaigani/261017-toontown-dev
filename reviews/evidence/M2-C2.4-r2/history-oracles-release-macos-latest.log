@@ -1,0 +1,440 @@
+history oracles release (macos-latest)	UNKNOWN STEP	﻿2026-11-02T17:01:16.3376650Z Current runner version: '2.338.2'
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:16.3397950Z ##[group]Runner Image Provisioner
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:16.3398570Z Hosted Compute Agent
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:16.3399030Z Version: 20261021.618
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:16.3400200Z Commit: 21505ad2541d5be6135ed84fc33697146cf75b8e
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:16.3400770Z Build Date: 2026-10-21T00:45:21Z
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:16.3402670Z Worker ID: {c37d5259-4f0f-4d2d-84fe-3b856bed845b}
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:16.3403280Z Region: westus
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:16.3404320Z Cloud: MacCloud
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:16.3404810Z ##[endgroup]
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:16.3406370Z ##[group]Operating System
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:16.3406860Z macOS
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:16.3407230Z 26.6.2
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:16.3407550Z 25G83
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:16.3408810Z ##[endgroup]
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:16.3410210Z ##[group]Runner Image
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:16.3410690Z Image: macos-26-arm64
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:16.3411170Z Version: 20261026.0455.2
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:16.3412090Z Included Software: https://github.com/actions/runner-images/blob/macos-26-arm64/20261026.0455/images/macos/macos-26-arm64-Readme.md
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:16.3413290Z Image Release: https://github.com/actions/runner-images/releases/tag/macos-26-arm64%2F20261026.0455
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:16.3414020Z ##[endgroup]
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:16.3414980Z ##[group]GITHUB_TOKEN Permissions
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:16.3416590Z Contents: read
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:16.3417060Z Metadata: read
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:16.3417420Z Packages: read
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:16.3417820Z ##[endgroup]
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:16.3419440Z Secret source: Actions
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:16.3420010Z Cache mode: write
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:16.3420480Z Prepare workflow directory
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:16.3844750Z Prepare all required actions
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:16.3910550Z Getting action download info
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:16.8506350Z Download action repository 'actions/checkout@v7' (SHA:3d3c42e5aac5ba805825da76410c181273ba90b1)
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:17.1660520Z Download action repository 'Swatinem/rust-cache@v2' (SHA:d1527c8f67ef9af357290475d4af4b0fab8f12e0)
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:17.6713120Z Download action repository 'actions/upload-artifact@v7' (SHA:cf430e030ddbb5b0abf93d22962f4752f3646cd9)
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:17.8902120Z Complete job name: history oracles release (macos-latest)
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:17.9893210Z ##[group]Run actions/checkout@v7
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:17.9893830Z with:
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:17.9894170Z   repository: kaigani/261017-toontown-dev
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:17.9897540Z   token: ***
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:17.9897900Z   ssh-strict: true
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:17.9898630Z   ssh-user: git
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:17.9898960Z   persist-credentials: true
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:17.9899360Z   clean: true
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:17.9900910Z   sparse-checkout-cone-mode: true
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:17.9901400Z   fetch-depth: 1
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:17.9901720Z   fetch-tags: false
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:17.9902050Z   show-progress: true
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:17.9902370Z   lfs: false
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:17.9902700Z   submodules: false
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:17.9903090Z   set-safe-directory: true
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:17.9903470Z   allow-unsafe-pr-checkout: false
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:17.9904100Z env:
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:17.9904520Z   CARGO_TERM_COLOR: always
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:17.9905230Z   CARGO_INCREMENTAL: 0
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:17.9905570Z   RUST_BACKTRACE: 1
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:17.9905920Z ##[endgroup]
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:18.5288890Z Syncing repository: kaigani/261017-toontown-dev
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:18.5296330Z ##[group]Getting Git version info
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:18.5299460Z Working directory is '/Users/runner/work/261017-toontown-dev/261017-toontown-dev'
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:18.5302130Z [command]/opt/homebrew/bin/git version
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:18.5684290Z git version 2.56.0
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:18.5708450Z ##[endgroup]
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:18.5727290Z Copying '/Users/runner/.gitconfig' to '/Users/runner/work/_temp/d8906bab-52be-4b68-b484-8e2877109e7b/.gitconfig'
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:18.5733810Z Temporarily overriding HOME='/Users/runner/work/_temp/d8906bab-52be-4b68-b484-8e2877109e7b' before making global git config changes
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:18.5736790Z Adding repository directory to the temporary git global config as a safe directory
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:18.5741280Z [command]/opt/homebrew/bin/git config --global --add safe.directory /Users/runner/work/261017-toontown-dev/261017-toontown-dev
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:18.6079880Z Deleting the contents of '/Users/runner/work/261017-toontown-dev/261017-toontown-dev'
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:18.6129450Z ##[group]Determining repository object format
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:18.6148860Z ##[endgroup]
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:18.6151200Z ##[group]Initializing the repository
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:18.6153460Z [command]/opt/homebrew/bin/git init /Users/runner/work/261017-toontown-dev/261017-toontown-dev
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:18.6518200Z hint: Using 'master' as the name for the initial branch. This default branch name
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:18.6520310Z hint: will change to "main" in Git 3.0. To configure the initial branch name
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:18.6522320Z hint: to use in all of your new repositories, which will suppress this warning,
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:18.6524070Z hint: call:
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:18.6525280Z hint:
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:18.6526240Z hint: 	git config --global init.defaultBranch <name>
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:18.6527670Z hint:
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:18.6528800Z hint: Names commonly chosen instead of 'master' are 'main', 'trunk' and
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:18.6531130Z hint: 'development'. The just-created branch can be renamed via this command:
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:18.6532650Z hint:
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:18.6533440Z hint: 	git branch -m <name>
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:18.6534330Z hint:
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:18.6535430Z hint: Disable this message with "git config set advice.defaultBranchName false"
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:18.6548100Z Initialized empty Git repository in /Users/runner/work/261017-toontown-dev/261017-toontown-dev/.git/
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:18.6562210Z [command]/opt/homebrew/bin/git remote add origin https://github.com/kaigani/261017-toontown-dev
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:18.6690970Z ##[endgroup]
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:18.6692480Z ##[group]Disabling automatic garbage collection
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:18.6693860Z [command]/opt/homebrew/bin/git config --local gc.auto 0
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:18.6816090Z ##[endgroup]
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:18.6817610Z ##[group]Setting up auth
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:18.6818540Z Removing SSH command configuration
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:18.6821600Z [command]/opt/homebrew/bin/git config --local --name-only --get-regexp core\.sshCommand
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:18.6943690Z [command]/opt/homebrew/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:18.8824980Z Removing HTTP extra header
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:18.8828680Z [command]/opt/homebrew/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:18.8936210Z [command]/opt/homebrew/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:19.0325320Z Removing includeIf entries pointing to credentials config files
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:19.0333500Z [command]/opt/homebrew/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:19.0448720Z [command]/opt/homebrew/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:19.1881800Z [command]/opt/homebrew/bin/git config --file /Users/runner/work/_temp/git-credentials-772181f8-0dba-4205-bd6f-0248f2799754.config http.https://github.com/.extraheader AUTHORIZATION: basic ***
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:19.2034600Z [command]/opt/homebrew/bin/git config --local includeIf.gitdir:/Users/runner/work/261017-toontown-dev/261017-toontown-dev/.git.path /Users/runner/work/_temp/git-credentials-772181f8-0dba-4205-bd6f-0248f2799754.config
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:19.2166720Z [command]/opt/homebrew/bin/git config --local includeIf.gitdir:/Users/runner/work/261017-toontown-dev/261017-toontown-dev/.git/worktrees/*.path /Users/runner/work/_temp/git-credentials-772181f8-0dba-4205-bd6f-0248f2799754.config
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:19.2272670Z [command]/opt/homebrew/bin/git config --local includeIf.gitdir:/github/workspace/.git.path /github/runner_temp/git-credentials-772181f8-0dba-4205-bd6f-0248f2799754.config
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:19.2378100Z [command]/opt/homebrew/bin/git config --local includeIf.gitdir:/github/workspace/.git/worktrees/*.path /github/runner_temp/git-credentials-772181f8-0dba-4205-bd6f-0248f2799754.config
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:19.2476210Z ##[endgroup]
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:19.2477350Z ##[group]Fetching the repository
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:19.2488590Z [command]/opt/homebrew/bin/git -c protocol.version=2 fetch --no-tags --prune --no-recurse-submodules --depth=1 origin +3c74c3432f2a1895b5aaca83e6ddf914cf6b4281:refs/remotes/origin/m2-vector-engine
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:24.9912140Z From https://github.com/kaigani/261017-toontown-dev
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:24.9920190Z  * [new ref]         3c74c3432f2a1895b5aaca83e6ddf914cf6b4281 -> origin/m2-vector-engine
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:24.9945450Z [command]/opt/homebrew/bin/git branch --list --remote origin/m2-vector-engine
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:25.0050710Z   origin/m2-vector-engine
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:25.0069950Z [command]/opt/homebrew/bin/git rev-parse refs/remotes/origin/m2-vector-engine
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:25.0236100Z 3c74c3432f2a1895b5aaca83e6ddf914cf6b4281
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:25.0240800Z ##[endgroup]
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:25.0241680Z ##[group]Determining the checkout info
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:25.0243390Z ##[endgroup]
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:25.0259160Z [command]/opt/homebrew/bin/git sparse-checkout disable
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:25.0380840Z [command]/opt/homebrew/bin/git config --local --unset-all extensions.worktreeConfig
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:25.0574440Z ##[group]Checking out the ref
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:25.0576290Z [command]/opt/homebrew/bin/git checkout --progress --force -B m2-vector-engine refs/remotes/origin/m2-vector-engine
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:26.6861620Z Updating files:  40% (3184/7777)
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:26.7457390Z Updating files:  41% (3189/7777)
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:26.7653070Z Updating files:  42% (3267/7777)
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:26.7870750Z Updating files:  43% (3345/7777)
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:26.8075750Z Updating files:  44% (3422/7777)
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:26.8272090Z Updating files:  45% (3500/7777)
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:26.8447810Z Updating files:  46% (3578/7777)
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:26.8667980Z Updating files:  47% (3656/7777)
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:26.8834340Z Updating files:  48% (3733/7777)
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:26.9088940Z Updating files:  49% (3811/7777)
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:26.9268210Z Updating files:  50% (3889/7777)
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:26.9467250Z Updating files:  51% (3967/7777)
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:26.9818270Z Updating files:  52% (4045/7777)
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:27.0201850Z Updating files:  53% (4122/7777)
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:27.0573560Z Updating files:  54% (4200/7777)
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:27.0801000Z Updating files:  55% (4278/7777)
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:27.0815450Z Updating files:  55% (4347/7777)
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:27.0951040Z Updating files:  56% (4356/7777)
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:27.1074580Z Updating files:  57% (4433/7777)
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:27.1359240Z Updating files:  58% (4511/7777)
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:27.1611460Z Updating files:  59% (4589/7777)
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:27.1789630Z Updating files:  60% (4667/7777)
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:27.1929950Z Updating files:  61% (4744/7777)
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:27.2070740Z Updating files:  62% (4822/7777)
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:27.2525460Z Updating files:  63% (4900/7777)
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:27.2824510Z Updating files:  64% (4978/7777)
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:27.3021140Z Updating files:  65% (5056/7777)
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:27.3180990Z Updating files:  66% (5133/7777)
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:27.3351040Z Updating files:  67% (5211/7777)
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:27.3742490Z Updating files:  68% (5289/7777)
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:27.3948030Z Updating files:  69% (5367/7777)
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:27.4154890Z Updating files:  70% (5444/7777)
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:27.4321480Z Updating files:  71% (5522/7777)
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:27.4654820Z Updating files:  72% (5600/7777)
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:27.5039450Z Updating files:  73% (5678/7777)
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:27.5203070Z Updating files:  74% (5755/7777)
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:27.5592810Z Updating files:  75% (5833/7777)
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:27.5982630Z Updating files:  76% (5911/7777)
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:27.6337540Z Updating files:  77% (5989/7777)
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:28.0358690Z Updating files:  78% (6067/7777)
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:28.0705460Z Updating files:  79% (6144/7777)
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:28.0774700Z Updating files:  80% (6222/7777)
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:28.0989940Z Updating files:  80% (6236/7777)
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:28.1216140Z Updating files:  81% (6300/7777)
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:28.1666280Z Updating files:  82% (6378/7777)
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:28.1934470Z Updating files:  83% (6455/7777)
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:28.2100520Z Updating files:  84% (6533/7777)
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:28.2379400Z Updating files:  85% (6611/7777)
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:28.2678750Z Updating files:  86% (6689/7777)
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:28.2886180Z Updating files:  87% (6766/7777)
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:28.3226630Z Updating files:  88% (6844/7777)
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:28.3395390Z Updating files:  89% (6922/7777)
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:28.3594580Z Updating files:  90% (7000/7777)
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:28.3997310Z Updating files:  91% (7078/7777)
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:28.4247190Z Updating files:  92% (7155/7777)
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:28.4518680Z Updating files:  93% (7233/7777)
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:28.4714550Z Updating files:  94% (7311/7777)
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:28.4955630Z Updating files:  95% (7389/7777)
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:28.5194710Z Updating files:  96% (7466/7777)
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:28.5298690Z Updating files:  97% (7544/7777)
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:28.5388310Z Updating files:  98% (7622/7777)
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:28.5490610Z Updating files:  99% (7700/7777)
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:28.5492430Z Updating files: 100% (7777/7777)
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:28.5582730Z Updating files: 100% (7777/7777), done.
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:28.5777300Z Switched to a new branch 'm2-vector-engine'
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:28.5809160Z branch 'm2-vector-engine' set up to track 'origin/m2-vector-engine'.
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:28.6635330Z ##[endgroup]
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:28.6961930Z [command]/opt/homebrew/bin/git log -1 --format=%H
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:28.7082340Z 3c74c3432f2a1895b5aaca83e6ddf914cf6b4281
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:28.7638330Z ##[group]Run tc=$(sed -n 's/^channel = "\(.*\)"/\1/p' rust-toolchain.toml)
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:28.7639070Z ^[[36;1mtc=$(sed -n 's/^channel = "\(.*\)"/\1/p' rust-toolchain.toml)^[[0m
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:28.7639660Z ^[[36;1mrustup toolchain install "$tc" --profile minimal^[[0m
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:28.7640290Z ^[[36;1mrustup override set "$tc"^[[0m
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:28.7640550Z ^[[36;1mrustc --version^[[0m
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:28.7739690Z shell: /bin/bash --noprofile --norc -e -o pipefail {0}
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:28.7740090Z env:
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:28.7740330Z   CARGO_TERM_COLOR: always
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:28.7741340Z   CARGO_INCREMENTAL: 0
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:28.7741660Z   RUST_BACKTRACE: 1
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:28.7742260Z ##[endgroup]
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:29.0210620Z info: syncing channel updates for 1.98.1-aarch64-apple-darwin
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:29.2360680Z info: latest update on 2026-09-03 for version 1.98.1 (48a229cea 2026-09-01)
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:29.2365820Z info: downloading 3 components
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:37.8333240Z 
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:38.0687350Z   1.98.1-aarch64-apple-darwin installed - rustc 1.98.1 (48a229cea 2026-09-01)
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:38.0688330Z info: self-update is disabled for this build of rustup
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:38.0688820Z info: any updates to rustup will need to be fetched with your system package manager
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:38.0689220Z 
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:38.1416700Z info: override toolchain for /Users/runner/work/261017-toontown-dev/261017-toontown-dev set to 1.98.1-aarch64-apple-darwin
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:38.2400590Z rustc 1.98.1 (48a229cea 2026-09-01)
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:38.3212270Z ##[group]Run Swatinem/rust-cache@v2
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:38.3212700Z with:
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:38.3213140Z   key: history-oracles
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:38.3213660Z   prefix-key: v0-rust
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:38.3214020Z   add-job-id-key: true
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:38.3214360Z   add-rust-environment-hash-key: true
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:38.3214630Z   cache-targets: true
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:38.3214940Z   cache-all-crates: false
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:38.3215240Z   cache-workspace-crates: false
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:38.3221550Z   save-if: true
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:38.3221780Z   cache-provider: github
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:38.3222080Z   cache-bin: true
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:38.3222310Z   lookup-only: false
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:38.3222730Z   cmd-format: {0}
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:38.3223030Z env:
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:38.3223240Z   CARGO_TERM_COLOR: always
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:38.3223580Z   CARGO_INCREMENTAL: 0
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:38.3223800Z   RUST_BACKTRACE: 1
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:38.3224120Z ##[endgroup]
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:40.2323250Z ##[group]Cache Configuration
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:40.2340120Z Cache Provider:
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:40.2341530Z     github
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:40.2343050Z Workspaces:
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:40.2344970Z     /Users/runner/work/261017-toontown-dev/261017-toontown-dev
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:40.2346270Z Cache Paths:
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:40.2347220Z     /Users/runner/.cargo/bin
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:40.2348300Z     /Users/runner/.cargo/.crates.toml
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:40.2349340Z     /Users/runner/.cargo/.crates2.json
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:40.2349860Z     /Users/runner/.cargo/registry
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:40.2350080Z     /Users/runner/.cargo/git
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:40.2350360Z     /Users/runner/work/261017-toontown-dev/261017-toontown-dev/target
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:40.2350820Z Restore Key:
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:40.2351250Z     v0-rust-history-oracles-history-oracles-Darwin-arm64-1ef279f7
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:40.2351610Z Cache Key:
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:40.2352060Z     v0-rust-history-oracles-history-oracles-Darwin-arm64-1ef279f7-7ca7b21e
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:40.2352540Z .. Prefix:
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:40.2352850Z   - v0-rust-history-oracles-history-oracles-Darwin-arm64
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:40.2353400Z .. Environment considered:
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:40.2353670Z   - Rust Versions:
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:40.2354020Z     - 1.98.1 aarch64-apple-darwin 48a229ceaefd4985c50990b14116b6d856af0985
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:40.2354400Z     - 1.99.1 aarch64-apple-darwin 58cf8f9c35b355199727627d07ae34a4e2846d67
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:40.2354730Z   - CARGO_INCREMENTAL
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:40.2354950Z   - CARGO_TERM_COLOR
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:40.2355240Z   - RUST_BACKTRACE
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:40.2355500Z .. Lockfiles considered:
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:40.2356000Z   - /Users/runner/work/261017-toontown-dev/261017-toontown-dev/bins/headless/Cargo.toml
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:40.2356610Z   - /Users/runner/work/261017-toontown-dev/261017-toontown-dev/Cargo.lock
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:40.2357130Z   - /Users/runner/work/261017-toontown-dev/261017-toontown-dev/crates/anim/Cargo.toml
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:40.2357760Z   - /Users/runner/work/261017-toontown-dev/261017-toontown-dev/crates/audio/Cargo.toml
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:40.2358230Z   - /Users/runner/work/261017-toontown-dev/261017-toontown-dev/crates/colour/Cargo.toml
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:40.2358710Z   - /Users/runner/work/261017-toontown-dev/261017-toontown-dev/crates/engine/Cargo.toml
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:40.2359240Z   - /Users/runner/work/261017-toontown-dev/261017-toontown-dev/crates/executor/Cargo.toml
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:40.2359910Z   - /Users/runner/work/261017-toontown-dev/261017-toontown-dev/crates/fx/Cargo.toml
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:40.2360480Z   - /Users/runner/work/261017-toontown-dev/261017-toontown-dev/crates/io/Cargo.toml
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:40.2361000Z   - /Users/runner/work/261017-toontown-dev/261017-toontown-dev/crates/lipsync/Cargo.toml
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:40.2361620Z   - /Users/runner/work/261017-toontown-dev/261017-toontown-dev/crates/mcp/Cargo.toml
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:40.2362240Z   - /Users/runner/work/261017-toontown-dev/261017-toontown-dev/crates/model/Cargo.toml
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:40.2363890Z   - /Users/runner/work/261017-toontown-dev/261017-toontown-dev/crates/persist/Cargo.toml
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:40.2364560Z   - /Users/runner/work/261017-toontown-dev/261017-toontown-dev/crates/registry-macros/Cargo.toml
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:40.2365510Z   - /Users/runner/work/261017-toontown-dev/261017-toontown-dev/crates/registry/Cargo.toml
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:40.2366310Z   - /Users/runner/work/261017-toontown-dev/261017-toontown-dev/crates/render/Cargo.toml
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:40.2366900Z   - /Users/runner/work/261017-toontown-dev/261017-toontown-dev/crates/vector/Cargo.toml
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:40.2368240Z   - /Users/runner/work/261017-toontown-dev/261017-toontown-dev/desktop/src-tauri/Cargo.toml
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:40.2368930Z   - /Users/runner/work/261017-toontown-dev/261017-toontown-dev/rust-toolchain.toml
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:40.2371860Z ##[endgroup]
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:40.2372190Z 
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:40.2372790Z ... Restoring cache ...
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:40.5747090Z Cache hit for: v0-rust-history-oracles-history-oracles-Darwin-arm64-1ef279f7-7ca7b21e
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:41.8783970Z Received 0 of 346226131 (0.0%), 0.0 MBs/sec
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:42.8769240Z Received 46137344 of 346226131 (13.3%), 22.0 MBs/sec
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:43.9176670Z Received 134217728 of 346226131 (38.8%), 42.1 MBs/sec
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:44.9171210Z Received 180355072 of 346226131 (52.1%), 42.6 MBs/sec
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:45.9195870Z Received 247463936 of 346226131 (71.5%), 46.8 MBs/sec
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:46.9206930Z Received 285212672 of 346226131 (82.4%), 45.0 MBs/sec
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:47.6374620Z Received 346226131 of 346226131 (100.0%), 48.8 MBs/sec
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:47.6383690Z Cache Size: ~330 MB (346226131 B)
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:47.6671900Z [command]/opt/homebrew/bin/gtar -xf /Users/runner/work/_temp/29f9b29e-cc26-4a51-a117-3ce3c05a800d/cache.tzst -P -C /Users/runner/work/261017-toontown-dev/261017-toontown-dev --delay-directory-restore --use-compress-program unzstd
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:53.3295840Z Cache restored successfully
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:53.3467830Z Restored from cache key "v0-rust-history-oracles-history-oracles-Darwin-arm64-1ef279f7-7ca7b21e" full match: true.
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:53.4013510Z ##[group]Run mkdir -p out
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:53.4014000Z ^[[36;1mmkdir -p out^[[0m
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:53.4015030Z ^[[36;1mcargo test --release --locked -p tt-executor --test c12_r1_stress --test c12_r3_stress --test c13_r3_history_r1 --test c13_r3_history_r3 -- ten_thousand_history_operations_match_independent_content_oracle_and_replay --exact --nocapture 2>&1 | tee out/history-oracles-executor.log^[[0m
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:53.4016510Z ^[[36;1mcargo test --release --locked -p tt-mcp --test c14_r3_history_r1 --test c14_r3_history_r3 -- ten_thousand_history_operations_match_independent_content_oracle_and_replay --exact --nocapture 2>&1 | tee out/history-oracles-mcp.log^[[0m
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:53.4104890Z shell: /bin/bash --noprofile --norc -e -o pipefail {0}
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:53.4105350Z env:
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:53.4105590Z   CARGO_TERM_COLOR: always
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:53.4105940Z   CARGO_INCREMENTAL: 0
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:53.4106230Z   RUST_BACKTRACE: 1
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:53.4106600Z   CACHE_ON_FAILURE: false
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:53.4106900Z ##[endgroup]
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:54.6018020Z ^[[1m^[[92m    Updating^[[0m crates.io index
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:58.7409020Z ^[[1m^[[92m   Compiling^[[0m tt-model v0.0.1 (/Users/runner/work/261017-toontown-dev/261017-toontown-dev/crates/model)
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:01:58.7765760Z ^[[1m^[[92m   Compiling^[[0m tt-registry-macros v0.0.1 (/Users/runner/work/261017-toontown-dev/261017-toontown-dev/crates/registry-macros)
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:02:14.3663460Z ^[[1m^[[92m   Compiling^[[0m tt-anim v0.0.1 (/Users/runner/work/261017-toontown-dev/261017-toontown-dev/crates/anim)
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:02:14.3674360Z ^[[1m^[[92m   Compiling^[[0m tt-colour v0.0.1 (/Users/runner/work/261017-toontown-dev/261017-toontown-dev/crates/colour)
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:02:14.5902810Z ^[[1m^[[92m   Compiling^[[0m tt-fx v0.0.1 (/Users/runner/work/261017-toontown-dev/261017-toontown-dev/crates/fx)
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:02:14.5921010Z ^[[1m^[[92m   Compiling^[[0m tt-vector v0.0.1 (/Users/runner/work/261017-toontown-dev/261017-toontown-dev/crates/vector)
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:02:14.6757220Z ^[[1m^[[92m   Compiling^[[0m tt-persist v0.0.1 (/Users/runner/work/261017-toontown-dev/261017-toontown-dev/crates/persist)
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:03:18.8456560Z ^[[1m^[[92m   Compiling^[[0m tt-render v0.0.1 (/Users/runner/work/261017-toontown-dev/261017-toontown-dev/crates/render)
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:03:21.5812280Z ^[[1m^[[92m   Compiling^[[0m tt-io v0.0.1 (/Users/runner/work/261017-toontown-dev/261017-toontown-dev/crates/io)
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:03:27.0914420Z ^[[1m^[[92m   Compiling^[[0m tt-registry v0.0.1 (/Users/runner/work/261017-toontown-dev/261017-toontown-dev/crates/registry)
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:03:30.2417880Z ^[[1m^[[92m   Compiling^[[0m tt-executor v0.0.1 (/Users/runner/work/261017-toontown-dev/261017-toontown-dev/crates/executor)
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:06:15.9861070Z ^[[1m^[[92m    Finished^[[0m `release` profile [optimized + debuginfo] target(s) in 4m 22s
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:06:16.1008510Z ^[[1m^[[92m     Running^[[0m tests/c12_r1_stress.rs (target/release/deps/c12_r1_stress-b306821bdff5069d)
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:06:16.1122610Z 
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:06:16.1233290Z running 1 test
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:06:48.7933230Z {"seed":"0xc12020261019a571","operations":10000,"replayOperations":10000,"editsUndoRedoCreateRestoreDryRun":[5472,3911,528,1,1690,534],"documentRev":11230,"durationSeconds":32.645188459,"oracle":"independent before/after metadata stack; exact canonical all-entry byte checks every 100 operations; full fresh executor replay"}
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:06:49.2192950Z test ten_thousand_history_operations_match_independent_content_oracle_and_replay ... ok
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:06:49.2198830Z 
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:06:49.2199380Z test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 4 filtered out; finished in 33.11s
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:06:49.2199860Z 
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:06:49.2409510Z ^[[1m^[[92m     Running^[[0m tests/c12_r3_stress.rs (target/release/deps/c12_r3_stress-0ee672753aaf8de2)
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:06:49.2672290Z 
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:06:49.2673520Z running 1 test
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:12.3723650Z {"seed":"0xc12320261019b683","operations":10000,"replayOperations":10000,"editsUndoRedoCreateRestoreDryRun":[5494,3902,470,1,1724,511],"documentRev":11176,"durationSeconds":23.082326834,"oracle":"independent before/after metadata stack; exact canonical all-entry byte checks every 100 operations; full fresh executor replay"}
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:12.5984790Z test ten_thousand_history_operations_match_independent_content_oracle_and_replay ... ok
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:12.5985940Z 
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:12.5986500Z test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 4 filtered out; finished in 23.33s
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:12.5987100Z 
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:12.6045290Z ^[[1m^[[92m     Running^[[0m tests/c13_r3_history_r1.rs (target/release/deps/c13_r3_history_r1-d6bf318d71de19fd)
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:12.6254240Z 
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:12.6254720Z running 1 test
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:38.6754730Z {"seed":"0xc12020261019a571","operations":10000,"replayOperations":10000,"editsUndoRedoCreateRestoreDryRun":[5472,3911,528,1,1690,534],"documentRev":11231,"durationSeconds":26.003746125,"oracle":"independent before/after metadata stack; exact canonical all-entry byte checks every 100 operations; full fresh executor replay"}
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:39.2410890Z test ten_thousand_history_operations_match_independent_content_oracle_and_replay ... ok
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:39.2439330Z 
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:39.2444510Z test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 26.61s
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:39.2449570Z 
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:39.2528520Z ^[[1m^[[92m     Running^[[0m tests/c13_r3_history_r3.rs (target/release/deps/c13_r3_history_r3-4d835ec90ddc1b67)
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:39.3485630Z 
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:39.3486590Z running 1 test
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:08:09.7313830Z {"seed":"0xc12320261019b683","operations":10000,"replayOperations":10000,"editsUndoRedoCreateRestoreDryRun":[5494,3902,470,1,1724,511],"documentRev":11177,"durationSeconds":30.352361541,"oracle":"independent before/after metadata stack; exact canonical all-entry byte checks every 100 operations; full fresh executor replay"}
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:08:10.1880460Z test ten_thousand_history_operations_match_independent_content_oracle_and_replay ... ok
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:08:10.1885600Z 
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:08:10.1897500Z test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 30.84s
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:08:10.1901670Z 
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:08:11.0531880Z ^[[1m^[[92m   Compiling^[[0m tt-model v0.0.1 (/Users/runner/work/261017-toontown-dev/261017-toontown-dev/crates/model)
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:08:24.6687470Z ^[[1m^[[92m   Compiling^[[0m tt-anim v0.0.1 (/Users/runner/work/261017-toontown-dev/261017-toontown-dev/crates/anim)
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:08:24.6807430Z ^[[1m^[[92m   Compiling^[[0m tt-vector v0.0.1 (/Users/runner/work/261017-toontown-dev/261017-toontown-dev/crates/vector)
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:08:25.0880230Z ^[[1m^[[92m   Compiling^[[0m tt-fx v0.0.1 (/Users/runner/work/261017-toontown-dev/261017-toontown-dev/crates/fx)
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:08:25.1935910Z ^[[1m^[[92m   Compiling^[[0m tt-colour v0.0.1 (/Users/runner/work/261017-toontown-dev/261017-toontown-dev/crates/colour)
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:08:25.2872790Z ^[[1m^[[92m   Compiling^[[0m tt-persist v0.0.1 (/Users/runner/work/261017-toontown-dev/261017-toontown-dev/crates/persist)
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:09:19.3403560Z ^[[1m^[[92m   Compiling^[[0m tt-render v0.0.1 (/Users/runner/work/261017-toontown-dev/261017-toontown-dev/crates/render)
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:09:21.4806810Z ^[[1m^[[92m   Compiling^[[0m tt-io v0.0.1 (/Users/runner/work/261017-toontown-dev/261017-toontown-dev/crates/io)
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:09:25.1816390Z ^[[1m^[[92m   Compiling^[[0m tt-audio v0.0.1 (/Users/runner/work/261017-toontown-dev/261017-toontown-dev/crates/audio)
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:09:25.2725600Z ^[[1m^[[92m   Compiling^[[0m tt-registry v0.0.1 (/Users/runner/work/261017-toontown-dev/261017-toontown-dev/crates/registry)
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:09:29.5257750Z ^[[1m^[[92m   Compiling^[[0m tt-executor v0.0.1 (/Users/runner/work/261017-toontown-dev/261017-toontown-dev/crates/executor)
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:09:59.1826750Z ^[[1m^[[92m   Compiling^[[0m tt-lipsync v0.0.1 (/Users/runner/work/261017-toontown-dev/261017-toontown-dev/crates/lipsync)
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:09:59.3456260Z ^[[1m^[[92m   Compiling^[[0m tt-engine v0.0.1 (/Users/runner/work/261017-toontown-dev/261017-toontown-dev/crates/engine)
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:10:05.4421760Z ^[[1m^[[92m   Compiling^[[0m tt-mcp v0.0.1 (/Users/runner/work/261017-toontown-dev/261017-toontown-dev/crates/mcp)
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:11:37.3594180Z ^[[1m^[[92m    Finished^[[0m `release` profile [optimized + debuginfo] target(s) in 3m 27s
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:11:37.4130760Z ^[[1m^[[92m     Running^[[0m tests/c14_r3_history_r1.rs (target/release/deps/c14_r3_history_r1-310324c850580a29)
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:11:37.4177460Z 
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:11:37.4179010Z running 1 test
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:12:10.6121640Z {"seed":"0xc12020261019a571","operations":10000,"replayOperations":10000,"editsUndoRedoCreateRestoreDryRun":[5472,3911,528,1,1690,534],"documentRev":11231,"durationSeconds":33.171469292,"oracle":"independent before/after metadata stack; exact canonical all-entry byte checks every 100 operations; full fresh executor replay"}
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:12:11.3134860Z test ten_thousand_history_operations_match_independent_content_oracle_and_replay ... ok
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:12:11.3135750Z 
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:12:11.3137450Z test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 33.90s
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:12:11.3138060Z 
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:12:11.3282930Z ^[[1m^[[92m     Running^[[0m tests/c14_r3_history_r3.rs (target/release/deps/c14_r3_history_r3-698569afbbd8758f)
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:12:11.3505900Z 
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:12:11.3615120Z running 1 test
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:12:50.0546720Z {"seed":"0xc12320261019b683","operations":10000,"replayOperations":10000,"editsUndoRedoCreateRestoreDryRun":[5494,3902,470,1,1724,511],"documentRev":11177,"durationSeconds":38.674185417,"oracle":"independent before/after metadata stack; exact canonical all-entry byte checks every 100 operations; full fresh executor replay"}
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:12:50.8574510Z test ten_thousand_history_operations_match_independent_content_oracle_and_replay ... ok
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:12:50.8577430Z 
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:12:50.8577870Z test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 39.51s
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:12:50.8601320Z 
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:12:50.9685870Z ##[group]Run actions/upload-artifact@v7
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:12:50.9687340Z with:
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:12:50.9688170Z   name: history-oracles-macOS
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:12:50.9688680Z   path: out/
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:12:50.9689300Z   if-no-files-found: error
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:12:50.9689900Z   compression-level: 6
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:12:50.9690690Z   overwrite: false
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:12:50.9691340Z   include-hidden-files: false
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:12:50.9692030Z   archive: true
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:12:50.9711620Z env:
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:12:50.9711920Z   CARGO_TERM_COLOR: always
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:12:50.9712180Z   CARGO_INCREMENTAL: 0
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:12:50.9712350Z   RUST_BACKTRACE: 1
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:12:50.9712620Z   CACHE_ON_FAILURE: false
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:12:50.9712840Z ##[endgroup]
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:12:51.6323730Z With the provided path, there will be 2 files uploaded
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:12:51.6332130Z Artifact name is valid!
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:12:51.6332510Z Root directory input is valid!
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:12:52.0658160Z Uploading artifact: history-oracles-macOS.zip
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:12:52.0660090Z Beginning upload of artifact content to blob storage
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:12:52.3869490Z Uploaded bytes 1834
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:12:52.4642390Z Finished uploading artifact content to blob storage!
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:12:52.4657570Z SHA256 digest of uploaded artifact is e98b449e092be310b42635f09ee58d19c0e5f9ac33e4ad5b4bd9b307ff101bdc
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:12:52.4659160Z Finalizing artifact upload
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:12:53.1112410Z Artifact history-oracles-macOS successfully finalized. Artifact ID 13161949567
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:12:53.1114360Z Artifact history-oracles-macOS has been successfully uploaded! Final size is 1834 bytes. Artifact ID is 13161949567
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:12:53.1127510Z Artifact download URL: https://github.com/kaigani/261017-toontown-dev/actions/runs/41486947308/artifacts/13161949567
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:12:53.1464380Z Post job cleanup.
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:12:53.3080600Z Cache up-to-date.
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:12:53.3203700Z Post job cleanup.
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:12:53.4449730Z [command]/opt/homebrew/bin/git version
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:12:53.4752940Z git version 2.56.0
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:12:53.4782680Z Copying '/Users/runner/.gitconfig' to '/Users/runner/work/_temp/55ba441e-e9bc-49cc-834c-7ab97fede8f3/.gitconfig'
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:12:53.4795970Z Temporarily overriding HOME='/Users/runner/work/_temp/55ba441e-e9bc-49cc-834c-7ab97fede8f3' before making global git config changes
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:12:53.4798710Z Adding repository directory to the temporary git global config as a safe directory
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:12:53.4803230Z [command]/opt/homebrew/bin/git config --global --add safe.directory /Users/runner/work/261017-toontown-dev/261017-toontown-dev
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:12:53.4962840Z Removing SSH command configuration
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:12:53.4969800Z [command]/opt/homebrew/bin/git config --local --name-only --get-regexp core\.sshCommand
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:12:53.5083960Z [command]/opt/homebrew/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:12:53.6685830Z Removing HTTP extra header
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:12:53.6693680Z [command]/opt/homebrew/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:12:53.6794110Z [command]/opt/homebrew/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:12:53.8004850Z Removing includeIf entries pointing to credentials config files
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:12:53.8010840Z [command]/opt/homebrew/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:12:53.8091590Z includeif.gitdir:/Users/runner/work/261017-toontown-dev/261017-toontown-dev/.git.path
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:12:53.8092750Z includeif.gitdir:/Users/runner/work/261017-toontown-dev/261017-toontown-dev/.git/worktrees/*.path
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:12:53.8093580Z includeif.gitdir:/github/workspace/.git.path
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:12:53.8094010Z includeif.gitdir:/github/workspace/.git/worktrees/*.path
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:12:53.8100000Z [command]/opt/homebrew/bin/git config --local --get-all includeif.gitdir:/Users/runner/work/261017-toontown-dev/261017-toontown-dev/.git.path
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:12:53.8182030Z /Users/runner/work/_temp/git-credentials-772181f8-0dba-4205-bd6f-0248f2799754.config
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:12:53.8196560Z [command]/opt/homebrew/bin/git config --local --unset includeif.gitdir:/Users/runner/work/261017-toontown-dev/261017-toontown-dev/.git.path \/Users\/runner\/work\/_temp\/git\-credentials\-772181f8\-0dba\-4205\-bd6f\-0248f2799754\.config
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:12:53.8310790Z [command]/opt/homebrew/bin/git config --local --get-all includeif.gitdir:/Users/runner/work/261017-toontown-dev/261017-toontown-dev/.git/worktrees/*.path
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:12:53.8395800Z /Users/runner/work/_temp/git-credentials-772181f8-0dba-4205-bd6f-0248f2799754.config
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:12:53.8403280Z [command]/opt/homebrew/bin/git config --local --unset includeif.gitdir:/Users/runner/work/261017-toontown-dev/261017-toontown-dev/.git/worktrees/*.path \/Users\/runner\/work\/_temp\/git\-credentials\-772181f8\-0dba\-4205\-bd6f\-0248f2799754\.config
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:12:53.8549680Z [command]/opt/homebrew/bin/git config --local --get-all includeif.gitdir:/github/workspace/.git.path
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:12:53.8630160Z /github/runner_temp/git-credentials-772181f8-0dba-4205-bd6f-0248f2799754.config
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:12:53.8644980Z [command]/opt/homebrew/bin/git config --local --unset includeif.gitdir:/github/workspace/.git.path \/github\/runner_temp\/git\-credentials\-772181f8\-0dba\-4205\-bd6f\-0248f2799754\.config
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:12:53.8773180Z [command]/opt/homebrew/bin/git config --local --get-all includeif.gitdir:/github/workspace/.git/worktrees/*.path
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:12:53.8849300Z /github/runner_temp/git-credentials-772181f8-0dba-4205-bd6f-0248f2799754.config
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:12:53.8862480Z [command]/opt/homebrew/bin/git config --local --unset includeif.gitdir:/github/workspace/.git/worktrees/*.path \/github\/runner_temp\/git\-credentials\-772181f8\-0dba\-4205\-bd6f\-0248f2799754\.config
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:12:53.8956010Z [command]/opt/homebrew/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:12:54.0026760Z Removing credentials config '/Users/runner/work/_temp/git-credentials-772181f8-0dba-4205-bd6f-0248f2799754.config'
+history oracles release (macos-latest)	UNKNOWN STEP	2026-11-02T17:12:54.0150610Z Cleaning up orphan processes
