@@ -1812,12 +1812,15 @@ fn snapping_onto_a_curved_contour_reaches_its_nearest_point() {
 fn flatten_keeps_a_pencil_piece_that_a_brush_only_partly_covers() {
     let h = fresh();
     let c = json!(palette(&h)[4]);
-    let pencils = vec![(vec![(40.0, 0.0), (40.0, 80.0), (60.0, 0.0), (0.0, 0.0)], false)];
+    let pencils = [(vec![(40.0, 0.0), (40.0, 80.0), (60.0, 0.0), (0.0, 0.0)], false)];
     let b = brush_contour(&(4, 5, 1, 3));
     let strokes: Vec<Value> = pencils.iter().enumerate().map(|(i, (p, cl))| pencil(&format!("p{i}"), p, *cl)).collect();
     let (d, ids) = create(
         &h,
-        vec![layer_json("l_p", "pencil", strokes), layer_json("l_q", "brush", vec![brush("b0", &[b.clone()], &c)])],
+        vec![
+            layer_json("l_p", "pencil", strokes),
+            layer_json("l_q", "brush", vec![brush("b0", std::slice::from_ref(&b), &c)]),
+        ],
     );
     let before = paint(&h, &d, &ids[0]);
     let old = old_state(&before).unwrap();
