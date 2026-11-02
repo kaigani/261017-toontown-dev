@@ -383,3 +383,92 @@ fn cancelling_keeps_the_images_already_completed() {
     assert_eq!(rev(&h), v + done, "each completed image is its own revision and stays");
     let _ = std::fs::remove_dir_all(dir);
 }
+
+/// The fixture with its image element's bitmap made real (the E2 line art), saved as a package with that blob and
+/// opened through `project.open`: the image element, its bank drawing and the bitmap node's entry, as imported.
+fn with_image_element() -> (ExecutorHandle, String, std::path::PathBuf) {
+    use tt_persist::container::{BlobData, Blobs};
+    let png = std::fs::read(art()).unwrap();
+    let mut parts = tt_model::fixture::sample_parts(1).unwrap();
+    let image = parts.elements.iter().find(|e| e.name() == "Background").unwrap();
+    let bank_id = image.drawing_bank_id().clone().unwrap();
+    let element_id = image.id().as_str().to_owned();
+    let bank = parts.banks.iter().find(|b| *b.id() == bank_id).unwrap();
+    let drawing_id = bank.drawings().ids()[0].clone();
+    let at = parts.drawings.iter().position(|d| *d.id() == drawing_id).unwrap();
+    let mut d = serde_json::to_value(&parts.drawings[at]).unwrap();
+    let node = &mut d["nodes"][0];
+    let entry = node["image"]["entry"].as_str().unwrap().to_owned();
+    node["image"]["size"] = json!(png.len());
+    node["image"]["sha256"] = json!(tt_persist::fsx::sha256(&png));
+    node["width"] = json!(256);
+    node["height"] = json!(192);
+    parts.drawings[at] = tt_model::object::from_json(&d).unwrap();
+    let doc = tt_model::document::Document::from_parts(parts).unwrap();
+    let mut blobs = Blobs::default();
+    blobs.insert(entry, BlobData::Bytes(std::sync::Arc::new(png)));
+    let dir =
+        std::env::temp_dir().join(format!("tt-c24-image-{}-{}", std::process::id(), tt_persist::fsx::random_token(4)));
+    std::fs::create_dir_all(&dir).unwrap();
+    let package = dir.join("Image.animpkg");
+    let preserved = tt_persist::load::Preserved::default();
+    let input = tt_persist::save::SaveInput {
+        doc: &doc,
+        preserved: &preserved,
+        blobs: &blobs,
+        session: None,
+        saved_at: "2026-11-02T09:00:00Z".into(),
+    };
+    tt_persist::save::save_package(&package, &input, None).unwrap();
+    let h = fixture();
+    let opened = job(&h, "project.open", json!({ "path": package.to_string_lossy(), "onUnsaved": "discard" }));
+    assert_eq!(opened["state"], "succeeded", "{opened}");
+    (h, element_id, dir)
+}
+
+#[test]
+fn an_image_element_becomes_a_new_drawing_element_with_matching_exposure() {
+    let (h, image, dir) = with_image_element();
+    // The preview reads the bitmap the image element shows at a frame.
+    let r = ok(&h, "draw.vectorize.preview", json!({ "imageElementId": image, "frame": 1, "width": 256 }));
+    assert_eq!(r["strokeCount"], 3);
+    assert_eq!(
+        err(&h, "draw.vectorize.run", json!({ "imageElementId": image, "targetElementId": BOB })).code,
+        "arg.invalid"
+    );
+    let doc = h.snapshot().unwrap().unwrap();
+    let before = doc.elements().count();
+    let source = doc.elements().find(|e| e.id().as_str() == image).unwrap();
+    let source_runs: Vec<(Option<String>, u32)> =
+        source.exposure().iter().flatten().map(|(d, n)| (d.as_ref().map(|x| x.as_str().to_owned()), *n)).collect();
+    let name = format!("{} Vector", source.name());
+    drop(doc);
+    let v = rev(&h);
+    let rec = job(&h, "draw.vectorize.run", json!({ "imageElementId": image }));
+    assert_eq!(rec["state"], "succeeded", "{rec}");
+    assert_eq!(rec["result"]["completed"], 1);
+    assert_eq!(rev(&h), v + 1, "one image, one step");
+    let doc = h.snapshot().unwrap().unwrap();
+    assert_eq!(doc.elements().count(), before + 1);
+    let new = doc.elements().find(|e| *e.name() == name).expect("the new drawing element");
+    assert_eq!(new.id().as_str(), rec["result"]["elementId"].as_str().unwrap());
+    let drawing = rec["result"]["drawingIds"][0].as_str().unwrap().to_owned();
+    // The exposure mirrors the image element's, drawing for drawing.
+    let new_runs: Vec<(Option<String>, u32)> =
+        new.exposure().iter().flatten().map(|(d, n)| (d.as_ref().map(|x| x.as_str().to_owned()), *n)).collect();
+    assert_eq!(new_runs.len(), source_runs.len());
+    for ((a, n), (b, m)) in source_runs.iter().zip(&new_runs) {
+        assert_eq!(n, m);
+        assert_eq!(a.is_some(), b.is_some());
+        if a.is_some() {
+            assert_eq!(b.as_deref(), Some(drawing.as_str()));
+        }
+    }
+    // The image element is kept unchanged.
+    assert!(doc.elements().any(|e| e.id().as_str() == image));
+    drop(doc);
+    ok(&h, "edit.undo", json!({}));
+    assert_eq!(h.snapshot().unwrap().unwrap().elements().count(), before);
+    drop(h);
+    let _ = std::fs::remove_dir_all(dir);
+}
