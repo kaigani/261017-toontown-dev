@@ -1,0 +1,145 @@
+{
+  "os": "macos",
+  "arch": "aarch64",
+  "profile": "release",
+  "strokes": 100000,
+  "repetitions": 5,
+  "memory": {
+    "rssBytes": {
+      "start": 1692991488.0,
+      "afterOpen": 2071314432.0,
+      "afterSeries": 2449997824.0
+    },
+    "liveBytes": {
+      "start": 146321824.0,
+      "afterOpen": 267728272.0,
+      "afterSeries": 1196822557.0
+    }
+  },
+  "series": [
+    {
+      "strokeAddSeconds": 12.207599334,
+      "undoSeconds": 4.509118667,
+      "redoSeconds": 5.344495167,
+      "dryRunSeconds": 10.200323666,
+      "liveBytes": 686474410.0,
+      "rssBytes": 3041263616.0
+    },
+    {
+      "strokeAddSeconds": 9.39811625,
+      "undoSeconds": 7.034761083,
+      "redoSeconds": 6.382017417,
+      "dryRunSeconds": 10.244627833,
+      "liveBytes": 814052604.0,
+      "rssBytes": 2774171648.0
+    },
+    {
+      "strokeAddSeconds": 11.030256,
+      "undoSeconds": 7.254268792,
+      "redoSeconds": 5.64918825,
+      "dryRunSeconds": 10.160655083,
+      "liveBytes": 941639480.0,
+      "rssBytes": 2981806080.0
+    },
+    {
+      "strokeAddSeconds": 10.131482083,
+      "undoSeconds": 6.211111,
+      "redoSeconds": 5.470463583,
+      "dryRunSeconds": 8.909989042,
+      "liveBytes": 1069229214.0,
+      "rssBytes": 2675720192.0
+    },
+    {
+      "strokeAddSeconds": 9.694524291,
+      "undoSeconds": 5.564860625,
+      "redoSeconds": 5.579470083,
+      "dryRunSeconds": 8.644047625,
+      "liveBytes": 1196825998.0,
+      "rssBytes": 2449997824.0
+    }
+  ],
+  "queuedRead": [
+    {
+      "longCommandSeconds": 9.902692958,
+      "readSentAtSeconds": 0.171026375,
+      "readSeconds": 9.735621959,
+      "readAnsweredAfterLongSeconds": 0.003955376000000399,
+      "readOk": true
+    },
+    {
+      "longCommandSeconds": 11.5630145,
+      "readSentAtSeconds": 0.120685292,
+      "readSeconds": 11.442405833,
+      "readAnsweredAfterLongSeconds": 0.00007662500000016337,
+      "readOk": true
+    },
+    {
+      "longCommandSeconds": 11.602889416,
+      "readSentAtSeconds": 0.102794708,
+      "readSeconds": 11.500509417,
+      "readAnsweredAfterLongSeconds": 0.00041470899999929145,
+      "readOk": true
+    },
+    {
+      "longCommandSeconds": 9.311536583,
+      "readSentAtSeconds": 0.174912958,
+      "readSeconds": 9.136815958,
+      "readAnsweredAfterLongSeconds": 0.00019233299999932285,
+      "readOk": true
+    },
+    {
+      "longCommandSeconds": 14.013835208,
+      "readSentAtSeconds": 0.120256,
+      "readSeconds": 13.894061708,
+      "readAnsweredAfterLongSeconds": 0.0004825000000003854,
+      "readOk": true
+    }
+  ],
+  "maintenance": [
+    {
+      "longCommandSeconds": 10.047014292,
+      "requestedAtSeconds": 0.1622235,
+      "behindLongSeconds": 9.897378333,
+      "autosaveSnapshotSeconds": 0.000225958,
+      "heartbeatSeconds": 0.012515708,
+      "idleSeconds": 0.002217041,
+      "idleAutosaveSnapshotSeconds": null
+    },
+    {
+      "longCommandSeconds": 11.949400875,
+      "requestedAtSeconds": 0.156434541,
+      "behindLongSeconds": 11.803606708,
+      "autosaveSnapshotSeconds": 0.000185709,
+      "heartbeatSeconds": 0.01091575,
+      "idleSeconds": 0.005841708,
+      "idleAutosaveSnapshotSeconds": null
+    },
+    {
+      "longCommandSeconds": 8.231478833,
+      "requestedAtSeconds": 0.086283333,
+      "behindLongSeconds": 8.159119666,
+      "autosaveSnapshotSeconds": 0.000172458,
+      "heartbeatSeconds": 0.012908875,
+      "idleSeconds": 0.037408584,
+      "idleAutosaveSnapshotSeconds": null
+    },
+    {
+      "longCommandSeconds": 8.625728041,
+      "requestedAtSeconds": 0.203420916,
+      "behindLongSeconds": 8.436297791,
+      "autosaveSnapshotSeconds": 0.000167625,
+      "heartbeatSeconds": 0.013800167,
+      "idleSeconds": 0.007542917,
+      "idleAutosaveSnapshotSeconds": null
+    },
+    {
+      "longCommandSeconds": 7.483055625,
+      "requestedAtSeconds": 0.106481125,
+      "behindLongSeconds": 7.388445208,
+      "autosaveSnapshotSeconds": 0.000165292,
+      "heartbeatSeconds": 0.011648917,
+      "idleSeconds": 0.006580292,
+      "idleAutosaveSnapshotSeconds": null
+    }
+  ]
+}

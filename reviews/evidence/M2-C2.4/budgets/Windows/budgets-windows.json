@@ -1,0 +1,145 @@
+{
+  "os": "windows",
+  "arch": "x86_64",
+  "profile": "release",
+  "strokes": 100000,
+  "repetitions": 5,
+  "memory": {
+    "rssBytes": {
+      "start": 175910912.0,
+      "afterOpen": 362164224.0,
+      "afterSeries": 2297282560.0
+    },
+    "liveBytes": {
+      "start": 146121735.0,
+      "afterOpen": 267527168.0,
+      "afterSeries": 1196622557.0
+    }
+  },
+  "series": [
+    {
+      "strokeAddSeconds": 15.5627047,
+      "undoSeconds": 10.8191159,
+      "redoSeconds": 9.526208,
+      "dryRunSeconds": 14.9765898,
+      "liveBytes": 686273922.0,
+      "rssBytes": 1789476864.0
+    },
+    {
+      "strokeAddSeconds": 17.2898843,
+      "undoSeconds": 12.0367814,
+      "redoSeconds": 10.7623196,
+      "dryRunSeconds": 16.8603477,
+      "liveBytes": 813852244.0,
+      "rssBytes": 1155698688.0
+    },
+    {
+      "strokeAddSeconds": 18.742275,
+      "undoSeconds": 12.1176495,
+      "redoSeconds": 11.212647,
+      "dryRunSeconds": 17.659339,
+      "liveBytes": 941439248.0,
+      "rssBytes": 2159124480.0
+    },
+    {
+      "strokeAddSeconds": 18.6212811,
+      "undoSeconds": 12.8026337,
+      "redoSeconds": 11.2100755,
+      "dryRunSeconds": 17.0049154,
+      "liveBytes": 1069029110.0,
+      "rssBytes": 2318884864.0
+    },
+    {
+      "strokeAddSeconds": 19.2442534,
+      "undoSeconds": 13.2742139,
+      "redoSeconds": 11.475912600000001,
+      "dryRunSeconds": 17.6145585,
+      "liveBytes": 1196626022.0,
+      "rssBytes": 2297282560.0
+    }
+  ],
+  "queuedRead": [
+    {
+      "longCommandSeconds": 19.7013065,
+      "readSentAtSeconds": 0.0506145,
+      "readSeconds": 19.6515645,
+      "readAnsweredAfterLongSeconds": 0.000872499999996279,
+      "readOk": true
+    },
+    {
+      "longCommandSeconds": 20.3553203,
+      "readSentAtSeconds": 0.050135,
+      "readSeconds": 20.3059527,
+      "readAnsweredAfterLongSeconds": 0.0007674000000008618,
+      "readOk": true
+    },
+    {
+      "longCommandSeconds": 20.0136691,
+      "readSentAtSeconds": 0.0502886,
+      "readSeconds": 19.9638455,
+      "readAnsweredAfterLongSeconds": 0.0004649999999983834,
+      "readOk": true
+    },
+    {
+      "longCommandSeconds": 21.1220509,
+      "readSentAtSeconds": 0.050372,
+      "readSeconds": 21.0724672,
+      "readAnsweredAfterLongSeconds": 0.0007882999999964113,
+      "readOk": true
+    },
+    {
+      "longCommandSeconds": 20.9509562,
+      "readSentAtSeconds": 0.0502399,
+      "readSeconds": 20.9012411,
+      "readAnsweredAfterLongSeconds": 0.0005248000000008801,
+      "readOk": true
+    }
+  ],
+  "maintenance": [
+    {
+      "longCommandSeconds": 19.4989696,
+      "requestedAtSeconds": 0.0504494,
+      "behindLongSeconds": 19.4548334,
+      "autosaveSnapshotSeconds": 0.0001106,
+      "heartbeatSeconds": 0.0060671,
+      "idleSeconds": 0.0049088,
+      "idleAutosaveSnapshotSeconds": null
+    },
+    {
+      "longCommandSeconds": 19.7248259,
+      "requestedAtSeconds": 0.0504132,
+      "behindLongSeconds": 19.737876,
+      "autosaveSnapshotSeconds": 0.0001015,
+      "heartbeatSeconds": 0.0632518,
+      "idleSeconds": 0.0324731,
+      "idleAutosaveSnapshotSeconds": null
+    },
+    {
+      "longCommandSeconds": 19.8114922,
+      "requestedAtSeconds": 0.0502677,
+      "behindLongSeconds": 19.774376,
+      "autosaveSnapshotSeconds": 0.0000794,
+      "heartbeatSeconds": 0.01298,
+      "idleSeconds": 0.0388984,
+      "idleAutosaveSnapshotSeconds": null
+    },
+    {
+      "longCommandSeconds": 20.6643341,
+      "requestedAtSeconds": 0.0502127,
+      "behindLongSeconds": 20.627491,
+      "autosaveSnapshotSeconds": 0.0000899,
+      "heartbeatSeconds": 0.0131953,
+      "idleSeconds": 0.0124317,
+      "idleAutosaveSnapshotSeconds": null
+    },
+    {
+      "longCommandSeconds": 21.2671943,
+      "requestedAtSeconds": 0.05039,
+      "behindLongSeconds": 21.2380493,
+      "autosaveSnapshotSeconds": 0.0000946,
+      "heartbeatSeconds": 0.0210315,
+      "idleSeconds": 0.0152166,
+      "idleAutosaveSnapshotSeconds": null
+    }
+  ]
+}
