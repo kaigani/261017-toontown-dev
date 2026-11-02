@@ -174,7 +174,8 @@ mod corpus_gen {
         };
         for y in 0..h {
             for x in 0..w {
-                let frame = (x >= 16 && x < 240 && y >= 16 && y < 176) && !(x >= 21 && x < 235 && y >= 21 && y < 171);
+                let frame = ((16..240).contains(&x) && (16..176).contains(&y))
+                    && !((21..235).contains(&x) && (21..171).contains(&y));
                 let split = (126..131).contains(&x) && (16..176).contains(&y);
                 let d = f64::from((x - 70).pow(2) + (y - 96).pow(2)).sqrt();
                 let ring = (30.0..35.0).contains(&d);
@@ -353,7 +354,7 @@ mod corpus_gen {
         let cmyk: Vec<Vec<u8>> =
             (0..4).map(|c| rgb.chunks(3).map(|p| if c == 3 { p[0] } else { 255 }).collect()).collect();
         files.push(("card-cmyk.psd".into(), psd(w, h, 8, 4, &[], &cmyk, false), "ok"));
-        files.push(("card-grey16.psd".into(), psd(w, h, 16, 1, &[], &[grey16.clone()], false), "ok"));
+        files.push(("card-grey16.psd".into(), psd(w, h, 16, 1, &[], std::slice::from_ref(&grey16), false), "ok"));
         let bits: Vec<u8> = grey
             .chunks(w as usize)
             .flat_map(|r| {
@@ -364,7 +365,7 @@ mod corpus_gen {
             .collect();
         files.push(("card-bitmap.psd".into(), psd(w, h, 1, 0, &[], &[bits], false), "ok"));
         let pal: Vec<u8> = (0..768).map(|i| (i % 256) as u8).collect();
-        files.push(("card-indexed.psd".into(), psd(w, h, 8, 2, &pal, &[grey.clone()], false), "ok"));
+        files.push(("card-indexed.psd".into(), psd(w, h, 8, 2, &pal, std::slice::from_ref(&grey), false), "ok"));
         // Malformed and oversize (derived deterministically from the valid files).
         let base_png = files[0].1.clone();
         files.push(("truncated.png".into(), base_png[..base_png.len() / 2].to_vec(), "vectorize.unsupportedFile"));
