@@ -701,6 +701,7 @@ fn apply(s: &NodeStroke, js: &[Junction]) -> Option<Outcome> {
         }
         return Some(Outcome::Moved(p));
     }
+    debug_check_cuts(&segs, s.path.closed, &merged);
     // Cut the path into pieces between consecutive cuts (cyclically for a closed path).
     let mut pieces: Vec<Path> = Vec::new();
     if s.path.closed {
@@ -724,6 +725,39 @@ fn apply(s: &NodeStroke, js: &[Junction]) -> Option<Outcome> {
     // coincident edge; M2 C2.4, found by the topology properties). Its neighbours meet at that junction.
     pieces.retain(|p| p.anchors.len() >= 2 && !degenerate(p));
     Some(Outcome::Split(pieces))
+}
+
+/// The cut invariant (C24-R2-07), checked in debug builds only (no work in a product build): the pieces between the
+/// cuts traverse the path exactly once — the cut parameters are strictly increasing within the path's range (cyclic for
+/// a closed path), so consecutive intervals partition it — and each cut's parameter is where its junction is, the path
+/// point there (on the chord of a straight segment) within the junction tolerance (twice), the flattening tolerance and a
+/// grid cell of the junction coordinate. A parameter interpolated over a range spanning a zero-length segment would put a cut on the wrong
+/// segment, and its pieces would traverse part of the path twice.
+fn debug_check_cuts(segs: &[Cubic], closed: bool, cuts: &[Junction]) {
+    if cfg!(debug_assertions) {
+        let n = segs.len();
+        let count = n as f64;
+        debug_assert!(cuts.windows(2).all(|w| w[0].s < w[1].s), "cut parameters increase: {cuts:?}");
+        debug_assert!(
+            cuts.iter().all(|c| c.s >= 0.0 && if closed { c.s < count } else { c.s <= count }),
+            "cuts within the path: {cuts:?}"
+        );
+        let bound = 2.0 * JUNCTION_TOLERANCE + super::flat::FLAT_TOLERANCE + std::f64::consts::SQRT_2 / 64.0;
+        for c in cuts {
+            let t = if closed { c.s.rem_euclid(count) } else { c.s.clamp(0.0, count) };
+            let j = (t.floor() as usize).min(n.saturating_sub(1));
+            // A straight segment's parameter is a fraction of its chord (its pieces stay straight); a curve's, the
+            // Bézier parameter (its flattened edges are short enough to be within the flattening tolerance).
+            let seg = &segs[j];
+            let at = if is_straight(seg) { seg.p0.lerp(seg.p3, t - j as f64) } else { seg.eval(t - j as f64) };
+            debug_assert!(
+                at.dist(c.at) <= bound,
+                "cut at parameter {} lies {} du from its junction",
+                c.s,
+                at.dist(c.at)
+            );
+        }
+    }
 }
 
 /// Whether an open piece starts and ends at one point and every control point stays within the junction tolerance.

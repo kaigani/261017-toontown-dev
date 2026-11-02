@@ -25,6 +25,10 @@ pub struct Flat {
     pub out: Vec<f64>,
     /// Whether the polyline closes back to its first vertex.
     pub closed: bool,
+    /// Path parameter where a closed polyline's last edge reaches the first vertex again: the path's end, or earlier
+    /// when the path returns to its start before zero-length closing segments (a repeated terminal anchor), so the
+    /// closing edge never spans them (C24-R2-07).
+    pub close: Option<f64>,
 }
 
 impl Flat {
@@ -38,7 +42,7 @@ impl Flat {
             out.push((self.pts[i], self.pts[i + 1], self.out[i], self.params[i + 1]));
         }
         if self.closed && n >= 2 {
-            out.push((self.pts[n - 1], self.pts[0], self.out[n - 1], segment_count as f64));
+            out.push((self.pts[n - 1], self.pts[0], self.out[n - 1], self.close.unwrap_or(segment_count as f64)));
         }
         out
     }
@@ -82,7 +86,7 @@ pub fn flatten(path: &Path, work: &mut Work) -> Result<Flat, GeomError> {
             params.push(0.0);
             out.push(0.0);
         }
-        return Ok(Flat { pts, params, out, closed: false });
+        return Ok(Flat { pts, params, out, closed: false, close: None });
     }
     let push = |pts: &mut Vec<P>, params: &mut Vec<f64>, out: &mut Vec<f64>, p: P, s: f64| {
         if pts.last() == Some(&p) {
@@ -109,13 +113,16 @@ pub fn flatten(path: &Path, work: &mut Work) -> Result<Flat, GeomError> {
             push(&mut pts, &mut params, &mut out, c.p3, base + 1.0);
         }
     }
+    // A closed path back at its start before its end (zero-length closing segments): the first vertex is not
+    // repeated, and the closing edge ends where the path first returned to it.
+    let mut close = None;
     if path.closed && pts.len() >= 2 && pts.last() == pts.first() {
         pts.pop();
-        params.pop();
+        close = params.pop();
         out.pop();
     }
     let closed = path.closed && pts.len() >= 2;
-    Ok(Flat { pts, params, out, closed })
+    Ok(Flat { pts, params, out, closed, close })
 }
 
 /// The Bézier parameter of a point at fraction `f` along the polyline edge from `s_a` to `s_b` (linear within an
@@ -139,6 +146,7 @@ mod tests {
             params: vec![],
             out: vec![],
             closed: false,
+            close: None,
         });
         assert_eq!(f.pts.len(), 2);
         assert_eq!(f.params, vec![0.0, 1.0]);
@@ -154,6 +162,7 @@ mod tests {
             params: vec![],
             out: vec![],
             closed: false,
+            close: None,
         });
         let c = arc.segments()[0];
         for w in f.params.windows(2) {
@@ -179,9 +188,31 @@ mod tests {
             params: vec![],
             out: vec![],
             closed: false,
+            close: None,
         });
         assert_eq!(f.pts.len(), 4);
         assert!(f.closed);
         assert_eq!(f.edges(4).last().map(|e| e.3), Some(4.0));
+    }
+
+    /// C24-R2-07: a closed path whose last anchor repeats its first ends its closing edge where the repeated anchor is
+    /// reached (parameter 2 of 3), not across the zero-length closing segment; the path without the repeat closes at 2 too.
+    #[test]
+    fn a_repeated_closing_anchor_keeps_the_closing_edge_parameter() {
+        for (pts, close) in
+            [(vec![(0.0, 80.0), (80.0, 20.0), (0.0, 80.0)], 2.0), (vec![(0.0, 80.0), (80.0, 20.0)], 2.0)]
+        {
+            let fold = Path { anchors: pts.iter().map(|&(x, y)| Anchor::corner(P::new(x, y))).collect(), closed: true };
+            let n = fold.segments().len();
+            let f = flatten(&fold, &mut Work::unlimited("t")).unwrap_or_else(|_| Flat {
+                pts: vec![],
+                params: vec![],
+                out: vec![],
+                closed: false,
+                close: None,
+            });
+            assert_eq!(f.pts.len(), 2);
+            assert_eq!(f.edges(n).iter().map(|e| (e.2, e.3)).collect::<Vec<_>>(), vec![(0.0, 1.0), (1.0, close)]);
+        }
     }
 }

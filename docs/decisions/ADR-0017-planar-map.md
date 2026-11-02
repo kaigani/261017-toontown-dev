@@ -222,3 +222,14 @@ C2.1 delivered strokes, text, groups and bitmaps as validated, persisted geometr
   hole with an old zone scored the wrong overlap and took the smaller part's fill. Edges traversed both ways now cancel
   before the overlap is computed (unit test `a_dangling_edge_inside_both_zones_bounds_no_area`). Both were found by
   `crates/executor/tests/c24_oracle_routes.rs` at 4096 cases and are kept there as permanent seeds.
+- **M2 C2.4 round 2 (C24-R2-07 ruling): (13) a closed retrace keeps its traversal.** Flattening a closed path whose
+  last anchor repeats its first dropped the repeated vertex but not its parameter, so the closing edge ran from the
+  last real vertex across the zero-length closing segment (parameters 1 to 3 of a three-segment fold instead of 1 to 2)
+  and the pieces cut from it traversed one pass twice. `Flat` now keeps the reach parameter of the dropped vertex and
+  closes there; repeated terminal anchors and zero-length closing segments keep their cyclic entry and exit
+  parameters. Intentional retraces are not deduplicated, folds are not split and area allowances are unchanged. A
+  debug-only invariant (`debug_check_cuts`, compiled out of release builds) checks before every cut that the cut
+  parameters increase strictly inside the traversal, so the pieces partition it exactly once, and that each lies at
+  its junction (on the chord of a straight segment, within twice the junction tolerance, the flattening tolerance and
+  a grid cell). Evidence: `crates/vector/tests/c24_r2_noding.rs` (reviewer, unchanged, both controls) and unit test
+  `a_repeated_closing_anchor_keeps_the_closing_edge_parameter`.
