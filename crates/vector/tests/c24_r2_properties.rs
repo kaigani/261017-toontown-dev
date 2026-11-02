@@ -378,3 +378,59 @@ fn shrunk_determinant_case() {
         assert_eq!(a, &areas[0], "determinant ?1 and whole-grid translation preserve face area");
     }
 }
+
+#[test]
+fn integer_translations_and_compositions_preserve_all_snapped_anchor_sequences() {
+    let list = vec![
+        (true, vec![(1, 1), (0, 0), (3, 4), (1, 1)]),
+        (false, vec![(4, 1), (1, 2), (0, 0)]),
+        (false, vec![(1, 4), (2, 1)]),
+    ];
+    let normalize = |strokes: &[Value], dx: i64, dy: i64| {
+        let mut paths: Vec<Vec<(i64, i64)>> = strokes
+            .iter()
+            .map(|s| {
+                s["points"]
+                    .as_array()
+                    .unwrap()
+                    .iter()
+                    .map(|p| {
+                        (
+                            ((p[0].as_f64().unwrap() - dx as f64) * 64.).round() as i64,
+                            ((p[1].as_f64().unwrap() - dy as f64) * 64.).round() as i64,
+                        )
+                    })
+                    .collect()
+            })
+            .collect();
+        paths.sort();
+        paths
+    };
+    let base = settle_all(None, &stroke_json(&list, &|p| p, 0), &BTreeMap::new());
+    let want = normalize(&base, 0, 0);
+    for (dx, dy) in [(37, -11), (-113, 257), (293, -282), (10000, -9000), (-1, 1)] {
+        let translated = settle_all(None, &stroke_json(&list, &|(x, y)| (x + dx, y + dy), 0), &BTreeMap::new());
+        assert_eq!(normalize(&translated, dx, dy), want, "translation {dx},{dy}");
+    }
+    // Composition T(-113,257) then T(406,-539) equals T(293,-282), including a second settle.
+    let first = settle_all(None, &stroke_json(&list, &|(x, y)| (x - 113, y + 257), 0), &BTreeMap::new());
+    let mut moved = first.clone();
+    for s in &mut moved {
+        for p in s["points"].as_array_mut().unwrap() {
+            p[0] = json!(p[0].as_f64().unwrap() + 406.);
+            p[1] = json!(p[1].as_f64().unwrap() - 539.);
+        }
+    }
+    let twice = settle_all(Some(&first), &moved, &BTreeMap::new());
+    assert_eq!(normalize(&twice, 293, -282), want);
+}
+
+#[test]
+fn independent_snapping_envelope_matches_a_rectangles_analytic_formula() {
+    let sides = vec![((0, 0), (13, 0)), ((13, 0), (13, 7)), ((13, 7), (0, 7)), ((0, 7), (0, 0))];
+    let delta = std::f64::consts::SQRT_2 / 128. + 1. / 32.;
+    let expected = 40. * delta + 4. * delta * delta;
+    assert!((oracle::snapping_envelope(&sides, 64) - expected).abs() < 1e-12);
+    let moved = sides.iter().map(|&(a, b)| ((a.0 - 43, a.1 + 71), (b.0 - 43, b.1 + 71))).collect::<Vec<_>>();
+    assert_eq!(oracle::snapping_envelope(&sides, 64), oracle::snapping_envelope(&moved, 64));
+}

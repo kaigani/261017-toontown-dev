@@ -1,0 +1,113 @@
+{
+  "head": "3c74c3432f2a1895b5aaca83e6ddf914cf6b4281",
+  "jobs": [
+    {
+      "name": "check (macos-latest)",
+      "seconds": 1285.0,
+      "conclusion": "success",
+      "above55Minutes": false
+    },
+    {
+      "name": "headless release (windows-latest)",
+      "seconds": 1861.0,
+      "conclusion": "success",
+      "above55Minutes": false
+    },
+    {
+      "name": "check properties (macos-latest)",
+      "seconds": 1091.0,
+      "conclusion": "success",
+      "above55Minutes": false
+    },
+    {
+      "name": "check properties (windows-latest)",
+      "seconds": 1877.0,
+      "conclusion": "success",
+      "above55Minutes": false
+    },
+    {
+      "name": "measurements release (windows-latest)",
+      "seconds": 947.0,
+      "conclusion": "success",
+      "above55Minutes": false
+    },
+    {
+      "name": "headless without a display (ubuntu)",
+      "seconds": 195.0,
+      "conclusion": "success",
+      "above55Minutes": false
+    },
+    {
+      "name": "headless release (macos-latest)",
+      "seconds": 1852.0,
+      "conclusion": "success",
+      "above55Minutes": false
+    },
+    {
+      "name": "history oracles release (windows-latest)",
+      "seconds": 704.0,
+      "conclusion": "success",
+      "above55Minutes": false
+    },
+    {
+      "name": "bundle (windows-latest)",
+      "seconds": 778.0,
+      "conclusion": "success",
+      "above55Minutes": false
+    },
+    {
+      "name": "bundle (macos-latest)",
+      "seconds": 448.0,
+      "conclusion": "success",
+      "above55Minutes": false
+    },
+    {
+      "name": "raster determinism (windows-latest)",
+      "seconds": 198.0,
+      "conclusion": "success",
+      "above55Minutes": false
+    },
+    {
+      "name": "measurements release (macos-latest)",
+      "seconds": 623.0,
+      "conclusion": "success",
+      "above55Minutes": false
+    },
+    {
+      "name": "check (windows-latest)",
+      "seconds": 2720.0,
+      "conclusion": "success",
+      "above55Minutes": false
+    },
+    {
+      "name": "e2 release (windows-latest)",
+      "seconds": 368.0,
+      "conclusion": "success",
+      "above55Minutes": false
+    },
+    {
+      "name": "history oracles release (macos-latest)",
+      "seconds": 703.0,
+      "conclusion": "success",
+      "above55Minutes": false
+    },
+    {
+      "name": "raster determinism (macos-latest)",
+      "seconds": 179.0,
+      "conclusion": "success",
+      "above55Minutes": false
+    },
+    {
+      "name": "raster determinism (ubuntu-latest)",
+      "seconds": 97.0,
+      "conclusion": "success",
+      "above55Minutes": false
+    },
+    {
+      "name": "e2 release (macos-latest)",
+      "seconds": 330.0,
+      "conclusion": "success",
+      "above55Minutes": false
+    }
+  ]
+}

@@ -1,0 +1,2210 @@
+[
+  {
+    "file": "crates/executor/tests/golden/c21-determinism.json",
+    "path": "/bytes",
+    "old": 210643,
+    "new": 206566
+  },
+  {
+    "file": "crates/executor/tests/golden/c21-determinism.json",
+    "path": "/drawing1/nodes/7/children/0/strokes/length",
+    "old": 46,
+    "new": 45
+  },
+  {
+    "file": "crates/executor/tests/golden/c21-determinism.json",
+    "path": "/drawing1/nodes/7/children/0/strokes/0/points/0/4",
+    "old": 2.436734284922224,
+    "new": 2.4231477310918876
+  },
+  {
+    "file": "crates/executor/tests/golden/c21-determinism.json",
+    "path": "/drawing1/nodes/7/children/0/strokes/0/points/0/5",
+    "old": -0.9301801427797614,
+    "new": -0.9249937165616942
+  },
+  {
+    "file": "crates/executor/tests/golden/c21-determinism.json",
+    "path": "/drawing1/nodes/7/children/0/strokes/0/points/1/0",
+    "old": -93.38380665603533,
+    "new": -93.40625
+  },
+  {
+    "file": "crates/executor/tests/golden/c21-determinism.json",
+    "path": "/drawing1/nodes/7/children/0/strokes/0/points/1/1",
+    "old": 41.732970953170096,
+    "new": 41.765625
+  },
+  {
+    "file": "crates/executor/tests/golden/c21-determinism.json",
+    "path": "/drawing1/nodes/7/children/0/strokes/0/points/1/2",
+    "old": -1.9958615111096947,
+    "new": -1.9868282710655762
+  },
+  {
+    "file": "crates/executor/tests/golden/c21-determinism.json",
+    "path": "/drawing1/nodes/7/children/0/strokes/0/points/1/3",
+    "old": 1.6516931398798533,
+    "new": 1.6391403264693594
+  },
+  {
+    "file": "crates/executor/tests/golden/c21-determinism.json",
+    "path": "/drawing1/nodes/7/children/0/strokes/1/points/0/0",
+    "old": -93.38380665603533,
+    "new": -93.40625
+  },
+  {
+    "file": "crates/executor/tests/golden/c21-determinism.json",
+    "path": "/drawing1/nodes/7/children/0/strokes/1/points/0/1",
+    "old": 41.732970953170096,
+    "new": 41.765625
+  },
+  {
+    "file": "crates/executor/tests/golden/c21-determinism.json",
+    "path": "/drawing1/nodes/7/children/0/strokes/1/points/0/4",
+    "old": 8.484927032364922,
+    "new": 8.53895464355341
+  },
+  {
+    "file": "crates/executor/tests/golden/c21-determinism.json",
+    "path": "/drawing1/nodes/7/children/0/strokes/1/points/0/5",
+    "old": -7.021777660287761,
+    "new": -7.044667677611898
+  },
+  {
+    "file": "crates/executor/tests/golden/c21-determinism.json",
+    "path": "/drawing1/nodes/7/children/0/strokes/1/points/1/0",
+    "old": -73.29311484565696,
+    "new": -73.203125
+  },
+  {
+    "file": "crates/executor/tests/golden/c21-determinism.json",
+    "path": "/drawing1/nodes/7/children/0/strokes/1/points/1/1",
+    "old": 13.499183366250781,
+    "new": 13.390625
+  },
+  {
+    "file": "crates/executor/tests/golden/c21-determinism.json",
+    "path": "/drawing1/nodes/7/children/0/strokes/1/points/1/2",
+    "old": -6.5302429050216375,
+    "new": -6.576672510905539
+  },
+  {
+    "file": "crates/executor/tests/golden/c21-determinism.json",
+    "path": "/drawing1/nodes/7/children/0/strokes/1/points/1/3",
+    "old": 8.751331052275635,
+    "new": 8.76779446604725
+  },
+  {
+    "file": "crates/executor/tests/golden/c21-determinism.json",
+    "path": "/drawing1/nodes/7/children/0/strokes/2/points/0/0",
+    "old": -73.29311484565696,
+    "new": -73.203125
+  },
+  {
+    "file": "crates/executor/tests/golden/c21-determinism.json",
+    "path": "/drawing1/nodes/7/children/0/strokes/2/points/0/1",
+    "old": 13.499183366250781,
+    "new": 13.390625
+  },
+  {
+    "file": "crates/executor/tests/golden/c21-determinism.json",
+    "path": "/drawing1/nodes/7/children/0/strokes/2/points/0/4",
+    "old": 0.6077812578281652,
+    "new": 0.5827384773677693
+  },
+  {
+    "file": "crates/executor/tests/golden/c21-determinism.json",
+    "path": "/drawing1/nodes/7/children/0/strokes/2/points/0/5",
+    "old": -0.8145018603416183,
+    "new": -0.7768869726363192
+  },
+  {
+    "file": "crates/executor/tests/golden/c21-determinism.json",
+    "path": "/drawing1/nodes/7/children/0/strokes/2/points/1/2",
+    "old": -0.6369438933596285,
+    "new": -0.6096057777048145
+  },
+  {
+    "file": "crates/executor/tests/golden/c21-determinism.json",
+    "path": "/drawing1/nodes/7/children/0/strokes/2/points/1/3",
+    "old": 0.742783522827958,
+    "new": 0.7109026898923325
+  },
+  {
+    "file": "crates/executor/tests/golden/c21-determinism.json",
+    "path": "/drawing1/nodes/7/children/0/strokes/2/points/1/4",
+    "old": 0.8752658123635229,
+    "new": 0.8690020984491298
+  },
+  {
+    "file": "crates/executor/tests/golden/c21-determinism.json",
+    "path": "/drawing1/nodes/7/children/0/strokes/2/points/1/5",
+    "old": -1.0207068947455564,
+    "new": -1.013402352640938
+  },
+  {
+    "file": "crates/executor/tests/golden/c21-determinism.json",
+    "path": "/drawing1/nodes/7/children/0/strokes/2/points/2/0",
+    "old": -68.70563491668251,
+    "new": -68.71875
+  },
+  {
+    "file": "crates/executor/tests/golden/c21-determinism.json",
+    "path": "/drawing1/nodes/7/children/0/strokes/2/points/2/1",
+    "old": 8.22691649618503,
+    "new": 8.25
+  },
+  {
+    "file": "crates/executor/tests/golden/c21-determinism.json",
+    "path": "/drawing1/nodes/7/children/0/strokes/2/points/2/2",
+    "old": -0.9359663415204409,
+    "new": -0.9288908569262446
+  },
+  {
+    "file": "crates/executor/tests/golden/c21-determinism.json",
+    "path": "/drawing1/nodes/7/children/0/strokes/2/points/2/3",
+    "old": 0.9385352390369324,
+    "new": 0.9323302677579939
+  },
+  {
+    "file": "crates/executor/tests/golden/c21-determinism.json",
+    "path": "/drawing1/nodes/7/children/0/strokes/3/points/0/0",
+    "old": -68.70563491668251,
+    "new": -68.71875
+  },
+  {
+    "file": "crates/executor/tests/golden/c21-determinism.json",
+    "path": "/drawing1/nodes/7/children/0/strokes/3/points/0/1",
+    "old": 8.22691649618503,
+    "new": 8.25
+  },
+  {
+    "file": "crates/executor/tests/golden/c21-determinism.json",
+    "path": "/drawing1/nodes/7/children/0/strokes/3/points/0/4",
+    "old": 0.35418332132123,
+    "new": 0.32663708702256145
+  },
+  {
+    "file": "crates/executor/tests/golden/c21-determinism.json",
+    "path": "/drawing1/nodes/7/children/0/strokes/3/points/0/5",
+    "old": -0.35515542962700763,
+    "new": -0.3278465285051375
+  },
+  {
+    "file": "crates/executor/tests/golden/c21-determinism.json",
+    "path": "/drawing1/nodes/7/children/0/strokes/3/points/1/0",
+    "old": -67.63238369344371,
+    "new": -67.734375
+  },
+  {
+    "file": "crates/executor/tests/golden/c21-determinism.json",
+    "path": "/drawing1/nodes/7/children/0/strokes/3/points/1/1",
+    "old": 7.175965461190099,
+    "new": 7.265625
+  },
+  {
+    "file": "crates/executor/tests/golden/c21-determinism.json",
+    "path": "/drawing1/nodes/7/children/0/strokes/3/points/1/2",
+    "old": -0.36136704450784407,
+    "new": -0.332792429942387
+  },
+  {
+    "file": "crates/executor/tests/golden/c21-determinism.json",
+    "path": "/drawing1/nodes/7/children/0/strokes/3/points/1/3",
+    "old": 0.3454122297295239,
+    "new": 0.31949870931318536
+  },
+  {
+    "file": "crates/executor/tests/golden/c21-determinism.json",
+    "path": "/drawing1/nodes/7/children/0/strokes/4/points/0/0",
+    "old": -67.63238369344371,
+    "new": -67.734375
+  },
+  {
+    "file": "crates/executor/tests/golden/c21-determinism.json",
+    "path": "/drawing1/nodes/7/children/0/strokes/4/points/0/1",
+    "old": 7.175965461190099,
+    "new": 7.265625
+  },
+  {
+    "file": "crates/executor/tests/golden/c21-determinism.json",
+    "path": "/drawing1/nodes/7/children/0/strokes/4/points/0/4",
+    "old": 2.68781407847176,
+    "new": 2.717331133990271
+  },
+  {
+    "file": "crates/executor/tests/golden/c21-determinism.json",
+    "path": "/drawing1/nodes/7/children/0/strokes/4/points/0/5",
+    "old": -2.5691436672311134,
+    "new": -2.6087846716847567
+  },
+  {
+    "file": "crates/executor/tests/golden/c21-determinism.json",
+    "path": "/drawing1/nodes/7/children/0/strokes/4/points/1/0",
+    "old": -59.17934956880028,
+    "new": -59.1875
+  },
+  {
+    "file": "crates/executor/tests/golden/c21-determinism.json",
+    "path": "/drawing1/nodes/7/children/0/strokes/4/points/1/1",
+    "old": 1.3877787807814457e-17,
+    "new": 0.0
+  },
+  {
+    "file": "crates/executor/tests/golden/c21-determinism.json",
+    "path": "/drawing1/nodes/7/children/0/strokes/4/points/1/2",
+    "old": -2.890901781023075,
+    "new": -2.9257458101364264
+  },
+  {
+    "file": "crates/executor/tests/golden/c21-determinism.json",
+    "path": "/drawing1/nodes/7/children/0/strokes/4/points/1/3",
+    "old": 2.290824359801297,
+    "new": 2.3172017528801963
+  },
+  {
+    "file": "crates/executor/tests/golden/c21-determinism.json",
+    "path": "/drawing1/nodes/7/children/0/strokes/5/points/0/0",
+    "old": -59.17934956880028,
+    "new": -59.1875
+  },
+  {
+    "file": "crates/executor/tests/golden/c21-determinism.json",
+    "path": "/drawing1/nodes/7/children/0/strokes/5/points/0/1",
+    "old": 1.3877787807814457e-17,
+    "new": 0.0
+  },
+  {
+    "file": "crates/executor/tests/golden/c21-determinism.json",
+    "path": "/drawing1/nodes/7/children/0/strokes/5/points/0/4",
+    "old": 5.282385421718075,
+    "new": 5.339814101908182
+  },
+  {
+    "file": "crates/executor/tests/golden/c21-determinism.json",
+    "path": "/drawing1/nodes/7/children/0/strokes/5/points/0/5",
+    "old": -4.185897037860805,
+    "new": -4.229152974987624
+  },
+  {
+    "file": "crates/executor/tests/golden/c21-determinism.json",
+    "path": "/drawing1/nodes/7/children/0/strokes/5/points/1/0",
+    "old": -44.20189031165924,
+    "new": -44.0625
+  },
+  {
+    "file": "crates/executor/tests/golden/c21-determinism.json",
+    "path": "/drawing1/nodes/7/children/0/strokes/5/points/1/1",
+    "old": -13.694972326091529,
+    "new": -13.875
+  },
+  {
+    "file": "crates/executor/tests/golden/c21-determinism.json",
+    "path": "/drawing1/nodes/7/children/0/strokes/5/points/1/2",
+    "old": -4.357224735865465,
+    "new": -4.384779130910793
+  },
+  {
+    "file": "crates/executor/tests/golden/c21-determinism.json",
+    "path": "/drawing1/nodes/7/children/0/strokes/5/points/1/3",
+    "old": 5.407381373509837,
+    "new": 5.501142676852009
+  },
+  {
+    "file": "crates/executor/tests/golden/c21-determinism.json",
+    "path": "/drawing1/nodes/7/children/0/strokes/6/points/0/0",
+    "old": -44.20189031165924,
+    "new": -44.0625
+  },
+  {
+    "file": "crates/executor/tests/golden/c21-determinism.json",
+    "path": "/drawing1/nodes/7/children/0/strokes/6/points/0/1",
+    "old": -13.694972326091529,
+    "new": -13.875
+  },
+  {
+    "file": "crates/executor/tests/golden/c21-determinism.json",
+    "path": "/drawing1/nodes/7/children/0/strokes/6/points/0/4",
+    "old": 0.45827217389664554,
+    "new": 0.4057282712412871
+  },
+  {
+    "file": "crates/executor/tests/golden/c21-determinism.json",
+    "path": "/drawing1/nodes/7/children/0/strokes/6/points/0/5",
+    "old": -0.5687226542916335,
+    "new": -0.5090265761384423
+  },
+  {
+    "file": "crates/executor/tests/golden/c21-determinism.json",
+    "path": "/drawing1/nodes/7/children/0/strokes/6/points/1/2",
+    "old": -0.43530830301858003,
+    "new": -0.3874324608420352
+  },
+  {
+    "file": "crates/executor/tests/golden/c21-determinism.json",
+    "path": "/drawing1/nodes/7/children/0/strokes/6/points/1/3",
+    "old": 0.5993116832076577,
+    "new": 0.5333985100362657
+  },
+  {
+    "file": "crates/executor/tests/golden/c21-determinism.json",
+    "path": "/drawing1/nodes/7/children/0/strokes/6/points/1/4",
+    "old": 0.2989910924417174,
+    "new": 0.28793373228265295
+  },
+  {
+    "file": "crates/executor/tests/golden/c21-determinism.json",
+    "path": "/drawing1/nodes/7/children/0/strokes/6/points/1/5",
+    "old": -0.41163665758907797,
+    "new": -0.3964134121724161
+  },
+  {
+    "file": "crates/executor/tests/golden/c21-determinism.json",
+    "path": "/drawing1/nodes/7/children/0/strokes/6/points/2/0",
+    "old": -41.947204722734575,
+    "new": -41.984375
+  },
+  {
+    "file": "crates/executor/tests/golden/c21-determinism.json",
+    "path": "/drawing1/nodes/7/children/0/strokes/6/points/2/1",
+    "old": -16.76499003959956,
+    "new": -16.703125
+  },
+  {
+    "file": "crates/executor/tests/golden/c21-determinism.json",
+    "path": "/drawing1/nodes/7/children/0/strokes/6/points/2/2",
+    "old": -0.3073618064142636,
+    "new": -0.2956863877844995
+  },
+  {
+    "file": "crates/executor/tests/golden/c21-determinism.json",
+    "path": "/drawing1/nodes/7/children/0/strokes/6/points/2/3",
+    "old": 0.4680930609658098,
+    "new": 0.4489026946714425
+  },
+  {
+    "file": "crates/executor/tests/golden/c21-determinism.json",
+    "path": "/drawing1/nodes/7/children/0/strokes/7/points/0/0",
+    "old": -41.947204722734575,
+    "new": -41.984375
+  },
+  {
+    "file": "crates/executor/tests/golden/c21-determinism.json",
+    "path": "/drawing1/nodes/7/children/0/strokes/7/points/0/1",
+    "old": -16.76499003959956,
+    "new": -16.703125
+  },
+  {
+    "file": "crates/executor/tests/golden/c21-determinism.json",
+    "path": "/drawing1/nodes/7/children/0/strokes/7/points/0/4",
+    "old": 5.87458989616637,
+    "new": 5.879822383224003
+  },
+  {
+    "file": "crates/executor/tests/golden/c21-determinism.json",
+    "path": "/drawing1/nodes/7/children/0/strokes/7/points/0/5",
+    "old": -8.946637835375991,
+    "new": -8.926579717773187
+  },
+  {
+    "file": "crates/executor/tests/golden/c21-determinism.json",
+    "path": "/drawing1/nodes/7/children/0/strokes/7/points/1/2",
+    "old": -11.15427757967857,
+    "new": -11.175860340576861
+  },
+  {
+    "file": "crates/executor/tests/golden/c21-determinism.json",
+    "path": "/drawing1/nodes/7/children/0/strokes/7/points/1/3",
+    "old": 1.4142689323738011,
+    "new": 1.4170054456078702
+  },
+  {
+    "file": "crates/executor/tests/golden/c21-determinism.json",
+    "path": "/drawing1/nodes/7/children/0/strokes/7/points/1/4",
+    "old": 9.063406286294416,
+    "new": 9.067760018379156
+  },
+  {
+    "file": "crates/executor/tests/golden/c21-determinism.json",
+    "path": "/drawing1/nodes/7/children/0/strokes/7/points/1/5",
+    "old": -1.1491639723526532,
+    "new": -1.1497159890998887
+  },
+  {
+    "file": "crates/executor/tests/golden/c21-determinism.json",
+    "path": "/drawing1/nodes/7/children/0/strokes/7/points/2/0",
+    "old": 4.039357782175788,
+    "new": 4.046875
+  },
+  {
+    "file": "crates/executor/tests/golden/c21-determinism.json",
+    "path": "/drawing1/nodes/7/children/0/strokes/7/points/2/1",
+    "old": -27.41870344235428,
+    "new": -27.421875
+  },
+  {
+    "file": "crates/executor/tests/golden/c21-determinism.json",
+    "path": "/drawing1/nodes/7/children/0/strokes/7/points/2/2",
+    "old": -5.027650178164503,
+    "new": -5.027776126951417
+  },
+  {
+    "file": "crates/executor/tests/golden/c21-determinism.json",
+    "path": "/drawing1/nodes/7/children/0/strokes/7/points/2/3",
+    "old": -6.380039245966824,
+    "new": -6.376702909123058
+  },
+  {
+    "file": "crates/executor/tests/golden/c21-determinism.json",
+    "path": "/drawing1/nodes/7/children/0/strokes/8/points/0/0",
+    "old": 4.039357782175788,
+    "new": 4.046875
+  },
+  {
+    "file": "crates/executor/tests/golden/c21-determinism.json",
+    "path": "/drawing1/nodes/7/children/0/strokes/8/points/0/1",
+    "old": -27.41870344235428,
+    "new": -27.421875
+  },
+  {
+    "file": "crates/executor/tests/golden/c21-determinism.json",
+    "path": "/drawing1/nodes/7/children/0/strokes/8/points/0/4",
+    "old": 0.24637530573955058,
+    "new": 0.24384917989402233
+  },
+  {
+    "file": "crates/executor/tests/golden/c21-determinism.json",
+    "path": "/drawing1/nodes/7/children/0/strokes/8/points/0/5",
+    "old": 0.31264787010882955,
+    "new": 0.3092726755437951
+  },
+  {
+    "file": "crates/executor/tests/golden/c21-determinism.json",
+    "path": "/drawing1/nodes/7/children/0/strokes/8/points/1/2",
+    "old": -0.23485232129105338,
+    "new": -0.23255017464437078
+  },
+  {
+    "file": "crates/executor/tests/golden/c21-determinism.json",
+    "path": "/drawing1/nodes/7/children/0/strokes/8/points/1/3",
+    "old": -0.27823527764922673,
+    "new": -0.27550786832277296
+  },
+  {
+    "file": "crates/executor/tests/golden/c21-determinism.json",
+    "path": "/drawing1/nodes/7/children/0/strokes/8/points/1/4",
+    "old": 0.3668080973676453,
+    "new": 0.4155764476985997
+  },
+  {
+    "file": "crates/executor/tests/golden/c21-determinism.json",
+    "path": "/drawing1/nodes/7/children/0/strokes/8/points/1/5",
+    "old": 0.434566506534928,
+    "new": 0.4923435615805616
+  },
+  {
+    "file": "crates/executor/tests/golden/c21-determinism.json",
+    "path": "/drawing1/nodes/7/children/0/strokes/8/points/2/0",
+    "old": 5.883690011594929,
+    "new": 6.03125
+  },
+  {
+    "file": "crates/executor/tests/golden/c21-determinism.json",
+    "path": "/drawing1/nodes/7/children/0/strokes/8/points/2/1",
+    "old": -25.252216471841237,
+    "new": -25.078125
+  },
+  {
+    "file": "crates/executor/tests/golden/c21-determinism.json",
+    "path": "/drawing1/nodes/7/children/0/strokes/8/points/2/2",
+    "old": -0.3798956256136963,
+    "new": -0.43227605737152874
+  },
+  {
+    "file": "crates/executor/tests/golden/c21-determinism.json",
+    "path": "/drawing1/nodes/7/children/0/strokes/8/points/2/3",
+    "old": -0.41799737386805447,
+    "new": -0.4711979281261982
+  },
+  {
+    "file": "crates/executor/tests/golden/c21-determinism.json",
+    "path": "/drawing1/nodes/7/children/0/strokes/9/points/0/0",
+    "old": 5.883690011594929,
+    "new": 6.03125
+  },
+  {
+    "file": "crates/executor/tests/golden/c21-determinism.json",
+    "path": "/drawing1/nodes/7/children/0/strokes/9/points/0/1",
+    "old": -25.252216471841237,
+    "new": -25.078125
+  },
+  {
+    "file": "crates/executor/tests/golden/c21-determinism.json",
+    "path": "/drawing1/nodes/7/children/0/strokes/9/points/0/4",
+    "old": 5.224672513577958,
+    "new": 5.178057526981597
+  },
+  {
+    "file": "crates/executor/tests/golden/c21-determinism.json",
+    "path": "/drawing1/nodes/7/children/0/strokes/9/points/0/5",
+    "old": 5.748682645314062,
+    "new": 5.644286646981666
+  },
+  {
+    "file": "crates/executor/tests/golden/c21-determinism.json",
+    "path": "/drawing1/nodes/7/children/0/strokes/9/points/1/0",
+    "old": 23.58969671928035,
+    "new": 23.53125
+  },
+  {
+    "file": "crates/executor/tests/golden/c21-determinism.json",
+    "path": "/drawing1/nodes/7/children/0/strokes/9/points/1/1",
+    "old": -10.638283866042858,
+    "new": -10.6875
+  },
+  {
+    "file": "crates/executor/tests/golden/c21-determinism.json",
+    "path": "/drawing1/nodes/7/children/0/strokes/9/points/1/2",
+    "old": -6.076073644047067,
+    "new": -5.998083636900674
+  },
+  {
+    "file": "crates/executor/tests/golden/c21-determinism.json",
+    "path": "/drawing1/nodes/7/children/0/strokes/9/points/1/3",
+    "old": -4.613283761418558,
+    "new": -4.54979952392169
+  },
+  {
+    "file": "crates/executor/tests/golden/c21-determinism.json",
+    "path": "/drawing1/nodes/7/children/0/strokes/10/points/0/0",
+    "old": 23.58969671928035,
+    "new": 23.53125
+  },
+  {
+    "file": "crates/executor/tests/golden/c21-determinism.json",
+    "path": "/drawing1/nodes/7/children/0/strokes/10/points/0/1",
+    "old": -10.638283866042858,
+    "new": -10.6875
+  },
+  {
+    "file": "crates/executor/tests/golden/c21-determinism.json",
+    "path": "/drawing1/nodes/7/children/0/strokes/10/points/0/4",
+    "old": 3.896223068217296,
+    "new": 3.906506466078824
+  },
+  {
+    "file": "crates/executor/tests/golden/c21-determinism.json",
+    "path": "/drawing1/nodes/7/children/0/strokes/10/points/0/5",
+    "old": 2.958223297553566,
+    "new": 2.9632499870819613
+  },
+  {
+    "file": "crates/executor/tests/golden/c21-determinism.json",
+    "path": "/drawing1/nodes/7/children/0/strokes/10/points/1/0",
+    "old": 34.4695129933442,
+    "new": 34.4375
+  },
+  {
+    "file": "crates/executor/tests/golden/c21-determinism.json",
+    "path": "/drawing1/nodes/7/children/0/strokes/10/points/1/1",
+    "old": -0.8222578732315098,
+    "new": -0.859375
+  },
+  {
+    "file": "crates/executor/tests/golden/c21-determinism.json",
+    "path": "/drawing1/nodes/7/children/0/strokes/10/points/1/2",
+    "old": -3.224619944978212,
+    "new": -3.2354028919758164
+  },
+  {
+    "file": "crates/executor/tests/golden/c21-determinism.json",
+    "path": "/drawing1/nodes/7/children/0/strokes/10/points/1/3",
+    "old": -3.7486675584071696,
+    "new": -3.752916776627612
+  },
+  {
+    "file": "crates/executor/tests/golden/c21-determinism.json",
+    "path": "/drawing1/nodes/7/children/0/strokes/11/points/0/0",
+    "old": 34.4695129933442,
+    "new": 34.4375
+  },
+  {
+    "file": "crates/executor/tests/golden/c21-determinism.json",
+    "path": "/drawing1/nodes/7/children/0/strokes/11/points/0/1",
+    "old": -0.8222578732315098,
+    "new": -0.859375
+  },
+  {
+    "file": "crates/executor/tests/golden/c21-determinism.json",
+    "path": "/drawing1/nodes/7/children/0/strokes/11/points/0/4",
+    "old": 0.23296532283991667,
+    "new": 0.24344946366160514
+  },
+  {
+    "file": "crates/executor/tests/golden/c21-determinism.json",
+    "path": "/drawing1/nodes/7/children/0/strokes/11/points/0/5",
+    "old": 0.27082557413435926,
+    "new": 0.2823900475277974
+  },
+  {
+    "file": "crates/executor/tests/golden/c21-determinism.json",
+    "path": "/drawing1/nodes/7/children/0/strokes/11/points/1/0",
+    "old": 35.16024185482786,
+    "new": 35.125
+  },
+  {
+    "file": "crates/executor/tests/golden/c21-determinism.json",
+    "path": "/drawing1/nodes/7/children/0/strokes/11/points/1/2",
+    "old": -0.22748435269152623,
+    "new": -0.23751838830820304
+  },
+  {
+    "file": "crates/executor/tests/golden/c21-determinism.json",
+    "path": "/drawing1/nodes/7/children/0/strokes/11/points/1/3",
+    "old": -0.27739129993053485,
+    "new": -0.28959382597856936
+  },
+  {
+    "file": "crates/executor/tests/golden/c21-determinism.json",
+    "path": "/drawing1/nodes/7/children/0/strokes/12/points/0/0",
+    "old": 35.16024185482786,
+    "new": 35.125
+  },
+  {
+    "file": "crates/executor/tests/golden/c21-determinism.json",
+    "path": "/drawing1/nodes/7/children/0/strokes/12/points/0/4",
+    "old": 0.4618692188987623,
+    "new": 0.46231257724275565
+  },
+  {
+    "file": "crates/executor/tests/golden/c21-determinism.json",
+    "path": "/drawing1/nodes/7/children/0/strokes/12/points/0/5",
+    "old": 0.563196991407855,
+    "new": 0.5636736969940013
+  },
+  {
+    "file": "crates/executor/tests/golden/c21-determinism.json",
+    "path": "/drawing1/nodes/7/children/0/strokes/12/points/1/2",
+    "old": -0.4358047531529792,
+    "new": -0.4361228261199699
+  },
+  {
+    "file": "crates/executor/tests/golden/c21-determinism.json",
+    "path": "/drawing1/nodes/7/children/0/strokes/12/points/1/3",
+    "old": -0.5944788617025392,
+    "new": -0.5949127432836558
+  },
+  {
+    "file": "crates/executor/tests/golden/c21-determinism.json",
+    "path": "/drawing1/nodes/7/children/0/strokes/12/points/1/4",
+    "old": 0.5073405778934514,
+    "new": 0.4351882189775367
+  },
+  {
+    "file": "crates/executor/tests/golden/c21-determinism.json",
+    "path": "/drawing1/nodes/7/children/0/strokes/12/points/1/5",
+    "old": 0.6920604859390662,
+    "new": 0.5936378508320301
+  },
+  {
+    "file": "crates/executor/tests/golden/c21-determinism.json",
+    "path": "/drawing1/nodes/7/children/0/strokes/12/points/2/0",
+    "old": 38.00576155582505,
+    "new": 37.796875
+  },
+  {
+    "file": "crates/executor/tests/golden/c21-determinism.json",
+    "path": "/drawing1/nodes/7/children/0/strokes/12/points/2/1",
+    "old": 3.9422523841591888,
+    "new": 3.609375
+  },
+  {
+    "file": "crates/executor/tests/golden/c21-determinism.json",
+    "path": "/drawing1/nodes/7/children/0/strokes/12/points/2/2",
+    "old": -0.49234174815232734,
+    "new": -0.4239176741295907
+  },
+  {
+    "file": "crates/executor/tests/golden/c21-determinism.json",
+    "path": "/drawing1/nodes/7/children/0/strokes/12/points/2/3",
+    "old": -0.77472001439346,
+    "new": -0.6551445031354568
+  },
+  {
+    "file": "crates/executor/tests/golden/c21-determinism.json",
+    "path": "/drawing1/nodes/7/children/0/strokes/13/points/0/0",
+    "old": 38.00576155582505,
+    "new": 37.796875
+  },
+  {
+    "file": "crates/executor/tests/golden/c21-determinism.json",
+    "path": "/drawing1/nodes/7/children/0/strokes/13/points/0/1",
+    "old": 3.9422523841591888,
+    "new": 3.609375
+  },
+  {
+    "file": "crates/executor/tests/golden/c21-determinism.json",
+    "path": "/drawing1/nodes/7/children/0/strokes/13/points/0/4",
+    "old": 4.337744143600425,
+    "new": 4.425011466160193
+  },
+  {
+    "file": "crates/executor/tests/golden/c21-determinism.json",
+    "path": "/drawing1/nodes/7/children/0/strokes/13/points/0/5",
+    "old": 6.8256190298238,
+    "new": 6.8386437161853255
+  },
+  {
+    "file": "crates/executor/tests/golden/c21-determinism.json",
+    "path": "/drawing1/nodes/7/children/0/strokes/13/points/1/0",
+    "old": 51.067507052944165,
+    "new": 51.078125
+  },
+  {
+    "file": "crates/executor/tests/golden/c21-determinism.json",
+    "path": "/drawing1/nodes/7/children/0/strokes/13/points/1/1",
+    "old": 28.78898277450981,
+    "new": 28.796875
+  },
+  {
+    "file": "crates/executor/tests/golden/c21-determinism.json",
+    "path": "/drawing1/nodes/7/children/0/strokes/13/points/1/2",
+    "old": -4.880219766422286,
+    "new": -4.95995717879682
+  },
+  {
+    "file": "crates/executor/tests/golden/c21-determinism.json",
+    "path": "/drawing1/nodes/7/children/0/strokes/13/points/1/3",
+    "old": -8.246510551935927,
+    "new": -8.3803304408798
+  },
+  {
+    "file": "crates/executor/tests/golden/c21-determinism.json",
+    "path": "/drawing1/nodes/7/children/0/strokes/14/points/0/0",
+    "old": 51.067507052944165,
+    "new": 51.078125
+  },
+  {
+    "file": "crates/executor/tests/golden/c21-determinism.json",
+    "path": "/drawing1/nodes/7/children/0/strokes/14/points/0/1",
+    "old": 28.78898277450981,
+    "new": 28.796875
+  },
+  {
+    "file": "crates/executor/tests/golden/c21-determinism.json",
+    "path": "/drawing1/nodes/7/children/0/strokes/14/points/0/4",
+    "old": 3.8002372457628795,
+    "new": 3.7997881552586534
+  },
+  {
+    "file": "crates/executor/tests/golden/c21-determinism.json",
+    "path": "/drawing1/nodes/7/children/0/strokes/14/points/0/5",
+    "old": 6.421574856662268,
+    "new": 6.4201119482513676
+  },
+  {
+    "file": "crates/executor/tests/golden/c21-determinism.json",
+    "path": "/drawing1/nodes/7/children/0/strokes/14/points/1/2",
+    "old": -5.782371007540235,
+    "new": -5.781349427069841
+  },
+  {
+    "file": "crates/executor/tests/golden/c21-determinism.json",
+    "path": "/drawing1/nodes/7/children/0/strokes/14/points/1/3",
+    "old": -2.4444611410045596,
+    "new": -2.4440292742566427
+  },
+  {
+    "file": "crates/executor/tests/golden/c21-determinism.json",
+    "path": "/drawing1/nodes/7/children/0/strokes/14/points/1/4",
+    "old": 0.9107397158916655,
+    "new": 0.9001420018007309
+  },
+  {
+    "file": "crates/executor/tests/golden/c21-determinism.json",
+    "path": "/drawing1/nodes/7/children/0/strokes/14/points/1/5",
+    "old": 0.38500951290804863,
+    "new": 0.3805293956265814
+  },
+  {
+    "file": "crates/executor/tests/golden/c21-determinism.json",
+    "path": "/drawing1/nodes/7/children/0/strokes/14/points/2/0",
+    "old": 67.90415775039175,
+    "new": 67.859375
+  },
+  {
+    "file": "crates/executor/tests/golden/c21-determinism.json",
+    "path": "/drawing1/nodes/7/children/0/strokes/14/points/2/1",
+    "old": 43.789555508041715,
+    "new": 43.78125
+  },
+  {
+    "file": "crates/executor/tests/golden/c21-determinism.json",
+    "path": "/drawing1/nodes/7/children/0/strokes/14/points/2/2",
+    "old": -0.9700438432249854,
+    "new": -0.9581490452223989
+  },
+  {
+    "file": "crates/executor/tests/golden/c21-determinism.json",
+    "path": "/drawing1/nodes/7/children/0/strokes/14/points/2/3",
+    "old": -0.05363063560614023,
+    "new": -0.05653523862982013
+  },
+  {
+    "file": "crates/executor/tests/golden/c21-determinism.json",
+    "path": "/drawing1/nodes/7/children/0/strokes/15/points/0/0",
+    "old": 67.90415775039175,
+    "new": 67.859375
+  },
+  {
+    "file": "crates/executor/tests/golden/c21-determinism.json",
+    "path": "/drawing1/nodes/7/children/0/strokes/15/points/0/1",
+    "old": 43.789555508041715,
+    "new": 43.78125
+  },
+  {
+    "file": "crates/executor/tests/golden/c21-determinism.json",
+    "path": "/drawing1/nodes/7/children/0/strokes/15/points/0/4",
+    "old": 0.28789347674354815,
+    "new": 0.30360207931961725
+  },
+  {
+    "file": "crates/executor/tests/golden/c21-determinism.json",
+    "path": "/drawing1/nodes/7/children/0/strokes/15/points/0/5",
+    "old": 0.01591671371603809,
+    "new": 0.017913931124212468
+  },
+  {
+    "file": "crates/executor/tests/golden/c21-determinism.json",
+    "path": "/drawing1/nodes/7/children/0/strokes/15/points/1/0",
+    "old": 68.77496779407643,
+    "new": 68.78125
+  },
+  {
+    "file": "crates/executor/tests/golden/c21-determinism.json",
+    "path": "/drawing1/nodes/7/children/0/strokes/15/points/1/1",
+    "old": 43.79532612927864,
+    "new": 43.796875
+  },
+  {
+    "file": "crates/executor/tests/golden/c21-determinism.json",
+    "path": "/drawing1/nodes/7/children/0/strokes/15/points/1/2",
+    "old": -0.29236282661510415,
+    "new": -0.30858322180081643
+  },
+  {
+    "file": "crates/executor/tests/golden/c21-determinism.json",
+    "path": "/drawing1/nodes/7/children/0/strokes/15/points/1/3",
+    "old": 0.010432597928854648,
+    "new": 0.011443184984372579
+  },
+  {
+    "file": "crates/executor/tests/golden/c21-determinism.json",
+    "path": "/drawing1/nodes/7/children/0/strokes/16/points/0/0",
+    "old": 68.77496779407643,
+    "new": 68.78125
+  },
+  {
+    "file": "crates/executor/tests/golden/c21-determinism.json",
+    "path": "/drawing1/nodes/7/children/0/strokes/16/points/0/1",
+    "old": 43.79532612927864,
+    "new": 43.796875
+  },
+  {
+    "file": "crates/executor/tests/golden/c21-determinism.json",
+    "path": "/drawing1/nodes/7/children/0/strokes/16/points/0/4",
+    "old": 0.7561431901128088,
+    "new": 0.7406352547372705
+  },
+  {
+    "file": "crates/executor/tests/golden/c21-determinism.json",
+    "path": "/drawing1/nodes/7/children/0/strokes/16/points/0/5",
+    "old": -0.0269820139941217,
+    "new": -0.027464961239466845
+  },
+  {
+    "file": "crates/executor/tests/golden/c21-determinism.json",
+    "path": "/drawing1/nodes/7/children/0/strokes/16/points/1/0",
+    "old": 71.083263542407,
+    "new": 71.046875
+  },
+  {
+    "file": "crates/executor/tests/golden/c21-determinism.json",
+    "path": "/drawing1/nodes/7/children/0/strokes/16/points/1/1",
+    "old": 43.46889312423914,
+    "new": 43.46875
+  },
+  {
+    "file": "crates/executor/tests/golden/c21-determinism.json",
+    "path": "/drawing1/nodes/7/children/0/strokes/16/points/1/2",
+    "old": -0.7818981610601128,
+    "new": -0.7653569083513219
+  },
+  {
+    "file": "crates/executor/tests/golden/c21-determinism.json",
+    "path": "/drawing1/nodes/7/children/0/strokes/16/points/1/3",
+    "old": 0.18764822488317634,
+    "new": 0.18162591834328623
+  },
+  {
+    "file": "crates/executor/tests/golden/c21-determinism.json",
+    "path": "/drawing1/nodes/7/children/0/strokes/17/points/0/0",
+    "old": 71.083263542407,
+    "new": 71.046875
+  },
+  {
+    "file": "crates/executor/tests/golden/c21-determinism.json",
+    "path": "/drawing1/nodes/7/children/0/strokes/17/points/0/1",
+    "old": 43.46889312423914,
+    "new": 43.46875
+  },
+  {
+    "file": "crates/executor/tests/golden/c21-determinism.json",
+    "path": "/drawing1/nodes/7/children/0/strokes/17/points/0/4",
+    "old": 0.1856066965176666,
+    "new": 0.19184558930297158
+  },
+  {
+    "file": "crates/executor/tests/golden/c21-determinism.json",
+    "path": "/drawing1/nodes/7/children/0/strokes/17/points/0/5",
+    "old": -0.044543866276328004,
+    "new": -0.045526643788086574
+  },
+  {
+    "file": "crates/executor/tests/golden/c21-determinism.json",
+    "path": "/drawing1/nodes/7/children/0/strokes/17/points/1/0",
+    "old": 71.64195286671549,
+    "new": 71.625
+  },
+  {
+    "file": "crates/executor/tests/golden/c21-determinism.json",
+    "path": "/drawing1/nodes/7/children/0/strokes/17/points/1/1",
+    "old": 43.32271529403357,
+    "new": 43.328125
+  },
+  {
+    "file": "crates/executor/tests/golden/c21-determinism.json",
+    "path": "/drawing1/nodes/7/children/0/strokes/17/points/1/2",
+    "old": -0.18684975855647679,
+    "new": -0.19317853016374897
+  },
+  {
+    "file": "crates/executor/tests/golden/c21-determinism.json",
+    "path": "/drawing1/nodes/7/children/0/strokes/17/points/1/3",
+    "old": 0.052813577677291335,
+    "new": 0.05438337440997287
+  },
+  {
+    "file": "crates/executor/tests/golden/c21-determinism.json",
+    "path": "/drawing1/nodes/7/children/0/strokes/18/points/0/0",
+    "old": 71.64195286671549,
+    "new": 71.625
+  },
+  {
+    "file": "crates/executor/tests/golden/c21-determinism.json",
+    "path": "/drawing1/nodes/7/children/0/strokes/18/points/0/1",
+    "old": 43.32271529403357,
+    "new": 43.328125
+  },
+  {
+    "file": "crates/executor/tests/golden/c21-determinism.json",
+    "path": "/drawing1/nodes/7/children/0/strokes/18/points/0/4",
+    "old": 9.692708209998798,
+    "new": 9.696092656184263
+  },
+  {
+    "file": "crates/executor/tests/golden/c21-determinism.json",
+    "path": "/drawing1/nodes/7/children/0/strokes/18/points/0/5",
+    "old": -2.739669571461242,
+    "new": -2.729631687269368
+  },
+  {
+    "file": "crates/executor/tests/golden/c21-determinism.json",
+    "path": "/drawing1/nodes/7/children/0/strokes/18/points/1/2",
+    "old": -7.354610716908766,
+    "new": -7.358469500780018
+  },
+  {
+    "file": "crates/executor/tests/golden/c21-determinism.json",
+    "path": "/drawing1/nodes/7/children/0/strokes/18/points/1/3",
+    "old": 3.602021941667136,
+    "new": 3.603911834240293
+  },
+  {
+    "file": "crates/executor/tests/golden/c21-determinism.json",
+    "path": "/drawing1/nodes/7/children/0/strokes/19/points/3/0",
+    "old": -93.38380665603533,
+    "new": -93.40625
+  },
+  {
+    "file": "crates/executor/tests/golden/c21-determinism.json",
+    "path": "/drawing1/nodes/7/children/0/strokes/19/points/3/1",
+    "old": 41.732970953170096,
+    "new": 41.765625
+  },
+  {
+    "file": "crates/executor/tests/golden/c21-determinism.json",
+    "path": "/drawing1/nodes/7/children/0/strokes/20/points/0/0",
+    "old": -93.38380665603533,
+    "new": -93.40625
+  },
+  {
+    "file": "crates/executor/tests/golden/c21-determinism.json",
+    "path": "/drawing1/nodes/7/children/0/strokes/20/points/0/1",
+    "old": 41.732970953170096,
+    "new": 41.765625
+  },
+  {
+    "file": "crates/executor/tests/golden/c21-determinism.json",
+    "path": "/drawing1/nodes/7/children/0/strokes/20/points/7/0",
+    "old": -73.29311484565696,
+    "new": -73.203125
+  },
+  {
+    "file": "crates/executor/tests/golden/c21-determinism.json",
+    "path": "/drawing1/nodes/7/children/0/strokes/20/points/7/1",
+    "old": 13.499183366250781,
+    "new": 13.390625
+  },
+  {
+    "file": "crates/executor/tests/golden/c21-determinism.json",
+    "path": "/drawing1/nodes/7/children/0/strokes/21/points/0/0",
+    "old": -73.29311484565696,
+    "new": -73.203125
+  },
+  {
+    "file": "crates/executor/tests/golden/c21-determinism.json",
+    "path": "/drawing1/nodes/7/children/0/strokes/21/points/0/1",
+    "old": 13.499183366250781,
+    "new": 13.390625
+  },
+  {
+    "file": "crates/executor/tests/golden/c21-determinism.json",
+    "path": "/drawing1/nodes/7/children/0/strokes/21/points/2/0",
+    "old": -68.70563491668251,
+    "new": -68.71875
+  },
+  {
+    "file": "crates/executor/tests/golden/c21-determinism.json",
+    "path": "/drawing1/nodes/7/children/0/strokes/21/points/2/1",
+    "old": 8.22691649618503,
+    "new": 8.25
+  },
+  {
+    "file": "crates/executor/tests/golden/c21-determinism.json",
+    "path": "/drawing1/nodes/7/children/0/strokes/22/points/0/0",
+    "old": -68.70563491668251,
+    "new": -68.71875
+  },
+  {
+    "file": "crates/executor/tests/golden/c21-determinism.json",
+    "path": "/drawing1/nodes/7/children/0/strokes/22/points/0/1",
+    "old": 8.22691649618503,
+    "new": 8.25
+  },
+  {
+    "file": "crates/executor/tests/golden/c21-determinism.json",
+    "path": "/drawing1/nodes/7/children/0/strokes/22/points/2/0",
+    "old": -67.63238369344371,
+    "new": -67.734375
+  },
+  {
+    "file": "crates/executor/tests/golden/c21-determinism.json",
+    "path": "/drawing1/nodes/7/children/0/strokes/22/points/2/1",
+    "old": 7.175965461190099,
+    "new": 7.265625
+  },
+  {
+    "file": "crates/executor/tests/golden/c21-determinism.json",
+    "path": "/drawing1/nodes/7/children/0/strokes/23/points/0/0",
+    "old": -67.63238369344371,
+    "new": -67.734375
+  },
+  {
+    "file": "crates/executor/tests/golden/c21-determinism.json",
+    "path": "/drawing1/nodes/7/children/0/strokes/23/points/0/1",
+    "old": 7.175965461190099,
+    "new": 7.265625
+  },
+  {
+    "file": "crates/executor/tests/golden/c21-determinism.json",
+    "path": "/drawing1/nodes/7/children/0/strokes/23/points/4/0",
+    "old": -58.60892847854356,
+    "new": -58.609375
+  },
+  {
+    "file": "crates/executor/tests/golden/c21-determinism.json",
+    "path": "/drawing1/nodes/7/children/0/strokes/24/points/0/0",
+    "old": -58.60892847854356,
+    "new": -58.609375
+  },
+  {
+    "file": "crates/executor/tests/golden/c21-determinism.json",
+    "path": "/drawing1/nodes/7/children/0/strokes/24/points/5/0",
+    "old": -44.20189031165924,
+    "new": -44.0625
+  },
+  {
+    "file": "crates/executor/tests/golden/c21-determinism.json",
+    "path": "/drawing1/nodes/7/children/0/strokes/24/points/5/1",
+    "old": -13.694972326091529,
+    "new": -13.875
+  },
+  {
+    "file": "crates/executor/tests/golden/c21-determinism.json",
+    "path": "/drawing1/nodes/7/children/0/strokes/25/points/0/0",
+    "old": -44.20189031165924,
+    "new": -44.0625
+  },
+  {
+    "file": "crates/executor/tests/golden/c21-determinism.json",
+    "path": "/drawing1/nodes/7/children/0/strokes/25/points/0/1",
+    "old": -13.694972326091529,
+    "new": -13.875
+  },
+  {
+    "file": "crates/executor/tests/golden/c21-determinism.json",
+    "path": "/drawing1/nodes/7/children/0/strokes/25/points/2/0",
+    "old": -41.947204722734575,
+    "new": -41.984375
+  },
+  {
+    "file": "crates/executor/tests/golden/c21-determinism.json",
+    "path": "/drawing1/nodes/7/children/0/strokes/25/points/2/1",
+    "old": -16.76499003959956,
+    "new": -16.703125
+  },
+  {
+    "file": "crates/executor/tests/golden/c21-determinism.json",
+    "path": "/drawing1/nodes/7/children/0/strokes/26/points/0/0",
+    "old": -41.947204722734575,
+    "new": -41.984375
+  },
+  {
+    "file": "crates/executor/tests/golden/c21-determinism.json",
+    "path": "/drawing1/nodes/7/children/0/strokes/26/points/0/1",
+    "old": -16.76499003959956,
+    "new": -16.703125
+  },
+  {
+    "file": "crates/executor/tests/golden/c21-determinism.json",
+    "path": "/drawing1/nodes/7/children/0/strokes/26/points/15/0",
+    "old": 4.039357782175788,
+    "new": 4.046875
+  },
+  {
+    "file": "crates/executor/tests/golden/c21-determinism.json",
+    "path": "/drawing1/nodes/7/children/0/strokes/26/points/15/1",
+    "old": -27.41870344235428,
+    "new": -27.421875
+  },
+  {
+    "file": "crates/executor/tests/golden/c21-determinism.json",
+    "path": "/drawing1/nodes/7/children/0/strokes/27/points/0/0",
+    "old": 4.039357782175788,
+    "new": 4.046875
+  },
+  {
+    "file": "crates/executor/tests/golden/c21-determinism.json",
+    "path": "/drawing1/nodes/7/children/0/strokes/27/points/0/1",
+    "old": -27.41870344235428,
+    "new": -27.421875
+  },
+  {
+    "file": "crates/executor/tests/golden/c21-determinism.json",
+    "path": "/drawing1/nodes/7/children/0/strokes/27/points/2/0",
+    "old": 5.883690011594929,
+    "new": 6.03125
+  },
+  {
+    "file": "crates/executor/tests/golden/c21-determinism.json",
+    "path": "/drawing1/nodes/7/children/0/strokes/27/points/2/1",
+    "old": -25.252216471841237,
+    "new": -25.078125
+  },
+  {
+    "file": "crates/executor/tests/golden/c21-determinism.json",
+    "path": "/drawing1/nodes/7/children/0/strokes/28/points/0/0",
+    "old": 5.883690011594929,
+    "new": 6.03125
+  },
+  {
+    "file": "crates/executor/tests/golden/c21-determinism.json",
+    "path": "/drawing1/nodes/7/children/0/strokes/28/points/0/1",
+    "old": -25.252216471841237,
+    "new": -25.078125
+  },
+  {
+    "file": "crates/executor/tests/golden/c21-determinism.json",
+    "path": "/drawing1/nodes/7/children/0/strokes/28/points/6/0",
+    "old": 23.58969671928035,
+    "new": 23.53125
+  },
+  {
+    "file": "crates/executor/tests/golden/c21-determinism.json",
+    "path": "/drawing1/nodes/7/children/0/strokes/28/points/6/1",
+    "old": -10.638283866042858,
+    "new": -10.6875
+  },
+  {
+    "file": "crates/executor/tests/golden/c21-determinism.json",
+    "path": "/drawing1/nodes/7/children/0/strokes/29/points/0/0",
+    "old": 23.58969671928035,
+    "new": 23.53125
+  },
+  {
+    "file": "crates/executor/tests/golden/c21-determinism.json",
+    "path": "/drawing1/nodes/7/children/0/strokes/29/points/0/1",
+    "old": -10.638283866042858,
+    "new": -10.6875
+  },
+  {
+    "file": "crates/executor/tests/golden/c21-determinism.json",
+    "path": "/drawing1/nodes/7/children/0/strokes/29/points/5/0",
+    "old": 34.4695129933442,
+    "new": 34.4375
+  },
+  {
+    "file": "crates/executor/tests/golden/c21-determinism.json",
+    "path": "/drawing1/nodes/7/children/0/strokes/29/points/5/1",
+    "old": -0.8222578732315098,
+    "new": -0.859375
+  },
+  {
+    "file": "crates/executor/tests/golden/c21-determinism.json",
+    "path": "/drawing1/nodes/7/children/0/strokes/30/points/0/0",
+    "old": 34.4695129933442,
+    "new": 34.4375
+  },
+  {
+    "file": "crates/executor/tests/golden/c21-determinism.json",
+    "path": "/drawing1/nodes/7/children/0/strokes/30/points/0/1",
+    "old": -0.8222578732315098,
+    "new": -0.859375
+  },
+  {
+    "file": "crates/executor/tests/golden/c21-determinism.json",
+    "path": "/drawing1/nodes/7/children/0/strokes/30/points/1/0",
+    "old": 35.12496585488326,
+    "new": 35.125
+  },
+  {
+    "file": "crates/executor/tests/golden/c21-determinism.json",
+    "path": "/drawing1/nodes/7/children/0/strokes/30/points/1/1",
+    "old": 1.1102230246251565e-16,
+    "new": 0.0
+  },
+  {
+    "file": "crates/executor/tests/golden/c21-determinism.json",
+    "path": "/drawing1/nodes/7/children/0/strokes/31/points/0/0",
+    "old": 35.12496585488326,
+    "new": 35.125
+  },
+  {
+    "file": "crates/executor/tests/golden/c21-determinism.json",
+    "path": "/drawing1/nodes/7/children/0/strokes/31/points/0/1",
+    "old": 1.1102230246251565e-16,
+    "new": 0.0
+  },
+  {
+    "file": "crates/executor/tests/golden/c21-determinism.json",
+    "path": "/drawing1/nodes/7/children/0/strokes/31/points/2/0",
+    "old": 38.00576155582505,
+    "new": 37.796875
+  },
+  {
+    "file": "crates/executor/tests/golden/c21-determinism.json",
+    "path": "/drawing1/nodes/7/children/0/strokes/31/points/2/1",
+    "old": 3.9422523841591888,
+    "new": 3.609375
+  },
+  {
+    "file": "crates/executor/tests/golden/c21-determinism.json",
+    "path": "/drawing1/nodes/7/children/0/strokes/32/points/0/0",
+    "old": 38.00576155582505,
+    "new": 37.796875
+  },
+  {
+    "file": "crates/executor/tests/golden/c21-determinism.json",
+    "path": "/drawing1/nodes/7/children/0/strokes/32/points/0/1",
+    "old": 3.9422523841591888,
+    "new": 3.609375
+  },
+  {
+    "file": "crates/executor/tests/golden/c21-determinism.json",
+    "path": "/drawing1/nodes/7/children/0/strokes/32/points/5/0",
+    "old": 52.33624597630528,
+    "new": 52.34375
+  },
+  {
+    "file": "crates/executor/tests/golden/c21-determinism.json",
+    "path": "/drawing1/nodes/7/children/0/strokes/32/points/5/1",
+    "old": 28.64723291829729,
+    "new": 28.65625
+  },
+  {
+    "file": "crates/executor/tests/golden/c21-determinism.json",
+    "path": "/drawing1/nodes/7/children/0/strokes/33/points/0/0",
+    "old": 52.33624597630528,
+    "new": 52.34375
+  },
+  {
+    "file": "crates/executor/tests/golden/c21-determinism.json",
+    "path": "/drawing1/nodes/7/children/0/strokes/33/points/0/1",
+    "old": 28.64723291829729,
+    "new": 28.65625
+  },
+  {
+    "file": "crates/executor/tests/golden/c21-determinism.json",
+    "path": "/drawing1/nodes/7/children/0/strokes/33/points/6/0",
+    "old": 67.90415775039175,
+    "new": 67.859375
+  },
+  {
+    "file": "crates/executor/tests/golden/c21-determinism.json",
+    "path": "/drawing1/nodes/7/children/0/strokes/33/points/6/1",
+    "old": 43.789555508041715,
+    "new": 43.78125
+  },
+  {
+    "file": "crates/executor/tests/golden/c21-determinism.json",
+    "path": "/drawing1/nodes/7/children/0/strokes/34/points/0/0",
+    "old": 67.90415775039175,
+    "new": 67.859375
+  },
+  {
+    "file": "crates/executor/tests/golden/c21-determinism.json",
+    "path": "/drawing1/nodes/7/children/0/strokes/34/points/0/1",
+    "old": 43.789555508041715,
+    "new": 43.78125
+  },
+  {
+    "file": "crates/executor/tests/golden/c21-determinism.json",
+    "path": "/drawing1/nodes/7/children/0/strokes/34/points/2/0",
+    "old": 68.77496779407643,
+    "new": 68.78125
+  },
+  {
+    "file": "crates/executor/tests/golden/c21-determinism.json",
+    "path": "/drawing1/nodes/7/children/0/strokes/34/points/2/1",
+    "old": 43.79532612927864,
+    "new": 43.796875
+  },
+  {
+    "file": "crates/executor/tests/golden/c21-determinism.json",
+    "path": "/drawing1/nodes/7/children/0/strokes/35/points/0/0",
+    "old": 68.77496779407643,
+    "new": 68.78125
+  },
+  {
+    "file": "crates/executor/tests/golden/c21-determinism.json",
+    "path": "/drawing1/nodes/7/children/0/strokes/35/points/0/1",
+    "old": 43.79532612927864,
+    "new": 43.796875
+  },
+  {
+    "file": "crates/executor/tests/golden/c21-determinism.json",
+    "path": "/drawing1/nodes/7/children/0/strokes/35/points/1/0",
+    "old": 71.083263542407,
+    "new": 71.046875
+  },
+  {
+    "file": "crates/executor/tests/golden/c21-determinism.json",
+    "path": "/drawing1/nodes/7/children/0/strokes/35/points/1/1",
+    "old": 43.46889312423914,
+    "new": 43.46875
+  },
+  {
+    "file": "crates/executor/tests/golden/c21-determinism.json",
+    "path": "/drawing1/nodes/7/children/0/strokes/36/points/0/0",
+    "old": 71.083263542407,
+    "new": 71.046875
+  },
+  {
+    "file": "crates/executor/tests/golden/c21-determinism.json",
+    "path": "/drawing1/nodes/7/children/0/strokes/36/points/0/1",
+    "old": 43.46889312423914,
+    "new": 43.46875
+  },
+  {
+    "file": "crates/executor/tests/golden/c21-determinism.json",
+    "path": "/drawing1/nodes/7/children/0/strokes/36/points/2/0",
+    "old": 71.64195286671549,
+    "new": 71.625
+  },
+  {
+    "file": "crates/executor/tests/golden/c21-determinism.json",
+    "path": "/drawing1/nodes/7/children/0/strokes/36/points/2/1",
+    "old": 43.32271529403357,
+    "new": 43.328125
+  },
+  {
+    "file": "crates/executor/tests/golden/c21-determinism.json",
+    "path": "/drawing1/nodes/7/children/0/strokes/37/points/0/0",
+    "old": 71.64195286671549,
+    "new": 71.625
+  },
+  {
+    "file": "crates/executor/tests/golden/c21-determinism.json",
+    "path": "/drawing1/nodes/7/children/0/strokes/37/points/0/1",
+    "old": 43.32271529403357,
+    "new": 43.328125
+  },
+  {
+    "file": "crates/executor/tests/golden/c21-determinism.json",
+    "path": "/drawing1/nodes/7/children/0/strokes/38/points/1/0",
+    "old": 52.33624597630528,
+    "new": 52.34375
+  },
+  {
+    "file": "crates/executor/tests/golden/c21-determinism.json",
+    "path": "/drawing1/nodes/7/children/0/strokes/38/points/1/1",
+    "old": 28.64723291829729,
+    "new": 28.65625
+  },
+  {
+    "file": "crates/executor/tests/golden/c21-determinism.json",
+    "path": "/drawing1/nodes/7/children/0/strokes/39/points/0/0",
+    "old": 52.33624597630528,
+    "new": 52.34375
+  },
+  {
+    "file": "crates/executor/tests/golden/c21-determinism.json",
+    "path": "/drawing1/nodes/7/children/0/strokes/39/points/0/1",
+    "old": 28.64723291829729,
+    "new": 28.65625
+  },
+  {
+    "file": "crates/executor/tests/golden/c21-determinism.json",
+    "path": "/drawing1/nodes/7/children/0/strokes/39/points/1/0",
+    "old": 51.067507052944165,
+    "new": 51.078125
+  },
+  {
+    "file": "crates/executor/tests/golden/c21-determinism.json",
+    "path": "/drawing1/nodes/7/children/0/strokes/39/points/1/1",
+    "old": 28.78898277450981,
+    "new": 28.796875
+  },
+  {
+    "file": "crates/executor/tests/golden/c21-determinism.json",
+    "path": "/drawing1/nodes/7/children/0/strokes/40/points/0/0",
+    "old": 51.067507052944165,
+    "new": 51.078125
+  },
+  {
+    "file": "crates/executor/tests/golden/c21-determinism.json",
+    "path": "/drawing1/nodes/7/children/0/strokes/40/points/0/1",
+    "old": 28.78898277450981,
+    "new": 28.796875
+  },
+  {
+    "file": "crates/executor/tests/golden/c21-determinism.json",
+    "path": "/drawing1/nodes/7/children/0/strokes/41/points/1/0",
+    "old": -59.17934956880028,
+    "new": -59.1875
+  },
+  {
+    "file": "crates/executor/tests/golden/c21-determinism.json",
+    "path": "/drawing1/nodes/7/children/0/strokes/41/points/1/1",
+    "old": 1.3877787807814457e-17,
+    "new": 0.0
+  },
+  {
+    "file": "crates/executor/tests/golden/c21-determinism.json",
+    "path": "/drawing1/nodes/7/children/0/strokes/42/points/0/0",
+    "old": -59.17934956880028,
+    "new": -59.1875
+  },
+  {
+    "file": "crates/executor/tests/golden/c21-determinism.json",
+    "path": "/drawing1/nodes/7/children/0/strokes/42/points/0/1",
+    "old": 1.3877787807814457e-17,
+    "new": 0.0
+  },
+  {
+    "file": "crates/executor/tests/golden/c21-determinism.json",
+    "path": "/drawing1/nodes/7/children/0/strokes/42/points/1/0",
+    "old": -58.60892847854356,
+    "new": -58.609375
+  },
+  {
+    "file": "crates/executor/tests/golden/c21-determinism.json",
+    "path": "/drawing1/nodes/7/children/0/strokes/43/points/0/0",
+    "old": -58.60892847854356,
+    "new": -58.609375
+  },
+  {
+    "file": "crates/executor/tests/golden/c21-determinism.json",
+    "path": "/drawing1/nodes/7/children/0/strokes/43/points/1/0",
+    "old": 35.12496585488326,
+    "new": 35.125
+  },
+  {
+    "file": "crates/executor/tests/golden/c21-determinism.json",
+    "path": "/drawing1/nodes/7/children/0/strokes/43/points/1/1",
+    "old": 1.1102230246251565e-16,
+    "new": 0.0
+  },
+  {
+    "file": "crates/executor/tests/golden/c21-determinism.json",
+    "path": "/drawing1/nodes/7/children/0/strokes/44/points/0/0",
+    "old": 35.12496585488326,
+    "new": 35.125
+  },
+  {
+    "file": "crates/executor/tests/golden/c21-determinism.json",
+    "path": "/drawing1/nodes/7/children/0/strokes/44/points/0/1",
+    "old": 1.1102230246251565e-16,
+    "new": 0.0
+  },
+  {
+    "file": "crates/executor/tests/golden/c21-determinism.json",
+    "path": "/drawing1/nodes/7/children/0/strokes/44/points/1/0",
+    "old": 35.16024185482786,
+    "new": 100.0
+  },
+  {
+    "file": "crates/executor/tests/golden/c21-determinism.json",
+    "path": "/sha256",
+    "old": "700421606da335a8d4b17cf68e6839cadacd9039bbb41a615be52e5f6501c8d9",
+    "new": "8a181d860c48fd454eb96cde60fe3b0d5661670b04b6bb978d967910fb643e2e"
+  },
+  {
+    "file": "crates/executor/tests/golden/c22-determinism.json",
+    "path": "/bytes",
+    "old": 115800,
+    "new": 115371
+  },
+  {
+    "file": "crates/executor/tests/golden/c22-determinism.json",
+    "path": "/nodes/3/strokes/0/bezier/5/y",
+    "old": 369.6475782151275,
+    "new": 369.640625
+  },
+  {
+    "file": "crates/executor/tests/golden/c22-determinism.json",
+    "path": "/nodes/3/strokes/0/bezier/6/y",
+    "old": 369.6475782151275,
+    "new": 369.640625
+  },
+  {
+    "file": "crates/executor/tests/golden/c22-determinism.json",
+    "path": "/nodes/3/strokes/0/leftZoneId",
+    "old": "zn_SM0180BMWC826XGDCB1NFK33ZG",
+    "new": "zn_SBAEZ27MS003KQN8K65HPAWTQZ"
+  },
+  {
+    "file": "crates/executor/tests/golden/c22-determinism.json",
+    "path": "/nodes/3/strokes/1/bezier/0/y",
+    "old": 369.6475782151275,
+    "new": 369.640625
+  },
+  {
+    "file": "crates/executor/tests/golden/c22-determinism.json",
+    "path": "/nodes/3/strokes/1/bezier/1/y",
+    "old": 369.6475782151275,
+    "new": 369.640625
+  },
+  {
+    "file": "crates/executor/tests/golden/c22-determinism.json",
+    "path": "/nodes/3/strokes/1/leftZoneId",
+    "old": "zn_TCEANC6S6Z635JP7JHGG8J9S3Y",
+    "new": "zn_EM1T3MF0G40WW614ZG78CCBTQZ"
+  },
+  {
+    "file": "crates/executor/tests/golden/c22-determinism.json",
+    "path": "/nodes/3/strokes/2/bezier/5/y",
+    "old": 333.8302439208128,
+    "new": 333.828125
+  },
+  {
+    "file": "crates/executor/tests/golden/c22-determinism.json",
+    "path": "/nodes/3/strokes/2/bezier/6/y",
+    "old": 333.8302439208128,
+    "new": 333.828125
+  },
+  {
+    "file": "crates/executor/tests/golden/c22-determinism.json",
+    "path": "/nodes/3/strokes/2/leftZoneId",
+    "old": "zn_TCEANC6S6Z635JP7JHGG8J9S3Y",
+    "new": "zn_EM1T3MF0G40WW614ZG78CCBTQZ"
+  },
+  {
+    "file": "crates/executor/tests/golden/c22-determinism.json",
+    "path": "/nodes/3/strokes/3/bezier/0/y",
+    "old": 333.8302439208128,
+    "new": 333.828125
+  },
+  {
+    "file": "crates/executor/tests/golden/c22-determinism.json",
+    "path": "/nodes/3/strokes/3/bezier/1/y",
+    "old": 333.8302439208128,
+    "new": 333.828125
+  },
+  {
+    "file": "crates/executor/tests/golden/c22-determinism.json",
+    "path": "/nodes/3/strokes/5/bezier/2/y",
+    "old": 348.2547043396475,
+    "new": 348.25
+  },
+  {
+    "file": "crates/executor/tests/golden/c22-determinism.json",
+    "path": "/nodes/3/strokes/5/bezier/3/y",
+    "old": 348.2547043396475,
+    "new": 348.25
+  },
+  {
+    "file": "crates/executor/tests/golden/c22-determinism.json",
+    "path": "/nodes/3/strokes/5/rightZoneId",
+    "old": "zn_SM0180BMWC826XGDCB1NFK33ZG",
+    "new": "zn_SBAEZ27MS003KQN8K65HPAWTQZ"
+  },
+  {
+    "file": "crates/executor/tests/golden/c22-determinism.json",
+    "path": "/nodes/3/strokes/7/bezier/1/x",
+    "old": 293.34169307208,
+    "new": 293.3425160697888
+  },
+  {
+    "file": "crates/executor/tests/golden/c22-determinism.json",
+    "path": "/nodes/3/strokes/7/bezier/1/y",
+    "old": 331.25313490203,
+    "new": 331.2534435261708
+  },
+  {
+    "file": "crates/executor/tests/golden/c22-determinism.json",
+    "path": "/nodes/3/strokes/7/bezier/2/x",
+    "old": 296.6720991318633,
+    "new": 296.6712808812663
+  },
+  {
+    "file": "crates/executor/tests/golden/c22-determinism.json",
+    "path": "/nodes/3/strokes/7/bezier/2/y",
+    "old": 332.5381513062572,
+    "new": 332.53571035252463
+  },
+  {
+    "file": "crates/executor/tests/golden/c22-determinism.json",
+    "path": "/nodes/3/strokes/7/bezier/3/y",
+    "old": 333.8302439208128,
+    "new": 333.828125
+  },
+  {
+    "file": "crates/executor/tests/golden/c22-determinism.json",
+    "path": "/nodes/3/strokes/8/bezier/0/y",
+    "old": 333.8302439208128,
+    "new": 333.828125
+  },
+  {
+    "file": "crates/executor/tests/golden/c22-determinism.json",
+    "path": "/nodes/3/strokes/8/bezier/1/x",
+    "old": 309.9504016623637,
+    "new": 309.94957802522606
+  },
+  {
+    "file": "crates/executor/tests/golden/c22-determinism.json",
+    "path": "/nodes/3/strokes/8/bezier/1/y",
+    "old": 337.6935923224738,
+    "new": 337.69116658366255
+  },
+  {
+    "file": "crates/executor/tests/golden/c22-determinism.json",
+    "path": "/nodes/3/strokes/8/bezier/2/x",
+    "old": 319.8765279742859,
+    "new": 319.87736183079636
+  },
+  {
+    "file": "crates/executor/tests/golden/c22-determinism.json",
+    "path": "/nodes/3/strokes/8/bezier/2/y",
+    "old": 341.62550932476194,
+    "new": 341.6257872769321
+  },
+  {
+    "file": "crates/executor/tests/golden/c22-determinism.json",
+    "path": "/nodes/3/strokes/8/bezier/4/x",
+    "old": 333.3253761874144,
+    "new": 333.3232898700752
+  },
+  {
+    "file": "crates/executor/tests/golden/c22-determinism.json",
+    "path": "/nodes/3/strokes/8/bezier/4/y",
+    "old": 346.10845872913814,
+    "new": 346.1077632900251
+  },
+  {
+    "file": "crates/executor/tests/golden/c22-determinism.json",
+    "path": "/nodes/3/strokes/8/bezier/5/x",
+    "old": 336.6601939024978,
+    "new": 336.6622979087664
+  },
+  {
+    "file": "crates/executor/tests/golden/c22-determinism.json",
+    "path": "/nodes/3/strokes/8/bezier/5/y",
+    "old": 347.18919678040015,
+    "new": 347.18513458994533
+  },
+  {
+    "file": "crates/executor/tests/golden/c22-determinism.json",
+    "path": "/nodes/3/strokes/8/bezier/6/y",
+    "old": 348.2547043396475,
+    "new": 348.25
+  },
+  {
+    "file": "crates/executor/tests/golden/c22-determinism.json",
+    "path": "/nodes/3/strokes/8/leftZoneId",
+    "old": "zn_TCEANC6S6Z635JP7JHGG8J9S3Y",
+    "new": "zn_EM1T3MF0G40WW614ZG78CCBTQZ"
+  },
+  {
+    "file": "crates/executor/tests/golden/c22-determinism.json",
+    "path": "/nodes/3/strokes/9/bezier/0/y",
+    "old": 348.2547043396475,
+    "new": 348.25
+  },
+  {
+    "file": "crates/executor/tests/golden/c22-determinism.json",
+    "path": "/nodes/3/strokes/9/bezier/1/x",
+    "old": 353.2393997598733,
+    "new": 353.2414608705257
+  },
+  {
+    "file": "crates/executor/tests/golden/c22-determinism.json",
+    "path": "/nodes/3/strokes/9/bezier/1/y",
+    "old": 352.4785065940934,
+    "new": 352.4745752539298
+  },
+  {
+    "file": "crates/executor/tests/golden/c22-determinism.json",
+    "path": "/nodes/3/strokes/9/bezier/2/x",
+    "old": 366.58511519596203,
+    "new": 366.5829920517696
+  },
+  {
+    "file": "crates/executor/tests/golden/c22-determinism.json",
+    "path": "/nodes/3/strokes/9/bezier/2/y",
+    "old": 356.37798110290976,
+    "new": 356.37740785397784
+  },
+  {
+    "file": "crates/executor/tests/golden/c22-determinism.json",
+    "path": "/nodes/3/strokes/9/bezier/4/x",
+    "old": 393.24170542117605,
+    "new": 393.2430774787741
+  },
+  {
+    "file": "crates/executor/tests/golden/c22-determinism.json",
+    "path": "/nodes/3/strokes/9/bezier/4/y",
+    "old": 363.57526046371754,
+    "new": 363.57563091926903
+  },
+  {
+    "file": "crates/executor/tests/golden/c22-determinism.json",
+    "path": "/nodes/3/strokes/9/bezier/5/x",
+    "old": 406.6361513140247,
+    "new": 406.634772944599
+  },
+  {
+    "file": "crates/executor/tests/golden/c22-determinism.json",
+    "path": "/nodes/3/strokes/9/bezier/5/y",
+    "old": 366.55141214137626,
+    "new": 366.5441132281919
+  },
+  {
+    "file": "crates/executor/tests/golden/c22-determinism.json",
+    "path": "/nodes/3/strokes/9/bezier/6/y",
+    "old": 369.6475782151275,
+    "new": 369.640625
+  },
+  {
+    "file": "crates/executor/tests/golden/c22-determinism.json",
+    "path": "/nodes/3/strokes/9/leftZoneId",
+    "old": "zn_TCEANC6S6Z635JP7JHGG8J9S3Y",
+    "new": "zn_EM1T3MF0G40WW614ZG78CCBTQZ"
+  },
+  {
+    "file": "crates/executor/tests/golden/c22-determinism.json",
+    "path": "/nodes/3/strokes/9/rightZoneId",
+    "old": "zn_SM0180BMWC826XGDCB1NFK33ZG",
+    "new": "zn_SBAEZ27MS003KQN8K65HPAWTQZ"
+  },
+  {
+    "file": "crates/executor/tests/golden/c22-determinism.json",
+    "path": "/nodes/3/strokes/10/bezier/0/y",
+    "old": 369.6475782151275,
+    "new": 369.640625
+  },
+  {
+    "file": "crates/executor/tests/golden/c22-determinism.json",
+    "path": "/nodes/3/strokes/10/bezier/1/x",
+    "old": 423.3361899332419,
+    "new": 423.33480363663375
+  },
+  {
+    "file": "crates/executor/tests/golden/c22-determinism.json",
+    "path": "/nodes/3/strokes/10/bezier/1/y",
+    "old": 370.4205140908333,
+    "new": 370.41324627120633
+  },
+  {
+    "file": "crates/executor/tests/golden/c22-determinism.json",
+    "path": "/nodes/3/strokes/10/bezier/2/x",
+    "old": 426.6704768281166,
+    "new": 426.6718587746625
+  },
+  {
+    "file": "crates/executor/tests/golden/c22-determinism.json",
+    "path": "/nodes/3/strokes/10/bezier/2/y",
+    "old": 371.200914438748,
+    "new": 371.201246105919
+  },
+  {
+    "file": "crates/executor/tests/golden/c22-determinism.json",
+    "path": "/nodes/3/zones/0/area",
+    "old": 4769.4500732421875,
+    "new": 4769.1639404296875
+  },
+  {
+    "file": "crates/executor/tests/golden/c22-determinism.json",
+    "path": "/nodes/3/zones/0/id",
+    "old": "zn_SM0180BMWC826XGDCB1NFK33ZG",
+    "new": "zn_SBAEZ27MS003KQN8K65HPAWTQZ"
+  },
+  {
+    "file": "crates/executor/tests/golden/c22-determinism.json",
+    "path": "/nodes/3/zones/1/area",
+    "old": 5577.7607421875,
+    "new": 5578.046875
+  },
+  {
+    "file": "crates/executor/tests/golden/c22-determinism.json",
+    "path": "/nodes/3/zones/1/id",
+    "old": "zn_TCEANC6S6Z635JP7JHGG8J9S3Y",
+    "new": "zn_EM1T3MF0G40WW614ZG78CCBTQZ"
+  },
+  {
+    "file": "crates/executor/tests/golden/c22-determinism.json",
+    "path": "/nodes/6/strokes/0/bezier/5/y",
+    "old": 169.6475782151275,
+    "new": 169.640625
+  },
+  {
+    "file": "crates/executor/tests/golden/c22-determinism.json",
+    "path": "/nodes/6/strokes/0/bezier/6/y",
+    "old": 169.6475782151275,
+    "new": 169.640625
+  },
+  {
+    "file": "crates/executor/tests/golden/c22-determinism.json",
+    "path": "/nodes/6/strokes/0/leftZoneId",
+    "old": "zn_3N3RK6TVXZFYAX7S7T0FYX68AD",
+    "new": "zn_A5MCXZ5G7ZZWVJVD9MDSWDRZS8"
+  },
+  {
+    "file": "crates/executor/tests/golden/c22-determinism.json",
+    "path": "/nodes/6/strokes/1/bezier/0/y",
+    "old": 169.6475782151275,
+    "new": 169.640625
+  },
+  {
+    "file": "crates/executor/tests/golden/c22-determinism.json",
+    "path": "/nodes/6/strokes/1/bezier/1/y",
+    "old": 169.6475782151275,
+    "new": 169.640625
+  },
+  {
+    "file": "crates/executor/tests/golden/c22-determinism.json",
+    "path": "/nodes/6/strokes/1/leftZoneId",
+    "old": "zn_48J1DC1C2X3PD52YVG4H4528CY",
+    "new": "zn_4A1MAWZDZ1F2NQ4DZQS3F22C57"
+  },
+  {
+    "file": "crates/executor/tests/golden/c22-determinism.json",
+    "path": "/nodes/6/strokes/2/bezier/5/y",
+    "old": 133.8302439208128,
+    "new": 133.828125
+  },
+  {
+    "file": "crates/executor/tests/golden/c22-determinism.json",
+    "path": "/nodes/6/strokes/2/bezier/6/y",
+    "old": 133.8302439208128,
+    "new": 133.828125
+  },
+  {
+    "file": "crates/executor/tests/golden/c22-determinism.json",
+    "path": "/nodes/6/strokes/2/leftZoneId",
+    "old": "zn_48J1DC1C2X3PD52YVG4H4528CY",
+    "new": "zn_4A1MAWZDZ1F2NQ4DZQS3F22C57"
+  },
+  {
+    "file": "crates/executor/tests/golden/c22-determinism.json",
+    "path": "/nodes/6/strokes/3/bezier/0/y",
+    "old": 133.8302439208128,
+    "new": 133.828125
+  },
+  {
+    "file": "crates/executor/tests/golden/c22-determinism.json",
+    "path": "/nodes/6/strokes/3/bezier/1/y",
+    "old": 133.8302439208128,
+    "new": 133.828125
+  },
+  {
+    "file": "crates/executor/tests/golden/c22-determinism.json",
+    "path": "/nodes/6/strokes/5/bezier/2/y",
+    "old": 148.2547043396475,
+    "new": 148.25
+  },
+  {
+    "file": "crates/executor/tests/golden/c22-determinism.json",
+    "path": "/nodes/6/strokes/5/bezier/3/y",
+    "old": 148.2547043396475,
+    "new": 148.25
+  },
+  {
+    "file": "crates/executor/tests/golden/c22-determinism.json",
+    "path": "/nodes/6/strokes/5/rightZoneId",
+    "old": "zn_3N3RK6TVXZFYAX7S7T0FYX68AD",
+    "new": "zn_A5MCXZ5G7ZZWVJVD9MDSWDRZS8"
+  },
+  {
+    "file": "crates/executor/tests/golden/c22-determinism.json",
+    "path": "/nodes/6/strokes/7/bezier/1/x",
+    "old": 293.34169307208,
+    "new": 293.3425160697888
+  },
+  {
+    "file": "crates/executor/tests/golden/c22-determinism.json",
+    "path": "/nodes/6/strokes/7/bezier/1/y",
+    "old": 131.25313490203,
+    "new": 131.25344352617083
+  },
+  {
+    "file": "crates/executor/tests/golden/c22-determinism.json",
+    "path": "/nodes/6/strokes/7/bezier/2/x",
+    "old": 296.6720991318633,
+    "new": 296.6712808812663
+  },
+  {
+    "file": "crates/executor/tests/golden/c22-determinism.json",
+    "path": "/nodes/6/strokes/7/bezier/2/y",
+    "old": 132.5381513062572,
+    "new": 132.53571035252463
+  },
+  {
+    "file": "crates/executor/tests/golden/c22-determinism.json",
+    "path": "/nodes/6/strokes/7/bezier/3/y",
+    "old": 133.8302439208128,
+    "new": 133.828125
+  },
+  {
+    "file": "crates/executor/tests/golden/c22-determinism.json",
+    "path": "/nodes/6/strokes/8/bezier/0/y",
+    "old": 133.8302439208128,
+    "new": 133.828125
+  },
+  {
+    "file": "crates/executor/tests/golden/c22-determinism.json",
+    "path": "/nodes/6/strokes/8/bezier/1/x",
+    "old": 309.9504016623637,
+    "new": 309.94957802522606
+  },
+  {
+    "file": "crates/executor/tests/golden/c22-determinism.json",
+    "path": "/nodes/6/strokes/8/bezier/1/y",
+    "old": 137.69359232247382,
+    "new": 137.69116658366255
+  },
+  {
+    "file": "crates/executor/tests/golden/c22-determinism.json",
+    "path": "/nodes/6/strokes/8/bezier/2/x",
+    "old": 319.8765279742859,
+    "new": 319.87736183079636
+  },
+  {
+    "file": "crates/executor/tests/golden/c22-determinism.json",
+    "path": "/nodes/6/strokes/8/bezier/2/y",
+    "old": 141.62550932476194,
+    "new": 141.6257872769321
+  },
+  {
+    "file": "crates/executor/tests/golden/c22-determinism.json",
+    "path": "/nodes/6/strokes/8/bezier/4/x",
+    "old": 333.3253761874144,
+    "new": 333.3232898700752
+  },
+  {
+    "file": "crates/executor/tests/golden/c22-determinism.json",
+    "path": "/nodes/6/strokes/8/bezier/4/y",
+    "old": 146.10845872913814,
+    "new": 146.1077632900251
+  },
+  {
+    "file": "crates/executor/tests/golden/c22-determinism.json",
+    "path": "/nodes/6/strokes/8/bezier/5/x",
+    "old": 336.6601939024978,
+    "new": 336.6622979087664
+  },
+  {
+    "file": "crates/executor/tests/golden/c22-determinism.json",
+    "path": "/nodes/6/strokes/8/bezier/5/y",
+    "old": 147.18919678040015,
+    "new": 147.18513458994533
+  },
+  {
+    "file": "crates/executor/tests/golden/c22-determinism.json",
+    "path": "/nodes/6/strokes/8/bezier/6/y",
+    "old": 148.2547043396475,
+    "new": 148.25
+  },
+  {
+    "file": "crates/executor/tests/golden/c22-determinism.json",
+    "path": "/nodes/6/strokes/8/leftZoneId",
+    "old": "zn_48J1DC1C2X3PD52YVG4H4528CY",
+    "new": "zn_4A1MAWZDZ1F2NQ4DZQS3F22C57"
+  },
+  {
+    "file": "crates/executor/tests/golden/c22-determinism.json",
+    "path": "/nodes/6/strokes/9/bezier/0/y",
+    "old": 148.2547043396475,
+    "new": 148.25
+  },
+  {
+    "file": "crates/executor/tests/golden/c22-determinism.json",
+    "path": "/nodes/6/strokes/9/bezier/1/x",
+    "old": 353.2393997598733,
+    "new": 353.2414608705257
+  },
+  {
+    "file": "crates/executor/tests/golden/c22-determinism.json",
+    "path": "/nodes/6/strokes/9/bezier/1/y",
+    "old": 152.4785065940934,
+    "new": 152.4745752539298
+  },
+  {
+    "file": "crates/executor/tests/golden/c22-determinism.json",
+    "path": "/nodes/6/strokes/9/bezier/2/x",
+    "old": 366.58511519596203,
+    "new": 366.5829920517696
+  },
+  {
+    "file": "crates/executor/tests/golden/c22-determinism.json",
+    "path": "/nodes/6/strokes/9/bezier/2/y",
+    "old": 156.37798110290976,
+    "new": 156.37740785397784
+  },
+  {
+    "file": "crates/executor/tests/golden/c22-determinism.json",
+    "path": "/nodes/6/strokes/9/bezier/4/x",
+    "old": 393.24170542117605,
+    "new": 393.2430774787741
+  },
+  {
+    "file": "crates/executor/tests/golden/c22-determinism.json",
+    "path": "/nodes/6/strokes/9/bezier/4/y",
+    "old": 163.57526046371754,
+    "new": 163.57563091926903
+  },
+  {
+    "file": "crates/executor/tests/golden/c22-determinism.json",
+    "path": "/nodes/6/strokes/9/bezier/5/x",
+    "old": 406.6361513140247,
+    "new": 406.634772944599
+  },
+  {
+    "file": "crates/executor/tests/golden/c22-determinism.json",
+    "path": "/nodes/6/strokes/9/bezier/5/y",
+    "old": 166.55141214137626,
+    "new": 166.54411322819192
+  },
+  {
+    "file": "crates/executor/tests/golden/c22-determinism.json",
+    "path": "/nodes/6/strokes/9/bezier/6/y",
+    "old": 169.6475782151275,
+    "new": 169.640625
+  },
+  {
+    "file": "crates/executor/tests/golden/c22-determinism.json",
+    "path": "/nodes/6/strokes/9/leftZoneId",
+    "old": "zn_48J1DC1C2X3PD52YVG4H4528CY",
+    "new": "zn_4A1MAWZDZ1F2NQ4DZQS3F22C57"
+  },
+  {
+    "file": "crates/executor/tests/golden/c22-determinism.json",
+    "path": "/nodes/6/strokes/9/rightZoneId",
+    "old": "zn_3N3RK6TVXZFYAX7S7T0FYX68AD",
+    "new": "zn_A5MCXZ5G7ZZWVJVD9MDSWDRZS8"
+  },
+  {
+    "file": "crates/executor/tests/golden/c22-determinism.json",
+    "path": "/nodes/6/strokes/10/bezier/0/y",
+    "old": 169.6475782151275,
+    "new": 169.640625
+  },
+  {
+    "file": "crates/executor/tests/golden/c22-determinism.json",
+    "path": "/nodes/6/strokes/10/bezier/1/x",
+    "old": 423.3361899332419,
+    "new": 423.33480363663375
+  },
+  {
+    "file": "crates/executor/tests/golden/c22-determinism.json",
+    "path": "/nodes/6/strokes/10/bezier/1/y",
+    "old": 170.4205140908333,
+    "new": 170.41324627120633
+  },
+  {
+    "file": "crates/executor/tests/golden/c22-determinism.json",
+    "path": "/nodes/6/strokes/10/bezier/2/x",
+    "old": 426.6704768281166,
+    "new": 426.6718587746625
+  },
+  {
+    "file": "crates/executor/tests/golden/c22-determinism.json",
+    "path": "/nodes/6/strokes/10/bezier/2/y",
+    "old": 171.200914438748,
+    "new": 171.20124610591898
+  },
+  {
+    "file": "crates/executor/tests/golden/c22-determinism.json",
+    "path": "/nodes/6/zones/0/area",
+    "old": 4769.4500732421875,
+    "new": 4769.1639404296875
+  },
+  {
+    "file": "crates/executor/tests/golden/c22-determinism.json",
+    "path": "/nodes/6/zones/0/id",
+    "old": "zn_3N3RK6TVXZFYAX7S7T0FYX68AD",
+    "new": "zn_A5MCXZ5G7ZZWVJVD9MDSWDRZS8"
+  },
+  {
+    "file": "crates/executor/tests/golden/c22-determinism.json",
+    "path": "/nodes/6/zones/1/area",
+    "old": 5577.7607421875,
+    "new": 5578.046875
+  },
+  {
+    "file": "crates/executor/tests/golden/c22-determinism.json",
+    "path": "/nodes/6/zones/1/id",
+    "old": "zn_48J1DC1C2X3PD52YVG4H4528CY",
+    "new": "zn_4A1MAWZDZ1F2NQ4DZQS3F22C57"
+  },
+  {
+    "file": "crates/executor/tests/golden/c22-determinism.json",
+    "path": "/sha256",
+    "old": "930253a740299a4b0d352a4a5b1e3eb3ebf2565154bbb9f14396f0ea6edbf0b3",
+    "new": "5f69e2ff29f73ca47217cc7a5702a10c06eb894444425145ef03d2ab234e867f"
+  },
+  {
+    "file": "crates/executor/tests/golden/c24-symmetry.json",
+    "path": "/bytes",
+    "old": 1088272,
+    "new": 1065164
+  },
+  {
+    "file": "crates/executor/tests/golden/c24-symmetry.json",
+    "path": "/sha256",
+    "old": "fc3116b0a61936dbb16dcc786aca19313b4671183b8d5ccfdce3da5f05f96e36",
+    "new": "fcaf9b702db54055f781e9385cdf4f753bba80f4a7ec9b7a76bf5f36882ad71b"
+  }
+]

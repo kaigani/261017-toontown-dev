@@ -101,6 +101,11 @@ class GateValidation(unittest.TestCase):
         f['budgeted'][0]['status'] = 'Ok'
         self.reject(s, f)
 
+    def test_huge_json_integer_duration_exits_2_without_receipt(self):
+        s, f = valid()
+        f['unbudgeted'][0]['seconds'] = 10 ** 400
+        self.reject(s, f)
+
     def test_percentiles_match_shared_rule_for_even_and_odd_counts(self):
         g = module('gate_r2', 'scripts/c22-t2-gate.py')
         a = module('analyser_r2', 'scripts/analyse-measurements.py')
@@ -135,6 +140,16 @@ class Bookkeeping(unittest.TestCase):
         self.assertIn('SI-084', si)
         self.assertIn('middle', si)
         self.assertIn('SI-084', next((ROOT / 'docs/decisions').glob('ADR-0018*')).read_text(encoding='utf-8'))
+
+    def test_si067_middle_step_and_si084_named_policy_remain_explicit(self):
+        si = (ROOT / 'plan/spec-issues.md').read_text(encoding='utf-8')
+        s67 = si.split('## SI-067')[1].split('## SI-068')[0]
+        self.assertIn('participant already has an anchor', s67)
+        self.assertIn('rounded half to even', s67)
+        s84 = si.split('## SI-084')[1]
+        for token in ('02 §11.2 takes precedence', 'generated black', 'reused `Vectorization` palette',
+                      'texture swatches named from the file', 'spec owner'):
+            self.assertIn(token, s84)
 
     def test_handoff_merge_readiness_no_longer_claims_round1_is_next(self):
         hand = (ROOT / 'reviews/M2-C2.4-handoff.md').read_text(encoding='utf-8')
@@ -187,8 +202,25 @@ def collect():
     print(json.dumps({'jobs': jobs, 'goldenLeaves': len(leaves)}, indent=2))
 
 
+def freshness():
+    """Generate only into target/, compare bytes, and leave every pre-existing file untouched."""
+    with tempfile.TemporaryDirectory(prefix='review-r2-gen-', dir=ROOT / 'target') as temp:
+        temp = Path(temp)
+        gen = module('gen_review_r2', 'scripts/gen-command-declarations.py')
+        gen.OUT_RS, gen.OUT_JSON, gen.ISSUES = temp / 'declared.rs', temp / 'declared.json', temp / 'spec-issues.md'
+        gen.ISSUES.write_bytes((ROOT / 'plan/spec-issues.md').read_bytes())
+        assert gen.main() == 0
+        for generated, original in [(gen.OUT_RS, ROOT / 'crates/registry/src/declared.rs'),
+                                     (gen.OUT_JSON, ROOT / 'crates/registry/src/declared.json'),
+                                     (gen.ISSUES, ROOT / 'plan/spec-issues.md')]:
+            assert generated.read_bytes() == original.read_bytes(), str(original)
+        print('598 current declarations: Rust, JSON and issue block byte-identical; temporary outputs only')
+
+
 if __name__ == '__main__':
     if sys.argv[1:] == ['--collect']:
         collect()
+    elif sys.argv[1:] == ['--freshness']:
+        freshness()
     else:
         unittest.main()

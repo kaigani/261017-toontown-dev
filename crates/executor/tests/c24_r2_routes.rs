@@ -47,6 +47,29 @@ const GRID: i64 = 64;
 /// Snap-safety margin (grid units): above the junction tolerance (1/32 du = 2 units) plus rounding.
 const MARGIN: i64 = 6;
 
+// Reviewer instrumentation: count actual command dispatches so bypassed snap-unsafe cases are visible.
+thread_local! {
+    static DISPATCHES: std::cell::RefCell<std::collections::BTreeMap<String, usize>> =
+        const { std::cell::RefCell::new(std::collections::BTreeMap::new()) };
+}
+fn record_dispatch(id: &str) {
+    DISPATCHES.with(|c| *c.borrow_mut().entry(id.to_owned()).or_default() += 1);
+}
+fn ok(h: &ExecutorHandle, id: &str, params: Value) -> Value {
+    record_dispatch(id);
+    common::ok(h, id, params)
+}
+fn run(h: &ExecutorHandle, id: &str, params: Value) -> tt_executor::Envelope {
+    record_dispatch(id);
+    common::run(h, id, params)
+}
+struct CoverageGuard(String);
+impl Drop for CoverageGuard {
+    fn drop(&mut self) {
+        DISPATCHES.with(|c| println!("REVIEW_ROUTE_DISPATCHES {} {:?}", self.0, c.borrow()));
+    }
+}
+
 fn cases() -> u32 {
     std::env::var("TT_ROUTE_CASES").ok().and_then(|v| v.parse().ok()).unwrap_or(256)
 }
@@ -530,6 +553,8 @@ fn property<S: Strategy>(
 ) where
     S::Value: std::fmt::Debug,
 {
+    DISPATCHES.with(|c| c.borrow_mut().clear());
+    let _coverage = CoverageGuard(format!("seed={} xor=5D cases={}", String::from_utf8_lossy(seed), cases()));
     runner(seed).run(&strategy, |v| op(&fresh(), &v)).unwrap();
 }
 
@@ -1054,4 +1079,26 @@ fn break_apart_leaves_the_line_layer_to_the_oracle_and_makes_one_group_per_glyph
         }
         Ok(())
     });
+}
+
+/// C24-R2-01: test the oracle comparison itself against the state a no-op Centre Line would leave.
+/// Intentionally failing: rejecting this mutant is required for the claimed independent changed-route proof.
+#[test]
+fn r1_01_route_oracle_rejects_a_noop_centre_line_mutant() {
+    let h = fresh();
+    let list = with_isolated_line(&[(true, vec![(0, 0), (4, 0), (4, 4), (0, 4)])], 3);
+    let (d, layer, old) = setup(&h, &list).unwrap().unwrap();
+    let (strokes, _) = read(&h, &d, &layer);
+    let line = strokes
+        .iter()
+        .find(|s| !s.segs.is_empty() && s.segs.iter().all(|&(a, b)| a.0 == 6 * STEP * GRID && b.0 == 6 * STEP * GRID))
+        .unwrap();
+    ok(&h, "draw.linesToBrush.apply", json!({"drawingId":d,"ids":[line.id]}));
+    let (unchanged_strokes, unchanged_zones) = read(&h, &d, &layer);
+    // Exact same expected state as the shipped property after Centre Line.
+    // Intentionally do not dispatch Centre Line: these are the unchanged pre-command strokes/zones of a no-op mutant.
+    let mut after = old.segs.clone();
+    after.extend(segments_of(std::slice::from_ref(line)));
+    let verdict = check(&unchanged_strokes, &unchanged_zones, &after, &carried(&old, &after));
+    assert!(verdict.is_err(), "the claimed Centre Line oracle accepts doing nothing: {verdict:?}");
 }

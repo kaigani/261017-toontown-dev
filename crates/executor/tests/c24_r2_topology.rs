@@ -321,12 +321,12 @@ fn shrunk_cutter_area_bound() {
 /// The numeric change predates round 1; the finding is the unauthorized assertion edit, not a new Cutter regression.
 #[test]
 fn edit38_original_area_preservation_assertion_remains_a_failure() {
-    let list=vec![(false,vec![(0,0),(1,2),(4,1),(0,2)])];
-    let h=fresh();
-    let d=drawing_with(&h,vec![layer(&list,0,"l_1")]);
-    let sb:f64=zone_areas(&h,&d).iter().sum();
-    ok(&h,"draw.cut.apply",json!({"drawingId":d,"segment":{"from":{"x":80,"y":60},"to":{"x":0,"y":0}}}));
-    let sa:f64=zone_areas(&h,&d).iter().sum();
+    let list = vec![(false, vec![(0, 0), (1, 2), (4, 1), (0, 2)])];
+    let h = fresh();
+    let d = drawing_with(&h, vec![layer(&list, 0, "l_1")]);
+    let sb: f64 = zone_areas(&h, &d).iter().sum();
+    ok(&h, "draw.cut.apply", json!({"drawingId":d,"segment":{"from":{"x":80,"y":60},"to":{"x":0,"y":0}}}));
+    let sa: f64 = zone_areas(&h, &d).iter().sum();
     println!("original area assertion: {sb} -> {sa}");
-    assert!((sa-sb).abs()<=1e-3*sb.max(1.0),"the cut keeps the zones' total area: {sb} vs {sa}");
+    assert!((sa - sb).abs() <= 1e-3 * sb.max(1.0), "the cut keeps the zones' total area: {sb} vs {sa}");
 }
