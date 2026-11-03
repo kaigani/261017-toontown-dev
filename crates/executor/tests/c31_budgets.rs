@@ -17,6 +17,7 @@ use tt_executor::{ExecutorConfig, Status};
 
 const INTRO: &str = "scene:\"Intro\"";
 const BOB: &str = "scene:\"Intro\"/element:\"Bob\"";
+const SHORT: &str = "scene:\"Intro\"/element:\"Short\"";
 
 fn case(h: &tt_executor::ExecutorHandle, name: &str, id: &str, params: Value, out: &mut Vec<Value>) -> (Status, f64) {
     let r0 = rev(h);
@@ -68,13 +69,12 @@ fn timing_budget_raw_observations() {
     let tenth: Vec<&String> = ids.iter().take(ids.len() / 10).collect();
     // Accepted cases.
     case(&h, "read one 100k column", "xsheet.exposures.get", json!({ "elementIds": [ids[0]] }), &mut out);
-    case(
-        &h,
-        "cycle 999 x 100 frames",
-        "cell.cycle.create",
-        json!({ "elementId": BOB, "from": 1, "to": 100, "cycles": 999 }),
-        &mut out,
-    );
+    ok(&h, "element.create", json!({ "type": "drawing", "name": "Short", "sceneId": INTRO }));
+    let short = json!([{ "elementId": SHORT, "exposures": [{ "drawing": "1", "from": 1, "to": 100 }] }]);
+    ok(&h, "xsheet.exposures.set", json!({ "createMissingDrawings": true, "columns": short }));
+    let cycle = |to: u32| json!({ "elementId": SHORT, "from": 1, "to": to, "cycles": 999 });
+    case(&h, "cycle 999 x 100 frames", "cell.cycle.create", cycle(100), &mut out);
+    case(&h, "cycle past the scene limit", "cell.cycle.create", cycle(1000), &mut out);
     case(
         &h,
         "set exposure on a tenth of the columns",
