@@ -79,6 +79,14 @@ fn property<S: Strategy>(
             generated.set(generated.get() + 1);
             op(&v)
         })
+        .inspect_err(|_| {
+            let d = DISPATCHES.with(|c| c.borrow().clone());
+            println!(
+                "ROUTE_DOMAIN_FAILED {name}: requested {} generated_with_shrinks {} dispatched {d:?}",
+                cases(),
+                generated.get()
+            );
+        })
         .unwrap();
     let d = DISPATCHES.with(|c| c.borrow().clone());
     println!("ROUTE_DOMAIN {name}: cases {} generated {} dispatched {d:?}", cases(), generated.get());
@@ -1571,6 +1579,7 @@ fn project(m: &[Q; 8], u: &Q, v: &Q) -> (Q, Q) {
 }
 
 #[test]
+// C24-R3-04: finer-probe oracle counterexample remains deliberately failing at 4096 cases.
 fn non_parallelogram_envelopes_map_the_layer_projectively() {
     // A lattice arrangement, zones painted; an envelope onto a random convex quadrilateral that is not a parallelogram
     // (SI-070: control points mapped as points, projectively). Exact: every anchor mapped by the exact homography from
@@ -1969,9 +1978,206 @@ fn vectorize_comparison_rejects_a_wrong_boundary_with_the_right_area_and_probe()
     assert_eq!(mutant.zones[0].area, 240.0 * 240.0);
     let mut mask = vec![vec![true; 5]; 5];
     mask[2][2] = false;
-    // The expected one-pixel hole is [480,720]?. This hole is [240,960]?[560,640]:
+    // The expected one-pixel hole is [480,720] squared. This hole is [240,960] x [560,640]:
     // equal area and centre, but it reaches a full pixel outside the expected boundary.
     let result = r3_shipped_vectorize_comparison(mutant, mask);
     println!("wrong-mask-boundary mutant comparison: {result:?}");
     assert!(result.is_err(), "the independent comparison must reject this non-corresponding paper boundary");
+}
+
+/// The same boundary defect at the specified image origin, to isolate it from layout/centering checks.
+#[test]
+fn vectorize_comparison_rejects_a_wrong_boundary_at_the_correct_image_origin() {
+    let h = fresh();
+    let c = json!(palette(&h)[0]);
+    let outer = rect(-600.0, -600.0, 600.0, 600.0);
+    let inner = rect(-360.0, -40.0, 360.0, 40.0);
+    let ring = vec![outer[0], outer[1], outer[2], outer[3], outer[0], inner[0], inner[3], inner[2], inner[1], inner[0]];
+    let (d, ids) = create(&h, vec![layer_json("r3_mutant_origin", "brush", vec![brush("r3_ring", &[ring], &c)])]);
+    let mutant = layer(&h, &d, &ids[0]);
+    assert_eq!(mutant.zones.len(), 1);
+    assert_eq!(mutant.zones[0].area, 240.0 * 240.0);
+    let mut mask = vec![vec![true; 5]; 5];
+    mask[2][2] = false;
+    let result = r3_shipped_vectorize_comparison(mutant, mask);
+    println!("correct-origin wrong-mask-boundary comparison: {result:?}");
+    assert!(result.is_err(), "centering cannot justify accepting the wrong boundary");
+}
+
+// Fixed shrink from the fresh XOR-D3 envelope property; original comparison retained.
+fn r3_envelope_case_with_query(lines: &[Spec], jitter: &[i64; 8], quarter_query: bool) -> Result<(), TestCaseError> {
+    let pencils: Vec<(Vec<F2>, bool)> = lines.iter().map(spec_points).collect();
+    let all = expected_inputs(&pencils, &[]);
+    if !safe(&all) {
+        return Ok(());
+    }
+    let anchors: Vec<F2> = pencils.iter().flat_map(|(p, _)| p.iter().copied()).collect();
+    let (ax0, ay0, ax1, ay1) =
+        anchors.iter().fold((f64::INFINITY, f64::INFINITY, f64::NEG_INFINITY, f64::NEG_INFINITY), |b, p| {
+            (b.0.min(p.0), b.1.min(p.1), b.2.max(p.0), b.3.max(p.1))
+        });
+    let h = fresh();
+    let strokes: Vec<Value> = pencils.iter().enumerate().map(|(i, (p, cl))| pencil(&format!("p{i}"), p, *cl)).collect();
+    let (d, ids) = create(&h, vec![layer_json("l_v", "pencil", strokes)]);
+    let la = &ids[0];
+    let before = paint(&h, &d, la);
+    let old = old_state(&before)?;
+    println!("R3_ENVELOPE oldfills {:?} faces {:?}", old.fills, old.map.faces);
+    let sids: Vec<String> = before.strokes.iter().map(|s| s.id.clone()).collect();
+    // The envelope's source rectangle is the selection's bounds: the anchors' box grown by half the line
+    // thickness (1 du lines).
+    let b = ok(&h, "draw.bounds.get", json!({ "drawingId": d, "ids": sids }))["bounds"].clone();
+    let (bx0, by0) = (b["x"].as_f64().unwrap(), b["y"].as_f64().unwrap());
+    let (bx1, by1) = (bx0 + b["width"].as_f64().unwrap(), by0 + b["height"].as_f64().unwrap());
+    prop_assert_eq!((bx0, by0, bx1, by1), (ax0 - 0.5, ay0 - 0.5, ax1 + 0.5, ay1 + 0.5), "bounds {}", b);
+    let base = [(bx0, by0), (bx1, by0), (bx1, by1), (bx0, by1)];
+    let corners: Vec<F2> =
+        (0..4).map(|i| (base[i].0 + 2.0 * jitter[2 * i] as f64, base[i].1 + 2.0 * jitter[2 * i + 1] as f64)).collect();
+    let cross = |o: F2, a: F2, b: F2| (a.0 - o.0) * (b.1 - o.1) - (a.1 - o.1) * (b.0 - o.0);
+    let turns: Vec<f64> = (0..4).map(|i| cross(corners[i], corners[(i + 1) % 4], corners[(i + 2) % 4])).collect();
+    if !(turns.iter().all(|t| *t > 0.0) || turns.iter().all(|t| *t < 0.0)) {
+        return Ok(());
+    }
+    let para = (corners[0].0 + corners[2].0 - corners[1].0 - corners[3].0).abs() < 1e-9
+        && (corners[0].1 + corners[2].1 - corners[1].1 - corners[3].1).abs() < 1e-9;
+    if para {
+        return Ok(());
+    }
+    let cq: [(Q, Q); 4] = std::array::from_fn(|i| (Q::from_f64(corners[i].0), Q::from_f64(corners[i].1)));
+    let m = homography(&cq);
+    let (w, hgt) = (Q::from_f64(bx1 - bx0), Q::from_f64(by1 - by0));
+    let map_pt = |p: F2| -> (Q, Q) {
+        let u = Q::from_f64(p.0 - bx0).over(&w);
+        let v = Q::from_f64(p.1 - by0).over(&hgt);
+        project(&m, &u, &v)
+    };
+    // Mapped anchors on the grid (skip near ties).
+    let mut tie = false;
+    let snap_q = |q: &Q, tie: &mut bool| -> f64 {
+        let g = q.times(&Q::int(64));
+        let f = g.clone().f64();
+        if (f - f.floor() - 0.5).abs() < 1e-6 {
+            *tie = true;
+        }
+        oracle::snap(&g) as f64 / 64.0
+    };
+    // The persisted pieces (junction anchors included: an envelope maps every control point) mapped.
+    let mapped: Vec<(Vec<F2>, bool)> = pieces_of(&before)
+        .iter()
+        .map(|(p, c)| {
+            (
+                p.iter()
+                    .map(|&a| {
+                        let (x, y) = map_pt(a);
+                        (snap_q(&x, &mut tie), snap_q(&y, &mut tie))
+                    })
+                    .collect(),
+                *c,
+            )
+        })
+        .collect();
+    if tie {
+        return Ok(());
+    }
+    let eins = expected_inputs(&mapped, &[]);
+    if !safe(&eins) {
+        return Ok(());
+    }
+    ok(
+        &h,
+        "draw.envelope.apply",
+        json!({ "drawingId": d, "ids": sids, "corners": corners.iter().map(|p| json!({"x": p.0, "y": p.1})).collect::<Vec<_>>() }),
+    );
+    let after = layer(&h, &d, la);
+    println!("R3_ENVELOPE before {before:#?} after {after:#?} corners {corners:?}");
+    let emap = SnapMap::build(eins);
+    let labels = SnapMap::build(inputs(&after));
+    // The three-corner affine fit (corners 0, 1, 3) and its inverse.
+    let (o, ex, ey) = (
+        corners[0],
+        ((corners[1].0 - corners[0].0) / (bx1 - bx0), (corners[1].1 - corners[0].1) / (bx1 - bx0)),
+        ((corners[3].0 - corners[0].0) / (by1 - by0), (corners[3].1 - corners[0].1) / (by1 - by0)),
+    );
+    let det = ex.0 * ey.1 - ey.0 * ex.1;
+    let back = |p: F2| {
+        let (x, y) = (p.0 - o.0, p.1 - o.1);
+        (bx0 + (ey.1 * x - ey.0 * y) / det, by0 + (-ex.1 * x + ex.0 * y) / det)
+    };
+    // A zone whose mapped-back point lies in no source zone keeps the carry-over fill.
+    verify_expected(
+        &after,
+        &emap,
+        &labels,
+        &|f, z| {
+            let p = back(z.interior);
+            let coarse = Dp { x: (p.0 * 256.0).round() as i128, y: (p.1 * 256.0).round() as i128, s: 4 };
+            let distance = old
+                .map
+                .edges
+                .keys()
+                .map(|&(a, b)| {
+                    route_oracle::seg_dist((p.0 * GRID, p.1 * GRID), (a.0 as f64, a.1 as f64), (b.0 as f64, b.1 as f64))
+                        / GRID
+                })
+                .fold(f64::INFINITY, f64::min);
+            println!(
+                "R3_ENVELOPE zone {} interior {:?} back {:?} distance {} actual {:?} quarter-grid holder {:?} carry {:?}",
+                z.id,
+                z.interior,
+                p,
+                distance,
+                z.colour,
+                old.map.locate(coarse),
+                carried(&old, &emap, f, z)
+            );
+            let fine =
+                Dp { x: (p.0 * 64.0 * 1024.0).round() as i128, y: (p.1 * 64.0 * 1024.0).round() as i128, s: 1024 };
+            let dp = if quarter_query { coarse } else { fine };
+            println!(
+                "R3_ENVELOPE selected holder (quarter_query={quarter_query}) {:?} coarse fill {:?}",
+                old.map.locate(dp),
+                old.map.locate(coarse).and_then(|f| old.fills.get(&f))
+            );
+            // Within 10⁻³ du of a source edge the source zone is a floating-point tie of the inverse map: either side.
+            let near = old.map.edges.keys().any(|&(a, b)| {
+                route_oracle::seg_dist((p.0 * GRID, p.1 * GRID), (a.0 as f64, a.1 as f64), (b.0 as f64, b.1 as f64))
+                    < 1e-3 * GRID
+            });
+            if near {
+                return z.colour.clone();
+            }
+            match old.map.locate(dp).filter(|o| old.fills.contains_key(o)) {
+                Some(o) => old.fills[&o].clone(),
+                None => carried(&old, &emap, f, z),
+            }
+        },
+        "after envelope",
+    )?;
+    Ok(())
+}
+
+#[test]
+// C24-R3-04: deliberately failing original finer-probe expectation.
+fn shrunk_projective_envelope_fill_case_for_independent_adjudication() {
+    let lines = vec![
+        (false, vec![(1, 1), (4, 2), (0, 1)]),
+        (false, vec![(2, 1), (2, 4)]),
+        (false, vec![(4, 3), (2, 1), (3, 3)]),
+    ];
+    r3_fixed_envelope_case(&lines, &[6, 5, -5, -1, -6, -5, 4, -2]).unwrap();
+}
+
+fn r3_fixed_envelope_case(lines: &[Spec], jitter: &[i64; 8]) -> Result<(), TestCaseError> {
+    r3_envelope_case_with_query(lines, jitter, false)
+}
+
+/// Positive control; the original finer-probe comparison and its fixed reproduction remain failing.
+#[test]
+fn projective_envelope_matches_the_independently_rounded_point_query_control() {
+    let lines = vec![
+        (false, vec![(1, 1), (4, 2), (0, 1)]),
+        (false, vec![(2, 1), (2, 4)]),
+        (false, vec![(4, 3), (2, 1), (3, 3)]),
+    ];
+    r3_envelope_case_with_query(&lines, &[6, 5, -5, -1, -6, -5, 4, -2], true).unwrap();
 }

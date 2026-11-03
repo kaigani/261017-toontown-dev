@@ -1,6 +1,6 @@
 // Round 3 independent seed variant; source assertions retained.
 // Round 2 seed copy from reviewed head; original assertions retained.
-// Reviewer R1 variant: unchanged builder assertions, 4096 cases per property; seed bytes XOR 0x5D.
+// Reviewer R1 variant: unchanged builder assertions, 4096 cases per property; seed bytes XOR 0xD3.
 //! M2 C2.4 readiness item 2: topology properties of the planar map against the independent exact oracle
 //! (`oracle/mod.rs`), on seeded degenerate arrangements with shrinking. Strokes join points of a small lattice, so
 //! shared end points, T-junctions, collinear overlaps, coincident strokes and shared edges between closed shapes are

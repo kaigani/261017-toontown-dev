@@ -15,7 +15,7 @@ def build():
     current = copy.deepcopy(prior)
     current['reviewedHead'] = HEAD
     updates = {
-        'U042': ('divergent', 'C24-R3-02: new changed-route domains substantially improve coverage, but the Vectorize semantic comparison accepts a wrong mask boundary with the correct area/probe; scoped closure required'),
+        'U042': ('divergent', 'C24-R3-02/04: changed-route domains improve coverage, but Vectorize accepts a wrong mask boundary and the Envelope oracle uses a finer point probe; scoped closure required'),
         'U043': ('implemented', 'Ruling (a) confirmed by independent Fraction intersections/shoelace/snapping and actual-delta perimeter bounds; authorized preservation substitutions retained'),
         'U049': ('divergent', 'C24-R3-01: original metadata/run/status/overflow malformations fixed; identity-free numeric samples and incompatible declared units still accepted'),
         'U050': ('implemented', 'Fresh handoff check: current round-3 review state, all declared ownership edits, accepted C22-T2 deferral and explicit SI-077 scope decision obligation'),
@@ -30,6 +30,9 @@ def build():
     current['requirements'].append({'id': 'U071', 'clause': 'C24-R2-05; whole-checkpoint evidence hygiene',
         'requirement': 'golden analyzer rejects malformed duplicate identities before ID alignment', 'state': 'divergent',
         'evidenceOrOwner': 'C24-R3-03: duplicate IDs silently overwrite an earlier changed stroke; CLI writes a zero-change success receipt'})
+    current['requirements'].append({'id': 'U072', 'clause': 'C24-R2-01; SI-070 point-location model',
+        'requirement': 'projective-envelope expected fill uses the established point-query representation', 'state': 'divergent',
+        'evidenceOrOwner': 'C24-R3-04: finer dyadic probe crosses a source boundary differently from the 1/256-du product query; original expectation and fixed failure retained, independent rounded-query control passes'})
     for row in current['readiness']:
         if row['id'] == '2':
             row.update(state='divergent', evidenceOrOwner='C24-R3-02: independent changed-mask boundary proof remains incomplete; other added domains and original proving controls retained')
@@ -63,9 +66,9 @@ if __name__ == '__main__':
         class Register(unittest.TestCase):
             def test_all_units_retained_and_deferred_owners_preserved(self):
                 doc, _ = build()
-                self.assertEqual(len({r['id'] for r in doc['requirements']}), 71)
+                self.assertEqual(len({r['id'] for r in doc['requirements']}), 72)
                 for row in doc['requirements']:
                     if row['state'] == 'deferred-with-owner':
                         self.assertIn('Owner', row['evidenceOrOwner'])
-                self.assertEqual(doc['counts']['requirements']['divergent'], 3)
+                self.assertEqual(doc['counts']['requirements']['divergent'], 4)
         unittest.main()

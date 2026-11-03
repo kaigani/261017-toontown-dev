@@ -1,8 +1,10 @@
 """Independent round-3 closure, malformed-input and ownership controls; temp receipts only."""
 import copy
+import contextlib
 from fractions import Fraction as F
 import hashlib
 import importlib.util
+import io
 import json
 import math
 from pathlib import Path
@@ -103,6 +105,27 @@ class Ownership(unittest.TestCase):
                                   'crates/executor/tests/c24_r2_routes.rs',
                                   'crates/executor/tests/c24_r2_topology.rs'])
 
+    def test_live_checker_rejects_unruled_mutations_without_prefix_ownership(self):
+        checker = module('r3_live_checker_mutants', 'scripts/check-reviewer-ownership.py')
+        current = checker.now
+        mutations = {
+            'crates/executor/tests/c24_r1_topology.rs': lambda s: s + '\n// undeclared change\n',
+            'crates/executor/tests/c24_r2_topology.rs': lambda s: s + '\n// undeclared change\n',
+            'crates/executor/tests/c24_r2_routes.rs': lambda s: s.replace(
+                'fn collapsed_other_contour_is_a_valid_snap_target_product_control() {',
+                'fn collapsed_other_contour_is_a_valid_snap_target_product_control() {\n    return;'),
+            'crates/vector/tests/c24_r2_noding.rs': lambda s: s + '\n// undeclared change\n',
+        }
+        for target, mutate in mutations.items():
+            with self.subTest(target=target):
+                checker.now = lambda p, target=target, mutate=mutate: mutate(current(p)) if p == target else current(p)
+                with contextlib.redirect_stdout(io.StringIO()):
+                    self.assertEqual(checker.main(), 1)
+        builder = 'crates/executor/tests/c24_topology.rs'
+        checker.now = lambda p: current(p) + '\n// builder change\n' if p == builder else current(p)
+        with contextlib.redirect_stdout(io.StringIO()):
+            self.assertEqual(checker.main(), 0, 'builder ownership is not inferred from c24_*')
+
 
 def shoelace(poly):
     return abs(sum(a[0] * b[1] - a[1] * b[0] for a, b in zip(poly, poly[1:] + poly[:1]))) / 2
@@ -147,6 +170,25 @@ class Cutter(unittest.TestCase):
         for kind in ('before', 'after'):
             self.assertLessEqual(abs(r[kind]['signedSnappingErrorDu2']), r[kind]['boundDu2'])
         self.assertLessEqual(.3125, r['before']['boundDu2'] + r['after']['boundDu2'])
+
+
+class EnvelopeQuery(unittest.TestCase):
+    def test_exact_inverse_and_quarter_grid_query_lie_on_opposite_sides(self):
+        p = (F(11003, 256), F(3763, 128))
+        origin = (F(23, 2), F(59, 2))
+        ex, ey = (F(59, 81), F(-12, 81)), (F(-4, 61), F(47, 61))
+        det = ex[0] * ey[1] - ey[0] * ex[1]
+        x, y = p[0] - origin[0], p[1] - origin[1]
+        back = (F(-1, 2) + (ey[1] * x - ey[0] * y) / det,
+                F(39, 2) + (-ex[1] * x + ex[0] * y) / det)
+        self.assertEqual(back, (F(30323389, 697600), F(9704407, 348800)))
+        rounded = tuple(F(round(v * 256), 256) for v in back)
+        self.assertEqual(rounded, (F(1391, 32), F(7123, 256)))
+        a, b = (F(40), F(1707, 64)), (F(44), F(28))
+        side = lambda q: (b[0] - a[0]) * (q[1] - a[1]) - (b[1] - a[1]) * (q[0] - a[0])
+        self.assertLess(side(back), 0)
+        self.assertGreater(side(rounded), 0)
+        self.assertGreater(abs(float(side(back))) / math.dist(a, b), .001)
 
 
 class GoldenAndRecords(unittest.TestCase):
@@ -194,5 +236,33 @@ if __name__ == '__main__':
         if p.exists():
             raise RuntimeError('refusing to overwrite receipt')
         p.write_text(json.dumps(cutter_receipt(), indent=2) + '\n', encoding='utf-8')
+    elif len(sys.argv) == 3 and sys.argv[1] == '--malformed-receipts':
+        p = Path(sys.argv[2])
+        if p.exists():
+            raise RuntimeError('refusing to overwrite receipt')
+        records = []
+        for name in ('identityless numeric copies', 'contradictory unit'):
+            s, f = BUILDER.valid()
+            if name.startswith('identityless'):
+                s['series']['strokeAdd.wallMs']['samples'] = [1000] * 5
+            else:
+                s['series']['strokeAdd.wallMs']['unit'] = 's'
+            rc, out, stdout = BUILDER.run_full(s, f)
+            records.append({'case': name, 'strokeInput': s, 'flattenInput': f,
+                            'exit': rc, 'receipt': out, 'stdout': stdout})
+        with tempfile.TemporaryDirectory(prefix='c24-r3-golden-receipt-') as tmp:
+            tmp = Path(tmp)
+            old = [{'id': 'same', 'type': 'stroke', 'points': [[1, 2, 0, 0, 0, 0]]},
+                   {'id': 'same', 'type': 'stroke', 'points': [[9, 9, 0, 0, 0, 0]]}]
+            new = copy.deepcopy(old)
+            new[0]['points'][0][0] = 100
+            for name, value in [('old', old), ('new', new)]:
+                (tmp / (name + '.json')).write_text(json.dumps(value))
+            result = subprocess.run([sys.executable, str(ROOT / 'scripts/golden-structural-diff.py'),
+                str(tmp / 'old.json'), str(tmp / 'new.json'), str(tmp / 'out.json')], capture_output=True, text=True)
+            records.append({'case': 'duplicate golden IDs', 'oldInput': old, 'newInput': new,
+                'exit': result.returncode, 'receipt': json.loads((tmp / 'out.json').read_text()),
+                'stdout': result.stdout, 'stderr': result.stderr})
+        p.write_text(json.dumps(records, indent=2) + '\n', encoding='utf-8')
     else:
         unittest.main()

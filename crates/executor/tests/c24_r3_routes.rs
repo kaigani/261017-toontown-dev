@@ -1,5 +1,5 @@
 // Round 3 independent seed variant; source assertions retained.
-// Round 2 independent seed variant: all 11 properties unchanged; seeds XOR 0x5D.
+// Round 2 independent seed variant: all 11 properties unchanged; seeds XOR 0xD3.
 //! M2 C2.4 readiness item 2 (C24-R1-01 ruling): every topology-changing command route against the independent exact
 //! oracle (`crates/vector/tests/oracle`, which imports no product geometry). For each command family a seeded
 //! property builds a lattice arrangement through the commands, paints every zone a colour, applies the command, and
@@ -713,7 +713,7 @@ fn property<S: Strategy>(
     S::Value: std::fmt::Debug,
 {
     DISPATCHES.with(|c| c.borrow_mut().clear());
-    let _coverage = CoverageGuard(format!("seed={} xor=5D cases={}", String::from_utf8_lossy(seed), cases()));
+    let _coverage = CoverageGuard(format!("seed={} xor=D3 cases={}", String::from_utf8_lossy(seed), cases()));
     runner(seed).run(&strategy, |v| op(&fresh(), &v)).unwrap();
 }
 

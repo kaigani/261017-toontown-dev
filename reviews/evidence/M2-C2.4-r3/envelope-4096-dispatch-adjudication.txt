@@ -1,0 +1,21 @@
+{"argv": ["cargo", "test", "--release", "-p", "tt-executor", "--locked", "-j", "4", "--test", "c24_r3_domains", "non_parallelogram_envelopes_map_the_layer_projectively", "--", "--exact", "--nocapture"], "cwd": "C:\\Users\\kaiga\\work\\review\\m2-c24-r3", "env": {"TT_ROUTE_CASES": "4096"}, "startedAt": "2026-11-03T01:37:09.304524+00:00"}
+   Compiling tt-executor v0.0.1 (C:\Users\kaiga\work\review\m2-c24-r3\crates\executor)
+    Finished `release` profile [optimized + debuginfo] target(s) in 6.72s
+     Running tests\c24_r3_domains.rs (target\release\deps\c24_r3_domains-a67d9939a409db16.exe)
+
+running 1 test
+ROUTE_DOMAIN_FAILED non_parallelogram_envelopes_map_the_layer_projectively: requested 4096 generated_with_shrinks 3844 dispatched {"colour.paint.apply": 6577, "doc.object.patch": 3844, "draw.bounds.get": 3844, "draw.content.add": 3844, "draw.drawing.get": 10689, "draw.envelope.apply": 3001}
+
+thread 'non_parallelogram_envelopes_map_the_layer_projectively' (14504) panicked at crates\executor\tests\c24_r3_domains.rs:90:10:
+called `Result::unwrap()` on an `Err` value: Fail(Reason("assertion failed: `(left == right)` \n  left: `Some(\"col_01K742SG059XGSNZ6M9MACZ2ZY\")`, \n right: `Some(\"col_01K742SG06BQ08FCT1TT8DF8MA\")`: after envelope: fill of zone zn_BASF2DQFMQQA6YYRZSVPB8ZD3K at crates\\executor\\tests\\c24_r3_domains.rs:339"), ([(false, [(1, 1), (4, 2), (0, 1)]), (false, [(2, 1), (2, 4)]), (false, [(4, 3), (2, 1), (3, 3)])], [6, 5, -5, -1, -6, -5, 4, -2]))
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+test non_parallelogram_envelopes_map_the_layer_projectively ... FAILED
+
+failures:
+
+failures:
+    non_parallelogram_envelopes_map_the_layer_projectively
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 13 filtered out; finished in 50.04s
+
+error: test failed, to rerun pass `-p tt-executor --test c24_r3_domains`

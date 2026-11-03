@@ -1,0 +1,200 @@
+[
+  {
+    "register": "requirements",
+    "id": "U042",
+    "before": {
+      "id": "U042",
+      "clause": "02 3.12; readiness 2",
+      "requirement": "independent topology oracle covers every topology operation",
+      "state": "divergent",
+      "evidenceOrOwner": "C24-R2-01/06/07: changed-route breadth incomplete; collapsed snap candidate omitted; Flatten exposes duplicated closed-fold geometry"
+    },
+    "after": {
+      "id": "U042",
+      "clause": "02 3.12; readiness 2",
+      "requirement": "independent topology oracle covers every topology operation",
+      "state": "divergent",
+      "evidenceOrOwner": "C24-R3-02/04: changed-route domains improve coverage, but Vectorize accepts a wrong mask boundary and the Envelope oracle uses a finer point probe; scoped closure required"
+    }
+  },
+  {
+    "register": "requirements",
+    "id": "U043",
+    "before": {
+      "id": "U043",
+      "clause": "02 3.12; readiness 2",
+      "requirement": "claimed exact metamorphic and Cutter area assertions",
+      "state": "divergent",
+      "evidenceOrOwner": "C24-R2-02: exact translation and two union-envelope substitutions accepted; protected preservation changed outside exception"
+    },
+    "after": {
+      "id": "U043",
+      "clause": "02 3.12; readiness 2",
+      "requirement": "claimed exact metamorphic and Cutter area assertions",
+      "state": "implemented",
+      "evidenceOrOwner": "Ruling (a) confirmed by independent Fraction intersections/shoelace/snapping and actual-delta perimeter bounds; authorized preservation substitutions retained"
+    }
+  },
+  {
+    "register": "requirements",
+    "id": "U049",
+    "before": {
+      "id": "U049",
+      "clause": "C22-T2; ruling a; engineering",
+      "requirement": "gate analyzer rejects malformed observations",
+      "state": "divergent",
+      "evidenceOrOwner": "C24-R2-03: original three malformations fixed; metadata/run/duplicate/status/huge-integer variants fail"
+    },
+    "after": {
+      "id": "U049",
+      "clause": "C22-T2; ruling a; engineering",
+      "requirement": "gate analyzer rejects malformed observations",
+      "state": "divergent",
+      "evidenceOrOwner": "C24-R3-01: original metadata/run/status/overflow malformations fixed; identity-free numeric samples and incompatible declared units still accepted"
+    }
+  },
+  {
+    "register": "requirements",
+    "id": "U050",
+    "before": {
+      "id": "U050",
+      "clause": "rulings a/b; merge condition 1",
+      "requirement": "synchronized owner/decision/spec-issue bookkeeping",
+      "state": "divergent",
+      "evidenceOrOwner": "C24-R2-04: owner, middle step and SI-084 synchronized; handoff section 7 remains stale"
+    },
+    "after": {
+      "id": "U050",
+      "clause": "rulings a/b; merge condition 1",
+      "requirement": "synchronized owner/decision/spec-issue bookkeeping",
+      "state": "implemented",
+      "evidenceOrOwner": "Fresh handoff check: current round-3 review state, all declared ownership edits, accepted C22-T2 deferral and explicit SI-077 scope decision obligation"
+    }
+  },
+  {
+    "register": "requirements",
+    "id": "U067",
+    "before": {
+      "id": "U067",
+      "clause": "C2.4 round-1 response; round-2 charter",
+      "requirement": "reviewer assertions preserved except explicitly ruled changes",
+      "state": "divergent",
+      "evidenceOrOwner": "C24-R2-02; protected-diff.txt and fixed-head Ownership test"
+    },
+    "after": {
+      "id": "U067",
+      "clause": "C2.4 round-1 response; round-2 charter",
+      "requirement": "reviewer assertions preserved except explicitly ruled changes",
+      "state": "implemented",
+      "evidenceOrOwner": "Rulings (a)/(b)/(c) confirmed: only three permitted files changed, all thirteen route test functions byte-identical, helper mirroring independently verified"
+    }
+  },
+  {
+    "register": "requirements",
+    "id": "U068",
+    "before": {
+      "id": "U068",
+      "clause": "C2.4 round-1 response; round-2 charter",
+      "requirement": "complete and accurate declared golden structural comparison/cause",
+      "state": "divergent",
+      "evidenceOrOwner": "C24-R2-05; full recursive and object-ID comparisons; first-piece anchor example"
+    },
+    "after": {
+      "id": "U068",
+      "clause": "C2.4 round-1 response; round-2 charter",
+      "requirement": "complete and accurate declared golden structural comparison/cause",
+      "state": "implemented",
+      "evidenceOrOwner": "Four structural receipts reproduce; exact symmetry corpus hashes match historical goldens; corrected displacement/cause declared; new malformed-input analyzer defect separated as U071"
+    }
+  },
+  {
+    "register": "requirements",
+    "id": "U069",
+    "before": {
+      "id": "U069",
+      "clause": "C2.4 round-1 response; round-2 charter",
+      "requirement": "nearest-contour route oracle includes degenerate anchors/zero-length contours",
+      "state": "divergent",
+      "evidenceOrOwner": "C24-R2-06; XOR-5D shrunk point move predicts 460 vs correct product area 400; independent SDK control passes"
+    },
+    "after": {
+      "id": "U069",
+      "clause": "C2.4 round-1 response; round-2 charter",
+      "requirement": "nearest-contour route oracle includes degenerate anchors/zero-length contours",
+      "state": "implemented",
+      "evidenceOrOwner": "Zero-length retained contours remain snap candidates and stay out of face construction; unchanged positive control and fresh-seed point-move route"
+    }
+  },
+  {
+    "register": "requirements",
+    "id": "U070",
+    "before": {
+      "id": "U070",
+      "clause": "C2.4 round-1 response; round-2 charter",
+      "requirement": "cyclic noding preserves source traversal multiplicity across zero-length closing segments",
+      "state": "divergent",
+      "evidenceOrOwner": "C24-R2-07; closed repeated-end fold crosses (10,72.5) twice before and four times after; closing edge spans 1->3 instead of 1->2"
+    },
+    "after": {
+      "id": "U070",
+      "clause": "C2.4 round-1 response; round-2 charter",
+      "requirement": "cyclic noding preserves source traversal multiplicity across zero-length closing segments",
+      "state": "implemented",
+      "evidenceOrOwner": "Closing-edge parameter fix and unchanged R2 controls; new 4096 repeated-interior/consecutive/terminal-anchor crossing variants preserve source multiplicity"
+    }
+  },
+  {
+    "register": "requirements",
+    "id": "U071",
+    "before": null,
+    "after": {
+      "id": "U071",
+      "clause": "C24-R2-05; whole-checkpoint evidence hygiene",
+      "requirement": "golden analyzer rejects malformed duplicate identities before ID alignment",
+      "state": "divergent",
+      "evidenceOrOwner": "C24-R3-03: duplicate IDs silently overwrite an earlier changed stroke; CLI writes a zero-change success receipt"
+    }
+  },
+  {
+    "register": "requirements",
+    "id": "U072",
+    "before": null,
+    "after": {
+      "id": "U072",
+      "clause": "C24-R2-01; SI-070 point-location model",
+      "requirement": "projective-envelope expected fill uses the established point-query representation",
+      "state": "divergent",
+      "evidenceOrOwner": "C24-R3-04: finer dyadic probe crosses a source boundary differently from the 1/256-du product query; original expectation and fixed failure retained, independent rounded-query control passes"
+    }
+  },
+  {
+    "register": "readiness",
+    "id": "2",
+    "before": {
+      "id": "2",
+      "item": "Topology properties",
+      "state": "divergent",
+      "evidenceOrOwner": "C24-R2-01 independent changed-route breadth; C24-R2-02 protected assertion change"
+    },
+    "after": {
+      "id": "2",
+      "item": "Topology properties",
+      "state": "divergent",
+      "evidenceOrOwner": "C24-R3-02: independent changed-mask boundary proof remains incomplete; other added domains and original proving controls retained"
+    }
+  },
+  {
+    "register": "commands",
+    "id": "draw.flatten.apply",
+    "before": {
+      "id": "draw.flatten.apply",
+      "state": "divergent",
+      "evidenceOrOwner": "New related-surface row: C24-R2-07 closed-fold duplicate traversals; other route/variant controls retained"
+    },
+    "after": {
+      "id": "draw.flatten.apply",
+      "state": "implemented",
+      "evidenceOrOwner": "Closed-fold traversal/parameter fix; partial-cover regression and mixed-kind domain controls; no new product defect demonstrated"
+    }
+  }
+]

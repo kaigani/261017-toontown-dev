@@ -41,6 +41,7 @@ fn repeated_interior_consecutive_and_terminal_anchors_with_crossings_4096() {
         vec![(0, 80), (80, 20), (80, 20), (80, 20), (0, 80)],
         vec![(0, 80), (80, 20), (0, 80), (0, 80)],
         vec![(0, 80), (80, 20), (40, 50), (40, 50), (0, 80)],
+        vec![(0, 80), (80, 20), (100, 20), (80, 20), (0, 80)],
     ];
     let mut seed = 0xc243_d39f_a18b_6517u64;
     for i in 0..4096 {

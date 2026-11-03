@@ -1,6 +1,6 @@
 // Round 3 independent seed variant; source assertions retained.
 // Round 2 seed copy from reviewed head; original assertions retained.
-// Reviewer R1 variant: unchanged builder assertions, 4096 cases per property; seed bytes XOR 0x5D.
+// Reviewer R1 variant: unchanged builder assertions, 4096 cases per property; seed bytes XOR 0xD3.
 //! M2 C2.4 readiness item 2 through the commands: after topology-changing operations, a layer's zones are the bounded
 //! faces of the independent exact oracle (`crates/vector/tests/oracle`) computed from the inputs, and every zone's
 //! interior point hits that zone. Seeded arrangements on a lattice (shared end points, T-junctions, collinear
