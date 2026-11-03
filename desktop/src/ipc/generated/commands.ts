@@ -3200,7 +3200,7 @@ export const COMMAND_INDEX = {
     examples: [
       {},
     ],
-    milestone: "M2 C2.4 (blocked on SI-077)",
+    milestone: "M7 C7.2 (or the first checkpoint after the SI-077 decision)",
   },
   "draw.flatten.apply": {
     kind: "action",

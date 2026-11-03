@@ -131,10 +131,11 @@ def owner_of(cid: str) -> str:
     if ns == "draw":
         if rest == "hitTest.get":
             return "M2 C2.2"  # zones under a point (C2.2 ruling)
-        # Feather moved to C2.4 (orchestrator ruling on the C2.3 handoff, ticket C23-T2), blocked on the spec owner's
-        # SI-077 decision (orchestrator ruling, C2.4 plan). Vector file import is M10 C10.2 (plan §4; ruling, SI-082).
+        # Feather (ticket C23-T2): re-scoped out of M2 by the orchestrator at the M2 merge because the spec owner has
+        # not answered SI-077; owned by M7 C7.2 (effects) or the first checkpoint after the SI-077 decision, whichever
+        # comes first (the spec owner may reverse this). Vector file import is M10 C10.2 (plan §4; ruling, SI-082).
         if rest.startswith("feather"):
-            return "M2 C2.4 (blocked on SI-077)"
+            return "M7 C7.2 (or the first checkpoint after the SI-077 decision)"
         if rest.startswith("vectorFile"):
             return "M10 C10.2"
         return "M2 C2.4" if rest.startswith("vectorize") else "M2 C2.3"

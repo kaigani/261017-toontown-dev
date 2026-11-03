@@ -71,4 +71,8 @@ The vectorize corpus and fuzzing (`tests/fixtures/vectorize/`, `crates/io/tests/
   smoothness 3) plus flattening and a grid cell. Each zone must be one enclosed paper component, bounded by the
   enclosing region's and its islands' strokes, with its area within the perimeter × that envelope. The exact
   snap-rounded map and ID stage follows. The reviewer's two wrong-boundary mutants are rejected. No product change.
+- **M2 merge (orchestrator scope decision): Feather deferred out of M2.** The spec owner has not answered SI-077 (feather
+  band colours), so `draw.feather.apply` stays declared and refusing, and ticket C23-T2 moves from M2 C2.4 to M7 C7.2
+  (effects), or the first checkpoint after the SI-077 decision, whichever comes first. The generated declaration owner,
+  `plan/traceability.csv` and SI-077 record it. The spec owner may reverse this. No behaviour change.
 

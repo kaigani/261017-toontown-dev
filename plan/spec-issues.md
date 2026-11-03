@@ -892,7 +892,7 @@ Reserved by the M0 closure for "measured deterministic-format incompatibility" (
   (ADR-0016 history). `drawing.centreLineNoSpine` remains only for outlines the algorithm refuses: fewer than three
   distinct points, crossing contours (self-intersection), no enclosed area, or no axis left after pruning.
 
-## SI-077 — feather colours (found in M2 C2.3; open for the spec owner; ticket C23-T2, owner M2 C2.4)
+## SI-077 — feather colours (found in M2 C2.3; deferred by orchestrator, awaiting spec owner; ticket C23-T2, owner M7 C7.2)
 
 - **Sections:** 02 §8 (Feather Edges), 03 §1.1 (indirect colour), 10 §4.9.
 - **Problem:** feather bands need each source colour at decreasing opacity ((N-1)/N down to 1/N), but artwork
@@ -911,6 +911,11 @@ Reserved by the M0 closure for "measured deterministic-format incompatibility" (
 - **Recommendation:** Design B. Feather bands are derived appearance of the source colour, and indirect colour (03 §1.1)
   is the reason colours are IDs; a per-object opacity keeps that property, where Design A copies colour values and
   would drift on the first swatch edit.
+- **Status at the M2 merge (orchestrator scope decision): deferred by orchestrator, awaiting the spec owner.** The spec
+  owner has not answered, so Feather is re-scoped out of M2 as an explicit declared deferral: `draw.feather.apply`
+  stays declared and refuses with `command.notImplemented`. Ticket C23-T2 is owned by **M7 C7.2 (effects), or the
+  first checkpoint after the spec owner decides SI-077, whichever comes first** (generated declaration owner
+  "M7 C7.2 (or the first checkpoint after the SI-077 decision)"). The spec owner may reverse this.
 
 ## SI-078 — the Cutter and text or bitmap nodes (found in M2 C2.3 round 1; decided)
 

@@ -763,10 +763,10 @@ pub static DECLARED: &[Command] = &[
             }],
             params_schema: || crate::declared_schema(34, false),
             result_schema: || crate::declared_schema(34, true),
-            status: Status::NotImplemented { owner: "M2 C2.4 (blocked on SI-077)" },
+            status: Status::NotImplemented { owner: "M7 C7.2 (or the first checkpoint after the SI-077 decision)" },
             agent_only: None,
             gui: Some(
-                "the Drawing view, the Drawing menu and tool properties (02); wired in M2 C2.4 (blocked on SI-077)",
+                "the Drawing view, the Drawing menu and tool properties (02); wired in M7 C7.2 (or the first checkpoint after the SI-077 decision)",
             ),
         },
         handler: crate::not_implemented_handler,

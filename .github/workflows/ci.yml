@@ -244,6 +244,8 @@ jobs:
           # Round 3 (C2.4): the route domains and routes with seeds XOR 0xD3 (256 cases), topology at the 4096 cases its
           # file fixes, the vector properties and the noding control.
           cargo test --release --locked -p tt-executor --test c24_r3_domains --test c24_r3_routes --test c24_r3_topology
+          # Round-4 closure (C2.4): its two seeded properties share names with `check`'s skip list, so they run here.
+          cargo test --release --locked -p tt-executor --test c24_r4_closure
           cargo test --release --locked -p tt-vector --test c24_r3_properties --test c24_r3_noding
 
   headless:
