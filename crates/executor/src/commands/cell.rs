@@ -1880,22 +1880,39 @@ pub(crate) fn cell_select(cx: &mut Cx, p: SelectParams) -> Result<SelectResult, 
             json!({ "cells": count, "limit": MAX_SELECTED_CELLS }),
         ));
     }
+    // Set-based membership keeping selection order, charged and cancellable (C31-R1-14): every generated, kept or
+    // read-back cell costs a unit, and the work account observes the caller's watchdog at each charge.
+    let mut budget = Budget::new("selecting cells");
     let mut refs = if p.mode == SelectMode::Add { cx.app().selection_of("xsheet") } else { Vec::new() };
-    for r in cell_refs(&ids, from, to) {
-        if !refs.contains(&r) {
-            refs.push(r);
+    budget.spend(refs.len())?;
+    let mut seen: std::collections::HashSet<String> = refs.iter().cloned().collect();
+    const CHUNK: usize = 4096;
+    for e in &ids {
+        let mut f = from;
+        while f <= to {
+            let end = (f + CHUNK - 1).min(to);
+            budget.spend(end - f + 1)?;
+            for r in cell_refs(std::slice::from_ref(e), f, end) {
+                if seen.insert(r.clone()) {
+                    refs.push(r);
+                }
+            }
+            f = end + 1;
         }
     }
-    cx.app_mut().set_selection("xsheet", refs.clone());
-    cx.app_mut().selections.insert("timeline".to_owned(), refs);
+    if refs.len() > MAX_SELECTED_CELLS {
+        return Err(err(
+            codes::LIMIT_EXCEEDED,
+            format!("{} cells exceed the {MAX_SELECTED_CELLS}-cell selection limit", refs.len()),
+            json!({ "cells": refs.len(), "limit": MAX_SELECTED_CELLS }),
+        ));
+    }
+    budget.spend(refs.len())?;
+    cx.app_mut().set_selection("xsheet", refs);
+    cx.app_mut().mirror_selection("timeline", "xsheet");
     let (sel, a, b) = selected_cells(cx).ok_or_else(no_target)?;
-    let current = cx.app().element.as_ref().map(|e| e.as_str().to_owned());
-    let frame_now = cx.app().frame;
     let element_ids: Vec<String> = sel.iter().map(|e| e.as_str().to_owned()).collect();
-    cx.emit(
-        "cell.selection.changed",
-        json!({ "elementIds": element_ids, "from": a, "to": b, "currentElementId": current, "currentFrame": frame_now }),
-    );
+    // `cell.selection.changed` is emitted once by the executor when the position or selection changed.
     Ok(SelectResult { element_ids, from: as_u32(a), to: as_u32(b) })
 }
 

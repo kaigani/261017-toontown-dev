@@ -745,3 +745,31 @@ impl Changes {
         self.0
     }
 }
+
+/// The `cell.selection.changed` payload of a context (04 §17.4): the elements and frame bounds of the cell
+/// selection, or the selected rows when no cells are selected, and the current position.
+pub(crate) fn cell_selection_state(app: &crate::app::AppContext) -> Value {
+    let refs = app.selection_of("xsheet");
+    let mut elements: Vec<String> = Vec::new();
+    let mut seen: BTreeSet<&str> = BTreeSet::new();
+    let (mut lo, mut hi) = (u32::MAX, 0u32);
+    let parsed: Vec<(String, u32)> = refs.iter().filter_map(|r| parse_cell_ref(r)).collect();
+    for (e, f) in &parsed {
+        if seen.insert(e.as_str()) {
+            elements.push(e.clone());
+        }
+        lo = lo.min(*f);
+        hi = hi.max(*f);
+    }
+    if elements.is_empty() {
+        elements = app.selection_of("timeline").into_iter().filter(|k| parse_cell_ref(k).is_none()).collect();
+        lo = 0;
+    }
+    json!({
+        "elementIds": elements,
+        "from": if lo == u32::MAX { 0 } else { lo },
+        "to": hi,
+        "currentElementId": app.element.as_ref().map(Id::as_str),
+        "currentFrame": app.frame,
+    })
+}

@@ -563,7 +563,7 @@ impl Cx {
         for r in refs {
             if r == "@selection" {
                 let doc = self.document()?;
-                for k in &self.session.app.selection.ids {
+                for k in self.session.app.selection.ids.iter() {
                     if let Some(l) = doc.locate(k)
                         && !out.iter().any(|(_, x)| x == &l.key)
                     {

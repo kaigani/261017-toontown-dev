@@ -265,14 +265,27 @@ struct Observed {
     dirty: Option<bool>,
     /// The persisted form of the workspaces (written to the settings when it changes; 01 §11).
     workspaces: Value,
+    /// The reported selection (shared list: compared by pointer, then by content only when it was replaced).
+    selection: crate::app::Ids,
+    /// The Timeline/Exposure Sheet position and cell/row selection (`cell.selection.changed`, 04 §17.4).
+    cells: (Option<crate::app::Ids>, Option<crate::app::Ids>, Option<tt_model::Id>, u32),
 }
 
+/// The observed application state. The selection lists are kept as shared lists rather than serialised, so a large
+/// cell selection costs nothing per call; the full state is built only when something changed.
 fn observe(s: &Session) -> Observed {
     Observed {
-        state: serde_json::to_value(crate::commands::app::app_state(s)).unwrap_or(Value::Null),
+        state: crate::commands::app::app_state_without_selection_ids(s),
+        selection: s.app.selection.ids.clone(),
         history: s.project.as_ref().map(|p| (p.history.position(), p.history.len())),
         dirty: s.project.as_ref().map(OpenProject::dirty),
         workspaces: s.ui.persisted(),
+        cells: (
+            s.app.selections.get("xsheet").cloned(),
+            s.app.selections.get("timeline").cloned(),
+            s.app.element.clone(),
+            s.app.frame,
+        ),
     }
 }
 
@@ -1010,13 +1023,29 @@ impl Core {
             let doc = p.doc.clone();
             let cache = s.planar.clone();
             let zones = |d: &str, z: &str| crate::planar::zone_exists(&cache, &doc, d, z);
-            s.app.repair_with(&doc, Some(&zones));
+            let lists = |app: &crate::app::AppContext| -> Vec<crate::app::Ids> {
+                std::iter::once(app.selection.ids.clone()).chain(app.selections.values().cloned()).collect()
+            };
+            let key = (doc.project().id().as_str().to_owned(), doc.document_rev());
+            let unchanged = s.selection_checked.as_ref().is_some_and(|(pid, rev, before)| {
+                let now = lists(&s.app);
+                *pid == key.0
+                    && *rev == key.1
+                    && before.len() == now.len()
+                    && before.iter().zip(&now).all(|(a, b)| std::sync::Arc::ptr_eq(a, b))
+            });
+            s.app.repair_checked(&doc, Some(&zones), !unchanged);
+            s.selection_checked = Some((key.0, key.1, lists(&s.app)));
         }
         let after = observe(s);
-        let changed = changed_fields(&before.state, &after.state);
+        let mut changed = changed_fields(&before.state, &after.state);
+        if after.selection != before.selection && !changed.iter().any(|c| c == "selection") {
+            changed.push("selection".to_owned());
+        }
         if !changed.is_empty() {
+            let full = serde_json::to_value(crate::commands::app::app_state(s)).unwrap_or(Value::Null);
             if changed.iter().any(|c| c == "selection")
-                && let Some(sel) = after.state.get("selection")
+                && let Some(sel) = full.get("selection")
             {
                 s.emit("edit.selection.changed", json!({ "context": sel.get("context"), "ids": sel.get("ids") }));
             }
@@ -1025,7 +1054,14 @@ impl Core {
             {
                 s.emit("workspace.changed", w.clone());
             }
-            s.emit("app.state.changed", json!({ "changed": changed, "state": after.state }));
+            s.emit("app.state.changed", json!({ "changed": changed, "state": full }));
+        }
+        // One `cell.selection.changed` per invocation that moved the current position or changed the cell or row
+        // selection, whichever command caused it (an explicit selection, a creation, a hidden current column, a
+        // deletion repaired here; C31-R1-03).
+        if after.cells != before.cells && s.project.is_some() {
+            let payload = crate::commands::timing::cell_selection_state(&s.app);
+            s.emit("cell.selection.changed", payload);
         }
         if after.history != before.history
             && let Some(p) = &s.project

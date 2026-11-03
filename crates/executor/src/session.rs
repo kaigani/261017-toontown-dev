@@ -201,6 +201,9 @@ pub(crate) struct Session {
     /// Timeline and Exposure Sheet view state that is not document content (M3 C3.1): solo mode, category colours,
     /// the static light tables (SI-085).
     pub timeline: crate::commands::timing::TimelineState,
+    /// The project, document revision and selection lists the last context repair checked: while all three are the
+    /// same, the lists need no new check (a large cell selection is not rescanned on every call; C31-R1-14).
+    pub selection_checked: Option<(String, u64, Vec<crate::app::Ids>)>,
 }
 
 impl Session {

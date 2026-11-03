@@ -27,13 +27,17 @@ pub enum Mode {
     Staging,
 }
 
+/// A selection list, shared: copying the context (rollback, savepoints, observation) costs nothing however many
+/// cells are selected; equal lists compare by pointer first (C31-R1-14).
+pub(crate) type Ids = std::sync::Arc<Vec<String>>;
+
 /// The selection of one context.
 #[derive(Debug, Clone, Default, PartialEq, Eq)]
 pub(crate) struct Selection {
     /// `drawing`, `staging`, …
     pub context: String,
     /// Selected object keys (plain or compound IDs), in selection order.
-    pub ids: Vec<String>,
+    pub ids: Ids,
 }
 
 /// The current context.
@@ -48,7 +52,7 @@ pub(crate) struct AppContext {
     /// The selection of the context used last (reported by `AppState`).
     pub selection: Selection,
     /// The selection of every context (01 §6.4: each context keeps its own; switching focus clears none).
-    pub selections: std::collections::BTreeMap<String, Vec<String>>,
+    pub selections: std::collections::BTreeMap<String, Ids>,
     /// The Contour Editor's anchor selection (02 §7.1.2; `draw.pointSelection.set`): compound stroke keys
     /// (`<drawingId>/<strokeId>`) with anchor indices, in selection order.
     pub points: Vec<(String, u32)>,
@@ -63,7 +67,7 @@ impl Default for AppContext {
             frame: 1,
             element: None,
             drawing: None,
-            selection: Selection { context: "staging".to_owned(), ids: Vec::new() },
+            selection: Selection { context: "staging".to_owned(), ids: Ids::default() },
             selections: std::collections::BTreeMap::new(),
             points: Vec::new(),
             tool_memory: std::collections::BTreeMap::new(),
@@ -297,17 +301,40 @@ fn selectable_exists(doc: &Document, k: &str, zones: Option<ZoneCheck<'_>>) -> b
 }
 
 impl AppContext {
+    /// A copy without the (possibly large) selection lists: the reported selection keeps its context only.
+    #[must_use]
+    pub(crate) fn clone_without_selection_ids(&self) -> Self {
+        Self {
+            scene: self.scene.clone(),
+            frame: self.frame,
+            element: self.element.clone(),
+            drawing: self.drawing.clone(),
+            selection: Selection { context: self.selection.context.clone(), ids: Ids::default() },
+            selections: std::collections::BTreeMap::new(),
+            points: self.points.clone(),
+            tool_memory: self.tool_memory.clone(),
+        }
+    }
+
     /// The selection of one context.
     #[must_use]
     pub fn selection_of(&self, context: &str) -> Vec<String> {
-        self.selections.get(context).cloned().unwrap_or_default()
+        self.selections.get(context).map(|v| v.as_ref().clone()).unwrap_or_default()
     }
 
     /// Sets the selection of a context and makes it the reported one.
     pub fn set_selection(&mut self, context: &str, ids: Vec<String>) {
         context.clone_into(&mut self.selection.context);
-        self.selection.ids.clone_from(&ids);
+        let ids = Ids::new(ids);
+        self.selection.ids = ids.clone();
         self.selections.insert(context.to_owned(), ids);
+    }
+
+    /// Sets the selection of a context without making it the reported one (a mirrored context).
+    pub fn mirror_selection(&mut self, context: &str, from: &str) {
+        if let Some(ids) = self.selections.get(from).cloned() {
+            self.selections.insert(context.to_owned(), ids);
+        }
     }
 
     /// The context for a newly opened document: its first scene, frame 1, the scene's first element.
@@ -327,6 +354,12 @@ impl AppContext {
     /// [`AppContext::repair`], keeping selected zones that still exist in the current planar maps (`zones`; without
     /// it, zone references are dropped).
     pub fn repair_with(&mut self, doc: &Document, zones: Option<ZoneCheck<'_>>) -> bool {
+        self.repair_checked(doc, zones, true)
+    }
+
+    /// [`AppContext::repair_with`]; `selections: false` skips the selection lists (the caller knows neither they nor
+    /// the document changed since they were last checked).
+    pub fn repair_checked(&mut self, doc: &Document, zones: Option<ZoneCheck<'_>>, selections: bool) -> bool {
         let before = self.clone();
         if self.scene.as_ref().is_none_or(|s| doc.scene(s).is_none()) {
             self.scene = doc.project().scenes().ids().first().cloned();
@@ -346,9 +379,21 @@ impl AppContext {
             self.drawing = None;
         }
         self.frame = self.frame.max(1);
-        self.selection.ids.retain(|k| selectable_exists(doc, k, zones));
-        for ids in self.selections.values_mut() {
-            ids.retain(|k| selectable_exists(doc, k, zones));
+        // Cell references of one element share its existence check (a 100 000-cell selection is one lookup per
+        // element per call, not one per cell; C31-R1-14).
+        let mut elements: std::collections::BTreeMap<String, bool> = std::collections::BTreeMap::new();
+        let mut exists = |k: &str| match parse_cell_ref(k) {
+            Some((element, _)) => *elements.entry(element.clone()).or_insert_with(|| doc.locate(&element).is_some()),
+            None => selectable_exists(doc, k, zones),
+        };
+        // A list is copied only when one of its entries is gone (shared lists stay shared).
+        if selections && !self.selection.ids.iter().all(|k| exists(k)) {
+            std::sync::Arc::make_mut(&mut self.selection.ids).retain(|k| exists(k));
+        }
+        for ids in self.selections.values_mut().filter(|_| selections) {
+            if !ids.iter().all(|k| exists(k)) {
+                std::sync::Arc::make_mut(ids).retain(|k| exists(k));
+            }
         }
         self.points.retain(|(k, anchor)| anchor_exists(doc, k, *anchor));
         *self != before
@@ -435,9 +480,9 @@ impl AppContext {
         if let Some(d) = self.current_drawing(doc).and_then(|d| doc.drawing(&d)) {
             st.drawing = Some(DrawingRef { id: d.id().as_str().to_owned(), name: d.name().clone() });
         }
-        st.selection.ids.clone_from(&self.selection.ids);
+        st.selection.ids = self.selection.ids.as_ref().clone();
         let mut kinds: Vec<String> = Vec::new();
-        for k in &self.selection.ids {
+        for k in self.selection.ids.iter() {
             if let Some(l) = doc.locate(k) {
                 let t = l.ty.as_str().to_owned();
                 if !kinds.contains(&t) {
