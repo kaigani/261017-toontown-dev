@@ -1869,3 +1869,88 @@ pub(crate) fn edit_paste_as_new_element(cx: &mut Cx, p: PasteNewParams) -> Resul
     cx.patch_entries(changes)?;
     Ok(NewElementResult { element_id: element.as_str().to_owned() })
 }
+
+// ----- bridges for the 04 cell clipboard commands (M3 C3.1) -----------------------------------------------------------
+
+/// Copies (or cuts, with the elements' descendants as `edit.cut` does) whole elements to the clipboard in the
+/// Timeline context: `cell.clipboard.set {wholeElements: true}` (04 §13.16).
+pub(crate) fn copy_elements(cx: &mut Cx, ids: &[String], cut: bool) -> Result<ClipboardSummary, CommandError> {
+    let picked = Picked::Elements(ids.to_vec());
+    let clip = copy_content(cx, EditContext::Timeline, &picked, None)?;
+    if cut {
+        delete(cx, &picked, false, true)?;
+    }
+    store(cx, &clip)
+}
+
+/// Puts copied cells on the clipboard: `(element, frame offset, drawing)` per cell (`cell.clipboard.set`).
+pub(crate) fn store_cells(cx: &mut Cx, cells: &[(Id, usize, Option<Id>)]) -> Result<ClipboardSummary, CommandError> {
+    let doc = cx.document()?;
+    let items: Vec<Map<String, Value>> = cells
+        .iter()
+        .map(|(e, k, d)| {
+            obj(json!({ "elementId": e.as_str(), "frameOffset": k, "drawingRef": d.as_ref().map(Id::as_str) }))
+        })
+        .collect();
+    let clip = Clipboard {
+        kind: ClipboardKind::Cells,
+        source_context: Some(EditContext::Xsheet.as_str().to_owned()),
+        source_project_id: Some(doc.project().id().as_str().to_owned()),
+        item_count: u32::try_from(items.len()).unwrap_or(u32::MAX),
+        items: Some(items),
+        options: None,
+    };
+    store(cx, &clip)
+}
+
+/// What a cell paste reads from the clipboard.
+pub(crate) enum CellClip {
+    /// Copied cells: `(element, frame offset, drawing)`.
+    Cells(Vec<(Id, usize, Option<Id>)>),
+    /// Whole elements (pasted as new elements).
+    Elements,
+}
+
+/// The clipboard as cells or whole elements (`cell.clipboard.apply`); anything else is `cell.typeMismatch`, nothing
+/// is `cell.clipboardEmpty`.
+pub(crate) fn clipboard_cells(cx: &Cx) -> Result<CellClip, CommandError> {
+    let clip = clipboard(cx).map_err(|_| {
+        CommandError::with_details("cell.clipboardEmpty", "the clipboard holds nothing to paste", json!({}))
+    })?;
+    match clip.kind {
+        ClipboardKind::Elements => Ok(CellClip::Elements),
+        ClipboardKind::Cells => {
+            let mut out = Vec::new();
+            for item in clip.items.unwrap_or_default() {
+                let e = item.get("elementId").and_then(Value::as_str).and_then(|s| Id::parse(s).ok());
+                let k = item.get("frameOffset").and_then(Value::as_u64).and_then(|v| usize::try_from(v).ok());
+                let d = item.get("drawingRef").and_then(Value::as_str).and_then(|s| Id::parse(s).ok());
+                if let (Some(e), Some(k)) = (e, k) {
+                    out.push((e, k, d));
+                }
+            }
+            if out.is_empty() {
+                return Err(CommandError::with_details(
+                    "cell.clipboardEmpty",
+                    "the clipboard holds no cells",
+                    json!({}),
+                ));
+            }
+            Ok(CellClip::Cells(out))
+        }
+        other => Err(CommandError::with_details(
+            "cell.typeMismatch",
+            format!("the clipboard holds {}, not cells or elements", other.as_str()),
+            json!({ "kind": other.as_str() }),
+        )),
+    }
+}
+
+/// Pastes the whole elements on the clipboard into a scene as new elements (`cell.clipboard.apply` with elements on
+/// the clipboard); returns the created element IDs.
+pub(crate) fn paste_elements(cx: &mut Cx, scene: &Id) -> Result<Vec<String>, CommandError> {
+    let clip = clipboard(cx)?;
+    let dest = Destination { scene: Some(scene.as_str().to_owned()), ..Destination::default() };
+    let r = paste(cx, EditContext::Timeline, &clip, &dest, Special::None)?;
+    Ok(r.created_ids)
+}

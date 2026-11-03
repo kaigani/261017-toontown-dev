@@ -7,6 +7,7 @@
 pub(crate) mod agent;
 pub(crate) mod app;
 pub(crate) mod bundle;
+pub(crate) mod cell;
 pub(crate) mod checkpoint;
 pub(crate) mod colour;
 pub(crate) mod colour_edit;
@@ -32,6 +33,7 @@ pub(crate) mod edit_ops;
 pub(crate) mod inspect;
 pub(crate) mod job;
 pub(crate) mod project;
+pub(crate) mod timing;
 pub(crate) mod tool_symmetry;
 pub(crate) mod window;
 pub(crate) mod workspace;
@@ -249,4 +251,25 @@ pub(crate) static ALL: &[&Command] = &[
     &workspace::WORKSPACE_EXPORT,
     &workspace::WORKSPACE_IMPORT,
     &workspace::WORKSPACE_CHANGED,
+    // cell (M3 C3.1)
+    &cell::CELL_EXPOSURE_ADD,
+    &cell::CELL_EXPOSURE_REMOVE,
+    &cell::CELL_EXPOSURE_SET,
+    &cell::CELL_FILL_APPLY,
+    &cell::CELL_BLANK_ADD,
+    &cell::CELL_BLANK_REMOVE,
+    &cell::CELL_RANGE_ADD,
+    &cell::CELL_RANGE_DELETE,
+    &cell::CELL_RANGE_MOVE,
+    &cell::CELL_LABEL_SET,
+    &cell::CELL_DRAWING_DUPLICATE,
+    &cell::CELL_CYCLE_CREATE,
+    &cell::CELL_COLUMNATE_APPLY,
+    &cell::CELL_NOTE_SET,
+    &cell::CELL_CLIPBOARD_SET,
+    &cell::CELL_CLIPBOARD_APPLY,
+    &cell::CELL_SELECT,
+    &cell::CELL_SELECTION_GET,
+    &cell::CELL_EXPOSURES_CHANGED,
+    &cell::CELL_SELECTION_CHANGED,
 ];
