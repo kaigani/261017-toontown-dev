@@ -14,9 +14,9 @@ use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
 use serde_json::{Map, Value, json};
 use tt_anim::exposure::{self as x, FillError, LoopMode};
+use tt_model::Id;
 use tt_model::document::{Document, EntryKey};
 use tt_model::entities::element::ElementType;
-use tt_model::Id;
 use tt_registry::{CommandError, codes, command};
 
 use super::common::NoParams;
@@ -73,7 +73,10 @@ fn peg_bar(cx: &mut Cx, doc: &Document, id: &Id, delta: i64, changes: &mut Chang
     super::timing::check_length(usize::try_from(start + nd - 1).unwrap_or(usize::MAX), id)?;
     if nd != d {
         changes.push(EntryKey::Element(id.clone()), vec![op("replace", "/duration", Some(json!(nd)))]);
-        cx.emit("element.state.changed", json!({ "sceneId": doc.scene_of(id).map(Id::as_str), "elementIds": [id.as_str()], "change": "timing" }));
+        cx.emit(
+            "element.state.changed",
+            json!({ "sceneId": doc.scene_of(id).map(Id::as_str), "elementIds": [id.as_str()], "change": "timing" }),
+        );
     }
     Ok(())
 }
@@ -105,11 +108,8 @@ fn exposure_step(cx: &mut Cx, p: &ExposureStepParams, add: bool) -> Result<Chang
     let doc = cx.document()?.clone();
     let mut budget = Budget::new("changing exposures");
     // Pegs: the bar length (04 §13.20).
-    let (pegs, cells): (Vec<Id>, Vec<Id>) = t
-        .elements
-        .iter()
-        .cloned()
-        .partition(|e| doc.element(e).is_some_and(|x| *x.element_type() == ElementType::Peg));
+    let (pegs, cells): (Vec<Id>, Vec<Id>) =
+        t.elements.iter().cloned().partition(|e| doc.element(e).is_some_and(|x| *x.element_type() == ElementType::Peg));
     let mut changes = Changes::default();
     let delta = if add { i64::from(p.frames) } else { -i64::from(p.frames) };
     for peg in &pegs {
@@ -482,13 +482,21 @@ pub(crate) fn cell_range_add(cx: &mut Cx, p: RangeAddParams) -> Result<RangeAddR
                 ops.push(op("replace", &format!("/{slot}/{i}/stopFrame"), Some(json!(ne))));
                 // Lip-sync mouths keep their timing relative to the moved clip.
                 if let Some(pf) = item.pointer("/mouthTrack/producedFor/stopFrame").and_then(Value::as_u64) {
-                    ops.push(op("replace", &format!("/{slot}/{i}/mouthTrack/producedFor/stopFrame"), Some(json!(pf + n as u64))));
+                    ops.push(op(
+                        "replace",
+                        &format!("/{slot}/{i}/mouthTrack/producedFor/stopFrame"),
+                        Some(json!(pf + n as u64)),
+                    ));
                 }
             }
         }
         super::timing::check_length(usize::try_from(last).unwrap_or(usize::MAX), e)?;
         if !ops.is_empty() {
-            out.push(CellChange { element_id: e.as_str().to_owned(), from: as_u32(at), to: as_u32(usize::try_from(last).unwrap_or(0)) });
+            out.push(CellChange {
+                element_id: e.as_str().to_owned(),
+                from: as_u32(at),
+                to: as_u32(usize::try_from(last).unwrap_or(0)),
+            });
         }
         changes.push(EntryKey::Element(e.clone()), ops);
     }
@@ -626,7 +634,9 @@ fn warn_options(cx: &mut Cx, o: &TransferOptions) {
     for name in o.not_applied() {
         cx.warn(
             "cell.optionNotApplied",
-            format!("transfer option `{name}` applies to templates and keyframes, not to a cell transfer; it was ignored"),
+            format!(
+                "transfer option `{name}` applies to templates and keyframes, not to a cell transfer; it was ignored"
+            ),
             Vec::new(),
         );
     }
@@ -663,7 +673,16 @@ struct Mapper<'a> {
 impl<'a> Mapper<'a> {
     fn new(doc: &'a Document, source_bank: &Id, bank: Id, fresh: bool, overwrite: bool) -> Self {
         let names = super::timing::bank_names(doc, &bank);
-        Self { doc, same: *source_bank == bank && !fresh, bank, fresh, overwrite, map: BTreeMap::new(), names, created: Vec::new() }
+        Self {
+            doc,
+            same: *source_bank == bank && !fresh,
+            bank,
+            fresh,
+            overwrite,
+            map: BTreeMap::new(),
+            names,
+            created: Vec::new(),
+        }
     }
 
     fn map(&mut self, cx: &mut Cx, changes: &mut Changes, d: &Id) -> Result<Id, CommandError> {
@@ -690,6 +709,7 @@ impl<'a> Mapper<'a> {
                     v["rev"] = json!(old.rev());
                 }
                 changes.push(EntryKey::Drawing(t.clone()), vec![op("replace", "", Some(v))]);
+                cx.keep_verbatim([t.clone()]);
                 t
             }
             _ => {
@@ -798,7 +818,11 @@ pub(crate) fn cell_range_move(cx: &mut Cx, p: RangeMoveParams) -> Result<RangeMo
             let scene = doc.scene_of(&t).and_then(|s| doc.scene(s)).ok_or_else(no_target)?;
             let order = scene.column_order();
             let start = order.iter().position(|c| *c == t).ok_or_else(|| {
-                err("element.notCellBased", "the target is not an Exposure Sheet column", json!({ "pointer": "/targetElementId" }))
+                err(
+                    "element.notCellBased",
+                    "the target is not an Exposure Sheet column",
+                    json!({ "pointer": "/targetElementId" }),
+                )
             })?;
             let v: Vec<Id> = order.iter().skip(start).take(sources.len()).cloned().collect();
             if v.len() < sources.len() {
@@ -863,7 +887,11 @@ pub(crate) fn cell_range_move(cx: &mut Cx, p: RangeMoveParams) -> Result<RangeMo
         for c in &picked {
             values.push(match c {
                 Some(d) => {
-                    let m = if p.mode == MoveMode::Move && sbank == mapper.bank { d.clone() } else { mapper.map(cx, &mut changes, d)? };
+                    let m = if p.mode == MoveMode::Move && sbank == mapper.bank {
+                        d.clone()
+                    } else {
+                        mapper.map(cx, &mut changes, d)?
+                    };
                     Some(tcol.intern(&m))
                 }
                 None => None,
@@ -978,7 +1006,9 @@ pub(crate) fn cell_label_set(cx: &mut Cx, p: LabelParams) -> Result<LabelResult,
             d.clone()
         } else if let Some(name) = &p.drawing {
             let name = drawing_name(name, "/drawing")?;
-            match super::timing::drawing_named(&doc, &bank, &name).or_else(|| created.get(&(bank.clone(), name.clone())).cloned()) {
+            match super::timing::drawing_named(&doc, &bank, &name)
+                .or_else(|| created.get(&(bank.clone(), name.clone())).cloned())
+            {
                 Some(d) => d,
                 None if p.create_missing && VECTOR.contains(element(&doc, e)?.element_type()) => {
                     let d = add_drawing(cx, &mut changes, &bank, &name, None)?;
@@ -1002,7 +1032,11 @@ pub(crate) fn cell_label_set(cx: &mut Cx, p: LabelParams) -> Result<LabelResult,
             let j = usize::try_from(i).ok().filter(|j| *j < order.len()).ok_or_else(|| {
                 err(
                     "cell.drawingNotFound",
-                    format!("stepping {step} from the drawing at frame {} leaves the bank ({} drawings)", t.from, order.len()),
+                    format!(
+                        "stepping {step} from the drawing at frame {} leaves the bank ({} drawings)",
+                        t.from,
+                        order.len()
+                    ),
                     json!({ "pointer": "/step", "elementId": e.as_str(), "step": step }),
                 )
             })?;
@@ -1085,7 +1119,11 @@ pub(crate) fn cell_drawing_duplicate(cx: &mut Cx, p: DuplicateParams) -> Result<
         Some(n) => {
             let n = drawing_name(n, "/name")?;
             if names.contains(&n) {
-                return Err(err("drawing.nameDuplicate", format!("drawing `{n}` already exists in the bank; choose a different name"), json!({ "pointer": "/name", "name": n })));
+                return Err(err(
+                    "drawing.nameDuplicate",
+                    format!("drawing `{n}` already exists in the bank; choose a different name"),
+                    json!({ "pointer": "/name", "name": n }),
+                ));
             }
             n
         }
@@ -1299,7 +1337,8 @@ pub(crate) fn cell_columnate_apply(cx: &mut Cx, p: ColumnateParams) -> Result<Co
     let last = p.expose_last.map_or(each, |l| l as usize);
     let loops = p.loops.map_or(1, |l| l as usize);
     // The cycle's length before it is built (refuse oversized cycles first).
-    let unit = if mode == LoopMode::ForwardBackward && drawings.len() > 2 { 2 * drawings.len() - 2 } else { drawings.len() };
+    let unit =
+        if mode == LoopMode::ForwardBackward && drawings.len() > 2 { 2 * drawings.len() - 2 } else { drawings.len() };
     let predicted = match p.total_frames {
         Some(tf) => tf as usize,
         None => (unit * if mode == LoopMode::None { 1 } else { loops }).saturating_sub(1) * each + last,
@@ -1465,7 +1504,11 @@ pub(crate) fn cell_clipboard_set(cx: &mut Cx, p: ClipboardSetParams) -> Result<C
     if p.whole_elements {
         let ids: Vec<String> = t.elements.iter().map(|e| e.as_str().to_owned()).collect();
         super::edit_ops::copy_elements(cx, &ids, p.cut)?;
-        return Ok(ClipboardSetResult { content_type: "elements".to_owned(), element_count: as_u32(ids.len()), frames: 0 });
+        return Ok(ClipboardSetResult {
+            content_type: "elements".to_owned(),
+            element_count: as_u32(ids.len()),
+            frames: 0,
+        });
     }
     let mut items = Vec::new();
     let mut kind = "drawingCells";
@@ -1611,7 +1654,8 @@ pub(crate) fn cell_clipboard_apply(cx: &mut Cx, p: ClipboardApplyParams) -> Resu
         }
         let tbank = bank_of_element(&doc, tgt)?;
         let sbank = doc.element(s).and_then(|e| e.drawing_bank_id().clone()).unwrap_or_else(|| tbank.clone());
-        let mut mapper = Mapper::new(&doc, &sbank, tbank.clone(), p.mode == PasteMode::NewDrawings, opts.overwrite_drawings);
+        let mut mapper =
+            Mapper::new(&doc, &sbank, tbank.clone(), p.mode == PasteMode::NewDrawings, opts.overwrite_drawings);
         let mut col = Column::read(&doc, tgt, &mut budget)?;
         let cells: Vec<&(Id, usize, Option<Id>)> = clip.iter().filter(|(e, _, _)| e == s).collect();
         let w = cells.iter().map(|(_, k, _)| k + 1).max().unwrap_or(0);
@@ -1620,7 +1664,11 @@ pub(crate) fn cell_clipboard_apply(cx: &mut Cx, p: ClipboardApplyParams) -> Resu
         for (_, k, d) in cells {
             if let Some(d) = d {
                 if doc.drawing(d).is_none() {
-                    return Err(err("cell.clipboardEmpty", "a copied drawing no longer exists", json!({ "drawingId": d.as_str() })));
+                    return Err(err(
+                        "cell.clipboardEmpty",
+                        "a copied drawing no longer exists",
+                        json!({ "drawingId": d.as_str() }),
+                    ));
                 }
                 let m = mapper.map(cx, &mut changes, d)?;
                 values[*k] = Some(col.intern(&m));
@@ -1636,7 +1684,11 @@ pub(crate) fn cell_clipboard_apply(cx: &mut Cx, p: ClipboardApplyParams) -> Resu
             }
         }
         budget.spend(col.frames.len() + w)?;
-        let after = if opts.exposure { x::insert(&col.frames, t.from, &values) } else { x::overwrite(&col.frames, t.from, &values) };
+        let after = if opts.exposure {
+            x::insert(&col.frames, t.from, &values)
+        } else {
+            x::overwrite(&col.frames, t.from, &values)
+        };
         write_column(&col, &after, &mut changes, &mut out)?;
         created.extend(mapper.created);
     }
@@ -1813,8 +1865,12 @@ pub(crate) struct SelectionResult {
 )]
 pub(crate) fn cell_selection_get(cx: &mut Cx, _p: NoParams) -> Result<SelectionResult, CommandError> {
     let doc = cx.document()?;
-    let rows: Vec<String> =
-        cx.app().selection_of("timeline").into_iter().filter(|k| parse_cell_ref(k).is_none() && Id::parse(k).ok().is_some_and(|id| doc.element(&id).is_some())).collect();
+    let rows: Vec<String> = cx
+        .app()
+        .selection_of("timeline")
+        .into_iter()
+        .filter(|k| parse_cell_ref(k).is_none() && Id::parse(k).ok().is_some_and(|id| doc.element(&id).is_some()))
+        .collect();
     let (element_ids, from, to) = match selected_cells(cx) {
         Some((e, a, b)) => (e.iter().map(|x| x.as_str().to_owned()).collect(), as_u32(a), as_u32(b)),
         None => (rows.clone(), 0, 0),

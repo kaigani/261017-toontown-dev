@@ -268,7 +268,11 @@ pub(crate) fn xsheet_exposures_get(cx: &mut Cx, p: GetParams) -> Result<Sheet, C
                                 continue;
                             }
                             if let Some(m) = r.value {
-                                mouths.push(Mouth { mouth: m.to_string(), from: as_u32(ra.max(from)), to: as_u32(rb.min(to)) });
+                                mouths.push(Mouth {
+                                    mouth: m.to_string(),
+                                    from: as_u32(ra.max(from)),
+                                    to: as_u32(rb.min(to)),
+                                });
                             }
                         }
                     }
@@ -512,11 +516,21 @@ pub(crate) fn xsheet_exposures_set(cx: &mut Cx, p: SetParams) -> Result<SetResul
                 return Err(run_error(code, format!("run {}-{} is invalid", r.from, r.to), ci, Some(ri)));
             }
             if usize::from(r.drawing.is_some()) + usize::from(r.drawing_id.is_some()) != 1 {
-                return Err(run_error("xsheet.runInvalid", "a run names its drawing by `drawing` or `drawingId`".to_owned(), ci, Some(ri)));
+                return Err(run_error(
+                    "xsheet.runInvalid",
+                    "a run names its drawing by `drawing` or `drawingId`".to_owned(),
+                    ci,
+                    Some(ri),
+                ));
             }
             if ri > 0 && r.from <= prev_to {
                 let code = if r.from < c.exposures[ri - 1].from { "xsheet.runInvalid" } else { "xsheet.runOverlap" };
-                return Err(run_error(code, format!("run {} starts at {} but the previous run ends at {prev_to}", ri, r.from), ci, Some(ri)));
+                return Err(run_error(
+                    code,
+                    format!("run {} starts at {} but the previous run ends at {prev_to}", ri, r.from),
+                    ci,
+                    Some(ri),
+                ));
             }
             prev_to = r.to;
             runs.push(r);
@@ -525,11 +539,21 @@ pub(crate) fn xsheet_exposures_set(cx: &mut Cx, p: SetParams) -> Result<SetResul
         let from = c.from.unwrap_or(1);
         let to = c.to.unwrap_or_else(|| prev_to.max(last_exposed).max(from));
         if from < 1 || to > x::MAX_FRAMES as i64 || to < from {
-            return Err(run_error("xsheet.runOutOfRange", format!("the window {from}-{to} is outside 1-{}", x::MAX_FRAMES), ci, None));
+            return Err(run_error(
+                "xsheet.runOutOfRange",
+                format!("the window {from}-{to} is outside 1-{}", x::MAX_FRAMES),
+                ci,
+                None,
+            ));
         }
         for (ri, r) in runs.iter().enumerate() {
             if r.from < from || r.to > to {
-                return Err(run_error("xsheet.runOutOfRange", format!("run {}-{} lies outside the window {from}-{to}", r.from, r.to), ci, Some(ri)));
+                return Err(run_error(
+                    "xsheet.runOutOfRange",
+                    format!("run {}-{} lies outside the window {from}-{to}", r.from, r.to),
+                    ci,
+                    Some(ri),
+                ));
             }
         }
         let (from, to) = (usize::try_from(from).unwrap_or(1), usize::try_from(to).unwrap_or(1));
@@ -540,7 +564,12 @@ pub(crate) fn xsheet_exposures_set(cx: &mut Cx, p: SetParams) -> Result<SetResul
                 (_, Some(dr)) => {
                     let d = super::timing::drawing_id(cx, dr, &format!("/columns/{ci}/exposures/{ri}/drawingId"))?;
                     if doc.bank_of(&d) != Some(&bank) {
-                        return Err(run_error("cell.drawingNotFound", format!("drawing `{dr}` is not in the column's bank"), ci, Some(ri)));
+                        return Err(run_error(
+                            "cell.drawingNotFound",
+                            format!("drawing `{dr}` is not in the column's bank"),
+                            ci,
+                            Some(ri),
+                        ));
                     }
                     d
                 }
@@ -548,15 +577,26 @@ pub(crate) fn xsheet_exposures_set(cx: &mut Cx, p: SetParams) -> Result<SetResul
                     .or_else(|| new_names.get(&(bank.clone(), name.clone())).cloned())
                 {
                     Some(d) => d,
-                    None if p.create_missing_drawings && matches!(t, ElementType::Drawing | ElementType::Annotation) => {
+                    None if p.create_missing_drawings
+                        && matches!(t, ElementType::Drawing | ElementType::Annotation) =>
+                    {
                         let n = super::timing::drawing_name(name, &format!("/columns/{ci}/exposures/{ri}/drawing"))?;
                         let d = add_drawing(cx, &mut changes, &bank, &n, None)?;
                         new_names.insert((bank.clone(), name.clone()), d.clone());
-                        created.push(Created { element_id: id.as_str().to_owned(), drawing_id: d.as_str().to_owned(), name: n });
+                        created.push(Created {
+                            element_id: id.as_str().to_owned(),
+                            drawing_id: d.as_str().to_owned(),
+                            name: n,
+                        });
                         d
                     }
                     None => {
-                        return Err(run_error("cell.drawingNotFound", format!("the column's bank has no drawing `{name}`"), ci, Some(ri)));
+                        return Err(run_error(
+                            "cell.drawingNotFound",
+                            format!("the column's bank has no drawing `{name}`"),
+                            ci,
+                            Some(ri),
+                        ));
                     }
                 },
                 (None, None) => return Err(internal("validated run")),

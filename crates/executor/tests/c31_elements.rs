@@ -95,7 +95,8 @@ fn create_is_one_undo_step_selects_and_makes_current() {
     let types: Vec<&str> = all.as_array().unwrap().iter().map(|e| e["type"].as_str().unwrap()).collect();
     assert_eq!(types, ["effectParameter", "drawing"]);
     let r = ok(&h, "element.create", json!({ "type": "skeleton", "sceneId": INTRO }));
-    let kids = ok(&h, "element.list", json!({ "parentId": r["elementIds"][0], "recursive": false }))["elements"].clone();
+    let kids =
+        ok(&h, "element.list", json!({ "parentId": r["elementIds"][0], "recursive": false }))["elements"].clone();
     assert_eq!(kids.as_array().unwrap().len(), 2);
 }
 
@@ -118,7 +119,10 @@ fn rename_rules() {
     let r0 = rev(&h);
     ok(&h, "element.rename", json!({ "elementId": BOB, "name": "Bob" }));
     assert_eq!(rev(&h), r0, "renaming to the current name is a silent no-op");
-    assert_eq!(err(&h, "element.rename", json!({ "elementId": BOB, "name": "Background" })).code, "element.nameDuplicate");
+    assert_eq!(
+        err(&h, "element.rename", json!({ "elementId": BOB, "name": "Background" })).code,
+        "element.nameDuplicate"
+    );
     ok(&h, "element.rename", json!({ "elementId": BOB, "name": "Robert" }));
     let hist = ok(&h, "edit.history.get", json!({}));
     assert!(hist.to_string().contains("Rename Drawing Element"), "the undo label names the type: {hist}");
@@ -154,7 +158,13 @@ fn clone_shares_the_bank_and_duplicate_copies_it() {
     assert_ne!(dup["drawingBankId"], get(&h, BOB)["drawingBankId"]);
     let a = ok(&h, "element.drawing.list", json!({ "elementId": BOB }))["drawings"].clone();
     let b = ok(&h, "element.drawing.list", json!({ "elementId": dup["id"] }))["drawings"].clone();
-    let strip = |v: &Value| v.as_array().unwrap().iter().map(|d| (d["name"].clone(), d["locked"].clone(), d["useCount"].clone())).collect::<Vec<_>>();
+    let strip = |v: &Value| {
+        v.as_array()
+            .unwrap()
+            .iter()
+            .map(|d| (d["name"].clone(), d["locked"].clone(), d["useCount"].clone()))
+            .collect::<Vec<_>>()
+    };
     assert_eq!(strip(&a), strip(&b), "same names, locks and timing in the copy");
     assert_eq!(dup["transform"], get(&h, BOB)["transform"], "the copy appears at exactly the same place");
 }
@@ -178,7 +188,10 @@ fn delete_reattaches_children_and_drops_unshared_banks() {
     let h = fixture();
     let r = ok(&h, "element.delete", json!({ "elementIds": ["scene:\"Intro\"/element:\"Clip\""] }));
     assert_eq!(r["deletedIds"].as_array().unwrap().len(), 2);
-    assert_eq!(err(&h, "element.delete", json!({ "elementIds": ["scene:\"Intro\"/element:\"Rig-bones\""] })).code, "arg.invalid");
+    assert_eq!(
+        err(&h, "element.delete", json!({ "elementIds": ["scene:\"Intro\"/element:\"Rig-bones\""] })).code,
+        "arg.invalid"
+    );
 }
 
 #[test]
@@ -196,7 +209,10 @@ fn stacking_orders_are_independent() {
     ok(&h, "element.order.move", json!({ "elementIds": [BOB], "to": "backward", "order": "xsheet" }));
     let x = names(&h, "xsheet");
     assert_eq!(x[x.len() - 2], "Bob");
-    assert_eq!(err(&h, "element.order.move", json!({ "elementIds": [PEG], "to": "front", "order": "xsheet" })).code, "element.notCellBased");
+    assert_eq!(
+        err(&h, "element.order.move", json!({ "elementIds": [PEG], "to": "front", "order": "xsheet" })).code,
+        "element.notCellBased"
+    );
     // order.set is a permutation of the level.
     let ids: Vec<String> = ok(&h, "element.list", json!({ "sceneId": INTRO, "order": "xsheet" }))["elements"]
         .as_array()
@@ -214,10 +230,20 @@ fn parenting_rules() {
     let h = fixture();
     ok(&h, "element.parent.set", json!({ "elementIds": [BG], "parentId": PEG }));
     assert_eq!(ok(&h, "element.hierarchy.get", json!({ "elementId": BG }))["parentId"], id(&h, PEG));
-    assert_eq!(err(&h, "element.parent.set", json!({ "elementIds": [PEG], "parentId": BOB })).code, "element.notParentable");
-    assert_eq!(err(&h, "element.parent.set", json!({ "elementIds": [PEG], "parentId": PEG })).code, "element.hierarchyCycle");
-    let child_peg = ok(&h, "element.create", json!({ "type": "peg", "name": "Inner", "parentId": PEG }))["elementIds"][0].clone();
-    assert_eq!(err(&h, "element.parent.set", json!({ "elementIds": [PEG], "parentId": child_peg })).code, "element.hierarchyCycle");
+    assert_eq!(
+        err(&h, "element.parent.set", json!({ "elementIds": [PEG], "parentId": BOB })).code,
+        "element.notParentable"
+    );
+    assert_eq!(
+        err(&h, "element.parent.set", json!({ "elementIds": [PEG], "parentId": PEG })).code,
+        "element.hierarchyCycle"
+    );
+    let child_peg =
+        ok(&h, "element.create", json!({ "type": "peg", "name": "Inner", "parentId": PEG }))["elementIds"][0].clone();
+    assert_eq!(
+        err(&h, "element.parent.set", json!({ "elementIds": [PEG], "parentId": child_peg })).code,
+        "element.hierarchyCycle"
+    );
     // Detach: to the parent's level, directly above the parent.
     let r = ok(&h, "element.parent.remove", json!({ "elementIds": [BG] }));
     assert_eq!(r["parentId"], Value::Null);
@@ -246,11 +272,22 @@ fn flags_visibility_lock_annotation_collapse_solo() {
     assert!(info["hiddenByParent"].as_bool().unwrap(), "a child hidden only through its parent");
     assert!(info["visibleInScene"].as_bool().unwrap());
     ok(&h, "element.visibility.set", json!({ "scope": "scene", "visible": true, "apply": "all" }));
-    let r = ok(&h, "element.visibility.set", json!({ "elementIds": [BOB], "scope": "scene", "visible": false, "apply": "others" }));
+    let r = ok(
+        &h,
+        "element.visibility.set",
+        json!({ "elementIds": [BOB], "scope": "scene", "visible": false, "apply": "others" }),
+    );
     assert!(r["changedIds"].as_array().unwrap().len() > 10);
-    let r = ok(&h, "element.visibility.set", json!({ "elementIds": [BOB], "scope": "scene", "visible": true, "apply": "all", "types": ["annotation"] }));
+    let r = ok(
+        &h,
+        "element.visibility.set",
+        json!({ "elementIds": [BOB], "scope": "scene", "visible": true, "apply": "all", "types": ["annotation"] }),
+    );
     assert_eq!(r["changedIds"].as_array().unwrap().len(), 1);
-    assert_eq!(err(&h, "element.visibility.set", json!({ "elementIds": [PEG], "scope": "xsheet", "visible": false })).code, "element.notCellBased");
+    assert_eq!(
+        err(&h, "element.visibility.set", json!({ "elementIds": [PEG], "scope": "xsheet", "visible": false })).code,
+        "element.notCellBased"
+    );
     // Hiding the current element in the Exposure Sheet moves the current element on (04 §10.2).
     ok(&h, "element.current.set", json!({ "elementId": BOB }));
     ok(&h, "element.visibility.set", json!({ "elementIds": [BOB], "scope": "xsheet", "visible": false }));
@@ -263,7 +300,10 @@ fn flags_visibility_lock_annotation_collapse_solo() {
     assert_eq!(ok(&h, "element.annotation.set", json!({ "elementId": BOB, "annotation": true }))["type"], "annotation");
     assert!(ok(&h, "element.get", json!({ "elementId": BOB }))["annotation"].as_bool().unwrap());
     ok(&h, "element.annotation.set", json!({ "elementId": BOB, "annotation": false }));
-    assert_eq!(err(&h, "element.annotation.set", json!({ "elementId": BG, "annotation": true })).code, "element.notDrawing");
+    assert_eq!(
+        err(&h, "element.annotation.set", json!({ "elementId": BG, "annotation": true })).code,
+        "element.notDrawing"
+    );
     // Collapse is saved with the scene but is not an undo step.
     let steps = ok(&h, "edit.history.get", json!({}))["entries"].as_array().map_or(0, Vec::len);
     ok(&h, "element.collapsed.set", json!({ "elementIds": [PEG], "collapsed": true }));
@@ -306,7 +346,12 @@ fn bar_timing_and_key_retiming() {
     let ch = |h: &ExecutorHandle| {
         let p = get(h, PEG);
         let c = get(h, p["channels"]["skew"]["id"].as_str().unwrap());
-        c["keys"].as_array().unwrap().iter().map(|k| get(h, k["id"].as_str().unwrap())["frame"].as_u64().unwrap()).collect::<Vec<_>>()
+        c["keys"]
+            .as_array()
+            .unwrap()
+            .iter()
+            .map(|k| get(h, k["id"].as_str().unwrap())["frame"].as_u64().unwrap())
+            .collect::<Vec<_>>()
     };
     assert_eq!(ch(&h), [1, 48], "keys are local frames: moving the bar moves them");
     ok(&h, "element.timing.set", json!({ "elementIds": [PEG], "duration": 24, "keyframes": "scale" }));
@@ -319,10 +364,19 @@ fn bar_timing_and_key_retiming() {
     // Loops: count multiplies the bar.
     let r = ok(&h, "element.timing.set", json!({ "elementIds": [FADE], "loops": 2 }));
     assert_eq!(r["elements"][0]["duration"], 96);
-    assert_eq!(err(&h, "element.timing.set", json!({ "elementIds": ["scene:\"Intro\"/element:\"Snow\""], "loops": 2 })).code, "element.notLoopable");
+    assert_eq!(
+        err(&h, "element.timing.set", json!({ "elementIds": ["scene:\"Intro\"/element:\"Snow\""], "loops": 2 })).code,
+        "element.notLoopable"
+    );
     assert_eq!(err(&h, "element.timing.set", json!({ "elementIds": [BOB], "start": 3 })).code, "cell.notApplicable");
-    assert_eq!(err(&h, "element.timing.set", json!({ "elementIds": [PEG], "start": 99_999, "duration": 10 })).code, "cell.frameOutOfRange");
-    assert_eq!(err(&h, "element.timing.set", json!({ "elementIds": [PEG], "start": 2, "startDelta": 1 })).code, "arg.invalid");
+    assert_eq!(
+        err(&h, "element.timing.set", json!({ "elementIds": [PEG], "start": 99_999, "duration": 10 })).code,
+        "cell.frameOutOfRange"
+    );
+    assert_eq!(
+        err(&h, "element.timing.set", json!({ "elementIds": [PEG], "start": 2, "startDelta": 1 })).code,
+        "arg.invalid"
+    );
 }
 
 #[test]
@@ -331,8 +385,15 @@ fn child_exposure_and_media_length() {
     let r = ok(&h, "element.childExposure.apply", json!({ "pegId": PEG, "toFrame": 60 }));
     assert_eq!(r["changed"][0]["to"], 60);
     assert_eq!(get(&h, BOB)["exposure"].as_array().unwrap().last().unwrap()[1], 40);
-    assert_eq!(err(&h, "element.childExposure.apply", json!({ "pegId": BOB, "toFrame": 60 })).code, "cell.notApplicable");
-    let r = ok(&h, "element.mediaLength.set", json!({ "elementId": "scene:\"Intro\"/element:\"Reference\"", "length": 30 }));
+    assert_eq!(
+        err(&h, "element.childExposure.apply", json!({ "pegId": BOB, "toFrame": 60 })).code,
+        "cell.notApplicable"
+    );
+    let r = ok(
+        &h,
+        "element.mediaLength.set",
+        json!({ "elementId": "scene:\"Intro\"/element:\"Reference\"", "length": 30 }),
+    );
     assert_eq!((r["from"].as_u64(), r["to"].as_u64()), (Some(1), Some(30)));
     let e = err(&h, "element.mediaLength.set", json!({ "elementId": "scene:\"Intro\"/element:\"Reference\"" }));
     assert_eq!(e.details["owner"], "M8 C8.3");
@@ -343,10 +404,36 @@ fn read_model_and_lists() {
     let h = fixture();
     let info = ok(&h, "element.get", json!({ "elementId": BOB }));
     for k in [
-        "id", "path", "name", "elementType", "sceneId", "parentId", "childIds", "depth", "timelineIndex", "xsheetIndex",
-        "start", "duration", "loops", "annotation", "role", "deformable", "visibleInScene", "hiddenByParent",
-        "visibleInXsheet", "locked", "collapsed", "markerColour", "backgroundColour", "effectiveMarkerColour", "note",
-        "columnWidth", "cloneGroupId", "cloneIds", "drawingCount", "media",
+        "id",
+        "path",
+        "name",
+        "elementType",
+        "sceneId",
+        "parentId",
+        "childIds",
+        "depth",
+        "timelineIndex",
+        "xsheetIndex",
+        "start",
+        "duration",
+        "loops",
+        "annotation",
+        "role",
+        "deformable",
+        "visibleInScene",
+        "hiddenByParent",
+        "visibleInXsheet",
+        "locked",
+        "collapsed",
+        "markerColour",
+        "backgroundColour",
+        "effectiveMarkerColour",
+        "note",
+        "columnWidth",
+        "cloneGroupId",
+        "cloneIds",
+        "drawingCount",
+        "media",
     ] {
         assert!(info.get(k).is_some(), "element.get lacks `{k}`: {info}");
     }
@@ -374,9 +461,16 @@ fn selection_commands_are_not_undoable() {
     assert_eq!(r["selectedIds"], json!([id(&h, PEG)]));
     let r = ok(&h, "element.hierarchy.select", json!({ "relation": "children", "elementId": PEG }));
     assert_eq!(r["selectedIds"], json!([id(&h, PEG), id(&h, BOB)]));
-    let r = ok(&h, "element.hierarchy.select", json!({ "relation": "skeletonRoot", "elementId": "scene:\"Intro\"/element:\"Arm\"" }));
+    let r = ok(
+        &h,
+        "element.hierarchy.select",
+        json!({ "relation": "skeletonRoot", "elementId": "scene:\"Intro\"/element:\"Arm\"" }),
+    );
     assert_eq!(r["selectedIds"], json!([id(&h, "scene:\"Intro\"/element:\"Rig\"")]));
-    assert_eq!(err(&h, "element.hierarchy.select", json!({ "relation": "parent", "elementId": PEG })).code, "command.disabled");
+    assert_eq!(
+        err(&h, "element.hierarchy.select", json!({ "relation": "parent", "elementId": PEG })).code,
+        "command.disabled"
+    );
     ok(&h, "element.current.set", json!({ "elementId": BOB }));
     let r = ok(&h, "element.current.move", json!({ "direction": "next" }));
     assert_eq!(r["elementId"], id(&h, BG));

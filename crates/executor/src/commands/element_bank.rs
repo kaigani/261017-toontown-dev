@@ -53,7 +53,11 @@ fn lip_sync_used(doc: &Document) -> BTreeSet<Id> {
 }
 
 /// Cells exposing each drawing of a bank across its clone group: drawing → `(element, from, to)` windows.
-fn usage(doc: &Document, bank: &Id, budget: &mut Budget) -> Result<BTreeMap<Id, Vec<(Id, usize, usize)>>, CommandError> {
+fn usage(
+    doc: &Document,
+    bank: &Id,
+    budget: &mut Budget,
+) -> Result<BTreeMap<Id, Vec<(Id, usize, usize)>>, CommandError> {
     let mut out: BTreeMap<Id, Vec<(Id, usize, usize)>> = BTreeMap::new();
     for e in doc.bank_users(bank) {
         if !doc.element(e).is_some_and(|x| x.element_type().has_exposure()) {
@@ -157,7 +161,11 @@ pub(crate) fn element_drawing_list(cx: &mut Cx, p: ListParams) -> Result<ListRes
     let mut budget = Budget::new("listing drawings");
     let used = usage(&doc, &bank, &mut budget)?;
     let lips = lip_sync_used(&doc);
-    let own = if element(&doc, &id)?.element_type().has_exposure() { Some(Column::read(&doc, &id, &mut budget)?) } else { None };
+    let own = if element(&doc, &id)?.element_type().has_exposure() {
+        Some(Column::read(&doc, &id, &mut budget)?)
+    } else {
+        None
+    };
     let mut out = Vec::new();
     for (d, name) in bank_order(&doc, &bank) {
         let Some(dr) = doc.drawing(&d) else { continue };
@@ -186,7 +194,9 @@ pub(crate) fn element_drawing_list(cx: &mut Cx, p: ListParams) -> Result<ListRes
             name,
             exposures: own
                 .as_ref()
-                .map(|c| exposures_of(c, &d).into_iter().map(|(a, b)| Window { from: as_u32(a), to: as_u32(b) }).collect())
+                .map(|c| {
+                    exposures_of(c, &d).into_iter().map(|(a, b)| Window { from: as_u32(a), to: as_u32(b) }).collect()
+                })
                 .unwrap_or_default(),
             use_count: as_u32(uses),
             locked: *dr.locked(),
@@ -206,11 +216,7 @@ fn thumbnail(cx: &mut Cx, d: &Id, size: u32) -> Result<String, CommandError> {
     }))
     .map_err(internal)?;
     let r = super::draw_render::draw_drawing_render(cx, params)?;
-    to_json(&r)?
-        .get("png")
-        .and_then(Value::as_str)
-        .map(str::to_owned)
-        .ok_or_else(|| internal("thumbnail without png"))
+    to_json(&r)?.get("png").and_then(Value::as_str).map(str::to_owned).ok_or_else(|| internal("thumbnail without png"))
 }
 
 // ----- element.unusedDrawing.list --------------------------------------------------------------------------------------------
@@ -318,7 +324,12 @@ pub(crate) struct DrawingResult {
     name: String,
 }
 
-fn unique_drawing_name(doc: &Document, bank: &Id, given: Option<&str>, except: Option<&Id>) -> Result<String, CommandError> {
+fn unique_drawing_name(
+    doc: &Document,
+    bank: &Id,
+    given: Option<&str>,
+    except: Option<&Id>,
+) -> Result<String, CommandError> {
     match given {
         Some(n) => {
             let n = drawing_name(n, "/name")?;
@@ -362,11 +373,17 @@ pub(crate) fn element_drawing_create(cx: &mut Cx, p: CreateParams) -> Result<Dra
                 None => a,
             };
             if b < a {
-                return Err(err(codes::ARG_INVALID, "`exposeTo` is before `exposeFrom`", json!({ "pointer": "/exposeTo" })));
+                return Err(err(
+                    codes::ARG_INVALID,
+                    "`exposeTo` is before `exposeFrom`",
+                    json!({ "pointer": "/exposeTo" }),
+                ));
             }
             Some((a, b))
         }
-        (None, Some(_)) => return Err(err(codes::ARG_INVALID, "`exposeTo` needs `exposeFrom`", json!({ "pointer": "/exposeTo" }))),
+        (None, Some(_)) => {
+            return Err(err(codes::ARG_INVALID, "`exposeTo` needs `exposeFrom`", json!({ "pointer": "/exposeTo" })));
+        }
         (None, None) => None,
     };
     let mut budget = Budget::new("creating a drawing");
@@ -516,7 +533,10 @@ pub(crate) fn element_drawing_delete(cx: &mut Cx, p: DeleteParams) -> Result<Del
     let mut budget = Budget::new("deleting drawings");
     let mut by_bank: BTreeMap<Id, Vec<Id>> = BTreeMap::new();
     for d in &ids {
-        by_bank.entry(doc.bank_of(d).cloned().ok_or_else(|| internal("drawing without bank"))?).or_default().push(d.clone());
+        by_bank
+            .entry(doc.bank_of(d).cloned().ok_or_else(|| internal("drawing without bank"))?)
+            .or_default()
+            .push(d.clone());
     }
     // Where each drawing is exposed.
     let mut exposed: Vec<Value> = Vec::new();
@@ -531,7 +551,10 @@ pub(crate) fn element_drawing_delete(cx: &mut Cx, p: DeleteParams) -> Result<Del
     if !exposed.is_empty() && p.if_in_use == IfInUse::Fail {
         return Err(err(
             "drawing.inUse",
-            format!("{} exposure(s) show the drawing(s); repeat with ifInUse: \"clearCells\" to delete them and blank those cells", exposed.len()),
+            format!(
+                "{} exposure(s) show the drawing(s); repeat with ifInUse: \"clearCells\" to delete them and blank those cells",
+                exposed.len()
+            ),
             json!({ "x-needsConfirmation": true, "consequences": exposed, "retryWith": { "ifInUse": "clearCells" } }),
         ));
     }
@@ -545,16 +568,20 @@ pub(crate) fn element_drawing_delete(cx: &mut Cx, p: DeleteParams) -> Result<Del
                 continue;
             }
             let col = Column::read(&doc, e, &mut budget)?;
-            let after: Vec<Option<u32>> = col
-                .frames
-                .iter()
-                .map(|c| c.filter(|i| !col.drawing(*i).is_some_and(|d| gone.contains(d))))
-                .collect();
+            let after: Vec<Option<u32>> =
+                col.frames.iter().map(|c| c.filter(|i| !col.drawing(*i).is_some_and(|d| gone.contains(d)))).collect();
             write_column(&col, &after, &mut changes, &mut cleared)?;
         }
         let stubs: Vec<Value> = doc
             .bank(bank)
-            .map(|b| b.drawings().ids().iter().filter(|d| !gone.contains(d)).map(|d| json!({ "id": d.as_str(), "type": "drawing" })).collect())
+            .map(|b| {
+                b.drawings()
+                    .ids()
+                    .iter()
+                    .filter(|d| !gone.contains(d))
+                    .map(|d| json!({ "id": d.as_str(), "type": "drawing" }))
+                    .collect()
+            })
             .unwrap_or_default();
         changes.push(EntryKey::Bank(bank.clone()), vec![op("replace", "/drawings", Some(Value::Array(stubs)))]);
         for d in list {
@@ -604,7 +631,11 @@ fn drawings_or_current(cx: &Cx, given: Option<&[String]>) -> Result<Vec<Id>, Com
             let doc = cx.document()?;
             match cx.app().current_drawing(doc) {
                 Some(d) => Ok(vec![d]),
-                None => Err(err("cell.noTarget", "no drawing was given and the current cell is blank", json!({ "pointer": "/drawingIds" }))),
+                None => Err(err(
+                    "cell.noTarget",
+                    "no drawing was given and the current cell is blank",
+                    json!({ "pointer": "/drawingIds" }),
+                )),
             }
         }
     }
@@ -696,7 +727,10 @@ pub(crate) fn element_drawing_lock_set(cx: &mut Cx, p: LockParams) -> Result<Dra
         let dr = doc.drawing(d).ok_or_else(|| super::draw::not_found(d.as_str()))?;
         if *dr.locked() != p.locked {
             changes.push(EntryKey::Drawing(d.clone()), vec![op("replace", "/locked", Some(json!(p.locked)))]);
-            by_bank.entry(doc.bank_of(d).cloned().ok_or_else(|| internal("bank"))?).or_default().push(d.as_str().to_owned());
+            by_bank
+                .entry(doc.bank_of(d).cloned().ok_or_else(|| internal("bank"))?)
+                .or_default()
+                .push(d.as_str().to_owned());
         }
     }
     changes.stage(cx)?;

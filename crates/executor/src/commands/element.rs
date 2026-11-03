@@ -23,8 +23,8 @@ use tt_registry::{CommandError, codes, command};
 
 use super::common::NoParams;
 use super::timing::{
-    Budget, CellChange, Changes, Column, as_u32, duplicate_name, element, element_id, element_name,
-    emit_cells, emit_state, err, internal, op, parentable, scene_id, scene_names, to_json, tree_json, write_column,
+    Budget, CellChange, Changes, Column, as_u32, duplicate_name, element, element_id, element_name, emit_cells,
+    emit_state, err, internal, op, parentable, scene_id, scene_names, to_json, tree_json, write_column,
 };
 use crate::app::{Mode, mode_of_view};
 use crate::cx::Cx;
@@ -155,7 +155,10 @@ fn build(
     let id = cx.new_id(ObjectType::Element)?;
     let bank = if t.specific_properties().contains(&"drawingBankId") {
         let b = cx.new_id(ObjectType::DrawingBank)?;
-        changes.push(EntryKey::Project, vec![op("add", "/drawingBanks/-", Some(json!({ "id": b.as_str(), "type": "drawingBank" })))]);
+        changes.push(
+            EntryKey::Project,
+            vec![op("add", "/drawingBanks/-", Some(json!({ "id": b.as_str(), "type": "drawingBank" })))],
+        );
         changes.push(
             EntryKey::Bank(b.clone()),
             vec![op("add", "", Some(to_json(&tt_model::entities::drawing::DrawingBank::new(b.clone(), Vec::new()))?))],
@@ -260,7 +263,9 @@ fn selected_row(cx: &Cx, doc: &Document, scene: &Id) -> Option<Id> {
 /// The first selected Exposure Sheet column of a scene.
 fn selected_column(cx: &Cx, doc: &Document, scene: &Id) -> Option<Id> {
     let cells = super::timing::selected_cells(cx).map(|s| s.0).unwrap_or_default();
-    cells.into_iter().find(|id| doc.scene_of(id) == Some(scene) && doc.element(id).is_some_and(|e| e.element_type().is_cell_based()))
+    cells
+        .into_iter()
+        .find(|id| doc.scene_of(id) == Some(scene) && doc.element(id).is_some_and(|e| e.element_type().is_cell_based()))
 }
 
 fn scene_len(doc: &Document, scene: &Id) -> u32 {
@@ -379,7 +384,11 @@ pub(crate) fn element_create(cx: &mut Cx, p: CreateParams) -> Result<CreateResul
             let mut v = vec![base.clone()];
             v.extend(x::unique_names(&base, &|n| taken.contains(n) || n == base, p.count as usize - 1, true));
             if v.iter().any(|n| n.chars().count() > 64) {
-                return Err(err("element.nameTooLong", "a derived name exceeds 64 characters", json!({ "pointer": "/name" })));
+                return Err(err(
+                    "element.nameTooLong",
+                    "a derived name exceeds 64 characters",
+                    json!({ "pointer": "/name" }),
+                ));
             }
             v
         }
@@ -392,7 +401,11 @@ pub(crate) fn element_create(cx: &mut Cx, p: CreateParams) -> Result<CreateResul
             let ps = h::parents(sc.tree());
             let lvl = ps.get(a).cloned().flatten();
             if pp.is_some() && pp.as_ref() != lvl.as_ref() {
-                return Err(err(codes::ARG_INVALID, "`above` is not a child of `parentId`", json!({ "pointer": "/above" })));
+                return Err(err(
+                    codes::ARG_INVALID,
+                    "`above` is not a child of `parentId`",
+                    json!({ "pointer": "/above" }),
+                ));
             }
             let i = h::level_ids(sc.tree(), lvl.as_ref()).iter().position(|x| x == a);
             (lvl, i)
@@ -415,7 +428,11 @@ pub(crate) fn element_create(cx: &mut Cx, p: CreateParams) -> Result<CreateResul
         Some(r) => {
             let a = element_id(cx, r, "/xsheetAfter")?;
             if !sc.column_order().contains(&a) {
-                return Err(err("element.notCellBased", "`xsheetAfter` is not an Exposure Sheet column", json!({ "pointer": "/xsheetAfter" })));
+                return Err(err(
+                    "element.notCellBased",
+                    "`xsheetAfter` is not an Exposure Sheet column",
+                    json!({ "pointer": "/xsheetAfter" }),
+                ));
             }
             Some(a)
         }
@@ -423,13 +440,14 @@ pub(crate) fn element_create(cx: &mut Cx, p: CreateParams) -> Result<CreateResul
         None => None,
     };
     let mut budget = Budget::new("creating elements");
-    budget.spend(h::count(sc.tree()) * p.count as usize)?;
     let bar = (1, scene_len(&doc, &scene));
     let mut changes = Changes::default();
     let mut news = Vec::new();
     let mut nodes = Vec::new();
     let mut extra = Vec::new();
     for name in &names {
+        // Each element costs its tree placement (and parameter rows) before anything is staged.
+        budget.spend(h::count(sc.tree()) + 4)?;
         let (n, node) = build(cx, &mut changes, t, name.clone(), bar, &mut taken, &mut extra)?;
         news.push(n);
         nodes.push(node);
@@ -531,7 +549,11 @@ fn one_scene(doc: &Document, ids: &[Id]) -> Result<Id, CommandError> {
         let s = doc.scene_of(e).cloned().ok_or_else(|| internal("scene"))?;
         match &scene {
             Some(x) if *x != s => {
-                return Err(err(codes::ARG_INVALID, "the elements are in different scenes", json!({ "pointer": "/elementIds" })));
+                return Err(err(
+                    codes::ARG_INVALID,
+                    "the elements are in different scenes",
+                    json!({ "pointer": "/elementIds" }),
+                ));
             }
             _ => scene = Some(s),
         }
@@ -745,7 +767,12 @@ fn copied_element(cx: &mut Cx, doc: &Document, id: &Id, name: &str) -> Result<(I
     if let Some(ch) = v.get_mut("channels") {
         if let Value::Object(m) = ch {
             for c in m.values_mut() {
-                super::edit_ops::regenerate(cx, c, &[ObjectType::Channel, ObjectType::Key, ObjectType::MotionPoint], &mut created)?;
+                super::edit_ops::regenerate(
+                    cx,
+                    c,
+                    &[ObjectType::Channel, ObjectType::Key, ObjectType::MotionPoint],
+                    &mut created,
+                )?;
             }
         }
     }
@@ -811,7 +838,11 @@ pub(crate) fn element_clone(cx: &mut Cx, p: CloneParams) -> Result<CloneResult, 
         _ => {
             return Err(err(
                 "element.notCloneable",
-                format!("{} element `{}` cannot be cloned: only drawing, image and annotation elements share a bank", e.element_type().as_str(), e.name()),
+                format!(
+                    "{} element `{}` cannot be cloned: only drawing, image and annotation elements share a bank",
+                    e.element_type().as_str(),
+                    e.name()
+                ),
                 json!({ "elementId": id.as_str(), "elementType": e.element_type().as_str() }),
             ));
         }
@@ -880,17 +911,26 @@ pub(crate) fn element_duplicate(cx: &mut Cx, p: DuplicateParams) -> Result<Dupli
     for id in &ids {
         let e = element(&doc, id)?;
         let scene = doc.scene_of(id).cloned().ok_or_else(|| internal("scene"))?;
-        let taken = taken_by.entry(scene.clone()).or_insert_with(|| doc.scene(&scene).map(|s| scene_names(&doc, s)).unwrap_or_default());
+        let taken = taken_by
+            .entry(scene.clone())
+            .or_insert_with(|| doc.scene(&scene).map(|s| scene_names(&doc, s)).unwrap_or_default());
         let name = x::unique_names(e.name(), &|n| taken.contains(n), 1, true).concat();
         taken.insert(name.clone());
         let (new, mut json) = copied_element(cx, &doc, id, &name)?;
         // A new bank with a copy of every drawing; the exposure follows the copies (04 §8.2).
         if let Some(bank) = e.drawing_bank_id() {
             let nb = cx.new_id(ObjectType::DrawingBank)?;
-            changes.push(EntryKey::Project, vec![op("add", "/drawingBanks/-", Some(json!({ "id": nb.as_str(), "type": "drawingBank" })))]);
+            changes.push(
+                EntryKey::Project,
+                vec![op("add", "/drawingBanks/-", Some(json!({ "id": nb.as_str(), "type": "drawingBank" })))],
+            );
             changes.push(
                 EntryKey::Bank(nb.clone()),
-                vec![op("add", "", Some(to_json(&tt_model::entities::drawing::DrawingBank::new(nb.clone(), Vec::new()))?))],
+                vec![op(
+                    "add",
+                    "",
+                    Some(to_json(&tt_model::entities::drawing::DrawingBank::new(nb.clone(), Vec::new()))?),
+                )],
             );
             let mut map: BTreeMap<String, String> = BTreeMap::new();
             let drawings = doc.bank(bank).map(|b| b.drawings().ids().to_vec()).unwrap_or_default();
@@ -1045,7 +1085,8 @@ pub(crate) fn element_delete(cx: &mut Cx, p: DeleteParams) -> Result<DeleteResul
     }
     // Banks no remaining element uses go with their drawings (10 §4.8).
     let mut deleted_drawings = 0u32;
-    let banks: BTreeSet<Id> = gone.iter().filter_map(|e| doc.element(e).and_then(|x| x.drawing_bank_id().clone())).collect();
+    let banks: BTreeSet<Id> =
+        gone.iter().filter_map(|e| doc.element(e).and_then(|x| x.drawing_bank_id().clone())).collect();
     let mut bank_stubs_removed = Vec::new();
     for b in &banks {
         if doc.bank_users(b).iter().all(|u| gone.contains(u)) {
@@ -1184,13 +1225,18 @@ pub(crate) fn element_order_move(cx: &mut Cx, p: OrderMoveParams) -> Result<Orde
         OrderKind::Xsheet => {
             for id in &ids {
                 if !sc.column_order().contains(id) {
-                    return Err(err("element.notCellBased", "only cell-based elements have Exposure Sheet columns", json!({ "elementId": id.as_str() })));
+                    return Err(err(
+                        "element.notCellBased",
+                        "only cell-based elements have Exposure Sheet columns",
+                        json!({ "elementId": id.as_str() }),
+                    ));
                 }
             }
             let after = moved(sc.column_order(), &picked, p.to, false);
             let changed = after != *sc.column_order();
             if changed {
-                changes.push(EntryKey::Scene(scene.clone()), vec![op("replace", "/columnOrder", Some(to_json(&after)?))]);
+                changes
+                    .push(EntryKey::Scene(scene.clone()), vec![op("replace", "/columnOrder", Some(to_json(&after)?))]);
             }
             (changed, after)
         }
@@ -1198,7 +1244,11 @@ pub(crate) fn element_order_move(cx: &mut Cx, p: OrderMoveParams) -> Result<Orde
             let ps = h::parents(sc.tree());
             let lvl = ps.get(&ids[0]).cloned().flatten();
             if ids.iter().any(|i| ps.get(i).cloned().flatten() != lvl) {
-                return Err(err(codes::ARG_INVALID, "the elements are on different hierarchy levels", json!({ "pointer": "/elementIds" })));
+                return Err(err(
+                    codes::ARG_INVALID,
+                    "the elements are on different hierarchy levels",
+                    json!({ "pointer": "/elementIds" }),
+                ));
             }
             let level = h::level_ids(sc.tree(), lvl.as_ref());
             let after = moved(&level, &picked, p.to, true);
@@ -1270,7 +1320,11 @@ pub(crate) fn element_order_set(cx: &mut Cx, p: OrderSetParams) -> Result<OrderS
     let mut budget = Budget::new("reordering elements");
     budget.spend(h::count(sc.tree()) + ids.len())?;
     let not_perm = |what: &str| {
-        err(codes::ARG_INVALID, format!("elementIds must list every {what} exactly once"), json!({ "pointer": "/elementIds" }))
+        err(
+            codes::ARG_INVALID,
+            format!("elementIds must list every {what} exactly once"),
+            json!({ "pointer": "/elementIds" }),
+        )
     };
     let mut changes = Changes::default();
     match p.order {
@@ -1363,12 +1417,25 @@ pub(crate) fn element_parent_set(cx: &mut Cx, p: ParentSetParams) -> Result<Pare
             level[..i]
                 .iter()
                 .rev()
-                .find(|e| doc.element(e).is_some_and(|x| *x.element_type() == ElementType::Peg || x.element_type().is_effect()))
+                .find(|e| {
+                    doc.element(e)
+                        .is_some_and(|x| *x.element_type() == ElementType::Peg || x.element_type().is_effect())
+                })
                 .cloned()
-                .ok_or_else(|| err("element.notParentable", "there is no peg or effect above at the same level", json!({ "pointer": "/nearest" })))?
+                .ok_or_else(|| {
+                    err(
+                        "element.notParentable",
+                        "there is no peg or effect above at the same level",
+                        json!({ "pointer": "/nearest" }),
+                    )
+                })?
         }
         _ => {
-            return Err(err(codes::ARG_INVALID, "give exactly one of `parentId` and `nearest: true`", json!({ "pointer": "/parentId" })));
+            return Err(err(
+                codes::ARG_INVALID,
+                "give exactly one of `parentId` and `nearest: true`",
+                json!({ "pointer": "/parentId" }),
+            ));
         }
     };
     if doc.scene_of(&parent) != Some(&scene) {
@@ -1388,7 +1455,11 @@ pub(crate) fn element_parent_set(cx: &mut Cx, p: ParentSetParams) -> Result<Pare
             ));
         }
         if doc.element(id).is_some_and(|e| *e.element_type() == ElementType::EffectParameter) {
-            return Err(err(codes::ARG_INVALID, "parameter elements stay under their effect", json!({ "elementId": id.as_str() })));
+            return Err(err(
+                codes::ARG_INVALID,
+                "parameter elements stay under their effect",
+                json!({ "elementId": id.as_str() }),
+            ));
         }
     }
     let mut index = p.index.map(|i| i as usize);
@@ -1438,7 +1509,11 @@ pub(crate) fn element_parent_remove(cx: &mut Cx, p: ParentRemoveParams) -> Resul
     let mut new_parent: Option<Id> = None;
     for id in &ids {
         if doc.element(id).is_some_and(|e| *e.element_type() == ElementType::EffectParameter) {
-            return Err(err(codes::ARG_INVALID, "parameter elements stay under their effect", json!({ "elementId": id.as_str() })));
+            return Err(err(
+                codes::ARG_INVALID,
+                "parameter elements stay under their effect",
+                json!({ "elementId": id.as_str() }),
+            ));
         }
         let ps = h::parents(&tree);
         let Some(Some(parent)) = ps.get(id).cloned() else { continue };
@@ -1762,7 +1837,13 @@ const fn loopable(t: ElementType) -> bool {
 /// `keep` removes keys beyond `new`; `scale` maps local frame k to round(1 + (k − 1)(new − 1)/(old − 1)) with the
 /// later key winning a collision (05 §8.4). Motion-path keyframes follow the same rule; control points between
 /// removed keyframes go with them. Returns the patch of the `channels` map, if anything changed.
-fn retimed_channels(channels: &Value, old: u32, new: u32, mode: KeyMode, budget: &mut Budget) -> Result<Option<Value>, CommandError> {
+fn retimed_channels(
+    channels: &Value,
+    old: u32,
+    new: u32,
+    mode: KeyMode,
+    budget: &mut Budget,
+) -> Result<Option<Value>, CommandError> {
     let Value::Object(map) = channels else { return Ok(None) };
     let map_frame = |k: u64| -> u64 {
         match mode {
@@ -1861,7 +1942,11 @@ fn retimed_channels(channels: &Value, old: u32, new: u32, mode: KeyMode, budget:
 )]
 pub(crate) fn element_timing_set(cx: &mut Cx, p: TimingParams) -> Result<TimingResult, CommandError> {
     if p.start.is_some() && p.start_delta.is_some() {
-        return Err(err(codes::ARG_INVALID, "give `start` or `startDelta`, not both", json!({ "pointer": "/startDelta" })));
+        return Err(err(
+            codes::ARG_INVALID,
+            "give `start` or `startDelta`, not both",
+            json!({ "pointer": "/startDelta" }),
+        ));
     }
     let ids = targets(cx, p.element_ids.as_deref())?;
     let doc = cx.document()?.clone();
@@ -1875,7 +1960,11 @@ pub(crate) fn element_timing_set(cx: &mut Cx, p: TimingParams) -> Result<TimingR
         let (Some(s), Some(d)) = (e.start().map(i64::from), e.duration().map(i64::from)) else {
             return Err(err(
                 "cell.notApplicable",
-                format!("{} element `{}` has no bar: its timing is its exposure (use the cell commands)", t.as_str(), e.name()),
+                format!(
+                    "{} element `{}` has no bar: its timing is its exposure (use the cell commands)",
+                    t.as_str(),
+                    e.name()
+                ),
                 json!({ "elementId": id.as_str(), "elementType": t.as_str() }),
             )
             .hint("move exposures with cell.range.move"));
@@ -1916,7 +2005,11 @@ pub(crate) fn element_timing_set(cx: &mut Cx, p: TimingParams) -> Result<TimingR
                 json!({ "elementId": id.as_str(), "start": ns, "duration": nd }),
             ));
         }
-        let (ns, nd, nl) = (as_u32(usize::try_from(ns).unwrap_or(1)), as_u32(usize::try_from(nd).unwrap_or(1)), as_u32(usize::try_from(nl).unwrap_or(1)));
+        let (ns, nd, nl) = (
+            as_u32(usize::try_from(ns).unwrap_or(1)),
+            as_u32(usize::try_from(nd).unwrap_or(1)),
+            as_u32(usize::try_from(nl).unwrap_or(1)),
+        );
         let mut ops = Vec::new();
         if i64::from(ns) != s {
             ops.push(op("replace", "/start", Some(json!(ns))));
@@ -2045,11 +2138,19 @@ pub(crate) fn element_media_length_set(cx: &mut Cx, p: MediaLengthParams) -> Res
     let doc = cx.document()?.clone();
     let e = element(&doc, &id)?;
     if *e.element_type() != ElementType::Media {
-        return Err(err("cell.notApplicable", format!("`{}` is not a media element", e.name()), json!({ "pointer": "/elementId" })));
+        return Err(err(
+            "cell.notApplicable",
+            format!("`{}` is not a media element", e.name()),
+            json!({ "pointer": "/elementId" }),
+        ));
     }
     let seqs = e.sequences().clone().unwrap_or_default();
     let Some(last_i) = seqs.len().checked_sub(1) else {
-        return Err(err("drawing.fileMissing", "the media element links no media", json!({ "elementId": id.as_str() })));
+        return Err(err(
+            "drawing.fileMissing",
+            "the media element links no media",
+            json!({ "elementId": id.as_str() }),
+        ));
     };
     let Some(length) = p.length else {
         // The natural length is the linked source's (derived `sourceLength`), read by the media decoder of M8 C8.3.
@@ -2063,12 +2164,19 @@ pub(crate) fn element_media_length_set(cx: &mut Cx, p: MediaLengthParams) -> Res
     let from = *s.start_frame();
     let to = i64::from(from) + length - 1;
     if to > x::MAX_FRAMES as i64 {
-        return Err(err("doc.limitExceeded", "the media would pass the 100 000-frame scene limit", json!({ "pointer": "/length" })));
+        return Err(err(
+            "doc.limitExceeded",
+            "the media would pass the 100 000-frame scene limit",
+            json!({ "pointer": "/length" }),
+        ));
     }
     let to = as_u32(usize::try_from(to).unwrap_or(1));
     if *s.stop_frame() != to {
         let mut changes = Changes::default();
-        changes.push(EntryKey::Element(id.clone()), vec![op("replace", &format!("/sequences/{last_i}/stopFrame"), Some(json!(to)))]);
+        changes.push(
+            EntryKey::Element(id.clone()),
+            vec![op("replace", &format!("/sequences/{last_i}/stopFrame"), Some(json!(to)))],
+        );
         changes.stage(cx)?;
         emit_cells(cx, &[CellChange { element_id: id.as_str().to_owned(), from, to }])?;
     }
@@ -2128,7 +2236,12 @@ pub(crate) struct ChangedIds {
 }
 
 /// The elements a toggle applies to (one scene: of the given elements, else the current scene).
-fn toggle_set(cx: &Cx, given: Option<&[String]>, apply: Apply, types: Option<&[ElementType]>) -> Result<(Id, Vec<Id>), CommandError> {
+fn toggle_set(
+    cx: &Cx,
+    given: Option<&[String]>,
+    apply: Apply,
+    types: Option<&[ElementType]>,
+) -> Result<(Id, Vec<Id>), CommandError> {
     let doc = cx.document()?;
     let (scene, picked) = match (apply, given) {
         (Apply::All, None) => (scene_id(cx, None)?, Vec::new()),
@@ -2191,7 +2304,8 @@ pub(crate) fn element_visibility_set(cx: &mut Cx, p: VisibilityParams) -> Result
     }
     changes.stage(cx)?;
     // Hiding the current element in the Exposure Sheet moves the current element to the next visible column (04 §10.2).
-    if p.scope == Scope::Xsheet && !p.visible
+    if p.scope == Scope::Xsheet
+        && !p.visible
         && let Some(cur) = cx.app().element.clone()
         && changed.iter().any(|c| c == cur.as_str())
         && let Some(sc) = cx.document()?.scene(&scene).cloned()

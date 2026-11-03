@@ -267,7 +267,8 @@ pub(crate) fn info(cx: &Cx, doc: &Document, id: &Id) -> Result<ElementInfo, Comm
     let e = element(doc, id)?;
     let sc = scene_of(doc, id)?;
     let placed = h::placed(sc.tree());
-    let (pi, q) = placed.iter().enumerate().find(|(_, q)| q.id == *id).ok_or_else(|| internal("element not in the tree"))?;
+    let (pi, q) =
+        placed.iter().enumerate().find(|(_, q)| q.id == *id).ok_or_else(|| internal("element not in the tree"))?;
     let ps = h::parents(sc.tree());
     let mut hidden_by_parent = false;
     let mut cur = q.parent.clone();
@@ -334,7 +335,11 @@ pub(crate) fn info(cx: &Cx, doc: &Document, id: &Id) -> Result<ElementInfo, Comm
         note: e.note().clone(),
         column_width: *e.column_width(),
         clone_group_id: bank.as_ref().filter(|_| users.len() > 1).map(|b| b.as_str().to_owned()),
-        clone_ids: if users.len() > 1 { users.iter().filter(|u| *u != id).map(|u| u.as_str().to_owned()).collect() } else { Vec::new() },
+        clone_ids: if users.len() > 1 {
+            users.iter().filter(|u| *u != id).map(|u| u.as_str().to_owned()).collect()
+        } else {
+            Vec::new()
+        },
         drawing_count: bank.as_ref().and_then(|b| doc.bank(b)).map_or(0, |b| as_u32(b.drawings().ids().len())),
         media,
     })
@@ -482,7 +487,10 @@ pub(crate) struct TypeColourSetResult {
     example(title = "Pegs in purple", params = r##"{"category": "pegs", "colour": "#8064A2"}"##),
     gui = "Preferences: Timeline category colours (M4 C4.1)",
 )]
-pub(crate) fn element_type_colour_set(cx: &mut Cx, p: TypeColourSetParams) -> Result<TypeColourSetResult, CommandError> {
+pub(crate) fn element_type_colour_set(
+    cx: &mut Cx,
+    p: TypeColourSetParams,
+) -> Result<TypeColourSetResult, CommandError> {
     let c = tt_model::value::Colour::parse(&p.colour)
         .map_err(|e| err(tt_registry::codes::ARG_INVALID, e.message().to_owned(), json!({ "pointer": "/colour" })))?
         .to_string();
@@ -556,12 +564,8 @@ pub(crate) fn element_select(cx: &mut Cx, p: SelectParams) -> Result<SelectedRes
             ids.push(id);
         }
     }
-    let mut sel: Vec<String> = cx
-        .app()
-        .selection_of("timeline")
-        .into_iter()
-        .filter(|k| crate::app::parse_cell_ref(k).is_none())
-        .collect();
+    let mut sel: Vec<String> =
+        cx.app().selection_of("timeline").into_iter().filter(|k| crate::app::parse_cell_ref(k).is_none()).collect();
     match p.mode {
         SelectMode::Replace => sel = ids,
         SelectMode::Add => sel.extend(ids.into_iter().filter(|i| !sel.contains(i)).collect::<Vec<_>>()),
@@ -623,7 +627,11 @@ pub(crate) fn element_hierarchy_select(cx: &mut Cx, p: HierarchySelectParams) ->
     let id = match &p.element_id {
         Some(r) => element_id(cx, r, "/elementId")?,
         None => cx.app().element.clone().ok_or_else(|| {
-            err("element.notFound", "there is no current element and no elementId was given", json!({ "pointer": "/elementId" }))
+            err(
+                "element.notFound",
+                "there is no current element and no elementId was given",
+                json!({ "pointer": "/elementId" }),
+            )
         })?,
     };
     let doc = cx.document()?.clone();
@@ -634,13 +642,16 @@ pub(crate) fn element_hierarchy_select(cx: &mut Cx, p: HierarchySelectParams) ->
     let none = || {
         err(
             tt_registry::codes::COMMAND_DISABLED,
-            format!("the element has no {}", match p.relation {
-                Relation::Parent => "parent",
-                Relation::Children | Relation::FirstChild => "children",
-                Relation::PreviousSibling => "previous sibling",
-                Relation::NextSibling => "next sibling",
-                Relation::SkeletonRoot => "skeleton",
-            }),
+            format!(
+                "the element has no {}",
+                match p.relation {
+                    Relation::Parent => "parent",
+                    Relation::Children | Relation::FirstChild => "children",
+                    Relation::PreviousSibling => "previous sibling",
+                    Relation::NextSibling => "next sibling",
+                    Relation::SkeletonRoot => "skeleton",
+                }
+            ),
             json!({ "elementId": id.as_str(), "reason": "noTarget" }),
         )
     };

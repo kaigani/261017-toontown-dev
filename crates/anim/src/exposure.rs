@@ -175,12 +175,7 @@ pub fn add_exposure<D: Clone + PartialEq>(frames: &[Option<D>], from: usize, to:
 /// 13.2 remove exposure: each distinct exposure (or blank run) intersecting `from..=to` is shortened by `n` frames
 /// (removed when it is at most `n` long); the following cells shift earlier. The drawing stays in the bank.
 #[must_use]
-pub fn remove_exposure<D: Clone + PartialEq>(
-    frames: &[Option<D>],
-    from: usize,
-    to: usize,
-    n: usize,
-) -> Vec<Option<D>> {
+pub fn remove_exposure<D: Clone + PartialEq>(frames: &[Option<D>], from: usize, to: usize, n: usize) -> Vec<Option<D>> {
     let mut out = frames.to_vec();
     for r in intersecting(frames, from, to).into_iter().rev() {
         let k = n.min(r.len);
@@ -194,12 +189,7 @@ pub fn remove_exposure<D: Clone + PartialEq>(
 /// 13.3/13.4 set exposure: every distinct exposure intersecting `from..=to` is re-timed to `len` frames; blank runs
 /// keep their length (04 §18 #11); the rest of the column shifts so the sequence of drawings is preserved.
 #[must_use]
-pub fn set_exposure<D: Clone + PartialEq>(
-    frames: &[Option<D>],
-    from: usize,
-    to: usize,
-    len: usize,
-) -> Vec<Option<D>> {
+pub fn set_exposure<D: Clone + PartialEq>(frames: &[Option<D>], from: usize, to: usize, len: usize) -> Vec<Option<D>> {
     let mut out = frames.to_vec();
     for r in intersecting(frames, from, to).into_iter().rev() {
         if r.value.is_none() || r.len == len {

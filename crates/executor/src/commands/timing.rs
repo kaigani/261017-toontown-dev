@@ -86,8 +86,12 @@ pub(crate) fn scene_id(cx: &Cx, r: Option<&str>) -> Result<Id, CommandError> {
     match r {
         Some(r) => Ok(Id::parse(&cx.resolve_as(r, ObjectType::Scene)?)?),
         None => cx.app().scene.clone().ok_or_else(|| {
-            err(codes::COMMAND_DISABLED, "there is no current scene and no sceneId was given", json!({ "reason": "noScene" }))
-                .hint("pass sceneId, or make a scene current (app.context.set)")
+            err(
+                codes::COMMAND_DISABLED,
+                "there is no current scene and no sceneId was given",
+                json!({ "reason": "noScene" }),
+            )
+            .hint("pass sceneId, or make a scene current (app.context.set)")
         }),
     }
 }
@@ -107,7 +111,9 @@ fn renamed(e: CommandError, code: &str, r: &str, pointer: &str) -> CommandError 
 
 /// The element (it must exist: resolved IDs only).
 pub(crate) fn element<'a>(doc: &'a Document, id: &Id) -> Result<&'a Element, CommandError> {
-    doc.element(id).ok_or_else(|| err("element.notFound", format!("element `{id}` does not exist"), json!({ "elementId": id.as_str() })))
+    doc.element(id).ok_or_else(|| {
+        err("element.notFound", format!("element `{id}` does not exist"), json!({ "elementId": id.as_str() }))
+    })
 }
 
 /// The scene of an element.
@@ -133,7 +139,8 @@ impl Column {
         let runs = e.exposure().clone().unwrap_or_default();
         budget.spend(x::runs_len(&runs))?;
         let mut c = Column { id: id.clone(), table: Vec::new(), index: BTreeMap::new(), frames: Vec::new() };
-        let interned: Vec<(Option<u32>, u32)> = runs.iter().map(|(d, n)| (d.as_ref().map(|d| c.intern(d)), *n)).collect();
+        let interned: Vec<(Option<u32>, u32)> =
+            runs.iter().map(|(d, n)| (d.as_ref().map(|d| c.intern(d)), *n)).collect();
         c.frames = x::expand(&interned);
         Ok(c)
     }
@@ -170,7 +177,10 @@ pub(crate) fn check_length(len: usize, element: &Id) -> Result<(), CommandError>
     if len > x::MAX_FRAMES {
         return Err(err(
             "doc.limitExceeded",
-            format!("the change would make element `{element}` {len} frames long; a scene has at most {} frames", x::MAX_FRAMES),
+            format!(
+                "the change would make element `{element}` {len} frames long; a scene has at most {} frames",
+                x::MAX_FRAMES
+            ),
             json!({ "elementId": element.as_str(), "frames": len, "limit": x::MAX_FRAMES }),
         ));
     }
@@ -234,7 +244,10 @@ pub(crate) fn emit_cells(cx: &mut Cx, changed: &[CellChange]) -> Result<(), Comm
     }
     for (e, (from, to)) in by {
         let scene = Id::parse(e).ok().and_then(|id| doc.scene_of(&id).cloned()).map(|s| s.as_str().to_owned());
-        cx.emit("cell.exposures.changed", json!({ "sceneId": scene, "elementId": e, "from": from, "to": to, "rev": rev }));
+        cx.emit(
+            "cell.exposures.changed",
+            json!({ "sceneId": scene, "elementId": e, "from": from, "to": to, "rev": rev }),
+        );
     }
     Ok(())
 }
@@ -252,7 +265,10 @@ pub(crate) fn emit_bank(cx: &mut Cx, doc: &Document, bank: &Id, drawings: &[Stri
         return;
     }
     for e in doc.bank_users(bank) {
-        cx.emit("element.drawing.changed", json!({ "elementId": e.as_str(), "drawingIds": drawings, "change": change }));
+        cx.emit(
+            "element.drawing.changed",
+            json!({ "elementId": e.as_str(), "drawingIds": drawings, "change": change }),
+        );
     }
 }
 
@@ -402,7 +418,10 @@ fn checked_name(input: &str, pointer: &str, ty: ObjectType, area: &str) -> Resul
             };
             Err(err(
                 &format!("{area}.{code}"),
-                format!("{}: names must not be empty, contain any of \\ / : * ? < > \" | . or exceed 64 characters", e.message()),
+                format!(
+                    "{}: names must not be empty, contain any of \\ / : * ? < > \" | . or exceed 64 characters",
+                    e.message()
+                ),
                 json!({ "pointer": pointer, "name": input, "rule": rule, "forbidden": "\\ / : * ? < > \" | .", "maxLength": 64 }),
             ))
         }
@@ -436,7 +455,12 @@ pub(crate) fn bank_order(doc: &Document, bank: &Id) -> Vec<(Id, String)> {
     let mut v: Vec<(Id, String)> = doc
         .bank(bank)
         .map(|b| {
-            b.drawings().ids().iter().filter_map(|d| doc.drawing(d)).map(|d| (d.id().clone(), d.name().clone())).collect()
+            b.drawings()
+                .ids()
+                .iter()
+                .filter_map(|d| doc.drawing(d))
+                .map(|d| (d.id().clone(), d.name().clone()))
+                .collect()
         })
         .unwrap_or_default();
     v.sort_by(|a, b| x::natural_cmp(&a.1, &b.1).then_with(|| a.0.cmp(&b.0)));
@@ -482,7 +506,11 @@ pub(crate) const CATEGORY_COLOURS: [(&str, &str); 9] = [
 pub(crate) const fn parentable(t: ElementType) -> bool {
     matches!(
         t,
-        ElementType::Peg | ElementType::Camera | ElementType::Skeleton | ElementType::Bone | ElementType::EffectParameter
+        ElementType::Peg
+            | ElementType::Camera
+            | ElementType::Skeleton
+            | ElementType::Bone
+            | ElementType::EffectParameter
     ) || t.is_effect()
 }
 
@@ -545,9 +573,15 @@ pub(crate) fn add_drawing(
     if source.is_some() {
         v["locked"] = json!(false);
         v["createdAt"] = to_json(&tt_model::value::Timestamp::now())?;
+        // A copy is persisted content, taken as it is: the settle pass never re-nodes or splits its strokes (C24-T1:
+        // owner resolution, stretch fills and brush outlines survive the copy).
+        cx.keep_verbatim([id.clone()]);
     }
     changes.push(EntryKey::Drawing(id.clone()), vec![op("add", "", Some(v))]);
-    changes.push(EntryKey::Bank(bank.clone()), vec![op("add", "/drawings/-", Some(json!({ "id": id.as_str(), "type": "drawing" })))]);
+    changes.push(
+        EntryKey::Bank(bank.clone()),
+        vec![op("add", "/drawings/-", Some(json!({ "id": id.as_str(), "type": "drawing" })))],
+    );
     Ok(id)
 }
 

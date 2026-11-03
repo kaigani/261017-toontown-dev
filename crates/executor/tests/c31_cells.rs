@@ -128,7 +128,11 @@ fn insert_named_cells_and_cells_in_all_columns() {
     // In all columns: Bob and Background shift; the sound clip after the insertion point moves too; pegs do not.
     let h = fixture();
     let peg_before = get(&h, "scene:\"Intro\"/element:\"Bob-P\"");
-    ok(&h, "cell.range.add", json!({ "allElements": true, "frame": 1, "count": 3, "position": "before", "elementIds": [BOB] }));
+    ok(
+        &h,
+        "cell.range.add",
+        json!({ "allElements": true, "frame": 1, "count": 3, "position": "before", "elementIds": [BOB] }),
+    );
     assert_eq!(runs(&h, BOB), ".x3 1x6 .x2 2x12 1x24");
     assert_eq!(runs(&h, BG).split(' ').next(), Some(".x3"));
     let sound = get(&h, "scene:\"Intro\"/element:\"Dialogue\"");
@@ -167,7 +171,11 @@ fn cycle_and_columnate() {
     assert_eq!(cells(&h, BOB).split(' ').take(9).collect::<Vec<_>>().join(" "), "1 2 10 2 1 2 10 2 2");
     // Reversed when last precedes first; unknown names refused.
     let h = fixture();
-    let r = ok(&h, "cell.columnate.apply", json!({ "elementId": BOB, "frame": 1, "firstDrawing": "10", "lastDrawing": "1", "placement": "insert" }));
+    let r = ok(
+        &h,
+        "cell.columnate.apply",
+        json!({ "elementId": BOB, "frame": 1, "firstDrawing": "10", "lastDrawing": "1", "placement": "insert" }),
+    );
     let seq: Vec<&str> = r["sequence"].as_array().unwrap().iter().map(|s| s["drawing"].as_str().unwrap()).collect();
     assert_eq!(seq, ["10", "2", "1"]);
     assert_eq!(runs(&h, BOB), "10x1 2x1 1x7 .x2 2x12 1x24", "insert shifts the column");
@@ -175,7 +183,11 @@ fn cycle_and_columnate() {
     assert_eq!(e.code, "cell.drawingNotFound");
     // dryRun computes and changes nothing.
     let before = runs(&h, BOB);
-    let r = ok(&h, "cell.columnate.apply", json!({ "elementId": BOB, "frame": 1, "firstDrawing": "1", "lastDrawing": "10", "loopMode": "continuous", "totalFrames": 10, "dryRun": true }));
+    let r = ok(
+        &h,
+        "cell.columnate.apply",
+        json!({ "elementId": BOB, "frame": 1, "firstDrawing": "1", "lastDrawing": "10", "loopMode": "continuous", "totalFrames": 10, "dryRun": true }),
+    );
     assert_eq!(r["totalFrames"], 10);
     assert_eq!(runs(&h, BOB), before);
 }
@@ -191,14 +203,22 @@ fn labels_by_name_id_and_step() {
     assert_eq!(r["name"], "2", "1 → 2 in natural order");
     let e = err(&h, "cell.label.set", json!({ "elementIds": [BOB], "from": 1, "to": 1, "drawing": "nope" }));
     assert_eq!(e.code, "cell.drawingNotFound");
-    let r = ok(&h, "cell.label.set", json!({ "elementIds": [BOB], "from": 1, "to": 1, "drawing": "nope", "createMissing": true }));
+    let r = ok(
+        &h,
+        "cell.label.set",
+        json!({ "elementIds": [BOB], "from": 1, "to": 1, "drawing": "nope", "createMissing": true }),
+    );
     assert_eq!(r["name"], "nope");
     let e = err(&h, "cell.label.set", json!({ "elementIds": [BOB], "from": 1, "to": 1, "step": 99 }));
     assert_eq!(e.code, "cell.drawingNotFound");
     let e = err(&h, "cell.label.set", json!({ "elementIds": [BOB], "from": 1, "to": 1 }));
     assert_eq!(e.code, "arg.invalid", "exactly one of drawing, drawingId, step");
     // Image elements never create drawings (13.13).
-    let e = err(&h, "cell.label.set", json!({ "elementIds": [BG], "from": 1, "to": 1, "drawing": "new", "createMissing": true }));
+    let e = err(
+        &h,
+        "cell.label.set",
+        json!({ "elementIds": [BG], "from": 1, "to": 1, "drawing": "new", "createMissing": true }),
+    );
     assert_eq!(e.code, "cell.drawingNotFound");
     // A drawing of another bank is not found.
     let e = err(&h, "cell.label.set", json!({ "elementIds": [NOTES], "from": 1, "to": 1, "drawingId": D1 }));
@@ -211,9 +231,14 @@ fn duplicate_drawing_replaces_only_the_range() {
     let r = ok(&h, "cell.drawing.duplicate", json!({ "elementId": BOB, "from": 3, "to": 4 }));
     assert_eq!(r["name"], "11");
     assert_eq!(runs(&h, BOB), "1x2 11x2 1x2 .x2 2x12 1x24");
-    let copy = get(&h, r["drawingId"].as_str().unwrap());
-    let orig = get(&h, D1);
-    assert_eq!(copy["nodes"], orig["nodes"], "content and drawing-local IDs are kept (C24-T1 owner resolution)");
+    let content = |d: &str| ok(&h, "draw.drawing.get", json!({ "drawingId": d }))["nodes"].clone();
+    assert_eq!(
+        content(r["drawingId"].as_str().unwrap()),
+        content(D1),
+        "content and drawing-local IDs are kept verbatim (C24-T1 owner resolution)"
+    );
+    let px = |d: &str| ok(&h, "draw.drawing.render", json!({ "drawingId": d, "width": 64 }))["pixelsSha256"].clone();
+    assert_eq!(px(r["drawingId"].as_str().unwrap()), px(D1));
     let e = err(&h, "cell.drawing.duplicate", json!({ "elementId": BOB, "from": 7 }));
     assert_eq!(e.code, "cell.notApplicable");
     let e = err(&h, "cell.drawing.duplicate", json!({ "elementId": BG, "from": 1 }));
@@ -227,7 +252,8 @@ fn notes_set_update_remove() {
     assert_eq!(get(&h, BOB)["cellNotes"]["9"], "ease");
     ok(&h, "cell.note.set", json!({ "elementId": BOB, "frame": 3, "text": "" }));
     assert!(get(&h, BOB)["cellNotes"].get("3").is_none());
-    let e = err(&h, "cell.note.set", json!({ "elementId": "scene:\"Intro\"/element:\"Bob-P\"", "frame": 1, "text": "x" }));
+    let e =
+        err(&h, "cell.note.set", json!({ "elementId": "scene:\"Intro\"/element:\"Bob-P\"", "frame": 1, "text": "x" }));
     assert_eq!(e.code, "cell.notApplicable");
 }
 
@@ -238,16 +264,32 @@ fn move_copy_link_and_type_rules() {
     assert_eq!(runs(&h, BOB), ".x2 2x12 1x30", "moved out (shift) and in after the end");
     // Copy into the annotation column: drawings copied into its bank.
     let h = fixture();
-    let r = ok(&h, "cell.range.move", json!({ "sourceElementIds": [BOB], "from": 1, "to": 6, "targetElementId": NOTES, "targetFrame": 1, "mode": "copy" }));
+    let r = ok(
+        &h,
+        "cell.range.move",
+        json!({ "sourceElementIds": [BOB], "from": 1, "to": 6, "targetElementId": NOTES, "targetFrame": 1, "mode": "copy" }),
+    );
     assert_eq!(r["createdDrawingIds"].as_array().unwrap().len(), 1);
     assert_eq!(runs(&h, NOTES), "1x6");
     assert_eq!(runs(&h, BOB), "1x6 .x2 2x12 1x24", "copy leaves the source");
-    let e = err(&h, "cell.range.move", json!({ "sourceElementIds": [BOB], "from": 1, "to": 6, "targetElementId": NOTES, "targetFrame": 1, "mode": "link" }));
+    let e = err(
+        &h,
+        "cell.range.move",
+        json!({ "sourceElementIds": [BOB], "from": 1, "to": 6, "targetElementId": NOTES, "targetFrame": 1, "mode": "link" }),
+    );
     assert_eq!(e.code, "cell.linkNotPossible");
-    let e = err(&h, "cell.range.move", json!({ "sourceElementIds": [BOB], "from": 1, "to": 6, "targetElementId": BG, "targetFrame": 1, "mode": "copy" }));
+    let e = err(
+        &h,
+        "cell.range.move",
+        json!({ "sourceElementIds": [BOB], "from": 1, "to": 6, "targetElementId": BG, "targetFrame": 1, "mode": "copy" }),
+    );
     assert_eq!(e.code, "cell.typeMismatch");
     // Overwriting cells that show a locked drawing is refused.
-    let e = err(&h, "cell.range.move", json!({ "sourceElementIds": [BOB], "from": 1, "to": 2, "targetFrame": 10, "mode": "copy", "options": { "exposure": false } }));
+    let e = err(
+        &h,
+        "cell.range.move",
+        json!({ "sourceElementIds": [BOB], "from": 1, "to": 2, "targetFrame": 10, "mode": "copy", "options": { "exposure": false } }),
+    );
     assert_eq!(e.code, "drawing.locked");
 }
 
@@ -297,7 +339,8 @@ fn no_target_and_availability() {
     let e = err(&h, "cell.exposure.set", json!({ "elementIds": [], "length": 2 }));
     assert_eq!(e.code, "cell.noTarget");
     // 13.20: set exposure is not available on sound columns at all; blank cells are, from M8 (SI-088).
-    let e = err(&h, "cell.exposure.set", json!({ "elementIds": ["scene:\"Intro\"/element:\"Dialogue\""], "length": 2 }));
+    let e =
+        err(&h, "cell.exposure.set", json!({ "elementIds": ["scene:\"Intro\"/element:\"Dialogue\""], "length": 2 }));
     assert_eq!(e.code, "cell.notApplicable");
     assert!(e.details.get("owner").is_none());
     let e = err(&h, "cell.blank.add", json!({ "elementIds": ["scene:\"Intro\"/element:\"Dialogue\""], "frame": 1 }));
@@ -323,11 +366,7 @@ fn exposure_events_fire_once_per_element() {
     let h = fixture();
     let rx = h.subscribe();
     ok(&h, "cell.exposure.set", json!({ "elementIds": [BOB, NOTES, BG], "from": 1, "to": 6, "length": 1 }));
-    let ev: Vec<Value> = rx
-        .try_iter()
-        .filter(|e| e.name == "cell.exposures.changed")
-        .map(|e| e.payload)
-        .collect();
+    let ev: Vec<Value> = rx.try_iter().filter(|e| e.name == "cell.exposures.changed").map(|e| e.payload).collect();
     // Notes is empty (unchanged); Bob and the Background change.
     assert_eq!(ev.len(), 2, "{ev:?}");
     assert!(ev.iter().all(|e| e["rev"].as_u64() == Some(rev(&h))));

@@ -937,6 +937,8 @@ fn copy_drawing(
     v["id"] = json!(id.as_str());
     v["rev"] = json!(0);
     v["name"] = json!(name);
+    // A copied drawing is persisted content: the settle pass takes it verbatim (M2 handoff item 6, C24-T1).
+    cx.keep_verbatim([id.clone()]);
     changes.push((EntryKey::Drawing(id.clone()), vec![op("add", "", Some(v))]));
     changes.push((
         EntryKey::Bank(bank.clone()),
@@ -1788,6 +1790,7 @@ pub(crate) fn edit_paste_as_new_element(cx: &mut Cx, p: PasteNewParams) -> Resul
                         v["id"] = json!(id.as_str());
                         v["rev"] = json!(0);
                         v["name"] = json!(name);
+                        cx.keep_verbatim([id.clone()]);
                         drawings.push(v);
                         mapped.insert(d.to_owned(), id.as_str().to_owned());
                         id.as_str().to_owned()

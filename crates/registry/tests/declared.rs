@@ -92,7 +92,8 @@ fn parameter_constraints_come_from_the_spec() {
     assert_eq!(p["properties"]["unit"]["default"], "frame");
     assert_eq!(p["required"], json!(["direction"]));
     assert_eq!(p["properties"]["direction"]["type"], "string");
-    let e = validate_params("timeline.currentFrame.move", &p, &json!({ "direction": "next", "unit": "x" })).unwrap_err();
+    let e =
+        validate_params("timeline.currentFrame.move", &p, &json!({ "direction": "next", "unit": "x" })).unwrap_err();
     assert_eq!(e.code, "arg.invalid");
     let p = at("lipsync.settings.set");
     assert_eq!(p["properties"]["minHoldFrames"]["minimum"], 0);
