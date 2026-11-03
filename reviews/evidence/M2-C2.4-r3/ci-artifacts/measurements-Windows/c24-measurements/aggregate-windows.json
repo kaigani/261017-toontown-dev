@@ -1,0 +1,139 @@
+{
+  "os": "windows",
+  "arch": "x86_64",
+  "profile": "release",
+  "watchdogSeconds": 30,
+  "repetitions": 5,
+  "breakApart": {
+    "characters": 100000,
+    "textAddSeconds": 4.0876871,
+    "observations": [
+      {
+        "answeredSeconds": 0.0015073,
+        "status": "Error",
+        "error": "limit.exceeded",
+        "committed": false,
+        "followingReadSeconds": 0.001232,
+        "followingReadOk": true,
+        "queuedCallSeconds": 0.0013058,
+        "queuedCallError": "limit.exceeded",
+        "queuedReadSeconds": 0.0603361,
+        "queuedReadOk": true
+      },
+      {
+        "answeredSeconds": 0.0011063,
+        "status": "Error",
+        "error": "limit.exceeded",
+        "committed": false,
+        "followingReadSeconds": 0.0007496,
+        "followingReadOk": true,
+        "queuedCallSeconds": 0.001312,
+        "queuedCallError": "limit.exceeded",
+        "queuedReadSeconds": 0.0209432,
+        "queuedReadOk": true
+      },
+      {
+        "answeredSeconds": 0.0011738,
+        "status": "Error",
+        "error": "limit.exceeded",
+        "committed": false,
+        "followingReadSeconds": 0.0007442,
+        "followingReadOk": true,
+        "queuedCallSeconds": 0.0013199,
+        "queuedCallError": "limit.exceeded",
+        "queuedReadSeconds": 0.0212039,
+        "queuedReadOk": true
+      },
+      {
+        "answeredSeconds": 0.0011803,
+        "status": "Error",
+        "error": "limit.exceeded",
+        "committed": false,
+        "followingReadSeconds": 0.0007599,
+        "followingReadOk": true,
+        "queuedCallSeconds": 0.0013427,
+        "queuedCallError": "limit.exceeded",
+        "queuedReadSeconds": 0.0210606,
+        "queuedReadOk": true
+      },
+      {
+        "answeredSeconds": 0.0012365,
+        "status": "Error",
+        "error": "limit.exceeded",
+        "committed": false,
+        "followingReadSeconds": 0.0007621,
+        "followingReadOk": true,
+        "queuedCallSeconds": 0.0013385,
+        "queuedCallError": "limit.exceeded",
+        "queuedReadSeconds": 0.02144,
+        "queuedReadOk": true
+      }
+    ]
+  },
+  "render": {
+    "width": 8192,
+    "height": 8192,
+    "observations": [
+      {
+        "answeredSeconds": 1.6570426,
+        "status": "Ok",
+        "error": null,
+        "committed": false,
+        "followingReadSeconds": 0.0008225,
+        "followingReadOk": true,
+        "queuedCallSeconds": 1.7357424,
+        "queuedCallError": null,
+        "queuedReadSeconds": 1.7160473,
+        "queuedReadOk": true
+      },
+      {
+        "answeredSeconds": 1.6607064999999999,
+        "status": "Ok",
+        "error": null,
+        "committed": false,
+        "followingReadSeconds": 0.0009006,
+        "followingReadOk": true,
+        "queuedCallSeconds": 1.6853956,
+        "queuedCallError": null,
+        "queuedReadSeconds": 1.6657672,
+        "queuedReadOk": true
+      },
+      {
+        "answeredSeconds": 1.6748929000000001,
+        "status": "Ok",
+        "error": null,
+        "committed": false,
+        "followingReadSeconds": 0.0008565,
+        "followingReadOk": true,
+        "queuedCallSeconds": 1.656876,
+        "queuedCallError": null,
+        "queuedReadSeconds": 1.6377099,
+        "queuedReadOk": true
+      },
+      {
+        "answeredSeconds": 1.656351,
+        "status": "Ok",
+        "error": null,
+        "committed": false,
+        "followingReadSeconds": 0.0008995,
+        "followingReadOk": true,
+        "queuedCallSeconds": 1.6546596999999998,
+        "queuedCallError": null,
+        "queuedReadSeconds": 1.6355089,
+        "queuedReadOk": true
+      },
+      {
+        "answeredSeconds": 1.6625786,
+        "status": "Ok",
+        "error": null,
+        "committed": false,
+        "followingReadSeconds": 0.0007872,
+        "followingReadOk": true,
+        "queuedCallSeconds": 1.6621648,
+        "queuedCallError": null,
+        "queuedReadSeconds": 1.6428500000000001,
+        "queuedReadOk": true
+      }
+    ]
+  }
+}

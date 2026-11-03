@@ -1,0 +1,69 @@
+{
+  "obligation": "C2.1 obligation 11",
+  "fixture": "100000 existing pencil strokes; real stroke add then forced autosave",
+  "environment": {
+    "os": "macos",
+    "arch": "aarch64",
+    "cpus": 3,
+    "profile": "debug",
+    "startedAt": "2026-11-02T23:56:11.654Z",
+    "runId": "local-2026-11-02T23:56:11.654Z",
+    "timeOrigin": "tMs: milliseconds since startedAt on a monotonic clock",
+    "summaryRule": "nearest rank: sorted[round((n - 1) * q)]"
+  },
+  "series": {
+    "geometryEditMs": {
+      "unit": "ms",
+      "samples": [
+        {
+          "tMs": 0.020292,
+          "value": 5969.557292
+        }
+      ],
+      "summary": {
+        "n": 1,
+        "p50": 5969.557292,
+        "p90": 5969.557292,
+        "p99": 5969.557292,
+        "max": 5969.557292
+      }
+    },
+    "snapshotMs": {
+      "unit": "ms",
+      "samples": [
+        {
+          "tMs": 50.288959,
+          "value": 0.894291
+        }
+      ],
+      "summary": {
+        "n": 1,
+        "p50": 0.894291,
+        "p90": 0.894291,
+        "p99": 0.894291,
+        "max": 0.894291
+      }
+    },
+    "waitBehindGeometryMs": {
+      "unit": "ms",
+      "samples": [
+        {
+          "tMs": 50.288959,
+          "value": 5928.73775
+        }
+      ],
+      "summary": {
+        "n": 1,
+        "p50": 5928.73775,
+        "p90": 5928.73775,
+        "p99": 5928.73775,
+        "max": 5928.73775
+      }
+    }
+  },
+  "facts": {
+    "strokes": 100000,
+    "repetitions": 1,
+    "documentRev": 3
+  }
+}

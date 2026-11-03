@@ -1,0 +1,77 @@
+[
+  {
+    "path": "reviews/evidence/M2-C2.4/round-2/44-restore-reviewer-assertion.diff",
+    "bytes": 1131,
+    "sha256": "9b389c4640ab4ff90ce9e1ba4c02fc655b657ef7bf49383ef60f5c2d2f791758"
+  },
+  {
+    "path": "reviews/evidence/M2-C2.4/round-2/45-cutter-snapping-regression.diff",
+    "bytes": 9467,
+    "sha256": "451783f536b20a6754d932aeb58324586a6673082a7f5f64b8b9bdbd56e14cd0"
+  },
+  {
+    "path": "reviews/evidence/M2-C2.4/round-2/46-r2-02-disposition-r2-topology.diff",
+    "bytes": 836,
+    "sha256": "27c5880b5f222c15a6186b9fdddd5d3702b8d68488b2a71185be79bede08be18"
+  },
+  {
+    "path": "reviews/evidence/M2-C2.4/round-2/46-r2-02-disposition.diff",
+    "bytes": 2516,
+    "sha256": "ac33ba4ca2b039ed2739661a1652ea2a156133c63c241d6838532badfb9f2741"
+  },
+  {
+    "path": "reviews/evidence/M2-C2.4/round-2/47-closed-retrace-parameter.diff",
+    "bytes": 7717,
+    "sha256": "2ee8590d0707e86b5335fe9b69ede9fe5c629ccfff10f75590d51d9e40c90047"
+  },
+  {
+    "path": "reviews/evidence/M2-C2.4/round-2/48-carry-bound.diff",
+    "bytes": 2654,
+    "sha256": "216204e81c5fd7a75c77fdf3eec215741ba6946a930158af85b404fdd7ac14cc"
+  },
+  {
+    "path": "reviews/evidence/M2-C2.4/round-2/49-53-route-oracle-helpers.diff",
+    "bytes": 29702,
+    "sha256": "a83a32a46a0bbc17371ce095d55acc92be66c13eadf78bb7c14b541a4d3dd49f"
+  },
+  {
+    "path": "reviews/evidence/M2-C2.4/round-2/49-route-oracle-snap-and-fallback.diff",
+    "bytes": 13054,
+    "sha256": "f1d8081f8774c034554ba07156d0a78fd641e5e76cd42f45b41af92a0dc40f81"
+  },
+  {
+    "path": "reviews/evidence/M2-C2.4/round-2/50-gate-validation.diff",
+    "bytes": 27720,
+    "sha256": "187b602c83afea49cea17a24706834e02abc23ebad3e3da40a7b676f52f55687"
+  },
+  {
+    "path": "reviews/evidence/M2-C2.4/round-2/51-exact-t-junction.diff",
+    "bytes": 7764,
+    "sha256": "1de8f10062a301720fed4e1f9aca949a6fc1adb762ffadffa32f1b6880abaaf6"
+  },
+  {
+    "path": "reviews/evidence/M2-C2.4/round-2/52-golden-tooling.diff",
+    "bytes": 9997,
+    "sha256": "1f46e7eb0c196dbf7c92f30685f52a93b06faae560b6746da511535c2a0ae747"
+  },
+  {
+    "path": "reviews/evidence/M2-C2.4/round-2/54-route-domains.diff",
+    "bytes": 128213,
+    "sha256": "98ef50821150f6893f4ffaf3348ea008e5e5b14c0e30c54254627ebb7fdef08a"
+  },
+  {
+    "path": "reviews/evidence/M2-C2.4/round-2/55-ci.diff",
+    "bytes": 5100,
+    "sha256": "8c832188a2cc088be81edc6827dee09aa2bf76de8f12840ba93e81f667156d96"
+  },
+  {
+    "path": "reviews/evidence/M2-C2.4/round-2/57-reviewer-suites-and-ownership.diff",
+    "bytes": 6744,
+    "sha256": "b310be8cbd4cc35cae1bbc28aa1586ec5f4e0bd6dcde58be0d0b52efe940096a"
+  },
+  {
+    "path": "reviews/evidence/M2-C2.4/round-2/58-flatten-cover.diff",
+    "bytes": 2021,
+    "sha256": "3e4ce250b275da13d65b3af859ca53fbcb47c031d2d36ee36cfc20835a763e2a"
+  }
+]

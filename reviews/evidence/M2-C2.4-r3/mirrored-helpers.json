@@ -1,0 +1,30 @@
+{
+  "try_straight": {
+    "present": true,
+    "byteIdentical": true
+  },
+  "read": {
+    "present": true,
+    "byteIdentical": true
+  },
+  "flatten_contour": {
+    "present": true,
+    "byteIdentical": true
+  },
+  "stretch": {
+    "present": true,
+    "byteIdentical": true
+  },
+  "winding": {
+    "present": true,
+    "byteIdentical": true
+  },
+  "segments_of": {
+    "present": true,
+    "byteIdentical": true
+  },
+  "check": {
+    "present": true,
+    "byteIdentical": true
+  }
+}
