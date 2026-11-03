@@ -267,9 +267,14 @@ pub fn cell_ref(element: &str, frame: u32) -> String {
 /// The element and frame of a cell selection entry.
 #[must_use]
 pub fn parse_cell_ref(k: &str) -> Option<(String, u32)> {
+    cell_ref_parts(k).map(|(e, f)| (e.to_owned(), f))
+}
+
+/// [`parse_cell_ref`] without allocating: the element part borrowed from `k`.
+pub(crate) fn cell_ref_parts(k: &str) -> Option<(&str, u32)> {
     let rest = k.strip_prefix("element:@")?;
     let (element, frame) = rest.split_once("/cell:#")?;
-    Some((element.to_owned(), frame.parse().ok()?))
+    Some((element, frame.parse().ok()?))
 }
 
 /// Whether a selection entry (an object key or a cell reference) still exists.
@@ -320,6 +325,11 @@ impl AppContext {
     #[must_use]
     pub fn selection_of(&self, context: &str) -> Vec<String> {
         self.selections.get(context).map(|v| v.as_ref().clone()).unwrap_or_default()
+    }
+
+    /// The selection of a context, borrowed (no copy of a large list).
+    pub(crate) fn selection_list(&self, context: &str) -> &[String] {
+        self.selections.get(context).map_or(&[], |v| v.as_slice())
     }
 
     /// Sets the selection of a context and makes it the reported one.
@@ -379,20 +389,44 @@ impl AppContext {
             self.drawing = None;
         }
         self.frame = self.frame.max(1);
-        // Cell references of one element share its existence check (a 100 000-cell selection is one lookup per
-        // element per call, not one per cell; C31-R1-14).
+        // Cell references of one element share its existence check, parsed without allocating (a 100 000-cell
+        // selection is one lookup per element per call, not one per cell; C31-R1-14).
         let mut elements: std::collections::BTreeMap<String, bool> = std::collections::BTreeMap::new();
-        let mut exists = |k: &str| match parse_cell_ref(k) {
-            Some((element, _)) => *elements.entry(element.clone()).or_insert_with(|| doc.locate(&element).is_some()),
+        let mut last: Option<(String, bool)> = None;
+        let mut exists = |k: &str| match cell_ref_parts(k) {
+            Some((element, _)) => match &last {
+                Some((e, ok)) if e == element => *ok,
+                _ => {
+                    let ok = match elements.get(element) {
+                        Some(ok) => *ok,
+                        None => {
+                            let ok = doc.locate(element).is_some();
+                            elements.insert(element.to_owned(), ok);
+                            ok
+                        }
+                    };
+                    last = Some((element.to_owned(), ok));
+                    ok
+                }
+            },
             None => selectable_exists(doc, k, zones),
         };
-        // A list is copied only when one of its entries is gone (shared lists stay shared).
-        if selections && !self.selection.ids.iter().all(|k| exists(k)) {
-            std::sync::Arc::make_mut(&mut self.selection.ids).retain(|k| exists(k));
-        }
-        for ids in self.selections.values_mut().filter(|_| selections) {
+        // A list is copied only when one of its entries is gone (shared lists stay shared), and a list shared by
+        // several contexts (the reported selection, its context, a mirror) is checked once.
+        let mut whole: Vec<Ids> = Vec::new();
+        let mut check = |ids: &mut Ids| {
+            if whole.iter().any(|w| std::sync::Arc::ptr_eq(w, ids)) {
+                return;
+            }
             if !ids.iter().all(|k| exists(k)) {
                 std::sync::Arc::make_mut(ids).retain(|k| exists(k));
+            }
+            whole.push(ids.clone());
+        };
+        if selections {
+            check(&mut self.selection.ids);
+            for ids in self.selections.values_mut() {
+                check(ids);
             }
         }
         self.points.retain(|(k, anchor)| anchor_exists(doc, k, *anchor));

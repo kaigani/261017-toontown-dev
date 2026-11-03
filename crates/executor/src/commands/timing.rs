@@ -297,20 +297,26 @@ pub(crate) struct CellTarget {
 
 /// The cell selection (`xsheet` context; shared with the Timeline): elements in selection order and frame bounds.
 pub(crate) fn selected_cells(cx: &Cx) -> Option<(Vec<Id>, usize, usize)> {
-    let refs = cx.app().selection_of("xsheet");
-    let mut elements: Vec<Id> = Vec::new();
-    let (mut lo, mut hi) = (usize::MAX, 0usize);
-    for r in &refs {
-        if let Some((e, f)) = parse_cell_ref(r) {
-            let Ok(id) = Id::parse(&e) else { continue };
-            if !elements.contains(&id) {
-                elements.push(id);
+    let (names, lo, hi) = cell_span(cx.app().selection_list("xsheet"));
+    let elements: Vec<Id> = names.into_iter().filter_map(|e| Id::parse(e).ok()).collect();
+    (!elements.is_empty()).then_some((elements, lo as usize, hi as usize))
+}
+
+/// The elements (in order of first appearance) and the frame span of a list of cell references, borrowed and without
+/// a per-cell allocation (selections of up to a million cells are read after every call that changes them).
+fn cell_span(refs: &[String]) -> (Vec<&str>, u32, u32) {
+    let mut elements: Vec<&str> = Vec::new();
+    let (mut lo, mut hi) = (u32::MAX, 0u32);
+    for r in refs {
+        if let Some((e, f)) = crate::app::cell_ref_parts(r) {
+            if elements.last() != Some(&e) && !elements.contains(&e) {
+                elements.push(e);
             }
-            lo = lo.min(f as usize);
-            hi = hi.max(f as usize);
+            lo = lo.min(f);
+            hi = hi.max(f);
         }
     }
-    (!elements.is_empty()).then_some((elements, lo, hi))
+    (elements, lo, hi)
 }
 
 /// Resolves the target of a cell command: explicit `elementIds`/`from`/`to` (or `frame`), else the cell selection,
@@ -765,18 +771,8 @@ impl Changes {
 /// The `cell.selection.changed` payload of a context (04 §17.4): the elements and frame bounds of the cell
 /// selection, or the selected rows when no cells are selected, and the current position.
 pub(crate) fn cell_selection_state(app: &crate::app::AppContext) -> Value {
-    let refs = app.selection_of("xsheet");
-    let mut elements: Vec<String> = Vec::new();
-    let mut seen: BTreeSet<&str> = BTreeSet::new();
-    let (mut lo, mut hi) = (u32::MAX, 0u32);
-    let parsed: Vec<(String, u32)> = refs.iter().filter_map(|r| parse_cell_ref(r)).collect();
-    for (e, f) in &parsed {
-        if seen.insert(e.as_str()) {
-            elements.push(e.clone());
-        }
-        lo = lo.min(*f);
-        hi = hi.max(*f);
-    }
+    let (names, mut lo, hi) = cell_span(app.selection_list("xsheet"));
+    let mut elements: Vec<String> = names.into_iter().map(str::to_owned).collect();
     if elements.is_empty() {
         elements = app.selection_of("timeline").into_iter().filter(|k| parse_cell_ref(k).is_none()).collect();
         lo = 0;

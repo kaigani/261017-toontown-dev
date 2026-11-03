@@ -281,3 +281,9 @@ transactions, idempotent requests and the never-block watchdog.
   bytes are shared, and different bytes under the same name give the copy a fresh deterministic entry
   (`<name>-<sha256 prefix>.<ext>`) with its typed references rewritten (`c31_r2_persistence`,
   `c31_round2::r06_*`).
+- **M3 C3.1 round 2, CI follow-up of C31-R1-14: post-call selection work.** The context repair, the selection
+  read-back and the `cell.selection.changed` payload read a large selection borrowed and parse cell references
+  without allocating; a list shared by the reported selection, its context and a mirror is checked once. The
+  uncharged work after a 100 000-cell `cell.select` fell from about 115 ms to 48 ms (debug, local), most of the rest
+  being the state events that carry the ids, so the next caller is not held past a short budget
+  (`c31_r1_selection_budget`).
