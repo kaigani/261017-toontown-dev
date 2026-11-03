@@ -36,6 +36,13 @@ on both OSes and tags `m2`.
 
    The round-4 addendum is met: `c24_r4_closure`'s two seeded properties share names with `check`'s skip list, so
    `review properties release` now runs that file explicitly on both OSes (declared CI edit).
+
+   A second declared CI edit was needed. The reviewer-owned `c24_r4_closure.rs` trips one clippy style lint (blank
+   lines after doc comments, five places), and reviewer-owned files are not edited. So `check` now runs clippy twice:
+   - over product code (libraries, binaries, examples) with every warning denied;
+   - over all targets with every warning denied except `clippy::empty_line_after_doc_comments`.
+
+   That `-A` should be dropped once the reviewer removes the blank lines.
 4. **Receipts and ownership preserved:**
    - raw receipts are kept under `reviews/evidence/`;
    - reviewer ownership is by file, and every reviewer-owned edit was ruled and declared (`scripts/check-reviewer-ownership.py` checks the C2.4 ones live);
