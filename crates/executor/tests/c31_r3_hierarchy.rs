@@ -14,10 +14,11 @@ fn next(s: &mut u64, n: usize) -> usize {
 fn random_hierarchy_edits_4096_keep_independent_parent_and_level_model() {
     let h = fixture();
     let scene = first(&h, "scene");
-    let made = ok(&h, "element.create", json!({"type":"peg","name":"Tree928","count":12}))["elementIds"]
-        .as_array()
-        .unwrap()
-        .clone();
+    let made =
+        ok(&h, "element.create", json!({"type":"peg","name":"Tree928","count":12,"sceneId":scene}))["elementIds"]
+            .as_array()
+            .unwrap()
+            .clone();
     let mut ids: Vec<String> = made.iter().map(|v| v.as_str().unwrap().to_owned()).collect();
     let mut parents: BTreeMap<String, Option<String>> = ids.iter().map(|v| (v.clone(), None)).collect();
     let mut seed = 0x313950;
@@ -34,15 +35,16 @@ fn random_hierarchy_edits_4096_keep_independent_parent_and_level_model() {
             }
             parents.remove(&a);
             ids.retain(|v| v != &a);
-            let new = ok(&h, "element.create", json!({"type":"peg","name":format!("New928-{step}")}))["elementIds"][0]
+            let new = ok(&h, "element.create", json!({"type":"peg","name":format!("New928-{step}"),"sceneId":scene}))["elementIds"][0]
                 .as_str()
                 .unwrap()
                 .to_owned();
             parents.insert(new.clone(), None);
             ids.push(new);
         } else if step % 5 == 0 {
+            let next_parent = parents[&a].as_ref().and_then(|p| parents[p].clone());
             ok(&h, "element.parent.remove", json!({"elementIds":[a]}));
-            parents.insert(a, None);
+            parents.insert(a, next_parent);
         } else {
             let mut cur = Some(b.clone());
             let mut cycle = false;

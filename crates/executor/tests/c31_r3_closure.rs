@@ -25,7 +25,7 @@ fn delegated_moves_and_image_vector_copy_lock() {
     ok(&h, "element.note.set", json!({"elementId":key,"text":"ToPlain928"}));
     ok(&h, "doc.object.patch", json!({"targets":[key],"ops":[{"op":"move","from":"/note","path":"/meta/r3"}]}));
     assert_eq!(get(&h, &key)["meta"]["r3"], "ToPlain928");
-    for (element, image) in [(&key, false), (BG, true)] {
+    for (element, image) in [(key.as_str(), false), (BG, true)] {
         let drawing = get(&h, element)["exposure"][0][0].as_str().unwrap().to_owned();
         ok(&h, "doc.object.patch", json!({"targets":[drawing],"props":{"meta":{"lock928":true}}}));
         let before = get(&h, &drawing);
@@ -53,6 +53,7 @@ fn four_paste_forms_both_types_after_delete_and_project_replacement() {
             ok(&h, "cell.clipboard.set", json!({"elementIds":[src],"from":1,"to":2}));
             ok(&h, "element.delete", json!({"elementIds":[src]}));
             if cross_project {
+                ok(&h, "project.close", json!({"onUnsaved":"discard"}));
                 assert!(h.open_document(tt_model::fixture::sample_document(0x313929).unwrap(), None, false).is_ok());
             }
             let target =
@@ -94,7 +95,7 @@ fn generic_delete_and_cut_special_notes_and_boundary_refusal_save_open() {
         for (f, t) in [(7, "removed928"), (11, "tail928"), (100000, "edge928")] {
             ok(&h, "cell.note.set", json!({"elementId":e,"frame":f,"text":t}));
         }
-        let mut p = json!({"context":"xsheet","objectIds":[format!("{}/cell:#7",e.as_str().unwrap())]});
+        let mut p = json!({"context":"xsheet","objectIds":[format!("element:@{}/cell:#7",e.as_str().unwrap())]});
         if !options.is_null() {
             p["options"] = options.clone();
         }

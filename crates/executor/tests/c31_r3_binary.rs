@@ -57,8 +57,14 @@ fn same_ids_in_another_project_do_not_reuse_destination_artwork() {
     job_ok(&h, "project.open", json!({"path":a,"onUnsaved":"discard"}));
     let did = get(&h, BG)["exposure"][0][0].as_str().unwrap().to_owned();
     let original = image(&h, &did);
+    let source_project = first(&h, "project");
     copy(&h);
     job_ok(&h, "project.open", json!({"path":b,"onUnsaved":"discard"}));
+    assert_ne!(source_project, first(&h, "project"), "the destination really is another project");
+    println!(
+        "project collision {}",
+        json!({"source":a,"destination":b,"sourceProject":source_project,"destinationProject":first(&h,"project"),"sourceDrawing":did,"sourceImage":original})
+    );
     ok(&h, "cell.clipboard.apply", json!({"elementId":BG,"frame":29}));
     let runs = get(&h, BG)["exposure"].as_array().unwrap().clone();
     let mut frame = 0;
@@ -121,15 +127,100 @@ fn fixture_for_official_sdk_lives_in_temp() {
 
 #[test]
 fn paste_then_copy_in_one_atomic_batch_captures_the_staged_binary_bytes() {
-    let dir=tmp();let source=package(&dir,0x313934,73);let h=fixture();
-    job_ok(&h,"project.open",json!({"path":source,"onUnsaved":"discard"}));copy(&h);
-    let original=ok(&h,"edit.clipboard.get",json!({"includeData":true}));
-    assert!(h.open_document(tt_model::fixture::sample_document(0x313935).unwrap(),None,false).is_ok());
-    let target=ok(&h,"element.create",json!({"type":"image","name":"Staged928"}))["elementIds"][0].clone();
-    let r=batch(&h,json!({"label":"Paste then copy928","atomic":true,"steps":[
-        {"id":"cell.clipboard.apply","params":{"elementId":target,"frame":9}},
-        {"id":"cell.clipboard.set","params":{"elementIds":[target],"from":9,"to":9}}
-    ]}));assert_eq!(r.status,tt_executor::Status::Ok,"{r:?}");
-    let recopy=ok(&h,"edit.clipboard.get",json!({"includeData":true}));
-    assert_eq!(recopy["payload"]["blobs"],original["payload"]["blobs"],"a later step sees the staged drawing and must also capture its staged bytes");
+    let dir = tmp();
+    let source = package(&dir, 0x313934, 73);
+    let h = fixture();
+    job_ok(&h, "project.open", json!({"path":source,"onUnsaved":"discard"}));
+    copy(&h);
+    let original = ok(&h, "edit.clipboard.get", json!({"includeData":true}));
+    assert!(h.open_document(tt_model::fixture::sample_document(0x313935).unwrap(), None, false).is_ok());
+    let target = ok(&h, "element.create", json!({"type":"image","name":"Staged928"}))["elementIds"][0].clone();
+    let r = batch(
+        &h,
+        json!({"label":"Paste then copy928","atomic":true,"steps":[
+            {"id":"cell.clipboard.apply","params":{"elementId":target,"frame":9}},
+            {"id":"cell.clipboard.set","params":{"elementIds":[target],"from":9,"to":9}}
+        ]}),
+    );
+    assert_eq!(r.status, tt_executor::Status::Ok, "{r:?}");
+    let recopy = ok(&h, "edit.clipboard.get", json!({"includeData":true}));
+    assert_eq!(
+        recopy["payload"]["blobs"], original["payload"]["blobs"],
+        "a later step sees the staged drawing and must also capture its staged bytes"
+    );
+}
+
+fn texture_package(dir: &std::path::Path, c: u8) -> std::path::PathBuf {
+    let mut parts = tt_model::fixture::sample_parts(0x313936).unwrap();
+    let mut palette = serde_json::to_value(&parts.palettes[0]).unwrap();
+    palette["swatches"][0]["kind"] = json!("texture");
+    for value in palette["swatches"][0]["values"].as_object_mut().unwrap().values_mut() {
+        *value = json!({"image":"textures/r3-shared.png","tile":true,"width":1,"height":1});
+    }
+    for drawing in &mut parts.drawings {
+        let mut value = serde_json::to_value(&*drawing).unwrap();
+        if value["colourRecovery"][0]["colourId"] == palette["swatches"][0]["colourId"] {
+            value["colourRecovery"][0]["swatch"] = palette["swatches"][0].clone();
+            *drawing = tt_model::object::from_json(&value).unwrap();
+        }
+    }
+    parts.palettes[0] = tt_model::object::from_json(&palette).unwrap();
+    let doc = tt_model::document::Document::from_parts(parts).unwrap();
+    let mut blobs = tt_persist::container::Blobs::default();
+    let png = tt_render::encode_png(&[c, 81, 222, 255], 1, 1).unwrap();
+    blobs.insert("textures/r3-shared.png".into(), tt_persist::container::BlobData::Bytes(std::sync::Arc::new(png)));
+    let preserved = tt_persist::load::Preserved::default();
+    let input = tt_persist::save::SaveInput {
+        doc: &doc,
+        preserved: &preserved,
+        blobs: &blobs,
+        session: None,
+        saved_at: "2026-11-03T19:00:00Z".into(),
+    };
+    let path = dir.join(format!("texture-{c}.animpkg"));
+    tt_persist::save::save_package(&path, &input, None).unwrap();
+    path
+}
+
+#[test]
+fn texture_recovery_references_remap_collisions_and_preserve_both_saved_blobs() {
+    let dir = tmp();
+    let h = fixture();
+    let mut clips = vec![];
+    for c in [41, 209] {
+        let path = texture_package(&dir, c);
+        job_ok(&h, "project.open", json!({"path":path,"onUnsaved":"discard"}));
+        ok(&h, "cell.clipboard.set", json!({"elementIds":["scene:\"Intro\"/element:\"Bob\""],"from":1,"to":1}));
+        let clip = ok(&h, "edit.clipboard.get", json!({"includeData":true}));
+        assert!(clip["payload"]["blobs"]["textures/r3-shared.png"].is_string());
+        clips.push(clip);
+    }
+    ok(&h, "project.close", json!({"onUnsaved":"discard"}));
+    assert!(h.open_document(tt_model::fixture::sample_document(0x313937).unwrap(), None, false).is_ok());
+    let target = ok(&h, "element.create", json!({"type":"drawing","name":"Textures928"}))["elementIds"][0].clone();
+    let mut refs = vec![];
+    for (i, clip) in clips.iter().enumerate() {
+        ok(&h, "edit.clipboard.set", json!({"content":clip}));
+        let made = ok(&h, "cell.clipboard.apply", json!({"elementId":target,"frame":1+i*3,"mode":"newDrawings"}));
+        let drawing = get(&h, made["createdDrawingIds"][0].as_str().unwrap());
+        let swatch = &drawing["colourRecovery"][0]["swatch"];
+        refs.push(swatch["values"].as_object().unwrap().values().next().unwrap()["image"].as_str().unwrap().to_owned());
+    }
+    assert_ne!(refs[0], refs[1]);
+    let output = dir.join("textures.animpkg");
+    job_ok(&h, "project.saveAs", json!({"path":output}));
+    ok(&h, "project.close", json!({"onUnsaved":"discard"}));
+    job_ok(&h, "project.open", json!({"path":output}));
+    let loaded = tt_persist::load::load(&output, &Default::default()).unwrap();
+    println!(
+        "texture readback {}",
+        json!({"path":output,"copiedEntries":refs,"hasOriginal":loaded.blobs.contains(&refs[0]),"hasRemapped":loaded.blobs.contains(&refs[1])})
+    );
+    for (entry, c) in refs.iter().zip([41, 209]) {
+        assert!(loaded.blobs.contains(entry), "saved texture recovery reference {entry} must retain its copied bytes");
+        assert_eq!(
+            loaded.blobs.read(entry, 1 << 20).unwrap(),
+            tt_render::encode_png(&[c, 81, 222, 255], 1, 1).unwrap()
+        );
+    }
 }

@@ -45,7 +45,11 @@ fn independent_sequences_4096_persist_canonical_runs_and_notes() {
     let mut seed = 0x313940u64;
     for sequence in 0..4096 {
         let e = if sequence % 2 == 0 { source } else { &clone };
-        ok(&h, "doc.object.patch", json!({"targets":[e],"props":{"exposure":[],"cellNotes":{}}}));
+        ok(
+            &h,
+            "doc.object.patch",
+            json!({"targets":[e],"ops":[{"op":"replace","path":"/exposure","value":[]},{"op":"add","path":"/cellNotes","value":{}}]}),
+        );
         let mut frames: Vec<Option<String>> = vec![];
         let mut notes: BTreeMap<usize, String> = BTreeMap::new();
         for step in 0..8 {

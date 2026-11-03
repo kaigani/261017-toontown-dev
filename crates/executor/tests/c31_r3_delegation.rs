@@ -101,3 +101,32 @@ fn all_delegated_properties_props_add_replace_copy_move_test_match_owner() {
         }
     }
 }
+
+#[test]
+fn remove_empty_forms_match_owner_and_copy_can_unlock_a_locked_vector_drawing() {
+    for (field,command,initial,empty) in [
+        ("note","element.note.set",json!({"elementId":B,"text":"remove928"}),json!({"elementId":B,"text":""})),
+        ("markerColour","element.colour.set",json!({"elementIds":[B],"marker":"#182739"}),json!({"elementIds":[B],"marker":""})),
+        ("backgroundColour","element.colour.set",json!({"elementIds":[B],"background":"#192837"}),json!({"elementIds":[B],"background":""}))
+    ] {
+        let a=fixture();let b=fixture();for h in [&a,&b] {ok(h,command,initial.clone());}
+        let ra=a.subscribe();let rb=b.subscribe();ok(&a,command,empty);
+        ok(&b,"doc.object.patch",json!({"targets":[B],"ops":[{"op":"remove","path":format!("/{field}")}]}));
+        let mut left=get(&a,B);let mut right=get(&b,B);scrub(&mut left);scrub(&mut right);assert_eq!(left,right,"{field}");
+        let events=|r:std::sync::mpsc::Receiver<tt_executor::Event>|->Vec<Value>{r.try_iter().filter(|e|e.name=="element.state.changed").map(|e|json!(e.payload)).collect()};
+        assert_eq!(events(ra),events(rb),"{field}");
+    }
+    let h=fixture();
+    ok(&h,"doc.object.patch",json!({"targets":[D],"props":{"meta":{"unlock928":false}}}));
+    ok(&h,"element.drawingLock.set",json!({"drawingIds":[D],"locked":true}));
+    ok(&h,"doc.object.patch",json!({"targets":[D],"ops":[{"op":"copy","from":"/meta/unlock928","path":"/locked"}]}));
+    assert_eq!(get(&h,D)["locked"],false);
+    for target in [B,D] {
+        for field in ["name","locked"] {
+            let before=get(&h,target);let revision=rev(&h);
+            let refused=run(&h,"doc.object.patch",json!({"targets":[target],"ops":[{"op":"remove","path":format!("/{field}")}]}));
+            assert_eq!(refused.status,tt_executor::Status::Error,"required field {target} {field}: {refused:?}");
+            assert_eq!(get(&h,target),before);assert_eq!(rev(&h),revision);
+        }
+    }
+}
