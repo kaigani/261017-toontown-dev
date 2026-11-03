@@ -1,0 +1,23 @@
+[
+  {
+    "path": "sdk-final.json",
+    "rawBytes": 127326832,
+    "rawSha256": "d8d34c22121ede4475543569a64a8f6babd8903a5e423d36a6a7621d62764452",
+    "losslessArchive": "sdk-final.json.gz",
+    "archiveSha256": "83a8e21b5c817fd265d4b55b9ce26248d71931255949ac66b7c6465f78075758"
+  },
+  {
+    "path": "sdk-every-command.json",
+    "rawBytes": 33591337,
+    "rawSha256": "1391b89ea7ece5acb9fd0cd7724517a1b9bd32e87c58e056ac883bf6ce337c0c",
+    "losslessArchive": "sdk-every-command.json.gz",
+    "archiveSha256": "013f3921acde7e7298c902267895a04d6e57b2aa564c0e42d73970cc71a1fd8c"
+  },
+  {
+    "path": "sdk-every-command-corrected.json",
+    "rawBytes": 32406842,
+    "rawSha256": "595d427daf8bbd38eed3f4b8910737bbce1e942c0621690ee03d2a69ed9062b5",
+    "losslessArchive": "sdk-every-command-corrected.json.gz",
+    "archiveSha256": "4e5053e96c56bb8b0e58a8494c4306b502b66739b5bbb99511bc0bb8c5a011c3"
+  }
+]

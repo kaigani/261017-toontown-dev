@@ -1,0 +1,284 @@
+[
+  {
+    "file": "autosave-windows.json",
+    "ok": true,
+    "kind": "series",
+    "environment": {
+      "os": "windows",
+      "arch": "x86_64",
+      "cpus": 4,
+      "profile": "debug",
+      "startedAt": "2026-11-03T18:25:03.987Z",
+      "runId": "local-2026-11-03T18:25:03.987Z",
+      "timeOrigin": "tMs: milliseconds since startedAt on a monotonic clock",
+      "summaryRule": "nearest rank: sorted[round((n - 1) * q)]"
+    },
+    "series": {
+      "longBatchMs": {
+        "unit": "ms",
+        "n": 1,
+        "p50": 866.0942,
+        "p90": 866.0942,
+        "p99": 866.0942,
+        "max": 866.0942
+      },
+      "queuedSchedulingDelayMs": {
+        "unit": "ms",
+        "n": 10,
+        "p50": 16.4094,
+        "p90": 21.2494,
+        "p99": 22.626299999999997,
+        "max": 22.626299999999997
+      },
+      "queuedSnapshotMs": {
+        "unit": "ms",
+        "n": 10,
+        "p50": 0.10830000000000001,
+        "p90": 0.1104,
+        "p99": 0.11299999999999999,
+        "max": 0.11299999999999999
+      },
+      "snapshotAfterLongBatchMs": {
+        "unit": "ms",
+        "n": 1,
+        "p50": 0.0936,
+        "p90": 0.0936,
+        "p99": 0.0936,
+        "max": 0.0936
+      },
+      "snapshotMs": {
+        "unit": "ms",
+        "n": 15,
+        "p50": 0.1003,
+        "p90": 0.1234,
+        "p99": 0.1495,
+        "max": 0.1495
+      },
+      "waitBehindLongBatchMs": {
+        "unit": "ms",
+        "n": 1,
+        "p50": 858.4201,
+        "p90": 858.4201,
+        "p99": 858.4201,
+        "max": 858.4201
+      }
+    },
+    "problems": []
+  },
+  {
+    "file": "c21-r1-autosave-windows.json",
+    "ok": true,
+    "kind": "series",
+    "environment": {
+      "os": "windows",
+      "arch": "x86_64",
+      "cpus": 4,
+      "profile": "debug",
+      "startedAt": "2026-11-03T18:26:08.160Z",
+      "runId": "local-2026-11-03T18:26:08.160Z",
+      "timeOrigin": "tMs: milliseconds since startedAt on a monotonic clock",
+      "summaryRule": "nearest rank: sorted[round((n - 1) * q)]"
+    },
+    "series": {
+      "geometryEditMs": {
+        "unit": "ms",
+        "n": 1,
+        "p50": 8810.198400000001,
+        "p90": 8810.198400000001,
+        "p99": 8810.198400000001,
+        "max": 8810.198400000001
+      },
+      "snapshotMs": {
+        "unit": "ms",
+        "n": 1,
+        "p50": 0.1075,
+        "p90": 0.1075,
+        "p99": 0.1075,
+        "max": 0.1075
+      },
+      "waitBehindGeometryMs": {
+        "unit": "ms",
+        "n": 1,
+        "p50": 8765.0484,
+        "p90": 8765.0484,
+        "p99": 8765.0484,
+        "max": 8765.0484
+      }
+    },
+    "problems": []
+  },
+  {
+    "file": "cache-bounds-windows.json",
+    "ok": true,
+    "kind": "facts",
+    "problems": []
+  },
+  {
+    "file": "fingerprint-windows.json",
+    "ok": true,
+    "kind": "series",
+    "environment": {
+      "os": "windows",
+      "arch": "x86_64",
+      "cpus": 4,
+      "profile": "debug",
+      "startedAt": "2026-11-03T18:25:07.730Z",
+      "runId": "local-2026-11-03T18:25:07.730Z",
+      "timeOrigin": "tMs: milliseconds since startedAt on a monotonic clock",
+      "summaryRule": "nearest rank: sorted[round((n - 1) * q)]"
+    },
+    "series": {
+      "callerLatencyBackToBackMs": {
+        "unit": "ms",
+        "n": 120,
+        "p50": 22.1295,
+        "p90": 22.961599999999997,
+        "p99": 33.8795,
+        "max": 70.2289
+      },
+      "callerLatencyScheduled2sWatchMs": {
+        "unit": "ms",
+        "n": 3331,
+        "p50": 0.7655,
+        "p90": 0.8373999999999999,
+        "p99": 0.954,
+        "max": 25.1634
+      },
+      "openMs": {
+        "unit": "ms",
+        "n": 1,
+        "p50": 676.7814,
+        "p90": 676.7814,
+        "p99": 676.7814,
+        "max": 676.7814
+      },
+      "saveContentCheckMs": {
+        "unit": "ms",
+        "n": 5,
+        "p50": 668.9361,
+        "p90": 781.5012,
+        "p99": 781.5012,
+        "max": 781.5012
+      },
+      "watchPassMs": {
+        "unit": "ms",
+        "n": 20,
+        "p50": 23.507,
+        "p90": 34.5077,
+        "p99": 74.5982,
+        "max": 74.5982
+      }
+    },
+    "problems": []
+  },
+  {
+    "file": "lock-liveness-windows.json",
+    "ok": true,
+    "kind": "series",
+    "environment": {
+      "os": "windows",
+      "arch": "x86_64",
+      "cpus": 4,
+      "profile": "debug",
+      "startedAt": "2026-11-03T18:25:01.615Z",
+      "runId": "local-2026-11-03T18:25:01.615Z",
+      "timeOrigin": "tMs: milliseconds since startedAt on a monotonic clock",
+      "summaryRule": "nearest rank: sorted[round((n - 1) * q)]"
+    },
+    "series": {
+      "acquireOnHeldMicros": {
+        "unit": "us",
+        "n": 50,
+        "p50": 145.4,
+        "p90": 187.2,
+        "p99": 216.70000000000002,
+        "max": 216.70000000000002
+      },
+      "crashedHolderTakeoverMs": {
+        "unit": "ms",
+        "n": 5,
+        "p50": 5.196400000000001,
+        "p90": 7.0726,
+        "p99": 7.0726,
+        "max": 7.0726
+      },
+      "probeHeldMicros": {
+        "unit": "us",
+        "n": 500,
+        "p50": 10.299999999999999,
+        "p90": 12.799999999999999,
+        "p99": 33.1,
+        "max": 113.7
+      },
+      "processAliveFallbackMs": {
+        "unit": "ms",
+        "n": 5,
+        "p50": 33.999300000000005,
+        "p90": 44.0162,
+        "p99": 44.0162,
+        "max": 44.0162
+      }
+    },
+    "problems": []
+  },
+  {
+    "file": "never-block-mcp-windows.json",
+    "ok": true,
+    "kind": "series",
+    "environment": {
+      "os": "windows",
+      "arch": "x86_64",
+      "cpus": 4,
+      "profile": "debug",
+      "startedAt": "2026-11-03T18:33:44.901Z",
+      "runId": "local-2026-11-03T18:33:44.901Z",
+      "timeOrigin": "tMs: milliseconds since startedAt on a monotonic clock",
+      "summaryRule": "nearest rank: sorted[round((n - 1) * q)]"
+    },
+    "series": {
+      "callLatencyMs": {
+        "unit": "ms",
+        "n": 719,
+        "p50": 1.5858,
+        "p90": 2.0744000000000002,
+        "p99": 10.1839,
+        "max": 45.9939
+      },
+      "jobWaitMs": {
+        "unit": "ms",
+        "n": 1,
+        "p50": 2.0052999999999996,
+        "p90": 2.0052999999999996,
+        "p99": 2.0052999999999996,
+        "max": 2.0052999999999996
+      }
+    },
+    "problems": []
+  },
+  {
+    "file": "queued-calls-windows.json",
+    "ok": true,
+    "kind": "series",
+    "environment": {
+      "os": "windows",
+      "arch": "x86_64",
+      "cpus": 4,
+      "profile": "debug",
+      "startedAt": "2026-11-03T18:33:45.160Z",
+      "runId": "local-2026-11-03T18:33:45.160Z",
+      "timeOrigin": "tMs: milliseconds since startedAt on a monotonic clock",
+      "summaryRule": "nearest rank: sorted[round((n - 1) * q)]"
+    },
+    "series": {
+      "perCallMs": {
+        "unit": "ms",
+        "n": 50,
+        "p50": 77.3292,
+        "p90": 118.26490000000001,
+        "p99": 128.3108,
+        "max": 128.3108
+      }
+    },
+    "problems": []
+  }
+]

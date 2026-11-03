@@ -1,0 +1,31 @@
+[1m[92m   Compiling[0m tt-model v0.0.1 (/Users/runner/work/261017-toontown-dev/261017-toontown-dev/crates/model)
+[1m[92m   Compiling[0m tt-anim v0.0.1 (/Users/runner/work/261017-toontown-dev/261017-toontown-dev/crates/anim)
+[1m[92m   Compiling[0m tt-vector v0.0.1 (/Users/runner/work/261017-toontown-dev/261017-toontown-dev/crates/vector)
+[1m[92m   Compiling[0m tt-fx v0.0.1 (/Users/runner/work/261017-toontown-dev/261017-toontown-dev/crates/fx)
+[1m[92m   Compiling[0m tt-colour v0.0.1 (/Users/runner/work/261017-toontown-dev/261017-toontown-dev/crates/colour)
+[1m[92m   Compiling[0m tt-persist v0.0.1 (/Users/runner/work/261017-toontown-dev/261017-toontown-dev/crates/persist)
+[1m[92m   Compiling[0m tt-render v0.0.1 (/Users/runner/work/261017-toontown-dev/261017-toontown-dev/crates/render)
+[1m[92m   Compiling[0m tt-io v0.0.1 (/Users/runner/work/261017-toontown-dev/261017-toontown-dev/crates/io)
+[1m[92m   Compiling[0m tt-registry v0.0.1 (/Users/runner/work/261017-toontown-dev/261017-toontown-dev/crates/registry)
+[1m[92m   Compiling[0m tt-audio v0.0.1 (/Users/runner/work/261017-toontown-dev/261017-toontown-dev/crates/audio)
+[1m[92m   Compiling[0m tt-lipsync v0.0.1 (/Users/runner/work/261017-toontown-dev/261017-toontown-dev/crates/lipsync)
+[1m[92m   Compiling[0m tt-executor v0.0.1 (/Users/runner/work/261017-toontown-dev/261017-toontown-dev/crates/executor)
+[1m[92m   Compiling[0m tt-engine v0.0.1 (/Users/runner/work/261017-toontown-dev/261017-toontown-dev/crates/engine)
+[1m[92m   Compiling[0m tt-mcp v0.0.1 (/Users/runner/work/261017-toontown-dev/261017-toontown-dev/crates/mcp)
+[1m[92m    Finished[0m `release` profile [optimized + debuginfo] target(s) in 3m 26s
+[1m[92m     Running[0m tests/c14_r3_history_r1.rs (target/release/deps/c14_r3_history_r1-0049515bdbf6b201)
+
+running 1 test
+{"seed":"0xc12020261019a571","operations":10000,"replayOperations":10000,"editsUndoRedoCreateRestoreDryRun":[5472,3911,528,1,1690,534],"documentRev":11231,"durationSeconds":29.137240708,"oracle":"independent before/after metadata stack; exact canonical all-entry byte checks every 100 operations; full fresh executor replay"}
+test ten_thousand_history_operations_match_independent_content_oracle_and_replay ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 29.96s
+
+[1m[92m     Running[0m tests/c14_r3_history_r3.rs (target/release/deps/c14_r3_history_r3-bb5f618fd68f7f09)
+
+running 1 test
+{"seed":"0xc12320261019b683","operations":10000,"replayOperations":10000,"editsUndoRedoCreateRestoreDryRun":[5494,3902,470,1,1724,511],"documentRev":11177,"durationSeconds":25.428830542,"oracle":"independent before/after metadata stack; exact canonical all-entry byte checks every 100 operations; full fresh executor replay"}
+test ten_thousand_history_operations_match_independent_content_oracle_and_replay ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 26.34s
+

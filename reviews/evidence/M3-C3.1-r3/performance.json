@@ -1,0 +1,1458 @@
+{
+  "head": "9d42034ab37cc2c6e904d0e4bceba3fe975a7d92",
+  "run": 41689238994,
+  "jobs": [
+    {
+      "name": "measurements release (macos-latest)",
+      "seconds": 599.0,
+      "conclusion": "success"
+    },
+    {
+      "name": "check (macos-latest)",
+      "seconds": 1980.0,
+      "conclusion": "success"
+    },
+    {
+      "name": "m3 properties release (macos-latest)",
+      "seconds": 110.0,
+      "conclusion": "success"
+    },
+    {
+      "name": "headless release (windows-latest)",
+      "seconds": 2834.0,
+      "conclusion": "success"
+    },
+    {
+      "name": "check properties (windows-latest)",
+      "seconds": 2180.0,
+      "conclusion": "success"
+    },
+    {
+      "name": "headless release (macos-latest)",
+      "seconds": 1498.0,
+      "conclusion": "success"
+    },
+    {
+      "name": "history oracles release (macos-latest)",
+      "seconds": 903.0,
+      "conclusion": "success"
+    },
+    {
+      "name": "raster determinism (macos-latest)",
+      "seconds": 155.0,
+      "conclusion": "success"
+    },
+    {
+      "name": "raster determinism (ubuntu-latest)",
+      "seconds": 110.0,
+      "conclusion": "success"
+    },
+    {
+      "name": "e2 release (macos-latest)",
+      "seconds": 315.0,
+      "conclusion": "success"
+    },
+    {
+      "name": "check properties (macos-latest)",
+      "seconds": 1593.0,
+      "conclusion": "success"
+    },
+    {
+      "name": "check (windows-latest)",
+      "seconds": 2719.0,
+      "conclusion": "success"
+    },
+    {
+      "name": "review properties release (macos-latest)",
+      "seconds": 1665.0,
+      "conclusion": "success"
+    },
+    {
+      "name": "e2 release (windows-latest)",
+      "seconds": 474.0,
+      "conclusion": "success"
+    },
+    {
+      "name": "measurements release (windows-latest)",
+      "seconds": 1063.0,
+      "conclusion": "success"
+    },
+    {
+      "name": "headless without a display (ubuntu)",
+      "seconds": 468.0,
+      "conclusion": "success"
+    },
+    {
+      "name": "review properties release (windows-latest)",
+      "seconds": 1991.0,
+      "conclusion": "success"
+    },
+    {
+      "name": "bundle (macos-latest)",
+      "seconds": 453.0,
+      "conclusion": "success"
+    },
+    {
+      "name": "m3 properties release (windows-latest)",
+      "seconds": 233.0,
+      "conclusion": "success"
+    },
+    {
+      "name": "raster determinism (windows-latest)",
+      "seconds": 268.0,
+      "conclusion": "success"
+    },
+    {
+      "name": "bundle (windows-latest)",
+      "seconds": 818.0,
+      "conclusion": "success"
+    },
+    {
+      "name": "history oracles release (windows-latest)",
+      "seconds": 873.0,
+      "conclusion": "success"
+    }
+  ],
+  "c31": [
+    {
+      "os": "windows",
+      "case": "read one 100k column",
+      "seconds": 0.0023749,
+      "baseline": "M3-C3.1-r1",
+      "previousSeconds": 0.0018756,
+      "ratio": 1.2662081467263808,
+      "outcome": "ok",
+      "revisionUnchanged": true
+    },
+    {
+      "os": "windows",
+      "case": "cycle 999 x 100 frames",
+      "seconds": 0.022926,
+      "baseline": "M3-C3.1-r1",
+      "previousSeconds": 0.0198807,
+      "ratio": 1.1531787110111815,
+      "outcome": "ok",
+      "revisionUnchanged": false
+    },
+    {
+      "os": "windows",
+      "case": "cycle past the scene limit",
+      "seconds": 0.0015571,
+      "baseline": "M3-C3.1-r1",
+      "previousSeconds": 0.0013467,
+      "ratio": 1.1562337565901835,
+      "outcome": "doc.limitExceeded",
+      "revisionUnchanged": true
+    },
+    {
+      "os": "windows",
+      "case": "set exposure on a tenth of the columns",
+      "seconds": 0.1393183,
+      "baseline": "M3-C3.1-r1",
+      "previousSeconds": 0.0890915,
+      "ratio": 1.563766464814264,
+      "outcome": "ok",
+      "revisionUnchanged": false
+    },
+    {
+      "os": "windows",
+      "case": "read the whole sheet",
+      "seconds": 0.2114257,
+      "baseline": "M3-C3.1-r1",
+      "previousSeconds": 0.1473632,
+      "ratio": 1.4347252231221905,
+      "outcome": "ok",
+      "revisionUnchanged": true
+    },
+    {
+      "os": "windows",
+      "case": "element list",
+      "seconds": 0.002608,
+      "baseline": "M3-C3.1-r1",
+      "previousSeconds": 0.0022237,
+      "ratio": 1.1728200746503576,
+      "outcome": "ok",
+      "revisionUnchanged": true
+    },
+    {
+      "os": "windows",
+      "case": "unused drawings of the scene",
+      "seconds": 0.2488699,
+      "baseline": "M3-C3.1-r1",
+      "previousSeconds": 0.1581687,
+      "ratio": 1.573445947270225,
+      "outcome": "ok",
+      "revisionUnchanged": true
+    },
+    {
+      "os": "windows",
+      "case": "remove exposure on every column",
+      "seconds": 1.4073128,
+      "baseline": "M3-C3.1-r1",
+      "previousSeconds": 0.8493979,
+      "ratio": 1.6568357421180342,
+      "outcome": "ok",
+      "revisionUnchanged": false
+    },
+    {
+      "os": "windows",
+      "case": "insert a cell in all columns",
+      "seconds": 1.3634469,
+      "baseline": "M3-C3.1-r1",
+      "previousSeconds": 1.1697641,
+      "ratio": 1.1655742384297825,
+      "outcome": "ok",
+      "revisionUnchanged": false
+    },
+    {
+      "os": "windows",
+      "case": "set every exposure to 9999 frames on every column",
+      "seconds": 0.0050157,
+      "baseline": "M3-C3.1-r1",
+      "previousSeconds": 0.0046339,
+      "ratio": 1.0823928008804677,
+      "outcome": "limit.exceeded",
+      "revisionUnchanged": true
+    },
+    {
+      "os": "windows",
+      "case": "read one 100k column",
+      "seconds": 0.0023749,
+      "baseline": "M3-C3.1-r2",
+      "previousSeconds": 0.0015887,
+      "ratio": 1.4948700195128093,
+      "outcome": "ok",
+      "revisionUnchanged": true
+    },
+    {
+      "os": "windows",
+      "case": "cycle 999 x 100 frames",
+      "seconds": 0.022926,
+      "baseline": "M3-C3.1-r2",
+      "previousSeconds": 0.0166352,
+      "ratio": 1.3781619697989804,
+      "outcome": "ok",
+      "revisionUnchanged": false
+    },
+    {
+      "os": "windows",
+      "case": "cycle past the scene limit",
+      "seconds": 0.0015571,
+      "baseline": "M3-C3.1-r2",
+      "previousSeconds": 0.0015968,
+      "ratio": 0.9751377755511023,
+      "outcome": "doc.limitExceeded",
+      "revisionUnchanged": true
+    },
+    {
+      "os": "windows",
+      "case": "set exposure on a tenth of the columns",
+      "seconds": 0.1393183,
+      "baseline": "M3-C3.1-r2",
+      "previousSeconds": 0.0918926,
+      "ratio": 1.5160992288824127,
+      "outcome": "ok",
+      "revisionUnchanged": false
+    },
+    {
+      "os": "windows",
+      "case": "read the whole sheet",
+      "seconds": 0.2114257,
+      "baseline": "M3-C3.1-r2",
+      "previousSeconds": 0.1385797,
+      "ratio": 1.5256614063964635,
+      "outcome": "ok",
+      "revisionUnchanged": true
+    },
+    {
+      "os": "windows",
+      "case": "element list",
+      "seconds": 0.002608,
+      "baseline": "M3-C3.1-r2",
+      "previousSeconds": 0.0018783,
+      "ratio": 1.3884895916520257,
+      "outcome": "ok",
+      "revisionUnchanged": true
+    },
+    {
+      "os": "windows",
+      "case": "unused drawings of the scene",
+      "seconds": 0.2488699,
+      "baseline": "M3-C3.1-r2",
+      "previousSeconds": 0.1227762,
+      "ratio": 2.0270207092254036,
+      "outcome": "ok",
+      "revisionUnchanged": true
+    },
+    {
+      "os": "windows",
+      "case": "remove exposure on every column",
+      "seconds": 1.4073128,
+      "baseline": "M3-C3.1-r2",
+      "previousSeconds": 0.7696129,
+      "ratio": 1.8285982472487141,
+      "outcome": "ok",
+      "revisionUnchanged": false
+    },
+    {
+      "os": "windows",
+      "case": "insert a cell in all columns",
+      "seconds": 1.3634469,
+      "baseline": "M3-C3.1-r2",
+      "previousSeconds": 0.7506549,
+      "ratio": 1.8163431691447027,
+      "outcome": "ok",
+      "revisionUnchanged": false
+    },
+    {
+      "os": "windows",
+      "case": "set every exposure to 9999 frames on every column",
+      "seconds": 0.0050157,
+      "baseline": "M3-C3.1-r2",
+      "previousSeconds": 0.0036493,
+      "ratio": 1.3744279724878743,
+      "outcome": "limit.exceeded",
+      "revisionUnchanged": true
+    },
+    {
+      "os": "macos",
+      "case": "read one 100k column",
+      "seconds": 0.002663792,
+      "baseline": "M3-C3.1-r1",
+      "previousSeconds": 0.001407333,
+      "ratio": 1.8927943848399773,
+      "outcome": "ok",
+      "revisionUnchanged": true
+    },
+    {
+      "os": "macos",
+      "case": "cycle 999 x 100 frames",
+      "seconds": 0.018127792,
+      "baseline": "M3-C3.1-r1",
+      "previousSeconds": 0.015389792,
+      "ratio": 1.1779101367971705,
+      "outcome": "ok",
+      "revisionUnchanged": false
+    },
+    {
+      "os": "macos",
+      "case": "cycle past the scene limit",
+      "seconds": 0.000843958,
+      "baseline": "M3-C3.1-r1",
+      "previousSeconds": 0.000861417,
+      "ratio": 0.9797322318923356,
+      "outcome": "doc.limitExceeded",
+      "revisionUnchanged": true
+    },
+    {
+      "os": "macos",
+      "case": "set exposure on a tenth of the columns",
+      "seconds": 0.103151333,
+      "baseline": "M3-C3.1-r1",
+      "previousSeconds": 0.084833375,
+      "ratio": 1.2159286719407307,
+      "outcome": "ok",
+      "revisionUnchanged": false
+    },
+    {
+      "os": "macos",
+      "case": "read the whole sheet",
+      "seconds": 0.243650708,
+      "baseline": "M3-C3.1-r1",
+      "previousSeconds": 0.273228042,
+      "ratio": 0.8917485416815306,
+      "outcome": "ok",
+      "revisionUnchanged": true
+    },
+    {
+      "os": "macos",
+      "case": "element list",
+      "seconds": 0.001844166,
+      "baseline": "M3-C3.1-r1",
+      "previousSeconds": 0.001889666,
+      "ratio": 0.975921670813784,
+      "outcome": "ok",
+      "revisionUnchanged": true
+    },
+    {
+      "os": "macos",
+      "case": "unused drawings of the scene",
+      "seconds": 0.239037458,
+      "baseline": "M3-C3.1-r1",
+      "previousSeconds": 0.302335458,
+      "ratio": 0.7906365319545152,
+      "outcome": "ok",
+      "revisionUnchanged": true
+    },
+    {
+      "os": "macos",
+      "case": "remove exposure on every column",
+      "seconds": 1.345559208,
+      "baseline": "M3-C3.1-r1",
+      "previousSeconds": 1.500451542,
+      "ratio": 0.8967695192651547,
+      "outcome": "ok",
+      "revisionUnchanged": false
+    },
+    {
+      "os": "macos",
+      "case": "insert a cell in all columns",
+      "seconds": 0.89172375,
+      "baseline": "M3-C3.1-r1",
+      "previousSeconds": 1.24102,
+      "ratio": 0.7185409985334644,
+      "outcome": "ok",
+      "revisionUnchanged": false
+    },
+    {
+      "os": "macos",
+      "case": "set every exposure to 9999 frames on every column",
+      "seconds": 0.002375,
+      "baseline": "M3-C3.1-r1",
+      "previousSeconds": 0.005984167,
+      "ratio": 0.3968806351828082,
+      "outcome": "limit.exceeded",
+      "revisionUnchanged": true
+    },
+    {
+      "os": "macos",
+      "case": "read one 100k column",
+      "seconds": 0.002663792,
+      "baseline": "M3-C3.1-r2",
+      "previousSeconds": 0.001161166,
+      "ratio": 2.294066481450542,
+      "outcome": "ok",
+      "revisionUnchanged": true
+    },
+    {
+      "os": "macos",
+      "case": "cycle 999 x 100 frames",
+      "seconds": 0.018127792,
+      "baseline": "M3-C3.1-r2",
+      "previousSeconds": 0.012398292,
+      "ratio": 1.4621201049305823,
+      "outcome": "ok",
+      "revisionUnchanged": false
+    },
+    {
+      "os": "macos",
+      "case": "cycle past the scene limit",
+      "seconds": 0.000843958,
+      "baseline": "M3-C3.1-r2",
+      "previousSeconds": 0.000693375,
+      "ratio": 1.2171739679105824,
+      "outcome": "doc.limitExceeded",
+      "revisionUnchanged": true
+    },
+    {
+      "os": "macos",
+      "case": "set exposure on a tenth of the columns",
+      "seconds": 0.103151333,
+      "baseline": "M3-C3.1-r2",
+      "previousSeconds": 0.084521167,
+      "ratio": 1.2204201226895033,
+      "outcome": "ok",
+      "revisionUnchanged": false
+    },
+    {
+      "os": "macos",
+      "case": "read the whole sheet",
+      "seconds": 0.243650708,
+      "baseline": "M3-C3.1-r2",
+      "previousSeconds": 0.212238208,
+      "ratio": 1.148005867068007,
+      "outcome": "ok",
+      "revisionUnchanged": true
+    },
+    {
+      "os": "macos",
+      "case": "element list",
+      "seconds": 0.001844166,
+      "baseline": "M3-C3.1-r2",
+      "previousSeconds": 0.0011595,
+      "ratio": 1.59048382923674,
+      "outcome": "ok",
+      "revisionUnchanged": true
+    },
+    {
+      "os": "macos",
+      "case": "unused drawings of the scene",
+      "seconds": 0.239037458,
+      "baseline": "M3-C3.1-r2",
+      "previousSeconds": 0.209550833,
+      "ratio": 1.140713470702357,
+      "outcome": "ok",
+      "revisionUnchanged": true
+    },
+    {
+      "os": "macos",
+      "case": "remove exposure on every column",
+      "seconds": 1.345559208,
+      "baseline": "M3-C3.1-r2",
+      "previousSeconds": 1.0257535,
+      "ratio": 1.3117763751232632,
+      "outcome": "ok",
+      "revisionUnchanged": false
+    },
+    {
+      "os": "macos",
+      "case": "insert a cell in all columns",
+      "seconds": 0.89172375,
+      "baseline": "M3-C3.1-r2",
+      "previousSeconds": 0.66637375,
+      "ratio": 1.3381735850189178,
+      "outcome": "ok",
+      "revisionUnchanged": false
+    },
+    {
+      "os": "macos",
+      "case": "set every exposure to 9999 frames on every column",
+      "seconds": 0.002375,
+      "baseline": "M3-C3.1-r2",
+      "previousSeconds": 0.002204042,
+      "ratio": 1.077565672523482,
+      "outcome": "limit.exceeded",
+      "revisionUnchanged": true
+    }
+  ],
+  "m2Baseline": {
+    "windows": {
+      "strokeAddSeconds": {
+        "m2Median": 21.3949171,
+        "currentMedian": 20.3575099,
+        "ratio": 0.951511511114946
+      },
+      "undoSeconds": {
+        "m2Median": 15.1897376,
+        "currentMedian": 12.9286083,
+        "ratio": 0.851140990085306
+      },
+      "redoSeconds": {
+        "m2Median": 12.9866124,
+        "currentMedian": 11.6426445,
+        "ratio": 0.8965112795697205
+      },
+      "dryRunSeconds": {
+        "m2Median": 19.8106489,
+        "currentMedian": 18.4353468,
+        "ratio": 0.9305776349405698
+      },
+      "liveBytes": {
+        "m2Median": 941439248.0,
+        "currentMedian": 941439437.0,
+        "ratio": 1.0000002007564486
+      },
+      "rssBytes": {
+        "m2Median": 1993224192.0,
+        "currentMedian": 2124824576.0,
+        "ratio": 1.066023874548679
+      },
+      "queuedRead": {
+        "longCommandSeconds": {
+          "m2Median": 22.7407183,
+          "currentMedian": 21.9826275,
+          "ratio": 0.9666637267126253
+        },
+        "readSentAtSeconds": {
+          "m2Median": 0.0502841,
+          "currentMedian": 0.0503343,
+          "ratio": 1.0009983275031273
+        },
+        "readSeconds": {
+          "m2Median": 22.6908019,
+          "currentMedian": 21.9328324,
+          "ratio": 0.9665957376323486
+        },
+        "readAnsweredAfterLongSeconds": {
+          "m2Median": 0.0007698999999981027,
+          "currentMedian": 0.0007067999999996744,
+          "ratio": 0.9180413040673024
+        }
+      },
+      "maintenance": {
+        "longCommandSeconds": {
+          "m2Median": 22.3936131,
+          "currentMedian": 20.9509572,
+          "ratio": 0.9355773499543046
+        },
+        "requestedAtSeconds": {
+          "m2Median": 0.0503143,
+          "currentMedian": 0.0503347,
+          "ratio": 1.0004054513329212
+        },
+        "behindLongSeconds": {
+          "m2Median": 22.3571715,
+          "currentMedian": 20.9100821,
+          "ratio": 0.9352740394731954
+        },
+        "autosaveSnapshotSeconds": {
+          "m2Median": 7.51e-05,
+          "currentMedian": 0.0001104,
+          "ratio": 1.4700399467376832
+        },
+        "heartbeatSeconds": {
+          "m2Median": 0.0129546,
+          "currentMedian": 0.008237,
+          "ratio": 0.6358359192873574
+        },
+        "idleSeconds": {
+          "m2Median": 0.0107835,
+          "currentMedian": 0.0078849,
+          "ratio": 0.7312004451244958
+        }
+      }
+    },
+    "macos": {
+      "strokeAddSeconds": {
+        "m2Median": 14.049530417,
+        "currentMedian": 11.327308292,
+        "ratio": 0.806241059722103
+      },
+      "undoSeconds": {
+        "m2Median": 8.828695125,
+        "currentMedian": 8.700233333,
+        "ratio": 0.9854495154514694
+      },
+      "redoSeconds": {
+        "m2Median": 7.530100792,
+        "currentMedian": 7.346694125,
+        "ratio": 0.9756435309345591
+      },
+      "dryRunSeconds": {
+        "m2Median": 13.190559417,
+        "currentMedian": 12.45552925,
+        "ratio": 0.9442760429059065
+      },
+      "liveBytes": {
+        "m2Median": 941639480.0,
+        "currentMedian": 941639669.0,
+        "ratio": 1.0000002007137594
+      },
+      "rssBytes": {
+        "m2Median": 2819964928.0,
+        "currentMedian": 2773319680.0,
+        "ratio": 0.983458926195553
+      },
+      "queuedRead": {
+        "longCommandSeconds": {
+          "m2Median": 13.839954792,
+          "currentMedian": 11.725994333,
+          "ratio": 0.8472566933367479
+        },
+        "readSentAtSeconds": {
+          "m2Median": 0.13197175,
+          "currentMedian": 0.108943791,
+          "ratio": 0.8255084213098637
+        },
+        "readSeconds": {
+          "m2Median": 13.77575325,
+          "currentMedian": 11.617631458,
+          "ratio": 0.8433391080084859
+        },
+        "readAnsweredAfterLongSeconds": {
+          "m2Median": 0.0010526249999980308,
+          "currentMedian": 0.0009482920000003503,
+          "ratio": 0.9008830305209589
+        }
+      },
+      "maintenance": {
+        "longCommandSeconds": {
+          "m2Median": 13.062405,
+          "currentMedian": 12.365745375,
+          "ratio": 0.9466668178639385
+        },
+        "requestedAtSeconds": {
+          "m2Median": 0.132945458,
+          "currentMedian": 0.140796083,
+          "ratio": 1.059051472070599
+        },
+        "behindLongSeconds": {
+          "m2Median": 13.015972958,
+          "currentMedian": 12.247137042,
+          "ratio": 0.9409313526940412
+        },
+        "autosaveSnapshotSeconds": {
+          "m2Median": 0.000439375,
+          "currentMedian": 0.000279042,
+          "ratio": 0.6350884779516359
+        },
+        "heartbeatSeconds": {
+          "m2Median": 0.015104333,
+          "currentMedian": 0.025889542,
+          "ratio": 1.7140473531668035
+        },
+        "idleSeconds": {
+          "m2Median": 0.007080958,
+          "currentMedian": 0.007077583,
+          "ratio": 0.9995233695779583
+        }
+      }
+    }
+  },
+  "planar": {
+    "windows": {
+      "m2": {
+        "budgetUnits": 1200000000,
+        "os": "windows",
+        "cases": [
+          {
+            "name": "100000-small-curves-plus-one",
+            "inputStrokes": 100001,
+            "runs": [
+              {
+                "wallMs": 4426.0871,
+                "units": 931042320,
+                "outcome": "ok",
+                "zones": 0,
+                "strokes": 100001
+              },
+              {
+                "wallMs": 4377.3047,
+                "units": 931042320,
+                "outcome": "ok",
+                "zones": 0,
+                "strokes": 100001
+              }
+            ]
+          },
+          {
+            "name": "grid-200x200-crossing-lines",
+            "inputStrokes": 400,
+            "runs": [
+              {
+                "wallMs": 1229.8265,
+                "units": 500462214,
+                "outcome": "ok",
+                "zones": 39601,
+                "strokes": 80400
+              },
+              {
+                "wallMs": 1199.5734,
+                "units": 500462214,
+                "outcome": "ok",
+                "zones": 39601,
+                "strokes": 80400
+              }
+            ]
+          },
+          {
+            "name": "grid-600x600-crossing-lines",
+            "inputStrokes": 1200,
+            "runs": [
+              {
+                "wallMs": 2398.0331,
+                "units": 1785763300,
+                "outcome": "limit.exceeded: the planar map needs more than 1200000000 units of work",
+                "zones": 0,
+                "strokes": 0
+              },
+              {
+                "wallMs": 2472.9524,
+                "units": 1785763300,
+                "outcome": "limit.exceeded: the planar map needs more than 1200000000 units of work",
+                "zones": 0,
+                "strokes": 0
+              }
+            ]
+          },
+          {
+            "name": "10000-concentric-squares",
+            "inputStrokes": 10000,
+            "runs": [
+              {
+                "wallMs": 3717.2334,
+                "units": 1200160000,
+                "outcome": "limit.exceeded: the planar map needs more than 1200000000 units of work",
+                "zones": 0,
+                "strokes": 0
+              },
+              {
+                "wallMs": 3714.1088,
+                "units": 1200160000,
+                "outcome": "limit.exceeded: the planar map needs more than 1200000000 units of work",
+                "zones": 0,
+                "strokes": 0
+              }
+            ]
+          },
+          {
+            "name": "20000-separate-closed-squares",
+            "inputStrokes": 20000,
+            "runs": [
+              {
+                "wallMs": 525.4731,
+                "units": 137183593,
+                "outcome": "ok",
+                "zones": 20000,
+                "strokes": 20000
+              },
+              {
+                "wallMs": 518.6945,
+                "units": 137183593,
+                "outcome": "ok",
+                "zones": 20000,
+                "strokes": 20000
+              }
+            ]
+          },
+          {
+            "name": "1500-random-crossing-lines",
+            "inputStrokes": 1500,
+            "runs": [
+              {
+                "wallMs": 2201.458,
+                "units": 1782205323,
+                "outcome": "limit.exceeded: the planar map needs more than 1200000000 units of work",
+                "zones": 0,
+                "strokes": 0
+              },
+              {
+                "wallMs": 2217.7761,
+                "units": 1782205323,
+                "outcome": "limit.exceeded: the planar map needs more than 1200000000 units of work",
+                "zones": 0,
+                "strokes": 0
+              }
+            ]
+          },
+          {
+            "name": "5000-point-random-scribble",
+            "inputStrokes": 1,
+            "runs": [
+              {
+                "wallMs": 513.5852,
+                "units": 1515542416,
+                "outcome": "limit.exceeded: the planar map needs more than 1200000000 units of work",
+                "zones": 0,
+                "strokes": 0
+              },
+              {
+                "wallMs": 504.66630000000004,
+                "units": 1515542416,
+                "outcome": "limit.exceeded: the planar map needs more than 1200000000 units of work",
+                "zones": 0,
+                "strokes": 0
+              }
+            ]
+          },
+          {
+            "name": "100000-point-dense-zigzag",
+            "inputStrokes": 1,
+            "runs": [
+              {
+                "wallMs": 59.9814,
+                "units": 15000482029,
+                "outcome": "limit.exceeded: the planar map needs more than 1200000000 units of work",
+                "zones": 0,
+                "strokes": 0
+              },
+              {
+                "wallMs": 57.7398,
+                "units": 15000482029,
+                "outcome": "limit.exceeded: the planar map needs more than 1200000000 units of work",
+                "zones": 0,
+                "strokes": 0
+              }
+            ]
+          },
+          {
+            "name": "100000-coincident-outlines-plus-one",
+            "inputStrokes": 100001,
+            "runs": [
+              {
+                "wallMs": 871.9458,
+                "units": 60003200026,
+                "outcome": "limit.exceeded: the planar map needs more than 1200000000 units of work",
+                "zones": 0,
+                "strokes": 0
+              },
+              {
+                "wallMs": 854.2824999999999,
+                "units": 60003200026,
+                "outcome": "limit.exceeded: the planar map needs more than 1200000000 units of work",
+                "zones": 0,
+                "strokes": 0
+              }
+            ]
+          }
+        ],
+        "worst": {
+          "name": "100000-small-curves-plus-one",
+          "wallMs": 4426.0871
+        }
+      },
+      "current": {
+        "budgetUnits": 1200000000,
+        "os": "windows",
+        "cases": [
+          {
+            "name": "100000-small-curves-plus-one",
+            "inputStrokes": 100001,
+            "runs": [
+              {
+                "wallMs": 5555.5281,
+                "units": 931042320,
+                "outcome": "ok",
+                "zones": 0,
+                "strokes": 100001
+              },
+              {
+                "wallMs": 5525.8333,
+                "units": 931042320,
+                "outcome": "ok",
+                "zones": 0,
+                "strokes": 100001
+              }
+            ]
+          },
+          {
+            "name": "grid-200x200-crossing-lines",
+            "inputStrokes": 400,
+            "runs": [
+              {
+                "wallMs": 1772.9477,
+                "units": 500462214,
+                "outcome": "ok",
+                "zones": 39601,
+                "strokes": 80400
+              },
+              {
+                "wallMs": 1721.0901999999999,
+                "units": 500462214,
+                "outcome": "ok",
+                "zones": 39601,
+                "strokes": 80400
+              }
+            ]
+          },
+          {
+            "name": "grid-600x600-crossing-lines",
+            "inputStrokes": 1200,
+            "runs": [
+              {
+                "wallMs": 3469.491,
+                "units": 1785763300,
+                "outcome": "limit.exceeded: the planar map needs more than 1200000000 units of work",
+                "zones": 0,
+                "strokes": 0
+              },
+              {
+                "wallMs": 3496.8827,
+                "units": 1785763300,
+                "outcome": "limit.exceeded: the planar map needs more than 1200000000 units of work",
+                "zones": 0,
+                "strokes": 0
+              }
+            ]
+          },
+          {
+            "name": "10000-concentric-squares",
+            "inputStrokes": 10000,
+            "runs": [
+              {
+                "wallMs": 6486.6089999999995,
+                "units": 1200160000,
+                "outcome": "limit.exceeded: the planar map needs more than 1200000000 units of work",
+                "zones": 0,
+                "strokes": 0
+              },
+              {
+                "wallMs": 6510.3809,
+                "units": 1200160000,
+                "outcome": "limit.exceeded: the planar map needs more than 1200000000 units of work",
+                "zones": 0,
+                "strokes": 0
+              }
+            ]
+          },
+          {
+            "name": "20000-separate-closed-squares",
+            "inputStrokes": 20000,
+            "runs": [
+              {
+                "wallMs": 700.3607,
+                "units": 137183593,
+                "outcome": "ok",
+                "zones": 20000,
+                "strokes": 20000
+              },
+              {
+                "wallMs": 688.3931,
+                "units": 137183593,
+                "outcome": "ok",
+                "zones": 20000,
+                "strokes": 20000
+              }
+            ]
+          },
+          {
+            "name": "1500-random-crossing-lines",
+            "inputStrokes": 1500,
+            "runs": [
+              {
+                "wallMs": 3052.3179,
+                "units": 1782205323,
+                "outcome": "limit.exceeded: the planar map needs more than 1200000000 units of work",
+                "zones": 0,
+                "strokes": 0
+              },
+              {
+                "wallMs": 3001.1603999999998,
+                "units": 1782205323,
+                "outcome": "limit.exceeded: the planar map needs more than 1200000000 units of work",
+                "zones": 0,
+                "strokes": 0
+              }
+            ]
+          },
+          {
+            "name": "5000-point-random-scribble",
+            "inputStrokes": 1,
+            "runs": [
+              {
+                "wallMs": 804.4943,
+                "units": 1515542416,
+                "outcome": "limit.exceeded: the planar map needs more than 1200000000 units of work",
+                "zones": 0,
+                "strokes": 0
+              },
+              {
+                "wallMs": 809.0337,
+                "units": 1515542416,
+                "outcome": "limit.exceeded: the planar map needs more than 1200000000 units of work",
+                "zones": 0,
+                "strokes": 0
+              }
+            ]
+          },
+          {
+            "name": "100000-point-dense-zigzag",
+            "inputStrokes": 1,
+            "runs": [
+              {
+                "wallMs": 80.5074,
+                "units": 15000482029,
+                "outcome": "limit.exceeded: the planar map needs more than 1200000000 units of work",
+                "zones": 0,
+                "strokes": 0
+              },
+              {
+                "wallMs": 77.841,
+                "units": 15000482029,
+                "outcome": "limit.exceeded: the planar map needs more than 1200000000 units of work",
+                "zones": 0,
+                "strokes": 0
+              }
+            ]
+          },
+          {
+            "name": "100000-coincident-outlines-plus-one",
+            "inputStrokes": 100001,
+            "runs": [
+              {
+                "wallMs": 1044.249,
+                "units": 60003200026,
+                "outcome": "limit.exceeded: the planar map needs more than 1200000000 units of work",
+                "zones": 0,
+                "strokes": 0
+              },
+              {
+                "wallMs": 1000.5366,
+                "units": 60003200026,
+                "outcome": "limit.exceeded: the planar map needs more than 1200000000 units of work",
+                "zones": 0,
+                "strokes": 0
+              }
+            ]
+          }
+        ],
+        "worst": {
+          "name": "10000-concentric-squares",
+          "wallMs": 6510.3809
+        }
+      }
+    },
+    "macos": {
+      "m2": {
+        "budgetUnits": 1200000000,
+        "os": "macos",
+        "cases": [
+          {
+            "name": "100000-small-curves-plus-one",
+            "inputStrokes": 100001,
+            "runs": [
+              {
+                "wallMs": 5974.517374999999,
+                "units": 931042320,
+                "outcome": "ok",
+                "zones": 0,
+                "strokes": 100001
+              },
+              {
+                "wallMs": 4676.664083000001,
+                "units": 931042320,
+                "outcome": "ok",
+                "zones": 0,
+                "strokes": 100001
+              }
+            ]
+          },
+          {
+            "name": "grid-200x200-crossing-lines",
+            "inputStrokes": 400,
+            "runs": [
+              {
+                "wallMs": 1081.638667,
+                "units": 500462214,
+                "outcome": "ok",
+                "zones": 39601,
+                "strokes": 80400
+              },
+              {
+                "wallMs": 1052.890208,
+                "units": 500462214,
+                "outcome": "ok",
+                "zones": 39601,
+                "strokes": 80400
+              }
+            ]
+          },
+          {
+            "name": "grid-600x600-crossing-lines",
+            "inputStrokes": 1200,
+            "runs": [
+              {
+                "wallMs": 2867.908,
+                "units": 1785763300,
+                "outcome": "limit.exceeded: the planar map needs more than 1200000000 units of work",
+                "zones": 0,
+                "strokes": 0
+              },
+              {
+                "wallMs": 2072.9304169999996,
+                "units": 1785763300,
+                "outcome": "limit.exceeded: the planar map needs more than 1200000000 units of work",
+                "zones": 0,
+                "strokes": 0
+              }
+            ]
+          },
+          {
+            "name": "10000-concentric-squares",
+            "inputStrokes": 10000,
+            "runs": [
+              {
+                "wallMs": 3237.0354159999997,
+                "units": 1200160000,
+                "outcome": "limit.exceeded: the planar map needs more than 1200000000 units of work",
+                "zones": 0,
+                "strokes": 0
+              },
+              {
+                "wallMs": 3325.091167,
+                "units": 1200160000,
+                "outcome": "limit.exceeded: the planar map needs more than 1200000000 units of work",
+                "zones": 0,
+                "strokes": 0
+              }
+            ]
+          },
+          {
+            "name": "20000-separate-closed-squares",
+            "inputStrokes": 20000,
+            "runs": [
+              {
+                "wallMs": 641.6134999999999,
+                "units": 137183593,
+                "outcome": "ok",
+                "zones": 20000,
+                "strokes": 20000
+              },
+              {
+                "wallMs": 374.15504100000004,
+                "units": 137183593,
+                "outcome": "ok",
+                "zones": 20000,
+                "strokes": 20000
+              }
+            ]
+          },
+          {
+            "name": "1500-random-crossing-lines",
+            "inputStrokes": 1500,
+            "runs": [
+              {
+                "wallMs": 2134.353167,
+                "units": 1782205323,
+                "outcome": "limit.exceeded: the planar map needs more than 1200000000 units of work",
+                "zones": 0,
+                "strokes": 0
+              },
+              {
+                "wallMs": 2029.643833,
+                "units": 1782205323,
+                "outcome": "limit.exceeded: the planar map needs more than 1200000000 units of work",
+                "zones": 0,
+                "strokes": 0
+              }
+            ]
+          },
+          {
+            "name": "5000-point-random-scribble",
+            "inputStrokes": 1,
+            "runs": [
+              {
+                "wallMs": 543.519042,
+                "units": 1515542416,
+                "outcome": "limit.exceeded: the planar map needs more than 1200000000 units of work",
+                "zones": 0,
+                "strokes": 0
+              },
+              {
+                "wallMs": 534.532458,
+                "units": 1515542416,
+                "outcome": "limit.exceeded: the planar map needs more than 1200000000 units of work",
+                "zones": 0,
+                "strokes": 0
+              }
+            ]
+          },
+          {
+            "name": "100000-point-dense-zigzag",
+            "inputStrokes": 1,
+            "runs": [
+              {
+                "wallMs": 80.123584,
+                "units": 15000482029,
+                "outcome": "limit.exceeded: the planar map needs more than 1200000000 units of work",
+                "zones": 0,
+                "strokes": 0
+              },
+              {
+                "wallMs": 33.67575,
+                "units": 15000482029,
+                "outcome": "limit.exceeded: the planar map needs more than 1200000000 units of work",
+                "zones": 0,
+                "strokes": 0
+              }
+            ]
+          },
+          {
+            "name": "100000-coincident-outlines-plus-one",
+            "inputStrokes": 100001,
+            "runs": [
+              {
+                "wallMs": 1768.668,
+                "units": 60003200026,
+                "outcome": "limit.exceeded: the planar map needs more than 1200000000 units of work",
+                "zones": 0,
+                "strokes": 0
+              },
+              {
+                "wallMs": 395.47862499999997,
+                "units": 60003200026,
+                "outcome": "limit.exceeded: the planar map needs more than 1200000000 units of work",
+                "zones": 0,
+                "strokes": 0
+              }
+            ]
+          }
+        ],
+        "worst": {
+          "name": "100000-small-curves-plus-one",
+          "wallMs": 5974.517374999999
+        }
+      },
+      "current": {
+        "budgetUnits": 1200000000,
+        "os": "macos",
+        "cases": [
+          {
+            "name": "100000-small-curves-plus-one",
+            "inputStrokes": 100001,
+            "runs": [
+              {
+                "wallMs": 4906.032416,
+                "units": 931042320,
+                "outcome": "ok",
+                "zones": 0,
+                "strokes": 100001
+              },
+              {
+                "wallMs": 3951.826833,
+                "units": 931042320,
+                "outcome": "ok",
+                "zones": 0,
+                "strokes": 100001
+              }
+            ]
+          },
+          {
+            "name": "grid-200x200-crossing-lines",
+            "inputStrokes": 400,
+            "runs": [
+              {
+                "wallMs": 855.3378339999999,
+                "units": 500462214,
+                "outcome": "ok",
+                "zones": 39601,
+                "strokes": 80400
+              },
+              {
+                "wallMs": 822.4751249999999,
+                "units": 500462214,
+                "outcome": "ok",
+                "zones": 39601,
+                "strokes": 80400
+              }
+            ]
+          },
+          {
+            "name": "grid-600x600-crossing-lines",
+            "inputStrokes": 1200,
+            "runs": [
+              {
+                "wallMs": 1647.9325000000001,
+                "units": 1785763300,
+                "outcome": "limit.exceeded: the planar map needs more than 1200000000 units of work",
+                "zones": 0,
+                "strokes": 0
+              },
+              {
+                "wallMs": 1708.9310420000002,
+                "units": 1785763300,
+                "outcome": "limit.exceeded: the planar map needs more than 1200000000 units of work",
+                "zones": 0,
+                "strokes": 0
+              }
+            ]
+          },
+          {
+            "name": "10000-concentric-squares",
+            "inputStrokes": 10000,
+            "runs": [
+              {
+                "wallMs": 2890.714584,
+                "units": 1200160000,
+                "outcome": "limit.exceeded: the planar map needs more than 1200000000 units of work",
+                "zones": 0,
+                "strokes": 0
+              },
+              {
+                "wallMs": 2691.284292,
+                "units": 1200160000,
+                "outcome": "limit.exceeded: the planar map needs more than 1200000000 units of work",
+                "zones": 0,
+                "strokes": 0
+              }
+            ]
+          },
+          {
+            "name": "20000-separate-closed-squares",
+            "inputStrokes": 20000,
+            "runs": [
+              {
+                "wallMs": 417.728833,
+                "units": 137183593,
+                "outcome": "ok",
+                "zones": 20000,
+                "strokes": 20000
+              },
+              {
+                "wallMs": 294.68979099999996,
+                "units": 137183593,
+                "outcome": "ok",
+                "zones": 20000,
+                "strokes": 20000
+              }
+            ]
+          },
+          {
+            "name": "1500-random-crossing-lines",
+            "inputStrokes": 1500,
+            "runs": [
+              {
+                "wallMs": 1747.826084,
+                "units": 1782205323,
+                "outcome": "limit.exceeded: the planar map needs more than 1200000000 units of work",
+                "zones": 0,
+                "strokes": 0
+              },
+              {
+                "wallMs": 1867.7655419999999,
+                "units": 1782205323,
+                "outcome": "limit.exceeded: the planar map needs more than 1200000000 units of work",
+                "zones": 0,
+                "strokes": 0
+              }
+            ]
+          },
+          {
+            "name": "5000-point-random-scribble",
+            "inputStrokes": 1,
+            "runs": [
+              {
+                "wallMs": 480.996625,
+                "units": 1515542416,
+                "outcome": "limit.exceeded: the planar map needs more than 1200000000 units of work",
+                "zones": 0,
+                "strokes": 0
+              },
+              {
+                "wallMs": 464.14666700000004,
+                "units": 1515542416,
+                "outcome": "limit.exceeded: the planar map needs more than 1200000000 units of work",
+                "zones": 0,
+                "strokes": 0
+              }
+            ]
+          },
+          {
+            "name": "100000-point-dense-zigzag",
+            "inputStrokes": 1,
+            "runs": [
+              {
+                "wallMs": 63.65541700000001,
+                "units": 15000482029,
+                "outcome": "limit.exceeded: the planar map needs more than 1200000000 units of work",
+                "zones": 0,
+                "strokes": 0
+              },
+              {
+                "wallMs": 30.750291999999998,
+                "units": 15000482029,
+                "outcome": "limit.exceeded: the planar map needs more than 1200000000 units of work",
+                "zones": 0,
+                "strokes": 0
+              }
+            ]
+          },
+          {
+            "name": "100000-coincident-outlines-plus-one",
+            "inputStrokes": 100001,
+            "runs": [
+              {
+                "wallMs": 1179.9520420000001,
+                "units": 60003200026,
+                "outcome": "limit.exceeded: the planar map needs more than 1200000000 units of work",
+                "zones": 0,
+                "strokes": 0
+              },
+              {
+                "wallMs": 335.41820900000005,
+                "units": 60003200026,
+                "outcome": "limit.exceeded: the planar map needs more than 1200000000 units of work",
+                "zones": 0,
+                "strokes": 0
+              }
+            ]
+          }
+        ],
+        "worst": {
+          "name": "100000-small-curves-plus-one",
+          "wallMs": 4906.032416
+        }
+      }
+    }
+  }
+}
