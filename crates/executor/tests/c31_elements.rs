@@ -523,3 +523,15 @@ fn patch_applies_the_owning_command_rules() {
     );
     assert_eq!(e.details["commandId"], "anim.transform.set");
 }
+
+#[test]
+fn current_position_changes_are_announced() {
+    let h = fixture();
+    let rx = h.subscribe();
+    ok(&h, "element.current.set", json!({ "elementId": BOB }));
+    ok(&h, "element.current.move", json!({ "direction": "next" }));
+    let ev: Vec<Value> = rx.try_iter().filter(|e| e.name == "cell.selection.changed").map(|e| e.payload).collect();
+    assert_eq!(ev.len(), 2, "{ev:?}");
+    assert_eq!(ev[0]["currentElementId"], id(&h, BOB));
+    assert_eq!(ev[1]["currentElementId"], id(&h, BG));
+}

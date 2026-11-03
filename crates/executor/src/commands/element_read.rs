@@ -535,6 +535,20 @@ pub(crate) struct SelectedResult {
     selected_ids: Vec<String>,
 }
 
+/// `cell.selection.changed` for a new current position (04 §17.4: "cell or row selection or current position").
+fn position_changed(cx: &mut Cx) {
+    let (elements, from, to) = match super::timing::selected_cells(cx) {
+        Some((e, a, b)) => (e.iter().map(|x| x.as_str().to_owned()).collect::<Vec<_>>(), as_u32(a), as_u32(b)),
+        None => (Vec::new(), 0, 0),
+    };
+    let current = cx.app().element.as_ref().map(|e| e.as_str().to_owned());
+    let frame = cx.app().frame;
+    cx.emit(
+        "cell.selection.changed",
+        json!({ "elementIds": elements, "from": from, "to": to, "currentElementId": current, "currentFrame": frame }),
+    );
+}
+
 fn set_rows(cx: &mut Cx, ids: Vec<String>) {
     cx.app_mut().set_selection("timeline", ids.clone());
     cx.app_mut().selections.insert("staging".to_owned(), ids);
@@ -715,7 +729,11 @@ pub(crate) fn element_current_set(cx: &mut Cx, p: ElementParams) -> Result<Curre
     if app.element.as_ref() != Some(&id) {
         app.drawing = None;
     }
+    let changed = app.element.as_ref() != Some(&id);
     app.element = Some(id.clone());
+    if changed {
+        position_changed(cx);
+    }
     Ok(CurrentResult { element_id: Some(id.as_str().to_owned()) })
 }
 
@@ -772,9 +790,13 @@ pub(crate) fn element_current_move(cx: &mut Cx, p: CurrentMoveParams) -> Result<
         (Some(i), Direction::Previous) => i.checked_sub(1).and_then(|j| order.get(j).cloned()).or(cur),
     };
     let app = cx.app_mut();
-    if app.element != next {
+    let changed = app.element != next;
+    if changed {
         app.drawing = None;
     }
     app.element.clone_from(&next);
+    if changed {
+        position_changed(cx);
+    }
     Ok(CurrentResult { element_id: next.map(|e| e.as_str().to_owned()) })
 }
