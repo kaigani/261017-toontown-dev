@@ -1,0 +1,174 @@
+//! Independent C3.1 review. Failing tests are intentional reproductions, never ignored.
+#![allow(clippy::unwrap_used, clippy::expect_used, clippy::panic, missing_docs, reason = "review tests")]
+mod common;
+use common::*;
+use serde_json::{Value, json};
+use tt_executor::{InvokeOptions, Status};
+const BOB: &str = "scene:\"Intro\"/element:\"Bob\"";
+const BG: &str = "scene:\"Intro\"/element:\"Background\"";
+const PEG: &str = "scene:\"Intro\"/element:\"Bob-P\"";
+
+#[test]
+fn timeline_colour_dry_run_restores_session() {
+    let h = fixture();
+    let before = ok(&h, "element.typeColour.get", json!({}));
+    let e = with(
+        &h,
+        "element.typeColour.set",
+        json!({"category":"pegs","colour":"#123456"}),
+        InvokeOptions { dry_run: true, ..Default::default() },
+    );
+    assert_eq!(e.status, Status::Ok, "{e:?}");
+    assert_eq!(ok(&h, "element.typeColour.get", json!({})), before, "dry run must write nothing");
+}
+#[test]
+fn timeline_colour_failing_atomic_batch_restores_session() {
+    let h = fixture();
+    let before = ok(&h, "element.typeColour.get", json!({}));
+    let e = batch(
+        &h,
+        json!({"atomic":true,"steps":[
+            {"id":"element.typeColour.set","params":{"category":"pegs","colour":"#123456"}},
+            {"id":"element.rename","params":{"elementId":BOB,"name":"bad.name"}}
+        ]}),
+    );
+    assert_ne!(e.status, Status::Ok, "{e:?}");
+    assert_eq!(ok(&h, "element.typeColour.get", json!({})), before, "failed atomic group leaked TimelineState");
+}
+#[test]
+fn delegated_hide_matches_command_current_position_and_event() {
+    let h = fixture();
+    ok(&h, "element.current.set", json!({"elementId":BOB}));
+    let rx = h.subscribe();
+    ok(&h, "doc.object.patch", json!({"targets":[BOB],"props":{"visibleInXsheet":false}}));
+    let current = ok(&h, "cell.selection.get", json!({}))["currentElementId"].clone();
+    assert_ne!(current, get(&h, BOB)["id"], "04 §10.2 / AG-02 must advance current element");
+    assert_eq!(
+        rx.try_iter().filter(|e| e.name == "element.state.changed").count(),
+        1,
+        "owning command event exactly once"
+    );
+}
+#[test]
+fn delegated_note_emits_owning_event() {
+    let h = fixture();
+    let rx = h.subscribe();
+    ok(&h, "doc.object.patch", json!({"targets":[BOB],"props":{"note":"review"}}));
+    assert_eq!(
+        rx.try_iter().filter(|e| e.name == "element.state.changed").count(),
+        1,
+        "AG-02 owning note command announces properties"
+    );
+}
+#[test]
+fn delegated_colour_normalizes_like_command() {
+    let direct = fixture();
+    let patch = fixture();
+    ok(&direct, "element.colour.set", json!({"elementIds":[BOB],"marker":"#aabbcc"}));
+    ok(&patch, "doc.object.patch", json!({"targets":[BOB],"props":{"markerColour":"#aabbcc"}}));
+    assert_eq!(get(&direct, BOB)["markerColour"], get(&patch, BOB)["markerColour"]);
+}
+#[test]
+fn clipboard_survives_deleted_source_element() {
+    let h = fixture();
+    ok(&h, "cell.clipboard.set", json!({"elementIds":[BOB],"from":1,"to":6}));
+    ok(&h, "element.delete", json!({"elementIds":[BOB]}));
+    let dest = ok(&h, "element.create", json!({"type":"drawing","name":"PasteTarget"}))["elementIds"][0].clone();
+    let e = run(&h, "cell.clipboard.apply", json!({"elementId":dest,"frame":1}));
+    assert_eq!(e.status, Status::Ok, "copied artwork must survive source deletion: {e:?}");
+}
+#[test]
+fn clipboard_cross_project_copies_artwork() {
+    let h = fixture();
+    ok(&h, "cell.clipboard.set", json!({"elementIds":[BOB],"from":1,"to":6}));
+    let doc = tt_model::fixture::sample_document(981).unwrap();
+    let e = h.open_document_with(
+        doc,
+        tt_executor::OpenOptions { on_unsaved: tt_executor::UnsavedPolicy::Discard, ..Default::default() },
+        tt_executor::Origin::User,
+    );
+    assert!(e.is_ok(), "{e:?}");
+    let target = first(&h, "element");
+    // Use the fresh project's Bob path so the target is a compatible drawing column.
+    let _ = target;
+    let e = run(&h, "cell.clipboard.apply", json!({"elementId":BOB,"frame":50}));
+    assert_eq!(e.status, Status::Ok, "cross-project clipboard must carry drawing payload: {e:?}");
+}
+#[test]
+fn xsheet_missing_name_on_two_clones_is_created_once() {
+    let h = fixture();
+    let clone = ok(&h, "element.clone", json!({"elementId":BOB}))["elementId"].clone();
+    let e = run(
+        &h,
+        "xsheet.exposures.set",
+        json!({"createMissingDrawings":true,"columns":[
+            {"elementId":BOB,"from":1,"to":1,"exposures":[{"drawing":" shared ","from":1,"to":1}]},
+            {"elementId":clone,"from":1,"to":1,"exposures":[{"drawing":"shared","from":1,"to":1}]}
+        ]}),
+    );
+    assert_eq!(e.status, Status::Ok, "normalised names share one bank entry: {e:?}");
+}
+#[test]
+fn multi_column_overlap_copies_original_source_values() {
+    let h = fixture();
+    let a=ok(&h,"element.create",json!({"type":"drawing","count":3,"name":"Shift","sceneId":"scene:\"Intro\""}))["elementIds"].as_array().unwrap().clone();
+    for (i, e) in a.iter().enumerate() {
+        ok(
+            &h,
+            "cell.label.set",
+            json!({"elementIds":[e],"from":1,"to":1,"drawing":format!("D{i}"),"createMissing":true}),
+        );
+    }
+    let before = get(&h, a[1].as_str().unwrap())["exposure"].clone();
+    ok(
+        &h,
+        "cell.range.move",
+        json!({"sourceElementIds":[a[0],a[1]],"from":1,"to":1,"targetElementId":a[1],"targetFrame":1,"mode":"copy","options":{"exposure":false}}),
+    );
+    let new = get(&h, a[2].as_str().unwrap())["exposure"][0][0].as_str().unwrap().to_owned();
+    let expected = get(&h, before[0][0].as_str().unwrap())["name"].clone();
+    assert_eq!(
+        get(&h, &new)["name"],
+        expected,
+        "overlapping columns must read original source, not earlier destination"
+    );
+}
+#[test]
+fn columnate_exact_total_with_short_final_hold() {
+    let h = fixture();
+    let e = ok(
+        &h,
+        "cell.columnate.apply",
+        json!({"elementId":BOB,"frame":1,"firstDrawing":"1","lastDrawing":"10","exposeEach":4,"exposeLast":1,"loopMode":"continuous","totalFrames":12}),
+    );
+    assert_eq!(e["totalFrames"], 12, "requested total frame count must be satisfied");
+}
+#[test]
+fn cycle_invalid_counts_refuse_and_one_is_noop() {
+    let h = fixture();
+    let r = rev(&h);
+    for n in [0, 1000, 1_000_000] {
+        assert_eq!(
+            err(&h, "cell.cycle.create", json!({"elementId":BOB,"from":1,"to":6,"cycles":n})).code,
+            "arg.invalid"
+        );
+    }
+    ok(&h, "cell.cycle.create", json!({"elementId":BOB,"from":1,"to":6,"cycles":1}));
+    assert_eq!(rev(&h), r);
+}
+#[test]
+fn hierarchy_cycles_parentability_and_undo_are_atomic() {
+    let h = fixture();
+    let tree = get(&h, "scene:\"Intro\"")["tree"].clone();
+    assert_eq!(err(&h, "element.parent.set", json!({"elementIds":[PEG],"parentId":BOB})).code, "element.notParentable");
+    assert_eq!(
+        err(&h, "element.parent.set", json!({"elementIds":[PEG],"parentId":PEG})).code,
+        "element.hierarchyCycle"
+    );
+    ok(&h, "element.parent.set", json!({"elementIds":[BG],"parentId":PEG}));
+    ok(&h, "element.delete", json!({"elementIds":[PEG]}));
+    assert_eq!(ok(&h, "element.hierarchy.get", json!({"elementId":BG}))["parentId"], Value::Null);
+    ok(&h, "edit.undo", json!({}));
+    ok(&h, "edit.undo", json!({}));
+    assert_eq!(get(&h, "scene:\"Intro\"")["tree"], tree);
+}
