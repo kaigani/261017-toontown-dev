@@ -27,13 +27,24 @@ fn timeline_colour_failing_atomic_batch_restores_session() {
     let before = ok(&h, "element.typeColour.get", json!({}));
     let e = batch(
         &h,
-        json!({"atomic":true,"steps":[
+        json!({"label":"Review rollback","atomic":true,"steps":[
             {"id":"element.typeColour.set","params":{"category":"pegs","colour":"#123456"}},
             {"id":"element.rename","params":{"elementId":BOB,"name":"bad.name"}}
         ]}),
     );
     assert_ne!(e.status, Status::Ok, "{e:?}");
     assert_eq!(ok(&h, "element.typeColour.get", json!({})), before, "failed atomic group leaked TimelineState");
+}
+
+#[test]
+fn fill_target_above_spec_maximum_refuses() {
+    let h = fixture();
+    let e = run(&h, "cell.fill.apply", json!({"elementIds":[BOB],"frame":1,"toFrame":10000}));
+    assert_eq!(
+        e.error.as_ref().map(|e| e.code.as_str()),
+        Some("cell.frameOutOfRange"),
+        "04 §13.5 and §17.6 cap fill targets at 9999: {e:?}"
+    );
 }
 #[test]
 fn delegated_hide_matches_command_current_position_and_event() {
@@ -247,4 +258,36 @@ fn locked_drawing_overwrite_refuses_and_dry_run_leaves_document() {
     assert_eq!(e.status, Status::Ok);
     assert_eq!(rev(&h), r);
     assert_eq!(get(&h, BOB), before);
+}
+
+#[test]
+fn copied_drawing_survives_later_metadata_settle_pass() {
+    let h = fixture();
+    let d=ok(&h,"element.drawing.duplicate",json!({"drawingId":"scene:\"Intro\"/element:\"Bob\"/drawing:\"1\""}))["drawingId"].as_str().unwrap().to_owned();
+    let nodes = get(&h, &d)["nodes"].clone();
+    let pixels = ok(&h, "draw.drawing.render", json!({"drawingId":d,"width":64}))["pixelsSha256"].clone();
+    ok(&h, "doc.object.patch", json!({"targets":[d],"props":{"meta":{"review":"settle control"}}}));
+    assert_eq!(get(&h, &d)["nodes"], nodes, "metadata must not re-node copied content");
+    assert_eq!(ok(&h, "draw.drawing.render", json!({"drawingId":d,"width":64}))["pixelsSha256"], pixels);
+}
+
+#[test]
+fn extreme_timing_parameters_do_not_stop_document_worker() {
+    for field in ["start", "startDelta", "duration", "loops"] {
+        let h = fixture();
+        let r = rev(&h);
+        let mut p = json!({"elementIds":[PEG]});
+        p[field] = json!(i64::MAX);
+        let e = run(&h, "element.timing.set", p);
+        assert_eq!(e.status, Status::Error, "{field}: {e:?}");
+        assert!(
+            matches!(
+                e.error.as_ref().map(|e| e.code.as_str()),
+                Some("arg.invalid" | "cell.frameOutOfRange" | "doc.limitExceeded")
+            ),
+            "{field} must refuse before arithmetic overflow: {e:?}"
+        );
+        assert_eq!(rev(&h), r);
+        assert!(run(&h, "doc.state.get", json!({})).is_ok());
+    }
 }

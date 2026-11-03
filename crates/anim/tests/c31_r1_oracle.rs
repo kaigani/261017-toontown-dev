@@ -90,6 +90,24 @@ fn insert_remove_4096() {
         assert_eq!(x::remove_blank(&b, at, n), Some(trimmed(a)));
     }
 }
+
+/// The executor always supplies canonical columns. Keep the failing arbitrary-tail probe above separately.
+#[test]
+fn insert_remove_canonical_4096() {
+    let mut r = Rng(0x31b002);
+    for _ in 0..4096 {
+        let a = trimmed(r.cells());
+        let at = 1 + r.n(110);
+        let n = 1 + r.n(10);
+        let mut expected = a.clone();
+        if at <= expected.len() {
+            expected.splice(at - 1..at - 1, vec![None; n]);
+        }
+        let b = x::insert_blank(&a, at, n);
+        assert_eq!(b, trimmed(expected));
+        assert_eq!(x::remove_blank(&b, at, n), Some(a));
+    }
+}
 #[test]
 fn set_length_4096() {
     let mut r = Rng(0x31a003);
