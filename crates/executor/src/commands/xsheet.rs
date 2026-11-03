@@ -573,32 +573,40 @@ pub(crate) fn xsheet_exposures_set(cx: &mut Cx, p: SetParams) -> Result<SetResul
                     }
                     d
                 }
-                (Some(name), None) => match super::timing::drawing_named(&doc, &bank, name)
-                    .or_else(|| new_names.get(&(bank.clone(), name.clone())).cloned())
-                {
-                    Some(d) => d,
-                    None if p.create_missing_drawings
-                        && matches!(t, ElementType::Drawing | ElementType::Annotation) =>
+                // Names are normalised (NFC, trimmed; 10 §1.3) before every lookup, staged ones included, so
+                // `" shared "` and `"shared"` are one drawing (C31-R1-08).
+                (Some(raw), None) => {
+                    let normalised =
+                        super::timing::drawing_name(raw, &format!("/columns/{ci}/exposures/{ri}/drawing"))?;
+                    let name = &normalised;
+                    match super::timing::drawing_named(&doc, &bank, name)
+                        .or_else(|| new_names.get(&(bank.clone(), name.clone())).cloned())
                     {
-                        let n = super::timing::drawing_name(name, &format!("/columns/{ci}/exposures/{ri}/drawing"))?;
-                        let d = add_drawing(cx, &mut changes, &bank, &n, None)?;
-                        new_names.insert((bank.clone(), name.clone()), d.clone());
-                        created.push(Created {
-                            element_id: id.as_str().to_owned(),
-                            drawing_id: d.as_str().to_owned(),
-                            name: n,
-                        });
-                        d
+                        Some(d) => d,
+                        None if p.create_missing_drawings
+                            && matches!(t, ElementType::Drawing | ElementType::Annotation) =>
+                        {
+                            let n =
+                                super::timing::drawing_name(name, &format!("/columns/{ci}/exposures/{ri}/drawing"))?;
+                            let d = add_drawing(cx, &mut changes, &bank, &n, None)?;
+                            new_names.insert((bank.clone(), name.clone()), d.clone());
+                            created.push(Created {
+                                element_id: id.as_str().to_owned(),
+                                drawing_id: d.as_str().to_owned(),
+                                name: n,
+                            });
+                            d
+                        }
+                        None => {
+                            return Err(run_error(
+                                "cell.drawingNotFound",
+                                format!("the column's bank has no drawing `{name}`"),
+                                ci,
+                                Some(ri),
+                            ));
+                        }
                     }
-                    None => {
-                        return Err(run_error(
-                            "cell.drawingNotFound",
-                            format!("the column's bank has no drawing `{name}`"),
-                            ci,
-                            Some(ri),
-                        ));
-                    }
-                },
+                }
                 (None, None) => return Err(internal("validated run")),
             };
             let i = col.intern(&d);
@@ -621,6 +629,18 @@ pub(crate) fn xsheet_exposures_set(cx: &mut Cx, p: SetParams) -> Result<SetResul
     let rev = if changed.is_empty() && created.is_empty() { sheet_rev(&doc, &sc) } else { cx.predicted_rev()? };
     if !p.dry_run {
         super::timing::emit_cells(cx, &changed)?;
+        // Drawing-bank creation events, one per bank with its drawings (C31-R1-03).
+        let mut by_bank: BTreeMap<Id, Vec<String>> = BTreeMap::new();
+        for c in &created {
+            if let Some(bank) =
+                Id::parse(&c.element_id).ok().and_then(|e| doc.element(&e).and_then(|x| x.drawing_bank_id().clone()))
+            {
+                by_bank.entry(bank).or_default().push(c.drawing_id.clone());
+            }
+        }
+        for (bank, ids) in &by_bank {
+            super::timing::emit_bank(cx, &doc, bank, ids, "created");
+        }
     }
     Ok(SetResult { rev, scene_length, changed, created_drawings: created })
 }

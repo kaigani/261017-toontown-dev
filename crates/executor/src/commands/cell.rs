@@ -451,6 +451,7 @@ pub(crate) fn cell_range_add(cx: &mut Cx, p: RangeAddParams) -> Result<RangeAddR
     let mut out = Vec::new();
     let mut created = Vec::new();
     let mut names_by_bank: BTreeMap<Id, Vec<String>> = BTreeMap::new();
+    let mut created_by_bank: BTreeMap<Id, Vec<String>> = BTreeMap::new();
     for e in &t.elements {
         applicable(&doc, e, "cell.range.add", if p.named { VECTOR } else { BLANKS })?;
         let mut col = Column::read(&doc, e, &mut budget)?;
@@ -465,6 +466,7 @@ pub(crate) fn cell_range_add(cx: &mut Cx, p: RangeAddParams) -> Result<RangeAddR
                 let d = add_drawing(cx, &mut changes, &bank, &name, None)?;
                 taken.push(name);
                 created.push(d.as_str().to_owned());
+                created_by_bank.entry(bank.clone()).or_default().push(d.as_str().to_owned());
                 v.push(Some(col.intern(&d)));
             }
             v
@@ -514,11 +516,9 @@ pub(crate) fn cell_range_add(cx: &mut Cx, p: RangeAddParams) -> Result<RangeAddR
     }
     changes.stage(cx)?;
     emit_cells(cx, &out)?;
-    if !created.is_empty()
-        && let Some(e) = t.elements.first()
-        && let Ok(bank) = bank_of_element(&doc, e)
-    {
-        emit_bank(cx, &doc, &bank, &created, "created");
+    // One event per bank with that bank's drawings, to each element of its clone group (C31-R1-03).
+    for (bank, ids) in &created_by_bank {
+        emit_bank(cx, &doc, bank, ids, "created");
     }
     Ok(RangeAddResult { from: as_u32(at), to: as_u32(at + n - 1), drawing_ids: created })
 }
@@ -1034,6 +1034,13 @@ pub(crate) fn cell_label_set(cx: &mut Cx, p: LabelParams) -> Result<LabelResult,
     }
     changes.stage(cx)?;
     emit_cells(cx, &out)?;
+    let mut by_bank: BTreeMap<&Id, Vec<String>> = BTreeMap::new();
+    for ((bank, _), d) in &created {
+        by_bank.entry(bank).or_default().push(d.as_str().to_owned());
+    }
+    for (bank, ids) in by_bank {
+        emit_bank(cx, &doc, bank, &ids, "created");
+    }
     let (d, name) = first.ok_or_else(no_target)?;
     Ok(LabelResult { drawing_id: d.as_str().to_owned(), name, changed: out })
 }

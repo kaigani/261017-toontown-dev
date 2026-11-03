@@ -851,69 +851,68 @@ fn delegated(command: &str) -> bool {
     )
 }
 
-/// The owning commands' rules for delegated properties (04 §4.2, §13.14): names are normalised, validated with the
-/// 04 codes and unique in their scene (elements) or bank (drawings), across every target of the patch.
-fn delegated_rules(doc: &Document, edits: &mut [(String, Vec<PatchOp>)]) -> Result<Vec<String>, CommandError> {
-    let mut renamed = Vec::new();
-    let mut claimed: BTreeMap<(String, String), String> = BTreeMap::new();
-    for (key, ops) in edits.iter_mut() {
-        let Some(loc) = doc.locate(key) else { continue };
-        let ty = loc.ty;
-        for o in ops.iter_mut().filter(|o| o.path == "/name" && matches!(o.op, "add" | "replace")) {
-            let Some(text) = o.value.as_ref().and_then(Value::as_str) else { continue };
-            let id = Id::parse(key)?;
-            let (name, scope, others): (String, String, Vec<(Id, String)>) = match ty {
-                ObjectType::Element => {
-                    let name = super::timing::element_name(text, "/props/name")?;
-                    let scene = doc.scene_of(&id).cloned().ok_or_else(|| CommandError::internal("scene"))?;
-                    let others = doc
-                        .scene(&scene)
-                        .map(|s| {
-                            s.elements()
-                                .ids()
-                                .iter()
-                                .filter_map(|e| doc.element(e))
-                                .map(|e| (e.id().clone(), e.name().clone()))
-                                .collect()
-                        })
-                        .unwrap_or_default();
-                    (name, scene.as_str().to_owned(), others)
-                }
-                ObjectType::Drawing => {
-                    let name = super::timing::drawing_name(text, "/props/name")?;
-                    let bank = doc.bank_of(&id).cloned().ok_or_else(|| CommandError::internal("bank"))?;
-                    let others = doc
-                        .bank(&bank)
-                        .map(|b| {
-                            b.drawings()
-                                .ids()
-                                .iter()
-                                .filter_map(|d| doc.drawing(d))
-                                .map(|d| (d.id().clone(), d.name().clone()))
-                                .collect()
-                        })
-                        .unwrap_or_default();
-                    (name, bank.as_str().to_owned(), others)
-                }
-                _ => continue,
-            };
-            let renamed_away = |other: &Id| claimed.values().any(|k| k == other.as_str());
-            let clash = others.iter().any(|(o, n)| *o != id && *n == name && !renamed_away(o))
-                || claimed.get(&(scope.clone(), name.clone())).is_some_and(|k| k != key);
-            if clash {
-                let code = if ty == ObjectType::Element { "element.nameDuplicate" } else { "drawing.nameDuplicate" };
-                return Err(CommandError::with_details(
-                    code,
-                    format!("`{name}` is already used; choose a different name"),
-                    json!({ "pointer": "/props/name", "name": name, "id": key }),
-                ));
-            }
-            claimed.insert((scope, name.clone()), key.clone());
-            o.value = Some(json!(name));
-            renamed.push(key.clone());
+/// A delegated property write: the owning command and its parameters (10 AG-02: a patch of such a property is
+/// applied by that command's own handler — validation, side effects such as moving the current element, and its
+/// area event exactly once; C31-R1-03).
+struct Delegated {
+    command: &'static str,
+    params: Value,
+}
+
+/// The owning command of one operation on a delegated property (`props` merge or RFC 6902 `add`/`replace`, and
+/// `remove` where the property has an empty form), or `None` for an ordinary property.
+fn delegated_op(ty: ObjectType, key: &str, o: &PatchOp) -> Option<Delegated> {
+    let v = o.value.clone().unwrap_or(Value::Null);
+    let set = matches!(o.op, "add" | "replace");
+    let (command, params) = match (ty, o.path.as_str(), o.op) {
+        (ObjectType::Element, "/name", _) if set => ("element.rename", json!({ "elementId": key, "name": v })),
+        (ObjectType::Element, "/note", "remove") => ("element.note.set", json!({ "elementId": key, "text": "" })),
+        (ObjectType::Element, "/note", _) if set => ("element.note.set", json!({ "elementId": key, "text": v })),
+        (ObjectType::Element, "/markerColour", op) if set || op == "remove" => {
+            ("element.colour.set", json!({ "elementIds": [key], "marker": if v.is_null() { json!("") } else { v } }))
         }
+        (ObjectType::Element, "/backgroundColour", op) if set || op == "remove" => (
+            "element.colour.set",
+            json!({ "elementIds": [key], "background": if v.is_null() { json!("") } else { v } }),
+        ),
+        (ObjectType::Element, "/visibleInScene", _) if set => {
+            ("element.visibility.set", json!({ "elementIds": [key], "scope": "scene", "visible": v }))
+        }
+        (ObjectType::Element, "/visibleInXsheet", _) if set => {
+            ("element.visibility.set", json!({ "elementIds": [key], "scope": "xsheet", "visible": v }))
+        }
+        (ObjectType::Element, "/locked", _) if set => ("element.lock.set", json!({ "elementIds": [key], "locked": v })),
+        (ObjectType::Drawing, "/name", _) if set => ("element.drawing.rename", json!({ "drawingId": key, "name": v })),
+        (ObjectType::Drawing, "/locked", _) if set => {
+            ("element.drawingLock.set", json!({ "drawingIds": [key], "locked": v }))
+        }
+        _ => return None,
+    };
+    Some(Delegated { command, params })
+}
+
+fn delegated_params<T: serde::de::DeserializeOwned>(d: &Delegated) -> Result<T, CommandError> {
+    serde_json::from_value(d.params.clone()).map_err(|e| {
+        CommandError::with_details(
+            codes::ARG_INVALID,
+            format!("not a valid value for `{}`: {e}", d.command),
+            json!({ "commandId": d.command, "params": d.params }),
+        )
+    })
+}
+
+/// Applies one delegated write through its owning command's handler.
+fn apply_delegated(cx: &mut Cx, d: &Delegated) -> Result<(), CommandError> {
+    match d.command {
+        "element.rename" => super::element::element_rename(cx, delegated_params(d)?).map(drop),
+        "element.note.set" => super::element::element_note_set(cx, delegated_params(d)?).map(drop),
+        "element.colour.set" => super::element::element_colour_set(cx, delegated_params(d)?).map(drop),
+        "element.visibility.set" => super::element::element_visibility_set(cx, delegated_params(d)?).map(drop),
+        "element.lock.set" => super::element::element_lock_set(cx, delegated_params(d)?).map(drop),
+        "element.drawing.rename" => super::element_bank::element_drawing_rename(cx, delegated_params(d)?).map(drop),
+        "element.drawingLock.set" => super::element_bank::element_drawing_lock_set(cx, delegated_params(d)?).map(drop),
+        other => Err(CommandError::internal(format!("`{other}` is not a delegated command"))),
     }
-    Ok(renamed)
 }
 
 /// A property with `x-command` follows that command's semantics (AG-02); until the command is implemented the patch
@@ -971,21 +970,8 @@ pub(crate) fn doc_object_patch(cx: &mut Cx, p: PatchParams) -> Result<PatchResul
     }
     let mut edits: Vec<(String, Vec<PatchOp>)> = Vec::with_capacity(targets.len());
     let mut first_property: Option<String> = None;
+    let mut delegated: Vec<Delegated> = Vec::new();
     for (ty, key) in &targets {
-        // Unlocking a locked drawing is `element.drawingLock.set`'s, not a content edit (AG-02 delegation).
-        let only_lock = *ty == ObjectType::Drawing
-            && p.ops.is_none()
-            && p.props.as_ref().is_some_and(|m| m.keys().all(|k| k == "locked"));
-        if let Some(d) = drawing_of(&doc, *ty, key)
-            && doc.drawing(&d).is_some_and(|x| *x.locked())
-            && !only_lock
-        {
-            return Err(CommandError::with_details(
-                "drawing.locked",
-                format!("drawing `{d}` is locked"),
-                json!({ "drawingId": d.as_str(), "id": key }),
-            ));
-        }
         let mut ops: Vec<PatchOp> = Vec::new();
         if let Some(props) = &p.props {
             let (_, current) = doc.object_raw_json(key)?;
@@ -1026,25 +1012,39 @@ pub(crate) fn doc_object_patch(cx: &mut Cx, p: PatchParams) -> Result<PatchResul
                 first_property = tt_model::pointer::parse(&op.path).ok().and_then(|t| t.into_iter().next());
             }
         }
-        edits.push((key.clone(), ops));
+        // Delegated properties go to their owning commands; the rest is an ordinary patch.
+        let mut rest = Vec::with_capacity(ops.len());
+        for o in ops {
+            match delegated_op(*ty, key, &o) {
+                Some(d) => delegated.push(d),
+                None => rest.push(o),
+            }
+        }
+        // A content edit of a locked drawing is refused; unlocking it is `element.drawingLock.set`'s.
+        if !rest.is_empty()
+            && let Some(d) = drawing_of(&doc, *ty, key)
+            && doc.drawing(&d).is_some_and(|x| *x.locked())
+        {
+            return Err(CommandError::with_details(
+                "drawing.locked",
+                format!("drawing `{d}` is locked"),
+                json!({ "drawingId": d.as_str(), "id": key }),
+            ));
+        }
+        if !rest.is_empty() {
+            edits.push((key.clone(), rest));
+        }
     }
     let label = p.label.clone().unwrap_or_else(|| match &first_property {
         Some(f) => format!("Set {f}"),
         None => "Set properties".to_owned(),
     });
+    for d in &delegated {
+        apply_delegated(cx, d)?;
+    }
     cx.set_label(label);
-    let renamed = delegated_rules(&doc, &mut edits)?;
-    cx.patch_objects(edits)?;
-    for key in renamed {
-        if let (Some(l), Ok(id)) = (doc.locate(&key), Id::parse(&key)) {
-            if l.ty == ObjectType::Element
-                && let Some(scene) = doc.scene_of(&id)
-            {
-                super::timing::emit_state(cx, scene, std::slice::from_ref(&key), "renamed");
-            } else if let Some(bank) = doc.bank_of(&id) {
-                super::timing::emit_bank(cx, &doc, bank, std::slice::from_ref(&key), "renamed");
-            }
-        }
+    if !edits.is_empty() {
+        cx.patch_objects(edits)?;
     }
     // 02 §13.6: patched strokes go through the same validation as `draw.stroke.set` (a brush outline is swept again
     // from an edited spine; an outline edited directly discards the spine).

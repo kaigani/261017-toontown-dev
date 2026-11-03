@@ -906,72 +906,170 @@ pub(crate) fn element_duplicate(cx: &mut Cx, p: DuplicateParams) -> Result<Dupli
     let ids = targets(cx, p.element_ids.as_deref())?;
     let doc = cx.document()?.clone();
     let mut budget = Budget::new("duplicating elements");
+    // The whole subtree is copied (SI-094): mandatory parameter rows (masks, sprites, bones, skin) and ordinary
+    // children alike, so an element given with one of its ancestors is copied once, with that ancestor. A parameter
+    // row alone is refused: it never becomes an unowned root (10 §4.6; C31-R1-06).
+    let mut roots: Vec<Id> = Vec::new();
+    for id in &ids {
+        let sc = super::timing::scene_of(&doc, id)?;
+        let covered = ids.iter().any(|o| o != id && h::is_within(sc.tree(), id, o));
+        if covered {
+            continue;
+        }
+        let e = element(&doc, id)?;
+        if *e.element_type() == ElementType::EffectParameter {
+            return Err(err(
+                codes::ARG_INVALID,
+                format!("parameter element `{}` is duplicated only with its effect or skeleton", e.name()),
+                json!({ "elementId": id.as_str() }),
+            ));
+        }
+        roots.push(id.clone());
+    }
     let mut changes = Changes::default();
-    let mut by_scene: BTreeMap<Id, Vec<(Id, Id, Value)>> = BTreeMap::new();
     let mut out_ids = Vec::new();
     let mut names = Vec::new();
     let mut taken_by: BTreeMap<Id, BTreeSet<String>> = BTreeMap::new();
-    for id in &ids {
-        let e = element(&doc, id)?;
-        let scene = doc.scene_of(id).cloned().ok_or_else(|| internal("scene"))?;
-        let taken = taken_by
-            .entry(scene.clone())
-            .or_insert_with(|| doc.scene(&scene).map(|s| scene_names(&doc, s)).unwrap_or_default());
-        let name = x::unique_names(e.name(), &|n| taken.contains(n), 1, true).concat();
-        taken.insert(name.clone());
-        let (new, mut json) = copied_element(cx, &doc, id, &name)?;
-        // A new bank with a copy of every drawing; the exposure follows the copies (04 §8.2).
-        if let Some(bank) = e.drawing_bank_id() {
-            let nb = cx.new_id(ObjectType::DrawingBank)?;
-            changes.push(
-                EntryKey::Project,
-                vec![op("add", "/drawingBanks/-", Some(json!({ "id": nb.as_str(), "type": "drawingBank" })))],
-            );
-            changes.push(
-                EntryKey::Bank(nb.clone()),
-                vec![op(
-                    "add",
-                    "",
-                    Some(to_json(&tt_model::entities::drawing::DrawingBank::new(nb.clone(), Vec::new()))?),
-                )],
-            );
-            let mut map: BTreeMap<String, String> = BTreeMap::new();
-            let drawings = doc.bank(bank).map(|b| b.drawings().ids().to_vec()).unwrap_or_default();
-            budget.spend(drawings.len())?;
-            for d in drawings {
-                let Some(dr) = doc.drawing(&d) else { continue };
-                let dj = doc.entry_raw_json(&EntryKey::Drawing(d.clone())).map_err(internal)?;
-                budget.spend(dr.nodes().len())?;
-                // A duplicate keeps each drawing's lock state.
-                let nd = super::timing::add_drawing(cx, &mut changes, &nb, dr.name(), Some(&dj))?;
-                if *dr.locked() {
-                    changes.push(EntryKey::Drawing(nd.clone()), vec![op("replace", "/locked", Some(json!(true)))]);
+    // Banks shared inside the copied subtrees stay shared between the copies (clones of each other), once.
+    let mut banks: BTreeMap<Id, (Id, BTreeMap<String, String>)> = BTreeMap::new();
+    let mut by_scene: BTreeMap<Id, Vec<(Id, TreeNode, Vec<(Id, Id)>, Vec<(Id, Value)>)>> = BTreeMap::new();
+    for root in &roots {
+        let scene = doc.scene_of(root).cloned().ok_or_else(|| internal("scene"))?;
+        let sc = doc.scene(&scene).ok_or_else(|| internal("scene"))?;
+        let taken = taken_by.entry(scene.clone()).or_insert_with(|| scene_names(&doc, sc));
+        let subtree: Vec<Id> = std::iter::once(root.clone()).chain(h::descendants(sc.tree(), root)).collect();
+        budget.spend(h::count(sc.tree()) + subtree.len())?;
+        let mut idmap: BTreeMap<String, String> = BTreeMap::new();
+        let mut copies: Vec<(Id, Value)> = Vec::new();
+        let mut columns: Vec<(Id, Id)> = Vec::new();
+        for e_id in &subtree {
+            let e = element(&doc, e_id)?;
+            let name = x::unique_names(e.name(), &|n| taken.contains(n), 1, true).concat();
+            taken.insert(name.clone());
+            let (new, mut json) = copied_element(cx, &doc, e_id, &name)?;
+            if let Some(bank) = e.drawing_bank_id() {
+                if !banks.contains_key(bank) {
+                    let made = copy_bank(cx, &doc, &mut changes, &mut budget, bank)?;
+                    banks.insert(bank.clone(), made);
                 }
-                map.insert(d.as_str().to_owned(), nd.as_str().to_owned());
-            }
-            json["drawingBankId"] = json!(nb.as_str());
-            if let Some(Value::Array(runs)) = json.get_mut("exposure") {
-                budget.spend(runs.len())?;
-                for r in runs.iter_mut() {
-                    if let Some(d) = r.get(0).and_then(Value::as_str).and_then(|d| map.get(d)) {
-                        r[0] = json!(d);
+                if let Some((nb, dmap)) = banks.get(bank) {
+                    json["drawingBankId"] = json!(nb.as_str());
+                    if let Some(Value::Array(runs)) = json.get_mut("exposure") {
+                        budget.spend(runs.len())?;
+                        for r in runs.iter_mut() {
+                            if let Some(d) = r.get(0).and_then(Value::as_str).and_then(|d| dmap.get(d)) {
+                                r[0] = json!(d);
+                            }
+                        }
                     }
                 }
             }
+            if sc.column_order().contains(e_id) {
+                columns.push((e_id.clone(), new.clone()));
+            }
+            idmap.insert(e_id.as_str().to_owned(), new.as_str().to_owned());
+            if e_id == root {
+                out_ids.push(new.as_str().to_owned());
+                names.push(name.clone());
+            }
+            copies.push((new, json));
         }
-        out_ids.push(new.as_str().to_owned());
-        names.push(name);
-        by_scene.entry(scene).or_default().push((id.clone(), new, json));
+        // References between copied elements follow the copies (`x-ref: element` properties).
+        for (_, json) in &mut copies {
+            super::edit_ops::remap_element_refs(json, &idmap, "");
+        }
+        let original = h::find(sc.tree(), root).cloned().ok_or_else(|| internal("tree"))?;
+        let node = renamed_node(&original, &idmap);
+        by_scene.entry(scene).or_default().push((root.clone(), node, columns, copies));
     }
-    for (scene, pairs) in &by_scene {
-        budget.spend(doc.scene(scene).map_or(0, |s| h::count(s.tree())))?;
-        place_copies(&doc, &mut changes, scene, pairs)?;
+    for (scene, groups) in &by_scene {
+        let sc = doc.scene(scene).ok_or_else(|| internal("scene"))?;
+        let mut tree = sc.tree().clone();
+        let mut columns = sc.column_order().clone();
+        let mut ops = Vec::new();
+        for (root, node, cols, copies) in groups {
+            // The copy goes directly above its original, at its level (Timeline); columns right of theirs.
+            let ps = h::parents(&tree);
+            let lvl = ps.get(root).cloned().flatten();
+            let i = h::level_ids(&tree, lvl.as_ref()).iter().position(|x| x == root);
+            h::attach(&mut tree, lvl.as_ref(), i, node.clone());
+            for (orig, new) in cols {
+                if let Some(c) = columns.iter().position(|c| c == orig) {
+                    columns.insert(c + 1, new.clone());
+                }
+            }
+            for (new, json) in copies {
+                changes.push(EntryKey::Element(new.clone()), vec![op("add", "", Some(json.clone()))]);
+                ops.push(op("add", "/elements/-", Some(json!({ "id": new.as_str(), "type": "element" }))));
+            }
+        }
+        ops.push(op("replace", "/tree", Some(tree_json(&tree)?)));
+        ops.push(op("replace", "/columnOrder", Some(to_json(&columns)?)));
+        changes.push(EntryKey::Scene(scene.clone()), ops);
     }
     changes.stage(cx)?;
-    for (scene, pairs) in &by_scene {
-        emit_state(cx, scene, &pairs.iter().map(|(_, n, _)| n.as_str().to_owned()).collect::<Vec<_>>(), "created");
+    for (scene, groups) in &by_scene {
+        let created: Vec<String> =
+            groups.iter().flat_map(|(_, _, _, copies)| copies.iter().map(|(n, _)| n.as_str().to_owned())).collect();
+        emit_state(cx, scene, &created, "created");
+        // The copies' new banks announce their drawings to the copies using them.
+        for (_, _, _, copies) in groups {
+            for (new, json) in copies {
+                if let Some(nb) = json.get("drawingBankId").and_then(Value::as_str)
+                    && let Some((_, (_, dmap))) = banks.iter().find(|(_, (b, _))| b.as_str() == nb)
+                    && !dmap.is_empty()
+                {
+                    let drawings: Vec<String> = dmap.values().cloned().collect();
+                    cx.emit(
+                        "element.drawing.changed",
+                        json!({ "elementId": new.as_str(), "drawingIds": drawings, "change": "created" }),
+                    );
+                }
+            }
+        }
     }
     Ok(DuplicateResult { element_ids: out_ids, names })
+}
+
+/// A copy of a bank with a verbatim copy of every drawing (lock states kept): `(new bank, old → new drawing ID)`.
+fn copy_bank(
+    cx: &mut Cx,
+    doc: &Document,
+    changes: &mut Changes,
+    budget: &mut Budget,
+    bank: &Id,
+) -> Result<(Id, BTreeMap<String, String>), CommandError> {
+    let nb = cx.new_id(ObjectType::DrawingBank)?;
+    changes.push(
+        EntryKey::Project,
+        vec![op("add", "/drawingBanks/-", Some(json!({ "id": nb.as_str(), "type": "drawingBank" })))],
+    );
+    changes.push(
+        EntryKey::Bank(nb.clone()),
+        vec![op("add", "", Some(to_json(&tt_model::entities::drawing::DrawingBank::new(nb.clone(), Vec::new()))?))],
+    );
+    let mut map: BTreeMap<String, String> = BTreeMap::new();
+    let drawings = doc.bank(bank).map(|b| b.drawings().ids().to_vec()).unwrap_or_default();
+    budget.spend(drawings.len())?;
+    for d in drawings {
+        let Some(dr) = doc.drawing(&d) else { continue };
+        let dj = doc.entry_raw_json(&EntryKey::Drawing(d.clone())).map_err(internal)?;
+        budget.spend(dr.nodes().len())?;
+        let nd = super::timing::add_drawing(cx, changes, &nb, dr.name(), Some(&dj))?;
+        if *dr.locked() {
+            changes.push(EntryKey::Drawing(nd.clone()), vec![op("replace", "/locked", Some(json!(true)))]);
+        }
+        map.insert(d.as_str().to_owned(), nd.as_str().to_owned());
+    }
+    Ok((nb, map))
+}
+
+/// A tree node with every ID mapped.
+fn renamed_node(n: &TreeNode, map: &BTreeMap<String, String>) -> TreeNode {
+    TreeNode {
+        id: map.get(n.id.as_str()).and_then(|s| Id::parse(s).ok()).unwrap_or_else(|| n.id.clone()),
+        children: n.children.iter().map(|c| renamed_node(c, map)).collect(),
+    }
 }
 
 // ----- element.delete ---------------------------------------------------------------------------------------------------

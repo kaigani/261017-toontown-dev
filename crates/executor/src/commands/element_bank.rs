@@ -724,6 +724,10 @@ pub(crate) fn element_drawing_lock_set(cx: &mut Cx, p: LockParams) -> Result<Dra
     let mut by_bank: BTreeMap<Id, Vec<String>> = BTreeMap::new();
     for d in &ids {
         let dr = doc.drawing(d).ok_or_else(|| super::draw::not_found(d.as_str()))?;
+        // 04 §13.20: lock drawing is for drawing and annotation elements (C31-R1-16), also through delegated writes.
+        if let Some(e) = doc.bank_of(d).and_then(|b| doc.bank_users(b).first()) {
+            applicable(&doc, e, "element.drawingLock.set", VECTOR)?;
+        }
         if *dr.locked() != p.locked {
             changes.push(EntryKey::Drawing(d.clone()), vec![op("replace", "/locked", Some(json!(p.locked)))]);
             by_bank

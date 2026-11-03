@@ -581,7 +581,8 @@ fn increment(n: &str) -> String {
 }
 
 /// 04 §3.2 / §8.1 unique element names: `base` when free (unless `skip_base`), else `base_1`, `base_2`, … skipping
-/// used names; `count` names, each distinct.
+/// used names; `count` names, each distinct and at most [`MAX_NAME_CHARS`] characters (the base is shortened to fit
+/// its suffix).
 #[must_use]
 pub fn unique_names(base: &str, taken: &dyn Fn(&str) -> bool, count: usize, skip_base: bool) -> Vec<String> {
     let mut out: Vec<String> = Vec::with_capacity(count);
@@ -591,7 +592,10 @@ pub fn unique_names(base: &str, taken: &dyn Fn(&str) -> bool, count: usize, skip
     }
     let mut k: u64 = 1;
     while out.len() < count {
-        let n = format!("{base}_{k}");
+        // A suffix that would pass the 64-character name limit shortens the base instead (C31-R1-08).
+        let suffix = format!("_{k}");
+        let keep = MAX_NAME_CHARS.saturating_sub(suffix.chars().count());
+        let n = format!("{}{suffix}", base.chars().take(keep).collect::<String>());
         if !used(&n, &out) {
             out.push(n);
         }
@@ -599,6 +603,9 @@ pub fn unique_names(base: &str, taken: &dyn Fn(&str) -> bool, count: usize, skip
     }
     out
 }
+
+/// Longest element or drawing name, in Unicode characters (04 §4.2, 10 §1.3).
+pub const MAX_NAME_CHARS: usize = 64;
 
 /// One step of a cell movement: cells inserted before a frame, or a frame range removed.
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]

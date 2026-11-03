@@ -607,7 +607,7 @@ const ELEMENT_DERIVED: [&str; 11] = [
 ];
 
 /// Rewrites element references (schema `x-ref: "element"` locations, never inside opaque data) through `map`.
-fn remap_element_refs(v: &mut Value, map: &BTreeMap<String, String>, at: &str) {
+pub(crate) fn remap_element_refs(v: &mut Value, map: &BTreeMap<String, String>, at: &str) {
     match v {
         Value::String(s) => {
             if let Some(new) = map.get(s.as_str())
@@ -1134,6 +1134,9 @@ fn paste(
             let at = order.iter().position(|c| *c == tid).unwrap_or(0);
             let opts = topts.unwrap_or_default();
             let insert = topts.is_some() && opts.create_delete_exposure;
+            // One drawing transfer per destination bank for the whole paste (C31-R1-07/-13).
+            let payload = clip.payload.clone().unwrap_or_else(|| super::transfer::ArtPayload::of(&doc));
+            let mut transfers: BTreeMap<Id, super::transfer::Transfer> = BTreeMap::new();
             for (n, src) in sources.iter().enumerate() {
                 let t = if n == 0 {
                     tid.clone()
@@ -1151,10 +1154,10 @@ fn paste(
                     ));
                 }
                 let bank = tel.drawing_bank_id().clone().ok_or_else(|| internal("cell element without bank"))?;
-                // One drawing transfer for the whole paste (C31-R1-13): full-drawing overwrite or verbatim copy, the
-                // copy's payload first.
-                let payload = clip.payload.clone().unwrap_or_else(|| super::transfer::ArtPayload::of(&doc));
-                let mut transfer = super::transfer::Transfer::new(&doc, bank.clone(), super::transfer::Naming::Dashed);
+                // Full-drawing overwrite or verbatim copy, the copy's payload first (C31-R1-13).
+                let transfer = transfers.entry(bank.clone()).or_insert_with(|| {
+                    super::transfer::Transfer::new(&doc, bank.clone(), super::transfer::Naming::Dashed)
+                });
                 let policy = super::transfer::Policy {
                     reuse: true,
                     fresh: false,
@@ -1189,8 +1192,7 @@ fn paste(
                         *slot = resolved;
                     }
                 }
-                out.created_ids.extend(transfer.created.iter().cloned());
-                out.modified_ids.extend(transfer.modified.iter().cloned());
+
                 // Pasted cells carry their notes and overwrite the destination's in the pasted range (SI-093).
                 let first = start as usize;
                 let carried: Vec<(usize, String)> = payload
@@ -1237,6 +1239,11 @@ fn paste(
                 }
                 changes.push((EntryKey::Element(t.clone()), vec![op("replace", "/exposure", Some(runs_of(&frames)))]));
                 out.modified_ids.push(t.as_str().to_owned());
+            }
+            for tr in transfers.values() {
+                out.created_ids.extend(tr.created.iter().cloned());
+                out.modified_ids.extend(tr.modified.iter().cloned());
+                super::timing::emit_bank(cx, &doc, &tr.bank, &tr.created, "created");
             }
         }
         ClipboardKind::Keyframes | ClipboardKind::FunctionPoints => {
