@@ -28,6 +28,8 @@ fn delegated_moves_and_image_vector_copy_lock() {
     for (element, image) in [(key.as_str(), false), (BG, true)] {
         let drawing = get(&h, element)["exposure"][0][0].as_str().unwrap().to_owned();
         ok(&h, "doc.object.patch", json!({"targets":[drawing],"props":{"meta":{"lock928":true}}}));
+        // M2's separately ruled writer seeds the pre-existing lock, including on the image drawing.
+        ok(&h, "draw.lock.set", json!({"drawingId":drawing,"locked":true}));
         let before = get(&h, &drawing);
         let r = run(
             &h,
