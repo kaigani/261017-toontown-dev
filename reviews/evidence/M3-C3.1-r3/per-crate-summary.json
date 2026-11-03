@@ -1,0 +1,30 @@
+{
+  "anim": {
+    "log": "per-crate-anim.txt",
+    "suiteSummaries": 6,
+    "passed": 32,
+    "failed": 0,
+    "ignored": 0,
+    "failureLines": []
+  },
+  "executor": {
+    "log": "per-crate-executor.txt",
+    "suiteSummaries": 121,
+    "passed": 707,
+    "failed": 3,
+    "ignored": 8,
+    "failureLines": [
+      "test move_reads_a_plain_source_created_immediately_before_it ... FAILED",
+      "test copy_of_a_source_removed_immediately_before_it_refuses_atomically ... FAILED",
+      "test copy_reads_a_plain_source_written_immediately_before_it ... FAILED"
+    ]
+  },
+  "mcp": {
+    "log": "per-crate-mcp.txt",
+    "suiteSummaries": 31,
+    "passed": 75,
+    "failed": 0,
+    "ignored": 3,
+    "failureLines": []
+  }
+}
