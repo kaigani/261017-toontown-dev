@@ -403,9 +403,10 @@ jobs:
         run: |
           mkdir -p out
           status=0
-          TT_MEASURE=1 cargo test --release --locked --no-fail-fast -p tt-executor --test c24_budgets --test c24_aggregate -- --ignored --nocapture || status=1
+          TT_MEASURE=1 cargo test --release --locked --no-fail-fast -p tt-executor --test c24_budgets --test c24_aggregate --test c31_budgets -- --ignored --nocapture || status=1
           # The raw observations are kept even when an assertion fails.
           cp -r target/evidence/c24 out/c24-measurements || true
+          cp -r target/evidence/c31 out/c31-measurements || true
           exit $status
 
       - uses: actions/upload-artifact@v7
@@ -414,6 +415,32 @@ jobs:
           name: measurements-${{ runner.os }}
           path: out/
           if-no-files-found: error
+
+  # M3 C3.1: the exposure-algebra properties at 4096 cases each (release; `check` runs them at 512).
+  m3-properties:
+    name: m3 properties release (${{ matrix.os }})
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [windows-latest, macos-latest]
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v7
+
+      - name: Rust toolchain (pinned in rust-toolchain.toml)
+        run: |
+          tc=$(sed -n 's/^channel = "\(.*\)"/\1/p' rust-toolchain.toml)
+          rustup toolchain install "$tc" --profile minimal
+          rustup override set "$tc"
+          rustc --version
+
+      - uses: Swatinem/rust-cache@v2
+        with:
+          key: m3-properties
+
+      - name: Exposure algebra properties, 4096 cases
+        run: TT_C31_CASES=4096 cargo test --release --locked -p tt-anim --test c31_exposure
 
   # End-to-end scenario E2 (paint by id, 11 §14.8; M2 C2.4 readiness item 3) through the official Python SDK against the
   # release binary: vectorize, validate, paint by ID, recolour, render, undo/redo, save/open, `--run` replay from the

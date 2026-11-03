@@ -476,3 +476,50 @@ fn selection_commands_are_not_undoable() {
     assert_eq!(r["elementId"], id(&h, BG));
     assert_eq!(rev(&h), r0);
 }
+
+#[test]
+fn patch_applies_the_owning_command_rules() {
+    // 10 AG-02: patching an element's name ≡ element.rename (normalised, 04 codes, unique in the scene).
+    let h = fixture();
+    ok(&h, "doc.object.patch", json!({ "targets": [BOB], "props": { "name": "  Robert " } }));
+    assert_eq!(get(&h, "scene:\"Intro\"/element:\"Robert\"")["name"], "Robert");
+    let bob = "scene:\"Intro\"/element:\"Robert\"";
+    assert_eq!(
+        err(&h, "doc.object.patch", json!({ "targets": [bob], "props": { "name": "Background" } })).code,
+        "element.nameDuplicate"
+    );
+    assert_eq!(
+        err(&h, "doc.object.patch", json!({ "targets": [bob], "props": { "name": "a/b" } })).code,
+        "element.nameInvalid"
+    );
+    // Two targets cannot take one name.
+    let e = err(&h, "doc.object.patch", json!({ "targets": [bob, PEG], "props": { "name": "Twin" } }));
+    assert_eq!(e.code, "element.nameDuplicate");
+    // Swapping two names in one patch is allowed: every target is renamed together.
+    ok(
+        &h,
+        "doc.object.patch",
+        json!({ "targets": [bob], "props": { "note": "n", "markerColour": "#00FF00FF", "locked": true, "visibleInScene": false } }),
+    );
+    let r = get(&h, bob);
+    assert_eq!(
+        (r["note"].as_str(), r["locked"].as_bool(), r["visibleInScene"].as_bool()),
+        (Some("n"), Some(true), Some(false))
+    );
+    // Drawings: element.drawing.rename and element.drawingLock.set rules; unlocking a locked drawing is allowed.
+    let d2 = "scene:\"Intro\"/element:\"Robert\"/drawing:\"2\"";
+    ok(&h, "doc.object.patch", json!({ "targets": [d2], "props": { "locked": false } }));
+    assert_eq!(
+        err(&h, "doc.object.patch", json!({ "targets": [d2], "props": { "name": "1" } })).code,
+        "drawing.nameDuplicate"
+    );
+    ok(&h, "doc.object.patch", json!({ "targets": [d2], "props": { "name": "B" } }));
+    assert_eq!(get(&h, "scene:\"Intro\"/element:\"Robert\"/drawing:\"B\"")["locked"], false);
+    // Properties of commands not yet implemented still name their owner.
+    let e = err(
+        &h,
+        "doc.object.patch",
+        json!({ "targets": [bob], "ops": [{ "op": "replace", "path": "/transform/offset/x", "value": 1 }] }),
+    );
+    assert_eq!(e.details["commandId"], "anim.transform.set");
+}

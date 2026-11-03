@@ -55,11 +55,12 @@ fn read_only_derived_transient_and_command_properties_are_refused() {
         let e = patch_err(&h, target, json!([{ "op": "replace", "path": path, "value": 1 }]));
         assert_eq!(e.code, code, "{path}");
     }
-    // x-command properties follow their command; until it exists the patch names it and its owner.
-    let e = err(&h, "doc.object.patch", json!({ "targets": [element], "props": { "name": "Bob" } }));
+    // x-command properties follow their command; until it exists the patch names it and its owner (`element.rename`
+    // was the example until M3 C3.1 implemented it: an element's name is now patched with its rules, AG-02).
+    let e = err(&h, "doc.object.patch", json!({ "targets": [scene], "props": { "name": "Other" } }));
     assert_eq!(e.code, "command.notImplemented");
-    assert_eq!(e.details["commandId"], "element.rename");
-    assert_eq!(e.details["milestone"], "M3 C3.1");
+    assert_eq!(e.details["commandId"], "storyline.scene.rename");
+    assert_eq!(e.details["milestone"], tt_registry::owner_of("storyline.scene.rename"));
     let e = patch_err(&h, &element, json!([{ "op": "replace", "path": "/transform/offset/x", "value": 1 }]));
     assert_eq!(e.details["commandId"], "anim.transform.set");
     // Replacing a value object that contains x-command properties is the same.

@@ -980,3 +980,87 @@ Reserved by the M0 closure for "measured deterministic-format incompatibility" (
   `c24_vectorize.rs` palette assertions). No behaviour change.
 - **Question (amendment candidate for the spec owner):** align 03 §11.6 and §7.4 with 02 §11.2 (colour choice, palette
   naming and lifetime, swatch naming), or rule the other way.
+
+## SI-085 — where the static light table is stored (found in M3 C3.1; interim decided)
+
+- **Sections:** 04 §15.3 ("the panel contents are saved with the scene"), §18 #13 (light-table changes are not
+  undoable); 10 §4.3 (the scene object has no light-table field), §6.12 (session state).
+- **Problem:** "saved with the scene" and "not undoable" cannot both hold for a document property: every persisted
+  property of the object model is part of revisions, change sets and undo (10 §2.5–§2.6).
+- **Interim decision (builder, C3.1, the spec's recommended default "not undoable"):** the light table is per-scene
+  view state of the session (`TimelineState.light_tables`, keyed by scene ID), outside revisions and undo;
+  `xsheet.lightTable.list` reads it and items whose drawing or element no longer exists drop out (04 §15.3). Writing
+  it into the project's session state (10 §6.12) arrives with `xsheet.lightTable.add/.remove/.set/.move` (M5 C5.2).
+- **Question:** add a `lightTable` field to the scene (10 §4.3) and accept undo, or confirm session state.
+
+## SI-086 — the hierarchy-cycle error code (found in M3 C3.1; decided by section ownership)
+
+- **Sections:** 04 §9.2, §17.6 (`element.hierarchyCycle`); 10 §5 (`anim.hierarchyCycle`).
+- **Decision (builder, C3.1):** each command uses its owning section's code: `element.parent.set` refuses with
+  `element.hierarchyCycle`; the `anim.*` hierarchy commands of C3.2 with `anim.hierarchyCycle`.
+- **Question:** name one code for both.
+
+## SI-087 — the batch-count error code (found in M3 C3.1; decided by section ownership)
+
+- **Sections:** 04 §3.2, §17.6 (`element.countOutOfRange`); 10 §5 (`element.tooMany`).
+- **Decision (builder, C3.1):** `element.create` refuses counts outside 1-99 with 04's `element.countOutOfRange`
+  (the count is validated by the handler, so the code is reachable; the schema states the range in its description).
+- **Question:** drop `element.tooMany` from 10 §5 or rename.
+
+## SI-088 — media and sound cells before M8 (found in M3 C3.1; interim decided, declared deferral)
+
+- **Sections:** 04 §13.20 (media and sound columns accept several cell commands), §12.8; 10 §4.14–§4.15 (their cells
+  derive from sound placements and media sequences, M8's model).
+- **Interim decision (builder, C3.1):** cell commands that 13.20 allows on media or sound columns refuse them with
+  `cell.notApplicable` naming the owner (`details.owner`: media → M8 C8.3, sound → M8 C8.1; `details.specIssue`).
+  Two exceptions are implemented now: `cell.range.add {allElements: true}` moves sound placements and media
+  sequences that start at or after the insertion point (and their lip-sync `producedFor.stopFrame`), so all columns
+  stay in sync; one spanning the point is not split. `element.mediaLength.set {length}` sets the last sequence's
+  length; without `length` (the media's natural length) it refuses with `command.disabled`
+  (`reason: sourceLengthUnknown`, owner M8 C8.3). `xsheet.exposures.set` treats media columns as read-only
+  (`xsheet.columnReadOnly`), like sound columns. `xsheet.exposures.get` reports media sequences as runs (drawing =
+  the asset name, drawingId = the sequence ID) and every column's type as `elementType` (the 17.2 example writes
+  `type` for the sound column only).
+- **Question:** none for the spec owner; M8 C8.1/C8.3 implement the remaining sound/media cell edits.
+
+## SI-089 — key re-timing when a bar's duration changes (found in M3 C3.1; decided by 05 §8.4)
+
+- **Sections:** 04 §11.10 (change duration removes keys beyond the end; stretching scales keys); 05 §8.4 (keys are
+  local frames; proportional re-timing maps local frame k to round(1 + (k − 1)(D′ − 1)/(D − 1)), the later key wins
+  a collision; truncation holds the value at the new end); 06 §2.6.
+- **Decision (builder, C3.1):** `element.timing.set {keyframes: "keep"}` removes keys (and motion-path keyframes, with
+  the control points after the last kept keyframe) beyond the new cycle length; `{keyframes: "scale"}` applies 05
+  §8.4's mapping with half-up rounding and later-wins collisions. Keys are local frames, so moving the start moves
+  them. With `count` loops the bar is `loops × L` (the stored `duration` is the bar; L = duration ÷ loops).
+  **Partial:** 05 §8.4's "the value at the new end is held" needs curve evaluation (`anim.evaluate`, C3.2); C3.1
+  truncates, and the held-value key at the new end is added in C3.2.
+- **Question:** store the cycle length L explicitly for `fill` loops (10 §4.5 has only `duration` and `loops`).
+
+## SI-090 — drawing-name codes of 02 and 04 (found in M3 C3.1; decided by section ownership)
+
+- **Sections:** 02 §9 (`draw.drawing.rename`: `drawing.nameExists`, `drawing.nameInvalid`); 04 §13.14, §17.6
+  (`element.drawing.rename`: `drawing.nameEmpty`, `drawing.nameInvalid`, `drawing.nameDuplicate`).
+- **Decision (builder, C3.1):** each command keeps its owning section's codes; `draw.drawing.rename` (M2, declared as
+  delegating to `element.drawing.rename`) keeps `drawing.nameExists`, which its M2 tests pin.
+- **Question:** unify the duplicate-name code.
+
+## SI-091 — default drawing names: 10 §1.3 versus 04 §14.2 (found in M3 C3.1; decided for 04)
+
+- **Sections:** 10 §1.3 (default pattern "the smallest positive integer that makes the name unique"); 04 §14.2 ("the
+  next integer after the highest purely numeric drawing name in the bank"), 02 §1.1 (drawing into a blank cell uses
+  14.2's name).
+- **Decision (builder, C3.1):** the C3.1 commands (named cells, `element.drawing.create/.duplicate`,
+  `cell.drawing.duplicate`, paste as new drawings) follow 04 §14.2 (`tt_anim::exposure::next_drawing_name`; after
+  `1`, `3` comes `4`). M2's drawing-into-a-blank-cell path (`draw.rs::next_name`) keeps 10 §1.3 until the spec
+  owner rules, so no M2 behaviour changes in C3.1.
+- **Question:** which rule governs; then align the remaining path.
+
+## SI-092 — which elements may have children: 04 §9.2 versus 10 §4.6 (found in M3 C3.1; decided for 04)
+
+- **Sections:** 04 §2.1, §9.2 (drawing, image, media, sound and annotation elements cannot have children,
+  `element.notParentable`); 10 §4.6 (drawing, annotation and image elements have children "yes (cut-out
+  hierarchies)").
+- **Decision (builder, C3.1):** the 04 commands (`element.parent.set`, `element.create {parentId}`) accept only pegs,
+  cameras, skeletons, bones and effects as parents; documents whose trees already hang elements under drawings stay
+  valid (the integrity gate follows 10 §4.6).
+- **Question:** whether cut-out rigs (M6) parent under drawings; then align 04 §9.2 or 10 §4.6.
