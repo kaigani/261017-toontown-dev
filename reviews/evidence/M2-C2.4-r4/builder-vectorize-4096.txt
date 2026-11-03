@@ -1,0 +1,18 @@
+cargo :     Blocking waiting for file lock on build directory
+At line:2 char:29
++ ... SES='4096'; cargo test --release -p tt-executor --locked -j 4 --test  ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (    Blocking wa...build directory:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+   Compiling tt-executor v0.0.1 (C:\Users\kaiga\work\review\m2-c24-r4\crates\executor)
+    Finished `release` profile [optimized + debuginfo] target(s) in 3m 05s
+     Running tests\c24_route_domains.rs (target\release\deps\c24_route_domains-0a13a372ec636628.exe)
+
+running 1 test
+test vectorize_masks_enclose_the_predicted_paper_components has been running for over 60 seconds
+ROUTE_DOMAIN vectorize_masks_enclose_the_predicted_paper_components: cases 4096 generated 4096 dispatched {"doc.object.patch": 4096, "draw.drawing.get": 4096, "draw.vectorize.run": 4096}
+test vectorize_masks_enclose_the_predicted_paper_components ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 9 filtered out; finished in 1001.63s
+

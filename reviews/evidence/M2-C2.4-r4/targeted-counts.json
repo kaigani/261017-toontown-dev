@@ -1,0 +1,27 @@
+{
+  "freshSeed": {
+    "xor": "A7",
+    "passed": 4,
+    "failed": 0,
+    "vectorize": {
+      "generated": 4096,
+      "dispatched": 4096
+    },
+    "envelope": {
+      "generated": 4096,
+      "dispatched": 3217
+    }
+  },
+  "builderVectorize": {
+    "passed": 1,
+    "failed": 0,
+    "generated": 4096,
+    "dispatched": 4096
+  },
+  "mutantsRejected": 2,
+  "fixedEnvelopePassed": 1,
+  "newPythonMalformedInputs": {
+    "cases": 4,
+    "exit2NoReceipt": 4
+  }
+}

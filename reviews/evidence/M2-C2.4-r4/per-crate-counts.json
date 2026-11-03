@@ -1,0 +1,12 @@
+{
+  "vector": {
+    "passed": 227,
+    "failed": 0,
+    "ignored": 9
+  },
+  "executor": {
+    "passed": 591,
+    "failed": 0,
+    "ignored": 7
+  }
+}

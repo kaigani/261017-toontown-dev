@@ -1,0 +1,86 @@
+[
+  {
+    "name": "lines_to_brush_then_centre_line_on_closed_loops",
+    "before": "f28a9c642bd25a42d5a0480780cb3f7535771674a5fa7bdd1b35046383383d86",
+    "after": "f28a9c642bd25a42d5a0480780cb3f7535771674a5fa7bdd1b35046383383d86",
+    "identical": true
+  },
+  {
+    "name": "centre_line_of_a_spineless_ring",
+    "before": "95b5ca17122c041a0b89802122aadcc681704ebb0f95d376c593156b5cdaa2a9",
+    "after": "95b5ca17122c041a0b89802122aadcc681704ebb0f95d376c593156b5cdaa2a9",
+    "identical": true
+  },
+  {
+    "name": "break_apart_matches_the_fonts_glyph_outlines",
+    "before": "c73861b7ed8723fc51a8676f8b3899078db821b96f2d39e49a7da5dce2dc97bd",
+    "after": "c73861b7ed8723fc51a8676f8b3899078db821b96f2d39e49a7da5dce2dc97bd",
+    "identical": true
+  },
+  {
+    "name": "vectorize_masks_enclose_the_predicted_paper_components",
+    "before": "149359fd2b6e51418949f2a915f91a982be2b9b8b632978f9fe52b961624de32",
+    "after": "149359fd2b6e51418949f2a915f91a982be2b9b8b632978f9fe52b961624de32",
+    "identical": true
+  },
+  {
+    "name": "smooth_changes_the_shape_within_its_tolerance",
+    "before": "aabf1448d59918880eee05b95aa2a6351e8224ed03f8802a9667cb6b562bd5cc",
+    "after": "aabf1448d59918880eee05b95aa2a6351e8224ed03f8802a9667cb6b562bd5cc",
+    "identical": true
+  },
+  {
+    "name": "erasing_polygonal_brushes_keeps_partly_covered_ones_whole",
+    "before": "6adb70f41481b3115821f8582baae04c99150d018bcad8e0fbece7c559fbb53d",
+    "after": "6adb70f41481b3115821f8582baae04c99150d018bcad8e0fbece7c559fbb53d",
+    "identical": true
+  },
+  {
+    "name": "flatten_of_pencil_and_polygonal_brush_layers_is_exact",
+    "before": "7d481a48a4acc8285a87a67b30596d65b7b5092305561bbc4d1d244e7bcf4cc4",
+    "after": "7d481a48a4acc8285a87a67b30596d65b7b5092305561bbc4d1d244e7bcf4cc4",
+    "identical": true
+  },
+  {
+    "name": "non_parallelogram_envelopes_map_the_layer_projectively",
+    "before": "7422af8d6295061131ee76e1a6558eff1f502090307da0e8e1c60879a9e0415d",
+    "after": "eec0c2989eae58ae1c9dae5dad4571563cac903b8f069c76a6361f121253700f",
+    "identical": false
+  },
+  {
+    "name": "snapping_onto_a_curved_contour_reaches_its_nearest_point",
+    "before": "d59bd1d55cfe71d4726a1cce4abcd34149e94d979a281ee42586e73d3e86c52e",
+    "after": "d59bd1d55cfe71d4726a1cce4abcd34149e94d979a281ee42586e73d3e86c52e",
+    "identical": true
+  },
+  {
+    "name": "flatten_keeps_a_pencil_piece_that_a_brush_only_partly_covers",
+    "before": "231d9783c16c023627784fadfe1f79f319864822b8de0fb491f32ce3aee89eb4",
+    "after": "231d9783c16c023627784fadfe1f79f319864822b8de0fb491f32ce3aee89eb4",
+    "identical": true
+  },
+  {
+    "name": "vectorize_comparison_rejects_a_wrong_boundary_with_the_right_area_and_probe",
+    "before": "f7bc650ea0976a878c7e29678ed90dfe7cfa40b0586262ca96526d0b1221a05a",
+    "after": "f7bc650ea0976a878c7e29678ed90dfe7cfa40b0586262ca96526d0b1221a05a",
+    "identical": true
+  },
+  {
+    "name": "vectorize_comparison_rejects_a_wrong_boundary_at_the_correct_image_origin",
+    "before": "0bd29f2f2efd5637deee85775e9afa1334df95d72bcbe21b97e6ee6984700769",
+    "after": "0bd29f2f2efd5637deee85775e9afa1334df95d72bcbe21b97e6ee6984700769",
+    "identical": true
+  },
+  {
+    "name": "shrunk_projective_envelope_fill_case_for_independent_adjudication",
+    "before": "66fc78d9bbb6d8dc11f2ea3ae6291f56c4a50f6466ae6a161082a14e075df328",
+    "after": "66fc78d9bbb6d8dc11f2ea3ae6291f56c4a50f6466ae6a161082a14e075df328",
+    "identical": true
+  },
+  {
+    "name": "projective_envelope_matches_the_independently_rounded_point_query_control",
+    "before": "b1a5a4b955de5ce68d35e540c30df18bfd8b5362cb721e0b0c50baf39b6af69e",
+    "after": "b1a5a4b955de5ce68d35e540c30df18bfd8b5362cb721e0b0c50baf39b6af69e",
+    "identical": true
+  }
+]

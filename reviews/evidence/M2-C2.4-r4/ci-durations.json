@@ -1,0 +1,20 @@
+[
+  {
+    "name": "check properties (windows-latest)",
+    "seconds": 2114,
+    "over55minutes": false,
+    "conclusion": "success"
+  },
+  {
+    "name": "review properties release (windows-latest)",
+    "seconds": 1819,
+    "over55minutes": false,
+    "conclusion": "success"
+  },
+  {
+    "name": "check (windows-latest)",
+    "seconds": 2456,
+    "over55minutes": false,
+    "conclusion": "success"
+  }
+]

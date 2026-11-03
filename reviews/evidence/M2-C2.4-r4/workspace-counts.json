@@ -1,0 +1,69 @@
+{
+  "command": "cargo test --workspace --locked -j 4 --no-fail-fast",
+  "runs": 1,
+  "cargoExit": 0,
+  "summaries": 248,
+  "passed": 1290,
+  "failed": 0,
+  "ignored": 22,
+  "distinctPassed": 1290,
+  "distinctIgnored": 22,
+  "newTestsAgainstCI": [
+    [
+      "tests/c12_r1_stress.rs",
+      "ten_thousand_history_operations_match_independent_content_oracle_and_replay",
+      "ok"
+    ],
+    [
+      "tests/c12_r3_stress.rs",
+      "ten_thousand_history_operations_match_independent_content_oracle_and_replay",
+      "ok"
+    ],
+    [
+      "tests/c13_r3_history_r1.rs",
+      "ten_thousand_history_operations_match_independent_content_oracle_and_replay",
+      "ok"
+    ],
+    [
+      "tests/c13_r3_history_r3.rs",
+      "ten_thousand_history_operations_match_independent_content_oracle_and_replay",
+      "ok"
+    ],
+    [
+      "tests/c14_r3_history_r1.rs",
+      "ten_thousand_history_operations_match_independent_content_oracle_and_replay",
+      "ok"
+    ],
+    [
+      "tests/c14_r3_history_r3.rs",
+      "ten_thousand_history_operations_match_independent_content_oracle_and_replay",
+      "ok"
+    ],
+    [
+      "tests/c24_r4_closure.rs",
+      "border_paper_and_diagonal_ink_bridge",
+      "ok"
+    ],
+    [
+      "tests/c24_r4_closure.rs",
+      "non_parallelogram_envelopes_map_the_layer_projectively",
+      "ok"
+    ],
+    [
+      "tests/c24_r4_closure.rs",
+      "quarter_grid_ties_and_boundary_refusal_match_readback",
+      "ok"
+    ],
+    [
+      "tests/c24_r4_closure.rs",
+      "vectorize_masks_enclose_the_predicted_paper_components",
+      "ok"
+    ]
+  ],
+  "missingTestsAgainstCI": [],
+  "TT_COMMIT_REVIEW_RECEIPTS": null,
+  "newRustTests": 4,
+  "extraUnfilteredPredecessorHistoryTests": 6,
+  "workspaceComparablePassed": 1280,
+  "countExplanation": "1290 = 1280 CI workspace-equivalent tests + 6 predecessor 10000-operation history functions excluded by CI check filter + 4 new R4 tests. Trybuild fixture success lines are not counted as separate Rust harness tests."
+}

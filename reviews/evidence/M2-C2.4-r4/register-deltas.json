@@ -1,0 +1,108 @@
+[
+  {
+    "register": "requirements",
+    "id": "U042",
+    "before": {
+      "id": "U042",
+      "clause": "02 3.12; readiness 2",
+      "requirement": "independent topology oracle covers every topology operation",
+      "state": "divergent",
+      "evidenceOrOwner": "C24-R3-02/04: changed-route domains improve coverage, but Vectorize accepts a wrong mask boundary and the Envelope oracle uses a finer point probe; scoped closure required"
+    },
+    "after": {
+      "id": "U042",
+      "clause": "02 3.12; readiness 2",
+      "requirement": "independent topology oracle covers every topology operation",
+      "state": "implemented",
+      "evidenceOrOwner": "R4 closure: independently traced mask comparator and corrected point-query oracle; fresh A7 seed 4096-case checks and retained mutants/reproduction."
+    }
+  },
+  {
+    "register": "requirements",
+    "id": "U049",
+    "before": {
+      "id": "U049",
+      "clause": "C22-T2; ruling a; engineering",
+      "requirement": "gate analyzer rejects malformed observations",
+      "state": "divergent",
+      "evidenceOrOwner": "C24-R3-01: original metadata/run/status/overflow malformations fixed; identity-free numeric samples and incompatible declared units still accepted"
+    },
+    "after": {
+      "id": "U049",
+      "clause": "C22-T2; ruling a; engineering",
+      "requirement": "gate analyzer rejects malformed observations",
+      "state": "implemented",
+      "evidenceOrOwner": "R4 closure: unchanged GateBattery plus nonfinite identity and structured-unit refusals, exit 2/no receipt."
+    }
+  },
+  {
+    "register": "requirements",
+    "id": "U067",
+    "before": {
+      "id": "U067",
+      "clause": "C2.4 round-1 response; round-2 charter",
+      "requirement": "reviewer assertions preserved except explicitly ruled changes",
+      "state": "implemented",
+      "evidenceOrOwner": "Rulings (a)/(b)/(c) confirmed: only three permitted files changed, all thirteen route test functions byte-identical, helper mirroring independently verified"
+    },
+    "after": {
+      "id": "U067",
+      "clause": "C2.4 round-1 response; round-2 charter",
+      "requirement": "reviewer assertions preserved except explicitly ruled changes",
+      "state": "implemented",
+      "evidenceOrOwner": "Rulings (a)/(b)/(c) confirmed: only three permitted files changed, all thirteen route test functions byte-identical, helper mirroring independently verified; R4 raw-byte extraction of all 14 R3 tests, exact edits 59/60 only, by-file checker passes."
+    }
+  },
+  {
+    "register": "requirements",
+    "id": "U071",
+    "before": {
+      "id": "U071",
+      "clause": "C24-R2-05; whole-checkpoint evidence hygiene",
+      "requirement": "golden analyzer rejects malformed duplicate identities before ID alignment",
+      "state": "divergent",
+      "evidenceOrOwner": "C24-R3-03: duplicate IDs silently overwrite an earlier changed stroke; CLI writes a zero-change success receipt"
+    },
+    "after": {
+      "id": "U071",
+      "clause": "C24-R2-05; whole-checkpoint evidence hygiene",
+      "requirement": "golden analyzer rejects malformed duplicate identities before ID alignment",
+      "state": "implemented",
+      "evidenceOrOwner": "R4 closure: unchanged duplicate-ID test and two nested duplicate CLI controls (both input sides), exit 2/no receipt."
+    }
+  },
+  {
+    "register": "requirements",
+    "id": "U072",
+    "before": {
+      "id": "U072",
+      "clause": "C24-R2-01; SI-070 point-location model",
+      "requirement": "projective-envelope expected fill uses the established point-query representation",
+      "state": "divergent",
+      "evidenceOrOwner": "C24-R3-04: finer dyadic probe crosses a source boundary differently from the 1/256-du product query; original expectation and fixed failure retained, independent rounded-query control passes"
+    },
+    "after": {
+      "id": "U072",
+      "clause": "C24-R2-01; SI-070 point-location model",
+      "requirement": "projective-envelope expected fill uses the established point-query representation",
+      "state": "implemented",
+      "evidenceOrOwner": "R4 closure: 1/256-du rounding, halves away from zero, boundary refusal; fresh 4096-case property, fixed reproduction and exact tie control."
+    }
+  },
+  {
+    "register": "readiness",
+    "id": "2",
+    "before": {
+      "id": "2",
+      "item": "Topology properties",
+      "state": "divergent",
+      "evidenceOrOwner": "C24-R3-02: independent changed-mask boundary proof remains incomplete; other added domains and original proving controls retained"
+    },
+    "after": {
+      "id": "2",
+      "item": "Topology properties",
+      "state": "implemented",
+      "evidenceOrOwner": "R4 scoped closure of R3-02/04; predecessor topology properties retained; Feather scope remains separate orchestrator obligation."
+    }
+  }
+]

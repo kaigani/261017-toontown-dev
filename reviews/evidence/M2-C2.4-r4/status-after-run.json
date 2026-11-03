@@ -1,0 +1,10 @@
+{
+  "status": [
+    "?? crates/executor/tests/c24_r4_closure.rs",
+    "?? reviews/M2-C2.4-r4-closure.md",
+    "?? reviews/evidence/M2-C2.4-r4/",
+    "?? tests/adversarial/c24-r4-closure.py"
+  ],
+  "trackedDiff": [],
+  "TT_COMMIT_REVIEW_RECEIPTS": null
+}

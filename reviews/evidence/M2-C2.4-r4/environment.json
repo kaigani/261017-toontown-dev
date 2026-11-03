@@ -1,0 +1,24 @@
+{
+  "head": "463158d17704e85419908eb22ca443a6400eb9cd",
+  "branch": "review/m2-c24-r4",
+  "TT_COMMIT_REVIEW_RECEIPTS": null,
+  "ownSeed": "original 32-byte domain seed XOR 0xA7 (R3 used XOR 0xD3)",
+  "cases": 4096,
+  "mask": [
+    "........",
+    ".###....",
+    ".#.#....",
+    ".###....",
+    "....###.",
+    "....###.",
+    "....###.",
+    "........"
+  ],
+  "tieQueriesX": [
+    -0.001953125,
+    0.001953125,
+    0,
+    9.998046875,
+    10.001953125
+  ]
+}
