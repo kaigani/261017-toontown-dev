@@ -47,3 +47,5 @@ python tests/adversarial/c31-r1-sdk.py --binary target/debug/toontown-headless.e
 ```
 
 Failures are intentionally enabled and must not be filtered out of a future fixing round. Default audit/register tests compare fixed historical SHAs, never a future working tree. No historical M1/M2 receipt was rewritten, and `TT_COMMIT_REVIEW_RECEIPTS` was unset.
+
+Final additions: `availability.txt` retains the image drawing-lock refusal failure; `workspace-summary.json` indexes the completed single workspace run (1374 passed, 22 reviewer failures, 23 ignored). Latest targeted review totals are 51 tests: 23 pass and 28 retained failures. The final source register separates media/sound availability portions into owned deferrals under SI-088.

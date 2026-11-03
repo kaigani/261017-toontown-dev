@@ -94,6 +94,8 @@ COMMAND_FINDINGS['xsheet.exposures.set']+=['03']
 REPRO['03']+='; cargo test -p tt-executor --locked -j 4 --test c31_r1_contract multi_bank_named_insert_emits_only_each_banks_created_ids; cargo test -p tt-executor --locked -j 4 --test c31_r1_contract sheet_and_label_creation_emit_drawing_bank_events'
 COMMAND_FINDINGS['cell.columnate.apply']+=['05']
 REPRO['05']+='; cargo test -p tt-executor --locked -j 4 --test c31_r1_notes'
+REPRO['16']='cargo test -p tt-executor --locked -j 4 --test c31_r1_availability'
+COMMAND_FINDINGS['element.drawingLock.set']=['16']
 
 
 def assessment(u):
@@ -157,6 +159,8 @@ def assessment(u):
         if c=='8.1' and 'unique suffix' in low: findings=['08']
         if c=='17.2' and ('createMissingDrawings' in t or 'unknown names' in low): findings=['08']
         if c=='17.6' and 'cell.frameOutOfRange' in t: findings=['09']
+        if c=='13.20' and 'Clear drawing / lock drawing' in t: findings=['16']
+        if c=='14.1' and 'media element' in low: return defer('M8 C8.3 (SI-088)','Drawing/image/annotation bank semantics are implemented in C3.1; the media wording is deferred to the sequence/asset owner under SI-088, not credited as a media drawing bank.')
         if c=='10.3': findings=['02']
         if c=='17.4' and 'xsheet.lightTable.changed' in t: return defer('M5 C5.2','Event is declared with schema; its producers are the later light-table mutation commands.')
     if findings:
@@ -173,6 +177,13 @@ def build():
         state,owner,basis,findings=assessment(u)
         records.append({'id':f'C31-U{i:03}',**u,'status':state,'owner':owner,'basis':basis,
                         'findings':[f'C31-R1-{n}' for n in findings], 'reproduction':[REPRO[n] for n in findings]})
+        if u['clause']=='13.20' and u['text'].startswith('|'):
+            cells=u['text'].split('|')
+            if len(cells)>6 and any('✓' in cells[k] for k in (4,5)):
+                records[-1]['basis']='C3.1 drawing/image/annotation/peg columns only; allowed media/sound operations have their own paired SI-088 deferral. '+basis
+                records.append({'id':f'C31-U{i:03}-MS',**u,'status':'deferred-with-owner','owner':'M8 C8.1/C8.3 (SI-088)',
+                    'basis':'The allowed media/sound portion of this availability row awaits placement/sequence editing. C3.1 refuses it explicitly with owner details. This is not credited as completed media/sound editing.',
+                    'findings':[],'reproduction':[]})
         # Mixed model/view sentences are split: the original row's implemented assessment covers its data/API
         # projection only; a separate unit explicitly owns the visible/evaluated behavior.
         if state=='implemented' and any(s in u['text'].lower() for s in ['panel','render','composite','preview','view','keyframe','transformation','indicator','display','shown','hover']):

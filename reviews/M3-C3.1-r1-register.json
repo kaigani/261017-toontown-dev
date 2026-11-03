@@ -4322,7 +4322,19 @@
       "text": "| Add / remove exposure | ✓ | ✓ | ✓ | — | ✓ | ✓ (bar length) |",
       "status": "implemented",
       "owner": "M3 C3.1",
-      "basis": "Model/handler inspection, builder c31 suites, independent c31_r1_mutations common-contract matrix and candidate CI.",
+      "basis": "C3.1 drawing/image/annotation/peg columns only; allowed media/sound operations have their own paired SI-088 deferral. Model/handler inspection, builder c31 suites, independent c31_r1_mutations common-contract matrix and candidate CI.",
+      "findings": [],
+      "reproduction": []
+    },
+    {
+      "id": "C31-U306-MS",
+      "source": "spec/04_timeline_xsheet.md",
+      "clause": "13.20",
+      "line": 1097,
+      "text": "| Add / remove exposure | ✓ | ✓ | ✓ | — | ✓ | ✓ (bar length) |",
+      "status": "deferred-with-owner",
+      "owner": "M8 C8.1/C8.3 (SI-088)",
+      "basis": "The allowed media/sound portion of this availability row awaits placement/sequence editing. C3.1 refuses it explicitly with owner details. This is not credited as completed media/sound editing.",
       "findings": [],
       "reproduction": []
     },
@@ -4334,7 +4346,19 @@
       "text": "| Set exposure 1/2/3/N | ✓ | ✓ | ✓ | — | ✓ | — |",
       "status": "implemented",
       "owner": "M3 C3.1",
-      "basis": "Model/handler inspection, builder c31 suites, independent c31_r1_mutations common-contract matrix and candidate CI.",
+      "basis": "C3.1 drawing/image/annotation/peg columns only; allowed media/sound operations have their own paired SI-088 deferral. Model/handler inspection, builder c31 suites, independent c31_r1_mutations common-contract matrix and candidate CI.",
+      "findings": [],
+      "reproduction": []
+    },
+    {
+      "id": "C31-U307-MS",
+      "source": "spec/04_timeline_xsheet.md",
+      "clause": "13.20",
+      "line": 1098,
+      "text": "| Set exposure 1/2/3/N | ✓ | ✓ | ✓ | — | ✓ | — |",
+      "status": "deferred-with-owner",
+      "owner": "M8 C8.1/C8.3 (SI-088)",
+      "basis": "The allowed media/sound portion of this availability row awaits placement/sequence editing. C3.1 refuses it explicitly with owner details. This is not credited as completed media/sound editing.",
       "findings": [],
       "reproduction": []
     },
@@ -4346,7 +4370,19 @@
       "text": "| Extend exposure | ✓ | ✓ | ✓ | — | ✓ | Extend children exposure |",
       "status": "implemented",
       "owner": "M3 C3.1",
-      "basis": "Model/handler inspection, builder c31 suites, independent c31_r1_mutations common-contract matrix and candidate CI.",
+      "basis": "C3.1 drawing/image/annotation/peg columns only; allowed media/sound operations have their own paired SI-088 deferral. Model/handler inspection, builder c31 suites, independent c31_r1_mutations common-contract matrix and candidate CI.",
+      "findings": [],
+      "reproduction": []
+    },
+    {
+      "id": "C31-U308-MS",
+      "source": "spec/04_timeline_xsheet.md",
+      "clause": "13.20",
+      "line": 1099,
+      "text": "| Extend exposure | ✓ | ✓ | ✓ | — | ✓ | Extend children exposure |",
+      "status": "deferred-with-owner",
+      "owner": "M8 C8.1/C8.3 (SI-088)",
+      "basis": "The allowed media/sound portion of this availability row awaits placement/sequence editing. C3.1 refuses it explicitly with owner details. This is not credited as completed media/sound editing.",
       "findings": [],
       "reproduction": []
     },
@@ -4358,7 +4394,19 @@
       "text": "| Insert cells / insert blank / delete blank | ✓ | ✓ | ✓ | ✓ | ✓ | — |",
       "status": "implemented",
       "owner": "M3 C3.1",
-      "basis": "Model/handler inspection, builder c31 suites, independent c31_r1_mutations common-contract matrix and candidate CI.",
+      "basis": "C3.1 drawing/image/annotation/peg columns only; allowed media/sound operations have their own paired SI-088 deferral. Model/handler inspection, builder c31 suites, independent c31_r1_mutations common-contract matrix and candidate CI.",
+      "findings": [],
+      "reproduction": []
+    },
+    {
+      "id": "C31-U309-MS",
+      "source": "spec/04_timeline_xsheet.md",
+      "clause": "13.20",
+      "line": 1100,
+      "text": "| Insert cells / insert blank / delete blank | ✓ | ✓ | ✓ | ✓ | ✓ | — |",
+      "status": "deferred-with-owner",
+      "owner": "M8 C8.1/C8.3 (SI-088)",
+      "basis": "The allowed media/sound portion of this availability row awaits placement/sequence editing. C3.1 refuses it explicitly with owner details. This is not credited as completed media/sound editing.",
       "findings": [],
       "reproduction": []
     },
@@ -4370,7 +4418,19 @@
       "text": "| Create cycle / columnate | ✓ | ✓ | ✓ | — | ✓ | — |",
       "status": "implemented",
       "owner": "M3 C3.1",
-      "basis": "Model/handler inspection, builder c31 suites, independent c31_r1_mutations common-contract matrix and candidate CI.",
+      "basis": "C3.1 drawing/image/annotation/peg columns only; allowed media/sound operations have their own paired SI-088 deferral. Model/handler inspection, builder c31 suites, independent c31_r1_mutations common-contract matrix and candidate CI.",
+      "findings": [],
+      "reproduction": []
+    },
+    {
+      "id": "C31-U310-MS",
+      "source": "spec/04_timeline_xsheet.md",
+      "clause": "13.20",
+      "line": 1101,
+      "text": "| Create cycle / columnate | ✓ | ✓ | ✓ | — | ✓ | — |",
+      "status": "deferred-with-owner",
+      "owner": "M8 C8.1/C8.3 (SI-088)",
+      "basis": "The allowed media/sound portion of this availability row awaits placement/sequence editing. C3.1 refuses it explicitly with owner details. This is not credited as completed media/sound editing.",
       "findings": [],
       "reproduction": []
     },
@@ -4392,11 +4452,15 @@
       "clause": "13.20",
       "line": 1103,
       "text": "| Clear drawing / lock drawing | ✓ | — | — | — | ✓ | — |",
-      "status": "implemented",
+      "status": "divergent",
       "owner": "M3 C3.1",
-      "basis": "Model/handler inspection, builder c31 suites, independent c31_r1_mutations common-contract matrix and candidate CI.",
-      "findings": [],
-      "reproduction": []
+      "basis": "Implemented normal path, but independent reproductions fail; see findings. Other aspects remain covered by the common matrix.",
+      "findings": [
+        "C31-R1-16"
+      ],
+      "reproduction": [
+        "cargo test -p tt-executor --locked -j 4 --test c31_r1_availability"
+      ]
     },
     {
       "id": "C31-U313",
@@ -4632,9 +4696,9 @@
       "clause": "14.1",
       "line": 1136,
       "text": "- Each drawing, image, annotation and media element owns a **drawing bank**: the set of its drawings, independent of whether they are currently exposed in cells.",
-      "status": "implemented",
-      "owner": "M3 C3.1",
-      "basis": "Model/handler inspection, builder c31 suites, independent c31_r1_mutations common-contract matrix and candidate CI.",
+      "status": "deferred-with-owner",
+      "owner": "M8 C8.3 (SI-088)",
+      "basis": "Drawing/image/annotation bank semantics are implemented in C3.1; the media wording is deferred to the sequence/asset owner under SI-088, not credited as a media drawing bank.",
       "findings": [],
       "reproduction": []
     },
@@ -6174,11 +6238,15 @@
       "clause": "17.4",
       "line": 1418,
       "text": "| `element.drawingLock.set` | toggle | Lock / unlock drawings | `drawingIds?: [id]; locked: bool` | `{drawingIds[]}` | yes |",
-      "status": "implemented",
+      "status": "divergent",
       "owner": "M3 C3.1",
-      "basis": "Model/handler inspection, builder c31 suites, independent c31_r1_mutations common-contract matrix and candidate CI.",
-      "findings": [],
-      "reproduction": []
+      "basis": "Implemented normal path, but independent reproductions fail; see findings. Other aspects remain covered by the common matrix.",
+      "findings": [
+        "C31-R1-16"
+      ],
+      "reproduction": [
+        "cargo test -p tt-executor --locked -j 4 --test c31_r1_availability"
+      ]
     },
     {
       "id": "C31-U448",
@@ -8713,10 +8781,14 @@
     {
       "id": "element.drawingLock.set",
       "kind": "toggle",
-      "status": "implemented",
+      "status": "divergent",
       "owner": "M3 C3.1",
-      "findings": [],
-      "reproduction": [],
+      "findings": [
+        "C31-R1-16"
+      ],
+      "reproduction": [
+        "cargo test -p tt-executor --locked -j 4 --test c31_r1_availability"
+      ],
       "basis": "Declaration/schema/example and handler inspection; c31_r1_mutations (44 action/toggle examples), c31 builder suites and candidate never-block/example-results CI.",
       "deferredAspects": []
     },
@@ -9345,14 +9417,14 @@
   ],
   "counts": {
     "requirements": {
-      "implemented": 413,
-      "divergent": 55,
+      "implemented": 410,
+      "divergent": 57,
       "missing": 0,
-      "deferred-with-owner": 221
+      "deferred-with-owner": 227
     },
     "commandsAndEvents": {
-      "implemented": 37,
-      "divergent": 26,
+      "implemented": 36,
+      "divergent": 27,
       "missing": 0,
       "deferred-with-owner": 1
     }
