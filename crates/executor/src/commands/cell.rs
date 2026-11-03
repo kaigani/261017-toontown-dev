@@ -1695,20 +1695,11 @@ pub(crate) fn cell_clipboard_apply(cx: &mut Cx, p: ClipboardApplyParams) -> Resu
     for (s, tgt) in sources.iter().zip(targets.iter()) {
         applicable(&doc, tgt, "cell.clipboard.apply", LABELLED)?;
         let tt = *element(&doc, tgt)?.element_type();
-        // The source column may be gone (deleted, another project): its cells' drawings decide compatibility.
-        let st = match doc.element(s) {
-            Some(e) => *e.element_type(),
-            None => {
-                let bitmap = clip.iter().filter(|(e, _, _)| e == s).filter_map(|(_, _, d)| d.as_ref()).any(|d| {
-                    payload.drawing(&doc, d).is_some_and(|v| {
-                        v.get("nodes").and_then(Value::as_array).is_some_and(|n| {
-                            !n.is_empty() && n.iter().all(|x| x.get("kind").and_then(Value::as_str) == Some("bitmap"))
-                        })
-                    })
-                });
-                if bitmap { ElementType::Image } else { tt }
-            }
-        };
+        // The source column may be gone (deleted, another project): the copy recorded its type.
+        let st = doc.element(s).map(|e| *e.element_type()).or_else(|| {
+            payload.element_types.get(s.as_str()).and_then(|t| serde_json::from_value::<ElementType>(json!(t)).ok())
+        });
+        let st = st.unwrap_or(tt);
         if !compatible(st, tt) {
             return Err(type_mismatch(s, tgt, st, tt));
         }

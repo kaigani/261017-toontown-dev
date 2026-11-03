@@ -400,3 +400,22 @@ fn save_open_round_trip_and_determinism() {
     std::fs::remove_file(&p1).ok();
     std::fs::remove_dir(&dir).ok();
 }
+
+/// C31-R1-14: a selection that overruns its caller's budget is cancelled at its next work charge; the selection and
+/// position are unchanged, and the next caller is answered at once.
+#[test]
+fn r14_cancelled_selection_changes_nothing_and_frees_the_worker() {
+    let _t = turn();
+    let budget = Duration::from_millis(500);
+    let h = fixture_with(ExecutorConfig { budget });
+    ok(&h, "cell.select", json!({ "elementIds": [BOB], "from": 1, "to": 2 }));
+    let before = ok(&h, "cell.selection.get", json!({}));
+    tt_vector::work::hooks::set_spin_micros(20_000);
+    let e = run(&h, "cell.select", json!({ "elementIds": [BOB, BG], "from": 1, "to": 100_000, "mode": "add" }));
+    tt_vector::work::hooks::set_spin_micros(0);
+    assert_eq!(e.error.as_ref().map(|e| e.code.as_str()), Some("command.timeout"), "{e:?}");
+    std::thread::sleep(Duration::from_millis(300));
+    let t = Instant::now();
+    assert_eq!(ok(&h, "cell.selection.get", json!({})), before, "no late session mutation");
+    assert!(t.elapsed() < budget, "the next caller is answered at once: {:?}", t.elapsed());
+}

@@ -41,6 +41,8 @@ pub(crate) struct ArtPayload {
     pub blobs: BTreeMap<String, String>,
     /// Cell notes of copied cells: element ID → frame offset (decimal) → text.
     pub notes: BTreeMap<String, BTreeMap<String, String>>,
+    /// The element type of every copied column (compatibility when the source element no longer exists).
+    pub element_types: BTreeMap<String, String>,
 }
 
 /// Entry names a drawing references (`entry` of bitmap blobs, texture images).

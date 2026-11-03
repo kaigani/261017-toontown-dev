@@ -738,9 +738,9 @@ impl Cx {
         let mut changes: Vec<(EntryKey, Vec<PatchOp>)> = Vec::new();
         for id in ids {
             let Some(ad) = after.drawing(&id) else { continue };
-            // A drawing an import created is settled as it stands: its strokes are compared with themselves, so
-            // nothing is re-noded and only paint passes change it.
-            let bd = before.drawing(&id).or_else(|| self.verbatim.contains(&id).then_some(ad));
+            // A drawing an import or a copy created or overwrote is settled as it stands: its strokes are compared
+            // with themselves, so nothing is re-noded and only paint passes change it (C31-R1-13: overwrites too).
+            let bd = if self.verbatim.contains(&id) { Some(ad) } else { before.drawing(&id) };
             let has_paint = self.painted.keys().any(|(d, _)| *d == id);
             if bd == Some(ad) && !has_paint {
                 continue;

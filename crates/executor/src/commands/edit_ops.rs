@@ -418,6 +418,9 @@ fn copy_content(
                 if let Some(id) = d.as_deref().and_then(|d| Id::parse(d).ok()) {
                     payload.capture_drawing(cx, doc, &id)?;
                 }
+                if let Some(x) = Id::parse(e).ok().and_then(|id| doc.element(&id)) {
+                    payload.element_types.insert(e.clone(), x.element_type().as_str().to_owned());
+                }
                 if let Some(t) =
                     Id::parse(e).ok().and_then(|id| doc.element(&id).and_then(|x| x.cell_notes().get(f).cloned()))
                 {
@@ -1900,6 +1903,11 @@ pub(crate) fn store_cells(
     }
     for (e, k, t) in notes {
         payload.notes.entry(e.as_str().to_owned()).or_default().insert(k.to_string(), t.clone());
+    }
+    for (e, _, _) in cells {
+        if let Some(x) = doc.element(e) {
+            payload.element_types.insert(e.as_str().to_owned(), x.element_type().as_str().to_owned());
+        }
     }
     let items: Vec<Map<String, Value>> = cells
         .iter()
