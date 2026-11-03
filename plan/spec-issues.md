@@ -1064,3 +1064,42 @@ Reserved by the M0 closure for "measured deterministic-format incompatibility" (
   cameras, skeletons, bones and effects as parents; documents whose trees already hang elements under drawings stay
   valid (the integrity gate follows 10 §4.6).
 - **Question:** whether cut-out rigs (M6) parent under drawings; then align 04 §9.2 or 10 §4.6.
+
+## SI-093 — cell notes through exposure edits (found in M3 C3.1 round 1; decided by orchestrator ruling)
+
+- **Sections:** 04 §7.2 (notes stored per element per frame), §13 (cells shift), §13.16 (cut/copy/paste carry
+  "labels, drawings, properties"); 10 §4.7 (`cellNotes`).
+- **Decision (orchestrator ruling, C31-R1-05):** notes are frame-keyed element data that follow their cells. Every
+  edit that moves cells moves their notes by the same mapping (`tt_anim::exposure::CellMap`: add/remove/set exposure,
+  blank cells, insert/remove cells, cycles, inserted columnate, moves); notes of removed cells (cut, shifting delete,
+  shortened exposures) go; clearing cells (`cell.range.delete {shift: false}`, cut without exposure change) clears
+  their notes; copy/paste and copying moves carry notes and **overwrite** the destination's notes in the pasted range
+  (an overwriting paste clears destination notes the copy does not carry); overwriting edits that move no cell
+  (extend exposure, change label, `xsheet.exposures.set`, overwriting columnate) keep notes where they are. Each edit
+  is one transaction with its exposure change; drawing and zone revisions are unchanged.
+- **Question:** none for the spec owner beyond confirming the overwrite/clear rule.
+
+## SI-094 — what duplicating an element copies (found in M3 C3.1 round 1; decided by orchestrator ruling)
+
+- **Sections:** 04 §8.2 (an independent copy of the element, its drawings, exposure and transformation), §2.9–§2.10
+  (parameter rows required by effects and skeletons); 10 §4.6 (`effectParameter` created and deleted with its owner).
+- **Decision (orchestrator ruling, C31-R1-06):** `element.duplicate` copies the element's whole subtree: mandatory
+  parameter rows (clipping masks, particle sprite rows with their sprite drawing element, skeleton bones and skin
+  with their bones) and ordinary user children alike, each with a new ID, a unique `_n` name and, for cell-based
+  elements, a new bank with verbatim drawing copies (banks shared inside the subtree stay shared between the copies);
+  `x-ref: element` references between copied elements follow the copies. An element listed together with one of its
+  ancestors is copied once, with that ancestor. A parameter row alone is refused (`arg.invalid`): it never becomes an
+  unowned root.
+- **Question:** confirm that ordinary children are duplicated with their parent (04 §8.2 is silent on children).
+
+## SI-095 — columnate: total frames versus "expose last" (found in M3 C3.1 round 1; decided by orchestrator ruling)
+
+- **Sections:** 04 §13.10 (total frames recompute the loops; the last loop is truncated to the requested count;
+  "expose last drawing for" the final drawing of the whole cycle).
+- **Decision (orchestrator ruling, C31-R1-01):** total frames take precedence. With `totalFrames`, loops =
+  ceil(frames ÷ frames-per-loop) (frames-per-loop uses `exposeEach` for every drawing) and the sequence is generated
+  far enough to reach the requested count before the last loop is truncated, so a short `exposeLast` never leaves a
+  shortfall; `exposeLast` applies only when the requested count ends exactly where the untruncated cycle ends. A
+  single pass (`loopMode: none`) is never extended: a larger `totalFrames` is refused (`arg.invalid`, the pass length
+  stated), a smaller one truncates it.
+- **Question:** confirm, or specify how `exposeLast` combines with a truncated cycle.

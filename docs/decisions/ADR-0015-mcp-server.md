@@ -258,3 +258,18 @@ transactions, idempotent requests and the never-block watchdog.
   call was cancelled. Verified by `c23_r3_selection_cancel` (reviewer), `c23_round3.rs` and
   `run::tests::the_acceptance_boundary_refuses_a_cancelled_request_and_restores_the_session` (handlers that charge no
   work, an atomic batch, and the same calls accepted once not cancelled).
+- **M3 C3.1 round 1 (C31-R1-02, C31-R1-03, C31-R1-14): new session state, one selection event, shared selection
+  lists.** The Timeline/Exposure Sheet view state added in C3.1 (`Session.timeline`: solo, category colours, light
+  tables) is part of the same acceptance boundary as the rest of the session: `run::Rollback` and `cx::Savepoint`
+  carry it, so a dry run, a failed atomic group or a cancelled call leaves it as it was
+  (`c31_r1_contract::timeline_colour_*`, `c31_r1_protocol::generic_tool_dry_run_does_not_leak_category_colour`,
+  `c31_round1::r02_*`). `cell.selection.changed` has one producer: the executor emits it once per accepted call whose
+  current element, current frame, cell selection or row selection changed — whichever command caused it (an
+  explicit selection, a creation, a hidden current column, a deletion repaired after the commit) — and handlers no
+  longer emit it themselves. Selection lists are shared (`app::Ids`, an `Arc<Vec<String>>`): copying the context for
+  rollback, savepoints and observation costs nothing however many cells are selected, observation compares lists by
+  pointer before content, and the post-call context repair skips the lists while the project, the document revision
+  and the lists are those it last checked (`Session.selection_checked`). With a 100 000-cell selection a following
+  call costs under 1 ms instead of about 190 ms (debug), so a cancelled large selection frees the worker for the next
+  caller (`c31_r1_selection_budget`, `c31_obligations::r14_*`). `cell.select` itself is set-based, charges its work
+  in 4096-cell steps and observes the caller's cancellation at each charge.
