@@ -172,3 +172,79 @@ fn hierarchy_cycles_parentability_and_undo_are_atomic() {
     ok(&h, "edit.undo", json!({}));
     assert_eq!(get(&h, "scene:\"Intro\"")["tree"], tree);
 }
+
+#[test]
+fn copied_cells_keep_notes() {
+    let h = fixture();
+    ok(&h, "cell.note.set", json!({"elementId":BOB,"frame":1,"text":"copied note"}));
+    ok(&h, "cell.clipboard.set", json!({"elementIds":[BOB],"from":1,"to":3}));
+    ok(&h, "cell.clipboard.apply", json!({"elementId":BOB,"frame":50,"options":{"exposure":false}}));
+    assert_eq!(get(&h, BOB)["cellNotes"]["50"], "copied note", "04 §13.16 copies cells with properties");
+}
+
+#[test]
+fn inserted_cells_shift_existing_notes() {
+    let h = fixture();
+    ok(&h, "cell.note.set", json!({"elementId":BOB,"frame":9,"text":"drawing two"}));
+    ok(&h, "cell.blank.add", json!({"elementIds":[BOB],"frame":1,"count":2}));
+    assert_eq!(
+        get(&h, BOB)["cellNotes"]["11"],
+        "drawing two",
+        "notes are per-cell properties and follow shifted cells"
+    );
+}
+
+#[test]
+fn duplicate_clipping_preserves_required_parameter_row() {
+    let h = fixture();
+    let orig = ok(&h, "element.create", json!({"type":"clipping","name":"ClipReview"}))["elementIds"][0].clone();
+    let copy = ok(&h, "element.duplicate", json!({"elementIds":[orig]}))["elementIds"][0].clone();
+    assert!(
+        !ok(&h, "element.hierarchy.get", json!({"elementId":copy}))["childIds"].as_array().unwrap().is_empty(),
+        "04 §2.9, 10 §4.6 required mask parameter row must accompany copied effect"
+    );
+}
+
+#[test]
+fn patch_unlock_ops_matches_command() {
+    let h = fixture();
+    let d = "scene:\"Intro\"/element:\"Bob\"/drawing:\"2\"";
+    let e = run(&h, "doc.object.patch", json!({"targets":[d],"ops":[{"op":"replace","path":"/locked","value":false}]}));
+    assert_eq!(e.status, Status::Ok, "AG-02 patch ops and props both delegate drawing unlock: {e:?}");
+}
+
+#[test]
+fn event_created_ids_match_created_element_ids() {
+    let h = fixture();
+    let rx = h.subscribe();
+    let r = rev(&h);
+    let e = run(&h, "element.create", json!({"type":"drawing","name":"EventReview"}));
+    assert_eq!(e.status, Status::Ok);
+    assert_eq!(rev(&h), r + 1);
+    let events: Vec<_> = rx.try_iter().collect();
+    assert_eq!(events.iter().filter(|e| e.name == "doc.changed").count(), 1);
+    assert_eq!(events.iter().filter(|e| e.name == "element.state.changed").count(), 1);
+    let created = e.result.unwrap()["elementIds"].clone();
+    assert_eq!(events.iter().find(|e| e.name == "element.state.changed").unwrap().payload["elementIds"], created);
+}
+
+#[test]
+fn locked_drawing_overwrite_refuses_and_dry_run_leaves_document() {
+    let h = fixture();
+    let before = get(&h, BOB);
+    let r = rev(&h);
+    ok(&h, "cell.clipboard.set", json!({"elementIds":[BOB],"from":1,"to":1}));
+    assert_eq!(
+        err(&h, "cell.clipboard.apply", json!({"elementId":BOB,"frame":9,"options":{"exposure":false}})).code,
+        "drawing.locked"
+    );
+    let e = with(
+        &h,
+        "cell.blank.add",
+        json!({"elementIds":[BOB],"frame":1}),
+        InvokeOptions { dry_run: true, ..Default::default() },
+    );
+    assert_eq!(e.status, Status::Ok);
+    assert_eq!(rev(&h), r);
+    assert_eq!(get(&h, BOB), before);
+}
