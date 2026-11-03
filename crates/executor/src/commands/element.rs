@@ -932,7 +932,7 @@ pub(crate) fn element_duplicate(cx: &mut Cx, p: DuplicateParams) -> Result<Dupli
     let mut taken_by: BTreeMap<Id, BTreeSet<String>> = BTreeMap::new();
     // Banks shared inside the copied subtrees stay shared between the copies (clones of each other), once.
     let mut banks: BTreeMap<Id, (Id, BTreeMap<String, String>)> = BTreeMap::new();
-    let mut by_scene: BTreeMap<Id, Vec<(Id, TreeNode, Vec<(Id, Id)>, Vec<(Id, Value)>)>> = BTreeMap::new();
+    let mut by_scene: BTreeMap<Id, Vec<CopiedSubtree>> = BTreeMap::new();
     for root in &roots {
         let scene = doc.scene_of(root).cloned().ok_or_else(|| internal("scene"))?;
         let sc = doc.scene(&scene).ok_or_else(|| internal("scene"))?;
@@ -1030,6 +1030,10 @@ pub(crate) fn element_duplicate(cx: &mut Cx, p: DuplicateParams) -> Result<Dupli
     }
     Ok(DuplicateResult { element_ids: out_ids, names })
 }
+
+/// One duplicated subtree: the original root, the copy's tree node, `(original, copy)` Exposure Sheet columns and
+/// the copied elements' JSON.
+type CopiedSubtree = (Id, TreeNode, Vec<(Id, Id)>, Vec<(Id, Value)>);
 
 /// A copy of a bank with a verbatim copy of every drawing (lock states kept): `(new bank, old → new drawing ID)`.
 fn copy_bank(

@@ -718,8 +718,15 @@ pub(crate) fn write_notes(
         return Ok(());
     }
     let frames: BTreeSet<u32> = old.keys().chain(next.keys()).copied().filter(|f| old.get(f) != next.get(f)).collect();
+    // One changed window per element: a note change widens the element's exposure window.
     if let (Some(a), Some(b)) = (frames.first(), frames.last()) {
-        out.push(CellChange { element_id: id.as_str().to_owned(), from: *a, to: *b });
+        match out.iter_mut().find(|c| c.element_id == id.as_str()) {
+            Some(c) => {
+                c.from = c.from.min(*a);
+                c.to = c.to.max(*b);
+            }
+            None => out.push(CellChange { element_id: id.as_str().to_owned(), from: *a, to: *b }),
+        }
     }
     let value: serde_json::Map<String, Value> = next.into_iter().map(|(f, t)| (f.to_string(), json!(t))).collect();
     changes.push(EntryKey::Element(id.clone()), vec![op("add", "/cellNotes", Some(Value::Object(value)))]);

@@ -22011,14 +22011,14 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
         default: null,
       },
       step: {
-        description: "Step through the bank (natural name order) from the drawing at `from`.",
+        description: "Step through the bank (natural name order) from the drawing at `from` (−1 000 000 … 1 000 000).",
         type: [
           "integer",
           "null",
         ],
-        maximum: 9223372036854775807n,
         default: null,
-        minimum: -9223372036854775808n,
+        minimum: -1000000,
+        maximum: 1000000,
       },
       createMissing: {
         description: "Create an empty drawing for an unknown name (drawing and annotation elements).",
@@ -40525,6 +40525,17 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
         additionalProperties: true,
         default: null,
       },
+      payload: {
+        description: "The copied artwork (drawings, binary entries, cell notes), so a paste never depends on the source document\n(present only with `includeData`; C31-R1-04).",
+        anyOf: [
+          {
+            $ref: "#/$defs/edit.clipboard.get.ArtPayload",
+          },
+          {
+            type: "null",
+          },
+        ],
+      },
     },
     additionalProperties: false,
     required: [
@@ -40580,6 +40591,67 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
         type: "string",
         const: "image",
       },
+    ],
+  },
+  "edit.clipboard.get.ArtPayload": {
+    description: "The self-contained artwork of a copy.",
+    type: "object",
+    properties: {
+      projectId: {
+        description: "The project copied from.",
+        type: "string",
+      },
+      drawings: {
+        description: "Full drawing objects by source drawing ID.",
+        type: "object",
+        additionalProperties: {
+          type: "object",
+          additionalProperties: true,
+        },
+      },
+      banks: {
+        description: "Source banks and their drawings (whole-element copies).",
+        type: "object",
+        additionalProperties: {
+          type: "array",
+          items: {
+            type: "string",
+          },
+        },
+      },
+      blobs: {
+        description: "Binary entries the drawings use: entry name → base64.",
+        type: "object",
+        additionalProperties: {
+          type: "string",
+        },
+      },
+      notes: {
+        description: "Cell notes of copied cells: element ID → frame offset (decimal) → text.",
+        type: "object",
+        additionalProperties: {
+          type: "object",
+          additionalProperties: {
+            type: "string",
+          },
+        },
+      },
+      elementTypes: {
+        description: "The element type of every copied column (compatibility when the source element no longer exists).",
+        type: "object",
+        additionalProperties: {
+          type: "string",
+        },
+      },
+    },
+    additionalProperties: false,
+    required: [
+      "projectId",
+      "drawings",
+      "banks",
+      "blobs",
+      "notes",
+      "elementTypes",
     ],
   },
   "edit.clipboard.get.result": {
@@ -40644,6 +40716,17 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
         additionalProperties: true,
         default: null,
       },
+      payload: {
+        description: "The copied artwork (drawings, binary entries, cell notes), so a paste never depends on the source document\n(present only with `includeData`; C31-R1-04).",
+        anyOf: [
+          {
+            $ref: "#/$defs/edit.clipboard.set.ArtPayload",
+          },
+          {
+            type: "null",
+          },
+        ],
+      },
     },
     additionalProperties: false,
     required: [
@@ -40699,6 +40782,67 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
         type: "string",
         const: "image",
       },
+    ],
+  },
+  "edit.clipboard.set.ArtPayload": {
+    description: "The self-contained artwork of a copy.",
+    type: "object",
+    properties: {
+      projectId: {
+        description: "The project copied from.",
+        type: "string",
+      },
+      drawings: {
+        description: "Full drawing objects by source drawing ID.",
+        type: "object",
+        additionalProperties: {
+          type: "object",
+          additionalProperties: true,
+        },
+      },
+      banks: {
+        description: "Source banks and their drawings (whole-element copies).",
+        type: "object",
+        additionalProperties: {
+          type: "array",
+          items: {
+            type: "string",
+          },
+        },
+      },
+      blobs: {
+        description: "Binary entries the drawings use: entry name → base64.",
+        type: "object",
+        additionalProperties: {
+          type: "string",
+        },
+      },
+      notes: {
+        description: "Cell notes of copied cells: element ID → frame offset (decimal) → text.",
+        type: "object",
+        additionalProperties: {
+          type: "object",
+          additionalProperties: {
+            type: "string",
+          },
+        },
+      },
+      elementTypes: {
+        description: "The element type of every copied column (compatibility when the source element no longer exists).",
+        type: "object",
+        additionalProperties: {
+          type: "string",
+        },
+      },
+    },
+    additionalProperties: false,
+    required: [
+      "projectId",
+      "drawings",
+      "banks",
+      "blobs",
+      "notes",
+      "elementTypes",
     ],
   },
   "edit.clipboard.set.params": {
@@ -44192,14 +44336,14 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
         type: "string",
       },
       length: {
-        description: "New length of the element's (last) sequence; omitted: the media's natural length.",
+        description: "New length of the element's (last) sequence (1 … 100 000); omitted: the media's natural length.",
         type: [
           "integer",
           "null",
         ],
-        maximum: 9223372036854775807n,
-        minimum: 1,
         default: null,
+        minimum: 1,
+        maximum: 100000,
       },
     },
     additionalProperties: false,
@@ -44892,34 +45036,34 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
         default: null,
       },
       start: {
-        description: "New start frame.",
+        description: "New start frame (1 … 100 000).",
         type: [
           "integer",
           "null",
         ],
-        maximum: 9223372036854775807n,
-        minimum: 1,
         default: null,
+        minimum: 1,
+        maximum: 100000,
       },
       startDelta: {
-        description: "Move the start by this many frames.",
+        description: "Move the start by this many frames (−100 000 … 100 000).",
         type: [
           "integer",
           "null",
         ],
-        maximum: 9223372036854775807n,
         default: null,
-        minimum: -9223372036854775808n,
+        minimum: -100000,
+        maximum: 100000,
       },
       duration: {
-        description: "New duration (of one cycle for `count` loops).",
+        description: "New duration (1 … 100 000).",
         type: [
           "integer",
           "null",
         ],
-        maximum: 9223372036854775807n,
-        minimum: 1,
         default: null,
+        minimum: 1,
+        maximum: 100000,
       },
       anchor: {
         description: "Which end a duration change keeps.",
@@ -44930,14 +45074,14 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
         $ref: "#/$defs/element.timing.set.KeyMode",
       },
       loops: {
-        description: "Loops (1 = not looped).",
+        description: "Loops (1 = not looped; at most 100 000).",
         type: [
           "integer",
           "null",
         ],
-        maximum: 9223372036854775807n,
-        minimum: 1,
         default: null,
+        minimum: 1,
+        maximum: 100000,
       },
     },
     additionalProperties: false,
@@ -84618,8 +84762,8 @@ export interface cell_label_set_params {
   drawing?: string | null;
   /** Drawing ID or path (it must belong to the element's bank). */
   drawingId?: string | null;
-  /** Step through the bank (natural name order) from the drawing at `from`. */
-  step?: number | bigint | null;
+  /** Step through the bank (natural name order) from the drawing at `from` (−1 000 000 … 1 000 000). */
+  step?: number | null;
   /** Create an empty drawing for an unknown name (drawing and annotation elements). */
   createMissing?: boolean;
 }
@@ -89919,10 +90063,28 @@ export interface edit_clipboard_get_Clipboard {
   items?: (Record<string, unknown>)[] | null;
   /** Cut-special options. */
   options?: Record<string, unknown> | null;
+  /** The copied artwork (drawings, binary entries, cell notes), so a paste never depends on the source document (present only with `includeData`; C31-R1-04). */
+  payload?: edit_clipboard_get_ArtPayload | null;
 }
 
 /** Clipboard content kinds (01 §12.4). */
 export type edit_clipboard_get_ClipboardKind = 'drawingObjects' | 'elements' | 'elementProperties' | 'cells' | 'keyframes' | 'motionPoint' | 'templates' | 'functionPoints' | 'image';
+
+/** The self-contained artwork of a copy. */
+export interface edit_clipboard_get_ArtPayload {
+  /** The project copied from. */
+  projectId: string;
+  /** Full drawing objects by source drawing ID. */
+  drawings: Record<string, Record<string, unknown>>;
+  /** Source banks and their drawings (whole-element copies). */
+  banks: Record<string, string[]>;
+  /** Binary entries the drawings use: entry name → base64. */
+  blobs: Record<string, string>;
+  /** Cell notes of copied cells: element ID → frame offset (decimal) → text. */
+  notes: Record<string, Record<string, string>>;
+  /** The element type of every copied column (compatibility when the source element no longer exists). */
+  elementTypes: Record<string, string>;
+}
 
 export type edit_clipboard_get_result = edit_clipboard_get_Clipboard | null;
 
@@ -89940,10 +90102,28 @@ export interface edit_clipboard_set_Clipboard {
   items?: (Record<string, unknown>)[] | null;
   /** Cut-special options. */
   options?: Record<string, unknown> | null;
+  /** The copied artwork (drawings, binary entries, cell notes), so a paste never depends on the source document (present only with `includeData`; C31-R1-04). */
+  payload?: edit_clipboard_set_ArtPayload | null;
 }
 
 /** Clipboard content kinds (01 §12.4). */
 export type edit_clipboard_set_ClipboardKind = 'drawingObjects' | 'elements' | 'elementProperties' | 'cells' | 'keyframes' | 'motionPoint' | 'templates' | 'functionPoints' | 'image';
+
+/** The self-contained artwork of a copy. */
+export interface edit_clipboard_set_ArtPayload {
+  /** The project copied from. */
+  projectId: string;
+  /** Full drawing objects by source drawing ID. */
+  drawings: Record<string, Record<string, unknown>>;
+  /** Source banks and their drawings (whole-element copies). */
+  banks: Record<string, string[]>;
+  /** Binary entries the drawings use: entry name → base64. */
+  blobs: Record<string, string>;
+  /** Cell notes of copied cells: element ID → frame offset (decimal) → text. */
+  notes: Record<string, Record<string, string>>;
+  /** The element type of every copied column (compatibility when the source element no longer exists). */
+  elementTypes: Record<string, string>;
+}
 
 /** `edit.clipboard.set` parameters. */
 export interface edit_clipboard_set_params {
@@ -90912,8 +91092,8 @@ export interface element_lock_set_result {
 export interface element_mediaLength_set_params {
   /** The media element. */
   elementId: string;
-  /** New length of the element's (last) sequence; omitted: the media's natural length. */
-  length?: number | bigint | null;
+  /** New length of the element's (last) sequence (1 … 100 000); omitted: the media's natural length. */
+  length?: number | null;
 }
 
 /** `{elementId, from, to}`. */
@@ -91126,18 +91306,18 @@ export type element_timing_set_KeyMode = 'keep' | 'scale';
 export interface element_timing_set_params {
   /** Bar elements (default: the selected rows, else the current element). */
   elementIds?: string[] | null;
-  /** New start frame. */
-  start?: number | bigint | null;
-  /** Move the start by this many frames. */
-  startDelta?: number | bigint | null;
-  /** New duration (of one cycle for `count` loops). */
-  duration?: number | bigint | null;
+  /** New start frame (1 … 100 000). */
+  start?: number | null;
+  /** Move the start by this many frames (−100 000 … 100 000). */
+  startDelta?: number | null;
+  /** New duration (1 … 100 000). */
+  duration?: number | null;
   /** Which end a duration change keeps. */
   anchor?: element_timing_set_Anchor;
   /** Keep or scale keyframes. */
   keyframes?: element_timing_set_KeyMode;
-  /** Loops (1 = not looped). */
-  loops?: number | bigint | null;
+  /** Loops (1 = not looped; at most 100 000). */
+  loops?: number | null;
 }
 
 /** One element's bar. */
