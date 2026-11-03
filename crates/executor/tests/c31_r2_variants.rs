@@ -11,7 +11,7 @@ const D: &str = "scene:\"Intro\"/element:\"Bob\"/drawing:\"1\"";
 const BG: &str = "scene:\"Intro\"/element:\"Background\"";
 fn seeded() -> ExecutorHandle {
     let h = ExecutorHandle::spawn(Default::default()).unwrap();
-    assert!(h.open_document(tt_model::fixture::sample_document(0x31_2007).unwrap(), None, false).is_ok());
+    assert!(h.open_document(tt_model::fixture::sample_document(0x0031_2007).unwrap(), None, false).is_ok());
     h
 }
 fn notes(h: &ExecutorHandle) -> Value {
@@ -211,7 +211,7 @@ fn r04_hundred_drawing_copy_survives_delete_close_and_open_another_project() {
         }
         ok(&h, "element.delete", json!({"elementIds":[B]}));
         ok(&h, "project.close", json!({"onUnsaved":"discard"}));
-        assert!(h.open_document(tt_model::fixture::sample_document(0x31_2019).unwrap(), None, false).is_ok());
+        assert!(h.open_document(tt_model::fixture::sample_document(0x0031_2019).unwrap(), None, false).is_ok());
         if generic {
             ok(&h, "edit.paste", json!({"context":"xsheet","destination":{"elementId":N,"frame":30}}));
         } else {
@@ -231,7 +231,7 @@ fn r04_hundred_drawing_copy_survives_delete_close_and_open_another_project() {
         assert_ne!(pasted["id"], copied["id"]);
         assert_eq!(pasted["ext"], copied["ext"]);
         assert_eq!(e["cellNotes"]["129"], "last731");
-        assert_eq!(names(&h, N.as_ref())[29..129].len(), 100);
+        assert_eq!(names(&h, N)[29..129], (1..=100).map(|i| format!("R2{i:03}")).collect::<Vec<_>>());
     }
 }
 
@@ -310,11 +310,32 @@ fn r06_nested_clip_skeleton_particle_and_user_children_are_independent_subtrees(
         ok(&h, "element.list", json!({"parentId":copied,"recursive":true}))["elements"].as_array().unwrap().clone();
     assert_eq!(source.len(), target.len());
     assert!(source.len() > 10);
+    let originals: Vec<String> =
+        source.iter().map(|s| s["id"].as_str().unwrap().to_owned()).chain([outer.clone()]).collect();
+    fn check_refs(v: &Value, originals: &[String]) {
+        match v {
+            Value::String(s) => assert!(!originals.contains(s), "reference still names source subtree: {s}"),
+            Value::Array(a) => {
+                for x in a {
+                    check_refs(x, originals);
+                }
+            }
+            Value::Object(o) => {
+                for (k, x) in o {
+                    if k != "ext" && k != "meta" {
+                        check_refs(x, originals);
+                    }
+                }
+            }
+            _ => {}
+        }
+    }
     for (s, t) in source.iter().zip(target.iter()) {
         assert_ne!(s["id"], t["id"]);
         assert_eq!(s["elementType"], t["elementType"]);
         let a = get(&h, s["id"].as_str().unwrap());
         let b = get(&h, t["id"].as_str().unwrap());
+        check_refs(&b, &originals);
         if a["drawingBankId"].is_string() {
             assert_ne!(a["drawingBankId"], b["drawingBankId"]);
         }
@@ -486,6 +507,10 @@ fn r13_generic_overwrite_clone_group_preserves_full_drawing_and_locked_refusal()
     for k in ["nodes", "colourRecovery", "ext", "meta", "pivot", "mouthShape"] {
         assert_eq!(a[k], b[k], "{k}");
     }
+    assert_eq!(
+        ok(&h, "draw.drawing.get", json!({"drawingId":D}))["nodes"],
+        ok(&h, "draw.drawing.get", json!({"drawingId":target}))["nodes"]
+    );
 }
 
 #[test]
@@ -553,23 +578,30 @@ fn r04_generic_bridge_refuses_image_cells_into_vector_column() {
     assert_eq!(rev(&h), revision);
 }
 
+fn assert_generic_cut_notes(special: bool) {
+    let h = seeded();
+    for f in [3, 12] {
+        ok(&h, "cell.note.set", json!({"elementId":B,"frame":f,"text":""}));
+    }
+    for (f, text) in [(1, "cut731"), (3, "tail731")] {
+        ok(&h, "cell.note.set", json!({"elementId":B,"frame":f,"text":text}));
+    }
+    ok(&h, "cell.select", json!({"elementIds":[B],"from":1,"to":2}));
+    if special {
+        ok(&h, "edit.cutSpecial", json!({"context":"xsheet","options":{"createDeleteExposure":true}}));
+    } else {
+        ok(&h, "edit.cut", json!({"context":"xsheet"}));
+    }
+    let expected = if special { json!({"1":"tail731"}) } else { json!({"3":"tail731"}) };
+    assert_eq!(notes(&h), expected, "SI-093 generic cut, special={special}");
+}
+
 #[test]
 fn r05_generic_cut_clears_notes_and_retimes_remaining_notes() {
-    for special in [false, true] {
-        let h = seeded();
-        for f in [3, 12] {
-            ok(&h, "cell.note.set", json!({"elementId":B,"frame":f,"text":""}));
-        }
-        for (f, text) in [(1, "cut731"), (3, "tail731")] {
-            ok(&h, "cell.note.set", json!({"elementId":B,"frame":f,"text":text}));
-        }
-        ok(&h, "cell.select", json!({"elementIds":[B],"from":1,"to":2}));
-        if special {
-            ok(&h, "edit.cutSpecial", json!({"context":"xsheet","options":{"createDeleteExposure":true}}));
-        } else {
-            ok(&h, "edit.cut", json!({"context":"xsheet"}));
-        }
-        let expected = if special { json!({"1":"tail731"}) } else { json!({"3":"tail731"}) };
-        assert_eq!(notes(&h), expected, "SI-093 generic cut, special={special}");
-    }
+    assert_generic_cut_notes(false);
+}
+
+#[test]
+fn r05_generic_cut_special_retimes_remaining_notes() {
+    assert_generic_cut_notes(true);
 }

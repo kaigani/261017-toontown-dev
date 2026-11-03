@@ -11,7 +11,7 @@ fn call(c: &mut support::Client, id: &str, p: Value) -> Value {
 fn r10_all_timing_numeric_extrema_are_typed_and_worker_survives() {
     let dir = support::tmp();
     let h = support::executor(&dir.join("user"));
-    assert!(h.open_document(tt_model::fixture::sample_document(0x31_2009).unwrap(), None, false).is_ok());
+    assert!(h.open_document(tt_model::fixture::sample_document(0x0031_2009).unwrap(), None, false).is_ok());
     let mut opts = support::opts(&dir);
     opts.policy = Some(tt_executor::agents::Policy::Autonomous);
     let (mut c, _) = support::Client::connect(&h, opts, json!({}));

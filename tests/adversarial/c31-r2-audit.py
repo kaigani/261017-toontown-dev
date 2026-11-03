@@ -43,7 +43,66 @@ def observations():
     return rows
 
 
+def register():
+    old = json.loads(git("show", f"{BASE}:reviews/M3-C3.1-r1-register.json"))
+    current = copy.deepcopy(old)
+    current["candidate"] = HEAD
+    current["previousRegisterHead"] = BASE
+    current["deltaBasis"] = "All unchanged R1 proving suites plus independent R2 variants; findings outside the 64 C3.1 rows are recorded as adjacentCommands."
+    units = {
+        "01": ["C31-X01"],
+        "02": ["C31-X01", "C31-U328", "C31-U491", "C31-U494"],
+        "03": ["C31-U300", "C31-U327"],
+        "04": ["C31-U168", "C31-U295", "C31-U299", "C31-U599"],
+        "05": ["C31-U088", "C31-U110", "C31-U410", "C31-U299"],
+        "06": ["C31-U296", "C31-U297", "C31-U298", "C31-U335", "C31-U460", "C31-X07"],
+    }
+    commands = {"element.create":["05"], "cell.clipboard.apply":["06"],
+                "element.state.changed":["02"], "cell.selection.changed":["02"]}
+    repro = {
+        "01":"cargo test -p tt-executor --locked -j 4 --test c31_r2_variants r03_rfc_test",
+        "02":"cargo test -p tt-executor --locked -j 4 --test c31_r2_variants r03_rfc_copy",
+        "03":"cargo test -p tt-executor --locked -j 4 --test c31_r2_variants r04_generic_bridge",
+        "04":"cargo test -p tt-executor --locked -j 4 --test c31_r2_variants r05_generic_cut",
+        "05":"cargo test -p tt-executor --locked -j 4 --test c31_r2_variants r08_",
+        "06":"cargo test -p tt-executor --locked -j 4 --test c31_r2_persistence r04_binary_entry_collision",
+    }
+    deltas = []
+    for group in ["requirements", "commandsAndEvents"]:
+        for previous, row in zip(old[group], current[group]):
+            refs = [n for n, ids in units.items() if row["id"] in ids] if group=="requirements" else commands.get(row["id"], [])
+            row["round1Findings"] = previous.get("findings", [])
+            row["findings"] = ["C31-R2-"+n for n in refs]
+            row["reproduction"] = [repro[n] for n in refs]
+            if refs:
+                row["status"] = "divergent"
+                row["basis"] = "R2 retained failing reproductions; unaffected aspects retain R1 proving coverage."
+            elif row["status"] == "divergent":
+                row["status"] = "implemented"
+                row["basis"] = "Unchanged R1 proving tests pass at response; R2 closure variants and pinned CI support closure."
+            if previous["status"] != row["status"] or previous.get("findings") != row["findings"]:
+                deltas.append(dict(group=group,id=row["id"],before=previous["status"],after=row["status"],
+                                   previousFindings=previous.get("findings",[]),findings=row["findings"]))
+    current["adjacentCommands"] = [dict(id=id,status="divergent",owner="M3 C3.1 bridge / inherited M1 command",findings=["C31-R2-"+n for n in refs])
+        for id,refs in {"doc.object.patch":["01","02"],"edit.paste":["03","06"],"edit.pasteSpecial":["05"],"edit.cut":["04"],"edit.cutSpecial":["04"]}.items()]
+    states=["implemented","divergent","missing","deferred-with-owner"]
+    current["counts"]={g:{s:sum(r["status"]==s for r in current[g]) for s in states} for g in ["requirements","commandsAndEvents"]}
+    current["deltas"] = deltas
+    current["clarifications"] = {"C31-X14":"R1-12 ruling: observations with a 30-second criterion; the previous under-1-second and <=4-ms claims are superseded, not new gates."}
+    return current
+
+
 class Audit(unittest.TestCase):
+    def test_register_preserves_every_source_unit_and_command(self):
+        r=register()
+        self.assertEqual(len(r["requirements"]),694)
+        self.assertEqual(len(r["commandsAndEvents"]),64)
+        self.assertEqual(len({x["id"] for x in r["requirements"]}),694)
+        for row in r["requirements"]+r["commandsAndEvents"]:
+            if row["status"]=="divergent":
+                self.assertTrue(row["reproduction"])
+            if row["status"]=="deferred-with-owner":
+                self.assertTrue(row["owner"])
     def test_reviewer_owned_files_unchanged_at_response(self):
         paths = ["tests/adversarial", "crates/*/tests/c0*_r*", "crates/*/tests/c1*_r*",
                  "crates/*/tests/c2*_r*", "crates/*/tests/c31_r1_*", "desktop/src/test"]
@@ -96,6 +155,14 @@ def guards(dest):
 
 
 if __name__ == "__main__":
+    if len(sys.argv)==3 and sys.argv[1]=="--register":
+        output=pathlib.Path(sys.argv[2]).resolve()
+        if output.exists():
+            raise FileExistsError("preserve previous register receipt")
+        result=register()
+        output.write_text(json.dumps(result,indent=2,ensure_ascii=False)+"\n",encoding="utf-8")
+        print(json.dumps(result["counts"]))
+        raise SystemExit(0)
     if len(sys.argv) == 3 and sys.argv[1] == "--guards":
         raise SystemExit(guards(pathlib.Path(sys.argv[2]).resolve()))
     unittest.main()

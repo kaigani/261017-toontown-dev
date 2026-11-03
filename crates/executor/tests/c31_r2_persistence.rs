@@ -4,9 +4,13 @@ mod c13_support;
 mod common;
 use c13_support::{job_ok, tmp};
 use common::*;
-use serde_json::json;
+use serde_json::{Value, json};
 const B: &str = "scene:\"Intro\"/element:\"Bob\"";
 const BG: &str = "scene:\"Intro\"/element:\"Background\"";
+
+fn image_ref(h: &tt_executor::ExecutorHandle, drawing: &str) -> Value {
+    ok(h, "draw.drawing.get", json!({"drawingId":drawing}))["nodes"][0]["image"].clone()
+}
 
 fn image_package(dir: &std::path::Path, seed: u64, colour: [u8; 4], entry: &str) -> std::path::PathBuf {
     let mut parts = tt_model::fixture::sample_parts(seed).unwrap();
@@ -38,13 +42,13 @@ fn image_package(dir: &std::path::Path, seed: u64, colour: [u8; 4], entry: &str)
 }
 
 #[test]
-fn r04_binary_copy_after_close_save_open_retains_pixels() {
+fn r04_binary_copy_after_close_save_open_retains_bytes() {
     let dir = tmp();
     let source = image_package(&dir, 0x312031, [91, 37, 219, 255], "banks/review-r2-source.png");
     let h = fixture();
     job_ok(&h, "project.open", json!({"path":source,"onUnsaved":"discard"}));
     let drawing = get(&h, BG)["exposure"][0][0].as_str().unwrap().to_owned();
-    let original = ok(&h, "draw.drawing.render", json!({"drawingId":drawing,"width":8,"height":8}));
+    let original = image_ref(&h, &drawing);
     ok(&h, "cell.clipboard.set", json!({"elementIds":[BG],"from":1,"to":1}));
     ok(&h, "element.delete", json!({"elementIds":[BG]}));
     ok(&h, "project.close", json!({"onUnsaved":"discard"}));
@@ -57,9 +61,10 @@ fn r04_binary_copy_after_close_save_open_retains_pixels() {
     job_ok(&h, "project.saveAs", json!({"path":output}));
     ok(&h, "project.close", json!({"onUnsaved":"discard"}));
     job_ok(&h, "project.open", json!({"path":output}));
-    let rendered = ok(&h, "draw.drawing.render", json!({"drawingId":copied,"width":8,"height":8}));
-    assert!(original["pixelsSha256"].is_string());
-    assert_eq!(rendered["pixelsSha256"], original["pixelsSha256"]);
+    let pasted = image_ref(&h, &copied);
+    let loaded = tt_persist::load::load(&output, &Default::default()).unwrap();
+    let bytes = loaded.blobs.read(pasted["entry"].as_str().unwrap(), 1 << 20).unwrap();
+    assert_eq!(tt_persist::fsx::sha256(&bytes), original["sha256"]);
 }
 
 #[test]
@@ -71,17 +76,21 @@ fn r04_binary_entry_collision_must_not_replace_copied_art_with_destination_bytes
     let h = fixture();
     job_ok(&h, "project.open", json!({"path":source,"onUnsaved":"discard"}));
     let original_id = get(&h, BG)["exposure"][0][0].as_str().unwrap().to_owned();
-    let original = ok(&h, "draw.drawing.render", json!({"drawingId":original_id,"width":8,"height":8}));
+    let original = image_ref(&h, &original_id);
     ok(&h, "cell.clipboard.set", json!({"elementIds":[BG],"from":1,"to":1}));
     job_ok(&h, "project.open", json!({"path":destination,"onUnsaved":"discard"}));
     let copied = ok(&h, "cell.clipboard.apply", json!({"elementId":BG,"frame":30}))["createdDrawingIds"][0]
         .as_str()
         .unwrap()
         .to_owned();
-    let rendered = ok(&h, "draw.drawing.render", json!({"drawingId":copied,"width":8,"height":8}));
-    assert!(original["pixelsSha256"].is_string());
+    let output = dir.join("collision.animpkg");
+    job_ok(&h, "project.saveAs", json!({"path":output}));
+    let pasted = image_ref(&h, &copied);
+    let loaded = tt_persist::load::load(&output, &Default::default()).unwrap();
+    let bytes = loaded.blobs.read(pasted["entry"].as_str().unwrap(), 1 << 20).unwrap();
     assert_eq!(
-        rendered["pixelsSha256"], original["pixelsSha256"],
+        tt_persist::fsx::sha256(&bytes),
+        original["sha256"],
         "self-contained copy must remap a colliding binary entry"
     );
 }
