@@ -40,6 +40,9 @@ pub(crate) struct ChangedResult {
     changed: Vec<CellChange>,
 }
 
+/// A per-element exposure edit: the column's new frames.
+type ColumnEdit<'a> = dyn FnMut(&Column, &mut Budget) -> Result<Vec<Option<u32>>, CommandError> + 'a;
+
 /// Runs a per-element exposure edit on every target element and stages it as one step.
 fn per_element(
     cx: &mut Cx,
@@ -47,7 +50,7 @@ fn per_element(
     command: &str,
     allowed: &[ElementType],
     budget: &mut Budget,
-    f: &mut dyn FnMut(&Column, &mut Budget) -> Result<Vec<Option<u32>>, CommandError>,
+    f: &mut ColumnEdit<'_>,
 ) -> Result<Vec<CellChange>, CommandError> {
     let doc = cx.document()?.clone();
     let mut changes = Changes::default();

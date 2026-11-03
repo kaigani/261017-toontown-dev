@@ -212,17 +212,25 @@ fn build(
     Ok((NewElement { id, json: to_json(&el)?, column: t.is_cell_based() }, node))
 }
 
-/// Stages new elements into a scene: entries, stubs, tree placement (`parent`, `index`) and columns (`after`).
+/// Where new elements go: the Timeline level (`parent`) and position (`index`), and the Exposure Sheet column they
+/// follow (`after`).
+#[derive(Clone, Copy)]
+struct Slot<'a> {
+    parent: Option<&'a Id>,
+    index: Option<usize>,
+    after: Option<&'a Id>,
+}
+
+/// Stages new elements into a scene: entries, stubs, tree placement and columns.
 fn place(
     doc: &Document,
     changes: &mut Changes,
     scene: &Id,
     news: &[NewElement],
     nodes: Vec<TreeNode>,
-    parent: Option<&Id>,
-    index: Option<usize>,
-    after: Option<&Id>,
+    slot: Slot<'_>,
 ) -> Result<(), CommandError> {
+    let Slot { parent, index, after } = slot;
     let sc = doc.scene(scene).ok_or_else(|| internal("scene"))?;
     let mut tree = sc.tree().clone();
     for (k, n) in nodes.into_iter().enumerate() {
@@ -419,10 +427,10 @@ pub(crate) fn element_create(cx: &mut Cx, p: CreateParams) -> Result<CreateResul
             _ => (None, Some(0)),
         },
     };
-    if let Some(pid) = &tree_parent {
-        if !parentable(*element(&doc, pid)?.element_type()) {
-            return Err(not_parentable(&doc, pid));
-        }
+    if let Some(pid) = &tree_parent
+        && !parentable(*element(&doc, pid)?.element_type())
+    {
+        return Err(not_parentable(&doc, pid));
     }
     let after = match &p.xsheet_after {
         Some(r) => {
@@ -454,7 +462,8 @@ pub(crate) fn element_create(cx: &mut Cx, p: CreateParams) -> Result<CreateResul
     }
     let ids: Vec<String> = news.iter().map(|n| n.id.as_str().to_owned()).collect();
     news.extend(extra);
-    place(&doc, &mut changes, &scene, &news, nodes, tree_parent.as_ref(), index, after.as_ref())?;
+    let slot = Slot { parent: tree_parent.as_ref(), index, after: after.as_ref() };
+    place(&doc, &mut changes, &scene, &news, nodes, slot)?;
     changes.stage(cx)?;
     // The new elements become the selection; the first becomes current (04 §3.2).
     cx.app_mut().set_selection("timeline", ids.clone());
@@ -764,16 +773,10 @@ fn copied_element(cx: &mut Cx, doc: &Document, id: &Id, name: &str) -> Result<(I
     v["name"] = json!(name);
     v["createdAt"] = to_json(&Timestamp::now())?;
     let mut created = Vec::new();
-    if let Some(ch) = v.get_mut("channels") {
-        if let Value::Object(m) = ch {
-            for c in m.values_mut() {
-                super::edit_ops::regenerate(
-                    cx,
-                    c,
-                    &[ObjectType::Channel, ObjectType::Key, ObjectType::MotionPoint],
-                    &mut created,
-                )?;
-            }
+    if let Some(Value::Object(m)) = v.get_mut("channels") {
+        for c in m.values_mut() {
+            let types = [ObjectType::Channel, ObjectType::Key, ObjectType::MotionPoint];
+            super::edit_ops::regenerate(cx, c, &types, &mut created)?;
         }
     }
     for slot in ["placements", "sequences", "blocks"] {
@@ -2017,7 +2020,7 @@ pub(crate) fn element_timing_set(cx: &mut Cx, p: TimingParams) -> Result<TimingR
         if i64::from(nd) != d {
             ops.push(op("replace", "/duration", Some(json!(nd))));
             let old_cycle = as_u32(usize::try_from(cycle).unwrap_or(1));
-            let new_cycle = if count { (nd / nl.max(1)).max(1) } else { (nd / nl.max(1)).max(1) };
+            let new_cycle = (nd / nl.max(1)).max(1);
             if let Some(ch) = doc.entry_raw_json(&EntryKey::Element(id.clone())).map_err(internal)?.get("channels")
                 && let Some(next) = retimed_channels(ch, old_cycle, new_cycle, p.keyframes, &mut budget)?
             {

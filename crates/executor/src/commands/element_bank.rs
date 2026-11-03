@@ -52,13 +52,12 @@ fn lip_sync_used(doc: &Document) -> BTreeSet<Id> {
     out
 }
 
-/// Cells exposing each drawing of a bank across its clone group: drawing → `(element, from, to)` windows.
-fn usage(
-    doc: &Document,
-    bank: &Id,
-    budget: &mut Budget,
-) -> Result<BTreeMap<Id, Vec<(Id, usize, usize)>>, CommandError> {
-    let mut out: BTreeMap<Id, Vec<(Id, usize, usize)>> = BTreeMap::new();
+/// Drawing → `(element, from, to)` windows exposing it.
+type Usage = BTreeMap<Id, Vec<(Id, usize, usize)>>;
+
+/// Cells exposing each drawing of a bank across its clone group.
+fn usage(doc: &Document, bank: &Id, budget: &mut Budget) -> Result<Usage, CommandError> {
+    let mut out: Usage = BTreeMap::new();
     for e in doc.bank_users(bank) {
         if !doc.element(e).is_some_and(|x| x.element_type().has_exposure()) {
             continue;
