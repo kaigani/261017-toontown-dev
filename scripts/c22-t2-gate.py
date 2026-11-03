@@ -18,9 +18,10 @@ samples and 5 observations of each Flatten kind.
 - One run: both files carry the same non-empty `runId` (`environment.runId`, `runId`), and when `TT_EXPECT_RUN_ID` is
   set (CI: `<GITHUB_RUN_ID>-<attempt>-<os>`) it must be that value. Both carry `startedAt` (ISO 8601 with a zone); the
   Flatten measurement starts after the stroke-add measurement and within 6 hours of it (the same job).
-- Identity: every Flatten record has an integer `sampleId`, distinct within its series; stroke-add samples given as
-  objects are distinct `(tMs, value)` observations. A duplicated record is malformed (equal durations alone are
-  legitimate).
+- Identity: every Flatten record has an integer `sampleId`, distinct within its series; the stroke-add series is
+  `{"unit": "ms", "samples": [{"tMs": t, "value": v}, ...]}` with its unit checked before any calculation and the
+  sample times distinct (C24-R3-01: bare numbers carry no identity). A duplicated record is malformed (equal durations
+  alone are legitimate).
 - Outcomes, for both series: a record is either a completion (status `Ok`, no error, committed) or an atomic refusal
   (status `Error`, an error code, not committed, document unchanged); any other combination is malformed. A stored
   `unbudgetedAllCompleted` must agree with the records.
@@ -68,24 +69,27 @@ def number(x, what):
 
 
 def values(series):
-    """The observations of a series: a list of numbers, or `{samples|values|observations: [...]}`; samples given as
-    objects must be distinct `(tMs, value)` observations."""
-    if isinstance(series, list):
-        items = series
-    elif isinstance(series, dict):
-        items = next((series[k] for k in ("samples", "values", "observations") if isinstance(series.get(k), list)), None)
-        if items is None:
-            raise Malformed("unreadable series")
-    else:
-        raise Malformed("unreadable series")
+    """The observations of the stroke-add series (C24-R2-03, C24-R3-01): `{"unit": "ms", "samples": [...]}`, the unit
+    declared and milliseconds (checked before any calculation), every sample an observation with its identity — an
+    object with a `tMs` time (milliseconds since the run's start) and a `value`, the times distinct (equal durations at
+    distinct times are legitimate; a bare number or a repeated time is not an observation of its own)."""
+    if not isinstance(series, dict):
+        raise Malformed("the stroke-add series is not an object with a unit and samples")
+    unit = series.get("unit")
+    if unit != "ms":
+        raise Malformed(f"the stroke-add series unit is {unit!r}, not 'ms'")
+    items = series.get("samples")
+    if not isinstance(items, list):
+        raise Malformed("the stroke-add series has no samples")
     out, seen = [], set()
-    for x in items:
-        v = number(x["value"] if isinstance(x, dict) and "value" in x else x, "a stroke-add sample")
-        if isinstance(x, dict):
-            t = number(x.get("tMs"), "a stroke-add sample's tMs")
-            if (t, v) in seen:
-                raise Malformed(f"duplicated stroke-add sample at tMs {t}")
-            seen.add((t, v))
+    for k, x in enumerate(items):
+        if not isinstance(x, dict) or "value" not in x or "tMs" not in x:
+            raise Malformed(f"stroke-add sample {k} has no identity (an object with tMs and value): {x!r}")
+        v = number(x["value"], "a stroke-add sample")
+        t = number(x["tMs"], "a stroke-add sample's tMs")
+        if t in seen:
+            raise Malformed(f"duplicated stroke-add sample at tMs {t}")
+        seen.add(t)
         out.append(v)
     return out
 

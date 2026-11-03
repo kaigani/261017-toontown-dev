@@ -212,7 +212,7 @@ jobs:
           cargo test --locked -p tt-executor --test c24_oracle_routes --test c24_route_domains --test c24_r1_topology --test c24_topology
           cargo test --locked -p tt-vector --test c24_r1_properties --test c24_properties
 
-  # The reviewer's round-2 seed variants (C2.4 round 2): the route properties with seeds XOR 0x5D (256 cases), the
+  # The reviewer's round-2 and round-3 seed variants (C2.4 rounds 2 and 3): the route properties with seeds XOR 0x5D (256 cases), the
   # topology and vector properties at the 4096 cases their files fix, the closed-fold noding controls. Release, in a job
   # of their own (CI rule: add jobs, not minutes; `check properties` was at 31 of its 45 minutes on Windows).
   review-properties:
@@ -241,6 +241,10 @@ jobs:
         run: |
           cargo test --release --locked -p tt-executor --test c24_r2_routes --test c24_r2_topology --test c24_r2_variants
           cargo test --release --locked -p tt-vector --test c24_r2_properties --test c24_r2_noding
+          # Round 3 (C2.4): the route domains and routes with seeds XOR 0xD3 (256 cases), topology at the 4096 cases its
+          # file fixes, the vector properties and the noding control.
+          cargo test --release --locked -p tt-executor --test c24_r3_domains --test c24_r3_routes --test c24_r3_topology
+          cargo test --release --locked -p tt-vector --test c24_r3_properties --test c24_r3_noding
 
   headless:
     name: headless release (${{ matrix.os }})

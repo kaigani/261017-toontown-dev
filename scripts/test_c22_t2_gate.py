@@ -129,6 +129,16 @@ class Gate(unittest.TestCase):
                 "neither a completion nor an atomic refusal"),
             "huge integer duration": (lambda s, f: f["unbudgeted"][0].__setitem__("seconds", 10 ** 400), "too large"),
             "huge integer sample": (lambda s, f: samples(s)[0].__setitem__("value", 10 ** 400), "too large"),
+            # C24-R3-01: observations carry identity in every accepted shape; the unit is checked first.
+            "bare numeric samples": (lambda s, f: s["series"]["strokeAdd.wallMs"].__setitem__("samples", [1000] * 6),
+                                     "has no identity"),
+            "series as a bare list": (lambda s, f: s["series"].__setitem__("strokeAdd.wallMs", [1000.0 + i for i in range(6)]),
+                                      "not an object with a unit"),
+            "sample without a time": (lambda s, f: samples(s)[2].pop("tMs"), "has no identity"),
+            "repeated time": (lambda s, f: samples(s)[2].__setitem__("tMs", samples(s)[1]["tMs"]),
+                              "duplicated stroke-add sample"),
+            "unit in seconds": (lambda s, f: s["series"]["strokeAdd.wallMs"].__setitem__("unit", "s"), "not 'ms'"),
+            "unit missing": (lambda s, f: s["series"]["strokeAdd.wallMs"].pop("unit"), "not 'ms'"),
         }
         for name, (mutate, reason) in cases.items():
             s, f = copy.deepcopy(valid())
