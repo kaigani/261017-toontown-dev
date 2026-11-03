@@ -1,0 +1,239 @@
+{"argv": ["cargo", "test", "-p", "tt-executor", "--locked", "-j", "4", "--release", "--test", "c24_r3_domains", "--", "--nocapture"], "cwd": "C:\\Users\\kaiga\\work\\review\\m2-c24-r3", "env": {"TT_ROUTE_CASES": "4096"}, "startedAt": "2026-11-03T00:49:41.528688+00:00"}
+   Compiling proc-macro2 v1.0.107
+   Compiling quote v1.0.47
+   Compiling unicode-ident v1.0.27
+   Compiling cfg-if v1.0.5
+   Compiling autocfg v1.5.1
+   Compiling serde_core v1.0.229
+   Compiling num-traits v0.2.19
+   Compiling foldhash v0.2.0
+   Compiling allocator-api2 v0.2.21
+   Compiling windows-link v0.2.1
+   Compiling syn v3.0.9
+   Compiling syn v2.0.119
+   Compiling equivalent v1.0.3
+   Compiling memchr v2.8.3
+   Compiling serde v1.0.229
+   Compiling version_check v0.9.5
+   Compiling once_cell v1.21.4
+   Compiling smallvec v1.16.3
+   Compiling serde_derive v1.0.229
+   Compiling zerocopy v0.8.63
+   Compiling hashbrown v0.17.1
+   Compiling zmij v1.0.23
+   Compiling num-integer v0.1.47
+   Compiling serde_json v1.0.154
+   Compiling zerocopy-derive v0.8.63
+   Compiling rand_core v0.10.1
+   Compiling indexmap v2.14.2
+   Compiling regex-syntax v0.8.11
+   Compiling ref-cast v1.0.27
+   Compiling itoa v1.0.18
+   Compiling getrandom v0.3.4
+   Compiling getrandom v0.4.3
+   Compiling num-bigint v0.4.8
+   Compiling ref-cast-impl v1.0.27
+   Compiling ahash v0.8.12
+   Compiling parking_lot_core v0.9.12
+   Compiling num-rational v0.4.2
+   Compiling num-iter v0.1.46
+   Compiling aho-corasick v1.1.5
+   Compiling num-complex v0.4.6
+   Compiling thiserror v2.0.21
+   Compiling scopeguard v1.2.0
+   Compiling lock_api v0.4.14
+   Compiling regex-automata v0.4.18
+   Compiling num v0.4.3
+   Compiling bytemuck_derive v1.12.1
+   Compiling thiserror-impl v2.0.21
+   Compiling bit-vec v0.8.0
+   Compiling jsonschema-value v0.59.0
+   Compiling unicode-general-category v1.1.0
+   Compiling heck v0.5.0
+   Compiling borrow-or-share v0.2.4
+   Compiling strum_macros v0.28.0
+   Compiling fluent-uri v0.4.1
+   Compiling bit-set v0.8.0
+   Compiling bytemuck v1.25.2
+   Compiling parking_lot v0.12.5
+   Compiling fraction v0.17.0
+   Compiling serde_derive_internals v0.30.0
+   Compiling tinyvec v1.13.3
+   Compiling crossbeam-utils v0.8.23
+   Compiling bytecount v0.6.9
+   Compiling micromap v0.3.0
+   Compiling num-cmp v0.1.0
+   Compiling vsimd v0.8.0
+   Compiling outref v0.5.2
+   Compiling percent-encoding v2.3.2
+   Compiling uuid-simd v0.8.0
+   Compiling referencing v0.59.0
+   Compiling schemars_derive v1.2.3
+   Compiling fancy-regex v0.19.2
+   Compiling strum v0.28.0
+   Compiling regex v1.13.1
+   Compiling jsonschema-regex v0.59.0
+   Compiling email_address v0.2.9
+   Compiling dyn-clone v1.0.20
+   Compiling data-encoding v2.11.1
+   Compiling simd-adler32 v0.3.10
+   Compiling jsonschema v0.59.0
+   Compiling schemars v1.2.3
+   Compiling unicode-normalization v0.1.26
+   Compiling adler2 v2.0.1
+   Compiling crc32fast v1.5.2
+   Compiling typenum v1.20.1
+   Compiling ryu v1.0.23
+   Compiling crossbeam-epoch v0.9.21
+   Compiling hybrid-array v0.4.15
+   Compiling libm v0.2.16
+   Compiling miniz_oxide v0.9.1
+   Compiling cpufeatures v0.3.1
+   Compiling crossbeam-deque v0.8.8
+   Compiling arrayvec v0.7.8
+   Compiling polycool v0.4.0
+   Compiling tt-model v0.0.1 (C:\Users\kaiga\work\review\m2-c24-r3\crates\model)
+   Compiling flate2 v1.1.10
+   Compiling block-buffer v0.12.1
+   Compiling crypto-common v0.2.2
+   Compiling slotmap v1.1.1
+   Compiling log v0.4.34
+   Compiling rayon-core v1.13.0
+   Compiling const-oid v0.10.2
+   Compiling digest v0.11.3
+   Compiling i_float v5.0.0
+   Compiling kurbo v0.13.1
+   Compiling color v0.3.3
+   Compiling font-types v0.12.7
+   Compiling euclid v0.22.14
+   Compiling windows-sys v0.61.2
+   Compiling linebender_resource_handle v0.1.1
+   Compiling bitflags v2.13.2
+   Compiling peniko v0.6.1
+   Compiling guillotiere v0.7.0
+   Compiling read-fonts v0.41.0
+   Compiling i_shape v5.0.0
+   Compiling sha2 v0.11.1
+   Compiling miniz_oxide v0.8.9
+   Compiling crossbeam-channel v0.5.17
+   Compiling fdeflate v0.3.7
+   Compiling hashbrown v0.16.1
+   Compiling weezl v0.1.12
+   Compiling either v1.19.0
+   Compiling memmap2 v0.9.11
+   Compiling fearless_simd v0.7.0
+   Compiling i_key_sort v0.12.0
+   Compiling robust v1.2.0
+   Compiling zune-core v0.5.3
+   Compiling i_tree v0.20.0
+   Compiling i_overlay v9.1.0
+   Compiling zune-jpeg v0.5.15
+   Compiling spade v2.15.1
+   Compiling vello_common v0.3.0
+   Compiling fontdb v0.24.0
+   Compiling rayon v1.12.0
+   Compiling png v0.18.1
+   Compiling ordered-channel v1.2.0
+   Compiling skrifa v0.44.0
+   Compiling tt-anim v0.0.1 (C:\Users\kaiga\work\review\m2-c24-r3\crates\anim)
+   Compiling half v2.7.1
+   Compiling thread_local v1.1.10
+   Compiling pxfm v0.1.30
+   Compiling color_quant v1.1.0
+   Compiling fax v0.2.7
+   Compiling quick-error v2.0.1
+   Compiling tiff v0.11.3
+   Compiling gif v0.14.2
+   Compiling moxcms v0.8.1
+   Compiling vello_cpu v0.3.0
+   Compiling tt-vector v0.0.1 (C:\Users\kaiga\work\review\m2-c24-r3\crates\vector)
+   Compiling tt-fx v0.0.1 (C:\Users\kaiga\work\review\m2-c24-r3\crates\fx)
+   Compiling tt-colour v0.0.1 (C:\Users\kaiga\work\review\m2-c24-r3\crates\colour)
+   Compiling fastrand v2.5.0
+   Compiling target-tuple v1.0.2
+   Compiling byteorder-lite v0.1.0
+   Compiling winnow v1.0.4
+   Compiling toml_parser v1.1.5+spec-1.1.0
+   Compiling image v0.25.10
+   Compiling tempfile v3.27.0
+   Compiling tt-render v0.0.1 (C:\Users\kaiga\work\review\m2-c24-r3\crates\render)
+   Compiling tt-persist v0.0.1 (C:\Users\kaiga\work\review\m2-c24-r3\crates\persist)
+   Compiling winapi-util v0.1.11
+   Compiling tt-registry-macros v0.0.1 (C:\Users\kaiga\work\review\m2-c24-r3\crates\registry-macros)
+   Compiling serde_spanned v1.1.2
+   Compiling toml_datetime v1.1.2+spec-1.1.0
+   Compiling fnv v1.0.7
+   Compiling wait-timeout v0.2.1
+   Compiling toml_writer v1.1.3+spec-1.1.0
+   Compiling bit-vec v0.10.1
+   Compiling quick-error v1.2.3
+   Compiling rusty-fork v0.3.1
+   Compiling bit-set v0.11.1
+   Compiling toml v1.1.8+spec-1.1.0
+   Compiling tt-io v0.0.1 (C:\Users\kaiga\work\review\m2-c24-r3\crates\io)
+   Compiling tt-registry v0.0.1 (C:\Users\kaiga\work\review\m2-c24-r3\crates\registry)
+   Compiling termcolor v1.4.1
+   Compiling chacha20 v0.10.2
+   Compiling rand v0.10.3
+   Compiling rand_xorshift v0.5.0
+   Compiling unarray v0.1.4
+   Compiling glob v0.3.4
+   Compiling core_detect v1.0.0
+   Compiling proptest v1.12.0
+   Compiling trybuild v1.0.122
+   Compiling tt-executor v0.0.1 (C:\Users\kaiga\work\review\m2-c24-r3\crates\executor)
+   Compiling stats_alloc v0.1.10
+    Finished `release` profile [optimized + debuginfo] target(s) in 2m 58s
+     Running tests\c24_r3_domains.rs (target\release\deps\c24_r3_domains-a67d9939a409db16.exe)
+
+running 12 tests
+wrong-mask-boundary mutant comparison: Ok(())
+
+thread 'vectorize_comparison_rejects_a_wrong_boundary_with_the_right_area_and_probe' (33220) panicked at crates\executor\tests\c24_r3_domains.rs:1976:5:
+the independent comparison must reject this non-corresponding paper boundary
+correct-origin wrong-mask-boundary comparison: Ok(())
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+thread 'vectorize_comparison_rejects_a_wrong_boundary_at_the_correct_image_origin' (22968) panicked at crates\executor\tests\c24_r3_domains.rs:1995:5:
+centering cannot justify accepting the wrong boundary
+test vectorize_comparison_rejects_a_wrong_boundary_with_the_right_area_and_probe ... FAILED
+test vectorize_comparison_rejects_a_wrong_boundary_at_the_correct_image_origin ... FAILED
+test flatten_keeps_a_pencil_piece_that_a_brush_only_partly_covers ... ok
+ROUTE_DOMAIN break_apart_matches_the_fonts_glyph_outlines: cases 4096 generated 4096 dispatched {"doc.object.patch": 4096, "draw.breakApart.apply": 4096, "draw.content.add": 4096, "draw.drawing.get": 4096, "draw.text.add": 4096}
+test break_apart_matches_the_fonts_glyph_outlines ... ok
+
+thread 'non_parallelogram_envelopes_map_the_layer_projectively' (32820) panicked at crates\executor\tests\c24_r3_domains.rs:82:10:
+called `Result::unwrap()` on an `Err` value: Fail(Reason("assertion failed: `(left == right)` \n  left: `Some(\"col_01K742SG059XGSNZ6M9MACZ2ZY\")`, \n right: `Some(\"col_01K742SG06BQ08FCT1TT8DF8MA\")`: after envelope: fill of zone zn_BASF2DQFMQQA6YYRZSVPB8ZD3K at crates\\executor\\tests\\c24_r3_domains.rs:331"), ([(false, [(1, 1), (4, 2), (0, 1)]), (false, [(2, 1), (2, 4)]), (false, [(4, 3), (2, 1), (3, 3)])], [6, 5, -5, -1, -6, -5, 4, -2]))
+test non_parallelogram_envelopes_map_the_layer_projectively ... FAILED
+test centre_line_of_a_spineless_ring has been running for over 60 seconds
+test erasing_polygonal_brushes_keeps_partly_covered_ones_whole has been running for over 60 seconds
+test flatten_of_pencil_and_polygonal_brush_layers_is_exact has been running for over 60 seconds
+test lines_to_brush_then_centre_line_on_closed_loops has been running for over 60 seconds
+test smooth_changes_the_shape_within_its_tolerance has been running for over 60 seconds
+test snapping_onto_a_curved_contour_reaches_its_nearest_point has been running for over 60 seconds
+test vectorize_masks_enclose_the_predicted_paper_components has been running for over 60 seconds
+ROUTE_DOMAIN erasing_polygonal_brushes_keeps_partly_covered_ones_whole: cases 4096 generated 4096 dispatched {"colour.paint.apply": 4096, "doc.object.patch": 4096, "draw.content.add": 4096, "draw.drawing.get": 12288, "draw.erase.apply": 4096}
+test erasing_polygonal_brushes_keeps_partly_covered_ones_whole ... ok
+ROUTE_DOMAIN flatten_of_pencil_and_polygonal_brush_layers_is_exact: cases 4096 generated 4096 dispatched {"colour.paint.apply": 6796, "doc.object.patch": 4096, "draw.content.add": 4096, "draw.drawing.get": 12288, "draw.flatten.apply": 4096}
+test flatten_of_pencil_and_polygonal_brush_layers_is_exact ... ok
+ROUTE_DOMAIN vectorize_masks_enclose_the_predicted_paper_components: cases 4096 generated 4096 dispatched {"doc.object.patch": 4096, "draw.drawing.get": 4096, "draw.vectorize.run": 4096}
+test vectorize_masks_enclose_the_predicted_paper_components ... ok
+ROUTE_DOMAIN lines_to_brush_then_centre_line_on_closed_loops: cases 4096 generated 4096 dispatched {"colour.paint.apply": 8192, "doc.object.patch": 4096, "draw.centreLine.apply": 4096, "draw.content.add": 4096, "draw.drawing.get": 16384, "draw.linesToBrush.apply": 4096}
+test lines_to_brush_then_centre_line_on_closed_loops ... ok
+ROUTE_DOMAIN smooth_changes_the_shape_within_its_tolerance: cases 4096 generated 4096 dispatched {"colour.paint.apply": 4096, "doc.object.patch": 4096, "draw.content.add": 4096, "draw.drawing.get": 12288, "draw.smooth.apply": 4096}
+test smooth_changes_the_shape_within_its_tolerance ... ok
+ROUTE_DOMAIN snapping_onto_a_curved_contour_reaches_its_nearest_point: cases 4096 generated 4096 dispatched {"colour.paint.apply": 4096, "doc.object.patch": 4096, "draw.content.add": 4096, "draw.drawing.get": 12288, "draw.point.move": 4096}
+test snapping_onto_a_curved_contour_reaches_its_nearest_point ... ok
+ROUTE_DOMAIN centre_line_of_a_spineless_ring: cases 4096 generated 4096 dispatched {"colour.paint.apply": 4096, "doc.object.patch": 4096, "draw.centreLine.apply": 4096, "draw.content.add": 4096, "draw.drawing.get": 12288}
+test centre_line_of_a_spineless_ring ... ok
+
+failures:
+
+failures:
+    non_parallelogram_envelopes_map_the_layer_projectively
+    vectorize_comparison_rejects_a_wrong_boundary_at_the_correct_image_origin
+    vectorize_comparison_rejects_a_wrong_boundary_with_the_right_area_and_probe
+
+test result: FAILED. 9 passed; 3 failed; 0 ignored; 0 measured; 0 filtered out; finished in 2216.12s
+
+error: test failed, to rerun pass `-p tt-executor --test c24_r3_domains`

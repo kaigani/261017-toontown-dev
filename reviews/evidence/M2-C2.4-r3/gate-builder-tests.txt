@@ -1,0 +1,6 @@
+{"argv": ["C:\\Python313\\python.exe", "scripts/test_c22_t2_gate.py"], "cwd": "C:\\Users\\kaiga\\work\\review\\m2-c24-r3", "env": {}, "startedAt": "2026-11-03T00:21:25.289018+00:00"}
+.......
+----------------------------------------------------------------------
+Ran 7 tests in 2.080s
+
+OK

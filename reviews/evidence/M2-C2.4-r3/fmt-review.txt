@@ -1,0 +1,5 @@
+{"argv": ["cargo", "fmt", "--all", "--check"], "cwd": "C:\\Users\\kaiga\\work\\review\\m2-c24-r3", "env": {}, "startedAt": "2026-11-03T00:36:58.862586+00:00"}
+Incorrect newline style in \\?\C:\Users\kaiga\work\review\m2-c24-r3\crates\executor\tests\c24_r3_domains.rs
+Incorrect newline style in \\?\C:\Users\kaiga\work\review\m2-c24-r3\crates\executor\tests\c24_r3_routes.rs
+Incorrect newline style in \\?\C:\Users\kaiga\work\review\m2-c24-r3\crates\executor\tests\c24_r3_topology.rs
+Incorrect newline style in \\?\C:\Users\kaiga\work\review\m2-c24-r3\crates\vector\tests\c24_r3_properties.rs

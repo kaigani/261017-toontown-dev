@@ -1,0 +1,52 @@
+{"argv": ["C:\\Python313\\python.exe", "tests/adversarial/c24-r3-sdk.py", "--binary", "C:\\Users\\kaiga\\work\\review\\m2-c24-r3\\reviews\\evidence\\M2-C2.4-r3\\ci-artifacts\\headless-Windows\\toontown-headless.exe", "--out", "C:\\Users\\kaiga\\work\\review\\m2-c24-r3\\reviews\\evidence\\M2-C2.4-r3\\sdk-probes.json"], "cwd": "C:\\Users\\kaiga\\work\\review\\m2-c24-r3", "env": {}, "startedAt": "2026-11-03T00:23:52.671871+00:00"}
+  + Exception Group Traceback (most recent call last):
+  |   File "C:\Users\kaiga\work\review\m2-c24-r3\tests\adversarial\c24-r3-sdk.py", line 116, in <module>
+  |     sys.exit(asyncio.run(probe(Path(sys.argv[2]).resolve(), output)))
+  |              ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  |   File "C:\Python313\Lib\asyncio\runners.py", line 194, in run
+  |     return runner.run(main)
+  |            ~~~~~~~~~~^^^^^^
+  |   File "C:\Python313\Lib\asyncio\runners.py", line 118, in run
+  |     return self._loop.run_until_complete(task)
+  |            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^
+  |   File "C:\Python313\Lib\asyncio\base_events.py", line 720, in run_until_complete
+  |     return future.result()
+  |            ~~~~~~~~~~~~~^^
+  |   File "C:\Users\kaiga\work\review\m2-c24-r3\tests\adversarial\c24-r3-sdk.py", line 22, in probe
+  |     async with stdio_client(StdioServerParameters(command=str(binary), args=args)) as (reader, writer):
+  |                ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  |   File "C:\Python313\Lib\contextlib.py", line 235, in __aexit__
+  |     await self.gen.athrow(value)
+  |   File "C:\Users\kaiga\AppData\Roaming\Python\Python313\site-packages\mcp\client\stdio.py", line 200, in stdio_client
+  |     async with anyio.create_task_group() as tg:
+  |                ~~~~~~~~~~~~~~~~~~~~~~~^^
+  |   File "C:\Users\kaiga\AppData\Roaming\Python\Python313\site-packages\anyio\_backends\_asyncio.py", line 783, in __aexit__
+  |     raise BaseExceptionGroup(
+  |         "unhandled errors in a TaskGroup", self._exceptions
+  |     ) from None
+  | ExceptionGroup: unhandled errors in a TaskGroup (1 sub-exception)
+  +-+---------------- 1 ----------------
+    | Exception Group Traceback (most recent call last):
+    |   File "C:\Users\kaiga\AppData\Roaming\Python\Python313\site-packages\mcp\client\stdio.py", line 204, in stdio_client
+    |     yield read_stream, write_stream
+    |   File "C:\Users\kaiga\work\review\m2-c24-r3\tests\adversarial\c24-r3-sdk.py", line 23, in probe
+    |     async with ClientSession(reader, writer, list_roots_callback=roots) as session:
+    |                ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "C:\Users\kaiga\AppData\Roaming\Python\Python313\site-packages\mcp\client\session.py", line 481, in __aexit__
+    |     result = await self._task_group.__aexit__(exc_type, exc_val, exc_tb)
+    |              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "C:\Users\kaiga\AppData\Roaming\Python\Python313\site-packages\anyio\_backends\_asyncio.py", line 783, in __aexit__
+    |     raise BaseExceptionGroup(
+    |         "unhandled errors in a TaskGroup", self._exceptions
+    |     ) from None
+    | ExceptionGroup: unhandled errors in a TaskGroup (1 sub-exception)
+    +-+---------------- 1 ----------------
+      | Traceback (most recent call last):
+      |   File "C:\Users\kaiga\work\review\m2-c24-r3\tests\adversarial\c24-r3-sdk.py", line 43, in probe
+      |     exported = await cmd('doc.export.json')
+      |                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+      |   File "C:\Users\kaiga\work\review\m2-c24-r3\tests\adversarial\c24-r3-sdk.py", line 30, in cmd
+      |     assert env['status'] == 'ok', env
+      |            ^^^^^^^^^^^^^^^^^^^^^
+      | AssertionError: {'status': 'error', 'changes': [], 'warnings': [], 'documentRev': 1, 'error': {'code': 'arg.missing', 'message': '`doc.export.json`: "scope" is a required property', 'details': {'pointer': '/scope', 'message': '"scope" is a required property', 'allowed': None, 'violations': [{'pointer': '/scope', 'message': '"scope" is a required property', 'allowed': None, 'code': 'arg.missing'}]}}}
+      +------------------------------------

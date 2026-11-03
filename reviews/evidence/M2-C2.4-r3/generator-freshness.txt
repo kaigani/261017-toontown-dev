@@ -1,0 +1,3 @@
+{"argv": ["C:\\Python313\\python.exe", "tests/adversarial/c24-r2-audit.py", "--freshness"], "cwd": "C:\\Users\\kaiga\\work\\review\\m2-c24-r3", "env": {}, "startedAt": "2026-11-03T00:24:42.317007+00:00"}
+598 declarations -> target\review-r2-gen-dztmb4t6\declared.rs, target\review-r2-gen-dztmb4t6\declared.json
+598 current declarations: Rust, JSON and issue block byte-identical; temporary outputs only
