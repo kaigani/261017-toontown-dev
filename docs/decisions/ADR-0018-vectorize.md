@@ -62,3 +62,13 @@ The vectorize corpus and fuzzing (`tests/fixtures/vectorize/`, `crates/io/tests/
   (generated black in the reused `Vectorization` palette; texture swatches named from the file); 03 §11.6 and §7.4
   disagree, and that disagreement and the adopted precedence are SI-084 (the 03 wording is the amendment candidate).
   No behaviour change.
+- **M2 C2.4 round 3 (C24-R3-02 ruling): the route oracle traces the mask itself.** The independent Vectorize route
+  comparison no longer builds its expectation from the produced outline alone. The test oracle (`trace_mask` in
+  `crates/executor/tests/c24_route_domains.rs`) traces the input mask with the rules above, rewritten: ink 8-connected,
+  paper 4-connected, unit edges with ink on the right, a left turn at a saddle, and loops through edge midpoints in the
+  fixed mapping (the image width spans 1200 du, centred, y up). Each output brush stroke's bridged outline must give
+  exactly one ink region's traced contours (outer boundary and holes), each within the fit tolerance (0.25 du + 0.5 du ×
+  smoothness 3) plus flattening and a grid cell. Each zone must be one enclosed paper component, bounded by the
+  enclosing region's and its islands' strokes, with its area within the perimeter × that envelope. The exact
+  snap-rounded map and ID stage follows. The reviewer's two wrong-boundary mutants are rejected. No product change.
+

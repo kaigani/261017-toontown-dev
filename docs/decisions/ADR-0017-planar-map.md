@@ -273,3 +273,16 @@ C2.1 delivered strokes, text, groups and bitmaps as validated, persisted geometr
   judged as before); the extra points are charged to the merge's work account. Evidence:
   `crates/executor/tests/c24_route_domains.rs` `flatten_keeps_a_pencil_piece_that_a_brush_only_partly_covers` and the
   4096-case Flatten property.
+- **M2 C2.4 round 3 (C24-R3-04 ruling): (17) the point-query representation.** `LayerMap::face_at`, and through it
+  `zone_at`, answers a point query exactly on a quarter of the grid:
+  - the query point is rounded to the nearest 1/256 du (a quarter grid unit; halves away from zero, as `f64::round`);
+  - a point on a face's ring (outer or hole) is refused (`None`);
+  - otherwise the answer is the smallest bounded face containing the point (by exact winding), or the unbounded face.
+
+  Every caller that maps a point back and asks which zone holds it inherits this representation, including the
+  transform and envelope repaint (SI-070): a refused point, or one in no zone, keeps what the settle pass carried. The
+  independent route oracle now models this: the three-corner affine inverse, the 1/256-du rounding, a refusal or a miss
+  falling back to the carry-over fill. There is no epsilon. Evidence: `c24_route_domains.rs` and the reviewer's
+  `c24_r3_domains.rs` `non_parallelogram_envelopes_map_the_layer_projectively` (4096 cases), the fixed reproduction
+  `shrunk_projective_envelope_fill_case_for_independent_adjudication`, and the rounded-query control. No product change.
+
