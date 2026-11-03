@@ -28,7 +28,11 @@ def load(path):
 
 
 def number(v):
-    if type(v) not in (int, float) or not math.isfinite(v) or v < 0:
+    try:
+        valid = type(v) in (int, float) and math.isfinite(v) and v >= 0
+    except OverflowError:
+        valid = False
+    if not valid:
         raise ValueError("duration must be a finite nonnegative number")
     return v
 
@@ -37,6 +41,9 @@ CASES = ["read one 100k column", "cycle 999 x 100 frames", "cycle past the scene
          "set exposure on a tenth of the columns", "read the whole sheet", "element list",
          "unused drawings of the scene", "remove exposure on every column", "insert a cell in all columns",
          "set every exposure to 9999 frames on every column"]
+COMMANDS = ['xsheet.exposures.get','cell.cycle.create','cell.cycle.create','cell.exposure.set',
+            'xsheet.exposures.get','element.list','element.unusedDrawing.list','cell.exposure.remove',
+            'cell.range.add','cell.exposure.set']
 
 
 def timing(raw, os_name):
@@ -50,10 +57,10 @@ def timing(raw, os_name):
         raise ValueError("missing cases")
     if [r.get("case") for r in rows] != CASES:
         raise ValueError("missing/duplicate/reordered identity")
-    for r in rows:
+    for i,r in enumerate(rows):
         number(r["seconds"])
-        if not isinstance(r.get("command"), str) or not r["command"]:
-            raise ValueError("command missing")
+        if r.get("command") != COMMANDS[i]:
+            raise ValueError("wrong command for case")
         if any(type(r.get(k)) is not int or r[k] < 0 for k in ("revBefore", "revAfter")):
             raise ValueError("invalid revision")
         outcome = r.get("outcome")
@@ -63,6 +70,12 @@ def timing(raw, os_name):
             raise ValueError("refusal committed")
         if r["revAfter"] - r["revBefore"] not in (0, 1):
             raise ValueError("not a single revision")
+        expected_outcome = 'doc.limitExceeded' if i==2 else 'limit.exceeded' if i==9 else 'ok'
+        if outcome != expected_outcome:
+            raise ValueError('wrong case outcome')
+        expected_delta = int(i in (1,3,7,8))
+        if r['revAfter'] - r['revBefore'] != expected_delta:
+            raise ValueError('wrong case revision behavior')
     return {
         "os": os_name, "cases": rows,
         "wholeSheetUnderOneSecond": all(rows[i]["seconds"] < 1 for i in (4, 6, 7, 8)),
@@ -91,14 +104,16 @@ class Audit(unittest.TestCase):
 
     def test_timing_parser_rejects_malformed(self):
         valid = {"os":"windows", "columns":1001,"framesPerColumn":100000,"budget":300000000,
-                 "cases":[{"case":c,"command":"test.command","seconds":.1,"outcome":"ok","revBefore":1,"revAfter":2} for c in CASES]}
+                 "cases":[{"case":c,"command":COMMANDS[i],"seconds":.1,"outcome":'doc.limitExceeded' if i==2 else 'limit.exceeded' if i==9 else 'ok',"revBefore":1,"revAfter":1+int(i in (1,3,7,8))} for i,c in enumerate(CASES)]}
         timing(valid, "windows")
         mutations = [lambda r:r["cases"].pop(), lambda r:r["cases"].append(r["cases"][0]),
                      lambda r:r.update(columns=True), lambda r:r.update(os=""),
                      lambda r:r["cases"][0].update(seconds=True), lambda r:r["cases"][0].update(seconds=-1),
                      lambda r:r["cases"][0].update(seconds=float("nan")), lambda r:r["cases"][0].update(seconds=float("inf")),
                      lambda r:r["cases"][0].update(revBefore=False), lambda r:r["cases"][0].update(outcome="limit.exceeded"),
-                     lambda r:r["cases"][0].update(case=CASES[1])]
+                     lambda r:r["cases"][0].update(case=CASES[1]), lambda r:r["cases"][0].update(command='wrong.command'),
+                     lambda r:r["cases"][0].update(seconds=10**1000), lambda r:r["cases"][0].update(revAfter=2),
+                     lambda r:r["cases"][1].update(revAfter=1)]
         for mutate in mutations:
             bad = copy.deepcopy(valid)
             mutate(bad)
@@ -116,6 +131,8 @@ def collect(out):
     out.mkdir(parents=True, exist_ok=True)
     artifacts = out / "ci-artifacts"
     run = load(out / "ci-run.json")
+    if run['headSha'] != '8f44969741f8662831e25a01a8a024b686daf02e' or len(run['jobs']) != 22:
+        raise ValueError('wrong candidate or incomplete job inventory')
     report = {"headSha":run["headSha"],"run":41621608304,"jobs":[],"timing":[],"baseline":{},"e2":[]}
     for j in run["jobs"]:
         import datetime
@@ -143,7 +160,10 @@ def collect(out):
         if a!=b: raise ValueError(f"cross-OS PNG mismatch: {p.name}")
         report["e2"].append({"name":p.name,"sha256":a,"identical":True})
     if len(report["e2"])!=7: raise ValueError("missing E2 PNGs")
-    (out / "independent-analysis.json").write_text(json.dumps(report, indent=2)+"\n",encoding="utf-8")
+    result=out / 'independent-analysis.json'
+    if result.exists():
+        raise FileExistsError('preserve evidence: choose a new output directory for a new analysis')
+    result.write_text(json.dumps(report, indent=2)+"\n",encoding="utf-8")
     print(json.dumps({"jobs":len(report["jobs"]),"e2Identical":len(report["e2"]),"baseline":{k:{m:round(v["ratio"],4) for m,v in values.items() if isinstance(v,dict) and "ratio" in v} for k,values in report["baseline"].items()}}, indent=2))
 
 

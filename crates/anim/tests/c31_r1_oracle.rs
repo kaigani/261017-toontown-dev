@@ -199,6 +199,32 @@ fn worked_examples_and_edges() {
     );
 }
 
+#[test]
+fn independently_enumerated_columnate_formulas() {
+    for mode in [x::LoopMode::None, x::LoopMode::Continuous, x::LoopMode::ForwardBackward] {
+        for n in 1usize..=8 {
+            for each in 1usize..=5 {
+                for last in 1usize..=5 {
+                    for loops in 1usize..=8 {
+                        let k = if mode == x::LoopMode::None { 1 } else { loops };
+                        let width = if mode == x::LoopMode::ForwardBackward && n > 1 { 2 * n - 2 } else { n };
+                        let mut expected = vec![];
+                        for visit in 0..width * k {
+                            let p = visit % width;
+                            let drawing = if p < n { p } else { 2 * n - 2 - p };
+                            let hold = if visit + 1 == width * k { last } else { each };
+                            expected.extend(std::iter::repeat_n(Some(drawing), hold));
+                        }
+                        let c = x::columnate(&(0..n).collect::<Vec<_>>(), mode, each, last, loops, None);
+                        assert_eq!(x::sequence_frames(&c.sequence), expected);
+                        assert_eq!(c.total_frames, (width * k - 1) * each + last);
+                    }
+                }
+            }
+        }
+    }
+}
+
 /// C31-R1-01: requested total must be filled even when exposeLast is shorter than exposeEach.
 #[test]
 fn columnate_total_frames_short_last_reaches_requested_length() {

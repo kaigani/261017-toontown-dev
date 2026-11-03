@@ -313,7 +313,7 @@ fn whole_element_clipboard_cross_project_contains_banks() {
 fn generic_paste_bridge_overwrites_opaque_drawing_properties() {
     let h = fixture();
     let source = "scene:\"Intro\"/element:\"Bob\"/drawing:\"1\"";
-    ok(&h, "doc.object.patch", json!({"targets":[source],"props":{"ext":{"review":{"opaque":[1,2,3]}}}}));
+    ok(&h, "doc.object.patch", json!({"targets":[source],"props":{"ext":{"review.example":{"opaque":[1,2,3]}}}}));
     let dest = "scene:\"Intro\"/element:\"Notes\"";
     let target = ok(&h, "element.drawing.create", json!({"elementId":dest,"name":"1","exposeFrom":1}))["drawingId"]
         .as_str()
@@ -340,4 +340,38 @@ fn cycle_selection_applies_to_every_selected_column() {
         4,
         "04 §13 general rule: multi-column selection applies per element independently"
     );
+}
+
+#[test]
+fn automatic_position_changes_emit_selection_event() {
+    for create in [true, false] {
+        let h = fixture();
+        ok(&h, "element.current.set", json!({"elementId":BOB}));
+        let rx = h.subscribe();
+        if create {
+            ok(&h, "element.create", json!({"type":"drawing","name":"SelectionEvent"}));
+        } else {
+            ok(&h, "element.visibility.set", json!({"elementIds":[BOB],"scope":"xsheet","visible":false}));
+        }
+        assert_eq!(
+            rx.try_iter().filter(|e| e.name == "cell.selection.changed").count(),
+            1,
+            "04 §17.4 automatically changed current position/row selection (create={create})"
+        );
+    }
+}
+
+#[test]
+fn default_copy_name_works_for_maximum_length_source_name() {
+    for command in ["element.clone", "element.duplicate"] {
+        let h = fixture();
+        let source = ok(&h, "element.create", json!({"type":"drawing","name":"N".repeat(64)}))["elementIds"][0].clone();
+        let p = if command == "element.clone" { json!({"elementId":source}) } else { json!({"elementIds":[source]}) };
+        let e = run(&h, command, p);
+        assert_eq!(
+            e.status,
+            Status::Ok,
+            "a valid maximum-length source still needs a valid deterministic default copy name: {e:?}"
+        );
+    }
 }

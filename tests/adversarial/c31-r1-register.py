@@ -68,19 +68,26 @@ REPRO = {
  '11':'cargo test -p tt-anim --locked -j 4 --test c31_r1_oracle insert_remove_4096',
  '12':'python tests/adversarial/c31-r1-audit.py --collect <new-directory-containing-downloaded-ci-inputs>',
  '13':'cargo test -p tt-executor --locked -j 4 --test c31_r1_contract generic_paste_bridge_overwrites_opaque_drawing_properties',
+ '14':'cargo test -p tt-executor --locked -j 4 --test c31_r1_selection_budget',
+ '15':'cargo test -p tt-executor --locked -j 4 --test c31_r1_contract cycle_selection_applies_to_every_selected_column',
 }
 
 COMMAND_FINDINGS = {
  'cell.columnate.apply':['01'], 'element.solo.set':['02'], 'element.typeColour.set':['02'],
- 'element.drawingLock.set':['03'], 'element.visibility.set':['03'], 'element.note.set':['03'],
- 'element.colour.set':['03'], 'element.lock.set':['03'],
+ 'element.visibility.set':['03'], 'element.create':['03'],
  'cell.clipboard.set':['04','05'], 'cell.clipboard.apply':['04','05','13'],
  'cell.range.move':['05','07'], 'cell.blank.add':['05'], 'cell.blank.remove':['05'],
  'cell.exposure.add':['05'], 'cell.exposure.remove':['05'], 'cell.exposure.set':['05'],
  'cell.range.add':['05'], 'cell.range.delete':['05'], 'cell.cycle.create':['05'],
  'element.duplicate':['06'], 'xsheet.exposures.set':['08'], 'cell.fill.apply':['09'],
  'element.timing.set':['10'], 'element.state.changed':['03'], 'element.drawing.changed':['03'],
+ 'cell.selection.changed':['03'], 'cell.select':['14'],
 }
+COMMAND_FINDINGS['cell.cycle.create'] += ['15']
+REPRO['03'] += '; cargo test -p tt-executor --locked -j 4 --test c31_r1_contract automatic_position_changes_emit_selection_event'
+COMMAND_FINDINGS['element.clone']=['08']
+COMMAND_FINDINGS['element.duplicate']+=['08']
+REPRO['08']+='; cargo test -p tt-executor --locked -j 4 --test c31_r1_contract default_copy_name_works_for_maximum_length_source_name'
 
 
 def assessment(u):
@@ -140,6 +147,8 @@ def assessment(u):
         if c=='8.2' and 'copy' in low: findings=['06']
         if c=='2.9' and 'parameter' in low: findings=['06']
         if c=='17.1' and 'atomic' in low: findings=['02']
+        if c=='13' and 'selection spanning several elements' in low: findings=['15']
+        if c=='8.1' and 'unique suffix' in low: findings=['08']
         if c=='17.2' and ('createMissingDrawings' in t or 'unknown names' in low): findings=['08']
         if c=='17.6' and 'cell.frameOutOfRange' in t: findings=['09']
         if c=='10.3': findings=['02']
@@ -181,32 +190,37 @@ def build():
       ('engineering helpers','Insertion helpers return trimmed arrays even on the beyond-end early-return path.','divergent','M3 C3.1',['11']),
       ('engineering evidence','Candidate whole-sheet under-1-second and <=4-ms refusal claims agree with candidate raw records.','divergent','M3 C3.1',['12']),
       ('SI-089','Held value at truncated bar new end needs evaluated curve value and explicit end-key behavior.','deferred-with-owner','M3 C3.2',[]),
+      ('work budgets','Every selection generation/deduplication scan observes cancellation and releases the worker.','divergent','M3 C3.1',['14']),
     ]
     for i,(clause,text,status,owner,findings) in enumerate(extra,1):
         records.append({'id':f'C31-X{i:02}','source':'review charter / binding rulings','clause':clause,'line':0,'text':text,'status':status,'owner':owner,
           'basis':'Independent review adjudication; see report and retained local/CI receipts.','findings':[f'C31-R1-{n}' for n in findings],'reproduction':[REPRO[n] for n in findings]})
     old=json.loads(source('crates/registry/src/declared.json','0b8fd0b'))
     new={r['id'] for r in json.loads(source('crates/registry/src/declared.json'))}
+    inventory={m[1]:m[2] for m in re.finditer(r'^\| `([^`]+)` \| (\w+) \|',source('spec/A_command_registry.md'),re.M)}
     commands=[]
     for row in old:
         name=row['id']
         if name in new: continue
         findings=COMMAND_FINDINGS.get(name,[])
         deferred=name=='xsheet.lightTable.changed'
-        commands.append({'id':name,'kind':row.get('kind'),'status':'divergent' if findings else 'deferred-with-owner' if deferred else 'implemented',
+        commands.append({'id':name,'kind':inventory[name],'status':'divergent' if findings else 'deferred-with-owner' if deferred else 'implemented',
             'owner':'M5 C5.2' if deferred else 'M3 C3.1','findings':[f'C31-R1-{n}' for n in findings],
             'reproduction':[REPRO[n] for n in findings],
             'basis':'Declaration/schema/example and handler inspection; c31_r1_mutations (44 action/toggle examples), c31 builder suites and candidate never-block/example-results CI.',
             'deferredAspects':(['natural media length discovery: M8 C8.3 (SI-088)'] if name=='element.mediaLength.set' else ['allowed sound/media cell operations: M8 C8.1/C8.3 (SI-088)'] if name.startswith('cell.') else [])})
+    states=['implemented','divergent','missing','deferred-with-owner']
+    count=lambda rows:{status:sum(r['status']==status for r in rows) for status in states}
     return {'candidate':HEAD,'granularity':'One source paragraph, list item, table requirement row or fenced shape/example. A divergent unit can contain passing aspects; the attached reproduction identifies the failing aspect. Inherited data shapes are not claims of later UI/render behavior.',
             'requirements':records,'commandsAndEvents':commands,
-            'counts':{'requirements':dict(collections.Counter(u['status'] for u in records)),'commandsAndEvents':dict(collections.Counter(u['status'] for u in commands))}}
+            'counts':{'requirements':count(records),'commandsAndEvents':count(commands)}}
 
 
 class Register(unittest.TestCase):
     def test_complete_pinned_command_inventory(self):
         r=build(); self.assertEqual(len(r['commandsAndEvents']),64)
         self.assertEqual(len({u['id'] for u in r['commandsAndEvents']}),64)
+        self.assertEqual(sum(u['kind']=='event' for u in r['commandsAndEvents']),5)
         self.assertGreater(len(r['requirements']),250)
         for u in r['requirements']+r['commandsAndEvents']:
             self.assertIn(u['status'],['implemented','divergent','missing','deferred-with-owner'])
