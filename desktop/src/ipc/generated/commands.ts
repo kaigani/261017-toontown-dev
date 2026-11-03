@@ -1632,36 +1632,65 @@ export const COMMAND_INDEX = {
     params: "cell.blank.add.params",
     result: "cell.blank.add.result",
     examples: [
-      {},
+      {
+        elementIds: [
+          "scene:\"Intro\"/element:\"Bob\"",
+        ],
+        frame: 3,
+        count: 2,
+      },
     ],
-    milestone: "M3 C3.1",
   },
   "cell.blank.remove": {
     kind: "action",
     params: "cell.blank.remove.params",
     result: "cell.blank.remove.result",
     examples: [
-      {},
+      {
+        elementIds: [
+          "scene:\"Intro\"/element:\"Bob\"",
+        ],
+        frame: 7,
+      },
     ],
-    milestone: "M3 C3.1",
   },
   "cell.clipboard.apply": {
     kind: "action",
     params: "cell.clipboard.apply.params",
     result: "cell.clipboard.apply.result",
     examples: [
-      {},
+      {
+        elementId: "scene:\"Intro\"/element:\"Bob\"",
+        frame: 45,
+      },
+      {
+        elementId: "scene:\"Intro\"/element:\"Bob\"",
+        frame: 45,
+        mode: "newDrawings",
+      },
     ],
-    milestone: "M3 C3.1",
   },
   "cell.clipboard.set": {
     kind: "action",
     params: "cell.clipboard.set.params",
     result: "cell.clipboard.set.result",
     examples: [
-      {},
+      {
+        elementIds: [
+          "scene:\"Intro\"/element:\"Bob\"",
+        ],
+        from: 1,
+        to: 8,
+      },
+      {
+        elementIds: [
+          "scene:\"Intro\"/element:\"Bob\"",
+        ],
+        from: 1,
+        to: 6,
+        cut: true,
+      },
     ],
-    milestone: "M3 C3.1",
   },
   "cell.columnate.apply": {
     kind: "action",
@@ -1669,11 +1698,24 @@ export const COMMAND_INDEX = {
     result: "cell.columnate.apply.result",
     examples: [
       {
-        firstDrawing: "example",
-        lastDrawing: "example",
+        elementId: "scene:\"Intro\"/element:\"Bob\"",
+        frame: 1,
+        firstDrawing: "1",
+        lastDrawing: "10",
+        exposeEach: 2,
+        loopMode: "forwardBackward",
+        loops: 2,
+      },
+      {
+        elementId: "scene:\"Intro\"/element:\"Bob\"",
+        frame: 1,
+        firstDrawing: "1",
+        lastDrawing: "10",
+        loopMode: "continuous",
+        totalFrames: 10,
+        dryRun: true,
       },
     ],
-    milestone: "M3 C3.1",
   },
   "cell.cycle.create": {
     kind: "action",
@@ -1681,37 +1723,60 @@ export const COMMAND_INDEX = {
     result: "cell.cycle.create.result",
     examples: [
       {
-        cycles: 1,
+        elementId: "scene:\"Intro\"/element:\"Bob\"",
+        from: 1,
+        to: 8,
+        cycles: 3,
       },
     ],
-    milestone: "M3 C3.1",
   },
   "cell.drawing.duplicate": {
     kind: "action",
     params: "cell.drawing.duplicate.params",
     result: "cell.drawing.duplicate.result",
     examples: [
-      {},
+      {
+        elementId: "scene:\"Intro\"/element:\"Bob\"",
+        from: 3,
+        to: 4,
+      },
     ],
-    milestone: "M3 C3.1",
   },
   "cell.exposure.add": {
     kind: "action",
     params: "cell.exposure.add.params",
     result: "cell.exposure.add.result",
     examples: [
-      {},
+      {
+        elementIds: [
+          "scene:\"Intro\"/element:\"Bob\"",
+        ],
+        from: 1,
+        to: 1,
+      },
+      {
+        elementIds: [
+          "scene:\"Intro\"/element:\"Bob\"",
+        ],
+        from: 1,
+        to: 10,
+        frames: 2,
+      },
     ],
-    milestone: "M3 C3.1",
   },
   "cell.exposure.remove": {
     kind: "action",
     params: "cell.exposure.remove.params",
     result: "cell.exposure.remove.result",
     examples: [
-      {},
+      {
+        elementIds: [
+          "scene:\"Intro\"/element:\"Bob\"",
+        ],
+        from: 9,
+        to: 9,
+      },
     ],
-    milestone: "M3 C3.1",
   },
   "cell.exposure.set": {
     kind: "action",
@@ -1719,10 +1784,14 @@ export const COMMAND_INDEX = {
     result: "cell.exposure.set.result",
     examples: [
       {
-        length: 1,
+        elementIds: [
+          "scene:\"Intro\"/element:\"Bob\"",
+        ],
+        from: 1,
+        to: 20,
+        length: 2,
       },
     ],
-    milestone: "M3 C3.1",
   },
   "cell.exposures.changed": {
     kind: "event",
@@ -1731,7 +1800,6 @@ export const COMMAND_INDEX = {
     examples: [
       {},
     ],
-    milestone: "M3 C3.1",
     event: true,
   },
   "cell.fill.apply": {
@@ -1740,19 +1808,45 @@ export const COMMAND_INDEX = {
     result: "cell.fill.apply.result",
     examples: [
       {
-        toFrame: 1,
+        elementIds: [
+          "scene:\"Intro\"/element:\"Bob\"",
+        ],
+        frame: 1,
+        toFrame: 8,
       },
     ],
-    milestone: "M3 C3.1",
   },
   "cell.label.set": {
     kind: "action",
     params: "cell.label.set.params",
     result: "cell.label.set.result",
     examples: [
-      {},
+      {
+        elementIds: [
+          "scene:\"Intro\"/element:\"Bob\"",
+        ],
+        from: 1,
+        to: 6,
+        drawing: "10",
+      },
+      {
+        elementIds: [
+          "scene:\"Intro\"/element:\"Bob\"",
+        ],
+        from: 7,
+        to: 8,
+        drawing: "11",
+        createMissing: true,
+      },
+      {
+        elementIds: [
+          "scene:\"Intro\"/element:\"Bob\"",
+        ],
+        from: 1,
+        to: 6,
+        step: 1,
+      },
     ],
-    milestone: "M3 C3.1",
   },
   "cell.note.set": {
     kind: "action",
@@ -1760,30 +1854,59 @@ export const COMMAND_INDEX = {
     result: "cell.note.set.result",
     examples: [
       {
-        elementId: "scene:#1",
-        frame: 1,
-        text: "example",
+        elementId: "scene:\"Intro\"/element:\"Bob\"",
+        frame: 9,
+        text: "ease out here",
+      },
+      {
+        elementId: "scene:\"Intro\"/element:\"Bob\"",
+        frame: 3,
+        text: "",
       },
     ],
-    milestone: "M3 C3.1",
   },
   "cell.range.add": {
     kind: "action",
     params: "cell.range.add.params",
     result: "cell.range.add.result",
     examples: [
-      {},
+      {
+        elementIds: [
+          "scene:\"Intro\"/element:\"Bob\"",
+        ],
+        frame: 6,
+        count: 2,
+        named: true,
+      },
+      {
+        allElements: true,
+        frame: 1,
+        count: 3,
+        position: "before",
+      },
     ],
-    milestone: "M3 C3.1",
   },
   "cell.range.delete": {
     kind: "action",
     params: "cell.range.delete.params",
     result: "cell.range.delete.result",
     examples: [
-      {},
+      {
+        elementIds: [
+          "scene:\"Intro\"/element:\"Bob\"",
+        ],
+        from: 1,
+        to: 3,
+      },
+      {
+        elementIds: [
+          "scene:\"Intro\"/element:\"Bob\"",
+        ],
+        from: 1,
+        to: 3,
+        shift: true,
+      },
     ],
-    milestone: "M3 C3.1",
   },
   "cell.range.move": {
     kind: "action",
@@ -1791,13 +1914,24 @@ export const COMMAND_INDEX = {
     result: "cell.range.move.result",
     examples: [
       {
-        sourceElementIds: [],
+        sourceElementIds: [
+          "scene:\"Intro\"/element:\"Bob\"",
+        ],
         from: 1,
-        to: 1,
+        to: 6,
+        targetFrame: 45,
+      },
+      {
+        sourceElementIds: [
+          "scene:\"Intro\"/element:\"Bob\"",
+        ],
+        from: 1,
+        to: 6,
+        targetElementId: "scene:\"Intro\"/element:\"Notes\"",
         targetFrame: 1,
+        mode: "copy",
       },
     ],
-    milestone: "M3 C3.1",
   },
   "cell.select": {
     kind: "ui",
@@ -1805,12 +1939,21 @@ export const COMMAND_INDEX = {
     result: "cell.select.result",
     examples: [
       {
-        elementIds: [],
+        elementIds: [
+          "scene:\"Intro\"/element:\"Bob\"",
+        ],
+        from: 1,
+        to: 6,
+      },
+      {
+        elementIds: [
+          "scene:\"Intro\"/element:\"Bob\"",
+        ],
         from: 1,
         to: 1,
+        extent: "track",
       },
     ],
-    milestone: "M5 C5.2",
   },
   "cell.selection.changed": {
     kind: "event",
@@ -1819,7 +1962,6 @@ export const COMMAND_INDEX = {
     examples: [
       {},
     ],
-    milestone: "M3 C3.1",
     event: true,
   },
   "cell.selection.get": {
@@ -1829,7 +1971,6 @@ export const COMMAND_INDEX = {
     examples: [
       {},
     ],
-    milestone: "M3 C3.1",
   },
   "checkpoint.create": {
     kind: "ui",
@@ -4240,11 +4381,10 @@ export const COMMAND_INDEX = {
     result: "element.annotation.set.result",
     examples: [
       {
-        elementId: "scene:#1",
+        elementId: "scene:\"Intro\"/element:\"Bob\"",
         annotation: true,
       },
     ],
-    milestone: "M3 C3.1",
   },
   "element.childExposure.apply": {
     kind: "action",
@@ -4252,11 +4392,10 @@ export const COMMAND_INDEX = {
     result: "element.childExposure.apply.result",
     examples: [
       {
-        pegId: "scene:#1",
-        toFrame: 1,
+        pegId: "scene:\"Intro\"/element:\"Bob-P\"",
+        toFrame: 60,
       },
     ],
-    milestone: "M3 C3.1",
   },
   "element.clone": {
     kind: "action",
@@ -4264,10 +4403,9 @@ export const COMMAND_INDEX = {
     result: "element.clone.result",
     examples: [
       {
-        elementId: "scene:#1",
+        elementId: "scene:\"Intro\"/element:\"Bob\"",
       },
     ],
-    milestone: "M3 C3.1",
   },
   "element.collapsed.set": {
     kind: "toggle",
@@ -4275,19 +4413,31 @@ export const COMMAND_INDEX = {
     result: "element.collapsed.set.result",
     examples: [
       {
+        elementIds: [
+          "scene:\"Intro\"/element:\"Bob-P\"",
+        ],
         collapsed: true,
       },
     ],
-    milestone: "M3 C3.1",
   },
   "element.colour.set": {
     kind: "action",
     params: "element.colour.set.params",
     result: "element.colour.set.result",
     examples: [
-      {},
+      {
+        elementIds: [
+          "scene:\"Intro\"/element:\"Bob\"",
+        ],
+        marker: "#FF0000",
+      },
+      {
+        elementIds: [
+          "scene:\"Intro\"/element:\"Bob\"",
+        ],
+        marker: "",
+      },
     ],
-    milestone: "M3 C3.1",
   },
   "element.create": {
     kind: "action",
@@ -4297,8 +4447,17 @@ export const COMMAND_INDEX = {
       {
         type: "drawing",
       },
+      {
+        type: "peg",
+        name: "Leg",
+        count: 3,
+        parentId: "scene:\"Intro\"/element:\"Bob-P\"",
+      },
+      {
+        type: "clipping",
+        sceneId: "scene:\"Intro\"",
+      },
     ],
-    milestone: "M3 C3.1",
   },
   "element.current.move": {
     kind: "ui",
@@ -4306,10 +4465,9 @@ export const COMMAND_INDEX = {
     result: "element.current.move.result",
     examples: [
       {
-        direction: "previous",
+        direction: "next",
       },
     ],
-    milestone: "M3 C3.1",
   },
   "element.current.set": {
     kind: "ui",
@@ -4317,19 +4475,21 @@ export const COMMAND_INDEX = {
     result: "element.current.set.result",
     examples: [
       {
-        elementId: "scene:#1",
+        elementId: "scene:\"Intro\"/element:\"Bob\"",
       },
     ],
-    milestone: "M3 C3.1",
   },
   "element.delete": {
     kind: "action",
     params: "element.delete.params",
     result: "element.delete.result",
     examples: [
-      {},
+      {
+        elementIds: [
+          "scene:\"Intro\"/element:\"Bob-P\"",
+        ],
+      },
     ],
-    milestone: "M3 C3.1",
   },
   "element.drawing.changed": {
     kind: "event",
@@ -4338,7 +4498,6 @@ export const COMMAND_INDEX = {
     examples: [
       {},
     ],
-    milestone: "M3 C3.1",
     event: true,
   },
   "element.drawing.create": {
@@ -4347,10 +4506,15 @@ export const COMMAND_INDEX = {
     result: "element.drawing.create.result",
     examples: [
       {
-        elementId: "scene:#1",
+        elementId: "scene:\"Intro\"/element:\"Bob\"",
+      },
+      {
+        elementId: "scene:\"Intro\"/element:\"Bob\"",
+        name: "A",
+        exposeFrom: 45,
+        exposeTo: 48,
       },
     ],
-    milestone: "M3 C3.1",
   },
   "element.drawing.delete": {
     kind: "action",
@@ -4358,10 +4522,17 @@ export const COMMAND_INDEX = {
     result: "element.drawing.delete.result",
     examples: [
       {
-        drawingIds: [],
+        drawingIds: [
+          "scene:\"Intro\"/element:\"Bob\"/drawing:\"10\"",
+        ],
+      },
+      {
+        drawingIds: [
+          "scene:\"Intro\"/element:\"Bob\"/drawing:\"1\"",
+        ],
+        ifInUse: "clearCells",
       },
     ],
-    milestone: "M3 C3.1",
   },
   "element.drawing.duplicate": {
     kind: "action",
@@ -4369,10 +4540,9 @@ export const COMMAND_INDEX = {
     result: "element.drawing.duplicate.result",
     examples: [
       {
-        drawingId: "scene:#1",
+        drawingId: "scene:\"Intro\"/element:\"Bob\"/drawing:\"1\"",
       },
     ],
-    milestone: "M3 C3.1",
   },
   "element.drawing.list": {
     kind: "query",
@@ -4380,10 +4550,14 @@ export const COMMAND_INDEX = {
     result: "element.drawing.list.result",
     examples: [
       {
-        elementId: "scene:#1",
+        elementId: "scene:\"Intro\"/element:\"Bob\"",
+      },
+      {
+        elementId: "scene:\"Intro\"/element:\"Bob\"",
+        filter: "unused",
+        thumbnails: 32,
       },
     ],
-    milestone: "M3 C3.1",
   },
   "element.drawing.rename": {
     kind: "action",
@@ -4391,20 +4565,22 @@ export const COMMAND_INDEX = {
     result: "element.drawing.rename.result",
     examples: [
       {
-        drawingId: "scene:#1",
-        name: "example",
+        drawingId: "scene:\"Intro\"/element:\"Bob\"/drawing:\"10\"",
+        name: "3",
       },
     ],
-    milestone: "M3 C3.1",
   },
   "element.drawingContent.delete": {
     kind: "action",
     params: "element.drawingContent.delete.params",
     result: "element.drawingContent.delete.result",
     examples: [
-      {},
+      {
+        drawingIds: [
+          "scene:\"Intro\"/element:\"Bob\"/drawing:\"1\"",
+        ],
+      },
     ],
-    milestone: "M3 C3.1",
   },
   "element.drawingLock.set": {
     kind: "toggle",
@@ -4412,19 +4588,24 @@ export const COMMAND_INDEX = {
     result: "element.drawingLock.set.result",
     examples: [
       {
+        drawingIds: [
+          "scene:\"Intro\"/element:\"Bob\"/drawing:\"1\"",
+        ],
         locked: true,
       },
     ],
-    milestone: "M3 C3.1",
   },
   "element.duplicate": {
     kind: "action",
     params: "element.duplicate.params",
     result: "element.duplicate.result",
     examples: [
-      {},
+      {
+        elementIds: [
+          "scene:\"Intro\"/element:\"Bob\"",
+        ],
+      },
     ],
-    milestone: "M3 C3.1",
   },
   "element.get": {
     kind: "query",
@@ -4432,10 +4613,9 @@ export const COMMAND_INDEX = {
     result: "element.get.result",
     examples: [
       {
-        elementId: "scene:#1",
+        elementId: "scene:\"Intro\"/element:\"Bob\"",
       },
     ],
-    milestone: "M3 C3.1",
   },
   "element.hierarchy.get": {
     kind: "query",
@@ -4443,10 +4623,9 @@ export const COMMAND_INDEX = {
     result: "element.hierarchy.get.result",
     examples: [
       {
-        elementId: "scene:#1",
+        elementId: "scene:\"Intro\"/element:\"Bob\"",
       },
     ],
-    milestone: "M3 C3.1",
   },
   "element.hierarchy.select": {
     kind: "ui",
@@ -4455,18 +4634,27 @@ export const COMMAND_INDEX = {
     examples: [
       {
         relation: "parent",
+        elementId: "scene:\"Intro\"/element:\"Bob\"",
       },
     ],
-    milestone: "M3 C3.1",
   },
   "element.list": {
     kind: "query",
     params: "element.list.params",
     result: "element.list.result",
     examples: [
-      {},
+      {
+        sceneId: "scene:\"Intro\"",
+      },
+      {
+        sceneId: "scene:\"Intro\"",
+        order: "xsheet",
+      },
+      {
+        parentId: "scene:\"Intro\"/element:\"Bob-P\"",
+        recursive: false,
+      },
     ],
-    milestone: "M3 C3.1",
   },
   "element.lock.set": {
     kind: "toggle",
@@ -4474,10 +4662,16 @@ export const COMMAND_INDEX = {
     result: "element.lock.set.result",
     examples: [
       {
+        elementIds: [
+          "scene:\"Intro\"/element:\"Bob\"",
+        ],
         locked: true,
       },
+      {
+        locked: false,
+        apply: "all",
+      },
     ],
-    milestone: "M3 C3.1",
   },
   "element.mediaLength.set": {
     kind: "action",
@@ -4485,10 +4679,10 @@ export const COMMAND_INDEX = {
     result: "element.mediaLength.set.result",
     examples: [
       {
-        elementId: "scene:#1",
+        elementId: "scene:\"Intro\"/element:\"Reference\"",
+        length: 30,
       },
     ],
-    milestone: "M3 C3.1",
   },
   "element.note.set": {
     kind: "action",
@@ -4496,11 +4690,10 @@ export const COMMAND_INDEX = {
     result: "element.note.set.result",
     examples: [
       {
-        elementId: "scene:#1",
-        text: "example",
+        elementId: "scene:\"Intro\"/element:\"Bob\"",
+        text: "redraw the hands",
       },
     ],
-    milestone: "M3 C3.1",
   },
   "element.order.move": {
     kind: "action",
@@ -4508,10 +4701,19 @@ export const COMMAND_INDEX = {
     result: "element.order.move.result",
     examples: [
       {
+        elementIds: [
+          "scene:\"Intro\"/element:\"Background\"",
+        ],
         to: "front",
       },
+      {
+        elementIds: [
+          "scene:\"Intro\"/element:\"Bob\"",
+        ],
+        to: "forward",
+        order: "xsheet",
+      },
     ],
-    milestone: "M3 C3.1",
   },
   "element.order.set": {
     kind: "action",
@@ -4519,38 +4721,59 @@ export const COMMAND_INDEX = {
     result: "element.order.set.result",
     examples: [
       {
-        order: "timeline",
-        elementIds: [],
+        order: "xsheet",
+        elementIds: [
+          "scene:\"Intro\"/element:\"Background\"",
+          "scene:\"Intro\"/element:\"Bob\"",
+          "scene:\"Intro\"/element:\"Notes\"",
+          "scene:\"Intro\"/element:\"Dialogue\"",
+          "scene:\"Intro\"/element:\"Reference\"",
+        ],
       },
     ],
-    milestone: "M3 C3.1",
   },
   "element.parent.remove": {
     kind: "action",
     params: "element.parent.remove.params",
     result: "element.parent.remove.result",
     examples: [
-      {},
+      {
+        elementIds: [
+          "scene:\"Intro\"/element:\"Bob\"",
+        ],
+      },
     ],
-    milestone: "M3 C3.1",
   },
   "element.parent.set": {
     kind: "action",
     params: "element.parent.set.params",
     result: "element.parent.set.result",
     examples: [
-      {},
+      {
+        elementIds: [
+          "scene:\"Intro\"/element:\"Background\"",
+        ],
+        parentId: "scene:\"Intro\"/element:\"Bob-P\"",
+      },
+      {
+        elementIds: [
+          "scene:\"Intro\"/element:\"Background\"",
+        ],
+        nearest: true,
+      },
     ],
-    milestone: "M3 C3.1",
   },
   "element.parentPeg.create": {
     kind: "action",
     params: "element.parentPeg.create.params",
     result: "element.parentPeg.create.result",
     examples: [
-      {},
+      {
+        elementIds: [
+          "scene:\"Intro\"/element:\"Background\"",
+        ],
+      },
     ],
-    milestone: "M3 C3.1",
   },
   "element.properties.set": {
     kind: "action",
@@ -4558,10 +4781,10 @@ export const COMMAND_INDEX = {
     result: "element.properties.set.result",
     examples: [
       {
-        elementId: "scene:#1",
+        elementId: "scene:\"Intro\"/element:\"Bob\"",
+        role: "foreground",
       },
     ],
-    milestone: "M3 C3.1",
   },
   "element.rename": {
     kind: "action",
@@ -4569,11 +4792,10 @@ export const COMMAND_INDEX = {
     result: "element.rename.result",
     examples: [
       {
-        elementId: "scene:#1",
-        name: "example",
+        elementId: "scene:\"Intro\"/element:\"Bob\"",
+        name: "Robert",
       },
     ],
-    milestone: "M3 C3.1",
   },
   "element.select": {
     kind: "ui",
@@ -4581,10 +4803,11 @@ export const COMMAND_INDEX = {
     result: "element.select.result",
     examples: [
       {
-        elementIds: [],
+        elementIds: [
+          "scene:\"Intro\"/element:\"Bob\"",
+        ],
       },
     ],
-    milestone: "M3 C3.1",
   },
   "element.solo.set": {
     kind: "toggle",
@@ -4593,9 +4816,14 @@ export const COMMAND_INDEX = {
     examples: [
       {
         enabled: true,
+        elementIds: [
+          "scene:\"Intro\"/element:\"Bob\"",
+        ],
+      },
+      {
+        enabled: false,
       },
     ],
-    milestone: "M3 C3.1",
   },
   "element.state.changed": {
     kind: "event",
@@ -4604,7 +4832,6 @@ export const COMMAND_INDEX = {
     examples: [
       {},
     ],
-    milestone: "M3 C3.1",
     event: true,
   },
   "element.timing.set": {
@@ -4612,9 +4839,26 @@ export const COMMAND_INDEX = {
     params: "element.timing.set.params",
     result: "element.timing.set.result",
     examples: [
-      {},
+      {
+        elementIds: [
+          "scene:\"Intro\"/element:\"Bob-P\"",
+        ],
+        start: 5,
+      },
+      {
+        elementIds: [
+          "scene:\"Intro\"/element:\"Bob-P\"",
+        ],
+        duration: 24,
+        keyframes: "scale",
+      },
+      {
+        elementIds: [
+          "scene:\"Intro\"/element:\"Fade\"",
+        ],
+        loops: 2,
+      },
     ],
-    milestone: "M3 C3.1",
   },
   "element.typeColour.get": {
     kind: "query",
@@ -4623,7 +4867,6 @@ export const COMMAND_INDEX = {
     examples: [
       {},
     ],
-    milestone: "M3 C3.1",
   },
   "element.typeColour.set": {
     kind: "ui",
@@ -4631,20 +4874,20 @@ export const COMMAND_INDEX = {
     result: "element.typeColour.set.result",
     examples: [
       {
-        category: "drawings",
-        colour: "#FF8000FF",
+        category: "pegs",
+        colour: "#8064A2",
       },
     ],
-    milestone: "M3 C3.1",
   },
   "element.unusedDrawing.list": {
     kind: "query",
     params: "element.unusedDrawing.list.params",
     result: "element.unusedDrawing.list.result",
     examples: [
-      {},
+      {
+        sceneId: "scene:\"Intro\"",
+      },
     ],
-    milestone: "M3 C3.1",
   },
   "element.visibility.set": {
     kind: "toggle",
@@ -4652,11 +4895,24 @@ export const COMMAND_INDEX = {
     result: "element.visibility.set.result",
     examples: [
       {
+        elementIds: [
+          "scene:\"Intro\"/element:\"Bob\"",
+        ],
         scope: "scene",
-        visible: true,
+        visible: false,
+      },
+      {
+        scope: "scene",
+        visible: false,
+        apply: "all",
+        types: [
+          "annotation",
+        ],
+        elementIds: [
+          "scene:\"Intro\"/element:\"Notes\"",
+        ],
       },
     ],
-    milestone: "M3 C3.1",
   },
   "export.drawingPdf.run": {
     kind: "job",
@@ -8933,9 +9189,20 @@ export const COMMAND_INDEX = {
     params: "xsheet.exposures.get.params",
     result: "xsheet.exposures.get.result",
     examples: [
-      {},
+      {
+        sceneId: "scene:\"Intro\"",
+        from: 1,
+        to: 24,
+      },
+      {
+        elementIds: [
+          "scene:\"Intro\"/element:\"Bob\"",
+        ],
+        include: [
+          "notes",
+        ],
+      },
     ],
-    milestone: "M3 C3.1",
   },
   "xsheet.exposures.set": {
     kind: "action",
@@ -8943,10 +9210,51 @@ export const COMMAND_INDEX = {
     result: "xsheet.exposures.set.result",
     examples: [
       {
-        columns: [],
+        sceneId: "scene:\"Intro\"",
+        columns: [
+          {
+            elementId: "scene:\"Intro\"/element:\"Bob\"",
+            from: 1,
+            to: 24,
+            exposures: [
+              {
+                drawing: "1",
+                from: 1,
+                to: 6,
+              },
+              {
+                drawing: "10",
+                from: 7,
+                to: 12,
+              },
+              {
+                drawing: "4",
+                from: 13,
+                to: 24,
+              },
+            ],
+          },
+        ],
+        createMissingDrawings: true,
+      },
+      {
+        columns: [
+          {
+            elementId: "scene:\"Intro\"/element:\"Bob\"",
+            from: 1,
+            to: 4,
+            exposures: [
+              {
+                drawing: "1",
+                from: 1,
+                to: 4,
+              },
+            ],
+          },
+        ],
+        dryRun: true,
       },
     ],
-    milestone: "M3 C3.1",
   },
   "xsheet.lightTable.add": {
     kind: "ui",
@@ -8964,7 +9272,6 @@ export const COMMAND_INDEX = {
     examples: [
       {},
     ],
-    milestone: "M3 C3.1",
     event: true,
   },
   "xsheet.lightTable.list": {
@@ -8974,7 +9281,6 @@ export const COMMAND_INDEX = {
     examples: [
       {},
     ],
-    milestone: "M3 C3.1",
   },
   "xsheet.lightTable.move": {
     kind: "ui",
@@ -20410,258 +20716,338 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
     additionalProperties: false,
   },
   "cell.blank.add.params": {
-    title: "cell.blank.add parameters",
+    title: "BlankParams",
+    description: "`cell.blank.add` / `cell.blank.remove` parameters.",
     type: "object",
     properties: {
       elementIds: {
-        type: "array",
-        items: {
-          type: "string",
-          minLength: 1,
-          maxLength: 4096,
-          description: "object ID or path reference (10 §3)",
-        },
-        maxItems: 100000,
-      },
-      frame: {
-        type: "integer",
-      },
-      count: {
-        type: "integer",
-        minimum: 1,
-        maximum: 9999,
-        default: 1,
-      },
-    },
-    additionalProperties: false,
-    "x-spec": "`elementIds?: [id]; frame?: int; count: int = 1 (1–9999)`",
-  },
-  "cell.blank.add.result": {
-    title: "cell.blank.add result",
-    type: "object",
-    properties: {
-      changed: {
-        type: "array",
-        items: {
-          type: "object",
-          properties: {
-            elementId: {
-              type: "string",
-              minLength: 1,
-              maxLength: 4096,
-              description: "object ID or path reference (10 §3)",
-            },
-            from: {
-              type: "number",
-            },
-            to: {
-              type: "number",
-            },
-          },
-          required: [
-            "elementId",
-            "from",
-            "to",
-          ],
-          additionalProperties: false,
-        },
-        maxItems: 100000,
-      },
-    },
-    required: [
-      "changed",
-    ],
-    "x-spec": "`{changed: [{elementId, from, to}]}`",
-    additionalProperties: false,
-  },
-  "cell.blank.remove.params": {
-    title: "cell.blank.remove parameters",
-    type: "object",
-    properties: {
-      elementIds: {
-        type: "array",
-        items: {
-          type: "string",
-          minLength: 1,
-          maxLength: 4096,
-          description: "object ID or path reference (10 §3)",
-        },
-        maxItems: 100000,
-      },
-      frame: {
-        type: "integer",
-      },
-      count: {
-        type: "integer",
-        minimum: 1,
-        maximum: 9999,
-        default: 1,
-      },
-    },
-    additionalProperties: false,
-    "x-spec": "`elementIds?: [id]; frame?: int; count: int = 1 (1–9999)`",
-  },
-  "cell.blank.remove.result": {
-    title: "cell.blank.remove result",
-    type: "object",
-    properties: {
-      changed: {
-        type: "array",
-        items: {
-          type: "object",
-          properties: {
-            elementId: {
-              type: "string",
-              minLength: 1,
-              maxLength: 4096,
-              description: "object ID or path reference (10 §3)",
-            },
-            from: {
-              type: "number",
-            },
-            to: {
-              type: "number",
-            },
-          },
-          required: [
-            "elementId",
-            "from",
-            "to",
-          ],
-          additionalProperties: false,
-        },
-        maxItems: 100000,
-      },
-    },
-    required: [
-      "changed",
-    ],
-    "x-spec": "`{changed: [{elementId, from, to}]}`",
-    additionalProperties: false,
-  },
-  "cell.clipboard.apply.spec.TransferOptions": {
-    type: "object",
-    properties: {
-      overwriteDrawings: {
-        type: "boolean",
-      },
-      exposure: {
-        type: "boolean",
-      },
-      autoExtend: {
-        type: "boolean",
-      },
-      updateColours: {
-        type: "boolean",
-      },
-      keyframeSubstitution: {
-        type: "boolean",
-      },
-      boundaryKeys: {
-        type: "boolean",
-      },
-      pegKeys: {
-        type: "object",
-        properties: {
-          motion: {
-            type: "boolean",
-          },
-          rotation: {
-            type: "boolean",
-          },
-          scale: {
-            type: "boolean",
-          },
-          pivot: {
-            type: "boolean",
-          },
-          velocity: {
-            type: "boolean",
-          },
-          skew: {
-            type: "boolean",
-          },
-        },
-        additionalProperties: false,
-        required: [
-          "motion",
-          "rotation",
-          "scale",
-          "pivot",
-          "velocity",
-          "skew",
+        description: "Target elements (default: the selection, else the current element).",
+        type: [
+          "array",
+          "null",
         ],
+        items: {
+          type: "string",
+        },
+        default: null,
+      },
+      frame: {
+        description: "The frame (default: the first selected frame, else the current frame).",
+        type: [
+          "integer",
+          "null",
+        ],
+        maximum: 9223372036854775807n,
+        default: null,
+        minimum: -9223372036854775808n,
+      },
+      count: {
+        description: "Number of blank cells.",
+        type: "integer",
+        default: 1,
+        minimum: 1,
+        maximum: 9999,
       },
     },
     additionalProperties: false,
-    required: [
-      "overwriteDrawings",
-      "exposure",
-      "autoExtend",
-      "updateColours",
-      "keyframeSubstitution",
-      "boundaryKeys",
-      "pegKeys",
-    ],
-    "x-specSection": "04",
   },
-  "cell.clipboard.apply.params": {
-    title: "cell.clipboard.apply parameters",
+  "cell.blank.add.CellChange": {
+    description: "A change of one element's cells: `{elementId, from, to}`.",
     type: "object",
     properties: {
       elementId: {
+        description: "The element.",
         type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
       },
-      frame: {
+      from: {
+        description: "First changed frame.",
         type: "integer",
+        maximum: 2147483647,
+        minimum: 0,
       },
-      mode: {
-        type: "string",
-        enum: [
-          "paste",
-          "newDrawings",
-        ],
-        default: "paste",
-      },
-      options: {
-        $ref: "#/$defs/cell.clipboard.apply.spec.TransferOptions",
+      to: {
+        description: "Last changed frame.",
+        type: "integer",
+        maximum: 2147483647,
+        minimum: 0,
       },
     },
-    additionalProperties: false,
-    "x-spec": "`elementId?: id; frame?: int; mode: enum \"paste\"|\"newDrawings\" = \"paste\"; options?: object`",
+    required: [
+      "elementId",
+      "from",
+      "to",
+    ],
   },
-  "cell.clipboard.apply.result": {
-    title: "cell.clipboard.apply result",
+  "cell.blank.add.result": {
+    title: "ChangedResult",
+    description: "`{changed: [{elementId, from, to}]}`.",
+    type: "object",
+    properties: {
+      changed: {
+        description: "The changed frame window of each changed element (unchanged elements are omitted).",
+        type: "array",
+        items: {
+          $ref: "#/$defs/cell.blank.add.CellChange",
+        },
+      },
+    },
+    required: [
+      "changed",
+    ],
+  },
+  "cell.blank.remove.params": {
+    title: "BlankParams",
+    description: "`cell.blank.add` / `cell.blank.remove` parameters.",
     type: "object",
     properties: {
       elementIds: {
-        type: "array",
+        description: "Target elements (default: the selection, else the current element).",
+        type: [
+          "array",
+          "null",
+        ],
         items: {
           type: "string",
-          minLength: 1,
-          maxLength: 4096,
-          description: "object ID or path reference (10 §3)",
         },
-        maxItems: 100000,
+        default: null,
+      },
+      frame: {
+        description: "The frame (default: the first selected frame, else the current frame).",
+        type: [
+          "integer",
+          "null",
+        ],
+        maximum: 9223372036854775807n,
+        default: null,
+        minimum: -9223372036854775808n,
+      },
+      count: {
+        description: "Number of blank cells.",
+        type: "integer",
+        default: 1,
+        minimum: 1,
+        maximum: 9999,
+      },
+    },
+    additionalProperties: false,
+  },
+  "cell.blank.remove.CellChange": {
+    description: "A change of one element's cells: `{elementId, from, to}`.",
+    type: "object",
+    properties: {
+      elementId: {
+        description: "The element.",
+        type: "string",
       },
       from: {
+        description: "First changed frame.",
         type: "integer",
+        maximum: 2147483647,
+        minimum: 0,
       },
       to: {
+        description: "Last changed frame.",
         type: "integer",
+        maximum: 2147483647,
+        minimum: 0,
       },
-      createdDrawingIds: {
+    },
+    required: [
+      "elementId",
+      "from",
+      "to",
+    ],
+  },
+  "cell.blank.remove.result": {
+    title: "ChangedResult",
+    description: "`{changed: [{elementId, from, to}]}`.",
+    type: "object",
+    properties: {
+      changed: {
+        description: "The changed frame window of each changed element (unchanged elements are omitted).",
+        type: "array",
+        items: {
+          $ref: "#/$defs/cell.blank.remove.CellChange",
+        },
+      },
+    },
+    required: [
+      "changed",
+    ],
+  },
+  "cell.clipboard.apply.PasteMode": {
+    description: "Paste mode.",
+    oneOf: [
+      {
+        description: "Same drawings within the bank; copies elsewhere.",
+        type: "string",
+        const: "paste",
+      },
+      {
+        description: "New drawings under new names.",
+        type: "string",
+        const: "newDrawings",
+      },
+    ],
+  },
+  "cell.clipboard.apply.TransferOptions": {
+    description: "The transfer options object (04 §17.3, 11.14); omitted fields take the defaults of 11.14.",
+    type: "object",
+    properties: {
+      overwriteDrawings: {
+        description: "Same-named drawings in the destination bank are overwritten (otherwise new drawings are created).",
+        type: "boolean",
+        default: false,
+      },
+      exposure: {
+        description: "Paste inserts cells and cut/move removes them (following cells shift); off: overwrite / clear.",
+        type: "boolean",
+        default: true,
+      },
+      autoExtend: {
+        description: "Extend transferred exposures up to the destination frame.",
+        type: "boolean",
+        default: false,
+      },
+      updateColours: {
+        description: "Update palette colours from templates.",
+        type: "boolean",
+        default: false,
+      },
+      keyframeSubstitution: {
+        description: "Replace keyframe properties at and after the current frame.",
+        type: "boolean",
+        default: false,
+      },
+      boundaryKeys: {
+        description: "Add keyframes at the start and end of the transferred range.",
+        type: "boolean",
+        default: false,
+      },
+      pegKeys: {
+        description: "Peg key groups.",
+        $ref: "#/$defs/cell.clipboard.apply.PegKeys",
+        default: {
+          motion: true,
+          rotation: true,
+          scale: true,
+          pivot: true,
+          velocity: true,
+          skew: true,
+        },
+      },
+    },
+    additionalProperties: false,
+  },
+  "cell.clipboard.apply.PegKeys": {
+    description: "Peg key groups of the transfer options.",
+    type: "object",
+    properties: {
+      motion: {
+        description: "Motion keyframes.",
+        type: "boolean",
+        default: true,
+      },
+      rotation: {
+        description: "Rotation keyframes.",
+        type: "boolean",
+        default: true,
+      },
+      scale: {
+        description: "Scale keyframes.",
+        type: "boolean",
+        default: true,
+      },
+      pivot: {
+        description: "Pivot keyframes.",
+        type: "boolean",
+        default: true,
+      },
+      velocity: {
+        description: "Velocity keyframes.",
+        type: "boolean",
+        default: true,
+      },
+      skew: {
+        description: "Skew keyframes.",
+        type: "boolean",
+        default: true,
+      },
+    },
+    additionalProperties: false,
+  },
+  "cell.clipboard.apply.params": {
+    title: "ClipboardApplyParams",
+    description: "`cell.clipboard.apply` parameters.",
+    type: "object",
+    properties: {
+      elementId: {
+        description: "Target element (default: the current element; following columns receive further copied elements).",
+        type: [
+          "string",
+          "null",
+        ],
+        default: null,
+      },
+      frame: {
+        description: "Target frame (default: the first selected frame, else the current frame).",
+        type: [
+          "integer",
+          "null",
+        ],
+        maximum: 9223372036854775807n,
+        default: null,
+        minimum: -9223372036854775808n,
+      },
+      mode: {
+        description: "Paste or paste as new drawings.",
+        $ref: "#/$defs/cell.clipboard.apply.PasteMode",
+      },
+      options: {
+        description: "Transfer options (default: 11.14's paste-special defaults).",
+        anyOf: [
+          {
+            $ref: "#/$defs/cell.clipboard.apply.TransferOptions",
+          },
+          {
+            type: "null",
+          },
+        ],
+        default: null,
+      },
+    },
+    additionalProperties: false,
+  },
+  "cell.clipboard.apply.result": {
+    title: "ClipboardApplyResult",
+    description: "`{elementIds, from, to, createdDrawingIds}`.",
+    type: "object",
+    properties: {
+      elementIds: {
+        description: "Elements pasted into (or created).",
         type: "array",
         items: {
           type: "string",
-          minLength: 1,
-          maxLength: 4096,
-          description: "object ID or path reference (10 §3)",
         },
-        maxItems: 100000,
+      },
+      from: {
+        description: "First frame.",
+        type: "integer",
+        maximum: 2147483647,
+        minimum: 0,
+      },
+      to: {
+        description: "Last frame.",
+        type: "integer",
+        maximum: 2147483647,
+        minimum: 0,
+      },
+      createdDrawingIds: {
+        description: "Drawings created.",
+        type: "array",
+        items: {
+          type: "string",
+        },
       },
     },
     required: [
@@ -20670,123 +21056,174 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
       "to",
       "createdDrawingIds",
     ],
-    "x-spec": "`{elementIds[], from, to, createdDrawingIds[]}`",
-    additionalProperties: false,
   },
-  "cell.clipboard.set.spec.TransferOptions": {
+  "cell.clipboard.set.TransferOptions": {
+    description: "The transfer options object (04 §17.3, 11.14); omitted fields take the defaults of 11.14.",
     type: "object",
     properties: {
       overwriteDrawings: {
+        description: "Same-named drawings in the destination bank are overwritten (otherwise new drawings are created).",
         type: "boolean",
+        default: false,
       },
       exposure: {
+        description: "Paste inserts cells and cut/move removes them (following cells shift); off: overwrite / clear.",
         type: "boolean",
+        default: true,
       },
       autoExtend: {
+        description: "Extend transferred exposures up to the destination frame.",
         type: "boolean",
+        default: false,
       },
       updateColours: {
+        description: "Update palette colours from templates.",
         type: "boolean",
+        default: false,
       },
       keyframeSubstitution: {
+        description: "Replace keyframe properties at and after the current frame.",
         type: "boolean",
+        default: false,
       },
       boundaryKeys: {
+        description: "Add keyframes at the start and end of the transferred range.",
         type: "boolean",
+        default: false,
       },
       pegKeys: {
-        type: "object",
-        properties: {
-          motion: {
-            type: "boolean",
-          },
-          rotation: {
-            type: "boolean",
-          },
-          scale: {
-            type: "boolean",
-          },
-          pivot: {
-            type: "boolean",
-          },
-          velocity: {
-            type: "boolean",
-          },
-          skew: {
-            type: "boolean",
-          },
+        description: "Peg key groups.",
+        $ref: "#/$defs/cell.clipboard.set.PegKeys",
+        default: {
+          motion: true,
+          rotation: true,
+          scale: true,
+          pivot: true,
+          velocity: true,
+          skew: true,
         },
-        additionalProperties: false,
-        required: [
-          "motion",
-          "rotation",
-          "scale",
-          "pivot",
-          "velocity",
-          "skew",
-        ],
       },
     },
     additionalProperties: false,
-    required: [
-      "overwriteDrawings",
-      "exposure",
-      "autoExtend",
-      "updateColours",
-      "keyframeSubstitution",
-      "boundaryKeys",
-      "pegKeys",
-    ],
-    "x-specSection": "04",
+  },
+  "cell.clipboard.set.PegKeys": {
+    description: "Peg key groups of the transfer options.",
+    type: "object",
+    properties: {
+      motion: {
+        description: "Motion keyframes.",
+        type: "boolean",
+        default: true,
+      },
+      rotation: {
+        description: "Rotation keyframes.",
+        type: "boolean",
+        default: true,
+      },
+      scale: {
+        description: "Scale keyframes.",
+        type: "boolean",
+        default: true,
+      },
+      pivot: {
+        description: "Pivot keyframes.",
+        type: "boolean",
+        default: true,
+      },
+      velocity: {
+        description: "Velocity keyframes.",
+        type: "boolean",
+        default: true,
+      },
+      skew: {
+        description: "Skew keyframes.",
+        type: "boolean",
+        default: true,
+      },
+    },
+    additionalProperties: false,
   },
   "cell.clipboard.set.params": {
-    title: "cell.clipboard.set parameters",
+    title: "ClipboardSetParams",
+    description: "`cell.clipboard.set` parameters.",
     type: "object",
     properties: {
       elementIds: {
-        type: "array",
+        description: "Source elements (default: the selection, else the current element).",
+        type: [
+          "array",
+          "null",
+        ],
         items: {
           type: "string",
-          minLength: 1,
-          maxLength: 4096,
-          description: "object ID or path reference (10 §3)",
         },
-        maxItems: 100000,
+        default: null,
       },
       from: {
-        type: "integer",
+        description: "First frame.",
+        type: [
+          "integer",
+          "null",
+        ],
+        maximum: 9223372036854775807n,
+        default: null,
+        minimum: -9223372036854775808n,
       },
       to: {
-        type: "integer",
+        description: "Last frame.",
+        type: [
+          "integer",
+          "null",
+        ],
+        maximum: 9223372036854775807n,
+        default: null,
+        minimum: -9223372036854775808n,
       },
       wholeElements: {
+        description: "Copy whole elements instead of cells.",
         type: "boolean",
         default: false,
       },
       cut: {
+        description: "Cut (an undoable removal, by the cut-special `exposure` option: remove and shift, or clear).",
         type: "boolean",
         default: false,
       },
       options: {
-        $ref: "#/$defs/cell.clipboard.set.spec.TransferOptions",
+        description: "Transfer options (default: 11.14's cut-special defaults).",
+        anyOf: [
+          {
+            $ref: "#/$defs/cell.clipboard.set.TransferOptions",
+          },
+          {
+            type: "null",
+          },
+        ],
+        default: null,
       },
     },
     additionalProperties: false,
-    "x-spec": "`elementIds?: [id]; from?: int; to?: int; wholeElements: bool = false; cut: bool = false; options?: object`",
   },
   "cell.clipboard.set.result": {
-    title: "cell.clipboard.set result",
+    title: "ClipboardSetResult",
+    description: "`{contentType, elementCount, frames}`.",
     type: "object",
     properties: {
       contentType: {
+        description: "`drawingCells`, `imageCells` or `elements`.",
         type: "string",
-        maxLength: 65536,
       },
       elementCount: {
-        type: "number",
+        description: "Elements copied.",
+        type: "integer",
+        maximum: 2147483647,
+        minimum: 0,
       },
       frames: {
-        type: "number",
+        description: "Frames per element.",
+        type: "integer",
+        maximum: 2147483647,
+        minimum: 0,
       },
     },
     required: [
@@ -20794,120 +21231,192 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
       "elementCount",
       "frames",
     ],
-    "x-spec": "`{contentType, elementCount, frames}`",
-    additionalProperties: false,
+  },
+  "cell.columnate.apply.ColumnateLoop": {
+    description: "Columnate loop mode.",
+    oneOf: [
+      {
+        description: "One pass.",
+        type: "string",
+        const: "none",
+      },
+      {
+        description: "Restart from the first drawing each loop.",
+        type: "string",
+        const: "continuous",
+      },
+      {
+        description: "Forward then backward, without repeating the end drawings.",
+        type: "string",
+        const: "forwardBackward",
+      },
+    ],
+  },
+  "cell.columnate.apply.Placement": {
+    description: "Columnate placement.",
+    oneOf: [
+      {
+        description: "Overwrite the cells the cycle covers.",
+        type: "string",
+        const: "overwrite",
+      },
+      {
+        description: "Insert at the frame; following cells shift later.",
+        type: "string",
+        const: "insert",
+      },
+    ],
   },
   "cell.columnate.apply.params": {
-    title: "cell.columnate.apply parameters",
+    title: "ColumnateParams",
+    description: "`cell.columnate.apply` parameters.",
     type: "object",
     properties: {
       elementId: {
-        type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
+        description: "Target element (default: the selection, else the current element).",
+        type: [
+          "string",
+          "null",
+        ],
+        default: null,
       },
       frame: {
-        type: "integer",
+        description: "First frame (default: the first selected frame, else the current frame).",
+        type: [
+          "integer",
+          "null",
+        ],
+        maximum: 9223372036854775807n,
+        default: null,
+        minimum: -9223372036854775808n,
       },
       firstDrawing: {
+        description: "First drawing (name in the bank).",
         type: "string",
-        maxLength: 65536,
       },
       lastDrawing: {
+        description: "Last drawing (name in the bank; before the first = reversed order).",
         type: "string",
-        maxLength: 65536,
       },
       exposeEach: {
+        description: "Frames each drawing is exposed.",
         type: "integer",
+        default: 1,
         minimum: 1,
         maximum: 9999,
-        default: 1,
       },
       exposeLast: {
-        type: "integer",
+        description: "Frames the final drawing of the whole cycle is exposed (default: `exposeEach`).",
+        type: [
+          "integer",
+          "null",
+        ],
+        default: null,
         minimum: 1,
         maximum: 9999,
       },
       loopMode: {
-        type: "string",
-        enum: [
-          "none",
-          "continuous",
-          "forwardBackward",
-        ],
-        default: "none",
+        description: "Loop mode.",
+        $ref: "#/$defs/cell.columnate.apply.ColumnateLoop",
       },
       loops: {
-        type: "integer",
+        description: "Loops (continuous and forward-backward).",
+        type: [
+          "integer",
+          "null",
+        ],
+        default: null,
         minimum: 1,
         maximum: 999,
       },
       totalFrames: {
-        type: "integer",
+        description: "Total frames (recomputes the loops; the last loop is truncated).",
+        type: [
+          "integer",
+          "null",
+        ],
+        default: null,
+        minimum: 1,
+        maximum: 100000,
       },
       placement: {
-        type: "string",
-        enum: [
-          "overwrite",
-          "insert",
-        ],
-        default: "overwrite",
+        description: "Overwrite or insert.",
+        $ref: "#/$defs/cell.columnate.apply.Placement",
       },
       dryRun: {
+        description: "Compute and return the cycle without applying it.",
         type: "boolean",
         default: false,
       },
     },
+    additionalProperties: false,
     required: [
       "firstDrawing",
       "lastDrawing",
     ],
-    additionalProperties: false,
-    "x-spec": "`elementId?: id; frame?: int; firstDrawing: string; lastDrawing: string; exposeEach: int = 1 (1–9999); exposeLast?: int (1–9999); loopMode: enum \"none\"|\"continuous\"|\"forwardBackward\" = \"none\"; loops?: int (1–999); totalFrames?: int; placement: enum \"overwrite\"|\"insert\" = \"overwrite\"; dryRun: bool = false`",
+  },
+  "cell.columnate.apply.SequenceItem": {
+    description: "One drawing of the computed cycle.",
+    type: "object",
+    properties: {
+      drawing: {
+        description: "Drawing name.",
+        type: "string",
+      },
+      from: {
+        description: "First frame.",
+        type: "integer",
+        maximum: 2147483647,
+        minimum: 0,
+      },
+      to: {
+        description: "Last frame.",
+        type: "integer",
+        maximum: 2147483647,
+        minimum: 0,
+      },
+    },
+    required: [
+      "drawing",
+      "from",
+      "to",
+    ],
   },
   "cell.columnate.apply.result": {
-    title: "cell.columnate.apply result",
+    title: "ColumnateResult",
+    description: "`{from, to, totalFrames, loops, sequence}`.",
     type: "object",
     properties: {
       from: {
-        type: "number",
+        description: "First frame.",
+        type: "integer",
+        maximum: 2147483647,
+        minimum: 0,
       },
       to: {
-        type: "number",
+        description: "Last frame.",
+        type: "integer",
+        maximum: 2147483647,
+        minimum: 0,
       },
       totalFrames: {
+        description: "Total frames.",
         type: "integer",
+        maximum: 2147483647,
+        minimum: 0,
       },
       loops: {
+        description: "Loops.",
         type: "integer",
-        minimum: 1,
         maximum: 999,
+        minimum: 1,
       },
       sequence: {
+        description: "The drawings with their frames.",
         type: "array",
         items: {
-          type: "object",
-          properties: {
-            drawing: {
-              type: "string",
-              maxLength: 65536,
-            },
-            from: {
-              type: "number",
-            },
-            to: {
-              type: "number",
-            },
-          },
-          required: [
-            "drawing",
-            "from",
-            "to",
-          ],
-          additionalProperties: false,
+          $ref: "#/$defs/cell.columnate.apply.SequenceItem",
         },
-        maxItems: 100000,
       },
     },
     required: [
@@ -20917,339 +21426,446 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
       "loops",
       "sequence",
     ],
-    "x-spec": "`{from, to, totalFrames, loops, sequence: [{drawing, from, to}]}`",
-    additionalProperties: false,
   },
   "cell.cycle.create.params": {
-    title: "cell.cycle.create parameters",
+    title: "CycleParams",
+    description: "`cell.cycle.create` parameters.",
     type: "object",
     properties: {
       elementId: {
-        type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
+        description: "Target element (default: the selection, else the current element).",
+        type: [
+          "string",
+          "null",
+        ],
+        default: null,
       },
       from: {
-        type: "integer",
+        description: "First frame of the pattern.",
+        type: [
+          "integer",
+          "null",
+        ],
+        maximum: 9223372036854775807n,
+        default: null,
+        minimum: -9223372036854775808n,
       },
       to: {
-        type: "integer",
+        description: "Last frame of the pattern.",
+        type: [
+          "integer",
+          "null",
+        ],
+        maximum: 9223372036854775807n,
+        default: null,
+        minimum: -9223372036854775808n,
       },
       cycles: {
+        description: "How many times the range appears in total (1 = no change).",
         type: "integer",
-        minimum: 1,
         maximum: 999,
+        minimum: 1,
       },
     },
+    additionalProperties: false,
     required: [
       "cycles",
     ],
-    additionalProperties: false,
-    "x-spec": "`elementId?: id; from?: int; to?: int; cycles: int (1–999)`",
   },
   "cell.cycle.create.result": {
-    title: "cell.cycle.create result",
+    title: "WindowResult",
+    description: "`{from, to}`.",
     type: "object",
     properties: {
       from: {
+        description: "First frame.",
         type: "integer",
+        maximum: 2147483647,
+        minimum: 0,
       },
       to: {
+        description: "Last frame.",
         type: "integer",
+        maximum: 2147483647,
+        minimum: 0,
       },
     },
     required: [
       "from",
       "to",
     ],
-    "x-spec": "`{from, to}`",
-    additionalProperties: false,
   },
   "cell.drawing.duplicate.params": {
-    title: "cell.drawing.duplicate parameters",
+    title: "DuplicateParams",
+    description: "`cell.drawing.duplicate` parameters.",
     type: "object",
     properties: {
       elementId: {
-        type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
+        description: "Target element (default: the selection, else the current element).",
+        type: [
+          "string",
+          "null",
+        ],
+        default: null,
       },
       from: {
-        type: "integer",
+        description: "First frame (its drawing is copied).",
+        type: [
+          "integer",
+          "null",
+        ],
+        maximum: 9223372036854775807n,
+        default: null,
+        minimum: -9223372036854775808n,
       },
       to: {
-        type: "integer",
+        description: "Last frame of the cells that show the copy.",
+        type: [
+          "integer",
+          "null",
+        ],
+        maximum: 9223372036854775807n,
+        default: null,
+        minimum: -9223372036854775808n,
       },
       name: {
-        type: "string",
-        maxLength: 65536,
+        description: "Name of the copy (default: the next free name).",
+        type: [
+          "string",
+          "null",
+        ],
+        default: null,
       },
     },
     additionalProperties: false,
-    "x-spec": "`elementId?: id; from?: int; to?: int; name?: string`",
   },
   "cell.drawing.duplicate.result": {
-    title: "cell.drawing.duplicate result",
+    title: "DrawingResult",
+    description: "`{drawingId, name}`.",
     type: "object",
     properties: {
       drawingId: {
+        description: "The new drawing.",
         type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
       },
       name: {
+        description: "Its name.",
         type: "string",
-        maxLength: 65536,
       },
     },
     required: [
       "drawingId",
       "name",
     ],
-    "x-spec": "`{drawingId, name}`",
-    additionalProperties: false,
   },
   "cell.exposure.add.params": {
-    title: "cell.exposure.add parameters",
+    title: "ExposureStepParams",
+    description: "`cell.exposure.add` / `cell.exposure.remove` parameters.",
     type: "object",
     properties: {
       elementIds: {
-        type: "array",
+        description: "Target elements (default: the selection, else the current element).",
+        type: [
+          "array",
+          "null",
+        ],
         items: {
           type: "string",
-          minLength: 1,
-          maxLength: 4096,
-          description: "object ID or path reference (10 §3)",
         },
-        maxItems: 100000,
+        default: null,
       },
       from: {
-        type: "integer",
+        description: "First frame of the range (default: the selection, else the current frame).",
+        type: [
+          "integer",
+          "null",
+        ],
+        maximum: 9223372036854775807n,
+        default: null,
+        minimum: -9223372036854775808n,
       },
       to: {
-        type: "integer",
+        description: "Last frame of the range.",
+        type: [
+          "integer",
+          "null",
+        ],
+        maximum: 9223372036854775807n,
+        default: null,
+        minimum: -9223372036854775808n,
       },
       frames: {
+        description: "Frames to add or remove per exposure.",
         type: "integer",
+        default: 1,
         minimum: 1,
         maximum: 9999,
-        default: 1,
       },
     },
     additionalProperties: false,
-    "x-spec": "`elementIds?: [id]; from?: int; to?: int; frames: int = 1 (1–9999)`",
+  },
+  "cell.exposure.add.CellChange": {
+    description: "A change of one element's cells: `{elementId, from, to}`.",
+    type: "object",
+    properties: {
+      elementId: {
+        description: "The element.",
+        type: "string",
+      },
+      from: {
+        description: "First changed frame.",
+        type: "integer",
+        maximum: 2147483647,
+        minimum: 0,
+      },
+      to: {
+        description: "Last changed frame.",
+        type: "integer",
+        maximum: 2147483647,
+        minimum: 0,
+      },
+    },
+    required: [
+      "elementId",
+      "from",
+      "to",
+    ],
   },
   "cell.exposure.add.result": {
-    title: "cell.exposure.add result",
+    title: "ChangedResult",
+    description: "`{changed: [{elementId, from, to}]}`.",
     type: "object",
     properties: {
       changed: {
+        description: "The changed frame window of each changed element (unchanged elements are omitted).",
         type: "array",
         items: {
-          type: "object",
-          properties: {
-            elementId: {
-              type: "string",
-              minLength: 1,
-              maxLength: 4096,
-              description: "object ID or path reference (10 §3)",
-            },
-            from: {
-              type: "integer",
-            },
-            to: {
-              type: "integer",
-            },
-          },
-          required: [
-            "elementId",
-            "from",
-            "to",
-          ],
-          additionalProperties: false,
+          $ref: "#/$defs/cell.exposure.add.CellChange",
         },
-        maxItems: 100000,
       },
     },
     required: [
       "changed",
     ],
-    "x-spec": "`{changed: [{elementId, from, to}]}`",
-    additionalProperties: false,
   },
   "cell.exposure.remove.params": {
-    title: "cell.exposure.remove parameters",
+    title: "ExposureStepParams",
+    description: "`cell.exposure.add` / `cell.exposure.remove` parameters.",
     type: "object",
     properties: {
       elementIds: {
-        type: "array",
+        description: "Target elements (default: the selection, else the current element).",
+        type: [
+          "array",
+          "null",
+        ],
         items: {
           type: "string",
-          minLength: 1,
-          maxLength: 4096,
-          description: "object ID or path reference (10 §3)",
         },
-        maxItems: 100000,
+        default: null,
       },
       from: {
-        type: "integer",
+        description: "First frame of the range (default: the selection, else the current frame).",
+        type: [
+          "integer",
+          "null",
+        ],
+        maximum: 9223372036854775807n,
+        default: null,
+        minimum: -9223372036854775808n,
       },
       to: {
-        type: "integer",
+        description: "Last frame of the range.",
+        type: [
+          "integer",
+          "null",
+        ],
+        maximum: 9223372036854775807n,
+        default: null,
+        minimum: -9223372036854775808n,
       },
       frames: {
+        description: "Frames to add or remove per exposure.",
         type: "integer",
+        default: 1,
         minimum: 1,
         maximum: 9999,
-        default: 1,
       },
     },
     additionalProperties: false,
-    "x-spec": "`elementIds?: [id]; from?: int; to?: int; frames: int = 1 (1–9999)`",
+  },
+  "cell.exposure.remove.CellChange": {
+    description: "A change of one element's cells: `{elementId, from, to}`.",
+    type: "object",
+    properties: {
+      elementId: {
+        description: "The element.",
+        type: "string",
+      },
+      from: {
+        description: "First changed frame.",
+        type: "integer",
+        maximum: 2147483647,
+        minimum: 0,
+      },
+      to: {
+        description: "Last changed frame.",
+        type: "integer",
+        maximum: 2147483647,
+        minimum: 0,
+      },
+    },
+    required: [
+      "elementId",
+      "from",
+      "to",
+    ],
   },
   "cell.exposure.remove.result": {
-    title: "cell.exposure.remove result",
+    title: "ChangedResult",
+    description: "`{changed: [{elementId, from, to}]}`.",
     type: "object",
     properties: {
       changed: {
+        description: "The changed frame window of each changed element (unchanged elements are omitted).",
         type: "array",
         items: {
-          type: "object",
-          properties: {
-            elementId: {
-              type: "string",
-              minLength: 1,
-              maxLength: 4096,
-              description: "object ID or path reference (10 §3)",
-            },
-            from: {
-              type: "integer",
-            },
-            to: {
-              type: "integer",
-            },
-          },
-          required: [
-            "elementId",
-            "from",
-            "to",
-          ],
-          additionalProperties: false,
+          $ref: "#/$defs/cell.exposure.remove.CellChange",
         },
-        maxItems: 100000,
       },
     },
     required: [
       "changed",
     ],
-    "x-spec": "`{changed: [{elementId, from, to}]}`",
-    additionalProperties: false,
   },
   "cell.exposure.set.params": {
-    title: "cell.exposure.set parameters",
+    title: "ExposureSetParams",
+    description: "`cell.exposure.set` parameters.",
     type: "object",
     properties: {
       elementIds: {
-        type: "array",
+        description: "Target elements (default: the selection, else the current element).",
+        type: [
+          "array",
+          "null",
+        ],
         items: {
           type: "string",
-          minLength: 1,
-          maxLength: 4096,
-          description: "object ID or path reference (10 §3)",
         },
-        maxItems: 100000,
+        default: null,
       },
       from: {
-        type: "integer",
+        description: "First frame of the range.",
+        type: [
+          "integer",
+          "null",
+        ],
+        maximum: 9223372036854775807n,
+        default: null,
+        minimum: -9223372036854775808n,
       },
       to: {
-        type: "integer",
+        description: "Last frame of the range.",
+        type: [
+          "integer",
+          "null",
+        ],
+        maximum: 9223372036854775807n,
+        default: null,
+        minimum: -9223372036854775808n,
       },
       length: {
+        description: "New length of every exposure intersecting the range (1 = on ones, 2 = on twos, …).",
         type: "integer",
-        minimum: 1,
         maximum: 9999,
+        minimum: 1,
       },
     },
+    additionalProperties: false,
     required: [
       "length",
     ],
-    additionalProperties: false,
-    "x-spec": "`elementIds?: [id]; from?: int; to?: int; length: int (1–9999)`",
+  },
+  "cell.exposure.set.CellChange": {
+    description: "A change of one element's cells: `{elementId, from, to}`.",
+    type: "object",
+    properties: {
+      elementId: {
+        description: "The element.",
+        type: "string",
+      },
+      from: {
+        description: "First changed frame.",
+        type: "integer",
+        maximum: 2147483647,
+        minimum: 0,
+      },
+      to: {
+        description: "Last changed frame.",
+        type: "integer",
+        maximum: 2147483647,
+        minimum: 0,
+      },
+    },
+    required: [
+      "elementId",
+      "from",
+      "to",
+    ],
   },
   "cell.exposure.set.result": {
-    title: "cell.exposure.set result",
+    title: "ChangedResult",
+    description: "`{changed: [{elementId, from, to}]}`.",
     type: "object",
     properties: {
       changed: {
+        description: "The changed frame window of each changed element (unchanged elements are omitted).",
         type: "array",
         items: {
-          type: "object",
-          properties: {
-            elementId: {
-              type: "string",
-              minLength: 1,
-              maxLength: 4096,
-              description: "object ID or path reference (10 §3)",
-            },
-            from: {
-              type: "integer",
-            },
-            to: {
-              type: "integer",
-            },
-          },
-          required: [
-            "elementId",
-            "from",
-            "to",
-          ],
-          additionalProperties: false,
+          $ref: "#/$defs/cell.exposure.set.CellChange",
         },
-        maxItems: 100000,
       },
     },
     required: [
       "changed",
     ],
-    "x-spec": "`{changed: [{elementId, from, to}]}`",
-    additionalProperties: false,
   },
   "cell.exposures.changed.params": {
-    title: "cell.exposures.changed parameters",
+    title: "NoParams",
+    description: "No parameters.",
     type: "object",
-    properties: {},
     additionalProperties: false,
-    description: "Events take no parameters; subscribe to them (11 §9).",
-    "x-spec": "—",
   },
   "cell.exposures.changed.result": {
-    title: "cell.exposures.changed result",
+    title: "ExposuresChanged",
+    description: "`cell.exposures.changed` payload.",
     type: "object",
     properties: {
       sceneId: {
+        description: "The scene.",
         type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
       },
       elementId: {
+        description: "The element.",
         type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
       },
       from: {
-        type: "number",
+        description: "First changed frame.",
+        type: "integer",
+        maximum: 2147483647,
+        minimum: 0,
       },
       to: {
-        type: "number",
+        description: "Last changed frame.",
+        type: "integer",
+        maximum: 2147483647,
+        minimum: 0,
       },
       rev: {
-        type: "number",
+        description: "Revision after the change.",
+        type: "integer",
+        maximum: 18446744073709551615n,
+        minimum: 0,
       },
     },
     required: [
@@ -21259,138 +21875,205 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
       "to",
       "rev",
     ],
-    description: "Event payload (delivered to subscribers).",
-    "x-spec": "`{sceneId, elementId, from, to, rev}`",
-    additionalProperties: false,
   },
   "cell.fill.apply.params": {
-    title: "cell.fill.apply parameters",
+    title: "FillParams",
+    description: "`cell.fill.apply` parameters.",
     type: "object",
     properties: {
       elementIds: {
-        type: "array",
+        description: "Target elements (default: the selection, else the current element).",
+        type: [
+          "array",
+          "null",
+        ],
         items: {
           type: "string",
-          minLength: 1,
-          maxLength: 4096,
-          description: "object ID or path reference (10 §3)",
         },
-        maxItems: 100000,
+        default: null,
       },
       frame: {
-        type: "integer",
+        description: "The cell whose drawing is extended (default: the first selected frame, else the current frame).",
+        type: [
+          "integer",
+          "null",
+        ],
+        maximum: 9223372036854775807n,
+        default: null,
+        minimum: -9223372036854775808n,
       },
       toFrame: {
+        description: "Last frame to expose the drawing in (minimum: `frame`; 04 §13.5).",
         type: "integer",
-        minimum: 1,
-        maximum: 9999,
+        maximum: 9223372036854775807n,
+        minimum: -9223372036854775808n,
       },
     },
+    additionalProperties: false,
     required: [
       "toFrame",
     ],
-    additionalProperties: false,
-    "x-spec": "`elementIds?: [id]; frame?: int; toFrame: int (1–9999)`",
+  },
+  "cell.fill.apply.CellChange": {
+    description: "A change of one element's cells: `{elementId, from, to}`.",
+    type: "object",
+    properties: {
+      elementId: {
+        description: "The element.",
+        type: "string",
+      },
+      from: {
+        description: "First changed frame.",
+        type: "integer",
+        maximum: 2147483647,
+        minimum: 0,
+      },
+      to: {
+        description: "Last changed frame.",
+        type: "integer",
+        maximum: 2147483647,
+        minimum: 0,
+      },
+    },
+    required: [
+      "elementId",
+      "from",
+      "to",
+    ],
   },
   "cell.fill.apply.result": {
-    title: "cell.fill.apply result",
+    title: "ChangedResult",
+    description: "`{changed: [{elementId, from, to}]}`.",
     type: "object",
     properties: {
       changed: {
+        description: "The changed frame window of each changed element (unchanged elements are omitted).",
         type: "array",
         items: {
-          type: "object",
-          properties: {
-            elementId: {
-              type: "string",
-              minLength: 1,
-              maxLength: 4096,
-              description: "object ID or path reference (10 §3)",
-            },
-            from: {
-              type: "number",
-            },
-            to: {
-              type: "number",
-            },
-          },
-          required: [
-            "elementId",
-            "from",
-            "to",
-          ],
-          additionalProperties: false,
+          $ref: "#/$defs/cell.fill.apply.CellChange",
         },
-        maxItems: 100000,
       },
     },
     required: [
       "changed",
     ],
-    "x-spec": "`{changed: [{elementId, from, to}]}`",
-    additionalProperties: false,
   },
   "cell.label.set.params": {
-    title: "cell.label.set parameters",
+    title: "LabelParams",
+    description: "`cell.label.set` parameters.",
     type: "object",
     properties: {
       elementIds: {
-        type: "array",
+        description: "Target elements (default: the selection, else the current element).",
+        type: [
+          "array",
+          "null",
+        ],
         items: {
           type: "string",
-          minLength: 1,
-          maxLength: 4096,
-          description: "object ID or path reference (10 §3)",
         },
-        maxItems: 100000,
+        default: null,
       },
       from: {
-        type: "integer",
+        description: "First frame.",
+        type: [
+          "integer",
+          "null",
+        ],
+        maximum: 9223372036854775807n,
+        default: null,
+        minimum: -9223372036854775808n,
       },
       to: {
-        type: "integer",
+        description: "Last frame.",
+        type: [
+          "integer",
+          "null",
+        ],
+        maximum: 9223372036854775807n,
+        default: null,
+        minimum: -9223372036854775808n,
       },
       drawing: {
-        type: "string",
-        maxLength: 65536,
+        description: "Drawing name in each element's bank.",
+        type: [
+          "string",
+          "null",
+        ],
+        default: null,
       },
       drawingId: {
-        type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
+        description: "Drawing ID or path (it must belong to the element's bank).",
+        type: [
+          "string",
+          "null",
+        ],
+        default: null,
       },
       step: {
-        type: "integer",
+        description: "Step through the bank (natural name order) from the drawing at `from`.",
+        type: [
+          "integer",
+          "null",
+        ],
+        maximum: 9223372036854775807n,
+        default: null,
+        minimum: -9223372036854775808n,
       },
       createMissing: {
+        description: "Create an empty drawing for an unknown name (drawing and annotation elements).",
         type: "boolean",
         default: false,
       },
     },
     additionalProperties: false,
-    "x-spec": "`elementIds?: [id]; from?: int; to?: int; drawing?: string; drawingId?: id; step?: int; createMissing: bool = false`",
+  },
+  "cell.label.set.CellChange": {
+    description: "A change of one element's cells: `{elementId, from, to}`.",
+    type: "object",
+    properties: {
+      elementId: {
+        description: "The element.",
+        type: "string",
+      },
+      from: {
+        description: "First changed frame.",
+        type: "integer",
+        maximum: 2147483647,
+        minimum: 0,
+      },
+      to: {
+        description: "Last changed frame.",
+        type: "integer",
+        maximum: 2147483647,
+        minimum: 0,
+      },
+    },
+    required: [
+      "elementId",
+      "from",
+      "to",
+    ],
   },
   "cell.label.set.result": {
-    title: "cell.label.set result",
+    title: "LabelResult",
+    description: "`{drawingId, name, changed}`.",
     type: "object",
     properties: {
       drawingId: {
+        description: "The drawing now exposed (first element).",
         type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
       },
       name: {
+        description: "Its name.",
         type: "string",
-        maxLength: 65536,
       },
       changed: {
+        description: "Changed windows.",
         type: "array",
         items: {
-          type: "boolean",
+          $ref: "#/$defs/cell.label.set.CellChange",
         },
-        maxItems: 100000,
       },
     },
     required: [
@@ -21398,118 +22081,144 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
       "name",
       "changed",
     ],
-    "x-spec": "`{drawingId, name, changed[]}`",
-    additionalProperties: false,
   },
   "cell.note.set.params": {
-    title: "cell.note.set parameters",
+    title: "NoteParams",
+    description: "`cell.note.set` parameters.",
     type: "object",
     properties: {
       elementId: {
+        description: "The element.",
         type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
       },
       frame: {
+        description: "The frame.",
         type: "integer",
+        maximum: 9223372036854775807n,
+        minimum: -9223372036854775808n,
       },
       text: {
+        description: "The note (empty removes it; at most 10 000 characters).",
         type: "string",
-        maxLength: 65536,
+        maxLength: 10000,
       },
     },
+    additionalProperties: false,
     required: [
       "elementId",
       "frame",
       "text",
     ],
-    additionalProperties: false,
-    "x-spec": "`elementId: id; frame: int; text: string`",
   },
   "cell.note.set.result": {
-    title: "cell.note.set result",
+    title: "NoteResult",
+    description: "`{elementId, frame}`.",
     type: "object",
     properties: {
       elementId: {
+        description: "The element.",
         type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
       },
       frame: {
+        description: "The frame.",
         type: "integer",
+        maximum: 2147483647,
+        minimum: 0,
       },
     },
     required: [
       "elementId",
       "frame",
     ],
-    "x-spec": "`{elementId, frame}`",
-    additionalProperties: false,
+  },
+  "cell.range.add.Position": {
+    description: "Insert position (13.6).",
+    oneOf: [
+      {
+        description: "Before the selected cell.",
+        type: "string",
+        const: "before",
+      },
+      {
+        description: "After the selected cell.",
+        type: "string",
+        const: "after",
+      },
+    ],
   },
   "cell.range.add.params": {
-    title: "cell.range.add parameters",
+    title: "RangeAddParams",
+    description: "`cell.range.add` parameters.",
     type: "object",
     properties: {
       elementIds: {
-        type: "array",
+        description: "Target elements (default: the selection, else the current element).",
+        type: [
+          "array",
+          "null",
+        ],
         items: {
           type: "string",
-          minLength: 1,
-          maxLength: 4096,
-          description: "object ID or path reference (10 §3)",
         },
-        maxItems: 100000,
+        default: null,
       },
       allElements: {
+        description: "Insert blank cells in every cell-based element of the scene (pegs, cameras and effects are not shifted).",
         type: "boolean",
         default: false,
       },
       frame: {
-        type: "integer",
+        description: "The selected cell (default: the first selected frame, else the current frame).",
+        type: [
+          "integer",
+          "null",
+        ],
+        maximum: 9223372036854775807n,
+        default: null,
+        minimum: -9223372036854775808n,
       },
       count: {
+        description: "Number of cells.",
         type: "integer",
+        default: 1,
         minimum: 1,
         maximum: 9999,
-        default: 1,
       },
       position: {
-        type: "string",
-        enum: [
-          "before",
-          "after",
-        ],
-        default: "after",
+        description: "Insert before or after the selected cell.",
+        $ref: "#/$defs/cell.range.add.Position",
       },
       named: {
+        description: "Each inserted cell gets a new empty drawing named after the highest numeric name (unavailable with\n`allElements`).",
         type: "boolean",
         default: false,
       },
     },
     additionalProperties: false,
-    "x-spec": "`elementIds?: [id]; allElements: bool = false; frame?: int; count: int = 1 (1–9999); position: enum \"before\"|\"after\" = \"after\"; named: bool = false`",
   },
   "cell.range.add.result": {
-    title: "cell.range.add result",
+    title: "RangeAddResult",
+    description: "`{from, to, drawingIds}`.",
     type: "object",
     properties: {
       from: {
+        description: "First inserted frame.",
         type: "integer",
+        maximum: 2147483647,
+        minimum: 0,
       },
       to: {
+        description: "Last inserted frame.",
         type: "integer",
+        maximum: 2147483647,
+        minimum: 0,
       },
       drawingIds: {
+        description: "Drawings created for named cells.",
         type: "array",
         items: {
           type: "string",
-          minLength: 1,
-          maxLength: 4096,
-          description: "object ID or path reference (10 §3)",
         },
-        maxItems: 100000,
       },
     },
     required: [
@@ -21517,212 +22226,293 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
       "to",
       "drawingIds",
     ],
-    "x-spec": "`{from, to, drawingIds[]}`",
-    additionalProperties: false,
   },
   "cell.range.delete.params": {
-    title: "cell.range.delete parameters",
+    title: "RangeDeleteParams",
+    description: "`cell.range.delete` parameters.",
     type: "object",
     properties: {
       elementIds: {
-        type: "array",
+        description: "Target elements (default: the selection, else the current element).",
+        type: [
+          "array",
+          "null",
+        ],
         items: {
           type: "string",
-          minLength: 1,
-          maxLength: 4096,
-          description: "object ID or path reference (10 §3)",
         },
-        maxItems: 100000,
+        default: null,
       },
       from: {
-        type: "integer",
+        description: "First frame.",
+        type: [
+          "integer",
+          "null",
+        ],
+        maximum: 9223372036854775807n,
+        default: null,
+        minimum: -9223372036854775808n,
       },
       to: {
-        type: "integer",
+        description: "Last frame.",
+        type: [
+          "integer",
+          "null",
+        ],
+        maximum: 9223372036854775807n,
+        default: null,
+        minimum: -9223372036854775808n,
       },
       shift: {
+        description: "Remove the cells and shift the following cells earlier (`true`), or clear them to blanks (`false`).",
         type: "boolean",
         default: false,
       },
     },
     additionalProperties: false,
-    "x-spec": "`elementIds?: [id]; from?: int; to?: int; shift: bool = false`",
+  },
+  "cell.range.delete.CellChange": {
+    description: "A change of one element's cells: `{elementId, from, to}`.",
+    type: "object",
+    properties: {
+      elementId: {
+        description: "The element.",
+        type: "string",
+      },
+      from: {
+        description: "First changed frame.",
+        type: "integer",
+        maximum: 2147483647,
+        minimum: 0,
+      },
+      to: {
+        description: "Last changed frame.",
+        type: "integer",
+        maximum: 2147483647,
+        minimum: 0,
+      },
+    },
+    required: [
+      "elementId",
+      "from",
+      "to",
+    ],
   },
   "cell.range.delete.result": {
-    title: "cell.range.delete result",
+    title: "ChangedResult",
+    description: "`{changed: [{elementId, from, to}]}`.",
     type: "object",
     properties: {
       changed: {
+        description: "The changed frame window of each changed element (unchanged elements are omitted).",
         type: "array",
         items: {
-          type: "object",
-          properties: {
-            elementId: {
-              type: "string",
-              minLength: 1,
-              maxLength: 4096,
-              description: "object ID or path reference (10 §3)",
-            },
-            from: {
-              type: "integer",
-            },
-            to: {
-              type: "integer",
-            },
-          },
-          required: [
-            "elementId",
-            "from",
-            "to",
-          ],
-          additionalProperties: false,
+          $ref: "#/$defs/cell.range.delete.CellChange",
         },
-        maxItems: 100000,
       },
     },
     required: [
       "changed",
     ],
-    "x-spec": "`{changed: [{elementId, from, to}]}`",
-    additionalProperties: false,
   },
-  "cell.range.move.spec.TransferOptions": {
+  "cell.range.move.MoveMode": {
+    description: "Transfer mode (11.13).",
+    oneOf: [
+      {
+        description: "Move the exposures.",
+        type: "string",
+        const: "move",
+      },
+      {
+        description: "Copy them (same drawings within the bank, copies elsewhere).",
+        type: "string",
+        const: "copy",
+      },
+      {
+        description: "Reference the same drawings (same element or clone group only).",
+        type: "string",
+        const: "link",
+      },
+      {
+        description: "Copy as new drawings.",
+        type: "string",
+        const: "copyNew",
+      },
+    ],
+  },
+  "cell.range.move.TransferOptions": {
+    description: "The transfer options object (04 §17.3, 11.14); omitted fields take the defaults of 11.14.",
     type: "object",
     properties: {
       overwriteDrawings: {
+        description: "Same-named drawings in the destination bank are overwritten (otherwise new drawings are created).",
         type: "boolean",
+        default: false,
       },
       exposure: {
+        description: "Paste inserts cells and cut/move removes them (following cells shift); off: overwrite / clear.",
         type: "boolean",
+        default: true,
       },
       autoExtend: {
+        description: "Extend transferred exposures up to the destination frame.",
         type: "boolean",
+        default: false,
       },
       updateColours: {
+        description: "Update palette colours from templates.",
         type: "boolean",
+        default: false,
       },
       keyframeSubstitution: {
+        description: "Replace keyframe properties at and after the current frame.",
         type: "boolean",
+        default: false,
       },
       boundaryKeys: {
+        description: "Add keyframes at the start and end of the transferred range.",
         type: "boolean",
+        default: false,
       },
       pegKeys: {
-        type: "object",
-        properties: {
-          motion: {
-            type: "boolean",
-          },
-          rotation: {
-            type: "boolean",
-          },
-          scale: {
-            type: "boolean",
-          },
-          pivot: {
-            type: "boolean",
-          },
-          velocity: {
-            type: "boolean",
-          },
-          skew: {
-            type: "boolean",
-          },
+        description: "Peg key groups.",
+        $ref: "#/$defs/cell.range.move.PegKeys",
+        default: {
+          motion: true,
+          rotation: true,
+          scale: true,
+          pivot: true,
+          velocity: true,
+          skew: true,
         },
-        additionalProperties: false,
-        required: [
-          "motion",
-          "rotation",
-          "scale",
-          "pivot",
-          "velocity",
-          "skew",
-        ],
       },
     },
     additionalProperties: false,
-    required: [
-      "overwriteDrawings",
-      "exposure",
-      "autoExtend",
-      "updateColours",
-      "keyframeSubstitution",
-      "boundaryKeys",
-      "pegKeys",
-    ],
-    "x-specSection": "04",
+  },
+  "cell.range.move.PegKeys": {
+    description: "Peg key groups of the transfer options.",
+    type: "object",
+    properties: {
+      motion: {
+        description: "Motion keyframes.",
+        type: "boolean",
+        default: true,
+      },
+      rotation: {
+        description: "Rotation keyframes.",
+        type: "boolean",
+        default: true,
+      },
+      scale: {
+        description: "Scale keyframes.",
+        type: "boolean",
+        default: true,
+      },
+      pivot: {
+        description: "Pivot keyframes.",
+        type: "boolean",
+        default: true,
+      },
+      velocity: {
+        description: "Velocity keyframes.",
+        type: "boolean",
+        default: true,
+      },
+      skew: {
+        description: "Skew keyframes.",
+        type: "boolean",
+        default: true,
+      },
+    },
+    additionalProperties: false,
   },
   "cell.range.move.params": {
-    title: "cell.range.move parameters",
+    title: "RangeMoveParams",
+    description: "`cell.range.move` parameters.",
     type: "object",
     properties: {
       sourceElementIds: {
+        description: "Source elements (several: they map onto consecutive Exposure Sheet columns from the target).",
         type: "array",
         items: {
           type: "string",
-          minLength: 1,
-          maxLength: 4096,
-          description: "object ID or path reference (10 §3)",
         },
-        maxItems: 100000,
+        minItems: 1,
       },
       from: {
+        description: "First source frame.",
         type: "integer",
+        maximum: 9223372036854775807n,
+        minimum: -9223372036854775808n,
       },
       to: {
+        description: "Last source frame.",
         type: "integer",
+        maximum: 9223372036854775807n,
+        minimum: -9223372036854775808n,
       },
       targetElementId: {
-        type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
+        description: "Target element (default: each source element itself).",
+        type: [
+          "string",
+          "null",
+        ],
+        default: null,
       },
       targetFrame: {
+        description: "Target frame (in the column as it is before the move).",
         type: "integer",
+        maximum: 9223372036854775807n,
+        minimum: -9223372036854775808n,
       },
       mode: {
-        type: "string",
-        enum: [
-          "move",
-          "copy",
-          "link",
-          "copyNew",
-        ],
-        default: "move",
+        description: "Move, copy, link or copy as new drawings.",
+        $ref: "#/$defs/cell.range.move.MoveMode",
       },
       options: {
-        $ref: "#/$defs/cell.range.move.spec.TransferOptions",
+        description: "Transfer options (default: the drag-and-drop defaults of 11.14).",
+        anyOf: [
+          {
+            $ref: "#/$defs/cell.range.move.TransferOptions",
+          },
+          {
+            type: "null",
+          },
+        ],
+        default: null,
       },
     },
+    additionalProperties: false,
     required: [
       "sourceElementIds",
       "from",
       "to",
       "targetFrame",
     ],
-    additionalProperties: false,
-    "x-spec": "`sourceElementIds: [id]; from: int; to: int; targetElementId?: id; targetFrame: int; mode: enum \"move\"|\"copy\"|\"link\"|\"copyNew\" = \"move\"; options?: object`",
   },
   "cell.range.move.result": {
-    title: "cell.range.move result",
+    title: "RangeMoveResult",
+    description: "`{from, to, createdDrawingIds}`.",
     type: "object",
     properties: {
       from: {
+        description: "First target frame.",
         type: "integer",
+        maximum: 2147483647,
+        minimum: 0,
       },
       to: {
+        description: "Last target frame.",
         type: "integer",
+        maximum: 2147483647,
+        minimum: 0,
       },
       createdDrawingIds: {
+        description: "Drawings created in target banks.",
         type: "array",
         items: {
           type: "string",
-          minLength: 1,
-          maxLength: 4096,
-          description: "object ID or path reference (10 §3)",
         },
-        maxItems: 100000,
       },
     },
     required: [
@@ -21730,76 +22520,115 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
       "to",
       "createdDrawingIds",
     ],
-    "x-spec": "`{from, to, createdDrawingIds[]}`",
-    additionalProperties: false,
+  },
+  "cell.select.SelectMode": {
+    description: "Selection mode.",
+    oneOf: [
+      {
+        description: "Replace the selection.",
+        type: "string",
+        const: "replace",
+      },
+      {
+        description: "Add to it.",
+        type: "string",
+        const: "add",
+      },
+    ],
+  },
+  "cell.select.Extent": {
+    description: "Cell selection extent.",
+    oneOf: [
+      {
+        description: "The given cells.",
+        type: "string",
+        const: "cells",
+      },
+      {
+        description: "The whole track of each element (frame 1 to its last exposed frame).",
+        type: "string",
+        const: "track",
+      },
+      {
+        description: "A sound clip's extent (M8).",
+        type: "string",
+        const: "soundClip",
+      },
+      {
+        description: "From the frame back to the sound clip's start (M8).",
+        type: "string",
+        const: "soundClipToStart",
+      },
+      {
+        description: "From the frame to the sound clip's end (M8).",
+        type: "string",
+        const: "soundClipToEnd",
+      },
+    ],
   },
   "cell.select.params": {
-    title: "cell.select parameters",
+    title: "SelectParams",
+    description: "`cell.select` parameters.",
     type: "object",
     properties: {
       elementIds: {
+        description: "Elements (columns or rows).",
         type: "array",
         items: {
           type: "string",
-          minLength: 1,
-          maxLength: 4096,
-          description: "object ID or path reference (10 §3)",
         },
-        maxItems: 100000,
       },
       from: {
+        description: "First frame.",
         type: "integer",
+        maximum: 9223372036854775807n,
+        minimum: -9223372036854775808n,
       },
       to: {
+        description: "Last frame.",
         type: "integer",
+        maximum: 9223372036854775807n,
+        minimum: -9223372036854775808n,
       },
       mode: {
-        type: "string",
-        enum: [
-          "replace",
-          "add",
-        ],
-        default: "replace",
+        description: "Replace or add.",
+        $ref: "#/$defs/cell.select.SelectMode",
       },
       extent: {
-        type: "string",
-        enum: [
-          "cells",
-          "track",
-          "soundClip",
-          "soundClipToStart",
-          "soundClipToEnd",
-        ],
-        default: "cells",
+        description: "Cells, a whole track, or a sound clip extent.",
+        $ref: "#/$defs/cell.select.Extent",
       },
     },
+    additionalProperties: false,
     required: [
       "elementIds",
       "from",
       "to",
     ],
-    additionalProperties: false,
-    "x-spec": "`elementIds: [id]; from: int; to: int; mode: enum \"replace\"|\"add\" = \"replace\"; extent: enum \"cells\"|\"track\"|\"soundClip\"|\"soundClipToStart\"|\"soundClipToEnd\" = \"cells\"`",
   },
   "cell.select.result": {
-    title: "cell.select result",
+    title: "SelectResult",
+    description: "`{elementIds, from, to}`.",
     type: "object",
     properties: {
       elementIds: {
+        description: "Selected elements.",
         type: "array",
         items: {
           type: "string",
-          minLength: 1,
-          maxLength: 4096,
-          description: "object ID or path reference (10 §3)",
         },
-        maxItems: 100000,
       },
       from: {
+        description: "First selected frame.",
         type: "integer",
+        maximum: 2147483647,
+        minimum: 0,
       },
       to: {
+        description: "Last selected frame.",
         type: "integer",
+        maximum: 2147483647,
+        minimum: 0,
       },
     },
     required: [
@@ -21807,96 +22636,106 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
       "from",
       "to",
     ],
-    "x-spec": "`{elementIds[], from, to}`",
-    additionalProperties: false,
   },
   "cell.selection.changed.params": {
-    title: "cell.selection.changed parameters",
+    title: "NoParams",
+    description: "No parameters.",
     type: "object",
-    properties: {},
     additionalProperties: false,
-    description: "Events take no parameters; subscribe to them (11 §9).",
-    "x-spec": "—",
   },
   "cell.selection.changed.result": {
-    title: "cell.selection.changed result",
+    title: "SelectionChanged",
+    description: "`cell.selection.changed` payload.",
     type: "object",
     properties: {
       elementIds: {
+        description: "Elements of the selected cells.",
         type: "array",
         items: {
           type: "string",
-          minLength: 1,
-          maxLength: 4096,
-          description: "object ID or path reference (10 §3)",
         },
-        maxItems: 100000,
       },
       from: {
-        type: "number",
+        description: "First selected frame.",
+        type: "integer",
+        maximum: 2147483647,
+        minimum: 0,
       },
       to: {
-        type: "number",
+        description: "Last selected frame.",
+        type: "integer",
+        maximum: 2147483647,
+        minimum: 0,
       },
       currentElementId: {
-        type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
+        description: "The current element.",
+        type: [
+          "string",
+          "null",
+        ],
       },
       currentFrame: {
-        type: "number",
+        description: "The current frame.",
+        type: "integer",
+        maximum: 2147483647,
+        minimum: 0,
       },
     },
     required: [
       "elementIds",
       "from",
       "to",
-      "currentElementId",
       "currentFrame",
     ],
-    description: "Event payload (delivered to subscribers).",
-    "x-spec": "`{elementIds[], from, to, currentElementId, currentFrame}`",
-    additionalProperties: false,
   },
   "cell.selection.get.params": {
-    title: "cell.selection.get parameters",
+    title: "NoParams",
+    description: "No parameters.",
     type: "object",
-    properties: {},
     additionalProperties: false,
-    "x-spec": "—",
   },
   "cell.selection.get.result": {
-    title: "cell.selection.get result",
+    title: "SelectionResult",
+    description: "`cell.selection.get` result.",
     type: "object",
     properties: {
       elementIds: {
+        description: "Elements of the selected cells (or the selected rows when no cells are selected).",
         type: "array",
         items: {
           type: "string",
-          minLength: 1,
-          maxLength: 4096,
-          description: "object ID or path reference (10 §3)",
         },
-        maxItems: 100000,
       },
       from: {
-        type: "number",
+        description: "First selected frame (0: no cells selected).",
+        type: "integer",
+        maximum: 2147483647,
+        minimum: 0,
       },
       to: {
-        type: "number",
+        description: "Last selected frame (0: no cells selected).",
+        type: "integer",
+        maximum: 2147483647,
+        minimum: 0,
       },
       rowsSelected: {
-        type: "number",
+        description: "Number of selected rows (Timeline element selection).",
+        type: "integer",
+        maximum: 2147483647,
+        minimum: 0,
       },
       currentElementId: {
-        type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
+        description: "The current element.",
+        type: [
+          "string",
+          "null",
+        ],
       },
       currentFrame: {
-        type: "number",
+        description: "The current frame.",
+        type: "integer",
+        maximum: 2147483647,
+        minimum: 0,
       },
     },
     required: [
@@ -21904,11 +22743,8 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
       "from",
       "to",
       "rowsSelected",
-      "currentElementId",
       "currentFrame",
     ],
-    "x-spec": "`{elementIds[], from, to, rowsSelected, currentElementId, currentFrame}`",
-    additionalProperties: false,
   },
   "checkpoint.create.params": {
     title: "NameParams",
@@ -41533,148 +42369,149 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
     ],
   },
   "element.annotation.set.params": {
-    title: "element.annotation.set parameters",
+    title: "AnnotationParams",
+    description: "`element.annotation.set` parameters.",
     type: "object",
     properties: {
       elementId: {
+        description: "A drawing or annotation element.",
         type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
       },
       annotation: {
+        description: "Annotation element (`true`) or drawing element (`false`).",
         type: "boolean",
       },
     },
+    additionalProperties: false,
     required: [
       "elementId",
       "annotation",
     ],
-    additionalProperties: false,
-    "x-spec": "`elementId: id; annotation: bool`",
   },
   "element.annotation.set.result": {
-    title: "element.annotation.set result",
+    title: "AnnotationResult",
+    description: "`{elementId, type}`.",
     type: "object",
     properties: {
       elementId: {
+        description: "The element.",
         type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
       },
       type: {
+        description: "Its type now.",
         type: "string",
-        maxLength: 65536,
       },
     },
     required: [
       "elementId",
       "type",
     ],
-    "x-spec": "`{elementId, type}`",
-    additionalProperties: false,
   },
   "element.childExposure.apply.params": {
-    title: "element.childExposure.apply parameters",
+    title: "ChildExposureParams",
+    description: "`element.childExposure.apply` parameters.",
     type: "object",
     properties: {
       pegId: {
+        description: "The peg.",
         type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
       },
       toFrame: {
+        description: "Last frame to expose the children's drawings in.",
         type: "integer",
+        maximum: 9223372036854775807n,
         minimum: 1,
       },
     },
+    additionalProperties: false,
     required: [
       "pegId",
       "toFrame",
     ],
-    additionalProperties: false,
-    "x-spec": "`pegId: id; toFrame: int (≥1)`",
+  },
+  "element.childExposure.apply.CellChange": {
+    description: "A change of one element's cells: `{elementId, from, to}`.",
+    type: "object",
+    properties: {
+      elementId: {
+        description: "The element.",
+        type: "string",
+      },
+      from: {
+        description: "First changed frame.",
+        type: "integer",
+        maximum: 2147483647,
+        minimum: 0,
+      },
+      to: {
+        description: "Last changed frame.",
+        type: "integer",
+        maximum: 2147483647,
+        minimum: 0,
+      },
+    },
+    required: [
+      "elementId",
+      "from",
+      "to",
+    ],
   },
   "element.childExposure.apply.result": {
-    title: "element.childExposure.apply result",
+    title: "ChangedResult",
+    description: "`{changed}`.",
     type: "object",
     properties: {
       changed: {
+        description: "Changed windows.",
         type: "array",
         items: {
-          type: "object",
-          properties: {
-            elementId: {
-              type: "string",
-              minLength: 1,
-              maxLength: 4096,
-              description: "object ID or path reference (10 §3)",
-            },
-            from: {
-              type: "number",
-            },
-            to: {
-              type: "number",
-            },
-          },
-          required: [
-            "elementId",
-            "from",
-            "to",
-          ],
-          additionalProperties: false,
+          $ref: "#/$defs/element.childExposure.apply.CellChange",
         },
-        maxItems: 100000,
       },
     },
     required: [
       "changed",
     ],
-    "x-spec": "`{changed: [{elementId, from, to}]}`",
-    additionalProperties: false,
   },
   "element.clone.params": {
-    title: "element.clone parameters",
+    title: "CloneParams",
+    description: "`element.clone` parameters.",
     type: "object",
     properties: {
       elementId: {
+        description: "A cell-based element.",
         type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
       },
       name: {
-        type: "string",
-        maxLength: 65536,
+        description: "Name (default: the original name with a unique suffix).",
+        type: [
+          "string",
+          "null",
+        ],
+        default: null,
       },
     },
+    additionalProperties: false,
     required: [
       "elementId",
     ],
-    additionalProperties: false,
-    "x-spec": "`elementId: id; name?: string`",
   },
   "element.clone.result": {
-    title: "element.clone result",
+    title: "CloneResult",
+    description: "`{elementId, name, cloneGroupId}`.",
     type: "object",
     properties: {
       elementId: {
+        description: "The clone.",
         type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
       },
       name: {
+        description: "Its name.",
         type: "string",
-        maxLength: 65536,
       },
       cloneGroupId: {
+        description: "The clone group (the shared drawing bank).",
         type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
       },
     },
     required: [
@@ -41682,221 +42519,296 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
       "name",
       "cloneGroupId",
     ],
-    "x-spec": "`{elementId, name, cloneGroupId}`",
-    additionalProperties: false,
   },
   "element.collapsed.set.params": {
-    title: "element.collapsed.set parameters",
+    title: "CollapsedParams",
+    description: "`element.collapsed.set` parameters.",
     type: "object",
     properties: {
       elementIds: {
-        type: "array",
+        description: "Parent elements (default: the selected rows, else the current element).",
+        type: [
+          "array",
+          "null",
+        ],
         items: {
           type: "string",
-          minLength: 1,
-          maxLength: 4096,
-          description: "object ID or path reference (10 §3)",
         },
-        maxItems: 100000,
+        default: null,
       },
       collapsed: {
+        description: "Collapsed or expanded.",
         type: "boolean",
       },
     },
+    additionalProperties: false,
     required: [
       "collapsed",
     ],
-    additionalProperties: false,
-    "x-spec": "`elementIds?: [id]; collapsed: bool`",
   },
   "element.collapsed.set.result": {
-    title: "element.collapsed.set result",
+    title: "IdsResult",
+    description: "`{elementIds}`.",
     type: "object",
     properties: {
       elementIds: {
+        description: "The elements.",
         type: "array",
         items: {
           type: "string",
-          minLength: 1,
-          maxLength: 4096,
-          description: "object ID or path reference (10 §3)",
         },
-        maxItems: 100000,
       },
     },
     required: [
       "elementIds",
     ],
-    "x-spec": "`{elementIds[]}`",
-    additionalProperties: false,
   },
   "element.colour.set.params": {
-    title: "element.colour.set parameters",
+    title: "ColourParams",
+    description: "`element.colour.set` parameters.",
     type: "object",
     properties: {
       elementIds: {
-        type: "array",
+        description: "Elements (default: the selected rows, else the current element).",
+        type: [
+          "array",
+          "null",
+        ],
         items: {
           type: "string",
-          minLength: 1,
-          maxLength: 4096,
-          description: "object ID or path reference (10 §3)",
         },
-        maxItems: 100000,
+        default: null,
       },
       marker: {
-        type: "string",
-        pattern: "^#[0-9A-Fa-f]{6}([0-9A-Fa-f]{2})?$",
-        description: "#RRGGBB or #RRGGBBAA",
+        description: "Marker colour; an empty string reverts to the category default.",
+        type: [
+          "string",
+          "null",
+        ],
+        pattern: "^(#[0-9A-Fa-f]{6}([0-9A-Fa-f]{2})?)?$",
+        default: null,
       },
       background: {
-        type: "string",
-        pattern: "^#[0-9A-Fa-f]{6}([0-9A-Fa-f]{2})?$",
-        description: "#RRGGBB or #RRGGBBAA",
+        description: "Timeline background colour; an empty string reverts to the category default.",
+        type: [
+          "string",
+          "null",
+        ],
+        pattern: "^(#[0-9A-Fa-f]{6}([0-9A-Fa-f]{2})?)?$",
+        default: null,
       },
     },
     additionalProperties: false,
-    "x-spec": "`elementIds?: [id]; marker?: colour; background?: colour`",
   },
   "element.colour.set.result": {
-    title: "element.colour.set result",
+    title: "IdsResult",
+    description: "`{elementIds}`.",
     type: "object",
     properties: {
       elementIds: {
+        description: "The elements.",
         type: "array",
         items: {
           type: "string",
-          minLength: 1,
-          maxLength: 4096,
-          description: "object ID or path reference (10 §3)",
         },
-        maxItems: 100000,
       },
     },
     required: [
       "elementIds",
     ],
-    "x-spec": "`{elementIds[]}`",
-    additionalProperties: false,
+  },
+  "element.create.CreateType": {
+    description: "Element types `element.create` accepts (04 §17.4).",
+    oneOf: [
+      {
+        description: "Vector drawing element.",
+        type: "string",
+        const: "drawing",
+      },
+      {
+        description: "Bitmap image element.",
+        type: "string",
+        const: "image",
+      },
+      {
+        description: "Sound element.",
+        type: "string",
+        const: "sound",
+      },
+      {
+        description: "Media element.",
+        type: "string",
+        const: "media",
+      },
+      {
+        description: "Annotation element.",
+        type: "string",
+        const: "annotation",
+      },
+      {
+        description: "Peg.",
+        type: "string",
+        const: "peg",
+      },
+      {
+        description: "Camera.",
+        type: "string",
+        const: "camera",
+      },
+      {
+        description: "Skeleton effect.",
+        type: "string",
+        const: "skeleton",
+      },
+      {
+        description: "Colour transform effect.",
+        type: "string",
+        const: "colourTransform",
+      },
+      {
+        description: "Clipping effect.",
+        type: "string",
+        const: "clipping",
+      },
+      {
+        description: "Drop shadow effect.",
+        type: "string",
+        const: "dropShadow",
+      },
+      {
+        description: "Blur effect.",
+        type: "string",
+        const: "blur",
+      },
+      {
+        description: "Shake effect.",
+        type: "string",
+        const: "shake",
+      },
+      {
+        description: "Natural-phenomena particle effect.",
+        type: "string",
+        const: "particleNature",
+      },
+      {
+        description: "Action/impact particle effect.",
+        type: "string",
+        const: "particleImpact",
+      },
+    ],
   },
   "element.create.params": {
-    title: "element.create parameters",
+    title: "CreateParams",
+    description: "`element.create` parameters.",
     type: "object",
     properties: {
       type: {
-        type: "string",
-        enum: [
-          "drawing",
-          "image",
-          "sound",
-          "media",
-          "annotation",
-          "peg",
-          "camera",
-          "skeleton",
-          "colourTransform",
-          "clipping",
-          "dropShadow",
-          "blur",
-          "shake",
-          "particleNature",
-          "particleImpact",
-        ],
+        description: "Element type.",
+        $ref: "#/$defs/element.create.CreateType",
       },
       name: {
-        type: "string",
-        maxLength: 65536,
+        description: "Base name (default: the type's default name); unique in the scene, at most 64 characters.",
+        type: [
+          "string",
+          "null",
+        ],
+        default: null,
       },
       count: {
+        description: "How many elements (1-99; `element.countOutOfRange` otherwise).",
         type: "integer",
-        minimum: 1,
-        maximum: 99,
+        maximum: 2147483647,
+        minimum: 0,
         default: 1,
       },
       sceneId: {
-        type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
+        description: "Scene (default: the current scene).",
+        type: [
+          "string",
+          "null",
+        ],
+        default: null,
       },
       parentId: {
-        type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
+        description: "Parent (peg, effect, skeleton or camera) to create the elements under.",
+        type: [
+          "string",
+          "null",
+        ],
+        default: null,
       },
       above: {
-        type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
+        description: "Element to insert directly above, at its level (default: above the selected row, else top of the root level).",
+        type: [
+          "string",
+          "null",
+        ],
+        default: null,
       },
       xsheetAfter: {
-        type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
+        description: "Exposure Sheet column to insert right of (default: right of the selected column, else rightmost).",
+        type: [
+          "string",
+          "null",
+        ],
+        default: null,
       },
     },
+    additionalProperties: false,
     required: [
       "type",
     ],
-    additionalProperties: false,
-    "x-spec": "`type: enum \"drawing\"|\"image\"|\"sound\"|\"media\"|\"annotation\"|\"peg\"|\"camera\"|\"skeleton\"|\"colourTransform\"|\"clipping\"|\"dropShadow\"|\"blur\"|\"shake\"|\"particleNature\"|\"particleImpact\"; name?: string; count: int = 1 (1–99); sceneId?: id; parentId?: id; above?: id; xsheetAfter?: id`",
+  },
+  "element.create.Warning": {
+    description: "A warning (11 §6.3, §10): same code space as errors, never aborts.",
+    type: "object",
+    properties: {
+      code: {
+        description: "Code.",
+        type: "string",
+      },
+      message: {
+        description: "Message.",
+        type: "string",
+      },
+      objectIds: {
+        description: "Affected objects.",
+        type: "array",
+        items: {
+          type: "string",
+        },
+      },
+    },
+    required: [
+      "code",
+      "message",
+    ],
   },
   "element.create.result": {
-    title: "element.create result",
+    title: "CreateResult",
+    description: "`{elementIds, names, warnings}`.",
     type: "object",
     properties: {
       elementIds: {
+        description: "The created elements (parameter elements of effects excluded), first = current.",
         type: "array",
         items: {
           type: "string",
-          minLength: 1,
-          maxLength: 4096,
-          description: "object ID or path reference (10 §3)",
         },
-        maxItems: 100000,
       },
       names: {
+        description: "Their names.",
         type: "array",
         items: {
           type: "string",
-          maxLength: 65536,
         },
-        maxItems: 100000,
       },
       warnings: {
+        description: "Non-blocking warnings (`element.hiddenInDrawingMode`).",
         type: "array",
         items: {
-          type: "object",
-          additionalProperties: false,
-          required: [
-            "code",
-            "message",
-          ],
-          properties: {
-            code: {
-              type: "string",
-              maxLength: 256,
-            },
-            message: {
-              type: "string",
-              maxLength: 65536,
-            },
-            objectIds: {
-              type: "array",
-              items: {
-                type: "string",
-                minLength: 1,
-                maxLength: 4096,
-                description: "object ID or path reference (10 §3)",
-              },
-              maxItems: 100000,
-            },
-          },
+          $ref: "#/$defs/element.create.Warning",
         },
-        maxItems: 100000,
       },
     },
     required: [
@@ -41904,130 +42816,142 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
       "names",
       "warnings",
     ],
-    "x-spec": "`{elementIds[], names[], warnings[]}`",
-    additionalProperties: false,
+  },
+  "element.current.move.Direction": {
+    description: "Previous / next.",
+    oneOf: [
+      {
+        description: "Backwards.",
+        type: "string",
+        const: "previous",
+      },
+      {
+        description: "Forwards.",
+        type: "string",
+        const: "next",
+      },
+    ],
+  },
+  "element.current.move.MoveOrder": {
+    description: "`element.current.move` order.",
+    oneOf: [
+      {
+        description: "Timeline order.",
+        type: "string",
+        const: "timeline",
+      },
+      {
+        description: "Exposure Sheet columns.",
+        type: "string",
+        const: "xsheet",
+      },
+    ],
   },
   "element.current.move.params": {
-    title: "element.current.move parameters",
+    title: "CurrentMoveParams",
+    description: "`element.current.move` parameters.",
     type: "object",
     properties: {
       direction: {
-        type: "string",
-        enum: [
-          "previous",
-          "next",
-        ],
+        description: "Previous or next.",
+        $ref: "#/$defs/element.current.move.Direction",
       },
       order: {
-        type: "string",
-        enum: [
-          "timeline",
-          "xsheet",
-        ],
-        default: "xsheet",
+        description: "Which order.",
+        $ref: "#/$defs/element.current.move.MoveOrder",
       },
     },
+    additionalProperties: false,
     required: [
       "direction",
     ],
-    additionalProperties: false,
-    "x-spec": "`direction: enum \"previous\"|\"next\"; order: enum \"timeline\"|\"xsheet\" = \"xsheet\"`",
   },
   "element.current.move.result": {
-    title: "element.current.move result",
+    title: "CurrentResult",
+    description: "`{elementId}`.",
     type: "object",
     properties: {
       elementId: {
-        type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
+        description: "The current element (`null` when the scene has none).",
+        type: [
+          "string",
+          "null",
+        ],
       },
     },
-    required: [
-      "elementId",
-    ],
-    "x-spec": "`{elementId}`",
-    additionalProperties: false,
   },
   "element.current.set.params": {
-    title: "element.current.set parameters",
+    title: "ElementParams",
+    description: "`element.get` / `element.hierarchy.get` parameters.",
     type: "object",
     properties: {
       elementId: {
+        description: "The element (ID or path).",
         type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
       },
     },
+    additionalProperties: false,
     required: [
       "elementId",
     ],
-    additionalProperties: false,
-    "x-spec": "`elementId: id`",
   },
   "element.current.set.result": {
-    title: "element.current.set result",
+    title: "CurrentResult",
+    description: "`{elementId}`.",
     type: "object",
     properties: {
       elementId: {
-        type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
+        description: "The current element (`null` when the scene has none).",
+        type: [
+          "string",
+          "null",
+        ],
       },
     },
-    required: [
-      "elementId",
-    ],
-    "x-spec": "`{elementId}`",
-    additionalProperties: false,
   },
   "element.delete.params": {
-    title: "element.delete parameters",
+    title: "DeleteParams",
+    description: "`element.delete` parameters.",
     type: "object",
     properties: {
       elementIds: {
-        type: "array",
+        description: "Elements (default: the selected rows, else the current element).",
+        type: [
+          "array",
+          "null",
+        ],
         items: {
           type: "string",
-          minLength: 1,
-          maxLength: 4096,
-          description: "object ID or path reference (10 §3)",
         },
-        maxItems: 100000,
+        default: null,
       },
     },
     additionalProperties: false,
-    "x-spec": "`elementIds?: [id]`",
   },
   "element.delete.result": {
-    title: "element.delete result",
+    title: "DeleteResult",
+    description: "`{deletedIds, reparentedIds, deletedDrawingCount}`.",
     type: "object",
     properties: {
       deletedIds: {
+        description: "Deleted elements (with the parameter elements of deleted effects).",
         type: "array",
         items: {
           type: "string",
-          minLength: 1,
-          maxLength: 4096,
-          description: "object ID or path reference (10 §3)",
         },
-        maxItems: 100000,
       },
       reparentedIds: {
+        description: "Children re-attached to the deleted element's parent.",
         type: "array",
         items: {
           type: "string",
-          minLength: 1,
-          maxLength: 4096,
-          description: "object ID or path reference (10 §3)",
         },
-        maxItems: 100000,
       },
       deletedDrawingCount: {
-        type: "number",
+        description: "Drawings deleted with banks no remaining element uses.",
+        type: "integer",
+        maximum: 2147483647,
+        minimum: 0,
       },
     },
     required: [
@@ -42035,40 +42959,32 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
       "reparentedIds",
       "deletedDrawingCount",
     ],
-    "x-spec": "`{deletedIds[], reparentedIds[], deletedDrawingCount}`",
-    additionalProperties: false,
   },
   "element.drawing.changed.params": {
-    title: "element.drawing.changed parameters",
+    title: "NoParams",
+    description: "No parameters.",
     type: "object",
-    properties: {},
     additionalProperties: false,
-    description: "Events take no parameters; subscribe to them (11 §9).",
-    "x-spec": "—",
   },
   "element.drawing.changed.result": {
-    title: "element.drawing.changed result",
+    title: "DrawingChanged",
+    description: "`element.drawing.changed` payload.",
     type: "object",
     properties: {
       elementId: {
+        description: "An element of the clone group (one event per element).",
         type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
       },
       drawingIds: {
+        description: "The drawings.",
         type: "array",
         items: {
           type: "string",
-          minLength: 1,
-          maxLength: 4096,
-          description: "object ID or path reference (10 §3)",
         },
-        maxItems: 100000,
       },
       change: {
+        description: "`created`, `renamed`, `deleted`, `locked`, `unlocked` or `cleared`.",
         type: "string",
-        maxLength: 65536,
       },
     },
     required: [
@@ -42076,657 +42992,751 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
       "drawingIds",
       "change",
     ],
-    description: "Event payload (delivered to subscribers).",
-    "x-spec": "`{elementId, drawingIds[], change}`",
-    additionalProperties: false,
   },
   "element.drawing.create.params": {
-    title: "element.drawing.create parameters",
+    title: "CreateParams",
+    description: "`element.drawing.create` parameters.",
     type: "object",
     properties: {
       elementId: {
+        description: "A drawing or annotation element.",
         type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
       },
       name: {
-        type: "string",
-        maxLength: 65536,
+        description: "Name (default: the next integer after the highest numeric name).",
+        type: [
+          "string",
+          "null",
+        ],
+        default: null,
       },
       exposeFrom: {
-        type: "integer",
+        description: "Expose the new drawing from this frame.",
+        type: [
+          "integer",
+          "null",
+        ],
+        maximum: 9223372036854775807n,
+        default: null,
+        minimum: -9223372036854775808n,
       },
       exposeTo: {
-        type: "integer",
+        description: "… through this frame (default: `exposeFrom`).",
+        type: [
+          "integer",
+          "null",
+        ],
+        maximum: 9223372036854775807n,
+        default: null,
+        minimum: -9223372036854775808n,
       },
     },
+    additionalProperties: false,
     required: [
       "elementId",
     ],
-    additionalProperties: false,
-    "x-spec": "`elementId: id; name?: string; exposeFrom?: int; exposeTo?: int`",
   },
   "element.drawing.create.result": {
-    title: "element.drawing.create result",
+    title: "DrawingResult",
+    description: "`{drawingId, name}`.",
     type: "object",
     properties: {
       drawingId: {
+        description: "The drawing.",
         type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
       },
       name: {
+        description: "Its name.",
         type: "string",
-        maxLength: 65536,
       },
     },
     required: [
       "drawingId",
       "name",
     ],
-    "x-spec": "`{drawingId, name}`",
-    additionalProperties: false,
+  },
+  "element.drawing.delete.IfInUse": {
+    description: "What to do with exposed drawings.",
+    oneOf: [
+      {
+        description: "Return `needs_confirmation` listing the exposures; change nothing.",
+        type: "string",
+        const: "fail",
+      },
+      {
+        description: "Delete and blank the cells that showed them.",
+        type: "string",
+        const: "clearCells",
+      },
+    ],
   },
   "element.drawing.delete.params": {
-    title: "element.drawing.delete parameters",
+    title: "DeleteParams",
+    description: "`element.drawing.delete` parameters.",
     type: "object",
     properties: {
       drawingIds: {
+        description: "The drawings.",
         type: "array",
         items: {
           type: "string",
-          minLength: 1,
-          maxLength: 4096,
-          description: "object ID or path reference (10 §3)",
         },
-        maxItems: 100000,
+        minItems: 1,
       },
       ifInUse: {
-        type: "string",
-        enum: [
-          "fail",
-          "clearCells",
-        ],
-        default: "fail",
+        description: "Exposed drawings: fail (confirmation) or clear their cells.",
+        $ref: "#/$defs/element.drawing.delete.IfInUse",
       },
     },
+    additionalProperties: false,
     required: [
       "drawingIds",
     ],
-    additionalProperties: false,
-    "x-spec": "`drawingIds: [id]; ifInUse: enum \"fail\"|\"clearCells\" = \"fail\"`",
+  },
+  "element.drawing.delete.CellChange": {
+    description: "A change of one element's cells: `{elementId, from, to}`.",
+    type: "object",
+    properties: {
+      elementId: {
+        description: "The element.",
+        type: "string",
+      },
+      from: {
+        description: "First changed frame.",
+        type: "integer",
+        maximum: 2147483647,
+        minimum: 0,
+      },
+      to: {
+        description: "Last changed frame.",
+        type: "integer",
+        maximum: 2147483647,
+        minimum: 0,
+      },
+    },
+    required: [
+      "elementId",
+      "from",
+      "to",
+    ],
   },
   "element.drawing.delete.result": {
-    title: "element.drawing.delete result",
+    title: "DeleteResult",
+    description: "`{deletedIds, clearedCells}`.",
     type: "object",
     properties: {
       deletedIds: {
+        description: "Deleted drawings.",
         type: "array",
         items: {
           type: "string",
-          minLength: 1,
-          maxLength: 4096,
-          description: "object ID or path reference (10 §3)",
         },
-        maxItems: 100000,
       },
       clearedCells: {
+        description: "Cells blanked.",
         type: "array",
         items: {
-          type: "object",
-          properties: {
-            elementId: {
-              type: "string",
-              minLength: 1,
-              maxLength: 4096,
-              description: "object ID or path reference (10 §3)",
-            },
-            from: {
-              type: "number",
-            },
-            to: {
-              type: "number",
-            },
-          },
-          required: [
-            "elementId",
-            "from",
-            "to",
-          ],
-          additionalProperties: false,
+          $ref: "#/$defs/element.drawing.delete.CellChange",
         },
-        maxItems: 100000,
       },
     },
     required: [
       "deletedIds",
       "clearedCells",
     ],
-    "x-spec": "`{deletedIds[], clearedCells: [{elementId, from, to}]}` or `needs_confirmation`",
-    additionalProperties: false,
   },
   "element.drawing.duplicate.params": {
-    title: "element.drawing.duplicate parameters",
+    title: "DuplicateParams",
+    description: "`element.drawing.duplicate` parameters.",
     type: "object",
     properties: {
       drawingId: {
+        description: "The drawing (ID or path).",
         type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
       },
       name: {
-        type: "string",
-        maxLength: 65536,
+        description: "Name of the copy (default: the next free name).",
+        type: [
+          "string",
+          "null",
+        ],
+        default: null,
       },
     },
+    additionalProperties: false,
     required: [
       "drawingId",
     ],
-    additionalProperties: false,
-    "x-spec": "`drawingId: id; name?: string`",
   },
   "element.drawing.duplicate.result": {
-    title: "element.drawing.duplicate result",
+    title: "DrawingResult",
+    description: "`{drawingId, name}`.",
     type: "object",
     properties: {
       drawingId: {
+        description: "The drawing.",
         type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
       },
       name: {
+        description: "Its name.",
         type: "string",
-        maxLength: 65536,
       },
     },
     required: [
       "drawingId",
       "name",
     ],
-    "x-spec": "`{drawingId, name}`",
-    additionalProperties: false,
+  },
+  "element.drawing.list.Filter": {
+    description: "Usage filter.",
+    oneOf: [
+      {
+        description: "Every drawing.",
+        type: "string",
+        const: "all",
+      },
+      {
+        description: "Drawings exposed somewhere in the clone group.",
+        type: "string",
+        const: "used",
+      },
+      {
+        description: "Drawings exposed nowhere in the clone group.",
+        type: "string",
+        const: "unused",
+      },
+    ],
   },
   "element.drawing.list.params": {
-    title: "element.drawing.list parameters",
+    title: "ListParams",
+    description: "`element.drawing.list` parameters.",
     type: "object",
     properties: {
       elementId: {
+        description: "A cell-based element.",
         type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
       },
       filter: {
-        type: "string",
-        enum: [
-          "all",
-          "used",
-          "unused",
-        ],
-        default: "all",
+        description: "All, used or unused drawings.",
+        $ref: "#/$defs/element.drawing.list.Filter",
       },
       thumbnails: {
-        type: "integer",
+        description: "Thumbnail size in pixels (16-512), rendered synchronously (04 §17.1 item 9).",
+        type: [
+          "integer",
+          "null",
+        ],
+        default: null,
         minimum: 16,
         maximum: 512,
       },
     },
+    additionalProperties: false,
     required: [
       "elementId",
     ],
-    additionalProperties: false,
-    "x-spec": "`elementId: id; filter: enum \"all\"|\"used\"|\"unused\" = \"all\"; thumbnails?: int (16–512)`",
+  },
+  "element.drawing.list.DrawingItem": {
+    description: "One drawing of the bank.",
+    type: "object",
+    properties: {
+      id: {
+        description: "ID.",
+        type: "string",
+      },
+      name: {
+        description: "Name.",
+        type: "string",
+      },
+      exposures: {
+        description: "Where this element exposes it.",
+        type: "array",
+        items: {
+          $ref: "#/$defs/element.drawing.list.Window",
+        },
+      },
+      useCount: {
+        description: "Cells exposing it in the whole clone group.",
+        type: "integer",
+        maximum: 2147483647,
+        minimum: 0,
+      },
+      locked: {
+        description: "Locked against editing.",
+        type: "boolean",
+      },
+      empty: {
+        description: "No content.",
+        type: "boolean",
+      },
+      missing: {
+        description: "Its data could not be loaded (a placeholder).",
+        type: "boolean",
+      },
+      contentType: {
+        description: "`vector`, `bitmap` or `empty`.",
+        type: "string",
+      },
+      thumbnail: {
+        description: "PNG thumbnail, base64 (with `thumbnails`).",
+        type: [
+          "string",
+          "null",
+        ],
+      },
+    },
+    required: [
+      "id",
+      "name",
+      "exposures",
+      "useCount",
+      "locked",
+      "empty",
+      "missing",
+      "contentType",
+    ],
+  },
+  "element.drawing.list.Window": {
+    description: "A frame window.",
+    type: "object",
+    properties: {
+      from: {
+        description: "First frame.",
+        type: "integer",
+        maximum: 2147483647,
+        minimum: 0,
+      },
+      to: {
+        description: "Last frame.",
+        type: "integer",
+        maximum: 2147483647,
+        minimum: 0,
+      },
+    },
+    required: [
+      "from",
+      "to",
+    ],
   },
   "element.drawing.list.result": {
-    title: "element.drawing.list result",
+    title: "ListResult",
+    description: "`{drawings}`.",
     type: "object",
     properties: {
       drawings: {
+        description: "The drawings in bank order (natural name order).",
         type: "array",
         items: {
-          type: "object",
-          properties: {
-            id: {
-              type: "string",
-              minLength: 1,
-              maxLength: 4096,
-              description: "object ID or path reference (10 §3)",
-            },
-            name: {
-              type: "string",
-              maxLength: 65536,
-            },
-            exposures: {
-              type: "array",
-              items: {
-                type: "object",
-                properties: {
-                  from: {
-                    type: "number",
-                  },
-                  to: {
-                    type: "number",
-                  },
-                },
-                required: [
-                  "from",
-                  "to",
-                ],
-                additionalProperties: false,
-              },
-              maxItems: 100000,
-            },
-            useCount: {
-              type: "number",
-            },
-            locked: {
-              type: "boolean",
-            },
-            empty: {
-              type: "boolean",
-            },
-            missing: {
-              type: "boolean",
-            },
-            contentType: {
-              type: "string",
-              maxLength: 65536,
-            },
-            thumbnail: {
-              type: "string",
-              maxLength: 65536,
-            },
-          },
-          required: [
-            "id",
-            "name",
-            "exposures",
-            "useCount",
-            "locked",
-            "empty",
-            "missing",
-            "contentType",
-          ],
-          additionalProperties: false,
+          $ref: "#/$defs/element.drawing.list.DrawingItem",
         },
-        maxItems: 100000,
       },
     },
     required: [
       "drawings",
     ],
-    "x-spec": "`{drawings: [{id, name, exposures: [{from, to}], useCount, locked, empty, missing, contentType, thumbnail?}]}`",
-    additionalProperties: false,
   },
   "element.drawing.rename.params": {
-    title: "element.drawing.rename parameters",
+    title: "RenameParams",
+    description: "`element.drawing.rename` parameters.",
     type: "object",
     properties: {
       drawingId: {
+        description: "The drawing (ID or path).",
         type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
       },
       name: {
+        description: "The new name (unique in the bank; at most 64 characters, none of `\\ / : * ? < > \" |` or `.`).",
         type: "string",
-        maxLength: 65536,
       },
     },
+    additionalProperties: false,
     required: [
       "drawingId",
       "name",
     ],
-    additionalProperties: false,
-    "x-spec": "`drawingId: id; name: string`",
   },
   "element.drawing.rename.result": {
-    title: "element.drawing.rename result",
+    title: "DrawingResult",
+    description: "`{drawingId, name}`.",
     type: "object",
     properties: {
       drawingId: {
+        description: "The drawing.",
         type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
       },
       name: {
+        description: "Its name.",
         type: "string",
-        maxLength: 65536,
       },
     },
     required: [
       "drawingId",
       "name",
     ],
-    "x-spec": "`{drawingId, name}`",
-    additionalProperties: false,
   },
   "element.drawingContent.delete.params": {
-    title: "element.drawingContent.delete parameters",
+    title: "ClearParams",
+    description: "`element.drawingContent.delete` parameters.",
     type: "object",
     properties: {
       drawingIds: {
-        type: "array",
+        description: "Drawings (default: the drawing at the current cell).",
+        type: [
+          "array",
+          "null",
+        ],
         items: {
           type: "string",
-          minLength: 1,
-          maxLength: 4096,
-          description: "object ID or path reference (10 §3)",
         },
-        maxItems: 100000,
+        default: null,
       },
     },
     additionalProperties: false,
-    "x-spec": "`drawingIds?: [id]`",
   },
   "element.drawingContent.delete.result": {
-    title: "element.drawingContent.delete result",
+    title: "DrawingIds",
+    description: "`{drawingIds}`.",
     type: "object",
     properties: {
       drawingIds: {
+        description: "The drawings.",
         type: "array",
         items: {
           type: "string",
-          minLength: 1,
-          maxLength: 4096,
-          description: "object ID or path reference (10 §3)",
         },
-        maxItems: 100000,
       },
     },
     required: [
       "drawingIds",
     ],
-    "x-spec": "`{drawingIds[]}`",
-    additionalProperties: false,
   },
   "element.drawingLock.set.params": {
-    title: "element.drawingLock.set parameters",
+    title: "LockParams",
+    description: "`element.drawingLock.set` parameters.",
     type: "object",
     properties: {
       drawingIds: {
-        type: "array",
+        description: "Drawings (default: the drawing at the current cell).",
+        type: [
+          "array",
+          "null",
+        ],
         items: {
           type: "string",
-          minLength: 1,
-          maxLength: 4096,
-          description: "object ID or path reference (10 §3)",
         },
-        maxItems: 100000,
+        default: null,
       },
       locked: {
+        description: "Locked or unlocked.",
         type: "boolean",
       },
     },
+    additionalProperties: false,
     required: [
       "locked",
     ],
-    additionalProperties: false,
-    "x-spec": "`drawingIds?: [id]; locked: bool`",
   },
   "element.drawingLock.set.result": {
-    title: "element.drawingLock.set result",
+    title: "DrawingIds",
+    description: "`{drawingIds}`.",
     type: "object",
     properties: {
       drawingIds: {
+        description: "The drawings.",
         type: "array",
         items: {
           type: "string",
-          minLength: 1,
-          maxLength: 4096,
-          description: "object ID or path reference (10 §3)",
         },
-        maxItems: 100000,
       },
     },
     required: [
       "drawingIds",
     ],
-    "x-spec": "`{drawingIds[]}`",
-    additionalProperties: false,
   },
   "element.duplicate.params": {
-    title: "element.duplicate parameters",
+    title: "DuplicateParams",
+    description: "`element.duplicate` parameters.",
     type: "object",
     properties: {
       elementIds: {
-        type: "array",
+        description: "Elements (default: the selected rows, else the current element).",
+        type: [
+          "array",
+          "null",
+        ],
         items: {
           type: "string",
-          minLength: 1,
-          maxLength: 4096,
-          description: "object ID or path reference (10 §3)",
         },
-        maxItems: 100000,
+        default: null,
       },
     },
     additionalProperties: false,
-    "x-spec": "`elementIds?: [id]`",
   },
   "element.duplicate.result": {
-    title: "element.duplicate result",
+    title: "DuplicateResult",
+    description: "`{elementIds, names}`.",
     type: "object",
     properties: {
       elementIds: {
+        description: "The copies, in the order of the originals.",
         type: "array",
         items: {
           type: "string",
-          minLength: 1,
-          maxLength: 4096,
-          description: "object ID or path reference (10 §3)",
         },
-        maxItems: 100000,
       },
       names: {
+        description: "Their names.",
         type: "array",
         items: {
           type: "string",
-          maxLength: 65536,
         },
-        maxItems: 100000,
       },
     },
     required: [
       "elementIds",
       "names",
     ],
-    "x-spec": "`{elementIds[], names[]}`",
-    additionalProperties: false,
   },
   "element.get.params": {
-    title: "element.get parameters",
+    title: "ElementParams",
+    description: "`element.get` / `element.hierarchy.get` parameters.",
     type: "object",
     properties: {
       elementId: {
+        description: "The element (ID or path).",
         type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
       },
     },
+    additionalProperties: false,
     required: [
       "elementId",
     ],
-    additionalProperties: false,
-    "x-spec": "`elementId: id`",
   },
-  "element.get.spec.ElementInfo": {
+  "element.get.Role": {
+    description: "Composite role (04 §6.1, 05 §8.1; SI-003: the superset of 04/05 and 10 §4.5).",
+    oneOf: [
+      {
+        description: "Normal compositing.",
+        type: "string",
+        const: "normal",
+      },
+      {
+        description: "In front of all normal elements.",
+        type: "string",
+        const: "foreground",
+      },
+      {
+        description: "Behind all normal elements; auto-extends to the scene length.",
+        type: "string",
+        const: "background",
+      },
+      {
+        description: "Marks a bone-deformation skin.",
+        type: "string",
+        const: "envelope",
+      },
+    ],
+  },
+  "element.get.MediaInfo": {
+    description: "The media summary of a media element.",
+    type: "object",
+    properties: {
+      path: {
+        description: "The linked file (or library item) of the first sequence's asset.",
+        type: [
+          "string",
+          "null",
+        ],
+      },
+      startFrame: {
+        description: "First frame of the first sequence.",
+        type: "integer",
+        maximum: 2147483647,
+        minimum: 0,
+      },
+      length: {
+        description: "Frames covered by the sequences.",
+        type: "integer",
+        maximum: 2147483647,
+        minimum: 0,
+      },
+      missing: {
+        description: "Whether the linked source is missing (as last checked; media checks arrive with M8 C8.3).",
+        type: "boolean",
+      },
+    },
+    required: [
+      "startFrame",
+      "length",
+      "missing",
+    ],
+  },
+  "element.get.result": {
+    title: "ElementInfo",
+    description: "The element read model (04 §17.5).",
     type: "object",
     properties: {
       id: {
+        description: "ID.",
         type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
+      },
+      path: {
+        description: "Canonical path (10 AG-03).",
+        type: "string",
       },
       name: {
+        description: "Name.",
         type: "string",
-        maxLength: 65536,
       },
       elementType: {
+        description: "Element type.",
         type: "string",
-        maxLength: 65536,
       },
       sceneId: {
+        description: "Scene.",
         type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
       },
       parentId: {
-        type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
+        description: "Parent (`null` at the root level).",
+        type: [
+          "string",
+          "null",
+        ],
       },
       childIds: {
+        description: "Children in Timeline order.",
         type: "array",
         items: {
           type: "string",
-          minLength: 1,
-          maxLength: 4096,
-          description: "object ID or path reference (10 §3)",
         },
-        maxItems: 100000,
       },
       depth: {
+        description: "Depth (0 = root level).",
         type: "integer",
+        maximum: 2147483647,
+        minimum: 0,
       },
       timelineIndex: {
+        description: "Position in Timeline order (pre-order index).",
         type: "integer",
+        maximum: 2147483647,
+        minimum: 0,
       },
       xsheetIndex: {
-        type: "integer",
+        description: "Exposure Sheet column index (`null` for non-column elements).",
+        type: [
+          "integer",
+          "null",
+        ],
+        maximum: 2147483647,
+        minimum: 0,
       },
       start: {
+        description: "First frame of the bar (cell-based: first exposed frame, 1 when empty).",
         type: "integer",
+        maximum: 2147483647,
+        minimum: 0,
       },
       duration: {
-        type: "number",
+        description: "Bar length (cell-based: the exposed extent, 0 when empty).",
+        type: "integer",
+        maximum: 2147483647,
+        minimum: 0,
       },
       loops: {
+        description: "Loops.",
         type: "integer",
+        maximum: 2147483647,
+        minimum: 0,
       },
       annotation: {
+        description: "Annotation element.",
         type: "boolean",
       },
       role: {
-        type: "string",
-        maxLength: 65536,
+        description: "Composite role.",
+        $ref: "#/$defs/element.get.Role",
       },
       deformable: {
+        description: "Deformable by bones.",
         type: "boolean",
       },
       visibleInScene: {
+        description: "Shown in the scene.",
         type: "boolean",
       },
       hiddenByParent: {
+        description: "Hidden because an ancestor is hidden (04 §10.1).",
         type: "boolean",
       },
       visibleInXsheet: {
-        type: "boolean",
+        description: "Shown in the Exposure Sheet (`null` for non-column elements).",
+        type: [
+          "boolean",
+          "null",
+        ],
       },
       locked: {
+        description: "Locked in scene-planning views.",
         type: "boolean",
       },
       collapsed: {
+        description: "Collapsed in the Timeline.",
         type: "boolean",
       },
       markerColour: {
-        anyOf: [
-          {
-            type: "string",
-            pattern: "^#[0-9A-Fa-f]{6}([0-9A-Fa-f]{2})?$",
-            description: "#RRGGBB or #RRGGBBAA",
-          },
-          {
-            type: "null",
-          },
+        description: "Marker colour (`null` = category default).",
+        type: [
+          "string",
+          "null",
         ],
       },
       backgroundColour: {
-        anyOf: [
-          {
-            type: "string",
-            pattern: "^#[0-9A-Fa-f]{6}([0-9A-Fa-f]{2})?$",
-            description: "#RRGGBB or #RRGGBBAA",
-          },
-          {
-            type: "null",
-          },
+        description: "Background colour (`null` = category default).",
+        type: [
+          "string",
+          "null",
         ],
       },
       effectiveMarkerColour: {
+        description: "The marker colour in effect.",
         type: "string",
-        pattern: "^#[0-9A-Fa-f]{6}([0-9A-Fa-f]{2})?$",
-        description: "#RRGGBB or #RRGGBBAA",
       },
       note: {
+        description: "Element note.",
         type: "string",
-        maxLength: 65536,
       },
       columnWidth: {
+        description: "Exposure Sheet column width.",
         type: "integer",
+        maximum: 2147483647,
+        minimum: 0,
       },
       cloneGroupId: {
-        anyOf: [
-          {
-            type: "string",
-            minLength: 1,
-            maxLength: 4096,
-            description: "object ID or path reference (10 §3)",
-          },
-          {
-            type: "null",
-          },
+        description: "Clone group (the shared drawing bank) when the bank is shared, else `null`.",
+        type: [
+          "string",
+          "null",
         ],
       },
       cloneIds: {
+        description: "The other elements of the clone group.",
         type: "array",
         items: {
           type: "string",
-          minLength: 1,
-          maxLength: 4096,
-          description: "object ID or path reference (10 §3)",
         },
-        maxItems: 100000,
       },
       drawingCount: {
+        description: "Drawings in the bank.",
         type: "integer",
+        maximum: 2147483647,
+        minimum: 0,
       },
       media: {
+        description: "Media summary (media elements), else `null`.",
         anyOf: [
           {
-            type: "object",
-            additionalProperties: false,
-            required: [
-              "path",
-              "startFrame",
-              "length",
-              "missing",
-            ],
-            properties: {
-              path: {
-                type: "string",
-                minLength: 1,
-                maxLength: 4096,
-                description: "file-system path (11 §6.2)",
-              },
-              startFrame: {
-                type: "integer",
-              },
-              length: {
-                type: "integer",
-              },
-              missing: {
-                type: "boolean",
-              },
-            },
+            $ref: "#/$defs/element.get.MediaInfo",
           },
           {
             type: "null",
@@ -42734,17 +43744,15 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
         ],
       },
     },
-    additionalProperties: false,
     required: [
       "id",
+      "path",
       "name",
       "elementType",
       "sceneId",
-      "parentId",
       "childIds",
       "depth",
       "timelineIndex",
-      "xsheetIndex",
       "start",
       "duration",
       "loops",
@@ -42753,323 +43761,472 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
       "deformable",
       "visibleInScene",
       "hiddenByParent",
-      "visibleInXsheet",
       "locked",
       "collapsed",
-      "markerColour",
-      "backgroundColour",
       "effectiveMarkerColour",
       "note",
       "columnWidth",
-      "cloneGroupId",
       "cloneIds",
       "drawingCount",
-      "media",
     ],
-    "x-specSection": "04",
-  },
-  "element.get.result": {
-    $ref: "#/$defs/element.get.spec.ElementInfo",
-    title: "element.get result",
-    "x-spec": "element object",
   },
   "element.hierarchy.get.params": {
-    title: "element.hierarchy.get parameters",
+    title: "ElementParams",
+    description: "`element.get` / `element.hierarchy.get` parameters.",
     type: "object",
     properties: {
       elementId: {
+        description: "The element (ID or path).",
         type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
       },
     },
+    additionalProperties: false,
     required: [
       "elementId",
     ],
-    additionalProperties: false,
-    "x-spec": "`elementId: id`",
   },
   "element.hierarchy.get.result": {
-    title: "element.hierarchy.get result",
+    title: "HierarchyResult",
+    description: "`{parentId, childIds, previousSiblingId, nextSiblingId, depth}`.",
     type: "object",
     properties: {
       parentId: {
-        type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
+        description: "Parent (`null` at the root level).",
+        type: [
+          "string",
+          "null",
+        ],
       },
       childIds: {
+        description: "Children, top to bottom.",
         type: "array",
         items: {
           type: "string",
-          minLength: 1,
-          maxLength: 4096,
-          description: "object ID or path reference (10 §3)",
         },
-        maxItems: 100000,
       },
       previousSiblingId: {
-        type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
+        description: "The sibling above (`null` when first).",
+        type: [
+          "string",
+          "null",
+        ],
       },
       nextSiblingId: {
-        type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
+        description: "The sibling below (`null` when last).",
+        type: [
+          "string",
+          "null",
+        ],
       },
       depth: {
-        type: "number",
+        description: "Depth (0 = root level).",
+        type: "integer",
+        maximum: 2147483647,
+        minimum: 0,
       },
     },
     required: [
-      "parentId",
       "childIds",
-      "previousSiblingId",
-      "nextSiblingId",
       "depth",
     ],
-    "x-spec": "`{parentId, childIds[], previousSiblingId, nextSiblingId, depth}`",
-    additionalProperties: false,
+  },
+  "element.hierarchy.select.Relation": {
+    description: "Hierarchy relations (04 §9.3).",
+    oneOf: [
+      {
+        description: "The parent.",
+        type: "string",
+        const: "parent",
+      },
+      {
+        description: "The element and every element attached to it.",
+        type: "string",
+        const: "children",
+      },
+      {
+        description: "The first child.",
+        type: "string",
+        const: "firstChild",
+      },
+      {
+        description: "The sibling above.",
+        type: "string",
+        const: "previousSibling",
+      },
+      {
+        description: "The sibling below.",
+        type: "string",
+        const: "nextSibling",
+      },
+      {
+        description: "The root of the current skeleton.",
+        type: "string",
+        const: "skeletonRoot",
+      },
+    ],
   },
   "element.hierarchy.select.params": {
-    title: "element.hierarchy.select parameters",
+    title: "HierarchySelectParams",
+    description: "`element.hierarchy.select` parameters.",
     type: "object",
     properties: {
       relation: {
-        type: "string",
-        enum: [
-          "parent",
-          "children",
-          "firstChild",
-          "previousSibling",
-          "nextSibling",
-          "skeletonRoot",
-        ],
+        description: "Relation to select.",
+        $ref: "#/$defs/element.hierarchy.select.Relation",
       },
       elementId: {
-        type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
+        description: "From this element (default: the current element).",
+        type: [
+          "string",
+          "null",
+        ],
+        default: null,
       },
     },
+    additionalProperties: false,
     required: [
       "relation",
     ],
-    additionalProperties: false,
-    "x-spec": "`relation: enum \"parent\"|\"children\"|\"firstChild\"|\"previousSibling\"|\"nextSibling\"|\"skeletonRoot\"; elementId?: id`",
   },
   "element.hierarchy.select.result": {
-    title: "element.hierarchy.select result",
+    title: "SelectedResult",
+    description: "`{selectedIds}`.",
     type: "object",
     properties: {
       selectedIds: {
+        description: "The selected elements.",
         type: "array",
         items: {
           type: "string",
-          minLength: 1,
-          maxLength: 4096,
-          description: "object ID or path reference (10 §3)",
         },
-        maxItems: 100000,
       },
     },
     required: [
       "selectedIds",
     ],
-    "x-spec": "`{selectedIds[]}`",
-    additionalProperties: false,
+  },
+  "element.list.ListOrder": {
+    description: "List order.",
+    oneOf: [
+      {
+        description: "Timeline order (parents before children).",
+        type: "string",
+        const: "timeline",
+      },
+      {
+        description: "Exposure Sheet column order (cell-based elements only).",
+        type: "string",
+        const: "xsheet",
+      },
+    ],
+  },
+  "element.list.ElementType": {
+    description: "Element types (10 §4.5). The 04 read model reports this value as `type`; the object model uses `elementType`\n(design decision D6).",
+    oneOf: [
+      {
+        description: "Vector drawing element.",
+        type: "string",
+        const: "drawing",
+      },
+      {
+        description: "Annotation (note drawing) element.",
+        type: "string",
+        const: "annotation",
+      },
+      {
+        description: "Bitmap image element.",
+        type: "string",
+        const: "image",
+      },
+      {
+        description: "Sound element.",
+        type: "string",
+        const: "sound",
+      },
+      {
+        description: "Media element (linked sources).",
+        type: "string",
+        const: "media",
+      },
+      {
+        description: "Peg.",
+        type: "string",
+        const: "peg",
+      },
+      {
+        description: "Camera.",
+        type: "string",
+        const: "camera",
+      },
+      {
+        description: "Skeleton effect.",
+        type: "string",
+        const: "skeleton",
+      },
+      {
+        description: "Bone.",
+        type: "string",
+        const: "bone",
+      },
+      {
+        description: "Effect parameter element (mask, sprites, bones, skin slot).",
+        type: "string",
+        const: "effectParameter",
+      },
+      {
+        description: "Colour transform effect.",
+        type: "string",
+        const: "colourTransform",
+      },
+      {
+        description: "Clipping effect.",
+        type: "string",
+        const: "clipping",
+      },
+      {
+        description: "Drop shadow effect.",
+        type: "string",
+        const: "dropShadow",
+      },
+      {
+        description: "Blur effect.",
+        type: "string",
+        const: "blur",
+      },
+      {
+        description: "Shake effect.",
+        type: "string",
+        const: "shake",
+      },
+      {
+        description: "Natural-phenomena particle effect.",
+        type: "string",
+        const: "particleNature",
+      },
+      {
+        description: "Action/impact particle effect.",
+        type: "string",
+        const: "particleImpact",
+      },
+    ],
   },
   "element.list.params": {
-    title: "element.list parameters",
+    title: "ListParams",
+    description: "`element.list` parameters.",
     type: "object",
     properties: {
       sceneId: {
-        type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
+        description: "Scene (default: the current scene).",
+        type: [
+          "string",
+          "null",
+        ],
+        default: null,
       },
       order: {
-        type: "string",
-        enum: [
-          "timeline",
-          "xsheet",
-        ],
-        default: "timeline",
+        description: "Timeline or Exposure Sheet order.",
+        $ref: "#/$defs/element.list.ListOrder",
       },
       types: {
-        type: "array",
+        description: "Only these element types.",
+        type: [
+          "array",
+          "null",
+        ],
         items: {
-          type: "string",
-          maxLength: 65536,
+          $ref: "#/$defs/element.list.ElementType",
         },
-        maxItems: 100000,
+        default: null,
       },
       parentId: {
-        type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
+        description: "Only the descendants (or, with `recursive: false`, the children) of this element.",
+        type: [
+          "string",
+          "null",
+        ],
+        default: null,
       },
       recursive: {
+        description: "Include every level below `parentId` (default) or only its children.",
         type: "boolean",
         default: true,
       },
     },
     additionalProperties: false,
-    "x-spec": "`sceneId?: id; order: enum \"timeline\"|\"xsheet\" = \"timeline\"; types?: [string]; parentId?: id; recursive: bool = true`",
+  },
+  "element.list.ListedElement": {
+    description: "One listed element.",
+    type: "object",
+    properties: {
+      id: {
+        description: "ID.",
+        type: "string",
+      },
+      name: {
+        description: "Name.",
+        type: "string",
+      },
+      type: {
+        description: "Element type.",
+        type: "string",
+      },
+      parentId: {
+        description: "Parent (`null` at the root level).",
+        type: [
+          "string",
+          "null",
+        ],
+      },
+      depth: {
+        description: "Depth in the hierarchy (0 = root level).",
+        type: "integer",
+        maximum: 2147483647,
+        minimum: 0,
+      },
+      index: {
+        description: "Index among its siblings (Timeline order) or column index (Exposure Sheet order).",
+        type: "integer",
+        maximum: 2147483647,
+        minimum: 0,
+      },
+    },
+    required: [
+      "id",
+      "name",
+      "type",
+      "depth",
+      "index",
+    ],
   },
   "element.list.result": {
-    title: "element.list result",
+    title: "ListResult",
+    description: "`{elements}`.",
     type: "object",
     properties: {
       elements: {
+        description: "The elements in the requested order.",
         type: "array",
         items: {
-          type: "object",
-          properties: {
-            id: {
-              type: "string",
-              minLength: 1,
-              maxLength: 4096,
-              description: "object ID or path reference (10 §3)",
-            },
-            name: {
-              type: "string",
-              maxLength: 65536,
-            },
-            type: {
-              type: "string",
-              maxLength: 65536,
-            },
-            parentId: {
-              type: "string",
-              minLength: 1,
-              maxLength: 4096,
-              description: "object ID or path reference (10 §3)",
-            },
-            depth: {
-              type: "number",
-            },
-            index: {
-              type: "number",
-            },
-          },
-          required: [
-            "id",
-            "name",
-            "type",
-            "parentId",
-            "depth",
-            "index",
-          ],
-          additionalProperties: false,
+          $ref: "#/$defs/element.list.ListedElement",
         },
-        maxItems: 100000,
       },
     },
     required: [
       "elements",
     ],
-    "x-spec": "`{elements: [{id, name, type, parentId, depth, index}]}`",
-    additionalProperties: false,
+  },
+  "element.lock.set.Apply": {
+    description: "Which elements a toggle applies to.",
+    oneOf: [
+      {
+        description: "The given elements.",
+        type: "string",
+        const: "given",
+      },
+      {
+        description: "Every element of the scene.",
+        type: "string",
+        const: "all",
+      },
+      {
+        description: "Every element except the given ones.",
+        type: "string",
+        const: "others",
+      },
+    ],
   },
   "element.lock.set.params": {
-    title: "element.lock.set parameters",
+    title: "LockParams",
+    description: "`element.lock.set` parameters.",
     type: "object",
     properties: {
       elementIds: {
-        type: "array",
+        description: "Elements (default: the selected rows, else the current element).",
+        type: [
+          "array",
+          "null",
+        ],
         items: {
           type: "string",
-          minLength: 1,
-          maxLength: 4096,
-          description: "object ID or path reference (10 §3)",
         },
-        maxItems: 100000,
+        default: null,
       },
       locked: {
+        description: "Locked or unlocked.",
         type: "boolean",
       },
       apply: {
-        type: "string",
-        enum: [
-          "given",
-          "all",
-          "others",
-        ],
-        default: "given",
+        description: "The given elements, all, or all others.",
+        $ref: "#/$defs/element.lock.set.Apply",
       },
     },
+    additionalProperties: false,
     required: [
       "locked",
     ],
-    additionalProperties: false,
-    "x-spec": "`elementIds?: [id]; locked: bool; apply: enum \"given\"|\"all\"|\"others\" = \"given\"`",
   },
   "element.lock.set.result": {
-    title: "element.lock.set result",
+    title: "ChangedIds",
+    description: "`{changedIds}`.",
     type: "object",
     properties: {
       changedIds: {
+        description: "Elements whose flag changed.",
         type: "array",
         items: {
           type: "string",
-          minLength: 1,
-          maxLength: 4096,
-          description: "object ID or path reference (10 §3)",
         },
-        maxItems: 100000,
       },
     },
     required: [
       "changedIds",
     ],
-    "x-spec": "`{changedIds[]}`",
-    additionalProperties: false,
   },
   "element.mediaLength.set.params": {
-    title: "element.mediaLength.set parameters",
+    title: "MediaLengthParams",
+    description: "`element.mediaLength.set` parameters.",
     type: "object",
     properties: {
       elementId: {
+        description: "The media element.",
         type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
       },
       length: {
-        type: "integer",
+        description: "New length of the element's (last) sequence; omitted: the media's natural length.",
+        type: [
+          "integer",
+          "null",
+        ],
+        maximum: 9223372036854775807n,
         minimum: 1,
+        default: null,
       },
     },
+    additionalProperties: false,
     required: [
       "elementId",
     ],
-    additionalProperties: false,
-    "x-spec": "`elementId: id; length?: int (≥1)`",
   },
   "element.mediaLength.set.result": {
-    title: "element.mediaLength.set result",
+    title: "MediaLengthResult",
+    description: "`{elementId, from, to}`.",
     type: "object",
     properties: {
       elementId: {
+        description: "The element.",
         type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
       },
       from: {
-        type: "number",
+        description: "First frame.",
+        type: "integer",
+        maximum: 2147483647,
+        minimum: 0,
       },
       to: {
-        type: "number",
+        description: "Last frame.",
+        type: "integer",
+        maximum: 2147483647,
+        minimum: 0,
       },
     },
     required: [
@@ -43077,544 +44234,609 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
       "from",
       "to",
     ],
-    "x-spec": "`{elementId, from, to}`",
-    additionalProperties: false,
   },
   "element.note.set.params": {
-    title: "element.note.set parameters",
+    title: "NoteParams",
+    description: "`element.note.set` parameters.",
     type: "object",
     properties: {
       elementId: {
+        description: "The element.",
         type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
       },
       text: {
+        description: "The note (empty removes it; at most 10 000 characters).",
         type: "string",
-        maxLength: 65536,
+        maxLength: 10000,
       },
     },
+    additionalProperties: false,
     required: [
       "elementId",
       "text",
     ],
-    additionalProperties: false,
-    "x-spec": "`elementId: id; text: string`",
   },
   "element.note.set.result": {
-    title: "element.note.set result",
+    title: "IdResult",
+    description: "`{elementId}`.",
     type: "object",
     properties: {
       elementId: {
+        description: "The element.",
         type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
       },
     },
     required: [
       "elementId",
     ],
-    "x-spec": "`{elementId}`",
-    additionalProperties: false,
+  },
+  "element.order.move.To": {
+    description: "Stacking direction (04 §9.1).",
+    oneOf: [
+      {
+        description: "Above all others of the level / rightmost column.",
+        type: "string",
+        const: "front",
+      },
+      {
+        description: "One up / one right.",
+        type: "string",
+        const: "forward",
+      },
+      {
+        description: "One down / one left.",
+        type: "string",
+        const: "backward",
+      },
+      {
+        description: "Below all others / leftmost.",
+        type: "string",
+        const: "back",
+      },
+    ],
+  },
+  "element.order.move.OrderKind": {
+    description: "Which order a reorder changes (04 §1.2).",
+    oneOf: [
+      {
+        description: "Timeline rows within a hierarchy level.",
+        type: "string",
+        const: "timeline",
+      },
+      {
+        description: "Exposure Sheet columns (left = back, right = front).",
+        type: "string",
+        const: "xsheet",
+      },
+    ],
   },
   "element.order.move.params": {
-    title: "element.order.move parameters",
+    title: "OrderMoveParams",
+    description: "`element.order.move` parameters.",
     type: "object",
     properties: {
       elementIds: {
-        type: "array",
+        description: "Elements (default: the selected rows, else the current element).",
+        type: [
+          "array",
+          "null",
+        ],
         items: {
           type: "string",
-          minLength: 1,
-          maxLength: 4096,
-          description: "object ID or path reference (10 §3)",
         },
-        maxItems: 100000,
+        default: null,
       },
       to: {
-        type: "string",
-        enum: [
-          "front",
-          "forward",
-          "backward",
-          "back",
-        ],
+        description: "Direction.",
+        $ref: "#/$defs/element.order.move.To",
       },
       order: {
-        type: "string",
-        enum: [
-          "timeline",
-          "xsheet",
-        ],
-        default: "timeline",
+        description: "Timeline level or Exposure Sheet columns.",
+        $ref: "#/$defs/element.order.move.OrderKind",
       },
     },
+    additionalProperties: false,
     required: [
       "to",
     ],
-    additionalProperties: false,
-    "x-spec": "`elementIds?: [id]; to: enum \"front\"|\"forward\"|\"backward\"|\"back\"; order: enum \"timeline\"|\"xsheet\" = \"timeline\"`",
   },
   "element.order.move.result": {
-    title: "element.order.move result",
+    title: "OrderMoveResult",
+    description: "`{changed, order}`.",
     type: "object",
     properties: {
       changed: {
+        description: "Whether anything moved (false at the boundary).",
         type: "boolean",
       },
       order: {
+        description: "The resulting order of the affected level or of the columns.",
         type: "array",
         items: {
           type: "string",
-          minLength: 1,
-          maxLength: 4096,
-          description: "object ID or path reference (10 §3)",
         },
-        maxItems: 100000,
       },
     },
     required: [
       "changed",
       "order",
     ],
-    "x-spec": "`{changed: bool, order: [id]}`",
-    additionalProperties: false,
+  },
+  "element.order.set.OrderKind": {
+    description: "Which order a reorder changes (04 §1.2).",
+    oneOf: [
+      {
+        description: "Timeline rows within a hierarchy level.",
+        type: "string",
+        const: "timeline",
+      },
+      {
+        description: "Exposure Sheet columns (left = back, right = front).",
+        type: "string",
+        const: "xsheet",
+      },
+    ],
   },
   "element.order.set.params": {
-    title: "element.order.set parameters",
+    title: "OrderSetParams",
+    description: "`element.order.set` parameters.",
     type: "object",
     properties: {
       order: {
-        type: "string",
-        enum: [
-          "timeline",
-          "xsheet",
-        ],
+        description: "Timeline level or Exposure Sheet columns.",
+        $ref: "#/$defs/element.order.set.OrderKind",
       },
       elementIds: {
+        description: "The complete new order (a permutation of the level or of the columns).",
         type: "array",
         items: {
           type: "string",
-          minLength: 1,
-          maxLength: 4096,
-          description: "object ID or path reference (10 §3)",
         },
-        maxItems: 100000,
       },
       parentId: {
-        type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
+        description: "The Timeline level (its parent; default the root level).",
+        type: [
+          "string",
+          "null",
+        ],
+        default: null,
       },
       sceneId: {
-        type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
+        description: "Scene (default: the scene of the elements, else the current scene).",
+        type: [
+          "string",
+          "null",
+        ],
+        default: null,
       },
     },
+    additionalProperties: false,
     required: [
       "order",
       "elementIds",
     ],
-    additionalProperties: false,
-    "x-spec": "`order: enum \"timeline\"|\"xsheet\"; elementIds: [id]; parentId?: id; sceneId?: id`",
   },
   "element.order.set.result": {
-    title: "element.order.set result",
+    title: "OrderSetResult",
+    description: "`{order}`.",
     type: "object",
     properties: {
       order: {
+        description: "The order.",
         type: "array",
         items: {
           type: "string",
-          minLength: 1,
-          maxLength: 4096,
-          description: "object ID or path reference (10 §3)",
         },
-        maxItems: 100000,
       },
     },
     required: [
       "order",
     ],
-    "x-spec": "`{order: [id]}`",
-    additionalProperties: false,
   },
   "element.parent.remove.params": {
-    title: "element.parent.remove parameters",
+    title: "ParentRemoveParams",
+    description: "`element.parent.remove` parameters.",
     type: "object",
     properties: {
       elementIds: {
-        type: "array",
+        description: "Elements (default: the selected rows, else the current element).",
+        type: [
+          "array",
+          "null",
+        ],
         items: {
           type: "string",
-          minLength: 1,
-          maxLength: 4096,
-          description: "object ID or path reference (10 §3)",
         },
-        maxItems: 100000,
+        default: null,
       },
     },
     additionalProperties: false,
-    "x-spec": "`elementIds?: [id]`",
   },
   "element.parent.remove.result": {
-    title: "element.parent.remove result",
+    title: "ParentResult",
+    description: "`{elementIds, parentId}`.",
     type: "object",
     properties: {
       elementIds: {
+        description: "The elements.",
         type: "array",
         items: {
           type: "string",
-          minLength: 1,
-          maxLength: 4096,
-          description: "object ID or path reference (10 §3)",
         },
-        maxItems: 100000,
       },
       parentId: {
-        type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
+        description: "The parent (`null` at the root level).",
+        type: [
+          "string",
+          "null",
+        ],
       },
     },
     required: [
       "elementIds",
-      "parentId",
     ],
-    "x-spec": "`{elementIds[], parentId}`",
-    additionalProperties: false,
   },
   "element.parent.set.params": {
-    title: "element.parent.set parameters",
+    title: "ParentSetParams",
+    description: "`element.parent.set` parameters.",
     type: "object",
     properties: {
       elementIds: {
-        type: "array",
+        description: "Elements (default: the selected rows, else the current element).",
+        type: [
+          "array",
+          "null",
+        ],
         items: {
           type: "string",
-          minLength: 1,
-          maxLength: 4096,
-          description: "object ID or path reference (10 §3)",
         },
-        maxItems: 100000,
+        default: null,
       },
       parentId: {
-        type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
+        description: "The parent: a peg, effect, skeleton, bone or camera.",
+        type: [
+          "string",
+          "null",
+        ],
+        default: null,
       },
       nearest: {
+        description: "Attach to the nearest peg or effect above at the same level (attach to next object).",
         type: "boolean",
         default: false,
       },
       index: {
-        type: "integer",
+        description: "Position among the parent's children (default: the bottom).",
+        type: [
+          "integer",
+          "null",
+        ],
+        maximum: 2147483647,
+        minimum: 0,
+        default: null,
       },
     },
     additionalProperties: false,
-    "x-spec": "`elementIds?: [id]; parentId?: id; nearest: bool = false; index?: int`",
   },
   "element.parent.set.result": {
-    title: "element.parent.set result",
+    title: "ParentResult",
+    description: "`{elementIds, parentId}`.",
     type: "object",
     properties: {
       elementIds: {
+        description: "The elements.",
         type: "array",
         items: {
           type: "string",
-          minLength: 1,
-          maxLength: 4096,
-          description: "object ID or path reference (10 §3)",
         },
-        maxItems: 100000,
       },
       parentId: {
-        type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
+        description: "The parent (`null` at the root level).",
+        type: [
+          "string",
+          "null",
+        ],
       },
     },
     required: [
       "elementIds",
-      "parentId",
     ],
-    "x-spec": "`{elementIds[], parentId}`",
-    additionalProperties: false,
   },
   "element.parentPeg.create.params": {
-    title: "element.parentPeg.create parameters",
+    title: "ParentPegParams",
+    description: "`element.parentPeg.create` parameters.",
     type: "object",
     properties: {
       elementIds: {
-        type: "array",
+        description: "Elements to attach (default: the selected rows, else the current element); one scene.",
+        type: [
+          "array",
+          "null",
+        ],
         items: {
           type: "string",
-          minLength: 1,
-          maxLength: 4096,
-          description: "object ID or path reference (10 §3)",
         },
-        maxItems: 100000,
+        default: null,
       },
       name: {
-        type: "string",
-        maxLength: 65536,
+        description: "Peg name (default: `<first element>-P`, unique).",
+        type: [
+          "string",
+          "null",
+        ],
+        default: null,
       },
     },
     additionalProperties: false,
-    "x-spec": "`elementIds?: [id]; name?: string`",
   },
   "element.parentPeg.create.result": {
-    title: "element.parentPeg.create result",
+    title: "ParentPegResult",
+    description: "`{pegId, name}`.",
     type: "object",
     properties: {
       pegId: {
+        description: "The new peg.",
         type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
       },
       name: {
+        description: "Its name.",
         type: "string",
-        maxLength: 65536,
       },
     },
     required: [
       "pegId",
       "name",
     ],
-    "x-spec": "`{pegId, name}`",
-    additionalProperties: false,
+  },
+  "element.properties.set.RoleParam": {
+    description: "Composite role (04 §6.1).",
+    oneOf: [
+      {
+        description: "Normal.",
+        type: "string",
+        const: "normal",
+      },
+      {
+        description: "In front of all normal elements.",
+        type: "string",
+        const: "foreground",
+      },
+      {
+        description: "Behind all normal elements; the last exposure extends to the scene length.",
+        type: "string",
+        const: "background",
+      },
+      {
+        description: "Deformation envelope (skin).",
+        type: "string",
+        const: "envelope",
+      },
+    ],
   },
   "element.properties.set.params": {
-    title: "element.properties.set parameters",
+    title: "PropertiesParams",
+    description: "`element.properties.set` parameters.",
     type: "object",
     properties: {
       elementId: {
+        description: "The element.",
         type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
       },
       role: {
-        type: "string",
-        enum: [
-          "normal",
-          "foreground",
-          "background",
-          "envelope",
+        description: "Composite role.",
+        anyOf: [
+          {
+            $ref: "#/$defs/element.properties.set.RoleParam",
+          },
+          {
+            type: "null",
+          },
         ],
       },
       deformable: {
-        type: "boolean",
+        description: "Deformable by skeleton bones.",
+        type: [
+          "boolean",
+          "null",
+        ],
+        default: null,
       },
     },
+    additionalProperties: false,
     required: [
       "elementId",
     ],
-    additionalProperties: false,
-    "x-spec": "`elementId: id; role?: enum \"normal\"|\"foreground\"|\"background\"|\"envelope\"; deformable?: bool`",
   },
   "element.properties.set.result": {
-    title: "element.properties.set result",
+    title: "IdResult",
+    description: "`{elementId}`.",
     type: "object",
     properties: {
       elementId: {
+        description: "The element.",
         type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
       },
     },
     required: [
       "elementId",
     ],
-    "x-spec": "`{elementId}`",
-    additionalProperties: false,
   },
   "element.rename.params": {
-    title: "element.rename parameters",
+    title: "RenameParams",
+    description: "`element.rename` parameters.",
     type: "object",
     properties: {
       elementId: {
+        description: "The element.",
         type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
       },
       name: {
+        description: "The new name (unique in the scene, at most 64 characters, none of `\\ / : * ? < > \" |` or `.`).",
         type: "string",
-        maxLength: 65536,
       },
     },
+    additionalProperties: false,
     required: [
       "elementId",
       "name",
     ],
-    additionalProperties: false,
-    "x-spec": "`elementId: id; name: string`",
   },
   "element.rename.result": {
-    title: "element.rename result",
+    title: "RenameResult",
+    description: "`{elementId, name}`.",
     type: "object",
     properties: {
       elementId: {
+        description: "The element.",
         type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
       },
       name: {
+        description: "Its name.",
         type: "string",
-        maxLength: 65536,
       },
     },
     required: [
       "elementId",
       "name",
     ],
-    "x-spec": "`{elementId, name}`",
-    additionalProperties: false,
+  },
+  "element.select.SelectMode": {
+    description: "Selection mode.",
+    oneOf: [
+      {
+        description: "Replace.",
+        type: "string",
+        const: "replace",
+      },
+      {
+        description: "Add.",
+        type: "string",
+        const: "add",
+      },
+      {
+        description: "Remove.",
+        type: "string",
+        const: "remove",
+      },
+      {
+        description: "Toggle.",
+        type: "string",
+        const: "toggle",
+      },
+    ],
   },
   "element.select.params": {
-    title: "element.select parameters",
+    title: "SelectParams",
+    description: "`element.select` parameters.",
     type: "object",
     properties: {
       elementIds: {
+        description: "Elements (rows / columns).",
         type: "array",
         items: {
           type: "string",
-          minLength: 1,
-          maxLength: 4096,
-          description: "object ID or path reference (10 §3)",
         },
-        maxItems: 100000,
       },
       mode: {
-        type: "string",
-        enum: [
-          "replace",
-          "add",
-          "remove",
-          "toggle",
-        ],
-        default: "replace",
+        description: "How to combine with the current selection.",
+        $ref: "#/$defs/element.select.SelectMode",
       },
     },
+    additionalProperties: false,
     required: [
       "elementIds",
     ],
-    additionalProperties: false,
-    "x-spec": "`elementIds: [id]; mode: enum \"replace\"|\"add\"|\"remove\"|\"toggle\" = \"replace\"`",
   },
   "element.select.result": {
-    title: "element.select result",
+    title: "SelectedResult",
+    description: "`{selectedIds}`.",
     type: "object",
     properties: {
       selectedIds: {
+        description: "The selected elements.",
         type: "array",
         items: {
           type: "string",
-          minLength: 1,
-          maxLength: 4096,
-          description: "object ID or path reference (10 §3)",
         },
-        maxItems: 100000,
       },
     },
     required: [
       "selectedIds",
     ],
-    "x-spec": "`{selectedIds[]}`",
-    additionalProperties: false,
   },
   "element.solo.set.params": {
-    title: "element.solo.set parameters",
+    title: "SoloParams",
+    description: "`element.solo.set` parameters.",
     type: "object",
     properties: {
       enabled: {
+        description: "Solo mode on or off.",
         type: "boolean",
       },
       elementIds: {
-        type: "array",
+        description: "The elements shown while solo is on (default: the selected rows, else the current element).",
+        type: [
+          "array",
+          "null",
+        ],
         items: {
           type: "string",
-          minLength: 1,
-          maxLength: 4096,
-          description: "object ID or path reference (10 §3)",
         },
-        maxItems: 100000,
+        default: null,
       },
     },
+    additionalProperties: false,
     required: [
       "enabled",
     ],
-    additionalProperties: false,
-    "x-spec": "`enabled: bool; elementIds?: [id]`",
   },
   "element.solo.set.result": {
-    title: "element.solo.set result",
+    title: "SoloResult",
+    description: "`{enabled, elementIds}`.",
     type: "object",
     properties: {
       enabled: {
+        description: "Solo mode.",
         type: "boolean",
       },
       elementIds: {
+        description: "The soloed elements.",
         type: "array",
         items: {
           type: "string",
-          minLength: 1,
-          maxLength: 4096,
-          description: "object ID or path reference (10 §3)",
         },
-        maxItems: 100000,
       },
     },
     required: [
       "enabled",
       "elementIds",
     ],
-    "x-spec": "`{enabled, elementIds[]}`",
-    additionalProperties: false,
   },
   "element.state.changed.params": {
-    title: "element.state.changed parameters",
+    title: "NoParams",
+    description: "No parameters.",
     type: "object",
-    properties: {},
     additionalProperties: false,
-    description: "Events take no parameters; subscribe to them (11 §9).",
-    "x-spec": "—",
   },
   "element.state.changed.result": {
-    title: "element.state.changed result",
+    title: "StateChanged",
+    description: "`element.state.changed` payload.",
     type: "object",
     properties: {
       sceneId: {
+        description: "The scene.",
         type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
       },
       elementIds: {
+        description: "The elements.",
         type: "array",
         items: {
           type: "string",
-          minLength: 1,
-          maxLength: 4096,
-          description: "object ID or path reference (10 §3)",
         },
-        maxItems: 100000,
       },
       change: {
+        description: "`created`, `deleted`, `renamed`, `reordered`, `reparented`, `timing`, `visibility`, `lock`, `type`,\n`collapsed` or `properties`.",
         type: "string",
-        maxLength: 65536,
       },
     },
     required: [
@@ -43622,322 +44844,521 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
       "elementIds",
       "change",
     ],
-    description: "Event payload (delivered to subscribers).",
-    "x-spec": "`{sceneId, elementIds[], change}`",
-    additionalProperties: false,
+  },
+  "element.timing.set.Anchor": {
+    description: "Which end a duration change keeps.",
+    oneOf: [
+      {
+        description: "Keep the start (stretch from the end).",
+        type: "string",
+        const: "start",
+      },
+      {
+        description: "Keep the end (stretch from the start).",
+        type: "string",
+        const: "end",
+      },
+    ],
+  },
+  "element.timing.set.KeyMode": {
+    description: "What happens to keyframes when the duration changes.",
+    oneOf: [
+      {
+        description: "Keys keep their local frames; keys beyond the new end are removed.",
+        type: "string",
+        const: "keep",
+      },
+      {
+        description: "Keys are re-timed proportionally (05 §8.4).",
+        type: "string",
+        const: "scale",
+      },
+    ],
   },
   "element.timing.set.params": {
-    title: "element.timing.set parameters",
+    title: "TimingParams",
+    description: "`element.timing.set` parameters.",
     type: "object",
     properties: {
       elementIds: {
-        type: "array",
+        description: "Bar elements (default: the selected rows, else the current element).",
+        type: [
+          "array",
+          "null",
+        ],
         items: {
           type: "string",
-          minLength: 1,
-          maxLength: 4096,
-          description: "object ID or path reference (10 §3)",
         },
-        maxItems: 100000,
+        default: null,
       },
       start: {
-        type: "integer",
+        description: "New start frame.",
+        type: [
+          "integer",
+          "null",
+        ],
+        maximum: 9223372036854775807n,
         minimum: 1,
+        default: null,
       },
       startDelta: {
-        type: "integer",
+        description: "Move the start by this many frames.",
+        type: [
+          "integer",
+          "null",
+        ],
+        maximum: 9223372036854775807n,
+        default: null,
+        minimum: -9223372036854775808n,
       },
       duration: {
-        type: "integer",
+        description: "New duration (of one cycle for `count` loops).",
+        type: [
+          "integer",
+          "null",
+        ],
+        maximum: 9223372036854775807n,
         minimum: 1,
+        default: null,
       },
       anchor: {
-        type: "string",
-        enum: [
-          "start",
-          "end",
-        ],
-        default: "start",
+        description: "Which end a duration change keeps.",
+        $ref: "#/$defs/element.timing.set.Anchor",
       },
       keyframes: {
-        type: "string",
-        enum: [
-          "keep",
-          "scale",
-        ],
-        default: "keep",
+        description: "Keep or scale keyframes.",
+        $ref: "#/$defs/element.timing.set.KeyMode",
       },
       loops: {
-        type: "integer",
+        description: "Loops (1 = not looped).",
+        type: [
+          "integer",
+          "null",
+        ],
+        maximum: 9223372036854775807n,
         minimum: 1,
+        default: null,
       },
     },
     additionalProperties: false,
-    "x-spec": "`elementIds?: [id]; start?: int (≥1); startDelta?: int; duration?: int (≥1); anchor: enum \"start\"|\"end\" = \"start\"; keyframes: enum \"keep\"|\"scale\" = \"keep\"; loops?: int (≥1)`",
+  },
+  "element.timing.set.Bar": {
+    description: "One element's bar.",
+    type: "object",
+    properties: {
+      id: {
+        description: "The element.",
+        type: "string",
+      },
+      start: {
+        description: "Start frame.",
+        type: "integer",
+        maximum: 2147483647,
+        minimum: 1,
+      },
+      duration: {
+        description: "Duration.",
+        type: "integer",
+        maximum: 2147483647,
+        minimum: 1,
+      },
+      loops: {
+        description: "Loops.",
+        type: "integer",
+        maximum: 2147483647,
+        minimum: 1,
+      },
+    },
+    required: [
+      "id",
+      "start",
+      "duration",
+      "loops",
+    ],
   },
   "element.timing.set.result": {
-    title: "element.timing.set result",
+    title: "TimingResult",
+    description: "`{elements}`.",
     type: "object",
     properties: {
       elements: {
+        description: "The bars after the change.",
         type: "array",
         items: {
-          type: "object",
-          properties: {
-            id: {
-              type: "string",
-              minLength: 1,
-              maxLength: 4096,
-              description: "object ID or path reference (10 §3)",
-            },
-            start: {
-              type: "integer",
-              minimum: 1,
-            },
-            duration: {
-              type: "integer",
-              minimum: 1,
-            },
-            loops: {
-              type: "integer",
-              minimum: 1,
-            },
-          },
-          required: [
-            "id",
-            "start",
-            "duration",
-            "loops",
-          ],
-          additionalProperties: false,
+          $ref: "#/$defs/element.timing.set.Bar",
         },
-        maxItems: 100000,
       },
     },
     required: [
       "elements",
     ],
-    "x-spec": "`{elements: [{id, start, duration, loops}]}`",
-    additionalProperties: false,
   },
   "element.typeColour.get.params": {
-    title: "element.typeColour.get parameters",
+    title: "NoParams",
+    description: "No parameters.",
     type: "object",
-    properties: {},
     additionalProperties: false,
-    "x-spec": "—",
   },
   "element.typeColour.get.result": {
-    title: "element.typeColour.get result",
+    title: "TypeColoursResult",
+    description: "`{colours}`.",
     type: "object",
     properties: {
       colours: {
+        description: "Colour by category (`drawings`, `images`, `sounds`, `pegs`, `skeletons`, `media`, `cameras`, `effects`,\n`effectParameters`).",
         type: "object",
-        description: "(elementType → colour)",
-        additionalProperties: {
-          type: "string",
-          pattern: "^#[0-9A-Fa-f]{6}([0-9A-Fa-f]{2})?$",
-          description: "#RRGGBB or #RRGGBBAA",
-        },
-        properties: {},
-        propertyNames: {
-          minLength: 1,
-          maxLength: 4096,
-        },
+        additionalProperties: true,
       },
     },
     required: [
       "colours",
     ],
-    "x-spec": "`{colours: object}`",
-    additionalProperties: false,
+  },
+  "element.typeColour.set.Category": {
+    description: "Element categories (04 §5.1).",
+    oneOf: [
+      {
+        description: "Drawing and annotation elements.",
+        type: "string",
+        const: "drawings",
+      },
+      {
+        description: "Image elements.",
+        type: "string",
+        const: "images",
+      },
+      {
+        description: "Sound elements.",
+        type: "string",
+        const: "sounds",
+      },
+      {
+        description: "Pegs.",
+        type: "string",
+        const: "pegs",
+      },
+      {
+        description: "Skeletons and bones.",
+        type: "string",
+        const: "skeletons",
+      },
+      {
+        description: "Media elements.",
+        type: "string",
+        const: "media",
+      },
+      {
+        description: "Cameras.",
+        type: "string",
+        const: "cameras",
+      },
+      {
+        description: "Effects.",
+        type: "string",
+        const: "effects",
+      },
+      {
+        description: "Effect parameters.",
+        type: "string",
+        const: "effectParameters",
+      },
+    ],
   },
   "element.typeColour.set.params": {
-    title: "element.typeColour.set parameters",
+    title: "TypeColourSetParams",
+    description: "`element.typeColour.set` parameters.",
     type: "object",
     properties: {
       category: {
-        type: "string",
-        enum: [
-          "drawings",
-          "images",
-          "sounds",
-          "pegs",
-          "skeletons",
-          "media",
-          "cameras",
-          "effects",
-          "effectParameters",
-        ],
+        description: "The category.",
+        $ref: "#/$defs/element.typeColour.set.Category",
       },
       colour: {
+        description: "`#RRGGBB` or `#RRGGBBAA`.",
         type: "string",
         pattern: "^#[0-9A-Fa-f]{6}([0-9A-Fa-f]{2})?$",
-        description: "#RRGGBB or #RRGGBBAA",
       },
     },
+    additionalProperties: false,
     required: [
       "category",
       "colour",
     ],
-    additionalProperties: false,
-    "x-spec": "`category: enum \"drawings\"|\"images\"|\"sounds\"|\"pegs\"|\"skeletons\"|\"media\"|\"cameras\"|\"effects\"|\"effectParameters\"; colour: colour`",
   },
   "element.typeColour.set.result": {
-    title: "element.typeColour.set result",
+    title: "TypeColourSetResult",
+    description: "`{category, colour}`.",
     type: "object",
     properties: {
       category: {
-        type: "string",
+        description: "The category.",
+        $ref: "#/$defs/element.typeColour.set.Category",
       },
       colour: {
+        description: "Its colour (`#RRGGBBAA`).",
         type: "string",
         pattern: "^#[0-9A-Fa-f]{6}([0-9A-Fa-f]{2})?$",
-        description: "#RRGGBB or #RRGGBBAA",
       },
     },
     required: [
       "category",
       "colour",
     ],
-    "x-spec": "`{category, colour}`",
-    additionalProperties: false,
   },
   "element.unusedDrawing.list.params": {
-    title: "element.unusedDrawing.list parameters",
+    title: "UnusedParams",
+    description: "`element.unusedDrawing.list` parameters.",
     type: "object",
     properties: {
       sceneId: {
-        type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
+        description: "Scene (default: the current scene) when `elementIds` is omitted.",
+        type: [
+          "string",
+          "null",
+        ],
+        default: null,
       },
       elementIds: {
-        type: "array",
+        description: "Elements (default: every cell-based element of the scene).",
+        type: [
+          "array",
+          "null",
+        ],
         items: {
           type: "string",
-          minLength: 1,
-          maxLength: 4096,
-          description: "object ID or path reference (10 §3)",
         },
-        maxItems: 100000,
+        default: null,
       },
     },
     additionalProperties: false,
-    "x-spec": "`sceneId?: id; elementIds?: [id]`",
+  },
+  "element.unusedDrawing.list.UnusedItem": {
+    description: "One unused drawing.",
+    type: "object",
+    properties: {
+      elementId: {
+        description: "The element (the first of its clone group in Exposure Sheet order).",
+        type: "string",
+      },
+      drawingId: {
+        description: "The drawing.",
+        type: "string",
+      },
+      name: {
+        description: "Its name.",
+        type: "string",
+      },
+    },
+    required: [
+      "elementId",
+      "drawingId",
+      "name",
+    ],
   },
   "element.unusedDrawing.list.result": {
-    title: "element.unusedDrawing.list result",
+    title: "UnusedResult",
+    description: "`{items}`.",
     type: "object",
     properties: {
       items: {
+        description: "Unused drawings.",
         type: "array",
         items: {
-          type: "object",
-          properties: {
-            elementId: {
-              type: "string",
-              minLength: 1,
-              maxLength: 4096,
-              description: "object ID or path reference (10 §3)",
-            },
-            drawingId: {
-              type: "string",
-              minLength: 1,
-              maxLength: 4096,
-              description: "object ID or path reference (10 §3)",
-            },
-            name: {
-              type: "string",
-              maxLength: 65536,
-            },
-          },
-          required: [
-            "elementId",
-            "drawingId",
-            "name",
-          ],
-          additionalProperties: false,
+          $ref: "#/$defs/element.unusedDrawing.list.UnusedItem",
         },
-        maxItems: 100000,
       },
     },
     required: [
       "items",
     ],
-    "x-spec": "`{items: [{elementId, drawingId, name}]}`",
-    additionalProperties: false,
+  },
+  "element.visibility.set.Scope": {
+    description: "Visibility scope (04 §10.1–§10.2).",
+    oneOf: [
+      {
+        description: "Scene views, playback, render and export.",
+        type: "string",
+        const: "scene",
+      },
+      {
+        description: "Exposure Sheet and Drawing View (cell-based elements).",
+        type: "string",
+        const: "xsheet",
+      },
+    ],
+  },
+  "element.visibility.set.Apply": {
+    description: "Which elements a toggle applies to.",
+    oneOf: [
+      {
+        description: "The given elements.",
+        type: "string",
+        const: "given",
+      },
+      {
+        description: "Every element of the scene.",
+        type: "string",
+        const: "all",
+      },
+      {
+        description: "Every element except the given ones.",
+        type: "string",
+        const: "others",
+      },
+    ],
+  },
+  "element.visibility.set.ElementType": {
+    description: "Element types (10 §4.5). The 04 read model reports this value as `type`; the object model uses `elementType`\n(design decision D6).",
+    oneOf: [
+      {
+        description: "Vector drawing element.",
+        type: "string",
+        const: "drawing",
+      },
+      {
+        description: "Annotation (note drawing) element.",
+        type: "string",
+        const: "annotation",
+      },
+      {
+        description: "Bitmap image element.",
+        type: "string",
+        const: "image",
+      },
+      {
+        description: "Sound element.",
+        type: "string",
+        const: "sound",
+      },
+      {
+        description: "Media element (linked sources).",
+        type: "string",
+        const: "media",
+      },
+      {
+        description: "Peg.",
+        type: "string",
+        const: "peg",
+      },
+      {
+        description: "Camera.",
+        type: "string",
+        const: "camera",
+      },
+      {
+        description: "Skeleton effect.",
+        type: "string",
+        const: "skeleton",
+      },
+      {
+        description: "Bone.",
+        type: "string",
+        const: "bone",
+      },
+      {
+        description: "Effect parameter element (mask, sprites, bones, skin slot).",
+        type: "string",
+        const: "effectParameter",
+      },
+      {
+        description: "Colour transform effect.",
+        type: "string",
+        const: "colourTransform",
+      },
+      {
+        description: "Clipping effect.",
+        type: "string",
+        const: "clipping",
+      },
+      {
+        description: "Drop shadow effect.",
+        type: "string",
+        const: "dropShadow",
+      },
+      {
+        description: "Blur effect.",
+        type: "string",
+        const: "blur",
+      },
+      {
+        description: "Shake effect.",
+        type: "string",
+        const: "shake",
+      },
+      {
+        description: "Natural-phenomena particle effect.",
+        type: "string",
+        const: "particleNature",
+      },
+      {
+        description: "Action/impact particle effect.",
+        type: "string",
+        const: "particleImpact",
+      },
+    ],
   },
   "element.visibility.set.params": {
-    title: "element.visibility.set parameters",
+    title: "VisibilityParams",
+    description: "`element.visibility.set` parameters.",
     type: "object",
     properties: {
       elementIds: {
-        type: "array",
+        description: "Elements (default: the selected rows, else the current element).",
+        type: [
+          "array",
+          "null",
+        ],
         items: {
           type: "string",
-          minLength: 1,
-          maxLength: 4096,
-          description: "object ID or path reference (10 §3)",
         },
-        maxItems: 100000,
+        default: null,
       },
       scope: {
-        type: "string",
-        enum: [
-          "scene",
-          "xsheet",
-        ],
+        description: "Scene or Exposure Sheet visibility.",
+        $ref: "#/$defs/element.visibility.set.Scope",
       },
       visible: {
+        description: "Shown or hidden.",
         type: "boolean",
       },
       apply: {
-        type: "string",
-        enum: [
-          "given",
-          "all",
-          "others",
-        ],
-        default: "given",
+        description: "The given elements, all, or all others.",
+        $ref: "#/$defs/element.visibility.set.Apply",
       },
       types: {
-        type: "array",
+        description: "Only elements of these types (e.g. `[\"annotation\"]` for show/hide all annotation elements).",
+        type: [
+          "array",
+          "null",
+        ],
         items: {
-          type: "string",
-          maxLength: 65536,
+          $ref: "#/$defs/element.visibility.set.ElementType",
         },
-        maxItems: 100000,
+        default: null,
       },
     },
+    additionalProperties: false,
     required: [
       "scope",
       "visible",
     ],
-    additionalProperties: false,
-    "x-spec": "`elementIds?: [id]; scope: enum \"scene\"|\"xsheet\"; visible: bool; apply: enum \"given\"|\"all\"|\"others\" = \"given\"; types?: [string]`",
   },
   "element.visibility.set.result": {
-    title: "element.visibility.set result",
+    title: "ChangedIds",
+    description: "`{changedIds}`.",
     type: "object",
     properties: {
       changedIds: {
+        description: "Elements whose flag changed.",
         type: "array",
         items: {
           type: "string",
-          minLength: 1,
-          maxLength: 4096,
-          description: "object ID or path reference (10 §3)",
         },
-        maxItems: 100000,
       },
     },
     required: [
       "changedIds",
     ],
-    "x-spec": "`{changedIds[]}`",
-    additionalProperties: false,
   },
   "export.drawingPdf.run.params": {
     title: "export.drawingPdf.run parameters",
@@ -78922,223 +80343,322 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
     "x-spec": "`{thumbnails, exposureText, elementNames, notes}`",
     additionalProperties: false,
   },
+  "xsheet.exposures.get.Include": {
+    description: "Optional parts of the sheet.",
+    oneOf: [
+      {
+        description: "Cell notes.",
+        type: "string",
+        const: "notes",
+      },
+      {
+        description: "Lip-sync mouths of sound columns.",
+        type: "string",
+        const: "mouths",
+      },
+      {
+        description: "64-pixel PNG thumbnails of the exposed drawings.",
+        type: "string",
+        const: "thumbnails",
+      },
+    ],
+  },
   "xsheet.exposures.get.params": {
-    title: "xsheet.exposures.get parameters",
+    title: "GetParams",
+    description: "`xsheet.exposures.get` parameters.",
     type: "object",
     properties: {
       sceneId: {
-        type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
+        description: "Scene (default: the current scene).",
+        type: [
+          "string",
+          "null",
+        ],
+        default: null,
       },
       elementIds: {
-        type: "array",
+        description: "Only these columns (default: every cell-based element, Exposure Sheet order).",
+        type: [
+          "array",
+          "null",
+        ],
         items: {
           type: "string",
-          minLength: 1,
-          maxLength: 4096,
-          description: "object ID or path reference (10 §3)",
         },
-        maxItems: 100000,
+        default: null,
       },
       from: {
+        description: "First frame of the window.",
         type: "integer",
+        maximum: 9223372036854775807n,
         default: 1,
+        minimum: -9223372036854775808n,
       },
       to: {
-        type: "integer",
+        description: "Last frame of the window (default: the scene length).",
+        type: [
+          "integer",
+          "null",
+        ],
+        maximum: 9223372036854775807n,
+        default: null,
+        minimum: -9223372036854775808n,
       },
       include: {
-        type: "array",
+        description: "Optional parts: `notes`, `mouths`, `thumbnails`.",
+        type: [
+          "array",
+          "null",
+        ],
         items: {
-          type: "string",
-          maxLength: 65536,
+          $ref: "#/$defs/xsheet.exposures.get.Include",
         },
-        maxItems: 100000,
       },
     },
     additionalProperties: false,
-    "x-spec": "`sceneId?: id; elementIds?: [id]; from: int = 1; to?: int; include?: [string]`",
   },
-  "xsheet.exposures.get.spec.ExposureSheet": {
+  "xsheet.exposures.get.ColumnOut": {
+    description: "One column.",
+    type: "object",
+    properties: {
+      elementId: {
+        description: "The element.",
+        type: "string",
+      },
+      name: {
+        description: "Its name.",
+        type: "string",
+      },
+      elementType: {
+        description: "Its type.",
+        type: "string",
+      },
+      visible: {
+        description: "Shown in the Exposure Sheet.",
+        type: "boolean",
+      },
+      exposures: {
+        description: "Exposed runs (drawing, image, annotation and media columns).",
+        type: [
+          "array",
+          "null",
+        ],
+        items: {
+          $ref: "#/$defs/xsheet.exposures.get.Run",
+        },
+      },
+      notes: {
+        description: "Cell notes in the window (with `include: [\"notes\"]`).",
+        type: [
+          "array",
+          "null",
+        ],
+        items: {
+          $ref: "#/$defs/xsheet.exposures.get.Note",
+        },
+      },
+      clips: {
+        description: "Sound clips (sound columns).",
+        type: [
+          "array",
+          "null",
+        ],
+        items: {
+          $ref: "#/$defs/xsheet.exposures.get.Clip",
+        },
+      },
+      mouths: {
+        description: "Mouth runs (sound columns, with `include: [\"mouths\"]`).",
+        type: [
+          "array",
+          "null",
+        ],
+        items: {
+          $ref: "#/$defs/xsheet.exposures.get.Mouth",
+        },
+      },
+      thumbnails: {
+        description: "Thumbnails by drawing ID (with `include: [\"thumbnails\"]`).",
+        type: [
+          "object",
+          "null",
+        ],
+        additionalProperties: true,
+      },
+    },
+    required: [
+      "elementId",
+      "name",
+      "elementType",
+      "visible",
+    ],
+  },
+  "xsheet.exposures.get.Run": {
+    description: "One exposed run.",
+    type: "object",
+    properties: {
+      drawing: {
+        description: "Drawing name (media: the media item's name).",
+        type: "string",
+      },
+      drawingId: {
+        description: "Drawing ID (media: the sequence ID).",
+        type: "string",
+      },
+      from: {
+        description: "First frame inside the window.",
+        type: "integer",
+        maximum: 2147483647,
+        minimum: 0,
+      },
+      to: {
+        description: "Last frame inside the window.",
+        type: "integer",
+        maximum: 2147483647,
+        minimum: 0,
+      },
+      continues: {
+        description: "The run continues outside the window: `before`, `after` or `both`.",
+        type: [
+          "string",
+          "null",
+        ],
+      },
+    },
+    required: [
+      "drawing",
+      "drawingId",
+      "from",
+      "to",
+    ],
+  },
+  "xsheet.exposures.get.Note": {
+    description: "One cell note.",
+    type: "object",
+    properties: {
+      frame: {
+        description: "Frame.",
+        type: "integer",
+        maximum: 2147483647,
+        minimum: 0,
+      },
+      text: {
+        description: "Text.",
+        type: "string",
+      },
+    },
+    required: [
+      "frame",
+      "text",
+    ],
+  },
+  "xsheet.exposures.get.Clip": {
+    description: "One sound clip.",
+    type: "object",
+    properties: {
+      clipId: {
+        description: "The placement.",
+        type: "string",
+      },
+      file: {
+        description: "The sound asset's name.",
+        type: "string",
+      },
+      from: {
+        description: "First frame inside the window.",
+        type: "integer",
+        maximum: 2147483647,
+        minimum: 0,
+      },
+      to: {
+        description: "Last frame inside the window.",
+        type: "integer",
+        maximum: 2147483647,
+        minimum: 0,
+      },
+      continues: {
+        description: "Continuation outside the window.",
+        type: [
+          "string",
+          "null",
+        ],
+      },
+    },
+    required: [
+      "clipId",
+      "file",
+      "from",
+      "to",
+    ],
+  },
+  "xsheet.exposures.get.Mouth": {
+    description: "One mouth run.",
+    type: "object",
+    properties: {
+      mouth: {
+        description: "`A`–`G` or `X`.",
+        type: "string",
+      },
+      from: {
+        description: "First frame.",
+        type: "integer",
+        maximum: 2147483647,
+        minimum: 0,
+      },
+      to: {
+        description: "Last frame.",
+        type: "integer",
+        maximum: 2147483647,
+        minimum: 0,
+      },
+    },
+    required: [
+      "mouth",
+      "from",
+      "to",
+    ],
+  },
+  "xsheet.exposures.get.result": {
+    title: "Sheet",
+    description: "The exposure-sheet object (04 §17.2).",
     type: "object",
     properties: {
       sceneId: {
+        description: "The scene.",
         type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
       },
       rev: {
+        description: "Sheet revision.",
         type: "integer",
+        maximum: 18446744073709551615n,
+        minimum: 0,
       },
       sceneLength: {
+        description: "Scene length.",
         type: "integer",
+        maximum: 2147483647,
+        minimum: 0,
       },
       from: {
+        description: "Window start.",
         type: "integer",
+        maximum: 2147483647,
+        minimum: 0,
       },
       to: {
+        description: "Window end.",
         type: "integer",
+        maximum: 2147483647,
+        minimum: 0,
       },
       columns: {
+        description: "Columns in Exposure Sheet order.",
         type: "array",
         items: {
-          type: "object",
-          properties: {
-            elementId: {
-              type: "string",
-              minLength: 1,
-              maxLength: 4096,
-              description: "object ID or path reference (10 §3)",
-            },
-            name: {
-              type: "string",
-              maxLength: 65536,
-            },
-            elementType: {
-              type: "string",
-              maxLength: 65536,
-            },
-            visible: {
-              type: "boolean",
-            },
-            exposures: {
-              type: "array",
-              items: {
-                type: "object",
-                properties: {
-                  drawing: {
-                    type: "string",
-                    maxLength: 65536,
-                  },
-                  drawingId: {
-                    type: "string",
-                    minLength: 1,
-                    maxLength: 4096,
-                    description: "object ID or path reference (10 §3)",
-                  },
-                  from: {
-                    type: "integer",
-                  },
-                  to: {
-                    type: "integer",
-                  },
-                  continues: {
-                    type: "string",
-                    maxLength: 65536,
-                  },
-                },
-                additionalProperties: false,
-                required: [
-                  "drawing",
-                  "drawingId",
-                  "from",
-                  "to",
-                ],
-              },
-              maxItems: 100000,
-            },
-            notes: {
-              type: "array",
-              items: {
-                type: "object",
-                properties: {
-                  frame: {
-                    type: "integer",
-                  },
-                  text: {
-                    type: "string",
-                    maxLength: 65536,
-                  },
-                },
-                additionalProperties: false,
-                required: [
-                  "frame",
-                  "text",
-                ],
-              },
-              maxItems: 100000,
-            },
-            type: {
-              type: "string",
-              maxLength: 65536,
-            },
-            clips: {
-              type: "array",
-              items: {
-                type: "object",
-                properties: {
-                  clipId: {
-                    type: "string",
-                    minLength: 1,
-                    maxLength: 4096,
-                    description: "object ID or path reference (10 §3)",
-                  },
-                  file: {
-                    type: "string",
-                    maxLength: 65536,
-                  },
-                  from: {
-                    type: "integer",
-                  },
-                  to: {
-                    type: "integer",
-                  },
-                  continues: {
-                    type: "string",
-                    maxLength: 65536,
-                  },
-                },
-                additionalProperties: false,
-                required: [
-                  "clipId",
-                  "file",
-                  "from",
-                  "to",
-                  "continues",
-                ],
-              },
-              maxItems: 100000,
-            },
-            mouths: {
-              type: "array",
-              items: {
-                type: "object",
-                properties: {
-                  mouth: {
-                    type: "string",
-                    maxLength: 65536,
-                  },
-                  from: {
-                    type: "integer",
-                  },
-                  to: {
-                    type: "integer",
-                  },
-                },
-                additionalProperties: false,
-                required: [
-                  "mouth",
-                  "from",
-                  "to",
-                ],
-              },
-              maxItems: 100000,
-            },
-          },
-          additionalProperties: false,
-          required: [
-            "elementId",
-            "name",
-            "visible",
-          ],
+          $ref: "#/$defs/xsheet.exposures.get.ColumnOut",
         },
-        maxItems: 100000,
       },
     },
-    additionalProperties: false,
     required: [
       "sceneId",
       "rev",
@@ -79147,163 +80667,214 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
       "to",
       "columns",
     ],
-    "x-specSection": "04",
   },
-  "xsheet.exposures.get.result": {
-    $ref: "#/$defs/xsheet.exposures.get.spec.ExposureSheet",
-    title: "xsheet.exposures.get result",
-    "x-spec": "exposure-sheet object",
+  "xsheet.exposures.set.ColumnIn": {
+    description: "One column to write.",
+    type: "object",
+    properties: {
+      elementId: {
+        description: "The element.",
+        type: "string",
+      },
+      from: {
+        description: "Window start (default 1).",
+        type: [
+          "integer",
+          "null",
+        ],
+        maximum: 9223372036854775807n,
+        default: null,
+        minimum: -9223372036854775808n,
+      },
+      to: {
+        description: "Window end (default: the later of the last run's end and the element's last exposed frame).",
+        type: [
+          "integer",
+          "null",
+        ],
+        maximum: 9223372036854775807n,
+        default: null,
+        minimum: -9223372036854775808n,
+      },
+      exposures: {
+        description: "Runs, sorted and non-overlapping, inside the window; frames not covered become blank.",
+        type: "array",
+        items: {
+          $ref: "#/$defs/xsheet.exposures.set.RunIn",
+        },
+      },
+    },
+    additionalProperties: false,
+    required: [
+      "elementId",
+      "exposures",
+    ],
+  },
+  "xsheet.exposures.set.RunIn": {
+    description: "One run to write.",
+    type: "object",
+    properties: {
+      drawing: {
+        description: "Drawing name in the column's bank.",
+        type: [
+          "string",
+          "null",
+        ],
+        default: null,
+      },
+      drawingId: {
+        description: "Drawing ID (or path).",
+        type: [
+          "string",
+          "null",
+        ],
+        default: null,
+      },
+      from: {
+        description: "First frame.",
+        type: "integer",
+        maximum: 9223372036854775807n,
+        minimum: -9223372036854775808n,
+      },
+      to: {
+        description: "Last frame.",
+        type: "integer",
+        maximum: 9223372036854775807n,
+        minimum: -9223372036854775808n,
+      },
+    },
+    additionalProperties: false,
+    required: [
+      "from",
+      "to",
+    ],
   },
   "xsheet.exposures.set.params": {
-    title: "xsheet.exposures.set parameters",
+    title: "SetParams",
+    description: "`xsheet.exposures.set` parameters.",
     type: "object",
     properties: {
       sceneId: {
-        type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
+        description: "Scene (default: the current scene); every column must belong to it.",
+        type: [
+          "string",
+          "null",
+        ],
+        default: null,
       },
       columns: {
+        description: "Columns to write.",
         type: "array",
-        maxItems: 100000,
         items: {
-          type: "object",
-          additionalProperties: false,
-          required: [
-            "elementId",
-            "exposures",
-          ],
-          properties: {
-            elementId: {
-              type: "string",
-              minLength: 1,
-              maxLength: 4096,
-              description: "object ID or path reference (10 §3)",
-            },
-            from: {
-              type: "integer",
-              minimum: 1,
-              maximum: 100000,
-            },
-            to: {
-              type: "integer",
-              minimum: 1,
-              maximum: 100000,
-            },
-            exposures: {
-              type: "array",
-              maxItems: 100000,
-              items: {
-                type: "object",
-                additionalProperties: false,
-                required: [
-                  "from",
-                  "to",
-                ],
-                properties: {
-                  drawing: {
-                    type: "string",
-                    maxLength: 65536,
-                  },
-                  drawingId: {
-                    type: "string",
-                    minLength: 1,
-                    maxLength: 4096,
-                    description: "object ID or path reference (10 §3)",
-                  },
-                  from: {
-                    type: "integer",
-                    minimum: 1,
-                    maximum: 100000,
-                  },
-                  to: {
-                    type: "integer",
-                    minimum: 1,
-                    maximum: 100000,
-                  },
-                },
-                anyOf: [
-                  {
-                    required: [
-                      "drawing",
-                    ],
-                  },
-                  {
-                    required: [
-                      "drawingId",
-                    ],
-                  },
-                ],
-              },
-            },
-          },
+          $ref: "#/$defs/xsheet.exposures.set.ColumnIn",
         },
+        minItems: 1,
       },
       createMissingDrawings: {
+        description: "Create empty drawings for unknown names (drawing and annotation columns).",
         type: "boolean",
         default: false,
       },
       expectRev: {
-        type: "integer",
+        description: "The sheet revision the edit is based on (`xsheet.revisionMismatch` otherwise).",
+        type: [
+          "integer",
+          "null",
+        ],
+        maximum: 18446744073709551615n,
+        minimum: 0,
+        default: null,
       },
       dryRun: {
+        description: "Validate and return the diff without applying it.",
         type: "boolean",
         default: false,
       },
     },
+    additionalProperties: false,
     required: [
       "columns",
     ],
-    additionalProperties: false,
-    "x-spec": "`sceneId?: id; columns: [object]; createMissingDrawings: bool = false; expectRev?: int; dryRun: bool = false`",
+  },
+  "xsheet.exposures.set.CellChange": {
+    description: "A change of one element's cells: `{elementId, from, to}`.",
+    type: "object",
+    properties: {
+      elementId: {
+        description: "The element.",
+        type: "string",
+      },
+      from: {
+        description: "First changed frame.",
+        type: "integer",
+        maximum: 2147483647,
+        minimum: 0,
+      },
+      to: {
+        description: "Last changed frame.",
+        type: "integer",
+        maximum: 2147483647,
+        minimum: 0,
+      },
+    },
+    required: [
+      "elementId",
+      "from",
+      "to",
+    ],
+  },
+  "xsheet.exposures.set.Created": {
+    description: "A created drawing.",
+    type: "object",
+    properties: {
+      elementId: {
+        description: "The column.",
+        type: "string",
+      },
+      drawingId: {
+        description: "The drawing.",
+        type: "string",
+      },
+      name: {
+        description: "Its name.",
+        type: "string",
+      },
+    },
+    required: [
+      "elementId",
+      "drawingId",
+      "name",
+    ],
   },
   "xsheet.exposures.set.result": {
-    title: "xsheet.exposures.set result",
+    title: "SetResult",
+    description: "`{rev, sceneLength, changed, createdDrawings}`.",
     type: "object",
     properties: {
       rev: {
-        type: "number",
+        description: "The sheet revision after the change.",
+        type: "integer",
+        maximum: 18446744073709551615n,
+        minimum: 0,
       },
       sceneLength: {
-        type: "number",
+        description: "The scene length after the change.",
+        type: "integer",
+        maximum: 2147483647,
+        minimum: 0,
       },
       changed: {
+        description: "Changed windows per column.",
         type: "array",
         items: {
-          type: "boolean",
+          $ref: "#/$defs/xsheet.exposures.set.CellChange",
         },
-        maxItems: 100000,
       },
       createdDrawings: {
+        description: "Drawings created by `createMissingDrawings`.",
         type: "array",
-        maxItems: 100000,
         items: {
-          type: "object",
-          additionalProperties: false,
-          required: [
-            "elementId",
-            "drawingId",
-            "name",
-          ],
-          properties: {
-            elementId: {
-              type: "string",
-              minLength: 1,
-              maxLength: 4096,
-              description: "object ID or path reference (10 §3)",
-            },
-            drawingId: {
-              type: "string",
-              minLength: 1,
-              maxLength: 4096,
-              description: "object ID or path reference (10 §3)",
-            },
-            name: {
-              type: "string",
-              maxLength: 65536,
-            },
-          },
+          $ref: "#/$defs/xsheet.exposures.set.Created",
         },
       },
     },
@@ -79313,8 +80884,6 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
       "changed",
       "createdDrawings",
     ],
-    "x-spec": "`{rev, sceneLength, changed[], createdDrawings[]}`",
-    additionalProperties: false,
   },
   "xsheet.lightTable.add.params": {
     title: "xsheet.lightTable.add parameters",
@@ -79324,45 +80893,11 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
         type: "array",
         items: {
           type: "object",
-          properties: {
-            itemId: {
-              type: "string",
-              minLength: 1,
-              maxLength: 4096,
-              description: "object ID or path reference (10 §3)",
-            },
-            elementId: {
-              type: "string",
-              minLength: 1,
-              maxLength: 4096,
-              description: "object ID or path reference (10 §3)",
-            },
-            drawingId: {
-              type: "string",
-              minLength: 1,
-              maxLength: 4096,
-              description: "object ID or path reference (10 §3)",
-            },
-            label: {
-              type: "string",
-              maxLength: 65536,
-            },
-            visible: {
-              type: "boolean",
-            },
-            placement: {
-              type: "string",
-            },
-          },
-          required: [
-            "itemId",
-            "elementId",
-            "drawingId",
-            "label",
-            "visible",
-            "placement",
-          ],
+          properties: {},
           additionalProperties: false,
+          "x-placeholder": true,
+          description: "shape not defined by the owning section (spec issue); only {} is accepted until it is",
+          "x-specIssue": "SI-043",
         },
         maxItems: 100000,
       },
@@ -79392,98 +80927,88 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
     additionalProperties: false,
   },
   "xsheet.lightTable.changed.params": {
-    title: "xsheet.lightTable.changed parameters",
+    title: "NoParams",
+    description: "No parameters.",
     type: "object",
-    properties: {},
     additionalProperties: false,
-    description: "Events take no parameters; subscribe to them (11 §9).",
-    "x-spec": "—",
   },
   "xsheet.lightTable.changed.result": {
-    title: "xsheet.lightTable.changed result",
+    title: "LightTableChanged",
+    description: "`xsheet.lightTable.changed` payload.",
     type: "object",
     properties: {
       itemIds: {
+        description: "The items.",
         type: "array",
         items: {
           type: "string",
-          minLength: 1,
-          maxLength: 4096,
-          description: "object ID or path reference (10 §3)",
         },
-        maxItems: 100000,
       },
     },
     required: [
       "itemIds",
     ],
-    description: "Event payload (delivered to subscribers).",
-    "x-spec": "`{itemIds[]}`",
-    additionalProperties: false,
   },
   "xsheet.lightTable.list.params": {
-    title: "xsheet.lightTable.list parameters",
+    title: "NoParams",
+    description: "No parameters.",
     type: "object",
-    properties: {},
     additionalProperties: false,
-    "x-spec": "—",
+  },
+  "xsheet.lightTable.list.LightItemOut": {
+    description: "One light-table item.",
+    type: "object",
+    properties: {
+      itemId: {
+        description: "Item ID.",
+        type: "string",
+      },
+      elementId: {
+        description: "Source element.",
+        type: "string",
+      },
+      drawingId: {
+        description: "The drawing.",
+        type: "string",
+      },
+      label: {
+        description: "`<drawing> in <element>`, following renames (04 §15.3).",
+        type: "string",
+      },
+      visible: {
+        description: "Shown.",
+        type: "boolean",
+      },
+      placement: {
+        description: "`over` or `under`.",
+        type: "string",
+      },
+    },
+    required: [
+      "itemId",
+      "elementId",
+      "drawingId",
+      "label",
+      "visible",
+      "placement",
+    ],
   },
   "xsheet.lightTable.list.result": {
-    title: "xsheet.lightTable.list result",
+    title: "LightTableResult",
+    description: "`{items}`.",
     type: "object",
     properties: {
       items: {
+        description: "Items in stacking order.",
         type: "array",
         items: {
-          type: "object",
-          properties: {
-            itemId: {
-              type: "string",
-              minLength: 1,
-              maxLength: 4096,
-              description: "object ID or path reference (10 §3)",
-            },
-            elementId: {
-              type: "string",
-              minLength: 1,
-              maxLength: 4096,
-              description: "object ID or path reference (10 §3)",
-            },
-            drawingId: {
-              type: "string",
-              minLength: 1,
-              maxLength: 4096,
-              description: "object ID or path reference (10 §3)",
-            },
-            label: {
-              type: "string",
-              maxLength: 65536,
-            },
-            visible: {
-              type: "boolean",
-            },
-            placement: {
-              type: "string",
-            },
-          },
-          required: [
-            "itemId",
-            "elementId",
-            "drawingId",
-            "label",
-            "visible",
-            "placement",
-          ],
-          additionalProperties: false,
+          $ref: "#/$defs/xsheet.lightTable.list.LightItemOut",
         },
-        maxItems: 100000,
       },
     },
     required: [
       "items",
     ],
-    "x-spec": "`{items: [{itemId, elementId, drawingId, label, visible, placement}]}`",
-    additionalProperties: false,
   },
   "xsheet.lightTable.move.params": {
     title: "xsheet.lightTable.move parameters",
@@ -82685,363 +84210,643 @@ export interface capture_target_set_result {
   advance: boolean;
 }
 
+/** `cell.blank.add` / `cell.blank.remove` parameters. */
 export interface cell_blank_add_params {
-  elementIds?: string[];
-  frame?: number | bigint;
+  /** Target elements (default: the selection, else the current element). */
+  elementIds?: string[] | null;
+  /** The frame (default: the first selected frame, else the current frame). */
+  frame?: number | bigint | null;
+  /** Number of blank cells. */
   count?: number;
 }
 
+/** A change of one element's cells: `{elementId, from, to}`. */
+export interface cell_blank_add_CellChange {
+  /** The element. */
+  elementId: string;
+  /** First changed frame. */
+  from: number;
+  /** Last changed frame. */
+  to: number;
+}
+
+/** `{changed: [{elementId, from, to}]}`. */
 export interface cell_blank_add_result {
-  changed: ({
-    /** object ID or path reference (10 §3) */
-    elementId: string;
-    from: number;
-    to: number;
-  })[];
+  /** The changed frame window of each changed element (unchanged elements are omitted). */
+  changed: cell_blank_add_CellChange[];
 }
 
+/** `cell.blank.add` / `cell.blank.remove` parameters. */
 export interface cell_blank_remove_params {
-  elementIds?: string[];
-  frame?: number | bigint;
+  /** Target elements (default: the selection, else the current element). */
+  elementIds?: string[] | null;
+  /** The frame (default: the first selected frame, else the current frame). */
+  frame?: number | bigint | null;
+  /** Number of blank cells. */
   count?: number;
 }
 
+/** A change of one element's cells: `{elementId, from, to}`. */
+export interface cell_blank_remove_CellChange {
+  /** The element. */
+  elementId: string;
+  /** First changed frame. */
+  from: number;
+  /** Last changed frame. */
+  to: number;
+}
+
+/** `{changed: [{elementId, from, to}]}`. */
 export interface cell_blank_remove_result {
-  changed: ({
-    /** object ID or path reference (10 §3) */
-    elementId: string;
-    from: number;
-    to: number;
-  })[];
+  /** The changed frame window of each changed element (unchanged elements are omitted). */
+  changed: cell_blank_remove_CellChange[];
 }
 
-export interface cell_clipboard_apply_spec_TransferOptions {
-  overwriteDrawings: boolean;
-  exposure: boolean;
-  autoExtend: boolean;
-  updateColours: boolean;
-  keyframeSubstitution: boolean;
-  boundaryKeys: boolean;
-  pegKeys: {
-    motion: boolean;
-    rotation: boolean;
-    scale: boolean;
-    pivot: boolean;
-    velocity: boolean;
-    skew: boolean;
-  };
+/** Paste mode. */
+export type cell_clipboard_apply_PasteMode = 'paste' | 'newDrawings';
+
+/** The transfer options object (04 §17.3, 11.14); omitted fields take the defaults of 11.14. */
+export interface cell_clipboard_apply_TransferOptions {
+  /** Same-named drawings in the destination bank are overwritten (otherwise new drawings are created). */
+  overwriteDrawings?: boolean;
+  /** Paste inserts cells and cut/move removes them (following cells shift); off: overwrite / clear. */
+  exposure?: boolean;
+  /** Extend transferred exposures up to the destination frame. */
+  autoExtend?: boolean;
+  /** Update palette colours from templates. */
+  updateColours?: boolean;
+  /** Replace keyframe properties at and after the current frame. */
+  keyframeSubstitution?: boolean;
+  /** Add keyframes at the start and end of the transferred range. */
+  boundaryKeys?: boolean;
+  /** Peg key groups. */
+  pegKeys?: cell_clipboard_apply_PegKeys;
 }
 
+/** Peg key groups of the transfer options. */
+export interface cell_clipboard_apply_PegKeys {
+  /** Motion keyframes. */
+  motion?: boolean;
+  /** Rotation keyframes. */
+  rotation?: boolean;
+  /** Scale keyframes. */
+  scale?: boolean;
+  /** Pivot keyframes. */
+  pivot?: boolean;
+  /** Velocity keyframes. */
+  velocity?: boolean;
+  /** Skew keyframes. */
+  skew?: boolean;
+}
+
+/** `cell.clipboard.apply` parameters. */
 export interface cell_clipboard_apply_params {
-  /** object ID or path reference (10 §3) */
-  elementId?: string;
-  frame?: number | bigint;
-  mode?: 'paste' | 'newDrawings';
-  options?: cell_clipboard_apply_spec_TransferOptions;
+  /** Target element (default: the current element; following columns receive further copied elements). */
+  elementId?: string | null;
+  /** Target frame (default: the first selected frame, else the current frame). */
+  frame?: number | bigint | null;
+  /** Paste or paste as new drawings. */
+  mode?: cell_clipboard_apply_PasteMode;
+  /** Transfer options (default: 11.14's paste-special defaults). */
+  options?: cell_clipboard_apply_TransferOptions | null;
 }
 
+/** `{elementIds, from, to, createdDrawingIds}`. */
 export interface cell_clipboard_apply_result {
+  /** Elements pasted into (or created). */
   elementIds: string[];
-  from: number | bigint;
-  to: number | bigint;
+  /** First frame. */
+  from: number;
+  /** Last frame. */
+  to: number;
+  /** Drawings created. */
   createdDrawingIds: string[];
 }
 
-export interface cell_clipboard_set_spec_TransferOptions {
-  overwriteDrawings: boolean;
-  exposure: boolean;
-  autoExtend: boolean;
-  updateColours: boolean;
-  keyframeSubstitution: boolean;
-  boundaryKeys: boolean;
-  pegKeys: {
-    motion: boolean;
-    rotation: boolean;
-    scale: boolean;
-    pivot: boolean;
-    velocity: boolean;
-    skew: boolean;
-  };
+/** The transfer options object (04 §17.3, 11.14); omitted fields take the defaults of 11.14. */
+export interface cell_clipboard_set_TransferOptions {
+  /** Same-named drawings in the destination bank are overwritten (otherwise new drawings are created). */
+  overwriteDrawings?: boolean;
+  /** Paste inserts cells and cut/move removes them (following cells shift); off: overwrite / clear. */
+  exposure?: boolean;
+  /** Extend transferred exposures up to the destination frame. */
+  autoExtend?: boolean;
+  /** Update palette colours from templates. */
+  updateColours?: boolean;
+  /** Replace keyframe properties at and after the current frame. */
+  keyframeSubstitution?: boolean;
+  /** Add keyframes at the start and end of the transferred range. */
+  boundaryKeys?: boolean;
+  /** Peg key groups. */
+  pegKeys?: cell_clipboard_set_PegKeys;
 }
 
+/** Peg key groups of the transfer options. */
+export interface cell_clipboard_set_PegKeys {
+  /** Motion keyframes. */
+  motion?: boolean;
+  /** Rotation keyframes. */
+  rotation?: boolean;
+  /** Scale keyframes. */
+  scale?: boolean;
+  /** Pivot keyframes. */
+  pivot?: boolean;
+  /** Velocity keyframes. */
+  velocity?: boolean;
+  /** Skew keyframes. */
+  skew?: boolean;
+}
+
+/** `cell.clipboard.set` parameters. */
 export interface cell_clipboard_set_params {
-  elementIds?: string[];
-  from?: number | bigint;
-  to?: number | bigint;
+  /** Source elements (default: the selection, else the current element). */
+  elementIds?: string[] | null;
+  /** First frame. */
+  from?: number | bigint | null;
+  /** Last frame. */
+  to?: number | bigint | null;
+  /** Copy whole elements instead of cells. */
   wholeElements?: boolean;
+  /** Cut (an undoable removal, by the cut-special `exposure` option: remove and shift, or clear). */
   cut?: boolean;
-  options?: cell_clipboard_set_spec_TransferOptions;
+  /** Transfer options (default: 11.14's cut-special defaults). */
+  options?: cell_clipboard_set_TransferOptions | null;
 }
 
+/** `{contentType, elementCount, frames}`. */
 export interface cell_clipboard_set_result {
+  /** `drawingCells`, `imageCells` or `elements`. */
   contentType: string;
+  /** Elements copied. */
   elementCount: number;
+  /** Frames per element. */
   frames: number;
 }
 
+/** Columnate loop mode. */
+export type cell_columnate_apply_ColumnateLoop = 'none' | 'continuous' | 'forwardBackward';
+
+/** Columnate placement. */
+export type cell_columnate_apply_Placement = 'overwrite' | 'insert';
+
+/** `cell.columnate.apply` parameters. */
 export interface cell_columnate_apply_params {
-  /** object ID or path reference (10 §3) */
-  elementId?: string;
-  frame?: number | bigint;
+  /** Target element (default: the selection, else the current element). */
+  elementId?: string | null;
+  /** First frame (default: the first selected frame, else the current frame). */
+  frame?: number | bigint | null;
+  /** First drawing (name in the bank). */
   firstDrawing: string;
+  /** Last drawing (name in the bank; before the first = reversed order). */
   lastDrawing: string;
+  /** Frames each drawing is exposed. */
   exposeEach?: number;
-  exposeLast?: number;
-  loopMode?: 'none' | 'continuous' | 'forwardBackward';
-  loops?: number;
-  totalFrames?: number | bigint;
-  placement?: 'overwrite' | 'insert';
+  /** Frames the final drawing of the whole cycle is exposed (default: `exposeEach`). */
+  exposeLast?: number | null;
+  /** Loop mode. */
+  loopMode?: cell_columnate_apply_ColumnateLoop;
+  /** Loops (continuous and forward-backward). */
+  loops?: number | null;
+  /** Total frames (recomputes the loops; the last loop is truncated). */
+  totalFrames?: number | null;
+  /** Overwrite or insert. */
+  placement?: cell_columnate_apply_Placement;
+  /** Compute and return the cycle without applying it. */
   dryRun?: boolean;
 }
 
-export interface cell_columnate_apply_result {
+/** One drawing of the computed cycle. */
+export interface cell_columnate_apply_SequenceItem {
+  /** Drawing name. */
+  drawing: string;
+  /** First frame. */
   from: number;
+  /** Last frame. */
   to: number;
-  totalFrames: number | bigint;
-  loops: number;
-  sequence: ({
-    drawing: string;
-    from: number;
-    to: number;
-  })[];
 }
 
+/** `{from, to, totalFrames, loops, sequence}`. */
+export interface cell_columnate_apply_result {
+  /** First frame. */
+  from: number;
+  /** Last frame. */
+  to: number;
+  /** Total frames. */
+  totalFrames: number;
+  /** Loops. */
+  loops: number;
+  /** The drawings with their frames. */
+  sequence: cell_columnate_apply_SequenceItem[];
+}
+
+/** `cell.cycle.create` parameters. */
 export interface cell_cycle_create_params {
-  /** object ID or path reference (10 §3) */
-  elementId?: string;
-  from?: number | bigint;
-  to?: number | bigint;
+  /** Target element (default: the selection, else the current element). */
+  elementId?: string | null;
+  /** First frame of the pattern. */
+  from?: number | bigint | null;
+  /** Last frame of the pattern. */
+  to?: number | bigint | null;
+  /** How many times the range appears in total (1 = no change). */
   cycles: number;
 }
 
+/** `{from, to}`. */
 export interface cell_cycle_create_result {
-  from: number | bigint;
-  to: number | bigint;
+  /** First frame. */
+  from: number;
+  /** Last frame. */
+  to: number;
 }
 
+/** `cell.drawing.duplicate` parameters. */
 export interface cell_drawing_duplicate_params {
-  /** object ID or path reference (10 §3) */
-  elementId?: string;
-  from?: number | bigint;
-  to?: number | bigint;
-  name?: string;
+  /** Target element (default: the selection, else the current element). */
+  elementId?: string | null;
+  /** First frame (its drawing is copied). */
+  from?: number | bigint | null;
+  /** Last frame of the cells that show the copy. */
+  to?: number | bigint | null;
+  /** Name of the copy (default: the next free name). */
+  name?: string | null;
 }
 
+/** `{drawingId, name}`. */
 export interface cell_drawing_duplicate_result {
-  /** object ID or path reference (10 §3) */
+  /** The new drawing. */
   drawingId: string;
+  /** Its name. */
   name: string;
 }
 
+/** `cell.exposure.add` / `cell.exposure.remove` parameters. */
 export interface cell_exposure_add_params {
-  elementIds?: string[];
-  from?: number | bigint;
-  to?: number | bigint;
+  /** Target elements (default: the selection, else the current element). */
+  elementIds?: string[] | null;
+  /** First frame of the range (default: the selection, else the current frame). */
+  from?: number | bigint | null;
+  /** Last frame of the range. */
+  to?: number | bigint | null;
+  /** Frames to add or remove per exposure. */
   frames?: number;
 }
 
+/** A change of one element's cells: `{elementId, from, to}`. */
+export interface cell_exposure_add_CellChange {
+  /** The element. */
+  elementId: string;
+  /** First changed frame. */
+  from: number;
+  /** Last changed frame. */
+  to: number;
+}
+
+/** `{changed: [{elementId, from, to}]}`. */
 export interface cell_exposure_add_result {
-  changed: ({
-    /** object ID or path reference (10 §3) */
-    elementId: string;
-    from: number | bigint;
-    to: number | bigint;
-  })[];
+  /** The changed frame window of each changed element (unchanged elements are omitted). */
+  changed: cell_exposure_add_CellChange[];
 }
 
+/** `cell.exposure.add` / `cell.exposure.remove` parameters. */
 export interface cell_exposure_remove_params {
-  elementIds?: string[];
-  from?: number | bigint;
-  to?: number | bigint;
+  /** Target elements (default: the selection, else the current element). */
+  elementIds?: string[] | null;
+  /** First frame of the range (default: the selection, else the current frame). */
+  from?: number | bigint | null;
+  /** Last frame of the range. */
+  to?: number | bigint | null;
+  /** Frames to add or remove per exposure. */
   frames?: number;
 }
 
-export interface cell_exposure_remove_result {
-  changed: ({
-    /** object ID or path reference (10 §3) */
-    elementId: string;
-    from: number | bigint;
-    to: number | bigint;
-  })[];
+/** A change of one element's cells: `{elementId, from, to}`. */
+export interface cell_exposure_remove_CellChange {
+  /** The element. */
+  elementId: string;
+  /** First changed frame. */
+  from: number;
+  /** Last changed frame. */
+  to: number;
 }
 
+/** `{changed: [{elementId, from, to}]}`. */
+export interface cell_exposure_remove_result {
+  /** The changed frame window of each changed element (unchanged elements are omitted). */
+  changed: cell_exposure_remove_CellChange[];
+}
+
+/** `cell.exposure.set` parameters. */
 export interface cell_exposure_set_params {
-  elementIds?: string[];
-  from?: number | bigint;
-  to?: number | bigint;
+  /** Target elements (default: the selection, else the current element). */
+  elementIds?: string[] | null;
+  /** First frame of the range. */
+  from?: number | bigint | null;
+  /** Last frame of the range. */
+  to?: number | bigint | null;
+  /** New length of every exposure intersecting the range (1 = on ones, 2 = on twos, …). */
   length: number;
 }
 
-export interface cell_exposure_set_result {
-  changed: ({
-    /** object ID or path reference (10 §3) */
-    elementId: string;
-    from: number | bigint;
-    to: number | bigint;
-  })[];
+/** A change of one element's cells: `{elementId, from, to}`. */
+export interface cell_exposure_set_CellChange {
+  /** The element. */
+  elementId: string;
+  /** First changed frame. */
+  from: number;
+  /** Last changed frame. */
+  to: number;
 }
 
-/** Events take no parameters; subscribe to them (11 §9). */
+/** `{changed: [{elementId, from, to}]}`. */
+export interface cell_exposure_set_result {
+  /** The changed frame window of each changed element (unchanged elements are omitted). */
+  changed: cell_exposure_set_CellChange[];
+}
+
+/** No parameters. */
 export type cell_exposures_changed_params = Record<string, unknown>;
 
-/** Event payload (delivered to subscribers). */
+/** `cell.exposures.changed` payload. */
 export interface cell_exposures_changed_result {
-  /** object ID or path reference (10 §3) */
+  /** The scene. */
   sceneId: string;
-  /** object ID or path reference (10 §3) */
+  /** The element. */
   elementId: string;
+  /** First changed frame. */
   from: number;
+  /** Last changed frame. */
   to: number;
-  rev: number;
+  /** Revision after the change. */
+  rev: number | bigint;
 }
 
+/** `cell.fill.apply` parameters. */
 export interface cell_fill_apply_params {
-  elementIds?: string[];
-  frame?: number | bigint;
-  toFrame: number;
+  /** Target elements (default: the selection, else the current element). */
+  elementIds?: string[] | null;
+  /** The cell whose drawing is extended (default: the first selected frame, else the current frame). */
+  frame?: number | bigint | null;
+  /** Last frame to expose the drawing in (minimum: `frame`; 04 §13.5). */
+  toFrame: number | bigint;
 }
 
+/** A change of one element's cells: `{elementId, from, to}`. */
+export interface cell_fill_apply_CellChange {
+  /** The element. */
+  elementId: string;
+  /** First changed frame. */
+  from: number;
+  /** Last changed frame. */
+  to: number;
+}
+
+/** `{changed: [{elementId, from, to}]}`. */
 export interface cell_fill_apply_result {
-  changed: ({
-    /** object ID or path reference (10 §3) */
-    elementId: string;
-    from: number;
-    to: number;
-  })[];
+  /** The changed frame window of each changed element (unchanged elements are omitted). */
+  changed: cell_fill_apply_CellChange[];
 }
 
+/** `cell.label.set` parameters. */
 export interface cell_label_set_params {
-  elementIds?: string[];
-  from?: number | bigint;
-  to?: number | bigint;
-  drawing?: string;
-  /** object ID or path reference (10 §3) */
-  drawingId?: string;
-  step?: number | bigint;
+  /** Target elements (default: the selection, else the current element). */
+  elementIds?: string[] | null;
+  /** First frame. */
+  from?: number | bigint | null;
+  /** Last frame. */
+  to?: number | bigint | null;
+  /** Drawing name in each element's bank. */
+  drawing?: string | null;
+  /** Drawing ID or path (it must belong to the element's bank). */
+  drawingId?: string | null;
+  /** Step through the bank (natural name order) from the drawing at `from`. */
+  step?: number | bigint | null;
+  /** Create an empty drawing for an unknown name (drawing and annotation elements). */
   createMissing?: boolean;
 }
 
-export interface cell_label_set_result {
-  /** object ID or path reference (10 §3) */
-  drawingId: string;
-  name: string;
-  changed: boolean[];
+/** A change of one element's cells: `{elementId, from, to}`. */
+export interface cell_label_set_CellChange {
+  /** The element. */
+  elementId: string;
+  /** First changed frame. */
+  from: number;
+  /** Last changed frame. */
+  to: number;
 }
 
+/** `{drawingId, name, changed}`. */
+export interface cell_label_set_result {
+  /** The drawing now exposed (first element). */
+  drawingId: string;
+  /** Its name. */
+  name: string;
+  /** Changed windows. */
+  changed: cell_label_set_CellChange[];
+}
+
+/** `cell.note.set` parameters. */
 export interface cell_note_set_params {
-  /** object ID or path reference (10 §3) */
+  /** The element. */
   elementId: string;
+  /** The frame. */
   frame: number | bigint;
+  /** The note (empty removes it; at most 10 000 characters). */
   text: string;
 }
 
+/** `{elementId, frame}`. */
 export interface cell_note_set_result {
-  /** object ID or path reference (10 §3) */
+  /** The element. */
   elementId: string;
-  frame: number | bigint;
+  /** The frame. */
+  frame: number;
 }
 
+/** Insert position (13.6). */
+export type cell_range_add_Position = 'before' | 'after';
+
+/** `cell.range.add` parameters. */
 export interface cell_range_add_params {
-  elementIds?: string[];
+  /** Target elements (default: the selection, else the current element). */
+  elementIds?: string[] | null;
+  /** Insert blank cells in every cell-based element of the scene (pegs, cameras and effects are not shifted). */
   allElements?: boolean;
-  frame?: number | bigint;
+  /** The selected cell (default: the first selected frame, else the current frame). */
+  frame?: number | bigint | null;
+  /** Number of cells. */
   count?: number;
-  position?: 'before' | 'after';
+  /** Insert before or after the selected cell. */
+  position?: cell_range_add_Position;
+  /** Each inserted cell gets a new empty drawing named after the highest numeric name (unavailable with `allElements`). */
   named?: boolean;
 }
 
+/** `{from, to, drawingIds}`. */
 export interface cell_range_add_result {
-  from: number | bigint;
-  to: number | bigint;
+  /** First inserted frame. */
+  from: number;
+  /** Last inserted frame. */
+  to: number;
+  /** Drawings created for named cells. */
   drawingIds: string[];
 }
 
+/** `cell.range.delete` parameters. */
 export interface cell_range_delete_params {
-  elementIds?: string[];
-  from?: number | bigint;
-  to?: number | bigint;
+  /** Target elements (default: the selection, else the current element). */
+  elementIds?: string[] | null;
+  /** First frame. */
+  from?: number | bigint | null;
+  /** Last frame. */
+  to?: number | bigint | null;
+  /** Remove the cells and shift the following cells earlier (`true`), or clear them to blanks (`false`). */
   shift?: boolean;
 }
 
+/** A change of one element's cells: `{elementId, from, to}`. */
+export interface cell_range_delete_CellChange {
+  /** The element. */
+  elementId: string;
+  /** First changed frame. */
+  from: number;
+  /** Last changed frame. */
+  to: number;
+}
+
+/** `{changed: [{elementId, from, to}]}`. */
 export interface cell_range_delete_result {
-  changed: ({
-    /** object ID or path reference (10 §3) */
-    elementId: string;
-    from: number | bigint;
-    to: number | bigint;
-  })[];
+  /** The changed frame window of each changed element (unchanged elements are omitted). */
+  changed: cell_range_delete_CellChange[];
 }
 
-export interface cell_range_move_spec_TransferOptions {
-  overwriteDrawings: boolean;
-  exposure: boolean;
-  autoExtend: boolean;
-  updateColours: boolean;
-  keyframeSubstitution: boolean;
-  boundaryKeys: boolean;
-  pegKeys: {
-    motion: boolean;
-    rotation: boolean;
-    scale: boolean;
-    pivot: boolean;
-    velocity: boolean;
-    skew: boolean;
-  };
+/** Transfer mode (11.13). */
+export type cell_range_move_MoveMode = 'move' | 'copy' | 'link' | 'copyNew';
+
+/** The transfer options object (04 §17.3, 11.14); omitted fields take the defaults of 11.14. */
+export interface cell_range_move_TransferOptions {
+  /** Same-named drawings in the destination bank are overwritten (otherwise new drawings are created). */
+  overwriteDrawings?: boolean;
+  /** Paste inserts cells and cut/move removes them (following cells shift); off: overwrite / clear. */
+  exposure?: boolean;
+  /** Extend transferred exposures up to the destination frame. */
+  autoExtend?: boolean;
+  /** Update palette colours from templates. */
+  updateColours?: boolean;
+  /** Replace keyframe properties at and after the current frame. */
+  keyframeSubstitution?: boolean;
+  /** Add keyframes at the start and end of the transferred range. */
+  boundaryKeys?: boolean;
+  /** Peg key groups. */
+  pegKeys?: cell_range_move_PegKeys;
 }
 
+/** Peg key groups of the transfer options. */
+export interface cell_range_move_PegKeys {
+  /** Motion keyframes. */
+  motion?: boolean;
+  /** Rotation keyframes. */
+  rotation?: boolean;
+  /** Scale keyframes. */
+  scale?: boolean;
+  /** Pivot keyframes. */
+  pivot?: boolean;
+  /** Velocity keyframes. */
+  velocity?: boolean;
+  /** Skew keyframes. */
+  skew?: boolean;
+}
+
+/** `cell.range.move` parameters. */
 export interface cell_range_move_params {
+  /** Source elements (several: they map onto consecutive Exposure Sheet columns from the target). */
   sourceElementIds: string[];
+  /** First source frame. */
   from: number | bigint;
+  /** Last source frame. */
   to: number | bigint;
-  /** object ID or path reference (10 §3) */
-  targetElementId?: string;
+  /** Target element (default: each source element itself). */
+  targetElementId?: string | null;
+  /** Target frame (in the column as it is before the move). */
   targetFrame: number | bigint;
-  mode?: 'move' | 'copy' | 'link' | 'copyNew';
-  options?: cell_range_move_spec_TransferOptions;
+  /** Move, copy, link or copy as new drawings. */
+  mode?: cell_range_move_MoveMode;
+  /** Transfer options (default: the drag-and-drop defaults of 11.14). */
+  options?: cell_range_move_TransferOptions | null;
 }
 
+/** `{from, to, createdDrawingIds}`. */
 export interface cell_range_move_result {
-  from: number | bigint;
-  to: number | bigint;
+  /** First target frame. */
+  from: number;
+  /** Last target frame. */
+  to: number;
+  /** Drawings created in target banks. */
   createdDrawingIds: string[];
 }
 
+/** Selection mode. */
+export type cell_select_SelectMode = 'replace' | 'add';
+
+/** Cell selection extent. */
+export type cell_select_Extent = 'cells' | 'track' | 'soundClip' | 'soundClipToStart' | 'soundClipToEnd';
+
+/** `cell.select` parameters. */
 export interface cell_select_params {
+  /** Elements (columns or rows). */
   elementIds: string[];
+  /** First frame. */
   from: number | bigint;
+  /** Last frame. */
   to: number | bigint;
-  mode?: 'replace' | 'add';
-  extent?: 'cells' | 'track' | 'soundClip' | 'soundClipToStart' | 'soundClipToEnd';
+  /** Replace or add. */
+  mode?: cell_select_SelectMode;
+  /** Cells, a whole track, or a sound clip extent. */
+  extent?: cell_select_Extent;
 }
 
+/** `{elementIds, from, to}`. */
 export interface cell_select_result {
+  /** Selected elements. */
   elementIds: string[];
-  from: number | bigint;
-  to: number | bigint;
+  /** First selected frame. */
+  from: number;
+  /** Last selected frame. */
+  to: number;
 }
 
-/** Events take no parameters; subscribe to them (11 §9). */
+/** No parameters. */
 export type cell_selection_changed_params = Record<string, unknown>;
 
-/** Event payload (delivered to subscribers). */
+/** `cell.selection.changed` payload. */
 export interface cell_selection_changed_result {
+  /** Elements of the selected cells. */
   elementIds: string[];
+  /** First selected frame. */
   from: number;
+  /** Last selected frame. */
   to: number;
-  /** object ID or path reference (10 §3) */
-  currentElementId: string;
+  /** The current element. */
+  currentElementId?: string | null;
+  /** The current frame. */
   currentFrame: number;
 }
 
+/** No parameters. */
 export type cell_selection_get_params = Record<string, unknown>;
 
+/** `cell.selection.get` result. */
 export interface cell_selection_get_result {
+  /** Elements of the selected cells (or the selected rows when no cells are selected). */
   elementIds: string[];
+  /** First selected frame (0: no cells selected). */
   from: number;
+  /** Last selected frame (0: no cells selected). */
   to: number;
+  /** Number of selected rows (Timeline element selection). */
   rowsSelected: number;
-  /** object ID or path reference (10 §3) */
-  currentElementId: string;
+  /** The current element. */
+  currentElementId?: string | null;
+  /** The current frame. */
   currentFrame: number;
 }
 
@@ -88560,546 +90365,877 @@ export interface edit_undo_result {
   position: number | bigint;
 }
 
+/** `element.annotation.set` parameters. */
 export interface element_annotation_set_params {
-  /** object ID or path reference (10 §3) */
+  /** A drawing or annotation element. */
   elementId: string;
+  /** Annotation element (`true`) or drawing element (`false`). */
   annotation: boolean;
 }
 
+/** `{elementId, type}`. */
 export interface element_annotation_set_result {
-  /** object ID or path reference (10 §3) */
+  /** The element. */
   elementId: string;
+  /** Its type now. */
   type: string;
 }
 
+/** `element.childExposure.apply` parameters. */
 export interface element_childExposure_apply_params {
-  /** object ID or path reference (10 §3) */
+  /** The peg. */
   pegId: string;
+  /** Last frame to expose the children's drawings in. */
   toFrame: number | bigint;
 }
 
-export interface element_childExposure_apply_result {
-  changed: ({
-    /** object ID or path reference (10 §3) */
-    elementId: string;
-    from: number;
-    to: number;
-  })[];
-}
-
-export interface element_clone_params {
-  /** object ID or path reference (10 §3) */
+/** A change of one element's cells: `{elementId, from, to}`. */
+export interface element_childExposure_apply_CellChange {
+  /** The element. */
   elementId: string;
-  name?: string;
-}
-
-export interface element_clone_result {
-  /** object ID or path reference (10 §3) */
-  elementId: string;
-  name: string;
-  /** object ID or path reference (10 §3) */
-  cloneGroupId: string;
-}
-
-export interface element_collapsed_set_params {
-  elementIds?: string[];
-  collapsed: boolean;
-}
-
-export interface element_collapsed_set_result {
-  elementIds: string[];
-}
-
-export interface element_colour_set_params {
-  elementIds?: string[];
-  /** #RRGGBB or #RRGGBBAA */
-  marker?: string;
-  /** #RRGGBB or #RRGGBBAA */
-  background?: string;
-}
-
-export interface element_colour_set_result {
-  elementIds: string[];
-}
-
-export interface element_create_params {
-  type: 'drawing' | 'image' | 'sound' | 'media' | 'annotation' | 'peg' | 'camera' | 'skeleton' | 'colourTransform' | 'clipping' | 'dropShadow' | 'blur' | 'shake' | 'particleNature' | 'particleImpact';
-  name?: string;
-  count?: number;
-  /** object ID or path reference (10 §3) */
-  sceneId?: string;
-  /** object ID or path reference (10 §3) */
-  parentId?: string;
-  /** object ID or path reference (10 §3) */
-  above?: string;
-  /** object ID or path reference (10 §3) */
-  xsheetAfter?: string;
-}
-
-export interface element_create_result {
-  elementIds: string[];
-  names: string[];
-  warnings: ({
-    code: string;
-    message: string;
-    objectIds?: string[];
-  })[];
-}
-
-export interface element_current_move_params {
-  direction: 'previous' | 'next';
-  order?: 'timeline' | 'xsheet';
-}
-
-export interface element_current_move_result {
-  /** object ID or path reference (10 §3) */
-  elementId: string;
-}
-
-export interface element_current_set_params {
-  /** object ID or path reference (10 §3) */
-  elementId: string;
-}
-
-export interface element_current_set_result {
-  /** object ID or path reference (10 §3) */
-  elementId: string;
-}
-
-export interface element_delete_params {
-  elementIds?: string[];
-}
-
-export interface element_delete_result {
-  deletedIds: string[];
-  reparentedIds: string[];
-  deletedDrawingCount: number;
-}
-
-/** Events take no parameters; subscribe to them (11 §9). */
-export type element_drawing_changed_params = Record<string, unknown>;
-
-/** Event payload (delivered to subscribers). */
-export interface element_drawing_changed_result {
-  /** object ID or path reference (10 §3) */
-  elementId: string;
-  drawingIds: string[];
-  change: string;
-}
-
-export interface element_drawing_create_params {
-  /** object ID or path reference (10 §3) */
-  elementId: string;
-  name?: string;
-  exposeFrom?: number | bigint;
-  exposeTo?: number | bigint;
-}
-
-export interface element_drawing_create_result {
-  /** object ID or path reference (10 §3) */
-  drawingId: string;
-  name: string;
-}
-
-export interface element_drawing_delete_params {
-  drawingIds: string[];
-  ifInUse?: 'fail' | 'clearCells';
-}
-
-export interface element_drawing_delete_result {
-  deletedIds: string[];
-  clearedCells: ({
-    /** object ID or path reference (10 §3) */
-    elementId: string;
-    from: number;
-    to: number;
-  })[];
-}
-
-export interface element_drawing_duplicate_params {
-  /** object ID or path reference (10 §3) */
-  drawingId: string;
-  name?: string;
-}
-
-export interface element_drawing_duplicate_result {
-  /** object ID or path reference (10 §3) */
-  drawingId: string;
-  name: string;
-}
-
-export interface element_drawing_list_params {
-  /** object ID or path reference (10 §3) */
-  elementId: string;
-  filter?: 'all' | 'used' | 'unused';
-  thumbnails?: number;
-}
-
-export interface element_drawing_list_result {
-  drawings: ({
-    /** object ID or path reference (10 §3) */
-    id: string;
-    name: string;
-    exposures: ({
-      from: number;
-      to: number;
-    })[];
-    useCount: number;
-    locked: boolean;
-    empty: boolean;
-    missing: boolean;
-    contentType: string;
-    thumbnail?: string;
-  })[];
-}
-
-export interface element_drawing_rename_params {
-  /** object ID or path reference (10 §3) */
-  drawingId: string;
-  name: string;
-}
-
-export interface element_drawing_rename_result {
-  /** object ID or path reference (10 §3) */
-  drawingId: string;
-  name: string;
-}
-
-export interface element_drawingContent_delete_params {
-  drawingIds?: string[];
-}
-
-export interface element_drawingContent_delete_result {
-  drawingIds: string[];
-}
-
-export interface element_drawingLock_set_params {
-  drawingIds?: string[];
-  locked: boolean;
-}
-
-export interface element_drawingLock_set_result {
-  drawingIds: string[];
-}
-
-export interface element_duplicate_params {
-  elementIds?: string[];
-}
-
-export interface element_duplicate_result {
-  elementIds: string[];
-  names: string[];
-}
-
-export interface element_get_params {
-  /** object ID or path reference (10 §3) */
-  elementId: string;
-}
-
-export interface element_get_spec_ElementInfo {
-  /** object ID or path reference (10 §3) */
-  id: string;
-  name: string;
-  elementType: string;
-  /** object ID or path reference (10 §3) */
-  sceneId: string;
-  /** object ID or path reference (10 §3) */
-  parentId: string;
-  childIds: string[];
-  depth: number | bigint;
-  timelineIndex: number | bigint;
-  xsheetIndex: number | bigint;
-  start: number | bigint;
-  duration: number;
-  loops: number | bigint;
-  annotation: boolean;
-  role: string;
-  deformable: boolean;
-  visibleInScene: boolean;
-  hiddenByParent: boolean;
-  visibleInXsheet: boolean;
-  locked: boolean;
-  collapsed: boolean;
-  markerColour: string | null;
-  backgroundColour: string | null;
-  /** #RRGGBB or #RRGGBBAA */
-  effectiveMarkerColour: string;
-  note: string;
-  columnWidth: number | bigint;
-  cloneGroupId: string | null;
-  cloneIds: string[];
-  drawingCount: number | bigint;
-  media: {
-    /** file-system path (11 §6.2) */
-    path: string;
-    startFrame: number | bigint;
-    length: number | bigint;
-    missing: boolean;
-  } | null;
-}
-
-export type element_get_result = element_get_spec_ElementInfo;
-
-export interface element_hierarchy_get_params {
-  /** object ID or path reference (10 §3) */
-  elementId: string;
-}
-
-export interface element_hierarchy_get_result {
-  /** object ID or path reference (10 §3) */
-  parentId: string;
-  childIds: string[];
-  /** object ID or path reference (10 §3) */
-  previousSiblingId: string;
-  /** object ID or path reference (10 §3) */
-  nextSiblingId: string;
-  depth: number;
-}
-
-export interface element_hierarchy_select_params {
-  relation: 'parent' | 'children' | 'firstChild' | 'previousSibling' | 'nextSibling' | 'skeletonRoot';
-  /** object ID or path reference (10 §3) */
-  elementId?: string;
-}
-
-export interface element_hierarchy_select_result {
-  selectedIds: string[];
-}
-
-export interface element_list_params {
-  /** object ID or path reference (10 §3) */
-  sceneId?: string;
-  order?: 'timeline' | 'xsheet';
-  types?: string[];
-  /** object ID or path reference (10 §3) */
-  parentId?: string;
-  recursive?: boolean;
-}
-
-export interface element_list_result {
-  elements: ({
-    /** object ID or path reference (10 §3) */
-    id: string;
-    name: string;
-    type: string;
-    /** object ID or path reference (10 §3) */
-    parentId: string;
-    depth: number;
-    index: number;
-  })[];
-}
-
-export interface element_lock_set_params {
-  elementIds?: string[];
-  locked: boolean;
-  apply?: 'given' | 'all' | 'others';
-}
-
-export interface element_lock_set_result {
-  changedIds: string[];
-}
-
-export interface element_mediaLength_set_params {
-  /** object ID or path reference (10 §3) */
-  elementId: string;
-  length?: number | bigint;
-}
-
-export interface element_mediaLength_set_result {
-  /** object ID or path reference (10 §3) */
-  elementId: string;
+  /** First changed frame. */
   from: number;
+  /** Last changed frame. */
   to: number;
 }
 
-export interface element_note_set_params {
-  /** object ID or path reference (10 §3) */
+/** `{changed}`. */
+export interface element_childExposure_apply_result {
+  /** Changed windows. */
+  changed: element_childExposure_apply_CellChange[];
+}
+
+/** `element.clone` parameters. */
+export interface element_clone_params {
+  /** A cell-based element. */
   elementId: string;
-  text: string;
+  /** Name (default: the original name with a unique suffix). */
+  name?: string | null;
 }
 
-export interface element_note_set_result {
-  /** object ID or path reference (10 §3) */
+/** `{elementId, name, cloneGroupId}`. */
+export interface element_clone_result {
+  /** The clone. */
   elementId: string;
-}
-
-export interface element_order_move_params {
-  elementIds?: string[];
-  to: 'front' | 'forward' | 'backward' | 'back';
-  order?: 'timeline' | 'xsheet';
-}
-
-export interface element_order_move_result {
-  changed: boolean;
-  order: string[];
-}
-
-export interface element_order_set_params {
-  order: 'timeline' | 'xsheet';
-  elementIds: string[];
-  /** object ID or path reference (10 §3) */
-  parentId?: string;
-  /** object ID or path reference (10 §3) */
-  sceneId?: string;
-}
-
-export interface element_order_set_result {
-  order: string[];
-}
-
-export interface element_parent_remove_params {
-  elementIds?: string[];
-}
-
-export interface element_parent_remove_result {
-  elementIds: string[];
-  /** object ID or path reference (10 §3) */
-  parentId: string;
-}
-
-export interface element_parent_set_params {
-  elementIds?: string[];
-  /** object ID or path reference (10 §3) */
-  parentId?: string;
-  nearest?: boolean;
-  index?: number | bigint;
-}
-
-export interface element_parent_set_result {
-  elementIds: string[];
-  /** object ID or path reference (10 §3) */
-  parentId: string;
-}
-
-export interface element_parentPeg_create_params {
-  elementIds?: string[];
-  name?: string;
-}
-
-export interface element_parentPeg_create_result {
-  /** object ID or path reference (10 §3) */
-  pegId: string;
+  /** Its name. */
   name: string;
+  /** The clone group (the shared drawing bank). */
+  cloneGroupId: string;
 }
 
-export interface element_properties_set_params {
-  /** object ID or path reference (10 §3) */
-  elementId: string;
-  role?: 'normal' | 'foreground' | 'background' | 'envelope';
-  deformable?: boolean;
+/** `element.collapsed.set` parameters. */
+export interface element_collapsed_set_params {
+  /** Parent elements (default: the selected rows, else the current element). */
+  elementIds?: string[] | null;
+  /** Collapsed or expanded. */
+  collapsed: boolean;
 }
 
-export interface element_properties_set_result {
-  /** object ID or path reference (10 §3) */
-  elementId: string;
-}
-
-export interface element_rename_params {
-  /** object ID or path reference (10 §3) */
-  elementId: string;
-  name: string;
-}
-
-export interface element_rename_result {
-  /** object ID or path reference (10 §3) */
-  elementId: string;
-  name: string;
-}
-
-export interface element_select_params {
-  elementIds: string[];
-  mode?: 'replace' | 'add' | 'remove' | 'toggle';
-}
-
-export interface element_select_result {
-  selectedIds: string[];
-}
-
-export interface element_solo_set_params {
-  enabled: boolean;
-  elementIds?: string[];
-}
-
-export interface element_solo_set_result {
-  enabled: boolean;
+/** `{elementIds}`. */
+export interface element_collapsed_set_result {
+  /** The elements. */
   elementIds: string[];
 }
 
-/** Events take no parameters; subscribe to them (11 §9). */
-export type element_state_changed_params = Record<string, unknown>;
+/** `element.colour.set` parameters. */
+export interface element_colour_set_params {
+  /** Elements (default: the selected rows, else the current element). */
+  elementIds?: string[] | null;
+  /** Marker colour; an empty string reverts to the category default. */
+  marker?: string | null;
+  /** Timeline background colour; an empty string reverts to the category default. */
+  background?: string | null;
+}
 
-/** Event payload (delivered to subscribers). */
-export interface element_state_changed_result {
-  /** object ID or path reference (10 §3) */
-  sceneId: string;
+/** `{elementIds}`. */
+export interface element_colour_set_result {
+  /** The elements. */
   elementIds: string[];
+}
+
+/** Element types `element.create` accepts (04 §17.4). */
+export type element_create_CreateType = 'drawing' | 'image' | 'sound' | 'media' | 'annotation' | 'peg' | 'camera' | 'skeleton' | 'colourTransform' | 'clipping' | 'dropShadow' | 'blur' | 'shake' | 'particleNature' | 'particleImpact';
+
+/** `element.create` parameters. */
+export interface element_create_params {
+  /** Element type. */
+  type: element_create_CreateType;
+  /** Base name (default: the type's default name); unique in the scene, at most 64 characters. */
+  name?: string | null;
+  /** How many elements (1-99; `element.countOutOfRange` otherwise). */
+  count?: number;
+  /** Scene (default: the current scene). */
+  sceneId?: string | null;
+  /** Parent (peg, effect, skeleton or camera) to create the elements under. */
+  parentId?: string | null;
+  /** Element to insert directly above, at its level (default: above the selected row, else top of the root level). */
+  above?: string | null;
+  /** Exposure Sheet column to insert right of (default: right of the selected column, else rightmost). */
+  xsheetAfter?: string | null;
+}
+
+/** A warning (11 §6.3, §10): same code space as errors, never aborts. */
+export interface element_create_Warning {
+  /** Code. */
+  code: string;
+  /** Message. */
+  message: string;
+  /** Affected objects. */
+  objectIds?: string[];
+}
+
+/** `{elementIds, names, warnings}`. */
+export interface element_create_result {
+  /** The created elements (parameter elements of effects excluded), first = current. */
+  elementIds: string[];
+  /** Their names. */
+  names: string[];
+  /** Non-blocking warnings (`element.hiddenInDrawingMode`). */
+  warnings: element_create_Warning[];
+}
+
+/** Previous / next. */
+export type element_current_move_Direction = 'previous' | 'next';
+
+/** `element.current.move` order. */
+export type element_current_move_MoveOrder = 'timeline' | 'xsheet';
+
+/** `element.current.move` parameters. */
+export interface element_current_move_params {
+  /** Previous or next. */
+  direction: element_current_move_Direction;
+  /** Which order. */
+  order?: element_current_move_MoveOrder;
+}
+
+/** `{elementId}`. */
+export interface element_current_move_result {
+  /** The current element (`null` when the scene has none). */
+  elementId?: string | null;
+}
+
+/** `element.get` / `element.hierarchy.get` parameters. */
+export interface element_current_set_params {
+  /** The element (ID or path). */
+  elementId: string;
+}
+
+/** `{elementId}`. */
+export interface element_current_set_result {
+  /** The current element (`null` when the scene has none). */
+  elementId?: string | null;
+}
+
+/** `element.delete` parameters. */
+export interface element_delete_params {
+  /** Elements (default: the selected rows, else the current element). */
+  elementIds?: string[] | null;
+}
+
+/** `{deletedIds, reparentedIds, deletedDrawingCount}`. */
+export interface element_delete_result {
+  /** Deleted elements (with the parameter elements of deleted effects). */
+  deletedIds: string[];
+  /** Children re-attached to the deleted element's parent. */
+  reparentedIds: string[];
+  /** Drawings deleted with banks no remaining element uses. */
+  deletedDrawingCount: number;
+}
+
+/** No parameters. */
+export type element_drawing_changed_params = Record<string, unknown>;
+
+/** `element.drawing.changed` payload. */
+export interface element_drawing_changed_result {
+  /** An element of the clone group (one event per element). */
+  elementId: string;
+  /** The drawings. */
+  drawingIds: string[];
+  /** `created`, `renamed`, `deleted`, `locked`, `unlocked` or `cleared`. */
   change: string;
 }
 
+/** `element.drawing.create` parameters. */
+export interface element_drawing_create_params {
+  /** A drawing or annotation element. */
+  elementId: string;
+  /** Name (default: the next integer after the highest numeric name). */
+  name?: string | null;
+  /** Expose the new drawing from this frame. */
+  exposeFrom?: number | bigint | null;
+  /** … through this frame (default: `exposeFrom`). */
+  exposeTo?: number | bigint | null;
+}
+
+/** `{drawingId, name}`. */
+export interface element_drawing_create_result {
+  /** The drawing. */
+  drawingId: string;
+  /** Its name. */
+  name: string;
+}
+
+/** What to do with exposed drawings. */
+export type element_drawing_delete_IfInUse = 'fail' | 'clearCells';
+
+/** `element.drawing.delete` parameters. */
+export interface element_drawing_delete_params {
+  /** The drawings. */
+  drawingIds: string[];
+  /** Exposed drawings: fail (confirmation) or clear their cells. */
+  ifInUse?: element_drawing_delete_IfInUse;
+}
+
+/** A change of one element's cells: `{elementId, from, to}`. */
+export interface element_drawing_delete_CellChange {
+  /** The element. */
+  elementId: string;
+  /** First changed frame. */
+  from: number;
+  /** Last changed frame. */
+  to: number;
+}
+
+/** `{deletedIds, clearedCells}`. */
+export interface element_drawing_delete_result {
+  /** Deleted drawings. */
+  deletedIds: string[];
+  /** Cells blanked. */
+  clearedCells: element_drawing_delete_CellChange[];
+}
+
+/** `element.drawing.duplicate` parameters. */
+export interface element_drawing_duplicate_params {
+  /** The drawing (ID or path). */
+  drawingId: string;
+  /** Name of the copy (default: the next free name). */
+  name?: string | null;
+}
+
+/** `{drawingId, name}`. */
+export interface element_drawing_duplicate_result {
+  /** The drawing. */
+  drawingId: string;
+  /** Its name. */
+  name: string;
+}
+
+/** Usage filter. */
+export type element_drawing_list_Filter = 'all' | 'used' | 'unused';
+
+/** `element.drawing.list` parameters. */
+export interface element_drawing_list_params {
+  /** A cell-based element. */
+  elementId: string;
+  /** All, used or unused drawings. */
+  filter?: element_drawing_list_Filter;
+  /** Thumbnail size in pixels (16-512), rendered synchronously (04 §17.1 item 9). */
+  thumbnails?: number | null;
+}
+
+/** One drawing of the bank. */
+export interface element_drawing_list_DrawingItem {
+  /** ID. */
+  id: string;
+  /** Name. */
+  name: string;
+  /** Where this element exposes it. */
+  exposures: element_drawing_list_Window[];
+  /** Cells exposing it in the whole clone group. */
+  useCount: number;
+  /** Locked against editing. */
+  locked: boolean;
+  /** No content. */
+  empty: boolean;
+  /** Its data could not be loaded (a placeholder). */
+  missing: boolean;
+  /** `vector`, `bitmap` or `empty`. */
+  contentType: string;
+  /** PNG thumbnail, base64 (with `thumbnails`). */
+  thumbnail?: string | null;
+}
+
+/** A frame window. */
+export interface element_drawing_list_Window {
+  /** First frame. */
+  from: number;
+  /** Last frame. */
+  to: number;
+}
+
+/** `{drawings}`. */
+export interface element_drawing_list_result {
+  /** The drawings in bank order (natural name order). */
+  drawings: element_drawing_list_DrawingItem[];
+}
+
+/** `element.drawing.rename` parameters. */
+export interface element_drawing_rename_params {
+  /** The drawing (ID or path). */
+  drawingId: string;
+  /** The new name (unique in the bank; at most 64 characters, none of `\ / : * ? < > " |` or `.`). */
+  name: string;
+}
+
+/** `{drawingId, name}`. */
+export interface element_drawing_rename_result {
+  /** The drawing. */
+  drawingId: string;
+  /** Its name. */
+  name: string;
+}
+
+/** `element.drawingContent.delete` parameters. */
+export interface element_drawingContent_delete_params {
+  /** Drawings (default: the drawing at the current cell). */
+  drawingIds?: string[] | null;
+}
+
+/** `{drawingIds}`. */
+export interface element_drawingContent_delete_result {
+  /** The drawings. */
+  drawingIds: string[];
+}
+
+/** `element.drawingLock.set` parameters. */
+export interface element_drawingLock_set_params {
+  /** Drawings (default: the drawing at the current cell). */
+  drawingIds?: string[] | null;
+  /** Locked or unlocked. */
+  locked: boolean;
+}
+
+/** `{drawingIds}`. */
+export interface element_drawingLock_set_result {
+  /** The drawings. */
+  drawingIds: string[];
+}
+
+/** `element.duplicate` parameters. */
+export interface element_duplicate_params {
+  /** Elements (default: the selected rows, else the current element). */
+  elementIds?: string[] | null;
+}
+
+/** `{elementIds, names}`. */
+export interface element_duplicate_result {
+  /** The copies, in the order of the originals. */
+  elementIds: string[];
+  /** Their names. */
+  names: string[];
+}
+
+/** `element.get` / `element.hierarchy.get` parameters. */
+export interface element_get_params {
+  /** The element (ID or path). */
+  elementId: string;
+}
+
+/** Composite role (04 §6.1, 05 §8.1; SI-003: the superset of 04/05 and 10 §4.5). */
+export type element_get_Role = 'normal' | 'foreground' | 'background' | 'envelope';
+
+/** The media summary of a media element. */
+export interface element_get_MediaInfo {
+  /** The linked file (or library item) of the first sequence's asset. */
+  path?: string | null;
+  /** First frame of the first sequence. */
+  startFrame: number;
+  /** Frames covered by the sequences. */
+  length: number;
+  /** Whether the linked source is missing (as last checked; media checks arrive with M8 C8.3). */
+  missing: boolean;
+}
+
+/** The element read model (04 §17.5). */
+export interface element_get_result {
+  /** ID. */
+  id: string;
+  /** Canonical path (10 AG-03). */
+  path: string;
+  /** Name. */
+  name: string;
+  /** Element type. */
+  elementType: string;
+  /** Scene. */
+  sceneId: string;
+  /** Parent (`null` at the root level). */
+  parentId?: string | null;
+  /** Children in Timeline order. */
+  childIds: string[];
+  /** Depth (0 = root level). */
+  depth: number;
+  /** Position in Timeline order (pre-order index). */
+  timelineIndex: number;
+  /** Exposure Sheet column index (`null` for non-column elements). */
+  xsheetIndex?: number | null;
+  /** First frame of the bar (cell-based: first exposed frame, 1 when empty). */
+  start: number;
+  /** Bar length (cell-based: the exposed extent, 0 when empty). */
+  duration: number;
+  /** Loops. */
+  loops: number;
+  /** Annotation element. */
+  annotation: boolean;
+  /** Composite role. */
+  role: element_get_Role;
+  /** Deformable by bones. */
+  deformable: boolean;
+  /** Shown in the scene. */
+  visibleInScene: boolean;
+  /** Hidden because an ancestor is hidden (04 §10.1). */
+  hiddenByParent: boolean;
+  /** Shown in the Exposure Sheet (`null` for non-column elements). */
+  visibleInXsheet?: boolean | null;
+  /** Locked in scene-planning views. */
+  locked: boolean;
+  /** Collapsed in the Timeline. */
+  collapsed: boolean;
+  /** Marker colour (`null` = category default). */
+  markerColour?: string | null;
+  /** Background colour (`null` = category default). */
+  backgroundColour?: string | null;
+  /** The marker colour in effect. */
+  effectiveMarkerColour: string;
+  /** Element note. */
+  note: string;
+  /** Exposure Sheet column width. */
+  columnWidth: number;
+  /** Clone group (the shared drawing bank) when the bank is shared, else `null`. */
+  cloneGroupId?: string | null;
+  /** The other elements of the clone group. */
+  cloneIds: string[];
+  /** Drawings in the bank. */
+  drawingCount: number;
+  /** Media summary (media elements), else `null`. */
+  media?: element_get_MediaInfo | null;
+}
+
+/** `element.get` / `element.hierarchy.get` parameters. */
+export interface element_hierarchy_get_params {
+  /** The element (ID or path). */
+  elementId: string;
+}
+
+/** `{parentId, childIds, previousSiblingId, nextSiblingId, depth}`. */
+export interface element_hierarchy_get_result {
+  /** Parent (`null` at the root level). */
+  parentId?: string | null;
+  /** Children, top to bottom. */
+  childIds: string[];
+  /** The sibling above (`null` when first). */
+  previousSiblingId?: string | null;
+  /** The sibling below (`null` when last). */
+  nextSiblingId?: string | null;
+  /** Depth (0 = root level). */
+  depth: number;
+}
+
+/** Hierarchy relations (04 §9.3). */
+export type element_hierarchy_select_Relation = 'parent' | 'children' | 'firstChild' | 'previousSibling' | 'nextSibling' | 'skeletonRoot';
+
+/** `element.hierarchy.select` parameters. */
+export interface element_hierarchy_select_params {
+  /** Relation to select. */
+  relation: element_hierarchy_select_Relation;
+  /** From this element (default: the current element). */
+  elementId?: string | null;
+}
+
+/** `{selectedIds}`. */
+export interface element_hierarchy_select_result {
+  /** The selected elements. */
+  selectedIds: string[];
+}
+
+/** List order. */
+export type element_list_ListOrder = 'timeline' | 'xsheet';
+
+/** Element types (10 §4.5). The 04 read model reports this value as `type`; the object model uses `elementType` (design decision D6). */
+export type element_list_ElementType = 'drawing' | 'annotation' | 'image' | 'sound' | 'media' | 'peg' | 'camera' | 'skeleton' | 'bone' | 'effectParameter' | 'colourTransform' | 'clipping' | 'dropShadow' | 'blur' | 'shake' | 'particleNature' | 'particleImpact';
+
+/** `element.list` parameters. */
+export interface element_list_params {
+  /** Scene (default: the current scene). */
+  sceneId?: string | null;
+  /** Timeline or Exposure Sheet order. */
+  order?: element_list_ListOrder;
+  /** Only these element types. */
+  types?: element_list_ElementType[] | null;
+  /** Only the descendants (or, with `recursive: false`, the children) of this element. */
+  parentId?: string | null;
+  /** Include every level below `parentId` (default) or only its children. */
+  recursive?: boolean;
+}
+
+/** One listed element. */
+export interface element_list_ListedElement {
+  /** ID. */
+  id: string;
+  /** Name. */
+  name: string;
+  /** Element type. */
+  type: string;
+  /** Parent (`null` at the root level). */
+  parentId?: string | null;
+  /** Depth in the hierarchy (0 = root level). */
+  depth: number;
+  /** Index among its siblings (Timeline order) or column index (Exposure Sheet order). */
+  index: number;
+}
+
+/** `{elements}`. */
+export interface element_list_result {
+  /** The elements in the requested order. */
+  elements: element_list_ListedElement[];
+}
+
+/** Which elements a toggle applies to. */
+export type element_lock_set_Apply = 'given' | 'all' | 'others';
+
+/** `element.lock.set` parameters. */
+export interface element_lock_set_params {
+  /** Elements (default: the selected rows, else the current element). */
+  elementIds?: string[] | null;
+  /** Locked or unlocked. */
+  locked: boolean;
+  /** The given elements, all, or all others. */
+  apply?: element_lock_set_Apply;
+}
+
+/** `{changedIds}`. */
+export interface element_lock_set_result {
+  /** Elements whose flag changed. */
+  changedIds: string[];
+}
+
+/** `element.mediaLength.set` parameters. */
+export interface element_mediaLength_set_params {
+  /** The media element. */
+  elementId: string;
+  /** New length of the element's (last) sequence; omitted: the media's natural length. */
+  length?: number | bigint | null;
+}
+
+/** `{elementId, from, to}`. */
+export interface element_mediaLength_set_result {
+  /** The element. */
+  elementId: string;
+  /** First frame. */
+  from: number;
+  /** Last frame. */
+  to: number;
+}
+
+/** `element.note.set` parameters. */
+export interface element_note_set_params {
+  /** The element. */
+  elementId: string;
+  /** The note (empty removes it; at most 10 000 characters). */
+  text: string;
+}
+
+/** `{elementId}`. */
+export interface element_note_set_result {
+  /** The element. */
+  elementId: string;
+}
+
+/** Stacking direction (04 §9.1). */
+export type element_order_move_To = 'front' | 'forward' | 'backward' | 'back';
+
+/** Which order a reorder changes (04 §1.2). */
+export type element_order_move_OrderKind = 'timeline' | 'xsheet';
+
+/** `element.order.move` parameters. */
+export interface element_order_move_params {
+  /** Elements (default: the selected rows, else the current element). */
+  elementIds?: string[] | null;
+  /** Direction. */
+  to: element_order_move_To;
+  /** Timeline level or Exposure Sheet columns. */
+  order?: element_order_move_OrderKind;
+}
+
+/** `{changed, order}`. */
+export interface element_order_move_result {
+  /** Whether anything moved (false at the boundary). */
+  changed: boolean;
+  /** The resulting order of the affected level or of the columns. */
+  order: string[];
+}
+
+/** Which order a reorder changes (04 §1.2). */
+export type element_order_set_OrderKind = 'timeline' | 'xsheet';
+
+/** `element.order.set` parameters. */
+export interface element_order_set_params {
+  /** Timeline level or Exposure Sheet columns. */
+  order: element_order_set_OrderKind;
+  /** The complete new order (a permutation of the level or of the columns). */
+  elementIds: string[];
+  /** The Timeline level (its parent; default the root level). */
+  parentId?: string | null;
+  /** Scene (default: the scene of the elements, else the current scene). */
+  sceneId?: string | null;
+}
+
+/** `{order}`. */
+export interface element_order_set_result {
+  /** The order. */
+  order: string[];
+}
+
+/** `element.parent.remove` parameters. */
+export interface element_parent_remove_params {
+  /** Elements (default: the selected rows, else the current element). */
+  elementIds?: string[] | null;
+}
+
+/** `{elementIds, parentId}`. */
+export interface element_parent_remove_result {
+  /** The elements. */
+  elementIds: string[];
+  /** The parent (`null` at the root level). */
+  parentId?: string | null;
+}
+
+/** `element.parent.set` parameters. */
+export interface element_parent_set_params {
+  /** Elements (default: the selected rows, else the current element). */
+  elementIds?: string[] | null;
+  /** The parent: a peg, effect, skeleton, bone or camera. */
+  parentId?: string | null;
+  /** Attach to the nearest peg or effect above at the same level (attach to next object). */
+  nearest?: boolean;
+  /** Position among the parent's children (default: the bottom). */
+  index?: number | null;
+}
+
+/** `{elementIds, parentId}`. */
+export interface element_parent_set_result {
+  /** The elements. */
+  elementIds: string[];
+  /** The parent (`null` at the root level). */
+  parentId?: string | null;
+}
+
+/** `element.parentPeg.create` parameters. */
+export interface element_parentPeg_create_params {
+  /** Elements to attach (default: the selected rows, else the current element); one scene. */
+  elementIds?: string[] | null;
+  /** Peg name (default: `<first element>-P`, unique). */
+  name?: string | null;
+}
+
+/** `{pegId, name}`. */
+export interface element_parentPeg_create_result {
+  /** The new peg. */
+  pegId: string;
+  /** Its name. */
+  name: string;
+}
+
+/** Composite role (04 §6.1). */
+export type element_properties_set_RoleParam = 'normal' | 'foreground' | 'background' | 'envelope';
+
+/** `element.properties.set` parameters. */
+export interface element_properties_set_params {
+  /** The element. */
+  elementId: string;
+  /** Composite role. */
+  role?: element_properties_set_RoleParam | null;
+  /** Deformable by skeleton bones. */
+  deformable?: boolean | null;
+}
+
+/** `{elementId}`. */
+export interface element_properties_set_result {
+  /** The element. */
+  elementId: string;
+}
+
+/** `element.rename` parameters. */
+export interface element_rename_params {
+  /** The element. */
+  elementId: string;
+  /** The new name (unique in the scene, at most 64 characters, none of `\ / : * ? < > " |` or `.`). */
+  name: string;
+}
+
+/** `{elementId, name}`. */
+export interface element_rename_result {
+  /** The element. */
+  elementId: string;
+  /** Its name. */
+  name: string;
+}
+
+/** Selection mode. */
+export type element_select_SelectMode = 'replace' | 'add' | 'remove' | 'toggle';
+
+/** `element.select` parameters. */
+export interface element_select_params {
+  /** Elements (rows / columns). */
+  elementIds: string[];
+  /** How to combine with the current selection. */
+  mode?: element_select_SelectMode;
+}
+
+/** `{selectedIds}`. */
+export interface element_select_result {
+  /** The selected elements. */
+  selectedIds: string[];
+}
+
+/** `element.solo.set` parameters. */
+export interface element_solo_set_params {
+  /** Solo mode on or off. */
+  enabled: boolean;
+  /** The elements shown while solo is on (default: the selected rows, else the current element). */
+  elementIds?: string[] | null;
+}
+
+/** `{enabled, elementIds}`. */
+export interface element_solo_set_result {
+  /** Solo mode. */
+  enabled: boolean;
+  /** The soloed elements. */
+  elementIds: string[];
+}
+
+/** No parameters. */
+export type element_state_changed_params = Record<string, unknown>;
+
+/** `element.state.changed` payload. */
+export interface element_state_changed_result {
+  /** The scene. */
+  sceneId: string;
+  /** The elements. */
+  elementIds: string[];
+  /** `created`, `deleted`, `renamed`, `reordered`, `reparented`, `timing`, `visibility`, `lock`, `type`, `collapsed` or `properties`. */
+  change: string;
+}
+
+/** Which end a duration change keeps. */
+export type element_timing_set_Anchor = 'start' | 'end';
+
+/** What happens to keyframes when the duration changes. */
+export type element_timing_set_KeyMode = 'keep' | 'scale';
+
+/** `element.timing.set` parameters. */
 export interface element_timing_set_params {
-  elementIds?: string[];
-  start?: number | bigint;
-  startDelta?: number | bigint;
-  duration?: number | bigint;
-  anchor?: 'start' | 'end';
-  keyframes?: 'keep' | 'scale';
-  loops?: number | bigint;
+  /** Bar elements (default: the selected rows, else the current element). */
+  elementIds?: string[] | null;
+  /** New start frame. */
+  start?: number | bigint | null;
+  /** Move the start by this many frames. */
+  startDelta?: number | bigint | null;
+  /** New duration (of one cycle for `count` loops). */
+  duration?: number | bigint | null;
+  /** Which end a duration change keeps. */
+  anchor?: element_timing_set_Anchor;
+  /** Keep or scale keyframes. */
+  keyframes?: element_timing_set_KeyMode;
+  /** Loops (1 = not looped). */
+  loops?: number | bigint | null;
 }
 
+/** One element's bar. */
+export interface element_timing_set_Bar {
+  /** The element. */
+  id: string;
+  /** Start frame. */
+  start: number;
+  /** Duration. */
+  duration: number;
+  /** Loops. */
+  loops: number;
+}
+
+/** `{elements}`. */
 export interface element_timing_set_result {
-  elements: ({
-    /** object ID or path reference (10 §3) */
-    id: string;
-    start: number | bigint;
-    duration: number | bigint;
-    loops: number | bigint;
-  })[];
+  /** The bars after the change. */
+  elements: element_timing_set_Bar[];
 }
 
+/** No parameters. */
 export type element_typeColour_get_params = Record<string, unknown>;
 
+/** `{colours}`. */
 export interface element_typeColour_get_result {
-  /** (elementType → colour) */
-  colours: Record<string, string>;
+  /** Colour by category (`drawings`, `images`, `sounds`, `pegs`, `skeletons`, `media`, `cameras`, `effects`, `effectParameters`). */
+  colours: Record<string, unknown>;
 }
 
+/** Element categories (04 §5.1). */
+export type element_typeColour_set_Category = 'drawings' | 'images' | 'sounds' | 'pegs' | 'skeletons' | 'media' | 'cameras' | 'effects' | 'effectParameters';
+
+/** `element.typeColour.set` parameters. */
 export interface element_typeColour_set_params {
-  category: 'drawings' | 'images' | 'sounds' | 'pegs' | 'skeletons' | 'media' | 'cameras' | 'effects' | 'effectParameters';
-  /** #RRGGBB or #RRGGBBAA */
+  /** The category. */
+  category: element_typeColour_set_Category;
+  /** `#RRGGBB` or `#RRGGBBAA`. */
   colour: string;
 }
 
+/** `{category, colour}`. */
 export interface element_typeColour_set_result {
-  category: string;
-  /** #RRGGBB or #RRGGBBAA */
+  /** The category. */
+  category: element_typeColour_set_Category;
+  /** Its colour (`#RRGGBBAA`). */
   colour: string;
 }
 
+/** `element.unusedDrawing.list` parameters. */
 export interface element_unusedDrawing_list_params {
-  /** object ID or path reference (10 §3) */
-  sceneId?: string;
-  elementIds?: string[];
+  /** Scene (default: the current scene) when `elementIds` is omitted. */
+  sceneId?: string | null;
+  /** Elements (default: every cell-based element of the scene). */
+  elementIds?: string[] | null;
 }
 
+/** One unused drawing. */
+export interface element_unusedDrawing_list_UnusedItem {
+  /** The element (the first of its clone group in Exposure Sheet order). */
+  elementId: string;
+  /** The drawing. */
+  drawingId: string;
+  /** Its name. */
+  name: string;
+}
+
+/** `{items}`. */
 export interface element_unusedDrawing_list_result {
-  items: ({
-    /** object ID or path reference (10 §3) */
-    elementId: string;
-    /** object ID or path reference (10 §3) */
-    drawingId: string;
-    name: string;
-  })[];
+  /** Unused drawings. */
+  items: element_unusedDrawing_list_UnusedItem[];
 }
 
+/** Visibility scope (04 §10.1–§10.2). */
+export type element_visibility_set_Scope = 'scene' | 'xsheet';
+
+/** Which elements a toggle applies to. */
+export type element_visibility_set_Apply = 'given' | 'all' | 'others';
+
+/** Element types (10 §4.5). The 04 read model reports this value as `type`; the object model uses `elementType` (design decision D6). */
+export type element_visibility_set_ElementType = 'drawing' | 'annotation' | 'image' | 'sound' | 'media' | 'peg' | 'camera' | 'skeleton' | 'bone' | 'effectParameter' | 'colourTransform' | 'clipping' | 'dropShadow' | 'blur' | 'shake' | 'particleNature' | 'particleImpact';
+
+/** `element.visibility.set` parameters. */
 export interface element_visibility_set_params {
-  elementIds?: string[];
-  scope: 'scene' | 'xsheet';
+  /** Elements (default: the selected rows, else the current element). */
+  elementIds?: string[] | null;
+  /** Scene or Exposure Sheet visibility. */
+  scope: element_visibility_set_Scope;
+  /** Shown or hidden. */
   visible: boolean;
-  apply?: 'given' | 'all' | 'others';
-  types?: string[];
+  /** The given elements, all, or all others. */
+  apply?: element_visibility_set_Apply;
+  /** Only elements of these types (e.g. `["annotation"]` for show/hide all annotation elements). */
+  types?: element_visibility_set_ElementType[] | null;
 }
 
+/** `{changedIds}`. */
 export interface element_visibility_set_result {
+  /** Elements whose flag changed. */
   changedIds: string[];
 }
 
@@ -97906,133 +100042,217 @@ export interface xsheet_display_set_result {
   notes: boolean;
 }
 
+/** Optional parts of the sheet. */
+export type xsheet_exposures_get_Include = 'notes' | 'mouths' | 'thumbnails';
+
+/** `xsheet.exposures.get` parameters. */
 export interface xsheet_exposures_get_params {
-  /** object ID or path reference (10 §3) */
-  sceneId?: string;
-  elementIds?: string[];
+  /** Scene (default: the current scene). */
+  sceneId?: string | null;
+  /** Only these columns (default: every cell-based element, Exposure Sheet order). */
+  elementIds?: string[] | null;
+  /** First frame of the window. */
   from?: number | bigint;
-  to?: number | bigint;
-  include?: string[];
+  /** Last frame of the window (default: the scene length). */
+  to?: number | bigint | null;
+  /** Optional parts: `notes`, `mouths`, `thumbnails`. */
+  include?: xsheet_exposures_get_Include[] | null;
 }
 
-export interface xsheet_exposures_get_spec_ExposureSheet {
-  /** object ID or path reference (10 §3) */
+/** One column. */
+export interface xsheet_exposures_get_ColumnOut {
+  /** The element. */
+  elementId: string;
+  /** Its name. */
+  name: string;
+  /** Its type. */
+  elementType: string;
+  /** Shown in the Exposure Sheet. */
+  visible: boolean;
+  /** Exposed runs (drawing, image, annotation and media columns). */
+  exposures?: xsheet_exposures_get_Run[] | null;
+  /** Cell notes in the window (with `include: ["notes"]`). */
+  notes?: xsheet_exposures_get_Note[] | null;
+  /** Sound clips (sound columns). */
+  clips?: xsheet_exposures_get_Clip[] | null;
+  /** Mouth runs (sound columns, with `include: ["mouths"]`). */
+  mouths?: xsheet_exposures_get_Mouth[] | null;
+  /** Thumbnails by drawing ID (with `include: ["thumbnails"]`). */
+  thumbnails?: Record<string, unknown> | null;
+}
+
+/** One exposed run. */
+export interface xsheet_exposures_get_Run {
+  /** Drawing name (media: the media item's name). */
+  drawing: string;
+  /** Drawing ID (media: the sequence ID). */
+  drawingId: string;
+  /** First frame inside the window. */
+  from: number;
+  /** Last frame inside the window. */
+  to: number;
+  /** The run continues outside the window: `before`, `after` or `both`. */
+  continues?: string | null;
+}
+
+/** One cell note. */
+export interface xsheet_exposures_get_Note {
+  /** Frame. */
+  frame: number;
+  /** Text. */
+  text: string;
+}
+
+/** One sound clip. */
+export interface xsheet_exposures_get_Clip {
+  /** The placement. */
+  clipId: string;
+  /** The sound asset's name. */
+  file: string;
+  /** First frame inside the window. */
+  from: number;
+  /** Last frame inside the window. */
+  to: number;
+  /** Continuation outside the window. */
+  continues?: string | null;
+}
+
+/** One mouth run. */
+export interface xsheet_exposures_get_Mouth {
+  /** `A`–`G` or `X`. */
+  mouth: string;
+  /** First frame. */
+  from: number;
+  /** Last frame. */
+  to: number;
+}
+
+/** The exposure-sheet object (04 §17.2). */
+export interface xsheet_exposures_get_result {
+  /** The scene. */
   sceneId: string;
+  /** Sheet revision. */
   rev: number | bigint;
-  sceneLength: number | bigint;
-  from: number | bigint;
-  to: number | bigint;
-  columns: ({
-    /** object ID or path reference (10 §3) */
-    elementId: string;
-    name: string;
-    elementType?: string;
-    visible: boolean;
-    exposures?: ({
-      drawing: string;
-      /** object ID or path reference (10 §3) */
-      drawingId: string;
-      from: number | bigint;
-      to: number | bigint;
-      continues?: string;
-    })[];
-    notes?: ({
-      frame: number | bigint;
-      text: string;
-    })[];
-    type?: string;
-    clips?: ({
-      /** object ID or path reference (10 §3) */
-      clipId: string;
-      file: string;
-      from: number | bigint;
-      to: number | bigint;
-      continues: string;
-    })[];
-    mouths?: ({
-      mouth: string;
-      from: number | bigint;
-      to: number | bigint;
-    })[];
-  })[];
+  /** Scene length. */
+  sceneLength: number;
+  /** Window start. */
+  from: number;
+  /** Window end. */
+  to: number;
+  /** Columns in Exposure Sheet order. */
+  columns: xsheet_exposures_get_ColumnOut[];
 }
 
-export type xsheet_exposures_get_result = xsheet_exposures_get_spec_ExposureSheet;
+/** One column to write. */
+export interface xsheet_exposures_set_ColumnIn {
+  /** The element. */
+  elementId: string;
+  /** Window start (default 1). */
+  from?: number | bigint | null;
+  /** Window end (default: the later of the last run's end and the element's last exposed frame). */
+  to?: number | bigint | null;
+  /** Runs, sorted and non-overlapping, inside the window; frames not covered become blank. */
+  exposures: xsheet_exposures_set_RunIn[];
+}
 
+/** One run to write. */
+export interface xsheet_exposures_set_RunIn {
+  /** Drawing name in the column's bank. */
+  drawing?: string | null;
+  /** Drawing ID (or path). */
+  drawingId?: string | null;
+  /** First frame. */
+  from: number | bigint;
+  /** Last frame. */
+  to: number | bigint;
+}
+
+/** `xsheet.exposures.set` parameters. */
 export interface xsheet_exposures_set_params {
-  /** object ID or path reference (10 §3) */
-  sceneId?: string;
-  columns: ({
-    /** object ID or path reference (10 §3) */
-    elementId: string;
-    from?: number;
-    to?: number;
-    exposures: ({
-      drawing?: string;
-      /** object ID or path reference (10 §3) */
-      drawingId?: string;
-      from: number;
-      to: number;
-    })[];
-  })[];
+  /** Scene (default: the current scene); every column must belong to it. */
+  sceneId?: string | null;
+  /** Columns to write. */
+  columns: xsheet_exposures_set_ColumnIn[];
+  /** Create empty drawings for unknown names (drawing and annotation columns). */
   createMissingDrawings?: boolean;
-  expectRev?: number | bigint;
+  /** The sheet revision the edit is based on (`xsheet.revisionMismatch` otherwise). */
+  expectRev?: number | bigint | null;
+  /** Validate and return the diff without applying it. */
   dryRun?: boolean;
 }
 
+/** A change of one element's cells: `{elementId, from, to}`. */
+export interface xsheet_exposures_set_CellChange {
+  /** The element. */
+  elementId: string;
+  /** First changed frame. */
+  from: number;
+  /** Last changed frame. */
+  to: number;
+}
+
+/** A created drawing. */
+export interface xsheet_exposures_set_Created {
+  /** The column. */
+  elementId: string;
+  /** The drawing. */
+  drawingId: string;
+  /** Its name. */
+  name: string;
+}
+
+/** `{rev, sceneLength, changed, createdDrawings}`. */
 export interface xsheet_exposures_set_result {
-  rev: number;
+  /** The sheet revision after the change. */
+  rev: number | bigint;
+  /** The scene length after the change. */
   sceneLength: number;
-  changed: boolean[];
-  createdDrawings: ({
-    /** object ID or path reference (10 §3) */
-    elementId: string;
-    /** object ID or path reference (10 §3) */
-    drawingId: string;
-    name: string;
-  })[];
+  /** Changed windows per column. */
+  changed: xsheet_exposures_set_CellChange[];
+  /** Drawings created by `createMissingDrawings`. */
+  createdDrawings: xsheet_exposures_set_Created[];
 }
 
 export interface xsheet_lightTable_add_params {
-  items?: ({
-    /** object ID or path reference (10 §3) */
-    itemId: string;
-    /** object ID or path reference (10 §3) */
-    elementId: string;
-    /** object ID or path reference (10 §3) */
-    drawingId: string;
-    label: string;
-    visible: boolean;
-    placement: string;
-  })[];
+  items?: (Record<string, unknown>)[];
 }
 
 export interface xsheet_lightTable_add_result {
   itemIds: string[];
 }
 
-/** Events take no parameters; subscribe to them (11 §9). */
+/** No parameters. */
 export type xsheet_lightTable_changed_params = Record<string, unknown>;
 
-/** Event payload (delivered to subscribers). */
+/** `xsheet.lightTable.changed` payload. */
 export interface xsheet_lightTable_changed_result {
+  /** The items. */
   itemIds: string[];
 }
 
+/** No parameters. */
 export type xsheet_lightTable_list_params = Record<string, unknown>;
 
+/** One light-table item. */
+export interface xsheet_lightTable_list_LightItemOut {
+  /** Item ID. */
+  itemId: string;
+  /** Source element. */
+  elementId: string;
+  /** The drawing. */
+  drawingId: string;
+  /** `<drawing> in <element>`, following renames (04 §15.3). */
+  label: string;
+  /** Shown. */
+  visible: boolean;
+  /** `over` or `under`. */
+  placement: string;
+}
+
+/** `{items}`. */
 export interface xsheet_lightTable_list_result {
-  items: ({
-    /** object ID or path reference (10 §3) */
-    itemId: string;
-    /** object ID or path reference (10 §3) */
-    elementId: string;
-    /** object ID or path reference (10 §3) */
-    drawingId: string;
-    label: string;
-    visible: boolean;
-    placement: string;
-  })[];
+  /** Items in stacking order. */
+  items: xsheet_lightTable_list_LightItemOut[];
 }
 
 export interface xsheet_lightTable_move_params {
