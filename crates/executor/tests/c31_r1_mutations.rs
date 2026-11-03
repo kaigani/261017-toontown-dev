@@ -59,6 +59,32 @@ fn all_c31_mutation_examples_obey_staging_revision_event_history_and_roundtrip()
         assert_eq!(applied.status, Status::Ok, "{} apply: {applied:?}", e.id());
         let after = content(&h);
         let changed = after != before;
+        let created: std::collections::BTreeSet<_> =
+            after.keys().filter(|k| !before.contains_key(*k)).cloned().collect();
+        let removed: std::collections::BTreeSet<_> =
+            before.keys().filter(|k| !after.contains_key(*k)).cloned().collect();
+        assert_eq!(
+            applied
+                .changes
+                .iter()
+                .filter(|c| c.op == "created")
+                .map(|c| c.id.clone())
+                .collect::<std::collections::BTreeSet<_>>(),
+            created,
+            "{} exact created IDs",
+            e.id()
+        );
+        assert_eq!(
+            applied
+                .changes
+                .iter()
+                .filter(|c| c.op == "deleted")
+                .map(|c| c.id.clone())
+                .collect::<std::collections::BTreeSet<_>>(),
+            removed,
+            "{} exact removed IDs",
+            e.id()
+        );
         assert_eq!(rev(&h), r + u64::from(changed), "{} revision", e.id());
         assert_eq!(
             rx.try_iter().filter(|e| e.name == "doc.changed").count(),

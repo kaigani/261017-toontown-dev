@@ -291,3 +291,53 @@ fn extreme_timing_parameters_do_not_stop_document_worker() {
         assert!(run(&h, "doc.state.get", json!({})).is_ok());
     }
 }
+
+#[test]
+fn whole_element_clipboard_cross_project_contains_banks() {
+    let h = fixture();
+    ok(&h, "cell.clipboard.set", json!({"elementIds":[BOB],"wholeElements":true}));
+    let doc = tt_model::fixture::sample_document(982).unwrap();
+    assert!(
+        h.open_document_with(
+            doc,
+            tt_executor::OpenOptions { on_unsaved: tt_executor::UnsavedPolicy::Discard, ..Default::default() },
+            tt_executor::Origin::User
+        )
+        .is_ok()
+    );
+    let e = run(&h, "cell.clipboard.apply", json!({"elementId":BOB,"frame":1}));
+    assert_eq!(e.status, Status::Ok, "whole element clipboard must carry banks: {e:?}");
+}
+
+#[test]
+fn generic_paste_bridge_overwrites_opaque_drawing_properties() {
+    let h = fixture();
+    let source = "scene:\"Intro\"/element:\"Bob\"/drawing:\"1\"";
+    ok(&h, "doc.object.patch", json!({"targets":[source],"props":{"ext":{"review":{"opaque":[1,2,3]}}}}));
+    let dest = "scene:\"Intro\"/element:\"Notes\"";
+    let target = ok(&h, "element.drawing.create", json!({"elementId":dest,"name":"1","exposeFrom":1}))["drawingId"]
+        .as_str()
+        .unwrap()
+        .to_owned();
+    ok(&h, "cell.clipboard.set", json!({"elementIds":[BOB],"from":1,"to":1}));
+    ok(&h, "edit.paste", json!({"context":"xsheet","destination":{"elementId":dest,"frame":1}}));
+    assert_eq!(
+        get(&h, &target)["ext"],
+        get(&h, source)["ext"],
+        "01 bridge must preserve opaque copied drawing properties, handoff item 6"
+    );
+}
+
+#[test]
+fn cycle_selection_applies_to_every_selected_column() {
+    let h = fixture();
+    let notes = "scene:\"Intro\"/element:\"Notes\"";
+    ok(&h, "cell.label.set", json!({"elementIds":[notes],"from":1,"to":2,"drawing":"N","createMissing":true}));
+    ok(&h, "cell.select", json!({"elementIds":[BOB,notes],"from":1,"to":2}));
+    ok(&h, "cell.cycle.create", json!({"cycles":2}));
+    assert_eq!(
+        get(&h, notes)["exposure"][0][1],
+        4,
+        "04 §13 general rule: multi-column selection applies per element independently"
+    );
+}
