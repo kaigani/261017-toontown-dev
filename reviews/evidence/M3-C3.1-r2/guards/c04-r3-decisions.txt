@@ -1,0 +1,8 @@
+test_C04_R3_01_outside_contact_must_not_flip_candidate (__main__.Regressions.test_C04_R3_01_outside_contact_must_not_flip_candidate) ... ok
+test_C04_R3_03_overlapping_native_marker_spans_must_be_rejected (__main__.Regressions.test_C04_R3_03_overlapping_native_marker_spans_must_be_rejected) ... ok
+test_C04_R3_04_binding_score_rule_has_no_unruled_core_filter (__main__.Regressions.test_C04_R3_04_binding_score_rule_has_no_unruled_core_filter) ... ok
+
+----------------------------------------------------------------------
+Ran 3 tests in 0.140s
+
+OK

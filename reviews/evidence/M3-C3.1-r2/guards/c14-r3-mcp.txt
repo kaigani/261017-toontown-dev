@@ -1,0 +1,10 @@
+test_cancelled_elicitation_does_not_authorize_a_late_accept (__main__.Protocol.test_cancelled_elicitation_does_not_authorize_a_late_accept) ... skipped 'set TT_REVIEW_BINARY to a built headless binary'
+test_close_keep_mine_completes_for_package_and_folder_and_quit_stays_scoped (__main__.Protocol.test_close_keep_mine_completes_for_package_and_folder_and_quit_stays_scoped) ... skipped 'set TT_REVIEW_BINARY to a built headless binary'
+test_every_registered_command_rejects_malformed_params_within_watchdog (__main__.Protocol.test_every_registered_command_rejects_malformed_params_within_watchdog) ... skipped 'set TT_REVIEW_BINARY to a built headless binary'
+test_generic_typed_and_atomic_exports_preserve_targets_on_later_failure (__main__.Protocol.test_generic_typed_and_atomic_exports_preserve_targets_on_later_failure) ... skipped 'set TT_REVIEW_BINARY to a built headless binary'
+test_headless_run_rolls_back_export_on_later_failure (__main__.Protocol.test_headless_run_rolls_back_export_on_later_failure) ... skipped 'set TT_REVIEW_BINARY to a built headless binary'
+
+----------------------------------------------------------------------
+Ran 5 tests in 0.000s
+
+OK (skipped=5)

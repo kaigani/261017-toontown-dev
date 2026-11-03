@@ -1,0 +1,16 @@
+
+> @toontown/desktop@0.0.1 test C:\Users\kaiga\work\review\m3-c31-r2\desktop
+> vitest run --config vite.config.ts "--run"
+
+
+ RUN  v5.0.5 C:/Users/kaiga/work/review/m3-c31-r2/desktop
+
+
+ Test Files  40 passed (40)
+      Tests  333 passed (333)
+   Start at  06:44:40
+   Duration  204.15s (tests 74%, environment 10%, transform 7%, import 5%, setup 4%)
+
+    Isolate  40 workers spawned · ~613ms startup each (spawn + environment, per file)
+             at least ~23.91s faster with isolate: false — reuses workers across files instead of one per file
+

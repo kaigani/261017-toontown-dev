@@ -1,0 +1,219 @@
+[
+  {
+    "suite": "c02-r1-tooling.py",
+    "exit": 0
+  },
+  {
+    "suite": "c02-r2-tooling.py",
+    "exit": 0
+  },
+  {
+    "suite": "c02-r3-tooling.py",
+    "exit": 0
+  },
+  {
+    "suite": "c03-r1-tooling.py",
+    "exit": 0
+  },
+  {
+    "suite": "c03-r2-tooling.py",
+    "exit": 0
+  },
+  {
+    "suite": "c04-r2-decisions.py",
+    "exit": 0
+  },
+  {
+    "suite": "c04-r3-decisions.py",
+    "exit": 0
+  },
+  {
+    "suite": "c04-r3-page.py",
+    "exit": 0
+  },
+  {
+    "suite": "c04-r5-decisions.py",
+    "exit": 0
+  },
+  {
+    "suite": "c11-r2-review-policy.py",
+    "exit": 0
+  },
+  {
+    "suite": "c14-r1-mcp.py",
+    "exit": 0
+  },
+  {
+    "suite": "c14-r2-mcp.py",
+    "exit": 0
+  },
+  {
+    "suite": "c14-r3-mcp.py",
+    "exit": 0
+  },
+  {
+    "suite": "c14-r3-measurements.py",
+    "exit": 0
+  },
+  {
+    "suite": "c22-r2-audit.py",
+    "exit": 0
+  },
+  {
+    "suite": "c22-r2-register.py",
+    "exit": 0
+  },
+  {
+    "suite": "c22-r3-audit.py",
+    "exit": 0
+  },
+  {
+    "suite": "c22-r3-headless.py",
+    "exit": 0
+  },
+  {
+    "suite": "c23-r1-audit.py",
+    "exit": 0
+  },
+  {
+    "suite": "c23-r1-headless.py",
+    "exit": 0
+  },
+  {
+    "suite": "c23-r1-register.py",
+    "exit": 0
+  },
+  {
+    "suite": "c23-r1-smooth.py",
+    "exit": 0
+  },
+  {
+    "suite": "c23-r2-audit.py",
+    "exit": 0
+  },
+  {
+    "suite": "c23-r2-register.py",
+    "exit": 0
+  },
+  {
+    "suite": "c23-r3-audit.py",
+    "exit": 0
+  },
+  {
+    "suite": "c23-r3-finalize.py",
+    "exit": 1
+  },
+  {
+    "suite": "c23-r3-headless.py",
+    "exit": 0
+  },
+  {
+    "suite": "c23-r3-heavy.py",
+    "exit": 0
+  },
+  {
+    "suite": "c23-r3-performance.py",
+    "exit": 0
+  },
+  {
+    "suite": "c24-r1-audit.py",
+    "exit": 0
+  },
+  {
+    "suite": "c24-r1-corpus.py",
+    "exit": 0
+  },
+  {
+    "suite": "c24-r1-e2.py",
+    "exit": 0
+  },
+  {
+    "suite": "c24-r1-register.py",
+    "exit": 0
+  },
+  {
+    "suite": "c24-r2-audit.py",
+    "exit": 1
+  },
+  {
+    "suite": "c24-r2-run.py",
+    "exit": 0
+  },
+  {
+    "suite": "c24-r3-audit.py",
+    "exit": 0
+  },
+  {
+    "suite": "c24-r3-corpus.py",
+    "exit": 0
+  },
+  {
+    "suite": "c24-r3-register.py",
+    "exit": 0
+  },
+  {
+    "suite": "c24-r3-run.py",
+    "exit": 0
+  },
+  {
+    "suite": "c24-r3-sdk.py",
+    "exit": 0
+  },
+  {
+    "suite": "c24-r4-closure.py",
+    "exit": 0
+  },
+  {
+    "suite": "c31-r1-audit.py",
+    "exit": 0
+  },
+  {
+    "suite": "c31-r1-register.py",
+    "exit": 0
+  },
+  {
+    "suite": "c31-r1-sdk.py",
+    "exit": 0
+  },
+  {
+    "suite": "collect_runtime_evidence.py",
+    "exit": 1
+  },
+  {
+    "suite": "headless_guard.py",
+    "exit": 0
+  },
+  {
+    "command": [
+      "C:\\Python313\\python.exe",
+      "scripts/check-product-allows.py"
+    ],
+    "exit": 0
+  },
+  {
+    "command": [
+      "C:\\Python313\\python.exe",
+      "scripts/gen-command-declarations.py",
+      "--check"
+    ],
+    "exit": 0
+  },
+  {
+    "command": [
+      "cargo",
+      "deny",
+      "check"
+    ],
+    "exit": 0
+  },
+  {
+    "command": [
+      "pnpm.cmd",
+      "--dir",
+      "desktop",
+      "test",
+      "--run"
+    ],
+    "exit": 0
+  }
+]

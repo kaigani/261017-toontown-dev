@@ -1,0 +1,19 @@
+test_analyzer_rejects_backwards_time_nonfinite_and_empty_series (__main__.MeasurementValidation.test_analyzer_rejects_backwards_time_nonfinite_and_empty_series) ... ok
+test_all_state_include_combinations_are_command_projections (__main__.Protocol.test_all_state_include_combinations_are_command_projections) ... skipped 'real binary supplied by bins/headless/tests/c14_r2.rs'
+test_cancel_live_elicitation_releases_the_call_worker (__main__.Protocol.test_cancel_live_elicitation_releases_the_call_worker) ... skipped 'real binary supplied by bins/headless/tests/c14_r2.rs'
+test_close_with_save_offers_external_change_confirmation (__main__.Protocol.test_close_with_save_offers_external_change_confirmation) ... skipped 'real binary supplied by bins/headless/tests/c14_r2.rs'
+test_decline_cancel_and_invalid_accept_settle_request_id_and_audit_once (__main__.Protocol.test_decline_cancel_and_invalid_accept_settle_request_id_and_audit_once) ... skipped 'real binary supplied by bins/headless/tests/c14_r2.rs'
+test_export_publication_failure_is_not_a_successful_audit_record (__main__.Protocol.test_export_publication_failure_is_not_a_successful_audit_record) ... skipped 'real binary supplied by bins/headless/tests/c14_r2.rs'
+test_idempotent_retry_is_not_a_second_replay_operation (__main__.Protocol.test_idempotent_retry_is_not_a_second_replay_operation) ... skipped 'real binary supplied by bins/headless/tests/c14_r2.rs'
+test_invalid_utf8_at_eof_is_a_parse_error_and_shutdown_is_bounded (__main__.Protocol.test_invalid_utf8_at_eof_is_a_parse_error_and_shutdown_is_bounded) ... skipped 'real binary supplied by bins/headless/tests/c14_r2.rs'
+test_invalid_utf8_mid_frame_and_oversized_frames_resynchronize (__main__.Protocol.test_invalid_utf8_mid_frame_and_oversized_frames_resynchronize) ... skipped 'real binary supplied by bins/headless/tests/c14_r2.rs'
+test_long_unicode_and_nested_globs_keep_the_server_usable (__main__.Protocol.test_long_unicode_and_nested_globs_keep_the_server_usable) ... skipped 'real binary supplied by bins/headless/tests/c14_r2.rs'
+test_nested_wrapper_validation_never_edits (__main__.Protocol.test_nested_wrapper_validation_never_edits) ... skipped 'real binary supplied by bins/headless/tests/c14_r2.rs'
+test_nonreading_client_without_eof_is_closed_by_pressure_timeout (__main__.Protocol.test_nonreading_client_without_eof_is_closed_by_pressure_timeout) ... skipped 'real binary supplied by bins/headless/tests/c14_r2.rs'
+test_partial_sequential_batch_keeps_its_committed_edits_in_replay (__main__.Protocol.test_partial_sequential_batch_keeps_its_committed_edits_in_replay) ... skipped 'real binary supplied by bins/headless/tests/c14_r2.rs'
+test_typed_tools_reject_nested_types_and_extra_options (__main__.Protocol.test_typed_tools_reject_nested_types_and_extra_options) ... skipped 'real binary supplied by bins/headless/tests/c14_r2.rs'
+
+----------------------------------------------------------------------
+Ran 14 tests in 0.043s
+
+OK (skipped=13)

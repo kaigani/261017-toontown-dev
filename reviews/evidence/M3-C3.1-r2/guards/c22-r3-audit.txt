@@ -1,0 +1,9 @@
+test_c21_masks_only_explained_piece_list_and_digest (__main__.Audit.test_c21_masks_only_explained_piece_list_and_digest) ... ok
+test_measurement_analyzer_rejects_bad_shape_types_and_quantiles (__main__.Audit.test_measurement_analyzer_rejects_bad_shape_types_and_quantiles) ... ok
+test_planar_analyzer_recomputes_and_rejects_malformed (__main__.Audit.test_planar_analyzer_recomputes_and_rejects_malformed) ... ok
+test_predecessor_tests_unchanged_at_response_head (__main__.Audit.test_predecessor_tests_unchanged_at_response_head) ... ok
+
+----------------------------------------------------------------------
+Ran 4 tests in 0.210s
+
+OK

@@ -1,0 +1,8 @@
+test_boolean_summary_fields_are_not_valid_numeric_evidence (__main__.Measurements.test_boolean_summary_fields_are_not_valid_numeric_evidence) ... ok
+test_malformed_shapes_are_rejected (__main__.Measurements.test_malformed_shapes_are_rejected) ... ok
+test_no_new_product_allow_attributes_since_round_two (__main__.Measurements.test_no_new_product_allow_attributes_since_round_two) ... ok
+
+----------------------------------------------------------------------
+Ran 3 tests in 0.424s
+
+OK

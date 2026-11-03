@@ -1,0 +1,8 @@
+test_nearest_rank (__main__.InputValidation.test_nearest_rank) ... ok
+test_rejects_bad_observations (__main__.InputValidation.test_rejects_bad_observations) ... ok
+test_signed_allocation_delta_and_nonnegative_time (__main__.InputValidation.test_signed_allocation_delta_and_nonnegative_time) ... ok
+
+----------------------------------------------------------------------
+Ran 3 tests in 0.000s
+
+OK

@@ -1,0 +1,6 @@
+test_square_is_closed_and_explicitly_targeted (__main__.FormatTest.test_square_is_closed_and_explicitly_targeted) ... ok
+
+----------------------------------------------------------------------
+Ran 1 test in 0.000s
+
+OK

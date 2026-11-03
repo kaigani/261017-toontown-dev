@@ -1,0 +1,72 @@
+{
+  "productHead": "ffffc7387f03e2be125a634dd29f698598532d0d",
+  "reviewTipAtCapture": "64183a98a367596e86bc68c6e743c33b521e443a",
+  "platform": "Windows-11-10.0.26200-SP0",
+  "python": "3.13.1",
+  "mcp": "2.0.0",
+  "TT_COMMIT_REVIEW_RECEIPTS_set": false,
+  "versions": [
+    {
+      "command": [
+        "rustc",
+        "-Vv"
+      ],
+      "exit": 0,
+      "stdout": "rustc 1.98.1 (48a229cea 2026-09-01)\nbinary: rustc\ncommit-hash: 48a229ceaefd4985c50990b14116b6d856af0985\ncommit-date: 2026-09-01\nhost: x86_64-pc-windows-msvc\nrelease: 1.98.1\nLLVM version: 22.1.8"
+    },
+    {
+      "command": [
+        "cargo",
+        "-V"
+      ],
+      "exit": 0,
+      "stdout": "cargo 1.98.1 (797e8a9bc 2026-08-05)"
+    },
+    {
+      "command": [
+        "node",
+        "-v"
+      ],
+      "exit": 0,
+      "stdout": "v22.23.4"
+    },
+    {
+      "command": [
+        "pnpm.cmd",
+        "-v"
+      ],
+      "exit": 0,
+      "stdout": "10.12.1"
+    },
+    {
+      "command": [
+        "gh",
+        "--version"
+      ],
+      "exit": 0,
+      "stdout": "gh version 2.101.0 (2026-09-15)\nhttps://github.com/cli/cli/releases/tag/v2.101.0"
+    }
+  ],
+  "specInputs": [
+    {
+      "path": "spec/04_timeline_xsheet.md",
+      "gitBlob": "4a8c90ef6790083137220d1045168b2fbf7b0697",
+      "sha256WorkingBytes": "fcb141fb9fdd0a1a53661693843eca2936736cbead52a6e2b1749a34c0392ea3"
+    },
+    {
+      "path": "spec/10_data_model_project_format.md",
+      "gitBlob": "9cf555640be9b7c7c5965b7b2a1eca81e6981b73",
+      "sha256WorkingBytes": "9ce6a6ad88a3080ef93f2b836d8f29cf7e06eb22fa74eaa6f3948746eac4b35b"
+    },
+    {
+      "path": "spec/11_agent_interface_mcp.md",
+      "gitBlob": "3bb5f246a6115d50d99fe9244187a07d9475968d",
+      "sha256WorkingBytes": "08e2767754d182416510e503a0882aa1a155c5f54a89f6c5807633ff40e3ba81"
+    },
+    {
+      "path": "spec/A_command_registry.md",
+      "gitBlob": "ca582c4d57fdb4a25045e2edaf9863315bca042e",
+      "sha256WorkingBytes": "44f8af1c89e75fab00fa48615fe632444047732b50b778f681b2d187d0493516"
+    }
+  ]
+}
