@@ -1,0 +1,56 @@
+diff --git a/scripts/golden-structural-diff.py b/scripts/golden-structural-diff.py
+index 517e483..734da78 100644
+--- a/scripts/golden-structural-diff.py
++++ b/scripts/golden-structural-diff.py
+@@ -13,7 +13,7 @@ relative to it): the anchor displacement is the distance between `(x, y)` pairs;
+ An anchor of a `moved` piece that moved more than `CORRESPONDING_DU` (1 du: far above any snapping or junction
+ placement change, far below the corpora's feature sizes) is not a displaced junction but a rerouted end (a junction that
+ appeared or disappeared, so the piece now ends at another vertex); those are listed apart.
+-Standard library only.
++Inputs whose ID-aligned arrays repeat an `id` are refused (exit 2, no receipt; C24-R3-03). Standard library only.
+ """
+ import difflib
+ import json
+@@ -143,12 +143,40 @@ class Diff:
+                     self.compare(a[i1 + k], b[j1 + k], f"{path}[{i1 + k}->{j1 + k}]")
+ 
+ 
++class Malformed(ValueError):
++    """An input the comparison cannot align soundly."""
++
++
++def check_identities(x, path, what):
++    """Refuses duplicate identities in every array the comparison aligns by ID (C24-R3-03: aligning would silently keep
++    one of the duplicates and could hide a change in another)."""
++    if isinstance(x, dict):
++        for k, v in x.items():
++            check_identities(v, f"{path}.{k}" if path else k, what)
++    elif isinstance(x, list):
++        ids = [e["id"] for e in x if isinstance(e, dict) and "id" in e]
++        seen = set()
++        for i in ids:
++            key = json.dumps(i, sort_keys=True)
++            if key in seen:
++                raise Malformed(f"{what}: duplicate id {i!r} in the array at {path or '(root)'}")
++            seen.add(key)
++        for k, e in enumerate(x):
++            check_identities(e, f"{path}[{k}]", what)
++
++
+ def main():
+     if len(sys.argv) != 4:
+         print(__doc__)
+         return 2
+-    old = json.loads(pathlib.Path(sys.argv[1]).read_text(encoding="utf-8"))
+-    new = json.loads(pathlib.Path(sys.argv[2]).read_text(encoding="utf-8"))
++    try:
++        old = json.loads(pathlib.Path(sys.argv[1]).read_text(encoding="utf-8"))
++        new = json.loads(pathlib.Path(sys.argv[2]).read_text(encoding="utf-8"))
++        check_identities(old, "", "old input")
++        check_identities(new, "", "new input")
++    except (OSError, ValueError) as e:
++        print(f"malformed input, no receipt written: {e}")
++        return 2
+     d = Diff()
+     d.compare(old, new, "")
+     disp = sorted(d.anchor_displacements, key=lambda t: -t[0])
