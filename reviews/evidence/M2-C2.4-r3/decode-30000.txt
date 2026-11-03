@@ -1,0 +1,26 @@
+{"argv": ["cargo", "test", "-p", "tt-io", "--locked", "-j", "4", "--release", "--test", "c24_r3_decoder", "--", "--nocapture"], "cwd": "C:\\Users\\kaiga\\work\\review\\m2-c24-r3", "env": {"TT_R3_CORPUS": "C:\\Users\\kaiga\\work\\review\\m2-c24-r3\\reviews\\evidence\\M2-C2.4-r3\\decoder-corpus"}, "startedAt": "2026-11-03T01:55:05.585892+00:00"}
+   Compiling once_cell v1.21.4
+   Compiling getrandom v0.4.3
+   Compiling ahash v0.8.12
+   Compiling read-fonts v0.41.0
+   Compiling jsonschema-value v0.59.0
+   Compiling referencing v0.59.0
+   Compiling jsonschema v0.59.0
+   Compiling skrifa v0.44.0
+   Compiling tt-model v0.0.1 (C:\Users\kaiga\work\review\m2-c24-r3\crates\model)
+   Compiling tt-anim v0.0.1 (C:\Users\kaiga\work\review\m2-c24-r3\crates\anim)
+   Compiling tt-fx v0.0.1 (C:\Users\kaiga\work\review\m2-c24-r3\crates\fx)
+   Compiling tt-vector v0.0.1 (C:\Users\kaiga\work\review\m2-c24-r3\crates\vector)
+   Compiling tt-colour v0.0.1 (C:\Users\kaiga\work\review\m2-c24-r3\crates\colour)
+   Compiling tt-render v0.0.1 (C:\Users\kaiga\work\review\m2-c24-r3\crates\render)
+   Compiling tt-persist v0.0.1 (C:\Users\kaiga\work\review\m2-c24-r3\crates\persist)
+   Compiling tt-io v0.0.1 (C:\Users\kaiga\work\review\m2-c24-r3\crates\io)
+    Finished `release` profile [optimized + debuginfo] target(s) in 1m 03s
+     Running tests\c24_r3_decoder.rs (target\release\deps\c24_r3_decoder-0ddec8c1434f4861.exe)
+
+running 1 test
+30000 cases; accepted=12353; max cumulative allocation=264241809
+test independent_corpus_and_seeded_mutations_stay_typed_and_bounded ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.39s
+

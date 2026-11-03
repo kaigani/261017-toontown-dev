@@ -1,0 +1,17 @@
+{"argv": ["cargo", "test", "-p", "tt-executor", "--locked", "-j", "4", "--release", "--test", "c24_r3_topology", "--", "--nocapture"], "cwd": "C:\\Users\\kaiga\\work\\review\\m2-c24-r3", "env": {}, "startedAt": "2026-11-03T01:52:18.691069+00:00"}
+   Compiling tt-executor v0.0.1 (C:\Users\kaiga\work\review\m2-c24-r3\crates\executor)
+    Finished `release` profile [optimized + debuginfo] target(s) in 3.65s
+     Running tests\c24_r3_topology.rs (target\release\deps\c24_r3_topology-24a5c5ee6e8044b3.exe)
+
+running 6 tests
+before=[19.077392578125], after=[19.077392578125], exact union=19.047619047619047
+original area assertion: 155.3125 -> 155.625
+test edit38_original_area_preservation_assertion_remains_a_failure ... ok
+test shrunk_cutter_area_bound ... ok
+test transforms_with_determinant_plus_and_minus_one_keep_the_oracles_faces ... ok
+test the_cutter_splits_along_its_segment_like_the_oracle ... ok
+test vectorized_shapes_enclose_one_unpainted_zone_per_paper_component ... ok
+test flatten_of_disjoint_layers_has_the_faces_of_their_union ... ok
+
+test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 45.69s
+
