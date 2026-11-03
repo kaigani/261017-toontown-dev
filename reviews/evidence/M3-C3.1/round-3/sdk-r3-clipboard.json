@@ -1,0 +1,1184 @@
+{
+  "profile": "release CI 9d42034",
+  "sdkVersion": "2.0.0",
+  "calls": [
+    {
+      "command": "doc.object.get",
+      "params": {
+        "ref": "scene:\"Intro\"/element:\"Background\""
+      },
+      "envelope": {
+        "status": "ok",
+        "result": {
+          "object": {
+            "id": "el_01K742SG12BCBRQ5DKGZBWAQ15",
+            "type": "element",
+            "rev": 1,
+            "name": "Background",
+            "path": "scene:\"Intro\"/element:\"Background\"",
+            "elementType": "image",
+            "loops": 1,
+            "loopType": "count",
+            "positionLoop": "cycle",
+            "role": "background",
+            "deformable": false,
+            "visibleInScene": true,
+            "visibleInXsheet": true,
+            "locked": false,
+            "collapsed": false,
+            "markerColour": null,
+            "backgroundColour": null,
+            "columnWidth": 80,
+            "drawingBankId": "db_01K742SG13SAQQWQPBT2YHRSS5",
+            "exposure": [
+              [
+                "dr_01K742SG14AM5D97ZF46JPANA2",
+                48
+              ]
+            ],
+            "importOptions": {
+              "premultiplied": false
+            },
+            "transform": {
+              "offset": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+              },
+              "rotation": 0.0,
+              "skew": 0.0,
+              "scale": {
+                "x": 1.0,
+                "y": 1.0
+              },
+              "keepProportions": false,
+              "rotationPivot": {
+                "x": 0.0,
+                "y": 0.0
+              },
+              "scalePivot": {
+                "x": 0.0,
+                "y": 0.0
+              },
+              "rotateAboutPivot": false,
+              "lockDepth": false,
+              "orientToPath": false
+            },
+            "channels": {},
+            "createdAt": "2026-10-17T09:30:12.345Z"
+          }
+        },
+        "targets": {
+          "ids": [
+            "el_01K742SG12BCBRQ5DKGZBWAQ15"
+          ]
+        },
+        "changes": [],
+        "warnings": [],
+        "documentRev": 1
+      }
+    },
+    {
+      "command": "doc.object.get",
+      "params": {
+        "ref": "dr_01K742SG14AM5D97ZF46JPANA2",
+        "depth": -1
+      },
+      "envelope": {
+        "status": "ok",
+        "result": {
+          "object": {
+            "id": "dr_01K742SG14AM5D97ZF46JPANA2",
+            "type": "drawing",
+            "rev": 1,
+            "name": "1",
+            "path": "scene:\"Intro\"/element:\"Background\"/drawing:\"1\"",
+            "locked": false,
+            "pivot": {
+              "x": 0.0,
+              "y": 0.0
+            },
+            "mouthShape": null,
+            "nodes": [
+              {
+                "id": "nd_01K742SG15Z827NPBDF674YS5T",
+                "type": "drawingNode",
+                "rev": 1,
+                "path": "scene:\"Intro\"/element:\"Background\"/drawing:\"1\"/drawingNode:@nd_01K742SG15Z827NPBDF674YS5T",
+                "kind": "bitmap",
+                "transform": [
+                  1.0,
+                  0.0,
+                  0.0,
+                  1.0,
+                  -960.0,
+                  540.0
+                ],
+                "width": 1.0,
+                "height": 1.0,
+                "image": {
+                  "entry": "banks/db_01K742SG13SAQQWQPBT2YHRSS5/dr_01K742SG14AM5D97ZF46JPANA2/nd_01K742SG15Z827NPBDF674YS5T.png",
+                  "mediaType": "image/png",
+                  "size": 70,
+                  "sha256": "50b8be0a33aa6a1e3d7fb691fc243c3ffb0a7e57a2a9824a7a8f7d79933c1b49"
+                }
+              }
+            ],
+            "colourRecovery": [],
+            "createdAt": "2026-10-17T09:30:12.345Z"
+          }
+        },
+        "targets": {
+          "ids": [
+            "dr_01K742SG14AM5D97ZF46JPANA2"
+          ]
+        },
+        "changes": [],
+        "warnings": [],
+        "documentRev": 1
+      }
+    },
+    {
+      "command": "cell.clipboard.set",
+      "params": {
+        "elementIds": [
+          "scene:\"Intro\"/element:\"Background\""
+        ],
+        "from": 1,
+        "to": 1
+      },
+      "envelope": {
+        "status": "ok",
+        "result": {
+          "contentType": "imageCells",
+          "elementCount": 1,
+          "frames": 1
+        },
+        "changes": [],
+        "warnings": [],
+        "documentRev": 1
+      }
+    },
+    {
+      "command": "project.open",
+      "params": {
+        "path": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\m3c31-scratch-7f3k\\sdk-r3-out-25557\\in\\seed-3225905-199.animpkg"
+      },
+      "envelope": {
+        "status": "ok",
+        "result": {
+          "jobId": "job-2"
+        },
+        "changes": [],
+        "warnings": [],
+        "documentRev": 1
+      }
+    },
+    {
+      "command": "job.wait",
+      "params": {
+        "jobId": "job-2",
+        "timeoutMs": 60000
+      },
+      "envelope": {
+        "status": "ok",
+        "result": {
+          "jobId": "job-2",
+          "commandId": "project.open",
+          "state": "succeeded",
+          "progress": 1.0,
+          "message": "Finalisation",
+          "startedAt": "2026-11-03T20:52:40.890Z",
+          "result": {
+            "projectId": "pr_01K742SG00MVT60N5CRXC4F9SK",
+            "readOnly": false,
+            "formatVersion": "1.0",
+            "warnings": [
+              {
+                "id": "project.mediaMissing",
+                "message": "8 media file(s) referenced by the project are missing",
+                "details": {
+                  "missing": [
+                    {
+                      "objectId": "dr_01K742SG0MKTVPV7ZG60YQXE2P",
+                      "location": "banks/db_01K742SG0JS7V9PC974X47SKY2/dr_01K742SG0MKTVPV7ZG60YQXE2P/nd_01K742SG0XRR3VF5PMSJC0W9PB.png",
+                      "kind": "pixels"
+                    },
+                    {
+                      "objectId": "li_01K742SG2XPR0PDNY3Y48S5CKT",
+                      "location": "library/files/Sky.png",
+                      "kind": "libraryFile"
+                    },
+                    {
+                      "objectId": "li_01K742SG2WJVG392CHH1KHM26K",
+                      "location": "library/files/walk.animtpl",
+                      "kind": "libraryFile"
+                    },
+                    {
+                      "objectId": "li_01K742SG2XPR0PDNY3Y48S5CKT",
+                      "location": "library/thumbnails/sky.png",
+                      "kind": "libraryFile"
+                    },
+                    {
+                      "objectId": "as_01K742SG0GR2BAWSTCD9WA50V5",
+                      "location": "media/as_01K742SG0GR2BAWSTCD9WA50V5.wav",
+                      "kind": "embedded"
+                    },
+                    {
+                      "objectId": "pal_01K742SG02EK0KMAT6T1KJJKH8",
+                      "location": "textures/fabric-day.png",
+                      "kind": "texture"
+                    },
+                    {
+                      "objectId": "pal_01K742SG02EK0KMAT6T1KJJKH8",
+                      "location": "textures/fabric-night.png",
+                      "kind": "texture"
+                    },
+                    {
+                      "objectId": "as_01K742SG0HK7S140VA2YYXZFH1",
+                      "location": "../ref/reference.mov",
+                      "kind": "linked"
+                    }
+                  ]
+                }
+              }
+            ]
+          },
+          "session": "agent:s1-59b562"
+        },
+        "changes": [],
+        "warnings": [],
+        "documentRev": 1
+      }
+    },
+    {
+      "command": "cell.clipboard.apply",
+      "params": {
+        "elementId": "scene:\"Intro\"/element:\"Background\"",
+        "frame": 29
+      },
+      "envelope": {
+        "status": "ok",
+        "result": {
+          "elementIds": [
+            "el_01K742SG12BCBRQ5DKGZBWAQ15"
+          ],
+          "from": 29,
+          "to": 29,
+          "createdDrawingIds": [
+            "dr_01K7JJN800DXSGQZMXZ4CJ5RAE"
+          ]
+        },
+        "changes": [
+          {
+            "id": "db_01K742SG13SAQQWQPBT2YHRSS5",
+            "type": "drawingBank",
+            "op": "modified",
+            "rev": 2,
+            "patch": [
+              {
+                "op": "add",
+                "path": "/drawings/1",
+                "value": {
+                  "id": "dr_01K7JJN800DXSGQZMXZ4CJ5RAE",
+                  "type": "drawing"
+                }
+              }
+            ]
+          },
+          {
+            "id": "dr_01K7JJN800DXSGQZMXZ4CJ5RAE/nd_01K742SG15Z827NPBDF674YS5T",
+            "type": "drawingNode",
+            "op": "created",
+            "rev": 2,
+            "parentId": "dr_01K7JJN800DXSGQZMXZ4CJ5RAE",
+            "index": 0
+          },
+          {
+            "id": "dr_01K7JJN800DXSGQZMXZ4CJ5RAE",
+            "type": "drawing",
+            "op": "created",
+            "rev": 2,
+            "parentId": "db_01K742SG13SAQQWQPBT2YHRSS5",
+            "index": 1
+          },
+          {
+            "id": "el_01K742SG12BCBRQ5DKGZBWAQ15",
+            "type": "element",
+            "op": "modified",
+            "rev": 2,
+            "patch": [
+              {
+                "op": "replace",
+                "path": "/exposure",
+                "range": {
+                  "from": 29,
+                  "to": 49
+                },
+                "value": [
+                  [
+                    "dr_01K7JJN800DXSGQZMXZ4CJ5RAE",
+                    1
+                  ],
+                  [
+                    "dr_01K742SG14AM5D97ZF46JPANA2",
+                    20
+                  ]
+                ],
+                "oldValue": [
+                  [
+                    "dr_01K742SG14AM5D97ZF46JPANA2",
+                    20
+                  ],
+                  [
+                    null,
+                    1
+                  ]
+                ]
+              }
+            ]
+          }
+        ],
+        "undo": {
+          "stepId": "u-1",
+          "label": "Paste Cells"
+        },
+        "warnings": [],
+        "documentRev": 2
+      }
+    },
+    {
+      "command": "doc.object.get",
+      "params": {
+        "ref": "scene:\"Intro\"/element:\"Background\""
+      },
+      "envelope": {
+        "status": "ok",
+        "result": {
+          "object": {
+            "id": "el_01K742SG12BCBRQ5DKGZBWAQ15",
+            "type": "element",
+            "rev": 2,
+            "name": "Background",
+            "path": "scene:\"Intro\"/element:\"Background\"",
+            "elementType": "image",
+            "loops": 1,
+            "loopType": "count",
+            "positionLoop": "cycle",
+            "role": "background",
+            "deformable": false,
+            "visibleInScene": true,
+            "visibleInXsheet": true,
+            "locked": false,
+            "collapsed": false,
+            "markerColour": null,
+            "backgroundColour": null,
+            "columnWidth": 80,
+            "drawingBankId": "db_01K742SG13SAQQWQPBT2YHRSS5",
+            "exposure": [
+              [
+                "dr_01K742SG14AM5D97ZF46JPANA2",
+                28
+              ],
+              [
+                "dr_01K7JJN800DXSGQZMXZ4CJ5RAE",
+                1
+              ],
+              [
+                "dr_01K742SG14AM5D97ZF46JPANA2",
+                20
+              ]
+            ],
+            "importOptions": {
+              "premultiplied": false
+            },
+            "transform": {
+              "offset": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+              },
+              "rotation": 0.0,
+              "skew": 0.0,
+              "scale": {
+                "x": 1.0,
+                "y": 1.0
+              },
+              "keepProportions": false,
+              "rotationPivot": {
+                "x": 0.0,
+                "y": 0.0
+              },
+              "scalePivot": {
+                "x": 0.0,
+                "y": 0.0
+              },
+              "rotateAboutPivot": false,
+              "lockDepth": false,
+              "orientToPath": false
+            },
+            "channels": {},
+            "createdAt": "2026-10-17T09:30:12.345Z"
+          }
+        },
+        "targets": {
+          "ids": [
+            "el_01K742SG12BCBRQ5DKGZBWAQ15"
+          ]
+        },
+        "changes": [],
+        "warnings": [],
+        "documentRev": 2
+      }
+    },
+    {
+      "command": "doc.object.get",
+      "params": {
+        "ref": "dr_01K7JJN800DXSGQZMXZ4CJ5RAE",
+        "depth": -1
+      },
+      "envelope": {
+        "status": "ok",
+        "result": {
+          "object": {
+            "id": "dr_01K7JJN800DXSGQZMXZ4CJ5RAE",
+            "type": "drawing",
+            "rev": 2,
+            "name": "2",
+            "path": "scene:\"Intro\"/element:\"Background\"/drawing:\"2\"",
+            "locked": false,
+            "pivot": {
+              "x": 0.0,
+              "y": 0.0
+            },
+            "mouthShape": null,
+            "nodes": [
+              {
+                "id": "nd_01K742SG15Z827NPBDF674YS5T",
+                "type": "drawingNode",
+                "rev": 2,
+                "path": "scene:\"Intro\"/element:\"Background\"/drawing:\"2\"/drawingNode:@nd_01K742SG15Z827NPBDF674YS5T",
+                "kind": "bitmap",
+                "transform": [
+                  1.0,
+                  0.0,
+                  0.0,
+                  1.0,
+                  -960.0,
+                  540.0
+                ],
+                "width": 1.0,
+                "height": 1.0,
+                "image": {
+                  "entry": "banks/db_01K742SG13SAQQWQPBT2YHRSS5/dr_01K742SG14AM5D97ZF46JPANA2/nd_01K742SG15Z827NPBDF674YS5T-50b8be0a33aa6a1e.png",
+                  "mediaType": "image/png",
+                  "size": 70,
+                  "sha256": "50b8be0a33aa6a1e3d7fb691fc243c3ffb0a7e57a2a9824a7a8f7d79933c1b49"
+                }
+              }
+            ],
+            "colourRecovery": [],
+            "createdAt": "2026-11-03T20:52:40.915Z"
+          }
+        },
+        "targets": {
+          "ids": [
+            "dr_01K7JJN800DXSGQZMXZ4CJ5RAE"
+          ]
+        },
+        "changes": [],
+        "warnings": [],
+        "documentRev": 2
+      }
+    },
+    {
+      "command": "project.saveAs",
+      "params": {
+        "path": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-c31-r3-clipboard-eazaux07\\collision.animpkg"
+      },
+      "envelope": {
+        "status": "ok",
+        "result": {
+          "jobId": "job-3"
+        },
+        "changes": [
+          {
+            "id": "pr_01K742SG00MVT60N5CRXC4F9SK",
+            "type": "project",
+            "op": "modified",
+            "rev": 3,
+            "patch": [
+              {
+                "op": "replace",
+                "path": "/modifiedAt",
+                "value": "2026-11-03T20:52:40.921Z",
+                "oldValue": "2026-10-17T09:30:12.345Z"
+              }
+            ]
+          },
+          {
+            "id": "dr_01K742SG0KH11R294QCF2Z6GW5",
+            "type": "drawing",
+            "op": "modified",
+            "rev": 3,
+            "patch": [
+              {
+                "op": "add",
+                "path": "/colourRecovery/1",
+                "value": {
+                  "colourId": "col_01K742SG06RHVGM2MJDEXPBJBT",
+                  "paletteId": "pal_01K742SG02EK0KMAT6T1KJJKH8",
+                  "paletteName": "Main",
+                  "styles": [
+                    {
+                      "styleId": "sty_01K742SG037MZTAZD8X588FBJZ",
+                      "styleName": "Day"
+                    },
+                    {
+                      "styleId": "sty_01K742SG041F602Y6JDW0NQYPC",
+                      "styleName": "Night"
+                    }
+                  ],
+                  "swatch": {
+                    "colourId": "col_01K742SG06RHVGM2MJDEXPBJBT",
+                    "type": "swatch",
+                    "rev": 1,
+                    "name": "Sky",
+                    "kind": "linearGradient",
+                    "deformable": false,
+                    "values": {
+                      "sty_01K742SG037MZTAZD8X588FBJZ": {
+                        "stops": [
+                          {
+                            "position": 0.0,
+                            "rgba": "#70C8F0FF"
+                          },
+                          {
+                            "position": 1.0,
+                            "rgba": "#FFFFFFFF"
+                          }
+                        ]
+                      },
+                      "sty_01K742SG041F602Y6JDW0NQYPC": {
+                        "stops": [
+                          {
+                            "position": 0.0,
+                            "rgba": "#10084AFF"
+                          },
+                          {
+                            "position": 1.0,
+                            "rgba": "#300448FF"
+                          }
+                        ]
+                      }
+                    }
+                  }
+                }
+              },
+              {
+                "op": "add",
+                "path": "/colourRecovery/2",
+                "value": {
+                  "colourId": "col_01K742SG09FJFGKMDSQNJ4VV2S",
+                  "paletteId": "pal_01K742SG02EK0KMAT6T1KJJKH8",
+                  "paletteName": "Main",
+                  "styles": [
+                    {
+                      "styleId": "sty_01K742SG037MZTAZD8X588FBJZ",
+                      "styleName": "Day"
+                    },
+                    {
+                      "styleId": "sty_01K742SG041F602Y6JDW0NQYPC",
+                      "styleName": "Night"
+                    }
+                  ],
+                  "swatch": {
+                    "colourId": "col_01K742SG09FJFGKMDSQNJ4VV2S",
+                    "type": "swatch",
+                    "rev": 1,
+                    "name": "Ink",
+                    "kind": "solid",
+                    "deformable": false,
+                    "values": {
+                      "sty_01K742SG037MZTAZD8X588FBJZ": {
+                        "rgba": "#000000FF"
+                      },
+                      "sty_01K742SG041F602Y6JDW0NQYPC": {
+                        "rgba": "#101010FF"
+                      }
+                    }
+                  }
+                }
+              }
+            ]
+          }
+        ],
+        "warnings": [],
+        "documentRev": 3
+      }
+    },
+    {
+      "command": "job.wait",
+      "params": {
+        "jobId": "job-3",
+        "timeoutMs": 60000
+      },
+      "envelope": {
+        "status": "ok",
+        "result": {
+          "jobId": "job-3",
+          "commandId": "project.saveAs",
+          "state": "succeeded",
+          "progress": 1.0,
+          "message": "Replace",
+          "startedAt": "2026-11-03T20:52:40.922Z",
+          "result": {
+            "path": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-c31-r3-clipboard-eazaux07\\collision.animpkg",
+            "projectSaved": true,
+            "globalLibrarySaved": false
+          },
+          "session": "agent:s1-59b562"
+        },
+        "changes": [],
+        "warnings": [],
+        "documentRev": 3
+      }
+    },
+    {
+      "command": "project.open",
+      "params": {
+        "path": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\m3c31-scratch-7f3k\\sdk-r3-out-25557\\in\\seed-3225905-21.animpkg"
+      },
+      "envelope": {
+        "status": "ok",
+        "result": {
+          "jobId": "job-4"
+        },
+        "changes": [],
+        "warnings": [],
+        "documentRev": 3
+      }
+    },
+    {
+      "command": "job.wait",
+      "params": {
+        "jobId": "job-4",
+        "timeoutMs": 60000
+      },
+      "envelope": {
+        "status": "ok",
+        "result": {
+          "jobId": "job-4",
+          "commandId": "project.open",
+          "state": "succeeded",
+          "progress": 1.0,
+          "message": "Finalisation",
+          "startedAt": "2026-11-03T20:52:40.951Z",
+          "result": {
+            "projectId": "pr_01K742SG00FJ099GV49H4H709C",
+            "readOnly": false,
+            "formatVersion": "1.0",
+            "warnings": [
+              {
+                "id": "project.mediaMissing",
+                "message": "8 media file(s) referenced by the project are missing",
+                "details": {
+                  "missing": [
+                    {
+                      "objectId": "dr_01K742SG0MKTVPV7ZG60YQXE2P",
+                      "location": "banks/db_01K742SG0JS7V9PC974X47SKY2/dr_01K742SG0MKTVPV7ZG60YQXE2P/nd_01K742SG0XRR3VF5PMSJC0W9PB.png",
+                      "kind": "pixels"
+                    },
+                    {
+                      "objectId": "li_01K742SG2XPR0PDNY3Y48S5CKT",
+                      "location": "library/files/Sky.png",
+                      "kind": "libraryFile"
+                    },
+                    {
+                      "objectId": "li_01K742SG2WJVG392CHH1KHM26K",
+                      "location": "library/files/walk.animtpl",
+                      "kind": "libraryFile"
+                    },
+                    {
+                      "objectId": "li_01K742SG2XPR0PDNY3Y48S5CKT",
+                      "location": "library/thumbnails/sky.png",
+                      "kind": "libraryFile"
+                    },
+                    {
+                      "objectId": "as_01K742SG0GR2BAWSTCD9WA50V5",
+                      "location": "media/as_01K742SG0GR2BAWSTCD9WA50V5.wav",
+                      "kind": "embedded"
+                    },
+                    {
+                      "objectId": "pal_01K742SG02EK0KMAT6T1KJJKH8",
+                      "location": "textures/fabric-day.png",
+                      "kind": "texture"
+                    },
+                    {
+                      "objectId": "pal_01K742SG02EK0KMAT6T1KJJKH8",
+                      "location": "textures/fabric-night.png",
+                      "kind": "texture"
+                    },
+                    {
+                      "objectId": "as_01K742SG0HK7S140VA2YYXZFH1",
+                      "location": "../ref/reference.mov",
+                      "kind": "linked"
+                    }
+                  ]
+                }
+              }
+            ]
+          },
+          "session": "agent:s1-59b562"
+        },
+        "changes": [],
+        "warnings": [],
+        "documentRev": 1
+      }
+    },
+    {
+      "command": "cell.clipboard.set",
+      "params": {
+        "elementIds": [
+          "scene:\"Intro\"/element:\"Background\""
+        ],
+        "from": 1,
+        "to": 1
+      },
+      "envelope": {
+        "status": "ok",
+        "result": {
+          "contentType": "imageCells",
+          "elementCount": 1,
+          "frames": 1
+        },
+        "changes": [],
+        "warnings": [],
+        "documentRev": 1
+      }
+    },
+    {
+      "command": "edit.clipboard.get",
+      "params": {
+        "includeData": true
+      },
+      "envelope": {
+        "status": "ok",
+        "result": {
+          "kind": "cells",
+          "sourceContext": "xsheet",
+          "sourceProjectId": "pr_01K742SG00FJ099GV49H4H709C",
+          "itemCount": 1,
+          "items": [
+            {
+              "elementId": "el_01K742SG12BCBRQ5DKGZBWAQ15",
+              "frameOffset": 0,
+              "drawingRef": "dr_01K742SG14AM5D97ZF46JPANA2"
+            }
+          ],
+          "options": null,
+          "payload": {
+            "projectId": "pr_01K742SG00FJ099GV49H4H709C",
+            "drawings": {
+              "dr_01K742SG14AM5D97ZF46JPANA2": {
+                "id": "dr_01K742SG14AM5D97ZF46JPANA2",
+                "type": "drawing",
+                "rev": 1,
+                "name": "1",
+                "locked": false,
+                "pivot": {
+                  "x": 0.0,
+                  "y": 0.0
+                },
+                "mouthShape": null,
+                "nodes": [
+                  {
+                    "id": "nd_01K742SG15Z827NPBDF674YS5T",
+                    "type": "drawingNode",
+                    "rev": 1,
+                    "kind": "bitmap",
+                    "transform": [
+                      1.0,
+                      0.0,
+                      0.0,
+                      1.0,
+                      -960.0,
+                      540.0
+                    ],
+                    "width": 1.0,
+                    "height": 1.0,
+                    "image": {
+                      "entry": "banks/db_01K742SG13SAQQWQPBT2YHRSS5/dr_01K742SG14AM5D97ZF46JPANA2/nd_01K742SG15Z827NPBDF674YS5T.png",
+                      "mediaType": "image/png",
+                      "size": 70,
+                      "sha256": "50b8be0a33aa6a1e3d7fb691fc243c3ffb0a7e57a2a9824a7a8f7d79933c1b49"
+                    }
+                  }
+                ],
+                "colourRecovery": [],
+                "createdAt": "2026-10-17T09:30:12.345Z"
+              }
+            },
+            "banks": {},
+            "blobs": {
+              "banks/db_01K742SG13SAQQWQPBT2YHRSS5/dr_01K742SG14AM5D97ZF46JPANA2/nd_01K742SG15Z827NPBDF674YS5T.png": "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR4nGMRja3/DwADgQH1KTMwSgAAAABJRU5ErkJggg=="
+            },
+            "notes": {},
+            "elementTypes": {
+              "el_01K742SG12BCBRQ5DKGZBWAQ15": "image"
+            }
+          }
+        },
+        "changes": [],
+        "warnings": [],
+        "documentRev": 1
+      }
+    },
+    {
+      "command": "project.create",
+      "params": {
+        "name": "Staged release928"
+      },
+      "envelope": {
+        "status": "ok",
+        "result": {
+          "projectId": "pr_01M6HJYZCEAY7QDM5FQCBH945W",
+          "sceneId": "sc_01M6HJYZCEAY7QDM5FQCBH94A0",
+          "cameraId": "el_01M6HJYZCEAY7QDM5FQCBH94A2",
+          "elementId": "el_01M6HJYZCEAY7QDM5FQCBH94A3"
+        },
+        "changes": [],
+        "warnings": [],
+        "documentRev": 1
+      }
+    },
+    {
+      "command": "element.create",
+      "params": {
+        "type": "image",
+        "name": "Staged928"
+      },
+      "envelope": {
+        "status": "ok",
+        "result": {
+          "elementIds": [
+            "el_01K7JJN800N1X4Z7N7EC3DHNNP"
+          ],
+          "names": [
+            "Staged928"
+          ],
+          "warnings": []
+        },
+        "changes": [
+          {
+            "id": "pr_01M6HJYZCEAY7QDM5FQCBH945W",
+            "type": "project",
+            "op": "modified",
+            "rev": 2,
+            "patch": [
+              {
+                "op": "add",
+                "path": "/drawingBanks/1",
+                "value": {
+                  "id": "db_01K7JJN801GE8WAJ5440HYCT4J",
+                  "type": "drawingBank"
+                }
+              }
+            ]
+          },
+          {
+            "id": "db_01K7JJN801GE8WAJ5440HYCT4J",
+            "type": "drawingBank",
+            "op": "created",
+            "rev": 2,
+            "parentId": "pr_01M6HJYZCEAY7QDM5FQCBH945W",
+            "index": 1
+          },
+          {
+            "id": "sc_01M6HJYZCEAY7QDM5FQCBH94A0",
+            "type": "scene",
+            "op": "modified",
+            "rev": 2,
+            "patch": [
+              {
+                "op": "add",
+                "path": "/tree/0",
+                "value": {
+                  "id": "el_01K7JJN800N1X4Z7N7EC3DHNNP",
+                  "children": []
+                }
+              },
+              {
+                "op": "replace",
+                "path": "/columnOrder",
+                "value": [
+                  "el_01M6HJYZCEAY7QDM5FQCBH94A3",
+                  "el_01K7JJN800N1X4Z7N7EC3DHNNP"
+                ],
+                "oldValue": [
+                  "el_01M6HJYZCEAY7QDM5FQCBH94A3"
+                ]
+              },
+              {
+                "op": "add",
+                "path": "/elements/3",
+                "value": {
+                  "id": "el_01K7JJN800N1X4Z7N7EC3DHNNP",
+                  "type": "element"
+                }
+              }
+            ]
+          },
+          {
+            "id": "el_01K7JJN800N1X4Z7N7EC3DHNNP",
+            "type": "element",
+            "op": "created",
+            "rev": 2,
+            "parentId": "sc_01M6HJYZCEAY7QDM5FQCBH94A0",
+            "index": 3
+          }
+        ],
+        "undo": {
+          "stepId": "u-1",
+          "label": "New Elements"
+        },
+        "warnings": [],
+        "documentRev": 2
+      }
+    },
+    {
+      "command": "batch",
+      "params": {
+        "label": "Paste copy928",
+        "atomic": true,
+        "steps": [
+          {
+            "id": "cell.clipboard.apply",
+            "params": {
+              "elementId": "el_01K7JJN800N1X4Z7N7EC3DHNNP",
+              "frame": 9
+            }
+          },
+          {
+            "id": "cell.clipboard.set",
+            "params": {
+              "elementIds": [
+                "el_01K7JJN800N1X4Z7N7EC3DHNNP"
+              ],
+              "from": 9,
+              "to": 9
+            }
+          }
+        ]
+      },
+      "envelope": {
+        "status": "ok",
+        "result": {
+          "stepCount": 2
+        },
+        "changes": [
+          {
+            "id": "db_01K7JJN801GE8WAJ5440HYCT4J",
+            "type": "drawingBank",
+            "op": "modified",
+            "rev": 3,
+            "patch": [
+              {
+                "op": "add",
+                "path": "/drawings/0",
+                "value": {
+                  "id": "dr_01K7JJN8003KGTSCKCDP2VWR06",
+                  "type": "drawing"
+                }
+              }
+            ]
+          },
+          {
+            "id": "dr_01K7JJN8003KGTSCKCDP2VWR06/nd_01K742SG15Z827NPBDF674YS5T",
+            "type": "drawingNode",
+            "op": "created",
+            "rev": 3,
+            "parentId": "dr_01K7JJN8003KGTSCKCDP2VWR06",
+            "index": 0
+          },
+          {
+            "id": "dr_01K7JJN8003KGTSCKCDP2VWR06",
+            "type": "drawing",
+            "op": "created",
+            "rev": 3,
+            "parentId": "db_01K7JJN801GE8WAJ5440HYCT4J",
+            "index": 0
+          },
+          {
+            "id": "el_01K7JJN800N1X4Z7N7EC3DHNNP",
+            "type": "element",
+            "op": "modified",
+            "rev": 3,
+            "patch": [
+              {
+                "op": "replace",
+                "path": "/exposure",
+                "range": {
+                  "from": 9,
+                  "to": 9
+                },
+                "value": [
+                  [
+                    "dr_01K7JJN8003KGTSCKCDP2VWR06",
+                    1
+                  ]
+                ],
+                "oldValue": [
+                  [
+                    null,
+                    1
+                  ]
+                ]
+              }
+            ]
+          }
+        ],
+        "undo": {
+          "stepId": "u-2",
+          "label": "Paste copy928"
+        },
+        "warnings": [],
+        "documentRev": 3,
+        "steps": [
+          {
+            "status": "ok",
+            "result": {
+              "elementIds": [
+                "el_01K7JJN800N1X4Z7N7EC3DHNNP"
+              ],
+              "from": 9,
+              "to": 9,
+              "createdDrawingIds": [
+                "dr_01K7JJN8003KGTSCKCDP2VWR06"
+              ]
+            },
+            "changes": [],
+            "warnings": [],
+            "documentRev": 3
+          },
+          {
+            "status": "ok",
+            "result": {
+              "contentType": "imageCells",
+              "elementCount": 1,
+              "frames": 1
+            },
+            "changes": [],
+            "warnings": [],
+            "documentRev": 3
+          }
+        ]
+      }
+    },
+    {
+      "command": "edit.clipboard.get",
+      "params": {
+        "includeData": true
+      },
+      "envelope": {
+        "status": "ok",
+        "result": {
+          "kind": "cells",
+          "sourceContext": "xsheet",
+          "sourceProjectId": "pr_01M6HJYZCEAY7QDM5FQCBH945W",
+          "itemCount": 1,
+          "items": [
+            {
+              "elementId": "el_01K7JJN800N1X4Z7N7EC3DHNNP",
+              "frameOffset": 0,
+              "drawingRef": "dr_01K7JJN8003KGTSCKCDP2VWR06"
+            }
+          ],
+          "options": null,
+          "payload": {
+            "projectId": "pr_01M6HJYZCEAY7QDM5FQCBH945W",
+            "drawings": {
+              "dr_01K7JJN8003KGTSCKCDP2VWR06": {
+                "id": "dr_01K7JJN8003KGTSCKCDP2VWR06",
+                "type": "drawing",
+                "rev": 0,
+                "name": "1",
+                "locked": false,
+                "pivot": {
+                  "x": 0.0,
+                  "y": 0.0
+                },
+                "mouthShape": null,
+                "nodes": [
+                  {
+                    "id": "nd_01K742SG15Z827NPBDF674YS5T",
+                    "type": "drawingNode",
+                    "rev": 1,
+                    "kind": "bitmap",
+                    "transform": [
+                      1.0,
+                      0.0,
+                      0.0,
+                      1.0,
+                      -960.0,
+                      540.0
+                    ],
+                    "width": 1.0,
+                    "height": 1.0,
+                    "image": {
+                      "entry": "banks/db_01K742SG13SAQQWQPBT2YHRSS5/dr_01K742SG14AM5D97ZF46JPANA2/nd_01K742SG15Z827NPBDF674YS5T.png",
+                      "mediaType": "image/png",
+                      "size": 70,
+                      "sha256": "50b8be0a33aa6a1e3d7fb691fc243c3ffb0a7e57a2a9824a7a8f7d79933c1b49"
+                    }
+                  }
+                ],
+                "colourRecovery": [],
+                "createdAt": "2026-11-03T20:52:40.986Z"
+              }
+            },
+            "banks": {},
+            "blobs": {
+              "banks/db_01K742SG13SAQQWQPBT2YHRSS5/dr_01K742SG14AM5D97ZF46JPANA2/nd_01K742SG15Z827NPBDF674YS5T.png": "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR4nGMRja3/DwADgQH1KTMwSgAAAABJRU5ErkJggg=="
+            },
+            "notes": {},
+            "elementTypes": {
+              "el_01K7JJN800N1X4Z7N7EC3DHNNP": "image"
+            }
+          }
+        },
+        "changes": [],
+        "warnings": [],
+        "documentRev": 3
+      }
+    }
+  ],
+  "checks": [
+    {
+      "check": "cross-project colliding IDs keep source artwork",
+      "ok": true,
+      "expected": {
+        "entry": "banks/db_01K742SG13SAQQWQPBT2YHRSS5/dr_01K742SG14AM5D97ZF46JPANA2/nd_01K742SG15Z827NPBDF674YS5T.png",
+        "mediaType": "image/png",
+        "size": 70,
+        "sha256": "50b8be0a33aa6a1e3d7fb691fc243c3ffb0a7e57a2a9824a7a8f7d79933c1b49"
+      },
+      "actual": {
+        "entry": "banks/db_01K742SG13SAQQWQPBT2YHRSS5/dr_01K742SG14AM5D97ZF46JPANA2/nd_01K742SG15Z827NPBDF674YS5T-50b8be0a33aa6a1e.png",
+        "mediaType": "image/png",
+        "size": 70,
+        "sha256": "50b8be0a33aa6a1e3d7fb691fc243c3ffb0a7e57a2a9824a7a8f7d79933c1b49"
+      }
+    },
+    {
+      "check": "atomic paste then copy captures staged bytes",
+      "ok": true,
+      "expected": {
+        "banks/db_01K742SG13SAQQWQPBT2YHRSS5/dr_01K742SG14AM5D97ZF46JPANA2/nd_01K742SG15Z827NPBDF674YS5T.png": "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR4nGMRja3/DwADgQH1KTMwSgAAAABJRU5ErkJggg=="
+      },
+      "actual": {
+        "banks/db_01K742SG13SAQQWQPBT2YHRSS5/dr_01K742SG14AM5D97ZF46JPANA2/nd_01K742SG15Z827NPBDF674YS5T.png": "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR4nGMRja3/DwADgQH1KTMwSgAAAABJRU5ErkJggg=="
+      }
+    }
+  ]
+}

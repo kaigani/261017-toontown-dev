@@ -79,7 +79,7 @@ impl ArtPayload {
         Self { project_id: doc.project().id().as_str().to_owned(), ..Self::default() }
     }
 
-    /// Captures a drawing (and its binary entries) once.
+    /// Captures a drawing (and its binary entries, read through the call's staged view) once.
     pub(crate) fn capture_drawing(&mut self, cx: &Cx, doc: &Document, d: &Id) -> Result<(), CommandError> {
         if self.drawings.contains_key(d.as_str()) {
             return Ok(());
@@ -87,13 +87,12 @@ impl ArtPayload {
         let v = doc.entry_raw_json(&EntryKey::Drawing(d.clone())).map_err(internal)?;
         let mut names = BTreeSet::new();
         entries(&v, &mut names, 0);
-        if let Ok(p) = cx.project() {
-            for n in names {
-                if !self.blobs.contains_key(&n)
-                    && let Ok(bytes) = p.store.blobs.read(&n, 1 << 32)
-                {
-                    self.blobs.insert(n, tt_persist::b64::encode(&bytes));
-                }
+        // The bytes as this call sees them: an entry an earlier step of the same call staged counts (C31-R3-03).
+        for n in names {
+            if !self.blobs.contains_key(&n)
+                && let Some(bytes) = cx.blob_bytes(&n)
+            {
+                self.blobs.insert(n, tt_persist::b64::encode(&bytes));
             }
         }
         self.drawings.insert(d.as_str().to_owned(), v);
@@ -110,18 +109,28 @@ impl ArtPayload {
         Ok(())
     }
 
-    /// The JSON of a source drawing: the payload's copy, else the live document's.
+    /// Whether the copy was made in the open project. Only then may a paste use live objects with the copy's IDs (a
+    /// drawing of the destination bank, the source column's type): another project may hold different objects under
+    /// the same IDs (C31-R3-02).
+    pub(crate) fn same_project(&self, doc: &Document) -> bool {
+        self.project_id == doc.project().id().as_str()
+    }
+
+    /// The JSON of a source drawing: the payload's copy, else (same project only) the live document's.
     pub(crate) fn drawing(&self, doc: &Document, d: &Id) -> Option<Value> {
-        self.drawings.get(d.as_str()).cloned().or_else(|| doc.entry_raw_json(&EntryKey::Drawing(d.clone())).ok())
+        self.drawings.get(d.as_str()).cloned().or_else(|| {
+            self.same_project(doc).then(|| doc.entry_raw_json(&EntryKey::Drawing(d.clone())).ok()).flatten()
+        })
     }
 
     /// The element type of a copied column: as recorded by the copy (authoritative across projects, where the same ID
     /// may name another element), else the live element's.
     pub(crate) fn source_type(&self, doc: &Document, source: &str) -> Option<ElementType> {
-        self.element_types
-            .get(source)
-            .and_then(|t| serde_json::from_value::<ElementType>(json!(t)).ok())
-            .or_else(|| Id::parse(source).ok().and_then(|s| doc.element(&s)).map(|e| *e.element_type()))
+        let live = || {
+            let id = Id::parse(source).ok().filter(|_| self.same_project(doc))?;
+            doc.element(&id).map(|e| *e.element_type())
+        };
+        self.element_types.get(source).and_then(|t| serde_json::from_value::<ElementType>(json!(t)).ok()).or_else(live)
     }
 
     /// Source/destination column compatibility (04 §13.16, §13.21), checked for every pasted column before any
@@ -289,7 +298,9 @@ impl Transfer {
         policy: Policy,
     ) -> Result<Id, CommandError> {
         let Policy { reuse, fresh, overwrite } = policy;
-        if reuse && !fresh && doc.bank_of(d) == Some(&self.bank) {
+        // Within the open project a source already in the destination bank is that drawing (clone groups); a copy
+        // from another project is placed from its captured artwork even when the IDs coincide (C31-R3-02).
+        if reuse && !fresh && payload.same_project(doc) && doc.bank_of(d) == Some(&self.bank) {
             return Ok(d.clone());
         }
         if let Some(m) = self.map.get(d) {

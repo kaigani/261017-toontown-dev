@@ -1037,6 +1037,8 @@ fn paste(
             let mut children: BTreeMap<String, Vec<String>> = BTreeMap::new();
             let mut roots: Vec<String> = Vec::new();
             let mut new_banks: BTreeMap<String, (Id, BTreeMap<String, String>)> = BTreeMap::new();
+            // A live bank with the copy's bank ID is the source bank only when the copy was made in this project.
+            let same_project = copied_here(clip, &doc);
             let mut scene_ops = Vec::new();
             for (old, parent, mut v) in prepared {
                 let id = map.get(&old).cloned().ok_or_else(|| internal("mapped id"))?;
@@ -1045,10 +1047,11 @@ fn paste(
                     None => roots.push(id.clone()),
                 }
                 if let Some(bank) = v.get("drawingBankId").and_then(Value::as_str).map(str::to_owned)
-                    && !Id::parse(&bank).ok().is_some_and(|b| doc.bank(&b).is_some())
+                    && !(same_project && Id::parse(&bank).ok().is_some_and(|b| doc.bank(&b).is_some()))
                 {
-                    // The source bank is not in this project (another project, or its last user deleted): the copy
-                    // carries it; it becomes a new bank here, once per source bank (C31-R1-04).
+                    // The source bank is not in this project (another project — even one using the same bank ID —
+                    // or its last user deleted): the copy carries it; it becomes a new bank here, once per source
+                    // bank (C31-R1-04, C31-R3-02).
                     let payload = clip.payload.as_ref().filter(|p| p.banks.contains_key(&bank)).ok_or_else(|| {
                         not_allowed(clip.kind, context, "the copied element's drawings are not in this project")
                     })?;
@@ -1146,7 +1149,7 @@ fn paste(
             let opts = topts.unwrap_or_default();
             let insert = topts.is_some() && opts.create_delete_exposure;
             // One drawing transfer per destination bank for the whole paste (C31-R1-07/-13).
-            let payload = clip.payload.clone().unwrap_or_else(|| super::transfer::ArtPayload::of(&doc));
+            let payload = clip.payload.clone().unwrap_or_else(|| fallback_payload(clip, &doc));
             let mut transfers: BTreeMap<Id, super::transfer::Transfer> = BTreeMap::new();
             let mut columns = Vec::with_capacity(sources.len());
             for n in 0..sources.len() {
@@ -1943,6 +1946,26 @@ pub(crate) fn store_cells(
     store(cx, &clip)
 }
 
+/// Whether clipboard content was copied in the open project: the payload's provenance, else the clipboard's
+/// `sourceProjectId`, else (content placed without either) yes.
+fn copied_here(clip: &Clipboard, doc: &Document) -> bool {
+    match (&clip.payload, &clip.source_project_id) {
+        (Some(p), _) => p.same_project(doc),
+        (None, Some(id)) => id == doc.project().id().as_str(),
+        (None, None) => true,
+    }
+}
+
+/// The payload of clipboard content that carries none: empty, with the clipboard's provenance (so live objects are
+/// used only for a copy made in this project).
+fn fallback_payload(clip: &Clipboard, doc: &Document) -> super::transfer::ArtPayload {
+    let mut p = super::transfer::ArtPayload::of(doc);
+    if let Some(id) = &clip.source_project_id {
+        p.project_id.clone_from(id);
+    }
+    p
+}
+
 /// What a cell paste reads from the clipboard.
 pub(crate) enum CellClip {
     /// Copied cells: `(element, frame offset, drawing)`, with their artwork.
@@ -1961,7 +1984,7 @@ pub(crate) fn clipboard_cells(cx: &Cx) -> Result<CellClip, CommandError> {
         ClipboardKind::Elements => Ok(CellClip::Elements),
         ClipboardKind::Cells => {
             let mut out = Vec::new();
-            for item in clip.items.unwrap_or_default() {
+            for item in clip.items.clone().unwrap_or_default() {
                 let e = item.get("elementId").and_then(Value::as_str).and_then(|s| Id::parse(s).ok());
                 let k = item.get("frameOffset").and_then(Value::as_u64).and_then(|v| usize::try_from(v).ok());
                 let d = item.get("drawingRef").and_then(Value::as_str).and_then(|s| Id::parse(s).ok());
@@ -1976,8 +1999,10 @@ pub(crate) fn clipboard_cells(cx: &Cx) -> Result<CellClip, CommandError> {
                     json!({}),
                 ));
             }
-            let payload =
-                clip.payload.unwrap_or_else(|| cx.document().map(super::transfer::ArtPayload::of).unwrap_or_default());
+            let payload = match clip.payload.clone() {
+                Some(p) => p,
+                None => fallback_payload(&clip, cx.document()?),
+            };
             Ok(CellClip::Cells(out, payload))
         }
         other => Err(CommandError::with_details(

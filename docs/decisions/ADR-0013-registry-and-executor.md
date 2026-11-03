@@ -95,6 +95,10 @@ state commands (§5, §12).
      6902 semantics. The locked-drawing refusal is evaluated per run against the staged drawing (a run of `test`s
      only reads), so an unlock earlier in the same patch is honoured. Verified by `c31_r2_variants::r03_rfc_*`,
      `r16_image_lock_rfc_copy_*` (reviewer) and `c31_round2::r01_*`, `r02_*`.
+   - *History, M3 C3.1 round 3 (C31-R3-01).* The whole patch is interpreted against one fully current staged view:
+     every ordinary operation before an operation that touches a delegated property is staged before that operation
+     resolves anything, so a `copy`/`move` source reflects an `add`, `replace` or `remove` immediately before it
+     (`c31_r3_patch`, `c31_round3::r01_*`).
 
 3. **One document thread.** `ExecutorHandle::spawn` starts the thread that owns the session (open project, history,
    checkpoints, revision log, application context, window/workspace state, clipboard). Every call is a message;

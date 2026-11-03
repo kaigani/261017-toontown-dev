@@ -933,13 +933,11 @@ fn delegated_steps(cx: &Cx, ty: ObjectType, key: &str, o: PatchOp) -> Result<Vec
             None => Step::Ordinary(o),
         }]);
     };
-    let write = |value: Value| PatchOp { op: "add", from: None, path: o.path.clone(), value: Some(value), ..o.clone() };
-    let removal = PatchOp { op: "remove", from: None, path: from.clone(), value: None, ..o.clone() };
-    let to_delegated = delegated_op(ty, key, &write(Value::Null)).is_some();
-    let from_delegated = o.op == "move" && delegated_op(ty, key, &removal).is_some();
-    if !to_delegated && !from_delegated || o.op == "move" && from == o.path {
+    if !touches_delegated(ty, key, &o) {
         return Ok(vec![Step::Ordinary(o)]);
     }
+    let write = |value: Value| PatchOp { op: "add", from: None, path: o.path.clone(), value: Some(value), ..o.clone() };
+    let removal = PatchOp { op: "remove", from: None, path: from.clone(), value: None, ..o.clone() };
     let (_, current) = cx.document()?.object_raw_json(key)?;
     let value = tt_model::pointer::get(&current, &tt_model::pointer::parse(&from)?).cloned().ok_or_else(|| {
         CommandError::with_details(
@@ -956,6 +954,20 @@ fn delegated_steps(cx: &Cx, ty: ObjectType, key: &str, o: PatchOp) -> Result<Vec
         });
     }
     Ok(steps)
+}
+
+/// Whether an operation is applied (wholly or partly) by an owning handler: a delegated write, or a `copy`/`move`
+/// with a delegated destination or a delegated `move` source.
+fn touches_delegated(ty: ObjectType, key: &str, o: &PatchOp) -> bool {
+    let Some(from) = o.from.as_ref().filter(|_| matches!(o.op, "copy" | "move")) else {
+        return delegated_op(ty, key, o).is_some();
+    };
+    if o.op == "move" && *from == o.path {
+        return false;
+    }
+    let write = PatchOp { op: "add", from: None, value: Some(Value::Null), ..o.clone() };
+    let removal = PatchOp { op: "remove", from: None, path: from.clone(), value: None, ..o.clone() };
+    delegated_op(ty, key, &write).is_some() || o.op == "move" && delegated_op(ty, key, &removal).is_some()
 }
 
 /// Stages a run of ordinary operations on one object; a content edit of a locked drawing is refused (unlocking it
@@ -1088,6 +1100,11 @@ pub(crate) fn doc_object_patch(cx: &mut Cx, p: PatchParams) -> Result<PatchResul
     for (ty, key, ops) in planned {
         let mut run: Vec<PatchOp> = Vec::new();
         for o in ops {
+            // Every earlier ordinary operation is staged before a delegated operation resolves anything, so a
+            // `copy`/`move` source is read from the fully current staged object (C31-R3-01).
+            if touches_delegated(ty, &key, &o) {
+                stage_run(cx, ty, &key, &mut run)?;
+            }
             for step in delegated_steps(cx, ty, &key, o)? {
                 match step {
                     Step::Delegated(d) => {

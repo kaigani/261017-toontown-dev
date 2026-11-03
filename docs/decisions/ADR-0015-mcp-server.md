@@ -287,3 +287,8 @@ transactions, idempotent requests and the never-block watchdog.
   uncharged work after a 100 000-cell `cell.select` fell from about 115 ms to 48 ms (debug, local), most of the rest
   being the state events that carry the ids, so the next caller is not held past a short budget
   (`c31_r1_selection_budget`).
+- **M3 C3.1 round 3 (C31-R3-03): one staged binary read view.** Every reader of binary entries within a call —
+  placement of a pasted copy and the capture of a new copy alike — reads through `Cx::blob_bytes` (entries staged by
+  earlier steps of the same call, then the project's store), so an atomic batch that pastes and then copies captures
+  the staged bytes. Staged entries are still accepted only with the call; a dry run or a failed batch discards them
+  and the clipboard it would have set (`c31_r3_binary::paste_then_copy_*`, `c31_round3::r03_*`).
