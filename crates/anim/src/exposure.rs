@@ -582,24 +582,48 @@ fn increment(n: &str) -> String {
 
 /// 04 §3.2 / §8.1 unique element names: `base` when free (unless `skip_base`), else `base_1`, `base_2`, … skipping
 /// used names; `count` names, each distinct and at most [`MAX_NAME_CHARS`] characters (the base is shortened to fit
-/// its suffix).
+/// its suffix). See [`plan_names`].
 #[must_use]
 pub fn unique_names(base: &str, taken: &dyn Fn(&str) -> bool, count: usize, skip_base: bool) -> Vec<String> {
+    plan_names(base, "", "_", 1, taken, count, skip_base)
+}
+
+/// `base` shortened so that `base` + `suffix` fits [`MAX_NAME_CHARS`], then `suffix`.
+#[must_use]
+pub fn derived_name(base: &str, suffix: &str) -> String {
+    let keep = MAX_NAME_CHARS.saturating_sub(suffix.chars().count());
+    format!("{}{suffix}", base.chars().take(keep).collect::<String>())
+}
+
+/// The one planner of generated names (companion rows, clones, duplicates, copies; C31-R1-08, C31-R2-05): `count`
+/// distinct names not `taken`, each at most [`MAX_NAME_CHARS`] characters. The unsuffixed candidate is `base` +
+/// `suffix` (a meaningful suffix such as `-mask` or `-P`; with an empty suffix `base` is used as given, so a caller's
+/// name is never shortened); the numbered candidates are `base` + `suffix` + `sep` + `n` for `n` from `first`. The base
+/// is shortened before the suffixes are added, for every candidate, so collisions are tested after shortening and
+/// after the counter gains a digit.
+#[must_use]
+pub fn plan_names(
+    base: &str,
+    suffix: &str,
+    sep: &str,
+    first: u64,
+    taken: &dyn Fn(&str) -> bool,
+    count: usize,
+    skip_base: bool,
+) -> Vec<String> {
     let mut out: Vec<String> = Vec::with_capacity(count);
     let used = |n: &str, out: &[String]| taken(n) || out.iter().any(|o| o == n);
-    if !skip_base && !used(base, &out) && count > 0 {
-        out.push(base.to_owned());
+    let plain = if suffix.is_empty() { base.to_owned() } else { derived_name(base, suffix) };
+    if !skip_base && !used(&plain, &out) && count > 0 {
+        out.push(plain);
     }
-    let mut k: u64 = 1;
+    let mut k = first;
     while out.len() < count {
-        // A suffix that would pass the 64-character name limit shortens the base instead (C31-R1-08).
-        let suffix = format!("_{k}");
-        let keep = MAX_NAME_CHARS.saturating_sub(suffix.chars().count());
-        let n = format!("{}{suffix}", base.chars().take(keep).collect::<String>());
+        let n = derived_name(base, &format!("{suffix}{sep}{k}"));
         if !used(&n, &out) {
             out.push(n);
         }
-        k += 1;
+        k = k.saturating_add(1);
     }
     out
 }

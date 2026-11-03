@@ -84,6 +84,17 @@ state commands (§5, §12).
    - `test` reads anything; `props` is RFC 7386 (null removes, nulls inside new values dropped); all targets commit
      atomically as one undo step labelled `label` or "Set <first property>"; edits of a locked drawing's content are
      `drawing.locked`; `expectRev` (int for every target, or per reference) and the parameter `dryRun` are honoured.
+   - *History, M3 C3.1 round 2 (C31-R2-01/-02).* A patch is interpreted **in order** — `props` (as RFC 6902
+     operations), then `ops`, target by target — over the staged objects. A write to a delegated `x-command`
+     property is applied by the owning command's handler when it is reached (validation, UI consequences such as
+     moving the current element, the area event once); the ordinary operations between two delegated ones are
+     staged together as one run, so a `test` observes every earlier write and any failure rolls the whole call back
+     as one transaction. `copy` and `move` read their value from the staged object; when either end is a delegated
+     property they become the owning handler's write (and, for `move`, the source's removal through its owner or the
+     generic path), never a second semantic implementation; between ordinary properties they keep the model's RFC
+     6902 semantics. The locked-drawing refusal is evaluated per run against the staged drawing (a run of `test`s
+     only reads), so an unlock earlier in the same patch is honoured. Verified by `c31_r2_variants::r03_rfc_*`,
+     `r16_image_lock_rfc_copy_*` (reviewer) and `c31_round2::r01_*`, `r02_*`.
 
 3. **One document thread.** `ExecutorHandle::spawn` starts the thread that owns the session (open project, history,
    checkpoints, revision log, application context, window/workspace state, clipboard). Every call is a message;

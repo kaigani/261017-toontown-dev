@@ -782,11 +782,21 @@ fn delete(cx: &mut Cx, picked: &Picked, remove_frames: bool, descendants: bool) 
             for (e, f) in cells {
                 by_element.entry(e.clone()).or_default().insert(*f);
             }
-            let mut changes = Vec::new();
+            let mut changes = super::timing::Changes::default();
+            let mut noted = Vec::new();
             for (e, frames) in &by_element {
+                let id = Id::parse(e)?;
                 let mut all = frames_of(&doc, e);
+                // Notes are frame-keyed cell data (SI-093): cleared with their cells, and following the cells a
+                // removal shifts, in the same transaction as the exposure (C31-R2-04).
+                let mut notes = super::timing::NoteEdit::none();
                 for f in frames.iter().rev() {
-                    let i = (*f as usize).saturating_sub(1);
+                    let at = *f as usize;
+                    notes.clear_old.push((at, at));
+                    if remove_frames {
+                        notes.map.then(tt_anim::exposure::remove_map(at, at));
+                    }
+                    let i = at.saturating_sub(1);
                     if i < all.len() {
                         if remove_frames {
                             all.remove(i);
@@ -795,9 +805,10 @@ fn delete(cx: &mut Cx, picked: &Picked, remove_frames: bool, descendants: bool) 
                         }
                     }
                 }
-                changes.push((EntryKey::Element(Id::parse(e)?), vec![op("replace", "/exposure", Some(runs_of(&all)))]));
+                changes.push(EntryKey::Element(id.clone()), vec![op("replace", "/exposure", Some(runs_of(&all)))]);
+                super::timing::write_notes(&doc, &id, &notes, &mut changes, &mut noted)?;
             }
-            cx.patch_entries(changes)?;
+            cx.patch_entries(changes.into_vec())?;
             Ok(cells.iter().map(|(e, f)| cell_ref(e, *f)).collect())
         }
     }
@@ -850,12 +861,9 @@ fn regenerate_slot(
     }
 }
 
-/// `name`, or `name-2`, `name-3`, … — the first not in `taken`.
+/// `name`, or `name-2`, `name-3`, … — the first not in `taken`, within 64 characters (C31-R2-05).
 fn unique(name: &str, taken: &BTreeSet<String>) -> String {
-    if !taken.contains(name) {
-        return name.to_owned();
-    }
-    (2..).map(|n| format!("{name}-{n}")).find(|n| !taken.contains(n)).unwrap_or_else(|| name.to_owned())
+    tt_anim::exposure::plan_names(name, "", "-", 2, &|n| taken.contains(n), 1, false).concat()
 }
 
 /// The pointer of the first layer node of a drawing.
@@ -1140,15 +1148,19 @@ fn paste(
             // One drawing transfer per destination bank for the whole paste (C31-R1-07/-13).
             let payload = clip.payload.clone().unwrap_or_else(|| super::transfer::ArtPayload::of(&doc));
             let mut transfers: BTreeMap<Id, super::transfer::Transfer> = BTreeMap::new();
-            for (n, src) in sources.iter().enumerate() {
-                let t = if n == 0 {
+            let mut columns = Vec::with_capacity(sources.len());
+            for n in 0..sources.len() {
+                columns.push(if n == 0 {
                     tid.clone()
                 } else {
                     order.get(at + n).cloned().ok_or_else(|| {
                         not_allowed(clip.kind, context, "not enough columns to the right of the target")
                     })?
-                };
-                let tel = doc.element(&t).ok_or_else(|| internal("element"))?;
+                });
+            }
+            // The column types of the shared payload, for every pair before anything is placed (C31-R2-03).
+            for (src, t) in sources.iter().zip(&columns) {
+                let tel = doc.element(t).ok_or_else(|| internal("element"))?;
                 if !tel.element_type().has_exposure() {
                     return Err(CommandError::with_details(
                         "edit.wrongElementType",
@@ -1156,6 +1168,10 @@ fn paste(
                         json!({ "elementId": t.as_str() }),
                     ));
                 }
+                payload.check_column(&doc, src, t)?;
+            }
+            for (src, t) in sources.iter().zip(columns) {
+                let tel = doc.element(&t).ok_or_else(|| internal("element"))?;
                 let bank = tel.drawing_bank_id().clone().ok_or_else(|| internal("cell element without bank"))?;
                 // Full-drawing overwrite or verbatim copy, the copy's payload first (C31-R1-13).
                 let transfer = transfers.entry(bank.clone()).or_insert_with(|| {

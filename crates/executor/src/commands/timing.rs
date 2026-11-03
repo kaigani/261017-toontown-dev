@@ -704,7 +704,16 @@ pub(crate) fn write_notes(
             continue;
         }
         let Some(nf) = edit.map.apply(f) else { continue };
-        if nf == 0 || nf > x::MAX_FRAMES || inside(nf, &edit.clear_new) {
+        // A shift never discards a note it does not remove: past the frame domain the edit is refused, the note
+        // kept (SI-093; C31-R2-04).
+        if nf > x::MAX_FRAMES {
+            return Err(err(
+                "cell.frameOutOfRange",
+                format!("the note at frame {f} would move to frame {nf}, outside 1…{}", x::MAX_FRAMES),
+                json!({ "elementId": id.as_str(), "frame": f, "movedTo": nf, "minimum": 1, "maximum": x::MAX_FRAMES }),
+            ));
+        }
+        if nf == 0 || inside(nf, &edit.clear_new) {
             continue;
         }
         next.insert(as_u32(nf), t.clone());

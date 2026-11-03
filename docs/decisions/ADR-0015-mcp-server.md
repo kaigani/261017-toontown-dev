@@ -273,3 +273,11 @@ transactions, idempotent requests and the never-block watchdog.
   call costs under 1 ms instead of about 190 ms (debug), so a cancelled large selection frees the worker for the next
   caller (`c31_r1_selection_budget`, `c31_obligations::r14_*`). `cell.select` itself is set-based, charges its work
   in 4096-cell steps and observes the caller's cancellation at each charge.
+- **M3 C3.1 round 2 (C31-R2-06): binary entries a call adds are accepted with it.** A paste that brings binary
+  entries (a copy's bitmap or texture bytes) no longer writes them into the project's store while the handler runs:
+  each new entry is a deferred effect (`Effect::Blob`), visible to the rest of the call (`Cx::blob_bytes`) and
+  inserted only after the document commit, so a dry run, a refused call, a failed atomic group and a step rolled back
+  to its savepoint add no entry. Entry names are compared by bytes: a missing entry is added under its name, equal
+  bytes are shared, and different bytes under the same name give the copy a fresh deterministic entry
+  (`<name>-<sha256 prefix>.<ext>`) with its typed references rewritten (`c31_r2_persistence`,
+  `c31_round2::r06_*`).

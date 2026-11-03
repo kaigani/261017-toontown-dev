@@ -763,6 +763,11 @@ fn apply_effects(s: &mut Session, effects: Vec<Effect>, simulating: bool, origin
                 let _ = s.jobs.cancel(&id);
             }
             Effect::Event(ev) => s.events.push(ev),
+            Effect::Blob(name, bytes) => {
+                if let Some(p) = s.project.as_mut() {
+                    p.store.blobs.insert(name, tt_persist::container::BlobData::Bytes(bytes));
+                }
+            }
             Effect::Close => crate::persistence::close(s),
             Effect::Install(i) => {
                 // The handler checked the candidate; the gate runs again here (ADR-0013 §16).

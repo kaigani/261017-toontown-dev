@@ -659,18 +659,10 @@ fn warn_options(cx: &mut Cx, o: &TransferOptions) {
     }
 }
 
-/// Whether two element types hold compatible drawings (vector drawing and annotation; image with image).
-fn compatible(a: ElementType, b: ElementType) -> bool {
-    let vector = |t: ElementType| matches!(t, ElementType::Drawing | ElementType::Annotation);
-    (vector(a) && vector(b)) || (a == ElementType::Image && b == ElementType::Image)
-}
+use super::transfer::compatible;
 
 fn type_mismatch(from: &Id, to: &Id, a: ElementType, b: ElementType) -> CommandError {
-    err(
-        "cell.typeMismatch",
-        format!("{} cells cannot go into a {} column", a.as_str(), b.as_str()),
-        json!({ "sourceElementId": from.as_str(), "targetElementId": to.as_str(), "source": a.as_str(), "target": b.as_str() }),
-    )
+    super::transfer::type_mismatch(from.as_str(), to.as_str(), a, b)
 }
 
 // ----- cell.range.move ----------------------------------------------------------------------------------------------------
@@ -1692,17 +1684,12 @@ pub(crate) fn cell_clipboard_apply(cx: &mut Cx, p: ClipboardApplyParams) -> Resu
         fresh: p.mode == PasteMode::NewDrawings,
         overwrite: opts.overwrite_drawings,
     };
+    // Every column pair is checked before anything is placed; the copy recorded its column types (C31-R2-03).
     for (s, tgt) in sources.iter().zip(targets.iter()) {
         applicable(&doc, tgt, "cell.clipboard.apply", LABELLED)?;
-        let tt = *element(&doc, tgt)?.element_type();
-        // The source column may be gone (deleted, another project): the copy recorded its type.
-        let st = doc.element(s).map(|e| *e.element_type()).or_else(|| {
-            payload.element_types.get(s.as_str()).and_then(|t| serde_json::from_value::<ElementType>(json!(t)).ok())
-        });
-        let st = st.unwrap_or(tt);
-        if !compatible(st, tt) {
-            return Err(type_mismatch(s, tgt, st, tt));
-        }
+        payload.check_column(&doc, s.as_str(), tgt)?;
+    }
+    for (s, tgt) in sources.iter().zip(targets.iter()) {
         let tbank = bank_of_element(&doc, tgt)?;
         let transfer = transfers.entry(tbank.clone()).or_insert_with(|| {
             super::transfer::Transfer::new(&doc, tbank.clone(), super::transfer::Naming::NextNumeric)

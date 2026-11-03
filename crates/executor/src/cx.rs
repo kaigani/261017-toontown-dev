@@ -88,6 +88,9 @@ pub(crate) enum Effect {
     /// A save of the open project (`onUnsaved: "save"`): written after every step succeeded and before the commit,
     /// applied to the project after it (C13-R1-01).
     Save(Box<crate::persistence::PendingSave>),
+    /// A binary entry the call adds to the project's store (a pasted copy's artwork; C31-R2-06): inserted after the
+    /// commit, never for a dry run or a refused call.
+    Blob(String, std::sync::Arc<Vec<u8>>),
     /// A file the call writes outside the project (`agent.activity.export`; C14-R1-03): staged next to its target
     /// only when every step succeeded, moved into place after the commit, discarded when the call rolls back.
     WriteFile(Box<FileWrite>),
@@ -337,6 +340,22 @@ impl Cx {
     /// The save time of a pending save of this atomic batch (see `persistence::batch_save_time`).
     pub(crate) fn pending_batch_save(&self) -> Option<String> {
         crate::persistence::batch_save_time(&self.effects)
+    }
+
+    /// Defers a binary entry to the call's acceptance ([`Effect::Blob`]).
+    pub(crate) fn stage_blob(&mut self, name: String, bytes: Vec<u8>) {
+        self.effects.push(Effect::Blob(name, std::sync::Arc::new(bytes)));
+    }
+
+    /// The bytes of a binary entry as this call sees it: one it staged, else the project's.
+    pub(crate) fn blob_bytes(&self, name: &str) -> Option<std::sync::Arc<Vec<u8>>> {
+        let staged = self.effects.iter().rev().find_map(|e| match e {
+            Effect::Blob(n, b) if n == name => Some(b.clone()),
+            _ => None,
+        });
+        staged.or_else(|| {
+            self.session.project.as_ref().and_then(|p| p.store.blobs.read(name, 1 << 32).ok()).map(std::sync::Arc::new)
+        })
     }
 
     pub(crate) fn take_effects(&mut self) -> Vec<Effect> {

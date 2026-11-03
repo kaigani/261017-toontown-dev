@@ -1077,6 +1077,11 @@ Reserved by the M0 closure for "measured deterministic-format incompatibility" (
   (an overwriting paste clears destination notes the copy does not carry); overwriting edits that move no cell
   (extend exposure, change label, `xsheet.exposures.set`, overwriting columnate) keep notes where they are. Each edit
   is one transaction with its exposure change; drawing and zone revisions are unchanged.
+- **Extension (orchestrator ruling, C31-R2-04):** the generic `edit.cut`, `edit.cutSpecial` and `edit.delete` of
+  cells use the same note edit as `cell.clipboard.set {cut: true}` (notes of cut or cleared cells go; a shifting cut
+  moves later notes with the cells), in the same transaction. **Overflow:** an edit that would move a note it does
+  not remove beyond frame 100 000 is refused as a whole (`cell.frameOutOfRange`, details `frame`, `movedTo`); the
+  note and the exposure stay as they were. A shift never discards a note silently.
 - **Question:** none for the spec owner beyond confirming the overwrite/clear rule.
 
 ## SI-094 — what duplicating an element copies (found in M3 C3.1 round 1; decided by orchestrator ruling)

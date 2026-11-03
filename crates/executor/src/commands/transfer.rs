@@ -21,6 +21,7 @@ use serde_json::{Value, json};
 use tt_anim::exposure as x;
 use tt_model::Id;
 use tt_model::document::{Document, EntryKey};
+use tt_model::entities::element::ElementType;
 use tt_registry::CommandError;
 
 use super::timing::{Changes, add_drawing, internal, locked, op, to_json};
@@ -114,22 +115,114 @@ impl ArtPayload {
         self.drawings.get(d.as_str()).cloned().or_else(|| doc.entry_raw_json(&EntryKey::Drawing(d.clone())).ok())
     }
 
-    /// Writes the binary entries a copied drawing needs into the project when they are missing there (a paste
-    /// into another project). Skipped for a dry run.
-    pub(crate) fn ensure_blobs(&self, cx: &mut Cx, v: &Value) {
-        if cx.dry_run() {
-            return;
+    /// The element type of a copied column: as recorded by the copy (authoritative across projects, where the same ID
+    /// may name another element), else the live element's.
+    pub(crate) fn source_type(&self, doc: &Document, source: &str) -> Option<ElementType> {
+        self.element_types
+            .get(source)
+            .and_then(|t| serde_json::from_value::<ElementType>(json!(t)).ok())
+            .or_else(|| Id::parse(source).ok().and_then(|s| doc.element(&s)).map(|e| *e.element_type()))
+    }
+
+    /// Source/destination column compatibility (04 §13.16, §13.21), checked for every pasted column before any
+    /// drawing or binary entry is placed, by every cell paste entry point (`cell.clipboard.apply`, `edit.paste`,
+    /// `edit.pasteSpecial`; C31-R2-03). An unknown source type is accepted.
+    pub(crate) fn check_column(&self, doc: &Document, source: &str, target: &Id) -> Result<(), CommandError> {
+        let Some(tt) = doc.element(target).map(|e| *e.element_type()) else { return Ok(()) };
+        match self.source_type(doc, source) {
+            Some(st) if !compatible(st, tt) => Err(type_mismatch(source, target.as_str(), st, tt)),
+            _ => Ok(()),
         }
+    }
+
+    /// The copied drawing `v` as placed in this project: every binary entry it references is the copy's bytes. An
+    /// entry missing here is added under its name; an entry holding the same bytes is shared; an entry holding other
+    /// bytes keeps them, and the copy gets a fresh deterministic entry (`<name>-<sha256 prefix>.<ext>`) with its typed
+    /// references (`entry`, texture `image`) rewritten; opaque `meta`/`ext` are not touched. New entries are deferred
+    /// effects of the call, accepted with its commit: a dry run or a refused call adds nothing (C31-R2-06).
+    pub(crate) fn place_blobs(&self, cx: &mut Cx, v: &Value) -> Value {
         let mut names = BTreeSet::new();
         entries(v, &mut names, 0);
-        let Ok(p) = cx.project_mut() else { return };
+        let mut map: BTreeMap<String, String> = BTreeMap::new();
         for n in names {
-            if p.store.blobs.read(&n, 1 << 32).is_err()
-                && let Some(bytes) = self.blobs.get(&n).and_then(|b| tt_persist::b64::decode(b))
-            {
-                p.store.blobs.insert(n, tt_persist::container::BlobData::Bytes(std::sync::Arc::new(bytes)));
+            let Some(bytes) = self.blobs.get(&n).and_then(|b| tt_persist::b64::decode(b)) else { continue };
+            let hash = tt_persist::fsx::sha256(&bytes);
+            let mut name = n.clone();
+            let mut attempt = 0u32;
+            loop {
+                match cx.blob_bytes(&name) {
+                    None => {
+                        cx.stage_blob(name.clone(), bytes);
+                        break;
+                    }
+                    Some(existing) if *existing == bytes => break,
+                    Some(_) => {
+                        name = fresh_entry(&n, &hash, attempt);
+                        attempt = attempt.saturating_add(1);
+                    }
+                }
+            }
+            if name != n {
+                map.insert(n, name);
             }
         }
+        let mut out = v.clone();
+        if !map.is_empty() {
+            rewrite_entries(&mut out, &map, 0);
+        }
+        out
+    }
+}
+
+/// Whether two element types hold compatible drawings (vector drawing and annotation; image with image).
+pub(crate) fn compatible(a: ElementType, b: ElementType) -> bool {
+    let vector = |t: ElementType| matches!(t, ElementType::Drawing | ElementType::Annotation);
+    (vector(a) && vector(b)) || (a == ElementType::Image && b == ElementType::Image)
+}
+
+pub(crate) fn type_mismatch(from: &str, to: &str, a: ElementType, b: ElementType) -> CommandError {
+    CommandError::with_details(
+        "cell.typeMismatch",
+        format!("{} cells cannot go into a {} column", a.as_str(), b.as_str()),
+        json!({ "sourceElementId": from, "targetElementId": to, "source": a.as_str(), "target": b.as_str() }),
+    )
+}
+
+/// A fresh entry name for `name` holding content with `hash`: the hash prefix before the extension, then a counter.
+fn fresh_entry(name: &str, hash: &str, attempt: u32) -> String {
+    let (dir, file) = name.rsplit_once('/').map_or(("", name), |(d, f)| (d, f));
+    let (stem, ext) = file.rsplit_once('.').map_or((file, ""), |(s, e)| (s, e));
+    let prefix = hash.get(..16).unwrap_or(hash);
+    let counter = if attempt == 0 { String::new() } else { format!("-{attempt}") };
+    let dot = if ext.is_empty() { "" } else { "." };
+    let slash = if dir.is_empty() { "" } else { "/" };
+    format!("{dir}{slash}{stem}-{prefix}{counter}{dot}{ext}")
+}
+
+/// Rewrites the typed entry references [`entries`] finds.
+fn rewrite_entries(v: &mut Value, map: &BTreeMap<String, String>, depth: usize) {
+    if depth > 200 {
+        return;
+    }
+    match v {
+        Value::Object(m) => {
+            for (k, x) in m.iter_mut() {
+                if k == "meta" || k == "ext" {
+                    continue;
+                }
+                let typed = matches!(k.as_str(), "entry" | "image");
+                match x {
+                    Value::String(s) if typed => {
+                        if let Some(to) = map.get(s.as_str()) {
+                            *s = to.clone();
+                        }
+                    }
+                    _ => rewrite_entries(x, map, depth + 1),
+                }
+            }
+        }
+        Value::Array(a) => a.iter_mut().for_each(|x| rewrite_entries(x, map, depth + 1)),
+        _ => {}
     }
 }
 
@@ -180,13 +273,7 @@ impl Transfer {
             Naming::NextNumeric => want.to_owned(),
             Naming::Dashed => {
                 let taken: BTreeSet<&str> = self.names.iter().map(String::as_str).collect();
-                if !taken.contains(want) {
-                    return want.to_owned();
-                }
-                (2..)
-                    .map(|n| format!("{want}-{n}"))
-                    .find(|n| !taken.contains(n.as_str()))
-                    .unwrap_or_else(|| want.to_owned())
+                x::plan_names(want, "", "-", 2, &|n| taken.contains(n), 1, false).concat()
             }
         }
     }
@@ -215,7 +302,7 @@ impl Transfer {
                 json!({ "drawingId": d.as_str() }),
             )
         })?;
-        payload.ensure_blobs(cx, &json);
+        let json = payload.place_blobs(cx, &json);
         let name = json.get("name").and_then(Value::as_str).unwrap_or("1").to_owned();
         let existing = super::timing::drawing_named(doc, &self.bank, &name);
         let target = match existing {
@@ -270,7 +357,7 @@ pub(crate) fn new_bank_from(
     let mut map = BTreeMap::new();
     for old in payload.banks.get(old_bank).cloned().unwrap_or_default() {
         let Some(v) = payload.drawings.get(&old) else { continue };
-        payload.ensure_blobs(cx, v);
+        let v = &payload.place_blobs(cx, v);
         let name = v.get("name").and_then(Value::as_str).unwrap_or("1").to_owned();
         let locked_flag = v.get("locked").and_then(Value::as_bool).unwrap_or(false);
         let id = add_drawing(cx, changes, &bank, &name, Some(v))?;

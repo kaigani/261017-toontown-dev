@@ -186,7 +186,7 @@ fn build(
         _ => &[],
     };
     for (slot, suffix) in params {
-        let pname = x::unique_names(&format!("{base}-{suffix}"), &|n| taken.contains(n), 1, false).concat();
+        let pname = x::plan_names(&base, &format!("-{suffix}"), "_", 1, &|n| taken.contains(n), 1, false).concat();
         taken.insert(pname.clone());
         let pid = cx.new_id(ObjectType::Element)?;
         let p = Element::new(ElementInit {
@@ -201,7 +201,7 @@ fn build(
         let mut pnode = TreeNode { id: pid.clone(), children: Vec::new() };
         if *slot == ParamSlot::Sprites {
             // The auto-created sprite drawing element holding the particle artwork (04 §2.9).
-            let sname = x::unique_names(&format!("{base}-sprite"), &|n| taken.contains(n), 1, false).concat();
+            let sname = x::plan_names(&base, "-sprite", "_", 1, &|n| taken.contains(n), 1, false).concat();
             let (sprite, snode) = build(cx, changes, ElementType::Drawing, sname, bar, taken, extra)?;
             pnode.children.push(snode);
             extra.push(sprite);
@@ -622,8 +622,7 @@ pub(crate) fn element_parent_peg_create(cx: &mut Cx, p: ParentPegParams) -> Resu
         }
         None => {
             let first = doc.element(&ids[0]).map(|e| e.name().clone()).unwrap_or_default();
-            let base: String = format!("{first}-P").chars().take(64).collect();
-            x::unique_names(&base, &|n| taken.contains(n), 1, false).concat()
+            x::plan_names(&first, "-P", "_", 1, &|n| taken.contains(n), 1, false).concat()
         }
     };
     // The peg goes where the first element (in Timeline order) was; its bar covers the children's combined range.
