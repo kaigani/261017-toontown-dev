@@ -1,0 +1,64 @@
+{
+  "reviewedHead": "989233ec83b78d37f41052b57bf12ee17d132940",
+  "verdict": "block",
+  "findings": {
+    "P0": 0,
+    "P1": 1,
+    "P2": 0
+  },
+  "findingIds": [
+    "C23-R3-01"
+  ],
+  "round2Closure": {
+    "C23-R2-01": "partial; UI-only session-state path remains divergent",
+    "C23-R2-02": "closed",
+    "C23-R2-03": "closed"
+  },
+  "workspace": {
+    "exitCode": 0,
+    "endedAt": "2026-11-01T21:12:53.7852503Z",
+    "startedAt": "2026-11-01T20:51:15.0572275Z",
+    "seconds": 1298.7290235,
+    "command": "cargo test --workspace --locked --no-fail-fast -j 4",
+    "passed": 1088,
+    "failed": 0,
+    "ignored": 18,
+    "summaries": 208
+  },
+  "lateProvingTarget": {
+    "file": "crates/executor/tests/c23_r3_selection_cancel.rs",
+    "passed": 0,
+    "failed": 1,
+    "ignored": 0,
+    "intentionallyFailing": true,
+    "reasonNotInWorkspaceRun": "file created after Cargo enumerated workspace targets; executed separately without filtering or ignoring its assertion"
+  },
+  "disjointCoverage": {
+    "passed": 1088,
+    "failed": 1,
+    "ignored": 18,
+    "summaries": 209
+  },
+  "pythonSuites": {
+    "passed": 30,
+    "failed": 0
+  },
+  "reviewReceiptSwitchIsUnset": true,
+  "authoritativeLogs": [
+    "workspace.log",
+    "selection-cancel.log",
+    "cancellation-replay.log",
+    "topology-affected.log",
+    "texture-final.log",
+    "session.log",
+    "render-cancel.log",
+    "clippy.log",
+    "scoped-clippy.log",
+    "fmt-final-after-probe.log",
+    "python-complete.log",
+    "audit-final.log",
+    "performance-recomputed.log",
+    "final-collector.log"
+  ],
+  "note": "Retained earlier harness diagnostics are not product findings or final gate failures. The one intentional failure is C23-R3-01."
+}

@@ -1,0 +1,10 @@
+{
+  "comparison": "git blob bytes 1c549b3..62c428d",
+  "filesCompared": 111,
+  "different": [
+    "tests/adversarial/c22-r2-audit.py",
+    "tests/adversarial/c22-r2-register.py"
+  ],
+  "onlyOutputPathHandlingChanged": true,
+  "inspection": "Full diff read: imports sys/tempfile, destination selection/argument removal and three receipt write destinations only; assertions, inputs and computed values unchanged."
+}

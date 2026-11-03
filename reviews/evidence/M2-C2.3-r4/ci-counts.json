@@ -1,0 +1,16 @@
+[
+  {
+    "os": "windows",
+    "passed": 1086,
+    "failed": 0,
+    "ignored": 18,
+    "summaries": 210
+  },
+  {
+    "os": "macos",
+    "passed": 1081,
+    "failed": 0,
+    "ignored": 18,
+    "summaries": 210
+  }
+]

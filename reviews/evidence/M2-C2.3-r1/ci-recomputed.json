@@ -1,0 +1,139 @@
+{
+  "run": 41303866582,
+  "head": "7a77138c6fb6531b67f4e840b765bd467bb76d28",
+  "successfulJobs": 10,
+  "jobs": [
+    {
+      "name": "headless release (macos-latest)",
+      "conclusion": "success",
+      "seconds": 1303.0,
+      "above55Minutes": false,
+      "workspaceSummaries": 0,
+      "workspaceCounts": {
+        "passed": 0,
+        "failed": 0,
+        "ignored": 0
+      },
+      "c23GoldenTestPassed": false
+    },
+    {
+      "name": "headless release (windows-latest)",
+      "conclusion": "success",
+      "seconds": 2174.0,
+      "above55Minutes": false,
+      "workspaceSummaries": 0,
+      "workspaceCounts": {
+        "passed": 0,
+        "failed": 0,
+        "ignored": 0
+      },
+      "c23GoldenTestPassed": false
+    },
+    {
+      "name": "raster determinism (macos-latest)",
+      "conclusion": "success",
+      "seconds": 110.0,
+      "above55Minutes": false,
+      "workspaceSummaries": 0,
+      "workspaceCounts": {
+        "passed": 0,
+        "failed": 0,
+        "ignored": 0
+      },
+      "c23GoldenTestPassed": false
+    },
+    {
+      "name": "check (windows-latest)",
+      "conclusion": "success",
+      "seconds": 3031.0,
+      "above55Minutes": false,
+      "workspaceSummaries": 182,
+      "workspaceCounts": {
+        "passed": 1020,
+        "failed": 0,
+        "ignored": 17
+      },
+      "c23GoldenTestPassed": true
+    },
+    {
+      "name": "raster determinism (ubuntu-latest)",
+      "conclusion": "success",
+      "seconds": 105.0,
+      "above55Minutes": false,
+      "workspaceSummaries": 0,
+      "workspaceCounts": {
+        "passed": 0,
+        "failed": 0,
+        "ignored": 0
+      },
+      "c23GoldenTestPassed": false
+    },
+    {
+      "name": "check (macos-latest)",
+      "conclusion": "success",
+      "seconds": 2489.0,
+      "above55Minutes": false,
+      "workspaceSummaries": 182,
+      "workspaceCounts": {
+        "passed": 1015,
+        "failed": 0,
+        "ignored": 17
+      },
+      "c23GoldenTestPassed": true
+    },
+    {
+      "name": "raster determinism (windows-latest)",
+      "conclusion": "success",
+      "seconds": 176.0,
+      "above55Minutes": false,
+      "workspaceSummaries": 0,
+      "workspaceCounts": {
+        "passed": 0,
+        "failed": 0,
+        "ignored": 0
+      },
+      "c23GoldenTestPassed": false
+    },
+    {
+      "name": "headless without a display (ubuntu)",
+      "conclusion": "success",
+      "seconds": 184.0,
+      "above55Minutes": false,
+      "workspaceSummaries": 0,
+      "workspaceCounts": {
+        "passed": 0,
+        "failed": 0,
+        "ignored": 0
+      },
+      "c23GoldenTestPassed": false
+    },
+    {
+      "name": "bundle (macos-latest)",
+      "conclusion": "success",
+      "seconds": 204.0,
+      "above55Minutes": false,
+      "workspaceSummaries": 0,
+      "workspaceCounts": {
+        "passed": 0,
+        "failed": 0,
+        "ignored": 0
+      },
+      "c23GoldenTestPassed": false
+    },
+    {
+      "name": "bundle (windows-latest)",
+      "conclusion": "success",
+      "seconds": 521.0,
+      "above55Minutes": false,
+      "workspaceSummaries": 0,
+      "workspaceCounts": {
+        "passed": 0,
+        "failed": 0,
+        "ignored": 0
+      },
+      "c23GoldenTestPassed": false
+    }
+  ],
+  "c23PngArtifactsPresent": false,
+  "limitation": "Check artifacts contain measurements, SDK receipts and feature graphs, not C2.3 PNGs. Both OS logs execute the exact golden equality assertions."
+}

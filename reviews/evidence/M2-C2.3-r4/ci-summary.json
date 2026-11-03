@@ -1,0 +1,65 @@
+{
+  "head": "fc25eae2caf5bb17fdb7c785be97ac9f680e9a24",
+  "jobs": [
+    {
+      "name": "history oracles release (windows-latest)",
+      "conclusion": "success",
+      "seconds": 906.0
+    },
+    {
+      "name": "raster determinism (windows-latest)",
+      "conclusion": "success",
+      "seconds": 184.0
+    },
+    {
+      "name": "raster determinism (ubuntu-latest)",
+      "conclusion": "success",
+      "seconds": 96.0
+    },
+    {
+      "name": "check (macos-latest)",
+      "conclusion": "success",
+      "seconds": 1362.0
+    },
+    {
+      "name": "bundle (macos-latest)",
+      "conclusion": "success",
+      "seconds": 398.0
+    },
+    {
+      "name": "check (windows-latest)",
+      "conclusion": "success",
+      "seconds": 1885.0
+    },
+    {
+      "name": "headless without a display (ubuntu)",
+      "conclusion": "success",
+      "seconds": 185.0
+    },
+    {
+      "name": "headless release (macos-latest)",
+      "conclusion": "success",
+      "seconds": 1223.0
+    },
+    {
+      "name": "history oracles release (macos-latest)",
+      "conclusion": "success",
+      "seconds": 402.0
+    },
+    {
+      "name": "raster determinism (macos-latest)",
+      "conclusion": "success",
+      "seconds": 132.0
+    },
+    {
+      "name": "bundle (windows-latest)",
+      "conclusion": "success",
+      "seconds": 737.0
+    },
+    {
+      "name": "headless release (windows-latest)",
+      "conclusion": "success",
+      "seconds": 1866.0
+    }
+  ]
+}

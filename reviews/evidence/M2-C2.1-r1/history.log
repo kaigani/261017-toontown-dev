@@ -1,0 +1,39 @@
+cargo :    Compiling once_cell v1.21.4
+At line:2 char:1
++ cargo test --release -p tt-mcp --test c21_history -- --ignored --noca ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (   Compiling once_cell v1.21.4:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+   Compiling getrandom v0.4.3
+   Compiling ahash v0.8.12
+   Compiling read-fonts v0.41.0
+   Compiling referencing v0.59.0
+   Compiling jsonschema-value v0.59.0
+   Compiling jsonschema v0.59.0
+   Compiling skrifa v0.44.0
+   Compiling tt-model v0.0.1 (C:\Users\kaiga\work\review\m2-c21-r1\crates\model)
+   Compiling tt-anim v0.0.1 (C:\Users\kaiga\work\review\m2-c21-r1\crates\anim)
+   Compiling tt-vector v0.0.1 (C:\Users\kaiga\work\review\m2-c21-r1\crates\vector)
+   Compiling tt-colour v0.0.1 (C:\Users\kaiga\work\review\m2-c21-r1\crates\colour)
+   Compiling tt-persist v0.0.1 (C:\Users\kaiga\work\review\m2-c21-r1\crates\persist)
+   Compiling tt-registry v0.0.1 (C:\Users\kaiga\work\review\m2-c21-r1\crates\registry)
+   Compiling tt-audio v0.0.1 (C:\Users\kaiga\work\review\m2-c21-r1\crates\audio)
+   Compiling tt-fx v0.0.1 (C:\Users\kaiga\work\review\m2-c21-r1\crates\fx)
+   Compiling tt-lipsync v0.0.1 (C:\Users\kaiga\work\review\m2-c21-r1\crates\lipsync)
+   Compiling tt-render v0.0.1 (C:\Users\kaiga\work\review\m2-c21-r1\crates\render)
+   Compiling tt-io v0.0.1 (C:\Users\kaiga\work\review\m2-c21-r1\crates\io)
+   Compiling tt-executor v0.0.1 (C:\Users\kaiga\work\review\m2-c21-r1\crates\executor)
+   Compiling tt-engine v0.0.1 (C:\Users\kaiga\work\review\m2-c21-r1\crates\engine)
+   Compiling tt-mcp v0.0.1 (C:\Users\kaiga\work\review\m2-c21-r1\crates\mcp)
+    Finished `release` profile [optimized + debuginfo] target(s) in 43.88s
+     Running tests\c21_history.rs (target\release\deps\c21_history-1a811786412fda79.exe)
+
+running 2 tests
+geometry-history-r3: {"seed":"0xc12320261019b683","operations":10000,"replayOperations":10000,"strokeSetUndoRedoCreateRestoreDryRun":[5494,3902,470,1,1724,511],"documentRev":11180,"durationSeconds":31.5341118,"oracle":"independent stroke geometry/thickness/revision stack; exact canonical all-entry byte checks every 100 operations; full fresh executor replay"}
+geometry-history-r1: {"seed":"0xc12020261019a571","operations":10000,"replayOperations":10000,"strokeSetUndoRedoCreateRestoreDryRun":[5472,3911,528,1,1690,534],"documentRev":11234,"durationSeconds":31.6375479,"oracle":"independent stroke geometry/thickness/revision stack; exact canonical all-entry byte checks every 100 operations; full fresh executor replay"}
+test geometry_oracle_seed_b683_matches_and_replays ... ok
+test geometry_oracle_seed_a571_matches_and_replays ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 31.82s
+

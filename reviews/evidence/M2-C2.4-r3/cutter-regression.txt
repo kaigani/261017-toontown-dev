@@ -1,0 +1,107 @@
+{"argv": ["cargo", "test", "-p", "tt-executor", "--locked", "-j", "4", "--release", "--test", "c24_cutter_snapping", "--", "--nocapture"], "cwd": "C:\\Users\\kaiga\\work\\review\\m2-c24-r3", "env": {}, "startedAt": "2026-11-03T01:55:02.320876+00:00"}
+   Compiling tt-executor v0.0.1 (C:\Users\kaiga\work\review\m2-c24-r3\crates\executor)
+    Finished `release` profile [optimized + debuginfo] target(s) in 2.77s
+     Running tests\c24_cutter_snapping.rs (target\release\deps\c24_cutter_snapping-4bcdd5cfddbd4a65.exe)
+
+running 2 tests
+exact vertex, snapped vertex, displacement (du): [
+    (
+        (
+            0.0,
+            0.0,
+        ),
+        (
+            0.0,
+            0.0,
+        ),
+        0.0,
+    ),
+    (
+        (
+            0.0,
+            40.0,
+        ),
+        (
+            0.0,
+            40.0,
+        ),
+        0.0,
+    ),
+    (
+        (
+            17.77777777777778,
+            35.55555555555556,
+        ),
+        (
+            17.78125,
+            35.5625,
+        ),
+        0.0077641249218742695,
+    ),
+    (
+        (
+            20.0,
+            40.0,
+        ),
+        (
+            20.0,
+            40.0,
+        ),
+        0.0,
+    ),
+    (
+        (
+            40.0,
+            30.0,
+        ),
+        (
+            40.0,
+            30.0,
+        ),
+        0.0,
+    ),
+    (
+        (
+            43.07692307692308,
+            32.30769230769231,
+        ),
+        (
+            43.078125,
+            32.3125,
+        ),
+        0.004955655800021227,
+    ),
+    (
+        (
+            80.0,
+            20.0,
+        ),
+        (
+            80.0,
+            20.0,
+        ),
+        0.0,
+    ),
+    (
+        (
+            80.0,
+            60.0,
+        ),
+        (
+            80.0,
+            60.0,
+        ),
+        0.0,
+    ),
+]
+test the_counterexample_junctions_are_the_snapped_exact_crossings ... ok
+pre strokes [[(0.0, 0.0), (17.78125, 35.5625)], [(17.78125, 35.5625), (20.0, 40.0), (80.0, 20.0), (17.78125, 35.5625)], [(17.78125, 35.5625), (0.0, 40.0)]]
+pre zone areas [155.3125]
+post strokes [[(0.0, 0.0), (17.78125, 35.5625)], [(17.78125, 35.5625), (20.0, 40.0), (43.078125, 32.3125)], [(43.078125, 32.3125), (80.0, 20.0), (40.0, 30.0)], [(40.0, 30.0), (17.78125, 35.5625)], [(17.78125, 35.5625), (0.0, 40.0)], [(43.078125, 32.3125), (40.0, 30.0)]]
+post zone areas [61.640625, 93.984375]
+exact area 155.55555555555554; oracle snapped before 155.3125 after [61.640625, 93.984375]
+δ before 0.0077641249218742695 du, bound 1.0277766898753047 du²; δ after 0.0077641249218742695 du, bound 1.0877418542790858 du²; errors -0.24305555555554292 and 0.06944444444442865
+test the_cutter_area_change_on_the_reviewers_counterexample_is_the_snapping_of_its_junctions ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.05s
+

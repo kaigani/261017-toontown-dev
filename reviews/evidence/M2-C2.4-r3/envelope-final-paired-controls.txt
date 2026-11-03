@@ -1,0 +1,2227 @@
+{"argv": ["cargo", "test", "--release", "-p", "tt-executor", "--locked", "-j", "4", "--test", "c24_r3_domains", "projective_envelope", "--", "--nocapture"], "cwd": "C:\\Users\\kaiga\\work\\review\\m2-c24-r3", "env": {}, "startedAt": "2026-11-03T01:40:39.525354+00:00"}
+   Compiling tt-executor v0.0.1 (C:\Users\kaiga\work\review\m2-c24-r3\crates\executor)
+    Finished `release` profile [optimized + debuginfo] target(s) in 6.73s
+     Running tests\c24_r3_domains.rs (target\release\deps\c24_r3_domains-a67d9939a409db16.exe)
+
+running 2 tests
+R3_ENVELOPE oldfills {0: Some("col_01K742SG081DHX1EPGV9BJQAQH"), 1: Some("col_01K742SG06BQ08FCT1TT8DF8MA"), 2: Some("col_01K742SG059XGSNZ6M9MACZ2ZY"), 3: Some("col_01K742SG07AYM2NGPE2YJQJJHV"), 4: Some("col_01K742SG09H7QE4RRR6XSYYS88")} faces [SFace { rings: [[(2560, 1280), (3200, 1920), (2816, 1792)]], area2: 163840, probe: Dp { x: 22016, y: 12288, s: 8 }, brush: false, id: "zn_RNN417QAE9C9ABW22Q3SBE7H16", boundary: ["st_01K7JJN80730F0EZ74BR22D379", "st_01K7JJN80HMKQH61BC39681PHC", "st_01K7JJN80JXTNMSATSQ4NG02KC"], bbox: [2560, 1280, 3200, 1920] }, SFace { rings: [[(2560, 1280), (2816, 1792), (2560, 1707)]], area2: 109312, probe: Dp { x: 20907, y: 11948, s: 8 }, brush: false, id: "zn_XBNJTRVN23CJ8MEK6MXP67A8TV", boundary: ["st_01K7JJN806XA7ASEPAA7TP68D1", "st_01K7JJN80C7H15SMJVX84RZBJP", "st_01K7JJN80JXTNMSATSQ4NG02KC"], bbox: [2560, 1280, 2816, 1792] }, SFace { rings: [[(2560, 1707), (2816, 1792), (2926, 2011), (2560, 1920)]], area2: 124672, probe: Dp { x: 20992, y: 13996, s: 8 }, brush: false, id: "zn_1TZ27G20APMRRVEC0Z80X9XK80", boundary: ["st_01K7JJN806XA7ASEPAA7TP68D1", "st_01K7JJN80A1K8KHX5QRDPS3YKZ", "st_01K7JJN80DJN3BP1CE499FWGB2", "st_01K7JJN80KZNGPFNG0K0151Y8Z"], bbox: [2560, 1707, 2926, 2011] }, SFace { rings: [[(2816, 1792), (3200, 1920), (3413, 2133), (2926, 2011)]], area2: 147761, probe: Dp { x: 23425, y: 14848, s: 8 }, brush: false, id: "zn_00Q18211VN4KSYZ58Q5S7TPCQQ", boundary: ["st_01K7JJN80730F0EZ74BR22D379", "st_01K7JJN809SYG5D4NHQNJ15RZ2", "st_01K7JJN80G42T5C17WTM3YK55N", "st_01K7JJN80KZNGPFNG0K0151Y8Z"], bbox: [2816, 1792, 3413, 2133] }, SFace { rings: [[(3200, 1920), (5120, 2560), (3413, 2133)]], area2: 272640, probe: Dp { x: 27304, y: 16212, s: 8 }, brush: false, id: "zn_0A3N22B8H3ZRC9VW0YVB6G7G09", boundary: ["st_01K7JJN808GA04BWTJRDCHMF1P", "st_01K7JJN80G42T5C17WTM3YK55N"], bbox: [3200, 1920, 5120, 2560] }]
+R3_ENVELOPE oldfills {0: Some("col_01K742SG081DHX1EPGV9BJQAQH"), 1: Some("col_01K742SG06BQ08FCT1TT8DF8MA"), 2: Some("col_01K742SG059XGSNZ6M9MACZ2ZY"), 3: Some("col_01K742SG07AYM2NGPE2YJQJJHV"), 4: Some("col_01K742SG09H7QE4RRR6XSYYS88")} faces [SFace { rings: [[(2560, 1280), (3200, 1920), (2816, 1792)]], area2: 163840, probe: Dp { x: 22016, y: 12288, s: 8 }, brush: false, id: "zn_RNN417QAE9C9ABW22Q3SBE7H16", boundary: ["st_01K7JJN80730F0EZ74BR22D379", "st_01K7JJN80HMKQH61BC39681PHC", "st_01K7JJN80JXTNMSATSQ4NG02KC"], bbox: [2560, 1280, 3200, 1920] }, SFace { rings: [[(2560, 1280), (2816, 1792), (2560, 1707)]], area2: 109312, probe: Dp { x: 20907, y: 11948, s: 8 }, brush: false, id: "zn_XBNJTRVN23CJ8MEK6MXP67A8TV", boundary: ["st_01K7JJN806XA7ASEPAA7TP68D1", "st_01K7JJN80C7H15SMJVX84RZBJP", "st_01K7JJN80JXTNMSATSQ4NG02KC"], bbox: [2560, 1280, 2816, 1792] }, SFace { rings: [[(2560, 1707), (2816, 1792), (2926, 2011), (2560, 1920)]], area2: 124672, probe: Dp { x: 20992, y: 13996, s: 8 }, brush: false, id: "zn_1TZ27G20APMRRVEC0Z80X9XK80", boundary: ["st_01K7JJN806XA7ASEPAA7TP68D1", "st_01K7JJN80A1K8KHX5QRDPS3YKZ", "st_01K7JJN80DJN3BP1CE499FWGB2", "st_01K7JJN80KZNGPFNG0K0151Y8Z"], bbox: [2560, 1707, 2926, 2011] }, SFace { rings: [[(2816, 1792), (3200, 1920), (3413, 2133), (2926, 2011)]], area2: 147761, probe: Dp { x: 23425, y: 14848, s: 8 }, brush: false, id: "zn_00Q18211VN4KSYZ58Q5S7TPCQQ", boundary: ["st_01K7JJN80730F0EZ74BR22D379", "st_01K7JJN809SYG5D4NHQNJ15RZ2", "st_01K7JJN80G42T5C17WTM3YK55N", "st_01K7JJN80KZNGPFNG0K0151Y8Z"], bbox: [2816, 1792, 3413, 2133] }, SFace { rings: [[(3200, 1920), (5120, 2560), (3413, 2133)]], area2: 272640, probe: Dp { x: 27304, y: 16212, s: 8 }, brush: false, id: "zn_0A3N22B8H3ZRC9VW0YVB6G7G09", boundary: ["st_01K7JJN808GA04BWTJRDCHMF1P", "st_01K7JJN80G42T5C17WTM3YK55N"], bbox: [3200, 1920, 5120, 2560] }]
+R3_ENVELOPE before Ls {
+    strokes: [
+        Sk {
+            id: "st_01K7JJN8058SW8PXKMRKXMFMQ1",
+            kind: "pencil",
+            bez: [
+                (
+                    20.0,
+                    20.0,
+                ),
+                (
+                    20.0,
+                    20.0,
+                ),
+                (
+                    40.0,
+                    26.671875,
+                ),
+                (
+                    40.0,
+                    26.671875,
+                ),
+            ],
+            closed: false,
+            outline: [],
+            thickness: Some(
+                1.0,
+            ),
+            pen_max: None,
+        },
+        Sk {
+            id: "st_01K7JJN806XA7ASEPAA7TP68D1",
+            kind: "pencil",
+            bez: [
+                (
+                    40.0,
+                    26.671875,
+                ),
+                (
+                    40.0,
+                    26.671875,
+                ),
+                (
+                    44.0,
+                    28.0,
+                ),
+                (
+                    44.0,
+                    28.0,
+                ),
+            ],
+            closed: false,
+            outline: [],
+            thickness: Some(
+                1.0,
+            ),
+            pen_max: None,
+        },
+        Sk {
+            id: "st_01K7JJN80730F0EZ74BR22D379",
+            kind: "pencil",
+            bez: [
+                (
+                    44.0,
+                    28.0,
+                ),
+                (
+                    44.0,
+                    28.0,
+                ),
+                (
+                    50.0,
+                    30.0,
+                ),
+                (
+                    50.0,
+                    30.0,
+                ),
+            ],
+            closed: false,
+            outline: [],
+            thickness: Some(
+                1.0,
+            ),
+            pen_max: None,
+        },
+        Sk {
+            id: "st_01K7JJN808GA04BWTJRDCHMF1P",
+            kind: "pencil",
+            bez: [
+                (
+                    50.0,
+                    30.0,
+                ),
+                (
+                    50.0,
+                    30.0,
+                ),
+                (
+                    80.0,
+                    40.0,
+                ),
+                (
+                    80.0,
+                    40.0,
+                ),
+                (
+                    80.0,
+                    40.0,
+                ),
+                (
+                    53.328125,
+                    33.328125,
+                ),
+                (
+                    53.328125,
+                    33.328125,
+                ),
+            ],
+            closed: false,
+            outline: [],
+            thickness: Some(
+                1.0,
+            ),
+            pen_max: None,
+        },
+        Sk {
+            id: "st_01K7JJN809SYG5D4NHQNJ15RZ2",
+            kind: "pencil",
+            bez: [
+                (
+                    53.328125,
+                    33.328125,
+                ),
+                (
+                    53.328125,
+                    33.328125,
+                ),
+                (
+                    45.71875,
+                    31.421875,
+                ),
+                (
+                    45.71875,
+                    31.421875,
+                ),
+            ],
+            closed: false,
+            outline: [],
+            thickness: Some(
+                1.0,
+            ),
+            pen_max: None,
+        },
+        Sk {
+            id: "st_01K7JJN80A1K8KHX5QRDPS3YKZ",
+            kind: "pencil",
+            bez: [
+                (
+                    45.71875,
+                    31.421875,
+                ),
+                (
+                    45.71875,
+                    31.421875,
+                ),
+                (
+                    40.0,
+                    30.0,
+                ),
+                (
+                    40.0,
+                    30.0,
+                ),
+            ],
+            closed: false,
+            outline: [],
+            thickness: Some(
+                1.0,
+            ),
+            pen_max: None,
+        },
+        Sk {
+            id: "st_01K7JJN80BYDBZ6RP3X5D6WZQT",
+            kind: "pencil",
+            bez: [
+                (
+                    40.0,
+                    30.0,
+                ),
+                (
+                    40.0,
+                    30.0,
+                ),
+                (
+                    0.0,
+                    20.0,
+                ),
+                (
+                    0.0,
+                    20.0,
+                ),
+            ],
+            closed: false,
+            outline: [],
+            thickness: Some(
+                1.0,
+            ),
+            pen_max: None,
+        },
+        Sk {
+            id: "st_01K7JJN80C7H15SMJVX84RZBJP",
+            kind: "pencil",
+            bez: [
+                (
+                    40.0,
+                    20.0,
+                ),
+                (
+                    40.0,
+                    20.0,
+                ),
+                (
+                    40.0,
+                    26.671875,
+                ),
+                (
+                    40.0,
+                    26.671875,
+                ),
+            ],
+            closed: false,
+            outline: [],
+            thickness: Some(
+                1.0,
+            ),
+            pen_max: None,
+        },
+        Sk {
+            id: "st_01K7JJN80DJN3BP1CE499FWGB2",
+            kind: "pencil",
+            bez: [
+                (
+                    40.0,
+                    26.671875,
+                ),
+                (
+                    40.0,
+                    26.671875,
+                ),
+                (
+                    40.0,
+                    30.0,
+                ),
+                (
+                    40.0,
+                    30.0,
+                ),
+            ],
+            closed: false,
+            outline: [],
+            thickness: Some(
+                1.0,
+            ),
+            pen_max: None,
+        },
+        Sk {
+            id: "st_01K7JJN80E4C09BNFJ1MD5BZPW",
+            kind: "pencil",
+            bez: [
+                (
+                    40.0,
+                    30.0,
+                ),
+                (
+                    40.0,
+                    30.0,
+                ),
+                (
+                    40.0,
+                    80.0,
+                ),
+                (
+                    40.0,
+                    80.0,
+                ),
+            ],
+            closed: false,
+            outline: [],
+            thickness: Some(
+                1.0,
+            ),
+            pen_max: None,
+        },
+        Sk {
+            id: "st_01K7JJN80FARAR2BX83QDT0Q6Z",
+            kind: "pencil",
+            bez: [
+                (
+                    80.0,
+                    60.0,
+                ),
+                (
+                    80.0,
+                    60.0,
+                ),
+                (
+                    53.328125,
+                    33.328125,
+                ),
+                (
+                    53.328125,
+                    33.328125,
+                ),
+            ],
+            closed: false,
+            outline: [],
+            thickness: Some(
+                1.0,
+            ),
+            pen_max: None,
+        },
+        Sk {
+            id: "st_01K7JJN80G42T5C17WTM3YK55N",
+            kind: "pencil",
+            bez: [
+                (
+                    53.328125,
+                    33.328125,
+                ),
+                (
+                    53.328125,
+                    33.328125,
+                ),
+                (
+                    50.0,
+                    30.0,
+                ),
+                (
+                    50.0,
+                    30.0,
+                ),
+            ],
+            closed: false,
+            outline: [],
+            thickness: Some(
+                1.0,
+            ),
+            pen_max: None,
+        },
+        Sk {
+            id: "st_01K7JJN80HMKQH61BC39681PHC",
+            kind: "pencil",
+            bez: [
+                (
+                    50.0,
+                    30.0,
+                ),
+                (
+                    50.0,
+                    30.0,
+                ),
+                (
+                    40.0,
+                    20.0,
+                ),
+                (
+                    40.0,
+                    20.0,
+                ),
+            ],
+            closed: false,
+            outline: [],
+            thickness: Some(
+                1.0,
+            ),
+            pen_max: None,
+        },
+        Sk {
+            id: "st_01K7JJN80JXTNMSATSQ4NG02KC",
+            kind: "pencil",
+            bez: [
+                (
+                    40.0,
+                    20.0,
+                ),
+                (
+                    40.0,
+                    20.0,
+                ),
+                (
+                    44.0,
+                    28.0,
+                ),
+                (
+                    44.0,
+                    28.0,
+                ),
+            ],
+            closed: false,
+            outline: [],
+            thickness: Some(
+                1.0,
+            ),
+            pen_max: None,
+        },
+        Sk {
+            id: "st_01K7JJN80KZNGPFNG0K0151Y8Z",
+            kind: "pencil",
+            bez: [
+                (
+                    44.0,
+                    28.0,
+                ),
+                (
+                    44.0,
+                    28.0,
+                ),
+                (
+                    45.71875,
+                    31.421875,
+                ),
+                (
+                    45.71875,
+                    31.421875,
+                ),
+            ],
+            closed: false,
+            outline: [],
+            thickness: Some(
+                1.0,
+            ),
+            pen_max: None,
+        },
+        Sk {
+            id: "st_01K7JJN80MTFKY6D4HVD51BJDD",
+            kind: "pencil",
+            bez: [
+                (
+                    45.71875,
+                    31.421875,
+                ),
+                (
+                    45.71875,
+                    31.421875,
+                ),
+                (
+                    60.0,
+                    60.0,
+                ),
+                (
+                    60.0,
+                    60.0,
+                ),
+            ],
+            closed: false,
+            outline: [],
+            thickness: Some(
+                1.0,
+            ),
+            pen_max: None,
+        },
+    ],
+    zones: [
+        Zn {
+            id: "zn_1TZ27G20APMRRVEC0Z80X9XK80",
+            area: 15.21875,
+            boundary: [
+                "st_01K7JJN806XA7ASEPAA7TP68D1",
+                "st_01K7JJN80A1K8KHX5QRDPS3YKZ",
+                "st_01K7JJN80DJN3BP1CE499FWGB2",
+                "st_01K7JJN80KZNGPFNG0K0151Y8Z",
+            ],
+            colour: Some(
+                "col_01K742SG059XGSNZ6M9MACZ2ZY",
+            ),
+            interior: (
+                42.43359375,
+                29.7265625,
+            ),
+        },
+        Zn {
+            id: "zn_XBNJTRVN23CJ8MEK6MXP67A8TV",
+            area: 13.34375,
+            boundary: [
+                "st_01K7JJN806XA7ASEPAA7TP68D1",
+                "st_01K7JJN80C7H15SMJVX84RZBJP",
+                "st_01K7JJN80JXTNMSATSQ4NG02KC",
+            ],
+            colour: Some(
+                "col_01K742SG06BQ08FCT1TT8DF8MA",
+            ),
+            interior: (
+                41.57421875,
+                26.2890625,
+            ),
+        },
+        Zn {
+            id: "zn_00Q18211VN4KSYZ58Q5S7TPCQQ",
+            area: 18.0372314453125,
+            boundary: [
+                "st_01K7JJN80730F0EZ74BR22D379",
+                "st_01K7JJN809SYG5D4NHQNJ15RZ2",
+                "st_01K7JJN80G42T5C17WTM3YK55N",
+                "st_01K7JJN80KZNGPFNG0K0151Y8Z",
+            ],
+            colour: Some(
+                "col_01K742SG07AYM2NGPE2YJQJJHV",
+            ),
+            interior: (
+                48.58984375,
+                31.4296875,
+            ),
+        },
+        Zn {
+            id: "zn_RNN417QAE9C9ABW22Q3SBE7H16",
+            area: 20.0,
+            boundary: [
+                "st_01K7JJN80730F0EZ74BR22D379",
+                "st_01K7JJN80HMKQH61BC39681PHC",
+                "st_01K7JJN80JXTNMSATSQ4NG02KC",
+            ],
+            colour: Some(
+                "col_01K742SG081DHX1EPGV9BJQAQH",
+            ),
+            interior: (
+                45.890625,
+                27.8515625,
+            ),
+        },
+        Zn {
+            id: "zn_0A3N22B8H3ZRC9VW0YVB6G7G09",
+            area: 33.28125,
+            boundary: [
+                "st_01K7JJN808GA04BWTJRDCHMF1P",
+                "st_01K7JJN80G42T5C17WTM3YK55N",
+            ],
+            colour: Some(
+                "col_01K742SG09H7QE4RRR6XSYYS88",
+            ),
+            interior: (
+                57.50390625,
+                33.5703125,
+            ),
+        },
+    ],
+} after Ls {
+    strokes: [
+        Sk {
+            id: "st_01K7JJN8058SW8PXKMRKXMFMQ1",
+            kind: "pencil",
+            bez: [
+                (
+                    25.0548195876105,
+                    27.119076005410992,
+                ),
+                (
+                    25.0548195876105,
+                    27.119076005410992,
+                ),
+                (
+                    38.804753060529244,
+                    29.52941474013827,
+                ),
+                (
+                    38.804753060529244,
+                    29.52941474013827,
+                ),
+            ],
+            closed: false,
+            outline: [],
+            thickness: Some(
+                1.0,
+            ),
+            pen_max: None,
+        },
+        Sk {
+            id: "st_01K7JJN806XA7ASEPAA7TP68D1",
+            kind: "pencil",
+            bez: [
+                (
+                    38.804753060529244,
+                    29.52941474013827,
+                ),
+                (
+                    38.804753060529244,
+                    29.52941474013827,
+                ),
+                (
+                    41.67202707629853,
+                    30.027001472280826,
+                ),
+                (
+                    41.67202707629853,
+                    30.027001472280826,
+                ),
+            ],
+            closed: false,
+            outline: [],
+            thickness: Some(
+                1.0,
+            ),
+            pen_max: None,
+        },
+        Sk {
+            id: "st_01K7JJN80730F0EZ74BR22D379",
+            kind: "pencil",
+            bez: [
+                (
+                    41.67202707629853,
+                    30.027001472280826,
+                ),
+                (
+                    41.67202707629853,
+                    30.027001472280826,
+                ),
+                (
+                    46.049586718190966,
+                    30.793051795361055,
+                ),
+                (
+                    46.049586718190966,
+                    30.793051795361055,
+                ),
+            ],
+            closed: false,
+            outline: [],
+            thickness: Some(
+                1.0,
+            ),
+            pen_max: None,
+        },
+        Sk {
+            id: "st_01K7JJN808GA04BWTJRDCHMF1P",
+            kind: "pencil",
+            bez: [
+                (
+                    46.049586718190966,
+                    30.793051795361055,
+                ),
+                (
+                    46.049586718190966,
+                    30.793051795361055,
+                ),
+                (
+                    69.429086638948,
+                    34.884343504183455,
+                ),
+                (
+                    69.429086638948,
+                    34.884343504183455,
+                ),
+                (
+                    69.429086638948,
+                    34.884343504183455,
+                ),
+                (
+                    48.41917025479352,
+                    33.030066431159945,
+                ),
+                (
+                    48.41917025479352,
+                    33.030066431159945,
+                ),
+            ],
+            closed: false,
+            outline: [],
+            thickness: Some(
+                1.0,
+            ),
+            pen_max: None,
+        },
+        Sk {
+            id: "st_01K7JJN809SYG5D4NHQNJ15RZ2",
+            kind: "pencil",
+            bez: [
+                (
+                    48.41917025479352,
+                    33.030066431159945,
+                ),
+                (
+                    48.41917025479352,
+                    33.030066431159945,
+                ),
+                (
+                    42.78014700235367,
+                    32.530126377455176,
+                ),
+                (
+                    42.78014700235367,
+                    32.530126377455176,
+                ),
+            ],
+            closed: false,
+            outline: [],
+            thickness: Some(
+                1.0,
+            ),
+            pen_max: None,
+        },
+        Sk {
+            id: "st_01K7JJN80A1K8KHX5QRDPS3YKZ",
+            kind: "pencil",
+            bez: [
+                (
+                    42.78014700235367,
+                    32.530126377455176,
+                ),
+                (
+                    42.78014700235367,
+                    32.530126377455176,
+                ),
+                (
+                    38.63826729736056,
+                    32.171517530060484,
+                ),
+                (
+                    38.63826729736056,
+                    32.171517530060484,
+                ),
+            ],
+            closed: false,
+            outline: [],
+            thickness: Some(
+                1.0,
+            ),
+            pen_max: None,
+        },
+        Sk {
+            id: "st_01K7JJN80BYDBZ6RP3X5D6WZQT",
+            kind: "pencil",
+            bez: [
+                (
+                    38.63826729736056,
+                    32.171517530060484,
+                ),
+                (
+                    38.63826729736056,
+                    32.171517530060484,
+                ),
+                (
+                    11.790168764611694,
+                    29.806065079853,
+                ),
+                (
+                    11.790168764611694,
+                    29.806065079853,
+                ),
+            ],
+            closed: false,
+            outline: [],
+            thickness: Some(
+                1.0,
+            ),
+            pen_max: None,
+        },
+        Sk {
+            id: "st_01K7JJN80C7H15SMJVX84RZBJP",
+            kind: "pencil",
+            bez: [
+                (
+                    39.13637617432785,
+                    24.266608254503968,
+                ),
+                (
+                    39.13637617432785,
+                    24.266608254503968,
+                ),
+                (
+                    38.804753060529244,
+                    29.52941474013827,
+                ),
+                (
+                    38.804753060529244,
+                    29.52941474013827,
+                ),
+            ],
+            closed: false,
+            outline: [],
+            thickness: Some(
+                1.0,
+            ),
+            pen_max: None,
+        },
+        Sk {
+            id: "st_01K7JJN80DJN3BP1CE499FWGB2",
+            kind: "pencil",
+            bez: [
+                (
+                    38.804753060529244,
+                    29.52941474013827,
+                ),
+                (
+                    38.804753060529244,
+                    29.52941474013827,
+                ),
+                (
+                    38.63826729736056,
+                    32.171517530060484,
+                ),
+                (
+                    38.63826729736056,
+                    32.171517530060484,
+                ),
+            ],
+            closed: false,
+            outline: [],
+            thickness: Some(
+                1.0,
+            ),
+            pen_max: None,
+        },
+        Sk {
+            id: "st_01K7JJN80E4C09BNFJ1MD5BZPW",
+            kind: "pencil",
+            bez: [
+                (
+                    38.63826729736056,
+                    32.171517530060484,
+                ),
+                (
+                    38.63826729736056,
+                    32.171517530060484,
+                ),
+                (
+                    36.04855662971773,
+                    73.26981716747372,
+                ),
+                (
+                    36.04855662971773,
+                    73.26981716747372,
+                ),
+            ],
+            closed: false,
+            outline: [],
+            thickness: Some(
+                1.0,
+            ),
+            pen_max: None,
+        },
+        Sk {
+            id: "st_01K7JJN80FARAR2BX83QDT0Q6Z",
+            kind: "pencil",
+            bez: [
+                (
+                    68.76832605881364,
+                    52.24076681651644,
+                ),
+                (
+                    68.76832605881364,
+                    52.24076681651644,
+                ),
+                (
+                    48.41917025479352,
+                    33.030066431159945,
+                ),
+                (
+                    48.41917025479352,
+                    33.030066431159945,
+                ),
+            ],
+            closed: false,
+            outline: [],
+            thickness: Some(
+                1.0,
+            ),
+            pen_max: None,
+        },
+        Sk {
+            id: "st_01K7JJN80G42T5C17WTM3YK55N",
+            kind: "pencil",
+            bez: [
+                (
+                    48.41917025479352,
+                    33.030066431159945,
+                ),
+                (
+                    48.41917025479352,
+                    33.030066431159945,
+                ),
+                (
+                    46.049586718190966,
+                    30.793051795361055,
+                ),
+                (
+                    46.049586718190966,
+                    30.793051795361055,
+                ),
+            ],
+            closed: false,
+            outline: [],
+            thickness: Some(
+                1.0,
+            ),
+            pen_max: None,
+        },
+        Sk {
+            id: "st_01K7JJN80HMKQH61BC39681PHC",
+            kind: "pencil",
+            bez: [
+                (
+                    46.049586718190966,
+                    30.793051795361055,
+                ),
+                (
+                    46.049586718190966,
+                    30.793051795361055,
+                ),
+                (
+                    39.13637617432785,
+                    24.266608254503968,
+                ),
+                (
+                    39.13637617432785,
+                    24.266608254503968,
+                ),
+            ],
+            closed: false,
+            outline: [],
+            thickness: Some(
+                1.0,
+            ),
+            pen_max: None,
+        },
+        Sk {
+            id: "st_01K7JJN80JXTNMSATSQ4NG02KC",
+            kind: "pencil",
+            bez: [
+                (
+                    39.13637617432785,
+                    24.266608254503968,
+                ),
+                (
+                    39.13637617432785,
+                    24.266608254503968,
+                ),
+                (
+                    41.67202707629853,
+                    30.027001472280826,
+                ),
+                (
+                    41.67202707629853,
+                    30.027001472280826,
+                ),
+            ],
+            closed: false,
+            outline: [],
+            thickness: Some(
+                1.0,
+            ),
+            pen_max: None,
+        },
+        Sk {
+            id: "st_01K7JJN80KZNGPFNG0K0151Y8Z",
+            kind: "pencil",
+            bez: [
+                (
+                    41.67202707629853,
+                    30.027001472280826,
+                ),
+                (
+                    41.67202707629853,
+                    30.027001472280826,
+                ),
+                (
+                    42.78014700235367,
+                    32.530126377455176,
+                ),
+                (
+                    42.78014700235367,
+                    32.530126377455176,
+                ),
+            ],
+            closed: false,
+            outline: [],
+            thickness: Some(
+                1.0,
+            ),
+            pen_max: None,
+        },
+        Sk {
+            id: "st_01K7JJN80MTFKY6D4HVD51BJDD",
+            kind: "pencil",
+            bez: [
+                (
+                    42.78014700235367,
+                    32.530126377455176,
+                ),
+                (
+                    42.78014700235367,
+                    32.530126377455176,
+                ),
+                (
+                    52.41996375395682,
+                    54.44374649619578,
+                ),
+                (
+                    52.41996375395682,
+                    54.44374649619578,
+                ),
+            ],
+            closed: false,
+            outline: [],
+            thickness: Some(
+                1.0,
+            ),
+            pen_max: None,
+        },
+    ],
+    zones: [
+        Zn {
+            id: "zn_RFYJ8SED4RE396M1XPHXHR3DKQ",
+            area: 8.794677734375,
+            boundary: [
+                "st_01K7JJN806XA7ASEPAA7TP68D1",
+                "st_01K7JJN80A1K8KHX5QRDPS3YKZ",
+                "st_01K7JJN80DJN3BP1CE499FWGB2",
+                "st_01K7JJN80KZNGPFNG0K0151Y8Z",
+            ],
+            colour: Some(
+                "col_01K742SG059XGSNZ6M9MACZ2ZY",
+            ),
+            interior: (
+                40.578125,
+                31.8828125,
+            ),
+        },
+        Zn {
+            id: "zn_XP1QNCJQE3VF47R129V25WARRJ",
+            area: 7.6102294921875,
+            boundary: [
+                "st_01K7JJN806XA7ASEPAA7TP68D1",
+                "st_01K7JJN80C7H15SMJVX84RZBJP",
+                "st_01K7JJN80JXTNMSATSQ4NG02KC",
+            ],
+            colour: Some(
+                "col_01K742SG059XGSNZ6M9MACZ2ZY",
+            ),
+            interior: (
+                39.9921875,
+                28.7890625,
+            ),
+        },
+        Zn {
+            id: "zn_3YW8NHX8VPXCN7RRQND7T4SG5Q",
+            area: 10.751953125,
+            boundary: [
+                "st_01K7JJN80730F0EZ74BR22D379",
+                "st_01K7JJN809SYG5D4NHQNJ15RZ2",
+                "st_01K7JJN80G42T5C17WTM3YK55N",
+                "st_01K7JJN80KZNGPFNG0K0151Y8Z",
+            ],
+            colour: Some(
+                "col_01K742SG059XGSNZ6M9MACZ2ZY",
+            ),
+            interior: (
+                45.22265625,
+                32.3828125,
+            ),
+        },
+        Zn {
+            id: "zn_BASF2DQFMQQA6YYRZSVPB8ZD3K",
+            area: 11.643310546875,
+            boundary: [
+                "st_01K7JJN80730F0EZ74BR22D379",
+                "st_01K7JJN80HMKQH61BC39681PHC",
+                "st_01K7JJN80JXTNMSATSQ4NG02KC",
+            ],
+            colour: Some(
+                "col_01K742SG059XGSNZ6M9MACZ2ZY",
+            ),
+            interior: (
+                42.98046875,
+                29.3984375,
+            ),
+        },
+        Zn {
+            id: "zn_7XCVV219BN93DCM8KH0PBBCV6S",
+            area: 21.2529296875,
+            boundary: [
+                "st_01K7JJN808GA04BWTJRDCHMF1P",
+                "st_01K7JJN80G42T5C17WTM3YK55N",
+            ],
+            colour: Some(
+                "col_01K742SG09H7QE4RRR6XSYYS88",
+            ),
+            interior: (
+                53.00390625,
+                32.8515625,
+            ),
+        },
+    ],
+} corners [(11.5, 29.5), (70.5, 17.5), (68.5, 70.5), (7.5, 76.5)]
+R3_ENVELOPE before Ls {
+    strokes: [
+        Sk {
+            id: "st_01K7JJN8058SW8PXKMRKXMFMQ1",
+            kind: "pencil",
+            bez: [
+                (
+                    20.0,
+                    20.0,
+                ),
+                (
+                    20.0,
+                    20.0,
+                ),
+                (
+                    40.0,
+                    26.671875,
+                ),
+                (
+                    40.0,
+                    26.671875,
+                ),
+            ],
+            closed: false,
+            outline: [],
+            thickness: Some(
+                1.0,
+            ),
+            pen_max: None,
+        },
+        Sk {
+            id: "st_01K7JJN806XA7ASEPAA7TP68D1",
+            kind: "pencil",
+            bez: [
+                (
+                    40.0,
+                    26.671875,
+                ),
+                (
+                    40.0,
+                    26.671875,
+                ),
+                (
+                    44.0,
+                    28.0,
+                ),
+                (
+                    44.0,
+                    28.0,
+                ),
+            ],
+            closed: false,
+            outline: [],
+            thickness: Some(
+                1.0,
+            ),
+            pen_max: None,
+        },
+        Sk {
+            id: "st_01K7JJN80730F0EZ74BR22D379",
+            kind: "pencil",
+            bez: [
+                (
+                    44.0,
+                    28.0,
+                ),
+                (
+                    44.0,
+                    28.0,
+                ),
+                (
+                    50.0,
+                    30.0,
+                ),
+                (
+                    50.0,
+                    30.0,
+                ),
+            ],
+            closed: false,
+            outline: [],
+            thickness: Some(
+                1.0,
+            ),
+            pen_max: None,
+        },
+        Sk {
+            id: "st_01K7JJN808GA04BWTJRDCHMF1P",
+            kind: "pencil",
+            bez: [
+                (
+                    50.0,
+                    30.0,
+                ),
+                (
+                    50.0,
+                    30.0,
+                ),
+                (
+                    80.0,
+                    40.0,
+                ),
+                (
+                    80.0,
+                    40.0,
+                ),
+                (
+                    80.0,
+                    40.0,
+                ),
+                (
+                    53.328125,
+                    33.328125,
+                ),
+                (
+                    53.328125,
+                    33.328125,
+                ),
+            ],
+            closed: false,
+            outline: [],
+            thickness: Some(
+                1.0,
+            ),
+            pen_max: None,
+        },
+        Sk {
+            id: "st_01K7JJN809SYG5D4NHQNJ15RZ2",
+            kind: "pencil",
+            bez: [
+                (
+                    53.328125,
+                    33.328125,
+                ),
+                (
+                    53.328125,
+                    33.328125,
+                ),
+                (
+                    45.71875,
+                    31.421875,
+                ),
+                (
+                    45.71875,
+                    31.421875,
+                ),
+            ],
+            closed: false,
+            outline: [],
+            thickness: Some(
+                1.0,
+            ),
+            pen_max: None,
+        },
+        Sk {
+            id: "st_01K7JJN80A1K8KHX5QRDPS3YKZ",
+            kind: "pencil",
+            bez: [
+                (
+                    45.71875,
+                    31.421875,
+                ),
+                (
+                    45.71875,
+                    31.421875,
+                ),
+                (
+                    40.0,
+                    30.0,
+                ),
+                (
+                    40.0,
+                    30.0,
+                ),
+            ],
+            closed: false,
+            outline: [],
+            thickness: Some(
+                1.0,
+            ),
+            pen_max: None,
+        },
+        Sk {
+            id: "st_01K7JJN80BYDBZ6RP3X5D6WZQT",
+            kind: "pencil",
+            bez: [
+                (
+                    40.0,
+                    30.0,
+                ),
+                (
+                    40.0,
+                    30.0,
+                ),
+                (
+                    0.0,
+                    20.0,
+                ),
+                (
+                    0.0,
+                    20.0,
+                ),
+            ],
+            closed: false,
+            outline: [],
+            thickness: Some(
+                1.0,
+            ),
+            pen_max: None,
+        },
+        Sk {
+            id: "st_01K7JJN80C7H15SMJVX84RZBJP",
+            kind: "pencil",
+            bez: [
+                (
+                    40.0,
+                    20.0,
+                ),
+                (
+                    40.0,
+                    20.0,
+                ),
+                (
+                    40.0,
+                    26.671875,
+                ),
+                (
+                    40.0,
+                    26.671875,
+                ),
+            ],
+            closed: false,
+            outline: [],
+            thickness: Some(
+                1.0,
+            ),
+            pen_max: None,
+        },
+        Sk {
+            id: "st_01K7JJN80DJN3BP1CE499FWGB2",
+            kind: "pencil",
+            bez: [
+                (
+                    40.0,
+                    26.671875,
+                ),
+                (
+                    40.0,
+                    26.671875,
+                ),
+                (
+                    40.0,
+                    30.0,
+                ),
+                (
+                    40.0,
+                    30.0,
+                ),
+            ],
+            closed: false,
+            outline: [],
+            thickness: Some(
+                1.0,
+            ),
+            pen_max: None,
+        },
+        Sk {
+            id: "st_01K7JJN80E4C09BNFJ1MD5BZPW",
+            kind: "pencil",
+            bez: [
+                (
+                    40.0,
+                    30.0,
+                ),
+                (
+                    40.0,
+                    30.0,
+                ),
+                (
+                    40.0,
+                    80.0,
+                ),
+                (
+                    40.0,
+                    80.0,
+                ),
+            ],
+            closed: false,
+            outline: [],
+            thickness: Some(
+                1.0,
+            ),
+            pen_max: None,
+        },
+        Sk {
+            id: "st_01K7JJN80FARAR2BX83QDT0Q6Z",
+            kind: "pencil",
+            bez: [
+                (
+                    80.0,
+                    60.0,
+                ),
+                (
+                    80.0,
+                    60.0,
+                ),
+                (
+                    53.328125,
+                    33.328125,
+                ),
+                (
+                    53.328125,
+                    33.328125,
+                ),
+            ],
+            closed: false,
+            outline: [],
+            thickness: Some(
+                1.0,
+            ),
+            pen_max: None,
+        },
+        Sk {
+            id: "st_01K7JJN80G42T5C17WTM3YK55N",
+            kind: "pencil",
+            bez: [
+                (
+                    53.328125,
+                    33.328125,
+                ),
+                (
+                    53.328125,
+                    33.328125,
+                ),
+                (
+                    50.0,
+                    30.0,
+                ),
+                (
+                    50.0,
+                    30.0,
+                ),
+            ],
+            closed: false,
+            outline: [],
+            thickness: Some(
+                1.0,
+            ),
+            pen_max: None,
+        },
+        Sk {
+            id: "st_01K7JJN80HMKQH61BC39681PHC",
+            kind: "pencil",
+            bez: [
+                (
+                    50.0,
+                    30.0,
+                ),
+                (
+                    50.0,
+                    30.0,
+                ),
+                (
+                    40.0,
+                    20.0,
+                ),
+                (
+                    40.0,
+                    20.0,
+                ),
+            ],
+            closed: false,
+            outline: [],
+            thickness: Some(
+                1.0,
+            ),
+            pen_max: None,
+        },
+        Sk {
+            id: "st_01K7JJN80JXTNMSATSQ4NG02KC",
+            kind: "pencil",
+            bez: [
+                (
+                    40.0,
+                    20.0,
+                ),
+                (
+                    40.0,
+                    20.0,
+                ),
+                (
+                    44.0,
+                    28.0,
+                ),
+                (
+                    44.0,
+                    28.0,
+                ),
+            ],
+            closed: false,
+            outline: [],
+            thickness: Some(
+                1.0,
+            ),
+            pen_max: None,
+        },
+        Sk {
+            id: "st_01K7JJN80KZNGPFNG0K0151Y8Z",
+            kind: "pencil",
+            bez: [
+                (
+                    44.0,
+                    28.0,
+                ),
+                (
+                    44.0,
+                    28.0,
+                ),
+                (
+                    45.71875,
+                    31.421875,
+                ),
+                (
+                    45.71875,
+                    31.421875,
+                ),
+            ],
+            closed: false,
+            outline: [],
+            thickness: Some(
+                1.0,
+            ),
+            pen_max: None,
+        },
+        Sk {
+            id: "st_01K7JJN80MTFKY6D4HVD51BJDD",
+            kind: "pencil",
+            bez: [
+                (
+                    45.71875,
+                    31.421875,
+                ),
+                (
+                    45.71875,
+                    31.421875,
+                ),
+                (
+                    60.0,
+                    60.0,
+                ),
+                (
+                    60.0,
+                    60.0,
+                ),
+            ],
+            closed: false,
+            outline: [],
+            thickness: Some(
+                1.0,
+            ),
+            pen_max: None,
+        },
+    ],
+    zones: [
+        Zn {
+            id: "zn_1TZ27G20APMRRVEC0Z80X9XK80",
+            area: 15.21875,
+            boundary: [
+                "st_01K7JJN806XA7ASEPAA7TP68D1",
+                "st_01K7JJN80A1K8KHX5QRDPS3YKZ",
+                "st_01K7JJN80DJN3BP1CE499FWGB2",
+                "st_01K7JJN80KZNGPFNG0K0151Y8Z",
+            ],
+            colour: Some(
+                "col_01K742SG059XGSNZ6M9MACZ2ZY",
+            ),
+            interior: (
+                42.43359375,
+                29.7265625,
+            ),
+        },
+        Zn {
+            id: "zn_XBNJTRVN23CJ8MEK6MXP67A8TV",
+            area: 13.34375,
+            boundary: [
+                "st_01K7JJN806XA7ASEPAA7TP68D1",
+                "st_01K7JJN80C7H15SMJVX84RZBJP",
+                "st_01K7JJN80JXTNMSATSQ4NG02KC",
+            ],
+            colour: Some(
+                "col_01K742SG06BQ08FCT1TT8DF8MA",
+            ),
+            interior: (
+                41.57421875,
+                26.2890625,
+            ),
+        },
+        Zn {
+            id: "zn_00Q18211VN4KSYZ58Q5S7TPCQQ",
+            area: 18.0372314453125,
+            boundary: [
+                "st_01K7JJN80730F0EZ74BR22D379",
+                "st_01K7JJN809SYG5D4NHQNJ15RZ2",
+                "st_01K7JJN80G42T5C17WTM3YK55N",
+                "st_01K7JJN80KZNGPFNG0K0151Y8Z",
+            ],
+            colour: Some(
+                "col_01K742SG07AYM2NGPE2YJQJJHV",
+            ),
+            interior: (
+                48.58984375,
+                31.4296875,
+            ),
+        },
+        Zn {
+            id: "zn_RNN417QAE9C9ABW22Q3SBE7H16",
+            area: 20.0,
+            boundary: [
+                "st_01K7JJN80730F0EZ74BR22D379",
+                "st_01K7JJN80HMKQH61BC39681PHC",
+                "st_01K7JJN80JXTNMSATSQ4NG02KC",
+            ],
+            colour: Some(
+                "col_01K742SG081DHX1EPGV9BJQAQH",
+            ),
+            interior: (
+                45.890625,
+                27.8515625,
+            ),
+        },
+        Zn {
+            id: "zn_0A3N22B8H3ZRC9VW0YVB6G7G09",
+            area: 33.28125,
+            boundary: [
+                "st_01K7JJN808GA04BWTJRDCHMF1P",
+                "st_01K7JJN80G42T5C17WTM3YK55N",
+            ],
+            colour: Some(
+                "col_01K742SG09H7QE4RRR6XSYYS88",
+            ),
+            interior: (
+                57.50390625,
+                33.5703125,
+            ),
+        },
+    ],
+} after Ls {
+    strokes: [
+        Sk {
+            id: "st_01K7JJN8058SW8PXKMRKXMFMQ1",
+            kind: "pencil",
+            bez: [
+                (
+                    25.0548195876105,
+                    27.119076005410992,
+                ),
+                (
+                    25.0548195876105,
+                    27.119076005410992,
+                ),
+                (
+                    38.804753060529244,
+                    29.52941474013827,
+                ),
+                (
+                    38.804753060529244,
+                    29.52941474013827,
+                ),
+            ],
+            closed: false,
+            outline: [],
+            thickness: Some(
+                1.0,
+            ),
+            pen_max: None,
+        },
+        Sk {
+            id: "st_01K7JJN806XA7ASEPAA7TP68D1",
+            kind: "pencil",
+            bez: [
+                (
+                    38.804753060529244,
+                    29.52941474013827,
+                ),
+                (
+                    38.804753060529244,
+                    29.52941474013827,
+                ),
+                (
+                    41.67202707629853,
+                    30.027001472280826,
+                ),
+                (
+                    41.67202707629853,
+                    30.027001472280826,
+                ),
+            ],
+            closed: false,
+            outline: [],
+            thickness: Some(
+                1.0,
+            ),
+            pen_max: None,
+        },
+        Sk {
+            id: "st_01K7JJN80730F0EZ74BR22D379",
+            kind: "pencil",
+            bez: [
+                (
+                    41.67202707629853,
+                    30.027001472280826,
+                ),
+                (
+                    41.67202707629853,
+                    30.027001472280826,
+                ),
+                (
+                    46.049586718190966,
+                    30.793051795361055,
+                ),
+                (
+                    46.049586718190966,
+                    30.793051795361055,
+                ),
+            ],
+            closed: false,
+            outline: [],
+            thickness: Some(
+                1.0,
+            ),
+            pen_max: None,
+        },
+        Sk {
+            id: "st_01K7JJN808GA04BWTJRDCHMF1P",
+            kind: "pencil",
+            bez: [
+                (
+                    46.049586718190966,
+                    30.793051795361055,
+                ),
+                (
+                    46.049586718190966,
+                    30.793051795361055,
+                ),
+                (
+                    69.429086638948,
+                    34.884343504183455,
+                ),
+                (
+                    69.429086638948,
+                    34.884343504183455,
+                ),
+                (
+                    69.429086638948,
+                    34.884343504183455,
+                ),
+                (
+                    48.41917025479352,
+                    33.030066431159945,
+                ),
+                (
+                    48.41917025479352,
+                    33.030066431159945,
+                ),
+            ],
+            closed: false,
+            outline: [],
+            thickness: Some(
+                1.0,
+            ),
+            pen_max: None,
+        },
+        Sk {
+            id: "st_01K7JJN809SYG5D4NHQNJ15RZ2",
+            kind: "pencil",
+            bez: [
+                (
+                    48.41917025479352,
+                    33.030066431159945,
+                ),
+                (
+                    48.41917025479352,
+                    33.030066431159945,
+                ),
+                (
+                    42.78014700235367,
+                    32.530126377455176,
+                ),
+                (
+                    42.78014700235367,
+                    32.530126377455176,
+                ),
+            ],
+            closed: false,
+            outline: [],
+            thickness: Some(
+                1.0,
+            ),
+            pen_max: None,
+        },
+        Sk {
+            id: "st_01K7JJN80A1K8KHX5QRDPS3YKZ",
+            kind: "pencil",
+            bez: [
+                (
+                    42.78014700235367,
+                    32.530126377455176,
+                ),
+                (
+                    42.78014700235367,
+                    32.530126377455176,
+                ),
+                (
+                    38.63826729736056,
+                    32.171517530060484,
+                ),
+                (
+                    38.63826729736056,
+                    32.171517530060484,
+                ),
+            ],
+            closed: false,
+            outline: [],
+            thickness: Some(
+                1.0,
+            ),
+            pen_max: None,
+        },
+        Sk {
+            id: "st_01K7JJN80BYDBZ6RP3X5D6WZQT",
+            kind: "pencil",
+            bez: [
+                (
+                    38.63826729736056,
+                    32.171517530060484,
+                ),
+                (
+                    38.63826729736056,
+                    32.171517530060484,
+                ),
+                (
+                    11.790168764611694,
+                    29.806065079853,
+                ),
+                (
+                    11.790168764611694,
+                    29.806065079853,
+                ),
+            ],
+            closed: false,
+            outline: [],
+            thickness: Some(
+                1.0,
+            ),
+            pen_max: None,
+        },
+        Sk {
+            id: "st_01K7JJN80C7H15SMJVX84RZBJP",
+            kind: "pencil",
+            bez: [
+                (
+                    39.13637617432785,
+                    24.266608254503968,
+                ),
+                (
+                    39.13637617432785,
+                    24.266608254503968,
+                ),
+                (
+                    38.804753060529244,
+                    29.52941474013827,
+                ),
+                (
+                    38.804753060529244,
+                    29.52941474013827,
+                ),
+            ],
+            closed: false,
+            outline: [],
+            thickness: Some(
+                1.0,
+            ),
+            pen_max: None,
+        },
+        Sk {
+            id: "st_01K7JJN80DJN3BP1CE499FWGB2",
+            kind: "pencil",
+            bez: [
+                (
+                    38.804753060529244,
+                    29.52941474013827,
+                ),
+                (
+                    38.804753060529244,
+                    29.52941474013827,
+                ),
+                (
+                    38.63826729736056,
+                    32.171517530060484,
+                ),
+                (
+                    38.63826729736056,
+                    32.171517530060484,
+                ),
+            ],
+            closed: false,
+            outline: [],
+            thickness: Some(
+                1.0,
+            ),
+            pen_max: None,
+        },
+        Sk {
+            id: "st_01K7JJN80E4C09BNFJ1MD5BZPW",
+            kind: "pencil",
+            bez: [
+                (
+                    38.63826729736056,
+                    32.171517530060484,
+                ),
+                (
+                    38.63826729736056,
+                    32.171517530060484,
+                ),
+                (
+                    36.04855662971773,
+                    73.26981716747372,
+                ),
+                (
+                    36.04855662971773,
+                    73.26981716747372,
+                ),
+            ],
+            closed: false,
+            outline: [],
+            thickness: Some(
+                1.0,
+            ),
+            pen_max: None,
+        },
+        Sk {
+            id: "st_01K7JJN80FARAR2BX83QDT0Q6Z",
+            kind: "pencil",
+            bez: [
+                (
+                    68.76832605881364,
+                    52.24076681651644,
+                ),
+                (
+                    68.76832605881364,
+                    52.24076681651644,
+                ),
+                (
+                    48.41917025479352,
+                    33.030066431159945,
+                ),
+                (
+                    48.41917025479352,
+                    33.030066431159945,
+                ),
+            ],
+            closed: false,
+            outline: [],
+            thickness: Some(
+                1.0,
+            ),
+            pen_max: None,
+        },
+        Sk {
+            id: "st_01K7JJN80G42T5C17WTM3YK55N",
+            kind: "pencil",
+            bez: [
+                (
+                    48.41917025479352,
+                    33.030066431159945,
+                ),
+                (
+                    48.41917025479352,
+                    33.030066431159945,
+                ),
+                (
+                    46.049586718190966,
+                    30.793051795361055,
+                ),
+                (
+                    46.049586718190966,
+                    30.793051795361055,
+                ),
+            ],
+            closed: false,
+            outline: [],
+            thickness: Some(
+                1.0,
+            ),
+            pen_max: None,
+        },
+        Sk {
+            id: "st_01K7JJN80HMKQH61BC39681PHC",
+            kind: "pencil",
+            bez: [
+                (
+                    46.049586718190966,
+                    30.793051795361055,
+                ),
+                (
+                    46.049586718190966,
+                    30.793051795361055,
+                ),
+                (
+                    39.13637617432785,
+                    24.266608254503968,
+                ),
+                (
+                    39.13637617432785,
+                    24.266608254503968,
+                ),
+            ],
+            closed: false,
+            outline: [],
+            thickness: Some(
+                1.0,
+            ),
+            pen_max: None,
+        },
+        Sk {
+            id: "st_01K7JJN80JXTNMSATSQ4NG02KC",
+            kind: "pencil",
+            bez: [
+                (
+                    39.13637617432785,
+                    24.266608254503968,
+                ),
+                (
+                    39.13637617432785,
+                    24.266608254503968,
+                ),
+                (
+                    41.67202707629853,
+                    30.027001472280826,
+                ),
+                (
+                    41.67202707629853,
+                    30.027001472280826,
+                ),
+            ],
+            closed: false,
+            outline: [],
+            thickness: Some(
+                1.0,
+            ),
+            pen_max: None,
+        },
+        Sk {
+            id: "st_01K7JJN80KZNGPFNG0K0151Y8Z",
+            kind: "pencil",
+            bez: [
+                (
+                    41.67202707629853,
+                    30.027001472280826,
+                ),
+                (
+                    41.67202707629853,
+                    30.027001472280826,
+                ),
+                (
+                    42.78014700235367,
+                    32.530126377455176,
+                ),
+                (
+                    42.78014700235367,
+                    32.530126377455176,
+                ),
+            ],
+            closed: false,
+            outline: [],
+            thickness: Some(
+                1.0,
+            ),
+            pen_max: None,
+        },
+        Sk {
+            id: "st_01K7JJN80MTFKY6D4HVD51BJDD",
+            kind: "pencil",
+            bez: [
+                (
+                    42.78014700235367,
+                    32.530126377455176,
+                ),
+                (
+                    42.78014700235367,
+                    32.530126377455176,
+                ),
+                (
+                    52.41996375395682,
+                    54.44374649619578,
+                ),
+                (
+                    52.41996375395682,
+                    54.44374649619578,
+                ),
+            ],
+            closed: false,
+            outline: [],
+            thickness: Some(
+                1.0,
+            ),
+            pen_max: None,
+        },
+    ],
+    zones: [
+        Zn {
+            id: "zn_RFYJ8SED4RE396M1XPHXHR3DKQ",
+            area: 8.794677734375,
+            boundary: [
+                "st_01K7JJN806XA7ASEPAA7TP68D1",
+                "st_01K7JJN80A1K8KHX5QRDPS3YKZ",
+                "st_01K7JJN80DJN3BP1CE499FWGB2",
+                "st_01K7JJN80KZNGPFNG0K0151Y8Z",
+            ],
+            colour: Some(
+                "col_01K742SG059XGSNZ6M9MACZ2ZY",
+            ),
+            interior: (
+                40.578125,
+                31.8828125,
+            ),
+        },
+        Zn {
+            id: "zn_XP1QNCJQE3VF47R129V25WARRJ",
+            area: 7.6102294921875,
+            boundary: [
+                "st_01K7JJN806XA7ASEPAA7TP68D1",
+                "st_01K7JJN80C7H15SMJVX84RZBJP",
+                "st_01K7JJN80JXTNMSATSQ4NG02KC",
+            ],
+            colour: Some(
+                "col_01K742SG059XGSNZ6M9MACZ2ZY",
+            ),
+            interior: (
+                39.9921875,
+                28.7890625,
+            ),
+        },
+        Zn {
+            id: "zn_3YW8NHX8VPXCN7RRQND7T4SG5Q",
+            area: 10.751953125,
+            boundary: [
+                "st_01K7JJN80730F0EZ74BR22D379",
+                "st_01K7JJN809SYG5D4NHQNJ15RZ2",
+                "st_01K7JJN80G42T5C17WTM3YK55N",
+                "st_01K7JJN80KZNGPFNG0K0151Y8Z",
+            ],
+            colour: Some(
+                "col_01K742SG059XGSNZ6M9MACZ2ZY",
+            ),
+            interior: (
+                45.22265625,
+                32.3828125,
+            ),
+        },
+        Zn {
+            id: "zn_BASF2DQFMQQA6YYRZSVPB8ZD3K",
+            area: 11.643310546875,
+            boundary: [
+                "st_01K7JJN80730F0EZ74BR22D379",
+                "st_01K7JJN80HMKQH61BC39681PHC",
+                "st_01K7JJN80JXTNMSATSQ4NG02KC",
+            ],
+            colour: Some(
+                "col_01K742SG059XGSNZ6M9MACZ2ZY",
+            ),
+            interior: (
+                42.98046875,
+                29.3984375,
+            ),
+        },
+        Zn {
+            id: "zn_7XCVV219BN93DCM8KH0PBBCV6S",
+            area: 21.2529296875,
+            boundary: [
+                "st_01K7JJN808GA04BWTJRDCHMF1P",
+                "st_01K7JJN80G42T5C17WTM3YK55N",
+            ],
+            colour: Some(
+                "col_01K742SG09H7QE4RRR6XSYYS88",
+            ),
+            interior: (
+                53.00390625,
+                32.8515625,
+            ),
+        },
+    ],
+} corners [(11.5, 29.5), (70.5, 17.5), (68.5, 70.5), (7.5, 76.5)]
+R3_ENVELOPE zone zn_RFYJ8SED4RE396M1XPHXHR3DKQ interior (40.578125, 31.8828125) back (40.407322247706425, 30.458139334862388) distance 0.34632115585006695 actual Some("col_01K742SG059XGSNZ6M9MACZ2ZY") quarter-grid holder None carry Some("col_01K742SG059XGSNZ6M9MACZ2ZY")
+R3_ENVELOPE selected holder (quarter_query=true) None coarse fill None
+R3_ENVELOPE zone zn_RFYJ8SED4RE396M1XPHXHR3DKQ interior (40.578125, 31.8828125) back (40.407322247706425, 30.458139334862388) distance 0.34632115585006695 actual Some("col_01K742SG059XGSNZ6M9MACZ2ZY") quarter-grid holder None carry Some("col_01K742SG059XGSNZ6M9MACZ2ZY")
+R3_ENVELOPE selected holder (quarter_query=false) None coarse fill None
+R3_ENVELOPE zone zn_XP1QNCJQE3VF47R129V25WARRJ interior (39.9921875, 28.7890625) back (39.22088589449541, 26.214721903669727) distance 0.18710888863199035 actual Some("col_01K742SG059XGSNZ6M9MACZ2ZY") quarter-grid holder None carry Some("col_01K742SG059XGSNZ6M9MACZ2ZY")
+R3_ENVELOPE selected holder (quarter_query=true) None coarse fill None
+R3_ENVELOPE zone zn_XP1QNCJQE3VF47R129V25WARRJ interior (39.9921875, 28.7890625) back (39.22088589449541, 26.214721903669727) distance 0.18710888863199035 actual Some("col_01K742SG059XGSNZ6M9MACZ2ZY") quarter-grid holder None carry Some("col_01K742SG059XGSNZ6M9MACZ2ZY")
+R3_ENVELOPE selected holder (quarter_query=false) None coarse fill None
+R3_ENVELOPE zone zn_3YW8NHX8VPXCN7RRQND7T4SG5Q interior (45.22265625, 32.3828125) back (46.95548021788991, 32.36613818807339) distance 0.6154283896840258 actual Some("col_01K742SG059XGSNZ6M9MACZ2ZY") quarter-grid holder None carry Some("col_01K742SG059XGSNZ6M9MACZ2ZY")
+R3_ENVELOPE selected holder (quarter_query=true) None coarse fill None
+R3_ENVELOPE zone zn_3YW8NHX8VPXCN7RRQND7T4SG5Q interior (45.22265625, 32.3828125) back (46.95548021788991, 32.36613818807339) distance 0.6154283896840258 actual Some("col_01K742SG059XGSNZ6M9MACZ2ZY") quarter-grid holder None carry Some("col_01K742SG059XGSNZ6M9MACZ2ZY")
+R3_ENVELOPE selected holder (quarter_query=false) None coarse fill None
+R3_ENVELOPE zone zn_BASF2DQFMQQA6YYRZSVPB8ZD3K interior (42.98046875, 29.3984375) back (43.46816083715597, 27.822267775229356) distance 0.0010866687021410647 actual Some("col_01K742SG059XGSNZ6M9MACZ2ZY") quarter-grid holder Some(2) carry Some("col_01K742SG059XGSNZ6M9MACZ2ZY")
+R3_ENVELOPE selected holder (quarter_query=true) Some(2) coarse fill Some(Some("col_01K742SG059XGSNZ6M9MACZ2ZY"))
+R3_ENVELOPE zone zn_BASF2DQFMQQA6YYRZSVPB8ZD3K interior (42.98046875, 29.3984375) back (43.46816083715597, 27.822267775229356) distance 0.0010866687021410647 actual Some("col_01K742SG059XGSNZ6M9MACZ2ZY") quarter-grid holder Some(2) carry Some("col_01K742SG059XGSNZ6M9MACZ2ZY")
+R3_ENVELOPE selected holder (quarter_query=false) Some(1) coarse fill Some(Some("col_01K742SG059XGSNZ6M9MACZ2ZY"))
+R3_ENVELOPE zone zn_7XCVV219BN93DCM8KH0PBBCV6S interior (53.00390625, 32.8515625) back (57.88212012614679, 35.075461582568806) distance 0.5899920444985232 actual Some("col_01K742SG09H7QE4RRR6XSYYS88") quarter-grid holder None carry Some("col_01K742SG09H7QE4RRR6XSYYS88")
+R3_ENVELOPE selected holder (quarter_query=true) None coarse fill None
+
+thread 'shrunk_projective_envelope_fill_case_for_independent_adjudication' (20280) panicked at crates\executor\tests\c24_r3_domains.rs:2167:68:
+called `Result::unwrap()` on an `Err` value: Fail(Reason("assertion failed: `(left == right)` \n  left: `Some(\"col_01K742SG059XGSNZ6M9MACZ2ZY\")`, \n right: `Some(\"col_01K742SG06BQ08FCT1TT8DF8MA\")`: after envelope: fill of zone zn_BASF2DQFMQQA6YYRZSVPB8ZD3K at crates\\executor\\tests\\c24_r3_domains.rs:339"))
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+test shrunk_projective_envelope_fill_case_for_independent_adjudication ... FAILED
+test projective_envelope_matches_the_independently_rounded_point_query_control ... ok
+
+failures:
+
+failures:
+    shrunk_projective_envelope_fill_case_for_independent_adjudication
+
+test result: FAILED. 1 passed; 1 failed; 0 ignored; 0 measured; 12 filtered out; finished in 0.09s
+
+error: test failed, to rerun pass `-p tt-executor --test c24_r3_domains`

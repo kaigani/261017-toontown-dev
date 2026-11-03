@@ -1,0 +1,89 @@
+cargo :    Compiling typenum v1.20.1
+At line:2 char:1
++ cargo test -p tt-executor --test c21_draw --test c21_obligations --te ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (   Compiling typenum v1.20.1:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+   Compiling windows-sys v0.61.2
+   Compiling crc32fast v1.5.2
+   Compiling const-oid v0.10.2
+   Compiling adler2 v2.0.1
+   Compiling simd-adler32 v0.3.10
+   Compiling winnow v1.0.4
+   Compiling target-tuple v1.0.2
+   Compiling syn v2.0.119
+   Compiling toml_datetime v1.1.2+spec-1.1.0
+   Compiling serde_spanned v1.1.2
+   Compiling toml_writer v1.1.3+spec-1.1.0
+   Compiling glob v0.3.4
+   Compiling stats_alloc v0.1.10
+   Compiling miniz_oxide v0.9.1
+   Compiling toml_parser v1.1.5+spec-1.1.0
+   Compiling hybrid-array v0.4.15
+   Compiling flate2 v1.1.10
+   Compiling toml v1.1.8+spec-1.1.0
+   Compiling tempfile v3.27.0
+   Compiling winapi-util v0.1.11
+   Compiling termcolor v1.4.1
+   Compiling rusty-fork v0.3.1
+   Compiling proptest v1.12.0
+   Compiling crypto-common v0.2.2
+   Compiling block-buffer v0.12.1
+   Compiling trybuild v1.0.122
+   Compiling digest v0.11.3
+   Compiling sha2 v0.11.1
+   Compiling strum_macros v0.28.0
+   Compiling tt-registry-macros v0.0.1 (C:\Users\kaiga\work\review\m2-c21-r1\crates\registry-macros)
+   Compiling strum v0.28.0
+   Compiling jsonschema v0.59.0
+   Compiling tt-model v0.0.1 (C:\Users\kaiga\work\review\m2-c21-r1\crates\model)
+   Compiling tt-persist v0.0.1 (C:\Users\kaiga\work\review\m2-c21-r1\crates\persist)
+   Compiling tt-registry v0.0.1 (C:\Users\kaiga\work\review\m2-c21-r1\crates\registry)
+   Compiling tt-vector v0.0.1 (C:\Users\kaiga\work\review\m2-c21-r1\crates\vector)
+   Compiling tt-executor v0.0.1 (C:\Users\kaiga\work\review\m2-c21-r1\crates\executor)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 34.79s
+     Running tests\c21_determinism.rs (target\debug\deps\c21_determinism-4b06ba5882711e05.exe)
+
+running 1 test
+test command_created_geometry_is_identical_across_runs_and_platforms ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.33s
+
+     Running tests\c21_draw.rs (target\debug\deps\c21_draw-3a2abaa06b4ed2a3.exe)
+
+running 10 tests
+test geometry_errors_name_their_parameter_and_change_nothing ... ok
+test drawing_into_an_empty_cell_creates_the_drawing_in_the_same_step ... ok
+test pencil_and_invisible_strokes_have_their_shapes_and_labels ... ok
+test read_back_options_flatten_ids_and_include ... ok
+test locked_drawings_refuse_every_edit_and_stale_revisions_refuse_id_edits ... ok
+test stroke_set_edits_geometry_and_kind_and_keeps_the_id ... ok
+test a_brush_stroke_keeps_spine_pressure_and_pen_and_gets_a_closed_outline ... ok
+test groups_delete_and_pivot ... ok
+test content_round_trips_through_read_back_with_new_ids ... ok
+test text_objects_add_edit_and_format_with_runs_paragraphs_and_bounds ... ok
+
+test result: ok. 10 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.14s
+
+     Running tests\c21_example_results.rs (target\debug\deps\c21_example_results-329f25f353b39cbf.exe)
+
+running 2 tests
+test describe_command_carries_the_retained_results ... ok
+test every_implemented_example_has_a_retained_executed_result ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 5.98s
+
+     Running tests\c21_obligations.rs (target\debug\deps\c21_obligations-aecd911450c87a05.exe)
+
+running 7 tests
+test c21_drawing_commands_write_no_files_and_ask_no_confirmation ... ok
+test revision_exhaustion_refuses_drawing_edits_and_changes_nothing ... ok
+test a_dry_run_predicts_the_real_call_and_keeps_the_pre_state ... ok
+test a_patch_of_a_brush_spine_sweeps_the_outline_and_a_patch_of_the_outline_drops_the_spine ... ok
+test a_later_invalid_step_rolls_the_whole_atomic_batch_back ... ok
+test a_successful_atomic_batch_is_one_revision_and_one_exactly_invertible_undo_step ... ok
+test opaque_data_ids_and_revisions_survive_edits_save_and_reopen ... ok
+
+test result: ok. 7 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.30s
+

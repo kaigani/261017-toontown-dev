@@ -111,6 +111,18 @@ pub type Matrix2d = [f64; 6];
 /// The identity [`Matrix2d`].
 pub const IDENTITY: Matrix2d = [1.0, 0.0, 0.0, 1.0, 0.0, 0.0];
 
+/// Serialises an optional fill matrix with its integral entries as JSON integers, as the input path and the canonical
+/// writer have them (`1.0` and `1` are one JSON value; read-back of stored mappings compares equal to what was given,
+/// C22-R1-09).
+///
+/// # Errors
+/// The serializer's.
+pub fn serialize_matrix<S: Serializer>(m: &Option<Matrix2d>, s: S) -> Result<S::Ok, S::Error> {
+    let mut v = serde_json::to_value(m).map_err(serde::ser::Error::custom)?;
+    crate::canonical::normalize_numbers(&mut v);
+    v.serialize(s)
+}
+
 /// An inclusive frame range `{from, to}` (10 §1.1).
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize, JsonSchema)]
 #[serde(deny_unknown_fields)]

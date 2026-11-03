@@ -1,0 +1,16 @@
+cargo :     Finished `test` profile [unoptimized + debuginfo] target(s) in 0.16s
+At line:2 char:247
++ ... -final.log; cargo test -p tt-mcp --test c22_r2_surface --locked -- -- ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (    Finished `t...get(s) in 0.16s:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+     Running tests\c22_r2_surface.rs (target\debug\deps\c22_r2_surface-aa44c173493e6f60.exe)
+
+running 3 tests
+test all_four_deferred_contracts_and_generated_types_name_c23 ... ok
+test prefs_agent_failed_atomic_batch_rolls_back_gap_setting ... ok
+test topology_oracle_checks_every_step_of_full_cut_stack_and_reverse_merge ... ok
+
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.28s
+

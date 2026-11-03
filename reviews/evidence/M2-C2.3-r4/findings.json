@@ -1,0 +1,24 @@
+{
+  "verdict": "block",
+  "r3Disposition": "technically closed",
+  "findings": [
+    {
+      "id": "C23-R4-01",
+      "severity": "P2",
+      "kind": "review-gate mismatch",
+      "path": "crates/executor/tests/c23_round3.rs",
+      "detail": "Exact protected glob diff 29fa294..fc25eae is 5039 bytes: declared new builder test matches c23_r*. No pre-existing reviewer file differs. Literal empty-diff gate requires orchestrator exception.",
+      "requestedRuling": "Accept the declared-new-file exception or revise the exact-diff gate."
+    }
+  ],
+  "limitations": [
+    {
+      "item": "persisted audit test",
+      "detail": "Retains line-count assertion only; adjacent resource-log test retains sequence and normalized golden-content assertions. Persisted content/order assertion cannot be certified."
+    },
+    {
+      "item": "20.34s local release observation",
+      "detail": "Quoted in response; no raw file in declared round-3 evidence directory supports independent verification."
+    }
+  ]
+}

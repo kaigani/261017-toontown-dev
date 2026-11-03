@@ -1,0 +1,101 @@
+diff --git a/scripts/check-reviewer-ownership.py b/scripts/check-reviewer-ownership.py
+index 1d6a9d0..3c52ce9 100644
+--- a/scripts/check-reviewer-ownership.py
++++ b/scripts/check-reviewer-ownership.py
+@@ -13,7 +13,13 @@ declared, and by nothing else:
+   (ruling (b), edit 46);
+ - `crates/executor/tests/c24_r2_routes.rs` (`9b37e9d`): every `#[test]` function byte-identical (ruling (a): only the
+   embedded oracle helpers mirror the builder oracle, edits 49 and 53);
+-- every other round-2 reviewer file unchanged.
++- every other round-2 reviewer file unchanged;
++- `crates/executor/tests/c24_r3_domains.rs` (`cb1ea11`): the helper `r3_shipped_vectorize_comparison` calls the
++  repaired comparator, mirrored byte for byte from the builder's `c24_route_domains.rs` (C24-R3-02 authorization), and
++  the point-query probe in `non_parallelogram_envelopes_map_the_layer_projectively` and in the fixed reproduction's
++  helper uses the product's 1/256-du representation (C24-R3-04 disposition); nothing else, every other `#[test]`
++  function byte-identical;
++- every other round-3 reviewer file unchanged.
+ 
+ This is the live counterpart of the reviewer's `Ownership` receipt in `tests/adversarial/c24-r2-audit.py`, which compares
+ the fixed round-1 head `3c74c34` (the finding itself) and cannot change; exit status 1 on any difference.
+@@ -43,11 +49,71 @@ def replace_once(text, old, new, what):
+ def tests(text):
+     """The `#[test]` functions of a Rust file, by name."""
+     out = {}
+-    for m in re.finditer(r"^#\[test\]\n(?:#\[[^\n]*\]\n)*fn (\w+)\(.*?^\}\n", text, re.S | re.M):
++    for m in re.finditer(r"^#\[test\]\n(?:(?:#\[[^\n]*\]|//[^\n]*)\n)*fn (\w+)\(.*?^\}\n", text, re.S | re.M):
+         out[m.group(1)] = m.group(0)
+     return out
+ 
+ 
++R3_FINE_PROPERTY = """                    let dp = Dp {
++                        x: (p.0 * 64.0 * 1024.0).round() as i128,
++                        y: (p.1 * 64.0 * 1024.0).round() as i128,
++                        s: 1024,
++                    };
++"""
++R3_QUARTER_PROPERTY = """                    // C24-R3-04 disposition (declared): the product's point query, rounded to 1/256 du.
++                    let dp = Dp { x: (p.0 * 256.0).round() as i128, y: (p.1 * 256.0).round() as i128, s: 4 };
++"""
++R3_FINE_FIXED = """            let fine =
++                Dp { x: (p.0 * 64.0 * 1024.0).round() as i128, y: (p.1 * 64.0 * 1024.0).round() as i128, s: 1024 };
++"""
++R3_QUARTER_FIXED = """            // C24-R3-04 disposition (declared): the product's point query, rounded to 1/256 du.
++            let fine = Dp { x: (p.0 * 256.0).round() as i128, y: (p.1 * 256.0).round() as i128, s: 4 };
++"""
++
++
++def round3():
++    failures = []
++    path = "crates/executor/tests/c24_r3_domains.rs"
++    builder = now("crates/executor/tests/c24_route_domains.rs")
++    start = builder.index("/// An independent trace of a binary mask")
++    comparator = builder[start:builder.index("#[test]\nfn vectorize_masks_enclose_the_predicted_paper_components", start)]
++    old = show("cb1ea11", path)
++    head = "// Copied verbatim from the builder vectorize semantic/exact comparison, 871e8bd.\n"
++    i = old.index(head)
++    j = old.index("/// C24-R3-02 proving failure:", i)
++    want = (
++        old[:i]
++        + head
++        + "// C24-R3-02 ruling (declared helper hunks): the repaired builder comparator, mirrored.\n"
++        + "fn r3_shipped_vectorize_comparison(ls: Ls, mask: Vec<Vec<bool>>) -> Result<(), TestCaseError> {\n"
++        + "    vectorize_comparison(&ls, &mask)\n}\n\n"
++        + comparator
++        + old[j:]
++    )
++    want = replace_once(want, R3_FINE_PROPERTY, R3_QUARTER_PROPERTY, path)
++    want = replace_once(want, R3_FINE_FIXED, R3_QUARTER_FIXED, path)
++    if now(path) != want:
++        failures.append(f"{path} differs from cb1ea11 beyond the C24-R3-02 and C24-R3-04 dispositions")
++    before, after = tests(old), tests(now(path))
++    changed = sorted(n for n in set(before) | set(after) if before.get(n) != after.get(n))
++    if changed != ["non_parallelogram_envelopes_map_the_layer_projectively"]:
++        failures.append(f"{path}: #[test] functions changed: {changed}")
++    for path in [
++        "crates/executor/tests/c24_r3_routes.rs",
++        "crates/executor/tests/c24_r3_topology.rs",
++        "crates/vector/tests/c24_r3_properties.rs",
++        "crates/vector/tests/c24_r3_noding.rs",
++        "tests/adversarial/c24-r3-audit.py",
++        "tests/adversarial/c24-r3-corpus.py",
++        "tests/adversarial/c24-r3-register.py",
++        "tests/adversarial/c24-r3-run.py",
++        "tests/adversarial/c24-r3-sdk.py",
++    ]:
++        if now(path) != show("cb1ea11", path):
++            failures.append(f"{path} changed")
++    return failures
++
++
+ def main():
+     failures = []
+ 
+@@ -95,6 +161,8 @@ def main():
+         if now(path) != show("9b37e9d", path):
+             failures.append(f"{path} changed")
+ 
++    failures.extend(round3())
++
+     for f in failures:
+         print(f"FAIL {f}")
+     if not failures:

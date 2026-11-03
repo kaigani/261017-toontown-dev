@@ -1,0 +1,104 @@
+{
+  "strokes": 100000,
+  "repetitions": 5,
+  "os": "windows",
+  "arch": "x86_64",
+  "profile": "release",
+  "budgeted": [
+    {
+      "seconds": 1.3715257,
+      "openSeconds": 4.5823345,
+      "status": "Error",
+      "error": {
+        "code": "limit.exceeded"
+      },
+      "committed": false,
+      "unchangedOnRefusal": true
+    },
+    {
+      "seconds": 1.3762856,
+      "openSeconds": 4.5077049,
+      "status": "Error",
+      "error": {
+        "code": "limit.exceeded"
+      },
+      "committed": false,
+      "unchangedOnRefusal": true
+    },
+    {
+      "seconds": 1.3913476,
+      "openSeconds": 4.3833568,
+      "status": "Error",
+      "error": {
+        "code": "limit.exceeded"
+      },
+      "committed": false,
+      "unchangedOnRefusal": true
+    },
+    {
+      "seconds": 1.3426984,
+      "openSeconds": 4.4042259,
+      "status": "Error",
+      "error": {
+        "code": "limit.exceeded"
+      },
+      "committed": false,
+      "unchangedOnRefusal": true
+    },
+    {
+      "seconds": 1.2645126,
+      "openSeconds": 4.2876408999999995,
+      "status": "Error",
+      "error": {
+        "code": "limit.exceeded"
+      },
+      "committed": false,
+      "unchangedOnRefusal": true
+    }
+  ],
+  "budgetedP50Seconds": 1.3715257,
+  "unbudgeted": [
+    {
+      "seconds": 26.5071211,
+      "openSeconds": 4.1872318,
+      "status": "Ok",
+      "error": null,
+      "committed": true,
+      "unchangedOnRefusal": true
+    },
+    {
+      "seconds": 26.7213741,
+      "openSeconds": 4.3987765,
+      "status": "Ok",
+      "error": null,
+      "committed": true,
+      "unchangedOnRefusal": true
+    },
+    {
+      "seconds": 26.7819236,
+      "openSeconds": 4.4737856,
+      "status": "Ok",
+      "error": null,
+      "committed": true,
+      "unchangedOnRefusal": true
+    },
+    {
+      "seconds": 26.7892232,
+      "openSeconds": 4.4560300999999995,
+      "status": "Ok",
+      "error": null,
+      "committed": true,
+      "unchangedOnRefusal": true
+    },
+    {
+      "seconds": 26.7385784,
+      "openSeconds": 4.7916065,
+      "status": "Ok",
+      "error": null,
+      "committed": true,
+      "unchangedOnRefusal": true
+    }
+  ],
+  "unbudgetedP50Seconds": 26.7385784,
+  "unbudgetedAllCompleted": true
+}

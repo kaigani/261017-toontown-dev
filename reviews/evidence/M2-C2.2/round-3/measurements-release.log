@@ -1,0 +1,21 @@
+   Compiling tt-registry v0.0.1 (C:\Users\kaiga\.t3\worktrees\261017-toontown-dev\m2-vector-engine\crates\registry)
+   Compiling tt-vector v0.0.1 (C:\Users\kaiga\.t3\worktrees\261017-toontown-dev\m2-vector-engine\crates\vector)
+   Compiling tt-executor v0.0.1 (C:\Users\kaiga\.t3\worktrees\261017-toontown-dev\m2-vector-engine\crates\executor)
+    Finished `release` profile [optimized + debuginfo] target(s) in 30.86s
+     Running tests\c21_measurements.rs (target\release\deps\c21_measurements-c652d4e8c0c8e896.exe)
+
+running 1 test
+test hundred_thousand_stroke_edit_undo_redo_and_dry_run_are_measured has been running for over 60 seconds
+process live bytes: first 732637514 last 1426118436
+strokeAdd: 10044.1404 ms (p50), 31501.0 bytes retained (p50)
+undo: 6286.5735 ms (p50), 12976.0 bytes retained (p50)
+redo: 5410.1198 ms (p50), 13594.0 bytes retained (p50)
+strokeAddDryRun: 9498.8318 ms (p50), -35531.0 bytes retained (p50)
+strokeSet: 4822.2987 ms (p50), 5415.0 bytes retained (p50)
+patchProperty: 3346.0706999999998 ms (p50), 6112.0 bytes retained (p50)
+brushAdd: 4697.905699999999 ms (p50), 91799.0 bytes retained (p50)
+test hundred_thousand_stroke_edit_undo_redo_and_dry_run_are_measured ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 442.13s
+
+exit=0

@@ -1,0 +1,525 @@
+Diff in \\?\C:\Users\kaiga\work\review\m2-c21-r1\crates\executor\tests\c21_r1_contracts.rs:12:
+ fn object_setters_accept_common_cell_addressing() {
+     let h = fixture();
+     let cases = [
+-        ("draw.stroke.set",json!({"elementId":BOB,"frame":1,"strokeId":"st_01K742SG0R61SYK9GG0HGYVNBT","thickness":3})),
+-        ("draw.text.set",json!({"elementId":BOB,"frame":1,"textId":"nd_01K742SG0WFAQJFKAZKV4CD56C","text":"review"})),
+-        ("draw.textFormat.set",json!({"elementId":BOB,"frame":1,"textId":"nd_01K742SG0WFAQJFKAZKV4CD56C","bold":true})),
++        (
++            "draw.stroke.set",
++            json!({"elementId":BOB,"frame":1,"strokeId":"st_01K742SG0R61SYK9GG0HGYVNBT","thickness":3}),
++        ),
++        ("draw.text.set", json!({"elementId":BOB,"frame":1,"textId":"nd_01K742SG0WFAQJFKAZKV4CD56C","text":"review"})),
++        (
++            "draw.textFormat.set",
++            json!({"elementId":BOB,"frame":1,"textId":"nd_01K742SG0WFAQJFKAZKV4CD56C","bold":true}),
++        ),
+     ];
+     let mut failures = Vec::new();
+-    for (id,p) in cases {
+-        let e = run(&h,id,p);
+-        if e.status != Status::Ok { failures.push(format!("{id}: {:?}", e.error)); }
++    for (id, p) in cases {
++        let e = run(&h, id, p);
++        if e.status != Status::Ok {
++            failures.push(format!("{id}: {:?}", e.error));
++        }
+     }
+     assert!(failures.is_empty(), "02 13.1(4): {failures:?}");
+ }
+Diff in \\?\C:\Users\kaiga\work\review\m2-c21-r1\crates\executor\tests\c21_r1_contracts.rs:27:
+ #[test]
+ fn direct_outline_edit_discards_spine_when_pressure_also_changes() {
+     let h = fixture();
+-    let made = ok(&h,"draw.stroke.add",json!({"drawingId":D,"points":[{"x":0,"y":0},{"x":20,"y":0}]}));
++    let made = ok(&h, "draw.stroke.add", json!({"drawingId":D,"points":[{"x":0,"y":0},{"x":20,"y":0}]}));
+     let id = made["strokeIds"][0].as_str().unwrap();
+     let key = format!("{D}/{id}");
+-    ok(&h,"doc.object.patch",json!({"targets":[key],"ops":[
+-        {"op":"replace","path":"/points/0/0","value":1000},
+-        {"op":"replace","path":"/spine/pressure","value":[[0,0.2],[1,0.2]]}
+-    ]}));
+-    let stroke = get(&h,&key);
++    ok(
++        &h,
++        "doc.object.patch",
++        json!({"targets":[key],"ops":[
++            {"op":"replace","path":"/points/0/0","value":1000},
++            {"op":"replace","path":"/spine/pressure","value":[[0,0.2],[1,0.2]]}
++        ]}),
++    );
++    let stroke = get(&h, &key);
+     assert!(stroke["spine"].is_null(), "02 3.2: directly edited outline is authoritative: {stroke}");
+ }
+ 
+Diff in \\?\C:\Users\kaiga\work\review\m2-c21-r1\crates\executor\tests\c21_r1_contracts.rs:41:
+ #[test]
+ fn generic_patch_enforces_one_paragraph_per_line() {
+     let h = fixture();
+-    let made = ok(&h,"draw.text.add",json!({"drawingId":D,"position":{"x":0,"y":0},"text":"one\ntwo"}));
++    let made = ok(&h, "draw.text.add", json!({"drawingId":D,"position":{"x":0,"y":0},"text":"one\ntwo"}));
+     let id = made["textId"].as_str().unwrap();
+     let key = format!("{D}/{id}");
+-    let e = run(&h,"doc.object.patch",json!({"targets":[key],"ops":[{"op":"replace","path":"/paragraphs","value":[]}]}));
++    let e =
++        run(&h, "doc.object.patch", json!({"targets":[key],"ops":[{"op":"replace","path":"/paragraphs","value":[]}]}));
+     // Either reject malformed content atomically, or normalize it to valid paragraphs.
+     if e.status == Status::Ok {
+-        assert_eq!(get(&h,&key)["paragraphs"].as_array().unwrap().len(),2,"02 3.7 / 13.6");
++        assert_eq!(get(&h, &key)["paragraphs"].as_array().unwrap().len(), 2, "02 3.7 / 13.6");
+     }
+ }
+ 
+Diff in \\?\C:\Users\kaiga\work\review\m2-c21-r1\crates\executor\tests\c21_r1_contracts.rs:56:
+     let h = fixture();
+     let rx = h.subscribe();
+     let mut failures = Vec::new();
+-    for (id,p) in [
+-        ("draw.pivot.set",json!({"drawingId":D,"point":{"x":5,"y":6}})),
+-        ("edit.undo",json!({})),("edit.redo",json!({}))
++    for (id, p) in [
++        ("draw.pivot.set", json!({"drawingId":D,"point":{"x":5,"y":6}})),
++        ("edit.undo", json!({})),
++        ("edit.redo", json!({})),
+     ] {
+-        ok(&h,id,p);
+-        let events:Vec<_> = rx.try_iter().collect();
+-        if !events.iter().any(|e| e.name=="draw.drawing.changed" && e.payload["drawingId"]==D) {
+-            failures.push(format!("{id}: {:?}",events.iter().map(|e|&e.name).collect::<Vec<_>>()));
++        ok(&h, id, p);
++        let events: Vec<_> = rx.try_iter().collect();
++        if !events.iter().any(|e| e.name == "draw.drawing.changed" && e.payload["drawingId"] == D) {
++            failures.push(format!("{id}: {:?}", events.iter().map(|e| &e.name).collect::<Vec<_>>()));
+         }
+     }
+-    assert!(failures.is_empty(),"02 13.6 requires a drawing event on every content change: {failures:?}");
++    assert!(failures.is_empty(), "02 13.6 requires a drawing event on every content change: {failures:?}");
+ }
+ 
+ #[test]
+Diff in \\?\C:\Users\kaiga\work\review\m2-c21-r1\crates\executor\tests\c21_r1_contracts.rs:73:
+ fn edit_results_report_the_resolved_drawing() {
+     let h = fixture();
+-    let r = ok(&h,"draw.stroke.set",json!({"drawingId":D,"strokeId":"st_01K742SG0R61SYK9GG0HGYVNBT","thickness":3}));
+-    assert_eq!(r["drawingId"],D,"02 13.1(11): edit result includes drawingId and rev");
++    let r = ok(&h, "draw.stroke.set", json!({"drawingId":D,"strokeId":"st_01K742SG0R61SYK9GG0HGYVNBT","thickness":3}));
++    assert_eq!(r["drawingId"], D, "02 13.1(11): edit result includes drawingId and rev");
+ }
+ 
+ #[test]
+Diff in \\?\C:\Users\kaiga\work\review\m2-c21-r1\crates\executor\tests\c21_r1_contracts.rs:80:
+ fn decomposed_unicode_text_is_accepted_and_ranges_follow_normalization() {
+     let h = fixture();
+-    let created = run(&h,"draw.text.add",json!({"drawingId":D,"position":{"x":0,"y":0},"text":"e\u{301}"}));
+-    let base = ok(&h,"draw.text.add",json!({"drawingId":D,"position":{"x":0,"y":0},"text":"e"}));
+-    let inserted = run(&h,"draw.text.set",json!({"drawingId":D,"textId":base["textId"],"insert":{"at":1,"text":"\u{301}"}}));
+-    assert!(created.is_ok() && inserted.is_ok(),"02 3.7 / 10 1.1 NFC text must keep valid codepoint ranges; add {:?}, insert {:?}",created.error,inserted.error);
++    let created = run(&h, "draw.text.add", json!({"drawingId":D,"position":{"x":0,"y":0},"text":"e\u{301}"}));
++    let base = ok(&h, "draw.text.add", json!({"drawingId":D,"position":{"x":0,"y":0},"text":"e"}));
++    let inserted =
++        run(&h, "draw.text.set", json!({"drawingId":D,"textId":base["textId"],"insert":{"at":1,"text":"\u{301}"}}));
++    assert!(
++        created.is_ok() && inserted.is_ok(),
++        "02 3.7 / 10 1.1 NFC text must keep valid codepoint ranges; add {:?}, insert {:?}",
++        created.error,
++        inserted.error
++    );
+ }
+ 
+Diff in \\?\C:\Users\kaiga\work\review\m2-c21-r1\crates\executor\tests\c21_r1_retention.rs:2:
+ #![allow(clippy::unwrap_used, missing_docs, reason = "review tests")]
+ mod common;
+ use common::*;
+-use serde_json::{Value,json};
+-use tt_executor::{ExecutorHandle,ExecutorConfig};
+-use tt_model::{document::Document,entities::drawing::Drawing};
++use serde_json::{Value, json};
++use tt_executor::{ExecutorConfig, ExecutorHandle};
++use tt_model::{document::Document, entities::drawing::Drawing};
+ 
+ #[test]
+ fn eviction_by_object_budget_preserves_exact_diff_and_checkpoint() {
+Diff in \\?\C:\Users\kaiga\work\review\m2-c21-r1\crates\executor\tests\c21_r1_retention.rs:11:
+     let mut parts = tt_model::fixture::sample_parts(1).unwrap();
+-    let at = parts.drawings.iter().position(|d| d.name()=="1").unwrap();
++    let at = parts.drawings.iter().position(|d| d.name() == "1").unwrap();
+     let mut drawing = serde_json::to_value(&parts.drawings[at]).unwrap();
+     let template = drawing["nodes"][0]["strokes"][1].clone();
+-    drawing["nodes"][0]["strokes"] = Value::Array((0..2100).map(|i| {
+-        let mut s = template.clone(); s["id"]=json!(format!("budget{i}")); s
+-    }).collect());
+-    parts.drawings[at]=tt_model::object::from_json::<Drawing>(&drawing).unwrap();
+-    let id=parts.drawings[at].id().as_str().to_owned();
+-    let h=ExecutorHandle::spawn(ExecutorConfig {budget:std::time::Duration::from_secs(120)}).unwrap();
+-    assert!(h.open_document(Document::from_parts(parts).unwrap(),None,false).is_ok());
+-    let before=rev(&h);
+-    ok(&h,"checkpoint.create",json!({"name":"object-budget-base"}));
++    drawing["nodes"][0]["strokes"] = Value::Array(
++        (0..2100)
++            .map(|i| {
++                let mut s = template.clone();
++                s["id"] = json!(format!("budget{i}"));
++                s
++            })
++            .collect(),
++    );
++    parts.drawings[at] = tt_model::object::from_json::<Drawing>(&drawing).unwrap();
++    let id = parts.drawings[at].id().as_str().to_owned();
++    let h = ExecutorHandle::spawn(ExecutorConfig { budget: std::time::Duration::from_secs(120) }).unwrap();
++    assert!(h.open_document(Document::from_parts(parts).unwrap(), None, false).is_ok());
++    let before = rev(&h);
++    ok(&h, "checkpoint.create", json!({"name":"object-budget-base"}));
+     // 200 copies of >2100 objects exceed 400000 before the 256-record window.
+     for i in 1..=200 {
+-        ok(&h,"draw.pivot.set",json!({"drawingId":id,"point":{"x":i,"y":0}}));
++        ok(&h, "draw.pivot.set", json!({"drawingId":id,"point":{"x":i,"y":0}}));
+     }
+-    let by_rev=ok(&h,"doc.diff",json!({"sinceRev":before}));
+-    let by_cp=ok(&h,"doc.diff",json!({"sinceCheckpoint":"object-budget-base"}));
+-    assert_eq!(by_rev,by_cp,"budget-evicted snapshot reconstructed exactly");
+-    let early=ok(&h,"doc.diff",json!({"sinceRev":before,"untilRev":before+1}));
++    let by_rev = ok(&h, "doc.diff", json!({"sinceRev":before}));
++    let by_cp = ok(&h, "doc.diff", json!({"sinceCheckpoint":"object-budget-base"}));
++    assert_eq!(by_rev, by_cp, "budget-evicted snapshot reconstructed exactly");
++    let early = ok(&h, "doc.diff", json!({"sinceRev":before,"untilRev":before+1}));
+     assert!(early["changes"].to_string().contains("pivot"));
+-    ok(&h,"checkpoint.restore",json!({"name":"object-budget-base"}));
+-    assert_eq!(ok(&h,"draw.drawing.get",json!({"drawingId":id,"include":[]}))["pivot"],json!({"x":0.0,"y":0.0}));
++    ok(&h, "checkpoint.restore", json!({"name":"object-budget-base"}));
++    assert_eq!(ok(&h, "draw.drawing.get", json!({"drawingId":id,"include":[]}))["pivot"], json!({"x":0.0,"y":0.0}));
+ }
+ 
+Diff in \\?\C:\Users\kaiga\work\review\m2-c21-r1\crates\mcp\tests\c21_r1_surfaces.rs:1:
+ //! Independent C2.1 surface, persistence and malformed-content review checks.
+ #![allow(clippy::unwrap_used, missing_docs, reason = "review tests")]
+ mod support;
+-use serde_json::{Value,json};
++use serde_json::{Value, json};
+ use support::*;
+-use tt_executor::{Invocation,agents::Policy};
++use tt_executor::{Invocation, agents::Policy};
+ 
+ const D: &str = "dr_01K742SG0KKMCAP9X1E6Z5P4SW";
+ const D2: &str = "dr_01K742SG0M5J3BAJSW8241WA87";
+Diff in \\?\C:\Users\kaiga\work\review\m2-c21-r1\crates\mcp\tests\c21_r1_surfaces.rs:10:
+ 
+-fn ok(c: &mut Client,id: &str,p:Value)->Value {
+-    let e = c.run(id,p); assert_eq!(e["status"],"ok","{id}: {e}"); e["result"].clone()
++fn ok(c: &mut Client, id: &str, p: Value) -> Value {
++    let e = c.run(id, p);
++    assert_eq!(e["status"], "ok", "{id}: {e}");
++    e["result"].clone()
+ }
+-fn wait(c:&mut Client,r:&Value) {
+-    let job = ok(c,"job.wait",json!({"jobId":r["jobId"],"timeoutMs":60000}));
+-    assert_eq!(job["state"],"succeeded","{job}");
++fn wait(c: &mut Client, r: &Value) {
++    let job = ok(c, "job.wait", json!({"jobId":r["jobId"],"timeoutMs":60000}));
++    assert_eq!(job["state"], "succeeded", "{job}");
+ }
+ 
+ #[test]
+Diff in \\?\C:\Users\kaiga\work\review\m2-c21-r1\crates\mcp\tests\c21_r1_surfaces.rs:20:
+ fn typed_generic_batches_scripts_and_both_container_forms() {
+     let dir = tmp();
+     let h = executor(&dir.join("user"));
+-    assert!(h.open_document(tt_model::fixture::sample_document(1).unwrap(),None,false).is_ok());
+-    assert!(h.invoke(Invocation::user("agent.typedTools.set",json!({"enabled":true,"namespaces":["draw"]}))).is_ok());
+-    let mut options = opts(&dir); options.policy=Some(Policy::Autonomous);
+-    let (mut c,_) = Client::connect(&h,options.clone(),json!({}));
+-    let r = c.call("draw_stroke_add",json!({"drawingId":D,"kind":"pencil","points":[{"x":0,"y":0},{"x":100,"y":0}]}));
+-    assert_eq!(r["structuredContent"]["status"],"ok","{r}");
++    assert!(h.open_document(tt_model::fixture::sample_document(1).unwrap(), None, false).is_ok());
++    assert!(h.invoke(Invocation::user("agent.typedTools.set", json!({"enabled":true,"namespaces":["draw"]}))).is_ok());
++    let mut options = opts(&dir);
++    options.policy = Some(Policy::Autonomous);
++    let (mut c, _) = Client::connect(&h, options.clone(), json!({}));
++    let r = c.call("draw_stroke_add", json!({"drawingId":D,"kind":"pencil","points":[{"x":0,"y":0},{"x":100,"y":0}]}));
++    assert_eq!(r["structuredContent"]["status"], "ok", "{r}");
+     let stroke = r["structuredContent"]["result"]["strokeIds"][0].clone();
+-    let text = ok(&mut c,"draw.text.add",json!({"drawingId":D,"position":{"x":0,"y":0},"text":"AV é\nאבג مرحبا","width":40}));
+-    ok(&mut c,"draw.textFormat.set",json!({"drawingId":D,"textId":text["textId"],"start":1,"length":3,"bold":true}));
+-    let bitmap = ok(&mut c,"draw.drawing.get",json!({"drawingId":D2}))["nodes"][0].clone();
+-    ok(&mut c,"draw.content.add",json!({"drawingId":D,"content":{"nodes":[bitmap]}}));
+-    let group = ok(&mut c,"draw.group.create",json!({"drawingId":D,"ids":[text["textId"]]}));
+-    ok(&mut c,"draw.group.delete",json!({"drawingId":D,"groupIds":[group["groupId"]]}));
+-    let before = ok(&mut c,"draw.drawing.get",json!({"drawingId":D}));
+-    let bad = c.call("batch",json!({"label":"review rollback","atomic":true,"steps":[
+-        {"id":"draw.pivot.set","params":{"drawingId":D,"point":{"x":8,"y":9}}},
+-        {"id":"draw.stroke.set","params":{"drawingId":D,"strokeId":"missing","thickness":2}}
+-    ]}));
+-    assert_eq!(bad["structuredContent"]["status"],"error");
+-    assert_eq!(ok(&mut c,"draw.drawing.get",json!({"drawingId":D})),before);
+-    let partial = c.call("batch",json!({"label":"review partial","atomic":false,"steps":[
+-        {"id":"draw.pivot.set","params":{"drawingId":D,"point":{"x":8,"y":9}}},
+-        {"id":"draw.stroke.set","params":{"drawingId":D,"strokeId":"missing","thickness":2}}
+-    ]}));
+-    assert_eq!(partial["structuredContent"]["status"],"error");
+-    assert_eq!(ok(&mut c,"draw.drawing.get",json!({"drawingId":D}))["pivot"],json!({"x":8.0,"y":9.0}));
+-    let script = serde_json::from_value(json!({"label":"review script","atomic":false,"steps":[{"atomic":true,"label":"review group","steps":[
+-        {"id":"draw.stroke.set","params":{"drawingId":D,"strokeId":stroke,"thickness":4}},
+-        {"id":"draw.pivot.set","params":{"drawingId":D,"point":{"x":2,"y":3}}}
+-    ]}]})).unwrap();
+-    let out = tt_mcp::script::run(&h,&options,script,None).unwrap(); assert!(out.ok,"{:?}",out.envelope.error);
+-    for form in ["package","folder"] {
+-        let p = if form=="folder" {format!("{}/",path(&dir.join("RoundtripFolder.animpkg")))} else {path(&dir.join("Roundtrip.animpkg"))};
+-        let r = ok(&mut c,"project.saveAs",json!({"path":p})); wait(&mut c,&r);
+-        let expected = ok(&mut c,"draw.drawing.get",json!({"drawingId":D}));
+-        ok(&mut c,"project.close",json!({}));
+-        let r = ok(&mut c,"project.open",json!({"path":p})); wait(&mut c,&r);
+-        assert_eq!(ok(&mut c,"draw.drawing.get",json!({"drawingId":D})),expected,"{form}");
++    let text = ok(
++        &mut c,
++        "draw.text.add",
++        json!({"drawingId":D,"position":{"x":0,"y":0},"text":"AV é\nאבג مرحبا","width":40}),
++    );
++    ok(&mut c, "draw.textFormat.set", json!({"drawingId":D,"textId":text["textId"],"start":1,"length":3,"bold":true}));
++    let bitmap = ok(&mut c, "draw.drawing.get", json!({"drawingId":D2}))["nodes"][0].clone();
++    ok(&mut c, "draw.content.add", json!({"drawingId":D,"content":{"nodes":[bitmap]}}));
++    let group = ok(&mut c, "draw.group.create", json!({"drawingId":D,"ids":[text["textId"]]}));
++    ok(&mut c, "draw.group.delete", json!({"drawingId":D,"groupIds":[group["groupId"]]}));
++    let before = ok(&mut c, "draw.drawing.get", json!({"drawingId":D}));
++    let bad = c.call(
++        "batch",
++        json!({"label":"review rollback","atomic":true,"steps":[
++            {"id":"draw.pivot.set","params":{"drawingId":D,"point":{"x":8,"y":9}}},
++            {"id":"draw.stroke.set","params":{"drawingId":D,"strokeId":"missing","thickness":2}}
++        ]}),
++    );
++    assert_eq!(bad["structuredContent"]["status"], "error");
++    assert_eq!(ok(&mut c, "draw.drawing.get", json!({"drawingId":D})), before);
++    let partial = c.call(
++        "batch",
++        json!({"label":"review partial","atomic":false,"steps":[
++            {"id":"draw.pivot.set","params":{"drawingId":D,"point":{"x":8,"y":9}}},
++            {"id":"draw.stroke.set","params":{"drawingId":D,"strokeId":"missing","thickness":2}}
++        ]}),
++    );
++    assert_eq!(partial["structuredContent"]["status"], "error");
++    assert_eq!(ok(&mut c, "draw.drawing.get", json!({"drawingId":D}))["pivot"], json!({"x":8.0,"y":9.0}));
++    let script = serde_json::from_value(
++        json!({"label":"review script","atomic":false,"steps":[{"atomic":true,"label":"review group","steps":[
++            {"id":"draw.stroke.set","params":{"drawingId":D,"strokeId":stroke,"thickness":4}},
++            {"id":"draw.pivot.set","params":{"drawingId":D,"point":{"x":2,"y":3}}}
++        ]}]}),
++    )
++    .unwrap();
++    let out = tt_mcp::script::run(&h, &options, script, None).unwrap();
++    assert!(out.ok, "{:?}", out.envelope.error);
++    for form in ["package", "folder"] {
++        let p = if form == "folder" {
++            format!("{}/", path(&dir.join("RoundtripFolder.animpkg")))
++        } else {
++            path(&dir.join("Roundtrip.animpkg"))
++        };
++        let r = ok(&mut c, "project.saveAs", json!({"path":p}));
++        wait(&mut c, &r);
++        let expected = ok(&mut c, "draw.drawing.get", json!({"drawingId":D}));
++        ok(&mut c, "project.close", json!({}));
++        let r = ok(&mut c, "project.open", json!({"path":p}));
++        wait(&mut c, &r);
++        assert_eq!(ok(&mut c, "draw.drawing.get", json!({"drawingId":D})), expected, "{form}");
+     }
+     // Duplicate IDs and malformed recursive group shapes must fail without changing the document.
+-    let before = ok(&mut c,"draw.drawing.get",json!({"drawingId":D}));
+-    for nodes in [json!([{"type":"group","id":"g","children":[]},{"type":"group","id":"g","children":[]}]),
+-        json!([{"type":"group","id":"g","children":["g"]}])] {
+-        let e = c.run("draw.content.add",json!({"drawingId":D,"content":{"nodes":nodes}}));
+-        assert_eq!(e["status"],"error","{e}");
+-        assert_eq!(ok(&mut c,"draw.drawing.get",json!({"drawingId":D})),before);
++    let before = ok(&mut c, "draw.drawing.get", json!({"drawingId":D}));
++    for nodes in [
++        json!([{"type":"group","id":"g","children":[]},{"type":"group","id":"g","children":[]}]),
++        json!([{"type":"group","id":"g","children":["g"]}]),
++    ] {
++        let e = c.run("draw.content.add", json!({"drawingId":D,"content":{"nodes":nodes}}));
++        assert_eq!(e["status"], "error", "{e}");
++        assert_eq!(ok(&mut c, "draw.drawing.get", json!({"drawingId":D})), before);
+     }
+-    ok(&mut c,"project.close",json!({})); c.close().unwrap(); drop(h);
++    ok(&mut c, "project.close", json!({}));
++    c.close().unwrap();
++    drop(h);
+     std::fs::remove_dir_all(dir).unwrap();
+ }
+ 
+Diff in \\?\C:\Users\kaiga\work\review\m2-c21-r1\crates\vector\tests\c21_r1_geometry.rs:9:
+ 
+ fn distance(p: P, a: P, b: P) -> f64 {
+     let d = b - a;
+-    let t = if d.dot(d) == 0.0 { 0.0 } else { ((p-a).dot(d)/d.dot(d)).clamp(0.0,1.0) };
+-    p.dist(a+d*t)
++    let t = if d.dot(d) == 0.0 { 0.0 } else { ((p - a).dot(d) / d.dot(d)).clamp(0.0, 1.0) };
++    p.dist(a + d * t)
+ }
+ 
+ #[test]
+Diff in \\?\C:\Users\kaiga\work\review\m2-c21-r1\crates\vector\tests\c21_r1_geometry.rs:17:
+ fn fitted_curve_stays_within_tolerance_of_input_polyline() {
+-    let raw: Vec<Sample> = [(0.0,0.0),(100.0,50.0),(200.0,0.0)].into_iter()
+-        .map(|(x,y)| Sample { p:P::new(x,y), pressure:1.0 }).collect();
+-    let f = fit(&clean(&raw,"/points").unwrap(),0.0,false);
++    let raw: Vec<Sample> = [(0.0, 0.0), (100.0, 50.0), (200.0, 0.0)]
++        .into_iter()
++        .map(|(x, y)| Sample { p: P::new(x, y), pressure: 1.0 })
++        .collect();
++    let f = fit(&clean(&raw, "/points").unwrap(), 0.0, false);
+     let mut worst: f64 = 0.0;
+     for s in f.path.segments() {
+         for k in 0..=10000 {
+Diff in \\?\C:\Users\kaiga\work\review\m2-c21-r1\crates\vector\tests\c21_r1_geometry.rs:24:
+-            let p = s.eval(f64::from(k)/10000.0);
+-            let d = raw.windows(2).map(|w| distance(p,w[0].p,w[1].p)).fold(f64::INFINITY,f64::min);
++            let p = s.eval(f64::from(k) / 10000.0);
++            let d = raw.windows(2).map(|w| distance(p, w[0].p, w[1].p)).fold(f64::INFINITY, f64::min);
+             worst = worst.max(d);
+         }
+     }
+Diff in \\?\C:\Users\kaiga\work\review\m2-c21-r1\crates\vector\tests\c21_r1_geometry.rs:33:
+ fn contains(poly: &[P], p: P) -> bool {
+     let mut winding = 0;
+     for i in 0..poly.len() {
+-        let a = poly[i]; let b = poly[(i+1)%poly.len()];
+-        if a.y <= p.y && b.y > p.y && (b-a).cross(p-a)>0.0 { winding += 1; }
+-        if a.y > p.y && b.y <= p.y && (b-a).cross(p-a)<0.0 { winding -= 1; }
++        let a = poly[i];
++        let b = poly[(i + 1) % poly.len()];
++        if a.y <= p.y && b.y > p.y && (b - a).cross(p - a) > 0.0 {
++            winding += 1;
++        }
++        if a.y > p.y && b.y <= p.y && (b - a).cross(p - a) < 0.0 {
++            winding -= 1;
++        }
+     }
+     winding != 0
+ }
+Diff in \\?\C:\Users\kaiga\work\review\m2-c21-r1\crates\vector\tests\c21_r1_geometry.rs:42:
+ 
+ #[test]
+ fn brush_sweep_includes_pressure_peak_between_placements() {
+-    let spine = Path { anchors: vec![Anchor::corner(P::new(0.0,0.0)),Anchor::corner(P::new(100.0,0.0))], closed:false };
+-    let pen = BrushPen { tip:Tip::Round,min_size:0.0,max_size:100.0,tip_angle:0.0 };
+-    let out = outline(&spine,&[[0.0,0.0],[0.1,1.0],[0.2,0.0],[1.0,0.0]],&pen).unwrap();
++    let spine =
++        Path { anchors: vec![Anchor::corner(P::new(0.0, 0.0)), Anchor::corner(P::new(100.0, 0.0))], closed: false };
++    let pen = BrushPen { tip: Tip::Round, min_size: 0.0, max_size: 100.0, tip_angle: 0.0 };
++    let out = outline(&spine, &[[0.0, 0.0], [0.1, 1.0], [0.2, 0.0], [1.0, 0.0]], &pen).unwrap();
+     let poly = out.flatten(0.001);
+     // At t=.1 the exact swept tip is a radius-50 disk centred on (10,0).
+     // This probe is one whole du inside that disk, far beyond grid/fitting error.
+Diff in \\?\C:\Users\kaiga\work\review\m2-c21-r1\crates\vector\tests\c21_r1_geometry.rs:51:
+-    let probe = P::new(10.0,49.0);
+-    eprintln!("pressure peak outline bounds: {:?}",out.bounds());
+-    assert!(contains(&poly,probe), "02 3.4: swept tip at pressure knot must be included");
++    let probe = P::new(10.0, 49.0);
++    eprintln!("pressure peak outline bounds: {:?}", out.bounds());
++    assert!(contains(&poly, probe), "02 3.4: swept tip at pressure knot must be included");
+ }
+ 
+ #[test]
+Diff in \\?\C:\Users\kaiga\work\review\m2-c21-r1\crates\vector\tests\c21_r1_geometry.rs:57:
+ fn invalid_sample_values_are_rejected_before_fitting() {
+-    for x in [f64::NAN,f64::INFINITY,f64::NEG_INFINITY,1e100,10_000_001.0] {
+-        assert!(clean(&[Sample {p:P::new(x,0.0),pressure:1.0}],"/points").is_err());
++    for x in [f64::NAN, f64::INFINITY, f64::NEG_INFINITY, 1e100, 10_000_001.0] {
++        assert!(clean(&[Sample { p: P::new(x, 0.0), pressure: 1.0 }], "/points").is_err());
+     }
+ }
+ 
+Diff in \\?\C:\Users\kaiga\work\review\m2-c21-r1\crates\vector\tests\c21_r1_geometry.rs:63:
+ #[test]
+ #[ignore = "subprocess worker; the parent runs this with a bounded timeout"]
+ fn dense_input_worker() {
+-    let samples: Vec<Sample> = (0..100_000).map(|i| Sample {
+-        p:P::new(f64::from(i)*1e-9,0.0),pressure:1.0
+-    }).collect();
++    let samples: Vec<Sample> =
++        (0..100_000).map(|i| Sample { p: P::new(f64::from(i) * 1e-9, 0.0), pressure: 1.0 }).collect();
+     let start = std::time::Instant::now();
+-    let result = fit(&clean(&samples,"/points").unwrap(),3.0,true);
+-    eprintln!("100000 dense straight samples: {:?}, {} anchors",start.elapsed(),result.path.anchors.len());
+-    assert!(result.path.anchors.len()<=100_000);
++    let result = fit(&clean(&samples, "/points").unwrap(), 3.0, true);
++    eprintln!("100000 dense straight samples: {:?}, {} anchors", start.elapsed(), result.path.anchors.len());
++    assert!(result.path.anchors.len() <= 100_000);
+ }
+ 
+ #[test]
+Diff in \\?\C:\Users\kaiga\work\review\m2-c21-r1\crates\vector\tests\c21_r1_geometry.rs:76:
+ fn dense_100k_input_finishes_within_document_watchdog_budget() {
+-    use std::time::{Duration,Instant};
++    use std::time::{Duration, Instant};
+     let mut child = std::process::Command::new(std::env::current_exe().unwrap())
+-        .args(["--exact","dense_input_worker","--ignored","--nocapture"]).spawn().unwrap();
++        .args(["--exact", "dense_input_worker", "--ignored", "--nocapture"])
++        .spawn()
++        .unwrap();
+     let start = Instant::now();
+     loop {
+-        if let Some(status) = child.try_wait().unwrap() { assert!(status.success()); break; }
+-        if start.elapsed()>Duration::from_secs(30) {
+-            child.kill().unwrap(); child.wait().unwrap();
+-            assert!(start.elapsed()<=Duration::from_secs(30),"100000 distinct points on a .0001 du closed path exceeded 30 s; corners reach scans quadratically");
++        if let Some(status) = child.try_wait().unwrap() {
++            assert!(status.success());
++            break;
+         }
++        if start.elapsed() > Duration::from_secs(30) {
++            child.kill().unwrap();
++            child.wait().unwrap();
++            assert!(
++                start.elapsed() <= Duration::from_secs(30),
++                "100000 distinct points on a .0001 du closed path exceeded 30 s; corners reach scans quadratically"
++            );
++        }
+         std::thread::sleep(Duration::from_millis(20));
+     }
+ }
+Diff in \\?\C:\Users\kaiga\work\review\m2-c21-r1\crates\vector\tests\c21_r1_geometry.rs:90:
+ 
+ #[test]
+ fn looping_brush_preserves_hole_and_clean_swept_area() {
+-    let corners = [P::new(0.0,0.0),P::new(100.0,0.0),P::new(100.0,100.0),P::new(0.0,100.0)];
+-    let spine = Path { anchors:corners.iter().copied().map(Anchor::corner).collect(),closed:true };
+-    let pen = BrushPen {tip:Tip::Round,min_size:4.0,max_size:4.0,tip_angle:0.0};
+-    let out = outline(&spine,&[[0.0,1.0],[1.0,1.0]],&pen).unwrap();
++    let corners = [P::new(0.0, 0.0), P::new(100.0, 0.0), P::new(100.0, 100.0), P::new(0.0, 100.0)];
++    let spine = Path { anchors: corners.iter().copied().map(Anchor::corner).collect(), closed: true };
++    let pen = BrushPen { tip: Tip::Round, min_size: 4.0, max_size: 4.0, tip_angle: 0.0 };
++    let out = outline(&spine, &[[0.0, 1.0], [1.0, 1.0]], &pen).unwrap();
+     let poly = out.flatten(0.001);
+-    for x in -4..=104 { for y in -4..=104 {
+-        let p = P::new(f64::from(x),f64::from(y));
+-        let d = (0..4).map(|i|distance(p,corners[i],corners[(i+1)%4])).fold(f64::INFINITY,f64::min);
+-        if (d-2.0).abs()>0.3 { assert_eq!(contains(&poly,p),d<2.0,"swept-area mismatch at {p:?}, distance {d}"); }
+-    }}
++    for x in -4..=104 {
++        for y in -4..=104 {
++            let p = P::new(f64::from(x), f64::from(y));
++            let d = (0..4).map(|i| distance(p, corners[i], corners[(i + 1) % 4])).fold(f64::INFINITY, f64::min);
++            if (d - 2.0).abs() > 0.3 {
++                assert_eq!(contains(&poly, p), d < 2.0, "swept-area mismatch at {p:?}, distance {d}");
++            }
++        }
++    }
+ }
+ 
+ #[test]
+Diff in \\?\C:\Users\kaiga\work\review\m2-c21-r1\crates\vector\tests\c21_r1_geometry.rs:106:
+ fn text_edge_cases_are_finite_and_bounded() {
+-    use tt_vector::text::{Content,default_run,default_para,layout};
+-    for s in [String::new(),"AV To\nمرحبا e\u{301}\nאבג".into(),"W".repeat(100_000)] {
+-        let c = Content::new(&s,default_run(None),default_para());
+-        for width in [None,Some(1.0),Some(100.0)] {
+-            let l = layout(&c,width);
++    use tt_vector::text::{Content, default_para, default_run, layout};
++    for s in [String::new(), "AV To\nمرحبا e\u{301}\nאבג".into(), "W".repeat(100_000)] {
++        let c = Content::new(&s, default_run(None), default_para());
++        for width in [None, Some(1.0), Some(100.0)] {
++            let l = layout(&c, width);
+             assert!(l.width.is_finite() && l.height.is_finite());
+-            assert!(l.lines<=100_003);
++            assert!(l.lines <= 100_003);
+         }
+     }
+ }

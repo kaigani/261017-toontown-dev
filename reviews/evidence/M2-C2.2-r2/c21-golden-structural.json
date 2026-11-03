@@ -1,0 +1,44 @@
+[
+  {
+    "base": "648e22d",
+    "countsBeforeAfter": [
+      [
+        2,
+        48
+      ],
+      [
+        3,
+        52
+      ]
+    ],
+    "otherFieldsIdentical": true
+  },
+  {
+    "base": "fd5c530",
+    "countsBeforeAfter": [
+      [
+        2,
+        48
+      ],
+      [
+        3,
+        52
+      ]
+    ],
+    "otherFieldsIdentical": true
+  },
+  {
+    "base": "572da32",
+    "countsBeforeAfter": [
+      [
+        2,
+        48
+      ],
+      [
+        3,
+        52
+      ]
+    ],
+    "otherFieldsIdentical": true
+  }
+]

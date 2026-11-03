@@ -1,0 +1,30 @@
+[
+  {
+    "crate": "vector",
+    "summaries": 36,
+    "passed": 215,
+    "failed": 0,
+    "ignored": 9
+  },
+  {
+    "crate": "executor",
+    "summaries": 96,
+    "passed": 538,
+    "failed": 1,
+    "ignored": 7
+  },
+  {
+    "crate": "io",
+    "summaries": 6,
+    "passed": 8,
+    "failed": 0,
+    "ignored": 1
+  },
+  {
+    "crate": "mcp",
+    "summaries": 28,
+    "passed": 70,
+    "failed": 0,
+    "ignored": 3
+  }
+]

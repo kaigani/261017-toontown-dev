@@ -31,8 +31,10 @@ pub mod commands;
 mod cx;
 mod history;
 mod jobs;
+mod load_repair;
 mod maintenance;
 mod persistence;
+mod planar;
 mod rules;
 mod run;
 mod session;
@@ -120,6 +122,8 @@ enum Request {
     List(Origin, Sender<Vec<Value>>),
     /// Work posted by a job thread (installing a loaded project, finishing a save; C1.3).
     Run(Box<dyn FnOnce(&mut run::Core) + Send>),
+    /// A caller's request with its cancellation token, allocated before enqueueing (C23-R2-01).
+    Tagged(u64, Box<Request>),
     /// Background maintenance: autosave, heartbeats, external-change detection.
     Tick,
     /// Maintenance now (forcing autosave or not), answered after its events are delivered.
@@ -159,11 +163,21 @@ impl Poster {
 }
 
 /// Stops the document thread when the last handle is dropped.
-struct ShutdownGuard(Sender<Request>);
+struct ShutdownGuard(Sender<Request>, Mutex<Option<Receiver<()>>>);
+
+/// How long dropping the last handle waits for the document thread to release the project (its lock and files).
+const SHUTDOWN_WAIT: Duration = Duration::from_secs(10);
 
 impl Drop for ShutdownGuard {
     fn drop(&mut self) {
         let _ = self.0.send(Request::Shutdown);
+        // Deterministic shutdown: once the last handle is gone, the project's lock and files are released (a caller
+        // may remove the folder next). Bounded, so a stuck worker never blocks the dropper for long.
+        if let Ok(mut done) = self.1.lock()
+            && let Some(rx) = done.take()
+        {
+            let _ = rx.recv_timeout(SHUTDOWN_WAIT);
+        }
     }
 }
 
@@ -213,6 +227,8 @@ pub struct ExecutorHandle {
     jobs: Arc<JobTable>,
     subscribers: Arc<Mutex<Vec<Sender<Event>>>>,
     config: ExecutorConfig,
+    /// The document thread's watchdog cancellation state (C23-R1-07).
+    cancel: Arc<tt_vector::work::CancelState>,
     _guard: Arc<ShutdownGuard>,
 }
 
@@ -228,7 +244,7 @@ fn timeout(what: &str, budget: Duration) -> CommandError {
         format!("`{what}` did not answer within {} ms", budget.as_millis()),
         json!({ "commandId": what, "budgetMs": u64::try_from(budget.as_millis()).unwrap_or(u64::MAX) }),
     )
-    .hint("the document thread is busy; the call may still complete — read doc.state.get before retrying")
+    .hint("the call was cancelled: unless it had already committed, it changed nothing; read doc.state.get before retrying")
 }
 
 fn stopped() -> CommandError {
@@ -267,6 +283,8 @@ impl ExecutorHandle {
 
     fn spawn_full(options: ExecutorOptions, registry: &'static Registry) -> Result<Self, CommandError> {
         let ExecutorOptions { config, persist } = options;
+        // The system font list (text layout, missingFonts lint) is read once, off the document thread.
+        tt_vector::fonts::warm();
         let (tx, rx) = mpsc::channel::<Request>();
         let subscribers: Arc<Mutex<Vec<Sender<Event>>>> = Arc::new(Mutex::new(Vec::new()));
         let job_subs = subscribers.clone();
@@ -283,10 +301,16 @@ impl ExecutorHandle {
         maintenance::start(&mut session);
         let subs = subscribers.clone();
         let budget = config.budget;
+        let cancel = Arc::new(tt_vector::work::CancelState::default());
+        let worker_cancel = cancel.clone();
+        let (done_tx, done_rx) = mpsc::channel::<()>();
         let tick = persist.maintenance.tick;
         std::thread::Builder::new()
             .name("tt-document".to_owned())
-            .spawn(move || document_thread(run::Core::new(registry, session, budget), &rx, &subs))
+            .spawn(move || {
+                document_thread(run::Core::new(registry, session, budget), &rx, &subs, &worker_cancel);
+                let _ = done_tx.send(());
+            })
             .map_err(|e| CommandError::internal(format!("cannot start the document thread: {e}")))?;
         if !tick.is_zero() {
             let ticker = tx.clone();
@@ -302,8 +326,8 @@ impl ExecutorHandle {
                 })
                 .map_err(|e| CommandError::internal(format!("cannot start the maintenance thread: {e}")))?;
         }
-        let guard = Arc::new(ShutdownGuard(tx.clone()));
-        Ok(Self { tx, jobs, subscribers, config, _guard: guard })
+        let guard = Arc::new(ShutdownGuard(tx.clone(), Mutex::new(Some(done_rx))));
+        Ok(Self { tx, jobs, subscribers, config, cancel, _guard: guard })
     }
 
     /// Grants an agent session file-system roots (11 §6.2): paths given by that session must lie inside one of them
@@ -344,10 +368,17 @@ impl ExecutorHandle {
 
     fn call<T>(&self, what: &str, make: impl FnOnce(Sender<T>) -> Request) -> Result<T, CommandError> {
         let (reply, rx) = mpsc::channel();
-        self.tx.send(make(reply)).map_err(|_| stopped())?;
+        // The token travels with the request: a timeout cancels exactly this request, queued or running (C23-R2-01).
+        let token = self.cancel.token();
+        self.tx.send(Request::Tagged(token, Box::new(make(reply)))).map_err(|_| stopped())?;
         match rx.recv_timeout(self.config.budget) {
             Ok(v) => Ok(v),
-            Err(RecvTimeoutError::Timeout) => Err(timeout(what, self.config.budget)),
+            Err(RecvTimeoutError::Timeout) => {
+                // Queued: the worker drops it at dequeue. Running: it stops at its next work-account check and before
+                // any commit. Either way it never begins or commits after this answer (ADR-0015 history).
+                self.cancel.mark(token);
+                Err(timeout(what, self.config.budget))
+            }
             Err(RecvTimeoutError::Disconnected) => Err(stopped()),
         }
     }
@@ -512,11 +543,10 @@ impl ExecutorHandle {
             document_rev: env.document_rev,
             duration_ms: u64::try_from(took.as_millis()).unwrap_or(u64::MAX),
         };
-        let _ = self.call("agent.audit", |r| {
-            Request::Run(Box::new(move |core| {
-                let _ = r.send(core.audit(entry));
-            }))
-        });
+        // Queued behind the call it records, without waiting: the reply never blocks on a busy worker (C23-R1-07).
+        let _ = self.tx.send(Request::Run(Box::new(move |core| {
+            let _ = core.audit(entry);
+        })));
     }
 
     /// Opens a document as the project, as the user, refusing to discard unsaved changes of an open project
@@ -598,10 +628,27 @@ impl ExecutorHandle {
     }
 }
 
-fn document_thread(mut core: run::Core, rx: &Receiver<Request>, subscribers: &Mutex<Vec<Sender<Event>>>) {
+fn document_thread(
+    mut core: run::Core,
+    rx: &Receiver<Request>,
+    subscribers: &Mutex<Vec<Sender<Event>>>,
+    cancel: &Arc<tt_vector::work::CancelState>,
+) {
     // A call's events are broadcast before its reply is sent, so a subscriber has them when the caller has the result.
     let flush = |core: &mut run::Core| broadcast(subscribers, &core.take_events());
+    tt_vector::work::set_cancel_state(Some(cancel.clone()));
     while let Ok(req) = rx.recv() {
+        let (token, req) = match req {
+            Request::Tagged(t, r) => (t, *r),
+            r => (0, r),
+        };
+        // A request whose caller already timed out never begins (C23-R2-01).
+        if token != 0 && cancel.is_cancelled(token) {
+            cancel.forget(token);
+            continue;
+        }
+        cancel.current.store(token, std::sync::atomic::Ordering::Release);
+        let shutdown = matches!(req, Request::Shutdown);
         match req {
             Request::Invoke(inv, reply) => {
                 let env = core.invoke(&inv);
@@ -647,11 +694,20 @@ fn document_thread(mut core: run::Core, rx: &Receiver<Request>, subscribers: &Mu
                 flush(&mut core);
                 let _ = reply.send(timings);
             }
-            Request::Shutdown => break,
+            Request::Shutdown | Request::Tagged(..) => {}
+        }
+        cancel.current.store(0, std::sync::atomic::Ordering::Release);
+        if token != 0 {
+            cancel.forget(token);
+        }
+        if shutdown {
+            break;
         }
         flush(&mut core);
     }
     maintenance::stop(&mut core);
+    // The project (lock, recovery files) is released before the dropper is told the thread is done.
+    drop(core);
 }
 
 /// Delivers events to every live subscriber (dropping closed ones).
@@ -704,4 +760,23 @@ fn list(core: &mut run::Core, origin: Origin) -> Vec<Value> {
         *s = cx.into_session();
     }
     out
+}
+
+/// Measurement hooks (dev-only feature `test-hooks`; never in a product build): lift Flatten's work budget so the
+/// C22-T2 measurement can time a 100 000-stroke merge to completion (M2 C2.4).
+#[cfg(feature = "test-hooks")]
+pub mod hooks {
+    use std::sync::atomic::{AtomicU64, Ordering};
+
+    static MERGE_BUDGET: AtomicU64 = AtomicU64::new(0);
+
+    /// Flatten's work budget from now on (0: the product's).
+    pub fn set_merge_work_budget(units: u64) {
+        MERGE_BUDGET.store(units, Ordering::Release);
+    }
+
+    pub(crate) fn merge_work_budget() -> Option<u64> {
+        let b = MERGE_BUDGET.load(Ordering::Acquire);
+        (b > 0).then_some(b)
+    }
 }

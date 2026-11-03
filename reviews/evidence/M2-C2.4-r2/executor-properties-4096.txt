@@ -1,0 +1,27 @@
+{"argv": ["cargo", "test", "--release", "-p", "tt-executor", "--locked", "-j", "4", "--test", "c24_r2_topology", "--", "--nocapture"], "cwd": "C:\\Users\\kaiga\\work\\review\\m2-c24-r2", "env": {}, "startedAt": "2026-11-02T19:16:06.421005+00:00"}
+   Compiling tt-executor v0.0.1 (C:\Users\kaiga\work\review\m2-c24-r2\crates\executor)
+    Finished `release` profile [optimized + debuginfo] target(s) in 3.42s
+     Running tests\c24_r2_topology.rs (target\release\deps\c24_r2_topology-8355dc17b7c8dd93.exe)
+
+running 6 tests
+before=[19.077392578125], after=[19.077392578125], exact union=19.047619047619047
+original area assertion: 155.3125 -> 155.625
+
+thread 'edit38_original_area_preservation_assertion_remains_a_failure' (10876) panicked at crates\executor\tests\c24_r2_topology.rs:331:5:
+the cut keeps the zones' total area: 155.3125 vs 155.625
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+test shrunk_cutter_area_bound ... ok
+test edit38_original_area_preservation_assertion_remains_a_failure ... FAILED
+test transforms_with_determinant_plus_and_minus_one_keep_the_oracles_faces ... ok
+test the_cutter_splits_along_its_segment_like_the_oracle ... ok
+test vectorized_shapes_enclose_one_unpainted_zone_per_paper_component ... ok
+test flatten_of_disjoint_layers_has_the_faces_of_their_union ... ok
+
+failures:
+
+failures:
+    edit38_original_area_preservation_assertion_remains_a_failure
+
+test result: FAILED. 5 passed; 1 failed; 0 ignored; 0 measured; 0 filtered out; finished in 45.78s
+
+error: test failed, to rerun pass `-p tt-executor --test c24_r2_topology`

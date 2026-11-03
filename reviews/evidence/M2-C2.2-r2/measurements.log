@@ -1,0 +1,54 @@
+cargo :    Compiling windows-sys v0.61.2
+At line:2 char:138
++ ... t-case.log; cargo test --release -p tt-executor --test c21_measuremen ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (   Compiling windows-sys v0.61.2:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+   Compiling crc32fast v1.5.2
+   Compiling simd-adler32 v0.3.10
+   Compiling adler2 v2.0.1
+   Compiling target-tuple v1.0.2
+   Compiling winnow v1.0.4
+   Compiling syn v2.0.119
+   Compiling toml_datetime v1.1.2+spec-1.1.0
+   Compiling serde_spanned v1.1.2
+   Compiling toml_writer v1.1.3+spec-1.1.0
+   Compiling glob v0.3.4
+   Compiling stats_alloc v0.1.10
+   Compiling miniz_oxide v0.9.1
+   Compiling toml_parser v1.1.5+spec-1.1.0
+   Compiling winapi-util v0.1.11
+   Compiling tempfile v3.27.0
+   Compiling termcolor v1.4.1
+   Compiling rusty-fork v0.3.1
+   Compiling flate2 v1.1.10
+   Compiling proptest v1.12.0
+   Compiling toml v1.1.8+spec-1.1.0
+   Compiling strum_macros v0.28.0
+   Compiling tt-registry-macros v0.0.1 (C:\Users\kaiga\work\review\m2-c22-r2\crates\registry-macros)
+   Compiling trybuild v1.0.122
+   Compiling strum v0.28.0
+   Compiling jsonschema v0.59.0
+   Compiling tt-model v0.0.1 (C:\Users\kaiga\work\review\m2-c22-r2\crates\model)
+   Compiling tt-persist v0.0.1 (C:\Users\kaiga\work\review\m2-c22-r2\crates\persist)
+   Compiling tt-vector v0.0.1 (C:\Users\kaiga\work\review\m2-c22-r2\crates\vector)
+   Compiling tt-registry v0.0.1 (C:\Users\kaiga\work\review\m2-c22-r2\crates\registry)
+   Compiling tt-executor v0.0.1 (C:\Users\kaiga\work\review\m2-c22-r2\crates\executor)
+    Finished `release` profile [optimized + debuginfo] target(s) in 1m 01s
+     Running tests\c21_measurements.rs (target\release\deps\c21_measurements-512daf4503100e2b.exe)
+
+running 1 test
+test hundred_thousand_stroke_edit_undo_redo_and_dry_run_are_measured has been running for over 60 seconds
+process live bytes: first 732637493 last 1426118415
+strokeAdd: 10385.8398 ms (p50), 30616.0 bytes retained (p50)
+undo: 6119.8423999999995 ms (p50), 13038.0 bytes retained (p50)
+redo: 5393.056299999999 ms (p50), 10264.0 bytes retained (p50)
+strokeAddDryRun: 9125.4124 ms (p50), -45559.0 bytes retained (p50)
+strokeSet: 4734.3273 ms (p50), 5415.0 bytes retained (p50)
+patchProperty: 3305.4319 ms (p50), 6112.0 bytes retained (p50)
+brushAdd: 4629.7354 ms (p50), 91789.0 bytes retained (p50)
+test hundred_thousand_stroke_edit_undo_redo_and_dry_run_are_measured ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 438.38s
+

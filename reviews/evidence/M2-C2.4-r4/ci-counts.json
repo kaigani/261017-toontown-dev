@@ -1,0 +1,26 @@
+{
+  "check properties (windows-latest) / Seeded topology properties (256 cases each)": [
+    48,
+    0,
+    0,
+    0
+  ],
+  "review properties release (windows-latest) / Reviewer round-2 seed variants": [
+    87,
+    0,
+    0,
+    0
+  ],
+  "check (windows-latest) / Run cargo test --workspace --locked": [
+    1180,
+    0,
+    22,
+    148
+  ],
+  "check (windows-latest) / Desktop host with the M0 diagnostics feature (C0.4 gating) \u2014 clippy and tests": [
+    49,
+    0,
+    0,
+    0
+  ]
+}

@@ -137,9 +137,38 @@ fn persisted_activity_log_beside_the_project() {
     for i in 0..3 {
         c.call("set_properties", json!({ "targets": [scene], "props": { "meta": { "i": i } } }));
     }
+    // Each entry is queued on the document thread behind its call, without waiting (C23-R1-07): a later request is
+    // answered only after the queued entries are written (M2 C2.3 round 3, CI run 41369919298).
+    let read = tt_executor::Invocation {
+        command: "app.state.get".into(),
+        params: json!({}),
+        options: tt_executor::InvokeOptions::default(),
+        origin: tt_executor::Origin::User,
+    };
+    assert!(h.invoke(read).is_ok());
     let file = dir.join("agent-activity.jsonl");
     let text = std::fs::read_to_string(&file).unwrap_or_default();
     assert_eq!(text.lines().count(), 3, "{}: {text}", file.display());
+    // Content and order: the persisted lines are exactly the in-memory entries of those three calls (`app://activity`),
+    // in call order, each recording its own parameters and committed revision.
+    let persisted: Vec<Value> = text.lines().map(|l| serde_json::from_str(l).unwrap()).collect();
+    let log = entries(&mut c);
+    assert!(log.len() >= 3, "{log:#?}");
+    assert_eq!(persisted, log[log.len() - 3..].to_vec(), "the persisted entries are the in-memory ones, in order");
+    let mut rev = None;
+    for (i, e) in persisted.iter().enumerate() {
+        assert_eq!((e["tool"].as_str(), e["commandId"].as_str()), (Some("set_properties"), Some("doc.object.patch")));
+        assert_eq!(e["status"], "ok", "{e}");
+        assert_eq!(e["params"], json!({ "targets": [scene], "props": { "meta": { "i": i } } }), "{e}");
+        assert_eq!(e["changedCount"], 1, "{e}");
+        let r = e["documentRev"].as_u64().unwrap();
+        if let Some(prev) = rev {
+            assert_eq!(r, prev + 1, "one revision per call, in order: {e}");
+        }
+        rev = Some(r);
+    }
+    let seqs: Vec<u64> = persisted.iter().map(|e| e["seq"].as_u64().unwrap()).collect();
+    assert!(seqs.windows(2).all(|w| w[1] == w[0] + 1), "{seqs:?}");
     c.close().unwrap();
     let _ = std::fs::remove_dir_all(&dir);
 }

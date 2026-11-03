@@ -1,0 +1,16 @@
+[
+  {
+    "path": "reviews/evidence/M1-C1.3-r2/inspection-memory.json",
+    "sha256": "cf68973d1c801acc70b78e2796c68e40a4536ed2b80e0abf62cb565abe4af1bd",
+    "committedBlobSha256": "cf68973d1c801acc70b78e2796c68e40a4536ed2b80e0abf62cb565abe4af1bd",
+    "exactBlobBytesEqual": true,
+    "lineEndingNormalizedEqual": true
+  },
+  {
+    "path": "reviews/evidence/M1-C1.3-r3/open-latency.json",
+    "sha256": "48f2c6c9fa4b19cf4b13e3bbd40b65f49fa781ce213b167d7358470738570f29",
+    "committedBlobSha256": "48f2c6c9fa4b19cf4b13e3bbd40b65f49fa781ce213b167d7358470738570f29",
+    "exactBlobBytesEqual": true,
+    "lineEndingNormalizedEqual": true
+  }
+]

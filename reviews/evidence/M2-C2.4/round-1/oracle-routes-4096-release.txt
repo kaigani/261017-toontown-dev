@@ -1,0 +1,17 @@
+
+running 11 tests
+test affine_envelopes_match_the_oracle has been running for over 60 seconds
+test break_apart_leaves_the_line_layer_to_the_oracle_and_makes_one_group_per_glyph has been running for over 60 seconds
+test flatten_of_overlapping_layers_matches_the_oracle has been running for over 60 seconds
+test lines_to_brush_and_centre_line_keep_the_oracles_partition has been running for over 60 seconds
+test optimize_and_smooth_keep_the_oracles_partition has been running for over 60 seconds
+test point_moves_with_and_without_snapping_match_the_oracle has been running for over 60 seconds
+test region_erase_matches_the_oracle has been running for over 60 seconds
+test segment_cut_matches_the_oracle has been running for over 60 seconds
+test stroke_add_matches_the_oracle has been running for over 60 seconds
+test stroke_set_and_delete_match_the_oracle has been running for over 60 seconds
+test transforms_match_the_oracles_transformed_geometry has been running for over 60 seconds
+...........
+test result: ok. 11 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1434.07s
+
+exit 0

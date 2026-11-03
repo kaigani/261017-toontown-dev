@@ -1,0 +1,20 @@
+{
+  "vector": {
+    "summaries": 22,
+    "passed": 141,
+    "failed": 0,
+    "ignored": 8
+  },
+  "executor-final": {
+    "summaries": 55,
+    "passed": 375,
+    "failed": 0,
+    "ignored": 3
+  },
+  "mcp": {
+    "summaries": 27,
+    "passed": 69,
+    "failed": 0,
+    "ignored": 3
+  }
+}

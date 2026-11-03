@@ -1,0 +1,16 @@
+cargo :     Blocking waiting for file lock on build directory
+At line:2 char:1
++ cargo test -p tt-vector --test c21_r1_geometry looping_brush -- --noc ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (    Blocking wa...build directory:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+   Compiling tt-vector v0.0.1 (C:\Users\kaiga\work\review\m2-c21-r1\crates\vector)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 5.46s
+     Running tests\c21_r1_geometry.rs (target\debug\deps\c21_r1_geometry-e8135ee546d83350.exe)
+
+running 1 test
+test looping_brush_preserves_hole_and_clean_swept_area ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 6 filtered out; finished in 0.02s
+

@@ -1,0 +1,459 @@
+[
+  {
+    "case": "identityless numeric copies",
+    "strokeInput": {
+      "environment": {
+        "os": "windows",
+        "arch": "x86_64",
+        "profile": "release",
+        "startedAt": "2026-11-02T10:00:00Z",
+        "runId": "41486947308-1-windows"
+      },
+      "series": {
+        "strokeAdd.wallMs": {
+          "unit": "ms",
+          "samples": [
+            1000,
+            1000,
+            1000,
+            1000,
+            1000
+          ]
+        }
+      }
+    },
+    "flattenInput": {
+      "os": "windows",
+      "arch": "x86_64",
+      "profile": "release",
+      "runId": "41486947308-1-windows",
+      "startedAt": "2026-11-02T10:20:00Z",
+      "unbudgeted": [
+        {
+          "seconds": 0.9,
+          "status": "Ok",
+          "error": null,
+          "committed": true,
+          "unchangedOnRefusal": true,
+          "sampleId": 0
+        },
+        {
+          "seconds": 0.9,
+          "status": "Ok",
+          "error": null,
+          "committed": true,
+          "unchangedOnRefusal": true,
+          "sampleId": 1
+        },
+        {
+          "seconds": 0.9,
+          "status": "Ok",
+          "error": null,
+          "committed": true,
+          "unchangedOnRefusal": true,
+          "sampleId": 2
+        },
+        {
+          "seconds": 0.9,
+          "status": "Ok",
+          "error": null,
+          "committed": true,
+          "unchangedOnRefusal": true,
+          "sampleId": 3
+        },
+        {
+          "seconds": 0.9,
+          "status": "Ok",
+          "error": null,
+          "committed": true,
+          "unchangedOnRefusal": true,
+          "sampleId": 4
+        }
+      ],
+      "budgeted": [
+        {
+          "seconds": 0.5,
+          "status": "Error",
+          "error": {
+            "code": "limit.exceeded"
+          },
+          "committed": false,
+          "unchangedOnRefusal": true,
+          "sampleId": 0
+        },
+        {
+          "seconds": 0.5,
+          "status": "Error",
+          "error": {
+            "code": "limit.exceeded"
+          },
+          "committed": false,
+          "unchangedOnRefusal": true,
+          "sampleId": 1
+        },
+        {
+          "seconds": 0.5,
+          "status": "Error",
+          "error": {
+            "code": "limit.exceeded"
+          },
+          "committed": false,
+          "unchangedOnRefusal": true,
+          "sampleId": 2
+        },
+        {
+          "seconds": 0.5,
+          "status": "Error",
+          "error": {
+            "code": "limit.exceeded"
+          },
+          "committed": false,
+          "unchangedOnRefusal": true,
+          "sampleId": 3
+        },
+        {
+          "seconds": 0.5,
+          "status": "Error",
+          "error": {
+            "code": "limit.exceeded"
+          },
+          "committed": false,
+          "unchangedOnRefusal": true,
+          "sampleId": 4
+        }
+      ],
+      "unbudgetedAllCompleted": true
+    },
+    "exit": 0,
+    "receipt": {
+      "gate": "C22-T2: 100k Flatten completes within the same run's 100k strokeAdd p50 and under the 30 s watchdog",
+      "os": "windows",
+      "arch": "x86_64",
+      "runId": "41486947308-1-windows",
+      "runStartedAt": "2026-11-02T10:00:00Z",
+      "flattenStartedAt": "2026-11-02T10:20:00Z",
+      "percentileRule": "upper nearest rank, as scripts/analyse-measurements.py",
+      "strokeAddP50Seconds": 1.0,
+      "flattenUnbudgetedP50Seconds": 0.9,
+      "flattenUnbudgetedSeconds": [
+        0.9,
+        0.9,
+        0.9,
+        0.9,
+        0.9
+      ],
+      "flattenUnbudgetedAllCompleted": true,
+      "flattenBudgetedSeconds": [
+        0.5,
+        0.5,
+        0.5,
+        0.5,
+        0.5
+      ],
+      "flattenBudgetedOutcomes": [
+        {
+          "code": "limit.exceeded"
+        },
+        {
+          "code": "limit.exceeded"
+        },
+        {
+          "code": "limit.exceeded"
+        },
+        {
+          "code": "limit.exceeded"
+        },
+        {
+          "code": "limit.exceeded"
+        }
+      ],
+      "met": true,
+      "gapSeconds": 0.0,
+      "note": "C22-T2 and the interactive latency budget (R1-12) are the M11 C11.1 scale gate"
+    },
+    "stdout": "{\"gate\": \"C22-T2: 100k Flatten completes within the same run's 100k strokeAdd p50 and under the 30 s watchdog\", \"os\": \"windows\", \"arch\": \"x86_64\", \"runId\": \"41486947308-1-windows\", \"runStartedAt\": \"2026-11-02T10:00:00Z\", \"flattenStartedAt\": \"2026-11-02T10:20:00Z\", \"percentileRule\": \"upper nearest rank, as scripts/analyse-measurements.py\", \"strokeAddP50Seconds\": 1.0, \"flattenUnbudgetedP50Seconds\": 0.9, \"flattenUnbudgetedSeconds\": [0.9, 0.9, 0.9, 0.9, 0.9], \"flattenUnbudgetedAllCompleted\": true, \"flattenBudgetedSeconds\": [0.5, 0.5, 0.5, 0.5, 0.5], \"flattenBudgetedOutcomes\": [{\"code\": \"limit.exceeded\"}, {\"code\": \"limit.exceeded\"}, {\"code\": \"limit.exceeded\"}, {\"code\": \"limit.exceeded\"}, {\"code\": \"limit.exceeded\"}], \"met\": true, \"gapSeconds\": 0.0, \"note\": \"C22-T2 and the interactive latency budget (R1-12) are the M11 C11.1 scale gate\"}\n"
+  },
+  {
+    "case": "contradictory unit",
+    "strokeInput": {
+      "environment": {
+        "os": "windows",
+        "arch": "x86_64",
+        "profile": "release",
+        "startedAt": "2026-11-02T10:00:00Z",
+        "runId": "41486947308-1-windows"
+      },
+      "series": {
+        "strokeAdd.wallMs": {
+          "unit": "s",
+          "samples": [
+            {
+              "tMs": 0,
+              "value": 1000.0
+            },
+            {
+              "tMs": 1,
+              "value": 1001.0
+            },
+            {
+              "tMs": 2,
+              "value": 1002.0
+            },
+            {
+              "tMs": 3,
+              "value": 1003.0
+            },
+            {
+              "tMs": 4,
+              "value": 1004.0
+            },
+            {
+              "tMs": 5,
+              "value": 1005.0
+            }
+          ]
+        }
+      }
+    },
+    "flattenInput": {
+      "os": "windows",
+      "arch": "x86_64",
+      "profile": "release",
+      "runId": "41486947308-1-windows",
+      "startedAt": "2026-11-02T10:20:00Z",
+      "unbudgeted": [
+        {
+          "seconds": 0.9,
+          "status": "Ok",
+          "error": null,
+          "committed": true,
+          "unchangedOnRefusal": true,
+          "sampleId": 0
+        },
+        {
+          "seconds": 0.9,
+          "status": "Ok",
+          "error": null,
+          "committed": true,
+          "unchangedOnRefusal": true,
+          "sampleId": 1
+        },
+        {
+          "seconds": 0.9,
+          "status": "Ok",
+          "error": null,
+          "committed": true,
+          "unchangedOnRefusal": true,
+          "sampleId": 2
+        },
+        {
+          "seconds": 0.9,
+          "status": "Ok",
+          "error": null,
+          "committed": true,
+          "unchangedOnRefusal": true,
+          "sampleId": 3
+        },
+        {
+          "seconds": 0.9,
+          "status": "Ok",
+          "error": null,
+          "committed": true,
+          "unchangedOnRefusal": true,
+          "sampleId": 4
+        }
+      ],
+      "budgeted": [
+        {
+          "seconds": 0.5,
+          "status": "Error",
+          "error": {
+            "code": "limit.exceeded"
+          },
+          "committed": false,
+          "unchangedOnRefusal": true,
+          "sampleId": 0
+        },
+        {
+          "seconds": 0.5,
+          "status": "Error",
+          "error": {
+            "code": "limit.exceeded"
+          },
+          "committed": false,
+          "unchangedOnRefusal": true,
+          "sampleId": 1
+        },
+        {
+          "seconds": 0.5,
+          "status": "Error",
+          "error": {
+            "code": "limit.exceeded"
+          },
+          "committed": false,
+          "unchangedOnRefusal": true,
+          "sampleId": 2
+        },
+        {
+          "seconds": 0.5,
+          "status": "Error",
+          "error": {
+            "code": "limit.exceeded"
+          },
+          "committed": false,
+          "unchangedOnRefusal": true,
+          "sampleId": 3
+        },
+        {
+          "seconds": 0.5,
+          "status": "Error",
+          "error": {
+            "code": "limit.exceeded"
+          },
+          "committed": false,
+          "unchangedOnRefusal": true,
+          "sampleId": 4
+        }
+      ],
+      "unbudgetedAllCompleted": true
+    },
+    "exit": 0,
+    "receipt": {
+      "gate": "C22-T2: 100k Flatten completes within the same run's 100k strokeAdd p50 and under the 30 s watchdog",
+      "os": "windows",
+      "arch": "x86_64",
+      "runId": "41486947308-1-windows",
+      "runStartedAt": "2026-11-02T10:00:00Z",
+      "flattenStartedAt": "2026-11-02T10:20:00Z",
+      "percentileRule": "upper nearest rank, as scripts/analyse-measurements.py",
+      "strokeAddP50Seconds": 1.003,
+      "flattenUnbudgetedP50Seconds": 0.9,
+      "flattenUnbudgetedSeconds": [
+        0.9,
+        0.9,
+        0.9,
+        0.9,
+        0.9
+      ],
+      "flattenUnbudgetedAllCompleted": true,
+      "flattenBudgetedSeconds": [
+        0.5,
+        0.5,
+        0.5,
+        0.5,
+        0.5
+      ],
+      "flattenBudgetedOutcomes": [
+        {
+          "code": "limit.exceeded"
+        },
+        {
+          "code": "limit.exceeded"
+        },
+        {
+          "code": "limit.exceeded"
+        },
+        {
+          "code": "limit.exceeded"
+        },
+        {
+          "code": "limit.exceeded"
+        }
+      ],
+      "met": true,
+      "gapSeconds": 0.0,
+      "note": "C22-T2 and the interactive latency budget (R1-12) are the M11 C11.1 scale gate"
+    },
+    "stdout": "{\"gate\": \"C22-T2: 100k Flatten completes within the same run's 100k strokeAdd p50 and under the 30 s watchdog\", \"os\": \"windows\", \"arch\": \"x86_64\", \"runId\": \"41486947308-1-windows\", \"runStartedAt\": \"2026-11-02T10:00:00Z\", \"flattenStartedAt\": \"2026-11-02T10:20:00Z\", \"percentileRule\": \"upper nearest rank, as scripts/analyse-measurements.py\", \"strokeAddP50Seconds\": 1.003, \"flattenUnbudgetedP50Seconds\": 0.9, \"flattenUnbudgetedSeconds\": [0.9, 0.9, 0.9, 0.9, 0.9], \"flattenUnbudgetedAllCompleted\": true, \"flattenBudgetedSeconds\": [0.5, 0.5, 0.5, 0.5, 0.5], \"flattenBudgetedOutcomes\": [{\"code\": \"limit.exceeded\"}, {\"code\": \"limit.exceeded\"}, {\"code\": \"limit.exceeded\"}, {\"code\": \"limit.exceeded\"}, {\"code\": \"limit.exceeded\"}], \"met\": true, \"gapSeconds\": 0.0, \"note\": \"C22-T2 and the interactive latency budget (R1-12) are the M11 C11.1 scale gate\"}\n"
+  },
+  {
+    "case": "duplicate golden IDs",
+    "oldInput": [
+      {
+        "id": "same",
+        "type": "stroke",
+        "points": [
+          [
+            1,
+            2,
+            0,
+            0,
+            0,
+            0
+          ]
+        ]
+      },
+      {
+        "id": "same",
+        "type": "stroke",
+        "points": [
+          [
+            9,
+            9,
+            0,
+            0,
+            0,
+            0
+          ]
+        ]
+      }
+    ],
+    "newInput": [
+      {
+        "id": "same",
+        "type": "stroke",
+        "points": [
+          [
+            100,
+            2,
+            0,
+            0,
+            0,
+            0
+          ]
+        ]
+      },
+      {
+        "id": "same",
+        "type": "stroke",
+        "points": [
+          [
+            9,
+            9,
+            0,
+            0,
+            0,
+            0
+          ]
+        ]
+      }
+    ],
+    "exit": 0,
+    "receipt": {
+      "old": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\c24-r3-golden-receipt-0vejcao7\\old.json",
+      "new": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\c24-r3-golden-receipt-0vejcao7\\new.json",
+      "pieces": {
+        "added": 0,
+        "removed": 0,
+        "moved": 0,
+        "resplit": 0
+      },
+      "pieceDetails": {
+        "added": [],
+        "removed": [],
+        "moved": [],
+        "resplit": []
+      },
+      "correspondingAnchorsMoved": 0,
+      "maxAnchorDisplacementDu": 0.0,
+      "largestAnchorDisplacements": [],
+      "reroutedAnchors": [],
+      "handleRowsChanged": 0,
+      "arrayEdits": [],
+      "leafChanges": 0,
+      "leafChangeDetails": []
+    },
+    "stdout": "{\"pieces\": {\"added\": 0, \"removed\": 0, \"moved\": 0, \"resplit\": 0}, \"correspondingAnchorsMoved\": 0, \"maxAnchorDisplacementDu\": 0.0, \"handleRowsChanged\": 0, \"leafChanges\": 0, \"rerouted\": 0}\n",
+    "stderr": ""
+  }
+]

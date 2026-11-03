@@ -1,0 +1,430 @@
+{
+  "before": [
+    {
+      "id": "st_01K742SG0QD1F2HFZSX8R4V7WP",
+      "type": "stroke",
+      "rev": 1,
+      "kind": "brush",
+      "closed": true,
+      "points": [
+        [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          10.5,
+          0.0
+        ],
+        [
+          100.0,
+          0.0,
+          -10.0,
+          0.0,
+          0.0,
+          10.0
+        ],
+        [
+          100.0,
+          100.0,
+          0.0,
+          -10.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          100.0,
+          0.0,
+          0.0,
+          0.0,
+          -10.0
+        ]
+      ],
+      "colourId": "col_01K742SG059XGSNZ6M9MACZ2ZY",
+      "fillMatrix": null,
+      "lineStyle": null,
+      "spine": {
+        "points": [
+          [
+            10.0,
+            50.0,
+            0.0,
+            0.0,
+            20.0,
+            0.0
+          ],
+          [
+            90.0,
+            50.0,
+            -20.0,
+            0.0,
+            0.0,
+            0.0
+          ]
+        ],
+        "pressure": [
+          [
+            0.0,
+            0.2
+          ],
+          [
+            0.5,
+            1.0
+          ],
+          [
+            1.0,
+            0.4
+          ]
+        ],
+        "pen": {
+          "penId": null,
+          "tip": "round",
+          "minSize": 0.5,
+          "maxSize": 2.0
+        }
+      },
+      "sides": {
+        "left": {
+          "colourId": "col_01K742SG059XGSNZ6M9MACZ2ZY",
+          "matrix": null
+        },
+        "right": null
+      }
+    },
+    {
+      "id": "st_01K7JJN800J6GZ68MHS01HNTDM",
+      "type": "stroke",
+      "rev": 2,
+      "kind": "pencil",
+      "closed": false,
+      "points": [
+        [
+          -33.55797876726388,
+          -60.92279653395692,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          9.100622614629126,
+          0.0,
+          -21.272084349694634,
+          -30.37968486326652,
+          0.0,
+          0.0
+        ]
+      ],
+      "colourId": "col_01K742SG09H7QE4RRR6XSYYS88",
+      "fillMatrix": null,
+      "lineStyle": {
+        "thickness": 1.5,
+        "lineType": "solid"
+      },
+      "spine": null,
+      "sides": {
+        "left": null,
+        "right": null
+      }
+    },
+    {
+      "id": "st_01K7JJN801R8A796ZFD2MC9VCK",
+      "type": "stroke",
+      "rev": 2,
+      "kind": "pencil",
+      "closed": false,
+      "points": [
+        [
+          9.100622614629126,
+          0.0,
+          0.0,
+          0.0,
+          19.177096703698634,
+          27.387732432487983
+        ],
+        [
+          47.55797876726388,
+          54.92279653395692,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ]
+      ],
+      "colourId": "col_01K742SG09H7QE4RRR6XSYYS88",
+      "fillMatrix": null,
+      "lineStyle": {
+        "thickness": 1.5,
+        "lineType": "solid"
+      },
+      "spine": null,
+      "sides": {
+        "left": null,
+        "right": null
+      }
+    },
+    {
+      "id": "st_01K742SG0S0NT23BWCZN64SFQ5",
+      "type": "stroke",
+      "rev": 1,
+      "kind": "invisible",
+      "closed": false,
+      "points": [
+        [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          100.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ]
+      ],
+      "colourId": null,
+      "fillMatrix": null,
+      "lineStyle": null,
+      "spine": null,
+      "sides": {
+        "left": {
+          "colourId": "col_01K742SG06BQ08FCT1TT8DF8MA",
+          "matrix": [
+            1,
+            0,
+            0,
+            1,
+            0,
+            0
+          ]
+        },
+        "right": {
+          "colourId": null,
+          "matrix": null
+        }
+      },
+      "meta": {
+        "note": "closes the sky zone"
+      }
+    }
+  ],
+  "after": [
+    {
+      "id": "st_01K742SG0QD1F2HFZSX8R4V7WP",
+      "type": "stroke",
+      "rev": 1,
+      "kind": "brush",
+      "closed": true,
+      "points": [
+        [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          10.5,
+          0.0
+        ],
+        [
+          100.0,
+          0.0,
+          -10.0,
+          0.0,
+          0.0,
+          10.0
+        ],
+        [
+          100.0,
+          100.0,
+          0.0,
+          -10.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          100.0,
+          0.0,
+          0.0,
+          0.0,
+          -10.0
+        ]
+      ],
+      "colourId": "col_01K742SG059XGSNZ6M9MACZ2ZY",
+      "fillMatrix": null,
+      "lineStyle": null,
+      "spine": {
+        "points": [
+          [
+            10.0,
+            50.0,
+            0.0,
+            0.0,
+            20.0,
+            0.0
+          ],
+          [
+            90.0,
+            50.0,
+            -20.0,
+            0.0,
+            0.0,
+            0.0
+          ]
+        ],
+        "pressure": [
+          [
+            0.0,
+            0.2
+          ],
+          [
+            0.5,
+            1.0
+          ],
+          [
+            1.0,
+            0.4
+          ]
+        ],
+        "pen": {
+          "penId": null,
+          "tip": "round",
+          "minSize": 0.5,
+          "maxSize": 2.0
+        }
+      },
+      "sides": {
+        "left": {
+          "colourId": "col_01K742SG059XGSNZ6M9MACZ2ZY",
+          "matrix": null
+        },
+        "right": null
+      }
+    },
+    {
+      "id": "st_01K7JJN800J6GZ68MHS01HNTDM",
+      "type": "stroke",
+      "rev": 2,
+      "kind": "pencil",
+      "closed": false,
+      "points": [
+        [
+          -33.55797876726388,
+          -60.92279653395692,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          9.100622614629126,
+          0.0,
+          -21.272084349694634,
+          -30.37968486326652,
+          0.0,
+          0.0
+        ]
+      ],
+      "colourId": "col_01K742SG09H7QE4RRR6XSYYS88",
+      "fillMatrix": null,
+      "lineStyle": {
+        "thickness": 1.5,
+        "lineType": "solid"
+      },
+      "spine": null,
+      "sides": {
+        "left": null,
+        "right": null
+      }
+    },
+    {
+      "id": "st_01K7JJN801R8A796ZFD2MC9VCK",
+      "type": "stroke",
+      "rev": 2,
+      "kind": "pencil",
+      "closed": false,
+      "points": [
+        [
+          9.100622614629126,
+          0.0,
+          0.0,
+          0.0,
+          19.177096703698634,
+          27.387732432487983
+        ],
+        [
+          47.55797876726388,
+          54.92279653395692,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ]
+      ],
+      "colourId": "col_01K742SG09H7QE4RRR6XSYYS88",
+      "fillMatrix": null,
+      "lineStyle": {
+        "thickness": 1.5,
+        "lineType": "solid"
+      },
+      "spine": null,
+      "sides": {
+        "left": null,
+        "right": null
+      }
+    },
+    {
+      "id": "st_01K742SG0S0NT23BWCZN64SFQ5",
+      "type": "stroke",
+      "rev": 1,
+      "kind": "invisible",
+      "closed": false,
+      "points": [
+        [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          100.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ]
+      ],
+      "colourId": null,
+      "fillMatrix": null,
+      "lineStyle": null,
+      "spine": null,
+      "sides": {
+        "left": {
+          "colourId": "col_01K742SG06BQ08FCT1TT8DF8MA",
+          "matrix": [
+            1.0,
+            0.0,
+            0.0,
+            1.0,
+            0.0,
+            0.0
+          ]
+        },
+        "right": {
+          "colourId": null,
+          "matrix": null
+        }
+      },
+      "meta": {
+        "note": "closes the sky zone"
+      }
+    }
+  ]
+}

@@ -1,0 +1,52 @@
+cargo :    Compiling once_cell v1.21.4
+At line:2 char:1
++ cargo test -p tt-mcp --test c21_replay --test c21_worked_examples --t ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (   Compiling once_cell v1.21.4:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+   Compiling getrandom v0.4.3
+   Compiling ahash v0.8.12
+   Compiling read-fonts v0.41.0
+   Compiling jsonschema-value v0.59.0
+   Compiling referencing v0.59.0
+   Compiling jsonschema v0.59.0
+   Compiling skrifa v0.44.0
+   Compiling tt-model v0.0.1 (C:\Users\kaiga\work\review\m2-c21-r1\crates\model)
+   Compiling tt-vector v0.0.1 (C:\Users\kaiga\work\review\m2-c21-r1\crates\vector)
+   Compiling tt-anim v0.0.1 (C:\Users\kaiga\work\review\m2-c21-r1\crates\anim)
+   Compiling tt-colour v0.0.1 (C:\Users\kaiga\work\review\m2-c21-r1\crates\colour)
+   Compiling tt-persist v0.0.1 (C:\Users\kaiga\work\review\m2-c21-r1\crates\persist)
+   Compiling tt-audio v0.0.1 (C:\Users\kaiga\work\review\m2-c21-r1\crates\audio)
+   Compiling tt-registry v0.0.1 (C:\Users\kaiga\work\review\m2-c21-r1\crates\registry)
+   Compiling tt-fx v0.0.1 (C:\Users\kaiga\work\review\m2-c21-r1\crates\fx)
+   Compiling tt-lipsync v0.0.1 (C:\Users\kaiga\work\review\m2-c21-r1\crates\lipsync)
+   Compiling tt-render v0.0.1 (C:\Users\kaiga\work\review\m2-c21-r1\crates\render)
+   Compiling tt-io v0.0.1 (C:\Users\kaiga\work\review\m2-c21-r1\crates\io)
+   Compiling tt-executor v0.0.1 (C:\Users\kaiga\work\review\m2-c21-r1\crates\executor)
+   Compiling tt-engine v0.0.1 (C:\Users\kaiga\work\review\m2-c21-r1\crates\engine)
+   Compiling tt-mcp v0.0.1 (C:\Users\kaiga\work\review\m2-c21-r1\crates\mcp)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 31.81s
+     Running tests\c14_tickets.rs (target\debug\deps\c14_tickets-b2f99da8b2c26697.exe)
+
+running 2 tests
+test every_result_lists_its_effective_params ... ignored, C14-R1-16: result.effectiveParams changes the result contract of every command (719 result schemas, the generated IPC types) and its defaults include the GUI's last-used values, which arrive with the M4 dialogs; owner: builder, M4 C4.1 (traceability row 11 §8)
+test namespace_docs_carry_a_worked_example_with_executed_results ... ok
+
+test result: ok. 1 passed; 0 failed; 1 ignored; 0 measured; 0 filtered out; finished in 0.08s
+
+     Running tests\c21_replay.rs (target\debug\deps\c21_replay-175c4099da2d6dee.exe)
+
+running 1 test
+test drawing_edits_replay_byte_for_byte_through_script_mode ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.33s
+
+     Running tests\c21_worked_examples.rs (target\debug\deps\c21_worked_examples-1d035109f488c207.exe)
+
+running 2 tests
+test namespace_docs_render_the_retained_worked_examples ... ok
+test every_kernel_namespace_has_a_retained_worked_example ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.46s
+

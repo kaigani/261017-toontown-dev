@@ -1,0 +1,11 @@
+{
+  "range": "1df274b..871e8bd",
+  "paths": [
+    "crates/executor/tests/golden/c21-determinism.json",
+    "crates/executor/tests/golden/c22-determinism.json",
+    "crates/executor/tests/golden/c24-symmetry.json",
+    "crates/executor/tests/golden/c24-text-layout.json",
+    "crates/registry/src/example-results.json"
+  ],
+  "noRound2GoldenDelta": true
+}

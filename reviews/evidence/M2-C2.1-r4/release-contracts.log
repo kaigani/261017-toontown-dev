@@ -1,0 +1,60 @@
+   Compiling typenum v1.20.1
+   Compiling windows-sys v0.61.2
+   Compiling crc32fast v1.5.2
+   Compiling simd-adler32 v0.3.10
+   Compiling adler2 v2.0.1
+   Compiling const-oid v0.10.2
+   Compiling winnow v1.0.4
+   Compiling target-tuple v1.0.2
+   Compiling syn v2.0.119
+   Compiling serde_spanned v1.1.2
+   Compiling toml_datetime v1.1.2+spec-1.1.0
+   Compiling toml_writer v1.1.3+spec-1.1.0
+   Compiling glob v0.3.4
+   Compiling stats_alloc v0.1.10
+   Compiling miniz_oxide v0.9.1
+   Compiling toml_parser v1.1.5+spec-1.1.0
+   Compiling flate2 v1.1.10
+   Compiling hybrid-array v0.4.15
+   Compiling tempfile v3.27.0
+   Compiling winapi-util v0.1.11
+   Compiling termcolor v1.4.1
+   Compiling rusty-fork v0.3.1
+   Compiling toml v1.1.8+spec-1.1.0
+   Compiling block-buffer v0.12.1
+   Compiling crypto-common v0.2.2
+   Compiling proptest v1.12.0
+   Compiling digest v0.11.3
+   Compiling sha2 v0.11.1
+   Compiling trybuild v1.0.122
+   Compiling strum_macros v0.28.0
+   Compiling tt-registry-macros v0.0.1 (C:\Users\kaiga\work\review\m2-c21-r4\crates\registry-macros)
+   Compiling strum v0.28.0
+   Compiling jsonschema v0.59.0
+   Compiling tt-model v0.0.1 (C:\Users\kaiga\work\review\m2-c21-r4\crates\model)
+   Compiling tt-vector v0.0.1 (C:\Users\kaiga\work\review\m2-c21-r4\crates\vector)
+   Compiling tt-persist v0.0.1 (C:\Users\kaiga\work\review\m2-c21-r4\crates\persist)
+   Compiling tt-registry v0.0.1 (C:\Users\kaiga\work\review\m2-c21-r4\crates\registry)
+   Compiling tt-executor v0.0.1 (C:\Users\kaiga\work\review\m2-c21-r4\crates\executor)
+    Finished `release` profile [optimized + debuginfo] target(s) in 43.33s
+     Running tests\c21_r3_contracts.rs (target\release\deps\c21_r3_contracts-6f2d073c28ea7e8f.exe)
+
+running 7 tests
+test closed_step_pressure_command_worker ... ignored, bounded subprocess worker
+
+running 1 test
+test stationary_pressure_dab_is_not_refused_as_zero_area ... ok
+test deleting_a_separator_keeps_formats_on_reordered_hebrew_points ... ok
+test nfc_script_corpus_edits_formats_content_and_package_round_trip ... ok
+complete accepted draw.stroke.add 1.1542791s
+test complete_command_accepted_pressure_worst_case_is_measured ... ok
+complete closed-decagon 99000-knot command 2.0745549s: None
+test closed_step_pressure_command_worker ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 6 filtered out; finished in 2.15s
+
+test closed_step_pressure_command_returns_within_watchdog ... ok
+complete draw.stroke.add refusal 2.219938s: CommandError { code: "limit.exceeded", message: "sweeping this brush stroke needs more than 1200000000 units of work", details: Object {"pointer": String("/points")}, hint: Some("give finite coordinates within ±10 000 000 du and complete Bézier lists (02 §13.4)") }
+test over_limit_brush_refuses_atomically_and_worker_accepts_next_edit ... ok
+
+test result: ok. 6 passed; 0 failed; 1 ignored; 0 measured; 0 filtered out; finished in 2.31s

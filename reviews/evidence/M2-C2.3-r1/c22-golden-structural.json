@@ -1,0 +1,17 @@
+[
+  {
+    "path": "/bytes",
+    "old": 116408,
+    "new": 116410
+  },
+  {
+    "path": "/nodes/4/zones/0/textureMatrix/3",
+    "old": 53.96875,
+    "new": -53.96875
+  },
+  {
+    "path": "/sha256",
+    "old": "1b76885cca72a4c58c2a609a828f3432ab5d0e921e21ccf3e2c4770015ca12fe",
+    "new": "a3fb6377f4eada65646fa5d4086fb791ab342d88111f72d66fe3823a1f191714"
+  }
+]

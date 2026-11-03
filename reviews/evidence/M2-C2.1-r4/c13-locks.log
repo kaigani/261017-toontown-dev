@@ -1,0 +1,7 @@
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.15s
+     Running tests\c13_r4_lock.rs (target\debug\deps\c13_r4_lock-6fc838ee67d97dda.exe)
+
+running 1 test
+test heartbeat_and_drop_do_not_write_while_takeover_holds_arbiter ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.11s

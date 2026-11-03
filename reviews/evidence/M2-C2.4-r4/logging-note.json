@@ -1,0 +1,8 @@
+{
+  "earlyShellWrappers": {
+    "observedExit": 1,
+    "cargoExitSeparatelyCaptured": false,
+    "note": "Windows PowerShell formats native stderr Cargo progress as NativeCommandError records. Early wrappers did not explicitly exit with LASTEXITCODE. Complete successful test-binary/doc-test summaries are retained, without removing those shell artifacts."
+  },
+  "workspace": "The one final workspace command explicitly saves and exits with Cargo LASTEXITCODE; use workspace-counts.json and its complete log for the process verdict."
+}

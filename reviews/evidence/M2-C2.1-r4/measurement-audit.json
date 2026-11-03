@@ -1,0 +1,38 @@
+[
+  {
+    "file": "ci-41196211322-brush-worst-case-macos.json",
+    "observations": 33,
+    "worstCase": "long-line-tiny-tip",
+    "worstMs": 2821.8498329999998
+  },
+  {
+    "file": "ci-41196211322-brush-worst-case-windows.json",
+    "observations": 33,
+    "worstCase": "long-line-tiny-tip",
+    "worstMs": 3697.8249
+  },
+  {
+    "file": "ci-41196211322-fit-worst-case-macos.json",
+    "observations": 30,
+    "worstCase": "zigzag-above-tolerance",
+    "worstMs": 947.458292
+  },
+  {
+    "file": "ci-41196211322-fit-worst-case-windows.json",
+    "observations": 30,
+    "worstCase": "zigzag-above-tolerance",
+    "worstMs": 903.9517000000001
+  },
+  {
+    "file": "brush-debug.json",
+    "observations": 33,
+    "worstCase": "long-line-tiny-tip",
+    "worstMs": 2607.4748
+  },
+  {
+    "file": "brush-release.json",
+    "observations": 33,
+    "worstCase": "long-line-tiny-tip",
+    "worstMs": 1851.4534999999998
+  }
+]

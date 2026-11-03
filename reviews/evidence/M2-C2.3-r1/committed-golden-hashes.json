@@ -1,0 +1,56 @@
+{
+  "content-strokes": {
+    "pngSha256": "54499132741323384cfc0e7a5a9bde7173c6266a8a4febb8a1f74142077476ed",
+    "straightPixelsSha256": "5a232bb66bcdb7dc2dead4a6a49d6f7e1035f76d603bb62119c696d961c89134",
+    "premultipliedPixelsSha256": "e3cf37322fb4bb924883d6e1948d21de2b10b63cb055a58337f74109cd0f46c0",
+    "size": [
+      320,
+      200
+    ]
+  },
+  "content": {
+    "pngSha256": "eca3e9ae26b092903a9f4a2a1f3b66e12a62089aa1e9fd67364058ea3bdcf4ca",
+    "straightPixelsSha256": "a3201ae1a8580cece3ffb37db337256092825dc002fc7bd84b0df59f1b1af9ed",
+    "premultipliedPixelsSha256": "a3201ae1a8580cece3ffb37db337256092825dc002fc7bd84b0df59f1b1af9ed",
+    "size": [
+      320,
+      200
+    ]
+  },
+  "gradients": {
+    "pngSha256": "82c0486c5d3669fc4644628719ef481d950b576d4a63d95e85cad7cd8f306bf6",
+    "straightPixelsSha256": "6f6b4b43a3d4cb403fca709665262cfb22d64b943a0fb53e9fd94dd53140c333",
+    "premultipliedPixelsSha256": "6f6b4b43a3d4cb403fca709665262cfb22d64b943a0fb53e9fd94dd53140c333",
+    "size": [
+      300,
+      100
+    ]
+  },
+  "texture-drag": {
+    "pngSha256": "382050bb7c4eda0794a853d52e5b35593e9d8a65dc23dc476039d6ecffeee5e4",
+    "straightPixelsSha256": "63aaa57b7eec7fdd072dee59761e10a22171609ba69fbbf1c398d4134c78e315",
+    "premultipliedPixelsSha256": "d51216d03c6a1d95a4fcd1fd7a04264fe3dbdfc234d2f14996f12ddfdaea3212",
+    "size": [
+      140,
+      100
+    ]
+  },
+  "texture-stretch": {
+    "pngSha256": "ac0361e991e38cb0e24edc3e0d8cdda3d0d89848e0ed968968595565c6f9b8b1",
+    "straightPixelsSha256": "d8102323d6f21f04e7776ec100a52d710f036f4a0836256445cf5668c590e1ca",
+    "premultipliedPixelsSha256": "83caffcef9a33c5a60af28d365cd4e74368f15ff7a032d0f1830b7c3ae628ab6",
+    "size": [
+      140,
+      100
+    ]
+  },
+  "texture-tile": {
+    "pngSha256": "96c56276060e90288774835f9c7f09ef7ff3406c346ad90cb3658581a21ea9de",
+    "straightPixelsSha256": "0e0d3398bbea61ac1c2efbed0013b552a53c16ca964192e699adc1fca5965ace",
+    "premultipliedPixelsSha256": "844175ca50f7115af8338f7f184596c4d5823a1222b28a33afce4f4f6f4372ed",
+    "size": [
+      140,
+      100
+    ]
+  }
+}

@@ -1,0 +1,9 @@
+{
+  "compiledSourceCommit": "ea147bf",
+  "sourceSha256": "3afce8fc91aa6a93278e383ced9309449fdb633bbec6e9706f34cc8e385abea2",
+  "seedCode": [
+    "        TestRng::from_seed(RngAlgorithm::ChaCha, &seed.map(|b| b ^ 0xD3)),",
+    "    let _coverage = CoverageGuard(format!(\"seed={} xor=5D cases={}\", String::from_utf8_lossy(seed), cases()));"
+  ],
+  "note": "The first release run retains the copied diagnostic literal xor=5D. The actual seed transformation was D3 from initial commit ea147bf. Only the diagnostic literal was subsequently corrected; raw stdout is preserved."
+}

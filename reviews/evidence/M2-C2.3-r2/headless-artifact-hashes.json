@@ -1,0 +1,42 @@
+[
+  {
+    "path": "c21-measurement-analysis.json",
+    "bytes": 4908,
+    "sha256": "2791b0f3f15c5855d775a838ad816b1efa6a58f71bf3ee375eb8a328e9add590"
+  },
+  {
+    "path": "sdk-conformance.json",
+    "bytes": 6479,
+    "sha256": "8c3ee1c6f4f1f83cb2646015274e254feeb45f878d7a42fea8d93182de42c861"
+  },
+  {
+    "path": "selftest-1.json",
+    "bytes": 1219,
+    "sha256": "78778d28b3e5f38df2c3129b57b70fa83828539115f5ec5dd57c82efd11204c4"
+  },
+  {
+    "path": "toontown-headless.exe",
+    "bytes": 39098880,
+    "sha256": "d190ba9fb95765fb2bcc91809d367dab0260f44307e3f2ecd2550de22df8bce2"
+  },
+  {
+    "path": "c21-fit-worst-case\\brush-worst-case-windows.json",
+    "bytes": 6668,
+    "sha256": "387323d7198b0e3de98c6695267bf0eef0ee973dbcdb652187bb194c8231734e"
+  },
+  {
+    "path": "c21-fit-worst-case\\fit-worst-case-windows.json",
+    "bytes": 4651,
+    "sha256": "18642285e344d68758a37f206a8f71abf2f86cebb01614ea60b5d52ce80da6ca"
+  },
+  {
+    "path": "c21-measurements\\strokes-100k-windows.json",
+    "bytes": 31518,
+    "sha256": "a2e4a819ce71fcedb7a95d7a5836448b7797e4ecc7b0ed5a5244b555fcddc370"
+  },
+  {
+    "path": "c22-planar-worst-case\\planar-worst-case-windows.json",
+    "bytes": 4825,
+    "sha256": "63034b5f09666aa6073f9a9b7934d7cec3fa13d22aed2b6608d41e92db66402d"
+  }
+]

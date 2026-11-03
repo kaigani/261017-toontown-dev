@@ -1,0 +1,48 @@
+{"argv": ["cargo", "build", "--release", "-p", "tt-headless", "--locked", "-j", "4"], "cwd": "C:\\Users\\kaiga\\work\\review\\m2-c24-r3", "env": {}, "startedAt": "2026-11-03T01:56:09.477862+00:00"}
+   Compiling syn v3.0.9
+   Compiling clap_lex v1.1.1
+   Compiling anstyle v1.0.14
+   Compiling clap_builder v4.6.7
+   Compiling serde_derive_internals v0.30.0
+   Compiling serde_derive v1.0.229
+   Compiling ref-cast-impl v1.0.27
+   Compiling thiserror-impl v2.0.21
+   Compiling ref-cast v1.0.27
+   Compiling schemars_derive v1.2.3
+   Compiling thiserror v2.0.21
+   Compiling bytemuck_derive v1.12.1
+   Compiling serde v1.0.229
+   Compiling clap_derive v4.6.7
+   Compiling ahash v0.8.12
+   Compiling fluent-uri v0.4.1
+   Compiling jsonschema-value v0.59.0
+   Compiling referencing v0.59.0
+   Compiling email_address v0.2.9
+   Compiling jsonschema v0.59.0
+   Compiling bytemuck v1.25.2
+   Compiling schemars v1.2.3
+   Compiling font-types v0.12.7
+   Compiling color v0.3.3
+   Compiling peniko v0.6.1
+   Compiling tt-model v0.0.1 (C:\Users\kaiga\work\review\m2-c24-r3\crates\model)
+   Compiling read-fonts v0.41.0
+   Compiling vello_common v0.3.0
+   Compiling tt-anim v0.0.1 (C:\Users\kaiga\work\review\m2-c24-r3\crates\anim)
+   Compiling skrifa v0.44.0
+   Compiling tt-vector v0.0.1 (C:\Users\kaiga\work\review\m2-c24-r3\crates\vector)
+   Compiling tt-fx v0.0.1 (C:\Users\kaiga\work\review\m2-c24-r3\crates\fx)
+   Compiling tt-colour v0.0.1 (C:\Users\kaiga\work\review\m2-c24-r3\crates\colour)
+   Compiling vello_cpu v0.3.0
+   Compiling tt-render v0.0.1 (C:\Users\kaiga\work\review\m2-c24-r3\crates\render)
+   Compiling tt-persist v0.0.1 (C:\Users\kaiga\work\review\m2-c24-r3\crates\persist)
+   Compiling image v0.25.10
+   Compiling tt-io v0.0.1 (C:\Users\kaiga\work\review\m2-c24-r3\crates\io)
+   Compiling tt-registry v0.0.1 (C:\Users\kaiga\work\review\m2-c24-r3\crates\registry)
+   Compiling tt-audio v0.0.1 (C:\Users\kaiga\work\review\m2-c24-r3\crates\audio)
+   Compiling tt-lipsync v0.0.1 (C:\Users\kaiga\work\review\m2-c24-r3\crates\lipsync)
+   Compiling tt-executor v0.0.1 (C:\Users\kaiga\work\review\m2-c24-r3\crates\executor)
+   Compiling clap v4.6.7
+   Compiling tt-engine v0.0.1 (C:\Users\kaiga\work\review\m2-c24-r3\crates\engine)
+   Compiling tt-mcp v0.0.1 (C:\Users\kaiga\work\review\m2-c24-r3\crates\mcp)
+   Compiling tt-headless v0.0.1 (C:\Users\kaiga\work\review\m2-c24-r3\bins\headless)
+    Finished `release` profile [optimized + debuginfo] target(s) in 2m 22s

@@ -1,0 +1,29 @@
+ crates/executor/tests/c24_r1_topology.rs | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
+diff --git a/crates/executor/tests/c24_r1_topology.rs b/crates/executor/tests/c24_r1_topology.rs
+index 8a446c0..a022d6c 100644
+--- a/crates/executor/tests/c24_r1_topology.rs
++++ b/crates/executor/tests/c24_r1_topology.rs
+@@ -172,13 +172,13 @@ fn the_cutter_splits_along_its_segment_like_the_oracle() {
+             let after = zone_areas(&h, &d);
+             prop_assert!(after.len() >= before.len());
+             let (sb, sa): (f64, f64) = (before.iter().sum(), after.iter().sum());
+-            prop_assert!((sa - sb).abs() <= 1e-3 * sb.max(1.0), "the cut keeps the zones' total area: {} vs {}", sb, sa);
+             let mut segs = segments(&list, 0);
+             segs.push((from, to));
++            prop_assert!((sa - sb).abs() <= (1e-3 * sb.max(1.0)).max(oracle::snapping_envelope(&segs, 64)), "the cut keeps the zones' total area: {} vs {}", sb, sa);
+             let union: f64 = oracle::face_areas(&segs).into_iter().map(oracle::Q::f64).sum();
+             // Inside the original zones the cut's faces are the oracle's; faces it would close outside them are not
+             // zones (the cut only splits existing zones).
+-            prop_assert!(sa <= union + 1e-3 * union.max(1.0));
++            prop_assert!(sa <= union + oracle::snapping_envelope(&segs, 64));
+             ran.fetch_add(1, Ordering::Relaxed);
+             Ok(())
+         })
+@@ -313,5 +313,5 @@ fn shrunk_cutter_area_bound() {
+     let union: f64 = oracle::face_areas(&segs).into_iter().map(oracle::Q::f64).sum();
+     println!("before={before:?}, after={after:?}, exact union={union}");
+     let sa: f64 = after.iter().sum();
+-    assert!(sa <= union + 1e-3 * union.max(1.0));
++    assert!(sa <= union + oracle::snapping_envelope(&segs, 64));
+ }

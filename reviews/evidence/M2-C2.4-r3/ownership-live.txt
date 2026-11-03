@@ -1,0 +1,2 @@
+{"argv": ["C:\\Python313\\python.exe", "scripts/check-reviewer-ownership.py"], "cwd": "C:\\Users\\kaiga\\work\\review\\m2-c24-r3", "env": {}, "startedAt": "2026-11-03T00:21:29.190880+00:00"}
+ok: reviewer-owned C2.4 files differ only by the ruled, declared edits

@@ -1,0 +1,12 @@
+C24-R1-02(ii) receipt: the Cutter's area change on a crossing cut predates round 1.
+
+Case (the first failing case of the reviewer's 4096-case property once the union bound uses the snapping envelope):
+  one open pencil stroke (0,0)-(20,40)-(80,20)-(0,40) du, cut along the segment (80,60) -> (0,0).
+
+Total zone area before -> after the cut (draw.drawing.get zones), same machine, same test body:
+  node.rs at the reviewed head 0ded6fa (floating-point crossing placement): 155.3125 -> 155.625
+  node.rs after round 1 (exact crossing placement, C24-R1-02(i)):          155.3125 -> 155.625
+
+Cause: the cut's crossings with the zone boundary become grid points (snap rounding), so the boundary edges they split
+move by up to half a grid cell; the area moves by about edge length x that offset. The oracle's independent snapping
+envelope for this arrangement covers it; 0.1 % of 155 du^2 does not.

@@ -1,0 +1,56 @@
+{
+  "workspaceCommand": "cargo test --workspace --locked --no-fail-fast -j 4",
+  "workspaceExit": 101,
+  "workspace": {
+    "summaries": 189,
+    "passed": 1028,
+    "failed": 13,
+    "ignored": 18
+  },
+  "supplementalTargets": {
+    "c23_r1_colour": {
+      "workspace": {
+        "passed": 1,
+        "failed": 1,
+        "ignored": 0
+      },
+      "finalRerun": {
+        "passed": 1,
+        "failed": 2,
+        "ignored": 0
+      },
+      "log": "colour-final.log"
+    },
+    "c23_r1_contracts": {
+      "workspace": {
+        "passed": 2,
+        "failed": 0,
+        "ignored": 0
+      },
+      "finalRerun": {
+        "passed": 2,
+        "failed": 0,
+        "ignored": 0
+      },
+      "log": "contracts-final.log"
+    }
+  },
+  "finalCoverage": {
+    "passed": 1028,
+    "failed": 14,
+    "ignored": 18
+  },
+  "unchangedTargetsFailed": [],
+  "reason": "One late independent scene-scope reproduction was added after workspace target discovery. Final colour and strengthened contract targets were recompiled and rerun with tt-persist/test-hooks to match workspace features; existing tests were not edited.",
+  "pythonSuites": {
+    "passed": 22,
+    "failed": 1,
+    "intentionalFailure": "c23-r1-audit.py common-contract inventory"
+  },
+  "auditCurrent": {
+    "passed": 4,
+    "failed": 1
+  },
+  "runtimeE2": "passed",
+  "runtimeSmooth": "external 40-second timeout; finding C23-R1-07"
+}

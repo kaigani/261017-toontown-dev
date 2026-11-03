@@ -1,0 +1,1 @@
+PASS: every byte identical after masking only sha256, bytes, and drawing1/nodes/7/children/0/strokes (3 -> 48). Layer nd_01K7JJN801CEZ464DMJ4DTYXWR

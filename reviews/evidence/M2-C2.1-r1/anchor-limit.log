@@ -1,0 +1,27 @@
+cargo :    Compiling tt-vector v0.0.1 (C:\Users\kaiga\work\review\m2-c21-r1\crates\vector)
+At line:2 char:64
++ ... eometry.rs; cargo test -p tt-vector --test c21_r1_geometry closed_pat ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (   Compiling tt...\crates\vector):String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 1.32s
+     Running tests\c21_r1_geometry.rs (target\debug\deps\c21_r1_geometry-e8135ee546d83350.exe)
+
+running 1 test
+
+thread 'closed_path_at_anchor_limit_reimports_its_own_bezier_list' (21700) panicked at 
+crates\vector\tests\c21_r1_geometry.rs:194:5:
+a valid closed path's read-back must remain valid input: Err(GeomError { code: "drawing.invalidGeometry", message: "at 
+most 100000 anchors per stroke", pointer: "/bezier" })
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+test closed_path_at_anchor_limit_reimports_its_own_bezier_list ... FAILED
+
+failures:
+
+failures:
+    closed_path_at_anchor_limit_reimports_its_own_bezier_list
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 9 filtered out; finished in 0.16s
+
+error: test failed, to rerun pass `-p tt-vector --test c21_r1_geometry`

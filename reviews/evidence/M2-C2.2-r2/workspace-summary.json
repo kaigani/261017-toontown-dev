@@ -1,0 +1,35 @@
+{
+  "summaryCount": 166,
+  "sumPassedFailedIgnored": [
+    934,
+    5,
+    16
+  ],
+  "failedTests": [
+    "test json_import_repairs_clockwise_side_disagreement_without_renoding ... FAILED",
+    "test c01_r1_01_license_grouping_preserves_mandatory_copyleft ... FAILED",
+    "test c01_r1_01_license_allowlist_stays_within_user_policy ... FAILED",
+    "test c01_r1_02_dynamic_import_cannot_bypass_ipc_boundary ... FAILED",
+    "test vertex_crossing_uses_exact_orientation_for_grid_coordinates ... FAILED"
+  ],
+  "regressionSuites": [
+    "Running tests\\c21_r1_autosave.rs (target\\debug\\deps\\c21_r1_autosave-a32ae94dbaa9e681.exe)",
+    "Running tests\\c21_r1_contracts.rs (target\\debug\\deps\\c21_r1_contracts-632c5ffc4c7df230.exe)",
+    "Running tests\\c21_r1_retention.rs (target\\debug\\deps\\c21_r1_retention-57445c9ec1237948.exe)",
+    "Running tests\\c21_r2_contracts.rs (target\\debug\\deps\\c21_r2_contracts-b6b168a921c87e5a.exe)",
+    "Running tests\\c21_r3_contracts.rs (target\\debug\\deps\\c21_r3_contracts-d5e89caab38aefc3.exe)",
+    "Running tests\\c22_r1_cache.rs (target\\debug\\deps\\c22_r1_cache-98fb51c8f998e04c.exe)",
+    "Running tests\\c22_r1_commands.rs (target\\debug\\deps\\c22_r1_commands-c7d56730e3b206e1.exe)",
+    "Running tests\\c21_r1_surfaces.rs (target\\debug\\deps\\c21_r1_surfaces-f460e184fa07c500.exe)",
+    "Running tests\\c21_r2_events.rs (target\\debug\\deps\\c21_r2_events-3b296780ea65f941.exe)",
+    "Running tests\\c21_r3_never_block.rs (target\\debug\\deps\\c21_r3_never_block-d7622b78b1241e58.exe)",
+    "Running tests\\c21_replay.rs (target\\debug\\deps\\c21_replay-80f6905d523fefab.exe)",
+    "Running tests\\c22_r1_surface.rs (target\\debug\\deps\\c22_r1_surface-e7caeb7aa127c385.exe)",
+    "Running tests\\c21_r1_geometry.rs (target\\debug\\deps\\c21_r1_geometry-8fdf7a1722f874e6.exe)",
+    "Running tests\\c21_r2_geometry.rs (target\\debug\\deps\\c21_r2_geometry-881593bb663e1d82.exe)",
+    "Running tests\\c21_r3_geometry.rs (target\\debug\\deps\\c21_r3_geometry-62d339eb3b953030.exe)",
+    "Running tests\\c21_r4_closure.rs (target\\debug\\deps\\c21_r4_closure-c08dff1dbf0ba1d0.exe)",
+    "Running tests\\c22_r1_geometry.rs (target\\debug\\deps\\c22_r1_geometry-bf5a1c4a8787673f.exe)"
+  ],
+  "scope": "workspace compiled during review test development; final focused logs supersede its review-test snapshot; c01 missing pnpm prerequisite failures rerun separately"
+}

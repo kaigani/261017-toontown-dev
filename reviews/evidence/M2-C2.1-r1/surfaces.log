@@ -1,0 +1,31 @@
+cargo :     Blocking waiting for file lock on build directory
+At line:2 char:1
++ cargo test -p tt-mcp --test c21_r1_surfaces -- --nocapture > reviews/ ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (    Blocking wa...build directory:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+   Compiling tt-mcp v0.0.1 (C:\Users\kaiga\work\review\m2-c21-r1\crates\mcp)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 2m 03s
+     Running tests\c21_r1_surfaces.rs (target\debug\deps\c21_r1_surfaces-a4dec9f430315165.exe)
+
+running 1 test
+
+thread 'typed_generic_batches_scripts_and_both_container_forms' (32092) panicked at 
+crates\mcp\tests\c21_r1_surfaces.rs:12:26:
+assertion `left == right` failed: draw.text.add: 
+{"status":"error","changes":[],"warnings":[],"documentRev":2,"error":{"code":"arg.invalid","message":"runs cover the 
+whole text","details":{"pointer":"/nodes/4/runs","rule":"runsCover","objectId":"dr_01K742SG0KKMCAP9X1E6Z5P4SW"}}}
+  left: String("error")
+ right: "ok"
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+test typed_generic_batches_scripts_and_both_container_forms ... FAILED
+
+failures:
+
+failures:
+    typed_generic_batches_scripts_and_both_container_forms
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.14s
+
+error: test failed, to rerun pass `-p tt-mcp --test c21_r1_surfaces`

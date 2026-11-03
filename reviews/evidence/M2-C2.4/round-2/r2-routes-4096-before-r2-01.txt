@@ -1,0 +1,54 @@
+    Finished `release` profile [optimized + debuginfo] target(s) in 0.23s
+     Running tests\c24_r2_routes.rs (target\release\deps\c24_r2_routes-06b3746d2d72a967.exe)
+
+running 13 tests
+
+thread 'r1_01_route_oracle_rejects_a_noop_centre_line_mutant' (28028) panicked at crates\executor\tests\c24_r2_routes.rs:1122:5collapsed snap: requested (77,23), other contour at (80,20), distance sqrt(18) < 8; correct area=400
+:
+the claimed Centre Line oracle accepts doing nothing: Ok((Arrangement { faces: [Face { outer: [(Q(Ratio { numer: 0, denom: 1 }), Q(Ratio { numer: 0, denom: 1 })), (Q(Ratio { numer: 5120, denom: 1 }), Q(Ratio { numer: 0, denom: 1 })), (Q(Ratio { numer: 5120, denom: 1 }), Q(Ratio { numer: 5120, denom: 1 })), (Q(Ratio { numer: 0, denom: 1 }), Q(Ratio { numer: 5120, denom: 1 }))], holes: [], area2: Q(Ratio { numer: 52428800, denom: 1 }), probe: (Q(Ratio { numer: 2560, denom: 1 }), Q(Ratio { numer: 731, denom: 2 })) }], edges: [((Q(Ratio { numer: 0, denom: 1 }), Q(Ratio { numer: 0, denom: 1 })), (Q(Ratio { numer: 0, denom: 1 }), Q(Ratio { numer: 5120, denom: 1 }))), ((Q(Ratio { numer: 0, denom: 1 }), Q(Ratio { numer: 0, denom: 1 })), (Q(Ratio { numer: 5120, denom: 1 }), Q(Ratio { numer: 0, denom: 1 }))), ((Q(Ratio { numer: 0, denom: 1 }), Q(Ratio { numer: 5120, denom: 1 })), (Q(Ratio { numer: 5120, denom: 1 }), Q(Ratio { numer: 5120, denom: 1 }))), ((Q(Ratio { numer: 5120, denom: 1 }), Q(Ratio { numer: 0, denom: 1 })), (Q(Ratio { numer: 5120, denom: 1 }), Q(Ratio { numer: 5120, denom: 1 }))), ((Q(Ratio { numer: 7680, denom: 1 }), Q(Ratio { numer: 0, denom: 1 })), (Q(Ratio { numer: 7680, denom: 1 }), Q(Ratio { numer: 3840, denom: 1 })))] }, ["zn_MV6ZSSZ863T2J09751ERCKV2T8"]))
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+test collapsed_other_contour_is_a_valid_snap_target_product_control ... ok
+test r1_01_route_oracle_rejects_a_noop_centre_line_mutant ... FAILED
+test affine_envelopes_match_the_oracle has been running for over 60 seconds
+test break_apart_leaves_the_line_layer_to_the_oracle_and_makes_one_group_per_glyph has been running for over 60 seconds
+test flatten_of_overlapping_layers_matches_the_oracle has been running for over 60 seconds
+test lines_to_brush_and_centre_line_keep_the_oracles_partition has been running for over 60 seconds
+test optimize_and_smooth_keep_the_oracles_partition has been running for over 60 seconds
+test point_moves_with_and_without_snapping_match_the_oracle has been running for over 60 seconds
+test region_erase_matches_the_oracle has been running for over 60 seconds
+test segment_cut_matches_the_oracle has been running for over 60 seconds
+test stroke_add_matches_the_oracle has been running for over 60 seconds
+test stroke_set_and_delete_match_the_oracle has been running for over 60 seconds
+test transforms_match_the_oracles_transformed_geometry has been running for over 60 seconds
+REVIEW_ROUTE_DISPATCHES seed=toontown-m2-c24-oracle-route-brk xor=5D cases=4096 {"colour.paint.apply": 10523, "doc.object.patch": 4096, "draw.breakApart.apply": 4083, "draw.content.add": 4096, "draw.drawing.get": 16345, "draw.text.add": 4083}
+test break_apart_leaves_the_line_layer_to_the_oracle_and_makes_one_group_per_glyph ... ok
+REVIEW_ROUTE_DISPATCHES seed=toontown-m2-c24-oracle-route-env xor=5D cases=4096 {"colour.paint.apply": 10843, "doc.object.patch": 4096, "draw.bounds.get": 4088, "draw.content.add": 4096, "draw.drawing.get": 16360, "draw.envelope.apply": 4088}
+test affine_envelopes_match_the_oracle ... ok
+REVIEW_ROUTE_DISPATCHES seed=toontown-m2-c24-oracle-route-tra xor=5D cases=4096 {"colour.paint.apply": 11026, "doc.object.patch": 4096, "draw.content.add": 4096, "draw.drawing.get": 16360, "draw.transform.apply": 4088}
+test transforms_match_the_oracles_transformed_geometry ... ok
+REVIEW_ROUTE_DISPATCHES seed=toontown-m2-c24-oracle-route-opt xor=5D cases=4096 {"colour.paint.apply": 13101, "doc.object.patch": 4096, "draw.content.add": 4096, "draw.drawing.get": 16133, "draw.optimize.apply": 2056, "draw.smooth.apply": 1813}
+test optimize_and_smooth_keep_the_oracles_partition ... ok
+REVIEW_ROUTE_DISPATCHES seed=toontown-m2-c24-oracle-route-l2b xor=5D cases=4096 {"colour.paint.apply": 10520, "doc.object.patch": 4096, "draw.centreLine.apply": 4084, "draw.content.add": 4096, "draw.drawing.get": 20432, "draw.linesToBrush.apply": 4084}
+test lines_to_brush_and_centre_line_keep_the_oracles_partition ... ok
+REVIEW_ROUTE_DISPATCHES seed=toontown-m2-c24-oracle-route-set xor=5D cases=4096 {"colour.paint.apply": 10533, "doc.object.patch": 4096, "draw.content.add": 4096, "draw.drawing.get": 16312, "draw.object.delete": 2041, "draw.stroke.set": 2009}
+test stroke_set_and_delete_match_the_oracle ... ok
+REVIEW_ROUTE_DISPATCHES seed=toontown-m2-c24-oracle-route-era xor=5D cases=4096 {"colour.paint.apply": 10793, "doc.object.patch": 4096, "draw.content.add": 4096, "draw.drawing.get": 11456, "draw.erase.apply": 4026}
+test region_erase_matches_the_oracle ... ok
+REVIEW_ROUTE_DISPATCHES seed=toontown-m2-c24-oracle-route-cut xor=5D cases=4096 {"colour.paint.apply": 10461, "doc.object.patch": 4096, "draw.content.add": 3931, "draw.cut.apply": 3871, "draw.drawing.get": 10935}
+test segment_cut_matches_the_oracle ... ok
+REVIEW_ROUTE_DISPATCHES seed=toontown-m2-c24-oracle-route-pnt xor=5D cases=4096 {"colour.paint.apply": 9945, "doc.object.patch": 4096, "draw.content.add": 3912, "draw.drawing.get": 15250, "draw.point.move": 3534}
+test point_moves_with_and_without_snapping_match_the_oracle ... ok
+REVIEW_ROUTE_DISPATCHES seed=toontown-m2-c24-oracle-route-add xor=5D cases=4096 {"colour.paint.apply": 11138, "doc.object.patch": 4096, "draw.content.add": 4096, "draw.drawing.get": 12214, "draw.stroke.add": 4027}
+test stroke_add_matches_the_oracle ... ok
+REVIEW_ROUTE_DISPATCHES seed=toontown-m2-c24-oracle-route-fla xor=5D cases=4096 {"colour.paint.apply": 10519, "doc.object.patch": 4096, "draw.content.add": 8185, "draw.drawing.get": 15980, "draw.flatten.apply": 3706}
+test flatten_of_overlapping_layers_matches_the_oracle ... ok
+
+failures:
+
+failures:
+    r1_01_route_oracle_rejects_a_noop_centre_line_mutant
+
+test result: FAILED. 12 passed; 1 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1477.86s
+
+error: test failed, to rerun pass `-p tt-executor --test c24_r2_routes`
+exit=101

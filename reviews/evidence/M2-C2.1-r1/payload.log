@@ -1,0 +1,18 @@
+cargo :    Compiling tt-registry v0.0.1 (C:\Users\kaiga\work\review\m2-c21-r1\crates\registry)
+At line:2 char:61
++ ... urfaces.rs; cargo test -p tt-mcp --test c21_r1_surfaces ingress_paylo ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (   Compiling tt...rates\registry):String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+   Compiling tt-executor v0.0.1 (C:\Users\kaiga\work\review\m2-c21-r1\crates\executor)
+   Compiling tt-engine v0.0.1 (C:\Users\kaiga\work\review\m2-c21-r1\crates\engine)
+   Compiling tt-mcp v0.0.1 (C:\Users\kaiga\work\review\m2-c21-r1\crates\mcp)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 6.63s
+     Running tests\c21_r1_surfaces.rs (target\debug\deps\c21_r1_surfaces-a4dec9f430315165.exe)
+
+running 1 test
+test ingress_payload_limit_is_distinct_from_32_mib_readback_limit ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 1 filtered out; finished in 0.95s
+

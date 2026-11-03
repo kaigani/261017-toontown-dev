@@ -1,0 +1,16 @@
+cargo :    Compiling tt-mcp v0.0.1 (C:\Users\kaiga\work\review\m2-c21-r1\crates\mcp)
+At line:2 char:389
++ ... l.log 2>&1; cargo test -p tt-mcp --test c21_r1_surfaces -- --nocaptur ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (   Compiling tt...-r1\crates\mcp):String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 1.81s
+     Running tests\c21_r1_surfaces.rs (target\debug\deps\c21_r1_surfaces-a4dec9f430315165.exe)
+
+running 2 tests
+test ingress_payload_limit_is_distinct_from_32_mib_readback_limit ... ok
+test typed_generic_batches_scripts_and_both_container_forms ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 2.62s
+

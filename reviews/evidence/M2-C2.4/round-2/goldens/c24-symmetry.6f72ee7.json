@@ -1,0 +1,61 @@
+{
+  "sha256": "fc3116b0a61936dbb16dcc786aca19313b4671183b8d5ccfdce3da5f05f96e36",
+  "bytes": 1088272,
+  "configs": [
+    {
+      "mode": "mirror",
+      "angle": 0.0
+    },
+    {
+      "mode": "mirror",
+      "angle": 30.0
+    },
+    {
+      "mode": "mirror",
+      "angle": 45.0
+    },
+    {
+      "mode": "mirror",
+      "angle": 90.0
+    },
+    {
+      "mode": "mirror",
+      "angle": 137.5
+    },
+    {
+      "mode": "kaleidoscope",
+      "angle": 0.0,
+      "mirrors": 2
+    },
+    {
+      "mode": "kaleidoscope",
+      "angle": 15.0,
+      "mirrors": 3
+    },
+    {
+      "mode": "kaleidoscope",
+      "angle": 22.5,
+      "mirrors": 5
+    },
+    {
+      "mode": "kaleidoscope",
+      "angle": 0.0,
+      "mirrors": 6
+    },
+    {
+      "mode": "kaleidoscope",
+      "angle": 15.0,
+      "mirrors": 8
+    },
+    {
+      "mode": "kaleidoscope",
+      "angle": 7.5,
+      "mirrors": 12
+    },
+    {
+      "mode": "kaleidoscope",
+      "angle": 3.0,
+      "mirrors": 16
+    }
+  ]
+}

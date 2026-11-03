@@ -1,0 +1,28 @@
+cargo :    Compiling tt-vector v0.0.1 (C:\Users\kaiga\work\review\m2-c21-r1\crates\vector)
+At line:2 char:1
++ cargo test -p tt-vector --test c21_r1_geometry dense_100k -- --nocapt ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (   Compiling tt...\crates\vector):String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 4.00s
+     Running tests\c21_r1_geometry.rs (target\debug\deps\c21_r1_geometry-e8135ee546d83350.exe)
+
+running 1 test
+
+running 1 test
+
+thread 'dense_100k_input_finishes_within_document_watchdog_budget' (30592) panicked at 
+crates\vector\tests\c21_r1_geometry.rs:85:13:
+100000 distinct points on a .0001 du closed path exceeded 30 s; corners reach scans quadratically
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+test dense_100k_input_finishes_within_document_watchdog_budget ... FAILED
+
+failures:
+
+failures:
+    dense_100k_input_finishes_within_document_watchdog_budget
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 4 filtered out; finished in 30.02s
+
+error: test failed, to rerun pass `-p tt-vector --test c21_r1_geometry`

@@ -1,0 +1,58 @@
+cargo :     Blocking waiting for file lock on build directory
+At line:2 char:1
++ cargo test -p tt-vector --locked > reviews/evidence/M2-C2.1-r1/vector ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (    Blocking wa...build directory:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 3.91s
+     Running unittests src\lib.rs (target\debug\deps\tt_vector-777df2d21e46208c.exe)
+
+running 26 tests
+test fit::tests::a_square_keeps_its_corners ... ok
+test brush::tests::a_dab_is_one_tip ... ok
+test text::tests::format_splits_and_merges_runs ... ok
+test brush::tests::zero_width_is_invalid_geometry ... ok
+test fit::tests::a_straight_drag_fits_one_segment ... ok
+test geom::tests::affine_composition ... ok
+test geom::tests::bounds_cover_bulging_curves ... ok
+test geom::tests::line_length_and_bounds ... ok
+test path::tests::bezier_lists_round_trip_open_and_closed ... ok
+test num::tests::golden_values_are_platform_independent ... ok
+test fit::tests::closed_loops_return_to_the_start ... ok
+test num::tests::reflection_about_the_y_axis ... ok
+test symmetry::tests::mirror_at_zero_is_left_right ... ok
+test fit::tests::a_click_is_a_dab ... ok
+test text::tests::paragraph_format_follows_split_lines ... ok
+test fit::tests::fitting_error_is_within_tolerance ... ok
+test text::tests::typing_and_deleting_keep_runs_covering_the_text ... ok
+test brush::tests::pressure_varies_the_width ... ok
+test fit::tests::pressure_maps_are_ordered_and_span_the_spine ... ok
+test path::tests::malformed_lists_are_invalid_geometry ... ok
+test symmetry::tests::kaleidoscope_gives_two_n_images ... ok
+test brush::tests::a_straight_stroke_outlines_a_capsule ... ok
+test text::tests::new_text_has_one_run_and_one_paragraph_per_line ... ok
+test brush::tests::outlines_are_reproducible ... ok
+test brush::tests::a_looping_stroke_is_one_clean_closed_path ... ok
+test text::tests::layout_wraps_at_a_fixed_width ... ok
+
+test result: ok. 26 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.13s
+
+     Running tests\properties.rs (target\debug\deps\properties-91d99a312257b1c0.exe)
+
+running 6 tests
+test pressure_interpolation_stays_in_range ... ok
+test bezier_lists_round_trip ... ok
+test text_edits_keep_runs_covering_and_one_paragraph_per_line ... ok
+test fitting_ignores_timing_only_positions_and_pressures_matter ... ok
+test fitting_is_deterministic_and_within_tolerance ... ok
+test outlines_are_closed_finite_and_cover_every_tip ... ok
+
+test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.59s
+
+   Doc-tests tt_vector
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+

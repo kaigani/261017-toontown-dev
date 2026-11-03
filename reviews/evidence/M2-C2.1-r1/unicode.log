@@ -1,0 +1,30 @@
+cargo :    Compiling tt-executor v0.0.1 (C:\Users\kaiga\work\review\m2-c21-r1\crates\executor)
+At line:2 char:115
++ ... l.log 2>&1; cargo test -p tt-executor --test c21_r1_contracts decompo ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (   Compiling tt...rates\executor):String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 1.92s
+     Running tests\c21_r1_contracts.rs (target\debug\deps\c21_r1_contracts-c03280d5479a975d.exe)
+
+running 1 test
+
+thread 'decomposed_unicode_text_is_accepted_and_ranges_follow_normalization' (14684) panicked at 
+crates\executor\tests\c21_r1_contracts.rs:85:5:
+02 3.7 / 10 1.1 NFC text must keep valid codepoint ranges; add Some(CommandError { code: "arg.invalid", message: "runs 
+cover the whole text", details: Object {"pointer": String("/nodes/3/runs"), "rule": String("runsCover"), "objectId": 
+String("dr_01K742SG0KKMCAP9X1E6Z5P4SW")}, hint: None }), insert Some(CommandError { code: "arg.invalid", message: 
+"runs cover the whole text", details: Object {"pointer": String("/nodes/3/runs"), "rule": String("runsCover"), 
+"objectId": String("dr_01K742SG0KKMCAP9X1E6Z5P4SW")}, hint: None })
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+test decomposed_unicode_text_is_accepted_and_ranges_follow_normalization ... FAILED
+
+failures:
+
+failures:
+    decomposed_unicode_text_is_accepted_and_ranges_follow_normalization
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 5 filtered out; finished in 0.11s
+
+error: test failed, to rerun pass `-p tt-executor --test c21_r1_contracts`

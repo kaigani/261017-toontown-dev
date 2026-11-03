@@ -6,10 +6,20 @@ edition.workspace = true
 rust-version.workspace = true
 publish.workspace = true
 
+[features]
+# Dev-only measurement hooks (never in a product build; the product feature proofs check headless and desktop).
+test-hooks = []
+
 [dependencies]
 tt-model.workspace = true
 tt-persist.workspace = true
 tt-registry.workspace = true
+tt-vector.workspace = true
+tt-render.workspace = true
+# Bitmap decoding for import and vectorize (M2 C2.4).
+tt-io.workspace = true
+# Geometry keys of the derived planar-map cache (M2 C2.2).
+sha2.workspace = true
 serde.workspace = true
 serde_json.workspace = true
 schemars.workspace = true
@@ -17,8 +27,16 @@ regex.workspace = true
 
 [dev-dependencies]
 tt-persist = { workspace = true, features = ["test-hooks"] }
+tt-vector = { workspace = true, features = ["test-hooks"] }
 trybuild.workspace = true
 jsonschema.workspace = true
+proptest.workspace = true
+# Arbitrary-precision rationals of the independent planar oracle shared with tt-vector's tests (C24-R1-01).
+num-bigint.workspace = true
+num-rational.workspace = true
+num-traits.workspace = true
+# Counting allocator of the C2.1 measurement test binary only (MIT; never in a product graph).
+stats_alloc = "0.1.10"
 
 [lints]
 workspace = true

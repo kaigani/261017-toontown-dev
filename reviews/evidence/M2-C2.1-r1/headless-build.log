@@ -1,0 +1,48 @@
+cargo :    Compiling clap_lex v1.1.1
+At line:2 char:133
++ ... t.log 2>&1; cargo build -p tt-headless --locked > reviews/evidence/M2 ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (   Compiling clap_lex v1.1.1:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+   Compiling anstyle v1.0.14
+   Compiling syn v3.0.9
+   Compiling clap_builder v4.6.7
+   Compiling serde_derive_internals v0.30.0
+   Compiling serde_derive v1.0.229
+   Compiling ref-cast-impl v1.0.27
+   Compiling schemars_derive v1.2.3
+   Compiling thiserror-impl v2.0.21
+   Compiling bytemuck_derive v1.12.1
+   Compiling clap_derive v4.6.7
+   Compiling ref-cast v1.0.27
+   Compiling thiserror v2.0.21
+   Compiling bytemuck v1.25.2
+   Compiling font-types v0.12.7
+   Compiling read-fonts v0.41.0
+   Compiling clap v4.6.7
+   Compiling serde v1.0.229
+   Compiling ahash v0.8.12
+   Compiling fluent-uri v0.4.1
+   Compiling email_address v0.2.9
+   Compiling schemars v1.2.3
+   Compiling jsonschema-value v0.59.0
+   Compiling referencing v0.59.0
+   Compiling jsonschema v0.59.0
+   Compiling skrifa v0.44.0
+   Compiling tt-model v0.0.1 (C:\Users\kaiga\work\review\m2-c21-r1\crates\model)
+   Compiling tt-vector v0.0.1 (C:\Users\kaiga\work\review\m2-c21-r1\crates\vector)
+   Compiling tt-anim v0.0.1 (C:\Users\kaiga\work\review\m2-c21-r1\crates\anim)
+   Compiling tt-persist v0.0.1 (C:\Users\kaiga\work\review\m2-c21-r1\crates\persist)
+   Compiling tt-colour v0.0.1 (C:\Users\kaiga\work\review\m2-c21-r1\crates\colour)
+   Compiling tt-registry v0.0.1 (C:\Users\kaiga\work\review\m2-c21-r1\crates\registry)
+   Compiling tt-audio v0.0.1 (C:\Users\kaiga\work\review\m2-c21-r1\crates\audio)
+   Compiling tt-fx v0.0.1 (C:\Users\kaiga\work\review\m2-c21-r1\crates\fx)
+   Compiling tt-lipsync v0.0.1 (C:\Users\kaiga\work\review\m2-c21-r1\crates\lipsync)
+   Compiling tt-render v0.0.1 (C:\Users\kaiga\work\review\m2-c21-r1\crates\render)
+   Compiling tt-io v0.0.1 (C:\Users\kaiga\work\review\m2-c21-r1\crates\io)
+   Compiling tt-executor v0.0.1 (C:\Users\kaiga\work\review\m2-c21-r1\crates\executor)
+   Compiling tt-engine v0.0.1 (C:\Users\kaiga\work\review\m2-c21-r1\crates\engine)
+   Compiling tt-mcp v0.0.1 (C:\Users\kaiga\work\review\m2-c21-r1\crates\mcp)
+   Compiling tt-headless v0.0.1 (C:\Users\kaiga\work\review\m2-c21-r1\bins\headless)
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 42.79s

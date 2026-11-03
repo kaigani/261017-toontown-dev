@@ -1,0 +1,35 @@
+    Finished `release` profile [optimized + debuginfo] target(s) in 0.20s
+     Running tests\c24_route_domains.rs (target\release\deps\c24_route_domains-0a13a372ec636628.exe)
+
+running 10 tests
+test flatten_keeps_a_pencil_piece_that_a_brush_only_partly_covers ... ok
+ROUTE_DOMAIN break_apart_matches_the_fonts_glyph_outlines: cases 4096 generated 4096 dispatched {"doc.object.patch": 4096, "draw.breakApart.apply": 4096, "draw.content.add": 4096, "draw.drawing.get": 4096, "draw.text.add": 4096}
+test break_apart_matches_the_fonts_glyph_outlines ... ok
+test centre_line_of_a_spineless_ring has been running for over 60 seconds
+test erasing_polygonal_brushes_keeps_partly_covered_ones_whole has been running for over 60 seconds
+test flatten_of_pencil_and_polygonal_brush_layers_is_exact has been running for over 60 seconds
+test lines_to_brush_then_centre_line_on_closed_loops has been running for over 60 seconds
+test non_parallelogram_envelopes_map_the_layer_projectively has been running for over 60 seconds
+test smooth_changes_the_shape_within_its_tolerance has been running for over 60 seconds
+test snapping_onto_a_curved_contour_reaches_its_nearest_point has been running for over 60 seconds
+test vectorize_masks_enclose_the_predicted_paper_components has been running for over 60 seconds
+ROUTE_DOMAIN non_parallelogram_envelopes_map_the_layer_projectively: cases 4096 generated 4096 dispatched {"colour.paint.apply": 6258, "doc.object.patch": 4096, "draw.bounds.get": 4096, "draw.content.add": 4096, "draw.drawing.get": 11393, "draw.envelope.apply": 3201}
+test non_parallelogram_envelopes_map_the_layer_projectively ... ok
+ROUTE_DOMAIN erasing_polygonal_brushes_keeps_partly_covered_ones_whole: cases 4096 generated 4096 dispatched {"colour.paint.apply": 4096, "doc.object.patch": 4096, "draw.content.add": 4096, "draw.drawing.get": 12288, "draw.erase.apply": 4096}
+test erasing_polygonal_brushes_keeps_partly_covered_ones_whole ... ok
+ROUTE_DOMAIN flatten_of_pencil_and_polygonal_brush_layers_is_exact: cases 4096 generated 4096 dispatched {"colour.paint.apply": 6379, "doc.object.patch": 4096, "draw.content.add": 4096, "draw.drawing.get": 12288, "draw.flatten.apply": 4096}
+test flatten_of_pencil_and_polygonal_brush_layers_is_exact ... ok
+ROUTE_DOMAIN lines_to_brush_then_centre_line_on_closed_loops: cases 4096 generated 4096 dispatched {"colour.paint.apply": 8192, "doc.object.patch": 4096, "draw.centreLine.apply": 4096, "draw.content.add": 4096, "draw.drawing.get": 16384, "draw.linesToBrush.apply": 4096}
+test lines_to_brush_then_centre_line_on_closed_loops ... ok
+ROUTE_DOMAIN smooth_changes_the_shape_within_its_tolerance: cases 4096 generated 4096 dispatched {"colour.paint.apply": 4096, "doc.object.patch": 4096, "draw.content.add": 4096, "draw.drawing.get": 12288, "draw.smooth.apply": 4096}
+test smooth_changes_the_shape_within_its_tolerance ... ok
+ROUTE_DOMAIN vectorize_masks_enclose_the_predicted_paper_components: cases 4096 generated 4096 dispatched {"doc.object.patch": 4096, "draw.drawing.get": 4096, "draw.vectorize.run": 4096}
+test vectorize_masks_enclose_the_predicted_paper_components ... ok
+ROUTE_DOMAIN snapping_onto_a_curved_contour_reaches_its_nearest_point: cases 4096 generated 4096 dispatched {"colour.paint.apply": 4096, "doc.object.patch": 4096, "draw.content.add": 4096, "draw.drawing.get": 12288, "draw.point.move": 4096}
+test snapping_onto_a_curved_contour_reaches_its_nearest_point ... ok
+ROUTE_DOMAIN centre_line_of_a_spineless_ring: cases 4096 generated 4096 dispatched {"colour.paint.apply": 4096, "doc.object.patch": 4096, "draw.centreLine.apply": 4096, "draw.content.add": 4096, "draw.drawing.get": 12288}
+test centre_line_of_a_spineless_ring ... ok
+
+test result: ok. 10 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 2275.04s
+
+exit=0

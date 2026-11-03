@@ -192,7 +192,7 @@ pub(crate) fn doc_object_get(cx: &mut Cx, p: GetParams) -> Result<GetResult, Com
         }
         let Value::Object(mut m) = v else { return Err(CommandError::internal("object JSON is not an object")) };
         if p.include.contains(&Include::Derived) && depth != Some(0) {
-            for (name, owner) in derived::add(&doc, *ty, key, &mut m) {
+            for (name, owner) in derived::add(&doc, *ty, key, &mut m, &cx.planar_cache()) {
                 missing.insert(format!("{}.{name} ({owner})", ty.as_str()));
             }
         }
@@ -946,6 +946,11 @@ pub(crate) fn doc_object_patch(cx: &mut Cx, p: PatchParams) -> Result<PatchResul
     });
     cx.set_label(label);
     cx.patch_objects(edits)?;
+    // 02 §13.6: patched strokes go through the same validation as `draw.stroke.set` (a brush outline is swept again
+    // from an edited spine; an outline edited directly discards the spine).
+    let strokes: Vec<String> =
+        targets.iter().filter(|(t, _)| *t == ObjectType::Stroke).map(|(_, k)| k.clone()).collect();
+    super::draw_stroke::normalise_patched_strokes(cx, &doc, &strokes)?;
     let (changes, rev) = cx.preview_changes()?;
     cx.set_targets(json!({ "ids": targets.iter().map(|(_, k)| k).collect::<Vec<_>>() }));
     let document_rev = if changes.is_empty() { doc.document_rev() } else { rev };

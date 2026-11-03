@@ -1,0 +1,19 @@
+{
+  "reviewedHead": "7a77138",
+  "trackedAtReviewedHead": 6874,
+  "changedExistingFiles": [],
+  "legacyReceipts": [
+    {
+      "path": "reviews/evidence/M1-C1.3-r2/inspection-memory.json",
+      "sha256": "cf68973d1c801acc70b78e2796c68e40a4536ed2b80e0abf62cb565abe4af1bd",
+      "exactCommittedBytes": true
+    },
+    {
+      "path": "reviews/evidence/M1-C1.3-r3/open-latency.json",
+      "sha256": "48f2c6c9fa4b19cf4b13e3bbd40b65f49fa781ce213b167d7358470738570f29",
+      "exactCommittedBytes": true
+    }
+  ],
+  "TT_COMMIT_REVIEW_RECEIPTS": null,
+  "statusBeforeFinalCommit": " M crates/executor/tests/c23_r1_colour.rs\n M crates/executor/tests/c23_r1_contracts.rs\n M reviews/M2-C2.3-r1.md\n M reviews/evidence/M2-C2.3-r1/audit.log\n M reviews/evidence/M2-C2.3-r1/command-inventory.json\n M reviews/evidence/M2-C2.3-r1/gate-counts.json\n M reviews/evidence/M2-C2.3-r1/register.json\n M reviews/evidence/M2-C2.3-r1/register.md\n M tests/adversarial/c23-r1-audit.py\n M tests/adversarial/c23-r1-register.py\n?? reviews/evidence/M2-C2.3-r1/ci-observations/macOS/\n?? reviews/evidence/M2-C2.3-r1/colour-final.log\n?? reviews/evidence/M2-C2.3-r1/contracts-final.log\n?? reviews/evidence/M2-C2.3-r1/environment.json\n?? reviews/evidence/M2-C2.3-r1/final-validation.json\n?? reviews/evidence/M2-C2.3-r1/format.log\n?? reviews/evidence/M2-C2.3-r1/legacy-receipts.json\n?? reviews/evidence/M2-C2.3-r1/workspace-exit.txt\n?? reviews/evidence/M2-C2.3-r1/workspace.log\n"
+}

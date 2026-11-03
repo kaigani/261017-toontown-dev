@@ -1,0 +1,11 @@
+{"argv": ["cargo", "test", "--release", "-p", "tt-executor", "--locked", "-j", "4", "--test", "c24_r2_routes", "collapsed_other_contour", "--", "--nocapture"], "cwd": "C:\\Users\\kaiga\\work\\review\\m2-c24-r2", "env": {}, "startedAt": "2026-11-02T19:23:32.831400+00:00"}
+   Compiling tt-executor v0.0.1 (C:\Users\kaiga\work\review\m2-c24-r2\crates\executor)
+    Finished `release` profile [optimized + debuginfo] target(s) in 4.94s
+     Running tests\c24_r2_routes.rs (target\release\deps\c24_r2_routes-06b3746d2d72a967.exe)
+
+running 1 test
+collapsed snap: requested (77,23), other contour at (80,20), distance sqrt(18) < 8; correct area=400
+test collapsed_other_contour_is_a_valid_snap_target_product_control ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 12 filtered out; finished in 0.05s
+

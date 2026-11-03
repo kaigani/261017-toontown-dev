@@ -1,0 +1,25 @@
+{
+  "reviewedHead": "3c74c3432f2a1895b5aaca83e6ddf914cf6b4281",
+  "preexistingFilesChanged": [],
+  "specDiff": "",
+  "m1Receipts": [
+    {
+      "path": "reviews/evidence/M1-C1.3-r3/open-latency.json",
+      "fixedSha": "989233ec83b78d37f41052b57bf12ee17d132940",
+      "byteIdentical": true,
+      "sha256": "48f2c6c9fa4b19cf4b13e3bbd40b65f49fa781ce213b167d7358470738570f29"
+    },
+    {
+      "path": "reviews/evidence/M1-C1.3-r2/inspection-memory.json",
+      "fixedSha": "989233ec83b78d37f41052b57bf12ee17d132940",
+      "byteIdentical": true,
+      "sha256": "cf68973d1c801acc70b78e2796c68e40a4536ed2b80e0abf62cb565abe4af1bd"
+    }
+  ],
+  "TT_COMMIT_REVIEW_RECEIPTS": null,
+  "branch": "review/m2-c24-r2",
+  "mcpVersion": "2.0.0",
+  "rustc": "rustc 1.98.1 (48a229cea 2026-09-01)",
+  "node": "v22.23.4",
+  "statusBeforeCommit": " M reviews/M2-C2.4-r2.md\n?? reviews/evidence/M2-C2.4-r2/execution-final.json\n?? reviews/evidence/M2-C2.4-r2/execution.jsonl\n?? reviews/evidence/M2-C2.4-r2/workspace-final.txt\n"
+}

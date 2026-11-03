@@ -1,0 +1,51 @@
+cargo :    Compiling tt-vector v0.0.1 (C:\Users\kaiga\work\review\m2-c22-r1\crates\vector)
+At line:5 char:1
++ cargo test -p tt-vector --test c22_r1_geometry --locked > .review-c22 ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (   Compiling tt...\crates\vector):String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 1.46s
+     Running tests\c22_r1_geometry.rs (target\debug\deps\c22_r1_geometry-2203b909bea08c27.exe)
+
+running 6 tests
+test a_crossing_near_an_existing_anchor_has_one_shared_junction ... FAILED
+test changing_a_boundarys_geometry_changes_its_zone_id ... FAILED
+test analytic_holes_parents_sides_retracing_tangency_and_brush_winding ... ok
+test overlapping_zones_carry_fill_even_when_neither_interior_point_is_in_the_other ... FAILED
+test topology_changes_at_the_documented_snap_grid_are_repeatable ... ok
+test fixed_seed_line_arrangements_match_independent_convex_clipping ... ok
+
+failures:
+
+---- a_crossing_near_an_existing_anchor_has_one_shared_junction stdout ----
+
+thread 'a_crossing_near_an_existing_anchor_has_one_shared_junction' (20732) panicked at crates\vector\tests\c22_r1_geometry.rs:47:5:
+assertion `left == right` failed: junctions must share an exact coordinate
+  left: P { x: 5.0, y: 0.0 }
+ right: P { x: 5.01, y: 0.0 }
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+---- changing_a_boundarys_geometry_changes_its_zone_id stdout ----
+
+thread 'changing_a_boundarys_geometry_changes_its_zone_id' (22672) panicked at crates\vector\tests\c22_r1_geometry.rs:123:5:
+assertion `left != right` failed: 02 3.12(4), 03 16.1(5): changed zone geometry needs a new boundary-derived ID
+  left: "zn_YEA8XJG3D5S6B5JJEV6R1ZX3B0"
+ right: "zn_YEA8XJG3D5S6B5JJEV6R1ZX3B0"
+
+---- overlapping_zones_carry_fill_even_when_neither_interior_point_is_in_the_other stdout ----
+
+thread 'overlapping_zones_carry_fill_even_when_neither_interior_point_is_in_the_other' (26688) panicked at crates\vector\tests\c22_r1_geometry.rs:22:5:
+assertion `left == right` failed: the exact intersection is a 2 x 2 square; old interior P { x: 5.0, y: 4.1484375 }, new interior P { x: 2.0, y: 0.7109375 }
+  left: [None]
+ right: [Some(Fill { colour_id: Some("col_red"), matrix: None })]
+
+
+failures:
+    a_crossing_near_an_existing_anchor_has_one_shared_junction
+    changing_a_boundarys_geometry_changes_its_zone_id
+    overlapping_zones_carry_fill_even_when_neither_interior_point_is_in_the_other
+
+test result: FAILED. 3 passed; 3 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+error: test failed, to rerun pass `-p tt-vector --test c22_r1_geometry`

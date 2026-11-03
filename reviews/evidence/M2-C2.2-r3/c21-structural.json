@@ -1,0 +1,10 @@
+{
+  "oldPieces": 52,
+  "newPieces": 46,
+  "masked": [
+    "/drawing1/nodes/7/children/0/strokes",
+    "/sha256",
+    "/bytes"
+  ],
+  "everythingElseEqual": true
+}

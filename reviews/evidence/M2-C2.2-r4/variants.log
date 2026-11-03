@@ -1,0 +1,25 @@
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 3.59s
+     Running tests\c22_r4_closure.rs (target\debug\deps\c22_r4_closure-202389510ad5e219.exe)
+
+running 2 tests
+
+thread 'three_reverse_order_styles_share_pick_and_native_click_selection' (25452) panicked at crates\executor\tests\c22_r4_closure.rs:93:77:
+called `Result::unwrap()` on an `Err` value: [ModelError { code: "ref.dangling", message: "style `sty_01K742SG047PMCPGTWHST62SWP` is not a style of palette `pal_01K742SG02PPWW6K8BZY81A0M0`", details: Object {"objectId": String("sc_01K742SG0YSRA1305J7887BDVZ"), "pointer": String("/paletteStyles/pal_01K742SG02PPWW6K8BZY81A0M0"), "severity": String("error")} }, ModelError { code: "ref.dangling", message: "style `sty_01K742SG037JJRBSXV1W92F1BN` is not a style of palette `pal_01K742SG02PPWW6K8BZY81A0M0`", details: Object {"objectId": String("sc_01K742SG2M2H2H02X6D97DG7DN"), "pointer": String("/paletteStyles/pal_01K742SG02PPWW6K8BZY81A0M0"), "severity": String("error")} }]
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+test three_reverse_order_styles_share_pick_and_native_click_selection ... FAILED
+
+thread 'schema_children_stamp_but_model_shaped_opaque_values_survive' (20580) panicked at crates\executor\tests\c22_r4_closure.rs:53:9:
+assertion `left == right` failed: preserve
+  left: Object {"com.example.tool": Object {"pass": Number(2), "stage": String("clean-up")}, "x.y": Object {"closed": Bool(false), "colourId": String("col_01K742SG09H7QE4RRR6XSYYS88"), "id": String("st_01K742SG0R61SYK9GG0HGYVNBT"), "kind": String("pencil"), "lineStyle": Object {"lineType": String("solid"), "thickness": Number(1.5)}, "points": Array [Array [Number(-50), Number(-50), Number(0), Number(0), Number(0), Number(0)], Array [Number(50), Number(50), Number(0), Number(0), Number(0), Number(0)]], "rev": Number(5), "sides": Object {}, "type": String("stroke")}}
+ right: Object {"x.y": Object {"id": String("st_01K742SG0R61SYK9GG0HGYVNBT"), "type": String("stroke"), "rev": Number(5), "kind": String("pencil"), "closed": Bool(false), "points": Array [Array [Number(-50.0), Number(-50.0), Number(0.0), Number(0.0), Number(0.0), Number(0.0)], Array [Number(50.0), Number(50.0), Number(0.0), Number(0.0), Number(0.0), Number(0.0)]], "colourId": String("col_01K742SG09H7QE4RRR6XSYYS88"), "fillMatrix": Null, "lineStyle": Object {"thickness": Number(1.5), "lineType": String("solid")}, "spine": Null, "sides": Object {"left": Null, "right": Null}}}
+test schema_children_stamp_but_model_shaped_opaque_values_survive ... FAILED
+
+failures:
+
+failures:
+    schema_children_stamp_but_model_shaped_opaque_values_survive
+    three_reverse_order_styles_share_pick_and_native_click_selection
+
+test result: FAILED. 0 passed; 2 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.39s
+
+error: test failed, to rerun pass `-p tt-executor --test c22_r4_closure`

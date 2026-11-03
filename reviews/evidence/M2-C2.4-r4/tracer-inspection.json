@@ -1,0 +1,9 @@
+{
+  "builderReviewerHelperByteIdentical": true,
+  "sha256": "e0ee1163932f23efe1e1a3f8f917dbbc3f933988facc3e661b6e224d6330a6b2",
+  "productTracingFittingCalls": false,
+  "mapping": "1200/image width, centered, y up; unit-edge midpoints",
+  "connectivity": "ink 8, paper 4; left turn at saddle",
+  "comparison": "bidirectional contour envelope; paper holes, island adjacency, area bound; exact snap map and IDs",
+  "envelopeDu": 1.7734375
+}

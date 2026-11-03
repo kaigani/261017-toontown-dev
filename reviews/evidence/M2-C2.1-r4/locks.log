@@ -1,0 +1,11 @@
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.14s
+     Running unittests src\lib.rs (target\debug\deps\tt_persist-529424b42d04f7d1.exe)
+
+running 5 tests
+test lock::tests::an_abandoned_arbiter_is_removed_only_when_unprotected ... ok
+test lock::tests::an_unprotected_stale_lock_is_taken_over_and_a_live_unprotected_one_is_not ... ok
+test lock::tests::an_unreadable_lock_is_held_until_abandoned ... ok
+test lock::tests::a_protected_lock_left_by_a_dead_holder_is_taken_over_and_its_heartbeat_fails_closed ... ok
+test lock::tests::a_live_lock_is_protected_and_never_stale ... ok
+
+test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 14 filtered out; finished in 0.04s

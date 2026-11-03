@@ -1,0 +1,2902 @@
+{
+  "reviewedHead": "3c74c3432f2a1895b5aaca83e6ddf914cf6b4281",
+  "sourceRun": 41486947308,
+  "sdk": "2.0.0",
+  "calls": [
+    {
+      "id": "project.create",
+      "params": {
+        "name": "Flatten oracle control",
+        "path": "C:\\Users\\kaiga\\work\\review\\m2-c24-r2\\target\\c24-r2-flatten-pypim9kx\\Flat.animpkg"
+      },
+      "envelope": {
+        "status": "ok",
+        "result": {
+          "projectId": "pr_01M6EV7A3J22VR7CT328VC6BVT",
+          "path": "C:\\Users\\kaiga\\work\\review\\m2-c24-r2\\target\\c24-r2-flatten-pypim9kx\\Flat.animpkg",
+          "sceneId": "sc_01M6EV7A3J22VR7CT328VC6BZY",
+          "cameraId": "el_01M6EV7A3J22VR7CT328VC6C00",
+          "elementId": "el_01M6EV7A3J22VR7CT328VC6C01"
+        },
+        "changes": [],
+        "warnings": [],
+        "documentRev": 1
+      }
+    },
+    {
+      "id": "draw.content.add",
+      "params": {
+        "elementId": "scene:#1/element:\"Drawing\"",
+        "frame": 1,
+        "createDrawing": true,
+        "select": false,
+        "content": {
+          "nodes": [
+            {
+              "type": "layer",
+              "id": "l_a",
+              "layerKind": "pencil",
+              "strokes": [
+                {
+                  "id": "l_a0",
+                  "kind": "pencil",
+                  "closed": true,
+                  "colourId": null,
+                  "lineStyle": {
+                    "thickness": 1,
+                    "lineType": "solid"
+                  },
+                  "bezier": [
+                    {
+                      "x": 0,
+                      "y": 80
+                    },
+                    {
+                      "x": 0,
+                      "y": 80
+                    },
+                    {
+                      "x": 80,
+                      "y": 20
+                    },
+                    {
+                      "x": 80,
+                      "y": 20
+                    },
+                    {
+                      "x": 80,
+                      "y": 20
+                    },
+                    {
+                      "x": 0,
+                      "y": 80
+                    },
+                    {
+                      "x": 0,
+                      "y": 80
+                    },
+                    {
+                      "x": 0,
+                      "y": 80
+                    },
+                    {
+                      "x": 0,
+                      "y": 80
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      },
+      "envelope": {
+        "status": "ok",
+        "result": {
+          "drawingId": "dr_01K7JJN800K4DXN5YY70GS1MD0",
+          "createdDrawing": true,
+          "idMap": {
+            "l_a": "nd_01K7JJN801HPY2PAMWVNMSD28B",
+            "l_a0": "st_01K7JJN802M5JQM27EKTSGHS3Y"
+          },
+          "createdIds": [
+            "nd_01K7JJN801HPY2PAMWVNMSD28B",
+            "st_01K7JJN802M5JQM27EKTSGHS3Y",
+            "dr_01K7JJN800K4DXN5YY70GS1MD0"
+          ],
+          "modifiedIds": [],
+          "removedIds": [],
+          "rev": 2
+        },
+        "changes": [
+          {
+            "id": "db_01M6EV7A3J22VR7CT328VC6BZX",
+            "type": "drawingBank",
+            "op": "modified",
+            "rev": 2,
+            "patch": [
+              {
+                "op": "add",
+                "path": "/drawings/0",
+                "value": {
+                  "id": "dr_01K7JJN800K4DXN5YY70GS1MD0",
+                  "type": "drawing"
+                }
+              }
+            ]
+          },
+          {
+            "id": "dr_01K7JJN800K4DXN5YY70GS1MD0/st_01K7JJN802M5JQM27EKTSGHS3Y",
+            "type": "stroke",
+            "op": "created",
+            "rev": 2,
+            "parentId": "dr_01K7JJN800K4DXN5YY70GS1MD0/nd_01K7JJN801HPY2PAMWVNMSD28B",
+            "index": 0
+          },
+          {
+            "id": "dr_01K7JJN800K4DXN5YY70GS1MD0/nd_01K7JJN801HPY2PAMWVNMSD28B",
+            "type": "drawingNode",
+            "op": "created",
+            "rev": 2,
+            "parentId": "dr_01K7JJN800K4DXN5YY70GS1MD0",
+            "index": 0
+          },
+          {
+            "id": "dr_01K7JJN800K4DXN5YY70GS1MD0",
+            "type": "drawing",
+            "op": "created",
+            "rev": 2,
+            "parentId": "db_01M6EV7A3J22VR7CT328VC6BZX",
+            "index": 0
+          },
+          {
+            "id": "el_01M6EV7A3J22VR7CT328VC6C01",
+            "type": "element",
+            "op": "modified",
+            "rev": 2,
+            "patch": [
+              {
+                "op": "replace",
+                "path": "/exposure",
+                "range": {
+                  "from": 1,
+                  "to": 1
+                },
+                "value": [
+                  [
+                    "dr_01K7JJN800K4DXN5YY70GS1MD0",
+                    1
+                  ]
+                ],
+                "oldValue": [
+                  [
+                    null,
+                    1
+                  ]
+                ]
+              }
+            ]
+          }
+        ],
+        "undo": {
+          "stepId": "u-1",
+          "label": "Paste"
+        },
+        "warnings": [],
+        "documentRev": 2
+      }
+    },
+    {
+      "id": "draw.content.add",
+      "params": {
+        "drawingId": "dr_01K7JJN800K4DXN5YY70GS1MD0",
+        "select": false,
+        "content": {
+          "nodes": [
+            {
+              "type": "layer",
+              "id": "l_b",
+              "layerKind": "pencil",
+              "strokes": [
+                {
+                  "id": "l_b0",
+                  "kind": "pencil",
+                  "closed": false,
+                  "colourId": null,
+                  "lineStyle": {
+                    "thickness": 1,
+                    "lineType": "solid"
+                  },
+                  "bezier": [
+                    {
+                      "x": 0,
+                      "y": 40
+                    },
+                    {
+                      "x": 0,
+                      "y": 40
+                    },
+                    {
+                      "x": 80,
+                      "y": 80
+                    },
+                    {
+                      "x": 80,
+                      "y": 80
+                    },
+                    {
+                      "x": 80,
+                      "y": 80
+                    },
+                    {
+                      "x": 40,
+                      "y": 20
+                    },
+                    {
+                      "x": 40,
+                      "y": 20
+                    }
+                  ]
+                },
+                {
+                  "id": "l_b1",
+                  "kind": "pencil",
+                  "closed": false,
+                  "colourId": null,
+                  "lineStyle": {
+                    "thickness": 1,
+                    "lineType": "solid"
+                  },
+                  "bezier": [
+                    {
+                      "x": 20,
+                      "y": 40
+                    },
+                    {
+                      "x": 20,
+                      "y": 40
+                    },
+                    {
+                      "x": 40,
+                      "y": 60
+                    },
+                    {
+                      "x": 40,
+                      "y": 60
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      },
+      "envelope": {
+        "status": "ok",
+        "result": {
+          "drawingId": "dr_01K7JJN800K4DXN5YY70GS1MD0",
+          "createdDrawing": false,
+          "idMap": {
+            "l_b": "nd_01K7JJN800D2GRHQWQSQSXDPV9",
+            "l_b0": "st_01K7JJN8013J9K7J6TST0VVXXY",
+            "l_b1": "st_01K7JJN802E6RW9JFGYQV5DPPR"
+          },
+          "createdIds": [
+            "nd_01K7JJN800D2GRHQWQSQSXDPV9",
+            "st_01K7JJN802E6RW9JFGYQV5DPPR",
+            "st_01K7JJN803B8CNCPHCABY6VWN2",
+            "st_01K7JJN804VY7RE7QB7YNQGFNX"
+          ],
+          "modifiedIds": [],
+          "removedIds": [],
+          "rev": 3
+        },
+        "changes": [
+          {
+            "id": "dr_01K7JJN800K4DXN5YY70GS1MD0/st_01K7JJN803B8CNCPHCABY6VWN2",
+            "type": "stroke",
+            "op": "created",
+            "rev": 3,
+            "parentId": "dr_01K7JJN800K4DXN5YY70GS1MD0/nd_01K7JJN800D2GRHQWQSQSXDPV9",
+            "index": 0
+          },
+          {
+            "id": "dr_01K7JJN800K4DXN5YY70GS1MD0/st_01K7JJN804VY7RE7QB7YNQGFNX",
+            "type": "stroke",
+            "op": "created",
+            "rev": 3,
+            "parentId": "dr_01K7JJN800K4DXN5YY70GS1MD0/nd_01K7JJN800D2GRHQWQSQSXDPV9",
+            "index": 1
+          },
+          {
+            "id": "dr_01K7JJN800K4DXN5YY70GS1MD0/st_01K7JJN802E6RW9JFGYQV5DPPR",
+            "type": "stroke",
+            "op": "created",
+            "rev": 3,
+            "parentId": "dr_01K7JJN800K4DXN5YY70GS1MD0/nd_01K7JJN800D2GRHQWQSQSXDPV9",
+            "index": 2
+          },
+          {
+            "id": "dr_01K7JJN800K4DXN5YY70GS1MD0/nd_01K7JJN800D2GRHQWQSQSXDPV9",
+            "type": "drawingNode",
+            "op": "created",
+            "rev": 3,
+            "parentId": "dr_01K7JJN800K4DXN5YY70GS1MD0",
+            "index": 1
+          },
+          {
+            "id": "dr_01K7JJN800K4DXN5YY70GS1MD0",
+            "type": "drawing",
+            "op": "modified",
+            "rev": 3,
+            "patch": [
+              {
+                "op": "add",
+                "path": "/nodes/1",
+                "value": {
+                  "id": "nd_01K7JJN800D2GRHQWQSQSXDPV9",
+                  "type": "drawingNode"
+                }
+              }
+            ]
+          }
+        ],
+        "undo": {
+          "stepId": "u-2",
+          "label": "Paste"
+        },
+        "warnings": [],
+        "documentRev": 3
+      }
+    },
+    {
+      "id": "draw.drawing.get",
+      "params": {
+        "drawingId": "dr_01K7JJN800K4DXN5YY70GS1MD0"
+      },
+      "envelope": {
+        "status": "ok",
+        "result": {
+          "drawingId": "dr_01K7JJN800K4DXN5YY70GS1MD0",
+          "elementId": "el_01M6EV7A3J22VR7CT328VC6C01",
+          "name": "1",
+          "rev": 3,
+          "locked": false,
+          "space": {
+            "units": "du",
+            "duPerField": 100,
+            "yAxis": "up",
+            "origin": "drawingCentre"
+          },
+          "pivot": {
+            "x": 0.0,
+            "y": 0.0
+          },
+          "bounds": {
+            "x": -0.5,
+            "y": 19.5,
+            "width": 81.0,
+            "height": 61.0
+          },
+          "nodes": [
+            {
+              "type": "layer",
+              "id": "nd_01K7JJN801HPY2PAMWVNMSD28B",
+              "layerKind": "pencil",
+              "strokes": [
+                {
+                  "type": "stroke",
+                  "id": "st_01K7JJN802M5JQM27EKTSGHS3Y",
+                  "kind": "pencil",
+                  "closed": true,
+                  "bezier": [
+                    {
+                      "x": 0.0,
+                      "y": 80.0
+                    },
+                    {
+                      "x": 0.0,
+                      "y": 80.0
+                    },
+                    {
+                      "x": 80.0,
+                      "y": 20.0
+                    },
+                    {
+                      "x": 80.0,
+                      "y": 20.0
+                    },
+                    {
+                      "x": 80.0,
+                      "y": 20.0
+                    },
+                    {
+                      "x": 0.0,
+                      "y": 80.0
+                    },
+                    {
+                      "x": 0.0,
+                      "y": 80.0
+                    },
+                    {
+                      "x": 0.0,
+                      "y": 80.0
+                    },
+                    {
+                      "x": 0.0,
+                      "y": 80.0
+                    }
+                  ],
+                  "colourId": null,
+                  "lineStyle": {
+                    "thickness": 1.0,
+                    "lineType": "solid"
+                  },
+                  "pressure": null,
+                  "bounds": {
+                    "x": -0.5,
+                    "y": 19.5,
+                    "width": 81.0,
+                    "height": 61.0
+                  },
+                  "leftZoneId": null,
+                  "rightZoneId": null
+                }
+              ],
+              "zones": []
+            },
+            {
+              "type": "layer",
+              "id": "nd_01K7JJN800D2GRHQWQSQSXDPV9",
+              "layerKind": "pencil",
+              "strokes": [
+                {
+                  "type": "stroke",
+                  "id": "st_01K7JJN803B8CNCPHCABY6VWN2",
+                  "kind": "pencil",
+                  "closed": false,
+                  "bezier": [
+                    {
+                      "x": 0.0,
+                      "y": 40.0
+                    },
+                    {
+                      "x": 0.0,
+                      "y": 40.0
+                    },
+                    {
+                      "x": 40.0,
+                      "y": 60.0
+                    },
+                    {
+                      "x": 40.0,
+                      "y": 60.0
+                    }
+                  ],
+                  "colourId": null,
+                  "lineStyle": {
+                    "thickness": 1.0,
+                    "lineType": "solid"
+                  },
+                  "pressure": null,
+                  "bounds": {
+                    "x": -0.5,
+                    "y": 39.5,
+                    "width": 41.0,
+                    "height": 21.0
+                  },
+                  "leftZoneId": null,
+                  "rightZoneId": null
+                },
+                {
+                  "type": "stroke",
+                  "id": "st_01K7JJN804VY7RE7QB7YNQGFNX",
+                  "kind": "pencil",
+                  "closed": false,
+                  "bezier": [
+                    {
+                      "x": 40.0,
+                      "y": 60.0
+                    },
+                    {
+                      "x": 40.0,
+                      "y": 60.0
+                    },
+                    {
+                      "x": 80.0,
+                      "y": 80.0
+                    },
+                    {
+                      "x": 80.0,
+                      "y": 80.0
+                    },
+                    {
+                      "x": 80.0,
+                      "y": 80.0
+                    },
+                    {
+                      "x": 40.0,
+                      "y": 20.0
+                    },
+                    {
+                      "x": 40.0,
+                      "y": 20.0
+                    }
+                  ],
+                  "colourId": null,
+                  "lineStyle": {
+                    "thickness": 1.0,
+                    "lineType": "solid"
+                  },
+                  "pressure": null,
+                  "bounds": {
+                    "x": 39.5,
+                    "y": 19.5,
+                    "width": 41.0,
+                    "height": 61.0
+                  },
+                  "leftZoneId": null,
+                  "rightZoneId": null
+                },
+                {
+                  "type": "stroke",
+                  "id": "st_01K7JJN802E6RW9JFGYQV5DPPR",
+                  "kind": "pencil",
+                  "closed": false,
+                  "bezier": [
+                    {
+                      "x": 20.0,
+                      "y": 40.0
+                    },
+                    {
+                      "x": 20.0,
+                      "y": 40.0
+                    },
+                    {
+                      "x": 40.0,
+                      "y": 60.0
+                    },
+                    {
+                      "x": 40.0,
+                      "y": 60.0
+                    }
+                  ],
+                  "colourId": null,
+                  "lineStyle": {
+                    "thickness": 1.0,
+                    "lineType": "solid"
+                  },
+                  "pressure": null,
+                  "bounds": {
+                    "x": 19.5,
+                    "y": 39.5,
+                    "width": 21.0,
+                    "height": 21.0
+                  },
+                  "leftZoneId": null,
+                  "rightZoneId": null
+                }
+              ],
+              "zones": []
+            }
+          ]
+        },
+        "changes": [],
+        "warnings": [],
+        "documentRev": 3
+      }
+    },
+    {
+      "id": "draw.flatten.apply",
+      "params": {
+        "drawingId": "dr_01K7JJN800K4DXN5YY70GS1MD0",
+        "ids": [
+          "nd_01K7JJN801HPY2PAMWVNMSD28B",
+          "nd_01K7JJN800D2GRHQWQSQSXDPV9"
+        ]
+      },
+      "envelope": {
+        "status": "ok",
+        "result": {
+          "drawingId": "dr_01K7JJN800K4DXN5YY70GS1MD0",
+          "layerId": "nd_01K7JJN800D2GRHQWQSQSXDPV9",
+          "createdIds": [
+            "st_01K7JJN80GVSZ0KC199ACN49CD",
+            "st_01K7JJN80HZ4D66PJCPPR8RV2F",
+            "st_01K7JJN800RAWE5N2H7NMFWJ34",
+            "st_01K7JJN801G63V4RVN6SMMHZJS",
+            "st_01K7JJN802T6JVPFZXV5N8WEKP",
+            "st_01K7JJN8034DVA3CYZYT213Q7G",
+            "st_01K7JJN8044MAVAN1BPGR9AE3D",
+            "st_01K7JJN805BJ4Y8MFE6MYN1AA0",
+            "st_01K7JJN806R2RDJWXZH1J7RKCQ",
+            "st_01K7JJN807GBFDFK98RX92DCW5",
+            "st_01K7JJN808KDACKN7NJ31R6G59",
+            "st_01K7JJN809WF2B30RZBYYEHEA6",
+            "st_01K7JJN80AR75T9XYFM0H9VEFV",
+            "st_01K7JJN80BNMM489MYHCE03JCC",
+            "st_01K7JJN80C6PCZAXE3A4FS8XFY",
+            "st_01K7JJN80DGVVD6R7F3KV9H479",
+            "st_01K7JJN80EB7K0DH1JKGVJ48NJ",
+            "st_01K7JJN80FZFY7DKSY6DHXEMQ5",
+            "zn_EKA1QY13GK968W40A0FSZ14PCP",
+            "zn_Z7VVCJ077MDT1J6XA2GGRHNV3Q"
+          ],
+          "modifiedIds": [
+            "nd_01K7JJN800D2GRHQWQSQSXDPV9"
+          ],
+          "removedIds": [
+            "nd_01K7JJN801HPY2PAMWVNMSD28B",
+            "st_01K7JJN802M5JQM27EKTSGHS3Y",
+            "st_01K7JJN802E6RW9JFGYQV5DPPR",
+            "st_01K7JJN803B8CNCPHCABY6VWN2",
+            "st_01K7JJN804VY7RE7QB7YNQGFNX"
+          ],
+          "rev": 4
+        },
+        "changes": [
+          {
+            "id": "dr_01K7JJN800K4DXN5YY70GS1MD0/st_01K7JJN800RAWE5N2H7NMFWJ34",
+            "type": "stroke",
+            "op": "created",
+            "rev": 4,
+            "parentId": "dr_01K7JJN800K4DXN5YY70GS1MD0/nd_01K7JJN800D2GRHQWQSQSXDPV9",
+            "index": 0
+          },
+          {
+            "id": "dr_01K7JJN800K4DXN5YY70GS1MD0/st_01K7JJN801G63V4RVN6SMMHZJS",
+            "type": "stroke",
+            "op": "created",
+            "rev": 4,
+            "parentId": "dr_01K7JJN800K4DXN5YY70GS1MD0/nd_01K7JJN800D2GRHQWQSQSXDPV9",
+            "index": 1
+          },
+          {
+            "id": "dr_01K7JJN800K4DXN5YY70GS1MD0/st_01K7JJN802T6JVPFZXV5N8WEKP",
+            "type": "stroke",
+            "op": "created",
+            "rev": 4,
+            "parentId": "dr_01K7JJN800K4DXN5YY70GS1MD0/nd_01K7JJN800D2GRHQWQSQSXDPV9",
+            "index": 2
+          },
+          {
+            "id": "dr_01K7JJN800K4DXN5YY70GS1MD0/st_01K7JJN8034DVA3CYZYT213Q7G",
+            "type": "stroke",
+            "op": "created",
+            "rev": 4,
+            "parentId": "dr_01K7JJN800K4DXN5YY70GS1MD0/nd_01K7JJN800D2GRHQWQSQSXDPV9",
+            "index": 3
+          },
+          {
+            "id": "dr_01K7JJN800K4DXN5YY70GS1MD0/st_01K7JJN8044MAVAN1BPGR9AE3D",
+            "type": "stroke",
+            "op": "created",
+            "rev": 4,
+            "parentId": "dr_01K7JJN800K4DXN5YY70GS1MD0/nd_01K7JJN800D2GRHQWQSQSXDPV9",
+            "index": 4
+          },
+          {
+            "id": "dr_01K7JJN800K4DXN5YY70GS1MD0/st_01K7JJN805BJ4Y8MFE6MYN1AA0",
+            "type": "stroke",
+            "op": "created",
+            "rev": 4,
+            "parentId": "dr_01K7JJN800K4DXN5YY70GS1MD0/nd_01K7JJN800D2GRHQWQSQSXDPV9",
+            "index": 5
+          },
+          {
+            "id": "dr_01K7JJN800K4DXN5YY70GS1MD0/st_01K7JJN806R2RDJWXZH1J7RKCQ",
+            "type": "stroke",
+            "op": "created",
+            "rev": 4,
+            "parentId": "dr_01K7JJN800K4DXN5YY70GS1MD0/nd_01K7JJN800D2GRHQWQSQSXDPV9",
+            "index": 6
+          },
+          {
+            "id": "dr_01K7JJN800K4DXN5YY70GS1MD0/st_01K7JJN807GBFDFK98RX92DCW5",
+            "type": "stroke",
+            "op": "created",
+            "rev": 4,
+            "parentId": "dr_01K7JJN800K4DXN5YY70GS1MD0/nd_01K7JJN800D2GRHQWQSQSXDPV9",
+            "index": 7
+          },
+          {
+            "id": "dr_01K7JJN800K4DXN5YY70GS1MD0/st_01K7JJN808KDACKN7NJ31R6G59",
+            "type": "stroke",
+            "op": "created",
+            "rev": 4,
+            "parentId": "dr_01K7JJN800K4DXN5YY70GS1MD0/nd_01K7JJN800D2GRHQWQSQSXDPV9",
+            "index": 8
+          },
+          {
+            "id": "dr_01K7JJN800K4DXN5YY70GS1MD0/st_01K7JJN809WF2B30RZBYYEHEA6",
+            "type": "stroke",
+            "op": "created",
+            "rev": 4,
+            "parentId": "dr_01K7JJN800K4DXN5YY70GS1MD0/nd_01K7JJN800D2GRHQWQSQSXDPV9",
+            "index": 9
+          },
+          {
+            "id": "dr_01K7JJN800K4DXN5YY70GS1MD0/st_01K7JJN80AR75T9XYFM0H9VEFV",
+            "type": "stroke",
+            "op": "created",
+            "rev": 4,
+            "parentId": "dr_01K7JJN800K4DXN5YY70GS1MD0/nd_01K7JJN800D2GRHQWQSQSXDPV9",
+            "index": 10
+          },
+          {
+            "id": "dr_01K7JJN800K4DXN5YY70GS1MD0/st_01K7JJN80BNMM489MYHCE03JCC",
+            "type": "stroke",
+            "op": "created",
+            "rev": 4,
+            "parentId": "dr_01K7JJN800K4DXN5YY70GS1MD0/nd_01K7JJN800D2GRHQWQSQSXDPV9",
+            "index": 11
+          },
+          {
+            "id": "dr_01K7JJN800K4DXN5YY70GS1MD0/st_01K7JJN80C6PCZAXE3A4FS8XFY",
+            "type": "stroke",
+            "op": "created",
+            "rev": 4,
+            "parentId": "dr_01K7JJN800K4DXN5YY70GS1MD0/nd_01K7JJN800D2GRHQWQSQSXDPV9",
+            "index": 12
+          },
+          {
+            "id": "dr_01K7JJN800K4DXN5YY70GS1MD0/st_01K7JJN80DGVVD6R7F3KV9H479",
+            "type": "stroke",
+            "op": "created",
+            "rev": 4,
+            "parentId": "dr_01K7JJN800K4DXN5YY70GS1MD0/nd_01K7JJN800D2GRHQWQSQSXDPV9",
+            "index": 13
+          },
+          {
+            "id": "dr_01K7JJN800K4DXN5YY70GS1MD0/st_01K7JJN80EB7K0DH1JKGVJ48NJ",
+            "type": "stroke",
+            "op": "created",
+            "rev": 4,
+            "parentId": "dr_01K7JJN800K4DXN5YY70GS1MD0/nd_01K7JJN800D2GRHQWQSQSXDPV9",
+            "index": 14
+          },
+          {
+            "id": "dr_01K7JJN800K4DXN5YY70GS1MD0/st_01K7JJN80FZFY7DKSY6DHXEMQ5",
+            "type": "stroke",
+            "op": "created",
+            "rev": 4,
+            "parentId": "dr_01K7JJN800K4DXN5YY70GS1MD0/nd_01K7JJN800D2GRHQWQSQSXDPV9",
+            "index": 15
+          },
+          {
+            "id": "dr_01K7JJN800K4DXN5YY70GS1MD0/st_01K7JJN80GVSZ0KC199ACN49CD",
+            "type": "stroke",
+            "op": "created",
+            "rev": 4,
+            "parentId": "dr_01K7JJN800K4DXN5YY70GS1MD0/nd_01K7JJN800D2GRHQWQSQSXDPV9",
+            "index": 16
+          },
+          {
+            "id": "dr_01K7JJN800K4DXN5YY70GS1MD0/st_01K7JJN80HZ4D66PJCPPR8RV2F",
+            "type": "stroke",
+            "op": "created",
+            "rev": 4,
+            "parentId": "dr_01K7JJN800K4DXN5YY70GS1MD0/nd_01K7JJN800D2GRHQWQSQSXDPV9",
+            "index": 17
+          },
+          {
+            "id": "dr_01K7JJN800K4DXN5YY70GS1MD0/nd_01K7JJN800D2GRHQWQSQSXDPV9",
+            "type": "drawingNode",
+            "op": "modified",
+            "rev": 4,
+            "patch": [
+              {
+                "op": "remove",
+                "path": "/strokes/2",
+                "oldValue": {
+                  "id": "st_01K7JJN802E6RW9JFGYQV5DPPR",
+                  "type": "stroke"
+                }
+              },
+              {
+                "op": "remove",
+                "path": "/strokes/1",
+                "oldValue": {
+                  "id": "st_01K7JJN804VY7RE7QB7YNQGFNX",
+                  "type": "stroke"
+                }
+              },
+              {
+                "op": "remove",
+                "path": "/strokes/0",
+                "oldValue": {
+                  "id": "st_01K7JJN803B8CNCPHCABY6VWN2",
+                  "type": "stroke"
+                }
+              },
+              {
+                "op": "add",
+                "path": "/strokes/0",
+                "value": {
+                  "id": "st_01K7JJN800RAWE5N2H7NMFWJ34",
+                  "type": "stroke"
+                }
+              },
+              {
+                "op": "add",
+                "path": "/strokes/1",
+                "value": {
+                  "id": "st_01K7JJN801G63V4RVN6SMMHZJS",
+                  "type": "stroke"
+                }
+              },
+              {
+                "op": "add",
+                "path": "/strokes/2",
+                "value": {
+                  "id": "st_01K7JJN802T6JVPFZXV5N8WEKP",
+                  "type": "stroke"
+                }
+              },
+              {
+                "op": "add",
+                "path": "/strokes/3",
+                "value": {
+                  "id": "st_01K7JJN8034DVA3CYZYT213Q7G",
+                  "type": "stroke"
+                }
+              },
+              {
+                "op": "add",
+                "path": "/strokes/4",
+                "value": {
+                  "id": "st_01K7JJN8044MAVAN1BPGR9AE3D",
+                  "type": "stroke"
+                }
+              },
+              {
+                "op": "add",
+                "path": "/strokes/5",
+                "value": {
+                  "id": "st_01K7JJN805BJ4Y8MFE6MYN1AA0",
+                  "type": "stroke"
+                }
+              },
+              {
+                "op": "add",
+                "path": "/strokes/6",
+                "value": {
+                  "id": "st_01K7JJN806R2RDJWXZH1J7RKCQ",
+                  "type": "stroke"
+                }
+              },
+              {
+                "op": "add",
+                "path": "/strokes/7",
+                "value": {
+                  "id": "st_01K7JJN807GBFDFK98RX92DCW5",
+                  "type": "stroke"
+                }
+              },
+              {
+                "op": "add",
+                "path": "/strokes/8",
+                "value": {
+                  "id": "st_01K7JJN808KDACKN7NJ31R6G59",
+                  "type": "stroke"
+                }
+              },
+              {
+                "op": "add",
+                "path": "/strokes/9",
+                "value": {
+                  "id": "st_01K7JJN809WF2B30RZBYYEHEA6",
+                  "type": "stroke"
+                }
+              },
+              {
+                "op": "add",
+                "path": "/strokes/10",
+                "value": {
+                  "id": "st_01K7JJN80AR75T9XYFM0H9VEFV",
+                  "type": "stroke"
+                }
+              },
+              {
+                "op": "add",
+                "path": "/strokes/11",
+                "value": {
+                  "id": "st_01K7JJN80BNMM489MYHCE03JCC",
+                  "type": "stroke"
+                }
+              },
+              {
+                "op": "add",
+                "path": "/strokes/12",
+                "value": {
+                  "id": "st_01K7JJN80C6PCZAXE3A4FS8XFY",
+                  "type": "stroke"
+                }
+              },
+              {
+                "op": "add",
+                "path": "/strokes/13",
+                "value": {
+                  "id": "st_01K7JJN80DGVVD6R7F3KV9H479",
+                  "type": "stroke"
+                }
+              },
+              {
+                "op": "add",
+                "path": "/strokes/14",
+                "value": {
+                  "id": "st_01K7JJN80EB7K0DH1JKGVJ48NJ",
+                  "type": "stroke"
+                }
+              },
+              {
+                "op": "add",
+                "path": "/strokes/15",
+                "value": {
+                  "id": "st_01K7JJN80FZFY7DKSY6DHXEMQ5",
+                  "type": "stroke"
+                }
+              },
+              {
+                "op": "add",
+                "path": "/strokes/16",
+                "value": {
+                  "id": "st_01K7JJN80GVSZ0KC199ACN49CD",
+                  "type": "stroke"
+                }
+              },
+              {
+                "op": "add",
+                "path": "/strokes/17",
+                "value": {
+                  "id": "st_01K7JJN80HZ4D66PJCPPR8RV2F",
+                  "type": "stroke"
+                }
+              }
+            ]
+          },
+          {
+            "id": "dr_01K7JJN800K4DXN5YY70GS1MD0",
+            "type": "drawing",
+            "op": "modified",
+            "rev": 4,
+            "patch": [
+              {
+                "op": "remove",
+                "path": "/nodes/0",
+                "oldValue": {
+                  "id": "nd_01K7JJN801HPY2PAMWVNMSD28B",
+                  "type": "drawingNode"
+                }
+              }
+            ]
+          },
+          {
+            "id": "dr_01K7JJN800K4DXN5YY70GS1MD0/st_01K7JJN802M5JQM27EKTSGHS3Y",
+            "type": "stroke",
+            "op": "deleted",
+            "rev": 4,
+            "parentId": "dr_01K7JJN800K4DXN5YY70GS1MD0/nd_01K7JJN801HPY2PAMWVNMSD28B"
+          },
+          {
+            "id": "dr_01K7JJN800K4DXN5YY70GS1MD0/nd_01K7JJN801HPY2PAMWVNMSD28B",
+            "type": "drawingNode",
+            "op": "deleted",
+            "rev": 4,
+            "parentId": "dr_01K7JJN800K4DXN5YY70GS1MD0"
+          },
+          {
+            "id": "dr_01K7JJN800K4DXN5YY70GS1MD0/st_01K7JJN803B8CNCPHCABY6VWN2",
+            "type": "stroke",
+            "op": "deleted",
+            "rev": 4,
+            "parentId": "dr_01K7JJN800K4DXN5YY70GS1MD0/nd_01K7JJN800D2GRHQWQSQSXDPV9"
+          },
+          {
+            "id": "dr_01K7JJN800K4DXN5YY70GS1MD0/st_01K7JJN804VY7RE7QB7YNQGFNX",
+            "type": "stroke",
+            "op": "deleted",
+            "rev": 4,
+            "parentId": "dr_01K7JJN800K4DXN5YY70GS1MD0/nd_01K7JJN800D2GRHQWQSQSXDPV9"
+          },
+          {
+            "id": "dr_01K7JJN800K4DXN5YY70GS1MD0/st_01K7JJN802E6RW9JFGYQV5DPPR",
+            "type": "stroke",
+            "op": "deleted",
+            "rev": 4,
+            "parentId": "dr_01K7JJN800K4DXN5YY70GS1MD0/nd_01K7JJN800D2GRHQWQSQSXDPV9"
+          }
+        ],
+        "undo": {
+          "stepId": "u-3",
+          "label": "Flatten Drawing"
+        },
+        "warnings": [],
+        "documentRev": 4
+      }
+    },
+    {
+      "id": "draw.drawing.get",
+      "params": {
+        "drawingId": "dr_01K7JJN800K4DXN5YY70GS1MD0"
+      },
+      "envelope": {
+        "status": "ok",
+        "result": {
+          "drawingId": "dr_01K7JJN800K4DXN5YY70GS1MD0",
+          "elementId": "el_01M6EV7A3J22VR7CT328VC6C01",
+          "name": "1",
+          "rev": 4,
+          "locked": false,
+          "space": {
+            "units": "du",
+            "duPerField": 100,
+            "yAxis": "up",
+            "origin": "drawingCentre"
+          },
+          "pivot": {
+            "x": 0.0,
+            "y": 0.0
+          },
+          "bounds": {
+            "x": -0.5,
+            "y": 19.5,
+            "width": 81.0,
+            "height": 61.0
+          },
+          "nodes": [
+            {
+              "type": "layer",
+              "id": "nd_01K7JJN800D2GRHQWQSQSXDPV9",
+              "layerKind": "pencil",
+              "strokes": [
+                {
+                  "type": "stroke",
+                  "id": "st_01K7JJN800RAWE5N2H7NMFWJ34",
+                  "kind": "pencil",
+                  "closed": false,
+                  "bezier": [
+                    {
+                      "x": 32.0,
+                      "y": 56.0
+                    },
+                    {
+                      "x": 32.0,
+                      "y": 56.0
+                    },
+                    {
+                      "x": 32.703125,
+                      "y": 55.46875
+                    },
+                    {
+                      "x": 32.703125,
+                      "y": 55.46875
+                    }
+                  ],
+                  "colourId": null,
+                  "lineStyle": {
+                    "thickness": 1.0,
+                    "lineType": "solid"
+                  },
+                  "pressure": null,
+                  "bounds": {
+                    "x": 31.5,
+                    "y": 54.96875,
+                    "width": 1.703125,
+                    "height": 1.53125
+                  },
+                  "leftZoneId": "zn_Z7VVCJ077MDT1J6XA2GGRHNV3Q",
+                  "rightZoneId": null
+                },
+                {
+                  "type": "stroke",
+                  "id": "st_01K7JJN801G63V4RVN6SMMHZJS",
+                  "kind": "pencil",
+                  "closed": false,
+                  "bezier": [
+                    {
+                      "x": 32.703125,
+                      "y": 55.46875
+                    },
+                    {
+                      "x": 32.703125,
+                      "y": 55.46875
+                    },
+                    {
+                      "x": 34.28125,
+                      "y": 54.28125
+                    },
+                    {
+                      "x": 34.28125,
+                      "y": 54.28125
+                    }
+                  ],
+                  "colourId": null,
+                  "lineStyle": {
+                    "thickness": 1.0,
+                    "lineType": "solid"
+                  },
+                  "pressure": null,
+                  "bounds": {
+                    "x": 32.203125,
+                    "y": 53.78125,
+                    "width": 2.578125,
+                    "height": 2.1875
+                  },
+                  "leftZoneId": "zn_Z7VVCJ077MDT1J6XA2GGRHNV3Q",
+                  "rightZoneId": null
+                },
+                {
+                  "type": "stroke",
+                  "id": "st_01K7JJN802T6JVPFZXV5N8WEKP",
+                  "kind": "pencil",
+                  "closed": false,
+                  "bezier": [
+                    {
+                      "x": 34.28125,
+                      "y": 54.28125
+                    },
+                    {
+                      "x": 34.28125,
+                      "y": 54.28125
+                    },
+                    {
+                      "x": 53.328125,
+                      "y": 40.0
+                    },
+                    {
+                      "x": 53.328125,
+                      "y": 40.0
+                    }
+                  ],
+                  "colourId": null,
+                  "lineStyle": {
+                    "thickness": 1.0,
+                    "lineType": "solid"
+                  },
+                  "pressure": null,
+                  "bounds": {
+                    "x": 33.78125,
+                    "y": 39.5,
+                    "width": 20.046875,
+                    "height": 15.28125
+                  },
+                  "leftZoneId": "zn_EKA1QY13GK968W40A0FSZ14PCP",
+                  "rightZoneId": null
+                },
+                {
+                  "type": "stroke",
+                  "id": "st_01K7JJN8034DVA3CYZYT213Q7G",
+                  "kind": "pencil",
+                  "closed": false,
+                  "bezier": [
+                    {
+                      "x": 53.328125,
+                      "y": 40.0
+                    },
+                    {
+                      "x": 53.328125,
+                      "y": 40.0
+                    },
+                    {
+                      "x": 80.0,
+                      "y": 20.0
+                    },
+                    {
+                      "x": 80.0,
+                      "y": 20.0
+                    },
+                    {
+                      "x": 80.0,
+                      "y": 20.0
+                    },
+                    {
+                      "x": 53.328125,
+                      "y": 40.0
+                    },
+                    {
+                      "x": 53.328125,
+                      "y": 40.0
+                    }
+                  ],
+                  "colourId": null,
+                  "lineStyle": {
+                    "thickness": 1.0,
+                    "lineType": "solid"
+                  },
+                  "pressure": null,
+                  "bounds": {
+                    "x": 52.828125,
+                    "y": 19.5,
+                    "width": 27.671875,
+                    "height": 21.0
+                  },
+                  "leftZoneId": null,
+                  "rightZoneId": null
+                },
+                {
+                  "type": "stroke",
+                  "id": "st_01K7JJN8044MAVAN1BPGR9AE3D",
+                  "kind": "pencil",
+                  "closed": false,
+                  "bezier": [
+                    {
+                      "x": 53.328125,
+                      "y": 40.0
+                    },
+                    {
+                      "x": 53.328125,
+                      "y": 40.0
+                    },
+                    {
+                      "x": 34.28125,
+                      "y": 54.28125
+                    },
+                    {
+                      "x": 34.28125,
+                      "y": 54.28125
+                    }
+                  ],
+                  "colourId": null,
+                  "lineStyle": {
+                    "thickness": 1.0,
+                    "lineType": "solid"
+                  },
+                  "pressure": null,
+                  "bounds": {
+                    "x": 33.78125,
+                    "y": 39.5,
+                    "width": 20.046875,
+                    "height": 15.28125
+                  },
+                  "leftZoneId": null,
+                  "rightZoneId": "zn_EKA1QY13GK968W40A0FSZ14PCP"
+                },
+                {
+                  "type": "stroke",
+                  "id": "st_01K7JJN805BJ4Y8MFE6MYN1AA0",
+                  "kind": "pencil",
+                  "closed": false,
+                  "bezier": [
+                    {
+                      "x": 34.28125,
+                      "y": 54.28125
+                    },
+                    {
+                      "x": 34.28125,
+                      "y": 54.28125
+                    },
+                    {
+                      "x": 32.703125,
+                      "y": 55.46875
+                    },
+                    {
+                      "x": 32.703125,
+                      "y": 55.46875
+                    }
+                  ],
+                  "colourId": null,
+                  "lineStyle": {
+                    "thickness": 1.0,
+                    "lineType": "solid"
+                  },
+                  "pressure": null,
+                  "bounds": {
+                    "x": 32.203125,
+                    "y": 53.78125,
+                    "width": 2.578125,
+                    "height": 2.1875
+                  },
+                  "leftZoneId": null,
+                  "rightZoneId": "zn_Z7VVCJ077MDT1J6XA2GGRHNV3Q"
+                },
+                {
+                  "type": "stroke",
+                  "id": "st_01K7JJN806R2RDJWXZH1J7RKCQ",
+                  "kind": "pencil",
+                  "closed": false,
+                  "bezier": [
+                    {
+                      "x": 32.703125,
+                      "y": 55.46875
+                    },
+                    {
+                      "x": 32.703125,
+                      "y": 55.46875
+                    },
+                    {
+                      "x": 32.0,
+                      "y": 56.0
+                    },
+                    {
+                      "x": 32.0,
+                      "y": 56.0
+                    }
+                  ],
+                  "colourId": null,
+                  "lineStyle": {
+                    "thickness": 1.0,
+                    "lineType": "solid"
+                  },
+                  "pressure": null,
+                  "bounds": {
+                    "x": 31.5,
+                    "y": 54.96875,
+                    "width": 1.703125,
+                    "height": 1.53125
+                  },
+                  "leftZoneId": null,
+                  "rightZoneId": "zn_Z7VVCJ077MDT1J6XA2GGRHNV3Q"
+                },
+                {
+                  "type": "stroke",
+                  "id": "st_01K7JJN807GBFDFK98RX92DCW5",
+                  "kind": "pencil",
+                  "closed": false,
+                  "bezier": [
+                    {
+                      "x": 32.0,
+                      "y": 56.0
+                    },
+                    {
+                      "x": 32.0,
+                      "y": 56.0
+                    },
+                    {
+                      "x": 0.0,
+                      "y": 80.0
+                    },
+                    {
+                      "x": 0.0,
+                      "y": 80.0
+                    },
+                    {
+                      "x": 0.0,
+                      "y": 80.0
+                    },
+                    {
+                      "x": 32.0,
+                      "y": 56.0
+                    },
+                    {
+                      "x": 32.0,
+                      "y": 56.0
+                    }
+                  ],
+                  "colourId": null,
+                  "lineStyle": {
+                    "thickness": 1.0,
+                    "lineType": "solid"
+                  },
+                  "pressure": null,
+                  "bounds": {
+                    "x": -0.5,
+                    "y": 55.5,
+                    "width": 33.0,
+                    "height": 25.0
+                  },
+                  "leftZoneId": null,
+                  "rightZoneId": null
+                },
+                {
+                  "type": "stroke",
+                  "id": "st_01K7JJN808KDACKN7NJ31R6G59",
+                  "kind": "pencil",
+                  "closed": false,
+                  "bezier": [
+                    {
+                      "x": 32.0,
+                      "y": 56.0
+                    },
+                    {
+                      "x": 32.0,
+                      "y": 56.0
+                    },
+                    {
+                      "x": 34.28125,
+                      "y": 54.28125
+                    },
+                    {
+                      "x": 34.28125,
+                      "y": 54.28125
+                    }
+                  ],
+                  "colourId": null,
+                  "lineStyle": {
+                    "thickness": 1.0,
+                    "lineType": "solid"
+                  },
+                  "pressure": null,
+                  "bounds": {
+                    "x": 31.5,
+                    "y": 53.78125,
+                    "width": 3.28125,
+                    "height": 2.71875
+                  },
+                  "leftZoneId": "zn_Z7VVCJ077MDT1J6XA2GGRHNV3Q",
+                  "rightZoneId": null
+                },
+                {
+                  "type": "stroke",
+                  "id": "st_01K7JJN809WF2B30RZBYYEHEA6",
+                  "kind": "pencil",
+                  "closed": false,
+                  "bezier": [
+                    {
+                      "x": 34.28125,
+                      "y": 54.28125
+                    },
+                    {
+                      "x": 34.28125,
+                      "y": 54.28125
+                    },
+                    {
+                      "x": 32.703125,
+                      "y": 55.46875
+                    },
+                    {
+                      "x": 32.703125,
+                      "y": 55.46875
+                    }
+                  ],
+                  "colourId": null,
+                  "lineStyle": {
+                    "thickness": 1.0,
+                    "lineType": "solid"
+                  },
+                  "pressure": null,
+                  "bounds": {
+                    "x": 32.203125,
+                    "y": 53.78125,
+                    "width": 2.578125,
+                    "height": 2.1875
+                  },
+                  "leftZoneId": null,
+                  "rightZoneId": "zn_Z7VVCJ077MDT1J6XA2GGRHNV3Q"
+                },
+                {
+                  "type": "stroke",
+                  "id": "st_01K7JJN80AR75T9XYFM0H9VEFV",
+                  "kind": "pencil",
+                  "closed": false,
+                  "bezier": [
+                    {
+                      "x": 32.703125,
+                      "y": 55.46875
+                    },
+                    {
+                      "x": 32.703125,
+                      "y": 55.46875
+                    },
+                    {
+                      "x": 32.0,
+                      "y": 56.0
+                    },
+                    {
+                      "x": 32.0,
+                      "y": 56.0
+                    }
+                  ],
+                  "colourId": null,
+                  "lineStyle": {
+                    "thickness": 1.0,
+                    "lineType": "solid"
+                  },
+                  "pressure": null,
+                  "bounds": {
+                    "x": 31.5,
+                    "y": 54.96875,
+                    "width": 1.703125,
+                    "height": 1.53125
+                  },
+                  "leftZoneId": null,
+                  "rightZoneId": "zn_Z7VVCJ077MDT1J6XA2GGRHNV3Q"
+                },
+                {
+                  "type": "stroke",
+                  "id": "st_01K7JJN80BNMM489MYHCE03JCC",
+                  "kind": "pencil",
+                  "closed": false,
+                  "bezier": [
+                    {
+                      "x": 32.0,
+                      "y": 56.0
+                    },
+                    {
+                      "x": 32.0,
+                      "y": 56.0
+                    },
+                    {
+                      "x": 0.0,
+                      "y": 80.0
+                    },
+                    {
+                      "x": 0.0,
+                      "y": 80.0
+                    },
+                    {
+                      "x": 0.0,
+                      "y": 80.0
+                    },
+                    {
+                      "x": 32.0,
+                      "y": 56.0
+                    },
+                    {
+                      "x": 32.0,
+                      "y": 56.0
+                    }
+                  ],
+                  "colourId": null,
+                  "lineStyle": {
+                    "thickness": 1.0,
+                    "lineType": "solid"
+                  },
+                  "pressure": null,
+                  "bounds": {
+                    "x": -0.5,
+                    "y": 55.5,
+                    "width": 33.0,
+                    "height": 25.0
+                  },
+                  "leftZoneId": null,
+                  "rightZoneId": null
+                },
+                {
+                  "type": "stroke",
+                  "id": "st_01K7JJN80C6PCZAXE3A4FS8XFY",
+                  "kind": "pencil",
+                  "closed": false,
+                  "bezier": [
+                    {
+                      "x": 0.0,
+                      "y": 40.0
+                    },
+                    {
+                      "x": 0.0,
+                      "y": 40.0
+                    },
+                    {
+                      "x": 32.0,
+                      "y": 56.0
+                    },
+                    {
+                      "x": 32.0,
+                      "y": 56.0
+                    }
+                  ],
+                  "colourId": null,
+                  "lineStyle": {
+                    "thickness": 1.0,
+                    "lineType": "solid"
+                  },
+                  "pressure": null,
+                  "bounds": {
+                    "x": -0.5,
+                    "y": 39.5,
+                    "width": 33.0,
+                    "height": 17.0
+                  },
+                  "leftZoneId": null,
+                  "rightZoneId": null
+                },
+                {
+                  "type": "stroke",
+                  "id": "st_01K7JJN80DGVVD6R7F3KV9H479",
+                  "kind": "pencil",
+                  "closed": false,
+                  "bezier": [
+                    {
+                      "x": 32.0,
+                      "y": 56.0
+                    },
+                    {
+                      "x": 32.0,
+                      "y": 56.0
+                    },
+                    {
+                      "x": 40.0,
+                      "y": 60.0
+                    },
+                    {
+                      "x": 40.0,
+                      "y": 60.0
+                    }
+                  ],
+                  "colourId": null,
+                  "lineStyle": {
+                    "thickness": 1.0,
+                    "lineType": "solid"
+                  },
+                  "pressure": null,
+                  "bounds": {
+                    "x": 31.5,
+                    "y": 55.5,
+                    "width": 9.0,
+                    "height": 5.0
+                  },
+                  "leftZoneId": null,
+                  "rightZoneId": "zn_Z7VVCJ077MDT1J6XA2GGRHNV3Q"
+                },
+                {
+                  "type": "stroke",
+                  "id": "st_01K7JJN80EB7K0DH1JKGVJ48NJ",
+                  "kind": "pencil",
+                  "closed": false,
+                  "bezier": [
+                    {
+                      "x": 40.0,
+                      "y": 60.0
+                    },
+                    {
+                      "x": 40.0,
+                      "y": 60.0
+                    },
+                    {
+                      "x": 80.0,
+                      "y": 80.0
+                    },
+                    {
+                      "x": 80.0,
+                      "y": 80.0
+                    },
+                    {
+                      "x": 80.0,
+                      "y": 80.0
+                    },
+                    {
+                      "x": 53.328125,
+                      "y": 40.0
+                    },
+                    {
+                      "x": 53.328125,
+                      "y": 40.0
+                    }
+                  ],
+                  "colourId": null,
+                  "lineStyle": {
+                    "thickness": 1.0,
+                    "lineType": "solid"
+                  },
+                  "pressure": null,
+                  "bounds": {
+                    "x": 39.5,
+                    "y": 39.5,
+                    "width": 41.0,
+                    "height": 41.0
+                  },
+                  "leftZoneId": null,
+                  "rightZoneId": "zn_EKA1QY13GK968W40A0FSZ14PCP"
+                },
+                {
+                  "type": "stroke",
+                  "id": "st_01K7JJN80FZFY7DKSY6DHXEMQ5",
+                  "kind": "pencil",
+                  "closed": false,
+                  "bezier": [
+                    {
+                      "x": 53.328125,
+                      "y": 40.0
+                    },
+                    {
+                      "x": 53.328125,
+                      "y": 40.0
+                    },
+                    {
+                      "x": 40.0,
+                      "y": 20.0
+                    },
+                    {
+                      "x": 40.0,
+                      "y": 20.0
+                    }
+                  ],
+                  "colourId": null,
+                  "lineStyle": {
+                    "thickness": 1.0,
+                    "lineType": "solid"
+                  },
+                  "pressure": null,
+                  "bounds": {
+                    "x": 39.5,
+                    "y": 19.5,
+                    "width": 14.328125,
+                    "height": 21.0
+                  },
+                  "leftZoneId": null,
+                  "rightZoneId": null
+                },
+                {
+                  "type": "stroke",
+                  "id": "st_01K7JJN80GVSZ0KC199ACN49CD",
+                  "kind": "pencil",
+                  "closed": false,
+                  "bezier": [
+                    {
+                      "x": 20.0,
+                      "y": 40.0
+                    },
+                    {
+                      "x": 20.0,
+                      "y": 40.0
+                    },
+                    {
+                      "x": 34.28125,
+                      "y": 54.28125
+                    },
+                    {
+                      "x": 34.28125,
+                      "y": 54.28125
+                    }
+                  ],
+                  "colourId": null,
+                  "lineStyle": {
+                    "thickness": 1.0,
+                    "lineType": "solid"
+                  },
+                  "pressure": null,
+                  "bounds": {
+                    "x": 19.5,
+                    "y": 39.5,
+                    "width": 15.28125,
+                    "height": 15.28125
+                  },
+                  "leftZoneId": null,
+                  "rightZoneId": null
+                },
+                {
+                  "type": "stroke",
+                  "id": "st_01K7JJN80HZ4D66PJCPPR8RV2F",
+                  "kind": "pencil",
+                  "closed": false,
+                  "bezier": [
+                    {
+                      "x": 34.28125,
+                      "y": 54.28125
+                    },
+                    {
+                      "x": 34.28125,
+                      "y": 54.28125
+                    },
+                    {
+                      "x": 40.0,
+                      "y": 60.0
+                    },
+                    {
+                      "x": 40.0,
+                      "y": 60.0
+                    }
+                  ],
+                  "colourId": null,
+                  "lineStyle": {
+                    "thickness": 1.0,
+                    "lineType": "solid"
+                  },
+                  "pressure": null,
+                  "bounds": {
+                    "x": 33.78125,
+                    "y": 53.78125,
+                    "width": 6.71875,
+                    "height": 6.71875
+                  },
+                  "leftZoneId": "zn_Z7VVCJ077MDT1J6XA2GGRHNV3Q",
+                  "rightZoneId": "zn_EKA1QY13GK968W40A0FSZ14PCP"
+                }
+              ],
+              "zones": [
+                {
+                  "type": "zone",
+                  "id": "zn_Z7VVCJ077MDT1J6XA2GGRHNV3Q",
+                  "colourId": null,
+                  "textureMatrix": null,
+                  "boundaryStrokeIds": [
+                    "st_01K7JJN800RAWE5N2H7NMFWJ34",
+                    "st_01K7JJN801G63V4RVN6SMMHZJS",
+                    "st_01K7JJN805BJ4Y8MFE6MYN1AA0",
+                    "st_01K7JJN806R2RDJWXZH1J7RKCQ",
+                    "st_01K7JJN808KDACKN7NJ31R6G59",
+                    "st_01K7JJN809WF2B30RZBYYEHEA6",
+                    "st_01K7JJN80AR75T9XYFM0H9VEFV",
+                    "st_01K7JJN80DGVVD6R7F3KV9H479",
+                    "st_01K7JJN80HZ4D66PJCPPR8RV2F"
+                  ],
+                  "holes": [],
+                  "parentZoneId": null,
+                  "area": 11.439208984375,
+                  "bounds": {
+                    "x": 32,
+                    "y": 54.28125,
+                    "width": 8,
+                    "height": 5.71875
+                  },
+                  "interiorPoint": {
+                    "x": 34.48046875,
+                    "y": 56.3203125
+                  }
+                },
+                {
+                  "type": "zone",
+                  "id": "zn_EKA1QY13GK968W40A0FSZ14PCP",
+                  "colourId": null,
+                  "textureMatrix": null,
+                  "boundaryStrokeIds": [
+                    "st_01K7JJN802T6JVPFZXV5N8WEKP",
+                    "st_01K7JJN8044MAVAN1BPGR9AE3D",
+                    "st_01K7JJN80EB7K0DH1JKGVJ48NJ",
+                    "st_01K7JJN80HZ4D66PJCPPR8RV2F"
+                  ],
+                  "holes": [],
+                  "parentZoneId": null,
+                  "area": 628.578857421875,
+                  "bounds": {
+                    "x": 34.28125,
+                    "y": 40,
+                    "width": 45.71875,
+                    "height": 40
+                  },
+                  "interiorPoint": {
+                    "x": 48.57421875,
+                    "y": 54.2890625
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        "changes": [],
+        "warnings": [],
+        "documentRev": 4
+      }
+    }
+  ],
+  "actualAreas": [
+    11.439208984375,
+    628.578857421875
+  ],
+  "before": {
+    "drawingId": "dr_01K7JJN800K4DXN5YY70GS1MD0",
+    "elementId": "el_01M6EV7A3J22VR7CT328VC6C01",
+    "name": "1",
+    "rev": 3,
+    "locked": false,
+    "space": {
+      "units": "du",
+      "duPerField": 100,
+      "yAxis": "up",
+      "origin": "drawingCentre"
+    },
+    "pivot": {
+      "x": 0.0,
+      "y": 0.0
+    },
+    "bounds": {
+      "x": -0.5,
+      "y": 19.5,
+      "width": 81.0,
+      "height": 61.0
+    },
+    "nodes": [
+      {
+        "type": "layer",
+        "id": "nd_01K7JJN801HPY2PAMWVNMSD28B",
+        "layerKind": "pencil",
+        "strokes": [
+          {
+            "type": "stroke",
+            "id": "st_01K7JJN802M5JQM27EKTSGHS3Y",
+            "kind": "pencil",
+            "closed": true,
+            "bezier": [
+              {
+                "x": 0.0,
+                "y": 80.0
+              },
+              {
+                "x": 0.0,
+                "y": 80.0
+              },
+              {
+                "x": 80.0,
+                "y": 20.0
+              },
+              {
+                "x": 80.0,
+                "y": 20.0
+              },
+              {
+                "x": 80.0,
+                "y": 20.0
+              },
+              {
+                "x": 0.0,
+                "y": 80.0
+              },
+              {
+                "x": 0.0,
+                "y": 80.0
+              },
+              {
+                "x": 0.0,
+                "y": 80.0
+              },
+              {
+                "x": 0.0,
+                "y": 80.0
+              }
+            ],
+            "colourId": null,
+            "lineStyle": {
+              "thickness": 1.0,
+              "lineType": "solid"
+            },
+            "pressure": null,
+            "bounds": {
+              "x": -0.5,
+              "y": 19.5,
+              "width": 81.0,
+              "height": 61.0
+            },
+            "leftZoneId": null,
+            "rightZoneId": null
+          }
+        ],
+        "zones": []
+      },
+      {
+        "type": "layer",
+        "id": "nd_01K7JJN800D2GRHQWQSQSXDPV9",
+        "layerKind": "pencil",
+        "strokes": [
+          {
+            "type": "stroke",
+            "id": "st_01K7JJN803B8CNCPHCABY6VWN2",
+            "kind": "pencil",
+            "closed": false,
+            "bezier": [
+              {
+                "x": 0.0,
+                "y": 40.0
+              },
+              {
+                "x": 0.0,
+                "y": 40.0
+              },
+              {
+                "x": 40.0,
+                "y": 60.0
+              },
+              {
+                "x": 40.0,
+                "y": 60.0
+              }
+            ],
+            "colourId": null,
+            "lineStyle": {
+              "thickness": 1.0,
+              "lineType": "solid"
+            },
+            "pressure": null,
+            "bounds": {
+              "x": -0.5,
+              "y": 39.5,
+              "width": 41.0,
+              "height": 21.0
+            },
+            "leftZoneId": null,
+            "rightZoneId": null
+          },
+          {
+            "type": "stroke",
+            "id": "st_01K7JJN804VY7RE7QB7YNQGFNX",
+            "kind": "pencil",
+            "closed": false,
+            "bezier": [
+              {
+                "x": 40.0,
+                "y": 60.0
+              },
+              {
+                "x": 40.0,
+                "y": 60.0
+              },
+              {
+                "x": 80.0,
+                "y": 80.0
+              },
+              {
+                "x": 80.0,
+                "y": 80.0
+              },
+              {
+                "x": 80.0,
+                "y": 80.0
+              },
+              {
+                "x": 40.0,
+                "y": 20.0
+              },
+              {
+                "x": 40.0,
+                "y": 20.0
+              }
+            ],
+            "colourId": null,
+            "lineStyle": {
+              "thickness": 1.0,
+              "lineType": "solid"
+            },
+            "pressure": null,
+            "bounds": {
+              "x": 39.5,
+              "y": 19.5,
+              "width": 41.0,
+              "height": 61.0
+            },
+            "leftZoneId": null,
+            "rightZoneId": null
+          },
+          {
+            "type": "stroke",
+            "id": "st_01K7JJN802E6RW9JFGYQV5DPPR",
+            "kind": "pencil",
+            "closed": false,
+            "bezier": [
+              {
+                "x": 20.0,
+                "y": 40.0
+              },
+              {
+                "x": 20.0,
+                "y": 40.0
+              },
+              {
+                "x": 40.0,
+                "y": 60.0
+              },
+              {
+                "x": 40.0,
+                "y": 60.0
+              }
+            ],
+            "colourId": null,
+            "lineStyle": {
+              "thickness": 1.0,
+              "lineType": "solid"
+            },
+            "pressure": null,
+            "bounds": {
+              "x": 19.5,
+              "y": 39.5,
+              "width": 21.0,
+              "height": 21.0
+            },
+            "leftZoneId": null,
+            "rightZoneId": null
+          }
+        ],
+        "zones": []
+      }
+    ]
+  },
+  "after": {
+    "drawingId": "dr_01K7JJN800K4DXN5YY70GS1MD0",
+    "elementId": "el_01M6EV7A3J22VR7CT328VC6C01",
+    "name": "1",
+    "rev": 4,
+    "locked": false,
+    "space": {
+      "units": "du",
+      "duPerField": 100,
+      "yAxis": "up",
+      "origin": "drawingCentre"
+    },
+    "pivot": {
+      "x": 0.0,
+      "y": 0.0
+    },
+    "bounds": {
+      "x": -0.5,
+      "y": 19.5,
+      "width": 81.0,
+      "height": 61.0
+    },
+    "nodes": [
+      {
+        "type": "layer",
+        "id": "nd_01K7JJN800D2GRHQWQSQSXDPV9",
+        "layerKind": "pencil",
+        "strokes": [
+          {
+            "type": "stroke",
+            "id": "st_01K7JJN800RAWE5N2H7NMFWJ34",
+            "kind": "pencil",
+            "closed": false,
+            "bezier": [
+              {
+                "x": 32.0,
+                "y": 56.0
+              },
+              {
+                "x": 32.0,
+                "y": 56.0
+              },
+              {
+                "x": 32.703125,
+                "y": 55.46875
+              },
+              {
+                "x": 32.703125,
+                "y": 55.46875
+              }
+            ],
+            "colourId": null,
+            "lineStyle": {
+              "thickness": 1.0,
+              "lineType": "solid"
+            },
+            "pressure": null,
+            "bounds": {
+              "x": 31.5,
+              "y": 54.96875,
+              "width": 1.703125,
+              "height": 1.53125
+            },
+            "leftZoneId": "zn_Z7VVCJ077MDT1J6XA2GGRHNV3Q",
+            "rightZoneId": null
+          },
+          {
+            "type": "stroke",
+            "id": "st_01K7JJN801G63V4RVN6SMMHZJS",
+            "kind": "pencil",
+            "closed": false,
+            "bezier": [
+              {
+                "x": 32.703125,
+                "y": 55.46875
+              },
+              {
+                "x": 32.703125,
+                "y": 55.46875
+              },
+              {
+                "x": 34.28125,
+                "y": 54.28125
+              },
+              {
+                "x": 34.28125,
+                "y": 54.28125
+              }
+            ],
+            "colourId": null,
+            "lineStyle": {
+              "thickness": 1.0,
+              "lineType": "solid"
+            },
+            "pressure": null,
+            "bounds": {
+              "x": 32.203125,
+              "y": 53.78125,
+              "width": 2.578125,
+              "height": 2.1875
+            },
+            "leftZoneId": "zn_Z7VVCJ077MDT1J6XA2GGRHNV3Q",
+            "rightZoneId": null
+          },
+          {
+            "type": "stroke",
+            "id": "st_01K7JJN802T6JVPFZXV5N8WEKP",
+            "kind": "pencil",
+            "closed": false,
+            "bezier": [
+              {
+                "x": 34.28125,
+                "y": 54.28125
+              },
+              {
+                "x": 34.28125,
+                "y": 54.28125
+              },
+              {
+                "x": 53.328125,
+                "y": 40.0
+              },
+              {
+                "x": 53.328125,
+                "y": 40.0
+              }
+            ],
+            "colourId": null,
+            "lineStyle": {
+              "thickness": 1.0,
+              "lineType": "solid"
+            },
+            "pressure": null,
+            "bounds": {
+              "x": 33.78125,
+              "y": 39.5,
+              "width": 20.046875,
+              "height": 15.28125
+            },
+            "leftZoneId": "zn_EKA1QY13GK968W40A0FSZ14PCP",
+            "rightZoneId": null
+          },
+          {
+            "type": "stroke",
+            "id": "st_01K7JJN8034DVA3CYZYT213Q7G",
+            "kind": "pencil",
+            "closed": false,
+            "bezier": [
+              {
+                "x": 53.328125,
+                "y": 40.0
+              },
+              {
+                "x": 53.328125,
+                "y": 40.0
+              },
+              {
+                "x": 80.0,
+                "y": 20.0
+              },
+              {
+                "x": 80.0,
+                "y": 20.0
+              },
+              {
+                "x": 80.0,
+                "y": 20.0
+              },
+              {
+                "x": 53.328125,
+                "y": 40.0
+              },
+              {
+                "x": 53.328125,
+                "y": 40.0
+              }
+            ],
+            "colourId": null,
+            "lineStyle": {
+              "thickness": 1.0,
+              "lineType": "solid"
+            },
+            "pressure": null,
+            "bounds": {
+              "x": 52.828125,
+              "y": 19.5,
+              "width": 27.671875,
+              "height": 21.0
+            },
+            "leftZoneId": null,
+            "rightZoneId": null
+          },
+          {
+            "type": "stroke",
+            "id": "st_01K7JJN8044MAVAN1BPGR9AE3D",
+            "kind": "pencil",
+            "closed": false,
+            "bezier": [
+              {
+                "x": 53.328125,
+                "y": 40.0
+              },
+              {
+                "x": 53.328125,
+                "y": 40.0
+              },
+              {
+                "x": 34.28125,
+                "y": 54.28125
+              },
+              {
+                "x": 34.28125,
+                "y": 54.28125
+              }
+            ],
+            "colourId": null,
+            "lineStyle": {
+              "thickness": 1.0,
+              "lineType": "solid"
+            },
+            "pressure": null,
+            "bounds": {
+              "x": 33.78125,
+              "y": 39.5,
+              "width": 20.046875,
+              "height": 15.28125
+            },
+            "leftZoneId": null,
+            "rightZoneId": "zn_EKA1QY13GK968W40A0FSZ14PCP"
+          },
+          {
+            "type": "stroke",
+            "id": "st_01K7JJN805BJ4Y8MFE6MYN1AA0",
+            "kind": "pencil",
+            "closed": false,
+            "bezier": [
+              {
+                "x": 34.28125,
+                "y": 54.28125
+              },
+              {
+                "x": 34.28125,
+                "y": 54.28125
+              },
+              {
+                "x": 32.703125,
+                "y": 55.46875
+              },
+              {
+                "x": 32.703125,
+                "y": 55.46875
+              }
+            ],
+            "colourId": null,
+            "lineStyle": {
+              "thickness": 1.0,
+              "lineType": "solid"
+            },
+            "pressure": null,
+            "bounds": {
+              "x": 32.203125,
+              "y": 53.78125,
+              "width": 2.578125,
+              "height": 2.1875
+            },
+            "leftZoneId": null,
+            "rightZoneId": "zn_Z7VVCJ077MDT1J6XA2GGRHNV3Q"
+          },
+          {
+            "type": "stroke",
+            "id": "st_01K7JJN806R2RDJWXZH1J7RKCQ",
+            "kind": "pencil",
+            "closed": false,
+            "bezier": [
+              {
+                "x": 32.703125,
+                "y": 55.46875
+              },
+              {
+                "x": 32.703125,
+                "y": 55.46875
+              },
+              {
+                "x": 32.0,
+                "y": 56.0
+              },
+              {
+                "x": 32.0,
+                "y": 56.0
+              }
+            ],
+            "colourId": null,
+            "lineStyle": {
+              "thickness": 1.0,
+              "lineType": "solid"
+            },
+            "pressure": null,
+            "bounds": {
+              "x": 31.5,
+              "y": 54.96875,
+              "width": 1.703125,
+              "height": 1.53125
+            },
+            "leftZoneId": null,
+            "rightZoneId": "zn_Z7VVCJ077MDT1J6XA2GGRHNV3Q"
+          },
+          {
+            "type": "stroke",
+            "id": "st_01K7JJN807GBFDFK98RX92DCW5",
+            "kind": "pencil",
+            "closed": false,
+            "bezier": [
+              {
+                "x": 32.0,
+                "y": 56.0
+              },
+              {
+                "x": 32.0,
+                "y": 56.0
+              },
+              {
+                "x": 0.0,
+                "y": 80.0
+              },
+              {
+                "x": 0.0,
+                "y": 80.0
+              },
+              {
+                "x": 0.0,
+                "y": 80.0
+              },
+              {
+                "x": 32.0,
+                "y": 56.0
+              },
+              {
+                "x": 32.0,
+                "y": 56.0
+              }
+            ],
+            "colourId": null,
+            "lineStyle": {
+              "thickness": 1.0,
+              "lineType": "solid"
+            },
+            "pressure": null,
+            "bounds": {
+              "x": -0.5,
+              "y": 55.5,
+              "width": 33.0,
+              "height": 25.0
+            },
+            "leftZoneId": null,
+            "rightZoneId": null
+          },
+          {
+            "type": "stroke",
+            "id": "st_01K7JJN808KDACKN7NJ31R6G59",
+            "kind": "pencil",
+            "closed": false,
+            "bezier": [
+              {
+                "x": 32.0,
+                "y": 56.0
+              },
+              {
+                "x": 32.0,
+                "y": 56.0
+              },
+              {
+                "x": 34.28125,
+                "y": 54.28125
+              },
+              {
+                "x": 34.28125,
+                "y": 54.28125
+              }
+            ],
+            "colourId": null,
+            "lineStyle": {
+              "thickness": 1.0,
+              "lineType": "solid"
+            },
+            "pressure": null,
+            "bounds": {
+              "x": 31.5,
+              "y": 53.78125,
+              "width": 3.28125,
+              "height": 2.71875
+            },
+            "leftZoneId": "zn_Z7VVCJ077MDT1J6XA2GGRHNV3Q",
+            "rightZoneId": null
+          },
+          {
+            "type": "stroke",
+            "id": "st_01K7JJN809WF2B30RZBYYEHEA6",
+            "kind": "pencil",
+            "closed": false,
+            "bezier": [
+              {
+                "x": 34.28125,
+                "y": 54.28125
+              },
+              {
+                "x": 34.28125,
+                "y": 54.28125
+              },
+              {
+                "x": 32.703125,
+                "y": 55.46875
+              },
+              {
+                "x": 32.703125,
+                "y": 55.46875
+              }
+            ],
+            "colourId": null,
+            "lineStyle": {
+              "thickness": 1.0,
+              "lineType": "solid"
+            },
+            "pressure": null,
+            "bounds": {
+              "x": 32.203125,
+              "y": 53.78125,
+              "width": 2.578125,
+              "height": 2.1875
+            },
+            "leftZoneId": null,
+            "rightZoneId": "zn_Z7VVCJ077MDT1J6XA2GGRHNV3Q"
+          },
+          {
+            "type": "stroke",
+            "id": "st_01K7JJN80AR75T9XYFM0H9VEFV",
+            "kind": "pencil",
+            "closed": false,
+            "bezier": [
+              {
+                "x": 32.703125,
+                "y": 55.46875
+              },
+              {
+                "x": 32.703125,
+                "y": 55.46875
+              },
+              {
+                "x": 32.0,
+                "y": 56.0
+              },
+              {
+                "x": 32.0,
+                "y": 56.0
+              }
+            ],
+            "colourId": null,
+            "lineStyle": {
+              "thickness": 1.0,
+              "lineType": "solid"
+            },
+            "pressure": null,
+            "bounds": {
+              "x": 31.5,
+              "y": 54.96875,
+              "width": 1.703125,
+              "height": 1.53125
+            },
+            "leftZoneId": null,
+            "rightZoneId": "zn_Z7VVCJ077MDT1J6XA2GGRHNV3Q"
+          },
+          {
+            "type": "stroke",
+            "id": "st_01K7JJN80BNMM489MYHCE03JCC",
+            "kind": "pencil",
+            "closed": false,
+            "bezier": [
+              {
+                "x": 32.0,
+                "y": 56.0
+              },
+              {
+                "x": 32.0,
+                "y": 56.0
+              },
+              {
+                "x": 0.0,
+                "y": 80.0
+              },
+              {
+                "x": 0.0,
+                "y": 80.0
+              },
+              {
+                "x": 0.0,
+                "y": 80.0
+              },
+              {
+                "x": 32.0,
+                "y": 56.0
+              },
+              {
+                "x": 32.0,
+                "y": 56.0
+              }
+            ],
+            "colourId": null,
+            "lineStyle": {
+              "thickness": 1.0,
+              "lineType": "solid"
+            },
+            "pressure": null,
+            "bounds": {
+              "x": -0.5,
+              "y": 55.5,
+              "width": 33.0,
+              "height": 25.0
+            },
+            "leftZoneId": null,
+            "rightZoneId": null
+          },
+          {
+            "type": "stroke",
+            "id": "st_01K7JJN80C6PCZAXE3A4FS8XFY",
+            "kind": "pencil",
+            "closed": false,
+            "bezier": [
+              {
+                "x": 0.0,
+                "y": 40.0
+              },
+              {
+                "x": 0.0,
+                "y": 40.0
+              },
+              {
+                "x": 32.0,
+                "y": 56.0
+              },
+              {
+                "x": 32.0,
+                "y": 56.0
+              }
+            ],
+            "colourId": null,
+            "lineStyle": {
+              "thickness": 1.0,
+              "lineType": "solid"
+            },
+            "pressure": null,
+            "bounds": {
+              "x": -0.5,
+              "y": 39.5,
+              "width": 33.0,
+              "height": 17.0
+            },
+            "leftZoneId": null,
+            "rightZoneId": null
+          },
+          {
+            "type": "stroke",
+            "id": "st_01K7JJN80DGVVD6R7F3KV9H479",
+            "kind": "pencil",
+            "closed": false,
+            "bezier": [
+              {
+                "x": 32.0,
+                "y": 56.0
+              },
+              {
+                "x": 32.0,
+                "y": 56.0
+              },
+              {
+                "x": 40.0,
+                "y": 60.0
+              },
+              {
+                "x": 40.0,
+                "y": 60.0
+              }
+            ],
+            "colourId": null,
+            "lineStyle": {
+              "thickness": 1.0,
+              "lineType": "solid"
+            },
+            "pressure": null,
+            "bounds": {
+              "x": 31.5,
+              "y": 55.5,
+              "width": 9.0,
+              "height": 5.0
+            },
+            "leftZoneId": null,
+            "rightZoneId": "zn_Z7VVCJ077MDT1J6XA2GGRHNV3Q"
+          },
+          {
+            "type": "stroke",
+            "id": "st_01K7JJN80EB7K0DH1JKGVJ48NJ",
+            "kind": "pencil",
+            "closed": false,
+            "bezier": [
+              {
+                "x": 40.0,
+                "y": 60.0
+              },
+              {
+                "x": 40.0,
+                "y": 60.0
+              },
+              {
+                "x": 80.0,
+                "y": 80.0
+              },
+              {
+                "x": 80.0,
+                "y": 80.0
+              },
+              {
+                "x": 80.0,
+                "y": 80.0
+              },
+              {
+                "x": 53.328125,
+                "y": 40.0
+              },
+              {
+                "x": 53.328125,
+                "y": 40.0
+              }
+            ],
+            "colourId": null,
+            "lineStyle": {
+              "thickness": 1.0,
+              "lineType": "solid"
+            },
+            "pressure": null,
+            "bounds": {
+              "x": 39.5,
+              "y": 39.5,
+              "width": 41.0,
+              "height": 41.0
+            },
+            "leftZoneId": null,
+            "rightZoneId": "zn_EKA1QY13GK968W40A0FSZ14PCP"
+          },
+          {
+            "type": "stroke",
+            "id": "st_01K7JJN80FZFY7DKSY6DHXEMQ5",
+            "kind": "pencil",
+            "closed": false,
+            "bezier": [
+              {
+                "x": 53.328125,
+                "y": 40.0
+              },
+              {
+                "x": 53.328125,
+                "y": 40.0
+              },
+              {
+                "x": 40.0,
+                "y": 20.0
+              },
+              {
+                "x": 40.0,
+                "y": 20.0
+              }
+            ],
+            "colourId": null,
+            "lineStyle": {
+              "thickness": 1.0,
+              "lineType": "solid"
+            },
+            "pressure": null,
+            "bounds": {
+              "x": 39.5,
+              "y": 19.5,
+              "width": 14.328125,
+              "height": 21.0
+            },
+            "leftZoneId": null,
+            "rightZoneId": null
+          },
+          {
+            "type": "stroke",
+            "id": "st_01K7JJN80GVSZ0KC199ACN49CD",
+            "kind": "pencil",
+            "closed": false,
+            "bezier": [
+              {
+                "x": 20.0,
+                "y": 40.0
+              },
+              {
+                "x": 20.0,
+                "y": 40.0
+              },
+              {
+                "x": 34.28125,
+                "y": 54.28125
+              },
+              {
+                "x": 34.28125,
+                "y": 54.28125
+              }
+            ],
+            "colourId": null,
+            "lineStyle": {
+              "thickness": 1.0,
+              "lineType": "solid"
+            },
+            "pressure": null,
+            "bounds": {
+              "x": 19.5,
+              "y": 39.5,
+              "width": 15.28125,
+              "height": 15.28125
+            },
+            "leftZoneId": null,
+            "rightZoneId": null
+          },
+          {
+            "type": "stroke",
+            "id": "st_01K7JJN80HZ4D66PJCPPR8RV2F",
+            "kind": "pencil",
+            "closed": false,
+            "bezier": [
+              {
+                "x": 34.28125,
+                "y": 54.28125
+              },
+              {
+                "x": 34.28125,
+                "y": 54.28125
+              },
+              {
+                "x": 40.0,
+                "y": 60.0
+              },
+              {
+                "x": 40.0,
+                "y": 60.0
+              }
+            ],
+            "colourId": null,
+            "lineStyle": {
+              "thickness": 1.0,
+              "lineType": "solid"
+            },
+            "pressure": null,
+            "bounds": {
+              "x": 33.78125,
+              "y": 53.78125,
+              "width": 6.71875,
+              "height": 6.71875
+            },
+            "leftZoneId": "zn_Z7VVCJ077MDT1J6XA2GGRHNV3Q",
+            "rightZoneId": "zn_EKA1QY13GK968W40A0FSZ14PCP"
+          }
+        ],
+        "zones": [
+          {
+            "type": "zone",
+            "id": "zn_Z7VVCJ077MDT1J6XA2GGRHNV3Q",
+            "colourId": null,
+            "textureMatrix": null,
+            "boundaryStrokeIds": [
+              "st_01K7JJN800RAWE5N2H7NMFWJ34",
+              "st_01K7JJN801G63V4RVN6SMMHZJS",
+              "st_01K7JJN805BJ4Y8MFE6MYN1AA0",
+              "st_01K7JJN806R2RDJWXZH1J7RKCQ",
+              "st_01K7JJN808KDACKN7NJ31R6G59",
+              "st_01K7JJN809WF2B30RZBYYEHEA6",
+              "st_01K7JJN80AR75T9XYFM0H9VEFV",
+              "st_01K7JJN80DGVVD6R7F3KV9H479",
+              "st_01K7JJN80HZ4D66PJCPPR8RV2F"
+            ],
+            "holes": [],
+            "parentZoneId": null,
+            "area": 11.439208984375,
+            "bounds": {
+              "x": 32,
+              "y": 54.28125,
+              "width": 8,
+              "height": 5.71875
+            },
+            "interiorPoint": {
+              "x": 34.48046875,
+              "y": 56.3203125
+            }
+          },
+          {
+            "type": "zone",
+            "id": "zn_EKA1QY13GK968W40A0FSZ14PCP",
+            "colourId": null,
+            "textureMatrix": null,
+            "boundaryStrokeIds": [
+              "st_01K7JJN802T6JVPFZXV5N8WEKP",
+              "st_01K7JJN8044MAVAN1BPGR9AE3D",
+              "st_01K7JJN80EB7K0DH1JKGVJ48NJ",
+              "st_01K7JJN80HZ4D66PJCPPR8RV2F"
+            ],
+            "holes": [],
+            "parentZoneId": null,
+            "area": 628.578857421875,
+            "bounds": {
+              "x": 34.28125,
+              "y": 40,
+              "width": 45.71875,
+              "height": 40
+            },
+            "interiorPoint": {
+              "x": 48.57421875,
+              "y": 54.2890625
+            }
+          }
+        ]
+      }
+    ]
+  }
+}

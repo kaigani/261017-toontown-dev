@@ -218,6 +218,23 @@ impl Env {
         settings::write(&self.dirs.settings, kind, &data)
     }
 
+    /// Applies an accepted settings change and writes what it changed (C23-R3-01).
+    pub(crate) fn apply(&mut self, change: crate::cx::SettingsChange) {
+        match change {
+            crate::cx::SettingsChange::NewProject { last_used, recent } => {
+                self.settings.last_used.insert("newProject".into(), last_used);
+                let _ = self.write("state");
+                if let Some((path, name)) = recent {
+                    self.add_recent(&path, &name);
+                }
+            }
+            crate::cx::SettingsChange::RemoveRecent(path) => {
+                self.settings.recent = recent_after_removal(&self.settings.recent, path.as_deref());
+                let _ = self.write("recent");
+            }
+        }
+    }
+
     /// Puts a project at the top of the recent list (01 §3.3: no duplicates, paths compared after normalisation).
     pub(crate) fn add_recent(&mut self, path: &Path, name: &str) {
         let p = path.to_string_lossy().into_owned();
@@ -394,6 +411,17 @@ impl Default for Store {
             linked: BTreeMap::new(),
             asset_status: BTreeMap::new(),
             locked_by: None,
+        }
+    }
+}
+
+/// The recent list without `path` (compared after normalisation), or empty when no path is given (remove all).
+pub(crate) fn recent_after_removal(recent: &[Recent], path: Option<&str>) -> Vec<Recent> {
+    match path {
+        None => Vec::new(),
+        Some(path) => {
+            let norm = normalize(path);
+            recent.iter().filter(|r| normalize(&r.path) != norm).cloned().collect()
         }
     }
 }

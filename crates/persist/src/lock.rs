@@ -172,13 +172,25 @@ fn create_protected(path: &Path) -> std::io::Result<File> {
         o.share_mode(0x0000_0007);
     }
     let f = o.open(path)?;
+    // The file was created exclusively, so a conflicting lock can only be a `probe`'s momentary shared lock: it is
+    // waited out. Giving up removes the file just created, so no empty, unprotected file is left behind for every
+    // opener to read as an unreadable holder (macOS CI run 41170158603).
     #[cfg(not(windows))]
-    match f.try_lock() {
-        Ok(()) => {}
-        Err(std::fs::TryLockError::WouldBlock) => {
-            return Err(std::io::Error::new(std::io::ErrorKind::AlreadyExists, "locked by another holder"));
+    for attempt in 0..=200 {
+        match f.try_lock() {
+            Ok(()) => break,
+            Err(std::fs::TryLockError::WouldBlock) if attempt < 200 => std::thread::sleep(Duration::from_millis(1)),
+            Err(e) => {
+                drop(f);
+                let _ = fs::remove_file(path);
+                return Err(match e {
+                    std::fs::TryLockError::WouldBlock => {
+                        std::io::Error::new(std::io::ErrorKind::AlreadyExists, "locked by another holder")
+                    }
+                    std::fs::TryLockError::Error(e) => e,
+                });
+            }
         }
-        Err(std::fs::TryLockError::Error(e)) => return Err(e),
     }
     Ok(f)
 }
@@ -662,6 +674,13 @@ mod tests {
         let token = handle.info().lock_id;
         // The holder's process "ends": its handle closes, the file stays (a crash leaves it behind).
         handle.release_handle();
+        // A `flock` belongs to the open file description, which a process spawned at that instant by another thread
+        // (the parallel tests' liveness probes) shares until its close-on-exec runs: the lock is free once that
+        // reference is gone, so wait for it (bounded; macOS CI run 41191607130).
+        let freed = std::time::Instant::now();
+        while probe(handle.path()) != Some(false) && freed.elapsed() < std::time::Duration::from_secs(2) {
+            std::thread::sleep(std::time::Duration::from_millis(5));
+        }
         assert_eq!(probe(handle.path()), Some(false));
         let Locked::Acquired { handle: h2, took_over: Some(old) } = acquire(&project) else {
             panic!("a protected lock of this host that nobody protects is stale at once")

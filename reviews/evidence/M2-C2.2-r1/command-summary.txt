@@ -1,0 +1,52 @@
+colour.autoColourUpdate.set notImplemented M7 C7.1 ['edit'] Project flag: template colours overwrite existing swatch val Enabled when a project is open (01 §1.3).
+colour.current.changed notImplemented M7 C7.1 ['read'] None Never invoked: an event delivered to subscribers (11 §9).
+colour.current.get notImplemented M7 C7.1 ['read'] None Enabled when a project is open (01 §1.3).
+colour.current.set notImplemented M7 C7.1 ['ui'] None Enabled when a project is open (01 §1.3); `colourId` names an existing colour.
+colour.editor.close notImplemented M7 C7.1 ['ui'] None Enabled when a project is open (01 §1.3).
+colour.editor.open notImplemented M7 C7.1 ['ui'] None Enabled when a project is open (01 §1.3).
+colour.fillMapping.get notImplemented M7 C7.1 ['read'] None Enabled when a project is open (01 §1.3); a current drawing exists or `drawingId` is given; `objectId` names an existing object.
+colour.fillMapping.set notImplemented M7 C7.1 ['edit'] Edit Fill Mapping Enabled when a project is open (01 §1.3); a current drawing exists or `drawingId` is given; every `objectIds` entry names an existing object.
+colour.gap.close implemented M2 C2.2 ['edit'] Close Gap always enabled
+colour.gapClosing.get implemented M2 C2.2 ['read'] None always enabled
+colour.gapClosing.set implemented M2 C2.2 ['app'] None always enabled
+colour.missing.list implemented M2 C2.2 ['read'] None always enabled
+colour.paint.apply implemented M2 C2.2 ['edit'] Paint always enabled
+colour.paint.remove implemented M2 C2.2 ['edit'] Unpaint always enabled
+colour.paintUnpainted.apply implemented M2 C2.2 ['edit'] Paint Unpainted always enabled
+colour.palette.changed notImplemented M7 C7.1 ['read'] None Never invoked: an event delivered to subscribers (11 §9).
+colour.palette.create notImplemented M7 C7.1 ['edit'] Add Palette Enabled when a project is open (01 §1.3).
+colour.palette.delete notImplemented M7 C7.1 ['edit'] Remove Palette Enabled when a project is open (01 §1.3); `paletteId` names an existing palette; the palette is not the last visible palette (03 §1.2).
+colour.palette.duplicate notImplemented M7 C7.1 ['edit'] Duplicate Palette Enabled when a project is open (01 §1.3); `paletteId` names an existing palette.
+colour.palette.export notImplemented M7 C7.1 ['ui', 'files.write'] None Enabled when a project is open (01 §1.3); every `paletteIds` entry names an existing palette; at least one visible palette exists (03 §2.5).
+colour.palette.get notImplemented M7 C7.1 ['read'] None Enabled when a project is open (01 §1.3); `paletteId` names an existing palette.
+colour.palette.import notImplemented M7 C7.1 ['edit', 'files.read'] Import Palette Enabled when a project is open (01 §1.3).
+colour.palette.list notImplemented M7 C7.1 ['read'] None Enabled when a project is open (01 §1.3).
+colour.palette.rename notImplemented M7 C7.1 ['edit'] Rename Palette Enabled when a project is open (01 §1.3); `paletteId` names an existing palette.
+colour.palette.select notImplemented M7 C7.1 ['ui'] None Enabled when a project is open (01 §1.3); `paletteId` names an existing palette.
+colour.palette.set notImplemented M7 C7.1 ['edit'] Replace or merge a palette's styles and swatches from a pale Enabled when a project is open (01 §1.3); `paletteId` names an existing palette.
+colour.pick implemented M2 C2.2 ['read'] None always enabled
+colour.recolour.apply notImplemented M7 C7.1 ['edit'] Replace Colour Enabled when a project is open (01 §1.3); a current scene exists or `sceneId` is given.
+colour.recovery.performed implemented M2 C2.2 ['read'] None always enabled
+colour.recovery.run implemented M2 C2.2 ['edit'] Colour Recovery always enabled
+colour.sceneStyle.changed notImplemented M7 C7.1 ['read'] None Never invoked: an event delivered to subscribers (11 §9).
+colour.sceneStyles.get notImplemented M7 C7.1 ['read'] None Enabled when a project is open (01 §1.3); a current scene exists or `sceneId` is given; the context has a selection, or the objects are given.
+colour.selection.apply notImplemented M7 C7.1 ['edit'] Set Colour Enabled when a project is open (01 §1.3); a current drawing exists or `drawingId` is given; the context has a selection, or the objects are given.
+colour.style.changed notImplemented M7 C7.1 ['read'] None Never invoked: an event delivered to subscribers (11 §9).
+colour.style.delete notImplemented M7 C7.1 ['edit'] Delete Style Enabled when a project is open (01 §1.3); `paletteId` names an existing palette; `styleId` names an existing style.
+colour.style.duplicate notImplemented M7 C7.1 ['edit'] Duplicate Style Enabled when a project is open (01 §1.3); a current scene exists or `sceneId` is given; `paletteId` names an existing palette.
+colour.style.list notImplemented M7 C7.1 ['read'] None Enabled when a project is open (01 §1.3); `paletteId` names an existing palette.
+colour.style.rename notImplemented M7 C7.1 ['edit'] Rename Style Enabled when a project is open (01 §1.3); `paletteId` names an existing palette; `styleId` names an existing style.
+colour.style.select notImplemented M7 C7.1 ['edit'] Style Change Enabled when a project is open (01 §1.3); a current scene exists or `sceneId` is given; `paletteId` names an existing palette; `styleId` names an existing style.
+colour.swatch.changed notImplemented M7 C7.1 ['read'] None Never invoked: an event delivered to subscribers (11 §9).
+colour.swatch.create notImplemented M7 C7.1 ['edit'] Add a colour or texture swatch Enabled when a project is open (01 §1.3).
+colour.swatch.delete notImplemented M7 C7.1 ['edit'] Remove Colour Enabled when a project is open (01 §1.3); `colourId` names an existing colour.
+colour.swatch.get notImplemented M7 C7.1 ['read'] None Enabled when a project is open (01 §1.3); a current scene exists or `sceneId` is given; `colourId` names an existing colour.
+colour.swatch.list notImplemented M7 C7.1 ['read'] None Enabled when a project is open (01 §1.3); a current scene exists or `sceneId` is given.
+colour.swatch.move notImplemented M7 C7.1 ['edit'] Move Colour Enabled when a project is open (01 §1.3); `colourId` names an existing colour.
+colour.swatch.set notImplemented M7 C7.1 ['edit', 'files.read'] Edit Colour Enabled when a project is open (01 §1.3); `colourId` names an existing colour.
+colour.swatchNames.set notImplemented M7 C7.1 ['ui'] None Enabled when a project is open (01 §1.3).
+colour.tintBlend.apply notImplemented M7 C7.1 ['edit'] Blend Style Enabled when a project is open (01 §1.3).
+colour.tintDialog.open notImplemented M7 C7.1 ['ui'] None Enabled when a project is open (01 §1.3).
+colour.tintOffset.apply notImplemented M7 C7.1 ['edit'] Offset Style Enabled when a project is open (01 §1.3).
+colour.usage.list notImplemented M7 C7.1 ['read'] None Enabled when a project is open (01 §1.3); a current scene exists or `sceneId` is given.
+draw.hitTest.get implemented M2 C2.2 ['read'] None always enabled

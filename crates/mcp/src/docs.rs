@@ -67,7 +67,7 @@ its revisions and undo boundary.\n\
 `requestId` to make a retry safe.\n\n\
 ## Verify\n\n\
 Read back with `get_object` / `find_objects`, compare revisions with `doc_diff {{sinceRev}}`, and check `doc.validate`. \
-Renders (`render_frame`, `render_drawing`, contact sheets) arrive with the renderer milestone (M3).\n\n\
+`render_drawing` renders one drawing to a PNG; scene renders (`render_frame`, contact sheets) arrive with M3.\n\n\
 ## Safety\n\n\
 Your session holds scopes (`read`, `edit`, `files.write`, …); a missing scope is `permission.denied`. Some actions \
 need confirmation under your policy: the call then returns `status: \"needs_confirmation\"` with a `confirmToken`, a \
@@ -117,7 +117,10 @@ pub fn errors() -> String {
         ("command.unknown", "No such command id"),
         ("command.disabled", "Not enabled in the current context (`details.reason`)"),
         ("command.notImplemented", "Registered, implemented by a later milestone (`details.milestone`)"),
-        ("command.timeout", "The call exceeded its budget; it may still complete — read `get_state` before retrying"),
+        (
+            "command.timeout",
+            "The call exceeded its budget and was cancelled; unless it had already committed it changed nothing — read `get_state` before retrying",
+        ),
         ("arg.missing / arg.unknown / arg.invalid", "Parameter validation (`details.pointer`, `details.allowed`)"),
         ("ref.notFound / ref.ambiguous / ref.wrongType", "Object references (`details.candidates`)"),
         ("rev.conflict", "`expectRev` mismatch (`details.currentRev`)"),
@@ -179,5 +182,61 @@ pub fn namespace(reg: &Registry, ns: &str) -> String {
             );
         }
     }
+    worked_example(&mut s, ns);
     s
+}
+
+/// The worked end-to-end examples, executed through the MCP server and retained (M2 C2.1 obligation 1; recorded and
+/// re-checked by `tests/c21_worked_examples.rs`).
+fn worked_examples() -> &'static Value {
+    static ALL: std::sync::OnceLock<Value> = std::sync::OnceLock::new();
+    ALL.get_or_init(|| serde_json::from_str(include_str!("worked-examples.json")).unwrap_or(Value::Null))
+}
+
+/// Appends a namespace's worked example: each step's tool call and its executed response (11 §13).
+fn worked_example(s: &mut String, ns: &str) {
+    let Some(w) = worked_examples().get(ns) else { return };
+    let _ = write!(
+        s,
+        "## Worked example
+
+{}. Each step is a tool call an agent made and the response it received, recorded          from a real run (values listed under \"varies\" — generated ids, times, tokens — differ from run to run;          paths are shown under `/tmp`).
+
+",
+        w.get("title").and_then(Value::as_str).unwrap_or("Worked example")
+    );
+    for (i, st) in w.get("steps").and_then(Value::as_array).into_iter().flatten().enumerate() {
+        let _ = write!(
+            s,
+            "### Step {}: {}
+
+Request:
+
+```json
+{}
+```
+
+Response:
+
+```json
+{}
+```
+
+",
+            i + 1,
+            st.get("note").and_then(Value::as_str).unwrap_or_default(),
+            serde_json::to_string_pretty(st.get("request").unwrap_or(&Value::Null)).unwrap_or_default(),
+            serde_json::to_string_pretty(st.get("response").unwrap_or(&Value::Null)).unwrap_or_default(),
+        );
+        if let Some(v) = st.get("varies").and_then(Value::as_array).filter(|v| !v.is_empty()) {
+            let list: Vec<&str> = v.iter().filter_map(Value::as_str).collect();
+            let _ = write!(
+                s,
+                "Varies: `{}`
+
+",
+                list.join("`, `")
+            );
+        }
+    }
 }

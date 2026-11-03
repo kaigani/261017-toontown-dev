@@ -1,0 +1,89 @@
+cargo :     Finished `test` profile [unoptimized + debuginfo] target(s) in 0.16s
+At line:2 char:115
++ ... l.log 2>&1; cargo test -p tt-executor --test c21_r1_contracts -- --no ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (    Finished `t...get(s) in 0.16s:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+     Running tests\c21_r1_contracts.rs (target\debug\deps\c21_r1_contracts-c03280d5479a975d.exe)
+
+running 6 tests
+
+thread 'edit_results_report_the_resolved_drawing' (3192) panicked at crates\executor\tests\c21_r1_contracts.rs:76:5:
+assertion `left == right` failed: 02 13.1(11): edit result includes drawingId and rev
+  left: Null
+ right: "dr_01K742SG0KKMCAP9X1E6Z5P4SW"
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+test edit_results_report_the_resolved_drawing ... FAILED
+
+thread 'object_setters_accept_common_cell_addressing' (4104) panicked at 
+crates\executor\tests\c21_r1_contracts.rs:24:5:
+02 13.1(4): ["draw.stroke.set: Some(CommandError { code: \"arg.unknown\", message: \"`draw.stroke.set`: Additional 
+properties are not allowed ('elementId', 'frame' were unexpected)\", details: Object {\"pointer\": 
+String(\"/elementId\"), \"message\": String(\"Additional properties are not allowed ('elementId', 'frame' were 
+unexpected)\"), \"allowed\": Null, \"violations\": Array [Object {\"pointer\": String(\"/elementId\"), \"message\": 
+String(\"Additional properties are not allowed ('elementId', 'frame' were unexpected)\"), \"allowed\": Null, \"code\": 
+String(\"arg.unknown\")}]}, hint: None })", "draw.text.set: Some(CommandError { code: \"arg.unknown\", message: 
+\"`draw.text.set`: Additional properties are not allowed ('elementId', 'frame' were unexpected)\", details: Object 
+{\"pointer\": String(\"/elementId\"), \"message\": String(\"Additional properties are not allowed ('elementId', 
+'frame' were unexpected)\"), \"allowed\": Null, \"violations\": Array [Object {\"pointer\": String(\"/elementId\"), 
+\"message\": String(\"Additional properties are not allowed ('elementId', 'frame' were unexpected)\"), \"allowed\": 
+Null, \"code\": String(\"arg.unknown\")}]}, hint: None })", "draw.textFormat.set: Some(CommandError { code: 
+\"arg.unknown\", message: \"`draw.textFormat.set`: Additional properties are not allowed ('elementId', 'frame' were 
+unexpected)\", details: Object {\"pointer\": String(\"/elementId\"), \"message\": String(\"Additional properties are 
+not allowed ('elementId', 'frame' were unexpected)\"), \"allowed\": Null, \"violations\": Array [Object {\"pointer\": 
+String(\"/elementId\"), \"message\": String(\"Additional properties are not allowed ('elementId', 'frame' were 
+unexpected)\"), \"allowed\": Null, \"code\": String(\"arg.unknown\")}]}, hint: None })"]
+test object_setters_accept_common_cell_addressing ... FAILED
+
+thread 'content_changes_emit_drawing_event_including_undo_redo' (11740) panicked at 
+crates\executor\tests\c21_r1_contracts.rs:69:5:
+02 13.6 requires a drawing event on every content change: ["draw.pivot.set: [\"doc.changed\", 
+\"edit.history.changed\"]", "edit.undo: [\"doc.changed\", \"doc.undone\", \"edit.history.changed\"]", "edit.redo: 
+[\"doc.changed\", \"doc.redone\", \"edit.history.changed\"]"]
+test content_changes_emit_drawing_event_including_undo_redo ... FAILED
+
+thread 'direct_outline_edit_discards_spine_when_pressure_also_changes' (28916) panicked at 
+crates\executor\tests\c21_r1_contracts.rs:38:5:
+02 3.2: directly edited outline is authoritative: {"id":"st_01K7JJN800J6GZ68MHS01HNTDM","type":"stroke","rev":3,"path":
+"scene:\"Intro\"/element:\"Bob\"/drawing:\"1\"/drawingNode:@nd_01K7JJN801R8A796ZFD2MC9VCK/stroke:@st_01K7JJN800J6GZ68MH
+S01HNTDM","kind":"brush","closed":true,"points":[[1000.0,0.203125,0.2600607949760748,1.2057364130708923,-0.359950981005
+84166,-1.6688636392089022],[2.6906250000000003,-1.0,-0.9284859423314547,0.0,4.53333333333333,0.0],[16.290625,-1.0,-4.53
+3333333333328,0.0,0.9783119959080473,0.0],[20.3125,-0.953125,-0.8396126798505357,-0.2686760575521716,0.4036546522189894
+4,0.12916948871007694],[21.0,0.0,0.0,-0.4250909833330157,0.0,0.42509098333301654],[20.3125,0.953125,0.403654652218993,-
+0.12916948871007794,-0.8396126798505286,0.26867605755216895],[16.290625,1.0,0.978311995908026,0.0,-4.399999999999997,0.
+0],[3.0906249999999993,1.0,4.399999999999998,0.0,-0.9735831477052033,0.0]],"colourId":"col_01K742SG059XGSNZ6M9MACZ2ZY",
+"fillMatrix":null,"lineStyle":null,"spine":{"points":[[0.0,0.0,0.0,0.0,6.666666666666667,0.0],[20.0,0.0,-6.666666666666
+668,0.0,0.0,0.0]],"pressure":[[0.0,0.2],[1.0,0.2]],"pen":{"penId":"pen_01K742SG0DE4TVDEDEXW6JVXXB","tip":"round","minSi
+ze":0.5,"maxSize":2.0}},"sides":{"left":null,"right":null}}
+test direct_outline_edit_discards_spine_when_pressure_also_changes ... FAILED
+
+thread 'decomposed_unicode_text_is_accepted_and_ranges_follow_normalization' (29680) panicked at 
+crates\executor\tests\c21_r1_contracts.rs:85:5:
+02 3.7 / 10 1.1 NFC text must keep valid codepoint ranges; add Some(CommandError { code: "arg.invalid", message: "runs 
+cover the whole text", details: Object {"pointer": String("/nodes/3/runs"), "rule": String("runsCover"), "objectId": 
+String("dr_01K742SG0KKMCAP9X1E6Z5P4SW")}, hint: None }), insert Some(CommandError { code: "arg.invalid", message: 
+"runs cover the whole text", details: Object {"pointer": String("/nodes/3/runs"), "rule": String("runsCover"), 
+"objectId": String("dr_01K742SG0KKMCAP9X1E6Z5P4SW")}, hint: None })
+test decomposed_unicode_text_is_accepted_and_ranges_follow_normalization ... FAILED
+
+thread 'generic_patch_enforces_one_paragraph_per_line' (13984) panicked at 
+crates\executor\tests\c21_r1_contracts.rs:50:9:
+assertion `left == right` failed: 02 3.7 / 13.6
+  left: 0
+ right: 2
+test generic_patch_enforces_one_paragraph_per_line ... FAILED
+
+failures:
+
+failures:
+    content_changes_emit_drawing_event_including_undo_redo
+    decomposed_unicode_text_is_accepted_and_ranges_follow_normalization
+    direct_outline_edit_discards_spine_when_pressure_also_changes
+    edit_results_report_the_resolved_drawing
+    generic_patch_enforces_one_paragraph_per_line
+    object_setters_accept_common_cell_addressing
+
+test result: FAILED. 0 passed; 6 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.11s
+
+error: test failed, to rerun pass `-p tt-executor --test c21_r1_contracts`

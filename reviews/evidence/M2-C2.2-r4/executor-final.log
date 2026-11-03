@@ -1,0 +1,976 @@
+   Compiling tt-executor v0.0.1 (C:\Users\kaiga\work\review\m2-c22-r4\crates\executor)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 49.22s
+     Running unittests src\lib.rs (target\debug\deps\tt_executor-69c8a7732a3a184f.exe)
+
+running 6 tests
+test time::tests::known_instants ... ok
+test align::tests::patches_without_preconditions_are_returned_unchanged ... ok
+test align::tests::content_differences_are_divergence ... ok
+test align::tests::shifting_patches_are_checked_in_order ... ok
+test align::tests::preconditions_hold_modulo_rev_and_are_rewritten ... ok
+test run::tests::created_objects_survive_undo_redo_cycles_with_rising_revisions ... ok
+
+test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.15s
+
+     Running tests\c12_checkpoint_property.rs (target\debug\deps\c12_checkpoint_property-2918720ba6d2c89e.exe)
+
+running 1 test
+test random_edit_checkpoint_diff_sequences_stay_coherent ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 2.47s
+
+     Running tests\c12_edit_ops.rs (target\debug\deps\c12_edit_ops-2d50a2ec0894b8b2.exe)
+
+running 16 tests
+test paste_special_again_needs_an_earlier_paste_special ... ok
+test dry_run_cut_changes_nothing ... ok
+test paste_errors ... ok
+test selection_is_the_default_target ... ok
+test locked_drawings_refuse_cut_and_paste ... ok
+test motion_point_paste_special_pastes_selected_values ... ok
+test templates_copy_between_catalogs ... ok
+test element_properties_paste_onto_elements ... ok
+test keys_paste_at_a_frame_and_cut_special_filters_key_groups ... ok
+test delete_clears_cells_and_cut_special_removes_frames ... ok
+test paste_as_new_element_copies_the_cells_into_a_new_bank ... ok
+test drawing_objects_cut_copy_paste_and_new_element ... ok
+test paste_and_paste_special_cells ... ok
+test cut_and_paste_in_one_atomic_batch_is_one_undo_step ... ok
+test copy_and_paste_elements_makes_renamed_clones_sharing_drawings ... ok
+test cut_takes_descendants_paste_restores_the_forest_and_delete_reattaches ... ok
+
+test result: ok. 16 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.22s
+
+     Running tests\c12_invalidation_property.rs (target\debug\deps\c12_invalidation_property-a7638bcbcab90ae3.exe)
+
+running 1 test
+test drawing_invalidation_appears_exactly_when_drawing_content_differs ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 2.45s
+
+     Running tests\c12_kernel_state.rs (target\debug\deps\c12_kernel_state-9342275b65121cdd.exe)
+
+running 7 tests
+test the_watchdog_answers_within_its_budget ... ok
+test window_and_panel_state_is_queryable_and_settable ... ok
+test the_application_context_follows_commands ... ok
+test workspaces_are_kernel_state ... ok
+test jobs_run_off_the_document_thread ... ok
+test every_generated_declaration_answers_with_its_owner ... ok
+test every_example_runs_on_the_fixture_under_the_watchdog has been running for over 60 seconds
+test every_example_runs_on_the_fixture_under_the_watchdog ... ok
+
+test result: ok. 7 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 148.64s
+
+     Running tests\c12_never_block.rs (target\debug\deps\c12_never_block-dba5c0d6ceb08c69.exe)
+
+running 1 test
+test a_handler_that_does_not_return_never_blocks_callers ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.83s
+
+     Running tests\c12_policy.rs (target\debug\deps\c12_policy-cc2ce932b5252207.exe)
+
+running 11 tests
+test locked_drawings_refuse_content_patches ... ok
+test special_references_resolve_against_the_context ... ok
+test whole_object_and_structural_patches_are_refused ... ok
+test queries_find_resolve_and_page ... ok
+test batches_resolve_references_and_refuse_jobs_and_history ... ok
+test derived_properties_are_projected_on_request ... ok
+test value_collections_are_patchable_and_validated ... ok
+test read_only_derived_transient_and_command_properties_are_refused ... ok
+test naming_rulings_hold_in_patches ... ok
+test the_load_transaction_is_guarded ... ok
+test permissions_validation_and_availability ... ok
+
+test result: ok. 11 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.25s
+
+     Running tests\c12_r1_contracts.rs (target\debug\deps\c12_r1_contracts-d09017857a8fd0b2.exe)
+
+running 36 tests
+test edit_commands_promised_for_c12_are_implemented ... ok
+test registry_file_and_network_commands_declare_required_scopes ... ok
+test registry_owners_follow_the_milestone_plan ... ok
+test edit_clipboard_is_disabled_without_a_project ... ok
+test registry_stubs_have_actual_parameter_constraints_and_examples ... ok
+test every_registry_entry_has_a_gui_binding_or_agent_only_justification ... ok
+test dry_run_cannot_cancel_a_running_job ... ok
+test setting_mode_activates_a_view_of_the_requested_type ... ok
+test failed_batch_clipboard_emits_no_change_event ... ok
+test failed_atomic_batch_cannot_cancel_a_running_job ... ok
+test agent_cannot_cancel_another_sessions_job ... ok
+test agent_cannot_read_another_sessions_jobs_with_all_true ... ok
+test clipboard_set_validates_the_content_for_its_kind ... ok
+test job_wait_obeys_request_id_and_retains_document_revision ... ok
+test request_id_collision_returns_original_result_per_literal_spec ... ok
+test dry_run_clipboard_emits_no_change_event ... ok
+test clipboard_get_returns_the_specified_clipboard_directly ... ok
+test revision_exhaustion_is_an_error_and_does_not_kill_the_document_thread ... ok
+test fullscreen_state_and_active_view_agree_with_visible_central_panel ... ok
+test parameter_dry_run_is_honoured_inside_atomic_batch ... ok
+test expect_rev_map_checks_every_listed_object_not_only_patch_targets ... ok
+test external_safe_code_cannot_install_a_mutated_stale_snapshot ... ok
+test doc_diff_sees_prior_uncommitted_atomic_steps ... ok
+test checkpoint_in_atomic_batch_has_the_committed_content_revision ... ok
+test idle_query_does_not_repair_context_after_atomic_current_element_change ... ok
+test expect_rev_error_reports_current_rev_and_small_current_object ... ok
+test sequential_batch_dry_run_queries_see_previous_simulated_edits ... ok
+test changes_report_drawing_revision_when_a_stroke_changes ... ok
+test explicitly_saving_and_reselecting_current_workspace_keeps_layout ... ok
+test renamed_builtin_workspace_can_still_be_restored ... ok
+test workspace_switch_defaults_to_autosaving_current_arrangement ... ok
+test job_wait_timeout_policy_is_explicitly_measured ... ok
+test diff_older_than_snapshot_window_replays_repeated_entry_batch ... ok
+test historical_diff_reports_the_revision_of_its_requested_end_state ... ok
+test session_idempotency_survives_more_than_ten_thousand_other_requests ... ok
+test diff_retains_the_last_save_even_after_ten_thousand_transactions ... ok
+
+test result: ok. 36 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 36.26s
+
+     Running tests\c12_r1_macro.rs (target\debug\deps\c12_r1_macro-1c7df316bae36fe4.exe)
+
+running 2 tests
+test duplicate_ids_and_inventory_kind_drift_are_rejected ... ok
+   Compiling proc-macro2 v1.0.107
+   Compiling quote v1.0.47
+   Compiling unicode-ident v1.0.27
+    Checking cfg-if v1.0.5
+   Compiling autocfg v1.5.1
+   Compiling serde_core v1.0.229
+   Compiling version_check v0.9.5
+    Checking memchr v2.8.3
+   Compiling serde v1.0.229
+    Checking once_cell v1.21.4
+    Checking windows-link v0.2.1
+    Checking foldhash v0.2.0
+   Compiling zmij v1.0.23
+    Checking rand_core v0.10.1
+    Checking allocator-api2 v0.2.21
+    Checking equivalent v1.0.3
+   Compiling zerocopy v0.8.63
+   Compiling ref-cast v1.0.27
+   Compiling serde_json v1.0.154
+   Compiling getrandom v0.3.4
+   Compiling getrandom v0.4.3
+    Checking regex-syntax v0.8.11
+   Compiling parking_lot_core v0.9.12
+    Checking itoa v1.0.18
+    Checking smallvec v1.16.3
+    Checking scopeguard v1.2.0
+   Compiling unicode-general-category v1.1.0
+    Checking bit-vec v0.8.0
+    Checking borrow-or-share v0.2.4
+   Compiling jsonschema-value v0.59.0
+   Compiling heck v0.5.0
+    Checking typenum v1.20.1
+    Checking tinyvec v1.13.3
+   Compiling thiserror v2.0.21
+    Checking num-cmp v0.1.0
+    Checking percent-encoding v2.3.2
+    Checking outref v0.5.2
+    Checking lock_api v0.4.14
+    Checking vsimd v0.8.0
+    Checking bytecount v0.6.9
+    Checking micromap v0.3.0
+   Compiling libm v0.2.16
+    Checking dyn-clone v1.0.20
+    Checking cpufeatures v0.3.1
+    Checking data-encoding v2.11.1
+    Checking bit-set v0.8.0
+   Compiling crc32fast v1.5.2
+    Checking const-oid v0.10.2
+    Checking ryu v1.0.23
+    Checking simd-adler32 v0.3.10
+    Checking adler2 v2.0.1
+    Checking hashbrown v0.17.1
+    Checking windows-sys v0.61.2
+    Checking fastrand v2.5.0
+    Checking i_key_sort v0.12.0
+   Compiling ahash v0.8.12
+   Compiling slotmap v1.1.1
+    Checking unicode-normalization v0.1.26
+    Checking i_tree v0.20.0
+    Checking log v0.4.34
+    Checking aho-corasick v1.1.5
+    Checking memmap2 v0.9.11
+    Checking uuid-simd v0.8.0
+    Checking wait-timeout v0.2.1
+    Checking bit-vec v0.10.1
+    Checking quick-error v1.2.3
+   Compiling num-traits v0.2.19
+    Checking fnv v1.0.7
+    Checking rand v0.10.3
+    Checking miniz_oxide v0.9.1
+    Checking hybrid-array v0.4.15
+    Checking chacha20 v0.10.2
+    Checking rand_xorshift v0.5.0
+    Checking unarray v0.1.4
+    Checking bitflags v2.13.2
+    Checking core_detect v1.0.0
+    Checking stats_alloc v0.1.10
+    Checking parking_lot v0.12.5
+    Checking bit-set v0.11.1
+    Checking tempfile v3.27.0
+    Checking jsonschema-regex v0.59.0
+    Checking flate2 v1.1.10
+    Checking rusty-fork v0.3.1
+    Checking block-buffer v0.12.1
+    Checking crypto-common v0.2.2
+   Compiling syn v3.0.9
+   Compiling syn v2.0.119
+    Checking fontdb v0.24.0
+    Checking regex-automata v0.4.18
+    Checking digest v0.11.3
+    Checking num-integer v0.1.47
+    Checking num-complex v0.4.6
+    Checking proptest v1.12.0
+    Checking sha2 v0.11.1
+    Checking num-bigint v0.4.8
+    Checking num-iter v0.1.46
+    Checking indexmap v2.14.2
+    Checking i_float v5.0.0
+   Compiling serde_derive_internals v0.30.0
+    Checking num-rational v0.4.2
+    Checking i_shape v5.0.0
+    Checking num v0.4.3
+    Checking fraction v0.17.0
+   Compiling serde_derive v1.0.229
+   Compiling ref-cast-impl v1.0.27
+   Compiling bytemuck_derive v1.12.1
+   Compiling thiserror-impl v2.0.21
+    Checking i_overlay v9.1.0
+   Compiling schemars_derive v1.2.3
+    Checking regex v1.13.1
+    Checking fancy-regex v0.19.2
+   Compiling strum_macros v0.28.0
+   Compiling tt-registry-macros v0.0.1 (C:\Users\kaiga\work\review\m2-c22-r4\crates\registry-macros)
+    Checking bytemuck v1.25.2
+    Checking font-types v0.12.7
+    Checking read-fonts v0.41.0
+    Checking strum v0.28.0
+    Checking fluent-uri v0.4.1
+    Checking email_address v0.2.9
+    Checking schemars v1.2.3
+    Checking referencing v0.59.0
+    Checking jsonschema v0.59.0
+    Checking skrifa v0.44.0
+    Checking tt-model v0.0.1 (C:\Users\kaiga\work\review\m2-c22-r4\crates\model)
+    Checking tt-persist v0.0.1 (C:\Users\kaiga\work\review\m2-c22-r4\crates\persist)
+    Checking tt-registry v0.0.1 (C:\Users\kaiga\work\review\m2-c22-r4\crates\registry)
+    Checking tt-vector v0.0.1 (C:\Users\kaiga\work\review\m2-c22-r4\crates\vector)
+    Checking tt-executor v0.0.1 (C:\Users\kaiga\work\review\m2-c22-r4\crates\executor)
+    Checking tt-executor-tests v0.0.0 (C:\Users\kaiga\work\review\m2-c22-r4\target\tests\trybuild\tt-executor)
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 17.54s
+
+
+test tests\c12-r1-ui\missing_example.rs ... ok
+
+
+test missing_example_is_rejected_at_compile_time ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 31.76s
+
+     Running tests\c12_r1_scale.rs (target\debug\deps\c12_r1_scale-5c5462db1fd3168a.exe)
+
+running 1 test
+test every_command_rejects_huge_malformed_input_on_large_documents ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 37.89s
+
+     Running tests\c12_r1_stress.rs (target\debug\deps\c12_r1_stress-a6b0c7efa2481b3e.exe)
+
+running 5 tests
+test ordinary_dry_run_preserves_exact_history_and_matches_real_result ... ok
+test all_inventory_entries_reject_malformed_params_under_watchdog_and_catalogue_is_recorded ... ok
+test eight_clients_cas_commands_and_batches_have_no_lost_updates ... ok
+test every_executable_typed_example_also_validates_its_result_schema ... ok
+test ten_thousand_history_operations_match_independent_content_oracle_and_replay ... ok
+
+test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 51.78s
+
+     Running tests\c12_r2_contracts.rs (target\debug\deps\c12_r2_contracts-6f5fe805962cfd5c.exe)
+
+running 40 tests
+test export_registry_for_independent_audit ... ok
+test all_edit_commands_require_project ... ok
+test checkpoint_is_visible_to_later_atomic_query ... ok
+test checkpoint_create_then_delete_in_atomic_batch_succeeds ... ok
+test json04_materialised_parent_is_removed_by_raw_patch_inverse ... ok
+test edit_envelopes_report_explicit_or_selection_targets ... ok
+test malformed_paste_destination_is_rejected_without_fallback ... ok
+test fresh_job_cross_session_list_wait_cancel_are_isolated ... ok
+test clipboard_element_properties_validates_values_not_only_names ... ok
+test copying_a_peg_includes_descendants_per_scene_edit_rules ... ok
+test locked_elements_still_allow_exposure_edits_per_04_10_4 ... ok
+test diff_reports_drawing_content_revision_invalidation ... ok
+test checkpoint_before_edit_predicts_same_result_in_dry_run ... ok
+test cutting_a_peg_removes_descendants_per_scene_edit_rules ... ok
+test explicit_key_edit_on_locked_element_is_allowed_per_05_6_6 ... ok
+test json04_materialisation_does_not_invent_opaque_nested_containers ... ok
+test external_snapshot_staging_and_revision_rewind_cannot_replace_dirty_live_document ... ok
+test paste_dry_run_predicts_created_ids_exactly ... ok
+test checkpoint_between_edits_captures_its_staged_content ... ok
+test omitted_meta_materialisation_keeps_canonical_undo_exact ... ok
+test mixed_expect_rev_guards_cover_paths_compound_ids_and_unmodified_project ... ok
+test element_delete_preserves_opaque_metadata_and_extension_strings ... ok
+test drawing_copy_preserves_object_shaped_opaque_metadata ... ok
+test failed_batch_rolls_back_all_five_effect_classes_together ... ok
+test composite_failed_batch_preview_matches_real_envelope_and_commits_no_effects ... ok
+test safe_revision_reconstruction_cannot_install_future_object_revisions ... ok
+test cross_bank_cell_paste_cannot_overwrite_a_locked_drawing ... ok
+test copying_complete_scene_forest_preserves_effect_parentage_on_paste ... ok
+test fresh_mode_workspace_and_renamed_builtin_reset_are_coherent ... ok
+test request_ids_are_session_scoped_and_survive_undo ... ok
+test sequential_dry_run_simulates_checkpoints ... ok
+test identical_document_and_paste_sequence_produce_identical_ids ... ok
+test revision_max_blocks_fresh_paste_and_keeps_queries_alive ... ok
+test pending_job_wait_reserves_request_id_against_other_commands ... ok
+test sequential_batch_job_wait_honours_wait_timeout_contract ... ok
+test edit_object_kinds_clipboard_and_history_roundtrip ... ok
+test standalone_m1_element_types_roundtrip_undo_redo ... ok
+test fresh_historical_diff_replays_and_agrees_with_checkpoint_across_batch_steps ... ok
+test eviction_at_byte_limit_never_reexecutes_oldest_request ... ok
+test eight_fresh_clients_mix_object_guards_and_atomic_batches ... ok
+
+test result: ok. 40 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 3.63s
+
+     Running tests\c12_r2_registry.rs (target\debug\deps\c12_r2_registry-f5ae95915ef49118.exe)
+
+running 7 tests
+test library_close_has_no_project_rule_from_01_1_3 ... ok
+test library_global_write_scope_is_declared ... ok
+test generated_nested_parameters_reject_wrong_handle_type ... ok
+test result_schema_catalogue_does_not_accept_null_for_device_record ... ok
+test generated_named_result_is_not_an_unconstrained_object ... ok
+test generated_result_rejects_wrong_enabled_type ... ok
+test independently_validate_every_declared_parameter_example ... ok
+
+test result: ok. 7 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.14s
+
+     Running tests\c12_r2_scale.rs (target\debug\deps\c12_r2_scale-7de48646e31a654d.exe)
+
+running 1 test
+test hundred_thousand_stroke_change_reports_drawing_in_envelope_event_and_diff ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 26.15s
+
+     Running tests\c12_r3_contracts.rs (target\debug\deps\c12_r3_contracts-0e40e1adca3a11ed.exe)
+
+running 15 tests
+test json04_multi_operation_inverse_restores_raw_bytes_and_opaque_boundaries ... ok
+test maximum_revision_rolls_back_checkpoints_and_keeps_executor_alive ... ok
+test staged_drawing_only_diff_keeps_content_invalidation ... ok
+test checkpoint_after_stroke_edit_has_no_diff_at_same_committed_revision ... ok
+test checkpoint_create_delete_and_failure_are_transactional_on_fresh_content ... ok
+test fresh_clipboard_property_values_are_checked_before_storage ... ok
+test public_staging_rewind_and_serde_candidates_cannot_cross_load_integrity_gate ... ok
+test fresh_cell_paste_checks_target_type_and_locked_drawing_before_commit ... ok
+test malformed_paste_destination_variants_never_fall_back ... ok
+test key_and_template_creation_predict_ids_and_stay_opaque ... ok
+test fresh_complete_forest_paste_preserves_derived_parent_links ... ok
+test dry_run_ids_match_for_all_implemented_paste_creation_routes ... ok
+test opaque_payloads_survive_every_edit_handler_and_property_patch ... ok
+test overlapping_identical_waits_retain_one_original_envelope ... ok
+test sequential_batch_wait_uses_elapsed_time_and_reaches_completion ... ok
+
+test result: ok. 15 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.45s
+
+     Running tests\c12_r3_registry.rs (target\debug\deps\c12_r3_registry-ed7cde2a91b385e8.exe)
+
+running 12 tests
+test xsheet_panel_result_preserves_boolean_fields_from_parameters ... ok
+test export_settings_returns_an_object_as_its_setter_accepts ... ok
+test light_table_set_returns_the_entries_that_list_defines ... ok
+test selected_point_anchor_is_the_integer_index_from_02 ... ok
+test binding_params_support_commands_other_than_undo ... ok
+test path_result_accepts_exact_05_section_19_4_example ... ok
+test velocity_function_pins_accept_the_explicit_frame_value_shape ... ok
+test preference_listing_can_return_a_boolean_preference ... ok
+test envelope_point_results_use_time_and_gains_from_07 ... ok
+test polyline_options_result_is_the_option_object ... ok
+test print_settings_accepts_a_defined_print_parameter ... ok
+test pen_set_returns_a_model_pen_instead_of_a_scalar ... ok
+
+test result: ok. 12 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.18s
+
+     Running tests\c12_r3_stress.rs (target\debug\deps\c12_r3_stress-cda8805b1ac6d9a4.exe)
+
+running 5 tests
+test ordinary_dry_run_preserves_exact_history_and_matches_real_result ... ok
+test all_inventory_entries_reject_malformed_params_under_watchdog_and_catalogue_is_recorded ... ok
+test eight_clients_cas_commands_and_batches_have_no_lost_updates ... ok
+test every_executable_typed_example_also_validates_its_result_schema ... ok
+test ten_thousand_history_operations_match_independent_content_oracle_and_replay ... ok
+
+test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 50.74s
+
+     Running tests\c12_r4_closure.rs (target\debug\deps\c12_r4_closure-0415d868436cfaba.exe)
+
+running 4 tests
+test storyline_playback_changed_can_announce_a_stop ... ok
+test configured_publishing_services_can_be_connected ... ok
+test immediately_querying_a_staged_checkpoint_is_empty ... ok
+test nested_checkpoints_do_not_reinvalidate_unchanged_drawing_content ... ok
+
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.19s
+
+     Running tests\c12_registry.rs (target\debug\deps\c12_registry-bb171c7653ddc6ab.exe)
+
+running 6 tests
+test registry_covers_spec_a_and_types_every_m1_command ... ok
+test ui_binding_manifest_parity ... ok
+test describe_reports_declarations ... ok
+test drawing_command_delegation_ruling ... ok
+test stubs_and_declarations_name_their_owners ... ok
+test every_declaration_has_schemas_and_valid_examples ... ok
+
+test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.16s
+
+     Running tests\c12_transactions.rs (target\debug\deps\c12_transactions-b40542a57aa5c7e5.exe)
+
+running 14 tests
+test model_level_staged_commit_of_several_entries_is_atomic ... ok
+test a_patch_is_one_transaction_with_stamped_revisions_and_an_undo_step ... ok
+test events_follow_commits ... ok
+test request_ids_make_calls_idempotent_per_session ... ok
+test expect_rev_conflicts_are_typed ... ok
+test drawing_content_edits_stamp_the_drawing ... ok
+test doc_diff_reports_net_changes_since_a_revision_or_checkpoint ... ok
+test dry_runs_report_changes_and_change_nothing ... ok
+test atomic_batches_commit_several_entries_as_one_step_or_roll_back_entirely ... ok
+test checkpoints_restore_as_one_undoable_step_without_lowering_revisions ... ok
+test a_batch_changing_one_property_twice_undoes_and_redoes_exactly ... ok
+test job_results_must_satisfy_the_declared_final_result_schema ... ok
+test undo_and_redo_replay_verified_patches_and_keep_step_ids ... ok
+test history_keeps_at_least_200_steps ... ok
+
+test result: ok. 14 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.96s
+
+     Running tests\c13_doc.rs (target\debug\deps\c13_doc-5090edd1561592e2.exe)
+
+running 9 tests
+test validation_references_and_candidates ... ok
+test replacing_a_pen_repoints_typed_stroke_references_only ... ok
+test bundles_import_into_a_scene_at_a_frame_with_fresh_ids_and_renames ... ok
+test replacing_a_used_asset_repoints_its_placements_and_undo_restores_them ... ok
+test import_replace_replaces_elements_of_the_target_scene_and_palettes_by_name ... ok
+test packages_templates_palettes_and_libraries_are_inspected_without_opening ... ok
+test linked_media_relink_embed_blob_export_and_remove ... ok
+test objects_created_by_import_survive_save_and_reopen_identically ... ok
+test a_repaired_load_is_one_non_undoable_step_and_reported ... ok
+
+test result: ok. 9 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 2.47s
+
+     Running tests\c13_projects.rs (target\debug\deps\c13_projects-2b9bb28e32f85750.exe)
+
+running 13 tests
+test opening_bad_files_fails_the_job_and_leaves_no_project_open ... ok
+test a_session_whose_lock_was_taken_over_cannot_save_over_the_new_owner ... ok
+test an_atomic_batch_that_saves_commits_one_step_and_writes_that_revision ... ok
+test external_changes_are_detected_and_block_a_plain_save ... ok
+test unsaved_changes_policies_and_quit ... ok
+test closing_a_project_removes_its_cached_media ... ok
+test workspaces_recent_projects_and_defaults_persist_per_user ... ok
+test saves_stamp_modified_at_keep_backups_and_clean_saves_rewrite_nothing ... ok
+test a_second_session_opens_a_locked_project_read_only ... ok
+test autosave_writes_recovery_copies_that_a_later_session_recovers ... ok
+test objects_with_unknown_values_of_a_newer_minor_version_are_read_only ... ok
+test older_files_are_migrated_in_memory_and_the_first_save_needs_the_upgrade ... ok
+test create_save_close_open_round_trips_both_forms ... ok
+
+test result: ok. 13 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 2.65s
+
+     Running tests\c13_r1_persistence.rs (target\debug\deps\c13_r1_persistence-3b70f14f772cbbc7.exe)
+
+running 18 tests
+test package_inspection_reads_a_bounded_header ... ok
+test persistence_registry_declarations_have_valid_examples_and_record_their_schemas ... ok
+test import_and_repair_undo_labels_match_the_command_table ... ok
+test default_preference_values_are_not_persisted_as_overrides ... ok
+test import_replace_replaces_a_same_named_scene_instead_of_renaming_it ... ok
+test bundle_binary_references_cannot_read_outside_agent_roots ... ok
+test failed_atomic_batch_after_save_does_not_leak_disk_or_clean_marker_changes ... ok
+test dry_run_close_with_save_does_not_write_the_project_or_backups ... ok
+test unreferenced_embedded_media_is_removed_from_the_saved_package ... ok
+test identical_embedded_asset_content_is_stored_once ... ok
+test folder_entry_change_is_detected_even_when_manifest_is_unchanged ... ok
+test save_as_current_path_does_not_overwrite_another_sessions_lock ... ok
+test failed_package_export_overwrite_keeps_the_previous_destination ... ok
+test recovering_an_untitled_copy_claims_it_before_a_second_session_can_recover ... ok
+test scheduled_autosave_of_untitled_work_preserves_history_and_location ... ok
+test external_change_reload_and_keep_mine_choices_work_on_owned_package ... ok
+test malformed_numeric_inputs_fail_closed_or_repair_deterministically_under_watchdog ... ok
+test concurrent_stale_lock_takeover_has_only_one_owner ... ok
+
+test result: ok. 18 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.04s
+
+     Running tests\c13_r2_persistence.rs (target\debug\deps\c13_r2_persistence-06b250b382a2e3d0.exe)
+
+running 14 tests
+test gigabyte_package_inspection_is_bounded_with_and_without_validation ... ok
+test asset_name_conflict_replace_keeps_one_asset_and_undo_restores_original ... ok
+test failed_atomic_quit_save_leaves_disk_and_revision_unchanged ... ok
+test clean_project_atomic_quit_saves_staged_edits ... ok
+test clean_project_atomic_close_saves_staged_edits ... ok
+test successful_atomic_close_with_save_commits_and_emits_the_saved_revision ... ok
+test same_path_package_save_retains_removed_asset_bytes_for_undo ... ok
+test save_as_package_retains_removed_asset_bytes_for_undo ... ok
+test folder_hidden_preserved_entry_change_blocks_save ... ok
+test dry_run_persistence_paths_do_not_change_disk_state_or_clean_marker ... ok
+test save_as_folder_retains_removed_asset_bytes_for_undo ... ok
+test same_path_folder_save_retains_removed_asset_bytes_for_undo ... ok
+test folder_visible_mutations_are_detected_without_waiting_for_maintenance_and_own_save_is_clean ... ok
+test thirty_two_concurrent_lock_acquisitions_keep_exactly_one_owner ... ok
+
+test result: ok. 14 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 2.39s
+
+     Running tests\c13_r3_history_r1.rs (target\debug\deps\c13_r3_history_r1-a4ef5829a90facc9.exe)
+
+running 1 test
+test ten_thousand_history_operations_match_independent_content_oracle_and_replay ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 51.54s
+
+     Running tests\c13_r3_history_r3.rs (target\debug\deps\c13_r3_history_r3-db7fe29d3a740390.exe)
+
+running 1 test
+test ten_thousand_history_operations_match_independent_content_oracle_and_replay ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 52.43s
+
+     Running tests\c13_r3_persistence.rs (target\debug\deps\c13_r3_persistence-5dfedd494bbb8984.exe)
+
+running 10 tests
+test asset_replace_with_palette_import_repoints_existing_scene_placements ... ok
+test asset_replace_preserves_unrelated_strings_equal_to_the_old_id ... ok
+test movie_asset_replace_repoints_sequences_and_one_undo_restores_exact_entries ... ok
+test checkpoint_restore_inside_atomic_batch_is_refused_without_saving ... ok
+test save_as_job_and_stale_expect_rev_inside_atomic_batch_roll_back ... ok
+test repeated_exports_do_not_duplicate_omitted_media_in_session_cache ... ok
+test failed_and_dry_atomic_save_variants_preserve_disk_revision_and_events ... ok
+test fixture_open_latency_twenty_samples ... ok
+test folder_fingerprint_includes_nested_hidden_names_but_excludes_root_controls_and_session ... ok
+test media_survives_cross_form_save_as_and_recovery_deletion_with_two_undos ... ok
+
+test result: ok. 10 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.02s
+
+     Running tests\c13_r4_closure.rs (target\debug\deps\c13_r4_closure-548bf7f23b1c9f03.exe)
+
+running 2 tests
+test label_and_real_reference_in_one_entry_are_distinguished ... ok
+test remove_export_three_undo_blob_close_clears_cache ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.36s
+
+     Running tests\c14_lock_races.rs (target\debug\deps\c14_lock_races-6fbbce7e9b97ac0d.exe)
+
+running 10 tests
+test child_lock_holder ... ignored, run by crashed_holder_is_detected_at_once as a child process
+test liveness_does_not_depend_on_process_ids_or_clocks ... ok
+test a_suspended_release_hands_over_cleanly ... ok
+test a_resumed_heartbeat_whose_lock_was_replaced_fails_closed ... ok
+test a_suspended_heartbeat_is_not_taken_over_and_resumes_as_the_owner ... ok
+test a_paused_arbiter_past_its_abandonment_age_is_not_removed_and_resumes ... ok
+test ownership_lost_during_a_suspended_save_never_advances_the_save ... ok
+test a_publisher_suspended_at_each_publication_boundary_is_never_raced_into_two_owners ... ok
+test crashed_holder_is_detected_at_once_and_liveness_is_measured ... ok
+test a_suspended_takeover_leaves_exactly_one_owner ... ok
+
+test result: ok. 9 passed; 0 failed; 1 ignored; 0 measured; 0 filtered out; finished in 16.51s
+
+     Running tests\c14_measurements.rs (target\debug\deps\c14_measurements-e97fae27989ee788.exe)
+
+running 2 tests
+test autosave_snapshot_latency_during_batches_queued_requests_and_large_media ... ok
+test folder_fingerprint_cost_at_the_watch_interval_and_the_size_mtime_blind_spot ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 18.85s
+
+     Running tests\c14_obligations.rs (target\debug\deps\c14_obligations-d16c5b0f9880bca8.exe)
+
+running 7 tests
+test a_file_that_cannot_be_published_after_the_commit_fails_the_call_and_reports_the_commit ... ok
+test lock_ownership_is_rechecked_after_the_confirmation ... ok
+test an_activity_export_is_written_only_when_its_call_commits ... ok
+test an_external_change_is_a_bound_confirmation_for_agents ... ok
+test every_save_path_verifies_the_content_recorded_at_open_or_last_save ... ok
+test session_cache_is_bounded_kept_while_needed_and_released_on_close_and_stop ... ok
+test folder_conversion_refuses_entry_names_a_file_system_would_merge ... ok
+
+test result: ok. 7 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 4.74s
+
+     Running tests\c14_r2_contracts.rs (target\debug\deps\c14_r2_contracts-31fd93d0191da587.exe)
+
+running 3 tests
+test downgrade_and_corrupt_preferences_have_explicit_restart_behaviour ... ok
+test quit_save_and_agent_save_as_current_preserve_external_content ... ok
+test recovered_project_records_original_content_and_autosave_preserves_it ... ok
+
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.36s
+
+     Running tests\c14_r2_effects.rs (target\debug\deps\c14_r2_effects-c0af93dd077dff58.exe)
+
+running 4 tests
+test restart_does_not_publish_a_handcrafted_uncommitted_stage ... ok
+test discovery_token_file_does_not_change_when_atomic_batch_rolls_back ... ok
+test json_export_is_not_published_by_a_failed_atomic_batch ... ok
+test media_export_is_not_published_by_a_failed_atomic_batch ... ok
+
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.23s
+
+     Running tests\c21_determinism.rs (target\debug\deps\c21_determinism-3285150e0a3e1e0c.exe)
+
+running 1 test
+test command_created_geometry_is_identical_across_runs_and_platforms ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.70s
+
+     Running tests\c21_draw.rs (target\debug\deps\c21_draw-0f16b837a64109a3.exe)
+
+running 11 tests
+test geometry_errors_name_their_parameter_and_change_nothing ... ok
+test drawing_events_come_from_the_commit_path_for_patches_batches_and_checkpoint_restore ... ok
+test drawing_into_an_empty_cell_creates_the_drawing_in_the_same_step ... ok
+test locked_drawings_refuse_every_edit_and_stale_revisions_refuse_id_edits ... ok
+test pencil_and_invisible_strokes_have_their_shapes_and_labels ... ok
+test read_back_options_flatten_ids_and_include ... ok
+test a_brush_stroke_keeps_spine_pressure_and_pen_and_gets_a_closed_outline ... ok
+test stroke_set_edits_geometry_and_kind_and_keeps_the_id ... ok
+test groups_delete_and_pivot ... ok
+test content_round_trips_through_read_back_with_new_ids ... ok
+test text_objects_add_edit_and_format_with_runs_paragraphs_and_bounds ... ok
+
+test result: ok. 11 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.27s
+
+     Running tests\c21_example_results.rs (target\debug\deps\c21_example_results-66a9d3f4a056db2d.exe)
+
+running 2 tests
+test describe_command_carries_the_retained_results ... ok
+test every_implemented_example_has_a_retained_executed_result ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 6.61s
+
+     Running tests\c21_measurements.rs (target\debug\deps\c21_measurements-d23d375d099cb44a.exe)
+
+running 1 test
+test hundred_thousand_stroke_edit_undo_redo_and_dry_run_are_measured ... ignored, release-only measurement (about 5 minutes at 100 000 strokes); CI runs it in the headless job with             `cargo test --release -p tt-executor --test c21_measurements -- --ignored` on Windows and macOS and checks             the evidence with scripts/analyse-measurements.py (M2 C2.1 obligation 4)
+
+test result: ok. 0 passed; 0 failed; 1 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests\c21_obligations.rs (target\debug\deps\c21_obligations-0ce2f3467446cd2f.exe)
+
+running 7 tests
+test c21_drawing_commands_write_no_files_and_ask_no_confirmation ... ok
+test revision_exhaustion_refuses_drawing_edits_and_changes_nothing ... ok
+test a_dry_run_predicts_the_real_call_and_keeps_the_pre_state ... ok
+test a_patch_of_a_brush_spine_sweeps_the_outline_and_a_patch_of_the_outline_drops_the_spine ... ok
+test a_later_invalid_step_rolls_the_whole_atomic_batch_back ... ok
+test a_successful_atomic_batch_is_one_revision_and_one_exactly_invertible_undo_step ... ok
+test opaque_data_ids_and_revisions_survive_edits_save_and_reopen ... ok
+
+test result: ok. 7 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.44s
+
+     Running tests\c21_r1_autosave.rs (target\debug\deps\c21_r1_autosave-fec2c1d5e230008a.exe)
+
+running 1 test
+test autosave_takes_a_committed_snapshot_after_large_geometry_work ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 31.23s
+
+     Running tests\c21_r1_contracts.rs (target\debug\deps\c21_r1_contracts-e51a5301de5a5a11.exe)
+
+running 6 tests
+test edit_results_report_the_resolved_drawing ... ok
+test generic_patch_enforces_one_paragraph_per_line ... ok
+test content_changes_emit_drawing_event_including_undo_redo ... ok
+test decomposed_unicode_text_is_accepted_and_ranges_follow_normalization ... ok
+test object_setters_accept_common_cell_addressing ... ok
+test direct_outline_edit_discards_spine_when_pressure_also_changes ... ok
+
+test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.17s
+
+     Running tests\c21_r1_retention.rs (target\debug\deps\c21_r1_retention-020422a691e2e9e0.exe)
+
+running 1 test
+test eviction_by_object_budget_preserves_exact_diff_and_checkpoint ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 33.36s
+
+     Running tests\c21_r2_contracts.rs (target\debug\deps\c21_r2_contracts-857bc551652f5ba2.exe)
+
+running 8 tests
+test events_exclude_dry_run_and_failures_and_sequential_batch_has_two ... ok
+test unrelated_format_survives_nfc_in_command_path ... ok
+test mixed_patch_variants_and_failed_batch_have_no_effect ... ok
+test paragraph_patch_variants_are_atomic ... ok
+test remaining_draw_commands_common_addressing_and_results ... ok
+test setter_addressing_revision_and_result_matrix ... ok
+test unicode_ranges_round_trip_through_content_and_package ... ok
+test malformed_paragraphs_in_package_fail_the_load_gate ... ok
+
+test result: ok. 8 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.49s
+
+     Running tests\c21_r3_contracts.rs (target\debug\deps\c21_r3_contracts-183ab6586b1fa82c.exe)
+
+running 7 tests
+test closed_step_pressure_command_worker ... ignored, bounded subprocess worker
+
+running 1 test
+test stationary_pressure_dab_is_not_refused_as_zero_area ... ok
+test deleting_a_separator_keeps_formats_on_reordered_hebrew_points ... ok
+test nfc_script_corpus_edits_formats_content_and_package_round_trip ... ok
+test complete_command_accepted_pressure_worst_case_is_measured ... ok
+complete closed-decagon 99000-knot command 3.0696234s: None
+test closed_step_pressure_command_worker ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 6 filtered out; finished in 3.31s
+
+test closed_step_pressure_command_returns_within_watchdog ... ok
+test over_limit_brush_refuses_atomically_and_worker_accepts_next_edit ... ok
+
+test result: ok. 6 passed; 0 failed; 1 ignored; 0 measured; 0 filtered out; finished in 5.42s
+
+     Running tests\c22_determinism.rs (target\debug\deps\c22_determinism-8b9fdbe269b969fb.exe)
+
+running 1 test
+test planar_graph_side_assignments_zone_ids_fills_and_membership_are_identical_across_runs_and_platforms ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 4.92s
+
+     Running tests\c22_planar.rs (target\debug\deps\c22_planar-3d4dd1d44df993fd.exe)
+
+running 11 tests
+test a_pencil_line_across_a_brush_stroke_splits_and_the_brush_entry_is_untouched ... ok
+test a_closed_line_bounds_a_zone_read_back_with_sides_and_no_unavailability_warning ... ok
+test the_hit_test_reports_lines_before_zones_and_the_lint_lists_unpainted_zones ... ok
+test paint_unpainted_fills_only_unpainted_zones_by_lasso_and_all ... ok
+test protected_colours_are_refused_per_target_unless_overridden ... ok
+test zone_fills_travel_with_pasted_content ... ok
+test unpaint_turns_a_line_invisible_and_clears_a_zone_brush_strokes_refuse ... ok
+test a_split_zone_keeps_its_fill_on_both_parts_and_a_merge_takes_the_larger_part ... ok
+test painting_by_point_and_id_stores_the_fill_undo_and_redo_restore_it_and_events_report_the_zone ... ok
+test gap_closing_paints_an_open_region_and_keeps_only_the_bounding_segment ... ok
+test an_over_budget_edit_is_refused_atomically_and_the_next_edit_runs ... ok
+
+test result: ok. 11 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.61s
+
+     Running tests\c22_r1_cache.rs (target\debug\deps\c22_r1_cache-0c9fd3f787a41f95.exe)
+
+running 1 test
+test repeated_reads_past_the_512_map_capacity_have_stable_retained_memory ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.73s
+
+     Running tests\c22_r1_commands.rs (target\debug\deps\c22_r1_commands-0710b93b58527aca.exe)
+
+running 8 tests
+test painting_a_pencil_with_a_gradient_stores_the_drag_mapping ... ok
+test crossing_path_paints_a_zone_between_sample_positions ... ok
+test repainting_with_solid_preserves_the_existing_fill_matrix ... ok
+test painting_closed_and_gap_closed_points_paints_both_targets ... ok
+test json_import_recovers_missing_colour_references_in_the_same_transaction ... ok
+test save_has_a_recovery_entry_for_every_used_colour_even_without_prior_copy ... ok
+test loading_a_drawing_recovers_its_missing_colour ... ok
+test loading_repairs_inconsistent_boundary_sides_and_reports_it ... ok
+
+test result: ok. 8 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.91s
+
+     Running tests\c22_r2_commands.rs (target\debug\deps\c22_r2_commands-fa145cb777a1ae48.exe)
+
+running 12 tests
+test gap_preference_dry_run_writes_nothing ... ok
+test recovery_preserves_full_swatch_extensions_including_paint_protection ... ok
+test tiled_texture_click_uses_native_pixel_dimensions ... ok
+test paste_splits_existing_stroke_reports_pieces_and_cut_copy_piece_survives_redo ... ok
+test pencil_solid_keeps_matrix_click_gradient_defaults_and_invisible_rejects_matrix ... ok
+test path_reentry_across_two_layers_is_one_transaction_and_respects_only_painted ... ok
+test json_import_repairs_clockwise_side_disagreement_without_renoding ... ok
+test gap_closing_preserves_id_point_line_and_text_targets_and_undo_redo ... ok
+test saving_repeated_missing_usage_writes_exactly_one_placeholder ... ok
+test conflicting_recovery_copies_choose_the_first_using_drawing_deterministically ... ok
+test loading_clockwise_sides_is_deterministic_and_a_base ... ok
+test backup_and_recovery_folder_open_recover_missing_colour ... ok
+
+test result: ok. 12 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.46s
+
+     Running tests\c22_r3_cache.rs (target\debug\deps\c22_r3_cache-5d295533803e4885.exe)
+
+running 1 test
+test six_hundred_layers_evict_expensive_layer_before_undo_redo_without_changing_deltas ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 33.81s
+
+     Running tests\c22_r3_commands.rs (target\debug\deps\c22_r3_commands-7e3752d9ebd3b70f.exe)
+
+running 5 tests
+test pasted_piece_event_reports_all_new_pieces_and_removed_original_once ... ok
+test texture_click_uses_palette_first_style_and_drag_and_tile_off_stay_unchanged ... ok
+test import_revision_reset_preserves_opaque_meta_and_ext_for_both_id_policies ... ok
+test load_and_import_recovery_keep_nested_extensions_meta_deformable_and_path_protection ... ok
+test multi_drawing_import_repairs_only_inconsistent_drawing_and_undoes_everything ... ok
+
+test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.40s
+
+     Running tests\c22_r4_closure.rs (target\debug\deps\c22_r4_closure-202389510ad5e219.exe)
+
+running 2 tests
+test three_reverse_order_styles_share_pick_and_native_click_selection ... ok
+test schema_children_stamp_but_model_shaped_opaque_values_survive ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.17s
+
+     Running tests\c22_recovery.rs (target\debug\deps\c22_recovery-06ea433ec4f5671c.exe)
+
+running 5 tests
+test a_colour_without_a_copy_gets_a_placeholder_in_recovered ... ok
+test pasted_content_recovers_its_colours_into_the_recorded_palette_in_the_same_step ... ok
+test missing_colours_are_listed_and_recovered_on_demand_as_one_undoable_step ... ok
+test saving_refreshes_each_drawings_recovery_list_to_one_entry_per_used_colour ... ok
+test recovery_keeps_the_protection_flag_and_every_extension_on_demand_on_load_and_on_import ... ok
+
+test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.31s
+
+     Running tests\compile_fail.rs (target\debug\deps\compile_fail-fe1082c395f9beb9.exe)
+
+running 1 test
+   Compiling cfg-if v1.0.5
+   Compiling memchr v2.8.3
+   Compiling once_cell v1.21.4
+   Compiling windows-link v0.2.1
+   Compiling equivalent v1.0.3
+   Compiling allocator-api2 v0.2.21
+   Compiling rand_core v0.10.1
+   Compiling foldhash v0.2.0
+   Compiling regex-syntax v0.8.11
+   Compiling itoa v1.0.18
+   Compiling smallvec v1.16.3
+   Compiling scopeguard v1.2.0
+   Compiling bit-vec v0.8.0
+   Compiling borrow-or-share v0.2.4
+   Compiling typenum v1.20.1
+   Compiling micromap v0.3.0
+   Compiling outref v0.5.2
+   Compiling serde_core v1.0.229
+   Compiling zmij v1.0.23
+   Compiling zerocopy v0.8.63
+   Compiling vsimd v0.8.0
+   Compiling num-cmp v0.1.0
+   Compiling bytecount v0.6.9
+   Compiling percent-encoding v2.3.2
+   Compiling tinyvec v1.13.3
+   Compiling unicode-general-category v1.1.0
+   Compiling data-encoding v2.11.1
+   Compiling num-traits v0.2.19
+   Compiling ref-cast v1.0.27
+   Compiling strum v0.28.0
+   Compiling cpufeatures v0.3.1
+   Compiling dyn-clone v1.0.20
+   Compiling getrandom v0.3.4
+   Compiling lock_api v0.4.14
+   Compiling getrandom v0.4.3
+   Compiling thiserror v2.0.21
+   Compiling bytemuck v1.25.2
+   Compiling libm v0.2.16
+   Compiling parking_lot_core v0.9.12
+   Compiling bit-set v0.8.0
+   Compiling ryu v1.0.23
+   Compiling const-oid v0.10.2
+   Compiling simd-adler32 v0.3.10
+   Compiling hashbrown v0.17.1
+   Compiling adler2 v2.0.1
+   Compiling slotmap v1.1.1
+   Compiling crc32fast v1.5.2
+   Compiling windows-sys v0.61.2
+   Compiling log v0.4.34
+   Compiling i_key_sort v0.12.0
+   Compiling i_tree v0.20.0
+   Compiling memmap2 v0.9.11
+   Compiling fastrand v2.5.0
+   Compiling aho-corasick v1.1.5
+   Compiling font-types v0.12.7
+   Compiling parking_lot v0.12.5
+   Compiling miniz_oxide v0.9.1
+   Compiling wait-timeout v0.2.1
+   Compiling fnv v1.0.7
+   Compiling uuid-simd v0.8.0
+   Compiling unicode-normalization v0.1.26
+   Compiling quick-error v1.2.3
+   Compiling bit-vec v0.10.1
+   Compiling rand v0.10.3
+   Compiling chacha20 v0.10.2
+   Compiling num-integer v0.1.47
+   Compiling num-complex v0.4.6
+   Compiling rand_xorshift v0.5.0
+   Compiling unarray v0.1.4
+   Compiling fontdb v0.24.0
+   Compiling core_detect v1.0.0
+   Compiling bitflags v2.13.2
+   Compiling stats_alloc v0.1.10
+   Compiling bit-set v0.11.1
+   Compiling num-bigint v0.4.8
+   Compiling num-iter v0.1.46
+   Compiling read-fonts v0.41.0
+   Compiling flate2 v1.1.10
+   Compiling hybrid-array v0.4.15
+   Compiling i_float v5.0.0
+   Compiling tempfile v3.27.0
+   Compiling crypto-common v0.2.2
+   Compiling block-buffer v0.12.1
+   Compiling rusty-fork v0.3.1
+   Compiling i_shape v5.0.0
+   Compiling regex-automata v0.4.18
+   Compiling jsonschema-regex v0.59.0
+   Compiling proptest v1.12.0
+   Compiling i_overlay v9.1.0
+   Compiling num-rational v0.4.2
+   Compiling digest v0.11.3
+   Compiling sha2 v0.11.1
+   Compiling num v0.4.3
+   Compiling fraction v0.17.0
+   Compiling serde v1.0.229
+   Compiling indexmap v2.14.2
+   Compiling fluent-uri v0.4.1
+   Compiling email_address v0.2.9
+   Compiling serde_json v1.0.154
+   Compiling ahash v0.8.12
+   Compiling referencing v0.59.0
+   Compiling jsonschema-value v0.59.0
+   Compiling schemars v1.2.3
+   Compiling regex v1.13.1
+   Compiling fancy-regex v0.19.2
+   Compiling jsonschema v0.59.0
+   Compiling skrifa v0.44.0
+   Compiling tt-model v0.0.1 (C:\Users\kaiga\work\review\m2-c22-r4\crates\model)
+   Compiling tt-vector v0.0.1 (C:\Users\kaiga\work\review\m2-c22-r4\crates\vector)
+   Compiling tt-registry v0.0.1 (C:\Users\kaiga\work\review\m2-c22-r4\crates\registry)
+   Compiling tt-persist v0.0.1 (C:\Users\kaiga\work\review\m2-c22-r4\crates\persist)
+   Compiling tt-executor v0.0.1 (C:\Users\kaiga\work\review\m2-c22-r4\crates\executor)
+   Compiling tt-executor-tests v0.0.0 (C:\Users\kaiga\work\review\m2-c22-r4\target\tests\trybuild\tt-executor)
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 23.67s
+
+
+test tests\ui\core_install.rs [should fail to compile] ... ok
+test tests\ui\cx_clone_default.rs [should fail to compile] ... ok
+test tests\ui\cx_constructor.rs [should fail to compile] ... ok
+test tests\ui\cx_struct_literal.rs [should fail to compile] ... ok
+test tests\ui\document_fields.rs [should fail to compile] ... ok
+test tests\ui\enablement_read_only.rs [should fail to compile] ... ok
+test tests\ui\entity_fields.rs [should fail to compile] ... ok
+test tests\ui\handle_channel.rs [should fail to compile] ... ok
+test tests\ui\job_keeps_context.rs [should fail to compile] ... ok
+test tests\ui\load_grant_forged.rs [should fail to compile] ... ok
+test tests\ui\request_type.rs [should fail to compile] ... ok
+test tests\ui\session_private.rs [should fail to compile] ... ok
+test tests\ui-pass\read_snapshots.rs [should pass] ... ok
+
+
+test exclusive_mutation_capability ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 57.06s
+
+   Doc-tests tt_executor
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s

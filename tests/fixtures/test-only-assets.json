@@ -1,0 +1,13 @@
+{
+  "note": "Test-only assets under their own licences (ADR-0003 rule 7). Never shipped: scripts/check-test-only-assets.py checks the repository (check job) and the built bundles (bundle job).",
+  "assets": [
+    {
+      "path": "tests/fixtures/fonts/B612-Regular.ttf",
+      "licence": "OFL-1.1",
+      "licenceFile": "OFL.txt",
+      "source": "https://github.com/google/fonts/raw/main/ofl/b612/B612-Regular.ttf (unmodified)",
+      "sha256": "139dce659100a83bf95b48474696e448bee95631ef84fd3d0437ced2bf33cf73",
+      "use": "same-font text-layout and Break Apart controls (C21-R1-11): crates/executor/tests/c24_text_layout.rs, crates/executor/tests/c24_symmetry.rs"
+    }
+  ]
+}

@@ -205,9 +205,12 @@ fn the_watchdog_answers_within_its_budget() {
     let mut timed_out = false;
     for _ in 0..50 {
         let t = Instant::now();
+        // A 2048-pixel drawing render: well over 1 ms on every runner. (M2 C2.3 round 2 used a whole-project export,
+        // which the macOS runner finished inside 1 ms in round 3.)
         let env = h.invoke(Invocation::user(
-            "doc.object.find",
-            json!({ "where": { "meta": { "op": "exists", "value": false } }, "limit": 1000 }),
+            "draw.drawing.render",
+            json!({ "drawingId": "drawingBank:#1/drawing:#1", "width": 2048,
+                    "region": {"x": -60, "y": -60, "width": 170, "height": 170} }),
         ));
         assert!(t.elapsed() < Duration::from_millis(500));
         if env.error.as_ref().is_some_and(|e| e.code == "command.timeout") {
@@ -216,7 +219,7 @@ fn the_watchdog_answers_within_its_budget() {
             break;
         }
     }
-    assert!(timed_out, "a 1 ms budget times out a full-document find");
+    assert!(timed_out, "a 1 ms budget times out a 2048-pixel render");
 }
 
 /// The state every example expects: one checkpoint, a user workspace, a job, undo and redo steps.
@@ -240,7 +243,9 @@ fn edits(h: &ExecutorHandle) {
 /// with a backup `bk_1a2b3c4d`, recovery data `rc_1a2b3c4d`, `Short.animpkg` and a `media` folder in a temporary folder
 /// that stands for the examples' `/tmp`.
 fn with_files(id: &str) -> bool {
-    ["project.", "doc.asset.", "doc.blob.", "doc.package.", "agent."].iter().any(|p| id.starts_with(p))
+    ["project.", "doc.asset.", "doc.blob.", "doc.package.", "agent.", "draw.vectorize."]
+        .iter()
+        .any(|p| id.starts_with(p))
 }
 
 fn wait_job(h: &ExecutorHandle, started: &Value) {
@@ -272,6 +277,12 @@ fn prepared_with_files(id: &str, dir: &std::path::Path) -> ExecutorHandle {
     let user = tt_persist::settings::UserDirs::under(&dir.join("user"));
     let project_id = doc.project().id().to_string();
     // Only the files an example uses are made (file creation is slow on CI runners).
+    if id.starts_with("draw.vectorize.") {
+        // The E2 line art (M2 C2.4) as the examples' `/tmp/lineart.png`.
+        let art =
+            std::path::Path::new(env!("CARGO_MANIFEST_DIR")).join("../../tests/fixtures/vectorize/e2-lineart.png");
+        std::fs::copy(art, dir.join("lineart.png")).unwrap();
+    }
     if id.starts_with("project.backup.") {
         let backups = user.backups.join(&project_id);
         std::fs::create_dir_all(&backups).unwrap();
@@ -476,5 +487,7 @@ fn every_generated_declaration_answers_with_its_owner() {
         n += 1;
     }
     println!("generated declarations: {n}");
-    assert!(n > 600);
+    // A floor against an empty table: the count falls as checkpoints implement declared commands (599 after M2 C2.4
+    // implemented `draw.vectorize.*`).
+    assert!(n > 500, "{n}");
 }

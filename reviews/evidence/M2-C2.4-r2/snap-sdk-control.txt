@@ -1,0 +1,21 @@
+{"argv": ["python", "tests/adversarial/c24-r2-audit.py", "--snap-probe", "target/review-ci-headless/toontown-headless.exe", "reviews/evidence/M2-C2.4-r2/snap-sdk-control.json"], "cwd": "C:\\Users\\kaiga\\work\\review\\m2-c24-r2", "env": {}, "startedAt": "2026-11-02T19:11:40.284166+00:00"}
+{
+  "reviewedHead": "3c74c3432f2a1895b5aaca83e6ddf914cf6b4281",
+  "sourceRun": 41486947308,
+  "sdk": "2.0.0",
+  "beforeArea": 800.0,
+  "afterArea": 400.0,
+  "shippedOraclePredictedArea": 460.0,
+  "requestedPoint": [
+    77,
+    23
+  ],
+  "nearestOtherCollapsedContour": [
+    80,
+    20
+  ],
+  "distance": 4.242640687119285,
+  "radius": 8,
+  "anchorsAtSnapPoint": 5,
+  "passed": true
+}

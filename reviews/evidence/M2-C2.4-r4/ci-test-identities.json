@@ -1,0 +1,6516 @@
+{
+  "passed": 1280,
+  "ignored": 22,
+  "tests": [
+    {
+      "binary": "tests/adversarial/c01.rs",
+      "test": "c01_r1_01_license_allowlist_stays_within_user_policy",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/adversarial/c01.rs",
+      "test": "c01_r1_01_license_grouping_preserves_mandatory_copyleft",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/adversarial/c01.rs",
+      "test": "c01_r1_02_dynamic_import_cannot_bypass_ipc_boundary",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/adversarial/c01.rs",
+      "test": "c01_r1_04_engine_info_is_bootstrap_info_not_app_info_get",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/adversarial/c01.rs",
+      "test": "c01_r1_05_rust_control_rejects_multibyte_over_limit",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/adversarial/c01.rs",
+      "test": "c01_r1_06_dependency_proof_rejects_graphics_dependencies",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/adversarial/c01.rs",
+      "test": "wire_engine_info_field_names_match_typescript",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/adversarial/c03-r2-encoder.rs",
+      "test": "adjacent_out_of_bounds_and_negative_width_are_refused",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/adversarial/c03-r2-encoder.rs",
+      "test": "c03_r2_03_unknown_style_must_be_refused",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/adversarial/c03-r2-encoder.rs",
+      "test": "c03_r2_03_unpaired_coordinate_must_be_refused",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/adversarial/c03-r2-encoder.rs",
+      "test": "nonfinite_points_and_bounds_return_typed_errors",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/adversarial/c03-r2-encoder.rs",
+      "test": "renderlist::tests::encoder_refuses_invalid_geometry",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/adversarial/c03-r2-encoder.rs",
+      "test": "renderlist::tests::encoding_has_the_documented_layout",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/adversarial/c03-r2-encoder.rs",
+      "test": "renderlist::tests::generated_scenes_are_valid_and_bounded_by_their_points",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/adversarial/c03-r2-encoder.rs",
+      "test": "renderlist::tests::generation_is_reproducible",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/adversarial/c03-r2-encoder.rs",
+      "test": "renderlist::tests::scenes_have_the_specified_sizes",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/adversarial/c03-r2-encoder.rs",
+      "test": "renderlist::tests::tiny_fixture_matches_committed_bytes",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/adversarial/c03-r2-encoder.rs",
+      "test": "subnormal_and_empty_path_are_valid",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/audit.rs",
+      "test": "one_entry_per_call_and_reproducible_from_the_committed_fixture",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/audit.rs",
+      "test": "persisted_activity_log_beside_the_project",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c03_fixed_configurations.rs",
+      "test": "fixed_scalar_configuration_hashes_identically_across_oses",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c03_fixed_configurations.rs",
+      "test": "u8_pipeline_loses_opacity_over_an_opaque_background_known_limitation",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c03_r1_stress.rs",
+      "test": "c03_r1_04_simd_dispatch_must_not_change_final_pixels",
+      "result": "ignored"
+    },
+    {
+      "binary": "tests/c03_r1_stress.rs",
+      "test": "c03_r1_05_source_over_an_opaque_background_stays_opaque",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c03_r1_stress.rs",
+      "test": "extended_corpus_repeats_and_cross_os_hashes",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c03_r2_quality.rs",
+      "test": "quality_pipeline_opacity_full_corpus",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c11_r1_adversarial.rs",
+      "test": "add_over_existing_object_property_is_invertible",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c11_r1_adversarial.rs",
+      "test": "brush_outline_must_be_closed",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c11_r1_adversarial.rs",
+      "test": "canonical_map_order_does_not_depend_on_insertion_order",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c11_r1_adversarial.rs",
+      "test": "canonical_scene_map_order_is_not_document_state",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c11_r1_adversarial.rs",
+      "test": "canonical_serialization_rejects_nonfinite_values",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c11_r1_adversarial.rs",
+      "test": "child_stub_type_must_agree_with_the_containment_slot",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c11_r1_adversarial.rs",
+      "test": "cloning_a_system_generator_cannot_duplicate_ids",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c11_r1_adversarial.rs",
+      "test": "containment_and_scene_limit_controls",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c11_r1_adversarial.rs",
+      "test": "depth_zero_results_validate_against_their_object_schema",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c11_r1_adversarial.rs",
+      "test": "derived_properties_are_output_only_on_validated_entity_input",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c11_r1_adversarial.rs",
+      "test": "diff_does_not_treat_opaque_arrays_as_child_collections",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c11_r1_adversarial.rs",
+      "test": "document_assembly_rechecks_schema_ranges_after_public_deserialize",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c11_r1_adversarial.rs",
+      "test": "duplicate_entry_ids_must_not_silently_overwrite_content",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c11_r1_adversarial.rs",
+      "test": "elided_patch_must_not_write_null",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c11_r1_adversarial.rs",
+      "test": "every_valid_deep_library_object_has_a_resolvable_canonical_path",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c11_r1_adversarial.rs",
+      "test": "extension_and_metadata_names_are_never_interpreted",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c11_r1_adversarial.rs",
+      "test": "fixed_text_requires_width",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c11_r1_adversarial.rs",
+      "test": "hostile_path_and_id_controls",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c11_r1_adversarial.rs",
+      "test": "image_element_bank_requires_exactly_one_bitmap_per_drawing",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c11_r1_adversarial.rs",
+      "test": "int_means_signed_32_bit_unless_spec_states_otherwise",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c11_r1_adversarial.rs",
+      "test": "jsonschema_integer_multiple_of_does_not_round_before_testing",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c11_r1_adversarial.rs",
+      "test": "linked_file_asset_requires_paths",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c11_r1_adversarial.rs",
+      "test": "metadata_depth_is_enforced_at_model_input",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c11_r1_adversarial.rs",
+      "test": "million_system_ids_unique_ordered_and_correctly_prefixed",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c11_r1_adversarial.rs",
+      "test": "mouth_track_manual_ranges_stay_within_the_placement",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c11_r1_adversarial.rs",
+      "test": "move_over_existing_object_property_is_invertible",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c11_r1_adversarial.rs",
+      "test": "nested_closed_value_objects_reject_unknown_fields",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c11_r1_adversarial.rs",
+      "test": "nfc_applies_to_persisted_strings_beyond_names",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c11_r1_adversarial.rs",
+      "test": "project_library_must_have_local_kind",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c11_r1_adversarial.rs",
+      "test": "project_requires_a_visible_palette",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c11_r1_adversarial.rs",
+      "test": "property_schema_resolves_nested_child_and_tuple_fields",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c11_r1_adversarial.rs",
+      "test": "root_add_is_rfc6902_replacement",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c11_r1_adversarial.rs",
+      "test": "schema_integer_boundary_does_not_round_u64_max_up",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c11_r1_adversarial.rs",
+      "test": "schema_mutations_cover_all_object_types_and_root_properties",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c11_r1_adversarial.rs",
+      "test": "schema_properties_have_format_introduction_annotations",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c11_r1_adversarial.rs",
+      "test": "spline_handle_offsets_are_clamped_to_adjacent_key_times",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c11_r1_adversarial.rs",
+      "test": "swatch_id_alias_is_accepted_by_the_validated_input_path",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c11_r1_adversarial.rs",
+      "test": "ten_megabyte_drawing_validation_measurement",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c11_r1_adversarial.rs",
+      "test": "texture_paths_must_be_under_textures",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c11_r1_wire.rs",
+      "test": "nested_duplicate_keys_are_rejected_in_requests",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c11_r1_wire.rs",
+      "test": "opaque_json_integer_outside_u64_is_not_silently_rounded",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c11_r1_wire.rs",
+      "test": "supported_integer_boundaries_and_utf8_controls",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c11_r1_wire.rs",
+      "test": "typed_nonfinite_wire_numbers_are_rejected_not_changed_to_null",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c11_r2_adversarial.rs",
+      "test": "all_entity_serde_entry_points_reject_unknown_fields_and_revalidate",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c11_r2_adversarial.rs",
+      "test": "all_public_entity_constructors_are_checked_before_document_use",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c11_r2_adversarial.rs",
+      "test": "array_append_patch_inverse_restores_input",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c11_r2_adversarial.rs",
+      "test": "canonical_writer_limits_are_explicit",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c11_r2_adversarial.rs",
+      "test": "cell_note_frame_map_keys_obey_signed_int_bounds",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c11_r2_adversarial.rs",
+      "test": "cloned_generator_eight_threads_100k_each_are_unique",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c11_r2_adversarial.rs",
+      "test": "deeper_library_paths_near_model_limit_resolve",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c11_r2_adversarial.rs",
+      "test": "duplicate_ids_across_split_types_and_inline_levels_are_rejected",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c11_r2_adversarial.rs",
+      "test": "duplicate_inline_collections_and_cross_entry_global_ids_are_rejected",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c11_r2_adversarial.rs",
+      "test": "duplicate_keys_are_rejected_even_at_distinct_frames",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c11_r2_adversarial.rs",
+      "test": "duplicate_local_ids_across_nested_nodes_share_drawing_scope",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c11_r2_adversarial.rs",
+      "test": "duplicate_placement_sequence_block_and_channel_ids_are_rejected",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c11_r2_adversarial.rs",
+      "test": "duplicate_split_entries_all_five_maps_are_rejected",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c11_r2_adversarial.rs",
+      "test": "elided_and_incomplete_operations_fail_without_mutating_input",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c11_r2_adversarial.rs",
+      "test": "every_document_entry_kind_revalidates_deserialized_fields",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c11_r2_adversarial.rs",
+      "test": "every_envelope_type_is_readonly",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c11_r2_adversarial.rs",
+      "test": "every_model_stub_and_full_result_validates_at_depth_zero_one_two_all",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c11_r2_adversarial.rs",
+      "test": "every_schema_property_has_since_and_envelope_type_is_readonly",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c11_r2_adversarial.rs",
+      "test": "fixed_text_width_and_texture_paths_reject_new_invalid_cases",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c11_r2_adversarial.rs",
+      "test": "forty_previously_implemented_register_rows_retain_constraints",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c11_r2_adversarial.rs",
+      "test": "image_import_options_are_opaque",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c11_r2_adversarial.rs",
+      "test": "missing_copy_source_is_not_implicitly_the_document_root",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c11_r2_adversarial.rs",
+      "test": "model_depth_99_100_101_is_enforced_before_parsing",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c11_r2_adversarial.rs",
+      "test": "mouth_label_frame_map_keys_are_positive_and_within_int",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c11_r2_adversarial.rs",
+      "test": "multiple_of_is_exact_near_u64_and_signed_limits",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c11_r2_adversarial.rs",
+      "test": "nested_array_move_with_overwrite_inverse_restores_input",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c11_r2_adversarial.rs",
+      "test": "new_entity_semantic_boundary_controls",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c11_r2_adversarial.rs",
+      "test": "nfc_is_applied_to_declared_non_name_strings_without_touching_opaque_values",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c11_r2_adversarial.rs",
+      "test": "nonfinite_nested_structs_maps_and_model_constructors_are_rejected",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c11_r2_adversarial.rs",
+      "test": "opaque_model_lookalikes_deep_arrays_and_patch_inverse_are_preserved",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c11_r2_adversarial.rs",
+      "test": "ordinary_move_copy_test_and_array_index_shifts_invert",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c11_r2_adversarial.rs",
+      "test": "property_lookup_follows_effect_condition_without_discarding_it",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c11_r2_adversarial.rs",
+      "test": "property_lookup_preserves_ref_property_annotations",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c11_r2_adversarial.rs",
+      "test": "public_serde_entries_cannot_evade_revalidation",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c11_r2_adversarial.rs",
+      "test": "randomized_insertion_and_post_patch_revalidation_write_identical_bytes",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c11_r2_adversarial.rs",
+      "test": "range_patch_rejects_nonstring_mouth_value_without_deleting_text",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c11_r2_adversarial.rs",
+      "test": "signed_int_boundaries_and_seed_exception",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c11_r2_adversarial.rs",
+      "test": "spline_clamps_both_sides_for_irregular_key_spacing",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c11_r2_adversarial.rs",
+      "test": "swatch_alias_equal_conflicting_and_nested_forms",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c11_r2_wire.rs",
+      "test": "cross_language_exchange",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c11_r2_wire.rs",
+      "test": "fresh_hostile_text_cases_reject_and_escaped_unicode_roundtrips",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c11_r2_wire.rs",
+      "test": "integer_edges_are_lossless_or_typed_errors",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c11_r2_wire.rs",
+      "test": "nested_nonfinite_f32_f64_maps_and_sequences_are_errors",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c11_r2_wire.rs",
+      "test": "wire_depth_one_under_and_one_over",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c11_r2_wire.rs",
+      "test": "writer_never_emits_text_its_reader_rejects_at_depth_boundary",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c11_r3_adversarial.rs",
+      "test": "anonymous_variant_property_declarations_have_since",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c11_r3_adversarial.rs",
+      "test": "append_move_remove_sequences_restore_nested_arrays",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c11_r3_adversarial.rs",
+      "test": "frame_map_keys_and_nfc_values_at_fresh_boundaries",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c11_r3_adversarial.rs",
+      "test": "malformed_mouth_ranges_return_typed_errors",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c11_r3_adversarial.rs",
+      "test": "moving_into_own_subtree_fails_atomically_and_copying_parent_succeeds",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c11_r3_adversarial.rs",
+      "test": "opaque_mouth_track_lookalikes_are_ordinary_json_changes",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c11_r3_adversarial.rs",
+      "test": "property_schema_nested_conditionals_and_ref_annotations_survive",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c11_r3_adversarial.rs",
+      "test": "property_schema_preserves_every_enum_alternative",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c11_r3_adversarial.rs",
+      "test": "property_schema_preserves_nullable_value_domains",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c11_r3_adversarial.rs",
+      "test": "resolved_stateless_move_inverse_does_not_shift_numeric_object_keys",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c11_r3_adversarial.rs",
+      "test": "zero_length_exposure_runs_are_invalid_range_payloads",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c11_r3_random.rs",
+      "test": "ten_thousand_rfc6902_sequences_apply_and_invert",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c11_r3_register.rs",
+      "test": "rows_111_to_124_element_variant_blocks_are_required_and_typed",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c11_r3_register.rs",
+      "test": "rows_128_to_137_transform_constraints_and_pivots",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c11_r3_register.rs",
+      "test": "rows_138_to_141_camera_export_skeleton_and_bone_blocks",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c11_r3_register.rs",
+      "test": "rows_146_and_148_drawing_pivot_and_ordered_nodes",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c11_r3_wire.rs",
+      "test": "mixed_depth_boundary_writer_output_is_readable",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c11_r3_wire.rs",
+      "test": "negative_and_noninteger_range_frames_are_typed_wire_errors",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c11_r4_exposure_bounds.rs",
+      "test": "exposure_range_rejects_total_above_scene_limit",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c11_r4_exposure_bounds.rs",
+      "test": "exposure_range_rejects_window_past_scene_limit",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c11_r5_write_bounds.rs",
+      "test": "copy_and_move_into_exposure_obey_scene_limit",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c11_r5_write_bounds.rs",
+      "test": "exposure_append_batch_cannot_cross_limit",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c11_r5_write_bounds.rs",
+      "test": "nested_exposure_count_write_obeys_total_limit",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c11_r5_write_bounds.rs",
+      "test": "whole_mouth_string_writes_obey_scene_limit",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c11_r6_staged_inverse.rs",
+      "test": "staged_append_inverse_survives_run_merging",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c11_r6_staged_inverse.rs",
+      "test": "staged_inverse_restores_frames_after_runs_merge",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c12_checkpoint_property.rs",
+      "test": "random_edit_checkpoint_diff_sequences_stay_coherent",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c12_edit_ops.rs",
+      "test": "copy_and_paste_elements_makes_renamed_clones_sharing_drawings",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c12_edit_ops.rs",
+      "test": "cut_and_paste_in_one_atomic_batch_is_one_undo_step",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c12_edit_ops.rs",
+      "test": "cut_takes_descendants_paste_restores_the_forest_and_delete_reattaches",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c12_edit_ops.rs",
+      "test": "delete_clears_cells_and_cut_special_removes_frames",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c12_edit_ops.rs",
+      "test": "drawing_objects_cut_copy_paste_and_new_element",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c12_edit_ops.rs",
+      "test": "dry_run_cut_changes_nothing",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c12_edit_ops.rs",
+      "test": "element_properties_paste_onto_elements",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c12_edit_ops.rs",
+      "test": "keys_paste_at_a_frame_and_cut_special_filters_key_groups",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c12_edit_ops.rs",
+      "test": "locked_drawings_refuse_cut_and_paste",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c12_edit_ops.rs",
+      "test": "motion_point_paste_special_pastes_selected_values",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c12_edit_ops.rs",
+      "test": "paste_and_paste_special_cells",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c12_edit_ops.rs",
+      "test": "paste_as_new_element_copies_the_cells_into_a_new_bank",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c12_edit_ops.rs",
+      "test": "paste_errors",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c12_edit_ops.rs",
+      "test": "paste_special_again_needs_an_earlier_paste_special",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c12_edit_ops.rs",
+      "test": "selection_is_the_default_target",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c12_edit_ops.rs",
+      "test": "templates_copy_between_catalogs",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c12_invalidation_property.rs",
+      "test": "drawing_invalidation_appears_exactly_when_drawing_content_differs",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c12_kernel_state.rs",
+      "test": "every_example_runs_on_the_fixture_under_the_watchdog",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c12_kernel_state.rs",
+      "test": "every_generated_declaration_answers_with_its_owner",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c12_kernel_state.rs",
+      "test": "jobs_run_off_the_document_thread",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c12_kernel_state.rs",
+      "test": "the_application_context_follows_commands",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c12_kernel_state.rs",
+      "test": "the_watchdog_answers_within_its_budget",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c12_kernel_state.rs",
+      "test": "window_and_panel_state_is_queryable_and_settable",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c12_kernel_state.rs",
+      "test": "workspaces_are_kernel_state",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c12_kernel_support.rs",
+      "test": "list_insertions_and_removals_diff_by_id",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c12_kernel_support.rs",
+      "test": "multi_entry_commits_are_atomic_and_carry_verified_undo_and_redo",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c12_kernel_support.rs",
+      "test": "own_views_and_pointers_of_nested_objects",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c12_kernel_support.rs",
+      "test": "stamping_sets_document_and_object_revisions_and_the_drawing_rule",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c12_kernel_support.rs",
+      "test": "typed_object_pointers_agree_with_the_entry_json",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c12_kernel_support.rs",
+      "test": "validated_entry_cache_never_hides_object_issues",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c12_never_block.rs",
+      "test": "a_handler_that_does_not_return_never_blocks_callers",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c12_policy.rs",
+      "test": "batches_resolve_references_and_refuse_jobs_and_history",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c12_policy.rs",
+      "test": "derived_properties_are_projected_on_request",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c12_policy.rs",
+      "test": "locked_drawings_refuse_content_patches",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c12_policy.rs",
+      "test": "naming_rulings_hold_in_patches",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c12_policy.rs",
+      "test": "permissions_validation_and_availability",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c12_policy.rs",
+      "test": "queries_find_resolve_and_page",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c12_policy.rs",
+      "test": "read_only_derived_transient_and_command_properties_are_refused",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c12_policy.rs",
+      "test": "special_references_resolve_against_the_context",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c12_policy.rs",
+      "test": "the_load_transaction_is_guarded",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c12_policy.rs",
+      "test": "value_collections_are_patchable_and_validated",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c12_policy.rs",
+      "test": "whole_object_and_structural_patches_are_refused",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c12_r1_contracts.rs",
+      "test": "agent_cannot_cancel_another_sessions_job",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c12_r1_contracts.rs",
+      "test": "agent_cannot_read_another_sessions_jobs_with_all_true",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c12_r1_contracts.rs",
+      "test": "changes_report_drawing_revision_when_a_stroke_changes",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c12_r1_contracts.rs",
+      "test": "checkpoint_in_atomic_batch_has_the_committed_content_revision",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c12_r1_contracts.rs",
+      "test": "clipboard_get_returns_the_specified_clipboard_directly",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c12_r1_contracts.rs",
+      "test": "clipboard_set_validates_the_content_for_its_kind",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c12_r1_contracts.rs",
+      "test": "diff_older_than_snapshot_window_replays_repeated_entry_batch",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c12_r1_contracts.rs",
+      "test": "diff_retains_the_last_save_even_after_ten_thousand_transactions",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c12_r1_contracts.rs",
+      "test": "doc_diff_sees_prior_uncommitted_atomic_steps",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c12_r1_contracts.rs",
+      "test": "dry_run_cannot_cancel_a_running_job",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c12_r1_contracts.rs",
+      "test": "dry_run_clipboard_emits_no_change_event",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c12_r1_contracts.rs",
+      "test": "edit_clipboard_is_disabled_without_a_project",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c12_r1_contracts.rs",
+      "test": "edit_commands_promised_for_c12_are_implemented",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c12_r1_contracts.rs",
+      "test": "every_registry_entry_has_a_gui_binding_or_agent_only_justification",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c12_r1_contracts.rs",
+      "test": "expect_rev_error_reports_current_rev_and_small_current_object",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c12_r1_contracts.rs",
+      "test": "expect_rev_map_checks_every_listed_object_not_only_patch_targets",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c12_r1_contracts.rs",
+      "test": "explicitly_saving_and_reselecting_current_workspace_keeps_layout",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c12_r1_contracts.rs",
+      "test": "external_safe_code_cannot_install_a_mutated_stale_snapshot",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c12_r1_contracts.rs",
+      "test": "failed_atomic_batch_cannot_cancel_a_running_job",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c12_r1_contracts.rs",
+      "test": "failed_batch_clipboard_emits_no_change_event",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c12_r1_contracts.rs",
+      "test": "fullscreen_state_and_active_view_agree_with_visible_central_panel",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c12_r1_contracts.rs",
+      "test": "historical_diff_reports_the_revision_of_its_requested_end_state",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c12_r1_contracts.rs",
+      "test": "idle_query_does_not_repair_context_after_atomic_current_element_change",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c12_r1_contracts.rs",
+      "test": "job_wait_obeys_request_id_and_retains_document_revision",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c12_r1_contracts.rs",
+      "test": "job_wait_timeout_policy_is_explicitly_measured",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c12_r1_contracts.rs",
+      "test": "parameter_dry_run_is_honoured_inside_atomic_batch",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c12_r1_contracts.rs",
+      "test": "registry_file_and_network_commands_declare_required_scopes",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c12_r1_contracts.rs",
+      "test": "registry_owners_follow_the_milestone_plan",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c12_r1_contracts.rs",
+      "test": "registry_stubs_have_actual_parameter_constraints_and_examples",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c12_r1_contracts.rs",
+      "test": "renamed_builtin_workspace_can_still_be_restored",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c12_r1_contracts.rs",
+      "test": "request_id_collision_returns_original_result_per_literal_spec",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c12_r1_contracts.rs",
+      "test": "revision_exhaustion_is_an_error_and_does_not_kill_the_document_thread",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c12_r1_contracts.rs",
+      "test": "sequential_batch_dry_run_queries_see_previous_simulated_edits",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c12_r1_contracts.rs",
+      "test": "session_idempotency_survives_more_than_ten_thousand_other_requests",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c12_r1_contracts.rs",
+      "test": "setting_mode_activates_a_view_of_the_requested_type",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c12_r1_contracts.rs",
+      "test": "workspace_switch_defaults_to_autosaving_current_arrangement",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c12_r1_macro.rs",
+      "test": "duplicate_ids_and_inventory_kind_drift_are_rejected",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c12_r1_macro.rs",
+      "test": "missing_example_is_rejected_at_compile_time",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c12_r1_scale.rs",
+      "test": "every_command_rejects_huge_malformed_input_on_large_documents",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c12_r1_stress.rs",
+      "test": "all_inventory_entries_reject_malformed_params_under_watchdog_and_catalogue_is_recorded",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c12_r1_stress.rs",
+      "test": "eight_clients_cas_commands_and_batches_have_no_lost_updates",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c12_r1_stress.rs",
+      "test": "every_executable_typed_example_also_validates_its_result_schema",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c12_r1_stress.rs",
+      "test": "ordinary_dry_run_preserves_exact_history_and_matches_real_result",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c12_r2_contracts.rs",
+      "test": "all_edit_commands_require_project",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c12_r2_contracts.rs",
+      "test": "checkpoint_before_edit_predicts_same_result_in_dry_run",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c12_r2_contracts.rs",
+      "test": "checkpoint_between_edits_captures_its_staged_content",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c12_r2_contracts.rs",
+      "test": "checkpoint_create_then_delete_in_atomic_batch_succeeds",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c12_r2_contracts.rs",
+      "test": "checkpoint_is_visible_to_later_atomic_query",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c12_r2_contracts.rs",
+      "test": "clipboard_element_properties_validates_values_not_only_names",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c12_r2_contracts.rs",
+      "test": "composite_failed_batch_preview_matches_real_envelope_and_commits_no_effects",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c12_r2_contracts.rs",
+      "test": "copying_a_peg_includes_descendants_per_scene_edit_rules",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c12_r2_contracts.rs",
+      "test": "copying_complete_scene_forest_preserves_effect_parentage_on_paste",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c12_r2_contracts.rs",
+      "test": "cross_bank_cell_paste_cannot_overwrite_a_locked_drawing",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c12_r2_contracts.rs",
+      "test": "cutting_a_peg_removes_descendants_per_scene_edit_rules",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c12_r2_contracts.rs",
+      "test": "diff_reports_drawing_content_revision_invalidation",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c12_r2_contracts.rs",
+      "test": "drawing_copy_preserves_object_shaped_opaque_metadata",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c12_r2_contracts.rs",
+      "test": "edit_envelopes_report_explicit_or_selection_targets",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c12_r2_contracts.rs",
+      "test": "edit_object_kinds_clipboard_and_history_roundtrip",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c12_r2_contracts.rs",
+      "test": "eight_fresh_clients_mix_object_guards_and_atomic_batches",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c12_r2_contracts.rs",
+      "test": "element_delete_preserves_opaque_metadata_and_extension_strings",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c12_r2_contracts.rs",
+      "test": "eviction_at_byte_limit_never_reexecutes_oldest_request",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c12_r2_contracts.rs",
+      "test": "explicit_key_edit_on_locked_element_is_allowed_per_05_6_6",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c12_r2_contracts.rs",
+      "test": "export_registry_for_independent_audit",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c12_r2_contracts.rs",
+      "test": "external_snapshot_staging_and_revision_rewind_cannot_replace_dirty_live_document",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c12_r2_contracts.rs",
+      "test": "failed_batch_rolls_back_all_five_effect_classes_together",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c12_r2_contracts.rs",
+      "test": "fresh_historical_diff_replays_and_agrees_with_checkpoint_across_batch_steps",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c12_r2_contracts.rs",
+      "test": "fresh_job_cross_session_list_wait_cancel_are_isolated",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c12_r2_contracts.rs",
+      "test": "fresh_mode_workspace_and_renamed_builtin_reset_are_coherent",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c12_r2_contracts.rs",
+      "test": "identical_document_and_paste_sequence_produce_identical_ids",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c12_r2_contracts.rs",
+      "test": "json04_materialisation_does_not_invent_opaque_nested_containers",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c12_r2_contracts.rs",
+      "test": "json04_materialised_parent_is_removed_by_raw_patch_inverse",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c12_r2_contracts.rs",
+      "test": "locked_elements_still_allow_exposure_edits_per_04_10_4",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c12_r2_contracts.rs",
+      "test": "malformed_paste_destination_is_rejected_without_fallback",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c12_r2_contracts.rs",
+      "test": "mixed_expect_rev_guards_cover_paths_compound_ids_and_unmodified_project",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c12_r2_contracts.rs",
+      "test": "omitted_meta_materialisation_keeps_canonical_undo_exact",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c12_r2_contracts.rs",
+      "test": "paste_dry_run_predicts_created_ids_exactly",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c12_r2_contracts.rs",
+      "test": "pending_job_wait_reserves_request_id_against_other_commands",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c12_r2_contracts.rs",
+      "test": "request_ids_are_session_scoped_and_survive_undo",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c12_r2_contracts.rs",
+      "test": "revision_max_blocks_fresh_paste_and_keeps_queries_alive",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c12_r2_contracts.rs",
+      "test": "safe_revision_reconstruction_cannot_install_future_object_revisions",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c12_r2_contracts.rs",
+      "test": "sequential_batch_job_wait_honours_wait_timeout_contract",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c12_r2_contracts.rs",
+      "test": "sequential_dry_run_simulates_checkpoints",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c12_r2_contracts.rs",
+      "test": "standalone_m1_element_types_roundtrip_undo_redo",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c12_r2_registry.rs",
+      "test": "generated_named_result_is_not_an_unconstrained_object",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c12_r2_registry.rs",
+      "test": "generated_nested_parameters_reject_wrong_handle_type",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c12_r2_registry.rs",
+      "test": "generated_result_rejects_wrong_enabled_type",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c12_r2_registry.rs",
+      "test": "independently_validate_every_declared_parameter_example",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c12_r2_registry.rs",
+      "test": "library_close_has_no_project_rule_from_01_1_3",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c12_r2_registry.rs",
+      "test": "library_global_write_scope_is_declared",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c12_r2_registry.rs",
+      "test": "result_schema_catalogue_does_not_accept_null_for_device_record",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c12_r2_scale.rs",
+      "test": "hundred_thousand_stroke_change_reports_drawing_in_envelope_event_and_diff",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c12_r3_contracts.rs",
+      "test": "checkpoint_after_stroke_edit_has_no_diff_at_same_committed_revision",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c12_r3_contracts.rs",
+      "test": "checkpoint_create_delete_and_failure_are_transactional_on_fresh_content",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c12_r3_contracts.rs",
+      "test": "dry_run_ids_match_for_all_implemented_paste_creation_routes",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c12_r3_contracts.rs",
+      "test": "fresh_cell_paste_checks_target_type_and_locked_drawing_before_commit",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c12_r3_contracts.rs",
+      "test": "fresh_clipboard_property_values_are_checked_before_storage",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c12_r3_contracts.rs",
+      "test": "fresh_complete_forest_paste_preserves_derived_parent_links",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c12_r3_contracts.rs",
+      "test": "json04_multi_operation_inverse_restores_raw_bytes_and_opaque_boundaries",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c12_r3_contracts.rs",
+      "test": "key_and_template_creation_predict_ids_and_stay_opaque",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c12_r3_contracts.rs",
+      "test": "malformed_paste_destination_variants_never_fall_back",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c12_r3_contracts.rs",
+      "test": "maximum_revision_rolls_back_checkpoints_and_keeps_executor_alive",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c12_r3_contracts.rs",
+      "test": "opaque_payloads_survive_every_edit_handler_and_property_patch",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c12_r3_contracts.rs",
+      "test": "overlapping_identical_waits_retain_one_original_envelope",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c12_r3_contracts.rs",
+      "test": "public_staging_rewind_and_serde_candidates_cannot_cross_load_integrity_gate",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c12_r3_contracts.rs",
+      "test": "sequential_batch_wait_uses_elapsed_time_and_reaches_completion",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c12_r3_contracts.rs",
+      "test": "staged_drawing_only_diff_keeps_content_invalidation",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c12_r3_registry.rs",
+      "test": "binding_params_support_commands_other_than_undo",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c12_r3_registry.rs",
+      "test": "envelope_point_results_use_time_and_gains_from_07",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c12_r3_registry.rs",
+      "test": "export_settings_returns_an_object_as_its_setter_accepts",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c12_r3_registry.rs",
+      "test": "light_table_set_returns_the_entries_that_list_defines",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c12_r3_registry.rs",
+      "test": "path_result_accepts_exact_05_section_19_4_example",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c12_r3_registry.rs",
+      "test": "pen_set_returns_a_model_pen_instead_of_a_scalar",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c12_r3_registry.rs",
+      "test": "polyline_options_result_is_the_option_object",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c12_r3_registry.rs",
+      "test": "preference_listing_can_return_a_boolean_preference",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c12_r3_registry.rs",
+      "test": "print_settings_accepts_a_defined_print_parameter",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c12_r3_registry.rs",
+      "test": "selected_point_anchor_is_the_integer_index_from_02",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c12_r3_registry.rs",
+      "test": "velocity_function_pins_accept_the_explicit_frame_value_shape",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c12_r3_registry.rs",
+      "test": "xsheet_panel_result_preserves_boolean_fields_from_parameters",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c12_r3_stress.rs",
+      "test": "all_inventory_entries_reject_malformed_params_under_watchdog_and_catalogue_is_recorded",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c12_r3_stress.rs",
+      "test": "eight_clients_cas_commands_and_batches_have_no_lost_updates",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c12_r3_stress.rs",
+      "test": "every_executable_typed_example_also_validates_its_result_schema",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c12_r3_stress.rs",
+      "test": "ordinary_dry_run_preserves_exact_history_and_matches_real_result",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c12_r4_closure.rs",
+      "test": "configured_publishing_services_can_be_connected",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c12_r4_closure.rs",
+      "test": "immediately_querying_a_staged_checkpoint_is_empty",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c12_r4_closure.rs",
+      "test": "nested_checkpoints_do_not_reinvalidate_unchanged_drawing_content",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c12_r4_closure.rs",
+      "test": "storyline_playback_changed_can_announce_a_stop",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c12_registry.rs",
+      "test": "describe_reports_declarations",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c12_registry.rs",
+      "test": "drawing_command_delegation_ruling",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c12_registry.rs",
+      "test": "every_declaration_has_schemas_and_valid_examples",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c12_registry.rs",
+      "test": "registry_covers_spec_a_and_types_every_m1_command",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c12_registry.rs",
+      "test": "stubs_and_declarations_name_their_owners",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c12_registry.rs",
+      "test": "ui_binding_manifest_parity",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c12_transactions.rs",
+      "test": "a_batch_changing_one_property_twice_undoes_and_redoes_exactly",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c12_transactions.rs",
+      "test": "a_patch_is_one_transaction_with_stamped_revisions_and_an_undo_step",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c12_transactions.rs",
+      "test": "atomic_batches_commit_several_entries_as_one_step_or_roll_back_entirely",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c12_transactions.rs",
+      "test": "checkpoints_restore_as_one_undoable_step_without_lowering_revisions",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c12_transactions.rs",
+      "test": "doc_diff_reports_net_changes_since_a_revision_or_checkpoint",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c12_transactions.rs",
+      "test": "drawing_content_edits_stamp_the_drawing",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c12_transactions.rs",
+      "test": "dry_runs_report_changes_and_change_nothing",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c12_transactions.rs",
+      "test": "events_follow_commits",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c12_transactions.rs",
+      "test": "expect_rev_conflicts_are_typed",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c12_transactions.rs",
+      "test": "history_keeps_at_least_200_steps",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c12_transactions.rs",
+      "test": "job_results_must_satisfy_the_declared_final_result_schema",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c12_transactions.rs",
+      "test": "model_level_staged_commit_of_several_entries_is_atomic",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c12_transactions.rs",
+      "test": "request_ids_make_calls_idempotent_per_session",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c12_transactions.rs",
+      "test": "undo_and_redo_replay_verified_patches_and_keep_step_ids",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c13_doc.rs",
+      "test": "a_repaired_load_is_one_non_undoable_step_and_reported",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c13_doc.rs",
+      "test": "bundles_import_into_a_scene_at_a_frame_with_fresh_ids_and_renames",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c13_doc.rs",
+      "test": "import_replace_replaces_elements_of_the_target_scene_and_palettes_by_name",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c13_doc.rs",
+      "test": "linked_media_relink_embed_blob_export_and_remove",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c13_doc.rs",
+      "test": "objects_created_by_import_survive_save_and_reopen_identically",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c13_doc.rs",
+      "test": "packages_templates_palettes_and_libraries_are_inspected_without_opening",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c13_doc.rs",
+      "test": "replacing_a_pen_repoints_typed_stroke_references_only",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c13_doc.rs",
+      "test": "replacing_a_used_asset_repoints_its_placements_and_undo_restores_them",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c13_doc.rs",
+      "test": "validation_references_and_candidates",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c13_projects.rs",
+      "test": "a_second_session_opens_a_locked_project_read_only",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c13_projects.rs",
+      "test": "a_session_whose_lock_was_taken_over_cannot_save_over_the_new_owner",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c13_projects.rs",
+      "test": "an_atomic_batch_that_saves_commits_one_step_and_writes_that_revision",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c13_projects.rs",
+      "test": "autosave_writes_recovery_copies_that_a_later_session_recovers",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c13_projects.rs",
+      "test": "closing_a_project_removes_its_cached_media",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c13_projects.rs",
+      "test": "create_save_close_open_round_trips_both_forms",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c13_projects.rs",
+      "test": "external_changes_are_detected_and_block_a_plain_save",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c13_projects.rs",
+      "test": "objects_with_unknown_values_of_a_newer_minor_version_are_read_only",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c13_projects.rs",
+      "test": "older_files_are_migrated_in_memory_and_the_first_save_needs_the_upgrade",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c13_projects.rs",
+      "test": "opening_bad_files_fails_the_job_and_leaves_no_project_open",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c13_projects.rs",
+      "test": "saves_stamp_modified_at_keep_backups_and_clean_saves_rewrite_nothing",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c13_projects.rs",
+      "test": "unsaved_changes_policies_and_quit",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c13_projects.rs",
+      "test": "workspaces_recent_projects_and_defaults_persist_per_user",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c13_r1_format.rs",
+      "test": "existing_project_thumbnail_survives_save",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c13_r1_format.rs",
+      "test": "folder_has_the_same_mimetype_entry_as_package",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c13_r1_format.rs",
+      "test": "malformed_journal_cannot_delete_an_arbitrary_project_entry",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c13_r1_format.rs",
+      "test": "newer_minor_unknown_properties_survive_on_the_same_frozen_entry",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c13_r1_format.rs",
+      "test": "package_and_folder_round_trip_all_fixture_entries_and_binary_bytes",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c13_r1_format.rs",
+      "test": "partial_folder_rollback_restores_every_already_replaced_entry",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c13_r1_format.rs",
+      "test": "repairs_at_exhausted_document_revision_fail_closed",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c13_r1_format.rs",
+      "test": "zip_names_reject_drive_prefixes_in_every_path_component",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c13_r1_persistence.rs",
+      "test": "bundle_binary_references_cannot_read_outside_agent_roots",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c13_r1_persistence.rs",
+      "test": "concurrent_stale_lock_takeover_has_only_one_owner",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c13_r1_persistence.rs",
+      "test": "default_preference_values_are_not_persisted_as_overrides",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c13_r1_persistence.rs",
+      "test": "dry_run_close_with_save_does_not_write_the_project_or_backups",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c13_r1_persistence.rs",
+      "test": "external_change_reload_and_keep_mine_choices_work_on_owned_package",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c13_r1_persistence.rs",
+      "test": "failed_atomic_batch_after_save_does_not_leak_disk_or_clean_marker_changes",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c13_r1_persistence.rs",
+      "test": "failed_package_export_overwrite_keeps_the_previous_destination",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c13_r1_persistence.rs",
+      "test": "folder_entry_change_is_detected_even_when_manifest_is_unchanged",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c13_r1_persistence.rs",
+      "test": "identical_embedded_asset_content_is_stored_once",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c13_r1_persistence.rs",
+      "test": "import_and_repair_undo_labels_match_the_command_table",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c13_r1_persistence.rs",
+      "test": "import_replace_replaces_a_same_named_scene_instead_of_renaming_it",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c13_r1_persistence.rs",
+      "test": "malformed_numeric_inputs_fail_closed_or_repair_deterministically_under_watchdog",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c13_r1_persistence.rs",
+      "test": "package_inspection_reads_a_bounded_header",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c13_r1_persistence.rs",
+      "test": "persistence_registry_declarations_have_valid_examples_and_record_their_schemas",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c13_r1_persistence.rs",
+      "test": "recovering_an_untitled_copy_claims_it_before_a_second_session_can_recover",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c13_r1_persistence.rs",
+      "test": "save_as_current_path_does_not_overwrite_another_sessions_lock",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c13_r1_persistence.rs",
+      "test": "scheduled_autosave_of_untitled_work_preserves_history_and_location",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c13_r1_persistence.rs",
+      "test": "unreferenced_embedded_media_is_removed_from_the_saved_package",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c13_r2_format.rs",
+      "test": "actual_folder_writer_keeps_manifest_after_removal_renames",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c13_r2_format.rs",
+      "test": "crash_before_journal_publication_leaves_old_document_loadable",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c13_r2_format.rs",
+      "test": "document_revision_boundaries_with_and_without_repairs",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c13_r2_format.rs",
+      "test": "frozen_entry_nested_unknown_data_survives_other_entry_edit_both_forms_and_reopen",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c13_r2_format.rs",
+      "test": "overlong_component_is_not_a_portable_folder_entry",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c13_r2_format.rs",
+      "test": "portable_entry_names_reject_windows_special_forms",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c13_r2_format.rs",
+      "test": "recovery_claim_expires_when_actual_child_owner_exits_and_release_restores_metadata",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c13_r2_persistence.rs",
+      "test": "asset_name_conflict_replace_keeps_one_asset_and_undo_restores_original",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c13_r2_persistence.rs",
+      "test": "clean_project_atomic_close_saves_staged_edits",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c13_r2_persistence.rs",
+      "test": "clean_project_atomic_quit_saves_staged_edits",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c13_r2_persistence.rs",
+      "test": "dry_run_persistence_paths_do_not_change_disk_state_or_clean_marker",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c13_r2_persistence.rs",
+      "test": "failed_atomic_quit_save_leaves_disk_and_revision_unchanged",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c13_r2_persistence.rs",
+      "test": "folder_hidden_preserved_entry_change_blocks_save",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c13_r2_persistence.rs",
+      "test": "folder_visible_mutations_are_detected_without_waiting_for_maintenance_and_own_save_is_clean",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c13_r2_persistence.rs",
+      "test": "gigabyte_package_inspection_is_bounded_with_and_without_validation",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c13_r2_persistence.rs",
+      "test": "same_path_folder_save_retains_removed_asset_bytes_for_undo",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c13_r2_persistence.rs",
+      "test": "same_path_package_save_retains_removed_asset_bytes_for_undo",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c13_r2_persistence.rs",
+      "test": "save_as_folder_retains_removed_asset_bytes_for_undo",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c13_r2_persistence.rs",
+      "test": "save_as_package_retains_removed_asset_bytes_for_undo",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c13_r2_persistence.rs",
+      "test": "successful_atomic_close_with_save_commits_and_emits_the_saved_revision",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c13_r2_persistence.rs",
+      "test": "thirty_two_concurrent_lock_acquisitions_keep_exactly_one_owner",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c13_r3_format.rs",
+      "test": "a_live_writer_paused_beyond_two_seconds_is_not_taken_over",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c13_r3_format.rs",
+      "test": "heartbeat_refuses_an_unreadable_replacement_lock",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c13_r3_format.rs",
+      "test": "two_hundred_byte_unicode_components_work_in_windows_folder_form",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c13_r3_persistence.rs",
+      "test": "asset_replace_preserves_unrelated_strings_equal_to_the_old_id",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c13_r3_persistence.rs",
+      "test": "asset_replace_with_palette_import_repoints_existing_scene_placements",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c13_r3_persistence.rs",
+      "test": "checkpoint_restore_inside_atomic_batch_is_refused_without_saving",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c13_r3_persistence.rs",
+      "test": "failed_and_dry_atomic_save_variants_preserve_disk_revision_and_events",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c13_r3_persistence.rs",
+      "test": "fixture_open_latency_twenty_samples",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c13_r3_persistence.rs",
+      "test": "folder_fingerprint_includes_nested_hidden_names_but_excludes_root_controls_and_session",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c13_r3_persistence.rs",
+      "test": "media_survives_cross_form_save_as_and_recovery_deletion_with_two_undos",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c13_r3_persistence.rs",
+      "test": "movie_asset_replace_repoints_sequences_and_one_undo_restores_exact_entries",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c13_r3_persistence.rs",
+      "test": "repeated_exports_do_not_duplicate_omitted_media_in_session_cache",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c13_r3_persistence.rs",
+      "test": "save_as_job_and_stale_expect_rev_inside_atomic_batch_roll_back",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c13_r4_closure.rs",
+      "test": "label_and_real_reference_in_one_entry_are_distinguished",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c13_r4_closure.rs",
+      "test": "remove_export_three_undo_blob_close_clears_cache",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c13_r4_lock.rs",
+      "test": "heartbeat_and_drop_do_not_write_while_takeover_holds_arbiter",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c14_lock_races.rs",
+      "test": "a_paused_arbiter_past_its_abandonment_age_is_not_removed_and_resumes",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c14_lock_races.rs",
+      "test": "a_publisher_suspended_at_each_publication_boundary_is_never_raced_into_two_owners",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c14_lock_races.rs",
+      "test": "a_resumed_heartbeat_whose_lock_was_replaced_fails_closed",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c14_lock_races.rs",
+      "test": "a_suspended_heartbeat_is_not_taken_over_and_resumes_as_the_owner",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c14_lock_races.rs",
+      "test": "a_suspended_release_hands_over_cleanly",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c14_lock_races.rs",
+      "test": "a_suspended_takeover_leaves_exactly_one_owner",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c14_lock_races.rs",
+      "test": "child_lock_holder",
+      "result": "ignored"
+    },
+    {
+      "binary": "tests/c14_lock_races.rs",
+      "test": "crashed_holder_is_detected_at_once_and_liveness_is_measured",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c14_lock_races.rs",
+      "test": "liveness_does_not_depend_on_process_ids_or_clocks",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c14_lock_races.rs",
+      "test": "ownership_lost_during_a_suspended_save_never_advances_the_save",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c14_measurements.rs",
+      "test": "autosave_snapshot_latency_during_batches_queued_requests_and_large_media",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c14_measurements.rs",
+      "test": "folder_fingerprint_cost_at_the_watch_interval_and_the_size_mtime_blind_spot",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c14_obligations.rs",
+      "test": "a_file_that_cannot_be_published_after_the_commit_fails_the_call_and_reports_the_commit",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c14_obligations.rs",
+      "test": "an_activity_export_is_written_only_when_its_call_commits",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c14_obligations.rs",
+      "test": "an_external_change_is_a_bound_confirmation_for_agents",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c14_obligations.rs",
+      "test": "every_save_path_verifies_the_content_recorded_at_open_or_last_save",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c14_obligations.rs",
+      "test": "folder_conversion_refuses_entry_names_a_file_system_would_merge",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c14_obligations.rs",
+      "test": "lock_ownership_is_rechecked_after_the_confirmation",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c14_obligations.rs",
+      "test": "session_cache_is_bounded_kept_while_needed_and_released_on_close_and_stop",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c14_r1.rs",
+      "test": "real_stdio_boundary_regressions",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c14_r1_autosave.rs",
+      "test": "autosave_under_queued_protocol_calls_and_background_export",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c14_r1_limits.rs",
+      "test": "configured_batch_limit_applies_to_batch_script",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c14_r1_limits.rs",
+      "test": "saved_observe_policy_and_limits_survive_restart",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c14_r2.rs",
+      "test": "real_stdio_round_two_regressions",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c14_r2_contracts.rs",
+      "test": "downgrade_and_corrupt_preferences_have_explicit_restart_behaviour",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c14_r2_contracts.rs",
+      "test": "quit_save_and_agent_save_as_current_preserve_external_content",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c14_r2_contracts.rs",
+      "test": "recovered_project_records_original_content_and_autosave_preserves_it",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c14_r2_effects.rs",
+      "test": "discovery_token_file_does_not_change_when_atomic_batch_rolls_back",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c14_r2_effects.rs",
+      "test": "json_export_is_not_published_by_a_failed_atomic_batch",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c14_r2_effects.rs",
+      "test": "media_export_is_not_published_by_a_failed_atomic_batch",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c14_r2_effects.rs",
+      "test": "restart_does_not_publish_a_handcrafted_uncommitted_stage",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c14_r2_replay.rs",
+      "test": "idempotent_retry_replays_canonically",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c14_r2_replay.rs",
+      "test": "ordinary_edits_dry_runs_and_discovery_replay_canonically",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c14_r2_replay.rs",
+      "test": "partially_committed_batch_replays_canonically",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c14_r3.rs",
+      "test": "real_stdio_round_three_regressions",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c14_r3_groups.rs",
+      "test": "a_group_is_one_undo_step_like_an_atomic_batch",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c14_r3_groups.rs",
+      "test": "nested_and_non_atomic_groups_are_refused",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c14_r3_groups.rs",
+      "test": "undo_then_redo_after_an_atomic_batch_replays_the_same_document",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c14_r3_replay.rs",
+      "test": "atomic_publication_failure_keeps_committed_edits_in_script_replay",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c14_r3_replay.rs",
+      "test": "checkpoint_restore_after_an_atomic_batch_replays_the_same_document",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c14_r3_replay.rs",
+      "test": "sequential_publication_failure_keeps_committed_edits_in_script_replay",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c14_r3_replay.rs",
+      "test": "two_edits_in_one_atomic_batch_replay_with_the_same_revision",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c14_r3_replay.rs",
+      "test": "undo_after_an_atomic_batch_replays_the_same_document",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c14_r4_closure.rs",
+      "test": "group_accepts_a_matching_expect_rev",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c14_r4_closure.rs",
+      "test": "group_expect_rev_is_supported_and_conflicts_atomically",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c14_r4_closure.rs",
+      "test": "sequential_last_publication_failure_after_two_edits",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c14_r4_closure.rs",
+      "test": "two_atomic_batches_and_sequential_batch_keep_history",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c14_r4_expect_rev.rs",
+      "test": "a_group_after_an_edit_to_its_guarded_object_is_refused_whole",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c14_r4_expect_rev.rs",
+      "test": "a_sequential_batch_refuses_expect_rev",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c14_r4_expect_rev.rs",
+      "test": "the_batch_tool_and_its_replayed_group_honour_expect_rev",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c14_r5_closure.rs",
+      "test": "exported_guard_replays_exactly_and_refuses_changed_revision",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c14_r5_closure.rs",
+      "test": "guarded_group_has_one_revision_and_one_undo",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c14_r5_closure.rs",
+      "test": "sequential_step_guard_still_matches_then_conflicts",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c14_r5_closure.rs",
+      "test": "wrong_type_group_guard_is_invalid_and_executes_no_steps",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c14_tickets.rs",
+      "test": "every_result_lists_its_effective_params",
+      "result": "ignored"
+    },
+    {
+      "binary": "tests/c14_tickets.rs",
+      "test": "namespace_docs_carry_a_worked_example_with_executed_results",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c21_determinism.rs",
+      "test": "command_created_geometry_is_identical_across_runs_and_platforms",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c21_draw.rs",
+      "test": "a_brush_stroke_keeps_spine_pressure_and_pen_and_gets_a_closed_outline",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c21_draw.rs",
+      "test": "content_round_trips_through_read_back_with_new_ids",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c21_draw.rs",
+      "test": "drawing_events_come_from_the_commit_path_for_patches_batches_and_checkpoint_restore",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c21_draw.rs",
+      "test": "drawing_into_an_empty_cell_creates_the_drawing_in_the_same_step",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c21_draw.rs",
+      "test": "geometry_errors_name_their_parameter_and_change_nothing",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c21_draw.rs",
+      "test": "groups_delete_and_pivot",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c21_draw.rs",
+      "test": "locked_drawings_refuse_every_edit_and_stale_revisions_refuse_id_edits",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c21_draw.rs",
+      "test": "pencil_and_invisible_strokes_have_their_shapes_and_labels",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c21_draw.rs",
+      "test": "read_back_options_flatten_ids_and_include",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c21_draw.rs",
+      "test": "stroke_set_edits_geometry_and_kind_and_keeps_the_id",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c21_draw.rs",
+      "test": "text_objects_add_edit_and_format_with_runs_paragraphs_and_bounds",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c21_example_results.rs",
+      "test": "describe_command_carries_the_retained_results",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c21_example_results.rs",
+      "test": "every_implemented_example_has_a_retained_executed_result",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c21_history.rs",
+      "test": "geometry_oracle_seed_a571_matches_and_replays",
+      "result": "ignored"
+    },
+    {
+      "binary": "tests/c21_history.rs",
+      "test": "geometry_oracle_seed_b683_matches_and_replays",
+      "result": "ignored"
+    },
+    {
+      "binary": "tests/c21_measurements.rs",
+      "test": "hundred_thousand_stroke_edit_undo_redo_and_dry_run_are_measured",
+      "result": "ignored"
+    },
+    {
+      "binary": "tests/c21_obligations.rs",
+      "test": "a_dry_run_predicts_the_real_call_and_keeps_the_pre_state",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c21_obligations.rs",
+      "test": "a_later_invalid_step_rolls_the_whole_atomic_batch_back",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c21_obligations.rs",
+      "test": "a_patch_of_a_brush_spine_sweeps_the_outline_and_a_patch_of_the_outline_drops_the_spine",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c21_obligations.rs",
+      "test": "a_successful_atomic_batch_is_one_revision_and_one_exactly_invertible_undo_step",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c21_obligations.rs",
+      "test": "c21_drawing_commands_write_no_files_and_ask_no_confirmation",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c21_obligations.rs",
+      "test": "opaque_data_ids_and_revisions_survive_edits_save_and_reopen",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c21_obligations.rs",
+      "test": "revision_exhaustion_refuses_drawing_edits_and_changes_nothing",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c21_r1_autosave.rs",
+      "test": "autosave_takes_a_committed_snapshot_after_large_geometry_work",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c21_r1_contracts.rs",
+      "test": "content_changes_emit_drawing_event_including_undo_redo",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c21_r1_contracts.rs",
+      "test": "decomposed_unicode_text_is_accepted_and_ranges_follow_normalization",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c21_r1_contracts.rs",
+      "test": "direct_outline_edit_discards_spine_when_pressure_also_changes",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c21_r1_contracts.rs",
+      "test": "edit_results_report_the_resolved_drawing",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c21_r1_contracts.rs",
+      "test": "generic_patch_enforces_one_paragraph_per_line",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c21_r1_contracts.rs",
+      "test": "object_setters_accept_common_cell_addressing",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c21_r1_geometry.rs",
+      "test": "brush_sweep_includes_pressure_peak_between_placements",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c21_r1_geometry.rs",
+      "test": "brush_tips_dabs_pressure_extremes_and_reversals_remain_defined",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c21_r1_geometry.rs",
+      "test": "closed_path_at_anchor_limit_reimports_its_own_bezier_list",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c21_r1_geometry.rs",
+      "test": "curve_fixture_matrix_keeps_valid_paths_and_anchor_limit",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c21_r1_geometry.rs",
+      "test": "dense_100k_input_finishes_within_document_watchdog_budget",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c21_r1_geometry.rs",
+      "test": "dense_input_worker",
+      "result": "ignored"
+    },
+    {
+      "binary": "tests/c21_r1_geometry.rs",
+      "test": "dense_input_worker",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c21_r1_geometry.rs",
+      "test": "fitted_curve_stays_within_tolerance_of_input_polyline",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c21_r1_geometry.rs",
+      "test": "invalid_sample_values_are_rejected_before_fitting",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c21_r1_geometry.rs",
+      "test": "looping_brush_preserves_hole_and_clean_swept_area",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c21_r1_geometry.rs",
+      "test": "text_edge_cases_are_finite_and_bounded",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c21_r1_retention.rs",
+      "test": "eviction_by_object_budget_preserves_exact_diff_and_checkpoint",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c21_r1_surfaces.rs",
+      "test": "ingress_payload_limit_is_distinct_from_32_mib_readback_limit",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c21_r1_surfaces.rs",
+      "test": "typed_generic_batches_scripts_and_both_container_forms",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c21_r2_contracts.rs",
+      "test": "events_exclude_dry_run_and_failures_and_sequential_batch_has_two",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c21_r2_contracts.rs",
+      "test": "malformed_paragraphs_in_package_fail_the_load_gate",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c21_r2_contracts.rs",
+      "test": "mixed_patch_variants_and_failed_batch_have_no_effect",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c21_r2_contracts.rs",
+      "test": "paragraph_patch_variants_are_atomic",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c21_r2_contracts.rs",
+      "test": "remaining_draw_commands_common_addressing_and_results",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c21_r2_contracts.rs",
+      "test": "setter_addressing_revision_and_result_matrix",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c21_r2_contracts.rs",
+      "test": "unicode_ranges_round_trip_through_content_and_package",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c21_r2_contracts.rs",
+      "test": "unrelated_format_survives_nfc_in_command_path",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c21_r2_events.rs",
+      "test": "drawing_events_reach_mcp_event_resource_subscribers",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c21_r2_geometry.rs",
+      "test": "alternating_pressure_fitting_respects_watchdog",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c21_r2_geometry.rs",
+      "test": "alternating_pressure_worker",
+      "result": "ignored"
+    },
+    {
+      "binary": "tests/c21_r2_geometry.rs",
+      "test": "alternating_pressure_worker",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c21_r2_geometry.rs",
+      "test": "dense_bidirectional_fitting_corpus",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c21_r2_geometry.rs",
+      "test": "hundred_thousand_collinear_samples_respect_polyline_tolerance",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c21_r2_geometry.rs",
+      "test": "many_pressure_knots_brush_respects_watchdog",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c21_r2_geometry.rs",
+      "test": "many_pressure_knots_brush_worker",
+      "result": "ignored"
+    },
+    {
+      "binary": "tests/c21_r2_geometry.rs",
+      "test": "many_pressure_knots_brush_worker",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c21_r2_geometry.rs",
+      "test": "nfc_composition_preserves_unaffected_character_formats",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c21_r2_geometry.rs",
+      "test": "open_and_closed_anchor_limit_boundaries",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c21_r2_geometry.rs",
+      "test": "round_loop_union_grid_error_is_within_outline_tolerance",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c21_r2_geometry.rs",
+      "test": "spatial_dedupe_preserves_pressure_extrema_for_the_brush_sweep",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c21_r2_geometry.rs",
+      "test": "swept_tip_containment_matrix_at_and_between_knots",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c21_r3_contracts.rs",
+      "test": "closed_step_pressure_command_returns_within_watchdog",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c21_r3_contracts.rs",
+      "test": "closed_step_pressure_command_worker",
+      "result": "ignored"
+    },
+    {
+      "binary": "tests/c21_r3_contracts.rs",
+      "test": "closed_step_pressure_command_worker",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c21_r3_contracts.rs",
+      "test": "complete_command_accepted_pressure_worst_case_is_measured",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c21_r3_contracts.rs",
+      "test": "deleting_a_separator_keeps_formats_on_reordered_hebrew_points",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c21_r3_contracts.rs",
+      "test": "nfc_script_corpus_edits_formats_content_and_package_round_trip",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c21_r3_contracts.rs",
+      "test": "over_limit_brush_refuses_atomically_and_worker_accepts_next_edit",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c21_r3_contracts.rs",
+      "test": "stationary_pressure_dab_is_not_refused_as_zero_area",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c21_r3_geometry.rs",
+      "test": "bridge_threshold_closed_spine_and_symmetry_work_variants",
+      "result": "ignored"
+    },
+    {
+      "binary": "tests/c21_r3_geometry.rs",
+      "test": "canonical_reordering_preserves_each_marks_own_format",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c21_r3_geometry.rs",
+      "test": "closing_near_duplicate_pressure_stays_at_the_end_of_the_loop",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c21_r3_geometry.rs",
+      "test": "exact_stationary_samples_keep_pressure_extrema_after_command_cleaning",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c21_r3_geometry.rs",
+      "test": "maximum_spine_and_pressure_return_within_watchdog",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c21_r3_geometry.rs",
+      "test": "maximum_spine_and_pressure_worker",
+      "result": "ignored"
+    },
+    {
+      "binary": "tests/c21_r3_geometry.rs",
+      "test": "maximum_spine_and_pressure_worker",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c21_r3_geometry.rs",
+      "test": "merged_pressure_moving_average_matches_input_window_at_every_smoothness",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c21_r3_geometry.rs",
+      "test": "nfc_reference_and_origin_coverage_corpus",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c21_r3_never_block.rs",
+      "test": "every_registered_command_answers_malformed_params_through_mcp",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c21_r4_closure.rs",
+      "test": "closed_stationary_samples_keep_every_pressure",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c21_r4_closure.rs",
+      "test": "distinct_return_groups_keep_their_arc_positions_and_tail_rotates_with_geometry",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c21_r4_closure.rs",
+      "test": "reordered_marks_composites_and_paragraph_boundaries_keep_owners",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c21_r4_closure.rs",
+      "test": "several_closing_samples_form_ordered_seam_and_open_return_stays_open",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c21_replay.rs",
+      "test": "drawing_edits_replay_byte_for_byte_through_script_mode",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c21_worked_examples.rs",
+      "test": "every_kernel_namespace_has_a_retained_worked_example",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c21_worked_examples.rs",
+      "test": "namespace_docs_render_the_retained_worked_examples",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c21_worst_case.rs",
+      "test": "adversarial_brush_outlines_finish_or_are_refused_within_the_work_budget",
+      "result": "ignored"
+    },
+    {
+      "binary": "tests/c21_worst_case.rs",
+      "test": "adversarial_inputs_fit_within_the_work_budget",
+      "result": "ignored"
+    },
+    {
+      "binary": "tests/c21_worst_case.rs",
+      "test": "input_needing_more_work_than_the_budget_is_refused_with_limit_exceeded",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c22_bridges.rs",
+      "test": "holes_pieces_and_bridges_match_the_swept_union_and_the_planar_map",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c22_determinism.rs",
+      "test": "planar_graph_side_assignments_zone_ids_fills_and_membership_are_identical_across_runs_and_platforms",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c22_exact_overlap.rs",
+      "test": "exact_overlap_areas_match_a_big_rational_reference",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c22_planar.rs",
+      "test": "a_brush_ring_fills_itself_and_bounds_its_hole",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c22_planar.rs",
+      "test": "a_closed_circle_is_one_zone_with_its_area",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c22_planar.rs",
+      "test": "a_closed_line_bounds_a_zone_read_back_with_sides_and_no_unavailability_warning",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c22_planar.rs",
+      "test": "a_dangling_line_inside_a_zone_does_not_split_it",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c22_planar.rs",
+      "test": "a_figure_eight_line_bounds_two_zones",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c22_planar.rs",
+      "test": "a_nested_square_is_a_hole_and_a_child_zone",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c22_planar.rs",
+      "test": "a_pencil_line_across_a_brush_stroke_meets_it_in_the_graph",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c22_planar.rs",
+      "test": "a_pencil_line_across_a_brush_stroke_splits_and_the_brush_entry_is_untouched",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c22_planar.rs",
+      "test": "a_split_zone_keeps_its_fill_on_both_parts_and_a_merge_takes_the_larger_part",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c22_planar.rs",
+      "test": "an_over_budget_edit_is_refused_atomically_and_the_next_edit_runs",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c22_planar.rs",
+      "test": "crossing_squares_make_three_zones",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c22_planar.rs",
+      "test": "four_lines_meeting_at_corners_bound_one_zone",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c22_planar.rs",
+      "test": "gap_closing_paints_an_open_region_and_keeps_only_the_bounding_segment",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c22_planar.rs",
+      "test": "paint_unpainted_fills_only_unpainted_zones_by_lasso_and_all",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c22_planar.rs",
+      "test": "painting_by_point_and_id_stores_the_fill_undo_and_redo_restore_it_and_events_report_the_zone",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c22_planar.rs",
+      "test": "protected_colours_are_refused_per_target_unless_overridden",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c22_planar.rs",
+      "test": "the_hit_test_reports_lines_before_zones_and_the_lint_lists_unpainted_zones",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c22_planar.rs",
+      "test": "the_work_budget_refuses_large_input",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c22_planar.rs",
+      "test": "unpaint_turns_a_line_invisible_and_clears_a_zone_brush_strokes_refuse",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c22_planar.rs",
+      "test": "zone_fills_travel_with_pasted_content",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c22_planar.rs",
+      "test": "zone_ids_do_not_depend_on_where_tracing_starts_or_on_stroke_order",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c22_planar.rs",
+      "test": "zone_ids_follow_the_boundary_only_and_are_reproducible",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c22_properties.rs",
+      "test": "settling_is_idempotent_and_painted_fills_read_back",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c22_properties.rs",
+      "test": "the_map_is_deterministic_order_independent_and_interior_points_locate_their_zones",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c22_properties.rs",
+      "test": "zones_an_edit_leaves_alone_keep_their_id_and_fill",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c22_r1_cache.rs",
+      "test": "repeated_reads_past_the_512_map_capacity_have_stable_retained_memory",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c22_r1_commands.rs",
+      "test": "crossing_path_paints_a_zone_between_sample_positions",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c22_r1_commands.rs",
+      "test": "json_import_recovers_missing_colour_references_in_the_same_transaction",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c22_r1_commands.rs",
+      "test": "loading_a_drawing_recovers_its_missing_colour",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c22_r1_commands.rs",
+      "test": "loading_repairs_inconsistent_boundary_sides_and_reports_it",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c22_r1_commands.rs",
+      "test": "painting_a_pencil_with_a_gradient_stores_the_drag_mapping",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c22_r1_commands.rs",
+      "test": "painting_closed_and_gap_closed_points_paints_both_targets",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c22_r1_commands.rs",
+      "test": "repainting_with_solid_preserves_the_existing_fill_matrix",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c22_r1_commands.rs",
+      "test": "save_has_a_recovery_entry_for_every_used_colour_even_without_prior_copy",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c22_r1_geometry.rs",
+      "test": "a_crossing_near_an_existing_anchor_has_one_shared_junction",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c22_r1_geometry.rs",
+      "test": "analytic_holes_parents_sides_retracing_tangency_and_brush_winding",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c22_r1_geometry.rs",
+      "test": "changing_a_boundarys_geometry_changes_its_zone_id",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c22_r1_geometry.rs",
+      "test": "fixed_seed_line_arrangements_match_independent_convex_clipping",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c22_r1_geometry.rs",
+      "test": "overlapping_zones_carry_fill_even_when_neither_interior_point_is_in_the_other",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c22_r1_geometry.rs",
+      "test": "topology_changes_at_the_documented_snap_grid_are_repeatable",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c22_r1_surface.rs",
+      "test": "an_agent_with_preferences_permission_can_set_gap_closing",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c22_r1_surface.rs",
+      "test": "record_checkpoint_command_contracts_and_deferred_owners",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c22_r1_surface.rs",
+      "test": "retain_a_baseline_bundle_for_the_headless_paint_probe",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c22_r1_surface.rs",
+      "test": "typed_generic_atomic_sequential_and_script_paints_preserve_commit_contracts",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c22_r2_commands.rs",
+      "test": "backup_and_recovery_folder_open_recover_missing_colour",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c22_r2_commands.rs",
+      "test": "conflicting_recovery_copies_choose_the_first_using_drawing_deterministically",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c22_r2_commands.rs",
+      "test": "gap_closing_preserves_id_point_line_and_text_targets_and_undo_redo",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c22_r2_commands.rs",
+      "test": "gap_preference_dry_run_writes_nothing",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c22_r2_commands.rs",
+      "test": "json_import_repairs_clockwise_side_disagreement_without_renoding",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c22_r2_commands.rs",
+      "test": "loading_clockwise_sides_is_deterministic_and_a_base",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c22_r2_commands.rs",
+      "test": "paste_splits_existing_stroke_reports_pieces_and_cut_copy_piece_survives_redo",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c22_r2_commands.rs",
+      "test": "path_reentry_across_two_layers_is_one_transaction_and_respects_only_painted",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c22_r2_commands.rs",
+      "test": "pencil_solid_keeps_matrix_click_gradient_defaults_and_invisible_rejects_matrix",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c22_r2_commands.rs",
+      "test": "recovery_preserves_full_swatch_extensions_including_paint_protection",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c22_r2_commands.rs",
+      "test": "saving_repeated_missing_usage_writes_exactly_one_placeholder",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c22_r2_commands.rs",
+      "test": "tiled_texture_click_uses_native_pixel_dimensions",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c22_r2_geometry.rs",
+      "test": "along_edge_vertex_reentry_and_brush",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c22_r2_geometry.rs",
+      "test": "brush_exterior_fill_survives_split_to_sides_and_merge_back",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c22_r2_geometry.rs",
+      "test": "junction_clusters_do_not_chain_and_a_cut_can_end_at_a_shared_junction",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c22_r2_geometry.rs",
+      "test": "overlap_equal_merge_three_way_split_sliver_and_holes",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c22_r2_geometry.rs",
+      "test": "overlap_ranking_keeps_rational_intersection_area_before_grid_rounding",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c22_r2_geometry.rs",
+      "test": "shared_anchor_rotated_reversed_and_at_tolerance",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c22_r2_geometry.rs",
+      "test": "vertex_crossing_uses_exact_orientation_for_grid_coordinates",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c22_r2_geometry.rs",
+      "test": "vertex_touches_turnbacks_overlaps_and_degenerate_anchors",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c22_r2_geometry.rs",
+      "test": "zone_identity_hole_spur_straight_elision_and_nonboundary_edits",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c22_r2_surface.rs",
+      "test": "all_four_deferred_contracts_and_generated_types_name_c23",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c22_r2_surface.rs",
+      "test": "prefs_agent_failed_atomic_batch_rolls_back_gap_setting",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c22_r2_surface.rs",
+      "test": "topology_oracle_checks_every_step_of_full_cut_stack_and_reverse_merge",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c22_r3_cache.rs",
+      "test": "six_hundred_layers_evict_expensive_layer_before_undo_redo_without_changing_deltas",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c22_r3_commands.rs",
+      "test": "import_revision_reset_preserves_opaque_meta_and_ext_for_both_id_policies",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c22_r3_commands.rs",
+      "test": "load_and_import_recovery_keep_nested_extensions_meta_deformable_and_path_protection",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c22_r3_commands.rs",
+      "test": "multi_drawing_import_repairs_only_inconsistent_drawing_and_undoes_everything",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c22_r3_commands.rs",
+      "test": "pasted_piece_event_reports_all_new_pieces_and_removed_original_once",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c22_r3_commands.rs",
+      "test": "texture_click_uses_palette_first_style_and_drag_and_tile_off_stay_unchanged",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c22_r3_geometry.rs",
+      "test": "exact_interior_endpoint_and_snapped_collinear_controls",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c22_r3_geometry.rs",
+      "test": "exact_near_collinear_crossings_in_every_quadrant_and_both_vertex_forms",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c22_r3_geometry.rs",
+      "test": "large_candidate_set_charges_and_refuses_without_partial_result",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c22_r3_geometry.rs",
+      "test": "nonconvex_holed_sloping_shared_edges_have_analytic_areas",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c22_r3_geometry.rs",
+      "test": "three_subcell_differences_and_exact_ties_rank_before_ids",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c22_r3_surface.rs",
+      "test": "e2_split_stale_fresh_ids_events_inspect_and_saved_readback",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c22_r3_surface.rs",
+      "test": "importing_ahead_revisions_stamps_preserved_ids_and_replays_from_the_same_base",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c22_r4_closure.rs",
+      "test": "continuation_oblique_parallel_and_original_collinear_cases",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c22_r4_closure.rs",
+      "test": "end_joins_existing_three_stroke_junction_with_unchanged_anchor_authority",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c22_r4_closure.rs",
+      "test": "schema_children_stamp_but_model_shaped_opaque_values_survive",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c22_r4_closure.rs",
+      "test": "three_reverse_order_styles_share_pick_and_native_click_selection",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c22_recovery.rs",
+      "test": "a_colour_without_a_copy_gets_a_placeholder_in_recovered",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c22_recovery.rs",
+      "test": "missing_colours_are_listed_and_recovered_on_demand_as_one_undoable_step",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c22_recovery.rs",
+      "test": "pasted_content_recovers_its_colours_into_the_recorded_palette_in_the_same_step",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c22_recovery.rs",
+      "test": "recovery_keeps_the_protection_flag_and_every_extension_on_demand_on_load_and_on_import",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c22_recovery.rs",
+      "test": "saving_refreshes_each_drawings_recovery_list_to_one_entry_per_used_colour",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c22_replay.rs",
+      "test": "painting_sessions_replay_byte_for_byte_through_script_mode",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c22_settle.rs",
+      "test": "a_brush_only_zone_keeps_its_fill_in_exterior_records",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c22_settle.rs",
+      "test": "a_crossing_line_splits_strokes_and_both_zone_parts_keep_the_fill",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c22_settle.rs",
+      "test": "a_pencil_crossing_a_brush_splits_at_the_outline_and_leaves_the_brush_byte_identical",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c22_settle.rs",
+      "test": "painting_a_zone_writes_its_fill_on_the_bounding_sides",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c22_worst_case.rs",
+      "test": "adversarial_layers_settle_or_are_refused_within_the_planar_budget",
+      "result": "ignored"
+    },
+    {
+      "binary": "tests/c23_colour.rs",
+      "test": "fill_mapping_get_reads_handles_and_refuses_unmappable_objects",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c23_colour.rs",
+      "test": "fill_mapping_set_explicit_default_and_clipboard_with_skips_and_undo",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c23_colour.rs",
+      "test": "protected_colours_are_skipped_unless_overridden",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c23_colour.rs",
+      "test": "replace_colour_by_scope_with_locks_pens_counts_and_the_matrix_rule",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c23_colour.rs",
+      "test": "set_colour_recolours_lines_brushes_text_and_painted_zones_inside_the_selection",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c23_contracts.rs",
+      "test": "break_text_apart_makes_one_group_per_character",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c23_contracts.rs",
+      "test": "every_new_mutation_keeps_the_common_contract",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c23_contracts.rs",
+      "test": "the_contract_covers_every_new_mutation",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c23_cut.rs",
+      "test": "a_delete_cut_removes_the_inside_lines_and_unpaints_the_inside_zone",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c23_cut.rs",
+      "test": "a_rect_cut_and_a_segment_cut",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c23_cut.rs",
+      "test": "a_select_cut_splits_lines_and_zones_on_the_boundary_and_selects_the_inside",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c23_cut.rs",
+      "test": "erasing_splits_lines_keeps_brush_strokes_whole_and_respects_layers_and_locks",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c23_layers.rs",
+      "test": "a_lower_precedence_bottom_policy_merges_behind",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c23_layers.rs",
+      "test": "arrange_reorders_back_to_front_and_separates_part_of_a_layer",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c23_layers.rs",
+      "test": "flatten_keeps_gradient_matrices",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c23_layers.rs",
+      "test": "flatten_lets_the_upper_colour_replace_the_lower_and_discards_hidden_content",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c23_layers.rs",
+      "test": "optimize_merges_only_where_appearance_cannot_change",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c23_measure.rs",
+      "test": "heavy_commands_raw_measurements",
+      "result": "ignored"
+    },
+    {
+      "binary": "tests/c23_predicates.rs",
+      "test": "containment_is_exact_on_and_off_the_boundary",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c23_predicates.rs",
+      "test": "endpoint_contact_and_collinear_overlap_are_not_crossings_but_do_meet",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c23_predicates.rs",
+      "test": "unit_determinants_far_from_the_origin_are_decided_exactly",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c23_r1_colour.rs",
+      "test": "a_bulk_map_with_only_protected_effective_targets_refuses",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c23_r1_colour.rs",
+      "test": "linear_radial_and_texture_forms_map_strokes_with_kind_skips",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c23_r1_colour.rs",
+      "test": "scene_recolour_leaves_unexposed_bank_drawings_unchanged",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c23_r1_commands.rs",
+      "test": "centre_line_fill_only_selection_reports_the_typed_reason",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c23_r1_commands.rs",
+      "test": "cutter_selects_a_wholly_enclosed_text_node",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c23_r1_commands.rs",
+      "test": "envelope_translation_keeps_zone_colour_and_maps_its_matrix",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c23_r1_commands.rs",
+      "test": "lines_to_brush_accepts_a_gradient_pencil_and_keeps_brush_mapping",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c23_r1_commands.rs",
+      "test": "optimize_preserves_opaque_brush_over_thick_lower_pencil",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c23_r1_commands.rs",
+      "test": "point_subset_transform_moves_every_incident_anchor",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c23_r1_commands.rs",
+      "test": "reposition_all_maps_zone_matrices_with_geometry",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c23_r1_commands.rs",
+      "test": "shape_creation_accepts_the_common_explicit_cell_address",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c23_r1_commands.rs",
+      "test": "snap_to_contour_reaches_a_segment_interior",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c23_r1_commands.rs",
+      "test": "stale_zone_cannot_be_silently_ignored_beside_a_valid_transform_target",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c23_r1_contracts.rs",
+      "test": "five_independent_mutations_are_atomic_reversible_and_persistent",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c23_r1_contracts.rs",
+      "test": "transform_stale_revision_and_render_file_staging",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c23_r1_controls.rs",
+      "test": "a_cut_through_an_existing_junction_has_no_zero_length_piece_and_is_undoable",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c23_r1_controls.rs",
+      "test": "asymmetric_texture_pixels_follow_a_horizontal_flip",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c23_r1_controls.rs",
+      "test": "every_flatten_policy_combination_and_junction_cut_keeps_winning_paint",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c23_r1_geometry.rs",
+      "test": "cutter_overlap_classification_keeps_exact_grid_crossings",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c23_r1_geometry.rs",
+      "test": "rich_rtl_and_combining_glyphs_match_the_same_font_layout",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c23_r1_geometry.rs",
+      "test": "smooth_dense_bidirectional_distance_and_selected_anchors",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c23_r1_measure.rs",
+      "test": "heavy_commands_raw_measurements",
+      "result": "ignored"
+    },
+    {
+      "binary": "tests/c23_r1_texture.rs",
+      "test": "tile_off_is_transparent_outside_the_mapped_unit_square",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c23_r2_closure.rs",
+      "test": "r01_non_parallelogram_envelope_uses_three_corner_fill_fit",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c23_r2_closure.rs",
+      "test": "r01_reposition_two_drawings_reflection_and_undo_redo",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c23_r2_closure.rs",
+      "test": "r02_rotation_pivot_is_requested_subset_and_other_layer_stays",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c23_r2_closure.rs",
+      "test": "r03_equal_distance_contours_choose_lower_stroke_id",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c23_r2_closure.rs",
+      "test": "r03_snap_radius_boundary_and_cross_layer_exclusion",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c23_r2_closure.rs",
+      "test": "r04_disjoint_thick_caps_merge_with_identical_pixels",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c23_r2_closure.rs",
+      "test": "r05_closed_texture_pencil_conversion_clears_centre_and_keeps_mapping",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c23_r2_closure.rs",
+      "test": "r09_explicit_stale_and_unknown_targets_are_atomic_across_routes",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c23_r2_closure.rs",
+      "test": "r10_all_shapes_empty_cell_create_or_refuse_atomically",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c23_r2_closure.rs",
+      "test": "r10_each_shape_preserves_explicit_false_and_true_creates",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c23_r2_closure.rs",
+      "test": "r11_partial_text_is_reported_and_eraser_leaves_text",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c23_r2_closure.rs",
+      "test": "r12_painted_zone_warning_survives_drawing_selection",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c23_r2_closure.rs",
+      "test": "r12_zone_selection_readback_must_keep_a_valid_derived_id",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c23_r2_closure.rs",
+      "test": "r13_protected_colour_outside_filter_does_not_cause_false_refusal",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c23_r2_closure.rs",
+      "test": "r16_locked_exposed_is_skipped_but_element_reaches_unexposed",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c23_r2_limits.rs",
+      "test": "smooth_twenty_thousand_anchors_refuses_within_budget_and_commits_nothing",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c23_r2_predicates.rs",
+      "test": "every_work_account_observes_request_cancellation_and_next_request_is_clean",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c23_r2_predicates.rs",
+      "test": "translated_reversed_unit_determinants_and_shared_edges",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c23_r2_smooth.rs",
+      "test": "twenty_thousand_anchor_work_observations",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c23_r2_texture.rs",
+      "test": "renderer_observes_cancellation_before_drawing",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c23_r2_texture.rs",
+      "test": "rotated_skewed_and_reflected_tile_off_alpha_has_transparent_exterior",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c23_r2_timeout.rs",
+      "test": "smooth_watchdog_reaches_mcp_and_next_read_answers",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c23_r2_watchdog.rs",
+      "test": "timed_out_queued_mutation_is_cancelled_instead_of_committing_later",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c23_r3_budgets.rs",
+      "test": "heavy_command_watchdogs_leave_no_partial_state_and_release_queued_reads",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c23_r3_cancel.rs",
+      "test": "render_stops_between_processed_items",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c23_r3_cancellation.rs",
+      "test": "cancellation_during_running_queued_call_batch_and_planar_settle",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c23_r3_closure.rs",
+      "test": "all_shapes_false_in_second_batch_step_roll_back_and_two_true_share_one_cell",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c23_r3_closure.rs",
+      "test": "set_colour_default_selection_changes_painted_zone_only",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c23_r3_closure.rs",
+      "test": "zone_pruning_undo_redo_is_session_state_and_drawing_isolation_holds",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c23_r3_inputs.rs",
+      "test": "export_mcp_contract_inputs",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c23_r3_profile.rs",
+      "test": "observe_twenty_thousand_anchor_staging",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c23_r3_selection_cancel.rs",
+      "test": "timed_out_selection_must_not_apply_session_state_later",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c23_r3_session.rs",
+      "test": "mapping_clipboard_is_not_package_content",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c23_r3_texture.rs",
+      "test": "asymmetric_texture_pixels_follow_all_three_transforms_and_mapping_modes",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c23_r3_topology.rs",
+      "test": "operation_results_pass_c22_topology_oracle",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c23_r4_closure.rs",
+      "test": "cancelled_session_document_and_prefs_batch_exports_nothing",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c23_r4_closure.rs",
+      "test": "nonempty_selection_is_preserved_and_success_emits_once",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c23_r4_closure.rs",
+      "test": "queued_point_and_prefs_calls_timeout_without_late_changes",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c23_render.rs",
+      "test": "content_order_holes_invisible_strokes_and_determinism",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c23_render.rs",
+      "test": "golden_hashes_hold_on_every_platform",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c23_render.rs",
+      "test": "sizes_regions_padding_and_bounded_inputs",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c23_render.rs",
+      "test": "the_tile_axis_style_order_drag_and_transforms",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c23_round2.rs",
+      "test": "explicit_create_drawing_false_refuses_and_true_creates_on_every_shape",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c23_round2.rs",
+      "test": "selected_zones_survive_command_completion_and_unrelated_edits",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c23_round2.rs",
+      "test": "zone_selections_keep_their_drawing_identity",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c23_round3.rs",
+      "test": "a_cancelled_selection_keeps_the_previous_selection_points_frame_and_mode",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c23_round3.rs",
+      "test": "the_same_selection_is_accepted_within_its_budget",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c23_select.rs",
+      "test": "bounds_view_mapping_and_inspector_preview",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c23_select.rs",
+      "test": "point_selection_by_anchor_and_rect_is_read_back_and_pruned_with_the_stroke",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c23_select.rs",
+      "test": "rename_and_lock_validate_and_undo",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c23_select.rs",
+      "test": "selection_by_ids_point_rect_lasso_all_and_modes_with_events",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c23_select.rs",
+      "test": "shape_tools_add_closed_and_open_pencil_paths_with_zones_and_undo",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c23_strokeops.rs",
+      "test": "centre_line_follows_the_spine_with_the_average_width_and_reports_what_it_cannot_do",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c23_strokeops.rs",
+      "test": "lines_to_brush_sweeps_the_current_pen_and_keeps_an_invisible_centre",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c23_strokeops.rs",
+      "test": "smooth_removes_redundant_anchors_keeps_junctions_and_repeats",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c23_strokeops.rs",
+      "test": "smooth_respects_a_point_selection_and_the_tolerance",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c23_strokeops.rs",
+      "test": "smoothing_a_painted_shape_keeps_its_fill_and_a_brush_outline_loses_its_spine",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c23_strokeops.rs",
+      "test": "smoothing_two_thousand_collinear_anchors_is_bounded",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c23_transform.rs",
+      "test": "brush_spines_survive_rigid_motions_and_are_dropped_by_scaling",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c23_transform.rs",
+      "test": "contour_points_add_set_delete_and_segment_move",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c23_transform.rs",
+      "test": "copies_get_fresh_ids_and_leave_the_originals",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c23_transform.rs",
+      "test": "envelopes_map_the_bounds_corners_and_reposition_all_moves_every_drawing",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c23_transform.rs",
+      "test": "flips_swap_side_fills_and_keep_the_painted_zone",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c23_transform.rs",
+      "test": "locked_drawings_and_missing_objects_are_refused",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c23_transform.rs",
+      "test": "moving_a_shared_junction_anchor_moves_every_stroke_end_there",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c23_transform.rs",
+      "test": "point_subset_transforms_move_only_the_chosen_anchors_and_default_to_the_point_selection",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c23_transform.rs",
+      "test": "translate_rotate_and_matrix_keep_ids_fills_and_undo_in_one_step",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c23_watchdog.rs",
+      "test": "an_overrunning_call_times_out_typed_and_the_worker_answers_the_next_request",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c23_watchdog.rs",
+      "test": "one_callers_timeout_never_cancels_another_callers_request",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c24_aggregate.rs",
+      "test": "aggregate_break_apart_and_size_limit_render_raw_observations",
+      "result": "ignored"
+    },
+    {
+      "binary": "tests/c24_aggregate.rs",
+      "test": "an_over_bound_text_is_refused_before_any_glyph_is_prepared",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c24_budgets.rs",
+      "test": "budget_baselines_raw_observations",
+      "result": "ignored"
+    },
+    {
+      "binary": "tests/c24_centre.rs",
+      "test": "a_bar_gives_one_line_along_its_middle_with_its_width",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c24_centre.rs",
+      "test": "a_frame_split_by_a_bar_gives_three_lines_between_two_junctions",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c24_centre.rs",
+      "test": "a_plus_gives_branches_meeting_at_a_junction",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c24_centre.rs",
+      "test": "a_ring_with_a_bridged_hole_gives_a_closed_line",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c24_centre.rs",
+      "test": "refusals_are_typed",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c24_centre.rs",
+      "test": "the_result_is_deterministic",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c24_centre_line.rs",
+      "test": "an_explicit_thickness_overrides_the_average_width",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c24_centre_line.rs",
+      "test": "an_outline_past_the_work_budget_is_refused_before_anything_is_staged",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c24_centre_line.rs",
+      "test": "vectorized_line_art_becomes_pencil_lines_along_its_middle",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c24_contracts.rs",
+      "test": "vectorize_never_edits_a_locked_drawing_and_a_failing_image_keeps_the_ones_before",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c24_contracts.rs",
+      "test": "vectorize_run_keeps_the_common_contract",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c24_cutter_snapping.rs",
+      "test": "the_counterexample_junctions_are_the_snapped_exact_crossings",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c24_cutter_snapping.rs",
+      "test": "the_cutter_area_change_on_the_reviewers_counterexample_is_the_snapping_of_its_junctions",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c24_decode_fuzz.rs",
+      "test": "every_corpus_file_gives_its_recorded_result",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c24_decode_fuzz.rs",
+      "test": "generate_corpus",
+      "result": "ignored"
+    },
+    {
+      "binary": "tests/c24_decode_fuzz.rs",
+      "test": "mutated_corpus_files_decode_or_refuse_typed_with_bounded_allocation",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c24_flatten_phases.rs",
+      "test": "flatten_settle_phases_raw_observations",
+      "result": "ignored"
+    },
+    {
+      "binary": "tests/c24_image.rs",
+      "test": "limits_are_checked_from_the_header",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c24_image.rs",
+      "test": "malformed_input_is_a_typed_error",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c24_image.rs",
+      "test": "png_decodes_to_rgba",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c24_image.rs",
+      "test": "psd_composites_rgb_cmyk_and_grey",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c24_noding_regressions.rs",
+      "test": "a_fold_through_piece_ends_is_cut_at_every_pass",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c24_oracle_routes.rs",
+      "test": "a_snapping_sliver_below_the_documented_bound_carries_no_fill",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c24_oracle_routes.rs",
+      "test": "affine_envelopes_match_the_oracle",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c24_oracle_routes.rs",
+      "test": "break_apart_leaves_the_line_layer_to_the_oracle_and_makes_one_group_per_glyph",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c24_oracle_routes.rs",
+      "test": "flatten_of_overlapping_layers_matches_the_oracle",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c24_oracle_routes.rs",
+      "test": "lines_to_brush_and_centre_line_keep_the_oracles_partition",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c24_oracle_routes.rs",
+      "test": "optimize_and_smooth_keep_the_oracles_partition",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c24_oracle_routes.rs",
+      "test": "point_moves_with_and_without_snapping_match_the_oracle",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c24_oracle_routes.rs",
+      "test": "region_erase_matches_the_oracle",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c24_oracle_routes.rs",
+      "test": "segment_cut_matches_the_oracle",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c24_oracle_routes.rs",
+      "test": "stroke_add_matches_the_oracle",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c24_oracle_routes.rs",
+      "test": "stroke_set_and_delete_match_the_oracle",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c24_oracle_routes.rs",
+      "test": "transforms_match_the_oracles_transformed_geometry",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c24_properties.rs",
+      "test": "a_settled_layer_is_a_fixpoint_of_noding",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c24_properties.rs",
+      "test": "adding_strokes_carries_each_fill_into_the_zones_it_splits",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c24_properties.rs",
+      "test": "determinant_plus_and_minus_one_maps_keep_the_faces",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c24_properties.rs",
+      "test": "fixed_regressions",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c24_properties.rs",
+      "test": "side_fills_read_back_after_adding_strokes",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c24_properties.rs",
+      "test": "side_fills_read_back_beside_collinear_overlaps",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c24_properties.rs",
+      "test": "zone_ids_and_areas_do_not_depend_on_stroke_order_and_settling_is_idempotent",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c24_properties.rs",
+      "test": "zones_are_the_oracles_bounded_faces_on_degenerate_arrangements",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c24_r1_decoder.rs",
+      "test": "independent_corpus_and_seeded_mutations_stay_typed_and_bounded",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c24_r1_geometry.rs",
+      "test": "thin_neck_t_and_subunit_bars_have_finite_axes_and_independent_average_width",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c24_r1_geometry.rs",
+      "test": "three_way_owner_deletion_split_and_import_keep_fill_and_opaque_namespaces",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c24_r1_lifecycle.rs",
+      "test": "fixture_font_letters_break_apart_and_extract_without_refusal",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c24_r1_lifecycle.rs",
+      "test": "preexisting_stretch_records_survive_owner_deletion_undo_redo_and_package_open",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c24_r1_lifecycle.rs",
+      "test": "symmetry_is_session_state_and_does_not_survive_a_new_session",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c24_r1_properties.rs",
+      "test": "a_settled_layer_is_a_fixpoint_of_noding",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c24_r1_properties.rs",
+      "test": "adding_strokes_carries_each_fill_into_the_zones_it_splits",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c24_r1_properties.rs",
+      "test": "determinant_plus_and_minus_one_maps_keep_the_faces",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c24_r1_properties.rs",
+      "test": "fixed_regressions",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c24_r1_properties.rs",
+      "test": "shrunk_determinant_case",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c24_r1_properties.rs",
+      "test": "side_fills_read_back_after_adding_strokes",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c24_r1_properties.rs",
+      "test": "side_fills_read_back_beside_collinear_overlaps",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c24_r1_properties.rs",
+      "test": "zone_ids_and_areas_do_not_depend_on_stroke_order_and_settling_is_idempotent",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c24_r1_properties.rs",
+      "test": "zones_are_the_oracles_bounded_faces_on_degenerate_arrangements",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c24_r1_topology.rs",
+      "test": "flatten_of_disjoint_layers_has_the_faces_of_their_union",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c24_r1_topology.rs",
+      "test": "shrunk_cutter_area_bound",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c24_r1_topology.rs",
+      "test": "the_cutter_splits_along_its_segment_like_the_oracle",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c24_r1_topology.rs",
+      "test": "transforms_with_determinant_plus_and_minus_one_keep_the_oracles_faces",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c24_r1_topology.rs",
+      "test": "vectorized_shapes_enclose_one_unpainted_zone_per_paper_component",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c24_r2_noding.rs",
+      "test": "a_closed_fold_with_a_repeated_terminal_anchor_keeps_two_passes",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c24_r2_noding.rs",
+      "test": "a_closed_fold_without_a_repeated_terminal_anchor_keeps_two_passes",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c24_r2_noding.rs",
+      "test": "a_closed_zero_length_last_segment_is_not_part_of_the_nonzero_closing_edge_parameter_range",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c24_r2_properties.rs",
+      "test": "a_settled_layer_is_a_fixpoint_of_noding",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c24_r2_properties.rs",
+      "test": "adding_strokes_carries_each_fill_into_the_zones_it_splits",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c24_r2_properties.rs",
+      "test": "determinant_plus_and_minus_one_maps_keep_the_faces",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c24_r2_properties.rs",
+      "test": "fixed_regressions",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c24_r2_properties.rs",
+      "test": "independent_snapping_envelope_matches_a_rectangles_analytic_formula",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c24_r2_properties.rs",
+      "test": "integer_translations_and_compositions_preserve_all_snapped_anchor_sequences",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c24_r2_properties.rs",
+      "test": "shrunk_determinant_case",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c24_r2_properties.rs",
+      "test": "side_fills_read_back_after_adding_strokes",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c24_r2_properties.rs",
+      "test": "side_fills_read_back_beside_collinear_overlaps",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c24_r2_properties.rs",
+      "test": "zone_ids_and_areas_do_not_depend_on_stroke_order_and_settling_is_idempotent",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c24_r2_properties.rs",
+      "test": "zones_are_the_oracles_bounded_faces_on_degenerate_arrangements",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c24_r2_routes.rs",
+      "test": "affine_envelopes_match_the_oracle",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c24_r2_routes.rs",
+      "test": "break_apart_leaves_the_line_layer_to_the_oracle_and_makes_one_group_per_glyph",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c24_r2_routes.rs",
+      "test": "collapsed_other_contour_is_a_valid_snap_target_product_control",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c24_r2_routes.rs",
+      "test": "flatten_of_overlapping_layers_matches_the_oracle",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c24_r2_routes.rs",
+      "test": "lines_to_brush_and_centre_line_keep_the_oracles_partition",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c24_r2_routes.rs",
+      "test": "optimize_and_smooth_keep_the_oracles_partition",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c24_r2_routes.rs",
+      "test": "point_moves_with_and_without_snapping_match_the_oracle",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c24_r2_routes.rs",
+      "test": "r1_01_route_oracle_rejects_a_noop_centre_line_mutant",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c24_r2_routes.rs",
+      "test": "region_erase_matches_the_oracle",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c24_r2_routes.rs",
+      "test": "segment_cut_matches_the_oracle",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c24_r2_routes.rs",
+      "test": "stroke_add_matches_the_oracle",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c24_r2_routes.rs",
+      "test": "stroke_set_and_delete_match_the_oracle",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c24_r2_routes.rs",
+      "test": "transforms_match_the_oracles_transformed_geometry",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c24_r2_topology.rs",
+      "test": "edit38_original_area_preservation_assertion_remains_a_failure",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c24_r2_topology.rs",
+      "test": "flatten_of_disjoint_layers_has_the_faces_of_their_union",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c24_r2_topology.rs",
+      "test": "shrunk_cutter_area_bound",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c24_r2_topology.rs",
+      "test": "the_cutter_splits_along_its_segment_like_the_oracle",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c24_r2_topology.rs",
+      "test": "transforms_with_determinant_plus_and_minus_one_keep_the_oracles_faces",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c24_r2_topology.rs",
+      "test": "vectorized_shapes_enclose_one_unpainted_zone_per_paper_component",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c24_r2_variants.rs",
+      "test": "closed_concentric_loops_keep_two_painted_regions_through_lines_to_brush",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c24_r2_variants.rs",
+      "test": "flatten_mixed_overlapping_pencil_and_brush_layers_has_two_exact_regions",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c24_r2_variants.rs",
+      "test": "multiglyph_two_counter_text_and_spineless_centre_lines",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c24_r2_variants.rs",
+      "test": "non_parallelogram_envelope_has_independently_predicted_corners_and_area",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c24_r2_variants.rs",
+      "test": "optimize_declines_overlapping_layers_without_changing_geometry_or_fill",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c24_r2_variants.rs",
+      "test": "si059_erase_keeps_a_partly_covered_brush_whole_then_removes_a_wholly_covered_brush",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c24_r2_variants.rs",
+      "test": "smooth_noop_and_shape_changing_tolerances_have_distinct_history",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c24_r2_variants.rs",
+      "test": "snap_to_a_curved_contour_reaches_its_analytic_midpoint",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c24_r2_variants.rs",
+      "test": "tiny_vectorized_ring_uses_its_own_generated_black_and_reuses_the_palette",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c24_r3_decoder.rs",
+      "test": "independent_corpus_and_seeded_mutations_stay_typed_and_bounded",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c24_r3_domains.rs",
+      "test": "break_apart_matches_the_fonts_glyph_outlines",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c24_r3_domains.rs",
+      "test": "centre_line_of_a_spineless_ring",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c24_r3_domains.rs",
+      "test": "erasing_polygonal_brushes_keeps_partly_covered_ones_whole",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c24_r3_domains.rs",
+      "test": "flatten_keeps_a_pencil_piece_that_a_brush_only_partly_covers",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c24_r3_domains.rs",
+      "test": "flatten_of_pencil_and_polygonal_brush_layers_is_exact",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c24_r3_domains.rs",
+      "test": "lines_to_brush_then_centre_line_on_closed_loops",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c24_r3_domains.rs",
+      "test": "non_parallelogram_envelopes_map_the_layer_projectively",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c24_r3_domains.rs",
+      "test": "projective_envelope_matches_the_independently_rounded_point_query_control",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c24_r3_domains.rs",
+      "test": "shrunk_projective_envelope_fill_case_for_independent_adjudication",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c24_r3_domains.rs",
+      "test": "smooth_changes_the_shape_within_its_tolerance",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c24_r3_domains.rs",
+      "test": "snapping_onto_a_curved_contour_reaches_its_nearest_point",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c24_r3_domains.rs",
+      "test": "vectorize_comparison_rejects_a_wrong_boundary_at_the_correct_image_origin",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c24_r3_domains.rs",
+      "test": "vectorize_comparison_rejects_a_wrong_boundary_with_the_right_area_and_probe",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c24_r3_domains.rs",
+      "test": "vectorize_masks_enclose_the_predicted_paper_components",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c24_r3_noding.rs",
+      "test": "repeated_interior_consecutive_and_terminal_anchors_with_crossings_4096",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c24_r3_properties.rs",
+      "test": "a_settled_layer_is_a_fixpoint_of_noding",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c24_r3_properties.rs",
+      "test": "adding_strokes_carries_each_fill_into_the_zones_it_splits",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c24_r3_properties.rs",
+      "test": "determinant_plus_and_minus_one_maps_keep_the_faces",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c24_r3_properties.rs",
+      "test": "fixed_regressions",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c24_r3_properties.rs",
+      "test": "independent_snapping_envelope_matches_a_rectangles_analytic_formula",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c24_r3_properties.rs",
+      "test": "integer_translations_and_compositions_preserve_all_snapped_anchor_sequences",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c24_r3_properties.rs",
+      "test": "shrunk_determinant_case",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c24_r3_properties.rs",
+      "test": "side_fills_read_back_after_adding_strokes",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c24_r3_properties.rs",
+      "test": "side_fills_read_back_beside_collinear_overlaps",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c24_r3_properties.rs",
+      "test": "zone_ids_and_areas_do_not_depend_on_stroke_order_and_settling_is_idempotent",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c24_r3_properties.rs",
+      "test": "zones_are_the_oracles_bounded_faces_on_degenerate_arrangements",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c24_r3_routes.rs",
+      "test": "affine_envelopes_match_the_oracle",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c24_r3_routes.rs",
+      "test": "break_apart_leaves_the_line_layer_to_the_oracle_and_makes_one_group_per_glyph",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c24_r3_routes.rs",
+      "test": "collapsed_other_contour_is_a_valid_snap_target_product_control",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c24_r3_routes.rs",
+      "test": "flatten_of_overlapping_layers_matches_the_oracle",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c24_r3_routes.rs",
+      "test": "lines_to_brush_and_centre_line_keep_the_oracles_partition",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c24_r3_routes.rs",
+      "test": "optimize_and_smooth_keep_the_oracles_partition",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c24_r3_routes.rs",
+      "test": "point_moves_with_and_without_snapping_match_the_oracle",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c24_r3_routes.rs",
+      "test": "r1_01_route_oracle_rejects_a_noop_centre_line_mutant",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c24_r3_routes.rs",
+      "test": "region_erase_matches_the_oracle",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c24_r3_routes.rs",
+      "test": "segment_cut_matches_the_oracle",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c24_r3_routes.rs",
+      "test": "stroke_add_matches_the_oracle",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c24_r3_routes.rs",
+      "test": "stroke_set_and_delete_match_the_oracle",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c24_r3_routes.rs",
+      "test": "transforms_match_the_oracles_transformed_geometry",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c24_r3_topology.rs",
+      "test": "edit38_original_area_preservation_assertion_remains_a_failure",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c24_r3_topology.rs",
+      "test": "flatten_of_disjoint_layers_has_the_faces_of_their_union",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c24_r3_topology.rs",
+      "test": "shrunk_cutter_area_bound",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c24_r3_topology.rs",
+      "test": "the_cutter_splits_along_its_segment_like_the_oracle",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c24_r3_topology.rs",
+      "test": "transforms_with_determinant_plus_and_minus_one_keep_the_oracles_faces",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c24_r3_topology.rs",
+      "test": "vectorized_shapes_enclose_one_unpainted_zone_per_paper_component",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c24_route_domains.rs",
+      "test": "break_apart_matches_the_fonts_glyph_outlines",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c24_route_domains.rs",
+      "test": "centre_line_of_a_spineless_ring",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c24_route_domains.rs",
+      "test": "erasing_polygonal_brushes_keeps_partly_covered_ones_whole",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c24_route_domains.rs",
+      "test": "flatten_keeps_a_pencil_piece_that_a_brush_only_partly_covers",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c24_route_domains.rs",
+      "test": "flatten_of_pencil_and_polygonal_brush_layers_is_exact",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c24_route_domains.rs",
+      "test": "lines_to_brush_then_centre_line_on_closed_loops",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c24_route_domains.rs",
+      "test": "non_parallelogram_envelopes_map_the_layer_projectively",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c24_route_domains.rs",
+      "test": "smooth_changes_the_shape_within_its_tolerance",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c24_route_domains.rs",
+      "test": "snapping_onto_a_curved_contour_reaches_its_nearest_point",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c24_route_domains.rs",
+      "test": "vectorize_masks_enclose_the_predicted_paper_components",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c24_symmetry.rs",
+      "test": "command_created_mirrors_and_kaleidoscopes_are_exact_and_identical_across_platforms",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c24_symmetry.rs",
+      "test": "symmetry_values_out_of_range_are_refused_and_none_draws_once",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c24_text_layout.rs",
+      "test": "same_font_layout_and_break_apart_are_identical_across_platforms",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c24_text_layout.rs",
+      "test": "the_fixture_font_is_installed_and_lays_out_by_its_own_advances",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c24_topology.rs",
+      "test": "flatten_of_disjoint_layers_has_the_faces_of_their_union",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c24_topology.rs",
+      "test": "the_cutter_splits_along_its_segment_like_the_oracle",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c24_topology.rs",
+      "test": "transforms_with_determinant_plus_and_minus_one_keep_the_oracles_faces",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c24_topology.rs",
+      "test": "vectorized_shapes_enclose_one_unpainted_zone_per_paper_component",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c24_trace.rs",
+      "test": "a_tiny_budget_refuses_before_finishing",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c24_trace.rs",
+      "test": "random_images_vectorize_or_refuse_typed_and_never_panic",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c24_trace.rs",
+      "test": "traced_regions_match_the_independent_oracle",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c24_vectorize.rs",
+      "test": "a_second_image_reuses_the_palette_and_fills_consecutive_cells",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c24_vectorize.rs",
+      "test": "a_selected_element_that_is_not_a_drawing_element_is_refused",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c24_vectorize.rs",
+      "test": "an_image_element_becomes_a_new_drawing_element_with_matching_exposure",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c24_vectorize.rs",
+      "test": "cancelling_keeps_the_images_already_completed",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c24_vectorize.rs",
+      "test": "malformed_input_and_ranges_are_refused_before_anything_starts",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c24_vectorize.rs",
+      "test": "occupied_cells_ask_replace_or_skip",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c24_vectorize.rs",
+      "test": "the_e2_line_art_becomes_brush_shapes_with_paintable_zones_in_one_step",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c24_vectorize.rs",
+      "test": "the_preview_renders_what_the_run_creates",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c24_vectorize.rs",
+      "test": "vectorized_drawings_survive_save_and_open",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c24_vectorize.rs",
+      "test": "with_texture_the_shapes_carry_the_source_colours",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c24_vectorize.rs",
+      "test": "without_a_selected_element_a_new_drawing_element_is_created",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c24_vectorize_unit.rs",
+      "test": "a_ring_is_one_region_with_one_hole",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c24_vectorize_unit.rs",
+      "test": "an_image_becomes_one_outline_per_region_spanning_the_frame_width",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c24_vectorize_unit.rs",
+      "test": "diagonal_ink_is_connected_and_paper_is_not",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c24_vectorize_unit.rs",
+      "test": "filters_and_threshold",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c24_vectorize_unit.rs",
+      "test": "oversize_and_mismatched_input_is_refused",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c24_vectorize_unit.rs",
+      "test": "separate_regions_come_in_row_major_order",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/c24_vectorize_unit.rs",
+      "test": "transparent_pixels_are_paper",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/cancel_phases.rs",
+      "test": "an_accept_racing_a_cancellation_always_ends_consistently",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/cancel_phases.rs",
+      "test": "cancellation_before_the_elicitation_is_sent_asks_nothing",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/cancel_phases.rs",
+      "test": "cancellation_while_waiting_and_before_a_late_accept_authorises_nothing",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/cli.rs",
+      "test": "a_bad_policy_is_a_usage_error",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/cli.rs",
+      "test": "mcp_stdio_exits_zero_when_the_client_closes_its_input",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/cli.rs",
+      "test": "selftest_exits_zero_with_json_report",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/cli.rs",
+      "test": "selftest_runs_with_display_environment_removed",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/cli.rs",
+      "test": "usage_error_exits_two",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/cli.rs",
+      "test": "version_exits_zero",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/compile_fail.rs",
+      "test": "exclusive_mutation_capability",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/conformance.rs",
+      "test": "ambiguous_names_list_candidates",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/conformance.rs",
+      "test": "canonical_paths_resolve_to_their_objects",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/conformance.rs",
+      "test": "canonical_round_trip_is_byte_identical",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/conformance.rs",
+      "test": "change_sets_describe_and_invert_edits",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/conformance.rs",
+      "test": "every_entry_validates_and_has_no_query_only_properties",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/conformance.rs",
+      "test": "every_object_validates_at_every_depth",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/conformance.rs",
+      "test": "fixture_covers_every_object_and_element_type",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/conformance.rs",
+      "test": "golden_canonical_entries",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/conformance.rs",
+      "test": "persisted_json_equals_query_json_minus_transient",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/conformance.rs",
+      "test": "published_schema_bundle_is_current",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/conformance.rs",
+      "test": "reference_errors_carry_the_spec_codes",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/conformance.rs",
+      "test": "revisions_newer_than_the_document_are_integrity_errors",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/conformance.rs",
+      "test": "schemas_are_valid_draft_2020_12",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/conformance.rs",
+      "test": "spec_example_paths_resolve",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/conformance.rs",
+      "test": "x_command_annotations_name_registered_commands",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/contracts.rs",
+      "test": "atomic_batch_with_a_deferred_save_and_staged_integrity_through_mcp",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/contracts.rs",
+      "test": "guarded_load_and_frozen_gate_through_mcp",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/declared.rs",
+      "test": "declarations_carry_owner_scopes_project_rule_undo_and_gui",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/declared.rs",
+      "test": "declarations_follow_the_current_spec_columns",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/declared.rs",
+      "test": "generated_schemas_reject_every_mutated_leaf_and_unknown_member",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/declared.rs",
+      "test": "literal_constants_are_stated_by_their_own_entry",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/declared.rs",
+      "test": "owning_section_examples_validate",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/declared.rs",
+      "test": "parameter_constraints_come_from_the_spec",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/declared.rs",
+      "test": "placeholders_are_strict_and_recorded",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/declared.rs",
+      "test": "placeholders_carry_their_spec_issue",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/declared.rs",
+      "test": "schemas_compile_reject_unknown_parameters_and_accept_the_examples",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/frontend_schemas.rs",
+      "test": "commands_module_is_current",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/frontend_schemas.rs",
+      "test": "model_module_is_current",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/frontend_schemas.rs",
+      "test": "wire_module_is_current",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/guard_fixtures.rs",
+      "test": "rejects_a_real_direct_composition_import",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/hostile.rs",
+      "test": "duplicate_entries_encryption_and_unknown_methods_are_refused",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/hostile.rs",
+      "test": "duplicate_ids_dangling_references_and_unreadable_entries_are_repaired_deterministically",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/hostile.rs",
+      "test": "hash_mismatches_are_warnings_and_the_entry_is_still_read",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/hostile.rs",
+      "test": "interrupted_folder_saves_complete_or_roll_back_on_open",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/hostile.rs",
+      "test": "invalid_trees_are_repaired_without_losing_elements",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/hostile.rs",
+      "test": "local_header_naming_another_entry_is_refused",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/hostile.rs",
+      "test": "mimetype_must_come_first_uncompressed_and_exact",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/hostile.rs",
+      "test": "newer_major_versions_reader_versions_and_unknown_features_refuse_to_open",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/hostile.rs",
+      "test": "newer_minor_content_is_preserved_verbatim_and_unknown_values_freeze_their_entry",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/hostile.rs",
+      "test": "project_json_missing_or_invalid_is_fatal",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/hostile.rs",
+      "test": "size_lies_and_decompression_bombs_abort_the_load",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/hostile.rs",
+      "test": "truncated_and_corrupted_packages_are_invalid_and_never_panic",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/hostile.rs",
+      "test": "unsafe_entry_names_are_refused_before_extracting_anything",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/inventory.rs",
+      "test": "inventory_matches_spec_a_exactly",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/journal.rs",
+      "test": "a_journal_whose_versions_are_both_incomplete_changes_nothing",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/journal.rs",
+      "test": "a_save_interrupted_after_any_rename_recovers_to_one_whole_version",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/journal.rs",
+      "test": "journals_are_validated_before_anything_changes",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/mcp.rs",
+      "test": "batch_scripts_exit_zero_or_five_and_log_json_lines",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/mcp.rs",
+      "test": "mcp_stdio_serves_the_opened_project_and_exits_when_the_client_leaves",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/migrations.rs",
+      "test": "every_product_step_has_a_fixture_and_the_chain_ends_at_the_current_format",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/migrations.rs",
+      "test": "the_engine_applies_steps_in_order_and_reports_gaps_and_failures",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/migrations.rs",
+      "test": "the_synthetic_chain_matches_its_fixtures",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/migrations.rs",
+      "test": "values_without_a_new_home_are_kept_under_ext",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/never_block.rs",
+      "test": "every_command_answers_through_mcp_within_the_watchdog",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/never_block.rs",
+      "test": "queued_calls_stay_responsive_while_jobs_run",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/properties.rs",
+      "test": "bezier_lists_round_trip",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/properties.rs",
+      "test": "canonical_json_is_stable",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/properties.rs",
+      "test": "child_collection_patches_apply_and_invert",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/properties.rs",
+      "test": "elements_of_every_type_round_trip",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/properties.rs",
+      "test": "every_object_type_has_a_schema_that_rejects_unknown_properties",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/properties.rs",
+      "test": "exposure_range_patches_apply_and_invert",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/properties.rs",
+      "test": "fitting_ignores_timing_only_positions_and_pressures_matter",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/properties.rs",
+      "test": "fitting_is_deterministic_and_within_tolerance",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/properties.rs",
+      "test": "generated_paths_print_and_parse_identically",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/properties.rs",
+      "test": "id_parsing_never_panics_and_matches_the_grammar",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/properties.rs",
+      "test": "json_parsing_of_doubles_is_correctly_rounded",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/properties.rs",
+      "test": "names_normalise_idempotently",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/properties.rs",
+      "test": "number_vectors_for_the_front_end",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/properties.rs",
+      "test": "numbers_round_trip_through_canonical_text",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/properties.rs",
+      "test": "outlines_are_closed_finite_and_cover_every_tip",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/properties.rs",
+      "test": "outlines_contain_every_swept_tip_including_holes_and_separate_pieces",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/properties.rs",
+      "test": "palettes_round_trip",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/properties.rs",
+      "test": "patches_apply_and_invert",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/properties.rs",
+      "test": "path_parsing_never_panics",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/properties.rs",
+      "test": "pens_round_trip",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/properties.rs",
+      "test": "pressure_interpolation_stays_in_range",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/properties.rs",
+      "test": "random_rfc6902_sequences_invert_against_their_pre_state",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/properties.rs",
+      "test": "strokes_round_trip",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/properties.rs",
+      "test": "text_edits_keep_runs_covering_and_one_paragraph_per_line",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/properties.rs",
+      "test": "timestamps_round_trip",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/protocol.rs",
+      "test": "an_external_change_reaches_the_agent_as_a_confirmation",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/protocol.rs",
+      "test": "atomic_batch_commits_one_revision_one_undo_step_and_one_audit_entry",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/protocol.rs",
+      "test": "confirmation_protocol_with_token_and_with_elicitation",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/protocol.rs",
+      "test": "generic_tools_wrap_commands_revisions_undo_and_idempotent_requests",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/protocol.rs",
+      "test": "lifecycle_negotiation_and_json_rpc_errors",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/protocol.rs",
+      "test": "parse_and_invalid_request_errors_are_answered",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/protocol.rs",
+      "test": "progress_and_cancellation",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/protocol.rs",
+      "test": "prompts_completions_and_logging",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/protocol.rs",
+      "test": "resources_templates_subscriptions_coalescing_and_events",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/protocol.rs",
+      "test": "roots_from_the_client_extend_the_grant",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/protocol.rs",
+      "test": "scopes_roots_and_policies_are_enforced",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/protocol.rs",
+      "test": "session_limits_cap_batches_and_jobs",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/protocol.rs",
+      "test": "tools_list_schemas_and_structured_content_validate",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/protocol.rs",
+      "test": "typed_tools_change_the_list_and_disconnect_ends_the_session",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/round_trip.rs",
+      "test": "an_unchanged_folder_save_rewrites_nothing_and_a_change_rewrites_one_entry",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/round_trip.rs",
+      "test": "both_forms_hold_identical_entry_bytes_and_saves_are_deterministic",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/round_trip.rs",
+      "test": "package_and_folder_round_trip_to_the_identical_document",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/staged_commit.rs",
+      "test": "document_level_frame_writes_are_refused_and_leave_the_document_unchanged",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/staged_commit.rs",
+      "test": "random_patches_never_commit_a_document_with_integrity_errors",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/staged_commit.rs",
+      "test": "staged_commit_sweep_commits_and_refuses",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/staged_inverse.rs",
+      "test": "staged_exposure_and_mouth_edits_undo_and_redo_exactly",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/staged_inverse.rs",
+      "test": "staged_inverse_sweep_covers_merging_and_splitting_runs",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/wire_corpus.rs",
+      "test": "every_hostile_text_is_rejected_with_a_typed_error",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/wire_corpus.rs",
+      "test": "every_valid_text_is_accepted_and_written_canonically",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/wire_corpus.rs",
+      "test": "invalid_utf8_bodies_are_rejected",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/wire_corpus.rs",
+      "test": "the_corpus_depth_is_the_engine_limit",
+      "result": "ok"
+    },
+    {
+      "binary": "tests/zip64.rs",
+      "test": "an_entry_over_4_gib_round_trips_with_zip64_sizes",
+      "result": "ignored"
+    },
+    {
+      "binary": "tests/zip64.rs",
+      "test": "more_than_65535_entries_switch_to_zip64_records",
+      "result": "ok"
+    },
+    {
+      "binary": "unittests src/lib.rs",
+      "test": "align::tests::content_differences_are_divergence",
+      "result": "ok"
+    },
+    {
+      "binary": "unittests src/lib.rs",
+      "test": "align::tests::patches_without_preconditions_are_returned_unchanged",
+      "result": "ok"
+    },
+    {
+      "binary": "unittests src/lib.rs",
+      "test": "align::tests::preconditions_hold_modulo_rev_and_are_rewritten",
+      "result": "ok"
+    },
+    {
+      "binary": "unittests src/lib.rs",
+      "test": "align::tests::shifting_patches_are_checked_in_order",
+      "result": "ok"
+    },
+    {
+      "binary": "unittests src/lib.rs",
+      "test": "b64::tests::rfc4648_vectors",
+      "result": "ok"
+    },
+    {
+      "binary": "unittests src/lib.rs",
+      "test": "bindings::tests::command_id_syntax",
+      "result": "ok"
+    },
+    {
+      "binary": "unittests src/lib.rs",
+      "test": "bindings::tests::embedded_manifest_is_valid",
+      "result": "ok"
+    },
+    {
+      "binary": "unittests src/lib.rs",
+      "test": "bindings::tests::enablement_without_project_follows_01_1_3",
+      "result": "ok"
+    },
+    {
+      "binary": "unittests src/lib.rs",
+      "test": "bindings::tests::per_platform_accelerators",
+      "result": "ok"
+    },
+    {
+      "binary": "unittests src/lib.rs",
+      "test": "bindings::tests::platform_specific_duplicates_are_allowed",
+      "result": "ok"
+    },
+    {
+      "binary": "unittests src/lib.rs",
+      "test": "bindings::tests::quit_is_bound_on_every_platform",
+      "result": "ok"
+    },
+    {
+      "binary": "unittests src/lib.rs",
+      "test": "bindings::tests::rejects_duplicates_bad_ids_and_missing_milestones",
+      "result": "ok"
+    },
+    {
+      "binary": "unittests src/lib.rs",
+      "test": "bindings::tests::task_menus_exist_on_both_product_platforms",
+      "result": "ok"
+    },
+    {
+      "binary": "unittests src/lib.rs",
+      "test": "brush::tests::a_dab_is_one_tip",
+      "result": "ok"
+    },
+    {
+      "binary": "unittests src/lib.rs",
+      "test": "brush::tests::a_looping_stroke_is_one_clean_closed_path",
+      "result": "ok"
+    },
+    {
+      "binary": "unittests src/lib.rs",
+      "test": "brush::tests::a_straight_stroke_outlines_a_capsule",
+      "result": "ok"
+    },
+    {
+      "binary": "unittests src/lib.rs",
+      "test": "brush::tests::outlines_are_reproducible",
+      "result": "ok"
+    },
+    {
+      "binary": "unittests src/lib.rs",
+      "test": "brush::tests::pressure_varies_the_width",
+      "result": "ok"
+    },
+    {
+      "binary": "unittests src/lib.rs",
+      "test": "brush::tests::zero_width_is_invalid_geometry",
+      "result": "ok"
+    },
+    {
+      "binary": "unittests src/lib.rs",
+      "test": "canonical::tests::integral_doubles_normalise_to_integers",
+      "result": "ok"
+    },
+    {
+      "binary": "unittests src/lib.rs",
+      "test": "canonical::tests::large_integers_are_exact",
+      "result": "ok"
+    },
+    {
+      "binary": "unittests src/lib.rs",
+      "test": "canonical::tests::layout_is_two_space_with_tuples_on_one_line",
+      "result": "ok"
+    },
+    {
+      "binary": "unittests src/lib.rs",
+      "test": "canonical::tests::non_finite_values_are_errors_not_null",
+      "result": "ok"
+    },
+    {
+      "binary": "unittests src/lib.rs",
+      "test": "canonical::tests::numbers_match_ecmascript",
+      "result": "ok"
+    },
+    {
+      "binary": "unittests src/lib.rs",
+      "test": "change::tests::frame_bearing_writes_are_bounded_at_the_scene_limit",
+      "result": "ok"
+    },
+    {
+      "binary": "unittests src/lib.rs",
+      "test": "change::tests::inverse_against_pre_state_is_concrete",
+      "result": "ok"
+    },
+    {
+      "binary": "unittests src/lib.rs",
+      "test": "change::tests::move_and_copy_need_from",
+      "result": "ok"
+    },
+    {
+      "binary": "unittests src/lib.rs",
+      "test": "change::tests::range_operations_apply_only_to_declared_fields",
+      "result": "ok"
+    },
+    {
+      "binary": "unittests src/lib.rs",
+      "test": "change::tests::range_replace_checks_types_window_and_bounds",
+      "result": "ok"
+    },
+    {
+      "binary": "unittests src/lib.rs",
+      "test": "components::tests::every_component_cites_spec_sections",
+      "result": "ok"
+    },
+    {
+      "binary": "unittests src/lib.rs",
+      "test": "components::tests::lists_every_plan_crate_once",
+      "result": "ok"
+    },
+    {
+      "binary": "unittests src/lib.rs",
+      "test": "defaults::tests::default_palette_meets_its_coverage_rules",
+      "result": "ok"
+    },
+    {
+      "binary": "unittests src/lib.rs",
+      "test": "defaults::tests::new_project_is_valid_and_complete",
+      "result": "ok"
+    },
+    {
+      "binary": "unittests src/lib.rs",
+      "test": "determinism::tests::hex_encodes_lowercase",
+      "result": "ok"
+    },
+    {
+      "binary": "unittests src/lib.rs",
+      "test": "determinism::tests::probe_is_stable_within_a_run",
+      "result": "ok"
+    },
+    {
+      "binary": "unittests src/lib.rs",
+      "test": "determinism::tests::probe_matches_golden",
+      "result": "ok"
+    },
+    {
+      "binary": "unittests src/lib.rs",
+      "test": "determinism::tests::workload_has_expected_shape",
+      "result": "ok"
+    },
+    {
+      "binary": "unittests src/lib.rs",
+      "test": "diagnostics::tests::bench_with_count",
+      "result": "ok"
+    },
+    {
+      "binary": "unittests src/lib.rs",
+      "test": "diagnostics::tests::errors",
+      "result": "ok"
+    },
+    {
+      "binary": "unittests src/lib.rs",
+      "test": "diagnostics::tests::no_arguments_is_interactive",
+      "result": "ok"
+    },
+    {
+      "binary": "unittests src/lib.rs",
+      "test": "diagnostics::tests::requested_diagnostic_names_the_flag",
+      "result": "ok"
+    },
+    {
+      "binary": "unittests src/lib.rs",
+      "test": "diagnostics::tests::spike_flags",
+      "result": "ok"
+    },
+    {
+      "binary": "unittests src/lib.rs",
+      "test": "entities::tests::ext_keys_are_reverse_dns",
+      "result": "ok"
+    },
+    {
+      "binary": "unittests src/lib.rs",
+      "test": "entities::tests::stubs_reject_full_objects_and_foreign_types",
+      "result": "ok"
+    },
+    {
+      "binary": "unittests src/lib.rs",
+      "test": "error::tests::limit_exceeded_wire_form",
+      "result": "ok"
+    },
+    {
+      "binary": "unittests src/lib.rs",
+      "test": "error::tests::wire_form_has_three_fields",
+      "result": "ok"
+    },
+    {
+      "binary": "unittests src/lib.rs",
+      "test": "fit::tests::a_click_is_a_dab",
+      "result": "ok"
+    },
+    {
+      "binary": "unittests src/lib.rs",
+      "test": "fit::tests::a_closed_polyline_keeps_its_last_vertex_at_its_own_position",
+      "result": "ok"
+    },
+    {
+      "binary": "unittests src/lib.rs",
+      "test": "fit::tests::a_rotated_loop_keeps_its_closing_pressure_before_the_first_sample",
+      "result": "ok"
+    },
+    {
+      "binary": "unittests src/lib.rs",
+      "test": "fit::tests::a_square_keeps_its_corners",
+      "result": "ok"
+    },
+    {
+      "binary": "unittests src/lib.rs",
+      "test": "fit::tests::a_straight_drag_fits_one_segment",
+      "result": "ok"
+    },
+    {
+      "binary": "unittests src/lib.rs",
+      "test": "fit::tests::closed_loops_return_to_the_start",
+      "result": "ok"
+    },
+    {
+      "binary": "unittests src/lib.rs",
+      "test": "fit::tests::fitting_error_is_within_tolerance",
+      "result": "ok"
+    },
+    {
+      "binary": "unittests src/lib.rs",
+      "test": "fit::tests::pressure_maps_are_ordered_and_span_the_spine",
+      "result": "ok"
+    },
+    {
+      "binary": "unittests src/lib.rs",
+      "test": "fit::tests::stationary_pressure_peaks_survive_cleaning_at_the_start_middle_and_end",
+      "result": "ok"
+    },
+    {
+      "binary": "unittests src/lib.rs",
+      "test": "fsx::tests::absolute_paths_only",
+      "result": "ok"
+    },
+    {
+      "binary": "unittests src/lib.rs",
+      "test": "fsx::tests::atomic_write_replaces_and_leaves_no_temporaries",
+      "result": "ok"
+    },
+    {
+      "binary": "unittests src/lib.rs",
+      "test": "geom::tests::affine_composition",
+      "result": "ok"
+    },
+    {
+      "binary": "unittests src/lib.rs",
+      "test": "geom::tests::bounds_cover_bulging_curves",
+      "result": "ok"
+    },
+    {
+      "binary": "unittests src/lib.rs",
+      "test": "geom::tests::line_length_and_bounds",
+      "result": "ok"
+    },
+    {
+      "binary": "unittests src/lib.rs",
+      "test": "host::tests::own_process_is_alive_and_a_bogus_one_is_not",
+      "result": "ok"
+    },
+    {
+      "binary": "unittests src/lib.rs",
+      "test": "id::tests::clones_share_one_sequence",
+      "result": "ok"
+    },
+    {
+      "binary": "unittests src/lib.rs",
+      "test": "id::tests::compound_form",
+      "result": "ok"
+    },
+    {
+      "binary": "unittests src/lib.rs",
+      "test": "id::tests::generated_ids_are_valid_prefixed_and_increasing",
+      "result": "ok"
+    },
+    {
+      "binary": "unittests src/lib.rs",
+      "test": "id::tests::seeded_generators_are_reproducible",
+      "result": "ok"
+    },
+    {
+      "binary": "unittests src/lib.rs",
+      "test": "id::tests::ulid_encoding_is_26_crockford_chars_and_ordered",
+      "result": "ok"
+    },
+    {
+      "binary": "unittests src/lib.rs",
+      "test": "id::tests::validates_character_set_and_length",
+      "result": "ok"
+    },
+    {
+      "binary": "unittests src/lib.rs",
+      "test": "input::tests::depth_counts_containers",
+      "result": "ok"
+    },
+    {
+      "binary": "unittests src/lib.rs",
+      "test": "input::tests::opaque_values_are_untouched_but_ordered",
+      "result": "ok"
+    },
+    {
+      "binary": "unittests src/lib.rs",
+      "test": "json_text::tests::rules",
+      "result": "ok"
+    },
+    {
+      "binary": "unittests src/lib.rs",
+      "test": "jsonrpc::tests::messages_are_classified_and_malformed_ones_answered",
+      "result": "ok"
+    },
+    {
+      "binary": "unittests src/lib.rs",
+      "test": "layout::tests::names",
+      "result": "ok"
+    },
+    {
+      "binary": "unittests src/lib.rs",
+      "test": "lock::tests::a_live_lock_is_protected_and_never_stale",
+      "result": "ok"
+    },
+    {
+      "binary": "unittests src/lib.rs",
+      "test": "lock::tests::a_protected_lock_left_by_a_dead_holder_is_taken_over_and_its_heartbeat_fails_closed",
+      "result": "ok"
+    },
+    {
+      "binary": "unittests src/lib.rs",
+      "test": "lock::tests::an_abandoned_arbiter_is_removed_only_when_unprotected",
+      "result": "ok"
+    },
+    {
+      "binary": "unittests src/lib.rs",
+      "test": "lock::tests::an_unprotected_stale_lock_is_taken_over_and_a_live_unprotected_one_is_not",
+      "result": "ok"
+    },
+    {
+      "binary": "unittests src/lib.rs",
+      "test": "lock::tests::an_unreadable_lock_is_held_until_abandoned",
+      "result": "ok"
+    },
+    {
+      "binary": "unittests src/lib.rs",
+      "test": "manifest::tests::parse_round_trip_keeps_unknown_fields",
+      "result": "ok"
+    },
+    {
+      "binary": "unittests src/lib.rs",
+      "test": "manifest::tests::ver02",
+      "result": "ok"
+    },
+    {
+      "binary": "unittests src/lib.rs",
+      "test": "manifest::tests::versions",
+      "result": "ok"
+    },
+    {
+      "binary": "unittests src/lib.rs",
+      "test": "menu::tests::event_serializes_camel_case",
+      "result": "ok"
+    },
+    {
+      "binary": "unittests src/lib.rs",
+      "test": "menu::tests::frontend_command_carries_params",
+      "result": "ok"
+    },
+    {
+      "binary": "unittests src/lib.rs",
+      "test": "menu::tests::host_commands",
+      "result": "ok"
+    },
+    {
+      "binary": "unittests src/lib.rs",
+      "test": "menu::tests::pending_command_carries_milestone",
+      "result": "ok"
+    },
+    {
+      "binary": "unittests src/lib.rs",
+      "test": "menu::tests::unknown_and_platform_hidden_ids_are_unbound",
+      "result": "ok"
+    },
+    {
+      "binary": "unittests src/lib.rs",
+      "test": "name::tests::next_free_uses_smallest_unused",
+      "result": "ok"
+    },
+    {
+      "binary": "unittests src/lib.rs",
+      "test": "name::tests::normalises_nfc_and_trims",
+      "result": "ok"
+    },
+    {
+      "binary": "unittests src/lib.rs",
+      "test": "name::tests::per_entity_rules",
+      "result": "ok"
+    },
+    {
+      "binary": "unittests src/lib.rs",
+      "test": "num::tests::golden_values_are_platform_independent",
+      "result": "ok"
+    },
+    {
+      "binary": "unittests src/lib.rs",
+      "test": "num::tests::reflection_about_the_y_axis",
+      "result": "ok"
+    },
+    {
+      "binary": "unittests src/lib.rs",
+      "test": "object::tests::runs_are_merged_and_trailing_blanks_dropped",
+      "result": "ok"
+    },
+    {
+      "binary": "unittests src/lib.rs",
+      "test": "ops::cut::tests::winding_inside_and_the_boundary_is_a_closed_invisible_stroke",
+      "result": "ok"
+    },
+    {
+      "binary": "unittests src/lib.rs",
+      "test": "ops::glyphs::tests::bridging_keeps_both_contours_and_their_anchor_count",
+      "result": "ok"
+    },
+    {
+      "binary": "unittests src/lib.rs",
+      "test": "ops::glyphs::tests::placed_glyphs_follow_the_layout_and_carry_the_run_colour",
+      "result": "ok"
+    },
+    {
+      "binary": "unittests src/lib.rs",
+      "test": "ops::smooth::tests::a_closed_circle_of_many_anchors_keeps_at_least_three_and_stays_close",
+      "result": "ok"
+    },
+    {
+      "binary": "unittests src/lib.rs",
+      "test": "ops::smooth::tests::collinear_points_go_and_the_shape_stays_within_tolerance",
+      "result": "ok"
+    },
+    {
+      "binary": "unittests src/lib.rs",
+      "test": "ops::transform::tests::a_reflection_swaps_sides_and_maps_matrices",
+      "result": "ok"
+    },
+    {
+      "binary": "unittests src/lib.rs",
+      "test": "ops::transform::tests::a_rigid_map_turns_a_flat_tip_and_a_mirror_reflects_it",
+      "result": "ok"
+    },
+    {
+      "binary": "unittests src/lib.rs",
+      "test": "ops::transform::tests::a_scaled_brush_drops_its_spine_and_a_moved_or_turned_one_keeps_it",
+      "result": "ok"
+    },
+    {
+      "binary": "unittests src/lib.rs",
+      "test": "ops::transform::tests::envelopes_hit_their_corners_projectively_and_bilinearly",
+      "result": "ok"
+    },
+    {
+      "binary": "unittests src/lib.rs",
+      "test": "ops::transform::tests::quarter_turns_are_exact_and_about_moves_the_pivot",
+      "result": "ok"
+    },
+    {
+      "binary": "unittests src/lib.rs",
+      "test": "overlay::tests::newer_minor_properties_survive_a_parse_and_write_in_lexicographic_order",
+      "result": "ok"
+    },
+    {
+      "binary": "unittests src/lib.rs",
+      "test": "owners::tests::every_inventory_entry_has_an_owner",
+      "result": "ok"
+    },
+    {
+      "binary": "unittests src/lib.rs",
+      "test": "path::tests::bezier_lists_round_trip_open_and_closed",
+      "result": "ok"
+    },
+    {
+      "binary": "unittests src/lib.rs",
+      "test": "path::tests::malformed_lists_are_invalid_geometry",
+      "result": "ok"
+    },
+    {
+      "binary": "unittests src/lib.rs",
+      "test": "path::tests::quoted_names_escape",
+      "result": "ok"
+    },
+    {
+      "binary": "unittests src/lib.rs",
+      "test": "path::tests::refs_classify",
+      "result": "ok"
+    },
+    {
+      "binary": "unittests src/lib.rs",
+      "test": "path::tests::rejects_malformed_paths",
+      "result": "ok"
+    },
+    {
+      "binary": "unittests src/lib.rs",
+      "test": "path::tests::spec_examples_parse_and_print",
+      "result": "ok"
+    },
+    {
+      "binary": "unittests src/lib.rs",
+      "test": "ping::tests::echoes_seq_and_payload",
+      "result": "ok"
+    },
+    {
+      "binary": "unittests src/lib.rs",
+      "test": "ping::tests::payload_limit_is_inclusive",
+      "result": "ok"
+    },
+    {
+      "binary": "unittests src/lib.rs",
+      "test": "ping::tests::request_rejects_unknown_fields",
+      "result": "ok"
+    },
+    {
+      "binary": "unittests src/lib.rs",
+      "test": "planar::along::tests::a_path_crosses_a_zone_narrower_than_any_sampling_step",
+      "result": "ok"
+    },
+    {
+      "binary": "unittests src/lib.rs",
+      "test": "planar::along::tests::the_account_is_shared",
+      "result": "ok"
+    },
+    {
+      "binary": "unittests src/lib.rs",
+      "test": "planar::exact::tests::a_dangling_edge_inside_both_zones_bounds_no_area",
+      "result": "ok"
+    },
+    {
+      "binary": "unittests src/lib.rs",
+      "test": "planar::exact::tests::holes_and_a_sloping_cut_are_exact",
+      "result": "ok"
+    },
+    {
+      "binary": "unittests src/lib.rs",
+      "test": "planar::exact::tests::identical_shared_and_disjoint_squares",
+      "result": "ok"
+    },
+    {
+      "binary": "unittests src/lib.rs",
+      "test": "planar::fill::tests::a_split_zone_gives_both_parts_its_fill_and_a_merge_takes_the_larger_part",
+      "result": "ok"
+    },
+    {
+      "binary": "unittests src/lib.rs",
+      "test": "planar::fill::tests::disagreeing_sides_resolve_to_the_longest_bounding_length",
+      "result": "ok"
+    },
+    {
+      "binary": "unittests src/lib.rs",
+      "test": "planar::fill::tests::the_largest_overlap_wins_even_when_no_interior_point_lies_in_the_other_zone",
+      "result": "ok"
+    },
+    {
+      "binary": "unittests src/lib.rs",
+      "test": "planar::fill::tests::written_fills_read_back",
+      "result": "ok"
+    },
+    {
+      "binary": "unittests src/lib.rs",
+      "test": "planar::flat::tests::a_closed_path_does_not_repeat_its_start",
+      "result": "ok"
+    },
+    {
+      "binary": "unittests src/lib.rs",
+      "test": "planar::flat::tests::a_repeated_closing_anchor_keeps_the_closing_edge_parameter",
+      "result": "ok"
+    },
+    {
+      "binary": "unittests src/lib.rs",
+      "test": "planar::flat::tests::a_straight_segment_is_one_edge_and_a_curve_is_within_tolerance",
+      "result": "ok"
+    },
+    {
+      "binary": "unittests src/lib.rs",
+      "test": "planar::gap::tests::a_small_opening_closes_with_one_kept_segment",
+      "result": "ok"
+    },
+    {
+      "binary": "unittests src/lib.rs",
+      "test": "planar::gap::tests::close_gap_prefers_ends",
+      "result": "ok"
+    },
+    {
+      "binary": "unittests src/lib.rs",
+      "test": "planar::node::tests::a_changed_end_near_a_line_snaps_onto_it_and_splits_it",
+      "result": "ok"
+    },
+    {
+      "binary": "unittests src/lib.rs",
+      "test": "planar::node::tests::a_closed_loop_split_twice_gives_two_open_pieces",
+      "result": "ok"
+    },
+    {
+      "binary": "unittests src/lib.rs",
+      "test": "planar::node::tests::a_line_looping_through_its_own_crossing_is_cut_on_both_passes",
+      "result": "ok"
+    },
+    {
+      "binary": "unittests src/lib.rs",
+      "test": "planar::node::tests::a_line_through_another_lines_anchor_splits_both_there",
+      "result": "ok"
+    },
+    {
+      "binary": "unittests src/lib.rs",
+      "test": "planar::node::tests::a_line_through_the_meeting_point_of_two_pieces_is_split_there",
+      "result": "ok"
+    },
+    {
+      "binary": "unittests src/lib.rs",
+      "test": "planar::node::tests::a_t_junction_is_on_the_grid_and_translates_exactly",
+      "result": "ok"
+    },
+    {
+      "binary": "unittests src/lib.rs",
+      "test": "planar::node::tests::an_unchanged_anchor_near_a_crossing_is_the_junction_for_every_stroke",
+      "result": "ok"
+    },
+    {
+      "binary": "unittests src/lib.rs",
+      "test": "planar::node::tests::brush_outlines_are_never_split",
+      "result": "ok"
+    },
+    {
+      "binary": "unittests src/lib.rs",
+      "test": "planar::node::tests::crossing_lines_split_both_at_one_shared_point",
+      "result": "ok"
+    },
+    {
+      "binary": "unittests src/lib.rs",
+      "test": "planar::node::tests::noding_a_noded_layer_changes_nothing",
+      "result": "ok"
+    },
+    {
+      "binary": "unittests src/lib.rs",
+      "test": "planar::node::tests::three_lines_crossing_near_one_point_share_one_junction",
+      "result": "ok"
+    },
+    {
+      "binary": "unittests src/lib.rs",
+      "test": "planar::node::tests::touching_or_retracing_at_a_vertex_is_not_a_crossing",
+      "result": "ok"
+    },
+    {
+      "binary": "unittests src/lib.rs",
+      "test": "planar::predicates::tests::a_unit_determinant_on_the_grid_is_exact",
+      "result": "ok"
+    },
+    {
+      "binary": "unittests src/lib.rs",
+      "test": "pointer::tests::indexes_are_strict",
+      "result": "ok"
+    },
+    {
+      "binary": "unittests src/lib.rs",
+      "test": "pointer::tests::round_trip_escapes",
+      "result": "ok"
+    },
+    {
+      "binary": "unittests src/lib.rs",
+      "test": "prompts::tests::prompts_reference_only_registered_commands",
+      "result": "ok"
+    },
+    {
+      "binary": "unittests src/lib.rs",
+      "test": "resources::tests::uris_resolve_to_commands_and_events_update_subscriptions",
+      "result": "ok"
+    },
+    {
+      "binary": "unittests src/lib.rs",
+      "test": "run::tests::created_objects_survive_undo_redo_cycles_with_rising_revisions",
+      "result": "ok"
+    },
+    {
+      "binary": "unittests src/lib.rs",
+      "test": "run::tests::the_acceptance_boundary_refuses_a_cancelled_request_and_restores_the_session",
+      "result": "ok"
+    },
+    {
+      "binary": "unittests src/lib.rs",
+      "test": "schema_ts::tests::types_and_bigint_bounds",
+      "result": "ok"
+    },
+    {
+      "binary": "unittests src/lib.rs",
+      "test": "selftest::tests::dotted_version_parser",
+      "result": "ok"
+    },
+    {
+      "binary": "unittests src/lib.rs",
+      "test": "selftest::tests::push_keeps_ok_consistent",
+      "result": "ok"
+    },
+    {
+      "binary": "unittests src/lib.rs",
+      "test": "selftest::tests::selftest_passes",
+      "result": "ok"
+    },
+    {
+      "binary": "unittests src/lib.rs",
+      "test": "settings::tests::missing_data_and_corrupt",
+      "result": "ok"
+    },
+    {
+      "binary": "unittests src/lib.rs",
+      "test": "spikes::canvas::renderlist::tests::encoder_refuses_invalid_geometry",
+      "result": "ok"
+    },
+    {
+      "binary": "unittests src/lib.rs",
+      "test": "spikes::canvas::renderlist::tests::encoding_has_the_documented_layout",
+      "result": "ok"
+    },
+    {
+      "binary": "unittests src/lib.rs",
+      "test": "spikes::canvas::renderlist::tests::generated_scenes_are_valid_and_bounded_by_their_points",
+      "result": "ok"
+    },
+    {
+      "binary": "unittests src/lib.rs",
+      "test": "spikes::canvas::renderlist::tests::generation_is_reproducible",
+      "result": "ok"
+    },
+    {
+      "binary": "unittests src/lib.rs",
+      "test": "spikes::canvas::renderlist::tests::scenes_have_the_specified_sizes",
+      "result": "ok"
+    },
+    {
+      "binary": "unittests src/lib.rs",
+      "test": "spikes::canvas::renderlist::tests::tiny_fixture_matches_committed_bytes",
+      "result": "ok"
+    },
+    {
+      "binary": "unittests src/lib.rs",
+      "test": "spikes::tablet::simulate_windows::tests::positions_stay_inside_the_rectangle",
+      "result": "ok"
+    },
+    {
+      "binary": "unittests src/lib.rs",
+      "test": "spikes::tablet::simulate_windows::tests::pressure_only_holds_tilt_and_rotation_and_position",
+      "result": "ok"
+    },
+    {
+      "binary": "unittests src/lib.rs",
+      "test": "spikes::tablet::simulate_windows::tests::pressure_steps_through_every_level",
+      "result": "ok"
+    },
+    {
+      "binary": "unittests src/lib.rs",
+      "test": "spikes::tablet::simulate_windows::tests::sine_repeats_pixels_where_the_review_found_missing_frames",
+      "result": "ok"
+    },
+    {
+      "binary": "unittests src/lib.rs",
+      "test": "spikes::tablet::simulate_windows::tests::tilt_and_rotation_stay_in_range",
+      "result": "ok"
+    },
+    {
+      "binary": "unittests src/lib.rs",
+      "test": "spikes::tablet::simulate_windows::tests::zigzag_never_repeats_a_pixel_in_adjacent_frames_and_stationary_always_does",
+      "result": "ok"
+    },
+    {
+      "binary": "unittests src/lib.rs",
+      "test": "spikes::tablet::tests::disabled_unless_tablet",
+      "result": "ok"
+    },
+    {
+      "binary": "unittests src/lib.rs",
+      "test": "spikes::tablet::tests::packet_serializes_camel_case",
+      "result": "ok"
+    },
+    {
+      "binary": "unittests src/lib.rs",
+      "test": "spikes::tablet::tests::request_rejects_unknown_fields",
+      "result": "ok"
+    },
+    {
+      "binary": "unittests src/lib.rs",
+      "test": "spikes::tablet::tests::sequencer_is_gap_free_and_wire_packets_flatten",
+      "result": "ok"
+    },
+    {
+      "binary": "unittests src/lib.rs",
+      "test": "spikes::tablet::tests::validates_simulation_requests",
+      "result": "ok"
+    },
+    {
+      "binary": "unittests src/lib.rs",
+      "test": "symmetry::tests::kaleidoscope_gives_two_n_images",
+      "result": "ok"
+    },
+    {
+      "binary": "unittests src/lib.rs",
+      "test": "symmetry::tests::mirror_at_zero_is_left_right",
+      "result": "ok"
+    },
+    {
+      "binary": "unittests src/lib.rs",
+      "test": "tests::an_opaque_square_covers_its_pixels_and_alpha_stays_255",
+      "result": "ok"
+    },
+    {
+      "binary": "unittests src/lib.rs",
+      "test": "tests::bad_sizes_images_and_a_stop_are_refused",
+      "result": "ok"
+    },
+    {
+      "binary": "unittests src/lib.rs",
+      "test": "tests::default_build_registers_no_diagnostic_commands",
+      "result": "ok"
+    },
+    {
+      "binary": "unittests src/lib.rs",
+      "test": "tests::diagnostics_overlay_config_enables_both_halves",
+      "result": "ok"
+    },
+    {
+      "binary": "unittests src/lib.rs",
+      "test": "tests::engine_is_send_and_sync",
+      "result": "ok"
+    },
+    {
+      "binary": "unittests src/lib.rs",
+      "test": "tests::info_reports_versions_and_mode",
+      "result": "ok"
+    },
+    {
+      "binary": "unittests src/lib.rs",
+      "test": "tests::info_serializes_camel_case",
+      "result": "ok"
+    },
+    {
+      "binary": "unittests src/lib.rs",
+      "test": "tests::tauri_config_matches_workspace_and_plan",
+      "result": "ok"
+    },
+    {
+      "binary": "unittests src/lib.rs",
+      "test": "text::nfc_tests::a_class_zero_composition_keeps_unrelated_formats",
+      "result": "ok"
+    },
+    {
+      "binary": "unittests src/lib.rs",
+      "test": "text::nfc_tests::a_combining_mark_typed_after_a_base_joins_the_base_and_its_run",
+      "result": "ok"
+    },
+    {
+      "binary": "unittests src/lib.rs",
+      "test": "text::nfc_tests::decomposed_input_is_composed_and_runs_follow",
+      "result": "ok"
+    },
+    {
+      "binary": "unittests src/lib.rs",
+      "test": "text::nfc_tests::deleting_between_a_base_and_a_mark_composes_them",
+      "result": "ok"
+    },
+    {
+      "binary": "unittests src/lib.rs",
+      "test": "text::nfc_tests::hangul_jamo_compose_into_one_syllable",
+      "result": "ok"
+    },
+    {
+      "binary": "unittests src/lib.rs",
+      "test": "text::nfc_tests::nfc_with_origins_matches_the_library_on_random_text",
+      "result": "ok"
+    },
+    {
+      "binary": "unittests src/lib.rs",
+      "test": "text::nfc_tests::origins_follow_reordering_and_blocking",
+      "result": "ok"
+    },
+    {
+      "binary": "unittests src/lib.rs",
+      "test": "text::tests::format_splits_and_merges_runs",
+      "result": "ok"
+    },
+    {
+      "binary": "unittests src/lib.rs",
+      "test": "text::tests::layout_wraps_at_a_fixed_width",
+      "result": "ok"
+    },
+    {
+      "binary": "unittests src/lib.rs",
+      "test": "text::tests::new_text_has_one_run_and_one_paragraph_per_line",
+      "result": "ok"
+    },
+    {
+      "binary": "unittests src/lib.rs",
+      "test": "text::tests::paragraph_format_follows_split_lines",
+      "result": "ok"
+    },
+    {
+      "binary": "unittests src/lib.rs",
+      "test": "text::tests::typing_and_deleting_keep_runs_covering_the_text",
+      "result": "ok"
+    },
+    {
+      "binary": "unittests src/lib.rs",
+      "test": "time::tests::known_instants",
+      "result": "ok"
+    },
+    {
+      "binary": "unittests src/lib.rs",
+      "test": "time::tests::round_trips",
+      "result": "ok"
+    },
+    {
+      "binary": "unittests src/lib.rs",
+      "test": "tools::tests::every_generic_tool_has_a_plan_and_wraps_a_registered_command",
+      "result": "ok"
+    },
+    {
+      "binary": "unittests src/lib.rs",
+      "test": "types::tests::names_round_trip_and_aliases_resolve",
+      "result": "ok"
+    },
+    {
+      "binary": "unittests src/lib.rs",
+      "test": "types::tests::prefixes_are_unique_and_valid",
+      "result": "ok"
+    },
+    {
+      "binary": "unittests src/lib.rs",
+      "test": "types::tests::tags_reject_other_types",
+      "result": "ok"
+    },
+    {
+      "binary": "unittests src/lib.rs",
+      "test": "validate::tests::zero_count_exposure_runs_are_reported_by_the_model_check",
+      "result": "ok"
+    },
+    {
+      "binary": "unittests src/lib.rs",
+      "test": "value::tests::colours_normalise_to_upper_rgba",
+      "result": "ok"
+    },
+    {
+      "binary": "unittests src/lib.rs",
+      "test": "value::tests::timestamp_display_matches_civil_conversion_for_many_days",
+      "result": "ok"
+    },
+    {
+      "binary": "unittests src/lib.rs",
+      "test": "value::tests::timestamps_round_trip_and_reject_impossible_dates",
+      "result": "ok"
+    },
+    {
+      "binary": "unittests src/lib.rs",
+      "test": "wire::tests::definitions_cover_every_wire_type",
+      "result": "ok"
+    },
+    {
+      "binary": "unittests src/lib.rs",
+      "test": "wire::tests::requests_reject_unknown_fields_and_bad_json",
+      "result": "ok"
+    },
+    {
+      "binary": "unittests src/lib.rs",
+      "test": "wire::tests::u64_values_are_exact_on_the_wire",
+      "result": "ok"
+    },
+    {
+      "binary": "unittests src/lib.rs",
+      "test": "work::tests::a_mark_cancels_exactly_its_own_token",
+      "result": "ok"
+    },
+    {
+      "binary": "unittests src/lib.rs",
+      "test": "zip::tests::deterministic_bytes",
+      "result": "ok"
+    },
+    {
+      "binary": "unittests src/lib.rs",
+      "test": "zip::tests::mimetype_rules",
+      "result": "ok"
+    },
+    {
+      "binary": "unittests src/lib.rs",
+      "test": "zip::tests::round_trip_plain_and_zip64",
+      "result": "ok"
+    },
+    {
+      "binary": "unittests src/lib.rs",
+      "test": "zip::tests::unsafe_names_are_refused",
+      "result": "ok"
+    },
+    {
+      "binary": "unittests src/main.rs",
+      "test": "cli::tests::a_missing_batch_script_is_a_usage_error",
+      "result": "ok"
+    },
+    {
+      "binary": "unittests src/main.rs",
+      "test": "cli::tests::actions_are_exclusive",
+      "result": "ok"
+    },
+    {
+      "binary": "unittests src/main.rs",
+      "test": "cli::tests::agent_flags_are_validated",
+      "result": "ok"
+    },
+    {
+      "binary": "unittests src/main.rs",
+      "test": "cli::tests::an_action_is_required",
+      "result": "ok"
+    },
+    {
+      "binary": "unittests src/main.rs",
+      "test": "cli::tests::option_combinations",
+      "result": "ok"
+    },
+    {
+      "binary": "unittests src/main.rs",
+      "test": "cli::tests::selftest_human_passes",
+      "result": "ok"
+    },
+    {
+      "binary": "unittests src/main.rs",
+      "test": "cli::tests::selftest_json_passes",
+      "result": "ok"
+    },
+    {
+      "binary": "unittests src/main.rs",
+      "test": "cli::tests::version_line",
+      "result": "ok"
+    }
+  ]
+}

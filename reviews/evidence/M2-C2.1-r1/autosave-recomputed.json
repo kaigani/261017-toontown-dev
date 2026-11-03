@@ -1,0 +1,43 @@
+[
+  {
+    "file": "autosave-windows.json",
+    "ok": true,
+    "kind": "series",
+    "environment": {
+      "os": "windows",
+      "arch": "x86_64",
+      "cpus": 32,
+      "profile": "release",
+      "startedAt": "2026-10-31T01:59:04.600Z",
+      "timeOrigin": "tMs: milliseconds since startedAt on a monotonic clock",
+      "summaryRule": "nearest rank: sorted[round((n - 1) * q)]"
+    },
+    "series": {
+      "geometryEditMs": {
+        "unit": "ms",
+        "n": 1,
+        "p50": 3307.2688000000003,
+        "p90": 3307.2688000000003,
+        "p99": 3307.2688000000003,
+        "max": 3307.2688000000003
+      },
+      "snapshotMs": {
+        "unit": "ms",
+        "n": 1,
+        "p50": 0.0443,
+        "p90": 0.0443,
+        "p99": 0.0443,
+        "max": 0.0443
+      },
+      "waitBehindGeometryMs": {
+        "unit": "ms",
+        "n": 1,
+        "p50": 3268.1728,
+        "p90": 3268.1728,
+        "p99": 3268.1728,
+        "max": 3268.1728
+      }
+    },
+    "problems": []
+  }
+]

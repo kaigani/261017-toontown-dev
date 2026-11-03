@@ -1,0 +1,63 @@
+﻿ M crates/executor/tests/c24_r3_domains.rs
+ M crates/executor/tests/c24_r3_routes.rs
+ M crates/executor/tests/c24_r3_topology.rs
+ M crates/vector/tests/c24_r3_noding.rs
+ M crates/vector/tests/c24_r3_properties.rs
+ M reviews/M2-C2.4-r3.md
+ M tests/adversarial/c24-r3-audit.py
+ M tests/adversarial/c24-r3-register.py
+?? reviews/evidence/M2-C2.4-r3/allow-inventory.txt
+?? reviews/evidence/M2-C2.4-r3/audit-final.txt
+?? reviews/evidence/M2-C2.4-r3/cargo-deny.txt
+?? reviews/evidence/M2-C2.4-r3/clippy-new-envelope-controls.txt
+?? reviews/evidence/M2-C2.4-r3/clippy-workspace-test-hooks.txt
+?? reviews/evidence/M2-C2.4-r3/clippy-workspace.txt
+?? reviews/evidence/M2-C2.4-r3/crate-executor.txt
+?? reviews/evidence/M2-C2.4-r3/crate-io.txt
+?? reviews/evidence/M2-C2.4-r3/crate-mcp.txt
+?? reviews/evidence/M2-C2.4-r3/crate-vector.txt
+?? reviews/evidence/M2-C2.4-r3/domains-4096.txt
+?? reviews/evidence/M2-C2.4-r3/e2-byte-comparison-ci-binary.json
+?? reviews/evidence/M2-C2.4-r3/e2-ci-binary.txt
+?? reviews/evidence/M2-C2.4-r3/e2-ci-binary/
+?? reviews/evidence/M2-C2.4-r3/envelope-4096-dispatch-adjudication.txt
+?? reviews/evidence/M2-C2.4-r3/envelope-final-paired-controls.txt
+?? reviews/evidence/M2-C2.4-r3/envelope-fixed-adjudication.txt
+?? reviews/evidence/M2-C2.4-r3/envelope-fixed-detail.txt
+?? reviews/evidence/M2-C2.4-r3/envelope-quarter-query-control.txt
+?? reviews/evidence/M2-C2.4-r3/envelope-query-independent.json
+?? reviews/evidence/M2-C2.4-r3/execution.jsonl
+?? reviews/evidence/M2-C2.4-r3/fmt-after-envelope.txt
+?? reviews/evidence/M2-C2.4-r3/fmt-corrected.txt
+?? reviews/evidence/M2-C2.4-r3/fmt-final.txt
+?? reviews/evidence/M2-C2.4-r3/fmt-review.txt
+?? reviews/evidence/M2-C2.4-r3/frontend-build.txt
+?? reviews/evidence/M2-C2.4-r3/frontend-format.txt
+?? reviews/evidence/M2-C2.4-r3/frontend-licences.txt
+?? reviews/evidence/M2-C2.4-r3/frontend-lint.txt
+?? reviews/evidence/M2-C2.4-r3/frontend-tests.txt
+?? reviews/evidence/M2-C2.4-r3/frontend-types.txt
+?? reviews/evidence/M2-C2.4-r3/gate-builder-tests.txt
+?? reviews/evidence/M2-C2.4-r3/generator-freshness.txt
+?? reviews/evidence/M2-C2.4-r3/initial-status.txt
+?? reviews/evidence/M2-C2.4-r3/ownership-live.txt
+?? reviews/evidence/M2-C2.4-r3/ownership-mutation-controls.txt
+?? reviews/evidence/M2-C2.4-r3/per-crate-counts.json
+?? reviews/evidence/M2-C2.4-r3/pnpm-install.txt
+?? reviews/evidence/M2-C2.4-r3/register-final-deltas.json
+?? reviews/evidence/M2-C2.4-r3/register-final.json
+?? reviews/evidence/M2-C2.4-r3/release-features.txt
+?? reviews/evidence/M2-C2.4-r3/reviewer-python-suites-final.txt
+?? reviews/evidence/M2-C2.4-r3/reviewer-python-suites-with-envelope.txt
+?? reviews/evidence/M2-C2.4-r3/reviewer-python-suites.txt
+?? reviews/evidence/M2-C2.4-r3/route-seed-provenance.json
+?? reviews/evidence/M2-C2.4-r3/routes-4096.txt
+?? reviews/evidence/M2-C2.4-r3/sdk-probes-corrected.txt
+?? reviews/evidence/M2-C2.4-r3/sdk-probes-corrected2.txt
+?? reviews/evidence/M2-C2.4-r3/sdk-probes-corrected3.txt
+?? reviews/evidence/M2-C2.4-r3/sdk-probes-initial.txt
+?? reviews/evidence/M2-C2.4-r3/sdk-probes.json
+?? reviews/evidence/M2-C2.4-r3/status-before-ci-evidence-commit.txt
+?? reviews/evidence/M2-C2.4-r3/status-before-controls-commit.txt
+?? reviews/evidence/M2-C2.4-r3/status-before-raw-byte-commit.txt
+?? reviews/evidence/M2-C2.4-r3/test-only-assets.txt

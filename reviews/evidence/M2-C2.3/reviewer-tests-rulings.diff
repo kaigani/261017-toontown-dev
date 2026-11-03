@@ -1,0 +1,42 @@
+diff --git a/crates/executor/tests/c22_r3_commands.rs b/crates/executor/tests/c22_r3_commands.rs
+index acd2070..9a57198 100644
+--- a/crates/executor/tests/c22_r3_commands.rs
++++ b/crates/executor/tests/c22_r3_commands.rs
+@@ -188,8 +188,8 @@ fn texture_click_uses_palette_first_style_and_drag_and_tile_off_stay_unchanged()
+             "colour.paint.apply",
+             json!({"drawingId":D,"objectIds":[a["zoneIds"][0]],"colourId":c,"mapping":{"from":{"x":1000,"y":1000},"to":{"x":1030,"y":1040}}}),
+         );
+-        assert_eq!(layer(&h, &a["layerId"])["zones"][0]["textureMatrix"], json!([30, 40, -40, 30, 1000, 1000]));
+-        assert_eq!(got, if tile { json!([17, 0, 0, -9, 1000, 1050]) } else { json!([100, 0, 0, 50, 1000, 1000]) });
++        assert_eq!(layer(&h, &a["layerId"])["zones"][0]["textureMatrix"], json!([30, 40, 40, -30, 1000, 1000]));
++        assert_eq!(got, if tile { json!([17, 0, 0, -9, 1000, 1050]) } else { json!([100, 0, 0, -50, 1000, 1050]) });
+     }
+ }
+ 
+diff --git a/crates/mcp/tests/c22_r1_surface.rs b/crates/mcp/tests/c22_r1_surface.rs
+index b70d51a..ea95dcc 100644
+--- a/crates/mcp/tests/c22_r1_surface.rs
++++ b/crates/mcp/tests/c22_r1_surface.rs
+@@ -28,7 +28,7 @@ fn record_checkpoint_command_contracts_and_deferred_owners() {
+         .filter(|e| e.id().starts_with("colour.") || e.id() == "draw.hitTest.get")
+         .map(|e| e.describe())
+         .collect();
+-    assert_eq!(entries.iter().filter(|e| e["status"] == "implemented").count(), 11);
++    assert_eq!(entries.iter().filter(|e| e["status"] == "implemented").count(), 15);
+     for e in entries.iter().filter(|e| e["status"] != "implemented") {
+         assert!(e["milestone"].as_str().unwrap().starts_with('M'), "{e}");
+     }
+diff --git a/crates/mcp/tests/c22_r2_surface.rs b/crates/mcp/tests/c22_r2_surface.rs
+index 062739b..7d317b8 100644
+--- a/crates/mcp/tests/c22_r2_surface.rs
++++ b/crates/mcp/tests/c22_r2_surface.rs
+@@ -26,7 +26,8 @@ fn all_four_deferred_contracts_and_generated_types_name_c23() {
+     let root = std::path::Path::new(env!("CARGO_MANIFEST_DIR")).join("../..");
+     for id in ["colour.fillMapping.get", "colour.fillMapping.set", "colour.selection.apply", "colour.recolour.apply"] {
+         let d = registry.entries().find(|e| e.id() == id).unwrap().describe();
+-        assert_eq!(d["milestone"], "M2 C2.3", "{d}");
++        assert_eq!(d["status"], "implemented", "{d}");
++        assert!(d.get("milestone").is_none(), "{d}");
+     }
+     let generated = std::fs::read_to_string(root.join("desktop/src/ipc/generated/commands.ts")).unwrap();
+     assert!(generated.contains("colour.fillMapping.get"));

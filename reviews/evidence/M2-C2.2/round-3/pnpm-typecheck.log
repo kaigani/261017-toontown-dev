@@ -1,0 +1,9 @@
+
+> toontown-workspace@ typecheck C:\Users\kaiga\.t3\worktrees\261017-toontown-dev\m2-vector-engine
+> pnpm -r typecheck
+
+
+> @toontown/desktop@0.0.1 typecheck C:\Users\kaiga\.t3\worktrees\261017-toontown-dev\m2-vector-engine\desktop
+> tsc --noEmit -p tsconfig.json && tsc --noEmit -p tsconfig.node.json
+
+exit=0

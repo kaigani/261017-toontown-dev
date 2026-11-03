@@ -49,6 +49,11 @@ pub(crate) struct AppContext {
     pub selection: Selection,
     /// The selection of every context (01 §6.4: each context keeps its own; switching focus clears none).
     pub selections: std::collections::BTreeMap<String, Vec<String>>,
+    /// The Contour Editor's anchor selection (02 §7.1.2; `draw.pointSelection.set`): compound stroke keys
+    /// (`<drawingId>/<strokeId>`) with anchor indices, in selection order.
+    pub points: Vec<(String, u32)>,
+    /// Tool memory of the session that is not document content (the Line tool's last end per drawing: `x,y`).
+    pub tool_memory: std::collections::BTreeMap<String, String>,
 }
 
 impl Default for AppContext {
@@ -60,6 +65,8 @@ impl Default for AppContext {
             drawing: None,
             selection: Selection { context: "staging".to_owned(), ids: Vec::new() },
             selections: std::collections::BTreeMap::new(),
+            points: Vec::new(),
+            tool_memory: std::collections::BTreeMap::new(),
         }
     }
 }
@@ -262,7 +269,27 @@ pub fn parse_cell_ref(k: &str) -> Option<(String, u32)> {
 }
 
 /// Whether a selection entry (an object key or a cell reference) still exists.
-fn selectable_exists(doc: &Document, k: &str) -> bool {
+/// Whether a stroke (compound key) exists and has the anchor.
+fn anchor_exists(doc: &Document, k: &str, anchor: u32) -> bool {
+    let Some((d, s)) = k.split_once('/') else { return false };
+    let Ok(id) = Id::parse(d) else { return false };
+    doc.drawing(&id).is_some_and(|dr| {
+        tt_vector::drawing::locate(dr, s)
+            .and_then(|l| tt_vector::drawing::stroke_at(dr, &l.pointer))
+            .is_some_and(|st| (anchor as usize) < st.points().len())
+    })
+}
+
+/// Whether a zone of a drawing exists, by its derived ID: `(drawing ID, zone ID)`.
+pub type ZoneCheck<'a> = &'a dyn Fn(&str, &str) -> bool;
+
+fn selectable_exists(doc: &Document, k: &str, zones: Option<ZoneCheck<'_>>) -> bool {
+    // Derived zone IDs are not document objects: they are checked against the current planar maps (C23-R2-03).
+    if let Some((d, z)) = k.split_once('/')
+        && z.starts_with("zn_")
+    {
+        return zones.is_some_and(|check| check(d, z));
+    }
     match parse_cell_ref(k) {
         Some((element, _)) => doc.locate(&element).is_some(),
         None => doc.locate(k).is_some(),
@@ -294,6 +321,12 @@ impl AppContext {
     /// foreign element to the scene's first element, a drawing outside the element's bank is cleared, selected
     /// objects that no longer exist are dropped. Returns whether anything changed.
     pub fn repair(&mut self, doc: &Document) -> bool {
+        self.repair_with(doc, None)
+    }
+
+    /// [`AppContext::repair`], keeping selected zones that still exist in the current planar maps (`zones`; without
+    /// it, zone references are dropped).
+    pub fn repair_with(&mut self, doc: &Document, zones: Option<ZoneCheck<'_>>) -> bool {
         let before = self.clone();
         if self.scene.as_ref().is_none_or(|s| doc.scene(s).is_none()) {
             self.scene = doc.project().scenes().ids().first().cloned();
@@ -313,10 +346,11 @@ impl AppContext {
             self.drawing = None;
         }
         self.frame = self.frame.max(1);
-        self.selection.ids.retain(|k| selectable_exists(doc, k));
+        self.selection.ids.retain(|k| selectable_exists(doc, k, zones));
         for ids in self.selections.values_mut() {
-            ids.retain(|k| selectable_exists(doc, k));
+            ids.retain(|k| selectable_exists(doc, k, zones));
         }
+        self.points.retain(|(k, anchor)| anchor_exists(doc, k, *anchor));
         *self != before
     }
 

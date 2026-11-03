@@ -1,0 +1,28 @@
+cargo :    Compiling tt-executor v0.0.1 (C:\Users\kaiga\work\review\m2-c21-r1\crates\executor)
+At line:2 char:1
++ cargo test -p tt-executor --test c21_r1_retention -- --nocapture > re ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (   Compiling tt...rates\executor):String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 1.42s
+     Running tests\c21_r1_retention.rs (target\debug\deps\c21_r1_retention-e53a2ac5e6ef8819.exe)
+
+running 1 test
+
+thread 'eviction_by_object_budget_preserves_exact_diff_and_checkpoint' (30956) panicked at 
+crates\executor\tests\c21_r1_retention.rs:34:5:
+assertion `left == right` failed
+  left: Object {"x": Number(0.0), "y": Number(-50.0)}
+ right: Object {"x": Number(0.0), "y": Number(0.0)}
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+test eviction_by_object_budget_preserves_exact_diff_and_checkpoint ... FAILED
+
+failures:
+
+failures:
+    eviction_by_object_budget_preserves_exact_diff_and_checkpoint
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 0 filtered out; finished in 32.60s
+
+error: test failed, to rerun pass `-p tt-executor --test c21_r1_retention`

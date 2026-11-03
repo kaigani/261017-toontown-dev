@@ -1,0 +1,49 @@
+commit fc25eae2caf5bb17fdb7c785be97ac9f680e9a24
+Author: kaigani <kaigani@gmail.com>
+Date:   Sun Nov 1 17:25:02 2026 -0800
+
+    test(mcp): read the persisted activity log after the queued entries are written
+    
+    The MCP route queues each activity entry behind its call without waiting
+    (C23-R1-07); the test read the file as soon as the third reply arrived and
+    saw two lines on the Windows runner (CI run 41369919298). One user call
+    first is a FIFO sync point; the three-line assertion is unchanged.
+    
+    Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>
+
+diff --git a/crates/mcp/tests/audit.rs b/crates/mcp/tests/audit.rs
+index 1224140..369ac29 100644
+--- a/crates/mcp/tests/audit.rs
++++ b/crates/mcp/tests/audit.rs
+@@ -137,6 +137,15 @@ fn persisted_activity_log_beside_the_project() {
+     for i in 0..3 {
+         c.call("set_properties", json!({ "targets": [scene], "props": { "meta": { "i": i } } }));
+     }
++    // Each entry is queued on the document thread behind its call, without waiting (C23-R1-07): a later request is
++    // answered only after the queued entries are written (M2 C2.3 round 3, CI run 41369919298).
++    let read = tt_executor::Invocation {
++        command: "app.state.get".into(),
++        params: json!({}),
++        options: tt_executor::InvokeOptions::default(),
++        origin: tt_executor::Origin::User,
++    };
++    assert!(h.invoke(read).is_ok());
+     let file = dir.join("agent-activity.jsonl");
+     let text = std::fs::read_to_string(&file).unwrap_or_default();
+     assert_eq!(text.lines().count(), 3, "{}: {text}", file.display());
+diff --git a/reviews/M2-C2.3-r3-response.md b/reviews/M2-C2.3-r3-response.md
+index 1aa07df..cf130cc 100644
+--- a/reviews/M2-C2.3-r3-response.md
++++ b/reviews/M2-C2.3-r3-response.md
+@@ -29,6 +29,11 @@ replay exclusion and valid-zone selection; the MCP typed-timeout test. No budget
+    macOS: the round-2 probe, a whole-project `doc.export.json`, finished inside the 1 ms budget in all 50 attempts. It
+    now probes with a 2048-pixel `draw.drawing.render`. The contract is unchanged: the 1 ms budget, the 500 ms caller
+    ceiling, the typed `command.timeout` with `budgetMs: 1`, and the 50-attempt bound.
++   A second existing builder test changed, `crates/mcp/tests/audit.rs::persisted_activity_log_beside_the_project`.
++   **Cause:** CI run 41369919298, Windows `check`: the persisted log had 2 of 3 lines. Since C23-R1-07 the MCP route
++   queues each activity entry on the document thread behind its call without waiting, and the test read the file as
++   soon as the third reply arrived. It now makes one user call first. The document thread is FIFO, so the queued
++   entries are written before that call answers. The assertion (three lines, one per call) is unchanged.
+ 2. **Reviewer-suite runner (orchestrator ruling, C2.3 round 3):** `scripts/run-reviewer-python-suites.py` excludes
+    exactly `tests/adversarial/c23-r3-finalize.py` (`NOT_SUITES`, reason "round-3 collector pinned to 989233e; receipts
+    retained under reviews/evidence/M2-C2.3-r3", with a one-line comment). The script is a round receipt, not a product

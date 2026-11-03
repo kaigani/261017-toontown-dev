@@ -952,6 +952,52 @@ fn read_source(cx: &Cx, source: ImportSource) -> Result<(Value, Option<PathBuf>)
     }
 }
 
+/// Sets the `rev` of the genuine model objects of a bundle entry of type `ty` to 0, found by the schema's child slots
+/// (`slots_of`, the positions the model indexes; 10 §3). Nothing else is visited: `meta`, `ext` and colour-recovery
+/// copies are opaque and kept byte for byte (C22-R3-01). Split children appear in full in a bundle and are followed
+/// with their declared type; inline children carry their own `type`.
+fn reset_revs(v: &mut Value, ty: ObjectType, depth: usize) {
+    use tt_model::document::SlotKind;
+    if depth > tt_model::MAX_JSON_DEPTH {
+        return;
+    }
+    let Some(m) = v.as_object_mut() else { return };
+    if m.get("rev").is_some_and(Value::is_u64) {
+        m.insert("rev".into(), json!(0));
+    }
+    let child_ty = |c: &Value| c.get("type").and_then(Value::as_str).and_then(ObjectType::parse);
+    for (field, slot) in tt_model::document::slots_of(ty) {
+        let Some(child) = m.get_mut(*field) else { continue };
+        match *slot {
+            SlotKind::Split(t) => {
+                for c in child.as_array_mut().into_iter().flatten() {
+                    reset_revs(c, t, depth + 1);
+                }
+            }
+            SlotKind::SplitOne(t) => reset_revs(child, t, depth + 1),
+            SlotKind::Inline => {
+                for c in child.as_array_mut().into_iter().flatten() {
+                    if let Some(t) = child_ty(c) {
+                        reset_revs(c, t, depth + 1);
+                    }
+                }
+            }
+            SlotKind::InlineOne => {
+                if let Some(t) = child_ty(child) {
+                    reset_revs(child, t, depth + 1);
+                }
+            }
+            SlotKind::InlineMap => {
+                for c in child.as_object_mut().into_iter().flat_map(|o| o.values_mut()) {
+                    if let Some(t) = child_ty(c) {
+                        reset_revs(c, t, depth + 1);
+                    }
+                }
+            }
+        }
+    }
+}
+
 #[allow(clippy::too_many_lines)]
 fn import(cx: &mut Cx, p: ImportJsonParams) -> Result<ImportResult, CommandError> {
     let (mut bundle, folder) = read_source(cx, p.source)?;
@@ -965,6 +1011,22 @@ fn import(cx: &mut Cx, p: ImportJsonParams) -> Result<ImportResult, CommandError
             "the bundle's format version is not readable",
             json!({ "formatVersion": bundle.get("formatVersion") }),
         ));
+    }
+    // Revisions are the source project's bookkeeping (REV-01): imported objects are stamped with the import's revision
+    // when it commits, so the bundle's are reset, or a bundle from a project further along would be refused.
+    for (k, ty) in [
+        ("scenes", ObjectType::Scene),
+        ("elements", ObjectType::Element),
+        ("drawingBanks", ObjectType::DrawingBank),
+        ("palettes", ObjectType::Palette),
+        ("pens", ObjectType::Pen),
+        ("assets", ObjectType::Asset),
+    ] {
+        if let Some(list) = bundle.get_mut(k).and_then(Value::as_array_mut) {
+            for v in list {
+                reset_revs(v, ty, 0);
+            }
+        }
     }
     // `replace` (C13-R1-11): the existing objects the imported ones conflict with by name go first, in this same
     // transaction; the import then meets no name conflict.
@@ -1428,7 +1490,48 @@ fn import(cx: &mut Cx, p: ImportJsonParams) -> Result<ImportResult, CommandError
     if changes.is_empty() {
         return Ok(result);
     }
+    // Imported drawings are persisted content: taken as they are, not re-noded (as on load; C1.3 import fidelity).
+    cx.keep_verbatim(result.created.drawings.iter().filter_map(|d| Id::parse(d).ok()));
     cx.patch_entries(changes)?;
+    // Fill-consistency repair of the imported drawings, as on load (10 §4.9, §7.2; C22-R2-02): disagreeing sides are
+    // rewritten to the longest bounding length, without re-noding (geometry and IDs stay verbatim), in this
+    // transaction, and each repaired drawing is reported.
+    if !result.created.drawings.is_empty() {
+        let doc = cx.document()?.clone();
+        let mut repairs = Vec::new();
+        for did in &result.created.drawings {
+            let Ok(id) = Id::parse(did) else { continue };
+            let Some(d) = doc.drawing(&id) else { continue };
+            let (ops, layers) = crate::load_repair::repair_drawing_sides(d);
+            if ops.is_empty() {
+                continue;
+            }
+            for (layer, zones) in layers {
+                result.issues.push(json!({
+                    "code": "drawing.fillInconsistent", "objectId": did, "layerId": layer, "zones": zones,
+                    "message": format!("{zones} zone(s) of layer `{layer}` had disagreeing fills on their bounding strokes; the fill of the longest bounding length was kept"),
+                }));
+            }
+            repairs.push((EntryKey::Drawing(id), ops));
+        }
+        if !repairs.is_empty() {
+            cx.patch_entries(repairs)?;
+        }
+    }
+    // Colour recovery in the import's own transaction (10 §4.11; 03 §11.2; C22-R1-05): the colours the imported content
+    // uses that nothing defines are recreated from the imported drawings' recovery copies, else as placeholders.
+    if !result.recovered_colour_ids.is_empty() {
+        let doc = cx.document()?.clone();
+        let missing: Vec<(String, Option<Value>)> = super::colour_recovery::missing_with_copies(&doc)
+            .into_iter()
+            .filter(|(c, _)| result.recovered_colour_ids.contains(c))
+            .collect();
+        let (recovered, recovery) = super::colour_recovery::recover(cx, &doc, &missing)?;
+        if !recovery.is_empty() {
+            cx.patch_entries(recovery)?;
+            super::colour_recovery::performed(cx, &recovered);
+        }
+    }
     if !cx.dry_run()
         && let Ok(proj) = cx.project_mut()
     {

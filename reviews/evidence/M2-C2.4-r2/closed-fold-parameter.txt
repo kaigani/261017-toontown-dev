@@ -1,0 +1,22 @@
+{"argv": ["cargo", "test", "--release", "-p", "tt-vector", "--locked", "-j", "4", "--test", "c24_r2_noding", "a_closed_zero_length", "--", "--nocapture"], "cwd": "C:\\Users\\kaiga\\work\\review\\m2-c24-r2", "env": {}, "startedAt": "2026-11-02T19:24:48.829911+00:00"}
+   Compiling tt-vector v0.0.1 (C:\Users\kaiga\work\review\m2-c24-r2\crates\vector)
+    Finished `release` profile [optimized + debuginfo] target(s) in 0.77s
+     Running tests\c24_r2_noding.rs (target\release\deps\c24_r2_noding-79277ff043c74821.exe)
+
+running 1 test
+
+thread 'a_closed_zero_length_last_segment_is_not_part_of_the_nonzero_closing_edge_parameter_range' (6384) panicked at crates\vector\tests\c24_r2_noding.rs:81:5:
+assertion `left == right` failed: the edge parameter must not run into the zero-length closing segment
+  left: (1.0, 3.0)
+ right: (1.0, 2.0)
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+test a_closed_zero_length_last_segment_is_not_part_of_the_nonzero_closing_edge_parameter_range ... FAILED
+
+failures:
+
+failures:
+    a_closed_zero_length_last_segment_is_not_part_of_the_nonzero_closing_edge_parameter_range
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 2 filtered out; finished in 0.00s
+
+error: test failed, to rerun pass `-p tt-vector --test c24_r2_noding`

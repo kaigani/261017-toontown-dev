@@ -1,0 +1,190 @@
+{
+  "budgetUnits": 1200000000,
+  "os": "macos",
+  "cases": [
+    {
+      "name": "100000-small-curves-plus-one",
+      "inputStrokes": 100001,
+      "runs": [
+        {
+          "wallMs": 4282.579958,
+          "units": 931042320,
+          "outcome": "ok",
+          "zones": 0,
+          "strokes": 100001
+        },
+        {
+          "wallMs": 3450.995417,
+          "units": 931042320,
+          "outcome": "ok",
+          "zones": 0,
+          "strokes": 100001
+        }
+      ]
+    },
+    {
+      "name": "grid-200x200-crossing-lines",
+      "inputStrokes": 400,
+      "runs": [
+        {
+          "wallMs": 879.340458,
+          "units": 500462214,
+          "outcome": "ok",
+          "zones": 39601,
+          "strokes": 80400
+        },
+        {
+          "wallMs": 811.2647079999999,
+          "units": 500462214,
+          "outcome": "ok",
+          "zones": 39601,
+          "strokes": 80400
+        }
+      ]
+    },
+    {
+      "name": "grid-600x600-crossing-lines",
+      "inputStrokes": 1200,
+      "runs": [
+        {
+          "wallMs": 1832.993417,
+          "units": 1785763300,
+          "outcome": "limit.exceeded: the planar map needs more than 1200000000 units of work",
+          "zones": 0,
+          "strokes": 0
+        },
+        {
+          "wallMs": 1864.2489580000001,
+          "units": 1785763300,
+          "outcome": "limit.exceeded: the planar map needs more than 1200000000 units of work",
+          "zones": 0,
+          "strokes": 0
+        }
+      ]
+    },
+    {
+      "name": "10000-concentric-squares",
+      "inputStrokes": 10000,
+      "runs": [
+        {
+          "wallMs": 3070.490708,
+          "units": 1200160000,
+          "outcome": "limit.exceeded: the planar map needs more than 1200000000 units of work",
+          "zones": 0,
+          "strokes": 0
+        },
+        {
+          "wallMs": 2885.8710419999998,
+          "units": 1200160000,
+          "outcome": "limit.exceeded: the planar map needs more than 1200000000 units of work",
+          "zones": 0,
+          "strokes": 0
+        }
+      ]
+    },
+    {
+      "name": "20000-separate-closed-squares",
+      "inputStrokes": 20000,
+      "runs": [
+        {
+          "wallMs": 438.817084,
+          "units": 137183593,
+          "outcome": "ok",
+          "zones": 20000,
+          "strokes": 20000
+        },
+        {
+          "wallMs": 287.70658399999996,
+          "units": 137183593,
+          "outcome": "ok",
+          "zones": 20000,
+          "strokes": 20000
+        }
+      ]
+    },
+    {
+      "name": "1500-random-crossing-lines",
+      "inputStrokes": 1500,
+      "runs": [
+        {
+          "wallMs": 1604.6760419999998,
+          "units": 1782228838,
+          "outcome": "limit.exceeded: the planar map needs more than 1200000000 units of work",
+          "zones": 0,
+          "strokes": 0
+        },
+        {
+          "wallMs": 1402.668834,
+          "units": 1782228838,
+          "outcome": "limit.exceeded: the planar map needs more than 1200000000 units of work",
+          "zones": 0,
+          "strokes": 0
+        }
+      ]
+    },
+    {
+      "name": "5000-point-random-scribble",
+      "inputStrokes": 1,
+      "runs": [
+        {
+          "wallMs": 480.938125,
+          "units": 1515542416,
+          "outcome": "limit.exceeded: the planar map needs more than 1200000000 units of work",
+          "zones": 0,
+          "strokes": 0
+        },
+        {
+          "wallMs": 488.674916,
+          "units": 1515542416,
+          "outcome": "limit.exceeded: the planar map needs more than 1200000000 units of work",
+          "zones": 0,
+          "strokes": 0
+        }
+      ]
+    },
+    {
+      "name": "100000-point-dense-zigzag",
+      "inputStrokes": 1,
+      "runs": [
+        {
+          "wallMs": 69.79270799999999,
+          "units": 15000482029,
+          "outcome": "limit.exceeded: the planar map needs more than 1200000000 units of work",
+          "zones": 0,
+          "strokes": 0
+        },
+        {
+          "wallMs": 33.444167,
+          "units": 15000482029,
+          "outcome": "limit.exceeded: the planar map needs more than 1200000000 units of work",
+          "zones": 0,
+          "strokes": 0
+        }
+      ]
+    },
+    {
+      "name": "100000-coincident-outlines-plus-one",
+      "inputStrokes": 100001,
+      "runs": [
+        {
+          "wallMs": 1541.2715,
+          "units": 60003200026,
+          "outcome": "limit.exceeded: the planar map needs more than 1200000000 units of work",
+          "zones": 0,
+          "strokes": 0
+        },
+        {
+          "wallMs": 363.43987500000003,
+          "units": 60003200026,
+          "outcome": "limit.exceeded: the planar map needs more than 1200000000 units of work",
+          "zones": 0,
+          "strokes": 0
+        }
+      ]
+    }
+  ],
+  "worst": {
+    "name": "100000-small-curves-plus-one",
+    "wallMs": 4282.579958
+  }
+}

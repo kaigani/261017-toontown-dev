@@ -1,0 +1,22 @@
+{
+  "sdkScenarios": 41,
+  "registerCommandsCovered": 37,
+  "missing": [],
+  "replaysPassed": 41,
+  "savedOpenIdentical": 41,
+  "oneRevisionEventChecks": 32,
+  "eventOnlyCommandRefusal": {
+    "status": "error",
+    "changes": [],
+    "warnings": [],
+    "documentRev": 3,
+    "error": {
+      "code": "command.disabled",
+      "message": "`draw.selection.changed` is an event; events are delivered to subscribers and cannot be invoked",
+      "details": {
+        "commandId": "draw.selection.changed",
+        "reason": "event"
+      }
+    }
+  }
+}

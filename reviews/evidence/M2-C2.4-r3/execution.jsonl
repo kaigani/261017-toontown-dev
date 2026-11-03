@@ -1,0 +1,50 @@
+{"name": "audit-initial", "argv": ["python", "tests/adversarial/c24-r3-audit.py", "-v"], "exit": 1, "seconds": 1.3734639000613242}
+{"name": "frontend-lint", "argv": ["C:\\Users\\kaiga\\AppData\\Roaming\\npm\\pnpm.CMD", "lint"], "exit": 0, "seconds": 11.469427099917084}
+{"name": "frontend-types", "argv": ["C:\\Users\\kaiga\\AppData\\Roaming\\npm\\pnpm.CMD", "typecheck"], "exit": 0, "seconds": 3.4908817999530584}
+{"name": "frontend-tests", "argv": ["C:\\Users\\kaiga\\AppData\\Roaming\\npm\\pnpm.CMD", "test"], "exit": 0, "seconds": 93.26147149992175}
+{"name": "frontend-format", "argv": ["C:\\Users\\kaiga\\AppData\\Roaming\\npm\\pnpm.CMD", "format:check"], "exit": 0, "seconds": 1.7984409998171031}
+{"name": "frontend-licences", "argv": ["C:\\Users\\kaiga\\AppData\\Roaming\\npm\\pnpm.CMD", "licenses:check"], "exit": 0, "seconds": 0.8727257999125868}
+{"name": "frontend-build", "argv": ["C:\\Users\\kaiga\\AppData\\Roaming\\npm\\pnpm.CMD", "--dir", "desktop", "build"], "exit": 0, "seconds": 1.7967564999125898}
+{"name": "reviewer-python-suites", "argv": ["C:\\Python313\\python.exe", "scripts/run-reviewer-python-suites.py"], "exit": 1, "seconds": 15.61750639998354}
+{"name": "gate-builder-tests", "argv": ["C:\\Python313\\python.exe", "scripts/test_c22_t2_gate.py"], "exit": 0, "seconds": 2.17760489997454}
+{"name": "allow-inventory", "argv": ["C:\\Python313\\python.exe", "scripts/check-product-allows.py"], "exit": 0, "seconds": 1.7233740000519902}
+{"name": "ownership-live", "argv": ["C:\\Python313\\python.exe", "scripts/check-reviewer-ownership.py"], "exit": 0, "seconds": 0.18348190002143383}
+{"name": "test-only-assets", "argv": ["C:\\Python313\\python.exe", "scripts/check-test-only-assets.py"], "exit": 0, "seconds": 0.1885909999255091}
+{"name": "release-features", "argv": ["C:\\Python313\\python.exe", "scripts/check-release-features.py"], "exit": 0, "seconds": 0.5125112000387162}
+{"name": "cargo-deny", "argv": ["cargo", "deny", "--locked", "check"], "exit": 0, "seconds": 8.484333199914545}
+{"name": "e2-ci-binary", "argv": ["C:\\Python313\\python.exe", "scripts/e2-paint-by-id.py", "C:\\Users\\kaiga\\work\\review\\m2-c24-r3\\reviews\\evidence\\M2-C2.4-r3\\ci-artifacts\\headless-Windows\\toontown-headless.exe", "C:\\Users\\kaiga\\work\\review\\m2-c24-r3\\reviews\\evidence\\M2-C2.4-r3\\e2-ci-binary"], "exit": 0, "seconds": 3.930980200180784}
+{"name": "sdk-probes-initial", "argv": ["C:\\Python313\\python.exe", "tests/adversarial/c24-r3-sdk.py", "--binary", "C:\\Users\\kaiga\\work\\review\\m2-c24-r3\\reviews\\evidence\\M2-C2.4-r3\\ci-artifacts\\headless-Windows\\toontown-headless.exe", "--out", "C:\\Users\\kaiga\\work\\review\\m2-c24-r3\\reviews\\evidence\\M2-C2.4-r3\\sdk-probes.json"], "exit": 1, "seconds": 1.736267999978736}
+{"name": "sdk-probes-corrected", "argv": ["C:\\Python313\\python.exe", "tests/adversarial/c24-r3-sdk.py", "--binary", "C:\\Users\\kaiga\\work\\review\\m2-c24-r3\\reviews\\evidence\\M2-C2.4-r3\\ci-artifacts\\headless-Windows\\toontown-headless.exe", "--out", "C:\\Users\\kaiga\\work\\review\\m2-c24-r3\\reviews\\evidence\\M2-C2.4-r3\\sdk-probes.json"], "exit": 1, "seconds": 4.867035599891096}
+{"name": "sdk-probes-corrected2", "argv": ["C:\\Python313\\python.exe", "tests/adversarial/c24-r3-sdk.py", "--binary", "C:\\Users\\kaiga\\work\\review\\m2-c24-r3\\reviews\\evidence\\M2-C2.4-r3\\ci-artifacts\\headless-Windows\\toontown-headless.exe", "--out", "C:\\Users\\kaiga\\work\\review\\m2-c24-r3\\reviews\\evidence\\M2-C2.4-r3\\sdk-probes.json"], "exit": 1, "seconds": 4.6584733000490814}
+{"name": "sdk-probes-corrected3", "argv": ["C:\\Python313\\python.exe", "tests/adversarial/c24-r3-sdk.py", "--binary", "C:\\Users\\kaiga\\work\\review\\m2-c24-r3\\reviews\\evidence\\M2-C2.4-r3\\ci-artifacts\\headless-Windows\\toontown-headless.exe", "--out", "C:\\Users\\kaiga\\work\\review\\m2-c24-r3\\reviews\\evidence\\M2-C2.4-r3\\sdk-probes.json"], "exit": 0, "seconds": 5.167260899906978}
+{"name": "generator-freshness", "argv": ["C:\\Python313\\python.exe", "tests/adversarial/c24-r2-audit.py", "--freshness"], "exit": 0, "seconds": 2.347917600069195}
+{"name": "audit-expanded", "argv": ["C:\\Python313\\python.exe", "tests/adversarial/c24-r3-audit.py", "-v"], "exit": 1, "seconds": 2.5530697000212967}
+{"name": "vectorize-mutant-debug", "argv": ["target\\debug\\deps\\c24_r3_domains-c34c7d24d4fb2eea.exe", "vectorize_comparison_rejects_a_wrong_boundary_with_the_right_area_and_probe", "--exact", "--nocapture"], "exit": 101, "seconds": 0.5576585000380874}
+{"name": "reviewer-python-suites-final", "argv": ["C:\\Python313\\python.exe", "scripts/run-reviewer-python-suites.py"], "exit": 1, "seconds": 20.921651399927214}
+{"name": "fmt-review", "argv": ["cargo", "fmt", "--all", "--check"], "exit": 1, "seconds": 2.102385099977255}
+{"name": "fmt-corrected", "argv": ["cargo", "fmt", "--all", "--check"], "exit": 0, "seconds": 1.9318430998828262}
+{"name": "crate-executor", "argv": ["cargo", "test", "-p", "tt-executor", "--locked", "-j", "4"], "exit": 101, "seconds": 1527.7957544999663}
+{"name": "crate-io", "argv": ["cargo", "test", "-p", "tt-io", "--locked", "-j", "4"], "exit": 0, "seconds": 74.6569113000296}
+{"name": "crate-mcp", "argv": ["cargo", "test", "-p", "tt-mcp", "--locked", "-j", "4"], "exit": 0, "seconds": 191.74051979999058}
+{"name": "ownership-mutation-controls", "argv": ["C:\\Python313\\python.exe", "tests/adversarial/c24-r3-audit.py", "Ownership", "-v"], "exit": 0, "seconds": 0.9816030999645591}
+{"name": "clippy-workspace", "argv": ["cargo", "clippy", "--workspace", "--all-targets", "--locked", "-j", "4", "--", "-D", "warnings"], "exit": 0, "seconds": 186.62323839985766}
+{"name": "clippy-workspace-test-hooks", "argv": ["cargo", "clippy", "--workspace", "--all-targets", "--locked", "-j", "4", "--features", "test-hooks", "--", "-D", "warnings"], "exit": 0, "seconds": 15.95993350003846}
+{"name": "fmt-final", "argv": ["cargo", "fmt", "--all", "--check"], "exit": 0, "seconds": 1.822890100069344}
+{"name": "audit-final", "argv": ["C:\\Python313\\python.exe", "tests/adversarial/c24-r3-audit.py", "-v"], "exit": 1, "seconds": 2.075314400019124}
+{"name": "domains-4096", "argv": ["cargo", "test", "-p", "tt-executor", "--locked", "-j", "4", "--release", "--test", "c24_r3_domains", "--", "--nocapture"], "exit": 101, "seconds": 2395.2684484000783}
+{"name": "envelope-fixed-adjudication", "argv": ["cargo", "test", "--release", "-p", "tt-executor", "--locked", "-j", "4", "--test", "c24_r3_domains", "shrunk_projective_envelope_fill_case_for_independent_adjudication", "--", "--exact", "--nocapture"], "exit": 101, "seconds": 7.651577099924907}
+{"name": "envelope-fixed-detail", "argv": ["cargo", "test", "--release", "-p", "tt-executor", "--locked", "-j", "4", "--test", "c24_r3_domains", "shrunk_projective_envelope_fill_case_for_independent_adjudication", "--", "--exact", "--nocapture"], "exit": 101, "seconds": 7.311455999966711}
+{"name": "envelope-quarter-query-control", "argv": ["cargo", "test", "--release", "-p", "tt-executor", "--locked", "-j", "4", "--test", "c24_r3_domains", "projective_envelope_matches_the_independently_rounded_point_query_control", "--", "--exact", "--nocapture"], "exit": 0, "seconds": 7.25523899984546}
+{"name": "envelope-4096-dispatch-adjudication", "argv": ["cargo", "test", "--release", "-p", "tt-executor", "--locked", "-j", "4", "--test", "c24_r3_domains", "non_parallelogram_envelopes_map_the_layer_projectively", "--", "--exact", "--nocapture"], "exit": 101, "seconds": 57.207450499990955}
+{"name": "envelope-final-paired-controls", "argv": ["cargo", "test", "--release", "-p", "tt-executor", "--locked", "-j", "4", "--test", "c24_r3_domains", "projective_envelope", "--", "--nocapture"], "exit": 101, "seconds": 7.221908700186759}
+{"name": "clippy-new-envelope-controls", "argv": ["cargo", "clippy", "-p", "tt-executor", "--test", "c24_r3_domains", "--test", "c24_r3_routes", "--locked", "-j", "4", "--", "-D", "warnings"], "exit": 0, "seconds": 19.068780099973083}
+{"name": "reviewer-python-suites-with-envelope", "argv": ["C:\\Python313\\python.exe", "scripts/run-reviewer-python-suites.py"], "exit": 1, "seconds": 12.766034899977967}
+{"name": "fmt-after-envelope", "argv": ["cargo", "fmt", "--all", "--check"], "exit": 0, "seconds": 1.7664546999149024}
+{"name": "routes-4096", "argv": ["cargo", "test", "-p", "tt-executor", "--locked", "-j", "4", "--release", "--test", "c24_r3_routes", "--", "--nocapture"], "exit": 0, "seconds": 1361.858721200144}
+{"name": "topology-4096", "argv": ["cargo", "test", "-p", "tt-executor", "--locked", "-j", "4", "--release", "--test", "c24_r3_topology", "--", "--nocapture"], "exit": 0, "seconds": 49.768117600120604}
+{"name": "vector-4096", "argv": ["cargo", "test", "-p", "tt-vector", "--locked", "-j", "4", "--release", "--test", "c24_r3_properties", "--", "--nocapture"], "exit": 0, "seconds": 112.74067629990168}
+{"name": "noding-variants", "argv": ["cargo", "test", "-p", "tt-vector", "--locked", "-j", "4", "--release", "--test", "c24_r2_noding", "--test", "c24_r3_noding", "--", "--nocapture"], "exit": 0, "seconds": 1.118111499818042}
+{"name": "cutter-regression", "argv": ["cargo", "test", "-p", "tt-executor", "--locked", "-j", "4", "--release", "--test", "c24_cutter_snapping", "--", "--nocapture"], "exit": 0, "seconds": 3.2647512000985444}
+{"name": "decode-30000", "argv": ["cargo", "test", "-p", "tt-io", "--locked", "-j", "4", "--release", "--test", "c24_r3_decoder", "--", "--nocapture"], "exit": 0, "seconds": 63.890924900071695}
+{"name": "headless-release-build", "argv": ["cargo", "build", "--release", "-p", "tt-headless", "--locked", "-j", "4"], "exit": 0, "seconds": 142.7286406001076}
+{"name": "e2-local-build", "argv": ["C:\\Python313\\python.exe", "scripts/e2-paint-by-id.py", "target/release/toontown-headless.exe", "C:\\Users\\kaiga\\work\\review\\m2-c24-r3\\reviews\\evidence\\M2-C2.4-r3\\e2-local-build"], "exit": 0, "seconds": 3.3875213998835534}

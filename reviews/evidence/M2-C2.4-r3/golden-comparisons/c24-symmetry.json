@@ -1,0 +1,35 @@
+{
+  "old": "reviews\\evidence\\M2-C2.4\\round-2\\goldens\\c24-symmetry.6f72ee7.json",
+  "new": "reviews\\evidence\\M2-C2.4\\round-2\\goldens\\c24-symmetry.3c74c34.json",
+  "pieces": {
+    "added": 0,
+    "removed": 0,
+    "moved": 0,
+    "resplit": 0
+  },
+  "pieceDetails": {
+    "added": [],
+    "removed": [],
+    "moved": [],
+    "resplit": []
+  },
+  "correspondingAnchorsMoved": 0,
+  "maxAnchorDisplacementDu": 0.0,
+  "largestAnchorDisplacements": [],
+  "reroutedAnchors": [],
+  "handleRowsChanged": 0,
+  "arrayEdits": [],
+  "leafChanges": 2,
+  "leafChangeDetails": [
+    {
+      "path": "bytes",
+      "old": 1088272,
+      "new": 1065164
+    },
+    {
+      "path": "sha256",
+      "old": "fc3116b0a61936dbb16dcc786aca19313b4671183b8d5ccfdce3da5f05f96e36",
+      "new": "fcaf9b702db54055f781e9385cdf4f753bba80f4a7ec9b7a76bf5f36882ad71b"
+    }
+  ]
+}

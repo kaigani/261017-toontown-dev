@@ -1,0 +1,2 @@
+{"argv": ["python", "scripts/check-test-only-assets.py"], "cwd": "C:\\Users\\kaiga\\work\\review\\m2-c24-r2", "env": {}, "startedAt": "2026-11-02T18:33:15.743799+00:00"}
+ok: 1 test-only asset(s), licences beside them, none in product sources

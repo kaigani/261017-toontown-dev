@@ -1,0 +1,838 @@
+check properties (macos-latest)	UNKNOWN STEP	﻿2026-11-02T17:06:58.5708950Z Current runner version: '2.338.0'
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:06:58.5750060Z ##[group]Runner Image Provisioner
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:06:58.5751600Z Hosted Compute Agent
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:06:58.5752600Z Version: 20261021.618
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:06:58.5753740Z Commit: 21505ad2541d5be6135ed84fc33697146cf75b8e
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:06:58.5755050Z Build Date: 2026-10-21T00:45:21Z
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:06:58.5756280Z Worker ID: {60514d71-38b8-42b9-a82c-686d7b688acb}
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:06:58.5757650Z Region: westus
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:06:58.5758620Z Cloud: MacCloud
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:06:58.5759570Z ##[endgroup]
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:06:58.5762420Z ##[group]Operating System
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:06:58.5763500Z macOS
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:06:58.5764400Z 26.6.2
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:06:58.5765250Z 25G83
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:06:58.5766200Z ##[endgroup]
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:06:58.5767160Z ##[group]Runner Image
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:06:58.5768180Z Image: macos-26-arm64
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:06:58.5769170Z Version: 20261021.0445.8
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:06:58.5771450Z Included Software: https://github.com/actions/runner-images/blob/macos-26-arm64/20261021.0445/images/macos/macos-26-arm64-Readme.md
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:06:58.5774320Z Image Release: https://github.com/actions/runner-images/releases/tag/macos-26-arm64%2F20261021.0445
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:06:58.5776140Z ##[endgroup]
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:06:58.5778530Z ##[group]GITHUB_TOKEN Permissions
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:06:58.5782640Z Contents: read
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:06:58.5783660Z Metadata: read
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:06:58.5784760Z Packages: read
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:06:58.5785740Z ##[endgroup]
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:06:58.5789680Z Secret source: Actions
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:06:58.5791230Z Cache mode: write
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:06:58.5792380Z Prepare workflow directory
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:06:58.6369000Z Prepare all required actions
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:06:58.6447450Z Getting action download info
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:06:58.8053670Z Download action repository 'actions/checkout@v7' (SHA:3d3c42e5aac5ba805825da76410c181273ba90b1)
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:06:59.1152700Z Download action repository 'Swatinem/rust-cache@v2' (SHA:d1527c8f67ef9af357290475d4af4b0fab8f12e0)
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:00.1097430Z Complete job name: check properties (macos-latest)
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:00.1645190Z ##[group]Run actions/checkout@v7
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:00.1646080Z with:
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:00.1646450Z   repository: kaigani/261017-toontown-dev
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:00.1649330Z   token: ***
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:00.1649650Z   ssh-strict: true
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:00.1649980Z   ssh-user: git
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:00.1650310Z   persist-credentials: true
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:00.1650690Z   clean: true
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:00.1651020Z   sparse-checkout-cone-mode: true
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:00.1651420Z   fetch-depth: 1
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:00.1651750Z   fetch-tags: false
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:00.1652090Z   show-progress: true
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:00.1652430Z   lfs: false
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:00.1652750Z   submodules: false
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:00.1653100Z   set-safe-directory: true
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:00.1653800Z   allow-unsafe-pr-checkout: false
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:00.1654290Z env:
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:00.1654610Z   CARGO_TERM_COLOR: always
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:00.1654980Z   CARGO_INCREMENTAL: 0
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:00.1655340Z   RUST_BACKTRACE: 1
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:00.1655710Z ##[endgroup]
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:00.6263190Z Syncing repository: kaigani/261017-toontown-dev
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:00.6270590Z ##[group]Getting Git version info
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:00.6272390Z Working directory is '/Users/runner/work/261017-toontown-dev/261017-toontown-dev'
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:00.6274220Z [command]/opt/homebrew/bin/git version
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:00.6623730Z git version 2.56.0
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:00.6642500Z ##[endgroup]
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:00.6649520Z Copying '/Users/runner/.gitconfig' to '/Users/runner/work/_temp/cc030d7d-1342-4dd8-b65b-6a1ca2f6182b/.gitconfig'
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:00.6654730Z Temporarily overriding HOME='/Users/runner/work/_temp/cc030d7d-1342-4dd8-b65b-6a1ca2f6182b' before making global git config changes
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:00.6656330Z Adding repository directory to the temporary git global config as a safe directory
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:00.6659150Z [command]/opt/homebrew/bin/git config --global --add safe.directory /Users/runner/work/261017-toontown-dev/261017-toontown-dev
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:00.6777930Z Deleting the contents of '/Users/runner/work/261017-toontown-dev/261017-toontown-dev'
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:00.6779800Z ##[group]Determining repository object format
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:00.6780700Z ##[endgroup]
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:00.6781460Z ##[group]Initializing the repository
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:00.6784460Z [command]/opt/homebrew/bin/git init /Users/runner/work/261017-toontown-dev/261017-toontown-dev
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:00.7143550Z hint: Using 'master' as the name for the initial branch. This default branch name
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:00.7144540Z hint: will change to "main" in Git 3.0. To configure the initial branch name
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:00.7145300Z hint: to use in all of your new repositories, which will suppress this warning,
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:00.7145930Z hint: call:
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:00.7146300Z hint:
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:00.7146700Z hint: 	git config --global init.defaultBranch <name>
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:00.7147240Z hint:
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:00.7147780Z hint: Names commonly chosen instead of 'master' are 'main', 'trunk' and
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:00.7148570Z hint: 'development'. The just-created branch can be renamed via this command:
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:00.7149170Z hint:
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:00.7149560Z hint: 	git branch -m <name>
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:00.7149950Z hint:
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:00.7150490Z hint: Disable this message with "git config set advice.defaultBranchName false"
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:00.7166630Z Initialized empty Git repository in /Users/runner/work/261017-toontown-dev/261017-toontown-dev/.git/
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:00.7172930Z [command]/opt/homebrew/bin/git remote add origin https://github.com/kaigani/261017-toontown-dev
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:00.7283290Z ##[endgroup]
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:00.7284080Z ##[group]Disabling automatic garbage collection
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:00.7286270Z [command]/opt/homebrew/bin/git config --local gc.auto 0
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:00.7384310Z ##[endgroup]
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:00.7385000Z ##[group]Setting up auth
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:00.7391430Z Removing SSH command configuration
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:00.7404870Z [command]/opt/homebrew/bin/git config --local --name-only --get-regexp core\.sshCommand
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:00.7479530Z [command]/opt/homebrew/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:00.8869140Z Removing HTTP extra header
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:00.8871470Z [command]/opt/homebrew/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:00.8959400Z [command]/opt/homebrew/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:01.0254170Z Removing includeIf entries pointing to credentials config files
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:01.0256700Z [command]/opt/homebrew/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:01.0334470Z [command]/opt/homebrew/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:01.1383890Z [command]/opt/homebrew/bin/git config --file /Users/runner/work/_temp/git-credentials-fe9d0d23-1cff-4a76-8d5f-7f80b3abf0ef.config http.https://github.com/.extraheader AUTHORIZATION: basic ***
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:01.1487370Z [command]/opt/homebrew/bin/git config --local includeIf.gitdir:/Users/runner/work/261017-toontown-dev/261017-toontown-dev/.git.path /Users/runner/work/_temp/git-credentials-fe9d0d23-1cff-4a76-8d5f-7f80b3abf0ef.config
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:01.1602240Z [command]/opt/homebrew/bin/git config --local includeIf.gitdir:/Users/runner/work/261017-toontown-dev/261017-toontown-dev/.git/worktrees/*.path /Users/runner/work/_temp/git-credentials-fe9d0d23-1cff-4a76-8d5f-7f80b3abf0ef.config
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:01.1720550Z [command]/opt/homebrew/bin/git config --local includeIf.gitdir:/github/workspace/.git.path /github/runner_temp/git-credentials-fe9d0d23-1cff-4a76-8d5f-7f80b3abf0ef.config
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:01.1801290Z [command]/opt/homebrew/bin/git config --local includeIf.gitdir:/github/workspace/.git/worktrees/*.path /github/runner_temp/git-credentials-fe9d0d23-1cff-4a76-8d5f-7f80b3abf0ef.config
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:01.1910130Z ##[endgroup]
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:01.1911160Z ##[group]Fetching the repository
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:01.1914840Z [command]/opt/homebrew/bin/git -c protocol.version=2 fetch --no-tags --prune --no-recurse-submodules --depth=1 origin +3c74c3432f2a1895b5aaca83e6ddf914cf6b4281:refs/remotes/origin/m2-vector-engine
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:09.9973210Z From https://github.com/kaigani/261017-toontown-dev
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:09.9976990Z  * [new ref]         3c74c3432f2a1895b5aaca83e6ddf914cf6b4281 -> origin/m2-vector-engine
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:09.9999970Z [command]/opt/homebrew/bin/git branch --list --remote origin/m2-vector-engine
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:10.0163710Z   origin/m2-vector-engine
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:10.0181960Z [command]/opt/homebrew/bin/git rev-parse refs/remotes/origin/m2-vector-engine
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:10.0303020Z 3c74c3432f2a1895b5aaca83e6ddf914cf6b4281
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:10.0320960Z ##[endgroup]
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:10.0324170Z ##[group]Determining the checkout info
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:10.0330660Z ##[endgroup]
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:10.0331850Z [command]/opt/homebrew/bin/git sparse-checkout disable
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:10.0443340Z [command]/opt/homebrew/bin/git config --local --unset-all extensions.worktreeConfig
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:10.0566220Z ##[group]Checking out the ref
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:10.0570870Z [command]/opt/homebrew/bin/git checkout --progress --force -B m2-vector-engine refs/remotes/origin/m2-vector-engine
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:11.4332080Z Updating files:  40% (3186/7777)
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:11.4883560Z Updating files:  41% (3189/7777)
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:11.5019440Z Updating files:  42% (3267/7777)
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:11.5239570Z Updating files:  43% (3345/7777)
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:11.5363940Z Updating files:  44% (3422/7777)
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:11.5534370Z Updating files:  45% (3500/7777)
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:11.5674520Z Updating files:  46% (3578/7777)
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:11.5881630Z Updating files:  47% (3656/7777)
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:11.6030820Z Updating files:  48% (3733/7777)
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:11.6191050Z Updating files:  49% (3811/7777)
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:11.6329940Z Updating files:  50% (3889/7777)
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:11.6443410Z Updating files:  51% (3967/7777)
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:11.6815730Z Updating files:  52% (4045/7777)
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:11.7063130Z Updating files:  53% (4122/7777)
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:11.7387480Z Updating files:  54% (4200/7777)
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:11.7610390Z Updating files:  55% (4278/7777)
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:11.7779440Z Updating files:  56% (4356/7777)
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:11.7904600Z Updating files:  57% (4433/7777)
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:11.8174230Z Updating files:  58% (4511/7777)
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:11.8393320Z Updating files:  59% (4589/7777)
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:11.8608370Z Updating files:  60% (4667/7777)
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:11.8706870Z Updating files:  61% (4744/7777)
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:11.8827590Z Updating files:  62% (4822/7777)
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:11.9106850Z Updating files:  63% (4900/7777)
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:11.9369760Z Updating files:  64% (4978/7777)
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:11.9511800Z Updating files:  65% (5056/7777)
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:11.9696590Z Updating files:  66% (5133/7777)
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:11.9914480Z Updating files:  67% (5211/7777)
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:12.0223620Z Updating files:  68% (5289/7777)
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:12.0405430Z Updating files:  69% (5367/7777)
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:12.0557970Z Updating files:  70% (5444/7777)
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:12.0720970Z Updating files:  71% (5522/7777)
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:12.0831160Z Updating files:  72% (5600/7777)
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:12.1041180Z Updating files:  72% (5631/7777)
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:12.1341800Z Updating files:  73% (5678/7777)
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:12.1478230Z Updating files:  74% (5755/7777)
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:12.1824190Z Updating files:  75% (5833/7777)
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:12.2112160Z Updating files:  76% (5911/7777)
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:12.2533040Z Updating files:  77% (5989/7777)
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:12.5199930Z Updating files:  78% (6067/7777)
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:12.5505150Z Updating files:  79% (6144/7777)
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:12.5771950Z Updating files:  80% (6222/7777)
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:12.5955830Z Updating files:  81% (6300/7777)
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:12.6324050Z Updating files:  82% (6378/7777)
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:12.6514390Z Updating files:  83% (6455/7777)
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:12.6673730Z Updating files:  84% (6533/7777)
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:12.6895780Z Updating files:  85% (6611/7777)
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:12.7152750Z Updating files:  86% (6689/7777)
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:12.7246960Z Updating files:  87% (6766/7777)
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:12.7415340Z Updating files:  88% (6844/7777)
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:12.7559460Z Updating files:  89% (6922/7777)
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:12.7675590Z Updating files:  90% (7000/7777)
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:12.8026640Z Updating files:  91% (7078/7777)
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:12.8259990Z Updating files:  92% (7155/7777)
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:12.8420820Z Updating files:  93% (7233/7777)
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:12.8595170Z Updating files:  94% (7311/7777)
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:12.8851290Z Updating files:  95% (7389/7777)
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:12.9000120Z Updating files:  96% (7466/7777)
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:12.9115280Z Updating files:  97% (7544/7777)
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:12.9231430Z Updating files:  98% (7622/7777)
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:12.9325210Z Updating files:  99% (7700/7777)
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:12.9325620Z Updating files: 100% (7777/7777)
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:12.9325990Z Updating files: 100% (7777/7777), done.
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:12.9470490Z Switched to a new branch 'm2-vector-engine'
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:12.9484780Z branch 'm2-vector-engine' set up to track 'origin/m2-vector-engine'.
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:12.9598630Z ##[endgroup]
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:12.9809950Z [command]/opt/homebrew/bin/git log -1 --format=%H
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:12.9902470Z 3c74c3432f2a1895b5aaca83e6ddf914cf6b4281
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:13.0479720Z ##[group]Run tc=$(sed -n 's/^channel = "\(.*\)"/\1/p' rust-toolchain.toml)
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:13.0480450Z ^[[36;1mtc=$(sed -n 's/^channel = "\(.*\)"/\1/p' rust-toolchain.toml)^[[0m
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:13.0480860Z ^[[36;1mrustup toolchain install "$tc" --profile minimal^[[0m
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:13.0481150Z ^[[36;1mrustup override set "$tc"^[[0m
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:13.0481360Z ^[[36;1mrustc --version^[[0m
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:13.0547550Z shell: /bin/bash --noprofile --norc -e -o pipefail {0}
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:13.0548300Z env:
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:13.0548840Z   CARGO_TERM_COLOR: always
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:13.0549490Z   CARGO_INCREMENTAL: 0
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:13.0550110Z   RUST_BACKTRACE: 1
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:13.0550670Z ##[endgroup]
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:13.2433030Z info: syncing channel updates for 1.98.1-aarch64-apple-darwin
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:13.4158140Z info: latest update on 2026-09-03 for version 1.98.1 (48a229cea 2026-09-01)
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:13.4164110Z info: downloading 3 components
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:20.1917120Z 
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:20.2389490Z   1.98.1-aarch64-apple-darwin installed - rustc 1.98.1 (48a229cea 2026-09-01)
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:20.2395730Z info: self-update is disabled for this build of rustup
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:20.2397770Z info: any updates to rustup will need to be fetched with your system package manager
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:20.2398040Z 
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:20.2834040Z info: override toolchain for /Users/runner/work/261017-toontown-dev/261017-toontown-dev set to 1.98.1-aarch64-apple-darwin
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:20.3442280Z rustc 1.98.1 (48a229cea 2026-09-01)
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:20.3643020Z ##[group]Run Swatinem/rust-cache@v2
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:20.3643450Z with:
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:20.3643670Z   key: check-properties
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:20.3643990Z   prefix-key: v0-rust
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:20.3644270Z   add-job-id-key: true
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:20.3644600Z   add-rust-environment-hash-key: true
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:20.3644960Z   cache-targets: true
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:20.3645220Z   cache-all-crates: false
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:20.3645550Z   cache-workspace-crates: false
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:20.3645770Z   save-if: true
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:20.3646050Z   cache-provider: github
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:20.3646280Z   cache-bin: true
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:20.3646550Z   lookup-only: false
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:20.3656680Z   cmd-format: {0}
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:20.3657280Z env:
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:20.3657780Z   CARGO_TERM_COLOR: always
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:20.3658610Z   CARGO_INCREMENTAL: 0
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:20.3659360Z   RUST_BACKTRACE: 1
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:20.3659930Z ##[endgroup]
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:21.9860630Z ##[group]Cache Configuration
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:21.9861410Z Cache Provider:
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:21.9861860Z     github
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:21.9862160Z Workspaces:
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:21.9862530Z     /Users/runner/work/261017-toontown-dev/261017-toontown-dev
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:21.9862940Z Cache Paths:
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:21.9863240Z     /Users/runner/.cargo/bin
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:21.9863520Z     /Users/runner/.cargo/.crates.toml
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:21.9863900Z     /Users/runner/.cargo/.crates2.json
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:21.9864250Z     /Users/runner/.cargo/registry
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:21.9864540Z     /Users/runner/.cargo/git
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:21.9864960Z     /Users/runner/work/261017-toontown-dev/261017-toontown-dev/target
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:21.9865390Z Restore Key:
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:21.9865810Z     v0-rust-check-properties-check-properties-Darwin-arm64-1ef279f7
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:21.9866250Z Cache Key:
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:21.9866730Z     v0-rust-check-properties-check-properties-Darwin-arm64-1ef279f7-7ca7b21e
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:21.9867240Z .. Prefix:
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:21.9867610Z   - v0-rust-check-properties-check-properties-Darwin-arm64
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:21.9868170Z .. Environment considered:
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:21.9868500Z   - Rust Versions:
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:21.9868970Z     - 1.98.1 aarch64-apple-darwin 48a229ceaefd4985c50990b14116b6d856af0985
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:21.9870110Z     - 1.99.1 aarch64-apple-darwin 58cf8f9c35b355199727627d07ae34a4e2846d67
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:21.9871620Z   - CARGO_INCREMENTAL
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:21.9872560Z   - CARGO_TERM_COLOR
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:21.9873030Z   - RUST_BACKTRACE
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:21.9874420Z .. Lockfiles considered:
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:21.9875020Z   - /Users/runner/work/261017-toontown-dev/261017-toontown-dev/bins/headless/Cargo.toml
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:21.9875670Z   - /Users/runner/work/261017-toontown-dev/261017-toontown-dev/Cargo.lock
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:21.9876270Z   - /Users/runner/work/261017-toontown-dev/261017-toontown-dev/crates/anim/Cargo.toml
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:21.9878020Z   - /Users/runner/work/261017-toontown-dev/261017-toontown-dev/crates/audio/Cargo.toml
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:21.9881610Z   - /Users/runner/work/261017-toontown-dev/261017-toontown-dev/crates/colour/Cargo.toml
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:21.9883430Z   - /Users/runner/work/261017-toontown-dev/261017-toontown-dev/crates/engine/Cargo.toml
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:21.9884970Z   - /Users/runner/work/261017-toontown-dev/261017-toontown-dev/crates/executor/Cargo.toml
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:21.9886510Z   - /Users/runner/work/261017-toontown-dev/261017-toontown-dev/crates/fx/Cargo.toml
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:21.9888570Z   - /Users/runner/work/261017-toontown-dev/261017-toontown-dev/crates/io/Cargo.toml
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:21.9889980Z   - /Users/runner/work/261017-toontown-dev/261017-toontown-dev/crates/lipsync/Cargo.toml
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:21.9892000Z   - /Users/runner/work/261017-toontown-dev/261017-toontown-dev/crates/mcp/Cargo.toml
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:21.9893620Z   - /Users/runner/work/261017-toontown-dev/261017-toontown-dev/crates/model/Cargo.toml
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:21.9964880Z   - /Users/runner/work/261017-toontown-dev/261017-toontown-dev/crates/persist/Cargo.toml
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:21.9965560Z   - /Users/runner/work/261017-toontown-dev/261017-toontown-dev/crates/registry-macros/Cargo.toml
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:21.9966240Z   - /Users/runner/work/261017-toontown-dev/261017-toontown-dev/crates/registry/Cargo.toml
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:21.9966790Z   - /Users/runner/work/261017-toontown-dev/261017-toontown-dev/crates/render/Cargo.toml
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:21.9967370Z   - /Users/runner/work/261017-toontown-dev/261017-toontown-dev/crates/vector/Cargo.toml
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:21.9967880Z   - /Users/runner/work/261017-toontown-dev/261017-toontown-dev/desktop/src-tauri/Cargo.toml
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:21.9968370Z   - /Users/runner/work/261017-toontown-dev/261017-toontown-dev/rust-toolchain.toml
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:21.9969930Z ##[endgroup]
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:21.9970120Z 
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:21.9970240Z ... Restoring cache ...
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:22.1029220Z No cache found.
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:22.1145600Z ##[group]Run cargo test --locked -p tt-executor --test c24_oracle_routes --test c24_r1_topology --test c24_topology
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:22.1146240Z ^[[36;1mcargo test --locked -p tt-executor --test c24_oracle_routes --test c24_r1_topology --test c24_topology^[[0m
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:22.1146750Z ^[[36;1mcargo test --locked -p tt-vector --test c24_r1_properties --test c24_properties^[[0m
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:22.1198930Z shell: /bin/bash --noprofile --norc -e -o pipefail {0}
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:22.1199270Z env:
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:22.1199470Z   CARGO_TERM_COLOR: always
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:22.1199640Z   CARGO_INCREMENTAL: 0
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:22.1199820Z   RUST_BACKTRACE: 1
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:22.1199980Z   CACHE_ON_FAILURE: false
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:22.1200160Z ##[endgroup]
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:22.4431680Z ^[[1m^[[92m    Updating^[[0m crates.io index
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:23.5394020Z ^[[1m^[[92m Downloading^[[0m crates ...
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:23.5758370Z ^[[1m^[[92m  Downloaded^[[0m fdeflate v0.3.7
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:23.5896140Z ^[[1m^[[92m  Downloaded^[[0m bytes v1.12.1
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:23.6017430Z ^[[1m^[[92m  Downloaded^[[0m equivalent v1.0.3
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:23.6049320Z ^[[1m^[[92m  Downloaded^[[0m fraction v0.17.0
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:23.6207060Z ^[[1m^[[92m  Downloaded^[[0m i_tree v0.20.0
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:23.6303980Z ^[[1m^[[92m  Downloaded^[[0m log v0.4.34
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:23.6396270Z ^[[1m^[[92m  Downloaded^[[0m foldhash v0.2.0
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:23.6404720Z ^[[1m^[[92m  Downloaded^[[0m micromap v0.3.0
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:23.6642140Z ^[[1m^[[92m  Downloaded^[[0m errno v0.3.14
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:23.6686400Z ^[[1m^[[92m  Downloaded^[[0m getrandom v0.4.3
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:23.6866810Z ^[[1m^[[92m  Downloaded^[[0m bit-vec v0.8.0
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:23.6969600Z ^[[1m^[[92m  Downloaded^[[0m cpufeatures v0.3.1
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:23.6985600Z ^[[1m^[[92m  Downloaded^[[0m itoa v1.0.18
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:23.7115940Z ^[[1m^[[92m  Downloaded^[[0m ahash v0.8.12
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:23.7198910Z ^[[1m^[[92m  Downloaded^[[0m byteorder-lite v0.1.0
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:23.7281410Z ^[[1m^[[92m  Downloaded^[[0m memchr v2.8.3
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:23.7538570Z ^[[1m^[[92m  Downloaded^[[0m borsh v1.8.1
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:23.7769280Z ^[[1m^[[92m  Downloaded^[[0m core_detect v1.0.0
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:23.7802630Z ^[[1m^[[92m  Downloaded^[[0m chacha20 v0.10.2
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:23.7875450Z ^[[1m^[[92m  Downloaded^[[0m crossbeam-utils v0.8.23
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:23.7966800Z ^[[1m^[[92m  Downloaded^[[0m font-types v0.12.7
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:23.8023560Z ^[[1m^[[92m  Downloaded^[[0m hashbrown v0.16.1
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:23.8198430Z ^[[1m^[[92m  Downloaded^[[0m serde_spanned v1.1.2
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:23.8244070Z ^[[1m^[[92m  Downloaded^[[0m stats_alloc v0.1.10
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:23.8278510Z ^[[1m^[[92m  Downloaded^[[0m strum v0.28.0
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:23.8295220Z ^[[1m^[[92m  Downloaded^[[0m crc32fast v1.5.2
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:23.8336190Z ^[[1m^[[92m  Downloaded^[[0m email_address v0.2.9
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:23.8386330Z ^[[1m^[[92m  Downloaded^[[0m fnv v1.0.7
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:23.8405580Z ^[[1m^[[92m  Downloaded^[[0m glifo v0.4.0
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:23.8470060Z ^[[1m^[[92m  Downloaded^[[0m libm v0.2.16
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:23.8770090Z ^[[1m^[[92m  Downloaded^[[0m num-iter v0.1.46
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:23.8810890Z ^[[1m^[[92m  Downloaded^[[0m borrow-or-share v0.2.4
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:23.8848770Z ^[[1m^[[92m  Downloaded^[[0m fancy-regex v0.19.2
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:23.9042850Z ^[[1m^[[92m  Downloaded^[[0m fastrand v2.5.0
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:23.9101890Z ^[[1m^[[92m  Downloaded^[[0m getrandom v0.3.4
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:23.9197100Z ^[[1m^[[92m  Downloaded^[[0m hashbrown v0.17.1
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:23.9398590Z ^[[1m^[[92m  Downloaded^[[0m miniz_oxide v0.8.9
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:23.9449990Z ^[[1m^[[92m  Downloaded^[[0m num-bigint v0.4.8
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:23.9569270Z ^[[1m^[[92m  Downloaded^[[0m ordered-channel v1.2.0
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:23.9588480Z ^[[1m^[[92m  Downloaded^[[0m color_quant v1.1.0
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:23.9624240Z ^[[1m^[[92m  Downloaded^[[0m flate2 v1.1.10
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:23.9732000Z ^[[1m^[[92m  Downloaded^[[0m fluent-uri v0.4.1
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:23.9858650Z ^[[1m^[[92m  Downloaded^[[0m guillotiere v0.7.0
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:23.9884910Z ^[[1m^[[92m  Downloaded^[[0m linebender_resource_handle v0.1.1
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:23.9909770Z ^[[1m^[[92m  Downloaded^[[0m num-traits v0.2.19
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:23.9975260Z ^[[1m^[[92m  Downloaded^[[0m outref v0.5.2
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:24.0021090Z ^[[1m^[[92m  Downloaded^[[0m proc-macro2 v1.0.107
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:24.0112160Z ^[[1m^[[92m  Downloaded^[[0m rayon-core v1.13.0
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:24.0193940Z ^[[1m^[[92m  Downloaded^[[0m target-tuple v1.0.2
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:24.0215910Z ^[[1m^[[92m  Downloaded^[[0m thread_local v1.1.10
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:24.0244780Z ^[[1m^[[92m  Downloaded^[[0m wait-timeout v0.2.1
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:24.0276900Z ^[[1m^[[92m  Downloaded^[[0m percent-encoding v2.3.2
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:24.0292270Z ^[[1m^[[92m  Downloaded^[[0m proc-macro-crate v3.5.0
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:24.0329940Z ^[[1m^[[92m  Downloaded^[[0m aho-corasick v1.1.5
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:24.0438890Z ^[[1m^[[92m  Downloaded^[[0m arrayvec v0.7.8
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:24.0472050Z ^[[1m^[[92m  Downloaded^[[0m const-oid v0.10.2
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:24.0511550Z ^[[1m^[[92m  Downloaded^[[0m bit-vec v0.10.1
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:24.0539760Z ^[[1m^[[92m  Downloaded^[[0m jsonschema v0.59.0
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:24.1136370Z ^[[1m^[[92m  Downloaded^[[0m cfg-if v1.0.5
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:24.1162360Z ^[[1m^[[92m  Downloaded^[[0m num-cmp v0.1.0
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:24.1176790Z ^[[1m^[[92m  Downloaded^[[0m toml_writer v1.1.3+spec-1.1.0
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:24.1202870Z ^[[1m^[[92m  Downloaded^[[0m unarray v0.1.4
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:24.1227600Z ^[[1m^[[92m  Downloaded^[[0m uuid-simd v0.8.0
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:24.1249320Z ^[[1m^[[92m  Downloaded^[[0m version_check v0.9.5
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:24.1282900Z ^[[1m^[[92m  Downloaded^[[0m quick-error v1.2.3
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:24.1308190Z ^[[1m^[[92m  Downloaded^[[0m quick-error v2.0.1
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:24.1340470Z ^[[1m^[[92m  Downloaded^[[0m rand_xorshift v0.5.0
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:24.1364980Z ^[[1m^[[92m  Downloaded^[[0m ref-cast-impl v1.0.27
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:24.1387280Z ^[[1m^[[92m  Downloaded^[[0m scopeguard v1.2.0
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:24.1409630Z ^[[1m^[[92m  Downloaded^[[0m bytemuck_derive v1.12.1
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:24.1439490Z ^[[1m^[[92m  Downloaded^[[0m i_key_sort v0.12.0
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:24.1525960Z ^[[1m^[[92m  Downloaded^[[0m memmap2 v0.9.11
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:24.1581650Z ^[[1m^[[92m  Downloaded^[[0m miniz_oxide v0.9.1
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:24.1644670Z ^[[1m^[[92m  Downloaded^[[0m serde_derive_internals v0.30.0
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:24.1675500Z ^[[1m^[[92m  Downloaded^[[0m simd-adler32 v0.3.10
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:24.1745530Z ^[[1m^[[92m  Downloaded^[[0m thiserror v2.0.21
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:24.1902810Z ^[[1m^[[92m  Downloaded^[[0m adler2 v2.0.1
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:24.1928590Z ^[[1m^[[92m  Downloaded^[[0m autocfg v1.5.1
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:24.1965310Z ^[[1m^[[92m  Downloaded^[[0m bit-set v0.11.1
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:24.1997360Z ^[[1m^[[92m  Downloaded^[[0m borsh-derive v1.8.1
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:24.2061180Z ^[[1m^[[92m  Downloaded^[[0m crossbeam-channel v0.5.17
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:24.2153680Z ^[[1m^[[92m  Downloaded^[[0m crossbeam-epoch v0.9.21
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:24.2193610Z ^[[1m^[[92m  Downloaded^[[0m data-encoding v2.11.1
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:24.2211380Z ^[[1m^[[92m  Downloaded^[[0m fearless_simd v0.7.0
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:24.2305410Z ^[[1m^[[92m  Downloaded^[[0m heck v0.5.0
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:24.2329820Z ^[[1m^[[92m  Downloaded^[[0m i_overlay v9.1.0
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:24.3136390Z ^[[1m^[[92m  Downloaded^[[0m jsonschema-value v0.59.0
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:24.3196540Z ^[[1m^[[92m  Downloaded^[[0m read-fonts v0.41.0
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:24.3978080Z ^[[1m^[[92m  Downloaded^[[0m termcolor v1.4.1
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:24.4001870Z ^[[1m^[[92m  Downloaded^[[0m thiserror-impl v2.0.21
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:24.4083810Z ^[[1m^[[92m  Downloaded^[[0m vsimd v0.8.0
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:24.4149820Z ^[[1m^[[92m  Downloaded^[[0m zmij v1.0.23
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:24.4197960Z ^[[1m^[[92m  Downloaded^[[0m zune-core v0.5.3
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:24.4279550Z ^[[1m^[[92m  Downloaded^[[0m polycool v0.4.0
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:24.4336660Z ^[[1m^[[92m  Downloaded^[[0m quote v1.0.47
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:24.4427730Z ^[[1m^[[92m  Downloaded^[[0m rand_core v0.10.1
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:24.4467520Z ^[[1m^[[92m  Downloaded^[[0m rusty-fork v0.3.1
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:24.4506740Z ^[[1m^[[92m  Downloaded^[[0m schemars_derive v1.2.3
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:24.4592900Z ^[[1m^[[92m  Downloaded^[[0m crossbeam-deque v0.8.8
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:24.4666650Z ^[[1m^[[92m  Downloaded^[[0m fontdb v0.24.0
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:24.4748590Z ^[[1m^[[92m  Downloaded^[[0m hybrid-array v0.4.15
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:24.4831170Z ^[[1m^[[92m  Downloaded^[[0m num-complex v0.4.6
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:24.4873360Z ^[[1m^[[92m  Downloaded^[[0m once_cell v1.21.4
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:24.4935210Z ^[[1m^[[92m  Downloaded^[[0m parking_lot_core v0.9.12
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:24.4979230Z ^[[1m^[[92m  Downloaded^[[0m proptest v1.12.0
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:24.5251640Z ^[[1m^[[92m  Downloaded^[[0m ref-cast v1.0.27
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:24.5324380Z ^[[1m^[[92m  Downloaded^[[0m sha2 v0.11.1
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:24.5450260Z ^[[1m^[[92m  Downloaded^[[0m slotmap v1.1.1
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:24.5483580Z ^[[1m^[[92m  Downloaded^[[0m smallvec v1.16.3
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:24.5524920Z ^[[1m^[[92m  Downloaded^[[0m strum_macros v0.28.0
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:24.5574410Z ^[[1m^[[92m  Downloaded^[[0m tempfile v3.27.0
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:24.5641990Z ^[[1m^[[92m  Downloaded^[[0m toml_parser v1.1.5+spec-1.1.0
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:24.5691110Z ^[[1m^[[92m  Downloaded^[[0m trybuild v1.0.122
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:24.5821320Z ^[[1m^[[92m  Downloaded^[[0m unicode-general-category v1.1.0
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:24.5864240Z ^[[1m^[[92m  Downloaded^[[0m unicode-ident v1.0.27
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:24.5949590Z ^[[1m^[[92m  Downloaded^[[0m weezl v0.1.12
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:24.6008140Z ^[[1m^[[92m  Downloaded^[[0m block-buffer v0.12.1
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:24.6065850Z ^[[1m^[[92m  Downloaded^[[0m moxcms v0.8.1
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:24.6329350Z ^[[1m^[[92m  Downloaded^[[0m serde_core v1.0.229
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:24.6386940Z ^[[1m^[[92m  Downloaded^[[0m tinyvec v1.13.3
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:24.6469290Z ^[[1m^[[92m  Downloaded^[[0m toml v1.1.8+spec-1.1.0
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:24.6550270Z ^[[1m^[[92m  Downloaded^[[0m toml_datetime v1.1.2+spec-1.1.0
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:24.6570200Z ^[[1m^[[92m  Downloaded^[[0m ryu v1.0.23
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:24.6666400Z ^[[1m^[[92m  Downloaded^[[0m cfg_aliases v0.2.2
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:24.6693780Z ^[[1m^[[92m  Downloaded^[[0m crypto-common v0.2.2
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:24.6756970Z ^[[1m^[[92m  Downloaded^[[0m digest v0.11.3
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:24.6819810Z ^[[1m^[[92m  Downloaded^[[0m either v1.19.0
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:24.6850570Z ^[[1m^[[92m  Downloaded^[[0m glob v0.3.4
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:24.6885030Z ^[[1m^[[92m  Downloaded^[[0m indexmap v2.14.2
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:24.6988140Z ^[[1m^[[92m  Downloaded^[[0m serde v1.0.229
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:24.7048190Z ^[[1m^[[92m  Downloaded^[[0m serde_derive v1.0.229
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:24.7132410Z ^[[1m^[[92m  Downloaded^[[0m toml_edit v0.25.17+spec-1.1.0
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:24.7235500Z ^[[1m^[[92m  Downloaded^[[0m referencing v0.59.0
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:24.7400060Z ^[[1m^[[92m  Downloaded^[[0m schemars v1.2.3
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:24.7948280Z ^[[1m^[[92m  Downloaded^[[0m dyn-clone v1.0.20
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:24.7998960Z ^[[1m^[[92m  Downloaded^[[0m i_shape v5.0.0
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:24.8132590Z ^[[1m^[[92m  Downloaded^[[0m image v0.25.10
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:24.8338210Z ^[[1m^[[92m  Downloaded^[[0m libc v0.2.191
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:24.9308970Z ^[[1m^[[92m  Downloaded^[[0m tiff v0.11.3
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:24.9393490Z ^[[1m^[[92m  Downloaded^[[0m zune-jpeg v0.5.15
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:24.9460080Z ^[[1m^[[92m  Downloaded^[[0m allocator-api2 v0.2.21
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:24.9549860Z ^[[1m^[[92m  Downloaded^[[0m bitflags v2.13.2
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:24.9698640Z ^[[1m^[[92m  Downloaded^[[0m euclid v0.22.14
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:24.9757880Z ^[[1m^[[92m  Downloaded^[[0m fax v0.2.7
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:24.9796560Z ^[[1m^[[92m  Downloaded^[[0m gif v0.14.2
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:24.9832780Z ^[[1m^[[92m  Downloaded^[[0m num v0.4.3
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:24.9852730Z ^[[1m^[[92m  Downloaded^[[0m peniko v0.6.1
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:24.9879300Z ^[[1m^[[92m  Downloaded^[[0m typenum v1.20.1
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:24.9966620Z ^[[1m^[[92m  Downloaded^[[0m png v0.18.1
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:25.0025570Z ^[[1m^[[92m  Downloaded^[[0m rand v0.10.3
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:25.0114490Z ^[[1m^[[92m  Downloaded^[[0m bit-set v0.8.0
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:25.0138480Z ^[[1m^[[92m  Downloaded^[[0m bytecount v0.6.9
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:25.0169780Z ^[[1m^[[92m  Downloaded^[[0m color v0.3.3
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:25.0217520Z ^[[1m^[[92m  Downloaded^[[0m num-integer v0.1.47
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:25.0256450Z ^[[1m^[[92m  Downloaded^[[0m num-rational v0.4.2
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:25.0298940Z ^[[1m^[[92m  Downloaded^[[0m unicode-normalization v0.1.26
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:25.0361000Z ^[[1m^[[92m  Downloaded^[[0m vello_cpu v0.3.0
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:25.0462470Z ^[[1m^[[92m  Downloaded^[[0m zerocopy-derive v0.8.63
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:25.0796110Z ^[[1m^[[92m  Downloaded^[[0m bytemuck v1.25.2
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:25.0866810Z ^[[1m^[[92m  Downloaded^[[0m i_float v5.0.0
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:25.0965500Z ^[[1m^[[92m  Downloaded^[[0m serde_json v1.0.154
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:25.1126300Z ^[[1m^[[92m  Downloaded^[[0m vello_common v0.3.0
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:25.1230950Z ^[[1m^[[92m  Downloaded^[[0m regex v1.13.1
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:25.1327600Z ^[[1m^[[92m  Downloaded^[[0m half v2.7.1
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:25.1390750Z ^[[1m^[[92m  Downloaded^[[0m jsonschema-regex v0.59.0
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:25.1403350Z ^[[1m^[[92m  Downloaded^[[0m parking_lot v0.12.5
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:25.1456510Z ^[[1m^[[92m  Downloaded^[[0m lock_api v0.4.14
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:25.1478000Z ^[[1m^[[92m  Downloaded^[[0m winnow v1.0.4
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:25.1860030Z ^[[1m^[[92m  Downloaded^[[0m rayon v1.12.0
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:25.2134270Z ^[[1m^[[92m  Downloaded^[[0m zlib-rs v0.6.8
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:25.2227050Z ^[[1m^[[92m  Downloaded^[[0m syn v2.0.119
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:25.2412960Z ^[[1m^[[92m  Downloaded^[[0m skrifa v0.44.0
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:25.2594050Z ^[[1m^[[92m  Downloaded^[[0m syn v3.0.9
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:25.2840440Z ^[[1m^[[92m  Downloaded^[[0m zerocopy v0.8.63
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:25.3431880Z ^[[1m^[[92m  Downloaded^[[0m regex-syntax v0.8.11
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:25.3545540Z ^[[1m^[[92m  Downloaded^[[0m kurbo v0.13.1
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:25.3658100Z ^[[1m^[[92m  Downloaded^[[0m rustix v1.1.5
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:25.4301270Z ^[[1m^[[92m  Downloaded^[[0m spade v2.15.1
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:25.4500410Z ^[[1m^[[92m  Downloaded^[[0m robust v1.2.0
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:25.4577900Z ^[[1m^[[92m  Downloaded^[[0m regex-automata v0.4.18
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:25.4826300Z ^[[1m^[[92m  Downloaded^[[0m pxfm v0.1.30
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:25.6558060Z ^[[1m^[[92m   Compiling^[[0m proc-macro2 v1.0.107
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:25.6559570Z ^[[1m^[[92m   Compiling^[[0m unicode-ident v1.0.27
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:25.6560050Z ^[[1m^[[92m   Compiling^[[0m quote v1.0.47
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:26.3088440Z ^[[1m^[[92m   Compiling^[[0m cfg-if v1.0.5
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:26.3874860Z ^[[1m^[[92m   Compiling^[[0m libc v0.2.191
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:31.3021000Z ^[[1m^[[92m   Compiling^[[0m autocfg v1.5.1
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:32.9744470Z ^[[1m^[[92m   Compiling^[[0m syn v3.0.9
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:32.9998480Z ^[[1m^[[92m   Compiling^[[0m num-traits v0.2.19
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:34.0437450Z ^[[1m^[[92m   Compiling^[[0m serde_core v1.0.229
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:34.2505690Z ^[[1m^[[92m   Compiling^[[0m syn v2.0.119
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:36.9619470Z ^[[1m^[[92m   Compiling^[[0m foldhash v0.2.0
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:37.1721670Z ^[[1m^[[92m   Compiling^[[0m allocator-api2 v0.2.21
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:37.5473370Z ^[[1m^[[92m   Compiling^[[0m equivalent v1.0.3
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:37.6063410Z ^[[1m^[[92m   Compiling^[[0m version_check v0.9.5
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:38.5337680Z ^[[1m^[[92m   Compiling^[[0m memchr v2.8.3
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:39.4146050Z ^[[1m^[[92m   Compiling^[[0m serde v1.0.229
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:40.0238220Z ^[[1m^[[92m   Compiling^[[0m zerocopy v0.8.63
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:40.9741190Z ^[[1m^[[92m   Compiling^[[0m once_cell v1.21.4
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:41.2076660Z ^[[1m^[[92m   Compiling^[[0m smallvec v1.16.3
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:41.4870550Z ^[[1m^[[92m   Compiling^[[0m hashbrown v0.17.1
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:42.1779620Z ^[[1m^[[92m   Compiling^[[0m zmij v1.0.23
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:42.5931110Z ^[[1m^[[92m   Compiling^[[0m num-integer v0.1.47
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:43.3292490Z ^[[1m^[[92m   Compiling^[[0m rand_core v0.10.1
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:43.4890550Z ^[[1m^[[92m   Compiling^[[0m serde_json v1.0.154
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:44.1182660Z ^[[1m^[[92m   Compiling^[[0m indexmap v2.14.2
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:44.9329050Z ^[[1m^[[92m   Compiling^[[0m ref-cast v1.0.27
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:45.4497410Z ^[[1m^[[92m   Compiling^[[0m itoa v1.0.18
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:45.7301210Z ^[[1m^[[92m   Compiling^[[0m getrandom v0.4.3
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:45.9855110Z ^[[1m^[[92m   Compiling^[[0m regex-syntax v0.8.11
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:47.3828120Z ^[[1m^[[92m   Compiling^[[0m serde_derive v1.0.229
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:57.2436920Z ^[[1m^[[92m   Compiling^[[0m getrandom v0.3.4
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:07:57.7816080Z ^[[1m^[[92m   Compiling^[[0m ref-cast-impl v1.0.27
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:08:00.8239620Z ^[[1m^[[92m   Compiling^[[0m zerocopy-derive v0.8.63
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:08:03.7637060Z ^[[1m^[[92m   Compiling^[[0m num-bigint v0.4.8
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:08:05.0346480Z ^[[1m^[[92m   Compiling^[[0m ahash v0.8.12
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:08:05.2250940Z ^[[1m^[[92m   Compiling^[[0m parking_lot_core v0.9.12
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:08:05.5002180Z ^[[1m^[[92m   Compiling^[[0m num-rational v0.4.2
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:08:07.4200760Z ^[[1m^[[92m   Compiling^[[0m num-iter v0.1.46
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:08:07.4993540Z ^[[1m^[[92m   Compiling^[[0m aho-corasick v1.1.5
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:08:09.1050320Z ^[[1m^[[92m   Compiling^[[0m num-complex v0.4.6
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:08:09.6474330Z ^[[1m^[[92m   Compiling^[[0m thiserror v2.0.21
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:08:10.2345860Z ^[[1m^[[92m   Compiling^[[0m scopeguard v1.2.0
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:08:10.3119050Z ^[[1m^[[92m   Compiling^[[0m lock_api v0.4.14
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:08:10.5884060Z ^[[1m^[[92m   Compiling^[[0m num v0.4.3
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:08:10.6497990Z ^[[1m^[[92m   Compiling^[[0m regex-automata v0.4.18
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:08:13.7827540Z ^[[1m^[[92m   Compiling^[[0m thiserror-impl v2.0.21
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:08:20.3782020Z ^[[1m^[[92m   Compiling^[[0m bytemuck_derive v1.12.1
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:08:24.3240440Z ^[[1m^[[92m   Compiling^[[0m unicode-general-category v1.1.0
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:08:24.8593930Z ^[[1m^[[92m   Compiling^[[0m heck v0.5.0
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:08:25.5387640Z ^[[1m^[[92m   Compiling^[[0m jsonschema-value v0.59.0
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:08:26.0392590Z ^[[1m^[[92m   Compiling^[[0m borrow-or-share v0.2.4
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:08:26.1766050Z ^[[1m^[[92m   Compiling^[[0m bit-vec v0.8.0
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:08:26.5926380Z ^[[1m^[[92m   Compiling^[[0m bit-set v0.8.0
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:08:26.8182900Z ^[[1m^[[92m   Compiling^[[0m fluent-uri v0.4.1
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:08:28.4654500Z ^[[1m^[[92m   Compiling^[[0m strum_macros v0.28.0
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:08:28.6676600Z ^[[1m^[[92m   Compiling^[[0m bytemuck v1.25.2
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:08:29.2300560Z ^[[1m^[[92m   Compiling^[[0m parking_lot v0.12.5
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:08:29.3479810Z ^[[1m^[[92m   Compiling^[[0m fraction v0.17.0
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:08:29.8833750Z ^[[1m^[[92m   Compiling^[[0m serde_derive_internals v0.30.0
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:08:30.5364880Z ^[[1m^[[92m   Compiling^[[0m percent-encoding v2.3.2
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:08:30.8645610Z ^[[1m^[[92m   Compiling^[[0m bytecount v0.6.9
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:08:31.1400850Z ^[[1m^[[92m   Compiling^[[0m tinyvec v1.13.3
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:08:31.6363830Z ^[[1m^[[92m   Compiling^[[0m vsimd v0.8.0
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:08:32.1084400Z ^[[1m^[[92m   Compiling^[[0m outref v0.5.2
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:08:32.1988800Z ^[[1m^[[92m   Compiling^[[0m crossbeam-utils v0.8.23
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:08:32.7295760Z ^[[1m^[[92m   Compiling^[[0m micromap v0.3.0
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:08:32.9778050Z ^[[1m^[[92m   Compiling^[[0m num-cmp v0.1.0
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:08:34.9685430Z ^[[1m^[[92m   Compiling^[[0m referencing v0.59.0
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:08:38.5407110Z ^[[1m^[[92m   Compiling^[[0m schemars_derive v1.2.3
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:08:42.3560210Z ^[[1m^[[92m   Compiling^[[0m uuid-simd v0.8.0
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:08:42.9837900Z ^[[1m^[[92m   Compiling^[[0m fancy-regex v0.19.2
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:08:43.5844200Z ^[[1m^[[92m   Compiling^[[0m strum v0.28.0
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:08:43.6839320Z ^[[1m^[[92m   Compiling^[[0m regex v1.13.1
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:08:45.0850450Z ^[[1m^[[92m   Compiling^[[0m email_address v0.2.9
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:08:45.4869050Z ^[[1m^[[92m   Compiling^[[0m jsonschema-regex v0.59.0
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:08:47.1009990Z ^[[1m^[[92m   Compiling^[[0m simd-adler32 v0.3.10
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:08:47.2872320Z ^[[1m^[[92m   Compiling^[[0m data-encoding v2.11.1
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:08:47.9572260Z ^[[1m^[[92m   Compiling^[[0m dyn-clone v1.0.20
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:08:48.0882610Z ^[[1m^[[92m   Compiling^[[0m schemars v1.2.3
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:08:50.6648400Z ^[[1m^[[92m   Compiling^[[0m jsonschema v0.59.0
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:08:52.4993710Z ^[[1m^[[92m   Compiling^[[0m unicode-normalization v0.1.26
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:08:52.9357200Z ^[[1m^[[92m   Compiling^[[0m typenum v1.20.1
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:08:53.5446040Z ^[[1m^[[92m   Compiling^[[0m ryu v1.0.23
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:08:53.8584900Z ^[[1m^[[92m   Compiling^[[0m adler2 v2.0.1
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:08:54.0016530Z ^[[1m^[[92m   Compiling^[[0m crc32fast v1.5.2
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:08:54.3455190Z ^[[1m^[[92m   Compiling^[[0m hybrid-array v0.4.15
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:08:54.5744310Z ^[[1m^[[92m   Compiling^[[0m libm v0.2.16
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:08:54.7313550Z ^[[1m^[[92m   Compiling^[[0m bitflags v2.13.2
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:08:54.9757650Z ^[[1m^[[92m   Compiling^[[0m crossbeam-epoch v0.9.21
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:08:55.2303900Z ^[[1m^[[92m   Compiling^[[0m miniz_oxide v0.9.1
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:08:55.3924330Z ^[[1m^[[92m   Compiling^[[0m crossbeam-deque v0.8.8
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:08:55.6231670Z ^[[1m^[[92m   Compiling^[[0m arrayvec v0.7.8
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:08:55.8503160Z ^[[1m^[[92m   Compiling^[[0m polycool v0.4.0
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:08:57.0086950Z ^[[1m^[[92m   Compiling^[[0m tt-model v0.0.1 (/Users/runner/work/261017-toontown-dev/261017-toontown-dev/crates/model)
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:08:57.1013580Z ^[[1m^[[92m   Compiling^[[0m flate2 v1.1.10
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:09:00.2718140Z ^[[1m^[[92m   Compiling^[[0m block-buffer v0.12.1
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:09:00.4094950Z ^[[1m^[[92m   Compiling^[[0m crypto-common v0.2.2
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:09:02.0575220Z ^[[1m^[[92m   Compiling^[[0m slotmap v1.1.1
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:09:02.3049200Z ^[[1m^[[92m   Compiling^[[0m rayon-core v1.13.0
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:09:02.4602000Z ^[[1m^[[92m   Compiling^[[0m log v0.4.34
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:09:02.6220640Z ^[[1m^[[92m   Compiling^[[0m const-oid v0.10.2
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:09:02.8414930Z ^[[1m^[[92m   Compiling^[[0m digest v0.11.3
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:09:03.0765760Z ^[[1m^[[92m   Compiling^[[0m i_float v5.0.0
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:09:03.6323520Z ^[[1m^[[92m   Compiling^[[0m kurbo v0.13.1
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:09:07.2497050Z ^[[1m^[[92m   Compiling^[[0m color v0.3.3
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:09:08.6558210Z ^[[1m^[[92m   Compiling^[[0m font-types v0.12.7
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:09:09.0473470Z ^[[1m^[[92m   Compiling^[[0m euclid v0.22.14
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:09:09.5634410Z ^[[1m^[[92m   Compiling^[[0m cpufeatures v0.3.1
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:09:09.6801880Z ^[[1m^[[92m   Compiling^[[0m linebender_resource_handle v0.1.1
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:09:09.7705380Z ^[[1m^[[92m   Compiling^[[0m peniko v0.6.1
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:09:10.1720270Z ^[[1m^[[92m   Compiling^[[0m sha2 v0.11.1
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:09:10.8475240Z ^[[1m^[[92m   Compiling^[[0m guillotiere v0.7.0
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:09:11.6512190Z ^[[1m^[[92m   Compiling^[[0m read-fonts v0.41.0
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:09:35.7799750Z ^[[1m^[[92m   Compiling^[[0m i_shape v5.0.0
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:09:36.4660900Z ^[[1m^[[92m   Compiling^[[0m miniz_oxide v0.8.9
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:09:38.3899110Z ^[[1m^[[92m   Compiling^[[0m crossbeam-channel v0.5.17
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:09:38.9659190Z ^[[1m^[[92m   Compiling^[[0m fdeflate v0.3.7
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:09:39.9626020Z ^[[1m^[[92m   Compiling^[[0m hashbrown v0.16.1
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:09:40.5613910Z ^[[1m^[[92m   Compiling^[[0m memmap2 v0.9.11
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:09:40.7783580Z ^[[1m^[[92m   Compiling^[[0m rustix v1.1.5
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:09:41.3444790Z ^[[1m^[[92m   Compiling^[[0m i_key_sort v0.12.0
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:09:41.5125090Z ^[[1m^[[92m   Compiling^[[0m fearless_simd v0.7.0
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:09:43.8345670Z ^[[1m^[[92m   Compiling^[[0m robust v1.2.0
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:09:44.6537610Z ^[[1m^[[92m   Compiling^[[0m i_tree v0.20.0
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:09:44.8344090Z ^[[1m^[[92m   Compiling^[[0m zune-core v0.5.3
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:09:45.0244280Z ^[[1m^[[92m   Compiling^[[0m either v1.19.0
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:09:45.1423240Z ^[[1m^[[92m   Compiling^[[0m weezl v0.1.12
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:09:46.2244490Z ^[[1m^[[92m   Compiling^[[0m rayon v1.12.0
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:09:47.9965660Z ^[[1m^[[92m   Compiling^[[0m zune-jpeg v0.5.15
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:09:49.4436230Z ^[[1m^[[92m   Compiling^[[0m i_overlay v9.1.0
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:09:50.7071230Z ^[[1m^[[92m   Compiling^[[0m spade v2.15.1
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:09:51.7694950Z ^[[1m^[[92m   Compiling^[[0m vello_common v0.3.0
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:09:59.9784450Z ^[[1m^[[92m   Compiling^[[0m fontdb v0.24.0
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:10:01.7513350Z ^[[1m^[[92m   Compiling^[[0m png v0.18.1
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:10:04.4833360Z ^[[1m^[[92m   Compiling^[[0m ordered-channel v1.2.0
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:10:04.6061070Z ^[[1m^[[92m   Compiling^[[0m skrifa v0.44.0
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:10:10.7820090Z ^[[1m^[[92m   Compiling^[[0m tt-anim v0.0.1 (/Users/runner/work/261017-toontown-dev/261017-toontown-dev/crates/anim)
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:10:10.8594680Z ^[[1m^[[92m   Compiling^[[0m half v2.7.1
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:10:11.2267320Z ^[[1m^[[92m   Compiling^[[0m errno v0.3.14
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:10:11.3647870Z ^[[1m^[[92m   Compiling^[[0m thread_local v1.1.10
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:10:11.6593580Z ^[[1m^[[92m   Compiling^[[0m quick-error v2.0.1
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:10:11.7528940Z ^[[1m^[[92m   Compiling^[[0m color_quant v1.1.0
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:10:12.0663000Z ^[[1m^[[92m   Compiling^[[0m fax v0.2.7
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:10:12.4066570Z ^[[1m^[[92m   Compiling^[[0m pxfm v0.1.30
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:10:22.3365500Z ^[[1m^[[92m   Compiling^[[0m moxcms v0.8.1
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:10:22.6876410Z ^[[1m^[[92m   Compiling^[[0m tiff v0.11.3
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:10:26.2385460Z ^[[1m^[[92m   Compiling^[[0m gif v0.14.2
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:10:28.6831510Z ^[[1m^[[92m   Compiling^[[0m vello_cpu v0.3.0
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:10:32.8125380Z ^[[1m^[[92m   Compiling^[[0m tt-fx v0.0.1 (/Users/runner/work/261017-toontown-dev/261017-toontown-dev/crates/fx)
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:10:32.8966110Z ^[[1m^[[92m   Compiling^[[0m tt-vector v0.0.1 (/Users/runner/work/261017-toontown-dev/261017-toontown-dev/crates/vector)
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:10:40.9598500Z ^[[1m^[[92m   Compiling^[[0m tt-colour v0.0.1 (/Users/runner/work/261017-toontown-dev/261017-toontown-dev/crates/colour)
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:10:41.0214830Z ^[[1m^[[92m   Compiling^[[0m byteorder-lite v0.1.0
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:10:41.2597510Z ^[[1m^[[92m   Compiling^[[0m target-tuple v1.0.2
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:10:41.6410940Z ^[[1m^[[92m   Compiling^[[0m fastrand v2.5.0
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:10:41.8939400Z ^[[1m^[[92m   Compiling^[[0m winnow v1.0.4
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:10:42.2311780Z ^[[1m^[[92m   Compiling^[[0m toml_parser v1.1.5+spec-1.1.0
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:10:44.5647780Z ^[[1m^[[92m   Compiling^[[0m tempfile v3.27.0
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:10:46.2537780Z ^[[1m^[[92m   Compiling^[[0m image v0.25.10
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:11:20.3113710Z ^[[1m^[[92m   Compiling^[[0m tt-render v0.0.1 (/Users/runner/work/261017-toontown-dev/261017-toontown-dev/crates/render)
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:11:21.1857740Z ^[[1m^[[92m   Compiling^[[0m tt-persist v0.0.1 (/Users/runner/work/261017-toontown-dev/261017-toontown-dev/crates/persist)
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:11:27.9059440Z ^[[1m^[[92m   Compiling^[[0m tt-registry-macros v0.0.1 (/Users/runner/work/261017-toontown-dev/261017-toontown-dev/crates/registry-macros)
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:11:28.5910650Z ^[[1m^[[92m   Compiling^[[0m toml_datetime v1.1.2+spec-1.1.0
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:11:29.0737170Z ^[[1m^[[92m   Compiling^[[0m serde_spanned v1.1.2
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:11:29.2217820Z ^[[1m^[[92m   Compiling^[[0m wait-timeout v0.2.1
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:11:29.3162980Z ^[[1m^[[92m   Compiling^[[0m fnv v1.0.7
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:11:29.4141570Z ^[[1m^[[92m   Compiling^[[0m toml_writer v1.1.3+spec-1.1.0
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:11:29.7180380Z ^[[1m^[[92m   Compiling^[[0m bit-vec v0.10.1
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:11:30.0323120Z ^[[1m^[[92m   Compiling^[[0m quick-error v1.2.3
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:11:30.0788070Z ^[[1m^[[92m   Compiling^[[0m bit-set v0.11.1
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:11:30.1472430Z ^[[1m^[[92m   Compiling^[[0m rusty-fork v0.3.1
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:11:30.2763250Z ^[[1m^[[92m   Compiling^[[0m toml v1.1.8+spec-1.1.0
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:11:31.7839110Z ^[[1m^[[92m   Compiling^[[0m tt-registry v0.0.1 (/Users/runner/work/261017-toontown-dev/261017-toontown-dev/crates/registry)
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:11:33.7017390Z ^[[1m^[[92m   Compiling^[[0m tt-io v0.0.1 (/Users/runner/work/261017-toontown-dev/261017-toontown-dev/crates/io)
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:11:35.9370000Z ^[[1m^[[92m   Compiling^[[0m rand v0.10.3
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:11:36.4365820Z ^[[1m^[[92m   Compiling^[[0m chacha20 v0.10.2
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:11:36.6706830Z ^[[1m^[[92m   Compiling^[[0m rand_xorshift v0.5.0
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:11:36.7886610Z ^[[1m^[[92m   Compiling^[[0m core_detect v1.0.0
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:11:36.8913960Z ^[[1m^[[92m   Compiling^[[0m glob v0.3.4
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:11:37.4173470Z ^[[1m^[[92m   Compiling^[[0m unarray v0.1.4
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:11:37.5620990Z ^[[1m^[[92m   Compiling^[[0m termcolor v1.4.1
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:11:38.1745420Z ^[[1m^[[92m   Compiling^[[0m trybuild v1.0.122
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:11:38.4882460Z ^[[1m^[[92m   Compiling^[[0m proptest v1.12.0
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:11:43.2459340Z ^[[1m^[[92m   Compiling^[[0m tt-executor v0.0.1 (/Users/runner/work/261017-toontown-dev/261017-toontown-dev/crates/executor)
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:11:50.7671950Z ^[[1m^[[92m   Compiling^[[0m stats_alloc v0.1.10
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:12:16.4014790Z ^[[1m^[[92m    Finished^[[0m `test` profile [unoptimized + debuginfo] target(s) in 4m 54s
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:12:16.6893610Z ^[[1m^[[92m     Running^[[0m tests/c24_oracle_routes.rs (target/debug/deps/c24_oracle_routes-ffd160496756bae3)
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:12:16.6964630Z 
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:12:16.7289980Z running 11 tests
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:12:27.5264450Z test break_apart_leaves_the_line_layer_to_the_oracle_and_makes_one_group_per_glyph ... ok
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:12:27.5566120Z test affine_envelopes_match_the_oracle ... ok
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:12:38.1774890Z test optimize_and_smooth_keep_the_oracles_partition ... ok
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:12:39.4628880Z test lines_to_brush_and_centre_line_keep_the_oracles_partition ... ok
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:13:05.0006100Z test region_erase_matches_the_oracle ... ok
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:13:07.9995100Z test point_moves_with_and_without_snapping_match_the_oracle ... ok
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:13:16.8309620Z test flatten_of_overlapping_layers_matches_the_oracle has been running for over 60 seconds
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:13:28.5339600Z test segment_cut_matches_the_oracle ... ok
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:13:44.5352090Z test stroke_set_and_delete_match_the_oracle ... ok
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:13:49.9883080Z test stroke_add_matches_the_oracle ... ok
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:13:55.7726180Z test transforms_match_the_oracles_transformed_geometry ... ok
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:18:11.5783860Z test flatten_of_overlapping_layers_matches_the_oracle ... ok
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:18:11.5786210Z 
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:18:11.5788260Z test result: ok. 11 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 354.88s
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:18:11.5789550Z 
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:18:11.5802690Z ^[[1m^[[92m     Running^[[0m tests/c24_r1_topology.rs (target/debug/deps/c24_r1_topology-4e3b014c1dc3bec9)
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:18:11.6030810Z 
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:18:11.6031270Z running 5 tests
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:18:11.8701580Z test shrunk_cutter_area_bound ... ok
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:19:11.6751050Z test flatten_of_disjoint_layers_has_the_faces_of_their_union has been running for over 60 seconds
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:19:11.6789120Z test the_cutter_splits_along_its_segment_like_the_oracle has been running for over 60 seconds
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:19:11.9293930Z test transforms_with_determinant_plus_and_minus_one_keep_the_oracles_faces has been running for over 60 seconds
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:19:34.6353080Z test transforms_with_determinant_plus_and_minus_one_keep_the_oracles_faces ... ok
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:19:45.6353240Z test the_cutter_splits_along_its_segment_like_the_oracle ... ok
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:19:47.7841550Z test flatten_of_disjoint_layers_has_the_faces_of_their_union ... ok
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:20:34.6404960Z test vectorized_shapes_enclose_one_unpainted_zone_per_paper_component has been running for over 60 seconds
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:20:47.5902780Z test vectorized_shapes_enclose_one_unpainted_zone_per_paper_component ... ok
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:20:47.5903810Z 
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:20:47.5904460Z test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 155.99s
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:20:47.5905370Z 
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:20:47.5927940Z ^[[1m^[[92m     Running^[[0m tests/c24_topology.rs (target/debug/deps/c24_topology-7a02318bedeb3c02)
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:20:47.6111140Z 
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:20:47.6112360Z running 4 tests
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:20:48.1547500Z test flatten_of_disjoint_layers_has_the_faces_of_their_union ... ok
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:20:48.2552340Z test transforms_with_determinant_plus_and_minus_one_keep_the_oracles_faces ... ok
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:20:48.2795770Z test the_cutter_splits_along_its_segment_like_the_oracle ... ok
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:20:48.3576960Z test vectorized_shapes_enclose_one_unpainted_zone_per_paper_component ... ok
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:20:48.3577350Z 
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:20:48.3577710Z test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.75s
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:20:48.3578150Z 
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:20:49.0984850Z ^[[1m^[[92m   Compiling^[[0m zerocopy v0.8.63
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:20:49.0989910Z ^[[1m^[[92m   Compiling^[[0m smallvec v1.16.3
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:20:49.1110990Z ^[[1m^[[92m   Compiling^[[0m syn v2.0.119
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:20:50.7462190Z ^[[1m^[[92m   Compiling^[[0m parking_lot_core v0.9.12
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:20:51.3019800Z ^[[1m^[[92m   Compiling^[[0m parking_lot v0.12.5
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:20:52.8459000Z ^[[1m^[[92m   Compiling^[[0m bytemuck v1.25.2
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:20:53.0825400Z ^[[1m^[[92m   Compiling^[[0m font-types v0.12.7
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:20:53.6319990Z ^[[1m^[[92m   Compiling^[[0m read-fonts v0.41.0
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:20:55.7761750Z ^[[1m^[[92m   Compiling^[[0m ahash v0.8.12
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:20:56.1021010Z ^[[1m^[[92m   Compiling^[[0m referencing v0.59.0
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:21:04.3511090Z ^[[1m^[[92m   Compiling^[[0m strum_macros v0.28.0
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:21:05.7524340Z ^[[1m^[[92m   Compiling^[[0m jsonschema-value v0.59.0
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:21:07.6714700Z ^[[1m^[[92m   Compiling^[[0m spade v2.15.1
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:21:09.2078570Z ^[[1m^[[92m   Compiling^[[0m skrifa v0.44.0
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:21:17.2817310Z ^[[1m^[[92m   Compiling^[[0m strum v0.28.0
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:21:17.3833610Z ^[[1m^[[92m   Compiling^[[0m jsonschema v0.59.0
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:21:28.3830940Z ^[[1m^[[92m   Compiling^[[0m tt-model v0.0.1 (/Users/runner/work/261017-toontown-dev/261017-toontown-dev/crates/model)
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:21:41.8254460Z ^[[1m^[[92m   Compiling^[[0m tt-vector v0.0.1 (/Users/runner/work/261017-toontown-dev/261017-toontown-dev/crates/vector)
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:23:12.9336670Z ^[[1m^[[92m    Finished^[[0m `test` profile [unoptimized + debuginfo] target(s) in 2m 24s
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:23:12.9590870Z ^[[1m^[[92m     Running^[[0m tests/c24_properties.rs (target/debug/deps/c24_properties-42aeb79c95a95e07)
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:23:12.9636150Z 
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:23:12.9636880Z running 8 tests
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:23:13.3093990Z test a_settled_layer_is_a_fixpoint_of_noding ... ok
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:23:13.3223420Z test fixed_regressions ... ok
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:23:13.7852530Z test adding_strokes_carries_each_fill_into_the_zones_it_splits ... ok
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:23:13.7953990Z test side_fills_read_back_beside_collinear_overlaps ... ok
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:23:14.0371270Z test zone_ids_and_areas_do_not_depend_on_stroke_order_and_settling_is_idempotent ... ok
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:23:14.3343870Z test side_fills_read_back_after_adding_strokes ... ok
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:23:14.7580470Z test zones_are_the_oracles_bounded_faces_on_degenerate_arrangements ... ok
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:23:15.6931060Z test determinant_plus_and_minus_one_maps_keep_the_faces ... ok
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:23:15.6936730Z ^[[1m^[[92m     Running^[[0m tests/c24_r1_properties.rs (target/debug/deps/c24_r1_properties-071434b1484a0ed9)
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:23:15.6937770Z 
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:23:15.6938380Z test result: ok. 8 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 2.73s
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:23:15.6939100Z 
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:23:15.6965980Z 
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:23:15.6968980Z running 9 tests
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:23:17.8967640Z test a_settled_layer_is_a_fixpoint_of_noding ... ok
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:23:17.8997850Z test fixed_regressions ... ok
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:23:17.9101290Z test shrunk_determinant_case ... ok
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:23:32.3929930Z test adding_strokes_carries_each_fill_into_the_zones_it_splits ... ok
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:23:32.4030660Z test side_fills_read_back_beside_collinear_overlaps ... ok
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:23:35.3536390Z test side_fills_read_back_after_adding_strokes ... ok
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:23:36.3966220Z test zone_ids_and_areas_do_not_depend_on_stroke_order_and_settling_is_idempotent ... ok
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:23:42.7790410Z test zones_are_the_oracles_bounded_faces_on_degenerate_arrangements ... ok
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:24:15.7811210Z test determinant_plus_and_minus_one_maps_keep_the_faces has been running for over 60 seconds
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:24:39.6721340Z test determinant_plus_and_minus_one_maps_keep_the_faces ... ok
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:24:39.6722160Z 
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:24:39.6722910Z test result: ok. 9 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 83.98s
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:24:39.6723710Z 
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:24:39.7295300Z Post job cleanup.
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:24:40.2186530Z ##[group]Cache Configuration
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:24:40.2186960Z Cache Provider:
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:24:40.2187180Z     github
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:24:40.2187430Z Workspaces:
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:24:40.2187790Z     /Users/runner/work/261017-toontown-dev/261017-toontown-dev
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:24:40.2188170Z Cache Paths:
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:24:40.2188550Z     /Users/runner/.cargo/bin
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:24:40.2189540Z     /Users/runner/.cargo/.crates.toml
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:24:40.2195130Z     /Users/runner/.cargo/.crates2.json
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:24:40.2196100Z     /Users/runner/.cargo/registry
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:24:40.2196550Z     /Users/runner/.cargo/git
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:24:40.2197380Z     /Users/runner/work/261017-toontown-dev/261017-toontown-dev/target
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:24:40.2197830Z Restore Key:
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:24:40.2198950Z     v0-rust-check-properties-check-properties-Darwin-arm64-1ef279f7
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:24:40.2199460Z Cache Key:
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:24:40.2199910Z     v0-rust-check-properties-check-properties-Darwin-arm64-1ef279f7-7ca7b21e
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:24:40.2200280Z .. Prefix:
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:24:40.2200790Z   - v0-rust-check-properties-check-properties-Darwin-arm64
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:24:40.2201260Z .. Environment considered:
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:24:40.2201680Z   - Rust Versions:
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:24:40.2202060Z     - 1.98.1 aarch64-apple-darwin 48a229ceaefd4985c50990b14116b6d856af0985
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:24:40.2203010Z     - 1.99.1 aarch64-apple-darwin 58cf8f9c35b355199727627d07ae34a4e2846d67
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:24:40.2203710Z   - CARGO_INCREMENTAL
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:24:40.2204610Z   - CARGO_TERM_COLOR
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:24:40.2205120Z   - RUST_BACKTRACE
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:24:40.2205800Z .. Lockfiles considered:
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:24:40.2206780Z   - /Users/runner/work/261017-toontown-dev/261017-toontown-dev/bins/headless/Cargo.toml
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:24:40.2207290Z   - /Users/runner/work/261017-toontown-dev/261017-toontown-dev/Cargo.lock
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:24:40.2207990Z   - /Users/runner/work/261017-toontown-dev/261017-toontown-dev/crates/anim/Cargo.toml
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:24:40.2208660Z   - /Users/runner/work/261017-toontown-dev/261017-toontown-dev/crates/audio/Cargo.toml
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:24:40.2209780Z   - /Users/runner/work/261017-toontown-dev/261017-toontown-dev/crates/colour/Cargo.toml
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:24:40.2210380Z   - /Users/runner/work/261017-toontown-dev/261017-toontown-dev/crates/engine/Cargo.toml
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:24:40.2211430Z   - /Users/runner/work/261017-toontown-dev/261017-toontown-dev/crates/executor/Cargo.toml
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:24:40.2212040Z   - /Users/runner/work/261017-toontown-dev/261017-toontown-dev/crates/fx/Cargo.toml
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:24:40.2212720Z   - /Users/runner/work/261017-toontown-dev/261017-toontown-dev/crates/io/Cargo.toml
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:24:40.2213680Z   - /Users/runner/work/261017-toontown-dev/261017-toontown-dev/crates/lipsync/Cargo.toml
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:24:40.2214370Z   - /Users/runner/work/261017-toontown-dev/261017-toontown-dev/crates/mcp/Cargo.toml
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:24:40.2215450Z   - /Users/runner/work/261017-toontown-dev/261017-toontown-dev/crates/model/Cargo.toml
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:24:40.2216090Z   - /Users/runner/work/261017-toontown-dev/261017-toontown-dev/crates/persist/Cargo.toml
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:24:40.2216830Z   - /Users/runner/work/261017-toontown-dev/261017-toontown-dev/crates/registry-macros/Cargo.toml
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:24:40.2217590Z   - /Users/runner/work/261017-toontown-dev/261017-toontown-dev/crates/registry/Cargo.toml
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:24:40.2219030Z   - /Users/runner/work/261017-toontown-dev/261017-toontown-dev/crates/render/Cargo.toml
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:24:40.2219780Z   - /Users/runner/work/261017-toontown-dev/261017-toontown-dev/crates/vector/Cargo.toml
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:24:40.2220280Z   - /Users/runner/work/261017-toontown-dev/261017-toontown-dev/desktop/src-tauri/Cargo.toml
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:24:40.2221010Z   - /Users/runner/work/261017-toontown-dev/261017-toontown-dev/rust-toolchain.toml
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:24:40.2221750Z ##[endgroup]
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:24:40.2221990Z 
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:24:52.7307550Z ... Cleaning /Users/runner/work/261017-toontown-dev/261017-toontown-dev/target ...
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:24:53.0915510Z ... Cleaning cargo registry (cache-all-crates: false) ...
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:24:56.1169020Z ... Cleaning cargo/bin ...
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:24:56.1173240Z ... Cleaning cargo git cache ...
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:24:56.1197870Z ... Saving cache ...
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:24:56.2290680Z [command]/opt/homebrew/bin/gtar --posix -cf cache.tzst --exclude cache.tzst -P -C /Users/runner/work/261017-toontown-dev/261017-toontown-dev --files-from manifest.txt --delay-directory-restore --use-compress-program zstdmt
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:25:02.2729120Z Sent 0 of 372168591 (0.0%), 0.0 MBs/sec
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:25:03.2834960Z Sent 36624271 of 372168591 (9.8%), 17.4 MBs/sec
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:25:03.9604640Z Sent 372168591 of 372168591 (100.0%), 131.9 MBs/sec
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:25:04.1583620Z Post job cleanup.
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:25:04.5907180Z [command]/opt/homebrew/bin/git version
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:25:04.6242620Z git version 2.56.0
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:25:04.6264640Z Copying '/Users/runner/.gitconfig' to '/Users/runner/work/_temp/908bbeb0-1c41-4255-bcb7-3c3138238a86/.gitconfig'
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:25:04.6273160Z Temporarily overriding HOME='/Users/runner/work/_temp/908bbeb0-1c41-4255-bcb7-3c3138238a86' before making global git config changes
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:25:04.6275930Z Adding repository directory to the temporary git global config as a safe directory
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:25:04.6283590Z [command]/opt/homebrew/bin/git config --global --add safe.directory /Users/runner/work/261017-toontown-dev/261017-toontown-dev
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:25:04.6573760Z Removing SSH command configuration
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:25:04.6574610Z [command]/opt/homebrew/bin/git config --local --name-only --get-regexp core\.sshCommand
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:25:04.6605870Z [command]/opt/homebrew/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:25:04.8152490Z Removing HTTP extra header
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:25:04.8156730Z [command]/opt/homebrew/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:25:04.8258420Z [command]/opt/homebrew/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:25:04.9670260Z Removing includeIf entries pointing to credentials config files
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:25:04.9675100Z [command]/opt/homebrew/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:25:04.9766230Z includeif.gitdir:/Users/runner/work/261017-toontown-dev/261017-toontown-dev/.git.path
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:25:04.9766950Z includeif.gitdir:/Users/runner/work/261017-toontown-dev/261017-toontown-dev/.git/worktrees/*.path
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:25:04.9767620Z includeif.gitdir:/github/workspace/.git.path
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:25:04.9768000Z includeif.gitdir:/github/workspace/.git/worktrees/*.path
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:25:04.9779830Z [command]/opt/homebrew/bin/git config --local --get-all includeif.gitdir:/Users/runner/work/261017-toontown-dev/261017-toontown-dev/.git.path
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:25:04.9896180Z /Users/runner/work/_temp/git-credentials-fe9d0d23-1cff-4a76-8d5f-7f80b3abf0ef.config
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:25:04.9912780Z [command]/opt/homebrew/bin/git config --local --unset includeif.gitdir:/Users/runner/work/261017-toontown-dev/261017-toontown-dev/.git.path \/Users\/runner\/work\/_temp\/git\-credentials\-fe9d0d23\-1cff\-4a76\-8d5f\-7f80b3abf0ef\.config
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:25:05.0022910Z [command]/opt/homebrew/bin/git config --local --get-all includeif.gitdir:/Users/runner/work/261017-toontown-dev/261017-toontown-dev/.git/worktrees/*.path
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:25:05.0104120Z /Users/runner/work/_temp/git-credentials-fe9d0d23-1cff-4a76-8d5f-7f80b3abf0ef.config
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:25:05.0129560Z [command]/opt/homebrew/bin/git config --local --unset includeif.gitdir:/Users/runner/work/261017-toontown-dev/261017-toontown-dev/.git/worktrees/*.path \/Users\/runner\/work\/_temp\/git\-credentials\-fe9d0d23\-1cff\-4a76\-8d5f\-7f80b3abf0ef\.config
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:25:05.0245490Z [command]/opt/homebrew/bin/git config --local --get-all includeif.gitdir:/github/workspace/.git.path
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:25:05.0324810Z /github/runner_temp/git-credentials-fe9d0d23-1cff-4a76-8d5f-7f80b3abf0ef.config
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:25:05.0336650Z [command]/opt/homebrew/bin/git config --local --unset includeif.gitdir:/github/workspace/.git.path \/github\/runner_temp\/git\-credentials\-fe9d0d23\-1cff\-4a76\-8d5f\-7f80b3abf0ef\.config
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:25:05.0429590Z [command]/opt/homebrew/bin/git config --local --get-all includeif.gitdir:/github/workspace/.git/worktrees/*.path
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:25:05.0510770Z /github/runner_temp/git-credentials-fe9d0d23-1cff-4a76-8d5f-7f80b3abf0ef.config
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:25:05.0525010Z [command]/opt/homebrew/bin/git config --local --unset includeif.gitdir:/github/workspace/.git/worktrees/*.path \/github\/runner_temp\/git\-credentials\-fe9d0d23\-1cff\-4a76\-8d5f\-7f80b3abf0ef\.config
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:25:05.0639260Z [command]/opt/homebrew/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:25:05.2018880Z Removing credentials config '/Users/runner/work/_temp/git-credentials-fe9d0d23-1cff-4a76-8d5f-7f80b3abf0ef.config'
+check properties (macos-latest)	UNKNOWN STEP	2026-11-02T17:25:05.2178430Z Cleaning up orphan processes

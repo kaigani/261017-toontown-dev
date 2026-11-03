@@ -232,6 +232,8 @@ Codex is asked to break the checkpoint, not to approve it. Required activities a
   spec's recommended default unless there is a documented reason.
 - Tests before merge for every command, renderer and serializer path; keep the traceability matrix current.
 - Report blocked items explicitly in the handoff; never narrow a checkpoint silently.
+- Reviewer ownership is by file, not by name prefix; builder test files named `c2x_round<n>.rs` are builder-owned
+  (orchestrator ruling, M2 C2.3 round 4).
 
 ---
 

@@ -1,0 +1,11 @@
+cargo :     Checking tt-vector v0.0.1 (C:\Users\kaiga\work\review\m2-c22-r1\crates\vector)
+At line:4 char:1
++ cargo clippy --locked -p tt-vector -p tt-executor -p tt-mcp --test c2 ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (    Checking tt...\crates\vector):String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+
+    Checking tt-executor v0.0.1 (C:\Users\kaiga\work\review\m2-c22-r1\crates\executor)
+    Checking tt-engine v0.0.1 (C:\Users\kaiga\work\review\m2-c22-r1\crates\engine)
+    Checking tt-mcp v0.0.1 (C:\Users\kaiga\work\review\m2-c22-r1\crates\mcp)
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.98s

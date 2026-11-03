@@ -1,0 +1,288 @@
+{
+  "builderHead": "3d6dfa3968635f014007ad8264fb81494184965e",
+  "reviewerPaths": 87,
+  "changedReviewerPaths": [
+    "crates/executor/tests/c21_r1_contracts.rs"
+  ],
+  "reviewerDiffRuled": true,
+  "productRustFiles": [
+    "crates/executor/src/commands/draw.rs",
+    "crates/executor/src/commands/draw_stroke.rs",
+    "crates/executor/src/commands/draw_text.rs",
+    "crates/executor/src/commands/mod.rs",
+    "crates/executor/src/run.rs",
+    "crates/model/src/validate.rs",
+    "crates/persist/src/lock.rs",
+    "crates/registry/src/declared.rs",
+    "crates/vector/src/brush.rs",
+    "crates/vector/src/fit.rs",
+    "crates/vector/src/fonts.rs",
+    "crates/vector/src/path.rs",
+    "crates/vector/src/stroke.rs",
+    "crates/vector/src/text.rs"
+  ],
+  "prohibitedAdditions": [],
+  "denyTomlUnchanged": true,
+  "builderWorkspaceTotals": [
+    802,
+    0,
+    9
+  ],
+  "localWorkspaceTotals": [
+    803,
+    0,
+    9
+  ],
+  "ci": [
+    {
+      "run": 41172384155,
+      "head": "07ae96806edcad6ff21fc31a8d1d24400f3a6963",
+      "conclusion": "success",
+      "jobs": [
+        {
+          "name": "raster determinism (ubuntu-latest)",
+          "conclusion": "success",
+          "url": "https://github.com/kaigani/261017-toontown-dev/actions/runs/41172384155/job/124453127972"
+        },
+        {
+          "name": "bundle (windows-latest)",
+          "conclusion": "success",
+          "url": "https://github.com/kaigani/261017-toontown-dev/actions/runs/41172384155/job/124453127986"
+        },
+        {
+          "name": "headless without a display (ubuntu)",
+          "conclusion": "success",
+          "url": "https://github.com/kaigani/261017-toontown-dev/actions/runs/41172384155/job/124453127995"
+        },
+        {
+          "name": "check (windows-latest)",
+          "conclusion": "success",
+          "url": "https://github.com/kaigani/261017-toontown-dev/actions/runs/41172384155/job/124453128005"
+        },
+        {
+          "name": "headless release (macos-latest)",
+          "conclusion": "success",
+          "url": "https://github.com/kaigani/261017-toontown-dev/actions/runs/41172384155/job/124453128009"
+        },
+        {
+          "name": "headless release (windows-latest)",
+          "conclusion": "success",
+          "url": "https://github.com/kaigani/261017-toontown-dev/actions/runs/41172384155/job/124453128029"
+        },
+        {
+          "name": "check (macos-latest)",
+          "conclusion": "success",
+          "url": "https://github.com/kaigani/261017-toontown-dev/actions/runs/41172384155/job/124453128041"
+        },
+        {
+          "name": "raster determinism (windows-latest)",
+          "conclusion": "success",
+          "url": "https://github.com/kaigani/261017-toontown-dev/actions/runs/41172384155/job/124453128043"
+        },
+        {
+          "name": "bundle (macos-latest)",
+          "conclusion": "success",
+          "url": "https://github.com/kaigani/261017-toontown-dev/actions/runs/41172384155/job/124453128074"
+        },
+        {
+          "name": "raster determinism (macos-latest)",
+          "conclusion": "success",
+          "url": "https://github.com/kaigani/261017-toontown-dev/actions/runs/41172384155/job/124453128179"
+        }
+      ]
+    },
+    {
+      "run": 41175287616,
+      "head": "3d6dfa3968635f014007ad8264fb81494184965e",
+      "conclusion": "success",
+      "jobs": [
+        {
+          "name": "bundle (macos-latest)",
+          "conclusion": "success",
+          "url": "https://github.com/kaigani/261017-toontown-dev/actions/runs/41175287616/job/124461455227"
+        },
+        {
+          "name": "raster determinism (windows-latest)",
+          "conclusion": "success",
+          "url": "https://github.com/kaigani/261017-toontown-dev/actions/runs/41175287616/job/124461455339"
+        },
+        {
+          "name": "headless without a display (ubuntu)",
+          "conclusion": "success",
+          "url": "https://github.com/kaigani/261017-toontown-dev/actions/runs/41175287616/job/124461455345"
+        },
+        {
+          "name": "headless release (windows-latest)",
+          "conclusion": "success",
+          "url": "https://github.com/kaigani/261017-toontown-dev/actions/runs/41175287616/job/124461455349"
+        },
+        {
+          "name": "raster determinism (ubuntu-latest)",
+          "conclusion": "success",
+          "url": "https://github.com/kaigani/261017-toontown-dev/actions/runs/41175287616/job/124461455360"
+        },
+        {
+          "name": "bundle (windows-latest)",
+          "conclusion": "success",
+          "url": "https://github.com/kaigani/261017-toontown-dev/actions/runs/41175287616/job/124461455381"
+        },
+        {
+          "name": "raster determinism (macos-latest)",
+          "conclusion": "success",
+          "url": "https://github.com/kaigani/261017-toontown-dev/actions/runs/41175287616/job/124461455399"
+        },
+        {
+          "name": "headless release (macos-latest)",
+          "conclusion": "success",
+          "url": "https://github.com/kaigani/261017-toontown-dev/actions/runs/41175287616/job/124461455410"
+        },
+        {
+          "name": "check (macos-latest)",
+          "conclusion": "success",
+          "url": "https://github.com/kaigani/261017-toontown-dev/actions/runs/41175287616/job/124461455459"
+        },
+        {
+          "name": "check (windows-latest)",
+          "conclusion": "success",
+          "url": "https://github.com/kaigani/261017-toontown-dev/actions/runs/41175287616/job/124461455470"
+        }
+      ]
+    },
+    {
+      "run": 41163880282,
+      "head": "57e0b706d7b9b324ba6af813cb53a2d8bd0cbed2",
+      "conclusion": "cancelled",
+      "jobs": [
+        {
+          "name": "raster determinism (windows-latest)",
+          "conclusion": "success",
+          "url": "https://github.com/kaigani/261017-toontown-dev/actions/runs/41163880282/job/124427323955"
+        },
+        {
+          "name": "check (windows-latest)",
+          "conclusion": "cancelled",
+          "url": "https://github.com/kaigani/261017-toontown-dev/actions/runs/41163880282/job/124427324131"
+        },
+        {
+          "name": "raster determinism (ubuntu-latest)",
+          "conclusion": "success",
+          "url": "https://github.com/kaigani/261017-toontown-dev/actions/runs/41163880282/job/124427324147"
+        },
+        {
+          "name": "headless release (windows-latest)",
+          "conclusion": "success",
+          "url": "https://github.com/kaigani/261017-toontown-dev/actions/runs/41163880282/job/124427324154"
+        },
+        {
+          "name": "bundle (windows-latest)",
+          "conclusion": "success",
+          "url": "https://github.com/kaigani/261017-toontown-dev/actions/runs/41163880282/job/124427324167"
+        },
+        {
+          "name": "headless release (macos-latest)",
+          "conclusion": "success",
+          "url": "https://github.com/kaigani/261017-toontown-dev/actions/runs/41163880282/job/124427324179"
+        },
+        {
+          "name": "check (macos-latest)",
+          "conclusion": "failure",
+          "url": "https://github.com/kaigani/261017-toontown-dev/actions/runs/41163880282/job/124427324180"
+        },
+        {
+          "name": "headless without a display (ubuntu)",
+          "conclusion": "success",
+          "url": "https://github.com/kaigani/261017-toontown-dev/actions/runs/41163880282/job/124427324181"
+        },
+        {
+          "name": "raster determinism (macos-latest)",
+          "conclusion": "success",
+          "url": "https://github.com/kaigani/261017-toontown-dev/actions/runs/41163880282/job/124427324190"
+        },
+        {
+          "name": "bundle (macos-latest)",
+          "conclusion": "success",
+          "url": "https://github.com/kaigani/261017-toontown-dev/actions/runs/41163880282/job/124427324255"
+        }
+      ]
+    }
+  ],
+  "ciLogSummary": {
+    "ci-fix.log": {
+      "sha256": "85ed3684234e4ba0e941b99dd31b1e8d35da1396c810cc1ba99216baf51b43da",
+      "excerpts": 38
+    },
+    "ci-receipt.log": {
+      "sha256": "81a41fb488a79451aad70f8a02030c732fd6aa0ff89a2714722e919f25c45126",
+      "excerpts": 38
+    }
+  },
+  "ticketWordingExact": true,
+  "ticketOwnersInPlan": "plan/IMPLEMENTATION_PLAN.md:169 (M2 C2.3/C2.4); M4 C4.2 and M11 C11.1 qualifications retained",
+  "golden": {
+    "oldSha256": "b8cca851139bcfecdac006e78125975a50cf07de9e5c44111bcd6036130cf02d",
+    "newSha256": "f4549d04cfb10a08276abf1f189e9e9b7ef4fac32d7bb09b01cb3091b3d18eaa",
+    "oldCanonicalBytes": 144970,
+    "newCanonicalBytes": 146251,
+    "sameDrawingStrokeIds": true,
+    "changedStrokes": [
+      {
+        "id": "st_01K7JJN800A0PD7TZ1MTM8VKY9",
+        "kind": "brush",
+        "oldOutlineAnchors": 2,
+        "newOutlineAnchors": 2,
+        "changedFields": [
+          "points"
+        ]
+      },
+      {
+        "id": "st_01K7JJN800DDW44SJVC40KANBT",
+        "kind": "brush",
+        "oldOutlineAnchors": 46,
+        "newOutlineAnchors": 48,
+        "changedFields": [
+          "points",
+          "spine"
+        ]
+      },
+      {
+        "id": "st_01K7JJN800FJRWFM4KTPMG2Y8P",
+        "kind": "brush",
+        "oldOutlineAnchors": 38,
+        "newOutlineAnchors": 37,
+        "changedFields": [
+          "points",
+          "spine"
+        ]
+      },
+      {
+        "id": "st_01K7JJN800J6GZ68MHS01HNTDM",
+        "kind": "brush",
+        "oldOutlineAnchors": 42,
+        "newOutlineAnchors": 42,
+        "changedFields": [
+          "points",
+          "spine"
+        ]
+      },
+      {
+        "id": "st_01K7JJN800NAF57VT4TKA5WVYF",
+        "kind": "pencil",
+        "oldOutlineAnchors": 8,
+        "newOutlineAnchors": 8,
+        "changedFields": [
+          "points"
+        ]
+      },
+      {
+        "id": "st_01K7JJN800RXHD55052GG3NDRM",
+        "kind": "brush",
+        "oldOutlineAnchors": 43,
+        "newOutlineAnchors": 46,
+        "changedFields": [
+          "points",
+          "spine"
+        ]
+      }
+    ]
+  }
+}

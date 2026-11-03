@@ -125,3 +125,18 @@ is yet a spec-complete final renderer."
   advance.
 - **Multithreaded scalar rendering.** *Experiment R-3:* add a `vello_cpu_f32_fallback_mt` configuration to the golden
   set before any use.
+
+## History
+
+- **M2 C2.3 (2026-11-01): first product use.** `tt-render` takes `vello_cpu =0.3.0` (features as golden-tested),
+  `fearless_simd =0.7.0` with `force_support_fallback` and `png =0.18.1` as normal dependencies, behind its own scene
+  type (filled and stroked paths; solid, linear, radial and image paints through a unit-space mapping; PNG codec with
+  straight alpha `round(c × 255 / a)`). `draw.drawing.render` (MCP `render_drawing`) is its first caller. Its goldens —
+  pixel hashes in `crates/executor/tests/goldens/c23_render.json` and PNGs in `reviews/evidence/M2-C2.3/goldens/` —
+  cover content order, holes, gradients and the texture tile axis, and run in the check jobs of every OS. Text is
+  excluded from them because its pixels depend on the machine's fonts (SI-074). The texture orientation question for
+  positive-determinant mappings is recorded in SI-074 for a ruling. Images are sampled with `ImageQuality::Medium`
+  (bilinear).
+- **M2 C2.3 ruling (2026-11-01): texture orientation.** Image row 0 sits at unit y = 0; stored texture mappings show the
+  image upright in y-up drawing space (tile-on and tile-off defaults `[w, 0, 0, -h, minX, maxY]`, drags
+  `[dx, dy, dy, -dx, fromX, fromY]`); the `texture-tile`, `texture-stretch` and `texture-drag` goldens pin it (SI-074).

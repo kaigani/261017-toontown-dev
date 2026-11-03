@@ -1,0 +1,195 @@
+[
+  {
+    "file": "c21-strokes-100k-windows.json",
+    "ok": true,
+    "kind": "series",
+    "environment": {
+      "os": "windows",
+      "arch": "x86_64",
+      "cpus": 32,
+      "profile": "release",
+      "startedAt": "2026-11-01T12:59:07.980Z",
+      "timeOrigin": "tMs: milliseconds since startedAt on a monotonic clock",
+      "summaryRule": "nearest rank: sorted[round((n - 1) * q)]"
+    },
+    "series": {
+      "brushAdd.allocatedBytes": {
+        "unit": "bytes",
+        "n": 10,
+        "p50": 3434890284.0,
+        "p90": 3435391072.0,
+        "p99": 3435559320.0,
+        "max": 3435559320.0
+      },
+      "brushAdd.retainedBytes": {
+        "unit": "bytes",
+        "n": 10,
+        "p50": 91789.0,
+        "p90": 91799.0,
+        "p99": 102901.0,
+        "max": 102901.0
+      },
+      "brushAdd.wallMs": {
+        "unit": "ms",
+        "n": 10,
+        "p50": 4917.8877999999995,
+        "p90": 5699.8471,
+        "p99": 6804.1208,
+        "max": 6804.1208
+      },
+      "patchProperty.allocatedBytes": {
+        "unit": "bytes",
+        "n": 10,
+        "p50": 2456591972.0,
+        "p90": 2456957545.0,
+        "p99": 2457079062.0,
+        "max": 2457079062.0
+      },
+      "patchProperty.retainedBytes": {
+        "unit": "bytes",
+        "n": 10,
+        "p50": 6112.0,
+        "p90": 17094.0,
+        "p99": 32957.0,
+        "max": 32957.0
+      },
+      "patchProperty.wallMs": {
+        "unit": "ms",
+        "n": 10,
+        "p50": 3469.2728,
+        "p90": 3613.7340999999997,
+        "p99": 3815.6824,
+        "max": 3815.6824
+      },
+      "process.liveBytes": {
+        "unit": "bytes",
+        "n": 70,
+        "p50": 1425600430.0,
+        "p90": 1426015835.0,
+        "p99": 1426064549.0,
+        "max": 1426118455.0
+      },
+      "redo.allocatedBytes": {
+        "unit": "bytes",
+        "n": 10,
+        "p50": 4003128103.0,
+        "p90": 4003618557.0,
+        "p99": 4003786943.0,
+        "max": 4003786943.0
+      },
+      "redo.retainedBytes": {
+        "unit": "bytes",
+        "n": 10,
+        "p50": 10202.0,
+        "p90": 23770.0,
+        "p99": 121233111.0,
+        "max": 121233111.0
+      },
+      "redo.wallMs": {
+        "unit": "ms",
+        "n": 10,
+        "p50": 5559.939,
+        "p90": 5632.4818,
+        "p99": 6202.7475,
+        "max": 6202.7475
+      },
+      "strokeAdd.allocatedBytes": {
+        "unit": "bytes",
+        "n": 10,
+        "p50": 7525061087.0,
+        "p90": 7525705813.0,
+        "p99": 8242407362.0,
+        "max": 8242407362.0
+      },
+      "strokeAdd.retainedBytes": {
+        "unit": "bytes",
+        "n": 10,
+        "p50": 23843.0,
+        "p90": 232500000.0,
+        "p99": 586290489.0,
+        "max": 586290489.0
+      },
+      "strokeAdd.wallMs": {
+        "unit": "ms",
+        "n": 10,
+        "p50": 9890.3331,
+        "p90": 11044.044899999999,
+        "p99": 12550.610799999999,
+        "max": 12550.610799999999
+      },
+      "strokeAddDryRun.allocatedBytes": {
+        "unit": "bytes",
+        "n": 10,
+        "p50": 6830749122.0,
+        "p90": 6831563788.0,
+        "p99": 7901253675.0,
+        "max": 7901253675.0
+      },
+      "strokeAddDryRun.retainedBytes": {
+        "unit": "bytes",
+        "n": 10,
+        "p50": -35469.0,
+        "p90": 8264.0,
+        "p99": 232482509.0,
+        "max": 232482509.0
+      },
+      "strokeAddDryRun.wallMs": {
+        "unit": "ms",
+        "n": 10,
+        "p50": 9521.709700000001,
+        "p90": 10789.415200000001,
+        "p99": 23123.143,
+        "max": 23123.143
+      },
+      "strokeSet.allocatedBytes": {
+        "unit": "bytes",
+        "n": 10,
+        "p50": 3455287899.0,
+        "p90": 3455775369.0,
+        "p99": 3455952556.0,
+        "max": 3455952556.0
+      },
+      "strokeSet.retainedBytes": {
+        "unit": "bytes",
+        "n": 10,
+        "p50": 5415.0,
+        "p90": 16335.0,
+        "p99": 16335.0,
+        "max": 16335.0
+      },
+      "strokeSet.wallMs": {
+        "unit": "ms",
+        "n": 10,
+        "p50": 4846.646,
+        "p90": 4947.788100000001,
+        "p99": 4971.028600000001,
+        "max": 4971.028600000001
+      },
+      "undo.allocatedBytes": {
+        "unit": "bytes",
+        "n": 10,
+        "p50": 4664315178.0,
+        "p90": 4664928100.0,
+        "p99": 4665132732.0,
+        "max": 4665132732.0
+      },
+      "undo.retainedBytes": {
+        "unit": "bytes",
+        "n": 10,
+        "p50": 13038.0,
+        "p90": 23958.0,
+        "p99": 121237094.0,
+        "max": 121237094.0
+      },
+      "undo.wallMs": {
+        "unit": "ms",
+        "n": 10,
+        "p50": 6281.447700000001,
+        "p90": 6745.209199999999,
+        "p99": 7591.3902,
+        "max": 7591.3902
+      }
+    },
+    "problems": []
+  }
+]

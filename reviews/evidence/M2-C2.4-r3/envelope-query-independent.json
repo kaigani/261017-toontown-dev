@@ -1,0 +1,34 @@
+{
+  "sourceBounds": [
+    "-1/2",
+    "39/2",
+    "161/2",
+    "161/2"
+  ],
+  "newInterior": [
+    "11003/256",
+    "3763/128"
+  ],
+  "exactAffineBack": [
+    "30323389/697600",
+    "9704407/348800"
+  ],
+  "quarterGridQuery": [
+    "1391/32",
+    "7123/256"
+  ],
+  "sourceEdge": [
+    [
+      "40",
+      "1707/64"
+    ],
+    [
+      "44",
+      "28"
+    ]
+  ],
+  "exactPointSide": "-204481/44646400",
+  "queryPointSide": "5/2048",
+  "distanceToEdgeDu": 0.001086668702138091,
+  "queryDisplacementDu": 0.002037992986367081
+}

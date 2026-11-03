@@ -1,0 +1,19 @@
+   Compiling tt-executor v0.0.1 (C:\Users\kaiga\.t3\worktrees\261017-toontown-dev\m2-vector-engine\crates\executor)
+    Finished `release` profile [optimized + debuginfo] target(s) in 2.42s
+     Running tests\c21_measurements.rs (target\release\deps\c21_measurements-512daf4503100e2b.exe)
+
+running 1 test
+test hundred_thousand_stroke_edit_undo_redo_and_dry_run_are_measured has been running for over 60 seconds
+process live bytes: first 732637522 last 1426118444
+strokeAdd: 10096.14 ms (p50), 31563.0 bytes retained (p50)
+undo: 6217.847299999999 ms (p50), 13038.0 bytes retained (p50)
+redo: 5424.2811 ms (p50), 10264.0 bytes retained (p50)
+strokeAddDryRun: 9284.4731 ms (p50), -45939.0 bytes retained (p50)
+strokeSet: 4724.2849 ms (p50), 5415.0 bytes retained (p50)
+patchProperty: 3318.6811000000002 ms (p50), 6112.0 bytes retained (p50)
+brushAdd: 4660.920499999999 ms (p50), 91799.0 bytes retained (p50)
+test hundred_thousand_stroke_edit_undo_redo_and_dry_run_are_measured ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 439.27s
+
+exit=0

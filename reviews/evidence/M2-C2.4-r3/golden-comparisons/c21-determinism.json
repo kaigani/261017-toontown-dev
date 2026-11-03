@@ -1,0 +1,476 @@
+{
+  "old": "reviews\\evidence\\M2-C2.4\\round-2\\goldens\\c21-determinism.6f72ee7.json",
+  "new": "reviews\\evidence\\M2-C2.4\\round-2\\goldens\\c21-determinism.3c74c34.json",
+  "pieces": {
+    "added": 0,
+    "removed": 1,
+    "moved": 45,
+    "resplit": 0
+  },
+  "pieceDetails": {
+    "added": [],
+    "removed": [
+      {
+        "path": "drawing1.nodes[id=nd_01K7JJN8006P9P725PDXR1TR0E].children[id=nd_01K7JJN801CEZ464DMJ4DTYXWR].strokes",
+        "id": "st_01K7JJN80DBWN2CHYNSJCY60BV",
+        "type": "stroke"
+      }
+    ],
+    "moved": [
+      {
+        "path": "drawing1.nodes[id=nd_01K7JJN8006P9P725PDXR1TR0E].children[id=nd_01K7JJN801CEZ464DMJ4DTYXWR].strokes",
+        "id": "st_01K7JJN801RWSRW6CXWBWEKSD8"
+      },
+      {
+        "path": "drawing1.nodes[id=nd_01K7JJN8006P9P725PDXR1TR0E].children[id=nd_01K7JJN801CEZ464DMJ4DTYXWR].strokes",
+        "id": "st_01K7JJN802QFTMW7HAEY89F1MN"
+      },
+      {
+        "path": "drawing1.nodes[id=nd_01K7JJN8006P9P725PDXR1TR0E].children[id=nd_01K7JJN801CEZ464DMJ4DTYXWR].strokes",
+        "id": "st_01K7JJN803DTFB9YPBGNBTNDSY"
+      },
+      {
+        "path": "drawing1.nodes[id=nd_01K7JJN8006P9P725PDXR1TR0E].children[id=nd_01K7JJN801CEZ464DMJ4DTYXWR].strokes",
+        "id": "st_01K7JJN8046QR0DQZKZXWVVRXP"
+      },
+      {
+        "path": "drawing1.nodes[id=nd_01K7JJN8006P9P725PDXR1TR0E].children[id=nd_01K7JJN801CEZ464DMJ4DTYXWR].strokes",
+        "id": "st_01K7JJN801B0SGM09PS989S19V"
+      },
+      {
+        "path": "drawing1.nodes[id=nd_01K7JJN8006P9P725PDXR1TR0E].children[id=nd_01K7JJN801CEZ464DMJ4DTYXWR].strokes",
+        "id": "st_01K7JJN802HQWJS57MP0YT3PX9"
+      },
+      {
+        "path": "drawing1.nodes[id=nd_01K7JJN8006P9P725PDXR1TR0E].children[id=nd_01K7JJN801CEZ464DMJ4DTYXWR].strokes",
+        "id": "st_01K7JJN8069ZNCA58T4TTM0FE3"
+      },
+      {
+        "path": "drawing1.nodes[id=nd_01K7JJN8006P9P725PDXR1TR0E].children[id=nd_01K7JJN801CEZ464DMJ4DTYXWR].strokes",
+        "id": "st_01K7JJN807KA9VAPXN975VT91R"
+      },
+      {
+        "path": "drawing1.nodes[id=nd_01K7JJN8006P9P725PDXR1TR0E].children[id=nd_01K7JJN801CEZ464DMJ4DTYXWR].strokes",
+        "id": "st_01K7JJN8086DGF4RXGSV54E157"
+      },
+      {
+        "path": "drawing1.nodes[id=nd_01K7JJN8006P9P725PDXR1TR0E].children[id=nd_01K7JJN801CEZ464DMJ4DTYXWR].strokes",
+        "id": "st_01K7JJN809AB8ZABTHN9KMZFYT"
+      },
+      {
+        "path": "drawing1.nodes[id=nd_01K7JJN8006P9P725PDXR1TR0E].children[id=nd_01K7JJN801CEZ464DMJ4DTYXWR].strokes",
+        "id": "st_01K7JJN80ARRX43XXFBNE1QC3C"
+      },
+      {
+        "path": "drawing1.nodes[id=nd_01K7JJN8006P9P725PDXR1TR0E].children[id=nd_01K7JJN801CEZ464DMJ4DTYXWR].strokes",
+        "id": "st_01K7JJN8033Y35E3WNCJSRW44R"
+      },
+      {
+        "path": "drawing1.nodes[id=nd_01K7JJN8006P9P725PDXR1TR0E].children[id=nd_01K7JJN801CEZ464DMJ4DTYXWR].strokes",
+        "id": "st_01K7JJN8045RV567JKA6BQDB5V"
+      },
+      {
+        "path": "drawing1.nodes[id=nd_01K7JJN8006P9P725PDXR1TR0E].children[id=nd_01K7JJN801CEZ464DMJ4DTYXWR].strokes",
+        "id": "st_01K7JJN80CD6RAVAVMTT7SF1PR"
+      },
+      {
+        "path": "drawing1.nodes[id=nd_01K7JJN8006P9P725PDXR1TR0E].children[id=nd_01K7JJN801CEZ464DMJ4DTYXWR].strokes",
+        "id": "st_01K7JJN80DW9WV0CXQ8DFE3WCV"
+      },
+      {
+        "path": "drawing1.nodes[id=nd_01K7JJN8006P9P725PDXR1TR0E].children[id=nd_01K7JJN801CEZ464DMJ4DTYXWR].strokes",
+        "id": "st_01K7JJN80EB5TPC6TNHE0H64JV"
+      },
+      {
+        "path": "drawing1.nodes[id=nd_01K7JJN8006P9P725PDXR1TR0E].children[id=nd_01K7JJN801CEZ464DMJ4DTYXWR].strokes",
+        "id": "st_01K7JJN80F7MQ761HZFMRSV9AQ"
+      },
+      {
+        "path": "drawing1.nodes[id=nd_01K7JJN8006P9P725PDXR1TR0E].children[id=nd_01K7JJN801CEZ464DMJ4DTYXWR].strokes",
+        "id": "st_01K7JJN80G0SJZJJEQ48QXP2D7"
+      },
+      {
+        "path": "drawing1.nodes[id=nd_01K7JJN8006P9P725PDXR1TR0E].children[id=nd_01K7JJN801CEZ464DMJ4DTYXWR].strokes",
+        "id": "st_01K7JJN80H4Z5ZDTNM3JAN1ZQF"
+      },
+      {
+        "path": "drawing1.nodes[id=nd_01K7JJN8006P9P725PDXR1TR0E].children[id=nd_01K7JJN801CEZ464DMJ4DTYXWR].strokes",
+        "id": "st_01K7JJN80JFCT4PYCV0D08VG3E"
+      },
+      {
+        "path": "drawing1.nodes[id=nd_01K7JJN8006P9P725PDXR1TR0E].children[id=nd_01K7JJN801CEZ464DMJ4DTYXWR].strokes",
+        "id": "st_01K7JJN80K45JEKQV44XWTG7QX"
+      },
+      {
+        "path": "drawing1.nodes[id=nd_01K7JJN8006P9P725PDXR1TR0E].children[id=nd_01K7JJN801CEZ464DMJ4DTYXWR].strokes",
+        "id": "st_01K7JJN80M3GXA8TBA8BSFDE0V"
+      },
+      {
+        "path": "drawing1.nodes[id=nd_01K7JJN8006P9P725PDXR1TR0E].children[id=nd_01K7JJN801CEZ464DMJ4DTYXWR].strokes",
+        "id": "st_01K7JJN80NWSCFPKZXQSMBMQAM"
+      },
+      {
+        "path": "drawing1.nodes[id=nd_01K7JJN8006P9P725PDXR1TR0E].children[id=nd_01K7JJN801CEZ464DMJ4DTYXWR].strokes",
+        "id": "st_01K7JJN805QSH86948W7RV6SHM"
+      },
+      {
+        "path": "drawing1.nodes[id=nd_01K7JJN8006P9P725PDXR1TR0E].children[id=nd_01K7JJN801CEZ464DMJ4DTYXWR].strokes",
+        "id": "st_01K7JJN806YDG07T7ZB8SGZSJB"
+      },
+      {
+        "path": "drawing1.nodes[id=nd_01K7JJN8006P9P725PDXR1TR0E].children[id=nd_01K7JJN801CEZ464DMJ4DTYXWR].strokes",
+        "id": "st_01K7JJN80QAFGVM09JCDHYM1K1"
+      },
+      {
+        "path": "drawing1.nodes[id=nd_01K7JJN8006P9P725PDXR1TR0E].children[id=nd_01K7JJN801CEZ464DMJ4DTYXWR].strokes",
+        "id": "st_01K7JJN80RQHFBEHACZT76MA2B"
+      },
+      {
+        "path": "drawing1.nodes[id=nd_01K7JJN8006P9P725PDXR1TR0E].children[id=nd_01K7JJN801CEZ464DMJ4DTYXWR].strokes",
+        "id": "st_01K7JJN80S2TS8M3XZ1K2YF75R"
+      },
+      {
+        "path": "drawing1.nodes[id=nd_01K7JJN8006P9P725PDXR1TR0E].children[id=nd_01K7JJN801CEZ464DMJ4DTYXWR].strokes",
+        "id": "st_01K7JJN80TJ3WCNPVT99ZW9CKN"
+      },
+      {
+        "path": "drawing1.nodes[id=nd_01K7JJN8006P9P725PDXR1TR0E].children[id=nd_01K7JJN801CEZ464DMJ4DTYXWR].strokes",
+        "id": "st_01K7JJN80VTME9AG7AKTWNA7N8"
+      },
+      {
+        "path": "drawing1.nodes[id=nd_01K7JJN8006P9P725PDXR1TR0E].children[id=nd_01K7JJN801CEZ464DMJ4DTYXWR].strokes",
+        "id": "st_01K7JJN807R7FA7RPKTKJZCZPM"
+      },
+      {
+        "path": "drawing1.nodes[id=nd_01K7JJN8006P9P725PDXR1TR0E].children[id=nd_01K7JJN801CEZ464DMJ4DTYXWR].strokes",
+        "id": "st_01K7JJN808KCHJNABPMKPG0A0B"
+      },
+      {
+        "path": "drawing1.nodes[id=nd_01K7JJN8006P9P725PDXR1TR0E].children[id=nd_01K7JJN801CEZ464DMJ4DTYXWR].strokes",
+        "id": "st_01K7JJN80XPB8QPPFMVNEQSMGQ"
+      },
+      {
+        "path": "drawing1.nodes[id=nd_01K7JJN8006P9P725PDXR1TR0E].children[id=nd_01K7JJN801CEZ464DMJ4DTYXWR].strokes",
+        "id": "st_01K7JJN80Y7NVRNND9FNAAZTBV"
+      },
+      {
+        "path": "drawing1.nodes[id=nd_01K7JJN8006P9P725PDXR1TR0E].children[id=nd_01K7JJN801CEZ464DMJ4DTYXWR].strokes",
+        "id": "st_01K7JJN80ZVSQBVT02EC4KZKZ3"
+      },
+      {
+        "path": "drawing1.nodes[id=nd_01K7JJN8006P9P725PDXR1TR0E].children[id=nd_01K7JJN801CEZ464DMJ4DTYXWR].strokes",
+        "id": "st_01K7JJN810KQYKZ8BN6J0DZ40Y"
+      },
+      {
+        "path": "drawing1.nodes[id=nd_01K7JJN8006P9P725PDXR1TR0E].children[id=nd_01K7JJN801CEZ464DMJ4DTYXWR].strokes",
+        "id": "st_01K7JJN811MM76GVV5ZEWPRQY8"
+      },
+      {
+        "path": "drawing1.nodes[id=nd_01K7JJN8006P9P725PDXR1TR0E].children[id=nd_01K7JJN801CEZ464DMJ4DTYXWR].strokes",
+        "id": "st_01K7JJN812WC10KW4S38DD1FAR"
+      },
+      {
+        "path": "drawing1.nodes[id=nd_01K7JJN8006P9P725PDXR1TR0E].children[id=nd_01K7JJN801CEZ464DMJ4DTYXWR].strokes",
+        "id": "st_01K7JJN8138Z75G2JV904SC6EQ"
+      },
+      {
+        "path": "drawing1.nodes[id=nd_01K7JJN8006P9P725PDXR1TR0E].children[id=nd_01K7JJN801CEZ464DMJ4DTYXWR].strokes",
+        "id": "st_01K7JJN814VTWKHE2MM4T0SYGN"
+      },
+      {
+        "path": "drawing1.nodes[id=nd_01K7JJN8006P9P725PDXR1TR0E].children[id=nd_01K7JJN801CEZ464DMJ4DTYXWR].strokes",
+        "id": "st_01K7JJN815293W1TJSJ50H29X3"
+      },
+      {
+        "path": "drawing1.nodes[id=nd_01K7JJN8006P9P725PDXR1TR0E].children[id=nd_01K7JJN801CEZ464DMJ4DTYXWR].strokes",
+        "id": "st_01K7JJN809H9M0N0JWNYEAMT27"
+      },
+      {
+        "path": "drawing1.nodes[id=nd_01K7JJN8006P9P725PDXR1TR0E].children[id=nd_01K7JJN801CEZ464DMJ4DTYXWR].strokes",
+        "id": "st_01K7JJN80AR3CKG4YCFMFA9C2W"
+      },
+      {
+        "path": "drawing1.nodes[id=nd_01K7JJN8006P9P725PDXR1TR0E].children[id=nd_01K7JJN801CEZ464DMJ4DTYXWR].strokes",
+        "id": "st_01K7JJN80BBZBT8DEQ93AXMTG4"
+      },
+      {
+        "path": "drawing1.nodes[id=nd_01K7JJN8006P9P725PDXR1TR0E].children[id=nd_01K7JJN801CEZ464DMJ4DTYXWR].strokes",
+        "id": "st_01K7JJN80C0KEKSXQTAPG330XK"
+      }
+    ],
+    "resplit": []
+  },
+  "correspondingAnchorsMoved": 82,
+  "maxAnchorDisplacementDu": 0.39298975316045737,
+  "largestAnchorDisplacements": [
+    {
+      "du": 0.39298975316045737,
+      "path": "drawing1.nodes[id=nd_01K7JJN8006P9P725PDXR1TR0E].children[id=nd_01K7JJN801CEZ464DMJ4DTYXWR].strokes[id=st_01K7JJN8045RV567JKA6BQDB5V].points[2]",
+      "old": [
+        38.00576155582505,
+        3.9422523841591888
+      ],
+      "new": [
+        37.796875,
+        3.609375
+      ]
+    },
+    {
+      "du": 0.39298975316045737,
+      "path": "drawing1.nodes[id=nd_01K7JJN8006P9P725PDXR1TR0E].children[id=nd_01K7JJN801CEZ464DMJ4DTYXWR].strokes[id=st_01K7JJN80CD6RAVAVMTT7SF1PR].points[0]",
+      "old": [
+        38.00576155582505,
+        3.9422523841591888
+      ],
+      "new": [
+        37.796875,
+        3.609375
+      ]
+    },
+    {
+      "du": 0.39298975316045737,
+      "path": "drawing1.nodes[id=nd_01K7JJN8006P9P725PDXR1TR0E].children[id=nd_01K7JJN801CEZ464DMJ4DTYXWR].strokes[id=st_01K7JJN808KCHJNABPMKPG0A0B].points[2]",
+      "old": [
+        38.00576155582505,
+        3.9422523841591888
+      ],
+      "new": [
+        37.796875,
+        3.609375
+      ]
+    },
+    {
+      "du": 0.39298975316045737,
+      "path": "drawing1.nodes[id=nd_01K7JJN8006P9P725PDXR1TR0E].children[id=nd_01K7JJN801CEZ464DMJ4DTYXWR].strokes[id=st_01K7JJN80XPB8QPPFMVNEQSMGQ].points[0]",
+      "old": [
+        38.00576155582505,
+        3.9422523841591888
+      ],
+      "new": [
+        37.796875,
+        3.609375
+      ]
+    },
+    {
+      "du": 0.22821435262917375,
+      "path": "drawing1.nodes[id=nd_01K7JJN8006P9P725PDXR1TR0E].children[id=nd_01K7JJN801CEZ464DMJ4DTYXWR].strokes[id=st_01K7JJN8086DGF4RXGSV54E157].points[2]",
+      "old": [
+        5.883690011594929,
+        -25.252216471841237
+      ],
+      "new": [
+        6.03125,
+        -25.078125
+      ]
+    },
+    {
+      "du": 0.22821435262917375,
+      "path": "drawing1.nodes[id=nd_01K7JJN8006P9P725PDXR1TR0E].children[id=nd_01K7JJN801CEZ464DMJ4DTYXWR].strokes[id=st_01K7JJN809AB8ZABTHN9KMZFYT].points[0]",
+      "old": [
+        5.883690011594929,
+        -25.252216471841237
+      ],
+      "new": [
+        6.03125,
+        -25.078125
+      ]
+    },
+    {
+      "du": 0.22821435262917375,
+      "path": "drawing1.nodes[id=nd_01K7JJN8006P9P725PDXR1TR0E].children[id=nd_01K7JJN801CEZ464DMJ4DTYXWR].strokes[id=st_01K7JJN80S2TS8M3XZ1K2YF75R].points[2]",
+      "old": [
+        5.883690011594929,
+        -25.252216471841237
+      ],
+      "new": [
+        6.03125,
+        -25.078125
+      ]
+    },
+    {
+      "du": 0.22821435262917375,
+      "path": "drawing1.nodes[id=nd_01K7JJN8006P9P725PDXR1TR0E].children[id=nd_01K7JJN801CEZ464DMJ4DTYXWR].strokes[id=st_01K7JJN80TJ3WCNPVT99ZW9CKN].points[0]",
+      "old": [
+        5.883690011594929,
+        -25.252216471841237
+      ],
+      "new": [
+        6.03125,
+        -25.078125
+      ]
+    },
+    {
+      "du": 0.2276831622174886,
+      "path": "drawing1.nodes[id=nd_01K7JJN8006P9P725PDXR1TR0E].children[id=nd_01K7JJN801CEZ464DMJ4DTYXWR].strokes[id=st_01K7JJN802HQWJS57MP0YT3PX9].points[1]",
+      "old": [
+        -44.20189031165924,
+        -13.694972326091529
+      ],
+      "new": [
+        -44.0625,
+        -13.875
+      ]
+    },
+    {
+      "du": 0.2276831622174886,
+      "path": "drawing1.nodes[id=nd_01K7JJN8006P9P725PDXR1TR0E].children[id=nd_01K7JJN801CEZ464DMJ4DTYXWR].strokes[id=st_01K7JJN8069ZNCA58T4TTM0FE3].points[0]",
+      "old": [
+        -44.20189031165924,
+        -13.694972326091529
+      ],
+      "new": [
+        -44.0625,
+        -13.875
+      ]
+    },
+    {
+      "du": 0.2276831622174886,
+      "path": "drawing1.nodes[id=nd_01K7JJN8006P9P725PDXR1TR0E].children[id=nd_01K7JJN801CEZ464DMJ4DTYXWR].strokes[id=st_01K7JJN806YDG07T7ZB8SGZSJB].points[5]",
+      "old": [
+        -44.20189031165924,
+        -13.694972326091529
+      ],
+      "new": [
+        -44.0625,
+        -13.875
+      ]
+    },
+    {
+      "du": 0.2276831622174886,
+      "path": "drawing1.nodes[id=nd_01K7JJN8006P9P725PDXR1TR0E].children[id=nd_01K7JJN801CEZ464DMJ4DTYXWR].strokes[id=st_01K7JJN80QAFGVM09JCDHYM1K1].points[0]",
+      "old": [
+        -44.20189031165924,
+        -13.694972326091529
+      ],
+      "new": [
+        -44.0625,
+        -13.875
+      ]
+    },
+    {
+      "du": 0.14100741542345216,
+      "path": "drawing1.nodes[id=nd_01K7JJN8006P9P725PDXR1TR0E].children[id=nd_01K7JJN801CEZ464DMJ4DTYXWR].strokes[id=st_01K7JJN802QFTMW7HAEY89F1MN].points[1]",
+      "old": [
+        -73.29311484565696,
+        13.499183366250781
+      ],
+      "new": [
+        -73.203125,
+        13.390625
+      ]
+    },
+    {
+      "du": 0.14100741542345216,
+      "path": "drawing1.nodes[id=nd_01K7JJN8006P9P725PDXR1TR0E].children[id=nd_01K7JJN801CEZ464DMJ4DTYXWR].strokes[id=st_01K7JJN803DTFB9YPBGNBTNDSY].points[0]",
+      "old": [
+        -73.29311484565696,
+        13.499183366250781
+      ],
+      "new": [
+        -73.203125,
+        13.390625
+      ]
+    },
+    {
+      "du": 0.14100741542345216,
+      "path": "drawing1.nodes[id=nd_01K7JJN8006P9P725PDXR1TR0E].children[id=nd_01K7JJN801CEZ464DMJ4DTYXWR].strokes[id=st_01K7JJN80K45JEKQV44XWTG7QX].points[7]",
+      "old": [
+        -73.29311484565696,
+        13.499183366250781
+      ],
+      "new": [
+        -73.203125,
+        13.390625
+      ]
+    },
+    {
+      "du": 0.14100741542345216,
+      "path": "drawing1.nodes[id=nd_01K7JJN8006P9P725PDXR1TR0E].children[id=nd_01K7JJN801CEZ464DMJ4DTYXWR].strokes[id=st_01K7JJN80M3GXA8TBA8BSFDE0V].points[0]",
+      "old": [
+        -73.29311484565696,
+        13.499183366250781
+      ],
+      "new": [
+        -73.203125,
+        13.390625
+      ]
+    },
+    {
+      "du": 0.13579786269548738,
+      "path": "drawing1.nodes[id=nd_01K7JJN8006P9P725PDXR1TR0E].children[id=nd_01K7JJN801CEZ464DMJ4DTYXWR].strokes[id=st_01K7JJN8046QR0DQZKZXWVVRXP].points[1]",
+      "old": [
+        -67.63238369344371,
+        7.175965461190099
+      ],
+      "new": [
+        -67.734375,
+        7.265625
+      ]
+    },
+    {
+      "du": 0.13579786269548738,
+      "path": "drawing1.nodes[id=nd_01K7JJN8006P9P725PDXR1TR0E].children[id=nd_01K7JJN801CEZ464DMJ4DTYXWR].strokes[id=st_01K7JJN801B0SGM09PS989S19V].points[0]",
+      "old": [
+        -67.63238369344371,
+        7.175965461190099
+      ],
+      "new": [
+        -67.734375,
+        7.265625
+      ]
+    },
+    {
+      "du": 0.13579786269548738,
+      "path": "drawing1.nodes[id=nd_01K7JJN8006P9P725PDXR1TR0E].children[id=nd_01K7JJN801CEZ464DMJ4DTYXWR].strokes[id=st_01K7JJN80NWSCFPKZXQSMBMQAM].points[2]",
+      "old": [
+        -67.63238369344371,
+        7.175965461190099
+      ],
+      "new": [
+        -67.734375,
+        7.265625
+      ]
+    },
+    {
+      "du": 0.13579786269548738,
+      "path": "drawing1.nodes[id=nd_01K7JJN8006P9P725PDXR1TR0E].children[id=nd_01K7JJN801CEZ464DMJ4DTYXWR].strokes[id=st_01K7JJN805QSH86948W7RV6SHM].points[0]",
+      "old": [
+        -67.63238369344371,
+        7.175965461190099
+      ],
+      "new": [
+        -67.734375,
+        7.265625
+      ]
+    }
+  ],
+  "reroutedAnchors": [
+    {
+      "du": 64.83975814517214,
+      "path": "drawing1.nodes[id=nd_01K7JJN8006P9P725PDXR1TR0E].children[id=nd_01K7JJN801CEZ464DMJ4DTYXWR].strokes[id=st_01K7JJN80C0KEKSXQTAPG330XK].points[1]",
+      "old": [
+        35.16024185482786,
+        0.0
+      ],
+      "new": [
+        100.0,
+        0.0
+      ]
+    }
+  ],
+  "handleRowsChanged": 44,
+  "arrayEdits": [],
+  "leafChanges": 2,
+  "leafChangeDetails": [
+    {
+      "path": "bytes",
+      "old": 210643,
+      "new": 206566
+    },
+    {
+      "path": "sha256",
+      "old": "700421606da335a8d4b17cf68e6839cadacd9039bbb41a615be52e5f6501c8d9",
+      "new": "8a181d860c48fd454eb96cde60fe3b0d5661670b04b6bb978d967910fb643e2e"
+    }
+  ]
+}

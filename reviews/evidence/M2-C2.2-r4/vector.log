@@ -1,0 +1,406 @@
+cargo :    Compiling proc-macro2 v1.0.107
+At line:98 char:1
++ cargo test -p tt-vector --locked *> reviews/evidence/M2-C2.2-r4/vecto ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (   Compiling proc-macro2 v1.0.107:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+
+   Compiling unicode-ident v1.0.27
+   Compiling quote v1.0.47
+   Compiling cfg-if v1.0.5
+   Compiling autocfg v1.5.1
+   Compiling serde_core v1.0.229
+   Compiling version_check v0.9.5
+   Compiling memchr v2.8.3
+   Compiling serde v1.0.229
+   Compiling once_cell v1.21.4
+   Compiling windows-link v0.2.1
+   Compiling allocator-api2 v0.2.21
+   Compiling zmij v1.0.23
+   Compiling foldhash v0.2.0
+   Compiling equivalent v1.0.3
+   Compiling rand_core v0.10.1
+   Compiling zerocopy v0.8.63
+   Compiling getrandom v0.3.4
+   Compiling getrandom v0.4.3
+   Compiling regex-syntax v0.8.11
+   Compiling ref-cast v1.0.27
+   Compiling serde_json v1.0.154
+   Compiling itoa v1.0.18
+   Compiling parking_lot_core v0.9.12
+   Compiling scopeguard v1.2.0
+   Compiling smallvec v1.16.3
+   Compiling libm v0.2.16
+   Compiling typenum v1.20.1
+   Compiling jsonschema-value v0.59.0
+   Compiling unicode-general-category v1.1.0
+   Compiling heck v0.5.0
+   Compiling bit-vec v0.8.0
+   Compiling borrow-or-share v0.2.4
+   Compiling vsimd v0.8.0
+   Compiling percent-encoding v2.3.2
+   Compiling lock_api v0.4.14
+   Compiling bytecount v0.6.9
+   Compiling thiserror v2.0.21
+   Compiling micromap v0.3.0
+   Compiling num-cmp v0.1.0
+   Compiling cpufeatures v0.3.1
+   Compiling bit-set v0.8.0
+   Compiling tinyvec v1.13.3
+   Compiling outref v0.5.2
+   Compiling windows-sys v0.61.2
+   Compiling data-encoding v2.11.1
+   Compiling hashbrown v0.17.1
+   Compiling dyn-clone v1.0.20
+   Compiling fastrand v2.5.0
+   Compiling const-oid v0.10.2
+   Compiling wait-timeout v0.2.1
+   Compiling i_key_sort v0.12.0
+   Compiling memmap2 v0.9.11
+   Compiling i_tree v0.20.0
+   Compiling uuid-simd v0.8.0
+   Compiling aho-corasick v1.1.5
+   Compiling quick-error v1.2.3
+   Compiling unicode-normalization v0.1.26
+   Compiling bit-vec v0.10.1
+   Compiling log v0.4.34
+   Compiling ryu v1.0.23
+   Compiling fnv v1.0.7
+   Compiling ahash v0.8.12
+   Compiling slotmap v1.1.1
+   Compiling hybrid-array v0.4.15
+   Compiling chacha20 v0.10.2
+   Compiling rand_xorshift v0.5.0
+   Compiling tempfile v3.27.0
+   Compiling rand v0.10.3
+   Compiling bitflags v2.13.2
+   Compiling unarray v0.1.4
+   Compiling core_detect v1.0.0
+   Compiling parking_lot v0.12.5
+   Compiling bit-set v0.11.1
+   Compiling num-traits v0.2.19
+   Compiling rusty-fork v0.3.1
+   Compiling crypto-common v0.2.2
+   Compiling block-buffer v0.12.1
+   Compiling jsonschema-regex v0.59.0
+   Compiling fontdb v0.24.0
+   Compiling syn v3.0.9
+   Compiling syn v2.0.119
+   Compiling regex-automata v0.4.18
+   Compiling digest v0.11.3
+   Compiling num-integer v0.1.47
+   Compiling num-complex v0.4.6
+   Compiling proptest v1.12.0
+   Compiling sha2 v0.11.1
+   Compiling num-bigint v0.4.8
+   Compiling num-iter v0.1.46
+   Compiling i_float v5.0.0
+   Compiling indexmap v2.14.2
+   Compiling serde_derive_internals v0.30.0
+   Compiling i_shape v5.0.0
+   Compiling num-rational v0.4.2
+   Compiling i_overlay v9.1.0
+   Compiling num v0.4.3
+   Compiling fraction v0.17.0
+   Compiling strum_macros v0.28.0
+   Compiling regex v1.13.1
+   Compiling fancy-regex v0.19.2
+   Compiling serde_derive v1.0.229
+   Compiling ref-cast-impl v1.0.27
+   Compiling bytemuck_derive v1.12.1
+   Compiling thiserror-impl v2.0.21
+   Compiling schemars_derive v1.2.3
+   Compiling bytemuck v1.25.2
+   Compiling strum v0.28.0
+   Compiling font-types v0.12.7
+   Compiling read-fonts v0.41.0
+   Compiling fluent-uri v0.4.1
+   Compiling email_address v0.2.9
+   Compiling schemars v1.2.3
+   Compiling referencing v0.59.0
+   Compiling jsonschema v0.59.0
+   Compiling skrifa v0.44.0
+   Compiling tt-model v0.0.1 (C:\Users\kaiga\work\review\m2-c22-r4\crates\model)
+   Compiling tt-vector v0.0.1 (C:\Users\kaiga\work\review\m2-c22-r4\crates\vector)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 57.75s
+     Running unittests src\lib.rs (target\debug\deps\tt_vector-554ea4f69f23674a.exe)
+
+running 59 tests
+test num::tests::reflection_about_the_y_axis ... ok
+test fit::tests::a_closed_polyline_keeps_its_last_vertex_at_its_own_position ... ok
+test path::tests::malformed_lists_are_invalid_geometry ... ok
+test brush::tests::zero_width_is_invalid_geometry ... ok
+test fit::tests::a_square_keeps_its_corners ... ok
+test brush::tests::a_dab_is_one_tip ... ok
+test fit::tests::a_rotated_loop_keeps_its_closing_pressure_before_the_first_sample ... ok
+test geom::tests::bounds_cover_bulging_curves ... ok
+test geom::tests::line_length_and_bounds ... ok
+test planar::flat::tests::a_straight_segment_is_one_edge_and_a_curve_is_within_tolerance ... ok
+test num::tests::golden_values_are_platform_independent ... ok
+test fit::tests::pressure_maps_are_ordered_and_span_the_spine ... ok
+test fit::tests::closed_loops_return_to_the_start ... ok
+test path::tests::bezier_lists_round_trip_open_and_closed ... ok
+test fit::tests::a_click_is_a_dab ... ok
+test planar::fill::tests::written_fills_read_back ... ok
+test planar::along::tests::the_account_is_shared ... ok
+test planar::along::tests::a_path_crosses_a_zone_narrower_than_any_sampling_step ... ok
+test planar::gap::tests::close_gap_prefers_ends ... ok
+test fit::tests::a_straight_drag_fits_one_segment ... ok
+test brush::tests::pressure_varies_the_width ... ok
+test planar::exact::tests::identical_shared_and_disjoint_squares ... ok
+test planar::exact::tests::holes_and_a_sloping_cut_are_exact ... ok
+test planar::gap::tests::a_small_opening_closes_with_one_kept_segment ... ok
+test planar::fill::tests::a_split_zone_gives_both_parts_its_fill_and_a_merge_takes_the_larger_part ... ok
+test planar::fill::tests::disagreeing_sides_resolve_to_the_longest_bounding_length ... ok
+test geom::tests::affine_composition ... ok
+test fit::tests::stationary_pressure_peaks_survive_cleaning_at_the_start_middle_and_end ... ok
+test planar::fill::tests::the_largest_overlap_wins_even_when_no_interior_point_lies_in_the_other_zone ... ok
+test planar::flat::tests::a_closed_path_does_not_repeat_its_start ... ok
+test planar::node::tests::a_changed_end_near_a_line_snaps_onto_it_and_splits_it ... ok
+test brush::tests::a_straight_stroke_outlines_a_capsule ... ok
+test planar::node::tests::a_line_looping_through_its_own_crossing_is_cut_on_both_passes ... ok
+test planar::node::tests::a_line_through_another_lines_anchor_splits_both_there ... ok
+test planar::node::tests::a_closed_loop_split_twice_gives_two_open_pieces ... ok
+test planar::node::tests::a_line_through_the_meeting_point_of_two_pieces_is_split_there ... ok
+test fit::tests::fitting_error_is_within_tolerance ... ok
+test planar::node::tests::an_unchanged_anchor_near_a_crossing_is_the_junction_for_every_stroke ... ok
+test planar::node::tests::crossing_lines_split_both_at_one_shared_point ... ok
+test planar::node::tests::brush_outlines_are_never_split ... ok
+test planar::node::tests::noding_a_noded_layer_changes_nothing ... ok
+test planar::node::tests::three_lines_crossing_near_one_point_share_one_junction ... ok
+test text::nfc_tests::a_class_zero_composition_keeps_unrelated_formats ... ok
+test planar::node::tests::touching_or_retracing_at_a_vertex_is_not_a_crossing ... ok
+test symmetry::tests::kaleidoscope_gives_two_n_images ... ok
+test symmetry::tests::mirror_at_zero_is_left_right ... ok
+test brush::tests::outlines_are_reproducible ... ok
+test text::nfc_tests::hangul_jamo_compose_into_one_syllable ... ok
+test text::nfc_tests::decomposed_input_is_composed_and_runs_follow ... ok
+test text::nfc_tests::deleting_between_a_base_and_a_mark_composes_them ... ok
+test text::nfc_tests::origins_follow_reordering_and_blocking ... ok
+test text::tests::format_splits_and_merges_runs ... ok
+test text::nfc_tests::a_combining_mark_typed_after_a_base_joins_the_base_and_its_run ... ok
+test text::tests::new_text_has_one_run_and_one_paragraph_per_line ... ok
+test text::tests::typing_and_deleting_keep_runs_covering_the_text ... ok
+test text::tests::paragraph_format_follows_split_lines ... ok
+test brush::tests::a_looping_stroke_is_one_clean_closed_path ... ok
+test text::tests::layout_wraps_at_a_fixed_width ... ok
+test text::nfc_tests::nfc_with_origins_matches_the_library_on_random_text ... ok
+
+test result: ok. 59 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.06s
+
+     Running tests\c21_r1_geometry.rs (target\debug\deps\c21_r1_geometry-522caa0a37eb5756.exe)
+
+running 10 tests
+test dense_input_worker ... ignored, subprocess worker; the parent runs this with a bounded timeout
+test invalid_sample_values_are_rejected_before_fitting ... ok
+test fitted_curve_stays_within_tolerance_of_input_polyline ... ok
+test brush_sweep_includes_pressure_peak_between_placements ... ok
+test brush_tips_dabs_pressure_extremes_and_reversals_remain_defined ... ok
+
+running 1 test
+test looping_brush_preserves_hole_and_clean_swept_area ... ok
+test text_edge_cases_are_finite_and_bounded ... ok
+100000 dense straight samples: 22.5515ms, 1 anchors
+test dense_input_worker ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 9 filtered out; finished in 0.02s
+
+test dense_100k_input_finishes_within_document_watchdog_budget ... ok
+test curve_fixture_matrix_keeps_valid_paths_and_anchor_limit ... ok
+test closed_path_at_anchor_limit_reimports_its_own_bezier_list ... ok
+
+test result: ok. 9 passed; 0 failed; 1 ignored; 0 measured; 0 filtered out; finished in 0.16s
+
+     Running tests\c21_r2_geometry.rs (target\debug\deps\c21_r2_geometry-fe72b4be4c14b213.exe)
+
+running 11 tests
+test alternating_pressure_worker ... ignored, subprocess worker run by the bounded parent
+test many_pressure_knots_brush_worker ... ignored, subprocess worker run by the bounded parent
+test nfc_composition_preserves_unaffected_character_formats ... ok
+test spatial_dedupe_preserves_pressure_extrema_for_the_brush_sweep ... ok
+
+running 1 test
+
+running 1 test
+test swept_tip_containment_matrix_at_and_between_knots ... ok
+test round_loop_union_grid_error_is_within_outline_tolerance ... ok
+alternating pressure: 38.5913ms, charged visits=20787858, knots=100000
+test alternating_pressure_worker ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 10 filtered out; finished in 0.04s
+
+test alternating_pressure_fitting_respects_watchdog ... ok
+test hundred_thousand_collinear_samples_respect_polyline_tolerance ... ok
+test open_and_closed_anchor_limit_boundaries ... ok
+99000-knot brush: 1.2461172s, result anchors/error=Ok(20)
+test many_pressure_knots_brush_worker ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 10 filtered out; finished in 1.25s
+
+test many_pressure_knots_brush_respects_watchdog ... ok
+test dense_bidirectional_fitting_corpus ... ok
+
+test result: ok. 9 passed; 0 failed; 2 ignored; 0 measured; 0 filtered out; finished in 19.31s
+
+     Running tests\c21_r3_geometry.rs (target\debug\deps\c21_r3_geometry-ebf2a0ed71203e03.exe)
+
+running 8 tests
+test bridge_threshold_closed_spine_and_symmetry_work_variants ... ignored, release-only bridge and symmetry work observations
+test maximum_spine_and_pressure_worker ... ignored, bounded subprocess worker
+test exact_stationary_samples_keep_pressure_extrema_after_command_cleaning ... ok
+test canonical_reordering_preserves_each_marks_own_format ... ok
+test closing_near_duplicate_pressure_stays_at_the_end_of_the_loop ... ok
+test nfc_reference_and_origin_coverage_corpus ... ok
+test merged_pressure_moving_average_matches_input_window_at_every_smoothness ... ok
+
+running 1 test
+maximum spine + pressure complete outline 1.8908395s: Err(GeomError { code: "limit.exceeded", message: "the brush
+stroke needs more than 100000 tip placements", pointer: "/points" })
+test maximum_spine_and_pressure_worker ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 7 filtered out; finished in 1.89s
+
+test maximum_spine_and_pressure_return_within_watchdog ... ok
+
+test result: ok. 6 passed; 0 failed; 2 ignored; 0 measured; 0 filtered out; finished in 1.91s
+
+     Running tests\c21_r4_closure.rs (target\debug\deps\c21_r4_closure-982470c00b3f2f69.exe)
+
+running 4 tests
+test distinct_return_groups_keep_their_arc_positions_and_tail_rotates_with_geometry ... ok
+test several_closing_samples_form_ordered_seam_and_open_return_stays_open ... ok
+test reordered_marks_composites_and_paragraph_boundaries_keep_owners ... ok
+test closed_stationary_samples_keep_every_pressure ... ok
+
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests\c21_worst_case.rs (target\debug\deps\c21_worst_case-dc2c393089576032.exe)
+
+running 3 tests
+test adversarial_brush_outlines_finish_or_are_refused_within_the_work_budget ... ignored, release-only measurement (about a minute); CI runs it in the headless job with the fitting corpus
+test adversarial_inputs_fit_within_the_work_budget ... ignored, release-only measurement (about a minute); CI runs it in the headless job with `cargo test --release -p tt-vector --test c21_worst_case -- --ignored --nocapture` and keeps the observations
+test input_needing_more_work_than_the_budget_is_refused_with_limit_exceeded ... ok
+
+test result: ok. 1 passed; 0 failed; 2 ignored; 0 measured; 0 filtered out; finished in 0.04s
+
+     Running tests\c22_bridges.rs (target\debug\deps\c22_bridges-33c06f2c060a643e.exe)
+
+running 1 test
+test holes_pieces_and_bridges_match_the_swept_union_and_the_planar_map ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.35s
+
+     Running tests\c22_exact_overlap.rs (target\debug\deps\c22_exact_overlap-954b03b8d60076cc.exe)
+
+running 1 test
+test exact_overlap_areas_match_a_big_rational_reference ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.22s
+
+     Running tests\c22_planar.rs (target\debug\deps\c22_planar-a415b2162357e0f7.exe)
+
+running 11 tests
+test a_figure_eight_line_bounds_two_zones ... ok
+test a_nested_square_is_a_hole_and_a_child_zone ... ok
+test a_dangling_line_inside_a_zone_does_not_split_it ... ok
+test four_lines_meeting_at_corners_bound_one_zone ... ok
+test zone_ids_do_not_depend_on_where_tracing_starts_or_on_stroke_order ... ok
+test crossing_squares_make_three_zones ... ok
+test zone_ids_follow_the_boundary_only_and_are_reproducible ... ok
+test a_closed_circle_is_one_zone_with_its_area ... ok
+test a_pencil_line_across_a_brush_stroke_meets_it_in_the_graph ... ok
+test a_brush_ring_fills_itself_and_bounds_its_hole ... ok
+test the_work_budget_refuses_large_input ... ok
+
+test result: ok. 11 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.36s
+
+     Running tests\c22_properties.rs (target\debug\deps\c22_properties-66437ecf4108513b.exe)
+
+running 3 tests
+test the_map_is_deterministic_order_independent_and_interior_points_locate_their_zones ... ok
+test zones_an_edit_leaves_alone_keep_their_id_and_fill ... ok
+test settling_is_idempotent_and_painted_fills_read_back ... ok
+
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.57s
+
+     Running tests\c22_r1_geometry.rs (target\debug\deps\c22_r1_geometry-55fd54ebc4fdde2e.exe)
+
+running 6 tests
+test a_crossing_near_an_existing_anchor_has_one_shared_junction ... ok
+test topology_changes_at_the_documented_snap_grid_are_repeatable ... ok
+test changing_a_boundarys_geometry_changes_its_zone_id ... ok
+test analytic_holes_parents_sides_retracing_tangency_and_brush_winding ... ok
+test overlapping_zones_carry_fill_even_when_neither_interior_point_is_in_the_other ... ok
+test fixed_seed_line_arrangements_match_independent_convex_clipping ... ok
+
+test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+
+     Running tests\c22_r2_geometry.rs (target\debug\deps\c22_r2_geometry-4dde9125b0087840.exe)
+
+running 9 tests
+test junction_clusters_do_not_chain_and_a_cut_can_end_at_a_shared_junction ... ok
+test shared_anchor_rotated_reversed_and_at_tolerance ... ok
+test vertex_touches_turnbacks_overlaps_and_degenerate_anchors ... ok
+test along_edge_vertex_reentry_and_brush ... ok
+test overlap_ranking_keeps_rational_intersection_area_before_grid_rounding ... ok
+test brush_exterior_fill_survives_split_to_sides_and_merge_back ... ok
+test zone_identity_hole_spur_straight_elision_and_nonboundary_edits ... ok
+test overlap_equal_merge_three_way_split_sliver_and_holes ... ok
+test vertex_crossing_uses_exact_orientation_for_grid_coordinates ... ok
+
+test result: ok. 9 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests\c22_r3_geometry.rs (target\debug\deps\c22_r3_geometry-b91bbea1374221a3.exe)
+
+running 5 tests
+test nonconvex_holed_sloping_shared_edges_have_analytic_areas ... ok
+test exact_interior_endpoint_and_snapped_collinear_controls ... ok
+test three_subcell_differences_and_exact_ties_rank_before_ids ... ok
+test large_candidate_set_charges_and_refuses_without_partial_result ... ok
+test exact_near_collinear_crossings_in_every_quadrant_and_both_vertex_forms ... ok
+
+test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.02s
+
+     Running tests\c22_r4_closure.rs (target\debug\deps\c22_r4_closure-dea71ca068a8a460.exe)
+
+running 2 tests
+test end_joins_existing_three_stroke_junction_with_unchanged_anchor_authority ... ok
+test continuation_oblique_parallel_and_original_collinear_cases ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests\c22_settle.rs (target\debug\deps\c22_settle-94fd436154fb54f9.exe)
+
+running 4 tests
+test painting_a_zone_writes_its_fill_on_the_bounding_sides ... ok
+test a_crossing_line_splits_strokes_and_both_zone_parts_keep_the_fill ... ok
+test a_pencil_crossing_a_brush_splits_at_the_outline_and_leaves_the_brush_byte_identical ... ok
+test a_brush_only_zone_keeps_its_fill_in_exterior_records ... ok
+
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+
+     Running tests\c22_worst_case.rs (target\debug\deps\c22_worst_case-27f8dacf5cfdf767.exe)
+
+running 1 test
+test adversarial_layers_settle_or_are_refused_within_the_planar_budget ... ignored, release-only measurement (a few minutes); CI runs it in the headless job with `cargo test --release -p tt-vector --test c22_worst_case -- --ignored --nocapture` and keeps the observations
+
+test result: ok. 0 passed; 0 failed; 1 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests\properties.rs (target\debug\deps\properties-7cdf1a733132e5db.exe)
+
+running 7 tests
+test pressure_interpolation_stays_in_range ... ok
+test bezier_lists_round_trip ... ok
+test text_edits_keep_runs_covering_and_one_paragraph_per_line ... ok
+test fitting_ignores_timing_only_positions_and_pressures_matter ... ok
+test outlines_contain_every_swept_tip_including_holes_and_separate_pieces ... ok
+test fitting_is_deterministic_and_within_tolerance ... ok
+test outlines_are_closed_finite_and_cover_every_tip ... ok
+
+test result: ok. 7 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.96s
+
+   Doc-tests tt_vector
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s

@@ -1,0 +1,18 @@
+{
+  "command": "draw.flatten.apply",
+  "params": {
+    "drawingId": "dr_01K742SG0KKMCAP9X1E6Z5P4SW",
+    "ids": [
+      "nd_01K9MEASURE00000000000001",
+      "nd_01K9MEASURE00000000000002"
+    ]
+  },
+  "seconds": 23.1416214,
+  "status": "Ok",
+  "error": null,
+  "os": "windows",
+  "arch": "x86_64",
+  "profile": "release",
+  "openSeconds": 2.5271986,
+  "strokes": 100000
+}

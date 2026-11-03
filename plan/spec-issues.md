@@ -161,7 +161,7 @@ Reserved by the M0 closure for "measured deterministic-format incompatibility" (
 
 - **Section:** 11 §10 (generic codes), 11 §7.7 (checkpoints, jobs), 11 §14.6 (never-block watchdog).
 - **Decision taken (ADR-0013):** `command.notImplemented` (registered command implemented by a later milestone;
-  `details.milestone`), `command.timeout` (watchdog budget exceeded; the outcome is indeterminate: the call may still complete, nothing is rolled back or cancelled, and the caller reads `doc.state.get` before retrying),
+  `details.milestone`), `command.timeout` (watchdog budget exceeded; the outcome is indeterminate: the call may still complete, nothing is rolled back or cancelled, and the caller reads `doc.state.get` before retrying; superseded in M2 C2.3 by ADR-0015 history C23-R2-01/C23-R3-01: the timed-out request is cancelled and not accepted unless it had already committed),
   `history.diverged` (a replayed undo step does not match the document; nothing applied), `checkpoint.exists`,
   `checkpoint.notFound`, `job.notFound`; round 1 (ruling R1-22): `request.conflict` (a `requestId` reused with a
   different command, parameters or options; `{requestId, originalCommand}`; never executed) and `request.unknownId`
@@ -221,7 +221,6 @@ Reserved by the M0 closure for "measured deterministic-format incompatibility" (
 
 - **Section:** 03 and spec A (`colour.*` command rows).
 - **Positions** (in `crates/registry/src/declared.json`, `placeholders`):
-  - `colour.fillMapping.set` `/params/mapping`: an object whose fields are not listed
   - `colour.palette.create` `/params/swatches/*`: an object whose fields are not listed
   - `colour.palette.duplicate` `/result/idMap`: an object whose fields are not listed
   - `colour.palette.set` `/params/palette`: an object whose fields are not listed
@@ -232,20 +231,9 @@ Reserved by the M0 closure for "measured deterministic-format incompatibility" (
 - **Decision taken (ADR-0013 §1, C12-R2-02):** each position is a strict placeholder: an object accepts only `{}`, a member accepts only a scalar (never an object or a list), so nothing undefined is accepted silently. The implementing checkpoint replaces it with the shape the section gives.
 - **Question:** define these shapes in the owning section (field names and types).
 
-## SI-026 — `draw.*`: shapes the owning section leaves undefined (found in C1.2 r2; decided)
+## SI-026 — `draw.*`: shapes the owning section leaves undefined (found in C1.2 r2; resolved)
 
-- **Section:** 02 and spec A (`draw.*` command rows).
-- **Positions** (in `crates/registry/src/declared.json`, `placeholders`):
-  - `draw.content.add` `/params/content`: an object whose fields are not listed
-  - `draw.content.add` `/result/idMap`: an object whose fields are not listed
-  - `draw.current.get` `/result/activeView`: a member whose type is not stated (`activeView`)
-  - `draw.drawing.get` `/$defs/spec.DrawingReadback/nodes/*/strokes/*/textureMatrix`: a member whose type is not stated (`textureMatrix`)
-  - `draw.drawing.get` `/$defs/spec.DrawingReadback/nodes/*/zones/*/textureMatrix`: a member whose type is not stated (`textureMatrix`)
-  - `draw.erase.apply` `/params/pen`: an object whose fields are not listed
-  - `draw.hitTest.get` `/result/hits/*`: an object whose fields are not listed
-  - `draw.text.add` `/params/format`: an object whose fields are not listed
-- **Decision taken (ADR-0013 §1, C12-R2-02):** each position is a strict placeholder: an object accepts only `{}`, a member accepts only a scalar (never an object or a list), so nothing undefined is accepted silently. The implementing checkpoint replaces it with the shape the section gives.
-- **Question:** define these shapes in the owning section (field names and types).
+- **Resolved in C1.2 r3 (C12-R3-01):** every position of `draw.*` is now typed from its owning section or its sibling commands; no placeholder remains.
 
 ## SI-027 — `drawAid.*`: shapes the owning section leaves undefined (found in C1.2 r2; decided)
 
@@ -568,3 +556,423 @@ Reserved by the M0 closure for "measured deterministic-format incompatibility" (
   `expectRev` (ADR-0015 §14).
 - **Question:** confirm, or define the representation in 11 §11. The orchestrator's ruling (atomic group step) is the
   M1 representation until the spec owner decides otherwise.
+
+## SI-052 — bitmaps in drawings: no `draw.bitmap.*` commands, and `mediaId` vs `image` (found in M2 C2.1; decided)
+
+- **Sections:** 02 §3.9 (embedded bitmaps), §13.4 bitmap node `{mediaId, pixelWidth, pixelHeight, transform}`, §13.5
+  (no `draw.bitmap.*` rows); 10 §4.9 bitmap node `{image: blob, width, height, transform}`; spec A.
+- **Problem:** spec A has no command that creates a bitmap node; 02's read-back names a `mediaId` that 10 does not
+  persist (10 stores the PNG as a blob entry).
+- **Decision taken (ADR-0016 §8):** bitmaps enter a drawing through `draw.content.add` (and `edit.paste`) in the
+  §13.4 shape; `mediaId` is the package entry of an image the document already holds (the read-back reports the
+  bitmap's blob entry as `mediaId` and the blob itself as `image`). New pixels arrive with image import (09, M10) and
+  vectorization "with texture" (M2 C2.4). Bitmaps are read back, bounded, deleted, grouped and saved like any node.
+- **Question:** confirm, or add a `draw.bitmap.add` command and a media reference to 10 §4.9.
+
+## SI-053 — brush outlines with holes in a one-path stroke (found in M2 C2.1; decided)
+
+- **Sections:** 02 §3.4 ("Self-overlaps of one stroke form a single clean outline"), §13.4 (`outline: [[outer],
+  [hole]]`); 10 §4.9 (a stroke has one `points` path).
+- **Problem:** a stroke that loops sweeps an outline with a hole (and a zero-width pressure section can split it into
+  pieces); 10 stores one closed path per stroke.
+- **Decision taken (ADR-0016 §4):** the outline is the union of the swept tips; its contours are joined into one closed
+  path by zero-width bridges (each hole or piece spliced in at its nearest vertex). Filled with the non-zero rule the
+  bridge edges cancel, so the shape renders as the union. `draw.drawing.get` reports `outline` with that one contour;
+  `draw.content.add` accepts one contour. The planar map (C2.2) treats a bridge as two coincident edges.
+- **Question:** amendment candidate for the spec owner: allow several contours per brush stroke in 10 §4.9.
+- **Round 1 adjudication (`reviews/M2-C2.1-r1.md`):** accepted as an interim representation, but C2.2 may not rely on
+  it before a larger corpus of holes, disconnected pieces and bridges is retained. C2.1 round 1 adds the property
+  `outlines_contain_every_swept_tip_including_holes_and_separate_pieces` (loops and zero-pressure gaps, winding
+  containment of every swept tip); the larger bridge corpus that the planar map consumes is ticketed to M2 C2.2 in
+  `plan/traceability.csv` (SI-053 row).
+
+## SI-054 — the persisted brush spine: tip angle, tip proportions and closed spines (found in M2 C2.1; decided)
+
+- **Sections:** 02 §3.2 (spine keeps "the pen (tip shape, minimum/maximum size)"), §6.1 (tip shapes round, oval,
+  square, flat; tip angle), §13.4 (`pen: {tipShape, minSize, maxSize, tipAngle}`); 10 §4.9 (`spine: {points, pressure,
+  pen: {penId, tip, minSize, maxSize}}`, no `closed`).
+- **Problem:** (a) 10's spine pen has no tip angle, so a non-round outline could not be swept again after a spine or
+  pressure edit; (b) 02 does not give the proportions of oval and flat tips; (c) a spine has no `closed` flag.
+- **Decision taken (ADR-0016 §3–§5):** (a) a non-zero tip angle of a non-round tip is kept in the stroke's
+  `ext["dev.toontown.brush"].tipAngle` (the reverse-DNS extension slot of 10 §2.2, preserved by every reader) and read
+  back as `pen.tipAngle`; (b) oval tips are 2:1 ellipses and flat tips 5:1 rectangles with the long axis at the tip
+  angle, square tips have side = width; (c) a closed spine is stored open with its first anchor repeated at the end.
+- **Question:** add `tipAngle` (and `closed`) to 10 §4.9's spine; state the tip proportions in 02 §6.1.
+
+## SI-055 — text property names and units differ between 02 and 10 (found in M2 C2.1; decided)
+
+- **Sections:** 02 §7.6.1 (Text panel: kerning int 1/100 em; line spacing "Additional spacing between lines", du;
+  outline colour), §13.4 runs `{baseline, autoKern, colourId, outlineColourId}` and paragraphs `{align, leftMargin,
+  rightMargin}`; 10 §4.9 runs `{script, kerning, autoKerning, colourId}` and paragraphs `{alignment, marginLeft,
+  marginRight, indent, lineSpacing}`.
+- **Problem:** the read-back and the persisted form name the same fields differently; 10 has no outline colour; the
+  model's documentation called `lineSpacing` a factor.
+- **Decision taken (ADR-0016 §6):** 10 owns the persisted names, 02 the command and read-back names (mapped one to
+  one); units are 02's (sizes, margins, indent and line spacing in du, kerning 1/100 em, §14 decision 16).
+  `outlineColourId` is accepted only as `null` (`arg.invalid` otherwise) and read back as `null`. New text uses the
+  generic family `sans-serif` (resolved to the platform's default sans-serif face), so the persisted name is the same on
+  every OS.
+- **Question:** add `outlineColourId` to 10 §4.9 runs, or remove it from 02.
+
+## SI-056 — targeting, revisions and settings of the C2.1 drawing commands (found in M2 C2.1; decided)
+
+- **Sections:** 02 §13.1 items 4 and 5, §3.12 ("Commands that address objects by ID MAY pass the revision they
+  read"), §13.5 rows; 10 REV-05; 02 §6.1 (current pen), §6.2/§8.11 (symmetry, Draw Behind), §7.3.6 (Stroke tool
+  layer); 03 §2.4 (current colour).
+- **Problem:** the rows list `drawingId?` only on some commands and `expectRev` on two; the current pen, colour,
+  symmetry and Draw Behind settings have no setters before M4/M7; the Stroke tool's layer rule needs zones.
+- **Decision taken (ADR-0016 §2, §7):** every C2.1 drawing command accepts `drawingId`, `elementId` and `frame`
+  (§13.1 item 4); creation commands (`draw.stroke.add`, `draw.text.add`, `draw.content.add`) accept `createDrawing`;
+  commands that edit objects by ID accept `expectRev` (the drawing revision) and fail with `drawing.staleRevision`.
+  Until their commands exist: the current brush pen is the project's "Pen 3", else its first brush pen; the current
+  colour is the pen's colour, else the first swatch of the first visible palette; symmetry is none and Draw Behind
+  off (the engine applies both when set). `layer: "auto"` for an invisible stroke uses the top-most layer with a stroke
+  the new stroke crosses (zones arrive with C2.2). Point-taking parameters are in drawing space; `space: scene|view`
+  needs the M3 transforms and M4 views.
+- **Question:** confirm the parameter superset, or list the addressing parameters in each row.
+- **Round 1 adjudication (`reviews/M2-C2.1-r1.md`):** common addressing is a reading of the explicit 02 §13.1 item 4,
+  not an ambiguity that permits omission. Round 1 applies it to the three object setters that lacked it
+  (`draw.stroke.set`, `draw.text.set`, `draw.textFormat.set`; C21-R1-03); the revision check runs on the resolved
+  drawing. The scene/view deferral (M3 C3.2 / M4 C4.2) and the settings deferral (M4 C4.2 / M7 C7.1) stand.
+
+## SI-057 — zones in the C2.1 read-back (found in M2 C2.1; decided)
+
+- **Sections:** 02 §13.4 (`zones`, stroke `leftZoneId`/`rightZoneId`), §13.5 (`zoneIds` results), §3.12 item 1; 10
+  §4.8 (derived `zones`).
+- **Problem:** zones are derived by the planar map, which is M2 C2.2.
+- **Decision taken (ADR-0016 §9):** until C2.2, `draw.drawing.get` leaves `zones` and the side zone IDs out (the
+  closed result schema has no such members), commands report `zoneIds: []`, and every such result carries the warning
+  `doc.derivedUnavailable` naming M2 C2.2. Zone fills persisted on stroke sides are preserved untouched. Nothing
+  reports an empty zone list as computed.
+- **Question:** none; C2.2 replaces the warning with computed zones.
+
+## SI-058 — edit results and the drawing event: §13.1 item 11 against the shorter §13.5 rows (found in M2 C2.1 round 1; decided)
+
+- **Sections:** 02 §13.1 item 11 ("every edit result includes `{drawingId, rev}`" and the changed IDs), §13.5 result
+  columns (e.g. `draw.stroke.set → {strokeIds, removedIds, rev}`), §13.6 and spec A `draw.drawing.changed`
+  (`{drawingId, rev, commandId, createdIds, modifiedIds, removedIds}`); 02 §3.2 and §14 decision 2 (outline edit
+  discards the spine).
+- **Problem:** the §13.5 rows list shorter results than the common rule; the event row names fields but not which
+  commits produce it; §3.2 does not say what one edit of both the outline and the spine means.
+- **Decision taken (ADR-0016 §2, §5; C21-R1-04, -07, -08):** every edit result is the row's members plus `drawingId`,
+  `rev`, `createdIds`, `modifiedIds` and `removedIds` (local IDs; the rows' own `strokeIds`/`removedIds` keep their
+  meaning). `draw.drawing.changed` is emitted by the common commit path for every commit that changes drawing content
+  (commands, generic patches, batches, undo, redo, checkpoint restore) with `commandId` the committing command
+  (`batch` for a batch). An edit that changes both a stroke's outline and its spine is refused (`arg.invalid`,
+  `details.pointers: ["/points", "/spine"]`) by orchestrator ruling; an outline edit alone discards the spine.
+- **Question:** state in §13.5 that the rows extend §13.1 item 11's common members, and add the both-authorities
+  rejection to §3.2.
+
+## SI-059 — brush outlines and persistent noding (found in M2 C2.2; ruled)
+
+- **Sections:** 02 §3.2 ("Within a layer, strokes are split at intersections and junctions"), §3.12 item 1; 10 §4.9 (a
+  brush stroke has one closed outline path); SI-053, SI-054.
+- **Problem:** splitting a brush outline would break its single closed path and stale its spine.
+- **Decision (orchestrator ruling, ADR-0017 §1):** brush outlines are never split or moved by noding; their crossings
+  are vertices of the derived graph only. Pencil and invisible strokes are split at the outline. Tests:
+  `c22_settle::a_pencil_crossing_a_brush_splits_at_the_outline_and_leaves_the_brush_byte_identical`,
+  `c22_planar::a_pencil_line_across_a_brush_stroke_splits_and_the_brush_entry_is_untouched`.
+- **Question:** state in 02 §3.2 that brush outlines take part in topology without being split.
+
+## SI-060 — fills of zones bounded only by brush-outline stretches (found in M2 C2.2; ruled, interim)
+
+- **Sections:** 10 §4.9 (fills on stroke sides; zones derived), 02 §3.5; SI-059.
+- **Problem:** one brush outline may border several zones (the hole of a ring and the space outside it); its two sides
+  cannot hold their different fills.
+- **Decision (orchestrator ruling, ADR-0017 §4):** such fills are kept in the brush stroke's
+  `ext["dev.toontown.zones"].exterior` = `[{side, from, to, fill}]` (path-parameter ranges), rewritten deterministically
+  on every re-node (same input → same bytes, `c22_settle`, `c22_properties`), round-tripping through both container
+  forms (`ext` is preserved by every reader) and `draw.content.add` (fills travel at interior points), and listed in
+  the drawing's `colourRecovery` like any fill (`colour_recovery::used_colours`).
+- **Question (amendment proposal for the spec owner):** add a zone-fill side table to the drawing in 10 §4.9 (e.g.
+  `zoneFills: [{layerId, boundary, fill}]`), from which the `ext` key would be migrated.
+
+## SI-061 — region targets, repaint, protected colours (found in M2 C2.2; ruled)
+
+- **Sections:** 03 §8.2, §8.4, §16.3 (`colour.paint.apply` parameters), §1.4 (swatch fields).
+- **Decision (orchestrator ruling, ADR-0017 §8):** `colour.paint.apply` also takes `lasso` and `rect` (zones whose
+  interior point lies inside), `onlyPainted` (repaint), and `respectProtected` (default true); a swatch is protected by
+  `ext["dev.toontown.paint"].protected: true`; refusals are reported per target with `colour.protected`.
+- **Question (amendment proposal):** add a `protected` flag to 03 §1.4 swatches and these parameters to the §16.3 row.
+
+## SI-062 — per-drawing gap-closing setting (found in M2 C2.2; ruled)
+
+- **Sections:** 03 §8.8 (a persisted user setting), §16.3 (`gapClosing` per command).
+- **Decision (orchestrator ruling):** the spec as written — user setting (`paint.gapClosing` preference) plus the
+  per-command override; no per-drawing field.
+- **Question (amendment proposal, owner M4 C4.2):** whether the paint tools' UI wants a per-drawing setting.
+
+## SI-063 — view pixels at 100 % zoom (found in M2 C2.2; decided)
+
+- **Sections:** 03 §8.8 ("tolerance at 100 % zoom"), 02 §13.1 item 5; 03 §7.2 ("1 image pixel = 1 drawing unit at
+  100 %").
+- **Decision (accepted by ruling):** at 100 % zoom one view pixel is one drawing unit; gap tolerances are 3/8/16 du and
+  the hit-test tolerance is in du for commands without a view.
+
+## SI-064 — the unit space of fill mappings (found in M2 C2.2; decided)
+
+- **Sections:** 03 §7.2 (default and drag mappings), §16.3 (`Mapping`).
+- **Problem:** the unit space the 2×3 matrix maps from is not stated.
+- **Decision (ADR-0017 §8):** unit square `[0, 1]²`: linear axis along x (0 → 1), radial centred at (½, ½) with radius ½,
+  texture image over the square. Default mapping: the square onto the object's bounds (radial: radius to the corner);
+  drag: linear 0 at the press and 1 at the release, radial centre at the press with the drag as radius, texture origin
+  at the press, width = drag length, rotated to the drag.
+- **Question:** confirm, or define the unit space in 03 §7.2.
+
+## SI-065 — `colour.pick` before the renderer and the views (found in M2 C2.2; decided)
+
+- **Sections:** 03 §16.3 (`colour.pick`: `space` defaults to `view`, `rgba` is the rendered pixel).
+- **Decision:** until the desktop views (M4 C4.2) and the renderer (C2.3/M3), points are given in drawing space
+  (`space: "drawing"`; `scene`/`view` are `arg.invalid` with a hint, in every paint command), and `rgba` is the swatch's
+  value for the palette's first style (first stop of a gradient; `#00000000` for textures, unpainted and empty canvas).
+- **Question:** none; M4 C4.2 and C2.3 complete the view space and the composited pixel.
+
+## SI-066 — zone reporting (found in M2 C2.2; decided)
+
+- **Sections:** 02 §13.4 (zones), §13.5 (`zoneIds`), §13.6 (`draw.drawing.changed`); 10 §10.3 (`unpaintedZones`).
+- **Decision (ADR-0017 §3, §11):** zone IDs are `zn_` + 26 base-32 characters of a SHA-256 of the canonical boundary;
+  `draw.drawing.changed` and edit results list zones as derived objects (new IDs created, vanished ones removed,
+  repainted ones modified); `zoneIds` of `draw.stroke.add` are the zones the edit created; a hole's `zoneId` is the zone
+  across its longest boundary stretch; `unpaintedZones` reports zones with at least one visible bounding stroke and no
+  fill (a zone closed only by invisible strokes is not line art to paint).
+- **Question:** confirm the event semantics for derived objects in 02 §13.6.
+
+## SI-067 — noding and recovery details (found in M2 C2.2; decided)
+
+- **Sections:** 02 §3.12 item 1, §3.11; 03 §11.2; 10 §4.11.
+- **Decision (ADR-0017 §1, §10):** junction tolerance 1/32 du; pieces are not merged back after a delete; recovered
+  swatches without a recorded palette name and placeholders go to one palette `Recovered` (created once, reused);
+  missing styles are added by name with every swatch receiving its first style's value; recovery lists are refreshed on
+  save (10 §4.11's "on save"), not on every edit; texture images referenced by recovered swatches keep their package
+  entry (a missing image is reported by `missingMedia`).
+- **Question:** confirm where recovered swatches go when the recorded palette exists but is hidden (C2.2: a visible
+  palette of that name, else a new one).
+- **Round 1 (C22-R1-01, R1-03, R1-05, R1-06; orchestrator rulings):**
+  - *Junction rule.* Every crossing and T-junction is resolved once for all participants. A record within the
+    tolerance of a junction's first record belongs to it (no chaining). Its coordinate is the nearest existing anchor
+    of an unchanged pencil or invisible participant, else the first record's point, and every participant meets that
+    exact coordinate. An open end is a junction with the nearest stroke and with every stroke as near (ties). A
+    stroke crossing another exactly at a vertex of either is a junction at exactly that vertex. A touch, retracing, or
+    any shared direction (collinear overlap) is not a crossing. Round 2 (C22-R2-01 ruling): every crossing,
+    vertex, collinear, touch and turn-back decision uses `i128` orientation signs on the snapped 1/64 du grid, with no
+    epsilon. Floating point only places a proper crossing's point. Round 3 (C22-R3-03 ruling): the endpoint pass uses the
+    same classification. An open end on another stroke is a junction only when its grid direction is not parallel to
+    that stroke's segment (exact sign), so collinear overlap is excluded by both passes alike. A cut at the same place as an open path's end becomes that end's junction.
+  - *Imports.* Drawings `doc.import.json` creates are persisted content, taken as they are like a load: their fills
+    are read and repaired (round 2, C22-R2-02: `repair_drawing_sides` in the import's own transaction, reported as
+    `drawing.fillInconsistent`), but they are not re-noded. Their first edit nodes them. This keeps C1.3's import fidelity
+    and `idPolicy: preserve`.
+  - *Zone-ID input (ruling).* A zone ID is SHA-256 over each boundary cycle in traversal order: the snapped integer
+    coordinate of each vertex with the stroke IDs and sides of the edge leaving it. A vertex where the boundary goes
+    straight on along the same strokes is left out, the cycle starts at its smallest token sequence, and hole cycles
+    are sorted. Carry-over scores by exact overlap. An old zone with a new zone's ID has the same polygon and keeps its
+    fill directly.
+  - *Recovery.* Recovery and side-fill repair run on load as part of the repair step (C22-T1 withdrawn). Placeholder
+    recovery entries are written on save for used colours without a definition or a copy, in the `Recovered` palette.
+- **M2 C2.4 (ticket C24-T1, orchestrator ruling): side fills on overlapped edges.** Overlapping or retracing collinear
+  segments stay unsplit (C22-R3-03 stands). For any set of mutually overlapping segments the side fill is owned by one
+  deterministic owner: the segment of the stroke with the lowest stroke ID, then the lowest segment index. Every read of
+  a side fill on an overlapped segment resolves through the owner; every write (paint, repair, recovery, carry-over)
+  writes through to the owner and mirrors to the other members. Folds are covered by the owner rule, not by splitting.
+  Where a stroke side faces zones with different fills along its length (an overlap, a fold, or a vertex another stroke
+  only touches), the stretches that differ from its side fill are stored as `{side, from, to, fill}` records in the
+  SI-060 extension key (ADR-0017 history 7–8). The shrunk property case is a permanent regression with retrace and
+  fold variants.
+- **M2 C2.4 round 1 (C24-R1-04, confirmed ruling): the junction coordinate has three steps.** A junction's coordinate
+  is the nearest existing anchor of an unchanged pencil or invisible participant; **else the one point where every
+  participant already has an anchor**; else the first record's point. The middle step keeps re-noding settled pieces
+  that are marked changed from moving them (C22-T2 fixpoint; ADR-0017 history 9). This supersedes the two-step wording
+  of the round-1 junction rule above.
+- **M2 C2.4 round 1 (C24-R1-02 ruling): a proper crossing's point is exact.** The fractions along both snapped edges
+  are ratios of the exact grid orientations, and the crossing point is the rational crossing of the snapped edges
+  rounded half to even onto the 1/64-du grid. Floating point no longer places it (this supersedes "Floating point only
+  places a proper crossing's point" in round 2), so an integer-du translation of the input translates the snapped
+  arrangement exactly (ADR-0017 history 10).
+
+## SI-068 — mappings of lines (found in M2 C2.2 round 1; decided)
+
+- **Sections:** 03 §7.2, §1.6; 10 §4.9 (stroke `fillMatrix`).
+- **Issue:** 03 §7.2 says each painted zone, brush stroke **or line** that uses a gradient or texture stores its mapping
+  matrix. The note on `fillMatrix` in the 10 §4.9 stroke table names only brush strokes, and C2.1's schema rule kept
+  `fillMatrix` null for pencils.
+- **Decision (C22-R1-09 ruling):** pencil strokes store `fillMatrix` when painted with a gradient or texture (drag
+  mapping or the default box). Invisible strokes keep it null. A solid colour ignores but preserves the stored matrix
+  (03 §1.6). Stored matrices serialise integral entries as integers.
+- **Proposal:** amend the 10 §4.9 note to "brush strokes and lines with gradient or texture colours".
+
+
+## SI-069 — headless view, rename and polyline handles (found in M2 C2.3; decided)
+
+- **Sections:** 02 §9, §7.2.6, §13.5 (`draw.viewMapping.get`, `draw.drawing.rename`, `draw.polyline.add`).
+- **Decisions:** headless runs have one virtual Drawing view of 1920 x 1080 px at zoom 1 with the drawing origin at its
+  centre (`drawingToView [1,0,0,-1,960,540]`); any other view is `view.notFound` until M4 C4.2 owns views. Drawing names
+  refuse `\ / : * ? < > " | .` (`drawing.nameInvalid`) and duplicates within the bank (`drawing.nameExists`); rename
+  and lock are allowed on a locked drawing (metadata, not artwork). Polyline `inHandle`/`outHandle` are offsets from
+  the point; snapping joins existing anchors within `snapRadius`.
+
+## SI-070 — transforms: spines, envelopes, point subsets (found in M2 C2.3; decided)
+
+- **Sections:** 02 §3.2, §7.1.1–§7.1.4, §8.13, §13.5.
+- **Decisions:** rigid motions (translation, rotation, reflection) move a brush spine with its outline and turn a
+  non-round tip angle; scale, skew and envelopes drop the spine (the outline becomes authoritative, as for a direct
+  outline edit). Envelopes map control points as points (projective when the target quadrilateral is convex, else
+  bilinear); fill matrices, text and bitmap transforms take the affine fit through three corners. Reflections swap side
+  fills and brush exterior records. `draw.transform.apply` also takes `points` (or the Contour Editor's point
+  selection) to move anchors only (orchestrator ruling: point-subset transforms for M4). Layers moved as a whole repaint
+  their zones with the old fills and mapped matrices, so gradients and textures stay attached.
+
+- **Round 1 additions (C23-R1-01/02/03):** every geometric transform route repaints moved layers the same way: each
+  zone takes the fill of the source zone at its interior point mapped back through the map's affine part (envelopes:
+  their three-corner fit; a parallelogram target is mapped exactly as an affine map), the matrix mapped forward;
+  Reposition All does the same for every drawing. Point-subset transforms move the whole same-layer junction class of
+  each requested anchor, with the pivot from the requested subset. **Snap to Contour reading:** candidates are the
+  other strokes of the moved stroke's own layer (layers are independent planar maps, 02 §3.1), by their whole contour
+  — anchors and segment interiors, curved segments included — within 8 du; ties go to the lower stroke ID, then the
+  lower segment and parameter.
+
+## SI-071 — the Cutter's segment primitive and brush strokes (found in M2 C2.3; decided)
+
+- **Sections:** 02 §7.2.2, §7.2.7, §13.5 (`draw.cut.apply`, `draw.erase.apply`); spec A (closed command list).
+- **Decisions:** the cut-by-polygon and cut-by-segment primitives (orchestrator ruling) are `draw.cut.apply` with
+  `polygon`/`rect` or the extension `segment` (spec A admits no new command ID). A cut stages its boundary as an
+  invisible stroke; pieces through a pre-existing zone stay as cut edges. Brush strokes are never split (SI-059): one
+  wholly inside is inside, one crossing is kept whole and reported in `keptBrushIds`.
+- **Question:** amendment candidate: a boolean outline cut for brush strokes.
+
+## SI-072 — explicit eraser pen (found in M2 C2.3; decided)
+
+- **Sections:** 02 §13.5 `draw.erase.apply` `pen?: object` (SI-026 placeholder).
+- **Decision:** `pen` is a round eraser `{minSize, maxSize}`; `penId` must name an eraser pen; the default is the
+  project's first eraser pen.
+
+## SI-073 — flatten and optimize details (found in M2 C2.3; decided)
+
+- **Sections:** 02 §3.5, §8.1, §8.2, §8.10, §8.11.
+- **Decisions:** after re-noding, lower pencil and invisible pieces under opaque upper cover (opaque zone fills, opaque
+  brush strokes) are discarded like wholly hidden strokes; partly covered lower brush strokes stay whole (SI-059).
+  "Opaque" means a solid colour or gradient with alpha 255 in the interim style; textures count as not opaque. Zones of
+  the result take the fill of the winning source layer painting their interior. `policy {precedence: upper|lower,
+  position: top|bottom}` (orchestrator ruling: one command for M4 auto-flatten and Draw Behind). Optimize merges
+  adjacent siblings only; it also declines when an upper painted zone covers a lower line or brush stroke (the merged
+  layer would draw it above the fill). Overlap is tested on zone outer rings, outlines and centre paths.
+
+## SI-074 — drawing renders: region, text, texture orientation (found in M2 C2.3; decided)
+
+- **Sections:** 02 §13.5 `draw.drawing.render`; 03 §7.2; ADR-0006.
+- **Decisions:** `padding` is in drawing units; without `height` the region keeps its aspect, with both it is fitted and
+  centred; `camera` is 12 fields wide at the project aspect; an empty drawing's `bounds` is the 12-field guide. Results
+  add `pixelsSha256` and `warnings`. Text pixels come from the machine's fonts, so cross-platform goldens avoid text.
+  Superscripts rise a third of the run size, subscripts drop a sixth; `centre`/`right` alignments shift lines.
+- **Texture orientation (orchestrator ruling on the C2.3 handoff): the upright convention everywhere.** The renderer
+  keeps image row 0 at unit y = 0 (the standard texture convention). Stored mappings therefore show the image upright
+  in drawing space: the tile-off click default is `[w, 0, 0, -h, minX, maxY]` like tile-on (`[W, 0, 0, -H, minX,
+  maxY]` at native size); a texture drag mapping takes the image's x axis along the drag and its y axis as the x axis
+  turned clockwise, `[dx, dy, dy, -dx, fromX, fromY]` (negative determinant in y-up drawing space); gradients are
+  unaffected. `c22_r3_commands::texture_click_uses_palette_first_style_and_drag_and_tile_off_stay_unchanged` carries
+  the new tile-off and drag values (declared edit under the ruling); the `c23_render` goldens show the asymmetric
+  3 x 2 fixture upright under tile-on, tile-off and a drag.
+
+## SI-075 — fill mapping objects (found in M2 C2.3; decided)
+
+- **Sections:** 03 §8.7, §13 (`colour.fillMapping.get/set`; SI-025 placeholder).
+- **Decisions:** `mapping` is `"default"`, `"clipboard"` or exactly one of `{matrix}`, `{linear: {start, end}}`,
+  `{radial: {centre, radius}}`, `{texture: {origin, xAxis, yAxis}}`. `get` reports handles for gradients and textures
+  and, for a solid colour, the matrix it keeps (or the box mapping); unpainted zones, invisible strokes and text refuse
+  with `colour.notMappable` and a reason. `set` skips solid, unpainted, invisible, text and mismatched-kind objects with
+  a reason. The fill-mapping clipboard is session state.
+
+## SI-076 — centre line without a spine (found in M2 C2.3; resolved in M2 C2.4, ticket C23-T1)
+
+- **Sections:** 02 §8.5.
+- **Decision (orchestrator ruling: accepted as interim):** brush strokes that keep their spine become pencil lines
+  along it at the pressure-average width; outlines edited directly (no spine) are kept and reported
+  (`drawing.centreLineNoSpine`). The triangulated medial axis with branch pruning and colour splitting for spineless
+  outlines is ticket **C23-T1**, owner M2 C2.4.
+- **Resolution (M2 C2.4, C23-T1):** spineless outlines get the chordal axis of a constrained Delaunay triangulation
+  (ADR-0016 history). `drawing.centreLineNoSpine` remains only for outlines the algorithm refuses: fewer than three
+  distinct points, crossing contours (self-intersection), no enclosed area, or no axis left after pruning.
+
+## SI-077 — feather colours (found in M2 C2.3; deferred by orchestrator, awaiting spec owner; ticket C23-T2, owner M7 C7.2)
+
+- **Sections:** 02 §8 (Feather Edges), 03 §1.1 (indirect colour), 10 §4.9.
+- **Problem:** feather bands need each source colour at decreasing opacity ((N-1)/N down to 1/N), but artwork
+  references colour IDs only and has no object opacity.
+- **Ruling:** `draw.feather.apply` moves to M2 C2.4 (generated declaration owner M2 C2.4, ticket **C23-T2**); the colour
+  question goes to the spec owner; neither design is implemented.
+- **Design A — per-band swatches in a dedicated system palette.** Feather creates (or reuses) swatches
+  `<source name> 1/N … N-1/N` in a hidden system palette (like the hidden palette of 03 §1.2), one per source colour and
+  band, holding the source's value in every style with the alpha scaled. *For:* no model change; renders, exports and
+  recolouring work today. *Against:* palette growth (colours × steps, up to 100 per colour); editing the source swatch
+  does not update the bands unless a link is added; Replace Colour must learn the family.
+- **Design B — band-opacity model amendment.** A stroke or zone fill gains an opacity factor (`fill.opacity`, 0–1) applied
+  on top of the referenced colour; feather bands reference the source colour ID with opacity k/N. *For:* bands follow
+  swatch edits, style switches and Replace Colour automatically; no palette growth; reusable for other effects.
+  *Against:* a 10 §4.9 schema amendment (migration, renderer and paint semantics, `colour.pick` reporting).
+- **Recommendation:** Design B. Feather bands are derived appearance of the source colour, and indirect colour (03 §1.1)
+  is the reason colours are IDs; a per-object opacity keeps that property, where Design A copies colour values and
+  would drift on the first swatch edit.
+- **Status at the M2 merge (orchestrator scope decision): deferred by orchestrator, awaiting the spec owner.** The spec
+  owner has not answered, so Feather is re-scoped out of M2 as an explicit declared deferral: `draw.feather.apply`
+  stays declared and refuses with `command.notImplemented`. Ticket C23-T2 is owned by **M7 C7.2 (effects), or the
+  first checkpoint after the spec owner decides SI-077, whichever comes first** (generated declaration owner
+  "M7 C7.2 (or the first checkpoint after the SI-077 decision)"). The spec owner may reverse this.
+
+## SI-078 — the Cutter and text or bitmap nodes (found in M2 C2.3 round 1; decided)
+
+- **Sections:** 02 §7.2.7 ("everything enclosed becomes selected"), §3.7, §3.9.
+- **Decision (orchestrator ruling C23-R1-11):** text and bitmap nodes wholly enclosed by the cut boundary (their
+  bounds' corners inside) are selected or deleted with the rest and reported by ID; partly enclosed ones are left whole
+  and reported in `skipped` with reason `notClippable` (no glyph or bitmap clipping in M2). Brush strokes keep the
+  SI-071 treatment. The Eraser leaves text and bitmap nodes alone.
+- **Candidate:** clipping bitmaps (and glyph outlines) for M3/M4.
+
+## SI-079 — selection and document history (found in M2 C2.3 round 3; decided)
+
+- **Sections:** 02 §7.1, §13.1.10; 10 §2.7.
+- **Decision (reviewer interpretation adopted as the ruling, M2-C2.3-r3):** the drawing selection (zones included) is
+  transient session state, not part of document history. Undo and redo restore document geometry and zone identity;
+  a selection pruned because its zone was re-identified stays pruned when undo brings the zone back, and the restored
+  zone can be selected again by its original ID. Selection readback returns only valid IDs (§13.1.10). A call whose
+  caller timed out leaves the selection as it was (ADR-0015 history, C23-R3-01).
+
+## SI-080 — `VectorizeSettings` example versus the command rows (found in M2 C2.4; interim decided)
+
+- **Sections:** 09 §11.2 (`VectorizeSettings` example `{"type": "blackWhite", "filter": "none", "threshold": 50}`);
+  02 §11.2 and A (`draw.vectorize.*`: `type` `blackAndWhite` | `withTexture`, threshold default 70).
+- **Interim decision (builder, C2.4):** the command rows govern (`blackAndWhite`, default 70); the 09 example is read
+  as illustrative. `import.vectorize.settings.*` stay M10 C10.2 and will store the command-row values.
+- **Question:** align the 09 example with the command rows.
+
+## SI-081 — the `draw.vectorize.preview` PNG result limit (found in M2 C2.4; interim decided)
+
+- **Sections:** A (`draw.vectorize.preview` result `{png, strokeCount}`, generated schema `png` max 65 536
+  characters); 02 §11.2 (preview width default 512).
+- **Interim decision (builder, C2.4):** the implemented result does not cap `png`: a 512-px preview of detailed line
+  art exceeds 64 KiB of base64. The width parameter (1–4096) bounds the output.
+- **Question:** raise or remove the limit, or return a `path` like `draw.drawing.render`.
+
+## SI-082 — owner of `draw.vectorFile.import` (found in M2 C2.4; decided)
+
+- **Decision (orchestrator ruling, C2.4 plan):** the registry row's original owner (M2 C2.4) disagreed with plan §4,
+  which places vector import (PDF/AI/SVG) in M10 C10.2; plan §4 governs, and the declaration's owner is M10 C10.2.
+
+## SI-083 — the `draw.vectorize.run` result reports skipped images (found in M2 C2.4; decided)
+
+- **Sections:** A (`draw.vectorize.run` → `{elementId, drawingIds, completed, cancelled}`); 02 §11.2 (cancelling keeps
+  completed drawings).
+- **Decision (orchestrator ruling, C2.4 plan):** each image is its own undo step; the result also lists the images not
+  committed, `skipped: [{index, source, reason: "occupied" | "cancelled"}]`, beside the spec's fields.
+- **Question:** add `skipped` to the A result column.
+
+## SI-084 — vectorization colours and palettes: 02 §11.2 versus 03 §11.6 and §7.4 (found in M2 C2.4 round 1; decided, amendment candidate)
+
+- **Sections:** 02 §11.2 (Vectorize); 03 §11.6 (vectorization colours), §7.4 (texture swatch names); ADR-0018.
+- **Problem:** 02 §11.2 gives black-and-white vectorization generated black in a reused palette named `Vectorization`,
+  and texture vectorization swatches named from the file. 03 §11.6 instead uses the current colour for
+  black-and-white and a new uniquely suffixed `Vectorization Palette` per import for texture, and 03 §7.4 names texture
+  swatches `1`, `2`, ….
+- **Decision (orchestrator ruling, C24-R1-05): 02 §11.2 takes precedence, as implemented** — generated black in the
+  reused `Vectorization` palette; texture swatches named from the file (`draw_vectorize.rs::{black, texture}`;
+  `c24_vectorize.rs` palette assertions). No behaviour change.
+- **Question (amendment candidate for the spec owner):** align 03 §11.6 and §7.4 with 02 §11.2 (colour choice, palette
+  naming and lifetime, swatch naming), or rule the other way.

@@ -1,0 +1,45 @@
+diff --git a/tests/adversarial/c22-r2-audit.py b/tests/adversarial/c22-r2-audit.py
+index 4b0934c..f4dcab8 100644
+--- a/tests/adversarial/c22-r2-audit.py
++++ b/tests/adversarial/c22-r2-audit.py
+@@ -89,7 +89,9 @@ class Audit(unittest.TestCase):
+     def test_c22_golden_only_zone_ids_and_number_representation(self):
+         p='crates/executor/tests/golden/c22-determinism.json'
+         old=json.loads(git('show','648e22d:'+p))
+-        new=json.loads((ROOT/p).read_bytes())
++        # History-pinned receipt (orchestrator ruling, M2 C2.4): the golden as last validated (7a77138); C2.4 re-recorded
++        # it with only Bezier handles of split straight pieces changed (C2.4 handoff, declared edits).
++        new=json.loads(git('show','7a77138:'+p))
+         self.assertEqual(mask(si074(old,new)),mask(new))
+ 
+     def test_reviewer_tests_unchanged_after_merge(self):
+diff --git a/tests/adversarial/c22-r3-audit.py b/tests/adversarial/c22-r3-audit.py
+index 0d05abd..bf4953e 100644
+--- a/tests/adversarial/c22-r3-audit.py
++++ b/tests/adversarial/c22-r3-audit.py
+@@ -24,7 +24,9 @@ def git(*args):
+ def structural():
+     p = 'crates/executor/tests/golden/c21-determinism.json'
+     a = json.loads(git('show', '7ccea58:' + p))
+-    b = json.loads((ROOT / p).read_bytes())
++    # History-pinned receipt (orchestrator ruling, M2 C2.4): the golden as last validated (c324340); C2.4 re-recorded it
++    # with only Bezier handles of split straight pieces changed (C2.4 handoff, declared edits).
++    b = json.loads(git('show', 'c324340:' + p))
+     old = a['drawing1']['nodes'][7]['children'][0]['strokes']
+     new = b['drawing1']['nodes'][7]['children'][0]['strokes']
+     receipt = {'oldPieces': len(old), 'newPieces': len(new), 'masked': [
+diff --git a/tests/adversarial/c23-r1-audit.py b/tests/adversarial/c23-r1-audit.py
+index cc50f35..7db2ca4 100644
+--- a/tests/adversarial/c23-r1-audit.py
++++ b/tests/adversarial/c23-r1-audit.py
+@@ -122,7 +122,9 @@ class Audit(unittest.TestCase):
+         for bad in [None,[],True]:
+             with self.assertRaises(ValueError):c23_measurement(bad)
+     def test_c22_golden_has_only_the_ruled_axis_change_and_derived_receipt(self):
+-        p='crates/executor/tests/golden/c22-determinism.json';delta=changes(json.loads(git('show',BASE+':'+p)),json.loads((ROOT/p).read_bytes()))
++        # History-pinned receipt (orchestrator ruling, M2 C2.4): the golden at the reviewed head; C2.4 re-recorded it with only
++        # Bezier handles of split straight pieces changed (C2.4 handoff, declared edits).
++        p='crates/executor/tests/golden/c22-determinism.json';delta=changes(json.loads(git('show',BASE+':'+p)),json.loads(git('show',HEAD+':'+p)))
+         content=[d for d in delta if d['path'] not in ['/sha256','/bytes']]
+         self.assertEqual(len(content),1,content);self.assertEqual(content[0]['old'],53.96875);self.assertEqual(content[0]['new'],-53.96875)
+     def test_planar_analyzer_rejects_bad_observations(self):

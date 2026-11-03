@@ -439,12 +439,32 @@ fn stub_key(v: &Value) -> String {
 /// re-ordering).
 fn diff_collection(a: &[Value], b: &[Value], path: &str, out: &mut Vec<PatchOp>) {
     let in_b: std::collections::HashSet<String> = b.iter().map(stub_key).collect();
-    let mut cur: Vec<Value> = a.to_vec();
-    for i in (0..cur.len()).rev() {
-        if cur.get(i).is_some_and(|v| !in_b.contains(&stub_key(v))) {
-            let old = cur.remove(i);
-            out.push(PatchOp::remove(format!("{path}/{i}"), old));
+    // Removals from the end first, so each index is the item's original index (linear, M2 C2.3: lists of 100 000
+    // strokes).
+    let mut cur: Vec<Value> = Vec::with_capacity(a.len());
+    let mut removed: Vec<(usize, &Value)> = Vec::new();
+    for (i, v) in a.iter().enumerate() {
+        if in_b.contains(&stub_key(v)) {
+            cur.push(v.clone());
+        } else {
+            removed.push((i, v));
         }
+    }
+    for (i, v) in removed.into_iter().rev() {
+        out.push(PatchOp::remove(format!("{path}/{i}"), v.clone()));
+    }
+    // Kept items in the same order (only additions): the additions at their final indices, in order — the same
+    // operations the general walk below emits, in one pass.
+    let cur_keys: Vec<String> = cur.iter().map(stub_key).collect();
+    let in_cur: std::collections::HashSet<&str> = cur_keys.iter().map(String::as_str).collect();
+    let b_keys: Vec<String> = b.iter().map(stub_key).collect();
+    if b_keys.iter().filter(|k| in_cur.contains(k.as_str())).eq(cur_keys.iter()) {
+        for (i, (want, k)) in b.iter().zip(&b_keys).enumerate() {
+            if !in_cur.contains(k.as_str()) {
+                out.push(PatchOp::add(format!("{path}/{i}"), want.clone()));
+            }
+        }
+        return;
     }
     for (i, want) in b.iter().enumerate() {
         let k = stub_key(want);

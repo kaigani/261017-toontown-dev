@@ -1,0 +1,7 @@
+{"argv": ["cargo", "clippy", "--workspace", "--all-targets", "--locked", "-j", "4", "--features", "test-hooks", "--", "-D", "warnings"], "cwd": "C:\\Users\\kaiga\\work\\review\\m2-c24-r3", "env": {}, "startedAt": "2026-11-03T01:21:09.524023+00:00"}
+    Checking tt-executor v0.0.1 (C:\Users\kaiga\work\review\m2-c24-r3\crates\executor)
+    Checking tt-engine v0.0.1 (C:\Users\kaiga\work\review\m2-c24-r3\crates\engine)
+    Checking tt-mcp v0.0.1 (C:\Users\kaiga\work\review\m2-c24-r3\crates\mcp)
+    Checking tt-desktop v0.0.1 (C:\Users\kaiga\work\review\m2-c24-r3\desktop\src-tauri)
+    Checking tt-headless v0.0.1 (C:\Users\kaiga\work\review\m2-c24-r3\bins\headless)
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 15.75s

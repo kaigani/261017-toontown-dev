@@ -1,0 +1,16 @@
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.17s
+     Running tests\c14_lock_races.rs (target\debug\deps\c14_lock_races-3cfc03095737f8e2.exe)
+
+running 10 tests
+test child_lock_holder ... ignored, run by crashed_holder_is_detected_at_once as a child process
+test a_paused_arbiter_past_its_abandonment_age_is_not_removed_and_resumes ... ok
+test a_resumed_heartbeat_whose_lock_was_replaced_fails_closed ... ok
+test a_publisher_suspended_at_each_publication_boundary_is_never_raced_into_two_owners ... ok
+test ownership_lost_during_a_suspended_save_never_advances_the_save ... ok
+test crashed_holder_is_detected_at_once_and_liveness_is_measured ... ok
+test a_suspended_takeover_leaves_exactly_one_owner ... ok
+test a_suspended_heartbeat_is_not_taken_over_and_resumes_as_the_owner ... ok
+test liveness_does_not_depend_on_process_ids_or_clocks ... ok
+test a_suspended_release_hands_over_cleanly ... ok
+
+test result: ok. 9 passed; 0 failed; 1 ignored; 0 measured; 0 filtered out; finished in 16.27s

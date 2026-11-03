@@ -1,0 +1,27 @@
+{
+  "atomic": false,
+  "stopOnError": true,
+  "steps": [
+    {
+      "id": "draw.stroke.add",
+      "params": {
+        "drawingId": "dr_01K7JJN803KX6Z725K3TFCS4TC",
+        "kind": "pencil",
+        "fit": false,
+        "points": [
+          {
+            "x": 900,
+            "y": 0
+          },
+          {
+            "x": 920,
+            "y": 0
+          }
+        ]
+      },
+      "expectRev": {
+        "dr_01K7JJN803KX6Z725K3TFCS4TC": 2
+      }
+    }
+  ]
+}

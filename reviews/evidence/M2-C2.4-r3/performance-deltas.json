@@ -1,0 +1,580 @@
+{
+  "Windows": {
+    "series": {
+      "brushAdd.allocatedBytes": {
+        "oldP50": 3434894913.0,
+        "newP50": 3434895006.0,
+        "deltaPercent": 2.707506419064032e-06
+      },
+      "brushAdd.retainedBytes": {
+        "oldP50": 91789.0,
+        "newP50": 91789.0,
+        "deltaPercent": 0.0
+      },
+      "brushAdd.wallMs": {
+        "oldP50": 7415.0064999999995,
+        "newP50": 7199.627600000001,
+        "deltaPercent": -2.90463534994877
+      },
+      "patchProperty.allocatedBytes": {
+        "oldP50": 2456603407.0,
+        "newP50": 2456592487.0,
+        "deltaPercent": -0.0004445161953636756
+      },
+      "patchProperty.retainedBytes": {
+        "oldP50": 6112.0,
+        "newP50": 6112.0,
+        "deltaPercent": 0.0
+      },
+      "patchProperty.wallMs": {
+        "oldP50": 5237.653899999999,
+        "newP50": 5088.732300000001,
+        "deltaPercent": -2.8432882898199674
+      },
+      "process.liveBytes": {
+        "oldP50": 1425394825.0,
+        "newP50": 1425394825.0,
+        "deltaPercent": 0.0
+      },
+      "redo.allocatedBytes": {
+        "oldP50": 4003283148.0,
+        "newP50": 4003128899.0,
+        "deltaPercent": -0.0038530624564270255
+      },
+      "redo.retainedBytes": {
+        "oldP50": 10202.0,
+        "newP50": 10202.0,
+        "deltaPercent": 0.0
+      },
+      "redo.wallMs": {
+        "oldP50": 8581.6092,
+        "newP50": 8398.7334,
+        "deltaPercent": -2.1310199024211163
+      },
+      "strokeAdd.allocatedBytes": {
+        "oldP50": 7560212910.0,
+        "newP50": 7562324170.0,
+        "deltaPercent": 0.02792593310709801
+      },
+      "strokeAdd.retainedBytes": {
+        "oldP50": 31521.0,
+        "newP50": 33867.0,
+        "deltaPercent": 7.44265727610165
+      },
+      "strokeAdd.wallMs": {
+        "oldP50": 16627.2243,
+        "newP50": 16497.821600000003,
+        "deltaPercent": -0.7782579801969614
+      },
+      "strokeAddDryRun.allocatedBytes": {
+        "oldP50": 6865900618.0,
+        "newP50": 6868205726.0,
+        "deltaPercent": 0.033573279431942105
+      },
+      "strokeAddDryRun.retainedBytes": {
+        "oldP50": -35531.0,
+        "newP50": -35460.0,
+        "deltaPercent": -0.19982550448903735
+      },
+      "strokeAddDryRun.wallMs": {
+        "oldP50": 15397.968,
+        "newP50": 14741.8372,
+        "deltaPercent": -4.26115186107674
+      },
+      "strokeSet.allocatedBytes": {
+        "oldP50": 3455279021.0,
+        "newP50": 3455289870.0,
+        "deltaPercent": 0.0003139833262055802
+      },
+      "strokeSet.retainedBytes": {
+        "oldP50": 4340.0,
+        "newP50": 5415.0,
+        "deltaPercent": 24.769585253456228
+      },
+      "strokeSet.wallMs": {
+        "oldP50": 7494.358700000001,
+        "newP50": 7230.6592,
+        "deltaPercent": -3.518639960481218
+      },
+      "undo.allocatedBytes": {
+        "oldP50": 4664316210.0,
+        "newP50": 4664327130.0,
+        "deltaPercent": 0.00023411791800764803
+      },
+      "undo.retainedBytes": {
+        "oldP50": 23958.0,
+        "newP50": 23958.0,
+        "deltaPercent": 0.0
+      },
+      "undo.wallMs": {
+        "oldP50": 9912.5545,
+        "newP50": 9437.6797,
+        "deltaPercent": -4.790639990932711
+      }
+    },
+    "planar": [
+      {
+        "name": "100000-small-curves-plus-one",
+        "oldMaxMs": 4765.4438,
+        "newMaxMs": 4426.0871,
+        "deltaPercent": -7.121198239710647,
+        "workAndOutcomeUnchanged": true
+      },
+      {
+        "name": "grid-200x200-crossing-lines",
+        "oldMaxMs": 1328.7996,
+        "newMaxMs": 1229.8265,
+        "deltaPercent": -7.448308985041852,
+        "workAndOutcomeUnchanged": true
+      },
+      {
+        "name": "grid-600x600-crossing-lines",
+        "oldMaxMs": 2575.809,
+        "newMaxMs": 2472.9524,
+        "deltaPercent": -3.9931765126995034,
+        "workAndOutcomeUnchanged": true
+      },
+      {
+        "name": "10000-concentric-squares",
+        "oldMaxMs": 3970.2986,
+        "newMaxMs": 3717.2334,
+        "deltaPercent": -6.373958875536467,
+        "workAndOutcomeUnchanged": true
+      },
+      {
+        "name": "20000-separate-closed-squares",
+        "oldMaxMs": 572.8863,
+        "newMaxMs": 525.4731,
+        "deltaPercent": -8.276197214002146,
+        "workAndOutcomeUnchanged": true
+      },
+      {
+        "name": "1500-random-crossing-lines",
+        "oldMaxMs": 2265.5993,
+        "newMaxMs": 2217.7761,
+        "deltaPercent": -2.1108410476645134,
+        "workAndOutcomeUnchanged": false
+      },
+      {
+        "name": "5000-point-random-scribble",
+        "oldMaxMs": 544.1594,
+        "newMaxMs": 513.5852,
+        "deltaPercent": -5.618611017286479,
+        "workAndOutcomeUnchanged": true
+      },
+      {
+        "name": "100000-point-dense-zigzag",
+        "oldMaxMs": 62.028,
+        "newMaxMs": 59.9814,
+        "deltaPercent": -3.2994776552524585,
+        "workAndOutcomeUnchanged": true
+      },
+      {
+        "name": "100000-coincident-outlines-plus-one",
+        "oldMaxMs": 892.1573999999999,
+        "newMaxMs": 871.9458,
+        "deltaPercent": -2.26547467969217,
+        "workAndOutcomeUnchanged": true
+      }
+    ],
+    "budgetAndAggregateRanges": {
+      "series.dryRunSeconds": {
+        "n": 5,
+        "min": 17.6915169,
+        "max": 22.1910657,
+        "p50": 19.8106489
+      },
+      "series.liveBytes": {
+        "n": 5,
+        "min": 686273922.0,
+        "max": 1196626022.0,
+        "p50": 941439248.0
+      },
+      "series.redoSeconds": {
+        "n": 5,
+        "min": 10.9814241,
+        "max": 13.7818384,
+        "p50": 12.9866124
+      },
+      "series.rssBytes": {
+        "n": 5,
+        "min": 968552448.0,
+        "max": 2195542016.0,
+        "p50": 1993224192.0
+      },
+      "series.strokeAddSeconds": {
+        "n": 5,
+        "min": 17.4228187,
+        "max": 24.2591957,
+        "p50": 21.3949171
+      },
+      "series.undoSeconds": {
+        "n": 5,
+        "min": 11.8999629,
+        "max": 15.2377258,
+        "p50": 15.1897376
+      },
+      "queuedRead.longCommandSeconds": {
+        "n": 5,
+        "min": 21.9193443,
+        "max": 23.3137124,
+        "p50": 22.7407183
+      },
+      "queuedRead.readAnsweredAfterLongSeconds": {
+        "n": 5,
+        "min": 0.0005601000000012846,
+        "max": 0.0011720999999980108,
+        "p50": 0.0007698999999981027
+      },
+      "queuedRead.readSeconds": {
+        "n": 5,
+        "min": 21.8703877,
+        "max": 23.2642551,
+        "p50": 22.6908019
+      },
+      "queuedRead.readSentAtSeconds": {
+        "n": 5,
+        "min": 0.0501287,
+        "max": 0.0506863,
+        "p50": 0.0502841
+      },
+      "maintenance.autosaveSnapshotSeconds": {
+        "n": 5,
+        "min": 7.11e-05,
+        "max": 0.0001099,
+        "p50": 7.51e-05
+      },
+      "maintenance.behindLongSeconds": {
+        "n": 5,
+        "min": 22.0167582,
+        "max": 23.798547,
+        "p50": 22.3571715
+      },
+      "maintenance.heartbeatSeconds": {
+        "n": 5,
+        "min": 0.0041634,
+        "max": 0.013953,
+        "p50": 0.0129546
+      },
+      "maintenance.idleSeconds": {
+        "n": 5,
+        "min": 0.0036796,
+        "max": 0.0126818,
+        "p50": 0.0107835
+      },
+      "maintenance.longCommandSeconds": {
+        "n": 5,
+        "min": 22.0541396,
+        "max": 23.8347304,
+        "p50": 22.3936131
+      },
+      "maintenance.requestedAtSeconds": {
+        "n": 5,
+        "min": 0.0501743,
+        "max": 0.0506189,
+        "p50": 0.0503143
+      }
+    },
+    "memory": {
+      "rssBytes": {
+        "start": 174088192.0,
+        "afterOpen": 367226880.0,
+        "afterSeries": 2195542016.0
+      },
+      "liveBytes": {
+        "start": 146121735.0,
+        "afterOpen": 267527168.0,
+        "afterSeries": 1196622557.0
+      }
+    }
+  },
+  "macOS": {
+    "series": {
+      "brushAdd.allocatedBytes": {
+        "oldP50": 3414093340.0,
+        "newP50": 3414082568.0,
+        "deltaPercent": -0.00031551568534515795
+      },
+      "brushAdd.retainedBytes": {
+        "oldP50": 91719.0,
+        "newP50": 91719.0,
+        "deltaPercent": 0.0
+      },
+      "brushAdd.wallMs": {
+        "oldP50": 5047.797042,
+        "newP50": 6214.253042,
+        "deltaPercent": 23.10821909626215
+      },
+      "patchProperty.allocatedBytes": {
+        "oldP50": 2442182940.0,
+        "newP50": 2442182940.0,
+        "deltaPercent": 0.0
+      },
+      "patchProperty.retainedBytes": {
+        "oldP50": 6048.0,
+        "newP50": 6048.0,
+        "deltaPercent": 0.0
+      },
+      "patchProperty.wallMs": {
+        "oldP50": 4460.719208,
+        "newP50": 4877.029583,
+        "deltaPercent": 9.332808356405264
+      },
+      "process.liveBytes": {
+        "oldP50": 1425592054.0,
+        "newP50": 1425591846.0,
+        "deltaPercent": -1.4590429242566927e-05
+      },
+      "redo.allocatedBytes": {
+        "oldP50": 3976729547.0,
+        "newP50": 3976729039.0,
+        "deltaPercent": -1.2774316027197585e-05
+      },
+      "redo.retainedBytes": {
+        "oldP50": 10154.0,
+        "newP50": 10154.0,
+        "deltaPercent": 0.0
+      },
+      "redo.wallMs": {
+        "oldP50": 5794.306,
+        "newP50": 7020.188958000001,
+        "deltaPercent": 21.15668309543888
+      },
+      "strokeAdd.allocatedBytes": {
+        "oldP50": 7518598985.0,
+        "newP50": 7520698708.0,
+        "deltaPercent": 0.027927051358767052
+      },
+      "strokeAdd.retainedBytes": {
+        "oldP50": 25476.0,
+        "newP50": 31815.0,
+        "deltaPercent": 24.882242110221387
+      },
+      "strokeAdd.wallMs": {
+        "oldP50": 14611.063958,
+        "newP50": 18091.961625,
+        "deltaPercent": 23.82371110691157
+      },
+      "strokeAddDryRun.allocatedBytes": {
+        "oldP50": 6829088827.0,
+        "newP50": 6831188527.0,
+        "deltaPercent": 0.03074641512492704
+      },
+      "strokeAddDryRun.retainedBytes": {
+        "oldP50": -44993.0,
+        "newP50": -35433.0,
+        "deltaPercent": -21.247749649945547
+      },
+      "strokeAddDryRun.wallMs": {
+        "oldP50": 13014.706875,
+        "newP50": 17094.207541,
+        "deltaPercent": 31.345313461007173
+      },
+      "strokeSet.allocatedBytes": {
+        "oldP50": 3434468971.0,
+        "newP50": 3434477633.0,
+        "deltaPercent": 0.00025220783979040817
+      },
+      "strokeSet.retainedBytes": {
+        "oldP50": 5345.0,
+        "newP50": 5345.0,
+        "deltaPercent": 0.0
+      },
+      "strokeSet.wallMs": {
+        "oldP50": 5058.143083,
+        "newP50": 7751.9985,
+        "deltaPercent": 53.25779387407654
+      },
+      "undo.allocatedBytes": {
+        "oldP50": 4633307058.0,
+        "newP50": 4633320908.0,
+        "deltaPercent": 0.0002989225584837385
+      },
+      "undo.retainedBytes": {
+        "oldP50": 12987.0,
+        "newP50": 12685.0,
+        "deltaPercent": -2.325402325402326
+      },
+      "undo.wallMs": {
+        "oldP50": 7790.738042,
+        "newP50": 8831.994541,
+        "deltaPercent": 13.36531267495542
+      }
+    },
+    "planar": [
+      {
+        "name": "100000-small-curves-plus-one",
+        "oldMaxMs": 4282.579958,
+        "newMaxMs": 5974.517374999999,
+        "deltaPercent": 39.507433220001055,
+        "workAndOutcomeUnchanged": true
+      },
+      {
+        "name": "grid-200x200-crossing-lines",
+        "oldMaxMs": 879.340458,
+        "newMaxMs": 1081.638667,
+        "deltaPercent": 23.005675123843773,
+        "workAndOutcomeUnchanged": true
+      },
+      {
+        "name": "grid-600x600-crossing-lines",
+        "oldMaxMs": 1864.2489580000001,
+        "newMaxMs": 2867.908,
+        "deltaPercent": 53.83717865004163,
+        "workAndOutcomeUnchanged": true
+      },
+      {
+        "name": "10000-concentric-squares",
+        "oldMaxMs": 3070.490708,
+        "newMaxMs": 3325.091167,
+        "deltaPercent": 8.291849193246282,
+        "workAndOutcomeUnchanged": true
+      },
+      {
+        "name": "20000-separate-closed-squares",
+        "oldMaxMs": 438.817084,
+        "newMaxMs": 641.6134999999999,
+        "deltaPercent": 46.21433927581542,
+        "workAndOutcomeUnchanged": true
+      },
+      {
+        "name": "1500-random-crossing-lines",
+        "oldMaxMs": 1604.6760419999998,
+        "newMaxMs": 2134.353167,
+        "deltaPercent": 33.008352535745054,
+        "workAndOutcomeUnchanged": false
+      },
+      {
+        "name": "5000-point-random-scribble",
+        "oldMaxMs": 488.674916,
+        "newMaxMs": 543.519042,
+        "deltaPercent": 11.223028685188341,
+        "workAndOutcomeUnchanged": true
+      },
+      {
+        "name": "100000-point-dense-zigzag",
+        "oldMaxMs": 69.79270799999999,
+        "newMaxMs": 80.123584,
+        "deltaPercent": 14.802228335945934,
+        "workAndOutcomeUnchanged": true
+      },
+      {
+        "name": "100000-coincident-outlines-plus-one",
+        "oldMaxMs": 1541.2715,
+        "newMaxMs": 1768.668,
+        "deltaPercent": 14.753825007469468,
+        "workAndOutcomeUnchanged": true
+      }
+    ],
+    "budgetAndAggregateRanges": {
+      "series.dryRunSeconds": {
+        "n": 5,
+        "min": 8.947821458,
+        "max": 13.935276209,
+        "p50": 13.190559417
+      },
+      "series.liveBytes": {
+        "n": 5,
+        "min": 686477722.0,
+        "max": 1196829310.0,
+        "p50": 941639480.0
+      },
+      "series.redoSeconds": {
+        "n": 5,
+        "min": 6.168654833,
+        "max": 8.747543667,
+        "p50": 7.530100792
+      },
+      "series.rssBytes": {
+        "n": 5,
+        "min": 2717663232.0,
+        "max": 2923118592.0,
+        "p50": 2819964928.0
+      },
+      "series.strokeAddSeconds": {
+        "n": 5,
+        "min": 10.624248416,
+        "max": 15.620542459,
+        "p50": 14.049530417
+      },
+      "series.undoSeconds": {
+        "n": 5,
+        "min": 7.508280709,
+        "max": 9.837424167,
+        "p50": 8.828695125
+      },
+      "queuedRead.longCommandSeconds": {
+        "n": 5,
+        "min": 13.253820292,
+        "max": 14.70289125,
+        "p50": 13.839954792
+      },
+      "queuedRead.readAnsweredAfterLongSeconds": {
+        "n": 5,
+        "min": 0.0005249999999996646,
+        "max": 0.0029744579999988474,
+        "p50": 0.0010526249999980308
+      },
+      "queuedRead.readSeconds": {
+        "n": 5,
+        "min": 13.087956292,
+        "max": 14.597883166999999,
+        "p50": 13.77575325
+      },
+      "queuedRead.readSentAtSeconds": {
+        "n": 5,
+        "min": 0.065359958,
+        "max": 0.17339775,
+        "p50": 0.13197175
+      },
+      "maintenance.autosaveSnapshotSeconds": {
+        "n": 5,
+        "min": 0.000154459,
+        "max": 0.001005917,
+        "p50": 0.000439375
+      },
+      "maintenance.behindLongSeconds": {
+        "n": 5,
+        "min": 9.044790958,
+        "max": 14.886909333,
+        "p50": 13.015972958
+      },
+      "maintenance.heartbeatSeconds": {
+        "n": 5,
+        "min": 0.009492833,
+        "max": 0.020559917,
+        "p50": 0.015104333
+      },
+      "maintenance.idleSeconds": {
+        "n": 5,
+        "min": 0.004296833,
+        "max": 0.016067541,
+        "p50": 0.007080958
+      },
+      "maintenance.longCommandSeconds": {
+        "n": 5,
+        "min": 9.213430166,
+        "max": 14.932842125,
+        "p50": 13.062405
+      },
+      "maintenance.requestedAtSeconds": {
+        "n": 5,
+        "min": 0.059087708,
+        "max": 0.178243458,
+        "p50": 0.132945458
+      }
+    },
+    "memory": {
+      "rssBytes": {
+        "start": 1664598016.0,
+        "afterOpen": 2088730624.0,
+        "afterSeries": 2819964928.0
+      },
+      "liveBytes": {
+        "start": 146321824.0,
+        "afterOpen": 267728272.0,
+        "afterSeries": 1196822557.0
+      }
+    }
+  }
+}

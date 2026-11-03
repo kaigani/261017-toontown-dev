@@ -1,0 +1,139 @@
+{
+  "os": "macos",
+  "arch": "aarch64",
+  "profile": "release",
+  "watchdogSeconds": 30,
+  "repetitions": 5,
+  "breakApart": {
+    "characters": 100000,
+    "textAddSeconds": 0.759961833,
+    "observations": [
+      {
+        "answeredSeconds": 0.001861625,
+        "status": "Error",
+        "error": "limit.exceeded",
+        "committed": false,
+        "followingReadSeconds": 0.001632709,
+        "followingReadOk": true,
+        "queuedCallSeconds": 0.000985708,
+        "queuedCallError": "limit.exceeded",
+        "queuedReadSeconds": 0.024912042,
+        "queuedReadOk": true
+      },
+      {
+        "answeredSeconds": 0.000906041,
+        "status": "Error",
+        "error": "limit.exceeded",
+        "committed": false,
+        "followingReadSeconds": 0.00052875,
+        "followingReadOk": true,
+        "queuedCallSeconds": 0.00090825,
+        "queuedCallError": "limit.exceeded",
+        "queuedReadSeconds": 0.044621833,
+        "queuedReadOk": true
+      },
+      {
+        "answeredSeconds": 0.00078325,
+        "status": "Error",
+        "error": "limit.exceeded",
+        "committed": false,
+        "followingReadSeconds": 0.000469333,
+        "followingReadOk": true,
+        "queuedCallSeconds": 0.001027375,
+        "queuedCallError": "limit.exceeded",
+        "queuedReadSeconds": 0.021545042,
+        "queuedReadOk": true
+      },
+      {
+        "answeredSeconds": 0.001856584,
+        "status": "Error",
+        "error": "limit.exceeded",
+        "committed": false,
+        "followingReadSeconds": 0.000520042,
+        "followingReadOk": true,
+        "queuedCallSeconds": 0.000828625,
+        "queuedCallError": "limit.exceeded",
+        "queuedReadSeconds": 0.015868875,
+        "queuedReadOk": true
+      },
+      {
+        "answeredSeconds": 0.001159708,
+        "status": "Error",
+        "error": "limit.exceeded",
+        "committed": false,
+        "followingReadSeconds": 0.00054625,
+        "followingReadOk": true,
+        "queuedCallSeconds": 0.000797375,
+        "queuedCallError": "limit.exceeded",
+        "queuedReadSeconds": 0.015243542,
+        "queuedReadOk": true
+      }
+    ]
+  },
+  "render": {
+    "width": 8192,
+    "height": 8192,
+    "observations": [
+      {
+        "answeredSeconds": 1.73337325,
+        "status": "Ok",
+        "error": null,
+        "committed": false,
+        "followingReadSeconds": 0.000903958,
+        "followingReadOk": true,
+        "queuedCallSeconds": 1.80291775,
+        "queuedCallError": null,
+        "queuedReadSeconds": 1.6768743750000001,
+        "queuedReadOk": true
+      },
+      {
+        "answeredSeconds": 1.661306,
+        "status": "Ok",
+        "error": null,
+        "committed": false,
+        "followingReadSeconds": 0.000614,
+        "followingReadOk": true,
+        "queuedCallSeconds": 1.221225834,
+        "queuedCallError": null,
+        "queuedReadSeconds": 1.067708584,
+        "queuedReadOk": true
+      },
+      {
+        "answeredSeconds": 1.2760085,
+        "status": "Ok",
+        "error": null,
+        "committed": false,
+        "followingReadSeconds": 0.001203,
+        "followingReadOk": true,
+        "queuedCallSeconds": 1.5473387920000001,
+        "queuedCallError": null,
+        "queuedReadSeconds": 1.493231709,
+        "queuedReadOk": true
+      },
+      {
+        "answeredSeconds": 1.199133125,
+        "status": "Ok",
+        "error": null,
+        "committed": false,
+        "followingReadSeconds": 0.00074975,
+        "followingReadOk": true,
+        "queuedCallSeconds": 1.054623542,
+        "queuedCallError": null,
+        "queuedReadSeconds": 0.977188833,
+        "queuedReadOk": true
+      },
+      {
+        "answeredSeconds": 1.153717625,
+        "status": "Ok",
+        "error": null,
+        "committed": false,
+        "followingReadSeconds": 0.000480083,
+        "followingReadOk": true,
+        "queuedCallSeconds": 1.097233667,
+        "queuedCallError": null,
+        "queuedReadSeconds": 1.074350666,
+        "queuedReadOk": true
+      }
+    ]
+  }
+}

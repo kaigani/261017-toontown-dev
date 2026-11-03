@@ -1,0 +1,4 @@
+{"argv": ["cmd", "/c", "pnpm", "install", "--frozen-lockfile"], "cwd": "C:\\Users\\kaiga\\work\\review\\m2-c24-r2\\desktop", "env": {}, "startedAt": "2026-11-02T18:43:24.105547+00:00"}
+Scope: all 2 workspace projects
+
+Done in 445ms using pnpm v10.12.1

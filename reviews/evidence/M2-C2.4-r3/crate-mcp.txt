@@ -1,0 +1,249 @@
+{"argv": ["cargo", "test", "-p", "tt-mcp", "--locked", "-j", "4"], "cwd": "C:\\Users\\kaiga\\work\\review\\m2-c24-r3", "env": {}, "startedAt": "2026-11-03T00:46:29.740461+00:00"}
+   Compiling tt-registry v0.0.1 (C:\Users\kaiga\work\review\m2-c24-r3\crates\registry)
+   Compiling tt-audio v0.0.1 (C:\Users\kaiga\work\review\m2-c24-r3\crates\audio)
+   Compiling tt-lipsync v0.0.1 (C:\Users\kaiga\work\review\m2-c24-r3\crates\lipsync)
+   Compiling tt-executor v0.0.1 (C:\Users\kaiga\work\review\m2-c24-r3\crates\executor)
+   Compiling tt-engine v0.0.1 (C:\Users\kaiga\work\review\m2-c24-r3\crates\engine)
+   Compiling tt-mcp v0.0.1 (C:\Users\kaiga\work\review\m2-c24-r3\crates\mcp)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 1m 41s
+     Running unittests src\lib.rs (target\debug\deps\tt_mcp-1870ac48a8e23eeb.exe)
+
+running 4 tests
+test jsonrpc::tests::messages_are_classified_and_malformed_ones_answered ... ok
+test resources::tests::uris_resolve_to_commands_and_events_update_subscriptions ... ok
+test prompts::tests::prompts_reference_only_registered_commands ... ok
+test tools::tests::every_generic_tool_has_a_plan_and_wraps_a_registered_command ... ok
+
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests\audit.rs (target\debug\deps\audit-6d063b00b13036c4.exe)
+
+running 2 tests
+test persisted_activity_log_beside_the_project ... ok
+test one_entry_per_call_and_reproducible_from_the_committed_fixture ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 2.35s
+
+     Running tests\c14_r1_autosave.rs (target\debug\deps\c14_r1_autosave-805d7a44965f1851.exe)
+
+running 1 test
+test autosave_under_queued_protocol_calls_and_background_export ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 6.92s
+
+     Running tests\c14_r1_limits.rs (target\debug\deps\c14_r1_limits-944d4b8381aa2c63.exe)
+
+running 2 tests
+test saved_observe_policy_and_limits_survive_restart ... ok
+test configured_batch_limit_applies_to_batch_script ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.05s
+
+     Running tests\c14_r2_replay.rs (target\debug\deps\c14_r2_replay-5c460f7191b2ba6a.exe)
+
+running 3 tests
+test idempotent_retry_replays_canonically ... ok
+test ordinary_edits_dry_runs_and_discovery_replay_canonically ... ok
+test partially_committed_batch_replays_canonically ... ok
+
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.22s
+
+     Running tests\c14_r3_groups.rs (target\debug\deps\c14_r3_groups-3cacfec504c86d81.exe)
+
+running 3 tests
+test nested_and_non_atomic_groups_are_refused ... ok
+test a_group_is_one_undo_step_like_an_atomic_batch ... ok
+test undo_then_redo_after_an_atomic_batch_replays_the_same_document ... ok
+
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.18s
+
+     Running tests\c14_r3_history_r1.rs (target\debug\deps\c14_r3_history_r1-d1d6eadfbf9c485d.exe)
+
+running 1 test
+test ten_thousand_history_operations_match_independent_content_oracle_and_replay ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 26.31s
+
+     Running tests\c14_r3_history_r3.rs (target\debug\deps\c14_r3_history_r3-f1922be382ea64d5.exe)
+
+running 1 test
+test ten_thousand_history_operations_match_independent_content_oracle_and_replay ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 26.54s
+
+     Running tests\c14_r3_replay.rs (target\debug\deps\c14_r3_replay-0effe090d0d9b61c.exe)
+
+running 5 tests
+test sequential_publication_failure_keeps_committed_edits_in_script_replay ... ok
+test two_edits_in_one_atomic_batch_replay_with_the_same_revision ... ok
+test checkpoint_restore_after_an_atomic_batch_replays_the_same_document ... ok
+test undo_after_an_atomic_batch_replays_the_same_document ... ok
+test atomic_publication_failure_keeps_committed_edits_in_script_replay ... ok
+
+test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.14s
+
+     Running tests\c14_r4_closure.rs (target\debug\deps\c14_r4_closure-18399d37395d2206.exe)
+
+running 4 tests
+test group_expect_rev_is_supported_and_conflicts_atomically ... ok
+test group_accepts_a_matching_expect_rev ... ok
+test two_atomic_batches_and_sequential_batch_keep_history ... ok
+test sequential_last_publication_failure_after_two_edits ... ok
+
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.14s
+
+     Running tests\c14_r4_expect_rev.rs (target\debug\deps\c14_r4_expect_rev-9b1d51d35e61b8aa.exe)
+
+running 3 tests
+test a_group_after_an_edit_to_its_guarded_object_is_refused_whole ... ok
+test a_sequential_batch_refuses_expect_rev ... ok
+test the_batch_tool_and_its_replayed_group_honour_expect_rev ... ok
+
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.13s
+
+     Running tests\c14_r5_closure.rs (target\debug\deps\c14_r5_closure-11702984e201c183.exe)
+
+running 4 tests
+test sequential_step_guard_still_matches_then_conflicts ... ok
+test guarded_group_has_one_revision_and_one_undo ... ok
+test wrong_type_group_guard_is_invalid_and_executes_no_steps ... ok
+test exported_guard_replays_exactly_and_refuses_changed_revision ... ok
+
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.13s
+
+     Running tests\c14_tickets.rs (target\debug\deps\c14_tickets-9d7d603cc4622964.exe)
+
+running 2 tests
+test every_result_lists_its_effective_params ... ignored, C14-R1-16: result.effectiveParams changes the result contract of every command (719 result schemas, the generated IPC types) and its defaults include the GUI's last-used values, which arrive with the M4 dialogs; owner: builder, M4 C4.1 (traceability row 11 §8)
+test namespace_docs_carry_a_worked_example_with_executed_results ... ok
+
+test result: ok. 1 passed; 0 failed; 1 ignored; 0 measured; 0 filtered out; finished in 0.08s
+
+     Running tests\c21_history.rs (target\debug\deps\c21_history-3d18014fc8d17b39.exe)
+
+running 2 tests
+test geometry_oracle_seed_a571_matches_and_replays ... ignored, 10 000-operation oracle (about 5 minutes per seed in a debug build on the Windows runner); CI runs both             seeds in release in the headless job: `cargo test --release -p tt-mcp --test c21_history -- --ignored`             (M2 C2.1 obligation 4)
+test geometry_oracle_seed_b683_matches_and_replays ... ignored, 10 000-operation oracle (about 5 minutes per seed in a debug build on the Windows runner); CI runs both             seeds in release in the headless job: `cargo test --release -p tt-mcp --test c21_history -- --ignored`             (M2 C2.1 obligation 4)
+
+test result: ok. 0 passed; 0 failed; 2 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests\c21_r1_surfaces.rs (target\debug\deps\c21_r1_surfaces-37c79c33e619e276.exe)
+
+running 2 tests
+test ingress_payload_limit_is_distinct_from_32_mib_readback_limit ... ok
+test typed_generic_batches_scripts_and_both_container_forms ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 2.53s
+
+     Running tests\c21_r2_events.rs (target\debug\deps\c21_r2_events-d10a1235b23abc00.exe)
+
+running 1 test
+test drawing_events_reach_mcp_event_resource_subscribers ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.43s
+
+     Running tests\c21_r3_never_block.rs (target\debug\deps\c21_r3_never_block-c7de2ba69de29f8a.exe)
+
+running 1 test
+test every_registered_command_answers_malformed_params_through_mcp ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.05s
+
+     Running tests\c21_replay.rs (target\debug\deps\c21_replay-ea462b3564f7d332.exe)
+
+running 1 test
+test drawing_edits_replay_byte_for_byte_through_script_mode ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.16s
+
+     Running tests\c21_worked_examples.rs (target\debug\deps\c21_worked_examples-1e1bd19c8f077344.exe)
+
+running 2 tests
+test namespace_docs_render_the_retained_worked_examples ... ok
+test every_kernel_namespace_has_a_retained_worked_example ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.82s
+
+     Running tests\c22_r1_surface.rs (target\debug\deps\c22_r1_surface-eb780f22723ca7e3.exe)
+
+running 4 tests
+test record_checkpoint_command_contracts_and_deferred_owners ... ok
+test retain_a_baseline_bundle_for_the_headless_paint_probe ... ok
+test an_agent_with_preferences_permission_can_set_gap_closing ... ok
+test typed_generic_atomic_sequential_and_script_paints_preserve_commit_contracts ... ok
+
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.12s
+
+     Running tests\c22_r2_surface.rs (target\debug\deps\c22_r2_surface-31a1fba6c89c0df2.exe)
+
+running 3 tests
+test all_four_deferred_contracts_and_generated_types_name_c23 ... ok
+test prefs_agent_failed_atomic_batch_rolls_back_gap_setting ... ok
+test topology_oracle_checks_every_step_of_full_cut_stack_and_reverse_merge ... ok
+
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.16s
+
+     Running tests\c22_r3_surface.rs (target\debug\deps\c22_r3_surface-273d38569da83951.exe)
+
+running 2 tests
+test importing_ahead_revisions_stamps_preserved_ids_and_replays_from_the_same_base ... ok
+test e2_split_stale_fresh_ids_events_inspect_and_saved_readback ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.28s
+
+     Running tests\c22_replay.rs (target\debug\deps\c22_replay-6972efed65cefda0.exe)
+
+running 1 test
+test painting_sessions_replay_byte_for_byte_through_script_mode ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.15s
+
+     Running tests\c23_r2_timeout.rs (target\debug\deps\c23_r2_timeout-1d5ae63573ced14e.exe)
+
+running 1 test
+test smooth_watchdog_reaches_mcp_and_next_read_answers ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.95s
+
+     Running tests\contracts.rs (target\debug\deps\contracts-b75d03e671837d83.exe)
+
+running 2 tests
+test atomic_batch_with_a_deferred_save_and_staged_integrity_through_mcp ... ok
+test guarded_load_and_frozen_gate_through_mcp ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.42s
+
+     Running tests\never_block.rs (target\debug\deps\never_block-e0a5c34d2fc6b6d6.exe)
+
+running 2 tests
+test every_command_answers_through_mcp_within_the_watchdog ... ok
+test queued_calls_stay_responsive_while_jobs_run ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.27s
+
+     Running tests\protocol.rs (target\debug\deps\protocol-d82b76548cff2037.exe)
+
+running 14 tests
+test session_limits_cap_batches_and_jobs ... ok
+test lifecycle_negotiation_and_json_rpc_errors ... ok
+test parse_and_invalid_request_errors_are_answered ... ok
+test scopes_roots_and_policies_are_enforced ... ok
+test atomic_batch_commits_one_revision_one_undo_step_and_one_audit_entry ... ok
+test generic_tools_wrap_commands_revisions_undo_and_idempotent_requests ... ok
+test tools_list_schemas_and_structured_content_validate ... ok
+test an_external_change_reaches_the_agent_as_a_confirmation ... ok
+test prompts_completions_and_logging ... ok
+test roots_from_the_client_extend_the_grant ... ok
+test typed_tools_change_the_list_and_disconnect_ends_the_session ... ok
+test resources_templates_subscriptions_coalescing_and_events ... ok
+test progress_and_cancellation ... ok
+test confirmation_protocol_with_token_and_with_elicitation ... ok
+
+test result: ok. 14 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 3.68s
+
+   Doc-tests tt_mcp
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+

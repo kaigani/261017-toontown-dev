@@ -1,0 +1,509 @@
+{
+  "binary": "C:\\Users\\kaiga\\work\\review\\m2-c23-r1\\target\\c23-r1-ci\\headless-Windows\\toontown-headless.exe",
+  "observations": [
+    {
+      "command": "draw.rectangle.add",
+      "params": {
+        "drawingId": "dr_01K742SG0KKMCAP9X1E6Z5P4SW",
+        "from": {
+          "x": 2000,
+          "y": 2000
+        },
+        "to": {
+          "x": 2100,
+          "y": 2100
+        },
+        "layer": "new"
+      },
+      "envelope": {
+        "status": "ok",
+        "result": {
+          "drawingId": "dr_01K742SG0KKMCAP9X1E6Z5P4SW",
+          "strokeIds": [
+            "st_01K7JJN8007GWTQF9M83GDMNCF"
+          ],
+          "zoneIds": [
+            "zn_PXDKVG7PXJ7ZXDSFT4JE5EPJVE"
+          ],
+          "layerId": "nd_01K7JJN801VXVB0NJPYF8VRHWH",
+          "createdIds": [
+            "st_01K7JJN8007GWTQF9M83GDMNCF",
+            "nd_01K7JJN801VXVB0NJPYF8VRHWH",
+            "zn_PXDKVG7PXJ7ZXDSFT4JE5EPJVE"
+          ],
+          "modifiedIds": [],
+          "removedIds": [],
+          "rev": 4
+        },
+        "changes": [
+          {
+            "id": "dr_01K742SG0KKMCAP9X1E6Z5P4SW/st_01K7JJN8007GWTQF9M83GDMNCF",
+            "type": "stroke",
+            "op": "created",
+            "rev": 4,
+            "parentId": "dr_01K742SG0KKMCAP9X1E6Z5P4SW/nd_01K7JJN801VXVB0NJPYF8VRHWH",
+            "index": 0
+          },
+          {
+            "id": "dr_01K742SG0KKMCAP9X1E6Z5P4SW/nd_01K7JJN801VXVB0NJPYF8VRHWH",
+            "type": "drawingNode",
+            "op": "created",
+            "rev": 4,
+            "parentId": "dr_01K742SG0KKMCAP9X1E6Z5P4SW",
+            "index": 3
+          },
+          {
+            "id": "dr_01K742SG0KKMCAP9X1E6Z5P4SW",
+            "type": "drawing",
+            "op": "modified",
+            "rev": 4,
+            "patch": [
+              {
+                "op": "add",
+                "path": "/nodes/3",
+                "value": {
+                  "id": "nd_01K7JJN801VXVB0NJPYF8VRHWH",
+                  "type": "drawingNode"
+                }
+              }
+            ]
+          }
+        ],
+        "undo": {
+          "stepId": "u-1",
+          "label": "Pencil Tool"
+        },
+        "warnings": [],
+        "documentRev": 4
+      }
+    },
+    {
+      "command": "colour.paint.apply",
+      "params": {
+        "drawingId": "dr_01K742SG0KKMCAP9X1E6Z5P4SW",
+        "objectIds": [
+          "zn_PXDKVG7PXJ7ZXDSFT4JE5EPJVE"
+        ],
+        "colourId": "col_01K742SG059XGSNZ6M9MACZ2ZY"
+      },
+      "envelope": {
+        "status": "ok",
+        "result": {
+          "drawingId": "dr_01K742SG0KKMCAP9X1E6Z5P4SW",
+          "painted": [
+            {
+              "drawingId": "dr_01K742SG0KKMCAP9X1E6Z5P4SW",
+              "objectId": "zn_PXDKVG7PXJ7ZXDSFT4JE5EPJVE",
+              "objectKind": "zone",
+              "previousColourId": null
+            }
+          ],
+          "skipped": [],
+          "addedStrokeIds": [],
+          "createdIds": [],
+          "modifiedIds": [
+            "zn_PXDKVG7PXJ7ZXDSFT4JE5EPJVE"
+          ],
+          "removedIds": [],
+          "rev": 5
+        },
+        "changes": [
+          {
+            "id": "dr_01K742SG0KKMCAP9X1E6Z5P4SW/st_01K7JJN8007GWTQF9M83GDMNCF",
+            "type": "stroke",
+            "op": "modified",
+            "rev": 5,
+            "patch": [
+              {
+                "op": "replace",
+                "path": "/sides/left",
+                "value": {
+                  "colourId": "col_01K742SG059XGSNZ6M9MACZ2ZY",
+                  "matrix": null
+                },
+                "oldValue": null
+              }
+            ]
+          },
+          {
+            "id": "dr_01K742SG0KKMCAP9X1E6Z5P4SW",
+            "type": "drawing",
+            "op": "modified",
+            "rev": 5,
+            "patch": []
+          }
+        ],
+        "undo": {
+          "stepId": "u-2",
+          "label": "Paint"
+        },
+        "warnings": [],
+        "documentRev": 5
+      }
+    },
+    {
+      "command": "colour.recolour.apply",
+      "params": {
+        "fromColourId": "col_01K742SG059XGSNZ6M9MACZ2ZY",
+        "toColourId": "col_01K742SG09H7QE4RRR6XSYYS88",
+        "scope": "drawing",
+        "drawingIds": [
+          "dr_01K742SG0KKMCAP9X1E6Z5P4SW"
+        ],
+        "targets": [
+          "zones"
+        ],
+        "respectProtected": false
+      },
+      "envelope": {
+        "status": "ok",
+        "result": {
+          "changed": [
+            {
+              "drawingId": "dr_01K742SG0KKMCAP9X1E6Z5P4SW",
+              "count": 1
+            }
+          ],
+          "pensChanged": [],
+          "skippedLocked": [],
+          "skippedProtected": []
+        },
+        "changes": [
+          {
+            "id": "dr_01K742SG0KKMCAP9X1E6Z5P4SW/st_01K7JJN8007GWTQF9M83GDMNCF",
+            "type": "stroke",
+            "op": "modified",
+            "rev": 6,
+            "patch": [
+              {
+                "op": "replace",
+                "path": "/sides/left/colourId",
+                "value": "col_01K742SG09H7QE4RRR6XSYYS88",
+                "oldValue": "col_01K742SG059XGSNZ6M9MACZ2ZY"
+              }
+            ]
+          },
+          {
+            "id": "dr_01K742SG0KKMCAP9X1E6Z5P4SW",
+            "type": "drawing",
+            "op": "modified",
+            "rev": 6,
+            "patch": []
+          }
+        ],
+        "undo": {
+          "stepId": "u-3",
+          "label": "Replace Colour"
+        },
+        "warnings": [],
+        "documentRev": 6
+      }
+    },
+    {
+      "command": "draw.drawing.render",
+      "params": {
+        "drawingId": "dr_01K742SG0KKMCAP9X1E6Z5P4SW",
+        "width": 100,
+        "height": 100,
+        "region": {
+          "x": 2000,
+          "y": 2000,
+          "width": 100,
+          "height": 100
+        }
+      },
+      "envelope": {
+        "status": "ok",
+        "result": {
+          "png": "iVBORw0KGgoAAAANSUhEUgAAAGQAAABkCAYAAABw4pVUAAAA8ElEQVR4nO3RMQ0AIAAEsQ/Bv2WwcUNroXfbGxlnpAiJERIjJEZIjJAYITFCYoTECIkREiMkRkiMkBghMUJihMQIiRESIyRGSIyQGCExQmKExAiJERIjJEZIjJAYITFCYoTECIkREiMkRkiMkBghMUJihMQIiRESIyRGSIyQGCExQmKExAiJERIjJEZIjJAYITFCYoTECIkREiMkRkiMkBghMUJihMQIiRESIyRGSIyQGCExQmKExAiJERIjJEZIjJAYITFCYoTECIkREiMkRkiMkBghMUJihMQIiRESIyRGSIyQGCExQmKExAiJERLzAbLVAcpRiB0/AAAAAElFTkSuQmCC",
+          "width": 100,
+          "height": 100,
+          "drawingToPixel": [
+            1.0,
+            0.0,
+            0.0,
+            -1.0,
+            -2000.0,
+            2100.0
+          ],
+          "rev": 6,
+          "pixelsSha256": "4869e9d9079fa372b2685a2b1c54f3262c72fa40078b7d6468ca2a58f4769415",
+          "warnings": []
+        },
+        "changes": [],
+        "warnings": [],
+        "documentRev": 6
+      }
+    },
+    {
+      "centrePixel": [
+        0,
+        0,
+        0,
+        255
+      ],
+      "pngSha256": "aa7ee273c482d69e96aa1a38433e7c9464cbdb4f125a7da984fc2754251985ff",
+      "pixelsSha256": "4869e9d9079fa372b2685a2b1c54f3262c72fa40078b7d6468ca2a58f4769415"
+    },
+    {
+      "command": "draw.drawing.render",
+      "params": {
+        "drawingId": "dr_01K742SG0KKMCAP9X1E6Z5P4SW",
+        "width": 100,
+        "height": 100,
+        "region": {
+          "x": 2000,
+          "y": 2000,
+          "width": 100,
+          "height": 100
+        }
+      },
+      "envelope": {
+        "status": "ok",
+        "result": {
+          "png": "iVBORw0KGgoAAAANSUhEUgAAAGQAAABkCAYAAABw4pVUAAAA8ElEQVR4nO3RMQ0AIAAEsQ/Bv2WwcUNroXfbGxlnpAiJERIjJEZIjJAYITFCYoTECIkREiMkRkiMkBghMUJihMQIiRESIyRGSIyQGCExQmKExAiJERIjJEZIjJAYITFCYoTECIkREiMkRkiMkBghMUJihMQIiRESIyRGSIyQGCExQmKExAiJERIjJEZIjJAYITFCYoTECIkREiMkRkiMkBghMUJihMQIiRESIyRGSIyQGCExQmKExAiJERIjJEZIjJAYITFCYoTECIkREiMkRkiMkBghMUJihMQIiRESIyRGSIyQGCExQmKExAiJERLzAbLVAcpRiB0/AAAAAElFTkSuQmCC",
+          "width": 100,
+          "height": 100,
+          "drawingToPixel": [
+            1.0,
+            0.0,
+            0.0,
+            -1.0,
+            -2000.0,
+            2100.0
+          ],
+          "rev": 6,
+          "pixelsSha256": "4869e9d9079fa372b2685a2b1c54f3262c72fa40078b7d6468ca2a58f4769415",
+          "warnings": []
+        },
+        "changes": [],
+        "warnings": [],
+        "documentRev": 6
+      }
+    },
+    {
+      "tool": "render_drawing",
+      "result": {
+        "status": "ok",
+        "result": {
+          "png": "iVBORw0KGgoAAAANSUhEUgAAAgAAAAH1CAYAAACAz0bNAAAJxklEQVR4nO3dvYqcZRyH4WeSJYpiKkNABQs/wCoGPxKiNilUAlaeQRoPwcYjsBV7xd4UgqCxi1hZKohNmpDOQlBQMR9P2G0T8rEz8w73dcGPmd0T+N/My+4cGQBAzt4AAJbmhblvx/q8KQAAYHmOzb081ufokQEA5AgAAAgSAAAQJAAAIEgAAECQAACAIAEAAEECAACCBAAABAkAAAgSAAAQJAAAIEgAAECQAACAIAEAAEECAACCBAAABAkAAAgSAAAQJAAAIEgAAEDQ3gAAlub63MWxPn+vBgCQ4xEAAAQJAAAIEgAAECQAACBIAABAkAAAgCABAABBAgAAggQAAAQJAAAIEgAAECQAACBIAABAkAAAgCABAABBAgAAggQAAAQJAAAIEgAAECQAACBIAABAkAAAgCABAABBAgAAggQAAAQJAAAIEgAAECQAACBIAABAkAAAgCABAABBAgAAggQAAAQJAAAIEgAAECQAACBIAABAkAAAgCABAABBAgAAggQAAAQJAAAIEgAAECQAACBIAABAkAAAgCABAABBAgAAggQAAAQJAAAIEgAAECQAACBIAABAkAAAgCABAABBAgAAggQAAAQJAAAIEgAAECQAACBIAABAkAAAgCABAABBAgAAggQAAAQJAAAIEgAAECQAACBIAABAkAAAgCABAABBAgAAggQAAAQJAAAIEgAAECQAACBIAABAkAAAgCABAABBAgAAggQAAAQJAAAIEgAAECQAACBIAABAkAAAgCABAABBAgAAggQAAAQJAAAIEgAAECQAACBIAABAkAAAgCABAABBAgAAggQAAAQJAAAIEgAAECQAACBIAABAkAAAgCABAABBAgAAggQAAAQJAAAIEgAAECQAACBIAABAkAAAgCABAABBAgAAggQAAAQJAAAIEgAAECQAACBIAABAkAAAgCABAABBAgAAggQAAAQJAAAIEgAAECQAACBIAABAkAAAgCABAABBAgAAggQAAAQJAAAIEgAAECQAACBIAABAkAAAgCABAABBAgAAggQAAAQJAAAIEgAAECQAACBIAABAkAAAgCABAABBAgAAggQAAAQJAAAIEgAAECQAACBIAABAkAAAgCABAABBAgAAggQAAAQJAAAIEgAAECQAACBIAABAkAAAgCABAABBAgAAggQAAAQJAAAIEgAAECQAACBIAABAkAAAgCABAABBAgAAggQAAAQJAAAIEgAAECQAACBIAABAkAAAgCABAABBAgAAggQAAAQJAAAIEgAAECQAACBIAABAkAAAgCABAABBAgAAggQAAAQJAAAIEgAAECQAACBIAABAkAAAgCABAABBAgAAggQAAAQJAAAIEgAAECQAACBIAABAkAAAgCABAABBAgAAggQAAAQJAAAIEgAAECQAACBIAABAkAAAgCABAABBAgAAggQAAAQJAAAIEgAAECQAACBIAABAkAAAgCABAABBAgAAggQAAAQJAAAIEgAAECQAACBIAABAkAAAgCABAABBAgAAggQAAAQJAAAIEgAAECQAACBIAABAkAAAgCABAABBAgAAggQAAAQJAAAIEgAAECQAACBIAABAkAAAgCABAABBAgAAggQAAAQJAAAIEgAAECQAACBIAABAkAAAgCABAABBAgAAggQAAAQJAAAIEgAAECQAACBIAABAkAAAgCABAABBAgAAggQAAAQJAAAIEgAAECQAACBIAABAkAAAgCABAABBAgAAggQAAAQJAAAIEgAAECQAACBIAABAkAAAgCABAABBAgAAggQAAAQJAAAIEgAAECQAACBIAABAkAAAgCABAABBAgAAggQAAAQJAAAIEgAAECQAACBIAABAkAAAgCABAABBAgAAggQAAAQJAAAIEgAAECQAACBIAABAkAAAgCABAABBAgAAggQAAAQJAAAIEgAAECQAACBIAABAkAAAgCABAABBAgAAggQAAAQJAAAIEgAAECQAACBIAABAkAAAgCABAABBAgAAggQAAAQJAAAIEgAAECQAACBIAABAkAAAgCABAABBAgAAggQAAAQJAAAIEgAAECQAACBIAABAkAAAgCABAABBAgAAggQAAAQJAAAIEgAAECQAACBIAABAkAAAgCABAABBAgAAggQAAAQJAAAIEgAAECQAACBIAABAkAAAgCABAABBAgAAggQAAAQJAAAIEgAAECQAACBIAABAkAAAgCABAABBAgAAggQAAAQJAAAIEgAAECQAACBIAABAkAAAgCABAABBAgAAggQAAAQJAAAIEgAAECQAACBIAABAkAAAgCABAABBAgAAggQAAAQJAAAIEgAAECQAACBIAABAkAAAgCABAABBAgAAggQAAAQJAAAIEgAAECQAACBIAABAkAAAgCABAABBAgAAggQAAAQJAAAIEgAAECQAACBIAABAkAAAgCABAABBAgAAggQAAAQJAAAIEgAAECQAACBIAABAkAAAgCABAABBAgAAggQAAAQJAAAIEgAAECQAACBIAABAkAAAgCABAABBAgAAggQAAAQJAAAIEgAAECQAACBIAABAkAAAgCABAABBAgAAggQAAATtSgCcPXh97mCruXMHv3v9YADAfdqFAHh87r2D9x/MHZ27MPfY3N7cuwc/Hzt4f3wAAPd0dCzfG3Pn514c+wf+6tzzc6/N/Tn3z9yJuVNzP8x9NPfjAADuam8s350A+GTu+tg/9Gfmfpp7au703K9zv8+9NPaD4NYAAO5pFz4BODn389h/XHHnccDlubfnrsz9N/fH3G9zT479OPhi7t8BANzVagAAOf4MEACCBAAABAkAAAgSAAAQJAAAIEgAAECQAACAIAEAAEECAACCBAAABAkAAAgSAAAQJAAAIEgAAECQAACAIAEAAEF7Y43++uWbUzdvrI6PNdgbR64+cerCtQEAPLC1BsDNW6vP52cMb401+H914+P58ukAAB6YRwAAECQAACBIAABAkAAAgCABAABBAgAAggQAAAQJAAAIEgAAECQAACBoMQHw9XdXBgCwGYsIgK8uXR5nXn1lAACbsdYvA7ofd47/+XOnx7Mnnx4AwGZsNQAcfwDYjq0FgOMPANuzlQBw/AFguzYeAI4/AGzfRgPA8QeAZdhYADj+ALAcGwkAxx8AlmXtAeD4A8DyrDUAPvvy0okP33/nxjPrOP63VjcHAPBQVmN9Ls59P3dtAACLsq5PABx/AFiwdQSA4w8AC3fYAeD4A8AOOMwAcPwBYEccVgA4/gCwQw4jABx/ANgxjxoAjj8A7KBHCQDHHwB21MMGgOMPADvsYQLA8QeAHfeg/wr47Ng//I4/AOyw2242aT0hwlIQAAAAAElFTkSuQmCC",
+          "width": 512,
+          "height": 501,
+          "drawingToPixel": [
+            0.2323049001814882,
+            0.0,
+            0.0,
+            -0.2323049001814882,
+            23.230490018148828,
+            488.99001814882035
+          ],
+          "rev": 6,
+          "pixelsSha256": "fd492e57ac8af50db2fac79e0b4a24a1548b503482624fee3a11799a14adc2f4",
+          "warnings": []
+        },
+        "changes": [],
+        "warnings": [],
+        "documentRev": 6
+      }
+    },
+    {
+      "command": "draw.stroke.add",
+      "params": {
+        "drawingId": "dr_01K742SG0KKMCAP9X1E6Z5P4SW",
+        "kind": "invisible",
+        "layer": "nd_01K7JJN801VXVB0NJPYF8VRHWH",
+        "fit": false,
+        "points": [
+          {
+            "x": 2050,
+            "y": 1990
+          },
+          {
+            "x": 2050,
+            "y": 2110
+          }
+        ]
+      },
+      "envelope": {
+        "status": "ok",
+        "result": {
+          "drawingId": "dr_01K742SG0KKMCAP9X1E6Z5P4SW",
+          "createdDrawing": false,
+          "strokeIds": [
+            "st_01K7JJN8033SRGRTS2DSXARV8T",
+            "st_01K7JJN804T650XWKWHR2ECMEQ",
+            "st_01K7JJN805ACXPCK1BQJEY7PJH"
+          ],
+          "zoneIds": [
+            "zn_65WVF2CYRQ113ZY1FY29WSJQ3Z",
+            "zn_8TJ7N9QK06F2M60Z2NG5JJPPVB"
+          ],
+          "layerId": "nd_01K7JJN801VXVB0NJPYF8VRHWH",
+          "createdIds": [
+            "st_01K7JJN8033SRGRTS2DSXARV8T",
+            "st_01K7JJN804T650XWKWHR2ECMEQ",
+            "st_01K7JJN805ACXPCK1BQJEY7PJH",
+            "st_01K7JJN801CJPEM53YXVKQD2C9",
+            "st_01K7JJN802Q4CG55NSPW52Z55J",
+            "zn_65WVF2CYRQ113ZY1FY29WSJQ3Z",
+            "zn_8TJ7N9QK06F2M60Z2NG5JJPPVB"
+          ],
+          "modifiedIds": [
+            "nd_01K7JJN801VXVB0NJPYF8VRHWH"
+          ],
+          "removedIds": [
+            "st_01K7JJN8007GWTQF9M83GDMNCF",
+            "zn_PXDKVG7PXJ7ZXDSFT4JE5EPJVE"
+          ],
+          "rev": 7,
+          "hints": [
+            "drawing.strokesHidden"
+          ]
+        },
+        "changes": [
+          {
+            "id": "dr_01K742SG0KKMCAP9X1E6Z5P4SW/st_01K7JJN801CJPEM53YXVKQD2C9",
+            "type": "stroke",
+            "op": "created",
+            "rev": 7,
+            "parentId": "dr_01K742SG0KKMCAP9X1E6Z5P4SW/nd_01K7JJN801VXVB0NJPYF8VRHWH",
+            "index": 0
+          },
+          {
+            "id": "dr_01K742SG0KKMCAP9X1E6Z5P4SW/st_01K7JJN802Q4CG55NSPW52Z55J",
+            "type": "stroke",
+            "op": "created",
+            "rev": 7,
+            "parentId": "dr_01K742SG0KKMCAP9X1E6Z5P4SW/nd_01K7JJN801VXVB0NJPYF8VRHWH",
+            "index": 1
+          },
+          {
+            "id": "dr_01K742SG0KKMCAP9X1E6Z5P4SW/st_01K7JJN8033SRGRTS2DSXARV8T",
+            "type": "stroke",
+            "op": "created",
+            "rev": 7,
+            "parentId": "dr_01K742SG0KKMCAP9X1E6Z5P4SW/nd_01K7JJN801VXVB0NJPYF8VRHWH",
+            "index": 2
+          },
+          {
+            "id": "dr_01K742SG0KKMCAP9X1E6Z5P4SW/st_01K7JJN804T650XWKWHR2ECMEQ",
+            "type": "stroke",
+            "op": "created",
+            "rev": 7,
+            "parentId": "dr_01K742SG0KKMCAP9X1E6Z5P4SW/nd_01K7JJN801VXVB0NJPYF8VRHWH",
+            "index": 3
+          },
+          {
+            "id": "dr_01K742SG0KKMCAP9X1E6Z5P4SW/st_01K7JJN805ACXPCK1BQJEY7PJH",
+            "type": "stroke",
+            "op": "created",
+            "rev": 7,
+            "parentId": "dr_01K742SG0KKMCAP9X1E6Z5P4SW/nd_01K7JJN801VXVB0NJPYF8VRHWH",
+            "index": 4
+          },
+          {
+            "id": "dr_01K742SG0KKMCAP9X1E6Z5P4SW/nd_01K7JJN801VXVB0NJPYF8VRHWH",
+            "type": "drawingNode",
+            "op": "modified",
+            "rev": 7,
+            "patch": [
+              {
+                "op": "remove",
+                "path": "/strokes/0",
+                "oldValue": {
+                  "id": "st_01K7JJN8007GWTQF9M83GDMNCF",
+                  "type": "stroke"
+                }
+              },
+              {
+                "op": "add",
+                "path": "/strokes/0",
+                "value": {
+                  "id": "st_01K7JJN801CJPEM53YXVKQD2C9",
+                  "type": "stroke"
+                }
+              },
+              {
+                "op": "add",
+                "path": "/strokes/1",
+                "value": {
+                  "id": "st_01K7JJN802Q4CG55NSPW52Z55J",
+                  "type": "stroke"
+                }
+              },
+              {
+                "op": "add",
+                "path": "/strokes/2",
+                "value": {
+                  "id": "st_01K7JJN8033SRGRTS2DSXARV8T",
+                  "type": "stroke"
+                }
+              },
+              {
+                "op": "add",
+                "path": "/strokes/3",
+                "value": {
+                  "id": "st_01K7JJN804T650XWKWHR2ECMEQ",
+                  "type": "stroke"
+                }
+              },
+              {
+                "op": "add",
+                "path": "/strokes/4",
+                "value": {
+                  "id": "st_01K7JJN805ACXPCK1BQJEY7PJH",
+                  "type": "stroke"
+                }
+              }
+            ]
+          },
+          {
+            "id": "dr_01K742SG0KKMCAP9X1E6Z5P4SW/st_01K7JJN8007GWTQF9M83GDMNCF",
+            "type": "stroke",
+            "op": "deleted",
+            "rev": 7,
+            "parentId": "dr_01K742SG0KKMCAP9X1E6Z5P4SW/nd_01K7JJN801VXVB0NJPYF8VRHWH"
+          },
+          {
+            "id": "dr_01K742SG0KKMCAP9X1E6Z5P4SW",
+            "type": "drawing",
+            "op": "modified",
+            "rev": 7,
+            "patch": []
+          }
+        ],
+        "undo": {
+          "stepId": "u-4",
+          "label": "Stroke Tool"
+        },
+        "warnings": [],
+        "documentRev": 7
+      }
+    },
+    {
+      "command": "colour.paint.apply",
+      "params": {
+        "drawingId": "dr_01K742SG0KKMCAP9X1E6Z5P4SW",
+        "objectIds": [
+          "zn_PXDKVG7PXJ7ZXDSFT4JE5EPJVE"
+        ],
+        "colourId": "col_01K742SG059XGSNZ6M9MACZ2ZY"
+      },
+      "envelope": {
+        "status": "error",
+        "changes": [],
+        "warnings": [],
+        "documentRev": 7,
+        "error": {
+          "code": "colour.staleZoneId",
+          "message": "zone `zn_PXDKVG7PXJ7ZXDSFT4JE5EPJVE` is not a zone of the drawing's current revision",
+          "details": {
+            "zoneId": "zn_PXDKVG7PXJ7ZXDSFT4JE5EPJVE",
+            "rev": 7
+          },
+          "hint": "read the zones again with draw.drawing.get, or paint by point"
+        }
+      }
+    }
+  ]
+}

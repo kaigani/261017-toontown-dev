@@ -1,0 +1,1277 @@
+headless release (windows-latest)	UNKNOWN STEP	2026-10-31T11:33:38.9601599Z
+headless release (windows-latest)	UNKNOWN STEP	2026-10-31T11:33:38.9601940Z test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 577.95s
+headless release (windows-latest)	UNKNOWN STEP	2026-10-31T11:33:38.9602373Z
+headless release (windows-latest)	UNKNOWN STEP	2026-10-31T11:33:39.3620330Z ^[[1m^[[92m   Compiling^[[0m tt-model v0.0.1 (D:\a\261017-toontown-dev\261017-toontown-dev\crates\model)
+headless release (windows-latest)	UNKNOWN STEP	2026-10-31T11:37:22.3883466Z
+headless release (windows-latest)	UNKNOWN STEP	2026-10-31T11:37:22.3886432Z test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 45.33s
+headless release (windows-latest)	UNKNOWN STEP	2026-10-31T11:37:22.3889041Z
+headless release (windows-latest)	UNKNOWN STEP	2026-10-31T11:37:22.7285474Z ^[[1m^[[92m   Compiling^[[0m tt-model v0.0.1 (D:\a\261017-toontown-dev\261017-toontown-dev\crates\model)
+headless release (windows-latest)	UNKNOWN STEP	2026-10-31T11:39:23.4894428Z
+headless release (windows-latest)	UNKNOWN STEP	2026-10-31T11:39:23.4895031Z test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 1 filtered out; finished in 52.83s
+headless release (windows-latest)	UNKNOWN STEP	2026-10-31T11:39:23.4895507Z
+headless release (windows-latest)	UNKNOWN STEP	2026-10-31T11:39:23.6048351Z ok   strokes-100k-windows.json (series)
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:23:54.3635900Z
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:23:54.3636890Z test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:23:54.3637770Z
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:23:54.3671300Z
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:23:54.3676200Z
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:23:54.3677080Z test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:23:54.3689800Z
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:23:54.3717210Z
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:23:54.3718650Z
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:23:54.3719750Z test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:23:54.3720880Z
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:23:54.3723950Z ^[[1m^[[92m     Running^[[0m unittests src/lib.rs (target/debug/deps/tt_desktop-682b421b4ad30406)
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:23:55.1743110Z
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:23:55.1844590Z test result: ok. 32 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.75s
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:23:55.1897420Z ^[[1m^[[92m     Running^[[0m ../../tests/adversarial/c03-r2-encoder.rs (target/debug/deps/c03_r2_encoder-26102a73b8edb38a)
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:23:55.1897970Z
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:23:55.1908750Z
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:23:55.1938730Z test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:23:55.1945340Z
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:23:55.2184580Z
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:23:55.9576970Z
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:23:55.9577890Z test result: ok. 11 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.73s
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:23:55.9578310Z
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:23:55.9739900Z
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:23:56.3415720Z
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:23:56.3416180Z test result: ok. 19 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.37s
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:23:56.3416760Z
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:23:56.3424070Z ^[[1m^[[92m     Running^[[0m tests/c11_r1_wire.rs (target/debug/deps/c11_r1_wire-ac1527181ae72009)
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:23:56.4536310Z
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:23:56.4542230Z test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.07s
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:23:56.4549640Z ^[[1m^[[92m     Running^[[0m tests/c11_r2_wire.rs (target/debug/deps/c11_r2_wire-65e8ad1184dc223a)
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:23:56.4549990Z
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:23:56.4782600Z
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:23:56.4783610Z test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:23:56.4784360Z
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:23:56.4952540Z
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:23:56.5142890Z
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:23:56.5143980Z test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.02s
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:23:56.5144930Z
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:23:56.5146370Z ^[[1m^[[92m     Running^[[0m tests/frontend_schemas.rs (target/debug/deps/frontend_schemas-b858e387bda0c3ac)
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:23:56.9240430Z
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:23:56.9287170Z test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.39s
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:23:56.9287880Z
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:23:56.9401130Z
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:23:56.9462700Z
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:23:56.9463710Z test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:23:56.9464620Z
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:23:56.9468720Z ^[[1m^[[92m     Running^[[0m unittests src/lib.rs (target/debug/deps/tt_executor-4d659167a7bc6d99)
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:23:57.3450000Z
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:23:57.3450450Z test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.37s
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:23:57.3450750Z
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:23:57.3463180Z ^[[1m^[[92m     Running^[[0m tests/c12_checkpoint_property.rs (target/debug/deps/c12_checkpoint_property-997688f45c43b130)
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:24:03.0017880Z
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:24:03.0031900Z test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 5.63s
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:24:03.0054020Z ^[[1m^[[92m     Running^[[0m tests/c12_edit_ops.rs (target/debug/deps/c12_edit_ops-947a0ee637fefa0b)
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:24:03.0055700Z
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:24:03.8017210Z
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:24:03.8034210Z test result: ok. 16 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.75s
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:24:03.8034770Z
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:24:03.8215340Z
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:24:07.1766660Z
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:24:07.1768510Z test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 3.36s
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:24:07.1769460Z
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:24:07.1773330Z ^[[1m^[[92m     Running^[[0m tests/c12_kernel_state.rs (target/debug/deps/c12_kernel_state-f3d5bd7095f1d97d)
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:24:49.7182490Z
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:24:49.7183970Z test result: ok. 7 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 42.49s
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:24:49.7185080Z
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:24:49.7218840Z ^[[1m^[[92m     Running^[[0m tests/c12_never_block.rs (target/debug/deps/c12_never_block-a47ebde20f3cf4eb)
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:24:50.9215090Z ^[[1m^[[92m     Running^[[0m tests/c12_policy.rs (target/debug/deps/c12_policy-464a51ece99a27a9)
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:24:50.9216060Z test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.18s
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:24:50.9216450Z
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:24:51.0001510Z
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:24:51.6614430Z
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:24:51.6615800Z test result: ok. 11 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.66s
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:24:51.6616160Z
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:24:51.6632430Z ^[[1m^[[92m     Running^[[0m tests/c12_r1_contracts.rs (target/debug/deps/c12_r1_contracts-7395bcbda688564c)
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:26:16.0269730Z
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:26:16.0270980Z test result: ok. 36 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 84.34s
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:26:16.0271860Z
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:26:16.0305040Z ^[[1m^[[92m     Running^[[0m tests/c12_r1_macro.rs (target/debug/deps/c12_r1_macro-e875aff8c629a11f)
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:26:45.5485860Z
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:26:45.5487560Z test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 29.50s
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:26:45.5489940Z
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:26:45.5498110Z ^[[1m^[[92m     Running^[[0m tests/c12_r1_scale.rs (target/debug/deps/c12_r1_scale-78248fa67ae663c2)
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:27:43.9113440Z
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:27:43.9113850Z test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 58.34s
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:27:43.9114210Z
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:27:43.9481400Z ^[[1m^[[92m     Running^[[0m tests/c12_r1_stress.rs (target/debug/deps/c12_r1_stress-88768952620e4d23)
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:29:26.8532600Z
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:29:26.8533610Z test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 102.89s
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:29:26.8534230Z
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:29:26.8619780Z ^[[1m^[[92m     Running^[[0m tests/c12_r2_contracts.rs (target/debug/deps/c12_r2_contracts-64aa3f2a67c4bc2e)
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:29:34.1079690Z
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:29:34.1085390Z test result: ok. 40 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 7.22s
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:29:34.1085790Z
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:29:34.1106230Z ^[[1m^[[92m     Running^[[0m tests/c12_r2_registry.rs (target/debug/deps/c12_r2_registry-f1890329da6c2cf7)
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:29:34.3594860Z
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:29:34.3599900Z test result: ok. 7 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.23s
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:29:34.3600820Z
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:29:34.3605150Z ^[[1m^[[92m     Running^[[0m tests/c12_r2_scale.rs (target/debug/deps/c12_r2_scale-0a579040c500723a)
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:30:22.0475360Z
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:30:22.0476850Z test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 47.65s
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:30:22.0477560Z
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:30:22.1170840Z ^[[1m^[[92m     Running^[[0m tests/c12_r3_contracts.rs (target/debug/deps/c12_r3_contracts-8132535e4ef4ea5a)
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:30:24.0530650Z
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:30:24.0534540Z test result: ok. 15 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.91s
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:30:24.0551080Z
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:30:24.0553130Z ^[[1m^[[92m     Running^[[0m tests/c12_r3_registry.rs (target/debug/deps/c12_r3_registry-62c9dae97af8f11e)
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:30:24.3227730Z
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:30:24.3231830Z test result: ok. 12 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.25s
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:30:24.3232980Z
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:30:24.3238740Z ^[[1m^[[92m     Running^[[0m tests/c12_r3_stress.rs (target/debug/deps/c12_r3_stress-c0776f3464b2ffcf)
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:32:07.1707650Z
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:32:07.1708310Z test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 102.83s
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:32:07.1708800Z
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:32:07.1797190Z ^[[1m^[[92m     Running^[[0m tests/c12_r4_closure.rs (target/debug/deps/c12_r4_closure-d7f260e711bce111)
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:32:07.5359250Z
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:32:07.5364940Z test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.33s
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:32:07.5366090Z
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:32:07.5372030Z ^[[1m^[[92m     Running^[[0m tests/c12_registry.rs (target/debug/deps/c12_registry-cf12ba18a024bb2e)
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:32:07.8210640Z
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:32:07.8214400Z test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.26s
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:32:07.8215940Z
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:32:07.8217580Z ^[[1m^[[92m     Running^[[0m tests/c12_transactions.rs (target/debug/deps/c12_transactions-e6cdc29a85934443)
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:32:09.5362850Z
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:32:09.5368200Z test result: ok. 14 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.70s
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:32:09.5369470Z
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:32:09.5379180Z ^[[1m^[[92m     Running^[[0m tests/c13_doc.rs (target/debug/deps/c13_doc-f600df18f07652c3)
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:32:20.7999780Z
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:32:20.8000650Z test result: ok. 9 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 11.24s
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:32:20.8001270Z
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:32:20.8029820Z ^[[1m^[[92m     Running^[[0m tests/c13_projects.rs (target/debug/deps/c13_projects-e02c734ad58b7dd1)
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:32:33.2498100Z
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:32:33.2499810Z test result: ok. 13 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 12.43s
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:32:33.2501040Z
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:32:33.2509120Z ^[[1m^[[92m     Running^[[0m tests/c13_r1_persistence.rs (target/debug/deps/c13_r1_persistence-7d7ee4ddb4e1f14f)
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:32:34.7204650Z
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:32:34.7205990Z test result: ok. 18 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.45s
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:32:34.7207030Z
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:32:34.7226590Z ^[[1m^[[92m     Running^[[0m tests/c13_r2_persistence.rs (target/debug/deps/c13_r2_persistence-6a44c6b222040b26)
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:32:38.8536790Z
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:32:38.8538410Z test result: ok. 14 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 4.11s
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:32:38.8539860Z
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:32:38.8546850Z ^[[1m^[[92m     Running^[[0m tests/c13_r3_history_r1.rs (target/debug/deps/c13_r3_history_r1-df0e64436627a18e)
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:34:11.6615460Z
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:34:11.6615940Z test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 92.79s
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:34:11.6616290Z
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:34:11.6710500Z ^[[1m^[[92m     Running^[[0m tests/c13_r3_history_r3.rs (target/debug/deps/c13_r3_history_r3-a2d6151b08e85a9a)
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:35:58.5271620Z
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:35:58.5273260Z test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 106.83s
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:35:58.5274690Z
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:35:58.5345540Z ^[[1m^[[92m     Running^[[0m tests/c13_r3_persistence.rs (target/debug/deps/c13_r3_persistence-f83569e7b68cdf6f)
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:36:01.0731670Z
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:36:01.0732120Z test result: ok. 10 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 2.51s
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:36:01.0732440Z
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:36:01.0748720Z ^[[1m^[[92m     Running^[[0m tests/c13_r4_closure.rs (target/debug/deps/c13_r4_closure-c73fe31144ef7985)
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:36:01.5155070Z
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:36:01.5156110Z test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.42s
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:36:01.5157130Z
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:36:01.5168630Z ^[[1m^[[92m     Running^[[0m tests/c14_lock_races.rs (target/debug/deps/c14_lock_races-fc1fe9813d407116)
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:36:36.4536050Z
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:36:36.4540740Z test result: ok. 9 passed; 0 failed; 1 ignored; 0 measured; 0 filtered out; finished in 34.91s
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:36:36.4541770Z
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:36:36.4559500Z ^[[1m^[[92m     Running^[[0m tests/c14_measurements.rs (target/debug/deps/c14_measurements-4d3fbad4550c612c)
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:36:55.9330370Z
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:36:55.9331000Z test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 19.46s
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:36:55.9331500Z
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:36:55.9393360Z ^[[1m^[[92m     Running^[[0m tests/c14_obligations.rs (target/debug/deps/c14_obligations-28879dcc6b5b3eb6)
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:37:20.7765090Z
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:37:20.7765870Z test result: ok. 7 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 24.81s
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:37:20.7766290Z
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:37:20.7787060Z ^[[1m^[[92m     Running^[[0m tests/c14_r2_contracts.rs (target/debug/deps/c14_r2_contracts-7a4b016eb1c7033e)
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:37:21.2749350Z
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:37:21.2750430Z test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.48s
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:37:21.2751770Z ^[[1m^[[92m     Running^[[0m tests/c14_r2_effects.rs (target/debug/deps/c14_r2_effects-0f51e69351aac5af)
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:37:21.2752170Z
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:37:21.7381720Z
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:37:21.7382390Z test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.44s
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:37:21.7383900Z ^[[1m^[[92m     Running^[[0m tests/c21_determinism.rs (target/debug/deps/c21_determinism-829d7a346ad9843e)
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:37:21.7384360Z
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:37:21.7611900Z
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:37:22.6837520Z
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:37:22.6838760Z test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.92s
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:37:22.6842980Z ^[[1m^[[92m     Running^[[0m tests/c21_draw.rs (target/debug/deps/c21_draw-c640756958968a3f)
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:37:22.6843880Z
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:37:23.3180610Z
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:37:23.3181130Z test result: ok. 11 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.61s
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:37:23.3181490Z
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:37:23.3188720Z ^[[1m^[[92m     Running^[[0m tests/c21_example_results.rs (target/debug/deps/c21_example_results-e473d756eee46c0f)
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:37:31.0777160Z
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:37:31.0778260Z test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 7.74s
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:37:31.0781060Z
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:37:31.0797060Z ^[[1m^[[92m     Running^[[0m tests/c21_measurements.rs (target/debug/deps/c21_measurements-74e120bb9708a4ce)
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:37:31.0969760Z
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:37:31.0970250Z test result: ok. 0 passed; 0 failed; 1 ignored; 0 measured; 0 filtered out; finished in 0.00s
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:37:31.0970580Z
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:37:31.0977070Z ^[[1m^[[92m     Running^[[0m tests/c21_obligations.rs (target/debug/deps/c21_obligations-3c0f9eb119cdd004)
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:37:31.7544420Z
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:37:31.7545210Z test result: ok. 7 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.64s
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:37:31.7545740Z
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:37:31.7553070Z ^[[1m^[[92m     Running^[[0m tests/c21_r1_autosave.rs (target/debug/deps/c21_r1_autosave-d2ad650eb2c99354)
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:38:04.5499610Z
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:38:04.5500200Z test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 32.78s
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:38:04.5500620Z
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:38:04.5855250Z ^[[1m^[[92m     Running^[[0m tests/c21_r1_contracts.rs (target/debug/deps/c21_r1_contracts-e63a354813e60263)
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:38:04.9457890Z
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:38:04.9458300Z test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.31s
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:38:04.9458640Z
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:38:05.0005490Z
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:38:52.1882740Z
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:38:52.1883100Z test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 47.19s
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:38:52.1883440Z
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:38:52.1963860Z ^[[1m^[[92m     Running^[[0m tests/c21_r2_contracts.rs (target/debug/deps/c21_r2_contracts-85a14386ee82d799)
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:38:52.8475340Z
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:38:52.8475900Z test result: ok. 8 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.63s
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:38:52.8476370Z
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:38:52.8500450Z ^[[1m^[[92m     Running^[[0m tests/c21_r3_contracts.rs (target/debug/deps/c21_r3_contracts-b2faeb3dc106e60c)
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:38:52.8643840Z running 7 tests
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:38:52.8644780Z test closed_step_pressure_command_worker ... ignored, bounded subprocess worker
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:38:52.8743640Z
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:38:52.8743960Z running 1 test
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:38:57.7565310Z complete closed-decagon 99000-knot command 4.585959417s: None
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:38:57.7630510Z test closed_step_pressure_command_worker ... ok
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:38:57.7631040Z
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:38:57.7631590Z test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 6 filtered out; finished in 4.89s
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:38:57.7632090Z
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:38:57.8906030Z test closed_step_pressure_command_returns_within_watchdog ... ok
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:38:58.0874520Z test over_limit_brush_refuses_atomically_and_worker_accepts_next_edit ... ok
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:38:58.0875400Z
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:38:58.0876350Z test result: ok. 6 passed; 0 failed; 1 ignored; 0 measured; 0 filtered out; finished in 5.22s
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:38:58.0877970Z
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:38:58.0977950Z ^[[1m^[[92m     Running^[[0m tests/compile_fail.rs (target/debug/deps/compile_fail-4e00e1bb7a139a35)
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:39:46.9330350Z
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:39:46.9333010Z test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 48.82s
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:39:46.9334900Z
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:39:46.9342700Z ^[[1m^[[92m     Running^[[0m unittests src/lib.rs (target/debug/deps/tt_fx-6ddf964e19e90579)
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:39:46.9464320Z
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:39:46.9465360Z test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:39:46.9466090Z
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:39:46.9481400Z ^[[1m^[[92m     Running^[[0m unittests src/main.rs (target/debug/deps/toontown_headless-9d5f5ae2c33ebadd)
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:39:47.3011490Z
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:39:47.3012380Z test result: ok. 8 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.33s
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:39:47.3013140Z
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:39:47.3016260Z ^[[1m^[[92m     Running^[[0m ../../tests/adversarial/c01.rs (target/debug/deps/adversarial_c01-2a20368c75446049)
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:39:51.8158820Z
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:39:51.8159430Z test result: ok. 7 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 4.50s
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:39:51.8160570Z ^[[1m^[[92m     Running^[[0m tests/c14_r1.rs (target/debug/deps/c14_r1-07ce8a7cadfce929)
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:39:51.8160930Z
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:39:55.1669070Z
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:39:55.1678550Z test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 3.34s
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:39:55.1679320Z
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:39:55.1686690Z ^[[1m^[[92m     Running^[[0m tests/c14_r2.rs (target/debug/deps/c14_r2-b54e122742802237)
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:40:14.1789130Z
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:40:14.1794160Z test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 19.00s
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:40:14.1795220Z
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:40:14.1817960Z ^[[1m^[[92m     Running^[[0m tests/c14_r3.rs (target/debug/deps/c14_r3-7439ecb771355716)
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:40:20.5643170Z
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:40:20.5647110Z test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 6.36s
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:40:20.5650050Z ^[[1m^[[92m     Running^[[0m tests/cancel_phases.rs (target/debug/deps/cancel_phases-5d309a387daee659)
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:40:20.5650870Z
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:41:00.6122600Z
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:41:00.6123840Z test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 40.03s
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:41:00.6124960Z
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:41:00.6141050Z ^[[1m^[[92m     Running^[[0m tests/cli.rs (target/debug/deps/cli-f20c9215aec6a1d9)
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:41:00.8099020Z
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:41:00.8100500Z test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.18s
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:41:00.8101430Z
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:41:00.8103140Z ^[[1m^[[92m     Running^[[0m tests/guard_fixtures.rs (target/debug/deps/guard_fixtures-86632a4d452b28a0)
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:41:03.6966700Z
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:41:03.6969480Z test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 2.88s
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:41:03.6971080Z
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:41:03.6972160Z ^[[1m^[[92m     Running^[[0m tests/mcp.rs (target/debug/deps/mcp-cca1569766d946d2)
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:41:04.7170090Z
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:41:04.7170660Z test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.83s
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:41:04.7171520Z
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:41:04.7172580Z ^[[1m^[[92m     Running^[[0m unittests src/lib.rs (target/debug/deps/tt_io-9e0ddad049760ea2)
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:41:04.8289710Z
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:41:04.8291130Z test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:41:04.8292120Z
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:41:04.8293130Z ^[[1m^[[92m     Running^[[0m unittests src/lib.rs (target/debug/deps/tt_lipsync-ce33769c43685734)
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:41:04.8394200Z
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:41:04.8394560Z test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:41:04.8394970Z
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:41:04.8399020Z ^[[1m^[[92m     Running^[[0m unittests src/lib.rs (target/debug/deps/tt_mcp-5323ccddfb3e55ed)
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:41:05.2550120Z ^[[1m^[[92m     Running^[[0m tests/audit.rs (target/debug/deps/audit-87d868644494179e)
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:41:05.2552930Z test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.23s
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:41:05.2554310Z
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:41:05.4022250Z
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:41:06.6506080Z
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:41:06.6507460Z test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.27s
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:41:06.6509060Z
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:41:06.6519470Z ^[[1m^[[92m     Running^[[0m tests/c14_r1_autosave.rs (target/debug/deps/c14_r1_autosave-47d5ec794cd6fa8c)
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:41:10.0999640Z
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:41:10.1000110Z test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 3.43s
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:41:10.1000540Z
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:41:10.1019090Z ^[[1m^[[92m     Running^[[0m tests/c14_r1_limits.rs (target/debug/deps/c14_r1_limits-a16ccbb78c8b13af)
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:41:10.2740780Z
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:41:10.2744400Z test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.16s
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:41:10.2744980Z
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:41:10.2748270Z ^[[1m^[[92m     Running^[[0m tests/c14_r2_replay.rs (target/debug/deps/c14_r2_replay-178c4708dd3f4cb1)
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:41:10.7832960Z
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:41:10.7839290Z test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.49s
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:41:10.7840460Z
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:41:10.7854020Z ^[[1m^[[92m     Running^[[0m tests/c14_r3_groups.rs (target/debug/deps/c14_r3_groups-4a5047b09021b13f)
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:41:11.2697020Z
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:41:11.2698620Z test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.46s
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:41:11.2699710Z
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:41:11.2726560Z ^[[1m^[[92m     Running^[[0m tests/c14_r3_history_r1.rs (target/debug/deps/c14_r3_history_r1-3be74b2e772ccbb6)
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:43:22.0188120Z
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:43:22.0189100Z test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 130.72s
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:43:22.0189950Z
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:43:22.0277600Z ^[[1m^[[92m     Running^[[0m tests/c14_r3_history_r3.rs (target/debug/deps/c14_r3_history_r3-828cfdd35293ab5c)
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:45:17.1863470Z
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:45:17.1863930Z test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 115.14s
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:45:17.1864400Z
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:45:17.1949350Z ^[[1m^[[92m     Running^[[0m tests/c14_r3_replay.rs (target/debug/deps/c14_r3_replay-b0ab0703f4cda582)
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:45:17.8436250Z
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:45:17.8436690Z test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.63s
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:45:17.8437040Z
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:45:17.8440690Z ^[[1m^[[92m     Running^[[0m tests/c14_r4_closure.rs (target/debug/deps/c14_r4_closure-a5a51838fe1f0867)
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:45:18.3731940Z
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:45:18.3735560Z test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.51s
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:45:18.3735960Z
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:45:18.3740740Z ^[[1m^[[92m     Running^[[0m tests/c14_r4_expect_rev.rs (target/debug/deps/c14_r4_expect_rev-57a37bf6fa36d6f5)
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:45:18.8351020Z
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:45:18.8358660Z test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.45s
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:45:18.8359990Z
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:45:18.8374680Z ^[[1m^[[92m     Running^[[0m tests/c14_r5_closure.rs (target/debug/deps/c14_r5_closure-bcd6450eefe31336)
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:45:19.3349270Z
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:45:19.3354230Z test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.48s
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:45:19.3354620Z
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:45:19.3360290Z ^[[1m^[[92m     Running^[[0m tests/c14_tickets.rs (target/debug/deps/c14_tickets-bdd1a12e0c5393ba)
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:45:19.6588180Z
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:45:19.6592320Z test result: ok. 1 passed; 0 failed; 1 ignored; 0 measured; 0 filtered out; finished in 0.31s
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:45:19.6592710Z
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:45:19.6597490Z ^[[1m^[[92m     Running^[[0m tests/c21_history.rs (target/debug/deps/c21_history-11a2939674e31224)
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:45:19.6773490Z
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:45:19.6774150Z test result: ok. 0 passed; 0 failed; 2 ignored; 0 measured; 0 filtered out; finished in 0.00s
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:45:19.6774510Z
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:45:19.6778750Z ^[[1m^[[92m     Running^[[0m tests/c21_r1_surfaces.rs (target/debug/deps/c21_r1_surfaces-8d88060e5cca98d7)
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:45:32.1485030Z
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:45:32.1485510Z test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 12.45s
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:45:32.1485880Z
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:45:32.1581580Z ^[[1m^[[92m     Running^[[0m tests/c21_r2_events.rs (target/debug/deps/c21_r2_events-cb7ddd9c2733552e)
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:45:33.1149050Z
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:45:33.1157150Z test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.94s
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:45:33.1158370Z
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:45:33.1171520Z ^[[1m^[[92m     Running^[[0m tests/c21_r3_never_block.rs (target/debug/deps/c21_r3_never_block-29976d1e0c2a9942)
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:45:36.8411100Z
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:45:36.8416620Z test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 3.70s
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:45:36.8417040Z
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:45:36.8422220Z ^[[1m^[[92m     Running^[[0m tests/c21_replay.rs (target/debug/deps/c21_replay-768ea5dcad6eda8a)
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:45:37.7213650Z
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:45:37.7219350Z test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.86s
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:45:37.7219880Z
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:45:37.7226130Z ^[[1m^[[92m     Running^[[0m tests/c21_worked_examples.rs (target/debug/deps/c21_worked_examples-acebae3c598ddcc4)
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:45:39.4098400Z
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:45:39.4102550Z test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.67s
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:45:39.4103340Z
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:45:39.4117770Z ^[[1m^[[92m     Running^[[0m tests/contracts.rs (target/debug/deps/contracts-766fd0ff5334ccee)
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:45:40.2739260Z
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:45:40.2740220Z test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.84s
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:45:40.2741090Z
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:45:40.2755350Z ^[[1m^[[92m     Running^[[0m tests/never_block.rs (target/debug/deps/never_block-96732170a4b9f710)
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:45:42.7703590Z
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:45:42.7708630Z test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 2.47s
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:45:42.7710690Z
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:45:42.7742020Z ^[[1m^[[92m     Running^[[0m tests/protocol.rs (target/debug/deps/protocol-caf74ee5fa0d1334)
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:45:46.3478160Z
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:45:46.3486380Z test result: ok. 14 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 3.55s
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:45:46.3487430Z
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:45:46.3514960Z ^[[1m^[[92m     Running^[[0m unittests src/lib.rs (target/debug/deps/tt_model-5b2ae22c34d5f87f)
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:45:46.5721350Z
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:45:46.5722300Z test result: ok. 43 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.20s
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:45:46.5723130Z
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:45:46.5729270Z ^[[1m^[[92m     Running^[[0m tests/c11_r1_adversarial.rs (target/debug/deps/c11_r1_adversarial-481c92a68d842a8a)
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:45:50.8024280Z
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:45:50.8025340Z test result: ok. 39 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 4.21s
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:45:50.8026210Z
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:45:50.8125970Z ^[[1m^[[92m     Running^[[0m tests/c11_r2_adversarial.rs (target/debug/deps/c11_r2_adversarial-420cfcd8a54b4f88)
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:46:01.4343150Z ^[[1m^[[92m     Running^[[0m tests/c11_r3_adversarial.rs (target/debug/deps/c11_r3_adversarial-77c97de2aa5bf9cc)
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:46:01.4343970Z test result: ok. 39 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 10.60s
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:46:01.4348040Z
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:46:01.4480070Z
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:46:01.6197140Z
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:46:01.6197560Z test result: ok. 11 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.17s
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:46:01.6198000Z
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:46:01.6201380Z ^[[1m^[[92m     Running^[[0m tests/c11_r3_random.rs (target/debug/deps/c11_r3_random-aa6ad044c1f7c6da)
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:46:03.4087600Z
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:46:03.4088040Z test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.78s
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:46:03.4088400Z
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:46:03.4090030Z ^[[1m^[[92m     Running^[[0m tests/c11_r3_register.rs (target/debug/deps/c11_r3_register-c6a3d518478e7e4e)
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:46:03.8470930Z
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:46:03.8471440Z test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.42s
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:46:03.8472680Z
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:46:03.8481690Z ^[[1m^[[92m     Running^[[0m tests/c11_r4_exposure_bounds.rs (target/debug/deps/c11_r4_exposure_bounds-473a66c75bedb494)
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:46:03.8703420Z
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:46:03.8703830Z test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:46:03.8704240Z
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:46:03.8707200Z ^[[1m^[[92m     Running^[[0m tests/c11_r5_write_bounds.rs (target/debug/deps/c11_r5_write_bounds-e631240884b55099)
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:46:03.8836380Z
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:46:03.8839540Z test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:46:03.8839880Z
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:46:03.8846120Z ^[[1m^[[92m     Running^[[0m tests/c11_r6_staged_inverse.rs (target/debug/deps/c11_r6_staged_inverse-2305d8b0830f9a68)
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:46:04.0847740Z
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:46:04.0852840Z test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.19s
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:46:04.0853330Z
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:46:04.0857050Z ^[[1m^[[92m     Running^[[0m tests/c12_kernel_support.rs (target/debug/deps/c12_kernel_support-9a9e8a69448cf35d)
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:46:04.3065840Z
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:46:04.3066900Z test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.21s
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:46:04.3067800Z
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:46:04.3070460Z ^[[1m^[[92m     Running^[[0m tests/conformance.rs (target/debug/deps/conformance-d0d5481356f645fa)
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:46:04.6210130Z
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:46:04.6210570Z test result: ok. 15 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.30s
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:46:04.6210950Z
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:46:04.6215220Z ^[[1m^[[92m     Running^[[0m tests/properties.rs (target/debug/deps/properties-e0554b4e992e037c)
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:46:04.9327930Z
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:46:04.9328370Z test result: ok. 18 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.30s
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:46:04.9328750Z
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:46:04.9332600Z ^[[1m^[[92m     Running^[[0m tests/staged_commit.rs (target/debug/deps/staged_commit-0f13844cf1a7a4db)
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:46:35.4739820Z
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:46:35.4740330Z test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 30.52s
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:46:35.4740700Z
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:46:35.4898470Z
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:46:55.2402900Z
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:46:55.2403360Z test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 19.75s
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:46:55.2403750Z
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:46:55.2407220Z ^[[1m^[[92m     Running^[[0m unittests src/lib.rs (target/debug/deps/tt_persist-96b8ba837cee3762)
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:46:55.2820580Z
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:46:55.2821420Z test result: ok. 19 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.03s
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:46:55.2822010Z
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:46:55.2822970Z ^[[1m^[[92m     Running^[[0m tests/c13_r1_format.rs (target/debug/deps/c13_r1_format-1010253ae0a45321)
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:46:55.7537650Z
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:46:55.7538150Z test result: ok. 8 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.46s
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:46:55.7538530Z
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:46:55.7545180Z ^[[1m^[[92m     Running^[[0m tests/c13_r2_format.rs (target/debug/deps/c13_r2_format-ed3bc21c478d7d6f)
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:46:56.7744660Z
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:46:56.7745670Z test result: ok. 7 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.01s
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:46:56.7746770Z
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:46:56.7762170Z ^[[1m^[[92m     Running^[[0m tests/c13_r3_format.rs (target/debug/deps/c13_r3_format-015403e100f63dd2)
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:46:59.0137380Z
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:46:59.0138430Z test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 2.22s
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:46:59.0139590Z
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:46:59.0150350Z ^[[1m^[[92m     Running^[[0m tests/c13_r4_lock.rs (target/debug/deps/c13_r4_lock-c5eed1c48db70bc8)
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:47:05.9634910Z
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:47:05.9640660Z test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 6.93s
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:47:05.9641630Z
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:47:05.9648010Z ^[[1m^[[92m     Running^[[0m tests/hostile.rs (target/debug/deps/hostile-081069870fb4d786)
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:47:08.0622290Z
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:47:08.0623330Z test result: ok. 14 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 2.08s
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:47:08.0624100Z
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:47:08.0644660Z ^[[1m^[[92m     Running^[[0m tests/journal.rs (target/debug/deps/journal-77bad7287bb68aa5)
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:47:10.5659120Z
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:47:10.5660820Z test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 2.48s
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:47:10.5662300Z
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:47:10.5831210Z
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:47:10.5866380Z
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:47:10.5866860Z test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:47:10.5867290Z
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:47:10.5872390Z ^[[1m^[[92m     Running^[[0m tests/round_trip.rs (target/debug/deps/round_trip-da435410f9e686c2)
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:47:11.1753960Z
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:47:11.1754930Z test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.57s
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:47:11.1755670Z
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:47:11.1757900Z ^[[1m^[[92m     Running^[[0m tests/zip64.rs (target/debug/deps/zip64-3f4cd80e416677cd)
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:47:12.4026520Z
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:47:12.4026960Z test result: ok. 1 passed; 0 failed; 1 ignored; 0 measured; 0 filtered out; finished in 1.22s
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:47:12.4027330Z
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:47:12.4034360Z ^[[1m^[[92m     Running^[[0m unittests src/lib.rs (target/debug/deps/tt_registry-ebe1f39f3678f971)
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:47:12.4212390Z
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:47:12.4212830Z test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:47:12.4213360Z
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:47:12.4214570Z ^[[1m^[[92m     Running^[[0m tests/declared.rs (target/debug/deps/declared-7d59cbb36000ddf9)
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:47:13.2634070Z
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:47:13.2634930Z test result: ok. 9 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.83s
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:47:13.2635810Z
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:47:13.2638300Z ^[[1m^[[92m     Running^[[0m tests/inventory.rs (target/debug/deps/inventory-b44521bf5b14d354)
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:47:13.2893070Z
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:47:13.2894150Z test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:47:13.2895090Z
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:47:13.2897650Z ^[[1m^[[92m     Running^[[0m unittests src/lib.rs (target/debug/deps/tt_registry_macros-fc0959ca3c0087d5)
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:47:13.3106450Z
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:47:13.3106910Z test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:47:13.3107260Z
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:47:13.3115820Z ^[[1m^[[92m     Running^[[0m unittests src/lib.rs (target/debug/deps/tt_render-b8695ca799f68581)
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:47:13.3222630Z
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:47:13.3223630Z test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:47:13.3224810Z
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:47:13.3230710Z ^[[1m^[[92m     Running^[[0m tests/c03_fixed_configurations.rs (target/debug/deps/c03_fixed_configurations-674b3deb7cf8e642)
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:47:14.6979390Z
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:47:14.6979940Z test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.36s
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:47:14.6980410Z
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:47:14.6985770Z ^[[1m^[[92m     Running^[[0m tests/c03_r1_stress.rs (target/debug/deps/c03_r1_stress-b45c57bd1532da0b)
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:47:16.3756750Z
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:47:16.3757790Z test result: ok. 2 passed; 0 failed; 1 ignored; 0 measured; 0 filtered out; finished in 1.66s
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:47:16.3758710Z
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:47:16.3760100Z ^[[1m^[[92m     Running^[[0m tests/c03_r2_quality.rs (target/debug/deps/c03_r2_quality-c445f722198635fa)
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:47:17.5935930Z
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:47:17.5936970Z test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.20s
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:47:17.5938010Z
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:47:17.5940720Z ^[[1m^[[92m     Running^[[0m unittests src/lib.rs (target/debug/deps/tt_vector-dd9e2ee2b407f8d5)
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:47:17.7128390Z
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:47:17.7128740Z test result: ok. 36 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.11s
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:47:17.7129250Z
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:47:17.7131110Z ^[[1m^[[92m     Running^[[0m tests/c21_r1_geometry.rs (target/debug/deps/c21_r1_geometry-fc5e4a1bcfd47d46)
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:47:17.7640090Z
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:47:17.7640590Z test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 9 filtered out; finished in 0.03s
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:47:17.7641080Z
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:47:17.7867940Z test curve_fixture_matrix_keeps_valid_paths_and_anchor_limit ... ok
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:47:17.8952750Z
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:47:17.8953090Z test result: ok. 9 passed; 0 failed; 1 ignored; 0 measured; 0 filtered out; finished in 0.17s
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:47:17.8953390Z
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:47:17.8959630Z ^[[1m^[[92m     Running^[[0m tests/c21_r2_geometry.rs (target/debug/deps/c21_r2_geometry-84e2dc0449ecd3aa)
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:47:17.9822420Z
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:47:17.9823000Z test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 10 filtered out; finished in 0.07s
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:47:17.9823970Z
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:47:17.9849820Z test alternating_pressure_fitting_respects_watchdog ... ok
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:47:19.7922430Z
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:47:19.7923700Z test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 10 filtered out; finished in 1.80s
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:47:19.7924770Z
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:47:19.8436080Z test many_pressure_knots_brush_respects_watchdog ... ok
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:47:39.9516490Z
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:47:39.9516910Z test result: ok. 9 passed; 0 failed; 2 ignored; 0 measured; 0 filtered out; finished in 22.04s
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:47:39.9517360Z
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:47:39.9533250Z ^[[1m^[[92m     Running^[[0m tests/c21_r3_geometry.rs (target/debug/deps/c21_r3_geometry-c92d9e3d258a3784)
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:47:42.3721800Z
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:47:42.3722190Z test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 7 filtered out; finished in 2.40s
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:47:42.3722480Z
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:47:42.5035210Z test maximum_spine_and_pressure_return_within_watchdog ... ok
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:47:42.5035630Z
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:47:42.5036090Z test result: ok. 6 passed; 0 failed; 2 ignored; 0 measured; 0 filtered out; finished in 2.54s
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:47:42.5036510Z
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:47:42.5037960Z ^[[1m^[[92m     Running^[[0m tests/c21_worst_case.rs (target/debug/deps/c21_worst_case-eb971a61c7a7f1d5)
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:47:42.5885690Z
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:47:42.5886170Z test result: ok. 1 passed; 0 failed; 2 ignored; 0 measured; 0 filtered out; finished in 0.08s
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:47:42.5888020Z
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:47:42.5888710Z ^[[1m^[[92m     Running^[[0m tests/properties.rs (target/debug/deps/properties-aadfff452f584672)
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:47:44.8393280Z
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:47:44.8396290Z test result: ok. 7 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 2.24s
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:47:44.8397870Z
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:47:45.0464040Z
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:47:45.0466620Z
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:47:45.0469250Z test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:47:45.0471090Z
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:47:45.0517990Z ^[[1m^[[92m   Doc-tests^[[0m tt_audio
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:47:45.1007350Z
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:47:45.1009050Z test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:47:45.1012160Z
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:47:45.1018480Z ^[[1m^[[92m   Doc-tests^[[0m tt_colour
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:47:45.1518070Z
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:47:45.1519900Z test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:47:45.1521500Z
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:47:45.1528300Z ^[[1m^[[92m   Doc-tests^[[0m tt_desktop
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:47:45.9211550Z
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:47:45.9212420Z test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:47:45.9213560Z
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:47:45.9224650Z ^[[1m^[[92m   Doc-tests^[[0m tt_engine
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:47:46.1149740Z
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:47:46.1150220Z test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:47:46.1150680Z
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:47:46.1163450Z ^[[1m^[[92m   Doc-tests^[[0m tt_executor
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:47:47.7387800Z
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:47:47.7388440Z test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:47:47.7388940Z
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:47:47.7404920Z ^[[1m^[[92m   Doc-tests^[[0m tt_fx
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:47:47.7834890Z
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:47:47.7835420Z test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:47:47.7835870Z
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:47:47.7854280Z ^[[1m^[[92m   Doc-tests^[[0m tt_io
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:47:47.8255390Z
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:47:47.8255980Z test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:47:47.8256420Z
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:47:47.8265570Z ^[[1m^[[92m   Doc-tests^[[0m tt_lipsync
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:47:47.8786280Z
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:47:47.8787600Z test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:47:47.8788680Z
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:47:47.8814830Z ^[[1m^[[92m   Doc-tests^[[0m tt_mcp
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:47:48.0610670Z
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:47:48.0613070Z test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:47:48.0614530Z
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:47:48.0623260Z ^[[1m^[[92m   Doc-tests^[[0m tt_model
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:47:48.9212090Z
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:47:48.9213350Z test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:47:48.9215940Z
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:47:48.9239000Z ^[[1m^[[92m   Doc-tests^[[0m tt_persist
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:47:49.1302440Z
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:47:49.1303600Z test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:47:49.1305170Z
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:47:49.1315760Z ^[[1m^[[92m   Doc-tests^[[0m tt_registry
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:47:49.2774860Z
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:47:49.2775890Z test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:47:49.2776800Z
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:47:49.2788990Z ^[[1m^[[92m   Doc-tests^[[0m tt_registry_macros
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:47:49.3685970Z
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:47:49.3686990Z test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:47:49.3687950Z
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:47:49.3698030Z ^[[1m^[[92m   Doc-tests^[[0m tt_render
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:47:49.4174630Z
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:47:49.4175510Z test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:47:49.4176360Z
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:47:49.4185850Z ^[[1m^[[92m   Doc-tests^[[0m tt_vector
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:47:49.6514100Z
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:47:49.6515190Z test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:47:49.6516150Z
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:47:49.6936780Z ##[group]Run cargo clippy -p tt-desktop --all-targets --locked --features m0-diagnostics -- -D warnings
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:48:56.4200710Z
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:48:56.4234440Z test result: ok. 32 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.22s
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:48:56.4240480Z
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:48:56.4292300Z ^[[1m^[[92m     Running^[[0m ../../tests/adversarial/c03-r2-encoder.rs (target/debug/deps/c03_r2_encoder-215a0b9452641345)
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:48:56.4314070Z
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:48:56.4459740Z test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:48:56.4620920Z
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:48:56.4747680Z
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:48:57.4749490Z
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:48:57.4751950Z test result: ok. 11 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.04s
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:48:57.4753120Z
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:48:57.4760090Z ^[[1m^[[92m   Doc-tests^[[0m tt_desktop
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:48:57.7043760Z
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:48:57.7044980Z test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:48:57.7046090Z
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:48:57.7420350Z ##[group]Run taiki-e/install-action@v2
+raster determinism (windows-latest)	UNKNOWN STEP	2026-10-31T11:19:18.8377703Z ..
+raster determinism (windows-latest)	UNKNOWN STEP	2026-10-31T11:19:18.8378295Z test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.18s
+raster determinism (windows-latest)	UNKNOWN STEP	2026-10-31T11:19:31.3536057Z
+raster determinism (windows-latest)	UNKNOWN STEP	2026-10-31T11:19:31.3743916Z ##[group]Run actions/upload-artifact@v7
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:28:17.5958861Z
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:28:17.5962315Z test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:28:17.5962840Z
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:28:17.5978306Z ^[[1m^[[92m     Running^[[0m unittests src\lib.rs (target\debug\deps\tt_audio-a65983c31b210095.exe)
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:28:17.6124893Z
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:28:17.6128790Z test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:28:17.6144187Z ^[[1m^[[92m     Running^[[0m unittests src\lib.rs (target\debug\deps\tt_colour-9a86beeac086e46c.exe)
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:28:17.6144657Z
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:28:17.6319274Z
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:28:17.6321989Z test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:28:17.6324805Z
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:28:17.6337693Z ^[[1m^[[92m     Running^[[0m unittests src\lib.rs (target\debug\deps\tt_desktop-b023165ac317af33.exe)
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:28:18.4648312Z
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:28:18.4649412Z test result: ok. 38 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.81s
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:28:18.4649817Z
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:28:18.4672249Z ^[[1m^[[92m     Running^[[0m unittests src\main.rs (target\debug\deps\toontown-7c1e09cffe179bac.exe)
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:28:18.4859762Z
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:28:18.4862547Z test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:28:18.4863047Z
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:28:18.4878062Z ^[[1m^[[92m     Running^[[0m ..\..\tests\adversarial\c03-r2-encoder.rs (target\debug\deps\c03_r2_encoder-f45d4ce1bef72b94.exe)
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:28:19.2789207Z
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:28:19.2789914Z test result: ok. 11 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.78s
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:28:19.2790545Z
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:28:19.2811283Z ^[[1m^[[92m     Running^[[0m unittests src\lib.rs (target\debug\deps\tt_engine-05f821452bad8b68.exe)
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:28:19.5825331Z
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:28:19.5827119Z test result: ok. 19 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.29s
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:28:19.5827899Z
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:28:19.5925098Z ^[[1m^[[92m     Running^[[0m tests\c11_r1_wire.rs (target\debug\deps\c11_r1_wire-3d59d80853242d61.exe)
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:28:19.6886771Z
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:28:19.6889362Z test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.07s
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:28:19.6890084Z
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:28:19.6909770Z ^[[1m^[[92m     Running^[[0m tests\c11_r2_wire.rs (target\debug\deps\c11_r2_wire-082734d9e0cd2249.exe)
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:28:19.7152546Z
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:28:19.7153175Z test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:28:19.7153864Z
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:28:19.7172629Z ^[[1m^[[92m     Running^[[0m tests\c11_r3_wire.rs (target\debug\deps\c11_r3_wire-45779c7621fdc8b2.exe)
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:28:19.7517211Z
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:28:19.7519571Z test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.02s
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:28:19.7520293Z
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:28:19.7536794Z ^[[1m^[[92m     Running^[[0m tests\frontend_schemas.rs (target\debug\deps\frontend_schemas-d952ec5e0746fec3.exe)
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:28:20.1360490Z
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:28:20.1361262Z test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.37s
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:28:20.1362094Z
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:28:20.1425195Z ^[[1m^[[92m     Running^[[0m tests\wire_corpus.rs (target\debug\deps\wire_corpus-e41bc1f8a72e0431.exe)
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:28:20.2036859Z
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:28:20.2039494Z test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:28:20.2040177Z
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:28:20.2057984Z ^[[1m^[[92m     Running^[[0m unittests src\lib.rs (target\debug\deps\tt_executor-f597cbec669b4267.exe)
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:28:20.7014460Z
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:28:20.7015098Z test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.47s
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:28:20.7016075Z
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:28:20.7067934Z ^[[1m^[[92m     Running^[[0m tests\c12_checkpoint_property.rs (target\debug\deps\c12_checkpoint_property-29c0edfd3c361491.exe)
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:28:24.9803397Z
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:28:24.9806593Z test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 4.25s
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:28:24.9807457Z
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:28:24.9868506Z ^[[1m^[[92m     Running^[[0m tests\c12_edit_ops.rs (target\debug\deps\c12_edit_ops-274d0bf2deeb0a9f.exe)
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:28:25.6943256Z
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:28:25.6943976Z test result: ok. 16 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.70s
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:28:25.6944745Z
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:28:25.7008619Z ^[[1m^[[92m     Running^[[0m tests\c12_invalidation_property.rs (target\debug\deps\c12_invalidation_property-78b23aaa0095cfde.exe)
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:28:28.6173058Z
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:28:28.6174748Z test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 2.90s
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:28:28.6175516Z
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:28:28.6239498Z ^[[1m^[[92m     Running^[[0m tests\c12_kernel_state.rs (target\debug\deps\c12_kernel_state-10b7805307a97182.exe)
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:29:30.9386238Z
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:29:30.9386936Z test result: ok. 7 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 62.29s
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:29:30.9387672Z
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:29:30.9506793Z ^[[1m^[[92m     Running^[[0m tests\c12_never_block.rs (target\debug\deps\c12_never_block-49ab884b799c87d1.exe)
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:29:31.7922263Z
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:29:31.7922961Z test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.83s
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:29:31.7923739Z
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:29:31.7953676Z ^[[1m^[[92m     Running^[[0m tests\c12_policy.rs (target\debug\deps\c12_policy-3cd0040bc3267c61.exe)
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:29:32.5153545Z
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:29:32.5154330Z test result: ok. 11 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.70s
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:29:32.5155082Z
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:29:32.5243000Z ^[[1m^[[92m     Running^[[0m tests\c12_r1_contracts.rs (target\debug\deps\c12_r1_contracts-2d16e87ceec115a9.exe)
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:30:52.1651573Z
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:30:52.1652245Z test result: ok. 36 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 79.61s
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:30:52.1652953Z
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:30:52.1787375Z ^[[1m^[[92m     Running^[[0m tests\c12_r1_macro.rs (target\debug\deps\c12_r1_macro-b3eb643804b5325b.exe)
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:31:29.2612572Z
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:31:29.2619076Z test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 37.06s
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:31:29.2619538Z
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:31:29.2640472Z ^[[1m^[[92m     Running^[[0m tests\c12_r1_scale.rs (target\debug\deps\c12_r1_scale-9d72d862f582bcbe.exe)
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:32:43.9927019Z
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:32:43.9927696Z test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 74.71s
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:32:43.9928788Z
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:32:44.0113372Z ^[[1m^[[92m     Running^[[0m tests\c12_r1_stress.rs (target\debug\deps\c12_r1_stress-1f74551d62d6217a.exe)
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:34:46.5806417Z
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:34:46.5807179Z test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 122.55s
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:34:46.5807958Z
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:34:46.6211261Z ^[[1m^[[92m     Running^[[0m tests\c12_r2_contracts.rs (target\debug\deps\c12_r2_contracts-84240a17160741c7.exe)
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:34:57.3019373Z
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:34:57.3020221Z test result: ok. 40 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 10.66s
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:34:57.3020980Z
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:34:57.3100296Z ^[[1m^[[92m     Running^[[0m tests\c12_r2_registry.rs (target\debug\deps\c12_r2_registry-72d2c445830c0231.exe)
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:34:57.5790547Z
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:34:57.5795535Z test result: ok. 7 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.25s
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:34:57.5796007Z
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:34:57.5843879Z ^[[1m^[[92m     Running^[[0m tests\c12_r2_scale.rs (target\debug\deps\c12_r2_scale-25dc00ca092ffa9b.exe)
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:35:58.2882711Z
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:35:58.2888148Z test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 60.69s
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:35:58.2888927Z
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:35:58.3090683Z ^[[1m^[[92m     Running^[[0m tests\c12_r3_contracts.rs (target\debug\deps\c12_r3_contracts-73be9330b88ede38.exe)
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:36:00.3641606Z
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:36:00.3642285Z test result: ok. 15 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 2.03s
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:36:00.3642969Z
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:36:00.3721631Z ^[[1m^[[92m     Running^[[0m tests\c12_r3_registry.rs (target\debug\deps\c12_r3_registry-dfa067b15e70cea2.exe)
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:36:00.7566951Z
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:36:00.7567373Z test result: ok. 12 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.36s
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:36:00.7567788Z
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:36:00.7626365Z ^[[1m^[[92m     Running^[[0m tests\c12_r3_stress.rs (target\debug\deps\c12_r3_stress-3776fec85f3be946.exe)
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:38:03.5523324Z
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:38:03.5524266Z test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 122.77s
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:38:03.5524967Z
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:38:03.5855081Z ^[[1m^[[92m     Running^[[0m tests\c12_r4_closure.rs (target\debug\deps\c12_r4_closure-7535252c255882be.exe)
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:38:04.0312377Z
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:38:04.0319885Z test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.42s
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:38:04.0325673Z
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:38:04.0403960Z ^[[1m^[[92m     Running^[[0m tests\c12_registry.rs (target\debug\deps\c12_registry-61cc39816474f792.exe)
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:38:04.4525607Z
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:38:04.4526065Z test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.39s
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:38:04.4526491Z
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:38:04.4582081Z ^[[1m^[[92m     Running^[[0m tests\c12_transactions.rs (target\debug\deps\c12_transactions-fc56b653a2dab96b.exe)
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:38:06.8209946Z
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:38:06.8216720Z test result: ok. 14 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 2.34s
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:38:06.8217465Z
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:38:06.8329351Z ^[[1m^[[92m     Running^[[0m tests\c13_doc.rs (target\debug\deps\c13_doc-84a09239d03a00b2.exe)
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:38:12.2824687Z
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:38:12.2825071Z test result: ok. 9 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 5.43s
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:38:12.2895227Z ^[[1m^[[92m     Running^[[0m tests\c13_projects.rs (target\debug\deps\c13_projects-e6c228722ac9ce27.exe)
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:38:12.2895761Z
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:38:16.3736974Z
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:38:16.3737630Z test result: ok. 13 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 4.07s
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:38:16.3738298Z
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:38:16.3810641Z ^[[1m^[[92m     Running^[[0m tests\c13_r1_persistence.rs (target\debug\deps\c13_r1_persistence-57637fd6ce083387.exe)
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:38:20.0027232Z
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:38:20.0027650Z test result: ok. 18 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 3.60s
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:38:20.0030730Z
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:38:20.0092593Z ^[[1m^[[92m     Running^[[0m tests\c13_r2_persistence.rs (target\debug\deps\c13_r2_persistence-d7e1edada153c20c.exe)
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:38:26.5149725Z
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:38:26.5150133Z test result: ok. 14 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 6.49s
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:38:26.5150538Z
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:38:26.5210435Z ^[[1m^[[92m     Running^[[0m tests\c13_r3_history_r1.rs (target\debug\deps\c13_r3_history_r1-1cf4ac42dcbd5fc4.exe)
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:40:21.8487773Z
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:40:21.8488656Z test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 115.31s
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:40:21.8489524Z
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:40:21.8796221Z ^[[1m^[[92m     Running^[[0m tests\c13_r3_history_r3.rs (target\debug\deps\c13_r3_history_r3-3f84136a11fabc77.exe)
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:42:15.5161282Z
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:42:15.5162178Z test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 113.62s
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:42:15.5163039Z
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:42:15.5486606Z ^[[1m^[[92m     Running^[[0m tests\c13_r3_persistence.rs (target\debug\deps\c13_r3_persistence-b03c4f47ec7bcb81.exe)
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:42:19.9624634Z
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:42:19.9625288Z test result: ok. 10 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 4.39s
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:42:19.9626387Z
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:42:19.9691857Z ^[[1m^[[92m     Running^[[0m tests\c13_r4_closure.rs (target\debug\deps\c13_r4_closure-efa274638ff22628.exe)
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:42:20.5844905Z
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:42:20.5845413Z test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.60s
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:42:20.5845942Z
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:42:20.5902507Z ^[[1m^[[92m     Running^[[0m tests\c14_lock_races.rs (target\debug\deps\c14_lock_races-4f7c2431a61485c5.exe)
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:42:38.1808510Z
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:42:38.1808914Z test result: ok. 9 passed; 0 failed; 1 ignored; 0 measured; 0 filtered out; finished in 17.57s
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:42:38.1809307Z
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:42:38.1934572Z ^[[1m^[[92m     Running^[[0m tests\c14_measurements.rs (target\debug\deps\c14_measurements-f4147e6d099f63a2.exe)
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:43:03.2065684Z ^[[1m^[[92m     Running^[[0m tests\c14_obligations.rs (target\debug\deps\c14_obligations-c8d41e901fb1a9aa.exe)
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:43:03.2067012Z test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 24.89s
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:43:03.2067602Z
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:43:03.2067617Z
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:43:08.5743978Z
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:43:08.5744591Z test result: ok. 7 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 5.42s
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:43:08.5745223Z
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:43:08.5806680Z ^[[1m^[[92m     Running^[[0m tests\c14_r2_contracts.rs (target\debug\deps\c14_r2_contracts-b02771676c4f6124.exe)
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:43:09.3994383Z
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:43:09.3997062Z test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.80s
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:43:09.3998017Z
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:43:09.4051155Z ^[[1m^[[92m     Running^[[0m tests\c14_r2_effects.rs (target\debug\deps\c14_r2_effects-8ddb876326176405.exe)
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:43:09.8806926Z
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:43:09.8807308Z test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.46s
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:43:09.8807713Z
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:43:09.8863358Z ^[[1m^[[92m     Running^[[0m tests\c21_determinism.rs (target\debug\deps\c21_determinism-527170c1ec2ea5c6.exe)
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:43:09.9055461Z
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:43:09.9055802Z running 1 test
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:43:10.8584023Z
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:43:10.8584834Z test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.95s
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:43:10.8590496Z
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:43:10.8655540Z ^[[1m^[[92m     Running^[[0m tests\c21_draw.rs (target\debug\deps\c21_draw-1f3b156ccac92ac2.exe)
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:43:11.7160529Z
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:43:11.7162026Z test result: ok. 11 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.83s
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:43:11.7162870Z
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:43:11.7247973Z ^[[1m^[[92m     Running^[[0m tests\c21_example_results.rs (target\debug\deps\c21_example_results-c6f1634dbcc30130.exe)
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:43:26.9329803Z
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:43:26.9330205Z test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 15.18s
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:43:26.9330581Z
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:43:26.9404338Z ^[[1m^[[92m     Running^[[0m tests\c21_measurements.rs (target\debug\deps\c21_measurements-318a021d2d1eb20c.exe)
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:43:26.9650127Z
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:43:26.9654092Z test result: ok. 0 passed; 0 failed; 1 ignored; 0 measured; 0 filtered out; finished in 0.00s
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:43:26.9654784Z
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:43:26.9674573Z ^[[1m^[[92m     Running^[[0m tests\c21_obligations.rs (target\debug\deps\c21_obligations-45e0e6659e9f2b57.exe)
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:43:28.2129212Z
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:43:28.2130676Z test result: ok. 7 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.22s
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:43:28.2131784Z
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:43:28.2198296Z ^[[1m^[[92m     Running^[[0m tests\c21_r1_autosave.rs (target\debug\deps\c21_r1_autosave-7be5583ebb9927c5.exe)
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:44:17.2711723Z
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:44:17.2712336Z test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 49.03s
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:44:17.2712957Z
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:44:17.2881560Z ^[[1m^[[92m     Running^[[0m tests\c21_r1_contracts.rs (target\debug\deps\c21_r1_contracts-2eafb1e4f4478668.exe)
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:44:17.7781568Z
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:44:17.7782466Z test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.47s
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:44:17.7783738Z
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:44:17.7876556Z ^[[1m^[[92m     Running^[[0m tests\c21_r1_retention.rs (target\debug\deps\c21_r1_retention-e582fa28a0e6462e.exe)
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:45:34.5110607Z
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:45:34.5111024Z test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 76.70s
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:45:34.5111439Z
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:45:34.5696689Z ^[[1m^[[92m     Running^[[0m tests\c21_r2_contracts.rs (target\debug\deps\c21_r2_contracts-d9cf66f1704a7fe6.exe)
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:45:35.7272007Z
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:45:35.7272851Z test result: ok. 8 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.13s
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:45:35.7273657Z
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:45:35.7369877Z ^[[1m^[[92m     Running^[[0m tests\c21_r3_contracts.rs (target\debug\deps\c21_r3_contracts-48ff4bdcc9cd5900.exe)
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:45:35.7583754Z running 7 tests
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:45:35.7586864Z test closed_step_pressure_command_worker ... ignored, bounded subprocess worker
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:45:35.7744295Z
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:45:35.7744861Z running 1 test
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:45:44.6644366Z complete closed-decagon 99000-knot command 8.2593136s: None
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:45:44.7153160Z test closed_step_pressure_command_worker ... ok
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:45:44.7154125Z
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:45:44.7154938Z test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 6 filtered out; finished in 8.94s
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:45:44.7155721Z
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:45:44.7323267Z test closed_step_pressure_command_returns_within_watchdog ... ok
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:45:45.5123696Z test over_limit_brush_refuses_atomically_and_worker_accepts_next_edit ... ok
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:45:45.5124392Z
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:45:45.5125053Z test result: ok. 6 passed; 0 failed; 1 ignored; 0 measured; 0 filtered out; finished in 9.75s
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:45:45.5125760Z
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:45:45.5219762Z ^[[1m^[[92m     Running^[[0m tests\compile_fail.rs (target\debug\deps\compile_fail-f7d4f50c009376cd.exe)
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:47:25.1317624Z
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:47:25.1322208Z test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 99.59s
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:47:25.1322733Z
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:47:25.1345104Z ^[[1m^[[92m     Running^[[0m unittests src\lib.rs (target\debug\deps\tt_fx-57940dca963118d4.exe)
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:47:25.1448862Z
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:47:25.1449575Z test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:47:25.1450669Z
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:47:25.1466114Z ^[[1m^[[92m     Running^[[0m unittests src\main.rs (target\debug\deps\toontown_headless-a7a54e8df337052e.exe)
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:47:25.6857529Z
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:47:25.6858624Z test result: ok. 8 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.52s
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:47:25.6859880Z
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:47:25.6928667Z ^[[1m^[[92m     Running^[[0m ..\..\tests\adversarial\c01.rs (target\debug\deps\adversarial_c01-b09f8b655a2761b7.exe)
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:47:32.9019705Z
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:47:32.9020131Z test result: ok. 7 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 7.18s
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:47:32.9020555Z
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:47:32.9039183Z ^[[1m^[[92m     Running^[[0m tests\c14_r1.rs (target\debug\deps\c14_r1-a3c33e0b2fb474e5.exe)
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:47:37.9890846Z
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:47:37.9891505Z test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 5.07s
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:47:37.9892175Z
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:47:37.9910820Z ^[[1m^[[92m     Running^[[0m tests\c14_r2.rs (target\debug\deps\c14_r2-cb57b25cdca0a194.exe)
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:47:57.8036206Z
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:47:57.8036631Z test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 19.80s
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:47:57.8037051Z
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:47:57.8055455Z ^[[1m^[[92m     Running^[[0m tests\c14_r3.rs (target\debug\deps\c14_r3-25b7b5baeab9dd90.exe)
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:48:06.3993396Z
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:48:06.3994064Z test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 8.58s
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:48:06.3994750Z
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:48:06.4012376Z ^[[1m^[[92m     Running^[[0m tests\cancel_phases.rs (target\debug\deps\cancel_phases-2855f233ff3a05a1.exe)
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:48:40.7803737Z
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:48:40.7804131Z test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 34.36s
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:48:40.7804847Z
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:48:40.7823193Z ^[[1m^[[92m     Running^[[0m tests\cli.rs (target\debug\deps\cli-e88c7d181a018163.exe)
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:48:41.1344356Z
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:48:41.1347216Z test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.33s
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:48:41.1347646Z
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:48:41.1365777Z ^[[1m^[[92m     Running^[[0m tests\guard_fixtures.rs (target\debug\deps\guard_fixtures-d5a47689d15d8f7a.exe)
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:48:43.7442508Z
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:48:43.7446571Z test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 2.59s
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:48:43.7447110Z
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:48:43.7464898Z ^[[1m^[[92m     Running^[[0m tests\mcp.rs (target\debug\deps\mcp-52e7849995412913.exe)
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:48:44.4469835Z
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:48:44.4470479Z test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.68s
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:48:44.4470928Z
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:48:44.4489825Z ^[[1m^[[92m     Running^[[0m unittests src\lib.rs (target\debug\deps\tt_io-b79a5b39992b22f2.exe)
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:48:44.4645678Z
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:48:44.4649352Z test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:48:44.4649860Z
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:48:44.4669164Z ^[[1m^[[92m     Running^[[0m unittests src\lib.rs (target\debug\deps\tt_lipsync-a1ed2722957dc04e.exe)
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:48:44.4767457Z
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:48:44.4768348Z test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:48:44.4769106Z
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:48:44.4784043Z ^[[1m^[[92m     Running^[[0m unittests src\lib.rs (target\debug\deps\tt_mcp-8d0765aed52d15f8.exe)
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:48:44.5451622Z
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:48:44.5455855Z test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.05s
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:48:44.5456310Z
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:48:44.5480963Z ^[[1m^[[92m     Running^[[0m tests\audit.rs (target\debug\deps\audit-a954e047117e0d54.exe)
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:48:45.1765920Z
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:48:45.1770789Z test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.61s
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:48:45.1771589Z
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:48:45.1834316Z ^[[1m^[[92m     Running^[[0m tests\c14_r1_autosave.rs (target\debug\deps\c14_r1_autosave-b8e375b924c6fe56.exe)
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:48:51.4373168Z
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:48:51.4373539Z test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 6.23s
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:48:51.4373945Z
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:48:51.4431471Z ^[[1m^[[92m     Running^[[0m tests\c14_r1_limits.rs (target\debug\deps\c14_r1_limits-29c16412bf694a66.exe)
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:48:51.6228425Z
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:48:51.6230390Z test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.16s
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:48:51.6230870Z
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:48:51.6262270Z ^[[1m^[[92m     Running^[[0m tests\c14_r2_replay.rs (target\debug\deps\c14_r2_replay-376dbab33fdc5063.exe)
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:48:51.9888920Z
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:48:51.9889647Z test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.35s
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:48:51.9890342Z
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:48:51.9942447Z ^[[1m^[[92m     Running^[[0m tests\c14_r3_groups.rs (target\debug\deps\c14_r3_groups-48a2c614a70e79a2.exe)
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:48:52.5039193Z
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:48:52.5039947Z test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.49s
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:48:52.5040841Z
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:48:52.5099685Z ^[[1m^[[92m     Running^[[0m tests\c14_r3_history_r1.rs (target\debug\deps\c14_r3_history_r1-570e38fba693ae82.exe)
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:51:29.1727192Z
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:51:29.1727930Z test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 156.64s
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:51:29.1728765Z
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:51:29.2092381Z ^[[1m^[[92m     Running^[[0m tests\c14_r3_history_r3.rs (target\debug\deps\c14_r3_history_r3-0d2c7286f7a79335.exe)
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:54:06.1633808Z
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:54:06.1634432Z test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 156.93s
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:54:06.1635623Z
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:54:06.1979027Z ^[[1m^[[92m     Running^[[0m tests\c14_r3_replay.rs (target\debug\deps\c14_r3_replay-31e42dd57c316fee.exe)
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:54:06.8557272Z
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:54:06.8559987Z test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.64s
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:54:06.8560416Z
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:54:06.8614303Z ^[[1m^[[92m     Running^[[0m tests\c14_r4_closure.rs (target\debug\deps\c14_r4_closure-8c979d1cb34d6e58.exe)
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:54:07.5215809Z
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:54:07.5216621Z test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.64s
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:54:07.5217507Z
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:54:07.5273167Z ^[[1m^[[92m     Running^[[0m tests\c14_r4_expect_rev.rs (target\debug\deps\c14_r4_expect_rev-2e0a957fb862a397.exe)
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:54:08.0168894Z
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:54:08.0171577Z test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.47s
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:54:08.0172312Z
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:54:08.0222679Z ^[[1m^[[92m     Running^[[0m tests\c14_r5_closure.rs (target\debug\deps\c14_r5_closure-73362274f48ca268.exe)
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:54:08.5472874Z
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:54:08.5475136Z test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.50s
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:54:08.5475664Z
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:54:08.5526481Z ^[[1m^[[92m     Running^[[0m tests\c14_tickets.rs (target\debug\deps\c14_tickets-4ef0d68994eeb17e.exe)
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:54:08.8008501Z
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:54:08.8013292Z test result: ok. 1 passed; 0 failed; 1 ignored; 0 measured; 0 filtered out; finished in 0.23s
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:54:08.8013761Z
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:54:08.8048508Z ^[[1m^[[92m     Running^[[0m tests\c21_history.rs (target\debug\deps\c21_history-3ff2bc7e1fff59be.exe)
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:54:08.8263640Z
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:54:08.8264079Z test result: ok. 0 passed; 0 failed; 2 ignored; 0 measured; 0 filtered out; finished in 0.00s
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:54:08.8264539Z
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:54:08.8284490Z ^[[1m^[[92m     Running^[[0m tests\c21_r1_surfaces.rs (target\debug\deps\c21_r1_surfaces-9bd6e709cd736213.exe)
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:54:12.0812711Z
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:54:12.0813083Z test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 3.24s
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:54:12.0813487Z
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:54:12.0887566Z ^[[1m^[[92m     Running^[[0m tests\c21_r2_events.rs (target\debug\deps\c21_r2_events-fdb30fcd353524e0.exe)
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:54:12.8503065Z
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:54:12.8504081Z test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.74s
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:54:12.8504524Z
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:54:12.8551992Z ^[[1m^[[92m     Running^[[0m tests\c21_r3_never_block.rs (target\debug\deps\c21_r3_never_block-1959d8102dd704fe.exe)
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:54:18.6047399Z
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:54:18.6048291Z test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 5.73s
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:54:18.6049164Z
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:54:18.6104860Z ^[[1m^[[92m     Running^[[0m tests\c21_replay.rs (target\debug\deps\c21_replay-aca4622715ca61d7.exe)
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:54:19.4047177Z
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:54:19.4048266Z test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.77s
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:54:19.4048730Z
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:54:19.4108715Z ^[[1m^[[92m     Running^[[0m tests\c21_worked_examples.rs (target\debug\deps\c21_worked_examples-6249149e7e11f902.exe)
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:54:20.9942310Z
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:54:20.9942726Z test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.56s
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:54:20.9943143Z
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:54:20.9996186Z ^[[1m^[[92m     Running^[[0m tests\contracts.rs (target\debug\deps\contracts-23a2ae8c6919bba2.exe)
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:54:21.9450970Z
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:54:21.9451652Z test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.92s
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:54:21.9452326Z
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:54:21.9505807Z ^[[1m^[[92m     Running^[[0m tests\never_block.rs (target\debug\deps\never_block-409a81422a6dcbd1.exe)
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:54:25.7147968Z
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:54:25.7152618Z test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 3.74s
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:54:25.7153391Z
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:54:25.7236827Z ^[[1m^[[92m     Running^[[0m tests\protocol.rs (target\debug\deps\protocol-14c9750f359b1111.exe)
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:54:28.1739192Z
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:54:28.1739971Z test result: ok. 14 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 2.43s
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:54:28.1740666Z
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:54:28.1806176Z ^[[1m^[[92m     Running^[[0m unittests src\lib.rs (target\debug\deps\tt_model-94b372fc752fd943.exe)
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:54:28.4995105Z
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:54:28.4995759Z test result: ok. 43 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.30s
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:54:28.4996401Z
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:54:28.5037741Z ^[[1m^[[92m     Running^[[0m tests\c11_r1_adversarial.rs (target\debug\deps\c11_r1_adversarial-45d71bf7445ca2d8.exe)
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:54:33.8016549Z
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:54:33.8017251Z test result: ok. 39 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 5.29s
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:54:33.8017971Z
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:54:33.8095617Z ^[[1m^[[92m     Running^[[0m tests\c11_r2_adversarial.rs (target\debug\deps\c11_r2_adversarial-244c56228d780a54.exe)
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:54:49.6316947Z
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:54:49.6317303Z test result: ok. 39 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 15.80s
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:54:49.6317661Z
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:54:49.6393175Z ^[[1m^[[92m     Running^[[0m tests\c11_r3_adversarial.rs (target\debug\deps\c11_r3_adversarial-f47dc2e0c7455bd7.exe)
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:54:49.8500056Z
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:54:49.8500434Z test result: ok. 11 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.20s
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:54:49.8500805Z
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:54:49.8547992Z ^[[1m^[[92m     Running^[[0m tests\c11_r3_random.rs (target\debug\deps\c11_r3_random-460a9fdd6537d95b.exe)
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:54:52.8984497Z
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:54:52.8984881Z test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 3.03s
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:54:52.8985641Z
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:54:52.9008376Z ^[[1m^[[92m     Running^[[0m tests\c11_r3_register.rs (target\debug\deps\c11_r3_register-440cab1393633bc9.exe)
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:54:53.5139979Z
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:54:53.5140371Z test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.60s
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:54:53.5140786Z
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:54:53.5187972Z ^[[1m^[[92m     Running^[[0m tests\c11_r4_exposure_bounds.rs (target\debug\deps\c11_r4_exposure_bounds-d9c55b90dae1559a.exe)
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:54:53.5571245Z
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:54:53.5571875Z test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.02s
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:54:53.5572588Z
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:54:53.5591401Z ^[[1m^[[92m     Running^[[0m tests\c11_r5_write_bounds.rs (target\debug\deps\c11_r5_write_bounds-e69c81f83aae3a89.exe)
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:54:53.5717307Z
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:54:53.5717704Z test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:54:53.5718099Z
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:54:53.5734047Z ^[[1m^[[92m     Running^[[0m tests\c11_r6_staged_inverse.rs (target\debug\deps\c11_r6_staged_inverse-14bd8c52b375d472.exe)
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:54:53.7831970Z
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:54:53.7832839Z test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.20s
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:54:53.7833523Z
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:54:53.7879548Z ^[[1m^[[92m     Running^[[0m tests\c12_kernel_support.rs (target\debug\deps\c12_kernel_support-1962b7a7fa17b6d0.exe)
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:54:54.1472222Z
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:54:54.1472639Z test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.34s
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:54:54.1474220Z
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:54:54.1533206Z ^[[1m^[[92m     Running^[[0m tests\conformance.rs (target\debug\deps\conformance-1387bb6a5b70e243.exe)
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:54:54.6862277Z
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:54:54.6865833Z test result: ok. 15 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.51s
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:54:54.6866398Z
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:54:54.6913658Z ^[[1m^[[92m     Running^[[0m tests\properties.rs (target\debug\deps\properties-6f04a557cf58313b.exe)
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:54:55.1816133Z
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:54:55.1817015Z test result: ok. 18 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.48s
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:54:55.1817721Z
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:54:55.1878268Z ^[[1m^[[92m     Running^[[0m tests\staged_commit.rs (target\debug\deps\staged_commit-1c5eadcf8e737752.exe)
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:55:42.1656823Z
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:55:42.1657428Z test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 46.97s
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:55:42.1658958Z
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:55:42.1703474Z ^[[1m^[[92m     Running^[[0m tests\staged_inverse.rs (target\debug\deps\staged_inverse-da14a3c4af83c389.exe)
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:56:12.2295732Z
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:56:12.2296410Z test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 30.05s
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:56:12.2297078Z
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:56:12.2349833Z ^[[1m^[[92m     Running^[[0m unittests src\lib.rs (target\debug\deps\tt_persist-a7a52178180136c8.exe)
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:56:12.3826736Z
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:56:12.3827424Z test result: ok. 19 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.14s
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:56:12.3828104Z
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:56:12.3849838Z ^[[1m^[[92m     Running^[[0m tests\c13_r1_format.rs (target\debug\deps\c13_r1_format-d1d8f1c4eacee525.exe)
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:56:14.3956452Z
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:56:14.3956846Z test result: ok. 8 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 2.00s
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:56:14.3957266Z
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:56:14.4005096Z ^[[1m^[[92m     Running^[[0m tests\c13_r2_format.rs (target\debug\deps\c13_r2_format-ed7af9097240cacb.exe)
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:56:18.2706846Z
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:56:18.2707212Z test result: ok. 7 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 3.85s
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:56:18.2707615Z
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:56:18.2757137Z ^[[1m^[[92m     Running^[[0m tests\c13_r3_format.rs (target\debug\deps\c13_r3_format-cb96c74bf11aa798.exe)
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:56:20.4917502Z
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:56:20.4918053Z test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 2.20s
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:56:20.4918484Z
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:56:20.4963109Z ^[[1m^[[92m     Running^[[0m tests\c13_r4_lock.rs (target\debug\deps\c13_r4_lock-9003d8fa71170983.exe)
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:56:21.6018317Z
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:56:21.6018716Z test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.09s
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:56:21.6019112Z
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:56:21.6038573Z ^[[1m^[[92m     Running^[[0m tests\hostile.rs (target\debug\deps\hostile-9aa3ad322ee9d038.exe)
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:56:25.6592263Z
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:56:25.6592667Z test result: ok. 13 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 4.04s
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:56:25.6593084Z
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:56:25.6642316Z ^[[1m^[[92m     Running^[[0m tests\journal.rs (target\debug\deps\journal-384bebcbce246e06.exe)
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:56:32.4185201Z
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:56:32.4185909Z test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 6.74s
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:56:32.4186975Z
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:56:32.4233190Z ^[[1m^[[92m     Running^[[0m tests\migrations.rs (target\debug\deps\migrations-b0b5ba440dd6cfb5.exe)
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:56:32.4360332Z
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:56:32.4360941Z test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:56:32.4361363Z
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:56:32.4378253Z ^[[1m^[[92m     Running^[[0m tests\round_trip.rs (target\debug\deps\round_trip-45484d0b747785c5.exe)
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:56:33.9957132Z
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:56:33.9957531Z test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.55s
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:56:33.9957921Z
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:56:34.0005461Z ^[[1m^[[92m     Running^[[0m tests\zip64.rs (target\debug\deps\zip64-724730c28d5075e6.exe)
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:56:35.7887482Z
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:56:35.7888122Z test result: ok. 1 passed; 0 failed; 1 ignored; 0 measured; 0 filtered out; finished in 1.78s
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:56:35.7888818Z
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:56:35.7913333Z ^[[1m^[[92m     Running^[[0m unittests src\lib.rs (target\debug\deps\tt_registry-fe1a37e35e31964c.exe)
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:56:35.8035615Z
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:56:35.8035983Z test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:56:35.8036384Z
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:56:35.8052827Z ^[[1m^[[92m     Running^[[0m tests\declared.rs (target\debug\deps\declared-40bd93aa9cab9fe3.exe)
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:56:37.2472598Z
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:56:37.2473001Z test result: ok. 9 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.43s
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:56:37.2473809Z
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:56:37.2518980Z ^[[1m^[[92m     Running^[[0m tests\inventory.rs (target\debug\deps\inventory-284e86b85d90a392.exe)
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:56:37.2812486Z
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:56:37.2812904Z test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:56:37.2813312Z
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:56:37.2831689Z ^[[1m^[[92m     Running^[[0m unittests src\lib.rs (target\debug\deps\tt_registry_macros-76b3092343e3343a.exe)
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:56:37.3119957Z
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:56:37.3124833Z test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:56:37.3125430Z
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:56:37.3144888Z ^[[1m^[[92m     Running^[[0m unittests src\lib.rs (target\debug\deps\tt_render-60164d4135bb8573.exe)
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:56:37.3251615Z
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:56:37.3252259Z test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:56:37.3252954Z
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:56:37.3270598Z ^[[1m^[[92m     Running^[[0m tests\c03_fixed_configurations.rs (target\debug\deps\c03_fixed_configurations-5e244f749b34f71a.exe)
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:56:39.0913489Z
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:56:39.0913860Z test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.75s
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:56:39.0914224Z
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:56:39.0938395Z ^[[1m^[[92m     Running^[[0m tests\c03_r1_stress.rs (target\debug\deps\c03_r1_stress-534807cd635d826a.exe)
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:56:41.2584738Z
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:56:41.2585083Z test result: ok. 2 passed; 0 failed; 1 ignored; 0 measured; 0 filtered out; finished in 2.15s
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:56:41.2585441Z
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:56:41.2608043Z ^[[1m^[[92m     Running^[[0m tests\c03_r2_quality.rs (target\debug\deps\c03_r2_quality-9a406d65c959f8d0.exe)
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:56:42.7082793Z
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:56:42.7083134Z test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.44s
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:56:42.7083517Z
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:56:42.7108254Z ^[[1m^[[92m     Running^[[0m unittests src\lib.rs (target\debug\deps\tt_vector-24dd45fe19c6c68f.exe)
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:56:42.8533141Z
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:56:42.8533605Z test result: ok. 36 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.13s
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:56:42.8534028Z
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:56:42.8556238Z ^[[1m^[[92m     Running^[[0m tests\c21_r1_geometry.rs (target\debug\deps\c21_r1_geometry-9bf48bdbd54deca8.exe)
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:56:42.9961064Z
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:56:42.9968008Z test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 9 filtered out; finished in 0.09s
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:56:42.9970563Z
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:56:42.9971194Z test dense_100k_input_finishes_within_document_watchdog_budget ... ok
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:56:43.2847841Z
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:56:43.2848448Z test result: ok. 9 passed; 0 failed; 1 ignored; 0 measured; 0 filtered out; finished in 0.42s
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:56:43.2849071Z
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:56:43.2873207Z ^[[1m^[[92m     Running^[[0m tests\c21_r2_geometry.rs (target\debug\deps\c21_r2_geometry-3298b96c4cec1279.exe)
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:56:43.4866587Z
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:56:43.4902518Z test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 10 filtered out; finished in 0.17s
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:56:43.4912689Z
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:56:43.5248301Z test alternating_pressure_fitting_respects_watchdog ... ok
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:56:46.4565385Z
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:56:46.4565936Z test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 10 filtered out; finished in 3.14s
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:56:46.4566551Z
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:56:46.4679786Z test many_pressure_knots_brush_respects_watchdog ... ok
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:57:26.7443341Z
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:57:26.7443757Z test result: ok. 9 passed; 0 failed; 2 ignored; 0 measured; 0 filtered out; finished in 43.44s
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:57:26.7444170Z
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:57:26.7468821Z ^[[1m^[[92m     Running^[[0m tests\c21_r3_geometry.rs (target\debug\deps\c21_r3_geometry-b46f70db96b8ad67.exe)
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:57:31.0491631Z
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:57:31.0492324Z test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 7 filtered out; finished in 4.28s
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:57:31.0493011Z
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:57:31.0588499Z test maximum_spine_and_pressure_return_within_watchdog ... ok
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:57:31.0589558Z
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:57:31.0590130Z test result: ok. 6 passed; 0 failed; 2 ignored; 0 measured; 0 filtered out; finished in 4.30s
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:57:31.0590651Z
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:57:31.0608314Z ^[[1m^[[92m     Running^[[0m tests\c21_worst_case.rs (target\debug\deps\c21_worst_case-dd57772b5bf9b37f.exe)
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:57:31.1826884Z
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:57:31.1828169Z test result: ok. 1 passed; 0 failed; 2 ignored; 0 measured; 0 filtered out; finished in 0.11s
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:57:31.1828613Z
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:57:31.1847690Z ^[[1m^[[92m     Running^[[0m tests\properties.rs (target\debug\deps\properties-694c1340ad26d85b.exe)
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:57:33.2425018Z
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:57:33.2425704Z test result: ok. 7 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 2.04s
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:57:33.2426231Z
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:57:33.2452267Z ^[[1m^[[92m   Doc-tests^[[0m tt_anim
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:57:33.3903102Z
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:57:33.3903801Z test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:57:33.3904372Z
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:57:33.3973277Z ^[[1m^[[92m   Doc-tests^[[0m tt_audio
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:57:33.4297889Z
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:57:33.4298520Z test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:57:33.4299148Z
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:57:33.4363982Z ^[[1m^[[92m   Doc-tests^[[0m tt_colour
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:57:33.4696254Z
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:57:33.4696626Z test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:57:33.4696999Z
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:57:33.4766773Z ^[[1m^[[92m   Doc-tests^[[0m tt_desktop
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:57:34.0000516Z
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:57:34.0001241Z test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:57:34.0001982Z
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:57:34.0094333Z ^[[1m^[[92m   Doc-tests^[[0m tt_engine
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:57:34.1543073Z
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:57:34.1543816Z test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:57:34.1544553Z
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:57:34.1629288Z ^[[1m^[[92m   Doc-tests^[[0m tt_executor
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:57:36.0675994Z
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:57:36.0676750Z test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:57:36.0677137Z
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:57:36.0770405Z ^[[1m^[[92m   Doc-tests^[[0m tt_fx
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:57:36.1118594Z
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:57:36.1119321Z test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:57:36.1119708Z
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:57:36.1170603Z ^[[1m^[[92m   Doc-tests^[[0m tt_io
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:57:36.1502176Z
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:57:36.1502991Z test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:57:36.1503712Z
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:57:36.1570988Z ^[[1m^[[92m   Doc-tests^[[0m tt_lipsync
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:57:36.1891837Z
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:57:36.1892277Z test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:57:36.1892662Z
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:57:36.1960258Z ^[[1m^[[92m   Doc-tests^[[0m tt_mcp
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:57:36.3523802Z
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:57:36.3524380Z test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:57:36.3524804Z
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:57:36.3604781Z ^[[1m^[[92m   Doc-tests^[[0m tt_model
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:57:37.5617880Z
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:57:37.5618502Z test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:57:37.5619118Z
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:57:37.5708682Z ^[[1m^[[92m   Doc-tests^[[0m tt_persist
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:57:37.7886010Z
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:57:37.7886605Z test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:57:37.7887248Z
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:57:37.7972964Z ^[[1m^[[92m   Doc-tests^[[0m tt_registry
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:57:37.9749331Z
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:57:37.9749920Z test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:57:37.9750537Z
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:57:37.9840184Z ^[[1m^[[92m   Doc-tests^[[0m tt_registry_macros
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:57:38.0588051Z
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:57:38.0589554Z test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:57:38.0590214Z
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:57:38.0668421Z ^[[1m^[[92m   Doc-tests^[[0m tt_render
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:57:38.1015126Z
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:57:38.1016664Z test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:57:38.1017092Z
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:57:38.1082161Z ^[[1m^[[92m   Doc-tests^[[0m tt_vector
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:57:38.3827858Z
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:57:38.3828452Z test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:57:38.3829030Z
+check (windows-latest)	Desktop host with the M0 diagnostics feature (C0.4 gating) — clippy and tests	﻿2026-10-31T11:57:38.5260978Z ##[group]Run cargo clippy -p tt-desktop --all-targets --locked --features m0-diagnostics -- -D warnings
+check (windows-latest)	Desktop host with the M0 diagnostics feature (C0.4 gating) — clippy and tests	2026-10-31T11:59:16.7279595Z
+check (windows-latest)	Desktop host with the M0 diagnostics feature (C0.4 gating) — clippy and tests	2026-10-31T11:59:16.7280057Z test result: ok. 38 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.82s
+check (windows-latest)	Desktop host with the M0 diagnostics feature (C0.4 gating) — clippy and tests	2026-10-31T11:59:16.7280509Z
+check (windows-latest)	Desktop host with the M0 diagnostics feature (C0.4 gating) — clippy and tests	2026-10-31T11:59:16.7302210Z ^[[1m^[[92m     Running^[[0m unittests src\main.rs (target\debug\deps\toontown-0a64afb3973f0bd9.exe)
+check (windows-latest)	Desktop host with the M0 diagnostics feature (C0.4 gating) — clippy and tests	2026-10-31T11:59:16.7431793Z
+check (windows-latest)	Desktop host with the M0 diagnostics feature (C0.4 gating) — clippy and tests	2026-10-31T11:59:16.7432911Z test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+check (windows-latest)	Desktop host with the M0 diagnostics feature (C0.4 gating) — clippy and tests	2026-10-31T11:59:16.7433300Z
+check (windows-latest)	Desktop host with the M0 diagnostics feature (C0.4 gating) — clippy and tests	2026-10-31T11:59:16.7448554Z ^[[1m^[[92m     Running^[[0m ..\..\tests\adversarial\c03-r2-encoder.rs (target\debug\deps\c03_r2_encoder-b08cb55f4643aca1.exe)
+check (windows-latest)	Desktop host with the M0 diagnostics feature (C0.4 gating) — clippy and tests	2026-10-31T11:59:17.5226575Z
+check (windows-latest)	Desktop host with the M0 diagnostics feature (C0.4 gating) — clippy and tests	2026-10-31T11:59:17.5227136Z test result: ok. 11 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.77s
+check (windows-latest)	Desktop host with the M0 diagnostics feature (C0.4 gating) — clippy and tests	2026-10-31T11:59:17.5227550Z
+check (windows-latest)	Desktop host with the M0 diagnostics feature (C0.4 gating) — clippy and tests	2026-10-31T11:59:17.5246873Z ^[[1m^[[92m   Doc-tests^[[0m tt_desktop
+check (windows-latest)	Desktop host with the M0 diagnostics feature (C0.4 gating) — clippy and tests	2026-10-31T11:59:17.8324929Z
+check (windows-latest)	Desktop host with the M0 diagnostics feature (C0.4 gating) — clippy and tests	2026-10-31T11:59:17.8326243Z test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+check (windows-latest)	Desktop host with the M0 diagnostics feature (C0.4 gating) — clippy and tests	2026-10-31T11:59:17.8326930Z
+check (windows-latest)	Run taiki-e/install-action@v2	﻿2026-10-31T11:59:17.9035405Z ##[group]Run taiki-e/install-action@v2
+raster determinism (macos-latest)	UNKNOWN STEP	2026-10-31T11:18:43.5702910Z ..
+raster determinism (macos-latest)	UNKNOWN STEP	2026-10-31T11:18:43.5786760Z test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.13s
+raster determinism (macos-latest)	UNKNOWN STEP	2026-10-31T11:18:43.5787660Z
+raster determinism (macos-latest)	UNKNOWN STEP	2026-10-31T11:18:54.7526100Z ##[group]Run actions/upload-artifact@v7
+raster determinism (ubuntu-latest)	UNKNOWN STEP	2026-10-31T11:18:24.3376403Z ..
+raster determinism (ubuntu-latest)	UNKNOWN STEP	2026-10-31T11:18:24.3377092Z test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.15s
+raster determinism (ubuntu-latest)	UNKNOWN STEP	2026-10-31T11:18:24.3377697Z
+raster determinism (ubuntu-latest)	UNKNOWN STEP	2026-10-31T11:18:36.8473560Z ##[group]Run actions/upload-artifact@v7
+headless release (macos-latest)	UNKNOWN STEP	2026-10-31T11:28:12.9752730Z
+headless release (macos-latest)	UNKNOWN STEP	2026-10-31T11:28:12.9753020Z test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 288.94s
+headless release (macos-latest)	UNKNOWN STEP	2026-10-31T11:28:12.9753890Z
+headless release (macos-latest)	UNKNOWN STEP	2026-10-31T11:28:14.1729790Z ^[[1m^[[92m   Compiling^[[0m tt-model v0.0.1 (/Users/runner/work/261017-toontown-dev/261017-toontown-dev/crates/model)
+headless release (macos-latest)	UNKNOWN STEP	2026-10-31T11:31:56.5801060Z
+headless release (macos-latest)	UNKNOWN STEP	2026-10-31T11:31:56.5802750Z test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 43.14s
+headless release (macos-latest)	UNKNOWN STEP	2026-10-31T11:31:56.5803470Z
+headless release (macos-latest)	UNKNOWN STEP	2026-10-31T11:31:57.0539380Z ^[[1m^[[92m   Compiling^[[0m tt-model v0.0.1 (/Users/runner/work/261017-toontown-dev/261017-toontown-dev/crates/model)
+headless release (macos-latest)	UNKNOWN STEP	2026-10-31T11:33:56.2184110Z
+headless release (macos-latest)	UNKNOWN STEP	2026-10-31T11:33:56.2184820Z test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 1 filtered out; finished in 45.45s
+headless release (macos-latest)	UNKNOWN STEP	2026-10-31T11:33:56.2185680Z
+headless release (macos-latest)	UNKNOWN STEP	2026-10-31T11:33:56.4981810Z ok   strokes-100k-macos.json (series)

@@ -10,7 +10,8 @@ use tt_registry::{Kind, Scope, Status, declared_sample, declared_schema, owner_o
 
 #[test]
 fn declarations_follow_the_current_spec_columns() {
-    assert!(DECLARED.len() > 600, "{}", DECLARED.len());
+    // A floor against an empty table: the count falls as checkpoints implement declared commands (599 after M2 C2.4).
+    assert!(DECLARED.len() > 500, "{}", DECLARED.len());
     for (i, c) in DECLARED.iter().enumerate() {
         let spec =
             INVENTORY.iter().find(|e| e.id == c.decl.id).unwrap_or_else(|| panic!("{} not in spec A", c.decl.id));

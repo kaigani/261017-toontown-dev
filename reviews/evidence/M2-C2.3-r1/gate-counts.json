@@ -1,0 +1,122 @@
+{
+  "c21-measurements.log": {
+    "summaries": 1,
+    "passed": 1,
+    "failed": 0,
+    "ignored": 0
+  },
+  "c22-worst-case.log": {
+    "summaries": 1,
+    "passed": 1,
+    "failed": 0,
+    "ignored": 0
+  },
+  "ci-all.log": {
+    "summaries": 383,
+    "passed": 2145,
+    "failed": 0,
+    "ignored": 34
+  },
+  "colour-final.log": {
+    "summaries": 1,
+    "passed": 1,
+    "failed": 2,
+    "ignored": 0
+  },
+  "commands.log": {
+    "summaries": 1,
+    "passed": 0,
+    "failed": 6,
+    "ignored": 0
+  },
+  "contracts-final.log": {
+    "summaries": 1,
+    "passed": 2,
+    "failed": 0,
+    "ignored": 0
+  },
+  "contracts.log": {
+    "summaries": 1,
+    "passed": 1,
+    "failed": 1,
+    "ignored": 0
+  },
+  "controls.log": {
+    "summaries": 1,
+    "passed": 3,
+    "failed": 0,
+    "ignored": 0
+  },
+  "executor-baseline.log": {
+    "summaries": 64,
+    "passed": 414,
+    "failed": 0,
+    "ignored": 4
+  },
+  "frontend-schemas.log": {
+    "summaries": 1,
+    "passed": 3,
+    "failed": 0,
+    "ignored": 0
+  },
+  "geometry-complete.log": {
+    "summaries": 1,
+    "passed": 2,
+    "failed": 1,
+    "ignored": 0
+  },
+  "geometry.log": {
+    "summaries": 1,
+    "passed": 2,
+    "failed": 1,
+    "ignored": 0
+  },
+  "mcp.log": {
+    "summaries": 27,
+    "passed": 69,
+    "failed": 0,
+    "ignored": 3
+  },
+  "measurements.log": {
+    "summaries": 1,
+    "passed": 1,
+    "failed": 0,
+    "ignored": 0
+  },
+  "render.log": {
+    "summaries": 6,
+    "passed": 7,
+    "failed": 1,
+    "ignored": 1
+  },
+  "reviewer-complete.log": {
+    "summaries": 4,
+    "passed": 5,
+    "failed": 12,
+    "ignored": 0
+  },
+  "reviewer-final.log": {
+    "summaries": 2,
+    "passed": 2,
+    "failed": 10,
+    "ignored": 0
+  },
+  "texture.log": {
+    "summaries": 1,
+    "passed": 0,
+    "failed": 1,
+    "ignored": 0
+  },
+  "vector.log": {
+    "summaries": 22,
+    "passed": 151,
+    "failed": 0,
+    "ignored": 8
+  },
+  "workspace.log": {
+    "summaries": 189,
+    "passed": 1028,
+    "failed": 13,
+    "ignored": 18
+  }
+}

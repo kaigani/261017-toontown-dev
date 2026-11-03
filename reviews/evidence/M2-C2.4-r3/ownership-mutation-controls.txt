@@ -1,0 +1,9 @@
+{"argv": ["C:\\Python313\\python.exe", "tests/adversarial/c24-r3-audit.py", "Ownership", "-v"], "cwd": "C:\\Users\\kaiga\\work\\review\\m2-c24-r3", "env": {}, "startedAt": "2026-11-03T01:02:03.554563+00:00"}
+test_every_original_route_test_function_is_byte_identical (__main__.Ownership.test_every_original_route_test_function_is_byte_identical) ... ok
+test_live_checker_and_file_owned_inventory (__main__.Ownership.test_live_checker_and_file_owned_inventory) ... ok
+test_live_checker_rejects_unruled_mutations_without_prefix_ownership (__main__.Ownership.test_live_checker_rejects_unruled_mutations_without_prefix_ownership) ... ok
+
+----------------------------------------------------------------------
+Ran 3 tests in 0.885s
+
+OK

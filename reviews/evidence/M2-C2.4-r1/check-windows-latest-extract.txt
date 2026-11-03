@@ -1,0 +1,252 @@
+check (windows-latest)	Run cargo test --workspace --locked	2026-11-02T12:21:46.5463364Z test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+check (windows-latest)	Run cargo test --workspace --locked	2026-11-02T12:21:46.5617866Z test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+check (windows-latest)	Run cargo test --workspace --locked	2026-11-02T12:21:46.5778321Z test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+check (windows-latest)	Run cargo test --workspace --locked	2026-11-02T12:21:47.4294543Z test result: ok. 38 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.84s
+check (windows-latest)	Run cargo test --workspace --locked	2026-11-02T12:21:47.4504801Z test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+check (windows-latest)	Run cargo test --workspace --locked	2026-11-02T12:21:48.2809243Z test result: ok. 11 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.82s
+check (windows-latest)	Run cargo test --workspace --locked	2026-11-02T12:21:48.5637136Z test result: ok. 19 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.26s
+check (windows-latest)	Run cargo test --workspace --locked	2026-11-02T12:21:48.6013098Z test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+check (windows-latest)	Run cargo test --workspace --locked	2026-11-02T12:21:48.6225312Z test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+check (windows-latest)	Run cargo test --workspace --locked	2026-11-02T12:21:48.6400118Z test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+check (windows-latest)	Run cargo test --workspace --locked	2026-11-02T12:21:48.8724145Z test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.21s
+check (windows-latest)	Run cargo test --workspace --locked	2026-11-02T12:21:48.8973735Z test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+check (windows-latest)	Run cargo test --workspace --locked	2026-11-02T12:21:50.6624692Z test result: ok. 7 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.74s
+check (windows-latest)	Run cargo test --workspace --locked	2026-11-02T12:21:52.1409267Z test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.45s
+check (windows-latest)	Run cargo test --workspace --locked	2026-11-02T12:21:52.5707963Z test result: ok. 16 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.41s
+check (windows-latest)	Run cargo test --workspace --locked	2026-11-02T12:21:53.6767051Z test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.08s
+check (windows-latest)	Run cargo test --workspace --locked	2026-11-02T12:22:20.8625905Z test result: ok. 7 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 27.16s
+check (windows-latest)	Run cargo test --workspace --locked	2026-11-02T12:22:21.7488896Z test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.86s
+check (windows-latest)	Run cargo test --workspace --locked	2026-11-02T12:22:21.9934486Z test result: ok. 11 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.23s
+check (windows-latest)	Run cargo test --workspace --locked	2026-11-02T12:22:46.1927237Z test result: ok. 36 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 24.17s
+check (windows-latest)	Run cargo test --workspace --locked	2026-11-02T12:23:41.4754572Z test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 55.26s
+check (windows-latest)	Run cargo test --workspace --locked	2026-11-02T12:24:08.7636618Z test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 27.27s
+check (windows-latest)	Run cargo test --workspace --locked	2026-11-02T12:24:30.9238476Z test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 1 filtered out; finished in 22.12s
+check (windows-latest)	Run cargo test --workspace --locked	2026-11-02T12:24:34.2900536Z test result: ok. 40 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 3.33s
+check (windows-latest)	Run cargo test --workspace --locked	2026-11-02T12:24:34.4615330Z test result: ok. 7 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.14s
+check (windows-latest)	Run cargo test --workspace --locked	2026-11-02T12:25:06.3600820Z test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 31.87s
+check (windows-latest)	Run cargo test --workspace --locked	2026-11-02T12:25:08.0444416Z test result: ok. 15 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.64s
+check (windows-latest)	Run cargo test --workspace --locked	2026-11-02T12:25:08.2854161Z test result: ok. 12 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.21s
+check (windows-latest)	Run cargo test --workspace --locked	2026-11-02T12:25:31.1749075Z test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 1 filtered out; finished in 22.86s
+check (windows-latest)	Run cargo test --workspace --locked	2026-11-02T12:25:31.4647531Z test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.26s
+check (windows-latest)	Run cargo test --workspace --locked	2026-11-02T12:25:31.6991779Z test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.21s
+check (windows-latest)	Run cargo test --workspace --locked	2026-11-02T12:25:32.6117059Z test result: ok. 14 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.89s
+check (windows-latest)	Run cargo test --workspace --locked	2026-11-02T12:25:36.4852767Z test result: ok. 9 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 3.84s
+check (windows-latest)	Run cargo test --workspace --locked	2026-11-02T12:25:42.9587196Z test result: ok. 13 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 6.45s
+check (windows-latest)	Run cargo test --workspace --locked	2026-11-02T12:25:45.8051669Z test result: ok. 18 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 2.82s
+check (windows-latest)	Run cargo test --workspace --locked	2026-11-02T12:25:51.1170240Z test result: ok. 14 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 5.28s
+check (windows-latest)	Run cargo test --workspace --locked	2026-11-02T12:25:51.1454003Z test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 1 filtered out; finished in 0.00s
+check (windows-latest)	Run cargo test --workspace --locked	2026-11-02T12:25:51.1690348Z test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 1 filtered out; finished in 0.00s
+check (windows-latest)	Run cargo test --workspace --locked	2026-11-02T12:25:56.0612772Z test result: ok. 10 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 4.87s
+check (windows-latest)	Run cargo test --workspace --locked	2026-11-02T12:25:56.4435067Z test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.35s
+check (windows-latest)	Run cargo test --workspace --locked	2026-11-02T12:26:13.7097041Z test result: ok. 9 passed; 0 failed; 1 ignored; 0 measured; 0 filtered out; finished in 17.24s
+check (windows-latest)	Run cargo test --workspace --locked	2026-11-02T12:26:36.5870933Z test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 22.85s
+check (windows-latest)	Run cargo test --workspace --locked	2026-11-02T12:26:41.8141871Z test result: ok. 7 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 5.20s
+check (windows-latest)	Run cargo test --workspace --locked	2026-11-02T12:26:42.3523822Z test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.51s
+check (windows-latest)	Run cargo test --workspace --locked	2026-11-02T12:26:42.6511179Z test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.27s
+check (windows-latest)	Run cargo test --workspace --locked	2026-11-02T12:26:43.3455465Z test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.67s
+check (windows-latest)	Run cargo test --workspace --locked	2026-11-02T12:26:43.7705409Z test result: ok. 11 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.40s
+check (windows-latest)	Run cargo test --workspace --locked	2026-11-02T12:26:53.2807252Z test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 9.48s
+check (windows-latest)	Run cargo test --workspace --locked	2026-11-02T12:26:53.3103265Z test result: ok. 0 passed; 0 failed; 1 ignored; 0 measured; 0 filtered out; finished in 0.00s
+check (windows-latest)	Run cargo test --workspace --locked	2026-11-02T12:26:56.1871838Z test result: ok. 7 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 2.86s
+check (windows-latest)	Run cargo test --workspace --locked	2026-11-02T12:27:28.6568826Z test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 32.44s
+check (windows-latest)	Run cargo test --workspace --locked	2026-11-02T12:27:28.8547206Z test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.17s
+check (windows-latest)	Run cargo test --workspace --locked	2026-11-02T12:28:03.6009608Z test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 34.72s
+check (windows-latest)	Run cargo test --workspace --locked	2026-11-02T12:28:04.1891588Z test result: ok. 8 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.56s
+check (windows-latest)	Run cargo test --workspace --locked	2026-11-02T12:28:10.5244958Z test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 6 filtered out; finished in 6.29s
+check (windows-latest)	Run cargo test --workspace --locked	2026-11-02T12:28:12.6810300Z test result: ok. 6 passed; 0 failed; 1 ignored; 0 measured; 0 filtered out; finished in 8.46s
+check (windows-latest)	Run cargo test --workspace --locked	2026-11-02T12:28:17.3424064Z test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 4.63s
+check (windows-latest)	Run cargo test --workspace --locked	2026-11-02T12:28:19.3466664Z test result: ok. 11 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.98s
+check (windows-latest)	Run cargo test --workspace --locked	2026-11-02T12:28:20.1798714Z test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.81s
+check (windows-latest)	Run cargo test --workspace --locked	2026-11-02T12:28:20.5259407Z test result: ok. 8 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.33s
+check (windows-latest)	Run cargo test --workspace --locked	2026-11-02T12:28:21.3380903Z test result: ok. 12 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.78s
+check (windows-latest)	Run cargo test --workspace --locked	2026-11-02T12:29:07.5629918Z test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 46.18s
+check (windows-latest)	Run cargo test --workspace --locked	2026-11-02T12:29:08.0711408Z test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.48s
+check (windows-latest)	Run cargo test --workspace --locked	2026-11-02T12:29:08.4049746Z test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.31s
+check (windows-latest)	Run cargo test --workspace --locked	2026-11-02T12:29:09.8723556Z test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.44s
+check (windows-latest)	Run cargo test --workspace --locked	2026-11-02T12:29:10.2597985Z test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.36s
+check (windows-latest)	Run cargo test --workspace --locked	2026-11-02T12:29:14.6032755Z test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 4.32s
+check (windows-latest)	Run cargo test --workspace --locked	2026-11-02T12:29:14.9459711Z test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.32s
+check (windows-latest)	Run cargo test --workspace --locked	2026-11-02T12:29:15.5098563Z test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.52s
+check (windows-latest)	Run cargo test --workspace --locked	2026-11-02T12:29:15.5406093Z test result: ok. 0 passed; 0 failed; 1 ignored; 0 measured; 0 filtered out; finished in 0.00s
+check (windows-latest)	Run cargo test --workspace --locked	2026-11-02T12:29:15.8600110Z test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.30s
+check (windows-latest)	Run cargo test --workspace --locked	2026-11-02T12:29:16.2454132Z test result: ok. 10 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.36s
+check (windows-latest)	Run cargo test --workspace --locked	2026-11-02T12:29:17.2563009Z test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.98s
+check (windows-latest)	Run cargo test --workspace --locked	2026-11-02T12:29:17.6522086Z test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.37s
+check (windows-latest)	Run cargo test --workspace --locked	2026-11-02T12:29:17.6791855Z test result: ok. 0 passed; 0 failed; 1 ignored; 0 measured; 0 filtered out; finished in 0.00s
+check (windows-latest)	Run cargo test --workspace --locked	2026-11-02T12:29:18.1982017Z test result: ok. 15 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.50s
+check (windows-latest)	Run cargo test --workspace --locked	2026-11-02T12:29:21.2463726Z test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 3.02s
+check (windows-latest)	Run cargo test --workspace --locked	2026-11-02T12:29:23.8210085Z test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 2.55s
+check (windows-latest)	Run cargo test --workspace --locked	2026-11-02T12:29:30.0913216Z test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 6.25s
+check (windows-latest)	Run cargo test --workspace --locked	2026-11-02T12:29:33.2757602Z test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 3.16s
+check (windows-latest)	Run cargo test --workspace --locked	2026-11-02T12:29:33.6240401Z test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.32s
+check (windows-latest)	Run cargo test --workspace --locked	2026-11-02T12:29:33.6517337Z test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+check (windows-latest)	Run cargo test --workspace --locked	2026-11-02T12:29:36.3204833Z test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 2.65s
+check (windows-latest)	Run cargo test --workspace --locked	2026-11-02T12:29:36.9739194Z test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.63s
+check (windows-latest)	Run cargo test --workspace --locked	2026-11-02T12:29:37.3150425Z test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.32s
+check (windows-latest)	Run cargo test --workspace --locked	2026-11-02T12:29:40.1736758Z test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 2.83s
+check (windows-latest)	Run cargo test --workspace --locked	2026-11-02T12:29:40.6838365Z test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.48s
+check (windows-latest)	Run cargo test --workspace --locked	2026-11-02T12:29:43.5181254Z test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 2.81s
+check (windows-latest)	Run cargo test --workspace --locked	2026-11-02T12:29:44.0459196Z test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.50s
+check (windows-latest)	Run cargo test --workspace --locked	2026-11-02T12:29:44.4295841Z test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.36s
+check (windows-latest)	Run cargo test --workspace --locked	2026-11-02T12:29:54.2860081Z test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 9.83s
+check (windows-latest)	Run cargo test --workspace --locked	2026-11-02T12:29:54.6377541Z test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.32s
+check (windows-latest)	Run cargo test --workspace --locked	2026-11-02T12:29:55.2396994Z test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.57s
+check (windows-latest)	Run cargo test --workspace --locked	2026-11-02T12:29:55.6381548Z test result: ok. 9 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.37s
+check (windows-latest)	Run cargo test --workspace --locked	2026-11-02T12:29:57.3707162Z test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.71s
+check (windows-latest)	Run cargo test --workspace --locked	2026-11-02T12:29:57.3771764Z ^[[1m^[[92m     Running^[[0m tests\c24_aggregate.rs (target\debug\deps\c24_aggregate-a348918a1fbf4fa6.exe)
+check (windows-latest)	Run cargo test --workspace --locked	2026-11-02T12:29:57.6639117Z test result: ok. 1 passed; 0 failed; 1 ignored; 0 measured; 0 filtered out; finished in 0.27s
+check (windows-latest)	Run cargo test --workspace --locked	2026-11-02T12:29:57.6698934Z ^[[1m^[[92m     Running^[[0m tests\c24_budgets.rs (target\debug\deps\c24_budgets-443404f9e87aa251.exe)
+check (windows-latest)	Run cargo test --workspace --locked	2026-11-02T12:29:57.6879411Z test result: ok. 0 passed; 0 failed; 1 ignored; 0 measured; 0 filtered out; finished in 0.00s
+check (windows-latest)	Run cargo test --workspace --locked	2026-11-02T12:29:57.6897774Z ^[[1m^[[92m     Running^[[0m tests\c24_centre_line.rs (target\debug\deps\c24_centre_line-b6af3548b60f1131.exe)
+check (windows-latest)	Run cargo test --workspace --locked	2026-11-02T12:30:03.8615339Z test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 6.15s
+check (windows-latest)	Run cargo test --workspace --locked	2026-11-02T12:30:03.8700237Z ^[[1m^[[92m     Running^[[0m tests\c24_contracts.rs (target\debug\deps\c24_contracts-c2f4d8a3fc277e63.exe)
+check (windows-latest)	Run cargo test --workspace --locked	2026-11-02T12:30:05.2456594Z test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.36s
+check (windows-latest)	Run cargo test --workspace --locked	2026-11-02T12:30:05.2530644Z ^[[1m^[[92m     Running^[[0m tests\c24_measure.rs (target\debug\deps\c24_measure-599ab2675d77fb36.exe)
+check (windows-latest)	Run cargo test --workspace --locked	2026-11-02T12:30:05.2640247Z test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+check (windows-latest)	Run cargo test --workspace --locked	2026-11-02T12:30:05.2658167Z ^[[1m^[[92m     Running^[[0m tests\c24_symmetry.rs (target\debug\deps\c24_symmetry-27401de4b1f6b702.exe)
+check (windows-latest)	Run cargo test --workspace --locked	2026-11-02T12:30:06.4727545Z test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.19s
+check (windows-latest)	Run cargo test --workspace --locked	2026-11-02T12:30:06.4796891Z ^[[1m^[[92m     Running^[[0m tests\c24_text_layout.rs (target\debug\deps\c24_text_layout-f7682a848d18b838.exe)
+check (windows-latest)	Run cargo test --workspace --locked	2026-11-02T12:30:06.8670212Z test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.37s
+check (windows-latest)	Run cargo test --workspace --locked	2026-11-02T12:30:06.8732685Z ^[[1m^[[92m     Running^[[0m tests\c24_topology.rs (target\debug\deps\c24_topology-b333f72113448549.exe)
+check (windows-latest)	Run cargo test --workspace --locked	2026-11-02T12:30:07.9619494Z test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.07s
+check (windows-latest)	Run cargo test --workspace --locked	2026-11-02T12:30:07.9705034Z ^[[1m^[[92m     Running^[[0m tests\c24_vectorize.rs (target\debug\deps\c24_vectorize-14b621110055ae2c.exe)
+check (windows-latest)	Run cargo test --workspace --locked	2026-11-02T12:30:09.7374618Z test result: ok. 11 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.75s
+check (windows-latest)	Run cargo test --workspace --locked	2026-11-02T12:32:40.1062513Z test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 150.34s
+check (windows-latest)	Run cargo test --workspace --locked	2026-11-02T12:32:40.1242965Z test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+check (windows-latest)	Run cargo test --workspace --locked	2026-11-02T12:32:40.4160144Z test result: ok. 8 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.27s
+check (windows-latest)	Run cargo test --workspace --locked	2026-11-02T12:32:47.2322865Z test result: ok. 7 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 6.79s
+check (windows-latest)	Run cargo test --workspace --locked	2026-11-02T12:32:51.2178481Z test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 3.97s
+check (windows-latest)	Run cargo test --workspace --locked	2026-11-02T12:33:07.2262622Z test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 15.99s
+check (windows-latest)	Run cargo test --workspace --locked	2026-11-02T12:33:11.4789013Z test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 4.24s
+check (windows-latest)	Run cargo test --workspace --locked	2026-11-02T12:33:51.7335626Z test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 40.24s
+check (windows-latest)	Run cargo test --workspace --locked	2026-11-02T12:33:51.9137910Z test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.16s
+check (windows-latest)	Run cargo test --workspace --locked	2026-11-02T12:33:53.4898629Z test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.56s
+check (windows-latest)	Run cargo test --workspace --locked	2026-11-02T12:33:54.0578951Z test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.55s
+check (windows-latest)	Run cargo test --workspace --locked	2026-11-02T12:33:54.0734440Z test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+check (windows-latest)	Run cargo test --workspace --locked	2026-11-02T12:33:54.0750352Z ^[[1m^[[92m     Running^[[0m tests\c24_decode_fuzz.rs (target\debug\deps\c24_decode_fuzz-6177f0aed92d665a.exe)
+check (windows-latest)	Run cargo test --workspace --locked	2026-11-02T12:33:54.1415269Z test result: ok. 2 passed; 0 failed; 1 ignored; 0 measured; 0 filtered out; finished in 0.05s
+check (windows-latest)	Run cargo test --workspace --locked	2026-11-02T12:33:54.1437466Z ^[[1m^[[92m     Running^[[0m tests\c24_image.rs (target\debug\deps\c24_image-41c4d823e8a9d87d.exe)
+check (windows-latest)	Run cargo test --workspace --locked	2026-11-02T12:33:54.1645207Z test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+check (windows-latest)	Run cargo test --workspace --locked	2026-11-02T12:33:54.1799264Z test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+check (windows-latest)	Run cargo test --workspace --locked	2026-11-02T12:33:54.2277825Z test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.03s
+check (windows-latest)	Run cargo test --workspace --locked	2026-11-02T12:33:55.7949114Z test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.55s
+check (windows-latest)	Run cargo test --workspace --locked	2026-11-02T12:34:00.7598528Z test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 4.94s
+check (windows-latest)	Run cargo test --workspace --locked	2026-11-02T12:34:00.9026262Z test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.12s
+check (windows-latest)	Run cargo test --workspace --locked	2026-11-02T12:34:01.2809953Z test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.36s
+check (windows-latest)	Run cargo test --workspace --locked	2026-11-02T12:34:01.6283322Z test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.32s
+check (windows-latest)	Run cargo test --workspace --locked	2026-11-02T12:34:01.6566200Z test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 1 filtered out; finished in 0.00s
+check (windows-latest)	Run cargo test --workspace --locked	2026-11-02T12:34:01.6850331Z test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 1 filtered out; finished in 0.00s
+check (windows-latest)	Run cargo test --workspace --locked	2026-11-02T12:34:02.1805670Z test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.46s
+check (windows-latest)	Run cargo test --workspace --locked	2026-11-02T12:34:02.5619581Z test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.36s
+check (windows-latest)	Run cargo test --workspace --locked	2026-11-02T12:34:02.7789054Z test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.20s
+check (windows-latest)	Run cargo test --workspace --locked	2026-11-02T12:34:03.1241563Z test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.32s
+check (windows-latest)	Run cargo test --workspace --locked	2026-11-02T12:34:03.3343102Z test result: ok. 1 passed; 0 failed; 1 ignored; 0 measured; 0 filtered out; finished in 0.19s
+check (windows-latest)	Run cargo test --workspace --locked	2026-11-02T12:34:03.3585530Z test result: ok. 0 passed; 0 failed; 2 ignored; 0 measured; 0 filtered out; finished in 0.00s
+check (windows-latest)	Run cargo test --workspace --locked	2026-11-02T12:34:06.3092343Z test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 2.93s
+check (windows-latest)	Run cargo test --workspace --locked	2026-11-02T12:34:06.9422645Z test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.60s
+check (windows-latest)	Run cargo test --workspace --locked	2026-11-02T12:34:09.3462527Z test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 2.38s
+check (windows-latest)	Run cargo test --workspace --locked	2026-11-02T12:34:09.8028516Z test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.43s
+check (windows-latest)	Run cargo test --workspace --locked	2026-11-02T12:34:10.9311056Z test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.10s
+check (windows-latest)	Run cargo test --workspace --locked	2026-11-02T12:34:11.2801097Z test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.32s
+check (windows-latest)	Run cargo test --workspace --locked	2026-11-02T12:34:11.7060292Z test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.40s
+check (windows-latest)	Run cargo test --workspace --locked	2026-11-02T12:34:12.2780931Z test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.55s
+check (windows-latest)	Run cargo test --workspace --locked	2026-11-02T12:34:12.7825037Z test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.48s
+check (windows-latest)	Run cargo test --workspace --locked	2026-11-02T12:34:14.1864937Z test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.38s
+check (windows-latest)	Run cargo test --workspace --locked	2026-11-02T12:34:15.9922005Z test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.78s
+check (windows-latest)	Run cargo test --workspace --locked	2026-11-02T12:34:17.8126873Z test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.80s
+check (windows-latest)	Run cargo test --workspace --locked	2026-11-02T12:34:23.9873715Z test result: ok. 14 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 6.15s
+check (windows-latest)	Run cargo test --workspace --locked	2026-11-02T12:34:24.1578769Z test result: ok. 43 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.15s
+check (windows-latest)	Run cargo test --workspace --locked	2026-11-02T12:34:26.0737436Z test result: ok. 39 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.89s
+check (windows-latest)	Run cargo test --workspace --locked	2026-11-02T12:34:28.7775479Z test result: ok. 39 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 2.68s
+check (windows-latest)	Run cargo test --workspace --locked	2026-11-02T12:34:28.9482793Z test result: ok. 11 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.15s
+check (windows-latest)	Run cargo test --workspace --locked	2026-11-02T12:34:29.8830229Z test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.91s
+check (windows-latest)	Run cargo test --workspace --locked	2026-11-02T12:34:30.1538411Z test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.25s
+check (windows-latest)	Run cargo test --workspace --locked	2026-11-02T12:34:30.1855966Z test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+check (windows-latest)	Run cargo test --workspace --locked	2026-11-02T12:34:30.2047878Z test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+check (windows-latest)	Run cargo test --workspace --locked	2026-11-02T12:34:30.3663829Z test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.14s
+check (windows-latest)	Run cargo test --workspace --locked	2026-11-02T12:34:30.5525598Z test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.16s
+check (windows-latest)	Run cargo test --workspace --locked	2026-11-02T12:34:30.7705932Z test result: ok. 15 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.20s
+check (windows-latest)	Run cargo test --workspace --locked	2026-11-02T12:34:30.9907159Z test result: ok. 18 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.20s
+check (windows-latest)	Run cargo test --workspace --locked	2026-11-02T12:34:41.2934171Z test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 10.29s
+check (windows-latest)	Run cargo test --workspace --locked	2026-11-02T12:34:48.6257419Z test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 7.31s
+check (windows-latest)	Run cargo test --workspace --locked	2026-11-02T12:34:48.7865729Z test result: ok. 19 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.14s
+check (windows-latest)	Run cargo test --workspace --locked	2026-11-02T12:34:50.4693370Z test result: ok. 8 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.66s
+check (windows-latest)	Run cargo test --workspace --locked	2026-11-02T12:34:53.4717936Z test result: ok. 7 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 2.98s
+check (windows-latest)	Run cargo test --workspace --locked	2026-11-02T12:34:55.7013127Z test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 2.21s
+check (windows-latest)	Run cargo test --workspace --locked	2026-11-02T12:34:56.8025896Z test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.08s
+check (windows-latest)	Run cargo test --workspace --locked	2026-11-02T12:34:59.6304318Z test result: ok. 13 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 2.81s
+check (windows-latest)	Run cargo test --workspace --locked	2026-11-02T12:35:03.9779035Z test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 4.32s
+check (windows-latest)	Run cargo test --workspace --locked	2026-11-02T12:35:04.0015759Z test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+check (windows-latest)	Run cargo test --workspace --locked	2026-11-02T12:35:05.2371568Z test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.22s
+check (windows-latest)	Run cargo test --workspace --locked	2026-11-02T12:35:06.7602096Z test result: ok. 1 passed; 0 failed; 1 ignored; 0 measured; 0 filtered out; finished in 1.50s
+check (windows-latest)	Run cargo test --workspace --locked	2026-11-02T12:35:06.7846203Z test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+check (windows-latest)	Run cargo test --workspace --locked	2026-11-02T12:35:07.2598600Z test result: ok. 9 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.46s
+check (windows-latest)	Run cargo test --workspace --locked	2026-11-02T12:35:07.2972274Z test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+check (windows-latest)	Run cargo test --workspace --locked	2026-11-02T12:35:07.3249626Z test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+check (windows-latest)	Run cargo test --workspace --locked	2026-11-02T12:35:07.3493316Z test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+check (windows-latest)	Run cargo test --workspace --locked	2026-11-02T12:35:09.3139060Z test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.95s
+check (windows-latest)	Run cargo test --workspace --locked	2026-11-02T12:35:11.7023103Z test result: ok. 2 passed; 0 failed; 1 ignored; 0 measured; 0 filtered out; finished in 2.37s
+check (windows-latest)	Run cargo test --workspace --locked	2026-11-02T12:35:13.3749710Z test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.65s
+check (windows-latest)	Run cargo test --workspace --locked	2026-11-02T12:35:13.3983519Z test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+check (windows-latest)	Run cargo test --workspace --locked	2026-11-02T12:35:13.4220483Z test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+check (windows-latest)	Run cargo test --workspace --locked	2026-11-02T12:35:13.4425327Z test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+check (windows-latest)	Run cargo test --workspace --locked	2026-11-02T12:35:13.5333045Z test result: ok. 71 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.07s
+check (windows-latest)	Run cargo test --workspace --locked	2026-11-02T12:35:13.6304196Z test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 9 filtered out; finished in 0.06s
+check (windows-latest)	Run cargo test --workspace --locked	2026-11-02T12:35:13.8784415Z test result: ok. 9 passed; 0 failed; 1 ignored; 0 measured; 0 filtered out; finished in 0.33s
+check (windows-latest)	Run cargo test --workspace --locked	2026-11-02T12:35:13.9960856Z test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 10 filtered out; finished in 0.08s
+check (windows-latest)	Run cargo test --workspace --locked	2026-11-02T12:35:16.3643950Z test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 10 filtered out; finished in 2.45s
+check (windows-latest)	Run cargo test --workspace --locked	2026-11-02T12:35:57.1081230Z test result: ok. 9 passed; 0 failed; 2 ignored; 0 measured; 0 filtered out; finished in 43.21s
+check (windows-latest)	Run cargo test --workspace --locked	2026-11-02T12:36:00.2577635Z test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 7 filtered out; finished in 3.13s
+check (windows-latest)	Run cargo test --workspace --locked	2026-11-02T12:36:00.2738567Z test result: ok. 6 passed; 0 failed; 2 ignored; 0 measured; 0 filtered out; finished in 3.15s
+check (windows-latest)	Run cargo test --workspace --locked	2026-11-02T12:36:00.2950653Z test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+check (windows-latest)	Run cargo test --workspace --locked	2026-11-02T12:36:00.3811143Z test result: ok. 1 passed; 0 failed; 2 ignored; 0 measured; 0 filtered out; finished in 0.07s
+check (windows-latest)	Run cargo test --workspace --locked	2026-11-02T12:36:01.0854908Z test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.69s
+check (windows-latest)	Run cargo test --workspace --locked	2026-11-02T12:36:01.3195044Z test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.22s
+check (windows-latest)	Run cargo test --workspace --locked	2026-11-02T12:36:01.8258745Z test result: ok. 11 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.49s
+check (windows-latest)	Run cargo test --workspace --locked	2026-11-02T12:36:04.1651901Z test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 2.32s
+check (windows-latest)	Run cargo test --workspace --locked	2026-11-02T12:36:04.1913034Z test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+check (windows-latest)	Run cargo test --workspace --locked	2026-11-02T12:36:04.2166758Z test result: ok. 9 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+check (windows-latest)	Run cargo test --workspace --locked	2026-11-02T12:36:04.2603311Z test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.03s
+check (windows-latest)	Run cargo test --workspace --locked	2026-11-02T12:36:04.2798354Z test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+check (windows-latest)	Run cargo test --workspace --locked	2026-11-02T12:36:04.3035619Z test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+check (windows-latest)	Run cargo test --workspace --locked	2026-11-02T12:36:04.3226074Z test result: ok. 0 passed; 0 failed; 1 ignored; 0 measured; 0 filtered out; finished in 0.00s
+check (windows-latest)	Run cargo test --workspace --locked	2026-11-02T12:36:04.3402165Z test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+check (windows-latest)	Run cargo test --workspace --locked	2026-11-02T12:36:04.3812615Z test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.02s
+check (windows-latest)	Run cargo test --workspace --locked	2026-11-02T12:36:04.3989069Z test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+check (windows-latest)	Run cargo test --workspace --locked	2026-11-02T12:36:12.9216105Z test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 8.50s
+check (windows-latest)	Run cargo test --workspace --locked	2026-11-02T12:36:12.9239952Z ^[[1m^[[92m     Running^[[0m tests\c24_centre.rs (target\debug\deps\c24_centre-f45043e3e1592aa2.exe)
+check (windows-latest)	Run cargo test --workspace --locked	2026-11-02T12:36:12.9518059Z test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+check (windows-latest)	Run cargo test --workspace --locked	2026-11-02T12:36:12.9540508Z ^[[1m^[[92m     Running^[[0m tests\c24_flatten_phases.rs (target\debug\deps\c24_flatten_phases-6fcc8184e2015539.exe)
+check (windows-latest)	Run cargo test --workspace --locked	2026-11-02T12:36:12.9697412Z test result: ok. 0 passed; 0 failed; 1 ignored; 0 measured; 0 filtered out; finished in 0.00s
+check (windows-latest)	Run cargo test --workspace --locked	2026-11-02T12:36:12.9714442Z ^[[1m^[[92m     Running^[[0m tests\c24_properties.rs (target\debug\deps\c24_properties-7802852fe8846e68.exe)
+check (windows-latest)	Run cargo test --workspace --locked	2026-11-02T12:36:15.4603122Z test result: ok. 8 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 2.47s
+check (windows-latest)	Run cargo test --workspace --locked	2026-11-02T12:36:15.4632221Z ^[[1m^[[92m     Running^[[0m tests\c24_trace.rs (target\debug\deps\c24_trace-d94e46497f7034bb.exe)
+check (windows-latest)	Run cargo test --workspace --locked	2026-11-02T12:36:15.5327689Z test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.05s
+check (windows-latest)	Run cargo test --workspace --locked	2026-11-02T12:36:15.5350063Z ^[[1m^[[92m     Running^[[0m tests\c24_vectorize_unit.rs (target\debug\deps\c24_vectorize_unit-de2958af0a5dbd53.exe)
+check (windows-latest)	Run cargo test --workspace --locked	2026-11-02T12:36:15.5514584Z test result: ok. 7 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+check (windows-latest)	Run cargo test --workspace --locked	2026-11-02T12:36:17.3774992Z test result: ok. 7 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.81s
+check (windows-latest)	Run cargo test --workspace --locked	2026-11-02T12:36:17.4783260Z test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+check (windows-latest)	Run cargo test --workspace --locked	2026-11-02T12:36:17.5263703Z test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+check (windows-latest)	Run cargo test --workspace --locked	2026-11-02T12:36:17.5698429Z test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+check (windows-latest)	Run cargo test --workspace --locked	2026-11-02T12:36:18.0095922Z test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+check (windows-latest)	Run cargo test --workspace --locked	2026-11-02T12:36:18.1928648Z test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+check (windows-latest)	Run cargo test --workspace --locked	2026-11-02T12:36:21.4870271Z test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+check (windows-latest)	Run cargo test --workspace --locked	2026-11-02T12:36:21.5347967Z test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+check (windows-latest)	Run cargo test --workspace --locked	2026-11-02T12:36:21.6046514Z test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+check (windows-latest)	Run cargo test --workspace --locked	2026-11-02T12:36:21.6493843Z test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+check (windows-latest)	Run cargo test --workspace --locked	2026-11-02T12:36:21.8263521Z test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+check (windows-latest)	Run cargo test --workspace --locked	2026-11-02T12:36:23.2240623Z test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+check (windows-latest)	Run cargo test --workspace --locked	2026-11-02T12:36:23.5002455Z test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+check (windows-latest)	Run cargo test --workspace --locked	2026-11-02T12:36:23.6967275Z test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+check (windows-latest)	Run cargo test --workspace --locked	2026-11-02T12:36:23.7819208Z test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+check (windows-latest)	Run cargo test --workspace --locked	2026-11-02T12:36:23.8670428Z test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+check (windows-latest)	Run cargo test --workspace --locked	2026-11-02T12:36:24.3314404Z test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+check (windows-latest)	Desktop host with the M0 diagnostics feature (C0.4 gating) — clippy and tests	2026-11-02T12:39:40.6603653Z test result: ok. 38 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.72s
+check (windows-latest)	Desktop host with the M0 diagnostics feature (C0.4 gating) — clippy and tests	2026-11-02T12:39:40.6765570Z test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+check (windows-latest)	Desktop host with the M0 diagnostics feature (C0.4 gating) — clippy and tests	2026-11-02T12:39:41.4762004Z test result: ok. 11 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.79s
+check (windows-latest)	Desktop host with the M0 diagnostics feature (C0.4 gating) — clippy and tests	2026-11-02T12:39:41.8282691Z test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+check (windows-latest)	Test-only assets stay out of the product	﻿2026-11-02T12:40:01.3677456Z ##[group]Run python scripts/check-test-only-assets.py || python3 scripts/check-test-only-assets.py
+check (windows-latest)	Test-only assets stay out of the product	2026-11-02T12:40:01.3677886Z ^[[36;1mpython scripts/check-test-only-assets.py || python3 scripts/check-test-only-assets.py^[[0m
+check (windows-latest)	Test-only assets stay out of the product	2026-11-02T12:40:01.6360339Z ok: 1 test-only asset(s), licences beside them, none in product sources
+check (windows-latest)	MCP protocol conformance with the official Python SDK client (C1.4; 11 §14.7), measurements	2026-11-02T12:42:48.2258482Z   ok: no test-only feature (test-hooks) in the tt-headless product graph
+check (windows-latest)	MCP protocol conformance with the official Python SDK client (C1.4; 11 §14.7), measurements	2026-11-02T12:42:48.2264796Z   ok: no test-only feature (test-hooks) in the tt-desktop product graph

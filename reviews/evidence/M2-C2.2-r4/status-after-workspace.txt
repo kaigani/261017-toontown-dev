@@ -1,0 +1,6 @@
+ M reviews/evidence/M1-C1.3-r2/inspection-memory.json
+ M reviews/evidence/M1-C1.3-r3/open-latency.json
+?? crates/executor/tests/c22_r4_closure.rs
+?? crates/vector/tests/c22_r4_closure.rs
+?? reviews/M2-C2.2-r4-closure.md
+?? reviews/evidence/M2-C2.2-r4/

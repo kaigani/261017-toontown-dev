@@ -1,0 +1,23 @@
+{
+  "reviewedHead": "871e8bd6299011a62e38d3da073755a54faec7f5",
+  "m1Receipts": [
+    {
+      "path": "reviews/evidence/M1-C1.3-r3/open-latency.json",
+      "fixedSha": "989233ec83b78d37f41052b57bf12ee17d132940",
+      "byteIdentical": true,
+      "sha256": "48f2c6c9fa4b19cf4b13e3bbd40b65f49fa781ce213b167d7358470738570f29"
+    },
+    {
+      "path": "reviews/evidence/M1-C1.3-r2/inspection-memory.json",
+      "fixedSha": "989233ec83b78d37f41052b57bf12ee17d132940",
+      "byteIdentical": true,
+      "sha256": "cf68973d1c801acc70b78e2796c68e40a4536ed2b80e0abf62cb565abe4af1bd"
+    }
+  ],
+  "TT_COMMIT_REVIEW_RECEIPTS": null,
+  "TT_UPDATE_GOLDEN": null,
+  "mcpVersion": "2.0.0",
+  "PillowVersion": "11.3.0",
+  "specDiff": "",
+  "preexistingModified": []
+}

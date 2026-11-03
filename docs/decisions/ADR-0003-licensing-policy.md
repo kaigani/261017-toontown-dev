@@ -1,7 +1,8 @@
 # ADR-0003 — Licensing policy for dependencies and shipped components
 
 Status: accepted (C0.1, 2026-10-17; amended after review round 1: one shared allow-list, 0BSD added, SPDX
-evaluation; amended in M1 C1.1 round 1, 2026-10-18: MIT-0 added). The FFmpeg sidecar build/encoder/fetch plan is ADR-0008 (C0.4).
+evaluation; amended in M1 C1.1 round 1, 2026-10-18: MIT-0 added; amended in M2 C2.4, 2026-11-02: test-only assets,
+rule 7). The FFmpeg sidecar build/encoder/fetch plan is ADR-0008 (C0.4).
 
 ## Context
 
@@ -44,6 +45,13 @@ statically linked into our executables; JavaScript dependencies are bundled into
    (Apache-2.0 for the recommended model) and are not part of the installer.
 6. **Never**: GPL or AGPL in anything we ship; FFmpeg builds configured with `--enable-gpl` or `--enable-nonfree`
    (no x264/x265, no fdk-aac).
+7. **Test-only assets** (amended in M2 C2.4, C21-R1-11): a data file used only by tests may carry another licence
+   when it is never shipped. Each is listed in `tests/fixtures/test-only-assets.json` (path, licence, SHA-256,
+   source, use) with its licence file beside it, lives under `tests/fixtures/`, is loaded only through dev-only
+   hooks, and is named by no product source; `scripts/check-test-only-assets.py` checks the repository (CI `check`)
+   and scans the built bundles for it (CI `bundle`). The allow-list (rule 1) is unchanged. Today: the font
+   `tests/fixtures/fonts/B612-Regular.ttf` (SIL OFL 1.1, unmodified; `OFL.txt` beside it) for same-font text-layout
+   controls.
 
 ## Consequences
 

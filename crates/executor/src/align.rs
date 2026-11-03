@@ -79,7 +79,9 @@ pub(crate) fn prepare(doc: &Document, entry: &EntryKey, patch: &[PatchOp]) -> Re
         return Ok(patch.to_vec());
     }
     let progressive = patch.iter().any(shifts) || overlapping(patch);
-    let mut cur = doc.entry_raw_json(entry)?;
+    // An entry the step created (redo) or removes (undo) is added or removed by a root operation of the same merged
+    // patch, next to the settle pass's patch of its content.
+    let mut cur = if doc.has_entry(entry) { doc.entry_raw_json(entry)? } else { Value::Null };
     let mut out = Vec::with_capacity(patch.len());
     for op in patch {
         let mut op = op.clone();
@@ -102,7 +104,11 @@ pub(crate) fn prepare(doc: &Document, entry: &EntryKey, patch: &[PatchOp]) -> Re
             }
         }
         if progressive {
-            cur = change::apply(&cur, std::slice::from_ref(&op))?;
+            cur = match (op.op, op.path.is_empty()) {
+                ("remove", true) => Value::Null,
+                (_, true) => op.value.clone().unwrap_or(Value::Null),
+                _ => change::apply(&cur, std::slice::from_ref(&op))?,
+            };
         }
         out.push(op);
     }

@@ -1,0 +1,15 @@
+cargo :    Compiling tt-executor v0.0.1 (C:\Users\kaiga\work\review\m2-c21-r1\crates\executor)
+At line:2 char:115
++ ... l.log 2>&1; cargo test -p tt-executor --test c21_r1_retention -- --no ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (   Compiling tt...rates\executor):String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 1.59s
+     Running tests\c21_r1_retention.rs (target\debug\deps\c21_r1_retention-e53a2ac5e6ef8819.exe)
+
+running 1 test
+test eviction_by_object_budget_preserves_exact_diff_and_checkpoint ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 32.99s
+

@@ -1,0 +1,4 @@
+Forbidden constructs before cfg(test): 0
+
+HashMap ordering: node.rs sorts grid cells before iterating. graph.rs iterates grid in arbitrary order only while filling ordered hot-pixel BTreeSet; accepted graph output later derives from sorted points. Budget error first-failing charge may vary; accepted content should not.
+i128 bounds at 1/64: |q|<=640000000; differences<=1280000000; determinant<=3276800000000000000; intersection numerator product<=4194304000000000000000000000 << 2^127. Even at 1/128 products remain below 3.36e28. Area accumulation also fits under bounded piece counts.

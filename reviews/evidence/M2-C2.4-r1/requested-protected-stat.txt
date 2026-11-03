@@ -1,0 +1,6 @@
+ crates/executor/tests/c12_registry.rs |  6 ++++--
+ tests/adversarial/c22-r2-audit.py     |  4 +++-
+ tests/adversarial/c22-r3-audit.py     |  4 +++-
+ tests/adversarial/c23-r1-audit.py     | 10 +++++++---
+ tests/adversarial/c23-r2-audit.py     |  4 +++-
+ 5 files changed, 20 insertions(+), 8 deletions(-)

@@ -1,0 +1,6 @@
+{"argv": ["C:\\Python313\\python.exe", "tests/adversarial/c24-r3-sdk.py", "--binary", "C:\\Users\\kaiga\\work\\review\\m2-c24-r3\\reviews\\evidence\\M2-C2.4-r3\\ci-artifacts\\headless-Windows\\toontown-headless.exe", "--out", "C:\\Users\\kaiga\\work\\review\\m2-c24-r3\\reviews\\evidence\\M2-C2.4-r3\\sdk-probes.json"], "cwd": "C:\\Users\\kaiga\\work\\review\\m2-c24-r3", "env": {}, "startedAt": "2026-11-03T00:24:26.071522+00:00"}
+symmetry has no document revision True
+symmetry has no undo step True
+symmetry does not alter saved document content True
+Flatten keeps a partially covered single segment True
+symmetry has no saved user default True

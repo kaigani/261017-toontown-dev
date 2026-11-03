@@ -1,0 +1,10 @@
+41196211322: Linux MCP over stdio with no display server (official Python SDK client): success
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:37:21.7383900Z ^[[1m^[[92m     Running^[[0m tests/c21_determinism.rs (target/debug/deps/c21_determinism-829d7a346ad9843e)
+check (macos-latest)	UNKNOWN STEP	2026-10-31T11:37:22.6835660Z test command_created_geometry_is_identical_across_runs_and_platforms ... ok
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:43:09.8863358Z ^[[1m^[[92m     Running^[[0m tests\c21_determinism.rs (target\debug\deps\c21_determinism-527170c1ec2ea5c6.exe)
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T11:43:10.8583100Z test command_created_geometry_is_identical_across_runs_and_platforms ... ok
+41199280966: Linux MCP over stdio with no display server (official Python SDK client): success
+check (macos-latest)	Run cargo test --workspace --locked	2026-10-31T12:22:16.8572000Z ^[[1m^[[92m     Running^[[0m tests/c21_determinism.rs (target/debug/deps/c21_determinism-829d7a346ad9843e)
+check (macos-latest)	Run cargo test --workspace --locked	2026-10-31T12:22:17.5020550Z test command_created_geometry_is_identical_across_runs_and_platforms ... ok
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T12:27:51.7989677Z ^[[1m^[[92m     Running^[[0m tests\c21_determinism.rs (target\debug\deps\c21_determinism-527170c1ec2ea5c6.exe)
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-31T12:27:52.8670693Z test command_created_geometry_is_identical_across_runs_and_platforms ... ok

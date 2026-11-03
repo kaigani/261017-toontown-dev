@@ -1,0 +1,135 @@
+diff --git a/crates/vector/src/planar/node.rs b/crates/vector/src/planar/node.rs
+index 35437df..1f44475 100644
+--- a/crates/vector/src/planar/node.rs
++++ b/crates/vector/src/planar/node.rs
+@@ -255,11 +255,89 @@ fn splittable(k: EdgeKind) -> bool {
+     k != EdgeKind::Brush
+ }
+ 
+-/// Nodes a layer's strokes.
++/// The most noding passes one call makes before it stops (each pass charges the work account; in practice a second
++/// pass finds nothing or only the ends the first pass created, and a third finds nothing).
++pub const MAX_PASSES: usize = 8;
++
++/// Nodes a layer's strokes, to a fixpoint (C22-T2): a pass's splits create piece ends at junctions, and an end resting on
++/// another stroke is itself a junction (an end at a stroke's vertex where it turns, e.g. a crossing that falls on a
++/// vertex of a third stroke retracing both), so the pieces are noded again until a pass changes nothing. A settled
++/// layer is therefore a fixpoint of noding: noding it again, with its strokes marked changed or not, changes nothing.
+ ///
+ /// # Errors
+ /// `limit.exceeded` past the work budget.
+ pub fn node(strokes: &[NodeStroke], work: &mut Work) -> Result<Noding, GeomError> {
++    let first = node_once(strokes, work)?;
++    if first.outcomes.is_empty() {
++        return Ok(first);
++    }
++    // The current pieces of every input stroke, and whether each was split.
++    let mut current: Vec<Vec<Path>> = Vec::with_capacity(strokes.len());
++    let mut split: Vec<bool> = vec![false; strokes.len()];
++    for (i, st) in strokes.iter().enumerate() {
++        current.push(match first.outcomes.get(&i) {
++            None => vec![st.path.clone()],
++            Some(Outcome::Moved(p)) => vec![p.clone()],
++            Some(Outcome::Split(pieces)) => {
++                split[i] = true;
++                pieces.clone()
++            }
++        });
++    }
++    let mut touched: Vec<bool> = (0..strokes.len()).map(|i| first.outcomes.contains_key(&i)).collect();
++    for _ in 1..MAX_PASSES {
++        let mut input: Vec<NodeStroke> = Vec::new();
++        let mut back: Vec<usize> = Vec::new();
++        for (i, pieces) in current.iter().enumerate() {
++            for p in pieces {
++                input.push(NodeStroke {
++                    id: strokes[i].id.clone(),
++                    kind: strokes[i].kind,
++                    path: p.clone(),
++                    // Later passes only split at the ends the earlier ones created; ends never move again.
++                    changed: false,
++                });
++                back.push(i);
++            }
++        }
++        let pass = node_once(&input, work)?;
++        if pass.outcomes.is_empty() {
++            break;
++        }
++        let mut next: Vec<Vec<Path>> = vec![Vec::new(); strokes.len()];
++        for (n, st) in input.into_iter().enumerate() {
++            let i = back[n];
++            match pass.outcomes.get(&n) {
++                None => next[i].push(st.path),
++                Some(Outcome::Moved(p)) => {
++                    touched[i] = true;
++                    next[i].push(p.clone());
++                }
++                Some(Outcome::Split(pieces)) => {
++                    touched[i] = true;
++                    split[i] = true;
++                    next[i].extend(pieces.iter().cloned());
++                }
++            }
++        }
++        current = next;
++    }
++    let mut outcomes = BTreeMap::new();
++    for (i, pieces) in current.into_iter().enumerate() {
++        if !touched[i] {
++            continue;
++        }
++        if split[i] {
++            outcomes.insert(i, Outcome::Split(pieces));
++        } else if let Some(p) = pieces.into_iter().next() {
++            outcomes.insert(i, Outcome::Moved(p));
++        }
++    }
++    Ok(Noding { outcomes })
++}
++
++/// One noding pass.
++fn node_once(strokes: &[NodeStroke], work: &mut Work) -> Result<Noding, GeomError> {
+     let flats: Vec<Flat> = strokes.iter().map(|s| flat::flatten(&s.path, work)).collect::<Result<_, _>>()?;
+     let mut edges: Vec<EdgeRef> = Vec::new();
+     for (i, f) in flats.iter().enumerate() {
+@@ -415,7 +493,8 @@ pub fn node(strokes: &[NodeStroke], work: &mut Work) -> Result<Noding, GeomError
+ 
+ /// Resolves every junction once for all of its participants (C22-R1-01): a record within [`JUNCTION_TOLERANCE`] of a
+ /// junction's first record belongs to that junction. Its coordinate is the nearest existing anchor of an unchanged pencil or
+-/// invisible participant (then lowest stroke index and parameter), else the point of the junction's first record.
++/// invisible participant (then lowest stroke index and parameter), else the one point where every participant already
++/// has an anchor, else the point of the junction's first record.
+ /// Every participant gets that exact coordinate, so the pieces meeting there share their junction anchor.
+ fn resolve(strokes: &[NodeStroke], records: &[Record], work: &mut Work) -> Result<Vec<Vec<Junction>>, GeomError> {
+     work.spend_n(records.len().saturating_mul(16))?;
+@@ -465,7 +544,28 @@ fn resolve(strokes: &[NodeStroke], records: &[Record], work: &mut Work) -> Resul
+                 }
+             }
+         }
+-        let at = best.map_or(records[first].at, |b| b.3);
++        // Without an unchanged participant: where every participant already has an anchor at one exact point (pieces
++        // an earlier noding joined there), that point stays the junction, so re-noding settled pieces marked changed
++        // moves nothing (C22-T2; the first record's point may differ from it by rounding).
++        let shared = || -> Option<P> {
++            let mut point: Option<P> = None;
++            for &m in &members {
++                let r = &records[m];
++                for &(k, sk) in &r.parts {
++                    let st = &strokes[k];
++                    let (_, p) = near_anchor(&st.path, st.path.segments().len(), &Junction { s: sk, at: r.at })?;
++                    if point.is_some_and(|q| q != p) {
++                        return None;
++                    }
++                    point = Some(p);
++                }
++            }
++            point
++        };
++        let at = match best {
++            Some(b) => b.3,
++            None => shared().unwrap_or(records[first].at),
++        };
+         for &m in &members {
+             for &(k, sk) in &records[m].parts {
+                 junctions[k].push(Junction { s: sk, at });

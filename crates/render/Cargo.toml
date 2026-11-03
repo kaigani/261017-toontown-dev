@@ -12,15 +12,17 @@ tt-vector.workspace = true
 tt-colour.workspace = true
 tt-anim.workspace = true
 tt-fx.workspace = true
+thiserror.workspace = true
+# The final-quality rasteriser (ADR-0006): pinned; any change is golden-gated. Feature set as golden-tested in C0.3.
+vello_cpu = { version = "=0.3.0", default-features = false, features = ["std", "u8_pipeline", "f32_pipeline", "multithreading"] }
+# `Level::fallback()` (scalar, no platform SIMD) needs this feature of vello_cpu's SIMD crate.
+fearless_simd = { version = "=0.7.0", features = ["force_support_fallback"] }
+png = "=0.18.1"
 
 [lints]
 workspace = true
 
-# C0.3 rasteriser spike only (examples/c03_raster); dev-dependencies never reach the product or headless graphs.
+# C0.3 rasteriser spike (examples/c03_raster) and the render tests.
 [dev-dependencies]
-# `Level::fallback()` (scalar, no platform SIMD) needs this feature of vello_cpu's SIMD crate.
-fearless_simd = { version = "0.7", features = ["force_support_fallback"] }
-png = "0.18.1"
 serde_json.workspace = true
 sha2.workspace = true
-vello_cpu = { version = "0.3.0", default-features = false, features = ["std", "u8_pipeline", "f32_pipeline", "multithreading"] }

@@ -1,0 +1,2211 @@
+{
+  "status": "ok",
+  "result": {
+    "stepCount": 8
+  },
+  "changes": [
+    {
+      "id": "pen_01K742SG0DE4TVDEDEXW6JVXXB",
+      "type": "pen",
+      "op": "created",
+      "rev": 2,
+      "parentId": "pr_01M69QVBPPKD2V8CZ0SS9SBPWQ",
+      "index": 8
+    },
+    {
+      "id": "pen_01K742SG0ESMKZYV37X0CGJXWA",
+      "type": "pen",
+      "op": "created",
+      "rev": 2,
+      "parentId": "pr_01M69QVBPPKD2V8CZ0SS9SBPWQ",
+      "index": 9
+    },
+    {
+      "id": "pen_01K742SG0FT229CARSCZ4GF2DT",
+      "type": "pen",
+      "op": "created",
+      "rev": 2,
+      "parentId": "pr_01M69QVBPPKD2V8CZ0SS9SBPWQ",
+      "index": 10
+    },
+    {
+      "id": "as_01K742SG0G5HPQ0RBF5X4DSR0W",
+      "type": "asset",
+      "op": "created",
+      "rev": 2,
+      "parentId": "pr_01M69QVBPPKD2V8CZ0SS9SBPWQ",
+      "index": 0
+    },
+    {
+      "id": "as_01K742SG0HZGBRF7HE49BFXZRC",
+      "type": "asset",
+      "op": "created",
+      "rev": 2,
+      "parentId": "pr_01M69QVBPPKD2V8CZ0SS9SBPWQ",
+      "index": 1
+    },
+    {
+      "id": "pr_01M69QVBPPKD2V8CZ0SS9SBPWQ",
+      "type": "project",
+      "op": "modified",
+      "rev": 2,
+      "patch": [
+        {
+          "op": "add",
+          "path": "/palettes/1",
+          "value": {
+            "id": "pal_01K742SG02PPWW6K8BZY81A0M0",
+            "type": "palette"
+          }
+        },
+        {
+          "op": "add",
+          "path": "/palettes/2",
+          "value": {
+            "id": "pal_01K742SG0AGX319NWQ7HE2MH4W",
+            "type": "palette"
+          }
+        },
+        {
+          "op": "add",
+          "path": "/pens/8",
+          "value": {
+            "id": "pen_01K742SG0DE4TVDEDEXW6JVXXB",
+            "type": "pen"
+          }
+        },
+        {
+          "op": "add",
+          "path": "/pens/9",
+          "value": {
+            "id": "pen_01K742SG0ESMKZYV37X0CGJXWA",
+            "type": "pen"
+          }
+        },
+        {
+          "op": "add",
+          "path": "/pens/10",
+          "value": {
+            "id": "pen_01K742SG0FT229CARSCZ4GF2DT",
+            "type": "pen"
+          }
+        },
+        {
+          "op": "add",
+          "path": "/assets/0",
+          "value": {
+            "id": "as_01K742SG0G5HPQ0RBF5X4DSR0W",
+            "type": "asset"
+          }
+        },
+        {
+          "op": "add",
+          "path": "/assets/1",
+          "value": {
+            "id": "as_01K742SG0HZGBRF7HE49BFXZRC",
+            "type": "asset"
+          }
+        },
+        {
+          "op": "add",
+          "path": "/drawingBanks/1",
+          "value": {
+            "id": "db_01K742SG0JW3TVZ32SQC03AMY1",
+            "type": "drawingBank"
+          }
+        },
+        {
+          "op": "add",
+          "path": "/drawingBanks/2",
+          "value": {
+            "id": "db_01K742SG134NGX5HGYXCKT44C7",
+            "type": "drawingBank"
+          }
+        },
+        {
+          "op": "add",
+          "path": "/drawingBanks/3",
+          "value": {
+            "id": "db_01K742SG17ZDAHQTMS9MQ7TXWX",
+            "type": "drawingBank"
+          }
+        },
+        {
+          "op": "add",
+          "path": "/drawingBanks/4",
+          "value": {
+            "id": "db_01K742SG2QJBK0K2VMXAK7VG6V",
+            "type": "drawingBank"
+          }
+        },
+        {
+          "op": "add",
+          "path": "/scenes/1",
+          "value": {
+            "id": "sc_01K742SG0YSRA1305J7887BDVZ",
+            "type": "scene"
+          }
+        },
+        {
+          "op": "add",
+          "path": "/scenes/2",
+          "value": {
+            "id": "sc_01K742SG2M2H2H02X6D97DG7DN",
+            "type": "scene"
+          }
+        }
+      ]
+    },
+    {
+      "id": "sty_01K742SG037JJRBSXV1W92F1BN",
+      "type": "paletteStyle",
+      "op": "created",
+      "rev": 2,
+      "parentId": "pal_01K742SG02PPWW6K8BZY81A0M0",
+      "index": 0
+    },
+    {
+      "id": "sty_01K742SG047PMCPGTWHST62SWP",
+      "type": "paletteStyle",
+      "op": "created",
+      "rev": 2,
+      "parentId": "pal_01K742SG02PPWW6K8BZY81A0M0",
+      "index": 1
+    },
+    {
+      "id": "col_01K742SG059XGSNZ6M9MACZ2ZY",
+      "type": "swatch",
+      "op": "created",
+      "rev": 2,
+      "parentId": "pal_01K742SG02PPWW6K8BZY81A0M0",
+      "index": 0
+    },
+    {
+      "id": "col_01K742SG06BQ08FCT1TT8DF8MA",
+      "type": "swatch",
+      "op": "created",
+      "rev": 2,
+      "parentId": "pal_01K742SG02PPWW6K8BZY81A0M0",
+      "index": 1
+    },
+    {
+      "id": "col_01K742SG07AYM2NGPE2YJQJJHV",
+      "type": "swatch",
+      "op": "created",
+      "rev": 2,
+      "parentId": "pal_01K742SG02PPWW6K8BZY81A0M0",
+      "index": 2
+    },
+    {
+      "id": "col_01K742SG081DHX1EPGV9BJQAQH",
+      "type": "swatch",
+      "op": "created",
+      "rev": 2,
+      "parentId": "pal_01K742SG02PPWW6K8BZY81A0M0",
+      "index": 3
+    },
+    {
+      "id": "col_01K742SG09H7QE4RRR6XSYYS88",
+      "type": "swatch",
+      "op": "created",
+      "rev": 2,
+      "parentId": "pal_01K742SG02PPWW6K8BZY81A0M0",
+      "index": 4
+    },
+    {
+      "id": "pal_01K742SG02PPWW6K8BZY81A0M0",
+      "type": "palette",
+      "op": "created",
+      "rev": 2,
+      "parentId": "pr_01M69QVBPPKD2V8CZ0SS9SBPWQ",
+      "index": 1
+    },
+    {
+      "id": "sty_01K742SG0BHZ6HZ10GCCZF61NC",
+      "type": "paletteStyle",
+      "op": "created",
+      "rev": 2,
+      "parentId": "pal_01K742SG0AGX319NWQ7HE2MH4W",
+      "index": 0
+    },
+    {
+      "id": "col_01K742SG0CQ6FGRGT0FQ0QFDQQ",
+      "type": "swatch",
+      "op": "created",
+      "rev": 2,
+      "parentId": "pal_01K742SG0AGX319NWQ7HE2MH4W",
+      "index": 0
+    },
+    {
+      "id": "pal_01K742SG0AGX319NWQ7HE2MH4W",
+      "type": "palette",
+      "op": "created",
+      "rev": 2,
+      "parentId": "pr_01M69QVBPPKD2V8CZ0SS9SBPWQ",
+      "index": 2
+    },
+    {
+      "id": "db_01K742SG0JW3TVZ32SQC03AMY1",
+      "type": "drawingBank",
+      "op": "created",
+      "rev": 2,
+      "parentId": "pr_01M69QVBPPKD2V8CZ0SS9SBPWQ",
+      "index": 1
+    },
+    {
+      "id": "db_01K742SG134NGX5HGYXCKT44C7",
+      "type": "drawingBank",
+      "op": "created",
+      "rev": 2,
+      "parentId": "pr_01M69QVBPPKD2V8CZ0SS9SBPWQ",
+      "index": 2
+    },
+    {
+      "id": "db_01K742SG17ZDAHQTMS9MQ7TXWX",
+      "type": "drawingBank",
+      "op": "created",
+      "rev": 2,
+      "parentId": "pr_01M69QVBPPKD2V8CZ0SS9SBPWQ",
+      "index": 3
+    },
+    {
+      "id": "db_01K742SG2QJBK0K2VMXAK7VG6V",
+      "type": "drawingBank",
+      "op": "created",
+      "rev": 2,
+      "parentId": "pr_01M69QVBPPKD2V8CZ0SS9SBPWQ",
+      "index": 4
+    },
+    {
+      "id": "dr_01K742SG0KKMCAP9X1E6Z5P4SW/st_01K742SG0QD1F2HFZSX8R4V7WP",
+      "type": "stroke",
+      "op": "created",
+      "rev": 2,
+      "parentId": "dr_01K742SG0KKMCAP9X1E6Z5P4SW/nd_01K742SG0PC20XDQKASM9CGZHR",
+      "index": 0
+    },
+    {
+      "id": "dr_01K742SG0KKMCAP9X1E6Z5P4SW/st_01K742SG0R61SYK9GG0HGYVNBT",
+      "type": "stroke",
+      "op": "created",
+      "rev": 2,
+      "parentId": "dr_01K742SG0KKMCAP9X1E6Z5P4SW/nd_01K742SG0PC20XDQKASM9CGZHR",
+      "index": 1
+    },
+    {
+      "id": "dr_01K742SG0KKMCAP9X1E6Z5P4SW/st_01K742SG0S0NT23BWCZN64SFQ5",
+      "type": "stroke",
+      "op": "created",
+      "rev": 2,
+      "parentId": "dr_01K742SG0KKMCAP9X1E6Z5P4SW/nd_01K742SG0PC20XDQKASM9CGZHR",
+      "index": 2
+    },
+    {
+      "id": "dr_01K742SG0KKMCAP9X1E6Z5P4SW/nd_01K742SG0PC20XDQKASM9CGZHR",
+      "type": "drawingNode",
+      "op": "created",
+      "rev": 2,
+      "parentId": "dr_01K742SG0KKMCAP9X1E6Z5P4SW",
+      "index": 0
+    },
+    {
+      "id": "dr_01K742SG0KKMCAP9X1E6Z5P4SW/nd_01K742SG0V9A7HCXC74WKN3V5F",
+      "type": "drawingNode",
+      "op": "created",
+      "rev": 2,
+      "parentId": "dr_01K742SG0KKMCAP9X1E6Z5P4SW/nd_01K742SG0TX3WF1BSWWGMWM5WG",
+      "index": 0
+    },
+    {
+      "id": "dr_01K742SG0KKMCAP9X1E6Z5P4SW/nd_01K742SG0TX3WF1BSWWGMWM5WG",
+      "type": "drawingNode",
+      "op": "created",
+      "rev": 2,
+      "parentId": "dr_01K742SG0KKMCAP9X1E6Z5P4SW",
+      "index": 1
+    },
+    {
+      "id": "dr_01K742SG0KKMCAP9X1E6Z5P4SW/nd_01K742SG0WFAQJFKAZKV4CD56C",
+      "type": "drawingNode",
+      "op": "created",
+      "rev": 2,
+      "parentId": "dr_01K742SG0KKMCAP9X1E6Z5P4SW",
+      "index": 2
+    },
+    {
+      "id": "dr_01K742SG0KKMCAP9X1E6Z5P4SW",
+      "type": "drawing",
+      "op": "created",
+      "rev": 2,
+      "parentId": "db_01K742SG0JW3TVZ32SQC03AMY1",
+      "index": 0
+    },
+    {
+      "id": "dr_01K742SG0M5J3BAJSW8241WA87/nd_01K742SG0XC99E0A2JJ9D4VJ2J",
+      "type": "drawingNode",
+      "op": "created",
+      "rev": 2,
+      "parentId": "dr_01K742SG0M5J3BAJSW8241WA87",
+      "index": 0
+    },
+    {
+      "id": "dr_01K742SG0M5J3BAJSW8241WA87",
+      "type": "drawing",
+      "op": "created",
+      "rev": 2,
+      "parentId": "db_01K742SG0JW3TVZ32SQC03AMY1",
+      "index": 1
+    },
+    {
+      "id": "dr_01K742SG0NG5HTFZRD7238FZXJ",
+      "type": "drawing",
+      "op": "created",
+      "rev": 2,
+      "parentId": "db_01K742SG0JW3TVZ32SQC03AMY1",
+      "index": 2
+    },
+    {
+      "id": "dr_01K742SG14TNTV1TR99SQHVKVK/nd_01K742SG156C77GY438XM6D1T3",
+      "type": "drawingNode",
+      "op": "created",
+      "rev": 2,
+      "parentId": "dr_01K742SG14TNTV1TR99SQHVKVK",
+      "index": 0
+    },
+    {
+      "id": "dr_01K742SG14TNTV1TR99SQHVKVK",
+      "type": "drawing",
+      "op": "created",
+      "rev": 2,
+      "parentId": "db_01K742SG134NGX5HGYXCKT44C7",
+      "index": 0
+    },
+    {
+      "id": "tr_01K742SG2KA0JQ0743D7J833ZK",
+      "type": "transition",
+      "op": "created",
+      "rev": 2,
+      "parentId": "sc_01K742SG0YSRA1305J7887BDVZ",
+      "index": 0
+    },
+    {
+      "id": "sc_01K742SG0YSRA1305J7887BDVZ",
+      "type": "scene",
+      "op": "created",
+      "rev": 2,
+      "parentId": "pr_01M69QVBPPKD2V8CZ0SS9SBPWQ",
+      "index": 1
+    },
+    {
+      "id": "tr_01K742SG2R85DNDRN0V96K9JB3",
+      "type": "transition",
+      "op": "created",
+      "rev": 2,
+      "parentId": "sc_01K742SG2M2H2H02X6D97DG7DN",
+      "index": 0
+    },
+    {
+      "id": "sc_01K742SG2M2H2H02X6D97DG7DN",
+      "type": "scene",
+      "op": "created",
+      "rev": 2,
+      "parentId": "pr_01M69QVBPPKD2V8CZ0SS9SBPWQ",
+      "index": 2
+    },
+    {
+      "id": "sc_01M69QVBPQ24GD8BP944RRK2H0",
+      "type": "scene",
+      "op": "modified",
+      "rev": 2,
+      "patch": [
+        {
+          "op": "add",
+          "path": "/paletteStyles/pal_01K742SG02PPWW6K8BZY81A0M0",
+          "value": "sty_01K742SG037JJRBSXV1W92F1BN"
+        },
+        {
+          "op": "add",
+          "path": "/paletteStyles/pal_01K742SG0AGX319NWQ7HE2MH4W",
+          "value": "sty_01K742SG0BHZ6HZ10GCCZF61NC"
+        }
+      ]
+    },
+    {
+      "id": "el_01K742SG0ZZYY8HE4MW501XMJV",
+      "type": "element",
+      "op": "created",
+      "rev": 2,
+      "parentId": "sc_01K742SG0YSRA1305J7887BDVZ",
+      "index": 0
+    },
+    {
+      "id": "ch_01K742SG233AAGQYCZWV5XVRPP/ky_01K742SG245790JGK2KWB7Z8RK",
+      "type": "key",
+      "op": "created",
+      "rev": 2,
+      "parentId": "ch_01K742SG233AAGQYCZWV5XVRPP",
+      "index": 0
+    },
+    {
+      "id": "ch_01K742SG233AAGQYCZWV5XVRPP/ky_01K742SG25VVP67AJQQCV1HDFJ",
+      "type": "key",
+      "op": "created",
+      "rev": 2,
+      "parentId": "ch_01K742SG233AAGQYCZWV5XVRPP",
+      "index": 1
+    },
+    {
+      "id": "ch_01K742SG233AAGQYCZWV5XVRPP",
+      "type": "channel",
+      "op": "created",
+      "rev": 2,
+      "parentId": "el_01K742SG101DH4FAEWCWWK4QXC",
+      "index": 0
+    },
+    {
+      "id": "el_01K742SG101DH4FAEWCWWK4QXC",
+      "type": "element",
+      "op": "created",
+      "rev": 2,
+      "parentId": "sc_01K742SG0YSRA1305J7887BDVZ",
+      "index": 1
+    },
+    {
+      "id": "ch_01K742SG1XFEFQMBCSQ7D6AX3G/mp_01K742SG1YDDR34S3G0DS5PVPK",
+      "type": "motionPoint",
+      "op": "created",
+      "rev": 2,
+      "parentId": "ch_01K742SG1XFEFQMBCSQ7D6AX3G",
+      "index": 0
+    },
+    {
+      "id": "ch_01K742SG1XFEFQMBCSQ7D6AX3G/mp_01K742SG1Z9PEPA9753ZZ77JT4",
+      "type": "motionPoint",
+      "op": "created",
+      "rev": 2,
+      "parentId": "ch_01K742SG1XFEFQMBCSQ7D6AX3G",
+      "index": 1
+    },
+    {
+      "id": "ch_01K742SG1XFEFQMBCSQ7D6AX3G/mp_01K742SG20TE2N53WY0C9CNKZR",
+      "type": "motionPoint",
+      "op": "created",
+      "rev": 2,
+      "parentId": "ch_01K742SG1XFEFQMBCSQ7D6AX3G",
+      "index": 2
+    },
+    {
+      "id": "ch_01K742SG1XFEFQMBCSQ7D6AX3G",
+      "type": "channel",
+      "op": "created",
+      "rev": 2,
+      "parentId": "el_01K742SG11W3SGB8Q1H50W74VB",
+      "index": 0
+    },
+    {
+      "id": "ch_01K742SG1QFHD2CCT6MTEX2H16/ky_01K742SG1R4DF9HWRAYHFSFV52",
+      "type": "key",
+      "op": "created",
+      "rev": 2,
+      "parentId": "ch_01K742SG1QFHD2CCT6MTEX2H16",
+      "index": 0
+    },
+    {
+      "id": "ch_01K742SG1QFHD2CCT6MTEX2H16/ky_01K742SG1SKWBHK8Y5J227CEGJ",
+      "type": "key",
+      "op": "created",
+      "rev": 2,
+      "parentId": "ch_01K742SG1QFHD2CCT6MTEX2H16",
+      "index": 1
+    },
+    {
+      "id": "ch_01K742SG1QFHD2CCT6MTEX2H16/ky_01K742SG1TD4QPFJQ4CNK9WK64",
+      "type": "key",
+      "op": "created",
+      "rev": 2,
+      "parentId": "ch_01K742SG1QFHD2CCT6MTEX2H16",
+      "index": 2
+    },
+    {
+      "id": "ch_01K742SG1QFHD2CCT6MTEX2H16",
+      "type": "channel",
+      "op": "created",
+      "rev": 2,
+      "parentId": "el_01K742SG11W3SGB8Q1H50W74VB",
+      "index": 1
+    },
+    {
+      "id": "ch_01K742SG1VM41901DYSMMVJQDV/ky_01K742SG1W88HBTZF8Y8YFYY6Y",
+      "type": "key",
+      "op": "created",
+      "rev": 2,
+      "parentId": "ch_01K742SG1VM41901DYSMMVJQDV",
+      "index": 0
+    },
+    {
+      "id": "ch_01K742SG1VM41901DYSMMVJQDV",
+      "type": "channel",
+      "op": "created",
+      "rev": 2,
+      "parentId": "el_01K742SG11W3SGB8Q1H50W74VB",
+      "index": 2
+    },
+    {
+      "id": "ch_01K742SG21WVPRAB3YJD7ZJTMP/ky_01K742SG22N9R180HJWCAM4TT0",
+      "type": "key",
+      "op": "created",
+      "rev": 2,
+      "parentId": "ch_01K742SG21WVPRAB3YJD7ZJTMP",
+      "index": 0
+    },
+    {
+      "id": "ch_01K742SG21WVPRAB3YJD7ZJTMP",
+      "type": "channel",
+      "op": "created",
+      "rev": 2,
+      "parentId": "el_01K742SG11W3SGB8Q1H50W74VB",
+      "index": 3
+    },
+    {
+      "id": "el_01K742SG11W3SGB8Q1H50W74VB",
+      "type": "element",
+      "op": "created",
+      "rev": 2,
+      "parentId": "sc_01K742SG0YSRA1305J7887BDVZ",
+      "index": 2
+    },
+    {
+      "id": "el_01K742SG12CTMHXEB7TY99G4XV",
+      "type": "element",
+      "op": "created",
+      "rev": 2,
+      "parentId": "sc_01K742SG0YSRA1305J7887BDVZ",
+      "index": 3
+    },
+    {
+      "id": "el_01K742SG16N99XRCS0QEBWMRXY",
+      "type": "element",
+      "op": "created",
+      "rev": 2,
+      "parentId": "sc_01K742SG0YSRA1305J7887BDVZ",
+      "index": 4
+    },
+    {
+      "id": "pl_01K742SG26M7NBT20KCAM2NWXK",
+      "type": "soundPlacement",
+      "op": "created",
+      "rev": 2,
+      "parentId": "el_01K742SG18FWWKH14N0RFB0V71",
+      "index": 0
+    },
+    {
+      "id": "el_01K742SG18FWWKH14N0RFB0V71",
+      "type": "element",
+      "op": "created",
+      "rev": 2,
+      "parentId": "sc_01K742SG0YSRA1305J7887BDVZ",
+      "index": 5
+    },
+    {
+      "id": "ms_01K742SG27RRHRRZ5147YSZD8N",
+      "type": "mediaSequence",
+      "op": "created",
+      "rev": 2,
+      "parentId": "el_01K742SG1997BY67AWW1M4Q0ZJ",
+      "index": 0
+    },
+    {
+      "id": "el_01K742SG1997BY67AWW1M4Q0ZJ",
+      "type": "element",
+      "op": "created",
+      "rev": 2,
+      "parentId": "sc_01K742SG0YSRA1305J7887BDVZ",
+      "index": 6
+    },
+    {
+      "id": "el_01K742SG1AC44Z1PPR4WQ603NH",
+      "type": "element",
+      "op": "created",
+      "rev": 2,
+      "parentId": "sc_01K742SG0YSRA1305J7887BDVZ",
+      "index": 7
+    },
+    {
+      "id": "el_01K742SG1BRDWJ0WNJDQZ83WKE",
+      "type": "element",
+      "op": "created",
+      "rev": 2,
+      "parentId": "sc_01K742SG0YSRA1305J7887BDVZ",
+      "index": 8
+    },
+    {
+      "id": "el_01K742SG1C65EBSWTVDPTZ7EJ0",
+      "type": "element",
+      "op": "created",
+      "rev": 2,
+      "parentId": "sc_01K742SG0YSRA1305J7887BDVZ",
+      "index": 9
+    },
+    {
+      "id": "ch_01K742SG28JT6KZZDQ7TWV0TF4/ky_01K742SG29KYYRPTXV1PA56RKZ",
+      "type": "key",
+      "op": "created",
+      "rev": 2,
+      "parentId": "ch_01K742SG28JT6KZZDQ7TWV0TF4",
+      "index": 0
+    },
+    {
+      "id": "ch_01K742SG28JT6KZZDQ7TWV0TF4",
+      "type": "channel",
+      "op": "created",
+      "rev": 2,
+      "parentId": "el_01K742SG1DA6M66PRBFSTF1J1Y",
+      "index": 0
+    },
+    {
+      "id": "el_01K742SG1DA6M66PRBFSTF1J1Y",
+      "type": "element",
+      "op": "created",
+      "rev": 2,
+      "parentId": "sc_01K742SG0YSRA1305J7887BDVZ",
+      "index": 10
+    },
+    {
+      "id": "el_01K742SG1E231F7W54P5SD2AAB",
+      "type": "element",
+      "op": "created",
+      "rev": 2,
+      "parentId": "sc_01K742SG0YSRA1305J7887BDVZ",
+      "index": 11
+    },
+    {
+      "id": "el_01K742SG1FGTQ1G2HBTRT3T0FR",
+      "type": "element",
+      "op": "created",
+      "rev": 2,
+      "parentId": "sc_01K742SG0YSRA1305J7887BDVZ",
+      "index": 12
+    },
+    {
+      "id": "ch_01K742SG2A902410YTC6YNB8CP/ky_01K742SG2B0EFR540R9PQNAKNH",
+      "type": "key",
+      "op": "created",
+      "rev": 2,
+      "parentId": "ch_01K742SG2A902410YTC6YNB8CP",
+      "index": 0
+    },
+    {
+      "id": "ch_01K742SG2A902410YTC6YNB8CP/ky_01K742SG2CZK3CXVCMK8QF2AZC",
+      "type": "key",
+      "op": "created",
+      "rev": 2,
+      "parentId": "ch_01K742SG2A902410YTC6YNB8CP",
+      "index": 1
+    },
+    {
+      "id": "ch_01K742SG2A902410YTC6YNB8CP",
+      "type": "channel",
+      "op": "created",
+      "rev": 2,
+      "parentId": "el_01K742SG1G9A0XG0WHZYSGT4WG",
+      "index": 0
+    },
+    {
+      "id": "el_01K742SG1G9A0XG0WHZYSGT4WG",
+      "type": "element",
+      "op": "created",
+      "rev": 2,
+      "parentId": "sc_01K742SG0YSRA1305J7887BDVZ",
+      "index": 13
+    },
+    {
+      "id": "el_01K742SG1H4KS4Y1FG6WTW7EAH",
+      "type": "element",
+      "op": "created",
+      "rev": 2,
+      "parentId": "sc_01K742SG0YSRA1305J7887BDVZ",
+      "index": 14
+    },
+    {
+      "id": "ch_01K742SG2DZXM4KT9CZ6ANRKCP/ky_01K742SG2E256MQK6T8DN2VPX9",
+      "type": "key",
+      "op": "created",
+      "rev": 2,
+      "parentId": "ch_01K742SG2DZXM4KT9CZ6ANRKCP",
+      "index": 0
+    },
+    {
+      "id": "ch_01K742SG2DZXM4KT9CZ6ANRKCP/ky_01K742SG2F3QTEYV49GAK0E9H4",
+      "type": "key",
+      "op": "created",
+      "rev": 2,
+      "parentId": "ch_01K742SG2DZXM4KT9CZ6ANRKCP",
+      "index": 1
+    },
+    {
+      "id": "ch_01K742SG2DZXM4KT9CZ6ANRKCP",
+      "type": "channel",
+      "op": "created",
+      "rev": 2,
+      "parentId": "el_01K742SG1J3M0SDFTX818N3V2K",
+      "index": 0
+    },
+    {
+      "id": "el_01K742SG1J3M0SDFTX818N3V2K",
+      "type": "element",
+      "op": "created",
+      "rev": 2,
+      "parentId": "sc_01K742SG0YSRA1305J7887BDVZ",
+      "index": 15
+    },
+    {
+      "id": "el_01K742SG1KNSDQQH1EG9W2NJWJ",
+      "type": "element",
+      "op": "created",
+      "rev": 2,
+      "parentId": "sc_01K742SG0YSRA1305J7887BDVZ",
+      "index": 16
+    },
+    {
+      "id": "blk_01K742SG2GAF82J6A55D2DPMT0",
+      "type": "particleBlock",
+      "op": "created",
+      "rev": 2,
+      "parentId": "el_01K742SG1M9CJZV12YYC0CWB8B",
+      "index": 0
+    },
+    {
+      "id": "blk_01K742SG2HA6NWCNFE7TT60BEF",
+      "type": "particleBlock",
+      "op": "created",
+      "rev": 2,
+      "parentId": "el_01K742SG1M9CJZV12YYC0CWB8B",
+      "index": 1
+    },
+    {
+      "id": "el_01K742SG1M9CJZV12YYC0CWB8B",
+      "type": "element",
+      "op": "created",
+      "rev": 2,
+      "parentId": "sc_01K742SG0YSRA1305J7887BDVZ",
+      "index": 17
+    },
+    {
+      "id": "el_01K742SG1N7SQGF0AQF87N7SEP",
+      "type": "element",
+      "op": "created",
+      "rev": 2,
+      "parentId": "sc_01K742SG0YSRA1305J7887BDVZ",
+      "index": 18
+    },
+    {
+      "id": "blk_01K742SG2JC5D5MT11TFA41DD7",
+      "type": "particleBlock",
+      "op": "created",
+      "rev": 2,
+      "parentId": "el_01K742SG1PHXPEHSG259WYPMBV",
+      "index": 0
+    },
+    {
+      "id": "el_01K742SG1PHXPEHSG259WYPMBV",
+      "type": "element",
+      "op": "created",
+      "rev": 2,
+      "parentId": "sc_01K742SG0YSRA1305J7887BDVZ",
+      "index": 19
+    },
+    {
+      "id": "ch_01K742SG2S2FDCMX8612WVRZ7W/ky_01K742SG2T4DDQ4EYH53HG6GBD",
+      "type": "key",
+      "op": "created",
+      "rev": 2,
+      "parentId": "ch_01K742SG2S2FDCMX8612WVRZ7W",
+      "index": 0
+    },
+    {
+      "id": "ch_01K742SG2S2FDCMX8612WVRZ7W",
+      "type": "channel",
+      "op": "created",
+      "rev": 2,
+      "parentId": "el_01K742SG2N1KWPRQ64SA20BQWW",
+      "index": 0
+    },
+    {
+      "id": "el_01K742SG2N1KWPRQ64SA20BQWW",
+      "type": "element",
+      "op": "created",
+      "rev": 2,
+      "parentId": "sc_01K742SG2M2H2H02X6D97DG7DN",
+      "index": 0
+    },
+    {
+      "id": "el_01K742SG2PA6VE2W9T5930NH2F",
+      "type": "element",
+      "op": "created",
+      "rev": 2,
+      "parentId": "sc_01K742SG2M2H2H02X6D97DG7DN",
+      "index": 1
+    },
+    {
+      "id": "dr_01K742SG0KKMCAP9X1E6Z5P4SW/st_01K7JJN800GZTJDW10K92BHQ94",
+      "type": "stroke",
+      "op": "created",
+      "rev": 3,
+      "parentId": "dr_01K742SG0KKMCAP9X1E6Z5P4SW/nd_01K7JJN8016QT212DZQ8X1KH8P",
+      "index": 0
+    },
+    {
+      "id": "dr_01K742SG0KKMCAP9X1E6Z5P4SW/nd_01K7JJN8016QT212DZQ8X1KH8P",
+      "type": "drawingNode",
+      "op": "created",
+      "rev": 3,
+      "parentId": "dr_01K742SG0KKMCAP9X1E6Z5P4SW",
+      "index": 3
+    },
+    {
+      "id": "dr_01K742SG0KKMCAP9X1E6Z5P4SW",
+      "type": "drawing",
+      "op": "modified",
+      "rev": 3,
+      "patch": [
+        {
+          "op": "add",
+          "path": "/nodes/3",
+          "value": {
+            "id": "nd_01K7JJN8016QT212DZQ8X1KH8P",
+            "type": "drawingNode"
+          }
+        }
+      ]
+    },
+    {
+      "id": "dr_01K742SG0KKMCAP9X1E6Z5P4SW/st_01K7JJN800GZTJDW10K92BHQ94",
+      "type": "stroke",
+      "op": "modified",
+      "rev": 4,
+      "patch": [
+        {
+          "op": "replace",
+          "path": "/sides/left",
+          "value": {
+            "colourId": "col_01M69QVBPPKD2V8CZ0SS9SBPWT",
+            "matrix": null
+          },
+          "oldValue": null
+        }
+      ]
+    },
+    {
+      "id": "dr_01K742SG0KKMCAP9X1E6Z5P4SW",
+      "type": "drawing",
+      "op": "modified",
+      "rev": 4,
+      "patch": []
+    },
+    {
+      "id": "dr_01K742SG0KKMCAP9X1E6Z5P4SW/st_01K7JJN800GZTJDW10K92BHQ94",
+      "type": "stroke",
+      "op": "modified",
+      "rev": 5,
+      "patch": [
+        {
+          "op": "replace",
+          "path": "/sides/left",
+          "value": null,
+          "oldValue": {
+            "colourId": "col_01M69QVBPPKD2V8CZ0SS9SBPWT",
+            "matrix": null
+          }
+        }
+      ]
+    },
+    {
+      "id": "dr_01K742SG0KKMCAP9X1E6Z5P4SW",
+      "type": "drawing",
+      "op": "modified",
+      "rev": 5,
+      "patch": []
+    },
+    {
+      "id": "dr_01K742SG0KKMCAP9X1E6Z5P4SW/st_01K7JJN800GZTJDW10K92BHQ94",
+      "type": "stroke",
+      "op": "modified",
+      "rev": 6,
+      "patch": [
+        {
+          "op": "replace",
+          "path": "/sides/left",
+          "value": {
+            "colourId": "col_01M69QVBPPKD2V8CZ0SS9SBPWT",
+            "matrix": null
+          },
+          "oldValue": null
+        }
+      ]
+    },
+    {
+      "id": "dr_01K742SG0KKMCAP9X1E6Z5P4SW",
+      "type": "drawing",
+      "op": "modified",
+      "rev": 6,
+      "patch": []
+    }
+  ],
+  "warnings": [],
+  "documentRev": 6,
+  "steps": [
+    {
+      "status": "ok",
+      "result": {
+        "projectId": "pr_01M69QVBPPKD2V8CZ0SS9SBPWQ",
+        "sceneId": "sc_01M69QVBPQ24GD8BP944RRK2H0",
+        "cameraId": "el_01M69QVBPQ24GD8BP944RRK2H2",
+        "elementId": "el_01M69QVBPQ24GD8BP944RRK2H3"
+      },
+      "changes": [],
+      "warnings": [],
+      "documentRev": 1
+    },
+    {
+      "status": "ok",
+      "result": {
+        "created": {
+          "scenes": [
+            "sc_01K742SG0YSRA1305J7887BDVZ",
+            "sc_01K742SG2M2H2H02X6D97DG7DN"
+          ],
+          "elements": [
+            "el_01K742SG0ZZYY8HE4MW501XMJV",
+            "el_01K742SG101DH4FAEWCWWK4QXC",
+            "el_01K742SG11W3SGB8Q1H50W74VB",
+            "el_01K742SG12CTMHXEB7TY99G4XV",
+            "el_01K742SG16N99XRCS0QEBWMRXY",
+            "el_01K742SG18FWWKH14N0RFB0V71",
+            "el_01K742SG1997BY67AWW1M4Q0ZJ",
+            "el_01K742SG1AC44Z1PPR4WQ603NH",
+            "el_01K742SG1BRDWJ0WNJDQZ83WKE",
+            "el_01K742SG1C65EBSWTVDPTZ7EJ0",
+            "el_01K742SG1DA6M66PRBFSTF1J1Y",
+            "el_01K742SG1E231F7W54P5SD2AAB",
+            "el_01K742SG1FGTQ1G2HBTRT3T0FR",
+            "el_01K742SG1G9A0XG0WHZYSGT4WG",
+            "el_01K742SG1H4KS4Y1FG6WTW7EAH",
+            "el_01K742SG1J3M0SDFTX818N3V2K",
+            "el_01K742SG1KNSDQQH1EG9W2NJWJ",
+            "el_01K742SG1M9CJZV12YYC0CWB8B",
+            "el_01K742SG1N7SQGF0AQF87N7SEP",
+            "el_01K742SG1PHXPEHSG259WYPMBV",
+            "el_01K742SG2N1KWPRQ64SA20BQWW",
+            "el_01K742SG2PA6VE2W9T5930NH2F"
+          ],
+          "drawings": [
+            "dr_01K742SG0KKMCAP9X1E6Z5P4SW",
+            "dr_01K742SG0M5J3BAJSW8241WA87",
+            "dr_01K742SG0NG5HTFZRD7238FZXJ",
+            "dr_01K742SG14TNTV1TR99SQHVKVK"
+          ],
+          "palettes": [
+            "pal_01K742SG02PPWW6K8BZY81A0M0",
+            "pal_01K742SG0AGX319NWQ7HE2MH4W"
+          ],
+          "assets": [
+            "as_01K742SG0G5HPQ0RBF5X4DSR0W",
+            "as_01K742SG0HZGBRF7HE49BFXZRC"
+          ]
+        },
+        "renamed": [
+          {
+            "id": "pen_01K742SG0DE4TVDEDEXW6JVXXB",
+            "from": "Pen 1",
+            "to": "Pen 1-2"
+          },
+          {
+            "id": "pen_01K742SG0ESMKZYV37X0CGJXWA",
+            "from": "Pen 2",
+            "to": "Pen 2-2"
+          },
+          {
+            "id": "pen_01K742SG0FT229CARSCZ4GF2DT",
+            "from": "Eraser 1",
+            "to": "Eraser 1-2"
+          }
+        ],
+        "recoveredColourIds": [],
+        "issues": [
+          {
+            "code": "project.mediaMissing",
+            "entry": "banks/db_01K742SG0JW3TVZ32SQC03AMY1/dr_01K742SG0M5J3BAJSW8241WA87/nd_01K742SG0XC99E0A2JJ9D4VJ2J.png",
+            "message": "the binary entry is not in the bundle, its folder or the project"
+          },
+          {
+            "code": "project.mediaMissing",
+            "entry": "banks/db_01K742SG134NGX5HGYXCKT44C7/dr_01K742SG14TNTV1TR99SQHVKVK/nd_01K742SG156C77GY438XM6D1T3.png",
+            "message": "the binary entry is not in the bundle, its folder or the project"
+          },
+          {
+            "code": "project.mediaMissing",
+            "entry": "media/as_01K742SG0G5HPQ0RBF5X4DSR0W.wav",
+            "message": "the binary entry is not in the bundle, its folder or the project"
+          },
+          {
+            "code": "project.mediaMissing",
+            "entry": "textures/fabric-day.png",
+            "message": "the binary entry is not in the bundle, its folder or the project"
+          },
+          {
+            "code": "project.mediaMissing",
+            "entry": "textures/fabric-night.png",
+            "message": "the binary entry is not in the bundle, its folder or the project"
+          }
+        ]
+      },
+      "changes": [
+        {
+          "id": "pen_01K742SG0DE4TVDEDEXW6JVXXB",
+          "type": "pen",
+          "op": "created",
+          "rev": 2,
+          "parentId": "pr_01M69QVBPPKD2V8CZ0SS9SBPWQ",
+          "index": 8
+        },
+        {
+          "id": "pen_01K742SG0ESMKZYV37X0CGJXWA",
+          "type": "pen",
+          "op": "created",
+          "rev": 2,
+          "parentId": "pr_01M69QVBPPKD2V8CZ0SS9SBPWQ",
+          "index": 9
+        },
+        {
+          "id": "pen_01K742SG0FT229CARSCZ4GF2DT",
+          "type": "pen",
+          "op": "created",
+          "rev": 2,
+          "parentId": "pr_01M69QVBPPKD2V8CZ0SS9SBPWQ",
+          "index": 10
+        },
+        {
+          "id": "as_01K742SG0G5HPQ0RBF5X4DSR0W",
+          "type": "asset",
+          "op": "created",
+          "rev": 2,
+          "parentId": "pr_01M69QVBPPKD2V8CZ0SS9SBPWQ",
+          "index": 0
+        },
+        {
+          "id": "as_01K742SG0HZGBRF7HE49BFXZRC",
+          "type": "asset",
+          "op": "created",
+          "rev": 2,
+          "parentId": "pr_01M69QVBPPKD2V8CZ0SS9SBPWQ",
+          "index": 1
+        },
+        {
+          "id": "pr_01M69QVBPPKD2V8CZ0SS9SBPWQ",
+          "type": "project",
+          "op": "modified",
+          "rev": 2,
+          "patch": [
+            {
+              "op": "add",
+              "path": "/palettes/1",
+              "value": {
+                "id": "pal_01K742SG02PPWW6K8BZY81A0M0",
+                "type": "palette"
+              }
+            },
+            {
+              "op": "add",
+              "path": "/palettes/2",
+              "value": {
+                "id": "pal_01K742SG0AGX319NWQ7HE2MH4W",
+                "type": "palette"
+              }
+            },
+            {
+              "op": "add",
+              "path": "/pens/8",
+              "value": {
+                "id": "pen_01K742SG0DE4TVDEDEXW6JVXXB",
+                "type": "pen"
+              }
+            },
+            {
+              "op": "add",
+              "path": "/pens/9",
+              "value": {
+                "id": "pen_01K742SG0ESMKZYV37X0CGJXWA",
+                "type": "pen"
+              }
+            },
+            {
+              "op": "add",
+              "path": "/pens/10",
+              "value": {
+                "id": "pen_01K742SG0FT229CARSCZ4GF2DT",
+                "type": "pen"
+              }
+            },
+            {
+              "op": "add",
+              "path": "/assets/0",
+              "value": {
+                "id": "as_01K742SG0G5HPQ0RBF5X4DSR0W",
+                "type": "asset"
+              }
+            },
+            {
+              "op": "add",
+              "path": "/assets/1",
+              "value": {
+                "id": "as_01K742SG0HZGBRF7HE49BFXZRC",
+                "type": "asset"
+              }
+            },
+            {
+              "op": "add",
+              "path": "/drawingBanks/1",
+              "value": {
+                "id": "db_01K742SG0JW3TVZ32SQC03AMY1",
+                "type": "drawingBank"
+              }
+            },
+            {
+              "op": "add",
+              "path": "/drawingBanks/2",
+              "value": {
+                "id": "db_01K742SG134NGX5HGYXCKT44C7",
+                "type": "drawingBank"
+              }
+            },
+            {
+              "op": "add",
+              "path": "/drawingBanks/3",
+              "value": {
+                "id": "db_01K742SG17ZDAHQTMS9MQ7TXWX",
+                "type": "drawingBank"
+              }
+            },
+            {
+              "op": "add",
+              "path": "/drawingBanks/4",
+              "value": {
+                "id": "db_01K742SG2QJBK0K2VMXAK7VG6V",
+                "type": "drawingBank"
+              }
+            },
+            {
+              "op": "add",
+              "path": "/scenes/1",
+              "value": {
+                "id": "sc_01K742SG0YSRA1305J7887BDVZ",
+                "type": "scene"
+              }
+            },
+            {
+              "op": "add",
+              "path": "/scenes/2",
+              "value": {
+                "id": "sc_01K742SG2M2H2H02X6D97DG7DN",
+                "type": "scene"
+              }
+            }
+          ]
+        },
+        {
+          "id": "sty_01K742SG037JJRBSXV1W92F1BN",
+          "type": "paletteStyle",
+          "op": "created",
+          "rev": 2,
+          "parentId": "pal_01K742SG02PPWW6K8BZY81A0M0",
+          "index": 0
+        },
+        {
+          "id": "sty_01K742SG047PMCPGTWHST62SWP",
+          "type": "paletteStyle",
+          "op": "created",
+          "rev": 2,
+          "parentId": "pal_01K742SG02PPWW6K8BZY81A0M0",
+          "index": 1
+        },
+        {
+          "id": "col_01K742SG059XGSNZ6M9MACZ2ZY",
+          "type": "swatch",
+          "op": "created",
+          "rev": 2,
+          "parentId": "pal_01K742SG02PPWW6K8BZY81A0M0",
+          "index": 0
+        },
+        {
+          "id": "col_01K742SG06BQ08FCT1TT8DF8MA",
+          "type": "swatch",
+          "op": "created",
+          "rev": 2,
+          "parentId": "pal_01K742SG02PPWW6K8BZY81A0M0",
+          "index": 1
+        },
+        {
+          "id": "col_01K742SG07AYM2NGPE2YJQJJHV",
+          "type": "swatch",
+          "op": "created",
+          "rev": 2,
+          "parentId": "pal_01K742SG02PPWW6K8BZY81A0M0",
+          "index": 2
+        },
+        {
+          "id": "col_01K742SG081DHX1EPGV9BJQAQH",
+          "type": "swatch",
+          "op": "created",
+          "rev": 2,
+          "parentId": "pal_01K742SG02PPWW6K8BZY81A0M0",
+          "index": 3
+        },
+        {
+          "id": "col_01K742SG09H7QE4RRR6XSYYS88",
+          "type": "swatch",
+          "op": "created",
+          "rev": 2,
+          "parentId": "pal_01K742SG02PPWW6K8BZY81A0M0",
+          "index": 4
+        },
+        {
+          "id": "pal_01K742SG02PPWW6K8BZY81A0M0",
+          "type": "palette",
+          "op": "created",
+          "rev": 2,
+          "parentId": "pr_01M69QVBPPKD2V8CZ0SS9SBPWQ",
+          "index": 1
+        },
+        {
+          "id": "sty_01K742SG0BHZ6HZ10GCCZF61NC",
+          "type": "paletteStyle",
+          "op": "created",
+          "rev": 2,
+          "parentId": "pal_01K742SG0AGX319NWQ7HE2MH4W",
+          "index": 0
+        },
+        {
+          "id": "col_01K742SG0CQ6FGRGT0FQ0QFDQQ",
+          "type": "swatch",
+          "op": "created",
+          "rev": 2,
+          "parentId": "pal_01K742SG0AGX319NWQ7HE2MH4W",
+          "index": 0
+        },
+        {
+          "id": "pal_01K742SG0AGX319NWQ7HE2MH4W",
+          "type": "palette",
+          "op": "created",
+          "rev": 2,
+          "parentId": "pr_01M69QVBPPKD2V8CZ0SS9SBPWQ",
+          "index": 2
+        },
+        {
+          "id": "db_01K742SG0JW3TVZ32SQC03AMY1",
+          "type": "drawingBank",
+          "op": "created",
+          "rev": 2,
+          "parentId": "pr_01M69QVBPPKD2V8CZ0SS9SBPWQ",
+          "index": 1
+        },
+        {
+          "id": "db_01K742SG134NGX5HGYXCKT44C7",
+          "type": "drawingBank",
+          "op": "created",
+          "rev": 2,
+          "parentId": "pr_01M69QVBPPKD2V8CZ0SS9SBPWQ",
+          "index": 2
+        },
+        {
+          "id": "db_01K742SG17ZDAHQTMS9MQ7TXWX",
+          "type": "drawingBank",
+          "op": "created",
+          "rev": 2,
+          "parentId": "pr_01M69QVBPPKD2V8CZ0SS9SBPWQ",
+          "index": 3
+        },
+        {
+          "id": "db_01K742SG2QJBK0K2VMXAK7VG6V",
+          "type": "drawingBank",
+          "op": "created",
+          "rev": 2,
+          "parentId": "pr_01M69QVBPPKD2V8CZ0SS9SBPWQ",
+          "index": 4
+        },
+        {
+          "id": "dr_01K742SG0KKMCAP9X1E6Z5P4SW/st_01K742SG0QD1F2HFZSX8R4V7WP",
+          "type": "stroke",
+          "op": "created",
+          "rev": 2,
+          "parentId": "dr_01K742SG0KKMCAP9X1E6Z5P4SW/nd_01K742SG0PC20XDQKASM9CGZHR",
+          "index": 0
+        },
+        {
+          "id": "dr_01K742SG0KKMCAP9X1E6Z5P4SW/st_01K742SG0R61SYK9GG0HGYVNBT",
+          "type": "stroke",
+          "op": "created",
+          "rev": 2,
+          "parentId": "dr_01K742SG0KKMCAP9X1E6Z5P4SW/nd_01K742SG0PC20XDQKASM9CGZHR",
+          "index": 1
+        },
+        {
+          "id": "dr_01K742SG0KKMCAP9X1E6Z5P4SW/st_01K742SG0S0NT23BWCZN64SFQ5",
+          "type": "stroke",
+          "op": "created",
+          "rev": 2,
+          "parentId": "dr_01K742SG0KKMCAP9X1E6Z5P4SW/nd_01K742SG0PC20XDQKASM9CGZHR",
+          "index": 2
+        },
+        {
+          "id": "dr_01K742SG0KKMCAP9X1E6Z5P4SW/nd_01K742SG0PC20XDQKASM9CGZHR",
+          "type": "drawingNode",
+          "op": "created",
+          "rev": 2,
+          "parentId": "dr_01K742SG0KKMCAP9X1E6Z5P4SW",
+          "index": 0
+        },
+        {
+          "id": "dr_01K742SG0KKMCAP9X1E6Z5P4SW/nd_01K742SG0V9A7HCXC74WKN3V5F",
+          "type": "drawingNode",
+          "op": "created",
+          "rev": 2,
+          "parentId": "dr_01K742SG0KKMCAP9X1E6Z5P4SW/nd_01K742SG0TX3WF1BSWWGMWM5WG",
+          "index": 0
+        },
+        {
+          "id": "dr_01K742SG0KKMCAP9X1E6Z5P4SW/nd_01K742SG0TX3WF1BSWWGMWM5WG",
+          "type": "drawingNode",
+          "op": "created",
+          "rev": 2,
+          "parentId": "dr_01K742SG0KKMCAP9X1E6Z5P4SW",
+          "index": 1
+        },
+        {
+          "id": "dr_01K742SG0KKMCAP9X1E6Z5P4SW/nd_01K742SG0WFAQJFKAZKV4CD56C",
+          "type": "drawingNode",
+          "op": "created",
+          "rev": 2,
+          "parentId": "dr_01K742SG0KKMCAP9X1E6Z5P4SW",
+          "index": 2
+        },
+        {
+          "id": "dr_01K742SG0KKMCAP9X1E6Z5P4SW",
+          "type": "drawing",
+          "op": "created",
+          "rev": 2,
+          "parentId": "db_01K742SG0JW3TVZ32SQC03AMY1",
+          "index": 0
+        },
+        {
+          "id": "dr_01K742SG0M5J3BAJSW8241WA87/nd_01K742SG0XC99E0A2JJ9D4VJ2J",
+          "type": "drawingNode",
+          "op": "created",
+          "rev": 2,
+          "parentId": "dr_01K742SG0M5J3BAJSW8241WA87",
+          "index": 0
+        },
+        {
+          "id": "dr_01K742SG0M5J3BAJSW8241WA87",
+          "type": "drawing",
+          "op": "created",
+          "rev": 2,
+          "parentId": "db_01K742SG0JW3TVZ32SQC03AMY1",
+          "index": 1
+        },
+        {
+          "id": "dr_01K742SG0NG5HTFZRD7238FZXJ",
+          "type": "drawing",
+          "op": "created",
+          "rev": 2,
+          "parentId": "db_01K742SG0JW3TVZ32SQC03AMY1",
+          "index": 2
+        },
+        {
+          "id": "dr_01K742SG14TNTV1TR99SQHVKVK/nd_01K742SG156C77GY438XM6D1T3",
+          "type": "drawingNode",
+          "op": "created",
+          "rev": 2,
+          "parentId": "dr_01K742SG14TNTV1TR99SQHVKVK",
+          "index": 0
+        },
+        {
+          "id": "dr_01K742SG14TNTV1TR99SQHVKVK",
+          "type": "drawing",
+          "op": "created",
+          "rev": 2,
+          "parentId": "db_01K742SG134NGX5HGYXCKT44C7",
+          "index": 0
+        },
+        {
+          "id": "tr_01K742SG2KA0JQ0743D7J833ZK",
+          "type": "transition",
+          "op": "created",
+          "rev": 2,
+          "parentId": "sc_01K742SG0YSRA1305J7887BDVZ",
+          "index": 0
+        },
+        {
+          "id": "sc_01K742SG0YSRA1305J7887BDVZ",
+          "type": "scene",
+          "op": "created",
+          "rev": 2,
+          "parentId": "pr_01M69QVBPPKD2V8CZ0SS9SBPWQ",
+          "index": 1
+        },
+        {
+          "id": "tr_01K742SG2R85DNDRN0V96K9JB3",
+          "type": "transition",
+          "op": "created",
+          "rev": 2,
+          "parentId": "sc_01K742SG2M2H2H02X6D97DG7DN",
+          "index": 0
+        },
+        {
+          "id": "sc_01K742SG2M2H2H02X6D97DG7DN",
+          "type": "scene",
+          "op": "created",
+          "rev": 2,
+          "parentId": "pr_01M69QVBPPKD2V8CZ0SS9SBPWQ",
+          "index": 2
+        },
+        {
+          "id": "sc_01M69QVBPQ24GD8BP944RRK2H0",
+          "type": "scene",
+          "op": "modified",
+          "rev": 2,
+          "patch": [
+            {
+              "op": "add",
+              "path": "/paletteStyles/pal_01K742SG02PPWW6K8BZY81A0M0",
+              "value": "sty_01K742SG037JJRBSXV1W92F1BN"
+            },
+            {
+              "op": "add",
+              "path": "/paletteStyles/pal_01K742SG0AGX319NWQ7HE2MH4W",
+              "value": "sty_01K742SG0BHZ6HZ10GCCZF61NC"
+            }
+          ]
+        },
+        {
+          "id": "el_01K742SG0ZZYY8HE4MW501XMJV",
+          "type": "element",
+          "op": "created",
+          "rev": 2,
+          "parentId": "sc_01K742SG0YSRA1305J7887BDVZ",
+          "index": 0
+        },
+        {
+          "id": "ch_01K742SG233AAGQYCZWV5XVRPP/ky_01K742SG245790JGK2KWB7Z8RK",
+          "type": "key",
+          "op": "created",
+          "rev": 2,
+          "parentId": "ch_01K742SG233AAGQYCZWV5XVRPP",
+          "index": 0
+        },
+        {
+          "id": "ch_01K742SG233AAGQYCZWV5XVRPP/ky_01K742SG25VVP67AJQQCV1HDFJ",
+          "type": "key",
+          "op": "created",
+          "rev": 2,
+          "parentId": "ch_01K742SG233AAGQYCZWV5XVRPP",
+          "index": 1
+        },
+        {
+          "id": "ch_01K742SG233AAGQYCZWV5XVRPP",
+          "type": "channel",
+          "op": "created",
+          "rev": 2,
+          "parentId": "el_01K742SG101DH4FAEWCWWK4QXC",
+          "index": 0
+        },
+        {
+          "id": "el_01K742SG101DH4FAEWCWWK4QXC",
+          "type": "element",
+          "op": "created",
+          "rev": 2,
+          "parentId": "sc_01K742SG0YSRA1305J7887BDVZ",
+          "index": 1
+        },
+        {
+          "id": "ch_01K742SG1XFEFQMBCSQ7D6AX3G/mp_01K742SG1YDDR34S3G0DS5PVPK",
+          "type": "motionPoint",
+          "op": "created",
+          "rev": 2,
+          "parentId": "ch_01K742SG1XFEFQMBCSQ7D6AX3G",
+          "index": 0
+        },
+        {
+          "id": "ch_01K742SG1XFEFQMBCSQ7D6AX3G/mp_01K742SG1Z9PEPA9753ZZ77JT4",
+          "type": "motionPoint",
+          "op": "created",
+          "rev": 2,
+          "parentId": "ch_01K742SG1XFEFQMBCSQ7D6AX3G",
+          "index": 1
+        },
+        {
+          "id": "ch_01K742SG1XFEFQMBCSQ7D6AX3G/mp_01K742SG20TE2N53WY0C9CNKZR",
+          "type": "motionPoint",
+          "op": "created",
+          "rev": 2,
+          "parentId": "ch_01K742SG1XFEFQMBCSQ7D6AX3G",
+          "index": 2
+        },
+        {
+          "id": "ch_01K742SG1XFEFQMBCSQ7D6AX3G",
+          "type": "channel",
+          "op": "created",
+          "rev": 2,
+          "parentId": "el_01K742SG11W3SGB8Q1H50W74VB",
+          "index": 0
+        },
+        {
+          "id": "ch_01K742SG1QFHD2CCT6MTEX2H16/ky_01K742SG1R4DF9HWRAYHFSFV52",
+          "type": "key",
+          "op": "created",
+          "rev": 2,
+          "parentId": "ch_01K742SG1QFHD2CCT6MTEX2H16",
+          "index": 0
+        },
+        {
+          "id": "ch_01K742SG1QFHD2CCT6MTEX2H16/ky_01K742SG1SKWBHK8Y5J227CEGJ",
+          "type": "key",
+          "op": "created",
+          "rev": 2,
+          "parentId": "ch_01K742SG1QFHD2CCT6MTEX2H16",
+          "index": 1
+        },
+        {
+          "id": "ch_01K742SG1QFHD2CCT6MTEX2H16/ky_01K742SG1TD4QPFJQ4CNK9WK64",
+          "type": "key",
+          "op": "created",
+          "rev": 2,
+          "parentId": "ch_01K742SG1QFHD2CCT6MTEX2H16",
+          "index": 2
+        },
+        {
+          "id": "ch_01K742SG1QFHD2CCT6MTEX2H16",
+          "type": "channel",
+          "op": "created",
+          "rev": 2,
+          "parentId": "el_01K742SG11W3SGB8Q1H50W74VB",
+          "index": 1
+        },
+        {
+          "id": "ch_01K742SG1VM41901DYSMMVJQDV/ky_01K742SG1W88HBTZF8Y8YFYY6Y",
+          "type": "key",
+          "op": "created",
+          "rev": 2,
+          "parentId": "ch_01K742SG1VM41901DYSMMVJQDV",
+          "index": 0
+        },
+        {
+          "id": "ch_01K742SG1VM41901DYSMMVJQDV",
+          "type": "channel",
+          "op": "created",
+          "rev": 2,
+          "parentId": "el_01K742SG11W3SGB8Q1H50W74VB",
+          "index": 2
+        },
+        {
+          "id": "ch_01K742SG21WVPRAB3YJD7ZJTMP/ky_01K742SG22N9R180HJWCAM4TT0",
+          "type": "key",
+          "op": "created",
+          "rev": 2,
+          "parentId": "ch_01K742SG21WVPRAB3YJD7ZJTMP",
+          "index": 0
+        },
+        {
+          "id": "ch_01K742SG21WVPRAB3YJD7ZJTMP",
+          "type": "channel",
+          "op": "created",
+          "rev": 2,
+          "parentId": "el_01K742SG11W3SGB8Q1H50W74VB",
+          "index": 3
+        },
+        {
+          "id": "el_01K742SG11W3SGB8Q1H50W74VB",
+          "type": "element",
+          "op": "created",
+          "rev": 2,
+          "parentId": "sc_01K742SG0YSRA1305J7887BDVZ",
+          "index": 2
+        },
+        {
+          "id": "el_01K742SG12CTMHXEB7TY99G4XV",
+          "type": "element",
+          "op": "created",
+          "rev": 2,
+          "parentId": "sc_01K742SG0YSRA1305J7887BDVZ",
+          "index": 3
+        },
+        {
+          "id": "el_01K742SG16N99XRCS0QEBWMRXY",
+          "type": "element",
+          "op": "created",
+          "rev": 2,
+          "parentId": "sc_01K742SG0YSRA1305J7887BDVZ",
+          "index": 4
+        },
+        {
+          "id": "pl_01K742SG26M7NBT20KCAM2NWXK",
+          "type": "soundPlacement",
+          "op": "created",
+          "rev": 2,
+          "parentId": "el_01K742SG18FWWKH14N0RFB0V71",
+          "index": 0
+        },
+        {
+          "id": "el_01K742SG18FWWKH14N0RFB0V71",
+          "type": "element",
+          "op": "created",
+          "rev": 2,
+          "parentId": "sc_01K742SG0YSRA1305J7887BDVZ",
+          "index": 5
+        },
+        {
+          "id": "ms_01K742SG27RRHRRZ5147YSZD8N",
+          "type": "mediaSequence",
+          "op": "created",
+          "rev": 2,
+          "parentId": "el_01K742SG1997BY67AWW1M4Q0ZJ",
+          "index": 0
+        },
+        {
+          "id": "el_01K742SG1997BY67AWW1M4Q0ZJ",
+          "type": "element",
+          "op": "created",
+          "rev": 2,
+          "parentId": "sc_01K742SG0YSRA1305J7887BDVZ",
+          "index": 6
+        },
+        {
+          "id": "el_01K742SG1AC44Z1PPR4WQ603NH",
+          "type": "element",
+          "op": "created",
+          "rev": 2,
+          "parentId": "sc_01K742SG0YSRA1305J7887BDVZ",
+          "index": 7
+        },
+        {
+          "id": "el_01K742SG1BRDWJ0WNJDQZ83WKE",
+          "type": "element",
+          "op": "created",
+          "rev": 2,
+          "parentId": "sc_01K742SG0YSRA1305J7887BDVZ",
+          "index": 8
+        },
+        {
+          "id": "el_01K742SG1C65EBSWTVDPTZ7EJ0",
+          "type": "element",
+          "op": "created",
+          "rev": 2,
+          "parentId": "sc_01K742SG0YSRA1305J7887BDVZ",
+          "index": 9
+        },
+        {
+          "id": "ch_01K742SG28JT6KZZDQ7TWV0TF4/ky_01K742SG29KYYRPTXV1PA56RKZ",
+          "type": "key",
+          "op": "created",
+          "rev": 2,
+          "parentId": "ch_01K742SG28JT6KZZDQ7TWV0TF4",
+          "index": 0
+        },
+        {
+          "id": "ch_01K742SG28JT6KZZDQ7TWV0TF4",
+          "type": "channel",
+          "op": "created",
+          "rev": 2,
+          "parentId": "el_01K742SG1DA6M66PRBFSTF1J1Y",
+          "index": 0
+        },
+        {
+          "id": "el_01K742SG1DA6M66PRBFSTF1J1Y",
+          "type": "element",
+          "op": "created",
+          "rev": 2,
+          "parentId": "sc_01K742SG0YSRA1305J7887BDVZ",
+          "index": 10
+        },
+        {
+          "id": "el_01K742SG1E231F7W54P5SD2AAB",
+          "type": "element",
+          "op": "created",
+          "rev": 2,
+          "parentId": "sc_01K742SG0YSRA1305J7887BDVZ",
+          "index": 11
+        },
+        {
+          "id": "el_01K742SG1FGTQ1G2HBTRT3T0FR",
+          "type": "element",
+          "op": "created",
+          "rev": 2,
+          "parentId": "sc_01K742SG0YSRA1305J7887BDVZ",
+          "index": 12
+        },
+        {
+          "id": "ch_01K742SG2A902410YTC6YNB8CP/ky_01K742SG2B0EFR540R9PQNAKNH",
+          "type": "key",
+          "op": "created",
+          "rev": 2,
+          "parentId": "ch_01K742SG2A902410YTC6YNB8CP",
+          "index": 0
+        },
+        {
+          "id": "ch_01K742SG2A902410YTC6YNB8CP/ky_01K742SG2CZK3CXVCMK8QF2AZC",
+          "type": "key",
+          "op": "created",
+          "rev": 2,
+          "parentId": "ch_01K742SG2A902410YTC6YNB8CP",
+          "index": 1
+        },
+        {
+          "id": "ch_01K742SG2A902410YTC6YNB8CP",
+          "type": "channel",
+          "op": "created",
+          "rev": 2,
+          "parentId": "el_01K742SG1G9A0XG0WHZYSGT4WG",
+          "index": 0
+        },
+        {
+          "id": "el_01K742SG1G9A0XG0WHZYSGT4WG",
+          "type": "element",
+          "op": "created",
+          "rev": 2,
+          "parentId": "sc_01K742SG0YSRA1305J7887BDVZ",
+          "index": 13
+        },
+        {
+          "id": "el_01K742SG1H4KS4Y1FG6WTW7EAH",
+          "type": "element",
+          "op": "created",
+          "rev": 2,
+          "parentId": "sc_01K742SG0YSRA1305J7887BDVZ",
+          "index": 14
+        },
+        {
+          "id": "ch_01K742SG2DZXM4KT9CZ6ANRKCP/ky_01K742SG2E256MQK6T8DN2VPX9",
+          "type": "key",
+          "op": "created",
+          "rev": 2,
+          "parentId": "ch_01K742SG2DZXM4KT9CZ6ANRKCP",
+          "index": 0
+        },
+        {
+          "id": "ch_01K742SG2DZXM4KT9CZ6ANRKCP/ky_01K742SG2F3QTEYV49GAK0E9H4",
+          "type": "key",
+          "op": "created",
+          "rev": 2,
+          "parentId": "ch_01K742SG2DZXM4KT9CZ6ANRKCP",
+          "index": 1
+        },
+        {
+          "id": "ch_01K742SG2DZXM4KT9CZ6ANRKCP",
+          "type": "channel",
+          "op": "created",
+          "rev": 2,
+          "parentId": "el_01K742SG1J3M0SDFTX818N3V2K",
+          "index": 0
+        },
+        {
+          "id": "el_01K742SG1J3M0SDFTX818N3V2K",
+          "type": "element",
+          "op": "created",
+          "rev": 2,
+          "parentId": "sc_01K742SG0YSRA1305J7887BDVZ",
+          "index": 15
+        },
+        {
+          "id": "el_01K742SG1KNSDQQH1EG9W2NJWJ",
+          "type": "element",
+          "op": "created",
+          "rev": 2,
+          "parentId": "sc_01K742SG0YSRA1305J7887BDVZ",
+          "index": 16
+        },
+        {
+          "id": "blk_01K742SG2GAF82J6A55D2DPMT0",
+          "type": "particleBlock",
+          "op": "created",
+          "rev": 2,
+          "parentId": "el_01K742SG1M9CJZV12YYC0CWB8B",
+          "index": 0
+        },
+        {
+          "id": "blk_01K742SG2HA6NWCNFE7TT60BEF",
+          "type": "particleBlock",
+          "op": "created",
+          "rev": 2,
+          "parentId": "el_01K742SG1M9CJZV12YYC0CWB8B",
+          "index": 1
+        },
+        {
+          "id": "el_01K742SG1M9CJZV12YYC0CWB8B",
+          "type": "element",
+          "op": "created",
+          "rev": 2,
+          "parentId": "sc_01K742SG0YSRA1305J7887BDVZ",
+          "index": 17
+        },
+        {
+          "id": "el_01K742SG1N7SQGF0AQF87N7SEP",
+          "type": "element",
+          "op": "created",
+          "rev": 2,
+          "parentId": "sc_01K742SG0YSRA1305J7887BDVZ",
+          "index": 18
+        },
+        {
+          "id": "blk_01K742SG2JC5D5MT11TFA41DD7",
+          "type": "particleBlock",
+          "op": "created",
+          "rev": 2,
+          "parentId": "el_01K742SG1PHXPEHSG259WYPMBV",
+          "index": 0
+        },
+        {
+          "id": "el_01K742SG1PHXPEHSG259WYPMBV",
+          "type": "element",
+          "op": "created",
+          "rev": 2,
+          "parentId": "sc_01K742SG0YSRA1305J7887BDVZ",
+          "index": 19
+        },
+        {
+          "id": "ch_01K742SG2S2FDCMX8612WVRZ7W/ky_01K742SG2T4DDQ4EYH53HG6GBD",
+          "type": "key",
+          "op": "created",
+          "rev": 2,
+          "parentId": "ch_01K742SG2S2FDCMX8612WVRZ7W",
+          "index": 0
+        },
+        {
+          "id": "ch_01K742SG2S2FDCMX8612WVRZ7W",
+          "type": "channel",
+          "op": "created",
+          "rev": 2,
+          "parentId": "el_01K742SG2N1KWPRQ64SA20BQWW",
+          "index": 0
+        },
+        {
+          "id": "el_01K742SG2N1KWPRQ64SA20BQWW",
+          "type": "element",
+          "op": "created",
+          "rev": 2,
+          "parentId": "sc_01K742SG2M2H2H02X6D97DG7DN",
+          "index": 0
+        },
+        {
+          "id": "el_01K742SG2PA6VE2W9T5930NH2F",
+          "type": "element",
+          "op": "created",
+          "rev": 2,
+          "parentId": "sc_01K742SG2M2H2H02X6D97DG7DN",
+          "index": 1
+        }
+      ],
+      "undo": {
+        "stepId": "u-1",
+        "label": "Import JSON"
+      },
+      "warnings": [],
+      "documentRev": 2
+    },
+    {
+      "status": "ok",
+      "result": {
+        "drawingId": "dr_01K742SG0KKMCAP9X1E6Z5P4SW",
+        "createdDrawing": false,
+        "strokeIds": [
+          "st_01K7JJN800GZTJDW10K92BHQ94"
+        ],
+        "zoneIds": [
+          "zn_EP3SZW3ED70DRT6N5FH8VVPPVZ"
+        ],
+        "layerId": "nd_01K7JJN8016QT212DZQ8X1KH8P",
+        "createdIds": [
+          "st_01K7JJN800GZTJDW10K92BHQ94",
+          "nd_01K7JJN8016QT212DZQ8X1KH8P",
+          "zn_EP3SZW3ED70DRT6N5FH8VVPPVZ"
+        ],
+        "modifiedIds": [],
+        "removedIds": [],
+        "rev": 3,
+        "hints": []
+      },
+      "changes": [
+        {
+          "id": "dr_01K742SG0KKMCAP9X1E6Z5P4SW/st_01K7JJN800GZTJDW10K92BHQ94",
+          "type": "stroke",
+          "op": "created",
+          "rev": 3,
+          "parentId": "dr_01K742SG0KKMCAP9X1E6Z5P4SW/nd_01K7JJN8016QT212DZQ8X1KH8P",
+          "index": 0
+        },
+        {
+          "id": "dr_01K742SG0KKMCAP9X1E6Z5P4SW/nd_01K7JJN8016QT212DZQ8X1KH8P",
+          "type": "drawingNode",
+          "op": "created",
+          "rev": 3,
+          "parentId": "dr_01K742SG0KKMCAP9X1E6Z5P4SW",
+          "index": 3
+        },
+        {
+          "id": "dr_01K742SG0KKMCAP9X1E6Z5P4SW",
+          "type": "drawing",
+          "op": "modified",
+          "rev": 3,
+          "patch": [
+            {
+              "op": "add",
+              "path": "/nodes/3",
+              "value": {
+                "id": "nd_01K7JJN8016QT212DZQ8X1KH8P",
+                "type": "drawingNode"
+              }
+            }
+          ]
+        }
+      ],
+      "undo": {
+        "stepId": "u-2",
+        "label": "Pencil Tool"
+      },
+      "warnings": [],
+      "documentRev": 3
+    },
+    {
+      "status": "ok",
+      "result": {
+        "documentRev": 2,
+        "issues": [
+          {
+            "issueId": "is_1",
+            "code": "unpaintedZones",
+            "severity": "info",
+            "objectId": "dr_01K742SG0KKMCAP9X1E6Z5P4SW/zn_EP3SZW3ED70DRT6N5FH8VVPPVZ",
+            "path": null,
+            "message": "a zone of 10000.0 du² in drawing `1` is unpainted",
+            "details": {
+              "drawingId": "dr_01K742SG0KKMCAP9X1E6Z5P4SW",
+              "layerId": "nd_01K7JJN8016QT212DZQ8X1KH8P",
+              "zoneId": "zn_EP3SZW3ED70DRT6N5FH8VVPPVZ",
+              "area": 10000.0,
+              "interiorPoint": {
+                "x": 1050.0,
+                "y": 1007.1484375
+              }
+            },
+            "fixes": [
+              {
+                "fixId": "fx_1",
+                "description": "Paint the zone (choose a colourId)",
+                "command": "colour.paint.apply",
+                "params": {
+                  "drawingId": "dr_01K742SG0KKMCAP9X1E6Z5P4SW",
+                  "objectIds": [
+                    "zn_EP3SZW3ED70DRT6N5FH8VVPPVZ"
+                  ]
+                },
+                "default": false
+              }
+            ]
+          }
+        ],
+        "counts": {
+          "error": 0,
+          "info": 1,
+          "warning": 0
+        },
+        "truncated": false,
+        "unavailable": []
+      },
+      "changes": [],
+      "warnings": [],
+      "documentRev": 3
+    },
+    {
+      "status": "ok",
+      "result": {
+        "drawingId": "dr_01K742SG0KKMCAP9X1E6Z5P4SW",
+        "painted": [
+          {
+            "drawingId": "dr_01K742SG0KKMCAP9X1E6Z5P4SW",
+            "objectId": "zn_EP3SZW3ED70DRT6N5FH8VVPPVZ",
+            "objectKind": "zone",
+            "previousColourId": null
+          }
+        ],
+        "skipped": [],
+        "addedStrokeIds": [],
+        "createdIds": [],
+        "modifiedIds": [
+          "zn_EP3SZW3ED70DRT6N5FH8VVPPVZ"
+        ],
+        "removedIds": [],
+        "rev": 4
+      },
+      "changes": [
+        {
+          "id": "dr_01K742SG0KKMCAP9X1E6Z5P4SW/st_01K7JJN800GZTJDW10K92BHQ94",
+          "type": "stroke",
+          "op": "modified",
+          "rev": 4,
+          "patch": [
+            {
+              "op": "replace",
+              "path": "/sides/left",
+              "value": {
+                "colourId": "col_01M69QVBPPKD2V8CZ0SS9SBPWT",
+                "matrix": null
+              },
+              "oldValue": null
+            }
+          ]
+        },
+        {
+          "id": "dr_01K742SG0KKMCAP9X1E6Z5P4SW",
+          "type": "drawing",
+          "op": "modified",
+          "rev": 4,
+          "patch": []
+        }
+      ],
+      "undo": {
+        "stepId": "u-3",
+        "label": "Paint"
+      },
+      "warnings": [],
+      "documentRev": 4
+    },
+    {
+      "status": "ok",
+      "result": {
+        "drawingId": "dr_01K742SG0KKMCAP9X1E6Z5P4SW",
+        "unpainted": [
+          {
+            "drawingId": "dr_01K742SG0KKMCAP9X1E6Z5P4SW",
+            "objectId": "zn_EP3SZW3ED70DRT6N5FH8VVPPVZ",
+            "previousColourId": "col_01M69QVBPPKD2V8CZ0SS9SBPWT"
+          }
+        ],
+        "skipped": [],
+        "createdIds": [],
+        "modifiedIds": [
+          "zn_EP3SZW3ED70DRT6N5FH8VVPPVZ"
+        ],
+        "removedIds": [],
+        "rev": 5
+      },
+      "changes": [
+        {
+          "id": "dr_01K742SG0KKMCAP9X1E6Z5P4SW/st_01K7JJN800GZTJDW10K92BHQ94",
+          "type": "stroke",
+          "op": "modified",
+          "rev": 5,
+          "patch": [
+            {
+              "op": "replace",
+              "path": "/sides/left",
+              "value": null,
+              "oldValue": {
+                "colourId": "col_01M69QVBPPKD2V8CZ0SS9SBPWT",
+                "matrix": null
+              }
+            }
+          ]
+        },
+        {
+          "id": "dr_01K742SG0KKMCAP9X1E6Z5P4SW",
+          "type": "drawing",
+          "op": "modified",
+          "rev": 5,
+          "patch": []
+        }
+      ],
+      "undo": {
+        "stepId": "u-4",
+        "label": "Unpaint"
+      },
+      "warnings": [],
+      "documentRev": 5
+    },
+    {
+      "status": "ok",
+      "result": {
+        "drawingId": "dr_01K742SG0KKMCAP9X1E6Z5P4SW",
+        "painted": [
+          {
+            "drawingId": "dr_01K742SG0KKMCAP9X1E6Z5P4SW",
+            "objectId": "zn_EP3SZW3ED70DRT6N5FH8VVPPVZ",
+            "objectKind": "zone",
+            "previousColourId": null
+          }
+        ],
+        "skippedPainted": 0,
+        "skipped": [],
+        "addedStrokeIds": [],
+        "createdIds": [],
+        "modifiedIds": [
+          "zn_EP3SZW3ED70DRT6N5FH8VVPPVZ"
+        ],
+        "removedIds": [],
+        "rev": 6
+      },
+      "changes": [
+        {
+          "id": "dr_01K742SG0KKMCAP9X1E6Z5P4SW/st_01K7JJN800GZTJDW10K92BHQ94",
+          "type": "stroke",
+          "op": "modified",
+          "rev": 6,
+          "patch": [
+            {
+              "op": "replace",
+              "path": "/sides/left",
+              "value": {
+                "colourId": "col_01M69QVBPPKD2V8CZ0SS9SBPWT",
+                "matrix": null
+              },
+              "oldValue": null
+            }
+          ]
+        },
+        {
+          "id": "dr_01K742SG0KKMCAP9X1E6Z5P4SW",
+          "type": "drawing",
+          "op": "modified",
+          "rev": 6,
+          "patch": []
+        }
+      ],
+      "undo": {
+        "stepId": "u-5",
+        "label": "Paint Unpainted"
+      },
+      "warnings": [],
+      "documentRev": 6
+    },
+    {
+      "status": "ok",
+      "result": {
+        "point": {
+          "x": 1050.0,
+          "y": 1050.0
+        },
+        "hits": [
+          {
+            "objectId": "zn_EP3SZW3ED70DRT6N5FH8VVPPVZ",
+            "objectKind": "zone",
+            "layerId": "nd_01K7JJN8016QT212DZQ8X1KH8P",
+            "groupPath": [],
+            "colourId": "col_01M69QVBPPKD2V8CZ0SS9SBPWT"
+          }
+        ],
+        "zoneId": "zn_EP3SZW3ED70DRT6N5FH8VVPPVZ",
+        "rev": 6
+      },
+      "changes": [],
+      "warnings": [],
+      "documentRev": 6
+    }
+  ]
+}

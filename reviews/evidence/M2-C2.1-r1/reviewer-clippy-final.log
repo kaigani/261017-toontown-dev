@@ -1,0 +1,8 @@
+cargo :     Checking tt-mcp v0.0.1 (C:\Users\kaiga\work\review\m2-c21-r1\crates\mcp)
+At line:2 char:61
++ ... urfaces.rs; cargo clippy -p tt-vector --test c21_r1_geometry -p tt-ex ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (    Checking tt...-r1\crates\mcp):String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.31s

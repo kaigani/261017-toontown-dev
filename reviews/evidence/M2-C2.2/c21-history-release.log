@@ -1,0 +1,14 @@
+   Compiling tt-executor v0.0.1 (C:\Users\kaiga\.t3\worktrees\261017-toontown-dev\m2-vector-engine\crates\executor)
+   Compiling tt-engine v0.0.1 (C:\Users\kaiga\.t3\worktrees\261017-toontown-dev\m2-vector-engine\crates\engine)
+   Compiling tt-mcp v0.0.1 (C:\Users\kaiga\.t3\worktrees\261017-toontown-dev\m2-vector-engine\crates\mcp)
+    Finished `release` profile [optimized + debuginfo] target(s) in 30.18s
+     Running tests\c21_history.rs (target\release\deps\c21_history-8cb49aefb1f37c2f.exe)
+
+running 2 tests
+geometry-history-r1: {"seed":"0xc12020261019a571","operations":10000,"replayOperations":10000,"strokeSetUndoRedoCreateRestoreDryRunPaint":[4658,3538,456,1,1823,637,814],"documentRev":10884,"durationSeconds":29.5134108,"oracle":"independent line geometry/thickness, square zone fill and revision stack; exact canonical all-entry byte checks every 100 operations; full fresh executor replay"}
+geometry-history-r3: {"seed":"0xc12320261019b683","operations":10000,"replayOperations":10000,"strokeSetUndoRedoCreateRestoreDryRunPaint":[4708,3496,423,1,1873,599,786],"documentRev":10816,"durationSeconds":29.613324,"oracle":"independent line geometry/thickness, square zone fill and revision stack; exact canonical all-entry byte checks every 100 operations; full fresh executor replay"}
+test geometry_oracle_seed_a571_matches_and_replays ... ok
+test geometry_oracle_seed_b683_matches_and_replays ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 29.77s
+

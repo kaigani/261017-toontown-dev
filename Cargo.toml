@@ -43,11 +43,20 @@ unicode-normalization = "0.1"
 getrandom = "0.4"
 ryu = "1.0"
 proptest = "1.12"
+# Constrained Delaunay triangulation for the medial-axis centre line (M2 C2.4, C23-T1; robust predicates, no fast-math).
+spade = { version = "2.15", default-features = false, features = ["std"] }
+# Bitmap decoding for import and vectorize (M2 C2.4): only the formats 02 §11.2 requires (PSD is read by tt-io).
+image = { version = "0.25", default-features = false, features = ["png", "jpeg", "bmp", "gif", "tiff", "tga"] }
 # Compile-fail tests of the executor's exclusive mutation capability (C1.2).
 trybuild = "1.0"
 # `doc.object.find` regex predicates (10 §10.3); linear-time engine.
 regex = "1"
 sha2 = "0.11"
+# Exact rational areas of zone intersections for carry-over (C22-R2-04; already resolved through jsonschema's
+# `fraction`, MIT OR Apache-2.0).
+num-bigint = "0.4"
+num-rational = { version = "0.4", default-features = false, features = ["num-bigint", "std"] }
+num-traits = "0.2"
 # Package containers (10 §6.2): deflate for JSON entries, CRC-32 of zip entries. Our own zip reader/writer (tt-persist)
 # applies the hostile-input rules of ZIP-01/ZIP-06 itself; these crates only compress and checksum.
 flate2 = { version = "1.1", default-features = false, features = ["rust_backend"] }
@@ -76,3 +85,18 @@ print_stderr = "warn"
 # Deterministic, reproducible-ish release builds; no LTO yet (CI time).
 codegen-units = 16
 debug = "line-tables-only"
+
+# Test builds optimise their dependencies (JSON, schema validation, compression, polygon unions; M2 C2.1): the suites
+# spend much of their time there and the Windows check job must fit its 60-minute budget. Workspace crates stay
+# unoptimised (their timing-based watchdog tests keep their margins) except the vector engine's geometry and the model
+# (M2 C2.3 round 2: staging a 20 000-anchor stroke took over 600 ms unoptimised on the Windows runner, beyond the
+# budget of the reviewer's MCP watchdog test setup); debug assertions and overflow checks stay on everywhere; release
+# builds are unaffected.
+[profile.dev.package."*"]
+opt-level = 2
+
+[profile.dev.package.tt-vector]
+opt-level = 1
+
+[profile.dev.package.tt-model]
+opt-level = 1

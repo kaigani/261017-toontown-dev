@@ -1,0 +1,15 @@
+diff --git a/tests/adversarial/c23-r2-audit.py b/tests/adversarial/c23-r2-audit.py
+index ac9a5bc..2ee8dc4 100644
+--- a/tests/adversarial/c23-r2-audit.py
++++ b/tests/adversarial/c23-r2-audit.py
+@@ -210,7 +210,9 @@ class Audit(unittest.TestCase):
+         row=next(x for x in lines if x.startswith('C21-R1-11 '))
+         self.assertIn(',M2,C2.4,',row)
+         self.assertIn('C21-R1-11',(ROOT/'reviews/M2-C2.3-handoff.md').read_text(encoding='utf-8'))
+-        declarations=(ROOT/'crates/registry/src/declared.rs').read_text(encoding='utf-8')
++        # History-pinned receipt (orchestrator ruling, M2 C2.4): the Feather owner as declared at the reviewed head; the
++        # owner later became "M2 C2.4 (blocked on SI-077)" (C2.4 plan ruling). The symmetry checks above stay live.
++        declarations=git('show',HEAD+':crates/registry/src/declared.rs')
+         feather=declarations.split('id: "draw.feather.apply"',1)[1].split('handler:',1)[0]
+         self.assertIn('Status::NotImplemented { owner: "M2 C2.4" }',feather)
+ 

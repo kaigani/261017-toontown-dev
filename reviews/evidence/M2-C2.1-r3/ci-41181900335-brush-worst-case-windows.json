@@ -1,0 +1,261 @@
+{
+  "budgetUnits": 1200000000,
+  "os": "windows",
+  "cases": [
+    {
+      "name": "99000-alternating-knots-round-100",
+      "spineAnchors": 2,
+      "pressureKnots": 99000,
+      "runs": [
+        {
+          "wallMs": 1990.0582,
+          "outcome": "ok",
+          "units": 425651220,
+          "anchors": 20
+        },
+        {
+          "wallMs": 2011.4592999999998,
+          "outcome": "ok",
+          "units": 425651220,
+          "anchors": 20
+        },
+        {
+          "wallMs": 1957.5605,
+          "outcome": "ok",
+          "units": 425651220,
+          "anchors": 20
+        }
+      ]
+    },
+    {
+      "name": "99000-alternating-knots-square-100",
+      "spineAnchors": 2,
+      "pressureKnots": 99000,
+      "runs": [
+        {
+          "wallMs": 775.1584,
+          "outcome": "ok",
+          "units": 27103868,
+          "anchors": 4
+        },
+        {
+          "wallMs": 779.2645,
+          "outcome": "ok",
+          "units": 27103868,
+          "anchors": 4
+        },
+        {
+          "wallMs": 762.2437,
+          "outcome": "ok",
+          "units": 27103868,
+          "anchors": 4
+        }
+      ]
+    },
+    {
+      "name": "99000-alternating-knots-oval-100-angled",
+      "spineAnchors": 2,
+      "pressureKnots": 99000,
+      "runs": [
+        {
+          "wallMs": 1952.0032,
+          "outcome": "ok",
+          "units": 425524500,
+          "anchors": 18
+        },
+        {
+          "wallMs": 1957.8294,
+          "outcome": "ok",
+          "units": 425524500,
+          "anchors": 18
+        },
+        {
+          "wallMs": 1958.575,
+          "outcome": "ok",
+          "units": 425524500,
+          "anchors": 18
+        }
+      ]
+    },
+    {
+      "name": "30000-anchor-zigzag-round-100",
+      "spineAnchors": 30000,
+      "pressureKnots": 2,
+      "runs": [
+        {
+          "wallMs": 1276.9002,
+          "outcome": "ok",
+          "units": 185214801,
+          "anchors": 45
+        },
+        {
+          "wallMs": 1280.9686,
+          "outcome": "ok",
+          "units": 185214801,
+          "anchors": 45
+        },
+        {
+          "wallMs": 1266.4039,
+          "outcome": "ok",
+          "units": 185214801,
+          "anchors": 45
+        }
+      ]
+    },
+    {
+      "name": "30000-anchor-zigzag-round-2",
+      "spineAnchors": 30000,
+      "pressureKnots": 2,
+      "runs": [
+        {
+          "wallMs": 439.4173,
+          "outcome": "ok",
+          "units": 109929858,
+          "anchors": 30010
+        },
+        {
+          "wallMs": 440.5254,
+          "outcome": "ok",
+          "units": 109929858,
+          "anchors": 30010
+        },
+        {
+          "wallMs": 449.7257,
+          "outcome": "ok",
+          "units": 109929858,
+          "anchors": 30010
+        }
+      ]
+    },
+    {
+      "name": "45000-anchor-dense-zigzag-flat-50",
+      "spineAnchors": 45000,
+      "pressureKnots": 2,
+      "runs": [
+        {
+          "wallMs": 802.4858,
+          "outcome": "ok",
+          "units": 47345410,
+          "anchors": 308
+        },
+        {
+          "wallMs": 792.7444,
+          "outcome": "ok",
+          "units": 47345410,
+          "anchors": 308
+        },
+        {
+          "wallMs": 787.653,
+          "outcome": "ok",
+          "units": 47345410,
+          "anchors": 308
+        }
+      ]
+    },
+    {
+      "name": "coil-1500-loops-round-1",
+      "spineAnchors": 36000,
+      "pressureKnots": 2,
+      "runs": [
+        {
+          "wallMs": 3672.5757,
+          "outcome": "limit.exceeded: sweeping this brush stroke needs more than 1200000000 units of work",
+          "units": 1200000000,
+          "anchors": 0
+        },
+        {
+          "wallMs": 3671.1068999999998,
+          "outcome": "limit.exceeded: sweeping this brush stroke needs more than 1200000000 units of work",
+          "units": 1200000000,
+          "anchors": 0
+        },
+        {
+          "wallMs": 3669.2406,
+          "outcome": "limit.exceeded: sweeping this brush stroke needs more than 1200000000 units of work",
+          "units": 1200000000,
+          "anchors": 0
+        }
+      ]
+    },
+    {
+      "name": "coil-3500-loops-round-1",
+      "spineAnchors": 42000,
+      "pressureKnots": 2,
+      "runs": [
+        {
+          "wallMs": 3671.5625,
+          "outcome": "limit.exceeded: sweeping this brush stroke needs more than 1200000000 units of work",
+          "units": 1200000000,
+          "anchors": 0
+        },
+        {
+          "wallMs": 3663.4426,
+          "outcome": "limit.exceeded: sweeping this brush stroke needs more than 1200000000 units of work",
+          "units": 1200000000,
+          "anchors": 0
+        },
+        {
+          "wallMs": 3662.8351000000002,
+          "outcome": "limit.exceeded: sweeping this brush stroke needs more than 1200000000 units of work",
+          "units": 1200000000,
+          "anchors": 0
+        }
+      ]
+    },
+    {
+      "name": "coil-1500-overlapping-loops-round-8",
+      "spineAnchors": 36000,
+      "pressureKnots": 2,
+      "runs": [
+        {
+          "wallMs": 1444.231,
+          "outcome": "ok",
+          "units": 81521168,
+          "anchors": 58
+        },
+        {
+          "wallMs": 1449.6561,
+          "outcome": "ok",
+          "units": 81521168,
+          "anchors": 58
+        },
+        {
+          "wallMs": 1437.0004999999999,
+          "outcome": "ok",
+          "units": 81521168,
+          "anchors": 58
+        }
+      ]
+    },
+    {
+      "name": "long-line-tiny-tip",
+      "spineAnchors": 2,
+      "pressureKnots": 90000,
+      "runs": [
+        {
+          "wallMs": 4336.140399999999,
+          "outcome": "limit.exceeded: sweeping this brush stroke needs more than 1200000000 units of work",
+          "units": 1200000000,
+          "anchors": 0
+        },
+        {
+          "wallMs": 4335.6927000000005,
+          "outcome": "limit.exceeded: sweeping this brush stroke needs more than 1200000000 units of work",
+          "units": 1200000000,
+          "anchors": 0
+        },
+        {
+          "wallMs": 4309.4878,
+          "outcome": "limit.exceeded: sweeping this brush stroke needs more than 1200000000 units of work",
+          "units": 1200000000,
+          "anchors": 0
+        }
+      ]
+    }
+  ],
+  "worst": {
+    "name": "long-line-tiny-tip",
+    "units": 1200000000,
+    "wallMs": 4336.140399999999
+  }
+}

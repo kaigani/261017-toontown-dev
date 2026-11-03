@@ -1,0 +1,36 @@
+cargo :    Compiling tt-vector v0.0.1 (C:\Users\kaiga\work\review\m2-c21-r1\crates\vector)
+At line:2 char:1
++ cargo test -p tt-vector --test c21_r1_geometry -- --nocapture > revie ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (   Compiling tt...\crates\vector):String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 1.01s
+     Running tests\c21_r1_geometry.rs (target\debug\deps\c21_r1_geometry-e8135ee546d83350.exe)
+
+running 3 tests
+test invalid_sample_values_are_rejected_before_fitting ... ok
+maximum fitted-curve to input-polyline distance: 3.3126932006255214 du
+
+thread 'fitted_curve_stays_within_tolerance_of_input_polyline' (28296) panicked at 
+crates\vector\tests\c21_r1_geometry.rs:30:5:
+02 3.3 tolerance 0.25 du; got 3.3126932006255214
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+test fitted_curve_stays_within_tolerance_of_input_polyline ... FAILED
+pressure peak outline bounds: Some(Rect { min_x: -25.465570963875138, min_y: -32.30749991636173, max_x: 
+45.90570753328226, max_y: 32.32964718931498 })
+
+thread 'brush_sweep_includes_pressure_peak_between_placements' (26600) panicked at 
+crates\vector\tests\c21_r1_geometry.rs:53:5:
+02 3.4: swept tip at pressure knot must be included
+test brush_sweep_includes_pressure_peak_between_placements ... FAILED
+
+failures:
+
+failures:
+    brush_sweep_includes_pressure_peak_between_placements
+    fitted_curve_stays_within_tolerance_of_input_polyline
+
+test result: FAILED. 1 passed; 2 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+error: test failed, to rerun pass `-p tt-vector --test c21_r1_geometry`

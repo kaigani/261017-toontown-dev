@@ -1,0 +1,1 @@
+{"argv": ["cargo", "fmt", "--all", "--check"], "cwd": "C:\\Users\\kaiga\\work\\review\\m2-c24-r2", "env": {}, "startedAt": "2026-11-02T19:24:56.779966+00:00"}

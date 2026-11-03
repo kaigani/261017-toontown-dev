@@ -1,0 +1,959 @@
+{
+  "reviewedHead": "3c74c3432f2a1895b5aaca83e6ddf914cf6b4281",
+  "sourceRun": 41486947308,
+  "sdk": "2.0.0",
+  "calls": [
+    {
+      "id": "project.create",
+      "params": {
+        "name": "Snap oracle control",
+        "path": "C:\\Users\\kaiga\\work\\review\\m2-c24-r2\\target\\c24-r2-snap-ky7km6qg\\Snap.animpkg"
+      },
+      "envelope": {
+        "status": "ok",
+        "result": {
+          "projectId": "pr_01M6ETSBPWZYV904B8YK41DK2C",
+          "path": "C:\\Users\\kaiga\\work\\review\\m2-c24-r2\\target\\c24-r2-snap-ky7km6qg\\Snap.animpkg",
+          "sceneId": "sc_01M6ETSBQ09TX1KFCY5JGRGV2K",
+          "cameraId": "el_01M6ETSBQ09TX1KFCY5JGRGV2N",
+          "elementId": "el_01M6ETSBQ09TX1KFCY5JGRGV2P"
+        },
+        "changes": [],
+        "warnings": [],
+        "documentRev": 1
+      }
+    },
+    {
+      "id": "draw.content.add",
+      "params": {
+        "elementId": "scene:#1/element:\"Drawing\"",
+        "frame": 1,
+        "createDrawing": true,
+        "select": false,
+        "content": {
+          "nodes": [
+            {
+              "type": "layer",
+              "id": "l_a",
+              "layerKind": "pencil",
+              "strokes": [
+                {
+                  "id": "s0",
+                  "kind": "pencil",
+                  "closed": false,
+                  "colourId": null,
+                  "lineStyle": {
+                    "thickness": 1,
+                    "lineType": "solid"
+                  },
+                  "bezier": [
+                    {
+                      "x": 40,
+                      "y": 0
+                    },
+                    {
+                      "x": 40,
+                      "y": 0
+                    },
+                    {
+                      "x": 40,
+                      "y": 40
+                    },
+                    {
+                      "x": 40,
+                      "y": 40
+                    }
+                  ]
+                },
+                {
+                  "id": "s1",
+                  "kind": "pencil",
+                  "closed": false,
+                  "colourId": null,
+                  "lineStyle": {
+                    "thickness": 1,
+                    "lineType": "solid"
+                  },
+                  "bezier": [
+                    {
+                      "x": 80,
+                      "y": 20
+                    },
+                    {
+                      "x": 80,
+                      "y": 20
+                    },
+                    {
+                      "x": 80,
+                      "y": 20
+                    },
+                    {
+                      "x": 80,
+                      "y": 20
+                    }
+                  ]
+                },
+                {
+                  "id": "s2",
+                  "kind": "pencil",
+                  "closed": false,
+                  "colourId": null,
+                  "lineStyle": {
+                    "thickness": 1,
+                    "lineType": "solid"
+                  },
+                  "bezier": [
+                    {
+                      "x": 40,
+                      "y": 0
+                    },
+                    {
+                      "x": 40,
+                      "y": 0
+                    },
+                    {
+                      "x": 0,
+                      "y": 0
+                    },
+                    {
+                      "x": 0,
+                      "y": 0
+                    },
+                    {
+                      "x": 0,
+                      "y": 0
+                    },
+                    {
+                      "x": 60,
+                      "y": 60
+                    },
+                    {
+                      "x": 60,
+                      "y": 60
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      },
+      "envelope": {
+        "status": "ok",
+        "result": {
+          "drawingId": "dr_01K7JJN8005RTSXT5SK1NEYRA4",
+          "createdDrawing": true,
+          "idMap": {
+            "l_a": "nd_01K7JJN801YCDKBREM6ZPEE03N",
+            "s0": "st_01K7JJN802WYJWN0DJ8W6GQ07M",
+            "s1": "st_01K7JJN803NRAS8C6JBW6GY9Q9",
+            "s2": "st_01K7JJN80405SJPES98HS8754T"
+          },
+          "createdIds": [
+            "nd_01K7JJN801YCDKBREM6ZPEE03N",
+            "st_01K7JJN802WYJWN0DJ8W6GQ07M",
+            "st_01K7JJN803NRAS8C6JBW6GY9Q9",
+            "dr_01K7JJN8005RTSXT5SK1NEYRA4",
+            "st_01K7JJN805KZ4K0FTEGHWABSWE",
+            "st_01K7JJN806RMSQSBD2FP08CTET",
+            "zn_3Q2JB62ZJ57C9EM83XCMW2ZAMY"
+          ],
+          "modifiedIds": [],
+          "removedIds": [],
+          "rev": 2
+        },
+        "changes": [
+          {
+            "id": "db_01M6ETSBQ09TX1KFCY5JGRGV2J",
+            "type": "drawingBank",
+            "op": "modified",
+            "rev": 2,
+            "patch": [
+              {
+                "op": "add",
+                "path": "/drawings/0",
+                "value": {
+                  "id": "dr_01K7JJN8005RTSXT5SK1NEYRA4",
+                  "type": "drawing"
+                }
+              }
+            ]
+          },
+          {
+            "id": "dr_01K7JJN8005RTSXT5SK1NEYRA4/st_01K7JJN802WYJWN0DJ8W6GQ07M",
+            "type": "stroke",
+            "op": "created",
+            "rev": 2,
+            "parentId": "dr_01K7JJN8005RTSXT5SK1NEYRA4/nd_01K7JJN801YCDKBREM6ZPEE03N",
+            "index": 0
+          },
+          {
+            "id": "dr_01K7JJN8005RTSXT5SK1NEYRA4/st_01K7JJN803NRAS8C6JBW6GY9Q9",
+            "type": "stroke",
+            "op": "created",
+            "rev": 2,
+            "parentId": "dr_01K7JJN8005RTSXT5SK1NEYRA4/nd_01K7JJN801YCDKBREM6ZPEE03N",
+            "index": 1
+          },
+          {
+            "id": "dr_01K7JJN8005RTSXT5SK1NEYRA4/st_01K7JJN805KZ4K0FTEGHWABSWE",
+            "type": "stroke",
+            "op": "created",
+            "rev": 2,
+            "parentId": "dr_01K7JJN8005RTSXT5SK1NEYRA4/nd_01K7JJN801YCDKBREM6ZPEE03N",
+            "index": 2
+          },
+          {
+            "id": "dr_01K7JJN8005RTSXT5SK1NEYRA4/st_01K7JJN806RMSQSBD2FP08CTET",
+            "type": "stroke",
+            "op": "created",
+            "rev": 2,
+            "parentId": "dr_01K7JJN8005RTSXT5SK1NEYRA4/nd_01K7JJN801YCDKBREM6ZPEE03N",
+            "index": 3
+          },
+          {
+            "id": "dr_01K7JJN8005RTSXT5SK1NEYRA4/nd_01K7JJN801YCDKBREM6ZPEE03N",
+            "type": "drawingNode",
+            "op": "created",
+            "rev": 2,
+            "parentId": "dr_01K7JJN8005RTSXT5SK1NEYRA4",
+            "index": 0
+          },
+          {
+            "id": "dr_01K7JJN8005RTSXT5SK1NEYRA4",
+            "type": "drawing",
+            "op": "created",
+            "rev": 2,
+            "parentId": "db_01M6ETSBQ09TX1KFCY5JGRGV2J",
+            "index": 0
+          },
+          {
+            "id": "el_01M6ETSBQ09TX1KFCY5JGRGV2P",
+            "type": "element",
+            "op": "modified",
+            "rev": 2,
+            "patch": [
+              {
+                "op": "replace",
+                "path": "/exposure",
+                "range": {
+                  "from": 1,
+                  "to": 1
+                },
+                "value": [
+                  [
+                    "dr_01K7JJN8005RTSXT5SK1NEYRA4",
+                    1
+                  ]
+                ],
+                "oldValue": [
+                  [
+                    null,
+                    1
+                  ]
+                ]
+              }
+            ]
+          }
+        ],
+        "undo": {
+          "stepId": "u-1",
+          "label": "Paste"
+        },
+        "warnings": [],
+        "documentRev": 2
+      }
+    },
+    {
+      "id": "draw.drawing.get",
+      "params": {
+        "drawingId": "dr_01K7JJN8005RTSXT5SK1NEYRA4"
+      },
+      "envelope": {
+        "status": "ok",
+        "result": {
+          "drawingId": "dr_01K7JJN8005RTSXT5SK1NEYRA4",
+          "elementId": "el_01M6ETSBQ09TX1KFCY5JGRGV2P",
+          "name": "1",
+          "rev": 2,
+          "locked": false,
+          "space": {
+            "units": "du",
+            "duPerField": 100,
+            "yAxis": "up",
+            "origin": "drawingCentre"
+          },
+          "pivot": {
+            "x": 0.0,
+            "y": 0.0
+          },
+          "bounds": {
+            "x": -0.5,
+            "y": -0.5,
+            "width": 81.0,
+            "height": 61.0
+          },
+          "nodes": [
+            {
+              "type": "layer",
+              "id": "nd_01K7JJN801YCDKBREM6ZPEE03N",
+              "layerKind": "pencil",
+              "strokes": [
+                {
+                  "type": "stroke",
+                  "id": "st_01K7JJN802WYJWN0DJ8W6GQ07M",
+                  "kind": "pencil",
+                  "closed": false,
+                  "bezier": [
+                    {
+                      "x": 40.0,
+                      "y": 0.0
+                    },
+                    {
+                      "x": 40.0,
+                      "y": 0.0
+                    },
+                    {
+                      "x": 40.0,
+                      "y": 40.0
+                    },
+                    {
+                      "x": 40.0,
+                      "y": 40.0
+                    }
+                  ],
+                  "colourId": null,
+                  "lineStyle": {
+                    "thickness": 1.0,
+                    "lineType": "solid"
+                  },
+                  "pressure": null,
+                  "bounds": {
+                    "x": 39.5,
+                    "y": -0.5,
+                    "width": 1.0,
+                    "height": 41.0
+                  },
+                  "leftZoneId": "zn_3Q2JB62ZJ57C9EM83XCMW2ZAMY",
+                  "rightZoneId": null
+                },
+                {
+                  "type": "stroke",
+                  "id": "st_01K7JJN803NRAS8C6JBW6GY9Q9",
+                  "kind": "pencil",
+                  "closed": false,
+                  "bezier": [
+                    {
+                      "x": 80.0,
+                      "y": 20.0
+                    },
+                    {
+                      "x": 80.0,
+                      "y": 20.0
+                    },
+                    {
+                      "x": 80.0,
+                      "y": 20.0
+                    },
+                    {
+                      "x": 80.0,
+                      "y": 20.0
+                    }
+                  ],
+                  "colourId": null,
+                  "lineStyle": {
+                    "thickness": 1.0,
+                    "lineType": "solid"
+                  },
+                  "pressure": null,
+                  "bounds": {
+                    "x": 79.5,
+                    "y": 19.5,
+                    "width": 1.0,
+                    "height": 1.0
+                  },
+                  "leftZoneId": null,
+                  "rightZoneId": null
+                },
+                {
+                  "type": "stroke",
+                  "id": "st_01K7JJN805KZ4K0FTEGHWABSWE",
+                  "kind": "pencil",
+                  "closed": false,
+                  "bezier": [
+                    {
+                      "x": 40.0,
+                      "y": 0.0
+                    },
+                    {
+                      "x": 40.0,
+                      "y": 0.0
+                    },
+                    {
+                      "x": 0.0,
+                      "y": 0.0
+                    },
+                    {
+                      "x": 0.0,
+                      "y": 0.0
+                    },
+                    {
+                      "x": 0.0,
+                      "y": 0.0
+                    },
+                    {
+                      "x": 40.0,
+                      "y": 40.0
+                    },
+                    {
+                      "x": 40.0,
+                      "y": 40.0
+                    }
+                  ],
+                  "colourId": null,
+                  "lineStyle": {
+                    "thickness": 1.0,
+                    "lineType": "solid"
+                  },
+                  "pressure": null,
+                  "bounds": {
+                    "x": -0.5,
+                    "y": -0.5,
+                    "width": 41.0,
+                    "height": 41.0
+                  },
+                  "leftZoneId": null,
+                  "rightZoneId": "zn_3Q2JB62ZJ57C9EM83XCMW2ZAMY"
+                },
+                {
+                  "type": "stroke",
+                  "id": "st_01K7JJN806RMSQSBD2FP08CTET",
+                  "kind": "pencil",
+                  "closed": false,
+                  "bezier": [
+                    {
+                      "x": 40.0,
+                      "y": 40.0
+                    },
+                    {
+                      "x": 40.0,
+                      "y": 40.0
+                    },
+                    {
+                      "x": 60.0,
+                      "y": 60.0
+                    },
+                    {
+                      "x": 60.0,
+                      "y": 60.0
+                    }
+                  ],
+                  "colourId": null,
+                  "lineStyle": {
+                    "thickness": 1.0,
+                    "lineType": "solid"
+                  },
+                  "pressure": null,
+                  "bounds": {
+                    "x": 39.5,
+                    "y": 39.5,
+                    "width": 21.0,
+                    "height": 21.0
+                  },
+                  "leftZoneId": null,
+                  "rightZoneId": null
+                }
+              ],
+              "zones": [
+                {
+                  "type": "zone",
+                  "id": "zn_3Q2JB62ZJ57C9EM83XCMW2ZAMY",
+                  "colourId": null,
+                  "textureMatrix": null,
+                  "boundaryStrokeIds": [
+                    "st_01K7JJN802WYJWN0DJ8W6GQ07M",
+                    "st_01K7JJN805KZ4K0FTEGHWABSWE"
+                  ],
+                  "holes": [],
+                  "parentZoneId": null,
+                  "area": 800,
+                  "bounds": {
+                    "x": 0,
+                    "y": 0,
+                    "width": 40,
+                    "height": 40
+                  },
+                  "interiorPoint": {
+                    "x": 21.42578125,
+                    "y": 2.8515625
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        "changes": [],
+        "warnings": [],
+        "documentRev": 2
+      }
+    },
+    {
+      "id": "draw.point.move",
+      "params": {
+        "drawingId": "dr_01K7JJN8005RTSXT5SK1NEYRA4",
+        "points": [
+          {
+            "strokeId": "st_01K7JJN806RMSQSBD2FP08CTET",
+            "anchor": 0
+          }
+        ],
+        "delta": {
+          "x": 37,
+          "y": -17
+        },
+        "snap": true
+      },
+      "envelope": {
+        "status": "ok",
+        "result": {
+          "drawingId": "dr_01K7JJN8005RTSXT5SK1NEYRA4",
+          "createdIds": [
+            "zn_JXPE9PEXJX73BE8KZH9RAJ9RN2"
+          ],
+          "modifiedIds": [
+            "st_01K7JJN802WYJWN0DJ8W6GQ07M",
+            "st_01K7JJN805KZ4K0FTEGHWABSWE",
+            "st_01K7JJN806RMSQSBD2FP08CTET"
+          ],
+          "removedIds": [
+            "zn_3Q2JB62ZJ57C9EM83XCMW2ZAMY"
+          ],
+          "rev": 3
+        },
+        "changes": [
+          {
+            "id": "dr_01K7JJN8005RTSXT5SK1NEYRA4/st_01K7JJN802WYJWN0DJ8W6GQ07M",
+            "type": "stroke",
+            "op": "modified",
+            "rev": 3,
+            "patch": [
+              {
+                "op": "replace",
+                "path": "/points",
+                "value": [
+                  [
+                    40.0,
+                    0.0,
+                    0.0,
+                    0.0,
+                    0.0,
+                    0.0
+                  ],
+                  [
+                    80.0,
+                    20.0,
+                    0.0,
+                    0.0,
+                    0.0,
+                    0.0
+                  ]
+                ],
+                "oldValue": [
+                  [
+                    40.0,
+                    0.0,
+                    0.0,
+                    0.0,
+                    0.0,
+                    0.0
+                  ],
+                  [
+                    40.0,
+                    40.0,
+                    0.0,
+                    0.0,
+                    0.0,
+                    0.0
+                  ]
+                ]
+              }
+            ]
+          },
+          {
+            "id": "dr_01K7JJN8005RTSXT5SK1NEYRA4/st_01K7JJN805KZ4K0FTEGHWABSWE",
+            "type": "stroke",
+            "op": "modified",
+            "rev": 3,
+            "patch": [
+              {
+                "op": "replace",
+                "path": "/points",
+                "value": [
+                  [
+                    40.0,
+                    0.0,
+                    0.0,
+                    0.0,
+                    0.0,
+                    0.0
+                  ],
+                  [
+                    0.0,
+                    0.0,
+                    0.0,
+                    0.0,
+                    0.0,
+                    0.0
+                  ],
+                  [
+                    80.0,
+                    20.0,
+                    0.0,
+                    0.0,
+                    0.0,
+                    0.0
+                  ]
+                ],
+                "oldValue": [
+                  [
+                    40.0,
+                    0.0,
+                    0.0,
+                    0.0,
+                    0.0,
+                    0.0
+                  ],
+                  [
+                    0.0,
+                    0.0,
+                    0.0,
+                    0.0,
+                    0.0,
+                    0.0
+                  ],
+                  [
+                    40.0,
+                    40.0,
+                    0.0,
+                    0.0,
+                    0.0,
+                    0.0
+                  ]
+                ]
+              }
+            ]
+          },
+          {
+            "id": "dr_01K7JJN8005RTSXT5SK1NEYRA4/st_01K7JJN806RMSQSBD2FP08CTET",
+            "type": "stroke",
+            "op": "modified",
+            "rev": 3,
+            "patch": [
+              {
+                "op": "replace",
+                "path": "/points",
+                "value": [
+                  [
+                    80.0,
+                    20.0,
+                    0.0,
+                    0.0,
+                    0.0,
+                    0.0
+                  ],
+                  [
+                    60.0,
+                    60.0,
+                    0.0,
+                    0.0,
+                    0.0,
+                    0.0
+                  ]
+                ],
+                "oldValue": [
+                  [
+                    40.0,
+                    40.0,
+                    0.0,
+                    0.0,
+                    0.0,
+                    0.0
+                  ],
+                  [
+                    60.0,
+                    60.0,
+                    0.0,
+                    0.0,
+                    0.0,
+                    0.0
+                  ]
+                ]
+              }
+            ]
+          },
+          {
+            "id": "dr_01K7JJN8005RTSXT5SK1NEYRA4",
+            "type": "drawing",
+            "op": "modified",
+            "rev": 3,
+            "patch": []
+          }
+        ],
+        "undo": {
+          "stepId": "u-2",
+          "label": "Contour Editing"
+        },
+        "warnings": [],
+        "documentRev": 3
+      }
+    },
+    {
+      "id": "draw.drawing.get",
+      "params": {
+        "drawingId": "dr_01K7JJN8005RTSXT5SK1NEYRA4"
+      },
+      "envelope": {
+        "status": "ok",
+        "result": {
+          "drawingId": "dr_01K7JJN8005RTSXT5SK1NEYRA4",
+          "elementId": "el_01M6ETSBQ09TX1KFCY5JGRGV2P",
+          "name": "1",
+          "rev": 3,
+          "locked": false,
+          "space": {
+            "units": "du",
+            "duPerField": 100,
+            "yAxis": "up",
+            "origin": "drawingCentre"
+          },
+          "pivot": {
+            "x": 0.0,
+            "y": 0.0
+          },
+          "bounds": {
+            "x": -0.5,
+            "y": -0.5,
+            "width": 81.0,
+            "height": 61.0
+          },
+          "nodes": [
+            {
+              "type": "layer",
+              "id": "nd_01K7JJN801YCDKBREM6ZPEE03N",
+              "layerKind": "pencil",
+              "strokes": [
+                {
+                  "type": "stroke",
+                  "id": "st_01K7JJN802WYJWN0DJ8W6GQ07M",
+                  "kind": "pencil",
+                  "closed": false,
+                  "bezier": [
+                    {
+                      "x": 40.0,
+                      "y": 0.0
+                    },
+                    {
+                      "x": 40.0,
+                      "y": 0.0
+                    },
+                    {
+                      "x": 80.0,
+                      "y": 20.0
+                    },
+                    {
+                      "x": 80.0,
+                      "y": 20.0
+                    }
+                  ],
+                  "colourId": null,
+                  "lineStyle": {
+                    "thickness": 1.0,
+                    "lineType": "solid"
+                  },
+                  "pressure": null,
+                  "bounds": {
+                    "x": 39.5,
+                    "y": -0.5,
+                    "width": 41.0,
+                    "height": 21.0
+                  },
+                  "leftZoneId": "zn_JXPE9PEXJX73BE8KZH9RAJ9RN2",
+                  "rightZoneId": null
+                },
+                {
+                  "type": "stroke",
+                  "id": "st_01K7JJN803NRAS8C6JBW6GY9Q9",
+                  "kind": "pencil",
+                  "closed": false,
+                  "bezier": [
+                    {
+                      "x": 80.0,
+                      "y": 20.0
+                    },
+                    {
+                      "x": 80.0,
+                      "y": 20.0
+                    },
+                    {
+                      "x": 80.0,
+                      "y": 20.0
+                    },
+                    {
+                      "x": 80.0,
+                      "y": 20.0
+                    }
+                  ],
+                  "colourId": null,
+                  "lineStyle": {
+                    "thickness": 1.0,
+                    "lineType": "solid"
+                  },
+                  "pressure": null,
+                  "bounds": {
+                    "x": 79.5,
+                    "y": 19.5,
+                    "width": 1.0,
+                    "height": 1.0
+                  },
+                  "leftZoneId": null,
+                  "rightZoneId": null
+                },
+                {
+                  "type": "stroke",
+                  "id": "st_01K7JJN805KZ4K0FTEGHWABSWE",
+                  "kind": "pencil",
+                  "closed": false,
+                  "bezier": [
+                    {
+                      "x": 40.0,
+                      "y": 0.0
+                    },
+                    {
+                      "x": 40.0,
+                      "y": 0.0
+                    },
+                    {
+                      "x": 0.0,
+                      "y": 0.0
+                    },
+                    {
+                      "x": 0.0,
+                      "y": 0.0
+                    },
+                    {
+                      "x": 0.0,
+                      "y": 0.0
+                    },
+                    {
+                      "x": 80.0,
+                      "y": 20.0
+                    },
+                    {
+                      "x": 80.0,
+                      "y": 20.0
+                    }
+                  ],
+                  "colourId": null,
+                  "lineStyle": {
+                    "thickness": 1.0,
+                    "lineType": "solid"
+                  },
+                  "pressure": null,
+                  "bounds": {
+                    "x": -0.5,
+                    "y": -0.5,
+                    "width": 81.0,
+                    "height": 21.0
+                  },
+                  "leftZoneId": null,
+                  "rightZoneId": "zn_JXPE9PEXJX73BE8KZH9RAJ9RN2"
+                },
+                {
+                  "type": "stroke",
+                  "id": "st_01K7JJN806RMSQSBD2FP08CTET",
+                  "kind": "pencil",
+                  "closed": false,
+                  "bezier": [
+                    {
+                      "x": 80.0,
+                      "y": 20.0
+                    },
+                    {
+                      "x": 80.0,
+                      "y": 20.0
+                    },
+                    {
+                      "x": 60.0,
+                      "y": 60.0
+                    },
+                    {
+                      "x": 60.0,
+                      "y": 60.0
+                    }
+                  ],
+                  "colourId": null,
+                  "lineStyle": {
+                    "thickness": 1.0,
+                    "lineType": "solid"
+                  },
+                  "pressure": null,
+                  "bounds": {
+                    "x": 59.5,
+                    "y": 19.5,
+                    "width": 21.0,
+                    "height": 41.0
+                  },
+                  "leftZoneId": null,
+                  "rightZoneId": null
+                }
+              ],
+              "zones": [
+                {
+                  "type": "zone",
+                  "id": "zn_JXPE9PEXJX73BE8KZH9RAJ9RN2",
+                  "colourId": null,
+                  "textureMatrix": null,
+                  "boundaryStrokeIds": [
+                    "st_01K7JJN802WYJWN0DJ8W6GQ07M",
+                    "st_01K7JJN805KZ4K0FTEGHWABSWE"
+                  ],
+                  "holes": [],
+                  "parentZoneId": null,
+                  "area": 400,
+                  "bounds": {
+                    "x": 0,
+                    "y": 0,
+                    "width": 80,
+                    "height": 20
+                  },
+                  "interiorPoint": {
+                    "x": 24.2890625,
+                    "y": 1.4296875
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        "changes": [],
+        "warnings": [],
+        "documentRev": 3
+      }
+    }
+  ],
+  "beforeArea": 800.0,
+  "afterArea": 400.0,
+  "shippedOraclePredictedArea": 460.0,
+  "requestedPoint": [
+    77,
+    23
+  ],
+  "nearestOtherCollapsedContour": [
+    80,
+    20
+  ],
+  "distance": 4.242640687119285,
+  "radius": 8,
+  "anchorsAtSnapPoint": 5,
+  "passed": true
+}

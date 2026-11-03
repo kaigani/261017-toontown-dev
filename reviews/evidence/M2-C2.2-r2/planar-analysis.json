@@ -1,0 +1,155 @@
+{
+  "planar-worst-case-windows.json": {
+    "cases": [
+      {
+        "name": "100000-small-curves-plus-one",
+        "maxWallMs": 3374.049,
+        "maxUnits": 931042320
+      },
+      {
+        "name": "grid-200x200-crossing-lines",
+        "maxWallMs": 663.1571,
+        "maxUnits": 318410926
+      },
+      {
+        "name": "grid-600x600-crossing-lines",
+        "maxWallMs": 3070.0214,
+        "maxUnits": 1672507212
+      },
+      {
+        "name": "10000-concentric-squares",
+        "maxWallMs": 1818.6741,
+        "maxUnits": 1200160000
+      },
+      {
+        "name": "20000-separate-closed-squares",
+        "maxWallMs": 334.0017,
+        "maxUnits": 137183593
+      },
+      {
+        "name": "1500-random-crossing-lines",
+        "maxWallMs": 2451.0081,
+        "maxUnits": 1208806567
+      },
+      {
+        "name": "5000-point-random-scribble",
+        "maxWallMs": 272.81460000000004,
+        "maxUnits": 1515558800
+      },
+      {
+        "name": "100000-point-dense-zigzag",
+        "maxWallMs": 43.201499999999996,
+        "maxUnits": 15000482029
+      },
+      {
+        "name": "100000-coincident-outlines-plus-one",
+        "maxWallMs": 474.5312,
+        "maxUnits": 60003200026
+      }
+    ],
+    "maxWallMs": 3374.049,
+    "underTenSeconds": true
+  },
+  "ci-planar-worst-case-windows.json": {
+    "cases": [
+      {
+        "name": "100000-small-curves-plus-one",
+        "maxWallMs": 5330.4932,
+        "maxUnits": 931042320
+      },
+      {
+        "name": "grid-200x200-crossing-lines",
+        "maxWallMs": 1160.2296000000001,
+        "maxUnits": 318410926
+      },
+      {
+        "name": "grid-600x600-crossing-lines",
+        "maxWallMs": 5788.5010999999995,
+        "maxUnits": 1672507212
+      },
+      {
+        "name": "10000-concentric-squares",
+        "maxWallMs": 2658.1191,
+        "maxUnits": 1200160000
+      },
+      {
+        "name": "20000-separate-closed-squares",
+        "maxWallMs": 618.8110999999999,
+        "maxUnits": 137183593
+      },
+      {
+        "name": "1500-random-crossing-lines",
+        "maxWallMs": 4338.045700000001,
+        "maxUnits": 1208806567
+      },
+      {
+        "name": "5000-point-random-scribble",
+        "maxWallMs": 502.344,
+        "maxUnits": 1515558800
+      },
+      {
+        "name": "100000-point-dense-zigzag",
+        "maxWallMs": 83.1019,
+        "maxUnits": 15000482029
+      },
+      {
+        "name": "100000-coincident-outlines-plus-one",
+        "maxWallMs": 883.1972999999999,
+        "maxUnits": 60003200026
+      }
+    ],
+    "maxWallMs": 5788.5010999999995,
+    "underTenSeconds": true
+  },
+  "ci-planar-worst-case-macos.json": {
+    "cases": [
+      {
+        "name": "100000-small-curves-plus-one",
+        "maxWallMs": 4531.487459,
+        "maxUnits": 931042320
+      },
+      {
+        "name": "grid-200x200-crossing-lines",
+        "maxWallMs": 742.6035840000001,
+        "maxUnits": 318410926
+      },
+      {
+        "name": "grid-600x600-crossing-lines",
+        "maxWallMs": 7002.648792,
+        "maxUnits": 1672507212
+      },
+      {
+        "name": "10000-concentric-squares",
+        "maxWallMs": 1595.5164160000002,
+        "maxUnits": 1200160000
+      },
+      {
+        "name": "20000-separate-closed-squares",
+        "maxWallMs": 588.4534580000001,
+        "maxUnits": 137183593
+      },
+      {
+        "name": "1500-random-crossing-lines",
+        "maxWallMs": 4376.212500000001,
+        "maxUnits": 1208806567
+      },
+      {
+        "name": "5000-point-random-scribble",
+        "maxWallMs": 367.76883399999997,
+        "maxUnits": 1515558800
+      },
+      {
+        "name": "100000-point-dense-zigzag",
+        "maxWallMs": 122.729333,
+        "maxUnits": 15000482029
+      },
+      {
+        "name": "100000-coincident-outlines-plus-one",
+        "maxWallMs": 1643.740709,
+        "maxUnits": 60003200026
+      }
+    ],
+    "maxWallMs": 7002.648792,
+    "underTenSeconds": true
+  }
+}

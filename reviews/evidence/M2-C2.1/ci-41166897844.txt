@@ -1,0 +1,10 @@
+bundle (macos-latest)	success	2026-10-31T04:03:15Z	2026-10-31T04:10:57Z
+headless release (windows-latest)	success	2026-10-31T04:03:14Z	2026-10-31T04:31:38Z
+check (windows-latest)	success	2026-10-31T04:03:14Z	2026-10-31T04:49:07Z
+headless release (macos-latest)	success	2026-10-31T04:03:15Z	2026-10-31T04:22:07Z
+check (macos-latest)	success	2026-10-31T04:03:14Z	2026-10-31T04:28:00Z
+bundle (windows-latest)	success	2026-10-31T04:03:14Z	2026-10-31T04:14:59Z
+headless without a display (ubuntu)	success	2026-10-31T04:03:14Z	2026-10-31T04:05:20Z
+raster determinism (windows-latest)	success	2026-10-31T04:03:14Z	2026-10-31T04:06:45Z
+raster determinism (ubuntu-latest)	success	2026-10-31T04:03:14Z	2026-10-31T04:04:26Z
+raster determinism (macos-latest)	success	2026-10-31T04:03:14Z	2026-10-31T04:05:08Z

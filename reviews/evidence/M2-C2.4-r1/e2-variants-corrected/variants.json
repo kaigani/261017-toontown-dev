@@ -1,0 +1,807 @@
+[
+  {
+    "check": "two images complete as distinct drawings",
+    "ok": true,
+    "detail": {
+      "jobId": "job-1",
+      "commandId": "draw.vectorize.run",
+      "state": "succeeded",
+      "progress": 1.0,
+      "message": "vectorizing image 2 of 2",
+      "startedAt": "2026-11-02T13:07:14.808Z",
+      "result": {
+        "elementId": "el_01M6E5Y0HPG9TAVAWAZFG4WAPB",
+        "drawingIds": [
+          "dr_01K7JJN8039SV65S8P5V6A3QRQ",
+          "dr_01K7JJN800EXXPMVZJY2JN49Z1"
+        ],
+        "completed": 2,
+        "cancelled": false,
+        "skipped": []
+      },
+      "session": "agent:s1-287e1c"
+    }
+  },
+  {
+    "check": "stale vectorize expectRev refuses before job",
+    "ok": true,
+    "detail": {
+      "status": "error",
+      "changes": [],
+      "warnings": [],
+      "documentRev": 3,
+      "error": {
+        "code": "rev.conflict",
+        "message": "`scene:#1/element:\"Drawing\"` changed: rev 3, expected 0",
+        "details": {
+          "ref": "scene:#1/element:\"Drawing\"",
+          "id": "el_01M6E5Y0HPG9TAVAWAZFG4WAPB",
+          "expectedRev": 0,
+          "currentRev": 3,
+          "documentRev": 3,
+          "current": {
+            "id": "el_01M6E5Y0HPG9TAVAWAZFG4WAPB",
+            "type": "element",
+            "rev": 3,
+            "name": "Drawing",
+            "elementType": "drawing",
+            "loops": 1,
+            "loopType": "count",
+            "positionLoop": "cycle",
+            "role": "normal",
+            "deformable": false,
+            "visibleInScene": true,
+            "visibleInXsheet": true,
+            "locked": false,
+            "collapsed": false,
+            "markerColour": null,
+            "backgroundColour": null,
+            "columnWidth": 80,
+            "drawingBankId": "db_01M6E5Y0HPG9TAVAWAZFG4WAP7",
+            "exposure": [
+              [
+                "dr_01K7JJN8039SV65S8P5V6A3QRQ",
+                1
+              ],
+              [
+                "dr_01K7JJN800EXXPMVZJY2JN49Z1",
+                1
+              ]
+            ],
+            "transform": {
+              "offset": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+              },
+              "rotation": 0.0,
+              "skew": 0.0,
+              "scale": {
+                "x": 1.0,
+                "y": 1.0
+              },
+              "keepProportions": false,
+              "rotationPivot": {
+                "x": 0.0,
+                "y": 0.0
+              },
+              "scalePivot": {
+                "x": 0.0,
+                "y": 0.0
+              },
+              "rotateAboutPivot": false,
+              "lockDepth": false,
+              "orientToPath": false
+            },
+            "channels": {},
+            "createdAt": "2026-11-02T13:07:14.614Z"
+          }
+        },
+        "hint": "re-read the object and retry"
+      }
+    }
+  },
+  {
+    "check": "mid-job cancellation preserves a nonzero committed prefix",
+    "ok": true,
+    "detail": {
+      "jobId": "job-2",
+      "commandId": "draw.vectorize.run",
+      "state": "cancelled",
+      "progress": 0.015625,
+      "message": "vectorizing image 2 of 64",
+      "startedAt": "2026-11-02T13:07:14.854Z",
+      "result": {
+        "elementId": "el_01M6E5Y0HPG9TAVAWAZFG4WAPB",
+        "drawingIds": [
+          "dr_01K7JJN8002J458RCEQG8E9QQW"
+        ],
+        "completed": 1,
+        "cancelled": true,
+        "skipped": [
+          {
+            "index": 1,
+            "source": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-c24-r1-e2-a_jmydno\\lineart.png",
+            "reason": "cancelled"
+          },
+          {
+            "index": 2,
+            "source": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-c24-r1-e2-a_jmydno\\lineart.png",
+            "reason": "cancelled"
+          },
+          {
+            "index": 3,
+            "source": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-c24-r1-e2-a_jmydno\\lineart.png",
+            "reason": "cancelled"
+          },
+          {
+            "index": 4,
+            "source": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-c24-r1-e2-a_jmydno\\lineart.png",
+            "reason": "cancelled"
+          },
+          {
+            "index": 5,
+            "source": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-c24-r1-e2-a_jmydno\\lineart.png",
+            "reason": "cancelled"
+          },
+          {
+            "index": 6,
+            "source": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-c24-r1-e2-a_jmydno\\lineart.png",
+            "reason": "cancelled"
+          },
+          {
+            "index": 7,
+            "source": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-c24-r1-e2-a_jmydno\\lineart.png",
+            "reason": "cancelled"
+          },
+          {
+            "index": 8,
+            "source": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-c24-r1-e2-a_jmydno\\lineart.png",
+            "reason": "cancelled"
+          },
+          {
+            "index": 9,
+            "source": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-c24-r1-e2-a_jmydno\\lineart.png",
+            "reason": "cancelled"
+          },
+          {
+            "index": 10,
+            "source": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-c24-r1-e2-a_jmydno\\lineart.png",
+            "reason": "cancelled"
+          },
+          {
+            "index": 11,
+            "source": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-c24-r1-e2-a_jmydno\\lineart.png",
+            "reason": "cancelled"
+          },
+          {
+            "index": 12,
+            "source": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-c24-r1-e2-a_jmydno\\lineart.png",
+            "reason": "cancelled"
+          },
+          {
+            "index": 13,
+            "source": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-c24-r1-e2-a_jmydno\\lineart.png",
+            "reason": "cancelled"
+          },
+          {
+            "index": 14,
+            "source": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-c24-r1-e2-a_jmydno\\lineart.png",
+            "reason": "cancelled"
+          },
+          {
+            "index": 15,
+            "source": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-c24-r1-e2-a_jmydno\\lineart.png",
+            "reason": "cancelled"
+          },
+          {
+            "index": 16,
+            "source": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-c24-r1-e2-a_jmydno\\lineart.png",
+            "reason": "cancelled"
+          },
+          {
+            "index": 17,
+            "source": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-c24-r1-e2-a_jmydno\\lineart.png",
+            "reason": "cancelled"
+          },
+          {
+            "index": 18,
+            "source": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-c24-r1-e2-a_jmydno\\lineart.png",
+            "reason": "cancelled"
+          },
+          {
+            "index": 19,
+            "source": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-c24-r1-e2-a_jmydno\\lineart.png",
+            "reason": "cancelled"
+          },
+          {
+            "index": 20,
+            "source": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-c24-r1-e2-a_jmydno\\lineart.png",
+            "reason": "cancelled"
+          },
+          {
+            "index": 21,
+            "source": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-c24-r1-e2-a_jmydno\\lineart.png",
+            "reason": "cancelled"
+          },
+          {
+            "index": 22,
+            "source": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-c24-r1-e2-a_jmydno\\lineart.png",
+            "reason": "cancelled"
+          },
+          {
+            "index": 23,
+            "source": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-c24-r1-e2-a_jmydno\\lineart.png",
+            "reason": "cancelled"
+          },
+          {
+            "index": 24,
+            "source": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-c24-r1-e2-a_jmydno\\lineart.png",
+            "reason": "cancelled"
+          },
+          {
+            "index": 25,
+            "source": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-c24-r1-e2-a_jmydno\\lineart.png",
+            "reason": "cancelled"
+          },
+          {
+            "index": 26,
+            "source": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-c24-r1-e2-a_jmydno\\lineart.png",
+            "reason": "cancelled"
+          },
+          {
+            "index": 27,
+            "source": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-c24-r1-e2-a_jmydno\\lineart.png",
+            "reason": "cancelled"
+          },
+          {
+            "index": 28,
+            "source": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-c24-r1-e2-a_jmydno\\lineart.png",
+            "reason": "cancelled"
+          },
+          {
+            "index": 29,
+            "source": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-c24-r1-e2-a_jmydno\\lineart.png",
+            "reason": "cancelled"
+          },
+          {
+            "index": 30,
+            "source": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-c24-r1-e2-a_jmydno\\lineart.png",
+            "reason": "cancelled"
+          },
+          {
+            "index": 31,
+            "source": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-c24-r1-e2-a_jmydno\\lineart.png",
+            "reason": "cancelled"
+          },
+          {
+            "index": 32,
+            "source": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-c24-r1-e2-a_jmydno\\lineart.png",
+            "reason": "cancelled"
+          },
+          {
+            "index": 33,
+            "source": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-c24-r1-e2-a_jmydno\\lineart.png",
+            "reason": "cancelled"
+          },
+          {
+            "index": 34,
+            "source": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-c24-r1-e2-a_jmydno\\lineart.png",
+            "reason": "cancelled"
+          },
+          {
+            "index": 35,
+            "source": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-c24-r1-e2-a_jmydno\\lineart.png",
+            "reason": "cancelled"
+          },
+          {
+            "index": 36,
+            "source": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-c24-r1-e2-a_jmydno\\lineart.png",
+            "reason": "cancelled"
+          },
+          {
+            "index": 37,
+            "source": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-c24-r1-e2-a_jmydno\\lineart.png",
+            "reason": "cancelled"
+          },
+          {
+            "index": 38,
+            "source": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-c24-r1-e2-a_jmydno\\lineart.png",
+            "reason": "cancelled"
+          },
+          {
+            "index": 39,
+            "source": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-c24-r1-e2-a_jmydno\\lineart.png",
+            "reason": "cancelled"
+          },
+          {
+            "index": 40,
+            "source": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-c24-r1-e2-a_jmydno\\lineart.png",
+            "reason": "cancelled"
+          },
+          {
+            "index": 41,
+            "source": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-c24-r1-e2-a_jmydno\\lineart.png",
+            "reason": "cancelled"
+          },
+          {
+            "index": 42,
+            "source": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-c24-r1-e2-a_jmydno\\lineart.png",
+            "reason": "cancelled"
+          },
+          {
+            "index": 43,
+            "source": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-c24-r1-e2-a_jmydno\\lineart.png",
+            "reason": "cancelled"
+          },
+          {
+            "index": 44,
+            "source": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-c24-r1-e2-a_jmydno\\lineart.png",
+            "reason": "cancelled"
+          },
+          {
+            "index": 45,
+            "source": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-c24-r1-e2-a_jmydno\\lineart.png",
+            "reason": "cancelled"
+          },
+          {
+            "index": 46,
+            "source": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-c24-r1-e2-a_jmydno\\lineart.png",
+            "reason": "cancelled"
+          },
+          {
+            "index": 47,
+            "source": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-c24-r1-e2-a_jmydno\\lineart.png",
+            "reason": "cancelled"
+          },
+          {
+            "index": 48,
+            "source": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-c24-r1-e2-a_jmydno\\lineart.png",
+            "reason": "cancelled"
+          },
+          {
+            "index": 49,
+            "source": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-c24-r1-e2-a_jmydno\\lineart.png",
+            "reason": "cancelled"
+          },
+          {
+            "index": 50,
+            "source": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-c24-r1-e2-a_jmydno\\lineart.png",
+            "reason": "cancelled"
+          },
+          {
+            "index": 51,
+            "source": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-c24-r1-e2-a_jmydno\\lineart.png",
+            "reason": "cancelled"
+          },
+          {
+            "index": 52,
+            "source": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-c24-r1-e2-a_jmydno\\lineart.png",
+            "reason": "cancelled"
+          },
+          {
+            "index": 53,
+            "source": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-c24-r1-e2-a_jmydno\\lineart.png",
+            "reason": "cancelled"
+          },
+          {
+            "index": 54,
+            "source": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-c24-r1-e2-a_jmydno\\lineart.png",
+            "reason": "cancelled"
+          },
+          {
+            "index": 55,
+            "source": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-c24-r1-e2-a_jmydno\\lineart.png",
+            "reason": "cancelled"
+          },
+          {
+            "index": 56,
+            "source": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-c24-r1-e2-a_jmydno\\lineart.png",
+            "reason": "cancelled"
+          },
+          {
+            "index": 57,
+            "source": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-c24-r1-e2-a_jmydno\\lineart.png",
+            "reason": "cancelled"
+          },
+          {
+            "index": 58,
+            "source": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-c24-r1-e2-a_jmydno\\lineart.png",
+            "reason": "cancelled"
+          },
+          {
+            "index": 59,
+            "source": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-c24-r1-e2-a_jmydno\\lineart.png",
+            "reason": "cancelled"
+          },
+          {
+            "index": 60,
+            "source": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-c24-r1-e2-a_jmydno\\lineart.png",
+            "reason": "cancelled"
+          },
+          {
+            "index": 61,
+            "source": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-c24-r1-e2-a_jmydno\\lineart.png",
+            "reason": "cancelled"
+          },
+          {
+            "index": 62,
+            "source": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-c24-r1-e2-a_jmydno\\lineart.png",
+            "reason": "cancelled"
+          },
+          {
+            "index": 63,
+            "source": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-c24-r1-e2-a_jmydno\\lineart.png",
+            "reason": "cancelled"
+          }
+        ]
+      },
+      "session": "agent:s1-287e1c"
+    }
+  },
+  {
+    "check": "cancelled suffix uses SI-083 reasons and indices",
+    "ok": true,
+    "detail": {
+      "jobId": "job-2",
+      "commandId": "draw.vectorize.run",
+      "state": "cancelled",
+      "progress": 0.015625,
+      "message": "vectorizing image 2 of 64",
+      "startedAt": "2026-11-02T13:07:14.854Z",
+      "result": {
+        "elementId": "el_01M6E5Y0HPG9TAVAWAZFG4WAPB",
+        "drawingIds": [
+          "dr_01K7JJN8002J458RCEQG8E9QQW"
+        ],
+        "completed": 1,
+        "cancelled": true,
+        "skipped": [
+          {
+            "index": 1,
+            "source": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-c24-r1-e2-a_jmydno\\lineart.png",
+            "reason": "cancelled"
+          },
+          {
+            "index": 2,
+            "source": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-c24-r1-e2-a_jmydno\\lineart.png",
+            "reason": "cancelled"
+          },
+          {
+            "index": 3,
+            "source": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-c24-r1-e2-a_jmydno\\lineart.png",
+            "reason": "cancelled"
+          },
+          {
+            "index": 4,
+            "source": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-c24-r1-e2-a_jmydno\\lineart.png",
+            "reason": "cancelled"
+          },
+          {
+            "index": 5,
+            "source": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-c24-r1-e2-a_jmydno\\lineart.png",
+            "reason": "cancelled"
+          },
+          {
+            "index": 6,
+            "source": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-c24-r1-e2-a_jmydno\\lineart.png",
+            "reason": "cancelled"
+          },
+          {
+            "index": 7,
+            "source": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-c24-r1-e2-a_jmydno\\lineart.png",
+            "reason": "cancelled"
+          },
+          {
+            "index": 8,
+            "source": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-c24-r1-e2-a_jmydno\\lineart.png",
+            "reason": "cancelled"
+          },
+          {
+            "index": 9,
+            "source": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-c24-r1-e2-a_jmydno\\lineart.png",
+            "reason": "cancelled"
+          },
+          {
+            "index": 10,
+            "source": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-c24-r1-e2-a_jmydno\\lineart.png",
+            "reason": "cancelled"
+          },
+          {
+            "index": 11,
+            "source": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-c24-r1-e2-a_jmydno\\lineart.png",
+            "reason": "cancelled"
+          },
+          {
+            "index": 12,
+            "source": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-c24-r1-e2-a_jmydno\\lineart.png",
+            "reason": "cancelled"
+          },
+          {
+            "index": 13,
+            "source": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-c24-r1-e2-a_jmydno\\lineart.png",
+            "reason": "cancelled"
+          },
+          {
+            "index": 14,
+            "source": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-c24-r1-e2-a_jmydno\\lineart.png",
+            "reason": "cancelled"
+          },
+          {
+            "index": 15,
+            "source": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-c24-r1-e2-a_jmydno\\lineart.png",
+            "reason": "cancelled"
+          },
+          {
+            "index": 16,
+            "source": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-c24-r1-e2-a_jmydno\\lineart.png",
+            "reason": "cancelled"
+          },
+          {
+            "index": 17,
+            "source": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-c24-r1-e2-a_jmydno\\lineart.png",
+            "reason": "cancelled"
+          },
+          {
+            "index": 18,
+            "source": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-c24-r1-e2-a_jmydno\\lineart.png",
+            "reason": "cancelled"
+          },
+          {
+            "index": 19,
+            "source": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-c24-r1-e2-a_jmydno\\lineart.png",
+            "reason": "cancelled"
+          },
+          {
+            "index": 20,
+            "source": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-c24-r1-e2-a_jmydno\\lineart.png",
+            "reason": "cancelled"
+          },
+          {
+            "index": 21,
+            "source": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-c24-r1-e2-a_jmydno\\lineart.png",
+            "reason": "cancelled"
+          },
+          {
+            "index": 22,
+            "source": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-c24-r1-e2-a_jmydno\\lineart.png",
+            "reason": "cancelled"
+          },
+          {
+            "index": 23,
+            "source": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-c24-r1-e2-a_jmydno\\lineart.png",
+            "reason": "cancelled"
+          },
+          {
+            "index": 24,
+            "source": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-c24-r1-e2-a_jmydno\\lineart.png",
+            "reason": "cancelled"
+          },
+          {
+            "index": 25,
+            "source": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-c24-r1-e2-a_jmydno\\lineart.png",
+            "reason": "cancelled"
+          },
+          {
+            "index": 26,
+            "source": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-c24-r1-e2-a_jmydno\\lineart.png",
+            "reason": "cancelled"
+          },
+          {
+            "index": 27,
+            "source": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-c24-r1-e2-a_jmydno\\lineart.png",
+            "reason": "cancelled"
+          },
+          {
+            "index": 28,
+            "source": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-c24-r1-e2-a_jmydno\\lineart.png",
+            "reason": "cancelled"
+          },
+          {
+            "index": 29,
+            "source": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-c24-r1-e2-a_jmydno\\lineart.png",
+            "reason": "cancelled"
+          },
+          {
+            "index": 30,
+            "source": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-c24-r1-e2-a_jmydno\\lineart.png",
+            "reason": "cancelled"
+          },
+          {
+            "index": 31,
+            "source": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-c24-r1-e2-a_jmydno\\lineart.png",
+            "reason": "cancelled"
+          },
+          {
+            "index": 32,
+            "source": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-c24-r1-e2-a_jmydno\\lineart.png",
+            "reason": "cancelled"
+          },
+          {
+            "index": 33,
+            "source": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-c24-r1-e2-a_jmydno\\lineart.png",
+            "reason": "cancelled"
+          },
+          {
+            "index": 34,
+            "source": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-c24-r1-e2-a_jmydno\\lineart.png",
+            "reason": "cancelled"
+          },
+          {
+            "index": 35,
+            "source": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-c24-r1-e2-a_jmydno\\lineart.png",
+            "reason": "cancelled"
+          },
+          {
+            "index": 36,
+            "source": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-c24-r1-e2-a_jmydno\\lineart.png",
+            "reason": "cancelled"
+          },
+          {
+            "index": 37,
+            "source": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-c24-r1-e2-a_jmydno\\lineart.png",
+            "reason": "cancelled"
+          },
+          {
+            "index": 38,
+            "source": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-c24-r1-e2-a_jmydno\\lineart.png",
+            "reason": "cancelled"
+          },
+          {
+            "index": 39,
+            "source": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-c24-r1-e2-a_jmydno\\lineart.png",
+            "reason": "cancelled"
+          },
+          {
+            "index": 40,
+            "source": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-c24-r1-e2-a_jmydno\\lineart.png",
+            "reason": "cancelled"
+          },
+          {
+            "index": 41,
+            "source": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-c24-r1-e2-a_jmydno\\lineart.png",
+            "reason": "cancelled"
+          },
+          {
+            "index": 42,
+            "source": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-c24-r1-e2-a_jmydno\\lineart.png",
+            "reason": "cancelled"
+          },
+          {
+            "index": 43,
+            "source": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-c24-r1-e2-a_jmydno\\lineart.png",
+            "reason": "cancelled"
+          },
+          {
+            "index": 44,
+            "source": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-c24-r1-e2-a_jmydno\\lineart.png",
+            "reason": "cancelled"
+          },
+          {
+            "index": 45,
+            "source": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-c24-r1-e2-a_jmydno\\lineart.png",
+            "reason": "cancelled"
+          },
+          {
+            "index": 46,
+            "source": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-c24-r1-e2-a_jmydno\\lineart.png",
+            "reason": "cancelled"
+          },
+          {
+            "index": 47,
+            "source": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-c24-r1-e2-a_jmydno\\lineart.png",
+            "reason": "cancelled"
+          },
+          {
+            "index": 48,
+            "source": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-c24-r1-e2-a_jmydno\\lineart.png",
+            "reason": "cancelled"
+          },
+          {
+            "index": 49,
+            "source": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-c24-r1-e2-a_jmydno\\lineart.png",
+            "reason": "cancelled"
+          },
+          {
+            "index": 50,
+            "source": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-c24-r1-e2-a_jmydno\\lineart.png",
+            "reason": "cancelled"
+          },
+          {
+            "index": 51,
+            "source": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-c24-r1-e2-a_jmydno\\lineart.png",
+            "reason": "cancelled"
+          },
+          {
+            "index": 52,
+            "source": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-c24-r1-e2-a_jmydno\\lineart.png",
+            "reason": "cancelled"
+          },
+          {
+            "index": 53,
+            "source": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-c24-r1-e2-a_jmydno\\lineart.png",
+            "reason": "cancelled"
+          },
+          {
+            "index": 54,
+            "source": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-c24-r1-e2-a_jmydno\\lineart.png",
+            "reason": "cancelled"
+          },
+          {
+            "index": 55,
+            "source": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-c24-r1-e2-a_jmydno\\lineart.png",
+            "reason": "cancelled"
+          },
+          {
+            "index": 56,
+            "source": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-c24-r1-e2-a_jmydno\\lineart.png",
+            "reason": "cancelled"
+          },
+          {
+            "index": 57,
+            "source": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-c24-r1-e2-a_jmydno\\lineart.png",
+            "reason": "cancelled"
+          },
+          {
+            "index": 58,
+            "source": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-c24-r1-e2-a_jmydno\\lineart.png",
+            "reason": "cancelled"
+          },
+          {
+            "index": 59,
+            "source": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-c24-r1-e2-a_jmydno\\lineart.png",
+            "reason": "cancelled"
+          },
+          {
+            "index": 60,
+            "source": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-c24-r1-e2-a_jmydno\\lineart.png",
+            "reason": "cancelled"
+          },
+          {
+            "index": 61,
+            "source": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-c24-r1-e2-a_jmydno\\lineart.png",
+            "reason": "cancelled"
+          },
+          {
+            "index": 62,
+            "source": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-c24-r1-e2-a_jmydno\\lineart.png",
+            "reason": "cancelled"
+          },
+          {
+            "index": 63,
+            "source": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-c24-r1-e2-a_jmydno\\lineart.png",
+            "reason": "cancelled"
+          }
+        ]
+      },
+      "session": "agent:s1-287e1c"
+    }
+  },
+  {
+    "check": "extra edit saved",
+    "ok": true,
+    "detail": {
+      "jobId": "job-3",
+      "commandId": "project.saveAs",
+      "state": "succeeded",
+      "progress": 1.0,
+      "message": "Replace",
+      "startedAt": "2026-11-02T13:07:14.959Z",
+      "result": {
+        "path": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-c24-r1-e2-a_jmydno\\edited-base.animpkg",
+        "projectSaved": true,
+        "globalLibrarySaved": false
+      },
+      "session": "agent:s1-287e1c"
+    }
+  },
+  {
+    "check": "replay after extra edit fails with revision conflict",
+    "ok": false,
+    "detail": {
+      "exit": 2,
+      "log": "",
+      "stderr": "toontown-headless: C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-c24-r1-e2-a_jmydno\\guarded-replay.json is not a batch (label, steps[{id, params, as?}]): missing field `label`\n"
+    }
+  }
+]

@@ -8,16 +8,31 @@ pub(crate) mod agent;
 pub(crate) mod app;
 pub(crate) mod bundle;
 pub(crate) mod checkpoint;
+pub(crate) mod colour;
+pub(crate) mod colour_edit;
+pub(crate) mod colour_recovery;
 pub(crate) mod common;
 pub(crate) mod derived;
 pub(crate) mod doc;
 pub(crate) mod doc_io;
 pub(crate) mod doc_lint;
+pub(crate) mod draw;
+pub(crate) mod draw_cut;
+pub(crate) mod draw_layers;
+pub(crate) mod draw_render;
+pub(crate) mod draw_select;
+pub(crate) mod draw_shapes;
+pub(crate) mod draw_stroke;
+pub(crate) mod draw_strokeops;
+pub(crate) mod draw_text;
+pub(crate) mod draw_transform;
+pub(crate) mod draw_vectorize;
 pub(crate) mod edit;
 pub(crate) mod edit_ops;
 pub(crate) mod inspect;
 pub(crate) mod job;
 pub(crate) mod project;
+pub(crate) mod tool_symmetry;
 pub(crate) mod window;
 pub(crate) mod workspace;
 
@@ -106,6 +121,71 @@ pub(crate) static ALL: &[&Command] = &[
     &doc::DOC_CHANGED,
     &doc_io::DOC_ASSET_STATUS_CHANGED,
     &doc_io::DOC_PACKAGE_CHANGED_ON_DISK,
+    // draw (M2 C2.1)
+    &draw::DRAW_DRAWING_GET,
+    &draw::DRAW_CURRENT_GET,
+    &draw::DRAW_PIVOT_SET,
+    &draw::DRAW_OBJECT_DELETE,
+    &draw::DRAW_GROUP_CREATE,
+    &draw::DRAW_GROUP_DELETE,
+    &draw::DRAW_DRAWING_CHANGED,
+    &tool_symmetry::TOOL_SYMMETRY_SET,
+    &draw_vectorize::DRAW_VECTORIZE_PREVIEW,
+    &draw_vectorize::DRAW_VECTORIZE_RUN,
+    &draw_select::DRAW_SELECTION_SET,
+    &draw_select::DRAW_SELECTION_GET,
+    &draw_select::DRAW_POINT_SELECTION_SET,
+    &draw_select::DRAW_SELECTION_CHANGED,
+    &draw_select::DRAW_BOUNDS_GET,
+    &draw_select::DRAW_VIEW_MAPPING_GET,
+    &draw_select::DRAW_INSPECTOR_PREVIEW_SET,
+    &draw_select::DRAW_DRAWING_RENAME,
+    &draw_select::DRAW_LOCK_SET,
+    &draw_shapes::DRAW_RECTANGLE_ADD,
+    &draw_shapes::DRAW_ELLIPSE_ADD,
+    &draw_shapes::DRAW_LINE_ADD,
+    &draw_shapes::DRAW_POLYLINE_ADD,
+    &draw_transform::DRAW_TRANSFORM_APPLY,
+    &draw_transform::DRAW_FLIP_APPLY,
+    &draw_transform::DRAW_ROTATE_APPLY,
+    &draw_transform::DRAW_ENVELOPE_APPLY,
+    &draw_transform::DRAW_REPOSITION_ALL_APPLY,
+    &draw_transform::DRAW_POINT_ADD,
+    &draw_transform::DRAW_POINT_MOVE,
+    &draw_transform::DRAW_POINT_SET,
+    &draw_transform::DRAW_POINT_DELETE,
+    &draw_transform::DRAW_SEGMENT_MOVE,
+    &draw_cut::DRAW_CUT_APPLY,
+    &draw_cut::DRAW_ERASE_APPLY,
+    &draw_layers::DRAW_ARRANGE_APPLY,
+    &draw_layers::DRAW_FLATTEN_APPLY,
+    &draw_layers::DRAW_OPTIMIZE_APPLY,
+    &draw_strokeops::DRAW_SMOOTH_APPLY,
+    &draw_strokeops::DRAW_LINES_TO_BRUSH_APPLY,
+    &draw_strokeops::DRAW_BREAK_APART_APPLY,
+    &draw_strokeops::DRAW_CENTRE_LINE_APPLY,
+    &draw_render::DRAW_DRAWING_RENDER,
+    &colour_edit::COLOUR_FILL_MAPPING_GET,
+    &colour_edit::COLOUR_FILL_MAPPING_SET,
+    &colour_edit::COLOUR_SELECTION_APPLY,
+    &colour_edit::COLOUR_RECOLOUR_APPLY,
+    &colour::COLOUR_PAINT_APPLY,
+    &colour::COLOUR_PAINT_UNPAINTED_APPLY,
+    &colour::COLOUR_PAINT_REMOVE,
+    &colour::COLOUR_PICK,
+    &colour::COLOUR_GAP_CLOSE,
+    &colour::COLOUR_GAP_CLOSING_SET,
+    &colour::COLOUR_GAP_CLOSING_GET,
+    &colour::DRAW_HIT_TEST_GET,
+    &colour_recovery::COLOUR_MISSING_LIST,
+    &colour_recovery::COLOUR_RECOVERY_RUN,
+    &colour_recovery::COLOUR_RECOVERY_PERFORMED,
+    &draw_stroke::DRAW_STROKE_ADD,
+    &draw_stroke::DRAW_STROKE_SET,
+    &draw_stroke::DRAW_CONTENT_ADD,
+    &draw_text::DRAW_TEXT_ADD,
+    &draw_text::DRAW_TEXT_SET,
+    &draw_text::DRAW_TEXT_FORMAT_SET,
     // agent
     &agent::AGENT_SERVER_SET,
     &agent::AGENT_SERVER_STATUS,

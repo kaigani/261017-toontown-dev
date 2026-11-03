@@ -1,0 +1,25 @@
+diff --git a/crates/executor/tests/c21_r1_contracts.rs b/crates/executor/tests/c21_r1_contracts.rs
+index b13b201..dfb6cec 100644
+--- a/crates/executor/tests/c21_r1_contracts.rs
++++ b/crates/executor/tests/c21_r1_contracts.rs
+@@ -38,7 +38,9 @@ fn direct_outline_edit_discards_spine_when_pressure_also_changes() {
+     let made = ok(&h, "draw.stroke.add", json!({"drawingId":D,"points":[{"x":0,"y":0},{"x":20,"y":0}]}));
+     let id = made["strokeIds"][0].as_str().unwrap();
+     let key = format!("{D}/{id}");
+-    ok(
++    // Orchestrator ruling on C21-R1-04: one patch editing both the outline and the spine is refused with a typed
++    // error naming both pointers; an outline edit alone discards the spine.
++    let e = run(
+         &h,
+         "doc.object.patch",
+         json!({"targets":[key],"ops":[
+@@ -46,6 +48,9 @@ fn direct_outline_edit_discards_spine_when_pressure_also_changes() {
+             {"op":"replace","path":"/spine/pressure","value":[[0,0.2],[1,0.2]]}
+         ]}),
+     );
++    assert_eq!(e.status, Status::Error, "{e:?}");
++    assert_eq!(e.error.as_ref().unwrap().details["pointers"], json!(["/points", "/spine"]));
++    ok(&h, "doc.object.patch", json!({"targets":[key],"ops":[{"op":"replace","path":"/points/0/0","value":1000}]}));
+     let stroke = get(&h, &key);
+     assert!(stroke["spine"].is_null(), "02 3.2: directly edited outline is authoritative: {stroke}");
+ }

@@ -22,7 +22,32 @@ SUITES = ROOT / "tests" / "adversarial"
 NOT_SUITES = {
     "collect_runtime_evidence.py": "M0 evidence collector, not a test: needs a release build and writes "
     "reviews/evidence/M0-C0.1-r1/",
+    # Orchestrator ruling, M2 C2.3 round 3: a round receipt, not a product invariant.
+    "c23-r3-finalize.py": "round-3 collector pinned to 989233e; receipts retained under reviews/evidence/M2-C2.3-r3",
 }
+# Single tests of a suite that are fixed-commit receipts of a finding rather than live checks: the suite runs every other
+# test (by name). Each entry names its live counterpart.
+NOT_TESTS = {
+    "c24-r2-audit.py": {
+        "Ownership.test_edit38_changes_only_the_two_ruled_union_assertions": "C24-R2-02 receipt comparing the fixed "
+        "round-1 head 3c74c34 (the finding itself; it cannot change); the restoration and the declared disposition are "
+        "checked live by scripts/check-reviewer-ownership.py (M2 C2.4 round 2, edit 57; for the round-3 ruling)",
+    },
+}
+
+
+def test_names(path: pathlib.Path) -> list:
+    """`Class.method` of every unittest test in a suite."""
+    import ast
+
+    tree = ast.parse(path.read_text(encoding="utf-8"))
+    out = []
+    for node in tree.body:
+        if isinstance(node, ast.ClassDef):
+            for item in node.body:
+                if isinstance(item, ast.FunctionDef) and item.name.startswith("test"):
+                    out.append(f"{node.name}.{item.name}")
+    return out
 
 
 def run_page_shim() -> int:
@@ -53,6 +78,12 @@ def main() -> int:
         start = time.monotonic()
         if path.name == "c04-r3-page.py" and os.name != "nt":
             rc = run_page_shim()
+        elif path.name in NOT_TESTS:
+            skipped = NOT_TESTS[path.name]
+            for name, reason in skipped.items():
+                print(f"skip {path.name} {name}: {reason}", flush=True)
+            names = [n for n in test_names(path) if n not in skipped]
+            rc = subprocess.run([sys.executable, "-I", str(path), *names], cwd=ROOT).returncode
         else:
             rc = subprocess.run([sys.executable, "-I", str(path)], cwd=ROOT).returncode
         results.append((path.name, rc, time.monotonic() - start))

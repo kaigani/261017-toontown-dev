@@ -1,0 +1,17 @@
+{
+  "command": "draw.centreLine.apply",
+  "params": {
+    "drawingId": "dr_01K742SG0KKMCAP9X1E6Z5P4SW",
+    "ids": [
+      "st_01K7JJN800J6GZ68MHS01HNTDM"
+    ]
+  },
+  "seconds": 4.0372229,
+  "status": "Ok",
+  "error": null,
+  "os": "windows",
+  "arch": "x86_64",
+  "profile": "release",
+  "openSeconds": 2.6336721,
+  "strokes": 100000
+}

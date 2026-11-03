@@ -1,0 +1,833 @@
+check properties (windows-latest)	UNKNOWN STEP	﻿2026-11-02T17:01:46.1811444Z Current runner version: '2.338.2'
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:46.1837381Z ##[group]Runner Image Provisioner
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:46.1838217Z Hosted Compute Agent
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:46.1838804Z Version: 20261021.618
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:46.1839381Z Commit: 21505ad2541d5be6135ed84fc33697146cf75b8e
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:46.1840029Z Build Date: 2026-10-21T00:45:21Z
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:46.1840653Z Worker ID: {6141d875-9494-4f06-b948-cb375c29b25a}
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:46.1841335Z Region: westus
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:46.1841816Z Cloud: Azure
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:46.1842321Z ##[endgroup]
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:46.1844065Z ##[group]Operating System
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:46.1844787Z Microsoft Windows Server 2025
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:46.1845357Z 10.0.26100
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:46.1845828Z Datacenter
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:46.1846313Z ##[endgroup]
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:46.1846790Z ##[group]Runner Image
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:46.1847321Z Image: windows-2025-vs2026
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:46.1847884Z Version: 20261030.294.1
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:46.1849441Z Included Software: https://github.com/actions/runner-images/blob/win25-vs2026/20261030.294/images/windows/Windows2025-VS2026-Readme.md
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:46.1851099Z Image Release: https://github.com/actions/runner-images/releases/tag/win25-vs2026%2F20261030.294
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:46.1852028Z ##[endgroup]
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:46.1853187Z ##[group]GITHUB_TOKEN Permissions
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:46.1855557Z Contents: read
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:46.1856224Z Metadata: read
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:46.1856769Z Packages: read
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:46.1857270Z ##[endgroup]
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:46.1859410Z Secret source: Actions
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:46.1860294Z Cache mode: write
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:46.1860985Z Prepare workflow directory
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:46.2332098Z Prepare all required actions
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:46.2379897Z Getting action download info
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:46.6055085Z Download action repository 'actions/checkout@v7' (SHA:3d3c42e5aac5ba805825da76410c181273ba90b1)
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:46.7302521Z Download action repository 'Swatinem/rust-cache@v2' (SHA:d1527c8f67ef9af357290475d4af4b0fab8f12e0)
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:47.2448670Z Complete job name: check properties (windows-latest)
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:47.4044292Z ##[group]Run actions/checkout@v7
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:47.4045359Z with:
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:47.4045836Z   repository: kaigani/261017-toontown-dev
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:47.4049979Z   token: ***
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:47.4050409Z   ssh-strict: true
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:47.4050859Z   ssh-user: git
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:47.4051601Z   persist-credentials: true
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:47.4052374Z   clean: true
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:47.4052821Z   sparse-checkout-cone-mode: true
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:47.4053337Z   fetch-depth: 1
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:47.4053752Z   fetch-tags: false
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:47.4054196Z   show-progress: true
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:47.4054644Z   lfs: false
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:47.4055038Z   submodules: false
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:47.4055478Z   set-safe-directory: true
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:47.4055983Z   allow-unsafe-pr-checkout: false
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:47.4056783Z env:
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:47.4057211Z   CARGO_TERM_COLOR: always
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:47.4057727Z   CARGO_INCREMENTAL: 0
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:47.4058208Z   RUST_BACKTRACE: 1
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:47.4058625Z ##[endgroup]
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:47.5665434Z Syncing repository: kaigani/261017-toontown-dev
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:47.5667981Z ##[group]Getting Git version info
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:47.5669210Z Working directory is 'D:\a\261017-toontown-dev\261017-toontown-dev'
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:47.6666780Z [command]"C:\Program Files\Git\bin\git.exe" version
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:47.9953690Z git version 2.56.0.windows.4
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:48.0003500Z ##[endgroup]
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:48.0020080Z Temporarily overriding HOME='D:\a\_temp\4245ccdf-7dba-4aa7-a04e-6e1dca1e881e' before making global git config changes
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:48.0022370Z Adding repository directory to the temporary git global config as a safe directory
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:48.0030107Z [command]"C:\Program Files\Git\bin\git.exe" config --global --add safe.directory D:\a\261017-toontown-dev\261017-toontown-dev
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:48.0601346Z Deleting the contents of 'D:\a\261017-toontown-dev\261017-toontown-dev'
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:48.0607674Z ##[group]Determining repository object format
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:48.0609767Z ##[endgroup]
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:48.0611324Z ##[group]Initializing the repository
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:48.0618950Z [command]"C:\Program Files\Git\bin\git.exe" init D:\a\261017-toontown-dev\261017-toontown-dev
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:48.1701885Z Initialized empty Git repository in D:/a/261017-toontown-dev/261017-toontown-dev/.git/
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:48.1753264Z [command]"C:\Program Files\Git\bin\git.exe" remote add origin https://github.com/kaigani/261017-toontown-dev
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:48.2448003Z ##[endgroup]
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:48.2451006Z ##[group]Disabling automatic garbage collection
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:48.2457804Z [command]"C:\Program Files\Git\bin\git.exe" config --local gc.auto 0
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:48.2917373Z ##[endgroup]
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:48.2920371Z ##[group]Setting up auth
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:48.2922593Z Removing SSH command configuration
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:48.2931383Z [command]"C:\Program Files\Git\bin\git.exe" config --local --name-only --get-regexp core\.sshCommand
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:48.3359473Z [command]"C:\Program Files\Git\bin\git.exe" submodule foreach --recursive "sh -c \"git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :\""
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:49.7344670Z Removing HTTP extra header
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:49.7355248Z [command]"C:\Program Files\Git\bin\git.exe" config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:49.7753039Z [command]"C:\Program Files\Git\bin\git.exe" submodule foreach --recursive "sh -c \"git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :\""
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:50.3593043Z Removing includeIf entries pointing to credentials config files
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:50.3601970Z [command]"C:\Program Files\Git\bin\git.exe" config --local --name-only --get-regexp ^includeIf\.gitdir:
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:50.3989907Z [command]"C:\Program Files\Git\bin\git.exe" submodule foreach --recursive "git config --local --show-origin --name-only --get-regexp remote.origin.url"
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:50.9611463Z [command]"C:\Program Files\Git\bin\git.exe" config --file D:\a\_temp\git-credentials-8bcb36b4-9469-4a10-8a3d-54e88a445680.config http.https://github.com/.extraheader "AUTHORIZATION: basic ***"
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:51.0000644Z [command]"C:\Program Files\Git\bin\git.exe" config --local includeIf.gitdir:D:/a/261017-toontown-dev/261017-toontown-dev/.git.path D:\a\_temp\git-credentials-8bcb36b4-9469-4a10-8a3d-54e88a445680.config
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:51.0388977Z [command]"C:\Program Files\Git\bin\git.exe" config --local includeIf.gitdir:D:/a/261017-toontown-dev/261017-toontown-dev/.git/worktrees/*.path D:\a\_temp\git-credentials-8bcb36b4-9469-4a10-8a3d-54e88a445680.config
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:51.0829061Z [command]"C:\Program Files\Git\bin\git.exe" config --local includeIf.gitdir:/github/workspace/.git.path /github/runner_temp/git-credentials-8bcb36b4-9469-4a10-8a3d-54e88a445680.config
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:51.1234865Z [command]"C:\Program Files\Git\bin\git.exe" config --local includeIf.gitdir:/github/workspace/.git/worktrees/*.path /github/runner_temp/git-credentials-8bcb36b4-9469-4a10-8a3d-54e88a445680.config
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:51.1624545Z ##[endgroup]
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:51.1625201Z ##[group]Fetching the repository
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:51.1638466Z [command]"C:\Program Files\Git\bin\git.exe" -c protocol.version=2 fetch --no-tags --prune --no-recurse-submodules --depth=1 origin +3c74c3432f2a1895b5aaca83e6ddf914cf6b4281:refs/remotes/origin/m2-vector-engine
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:03.5283465Z From https://github.com/kaigani/261017-toontown-dev
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:03.5284452Z  * [new ref]         3c74c3432f2a1895b5aaca83e6ddf914cf6b4281 -> origin/m2-vector-engine
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:03.5344930Z [command]"C:\Program Files\Git\bin\git.exe" branch --list --remote origin/m2-vector-engine
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:03.5757795Z   origin/m2-vector-engine
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:03.5802711Z [command]"C:\Program Files\Git\bin\git.exe" rev-parse refs/remotes/origin/m2-vector-engine
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:03.6205420Z 3c74c3432f2a1895b5aaca83e6ddf914cf6b4281
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:03.6241176Z ##[endgroup]
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:03.6241833Z ##[group]Determining the checkout info
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:03.6245263Z ##[endgroup]
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:03.6252948Z [command]"C:\Program Files\Git\bin\git.exe" sparse-checkout disable
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:03.6758371Z [command]"C:\Program Files\Git\bin\git.exe" config --local --unset-all extensions.worktreeConfig
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:03.7146542Z ##[group]Checking out the ref
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:03.7155396Z [command]"C:\Program Files\Git\bin\git.exe" checkout --progress --force -B m2-vector-engine refs/remotes/origin/m2-vector-engine
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:04.7869575Z Updating files:  37% (2920/7777)
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:04.8088397Z Updating files:  38% (2956/7777)
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:04.8518994Z Updating files:  39% (3034/7777)
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:05.2171409Z Updating files:  40% (3111/7777)
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:05.2714536Z Updating files:  41% (3189/7777)
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:05.2890441Z Updating files:  42% (3267/7777)
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:05.3165900Z Updating files:  43% (3345/7777)
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:05.3339762Z Updating files:  44% (3422/7777)
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:05.3574697Z Updating files:  45% (3500/7777)
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:05.3753151Z Updating files:  46% (3578/7777)
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:05.3999439Z Updating files:  47% (3656/7777)
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:05.4166013Z Updating files:  48% (3733/7777)
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:05.4392792Z Updating files:  49% (3811/7777)
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:05.4594811Z Updating files:  50% (3889/7777)
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:05.4788476Z Updating files:  51% (3967/7777)
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:05.5103103Z Updating files:  52% (4045/7777)
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:05.5414020Z Updating files:  53% (4122/7777)
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:05.5726323Z Updating files:  54% (4200/7777)
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:05.5942031Z Updating files:  55% (4278/7777)
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:05.6148642Z Updating files:  56% (4356/7777)
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:05.6359309Z Updating files:  57% (4433/7777)
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:05.6680537Z Updating files:  58% (4511/7777)
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:05.6932859Z Updating files:  59% (4589/7777)
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:05.7152549Z Updating files:  60% (4667/7777)
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:05.7374024Z Updating files:  61% (4744/7777)
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:05.7579068Z Updating files:  62% (4822/7777)
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:05.7799910Z Updating files:  63% (4900/7777)
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:05.7906569Z Updating files:  63% (4950/7777)
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:05.8335427Z Updating files:  64% (4978/7777)
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:05.8566787Z Updating files:  65% (5056/7777)
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:05.8774036Z Updating files:  66% (5133/7777)
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:05.9008563Z Updating files:  67% (5211/7777)
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:05.9374513Z Updating files:  68% (5289/7777)
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:05.9634110Z Updating files:  69% (5367/7777)
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:05.9850280Z Updating files:  70% (5444/7777)
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:06.0068897Z Updating files:  71% (5522/7777)
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:06.0326980Z Updating files:  72% (5600/7777)
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:06.0660234Z Updating files:  73% (5678/7777)
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:06.0879020Z Updating files:  74% (5755/7777)
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:06.1216912Z Updating files:  75% (5833/7777)
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:06.1643339Z Updating files:  76% (5911/7777)
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:06.2076814Z Updating files:  77% (5989/7777)
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:06.4477944Z Updating files:  78% (6067/7777)
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:06.4850485Z Updating files:  79% (6144/7777)
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:06.5190807Z Updating files:  80% (6222/7777)
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:06.5443262Z Updating files:  81% (6300/7777)
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:06.5796255Z Updating files:  82% (6378/7777)
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:06.6039455Z Updating files:  83% (6455/7777)
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:06.6259978Z Updating files:  84% (6533/7777)
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:06.6517567Z Updating files:  85% (6611/7777)
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:06.6857466Z Updating files:  86% (6689/7777)
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:06.7051457Z Updating files:  87% (6766/7777)
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:06.7352713Z Updating files:  88% (6844/7777)
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:06.7589879Z Updating files:  89% (6922/7777)
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:06.7827357Z Updating files:  90% (7000/7777)
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:06.7864463Z Updating files:  91% (7078/7777)
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:06.8238225Z Updating files:  91% (7090/7777)
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:06.8497169Z Updating files:  92% (7155/7777)
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:06.8743742Z Updating files:  93% (7233/7777)
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:06.8970215Z Updating files:  94% (7311/7777)
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:06.9225446Z Updating files:  95% (7389/7777)
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:06.9455632Z Updating files:  96% (7466/7777)
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:06.9614004Z Updating files:  97% (7544/7777)
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:06.9773379Z Updating files:  98% (7622/7777)
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:07.0157644Z Updating files:  99% (7700/7777)
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:07.0158188Z Updating files: 100% (7777/7777)
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:07.0158563Z Updating files: 100% (7777/7777), done.
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:07.0381400Z Switched to a new branch 'm2-vector-engine'
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:07.0405646Z branch 'm2-vector-engine' set up to track 'origin/m2-vector-engine'.
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:07.0709807Z ##[endgroup]
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:07.1202590Z [command]"C:\Program Files\Git\bin\git.exe" log -1 --format=%H
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:07.1562179Z 3c74c3432f2a1895b5aaca83e6ddf914cf6b4281
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:07.2142845Z ##[group]Run tc=$(sed -n 's/^channel = "\(.*\)"/\1/p' rust-toolchain.toml)
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:07.2144645Z ^[[36;1mtc=$(sed -n 's/^channel = "\(.*\)"/\1/p' rust-toolchain.toml)^[[0m
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:07.2146514Z ^[[36;1mrustup toolchain install "$tc" --profile minimal^[[0m
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:07.2146891Z ^[[36;1mrustup override set "$tc"^[[0m
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:07.2147157Z ^[[36;1mrustc --version^[[0m
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:07.2189896Z shell: C:\Program Files\Git\bin\bash.EXE --noprofile --norc -e -o pipefail {0}
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:07.2190298Z env:
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:07.2190488Z   CARGO_TERM_COLOR: always
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:07.2190713Z   CARGO_INCREMENTAL: 0
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:07.2190937Z   RUST_BACKTRACE: 1
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:07.2191126Z ##[endgroup]
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:08.0467364Z info: syncing channel updates for 1.98.1-x86_64-pc-windows-msvc
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:08.5885982Z info: latest update on 2026-09-03 for version 1.98.1 (48a229cea 2026-09-01)
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:08.6006682Z info: downloading 3 components
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:18.3446434Z 
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:18.3754871Z   1.98.1-x86_64-pc-windows-msvc installed - rustc 1.98.1 (48a229cea 2026-09-01)
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:18.3755396Z 
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:18.4089150Z info: override toolchain for D:\a\261017-toontown-dev\261017-toontown-dev set to 1.98.1-x86_64-pc-windows-msvc
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:18.9385201Z rustc 1.98.1 (48a229cea 2026-09-01)
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:19.0039169Z ##[group]Run Swatinem/rust-cache@v2
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:19.0039499Z with:
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:19.0039693Z   key: check-properties
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:19.0039921Z   prefix-key: v0-rust
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:19.0040132Z   add-job-id-key: true
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:19.0040363Z   add-rust-environment-hash-key: true
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:19.0040655Z   cache-targets: true
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:19.0040875Z   cache-all-crates: false
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:19.0041114Z   cache-workspace-crates: false
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:19.0041347Z   save-if: true
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:19.0041541Z   cache-provider: github
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:19.0041760Z   cache-bin: true
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:19.0041950Z   lookup-only: false
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:19.0042143Z   cmd-format: {0}
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:19.0042320Z env:
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:19.0042504Z   CARGO_TERM_COLOR: always
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:19.0042720Z   CARGO_INCREMENTAL: 0
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:19.0042913Z   RUST_BACKTRACE: 1
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:19.0043092Z ##[endgroup]
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:24.2186209Z ##[group]Cache Configuration
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:24.2186697Z Cache Provider:
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:24.2187022Z     github
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:24.2187310Z Workspaces:
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:24.2187670Z     D:\a\261017-toontown-dev\261017-toontown-dev
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:24.2188152Z Cache Paths:
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:24.2188853Z     C:\Users\runneradmin\.cargo\bin
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:24.2189329Z     C:\Users\runneradmin\.cargo\.crates.toml
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:24.2189840Z     C:\Users\runneradmin\.cargo\.crates2.json
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:24.2190328Z     C:\Users\runneradmin\.cargo\registry
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:24.2190798Z     C:\Users\runneradmin\.cargo\git
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:24.2191280Z     D:\a\261017-toontown-dev\261017-toontown-dev\target
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:24.2191783Z Restore Key:
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:24.2192310Z     v0-rust-check-properties-check-properties-Windows_NT-x64-c16cbc5d
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:24.2192942Z Cache Key:
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:24.2193514Z     v0-rust-check-properties-check-properties-Windows_NT-x64-c16cbc5d-7ca7b21e
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:24.2194230Z .. Prefix:
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:24.2194670Z   - v0-rust-check-properties-check-properties-Windows_NT-x64
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:24.2195273Z .. Environment considered:
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:24.2195664Z   - Rust Versions:
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:24.2196156Z     - 1.98.1 x86_64-pc-windows-msvc 48a229ceaefd4985c50990b14116b6d856af0985
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:24.2196946Z     - 1.99.1 x86_64-pc-windows-msvc 58cf8f9c35b355199727627d07ae34a4e2846d67
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:24.2197530Z   - CARGO_INCREMENTAL
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:24.2197874Z   - CARGO_TERM_COLOR
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:24.2198203Z   - RUST_BACKTRACE
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:24.2198539Z .. Lockfiles considered:
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:24.2199076Z   - D:\a\261017-toontown-dev\261017-toontown-dev\bins\headless\Cargo.toml
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:24.2200059Z   - D:\a\261017-toontown-dev\261017-toontown-dev\Cargo.lock
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:24.2200768Z   - D:\a\261017-toontown-dev\261017-toontown-dev\crates\anim\Cargo.toml
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:24.2201546Z   - D:\a\261017-toontown-dev\261017-toontown-dev\crates\audio\Cargo.toml
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:24.2202320Z   - D:\a\261017-toontown-dev\261017-toontown-dev\crates\colour\Cargo.toml
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:24.2203110Z   - D:\a\261017-toontown-dev\261017-toontown-dev\crates\engine\Cargo.toml
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:24.2203911Z   - D:\a\261017-toontown-dev\261017-toontown-dev\crates\executor\Cargo.toml
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:24.2204815Z   - D:\a\261017-toontown-dev\261017-toontown-dev\crates\fx\Cargo.toml
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:24.2205591Z   - D:\a\261017-toontown-dev\261017-toontown-dev\crates\io\Cargo.toml
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:24.2206343Z   - D:\a\261017-toontown-dev\261017-toontown-dev\crates\lipsync\Cargo.toml
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:24.2207111Z   - D:\a\261017-toontown-dev\261017-toontown-dev\crates\mcp\Cargo.toml
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:24.2207876Z   - D:\a\261017-toontown-dev\261017-toontown-dev\crates\model\Cargo.toml
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:24.2208655Z   - D:\a\261017-toontown-dev\261017-toontown-dev\crates\persist\Cargo.toml
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:24.2212636Z   - D:\a\261017-toontown-dev\261017-toontown-dev\crates\registry-macros\Cargo.toml
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:24.2213631Z   - D:\a\261017-toontown-dev\261017-toontown-dev\crates\registry\Cargo.toml
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:24.2214463Z   - D:\a\261017-toontown-dev\261017-toontown-dev\crates\render\Cargo.toml
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:24.2215269Z   - D:\a\261017-toontown-dev\261017-toontown-dev\crates\vector\Cargo.toml
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:24.2216143Z   - D:\a\261017-toontown-dev\261017-toontown-dev\desktop\src-tauri\Cargo.toml
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:24.2216968Z   - D:\a\261017-toontown-dev\261017-toontown-dev\rust-toolchain.toml
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:24.2217848Z ##[endgroup]
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:24.2218039Z 
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:24.2218166Z ... Restoring cache ...
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:24.6083982Z No cache found.
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:24.6373936Z ##[group]Run cargo test --locked -p tt-executor --test c24_oracle_routes --test c24_r1_topology --test c24_topology
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:24.6374826Z ^[[36;1mcargo test --locked -p tt-executor --test c24_oracle_routes --test c24_r1_topology --test c24_topology^[[0m
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:24.6375492Z ^[[36;1mcargo test --locked -p tt-vector --test c24_r1_properties --test c24_properties^[[0m
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:24.6391393Z shell: C:\Program Files\Git\bin\bash.EXE --noprofile --norc -e -o pipefail {0}
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:24.6391786Z env:
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:24.6391966Z   CARGO_TERM_COLOR: always
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:24.6392965Z   CARGO_INCREMENTAL: 0
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:24.6393164Z   RUST_BACKTRACE: 1
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:24.6393354Z   CACHE_ON_FAILURE: false
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:24.6393561Z ##[endgroup]
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:24.8035049Z ^[[1m^[[92m    Updating^[[0m crates.io index
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:26.8786339Z ^[[1m^[[92m Downloading^[[0m crates ...
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:26.9510385Z ^[[1m^[[92m  Downloaded^[[0m font-types v0.12.7
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:26.9780477Z ^[[1m^[[92m  Downloaded^[[0m crossbeam-epoch v0.9.21
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:27.0027858Z ^[[1m^[[92m  Downloaded^[[0m num-complex v0.4.6
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:27.0221825Z ^[[1m^[[92m  Downloaded^[[0m ref-cast-impl v1.0.27
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:27.0308475Z ^[[1m^[[92m  Downloaded^[[0m quote v1.0.47
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:27.0641821Z ^[[1m^[[92m  Downloaded^[[0m num v0.4.3
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:27.0827559Z ^[[1m^[[92m  Downloaded^[[0m png v0.18.1
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:27.1276999Z ^[[1m^[[92m  Downloaded^[[0m log v0.4.34
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:27.1516093Z ^[[1m^[[92m  Downloaded^[[0m miniz_oxide v0.9.1
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:27.1717827Z ^[[1m^[[92m  Downloaded^[[0m parking_lot_core v0.9.12
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:27.1977562Z ^[[1m^[[92m  Downloaded^[[0m ordered-channel v1.2.0
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:27.2067165Z ^[[1m^[[92m  Downloaded^[[0m num-rational v0.4.2
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:27.2176300Z ^[[1m^[[92m  Downloaded^[[0m micromap v0.3.0
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:27.2769467Z ^[[1m^[[92m  Downloaded^[[0m pxfm v0.1.30
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:28.6592439Z ^[[1m^[[92m  Downloaded^[[0m adler2 v2.0.1
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:28.6723614Z ^[[1m^[[92m  Downloaded^[[0m cpufeatures v0.3.1
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:28.6893768Z ^[[1m^[[92m  Downloaded^[[0m cfg_aliases v0.2.2
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:28.7008989Z ^[[1m^[[92m  Downloaded^[[0m crossbeam-utils v0.8.23
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:28.7352056Z ^[[1m^[[92m  Downloaded^[[0m crypto-common v0.2.2
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:28.7500538Z ^[[1m^[[92m  Downloaded^[[0m equivalent v1.0.3
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:28.7607327Z ^[[1m^[[92m  Downloaded^[[0m fdeflate v0.3.7
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:28.7792600Z ^[[1m^[[92m  Downloaded^[[0m const-oid v0.10.2
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:28.8040152Z ^[[1m^[[92m  Downloaded^[[0m foldhash v0.2.0
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:28.8151338Z ^[[1m^[[92m  Downloaded^[[0m outref v0.5.2
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:28.8272717Z ^[[1m^[[92m  Downloaded^[[0m core_detect v1.0.0
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:28.8461982Z ^[[1m^[[92m  Downloaded^[[0m miniz_oxide v0.8.9
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:28.8661237Z ^[[1m^[[92m  Downloaded^[[0m digest v0.11.3
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:29.1154268Z ^[[1m^[[92m  Downloaded^[[0m rayon v1.12.0
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:29.2244879Z ^[[1m^[[92m  Downloaded^[[0m rand v0.10.3
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:29.2621375Z ^[[1m^[[92m  Downloaded^[[0m i_shape v5.0.0
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:29.3074600Z ^[[1m^[[92m  Downloaded^[[0m image v0.25.10
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:29.3930641Z ^[[1m^[[92m  Downloaded^[[0m glob v0.3.4
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:29.4081031Z ^[[1m^[[92m  Downloaded^[[0m num-traits v0.2.19
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:29.4345495Z ^[[1m^[[92m  Downloaded^[[0m target-tuple v1.0.2
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:29.4495521Z ^[[1m^[[92m  Downloaded^[[0m either v1.19.0
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:29.4642342Z ^[[1m^[[92m  Downloaded^[[0m fraction v0.17.0
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:29.5267008Z ^[[1m^[[92m  Downloaded^[[0m hybrid-array v0.4.15
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:29.5507330Z ^[[1m^[[92m  Downloaded^[[0m chacha20 v0.10.2
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:29.5728233Z ^[[1m^[[92m  Downloaded^[[0m fax v0.2.7
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:29.5947803Z ^[[1m^[[92m  Downloaded^[[0m guillotiere v0.7.0
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:29.6090011Z ^[[1m^[[92m  Downloaded^[[0m half v2.7.1
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:29.6343444Z ^[[1m^[[92m  Downloaded^[[0m referencing v0.59.0
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:29.6866947Z ^[[1m^[[92m  Downloaded^[[0m i_tree v0.20.0
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:29.7184778Z ^[[1m^[[92m  Downloaded^[[0m polycool v0.4.0
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:29.7370620Z ^[[1m^[[92m  Downloaded^[[0m cfg-if v1.0.5
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:29.7537767Z ^[[1m^[[92m  Downloaded^[[0m stats_alloc v0.1.10
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:29.7673685Z ^[[1m^[[92m  Downloaded^[[0m email_address v0.2.9
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:29.7869396Z ^[[1m^[[92m  Downloaded^[[0m num-iter v0.1.46
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:29.8015158Z ^[[1m^[[92m  Downloaded^[[0m quick-error v2.0.1
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:29.8188546Z ^[[1m^[[92m  Downloaded^[[0m rand_core v0.10.1
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:29.8390178Z ^[[1m^[[92m  Downloaded^[[0m heck v0.5.0
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:29.8604691Z ^[[1m^[[92m  Downloaded^[[0m percent-encoding v2.3.2
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:29.8720129Z ^[[1m^[[92m  Downloaded^[[0m ref-cast v1.0.27
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:29.9518980Z ^[[1m^[[92m  Downloaded^[[0m linebender_resource_handle v0.1.1
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:29.9662826Z ^[[1m^[[92m  Downloaded^[[0m num-cmp v0.1.0
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:29.9884722Z ^[[1m^[[92m  Downloaded^[[0m once_cell v1.21.4
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:30.0744646Z ^[[1m^[[92m  Downloaded^[[0m crossbeam-deque v0.8.8
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:30.1600369Z ^[[1m^[[92m  Downloaded^[[0m data-encoding v2.11.1
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:30.1727985Z ^[[1m^[[92m  Downloaded^[[0m fluent-uri v0.4.1
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:31.3144245Z ^[[1m^[[92m  Downloaded^[[0m getrandom v0.4.3
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:31.4919333Z ^[[1m^[[92m  Downloaded^[[0m serde_spanned v1.1.2
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:31.5310852Z ^[[1m^[[92m  Downloaded^[[0m thread_local v1.1.10
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:31.6205394Z ^[[1m^[[92m  Downloaded^[[0m bit-set v0.8.0
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:31.7877303Z ^[[1m^[[92m  Downloaded^[[0m libm v0.2.16
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:32.1548852Z ^[[1m^[[92m  Downloaded^[[0m memchr v2.8.3
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:32.3603676Z ^[[1m^[[92m  Downloaded^[[0m flate2 v1.1.10
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:32.5862802Z ^[[1m^[[92m  Downloaded^[[0m gif v0.14.2
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:32.6010150Z ^[[1m^[[92m  Downloaded^[[0m i_key_sort v0.12.0
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:32.6419817Z ^[[1m^[[92m  Downloaded^[[0m indexmap v2.14.2
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:32.6882540Z ^[[1m^[[92m  Downloaded^[[0m jsonschema-value v0.59.0
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:32.7235916Z ^[[1m^[[92m  Downloaded^[[0m kurbo v0.13.1
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:32.7786608Z ^[[1m^[[92m  Downloaded^[[0m fearless_simd v0.7.0
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:32.8303811Z ^[[1m^[[92m  Downloaded^[[0m fontdb v0.24.0
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:32.8655123Z ^[[1m^[[92m  Downloaded^[[0m winapi-util v0.1.11
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:32.8910822Z ^[[1m^[[92m  Downloaded^[[0m autocfg v1.5.1
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:32.9153161Z ^[[1m^[[92m  Downloaded^[[0m crc32fast v1.5.2
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:32.9328917Z ^[[1m^[[92m  Downloaded^[[0m getrandom v0.3.4
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:32.9717671Z ^[[1m^[[92m  Downloaded^[[0m itoa v1.0.18
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:32.9875403Z ^[[1m^[[92m  Downloaded^[[0m smallvec v1.16.3
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:32.9980539Z ^[[1m^[[92m  Downloaded^[[0m strum_macros v0.28.0
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:33.0302060Z ^[[1m^[[92m  Downloaded^[[0m thiserror-impl v2.0.21
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:34.0788354Z ^[[1m^[[92m  Downloaded^[[0m toml_datetime v1.1.2+spec-1.1.0
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:34.0940011Z ^[[1m^[[92m  Downloaded^[[0m unicode-general-category v1.1.0
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:34.1119404Z ^[[1m^[[92m  Downloaded^[[0m unicode-ident v1.0.27
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:34.1379693Z ^[[1m^[[92m  Downloaded^[[0m uuid-simd v0.8.0
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:34.1536703Z ^[[1m^[[92m  Downloaded^[[0m weezl v0.1.12
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:34.1774045Z ^[[1m^[[92m  Downloaded^[[0m zmij v1.0.23
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:34.1972370Z ^[[1m^[[92m  Downloaded^[[0m allocator-api2 v0.2.21
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:34.2223647Z ^[[1m^[[92m  Downloaded^[[0m arrayvec v0.7.8
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:34.2458207Z ^[[1m^[[92m  Downloaded^[[0m bitflags v2.13.2
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:34.2994932Z ^[[1m^[[92m  Downloaded^[[0m euclid v0.22.14
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:34.3268804Z ^[[1m^[[92m  Downloaded^[[0m fastrand v2.5.0
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:34.3421525Z ^[[1m^[[92m  Downloaded^[[0m moxcms v0.8.1
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:35.1432461Z ^[[1m^[[92m  Downloaded^[[0m peniko v0.6.1
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:35.1569960Z ^[[1m^[[92m  Downloaded^[[0m schemars_derive v1.2.3
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:35.1805534Z ^[[1m^[[92m  Downloaded^[[0m serde_core v1.0.229
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:35.2072633Z ^[[1m^[[92m  Downloaded^[[0m serde_derive v1.0.229
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:35.2411389Z ^[[1m^[[92m  Downloaded^[[0m sha2 v0.11.1
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:35.2850303Z ^[[1m^[[92m  Downloaded^[[0m slotmap v1.1.1
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:35.3044021Z ^[[1m^[[92m  Downloaded^[[0m tempfile v3.27.0
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:35.3320284Z ^[[1m^[[92m  Downloaded^[[0m termcolor v1.4.1
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:35.3434950Z ^[[1m^[[92m  Downloaded^[[0m tiff v0.11.3
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:35.3891330Z ^[[1m^[[92m  Downloaded^[[0m toml v1.1.8+spec-1.1.0
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:35.4322184Z ^[[1m^[[92m  Downloaded^[[0m toml_edit v0.25.17+spec-1.1.0
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:35.4753025Z ^[[1m^[[92m  Downloaded^[[0m typenum v1.20.1
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:35.5003205Z ^[[1m^[[92m  Downloaded^[[0m vello_cpu v0.3.0
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:35.5513391Z ^[[1m^[[92m  Downloaded^[[0m aho-corasick v1.1.5
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:35.5964244Z ^[[1m^[[92m  Downloaded^[[0m jsonschema v0.59.0
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:35.7834495Z ^[[1m^[[92m  Downloaded^[[0m proptest v1.12.0
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:37.3357742Z ^[[1m^[[92m  Downloaded^[[0m serde v1.0.229
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:37.3673049Z ^[[1m^[[92m  Downloaded^[[0m serde_derive_internals v0.30.0
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:37.3826320Z ^[[1m^[[92m  Downloaded^[[0m serde_json v1.0.154
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:37.4490246Z ^[[1m^[[92m  Downloaded^[[0m syn v3.0.9
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:37.5366640Z ^[[1m^[[92m  Downloaded^[[0m vello_common v0.3.0
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:37.5846427Z ^[[1m^[[92m  Downloaded^[[0m wait-timeout v0.2.1
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:37.5980952Z ^[[1m^[[92m  Downloaded^[[0m bit-set v0.11.1
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:37.6101916Z ^[[1m^[[92m  Downloaded^[[0m borrow-or-share v0.2.4
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:37.6215901Z ^[[1m^[[92m  Downloaded^[[0m fancy-regex v0.19.2
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:38.0995171Z ^[[1m^[[92m  Downloaded^[[0m i_overlay v9.1.0
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:38.4107099Z ^[[1m^[[92m  Downloaded^[[0m parking_lot v0.12.5
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:38.4318741Z ^[[1m^[[92m  Downloaded^[[0m quick-error v1.2.3
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:38.4425535Z ^[[1m^[[92m  Downloaded^[[0m read-fonts v0.41.0
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:38.6003830Z ^[[1m^[[92m  Downloaded^[[0m regex-syntax v0.8.11
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:38.6420062Z ^[[1m^[[92m  Downloaded^[[0m syn v2.0.119
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:38.7251236Z ^[[1m^[[92m  Downloaded^[[0m borsh-derive v1.8.1
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:38.7517780Z ^[[1m^[[92m  Downloaded^[[0m color_quant v1.1.0
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:38.7613770Z ^[[1m^[[92m  Downloaded^[[0m memmap2 v0.9.11
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:38.7764122Z ^[[1m^[[92m  Downloaded^[[0m num-integer v0.1.47
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:38.7898756Z ^[[1m^[[92m  Downloaded^[[0m thiserror v2.0.21
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:38.8677415Z ^[[1m^[[92m  Downloaded^[[0m hashbrown v0.16.1
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:38.9021773Z ^[[1m^[[92m  Downloaded^[[0m tinyvec v1.13.3
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:38.9307642Z ^[[1m^[[92m  Downloaded^[[0m trybuild v1.0.122
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:40.2024113Z ^[[1m^[[92m  Downloaded^[[0m robust v1.2.0
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:40.2296116Z ^[[1m^[[92m  Downloaded^[[0m skrifa v0.44.0
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:40.3013712Z ^[[1m^[[92m  Downloaded^[[0m dyn-clone v1.0.20
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:40.3158272Z ^[[1m^[[92m  Downloaded^[[0m rand_xorshift v0.5.0
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:40.3248798Z ^[[1m^[[92m  Downloaded^[[0m toml_parser v1.1.5+spec-1.1.0
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:40.5526611Z ^[[1m^[[92m  Downloaded^[[0m windows-link v0.2.1
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:40.5611069Z ^[[1m^[[92m  Downloaded^[[0m simd-adler32 v0.3.10
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:40.5814793Z ^[[1m^[[92m  Downloaded^[[0m unicode-normalization v0.1.26
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:40.6048090Z ^[[1m^[[92m  Downloaded^[[0m rusty-fork v0.3.1
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:40.6205106Z ^[[1m^[[92m  Downloaded^[[0m ahash v0.8.12
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:40.6401118Z ^[[1m^[[92m  Downloaded^[[0m bytemuck_derive v1.12.1
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:40.6516271Z ^[[1m^[[92m  Downloaded^[[0m strum v0.28.0
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:40.6593404Z ^[[1m^[[92m  Downloaded^[[0m toml_writer v1.1.3+spec-1.1.0
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:40.6695836Z ^[[1m^[[92m  Downloaded^[[0m scopeguard v1.2.0
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:40.6797479Z ^[[1m^[[92m  Downloaded^[[0m vsimd v0.8.0
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:40.6987422Z ^[[1m^[[92m  Downloaded^[[0m schemars v1.2.3
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:40.8821640Z ^[[1m^[[92m  Downloaded^[[0m version_check v0.9.5
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:40.8932859Z ^[[1m^[[92m  Downloaded^[[0m num-bigint v0.4.8
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:40.9418464Z ^[[1m^[[92m  Downloaded^[[0m bit-vec v0.10.1
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:40.9522106Z ^[[1m^[[92m  Downloaded^[[0m crossbeam-channel v0.5.17
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:40.9888289Z ^[[1m^[[92m  Downloaded^[[0m bytemuck v1.25.2
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:41.0184441Z ^[[1m^[[92m  Downloaded^[[0m zlib-rs v0.6.8
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:41.0644145Z ^[[1m^[[92m  Downloaded^[[0m ryu v1.0.23
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:41.0941758Z ^[[1m^[[92m  Downloaded^[[0m unarray v0.1.4
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:41.1056369Z ^[[1m^[[92m  Downloaded^[[0m winnow v1.0.4
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:41.1905408Z ^[[1m^[[92m  Downloaded^[[0m glifo v0.4.0
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:41.2067031Z ^[[1m^[[92m  Downloaded^[[0m proc-macro-crate v3.5.0
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:41.2184607Z ^[[1m^[[92m  Downloaded^[[0m rayon-core v1.13.0
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:41.2534212Z ^[[1m^[[92m  Downloaded^[[0m fnv v1.0.7
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:41.2622399Z ^[[1m^[[92m  Downloaded^[[0m bytes v1.12.1
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:41.2942882Z ^[[1m^[[92m  Downloaded^[[0m jsonschema-regex v0.59.0
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:41.3011251Z ^[[1m^[[92m  Downloaded^[[0m i_float v5.0.0
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:41.3572915Z ^[[1m^[[92m  Downloaded^[[0m proc-macro2 v1.0.107
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:41.3842528Z ^[[1m^[[92m  Downloaded^[[0m byteorder-lite v0.1.0
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:41.3925060Z ^[[1m^[[92m  Downloaded^[[0m spade v2.15.1
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:41.4847641Z ^[[1m^[[92m  Downloaded^[[0m zune-core v0.5.3
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:41.5047474Z ^[[1m^[[92m  Downloaded^[[0m bit-vec v0.8.0
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:41.5166080Z ^[[1m^[[92m  Downloaded^[[0m hashbrown v0.17.1
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:41.5548266Z ^[[1m^[[92m  Downloaded^[[0m block-buffer v0.12.1
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:41.5644738Z ^[[1m^[[92m  Downloaded^[[0m color v0.3.3
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:41.5868645Z ^[[1m^[[92m  Downloaded^[[0m zerocopy-derive v0.8.63
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:41.7208461Z ^[[1m^[[92m  Downloaded^[[0m regex-automata v0.4.18
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:42.1420342Z ^[[1m^[[92m  Downloaded^[[0m lock_api v0.4.14
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:42.6633738Z ^[[1m^[[92m  Downloaded^[[0m regex v1.13.1
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:42.8859010Z ^[[1m^[[92m  Downloaded^[[0m bytecount v0.6.9
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:42.9027355Z ^[[1m^[[92m  Downloaded^[[0m windows-sys v0.61.2
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:43.3357016Z ^[[1m^[[92m  Downloaded^[[0m borsh v1.8.1
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:43.4085886Z ^[[1m^[[92m  Downloaded^[[0m zune-jpeg v0.5.15
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:43.4375346Z ^[[1m^[[92m  Downloaded^[[0m zerocopy v0.8.63
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:43.8955540Z ^[[1m^[[92m   Compiling^[[0m proc-macro2 v1.0.107
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:43.8956596Z ^[[1m^[[92m   Compiling^[[0m unicode-ident v1.0.27
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:43.8957187Z ^[[1m^[[92m   Compiling^[[0m quote v1.0.47
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:43.8957761Z ^[[1m^[[92m   Compiling^[[0m cfg-if v1.0.5
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:43.9647417Z ^[[1m^[[92m   Compiling^[[0m autocfg v1.5.1
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:44.0495022Z ^[[1m^[[92m   Compiling^[[0m serde_core v1.0.229
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:45.9934733Z ^[[1m^[[92m   Compiling^[[0m num-traits v0.2.19
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:46.6572789Z ^[[1m^[[92m   Compiling^[[0m foldhash v0.2.0
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:47.0432512Z ^[[1m^[[92m   Compiling^[[0m windows-link v0.2.1
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:47.1402072Z ^[[1m^[[92m   Compiling^[[0m allocator-api2 v0.2.21
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:48.5872276Z ^[[1m^[[92m   Compiling^[[0m syn v3.0.9
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:49.4163621Z ^[[1m^[[92m   Compiling^[[0m syn v2.0.119
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:51.0862135Z ^[[1m^[[92m   Compiling^[[0m equivalent v1.0.3
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:51.1599421Z ^[[1m^[[92m   Compiling^[[0m serde v1.0.229
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:51.7652599Z ^[[1m^[[92m   Compiling^[[0m memchr v2.8.3
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:52.3269721Z ^[[1m^[[92m   Compiling^[[0m version_check v0.9.5
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:54.2665083Z ^[[1m^[[92m   Compiling^[[0m once_cell v1.21.4
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:54.6386058Z ^[[1m^[[92m   Compiling^[[0m zerocopy v0.8.63
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:55.4484221Z ^[[1m^[[92m   Compiling^[[0m smallvec v1.16.3
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:55.8041975Z ^[[1m^[[92m   Compiling^[[0m hashbrown v0.17.1
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:56.5384837Z ^[[1m^[[92m   Compiling^[[0m zmij v1.0.23
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:57.0848874Z ^[[1m^[[92m   Compiling^[[0m num-integer v0.1.47
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:57.2862880Z ^[[1m^[[92m   Compiling^[[0m serde_json v1.0.154
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:57.5709586Z ^[[1m^[[92m   Compiling^[[0m rand_core v0.10.1
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:58.2485606Z ^[[1m^[[92m   Compiling^[[0m indexmap v2.14.2
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:58.5386383Z ^[[1m^[[92m   Compiling^[[0m regex-syntax v0.8.11
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:59.7135129Z ^[[1m^[[92m   Compiling^[[0m getrandom v0.3.4
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:03:00.6342403Z ^[[1m^[[92m   Compiling^[[0m itoa v1.0.18
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:03:01.1208858Z ^[[1m^[[92m   Compiling^[[0m getrandom v0.4.3
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:03:01.5682772Z ^[[1m^[[92m   Compiling^[[0m ref-cast v1.0.27
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:03:13.4285140Z ^[[1m^[[92m   Compiling^[[0m num-bigint v0.4.8
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:03:21.9014014Z ^[[1m^[[92m   Compiling^[[0m serde_derive v1.0.229
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:03:22.2789993Z ^[[1m^[[92m   Compiling^[[0m ref-cast-impl v1.0.27
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:03:26.6369014Z ^[[1m^[[92m   Compiling^[[0m ahash v0.8.12
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:03:26.9935236Z ^[[1m^[[92m   Compiling^[[0m parking_lot_core v0.9.12
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:03:27.5430320Z ^[[1m^[[92m   Compiling^[[0m num-rational v0.4.2
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:03:28.9383311Z ^[[1m^[[92m   Compiling^[[0m num-iter v0.1.46
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:03:29.0623007Z ^[[1m^[[92m   Compiling^[[0m aho-corasick v1.1.5
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:03:31.4707480Z ^[[1m^[[92m   Compiling^[[0m num-complex v0.4.6
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:03:32.4181660Z ^[[1m^[[92m   Compiling^[[0m scopeguard v1.2.0
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:03:32.5074009Z ^[[1m^[[92m   Compiling^[[0m thiserror v2.0.21
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:03:33.8978560Z ^[[1m^[[92m   Compiling^[[0m lock_api v0.4.14
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:03:34.2571874Z ^[[1m^[[92m   Compiling^[[0m num v0.4.3
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:03:34.3318488Z ^[[1m^[[92m   Compiling^[[0m regex-automata v0.4.18
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:03:48.7342135Z ^[[1m^[[92m   Compiling^[[0m thiserror-impl v2.0.21
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:03:49.6427660Z ^[[1m^[[92m   Compiling^[[0m zerocopy-derive v0.8.63
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:03:58.2214124Z ^[[1m^[[92m   Compiling^[[0m bytemuck_derive v1.12.1
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:04:13.7432641Z ^[[1m^[[92m   Compiling^[[0m bit-vec v0.8.0
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:04:14.3607814Z ^[[1m^[[92m   Compiling^[[0m borrow-or-share v0.2.4
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:04:14.4557879Z ^[[1m^[[92m   Compiling^[[0m heck v0.5.0
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:04:16.0372109Z ^[[1m^[[92m   Compiling^[[0m unicode-general-category v1.1.0
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:04:17.2254626Z ^[[1m^[[92m   Compiling^[[0m jsonschema-value v0.59.0
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:04:17.7628715Z ^[[1m^[[92m   Compiling^[[0m strum_macros v0.28.0
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:04:18.1226415Z ^[[1m^[[92m   Compiling^[[0m fluent-uri v0.4.1
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:04:18.8885352Z ^[[1m^[[92m   Compiling^[[0m bytemuck v1.25.2
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:04:19.3412654Z ^[[1m^[[92m   Compiling^[[0m bit-set v0.8.0
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:04:19.7019930Z ^[[1m^[[92m   Compiling^[[0m parking_lot v0.12.5
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:04:22.5753843Z ^[[1m^[[92m   Compiling^[[0m fraction v0.17.0
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:04:22.6005031Z ^[[1m^[[92m   Compiling^[[0m serde_derive_internals v0.30.0
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:04:23.6603040Z ^[[1m^[[92m   Compiling^[[0m outref v0.5.2
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:04:23.7558620Z ^[[1m^[[92m   Compiling^[[0m crossbeam-utils v0.8.23
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:04:24.6521673Z ^[[1m^[[92m   Compiling^[[0m micromap v0.3.0
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:04:25.1464194Z ^[[1m^[[92m   Compiling^[[0m percent-encoding v2.3.2
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:04:25.7180989Z ^[[1m^[[92m   Compiling^[[0m tinyvec v1.13.3
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:04:26.4396577Z ^[[1m^[[92m   Compiling^[[0m num-cmp v0.1.0
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:04:27.0345023Z ^[[1m^[[92m   Compiling^[[0m vsimd v0.8.0
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:04:27.8302809Z ^[[1m^[[92m   Compiling^[[0m bytecount v0.6.9
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:04:28.5429196Z ^[[1m^[[92m   Compiling^[[0m uuid-simd v0.8.0
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:04:29.6230752Z ^[[1m^[[92m   Compiling^[[0m fancy-regex v0.19.2
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:04:45.2981594Z ^[[1m^[[92m   Compiling^[[0m referencing v0.59.0
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:04:48.9572778Z ^[[1m^[[92m   Compiling^[[0m schemars_derive v1.2.3
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:04:59.8953133Z ^[[1m^[[92m   Compiling^[[0m email_address v0.2.9
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:05:01.0630239Z ^[[1m^[[92m   Compiling^[[0m regex v1.13.1
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:05:03.6949524Z ^[[1m^[[92m   Compiling^[[0m strum v0.28.0
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:05:03.8198870Z ^[[1m^[[92m   Compiling^[[0m jsonschema-regex v0.59.0
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:05:05.8275584Z ^[[1m^[[92m   Compiling^[[0m data-encoding v2.11.1
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:05:07.6481941Z ^[[1m^[[92m   Compiling^[[0m simd-adler32 v0.3.10
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:05:08.3582369Z ^[[1m^[[92m   Compiling^[[0m dyn-clone v1.0.20
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:05:08.5827864Z ^[[1m^[[92m   Compiling^[[0m jsonschema v0.59.0
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:05:10.0521102Z ^[[1m^[[92m   Compiling^[[0m unicode-normalization v0.1.26
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:05:11.2108710Z ^[[1m^[[92m   Compiling^[[0m ryu v1.0.23
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:05:12.1082181Z ^[[1m^[[92m   Compiling^[[0m typenum v1.20.1
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:05:13.6811824Z ^[[1m^[[92m   Compiling^[[0m crc32fast v1.5.2
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:05:14.3116606Z ^[[1m^[[92m   Compiling^[[0m adler2 v2.0.1
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:05:14.6450662Z ^[[1m^[[92m   Compiling^[[0m hybrid-array v0.4.15
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:05:14.9645168Z ^[[1m^[[92m   Compiling^[[0m crossbeam-epoch v0.9.21
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:05:15.4387282Z ^[[1m^[[92m   Compiling^[[0m libm v0.2.16
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:05:16.2216336Z ^[[1m^[[92m   Compiling^[[0m miniz_oxide v0.9.1
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:05:16.4317618Z ^[[1m^[[92m   Compiling^[[0m crossbeam-deque v0.8.8
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:05:16.9435327Z ^[[1m^[[92m   Compiling^[[0m cpufeatures v0.3.1
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:05:17.0080304Z ^[[1m^[[92m   Compiling^[[0m arrayvec v0.7.8
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:05:17.3233194Z ^[[1m^[[92m   Compiling^[[0m polycool v0.4.0
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:05:20.5606085Z ^[[1m^[[92m   Compiling^[[0m schemars v1.2.3
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:05:20.6426506Z ^[[1m^[[92m   Compiling^[[0m flate2 v1.1.10
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:05:22.7261824Z ^[[1m^[[92m   Compiling^[[0m tt-model v0.0.1 (D:\a\261017-toontown-dev\261017-toontown-dev\crates\model)
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:05:25.7566243Z ^[[1m^[[92m   Compiling^[[0m block-buffer v0.12.1
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:05:25.9684703Z ^[[1m^[[92m   Compiling^[[0m crypto-common v0.2.2
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:05:30.3625820Z ^[[1m^[[92m   Compiling^[[0m slotmap v1.1.1
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:05:30.6472283Z ^[[1m^[[92m   Compiling^[[0m const-oid v0.10.2
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:05:31.1970817Z ^[[1m^[[92m   Compiling^[[0m log v0.4.34
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:05:31.5180936Z ^[[1m^[[92m   Compiling^[[0m rayon-core v1.13.0
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:05:31.7736210Z ^[[1m^[[92m   Compiling^[[0m digest v0.11.3
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:05:32.1097195Z ^[[1m^[[92m   Compiling^[[0m i_float v5.0.0
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:05:33.0086617Z ^[[1m^[[92m   Compiling^[[0m kurbo v0.13.1
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:05:40.2897753Z ^[[1m^[[92m   Compiling^[[0m color v0.3.3
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:05:42.0001921Z ^[[1m^[[92m   Compiling^[[0m font-types v0.12.7
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:05:42.9976027Z ^[[1m^[[92m   Compiling^[[0m euclid v0.22.14
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:05:44.0763092Z ^[[1m^[[92m   Compiling^[[0m windows-sys v0.61.2
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:05:44.1484183Z ^[[1m^[[92m   Compiling^[[0m bitflags v2.13.2
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:05:44.9364463Z ^[[1m^[[92m   Compiling^[[0m linebender_resource_handle v0.1.1
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:05:45.0625085Z ^[[1m^[[92m   Compiling^[[0m peniko v0.6.1
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:05:46.0843458Z ^[[1m^[[92m   Compiling^[[0m guillotiere v0.7.0
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:05:46.3804346Z ^[[1m^[[92m   Compiling^[[0m read-fonts v0.41.0
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:05:52.9247910Z ^[[1m^[[92m   Compiling^[[0m i_shape v5.0.0
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:05:54.2106408Z ^[[1m^[[92m   Compiling^[[0m sha2 v0.11.1
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:05:59.3317754Z ^[[1m^[[92m   Compiling^[[0m miniz_oxide v0.8.9
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:06:03.5656153Z ^[[1m^[[92m   Compiling^[[0m crossbeam-channel v0.5.17
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:06:04.9776695Z ^[[1m^[[92m   Compiling^[[0m fdeflate v0.3.7
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:06:07.2548659Z ^[[1m^[[92m   Compiling^[[0m hashbrown v0.16.1
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:06:08.4931318Z ^[[1m^[[92m   Compiling^[[0m memmap2 v0.9.11
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:06:09.0177245Z ^[[1m^[[92m   Compiling^[[0m i_key_sort v0.12.0
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:06:09.3754665Z ^[[1m^[[92m   Compiling^[[0m i_tree v0.20.0
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:06:09.7465883Z ^[[1m^[[92m   Compiling^[[0m weezl v0.1.12
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:06:12.8530831Z ^[[1m^[[92m   Compiling^[[0m fearless_simd v0.7.0
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:06:23.9616070Z ^[[1m^[[92m   Compiling^[[0m zune-core v0.5.3
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:06:24.4777772Z ^[[1m^[[92m   Compiling^[[0m robust v1.2.0
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:06:26.7529677Z ^[[1m^[[92m   Compiling^[[0m either v1.19.0
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:06:27.0752926Z ^[[1m^[[92m   Compiling^[[0m rayon v1.12.0
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:06:31.5388457Z ^[[1m^[[92m   Compiling^[[0m spade v2.15.1
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:06:34.2716706Z ^[[1m^[[92m   Compiling^[[0m zune-jpeg v0.5.15
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:06:38.7595644Z ^[[1m^[[92m   Compiling^[[0m vello_common v0.3.0
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:06:48.3081125Z ^[[1m^[[92m   Compiling^[[0m i_overlay v9.1.0
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:06:51.1587719Z ^[[1m^[[92m   Compiling^[[0m fontdb v0.24.0
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:06:55.9961518Z ^[[1m^[[92m   Compiling^[[0m png v0.18.1
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:07:03.8602257Z ^[[1m^[[92m   Compiling^[[0m ordered-channel v1.2.0
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:07:03.9962905Z ^[[1m^[[92m   Compiling^[[0m skrifa v0.44.0
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:07:12.7139929Z ^[[1m^[[92m   Compiling^[[0m tt-anim v0.0.1 (D:\a\261017-toontown-dev\261017-toontown-dev\crates\anim)
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:07:12.7781543Z ^[[1m^[[92m   Compiling^[[0m half v2.7.1
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:07:13.9082963Z ^[[1m^[[92m   Compiling^[[0m thread_local v1.1.10
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:07:14.5169848Z ^[[1m^[[92m   Compiling^[[0m pxfm v0.1.30
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:07:46.6884676Z ^[[1m^[[92m   Compiling^[[0m fax v0.2.7
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:07:47.4054523Z ^[[1m^[[92m   Compiling^[[0m color_quant v1.1.0
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:07:48.1839549Z ^[[1m^[[92m   Compiling^[[0m quick-error v2.0.1
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:07:48.2751157Z ^[[1m^[[92m   Compiling^[[0m tiff v0.11.3
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:07:56.2118730Z ^[[1m^[[92m   Compiling^[[0m gif v0.14.2
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:07:58.9883916Z ^[[1m^[[92m   Compiling^[[0m moxcms v0.8.1
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:08:02.2813766Z ^[[1m^[[92m   Compiling^[[0m vello_cpu v0.3.0
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:08:48.5045062Z ^[[1m^[[92m   Compiling^[[0m tt-fx v0.0.1 (D:\a\261017-toontown-dev\261017-toontown-dev\crates\fx)
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:08:48.6084657Z ^[[1m^[[92m   Compiling^[[0m tt-vector v0.0.1 (D:\a\261017-toontown-dev\261017-toontown-dev\crates\vector)
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:09:01.6668296Z ^[[1m^[[92m   Compiling^[[0m tt-colour v0.0.1 (D:\a\261017-toontown-dev\261017-toontown-dev\crates\colour)
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:09:01.7631856Z ^[[1m^[[92m   Compiling^[[0m target-tuple v1.0.2
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:09:02.4067021Z ^[[1m^[[92m   Compiling^[[0m fastrand v2.5.0
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:09:02.9036153Z ^[[1m^[[92m   Compiling^[[0m winnow v1.0.4
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:09:03.6825854Z ^[[1m^[[92m   Compiling^[[0m byteorder-lite v0.1.0
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:09:04.1155372Z ^[[1m^[[92m   Compiling^[[0m image v0.25.10
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:10:23.5045484Z ^[[1m^[[92m   Compiling^[[0m toml_parser v1.1.5+spec-1.1.0
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:10:27.7790864Z ^[[1m^[[92m   Compiling^[[0m tempfile v3.27.0
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:10:30.3911994Z ^[[1m^[[92m   Compiling^[[0m tt-render v0.0.1 (D:\a\261017-toontown-dev\261017-toontown-dev\crates\render)
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:10:31.8552519Z ^[[1m^[[92m   Compiling^[[0m tt-persist v0.0.1 (D:\a\261017-toontown-dev\261017-toontown-dev\crates\persist)
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:10:37.7881496Z ^[[1m^[[92m   Compiling^[[0m winapi-util v0.1.11
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:10:38.3346380Z ^[[1m^[[92m   Compiling^[[0m tt-registry-macros v0.0.1 (D:\a\261017-toontown-dev\261017-toontown-dev\crates\registry-macros)
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:10:39.7396333Z ^[[1m^[[92m   Compiling^[[0m serde_spanned v1.1.2
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:10:39.9495771Z ^[[1m^[[92m   Compiling^[[0m toml_datetime v1.1.2+spec-1.1.0
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:10:41.0811241Z ^[[1m^[[92m   Compiling^[[0m wait-timeout v0.2.1
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:10:41.3614904Z ^[[1m^[[92m   Compiling^[[0m bit-vec v0.10.1
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:10:41.9887140Z ^[[1m^[[92m   Compiling^[[0m toml_writer v1.1.3+spec-1.1.0
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:10:42.5252205Z ^[[1m^[[92m   Compiling^[[0m fnv v1.0.7
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:10:42.6883258Z ^[[1m^[[92m   Compiling^[[0m quick-error v1.2.3
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:10:42.7801403Z ^[[1m^[[92m   Compiling^[[0m rusty-fork v0.3.1
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:10:45.8817891Z ^[[1m^[[92m   Compiling^[[0m toml v1.1.8+spec-1.1.0
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:10:46.4076689Z ^[[1m^[[92m   Compiling^[[0m bit-set v0.11.1
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:10:47.3048228Z ^[[1m^[[92m   Compiling^[[0m tt-registry v0.0.1 (D:\a\261017-toontown-dev\261017-toontown-dev\crates\registry)
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:10:50.5099111Z ^[[1m^[[92m   Compiling^[[0m termcolor v1.4.1
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:10:53.0741619Z ^[[1m^[[92m   Compiling^[[0m tt-io v0.0.1 (D:\a\261017-toontown-dev\261017-toontown-dev\crates\io)
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:10:54.0399749Z ^[[1m^[[92m   Compiling^[[0m chacha20 v0.10.2
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:10:55.0830711Z ^[[1m^[[92m   Compiling^[[0m rand v0.10.3
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:10:56.6753214Z ^[[1m^[[92m   Compiling^[[0m rand_xorshift v0.5.0
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:10:57.1832276Z ^[[1m^[[92m   Compiling^[[0m glob v0.3.4
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:11:00.7119217Z ^[[1m^[[92m   Compiling^[[0m unarray v0.1.4
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:11:01.1212599Z ^[[1m^[[92m   Compiling^[[0m core_detect v1.0.0
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:11:01.7139397Z ^[[1m^[[92m   Compiling^[[0m proptest v1.12.0
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:11:01.7227123Z ^[[1m^[[92m   Compiling^[[0m trybuild v1.0.122
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:11:08.0701210Z ^[[1m^[[92m   Compiling^[[0m tt-executor v0.0.1 (D:\a\261017-toontown-dev\261017-toontown-dev\crates\executor)
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:11:42.5042359Z ^[[1m^[[92m   Compiling^[[0m stats_alloc v0.1.10
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:12:32.2882426Z ^[[1m^[[92m    Finished^[[0m `test` profile [unoptimized + debuginfo] target(s) in 10m 07s
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:12:32.4402862Z ^[[1m^[[92m     Running^[[0m tests\c24_oracle_routes.rs (target\debug\deps\c24_oracle_routes-04d2ef5151b9234a.exe)
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:12:32.4536292Z 
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:12:32.4536716Z running 11 tests
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:12:59.7321304Z test affine_envelopes_match_the_oracle ... ok
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:13:05.2071519Z test lines_to_brush_and_centre_line_keep_the_oracles_partition ... ok
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:13:06.4034279Z test break_apart_leaves_the_line_layer_to_the_oracle_and_makes_one_group_per_glyph ... ok
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:13:28.1871422Z test optimize_and_smooth_keep_the_oracles_partition ... ok
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:13:32.4718353Z test flatten_of_overlapping_layers_matches_the_oracle has been running for over 60 seconds
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:14:05.2332665Z test point_moves_with_and_without_snapping_match_the_oracle has been running for over 60 seconds
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:14:06.4311847Z test region_erase_matches_the_oracle has been running for over 60 seconds
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:14:11.3852452Z test region_erase_matches_the_oracle ... ok
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:14:20.1977696Z test point_moves_with_and_without_snapping_match_the_oracle ... ok
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:14:28.0979645Z test segment_cut_matches_the_oracle ... ok
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:14:54.4042318Z test transforms_match_the_oracles_transformed_geometry ... ok
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:15:00.4112211Z test stroke_set_and_delete_match_the_oracle ... ok
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:15:11.3857139Z test stroke_add_matches_the_oracle has been running for over 60 seconds
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:15:36.6954380Z test stroke_add_matches_the_oracle ... ok
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:21:16.9369620Z test flatten_of_overlapping_layers_matches_the_oracle ... ok
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:21:16.9370185Z 
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:21:16.9370534Z test result: ok. 11 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 524.48s
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:21:16.9370992Z 
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:21:16.9452106Z ^[[1m^[[92m     Running^[[0m tests\c24_r1_topology.rs (target\debug\deps\c24_r1_topology-7c3cda1423720912.exe)
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:21:16.9583900Z 
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:21:16.9584403Z running 5 tests
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:21:17.1173942Z test shrunk_cutter_area_bound ... ok
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:22:16.9653746Z test flatten_of_disjoint_layers_has_the_faces_of_their_union has been running for over 60 seconds
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:22:16.9696105Z test the_cutter_splits_along_its_segment_like_the_oracle has been running for over 60 seconds
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:22:16.9742812Z test transforms_with_determinant_plus_and_minus_one_keep_the_oracles_faces has been running for over 60 seconds
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:22:17.1540882Z test vectorized_shapes_enclose_one_unpainted_zone_per_paper_component has been running for over 60 seconds
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:24:07.3519488Z test transforms_with_determinant_plus_and_minus_one_keep_the_oracles_faces ... ok
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:24:15.0954023Z test vectorized_shapes_enclose_one_unpainted_zone_per_paper_component ... ok
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:24:20.4913988Z test the_cutter_splits_along_its_segment_like_the_oracle ... ok
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:24:27.6338459Z test flatten_of_disjoint_layers_has_the_faces_of_their_union ... ok
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:24:27.6339212Z 
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:24:27.6339510Z test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 190.68s
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:24:27.6339938Z 
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:24:27.6428926Z ^[[1m^[[92m     Running^[[0m tests\c24_topology.rs (target\debug\deps\c24_topology-b6023dc3034b259c.exe)
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:24:27.6558557Z 
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:24:27.6559046Z running 4 tests
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:24:28.4922505Z test vectorized_shapes_enclose_one_unpainted_zone_per_paper_component ... ok
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:24:28.5896729Z test flatten_of_disjoint_layers_has_the_faces_of_their_union ... ok
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:24:28.7822180Z test transforms_with_determinant_plus_and_minus_one_keep_the_oracles_faces ... ok
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:24:28.8159312Z test the_cutter_splits_along_its_segment_like_the_oracle ... ok
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:24:28.8160486Z 
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:24:28.8163118Z test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.16s
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:24:28.8163780Z 
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:24:29.2716238Z ^[[1m^[[92m   Compiling^[[0m zerocopy v0.8.63
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:24:29.2736821Z ^[[1m^[[92m   Compiling^[[0m smallvec v1.16.3
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:24:29.2773429Z ^[[1m^[[92m   Compiling^[[0m syn v2.0.119
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:24:29.2795882Z ^[[1m^[[92m   Compiling^[[0m bytemuck v1.25.2
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:24:29.7167536Z ^[[1m^[[92m   Compiling^[[0m parking_lot_core v0.9.12
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:24:29.7307379Z ^[[1m^[[92m   Compiling^[[0m font-types v0.12.7
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:24:30.5835425Z ^[[1m^[[92m   Compiling^[[0m parking_lot v0.12.5
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:24:30.8329612Z ^[[1m^[[92m   Compiling^[[0m windows-sys v0.61.2
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:24:33.0035872Z ^[[1m^[[92m   Compiling^[[0m tempfile v3.27.0
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:24:33.6581813Z ^[[1m^[[92m   Compiling^[[0m read-fonts v0.41.0
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:24:35.6162037Z ^[[1m^[[92m   Compiling^[[0m rusty-fork v0.3.1
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:24:38.1832622Z ^[[1m^[[92m   Compiling^[[0m ahash v0.8.12
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:24:38.3577468Z ^[[1m^[[92m   Compiling^[[0m spade v2.15.1
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:24:38.6158573Z ^[[1m^[[92m   Compiling^[[0m jsonschema-value v0.59.0
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:24:41.2688500Z ^[[1m^[[92m   Compiling^[[0m referencing v0.59.0
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:24:42.9034409Z ^[[1m^[[92m   Compiling^[[0m proptest v1.12.0
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:25:00.9730175Z ^[[1m^[[92m   Compiling^[[0m strum_macros v0.28.0
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:25:03.6581291Z ^[[1m^[[92m   Compiling^[[0m skrifa v0.44.0
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:25:28.7809928Z ^[[1m^[[92m   Compiling^[[0m strum v0.28.0
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:25:28.9303773Z ^[[1m^[[92m   Compiling^[[0m jsonschema v0.59.0
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:25:39.8255486Z ^[[1m^[[92m   Compiling^[[0m tt-model v0.0.1 (D:\a\261017-toontown-dev\261017-toontown-dev\crates\model)
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:26:04.0829505Z ^[[1m^[[92m   Compiling^[[0m tt-vector v0.0.1 (D:\a\261017-toontown-dev\261017-toontown-dev\crates\vector)
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:28:36.3906992Z ^[[1m^[[92m    Finished^[[0m `test` profile [unoptimized + debuginfo] target(s) in 4m 07s
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:28:36.4110322Z ^[[1m^[[92m     Running^[[0m tests\c24_properties.rs (target\debug\deps\c24_properties-914f8e2082b6fb7c.exe)
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:28:36.4223559Z 
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:28:36.4224057Z running 8 tests
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:28:36.4300558Z test fixed_regressions ... ok
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:28:37.2580120Z test a_settled_layer_is_a_fixpoint_of_noding ... ok
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:28:37.2675636Z test side_fills_read_back_beside_collinear_overlaps ... ok
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:28:37.8770729Z test zone_ids_and_areas_do_not_depend_on_stroke_order_and_settling_is_idempotent ... ok
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:28:38.4171796Z test adding_strokes_carries_each_fill_into_the_zones_it_splits ... ok
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:28:38.8559666Z test side_fills_read_back_after_adding_strokes ... ok
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:28:39.2923927Z test zones_are_the_oracles_bounded_faces_on_degenerate_arrangements ... ok
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:28:41.6308713Z test determinant_plus_and_minus_one_maps_keep_the_faces ... ok
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:28:41.6309058Z 
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:28:41.6309398Z test result: ok. 8 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 5.21s
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:28:41.6309777Z 
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:28:41.6339837Z ^[[1m^[[92m     Running^[[0m tests\c24_r1_properties.rs (target\debug\deps\c24_r1_properties-674a359f3568cda9.exe)
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:28:41.6453232Z 
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:28:41.6453756Z running 9 tests
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:28:41.6539513Z test fixed_regressions ... ok
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:28:41.6622156Z test shrunk_determinant_case ... ok
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:28:47.2397987Z test a_settled_layer_is_a_fixpoint_of_noding ... ok
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:28:47.2485421Z test side_fills_read_back_beside_collinear_overlaps ... ok
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:28:56.3084763Z test zone_ids_and_areas_do_not_depend_on_stroke_order_and_settling_is_idempotent ... ok
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:29:14.5771556Z test zones_are_the_oracles_bounded_faces_on_degenerate_arrangements ... ok
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:29:20.1513966Z test adding_strokes_carries_each_fill_into_the_zones_it_splits ... ok
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:29:20.8395709Z test side_fills_read_back_after_adding_strokes ... ok
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:29:41.6462043Z test determinant_plus_and_minus_one_maps_keep_the_faces has been running for over 60 seconds
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:31:13.3382838Z test determinant_plus_and_minus_one_maps_keep_the_faces ... ok
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:31:13.3383222Z 
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:31:13.3383538Z test result: ok. 9 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 151.69s
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:31:13.3383918Z 
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:31:13.3844103Z Post job cleanup.
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:31:13.5501439Z ##[group]Cache Configuration
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:31:13.5502723Z Cache Provider:
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:31:13.5503208Z     github
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:31:13.5503708Z Workspaces:
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:31:13.5504190Z     D:\a\261017-toontown-dev\261017-toontown-dev
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:31:13.5505353Z Cache Paths:
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:31:13.5506440Z     C:\Users\runneradmin\.cargo\bin
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:31:13.5507083Z     C:\Users\runneradmin\.cargo\.crates.toml
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:31:13.5507758Z     C:\Users\runneradmin\.cargo\.crates2.json
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:31:13.5508404Z     C:\Users\runneradmin\.cargo\registry
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:31:13.5509082Z     C:\Users\runneradmin\.cargo\git
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:31:13.5509735Z     D:\a\261017-toontown-dev\261017-toontown-dev\target
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:31:13.5510261Z Restore Key:
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:31:13.5510835Z     v0-rust-check-properties-check-properties-Windows_NT-x64-c16cbc5d
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:31:13.5511280Z Cache Key:
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:31:13.5511792Z     v0-rust-check-properties-check-properties-Windows_NT-x64-c16cbc5d-7ca7b21e
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:31:13.5512266Z .. Prefix:
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:31:13.5512602Z   - v0-rust-check-properties-check-properties-Windows_NT-x64
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:31:13.5513460Z .. Environment considered:
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:31:13.5513778Z   - Rust Versions:
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:31:13.5514152Z     - 1.98.1 x86_64-pc-windows-msvc 48a229ceaefd4985c50990b14116b6d856af0985
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:31:13.5514668Z     - 1.99.1 x86_64-pc-windows-msvc 58cf8f9c35b355199727627d07ae34a4e2846d67
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:31:13.5515074Z   - CARGO_INCREMENTAL
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:31:13.5515368Z   - CARGO_TERM_COLOR
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:31:13.5515629Z   - RUST_BACKTRACE
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:31:13.5515888Z .. Lockfiles considered:
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:31:13.5516269Z   - D:\a\261017-toontown-dev\261017-toontown-dev\bins\headless\Cargo.toml
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:31:13.5516742Z   - D:\a\261017-toontown-dev\261017-toontown-dev\Cargo.lock
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:31:13.5517224Z   - D:\a\261017-toontown-dev\261017-toontown-dev\crates\anim\Cargo.toml
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:31:13.5517735Z   - D:\a\261017-toontown-dev\261017-toontown-dev\crates\audio\Cargo.toml
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:31:13.5518234Z   - D:\a\261017-toontown-dev\261017-toontown-dev\crates\colour\Cargo.toml
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:31:13.5518737Z   - D:\a\261017-toontown-dev\261017-toontown-dev\crates\engine\Cargo.toml
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:31:13.5519280Z   - D:\a\261017-toontown-dev\261017-toontown-dev\crates\executor\Cargo.toml
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:31:13.5519770Z   - D:\a\261017-toontown-dev\261017-toontown-dev\crates\fx\Cargo.toml
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:31:13.5520232Z   - D:\a\261017-toontown-dev\261017-toontown-dev\crates\io\Cargo.toml
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:31:13.5520714Z   - D:\a\261017-toontown-dev\261017-toontown-dev\crates\lipsync\Cargo.toml
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:31:13.5521207Z   - D:\a\261017-toontown-dev\261017-toontown-dev\crates\mcp\Cargo.toml
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:31:13.5521682Z   - D:\a\261017-toontown-dev\261017-toontown-dev\crates\model\Cargo.toml
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:31:13.5522186Z   - D:\a\261017-toontown-dev\261017-toontown-dev\crates\persist\Cargo.toml
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:31:13.5522735Z   - D:\a\261017-toontown-dev\261017-toontown-dev\crates\registry-macros\Cargo.toml
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:31:13.5523309Z   - D:\a\261017-toontown-dev\261017-toontown-dev\crates\registry\Cargo.toml
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:31:13.5523825Z   - D:\a\261017-toontown-dev\261017-toontown-dev\crates\render\Cargo.toml
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:31:13.5524329Z   - D:\a\261017-toontown-dev\261017-toontown-dev\crates\vector\Cargo.toml
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:31:13.5524849Z   - D:\a\261017-toontown-dev\261017-toontown-dev\desktop\src-tauri\Cargo.toml
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:31:13.5525359Z   - D:\a\261017-toontown-dev\261017-toontown-dev\rust-toolchain.toml
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:31:13.5526068Z ##[endgroup]
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:31:13.5526203Z 
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:31:40.2035701Z ... Cleaning D:\a\261017-toontown-dev\261017-toontown-dev\target ...
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:31:40.4517956Z ... Cleaning cargo registry (cache-all-crates: false) ...
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:31:48.3523180Z ... Cleaning cargo/bin ...
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:31:48.3598755Z ... Cleaning cargo git cache ...
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:31:48.3607529Z ... Saving cache ...
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:31:48.4654501Z [command]"C:\Program Files\Git\usr\bin\tar.exe" --posix -cf cache.tzst --exclude cache.tzst -P -C D:/a/261017-toontown-dev/261017-toontown-dev --files-from manifest.txt --force-local --use-compress-program "zstd -T0"
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:31:55.7103970Z Sent 0 of 373117733 (0.0%), 0.0 MBs/sec
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:31:56.7104452Z Sent 37573413 of 373117733 (10.1%), 17.9 MBs/sec
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:31:57.3799118Z Sent 373117733 of 373117733 (100.0%), 133.2 MBs/sec
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:31:57.7306501Z Post job cleanup.
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:31:57.9468033Z [command]"C:\Program Files\Git\bin\git.exe" version
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:31:57.9844339Z git version 2.56.0.windows.4
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:31:57.9917655Z Temporarily overriding HOME='D:\a\_temp\ddc5dd87-65f6-4631-a893-0a0574ed9983' before making global git config changes
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:31:57.9918468Z Adding repository directory to the temporary git global config as a safe directory
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:31:57.9928390Z [command]"C:\Program Files\Git\bin\git.exe" config --global --add safe.directory D:\a\261017-toontown-dev\261017-toontown-dev
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:31:58.0338242Z Removing SSH command configuration
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:31:58.0349783Z [command]"C:\Program Files\Git\bin\git.exe" config --local --name-only --get-regexp core\.sshCommand
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:31:58.0765915Z [command]"C:\Program Files\Git\bin\git.exe" submodule foreach --recursive "sh -c \"git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :\""
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:31:58.7055247Z Removing HTTP extra header
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:31:58.7065233Z [command]"C:\Program Files\Git\bin\git.exe" config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:31:58.7480714Z [command]"C:\Program Files\Git\bin\git.exe" submodule foreach --recursive "sh -c \"git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :\""
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:31:59.3557576Z Removing includeIf entries pointing to credentials config files
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:31:59.3569383Z [command]"C:\Program Files\Git\bin\git.exe" config --local --name-only --get-regexp ^includeIf\.gitdir:
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:31:59.3930478Z includeif.gitdir:D:/a/261017-toontown-dev/261017-toontown-dev/.git.path
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:31:59.3931606Z includeif.gitdir:D:/a/261017-toontown-dev/261017-toontown-dev/.git/worktrees/*.path
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:31:59.3932778Z includeif.gitdir:/github/workspace/.git.path
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:31:59.3933269Z includeif.gitdir:/github/workspace/.git/worktrees/*.path
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:31:59.3977797Z [command]"C:\Program Files\Git\bin\git.exe" config --local --get-all includeif.gitdir:D:/a/261017-toontown-dev/261017-toontown-dev/.git.path
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:31:59.4340873Z D:\a\_temp\git-credentials-8bcb36b4-9469-4a10-8a3d-54e88a445680.config
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:31:59.4388632Z [command]"C:\Program Files\Git\bin\git.exe" config --local --unset includeif.gitdir:D:/a/261017-toontown-dev/261017-toontown-dev/.git.path D\:\\a\\_temp\\git\-credentials\-8bcb36b4\-9469\-4a10\-8a3d\-54e88a445680\.config
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:31:59.4806506Z [command]"C:\Program Files\Git\bin\git.exe" config --local --get-all includeif.gitdir:D:/a/261017-toontown-dev/261017-toontown-dev/.git/worktrees/*.path
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:31:59.5161242Z D:\a\_temp\git-credentials-8bcb36b4-9469-4a10-8a3d-54e88a445680.config
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:31:59.5208048Z [command]"C:\Program Files\Git\bin\git.exe" config --local --unset includeif.gitdir:D:/a/261017-toontown-dev/261017-toontown-dev/.git/worktrees/*.path D\:\\a\\_temp\\git\-credentials\-8bcb36b4\-9469\-4a10\-8a3d\-54e88a445680\.config
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:31:59.5626944Z [command]"C:\Program Files\Git\bin\git.exe" config --local --get-all includeif.gitdir:/github/workspace/.git.path
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:31:59.6004767Z /github/runner_temp/git-credentials-8bcb36b4-9469-4a10-8a3d-54e88a445680.config
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:31:59.6053815Z [command]"C:\Program Files\Git\bin\git.exe" config --local --unset includeif.gitdir:/github/workspace/.git.path \/github\/runner_temp\/git\-credentials\-8bcb36b4\-9469\-4a10\-8a3d\-54e88a445680\.config
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:31:59.6464138Z [command]"C:\Program Files\Git\bin\git.exe" config --local --get-all includeif.gitdir:/github/workspace/.git/worktrees/*.path
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:31:59.6817847Z /github/runner_temp/git-credentials-8bcb36b4-9469-4a10-8a3d-54e88a445680.config
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:31:59.6867170Z [command]"C:\Program Files\Git\bin\git.exe" config --local --unset includeif.gitdir:/github/workspace/.git/worktrees/*.path \/github\/runner_temp\/git\-credentials\-8bcb36b4\-9469\-4a10\-8a3d\-54e88a445680\.config
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:31:59.7268938Z [command]"C:\Program Files\Git\bin\git.exe" submodule foreach --recursive "git config --local --show-origin --name-only --get-regexp remote.origin.url"
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:32:00.3387492Z Removing credentials config 'D:\a\_temp\git-credentials-8bcb36b4-9469-4a10-8a3d-54e88a445680.config'
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:32:00.3592937Z Cleaning up orphan processes
+check properties (windows-latest)	UNKNOWN STEP	2026-11-02T17:32:00.4109251Z Terminate orphan process: pid (4404) (vctip)

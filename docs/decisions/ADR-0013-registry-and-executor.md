@@ -89,6 +89,8 @@ state commands (§5, §12).
    checkpoints, revision log, application context, window/workspace state, clipboard). Every call is a message;
    the caller waits at most the **watchdog budget** (default 30 s) and otherwise gets **`command.timeout`**
    `{commandId, budgetMs}` — the work may still complete, and the hint says to read `doc.state.get` before retrying.
+   (Superseded in M2 C2.3, ADR-0015 history C23-R1-07, C23-R2-01, C23-R3-01: the caller's timeout cancels exactly
+   its request, which is not accepted unless its document commit had already happened; the hint says so.)
    Handlers never wait for input (P5). A handler that does not return cannot block callers: each call still answers
    with `command.timeout` within the budget, and the executor serves again when the handler returns
    (`tests/c12_never_block.rs`); a handler that never returns cannot be preempted in-process (no safe thread

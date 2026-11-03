@@ -1,0 +1,33 @@
+cargo :    Compiling tt-mcp v0.0.1 (C:\Users\kaiga\work\review\m2-c22-r1\crates\mcp)
+At line:3 char:1
++ cargo test -p tt-mcp --test c22_r1_surface --locked > .review-c22-tem ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (   Compiling tt...-r1\crates\mcp):String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 1.85s
+     Running tests\c22_r1_surface.rs (target\debug\deps\c22_r1_surface-2e0e36eff87b7679.exe)
+
+running 4 tests
+test record_checkpoint_command_contracts_and_deferred_owners ... ok
+test an_agent_with_preferences_permission_can_set_gap_closing ... FAILED
+test retain_a_baseline_bundle_for_the_headless_paint_probe ... ok
+test typed_generic_atomic_sequential_and_script_paints_preserve_commit_contracts ... ok
+
+failures:
+
+---- an_agent_with_preferences_permission_can_set_gap_closing stdout ----
+
+thread 'an_agent_with_preferences_permission_can_set_gap_closing' (34388) panicked at crates\mcp\tests\c22_r1_surface.rs:18:5:
+assertion `left == right` failed: the persisted paint preference must not require the agent-forbidden app scope: {"status":"error","changes":[],"warnings":[],"documentRev":null,"error":{"code":"permission.denied","message":"`colour.gapClosing.set` needs the scopes [\"app\"]","details":{"commandId":"colour.gapClosing.set","missingScopes":["app"]}}}
+  left: String("error")
+ right: "ok"
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+
+failures:
+    an_agent_with_preferences_permission_can_set_gap_closing
+
+test result: FAILED. 3 passed; 1 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.18s
+
+error: test failed, to rerun pass `-p tt-mcp --test c22_r1_surface`

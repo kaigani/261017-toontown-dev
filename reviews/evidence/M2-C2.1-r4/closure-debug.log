@@ -1,0 +1,11 @@
+   Compiling tt-vector v0.0.1 (C:\Users\kaiga\work\review\m2-c21-r4\crates\vector)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 1.32s
+     Running tests\c21_r4_closure.rs (target\debug\deps\c21_r4_closure-9d0a5381441172b9.exe)
+
+running 4 tests
+test distinct_return_groups_keep_their_arc_positions_and_tail_rotates_with_geometry ... ok
+test reordered_marks_composites_and_paragraph_boundaries_keep_owners ... ok
+test several_closing_samples_form_ordered_seam_and_open_return_stays_open ... ok
+test closed_stationary_samples_keep_every_pressure ... ok
+
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s

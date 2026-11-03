@@ -1,0 +1,89 @@
+{
+  "before": {
+    "count": 2,
+    "hits": [
+      {
+        "strokeId": "st_01K7JJN802M5JQM27EKTSGHS3Y",
+        "from": {
+          "x": 0.0,
+          "y": 80.0
+        },
+        "to": {
+          "x": 80.0,
+          "y": 20.0
+        },
+        "direction": 1
+      },
+      {
+        "strokeId": "st_01K7JJN802M5JQM27EKTSGHS3Y",
+        "from": {
+          "x": 80.0,
+          "y": 20.0
+        },
+        "to": {
+          "x": 0.0,
+          "y": 80.0
+        },
+        "direction": -1
+      }
+    ]
+  },
+  "after": {
+    "count": 4,
+    "hits": [
+      {
+        "strokeId": "st_01K7JJN807GBFDFK98RX92DCW5",
+        "from": {
+          "x": 32.0,
+          "y": 56.0
+        },
+        "to": {
+          "x": 0.0,
+          "y": 80.0
+        },
+        "direction": -1
+      },
+      {
+        "strokeId": "st_01K7JJN807GBFDFK98RX92DCW5",
+        "from": {
+          "x": 0.0,
+          "y": 80.0
+        },
+        "to": {
+          "x": 32.0,
+          "y": 56.0
+        },
+        "direction": 1
+      },
+      {
+        "strokeId": "st_01K7JJN80BNMM489MYHCE03JCC",
+        "from": {
+          "x": 32.0,
+          "y": 56.0
+        },
+        "to": {
+          "x": 0.0,
+          "y": 80.0
+        },
+        "direction": -1
+      },
+      {
+        "strokeId": "st_01K7JJN80BNMM489MYHCE03JCC",
+        "from": {
+          "x": 0.0,
+          "y": 80.0
+        },
+        "to": {
+          "x": 32.0,
+          "y": 56.0
+        },
+        "direction": 1
+      }
+    ]
+  },
+  "probe": [
+    10,
+    72.5
+  ],
+  "arithmetic": "Python arbitrary-precision Fraction over persisted anchors; straight corner segments"
+}

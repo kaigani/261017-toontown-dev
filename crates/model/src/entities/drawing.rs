@@ -106,6 +106,7 @@ pub struct ZoneFill {
     #[schemars(extend("x-ref" = "swatch"))]
     pub colour_id: Option<Id>,
     /// Gradient/texture placement; `null` for none.
+    #[serde(serialize_with = "crate::value::serialize_matrix")]
     pub matrix: Option<Matrix2d>,
 }
 
@@ -145,7 +146,8 @@ model_struct! {
         /// Brush: fill colour; pencil: line colour; `null` for invisible strokes.
         #[schemars(extend("x-ref" = "swatch"))]
         colour_id: Option<Id>,
-        /// Placement of a gradient/texture colour space for brush strokes.
+        /// Placement of a gradient/texture colour space (brush strokes and lines, 03 §7.2; SI-068).
+        #[serde(serialize_with = "crate::value::serialize_matrix")]
         fill_matrix: Option<Matrix2d>,
         /// Pencil strokes only.
         line_style: Option<LineStyle>,

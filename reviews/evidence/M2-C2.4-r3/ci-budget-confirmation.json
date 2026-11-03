@@ -1,0 +1,165 @@
+{
+  "head": "871e8bd6299011a62e38d3da073755a54faec7f5",
+  "jobs": [
+    {
+      "name": "check properties (windows-latest)",
+      "status": "success",
+      "seconds": 1861.0,
+      "id": 125622458355,
+      "budgetSeconds": 2700,
+      "insideBudget": true
+    },
+    {
+      "name": "check (windows-latest)",
+      "status": "success",
+      "seconds": 2371.0,
+      "id": 125622458593,
+      "budgetSeconds": 3600,
+      "insideBudget": true
+    },
+    {
+      "name": "review properties release (macos-latest)",
+      "status": "success",
+      "seconds": 677.0,
+      "id": 125622458620,
+      "budgetSeconds": 2700,
+      "insideBudget": true
+    },
+    {
+      "name": "headless release (windows-latest)",
+      "status": "success",
+      "seconds": 1774.0,
+      "id": 125622458632,
+      "budgetSeconds": 3300,
+      "insideBudget": true
+    },
+    {
+      "name": "raster determinism (ubuntu-latest)",
+      "status": "success",
+      "seconds": 74.0,
+      "id": 125622458634,
+      "budgetSeconds": 1200,
+      "insideBudget": true
+    },
+    {
+      "name": "headless release (macos-latest)",
+      "status": "success",
+      "seconds": 2052.0,
+      "id": 125622458680,
+      "budgetSeconds": 3300,
+      "insideBudget": true
+    },
+    {
+      "name": "history oracles release (macos-latest)",
+      "status": "success",
+      "seconds": 660.0,
+      "id": 125622458688,
+      "budgetSeconds": 2400,
+      "insideBudget": true
+    },
+    {
+      "name": "bundle (macos-latest)",
+      "status": "success",
+      "seconds": 413.0,
+      "id": 125622458738,
+      "budgetSeconds": 1800,
+      "insideBudget": true
+    },
+    {
+      "name": "headless without a display (ubuntu)",
+      "status": "success",
+      "seconds": 190.0,
+      "id": 125622458739,
+      "budgetSeconds": 900,
+      "insideBudget": true
+    },
+    {
+      "name": "raster determinism (windows-latest)",
+      "status": "success",
+      "seconds": 185.0,
+      "id": 125622458780,
+      "budgetSeconds": 1200,
+      "insideBudget": true
+    },
+    {
+      "name": "check (macos-latest)",
+      "status": "success",
+      "seconds": 1695.0,
+      "id": 125622458787,
+      "budgetSeconds": 3600,
+      "insideBudget": true
+    },
+    {
+      "name": "raster determinism (macos-latest)",
+      "status": "success",
+      "seconds": 145.0,
+      "id": 125622458801,
+      "budgetSeconds": 1200,
+      "insideBudget": true
+    },
+    {
+      "name": "review properties release (windows-latest)",
+      "status": "success",
+      "seconds": 556.0,
+      "id": 125622458805,
+      "budgetSeconds": 2700,
+      "insideBudget": true
+    },
+    {
+      "name": "check properties (macos-latest)",
+      "status": "success",
+      "seconds": 1534.0,
+      "id": 125622458823,
+      "budgetSeconds": 2700,
+      "insideBudget": true
+    },
+    {
+      "name": "bundle (windows-latest)",
+      "status": "success",
+      "seconds": 766.0,
+      "id": 125622458835,
+      "budgetSeconds": 1800,
+      "insideBudget": true
+    },
+    {
+      "name": "e2 release (macos-latest)",
+      "status": "success",
+      "seconds": 224.0,
+      "id": 125622458847,
+      "budgetSeconds": 1800,
+      "insideBudget": true
+    },
+    {
+      "name": "e2 release (windows-latest)",
+      "status": "success",
+      "seconds": 415.0,
+      "id": 125622458851,
+      "budgetSeconds": 1800,
+      "insideBudget": true
+    },
+    {
+      "name": "measurements release (windows-latest)",
+      "status": "success",
+      "seconds": 982.0,
+      "id": 125622458893,
+      "budgetSeconds": 2700,
+      "insideBudget": true
+    },
+    {
+      "name": "history oracles release (windows-latest)",
+      "status": "success",
+      "seconds": 947.0,
+      "id": 125622458940,
+      "budgetSeconds": 2400,
+      "insideBudget": true
+    },
+    {
+      "name": "measurements release (macos-latest)",
+      "status": "success",
+      "seconds": 687.0,
+      "id": 125622458966,
+      "budgetSeconds": 2700,
+      "insideBudget": true
+    }
+  ]
+}

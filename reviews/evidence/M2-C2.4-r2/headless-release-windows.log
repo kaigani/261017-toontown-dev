@@ -1,0 +1,709 @@
+headless release (windows-latest)	UNKNOWN STEP	﻿2026-11-02T17:01:15.4914313Z Current runner version: '2.338.2'
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:15.4931991Z ##[group]Runner Image Provisioner
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:15.4932508Z Hosted Compute Agent
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:15.4932837Z Version: 20261021.618
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:15.4933165Z Commit: 21505ad2541d5be6135ed84fc33697146cf75b8e
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:15.4933564Z Build Date: 2026-10-21T00:45:21Z
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:15.4933934Z Worker ID: {504028cb-8d81-405e-a338-0945ff0b9131}
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:15.4934309Z Region: westus3
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:15.4934629Z Cloud: Azure
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:15.4934905Z ##[endgroup]
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:15.4935620Z ##[group]Operating System
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:15.4935984Z Microsoft Windows Server 2025
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:15.4936308Z 10.0.26100
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:15.4936617Z Datacenter
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:15.4936901Z ##[endgroup]
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:15.4937313Z ##[group]Runner Image
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:15.4937636Z Image: windows-2025-vs2026
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:15.4937978Z Version: 20261030.294.1
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:15.4938835Z Included Software: https://github.com/actions/runner-images/blob/win25-vs2026/20261030.294/images/windows/Windows2025-VS2026-Readme.md
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:15.4939714Z Image Release: https://github.com/actions/runner-images/releases/tag/win25-vs2026%2F20261030.294
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:15.4940241Z ##[endgroup]
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:15.4940928Z ##[group]GITHUB_TOKEN Permissions
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:15.4942115Z Contents: read
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:15.4942416Z Metadata: read
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:15.4942770Z Packages: read
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:15.4943057Z ##[endgroup]
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:15.4944350Z Secret source: Actions
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:15.4944823Z Cache mode: write
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:15.4945216Z Prepare workflow directory
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:15.5207234Z Prepare all required actions
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:15.5240977Z Getting action download info
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:15.8365813Z Download action repository 'actions/checkout@v7' (SHA:3d3c42e5aac5ba805825da76410c181273ba90b1)
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:15.9817471Z Download action repository 'Swatinem/rust-cache@v2' (SHA:d1527c8f67ef9af357290475d4af4b0fab8f12e0)
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:16.6584523Z Download action repository 'actions/upload-artifact@v7' (SHA:cf430e030ddbb5b0abf93d22962f4752f3646cd9)
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:16.9992724Z Complete job name: headless release (windows-latest)
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:17.3189675Z ##[group]Run actions/checkout@v7
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:17.3190732Z with:
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:17.3191210Z   repository: kaigani/261017-toontown-dev
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:17.3195669Z   token: ***
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:17.3196108Z   ssh-strict: true
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:17.3196560Z   ssh-user: git
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:17.3197008Z   persist-credentials: true
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:17.3197496Z   clean: true
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:17.3197958Z   sparse-checkout-cone-mode: true
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:17.3198632Z   fetch-depth: 1
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:17.3199081Z   fetch-tags: false
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:17.3199548Z   show-progress: true
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:17.3200020Z   lfs: false
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:17.3200455Z   submodules: false
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:17.3200920Z   set-safe-directory: true
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:17.3201477Z   allow-unsafe-pr-checkout: false
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:17.3202129Z env:
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:17.3202537Z   CARGO_TERM_COLOR: always
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:17.3203031Z   CARGO_INCREMENTAL: 0
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:17.3203531Z   RUST_BACKTRACE: 1
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:17.3203966Z ##[endgroup]
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:17.4384289Z Syncing repository: kaigani/261017-toontown-dev
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:17.4386322Z ##[group]Getting Git version info
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:17.4387177Z Working directory is 'D:\a\261017-toontown-dev\261017-toontown-dev'
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:17.5354022Z [command]"C:\Program Files\Git\bin\git.exe" version
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:18.6234898Z git version 2.56.0.windows.4
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:18.6268788Z ##[endgroup]
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:18.6280367Z Temporarily overriding HOME='D:\a\_temp\bfa40c4e-dc4c-4c2b-8bc3-e44253a4c630' before making global git config changes
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:18.6280840Z Adding repository directory to the temporary git global config as a safe directory
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:18.6286927Z [command]"C:\Program Files\Git\bin\git.exe" config --global --add safe.directory D:\a\261017-toontown-dev\261017-toontown-dev
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:18.7284976Z Deleting the contents of 'D:\a\261017-toontown-dev\261017-toontown-dev'
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:18.7288362Z ##[group]Determining repository object format
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:18.7289865Z ##[endgroup]
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:18.7290185Z ##[group]Initializing the repository
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:18.7296153Z [command]"C:\Program Files\Git\bin\git.exe" init D:\a\261017-toontown-dev\261017-toontown-dev
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:18.9321774Z Initialized empty Git repository in D:/a/261017-toontown-dev/261017-toontown-dev/.git/
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:18.9360403Z [command]"C:\Program Files\Git\bin\git.exe" remote add origin https://github.com/kaigani/261017-toontown-dev
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:19.0480138Z ##[endgroup]
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:19.0480527Z ##[group]Disabling automatic garbage collection
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:19.0487002Z [command]"C:\Program Files\Git\bin\git.exe" config --local gc.auto 0
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:19.0770644Z ##[endgroup]
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:19.0771010Z ##[group]Setting up auth
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:19.0771271Z Removing SSH command configuration
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:19.0778434Z [command]"C:\Program Files\Git\bin\git.exe" config --local --name-only --get-regexp core\.sshCommand
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:19.1039210Z [command]"C:\Program Files\Git\bin\git.exe" submodule foreach --recursive "sh -c \"git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :\""
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:22.7845017Z Removing HTTP extra header
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:22.7853405Z [command]"C:\Program Files\Git\bin\git.exe" config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:22.8122733Z [command]"C:\Program Files\Git\bin\git.exe" submodule foreach --recursive "sh -c \"git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :\""
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:23.2436588Z Removing includeIf entries pointing to credentials config files
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:23.2445409Z [command]"C:\Program Files\Git\bin\git.exe" config --local --name-only --get-regexp ^includeIf\.gitdir:
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:23.2716706Z [command]"C:\Program Files\Git\bin\git.exe" submodule foreach --recursive "git config --local --show-origin --name-only --get-regexp remote.origin.url"
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:23.6732019Z [command]"C:\Program Files\Git\bin\git.exe" config --file D:\a\_temp\git-credentials-07d96e70-56ab-46d8-a4e5-806fc719cc9c.config http.https://github.com/.extraheader "AUTHORIZATION: basic ***"
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:23.7000814Z [command]"C:\Program Files\Git\bin\git.exe" config --local includeIf.gitdir:D:/a/261017-toontown-dev/261017-toontown-dev/.git.path D:\a\_temp\git-credentials-07d96e70-56ab-46d8-a4e5-806fc719cc9c.config
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:23.7264560Z [command]"C:\Program Files\Git\bin\git.exe" config --local includeIf.gitdir:D:/a/261017-toontown-dev/261017-toontown-dev/.git/worktrees/*.path D:\a\_temp\git-credentials-07d96e70-56ab-46d8-a4e5-806fc719cc9c.config
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:23.7699690Z [command]"C:\Program Files\Git\bin\git.exe" config --local includeIf.gitdir:/github/workspace/.git.path /github/runner_temp/git-credentials-07d96e70-56ab-46d8-a4e5-806fc719cc9c.config
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:23.7977366Z [command]"C:\Program Files\Git\bin\git.exe" config --local includeIf.gitdir:/github/workspace/.git/worktrees/*.path /github/runner_temp/git-credentials-07d96e70-56ab-46d8-a4e5-806fc719cc9c.config
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:23.8260547Z ##[endgroup]
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:23.8260803Z ##[group]Fetching the repository
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:23.8261373Z [command]"C:\Program Files\Git\bin\git.exe" -c protocol.version=2 fetch --no-tags --prune --no-recurse-submodules --depth=1 origin +3c74c3432f2a1895b5aaca83e6ddf914cf6b4281:refs/remotes/origin/m2-vector-engine
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:30.7332058Z From https://github.com/kaigani/261017-toontown-dev
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:30.7332616Z  * [new ref]         3c74c3432f2a1895b5aaca83e6ddf914cf6b4281 -> origin/m2-vector-engine
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:30.7370269Z [command]"C:\Program Files\Git\bin\git.exe" branch --list --remote origin/m2-vector-engine
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:30.7793590Z   origin/m2-vector-engine
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:30.7828634Z [command]"C:\Program Files\Git\bin\git.exe" rev-parse refs/remotes/origin/m2-vector-engine
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:30.8396359Z 3c74c3432f2a1895b5aaca83e6ddf914cf6b4281
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:30.8430375Z ##[endgroup]
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:30.8430614Z ##[group]Determining the checkout info
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:30.8431757Z ##[endgroup]
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:30.8438613Z [command]"C:\Program Files\Git\bin\git.exe" sparse-checkout disable
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:30.9072072Z [command]"C:\Program Files\Git\bin\git.exe" config --local --unset-all extensions.worktreeConfig
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:30.9354001Z ##[group]Checking out the ref
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:30.9365301Z [command]"C:\Program Files\Git\bin\git.exe" checkout --progress --force -B m2-vector-engine refs/remotes/origin/m2-vector-engine
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:32.0155044Z Updating files:  52% (4085/7777)
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:32.0321665Z Updating files:  53% (4122/7777)
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:32.0498843Z Updating files:  54% (4200/7777)
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:32.0592480Z Updating files:  55% (4278/7777)
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:32.0685180Z Updating files:  56% (4356/7777)
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:32.0781338Z Updating files:  57% (4433/7777)
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:32.0959352Z Updating files:  58% (4511/7777)
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:32.1084012Z Updating files:  59% (4589/7777)
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:32.1182923Z Updating files:  60% (4667/7777)
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:32.1285633Z Updating files:  61% (4744/7777)
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:32.1377765Z Updating files:  62% (4822/7777)
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:32.1562934Z Updating files:  63% (4900/7777)
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:32.1717753Z Updating files:  64% (4978/7777)
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:32.1818684Z Updating files:  65% (5056/7777)
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:32.1915733Z Updating files:  66% (5133/7777)
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:32.2032406Z Updating files:  67% (5211/7777)
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:32.2207515Z Updating files:  68% (5289/7777)
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:32.2327645Z Updating files:  69% (5367/7777)
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:32.2424550Z Updating files:  70% (5444/7777)
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:32.2517693Z Updating files:  71% (5522/7777)
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:32.2648006Z Updating files:  72% (5600/7777)
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:32.2836539Z Updating files:  73% (5678/7777)
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:32.2933245Z Updating files:  74% (5755/7777)
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:32.3135343Z Updating files:  75% (5833/7777)
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:32.3401223Z Updating files:  76% (5911/7777)
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:32.3653267Z Updating files:  77% (5989/7777)
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:32.5371670Z Updating files:  78% (6067/7777)
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:32.5593951Z Updating files:  79% (6144/7777)
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:32.5787993Z Updating files:  80% (6222/7777)
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:32.5922730Z Updating files:  81% (6300/7777)
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:32.6147354Z Updating files:  82% (6378/7777)
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:32.6269361Z Updating files:  83% (6455/7777)
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:32.6369268Z Updating files:  84% (6533/7777)
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:32.6506998Z Updating files:  85% (6611/7777)
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:32.6708608Z Updating files:  86% (6689/7777)
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:32.6799728Z Updating files:  87% (6766/7777)
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:32.6980323Z Updating files:  88% (6844/7777)
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:32.7094544Z Updating files:  89% (6922/7777)
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:32.7206685Z Updating files:  90% (7000/7777)
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:32.7460613Z Updating files:  91% (7078/7777)
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:32.7579339Z Updating files:  92% (7155/7777)
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:32.7708297Z Updating files:  93% (7233/7777)
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:32.7830381Z Updating files:  94% (7311/7777)
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:32.7963925Z Updating files:  95% (7389/7777)
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:32.8076634Z Updating files:  96% (7466/7777)
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:32.8146365Z Updating files:  97% (7544/7777)
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:32.8211543Z Updating files:  98% (7622/7777)
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:32.8272547Z Updating files:  99% (7700/7777)
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:32.8272811Z Updating files: 100% (7777/7777)
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:32.8273350Z Updating files: 100% (7777/7777), done.
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:32.8417002Z Switched to a new branch 'm2-vector-engine'
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:32.8433695Z branch 'm2-vector-engine' set up to track 'origin/m2-vector-engine'.
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:32.8691781Z ##[endgroup]
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:32.9167985Z [command]"C:\Program Files\Git\bin\git.exe" log -1 --format=%H
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:32.9409070Z 3c74c3432f2a1895b5aaca83e6ddf914cf6b4281
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:32.9765085Z ##[group]Run tc=$(sed -n 's/^channel = "\(.*\)"/\1/p' rust-toolchain.toml)
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:32.9765468Z ^[[36;1mtc=$(sed -n 's/^channel = "\(.*\)"/\1/p' rust-toolchain.toml)^[[0m
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:32.9765708Z ^[[36;1mrustup toolchain install "$tc" --profile minimal^[[0m
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:32.9765888Z ^[[36;1mrustup override set "$tc"^[[0m
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:32.9766031Z ^[[36;1mrustc --version^[[0m
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:32.9782366Z shell: C:\Program Files\Git\bin\bash.EXE --noprofile --norc -e -o pipefail {0}
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:32.9782596Z env:
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:32.9782724Z   CARGO_TERM_COLOR: always
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:32.9782850Z   CARGO_INCREMENTAL: 0
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:32.9782960Z   RUST_BACKTRACE: 1
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:32.9783065Z ##[endgroup]
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:36.1209008Z info: syncing channel updates for 1.98.1-x86_64-pc-windows-msvc
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:37.4463102Z info: latest update on 2026-09-03 for version 1.98.1 (48a229cea 2026-09-01)
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:37.4812830Z info: downloading 3 components
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:45.6692639Z 
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:47.5408583Z   1.98.1-x86_64-pc-windows-msvc installed - rustc 1.98.1 (48a229cea 2026-09-01)
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:47.5408799Z 
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:47.5641547Z info: override toolchain for D:\a\261017-toontown-dev\261017-toontown-dev set to 1.98.1-x86_64-pc-windows-msvc
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:49.6020259Z rustc 1.98.1 (48a229cea 2026-09-01)
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:49.6727435Z ##[group]Run Swatinem/rust-cache@v2
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:49.6727620Z with:
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:49.6727729Z   key: headless-release
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:49.6727849Z   prefix-key: v0-rust
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:49.6727981Z   add-job-id-key: true
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:49.6728107Z   add-rust-environment-hash-key: true
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:49.6728252Z   cache-targets: true
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:49.6728365Z   cache-all-crates: false
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:49.6728496Z   cache-workspace-crates: false
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:49.6728620Z   save-if: true
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:49.6728731Z   cache-provider: github
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:49.6728849Z   cache-bin: true
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:49.6728954Z   lookup-only: false
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:49.6729058Z   cmd-format: {0}
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:49.6729157Z env:
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:49.6729267Z   CARGO_TERM_COLOR: always
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:49.6729388Z   CARGO_INCREMENTAL: 0
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:49.6729499Z   RUST_BACKTRACE: 1
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:49.6729607Z ##[endgroup]
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:04.1466265Z ##[group]Cache Configuration
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:04.1466640Z Cache Provider:
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:04.1467108Z     github
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:04.1467778Z Workspaces:
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:04.1467990Z     D:\a\261017-toontown-dev\261017-toontown-dev
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:04.1468279Z Cache Paths:
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:04.1468454Z     C:\Users\runneradmin\.cargo\bin
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:04.1468690Z     C:\Users\runneradmin\.cargo\.crates.toml
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:04.1468934Z     C:\Users\runneradmin\.cargo\.crates2.json
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:04.1469172Z     C:\Users\runneradmin\.cargo\registry
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:04.1469521Z     C:\Users\runneradmin\.cargo\git
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:04.1469766Z     D:\a\261017-toontown-dev\261017-toontown-dev\target
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:04.1470019Z Restore Key:
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:04.1470251Z     v0-rust-headless-release-headless-Windows_NT-x64-c16cbc5d
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:04.1470532Z Cache Key:
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:04.1470789Z     v0-rust-headless-release-headless-Windows_NT-x64-c16cbc5d-7ca7b21e
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:04.1471121Z .. Prefix:
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:04.1471336Z   - v0-rust-headless-release-headless-Windows_NT-x64
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:04.1471627Z .. Environment considered:
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:04.1472101Z   - Rust Versions:
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:04.1472626Z     - 1.98.1 x86_64-pc-windows-msvc 48a229ceaefd4985c50990b14116b6d856af0985
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:04.1472881Z     - 1.99.1 x86_64-pc-windows-msvc 58cf8f9c35b355199727627d07ae34a4e2846d67
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:04.1473064Z   - CARGO_INCREMENTAL
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:04.1473180Z   - CARGO_TERM_COLOR
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:04.1473290Z   - RUST_BACKTRACE
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:04.1473397Z .. Lockfiles considered:
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:04.1473690Z   - D:\a\261017-toontown-dev\261017-toontown-dev\bins\headless\Cargo.toml
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:04.1473961Z   - D:\a\261017-toontown-dev\261017-toontown-dev\Cargo.lock
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:04.1474176Z   - D:\a\261017-toontown-dev\261017-toontown-dev\crates\anim\Cargo.toml
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:04.1474399Z   - D:\a\261017-toontown-dev\261017-toontown-dev\crates\audio\Cargo.toml
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:04.1474629Z   - D:\a\261017-toontown-dev\261017-toontown-dev\crates\colour\Cargo.toml
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:04.1474857Z   - D:\a\261017-toontown-dev\261017-toontown-dev\crates\engine\Cargo.toml
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:04.1475091Z   - D:\a\261017-toontown-dev\261017-toontown-dev\crates\executor\Cargo.toml
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:04.1475334Z   - D:\a\261017-toontown-dev\261017-toontown-dev\crates\fx\Cargo.toml
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:04.1475608Z   - D:\a\261017-toontown-dev\261017-toontown-dev\crates\io\Cargo.toml
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:04.1475841Z   - D:\a\261017-toontown-dev\261017-toontown-dev\crates\lipsync\Cargo.toml
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:04.1476069Z   - D:\a\261017-toontown-dev\261017-toontown-dev\crates\mcp\Cargo.toml
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:04.1476292Z   - D:\a\261017-toontown-dev\261017-toontown-dev\crates\model\Cargo.toml
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:04.1476523Z   - D:\a\261017-toontown-dev\261017-toontown-dev\crates\persist\Cargo.toml
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:04.1478566Z   - D:\a\261017-toontown-dev\261017-toontown-dev\crates\registry-macros\Cargo.toml
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:04.1478934Z   - D:\a\261017-toontown-dev\261017-toontown-dev\crates\registry\Cargo.toml
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:04.1479179Z   - D:\a\261017-toontown-dev\261017-toontown-dev\crates\render\Cargo.toml
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:04.1479410Z   - D:\a\261017-toontown-dev\261017-toontown-dev\crates\vector\Cargo.toml
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:04.1479654Z   - D:\a\261017-toontown-dev\261017-toontown-dev\desktop\src-tauri\Cargo.toml
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:04.1479888Z   - D:\a\261017-toontown-dev\261017-toontown-dev\rust-toolchain.toml
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:04.1480220Z ##[endgroup]
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:04.1480290Z 
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:04.1480357Z ... Restoring cache ...
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:04.5488812Z Cache hit for: v0-rust-headless-release-headless-Windows_NT-x64-c16cbc5d-7ca7b21e
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:05.7701454Z Received 62914560 of 463002152 (13.6%), 59.3 MBs/sec
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:06.8650162Z Received 134217728 of 463002152 (29.0%), 60.7 MBs/sec
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:08.2055007Z Received 268435456 of 463002152 (58.0%), 74.2 MBs/sec
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:09.4747046Z Received 402653184 of 463002152 (87.0%), 81.4 MBs/sec
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:10.4808949Z Received 461373440 of 463002152 (99.6%), 76.9 MBs/sec
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:10.6774158Z Received 463002152 of 463002152 (100.0%), 74.6 MBs/sec
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:10.6777378Z Cache Size: ~442 MB (463002152 B)
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:10.6996210Z [command]"C:\Program Files\Git\usr\bin\tar.exe" -xf D:/a/_temp/cb505081-bcd5-49ef-9d43-06a6c36b41c3/cache.tzst -P -C D:/a/261017-toontown-dev/261017-toontown-dev --force-local --use-compress-program "zstd -d"
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:30.4060723Z Cache restored successfully
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:30.4347075Z Restored from cache key "v0-rust-headless-release-headless-Windows_NT-x64-c16cbc5d-7ca7b21e" full match: true.
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:30.4576388Z ##[group]Run cargo build --release --locked -p tt-headless
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:30.4576683Z ^[[36;1mcargo build --release --locked -p tt-headless^[[0m
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:30.4576868Z ^[[36;1mexe=target/release/toontown-headless^[[0m
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:30.4577023Z ^[[36;1mPY=python3^[[0m
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:30.4577189Z ^[[36;1mif [ "$RUNNER_OS" = "Windows" ]; then exe="$exe.exe"; PY=python; fi^[[0m
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:30.4577388Z ^[[36;1m"$exe" --version^[[0m
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:30.4578072Z ^[[36;1menv -u DISPLAY -u WAYLAND_DISPLAY "$exe" --selftest^[[0m
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:30.4578271Z ^[[36;1m"$exe" --selftest --json > selftest-1.json^[[0m
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:30.4578447Z ^[[36;1m"$exe" --selftest --json > selftest-2.json^[[0m
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:30.4578701Z ^[[36;1m# Everything except timing must be identical between runs (determinism, ADR-0004).^[[0m
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:30.4579247Z ^[[36;1m$PY -c "import json,sys; strip=lambda f:[(c['id'],c['ok']) for c in json.load(open(f))['checks']]; a,b=strip('selftest-1.json'),strip('selftest-2.json'); print(a); sys.exit(0 if a==b and all(ok for _,ok in a) else 1)"^[[0m
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:30.4579688Z ^[[36;1m$PY scripts/check-headless-deps.py "$exe"^[[0m
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:30.4579881Z ^[[36;1mmkdir -p out && cp "$exe" selftest-1.json out/^[[0m
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:30.4588259Z shell: C:\Program Files\Git\bin\bash.EXE --noprofile --norc -e -o pipefail {0}
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:30.4588470Z env:
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:30.4588583Z   CARGO_TERM_COLOR: always
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:30.4588717Z   CARGO_INCREMENTAL: 0
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:30.4588833Z   RUST_BACKTRACE: 1
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:30.4588943Z   CACHE_ON_FAILURE: false
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:30.4589061Z ##[endgroup]
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:30.5825190Z ^[[1m^[[92m    Updating^[[0m crates.io index
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:36.2208582Z ^[[1m^[[92m   Compiling^[[0m tt-model v0.0.1 (D:\a\261017-toontown-dev\261017-toontown-dev\crates\model)
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:36.2247054Z ^[[1m^[[92m   Compiling^[[0m tt-registry-macros v0.0.1 (D:\a\261017-toontown-dev\261017-toontown-dev\crates\registry-macros)
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:42.8160027Z ^[[1m^[[92m   Compiling^[[0m tt-anim v0.0.1 (D:\a\261017-toontown-dev\261017-toontown-dev\crates\anim)
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:42.8161021Z ^[[1m^[[92m   Compiling^[[0m tt-colour v0.0.1 (D:\a\261017-toontown-dev\261017-toontown-dev\crates\colour)
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:42.8161531Z ^[[1m^[[92m   Compiling^[[0m tt-vector v0.0.1 (D:\a\261017-toontown-dev\261017-toontown-dev\crates\vector)
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:42.8716385Z ^[[1m^[[92m   Compiling^[[0m tt-fx v0.0.1 (D:\a\261017-toontown-dev\261017-toontown-dev\crates\fx)
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:42.8801740Z ^[[1m^[[92m   Compiling^[[0m tt-persist v0.0.1 (D:\a\261017-toontown-dev\261017-toontown-dev\crates\persist)
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:42.9209763Z ^[[1m^[[92m   Compiling^[[0m tt-audio v0.0.1 (D:\a\261017-toontown-dev\261017-toontown-dev\crates\audio)
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:42.9669239Z ^[[1m^[[92m   Compiling^[[0m tt-registry v0.0.1 (D:\a\261017-toontown-dev\261017-toontown-dev\crates\registry)
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:03:24.9485227Z ^[[1m^[[92m   Compiling^[[0m tt-render v0.0.1 (D:\a\261017-toontown-dev\261017-toontown-dev\crates\render)
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:03:27.3524306Z ^[[1m^[[92m   Compiling^[[0m tt-io v0.0.1 (D:\a\261017-toontown-dev\261017-toontown-dev\crates\io)
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:03:37.1455271Z ^[[1m^[[92m   Compiling^[[0m tt-executor v0.0.1 (D:\a\261017-toontown-dev\261017-toontown-dev\crates\executor)
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:03:44.1290912Z ^[[1m^[[92m   Compiling^[[0m tt-lipsync v0.0.1 (D:\a\261017-toontown-dev\261017-toontown-dev\crates\lipsync)
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:04:13.0218668Z ^[[1m^[[92m   Compiling^[[0m tt-engine v0.0.1 (D:\a\261017-toontown-dev\261017-toontown-dev\crates\engine)
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:04:19.2061033Z ^[[1m^[[92m   Compiling^[[0m tt-mcp v0.0.1 (D:\a\261017-toontown-dev\261017-toontown-dev\crates\mcp)
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:05:28.0851849Z ^[[1m^[[92m   Compiling^[[0m tt-headless v0.0.1 (D:\a\261017-toontown-dev\261017-toontown-dev\bins\headless)
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:05:32.5874460Z ^[[1m^[[92m    Finished^[[0m `release` profile [optimized + debuginfo] target(s) in 3m 02s
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:05:32.6290755Z toontown-headless 0.0.1 (Toontown 0.0.1; format 1.0; registry 0.1.0; windows-x86_64)
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:05:32.7663587Z Toontown 0.0.1 self-test (windows-x86_64, run mode headless)
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:05:32.7664441Z   [ok] engine.components      13 crates linked: tt-model, tt-registry, tt-executor, tt-vector, tt-colour, tt-anim, tt-fx, tt-render, tt-audio, tt-lipsync, tt-persist, tt-io, tt-engine
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:05:32.7665431Z   [ok] engine.versions        formatVersion 1.0 (MAJOR.MINOR), registryVersion 0.1.0 (semver)
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:05:32.7666494Z   [ok] engine.ping            echoed seq and 1024 payload bytes in 300 ns
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:05:32.7667063Z   [ok] determinism.ieee754    sha256 d22c8ec2eb9c269ed207f8421f83e96edcf58774894cfad3186b5e2169ad5a16 matches golden
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:05:32.7667827Z   [ok] kernel.executor        registry 796 entries (v0.1.0); patch rev Some(2), undo rev Some(3) from 1; stub answered Some("command.notImplemented")
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:05:32.7668227Z   [ok] headless.mcpLinked     tt-mcp linked (M1 (C1.4))
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:05:32.7668465Z self-test passed
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:05:35.7932004Z [('engine.components', True), ('engine.versions', True), ('engine.ping', True), ('determinism.ieee754', True), ('kernel.executor', True), ('headless.mcpLinked', True)]
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:05:36.1670059Z crate graph: 160 crates, forbidden: none
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:05:36.1670930Z linked libraries (win32): bcryptprimitives.dll, kernel32.dll, api-ms-win-core-synch-l1-2-0.dll, kernel32.dll, ntdll.dll, vcruntime140.dll, api-ms-win-crt-math-l1-1-0.dll, api-ms-win-crt-runtime-l1-1-0.dll, api-ms-win-crt-stdio-l1-1-0.dll, api-ms-win-crt-locale-l1-1-0.dll, api-ms-win-crt-heap-l1-1-0.dll
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:05:36.1672053Z forbidden libraries: none
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:05:36.1672254Z headless dependency check passed
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:05:36.3015368Z ##[group]Run PY=python3
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:05:36.3015686Z ^[[36;1mPY=python3^[[0m
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:05:36.3015880Z ^[[36;1mif [ "$RUNNER_OS" = "Windows" ]; then PY=python; fi^[[0m
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:05:36.3016220Z ^[[36;1mcargo test --release --locked -p tt-executor --test c21_measurements -- --ignored --nocapture^[[0m
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:05:36.3016629Z ^[[36;1m# Both seeded 10 000-operation history oracles with drawing geometry on a saved/reopened fixture (MCP).^[[0m
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:05:36.3017031Z ^[[36;1mcargo test --release --locked -p tt-mcp --test c21_history -- --ignored --nocapture^[[0m
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:05:36.3017416Z ^[[36;1m# The C1.2-C1.4 10 000-operation history oracles run in `history-oracles` (split out in M2 C2.3 round 3).^[[0m
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:05:36.3017828Z ^[[36;1m# Worst-case fitting work on the adversarial 100 000-sample corpus (C21-R1-06; every run kept).^[[0m
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:05:36.3018230Z ^[[36;1mcargo test --release --locked -p tt-vector --test c21_worst_case -- --ignored --nocapture^[[0m
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:05:36.3018701Z ^[[36;1m# Worst-case planar-map work on the adversarial layer corpus (M2 C2.2 readiness items 3 and 9; every run kept).^[[0m
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:05:36.3019097Z ^[[36;1mcargo test --release --locked -p tt-vector --test c22_worst_case -- --ignored --nocapture^[[0m
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:05:36.3019501Z ^[[36;1m# The C22-T2 gate (M2 C2.4 ruling): 100k Flatten, five budgeted and five unbudgeted repetitions (dev-only hook^[[0m
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:05:36.3019866Z ^[[36;1m# lifts the budget), against this run's 100k strokeAdd p50.^[[0m
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:05:36.3020239Z ^[[36;1mTT_MEASURE=1 cargo test --release --locked -p tt-executor --features test-hooks --test c24_measure -- --ignored --nocapture^[[0m
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:05:36.3020698Z ^[[36;1m# Where the merged layer's settling time goes (C22-T2 bounded pass: the noding an incremental pass could skip).^[[0m
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:05:36.3021557Z ^[[36;1mTT_MEASURE=1 cargo test --release --locked -p tt-vector --test c24_flatten_phases -- --ignored --nocapture^[[0m
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:05:36.3021985Z ^[[36;1mmkdir -p out^[[0m
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:05:36.3022177Z ^[[36;1mos=$(echo "$RUNNER_OS" | tr "[:upper:]" "[:lower:]")^[[0m
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:05:36.3022566Z ^[[36;1m$PY scripts/c22-t2-gate.py target/evidence/c21/strokes-100k-$os.json target/evidence/c24/flatten-100k-$os.json out/c22-t2-gate.json^[[0m
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:05:36.3022961Z ^[[36;1mcp -r target/evidence/c24 out/c24-measurements^[[0m
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:05:36.3023197Z ^[[36;1mcp -r target/evidence/c21-fit out/c21-fit-worst-case^[[0m
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:05:36.3023450Z ^[[36;1mcp -r target/evidence/c22-planar out/c22-planar-worst-case^[[0m
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:05:36.3023799Z ^[[36;1m$PY scripts/analyse-measurements.py target/evidence/c21 --out out/c21-measurement-analysis.json^[[0m
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:05:36.3024114Z ^[[36;1mcp -r target/evidence/c21 out/c21-measurements^[[0m
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:05:36.3032151Z shell: C:\Program Files\Git\bin\bash.EXE --noprofile --norc -e -o pipefail {0}
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:05:36.3032399Z env:
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:05:36.3118039Z   CARGO_TERM_COLOR: always
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:05:36.3118335Z   CARGO_INCREMENTAL: 0
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:05:36.3118535Z   RUST_BACKTRACE: 1
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:05:36.3118741Z   CACHE_ON_FAILURE: false
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:05:36.3118946Z ##[endgroup]
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:05:37.4684782Z ^[[1m^[[92m   Compiling^[[0m tt-model v0.0.1 (D:\a\261017-toontown-dev\261017-toontown-dev\crates\model)
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:05:44.0848929Z ^[[1m^[[92m   Compiling^[[0m tt-anim v0.0.1 (D:\a\261017-toontown-dev\261017-toontown-dev\crates\anim)
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:05:44.0849712Z ^[[1m^[[92m   Compiling^[[0m tt-vector v0.0.1 (D:\a\261017-toontown-dev\261017-toontown-dev\crates\vector)
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:05:44.0850314Z ^[[1m^[[92m   Compiling^[[0m tt-colour v0.0.1 (D:\a\261017-toontown-dev\261017-toontown-dev\crates\colour)
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:05:44.1350298Z ^[[1m^[[92m   Compiling^[[0m tt-fx v0.0.1 (D:\a\261017-toontown-dev\261017-toontown-dev\crates\fx)
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:05:44.1412233Z ^[[1m^[[92m   Compiling^[[0m tt-persist v0.0.1 (D:\a\261017-toontown-dev\261017-toontown-dev\crates\persist)
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:05:44.1799971Z ^[[1m^[[92m   Compiling^[[0m tt-registry v0.0.1 (D:\a\261017-toontown-dev\261017-toontown-dev\crates\registry)
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:06:25.0332822Z ^[[1m^[[92m   Compiling^[[0m tt-render v0.0.1 (D:\a\261017-toontown-dev\261017-toontown-dev\crates\render)
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:06:27.4414057Z ^[[1m^[[92m   Compiling^[[0m tt-io v0.0.1 (D:\a\261017-toontown-dev\261017-toontown-dev\crates\io)
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:06:37.4741007Z ^[[1m^[[92m   Compiling^[[0m tt-executor v0.0.1 (D:\a\261017-toontown-dev\261017-toontown-dev\crates\executor)
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:08:26.6679454Z ^[[1m^[[92m    Finished^[[0m `release` profile [optimized + debuginfo] target(s) in 2m 50s
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:08:26.6854538Z ^[[1m^[[92m     Running^[[0m tests\c21_measurements.rs (target\release\deps\c21_measurements-ded4e7b75aeb5f84.exe)
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:08:26.6946395Z 
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:08:26.6946779Z running 1 test
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:09:26.7015211Z test hundred_thousand_stroke_edit_undo_redo_and_dry_run_are_measured has been running for over 60 seconds
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:20:13.4148204Z process live bytes: first 732431673 last 1425923524
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:20:13.4148604Z strokeAdd: 16627.2243 ms (p50), 31521.0 bytes retained (p50)
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:20:13.4148875Z undo: 9912.5545 ms (p50), 23958.0 bytes retained (p50)
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:20:13.4149126Z redo: 8581.6092 ms (p50), 10202.0 bytes retained (p50)
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:20:13.4149674Z strokeAddDryRun: 15397.968 ms (p50), -35531.0 bytes retained (p50)
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:20:13.4149971Z strokeSet: 7494.358700000001 ms (p50), 4340.0 bytes retained (p50)
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:20:13.4150263Z patchProperty: 5237.653899999999 ms (p50), 6112.0 bytes retained (p50)
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:20:13.4150560Z brushAdd: 7415.0064999999995 ms (p50), 91789.0 bytes retained (p50)
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:20:14.8485842Z test hundred_thousand_stroke_edit_undo_redo_and_dry_run_are_measured ... ok
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:20:14.8486167Z 
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:20:14.8489475Z test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 708.15s
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:20:14.8489851Z 
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:20:15.1603007Z ^[[1m^[[92m   Compiling^[[0m tt-model v0.0.1 (D:\a\261017-toontown-dev\261017-toontown-dev\crates\model)
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:20:22.4180922Z ^[[1m^[[92m   Compiling^[[0m tt-anim v0.0.1 (D:\a\261017-toontown-dev\261017-toontown-dev\crates\anim)
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:20:22.4181810Z ^[[1m^[[92m   Compiling^[[0m tt-vector v0.0.1 (D:\a\261017-toontown-dev\261017-toontown-dev\crates\vector)
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:20:22.4182560Z ^[[1m^[[92m   Compiling^[[0m tt-colour v0.0.1 (D:\a\261017-toontown-dev\261017-toontown-dev\crates\colour)
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:20:22.4674018Z ^[[1m^[[92m   Compiling^[[0m tt-fx v0.0.1 (D:\a\261017-toontown-dev\261017-toontown-dev\crates\fx)
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:20:22.4674979Z ^[[1m^[[92m   Compiling^[[0m tt-persist v0.0.1 (D:\a\261017-toontown-dev\261017-toontown-dev\crates\persist)
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:20:22.5161658Z ^[[1m^[[92m   Compiling^[[0m tt-audio v0.0.1 (D:\a\261017-toontown-dev\261017-toontown-dev\crates\audio)
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:20:22.5640627Z ^[[1m^[[92m   Compiling^[[0m tt-registry v0.0.1 (D:\a\261017-toontown-dev\261017-toontown-dev\crates\registry)
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:21:07.8878078Z ^[[1m^[[92m   Compiling^[[0m tt-render v0.0.1 (D:\a\261017-toontown-dev\261017-toontown-dev\crates\render)
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:21:10.5025616Z ^[[1m^[[92m   Compiling^[[0m tt-io v0.0.1 (D:\a\261017-toontown-dev\261017-toontown-dev\crates\io)
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:21:21.1031040Z ^[[1m^[[92m   Compiling^[[0m tt-executor v0.0.1 (D:\a\261017-toontown-dev\261017-toontown-dev\crates\executor)
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:21:28.3314765Z ^[[1m^[[92m   Compiling^[[0m tt-lipsync v0.0.1 (D:\a\261017-toontown-dev\261017-toontown-dev\crates\lipsync)
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:22:00.0397974Z ^[[1m^[[92m   Compiling^[[0m tt-engine v0.0.1 (D:\a\261017-toontown-dev\261017-toontown-dev\crates\engine)
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:22:07.6066065Z ^[[1m^[[92m   Compiling^[[0m tt-mcp v0.0.1 (D:\a\261017-toontown-dev\261017-toontown-dev\crates\mcp)
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:23:27.1075314Z ^[[1m^[[92m    Finished^[[0m `release` profile [optimized + debuginfo] target(s) in 3m 12s
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:23:27.1248464Z ^[[1m^[[92m     Running^[[0m tests\c21_history.rs (target\release\deps\c21_history-56472de407015c20.exe)
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:23:27.1348491Z 
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:23:27.1348978Z running 2 tests
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:24:18.9969674Z geometry-history-r1: {"seed":"0xc12020261019a571","operations":10000,"replayOperations":10000,"strokeSetUndoRedoCreateRestoreDryRunPaintCutOrMergePaintTopology":[3199,3538,456,1,1823,637,814,760,699],"documentRev":10883,"durationSeconds":51.8612526,"zonesAtEnd":1,"maxZones":5,"oracle":"independent line geometry/thickness, square zone fill, topology layer (junctions, pieces, zone IDs, carried and painted fills) and revision stack; exact canonical all-entry byte checks every 100 operations; full fresh executor replay"}
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:24:19.7760279Z test geometry_oracle_seed_a571_matches_and_replays ... ok
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:24:22.0220184Z geometry-history-r3: {"seed":"0xc12320261019b683","operations":10000,"replayOperations":10000,"strokeSetUndoRedoCreateRestoreDryRunPaintCutOrMergePaintTopology":[3204,3496,423,1,1873,599,786,822,682],"documentRev":10817,"durationSeconds":54.8863146,"zonesAtEnd":1,"maxZones":5,"oracle":"independent line geometry/thickness, square zone fill, topology layer (junctions, pieces, zone IDs, carried and painted fills) and revision stack; exact canonical all-entry byte checks every 100 operations; full fresh executor replay"}
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:24:23.4738371Z test geometry_oracle_seed_b683_matches_and_replays ... ok
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:24:23.4738641Z 
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:24:23.4738896Z test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 56.34s
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:24:23.4739235Z 
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:24:23.7300435Z ^[[1m^[[92m   Compiling^[[0m tt-model v0.0.1 (D:\a\261017-toontown-dev\261017-toontown-dev\crates\model)
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:24:31.0421204Z ^[[1m^[[92m   Compiling^[[0m tt-vector v0.0.1 (D:\a\261017-toontown-dev\261017-toontown-dev\crates\vector)
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:25:27.1136456Z ^[[1m^[[92m    Finished^[[0m `release` profile [optimized + debuginfo] target(s) in 1m 03s
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:25:27.1284640Z ^[[1m^[[92m     Running^[[0m tests\c21_worst_case.rs (target\release\deps\c21_worst_case-a72a2972e99f5a94.exe)
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:25:27.1371661Z 
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:25:27.1372100Z running 2 tests
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:25:27.1663587Z dense-straight-closed: [Object {"wallMs": Number(1.436), "visits": Number(799999), "anchors": Number(1)}, Object {"wallMs": Number(1.3033000000000001), "visits": Number(799999), "anchors": Number(1)}, Object {"wallMs": Number(1.3154), "visits": Number(799999), "anchors": Number(1)}]
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:25:27.1896165Z dense-circle-closed: [Object {"wallMs": Number(1.3309000000000002), "visits": Number(799999), "anchors": Number(1)}, Object {"wallMs": Number(1.2645), "visits": Number(799999), "anchors": Number(1)}, Object {"wallMs": Number(1.3714), "visits": Number(799999), "anchors": Number(1)}]
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:25:27.2657386Z straight-open: [Object {"wallMs": Number(18.7889), "visits": Number(18399999), "anchors": Number(2)}, Object {"wallMs": Number(18.945300000000003), "visits": Number(18399999), "anchors": Number(2)}, Object {"wallMs": Number(18.9714), "visits": Number(18399999), "anchors": Number(2)}]
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:25:29.2626665Z zigzag-above-tolerance: [Object {"wallMs": Number(634.1152), "visits": Number(202241151), "anchors": Number(100000)}, Object {"wallMs": Number(695.2810000000001), "visits": Number(202241151), "anchors": Number(100000)}, Object {"wallMs": Number(647.0255000000001), "visits": Number(202241151), "anchors": Number(100000)}]
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:25:29.5297895Z wiggle-near-tolerance: [Object {"wallMs": Number(81.1434), "visits": Number(64814991), "anchors": Number(551)}, Object {"wallMs": Number(81.63199999999999), "visits": Number(64814991), "anchors": Number(551)}, Object {"wallMs": Number(84.0338), "visits": Number(64814991), "anchors": Number(551)}]
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:25:30.0602166Z spiral-closed: [Object {"wallMs": Number(173.4414), "visits": Number(196114384), "anchors": Number(88870)}, Object {"wallMs": Number(159.8866), "visits": Number(196114384), "anchors": Number(88870)}, Object {"wallMs": Number(176.60670000000002), "visits": Number(196114384), "anchors": Number(88870)}]
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:25:30.2886083Z random-walk-open: [Object {"wallMs": Number(66.17190000000001), "visits": Number(51826825), "anchors": Number(4809)}, Object {"wallMs": Number(77.39609999999999), "visits": Number(51826825), "anchors": Number(4809)}, Object {"wallMs": Number(65.4213), "visits": Number(51826825), "anchors": Number(4809)}]
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:25:30.5113837Z random-walk-closed: [Object {"wallMs": Number(64.7282), "visits": Number(51964993), "anchors": Number(4810)}, Object {"wallMs": Number(71.3514), "visits": Number(51964993), "anchors": Number(4810)}, Object {"wallMs": Number(67.2278), "visits": Number(51964993), "anchors": Number(4810)}]
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:25:30.6079964Z 99000-alternating-knots-round-100: [Object {"wallMs": Number(1165.6283), "outcome": String("ok"), "units": Number(555554356), "anchors": Number(20)}, Object {"wallMs": Number(1145.3821), "outcome": String("ok"), "units": Number(555554356), "anchors": Number(20)}, Object {"wallMs": Number(1155.4644999999998), "outcome": String("ok"), "units": Number(555554356), "anchors": Number(20)}]
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:25:30.9654726Z uniform-noise-open: [Object {"wallMs": Number(139.03869999999998), "visits": Number(40532873), "anchors": Number(100000)}, Object {"wallMs": Number(150.0893), "visits": Number(40532873), "anchors": Number(100000)}, Object {"wallMs": Number(143.7109), "visits": Number(40532873), "anchors": Number(100000)}]
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:25:31.4166540Z uniform-noise-closed: [Object {"wallMs": Number(138.4364), "visits": Number(40339805), "anchors": Number(100000)}, Object {"wallMs": Number(147.77779999999998), "visits": Number(40339805), "anchors": Number(100000)}, Object {"wallMs": Number(145.1638), "visits": Number(40339805), "anchors": Number(100000)}]
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:25:31.4174030Z worst ("zigzag-above-tolerance", 202241151, 695.2810000000001); observations in D:\a\261017-toontown-dev\261017-toontown-dev\crates\vector\../../target/evidence/c21-fit\fit-worst-case-windows.json
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:25:31.4176523Z test adversarial_inputs_fit_within_the_work_budget ... ok
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:25:32.1896458Z 99000-alternating-knots-square-100: [Object {"wallMs": Number(536.6812), "outcome": String("ok"), "units": Number(35148540), "anchors": Number(4)}, Object {"wallMs": Number(529.5654), "outcome": String("ok"), "units": Number(35148540), "anchors": Number(4)}, Object {"wallMs": Number(514.8163999999999), "outcome": String("ok"), "units": Number(35148540), "anchors": Number(4)}]
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:25:35.5242640Z 99000-alternating-knots-oval-100-angled: [Object {"wallMs": Number(1116.8537000000001), "outcome": String("ok"), "units": Number(555428084), "anchors": Number(18)}, Object {"wallMs": Number(1112.7694), "outcome": String("ok"), "units": Number(555428084), "anchors": Number(18)}, Object {"wallMs": Number(1104.4155), "outcome": String("ok"), "units": Number(555428084), "anchors": Number(18)}]
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:25:36.8911983Z 30000-anchor-zigzag-round-100: [Object {"wallMs": Number(455.4802), "outcome": String("ok"), "units": Number(241379857), "anchors": Number(45)}, Object {"wallMs": Number(457.9828), "outcome": String("ok"), "units": Number(241379857), "anchors": Number(45)}, Object {"wallMs": Number(453.2267), "outcome": String("ok"), "units": Number(241379857), "anchors": Number(45)}]
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:25:38.0574162Z 30000-anchor-zigzag-round-2: [Object {"wallMs": Number(391.7062), "outcome": String("ok"), "units": Number(184090018), "anchors": Number(30010)}, Object {"wallMs": Number(389.0516), "outcome": String("ok"), "units": Number(184090018), "anchors": Number(30010)}, Object {"wallMs": Number(384.859), "outcome": String("ok"), "units": Number(184090018), "anchors": Number(30010)}]
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:25:38.5411559Z 45000-anchor-dense-zigzag-flat-50: [Object {"wallMs": Number(157.1284), "outcome": String("ok"), "units": Number(64192770), "anchors": Number(308)}, Object {"wallMs": Number(162.19629999999998), "outcome": String("ok"), "units": Number(64192770), "anchors": Number(308)}, Object {"wallMs": Number(164.041), "outcome": String("ok"), "units": Number(64192770), "anchors": Number(308)}]
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:25:43.1808708Z coil-1500-loops-round-1: [Object {"wallMs": Number(1562.0161), "outcome": String("ok"), "units": Number(746532353), "anchors": Number(51545)}, Object {"wallMs": Number(1537.9345), "outcome": String("ok"), "units": Number(746532353), "anchors": Number(51545)}, Object {"wallMs": Number(1538.8903), "outcome": String("ok"), "units": Number(746532353), "anchors": Number(51545)}]
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:25:51.3537738Z coil-3500-loops-round-1: [Object {"wallMs": Number(2723.3442), "outcome": String("limit.exceeded: sweeping this brush stroke needs more than 1200000000 units of work"), "units": Number(1200000000), "anchors": Number(0)}, Object {"wallMs": Number(2712.9864000000002), "outcome": String("limit.exceeded: sweeping this brush stroke needs more than 1200000000 units of work"), "units": Number(1200000000), "anchors": Number(0)}, Object {"wallMs": Number(2735.9284000000002), "outcome": String("limit.exceeded: sweeping this brush stroke needs more than 1200000000 units of work"), "units": Number(1200000000), "anchors": Number(0)}]
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:25:52.2194954Z coil-1500-overlapping-loops-round-8: [Object {"wallMs": Number(287.85179999999997), "outcome": String("ok"), "units": Number(118445152), "anchors": Number(58)}, Object {"wallMs": Number(288.42), "outcome": String("ok"), "units": Number(118445152), "anchors": Number(58)}, Object {"wallMs": Number(289.1875), "outcome": String("ok"), "units": Number(118445152), "anchors": Number(58)}]
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:26:00.8086243Z long-line-tiny-tip: [Object {"wallMs": Number(2865.9184), "outcome": String("limit.exceeded: sweeping this brush stroke needs more than 1200000000 units of work"), "units": Number(1200000000), "anchors": Number(0)}, Object {"wallMs": Number(2848.6748), "outcome": String("limit.exceeded: sweeping this brush stroke needs more than 1200000000 units of work"), "units": Number(1200000000), "anchors": Number(0)}, Object {"wallMs": Number(2873.784), "outcome": String("limit.exceeded: sweeping this brush stroke needs more than 1200000000 units of work"), "units": Number(1200000000), "anchors": Number(0)}]
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:26:07.2159140Z closed-decagon-99000-alternating-knots-round-100: [Object {"wallMs": Number(2121.5623), "outcome": String("ok"), "units": Number(574126571), "anchors": Number(39)}, Object {"wallMs": Number(2153.6289), "outcome": String("ok"), "units": Number(574126571), "anchors": Number(39)}, Object {"wallMs": Number(2131.8182), "outcome": String("ok"), "units": Number(574126571), "anchors": Number(39)}]
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:26:07.2165535Z worst ("long-line-tiny-tip", 1200000000, 2873.784); observations in D:\a\261017-toontown-dev\261017-toontown-dev\crates\vector\../../target/evidence/c21-fit\brush-worst-case-windows.json
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:26:07.2167240Z test adversarial_brush_outlines_finish_or_are_refused_within_the_work_budget ... ok
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:26:07.2167750Z 
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:26:07.2167919Z test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 1 filtered out; finished in 40.08s
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:26:07.2168164Z 
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:26:07.4888936Z ^[[1m^[[92m   Compiling^[[0m tt-vector v0.0.1 (D:\a\261017-toontown-dev\261017-toontown-dev\crates\vector)
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:26:09.2599007Z ^[[1m^[[92m    Finished^[[0m `release` profile [optimized + debuginfo] target(s) in 2.00s
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:26:09.2771463Z ^[[1m^[[92m     Running^[[0m tests\c22_worst_case.rs (target\release\deps\c22_worst_case-26fd2aae0726d064.exe)
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:26:09.2851380Z 
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:26:09.2851779Z running 1 test
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:26:20.6758709Z 100000-small-curves-plus-one: [Object {"wallMs": Number(4677.8512), "units": Number(931042320), "outcome": String("ok"), "zones": Number(0), "strokes": Number(100001)}, Object {"wallMs": Number(4765.4438), "units": Number(931042320), "outcome": String("ok"), "zones": Number(0), "strokes": Number(100001)}]
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:26:23.9309871Z grid-200x200-crossing-lines: [Object {"wallMs": Number(1328.7996), "units": Number(500462214), "outcome": String("ok"), "zones": Number(39601), "strokes": Number(80400)}, Object {"wallMs": Number(1266.938), "units": Number(500462214), "outcome": String("ok"), "zones": Number(39601), "strokes": Number(80400)}]
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:26:29.0789966Z grid-600x600-crossing-lines: [Object {"wallMs": Number(2575.809), "units": Number(1785763300), "outcome": String("limit.exceeded: the planar map needs more than 1200000000 units of work"), "zones": Number(0), "strokes": Number(0)}, Object {"wallMs": Number(2571.2027), "units": Number(1785763300), "outcome": String("limit.exceeded: the planar map needs more than 1200000000 units of work"), "zones": Number(0), "strokes": Number(0)}]
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:26:36.9951511Z 10000-concentric-squares: [Object {"wallMs": Number(3970.2986), "units": Number(1200160000), "outcome": String("limit.exceeded: the planar map needs more than 1200000000 units of work"), "zones": Number(0), "strokes": Number(0)}, Object {"wallMs": Number(3943.7173), "units": Number(1200160000), "outcome": String("limit.exceeded: the planar map needs more than 1200000000 units of work"), "zones": Number(0), "strokes": Number(0)}]
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:26:38.2428635Z 20000-separate-closed-squares: [Object {"wallMs": Number(572.8863), "units": Number(137183593), "outcome": String("ok"), "zones": Number(20000), "strokes": Number(20000)}, Object {"wallMs": Number(565.0690999999999), "units": Number(137183593), "outcome": String("ok"), "zones": Number(20000), "strokes": Number(20000)}]
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:26:42.8100487Z 1500-random-crossing-lines: [Object {"wallMs": Number(2265.5993), "units": Number(1782228838), "outcome": String("limit.exceeded: the planar map needs more than 1200000000 units of work"), "zones": Number(0), "strokes": Number(0)}, Object {"wallMs": Number(2253.1359), "units": Number(1782228838), "outcome": String("limit.exceeded: the planar map needs more than 1200000000 units of work"), "zones": Number(0), "strokes": Number(0)}]
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:26:43.8991291Z 5000-point-random-scribble: [Object {"wallMs": Number(544.1594), "units": Number(1515542416), "outcome": String("limit.exceeded: the planar map needs more than 1200000000 units of work"), "zones": Number(0), "strokes": Number(0)}, Object {"wallMs": Number(542.1685000000001), "units": Number(1515542416), "outcome": String("limit.exceeded: the planar map needs more than 1200000000 units of work"), "zones": Number(0), "strokes": Number(0)}]
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:26:44.0215070Z 100000-point-dense-zigzag: [Object {"wallMs": Number(62.028), "units": Number(15000482029), "outcome": String("limit.exceeded: the planar map needs more than 1200000000 units of work"), "zones": Number(0), "strokes": Number(0)}, Object {"wallMs": Number(59.4423), "units": Number(15000482029), "outcome": String("limit.exceeded: the planar map needs more than 1200000000 units of work"), "zones": Number(0), "strokes": Number(0)}]
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:26:45.8040129Z 100000-coincident-outlines-plus-one: [Object {"wallMs": Number(892.1573999999999), "units": Number(60003200026), "outcome": String("limit.exceeded: the planar map needs more than 1200000000 units of work"), "zones": Number(0), "strokes": Number(0)}, Object {"wallMs": Number(871.5369), "units": Number(60003200026), "outcome": String("limit.exceeded: the planar map needs more than 1200000000 units of work"), "zones": Number(0), "strokes": Number(0)}]
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:26:46.2237431Z worst ("100000-small-curves-plus-one", 4765.4438); observations in D:\a\261017-toontown-dev\261017-toontown-dev\crates\vector\../../target/evidence/c22-planar\planar-worst-case-windows.json
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:26:46.2245072Z test adversarial_layers_settle_or_are_refused_within_the_planar_budget ... ok
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:26:46.2247533Z 
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:26:46.2248144Z test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 36.94s
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:26:46.2248492Z 
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:26:46.5275645Z ^[[1m^[[92m   Compiling^[[0m tt-executor v0.0.1 (D:\a\261017-toontown-dev\261017-toontown-dev\crates\executor)
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:28:19.6927134Z ^[[1m^[[92m    Finished^[[0m `release` profile [optimized + debuginfo] target(s) in 1m 33s
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:28:19.7090335Z ^[[1m^[[92m     Running^[[0m tests\c24_measure.rs (target\release\deps\c24_measure-8bd5fbd11822f3d9.exe)
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:28:19.7180615Z 
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:28:19.7180922Z running 1 test
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:29:19.7208412Z test flatten_100k_raw_observations has been running for over 60 seconds
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:31:29.7668119Z {"strokes":100000,"repetitions":5,"os":"windows","arch":"x86_64","profile":"release","budgeted":[{"seconds":1.3715257,"openSeconds":4.5823345,"status":"Error","error":{"code":"limit.exceeded"},"committed":false,"unchangedOnRefusal":true},{"seconds":1.3762856,"openSeconds":4.5077049,"status":"Error","error":{"code":"limit.exceeded"},"committed":false,"unchangedOnRefusal":true},{"seconds":1.3913476,"openSeconds":4.3833568,"status":"Error","error":{"code":"limit.exceeded"},"committed":false,"unchangedOnRefusal":true},{"seconds":1.3426984,"openSeconds":4.4042259,"status":"Error","error":{"code":"limit.exceeded"},"committed":false,"unchangedOnRefusal":true},{"seconds":1.2645126,"openSeconds":4.2876408999999995,"status":"Error","error":{"code":"limit.exceeded"},"committed":false,"unchangedOnRefusal":true}],"budgetedP50Seconds":1.3715257,"unbudgeted":[{"seconds":26.5071211,"openSeconds":4.1872318,"status":"Ok","error":null,"committed":true,"unchangedOnRefusal":true},{"seconds":26.7213741,"openSeconds":4.3987765,"status":"Ok","error":null,"committed":true,"unchangedOnRefusal":true},{"seconds":26.7819236,"openSeconds":4.4737856,"status":"Ok","error":null,"committed":true,"unchangedOnRefusal":true},{"seconds":26.7892232,"openSeconds":4.4560300999999995,"status":"Ok","error":null,"committed":true,"unchangedOnRefusal":true},{"seconds":26.7385784,"openSeconds":4.7916065,"status":"Ok","error":null,"committed":true,"unchangedOnRefusal":true}],"unbudgetedP50Seconds":26.7385784,"unbudgetedAllCompleted":true}
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:31:29.8823996Z test flatten_100k_raw_observations ... ok
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:31:29.8824268Z 
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:31:29.8824554Z test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 190.16s
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:31:29.8824973Z 
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:31:30.1904318Z ^[[1m^[[92m   Compiling^[[0m tt-vector v0.0.1 (D:\a\261017-toontown-dev\261017-toontown-dev\crates\vector)
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:31:31.8658012Z ^[[1m^[[92m    Finished^[[0m `release` profile [optimized + debuginfo] target(s) in 1.92s
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:31:31.8815695Z ^[[1m^[[92m     Running^[[0m tests\c24_flatten_phases.rs (target\release\deps\c24_flatten_phases-e7d1b06b6614bda7.exe)
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:31:31.8904109Z 
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:31:31.8904589Z running 1 test
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:31:43.5142660Z {"os":"windows","profile":"release","strokes":100000,"runs":[{"nodeMergedSeconds":0.2606561,"nodeLayer1Seconds":0.1276289,"nodeLayer2Seconds":0.1144543,"mapMergedSeconds":0.4200639,"mapLayer1Seconds":0.211034,"settleSeconds":2.5575502,"skippableNodingCeilingSeconds":0.2420832},{"nodeMergedSeconds":0.2578099,"nodeLayer1Seconds":0.1187964,"nodeLayer2Seconds":0.1157938,"mapMergedSeconds":0.4017572,"mapLayer1Seconds":0.2037102,"settleSeconds":2.5477065,"skippableNodingCeilingSeconds":0.2345902},{"nodeMergedSeconds":0.268453,"nodeLayer1Seconds":0.1182038,"nodeLayer2Seconds":0.1267098,"mapMergedSeconds":0.426574,"mapLayer1Seconds":0.2131019,"settleSeconds":2.5622826,"skippableNodingCeilingSeconds":0.2449136}]}
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:31:43.8799305Z test flatten_settle_phases_raw_observations ... ok
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:31:43.8799636Z 
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:31:43.8799964Z test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 11.99s
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:31:43.8800210Z 
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:31:44.1873833Z {"gate": "C22-T2: 100k Flatten completes within the same run's 100k strokeAdd p50 and under the 30 s watchdog", "os": "windows", "arch": "x86_64", "runStartedAt": "2026-11-02T17:08:31.111Z", "percentileRule": "upper nearest rank, as scripts/analyse-measurements.py", "strokeAddP50Seconds": 16.6272243, "flattenUnbudgetedP50Seconds": 26.7385784, "flattenUnbudgetedSeconds": [26.5071211, 26.7213741, 26.7819236, 26.7892232, 26.7385784], "flattenUnbudgetedAllCompleted": true, "flattenBudgetedSeconds": [1.3715257, 1.3762856, 1.3913476, 1.3426984, 1.2645126], "flattenBudgetedOutcomes": [{"code": "limit.exceeded"}, {"code": "limit.exceeded"}, {"code": "limit.exceeded"}, {"code": "limit.exceeded"}, {"code": "limit.exceeded"}], "met": false, "gapSeconds": 10.1113541, "note": "C22-T2 and the interactive latency budget (R1-12) are the M11 C11.1 scale gate"}
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:31:44.2691718Z ok   strokes-100k-windows.json (series)
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:31:44.2692250Z        brushAdd.allocatedBytes: n=10 p50=3434894913.0 p99=3435574869.0 max=3435574869.0 bytes
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:31:44.2692642Z        brushAdd.retainedBytes: n=10 p50=91789.0 p99=102719.0 max=102719.0 bytes
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:31:44.2692996Z        brushAdd.wallMs: n=10 p50=7415.0064999999995 p99=7728.506600000001 max=7728.506600000001 ms
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:31:44.2693401Z        patchProperty.allocatedBytes: n=10 p50=2456603407.0 p99=2457079645.0 max=2457079645.0 bytes
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:31:44.2693774Z        patchProperty.retainedBytes: n=10 p50=6112.0 p99=22037.0 max=22037.0 bytes
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:31:44.2694117Z        patchProperty.wallMs: n=10 p50=5237.653899999999 p99=5549.4924 max=5549.4924 ms
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:31:44.2730774Z        process.liveBytes: n=70 p50=1425394825.0 p99=1425858698.0 max=1425923524.0 bytes
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:31:44.2731369Z        redo.allocatedBytes: n=10 p50=4003283148.0 p99=5073128862.0 max=5073128862.0 bytes
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:31:44.2731890Z        redo.retainedBytes: n=10 p50=10202.0 p99=121222191.0 max=121222191.0 bytes
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:31:44.2732336Z        redo.wallMs: n=10 p50=8581.6092 p99=9555.9809 max=9555.9809 ms
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:31:44.2732839Z        strokeAdd.allocatedBytes: n=10 p50=7560212910.0 p99=8284003123.0 max=8284003123.0 bytes
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:31:44.2733406Z        strokeAdd.retainedBytes: n=10 p50=31521.0 p99=586320477.0 max=586320477.0 bytes
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:31:44.2733952Z        strokeAdd.wallMs: n=10 p50=16627.2243 p99=17148.783600000002 max=17148.783600000002 ms
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:31:44.2734798Z        strokeAddDryRun.allocatedBytes: n=10 p50=6865900618.0 p99=6866729420.0 max=6866729420.0 bytes
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:31:44.2735578Z        strokeAddDryRun.retainedBytes: n=10 p50=-35531.0 p99=232471547.0 max=232471547.0 bytes
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:31:44.2736052Z        strokeAddDryRun.wallMs: n=10 p50=15397.968 p99=15933.0035 max=15933.0035 ms
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:31:44.2736529Z        strokeSet.allocatedBytes: n=10 p50=3455279021.0 p99=4528523409.0 max=4528523409.0 bytes
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:31:44.2737067Z        strokeSet.retainedBytes: n=10 p50=4340.0 p99=21684.0 max=21684.0 bytes
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:31:44.2737523Z        strokeSet.wallMs: n=10 p50=7494.358700000001 p99=7792.6121 max=7792.6121 ms
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:31:44.2737983Z        undo.allocatedBytes: n=10 p50=4664316210.0 p99=4665133237.0 max=4665133237.0 bytes
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:31:44.2738734Z        undo.retainedBytes: n=10 p50=23958.0 p99=121248014.0 max=121248014.0 bytes
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:31:44.2739216Z        undo.wallMs: n=10 p50=9912.5545 p99=10719.0879 max=10719.0879 ms
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:31:44.2739576Z 1 file(s), 0 rejected
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:31:44.3062100Z ##[group]Run exe=target/release/toontown-headless
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:31:44.3062527Z ^[[36;1mexe=target/release/toontown-headless^[[0m
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:31:44.3062749Z ^[[36;1mPY=python3^[[0m
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:31:44.3062975Z ^[[36;1mif [ "$RUNNER_OS" = "Windows" ]; then exe="$exe.exe"; PY=python; fi^[[0m
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:31:44.3063236Z ^[[36;1m$PY -m venv .venv-mcp^[[0m
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:31:44.3063453Z ^[[36;1mVPY=.venv-mcp/bin/python^[[0m
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:31:44.3063708Z ^[[36;1mif [ "$RUNNER_OS" = "Windows" ]; then VPY=.venv-mcp/Scripts/python.exe; fi^[[0m
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:31:44.3063993Z ^[[36;1m$VPY -m pip install --quiet "mcp==2.0.0"^[[0m
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:31:44.3064318Z ^[[36;1mPYTHONIOENCODING=utf-8 $VPY scripts/mcp-conformance.py "$exe" out/sdk-conformance.json^[[0m
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:31:44.3072579Z shell: C:\Program Files\Git\bin\bash.EXE --noprofile --norc -e -o pipefail {0}
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:31:44.3072866Z env:
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:31:44.3073029Z   CARGO_TERM_COLOR: always
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:31:44.3073283Z   CARGO_INCREMENTAL: 0
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:31:44.3073448Z   RUST_BACKTRACE: 1
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:31:44.3073613Z   CACHE_ON_FAILURE: false
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:31:44.3073787Z ##[endgroup]
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:31:58.3266547Z 
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:31:58.3267417Z [notice] A new release of pip is available: 25.0.1 -> 26.2.2
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:31:58.3268359Z [notice] To update, run: D:\a\261017-toontown-dev\261017-toontown-dev\.venv-mcp\Scripts\python.exe -m pip install --upgrade pip
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:32:00.2968631Z D:\a\261017-toontown-dev\261017-toontown-dev\scripts\mcp-conformance.py:112: MCPDeprecationWarning: resources/subscribe is removed as of 2026-07-28; use Client.listen() instead.
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:32:00.2969696Z   await s.subscribe_resource(f"app://object/{scene}")
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:32:00.2971890Z D:\a\261017-toontown-dev\261017-toontown-dev\scripts\mcp-conformance.py:113: MCPDeprecationWarning: The logging capability is deprecated as of 2026-07-28 (SEP-2577).
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:32:00.2972358Z   await s.set_logging_level("info")
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:32:01.0327649Z {
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:32:01.0328032Z   "client": "mcp (Python SDK) 2.0.0",
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:32:01.0328524Z   "server": "target/release/toontown-headless.exe",
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:32:01.0328793Z   "platform": "win32",
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:32:01.0328984Z   "seconds": 1.42,
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:32:01.0329147Z   "passed": 24,
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:32:01.0329303Z   "failed": 0,
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:32:01.0329480Z   "checks": [
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:32:01.0329631Z     {
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:32:01.0329804Z       "check": "initialize.protocolVersion",
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:32:01.0330013Z       "ok": true,
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:32:01.0330207Z       "detail": "2025-11-25"
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:32:01.0330380Z     },
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:32:01.0330528Z     {
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:32:01.0330693Z       "check": "initialize.capabilities",
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:32:01.0330894Z       "ok": true,
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:32:01.0331679Z       "detail": "experimental=None logging=LoggingCapability() prompts=PromptsCapability(list_changed=False) resources=ResourcesCapability(subscribe=True, list_changed=False) tools=ToolsCapability(list_changed=True) completions=CompletionsCapability() extensions=None tasks=None"
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:32:01.0332329Z     },
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:32:01.0332467Z     {
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:32:01.0332646Z       "check": "initialize.instructions",
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:32:01.0332848Z       "ok": true,
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:32:01.0333004Z       "detail": ""
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:32:01.0333161Z     },
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:32:01.0333301Z     {
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:32:01.0333469Z       "check": "ping",
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:32:01.0333629Z       "ok": true,
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:32:01.0333785Z       "detail": ""
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:32:01.0333934Z     },
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:32:01.0334093Z     {
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:32:01.0334258Z       "check": "roots/list asked after initialized",
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:32:01.0334457Z       "ok": true,
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:32:01.0334610Z       "detail": "[True]"
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:32:01.0334989Z     },
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:32:01.0335135Z     {
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:32:01.0335281Z       "check": "tools/list 28 generic tools",
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:32:01.0335467Z       "ok": true,
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:32:01.0337687Z       "detail": "['batch', 'checkpoint', 'convert_coordinates', 'describe_command', 'describe_frame', 'doc_diff', 'find_objects', 'get_docs', 'get_object', 'get_state', 'history', 'hit_test', 'inspect_ui', 'job_cancel', 'job_status', 'job_wait', 'key', 'list_commands', 'pointer', 'redo', 'render_contact_sheet', 'render_drawing', 'render_frame', 'run_command', 'screenshot', 'set_properties', 'type_text', 'undo']"
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:32:01.0338629Z     },
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:32:01.0338839Z     {
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:32:01.0339023Z       "check": "tools carry outputSchema",
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:32:01.0339217Z       "ok": true,
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:32:01.0339376Z       "detail": ""
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:32:01.0339530Z     },
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:32:01.0339671Z     {
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:32:01.0339900Z       "check": "tools/call run_command project.create (inside client roots)",
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:32:01.0340156Z       "ok": true,
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:32:01.0340897Z       "detail": "{'status': 'ok', 'result': {'projectId': 'pr_01M6EN2SR4SNAR9KQ3ZQZVCVX2', 'path': 'C:\\\\Users\\\\RUNNER~1\\\\AppData\\\\Local\\\\Temp\\\\tt-c14-sdk-2dkwkvvs\\\\Conformance.animpkg', 'sceneId': 'sc_01M6EN2SR5K1K05Q485AR3E33R', 'cameraId': 'el_01M6EN2SR5K1K05Q485AR3E33T', 'elementId': 'el_01M6EN2SR5K1K05Q485AR3E33V'}, 'changes': [], 'warnings': [], 'documentRev': 1}"
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:32:01.0341657Z     },
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:32:01.0341794Z     {
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:32:01.0341947Z       "check": "tools/call get_state",
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:32:01.0342136Z       "ok": true,
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:32:01.0342926Z       "detail": "{'status': 'ok', 'result': {'project': {'id': 'pr_01M6EN2SR4SNAR9KQ3ZQZVCVX2', 'name': 'Conformance', 'path': 'C:\\\\Users\\\\RUNNER~1\\\\AppData\\\\Local\\\\Temp\\\\tt-c14-sdk-2dkwkvvs\\\\Conformance.animpkg', 'dirty': False, 'globalLibraryDirty': False, 'readOnly': False}, 'scene': {'id': 'sc_01M6EN2SR5K1K05Q485AR3E33R', 'name': 'Scene-1', 'frameCount': 1}, 'frame': 1, 'element': {'id': 'el_01M6EN2SR5K1K05Q48"
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:32:01.0343713Z     },
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:32:01.0343852Z     {
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:32:01.0344007Z       "check": "tools/call get_object",
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:32:01.0344220Z       "ok": true,
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:32:01.0344986Z       "detail": "{'status': 'ok', 'result': {'object': {'id': 'sc_01M6EN2SR5K1K05Q485AR3E33R', 'type': 'scene', 'rev': 1, 'name': 'Scene-1', 'path': 'scene:\"Scene-1\"', 'visible': True, 'backgroundColour': '#FFFFFFFF', 'currentCameraId': 'el_01M6EN2SR5K1K05Q485AR3E33T', 'paletteStyles': {'pal_01M6EN2SR5K1K05Q485AR3E2ZN': 'sty_01M6EN2SR5K1K05Q485AR3E2ZP'}, 'outTransition': {'id': 'tr_01M6EN2SR5K1K05Q485AR3E33Y', 'ty"
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:32:01.0345763Z     },
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:32:01.0345925Z     {
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:32:01.0346081Z       "check": "resources/list",
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:32:01.0346266Z       "ok": true,
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:32:01.0346726Z       "detail": "['app://state', 'app://project', 'app://docs/agent-guide', 'app://docs/object-model', 'app://docs/coordinates', 'app://docs/errors', 'app://events', 'app://activity']"
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:32:01.0347170Z     },
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:32:01.0347314Z     {
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:32:01.0347475Z       "check": "resources/templates/list",
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:32:01.0347876Z       "ok": true,
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:32:01.0348857Z       "detail": "10"
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:32:01.0349066Z     },
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:32:01.0349273Z     {
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:32:01.0349488Z       "check": "resources/read docs equals instructions",
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:32:01.0349781Z       "ok": true,
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:32:01.0349987Z       "detail": ""
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:32:01.0350184Z     },
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:32:01.0350363Z     {
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:32:01.0350591Z       "check": "resources/read object",
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:32:01.0350838Z       "ok": true,
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:32:01.0351039Z       "detail": ""
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:32:01.0351260Z     },
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:32:01.0351473Z     {
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:32:01.0351749Z       "check": "resources/subscribe -> notifications/resources/updated",
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:32:01.0352265Z       "ok": true,
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:32:01.0352472Z       "detail": "9"
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:32:01.0352667Z     },
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:32:01.0352879Z     {
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:32:01.0353792Z       "check": "logging/setLevel -> notifications/message",
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:32:01.0354115Z       "ok": true,
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:32:01.0354378Z       "detail": "4"
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:32:01.0354603Z     },
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:32:01.0354786Z     {
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:32:01.0354990Z       "check": "prompts/list",
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:32:01.0355236Z       "ok": true,
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:32:01.0355686Z       "detail": "['orient', 'draw_and_paint', 'traditional_animation', 'cutout_rig', 'animate_motion', 'lip_sync', 'storyboard_to_animatic', 'effects_pass', 'export_deliverable', 'review_and_fix']"
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:32:01.0356132Z     },
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:32:01.0356274Z     {
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:32:01.0356427Z       "check": "prompts/get",
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:32:01.0356609Z       "ok": true,
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:32:01.0356790Z       "detail": ""
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:32:01.0356942Z     },
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:32:01.0357274Z     {
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:32:01.0357432Z       "check": "completion/complete",
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:32:01.0357644Z       "ok": true,
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:32:01.0357813Z       "detail": "['doc.object.get']"
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:32:01.0357997Z     },
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:32:01.0358136Z     {
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:32:01.0358313Z       "check": "elicitation/create for a confirmation",
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:32:01.0358544Z       "ok": true,
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:32:01.0359391Z       "detail": "[ElicitRequestFormParams(meta=None, mode='form', message='Overwrite `C:\\\\Users\\\\RUNNER~1\\\\AppData\\\\Local\\\\Temp\\\\tt-c14-sdk-2dkwkvvs\\\\Existing.animpkg`\\n\\nConsequences: [{\"kind\":\"overwrite\",\"path\":\"C:\\\\\\\\Users\\\\\\\\RUNNER~1\\\\\\\\AppData\\\\\\\\Local\\\\\\\\Temp\\\\\\\\tt-c14-sdk-2dkwkvvs\\\\\\\\Existing.animpkg\",\"bytes\":8}]', requested_schema={'type': 'object', 'properties': {'confirm': {'type': 'boolean', 'title': 'P"
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:32:01.0360259Z     },
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:32:01.0360395Z     {
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:32:01.0360560Z       "check": "accepted elicitation proceeds",
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:32:01.0360763Z       "ok": true,
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:32:01.0361344Z       "detail": "{'status': 'ok', 'result': {'jobId': 'job-1'}, 'changes': [{'id': 'pr_01M6EN2SR4SNAR9KQ3ZQZVCVX2', 'type': 'project', 'op': 'modified', 'rev': 3, 'patch': [{'op': 'replace', 'path': '/modifiedAt', 'value': '2026-11-02T17:32:00.910Z', 'oldValue': '2026-11-02T17:32:00.132Z'}]}], 'warnings': [], 'documentRev': 3}"
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:32:01.0361960Z     },
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:32:01.0362092Z     {
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:32:01.0362235Z       "check": "job_wait ok",
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:32:01.0362428Z       "ok": true,
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:32:01.0363185Z       "detail": "{'status': 'ok', 'result': {'jobId': 'job-2', 'commandId': 'doc.package.export', 'state': 'succeeded', 'progress': 1.0, 'message': 'Write', 'startedAt': '2026-11-02T17:32:00.946Z', 'result': {'path': 'C:\\\\Users\\\\RUNNER~1\\\\AppData\\\\Local\\\\Temp\\\\tt-c14-sdk-2dkwkvvs\\\\Export.animpkg', 'form': 'package', 'bytes': 6686, 'entries': 11}, 'session': 'agent:s1-7c6a17'}, 'changes': [], 'warnings': [], 'docum"
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:32:01.0363954Z     },
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:32:01.0364094Z     {
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:32:01.0364275Z       "check": "notifications/progress",
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:32:01.0364464Z       "ok": true,
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:32:01.0364664Z       "detail": "[(1000.0, 1000.0, 'Write'), (1000.0, 1000.0, 'finished')]"
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:32:01.0364890Z     },
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:32:01.0365045Z     {
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:32:01.0365233Z       "check": "pointer answers notImplemented with its milestone",
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:32:01.0365456Z       "ok": true,
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:32:01.0366230Z       "detail": "{'status': 'error', 'changes': [], 'warnings': [], 'documentRev': None, 'error': {'code': 'command.notImplemented', 'message': 'the `pointer` tool is not available yet: pointer gestures produce the structured commands of the drawing tools (gesture equivalence, 11 \u00a77.6), which arrive with M2', 'details': {'tool': 'pointer', 'milestone': 'M2 C2.3'}, 'hint': 'use the structured commands (run_command)"
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:32:01.0367536Z     }
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:32:01.0367670Z   ]
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:32:01.0367811Z }
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:32:01.1515737Z ##[group]Run actions/upload-artifact@v7
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:32:01.1515954Z with:
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:32:01.1516078Z   name: headless-Windows
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:32:01.1516216Z   path: out/
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:32:01.1516340Z   if-no-files-found: error
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:32:01.1516478Z   compression-level: 6
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:32:01.1516600Z   overwrite: false
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:32:01.1516735Z   include-hidden-files: false
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:32:01.1516874Z   archive: true
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:32:01.1516991Z env:
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:32:01.1517102Z   CARGO_TERM_COLOR: always
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:32:01.1517237Z   CARGO_INCREMENTAL: 0
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:32:01.1517357Z   RUST_BACKTRACE: 1
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:32:01.1517476Z   CACHE_ON_FAILURE: false
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:32:01.1517599Z ##[endgroup]
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:32:01.2751526Z With the provided path, there will be 11 files uploaded
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:32:01.2754865Z Artifact name is valid!
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:32:01.2755491Z Root directory input is valid!
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:32:01.6416776Z Uploading artifact: headless-Windows.zip
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:32:01.6443447Z Beginning upload of artifact content to blob storage
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:32:03.2183051Z Uploaded bytes 8388608
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:32:03.4539474Z Uploaded bytes 12589261
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:32:03.5096320Z Finished uploading artifact content to blob storage!
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:32:03.5099837Z SHA256 digest of uploaded artifact is ea54907aad409eaca8e8966df5feeed4e47d1f749358b0f1a40ea0048bffc1a3
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:32:03.5101334Z Finalizing artifact upload
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:32:04.1061283Z Artifact headless-Windows successfully finalized. Artifact ID 13164801870
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:32:04.1061733Z Artifact headless-Windows has been successfully uploaded! Final size is 12589261 bytes. Artifact ID is 13164801870
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:32:04.1069903Z Artifact download URL: https://github.com/kaigani/261017-toontown-dev/actions/runs/41486947308/artifacts/13164801870
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:32:04.1373583Z Post job cleanup.
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:32:04.2448548Z Cache up-to-date.
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:32:04.2711634Z Post job cleanup.
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:32:04.3830108Z [command]"C:\Program Files\Git\bin\git.exe" version
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:32:04.4089879Z git version 2.56.0.windows.4
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:32:04.4140188Z Temporarily overriding HOME='D:\a\_temp\a1052698-c65c-4c07-9b48-bf5447760144' before making global git config changes
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:32:04.4140729Z Adding repository directory to the temporary git global config as a safe directory
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:32:04.4147286Z [command]"C:\Program Files\Git\bin\git.exe" config --global --add safe.directory D:\a\261017-toontown-dev\261017-toontown-dev
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:32:04.4429358Z Removing SSH command configuration
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:32:04.4438788Z [command]"C:\Program Files\Git\bin\git.exe" config --local --name-only --get-regexp core\.sshCommand
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:32:04.4777447Z [command]"C:\Program Files\Git\bin\git.exe" submodule foreach --recursive "sh -c \"git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :\""
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:32:04.9194552Z Removing HTTP extra header
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:32:04.9202401Z [command]"C:\Program Files\Git\bin\git.exe" config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:32:04.9483325Z [command]"C:\Program Files\Git\bin\git.exe" submodule foreach --recursive "sh -c \"git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :\""
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:32:05.3449969Z Removing includeIf entries pointing to credentials config files
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:32:05.3458621Z [command]"C:\Program Files\Git\bin\git.exe" config --local --name-only --get-regexp ^includeIf\.gitdir:
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:32:05.3694071Z includeif.gitdir:D:/a/261017-toontown-dev/261017-toontown-dev/.git.path
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:32:05.3694805Z includeif.gitdir:D:/a/261017-toontown-dev/261017-toontown-dev/.git/worktrees/*.path
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:32:05.3695192Z includeif.gitdir:/github/workspace/.git.path
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:32:05.3695393Z includeif.gitdir:/github/workspace/.git/worktrees/*.path
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:32:05.3724699Z [command]"C:\Program Files\Git\bin\git.exe" config --local --get-all includeif.gitdir:D:/a/261017-toontown-dev/261017-toontown-dev/.git.path
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:32:05.3954269Z D:\a\_temp\git-credentials-07d96e70-56ab-46d8-a4e5-806fc719cc9c.config
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:32:05.3985402Z [command]"C:\Program Files\Git\bin\git.exe" config --local --unset includeif.gitdir:D:/a/261017-toontown-dev/261017-toontown-dev/.git.path D\:\\a\\_temp\\git\-credentials\-07d96e70\-56ab\-46d8\-a4e5\-806fc719cc9c\.config
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:32:05.4267103Z [command]"C:\Program Files\Git\bin\git.exe" config --local --get-all includeif.gitdir:D:/a/261017-toontown-dev/261017-toontown-dev/.git/worktrees/*.path
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:32:05.4510327Z D:\a\_temp\git-credentials-07d96e70-56ab-46d8-a4e5-806fc719cc9c.config
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:32:05.4545821Z [command]"C:\Program Files\Git\bin\git.exe" config --local --unset includeif.gitdir:D:/a/261017-toontown-dev/261017-toontown-dev/.git/worktrees/*.path D\:\\a\\_temp\\git\-credentials\-07d96e70\-56ab\-46d8\-a4e5\-806fc719cc9c\.config
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:32:05.4823076Z [command]"C:\Program Files\Git\bin\git.exe" config --local --get-all includeif.gitdir:/github/workspace/.git.path
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:32:05.5062774Z /github/runner_temp/git-credentials-07d96e70-56ab-46d8-a4e5-806fc719cc9c.config
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:32:05.5098039Z [command]"C:\Program Files\Git\bin\git.exe" config --local --unset includeif.gitdir:/github/workspace/.git.path \/github\/runner_temp\/git\-credentials\-07d96e70\-56ab\-46d8\-a4e5\-806fc719cc9c\.config
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:32:05.5376492Z [command]"C:\Program Files\Git\bin\git.exe" config --local --get-all includeif.gitdir:/github/workspace/.git/worktrees/*.path
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:32:05.5606380Z /github/runner_temp/git-credentials-07d96e70-56ab-46d8-a4e5-806fc719cc9c.config
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:32:05.5638231Z [command]"C:\Program Files\Git\bin\git.exe" config --local --unset includeif.gitdir:/github/workspace/.git/worktrees/*.path \/github\/runner_temp\/git\-credentials\-07d96e70\-56ab\-46d8\-a4e5\-806fc719cc9c\.config
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:32:05.5933716Z [command]"C:\Program Files\Git\bin\git.exe" submodule foreach --recursive "git config --local --show-origin --name-only --get-regexp remote.origin.url"
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:32:05.9904441Z Removing credentials config 'D:\a\_temp\git-credentials-07d96e70-56ab-46d8-a4e5-806fc719cc9c.config'
+headless release (windows-latest)	UNKNOWN STEP	2026-11-02T17:32:06.0071303Z Cleaning up orphan processes

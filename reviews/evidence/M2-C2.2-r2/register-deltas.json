@@ -1,0 +1,166 @@
+{
+  "counts": {
+    "implemented": 176,
+    "divergent": 11,
+    "missing": 0,
+    "deferred-with-owner": 158
+  },
+  "previous": {
+    "implemented": 153,
+    "divergent": 36,
+    "missing": 0,
+    "deferred-with-owner": 156
+  },
+  "deltas": [
+    {
+      "unit": 11,
+      "requirement": "02_drawing.md \u00a73.12, L247",
+      "from": "divergent",
+      "to": "implemented"
+    },
+    {
+      "unit": 12,
+      "requirement": "02_drawing.md \u00a78.8, L788",
+      "from": "divergent",
+      "to": "implemented"
+    },
+    {
+      "unit": 30,
+      "requirement": "02_drawing.md \u00a713.6, L1407",
+      "from": "divergent",
+      "to": "implemented"
+    },
+    {
+      "unit": 68,
+      "requirement": "03_colour.md \u00a71.6, L130",
+      "from": "divergent",
+      "to": "implemented"
+    },
+    {
+      "unit": 94,
+      "requirement": "03_colour.md \u00a77.2, L534",
+      "from": "divergent",
+      "to": "implemented"
+    },
+    {
+      "unit": 96,
+      "requirement": "03_colour.md \u00a77.2, L541",
+      "from": "divergent",
+      "to": "implemented"
+    },
+    {
+      "unit": 97,
+      "requirement": "03_colour.md \u00a77.2, L542",
+      "from": "divergent",
+      "to": "deferred-with-owner"
+    },
+    {
+      "unit": 98,
+      "requirement": "03_colour.md \u00a77.2, L543",
+      "from": "divergent",
+      "to": "deferred-with-owner"
+    },
+    {
+      "unit": 126,
+      "requirement": "03_colour.md \u00a78.2, L607",
+      "from": "divergent",
+      "to": "implemented"
+    },
+    {
+      "unit": 127,
+      "requirement": "03_colour.md \u00a78.2, L609",
+      "from": "divergent",
+      "to": "implemented"
+    },
+    {
+      "unit": 163,
+      "requirement": "03_colour.md \u00a78.8, L689",
+      "from": "divergent",
+      "to": "implemented"
+    },
+    {
+      "unit": 192,
+      "requirement": "03_colour.md \u00a711.2, L775",
+      "from": "divergent",
+      "to": "implemented"
+    },
+    {
+      "unit": 194,
+      "requirement": "03_colour.md \u00a711.2, L779",
+      "from": "divergent",
+      "to": "implemented"
+    },
+    {
+      "unit": 195,
+      "requirement": "03_colour.md \u00a711.2, L781",
+      "from": "divergent",
+      "to": "implemented"
+    },
+    {
+      "unit": 196,
+      "requirement": "03_colour.md \u00a711.2, L782",
+      "from": "divergent",
+      "to": "implemented"
+    },
+    {
+      "unit": 234,
+      "requirement": "03_colour.md \u00a716.1, L983",
+      "from": "divergent",
+      "to": "implemented"
+    },
+    {
+      "unit": 235,
+      "requirement": "03_colour.md \u00a716.1, L990",
+      "from": "divergent",
+      "to": "implemented"
+    },
+    {
+      "unit": 277,
+      "requirement": "03_colour.md \u00a716.3, L1059",
+      "from": "divergent",
+      "to": "implemented"
+    },
+    {
+      "unit": 278,
+      "requirement": "03_colour.md \u00a716.3, L1060",
+      "from": "divergent",
+      "to": "implemented"
+    },
+    {
+      "unit": 279,
+      "requirement": "03_colour.md \u00a716.3, L1061",
+      "from": "divergent",
+      "to": "implemented"
+    },
+    {
+      "unit": 282,
+      "requirement": "03_colour.md \u00a716.3, L1064",
+      "from": "divergent",
+      "to": "implemented"
+    },
+    {
+      "unit": 333,
+      "requirement": "10_data_model_project_format.md \u00a77.2, L955",
+      "from": "divergent",
+      "to": "implemented"
+    },
+    {
+      "unit": 342,
+      "requirement": "10_data_model_project_format.md \u00a74.11, L532",
+      "from": "divergent",
+      "to": "implemented"
+    },
+    {
+      "unit": 343,
+      "requirement": "10_data_model_project_format.md \u00a74.11, L532",
+      "from": "divergent",
+      "to": "implemented"
+    },
+    {
+      "unit": 344,
+      "requirement": "10_data_model_project_format.md \u00a74.11, L532",
+      "from": "divergent",
+      "to": "implemented"
+    }
+  ]
+}

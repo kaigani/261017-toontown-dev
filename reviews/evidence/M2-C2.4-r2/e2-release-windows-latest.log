@@ -1,0 +1,397 @@
+e2 release (windows-latest)	UNKNOWN STEP	﻿2026-11-02T17:01:28.7099492Z Current runner version: '2.338.2'
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:28.7131337Z ##[group]Runner Image Provisioner
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:28.7132387Z Hosted Compute Agent
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:28.7133264Z Version: 20261021.618
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:28.7134048Z Commit: 21505ad2541d5be6135ed84fc33697146cf75b8e
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:28.7135018Z Build Date: 2026-10-21T00:45:21Z
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:28.7135988Z Worker ID: {bf642491-a118-49e4-86d6-2e1a787c0c64}
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:28.7137100Z Region: northcentralus
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:28.7137998Z Cloud: Azure
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:28.7138625Z ##[endgroup]
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:28.7140382Z ##[group]Operating System
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:28.7141773Z Microsoft Windows Server 2025
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:28.7142568Z 10.0.26100
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:28.7143258Z Datacenter
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:28.7144005Z ##[endgroup]
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:28.7144680Z ##[group]Runner Image
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:28.7145462Z Image: windows-2025-vs2026
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:28.7146223Z Version: 20261021.278.1
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:28.7148430Z Included Software: https://github.com/actions/runner-images/blob/win25-vs2026/20261021.278/images/windows/Windows2025-VS2026-Readme.md
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:28.7150724Z Image Release: https://github.com/actions/runner-images/releases/tag/win25-vs2026%2F20261021.278
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:28.7152058Z ##[endgroup]
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:28.7153632Z ##[group]GITHUB_TOKEN Permissions
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:28.7156909Z Contents: read
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:28.7157624Z Metadata: read
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:28.7158373Z Packages: read
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:28.7159057Z ##[endgroup]
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:28.7162368Z Secret source: Actions
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:28.7163593Z Cache mode: write
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:28.7164579Z Prepare workflow directory
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:28.7623765Z Prepare all required actions
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:28.7694029Z Getting action download info
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:29.0010551Z Download action repository 'actions/checkout@v7' (SHA:3d3c42e5aac5ba805825da76410c181273ba90b1)
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:29.1092726Z Download action repository 'Swatinem/rust-cache@v2' (SHA:d1527c8f67ef9af357290475d4af4b0fab8f12e0)
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:29.4547655Z Download action repository 'actions/upload-artifact@v7' (SHA:cf430e030ddbb5b0abf93d22962f4752f3646cd9)
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:29.6890314Z Complete job name: e2 release (windows-latest)
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:29.8421709Z ##[group]Run actions/checkout@v7
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:29.8423610Z with:
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:29.8424157Z   repository: kaigani/261017-toontown-dev
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:29.8429139Z   token: ***
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:29.8429927Z   ssh-strict: true
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:29.8430458Z   ssh-user: git
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:29.8431010Z   persist-credentials: true
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:29.8431605Z   clean: true
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:29.8432160Z   sparse-checkout-cone-mode: true
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:29.8432767Z   fetch-depth: 1
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:29.8433688Z   fetch-tags: false
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:29.8434234Z   show-progress: true
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:29.8434762Z   lfs: false
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:29.8435269Z   submodules: false
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:29.8435805Z   set-safe-directory: true
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:29.8436429Z   allow-unsafe-pr-checkout: false
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:29.8437499Z env:
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:29.8437986Z   CARGO_TERM_COLOR: always
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:29.8438581Z   CARGO_INCREMENTAL: 0
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:29.8439301Z   RUST_BACKTRACE: 1
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:29.8439819Z ##[endgroup]
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:30.0075657Z Syncing repository: kaigani/261017-toontown-dev
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:30.0077649Z ##[group]Getting Git version info
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:30.0078509Z Working directory is 'D:\a\261017-toontown-dev\261017-toontown-dev'
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:30.0815234Z [command]"C:\Program Files\Git\bin\git.exe" version
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:30.4715540Z git version 2.56.0.windows.2
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:30.4775203Z ##[endgroup]
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:30.4790763Z Temporarily overriding HOME='D:\a\_temp\a70eb768-9188-4c2e-8028-e08bdd9d1e52' before making global git config changes
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:30.4794835Z Adding repository directory to the temporary git global config as a safe directory
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:30.4801401Z [command]"C:\Program Files\Git\bin\git.exe" config --global --add safe.directory D:\a\261017-toontown-dev\261017-toontown-dev
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:30.5541462Z Deleting the contents of 'D:\a\261017-toontown-dev\261017-toontown-dev'
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:30.5547748Z ##[group]Determining repository object format
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:30.5550811Z ##[endgroup]
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:30.5552701Z ##[group]Initializing the repository
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:30.5560135Z [command]"C:\Program Files\Git\bin\git.exe" init D:\a\261017-toontown-dev\261017-toontown-dev
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:30.6557380Z Initialized empty Git repository in D:/a/261017-toontown-dev/261017-toontown-dev/.git/
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:30.6614467Z [command]"C:\Program Files\Git\bin\git.exe" remote add origin https://github.com/kaigani/261017-toontown-dev
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:30.7359461Z ##[endgroup]
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:30.7365268Z ##[group]Disabling automatic garbage collection
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:30.7369154Z [command]"C:\Program Files\Git\bin\git.exe" config --local gc.auto 0
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:30.7807767Z ##[endgroup]
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:30.7810492Z ##[group]Setting up auth
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:30.7813206Z Removing SSH command configuration
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:30.7818438Z [command]"C:\Program Files\Git\bin\git.exe" config --local --name-only --get-regexp core\.sshCommand
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:30.8245615Z [command]"C:\Program Files\Git\bin\git.exe" submodule foreach --recursive "sh -c \"git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :\""
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:32.3716333Z Removing HTTP extra header
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:32.3726858Z [command]"C:\Program Files\Git\bin\git.exe" config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:32.4136434Z [command]"C:\Program Files\Git\bin\git.exe" submodule foreach --recursive "sh -c \"git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :\""
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:32.9910968Z Removing includeIf entries pointing to credentials config files
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:32.9925564Z [command]"C:\Program Files\Git\bin\git.exe" config --local --name-only --get-regexp ^includeIf\.gitdir:
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:33.0340731Z [command]"C:\Program Files\Git\bin\git.exe" submodule foreach --recursive "git config --local --show-origin --name-only --get-regexp remote.origin.url"
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:33.6026421Z [command]"C:\Program Files\Git\bin\git.exe" config --file D:\a\_temp\git-credentials-c7ef9d5c-868b-4b97-b894-6c8c7b436095.config http.https://github.com/.extraheader "AUTHORIZATION: basic ***"
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:33.6444860Z [command]"C:\Program Files\Git\bin\git.exe" config --local includeIf.gitdir:D:/a/261017-toontown-dev/261017-toontown-dev/.git.path D:\a\_temp\git-credentials-c7ef9d5c-868b-4b97-b894-6c8c7b436095.config
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:33.6859232Z [command]"C:\Program Files\Git\bin\git.exe" config --local includeIf.gitdir:D:/a/261017-toontown-dev/261017-toontown-dev/.git/worktrees/*.path D:\a\_temp\git-credentials-c7ef9d5c-868b-4b97-b894-6c8c7b436095.config
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:33.7320718Z [command]"C:\Program Files\Git\bin\git.exe" config --local includeIf.gitdir:/github/workspace/.git.path /github/runner_temp/git-credentials-c7ef9d5c-868b-4b97-b894-6c8c7b436095.config
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:33.7749218Z [command]"C:\Program Files\Git\bin\git.exe" config --local includeIf.gitdir:/github/workspace/.git/worktrees/*.path /github/runner_temp/git-credentials-c7ef9d5c-868b-4b97-b894-6c8c7b436095.config
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:33.8174987Z ##[endgroup]
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:33.8175616Z ##[group]Fetching the repository
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:33.8193758Z [command]"C:\Program Files\Git\bin\git.exe" -c protocol.version=2 fetch --no-tags --prune --no-recurse-submodules --depth=1 origin +3c74c3432f2a1895b5aaca83e6ddf914cf6b4281:refs/remotes/origin/m2-vector-engine
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:39.3237984Z From https://github.com/kaigani/261017-toontown-dev
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:39.3240660Z  * [new ref]         3c74c3432f2a1895b5aaca83e6ddf914cf6b4281 -> origin/m2-vector-engine
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:39.3307023Z [command]"C:\Program Files\Git\bin\git.exe" branch --list --remote origin/m2-vector-engine
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:39.3781053Z   origin/m2-vector-engine
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:39.3836031Z [command]"C:\Program Files\Git\bin\git.exe" rev-parse refs/remotes/origin/m2-vector-engine
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:39.4244440Z 3c74c3432f2a1895b5aaca83e6ddf914cf6b4281
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:39.4288493Z ##[endgroup]
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:39.4289134Z ##[group]Determining the checkout info
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:39.4290027Z ##[endgroup]
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:39.4299692Z [command]"C:\Program Files\Git\bin\git.exe" sparse-checkout disable
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:39.4838335Z [command]"C:\Program Files\Git\bin\git.exe" config --local --unset-all extensions.worktreeConfig
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:39.5237947Z ##[group]Checking out the ref
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:39.5246646Z [command]"C:\Program Files\Git\bin\git.exe" checkout --progress --force -B m2-vector-engine refs/remotes/origin/m2-vector-engine
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:40.9783918Z Updating files:  40% (3184/7777)
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:41.0365559Z Updating files:  41% (3189/7777)
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:41.0482538Z Updating files:  42% (3267/7777)
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:41.0713862Z Updating files:  43% (3345/7777)
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:41.0831156Z Updating files:  44% (3422/7777)
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:41.1014396Z Updating files:  45% (3500/7777)
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:41.1119032Z Updating files:  46% (3578/7777)
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:41.1306562Z Updating files:  47% (3656/7777)
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:41.1415035Z Updating files:  48% (3733/7777)
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:41.1565798Z Updating files:  49% (3811/7777)
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:41.1712994Z Updating files:  50% (3889/7777)
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:41.1849981Z Updating files:  51% (3967/7777)
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:41.2115512Z Updating files:  52% (4045/7777)
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:41.2369306Z Updating files:  53% (4122/7777)
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:41.2635937Z Updating files:  54% (4200/7777)
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:41.3687246Z Updating files:  55% (4278/7777)
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:41.3822022Z Updating files:  56% (4356/7777)
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:41.3964487Z Updating files:  57% (4433/7777)
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:41.4229176Z Updating files:  58% (4511/7777)
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:41.4415858Z Updating files:  59% (4589/7777)
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:41.4550481Z Updating files:  60% (4667/7777)
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:41.4685044Z Updating files:  61% (4744/7777)
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:41.4817091Z Updating files:  62% (4822/7777)
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:41.5123567Z Updating files:  63% (4900/7777)
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:41.5339999Z Updating files:  64% (4978/7777)
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:41.5467578Z Updating files:  65% (5056/7777)
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:41.5596728Z Updating files:  66% (5133/7777)
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:41.5760297Z Updating files:  67% (5211/7777)
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:41.6013755Z Updating files:  68% (5289/7777)
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:41.6057991Z Updating files:  69% (5367/7777)
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:41.6181729Z Updating files:  69% (5373/7777)
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:41.6318868Z Updating files:  70% (5444/7777)
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:41.6452208Z Updating files:  71% (5522/7777)
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:41.6638982Z Updating files:  72% (5600/7777)
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:41.6931118Z Updating files:  73% (5678/7777)
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:41.7068128Z Updating files:  74% (5755/7777)
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:41.7371058Z Updating files:  75% (5833/7777)
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:41.7779521Z Updating files:  76% (5911/7777)
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:41.8168504Z Updating files:  77% (5989/7777)
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:42.1277675Z Updating files:  78% (6067/7777)
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:42.1611327Z Updating files:  79% (6144/7777)
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:42.1899580Z Updating files:  80% (6222/7777)
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:42.2096039Z Updating files:  81% (6300/7777)
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:42.2426367Z Updating files:  82% (6378/7777)
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:42.2602173Z Updating files:  83% (6455/7777)
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:42.2734269Z Updating files:  84% (6533/7777)
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:42.2939961Z Updating files:  85% (6611/7777)
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:42.3231206Z Updating files:  86% (6689/7777)
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:42.3356390Z Updating files:  87% (6766/7777)
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:42.3620588Z Updating files:  88% (6844/7777)
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:42.3776351Z Updating files:  89% (6922/7777)
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:42.3934643Z Updating files:  90% (7000/7777)
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:42.4316906Z Updating files:  91% (7078/7777)
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:42.4479177Z Updating files:  92% (7155/7777)
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:42.4667733Z Updating files:  93% (7233/7777)
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:42.4829394Z Updating files:  94% (7311/7777)
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:42.5015169Z Updating files:  95% (7389/7777)
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:42.5176076Z Updating files:  96% (7466/7777)
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:42.5275757Z Updating files:  97% (7544/7777)
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:42.5363353Z Updating files:  98% (7622/7777)
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:42.5443579Z Updating files:  99% (7700/7777)
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:42.5444458Z Updating files: 100% (7777/7777)
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:42.5444978Z Updating files: 100% (7777/7777), done.
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:42.5652845Z Switched to a new branch 'm2-vector-engine'
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:42.5676582Z branch 'm2-vector-engine' set up to track 'origin/m2-vector-engine'.
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:42.6072740Z ##[endgroup]
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:42.6811515Z [command]"C:\Program Files\Git\bin\git.exe" log -1 --format=%H
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:42.7242698Z 3c74c3432f2a1895b5aaca83e6ddf914cf6b4281
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:42.7704632Z ##[group]Run tc=$(sed -n 's/^channel = "\(.*\)"/\1/p' rust-toolchain.toml)
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:42.7705523Z ^[[36;1mtc=$(sed -n 's/^channel = "\(.*\)"/\1/p' rust-toolchain.toml)^[[0m
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:42.7706023Z ^[[36;1mrustup toolchain install "$tc" --profile minimal^[[0m
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:42.7706446Z ^[[36;1mrustup override set "$tc"^[[0m
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:42.7706788Z ^[[36;1mrustc --version^[[0m
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:42.7725424Z shell: C:\Program Files\Git\bin\bash.EXE --noprofile --norc -e -o pipefail {0}
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:42.7725872Z env:
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:42.7726206Z   CARGO_TERM_COLOR: always
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:42.7726561Z   CARGO_INCREMENTAL: 0
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:42.7726861Z   RUST_BACKTRACE: 1
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:42.7727144Z ##[endgroup]
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:43.7282782Z info: syncing channel updates for 1.98.1-x86_64-pc-windows-msvc
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:44.2626437Z info: latest update on 2026-09-03 for version 1.98.1 (48a229cea 2026-09-01)
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:44.2746061Z info: downloading 3 components
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:53.5976283Z 
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:54.5871497Z   1.98.1-x86_64-pc-windows-msvc installed - rustc 1.98.1 (48a229cea 2026-09-01)
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:54.5872282Z 
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:54.6212402Z info: override toolchain for D:\a\261017-toontown-dev\261017-toontown-dev set to 1.98.1-x86_64-pc-windows-msvc
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:55.3610443Z rustc 1.98.1 (48a229cea 2026-09-01)
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:55.4040198Z ##[group]Run Swatinem/rust-cache@v2
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:55.4040699Z with:
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:55.4041015Z   key: headless-release
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:55.4041311Z   prefix-key: v0-rust
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:55.4041637Z   add-job-id-key: true
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:55.4041968Z   add-rust-environment-hash-key: true
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:55.4042374Z   cache-targets: true
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:55.4042674Z   cache-all-crates: false
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:55.4043008Z   cache-workspace-crates: false
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:55.4043355Z   save-if: true
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:55.4043646Z   cache-provider: github
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:55.4043934Z   cache-bin: true
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:55.4044304Z   lookup-only: false
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:55.4044591Z   cmd-format: {0}
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:55.4044869Z env:
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:55.4045148Z   CARGO_TERM_COLOR: always
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:55.4045491Z   CARGO_INCREMENTAL: 0
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:55.4045802Z   RUST_BACKTRACE: 1
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:01:55.4046089Z ##[endgroup]
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:01.0792404Z ##[group]Cache Configuration
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:01.0793174Z Cache Provider:
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:01.0793635Z     github
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:01.0794060Z Workspaces:
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:01.0794525Z     D:\a\261017-toontown-dev\261017-toontown-dev
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:01.0795120Z Cache Paths:
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:01.0795559Z     C:\Users\runneradmin\.cargo\bin
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:01.0796133Z     C:\Users\runneradmin\.cargo\.crates.toml
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:01.0797133Z     C:\Users\runneradmin\.cargo\.crates2.json
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:01.0797793Z     C:\Users\runneradmin\.cargo\registry
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:01.0798699Z     C:\Users\runneradmin\.cargo\git
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:01.0799305Z     D:\a\261017-toontown-dev\261017-toontown-dev\target
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:01.0799885Z Restore Key:
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:01.0800357Z     v0-rust-headless-release-e2-Windows_NT-x64-c16cbc5d
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:01.0800959Z Cache Key:
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:01.0801629Z     v0-rust-headless-release-e2-Windows_NT-x64-c16cbc5d-7ca7b21e
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:01.0802285Z .. Prefix:
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:01.0802876Z   - v0-rust-headless-release-e2-Windows_NT-x64
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:01.0803514Z .. Environment considered:
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:01.0803971Z   - Rust Versions:
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:01.0804516Z     - 1.98.1 x86_64-pc-windows-msvc 48a229ceaefd4985c50990b14116b6d856af0985
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:01.0805376Z     - 1.99.1 x86_64-pc-windows-msvc 58cf8f9c35b355199727627d07ae34a4e2846d67
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:01.0806058Z   - CARGO_INCREMENTAL
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:01.0806509Z   - CARGO_TERM_COLOR
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:01.0806965Z   - RUST_BACKTRACE
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:01.0807395Z .. Lockfiles considered:
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:01.0808050Z   - D:\a\261017-toontown-dev\261017-toontown-dev\bins\headless\Cargo.toml
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:01.0808881Z   - D:\a\261017-toontown-dev\261017-toontown-dev\Cargo.lock
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:01.0809620Z   - D:\a\261017-toontown-dev\261017-toontown-dev\crates\anim\Cargo.toml
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:01.0810456Z   - D:\a\261017-toontown-dev\261017-toontown-dev\crates\audio\Cargo.toml
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:01.0811653Z   - D:\a\261017-toontown-dev\261017-toontown-dev\crates\colour\Cargo.toml
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:01.0812507Z   - D:\a\261017-toontown-dev\261017-toontown-dev\crates\engine\Cargo.toml
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:01.0813366Z   - D:\a\261017-toontown-dev\261017-toontown-dev\crates\executor\Cargo.toml
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:01.0814254Z   - D:\a\261017-toontown-dev\261017-toontown-dev\crates\fx\Cargo.toml
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:01.0815138Z   - D:\a\261017-toontown-dev\261017-toontown-dev\crates\io\Cargo.toml
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:01.0815964Z   - D:\a\261017-toontown-dev\261017-toontown-dev\crates\lipsync\Cargo.toml
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:01.0816813Z   - D:\a\261017-toontown-dev\261017-toontown-dev\crates\mcp\Cargo.toml
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:01.0817615Z   - D:\a\261017-toontown-dev\261017-toontown-dev\crates\model\Cargo.toml
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:01.0818422Z   - D:\a\261017-toontown-dev\261017-toontown-dev\crates\persist\Cargo.toml
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:01.0819342Z   - D:\a\261017-toontown-dev\261017-toontown-dev\crates\registry-macros\Cargo.toml
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:01.0823682Z   - D:\a\261017-toontown-dev\261017-toontown-dev\crates\registry\Cargo.toml
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:01.0824930Z   - D:\a\261017-toontown-dev\261017-toontown-dev\crates\render\Cargo.toml
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:01.0825698Z   - D:\a\261017-toontown-dev\261017-toontown-dev\crates\vector\Cargo.toml
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:01.0826434Z   - D:\a\261017-toontown-dev\261017-toontown-dev\desktop\src-tauri\Cargo.toml
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:01.0827276Z   - D:\a\261017-toontown-dev\261017-toontown-dev\rust-toolchain.toml
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:01.0828290Z ##[endgroup]
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:01.0828480Z 
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:01.0828648Z ... Restoring cache ...
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:01.3730837Z Cache hit for: v0-rust-headless-release-e2-Windows_NT-x64-c16cbc5d-7ca7b21e
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:02.4963365Z Received 117440512 of 250128220 (47.0%), 111.7 MBs/sec
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:03.5043235Z Received 197132288 of 250128220 (78.8%), 93.3 MBs/sec
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:04.1837435Z Received 250128220 of 250128220 (100.0%), 88.5 MBs/sec
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:04.1840589Z Cache Size: ~239 MB (250128220 B)
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:04.1946479Z [command]"C:\Program Files\Git\usr\bin\tar.exe" -xf D:/a/_temp/d51daf84-824e-427f-a4a9-446843bc084c/cache.tzst -P -C D:/a/261017-toontown-dev/261017-toontown-dev --force-local --use-compress-program "zstd -d"
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:17.1636749Z Cache restored successfully
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:17.1884620Z Restored from cache key "v0-rust-headless-release-e2-Windows_NT-x64-c16cbc5d-7ca7b21e" full match: true.
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:17.2200375Z ##[group]Run cargo build --release --locked -p tt-headless
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:17.2201116Z ^[[36;1mcargo build --release --locked -p tt-headless^[[0m
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:17.2201553Z ^[[36;1mexe=target/release/toontown-headless^[[0m
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:17.2201894Z ^[[36;1mPY=python3^[[0m
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:17.2202301Z ^[[36;1mif [ "$RUNNER_OS" = "Windows" ]; then exe="$exe.exe"; PY=python; fi^[[0m
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:17.2202723Z ^[[36;1m$PY -m venv .venv-e2^[[0m
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:17.2203050Z ^[[36;1mVPY=.venv-e2/bin/python^[[0m
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:17.2203484Z ^[[36;1mif [ "$RUNNER_OS" = "Windows" ]; then VPY=.venv-e2/Scripts/python.exe; fi^[[0m
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:17.2203985Z ^[[36;1m$VPY -m pip install --quiet "mcp==2.0.0"^[[0m
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:17.2204472Z ^[[36;1mPYTHONIOENCODING=utf-8 $VPY scripts/e2-paint-by-id.py "$exe" out/e2^[[0m
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:17.2220809Z shell: C:\Program Files\Git\bin\bash.EXE --noprofile --norc -e -o pipefail {0}
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:17.2221564Z env:
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:17.2222127Z   CARGO_TERM_COLOR: always
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:17.2222580Z   CARGO_INCREMENTAL: 0
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:17.2222979Z   RUST_BACKTRACE: 1
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:17.2223354Z   CACHE_ON_FAILURE: false
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:17.2223775Z ##[endgroup]
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:17.3948575Z ^[[1m^[[92m    Updating^[[0m crates.io index
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:25.3788257Z ^[[1m^[[92m   Compiling^[[0m tt-model v0.0.1 (D:\a\261017-toontown-dev\261017-toontown-dev\crates\model)
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:25.3843602Z ^[[1m^[[92m   Compiling^[[0m tt-registry-macros v0.0.1 (D:\a\261017-toontown-dev\261017-toontown-dev\crates\registry-macros)
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:35.9214933Z ^[[1m^[[92m   Compiling^[[0m tt-anim v0.0.1 (D:\a\261017-toontown-dev\261017-toontown-dev\crates\anim)
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:35.9216184Z ^[[1m^[[92m   Compiling^[[0m tt-vector v0.0.1 (D:\a\261017-toontown-dev\261017-toontown-dev\crates\vector)
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:35.9217258Z ^[[1m^[[92m   Compiling^[[0m tt-colour v0.0.1 (D:\a\261017-toontown-dev\261017-toontown-dev\crates\colour)
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:35.9865499Z ^[[1m^[[92m   Compiling^[[0m tt-fx v0.0.1 (D:\a\261017-toontown-dev\261017-toontown-dev\crates\fx)
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:35.9940294Z ^[[1m^[[92m   Compiling^[[0m tt-persist v0.0.1 (D:\a\261017-toontown-dev\261017-toontown-dev\crates\persist)
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:36.0523165Z ^[[1m^[[92m   Compiling^[[0m tt-audio v0.0.1 (D:\a\261017-toontown-dev\261017-toontown-dev\crates\audio)
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:02:36.1213554Z ^[[1m^[[92m   Compiling^[[0m tt-registry v0.0.1 (D:\a\261017-toontown-dev\261017-toontown-dev\crates\registry)
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:03:43.5815174Z ^[[1m^[[92m   Compiling^[[0m tt-render v0.0.1 (D:\a\261017-toontown-dev\261017-toontown-dev\crates\render)
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:03:47.5433792Z ^[[1m^[[92m   Compiling^[[0m tt-io v0.0.1 (D:\a\261017-toontown-dev\261017-toontown-dev\crates\io)
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:04:03.7586809Z ^[[1m^[[92m   Compiling^[[0m tt-executor v0.0.1 (D:\a\261017-toontown-dev\261017-toontown-dev\crates\executor)
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:04:13.8777610Z ^[[1m^[[92m   Compiling^[[0m tt-lipsync v0.0.1 (D:\a\261017-toontown-dev\261017-toontown-dev\crates\lipsync)
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:04:59.5712113Z ^[[1m^[[92m   Compiling^[[0m tt-engine v0.0.1 (D:\a\261017-toontown-dev\261017-toontown-dev\crates\engine)
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:05:08.1126712Z ^[[1m^[[92m   Compiling^[[0m tt-mcp v0.0.1 (D:\a\261017-toontown-dev\261017-toontown-dev\crates\mcp)
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:06:56.4565222Z ^[[1m^[[92m   Compiling^[[0m tt-headless v0.0.1 (D:\a\261017-toontown-dev\261017-toontown-dev\bins\headless)
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:07:03.1952472Z ^[[1m^[[92m    Finished^[[0m `release` profile [optimized + debuginfo] target(s) in 4m 45s
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:07:18.8870169Z 
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:07:18.8871674Z [notice] A new release of pip is available: 25.0.1 -> 26.2.2
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:07:18.8872508Z [notice] To update, run: D:\a\261017-toontown-dev\261017-toontown-dev\.venv-e2\Scripts\python.exe -m pip install --upgrade pip
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:07:21.0690518Z ok   project.create
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:07:21.0835885Z ok   vectorize preview
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:07:21.0876331Z ok   vectorize run started
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:07:21.1306026Z ok   vectorize job succeeded
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:07:21.1309400Z ok   job progress
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:07:21.2212241Z ok   known pixel: the frame line is ink
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:07:21.3032939Z ok   known pixel: inside the ring is paper
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:07:21.5451328Z ok   save the base
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:07:21.5848100Z ok   doc.validate reports the unpainted zones
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:07:21.5977196Z ok   hit test finds the ring's inside zone
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:07:21.7259106Z ok   each zone painted by ID in one revision
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:07:21.7284607Z ok   validation clean after painting
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:07:21.8216443Z ok   known pixel: the ring's inside is red
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:07:21.8408132Z ok   render_drawing (generic tool) twice: identical hashes
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:07:21.8663771Z ok   recolour
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:07:21.9543981Z ok   known pixel: recoloured green
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:07:21.9574080Z ok   a stale zone ID is refused
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:07:21.9638263Z ok   a stale revision is refused
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:07:22.0645932Z ok   undo restores red
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:07:22.1652871Z ok   redo restores green
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:07:22.3900585Z ok   save
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:07:22.5191871Z ok   reopen
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:07:22.5315833Z ok   save/open: identical doc.export.json
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:07:22.5392282Z ok   reopened render equals the redone render
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:07:23.1173010Z ok   --run replay exits 0
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:07:23.1290647Z ok   replay from the saved base reproduces the document
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:07:23.1351084Z 26/26 checks passed
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:07:23.3024293Z ##[group]Run actions/upload-artifact@v7
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:07:23.3024810Z with:
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:07:23.3025149Z   name: e2-Windows
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:07:23.3025474Z   path: out/e2/
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:07:23.3025852Z   if-no-files-found: error
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:07:23.3026226Z   compression-level: 6
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:07:23.3026570Z   overwrite: false
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:07:23.3026902Z   include-hidden-files: false
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:07:23.3027295Z   archive: true
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:07:23.3027582Z env:
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:07:23.3027907Z   CARGO_TERM_COLOR: always
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:07:23.3028290Z   CARGO_INCREMENTAL: 0
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:07:23.3028667Z   RUST_BACKTRACE: 1
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:07:23.3028991Z   CACHE_ON_FAILURE: false
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:07:23.3029313Z ##[endgroup]
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:07:23.5214066Z With the provided path, there will be 11 files uploaded
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:07:23.5219488Z Artifact name is valid!
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:07:23.5221026Z Root directory input is valid!
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:07:23.7867794Z Uploading artifact: e2-Windows.zip
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:07:23.7905301Z Beginning upload of artifact content to blob storage
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:07:24.0126575Z Uploaded bytes 54243
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:07:24.0471995Z Finished uploading artifact content to blob storage!
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:07:24.0473052Z SHA256 digest of uploaded artifact is 38ffe68e5ad1a87a1d454e552251a5821fad37fef0c333c5de653459fd268649
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:07:24.0473908Z Finalizing artifact upload
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:07:24.5548401Z Artifact e2-Windows successfully finalized. Artifact ID 13161194492
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:07:24.5549201Z Artifact e2-Windows has been successfully uploaded! Final size is 54243 bytes. Artifact ID is 13161194492
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:07:24.5556670Z Artifact download URL: https://github.com/kaigani/261017-toontown-dev/actions/runs/41486947308/artifacts/13161194492
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:07:24.5951459Z Post job cleanup.
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:07:24.7601540Z Cache up-to-date.
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:07:24.7956341Z Post job cleanup.
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:07:24.9893661Z [command]"C:\Program Files\Git\bin\git.exe" version
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:07:25.0264110Z git version 2.56.0.windows.2
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:07:25.0340294Z Temporarily overriding HOME='D:\a\_temp\d330f209-09a9-46fa-8b43-05bbadff1741' before making global git config changes
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:07:25.0341218Z Adding repository directory to the temporary git global config as a safe directory
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:07:25.0351418Z [command]"C:\Program Files\Git\bin\git.exe" config --global --add safe.directory D:\a\261017-toontown-dev\261017-toontown-dev
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:07:25.0759690Z Removing SSH command configuration
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:07:25.0771976Z [command]"C:\Program Files\Git\bin\git.exe" config --local --name-only --get-regexp core\.sshCommand
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:07:25.1198825Z [command]"C:\Program Files\Git\bin\git.exe" submodule foreach --recursive "sh -c \"git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :\""
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:07:25.7344536Z Removing HTTP extra header
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:07:25.7354649Z [command]"C:\Program Files\Git\bin\git.exe" config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:07:25.7779753Z [command]"C:\Program Files\Git\bin\git.exe" submodule foreach --recursive "sh -c \"git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :\""
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:07:26.3846774Z Removing includeIf entries pointing to credentials config files
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:07:26.3858427Z [command]"C:\Program Files\Git\bin\git.exe" config --local --name-only --get-regexp ^includeIf\.gitdir:
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:07:26.4242693Z includeif.gitdir:D:/a/261017-toontown-dev/261017-toontown-dev/.git.path
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:07:26.4244934Z includeif.gitdir:D:/a/261017-toontown-dev/261017-toontown-dev/.git/worktrees/*.path
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:07:26.4245644Z includeif.gitdir:/github/workspace/.git.path
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:07:26.4246179Z includeif.gitdir:/github/workspace/.git/worktrees/*.path
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:07:26.4301798Z [command]"C:\Program Files\Git\bin\git.exe" config --local --get-all includeif.gitdir:D:/a/261017-toontown-dev/261017-toontown-dev/.git.path
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:07:26.4668880Z D:\a\_temp\git-credentials-c7ef9d5c-868b-4b97-b894-6c8c7b436095.config
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:07:26.4720749Z [command]"C:\Program Files\Git\bin\git.exe" config --local --unset includeif.gitdir:D:/a/261017-toontown-dev/261017-toontown-dev/.git.path D\:\\a\\_temp\\git\-credentials\-c7ef9d5c\-868b\-4b97\-b894\-6c8c7b436095\.config
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:07:26.5133571Z [command]"C:\Program Files\Git\bin\git.exe" config --local --get-all includeif.gitdir:D:/a/261017-toontown-dev/261017-toontown-dev/.git/worktrees/*.path
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:07:26.5492974Z D:\a\_temp\git-credentials-c7ef9d5c-868b-4b97-b894-6c8c7b436095.config
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:07:26.5543054Z [command]"C:\Program Files\Git\bin\git.exe" config --local --unset includeif.gitdir:D:/a/261017-toontown-dev/261017-toontown-dev/.git/worktrees/*.path D\:\\a\\_temp\\git\-credentials\-c7ef9d5c\-868b\-4b97\-b894\-6c8c7b436095\.config
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:07:26.5955904Z [command]"C:\Program Files\Git\bin\git.exe" config --local --get-all includeif.gitdir:/github/workspace/.git.path
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:07:26.6315888Z /github/runner_temp/git-credentials-c7ef9d5c-868b-4b97-b894-6c8c7b436095.config
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:07:26.6407299Z [command]"C:\Program Files\Git\bin\git.exe" config --local --unset includeif.gitdir:/github/workspace/.git.path \/github\/runner_temp\/git\-credentials\-c7ef9d5c\-868b\-4b97\-b894\-6c8c7b436095\.config
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:07:26.6832372Z [command]"C:\Program Files\Git\bin\git.exe" config --local --get-all includeif.gitdir:/github/workspace/.git/worktrees/*.path
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:07:26.7190977Z /github/runner_temp/git-credentials-c7ef9d5c-868b-4b97-b894-6c8c7b436095.config
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:07:26.7244250Z [command]"C:\Program Files\Git\bin\git.exe" config --local --unset includeif.gitdir:/github/workspace/.git/worktrees/*.path \/github\/runner_temp\/git\-credentials\-c7ef9d5c\-868b\-4b97\-b894\-6c8c7b436095\.config
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:07:26.7652251Z [command]"C:\Program Files\Git\bin\git.exe" submodule foreach --recursive "git config --local --show-origin --name-only --get-regexp remote.origin.url"
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:07:27.3587642Z Removing credentials config 'D:\a\_temp\git-credentials-c7ef9d5c-868b-4b97-b894-6c8c7b436095.config'
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:07:27.3813071Z Cleaning up orphan processes
+e2 release (windows-latest)	UNKNOWN STEP	2026-11-02T17:07:27.4051274Z Terminate orphan process: pid (3268) (vctip)

@@ -1,0 +1,303 @@
+{
+  "commands": [
+    {
+      "id": "draw.selection.set",
+      "kind": "ui",
+      "source": "crates/executor/src/commands/draw_select.rs",
+      "examples": 2
+    },
+    {
+      "id": "draw.selection.get",
+      "kind": "query",
+      "source": "crates/executor/src/commands/draw_select.rs",
+      "examples": 1
+    },
+    {
+      "id": "draw.pointSelection.set",
+      "kind": "ui",
+      "source": "crates/executor/src/commands/draw_select.rs",
+      "examples": 1
+    },
+    {
+      "id": "draw.selection.changed",
+      "kind": "event",
+      "source": "crates/executor/src/commands/draw_select.rs",
+      "examples": 1
+    },
+    {
+      "id": "draw.bounds.get",
+      "kind": "query",
+      "source": "crates/executor/src/commands/draw_select.rs",
+      "examples": 1
+    },
+    {
+      "id": "draw.viewMapping.get",
+      "kind": "query",
+      "source": "crates/executor/src/commands/draw_select.rs",
+      "examples": 1
+    },
+    {
+      "id": "draw.inspectorPreview.set",
+      "kind": "ui",
+      "source": "crates/executor/src/commands/draw_select.rs",
+      "examples": 1
+    },
+    {
+      "id": "draw.drawing.rename",
+      "kind": "action",
+      "source": "crates/executor/src/commands/draw_select.rs",
+      "examples": 1
+    },
+    {
+      "id": "draw.lock.set",
+      "kind": "toggle",
+      "source": "crates/executor/src/commands/draw_select.rs",
+      "examples": 1
+    },
+    {
+      "id": "draw.rectangle.add",
+      "kind": "action",
+      "source": "crates/executor/src/commands/draw_shapes.rs",
+      "examples": 1
+    },
+    {
+      "id": "draw.ellipse.add",
+      "kind": "action",
+      "source": "crates/executor/src/commands/draw_shapes.rs",
+      "examples": 1
+    },
+    {
+      "id": "draw.line.add",
+      "kind": "action",
+      "source": "crates/executor/src/commands/draw_shapes.rs",
+      "examples": 1
+    },
+    {
+      "id": "draw.polyline.add",
+      "kind": "action",
+      "source": "crates/executor/src/commands/draw_shapes.rs",
+      "examples": 1
+    },
+    {
+      "id": "draw.transform.apply",
+      "kind": "action",
+      "source": "crates/executor/src/commands/draw_transform.rs",
+      "examples": 2
+    },
+    {
+      "id": "draw.flip.apply",
+      "kind": "action",
+      "source": "crates/executor/src/commands/draw_transform.rs",
+      "examples": 1
+    },
+    {
+      "id": "draw.rotate.apply",
+      "kind": "action",
+      "source": "crates/executor/src/commands/draw_transform.rs",
+      "examples": 1
+    },
+    {
+      "id": "draw.envelope.apply",
+      "kind": "action",
+      "source": "crates/executor/src/commands/draw_transform.rs",
+      "examples": 1
+    },
+    {
+      "id": "draw.repositionAll.apply",
+      "kind": "action",
+      "source": "crates/executor/src/commands/draw_transform.rs",
+      "examples": 1
+    },
+    {
+      "id": "draw.point.add",
+      "kind": "action",
+      "source": "crates/executor/src/commands/draw_transform.rs",
+      "examples": 1
+    },
+    {
+      "id": "draw.point.move",
+      "kind": "action",
+      "source": "crates/executor/src/commands/draw_transform.rs",
+      "examples": 1
+    },
+    {
+      "id": "draw.point.set",
+      "kind": "action",
+      "source": "crates/executor/src/commands/draw_transform.rs",
+      "examples": 1
+    },
+    {
+      "id": "draw.point.delete",
+      "kind": "action",
+      "source": "crates/executor/src/commands/draw_transform.rs",
+      "examples": 1
+    },
+    {
+      "id": "draw.segment.move",
+      "kind": "action",
+      "source": "crates/executor/src/commands/draw_transform.rs",
+      "examples": 1
+    },
+    {
+      "id": "draw.cut.apply",
+      "kind": "action",
+      "source": "crates/executor/src/commands/draw_cut.rs",
+      "examples": 3
+    },
+    {
+      "id": "draw.erase.apply",
+      "kind": "action",
+      "source": "crates/executor/src/commands/draw_cut.rs",
+      "examples": 2
+    },
+    {
+      "id": "draw.flatten.apply",
+      "kind": "action",
+      "source": "crates/executor/src/commands/draw_layers.rs",
+      "examples": 2
+    },
+    {
+      "id": "draw.optimize.apply",
+      "kind": "action",
+      "source": "crates/executor/src/commands/draw_layers.rs",
+      "examples": 1
+    },
+    {
+      "id": "draw.arrange.apply",
+      "kind": "action",
+      "source": "crates/executor/src/commands/draw_layers.rs",
+      "examples": 2
+    },
+    {
+      "id": "draw.smooth.apply",
+      "kind": "action",
+      "source": "crates/executor/src/commands/draw_strokeops.rs",
+      "examples": 1
+    },
+    {
+      "id": "draw.linesToBrush.apply",
+      "kind": "action",
+      "source": "crates/executor/src/commands/draw_strokeops.rs",
+      "examples": 1
+    },
+    {
+      "id": "draw.breakApart.apply",
+      "kind": "action",
+      "source": "crates/executor/src/commands/draw_strokeops.rs",
+      "examples": 1
+    },
+    {
+      "id": "draw.centreLine.apply",
+      "kind": "action",
+      "source": "crates/executor/src/commands/draw_strokeops.rs",
+      "examples": 1
+    },
+    {
+      "id": "colour.fillMapping.get",
+      "kind": "query",
+      "source": "crates/executor/src/commands/colour_edit.rs",
+      "examples": 1
+    },
+    {
+      "id": "colour.fillMapping.set",
+      "kind": "action",
+      "source": "crates/executor/src/commands/colour_edit.rs",
+      "examples": 2
+    },
+    {
+      "id": "colour.selection.apply",
+      "kind": "action",
+      "source": "crates/executor/src/commands/colour_edit.rs",
+      "examples": 2
+    },
+    {
+      "id": "colour.recolour.apply",
+      "kind": "action",
+      "source": "crates/executor/src/commands/colour_edit.rs",
+      "examples": 2
+    },
+    {
+      "id": "draw.drawing.render",
+      "kind": "query",
+      "source": "crates/executor/src/commands/draw_render.rs",
+      "examples": 2
+    }
+  ],
+  "generatedBefore": 638,
+  "generatedAfter": 601,
+  "newlyImplementedFromGeneratedDelta": [
+    "colour.fillMapping.get",
+    "colour.fillMapping.set",
+    "colour.recolour.apply",
+    "colour.selection.apply",
+    "draw.arrange.apply",
+    "draw.bounds.get",
+    "draw.breakApart.apply",
+    "draw.centreLine.apply",
+    "draw.cut.apply",
+    "draw.drawing.rename",
+    "draw.drawing.render",
+    "draw.ellipse.add",
+    "draw.envelope.apply",
+    "draw.erase.apply",
+    "draw.flatten.apply",
+    "draw.flip.apply",
+    "draw.inspectorPreview.set",
+    "draw.line.add",
+    "draw.linesToBrush.apply",
+    "draw.lock.set",
+    "draw.optimize.apply",
+    "draw.point.add",
+    "draw.point.delete",
+    "draw.point.move",
+    "draw.point.set",
+    "draw.pointSelection.set",
+    "draw.polyline.add",
+    "draw.rectangle.add",
+    "draw.repositionAll.apply",
+    "draw.rotate.apply",
+    "draw.segment.move",
+    "draw.selection.changed",
+    "draw.selection.get",
+    "draw.selection.set",
+    "draw.smooth.apply",
+    "draw.transform.apply",
+    "draw.viewMapping.get"
+  ],
+  "generatedDeltaExactlyMatchesNewHandlers": true,
+  "newMutations": 28,
+  "commonContractUniqueCommands": 28,
+  "missingFromCommonContract": [],
+  "commonContractCases": 33,
+  "commonContractCommands": [
+    "colour.fillMapping.set",
+    "colour.recolour.apply",
+    "colour.selection.apply",
+    "draw.arrange.apply",
+    "draw.breakApart.apply",
+    "draw.centreLine.apply",
+    "draw.cut.apply",
+    "draw.drawing.rename",
+    "draw.ellipse.add",
+    "draw.envelope.apply",
+    "draw.erase.apply",
+    "draw.flatten.apply",
+    "draw.flip.apply",
+    "draw.line.add",
+    "draw.linesToBrush.apply",
+    "draw.lock.set",
+    "draw.optimize.apply",
+    "draw.point.add",
+    "draw.point.delete",
+    "draw.point.move",
+    "draw.point.set",
+    "draw.polyline.add",
+    "draw.rectangle.add",
+    "draw.repositionAll.apply",
+    "draw.rotate.apply",
+    "draw.segment.move",
+    "draw.smooth.apply",
+    "draw.transform.apply"
+  ],
+  "independentCaseBoundary": "fn cases() through fn prelude; excludes setup and predecessor whitelist"
+}

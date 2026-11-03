@@ -123,11 +123,22 @@ def owner_of(cid: str) -> str:
             return "M6 C6.3"
         return "M6 C6.1"  # views, display options, animation tools, peg-only mode, flips, hierarchy commands
     if ns == "colour":
-        if rest.startswith(("paint", "gap")):
-            return "M2 C2.3"  # `colour.paint.*` with `draw.*`; gap closing is a paint operation (C2.2 engine)
+        if rest.startswith(("paint", "gap", "pick", "recovery", "missing")):
+            return "M2 C2.2"  # painting, gap closing, the dropper read-back and colour recovery (C2.2 ruling)
+        if rest.startswith(("fillMapping", "selection", "recolour")):
+            return "M2 C2.3"  # fill mapping edits and recolouring of drawing content (C22-R1-10)
         return "M7 C7.1"
     if ns == "draw":
-        return "M2 C2.4" if rest.startswith(("vectorize", "vectorFile")) else "M2 C2.3"
+        if rest == "hitTest.get":
+            return "M2 C2.2"  # zones under a point (C2.2 ruling)
+        # Feather (ticket C23-T2): re-scoped out of M2 by the orchestrator at the M2 merge because the spec owner has
+        # not answered SI-077; owned by M7 C7.2 (effects) or the first checkpoint after the SI-077 decision, whichever
+        # comes first (the spec owner may reverse this). Vector file import is M10 C10.2 (plan §4; ruling, SI-082).
+        if rest.startswith("feather"):
+            return "M7 C7.2 (or the first checkpoint after the SI-077 decision)"
+        if rest.startswith("vectorFile"):
+            return "M10 C10.2"
+        return "M2 C2.4" if rest.startswith("vectorize") else "M2 C2.3"
     if ns == "drawAid":
         return "M5 C5.2" if rest.startswith("staticLightTable") else "M4 C4.2"
     if ns in ("element",):

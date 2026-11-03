@@ -1934,10 +1934,10 @@ export const COMMAND_INDEX = {
     result: "colour.fillMapping.get.result",
     examples: [
       {
-        objectId: "scene:#1",
+        drawingId: "drawingBank:#1/drawing:#1",
+        objectId: "st_01K742SG0QD1F2HFZSX8R4V7WP",
       },
     ],
-    milestone: "M7 C7.1",
   },
   "colour.fillMapping.set": {
     kind: "action",
@@ -1945,11 +1945,29 @@ export const COMMAND_INDEX = {
     result: "colour.fillMapping.set.result",
     examples: [
       {
-        objectIds: [],
+        drawingId: "drawingBank:#1/drawing:#1",
+        objectIds: [
+          "st_01K742SG0QD1F2HFZSX8R4V7WP",
+        ],
         mapping: "default",
       },
+      {
+        drawingId: "drawingBank:#1/drawing:#1",
+        objectIds: [
+          "st_01K742SG0QD1F2HFZSX8R4V7WP",
+        ],
+        mapping: {
+          matrix: [
+            50,
+            0,
+            0,
+            50,
+            0,
+            0,
+          ],
+        },
+      },
     ],
-    milestone: "M7 C7.1",
   },
   "colour.gap.close": {
     kind: "action",
@@ -1957,17 +1975,17 @@ export const COMMAND_INDEX = {
     result: "colour.gap.close.result",
     examples: [
       {
+        drawingId: "drawingBank:#1/drawing:#1",
         from: {
-          x: 1,
-          y: 1,
+          x: -48,
+          y: -50,
         },
         to: {
-          x: 1,
-          y: 1,
+          x: 2,
+          y: 2,
         },
       },
     ],
-    milestone: "M2 C2.3",
   },
   "colour.gapClosing.get": {
     kind: "query",
@@ -1976,7 +1994,6 @@ export const COMMAND_INDEX = {
     examples: [
       {},
     ],
-    milestone: "M2 C2.3",
   },
   "colour.gapClosing.set": {
     kind: "ui",
@@ -1984,10 +2001,9 @@ export const COMMAND_INDEX = {
     result: "colour.gapClosing.set.result",
     examples: [
       {
-        mode: "off",
+        mode: "small",
       },
     ],
-    milestone: "M2 C2.3",
   },
   "colour.missing.list": {
     kind: "query",
@@ -1996,34 +2012,52 @@ export const COMMAND_INDEX = {
     examples: [
       {},
     ],
-    milestone: "M7 C7.1",
   },
   "colour.paint.apply": {
     kind: "action",
     params: "colour.paint.apply.params",
     result: "colour.paint.apply.result",
     examples: [
-      {},
+      {
+        drawingId: "drawingBank:#1/drawing:#1",
+        points: [
+          {
+            x: 50,
+            y: 50,
+          },
+        ],
+      },
+      {
+        drawingId: "drawingBank:#1/drawing:#1",
+        objectIds: [
+          "st_01K742SG0R61SYK9GG0HGYVNBT",
+        ],
+      },
     ],
-    milestone: "M2 C2.3",
   },
   "colour.paint.remove": {
     kind: "action",
     params: "colour.paint.remove.params",
     result: "colour.paint.remove.result",
     examples: [
-      {},
+      {
+        drawingId: "drawingBank:#1/drawing:#1",
+        objectIds: [
+          "st_01K742SG0R61SYK9GG0HGYVNBT",
+        ],
+      },
     ],
-    milestone: "M2 C2.3",
   },
   "colour.paintUnpainted.apply": {
     kind: "action",
     params: "colour.paintUnpainted.apply.params",
     result: "colour.paintUnpainted.apply.result",
     examples: [
-      {},
+      {
+        drawingId: "drawingBank:#1/drawing:#1",
+        all: true,
+      },
     ],
-    milestone: "M2 C2.3",
   },
   "colour.palette.changed": {
     kind: "event",
@@ -2151,21 +2185,29 @@ export const COMMAND_INDEX = {
     examples: [
       {
         point: {
-          x: 1,
-          y: 1,
+          x: 0,
+          y: 0,
         },
+        space: "drawing",
+        drawingId: "drawingBank:#1/drawing:#1",
       },
     ],
-    milestone: "M7 C7.1",
   },
   "colour.recolour.apply": {
     kind: "action",
     params: "colour.recolour.apply.params",
     result: "colour.recolour.apply.result",
     examples: [
-      {},
+      {
+        fromColourId: "col_01K742SG059XGSNZ6M9MACZ2ZY",
+        toColourId: "col_01K742SG09H7QE4RRR6XSYYS88",
+      },
+      {
+        fromColourId: "col_01K742SG09H7QE4RRR6XSYYS88",
+        toColourId: "col_01K742SG059XGSNZ6M9MACZ2ZY",
+        respectProtected: false,
+      },
     ],
-    milestone: "M7 C7.1",
   },
   "colour.recovery.performed": {
     kind: "event",
@@ -2174,7 +2216,6 @@ export const COMMAND_INDEX = {
     examples: [
       {},
     ],
-    milestone: "M7 C7.1",
     event: true,
   },
   "colour.recovery.run": {
@@ -2182,9 +2223,10 @@ export const COMMAND_INDEX = {
     params: "colour.recovery.run.params",
     result: "colour.recovery.run.result",
     examples: [
-      {},
+      {
+        all: true,
+      },
     ],
-    milestone: "M7 C7.1",
   },
   "colour.sceneStyle.changed": {
     kind: "event",
@@ -2210,9 +2252,22 @@ export const COMMAND_INDEX = {
     params: "colour.selection.apply.params",
     result: "colour.selection.apply.result",
     examples: [
-      {},
+      {
+        drawingId: "drawingBank:#1/drawing:#1",
+        objectIds: [
+          "st_01K742SG0R61SYK9GG0HGYVNBT",
+          "nd_01K742SG0WFAQJFKAZKV4CD56C",
+        ],
+      },
+      {
+        drawingId: "drawingBank:#1/drawing:#1",
+        colourId: "col_01K742SG06BQ08FCT1TT8DF8MA",
+        objectIds: [
+          "st_01K742SG0R61SYK9GG0HGYVNBT",
+        ],
+        respectProtected: false,
+      },
     ],
-    milestone: "M7 C7.1",
   },
   "colour.style.changed": {
     kind: "event",
@@ -2776,37 +2831,56 @@ export const COMMAND_INDEX = {
     result: "draw.arrange.apply.result",
     examples: [
       {
+        drawingId: "drawingBank:#1/drawing:#1",
+        ids: [
+          "nd_01K742SG0WFAQJFKAZKV4CD56C",
+        ],
+        to: "back",
+      },
+      {
+        drawingId: "drawingBank:#1/drawing:#1",
+        ids: [
+          "st_01K742SG0R61SYK9GG0HGYVNBT",
+        ],
         to: "front",
       },
     ],
-    milestone: "M2 C2.3",
   },
   "draw.bounds.get": {
     kind: "query",
     params: "draw.bounds.get.params",
     result: "draw.bounds.get.result",
     examples: [
-      {},
+      {
+        drawingId: "drawingBank:#1/drawing:#1",
+      },
     ],
-    milestone: "M2 C2.3",
   },
   "draw.breakApart.apply": {
     kind: "action",
     params: "draw.breakApart.apply.params",
     result: "draw.breakApart.apply.result",
     examples: [
-      {},
+      {
+        drawingId: "drawingBank:#1/drawing:#1",
+        textIds: [
+          "nd_01K742SG0WFAQJFKAZKV4CD56C",
+        ],
+      },
     ],
-    milestone: "M2 C2.3",
   },
   "draw.centreLine.apply": {
     kind: "action",
     params: "draw.centreLine.apply.params",
     result: "draw.centreLine.apply.result",
     examples: [
-      {},
+      {
+        drawingId: "drawingBank:#1/drawing:#1",
+        ids: [
+          "st_01K742SG0QD1F2HFZSX8R4V7WP",
+        ],
+      },
     ],
-    milestone: "M2 C2.3",
   },
   "draw.content.add": {
     kind: "action",
@@ -2814,10 +2888,94 @@ export const COMMAND_INDEX = {
     result: "draw.content.add.result",
     examples: [
       {
-        content: {},
+        elementId: "scene:#1/element:\"Bob\"",
+        frame: 1,
+        content: {
+          nodes: [
+            {
+              type: "layer",
+              id: "l_1",
+              layerKind: "pencil",
+              strokes: [
+                {
+                  id: "s_1",
+                  kind: "pencil",
+                  closed: false,
+                  bezier: [
+                    {
+                      x: 0,
+                      y: 0,
+                    },
+                    {
+                      x: 10,
+                      y: 5,
+                    },
+                    {
+                      x: 20,
+                      y: 5,
+                    },
+                    {
+                      x: 30,
+                      y: 0,
+                    },
+                  ],
+                  colourId: null,
+                  lineStyle: {
+                    thickness: 2,
+                    lineType: "solid",
+                  },
+                },
+              ],
+            },
+            {
+              type: "text",
+              id: "t_1",
+              text: "Hi",
+              transform: [
+                1,
+                0,
+                0,
+                1,
+                -50,
+                120,
+              ],
+              widthMode: "auto",
+              width: null,
+              runs: [
+                {
+                  start: 0,
+                  length: 2,
+                  font: "sans-serif",
+                  size: 36,
+                  bold: false,
+                  italic: false,
+                  baseline: "normal",
+                  kerning: 0,
+                  autoKern: true,
+                  colourId: null,
+                  outlineColourId: null,
+                },
+              ],
+              paragraphs: [
+                {
+                  start: 0,
+                  length: 2,
+                  align: "left",
+                  leftMargin: 0,
+                  rightMargin: 0,
+                  indent: 0,
+                  lineSpacing: 0,
+                },
+              ],
+            },
+          ],
+        },
+        offset: {
+          x: 10,
+          y: -10,
+        },
       },
     ],
-    milestone: "M2 C2.3",
   },
   "draw.current.get": {
     kind: "query",
@@ -2826,16 +2984,53 @@ export const COMMAND_INDEX = {
     examples: [
       {},
     ],
-    milestone: "M2 C2.3",
   },
   "draw.cut.apply": {
     kind: "action",
     params: "draw.cut.apply.params",
     result: "draw.cut.apply.result",
     examples: [
-      {},
+      {
+        drawingId: "drawingBank:#1/drawing:#1",
+        rect: {
+          x: -20,
+          y: -20,
+          width: 40,
+          height: 40,
+        },
+      },
+      {
+        drawingId: "drawingBank:#1/drawing:#1",
+        polygon: [
+          {
+            x: -30,
+            y: -30,
+          },
+          {
+            x: 30,
+            y: -30,
+          },
+          {
+            x: 0,
+            y: 30,
+          },
+        ],
+        then: "delete",
+      },
+      {
+        drawingId: "drawingBank:#1/drawing:#1",
+        segment: {
+          from: {
+            x: -100,
+            y: 0,
+          },
+          to: {
+            x: 100,
+            y: 0,
+          },
+        },
+      },
     ],
-    milestone: "M2 C2.3",
   },
   "draw.drawing.changed": {
     kind: "event",
@@ -2844,7 +3039,6 @@ export const COMMAND_INDEX = {
     examples: [
       {},
     ],
-    milestone: "M2 C2.3",
     event: true,
   },
   "draw.drawing.get": {
@@ -2852,9 +3046,19 @@ export const COMMAND_INDEX = {
     params: "draw.drawing.get.params",
     result: "draw.drawing.get.result",
     examples: [
-      {},
+      {
+        elementId: "scene:#1/element:\"Bob\"",
+        frame: 1,
+      },
+      {
+        drawingId: "drawingBank:#1/drawing:#1",
+        flatten: true,
+        include: [
+          "pressure",
+          "bounds",
+        ],
+      },
     ],
-    milestone: "M2 C2.3",
   },
   "draw.drawing.rename": {
     kind: "action",
@@ -2862,10 +3066,10 @@ export const COMMAND_INDEX = {
     result: "draw.drawing.rename.result",
     examples: [
       {
-        name: "example",
+        drawingId: "drawingBank:#1/drawing:#1",
+        name: "key-1",
       },
     ],
-    milestone: "M2 C2.3",
   },
   "draw.drawing.render": {
     kind: "query",
@@ -2873,10 +3077,29 @@ export const COMMAND_INDEX = {
     result: "draw.drawing.render.result",
     examples: [
       {
-        width: 1,
+        drawingId: "drawingBank:#1/drawing:#1",
+        width: 256,
+        region: {
+          x: -60,
+          y: -60,
+          width: 170,
+          height: 170,
+        },
+      },
+      {
+        drawingId: "drawingBank:#1/drawing:#1",
+        width: 320,
+        region: {
+          x: -60,
+          y: -60,
+          width: 170,
+          height: 170,
+        },
+        padding: 10,
+        background: "#FFFFFFFF",
+        showStrokes: true,
       },
     ],
-    milestone: "M2 C2.3",
   },
   "draw.ellipse.add": {
     kind: "action",
@@ -2884,17 +3107,19 @@ export const COMMAND_INDEX = {
     result: "draw.ellipse.add.result",
     examples: [
       {
+        drawingId: "drawingBank:#1/drawing:#1",
         from: {
-          x: 1,
-          y: 1,
+          x: 500,
+          y: 300,
         },
         to: {
-          x: 1,
-          y: 1,
+          x: 550,
+          y: 350,
         },
+        circle: true,
+        fromCentre: true,
       },
     ],
-    milestone: "M2 C2.3",
   },
   "draw.envelope.apply": {
     kind: "action",
@@ -2902,19 +3127,71 @@ export const COMMAND_INDEX = {
     result: "draw.envelope.apply.result",
     examples: [
       {
-        corners: [],
+        drawingId: "drawingBank:#1/drawing:#1",
+        ids: [
+          "st_01K742SG0R61SYK9GG0HGYVNBT",
+        ],
+        corners: [
+          {
+            x: -50,
+            y: -50,
+          },
+          {
+            x: 50,
+            y: -50,
+          },
+          {
+            x: 30,
+            y: 50,
+          },
+          {
+            x: -30,
+            y: 50,
+          },
+        ],
       },
     ],
-    milestone: "M2 C2.3",
   },
   "draw.erase.apply": {
     kind: "action",
     params: "draw.erase.apply.params",
     result: "draw.erase.apply.result",
     examples: [
-      {},
+      {
+        drawingId: "drawingBank:#1/drawing:#1",
+        path: [
+          {
+            x: -60,
+            y: 0,
+          },
+          {
+            x: 60,
+            y: 0,
+          },
+        ],
+      },
+      {
+        drawingId: "drawingBank:#1/drawing:#1",
+        region: [
+          {
+            x: -10,
+            y: -10,
+          },
+          {
+            x: 10,
+            y: -10,
+          },
+          {
+            x: 10,
+            y: 10,
+          },
+          {
+            x: -10,
+            y: 10,
+          },
+        ],
+      },
     ],
-    milestone: "M2 C2.3",
   },
   "draw.feather.apply": {
     kind: "job",
@@ -2923,16 +3200,33 @@ export const COMMAND_INDEX = {
     examples: [
       {},
     ],
-    milestone: "M2 C2.3",
+    milestone: "M7 C7.2 (or the first checkpoint after the SI-077 decision)",
   },
   "draw.flatten.apply": {
     kind: "action",
     params: "draw.flatten.apply.params",
     result: "draw.flatten.apply.result",
     examples: [
-      {},
+      {
+        drawingId: "drawingBank:#1/drawing:#1",
+        ids: [
+          "nd_01K742SG0TX3WF1BSWWGMWM5WG",
+          "st_01K742SG0R61SYK9GG0HGYVNBT",
+          "st_01K742SG0QD1F2HFZSX8R4V7WP",
+        ],
+      },
+      {
+        drawingId: "drawingBank:#1/drawing:#1",
+        ids: [
+          "nd_01K742SG0TX3WF1BSWWGMWM5WG",
+          "st_01K742SG0R61SYK9GG0HGYVNBT",
+        ],
+        policy: {
+          precedence: "lower",
+          position: "bottom",
+        },
+      },
     ],
-    milestone: "M2 C2.3",
   },
   "draw.flip.apply": {
     kind: "action",
@@ -2940,28 +3234,40 @@ export const COMMAND_INDEX = {
     result: "draw.flip.apply.result",
     examples: [
       {
+        drawingId: "drawingBank:#1/drawing:#1",
+        ids: [
+          "st_01K742SG0QD1F2HFZSX8R4V7WP",
+        ],
         axis: "horizontal",
       },
     ],
-    milestone: "M2 C2.3",
   },
   "draw.group.create": {
     kind: "action",
     params: "draw.group.create.params",
     result: "draw.group.create.result",
     examples: [
-      {},
+      {
+        drawingId: "drawingBank:#1/drawing:#1",
+        ids: [
+          "nd_01K742SG0TX3WF1BSWWGMWM5WG",
+          "nd_01K742SG0WFAQJFKAZKV4CD56C",
+        ],
+      },
     ],
-    milestone: "M2 C2.3",
   },
   "draw.group.delete": {
     kind: "action",
     params: "draw.group.delete.params",
     result: "draw.group.delete.result",
     examples: [
-      {},
+      {
+        drawingId: "drawingBank:#1/drawing:#1",
+        groupIds: [
+          "nd_01K742SG0TX3WF1BSWWGMWM5WG",
+        ],
+      },
     ],
-    milestone: "M2 C2.3",
   },
   "draw.hitTest.get": {
     kind: "query",
@@ -2969,13 +3275,14 @@ export const COMMAND_INDEX = {
     result: "draw.hitTest.get.result",
     examples: [
       {
+        drawingId: "drawingBank:#1/drawing:#1",
         point: {
-          x: 1,
-          y: 1,
+          x: 0,
+          y: 0,
         },
+        includeInvisible: true,
       },
     ],
-    milestone: "M2 C2.3",
   },
   "draw.inspectorPreview.set": {
     kind: "ui",
@@ -2986,7 +3293,6 @@ export const COMMAND_INDEX = {
         visible: true,
       },
     ],
-    milestone: "M2 C2.3",
   },
   "draw.line.add": {
     kind: "action",
@@ -2994,22 +3300,30 @@ export const COMMAND_INDEX = {
     result: "draw.line.add.result",
     examples: [
       {
+        drawingId: "drawingBank:#1/drawing:#1",
+        from: {
+          x: 300,
+          y: 500,
+        },
         to: {
-          x: 1,
-          y: 1,
+          x: 420,
+          y: 540,
         },
       },
     ],
-    milestone: "M2 C2.3",
   },
   "draw.linesToBrush.apply": {
     kind: "action",
     params: "draw.linesToBrush.apply.params",
     result: "draw.linesToBrush.apply.result",
     examples: [
-      {},
+      {
+        drawingId: "drawingBank:#1/drawing:#1",
+        ids: [
+          "st_01K742SG0R61SYK9GG0HGYVNBT",
+        ],
+      },
     ],
-    milestone: "M2 C2.3",
   },
   "draw.lock.set": {
     kind: "toggle",
@@ -3017,28 +3331,38 @@ export const COMMAND_INDEX = {
     result: "draw.lock.set.result",
     examples: [
       {
+        drawingId: "drawingBank:#1/drawing:#1",
         locked: true,
       },
     ],
-    milestone: "M2 C2.3",
   },
   "draw.object.delete": {
     kind: "action",
     params: "draw.object.delete.params",
     result: "draw.object.delete.result",
     examples: [
-      {},
+      {
+        elementId: "scene:#1/element:\"Bob\"",
+        frame: 1,
+        ids: [
+          "st_01K742SG0S0NT23BWCZN64SFQ5",
+        ],
+      },
     ],
-    milestone: "M2 C2.3",
   },
   "draw.optimize.apply": {
     kind: "action",
     params: "draw.optimize.apply.params",
     result: "draw.optimize.apply.result",
     examples: [
-      {},
+      {
+        drawingId: "drawingBank:#1/drawing:#1",
+        ids: [
+          "nd_01K742SG0TX3WF1BSWWGMWM5WG",
+          "st_01K742SG0R61SYK9GG0HGYVNBT",
+        ],
+      },
     ],
-    milestone: "M2 C2.3",
   },
   "draw.pivot.set": {
     kind: "action",
@@ -3046,13 +3370,14 @@ export const COMMAND_INDEX = {
     result: "draw.pivot.set.result",
     examples: [
       {
+        elementId: "scene:#1/element:\"Bob\"",
+        frame: 1,
         point: {
-          x: 1,
-          y: 1,
+          x: 0,
+          y: -120,
         },
       },
     ],
-    milestone: "M2 C2.3",
   },
   "draw.point.add": {
     kind: "action",
@@ -3060,19 +3385,27 @@ export const COMMAND_INDEX = {
     result: "draw.point.add.result",
     examples: [
       {
-        strokeId: "scene:#1",
+        strokeId: "dr_01K742SG0KKMCAP9X1E6Z5P4SW/st_01K742SG0R61SYK9GG0HGYVNBT",
+        segment: 0,
+        t: 0.5,
       },
     ],
-    milestone: "M2 C2.3",
   },
   "draw.point.delete": {
     kind: "action",
     params: "draw.point.delete.params",
     result: "draw.point.delete.result",
     examples: [
-      {},
+      {
+        drawingId: "drawingBank:#1/drawing:#1",
+        points: [
+          {
+            strokeId: "st_01K742SG0QD1F2HFZSX8R4V7WP",
+            anchor: 1,
+          },
+        ],
+      },
     ],
-    milestone: "M2 C2.3",
   },
   "draw.point.move": {
     kind: "action",
@@ -3080,13 +3413,19 @@ export const COMMAND_INDEX = {
     result: "draw.point.move.result",
     examples: [
       {
+        drawingId: "drawingBank:#1/drawing:#1",
+        points: [
+          {
+            strokeId: "st_01K742SG0R61SYK9GG0HGYVNBT",
+            anchor: 0,
+          },
+        ],
         delta: {
-          x: 1,
-          y: 1,
+          x: -5,
+          y: 0,
         },
       },
     ],
-    milestone: "M2 C2.3",
   },
   "draw.point.set": {
     kind: "action",
@@ -3094,20 +3433,31 @@ export const COMMAND_INDEX = {
     result: "draw.point.set.result",
     examples: [
       {
-        strokeId: "scene:#1",
+        strokeId: "dr_01K742SG0KKMCAP9X1E6Z5P4SW/st_01K742SG0R61SYK9GG0HGYVNBT",
         anchor: 1,
+        inHandle: {
+          x: -10,
+          y: 5,
+        },
+        handleMode: "symmetric",
       },
     ],
-    milestone: "M2 C2.3",
   },
   "draw.pointSelection.set": {
     kind: "ui",
     params: "draw.pointSelection.set.params",
     result: "draw.pointSelection.set.result",
     examples: [
-      {},
+      {
+        drawingId: "drawingBank:#1/drawing:#1",
+        points: [
+          {
+            strokeId: "st_01K742SG0R61SYK9GG0HGYVNBT",
+            anchor: 0,
+          },
+        ],
+      },
     ],
-    milestone: "M2 C2.3",
   },
   "draw.polyline.add": {
     kind: "action",
@@ -3115,10 +3465,32 @@ export const COMMAND_INDEX = {
     result: "draw.polyline.add.result",
     examples: [
       {
-        points: [],
+        drawingId: "drawingBank:#1/drawing:#1",
+        points: [
+          {
+            x: 300,
+            y: 600,
+          },
+          {
+            x: 360,
+            y: 640,
+            inHandle: {
+              x: -20,
+              y: 0,
+            },
+            outHandle: {
+              x: 20,
+              y: 0,
+            },
+          },
+          {
+            x: 420,
+            y: 600,
+          },
+        ],
+        snap: false,
       },
     ],
-    milestone: "M2 C2.3",
   },
   "draw.rectangle.add": {
     kind: "action",
@@ -3126,26 +3498,31 @@ export const COMMAND_INDEX = {
     result: "draw.rectangle.add.result",
     examples: [
       {
+        drawingId: "drawingBank:#1/drawing:#1",
         from: {
-          x: 1,
-          y: 1,
+          x: 300,
+          y: 300,
         },
         to: {
-          x: 1,
-          y: 1,
+          x: 400,
+          y: 360,
         },
       },
     ],
-    milestone: "M2 C2.3",
   },
   "draw.repositionAll.apply": {
     kind: "action",
     params: "draw.repositionAll.apply.params",
     result: "draw.repositionAll.apply.result",
     examples: [
-      {},
+      {
+        elementId: "scene:#1/element:\"Bob\"",
+        translate: {
+          x: 0,
+          y: 20,
+        },
+      },
     ],
-    milestone: "M2 C2.3",
   },
   "draw.rotate.apply": {
     kind: "action",
@@ -3153,10 +3530,13 @@ export const COMMAND_INDEX = {
     result: "draw.rotate.apply.result",
     examples: [
       {
+        drawingId: "drawingBank:#1/drawing:#1",
+        ids: [
+          "nd_01K742SG0WFAQJFKAZKV4CD56C",
+        ],
         by: "90cw",
       },
     ],
-    milestone: "M2 C2.3",
   },
   "draw.segment.move": {
     kind: "action",
@@ -3164,15 +3544,14 @@ export const COMMAND_INDEX = {
     result: "draw.segment.move.result",
     examples: [
       {
-        strokeId: "scene:#1",
-        segment: 1,
+        strokeId: "dr_01K742SG0KKMCAP9X1E6Z5P4SW/st_01K742SG0R61SYK9GG0HGYVNBT",
+        segment: 0,
         delta: {
-          x: 1,
-          y: 1,
+          x: 0,
+          y: 20,
         },
       },
     ],
-    milestone: "M2 C2.3",
   },
   "draw.selection.changed": {
     kind: "event",
@@ -3181,7 +3560,6 @@ export const COMMAND_INDEX = {
     examples: [
       {},
     ],
-    milestone: "M2 C2.3",
     event: true,
   },
   "draw.selection.get": {
@@ -3189,36 +3567,121 @@ export const COMMAND_INDEX = {
     params: "draw.selection.get.params",
     result: "draw.selection.get.result",
     examples: [
-      {},
+      {
+        drawingId: "drawingBank:#1/drawing:#1",
+      },
     ],
-    milestone: "M2 C2.3",
   },
   "draw.selection.set": {
     kind: "ui",
     params: "draw.selection.set.params",
     result: "draw.selection.set.result",
     examples: [
-      {},
+      {
+        drawingId: "drawingBank:#1/drawing:#1",
+        ids: [
+          "st_01K742SG0R61SYK9GG0HGYVNBT",
+        ],
+      },
+      {
+        drawingId: "drawingBank:#1/drawing:#1",
+        by: "rect",
+        rect: {
+          x: -200,
+          y: -200,
+          width: 400,
+          height: 400,
+        },
+      },
     ],
-    milestone: "M2 C2.3",
   },
   "draw.smooth.apply": {
     kind: "action",
     params: "draw.smooth.apply.params",
     result: "draw.smooth.apply.result",
     examples: [
-      {},
+      {
+        drawingId: "drawingBank:#1/drawing:#1",
+        ids: [
+          "st_01K742SG0QD1F2HFZSX8R4V7WP",
+        ],
+      },
     ],
-    milestone: "M2 C2.3",
   },
   "draw.stroke.add": {
     kind: "action",
     params: "draw.stroke.add.params",
     result: "draw.stroke.add.result",
     examples: [
-      {},
+      {
+        elementId: "scene:#1/element:\"Bob\"",
+        frame: 1,
+        kind: "brush",
+        points: [
+          {
+            x: 0,
+            y: 0,
+            pressure: 0.2,
+          },
+          {
+            x: 20,
+            y: 8,
+            pressure: 0.6,
+          },
+          {
+            x: 40,
+            y: 10,
+            pressure: 1,
+          },
+          {
+            x: 60,
+            y: 4,
+            pressure: 0.5,
+          },
+        ],
+      },
+      {
+        elementId: "scene:#1/element:\"Bob\"",
+        frame: 1,
+        kind: "pencil",
+        bezier: [
+          {
+            x: -50,
+            y: 0,
+          },
+          {
+            x: -20,
+            y: 30,
+          },
+          {
+            x: 20,
+            y: 30,
+          },
+          {
+            x: 50,
+            y: 0,
+          },
+        ],
+        thickness: 3,
+        layer: "new",
+      },
+      {
+        elementId: "scene:#1/element:\"Bob\"",
+        frame: 1,
+        kind: "invisible",
+        points: [
+          {
+            x: 0,
+            y: 0,
+          },
+          {
+            x: 0,
+            y: 100,
+          },
+        ],
+        fit: false,
+      },
     ],
-    milestone: "M2 C2.3",
   },
   "draw.stroke.set": {
     kind: "action",
@@ -3226,10 +3689,11 @@ export const COMMAND_INDEX = {
     result: "draw.stroke.set.result",
     examples: [
       {
-        strokeId: "scene:#1",
+        drawingId: "drawingBank:#1/drawing:#1",
+        strokeId: "st_01K742SG0R61SYK9GG0HGYVNBT",
+        thickness: 4,
       },
     ],
-    milestone: "M2 C2.3",
   },
   "draw.text.add": {
     kind: "action",
@@ -3237,14 +3701,30 @@ export const COMMAND_INDEX = {
     result: "draw.text.add.result",
     examples: [
       {
+        elementId: "scene:#1/element:\"Bob\"",
+        frame: 1,
         position: {
-          x: 1,
-          y: 1,
+          x: -100,
+          y: 300,
         },
-        text: "example",
+        text: "Hello\nworld",
+        format: {
+          size: 48,
+          bold: true,
+          align: "centre",
+        },
+      },
+      {
+        elementId: "scene:#1/element:\"Bob\"",
+        frame: 1,
+        position: {
+          x: -200,
+          y: 0,
+        },
+        text: "A longer note that wraps inside its box",
+        width: 300,
       },
     ],
-    milestone: "M2 C2.3",
   },
   "draw.text.set": {
     kind: "action",
@@ -3252,10 +3732,14 @@ export const COMMAND_INDEX = {
     result: "draw.text.set.result",
     examples: [
       {
-        textId: "scene:#1",
+        drawingId: "drawingBank:#1/drawing:#1",
+        textId: "nd_01K742SG0WFAQJFKAZKV4CD56C",
+        insert: {
+          at: 5,
+          text: "!",
+        },
       },
     ],
-    milestone: "M2 C2.3",
   },
   "draw.textFormat.set": {
     kind: "action",
@@ -3263,19 +3747,39 @@ export const COMMAND_INDEX = {
     result: "draw.textFormat.set.result",
     examples: [
       {
-        textId: "scene:#1",
+        drawingId: "drawingBank:#1/drawing:#1",
+        textId: "nd_01K742SG0WFAQJFKAZKV4CD56C",
+        start: 0,
+        length: 2,
+        bold: true,
+        size: 30,
       },
     ],
-    milestone: "M2 C2.3",
   },
   "draw.transform.apply": {
     kind: "action",
     params: "draw.transform.apply.params",
     result: "draw.transform.apply.result",
     examples: [
-      {},
+      {
+        drawingId: "drawingBank:#1/drawing:#1",
+        ids: [
+          "st_01K742SG0R61SYK9GG0HGYVNBT",
+        ],
+        translate: {
+          x: 10,
+          y: 0,
+        },
+      },
+      {
+        drawingId: "drawingBank:#1/drawing:#1",
+        ids: [
+          "nd_01K742SG0WFAQJFKAZKV4CD56C",
+        ],
+        rotate: 15,
+        copy: true,
+      },
     ],
-    milestone: "M2 C2.3",
   },
   "draw.vectorFile.import": {
     kind: "job",
@@ -3286,34 +3790,52 @@ export const COMMAND_INDEX = {
         file: "review/example.out",
       },
     ],
-    milestone: "M2 C2.4",
+    milestone: "M10 C10.2",
   },
   "draw.vectorize.preview": {
     kind: "query",
     params: "draw.vectorize.preview.params",
     result: "draw.vectorize.preview.result",
     examples: [
-      {},
+      {
+        file: "/tmp/lineart.png",
+        width: 256,
+      },
     ],
-    milestone: "M2 C2.4",
   },
   "draw.vectorize.run": {
     kind: "job",
     params: "draw.vectorize.run.params",
     result: "draw.vectorize.run.result",
     examples: [
-      {},
+      {
+        files: [
+          "/tmp/lineart.png",
+        ],
+        targetElementId: "scene:#1/element:\"Bob\"",
+        startFrame: 1,
+        onConflict: "replace",
+      },
+      {
+        files: [
+          "/tmp/lineart.png",
+          "/tmp/lineart.png",
+        ],
+        targetElementId: "scene:#1/element:\"Bob\"",
+        startFrame: 5,
+        onConflict: "replace",
+      },
     ],
-    milestone: "M2 C2.4",
   },
   "draw.viewMapping.get": {
     kind: "query",
     params: "draw.viewMapping.get.params",
     result: "draw.viewMapping.get.result",
     examples: [
-      {},
+      {
+        view: "drawing",
+      },
     ],
-    milestone: "M2 C2.3",
   },
   "drawAid.autoLightTable.set": {
     kind: "ui",
@@ -7826,9 +8348,15 @@ export const COMMAND_INDEX = {
     params: "tool.symmetry.set.params",
     result: "tool.symmetry.set.result",
     examples: [
-      {},
+      {
+        mode: "kaleidoscope",
+        angle: 15,
+        mirrors: 8,
+      },
+      {
+        mode: "mirror",
+      },
     ],
-    milestone: "M4 C4.2",
   },
   "tool.tablet.set": {
     kind: "ui",
@@ -21709,64 +22237,63 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
     "x-spec": "`{}`",
   },
   "colour.fillMapping.get.params": {
-    title: "colour.fillMapping.get parameters",
+    title: "FillMappingGetParams",
+    description: "`colour.fillMapping.get` parameters.",
     type: "object",
     properties: {
       drawingId: {
-        type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
+        description: "The drawing (default: current).",
+        type: [
+          "string",
+          "null",
+        ],
+        default: null,
       },
       objectId: {
+        description: "A painted zone, brush stroke or pencil line.",
         type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
       },
       toClipboard: {
+        description: "Copy the mapping to the fill-mapping clipboard.",
         type: "boolean",
         default: false,
       },
     },
+    additionalProperties: false,
     required: [
       "objectId",
     ],
-    additionalProperties: false,
-    "x-spec": "`drawingId?: id; objectId: id; toClipboard: bool = false`",
   },
   "colour.fillMapping.get.result": {
-    title: "colour.fillMapping.get result",
+    title: "FillMappingResult",
+    description: "`{colourId, kind, matrix, linear?, radial?, texture?}`.",
     type: "object",
     properties: {
       colourId: {
+        description: "The colour.",
         type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
       },
       kind: {
+        description: "The swatch kind (`solid`: the kept matrix, which a solid colour ignores; SI-075).",
         type: "string",
-        maxLength: 65536,
       },
       matrix: {
+        description: "Unit space → drawing space.",
         type: "array",
         items: {
           type: "number",
         },
-        maxItems: 100000,
+        minItems: 6,
+        maxItems: 6,
       },
       linear: {
-        type: "string",
-        maxLength: 65536,
+        description: "Linear gradient handles `{start, end}`.",
       },
       radial: {
-        type: "string",
-        maxLength: 65536,
+        description: "Radial gradient handles `{centre, radius, secondAxis}`.",
       },
       texture: {
-        type: "string",
-        maxLength: 65536,
+        description: "Texture frame `{origin, xAxis, yAxis, tile}`.",
       },
     },
     required: [
@@ -21774,96 +22301,243 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
       "kind",
       "matrix",
     ],
-    "x-spec": "`{colourId, kind, matrix: [number], linear?, radial?, texture?}`",
-    additionalProperties: false,
   },
-  "colour.fillMapping.set.params": {
-    title: "colour.fillMapping.set parameters",
+  "colour.fillMapping.set.MappingIn": {
+    description: "`mapping`.",
+    anyOf: [
+      {
+        description: "Named.",
+        $ref: "#/$defs/colour.fillMapping.set.MappingName",
+      },
+      {
+        description: "Explicit.",
+        $ref: "#/$defs/colour.fillMapping.set.MappingObject",
+      },
+    ],
+  },
+  "colour.fillMapping.set.MappingName": {
+    description: "`\"default\"` or `\"clipboard\"`.",
+    oneOf: [
+      {
+        description: "Refit to the object's bounds (03 §7.2).",
+        type: "string",
+        const: "default",
+      },
+      {
+        description: "The mapping copied with `toClipboard`.",
+        type: "string",
+        const: "clipboard",
+      },
+    ],
+  },
+  "colour.fillMapping.set.MappingObject": {
+    description: "An explicit mapping (SI-025 placeholder filled, SI-075): exactly one member.",
     type: "object",
     properties: {
-      drawingId: {
-        type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
-      },
-      objectIds: {
-        type: "array",
+      matrix: {
+        description: "A full unit → drawing matrix (any mappable kind).",
+        type: [
+          "array",
+          "null",
+        ],
         items: {
-          type: "string",
-          minLength: 1,
-          maxLength: 4096,
-          description: "object ID or path reference (10 §3)",
+          type: "number",
         },
-        maxItems: 100000,
+        minItems: 6,
+        maxItems: 6,
+        default: null,
       },
-      mapping: {
+      linear: {
+        description: "Linear gradient handles.",
         anyOf: [
           {
-            type: "string",
-            enum: [
-              "default",
-              "clipboard",
-            ],
+            $ref: "#/$defs/colour.fillMapping.set.LinearIn",
           },
           {
-            type: "object",
-            properties: {},
-            additionalProperties: false,
-            "x-placeholder": true,
-            description: "shape not defined by the owning section (spec issue); only {} is accepted until it is",
-            "x-specIssue": "SI-025",
+            type: "null",
+          },
+        ],
+      },
+      radial: {
+        description: "Radial gradient handles.",
+        anyOf: [
+          {
+            $ref: "#/$defs/colour.fillMapping.set.RadialIn",
+          },
+          {
+            type: "null",
+          },
+        ],
+      },
+      texture: {
+        description: "Texture frame.",
+        anyOf: [
+          {
+            $ref: "#/$defs/colour.fillMapping.set.TextureIn",
+          },
+          {
+            type: "null",
           },
         ],
       },
     },
+    additionalProperties: false,
+  },
+  "colour.fillMapping.set.LinearIn": {
+    description: "Linear gradient handles.",
+    type: "object",
+    properties: {
+      start: {
+        description: "Where the gradient starts.",
+        $ref: "#/$defs/colour.fillMapping.set.Point",
+      },
+      end: {
+        description: "Where it ends.",
+        $ref: "#/$defs/colour.fillMapping.set.Point",
+      },
+    },
+    additionalProperties: false,
+    required: [
+      "start",
+      "end",
+    ],
+  },
+  "colour.fillMapping.set.Point": {
+    description: "A point `{x, y}` in drawing units.",
+    type: "object",
+    properties: {
+      x: {
+        description: "X (du).",
+        type: "number",
+      },
+      y: {
+        description: "Y (du, up).",
+        type: "number",
+      },
+    },
+    additionalProperties: false,
+    required: [
+      "x",
+      "y",
+    ],
+  },
+  "colour.fillMapping.set.RadialIn": {
+    description: "Radial gradient handles.",
+    type: "object",
+    properties: {
+      centre: {
+        description: "Centre.",
+        $ref: "#/$defs/colour.fillMapping.set.Point",
+      },
+      radius: {
+        description: "Radius (du).",
+        type: "number",
+        minimum: 0,
+      },
+    },
+    additionalProperties: false,
+    required: [
+      "centre",
+      "radius",
+    ],
+  },
+  "colour.fillMapping.set.TextureIn": {
+    description: "A texture frame.",
+    type: "object",
+    properties: {
+      origin: {
+        description: "Where the image's unit origin goes.",
+        $ref: "#/$defs/colour.fillMapping.set.Point",
+      },
+      xAxis: {
+        description: "The image's unit x axis (du).",
+        $ref: "#/$defs/colour.fillMapping.set.Point",
+      },
+      yAxis: {
+        description: "The image's unit y axis (du).",
+        $ref: "#/$defs/colour.fillMapping.set.Point",
+      },
+    },
+    additionalProperties: false,
+    required: [
+      "origin",
+      "xAxis",
+      "yAxis",
+    ],
+  },
+  "colour.fillMapping.set.params": {
+    title: "FillMappingSetParams",
+    description: "`colour.fillMapping.set` parameters.",
+    type: "object",
+    properties: {
+      drawingId: {
+        description: "The drawing (default: current).",
+        type: [
+          "string",
+          "null",
+        ],
+        default: null,
+      },
+      objectIds: {
+        description: "Painted zones, brush strokes and pencil lines.",
+        type: "array",
+        items: {
+          type: "string",
+        },
+      },
+      mapping: {
+        description: "The mapping.",
+        $ref: "#/$defs/colour.fillMapping.set.MappingIn",
+      },
+    },
+    additionalProperties: false,
     required: [
       "objectIds",
       "mapping",
     ],
-    additionalProperties: false,
-    "x-spec": "`drawingId?: id; objectIds: [id]; mapping: object|\"default\"|\"clipboard\"`",
+  },
+  "colour.fillMapping.set.SkippedObject": {
+    description: "A skipped object.",
+    type: "object",
+    properties: {
+      objectId: {
+        description: "The object.",
+        type: "string",
+      },
+      reason: {
+        description: "Why (`solid`, `unpainted`, `invisible`, `text`, `notPaintable`, `kindMismatch`, `colourMissing`).",
+        type: "string",
+      },
+    },
+    required: [
+      "objectId",
+      "reason",
+    ],
   },
   "colour.fillMapping.set.result": {
-    title: "colour.fillMapping.set result",
+    title: "FillMappingSetResult",
+    description: "`{changed, skipped, rev}`.",
     type: "object",
     properties: {
       changed: {
+        description: "Objects whose mapping changed (zones by their ID after the change).",
         type: "array",
         items: {
           type: "string",
-          minLength: 1,
-          maxLength: 4096,
-          description: "object ID or path reference (10 §3)",
         },
-        maxItems: 100000,
       },
       skipped: {
+        description: "Objects left alone and why.",
         type: "array",
         items: {
-          type: "object",
-          properties: {
-            objectId: {
-              type: "string",
-              minLength: 1,
-              maxLength: 4096,
-              description: "object ID or path reference (10 §3)",
-            },
-            reason: {
-              type: "string",
-              maxLength: 65536,
-            },
-          },
-          required: [
-            "objectId",
-            "reason",
-          ],
-          additionalProperties: false,
+          $ref: "#/$defs/colour.fillMapping.set.SkippedObject",
         },
-        maxItems: 100000,
       },
       rev: {
-        type: "number",
+        description: "The drawing revision after the change.",
+        type: "integer",
+        maximum: 18446744073709551615n,
+        minimum: 0,
       },
     },
     required: [
@@ -21871,843 +22545,1374 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
       "skipped",
       "rev",
     ],
-    "x-spec": "`{changed: [id], skipped: [{objectId, reason}], rev}`",
+  },
+  "colour.gap.close.Point": {
+    description: "A point `{x, y}` in drawing units.",
+    type: "object",
+    properties: {
+      x: {
+        description: "X (du).",
+        type: "number",
+      },
+      y: {
+        description: "Y (du, up).",
+        type: "number",
+      },
+    },
     additionalProperties: false,
+    required: [
+      "x",
+      "y",
+    ],
+  },
+  "colour.gap.close.Space": {
+    description: "Coordinate space of point targets (03 §16.2).",
+    oneOf: [
+      {
+        description: "Drawing space of the target drawing.",
+        type: "string",
+        const: "drawing",
+      },
+      {
+        description: "Scene space at a frame (M3 C3.2).",
+        type: "string",
+        const: "scene",
+      },
+      {
+        description: "A view's pixels (M4 C4.2).",
+        type: "string",
+        const: "view",
+      },
+    ],
   },
   "colour.gap.close.params": {
-    title: "colour.gap.close parameters",
+    title: "GapCloseParams",
+    description: "`colour.gap.close` parameters (03 §16.3).",
     type: "object",
     properties: {
       drawingId: {
-        type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
+        description: "The drawing (default: the current drawing).",
+        type: [
+          "string",
+          "null",
+        ],
+        default: null,
       },
       from: {
-        type: "object",
-        properties: {
-          x: {
-            type: "number",
-          },
-          y: {
-            type: "number",
-          },
-        },
-        required: [
-          "x",
-          "y",
-        ],
-        additionalProperties: false,
+        description: "Start of the drag.",
+        $ref: "#/$defs/colour.gap.close.Point",
       },
       to: {
-        type: "object",
-        properties: {
-          x: {
-            type: "number",
-          },
-          y: {
-            type: "number",
-          },
-        },
-        required: [
-          "x",
-          "y",
-        ],
-        additionalProperties: false,
+        description: "End of the drag.",
+        $ref: "#/$defs/colour.gap.close.Point",
       },
       space: {
-        type: "string",
-        enum: [
-          "drawing",
-          "scene",
-          "view",
-        ],
-        default: "drawing",
+        description: "Coordinate space (only `drawing` until M3/M4).",
+        $ref: "#/$defs/colour.gap.close.Space",
       },
       sceneId: {
-        type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
+        description: "Scene of `scene` points.",
+        type: [
+          "string",
+          "null",
+        ],
+        default: null,
       },
       frame: {
-        type: "integer",
+        description: "Frame of `scene` points.",
+        type: [
+          "integer",
+          "null",
+        ],
+        default: null,
+        minimum: 1,
+        maximum: 2147483647,
       },
       view: {
-        type: "string",
-        maxLength: 65536,
+        description: "View of `view` points.",
+        type: [
+          "string",
+          "null",
+        ],
+        default: null,
       },
     },
+    additionalProperties: false,
     required: [
       "from",
       "to",
     ],
-    additionalProperties: false,
-    "x-spec": "`drawingId?: id; from: point; to: point; space: enum \"drawing\"|\"scene\"|\"view\" = \"drawing\"; sceneId?: id; frame?: int; view?: string`",
   },
   "colour.gap.close.result": {
-    title: "colour.gap.close result",
+    title: "GapCloseResult",
+    description: "`colour.gap.close` result (03 §16.3 plus the common edit members, SI-058).",
     type: "object",
     properties: {
+      drawingId: {
+        description: "The drawing.",
+        type: "string",
+      },
       strokeId: {
-        anyOf: [
-          {
-            type: "string",
-            minLength: 1,
-            maxLength: 4096,
-            description: "object ID or path reference (10 §3)",
-          },
-          {
-            type: "null",
-          },
+        description: "The invisible stroke added (its first piece when noding split it).",
+        type: [
+          "string",
+          "null",
         ],
       },
+      strokeIds: {
+        description: "All strokes it became.",
+        type: "array",
+        items: {
+          type: "string",
+        },
+      },
+      hints: {
+        description: "Hint codes (`drawing.strokesHidden`).",
+        type: "array",
+        items: {
+          type: "string",
+        },
+      },
+      createdIds: {
+        description: "Created objects.",
+        type: "array",
+        items: {
+          type: "string",
+        },
+      },
+      modifiedIds: {
+        description: "Modified objects (content, membership or position changed; IDs kept).",
+        type: "array",
+        items: {
+          type: "string",
+        },
+      },
+      removedIds: {
+        description: "Removed objects (descendants included).",
+        type: "array",
+        items: {
+          type: "string",
+        },
+      },
       rev: {
+        description: "The drawing revision after the change.",
+        type: "integer",
+        maximum: 18446744073709551615n,
+        minimum: 0,
+      },
+    },
+    required: [
+      "drawingId",
+      "strokeIds",
+      "hints",
+      "createdIds",
+      "modifiedIds",
+      "removedIds",
+      "rev",
+    ],
+  },
+  "colour.gapClosing.get.params": {
+    title: "NoParams",
+    description: "No parameters.",
+    type: "object",
+    additionalProperties: false,
+  },
+  "colour.gapClosing.get.GapMode": {
+    description: "The automatic gap-closing mode (03 §8.8).",
+    oneOf: [
+      {
+        description: "Off (default).",
+        type: "string",
+        const: "off",
+      },
+      {
+        description: "Small.",
+        type: "string",
+        const: "small",
+      },
+      {
+        description: "Medium.",
+        type: "string",
+        const: "medium",
+      },
+      {
+        description: "Large.",
+        type: "string",
+        const: "large",
+      },
+    ],
+  },
+  "colour.gapClosing.get.Tolerances": {
+    description: "Tolerances in view pixels.",
+    type: "object",
+    properties: {
+      small: {
+        description: "Small.",
+        type: "number",
+      },
+      medium: {
+        description: "Medium.",
+        type: "number",
+      },
+      large: {
+        description: "Large.",
         type: "number",
       },
     },
     required: [
-      "strokeId",
-      "rev",
+      "small",
+      "medium",
+      "large",
     ],
-    "x-spec": "`{strokeId|null, rev}`",
-    additionalProperties: false,
-  },
-  "colour.gapClosing.get.params": {
-    title: "colour.gapClosing.get parameters",
-    type: "object",
-    properties: {},
-    additionalProperties: false,
-    "x-spec": "—",
   },
   "colour.gapClosing.get.result": {
-    title: "colour.gapClosing.get result",
+    title: "GapClosingGetResult",
+    description: "`colour.gapClosing.get` result.",
     type: "object",
     properties: {
       mode: {
-        type: "string",
+        description: "The mode.",
+        $ref: "#/$defs/colour.gapClosing.get.GapMode",
       },
       tolerancesPx: {
-        type: "object",
-        properties: {
-          small: {
-            type: "string",
-            maxLength: 65536,
-          },
-          medium: {
-            type: "string",
-            maxLength: 65536,
-          },
-          large: {
-            type: "string",
-            maxLength: 65536,
-          },
-        },
-        required: [
-          "small",
-          "medium",
-          "large",
-        ],
-        additionalProperties: false,
+        description: "Tolerances (view px; 1 px = 1 du at 100 % zoom, SI-063).",
+        $ref: "#/$defs/colour.gapClosing.get.Tolerances",
       },
     },
     required: [
       "mode",
       "tolerancesPx",
     ],
-    "x-spec": "`{mode, tolerancesPx: {small, medium, large}}`",
-    additionalProperties: false,
+  },
+  "colour.gapClosing.set.GapMode": {
+    description: "The automatic gap-closing mode (03 §8.8).",
+    oneOf: [
+      {
+        description: "Off (default).",
+        type: "string",
+        const: "off",
+      },
+      {
+        description: "Small.",
+        type: "string",
+        const: "small",
+      },
+      {
+        description: "Medium.",
+        type: "string",
+        const: "medium",
+      },
+      {
+        description: "Large.",
+        type: "string",
+        const: "large",
+      },
+    ],
   },
   "colour.gapClosing.set.params": {
-    title: "colour.gapClosing.set parameters",
+    title: "GapClosingSetParams",
+    description: "`colour.gapClosing.set` parameters.",
     type: "object",
     properties: {
       mode: {
-        type: "string",
-        enum: [
-          "off",
-          "small",
-          "medium",
-          "large",
-        ],
+        description: "The mode.",
+        $ref: "#/$defs/colour.gapClosing.set.GapMode",
       },
     },
+    additionalProperties: false,
     required: [
       "mode",
     ],
-    additionalProperties: false,
-    "x-spec": "`mode: enum \"off\"|\"small\"|\"medium\"|\"large\"`",
   },
   "colour.gapClosing.set.result": {
-    title: "colour.gapClosing.set result",
+    title: "GapClosingSetResult",
+    description: "`{mode}`.",
     type: "object",
     properties: {
       mode: {
-        type: "string",
+        description: "The mode now.",
+        $ref: "#/$defs/colour.gapClosing.set.GapMode",
       },
     },
     required: [
       "mode",
     ],
-    "x-spec": "`{mode}`",
-    additionalProperties: false,
+  },
+  "colour.missing.list.Scope": {
+    description: "Scope of colour queries (03 §16.3).",
+    oneOf: [
+      {
+        description: "Every drawing of the project.",
+        type: "string",
+        const: "project",
+      },
+      {
+        description: "Drawings of the elements of a scene.",
+        type: "string",
+        const: "scene",
+      },
+      {
+        description: "Drawings of given elements.",
+        type: "string",
+        const: "element",
+      },
+      {
+        description: "Given drawings.",
+        type: "string",
+        const: "drawing",
+      },
+    ],
   },
   "colour.missing.list.params": {
-    title: "colour.missing.list parameters",
+    title: "MissingParams",
+    description: "`colour.missing.list` parameters (03 §16.3).",
     type: "object",
     properties: {
       scope: {
-        type: "string",
-        enum: [
-          "project",
-          "scene",
-          "element",
-          "drawing",
-        ],
-        default: "project",
+        description: "Scope.",
+        $ref: "#/$defs/colour.missing.list.Scope",
       },
       sceneId: {
-        type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
+        description: "Scene of `scene` scope (default: current).",
+        type: [
+          "string",
+          "null",
+        ],
+        default: null,
       },
       elementIds: {
-        type: "array",
+        description: "Elements of `element` scope.",
+        type: [
+          "array",
+          "null",
+        ],
         items: {
           type: "string",
-          minLength: 1,
-          maxLength: 4096,
-          description: "object ID or path reference (10 §3)",
         },
-        maxItems: 100000,
+        default: null,
       },
       drawingIds: {
-        type: "array",
+        description: "Drawings of `drawing` scope.",
+        type: [
+          "array",
+          "null",
+        ],
         items: {
           type: "string",
-          minLength: 1,
-          maxLength: 4096,
-          description: "object ID or path reference (10 §3)",
         },
-        maxItems: 100000,
+        default: null,
       },
     },
     additionalProperties: false,
-    "x-spec": "`scope: enum \"project\"|\"scene\"|\"element\"|\"drawing\" = \"project\"; sceneId?: id; elementIds?: [id]; drawingIds?: [id]`",
+  },
+  "colour.missing.list.Missing": {
+    description: "One missing colour.",
+    type: "object",
+    properties: {
+      colourId: {
+        description: "The colour ID.",
+        type: "string",
+      },
+      drawingIds: {
+        description: "Drawings using it.",
+        type: "array",
+        items: {
+          type: "string",
+        },
+      },
+      recoverable: {
+        description: "A recovery copy exists.",
+        type: "boolean",
+      },
+      recordedPaletteName: {
+        description: "The palette name the copy records.",
+        type: [
+          "string",
+          "null",
+        ],
+      },
+    },
+    required: [
+      "colourId",
+      "drawingIds",
+      "recoverable",
+    ],
   },
   "colour.missing.list.result": {
-    title: "colour.missing.list result",
+    title: "MissingResult",
+    description: "`colour.missing.list` result.",
     type: "object",
     properties: {
       missing: {
+        description: "Missing colours.",
         type: "array",
         items: {
-          type: "object",
-          properties: {
-            colourId: {
-              type: "string",
-              minLength: 1,
-              maxLength: 4096,
-              description: "object ID or path reference (10 §3)",
-            },
-            drawingIds: {
-              type: "array",
-              items: {
-                type: "string",
-                minLength: 1,
-                maxLength: 4096,
-                description: "object ID or path reference (10 §3)",
-              },
-              maxItems: 100000,
-            },
-            recoverable: {
-              type: "boolean",
-            },
-            recordedPaletteName: {
-              type: "string",
-              maxLength: 65536,
-            },
-          },
-          required: [
-            "colourId",
-            "drawingIds",
-            "recoverable",
-            "recordedPaletteName",
-          ],
-          additionalProperties: false,
+          $ref: "#/$defs/colour.missing.list.Missing",
         },
-        maxItems: 100000,
       },
     },
     required: [
       "missing",
     ],
-    "x-spec": "`{missing: [{colourId, drawingIds[], recoverable: bool, recordedPaletteName}]}`",
+  },
+  "colour.paint.apply.Point": {
+    description: "A point `{x, y}` in drawing units.",
+    type: "object",
+    properties: {
+      x: {
+        description: "X (du).",
+        type: "number",
+      },
+      y: {
+        description: "Y (du, up).",
+        type: "number",
+      },
+    },
     additionalProperties: false,
+    required: [
+      "x",
+      "y",
+    ],
+  },
+  "colour.paint.apply.RectIn": {
+    description: "A rectangle `{x, y, width, height}` (drawing space).",
+    type: "object",
+    properties: {
+      x: {
+        description: "Minimum x.",
+        type: "number",
+      },
+      y: {
+        description: "Minimum y.",
+        type: "number",
+      },
+      width: {
+        description: "Width.",
+        type: "number",
+        minimum: 0,
+      },
+      height: {
+        description: "Height.",
+        type: "number",
+        minimum: 0,
+      },
+    },
+    additionalProperties: false,
+    required: [
+      "x",
+      "y",
+      "width",
+      "height",
+    ],
+  },
+  "colour.paint.apply.Space": {
+    description: "Coordinate space of point targets (03 §16.2).",
+    oneOf: [
+      {
+        description: "Drawing space of the target drawing.",
+        type: "string",
+        const: "drawing",
+      },
+      {
+        description: "Scene space at a frame (M3 C3.2).",
+        type: "string",
+        const: "scene",
+      },
+      {
+        description: "A view's pixels (M4 C4.2).",
+        type: "string",
+        const: "view",
+      },
+    ],
+  },
+  "colour.paint.apply.MappingDrag": {
+    description: "`{from, to}` of a press–drag (gradient or texture mapping).",
+    type: "object",
+    properties: {
+      from: {
+        description: "Press point.",
+        $ref: "#/$defs/colour.paint.apply.Point",
+      },
+      to: {
+        description: "Release point.",
+        $ref: "#/$defs/colour.paint.apply.Point",
+      },
+    },
+    additionalProperties: false,
+    required: [
+      "from",
+      "to",
+    ],
+  },
+  "colour.paint.apply.GapChoice": {
+    description: "Gap-closing choice of a paint command (03 §8.8).",
+    oneOf: [
+      {
+        description: "The user setting.",
+        type: "string",
+        const: "current",
+      },
+      {
+        description: "No gap closing.",
+        type: "string",
+        const: "off",
+      },
+      {
+        description: "Small (3 view px).",
+        type: "string",
+        const: "small",
+      },
+      {
+        description: "Medium (8 view px).",
+        type: "string",
+        const: "medium",
+      },
+      {
+        description: "Large (16 view px).",
+        type: "string",
+        const: "large",
+      },
+    ],
   },
   "colour.paint.apply.params": {
-    title: "colour.paint.apply parameters",
+    title: "PaintParams",
+    description: "`colour.paint.apply` parameters (03 §16.3; `onlyPainted`, `lasso`, `rect`, `respectProtected`: SI-061).",
     type: "object",
     properties: {
       drawingId: {
-        type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
+        description: "The drawing (default: the current drawing).",
+        type: [
+          "string",
+          "null",
+        ],
+        default: null,
       },
       objectIds: {
-        type: "array",
+        description: "Zones, lines, brush strokes or text to paint.",
+        type: [
+          "array",
+          "null",
+        ],
         items: {
           type: "string",
-          minLength: 1,
-          maxLength: 4096,
-          description: "object ID or path reference (10 §3)",
         },
         maxItems: 100000,
+        default: null,
       },
       points: {
-        type: "array",
+        description: "Points: the front-most object under each is painted.",
+        type: [
+          "array",
+          "null",
+        ],
         items: {
-          type: "object",
-          properties: {
-            x: {
-              type: "number",
-            },
-            y: {
-              type: "number",
-            },
-          },
-          required: [
-            "x",
-            "y",
-          ],
-          additionalProperties: false,
+          $ref: "#/$defs/colour.paint.apply.Point",
         },
-        maxItems: 100000,
+        maxItems: 10000,
+        default: null,
       },
       path: {
-        type: "array",
-        items: {
-          type: "object",
-          properties: {
-            x: {
-              type: "number",
-            },
-            y: {
-              type: "number",
-            },
-          },
-          required: [
-            "x",
-            "y",
-          ],
-          additionalProperties: false,
-        },
-        maxItems: 100000,
-      },
-      space: {
-        type: "string",
-        enum: [
-          "drawing",
-          "scene",
-          "view",
+        description: "A crossing path: every zone and line it passes over is painted.",
+        type: [
+          "array",
+          "null",
         ],
-        default: "drawing",
-      },
-      sceneId: {
-        type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
-      },
-      frame: {
-        type: "integer",
-      },
-      elementId: {
-        type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
-      },
-      view: {
-        type: "string",
-        maxLength: 65536,
-      },
-      colourId: {
-        type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
-      },
-      onlyUnpainted: {
-        type: "boolean",
-        default: false,
-      },
-      mapping: {
-        type: "object",
-        properties: {
-          from: {
-            type: "object",
-            properties: {
-              x: {
-                type: "number",
-              },
-              y: {
-                type: "number",
-              },
-            },
-            required: [
-              "x",
-              "y",
-            ],
-            additionalProperties: false,
-          },
-          to: {
-            type: "object",
-            properties: {
-              x: {
-                type: "number",
-              },
-              y: {
-                type: "number",
-              },
-            },
-            required: [
-              "x",
-              "y",
-            ],
-            additionalProperties: false,
-          },
-        },
-        required: [
-          "from",
-          "to",
-        ],
-        additionalProperties: false,
-      },
-      gapClosing: {
-        type: "string",
-        enum: [
-          "current",
-          "off",
-          "small",
-          "medium",
-          "large",
-        ],
-        default: "current",
-      },
-      expectRev: {
-        type: "integer",
-      },
-    },
-    additionalProperties: false,
-    "x-spec": "`drawingId?: id; objectIds?: [id]; points?: [point]; path?: [point]; space: enum \"drawing\"|\"scene\"|\"view\" = \"drawing\"; sceneId?: id; frame?: int; elementId?: id; view?: string; colourId?: id; onlyUnpainted: bool = false; mapping?: {from: point, to: point}; gapClosing: enum \"current\"|\"off\"|\"small\"|\"medium\"|\"large\" = \"current\"; expectRev?: int`",
-  },
-  "colour.paint.apply.result": {
-    title: "colour.paint.apply result",
-    type: "object",
-    properties: {
-      painted: {
-        type: "array",
         items: {
-          type: "object",
-          properties: {
-            drawingId: {
-              type: "string",
-              minLength: 1,
-              maxLength: 4096,
-              description: "object ID or path reference (10 §3)",
-            },
-            objectId: {
-              type: "string",
-              minLength: 1,
-              maxLength: 4096,
-              description: "object ID or path reference (10 §3)",
-            },
-            objectKind: {
-              type: "string",
-              maxLength: 65536,
-            },
-            previousColourId: {
-              type: "string",
-              minLength: 1,
-              maxLength: 4096,
-              description: "object ID or path reference (10 §3)",
-            },
-          },
-          required: [
-            "drawingId",
-            "objectId",
-            "objectKind",
-            "previousColourId",
-          ],
-          additionalProperties: false,
+          $ref: "#/$defs/colour.paint.apply.Point",
         },
         maxItems: 100000,
-      },
-      skipped: {
-        type: "array",
-        items: {
-          type: "object",
-          properties: {
-            target: {
-              type: "string",
-              maxLength: 65536,
-            },
-            reason: {
-              type: "string",
-              maxLength: 65536,
-            },
-          },
-          required: [
-            "target",
-            "reason",
-          ],
-          additionalProperties: false,
-        },
-        maxItems: 100000,
-      },
-      addedStrokeIds: {
-        type: "array",
-        items: {
-          type: "string",
-          minLength: 1,
-          maxLength: 4096,
-          description: "object ID or path reference (10 §3)",
-        },
-        maxItems: 100000,
-      },
-      rev: {
-        type: "number",
-      },
-    },
-    required: [
-      "painted",
-      "skipped",
-      "addedStrokeIds",
-      "rev",
-    ],
-    "x-spec": "`{painted: [{drawingId, objectId, objectKind, previousColourId}], skipped: [{target, reason}], addedStrokeIds: [id], rev}`",
-    additionalProperties: false,
-  },
-  "colour.paint.remove.params": {
-    title: "colour.paint.remove parameters",
-    type: "object",
-    properties: {
-      drawingId: {
-        type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
-      },
-      objectIds: {
-        type: "array",
-        items: {
-          type: "string",
-          minLength: 1,
-          maxLength: 4096,
-          description: "object ID or path reference (10 §3)",
-        },
-        maxItems: 100000,
-      },
-      points: {
-        type: "array",
-        items: {
-          type: "object",
-          properties: {
-            x: {
-              type: "number",
-            },
-            y: {
-              type: "number",
-            },
-          },
-          required: [
-            "x",
-            "y",
-          ],
-          additionalProperties: false,
-        },
-        maxItems: 100000,
-      },
-      space: {
-        type: "string",
-        enum: [
-          "drawing",
-          "scene",
-          "view",
-        ],
-        default: "drawing",
-      },
-      sceneId: {
-        type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
-      },
-      frame: {
-        type: "integer",
-      },
-      view: {
-        type: "string",
-        maxLength: 65536,
-      },
-      gapClosing: {
-        type: "string",
-        enum: [
-          "current",
-          "off",
-          "small",
-          "medium",
-          "large",
-        ],
-        default: "current",
-      },
-      expectRev: {
-        type: "integer",
-      },
-    },
-    additionalProperties: false,
-    "x-spec": "`drawingId?: id; objectIds?: [id]; points?: [point]; space: enum \"drawing\"|\"scene\"|\"view\" = \"drawing\"; sceneId?: id; frame?: int; view?: string; gapClosing: enum \"current\"|\"off\"|\"small\"|\"medium\"|\"large\" = \"current\"; expectRev?: int`",
-  },
-  "colour.paint.remove.result": {
-    title: "colour.paint.remove result",
-    type: "object",
-    properties: {
-      unpainted: {
-        type: "array",
-        items: {
-          type: "object",
-          properties: {
-            drawingId: {
-              type: "string",
-              minLength: 1,
-              maxLength: 4096,
-              description: "object ID or path reference (10 §3)",
-            },
-            objectId: {
-              type: "string",
-              minLength: 1,
-              maxLength: 4096,
-              description: "object ID or path reference (10 §3)",
-            },
-            previousColourId: {
-              type: "string",
-              minLength: 1,
-              maxLength: 4096,
-              description: "object ID or path reference (10 §3)",
-            },
-          },
-          required: [
-            "drawingId",
-            "objectId",
-            "previousColourId",
-          ],
-          additionalProperties: false,
-        },
-        maxItems: 100000,
-      },
-      skipped: {
-        type: "array",
-        items: {
-          type: "object",
-          properties: {
-            target: {
-              type: "string",
-              maxLength: 65536,
-            },
-            reason: {
-              type: "string",
-              maxLength: 65536,
-            },
-          },
-          required: [
-            "target",
-            "reason",
-          ],
-          additionalProperties: false,
-        },
-        maxItems: 100000,
-      },
-      rev: {
-        type: "number",
-      },
-    },
-    required: [
-      "unpainted",
-      "skipped",
-      "rev",
-    ],
-    "x-spec": "`{unpainted: [{drawingId, objectId, previousColourId}], skipped: [{target, reason}], rev}`",
-    additionalProperties: false,
-  },
-  "colour.paintUnpainted.apply.params": {
-    title: "colour.paintUnpainted.apply parameters",
-    type: "object",
-    properties: {
-      drawingId: {
-        type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
-      },
-      objectIds: {
-        type: "array",
-        items: {
-          type: "string",
-          minLength: 1,
-          maxLength: 4096,
-          description: "object ID or path reference (10 §3)",
-        },
-        maxItems: 100000,
-      },
-      points: {
-        type: "array",
-        items: {
-          type: "object",
-          properties: {
-            x: {
-              type: "number",
-            },
-            y: {
-              type: "number",
-            },
-          },
-          required: [
-            "x",
-            "y",
-          ],
-          additionalProperties: false,
-        },
-        maxItems: 100000,
+        default: null,
       },
       lasso: {
-        type: "array",
+        description: "A lasso: every zone whose interior point lies inside is painted (SI-061).",
+        type: [
+          "array",
+          "null",
+        ],
         items: {
-          type: "object",
-          properties: {
-            x: {
-              type: "number",
-            },
-            y: {
-              type: "number",
-            },
-          },
-          required: [
-            "x",
-            "y",
-          ],
-          additionalProperties: false,
+          $ref: "#/$defs/colour.paint.apply.Point",
         },
         maxItems: 100000,
+        default: null,
+      },
+      rect: {
+        description: "A marquee: every zone whose interior point lies inside is painted (SI-061).",
+        anyOf: [
+          {
+            $ref: "#/$defs/colour.paint.apply.RectIn",
+          },
+          {
+            type: "null",
+          },
+        ],
+      },
+      space: {
+        description: "Coordinate space of points (only `drawing` until M3/M4).",
+        $ref: "#/$defs/colour.paint.apply.Space",
+      },
+      sceneId: {
+        description: "Scene of `scene` points (M3 C3.2).",
+        type: [
+          "string",
+          "null",
+        ],
+        default: null,
+      },
+      frame: {
+        description: "Frame of `scene` points.",
+        type: [
+          "integer",
+          "null",
+        ],
+        default: null,
+        minimum: 1,
+        maximum: 2147483647,
+      },
+      elementId: {
+        description: "The element of the drawing (default: current).",
+        type: [
+          "string",
+          "null",
+        ],
+        default: null,
+      },
+      view: {
+        description: "View of `view` points (M4 C4.2).",
+        type: [
+          "string",
+          "null",
+        ],
+        default: null,
+      },
+      colourId: {
+        description: "The colour (default: the current fill colour).",
+        type: [
+          "string",
+          "null",
+        ],
+        default: null,
+      },
+      onlyUnpainted: {
+        description: "Paint unpainted zones only.",
+        type: "boolean",
+        default: false,
+      },
+      onlyPainted: {
+        description: "Repaint: painted zones only (SI-061).",
+        type: "boolean",
+        default: false,
+      },
+      respectProtected: {
+        description: "Respect protected colours (SI-061).",
+        type: "boolean",
+        default: true,
+      },
+      mapping: {
+        description: "Gradient/texture mapping of a press–drag.",
+        anyOf: [
+          {
+            $ref: "#/$defs/colour.paint.apply.MappingDrag",
+          },
+          {
+            type: "null",
+          },
+        ],
+      },
+      gapClosing: {
+        description: "Automatic gap closing for point targets.",
+        $ref: "#/$defs/colour.paint.apply.GapChoice",
+        default: "current",
+      },
+      expectRev: {
+        description: "The drawing revision the caller read.",
+        type: [
+          "integer",
+          "null",
+        ],
+        maximum: 18446744073709551615n,
+        minimum: 0,
+        default: null,
+      },
+    },
+    additionalProperties: false,
+  },
+  "colour.paint.apply.Painted": {
+    description: "One painted object.",
+    type: "object",
+    properties: {
+      drawingId: {
+        description: "The drawing.",
+        type: "string",
+      },
+      objectId: {
+        description: "The object (zone IDs are those of the drawing after the paint).",
+        type: "string",
+      },
+      objectKind: {
+        description: "`zone`, `pencil`, `brush` or `text`.",
+        type: "string",
+      },
+      previousColourId: {
+        description: "Its colour before (`null` = unpainted).",
+        type: [
+          "string",
+          "null",
+        ],
+      },
+    },
+    required: [
+      "drawingId",
+      "objectId",
+      "objectKind",
+    ],
+  },
+  "colour.paint.apply.Skipped": {
+    description: "One target left alone.",
+    type: "object",
+    properties: {
+      target: {
+        description: "The target: an object ID, or `point:<i>` / `path` / `lasso` / `rect`.",
+        type: "string",
+      },
+      reason: {
+        description: "A `colour.*` code: `colour.noTarget`, `colour.zoneNotClosed`, `colour.protected`, `colour.alreadyPainted`,\n`colour.notPainted`, `colour.cannotUnpaint`, `colour.invisibleTarget`, `colour.notPaintable`.",
+        type: "string",
+      },
+    },
+    required: [
+      "target",
+      "reason",
+    ],
+  },
+  "colour.paint.apply.result": {
+    title: "PaintResult",
+    description: "`colour.paint.apply` result (03 §16.3, plus the common edit members of 02 §13.1 item 11, SI-058).",
+    type: "object",
+    properties: {
+      drawingId: {
+        description: "The drawing.",
+        type: "string",
+      },
+      painted: {
+        description: "Painted objects.",
+        type: "array",
+        items: {
+          $ref: "#/$defs/colour.paint.apply.Painted",
+        },
+      },
+      skipped: {
+        description: "Targets left alone, with the reason.",
+        type: "array",
+        items: {
+          $ref: "#/$defs/colour.paint.apply.Skipped",
+        },
+      },
+      addedStrokeIds: {
+        description: "Invisible strokes added by gap closing (kept so the zones stay closed, 03 §8.8).",
+        type: "array",
+        items: {
+          type: "string",
+        },
+      },
+      createdIds: {
+        description: "Created objects.",
+        type: "array",
+        items: {
+          type: "string",
+        },
+      },
+      modifiedIds: {
+        description: "Modified objects (content, membership or position changed; IDs kept).",
+        type: "array",
+        items: {
+          type: "string",
+        },
+      },
+      removedIds: {
+        description: "Removed objects (descendants included).",
+        type: "array",
+        items: {
+          type: "string",
+        },
+      },
+      rev: {
+        description: "The drawing revision after the change.",
+        type: "integer",
+        maximum: 18446744073709551615n,
+        minimum: 0,
+      },
+    },
+    required: [
+      "drawingId",
+      "painted",
+      "skipped",
+      "addedStrokeIds",
+      "createdIds",
+      "modifiedIds",
+      "removedIds",
+      "rev",
+    ],
+  },
+  "colour.paint.remove.Point": {
+    description: "A point `{x, y}` in drawing units.",
+    type: "object",
+    properties: {
+      x: {
+        description: "X (du).",
+        type: "number",
+      },
+      y: {
+        description: "Y (du, up).",
+        type: "number",
+      },
+    },
+    additionalProperties: false,
+    required: [
+      "x",
+      "y",
+    ],
+  },
+  "colour.paint.remove.Space": {
+    description: "Coordinate space of point targets (03 §16.2).",
+    oneOf: [
+      {
+        description: "Drawing space of the target drawing.",
+        type: "string",
+        const: "drawing",
+      },
+      {
+        description: "Scene space at a frame (M3 C3.2).",
+        type: "string",
+        const: "scene",
+      },
+      {
+        description: "A view's pixels (M4 C4.2).",
+        type: "string",
+        const: "view",
+      },
+    ],
+  },
+  "colour.paint.remove.GapChoice": {
+    description: "Gap-closing choice of a paint command (03 §8.8).",
+    oneOf: [
+      {
+        description: "The user setting.",
+        type: "string",
+        const: "current",
+      },
+      {
+        description: "No gap closing.",
+        type: "string",
+        const: "off",
+      },
+      {
+        description: "Small (3 view px).",
+        type: "string",
+        const: "small",
+      },
+      {
+        description: "Medium (8 view px).",
+        type: "string",
+        const: "medium",
+      },
+      {
+        description: "Large (16 view px).",
+        type: "string",
+        const: "large",
+      },
+    ],
+  },
+  "colour.paint.remove.params": {
+    title: "UnpaintParams",
+    description: "`colour.paint.remove` parameters (03 §16.3).",
+    type: "object",
+    properties: {
+      drawingId: {
+        description: "The drawing (default: the current drawing).",
+        type: [
+          "string",
+          "null",
+        ],
+        default: null,
+      },
+      objectIds: {
+        description: "Zones or lines to unpaint.",
+        type: [
+          "array",
+          "null",
+        ],
+        items: {
+          type: "string",
+        },
+        maxItems: 100000,
+        default: null,
+      },
+      points: {
+        description: "Points: the front-most object under each.",
+        type: [
+          "array",
+          "null",
+        ],
+        items: {
+          $ref: "#/$defs/colour.paint.remove.Point",
+        },
+        maxItems: 10000,
+        default: null,
+      },
+      space: {
+        description: "Coordinate space of points (only `drawing` until M3/M4).",
+        $ref: "#/$defs/colour.paint.remove.Space",
+      },
+      sceneId: {
+        description: "Scene of `scene` points (M3 C3.2).",
+        type: [
+          "string",
+          "null",
+        ],
+        default: null,
+      },
+      frame: {
+        description: "Frame of `scene` points.",
+        type: [
+          "integer",
+          "null",
+        ],
+        default: null,
+        minimum: 1,
+        maximum: 2147483647,
+      },
+      view: {
+        description: "View of `view` points (M4 C4.2).",
+        type: [
+          "string",
+          "null",
+        ],
+        default: null,
+      },
+      gapClosing: {
+        description: "Automatic gap closing for point targets.",
+        $ref: "#/$defs/colour.paint.remove.GapChoice",
+        default: "current",
+      },
+      expectRev: {
+        description: "The drawing revision the caller read.",
+        type: [
+          "integer",
+          "null",
+        ],
+        maximum: 18446744073709551615n,
+        minimum: 0,
+        default: null,
+      },
+    },
+    additionalProperties: false,
+  },
+  "colour.paint.remove.Unpainted": {
+    description: "One unpainted object.",
+    type: "object",
+    properties: {
+      drawingId: {
+        description: "The drawing.",
+        type: "string",
+      },
+      objectId: {
+        description: "The object.",
+        type: "string",
+      },
+      previousColourId: {
+        description: "Its colour before.",
+        type: [
+          "string",
+          "null",
+        ],
+      },
+    },
+    required: [
+      "drawingId",
+      "objectId",
+    ],
+  },
+  "colour.paint.remove.Skipped": {
+    description: "One target left alone.",
+    type: "object",
+    properties: {
+      target: {
+        description: "The target: an object ID, or `point:<i>` / `path` / `lasso` / `rect`.",
+        type: "string",
+      },
+      reason: {
+        description: "A `colour.*` code: `colour.noTarget`, `colour.zoneNotClosed`, `colour.protected`, `colour.alreadyPainted`,\n`colour.notPainted`, `colour.cannotUnpaint`, `colour.invisibleTarget`, `colour.notPaintable`.",
+        type: "string",
+      },
+    },
+    required: [
+      "target",
+      "reason",
+    ],
+  },
+  "colour.paint.remove.result": {
+    title: "UnpaintResult",
+    description: "`colour.paint.remove` result (03 §16.3 plus the common edit members, SI-058).",
+    type: "object",
+    properties: {
+      drawingId: {
+        description: "The drawing.",
+        type: "string",
+      },
+      unpainted: {
+        description: "Unpainted objects (lines became invisible strokes).",
+        type: "array",
+        items: {
+          $ref: "#/$defs/colour.paint.remove.Unpainted",
+        },
+      },
+      skipped: {
+        description: "Targets left alone, with the reason.",
+        type: "array",
+        items: {
+          $ref: "#/$defs/colour.paint.remove.Skipped",
+        },
+      },
+      createdIds: {
+        description: "Created objects.",
+        type: "array",
+        items: {
+          type: "string",
+        },
+      },
+      modifiedIds: {
+        description: "Modified objects (content, membership or position changed; IDs kept).",
+        type: "array",
+        items: {
+          type: "string",
+        },
+      },
+      removedIds: {
+        description: "Removed objects (descendants included).",
+        type: "array",
+        items: {
+          type: "string",
+        },
+      },
+      rev: {
+        description: "The drawing revision after the change.",
+        type: "integer",
+        maximum: 18446744073709551615n,
+        minimum: 0,
+      },
+    },
+    required: [
+      "drawingId",
+      "unpainted",
+      "skipped",
+      "createdIds",
+      "modifiedIds",
+      "removedIds",
+      "rev",
+    ],
+  },
+  "colour.paintUnpainted.apply.Point": {
+    description: "A point `{x, y}` in drawing units.",
+    type: "object",
+    properties: {
+      x: {
+        description: "X (du).",
+        type: "number",
+      },
+      y: {
+        description: "Y (du, up).",
+        type: "number",
+      },
+    },
+    additionalProperties: false,
+    required: [
+      "x",
+      "y",
+    ],
+  },
+  "colour.paintUnpainted.apply.Space": {
+    description: "Coordinate space of point targets (03 §16.2).",
+    oneOf: [
+      {
+        description: "Drawing space of the target drawing.",
+        type: "string",
+        const: "drawing",
+      },
+      {
+        description: "Scene space at a frame (M3 C3.2).",
+        type: "string",
+        const: "scene",
+      },
+      {
+        description: "A view's pixels (M4 C4.2).",
+        type: "string",
+        const: "view",
+      },
+    ],
+  },
+  "colour.paintUnpainted.apply.GapChoice": {
+    description: "Gap-closing choice of a paint command (03 §8.8).",
+    oneOf: [
+      {
+        description: "The user setting.",
+        type: "string",
+        const: "current",
+      },
+      {
+        description: "No gap closing.",
+        type: "string",
+        const: "off",
+      },
+      {
+        description: "Small (3 view px).",
+        type: "string",
+        const: "small",
+      },
+      {
+        description: "Medium (8 view px).",
+        type: "string",
+        const: "medium",
+      },
+      {
+        description: "Large (16 view px).",
+        type: "string",
+        const: "large",
+      },
+    ],
+  },
+  "colour.paintUnpainted.apply.params": {
+    title: "PaintUnpaintedParams",
+    description: "`colour.paintUnpainted.apply` parameters (03 §16.3).",
+    type: "object",
+    properties: {
+      drawingId: {
+        description: "The drawing (default: the current drawing).",
+        type: [
+          "string",
+          "null",
+        ],
+        default: null,
+      },
+      objectIds: {
+        description: "Zones to fill when unpainted.",
+        type: [
+          "array",
+          "null",
+        ],
+        items: {
+          type: "string",
+        },
+        maxItems: 100000,
+        default: null,
+      },
+      points: {
+        description: "Points: the zone under each, when unpainted.",
+        type: [
+          "array",
+          "null",
+        ],
+        items: {
+          $ref: "#/$defs/colour.paintUnpainted.apply.Point",
+        },
+        maxItems: 10000,
+        default: null,
+      },
+      lasso: {
+        description: "A lasso: every unpainted zone whose interior point lies inside.",
+        type: [
+          "array",
+          "null",
+        ],
+        items: {
+          $ref: "#/$defs/colour.paintUnpainted.apply.Point",
+        },
+        maxItems: 100000,
+        default: null,
       },
       all: {
+        description: "Every unpainted zone of the drawing.",
         type: "boolean",
         default: false,
       },
       space: {
-        type: "string",
-        enum: [
-          "drawing",
-          "scene",
-          "view",
-        ],
-        default: "drawing",
+        description: "Coordinate space of points (only `drawing` until M3/M4).",
+        $ref: "#/$defs/colour.paintUnpainted.apply.Space",
       },
       sceneId: {
-        type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
+        description: "Scene of `scene` points (M3 C3.2).",
+        type: [
+          "string",
+          "null",
+        ],
+        default: null,
       },
       frame: {
-        type: "integer",
+        description: "Frame of `scene` points.",
+        type: [
+          "integer",
+          "null",
+        ],
+        default: null,
+        minimum: 1,
+        maximum: 2147483647,
       },
       view: {
-        type: "string",
-        maxLength: 65536,
+        description: "View of `view` points (M4 C4.2).",
+        type: [
+          "string",
+          "null",
+        ],
+        default: null,
       },
       colourId: {
-        type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
+        description: "The colour (default: the current fill colour).",
+        type: [
+          "string",
+          "null",
+        ],
+        default: null,
       },
       gapClosing: {
-        type: "string",
-        enum: [
-          "current",
-          "off",
-          "small",
-          "medium",
-          "large",
-        ],
+        description: "Automatic gap closing for point targets.",
+        $ref: "#/$defs/colour.paintUnpainted.apply.GapChoice",
         default: "current",
       },
       expectRev: {
-        type: "integer",
+        description: "The drawing revision the caller read.",
+        type: [
+          "integer",
+          "null",
+        ],
+        maximum: 18446744073709551615n,
+        minimum: 0,
+        default: null,
       },
     },
     additionalProperties: false,
-    "x-spec": "`drawingId?: id; objectIds?: [id]; points?: [point]; lasso?: [point]; all: bool = false; space: enum \"drawing\"|\"scene\"|\"view\" = \"drawing\"; sceneId?: id; frame?: int; view?: string; colourId?: id; gapClosing: enum \"current\"|\"off\"|\"small\"|\"medium\"|\"large\" = \"current\"; expectRev?: int`",
   },
-  "colour.paintUnpainted.apply.result": {
-    title: "colour.paintUnpainted.apply result",
+  "colour.paintUnpainted.apply.Painted": {
+    description: "One painted object.",
     type: "object",
     properties: {
-      painted: {
-        type: "array",
-        items: {
-          type: "object",
-          properties: {
-            drawingId: {
-              type: "string",
-              minLength: 1,
-              maxLength: 4096,
-              description: "object ID or path reference (10 §3)",
-            },
-            objectId: {
-              type: "string",
-              minLength: 1,
-              maxLength: 4096,
-              description: "object ID or path reference (10 §3)",
-            },
-          },
-          required: [
-            "drawingId",
-            "objectId",
-          ],
-          additionalProperties: false,
-        },
-        maxItems: 100000,
+      drawingId: {
+        description: "The drawing.",
+        type: "string",
       },
-      skippedPainted: {
-        type: "integer",
+      objectId: {
+        description: "The object (zone IDs are those of the drawing after the paint).",
+        type: "string",
       },
-      addedStrokeIds: {
-        type: "array",
-        items: {
-          type: "string",
-          minLength: 1,
-          maxLength: 4096,
-          description: "object ID or path reference (10 §3)",
-        },
-        maxItems: 100000,
+      objectKind: {
+        description: "`zone`, `pencil`, `brush` or `text`.",
+        type: "string",
       },
-      rev: {
-        type: "number",
+      previousColourId: {
+        description: "Its colour before (`null` = unpainted).",
+        type: [
+          "string",
+          "null",
+        ],
       },
     },
     required: [
+      "drawingId",
+      "objectId",
+      "objectKind",
+    ],
+  },
+  "colour.paintUnpainted.apply.Skipped": {
+    description: "One target left alone.",
+    type: "object",
+    properties: {
+      target: {
+        description: "The target: an object ID, or `point:<i>` / `path` / `lasso` / `rect`.",
+        type: "string",
+      },
+      reason: {
+        description: "A `colour.*` code: `colour.noTarget`, `colour.zoneNotClosed`, `colour.protected`, `colour.alreadyPainted`,\n`colour.notPainted`, `colour.cannotUnpaint`, `colour.invisibleTarget`, `colour.notPaintable`.",
+        type: "string",
+      },
+    },
+    required: [
+      "target",
+      "reason",
+    ],
+  },
+  "colour.paintUnpainted.apply.result": {
+    title: "PaintUnpaintedResult",
+    description: "`colour.paintUnpainted.apply` result (03 §16.3 plus the common edit members, SI-058).",
+    type: "object",
+    properties: {
+      drawingId: {
+        description: "The drawing.",
+        type: "string",
+      },
+      painted: {
+        description: "Filled zones.",
+        type: "array",
+        items: {
+          $ref: "#/$defs/colour.paintUnpainted.apply.Painted",
+        },
+      },
+      skippedPainted: {
+        description: "Targets already painted (left unchanged).",
+        type: "integer",
+        format: "uint",
+        minimum: 0,
+      },
+      skipped: {
+        description: "Targets left alone for other reasons.",
+        type: "array",
+        items: {
+          $ref: "#/$defs/colour.paintUnpainted.apply.Skipped",
+        },
+      },
+      addedStrokeIds: {
+        description: "Invisible strokes added by gap closing.",
+        type: "array",
+        items: {
+          type: "string",
+        },
+      },
+      createdIds: {
+        description: "Created objects.",
+        type: "array",
+        items: {
+          type: "string",
+        },
+      },
+      modifiedIds: {
+        description: "Modified objects (content, membership or position changed; IDs kept).",
+        type: "array",
+        items: {
+          type: "string",
+        },
+      },
+      removedIds: {
+        description: "Removed objects (descendants included).",
+        type: "array",
+        items: {
+          type: "string",
+        },
+      },
+      rev: {
+        description: "The drawing revision after the change.",
+        type: "integer",
+        maximum: 18446744073709551615n,
+        minimum: 0,
+      },
+    },
+    required: [
+      "drawingId",
       "painted",
       "skippedPainted",
+      "skipped",
       "addedStrokeIds",
+      "createdIds",
+      "modifiedIds",
+      "removedIds",
       "rev",
     ],
-    "x-spec": "`{painted: [{drawingId, objectId}], skippedPainted: int, addedStrokeIds: [id], rev}`",
-    additionalProperties: false,
   },
   "colour.palette.changed.params": {
     title: "colour.palette.changed parameters",
@@ -23540,141 +24745,183 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
     "x-spec": "`{paletteId, created: [id], updated: [id], removed: [id]}`",
     additionalProperties: false,
   },
+  "colour.pick.Point": {
+    description: "A point `{x, y}` in drawing units.",
+    type: "object",
+    properties: {
+      x: {
+        description: "X (du).",
+        type: "number",
+      },
+      y: {
+        description: "Y (du, up).",
+        type: "number",
+      },
+    },
+    additionalProperties: false,
+    required: [
+      "x",
+      "y",
+    ],
+  },
+  "colour.pick.Space": {
+    description: "Coordinate space of point targets (03 §16.2).",
+    oneOf: [
+      {
+        description: "Drawing space of the target drawing.",
+        type: "string",
+        const: "drawing",
+      },
+      {
+        description: "Scene space at a frame (M3 C3.2).",
+        type: "string",
+        const: "scene",
+      },
+      {
+        description: "A view's pixels (M4 C4.2).",
+        type: "string",
+        const: "view",
+      },
+    ],
+  },
   "colour.pick.params": {
-    title: "colour.pick parameters",
+    title: "PickParams",
+    description: "`colour.pick` parameters (03 §16.3).",
     type: "object",
     properties: {
       point: {
-        type: "object",
-        properties: {
-          x: {
-            type: "number",
-          },
-          y: {
-            type: "number",
-          },
-        },
-        required: [
-          "x",
-          "y",
-        ],
-        additionalProperties: false,
+        description: "The point.",
+        $ref: "#/$defs/colour.pick.Point",
       },
       space: {
-        type: "string",
-        enum: [
-          "drawing",
-          "scene",
-          "view",
-        ],
-        default: "view",
+        description: "Its space (`drawing` until M3/M4; the spec's default `view` needs the desktop views).",
+        $ref: "#/$defs/colour.pick.Space",
       },
       drawingId: {
-        type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
+        description: "The drawing of a `drawing` point (default: current).",
+        type: [
+          "string",
+          "null",
+        ],
+        default: null,
       },
       sceneId: {
-        type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
+        description: "Scene of a `scene` point.",
+        type: [
+          "string",
+          "null",
+        ],
+        default: null,
       },
       frame: {
-        type: "integer",
+        description: "Frame of a `scene` point.",
+        type: [
+          "integer",
+          "null",
+        ],
+        default: null,
+        minimum: 1,
+        maximum: 2147483647,
       },
       elementId: {
-        type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
+        description: "Element restriction.",
+        type: [
+          "string",
+          "null",
+        ],
+        default: null,
       },
       view: {
-        type: "string",
-        maxLength: 65536,
+        description: "View of a `view` point.",
+        type: [
+          "string",
+          "null",
+        ],
+        default: null,
       },
     },
+    additionalProperties: false,
     required: [
       "point",
     ],
-    additionalProperties: false,
-    "x-spec": "`point: point; space: enum \"drawing\"|\"scene\"|\"view\" = \"view\"; drawingId?: id; sceneId?: id; frame?: int; elementId?: id; view?: string`",
+  },
+  "colour.pick.PickedObject": {
+    description: "The object a pick found.",
+    type: "object",
+    properties: {
+      drawingId: {
+        description: "The drawing.",
+        type: "string",
+      },
+      elementId: {
+        description: "An element exposing it.",
+        type: [
+          "string",
+          "null",
+        ],
+      },
+      objectId: {
+        description: "The object.",
+        type: "string",
+      },
+      objectKind: {
+        description: "`zone`, `pencil`, `brush` or `text`.",
+        type: "string",
+      },
+    },
+    required: [
+      "drawingId",
+      "objectId",
+      "objectKind",
+    ],
   },
   "colour.pick.result": {
-    title: "colour.pick result",
+    title: "PickResult",
+    description: "`colour.pick` result (03 §16.3).",
     type: "object",
     properties: {
       colourId: {
-        anyOf: [
-          {
-            type: "string",
-            minLength: 1,
-            maxLength: 4096,
-            description: "object ID or path reference (10 §3)",
-          },
-          {
-            type: "null",
-          },
+        description: "The colour (`null`: unpainted or nothing).",
+        type: [
+          "string",
+          "null",
         ],
       },
       paletteId: {
-        anyOf: [
-          {
-            type: "string",
-            minLength: 1,
-            maxLength: 4096,
-            description: "object ID or path reference (10 §3)",
-          },
-          {
-            type: "null",
-          },
+        description: "Its palette.",
+        type: [
+          "string",
+          "null",
         ],
       },
       swatchName: {
-        type: "string",
-        maxLength: 65536,
+        description: "Its swatch name.",
+        type: [
+          "string",
+          "null",
+        ],
       },
       rgba: {
+        description: "The swatch's value for the scene's style as `#RRGGBBAA` (first stop of a gradient; `#00000000` for textures,\nunpainted and empty canvas) until the renderer composites (SI-065).",
         type: "string",
-        pattern: "^#[0-9A-Fa-f]{6}([0-9A-Fa-f]{2})?$",
-        description: "#RRGGBB or #RRGGBBAA",
+      },
+      matrix: {
+        description: "The fill mapping of a gradient or texture fill.",
+        type: [
+          "array",
+          "null",
+        ],
+        items: {
+          type: "number",
+        },
+        minItems: 6,
+        maxItems: 6,
       },
       object: {
+        description: "The object picked.",
         anyOf: [
           {
-            type: "object",
-            properties: {
-              drawingId: {
-                type: "string",
-                minLength: 1,
-                maxLength: 4096,
-                description: "object ID or path reference (10 §3)",
-              },
-              elementId: {
-                type: "string",
-                minLength: 1,
-                maxLength: 4096,
-                description: "object ID or path reference (10 §3)",
-              },
-              objectId: {
-                type: "string",
-                minLength: 1,
-                maxLength: 4096,
-                description: "object ID or path reference (10 §3)",
-              },
-              objectKind: {
-                type: "string",
-                maxLength: 65536,
-              },
-            },
-            required: [
-              "drawingId",
-              "elementId",
-              "objectId",
-              "objectKind",
-            ],
-            additionalProperties: false,
+            $ref: "#/$defs/colour.pick.PickedObject",
           },
           {
             type: "null",
@@ -23682,293 +24929,328 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
         ],
       },
       missing: {
+        description: "The colour ID is in no palette.",
         type: "boolean",
       },
     },
     required: [
-      "colourId",
-      "paletteId",
-      "swatchName",
       "rgba",
-      "object",
       "missing",
     ],
-    "x-spec": "`{colourId|null, paletteId|null, swatchName, rgba: colour, object: {drawingId, elementId, objectId, objectKind}|null, missing: bool}`",
-    additionalProperties: false,
   },
-  "colour.recolour.apply.params": {
-    title: "colour.recolour.apply parameters",
+  "colour.recolour.apply.Pair": {
+    description: "A colour replacement.",
     type: "object",
     properties: {
-      fromColourId: {
+      from: {
+        description: "Replaced colour.",
         type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
       },
-      toColourId: {
+      to: {
+        description: "Replacement.",
         type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
-      },
-      map: {
-        type: "array",
-        items: {
-          type: "object",
-          properties: {
-            from: {
-              type: "string",
-              minLength: 1,
-              maxLength: 4096,
-              description: "object ID or path reference (10 §3)",
-            },
-            to: {
-              type: "string",
-              minLength: 1,
-              maxLength: 4096,
-              description: "object ID or path reference (10 §3)",
-            },
-          },
-          required: [
-            "from",
-            "to",
-          ],
-          additionalProperties: false,
-        },
-        maxItems: 100000,
-      },
-      scope: {
-        type: "string",
-        enum: [
-          "project",
-          "scene",
-          "element",
-          "drawing",
-        ],
-        default: "project",
-      },
-      sceneId: {
-        type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
-      },
-      elementIds: {
-        type: "array",
-        items: {
-          type: "string",
-          minLength: 1,
-          maxLength: 4096,
-          description: "object ID or path reference (10 §3)",
-        },
-        maxItems: 100000,
-      },
-      drawingIds: {
-        type: "array",
-        items: {
-          type: "string",
-          minLength: 1,
-          maxLength: 4096,
-          description: "object ID or path reference (10 §3)",
-        },
-        maxItems: 100000,
-      },
-      targets: {
-        type: "array",
-        items: {
-          type: "string",
-          enum: [
-            "zones",
-            "lines",
-            "brushStrokes",
-            "text",
-          ],
-        },
-        maxItems: 100000,
-        default: [
-          "zones",
-          "lines",
-          "brushStrokes",
-          "text",
-        ],
-      },
-      includePens: {
-        type: "boolean",
-        default: false,
       },
     },
     additionalProperties: false,
-    "x-spec": "`fromColourId?: id; toColourId?: id; map?: [{from: id, to: id}]; scope: enum \"project\"|\"scene\"|\"element\"|\"drawing\" = \"project\"; sceneId?: id; elementIds?: [id]; drawingIds?: [id]; targets: [enum \"zones\"|\"lines\"|\"brushStrokes\"|\"text\"] = [\"zones\",\"lines\",\"brushStrokes\",\"text\"]; includePens: bool = false`",
+    required: [
+      "from",
+      "to",
+    ],
+  },
+  "colour.recolour.apply.RecolourScope": {
+    description: "Scope of a replacement.",
+    oneOf: [
+      {
+        description: "Every drawing.",
+        type: "string",
+        const: "project",
+      },
+      {
+        description: "Drawings of the scene's elements.",
+        type: "string",
+        const: "scene",
+      },
+      {
+        description: "Drawings of the elements.",
+        type: "string",
+        const: "element",
+      },
+      {
+        description: "The drawings.",
+        type: "string",
+        const: "drawing",
+      },
+    ],
+  },
+  "colour.recolour.apply.RecolourTarget": {
+    description: "Reference kinds.",
+    oneOf: [
+      {
+        description: "Zone fills.",
+        type: "string",
+        const: "zones",
+      },
+      {
+        description: "Pencil lines.",
+        type: "string",
+        const: "lines",
+      },
+      {
+        description: "Brush strokes.",
+        type: "string",
+        const: "brushStrokes",
+      },
+      {
+        description: "Text runs.",
+        type: "string",
+        const: "text",
+      },
+    ],
+  },
+  "colour.recolour.apply.params": {
+    title: "RecolourParams",
+    description: "`colour.recolour.apply` parameters.",
+    type: "object",
+    properties: {
+      fromColourId: {
+        description: "Replaced colour (with `toColourId`).",
+        type: [
+          "string",
+          "null",
+        ],
+        default: null,
+      },
+      toColourId: {
+        description: "Replacement.",
+        type: [
+          "string",
+          "null",
+        ],
+        default: null,
+      },
+      map: {
+        description: "Or several replacements.",
+        type: [
+          "array",
+          "null",
+        ],
+        items: {
+          $ref: "#/$defs/colour.recolour.apply.Pair",
+        },
+      },
+      scope: {
+        description: "Scope.",
+        $ref: "#/$defs/colour.recolour.apply.RecolourScope",
+      },
+      sceneId: {
+        description: "The scene (scope `scene`; default: current).",
+        type: [
+          "string",
+          "null",
+        ],
+        default: null,
+      },
+      elementIds: {
+        description: "The elements (scope `element`).",
+        type: [
+          "array",
+          "null",
+        ],
+        items: {
+          type: "string",
+        },
+        default: null,
+      },
+      drawingIds: {
+        description: "The drawings (scope `drawing`).",
+        type: [
+          "array",
+          "null",
+        ],
+        items: {
+          type: "string",
+        },
+        default: null,
+      },
+      targets: {
+        description: "Reference kinds.",
+        type: "array",
+        items: {
+          $ref: "#/$defs/colour.recolour.apply.RecolourTarget",
+        },
+      },
+      includePens: {
+        description: "Also pens using a replaced colour.",
+        type: "boolean",
+        default: false,
+      },
+      respectProtected: {
+        description: "Leave references to protected colours (SI-061); `false` overrides.",
+        type: "boolean",
+        default: true,
+      },
+    },
+    additionalProperties: false,
+  },
+  "colour.recolour.apply.DrawingCount": {
+    description: "References changed in one drawing.",
+    type: "object",
+    properties: {
+      drawingId: {
+        description: "The drawing.",
+        type: "string",
+      },
+      count: {
+        description: "References changed.",
+        type: "integer",
+        maximum: 2147483647,
+        minimum: 0,
+      },
+    },
+    required: [
+      "drawingId",
+      "count",
+    ],
   },
   "colour.recolour.apply.result": {
-    title: "colour.recolour.apply result",
+    title: "RecolourResult",
+    description: "`{changed, pensChanged, skippedLocked}`.",
     type: "object",
     properties: {
       changed: {
+        description: "Per drawing, the references changed.",
         type: "array",
         items: {
-          type: "object",
-          properties: {
-            drawingId: {
-              type: "string",
-              minLength: 1,
-              maxLength: 4096,
-              description: "object ID or path reference (10 §3)",
-            },
-            count: {
-              type: "number",
-            },
-          },
-          required: [
-            "drawingId",
-            "count",
-          ],
-          additionalProperties: false,
+          $ref: "#/$defs/colour.recolour.apply.DrawingCount",
         },
-        maxItems: 100000,
       },
       pensChanged: {
+        description: "Pens recoloured.",
         type: "array",
         items: {
           type: "string",
-          minLength: 1,
-          maxLength: 4096,
-          description: "object ID or path reference (10 §3)",
         },
-        maxItems: 100000,
       },
       skippedLocked: {
+        description: "Locked drawings left alone.",
         type: "array",
         items: {
           type: "string",
-          minLength: 1,
-          maxLength: 4096,
-          description: "object ID or path reference (10 §3)",
         },
-        maxItems: 100000,
+      },
+      skippedProtected: {
+        description: "Protected colours whose references were left alone (SI-061).",
+        type: "array",
+        items: {
+          type: "string",
+        },
       },
     },
     required: [
       "changed",
       "pensChanged",
       "skippedLocked",
+      "skippedProtected",
     ],
-    "x-spec": "`{changed: [{drawingId, count}], pensChanged: [id], skippedLocked: [id]}`",
-    additionalProperties: false,
   },
   "colour.recovery.performed.params": {
-    title: "colour.recovery.performed parameters",
+    title: "NoParams",
+    description: "No parameters.",
     type: "object",
-    properties: {},
     additionalProperties: false,
-    description: "Events take no parameters; subscribe to them (11 §9).",
-    "x-spec": "—",
   },
   "colour.recovery.performed.result": {
-    title: "colour.recovery.performed result",
+    title: "RecoveryEvent",
+    description: "`colour.recovery.performed` payload.",
     type: "object",
     properties: {
       colourIds: {
+        description: "Colours recreated (placeholders included).",
         type: "array",
         items: {
           type: "string",
-          minLength: 1,
-          maxLength: 4096,
-          description: "object ID or path reference (10 §3)",
         },
-        maxItems: 100000,
       },
       paletteIds: {
+        description: "Palettes that received them.",
         type: "array",
         items: {
           type: "string",
-          minLength: 1,
-          maxLength: 4096,
-          description: "object ID or path reference (10 §3)",
         },
-        maxItems: 100000,
       },
     },
     required: [
       "colourIds",
       "paletteIds",
     ],
-    description: "Event payload (delivered to subscribers).",
-    "x-spec": "`{colourIds[], paletteIds[]}`",
-    additionalProperties: false,
   },
   "colour.recovery.run.params": {
-    title: "colour.recovery.run parameters",
+    title: "RecoveryParams",
+    description: "`colour.recovery.run` parameters (03 §16.3).",
     type: "object",
     properties: {
       drawingIds: {
-        type: "array",
+        description: "Drawings whose missing colours are recovered.",
+        type: [
+          "array",
+          "null",
+        ],
         items: {
           type: "string",
-          minLength: 1,
-          maxLength: 4096,
-          description: "object ID or path reference (10 §3)",
         },
-        maxItems: 100000,
+        default: null,
       },
       all: {
+        description: "Every drawing of the project.",
         type: "boolean",
         default: false,
       },
     },
     additionalProperties: false,
-    "x-spec": "`drawingIds?: [id]; all: bool = false`",
+  },
+  "colour.recovery.run.RecoveredColour": {
+    description: "One recreated swatch.",
+    type: "object",
+    properties: {
+      colourId: {
+        description: "The colour ID (unchanged).",
+        type: "string",
+      },
+      paletteId: {
+        description: "The palette it went into.",
+        type: "string",
+      },
+    },
+    required: [
+      "colourId",
+      "paletteId",
+    ],
   },
   "colour.recovery.run.result": {
-    title: "colour.recovery.run result",
+    title: "RecoveryResult",
+    description: "What a recovery did.",
     type: "object",
     properties: {
       recovered: {
+        description: "Swatches recreated from recovery copies, with the palette that received each.",
         type: "array",
         items: {
-          type: "object",
-          properties: {
-            colourId: {
-              type: "string",
-              minLength: 1,
-              maxLength: 4096,
-              description: "object ID or path reference (10 §3)",
-            },
-            paletteId: {
-              type: "string",
-              minLength: 1,
-              maxLength: 4096,
-              description: "object ID or path reference (10 §3)",
-            },
-          },
-          required: [
-            "colourId",
-            "paletteId",
-          ],
-          additionalProperties: false,
+          $ref: "#/$defs/colour.recovery.run.RecoveredColour",
         },
-        maxItems: 100000,
       },
       placeholders: {
+        description: "Placeholder swatches created for colours without a recovery copy.",
         type: "array",
         items: {
           type: "string",
-          minLength: 1,
-          maxLength: 4096,
-          description: "object ID or path reference (10 §3)",
         },
-        maxItems: 100000,
       },
       createdPaletteIds: {
+        description: "Palettes created.",
         type: "array",
         items: {
           type: "string",
-          minLength: 1,
-          maxLength: 4096,
-          description: "object ID or path reference (10 §3)",
         },
-        maxItems: 100000,
       },
     },
     required: [
@@ -23976,8 +25258,6 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
       "placeholders",
       "createdPaletteIds",
     ],
-    "x-spec": "`{recovered: [{colourId, paletteId}], placeholders: [id], createdPaletteIds: [id]}`",
-    additionalProperties: false,
   },
   "colour.sceneStyle.changed.params": {
     title: "colour.sceneStyle.changed parameters",
@@ -24067,59 +25347,94 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
     additionalProperties: false,
   },
   "colour.selection.apply.params": {
-    title: "colour.selection.apply parameters",
+    title: "SelectionApplyParams",
+    description: "`colour.selection.apply` parameters.",
     type: "object",
     properties: {
       colourId: {
-        type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
+        description: "The colour (default: the current colour).",
+        type: [
+          "string",
+          "null",
+        ],
+        default: null,
       },
       drawingId: {
-        type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
+        description: "The drawing (default: current).",
+        type: [
+          "string",
+          "null",
+        ],
+        default: null,
       },
       objectIds: {
-        type: "array",
+        description: "Objects (default: the drawing selection).",
+        type: [
+          "array",
+          "null",
+        ],
         items: {
           type: "string",
-          minLength: 1,
-          maxLength: 4096,
-          description: "object ID or path reference (10 §3)",
         },
-        maxItems: 100000,
+        default: null,
+      },
+      respectProtected: {
+        description: "Leave objects whose current colour is protected (SI-061); `false` overrides.",
+        type: "boolean",
+        default: true,
       },
     },
     additionalProperties: false,
-    "x-spec": "`colourId?: id; drawingId?: id; objectIds?: [id]`",
+  },
+  "colour.selection.apply.SkippedObject": {
+    description: "A skipped object.",
+    type: "object",
+    properties: {
+      objectId: {
+        description: "The object.",
+        type: "string",
+      },
+      reason: {
+        description: "Why (`solid`, `unpainted`, `invisible`, `text`, `notPaintable`, `kindMismatch`, `colourMissing`).",
+        type: "string",
+      },
+    },
+    required: [
+      "objectId",
+      "reason",
+    ],
   },
   "colour.selection.apply.result": {
-    title: "colour.selection.apply result",
+    title: "SelectionApplyResult",
+    description: "`{changed, rev}`.",
     type: "object",
     properties: {
       changed: {
+        description: "Objects recoloured (zones by their ID after the change).",
         type: "array",
         items: {
           type: "string",
-          minLength: 1,
-          maxLength: 4096,
-          description: "object ID or path reference (10 §3)",
         },
-        maxItems: 100000,
+      },
+      skipped: {
+        description: "Objects left alone and why (`colour.protected`).",
+        type: "array",
+        items: {
+          $ref: "#/$defs/colour.selection.apply.SkippedObject",
+        },
       },
       rev: {
-        type: "number",
+        description: "The drawing revision after the change.",
+        type: "integer",
+        maximum: 18446744073709551615n,
+        minimum: 0,
       },
     },
     required: [
       "changed",
+      "skipped",
       "rev",
     ],
-    "x-spec": "`{changed: [id], rev}`",
-    additionalProperties: false,
   },
   "colour.style.changed.params": {
     title: "colour.style.changed parameters",
@@ -28205,125 +29520,196 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
       "unavailable",
     ],
   },
+  "draw.arrange.apply.ArrangeTo": {
+    description: "Arrange direction.",
+    oneOf: [
+      {
+        description: "Above everything.",
+        type: "string",
+        const: "front",
+      },
+      {
+        description: "One position up.",
+        type: "string",
+        const: "forward",
+      },
+      {
+        description: "One position down.",
+        type: "string",
+        const: "backward",
+      },
+      {
+        description: "Behind everything.",
+        type: "string",
+        const: "back",
+      },
+    ],
+  },
   "draw.arrange.apply.params": {
-    title: "draw.arrange.apply parameters",
+    title: "ArrangeParams",
+    description: "`draw.arrange.apply` parameters.",
     type: "object",
     properties: {
       drawingId: {
-        type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
+        description: "The drawing (default: current).",
+        type: [
+          "string",
+          "null",
+        ],
+        default: null,
       },
       ids: {
-        type: "array",
+        description: "Objects (default: the selection).",
+        type: [
+          "array",
+          "null",
+        ],
         items: {
           type: "string",
-          minLength: 1,
-          maxLength: 4096,
-          description: "object ID or path reference (10 §3)",
         },
-        maxItems: 100000,
-        description: "Default: selection.",
+        default: null,
       },
       to: {
-        type: "string",
-        enum: [
-          "front",
-          "forward",
-          "backward",
-          "back",
-        ],
+        description: "Direction.",
+        $ref: "#/$defs/draw.arrange.apply.ArrangeTo",
       },
     },
+    additionalProperties: false,
     required: [
       "to",
     ],
-    additionalProperties: false,
-    "x-spec": "`drawingId?: id; ids?: [id] = selection; to: enum \"front\"|\"forward\"|\"backward\"|\"back\"`",
   },
   "draw.arrange.apply.result": {
-    title: "draw.arrange.apply result",
-    type: "object",
-    properties: {
-      order: {
-        type: "array",
-        items: {
-          type: "string",
-          minLength: 1,
-          maxLength: 4096,
-          description: "object ID or path reference (10 §3)",
-        },
-        maxItems: 100000,
-      },
-      rev: {
-        type: "number",
-      },
-    },
-    required: [
-      "order",
-      "rev",
-    ],
-    "x-spec": "`{order: [id], rev}`",
-    additionalProperties: false,
-  },
-  "draw.bounds.get.params": {
-    title: "draw.bounds.get parameters",
+    title: "ArrangeResult",
+    description: "`{order, rev}`.",
     type: "object",
     properties: {
       drawingId: {
+        description: "The drawing.",
         type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
       },
-      ids: {
+      order: {
+        description: "The drawing's top-level node IDs after the change, back to front.",
         type: "array",
         items: {
           type: "string",
-          minLength: 1,
-          maxLength: 4096,
-          description: "object ID or path reference (10 §3)",
         },
-        maxItems: 100000,
+      },
+      createdLayerIds: {
+        description: "Layers created by separating part of a layer.",
+        type: "array",
+        items: {
+          type: "string",
+        },
+      },
+      createdIds: {
+        description: "Created objects.",
+        type: "array",
+        items: {
+          type: "string",
+        },
+      },
+      modifiedIds: {
+        description: "Modified objects (content, membership or position changed; IDs kept).",
+        type: "array",
+        items: {
+          type: "string",
+        },
+      },
+      removedIds: {
+        description: "Removed objects (descendants included).",
+        type: "array",
+        items: {
+          type: "string",
+        },
+      },
+      rev: {
+        description: "The drawing revision after the change.",
+        type: "integer",
+        maximum: 18446744073709551615n,
+        minimum: 0,
+      },
+    },
+    required: [
+      "drawingId",
+      "order",
+      "createdLayerIds",
+      "createdIds",
+      "modifiedIds",
+      "removedIds",
+      "rev",
+    ],
+  },
+  "draw.bounds.get.params": {
+    title: "BoundsParams",
+    description: "`draw.bounds.get` parameters.",
+    type: "object",
+    properties: {
+      drawingId: {
+        description: "The drawing (default: current).",
+        type: [
+          "string",
+          "null",
+        ],
+        default: null,
+      },
+      ids: {
+        description: "Objects (default: the whole drawing).",
+        type: [
+          "array",
+          "null",
+        ],
+        items: {
+          type: "string",
+        },
+        default: null,
       },
       includeInvisible: {
+        description: "Include invisible strokes.",
         type: "boolean",
         default: false,
       },
     },
     additionalProperties: false,
-    "x-spec": "`drawingId?: id; ids?: [id]; includeInvisible: bool = false`",
+  },
+  "draw.bounds.get.Bounds": {
+    description: "`{x, y, width, height}`.",
+    type: "object",
+    properties: {
+      x: {
+        description: "Minimum x (du).",
+        type: "number",
+      },
+      y: {
+        description: "Minimum y (du).",
+        type: "number",
+      },
+      width: {
+        description: "Width (du).",
+        type: "number",
+      },
+      height: {
+        description: "Height (du).",
+        type: "number",
+      },
+    },
+    required: [
+      "x",
+      "y",
+      "width",
+      "height",
+    ],
   },
   "draw.bounds.get.result": {
-    title: "draw.bounds.get result",
+    title: "BoundsResult",
+    description: "`{bounds}`.",
     type: "object",
     properties: {
       bounds: {
+        description: "The bounding box (`null` for an empty drawing or selection).",
         anyOf: [
           {
-            type: "object",
-            properties: {
-              x: {
-                type: "number",
-              },
-              y: {
-                type: "number",
-              },
-              width: {
-                type: "number",
-              },
-              height: {
-                type: "number",
-              },
-            },
-            required: [
-              "x",
-              "y",
-              "width",
-              "height",
-            ],
-            additionalProperties: false,
+            $ref: "#/$defs/draw.bounds.get.Bounds",
           },
           {
             type: "null",
@@ -28331,445 +29717,1811 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
         ],
       },
     },
-    required: [
-      "bounds",
-    ],
-    "x-spec": "`{bounds: {x,y,width,height}|null}`",
-    additionalProperties: false,
   },
   "draw.breakApart.apply.params": {
-    title: "draw.breakApart.apply parameters",
+    title: "BreakApartParams",
+    description: "`draw.breakApart.apply` parameters.",
     type: "object",
     properties: {
       drawingId: {
-        type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
-      },
-      textIds: {
-        type: "array",
-        items: {
-          type: "string",
-          minLength: 1,
-          maxLength: 4096,
-          description: "object ID or path reference (10 §3)",
-        },
-        maxItems: 100000,
-        description: "Default: selected text.",
-      },
-    },
-    additionalProperties: false,
-    "x-spec": "`drawingId?: id; textIds?: [id] = selected text`",
-  },
-  "draw.breakApart.apply.result": {
-    title: "draw.breakApart.apply result",
-    type: "object",
-    properties: {
-      groupIds: {
-        type: "array",
-        items: {
-          type: "string",
-          minLength: 1,
-          maxLength: 4096,
-          description: "object ID or path reference (10 §3)",
-        },
-        maxItems: 100000,
-      },
-      rev: {
-        type: "number",
-      },
-    },
-    required: [
-      "groupIds",
-      "rev",
-    ],
-    "x-spec": "`{groupIds: [id], rev}`",
-    additionalProperties: false,
-  },
-  "draw.centreLine.apply.params": {
-    title: "draw.centreLine.apply parameters",
-    type: "object",
-    properties: {
-      drawingId: {
-        type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
-      },
-      ids: {
-        type: "array",
-        items: {
-          type: "string",
-          minLength: 1,
-          maxLength: 4096,
-          description: "object ID or path reference (10 §3)",
-        },
-        maxItems: 100000,
-        description: "Default: selection.",
-      },
-      thickness: {
-        type: "number",
-        description: "(default: average source width)",
-      },
-    },
-    additionalProperties: false,
-    "x-spec": "`drawingId?: id; ids?: [id] = selection; thickness?: number (default: average source width)`",
-  },
-  "draw.centreLine.apply.result": {
-    title: "draw.centreLine.apply result",
-    type: "object",
-    properties: {
-      strokeIds: {
-        type: "array",
-        items: {
-          type: "string",
-          minLength: 1,
-          maxLength: 4096,
-          description: "object ID or path reference (10 §3)",
-        },
-        maxItems: 100000,
-      },
-      removedIds: {
-        type: "array",
-        items: {
-          type: "string",
-          minLength: 1,
-          maxLength: 4096,
-          description: "object ID or path reference (10 §3)",
-        },
-        maxItems: 100000,
-      },
-      warnings: {
-        type: "array",
-        items: {
-          type: "string",
-          maxLength: 256,
-        },
-        maxItems: 100000,
-      },
-      rev: {
-        type: "number",
-      },
-    },
-    required: [
-      "strokeIds",
-      "removedIds",
-      "warnings",
-      "rev",
-    ],
-    "x-spec": "`{strokeIds: [id], removedIds: [id], warnings: [code], rev}`",
-    additionalProperties: false,
-  },
-  "draw.content.add.params": {
-    title: "draw.content.add parameters",
-    type: "object",
-    properties: {
-      drawingId: {
-        type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
-      },
-      content: {
-        type: "object",
-        properties: {},
-        additionalProperties: false,
-        "x-placeholder": true,
-        description: "shape not defined by the owning section (spec issue); only {} is accepted until it is",
-        "x-specIssue": "SI-026",
-      },
-      offset: {
-        type: "object",
-        properties: {
-          x: {
-            type: "number",
-          },
-          y: {
-            type: "number",
-          },
-        },
-        required: [
-          "x",
-          "y",
-        ],
-        additionalProperties: false,
-        description: "Default: {0,0}.",
-      },
-      layer: {
-        type: "string",
-        enum: [
-          "top",
-          "behind",
-        ],
-        default: "top",
-      },
-      select: {
-        type: "boolean",
-        default: true,
-      },
-    },
-    required: [
-      "content",
-    ],
-    additionalProperties: false,
-    "x-spec": "`drawingId?: id; content: object; offset: point = {0,0}; layer: enum \"top\"|\"behind\" = \"top\"; select: bool = true`",
-  },
-  "draw.content.add.result": {
-    title: "draw.content.add result",
-    type: "object",
-    properties: {
-      idMap: {
-        type: "object",
-        properties: {},
-        additionalProperties: false,
-        "x-placeholder": true,
-        description: "shape not defined by the owning section (spec issue); only {} is accepted until it is",
-        "x-specIssue": "SI-026",
-      },
-      rev: {
-        type: "number",
-      },
-    },
-    required: [
-      "idMap",
-      "rev",
-    ],
-    "x-spec": "`{idMap: object, rev}`",
-    additionalProperties: false,
-  },
-  "draw.current.get.params": {
-    title: "draw.current.get parameters",
-    type: "object",
-    properties: {
-      view: {
-        type: "string",
-        maxLength: 65536,
-      },
-    },
-    additionalProperties: false,
-    "x-spec": "`view?: string`",
-  },
-  "draw.current.get.result": {
-    title: "draw.current.get result",
-    type: "object",
-    properties: {
-      drawingId: {
-        anyOf: [
-          {
-            type: "string",
-            minLength: 1,
-            maxLength: 4096,
-            description: "object ID or path reference (10 §3)",
-          },
-          {
-            type: "null",
-          },
-        ],
-      },
-      elementId: {
-        type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
-      },
-      sceneId: {
-        type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
-      },
-      frame: {
-        type: "number",
-      },
-      cellEmpty: {
-        type: "boolean",
-      },
-      locked: {
-        type: "boolean",
-      },
-      activeView: {
+        description: "The drawing (default: current).",
         type: [
           "string",
-          "number",
-          "boolean",
           "null",
         ],
-        "x-placeholder": true,
-        description: "type not stated by the owning section (spec issue); a scalar",
-        "x-specIssue": "SI-026",
+        default: null,
+      },
+      textIds: {
+        description: "Text objects (default: the selected text objects).",
+        type: [
+          "array",
+          "null",
+        ],
+        items: {
+          type: "string",
+        },
+        default: null,
+      },
+    },
+    additionalProperties: false,
+  },
+  "draw.breakApart.apply.result": {
+    title: "BreakApartResult",
+    description: "`{groupIds, rev}`.",
+    type: "object",
+    properties: {
+      drawingId: {
+        description: "The drawing.",
+        type: "string",
+      },
+      groupIds: {
+        description: "One group per character, in text order.",
+        type: "array",
+        items: {
+          type: "string",
+        },
+      },
+      createdIds: {
+        description: "Created objects.",
+        type: "array",
+        items: {
+          type: "string",
+        },
+      },
+      modifiedIds: {
+        description: "Modified objects (content, membership or position changed; IDs kept).",
+        type: "array",
+        items: {
+          type: "string",
+        },
+      },
+      removedIds: {
+        description: "Removed objects (descendants included).",
+        type: "array",
+        items: {
+          type: "string",
+        },
+      },
+      rev: {
+        description: "The drawing revision after the change.",
+        type: "integer",
+        maximum: 18446744073709551615n,
+        minimum: 0,
       },
     },
     required: [
       "drawingId",
-      "elementId",
-      "sceneId",
+      "groupIds",
+      "createdIds",
+      "modifiedIds",
+      "removedIds",
+      "rev",
+    ],
+  },
+  "draw.centreLine.apply.params": {
+    title: "CentreLineParams",
+    description: "`draw.centreLine.apply` parameters.",
+    type: "object",
+    properties: {
+      drawingId: {
+        description: "The drawing (default: current).",
+        type: [
+          "string",
+          "null",
+        ],
+        default: null,
+      },
+      ids: {
+        description: "Brush strokes, or layers and groups holding them (default: the selection).",
+        type: [
+          "array",
+          "null",
+        ],
+        items: {
+          type: "string",
+        },
+        default: null,
+      },
+      thickness: {
+        description: "Line thickness (du; default: the source's average width).",
+        type: [
+          "number",
+          "null",
+        ],
+        default: null,
+        minimum: 0,
+        maximum: 1000,
+      },
+    },
+    additionalProperties: false,
+  },
+  "draw.centreLine.apply.result": {
+    title: "CentreLineResult",
+    description: "`{strokeIds, removedIds, warnings, rev}`.",
+    type: "object",
+    properties: {
+      drawingId: {
+        description: "The drawing.",
+        type: "string",
+      },
+      strokeIds: {
+        description: "The new pencil lines.",
+        type: "array",
+        items: {
+          type: "string",
+        },
+      },
+      warnings: {
+        description: "`drawing.centreLineOnFill` (painted zones that are not brush strokes selected), `drawing.centreLineNoSpine`\n(outlines edited directly, kept; SI-076).",
+        type: "array",
+        items: {
+          type: "string",
+        },
+      },
+      skippedIds: {
+        description: "Brush strokes left as they were (no spine).",
+        type: "array",
+        items: {
+          type: "string",
+        },
+      },
+      createdIds: {
+        description: "Created objects.",
+        type: "array",
+        items: {
+          type: "string",
+        },
+      },
+      modifiedIds: {
+        description: "Modified objects (content, membership or position changed; IDs kept).",
+        type: "array",
+        items: {
+          type: "string",
+        },
+      },
+      removedIds: {
+        description: "Removed objects (descendants included).",
+        type: "array",
+        items: {
+          type: "string",
+        },
+      },
+      rev: {
+        description: "The drawing revision after the change.",
+        type: "integer",
+        maximum: 18446744073709551615n,
+        minimum: 0,
+      },
+    },
+    required: [
+      "drawingId",
+      "strokeIds",
+      "warnings",
+      "skippedIds",
+      "createdIds",
+      "modifiedIds",
+      "removedIds",
+      "rev",
+    ],
+  },
+  "draw.content.add.ContentIn": {
+    description: "Content to insert: `{nodes}` (a whole `draw.drawing.get` result is accepted).",
+    type: "object",
+    properties: {
+      nodes: {
+        description: "Nodes, back to front.",
+        type: "array",
+        items: {
+          $ref: "#/$defs/draw.content.add.NodeIn",
+        },
+        maxItems: 100000,
+      },
+      drawingId: {
+        description: "Read-only (ignored).",
+        type: [
+          "string",
+          "null",
+        ],
+        default: null,
+      },
+      elementId: {
+        description: "Read-only (ignored).",
+        type: [
+          "string",
+          "null",
+        ],
+        default: null,
+      },
+      name: {
+        description: "Read-only (ignored).",
+        type: [
+          "string",
+          "null",
+        ],
+        default: null,
+      },
+      rev: {
+        description: "Read-only (ignored).",
+        type: [
+          "integer",
+          "null",
+        ],
+        maximum: 18446744073709551615n,
+        minimum: 0,
+        default: null,
+      },
+      locked: {
+        description: "Read-only (ignored).",
+        type: [
+          "boolean",
+          "null",
+        ],
+        default: null,
+      },
+      space: {
+        description: "Read-only (ignored).",
+        anyOf: [
+          {
+            $ref: "#/$defs/draw.content.add.SpaceIn",
+          },
+          {
+            type: "null",
+          },
+        ],
+      },
+      pivot: {
+        description: "Read-only (ignored; the target drawing keeps its pivot).",
+        anyOf: [
+          {
+            $ref: "#/$defs/draw.content.add.PointIn",
+          },
+          {
+            type: "null",
+          },
+        ],
+      },
+      bounds: {
+        description: "Read-only (ignored).",
+        anyOf: [
+          {
+            $ref: "#/$defs/draw.content.add.BoundsIn",
+          },
+          {
+            type: "null",
+          },
+        ],
+      },
+      colourRecovery: {
+        description: "Recovery copies of the colours the content uses (10 §4.11 entries; the clipboard's colour map, 03 §11.1):\ncolours the target project lacks are recreated from them (03 §11.2).",
+        type: [
+          "array",
+          "null",
+        ],
+        items: true,
+        maxItems: 100000,
+        default: null,
+      },
+    },
+    additionalProperties: false,
+    required: [
+      "nodes",
+    ],
+  },
+  "draw.content.add.NodeIn": {
+    description: "A node of the 02 §13.4 shape.",
+    oneOf: [
+      {
+        description: "A layer.",
+        type: "object",
+        properties: {
+          type: {
+            type: "string",
+            const: "layer",
+          },
+          id: {
+            description: "ID (replaced).",
+            type: "string",
+          },
+          name: {
+            description: "Optional name.",
+            type: [
+              "string",
+              "null",
+            ],
+            default: null,
+          },
+          layerKind: {
+            description: "Type hint.",
+            $ref: "#/$defs/draw.content.add.LayerKindIn",
+          },
+          strokes: {
+            description: "Strokes.",
+            type: "array",
+            items: {
+              $ref: "#/$defs/draw.content.add.StrokeIn",
+            },
+            maxItems: 100000,
+          },
+          zones: {
+            description: "Zones as read back (02 §13.4): their fills are painted onto the zones of the inserted layer that contain their\ninterior points; everything else about them is derived and ignored.",
+            type: [
+              "array",
+              "null",
+            ],
+            items: {
+              $ref: "#/$defs/draw.content.add.ZoneIn",
+            },
+            maxItems: 1000000,
+          },
+          bounds: {
+            description: "Read-only (ignored).",
+            anyOf: [
+              {
+                $ref: "#/$defs/draw.content.add.BoundsIn",
+              },
+              {
+                type: "null",
+              },
+            ],
+          },
+        },
+        additionalProperties: false,
+        required: [
+          "type",
+          "id",
+          "layerKind",
+          "strokes",
+        ],
+      },
+      {
+        description: "A group.",
+        type: "object",
+        properties: {
+          type: {
+            type: "string",
+            const: "group",
+          },
+          id: {
+            description: "ID (replaced).",
+            type: "string",
+          },
+          name: {
+            description: "Optional name.",
+            type: [
+              "string",
+              "null",
+            ],
+            default: null,
+          },
+          children: {
+            description: "Children, back to front.",
+            type: "array",
+            items: {
+              $ref: "#/$defs/draw.content.add.NodeIn",
+            },
+          },
+          bounds: {
+            description: "Read-only (ignored).",
+            anyOf: [
+              {
+                $ref: "#/$defs/draw.content.add.BoundsIn",
+              },
+              {
+                type: "null",
+              },
+            ],
+          },
+        },
+        additionalProperties: false,
+        required: [
+          "type",
+          "id",
+          "children",
+        ],
+      },
+      {
+        description: "A text object.",
+        type: "object",
+        properties: {
+          type: {
+            type: "string",
+            const: "text",
+          },
+          id: {
+            description: "ID (replaced).",
+            type: "string",
+          },
+          name: {
+            description: "Optional name.",
+            type: [
+              "string",
+              "null",
+            ],
+            default: null,
+          },
+          text: {
+            description: "The characters.",
+            type: "string",
+            maxLength: 100000,
+          },
+          transform: {
+            description: "Placement (origin = top-left of the box).",
+            type: "array",
+            items: {
+              type: "number",
+            },
+            minItems: 6,
+            maxItems: 6,
+          },
+          widthMode: {
+            description: "Auto or fixed width.",
+            $ref: "#/$defs/draw.content.add.WidthModeIn",
+          },
+          width: {
+            description: "Wrap width (fixed mode).",
+            type: [
+              "number",
+              "null",
+            ],
+            default: null,
+          },
+          runs: {
+            description: "Runs covering the text.",
+            type: "array",
+            items: {
+              $ref: "#/$defs/draw.content.add.RunIn",
+            },
+          },
+          paragraphs: {
+            description: "Paragraphs.",
+            type: "array",
+            items: {
+              $ref: "#/$defs/draw.content.add.ParaIn",
+            },
+          },
+          bounds: {
+            description: "Read-only (ignored).",
+            anyOf: [
+              {
+                $ref: "#/$defs/draw.content.add.BoundsIn",
+              },
+              {
+                type: "null",
+              },
+            ],
+          },
+        },
+        additionalProperties: false,
+        required: [
+          "type",
+          "id",
+          "text",
+          "transform",
+          "widthMode",
+          "runs",
+          "paragraphs",
+        ],
+      },
+      {
+        description: "An embedded bitmap.",
+        type: "object",
+        properties: {
+          type: {
+            type: "string",
+            const: "bitmap",
+          },
+          id: {
+            description: "ID (replaced).",
+            type: "string",
+          },
+          name: {
+            description: "Optional name.",
+            type: [
+              "string",
+              "null",
+            ],
+            default: null,
+          },
+          mediaId: {
+            description: "The package entry of an image the document holds.",
+            type: "string",
+          },
+          pixelWidth: {
+            description: "Pixel width (1–16384).",
+            type: "number",
+            maximum: 16384,
+            minimum: 1,
+          },
+          pixelHeight: {
+            description: "Pixel height (1–16384).",
+            type: "number",
+            maximum: 16384,
+            minimum: 1,
+          },
+          transform: {
+            description: "Pixel space → drawing space.",
+            type: "array",
+            items: {
+              type: "number",
+            },
+            minItems: 6,
+            maxItems: 6,
+          },
+          image: {
+            description: "The image blob as read back (must match `mediaId`).",
+            anyOf: [
+              {
+                $ref: "#/$defs/draw.content.add.Blob",
+              },
+              {
+                type: "null",
+              },
+            ],
+            default: null,
+          },
+          bounds: {
+            description: "Read-only (ignored).",
+            anyOf: [
+              {
+                $ref: "#/$defs/draw.content.add.BoundsIn",
+              },
+              {
+                type: "null",
+              },
+            ],
+          },
+        },
+        additionalProperties: false,
+        required: [
+          "type",
+          "id",
+          "mediaId",
+          "pixelWidth",
+          "pixelHeight",
+          "transform",
+        ],
+      },
+    ],
+  },
+  "draw.content.add.LayerKindIn": {
+    description: "Layer type hint.",
+    oneOf: [
+      {
+        description: "Contour artwork.",
+        type: "string",
+        const: "brush",
+      },
+      {
+        description: "Centre-line artwork.",
+        type: "string",
+        const: "pencil",
+      },
+    ],
+  },
+  "draw.content.add.StrokeIn": {
+    description: "A stroke of the 02 §13.4 shape.",
+    type: "object",
+    properties: {
+      type: {
+        description: "`stroke` (optional).",
+        anyOf: [
+          {
+            $ref: "#/$defs/draw.content.add.StrokeTypeIn",
+          },
+          {
+            type: "null",
+          },
+        ],
+      },
+      id: {
+        description: "ID (replaced).",
+        type: "string",
+      },
+      kind: {
+        description: "Kind.",
+        $ref: "#/$defs/draw.content.add.StrokeKindIn",
+      },
+      closed: {
+        description: "Whether `bezier` is closed.",
+        type: "boolean",
+        default: false,
+      },
+      bezier: {
+        description: "Centre line (pencil, invisible) or spine (brush; `null` once the outline was edited).",
+        type: [
+          "array",
+          "null",
+        ],
+        items: {
+          $ref: "#/$defs/draw.content.add.PointIn",
+        },
+      },
+      colourId: {
+        description: "Colour (kept as given, ID-05).",
+        type: [
+          "string",
+          "null",
+        ],
+        default: null,
+      },
+      lineStyle: {
+        description: "Pencil line style.",
+        anyOf: [
+          {
+            $ref: "#/$defs/draw.content.add.LineStyleIn",
+          },
+          {
+            type: "null",
+          },
+        ],
+      },
+      penId: {
+        description: "Brush pen ID (kept when the pen exists in this project).",
+        type: [
+          "string",
+          "null",
+        ],
+        default: null,
+      },
+      pen: {
+        description: "Brush pen.",
+        anyOf: [
+          {
+            $ref: "#/$defs/draw.content.add.PenIn",
+          },
+          {
+            type: "null",
+          },
+        ],
+      },
+      pressure: {
+        description: "Brush spine pressure.",
+        type: [
+          "array",
+          "null",
+        ],
+        items: {
+          $ref: "#/$defs/draw.content.add.PressureIn",
+        },
+      },
+      textureMatrix: {
+        description: "Gradient/texture placement of a brush fill.",
+        type: [
+          "array",
+          "null",
+        ],
+        items: {
+          type: "number",
+        },
+        minItems: 6,
+        maxItems: 6,
+        default: null,
+      },
+      outline: {
+        description: "Brush outline contours (closed Bézier lists; one contour, SI-053).",
+        type: [
+          "array",
+          "null",
+        ],
+        items: {
+          type: "array",
+          items: {
+            $ref: "#/$defs/draw.content.add.PointIn",
+          },
+        },
+      },
+      leftZoneId: {
+        description: "Derived side zone (ignored).",
+        type: [
+          "string",
+          "null",
+        ],
+        default: null,
+      },
+      rightZoneId: {
+        description: "Derived side zone (ignored).",
+        type: [
+          "string",
+          "null",
+        ],
+        default: null,
+      },
+      bounds: {
+        description: "Read-only (ignored).",
+        anyOf: [
+          {
+            $ref: "#/$defs/draw.content.add.BoundsIn",
+          },
+          {
+            type: "null",
+          },
+        ],
+      },
+    },
+    additionalProperties: false,
+    required: [
+      "id",
+      "kind",
+    ],
+  },
+  "draw.content.add.StrokeTypeIn": {
+    description: "`stroke` (the `type` of a stroke in a read-back).",
+    oneOf: [
+      {
+        description: "A stroke.",
+        type: "string",
+        const: "stroke",
+      },
+    ],
+  },
+  "draw.content.add.StrokeKindIn": {
+    description: "Stroke kind.",
+    oneOf: [
+      {
+        description: "Brush.",
+        type: "string",
+        const: "brush",
+      },
+      {
+        description: "Pencil.",
+        type: "string",
+        const: "pencil",
+      },
+      {
+        description: "Invisible.",
+        type: "string",
+        const: "invisible",
+      },
+    ],
+  },
+  "draw.content.add.PointIn": {
+    description: "A point `{x, y}`.",
+    type: "object",
+    properties: {
+      x: {
+        description: "X (du).",
+        type: "number",
+      },
+      y: {
+        description: "Y (du).",
+        type: "number",
+      },
+    },
+    additionalProperties: false,
+    required: [
+      "x",
+      "y",
+    ],
+  },
+  "draw.content.add.LineStyleIn": {
+    description: "Line style.",
+    type: "object",
+    properties: {
+      thickness: {
+        description: "Thickness (du).",
+        type: "number",
+        maximum: 100,
+        minimum: 0,
+      },
+      lineType: {
+        description: "`solid`.",
+        $ref: "#/$defs/draw.content.add.LineTypeIn",
+      },
+    },
+    additionalProperties: false,
+    required: [
+      "thickness",
+      "lineType",
+    ],
+  },
+  "draw.content.add.LineTypeIn": {
+    description: "Line type.",
+    oneOf: [
+      {
+        description: "Solid.",
+        type: "string",
+        const: "solid",
+      },
+    ],
+  },
+  "draw.content.add.PenIn": {
+    description: "A brush pen.",
+    type: "object",
+    properties: {
+      tipShape: {
+        description: "Tip shape.",
+        $ref: "#/$defs/draw.content.add.TipIn",
+      },
+      minSize: {
+        description: "Minimum size (du).",
+        type: "number",
+        maximum: 100,
+        minimum: 0,
+      },
+      maxSize: {
+        description: "Maximum size (du).",
+        type: "number",
+        maximum: 100,
+        minimum: 0,
+      },
+      tipAngle: {
+        description: "Tip angle (degrees).",
+        type: "number",
+        default: 0,
+        minimum: 0,
+        maximum: 360,
+      },
+    },
+    additionalProperties: false,
+    required: [
+      "tipShape",
+      "minSize",
+      "maxSize",
+    ],
+  },
+  "draw.content.add.TipIn": {
+    description: "Tip shape.",
+    oneOf: [
+      {
+        description: "Round.",
+        type: "string",
+        const: "round",
+      },
+      {
+        description: "Oval.",
+        type: "string",
+        const: "oval",
+      },
+      {
+        description: "Square.",
+        type: "string",
+        const: "square",
+      },
+      {
+        description: "Flat.",
+        type: "string",
+        const: "flat",
+      },
+    ],
+  },
+  "draw.content.add.PressureIn": {
+    description: "A pressure sample.",
+    type: "object",
+    properties: {
+      t: {
+        description: "Position 0–1.",
+        type: "number",
+        maximum: 1,
+        minimum: 0,
+      },
+      p: {
+        description: "Pressure 0–1.",
+        type: "number",
+        maximum: 1,
+        minimum: 0,
+      },
+    },
+    additionalProperties: false,
+    required: [
+      "t",
+      "p",
+    ],
+  },
+  "draw.content.add.BoundsIn": {
+    description: "`{x, y, width, height}` (read-only; ignored).",
+    type: "object",
+    properties: {
+      x: {
+        description: "X.",
+        type: "number",
+      },
+      y: {
+        description: "Y.",
+        type: "number",
+      },
+      width: {
+        description: "Width.",
+        type: "number",
+      },
+      height: {
+        description: "Height.",
+        type: "number",
+      },
+    },
+    additionalProperties: false,
+    required: [
+      "x",
+      "y",
+      "width",
+      "height",
+    ],
+  },
+  "draw.content.add.ZoneIn": {
+    description: "A zone of read-back content (only `colourId`, `textureMatrix` and `interiorPoint` are used).",
+    type: "object",
+    properties: {
+      type: {
+        description: "`zone` (optional).",
+        type: [
+          "string",
+          "null",
+        ],
+        default: null,
+      },
+      id: {
+        description: "Derived ID (ignored).",
+        type: [
+          "string",
+          "null",
+        ],
+        default: null,
+      },
+      colourId: {
+        description: "Fill colour (`null` = unpainted).",
+        type: [
+          "string",
+          "null",
+        ],
+        default: null,
+      },
+      textureMatrix: {
+        description: "Gradient/texture placement.",
+        type: [
+          "array",
+          "null",
+        ],
+        items: {
+          type: "number",
+        },
+        minItems: 6,
+        maxItems: 6,
+        default: null,
+      },
+      interiorPoint: {
+        description: "A point inside the zone.",
+        $ref: "#/$defs/draw.content.add.PointIn",
+      },
+      boundaryStrokeIds: {
+        description: "Derived (ignored).",
+        type: [
+          "array",
+          "null",
+        ],
+        items: {
+          type: "string",
+        },
+        default: null,
+      },
+      holes: {
+        description: "Derived (ignored).",
+        type: [
+          "array",
+          "null",
+        ],
+        items: true,
+        default: null,
+      },
+      parentZoneId: {
+        description: "Derived (ignored).",
+        type: [
+          "string",
+          "null",
+        ],
+        default: null,
+      },
+      area: {
+        description: "Derived (ignored).",
+        type: [
+          "number",
+          "null",
+        ],
+        default: null,
+      },
+      bounds: {
+        description: "Derived (ignored).",
+        anyOf: [
+          {
+            $ref: "#/$defs/draw.content.add.BoundsIn",
+          },
+          {
+            type: "null",
+          },
+        ],
+      },
+      parentId: {
+        description: "Flat read-back parent (ignored).",
+        type: [
+          "string",
+          "null",
+        ],
+        default: null,
+      },
+    },
+    additionalProperties: false,
+    required: [
+      "interiorPoint",
+    ],
+  },
+  "draw.content.add.WidthModeIn": {
+    description: "Width mode.",
+    oneOf: [
+      {
+        description: "No wrapping.",
+        type: "string",
+        const: "auto",
+      },
+      {
+        description: "Word wrap at `width`.",
+        type: "string",
+        const: "fixed",
+      },
+    ],
+  },
+  "draw.content.add.RunIn": {
+    description: "A character run of the 02 §13.4 shape.",
+    type: "object",
+    properties: {
+      start: {
+        description: "First code point.",
+        type: "integer",
+        maximum: 2147483647,
+        minimum: 0,
+      },
+      length: {
+        description: "Number of code points.",
+        type: "integer",
+        maximum: 2147483647,
+        minimum: 0,
+      },
+      font: {
+        description: "Font family.",
+        type: "string",
+        minLength: 1,
+        maxLength: 256,
+      },
+      size: {
+        description: "Size (du).",
+        type: "number",
+        maximum: 512,
+        minimum: 1,
+      },
+      bold: {
+        description: "Bold.",
+        type: "boolean",
+      },
+      italic: {
+        description: "Italic.",
+        type: "boolean",
+      },
+      baseline: {
+        description: "Baseline.",
+        $ref: "#/$defs/draw.content.add.BaselineIn",
+      },
+      kerning: {
+        description: "Kerning (1/100 em).",
+        type: "number",
+        maximum: 60,
+        minimum: -60,
+      },
+      autoKern: {
+        description: "Automatic kerning.",
+        type: "boolean",
+      },
+      colourId: {
+        description: "Fill colour.",
+        type: [
+          "string",
+          "null",
+        ],
+        default: null,
+      },
+      outlineColourId: {
+        description: "Outline colour (must be `null`: 10 §4.9 runs have no outline colour, SI-055).",
+        type: [
+          "string",
+          "null",
+        ],
+        default: null,
+      },
+    },
+    additionalProperties: false,
+    required: [
+      "start",
+      "length",
+      "font",
+      "size",
+      "bold",
+      "italic",
+      "baseline",
+      "kerning",
+      "autoKern",
+    ],
+  },
+  "draw.content.add.BaselineIn": {
+    description: "Baseline.",
+    oneOf: [
+      {
+        description: "Normal.",
+        type: "string",
+        const: "normal",
+      },
+      {
+        description: "Subscript.",
+        type: "string",
+        const: "subscript",
+      },
+      {
+        description: "Superscript.",
+        type: "string",
+        const: "superscript",
+      },
+    ],
+  },
+  "draw.content.add.ParaIn": {
+    description: "A paragraph of the 02 §13.4 shape.",
+    type: "object",
+    properties: {
+      start: {
+        description: "First code point.",
+        type: "integer",
+        maximum: 2147483647,
+        minimum: 0,
+      },
+      length: {
+        description: "Number of code points.",
+        type: "integer",
+        maximum: 2147483647,
+        minimum: 0,
+      },
+      align: {
+        description: "Alignment.",
+        $ref: "#/$defs/draw.content.add.AlignIn",
+      },
+      leftMargin: {
+        description: "Left margin (du).",
+        type: "number",
+        maximum: 1000,
+        minimum: 0,
+      },
+      rightMargin: {
+        description: "Right margin (du).",
+        type: "number",
+        maximum: 1000,
+        minimum: 0,
+      },
+      indent: {
+        description: "First-line indent (du).",
+        type: "number",
+        maximum: 1000,
+        minimum: -99,
+      },
+      lineSpacing: {
+        description: "Line spacing (du).",
+        type: "number",
+        maximum: 1000,
+        minimum: -99,
+      },
+    },
+    additionalProperties: false,
+    required: [
+      "start",
+      "length",
+      "align",
+      "leftMargin",
+      "rightMargin",
+      "indent",
+      "lineSpacing",
+    ],
+  },
+  "draw.content.add.AlignIn": {
+    description: "Alignment.",
+    oneOf: [
+      {
+        description: "Left.",
+        type: "string",
+        const: "left",
+      },
+      {
+        description: "Centre.",
+        type: "string",
+        const: "centre",
+      },
+      {
+        description: "Right.",
+        type: "string",
+        const: "right",
+      },
+      {
+        description: "Justify.",
+        type: "string",
+        const: "justify",
+      },
+    ],
+  },
+  "draw.content.add.Blob": {
+    description: "A binary payload stored as a package entry (10 §1.1). Never inlined in object JSON.",
+    type: "object",
+    properties: {
+      entry: {
+        description: "Package entry path.",
+        type: "string",
+        minLength: 1,
+        maxLength: 1024,
+      },
+      mediaType: {
+        description: "IANA media type.",
+        type: "string",
+        minLength: 1,
+        maxLength: 255,
+      },
+      size: {
+        description: "Size in bytes (64-bit: entries larger than 4 GiB are supported, 10 §5).",
+        type: "integer",
+        maximum: 18446744073709551615n,
+        minimum: 0,
+      },
+      sha256: {
+        description: "Lower-case hex SHA-256 of the bytes.",
+        type: "string",
+        pattern: "^[0-9a-f]{64}$",
+      },
+    },
+    additionalProperties: false,
+    required: [
+      "entry",
+      "mediaType",
+      "size",
+      "sha256",
+    ],
+  },
+  "draw.content.add.SpaceIn": {
+    description: "The drawing space description of a read-back (ignored).",
+    type: "object",
+    properties: {
+      units: {
+        description: "`du`.",
+        type: "string",
+      },
+      duPerField: {
+        description: "100.",
+        type: "number",
+      },
+      yAxis: {
+        description: "`up`.",
+        type: "string",
+      },
+      origin: {
+        description: "`drawingCentre`.",
+        type: "string",
+      },
+    },
+    additionalProperties: false,
+    required: [
+      "units",
+      "duPerField",
+      "yAxis",
+      "origin",
+    ],
+  },
+  "draw.content.add.Point": {
+    description: "A point `{x, y}` in drawing units.",
+    type: "object",
+    properties: {
+      x: {
+        description: "X (du).",
+        type: "number",
+      },
+      y: {
+        description: "Y (du, up).",
+        type: "number",
+      },
+    },
+    additionalProperties: false,
+    required: [
+      "x",
+      "y",
+    ],
+  },
+  "draw.content.add.ContentLayer": {
+    description: "Where inserted content goes.",
+    oneOf: [
+      {
+        description: "On top of the drawing.",
+        type: "string",
+        const: "top",
+      },
+      {
+        description: "Behind all artwork.",
+        type: "string",
+        const: "behind",
+      },
+    ],
+  },
+  "draw.content.add.params": {
+    title: "ContentAddParams",
+    description: "`draw.content.add` parameters (02 §13.5).",
+    type: "object",
+    properties: {
+      drawingId: {
+        description: "The drawing (default: `elementId` + `frame`, else the current drawing).",
+        type: [
+          "string",
+          "null",
+        ],
+        default: null,
+      },
+      elementId: {
+        description: "The element whose cell receives the content.",
+        type: [
+          "string",
+          "null",
+        ],
+        default: null,
+      },
+      frame: {
+        description: "The frame of that cell.",
+        type: [
+          "integer",
+          "null",
+        ],
+        default: null,
+        minimum: 1,
+        maximum: 2147483647,
+      },
+      createDrawing: {
+        description: "Create a drawing in an empty addressed cell.",
+        type: "boolean",
+        default: true,
+      },
+      content: {
+        description: "Drawing content in the 02 §13.4 shape: `{nodes: [...]}`, a `draw.drawing.get` result as returned.",
+        $ref: "#/$defs/draw.content.add.ContentIn",
+      },
+      offset: {
+        description: "Offset added to all geometry (du).",
+        anyOf: [
+          {
+            $ref: "#/$defs/draw.content.add.Point",
+          },
+          {
+            type: "null",
+          },
+        ],
+        default: null,
+      },
+      layer: {
+        description: "Insert on top or behind.",
+        $ref: "#/$defs/draw.content.add.ContentLayer",
+      },
+      select: {
+        description: "Make the inserted objects the drawing selection.",
+        type: "boolean",
+        default: true,
+      },
+    },
+    additionalProperties: false,
+    required: [
+      "content",
+    ],
+  },
+  "draw.content.add.result": {
+    title: "ContentAddResult",
+    description: "`{idMap, rev}`.",
+    type: "object",
+    properties: {
+      drawingId: {
+        description: "The drawing.",
+        type: "string",
+      },
+      createdDrawing: {
+        description: "A drawing was created in the empty cell.",
+        type: "boolean",
+      },
+      idMap: {
+        description: "Old ID → new ID of every inserted node and stroke (SI-026 `idMap`).",
+        type: "object",
+        additionalProperties: {
+          type: "string",
+        },
+      },
+      createdIds: {
+        description: "Created objects.",
+        type: "array",
+        items: {
+          type: "string",
+        },
+      },
+      modifiedIds: {
+        description: "Modified objects (content, membership or position changed; IDs kept).",
+        type: "array",
+        items: {
+          type: "string",
+        },
+      },
+      removedIds: {
+        description: "Removed objects (descendants included).",
+        type: "array",
+        items: {
+          type: "string",
+        },
+      },
+      rev: {
+        description: "The drawing revision after the change.",
+        type: "integer",
+        maximum: 18446744073709551615n,
+        minimum: 0,
+      },
+    },
+    required: [
+      "drawingId",
+      "createdDrawing",
+      "idMap",
+      "createdIds",
+      "modifiedIds",
+      "removedIds",
+      "rev",
+    ],
+  },
+  "draw.current.get.params": {
+    title: "CurrentGetParams",
+    description: "`draw.current.get` parameters.",
+    type: "object",
+    properties: {
+      view: {
+        description: "A view id (default: the active view, the central view of the arrangement in use).",
+        type: [
+          "string",
+          "null",
+        ],
+        default: null,
+      },
+    },
+    additionalProperties: false,
+  },
+  "draw.current.get.ViewRef": {
+    description: "The view a drawing is edited in (SI-026 `activeView`, the `AppState.activeView` shape).",
+    type: "object",
+    properties: {
+      viewId: {
+        description: "View id.",
+        type: "string",
+      },
+      panelId: {
+        description: "Panel id.",
+        type: "string",
+      },
+      type: {
+        description: "`camera`, `drawing`, `top` or `side`.",
+        type: "string",
+      },
+    },
+    required: [
+      "viewId",
+      "panelId",
+      "type",
+    ],
+  },
+  "draw.current.get.result": {
+    title: "CurrentResult",
+    description: "`draw.current.get` result (02 §13.5).",
+    type: "object",
+    properties: {
+      drawingId: {
+        description: "The current drawing, `null` for an empty cell.",
+        type: [
+          "string",
+          "null",
+        ],
+      },
+      elementId: {
+        description: "The current element.",
+        type: [
+          "string",
+          "null",
+        ],
+      },
+      sceneId: {
+        description: "The current scene.",
+        type: [
+          "string",
+          "null",
+        ],
+      },
+      frame: {
+        description: "The current frame.",
+        type: "integer",
+        maximum: 2147483647,
+        minimum: 0,
+      },
+      cellEmpty: {
+        description: "The current cell is empty.",
+        type: "boolean",
+      },
+      locked: {
+        description: "The current drawing is locked.",
+        type: "boolean",
+      },
+      activeView: {
+        description: "The active view.",
+        $ref: "#/$defs/draw.current.get.ViewRef",
+      },
+    },
+    required: [
       "frame",
       "cellEmpty",
       "locked",
       "activeView",
     ],
-    "x-spec": "`{drawingId|null, elementId, sceneId, frame, cellEmpty: bool, locked: bool, activeView}`",
-    additionalProperties: false,
   },
-  "draw.cut.apply.params": {
-    title: "draw.cut.apply parameters",
+  "draw.cut.apply.Point": {
+    description: "A point `{x, y}` in drawing units.",
     type: "object",
     properties: {
-      drawingId: {
-        type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
+      x: {
+        description: "X (du).",
+        type: "number",
       },
-      polygon: {
-        type: "array",
-        items: {
-          type: "object",
-          properties: {
-            x: {
-              type: "number",
-            },
-            y: {
-              type: "number",
-            },
-          },
-          required: [
-            "x",
-            "y",
-          ],
-          additionalProperties: false,
-        },
-        maxItems: 100000,
-      },
-      rect: {
-        type: "object",
-        properties: {
-          x: {
-            type: "number",
-          },
-          y: {
-            type: "number",
-          },
-          width: {
-            type: "number",
-          },
-          height: {
-            type: "number",
-          },
-        },
-        required: [
-          "x",
-          "y",
-          "width",
-          "height",
-        ],
-        additionalProperties: false,
-      },
-      then: {
-        type: "string",
-        enum: [
-          "select",
-          "delete",
-        ],
-        default: "select",
+      y: {
+        description: "Y (du, up).",
+        type: "number",
       },
     },
     additionalProperties: false,
-    "x-spec": "`drawingId?: id; polygon?: [point]; rect?: {x,y,width,height}; then: enum \"select\"|\"delete\" = \"select\"`",
+    required: [
+      "x",
+      "y",
+    ],
   },
-  "draw.cut.apply.result": {
-    title: "draw.cut.apply result",
+  "draw.cut.apply.RectArea": {
+    description: "A rectangle `{x, y, width, height}`.",
     type: "object",
     properties: {
-      insideIds: {
-        type: "array",
-        items: {
-          type: "string",
-          minLength: 1,
-          maxLength: 4096,
-          description: "object ID or path reference (10 §3)",
-        },
-        maxItems: 100000,
-      },
-      removedIds: {
-        type: "array",
-        items: {
-          type: "string",
-          minLength: 1,
-          maxLength: 4096,
-          description: "object ID or path reference (10 §3)",
-        },
-        maxItems: 100000,
-      },
-      rev: {
+      x: {
+        description: "Minimum x.",
         type: "number",
+      },
+      y: {
+        description: "Minimum y.",
+        type: "number",
+      },
+      width: {
+        description: "Width.",
+        type: "number",
+        minimum: 0,
+      },
+      height: {
+        description: "Height.",
+        type: "number",
+        minimum: 0,
+      },
+    },
+    additionalProperties: false,
+    required: [
+      "x",
+      "y",
+      "width",
+      "height",
+    ],
+  },
+  "draw.cut.apply.SegmentIn": {
+    description: "A segment `{from, to}`.",
+    type: "object",
+    properties: {
+      from: {
+        description: "Start.",
+        $ref: "#/$defs/draw.cut.apply.Point",
+      },
+      to: {
+        description: "End.",
+        $ref: "#/$defs/draw.cut.apply.Point",
+      },
+    },
+    additionalProperties: false,
+    required: [
+      "from",
+      "to",
+    ],
+  },
+  "draw.cut.apply.Then": {
+    description: "What happens to the inside of a cut.",
+    oneOf: [
+      {
+        description: "Select it.",
+        type: "string",
+        const: "select",
+      },
+      {
+        description: "Delete it.",
+        type: "string",
+        const: "delete",
+      },
+    ],
+  },
+  "draw.cut.apply.params": {
+    title: "CutParams",
+    description: "`draw.cut.apply` parameters (`segment`: SI-071).",
+    type: "object",
+    properties: {
+      drawingId: {
+        description: "The drawing (default: current).",
+        type: [
+          "string",
+          "null",
+        ],
+        default: null,
+      },
+      polygon: {
+        description: "A closed lasso.",
+        type: [
+          "array",
+          "null",
+        ],
+        items: {
+          $ref: "#/$defs/draw.cut.apply.Point",
+        },
+        default: null,
+      },
+      rect: {
+        description: "A rectangle.",
+        anyOf: [
+          {
+            $ref: "#/$defs/draw.cut.apply.RectArea",
+          },
+          {
+            type: "null",
+          },
+        ],
+      },
+      segment: {
+        description: "An open segment to cut along (splits lines and zones; SI-071).",
+        anyOf: [
+          {
+            $ref: "#/$defs/draw.cut.apply.SegmentIn",
+          },
+          {
+            type: "null",
+          },
+        ],
+      },
+      then: {
+        description: "What happens to the inside.",
+        $ref: "#/$defs/draw.cut.apply.Then",
+      },
+    },
+    additionalProperties: false,
+  },
+  "draw.cut.apply.SkippedNode": {
+    description: "A node a cut leaves whole.",
+    type: "object",
+    properties: {
+      objectId: {
+        description: "The text or bitmap node.",
+        type: "string",
+      },
+      reason: {
+        description: "Why (`notClippable`: partly enclosed text or bitmap, SI-078).",
+        type: "string",
       },
     },
     required: [
-      "insideIds",
-      "removedIds",
-      "rev",
+      "objectId",
+      "reason",
     ],
-    "x-spec": "`{insideIds: [id], removedIds: [id], rev}`",
-    additionalProperties: false,
   },
-  "draw.drawing.changed.params": {
-    title: "draw.drawing.changed parameters",
-    type: "object",
-    properties: {},
-    additionalProperties: false,
-    description: "Events take no parameters; subscribe to them (11 §9).",
-    "x-spec": "—",
-  },
-  "draw.drawing.changed.result": {
-    title: "draw.drawing.changed result",
+  "draw.cut.apply.result": {
+    title: "CutResult",
+    description: "`{insideIds, removedIds, rev}`.",
     type: "object",
     properties: {
       drawingId: {
+        description: "The drawing.",
         type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
       },
-      rev: {
-        type: "number",
+      insideIds: {
+        description: "The inside objects (now selected) with `then: \"select\"`; the new pieces of a segment cut.",
+        type: "array",
+        items: {
+          type: "string",
+        },
       },
-      commandId: {
-        type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
+      keptBrushIds: {
+        description: "Brush strokes crossing the boundary, kept whole (SI-059, SI-071).",
+        type: "array",
+        items: {
+          type: "string",
+        },
+      },
+      skipped: {
+        description: "Text and bitmap nodes partly enclosed, left whole (SI-078).",
+        type: "array",
+        items: {
+          $ref: "#/$defs/draw.cut.apply.SkippedNode",
+        },
       },
       createdIds: {
+        description: "Created objects.",
         type: "array",
         items: {
           type: "string",
-          minLength: 1,
-          maxLength: 4096,
-          description: "object ID or path reference (10 §3)",
         },
-        maxItems: 100000,
       },
       modifiedIds: {
+        description: "Modified objects (content, membership or position changed; IDs kept).",
         type: "array",
         items: {
           type: "string",
-          minLength: 1,
-          maxLength: 4096,
-          description: "object ID or path reference (10 §3)",
         },
-        maxItems: 100000,
       },
       removedIds: {
+        description: "Removed objects (descendants included).",
         type: "array",
         items: {
           type: "string",
-          minLength: 1,
-          maxLength: 4096,
-          description: "object ID or path reference (10 §3)",
         },
-        maxItems: 100000,
+      },
+      rev: {
+        description: "The drawing revision after the change.",
+        type: "integer",
+        maximum: 18446744073709551615n,
+        minimum: 0,
+      },
+    },
+    required: [
+      "drawingId",
+      "insideIds",
+      "keptBrushIds",
+      "skipped",
+      "createdIds",
+      "modifiedIds",
+      "removedIds",
+      "rev",
+    ],
+  },
+  "draw.drawing.changed.params": {
+    title: "NoParams",
+    description: "No parameters.",
+    type: "object",
+    additionalProperties: false,
+  },
+  "draw.drawing.changed.result": {
+    title: "DrawingChangedEvent",
+    description: "`draw.drawing.changed` payload (02 §13.5, spec A).",
+    type: "object",
+    properties: {
+      drawingId: {
+        description: "The drawing whose content changed.",
+        type: "string",
+      },
+      rev: {
+        description: "Its revision after the change.",
+        type: "integer",
+        maximum: 18446744073709551615n,
+        minimum: 0,
+      },
+      commandId: {
+        description: "The command that committed the change (`edit.undo`, `edit.redo`, `checkpoint.restore`, `batch`, …).",
+        type: "string",
+      },
+      createdIds: {
+        description: "Local IDs of the nodes and strokes created.",
+        type: "array",
+        items: {
+          type: "string",
+        },
+      },
+      modifiedIds: {
+        description: "Local IDs of the nodes and strokes modified.",
+        type: "array",
+        items: {
+          type: "string",
+        },
+      },
+      removedIds: {
+        description: "Local IDs of the nodes and strokes removed.",
+        type: "array",
+        items: {
+          type: "string",
+        },
       },
     },
     required: [
@@ -28780,81 +31532,830 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
       "modifiedIds",
       "removedIds",
     ],
-    description: "Event payload (delivered to subscribers).",
-    "x-spec": "`{drawingId, rev, commandId, createdIds: [id], modifiedIds: [id], removedIds: [id]}`",
-    additionalProperties: false,
+  },
+  "draw.drawing.get.IncludePart": {
+    description: "What `draw.drawing.get` includes.",
+    oneOf: [
+      {
+        description: "Zones per layer (planar map, M2 C2.2; reported as unavailable).",
+        type: "string",
+        const: "zones",
+      },
+      {
+        description: "Pressure maps.",
+        type: "string",
+        const: "pressure",
+      },
+      {
+        description: "Brush outlines.",
+        type: "string",
+        const: "outline",
+      },
+      {
+        description: "Bounds.",
+        type: "string",
+        const: "bounds",
+      },
+    ],
   },
   "draw.drawing.get.params": {
-    title: "draw.drawing.get parameters",
+    title: "DrawingGetParams",
+    description: "`draw.drawing.get` parameters (02 §13.5).",
     type: "object",
     properties: {
       drawingId: {
-        type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
+        description: "The drawing (default: `elementId` + `frame`, else the current drawing).",
+        type: [
+          "string",
+          "null",
+        ],
+        default: null,
       },
       elementId: {
-        type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
+        description: "The element whose cell exposes the drawing.",
+        type: [
+          "string",
+          "null",
+        ],
+        default: null,
       },
       frame: {
-        type: "integer",
+        description: "The frame of that cell (default: current frame).",
+        type: [
+          "integer",
+          "null",
+        ],
+        default: null,
+        minimum: 1,
+        maximum: 2147483647,
       },
       include: {
-        type: "array",
+        description: "Parts to include (default: all).",
+        type: [
+          "array",
+          "null",
+        ],
         items: {
-          type: "string",
-          enum: [
-            "zones",
-            "pressure",
-            "outline",
-            "bounds",
-          ],
+          $ref: "#/$defs/draw.drawing.get.IncludePart",
         },
-        maxItems: 100000,
       },
       flatten: {
+        description: "A flat object list with `parentId` instead of nesting.",
         type: "boolean",
         default: false,
       },
       ids: {
-        type: "array",
+        description: "Return only these objects (flat list).",
+        type: [
+          "array",
+          "null",
+        ],
         items: {
           type: "string",
-          minLength: 1,
-          maxLength: 4096,
-          description: "object ID or path reference (10 §3)",
         },
-        maxItems: 100000,
+        default: null,
       },
     },
     additionalProperties: false,
-    "x-spec": "`drawingId?: id; elementId?: id; frame?: int; include?: [enum \"zones\"|\"pressure\"|\"outline\"|\"bounds\"]; flatten: bool = false; ids?: [id]`",
   },
-  "draw.drawing.get.spec.DrawingReadback": {
+  "draw.drawing.get.point": {
+    type: "object",
+    properties: {
+      x: {
+        type: "number",
+      },
+      y: {
+        type: "number",
+      },
+    },
+    additionalProperties: false,
+    required: [
+      "x",
+      "y",
+    ],
+  },
+  "draw.drawing.get.bounds": {
+    type: "object",
+    properties: {
+      x: {
+        type: "number",
+      },
+      y: {
+        type: "number",
+      },
+      width: {
+        type: "number",
+        minimum: 0,
+      },
+      height: {
+        type: "number",
+        minimum: 0,
+      },
+    },
+    additionalProperties: false,
+    required: [
+      "x",
+      "y",
+      "width",
+      "height",
+    ],
+  },
+  "draw.drawing.get.bezier": {
+    type: "array",
+    minItems: 1,
+    items: {
+      $ref: "#/$defs/draw.drawing.get.point",
+    },
+  },
+  "draw.drawing.get.matrix": {
+    type: "array",
+    minItems: 6,
+    maxItems: 6,
+    items: {
+      type: "number",
+    },
+  },
+  "draw.drawing.get.colour": {
+    type: [
+      "string",
+      "null",
+    ],
+  },
+  "draw.drawing.get.parentId": {
+    type: [
+      "string",
+      "null",
+    ],
+  },
+  "draw.drawing.get.item": {
+    oneOf: [
+      {
+        $ref: "#/$defs/draw.drawing.get.layer",
+      },
+      {
+        $ref: "#/$defs/draw.drawing.get.group",
+      },
+      {
+        $ref: "#/$defs/draw.drawing.get.text",
+      },
+      {
+        $ref: "#/$defs/draw.drawing.get.bitmap",
+      },
+      {
+        $ref: "#/$defs/draw.drawing.get.stroke",
+      },
+      {
+        $ref: "#/$defs/draw.drawing.get.zone",
+      },
+    ],
+  },
+  "draw.drawing.get.layer": {
+    type: "object",
+    properties: {
+      type: {
+        const: "layer",
+      },
+      id: {
+        type: "string",
+      },
+      name: {
+        type: "string",
+      },
+      layerKind: {
+        enum: [
+          "brush",
+          "pencil",
+        ],
+      },
+      strokes: {
+        type: "array",
+        items: {
+          $ref: "#/$defs/draw.drawing.get.stroke",
+        },
+      },
+      parentId: {
+        $ref: "#/$defs/draw.drawing.get.parentId",
+      },
+      zones: {
+        type: "array",
+        items: {
+          $ref: "#/$defs/draw.drawing.get.zone",
+        },
+      },
+    },
+    additionalProperties: false,
+    required: [
+      "type",
+      "id",
+      "layerKind",
+    ],
+  },
+  "draw.drawing.get.group": {
+    type: "object",
+    properties: {
+      type: {
+        const: "group",
+      },
+      id: {
+        type: "string",
+      },
+      name: {
+        type: "string",
+      },
+      children: {
+        type: "array",
+        items: {
+          $ref: "#/$defs/draw.drawing.get.item",
+        },
+      },
+      bounds: {
+        oneOf: [
+          {
+            $ref: "#/$defs/draw.drawing.get.bounds",
+          },
+          {
+            type: "null",
+          },
+        ],
+      },
+      parentId: {
+        $ref: "#/$defs/draw.drawing.get.parentId",
+      },
+    },
+    additionalProperties: false,
+    required: [
+      "type",
+      "id",
+    ],
+  },
+  "draw.drawing.get.run": {
+    type: "object",
+    properties: {
+      start: {
+        type: "integer",
+        minimum: 0,
+      },
+      length: {
+        type: "integer",
+        minimum: 0,
+      },
+      font: {
+        type: "string",
+      },
+      size: {
+        type: "number",
+        minimum: 0,
+      },
+      bold: {
+        type: "boolean",
+      },
+      italic: {
+        type: "boolean",
+      },
+      baseline: {
+        enum: [
+          "normal",
+          "subscript",
+          "superscript",
+        ],
+      },
+      kerning: {
+        type: "number",
+      },
+      autoKern: {
+        type: "boolean",
+      },
+      colourId: {
+        $ref: "#/$defs/draw.drawing.get.colour",
+      },
+      outlineColourId: {
+        type: "null",
+      },
+    },
+    additionalProperties: false,
+    required: [
+      "start",
+      "length",
+      "font",
+      "size",
+      "bold",
+      "italic",
+      "baseline",
+      "kerning",
+      "autoKern",
+      "colourId",
+      "outlineColourId",
+    ],
+  },
+  "draw.drawing.get.paragraph": {
+    type: "object",
+    properties: {
+      start: {
+        type: "integer",
+        minimum: 0,
+      },
+      length: {
+        type: "integer",
+        minimum: 0,
+      },
+      align: {
+        enum: [
+          "left",
+          "centre",
+          "right",
+          "justify",
+        ],
+      },
+      leftMargin: {
+        type: "number",
+      },
+      rightMargin: {
+        type: "number",
+      },
+      indent: {
+        type: "number",
+      },
+      lineSpacing: {
+        type: "number",
+      },
+    },
+    additionalProperties: false,
+    required: [
+      "start",
+      "length",
+      "align",
+      "leftMargin",
+      "rightMargin",
+      "indent",
+      "lineSpacing",
+    ],
+  },
+  "draw.drawing.get.text": {
+    type: "object",
+    properties: {
+      type: {
+        const: "text",
+      },
+      id: {
+        type: "string",
+      },
+      name: {
+        type: "string",
+      },
+      text: {
+        type: "string",
+      },
+      transform: {
+        $ref: "#/$defs/draw.drawing.get.matrix",
+      },
+      widthMode: {
+        enum: [
+          "auto",
+          "fixed",
+        ],
+      },
+      width: {
+        type: [
+          "number",
+          "null",
+        ],
+      },
+      runs: {
+        type: "array",
+        items: {
+          $ref: "#/$defs/draw.drawing.get.run",
+        },
+      },
+      paragraphs: {
+        type: "array",
+        items: {
+          $ref: "#/$defs/draw.drawing.get.paragraph",
+        },
+      },
+      bounds: {
+        oneOf: [
+          {
+            $ref: "#/$defs/draw.drawing.get.bounds",
+          },
+          {
+            type: "null",
+          },
+        ],
+      },
+      parentId: {
+        $ref: "#/$defs/draw.drawing.get.parentId",
+      },
+    },
+    additionalProperties: false,
+    required: [
+      "type",
+      "id",
+      "text",
+      "transform",
+      "widthMode",
+      "width",
+      "runs",
+      "paragraphs",
+    ],
+  },
+  "draw.drawing.get.blob": {
+    type: "object",
+    properties: {
+      entry: {
+        type: "string",
+      },
+      mediaType: {
+        type: "string",
+      },
+      size: {
+        type: "integer",
+        minimum: 0,
+      },
+      sha256: {
+        type: "string",
+        pattern: "^[0-9a-f]{64}$",
+      },
+    },
+    additionalProperties: false,
+    required: [
+      "entry",
+      "mediaType",
+      "size",
+      "sha256",
+    ],
+  },
+  "draw.drawing.get.bitmap": {
+    type: "object",
+    properties: {
+      type: {
+        const: "bitmap",
+      },
+      id: {
+        type: "string",
+      },
+      name: {
+        type: "string",
+      },
+      mediaId: {
+        type: [
+          "string",
+          "null",
+        ],
+      },
+      pixelWidth: {
+        type: [
+          "number",
+          "null",
+        ],
+      },
+      pixelHeight: {
+        type: [
+          "number",
+          "null",
+        ],
+      },
+      transform: {
+        oneOf: [
+          {
+            $ref: "#/$defs/draw.drawing.get.matrix",
+          },
+          {
+            type: "null",
+          },
+        ],
+      },
+      image: {
+        oneOf: [
+          {
+            $ref: "#/$defs/draw.drawing.get.blob",
+          },
+          {
+            type: "null",
+          },
+        ],
+      },
+      bounds: {
+        oneOf: [
+          {
+            $ref: "#/$defs/draw.drawing.get.bounds",
+          },
+          {
+            type: "null",
+          },
+        ],
+      },
+      parentId: {
+        $ref: "#/$defs/draw.drawing.get.parentId",
+      },
+    },
+    additionalProperties: false,
+    required: [
+      "type",
+      "id",
+      "mediaId",
+      "pixelWidth",
+      "pixelHeight",
+      "transform",
+      "image",
+    ],
+  },
+  "draw.drawing.get.pressure": {
+    oneOf: [
+      {
+        type: "array",
+        items: {
+          type: "object",
+          properties: {
+            t: {
+              type: "number",
+              minimum: 0,
+              maximum: 1,
+            },
+            p: {
+              type: "number",
+              minimum: 0,
+              maximum: 1,
+            },
+          },
+          additionalProperties: false,
+          required: [
+            "t",
+            "p",
+          ],
+        },
+      },
+      {
+        type: "null",
+      },
+    ],
+  },
+  "draw.drawing.get.pen": {
+    oneOf: [
+      {
+        type: "object",
+        properties: {
+          tipShape: {
+            enum: [
+              "round",
+              "oval",
+              "square",
+              "flat",
+            ],
+          },
+          minSize: {
+            type: "number",
+            minimum: 0,
+            maximum: 100,
+          },
+          maxSize: {
+            type: "number",
+            minimum: 0,
+            maximum: 100,
+          },
+          tipAngle: {
+            type: "number",
+            minimum: 0,
+            maximum: 360,
+          },
+        },
+        additionalProperties: false,
+        required: [
+          "tipShape",
+          "minSize",
+          "maxSize",
+          "tipAngle",
+        ],
+      },
+      {
+        type: "null",
+      },
+    ],
+  },
+  "draw.drawing.get.stroke": {
+    type: "object",
+    properties: {
+      type: {
+        const: "stroke",
+      },
+      id: {
+        type: "string",
+      },
+      kind: {
+        enum: [
+          "brush",
+          "pencil",
+          "invisible",
+        ],
+      },
+      closed: {
+        type: "boolean",
+      },
+      bezier: {
+        oneOf: [
+          {
+            $ref: "#/$defs/draw.drawing.get.bezier",
+          },
+          {
+            type: "null",
+          },
+        ],
+      },
+      colourId: {
+        $ref: "#/$defs/draw.drawing.get.colour",
+      },
+      lineStyle: {
+        type: "object",
+        properties: {
+          thickness: {
+            type: "number",
+            minimum: 0,
+          },
+          lineType: {
+            const: "solid",
+          },
+        },
+        additionalProperties: false,
+        required: [
+          "thickness",
+          "lineType",
+        ],
+      },
+      penId: {
+        type: [
+          "string",
+          "null",
+        ],
+      },
+      pen: {
+        $ref: "#/$defs/draw.drawing.get.pen",
+      },
+      pressure: {
+        $ref: "#/$defs/draw.drawing.get.pressure",
+      },
+      textureMatrix: {
+        oneOf: [
+          {
+            $ref: "#/$defs/draw.drawing.get.matrix",
+          },
+          {
+            type: "null",
+          },
+        ],
+      },
+      outline: {
+        type: "array",
+        minItems: 1,
+        maxItems: 1,
+        items: {
+          $ref: "#/$defs/draw.drawing.get.bezier",
+        },
+      },
+      bounds: {
+        oneOf: [
+          {
+            $ref: "#/$defs/draw.drawing.get.bounds",
+          },
+          {
+            type: "null",
+          },
+        ],
+      },
+      parentId: {
+        $ref: "#/$defs/draw.drawing.get.parentId",
+      },
+      leftZoneId: {
+        type: [
+          "string",
+          "null",
+        ],
+      },
+      rightZoneId: {
+        type: [
+          "string",
+          "null",
+        ],
+      },
+    },
+    additionalProperties: false,
+    required: [
+      "type",
+      "id",
+      "kind",
+      "closed",
+      "bezier",
+      "colourId",
+    ],
+  },
+  "draw.drawing.get.zone": {
+    type: "object",
+    properties: {
+      type: {
+        const: "zone",
+      },
+      id: {
+        type: "string",
+      },
+      colourId: {
+        $ref: "#/$defs/draw.drawing.get.colour",
+      },
+      textureMatrix: {
+        oneOf: [
+          {
+            $ref: "#/$defs/draw.drawing.get.matrix",
+          },
+          {
+            type: "null",
+          },
+        ],
+      },
+      boundaryStrokeIds: {
+        type: "array",
+        items: {
+          type: "string",
+        },
+      },
+      holes: {
+        type: "array",
+        items: {
+          type: "object",
+          properties: {
+            boundaryStrokeIds: {
+              type: "array",
+              items: {
+                type: "string",
+              },
+            },
+            zoneId: {
+              type: [
+                "string",
+                "null",
+              ],
+            },
+          },
+          additionalProperties: false,
+          required: [
+            "boundaryStrokeIds",
+            "zoneId",
+          ],
+        },
+      },
+      parentZoneId: {
+        type: [
+          "string",
+          "null",
+        ],
+      },
+      area: {
+        type: "number",
+        minimum: 0,
+      },
+      bounds: {
+        $ref: "#/$defs/draw.drawing.get.bounds",
+      },
+      interiorPoint: {
+        $ref: "#/$defs/draw.drawing.get.point",
+      },
+      parentId: {
+        $ref: "#/$defs/draw.drawing.get.parentId",
+      },
+    },
+    additionalProperties: false,
+    required: [
+      "type",
+      "id",
+      "colourId",
+      "textureMatrix",
+      "boundaryStrokeIds",
+      "holes",
+      "parentZoneId",
+      "area",
+      "bounds",
+      "interiorPoint",
+    ],
+  },
+  "draw.drawing.get.result": {
+    title: "DrawingReadback",
+    description: "draw.drawing.get result (02 §13.4), closed. Zones (and the leftZoneId/rightZoneId of pencil and invisible strokes) are the planar map's (M2 C2.2): derived, IDs transient (02 §3.12 item 4).",
     type: "object",
     properties: {
       drawingId: {
         type: "string",
         minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
+        maxLength: 64,
       },
       elementId: {
-        type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
+        type: [
+          "string",
+          "null",
+        ],
       },
       name: {
         type: "string",
-        maxLength: 65536,
       },
       rev: {
         type: "integer",
+        minimum: 0,
+        maximum: 18446744073709551615n,
       },
       locked: {
         type: "boolean",
@@ -28863,19 +32364,16 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
         type: "object",
         properties: {
           units: {
-            type: "string",
-            maxLength: 65536,
+            const: "du",
           },
           duPerField: {
-            type: "number",
+            const: 100,
           },
           yAxis: {
-            type: "string",
-            maxLength: 65536,
+            const: "up",
           },
           origin: {
-            type: "string",
-            maxLength: 65536,
+            const: "drawingCentre",
           },
         },
         additionalProperties: false,
@@ -28887,574 +32385,23 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
         ],
       },
       pivot: {
-        type: "object",
-        properties: {
-          x: {
-            type: "number",
-          },
-          y: {
-            type: "number",
-          },
-        },
-        additionalProperties: false,
-        required: [
-          "x",
-          "y",
-        ],
+        $ref: "#/$defs/draw.drawing.get.point",
       },
       bounds: {
-        type: "object",
-        properties: {
-          x: {
-            type: "number",
+        oneOf: [
+          {
+            $ref: "#/$defs/draw.drawing.get.bounds",
           },
-          y: {
-            type: "number",
+          {
+            type: "null",
           },
-          width: {
-            type: "number",
-          },
-          height: {
-            type: "number",
-          },
-        },
-        additionalProperties: false,
-        required: [
-          "x",
-          "y",
-          "width",
-          "height",
         ],
       },
       nodes: {
         type: "array",
         items: {
-          type: "object",
-          properties: {
-            type: {
-              type: "string",
-              maxLength: 65536,
-            },
-            id: {
-              type: "string",
-              minLength: 1,
-              maxLength: 4096,
-              description: "object ID or path reference (10 §3)",
-            },
-            layerKind: {
-              type: "string",
-              maxLength: 65536,
-            },
-            strokes: {
-              type: "array",
-              items: {
-                type: "object",
-                properties: {
-                  id: {
-                    type: "string",
-                    minLength: 1,
-                    maxLength: 4096,
-                    description: "object ID or path reference (10 §3)",
-                  },
-                  kind: {
-                    type: "string",
-                    maxLength: 65536,
-                  },
-                  closed: {
-                    type: "boolean",
-                  },
-                  bezier: {
-                    type: "array",
-                    items: {
-                      anyOf: [
-                        {
-                          type: "object",
-                          properties: {
-                            x: {
-                              type: "number",
-                            },
-                            y: {
-                              type: "number",
-                            },
-                          },
-                          additionalProperties: false,
-                          required: [
-                            "x",
-                            "y",
-                          ],
-                        },
-                        {
-                          type: "string",
-                          maxLength: 65536,
-                        },
-                      ],
-                    },
-                    maxItems: 100000,
-                  },
-                  colourId: {
-                    anyOf: [
-                      {
-                        type: "string",
-                        minLength: 1,
-                        maxLength: 4096,
-                        description: "object ID or path reference (10 §3)",
-                      },
-                      {
-                        type: "null",
-                      },
-                    ],
-                  },
-                  lineStyle: {
-                    type: "object",
-                    properties: {
-                      thickness: {
-                        type: "number",
-                      },
-                      lineType: {
-                        type: "string",
-                        maxLength: 65536,
-                      },
-                    },
-                    additionalProperties: false,
-                    required: [
-                      "thickness",
-                      "lineType",
-                    ],
-                  },
-                  penId: {
-                    type: "string",
-                    minLength: 1,
-                    maxLength: 4096,
-                    description: "object ID or path reference (10 §3)",
-                  },
-                  pressure: {
-                    anyOf: [
-                      {
-                        type: "array",
-                        items: {
-                          type: "object",
-                          properties: {
-                            t: {
-                              type: "number",
-                            },
-                            p: {
-                              type: "number",
-                            },
-                          },
-                          additionalProperties: false,
-                          required: [
-                            "t",
-                            "p",
-                          ],
-                        },
-                        maxItems: 100000,
-                      },
-                      {
-                        type: "null",
-                      },
-                    ],
-                  },
-                  leftZoneId: {
-                    type: "string",
-                    minLength: 1,
-                    maxLength: 4096,
-                    description: "object ID or path reference (10 §3)",
-                  },
-                  rightZoneId: {
-                    type: "string",
-                    minLength: 1,
-                    maxLength: 4096,
-                    description: "object ID or path reference (10 §3)",
-                  },
-                  pen: {
-                    type: "object",
-                    properties: {
-                      tipShape: {
-                        type: "string",
-                        maxLength: 65536,
-                      },
-                      minSize: {
-                        type: "number",
-                      },
-                      maxSize: {
-                        type: "integer",
-                      },
-                      tipAngle: {
-                        type: "number",
-                      },
-                    },
-                    additionalProperties: false,
-                    required: [
-                      "tipShape",
-                      "minSize",
-                      "maxSize",
-                      "tipAngle",
-                    ],
-                  },
-                  textureMatrix: {
-                    type: [
-                      "string",
-                      "number",
-                      "boolean",
-                      "null",
-                    ],
-                    "x-placeholder": true,
-                    description: "type not stated by the owning section (spec issue); a scalar",
-                    "x-specIssue": "SI-026",
-                  },
-                  outline: {
-                    type: "array",
-                    items: {
-                      type: "array",
-                      items: {
-                        type: "string",
-                        maxLength: 65536,
-                      },
-                      maxItems: 100000,
-                    },
-                    maxItems: 100000,
-                  },
-                },
-                additionalProperties: false,
-                required: [
-                  "id",
-                  "kind",
-                  "closed",
-                  "bezier",
-                  "colourId",
-                ],
-              },
-              maxItems: 100000,
-            },
-            zones: {
-              type: "array",
-              items: {
-                type: "object",
-                properties: {
-                  id: {
-                    type: "string",
-                    minLength: 1,
-                    maxLength: 4096,
-                    description: "object ID or path reference (10 §3)",
-                  },
-                  colourId: {
-                    type: "string",
-                    minLength: 1,
-                    maxLength: 4096,
-                    description: "object ID or path reference (10 §3)",
-                  },
-                  textureMatrix: {
-                    type: [
-                      "string",
-                      "number",
-                      "boolean",
-                      "null",
-                    ],
-                    "x-placeholder": true,
-                    description: "type not stated by the owning section (spec issue); a scalar",
-                    "x-specIssue": "SI-026",
-                  },
-                  boundaryStrokeIds: {
-                    type: "array",
-                    items: {
-                      type: "string",
-                      minLength: 1,
-                      maxLength: 4096,
-                      description: "object ID or path reference (10 §3)",
-                    },
-                    maxItems: 100000,
-                  },
-                  holes: {
-                    type: "array",
-                    items: {
-                      type: "object",
-                      properties: {
-                        boundaryStrokeIds: {
-                          type: "array",
-                          items: {
-                            type: "string",
-                            minLength: 1,
-                            maxLength: 4096,
-                            description: "object ID or path reference (10 §3)",
-                          },
-                          maxItems: 100000,
-                        },
-                        zoneId: {
-                          type: "string",
-                          minLength: 1,
-                          maxLength: 4096,
-                          description: "object ID or path reference (10 §3)",
-                        },
-                      },
-                      additionalProperties: false,
-                      required: [
-                        "boundaryStrokeIds",
-                        "zoneId",
-                      ],
-                    },
-                    maxItems: 100000,
-                  },
-                  parentZoneId: {
-                    anyOf: [
-                      {
-                        type: "string",
-                        minLength: 1,
-                        maxLength: 4096,
-                        description: "object ID or path reference (10 §3)",
-                      },
-                      {
-                        type: "null",
-                      },
-                    ],
-                  },
-                  area: {
-                    type: "number",
-                  },
-                  bounds: {
-                    type: "object",
-                    properties: {
-                      x: {
-                        type: "number",
-                      },
-                      y: {
-                        type: "number",
-                      },
-                      width: {
-                        type: "integer",
-                      },
-                      height: {
-                        type: "integer",
-                      },
-                    },
-                    additionalProperties: false,
-                    required: [
-                      "x",
-                      "y",
-                      "width",
-                      "height",
-                    ],
-                  },
-                  interiorPoint: {
-                    type: "object",
-                    properties: {
-                      x: {
-                        type: "number",
-                      },
-                      y: {
-                        type: "number",
-                      },
-                    },
-                    additionalProperties: false,
-                    required: [
-                      "x",
-                      "y",
-                    ],
-                  },
-                },
-                additionalProperties: false,
-                required: [
-                  "id",
-                  "colourId",
-                  "textureMatrix",
-                  "boundaryStrokeIds",
-                  "holes",
-                  "parentZoneId",
-                  "area",
-                  "bounds",
-                  "interiorPoint",
-                ],
-              },
-              maxItems: 100000,
-            },
-            children: {
-              type: "array",
-              items: {
-                type: "string",
-                maxLength: 65536,
-              },
-              maxItems: 100000,
-            },
-            text: {
-              type: "string",
-              maxLength: 65536,
-            },
-            transform: {
-              type: "array",
-              items: {
-                type: "number",
-              },
-              maxItems: 100000,
-            },
-            widthMode: {
-              type: "string",
-              maxLength: 65536,
-            },
-            width: {
-              anyOf: [
-                {
-                  type: "integer",
-                },
-                {
-                  type: "null",
-                },
-              ],
-            },
-            runs: {
-              type: "array",
-              items: {
-                type: "object",
-                properties: {
-                  start: {
-                    type: "integer",
-                  },
-                  length: {
-                    type: "integer",
-                  },
-                  font: {
-                    type: "string",
-                    maxLength: 65536,
-                  },
-                  size: {
-                    type: "integer",
-                  },
-                  bold: {
-                    type: "boolean",
-                  },
-                  italic: {
-                    type: "boolean",
-                  },
-                  baseline: {
-                    type: "string",
-                    maxLength: 65536,
-                  },
-                  kerning: {
-                    type: "number",
-                  },
-                  autoKern: {
-                    type: "boolean",
-                  },
-                  colourId: {
-                    type: "string",
-                    minLength: 1,
-                    maxLength: 4096,
-                    description: "object ID or path reference (10 §3)",
-                  },
-                  outlineColourId: {
-                    anyOf: [
-                      {
-                        type: "string",
-                        minLength: 1,
-                        maxLength: 4096,
-                        description: "object ID or path reference (10 §3)",
-                      },
-                      {
-                        type: "null",
-                      },
-                    ],
-                  },
-                },
-                additionalProperties: false,
-                required: [
-                  "start",
-                  "length",
-                  "font",
-                  "size",
-                  "bold",
-                  "italic",
-                  "baseline",
-                  "kerning",
-                  "autoKern",
-                  "colourId",
-                  "outlineColourId",
-                ],
-              },
-              maxItems: 100000,
-            },
-            paragraphs: {
-              type: "array",
-              items: {
-                type: "object",
-                properties: {
-                  start: {
-                    type: "integer",
-                  },
-                  length: {
-                    type: "integer",
-                  },
-                  align: {
-                    type: "string",
-                    maxLength: 65536,
-                  },
-                  leftMargin: {
-                    type: "number",
-                  },
-                  rightMargin: {
-                    type: "number",
-                  },
-                  indent: {
-                    type: "number",
-                  },
-                  lineSpacing: {
-                    type: "number",
-                  },
-                },
-                additionalProperties: false,
-                required: [
-                  "start",
-                  "length",
-                  "align",
-                  "leftMargin",
-                  "rightMargin",
-                  "indent",
-                  "lineSpacing",
-                ],
-              },
-              maxItems: 100000,
-            },
-            bounds: {
-              type: "object",
-              properties: {
-                x: {
-                  type: "number",
-                },
-                y: {
-                  type: "number",
-                },
-                width: {
-                  type: "integer",
-                },
-                height: {
-                  type: "integer",
-                },
-              },
-              additionalProperties: false,
-              required: [
-                "x",
-                "y",
-                "width",
-                "height",
-              ],
-            },
-            mediaId: {
-              type: "string",
-              minLength: 1,
-              maxLength: 4096,
-              description: "object ID or path reference (10 §3)",
-            },
-            pixelWidth: {
-              type: "integer",
-            },
-            pixelHeight: {
-              type: "integer",
-            },
-          },
-          additionalProperties: false,
-          required: [
-            "type",
-            "id",
-          ],
+          $ref: "#/$defs/draw.drawing.get.item",
         },
-        maxItems: 100000,
       },
     },
     additionalProperties: false,
@@ -29469,179 +32416,282 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
       "bounds",
       "nodes",
     ],
-    "x-specSection": "02",
-  },
-  "draw.drawing.get.result": {
-    $ref: "#/$defs/draw.drawing.get.spec.DrawingReadback",
-    title: "draw.drawing.get result",
-    "x-spec": "drawing JSON (§13.4)",
   },
   "draw.drawing.rename.params": {
-    title: "draw.drawing.rename parameters",
+    title: "RenameParams",
+    description: "`draw.drawing.rename` parameters.",
     type: "object",
     properties: {
       drawingId: {
-        type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
+        description: "The drawing (default: current).",
+        type: [
+          "string",
+          "null",
+        ],
+        default: null,
       },
       name: {
+        description: "The new name (02 §9).",
         type: "string",
-        maxLength: 65536,
+        minLength: 1,
+        maxLength: 256,
       },
     },
+    additionalProperties: false,
     required: [
       "name",
     ],
-    additionalProperties: false,
-    "x-spec": "`drawingId?: id; name: string`",
   },
   "draw.drawing.rename.result": {
-    title: "draw.drawing.rename result",
+    title: "RenameResult",
+    description: "`{drawingId, name}`.",
     type: "object",
     properties: {
       drawingId: {
+        description: "The drawing.",
         type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
       },
       name: {
+        description: "Its name.",
         type: "string",
-        maxLength: 65536,
+      },
+      createdIds: {
+        description: "Created objects.",
+        type: "array",
+        items: {
+          type: "string",
+        },
+      },
+      modifiedIds: {
+        description: "Modified objects (content, membership or position changed; IDs kept).",
+        type: "array",
+        items: {
+          type: "string",
+        },
+      },
+      removedIds: {
+        description: "Removed objects (descendants included).",
+        type: "array",
+        items: {
+          type: "string",
+        },
+      },
+      rev: {
+        description: "The drawing revision after the change.",
+        type: "integer",
+        maximum: 18446744073709551615n,
+        minimum: 0,
       },
     },
     required: [
       "drawingId",
       "name",
+      "createdIds",
+      "modifiedIds",
+      "removedIds",
+      "rev",
     ],
-    "x-spec": "`{drawingId, name}`",
+  },
+  "draw.drawing.render.RegionIn": {
+    description: "The region to render.",
+    anyOf: [
+      {
+        description: "A named region.",
+        $ref: "#/$defs/draw.drawing.render.RegionName",
+      },
+      {
+        description: "A rectangle.",
+        $ref: "#/$defs/draw.drawing.render.RegionRect",
+      },
+    ],
+  },
+  "draw.drawing.render.RegionName": {
+    description: "A named region.",
+    oneOf: [
+      {
+        description: "The drawing's visible bounds.",
+        type: "string",
+        const: "bounds",
+      },
+      {
+        description: "The 12-field guide (x ±600, y ±450).",
+        type: "string",
+        const: "field12",
+      },
+      {
+        description: "The 16-field guide (x ±800, y ±600).",
+        type: "string",
+        const: "field16",
+      },
+      {
+        description: "The default camera frame (12 fields wide, the project's aspect).",
+        type: "string",
+        const: "camera",
+      },
+    ],
+  },
+  "draw.drawing.render.RegionRect": {
+    description: "A rectangle `{x, y, width, height}` (du).",
+    type: "object",
+    properties: {
+      x: {
+        description: "Minimum x.",
+        type: "number",
+      },
+      y: {
+        description: "Minimum y.",
+        type: "number",
+      },
+      width: {
+        description: "Width.",
+        type: "number",
+        minimum: 0,
+      },
+      height: {
+        description: "Height.",
+        type: "number",
+        minimum: 0,
+      },
+    },
     additionalProperties: false,
+    required: [
+      "x",
+      "y",
+      "width",
+      "height",
+    ],
   },
   "draw.drawing.render.params": {
-    title: "draw.drawing.render parameters",
+    title: "RenderParams",
+    description: "`draw.drawing.render` parameters.",
     type: "object",
     properties: {
       drawingId: {
-        type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
+        description: "The drawing (default: current).",
+        type: [
+          "string",
+          "null",
+        ],
+        default: null,
       },
       width: {
+        description: "Image width (px).",
         type: "integer",
-        minimum: 1,
         maximum: 8192,
+        minimum: 1,
       },
       height: {
-        type: "integer",
+        description: "Image height (px; default: the region's aspect).",
+        type: [
+          "integer",
+          "null",
+        ],
+        default: null,
         minimum: 1,
         maximum: 8192,
       },
       region: {
-        anyOf: [
-          {
-            type: "string",
-            enum: [
-              "bounds",
-              "field12",
-              "field16",
-              "camera",
-            ],
-          },
-          {
-            type: "object",
-            properties: {
-              x: {
-                type: "number",
-              },
-              y: {
-                type: "number",
-              },
-              width: {
-                type: "number",
-              },
-              height: {
-                type: "number",
-              },
-            },
-            required: [
-              "x",
-              "y",
-              "width",
-              "height",
-            ],
-            additionalProperties: false,
-          },
-        ],
-        default: "bounds",
+        description: "Region.",
+        $ref: "#/$defs/draw.drawing.render.RegionIn",
       },
       padding: {
+        description: "Margin around the region (du).",
         type: "number",
         default: 0,
+        minimum: 0,
+        maximum: 100000,
       },
       background: {
+        description: "Background (#RRGGBB or #RRGGBBAA).",
         type: "string",
-        pattern: "^#[0-9A-Fa-f]{6}([0-9A-Fa-f]{2})?$",
-        description: "#RRGGBB or #RRGGBBAA Default: #00000000.",
+        default: "#00000000",
       },
       styleId: {
-        type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
+        description: "Palette style (default: each palette's first style).",
+        type: [
+          "string",
+          "null",
+        ],
+        default: null,
       },
       showStrokes: {
+        description: "Draw every stroke's centre path (invisible ones included) and mark open ends.",
         type: "boolean",
         default: false,
       },
       showSelection: {
+        description: "Outline the drawing selection's bounds.",
         type: "boolean",
         default: false,
       },
       path: {
-        type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "file-system path (11 §6.2)",
+        description: "Write the PNG here instead of returning it.",
+        type: [
+          "string",
+          "null",
+        ],
+        default: null,
       },
     },
+    additionalProperties: false,
     required: [
       "width",
     ],
-    additionalProperties: false,
-    "x-spec": "`drawingId?: id; width: int (1–8192); height?: int (1–8192); region: enum \"bounds\"|\"field12\"|\"field16\"|\"camera\" | object {x,y,width,height} = \"bounds\"; padding: number = 0; background: colour = #00000000; styleId?: id; showStrokes: bool = false; showSelection: bool = false; path?: path`",
   },
   "draw.drawing.render.result": {
-    title: "draw.drawing.render result",
+    title: "RenderResult",
+    description: "`{png?, path?, width, height, drawingToPixel, rev}`.",
     type: "object",
     properties: {
       png: {
-        type: "string",
-        maxLength: 65536,
+        description: "The PNG, base64 (without `path`).",
+        type: [
+          "string",
+          "null",
+        ],
       },
       path: {
-        type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "file-system path (11 §6.2)",
+        description: "The written file (with `path`).",
+        type: [
+          "string",
+          "null",
+        ],
       },
       width: {
-        type: "number",
+        description: "Width (px).",
+        type: "integer",
+        maximum: 2147483647,
+        minimum: 0,
       },
       height: {
-        type: "number",
+        description: "Height (px).",
+        type: "integer",
+        maximum: 2147483647,
+        minimum: 0,
       },
       drawingToPixel: {
+        description: "Drawing space → pixel space `[a, b, c, d, e, f]`.",
         type: "array",
         items: {
           type: "number",
         },
-        maxItems: 100000,
+        minItems: 6,
+        maxItems: 6,
       },
       rev: {
-        type: "number",
+        description: "The drawing revision rendered.",
+        type: "integer",
+        maximum: 18446744073709551615n,
+        minimum: 0,
+      },
+      pixelsSha256: {
+        description: "SHA-256 of the premultiplied RGBA8 buffer (hex), for determinism checks.",
+        type: "string",
+      },
+      warnings: {
+        description: "Objects not drawn and why (`render.colourMissing`, `render.textureMissing`, `render.bitmapSkipped`).",
+        type: "array",
+        items: true,
       },
     },
     required: [
@@ -29649,348 +32699,536 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
       "height",
       "drawingToPixel",
       "rev",
+      "pixelsSha256",
+      "warnings",
     ],
-    "x-spec": "`{png?, path?, width, height, drawingToPixel: [number], rev}`",
+  },
+  "draw.ellipse.add.Point": {
+    description: "A point `{x, y}` in drawing units.",
+    type: "object",
+    properties: {
+      x: {
+        description: "X (du).",
+        type: "number",
+      },
+      y: {
+        description: "Y (du, up).",
+        type: "number",
+      },
+    },
     additionalProperties: false,
+    required: [
+      "x",
+      "y",
+    ],
   },
   "draw.ellipse.add.params": {
-    title: "draw.ellipse.add parameters",
+    title: "EllipseParams",
+    description: "`draw.ellipse.add` parameters.",
     type: "object",
     properties: {
       drawingId: {
-        type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
+        description: "The drawing (default: current).",
+        type: [
+          "string",
+          "null",
+        ],
+        default: null,
+      },
+      elementId: {
+        description: "Or the cell of this element (02 §13.1 item 4; ADR-0016 common addressing).",
+        type: [
+          "string",
+          "null",
+        ],
+        default: null,
+      },
+      frame: {
+        description: "The frame of that cell (default: current frame).",
+        type: [
+          "integer",
+          "null",
+        ],
+        maximum: 2147483647,
+        minimum: 0,
+        default: null,
+      },
+      createDrawing: {
+        description: "Create the cell's drawing when it has none (default true, as `draw.stroke.add`).",
+        type: "boolean",
+        default: true,
       },
       from: {
-        type: "object",
-        properties: {
-          x: {
-            type: "number",
-          },
-          y: {
-            type: "number",
-          },
-        },
-        required: [
-          "x",
-          "y",
-        ],
-        additionalProperties: false,
+        description: "Press point.",
+        $ref: "#/$defs/draw.ellipse.add.Point",
       },
       to: {
-        type: "object",
-        properties: {
-          x: {
-            type: "number",
-          },
-          y: {
-            type: "number",
-          },
-        },
-        required: [
-          "x",
-          "y",
-        ],
-        additionalProperties: false,
+        description: "Release point.",
+        $ref: "#/$defs/draw.ellipse.add.Point",
       },
       circle: {
+        description: "Circle constraint.",
         type: "boolean",
         default: false,
       },
       fromCentre: {
+        description: "`from` is the centre.",
         type: "boolean",
         default: false,
       },
       colourId: {
-        type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
+        description: "Line colour (default: current colour).",
+        type: [
+          "string",
+          "null",
+        ],
+        default: null,
       },
       thickness: {
-        type: "number",
+        description: "Line thickness (default: the pen's).",
+        type: [
+          "number",
+          "null",
+        ],
+        default: null,
+        minimum: 0,
+        maximum: 100,
       },
       penId: {
-        type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
+        description: "Pen (default: current pencil pen).",
+        type: [
+          "string",
+          "null",
+        ],
+        default: null,
       },
       layer: {
+        description: "Layer rule (as `draw.stroke.add`).",
         type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3) or \"auto\" | \"new\" | \"top\" | \"behind\"",
         default: "auto",
       },
       symmetry: {
+        description: "Symmetry copies (02 §6.2).",
         type: "boolean",
         default: true,
       },
     },
+    additionalProperties: false,
     required: [
       "from",
       "to",
     ],
-    additionalProperties: false,
-    "x-spec": "`drawingId?: id; from: point; to: point; circle: bool = false; fromCentre: bool = false; colourId?: id; thickness?: number; penId?: id; layer: enum \"auto\"|\"new\"|\"top\"|\"behind\" | id = \"auto\"; symmetry: bool = true`",
   },
   "draw.ellipse.add.result": {
-    title: "draw.ellipse.add result",
+    title: "ShapeResult",
+    description: "The result of a shape tool.",
     type: "object",
     properties: {
+      drawingId: {
+        description: "The drawing.",
+        type: "string",
+      },
       strokeIds: {
+        description: "New strokes (the pieces noding made of them, symmetry copies included).",
         type: "array",
         items: {
           type: "string",
-          minLength: 1,
-          maxLength: 4096,
-          description: "object ID or path reference (10 §3)",
         },
-        maxItems: 100000,
       },
       zoneIds: {
+        description: "Zones the shape created.",
         type: "array",
         items: {
           type: "string",
-          minLength: 1,
-          maxLength: 4096,
-          description: "object ID or path reference (10 §3)",
         },
-        maxItems: 100000,
       },
       layerId: {
+        description: "The layer holding them.",
         type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
+      },
+      createdIds: {
+        description: "Created objects.",
+        type: "array",
+        items: {
+          type: "string",
+        },
+      },
+      modifiedIds: {
+        description: "Modified objects.",
+        type: "array",
+        items: {
+          type: "string",
+        },
+      },
+      removedIds: {
+        description: "Removed objects (strokes split by noding, zones that ceased to exist).",
+        type: "array",
+        items: {
+          type: "string",
+        },
       },
       rev: {
-        type: "number",
+        description: "The drawing revision after the change.",
+        type: "integer",
+        maximum: 18446744073709551615n,
+        minimum: 0,
       },
     },
     required: [
+      "drawingId",
       "strokeIds",
       "zoneIds",
       "layerId",
+      "createdIds",
+      "modifiedIds",
+      "removedIds",
       "rev",
     ],
-    "x-spec": "`{strokeIds: [id], zoneIds: [id], layerId, rev}`",
+  },
+  "draw.envelope.apply.Point": {
+    description: "A point `{x, y}` in drawing units.",
+    type: "object",
+    properties: {
+      x: {
+        description: "X (du).",
+        type: "number",
+      },
+      y: {
+        description: "Y (du, up).",
+        type: "number",
+      },
+    },
     additionalProperties: false,
+    required: [
+      "x",
+      "y",
+    ],
+  },
+  "draw.envelope.apply.Mapping": {
+    description: "Envelope mapping.",
+    oneOf: [
+      {
+        description: "Projective when the target quadrilateral is convex, else bilinear.",
+        type: "string",
+        const: "auto",
+      },
+      {
+        description: "Projective (perspective).",
+        type: "string",
+        const: "projective",
+      },
+      {
+        description: "Bilinear.",
+        type: "string",
+        const: "bilinear",
+      },
+    ],
   },
   "draw.envelope.apply.params": {
-    title: "draw.envelope.apply parameters",
+    title: "EnvelopeParams",
+    description: "`draw.envelope.apply` parameters.",
     type: "object",
     properties: {
       drawingId: {
-        type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
+        description: "The drawing (default: current).",
+        type: [
+          "string",
+          "null",
+        ],
+        default: null,
       },
       ids: {
-        type: "array",
+        description: "Objects (default: the selection).",
+        type: [
+          "array",
+          "null",
+        ],
         items: {
           type: "string",
-          minLength: 1,
-          maxLength: 4096,
-          description: "object ID or path reference (10 §3)",
         },
-        maxItems: 100000,
-        description: "Default: selection.",
+        default: null,
       },
       corners: {
+        description: "Targets of the bounds' corners: bottom-left, bottom-right, top-right, top-left.",
         type: "array",
         items: {
-          type: "object",
-          properties: {
-            x: {
-              type: "number",
-            },
-            y: {
-              type: "number",
-            },
-          },
-          required: [
-            "x",
-            "y",
-          ],
-          additionalProperties: false,
+          $ref: "#/$defs/draw.envelope.apply.Point",
         },
-        maxItems: 100000,
-        description: "(4 targets for the bounds corners: bottom-left, bottom-right, top-right, top-left)",
+        minItems: 4,
+        maxItems: 4,
       },
       mapping: {
-        type: "string",
-        enum: [
-          "auto",
-          "projective",
-          "bilinear",
-        ],
-        default: "auto",
+        description: "Mapping.",
+        $ref: "#/$defs/draw.envelope.apply.Mapping",
       },
     },
+    additionalProperties: false,
     required: [
       "corners",
     ],
-    additionalProperties: false,
-    "x-spec": "`drawingId?: id; ids?: [id] = selection; corners: [point] (4 targets for the bounds corners: bottom-left, bottom-right, top-right, top-left); mapping: enum \"auto\"|\"projective\"|\"bilinear\" = \"auto\"`",
   },
   "draw.envelope.apply.result": {
-    title: "draw.envelope.apply result",
-    type: "object",
-    properties: {
-      ids: {
-        type: "array",
-        items: {
-          type: "string",
-          minLength: 1,
-          maxLength: 4096,
-          description: "object ID or path reference (10 §3)",
-        },
-        maxItems: 100000,
-      },
-      rev: {
-        type: "number",
-      },
-    },
-    required: [
-      "ids",
-      "rev",
-    ],
-    "x-spec": "`{ids: [id], rev}`",
-    additionalProperties: false,
-  },
-  "draw.erase.apply.params": {
-    title: "draw.erase.apply parameters",
+    title: "TransformResult",
+    description: "`{ids, removedIds, rev}` and the changed IDs.",
     type: "object",
     properties: {
       drawingId: {
+        description: "The drawing.",
         type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
       },
-      path: {
-        type: "array",
-        items: {
-          type: "object",
-          properties: {
-            x: {
-              type: "number",
-            },
-            y: {
-              type: "number",
-            },
-            pressure: {
-              type: "number",
-            },
-          },
-          required: [
-            "x",
-            "y",
-          ],
-          additionalProperties: false,
-        },
-        maxItems: 100000,
-      },
-      penId: {
-        type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3) Default: current eraser pen.",
-      },
-      pen: {
-        type: "object",
-        properties: {},
-        additionalProperties: false,
-        "x-placeholder": true,
-        description: "shape not defined by the owning section (spec issue); only {} is accepted until it is",
-        "x-specIssue": "SI-026",
-      },
-      region: {
-        type: "array",
-        items: {
-          type: "object",
-          properties: {
-            x: {
-              type: "number",
-            },
-            y: {
-              type: "number",
-            },
-          },
-          required: [
-            "x",
-            "y",
-          ],
-          additionalProperties: false,
-        },
-        maxItems: 100000,
-        description: "(closed polygon)",
-      },
-      layers: {
-        anyOf: [
-          {
-            type: "string",
-            enum: [
-              "all",
-            ],
-          },
-          {
-            type: "array",
-            items: {
-              type: "string",
-              minLength: 1,
-              maxLength: 4096,
-              description: "object ID or path reference (10 §3)",
-            },
-            maxItems: 100000,
-          },
-        ],
-        default: "all",
-      },
-    },
-    additionalProperties: false,
-    "x-spec": "`drawingId?: id; path?: [{x,y,pressure?}]; penId?: id = current eraser pen; pen?: object; region?: [point] (closed polygon); layers: enum \"all\" | [id] = \"all\"`",
-  },
-  "draw.erase.apply.result": {
-    title: "draw.erase.apply result",
-    type: "object",
-    properties: {
-      removedIds: {
+      ids: {
+        description: "The transformed objects (the copies with `copy`; pieces where noding split them).",
         type: "array",
         items: {
           type: "string",
-          minLength: 1,
-          maxLength: 4096,
-          description: "object ID or path reference (10 §3)",
         },
-        maxItems: 100000,
       },
       createdIds: {
+        description: "Created objects.",
         type: "array",
         items: {
           type: "string",
-          minLength: 1,
-          maxLength: 4096,
-          description: "object ID or path reference (10 §3)",
         },
-        maxItems: 100000,
+      },
+      modifiedIds: {
+        description: "Modified objects (content, membership or position changed; IDs kept).",
+        type: "array",
+        items: {
+          type: "string",
+        },
+      },
+      removedIds: {
+        description: "Removed objects (descendants included).",
+        type: "array",
+        items: {
+          type: "string",
+        },
       },
       rev: {
-        type: "number",
+        description: "The drawing revision after the change.",
+        type: "integer",
+        maximum: 18446744073709551615n,
+        minimum: 0,
       },
     },
     required: [
-      "removedIds",
+      "drawingId",
+      "ids",
       "createdIds",
+      "modifiedIds",
+      "removedIds",
       "rev",
     ],
-    "x-spec": "`{removedIds: [id], createdIds: [id], rev}`",
+  },
+  "draw.erase.apply.ErasePoint": {
+    description: "An eraser path point.",
+    type: "object",
+    properties: {
+      x: {
+        description: "x (du).",
+        type: "number",
+      },
+      y: {
+        description: "y (du).",
+        type: "number",
+      },
+      pressure: {
+        description: "Pressure (0–1, default 1).",
+        type: [
+          "number",
+          "null",
+        ],
+        default: null,
+        minimum: 0,
+        maximum: 1,
+      },
+    },
     additionalProperties: false,
+    required: [
+      "x",
+      "y",
+    ],
+  },
+  "draw.erase.apply.EraserPen": {
+    description: "An explicit round eraser `{minSize, maxSize}` (SI-072).",
+    type: "object",
+    properties: {
+      minSize: {
+        description: "Width at lowest pressure (du).",
+        type: "number",
+        maximum: 100,
+        minimum: 0,
+      },
+      maxSize: {
+        description: "Width at full pressure (du).",
+        type: "number",
+        maximum: 100,
+        minimum: 0.1,
+      },
+    },
+    additionalProperties: false,
+    required: [
+      "minSize",
+      "maxSize",
+    ],
+  },
+  "draw.erase.apply.Point": {
+    description: "A point `{x, y}` in drawing units.",
+    type: "object",
+    properties: {
+      x: {
+        description: "X (du).",
+        type: "number",
+      },
+      y: {
+        description: "Y (du, up).",
+        type: "number",
+      },
+    },
+    additionalProperties: false,
+    required: [
+      "x",
+      "y",
+    ],
+  },
+  "draw.erase.apply.LayersIn": {
+    description: "Layers an erase reaches.",
+    anyOf: [
+      {
+        description: "Every layer.",
+        $ref: "#/$defs/draw.erase.apply.AllLayers",
+      },
+      {
+        description: "These layers.",
+        type: "array",
+        items: {
+          type: "string",
+        },
+      },
+    ],
+  },
+  "draw.erase.apply.AllLayers": {
+    description: "`\"all\"`.",
+    oneOf: [
+      {
+        description: "Every layer.",
+        type: "string",
+        const: "all",
+      },
+    ],
+  },
+  "draw.erase.apply.params": {
+    title: "EraseParams",
+    description: "`draw.erase.apply` parameters.",
+    type: "object",
+    properties: {
+      drawingId: {
+        description: "The drawing (default: current).",
+        type: [
+          "string",
+          "null",
+        ],
+        default: null,
+      },
+      path: {
+        description: "The eraser's path (swept with the eraser pen).",
+        type: [
+          "array",
+          "null",
+        ],
+        items: {
+          $ref: "#/$defs/draw.erase.apply.ErasePoint",
+        },
+      },
+      penId: {
+        description: "The eraser pen (default: the project's first eraser pen, \"Eraser 1\").",
+        type: [
+          "string",
+          "null",
+        ],
+        default: null,
+      },
+      pen: {
+        description: "An explicit eraser (SI-072).",
+        anyOf: [
+          {
+            $ref: "#/$defs/draw.erase.apply.EraserPen",
+          },
+          {
+            type: "null",
+          },
+        ],
+      },
+      region: {
+        description: "Or: a closed region to erase.",
+        type: [
+          "array",
+          "null",
+        ],
+        items: {
+          $ref: "#/$defs/draw.erase.apply.Point",
+        },
+        default: null,
+      },
+      layers: {
+        description: "Layers to erase.",
+        $ref: "#/$defs/draw.erase.apply.LayersIn",
+      },
+    },
+    additionalProperties: false,
+  },
+  "draw.erase.apply.result": {
+    title: "EraseResult",
+    description: "`{removedIds, createdIds, rev}`.",
+    type: "object",
+    properties: {
+      drawingId: {
+        description: "The drawing.",
+        type: "string",
+      },
+      keptBrushIds: {
+        description: "Brush strokes crossing the erased area, kept whole (SI-059, SI-071).",
+        type: "array",
+        items: {
+          type: "string",
+        },
+      },
+      createdIds: {
+        description: "Created objects.",
+        type: "array",
+        items: {
+          type: "string",
+        },
+      },
+      modifiedIds: {
+        description: "Modified objects (content, membership or position changed; IDs kept).",
+        type: "array",
+        items: {
+          type: "string",
+        },
+      },
+      removedIds: {
+        description: "Removed objects (descendants included).",
+        type: "array",
+        items: {
+          type: "string",
+        },
+      },
+      rev: {
+        description: "The drawing revision after the change.",
+        type: "integer",
+        maximum: 18446744073709551615n,
+        minimum: 0,
+      },
+    },
+    required: [
+      "drawingId",
+      "keptBrushIds",
+      "createdIds",
+      "modifiedIds",
+      "removedIds",
+      "rev",
+    ],
   },
   "draw.feather.apply.params": {
     title: "draw.feather.apply parameters",
@@ -30086,1718 +33324,2695 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
     "x-spec": "`{jobId}` → `{layerIds: [id], skippedTextured: int, warnings: [code], rev}` or `{needs_confirmation}`",
     additionalProperties: false,
   },
-  "draw.flatten.apply.params": {
-    title: "draw.flatten.apply parameters",
+  "draw.flatten.apply.FlattenPolicy": {
+    description: "A flatten policy (SI-073).",
     type: "object",
     properties: {
-      drawingId: {
-        type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
+      precedence: {
+        description: "Which colour wins where content overlaps.",
+        $ref: "#/$defs/draw.flatten.apply.Precedence",
       },
-      ids: {
-        type: "array",
-        items: {
-          type: "string",
-          minLength: 1,
-          maxLength: 4096,
-          description: "object ID or path reference (10 §3)",
-        },
-        maxItems: 100000,
-        description: "Default: selection.",
+      position: {
+        description: "Where the merged layer goes.",
+        $ref: "#/$defs/draw.flatten.apply.Position",
       },
     },
     additionalProperties: false,
-    "x-spec": "`drawingId?: id; ids?: [id] = selection`",
   },
-  "draw.flatten.apply.result": {
-    title: "draw.flatten.apply result",
+  "draw.flatten.apply.Precedence": {
+    description: "Which layer's colour wins where merged content overlaps.",
+    oneOf: [
+      {
+        description: "The upper layer's colour replaces the lower one (02 §8.1).",
+        type: "string",
+        const: "upper",
+      },
+      {
+        description: "The lower layer's colour wins (Draw Behind merges, SI-073).",
+        type: "string",
+        const: "lower",
+      },
+    ],
+  },
+  "draw.flatten.apply.Position": {
+    description: "Where the merged layer goes.",
+    oneOf: [
+      {
+        description: "The top-most selected layer's position (02 §8.1).",
+        type: "string",
+        const: "top",
+      },
+      {
+        description: "The bottom-most selected layer's position.",
+        type: "string",
+        const: "bottom",
+      },
+    ],
+  },
+  "draw.flatten.apply.params": {
+    title: "FlattenParams",
+    description: "`draw.flatten.apply` parameters.",
     type: "object",
     properties: {
-      layerId: {
-        type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
+      drawingId: {
+        description: "The drawing (default: current).",
+        type: [
+          "string",
+          "null",
+        ],
+        default: null,
       },
-      removedIds: {
+      ids: {
+        description: "Layers, groups or strokes whose layers merge (default: the selection).",
+        type: [
+          "array",
+          "null",
+        ],
+        items: {
+          type: "string",
+        },
+        default: null,
+      },
+      policy: {
+        description: "Merge policy (SI-073; default: upper colour wins, merged layer at the top-most position).",
+        $ref: "#/$defs/draw.flatten.apply.FlattenPolicy",
+      },
+    },
+    additionalProperties: false,
+  },
+  "draw.flatten.apply.result": {
+    title: "FlattenResult",
+    description: "`{layerId, removedIds, rev}`.",
+    type: "object",
+    properties: {
+      drawingId: {
+        description: "The drawing.",
+        type: "string",
+      },
+      layerId: {
+        description: "The merged layer.",
+        type: "string",
+      },
+      createdIds: {
+        description: "Created objects.",
         type: "array",
         items: {
           type: "string",
-          minLength: 1,
-          maxLength: 4096,
-          description: "object ID or path reference (10 §3)",
         },
-        maxItems: 100000,
+      },
+      modifiedIds: {
+        description: "Modified objects (content, membership or position changed; IDs kept).",
+        type: "array",
+        items: {
+          type: "string",
+        },
+      },
+      removedIds: {
+        description: "Removed objects (descendants included).",
+        type: "array",
+        items: {
+          type: "string",
+        },
       },
       rev: {
-        type: "number",
+        description: "The drawing revision after the change.",
+        type: "integer",
+        maximum: 18446744073709551615n,
+        minimum: 0,
       },
     },
     required: [
+      "drawingId",
       "layerId",
+      "createdIds",
+      "modifiedIds",
       "removedIds",
       "rev",
     ],
-    "x-spec": "`{layerId, removedIds: [id], rev}`",
-    additionalProperties: false,
+  },
+  "draw.flip.apply.Axis": {
+    description: "Flip axis.",
+    oneOf: [
+      {
+        description: "Left ↔ right.",
+        type: "string",
+        const: "horizontal",
+      },
+      {
+        description: "Top ↔ bottom.",
+        type: "string",
+        const: "vertical",
+      },
+    ],
   },
   "draw.flip.apply.params": {
-    title: "draw.flip.apply parameters",
+    title: "FlipParams",
+    description: "`draw.flip.apply` parameters.",
     type: "object",
     properties: {
       drawingId: {
-        type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
+        description: "The drawing (default: current).",
+        type: [
+          "string",
+          "null",
+        ],
+        default: null,
       },
       ids: {
-        type: "array",
+        description: "Objects (default: the selection).",
+        type: [
+          "array",
+          "null",
+        ],
         items: {
           type: "string",
-          minLength: 1,
-          maxLength: 4096,
-          description: "object ID or path reference (10 §3)",
         },
-        maxItems: 100000,
-        description: "Default: selection.",
+        default: null,
       },
       axis: {
-        type: "string",
-        enum: [
-          "horizontal",
-          "vertical",
-        ],
+        description: "Axis.",
+        $ref: "#/$defs/draw.flip.apply.Axis",
       },
     },
+    additionalProperties: false,
     required: [
       "axis",
     ],
-    additionalProperties: false,
-    "x-spec": "`drawingId?: id; ids?: [id] = selection; axis: enum \"horizontal\"|\"vertical\"`",
   },
   "draw.flip.apply.result": {
-    title: "draw.flip.apply result",
+    title: "TransformResult",
+    description: "`{ids, removedIds, rev}` and the changed IDs.",
     type: "object",
     properties: {
+      drawingId: {
+        description: "The drawing.",
+        type: "string",
+      },
       ids: {
+        description: "The transformed objects (the copies with `copy`; pieces where noding split them).",
         type: "array",
         items: {
           type: "string",
-          minLength: 1,
-          maxLength: 4096,
-          description: "object ID or path reference (10 §3)",
         },
-        maxItems: 100000,
+      },
+      createdIds: {
+        description: "Created objects.",
+        type: "array",
+        items: {
+          type: "string",
+        },
+      },
+      modifiedIds: {
+        description: "Modified objects (content, membership or position changed; IDs kept).",
+        type: "array",
+        items: {
+          type: "string",
+        },
+      },
+      removedIds: {
+        description: "Removed objects (descendants included).",
+        type: "array",
+        items: {
+          type: "string",
+        },
       },
       rev: {
-        type: "number",
+        description: "The drawing revision after the change.",
+        type: "integer",
+        maximum: 18446744073709551615n,
+        minimum: 0,
       },
     },
     required: [
+      "drawingId",
       "ids",
+      "createdIds",
+      "modifiedIds",
+      "removedIds",
       "rev",
     ],
-    "x-spec": "`{ids: [id], rev}`",
-    additionalProperties: false,
   },
   "draw.group.create.params": {
-    title: "draw.group.create parameters",
+    title: "GroupCreateParams",
+    description: "`draw.group.create` parameters.",
     type: "object",
     properties: {
       drawingId: {
-        type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
+        description: "The drawing (default: `elementId` + `frame`, else the current drawing).",
+        type: [
+          "string",
+          "null",
+        ],
+        default: null,
+      },
+      elementId: {
+        description: "The element whose cell exposes the drawing.",
+        type: [
+          "string",
+          "null",
+        ],
+        default: null,
+      },
+      frame: {
+        description: "The frame of that cell.",
+        type: [
+          "integer",
+          "null",
+        ],
+        default: null,
+        minimum: 1,
+        maximum: 2147483647,
       },
       ids: {
-        type: "array",
+        description: "Objects to group (default: the drawing selection).",
+        type: [
+          "array",
+          "null",
+        ],
         items: {
           type: "string",
-          minLength: 1,
-          maxLength: 4096,
-          description: "object ID or path reference (10 §3)",
         },
-        maxItems: 100000,
-        description: "Default: selection.",
+        default: null,
+      },
+      expectRev: {
+        description: "The drawing revision the caller read (02 §3.12).",
+        type: [
+          "integer",
+          "null",
+        ],
+        maximum: 18446744073709551615n,
+        minimum: 0,
+        default: null,
       },
     },
     additionalProperties: false,
-    "x-spec": "`drawingId?: id; ids?: [id] = selection`",
   },
   "draw.group.create.result": {
-    title: "draw.group.create result",
+    title: "GroupCreateResult",
+    description: "`{groupId, rev}`.",
     type: "object",
     properties: {
-      groupId: {
+      drawingId: {
+        description: "The drawing.",
         type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
+      },
+      groupId: {
+        description: "The new group.",
+        type: "string",
+      },
+      createdIds: {
+        description: "Created objects.",
+        type: "array",
+        items: {
+          type: "string",
+        },
+      },
+      modifiedIds: {
+        description: "Modified objects (content, membership or position changed; IDs kept).",
+        type: "array",
+        items: {
+          type: "string",
+        },
+      },
+      removedIds: {
+        description: "Removed objects (descendants included).",
+        type: "array",
+        items: {
+          type: "string",
+        },
       },
       rev: {
-        type: "number",
+        description: "The drawing revision after the change.",
+        type: "integer",
+        maximum: 18446744073709551615n,
+        minimum: 0,
       },
     },
     required: [
+      "drawingId",
       "groupId",
+      "createdIds",
+      "modifiedIds",
+      "removedIds",
       "rev",
     ],
-    "x-spec": "`{groupId, rev}`",
-    additionalProperties: false,
   },
   "draw.group.delete.params": {
-    title: "draw.group.delete parameters",
+    title: "GroupDeleteParams",
+    description: "`draw.group.delete` parameters.",
     type: "object",
     properties: {
       drawingId: {
-        type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
+        description: "The drawing (default: `elementId` + `frame`, else the current drawing).",
+        type: [
+          "string",
+          "null",
+        ],
+        default: null,
+      },
+      elementId: {
+        description: "The element whose cell exposes the drawing.",
+        type: [
+          "string",
+          "null",
+        ],
+        default: null,
+      },
+      frame: {
+        description: "The frame of that cell.",
+        type: [
+          "integer",
+          "null",
+        ],
+        default: null,
+        minimum: 1,
+        maximum: 2147483647,
       },
       groupIds: {
-        type: "array",
+        description: "Groups to dissolve (default: the selected groups).",
+        type: [
+          "array",
+          "null",
+        ],
         items: {
           type: "string",
-          minLength: 1,
-          maxLength: 4096,
-          description: "object ID or path reference (10 §3)",
         },
-        maxItems: 100000,
-        description: "Default: selected groups.",
+        default: null,
+      },
+      expectRev: {
+        description: "The drawing revision the caller read (02 §3.12).",
+        type: [
+          "integer",
+          "null",
+        ],
+        maximum: 18446744073709551615n,
+        minimum: 0,
+        default: null,
       },
     },
     additionalProperties: false,
-    "x-spec": "`drawingId?: id; groupIds?: [id] = selected groups`",
   },
   "draw.group.delete.result": {
-    title: "draw.group.delete result",
+    title: "GroupDeleteResult",
+    description: "`{memberIds, rev}`.",
     type: "object",
     properties: {
+      drawingId: {
+        description: "The drawing.",
+        type: "string",
+      },
       memberIds: {
+        description: "The former members, in order.",
         type: "array",
         items: {
           type: "string",
-          minLength: 1,
-          maxLength: 4096,
-          description: "object ID or path reference (10 §3)",
         },
-        maxItems: 100000,
+      },
+      createdIds: {
+        description: "Created objects.",
+        type: "array",
+        items: {
+          type: "string",
+        },
+      },
+      modifiedIds: {
+        description: "Modified objects (content, membership or position changed; IDs kept).",
+        type: "array",
+        items: {
+          type: "string",
+        },
+      },
+      removedIds: {
+        description: "Removed objects (descendants included).",
+        type: "array",
+        items: {
+          type: "string",
+        },
       },
       rev: {
-        type: "number",
+        description: "The drawing revision after the change.",
+        type: "integer",
+        maximum: 18446744073709551615n,
+        minimum: 0,
       },
     },
     required: [
+      "drawingId",
       "memberIds",
+      "createdIds",
+      "modifiedIds",
+      "removedIds",
       "rev",
     ],
-    "x-spec": "`{memberIds: [id], rev}`",
+  },
+  "draw.hitTest.get.Point": {
+    description: "A point `{x, y}` in drawing units.",
+    type: "object",
+    properties: {
+      x: {
+        description: "X (du).",
+        type: "number",
+      },
+      y: {
+        description: "Y (du, up).",
+        type: "number",
+      },
+    },
     additionalProperties: false,
+    required: [
+      "x",
+      "y",
+    ],
   },
   "draw.hitTest.get.params": {
-    title: "draw.hitTest.get parameters",
+    title: "HitTestParams",
+    description: "`draw.hitTest.get` parameters (02 §13.5).",
     type: "object",
     properties: {
       drawingId: {
-        type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
+        description: "The drawing (default: `elementId` + `frame`, else the current drawing).",
+        type: [
+          "string",
+          "null",
+        ],
+        default: null,
+      },
+      elementId: {
+        description: "The element whose cell exposes the drawing.",
+        type: [
+          "string",
+          "null",
+        ],
+        default: null,
+      },
+      frame: {
+        description: "The frame of that cell.",
+        type: [
+          "integer",
+          "null",
+        ],
+        default: null,
+        minimum: 1,
+        maximum: 2147483647,
       },
       point: {
-        type: "object",
-        properties: {
-          x: {
-            type: "number",
-          },
-          y: {
-            type: "number",
-          },
-        },
-        required: [
-          "x",
-          "y",
-        ],
-        additionalProperties: false,
+        description: "The point (drawing space).",
+        $ref: "#/$defs/draw.hitTest.get.Point",
       },
       tolerance: {
+        description: "Extra reach of line hits in view pixels (1 px = 1 du at 100 % zoom, SI-063).",
         type: "number",
         default: 3,
+        minimum: 0,
+        maximum: 1000,
       },
       includeInvisible: {
+        description: "Report invisible strokes.",
         type: "boolean",
         default: false,
       },
     },
+    additionalProperties: false,
     required: [
       "point",
     ],
-    additionalProperties: false,
-    "x-spec": "`drawingId?: id; point: point; tolerance: number = 3 (view px); includeInvisible: bool = false`",
   },
-  "draw.hitTest.get.result": {
-    title: "draw.hitTest.get result",
+  "draw.hitTest.get.HitOut": {
+    description: "One hit.",
     type: "object",
     properties: {
-      hits: {
+      objectId: {
+        description: "The object.",
+        type: "string",
+      },
+      objectKind: {
+        description: "`pencil`, `brush`, `invisible`, `zone`, `text` or `bitmap`.",
+        type: "string",
+      },
+      layerId: {
+        description: "Its layer.",
+        type: [
+          "string",
+          "null",
+        ],
+      },
+      groupPath: {
+        description: "Enclosing groups, outermost first.",
         type: "array",
         items: {
-          type: "object",
-          properties: {},
-          additionalProperties: false,
-          "x-placeholder": true,
-          description: "shape not defined by the owning section (spec issue); only {} is accepted until it is",
-          "x-specIssue": "SI-026",
+          type: "string",
         },
-        maxItems: 100000,
+      },
+      colourId: {
+        description: "Its colour.",
+        type: [
+          "string",
+          "null",
+        ],
+      },
+    },
+    required: [
+      "objectId",
+      "objectKind",
+      "groupPath",
+    ],
+  },
+  "draw.hitTest.get.result": {
+    title: "HitTestResult",
+    description: "`draw.hitTest.get` result (02 §13.4).",
+    type: "object",
+    properties: {
+      point: {
+        description: "The point.",
+        $ref: "#/$defs/draw.hitTest.get.Point",
+      },
+      hits: {
+        description: "Hits, front to back.",
+        type: "array",
+        items: {
+          $ref: "#/$defs/draw.hitTest.get.HitOut",
+        },
       },
       zoneId: {
+        description: "The front-most zone under the point.",
+        type: [
+          "string",
+          "null",
+        ],
+      },
+      rev: {
+        description: "The drawing revision.",
+        type: "integer",
+        maximum: 18446744073709551615n,
+        minimum: 0,
+      },
+    },
+    required: [
+      "point",
+      "hits",
+      "rev",
+    ],
+  },
+  "draw.inspectorPreview.set.params": {
+    title: "PreviewParams",
+    description: "`{visible}`.",
+    type: "object",
+    properties: {
+      visible: {
+        description: "Show the drawing thumbnail in the inspector.",
+        type: "boolean",
+      },
+    },
+    additionalProperties: false,
+    required: [
+      "visible",
+    ],
+  },
+  "draw.inspectorPreview.set.result": {
+    title: "PreviewResult",
+    description: "`{visible}`.",
+    type: "object",
+    properties: {
+      visible: {
+        description: "Shown.",
+        type: "boolean",
+      },
+    },
+    required: [
+      "visible",
+    ],
+  },
+  "draw.line.add.Point": {
+    description: "A point `{x, y}` in drawing units.",
+    type: "object",
+    properties: {
+      x: {
+        description: "X (du).",
+        type: "number",
+      },
+      y: {
+        description: "Y (du, up).",
+        type: "number",
+      },
+    },
+    additionalProperties: false,
+    required: [
+      "x",
+      "y",
+    ],
+  },
+  "draw.line.add.params": {
+    title: "LineParams",
+    description: "`draw.line.add` parameters.",
+    type: "object",
+    properties: {
+      drawingId: {
+        description: "The drawing (default: current).",
+        type: [
+          "string",
+          "null",
+        ],
+        default: null,
+      },
+      elementId: {
+        description: "Or the cell of this element (02 §13.1 item 4; ADR-0016 common addressing).",
+        type: [
+          "string",
+          "null",
+        ],
+        default: null,
+      },
+      frame: {
+        description: "The frame of that cell (default: current frame).",
+        type: [
+          "integer",
+          "null",
+        ],
+        maximum: 2147483647,
+        minimum: 0,
+        default: null,
+      },
+      createDrawing: {
+        description: "Create the cell's drawing when it has none (default true, as `draw.stroke.add`).",
+        type: "boolean",
+        default: true,
+      },
+      from: {
+        description: "Start (required unless `continuePrevious`).",
         anyOf: [
           {
-            type: "string",
-            minLength: 1,
-            maxLength: 4096,
-            description: "object ID or path reference (10 §3)",
+            $ref: "#/$defs/draw.line.add.Point",
+          },
+          {
+            type: "null",
+          },
+        ],
+        default: null,
+      },
+      to: {
+        description: "End.",
+        $ref: "#/$defs/draw.line.add.Point",
+      },
+      continuePrevious: {
+        description: "Start at the end of the line this tool added last in the drawing.",
+        type: "boolean",
+        default: false,
+      },
+      constrainAngle: {
+        description: "Constrain the angle to multiples of 45°.",
+        type: "boolean",
+        default: false,
+      },
+      colourId: {
+        description: "Line colour.",
+        type: [
+          "string",
+          "null",
+        ],
+        default: null,
+      },
+      thickness: {
+        description: "Thickness.",
+        type: [
+          "number",
+          "null",
+        ],
+        default: null,
+        minimum: 0,
+        maximum: 100,
+      },
+      penId: {
+        description: "Pen.",
+        type: [
+          "string",
+          "null",
+        ],
+        default: null,
+      },
+      layer: {
+        description: "Layer rule.",
+        type: "string",
+        default: "auto",
+      },
+      symmetry: {
+        description: "Symmetry copies.",
+        type: "boolean",
+        default: true,
+      },
+    },
+    additionalProperties: false,
+    required: [
+      "to",
+    ],
+  },
+  "draw.line.add.result": {
+    title: "ShapeResult",
+    description: "The result of a shape tool.",
+    type: "object",
+    properties: {
+      drawingId: {
+        description: "The drawing.",
+        type: "string",
+      },
+      strokeIds: {
+        description: "New strokes (the pieces noding made of them, symmetry copies included).",
+        type: "array",
+        items: {
+          type: "string",
+        },
+      },
+      zoneIds: {
+        description: "Zones the shape created.",
+        type: "array",
+        items: {
+          type: "string",
+        },
+      },
+      layerId: {
+        description: "The layer holding them.",
+        type: "string",
+      },
+      createdIds: {
+        description: "Created objects.",
+        type: "array",
+        items: {
+          type: "string",
+        },
+      },
+      modifiedIds: {
+        description: "Modified objects.",
+        type: "array",
+        items: {
+          type: "string",
+        },
+      },
+      removedIds: {
+        description: "Removed objects (strokes split by noding, zones that ceased to exist).",
+        type: "array",
+        items: {
+          type: "string",
+        },
+      },
+      rev: {
+        description: "The drawing revision after the change.",
+        type: "integer",
+        maximum: 18446744073709551615n,
+        minimum: 0,
+      },
+    },
+    required: [
+      "drawingId",
+      "strokeIds",
+      "zoneIds",
+      "layerId",
+      "createdIds",
+      "modifiedIds",
+      "removedIds",
+      "rev",
+    ],
+  },
+  "draw.linesToBrush.apply.params": {
+    title: "LinesToBrushParams",
+    description: "`draw.linesToBrush.apply` parameters.",
+    type: "object",
+    properties: {
+      drawingId: {
+        description: "The drawing (default: current).",
+        type: [
+          "string",
+          "null",
+        ],
+        default: null,
+      },
+      ids: {
+        description: "Pencil lines, or layers and groups holding them (default: the selection).",
+        type: [
+          "array",
+          "null",
+        ],
+        items: {
+          type: "string",
+        },
+        default: null,
+      },
+      penId: {
+        description: "The brush pen (default: the current brush pen).",
+        type: [
+          "string",
+          "null",
+        ],
+        default: null,
+      },
+    },
+    additionalProperties: false,
+  },
+  "draw.linesToBrush.apply.result": {
+    title: "LinesToBrushResult",
+    description: "`{strokeIds, rev}`.",
+    type: "object",
+    properties: {
+      drawingId: {
+        description: "The drawing.",
+        type: "string",
+      },
+      strokeIds: {
+        description: "The new brush strokes.",
+        type: "array",
+        items: {
+          type: "string",
+        },
+      },
+      centreIds: {
+        description: "The invisible centre paths the lines became (their pieces where the new outlines split them).",
+        type: "array",
+        items: {
+          type: "string",
+        },
+      },
+      createdIds: {
+        description: "Created objects.",
+        type: "array",
+        items: {
+          type: "string",
+        },
+      },
+      modifiedIds: {
+        description: "Modified objects (content, membership or position changed; IDs kept).",
+        type: "array",
+        items: {
+          type: "string",
+        },
+      },
+      removedIds: {
+        description: "Removed objects (descendants included).",
+        type: "array",
+        items: {
+          type: "string",
+        },
+      },
+      rev: {
+        description: "The drawing revision after the change.",
+        type: "integer",
+        maximum: 18446744073709551615n,
+        minimum: 0,
+      },
+    },
+    required: [
+      "drawingId",
+      "strokeIds",
+      "centreIds",
+      "createdIds",
+      "modifiedIds",
+      "removedIds",
+      "rev",
+    ],
+  },
+  "draw.lock.set.params": {
+    title: "LockParams",
+    description: "`draw.lock.set` parameters.",
+    type: "object",
+    properties: {
+      drawingId: {
+        description: "The drawing (default: current).",
+        type: [
+          "string",
+          "null",
+        ],
+        default: null,
+      },
+      locked: {
+        description: "Locked.",
+        type: "boolean",
+      },
+    },
+    additionalProperties: false,
+    required: [
+      "locked",
+    ],
+  },
+  "draw.lock.set.result": {
+    title: "LockResult",
+    description: "`{drawingId, locked}`.",
+    type: "object",
+    properties: {
+      drawingId: {
+        description: "The drawing.",
+        type: "string",
+      },
+      locked: {
+        description: "Locked.",
+        type: "boolean",
+      },
+      rev: {
+        description: "The drawing revision after the change.",
+        type: "integer",
+        maximum: 18446744073709551615n,
+        minimum: 0,
+      },
+    },
+    required: [
+      "drawingId",
+      "locked",
+      "rev",
+    ],
+  },
+  "draw.object.delete.params": {
+    title: "DeleteParams",
+    description: "`draw.object.delete` parameters.",
+    type: "object",
+    properties: {
+      drawingId: {
+        description: "The drawing (default: `elementId` + `frame`, else the current drawing).",
+        type: [
+          "string",
+          "null",
+        ],
+        default: null,
+      },
+      elementId: {
+        description: "The element whose cell exposes the drawing.",
+        type: [
+          "string",
+          "null",
+        ],
+        default: null,
+      },
+      frame: {
+        description: "The frame of that cell.",
+        type: [
+          "integer",
+          "null",
+        ],
+        default: null,
+        minimum: 1,
+        maximum: 2147483647,
+      },
+      ids: {
+        description: "Objects to delete (default: the drawing selection).",
+        type: [
+          "array",
+          "null",
+        ],
+        items: {
+          type: "string",
+        },
+        default: null,
+      },
+      expectRev: {
+        description: "The drawing revision the caller read (02 §3.12).",
+        type: [
+          "integer",
+          "null",
+        ],
+        maximum: 18446744073709551615n,
+        minimum: 0,
+        default: null,
+      },
+    },
+    additionalProperties: false,
+  },
+  "draw.object.delete.result": {
+    title: "DeleteResult",
+    description: "`{removedIds, rev}`.",
+    type: "object",
+    properties: {
+      drawingId: {
+        description: "The drawing.",
+        type: "string",
+      },
+      createdIds: {
+        description: "Created objects.",
+        type: "array",
+        items: {
+          type: "string",
+        },
+      },
+      modifiedIds: {
+        description: "Modified objects (content, membership or position changed; IDs kept).",
+        type: "array",
+        items: {
+          type: "string",
+        },
+      },
+      removedIds: {
+        description: "Removed objects (descendants included).",
+        type: "array",
+        items: {
+          type: "string",
+        },
+      },
+      rev: {
+        description: "The drawing revision after the change.",
+        type: "integer",
+        maximum: 18446744073709551615n,
+        minimum: 0,
+      },
+    },
+    required: [
+      "drawingId",
+      "createdIds",
+      "modifiedIds",
+      "removedIds",
+      "rev",
+    ],
+  },
+  "draw.optimize.apply.params": {
+    title: "OptimizeParams",
+    description: "`draw.optimize.apply` parameters.",
+    type: "object",
+    properties: {
+      drawingId: {
+        description: "The drawing (default: current).",
+        type: [
+          "string",
+          "null",
+        ],
+        default: null,
+      },
+      ids: {
+        description: "Layers, groups or strokes whose layers are considered (default: the selection).",
+        type: [
+          "array",
+          "null",
+        ],
+        items: {
+          type: "string",
+        },
+        default: null,
+      },
+    },
+    additionalProperties: false,
+  },
+  "draw.optimize.apply.result": {
+    title: "OptimizeResult",
+    description: "`{layerIds, merged, rev}`.",
+    type: "object",
+    properties: {
+      drawingId: {
+        description: "The drawing.",
+        type: "string",
+      },
+      layerIds: {
+        description: "The considered layers that remain, back to front.",
+        type: "array",
+        items: {
+          type: "string",
+        },
+      },
+      merged: {
+        description: "Layers merged away.",
+        type: "integer",
+        maximum: 2147483647,
+        minimum: 0,
+      },
+      createdIds: {
+        description: "Created objects.",
+        type: "array",
+        items: {
+          type: "string",
+        },
+      },
+      modifiedIds: {
+        description: "Modified objects (content, membership or position changed; IDs kept).",
+        type: "array",
+        items: {
+          type: "string",
+        },
+      },
+      removedIds: {
+        description: "Removed objects (descendants included).",
+        type: "array",
+        items: {
+          type: "string",
+        },
+      },
+      rev: {
+        description: "The drawing revision after the change.",
+        type: "integer",
+        maximum: 18446744073709551615n,
+        minimum: 0,
+      },
+    },
+    required: [
+      "drawingId",
+      "layerIds",
+      "merged",
+      "createdIds",
+      "modifiedIds",
+      "removedIds",
+      "rev",
+    ],
+  },
+  "draw.pivot.set.Point": {
+    description: "A point `{x, y}` in drawing units.",
+    type: "object",
+    properties: {
+      x: {
+        description: "X (du).",
+        type: "number",
+      },
+      y: {
+        description: "Y (du, up).",
+        type: "number",
+      },
+    },
+    additionalProperties: false,
+    required: [
+      "x",
+      "y",
+    ],
+  },
+  "draw.pivot.set.params": {
+    title: "PivotParams",
+    description: "`draw.pivot.set` parameters.",
+    type: "object",
+    properties: {
+      drawingId: {
+        description: "The drawing (default: `elementId` + `frame`, else the current drawing).",
+        type: [
+          "string",
+          "null",
+        ],
+        default: null,
+      },
+      elementId: {
+        description: "The element whose cell exposes the drawing.",
+        type: [
+          "string",
+          "null",
+        ],
+        default: null,
+      },
+      frame: {
+        description: "The frame of that cell.",
+        type: [
+          "integer",
+          "null",
+        ],
+        default: null,
+        minimum: 1,
+        maximum: 2147483647,
+      },
+      point: {
+        description: "The new pivot (du).",
+        $ref: "#/$defs/draw.pivot.set.Point",
+      },
+      expectRev: {
+        description: "The drawing revision the caller read (02 §3.12; `drawing.staleRevision` when it changed).",
+        type: [
+          "integer",
+          "null",
+        ],
+        maximum: 18446744073709551615n,
+        minimum: 0,
+        default: null,
+      },
+    },
+    additionalProperties: false,
+    required: [
+      "point",
+    ],
+  },
+  "draw.pivot.set.result": {
+    title: "PivotResult",
+    description: "`{drawingId, pivot, rev}` and the changed IDs.",
+    type: "object",
+    properties: {
+      drawingId: {
+        description: "The drawing.",
+        type: "string",
+      },
+      pivot: {
+        description: "The pivot.",
+        $ref: "#/$defs/draw.pivot.set.Point",
+      },
+      createdIds: {
+        description: "Created objects.",
+        type: "array",
+        items: {
+          type: "string",
+        },
+      },
+      modifiedIds: {
+        description: "Modified objects (content, membership or position changed; IDs kept).",
+        type: "array",
+        items: {
+          type: "string",
+        },
+      },
+      removedIds: {
+        description: "Removed objects (descendants included).",
+        type: "array",
+        items: {
+          type: "string",
+        },
+      },
+      rev: {
+        description: "The drawing revision after the change.",
+        type: "integer",
+        maximum: 18446744073709551615n,
+        minimum: 0,
+      },
+    },
+    required: [
+      "drawingId",
+      "pivot",
+      "createdIds",
+      "modifiedIds",
+      "removedIds",
+      "rev",
+    ],
+  },
+  "draw.point.add.Point": {
+    description: "A point `{x, y}` in drawing units.",
+    type: "object",
+    properties: {
+      x: {
+        description: "X (du).",
+        type: "number",
+      },
+      y: {
+        description: "Y (du, up).",
+        type: "number",
+      },
+    },
+    additionalProperties: false,
+    required: [
+      "x",
+      "y",
+    ],
+  },
+  "draw.point.add.params": {
+    title: "PointAddParams",
+    description: "`draw.point.add` parameters.",
+    type: "object",
+    properties: {
+      strokeId: {
+        description: "The stroke (local or `<drawingId>/<strokeId>`).",
+        type: "string",
+      },
+      at: {
+        description: "Insert at the stroke location nearest to this point.",
+        anyOf: [
+          {
+            $ref: "#/$defs/draw.point.add.Point",
+          },
+          {
+            type: "null",
+          },
+        ],
+        default: null,
+      },
+      segment: {
+        description: "Or: the segment index …",
+        type: [
+          "integer",
+          "null",
+        ],
+        maximum: 2147483647,
+        minimum: 0,
+        default: null,
+      },
+      t: {
+        description: "… and the parameter on it (0–1).",
+        type: [
+          "number",
+          "null",
+        ],
+        default: null,
+        minimum: 0,
+        maximum: 1,
+      },
+    },
+    additionalProperties: false,
+    required: [
+      "strokeId",
+    ],
+  },
+  "draw.point.add.result": {
+    title: "PointAddResult",
+    description: "`{strokeId, anchor, rev}`.",
+    type: "object",
+    properties: {
+      strokeId: {
+        description: "The stroke.",
+        type: "string",
+      },
+      anchor: {
+        description: "The new anchor's index.",
+        type: "integer",
+        maximum: 2147483647,
+        minimum: 0,
+      },
+      createdIds: {
+        description: "Created objects.",
+        type: "array",
+        items: {
+          type: "string",
+        },
+      },
+      modifiedIds: {
+        description: "Modified objects (content, membership or position changed; IDs kept).",
+        type: "array",
+        items: {
+          type: "string",
+        },
+      },
+      removedIds: {
+        description: "Removed objects (descendants included).",
+        type: "array",
+        items: {
+          type: "string",
+        },
+      },
+      rev: {
+        description: "The drawing revision after the change.",
+        type: "integer",
+        maximum: 18446744073709551615n,
+        minimum: 0,
+      },
+    },
+    required: [
+      "strokeId",
+      "anchor",
+      "createdIds",
+      "modifiedIds",
+      "removedIds",
+      "rev",
+    ],
+  },
+  "draw.point.delete.AnchorRef": {
+    description: "An anchor of a stroke.",
+    type: "object",
+    properties: {
+      strokeId: {
+        description: "The stroke (local ID).",
+        type: "string",
+      },
+      anchor: {
+        description: "The anchor index.",
+        type: "integer",
+        maximum: 2147483647,
+        minimum: 0,
+      },
+    },
+    additionalProperties: false,
+    required: [
+      "strokeId",
+      "anchor",
+    ],
+  },
+  "draw.point.delete.params": {
+    title: "PointDeleteParams",
+    description: "`draw.point.delete` parameters.",
+    type: "object",
+    properties: {
+      drawingId: {
+        description: "The drawing (default: current).",
+        type: [
+          "string",
+          "null",
+        ],
+        default: null,
+      },
+      points: {
+        description: "Anchors (default: the point selection).",
+        type: [
+          "array",
+          "null",
+        ],
+        items: {
+          $ref: "#/$defs/draw.point.delete.AnchorRef",
+        },
+        default: null,
+      },
+    },
+    additionalProperties: false,
+  },
+  "draw.point.delete.result": {
+    title: "ContourResult",
+    description: "`{modifiedIds, removedIds, rev}`.",
+    type: "object",
+    properties: {
+      drawingId: {
+        description: "The drawing.",
+        type: "string",
+      },
+      createdIds: {
+        description: "Created objects.",
+        type: "array",
+        items: {
+          type: "string",
+        },
+      },
+      modifiedIds: {
+        description: "Modified objects (content, membership or position changed; IDs kept).",
+        type: "array",
+        items: {
+          type: "string",
+        },
+      },
+      removedIds: {
+        description: "Removed objects (descendants included).",
+        type: "array",
+        items: {
+          type: "string",
+        },
+      },
+      rev: {
+        description: "The drawing revision after the change.",
+        type: "integer",
+        maximum: 18446744073709551615n,
+        minimum: 0,
+      },
+    },
+    required: [
+      "drawingId",
+      "createdIds",
+      "modifiedIds",
+      "removedIds",
+      "rev",
+    ],
+  },
+  "draw.point.move.AnchorRef": {
+    description: "An anchor of a stroke.",
+    type: "object",
+    properties: {
+      strokeId: {
+        description: "The stroke (local ID).",
+        type: "string",
+      },
+      anchor: {
+        description: "The anchor index.",
+        type: "integer",
+        maximum: 2147483647,
+        minimum: 0,
+      },
+    },
+    additionalProperties: false,
+    required: [
+      "strokeId",
+      "anchor",
+    ],
+  },
+  "draw.point.move.Point": {
+    description: "A point `{x, y}` in drawing units.",
+    type: "object",
+    properties: {
+      x: {
+        description: "X (du).",
+        type: "number",
+      },
+      y: {
+        description: "Y (du, up).",
+        type: "number",
+      },
+    },
+    additionalProperties: false,
+    required: [
+      "x",
+      "y",
+    ],
+  },
+  "draw.point.move.params": {
+    title: "PointMoveParams",
+    description: "`draw.point.move` parameters.",
+    type: "object",
+    properties: {
+      drawingId: {
+        description: "The drawing (default: current).",
+        type: [
+          "string",
+          "null",
+        ],
+        default: null,
+      },
+      points: {
+        description: "Anchors (default: the point selection).",
+        type: [
+          "array",
+          "null",
+        ],
+        items: {
+          $ref: "#/$defs/draw.point.move.AnchorRef",
+        },
+        default: null,
+      },
+      delta: {
+        description: "Offset (du).",
+        $ref: "#/$defs/draw.point.move.Point",
+      },
+      snap: {
+        description: "Snap moved anchors to other strokes' anchors within 8 du (Snap to Contour, 02 §8.9; default off).",
+        type: "boolean",
+        default: false,
+      },
+    },
+    additionalProperties: false,
+    required: [
+      "delta",
+    ],
+  },
+  "draw.point.move.result": {
+    title: "ContourResult",
+    description: "`{modifiedIds, removedIds, rev}`.",
+    type: "object",
+    properties: {
+      drawingId: {
+        description: "The drawing.",
+        type: "string",
+      },
+      createdIds: {
+        description: "Created objects.",
+        type: "array",
+        items: {
+          type: "string",
+        },
+      },
+      modifiedIds: {
+        description: "Modified objects (content, membership or position changed; IDs kept).",
+        type: "array",
+        items: {
+          type: "string",
+        },
+      },
+      removedIds: {
+        description: "Removed objects (descendants included).",
+        type: "array",
+        items: {
+          type: "string",
+        },
+      },
+      rev: {
+        description: "The drawing revision after the change.",
+        type: "integer",
+        maximum: 18446744073709551615n,
+        minimum: 0,
+      },
+    },
+    required: [
+      "drawingId",
+      "createdIds",
+      "modifiedIds",
+      "removedIds",
+      "rev",
+    ],
+  },
+  "draw.point.set.Point": {
+    description: "A point `{x, y}` in drawing units.",
+    type: "object",
+    properties: {
+      x: {
+        description: "X (du).",
+        type: "number",
+      },
+      y: {
+        description: "Y (du, up).",
+        type: "number",
+      },
+    },
+    additionalProperties: false,
+    required: [
+      "x",
+      "y",
+    ],
+  },
+  "draw.point.set.HandleMode": {
+    description: "Handle behaviour of `draw.point.set`.",
+    oneOf: [
+      {
+        description: "The handle not given mirrors the given one.",
+        type: "string",
+        const: "symmetric",
+      },
+      {
+        description: "Handles independent.",
+        type: "string",
+        const: "broken",
+      },
+      {
+        description: "Both handles removed (a corner).",
+        type: "string",
+        const: "reset",
+      },
+    ],
+  },
+  "draw.point.set.params": {
+    title: "PointSetParams",
+    description: "`draw.point.set` parameters.",
+    type: "object",
+    properties: {
+      strokeId: {
+        description: "The stroke.",
+        type: "string",
+      },
+      anchor: {
+        description: "The anchor.",
+        type: "integer",
+        maximum: 2147483647,
+        minimum: 0,
+      },
+      position: {
+        description: "New position.",
+        anyOf: [
+          {
+            $ref: "#/$defs/draw.point.set.Point",
+          },
+          {
+            type: "null",
+          },
+        ],
+        default: null,
+      },
+      inHandle: {
+        description: "Incoming handle (offset).",
+        anyOf: [
+          {
+            $ref: "#/$defs/draw.point.set.Point",
+          },
+          {
+            type: "null",
+          },
+        ],
+        default: null,
+      },
+      outHandle: {
+        description: "Outgoing handle (offset).",
+        anyOf: [
+          {
+            $ref: "#/$defs/draw.point.set.Point",
+          },
+          {
+            type: "null",
+          },
+        ],
+        default: null,
+      },
+      handleMode: {
+        description: "Handle mode.",
+        anyOf: [
+          {
+            $ref: "#/$defs/draw.point.set.HandleMode",
           },
           {
             type: "null",
           },
         ],
       },
-      rev: {
-        type: "number",
-      },
-    },
-    required: [
-      "hits",
-      "zoneId",
-      "rev",
-    ],
-    "x-spec": "`{hits: [object], zoneId|null, rev}`",
-    additionalProperties: false,
-  },
-  "draw.inspectorPreview.set.params": {
-    title: "draw.inspectorPreview.set parameters",
-    type: "object",
-    properties: {
-      visible: {
-        type: "boolean",
-      },
-    },
-    required: [
-      "visible",
-    ],
-    additionalProperties: false,
-    "x-spec": "`visible: bool`",
-  },
-  "draw.inspectorPreview.set.result": {
-    title: "draw.inspectorPreview.set result",
-    type: "object",
-    properties: {
-      visible: {
-        type: "boolean",
-      },
-    },
-    required: [
-      "visible",
-    ],
-    "x-spec": "`{visible}`",
-    additionalProperties: false,
-  },
-  "draw.line.add.params": {
-    title: "draw.line.add parameters",
-    type: "object",
-    properties: {
-      drawingId: {
-        type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
-      },
-      from: {
-        type: "object",
-        properties: {
-          x: {
-            type: "number",
-          },
-          y: {
-            type: "number",
-          },
-        },
-        required: [
-          "x",
-          "y",
-        ],
-        additionalProperties: false,
-      },
-      to: {
-        type: "object",
-        properties: {
-          x: {
-            type: "number",
-          },
-          y: {
-            type: "number",
-          },
-        },
-        required: [
-          "x",
-          "y",
-        ],
-        additionalProperties: false,
-      },
-      continuePrevious: {
-        type: "boolean",
-        default: false,
-      },
-      constrainAngle: {
-        type: "boolean",
-        default: false,
-      },
-      colourId: {
-        type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
-      },
-      thickness: {
-        type: "number",
-      },
-      penId: {
-        type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
-      },
-      layer: {
-        type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3) or \"auto\" | \"new\" | \"top\" | \"behind\"",
-        default: "auto",
-      },
-      symmetry: {
-        type: "boolean",
-        default: true,
-      },
-    },
-    required: [
-      "to",
-    ],
-    additionalProperties: false,
-    "x-spec": "`drawingId?: id; from?: point; to: point; continuePrevious: bool = false; constrainAngle: bool = false; colourId?: id; thickness?: number; penId?: id; layer: enum \"auto\"|\"new\"|\"top\"|\"behind\" | id = \"auto\"; symmetry: bool = true`",
-  },
-  "draw.line.add.result": {
-    title: "draw.line.add result",
-    type: "object",
-    properties: {
-      strokeIds: {
-        type: "array",
-        items: {
-          type: "string",
-          minLength: 1,
-          maxLength: 4096,
-          description: "object ID or path reference (10 §3)",
-        },
-        maxItems: 100000,
-      },
-      zoneIds: {
-        type: "array",
-        items: {
-          type: "string",
-          minLength: 1,
-          maxLength: 4096,
-          description: "object ID or path reference (10 §3)",
-        },
-        maxItems: 100000,
-      },
-      layerId: {
-        type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
-      },
-      rev: {
-        type: "number",
-      },
-    },
-    required: [
-      "strokeIds",
-      "zoneIds",
-      "layerId",
-      "rev",
-    ],
-    "x-spec": "`{strokeIds: [id], zoneIds: [id], layerId, rev}`",
-    additionalProperties: false,
-  },
-  "draw.linesToBrush.apply.params": {
-    title: "draw.linesToBrush.apply parameters",
-    type: "object",
-    properties: {
-      drawingId: {
-        type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
-      },
-      ids: {
-        type: "array",
-        items: {
-          type: "string",
-          minLength: 1,
-          maxLength: 4096,
-          description: "object ID or path reference (10 §3)",
-        },
-        maxItems: 100000,
-        description: "Default: selection.",
-      },
-      penId: {
-        type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3) Default: current brush pen.",
-      },
     },
     additionalProperties: false,
-    "x-spec": "`drawingId?: id; ids?: [id] = selection; penId?: id = current brush pen`",
-  },
-  "draw.linesToBrush.apply.result": {
-    title: "draw.linesToBrush.apply result",
-    type: "object",
-    properties: {
-      strokeIds: {
-        type: "array",
-        items: {
-          type: "string",
-          minLength: 1,
-          maxLength: 4096,
-          description: "object ID or path reference (10 §3)",
-        },
-        maxItems: 100000,
-      },
-      rev: {
-        type: "number",
-      },
-    },
-    required: [
-      "strokeIds",
-      "rev",
-    ],
-    "x-spec": "`{strokeIds: [id], rev}`",
-    additionalProperties: false,
-  },
-  "draw.lock.set.params": {
-    title: "draw.lock.set parameters",
-    type: "object",
-    properties: {
-      drawingId: {
-        type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
-      },
-      locked: {
-        type: "boolean",
-      },
-    },
-    required: [
-      "locked",
-    ],
-    additionalProperties: false,
-    "x-spec": "`drawingId?: id; locked: bool`",
-  },
-  "draw.lock.set.result": {
-    title: "draw.lock.set result",
-    type: "object",
-    properties: {
-      drawingId: {
-        type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
-      },
-      locked: {
-        type: "boolean",
-      },
-    },
-    required: [
-      "drawingId",
-      "locked",
-    ],
-    "x-spec": "`{drawingId, locked}`",
-    additionalProperties: false,
-  },
-  "draw.object.delete.params": {
-    title: "draw.object.delete parameters",
-    type: "object",
-    properties: {
-      drawingId: {
-        type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
-      },
-      ids: {
-        type: "array",
-        items: {
-          type: "string",
-          minLength: 1,
-          maxLength: 4096,
-          description: "object ID or path reference (10 §3)",
-        },
-        maxItems: 100000,
-        description: "Default: selection.",
-      },
-    },
-    additionalProperties: false,
-    "x-spec": "`drawingId?: id; ids?: [id] = selection`",
-  },
-  "draw.object.delete.result": {
-    title: "draw.object.delete result",
-    type: "object",
-    properties: {
-      removedIds: {
-        type: "array",
-        items: {
-          type: "string",
-          minLength: 1,
-          maxLength: 4096,
-          description: "object ID or path reference (10 §3)",
-        },
-        maxItems: 100000,
-      },
-      rev: {
-        type: "number",
-      },
-    },
-    required: [
-      "removedIds",
-      "rev",
-    ],
-    "x-spec": "`{removedIds: [id], rev}`",
-    additionalProperties: false,
-  },
-  "draw.optimize.apply.params": {
-    title: "draw.optimize.apply parameters",
-    type: "object",
-    properties: {
-      drawingId: {
-        type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
-      },
-      ids: {
-        type: "array",
-        items: {
-          type: "string",
-          minLength: 1,
-          maxLength: 4096,
-          description: "object ID or path reference (10 §3)",
-        },
-        maxItems: 100000,
-        description: "Default: selection.",
-      },
-    },
-    additionalProperties: false,
-    "x-spec": "`drawingId?: id; ids?: [id] = selection`",
-  },
-  "draw.optimize.apply.result": {
-    title: "draw.optimize.apply result",
-    type: "object",
-    properties: {
-      layerIds: {
-        type: "array",
-        items: {
-          type: "string",
-          minLength: 1,
-          maxLength: 4096,
-          description: "object ID or path reference (10 §3)",
-        },
-        maxItems: 100000,
-      },
-      merged: {
-        type: "integer",
-      },
-      rev: {
-        type: "number",
-      },
-    },
-    required: [
-      "layerIds",
-      "merged",
-      "rev",
-    ],
-    "x-spec": "`{layerIds: [id], merged: int, rev}`",
-    additionalProperties: false,
-  },
-  "draw.pivot.set.params": {
-    title: "draw.pivot.set parameters",
-    type: "object",
-    properties: {
-      drawingId: {
-        type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
-      },
-      point: {
-        type: "object",
-        properties: {
-          x: {
-            type: "number",
-          },
-          y: {
-            type: "number",
-          },
-        },
-        required: [
-          "x",
-          "y",
-        ],
-        additionalProperties: false,
-      },
-    },
-    required: [
-      "point",
-    ],
-    additionalProperties: false,
-    "x-spec": "`drawingId?: id; point: point`",
-  },
-  "draw.pivot.set.result": {
-    title: "draw.pivot.set result",
-    type: "object",
-    properties: {
-      pivot: {
-        type: "object",
-        properties: {
-          x: {
-            type: "number",
-          },
-          y: {
-            type: "number",
-          },
-        },
-        required: [
-          "x",
-          "y",
-        ],
-        additionalProperties: false,
-      },
-      rev: {
-        type: "number",
-      },
-    },
-    required: [
-      "pivot",
-      "rev",
-    ],
-    "x-spec": "`{pivot, rev}`",
-    additionalProperties: false,
-  },
-  "draw.point.add.params": {
-    title: "draw.point.add parameters",
-    type: "object",
-    properties: {
-      strokeId: {
-        type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
-      },
-      at: {
-        type: "object",
-        properties: {
-          x: {
-            type: "number",
-          },
-          y: {
-            type: "number",
-          },
-        },
-        required: [
-          "x",
-          "y",
-        ],
-        additionalProperties: false,
-        description: "(nearest location)",
-      },
-      segment: {
-        type: "integer",
-      },
-      t: {
-        type: "number",
-        minimum: 0,
-        maximum: 1,
-      },
-    },
-    required: [
-      "strokeId",
-    ],
-    additionalProperties: false,
-    "x-spec": "`strokeId: id; at?: point (nearest location); segment?: int; t?: number (0–1)`",
-  },
-  "draw.point.add.result": {
-    title: "draw.point.add result",
-    type: "object",
-    properties: {
-      strokeId: {
-        type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
-      },
-      anchor: {
-        type: "integer",
-      },
-      rev: {
-        type: "number",
-      },
-    },
-    required: [
-      "strokeId",
-      "anchor",
-      "rev",
-    ],
-    "x-spec": "`{strokeId, anchor: int, rev}`",
-    additionalProperties: false,
-  },
-  "draw.point.delete.params": {
-    title: "draw.point.delete parameters",
-    type: "object",
-    properties: {
-      points: {
-        type: "array",
-        items: {
-          type: "object",
-          properties: {
-            strokeId: {
-              type: "string",
-              minLength: 1,
-              maxLength: 4096,
-              description: "object ID or path reference (10 §3)",
-            },
-            anchor: {
-              type: "integer",
-            },
-          },
-          required: [
-            "strokeId",
-            "anchor",
-          ],
-          additionalProperties: false,
-        },
-        maxItems: 100000,
-        description: "Default: point selection.",
-      },
-    },
-    additionalProperties: false,
-    "x-spec": "`points?: [{strokeId, anchor: int}] = point selection`",
-  },
-  "draw.point.delete.result": {
-    title: "draw.point.delete result",
-    type: "object",
-    properties: {
-      modifiedIds: {
-        type: "array",
-        items: {
-          type: "string",
-          minLength: 1,
-          maxLength: 4096,
-          description: "object ID or path reference (10 §3)",
-        },
-        maxItems: 100000,
-      },
-      removedIds: {
-        type: "array",
-        items: {
-          type: "string",
-          minLength: 1,
-          maxLength: 4096,
-          description: "object ID or path reference (10 §3)",
-        },
-        maxItems: 100000,
-      },
-      rev: {
-        type: "number",
-      },
-    },
-    required: [
-      "modifiedIds",
-      "removedIds",
-      "rev",
-    ],
-    "x-spec": "`{modifiedIds: [id], removedIds: [id], rev}`",
-    additionalProperties: false,
-  },
-  "draw.point.move.params": {
-    title: "draw.point.move parameters",
-    type: "object",
-    properties: {
-      points: {
-        type: "array",
-        items: {
-          type: "object",
-          properties: {
-            strokeId: {
-              type: "string",
-              minLength: 1,
-              maxLength: 4096,
-              description: "object ID or path reference (10 §3)",
-            },
-            anchor: {
-              type: "integer",
-            },
-          },
-          required: [
-            "strokeId",
-            "anchor",
-          ],
-          additionalProperties: false,
-        },
-        maxItems: 100000,
-        description: "Default: point selection.",
-      },
-      delta: {
-        type: "object",
-        properties: {
-          x: {
-            type: "number",
-          },
-          y: {
-            type: "number",
-          },
-        },
-        required: [
-          "x",
-          "y",
-        ],
-        additionalProperties: false,
-      },
-      snap: {
-        type: "boolean",
-        description: "Default: Snap to Contour setting.",
-      },
-    },
-    required: [
-      "delta",
-    ],
-    additionalProperties: false,
-    "x-spec": "`points?: [{strokeId, anchor: int}] = point selection; delta: point; snap?: bool = Snap to Contour setting`",
-  },
-  "draw.point.move.result": {
-    title: "draw.point.move result",
-    type: "object",
-    properties: {
-      modifiedIds: {
-        type: "array",
-        items: {
-          type: "string",
-          minLength: 1,
-          maxLength: 4096,
-          description: "object ID or path reference (10 §3)",
-        },
-        maxItems: 100000,
-      },
-      rev: {
-        type: "number",
-      },
-    },
-    required: [
-      "modifiedIds",
-      "rev",
-    ],
-    "x-spec": "`{modifiedIds: [id], rev}`",
-    additionalProperties: false,
-  },
-  "draw.point.set.params": {
-    title: "draw.point.set parameters",
-    type: "object",
-    properties: {
-      strokeId: {
-        type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
-      },
-      anchor: {
-        type: "integer",
-      },
-      position: {
-        type: "object",
-        properties: {
-          x: {
-            type: "number",
-          },
-          y: {
-            type: "number",
-          },
-        },
-        required: [
-          "x",
-          "y",
-        ],
-        additionalProperties: false,
-      },
-      inHandle: {
-        type: "object",
-        properties: {
-          x: {
-            type: "number",
-          },
-          y: {
-            type: "number",
-          },
-        },
-        required: [
-          "x",
-          "y",
-        ],
-        additionalProperties: false,
-      },
-      outHandle: {
-        type: "object",
-        properties: {
-          x: {
-            type: "number",
-          },
-          y: {
-            type: "number",
-          },
-        },
-        required: [
-          "x",
-          "y",
-        ],
-        additionalProperties: false,
-      },
-      handleMode: {
-        type: "string",
-        enum: [
-          "symmetric",
-          "broken",
-          "reset",
-        ],
-      },
-    },
     required: [
       "strokeId",
       "anchor",
     ],
-    additionalProperties: false,
-    "x-spec": "`strokeId: id; anchor: int; position?: point; inHandle?: point; outHandle?: point; handleMode?: enum \"symmetric\"|\"broken\"|\"reset\"`",
   },
   "draw.point.set.result": {
-    title: "draw.point.set result",
+    title: "PointSetResult",
+    description: "`{strokeId, rev}`.",
     type: "object",
     properties: {
       strokeId: {
+        description: "The stroke.",
         type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
+      },
+      createdIds: {
+        description: "Created objects.",
+        type: "array",
+        items: {
+          type: "string",
+        },
+      },
+      modifiedIds: {
+        description: "Modified objects (content, membership or position changed; IDs kept).",
+        type: "array",
+        items: {
+          type: "string",
+        },
+      },
+      removedIds: {
+        description: "Removed objects (descendants included).",
+        type: "array",
+        items: {
+          type: "string",
+        },
       },
       rev: {
-        type: "number",
+        description: "The drawing revision after the change.",
+        type: "integer",
+        maximum: 18446744073709551615n,
+        minimum: 0,
       },
     },
     required: [
       "strokeId",
+      "createdIds",
+      "modifiedIds",
+      "removedIds",
       "rev",
     ],
-    "x-spec": "`{strokeId, rev}`",
-    additionalProperties: false,
   },
-  "draw.pointSelection.set.params": {
-    title: "draw.pointSelection.set parameters",
+  "draw.pointSelection.set.AnchorRef": {
+    description: "An anchor of a stroke.",
     type: "object",
     properties: {
-      drawingId: {
+      strokeId: {
+        description: "The stroke (local ID).",
         type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
       },
-      points: {
-        type: "array",
-        items: {
-          type: "object",
-          properties: {
-            strokeId: {
-              type: "string",
-              minLength: 1,
-              maxLength: 4096,
-              description: "object ID or path reference (10 §3)",
-            },
-            anchor: {
-              type: "integer",
-            },
-          },
-          required: [
-            "strokeId",
-            "anchor",
-          ],
-          additionalProperties: false,
-        },
-        maxItems: 100000,
-      },
-      rect: {
-        type: "object",
-        properties: {
-          x: {
-            type: "number",
-          },
-          y: {
-            type: "number",
-          },
-          width: {
-            type: "number",
-          },
-          height: {
-            type: "number",
-          },
-        },
-        required: [
-          "x",
-          "y",
-          "width",
-          "height",
-        ],
-        additionalProperties: false,
-      },
-      mode: {
-        type: "string",
-        enum: [
-          "replace",
-          "add",
-          "toggle",
-          "remove",
-        ],
-        default: "replace",
+      anchor: {
+        description: "The anchor index.",
+        type: "integer",
+        maximum: 2147483647,
+        minimum: 0,
       },
     },
     additionalProperties: false,
-    "x-spec": "`drawingId?: id; points?: [{strokeId, anchor: int}]; rect?: {x,y,width,height}; mode: enum \"replace\"|\"add\"|\"toggle\"|\"remove\" = \"replace\"`",
+    required: [
+      "strokeId",
+      "anchor",
+    ],
+  },
+  "draw.pointSelection.set.RectIn": {
+    description: "`{x, y, width, height}` input.",
+    type: "object",
+    properties: {
+      x: {
+        description: "Left.",
+        type: "number",
+      },
+      y: {
+        description: "Bottom.",
+        type: "number",
+      },
+      width: {
+        description: "Width (≥ 0).",
+        type: "number",
+        minimum: 0,
+      },
+      height: {
+        description: "Height (≥ 0).",
+        type: "number",
+        minimum: 0,
+      },
+    },
+    additionalProperties: false,
+    required: [
+      "x",
+      "y",
+      "width",
+      "height",
+    ],
+  },
+  "draw.pointSelection.set.Mode": {
+    description: "How a selection combines with the current one.",
+    oneOf: [
+      {
+        description: "Replace it.",
+        type: "string",
+        const: "replace",
+      },
+      {
+        description: "Add to it.",
+        type: "string",
+        const: "add",
+      },
+      {
+        description: "Toggle membership.",
+        type: "string",
+        const: "toggle",
+      },
+      {
+        description: "Remove from it.",
+        type: "string",
+        const: "remove",
+      },
+    ],
+  },
+  "draw.pointSelection.set.params": {
+    title: "PointSelectionParams",
+    description: "`draw.pointSelection.set` parameters.",
+    type: "object",
+    properties: {
+      drawingId: {
+        description: "The drawing (default: current).",
+        type: [
+          "string",
+          "null",
+        ],
+        default: null,
+      },
+      points: {
+        description: "Anchors.",
+        type: [
+          "array",
+          "null",
+        ],
+        items: {
+          $ref: "#/$defs/draw.pointSelection.set.AnchorRef",
+        },
+        default: null,
+      },
+      rect: {
+        description: "Every anchor inside a rectangle.",
+        anyOf: [
+          {
+            $ref: "#/$defs/draw.pointSelection.set.RectIn",
+          },
+          {
+            type: "null",
+          },
+        ],
+      },
+      mode: {
+        description: "How to combine.",
+        $ref: "#/$defs/draw.pointSelection.set.Mode",
+      },
+    },
+    additionalProperties: false,
   },
   "draw.pointSelection.set.result": {
-    title: "draw.pointSelection.set result",
+    title: "PointSelectionResult",
+    description: "`{selectedPoints}`.",
     type: "object",
     properties: {
       selectedPoints: {
+        description: "Selected anchors.",
         type: "array",
         items: {
-          type: "object",
-          properties: {
-            strokeId: {
-              type: "string",
-              minLength: 1,
-              maxLength: 4096,
-              description: "object ID or path reference (10 §3)",
-            },
-            anchor: {
-              type: "integer",
-            },
-          },
-          required: [
-            "strokeId",
-            "anchor",
-          ],
-          additionalProperties: false,
+          $ref: "#/$defs/draw.pointSelection.set.AnchorRef",
         },
-        maxItems: 100000,
       },
     },
     required: [
       "selectedPoints",
     ],
-    "x-spec": "`{selectedPoints: [{strokeId, anchor}]}`",
+  },
+  "draw.polyline.add.PolyPoint": {
+    description: "A polyline anchor: position and optional handle offsets.",
+    type: "object",
+    properties: {
+      x: {
+        description: "x (du).",
+        type: "number",
+      },
+      y: {
+        description: "y (du).",
+        type: "number",
+      },
+      inHandle: {
+        description: "Incoming handle, as an offset from the anchor (10 §4.9 convention; SI-069).",
+        anyOf: [
+          {
+            $ref: "#/$defs/draw.polyline.add.Point",
+          },
+          {
+            type: "null",
+          },
+        ],
+        default: null,
+      },
+      outHandle: {
+        description: "Outgoing handle, as an offset from the anchor.",
+        anyOf: [
+          {
+            $ref: "#/$defs/draw.polyline.add.Point",
+          },
+          {
+            type: "null",
+          },
+        ],
+        default: null,
+      },
+    },
     additionalProperties: false,
+    required: [
+      "x",
+      "y",
+    ],
+  },
+  "draw.polyline.add.Point": {
+    description: "A point `{x, y}` in drawing units.",
+    type: "object",
+    properties: {
+      x: {
+        description: "X (du).",
+        type: "number",
+      },
+      y: {
+        description: "Y (du, up).",
+        type: "number",
+      },
+    },
+    additionalProperties: false,
+    required: [
+      "x",
+      "y",
+    ],
   },
   "draw.polyline.add.params": {
-    title: "draw.polyline.add parameters",
+    title: "PolylineParams",
+    description: "`draw.polyline.add` parameters.",
     type: "object",
     properties: {
       drawingId: {
-        type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
+        description: "The drawing (default: current).",
+        type: [
+          "string",
+          "null",
+        ],
+        default: null,
+      },
+      elementId: {
+        description: "Or the cell of this element (02 §13.1 item 4; ADR-0016 common addressing).",
+        type: [
+          "string",
+          "null",
+        ],
+        default: null,
+      },
+      frame: {
+        description: "The frame of that cell (default: current frame).",
+        type: [
+          "integer",
+          "null",
+        ],
+        maximum: 2147483647,
+        minimum: 0,
+        default: null,
+      },
+      createDrawing: {
+        description: "Create the cell's drawing when it has none (default true, as `draw.stroke.add`).",
+        type: "boolean",
+        default: true,
       },
       points: {
+        description: "Anchors (at least 2).",
         type: "array",
         items: {
-          type: "object",
-          properties: {
-            x: {
-              type: "number",
-            },
-            y: {
-              type: "number",
-            },
-            inHandle: {
-              type: "object",
-              properties: {
-                x: {
-                  type: "number",
-                },
-                y: {
-                  type: "number",
-                },
-              },
-              required: [
-                "x",
-                "y",
-              ],
-              additionalProperties: false,
-            },
-            outHandle: {
-              type: "object",
-              properties: {
-                x: {
-                  type: "number",
-                },
-                y: {
-                  type: "number",
-                },
-              },
-              required: [
-                "x",
-                "y",
-              ],
-              additionalProperties: false,
-            },
-          },
-          required: [
-            "x",
-            "y",
-          ],
-          additionalProperties: false,
+          $ref: "#/$defs/draw.polyline.add.PolyPoint",
         },
-        maxItems: 100000,
+        minItems: 2,
+        maxItems: 10000,
       },
       closed: {
+        description: "Closed.",
         type: "boolean",
         default: false,
       },
       snap: {
+        description: "Snap anchors to existing anchors within `snapRadius`.",
         type: "boolean",
         default: true,
       },
       snapRadius: {
+        description: "Snap radius (view px; 1 px = 1 du at 100 %, SI-063).",
         type: "number",
         default: 8,
+        minimum: 0,
+        maximum: 1000,
       },
       colourId: {
-        type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
+        description: "Line colour.",
+        type: [
+          "string",
+          "null",
+        ],
+        default: null,
       },
       thickness: {
-        type: "number",
+        description: "Thickness.",
+        type: [
+          "number",
+          "null",
+        ],
+        default: null,
+        minimum: 0,
+        maximum: 100,
       },
       penId: {
-        type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
+        description: "Pen.",
+        type: [
+          "string",
+          "null",
+        ],
+        default: null,
       },
       layer: {
+        description: "Layer rule.",
         type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3) or \"auto\" | \"new\" | \"top\" | \"behind\"",
         default: "auto",
       },
       symmetry: {
+        description: "Symmetry copies.",
         type: "boolean",
         default: true,
       },
     },
+    additionalProperties: false,
     required: [
       "points",
     ],
-    additionalProperties: false,
-    "x-spec": "`drawingId?: id; points: [{x,y,inHandle?: point,outHandle?: point}]; closed: bool = false; snap: bool = true; snapRadius: number = 8 (view px); colourId?: id; thickness?: number; penId?: id; layer: enum \"auto\"|\"new\"|\"top\"|\"behind\" | id = \"auto\"; symmetry: bool = true`",
   },
   "draw.polyline.add.result": {
-    title: "draw.polyline.add result",
-    type: "object",
-    properties: {
-      strokeIds: {
-        type: "array",
-        items: {
-          type: "string",
-          minLength: 1,
-          maxLength: 4096,
-          description: "object ID or path reference (10 §3)",
-        },
-        maxItems: 100000,
-      },
-      zoneIds: {
-        type: "array",
-        items: {
-          type: "string",
-          minLength: 1,
-          maxLength: 4096,
-          description: "object ID or path reference (10 §3)",
-        },
-        maxItems: 100000,
-      },
-      layerId: {
-        type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
-      },
-      rev: {
-        type: "number",
-      },
-    },
-    required: [
-      "strokeIds",
-      "zoneIds",
-      "layerId",
-      "rev",
-    ],
-    "x-spec": "`{strokeIds: [id], zoneIds: [id], layerId, rev}`",
-    additionalProperties: false,
-  },
-  "draw.rectangle.add.params": {
-    title: "draw.rectangle.add parameters",
+    title: "ShapeResult",
+    description: "The result of a shape tool.",
     type: "object",
     properties: {
       drawingId: {
+        description: "The drawing.",
         type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
+      },
+      strokeIds: {
+        description: "New strokes (the pieces noding made of them, symmetry copies included).",
+        type: "array",
+        items: {
+          type: "string",
+        },
+      },
+      zoneIds: {
+        description: "Zones the shape created.",
+        type: "array",
+        items: {
+          type: "string",
+        },
+      },
+      layerId: {
+        description: "The layer holding them.",
+        type: "string",
+      },
+      createdIds: {
+        description: "Created objects.",
+        type: "array",
+        items: {
+          type: "string",
+        },
+      },
+      modifiedIds: {
+        description: "Modified objects.",
+        type: "array",
+        items: {
+          type: "string",
+        },
+      },
+      removedIds: {
+        description: "Removed objects (strokes split by noding, zones that ceased to exist).",
+        type: "array",
+        items: {
+          type: "string",
+        },
+      },
+      rev: {
+        description: "The drawing revision after the change.",
+        type: "integer",
+        maximum: 18446744073709551615n,
+        minimum: 0,
+      },
+    },
+    required: [
+      "drawingId",
+      "strokeIds",
+      "zoneIds",
+      "layerId",
+      "createdIds",
+      "modifiedIds",
+      "removedIds",
+      "rev",
+    ],
+  },
+  "draw.rectangle.add.Point": {
+    description: "A point `{x, y}` in drawing units.",
+    type: "object",
+    properties: {
+      x: {
+        description: "X (du).",
+        type: "number",
+      },
+      y: {
+        description: "Y (du, up).",
+        type: "number",
+      },
+    },
+    additionalProperties: false,
+    required: [
+      "x",
+      "y",
+    ],
+  },
+  "draw.rectangle.add.params": {
+    title: "BoxShapeParams",
+    description: "`draw.rectangle.add` / `draw.ellipse.add` parameters.",
+    type: "object",
+    properties: {
+      drawingId: {
+        description: "The drawing (default: current).",
+        type: [
+          "string",
+          "null",
+        ],
+        default: null,
+      },
+      elementId: {
+        description: "Or the cell of this element (02 §13.1 item 4; ADR-0016 common addressing).",
+        type: [
+          "string",
+          "null",
+        ],
+        default: null,
+      },
+      frame: {
+        description: "The frame of that cell (default: current frame).",
+        type: [
+          "integer",
+          "null",
+        ],
+        maximum: 2147483647,
+        minimum: 0,
+        default: null,
+      },
+      createDrawing: {
+        description: "Create the cell's drawing when it has none (default true, as `draw.stroke.add`).",
+        type: "boolean",
+        default: true,
       },
       from: {
-        type: "object",
-        properties: {
-          x: {
-            type: "number",
-          },
-          y: {
-            type: "number",
-          },
-        },
-        required: [
-          "x",
-          "y",
-        ],
-        additionalProperties: false,
+        description: "Press point.",
+        $ref: "#/$defs/draw.rectangle.add.Point",
       },
       to: {
-        type: "object",
-        properties: {
-          x: {
-            type: "number",
-          },
-          y: {
-            type: "number",
-          },
-        },
-        required: [
-          "x",
-          "y",
-        ],
-        additionalProperties: false,
+        description: "Release point.",
+        $ref: "#/$defs/draw.rectangle.add.Point",
       },
       square: {
+        description: "Square constraint.",
         type: "boolean",
         default: false,
       },
       fromCentre: {
+        description: "`from` is the centre.",
         type: "boolean",
         default: false,
       },
       colourId: {
-        type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
+        description: "Line colour (default: current colour).",
+        type: [
+          "string",
+          "null",
+        ],
+        default: null,
       },
       thickness: {
-        type: "number",
+        description: "Line thickness (default: the pen's).",
+        type: [
+          "number",
+          "null",
+        ],
+        default: null,
+        minimum: 0,
+        maximum: 100,
       },
       penId: {
-        type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
+        description: "Pen (default: current pencil pen).",
+        type: [
+          "string",
+          "null",
+        ],
+        default: null,
       },
       layer: {
+        description: "Layer rule (as `draw.stroke.add`).",
         type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3) or \"auto\" | \"new\" | \"top\" | \"behind\"",
         default: "auto",
       },
       symmetry: {
+        description: "Symmetry copies (02 §6.2).",
         type: "boolean",
         default: true,
       },
     },
+    additionalProperties: false,
     required: [
       "from",
       "to",
     ],
-    additionalProperties: false,
-    "x-spec": "`drawingId?: id; from: point; to: point; square: bool = false; fromCentre: bool = false; colourId?: id; thickness?: number; penId?: id; layer: enum \"auto\"|\"new\"|\"top\"|\"behind\" | id = \"auto\"; symmetry: bool = true`",
   },
   "draw.rectangle.add.result": {
-    title: "draw.rectangle.add result",
+    title: "ShapeResult",
+    description: "The result of a shape tool.",
     type: "object",
     properties: {
+      drawingId: {
+        description: "The drawing.",
+        type: "string",
+      },
       strokeIds: {
+        description: "New strokes (the pieces noding made of them, symmetry copies included).",
         type: "array",
         items: {
           type: "string",
-          minLength: 1,
-          maxLength: 4096,
-          description: "object ID or path reference (10 §3)",
         },
-        maxItems: 100000,
       },
       zoneIds: {
+        description: "Zones the shape created.",
         type: "array",
         items: {
           type: "string",
-          minLength: 1,
-          maxLength: 4096,
-          description: "object ID or path reference (10 §3)",
         },
-        maxItems: 100000,
       },
       layerId: {
+        description: "The layer holding them.",
         type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
+      },
+      createdIds: {
+        description: "Created objects.",
+        type: "array",
+        items: {
+          type: "string",
+        },
+      },
+      modifiedIds: {
+        description: "Modified objects.",
+        type: "array",
+        items: {
+          type: "string",
+        },
+      },
+      removedIds: {
+        description: "Removed objects (strokes split by noding, zones that ceased to exist).",
+        type: "array",
+        items: {
+          type: "string",
+        },
       },
       rev: {
-        type: "number",
+        description: "The drawing revision after the change.",
+        type: "integer",
+        maximum: 18446744073709551615n,
+        minimum: 0,
       },
     },
     required: [
+      "drawingId",
       "strokeIds",
       "zoneIds",
       "layerId",
+      "createdIds",
+      "modifiedIds",
+      "removedIds",
       "rev",
     ],
-    "x-spec": "`{strokeIds: [id], zoneIds: [id], layerId, rev}`",
-    additionalProperties: false,
   },
-  "draw.repositionAll.apply.params": {
-    title: "draw.repositionAll.apply parameters",
+  "draw.repositionAll.apply.Point": {
+    description: "A point `{x, y}` in drawing units.",
     type: "object",
     properties: {
-      elementId: {
-        type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3) Default: current.",
-      },
-      translate: {
-        type: "object",
-        properties: {
-          x: {
-            type: "number",
-          },
-          y: {
-            type: "number",
-          },
-        },
-        required: [
-          "x",
-          "y",
-        ],
-        additionalProperties: false,
-      },
-      scale: {
-        type: "object",
-        properties: {
-          x: {
-            type: "number",
-          },
-          y: {
-            type: "number",
-          },
-        },
-        required: [
-          "x",
-          "y",
-        ],
-        additionalProperties: false,
-      },
-      rotate: {
+      x: {
+        description: "X (du).",
         type: "number",
       },
-      pivot: {
-        type: "object",
-        properties: {
-          x: {
-            type: "number",
-          },
-          y: {
-            type: "number",
-          },
-        },
-        required: [
-          "x",
-          "y",
-        ],
-        additionalProperties: false,
-        description: "Default: {0,0}.",
-      },
-      matrix: {
-        type: "array",
-        items: {
-          type: "number",
-        },
-        maxItems: 100000,
-      },
-      corners: {
-        type: "array",
-        items: {
-          type: "object",
-          properties: {
-            x: {
-              type: "number",
-            },
-            y: {
-              type: "number",
-            },
-          },
-          required: [
-            "x",
-            "y",
-          ],
-          additionalProperties: false,
-        },
-        maxItems: 100000,
+      y: {
+        description: "Y (du, up).",
+        type: "number",
       },
     },
     additionalProperties: false,
-    "x-spec": "`elementId?: id = current; translate?: point; scale?: {x,y}; rotate?: number; pivot?: point = {0,0}; matrix?: [number]; corners?: [point]`",
+    required: [
+      "x",
+      "y",
+    ],
+  },
+  "draw.repositionAll.apply.Xy": {
+    description: "`{x, y}` factors.",
+    type: "object",
+    properties: {
+      x: {
+        description: "x.",
+        type: "number",
+      },
+      y: {
+        description: "y.",
+        type: "number",
+      },
+    },
+    additionalProperties: false,
+    required: [
+      "x",
+      "y",
+    ],
+  },
+  "draw.repositionAll.apply.params": {
+    title: "RepositionParams",
+    description: "`draw.repositionAll.apply` parameters.",
+    type: "object",
+    properties: {
+      elementId: {
+        description: "The element (default: current).",
+        type: [
+          "string",
+          "null",
+        ],
+        default: null,
+      },
+      translate: {
+        description: "Translation.",
+        anyOf: [
+          {
+            $ref: "#/$defs/draw.repositionAll.apply.Point",
+          },
+          {
+            type: "null",
+          },
+        ],
+        default: null,
+      },
+      scale: {
+        description: "Scale.",
+        anyOf: [
+          {
+            $ref: "#/$defs/draw.repositionAll.apply.Xy",
+          },
+          {
+            type: "null",
+          },
+        ],
+      },
+      rotate: {
+        description: "Rotation (degrees CCW).",
+        type: [
+          "number",
+          "null",
+        ],
+        default: null,
+      },
+      pivot: {
+        description: "Pivot.",
+        anyOf: [
+          {
+            $ref: "#/$defs/draw.repositionAll.apply.Point",
+          },
+          {
+            type: "null",
+          },
+        ],
+        default: null,
+      },
+      matrix: {
+        description: "Matrix (overrides).",
+        type: [
+          "array",
+          "null",
+        ],
+        items: {
+          type: "number",
+        },
+        minItems: 6,
+        maxItems: 6,
+        default: null,
+      },
+      corners: {
+        description: "Envelope corners (of each drawing's bounds).",
+        type: [
+          "array",
+          "null",
+        ],
+        items: {
+          $ref: "#/$defs/draw.repositionAll.apply.Point",
+        },
+        default: null,
+      },
+    },
+    additionalProperties: false,
   },
   "draw.repositionAll.apply.result": {
-    title: "draw.repositionAll.apply result",
+    title: "RepositionResult",
+    description: "`{drawingIds}`.",
     type: "object",
     properties: {
       drawingIds: {
+        description: "The drawings changed.",
         type: "array",
         items: {
           type: "string",
-          minLength: 1,
-          maxLength: 4096,
-          description: "object ID or path reference (10 §3)",
         },
-        maxItems: 100000,
       },
     },
     required: [
       "drawingIds",
     ],
-    "x-spec": "`{drawingIds: [id]}`",
-    additionalProperties: false,
+  },
+  "draw.rotate.apply.Step": {
+    description: "A fixed rotation step.",
+    oneOf: [
+      {
+        description: "90° clockwise.",
+        type: "string",
+        const: "90cw",
+      },
+      {
+        description: "90° counter-clockwise.",
+        type: "string",
+        const: "90ccw",
+      },
+      {
+        description: "180°.",
+        type: "string",
+        const: "180",
+      },
+    ],
   },
   "draw.rotate.apply.params": {
-    title: "draw.rotate.apply parameters",
+    title: "RotateParams",
+    description: "`draw.rotate.apply` parameters.",
     type: "object",
     properties: {
       drawingId: {
-        type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
+        description: "The drawing (default: current).",
+        type: [
+          "string",
+          "null",
+        ],
+        default: null,
       },
       ids: {
-        type: "array",
+        description: "Objects (default: the selection).",
+        type: [
+          "array",
+          "null",
+        ],
         items: {
           type: "string",
-          minLength: 1,
-          maxLength: 4096,
-          description: "object ID or path reference (10 §3)",
         },
-        maxItems: 100000,
-        description: "Default: selection.",
+        default: null,
       },
       by: {
-        type: "string",
-        enum: [
-          "90cw",
-          "90ccw",
-          "180",
-        ],
+        description: "Step.",
+        $ref: "#/$defs/draw.rotate.apply.Step",
       },
     },
+    additionalProperties: false,
     required: [
       "by",
     ],
-    additionalProperties: false,
-    "x-spec": "`drawingId?: id; ids?: [id] = selection; by: enum \"90cw\"|\"90ccw\"|\"180\"`",
   },
   "draw.rotate.apply.result": {
-    title: "draw.rotate.apply result",
+    title: "TransformResult",
+    description: "`{ids, removedIds, rev}` and the changed IDs.",
     type: "object",
     properties: {
+      drawingId: {
+        description: "The drawing.",
+        type: "string",
+      },
       ids: {
+        description: "The transformed objects (the copies with `copy`; pieces where noding split them).",
         type: "array",
         items: {
           type: "string",
-          minLength: 1,
-          maxLength: 4096,
-          description: "object ID or path reference (10 §3)",
         },
-        maxItems: 100000,
+      },
+      createdIds: {
+        description: "Created objects.",
+        type: "array",
+        items: {
+          type: "string",
+        },
+      },
+      modifiedIds: {
+        description: "Modified objects (content, membership or position changed; IDs kept).",
+        type: "array",
+        items: {
+          type: "string",
+        },
+      },
+      removedIds: {
+        description: "Removed objects (descendants included).",
+        type: "array",
+        items: {
+          type: "string",
+        },
       },
       rev: {
-        type: "number",
+        description: "The drawing revision after the change.",
+        type: "integer",
+        maximum: 18446744073709551615n,
+        minimum: 0,
       },
     },
     required: [
+      "drawingId",
       "ids",
+      "createdIds",
+      "modifiedIds",
+      "removedIds",
       "rev",
     ],
-    "x-spec": "`{ids: [id], rev}`",
+  },
+  "draw.segment.move.Point": {
+    description: "A point `{x, y}` in drawing units.",
+    type: "object",
+    properties: {
+      x: {
+        description: "X (du).",
+        type: "number",
+      },
+      y: {
+        description: "Y (du, up).",
+        type: "number",
+      },
+    },
     additionalProperties: false,
+    required: [
+      "x",
+      "y",
+    ],
   },
   "draw.segment.move.params": {
-    title: "draw.segment.move parameters",
+    title: "SegmentMoveParams",
+    description: "`draw.segment.move` parameters.",
     type: "object",
     properties: {
       strokeId: {
+        description: "The stroke.",
         type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
       },
       segment: {
+        description: "The segment index.",
         type: "integer",
+        maximum: 2147483647,
+        minimum: 0,
       },
       t: {
+        description: "The parameter of the point that moves (0–1).",
         type: "number",
+        default: 0.5,
         minimum: 0,
         maximum: 1,
-        default: 0.5,
       },
       delta: {
-        type: "object",
-        properties: {
-          x: {
-            type: "number",
-          },
-          y: {
-            type: "number",
-          },
-        },
-        required: [
-          "x",
-          "y",
-        ],
-        additionalProperties: false,
+        description: "Offset of that point (du).",
+        $ref: "#/$defs/draw.segment.move.Point",
       },
     },
+    additionalProperties: false,
     required: [
       "strokeId",
       "segment",
       "delta",
     ],
-    additionalProperties: false,
-    "x-spec": "`strokeId: id; segment: int; t: number = 0.5 (0–1); delta: point`",
   },
   "draw.segment.move.result": {
-    title: "draw.segment.move result",
+    title: "PointSetResult",
+    description: "`{strokeId, rev}`.",
     type: "object",
     properties: {
       strokeId: {
+        description: "The stroke.",
         type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
+      },
+      createdIds: {
+        description: "Created objects.",
+        type: "array",
+        items: {
+          type: "string",
+        },
+      },
+      modifiedIds: {
+        description: "Modified objects (content, membership or position changed; IDs kept).",
+        type: "array",
+        items: {
+          type: "string",
+        },
+      },
+      removedIds: {
+        description: "Removed objects (descendants included).",
+        type: "array",
+        items: {
+          type: "string",
+        },
       },
       rev: {
-        type: "number",
+        description: "The drawing revision after the change.",
+        type: "integer",
+        maximum: 18446744073709551615n,
+        minimum: 0,
       },
     },
     required: [
       "strokeId",
+      "createdIds",
+      "modifiedIds",
+      "removedIds",
       "rev",
     ],
-    "x-spec": "`{strokeId, rev}`",
-    additionalProperties: false,
   },
   "draw.selection.changed.params": {
-    title: "draw.selection.changed parameters",
+    title: "NoParams",
+    description: "No parameters.",
     type: "object",
-    properties: {},
     additionalProperties: false,
-    description: "Events take no parameters; subscribe to them (11 §9).",
-    "x-spec": "—",
+  },
+  "draw.selection.changed.AnchorRef": {
+    description: "An anchor of a stroke.",
+    type: "object",
+    properties: {
+      strokeId: {
+        description: "The stroke (local ID).",
+        type: "string",
+      },
+      anchor: {
+        description: "The anchor index.",
+        type: "integer",
+        maximum: 2147483647,
+        minimum: 0,
+      },
+    },
+    additionalProperties: false,
+    required: [
+      "strokeId",
+      "anchor",
+    ],
   },
   "draw.selection.changed.result": {
-    title: "draw.selection.changed result",
+    title: "SelectionChanged",
+    description: "`draw.selection.changed` payload.",
     type: "object",
     properties: {
       drawingId: {
+        description: "The drawing.",
         type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
       },
       selectedIds: {
+        description: "Selected objects.",
         type: "array",
         items: {
           type: "string",
-          minLength: 1,
-          maxLength: 4096,
-          description: "object ID or path reference (10 §3)",
         },
-        maxItems: 100000,
       },
       selectedPoints: {
+        description: "Selected anchors.",
         type: "array",
         items: {
-          type: "object",
-          properties: {
-            strokeId: {
-              type: "string",
-              minLength: 1,
-              maxLength: 4096,
-              description: "object ID or path reference (10 §3)",
-            },
-            anchor: {
-              type: "object",
-              properties: {
-                x: {
-                  type: "number",
-                },
-                y: {
-                  type: "number",
-                },
-              },
-              required: [
-                "x",
-                "y",
-              ],
-              additionalProperties: false,
-            },
-          },
-          required: [
-            "strokeId",
-            "anchor",
-          ],
-          additionalProperties: false,
+          $ref: "#/$defs/draw.selection.changed.AnchorRef",
         },
-        maxItems: 100000,
       },
     },
     required: [
@@ -31805,596 +36020,853 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
       "selectedIds",
       "selectedPoints",
     ],
-    description: "Event payload (delivered to subscribers).",
-    "x-spec": "`{drawingId, selectedIds: [id], selectedPoints: [object]}`",
-    additionalProperties: false,
   },
   "draw.selection.get.params": {
-    title: "draw.selection.get parameters",
+    title: "SelectionGetParams",
+    description: "`draw.selection.get` parameters.",
     type: "object",
     properties: {
       drawingId: {
-        type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
+        description: "The drawing (default: current).",
+        type: [
+          "string",
+          "null",
+        ],
+        default: null,
       },
     },
     additionalProperties: false,
-    "x-spec": "`drawingId?: id`",
+  },
+  "draw.selection.get.Bounds": {
+    description: "`{x, y, width, height}`.",
+    type: "object",
+    properties: {
+      x: {
+        description: "Minimum x (du).",
+        type: "number",
+      },
+      y: {
+        description: "Minimum y (du).",
+        type: "number",
+      },
+      width: {
+        description: "Width (du).",
+        type: "number",
+      },
+      height: {
+        description: "Height (du).",
+        type: "number",
+      },
+    },
+    required: [
+      "x",
+      "y",
+      "width",
+      "height",
+    ],
+  },
+  "draw.selection.get.AnchorRef": {
+    description: "An anchor of a stroke.",
+    type: "object",
+    properties: {
+      strokeId: {
+        description: "The stroke (local ID).",
+        type: "string",
+      },
+      anchor: {
+        description: "The anchor index.",
+        type: "integer",
+        maximum: 2147483647,
+        minimum: 0,
+      },
+    },
+    additionalProperties: false,
+    required: [
+      "strokeId",
+      "anchor",
+    ],
   },
   "draw.selection.get.result": {
-    title: "draw.selection.get result",
+    title: "SelectionGetResult",
+    description: "`{selectedIds, bounds, selectedPoints}`.",
     type: "object",
     properties: {
       selectedIds: {
+        description: "Selected objects (local IDs).",
         type: "array",
         items: {
           type: "string",
-          minLength: 1,
-          maxLength: 4096,
-          description: "object ID or path reference (10 §3)",
         },
-        maxItems: 100000,
       },
       bounds: {
-        type: "object",
-        properties: {
-          x: {
-            type: "number",
+        description: "Their bounds.",
+        anyOf: [
+          {
+            $ref: "#/$defs/draw.selection.get.Bounds",
           },
-          y: {
-            type: "number",
+          {
+            type: "null",
           },
-          width: {
-            type: "number",
-          },
-          height: {
-            type: "number",
-          },
-        },
-        required: [
-          "x",
-          "y",
-          "width",
-          "height",
         ],
-        additionalProperties: false,
       },
       selectedPoints: {
+        description: "Selected anchors (Contour Editor).",
         type: "array",
         items: {
-          type: "object",
-          properties: {
-            strokeId: {
-              type: "string",
-              minLength: 1,
-              maxLength: 4096,
-              description: "object ID or path reference (10 §3)",
-            },
-            anchor: {
-              type: "object",
-              properties: {
-                x: {
-                  type: "number",
-                },
-                y: {
-                  type: "number",
-                },
-              },
-              required: [
-                "x",
-                "y",
-              ],
-              additionalProperties: false,
-            },
-          },
-          required: [
-            "strokeId",
-            "anchor",
-          ],
-          additionalProperties: false,
+          $ref: "#/$defs/draw.selection.get.AnchorRef",
         },
-        maxItems: 100000,
       },
     },
     required: [
       "selectedIds",
-      "bounds",
       "selectedPoints",
     ],
-    "x-spec": "`{selectedIds: [id], bounds, selectedPoints: [{strokeId, anchor}]}`",
-    additionalProperties: false,
   },
-  "draw.selection.set.params": {
-    title: "draw.selection.set parameters",
+  "draw.selection.set.SelectBy": {
+    description: "How `draw.selection.set` selects.",
+    oneOf: [
+      {
+        description: "The given IDs.",
+        type: "string",
+        const: "ids",
+      },
+      {
+        description: "The front-most object under a point (02 §8.1 hit order).",
+        type: "string",
+        const: "point",
+      },
+      {
+        description: "Objects in a rectangle (`rectRule`).",
+        type: "string",
+        const: "rect",
+      },
+      {
+        description: "Objects in a closed polygon (`rectRule`).",
+        type: "string",
+        const: "lasso",
+      },
+      {
+        description: "Every stroke, text and bitmap.",
+        type: "string",
+        const: "all",
+      },
+      {
+        description: "Nothing.",
+        type: "string",
+        const: "none",
+      },
+    ],
+  },
+  "draw.selection.set.Point": {
+    description: "A point `{x, y}` in drawing units.",
     type: "object",
     properties: {
-      drawingId: {
-        type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
+      x: {
+        description: "X (du).",
+        type: "number",
       },
-      by: {
-        type: "string",
-        enum: [
-          "ids",
-          "point",
-          "rect",
-          "lasso",
-          "all",
-          "none",
-        ],
-        default: "ids",
-      },
-      ids: {
-        type: "array",
-        items: {
-          type: "string",
-          minLength: 1,
-          maxLength: 4096,
-          description: "object ID or path reference (10 §3)",
-        },
-        maxItems: 100000,
-      },
-      point: {
-        type: "object",
-        properties: {
-          x: {
-            type: "number",
-          },
-          y: {
-            type: "number",
-          },
-        },
-        required: [
-          "x",
-          "y",
-        ],
-        additionalProperties: false,
-      },
-      rect: {
-        type: "object",
-        properties: {
-          x: {
-            type: "number",
-          },
-          y: {
-            type: "number",
-          },
-          width: {
-            type: "number",
-          },
-          height: {
-            type: "number",
-          },
-        },
-        required: [
-          "x",
-          "y",
-          "width",
-          "height",
-        ],
-        additionalProperties: false,
-      },
-      polygon: {
-        type: "array",
-        items: {
-          type: "object",
-          properties: {
-            x: {
-              type: "number",
-            },
-            y: {
-              type: "number",
-            },
-          },
-          required: [
-            "x",
-            "y",
-          ],
-          additionalProperties: false,
-        },
-        maxItems: 100000,
-      },
-      rectRule: {
-        type: "string",
-        enum: [
-          "inside",
-          "intersect",
-        ],
-        default: "inside",
-      },
-      mode: {
-        type: "string",
-        enum: [
-          "replace",
-          "add",
-          "toggle",
-          "remove",
-        ],
-        default: "replace",
+      y: {
+        description: "Y (du, up).",
+        type: "number",
       },
     },
     additionalProperties: false,
-    "x-spec": "`drawingId?: id; by: enum \"ids\"|\"point\"|\"rect\"|\"lasso\"|\"all\"|\"none\" = \"ids\"; ids?: [id]; point?: point; rect?: {x,y,width,height}; polygon?: [point]; rectRule: enum \"inside\"|\"intersect\" = \"inside\"; mode: enum \"replace\"|\"add\"|\"toggle\"|\"remove\" = \"replace\"`",
+    required: [
+      "x",
+      "y",
+    ],
+  },
+  "draw.selection.set.RectIn": {
+    description: "`{x, y, width, height}` input.",
+    type: "object",
+    properties: {
+      x: {
+        description: "Left.",
+        type: "number",
+      },
+      y: {
+        description: "Bottom.",
+        type: "number",
+      },
+      width: {
+        description: "Width (≥ 0).",
+        type: "number",
+        minimum: 0,
+      },
+      height: {
+        description: "Height (≥ 0).",
+        type: "number",
+        minimum: 0,
+      },
+    },
+    additionalProperties: false,
+    required: [
+      "x",
+      "y",
+      "width",
+      "height",
+    ],
+  },
+  "draw.selection.set.RectRule": {
+    description: "Inside or intersecting.",
+    oneOf: [
+      {
+        description: "The object's bounds lie wholly inside.",
+        type: "string",
+        const: "inside",
+      },
+      {
+        description: "The object's bounds meet the region.",
+        type: "string",
+        const: "intersect",
+      },
+    ],
+  },
+  "draw.selection.set.Mode": {
+    description: "How a selection combines with the current one.",
+    oneOf: [
+      {
+        description: "Replace it.",
+        type: "string",
+        const: "replace",
+      },
+      {
+        description: "Add to it.",
+        type: "string",
+        const: "add",
+      },
+      {
+        description: "Toggle membership.",
+        type: "string",
+        const: "toggle",
+      },
+      {
+        description: "Remove from it.",
+        type: "string",
+        const: "remove",
+      },
+    ],
+  },
+  "draw.selection.set.params": {
+    title: "SelectionSetParams",
+    description: "`draw.selection.set` parameters.",
+    type: "object",
+    properties: {
+      drawingId: {
+        description: "The drawing (default: current).",
+        type: [
+          "string",
+          "null",
+        ],
+        default: null,
+      },
+      by: {
+        description: "How to select.",
+        $ref: "#/$defs/draw.selection.set.SelectBy",
+      },
+      ids: {
+        description: "IDs (`by: \"ids\"`; local or compound; zone IDs select zones).",
+        type: [
+          "array",
+          "null",
+        ],
+        items: {
+          type: "string",
+        },
+        default: null,
+      },
+      point: {
+        description: "The point (`by: \"point\"`).",
+        anyOf: [
+          {
+            $ref: "#/$defs/draw.selection.set.Point",
+          },
+          {
+            type: "null",
+          },
+        ],
+        default: null,
+      },
+      rect: {
+        description: "The rectangle (`by: \"rect\"`).",
+        anyOf: [
+          {
+            $ref: "#/$defs/draw.selection.set.RectIn",
+          },
+          {
+            type: "null",
+          },
+        ],
+      },
+      polygon: {
+        description: "The polygon (`by: \"lasso\"`).",
+        type: [
+          "array",
+          "null",
+        ],
+        items: {
+          $ref: "#/$defs/draw.selection.set.Point",
+        },
+        default: null,
+      },
+      rectRule: {
+        description: "Region rule for `rect` and `lasso`.",
+        $ref: "#/$defs/draw.selection.set.RectRule",
+      },
+      mode: {
+        description: "How to combine with the current selection.",
+        $ref: "#/$defs/draw.selection.set.Mode",
+      },
+    },
+    additionalProperties: false,
+  },
+  "draw.selection.set.Bounds": {
+    description: "`{x, y, width, height}`.",
+    type: "object",
+    properties: {
+      x: {
+        description: "Minimum x (du).",
+        type: "number",
+      },
+      y: {
+        description: "Minimum y (du).",
+        type: "number",
+      },
+      width: {
+        description: "Width (du).",
+        type: "number",
+      },
+      height: {
+        description: "Height (du).",
+        type: "number",
+      },
+    },
+    required: [
+      "x",
+      "y",
+      "width",
+      "height",
+    ],
   },
   "draw.selection.set.result": {
-    title: "draw.selection.set result",
+    title: "SelectionSetResult",
+    description: "`{selectedIds, bounds}`.",
     type: "object",
     properties: {
       selectedIds: {
+        description: "Selected objects (local IDs), in selection order.",
         type: "array",
         items: {
           type: "string",
-          minLength: 1,
-          maxLength: 4096,
-          description: "object ID or path reference (10 §3)",
         },
-        maxItems: 100000,
       },
       bounds: {
-        type: "object",
-        properties: {
-          x: {
-            type: "number",
+        description: "Their bounds (`null` when nothing is selected).",
+        anyOf: [
+          {
+            $ref: "#/$defs/draw.selection.set.Bounds",
           },
-          y: {
-            type: "number",
+          {
+            type: "null",
           },
-          width: {
-            type: "number",
-          },
-          height: {
-            type: "number",
-          },
-        },
-        required: [
-          "x",
-          "y",
-          "width",
-          "height",
         ],
-        additionalProperties: false,
       },
     },
     required: [
       "selectedIds",
-      "bounds",
     ],
-    "x-spec": "`{selectedIds: [id], bounds}`",
+  },
+  "draw.smooth.apply.AnchorRef": {
+    description: "An anchor of a stroke.",
+    type: "object",
+    properties: {
+      strokeId: {
+        description: "The stroke (local ID).",
+        type: "string",
+      },
+      anchor: {
+        description: "The anchor index.",
+        type: "integer",
+        maximum: 2147483647,
+        minimum: 0,
+      },
+    },
     additionalProperties: false,
+    required: [
+      "strokeId",
+      "anchor",
+    ],
   },
   "draw.smooth.apply.params": {
-    title: "draw.smooth.apply parameters",
+    title: "SmoothParams",
+    description: "`draw.smooth.apply` parameters.",
     type: "object",
     properties: {
       drawingId: {
-        type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
+        description: "The drawing (default: current).",
+        type: [
+          "string",
+          "null",
+        ],
+        default: null,
       },
       ids: {
+        description: "Strokes, layers or groups (default: the selection).",
+        type: [
+          "array",
+          "null",
+        ],
+        items: {
+          type: "string",
+        },
+        default: null,
+      },
+      points: {
+        description: "Anchors that may go (default: the Contour Editor's point selection when no object is selected).",
+        type: [
+          "array",
+          "null",
+        ],
+        items: {
+          $ref: "#/$defs/draw.smooth.apply.AnchorRef",
+        },
+        default: null,
+      },
+      tolerance: {
+        description: "Tolerance (du).",
+        type: "number",
+        default: 1,
+        minimum: 0,
+        maximum: 100,
+      },
+    },
+    additionalProperties: false,
+  },
+  "draw.smooth.apply.result": {
+    title: "SmoothResult",
+    description: "`{removedPointCount, rev}`.",
+    type: "object",
+    properties: {
+      drawingId: {
+        description: "The drawing.",
+        type: "string",
+      },
+      removedPointCount: {
+        description: "Anchors removed.",
+        type: "integer",
+        maximum: 2147483647,
+        minimum: 0,
+      },
+      createdIds: {
+        description: "Created objects.",
         type: "array",
         items: {
           type: "string",
-          minLength: 1,
-          maxLength: 4096,
-          description: "object ID or path reference (10 §3)",
         },
-        maxItems: 100000,
-        description: "Default: selection.",
       },
-      points: {
+      modifiedIds: {
+        description: "Modified objects (content, membership or position changed; IDs kept).",
         type: "array",
         items: {
-          type: "object",
-          properties: {
-            strokeId: {
-              type: "string",
-              minLength: 1,
-              maxLength: 4096,
-              description: "object ID or path reference (10 §3)",
-            },
-            anchor: {
-              type: "object",
-              properties: {
-                x: {
-                  type: "number",
-                },
-                y: {
-                  type: "number",
-                },
-              },
-              required: [
-                "x",
-                "y",
-              ],
-              additionalProperties: false,
-            },
-          },
-          required: [
-            "strokeId",
-            "anchor",
-          ],
-          additionalProperties: false,
+          type: "string",
         },
-        maxItems: 100000,
       },
-      tolerance: {
-        type: "number",
-        default: 1,
-      },
-    },
-    additionalProperties: false,
-    "x-spec": "`drawingId?: id; ids?: [id] = selection; points?: [{strokeId, anchor}]; tolerance: number = 1 (du)`",
-  },
-  "draw.smooth.apply.result": {
-    title: "draw.smooth.apply result",
-    type: "object",
-    properties: {
-      removedPointCount: {
-        type: "integer",
+      removedIds: {
+        description: "Removed objects (descendants included).",
+        type: "array",
+        items: {
+          type: "string",
+        },
       },
       rev: {
-        type: "number",
+        description: "The drawing revision after the change.",
+        type: "integer",
+        maximum: 18446744073709551615n,
+        minimum: 0,
       },
     },
     required: [
+      "drawingId",
       "removedPointCount",
+      "createdIds",
+      "modifiedIds",
+      "removedIds",
       "rev",
     ],
-    "x-spec": "`{removedPointCount: int, rev}`",
+  },
+  "draw.stroke.add.KindParam": {
+    description: "Stroke kind parameter.",
+    oneOf: [
+      {
+        description: "Filled brush shape.",
+        type: "string",
+        const: "brush",
+      },
+      {
+        description: "Centre line with a line style.",
+        type: "string",
+        const: "pencil",
+      },
+      {
+        description: "Never rendered; closes and splits zones.",
+        type: "string",
+        const: "invisible",
+      },
+    ],
+  },
+  "draw.stroke.add.PointIn": {
+    description: "A sample `{x, y, pressure?}`.",
+    type: "object",
+    properties: {
+      x: {
+        description: "X (du).",
+        type: "number",
+      },
+      y: {
+        description: "Y (du).",
+        type: "number",
+      },
+      pressure: {
+        description: "Pressure 0–1 (default 1: a mouse, 02 §3.4).",
+        type: [
+          "number",
+          "null",
+        ],
+        default: null,
+        minimum: 0,
+        maximum: 1,
+      },
+    },
     additionalProperties: false,
+    required: [
+      "x",
+      "y",
+    ],
+  },
+  "draw.stroke.add.Point": {
+    description: "A point `{x, y}` in drawing units.",
+    type: "object",
+    properties: {
+      x: {
+        description: "X (du).",
+        type: "number",
+      },
+      y: {
+        description: "Y (du, up).",
+        type: "number",
+      },
+    },
+    additionalProperties: false,
+    required: [
+      "x",
+      "y",
+    ],
+  },
+  "draw.stroke.add.PressureIn": {
+    description: "A pressure sample `{t, p}` (02 §3.2).",
+    type: "object",
+    properties: {
+      t: {
+        description: "Normalised arc-length position 0–1.",
+        type: "number",
+        maximum: 1,
+        minimum: 0,
+      },
+      p: {
+        description: "Pressure 0–1.",
+        type: "number",
+        maximum: 1,
+        minimum: 0,
+      },
+    },
+    additionalProperties: false,
+    required: [
+      "t",
+      "p",
+    ],
+  },
+  "draw.stroke.add.PenIn": {
+    description: "An explicit pen `{tipShape, minSize, maxSize, tipAngle}` (02 §13.4 `pen`).",
+    type: "object",
+    properties: {
+      tipShape: {
+        description: "Tip shape.",
+        $ref: "#/$defs/draw.stroke.add.TipParam",
+      },
+      minSize: {
+        description: "Width at lowest pressure (du).",
+        type: "number",
+        maximum: 100,
+        minimum: 0,
+      },
+      maxSize: {
+        description: "Width at full pressure (du).",
+        type: "number",
+        maximum: 100,
+        minimum: 0,
+      },
+      tipAngle: {
+        description: "Orientation of non-round tips (degrees).",
+        type: "number",
+        default: 0,
+        minimum: 0,
+        maximum: 360,
+      },
+    },
+    additionalProperties: false,
+    required: [
+      "tipShape",
+      "minSize",
+      "maxSize",
+    ],
+  },
+  "draw.stroke.add.TipParam": {
+    description: "Tip shape parameter.",
+    oneOf: [
+      {
+        description: "Round nib.",
+        type: "string",
+        const: "round",
+      },
+      {
+        description: "Oval nib.",
+        type: "string",
+        const: "oval",
+      },
+      {
+        description: "Square nib.",
+        type: "string",
+        const: "square",
+      },
+      {
+        description: "Flat nib.",
+        type: "string",
+        const: "flat",
+      },
+    ],
   },
   "draw.stroke.add.params": {
-    title: "draw.stroke.add parameters",
+    title: "StrokeAddParams",
+    description: "`draw.stroke.add` parameters (02 §13.5).",
     type: "object",
     properties: {
       drawingId: {
-        type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
+        description: "The drawing (default: `elementId` + `frame`, else the current drawing).",
+        type: [
+          "string",
+          "null",
+        ],
+        default: null,
       },
       elementId: {
-        type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
+        description: "The element whose cell receives the stroke.",
+        type: [
+          "string",
+          "null",
+        ],
+        default: null,
       },
       frame: {
-        type: "integer",
+        description: "The frame of that cell (default: current frame).",
+        type: [
+          "integer",
+          "null",
+        ],
+        default: null,
+        minimum: 1,
+        maximum: 2147483647,
       },
       createDrawing: {
+        description: "Create a drawing in an empty addressed cell (same undo step, 02 §1.1).",
         type: "boolean",
         default: true,
       },
       kind: {
-        type: "string",
-        enum: [
-          "brush",
-          "pencil",
-          "invisible",
-        ],
-        default: "brush",
+        description: "Stroke kind.",
+        $ref: "#/$defs/draw.stroke.add.KindParam",
       },
       points: {
-        type: "array",
+        description: "Samples (curve-fitted when `fit`).",
+        type: [
+          "array",
+          "null",
+        ],
         items: {
-          type: "object",
-          properties: {
-            x: {
-              type: "number",
-            },
-            y: {
-              type: "number",
-            },
-            pressure: {
-              type: "array",
-              items: {
-                type: "object",
-                properties: {
-                  t: {
-                    type: "number",
-                  },
-                  p: {
-                    type: "number",
-                  },
-                },
-                required: [
-                  "t",
-                  "p",
-                ],
-                additionalProperties: false,
-              },
-              maxItems: 100000,
-            },
-          },
-          required: [
-            "x",
-            "y",
-          ],
-          additionalProperties: false,
+          $ref: "#/$defs/draw.stroke.add.PointIn",
         },
+        minItems: 1,
         maxItems: 100000,
       },
       bezier: {
-        type: "array",
+        description: "Bézier control points used verbatim (02 §13.4 Bézier list).",
+        type: [
+          "array",
+          "null",
+        ],
         items: {
-          type: "object",
-          properties: {
-            x: {
-              type: "number",
-            },
-            y: {
-              type: "number",
-            },
-          },
-          required: [
-            "x",
-            "y",
-          ],
-          additionalProperties: false,
+          $ref: "#/$defs/draw.stroke.add.Point",
         },
-        maxItems: 100000,
+        minItems: 1,
+        maxItems: 300001,
+        default: null,
       },
       closed: {
+        description: "Closed path.",
         type: "boolean",
         default: false,
       },
       pressure: {
-        type: "array",
+        description: "Pressure map `[{t, p}]` (overrides per-point pressure).",
+        type: [
+          "array",
+          "null",
+        ],
         items: {
-          type: "object",
-          properties: {
-            t: {
-              type: "number",
-            },
-            p: {
-              type: "number",
-            },
-          },
-          required: [
-            "t",
-            "p",
-          ],
-          additionalProperties: false,
+          $ref: "#/$defs/draw.stroke.add.PressureIn",
         },
+        minItems: 1,
         maxItems: 100000,
+        default: null,
       },
       fit: {
+        description: "Fit Béziers to `points` (§3.3); `false` joins them with straight segments.",
         type: "boolean",
         default: true,
       },
       smoothness: {
-        type: "number",
+        description: "Smoothness 0–10 (default: the pen's).",
+        type: [
+          "number",
+          "null",
+        ],
+        default: null,
         minimum: 0,
         maximum: 10,
-        description: "Default: pen's.",
       },
       penId: {
-        type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3) Default: current pen.",
+        description: "The brush pen (default: the current brush pen).",
+        type: [
+          "string",
+          "null",
+        ],
+        default: null,
       },
       pen: {
-        type: "object",
-        properties: {
-          tipShape: {
-            type: "string",
-            maxLength: 65536,
+        description: "An explicit pen (overrides the pen's shape and sizes).",
+        anyOf: [
+          {
+            $ref: "#/$defs/draw.stroke.add.PenIn",
           },
-          minSize: {
-            type: "number",
+          {
+            type: "null",
           },
-          maxSize: {
-            type: "number",
-          },
-          tipAngle: {
-            type: "number",
-          },
-        },
-        required: [
-          "tipShape",
-          "minSize",
-          "maxSize",
-          "tipAngle",
         ],
-        additionalProperties: false,
       },
       colourId: {
-        type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3) Default: current colour.",
+        description: "Colour (default: the pen's colour, else the current colour).",
+        type: [
+          "string",
+          "null",
+        ],
+        default: null,
       },
       thickness: {
-        type: "number",
+        description: "Pencil thickness 0–100 du (default: the pen's maximum size).",
+        type: [
+          "number",
+          "null",
+        ],
+        default: null,
         minimum: 0,
         maximum: 100,
-        description: "Default: pen max.",
       },
       layer: {
+        description: "`auto`, `new`, `top`, `behind` or a layer ID.",
         type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3) or \"auto\" | \"new\" | \"top\" | \"behind\"",
         default: "auto",
       },
       symmetry: {
+        description: "Apply the current symmetry setting (02 §6.2).",
         type: "boolean",
         default: true,
       },
       expectRev: {
-        type: "integer",
+        description: "The drawing revision the caller read (02 §3.12; `drawing.staleRevision` when it changed).",
+        type: [
+          "integer",
+          "null",
+        ],
+        maximum: 18446744073709551615n,
+        minimum: 0,
+        default: null,
       },
     },
     additionalProperties: false,
-    "x-spec": "`drawingId?: id; elementId?: id; frame?: int; createDrawing: bool = true; kind: enum \"brush\"|\"pencil\"|\"invisible\" = \"brush\"; points?: [{x,y,pressure?}]; bezier?: [point]; closed: bool = false; pressure?: [{t,p}]; fit: bool = true; smoothness?: number (0–10) = pen's; penId?: id = current pen; pen?: object {tipShape,minSize,maxSize,tipAngle}; colourId?: id = current colour; thickness?: number (0–100) = pen max; layer: enum \"auto\"|\"new\"|\"top\"|\"behind\" | id = \"auto\"; symmetry: bool = true; expectRev?: int`",
   },
   "draw.stroke.add.result": {
-    title: "draw.stroke.add result",
+    title: "StrokeAddResult",
+    description: "`draw.stroke.add` result (02 §13.5).",
     type: "object",
     properties: {
       drawingId: {
+        description: "The drawing.",
         type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
       },
       createdDrawing: {
+        description: "A drawing was created in the empty cell.",
         type: "boolean",
       },
       strokeIds: {
+        description: "The new strokes (symmetry copies included), back to front.",
         type: "array",
         items: {
           type: "string",
-          minLength: 1,
-          maxLength: 4096,
-          description: "object ID or path reference (10 §3)",
         },
-        maxItems: 100000,
       },
       zoneIds: {
+        description: "Zones the stroke created (02 §3.12 item 4: derived from their boundaries).",
         type: "array",
         items: {
           type: "string",
-          minLength: 1,
-          maxLength: 4096,
-          description: "object ID or path reference (10 §3)",
         },
-        maxItems: 100000,
       },
       layerId: {
+        description: "The layer holding the strokes.",
         type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
+      },
+      createdIds: {
+        description: "Created objects.",
+        type: "array",
+        items: {
+          type: "string",
+        },
+      },
+      modifiedIds: {
+        description: "Modified objects (content, membership or position changed; IDs kept).",
+        type: "array",
+        items: {
+          type: "string",
+        },
       },
       removedIds: {
+        description: "Removed objects (descendants included).",
         type: "array",
         items: {
           type: "string",
-          minLength: 1,
-          maxLength: 4096,
-          description: "object ID or path reference (10 §3)",
         },
-        maxItems: 100000,
       },
       rev: {
-        type: "number",
+        description: "The drawing revision after the change.",
+        type: "integer",
+        maximum: 18446744073709551615n,
+        minimum: 0,
       },
       hints: {
+        description: "Hint codes (`drawing.strokesHidden` for invisible strokes while Show Strokes is off).",
         type: "array",
         items: {
           type: "string",
-          maxLength: 256,
         },
-        maxItems: 100000,
       },
     },
     required: [
@@ -32403,619 +36875,1420 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
       "strokeIds",
       "zoneIds",
       "layerId",
+      "createdIds",
+      "modifiedIds",
       "removedIds",
       "rev",
       "hints",
     ],
-    "x-spec": "`{drawingId, createdDrawing: bool, strokeIds: [id], zoneIds: [id], layerId, removedIds: [id], rev, hints: [code]}`",
+  },
+  "draw.stroke.set.Point": {
+    description: "A point `{x, y}` in drawing units.",
+    type: "object",
+    properties: {
+      x: {
+        description: "X (du).",
+        type: "number",
+      },
+      y: {
+        description: "Y (du, up).",
+        type: "number",
+      },
+    },
     additionalProperties: false,
+    required: [
+      "x",
+      "y",
+    ],
+  },
+  "draw.stroke.set.PressureIn": {
+    description: "A pressure sample `{t, p}` (02 §3.2).",
+    type: "object",
+    properties: {
+      t: {
+        description: "Normalised arc-length position 0–1.",
+        type: "number",
+        maximum: 1,
+        minimum: 0,
+      },
+      p: {
+        description: "Pressure 0–1.",
+        type: "number",
+        maximum: 1,
+        minimum: 0,
+      },
+    },
+    additionalProperties: false,
+    required: [
+      "t",
+      "p",
+    ],
+  },
+  "draw.stroke.set.LineKind": {
+    description: "Kind conversion of `draw.stroke.set`.",
+    oneOf: [
+      {
+        description: "A visible centre line.",
+        type: "string",
+        const: "pencil",
+      },
+      {
+        description: "An invisible stroke (an unpainted line, 02 §7.3.2).",
+        type: "string",
+        const: "invisible",
+      },
+    ],
   },
   "draw.stroke.set.params": {
-    title: "draw.stroke.set parameters",
+    title: "StrokeSetParams",
+    description: "`draw.stroke.set` parameters (02 §13.5).",
     type: "object",
     properties: {
       strokeId: {
+        description: "The stroke (`<drawingId>/<localId>`, or local with `drawingId` / the current drawing).",
         type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
+      },
+      drawingId: {
+        description: "The drawing holding a local stroke ID (default: `elementId` + `frame`, else the current drawing).",
+        type: [
+          "string",
+          "null",
+        ],
+        default: null,
+      },
+      elementId: {
+        description: "The element whose cell exposes the drawing (02 §13.1 item 4; with a local ID).",
+        type: [
+          "string",
+          "null",
+        ],
+        default: null,
+      },
+      frame: {
+        description: "The frame of that cell (default: the current frame).",
+        type: [
+          "integer",
+          "null",
+        ],
+        default: null,
+        minimum: 1,
+        maximum: 2147483647,
       },
       bezier: {
-        type: "array",
+        description: "New geometry (02 §13.4 Bézier list): a brush stroke's spine (the outline is swept again), or its outline when\nthe spine was discarded; a pencil or invisible stroke's path.",
+        type: [
+          "array",
+          "null",
+        ],
         items: {
-          type: "object",
-          properties: {
-            x: {
-              type: "number",
-            },
-            y: {
-              type: "number",
-            },
-          },
-          required: [
-            "x",
-            "y",
-          ],
-          additionalProperties: false,
+          $ref: "#/$defs/draw.stroke.set.Point",
         },
-        maxItems: 100000,
+        minItems: 1,
+        maxItems: 300001,
+        default: null,
       },
       closed: {
-        type: "boolean",
+        description: "Closed path (with `bezier`).",
+        type: [
+          "boolean",
+          "null",
+        ],
+        default: null,
       },
       pressure: {
-        type: "array",
+        description: "New pressure map of a brush stroke's spine.",
+        type: [
+          "array",
+          "null",
+        ],
         items: {
-          type: "object",
-          properties: {
-            t: {
-              type: "number",
-            },
-            p: {
-              type: "number",
-            },
-          },
-          required: [
-            "t",
-            "p",
-          ],
-          additionalProperties: false,
+          $ref: "#/$defs/draw.stroke.set.PressureIn",
         },
+        minItems: 1,
         maxItems: 100000,
+        default: null,
       },
       thickness: {
-        type: "number",
+        description: "New line thickness of a pencil line (du).",
+        type: [
+          "number",
+          "null",
+        ],
+        default: null,
         minimum: 0,
         maximum: 100,
       },
       kind: {
-        type: "string",
-        enum: [
-          "pencil",
-          "invisible",
-        ],
-      },
-      expectRev: {
-        type: "integer",
-      },
-    },
-    required: [
-      "strokeId",
-    ],
-    additionalProperties: false,
-    "x-spec": "`strokeId: id; bezier?: [point]; closed?: bool; pressure?: [{t,p}]; thickness?: number (0–100); kind?: enum \"pencil\"|\"invisible\"; expectRev?: int`",
-  },
-  "draw.stroke.set.result": {
-    title: "draw.stroke.set result",
-    type: "object",
-    properties: {
-      strokeIds: {
-        type: "array",
-        items: {
-          type: "string",
-          minLength: 1,
-          maxLength: 4096,
-          description: "object ID or path reference (10 §3)",
-        },
-        maxItems: 100000,
-      },
-      removedIds: {
-        type: "array",
-        items: {
-          type: "string",
-          minLength: 1,
-          maxLength: 4096,
-          description: "object ID or path reference (10 §3)",
-        },
-        maxItems: 100000,
-      },
-      rev: {
-        type: "number",
-      },
-    },
-    required: [
-      "strokeIds",
-      "removedIds",
-      "rev",
-    ],
-    "x-spec": "`{strokeIds: [id], removedIds: [id], rev}`",
-    additionalProperties: false,
-  },
-  "draw.text.add.params": {
-    title: "draw.text.add parameters",
-    type: "object",
-    properties: {
-      drawingId: {
-        type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
-      },
-      position: {
-        type: "object",
-        properties: {
-          x: {
-            type: "number",
-          },
-          y: {
-            type: "number",
-          },
-        },
-        required: [
-          "x",
-          "y",
-        ],
-        additionalProperties: false,
-      },
-      text: {
-        type: "string",
-        maxLength: 65536,
-      },
-      width: {
-        type: "number",
-        description: "(fixed width; omit = auto)",
-      },
-      format: {
-        type: "object",
-        properties: {},
-        additionalProperties: false,
-        "x-placeholder": true,
-        description: "(Text panel fields) — shape not defined by the owning section (spec issue); only {} is accepted until it is",
-        "x-specIssue": "SI-026",
-      },
-      colourId: {
-        type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
-      },
-    },
-    required: [
-      "position",
-      "text",
-    ],
-    additionalProperties: false,
-    "x-spec": "`drawingId?: id; position: point; text: string; width?: number (fixed width; omit = auto); format?: object (Text panel fields); colourId?: id`",
-  },
-  "draw.text.add.result": {
-    title: "draw.text.add result",
-    type: "object",
-    properties: {
-      textId: {
-        type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
-      },
-      bounds: {
-        type: "object",
-        properties: {
-          x: {
-            type: "number",
-          },
-          y: {
-            type: "number",
-          },
-          width: {
-            type: "number",
-          },
-          height: {
-            type: "number",
-          },
-        },
-        required: [
-          "x",
-          "y",
-          "width",
-          "height",
-        ],
-        additionalProperties: false,
-      },
-      rev: {
-        type: "number",
-      },
-    },
-    required: [
-      "textId",
-      "bounds",
-      "rev",
-    ],
-    "x-spec": "`{textId, bounds, rev}`",
-    additionalProperties: false,
-  },
-  "draw.text.set.params": {
-    title: "draw.text.set parameters",
-    type: "object",
-    properties: {
-      textId: {
-        type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
-      },
-      text: {
-        type: "string",
-        maxLength: 65536,
-      },
-      insert: {
-        type: "object",
-        properties: {
-          at: {
-            type: "integer",
-          },
-          text: {
-            type: "string",
-            maxLength: 65536,
-          },
-        },
-        required: [
-          "at",
-          "text",
-        ],
-        additionalProperties: false,
-      },
-      delete: {
-        type: "object",
-        properties: {
-          start: {
-            type: "integer",
-          },
-          length: {
-            type: "integer",
-          },
-        },
-        required: [
-          "start",
-          "length",
-        ],
-        additionalProperties: false,
-      },
-      widthMode: {
-        type: "string",
-        enum: [
-          "auto",
-          "fixed",
-        ],
-      },
-      width: {
-        type: "number",
-      },
-      position: {
-        type: "object",
-        properties: {
-          x: {
-            type: "number",
-          },
-          y: {
-            type: "number",
-          },
-        },
-        required: [
-          "x",
-          "y",
-        ],
-        additionalProperties: false,
-      },
-    },
-    required: [
-      "textId",
-    ],
-    additionalProperties: false,
-    "x-spec": "`textId: id; text?: string; insert?: {at: int, text: string}; delete?: {start: int, length: int}; widthMode?: enum \"auto\"|\"fixed\"; width?: number; position?: point`",
-  },
-  "draw.text.set.result": {
-    title: "draw.text.set result",
-    type: "object",
-    properties: {
-      textId: {
-        type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
-      },
-      bounds: {
-        type: "object",
-        properties: {
-          x: {
-            type: "number",
-          },
-          y: {
-            type: "number",
-          },
-          width: {
-            type: "number",
-          },
-          height: {
-            type: "number",
-          },
-        },
-        required: [
-          "x",
-          "y",
-          "width",
-          "height",
-        ],
-        additionalProperties: false,
-      },
-      rev: {
-        type: "number",
-      },
-    },
-    required: [
-      "textId",
-      "bounds",
-      "rev",
-    ],
-    "x-spec": "`{textId, bounds, rev}`",
-    additionalProperties: false,
-  },
-  "draw.textFormat.set.params": {
-    title: "draw.textFormat.set parameters",
-    type: "object",
-    properties: {
-      textId: {
-        type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
-      },
-      start: {
-        type: "integer",
-        default: 0,
-      },
-      length: {
-        type: "integer",
-        description: "(default to end)",
-      },
-      font: {
-        type: "string",
-        maxLength: 65536,
-      },
-      size: {
-        type: "number",
-        minimum: 1,
-        maximum: 512,
-      },
-      bold: {
-        type: "boolean",
-      },
-      italic: {
-        type: "boolean",
-      },
-      baseline: {
-        type: "string",
-        enum: [
-          "normal",
-          "subscript",
-          "superscript",
-        ],
-      },
-      kerning: {
-        type: "integer",
-        minimum: -60,
-        maximum: 60,
-      },
-      autoKern: {
-        type: "boolean",
-      },
-      align: {
-        type: "string",
-        enum: [
-          "left",
-          "centre",
-          "right",
-          "justify",
-        ],
-      },
-      leftMargin: {
-        type: "number",
-        minimum: 0,
-        maximum: 1000,
-      },
-      rightMargin: {
-        type: "number",
-        minimum: 0,
-        maximum: 1000,
-      },
-      indent: {
-        type: "number",
-        minimum: -99,
-        maximum: 1000,
-      },
-      lineSpacing: {
-        type: "number",
-        minimum: -99,
-        maximum: 1000,
-      },
-      colourId: {
-        type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
-      },
-      outlineColourId: {
+        description: "Make a pencil line invisible or an invisible stroke a pencil line.",
         anyOf: [
           {
-            type: "string",
-            minLength: 1,
-            maxLength: 4096,
-            description: "object ID or path reference (10 §3)",
+            $ref: "#/$defs/draw.stroke.set.LineKind",
           },
           {
             type: "null",
           },
         ],
       },
-    },
-    required: [
-      "textId",
-    ],
-    additionalProperties: false,
-    "x-spec": "`textId: id; start: int = 0; length?: int (default to end); font?: string; size?: number (1–512); bold?: bool; italic?: bool; baseline?: enum \"normal\"|\"subscript\"|\"superscript\"; kerning?: int (−60–60); autoKern?: bool; align?: enum \"left\"|\"centre\"|\"right\"|\"justify\"; leftMargin?: number (0–1000); rightMargin?: number (0–1000); indent?: number (−99–1000); lineSpacing?: number (−99–1000); colourId?: id; outlineColourId?: id|null`",
-  },
-  "draw.textFormat.set.result": {
-    title: "draw.textFormat.set result",
-    type: "object",
-    properties: {
-      textId: {
-        type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
-      },
-      rev: {
-        type: "number",
+      expectRev: {
+        description: "The drawing revision the caller read (02 §3.12; `drawing.staleRevision` when it changed).",
+        type: [
+          "integer",
+          "null",
+        ],
+        maximum: 18446744073709551615n,
+        minimum: 0,
+        default: null,
       },
     },
-    required: [
-      "textId",
-      "rev",
-    ],
-    "x-spec": "`{textId, rev}`",
     additionalProperties: false,
+    required: [
+      "strokeId",
+    ],
   },
-  "draw.transform.apply.params": {
-    title: "draw.transform.apply parameters",
+  "draw.stroke.set.result": {
+    title: "StrokeSetResult",
+    description: "`{strokeIds, removedIds, rev}`.",
     type: "object",
     properties: {
       drawingId: {
+        description: "The drawing.",
         type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
       },
-      ids: {
+      strokeIds: {
+        description: "The edited stroke (its ID is kept, 02 §3.12 item 4).",
         type: "array",
         items: {
           type: "string",
-          minLength: 1,
-          maxLength: 4096,
-          description: "object ID or path reference (10 §3)",
         },
-        maxItems: 100000,
-        description: "Default: selection.",
       },
-      translate: {
-        type: "object",
-        properties: {
-          x: {
-            type: "number",
-          },
-          y: {
-            type: "number",
-          },
-        },
-        required: [
-          "x",
-          "y",
-        ],
-        additionalProperties: false,
-      },
-      scale: {
-        type: "object",
-        properties: {
-          x: {
-            type: "number",
-          },
-          y: {
-            type: "number",
-          },
-        },
-        required: [
-          "x",
-          "y",
-        ],
-        additionalProperties: false,
-      },
-      rotate: {
-        type: "number",
-        description: "(degrees, CCW)",
-      },
-      skew: {
-        type: "object",
-        properties: {
-          x: {
-            type: "number",
-          },
-          y: {
-            type: "number",
-          },
-        },
-        required: [
-          "x",
-          "y",
-        ],
-        additionalProperties: false,
-        description: "(degrees)",
-      },
-      pivot: {
-        type: "object",
-        properties: {
-          x: {
-            type: "number",
-          },
-          y: {
-            type: "number",
-          },
-        },
-        required: [
-          "x",
-          "y",
-        ],
-        additionalProperties: false,
-        description: "Default: selection bounds centre.",
-      },
-      matrix: {
+      createdIds: {
+        description: "Created objects.",
         type: "array",
         items: {
-          type: "number",
+          type: "string",
         },
-        maxItems: 100000,
-        description: "(overrides the others)",
       },
-      copy: {
-        type: "boolean",
-        default: false,
+      modifiedIds: {
+        description: "Modified objects (content, membership or position changed; IDs kept).",
+        type: "array",
+        items: {
+          type: "string",
+        },
+      },
+      removedIds: {
+        description: "Removed objects (descendants included).",
+        type: "array",
+        items: {
+          type: "string",
+        },
+      },
+      rev: {
+        description: "The drawing revision after the change.",
+        type: "integer",
+        maximum: 18446744073709551615n,
+        minimum: 0,
+      },
+    },
+    required: [
+      "drawingId",
+      "strokeIds",
+      "createdIds",
+      "modifiedIds",
+      "removedIds",
+      "rev",
+    ],
+  },
+  "draw.text.add.Point": {
+    description: "A point `{x, y}` in drawing units.",
+    type: "object",
+    properties: {
+      x: {
+        description: "X (du).",
+        type: "number",
+      },
+      y: {
+        description: "Y (du, up).",
+        type: "number",
       },
     },
     additionalProperties: false,
-    "x-spec": "`drawingId?: id; ids?: [id] = selection; translate?: point; scale?: {x,y}; rotate?: number (degrees, CCW); skew?: {x,y} (degrees); pivot?: point = selection bounds centre; matrix?: [number] (overrides the others); copy: bool = false`",
+    required: [
+      "x",
+      "y",
+    ],
   },
-  "draw.transform.apply.result": {
-    title: "draw.transform.apply result",
+  "draw.text.add.TextFormat": {
+    description: "The Text panel fields (02 §7.6.1; SI-026 `format`).",
     type: "object",
     properties: {
-      ids: {
-        type: "array",
-        items: {
-          type: "string",
-          minLength: 1,
-          maxLength: 4096,
-          description: "object ID or path reference (10 §3)",
-        },
-        maxItems: 100000,
+      font: {
+        description: "Font family (kept when missing).",
+        type: [
+          "string",
+          "null",
+        ],
+        minLength: 1,
+        maxLength: 256,
+        default: null,
       },
-      removedIds: {
-        type: "array",
-        items: {
-          type: "string",
-          minLength: 1,
-          maxLength: 4096,
-          description: "object ID or path reference (10 §3)",
-        },
-        maxItems: 100000,
+      size: {
+        description: "Size (du).",
+        type: [
+          "number",
+          "null",
+        ],
+        default: null,
+        minimum: 1,
+        maximum: 512,
       },
-      rev: {
+      bold: {
+        description: "Bold.",
+        type: [
+          "boolean",
+          "null",
+        ],
+        default: null,
+      },
+      italic: {
+        description: "Italic.",
+        type: [
+          "boolean",
+          "null",
+        ],
+        default: null,
+      },
+      baseline: {
+        description: "Baseline.",
+        anyOf: [
+          {
+            $ref: "#/$defs/draw.text.add.Baseline",
+          },
+          {
+            type: "null",
+          },
+        ],
+      },
+      kerning: {
+        description: "Manual kerning (1/100 em).",
+        type: [
+          "integer",
+          "null",
+        ],
+        default: null,
+        minimum: -60,
+        maximum: 60,
+      },
+      autoKern: {
+        description: "Font kerning pairs.",
+        type: [
+          "boolean",
+          "null",
+        ],
+        default: null,
+      },
+      align: {
+        description: "Alignment.",
+        anyOf: [
+          {
+            $ref: "#/$defs/draw.text.add.Align",
+          },
+          {
+            type: "null",
+          },
+        ],
+      },
+      leftMargin: {
+        description: "Left margin (du).",
+        type: [
+          "number",
+          "null",
+        ],
+        default: null,
+        minimum: 0,
+        maximum: 1000,
+      },
+      rightMargin: {
+        description: "Right margin (du).",
+        type: [
+          "number",
+          "null",
+        ],
+        default: null,
+        minimum: 0,
+        maximum: 1000,
+      },
+      indent: {
+        description: "First-line indent (du).",
+        type: [
+          "number",
+          "null",
+        ],
+        default: null,
+        minimum: -99,
+        maximum: 1000,
+      },
+      lineSpacing: {
+        description: "Additional line spacing (du).",
+        type: [
+          "number",
+          "null",
+        ],
+        default: null,
+        minimum: -99,
+        maximum: 1000,
+      },
+      outlineColourId: {
+        description: "Outline colour: only `null` (10 §4.9 runs store no outline colour; SI-055).",
+        type: [
+          "string",
+          "null",
+        ],
+        default: null,
+      },
+    },
+    additionalProperties: false,
+  },
+  "draw.text.add.Baseline": {
+    description: "Baseline (`script` in the project format).",
+    oneOf: [
+      {
+        description: "Normal.",
+        type: "string",
+        const: "normal",
+      },
+      {
+        description: "Subscript (60 % size).",
+        type: "string",
+        const: "subscript",
+      },
+      {
+        description: "Superscript (60 % size).",
+        type: "string",
+        const: "superscript",
+      },
+    ],
+  },
+  "draw.text.add.Align": {
+    description: "Paragraph alignment.",
+    oneOf: [
+      {
+        description: "Left.",
+        type: "string",
+        const: "left",
+      },
+      {
+        description: "Centre.",
+        type: "string",
+        const: "centre",
+      },
+      {
+        description: "Right.",
+        type: "string",
+        const: "right",
+      },
+      {
+        description: "Justify.",
+        type: "string",
+        const: "justify",
+      },
+    ],
+  },
+  "draw.text.add.params": {
+    title: "TextAddParams",
+    description: "`draw.text.add` parameters (02 §13.5).",
+    type: "object",
+    properties: {
+      drawingId: {
+        description: "The drawing (default: `elementId` + `frame`, else the current drawing).",
+        type: [
+          "string",
+          "null",
+        ],
+        default: null,
+      },
+      elementId: {
+        description: "The element whose cell receives the text.",
+        type: [
+          "string",
+          "null",
+        ],
+        default: null,
+      },
+      frame: {
+        description: "The frame of that cell.",
+        type: [
+          "integer",
+          "null",
+        ],
+        default: null,
+        minimum: 1,
+        maximum: 2147483647,
+      },
+      createDrawing: {
+        description: "Create a drawing in an empty addressed cell.",
+        type: "boolean",
+        default: true,
+      },
+      position: {
+        description: "Top-left corner of the text box (du).",
+        $ref: "#/$defs/draw.text.add.Point",
+      },
+      text: {
+        description: "The characters (`\\n` starts a paragraph).",
+        type: "string",
+        maxLength: 100000,
+      },
+      width: {
+        description: "Fixed width with word wrap (du); omitted = auto width.",
+        type: [
+          "number",
+          "null",
+        ],
+        default: null,
+      },
+      format: {
+        description: "Text panel fields (default: the Text panel defaults, 02 §7.6.1).",
+        anyOf: [
+          {
+            $ref: "#/$defs/draw.text.add.TextFormat",
+          },
+          {
+            type: "null",
+          },
+        ],
+      },
+      colourId: {
+        description: "Text colour (default: the current colour).",
+        type: [
+          "string",
+          "null",
+        ],
+        default: null,
+      },
+    },
+    additionalProperties: false,
+    required: [
+      "position",
+      "text",
+    ],
+  },
+  "draw.text.add.Bounds": {
+    description: "`{x, y, width, height}`.",
+    type: "object",
+    properties: {
+      x: {
+        description: "Minimum x (du).",
+        type: "number",
+      },
+      y: {
+        description: "Minimum y (du).",
+        type: "number",
+      },
+      width: {
+        description: "Width (du).",
+        type: "number",
+      },
+      height: {
+        description: "Height (du).",
         type: "number",
       },
     },
     required: [
-      "ids",
+      "x",
+      "y",
+      "width",
+      "height",
+    ],
+  },
+  "draw.text.add.result": {
+    title: "TextResult",
+    description: "`{textId, bounds, rev}`.",
+    type: "object",
+    properties: {
+      drawingId: {
+        description: "The drawing.",
+        type: "string",
+      },
+      textId: {
+        description: "The text object.",
+        type: "string",
+      },
+      bounds: {
+        description: "Its bounds in drawing space (laid out with the installed fonts).",
+        $ref: "#/$defs/draw.text.add.Bounds",
+      },
+      createdIds: {
+        description: "Created objects.",
+        type: "array",
+        items: {
+          type: "string",
+        },
+      },
+      modifiedIds: {
+        description: "Modified objects (content, membership or position changed; IDs kept).",
+        type: "array",
+        items: {
+          type: "string",
+        },
+      },
+      removedIds: {
+        description: "Removed objects (descendants included).",
+        type: "array",
+        items: {
+          type: "string",
+        },
+      },
+      rev: {
+        description: "The drawing revision after the change.",
+        type: "integer",
+        maximum: 18446744073709551615n,
+        minimum: 0,
+      },
+    },
+    required: [
+      "drawingId",
+      "textId",
+      "bounds",
+      "createdIds",
+      "modifiedIds",
       "removedIds",
       "rev",
     ],
-    "x-spec": "`{ids: [id], removedIds: [id], rev}`",
+  },
+  "draw.text.set.Insert": {
+    description: "`{at, text}` of an insertion.",
+    type: "object",
+    properties: {
+      at: {
+        description: "Code-point position.",
+        type: "integer",
+        maximum: 100000,
+        minimum: 0,
+      },
+      text: {
+        description: "The characters.",
+        type: "string",
+        maxLength: 100000,
+      },
+    },
     additionalProperties: false,
+    required: [
+      "at",
+      "text",
+    ],
+  },
+  "draw.text.set.Delete": {
+    description: "`{start, length}` of a deletion.",
+    type: "object",
+    properties: {
+      start: {
+        description: "First code point.",
+        type: "integer",
+        maximum: 100000,
+        minimum: 0,
+      },
+      length: {
+        description: "Number of code points.",
+        type: "integer",
+        maximum: 100000,
+        minimum: 0,
+      },
+    },
+    additionalProperties: false,
+    required: [
+      "start",
+      "length",
+    ],
+  },
+  "draw.text.set.WidthModeParam": {
+    description: "Width mode parameter.",
+    oneOf: [
+      {
+        description: "No wrapping.",
+        type: "string",
+        const: "auto",
+      },
+      {
+        description: "Word wrap at `width`.",
+        type: "string",
+        const: "fixed",
+      },
+    ],
+  },
+  "draw.text.set.Point": {
+    description: "A point `{x, y}` in drawing units.",
+    type: "object",
+    properties: {
+      x: {
+        description: "X (du).",
+        type: "number",
+      },
+      y: {
+        description: "Y (du, up).",
+        type: "number",
+      },
+    },
+    additionalProperties: false,
+    required: [
+      "x",
+      "y",
+    ],
+  },
+  "draw.text.set.params": {
+    title: "TextSetParams",
+    description: "`draw.text.set` parameters (02 §13.5).",
+    type: "object",
+    properties: {
+      textId: {
+        description: "The text object (`<drawingId>/<localId>`, or local with `drawingId` / the current drawing).",
+        type: "string",
+      },
+      drawingId: {
+        description: "The drawing holding a local ID (default: `elementId` + `frame`, else the current drawing).",
+        type: [
+          "string",
+          "null",
+        ],
+        default: null,
+      },
+      elementId: {
+        description: "The element whose cell exposes the drawing (02 §13.1 item 4; with a local ID).",
+        type: [
+          "string",
+          "null",
+        ],
+        default: null,
+      },
+      frame: {
+        description: "The frame of that cell (default: the current frame).",
+        type: [
+          "integer",
+          "null",
+        ],
+        default: null,
+        minimum: 1,
+        maximum: 2147483647,
+      },
+      text: {
+        description: "Replace the whole text (the first run's and paragraph's format is kept).",
+        type: [
+          "string",
+          "null",
+        ],
+        maxLength: 100000,
+        default: null,
+      },
+      insert: {
+        description: "Insert characters.",
+        anyOf: [
+          {
+            $ref: "#/$defs/draw.text.set.Insert",
+          },
+          {
+            type: "null",
+          },
+        ],
+      },
+      delete: {
+        description: "Delete characters.",
+        anyOf: [
+          {
+            $ref: "#/$defs/draw.text.set.Delete",
+          },
+          {
+            type: "null",
+          },
+        ],
+      },
+      widthMode: {
+        description: "Auto or fixed width.",
+        anyOf: [
+          {
+            $ref: "#/$defs/draw.text.set.WidthModeParam",
+          },
+          {
+            type: "null",
+          },
+        ],
+      },
+      width: {
+        description: "Fixed width (du); switches to fixed width (02 §7.6).",
+        type: [
+          "number",
+          "null",
+        ],
+        default: null,
+      },
+      position: {
+        description: "New top-left corner (du).",
+        anyOf: [
+          {
+            $ref: "#/$defs/draw.text.set.Point",
+          },
+          {
+            type: "null",
+          },
+        ],
+        default: null,
+      },
+      expectRev: {
+        description: "The drawing revision the caller read (02 §3.12).",
+        type: [
+          "integer",
+          "null",
+        ],
+        maximum: 18446744073709551615n,
+        minimum: 0,
+        default: null,
+      },
+    },
+    additionalProperties: false,
+    required: [
+      "textId",
+    ],
+  },
+  "draw.text.set.Bounds": {
+    description: "`{x, y, width, height}`.",
+    type: "object",
+    properties: {
+      x: {
+        description: "Minimum x (du).",
+        type: "number",
+      },
+      y: {
+        description: "Minimum y (du).",
+        type: "number",
+      },
+      width: {
+        description: "Width (du).",
+        type: "number",
+      },
+      height: {
+        description: "Height (du).",
+        type: "number",
+      },
+    },
+    required: [
+      "x",
+      "y",
+      "width",
+      "height",
+    ],
+  },
+  "draw.text.set.result": {
+    title: "TextResult",
+    description: "`{textId, bounds, rev}`.",
+    type: "object",
+    properties: {
+      drawingId: {
+        description: "The drawing.",
+        type: "string",
+      },
+      textId: {
+        description: "The text object.",
+        type: "string",
+      },
+      bounds: {
+        description: "Its bounds in drawing space (laid out with the installed fonts).",
+        $ref: "#/$defs/draw.text.set.Bounds",
+      },
+      createdIds: {
+        description: "Created objects.",
+        type: "array",
+        items: {
+          type: "string",
+        },
+      },
+      modifiedIds: {
+        description: "Modified objects (content, membership or position changed; IDs kept).",
+        type: "array",
+        items: {
+          type: "string",
+        },
+      },
+      removedIds: {
+        description: "Removed objects (descendants included).",
+        type: "array",
+        items: {
+          type: "string",
+        },
+      },
+      rev: {
+        description: "The drawing revision after the change.",
+        type: "integer",
+        maximum: 18446744073709551615n,
+        minimum: 0,
+      },
+    },
+    required: [
+      "drawingId",
+      "textId",
+      "bounds",
+      "createdIds",
+      "modifiedIds",
+      "removedIds",
+      "rev",
+    ],
+  },
+  "draw.textFormat.set.Baseline": {
+    description: "Baseline (`script` in the project format).",
+    oneOf: [
+      {
+        description: "Normal.",
+        type: "string",
+        const: "normal",
+      },
+      {
+        description: "Subscript (60 % size).",
+        type: "string",
+        const: "subscript",
+      },
+      {
+        description: "Superscript (60 % size).",
+        type: "string",
+        const: "superscript",
+      },
+    ],
+  },
+  "draw.textFormat.set.Align": {
+    description: "Paragraph alignment.",
+    oneOf: [
+      {
+        description: "Left.",
+        type: "string",
+        const: "left",
+      },
+      {
+        description: "Centre.",
+        type: "string",
+        const: "centre",
+      },
+      {
+        description: "Right.",
+        type: "string",
+        const: "right",
+      },
+      {
+        description: "Justify.",
+        type: "string",
+        const: "justify",
+      },
+    ],
+  },
+  "draw.textFormat.set.params": {
+    title: "TextFormatParams",
+    description: "`draw.textFormat.set` parameters (02 §13.5).",
+    type: "object",
+    properties: {
+      textId: {
+        description: "The text object.",
+        type: "string",
+      },
+      drawingId: {
+        description: "The drawing holding a local ID (default: `elementId` + `frame`, else the current drawing).",
+        type: [
+          "string",
+          "null",
+        ],
+        default: null,
+      },
+      elementId: {
+        description: "The element whose cell exposes the drawing (02 §13.1 item 4; with a local ID).",
+        type: [
+          "string",
+          "null",
+        ],
+        default: null,
+      },
+      frame: {
+        description: "The frame of that cell (default: the current frame).",
+        type: [
+          "integer",
+          "null",
+        ],
+        default: null,
+        minimum: 1,
+        maximum: 2147483647,
+      },
+      start: {
+        description: "First code point.",
+        type: "integer",
+        default: 0,
+        minimum: 0,
+        maximum: 100000,
+      },
+      length: {
+        description: "Number of code points (default: to the end).",
+        type: [
+          "integer",
+          "null",
+        ],
+        default: null,
+        minimum: 0,
+        maximum: 100000,
+      },
+      font: {
+        description: "Font family.",
+        type: [
+          "string",
+          "null",
+        ],
+        minLength: 1,
+        maxLength: 256,
+        default: null,
+      },
+      size: {
+        description: "Size (du).",
+        type: [
+          "number",
+          "null",
+        ],
+        default: null,
+        minimum: 1,
+        maximum: 512,
+      },
+      bold: {
+        description: "Bold.",
+        type: [
+          "boolean",
+          "null",
+        ],
+        default: null,
+      },
+      italic: {
+        description: "Italic.",
+        type: [
+          "boolean",
+          "null",
+        ],
+        default: null,
+      },
+      baseline: {
+        description: "Baseline.",
+        anyOf: [
+          {
+            $ref: "#/$defs/draw.textFormat.set.Baseline",
+          },
+          {
+            type: "null",
+          },
+        ],
+      },
+      kerning: {
+        description: "Manual kerning (1/100 em).",
+        type: [
+          "integer",
+          "null",
+        ],
+        default: null,
+        minimum: -60,
+        maximum: 60,
+      },
+      autoKern: {
+        description: "Font kerning pairs.",
+        type: [
+          "boolean",
+          "null",
+        ],
+        default: null,
+      },
+      align: {
+        description: "Alignment.",
+        anyOf: [
+          {
+            $ref: "#/$defs/draw.textFormat.set.Align",
+          },
+          {
+            type: "null",
+          },
+        ],
+      },
+      leftMargin: {
+        description: "Left margin (du).",
+        type: [
+          "number",
+          "null",
+        ],
+        default: null,
+        minimum: 0,
+        maximum: 1000,
+      },
+      rightMargin: {
+        description: "Right margin (du).",
+        type: [
+          "number",
+          "null",
+        ],
+        default: null,
+        minimum: 0,
+        maximum: 1000,
+      },
+      indent: {
+        description: "First-line indent (du).",
+        type: [
+          "number",
+          "null",
+        ],
+        default: null,
+        minimum: -99,
+        maximum: 1000,
+      },
+      lineSpacing: {
+        description: "Additional line spacing (du).",
+        type: [
+          "number",
+          "null",
+        ],
+        default: null,
+        minimum: -99,
+        maximum: 1000,
+      },
+      colourId: {
+        description: "Fill colour.",
+        type: [
+          "string",
+          "null",
+        ],
+        default: null,
+      },
+      outlineColourId: {
+        description: "Outline colour: only `null` (SI-055).",
+        type: [
+          "string",
+          "null",
+        ],
+        default: null,
+      },
+      expectRev: {
+        description: "The drawing revision the caller read (02 §3.12).",
+        type: [
+          "integer",
+          "null",
+        ],
+        maximum: 18446744073709551615n,
+        minimum: 0,
+        default: null,
+      },
+    },
+    additionalProperties: false,
+    required: [
+      "textId",
+    ],
+  },
+  "draw.textFormat.set.Bounds": {
+    description: "`{x, y, width, height}`.",
+    type: "object",
+    properties: {
+      x: {
+        description: "Minimum x (du).",
+        type: "number",
+      },
+      y: {
+        description: "Minimum y (du).",
+        type: "number",
+      },
+      width: {
+        description: "Width (du).",
+        type: "number",
+      },
+      height: {
+        description: "Height (du).",
+        type: "number",
+      },
+    },
+    required: [
+      "x",
+      "y",
+      "width",
+      "height",
+    ],
+  },
+  "draw.textFormat.set.result": {
+    title: "TextFormatResult",
+    description: "`{textId, rev}`.",
+    type: "object",
+    properties: {
+      drawingId: {
+        description: "The drawing.",
+        type: "string",
+      },
+      textId: {
+        description: "The text object.",
+        type: "string",
+      },
+      createdIds: {
+        description: "Created objects.",
+        type: "array",
+        items: {
+          type: "string",
+        },
+      },
+      modifiedIds: {
+        description: "Modified objects (content, membership or position changed; IDs kept).",
+        type: "array",
+        items: {
+          type: "string",
+        },
+      },
+      removedIds: {
+        description: "Removed objects (descendants included).",
+        type: "array",
+        items: {
+          type: "string",
+        },
+      },
+      bounds: {
+        description: "Its bounds after the change.",
+        $ref: "#/$defs/draw.textFormat.set.Bounds",
+      },
+      rev: {
+        description: "The drawing revision after the change.",
+        type: "integer",
+        maximum: 18446744073709551615n,
+        minimum: 0,
+      },
+    },
+    required: [
+      "drawingId",
+      "textId",
+      "createdIds",
+      "modifiedIds",
+      "removedIds",
+      "bounds",
+      "rev",
+    ],
+  },
+  "draw.transform.apply.AnchorRef": {
+    description: "An anchor of a stroke.",
+    type: "object",
+    properties: {
+      strokeId: {
+        description: "The stroke (local ID).",
+        type: "string",
+      },
+      anchor: {
+        description: "The anchor index.",
+        type: "integer",
+        maximum: 2147483647,
+        minimum: 0,
+      },
+    },
+    additionalProperties: false,
+    required: [
+      "strokeId",
+      "anchor",
+    ],
+  },
+  "draw.transform.apply.Point": {
+    description: "A point `{x, y}` in drawing units.",
+    type: "object",
+    properties: {
+      x: {
+        description: "X (du).",
+        type: "number",
+      },
+      y: {
+        description: "Y (du, up).",
+        type: "number",
+      },
+    },
+    additionalProperties: false,
+    required: [
+      "x",
+      "y",
+    ],
+  },
+  "draw.transform.apply.Xy": {
+    description: "`{x, y}` factors.",
+    type: "object",
+    properties: {
+      x: {
+        description: "x.",
+        type: "number",
+      },
+      y: {
+        description: "y.",
+        type: "number",
+      },
+    },
+    additionalProperties: false,
+    required: [
+      "x",
+      "y",
+    ],
+  },
+  "draw.transform.apply.params": {
+    title: "TransformParams",
+    description: "`draw.transform.apply` parameters.",
+    type: "object",
+    properties: {
+      drawingId: {
+        description: "The drawing (default: current).",
+        type: [
+          "string",
+          "null",
+        ],
+        default: null,
+      },
+      ids: {
+        description: "Objects (default: the selection).",
+        type: [
+          "array",
+          "null",
+        ],
+        items: {
+          type: "string",
+        },
+        default: null,
+      },
+      points: {
+        description: "Anchors to move instead of whole objects (default: the Contour Editor's point selection when no object is\nselected; SI-070).",
+        type: [
+          "array",
+          "null",
+        ],
+        items: {
+          $ref: "#/$defs/draw.transform.apply.AnchorRef",
+        },
+        default: null,
+      },
+      translate: {
+        description: "Translation (du).",
+        anyOf: [
+          {
+            $ref: "#/$defs/draw.transform.apply.Point",
+          },
+          {
+            type: "null",
+          },
+        ],
+        default: null,
+      },
+      scale: {
+        description: "Scale factors.",
+        anyOf: [
+          {
+            $ref: "#/$defs/draw.transform.apply.Xy",
+          },
+          {
+            type: "null",
+          },
+        ],
+      },
+      rotate: {
+        description: "Rotation (degrees, counter-clockwise).",
+        type: [
+          "number",
+          "null",
+        ],
+        default: null,
+      },
+      skew: {
+        description: "Skew (degrees).",
+        anyOf: [
+          {
+            $ref: "#/$defs/draw.transform.apply.Xy",
+          },
+          {
+            type: "null",
+          },
+        ],
+      },
+      pivot: {
+        description: "Pivot (default: the centre of the selection's bounds).",
+        anyOf: [
+          {
+            $ref: "#/$defs/draw.transform.apply.Point",
+          },
+          {
+            type: "null",
+          },
+        ],
+        default: null,
+      },
+      matrix: {
+        description: "A full matrix `[a, b, c, d, e, f]` (overrides the others).",
+        type: [
+          "array",
+          "null",
+        ],
+        items: {
+          type: "number",
+        },
+        minItems: 6,
+        maxItems: 6,
+        default: null,
+      },
+      copy: {
+        description: "Transform copies, leaving the originals.",
+        type: "boolean",
+        default: false,
+      },
+      expectRev: {
+        description: "The drawing revision the caller read.",
+        type: [
+          "integer",
+          "null",
+        ],
+        maximum: 18446744073709551615n,
+        minimum: 0,
+        default: null,
+      },
+    },
+    additionalProperties: false,
+  },
+  "draw.transform.apply.result": {
+    title: "TransformResult",
+    description: "`{ids, removedIds, rev}` and the changed IDs.",
+    type: "object",
+    properties: {
+      drawingId: {
+        description: "The drawing.",
+        type: "string",
+      },
+      ids: {
+        description: "The transformed objects (the copies with `copy`; pieces where noding split them).",
+        type: "array",
+        items: {
+          type: "string",
+        },
+      },
+      createdIds: {
+        description: "Created objects.",
+        type: "array",
+        items: {
+          type: "string",
+        },
+      },
+      modifiedIds: {
+        description: "Modified objects (content, membership or position changed; IDs kept).",
+        type: "array",
+        items: {
+          type: "string",
+        },
+      },
+      removedIds: {
+        description: "Removed objects (descendants included).",
+        type: "array",
+        items: {
+          type: "string",
+        },
+      },
+      rev: {
+        description: "The drawing revision after the change.",
+        type: "integer",
+        maximum: 18446744073709551615n,
+        minimum: 0,
+      },
+    },
+    required: [
+      "drawingId",
+      "ids",
+      "createdIds",
+      "modifiedIds",
+      "removedIds",
+      "rev",
+    ],
   },
   "draw.vectorFile.import.params": {
     title: "draw.vectorFile.import parameters",
@@ -33120,266 +38393,432 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
     "x-spec": "`{jobId}` → `{drawingId, objectIds: [id], addedColourIds: [id], warnings: [string], rev}`",
     additionalProperties: false,
   },
+  "draw.vectorize.preview.VectorizeType": {
+    description: "Vectorization type.",
+    oneOf: [
+      {
+        description: "Ink becomes black brush shapes.",
+        type: "string",
+        const: "blackAndWhite",
+      },
+      {
+        description: "Ink shapes are filled with the source bitmap as a texture colour.",
+        type: "string",
+        const: "withTexture",
+      },
+    ],
+  },
+  "draw.vectorize.preview.FilterIn": {
+    description: "Pre-filter.",
+    oneOf: [
+      {
+        description: "None.",
+        type: "string",
+        const: "none",
+      },
+      {
+        description: "Light mean blur.",
+        type: "string",
+        const: "smooth",
+      },
+      {
+        description: "Stronger 3×3 mean blur.",
+        type: "string",
+        const: "smoothMore",
+      },
+      {
+        description: "High-pass edge enhancement.",
+        type: "string",
+        const: "edgeEnhance",
+      },
+      {
+        description: "Sharpening.",
+        type: "string",
+        const: "sharpen",
+      },
+    ],
+  },
   "draw.vectorize.preview.params": {
-    title: "draw.vectorize.preview parameters",
+    title: "PreviewParams",
+    description: "`draw.vectorize.preview` parameters.",
     type: "object",
     properties: {
       file: {
-        type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "file-system path (11 §6.2)",
+        description: "An image file.",
+        type: [
+          "string",
+          "null",
+        ],
+        default: null,
       },
       imageElementId: {
-        type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
+        description: "An image element (its bitmap at `frame`).",
+        type: [
+          "string",
+          "null",
+        ],
+        default: null,
       },
       frame: {
-        type: "integer",
+        description: "The frame of the image element (default: current frame).",
+        type: [
+          "integer",
+          "null",
+        ],
+        maximum: 9223372036854775807n,
+        default: null,
+        minimum: -9223372036854775808n,
       },
       type: {
-        type: "string",
-        enum: [
-          "blackAndWhite",
-          "withTexture",
-        ],
+        description: "Vectorization type.",
+        $ref: "#/$defs/draw.vectorize.preview.VectorizeType",
         default: "blackAndWhite",
       },
       filter: {
-        type: "string",
-        enum: [
-          "none",
-          "smooth",
-          "smoothMore",
-          "edgeEnhance",
-          "sharpen",
-        ],
+        description: "Pre-filter.",
+        $ref: "#/$defs/draw.vectorize.preview.FilterIn",
         default: "none",
       },
       threshold: {
+        description: "Threshold, % of white (0–100; `vectorize.thresholdOutOfRange` outside).",
         type: "integer",
-        minimum: 0,
-        maximum: 100,
+        maximum: 9223372036854775807n,
         default: 70,
+        minimum: -9223372036854775808n,
       },
       width: {
+        description: "Preview width in pixels (1–4096).",
         type: "integer",
+        maximum: 9223372036854775807n,
         default: 512,
+        minimum: -9223372036854775808n,
       },
     },
     additionalProperties: false,
-    "x-spec": "`file?: path; imageElementId?: id; frame?: int; type: enum \"blackAndWhite\"|\"withTexture\" = \"blackAndWhite\"; filter: enum \"none\"|\"smooth\"|\"smoothMore\"|\"edgeEnhance\"|\"sharpen\" = \"none\"; threshold: int = 70 (0–100); width: int = 512`",
   },
   "draw.vectorize.preview.result": {
-    title: "draw.vectorize.preview result",
+    title: "PreviewResult",
+    description: "`{png, strokeCount}`.",
     type: "object",
     properties: {
       png: {
+        description: "The rendered result, base64 PNG.",
         type: "string",
-        maxLength: 65536,
       },
       strokeCount: {
+        description: "Shapes the vectorization creates.",
         type: "integer",
+        maximum: 18446744073709551615n,
+        minimum: 0,
       },
     },
     required: [
       "png",
       "strokeCount",
     ],
-    "x-spec": "`{png, strokeCount: int}`",
-    additionalProperties: false,
+  },
+  "draw.vectorize.run.VectorizeType": {
+    description: "Vectorization type.",
+    oneOf: [
+      {
+        description: "Ink becomes black brush shapes.",
+        type: "string",
+        const: "blackAndWhite",
+      },
+      {
+        description: "Ink shapes are filled with the source bitmap as a texture colour.",
+        type: "string",
+        const: "withTexture",
+      },
+    ],
+  },
+  "draw.vectorize.run.FilterIn": {
+    description: "Pre-filter.",
+    oneOf: [
+      {
+        description: "None.",
+        type: "string",
+        const: "none",
+      },
+      {
+        description: "Light mean blur.",
+        type: "string",
+        const: "smooth",
+      },
+      {
+        description: "Stronger 3×3 mean blur.",
+        type: "string",
+        const: "smoothMore",
+      },
+      {
+        description: "High-pass edge enhancement.",
+        type: "string",
+        const: "edgeEnhance",
+      },
+      {
+        description: "Sharpening.",
+        type: "string",
+        const: "sharpen",
+      },
+    ],
+  },
+  "draw.vectorize.run.OnConflict": {
+    description: "What to do with cells that already hold drawings.",
+    oneOf: [
+      {
+        description: "Ask (`needs_confirmation` with `drawing.cellOccupied`), then replace.",
+        type: "string",
+        const: "ask",
+      },
+      {
+        description: "Replace them.",
+        type: "string",
+        const: "replace",
+      },
+      {
+        description: "Leave them and skip their images.",
+        type: "string",
+        const: "skip",
+      },
+    ],
   },
   "draw.vectorize.run.params": {
-    title: "draw.vectorize.run parameters",
+    title: "RunParams",
+    description: "`draw.vectorize.run` parameters.",
     type: "object",
     properties: {
       files: {
-        type: "array",
+        description: "Image files, in order (one drawing each).",
+        type: [
+          "array",
+          "null",
+        ],
         items: {
           type: "string",
-          minLength: 1,
-          maxLength: 4096,
-          description: "file-system path (11 §6.2)",
         },
         maxItems: 100000,
+        default: null,
       },
       imageElementId: {
-        type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
+        description: "An image element to convert into a new drawing element with matching exposure (§11.3).",
+        type: [
+          "string",
+          "null",
+        ],
+        default: null,
       },
       targetElementId: {
-        type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3) (default: selected; new element if none)",
+        description: "The target drawing element (default: the selected element; a new element if none).",
+        type: [
+          "string",
+          "null",
+        ],
+        default: null,
       },
       startFrame: {
-        type: "integer",
-        description: "Default: selected cell.",
+        description: "The first cell (default: the current frame).",
+        type: [
+          "integer",
+          "null",
+        ],
+        maximum: 9223372036854775807n,
+        default: null,
+        minimum: -9223372036854775808n,
       },
       type: {
-        type: "string",
-        enum: [
-          "blackAndWhite",
-          "withTexture",
-        ],
+        description: "Vectorization type.",
+        $ref: "#/$defs/draw.vectorize.run.VectorizeType",
         default: "blackAndWhite",
       },
       filter: {
-        type: "string",
-        enum: [
-          "none",
-          "smooth",
-          "smoothMore",
-          "edgeEnhance",
-          "sharpen",
-        ],
+        description: "Pre-filter.",
+        $ref: "#/$defs/draw.vectorize.run.FilterIn",
         default: "none",
       },
       threshold: {
+        description: "Threshold, % of white (0–100; `vectorize.thresholdOutOfRange` outside).",
         type: "integer",
-        minimum: 0,
-        maximum: 100,
+        maximum: 9223372036854775807n,
         default: 70,
+        minimum: -9223372036854775808n,
       },
       onConflict: {
-        type: "string",
-        enum: [
-          "ask",
-          "replace",
-          "skip",
-        ],
+        description: "Occupied cells.",
+        $ref: "#/$defs/draw.vectorize.run.OnConflict",
         default: "ask",
       },
     },
     additionalProperties: false,
-    "x-spec": "`files?: [path]; imageElementId?: id; targetElementId?: id (default: selected; new element if none); startFrame?: int = selected cell; type: enum \"blackAndWhite\"|\"withTexture\" = \"blackAndWhite\"; filter: enum \"none\"|\"smooth\"|\"smoothMore\"|\"edgeEnhance\"|\"sharpen\" = \"none\"; threshold: int = 70 (0–100); onConflict: enum \"ask\"|\"replace\"|\"skip\" = \"ask\"`",
+  },
+  "draw.vectorize.run.RunResult": {
+    description: "The final result of `draw.vectorize.run`.",
+    type: "object",
+    properties: {
+      elementId: {
+        description: "The drawing element that received the drawings.",
+        type: "string",
+      },
+      drawingIds: {
+        description: "The drawings created, in order.",
+        type: "array",
+        items: {
+          type: "string",
+        },
+      },
+      completed: {
+        description: "Images completed.",
+        type: "integer",
+        maximum: 18446744073709551615n,
+        minimum: 0,
+      },
+      cancelled: {
+        description: "The job was cancelled after `completed` images.",
+        type: "boolean",
+      },
+      skipped: {
+        description: "Images not committed, in order: their cell was occupied (`onConflict: \"skip\"`) or the job was cancelled first\n(SI-083: reported beside the spec's fields).",
+        type: "array",
+        items: {
+          $ref: "#/$defs/draw.vectorize.run.Skipped",
+        },
+      },
+    },
+    required: [
+      "elementId",
+      "drawingIds",
+      "completed",
+      "cancelled",
+      "skipped",
+    ],
+  },
+  "draw.vectorize.run.Skipped": {
+    description: "An image a run did not commit.",
+    type: "object",
+    properties: {
+      index: {
+        description: "Its position in `files` (or among the image element's drawings), from 0.",
+        type: "integer",
+        maximum: 18446744073709551615n,
+        minimum: 0,
+      },
+      source: {
+        description: "The file, or the image element's drawing.",
+        type: "string",
+      },
+      reason: {
+        description: "`occupied` or `cancelled`.",
+        type: "string",
+      },
+    },
+    required: [
+      "index",
+      "source",
+      "reason",
+    ],
   },
   "draw.vectorize.run.result": {
-    title: "draw.vectorize.run result",
+    title: "Job_RunResult",
     type: "object",
     properties: {
       jobId: {
+        description: "The job (11 §7.7).",
         type: "string",
         minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
       },
     },
     required: [
       "jobId",
     ],
-    "x-jobResult": {
-      type: "object",
-      properties: {
-        elementId: {
-          type: "string",
-          minLength: 1,
-          maxLength: 4096,
-          description: "object ID or path reference (10 §3)",
-        },
-        drawingIds: {
-          type: "array",
-          items: {
-            type: "string",
-            minLength: 1,
-            maxLength: 4096,
-            description: "object ID or path reference (10 §3)",
-          },
-          maxItems: 100000,
-        },
-        completed: {
-          type: "integer",
-        },
-        cancelled: {
-          type: "boolean",
-        },
-      },
-      required: [
-        "elementId",
-        "drawingIds",
-        "completed",
-        "cancelled",
-      ],
-      additionalProperties: false,
-    },
-    "x-spec": "`{jobId}` → `{elementId, drawingIds: [id], completed: int, cancelled: bool}`",
     additionalProperties: false,
+    "x-jobResult": {
+      $ref: "#/$defs/draw.vectorize.run.RunResult",
+    },
   },
   "draw.viewMapping.get.params": {
-    title: "draw.viewMapping.get parameters",
+    title: "ViewMappingParams",
+    description: "`draw.viewMapping.get` parameters.",
     type: "object",
     properties: {
       view: {
+        description: "The view (`drawing`; views arrive with M4 C4.2).",
         type: "string",
-        maxLength: 65536,
         default: "drawing",
       },
     },
     additionalProperties: false,
-    "x-spec": "`view: string = \"drawing\"`",
   },
-  "draw.viewMapping.get.result": {
-    title: "draw.viewMapping.get result",
+  "draw.viewMapping.get.ViewSize": {
+    description: "`{width, height}`.",
     type: "object",
     properties: {
-      drawingId: {
-        type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
+      width: {
+        description: "Width.",
+        type: "integer",
+        maximum: 2147483647,
+        minimum: 0,
       },
-      drawingToView: {
-        type: "array",
-        items: {
-          type: "number",
-        },
-        maxItems: 100000,
-      },
-      viewToDrawing: {
-        type: "array",
-        items: {
-          type: "number",
-        },
-        maxItems: 100000,
-      },
-      zoom: {
-        type: "number",
-      },
-      rotation: {
-        type: "number",
-      },
-      viewSize: {
-        type: "object",
-        properties: {
-          width: {
-            type: "number",
-          },
-          height: {
-            type: "number",
-          },
-        },
-        required: [
-          "width",
-          "height",
-        ],
-        additionalProperties: false,
+      height: {
+        description: "Height.",
+        type: "integer",
+        maximum: 2147483647,
+        minimum: 0,
       },
     },
     required: [
-      "drawingId",
+      "width",
+      "height",
+    ],
+  },
+  "draw.viewMapping.get.result": {
+    title: "ViewMappingResult",
+    description: "The mapping between a view's pixels and drawing space.",
+    type: "object",
+    properties: {
+      drawingId: {
+        description: "The view's drawing (`null` without a current drawing).",
+        type: [
+          "string",
+          "null",
+        ],
+      },
+      drawingToView: {
+        description: "Drawing space → view pixels.",
+        type: "array",
+        items: {
+          type: "number",
+        },
+        minItems: 6,
+        maxItems: 6,
+      },
+      viewToDrawing: {
+        description: "View pixels → drawing space.",
+        type: "array",
+        items: {
+          type: "number",
+        },
+        minItems: 6,
+        maxItems: 6,
+      },
+      zoom: {
+        description: "Zoom (1 = 100 %).",
+        type: "number",
+      },
+      rotation: {
+        description: "Rotation (degrees).",
+        type: "number",
+      },
+      viewSize: {
+        description: "The view's size in pixels.",
+        $ref: "#/$defs/draw.viewMapping.get.ViewSize",
+      },
+    },
+    required: [
       "drawingToView",
       "viewToDrawing",
       "zoom",
       "rotation",
       "viewSize",
     ],
-    "x-spec": "`{drawingId, drawingToView: [number], viewToDrawing: [number], zoom, rotation, viewSize: {width,height}}`",
-    additionalProperties: false,
   },
   "drawAid.autoLightTable.set.params": {
     title: "drawAid.autoLightTable.set parameters",
@@ -69199,54 +74638,69 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
     "x-spec": "`{enabled}`",
     additionalProperties: false,
   },
+  "tool.symmetry.set.Mode": {
+    description: "Symmetry mode.",
+    oneOf: [
+      {
+        description: "No copies.",
+        type: "string",
+        const: "none",
+      },
+      {
+        description: "One mirror axis.",
+        type: "string",
+        const: "mirror",
+      },
+      {
+        description: "Dihedral symmetry.",
+        type: "string",
+        const: "kaleidoscope",
+      },
+    ],
+  },
   "tool.symmetry.set.params": {
-    title: "tool.symmetry.set parameters",
+    title: "SymmetryParams",
+    description: "`tool.symmetry.set` parameters.",
     type: "object",
     properties: {
       mode: {
-        type: "string",
-        enum: [
-          "none",
-          "mirror",
-          "kaleidoscope",
-        ],
+        description: "Mode.",
+        $ref: "#/$defs/tool.symmetry.set.Mode",
         default: "none",
       },
       angle: {
+        description: "Axis angle from +y, counter-clockwise, degrees (0–360).",
         type: "number",
-        minimum: 0,
-        maximum: 360,
         default: 0,
       },
       mirrors: {
+        description: "Mirror lines of a kaleidoscope (2–16).",
         type: "integer",
-        minimum: 2,
-        maximum: 16,
+        maximum: 9223372036854775807n,
         default: 6,
+        minimum: -9223372036854775808n,
       },
     },
     additionalProperties: false,
-    "x-spec": "`mode: enum \"none\"|\"mirror\"|\"kaleidoscope\" = \"none\"; angle?: number (0–360) = 0; mirrors?: int (2–16) = 6`",
   },
   "tool.symmetry.set.result": {
-    title: "tool.symmetry.set result",
+    title: "SymmetryResult",
+    description: "`{mode, angle, mirrors}`.",
     type: "object",
     properties: {
       mode: {
-        type: "string",
-        default: "none",
+        description: "Mode.",
+        $ref: "#/$defs/tool.symmetry.set.Mode",
       },
       angle: {
+        description: "Axis angle (degrees).",
         type: "number",
-        minimum: 0,
-        maximum: 360,
-        default: 0,
       },
       mirrors: {
+        description: "Mirror lines.",
         type: "integer",
-        minimum: 2,
-        maximum: 16,
-        default: 6,
+        maximum: 9223372036854775807n,
+        minimum: -9223372036854775808n,
       },
     },
     required: [
@@ -69254,8 +74708,6 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
       "angle",
       "mirrors",
     ],
-    "x-spec": "`{mode, angle, mirrors}`",
-    additionalProperties: false,
   },
   "tool.tablet.set.params": {
     title: "tool.tablet.set parameters",
@@ -77703,222 +83155,501 @@ export interface colour_editor_open_params {
 
 export type colour_editor_open_result = Record<string, unknown>;
 
+/** `colour.fillMapping.get` parameters. */
 export interface colour_fillMapping_get_params {
-  /** object ID or path reference (10 §3) */
-  drawingId?: string;
-  /** object ID or path reference (10 §3) */
+  /** The drawing (default: current). */
+  drawingId?: string | null;
+  /** A painted zone, brush stroke or pencil line. */
   objectId: string;
+  /** Copy the mapping to the fill-mapping clipboard. */
   toClipboard?: boolean;
 }
 
+/** `{colourId, kind, matrix, linear?, radial?, texture?}`. */
 export interface colour_fillMapping_get_result {
-  /** object ID or path reference (10 §3) */
+  /** The colour. */
   colourId: string;
+  /** The swatch kind (`solid`: the kept matrix, which a solid colour ignores; SI-075). */
   kind: string;
+  /** Unit space → drawing space. */
   matrix: number[];
-  linear?: string;
-  radial?: string;
-  texture?: string;
+  /** Linear gradient handles `{start, end}`. */
+  linear?: unknown;
+  /** Radial gradient handles `{centre, radius, secondAxis}`. */
+  radial?: unknown;
+  /** Texture frame `{origin, xAxis, yAxis, tile}`. */
+  texture?: unknown;
 }
 
+/** `mapping`. */
+export type colour_fillMapping_set_MappingIn = colour_fillMapping_set_MappingName | colour_fillMapping_set_MappingObject;
+
+/** `"default"` or `"clipboard"`. */
+export type colour_fillMapping_set_MappingName = 'default' | 'clipboard';
+
+/** An explicit mapping (SI-025 placeholder filled, SI-075): exactly one member. */
+export interface colour_fillMapping_set_MappingObject {
+  /** A full unit → drawing matrix (any mappable kind). */
+  matrix?: number[] | null;
+  /** Linear gradient handles. */
+  linear?: colour_fillMapping_set_LinearIn | null;
+  /** Radial gradient handles. */
+  radial?: colour_fillMapping_set_RadialIn | null;
+  /** Texture frame. */
+  texture?: colour_fillMapping_set_TextureIn | null;
+}
+
+/** Linear gradient handles. */
+export interface colour_fillMapping_set_LinearIn {
+  /** Where the gradient starts. */
+  start: colour_fillMapping_set_Point;
+  /** Where it ends. */
+  end: colour_fillMapping_set_Point;
+}
+
+/** A point `{x, y}` in drawing units. */
+export interface colour_fillMapping_set_Point {
+  /** X (du). */
+  x: number;
+  /** Y (du, up). */
+  y: number;
+}
+
+/** Radial gradient handles. */
+export interface colour_fillMapping_set_RadialIn {
+  /** Centre. */
+  centre: colour_fillMapping_set_Point;
+  /** Radius (du). */
+  radius: number;
+}
+
+/** A texture frame. */
+export interface colour_fillMapping_set_TextureIn {
+  /** Where the image's unit origin goes. */
+  origin: colour_fillMapping_set_Point;
+  /** The image's unit x axis (du). */
+  xAxis: colour_fillMapping_set_Point;
+  /** The image's unit y axis (du). */
+  yAxis: colour_fillMapping_set_Point;
+}
+
+/** `colour.fillMapping.set` parameters. */
 export interface colour_fillMapping_set_params {
-  /** object ID or path reference (10 §3) */
-  drawingId?: string;
+  /** The drawing (default: current). */
+  drawingId?: string | null;
+  /** Painted zones, brush strokes and pencil lines. */
   objectIds: string[];
-  mapping: 'default' | 'clipboard' | Record<string, unknown>;
+  /** The mapping. */
+  mapping: colour_fillMapping_set_MappingIn;
 }
 
+/** A skipped object. */
+export interface colour_fillMapping_set_SkippedObject {
+  /** The object. */
+  objectId: string;
+  /** Why (`solid`, `unpainted`, `invisible`, `text`, `notPaintable`, `kindMismatch`, `colourMissing`). */
+  reason: string;
+}
+
+/** `{changed, skipped, rev}`. */
 export interface colour_fillMapping_set_result {
+  /** Objects whose mapping changed (zones by their ID after the change). */
   changed: string[];
-  skipped: ({
-    /** object ID or path reference (10 §3) */
-    objectId: string;
-    reason: string;
-  })[];
-  rev: number;
+  /** Objects left alone and why. */
+  skipped: colour_fillMapping_set_SkippedObject[];
+  /** The drawing revision after the change. */
+  rev: number | bigint;
 }
 
+/** A point `{x, y}` in drawing units. */
+export interface colour_gap_close_Point {
+  /** X (du). */
+  x: number;
+  /** Y (du, up). */
+  y: number;
+}
+
+/** Coordinate space of point targets (03 §16.2). */
+export type colour_gap_close_Space = 'drawing' | 'scene' | 'view';
+
+/** `colour.gap.close` parameters (03 §16.3). */
 export interface colour_gap_close_params {
-  /** object ID or path reference (10 §3) */
-  drawingId?: string;
-  from: {
-    x: number;
-    y: number;
-  };
-  to: {
-    x: number;
-    y: number;
-  };
-  space?: 'drawing' | 'scene' | 'view';
-  /** object ID or path reference (10 §3) */
-  sceneId?: string;
-  frame?: number | bigint;
-  view?: string;
+  /** The drawing (default: the current drawing). */
+  drawingId?: string | null;
+  /** Start of the drag. */
+  from: colour_gap_close_Point;
+  /** End of the drag. */
+  to: colour_gap_close_Point;
+  /** Coordinate space (only `drawing` until M3/M4). */
+  space?: colour_gap_close_Space;
+  /** Scene of `scene` points. */
+  sceneId?: string | null;
+  /** Frame of `scene` points. */
+  frame?: number | null;
+  /** View of `view` points. */
+  view?: string | null;
 }
 
+/** `colour.gap.close` result (03 §16.3 plus the common edit members, SI-058). */
 export interface colour_gap_close_result {
-  strokeId: string | null;
-  rev: number;
+  /** The drawing. */
+  drawingId: string;
+  /** The invisible stroke added (its first piece when noding split it). */
+  strokeId?: string | null;
+  /** All strokes it became. */
+  strokeIds: string[];
+  /** Hint codes (`drawing.strokesHidden`). */
+  hints: string[];
+  /** Created objects. */
+  createdIds: string[];
+  /** Modified objects (content, membership or position changed; IDs kept). */
+  modifiedIds: string[];
+  /** Removed objects (descendants included). */
+  removedIds: string[];
+  /** The drawing revision after the change. */
+  rev: number | bigint;
 }
 
+/** No parameters. */
 export type colour_gapClosing_get_params = Record<string, unknown>;
 
+/** The automatic gap-closing mode (03 §8.8). */
+export type colour_gapClosing_get_GapMode = 'off' | 'small' | 'medium' | 'large';
+
+/** Tolerances in view pixels. */
+export interface colour_gapClosing_get_Tolerances {
+  /** Small. */
+  small: number;
+  /** Medium. */
+  medium: number;
+  /** Large. */
+  large: number;
+}
+
+/** `colour.gapClosing.get` result. */
 export interface colour_gapClosing_get_result {
-  mode: string;
-  tolerancesPx: {
-    small: string;
-    medium: string;
-    large: string;
-  };
+  /** The mode. */
+  mode: colour_gapClosing_get_GapMode;
+  /** Tolerances (view px; 1 px = 1 du at 100 % zoom, SI-063). */
+  tolerancesPx: colour_gapClosing_get_Tolerances;
 }
 
+/** The automatic gap-closing mode (03 §8.8). */
+export type colour_gapClosing_set_GapMode = 'off' | 'small' | 'medium' | 'large';
+
+/** `colour.gapClosing.set` parameters. */
 export interface colour_gapClosing_set_params {
-  mode: 'off' | 'small' | 'medium' | 'large';
+  /** The mode. */
+  mode: colour_gapClosing_set_GapMode;
 }
 
+/** `{mode}`. */
 export interface colour_gapClosing_set_result {
-  mode: string;
+  /** The mode now. */
+  mode: colour_gapClosing_set_GapMode;
 }
 
+/** Scope of colour queries (03 §16.3). */
+export type colour_missing_list_Scope = 'project' | 'scene' | 'element' | 'drawing';
+
+/** `colour.missing.list` parameters (03 §16.3). */
 export interface colour_missing_list_params {
-  scope?: 'project' | 'scene' | 'element' | 'drawing';
-  /** object ID or path reference (10 §3) */
-  sceneId?: string;
-  elementIds?: string[];
-  drawingIds?: string[];
+  /** Scope. */
+  scope?: colour_missing_list_Scope;
+  /** Scene of `scene` scope (default: current). */
+  sceneId?: string | null;
+  /** Elements of `element` scope. */
+  elementIds?: string[] | null;
+  /** Drawings of `drawing` scope. */
+  drawingIds?: string[] | null;
 }
 
+/** One missing colour. */
+export interface colour_missing_list_Missing {
+  /** The colour ID. */
+  colourId: string;
+  /** Drawings using it. */
+  drawingIds: string[];
+  /** A recovery copy exists. */
+  recoverable: boolean;
+  /** The palette name the copy records. */
+  recordedPaletteName?: string | null;
+}
+
+/** `colour.missing.list` result. */
 export interface colour_missing_list_result {
-  missing: ({
-    /** object ID or path reference (10 §3) */
-    colourId: string;
-    drawingIds: string[];
-    recoverable: boolean;
-    recordedPaletteName: string;
-  })[];
+  /** Missing colours. */
+  missing: colour_missing_list_Missing[];
 }
 
+/** A point `{x, y}` in drawing units. */
+export interface colour_paint_apply_Point {
+  /** X (du). */
+  x: number;
+  /** Y (du, up). */
+  y: number;
+}
+
+/** A rectangle `{x, y, width, height}` (drawing space). */
+export interface colour_paint_apply_RectIn {
+  /** Minimum x. */
+  x: number;
+  /** Minimum y. */
+  y: number;
+  /** Width. */
+  width: number;
+  /** Height. */
+  height: number;
+}
+
+/** Coordinate space of point targets (03 §16.2). */
+export type colour_paint_apply_Space = 'drawing' | 'scene' | 'view';
+
+/** `{from, to}` of a press–drag (gradient or texture mapping). */
+export interface colour_paint_apply_MappingDrag {
+  /** Press point. */
+  from: colour_paint_apply_Point;
+  /** Release point. */
+  to: colour_paint_apply_Point;
+}
+
+/** Gap-closing choice of a paint command (03 §8.8). */
+export type colour_paint_apply_GapChoice = 'current' | 'off' | 'small' | 'medium' | 'large';
+
+/** `colour.paint.apply` parameters (03 §16.3; `onlyPainted`, `lasso`, `rect`, `respectProtected`: SI-061). */
 export interface colour_paint_apply_params {
-  /** object ID or path reference (10 §3) */
-  drawingId?: string;
-  objectIds?: string[];
-  points?: ({
-    x: number;
-    y: number;
-  })[];
-  path?: ({
-    x: number;
-    y: number;
-  })[];
-  space?: 'drawing' | 'scene' | 'view';
-  /** object ID or path reference (10 §3) */
-  sceneId?: string;
-  frame?: number | bigint;
-  /** object ID or path reference (10 §3) */
-  elementId?: string;
-  view?: string;
-  /** object ID or path reference (10 §3) */
-  colourId?: string;
+  /** The drawing (default: the current drawing). */
+  drawingId?: string | null;
+  /** Zones, lines, brush strokes or text to paint. */
+  objectIds?: string[] | null;
+  /** Points: the front-most object under each is painted. */
+  points?: colour_paint_apply_Point[] | null;
+  /** A crossing path: every zone and line it passes over is painted. */
+  path?: colour_paint_apply_Point[] | null;
+  /** A lasso: every zone whose interior point lies inside is painted (SI-061). */
+  lasso?: colour_paint_apply_Point[] | null;
+  /** A marquee: every zone whose interior point lies inside is painted (SI-061). */
+  rect?: colour_paint_apply_RectIn | null;
+  /** Coordinate space of points (only `drawing` until M3/M4). */
+  space?: colour_paint_apply_Space;
+  /** Scene of `scene` points (M3 C3.2). */
+  sceneId?: string | null;
+  /** Frame of `scene` points. */
+  frame?: number | null;
+  /** The element of the drawing (default: current). */
+  elementId?: string | null;
+  /** View of `view` points (M4 C4.2). */
+  view?: string | null;
+  /** The colour (default: the current fill colour). */
+  colourId?: string | null;
+  /** Paint unpainted zones only. */
   onlyUnpainted?: boolean;
-  mapping?: {
-    from: {
-      x: number;
-      y: number;
-    };
-    to: {
-      x: number;
-      y: number;
-    };
-  };
-  gapClosing?: 'current' | 'off' | 'small' | 'medium' | 'large';
-  expectRev?: number | bigint;
+  /** Repaint: painted zones only (SI-061). */
+  onlyPainted?: boolean;
+  /** Respect protected colours (SI-061). */
+  respectProtected?: boolean;
+  /** Gradient/texture mapping of a press–drag. */
+  mapping?: colour_paint_apply_MappingDrag | null;
+  /** Automatic gap closing for point targets. */
+  gapClosing?: colour_paint_apply_GapChoice;
+  /** The drawing revision the caller read. */
+  expectRev?: number | bigint | null;
 }
 
+/** One painted object. */
+export interface colour_paint_apply_Painted {
+  /** The drawing. */
+  drawingId: string;
+  /** The object (zone IDs are those of the drawing after the paint). */
+  objectId: string;
+  /** `zone`, `pencil`, `brush` or `text`. */
+  objectKind: string;
+  /** Its colour before (`null` = unpainted). */
+  previousColourId?: string | null;
+}
+
+/** One target left alone. */
+export interface colour_paint_apply_Skipped {
+  /** The target: an object ID, or `point:<i>` / `path` / `lasso` / `rect`. */
+  target: string;
+  /** A `colour.*` code: `colour.noTarget`, `colour.zoneNotClosed`, `colour.protected`, `colour.alreadyPainted`, `colour.notPainted`, `colour.cannotUnpaint`, `colour.invisibleTarget`, `colour.notPaintable`. */
+  reason: string;
+}
+
+/** `colour.paint.apply` result (03 §16.3, plus the common edit members of 02 §13.1 item 11, SI-058). */
 export interface colour_paint_apply_result {
-  painted: ({
-    /** object ID or path reference (10 §3) */
-    drawingId: string;
-    /** object ID or path reference (10 §3) */
-    objectId: string;
-    objectKind: string;
-    /** object ID or path reference (10 §3) */
-    previousColourId: string;
-  })[];
-  skipped: ({
-    target: string;
-    reason: string;
-  })[];
+  /** The drawing. */
+  drawingId: string;
+  /** Painted objects. */
+  painted: colour_paint_apply_Painted[];
+  /** Targets left alone, with the reason. */
+  skipped: colour_paint_apply_Skipped[];
+  /** Invisible strokes added by gap closing (kept so the zones stay closed, 03 §8.8). */
   addedStrokeIds: string[];
-  rev: number;
+  /** Created objects. */
+  createdIds: string[];
+  /** Modified objects (content, membership or position changed; IDs kept). */
+  modifiedIds: string[];
+  /** Removed objects (descendants included). */
+  removedIds: string[];
+  /** The drawing revision after the change. */
+  rev: number | bigint;
 }
 
+/** A point `{x, y}` in drawing units. */
+export interface colour_paint_remove_Point {
+  /** X (du). */
+  x: number;
+  /** Y (du, up). */
+  y: number;
+}
+
+/** Coordinate space of point targets (03 §16.2). */
+export type colour_paint_remove_Space = 'drawing' | 'scene' | 'view';
+
+/** Gap-closing choice of a paint command (03 §8.8). */
+export type colour_paint_remove_GapChoice = 'current' | 'off' | 'small' | 'medium' | 'large';
+
+/** `colour.paint.remove` parameters (03 §16.3). */
 export interface colour_paint_remove_params {
-  /** object ID or path reference (10 §3) */
-  drawingId?: string;
-  objectIds?: string[];
-  points?: ({
-    x: number;
-    y: number;
-  })[];
-  space?: 'drawing' | 'scene' | 'view';
-  /** object ID or path reference (10 §3) */
-  sceneId?: string;
-  frame?: number | bigint;
-  view?: string;
-  gapClosing?: 'current' | 'off' | 'small' | 'medium' | 'large';
-  expectRev?: number | bigint;
+  /** The drawing (default: the current drawing). */
+  drawingId?: string | null;
+  /** Zones or lines to unpaint. */
+  objectIds?: string[] | null;
+  /** Points: the front-most object under each. */
+  points?: colour_paint_remove_Point[] | null;
+  /** Coordinate space of points (only `drawing` until M3/M4). */
+  space?: colour_paint_remove_Space;
+  /** Scene of `scene` points (M3 C3.2). */
+  sceneId?: string | null;
+  /** Frame of `scene` points. */
+  frame?: number | null;
+  /** View of `view` points (M4 C4.2). */
+  view?: string | null;
+  /** Automatic gap closing for point targets. */
+  gapClosing?: colour_paint_remove_GapChoice;
+  /** The drawing revision the caller read. */
+  expectRev?: number | bigint | null;
 }
 
+/** One unpainted object. */
+export interface colour_paint_remove_Unpainted {
+  /** The drawing. */
+  drawingId: string;
+  /** The object. */
+  objectId: string;
+  /** Its colour before. */
+  previousColourId?: string | null;
+}
+
+/** One target left alone. */
+export interface colour_paint_remove_Skipped {
+  /** The target: an object ID, or `point:<i>` / `path` / `lasso` / `rect`. */
+  target: string;
+  /** A `colour.*` code: `colour.noTarget`, `colour.zoneNotClosed`, `colour.protected`, `colour.alreadyPainted`, `colour.notPainted`, `colour.cannotUnpaint`, `colour.invisibleTarget`, `colour.notPaintable`. */
+  reason: string;
+}
+
+/** `colour.paint.remove` result (03 §16.3 plus the common edit members, SI-058). */
 export interface colour_paint_remove_result {
-  unpainted: ({
-    /** object ID or path reference (10 §3) */
-    drawingId: string;
-    /** object ID or path reference (10 §3) */
-    objectId: string;
-    /** object ID or path reference (10 §3) */
-    previousColourId: string;
-  })[];
-  skipped: ({
-    target: string;
-    reason: string;
-  })[];
-  rev: number;
+  /** The drawing. */
+  drawingId: string;
+  /** Unpainted objects (lines became invisible strokes). */
+  unpainted: colour_paint_remove_Unpainted[];
+  /** Targets left alone, with the reason. */
+  skipped: colour_paint_remove_Skipped[];
+  /** Created objects. */
+  createdIds: string[];
+  /** Modified objects (content, membership or position changed; IDs kept). */
+  modifiedIds: string[];
+  /** Removed objects (descendants included). */
+  removedIds: string[];
+  /** The drawing revision after the change. */
+  rev: number | bigint;
 }
 
+/** A point `{x, y}` in drawing units. */
+export interface colour_paintUnpainted_apply_Point {
+  /** X (du). */
+  x: number;
+  /** Y (du, up). */
+  y: number;
+}
+
+/** Coordinate space of point targets (03 §16.2). */
+export type colour_paintUnpainted_apply_Space = 'drawing' | 'scene' | 'view';
+
+/** Gap-closing choice of a paint command (03 §8.8). */
+export type colour_paintUnpainted_apply_GapChoice = 'current' | 'off' | 'small' | 'medium' | 'large';
+
+/** `colour.paintUnpainted.apply` parameters (03 §16.3). */
 export interface colour_paintUnpainted_apply_params {
-  /** object ID or path reference (10 §3) */
-  drawingId?: string;
-  objectIds?: string[];
-  points?: ({
-    x: number;
-    y: number;
-  })[];
-  lasso?: ({
-    x: number;
-    y: number;
-  })[];
+  /** The drawing (default: the current drawing). */
+  drawingId?: string | null;
+  /** Zones to fill when unpainted. */
+  objectIds?: string[] | null;
+  /** Points: the zone under each, when unpainted. */
+  points?: colour_paintUnpainted_apply_Point[] | null;
+  /** A lasso: every unpainted zone whose interior point lies inside. */
+  lasso?: colour_paintUnpainted_apply_Point[] | null;
+  /** Every unpainted zone of the drawing. */
   all?: boolean;
-  space?: 'drawing' | 'scene' | 'view';
-  /** object ID or path reference (10 §3) */
-  sceneId?: string;
-  frame?: number | bigint;
-  view?: string;
-  /** object ID or path reference (10 §3) */
-  colourId?: string;
-  gapClosing?: 'current' | 'off' | 'small' | 'medium' | 'large';
-  expectRev?: number | bigint;
+  /** Coordinate space of points (only `drawing` until M3/M4). */
+  space?: colour_paintUnpainted_apply_Space;
+  /** Scene of `scene` points (M3 C3.2). */
+  sceneId?: string | null;
+  /** Frame of `scene` points. */
+  frame?: number | null;
+  /** View of `view` points (M4 C4.2). */
+  view?: string | null;
+  /** The colour (default: the current fill colour). */
+  colourId?: string | null;
+  /** Automatic gap closing for point targets. */
+  gapClosing?: colour_paintUnpainted_apply_GapChoice;
+  /** The drawing revision the caller read. */
+  expectRev?: number | bigint | null;
 }
 
+/** One painted object. */
+export interface colour_paintUnpainted_apply_Painted {
+  /** The drawing. */
+  drawingId: string;
+  /** The object (zone IDs are those of the drawing after the paint). */
+  objectId: string;
+  /** `zone`, `pencil`, `brush` or `text`. */
+  objectKind: string;
+  /** Its colour before (`null` = unpainted). */
+  previousColourId?: string | null;
+}
+
+/** One target left alone. */
+export interface colour_paintUnpainted_apply_Skipped {
+  /** The target: an object ID, or `point:<i>` / `path` / `lasso` / `rect`. */
+  target: string;
+  /** A `colour.*` code: `colour.noTarget`, `colour.zoneNotClosed`, `colour.protected`, `colour.alreadyPainted`, `colour.notPainted`, `colour.cannotUnpaint`, `colour.invisibleTarget`, `colour.notPaintable`. */
+  reason: string;
+}
+
+/** `colour.paintUnpainted.apply` result (03 §16.3 plus the common edit members, SI-058). */
 export interface colour_paintUnpainted_apply_result {
-  painted: ({
-    /** object ID or path reference (10 §3) */
-    drawingId: string;
-    /** object ID or path reference (10 §3) */
-    objectId: string;
-  })[];
+  /** The drawing. */
+  drawingId: string;
+  /** Filled zones. */
+  painted: colour_paintUnpainted_apply_Painted[];
+  /** Targets already painted (left unchanged). */
   skippedPainted: number | bigint;
+  /** Targets left alone for other reasons. */
+  skipped: colour_paintUnpainted_apply_Skipped[];
+  /** Invisible strokes added by gap closing. */
   addedStrokeIds: string[];
-  rev: number;
+  /** Created objects. */
+  createdIds: string[];
+  /** Modified objects (content, membership or position changed; IDs kept). */
+  modifiedIds: string[];
+  /** Removed objects (descendants included). */
+  removedIds: string[];
+  /** The drawing revision after the change. */
+  rev: number | bigint;
 }
 
 /** Events take no parameters; subscribe to them (11 §9). */
@@ -78109,92 +83840,157 @@ export interface colour_palette_set_result {
   removed: string[];
 }
 
-export interface colour_pick_params {
-  point: {
-    x: number;
-    y: number;
-  };
-  space?: 'drawing' | 'scene' | 'view';
-  /** object ID or path reference (10 §3) */
-  drawingId?: string;
-  /** object ID or path reference (10 §3) */
-  sceneId?: string;
-  frame?: number | bigint;
-  /** object ID or path reference (10 §3) */
-  elementId?: string;
-  view?: string;
+/** A point `{x, y}` in drawing units. */
+export interface colour_pick_Point {
+  /** X (du). */
+  x: number;
+  /** Y (du, up). */
+  y: number;
 }
 
+/** Coordinate space of point targets (03 §16.2). */
+export type colour_pick_Space = 'drawing' | 'scene' | 'view';
+
+/** `colour.pick` parameters (03 §16.3). */
+export interface colour_pick_params {
+  /** The point. */
+  point: colour_pick_Point;
+  /** Its space (`drawing` until M3/M4; the spec's default `view` needs the desktop views). */
+  space?: colour_pick_Space;
+  /** The drawing of a `drawing` point (default: current). */
+  drawingId?: string | null;
+  /** Scene of a `scene` point. */
+  sceneId?: string | null;
+  /** Frame of a `scene` point. */
+  frame?: number | null;
+  /** Element restriction. */
+  elementId?: string | null;
+  /** View of a `view` point. */
+  view?: string | null;
+}
+
+/** The object a pick found. */
+export interface colour_pick_PickedObject {
+  /** The drawing. */
+  drawingId: string;
+  /** An element exposing it. */
+  elementId?: string | null;
+  /** The object. */
+  objectId: string;
+  /** `zone`, `pencil`, `brush` or `text`. */
+  objectKind: string;
+}
+
+/** `colour.pick` result (03 §16.3). */
 export interface colour_pick_result {
-  colourId: string | null;
-  paletteId: string | null;
-  swatchName: string;
-  /** #RRGGBB or #RRGGBBAA */
+  /** The colour (`null`: unpainted or nothing). */
+  colourId?: string | null;
+  /** Its palette. */
+  paletteId?: string | null;
+  /** Its swatch name. */
+  swatchName?: string | null;
+  /** The swatch's value for the scene's style as `#RRGGBBAA` (first stop of a gradient; `#00000000` for textures, unpainted and empty canvas) until the renderer composites (SI-065). */
   rgba: string;
-  object: {
-    /** object ID or path reference (10 §3) */
-    drawingId: string;
-    /** object ID or path reference (10 §3) */
-    elementId: string;
-    /** object ID or path reference (10 §3) */
-    objectId: string;
-    objectKind: string;
-  } | null;
+  /** The fill mapping of a gradient or texture fill. */
+  matrix?: number[] | null;
+  /** The object picked. */
+  object?: colour_pick_PickedObject | null;
+  /** The colour ID is in no palette. */
   missing: boolean;
 }
 
+/** A colour replacement. */
+export interface colour_recolour_apply_Pair {
+  /** Replaced colour. */
+  from: string;
+  /** Replacement. */
+  to: string;
+}
+
+/** Scope of a replacement. */
+export type colour_recolour_apply_RecolourScope = 'project' | 'scene' | 'element' | 'drawing';
+
+/** Reference kinds. */
+export type colour_recolour_apply_RecolourTarget = 'zones' | 'lines' | 'brushStrokes' | 'text';
+
+/** `colour.recolour.apply` parameters. */
 export interface colour_recolour_apply_params {
-  /** object ID or path reference (10 §3) */
-  fromColourId?: string;
-  /** object ID or path reference (10 §3) */
-  toColourId?: string;
-  map?: ({
-    /** object ID or path reference (10 §3) */
-    from: string;
-    /** object ID or path reference (10 §3) */
-    to: string;
-  })[];
-  scope?: 'project' | 'scene' | 'element' | 'drawing';
-  /** object ID or path reference (10 §3) */
-  sceneId?: string;
-  elementIds?: string[];
-  drawingIds?: string[];
-  targets?: ('zones' | 'lines' | 'brushStrokes' | 'text')[];
+  /** Replaced colour (with `toColourId`). */
+  fromColourId?: string | null;
+  /** Replacement. */
+  toColourId?: string | null;
+  /** Or several replacements. */
+  map?: colour_recolour_apply_Pair[] | null;
+  /** Scope. */
+  scope?: colour_recolour_apply_RecolourScope;
+  /** The scene (scope `scene`; default: current). */
+  sceneId?: string | null;
+  /** The elements (scope `element`). */
+  elementIds?: string[] | null;
+  /** The drawings (scope `drawing`). */
+  drawingIds?: string[] | null;
+  /** Reference kinds. */
+  targets?: colour_recolour_apply_RecolourTarget[];
+  /** Also pens using a replaced colour. */
   includePens?: boolean;
+  /** Leave references to protected colours (SI-061); `false` overrides. */
+  respectProtected?: boolean;
 }
 
+/** References changed in one drawing. */
+export interface colour_recolour_apply_DrawingCount {
+  /** The drawing. */
+  drawingId: string;
+  /** References changed. */
+  count: number;
+}
+
+/** `{changed, pensChanged, skippedLocked}`. */
 export interface colour_recolour_apply_result {
-  changed: ({
-    /** object ID or path reference (10 §3) */
-    drawingId: string;
-    count: number;
-  })[];
+  /** Per drawing, the references changed. */
+  changed: colour_recolour_apply_DrawingCount[];
+  /** Pens recoloured. */
   pensChanged: string[];
+  /** Locked drawings left alone. */
   skippedLocked: string[];
+  /** Protected colours whose references were left alone (SI-061). */
+  skippedProtected: string[];
 }
 
-/** Events take no parameters; subscribe to them (11 §9). */
+/** No parameters. */
 export type colour_recovery_performed_params = Record<string, unknown>;
 
-/** Event payload (delivered to subscribers). */
+/** `colour.recovery.performed` payload. */
 export interface colour_recovery_performed_result {
+  /** Colours recreated (placeholders included). */
   colourIds: string[];
+  /** Palettes that received them. */
   paletteIds: string[];
 }
 
+/** `colour.recovery.run` parameters (03 §16.3). */
 export interface colour_recovery_run_params {
-  drawingIds?: string[];
+  /** Drawings whose missing colours are recovered. */
+  drawingIds?: string[] | null;
+  /** Every drawing of the project. */
   all?: boolean;
 }
 
+/** One recreated swatch. */
+export interface colour_recovery_run_RecoveredColour {
+  /** The colour ID (unchanged). */
+  colourId: string;
+  /** The palette it went into. */
+  paletteId: string;
+}
+
+/** What a recovery did. */
 export interface colour_recovery_run_result {
-  recovered: ({
-    /** object ID or path reference (10 §3) */
-    colourId: string;
-    /** object ID or path reference (10 §3) */
-    paletteId: string;
-  })[];
+  /** Swatches recreated from recovery copies, with the palette that received each. */
+  recovered: colour_recovery_run_RecoveredColour[];
+  /** Placeholder swatches created for colours without a recovery copy. */
   placeholders: string[];
+  /** Palettes created. */
   createdPaletteIds: string[];
 }
 
@@ -78223,17 +84019,34 @@ export interface colour_sceneStyles_get_result {
   styles: Record<string, string>;
 }
 
+/** `colour.selection.apply` parameters. */
 export interface colour_selection_apply_params {
-  /** object ID or path reference (10 §3) */
-  colourId?: string;
-  /** object ID or path reference (10 §3) */
-  drawingId?: string;
-  objectIds?: string[];
+  /** The colour (default: the current colour). */
+  colourId?: string | null;
+  /** The drawing (default: current). */
+  drawingId?: string | null;
+  /** Objects (default: the drawing selection). */
+  objectIds?: string[] | null;
+  /** Leave objects whose current colour is protected (SI-061); `false` overrides. */
+  respectProtected?: boolean;
 }
 
+/** A skipped object. */
+export interface colour_selection_apply_SkippedObject {
+  /** The object. */
+  objectId: string;
+  /** Why (`solid`, `unpainted`, `invisible`, `text`, `notPaintable`, `kindMismatch`, `colourMissing`). */
+  reason: string;
+}
+
+/** `{changed, rev}`. */
 export interface colour_selection_apply_result {
+  /** Objects recoloured (zones by their ID after the change). */
   changed: string[];
-  rev: number;
+  /** Objects left alone and why (`colour.protected`). */
+  skipped: colour_selection_apply_SkippedObject[];
+  /** The drawing revision after the change. */
+  rev: number | bigint;
 }
 
 /** Events take no parameters; subscribe to them (11 §9). */
@@ -79443,397 +85256,1015 @@ export interface doc_validate_result {
   unavailable: doc_validate_Unavailable[];
 }
 
+/** Arrange direction. */
+export type draw_arrange_apply_ArrangeTo = 'front' | 'forward' | 'backward' | 'back';
+
+/** `draw.arrange.apply` parameters. */
 export interface draw_arrange_apply_params {
-  /** object ID or path reference (10 §3) */
-  drawingId?: string;
-  /** Default: selection. */
-  ids?: string[];
-  to: 'front' | 'forward' | 'backward' | 'back';
+  /** The drawing (default: current). */
+  drawingId?: string | null;
+  /** Objects (default: the selection). */
+  ids?: string[] | null;
+  /** Direction. */
+  to: draw_arrange_apply_ArrangeTo;
 }
 
+/** `{order, rev}`. */
 export interface draw_arrange_apply_result {
+  /** The drawing. */
+  drawingId: string;
+  /** The drawing's top-level node IDs after the change, back to front. */
   order: string[];
-  rev: number;
+  /** Layers created by separating part of a layer. */
+  createdLayerIds: string[];
+  /** Created objects. */
+  createdIds: string[];
+  /** Modified objects (content, membership or position changed; IDs kept). */
+  modifiedIds: string[];
+  /** Removed objects (descendants included). */
+  removedIds: string[];
+  /** The drawing revision after the change. */
+  rev: number | bigint;
 }
 
+/** `draw.bounds.get` parameters. */
 export interface draw_bounds_get_params {
-  /** object ID or path reference (10 §3) */
-  drawingId?: string;
-  ids?: string[];
+  /** The drawing (default: current). */
+  drawingId?: string | null;
+  /** Objects (default: the whole drawing). */
+  ids?: string[] | null;
+  /** Include invisible strokes. */
   includeInvisible?: boolean;
 }
 
+/** `{x, y, width, height}`. */
+export interface draw_bounds_get_Bounds {
+  /** Minimum x (du). */
+  x: number;
+  /** Minimum y (du). */
+  y: number;
+  /** Width (du). */
+  width: number;
+  /** Height (du). */
+  height: number;
+}
+
+/** `{bounds}`. */
 export interface draw_bounds_get_result {
-  bounds: {
-    x: number;
-    y: number;
-    width: number;
-    height: number;
-  } | null;
+  /** The bounding box (`null` for an empty drawing or selection). */
+  bounds?: draw_bounds_get_Bounds | null;
 }
 
+/** `draw.breakApart.apply` parameters. */
 export interface draw_breakApart_apply_params {
-  /** object ID or path reference (10 §3) */
-  drawingId?: string;
-  /** Default: selected text. */
-  textIds?: string[];
+  /** The drawing (default: current). */
+  drawingId?: string | null;
+  /** Text objects (default: the selected text objects). */
+  textIds?: string[] | null;
 }
 
+/** `{groupIds, rev}`. */
 export interface draw_breakApart_apply_result {
+  /** The drawing. */
+  drawingId: string;
+  /** One group per character, in text order. */
   groupIds: string[];
-  rev: number;
-}
-
-export interface draw_centreLine_apply_params {
-  /** object ID or path reference (10 §3) */
-  drawingId?: string;
-  /** Default: selection. */
-  ids?: string[];
-  /** (default: average source width) */
-  thickness?: number;
-}
-
-export interface draw_centreLine_apply_result {
-  strokeIds: string[];
+  /** Created objects. */
+  createdIds: string[];
+  /** Modified objects (content, membership or position changed; IDs kept). */
+  modifiedIds: string[];
+  /** Removed objects (descendants included). */
   removedIds: string[];
-  warnings: string[];
-  rev: number;
+  /** The drawing revision after the change. */
+  rev: number | bigint;
 }
 
+/** `draw.centreLine.apply` parameters. */
+export interface draw_centreLine_apply_params {
+  /** The drawing (default: current). */
+  drawingId?: string | null;
+  /** Brush strokes, or layers and groups holding them (default: the selection). */
+  ids?: string[] | null;
+  /** Line thickness (du; default: the source's average width). */
+  thickness?: number | null;
+}
+
+/** `{strokeIds, removedIds, warnings, rev}`. */
+export interface draw_centreLine_apply_result {
+  /** The drawing. */
+  drawingId: string;
+  /** The new pencil lines. */
+  strokeIds: string[];
+  /** `drawing.centreLineOnFill` (painted zones that are not brush strokes selected), `drawing.centreLineNoSpine` (outlines edited directly, kept; SI-076). */
+  warnings: string[];
+  /** Brush strokes left as they were (no spine). */
+  skippedIds: string[];
+  /** Created objects. */
+  createdIds: string[];
+  /** Modified objects (content, membership or position changed; IDs kept). */
+  modifiedIds: string[];
+  /** Removed objects (descendants included). */
+  removedIds: string[];
+  /** The drawing revision after the change. */
+  rev: number | bigint;
+}
+
+/** Content to insert: `{nodes}` (a whole `draw.drawing.get` result is accepted). */
+export interface draw_content_add_ContentIn {
+  /** Nodes, back to front. */
+  nodes: draw_content_add_NodeIn[];
+  /** Read-only (ignored). */
+  drawingId?: string | null;
+  /** Read-only (ignored). */
+  elementId?: string | null;
+  /** Read-only (ignored). */
+  name?: string | null;
+  /** Read-only (ignored). */
+  rev?: number | bigint | null;
+  /** Read-only (ignored). */
+  locked?: boolean | null;
+  /** Read-only (ignored). */
+  space?: draw_content_add_SpaceIn | null;
+  /** Read-only (ignored; the target drawing keeps its pivot). */
+  pivot?: draw_content_add_PointIn | null;
+  /** Read-only (ignored). */
+  bounds?: draw_content_add_BoundsIn | null;
+  /** Recovery copies of the colours the content uses (10 §4.11 entries; the clipboard's colour map, 03 §11.1): colours the target project lacks are recreated from them (03 §11.2). */
+  colourRecovery?: unknown[] | null;
+}
+
+/** A node of the 02 §13.4 shape. */
+export type draw_content_add_NodeIn = {
+  type: 'layer';
+  /** ID (replaced). */
+  id: string;
+  /** Optional name. */
+  name?: string | null;
+  /** Type hint. */
+  layerKind: draw_content_add_LayerKindIn;
+  /** Strokes. */
+  strokes: draw_content_add_StrokeIn[];
+  /** Zones as read back (02 §13.4): their fills are painted onto the zones of the inserted layer that contain their interior points; everything else about them is derived and ignored. */
+  zones?: draw_content_add_ZoneIn[] | null;
+  /** Read-only (ignored). */
+  bounds?: draw_content_add_BoundsIn | null;
+} | {
+  type: 'group';
+  /** ID (replaced). */
+  id: string;
+  /** Optional name. */
+  name?: string | null;
+  /** Children, back to front. */
+  children: draw_content_add_NodeIn[];
+  /** Read-only (ignored). */
+  bounds?: draw_content_add_BoundsIn | null;
+} | {
+  type: 'text';
+  /** ID (replaced). */
+  id: string;
+  /** Optional name. */
+  name?: string | null;
+  /** The characters. */
+  text: string;
+  /** Placement (origin = top-left of the box). */
+  transform: number[];
+  /** Auto or fixed width. */
+  widthMode: draw_content_add_WidthModeIn;
+  /** Wrap width (fixed mode). */
+  width?: number | null;
+  /** Runs covering the text. */
+  runs: draw_content_add_RunIn[];
+  /** Paragraphs. */
+  paragraphs: draw_content_add_ParaIn[];
+  /** Read-only (ignored). */
+  bounds?: draw_content_add_BoundsIn | null;
+} | {
+  type: 'bitmap';
+  /** ID (replaced). */
+  id: string;
+  /** Optional name. */
+  name?: string | null;
+  /** The package entry of an image the document holds. */
+  mediaId: string;
+  /** Pixel width (1–16384). */
+  pixelWidth: number;
+  /** Pixel height (1–16384). */
+  pixelHeight: number;
+  /** Pixel space → drawing space. */
+  transform: number[];
+  /** The image blob as read back (must match `mediaId`). */
+  image?: draw_content_add_Blob | null;
+  /** Read-only (ignored). */
+  bounds?: draw_content_add_BoundsIn | null;
+};
+
+/** Layer type hint. */
+export type draw_content_add_LayerKindIn = 'brush' | 'pencil';
+
+/** A stroke of the 02 §13.4 shape. */
+export interface draw_content_add_StrokeIn {
+  /** `stroke` (optional). */
+  type?: draw_content_add_StrokeTypeIn | null;
+  /** ID (replaced). */
+  id: string;
+  /** Kind. */
+  kind: draw_content_add_StrokeKindIn;
+  /** Whether `bezier` is closed. */
+  closed?: boolean;
+  /** Centre line (pencil, invisible) or spine (brush; `null` once the outline was edited). */
+  bezier?: draw_content_add_PointIn[] | null;
+  /** Colour (kept as given, ID-05). */
+  colourId?: string | null;
+  /** Pencil line style. */
+  lineStyle?: draw_content_add_LineStyleIn | null;
+  /** Brush pen ID (kept when the pen exists in this project). */
+  penId?: string | null;
+  /** Brush pen. */
+  pen?: draw_content_add_PenIn | null;
+  /** Brush spine pressure. */
+  pressure?: draw_content_add_PressureIn[] | null;
+  /** Gradient/texture placement of a brush fill. */
+  textureMatrix?: number[] | null;
+  /** Brush outline contours (closed Bézier lists; one contour, SI-053). */
+  outline?: draw_content_add_PointIn[][] | null;
+  /** Derived side zone (ignored). */
+  leftZoneId?: string | null;
+  /** Derived side zone (ignored). */
+  rightZoneId?: string | null;
+  /** Read-only (ignored). */
+  bounds?: draw_content_add_BoundsIn | null;
+}
+
+/** `stroke` (the `type` of a stroke in a read-back). */
+export type draw_content_add_StrokeTypeIn = 'stroke';
+
+/** Stroke kind. */
+export type draw_content_add_StrokeKindIn = 'brush' | 'pencil' | 'invisible';
+
+/** A point `{x, y}`. */
+export interface draw_content_add_PointIn {
+  /** X (du). */
+  x: number;
+  /** Y (du). */
+  y: number;
+}
+
+/** Line style. */
+export interface draw_content_add_LineStyleIn {
+  /** Thickness (du). */
+  thickness: number;
+  /** `solid`. */
+  lineType: draw_content_add_LineTypeIn;
+}
+
+/** Line type. */
+export type draw_content_add_LineTypeIn = 'solid';
+
+/** A brush pen. */
+export interface draw_content_add_PenIn {
+  /** Tip shape. */
+  tipShape: draw_content_add_TipIn;
+  /** Minimum size (du). */
+  minSize: number;
+  /** Maximum size (du). */
+  maxSize: number;
+  /** Tip angle (degrees). */
+  tipAngle?: number;
+}
+
+/** Tip shape. */
+export type draw_content_add_TipIn = 'round' | 'oval' | 'square' | 'flat';
+
+/** A pressure sample. */
+export interface draw_content_add_PressureIn {
+  /** Position 0–1. */
+  t: number;
+  /** Pressure 0–1. */
+  p: number;
+}
+
+/** `{x, y, width, height}` (read-only; ignored). */
+export interface draw_content_add_BoundsIn {
+  /** X. */
+  x: number;
+  /** Y. */
+  y: number;
+  /** Width. */
+  width: number;
+  /** Height. */
+  height: number;
+}
+
+/** A zone of read-back content (only `colourId`, `textureMatrix` and `interiorPoint` are used). */
+export interface draw_content_add_ZoneIn {
+  /** `zone` (optional). */
+  type?: string | null;
+  /** Derived ID (ignored). */
+  id?: string | null;
+  /** Fill colour (`null` = unpainted). */
+  colourId?: string | null;
+  /** Gradient/texture placement. */
+  textureMatrix?: number[] | null;
+  /** A point inside the zone. */
+  interiorPoint: draw_content_add_PointIn;
+  /** Derived (ignored). */
+  boundaryStrokeIds?: string[] | null;
+  /** Derived (ignored). */
+  holes?: unknown[] | null;
+  /** Derived (ignored). */
+  parentZoneId?: string | null;
+  /** Derived (ignored). */
+  area?: number | null;
+  /** Derived (ignored). */
+  bounds?: draw_content_add_BoundsIn | null;
+  /** Flat read-back parent (ignored). */
+  parentId?: string | null;
+}
+
+/** Width mode. */
+export type draw_content_add_WidthModeIn = 'auto' | 'fixed';
+
+/** A character run of the 02 §13.4 shape. */
+export interface draw_content_add_RunIn {
+  /** First code point. */
+  start: number;
+  /** Number of code points. */
+  length: number;
+  /** Font family. */
+  font: string;
+  /** Size (du). */
+  size: number;
+  /** Bold. */
+  bold: boolean;
+  /** Italic. */
+  italic: boolean;
+  /** Baseline. */
+  baseline: draw_content_add_BaselineIn;
+  /** Kerning (1/100 em). */
+  kerning: number;
+  /** Automatic kerning. */
+  autoKern: boolean;
+  /** Fill colour. */
+  colourId?: string | null;
+  /** Outline colour (must be `null`: 10 §4.9 runs have no outline colour, SI-055). */
+  outlineColourId?: string | null;
+}
+
+/** Baseline. */
+export type draw_content_add_BaselineIn = 'normal' | 'subscript' | 'superscript';
+
+/** A paragraph of the 02 §13.4 shape. */
+export interface draw_content_add_ParaIn {
+  /** First code point. */
+  start: number;
+  /** Number of code points. */
+  length: number;
+  /** Alignment. */
+  align: draw_content_add_AlignIn;
+  /** Left margin (du). */
+  leftMargin: number;
+  /** Right margin (du). */
+  rightMargin: number;
+  /** First-line indent (du). */
+  indent: number;
+  /** Line spacing (du). */
+  lineSpacing: number;
+}
+
+/** Alignment. */
+export type draw_content_add_AlignIn = 'left' | 'centre' | 'right' | 'justify';
+
+/** A binary payload stored as a package entry (10 §1.1). Never inlined in object JSON. */
+export interface draw_content_add_Blob {
+  /** Package entry path. */
+  entry: string;
+  /** IANA media type. */
+  mediaType: string;
+  /** Size in bytes (64-bit: entries larger than 4 GiB are supported, 10 §5). */
+  size: number | bigint;
+  /** Lower-case hex SHA-256 of the bytes. */
+  sha256: string;
+}
+
+/** The drawing space description of a read-back (ignored). */
+export interface draw_content_add_SpaceIn {
+  /** `du`. */
+  units: string;
+  /** 100. */
+  duPerField: number;
+  /** `up`. */
+  yAxis: string;
+  /** `drawingCentre`. */
+  origin: string;
+}
+
+/** A point `{x, y}` in drawing units. */
+export interface draw_content_add_Point {
+  /** X (du). */
+  x: number;
+  /** Y (du, up). */
+  y: number;
+}
+
+/** Where inserted content goes. */
+export type draw_content_add_ContentLayer = 'top' | 'behind';
+
+/** `draw.content.add` parameters (02 §13.5). */
 export interface draw_content_add_params {
-  /** object ID or path reference (10 §3) */
-  drawingId?: string;
-  /** shape not defined by the owning section (spec issue); only {} is accepted until it is */
-  content: Record<string, unknown>;
-  /** Default: {0,0}. */
-  offset?: {
-    x: number;
-    y: number;
-  };
-  layer?: 'top' | 'behind';
+  /** The drawing (default: `elementId` + `frame`, else the current drawing). */
+  drawingId?: string | null;
+  /** The element whose cell receives the content. */
+  elementId?: string | null;
+  /** The frame of that cell. */
+  frame?: number | null;
+  /** Create a drawing in an empty addressed cell. */
+  createDrawing?: boolean;
+  /** Drawing content in the 02 §13.4 shape: `{nodes: [...]}`, a `draw.drawing.get` result as returned. */
+  content: draw_content_add_ContentIn;
+  /** Offset added to all geometry (du). */
+  offset?: draw_content_add_Point | null;
+  /** Insert on top or behind. */
+  layer?: draw_content_add_ContentLayer;
+  /** Make the inserted objects the drawing selection. */
   select?: boolean;
 }
 
+/** `{idMap, rev}`. */
 export interface draw_content_add_result {
-  /** shape not defined by the owning section (spec issue); only {} is accepted until it is */
-  idMap: Record<string, unknown>;
-  rev: number;
-}
-
-export interface draw_current_get_params {
-  view?: string;
-}
-
-export interface draw_current_get_result {
-  drawingId: string | null;
-  /** object ID or path reference (10 §3) */
-  elementId: string;
-  /** object ID or path reference (10 §3) */
-  sceneId: string;
-  frame: number;
-  cellEmpty: boolean;
-  locked: boolean;
-  /** type not stated by the owning section (spec issue); a scalar */
-  activeView: string | number | boolean | null;
-}
-
-export interface draw_cut_apply_params {
-  /** object ID or path reference (10 §3) */
-  drawingId?: string;
-  polygon?: ({
-    x: number;
-    y: number;
-  })[];
-  rect?: {
-    x: number;
-    y: number;
-    width: number;
-    height: number;
-  };
-  then?: 'select' | 'delete';
-}
-
-export interface draw_cut_apply_result {
-  insideIds: string[];
+  /** The drawing. */
+  drawingId: string;
+  /** A drawing was created in the empty cell. */
+  createdDrawing: boolean;
+  /** Old ID → new ID of every inserted node and stroke (SI-026 `idMap`). */
+  idMap: Record<string, string>;
+  /** Created objects. */
+  createdIds: string[];
+  /** Modified objects (content, membership or position changed; IDs kept). */
+  modifiedIds: string[];
+  /** Removed objects (descendants included). */
   removedIds: string[];
-  rev: number;
+  /** The drawing revision after the change. */
+  rev: number | bigint;
 }
 
-/** Events take no parameters; subscribe to them (11 §9). */
+/** `draw.current.get` parameters. */
+export interface draw_current_get_params {
+  /** A view id (default: the active view, the central view of the arrangement in use). */
+  view?: string | null;
+}
+
+/** The view a drawing is edited in (SI-026 `activeView`, the `AppState.activeView` shape). */
+export interface draw_current_get_ViewRef {
+  /** View id. */
+  viewId: string;
+  /** Panel id. */
+  panelId: string;
+  /** `camera`, `drawing`, `top` or `side`. */
+  type: string;
+}
+
+/** `draw.current.get` result (02 §13.5). */
+export interface draw_current_get_result {
+  /** The current drawing, `null` for an empty cell. */
+  drawingId?: string | null;
+  /** The current element. */
+  elementId?: string | null;
+  /** The current scene. */
+  sceneId?: string | null;
+  /** The current frame. */
+  frame: number;
+  /** The current cell is empty. */
+  cellEmpty: boolean;
+  /** The current drawing is locked. */
+  locked: boolean;
+  /** The active view. */
+  activeView: draw_current_get_ViewRef;
+}
+
+/** A point `{x, y}` in drawing units. */
+export interface draw_cut_apply_Point {
+  /** X (du). */
+  x: number;
+  /** Y (du, up). */
+  y: number;
+}
+
+/** A rectangle `{x, y, width, height}`. */
+export interface draw_cut_apply_RectArea {
+  /** Minimum x. */
+  x: number;
+  /** Minimum y. */
+  y: number;
+  /** Width. */
+  width: number;
+  /** Height. */
+  height: number;
+}
+
+/** A segment `{from, to}`. */
+export interface draw_cut_apply_SegmentIn {
+  /** Start. */
+  from: draw_cut_apply_Point;
+  /** End. */
+  to: draw_cut_apply_Point;
+}
+
+/** What happens to the inside of a cut. */
+export type draw_cut_apply_Then = 'select' | 'delete';
+
+/** `draw.cut.apply` parameters (`segment`: SI-071). */
+export interface draw_cut_apply_params {
+  /** The drawing (default: current). */
+  drawingId?: string | null;
+  /** A closed lasso. */
+  polygon?: draw_cut_apply_Point[] | null;
+  /** A rectangle. */
+  rect?: draw_cut_apply_RectArea | null;
+  /** An open segment to cut along (splits lines and zones; SI-071). */
+  segment?: draw_cut_apply_SegmentIn | null;
+  /** What happens to the inside. */
+  then?: draw_cut_apply_Then;
+}
+
+/** A node a cut leaves whole. */
+export interface draw_cut_apply_SkippedNode {
+  /** The text or bitmap node. */
+  objectId: string;
+  /** Why (`notClippable`: partly enclosed text or bitmap, SI-078). */
+  reason: string;
+}
+
+/** `{insideIds, removedIds, rev}`. */
+export interface draw_cut_apply_result {
+  /** The drawing. */
+  drawingId: string;
+  /** The inside objects (now selected) with `then: "select"`; the new pieces of a segment cut. */
+  insideIds: string[];
+  /** Brush strokes crossing the boundary, kept whole (SI-059, SI-071). */
+  keptBrushIds: string[];
+  /** Text and bitmap nodes partly enclosed, left whole (SI-078). */
+  skipped: draw_cut_apply_SkippedNode[];
+  /** Created objects. */
+  createdIds: string[];
+  /** Modified objects (content, membership or position changed; IDs kept). */
+  modifiedIds: string[];
+  /** Removed objects (descendants included). */
+  removedIds: string[];
+  /** The drawing revision after the change. */
+  rev: number | bigint;
+}
+
+/** No parameters. */
 export type draw_drawing_changed_params = Record<string, unknown>;
 
-/** Event payload (delivered to subscribers). */
+/** `draw.drawing.changed` payload (02 §13.5, spec A). */
 export interface draw_drawing_changed_result {
-  /** object ID or path reference (10 §3) */
+  /** The drawing whose content changed. */
   drawingId: string;
-  rev: number;
-  /** object ID or path reference (10 §3) */
+  /** Its revision after the change. */
+  rev: number | bigint;
+  /** The command that committed the change (`edit.undo`, `edit.redo`, `checkpoint.restore`, `batch`, …). */
   commandId: string;
+  /** Local IDs of the nodes and strokes created. */
   createdIds: string[];
+  /** Local IDs of the nodes and strokes modified. */
   modifiedIds: string[];
+  /** Local IDs of the nodes and strokes removed. */
   removedIds: string[];
 }
 
+/** What `draw.drawing.get` includes. */
+export type draw_drawing_get_IncludePart = 'zones' | 'pressure' | 'outline' | 'bounds';
+
+/** `draw.drawing.get` parameters (02 §13.5). */
 export interface draw_drawing_get_params {
-  /** object ID or path reference (10 §3) */
-  drawingId?: string;
-  /** object ID or path reference (10 §3) */
-  elementId?: string;
-  frame?: number | bigint;
-  include?: ('zones' | 'pressure' | 'outline' | 'bounds')[];
+  /** The drawing (default: `elementId` + `frame`, else the current drawing). */
+  drawingId?: string | null;
+  /** The element whose cell exposes the drawing. */
+  elementId?: string | null;
+  /** The frame of that cell (default: current frame). */
+  frame?: number | null;
+  /** Parts to include (default: all). */
+  include?: draw_drawing_get_IncludePart[] | null;
+  /** A flat object list with `parentId` instead of nesting. */
   flatten?: boolean;
-  ids?: string[];
+  /** Return only these objects (flat list). */
+  ids?: string[] | null;
 }
 
-export interface draw_drawing_get_spec_DrawingReadback {
-  /** object ID or path reference (10 §3) */
+export interface draw_drawing_get_point {
+  x: number;
+  y: number;
+}
+
+export interface draw_drawing_get_bounds {
+  x: number;
+  y: number;
+  width: number;
+  height: number;
+}
+
+export type draw_drawing_get_bezier = draw_drawing_get_point[];
+
+export type draw_drawing_get_matrix = number[];
+
+export type draw_drawing_get_colour = string | null;
+
+export type draw_drawing_get_parentId = string | null;
+
+export type draw_drawing_get_item = draw_drawing_get_layer | draw_drawing_get_group | draw_drawing_get_text | draw_drawing_get_bitmap | draw_drawing_get_stroke | draw_drawing_get_zone;
+
+export interface draw_drawing_get_layer {
+  type: 'layer';
+  id: string;
+  name?: string;
+  layerKind: 'brush' | 'pencil';
+  strokes?: draw_drawing_get_stroke[];
+  parentId?: draw_drawing_get_parentId;
+  zones?: draw_drawing_get_zone[];
+}
+
+export interface draw_drawing_get_group {
+  type: 'group';
+  id: string;
+  name?: string;
+  children?: draw_drawing_get_item[];
+  bounds?: draw_drawing_get_bounds | null;
+  parentId?: draw_drawing_get_parentId;
+}
+
+export interface draw_drawing_get_run {
+  start: number | bigint;
+  length: number | bigint;
+  font: string;
+  size: number;
+  bold: boolean;
+  italic: boolean;
+  baseline: 'normal' | 'subscript' | 'superscript';
+  kerning: number;
+  autoKern: boolean;
+  colourId: draw_drawing_get_colour;
+  outlineColourId: null;
+}
+
+export interface draw_drawing_get_paragraph {
+  start: number | bigint;
+  length: number | bigint;
+  align: 'left' | 'centre' | 'right' | 'justify';
+  leftMargin: number;
+  rightMargin: number;
+  indent: number;
+  lineSpacing: number;
+}
+
+export interface draw_drawing_get_text {
+  type: 'text';
+  id: string;
+  name?: string;
+  text: string;
+  transform: draw_drawing_get_matrix;
+  widthMode: 'auto' | 'fixed';
+  width: number | null;
+  runs: draw_drawing_get_run[];
+  paragraphs: draw_drawing_get_paragraph[];
+  bounds?: draw_drawing_get_bounds | null;
+  parentId?: draw_drawing_get_parentId;
+}
+
+export interface draw_drawing_get_blob {
+  entry: string;
+  mediaType: string;
+  size: number | bigint;
+  sha256: string;
+}
+
+export interface draw_drawing_get_bitmap {
+  type: 'bitmap';
+  id: string;
+  name?: string;
+  mediaId: string | null;
+  pixelWidth: number | null;
+  pixelHeight: number | null;
+  transform: draw_drawing_get_matrix | null;
+  image: draw_drawing_get_blob | null;
+  bounds?: draw_drawing_get_bounds | null;
+  parentId?: draw_drawing_get_parentId;
+}
+
+export type draw_drawing_get_pressure = ({
+  t: number;
+  p: number;
+})[] | null;
+
+export type draw_drawing_get_pen = {
+  tipShape: 'round' | 'oval' | 'square' | 'flat';
+  minSize: number;
+  maxSize: number;
+  tipAngle: number;
+} | null;
+
+export interface draw_drawing_get_stroke {
+  type: 'stroke';
+  id: string;
+  kind: 'brush' | 'pencil' | 'invisible';
+  closed: boolean;
+  bezier: draw_drawing_get_bezier | null;
+  colourId: draw_drawing_get_colour;
+  lineStyle?: {
+    thickness: number;
+    lineType: 'solid';
+  };
+  penId?: string | null;
+  pen?: draw_drawing_get_pen;
+  pressure?: draw_drawing_get_pressure;
+  textureMatrix?: draw_drawing_get_matrix | null;
+  outline?: draw_drawing_get_bezier[];
+  bounds?: draw_drawing_get_bounds | null;
+  parentId?: draw_drawing_get_parentId;
+  leftZoneId?: string | null;
+  rightZoneId?: string | null;
+}
+
+export interface draw_drawing_get_zone {
+  type: 'zone';
+  id: string;
+  colourId: draw_drawing_get_colour;
+  textureMatrix: draw_drawing_get_matrix | null;
+  boundaryStrokeIds: string[];
+  holes: ({
+    boundaryStrokeIds: string[];
+    zoneId: string | null;
+  })[];
+  parentZoneId: string | null;
+  area: number;
+  bounds: draw_drawing_get_bounds;
+  interiorPoint: draw_drawing_get_point;
+  parentId?: draw_drawing_get_parentId;
+}
+
+/** draw.drawing.get result (02 §13.4), closed. Zones (and the leftZoneId/rightZoneId of pencil and invisible strokes) are the planar map's (M2 C2.2): derived, IDs transient (02 §3.12 item 4). */
+export interface draw_drawing_get_result {
   drawingId: string;
-  /** object ID or path reference (10 §3) */
-  elementId: string;
+  elementId: string | null;
   name: string;
   rev: number | bigint;
   locked: boolean;
   space: {
-    units: string;
-    duPerField: number;
-    yAxis: string;
-    origin: string;
+    units: 'du';
+    duPerField: 100;
+    yAxis: 'up';
+    origin: 'drawingCentre';
   };
-  pivot: {
-    x: number;
-    y: number;
-  };
-  bounds: {
-    x: number;
-    y: number;
-    width: number;
-    height: number;
-  };
-  nodes: ({
-    type: string;
-    /** object ID or path reference (10 §3) */
-    id: string;
-    layerKind?: string;
-    strokes?: ({
-      /** object ID or path reference (10 §3) */
-      id: string;
-      kind: string;
-      closed: boolean;
-      bezier: ({
-        x: number;
-        y: number;
-      } | string)[];
-      colourId: string | null;
-      lineStyle?: {
-        thickness: number;
-        lineType: string;
-      };
-      /** object ID or path reference (10 §3) */
-      penId?: string;
-      pressure?: ({
-        t: number;
-        p: number;
-      })[] | null;
-      /** object ID or path reference (10 §3) */
-      leftZoneId?: string;
-      /** object ID or path reference (10 §3) */
-      rightZoneId?: string;
-      pen?: {
-        tipShape: string;
-        minSize: number;
-        maxSize: number | bigint;
-        tipAngle: number;
-      };
-      /** type not stated by the owning section (spec issue); a scalar */
-      textureMatrix?: string | number | boolean | null;
-      outline?: string[][];
-    })[];
-    zones?: ({
-      /** object ID or path reference (10 §3) */
-      id: string;
-      /** object ID or path reference (10 §3) */
-      colourId: string;
-      /** type not stated by the owning section (spec issue); a scalar */
-      textureMatrix: string | number | boolean | null;
-      boundaryStrokeIds: string[];
-      holes: ({
-        boundaryStrokeIds: string[];
-        /** object ID or path reference (10 §3) */
-        zoneId: string;
-      })[];
-      parentZoneId: string | null;
-      area: number;
-      bounds: {
-        x: number;
-        y: number;
-        width: number | bigint;
-        height: number | bigint;
-      };
-      interiorPoint: {
-        x: number;
-        y: number;
-      };
-    })[];
-    children?: string[];
-    text?: string;
-    transform?: number[];
-    widthMode?: string;
-    width?: number | bigint | null;
-    runs?: ({
-      start: number | bigint;
-      length: number | bigint;
-      font: string;
-      size: number | bigint;
-      bold: boolean;
-      italic: boolean;
-      baseline: string;
-      kerning: number;
-      autoKern: boolean;
-      /** object ID or path reference (10 §3) */
-      colourId: string;
-      outlineColourId: string | null;
-    })[];
-    paragraphs?: ({
-      start: number | bigint;
-      length: number | bigint;
-      align: string;
-      leftMargin: number;
-      rightMargin: number;
-      indent: number;
-      lineSpacing: number;
-    })[];
-    bounds?: {
-      x: number;
-      y: number;
-      width: number | bigint;
-      height: number | bigint;
-    };
-    /** object ID or path reference (10 §3) */
-    mediaId?: string;
-    pixelWidth?: number | bigint;
-    pixelHeight?: number | bigint;
-  })[];
+  pivot: draw_drawing_get_point;
+  bounds: draw_drawing_get_bounds | null;
+  nodes: draw_drawing_get_item[];
 }
 
-export type draw_drawing_get_result = draw_drawing_get_spec_DrawingReadback;
-
+/** `draw.drawing.rename` parameters. */
 export interface draw_drawing_rename_params {
-  /** object ID or path reference (10 §3) */
-  drawingId?: string;
+  /** The drawing (default: current). */
+  drawingId?: string | null;
+  /** The new name (02 §9). */
   name: string;
 }
 
+/** `{drawingId, name}`. */
 export interface draw_drawing_rename_result {
-  /** object ID or path reference (10 §3) */
+  /** The drawing. */
   drawingId: string;
+  /** Its name. */
   name: string;
+  /** Created objects. */
+  createdIds: string[];
+  /** Modified objects (content, membership or position changed; IDs kept). */
+  modifiedIds: string[];
+  /** Removed objects (descendants included). */
+  removedIds: string[];
+  /** The drawing revision after the change. */
+  rev: number | bigint;
 }
 
-export interface draw_drawing_render_params {
-  /** object ID or path reference (10 §3) */
-  drawingId?: string;
-  width: number;
-  height?: number;
-  region?: 'bounds' | 'field12' | 'field16' | 'camera' | {
-    x: number;
-    y: number;
-    width: number;
-    height: number;
-  };
-  padding?: number;
-  /** #RRGGBB or #RRGGBBAA Default: #00000000. */
-  background?: string;
-  /** object ID or path reference (10 §3) */
-  styleId?: string;
-  showStrokes?: boolean;
-  showSelection?: boolean;
-  /** file-system path (11 §6.2) */
-  path?: string;
-}
+/** The region to render. */
+export type draw_drawing_render_RegionIn = draw_drawing_render_RegionName | draw_drawing_render_RegionRect;
 
-export interface draw_drawing_render_result {
-  png?: string;
-  /** file-system path (11 §6.2) */
-  path?: string;
+/** A named region. */
+export type draw_drawing_render_RegionName = 'bounds' | 'field12' | 'field16' | 'camera';
+
+/** A rectangle `{x, y, width, height}` (du). */
+export interface draw_drawing_render_RegionRect {
+  /** Minimum x. */
+  x: number;
+  /** Minimum y. */
+  y: number;
+  /** Width. */
   width: number;
+  /** Height. */
   height: number;
-  drawingToPixel: number[];
-  rev: number;
 }
 
+/** `draw.drawing.render` parameters. */
+export interface draw_drawing_render_params {
+  /** The drawing (default: current). */
+  drawingId?: string | null;
+  /** Image width (px). */
+  width: number;
+  /** Image height (px; default: the region's aspect). */
+  height?: number | null;
+  /** Region. */
+  region?: draw_drawing_render_RegionIn;
+  /** Margin around the region (du). */
+  padding?: number;
+  /** Background (#RRGGBB or #RRGGBBAA). */
+  background?: string;
+  /** Palette style (default: each palette's first style). */
+  styleId?: string | null;
+  /** Draw every stroke's centre path (invisible ones included) and mark open ends. */
+  showStrokes?: boolean;
+  /** Outline the drawing selection's bounds. */
+  showSelection?: boolean;
+  /** Write the PNG here instead of returning it. */
+  path?: string | null;
+}
+
+/** `{png?, path?, width, height, drawingToPixel, rev}`. */
+export interface draw_drawing_render_result {
+  /** The PNG, base64 (without `path`). */
+  png?: string | null;
+  /** The written file (with `path`). */
+  path?: string | null;
+  /** Width (px). */
+  width: number;
+  /** Height (px). */
+  height: number;
+  /** Drawing space → pixel space `[a, b, c, d, e, f]`. */
+  drawingToPixel: number[];
+  /** The drawing revision rendered. */
+  rev: number | bigint;
+  /** SHA-256 of the premultiplied RGBA8 buffer (hex), for determinism checks. */
+  pixelsSha256: string;
+  /** Objects not drawn and why (`render.colourMissing`, `render.textureMissing`, `render.bitmapSkipped`). */
+  warnings: unknown[];
+}
+
+/** A point `{x, y}` in drawing units. */
+export interface draw_ellipse_add_Point {
+  /** X (du). */
+  x: number;
+  /** Y (du, up). */
+  y: number;
+}
+
+/** `draw.ellipse.add` parameters. */
 export interface draw_ellipse_add_params {
-  /** object ID or path reference (10 §3) */
-  drawingId?: string;
-  from: {
-    x: number;
-    y: number;
-  };
-  to: {
-    x: number;
-    y: number;
-  };
+  /** The drawing (default: current). */
+  drawingId?: string | null;
+  /** Or the cell of this element (02 §13.1 item 4; ADR-0016 common addressing). */
+  elementId?: string | null;
+  /** The frame of that cell (default: current frame). */
+  frame?: number | null;
+  /** Create the cell's drawing when it has none (default true, as `draw.stroke.add`). */
+  createDrawing?: boolean;
+  /** Press point. */
+  from: draw_ellipse_add_Point;
+  /** Release point. */
+  to: draw_ellipse_add_Point;
+  /** Circle constraint. */
   circle?: boolean;
+  /** `from` is the centre. */
   fromCentre?: boolean;
-  /** object ID or path reference (10 §3) */
-  colourId?: string;
-  thickness?: number;
-  /** object ID or path reference (10 §3) */
-  penId?: string;
-  /** object ID or path reference (10 §3) or "auto" | "new" | "top" | "behind" */
+  /** Line colour (default: current colour). */
+  colourId?: string | null;
+  /** Line thickness (default: the pen's). */
+  thickness?: number | null;
+  /** Pen (default: current pencil pen). */
+  penId?: string | null;
+  /** Layer rule (as `draw.stroke.add`). */
   layer?: string;
+  /** Symmetry copies (02 §6.2). */
   symmetry?: boolean;
 }
 
+/** The result of a shape tool. */
 export interface draw_ellipse_add_result {
+  /** The drawing. */
+  drawingId: string;
+  /** New strokes (the pieces noding made of them, symmetry copies included). */
   strokeIds: string[];
+  /** Zones the shape created. */
   zoneIds: string[];
-  /** object ID or path reference (10 §3) */
+  /** The layer holding them. */
   layerId: string;
-  rev: number;
-}
-
-export interface draw_envelope_apply_params {
-  /** object ID or path reference (10 §3) */
-  drawingId?: string;
-  /** Default: selection. */
-  ids?: string[];
-  /** (4 targets for the bounds corners: bottom-left, bottom-right, top-right, top-left) */
-  corners: ({
-    x: number;
-    y: number;
-  })[];
-  mapping?: 'auto' | 'projective' | 'bilinear';
-}
-
-export interface draw_envelope_apply_result {
-  ids: string[];
-  rev: number;
-}
-
-export interface draw_erase_apply_params {
-  /** object ID or path reference (10 §3) */
-  drawingId?: string;
-  path?: ({
-    x: number;
-    y: number;
-    pressure?: number;
-  })[];
-  /** object ID or path reference (10 §3) Default: current eraser pen. */
-  penId?: string;
-  /** shape not defined by the owning section (spec issue); only {} is accepted until it is */
-  pen?: Record<string, unknown>;
-  /** (closed polygon) */
-  region?: ({
-    x: number;
-    y: number;
-  })[];
-  layers?: 'all' | string[];
-}
-
-export interface draw_erase_apply_result {
-  removedIds: string[];
+  /** Created objects. */
   createdIds: string[];
-  rev: number;
+  /** Modified objects. */
+  modifiedIds: string[];
+  /** Removed objects (strokes split by noding, zones that ceased to exist). */
+  removedIds: string[];
+  /** The drawing revision after the change. */
+  rev: number | bigint;
+}
+
+/** A point `{x, y}` in drawing units. */
+export interface draw_envelope_apply_Point {
+  /** X (du). */
+  x: number;
+  /** Y (du, up). */
+  y: number;
+}
+
+/** Envelope mapping. */
+export type draw_envelope_apply_Mapping = 'auto' | 'projective' | 'bilinear';
+
+/** `draw.envelope.apply` parameters. */
+export interface draw_envelope_apply_params {
+  /** The drawing (default: current). */
+  drawingId?: string | null;
+  /** Objects (default: the selection). */
+  ids?: string[] | null;
+  /** Targets of the bounds' corners: bottom-left, bottom-right, top-right, top-left. */
+  corners: draw_envelope_apply_Point[];
+  /** Mapping. */
+  mapping?: draw_envelope_apply_Mapping;
+}
+
+/** `{ids, removedIds, rev}` and the changed IDs. */
+export interface draw_envelope_apply_result {
+  /** The drawing. */
+  drawingId: string;
+  /** The transformed objects (the copies with `copy`; pieces where noding split them). */
+  ids: string[];
+  /** Created objects. */
+  createdIds: string[];
+  /** Modified objects (content, membership or position changed; IDs kept). */
+  modifiedIds: string[];
+  /** Removed objects (descendants included). */
+  removedIds: string[];
+  /** The drawing revision after the change. */
+  rev: number | bigint;
+}
+
+/** An eraser path point. */
+export interface draw_erase_apply_ErasePoint {
+  /** x (du). */
+  x: number;
+  /** y (du). */
+  y: number;
+  /** Pressure (0–1, default 1). */
+  pressure?: number | null;
+}
+
+/** An explicit round eraser `{minSize, maxSize}` (SI-072). */
+export interface draw_erase_apply_EraserPen {
+  /** Width at lowest pressure (du). */
+  minSize: number;
+  /** Width at full pressure (du). */
+  maxSize: number;
+}
+
+/** A point `{x, y}` in drawing units. */
+export interface draw_erase_apply_Point {
+  /** X (du). */
+  x: number;
+  /** Y (du, up). */
+  y: number;
+}
+
+/** Layers an erase reaches. */
+export type draw_erase_apply_LayersIn = draw_erase_apply_AllLayers | string[];
+
+/** `"all"`. */
+export type draw_erase_apply_AllLayers = 'all';
+
+/** `draw.erase.apply` parameters. */
+export interface draw_erase_apply_params {
+  /** The drawing (default: current). */
+  drawingId?: string | null;
+  /** The eraser's path (swept with the eraser pen). */
+  path?: draw_erase_apply_ErasePoint[] | null;
+  /** The eraser pen (default: the project's first eraser pen, "Eraser 1"). */
+  penId?: string | null;
+  /** An explicit eraser (SI-072). */
+  pen?: draw_erase_apply_EraserPen | null;
+  /** Or: a closed region to erase. */
+  region?: draw_erase_apply_Point[] | null;
+  /** Layers to erase. */
+  layers?: draw_erase_apply_LayersIn;
+}
+
+/** `{removedIds, createdIds, rev}`. */
+export interface draw_erase_apply_result {
+  /** The drawing. */
+  drawingId: string;
+  /** Brush strokes crossing the erased area, kept whole (SI-059, SI-071). */
+  keptBrushIds: string[];
+  /** Created objects. */
+  createdIds: string[];
+  /** Modified objects (content, membership or position changed; IDs kept). */
+  modifiedIds: string[];
+  /** Removed objects (descendants included). */
+  removedIds: string[];
+  /** The drawing revision after the change. */
+  rev: number | bigint;
 }
 
 export interface draw_feather_apply_params {
@@ -79851,711 +86282,1468 @@ export interface draw_feather_apply_result {
   jobId: string;
 }
 
+/** A flatten policy (SI-073). */
+export interface draw_flatten_apply_FlattenPolicy {
+  /** Which colour wins where content overlaps. */
+  precedence?: draw_flatten_apply_Precedence;
+  /** Where the merged layer goes. */
+  position?: draw_flatten_apply_Position;
+}
+
+/** Which layer's colour wins where merged content overlaps. */
+export type draw_flatten_apply_Precedence = 'upper' | 'lower';
+
+/** Where the merged layer goes. */
+export type draw_flatten_apply_Position = 'top' | 'bottom';
+
+/** `draw.flatten.apply` parameters. */
 export interface draw_flatten_apply_params {
-  /** object ID or path reference (10 §3) */
-  drawingId?: string;
-  /** Default: selection. */
-  ids?: string[];
+  /** The drawing (default: current). */
+  drawingId?: string | null;
+  /** Layers, groups or strokes whose layers merge (default: the selection). */
+  ids?: string[] | null;
+  /** Merge policy (SI-073; default: upper colour wins, merged layer at the top-most position). */
+  policy?: draw_flatten_apply_FlattenPolicy;
 }
 
+/** `{layerId, removedIds, rev}`. */
 export interface draw_flatten_apply_result {
-  /** object ID or path reference (10 §3) */
+  /** The drawing. */
+  drawingId: string;
+  /** The merged layer. */
   layerId: string;
+  /** Created objects. */
+  createdIds: string[];
+  /** Modified objects (content, membership or position changed; IDs kept). */
+  modifiedIds: string[];
+  /** Removed objects (descendants included). */
   removedIds: string[];
-  rev: number;
+  /** The drawing revision after the change. */
+  rev: number | bigint;
 }
 
+/** Flip axis. */
+export type draw_flip_apply_Axis = 'horizontal' | 'vertical';
+
+/** `draw.flip.apply` parameters. */
 export interface draw_flip_apply_params {
-  /** object ID or path reference (10 §3) */
-  drawingId?: string;
-  /** Default: selection. */
-  ids?: string[];
-  axis: 'horizontal' | 'vertical';
+  /** The drawing (default: current). */
+  drawingId?: string | null;
+  /** Objects (default: the selection). */
+  ids?: string[] | null;
+  /** Axis. */
+  axis: draw_flip_apply_Axis;
 }
 
+/** `{ids, removedIds, rev}` and the changed IDs. */
 export interface draw_flip_apply_result {
+  /** The drawing. */
+  drawingId: string;
+  /** The transformed objects (the copies with `copy`; pieces where noding split them). */
   ids: string[];
-  rev: number;
+  /** Created objects. */
+  createdIds: string[];
+  /** Modified objects (content, membership or position changed; IDs kept). */
+  modifiedIds: string[];
+  /** Removed objects (descendants included). */
+  removedIds: string[];
+  /** The drawing revision after the change. */
+  rev: number | bigint;
 }
 
+/** `draw.group.create` parameters. */
 export interface draw_group_create_params {
-  /** object ID or path reference (10 §3) */
-  drawingId?: string;
-  /** Default: selection. */
-  ids?: string[];
+  /** The drawing (default: `elementId` + `frame`, else the current drawing). */
+  drawingId?: string | null;
+  /** The element whose cell exposes the drawing. */
+  elementId?: string | null;
+  /** The frame of that cell. */
+  frame?: number | null;
+  /** Objects to group (default: the drawing selection). */
+  ids?: string[] | null;
+  /** The drawing revision the caller read (02 §3.12). */
+  expectRev?: number | bigint | null;
 }
 
+/** `{groupId, rev}`. */
 export interface draw_group_create_result {
-  /** object ID or path reference (10 §3) */
+  /** The drawing. */
+  drawingId: string;
+  /** The new group. */
   groupId: string;
-  rev: number;
+  /** Created objects. */
+  createdIds: string[];
+  /** Modified objects (content, membership or position changed; IDs kept). */
+  modifiedIds: string[];
+  /** Removed objects (descendants included). */
+  removedIds: string[];
+  /** The drawing revision after the change. */
+  rev: number | bigint;
 }
 
+/** `draw.group.delete` parameters. */
 export interface draw_group_delete_params {
-  /** object ID or path reference (10 §3) */
-  drawingId?: string;
-  /** Default: selected groups. */
-  groupIds?: string[];
+  /** The drawing (default: `elementId` + `frame`, else the current drawing). */
+  drawingId?: string | null;
+  /** The element whose cell exposes the drawing. */
+  elementId?: string | null;
+  /** The frame of that cell. */
+  frame?: number | null;
+  /** Groups to dissolve (default: the selected groups). */
+  groupIds?: string[] | null;
+  /** The drawing revision the caller read (02 §3.12). */
+  expectRev?: number | bigint | null;
 }
 
+/** `{memberIds, rev}`. */
 export interface draw_group_delete_result {
+  /** The drawing. */
+  drawingId: string;
+  /** The former members, in order. */
   memberIds: string[];
-  rev: number;
+  /** Created objects. */
+  createdIds: string[];
+  /** Modified objects (content, membership or position changed; IDs kept). */
+  modifiedIds: string[];
+  /** Removed objects (descendants included). */
+  removedIds: string[];
+  /** The drawing revision after the change. */
+  rev: number | bigint;
 }
 
+/** A point `{x, y}` in drawing units. */
+export interface draw_hitTest_get_Point {
+  /** X (du). */
+  x: number;
+  /** Y (du, up). */
+  y: number;
+}
+
+/** `draw.hitTest.get` parameters (02 §13.5). */
 export interface draw_hitTest_get_params {
-  /** object ID or path reference (10 §3) */
-  drawingId?: string;
-  point: {
-    x: number;
-    y: number;
-  };
+  /** The drawing (default: `elementId` + `frame`, else the current drawing). */
+  drawingId?: string | null;
+  /** The element whose cell exposes the drawing. */
+  elementId?: string | null;
+  /** The frame of that cell. */
+  frame?: number | null;
+  /** The point (drawing space). */
+  point: draw_hitTest_get_Point;
+  /** Extra reach of line hits in view pixels (1 px = 1 du at 100 % zoom, SI-063). */
   tolerance?: number;
+  /** Report invisible strokes. */
   includeInvisible?: boolean;
 }
 
+/** One hit. */
+export interface draw_hitTest_get_HitOut {
+  /** The object. */
+  objectId: string;
+  /** `pencil`, `brush`, `invisible`, `zone`, `text` or `bitmap`. */
+  objectKind: string;
+  /** Its layer. */
+  layerId?: string | null;
+  /** Enclosing groups, outermost first. */
+  groupPath: string[];
+  /** Its colour. */
+  colourId?: string | null;
+}
+
+/** `draw.hitTest.get` result (02 §13.4). */
 export interface draw_hitTest_get_result {
-  hits: (Record<string, unknown>)[];
-  zoneId: string | null;
-  rev: number;
+  /** The point. */
+  point: draw_hitTest_get_Point;
+  /** Hits, front to back. */
+  hits: draw_hitTest_get_HitOut[];
+  /** The front-most zone under the point. */
+  zoneId?: string | null;
+  /** The drawing revision. */
+  rev: number | bigint;
 }
 
+/** `{visible}`. */
 export interface draw_inspectorPreview_set_params {
+  /** Show the drawing thumbnail in the inspector. */
   visible: boolean;
 }
 
+/** `{visible}`. */
 export interface draw_inspectorPreview_set_result {
+  /** Shown. */
   visible: boolean;
 }
 
+/** A point `{x, y}` in drawing units. */
+export interface draw_line_add_Point {
+  /** X (du). */
+  x: number;
+  /** Y (du, up). */
+  y: number;
+}
+
+/** `draw.line.add` parameters. */
 export interface draw_line_add_params {
-  /** object ID or path reference (10 §3) */
-  drawingId?: string;
-  from?: {
-    x: number;
-    y: number;
-  };
-  to: {
-    x: number;
-    y: number;
-  };
+  /** The drawing (default: current). */
+  drawingId?: string | null;
+  /** Or the cell of this element (02 §13.1 item 4; ADR-0016 common addressing). */
+  elementId?: string | null;
+  /** The frame of that cell (default: current frame). */
+  frame?: number | null;
+  /** Create the cell's drawing when it has none (default true, as `draw.stroke.add`). */
+  createDrawing?: boolean;
+  /** Start (required unless `continuePrevious`). */
+  from?: draw_line_add_Point | null;
+  /** End. */
+  to: draw_line_add_Point;
+  /** Start at the end of the line this tool added last in the drawing. */
   continuePrevious?: boolean;
+  /** Constrain the angle to multiples of 45°. */
   constrainAngle?: boolean;
-  /** object ID or path reference (10 §3) */
-  colourId?: string;
-  thickness?: number;
-  /** object ID or path reference (10 §3) */
-  penId?: string;
-  /** object ID or path reference (10 §3) or "auto" | "new" | "top" | "behind" */
+  /** Line colour. */
+  colourId?: string | null;
+  /** Thickness. */
+  thickness?: number | null;
+  /** Pen. */
+  penId?: string | null;
+  /** Layer rule. */
   layer?: string;
+  /** Symmetry copies. */
   symmetry?: boolean;
 }
 
+/** The result of a shape tool. */
 export interface draw_line_add_result {
-  strokeIds: string[];
-  zoneIds: string[];
-  /** object ID or path reference (10 §3) */
-  layerId: string;
-  rev: number;
-}
-
-export interface draw_linesToBrush_apply_params {
-  /** object ID or path reference (10 §3) */
-  drawingId?: string;
-  /** Default: selection. */
-  ids?: string[];
-  /** object ID or path reference (10 §3) Default: current brush pen. */
-  penId?: string;
-}
-
-export interface draw_linesToBrush_apply_result {
-  strokeIds: string[];
-  rev: number;
-}
-
-export interface draw_lock_set_params {
-  /** object ID or path reference (10 §3) */
-  drawingId?: string;
-  locked: boolean;
-}
-
-export interface draw_lock_set_result {
-  /** object ID or path reference (10 §3) */
+  /** The drawing. */
   drawingId: string;
+  /** New strokes (the pieces noding made of them, symmetry copies included). */
+  strokeIds: string[];
+  /** Zones the shape created. */
+  zoneIds: string[];
+  /** The layer holding them. */
+  layerId: string;
+  /** Created objects. */
+  createdIds: string[];
+  /** Modified objects. */
+  modifiedIds: string[];
+  /** Removed objects (strokes split by noding, zones that ceased to exist). */
+  removedIds: string[];
+  /** The drawing revision after the change. */
+  rev: number | bigint;
+}
+
+/** `draw.linesToBrush.apply` parameters. */
+export interface draw_linesToBrush_apply_params {
+  /** The drawing (default: current). */
+  drawingId?: string | null;
+  /** Pencil lines, or layers and groups holding them (default: the selection). */
+  ids?: string[] | null;
+  /** The brush pen (default: the current brush pen). */
+  penId?: string | null;
+}
+
+/** `{strokeIds, rev}`. */
+export interface draw_linesToBrush_apply_result {
+  /** The drawing. */
+  drawingId: string;
+  /** The new brush strokes. */
+  strokeIds: string[];
+  /** The invisible centre paths the lines became (their pieces where the new outlines split them). */
+  centreIds: string[];
+  /** Created objects. */
+  createdIds: string[];
+  /** Modified objects (content, membership or position changed; IDs kept). */
+  modifiedIds: string[];
+  /** Removed objects (descendants included). */
+  removedIds: string[];
+  /** The drawing revision after the change. */
+  rev: number | bigint;
+}
+
+/** `draw.lock.set` parameters. */
+export interface draw_lock_set_params {
+  /** The drawing (default: current). */
+  drawingId?: string | null;
+  /** Locked. */
   locked: boolean;
 }
 
+/** `{drawingId, locked}`. */
+export interface draw_lock_set_result {
+  /** The drawing. */
+  drawingId: string;
+  /** Locked. */
+  locked: boolean;
+  /** The drawing revision after the change. */
+  rev: number | bigint;
+}
+
+/** `draw.object.delete` parameters. */
 export interface draw_object_delete_params {
-  /** object ID or path reference (10 §3) */
-  drawingId?: string;
-  /** Default: selection. */
-  ids?: string[];
+  /** The drawing (default: `elementId` + `frame`, else the current drawing). */
+  drawingId?: string | null;
+  /** The element whose cell exposes the drawing. */
+  elementId?: string | null;
+  /** The frame of that cell. */
+  frame?: number | null;
+  /** Objects to delete (default: the drawing selection). */
+  ids?: string[] | null;
+  /** The drawing revision the caller read (02 §3.12). */
+  expectRev?: number | bigint | null;
 }
 
+/** `{removedIds, rev}`. */
 export interface draw_object_delete_result {
+  /** The drawing. */
+  drawingId: string;
+  /** Created objects. */
+  createdIds: string[];
+  /** Modified objects (content, membership or position changed; IDs kept). */
+  modifiedIds: string[];
+  /** Removed objects (descendants included). */
   removedIds: string[];
-  rev: number;
+  /** The drawing revision after the change. */
+  rev: number | bigint;
 }
 
+/** `draw.optimize.apply` parameters. */
 export interface draw_optimize_apply_params {
-  /** object ID or path reference (10 §3) */
-  drawingId?: string;
-  /** Default: selection. */
-  ids?: string[];
+  /** The drawing (default: current). */
+  drawingId?: string | null;
+  /** Layers, groups or strokes whose layers are considered (default: the selection). */
+  ids?: string[] | null;
 }
 
+/** `{layerIds, merged, rev}`. */
 export interface draw_optimize_apply_result {
+  /** The drawing. */
+  drawingId: string;
+  /** The considered layers that remain, back to front. */
   layerIds: string[];
-  merged: number | bigint;
-  rev: number;
-}
-
-export interface draw_pivot_set_params {
-  /** object ID or path reference (10 §3) */
-  drawingId?: string;
-  point: {
-    x: number;
-    y: number;
-  };
-}
-
-export interface draw_pivot_set_result {
-  pivot: {
-    x: number;
-    y: number;
-  };
-  rev: number;
-}
-
-export interface draw_point_add_params {
-  /** object ID or path reference (10 §3) */
-  strokeId: string;
-  /** (nearest location) */
-  at?: {
-    x: number;
-    y: number;
-  };
-  segment?: number | bigint;
-  t?: number;
-}
-
-export interface draw_point_add_result {
-  /** object ID or path reference (10 §3) */
-  strokeId: string;
-  anchor: number | bigint;
-  rev: number;
-}
-
-export interface draw_point_delete_params {
-  /** Default: point selection. */
-  points?: ({
-    /** object ID or path reference (10 §3) */
-    strokeId: string;
-    anchor: number | bigint;
-  })[];
-}
-
-export interface draw_point_delete_result {
+  /** Layers merged away. */
+  merged: number;
+  /** Created objects. */
+  createdIds: string[];
+  /** Modified objects (content, membership or position changed; IDs kept). */
   modifiedIds: string[];
+  /** Removed objects (descendants included). */
   removedIds: string[];
-  rev: number;
+  /** The drawing revision after the change. */
+  rev: number | bigint;
 }
 
-export interface draw_point_move_params {
-  /** Default: point selection. */
-  points?: ({
-    /** object ID or path reference (10 §3) */
-    strokeId: string;
-    anchor: number | bigint;
-  })[];
-  delta: {
-    x: number;
-    y: number;
-  };
-  /** Default: Snap to Contour setting. */
-  snap?: boolean;
+/** A point `{x, y}` in drawing units. */
+export interface draw_pivot_set_Point {
+  /** X (du). */
+  x: number;
+  /** Y (du, up). */
+  y: number;
 }
 
-export interface draw_point_move_result {
+/** `draw.pivot.set` parameters. */
+export interface draw_pivot_set_params {
+  /** The drawing (default: `elementId` + `frame`, else the current drawing). */
+  drawingId?: string | null;
+  /** The element whose cell exposes the drawing. */
+  elementId?: string | null;
+  /** The frame of that cell. */
+  frame?: number | null;
+  /** The new pivot (du). */
+  point: draw_pivot_set_Point;
+  /** The drawing revision the caller read (02 §3.12; `drawing.staleRevision` when it changed). */
+  expectRev?: number | bigint | null;
+}
+
+/** `{drawingId, pivot, rev}` and the changed IDs. */
+export interface draw_pivot_set_result {
+  /** The drawing. */
+  drawingId: string;
+  /** The pivot. */
+  pivot: draw_pivot_set_Point;
+  /** Created objects. */
+  createdIds: string[];
+  /** Modified objects (content, membership or position changed; IDs kept). */
   modifiedIds: string[];
-  rev: number;
+  /** Removed objects (descendants included). */
+  removedIds: string[];
+  /** The drawing revision after the change. */
+  rev: number | bigint;
 }
 
-export interface draw_point_set_params {
-  /** object ID or path reference (10 §3) */
+/** A point `{x, y}` in drawing units. */
+export interface draw_point_add_Point {
+  /** X (du). */
+  x: number;
+  /** Y (du, up). */
+  y: number;
+}
+
+/** `draw.point.add` parameters. */
+export interface draw_point_add_params {
+  /** The stroke (local or `<drawingId>/<strokeId>`). */
   strokeId: string;
-  anchor: number | bigint;
-  position?: {
-    x: number;
-    y: number;
-  };
-  inHandle?: {
-    x: number;
-    y: number;
-  };
-  outHandle?: {
-    x: number;
-    y: number;
-  };
-  handleMode?: 'symmetric' | 'broken' | 'reset';
+  /** Insert at the stroke location nearest to this point. */
+  at?: draw_point_add_Point | null;
+  /** Or: the segment index … */
+  segment?: number | null;
+  /** … and the parameter on it (0–1). */
+  t?: number | null;
 }
 
-export interface draw_point_set_result {
-  /** object ID or path reference (10 §3) */
+/** `{strokeId, anchor, rev}`. */
+export interface draw_point_add_result {
+  /** The stroke. */
   strokeId: string;
-  rev: number;
+  /** The new anchor's index. */
+  anchor: number;
+  /** Created objects. */
+  createdIds: string[];
+  /** Modified objects (content, membership or position changed; IDs kept). */
+  modifiedIds: string[];
+  /** Removed objects (descendants included). */
+  removedIds: string[];
+  /** The drawing revision after the change. */
+  rev: number | bigint;
 }
 
-export interface draw_pointSelection_set_params {
-  /** object ID or path reference (10 §3) */
-  drawingId?: string;
-  points?: ({
-    /** object ID or path reference (10 §3) */
-    strokeId: string;
-    anchor: number | bigint;
-  })[];
-  rect?: {
-    x: number;
-    y: number;
-    width: number;
-    height: number;
-  };
-  mode?: 'replace' | 'add' | 'toggle' | 'remove';
+/** An anchor of a stroke. */
+export interface draw_point_delete_AnchorRef {
+  /** The stroke (local ID). */
+  strokeId: string;
+  /** The anchor index. */
+  anchor: number;
 }
 
-export interface draw_pointSelection_set_result {
-  selectedPoints: ({
-    /** object ID or path reference (10 §3) */
-    strokeId: string;
-    anchor: number | bigint;
-  })[];
+/** `draw.point.delete` parameters. */
+export interface draw_point_delete_params {
+  /** The drawing (default: current). */
+  drawingId?: string | null;
+  /** Anchors (default: the point selection). */
+  points?: draw_point_delete_AnchorRef[] | null;
 }
 
-export interface draw_polyline_add_params {
-  /** object ID or path reference (10 §3) */
-  drawingId?: string;
-  points: ({
-    x: number;
-    y: number;
-    inHandle?: {
-      x: number;
-      y: number;
-    };
-    outHandle?: {
-      x: number;
-      y: number;
-    };
-  })[];
-  closed?: boolean;
+/** `{modifiedIds, removedIds, rev}`. */
+export interface draw_point_delete_result {
+  /** The drawing. */
+  drawingId: string;
+  /** Created objects. */
+  createdIds: string[];
+  /** Modified objects (content, membership or position changed; IDs kept). */
+  modifiedIds: string[];
+  /** Removed objects (descendants included). */
+  removedIds: string[];
+  /** The drawing revision after the change. */
+  rev: number | bigint;
+}
+
+/** An anchor of a stroke. */
+export interface draw_point_move_AnchorRef {
+  /** The stroke (local ID). */
+  strokeId: string;
+  /** The anchor index. */
+  anchor: number;
+}
+
+/** A point `{x, y}` in drawing units. */
+export interface draw_point_move_Point {
+  /** X (du). */
+  x: number;
+  /** Y (du, up). */
+  y: number;
+}
+
+/** `draw.point.move` parameters. */
+export interface draw_point_move_params {
+  /** The drawing (default: current). */
+  drawingId?: string | null;
+  /** Anchors (default: the point selection). */
+  points?: draw_point_move_AnchorRef[] | null;
+  /** Offset (du). */
+  delta: draw_point_move_Point;
+  /** Snap moved anchors to other strokes' anchors within 8 du (Snap to Contour, 02 §8.9; default off). */
   snap?: boolean;
+}
+
+/** `{modifiedIds, removedIds, rev}`. */
+export interface draw_point_move_result {
+  /** The drawing. */
+  drawingId: string;
+  /** Created objects. */
+  createdIds: string[];
+  /** Modified objects (content, membership or position changed; IDs kept). */
+  modifiedIds: string[];
+  /** Removed objects (descendants included). */
+  removedIds: string[];
+  /** The drawing revision after the change. */
+  rev: number | bigint;
+}
+
+/** A point `{x, y}` in drawing units. */
+export interface draw_point_set_Point {
+  /** X (du). */
+  x: number;
+  /** Y (du, up). */
+  y: number;
+}
+
+/** Handle behaviour of `draw.point.set`. */
+export type draw_point_set_HandleMode = 'symmetric' | 'broken' | 'reset';
+
+/** `draw.point.set` parameters. */
+export interface draw_point_set_params {
+  /** The stroke. */
+  strokeId: string;
+  /** The anchor. */
+  anchor: number;
+  /** New position. */
+  position?: draw_point_set_Point | null;
+  /** Incoming handle (offset). */
+  inHandle?: draw_point_set_Point | null;
+  /** Outgoing handle (offset). */
+  outHandle?: draw_point_set_Point | null;
+  /** Handle mode. */
+  handleMode?: draw_point_set_HandleMode | null;
+}
+
+/** `{strokeId, rev}`. */
+export interface draw_point_set_result {
+  /** The stroke. */
+  strokeId: string;
+  /** Created objects. */
+  createdIds: string[];
+  /** Modified objects (content, membership or position changed; IDs kept). */
+  modifiedIds: string[];
+  /** Removed objects (descendants included). */
+  removedIds: string[];
+  /** The drawing revision after the change. */
+  rev: number | bigint;
+}
+
+/** An anchor of a stroke. */
+export interface draw_pointSelection_set_AnchorRef {
+  /** The stroke (local ID). */
+  strokeId: string;
+  /** The anchor index. */
+  anchor: number;
+}
+
+/** `{x, y, width, height}` input. */
+export interface draw_pointSelection_set_RectIn {
+  /** Left. */
+  x: number;
+  /** Bottom. */
+  y: number;
+  /** Width (≥ 0). */
+  width: number;
+  /** Height (≥ 0). */
+  height: number;
+}
+
+/** How a selection combines with the current one. */
+export type draw_pointSelection_set_Mode = 'replace' | 'add' | 'toggle' | 'remove';
+
+/** `draw.pointSelection.set` parameters. */
+export interface draw_pointSelection_set_params {
+  /** The drawing (default: current). */
+  drawingId?: string | null;
+  /** Anchors. */
+  points?: draw_pointSelection_set_AnchorRef[] | null;
+  /** Every anchor inside a rectangle. */
+  rect?: draw_pointSelection_set_RectIn | null;
+  /** How to combine. */
+  mode?: draw_pointSelection_set_Mode;
+}
+
+/** `{selectedPoints}`. */
+export interface draw_pointSelection_set_result {
+  /** Selected anchors. */
+  selectedPoints: draw_pointSelection_set_AnchorRef[];
+}
+
+/** A polyline anchor: position and optional handle offsets. */
+export interface draw_polyline_add_PolyPoint {
+  /** x (du). */
+  x: number;
+  /** y (du). */
+  y: number;
+  /** Incoming handle, as an offset from the anchor (10 §4.9 convention; SI-069). */
+  inHandle?: draw_polyline_add_Point | null;
+  /** Outgoing handle, as an offset from the anchor. */
+  outHandle?: draw_polyline_add_Point | null;
+}
+
+/** A point `{x, y}` in drawing units. */
+export interface draw_polyline_add_Point {
+  /** X (du). */
+  x: number;
+  /** Y (du, up). */
+  y: number;
+}
+
+/** `draw.polyline.add` parameters. */
+export interface draw_polyline_add_params {
+  /** The drawing (default: current). */
+  drawingId?: string | null;
+  /** Or the cell of this element (02 §13.1 item 4; ADR-0016 common addressing). */
+  elementId?: string | null;
+  /** The frame of that cell (default: current frame). */
+  frame?: number | null;
+  /** Create the cell's drawing when it has none (default true, as `draw.stroke.add`). */
+  createDrawing?: boolean;
+  /** Anchors (at least 2). */
+  points: draw_polyline_add_PolyPoint[];
+  /** Closed. */
+  closed?: boolean;
+  /** Snap anchors to existing anchors within `snapRadius`. */
+  snap?: boolean;
+  /** Snap radius (view px; 1 px = 1 du at 100 %, SI-063). */
   snapRadius?: number;
-  /** object ID or path reference (10 §3) */
-  colourId?: string;
-  thickness?: number;
-  /** object ID or path reference (10 §3) */
-  penId?: string;
-  /** object ID or path reference (10 §3) or "auto" | "new" | "top" | "behind" */
+  /** Line colour. */
+  colourId?: string | null;
+  /** Thickness. */
+  thickness?: number | null;
+  /** Pen. */
+  penId?: string | null;
+  /** Layer rule. */
   layer?: string;
+  /** Symmetry copies. */
   symmetry?: boolean;
 }
 
+/** The result of a shape tool. */
 export interface draw_polyline_add_result {
+  /** The drawing. */
+  drawingId: string;
+  /** New strokes (the pieces noding made of them, symmetry copies included). */
   strokeIds: string[];
+  /** Zones the shape created. */
   zoneIds: string[];
-  /** object ID or path reference (10 §3) */
+  /** The layer holding them. */
   layerId: string;
-  rev: number;
+  /** Created objects. */
+  createdIds: string[];
+  /** Modified objects. */
+  modifiedIds: string[];
+  /** Removed objects (strokes split by noding, zones that ceased to exist). */
+  removedIds: string[];
+  /** The drawing revision after the change. */
+  rev: number | bigint;
 }
 
+/** A point `{x, y}` in drawing units. */
+export interface draw_rectangle_add_Point {
+  /** X (du). */
+  x: number;
+  /** Y (du, up). */
+  y: number;
+}
+
+/** `draw.rectangle.add` / `draw.ellipse.add` parameters. */
 export interface draw_rectangle_add_params {
-  /** object ID or path reference (10 §3) */
-  drawingId?: string;
-  from: {
-    x: number;
-    y: number;
-  };
-  to: {
-    x: number;
-    y: number;
-  };
+  /** The drawing (default: current). */
+  drawingId?: string | null;
+  /** Or the cell of this element (02 §13.1 item 4; ADR-0016 common addressing). */
+  elementId?: string | null;
+  /** The frame of that cell (default: current frame). */
+  frame?: number | null;
+  /** Create the cell's drawing when it has none (default true, as `draw.stroke.add`). */
+  createDrawing?: boolean;
+  /** Press point. */
+  from: draw_rectangle_add_Point;
+  /** Release point. */
+  to: draw_rectangle_add_Point;
+  /** Square constraint. */
   square?: boolean;
+  /** `from` is the centre. */
   fromCentre?: boolean;
-  /** object ID or path reference (10 §3) */
-  colourId?: string;
-  thickness?: number;
-  /** object ID or path reference (10 §3) */
-  penId?: string;
-  /** object ID or path reference (10 §3) or "auto" | "new" | "top" | "behind" */
+  /** Line colour (default: current colour). */
+  colourId?: string | null;
+  /** Line thickness (default: the pen's). */
+  thickness?: number | null;
+  /** Pen (default: current pencil pen). */
+  penId?: string | null;
+  /** Layer rule (as `draw.stroke.add`). */
   layer?: string;
+  /** Symmetry copies (02 §6.2). */
   symmetry?: boolean;
 }
 
+/** The result of a shape tool. */
 export interface draw_rectangle_add_result {
+  /** The drawing. */
+  drawingId: string;
+  /** New strokes (the pieces noding made of them, symmetry copies included). */
   strokeIds: string[];
+  /** Zones the shape created. */
   zoneIds: string[];
-  /** object ID or path reference (10 §3) */
+  /** The layer holding them. */
   layerId: string;
-  rev: number;
+  /** Created objects. */
+  createdIds: string[];
+  /** Modified objects. */
+  modifiedIds: string[];
+  /** Removed objects (strokes split by noding, zones that ceased to exist). */
+  removedIds: string[];
+  /** The drawing revision after the change. */
+  rev: number | bigint;
 }
 
+/** A point `{x, y}` in drawing units. */
+export interface draw_repositionAll_apply_Point {
+  /** X (du). */
+  x: number;
+  /** Y (du, up). */
+  y: number;
+}
+
+/** `{x, y}` factors. */
+export interface draw_repositionAll_apply_Xy {
+  /** x. */
+  x: number;
+  /** y. */
+  y: number;
+}
+
+/** `draw.repositionAll.apply` parameters. */
 export interface draw_repositionAll_apply_params {
-  /** object ID or path reference (10 §3) Default: current. */
-  elementId?: string;
-  translate?: {
-    x: number;
-    y: number;
-  };
-  scale?: {
-    x: number;
-    y: number;
-  };
-  rotate?: number;
-  /** Default: {0,0}. */
-  pivot?: {
-    x: number;
-    y: number;
-  };
-  matrix?: number[];
-  corners?: ({
-    x: number;
-    y: number;
-  })[];
+  /** The element (default: current). */
+  elementId?: string | null;
+  /** Translation. */
+  translate?: draw_repositionAll_apply_Point | null;
+  /** Scale. */
+  scale?: draw_repositionAll_apply_Xy | null;
+  /** Rotation (degrees CCW). */
+  rotate?: number | null;
+  /** Pivot. */
+  pivot?: draw_repositionAll_apply_Point | null;
+  /** Matrix (overrides). */
+  matrix?: number[] | null;
+  /** Envelope corners (of each drawing's bounds). */
+  corners?: draw_repositionAll_apply_Point[] | null;
 }
 
+/** `{drawingIds}`. */
 export interface draw_repositionAll_apply_result {
+  /** The drawings changed. */
   drawingIds: string[];
 }
 
+/** A fixed rotation step. */
+export type draw_rotate_apply_Step = '90cw' | '90ccw' | '180';
+
+/** `draw.rotate.apply` parameters. */
 export interface draw_rotate_apply_params {
-  /** object ID or path reference (10 §3) */
-  drawingId?: string;
-  /** Default: selection. */
-  ids?: string[];
-  by: '90cw' | '90ccw' | '180';
+  /** The drawing (default: current). */
+  drawingId?: string | null;
+  /** Objects (default: the selection). */
+  ids?: string[] | null;
+  /** Step. */
+  by: draw_rotate_apply_Step;
 }
 
+/** `{ids, removedIds, rev}` and the changed IDs. */
 export interface draw_rotate_apply_result {
+  /** The drawing. */
+  drawingId: string;
+  /** The transformed objects (the copies with `copy`; pieces where noding split them). */
   ids: string[];
-  rev: number;
+  /** Created objects. */
+  createdIds: string[];
+  /** Modified objects (content, membership or position changed; IDs kept). */
+  modifiedIds: string[];
+  /** Removed objects (descendants included). */
+  removedIds: string[];
+  /** The drawing revision after the change. */
+  rev: number | bigint;
 }
 
+/** A point `{x, y}` in drawing units. */
+export interface draw_segment_move_Point {
+  /** X (du). */
+  x: number;
+  /** Y (du, up). */
+  y: number;
+}
+
+/** `draw.segment.move` parameters. */
 export interface draw_segment_move_params {
-  /** object ID or path reference (10 §3) */
+  /** The stroke. */
   strokeId: string;
-  segment: number | bigint;
+  /** The segment index. */
+  segment: number;
+  /** The parameter of the point that moves (0–1). */
   t?: number;
-  delta: {
-    x: number;
-    y: number;
-  };
+  /** Offset of that point (du). */
+  delta: draw_segment_move_Point;
 }
 
+/** `{strokeId, rev}`. */
 export interface draw_segment_move_result {
-  /** object ID or path reference (10 §3) */
+  /** The stroke. */
   strokeId: string;
-  rev: number;
+  /** Created objects. */
+  createdIds: string[];
+  /** Modified objects (content, membership or position changed; IDs kept). */
+  modifiedIds: string[];
+  /** Removed objects (descendants included). */
+  removedIds: string[];
+  /** The drawing revision after the change. */
+  rev: number | bigint;
 }
 
-/** Events take no parameters; subscribe to them (11 §9). */
+/** No parameters. */
 export type draw_selection_changed_params = Record<string, unknown>;
 
-/** Event payload (delivered to subscribers). */
+/** An anchor of a stroke. */
+export interface draw_selection_changed_AnchorRef {
+  /** The stroke (local ID). */
+  strokeId: string;
+  /** The anchor index. */
+  anchor: number;
+}
+
+/** `draw.selection.changed` payload. */
 export interface draw_selection_changed_result {
-  /** object ID or path reference (10 §3) */
+  /** The drawing. */
   drawingId: string;
+  /** Selected objects. */
   selectedIds: string[];
-  selectedPoints: ({
-    /** object ID or path reference (10 §3) */
-    strokeId: string;
-    anchor: {
-      x: number;
-      y: number;
-    };
-  })[];
+  /** Selected anchors. */
+  selectedPoints: draw_selection_changed_AnchorRef[];
 }
 
+/** `draw.selection.get` parameters. */
 export interface draw_selection_get_params {
-  /** object ID or path reference (10 §3) */
-  drawingId?: string;
+  /** The drawing (default: current). */
+  drawingId?: string | null;
 }
 
+/** `{x, y, width, height}`. */
+export interface draw_selection_get_Bounds {
+  /** Minimum x (du). */
+  x: number;
+  /** Minimum y (du). */
+  y: number;
+  /** Width (du). */
+  width: number;
+  /** Height (du). */
+  height: number;
+}
+
+/** An anchor of a stroke. */
+export interface draw_selection_get_AnchorRef {
+  /** The stroke (local ID). */
+  strokeId: string;
+  /** The anchor index. */
+  anchor: number;
+}
+
+/** `{selectedIds, bounds, selectedPoints}`. */
 export interface draw_selection_get_result {
+  /** Selected objects (local IDs). */
   selectedIds: string[];
-  bounds: {
-    x: number;
-    y: number;
-    width: number;
-    height: number;
-  };
-  selectedPoints: ({
-    /** object ID or path reference (10 §3) */
-    strokeId: string;
-    anchor: {
-      x: number;
-      y: number;
-    };
-  })[];
+  /** Their bounds. */
+  bounds?: draw_selection_get_Bounds | null;
+  /** Selected anchors (Contour Editor). */
+  selectedPoints: draw_selection_get_AnchorRef[];
 }
 
+/** How `draw.selection.set` selects. */
+export type draw_selection_set_SelectBy = 'ids' | 'point' | 'rect' | 'lasso' | 'all' | 'none';
+
+/** A point `{x, y}` in drawing units. */
+export interface draw_selection_set_Point {
+  /** X (du). */
+  x: number;
+  /** Y (du, up). */
+  y: number;
+}
+
+/** `{x, y, width, height}` input. */
+export interface draw_selection_set_RectIn {
+  /** Left. */
+  x: number;
+  /** Bottom. */
+  y: number;
+  /** Width (≥ 0). */
+  width: number;
+  /** Height (≥ 0). */
+  height: number;
+}
+
+/** Inside or intersecting. */
+export type draw_selection_set_RectRule = 'inside' | 'intersect';
+
+/** How a selection combines with the current one. */
+export type draw_selection_set_Mode = 'replace' | 'add' | 'toggle' | 'remove';
+
+/** `draw.selection.set` parameters. */
 export interface draw_selection_set_params {
-  /** object ID or path reference (10 §3) */
-  drawingId?: string;
-  by?: 'ids' | 'point' | 'rect' | 'lasso' | 'all' | 'none';
-  ids?: string[];
-  point?: {
-    x: number;
-    y: number;
-  };
-  rect?: {
-    x: number;
-    y: number;
-    width: number;
-    height: number;
-  };
-  polygon?: ({
-    x: number;
-    y: number;
-  })[];
-  rectRule?: 'inside' | 'intersect';
-  mode?: 'replace' | 'add' | 'toggle' | 'remove';
+  /** The drawing (default: current). */
+  drawingId?: string | null;
+  /** How to select. */
+  by?: draw_selection_set_SelectBy;
+  /** IDs (`by: "ids"`; local or compound; zone IDs select zones). */
+  ids?: string[] | null;
+  /** The point (`by: "point"`). */
+  point?: draw_selection_set_Point | null;
+  /** The rectangle (`by: "rect"`). */
+  rect?: draw_selection_set_RectIn | null;
+  /** The polygon (`by: "lasso"`). */
+  polygon?: draw_selection_set_Point[] | null;
+  /** Region rule for `rect` and `lasso`. */
+  rectRule?: draw_selection_set_RectRule;
+  /** How to combine with the current selection. */
+  mode?: draw_selection_set_Mode;
 }
 
+/** `{x, y, width, height}`. */
+export interface draw_selection_set_Bounds {
+  /** Minimum x (du). */
+  x: number;
+  /** Minimum y (du). */
+  y: number;
+  /** Width (du). */
+  width: number;
+  /** Height (du). */
+  height: number;
+}
+
+/** `{selectedIds, bounds}`. */
 export interface draw_selection_set_result {
+  /** Selected objects (local IDs), in selection order. */
   selectedIds: string[];
-  bounds: {
-    x: number;
-    y: number;
-    width: number;
-    height: number;
-  };
+  /** Their bounds (`null` when nothing is selected). */
+  bounds?: draw_selection_set_Bounds | null;
 }
 
+/** An anchor of a stroke. */
+export interface draw_smooth_apply_AnchorRef {
+  /** The stroke (local ID). */
+  strokeId: string;
+  /** The anchor index. */
+  anchor: number;
+}
+
+/** `draw.smooth.apply` parameters. */
 export interface draw_smooth_apply_params {
-  /** object ID or path reference (10 §3) */
-  drawingId?: string;
-  /** Default: selection. */
-  ids?: string[];
-  points?: ({
-    /** object ID or path reference (10 §3) */
-    strokeId: string;
-    anchor: {
-      x: number;
-      y: number;
-    };
-  })[];
+  /** The drawing (default: current). */
+  drawingId?: string | null;
+  /** Strokes, layers or groups (default: the selection). */
+  ids?: string[] | null;
+  /** Anchors that may go (default: the Contour Editor's point selection when no object is selected). */
+  points?: draw_smooth_apply_AnchorRef[] | null;
+  /** Tolerance (du). */
   tolerance?: number;
 }
 
+/** `{removedPointCount, rev}`. */
 export interface draw_smooth_apply_result {
-  removedPointCount: number | bigint;
-  rev: number;
-}
-
-export interface draw_stroke_add_params {
-  /** object ID or path reference (10 §3) */
-  drawingId?: string;
-  /** object ID or path reference (10 §3) */
-  elementId?: string;
-  frame?: number | bigint;
-  createDrawing?: boolean;
-  kind?: 'brush' | 'pencil' | 'invisible';
-  points?: ({
-    x: number;
-    y: number;
-    pressure?: ({
-      t: number;
-      p: number;
-    })[];
-  })[];
-  bezier?: ({
-    x: number;
-    y: number;
-  })[];
-  closed?: boolean;
-  pressure?: ({
-    t: number;
-    p: number;
-  })[];
-  fit?: boolean;
-  /** Default: pen's. */
-  smoothness?: number;
-  /** object ID or path reference (10 §3) Default: current pen. */
-  penId?: string;
-  pen?: {
-    tipShape: string;
-    minSize: number;
-    maxSize: number;
-    tipAngle: number;
-  };
-  /** object ID or path reference (10 §3) Default: current colour. */
-  colourId?: string;
-  /** Default: pen max. */
-  thickness?: number;
-  /** object ID or path reference (10 §3) or "auto" | "new" | "top" | "behind" */
-  layer?: string;
-  symmetry?: boolean;
-  expectRev?: number | bigint;
-}
-
-export interface draw_stroke_add_result {
-  /** object ID or path reference (10 §3) */
+  /** The drawing. */
   drawingId: string;
-  createdDrawing: boolean;
-  strokeIds: string[];
-  zoneIds: string[];
-  /** object ID or path reference (10 §3) */
-  layerId: string;
+  /** Anchors removed. */
+  removedPointCount: number;
+  /** Created objects. */
+  createdIds: string[];
+  /** Modified objects (content, membership or position changed; IDs kept). */
+  modifiedIds: string[];
+  /** Removed objects (descendants included). */
   removedIds: string[];
-  rev: number;
+  /** The drawing revision after the change. */
+  rev: number | bigint;
+}
+
+/** Stroke kind parameter. */
+export type draw_stroke_add_KindParam = 'brush' | 'pencil' | 'invisible';
+
+/** A sample `{x, y, pressure?}`. */
+export interface draw_stroke_add_PointIn {
+  /** X (du). */
+  x: number;
+  /** Y (du). */
+  y: number;
+  /** Pressure 0–1 (default 1: a mouse, 02 §3.4). */
+  pressure?: number | null;
+}
+
+/** A point `{x, y}` in drawing units. */
+export interface draw_stroke_add_Point {
+  /** X (du). */
+  x: number;
+  /** Y (du, up). */
+  y: number;
+}
+
+/** A pressure sample `{t, p}` (02 §3.2). */
+export interface draw_stroke_add_PressureIn {
+  /** Normalised arc-length position 0–1. */
+  t: number;
+  /** Pressure 0–1. */
+  p: number;
+}
+
+/** An explicit pen `{tipShape, minSize, maxSize, tipAngle}` (02 §13.4 `pen`). */
+export interface draw_stroke_add_PenIn {
+  /** Tip shape. */
+  tipShape: draw_stroke_add_TipParam;
+  /** Width at lowest pressure (du). */
+  minSize: number;
+  /** Width at full pressure (du). */
+  maxSize: number;
+  /** Orientation of non-round tips (degrees). */
+  tipAngle?: number;
+}
+
+/** Tip shape parameter. */
+export type draw_stroke_add_TipParam = 'round' | 'oval' | 'square' | 'flat';
+
+/** `draw.stroke.add` parameters (02 §13.5). */
+export interface draw_stroke_add_params {
+  /** The drawing (default: `elementId` + `frame`, else the current drawing). */
+  drawingId?: string | null;
+  /** The element whose cell receives the stroke. */
+  elementId?: string | null;
+  /** The frame of that cell (default: current frame). */
+  frame?: number | null;
+  /** Create a drawing in an empty addressed cell (same undo step, 02 §1.1). */
+  createDrawing?: boolean;
+  /** Stroke kind. */
+  kind?: draw_stroke_add_KindParam;
+  /** Samples (curve-fitted when `fit`). */
+  points?: draw_stroke_add_PointIn[] | null;
+  /** Bézier control points used verbatim (02 §13.4 Bézier list). */
+  bezier?: draw_stroke_add_Point[] | null;
+  /** Closed path. */
+  closed?: boolean;
+  /** Pressure map `[{t, p}]` (overrides per-point pressure). */
+  pressure?: draw_stroke_add_PressureIn[] | null;
+  /** Fit Béziers to `points` (§3.3); `false` joins them with straight segments. */
+  fit?: boolean;
+  /** Smoothness 0–10 (default: the pen's). */
+  smoothness?: number | null;
+  /** The brush pen (default: the current brush pen). */
+  penId?: string | null;
+  /** An explicit pen (overrides the pen's shape and sizes). */
+  pen?: draw_stroke_add_PenIn | null;
+  /** Colour (default: the pen's colour, else the current colour). */
+  colourId?: string | null;
+  /** Pencil thickness 0–100 du (default: the pen's maximum size). */
+  thickness?: number | null;
+  /** `auto`, `new`, `top`, `behind` or a layer ID. */
+  layer?: string;
+  /** Apply the current symmetry setting (02 §6.2). */
+  symmetry?: boolean;
+  /** The drawing revision the caller read (02 §3.12; `drawing.staleRevision` when it changed). */
+  expectRev?: number | bigint | null;
+}
+
+/** `draw.stroke.add` result (02 §13.5). */
+export interface draw_stroke_add_result {
+  /** The drawing. */
+  drawingId: string;
+  /** A drawing was created in the empty cell. */
+  createdDrawing: boolean;
+  /** The new strokes (symmetry copies included), back to front. */
+  strokeIds: string[];
+  /** Zones the stroke created (02 §3.12 item 4: derived from their boundaries). */
+  zoneIds: string[];
+  /** The layer holding the strokes. */
+  layerId: string;
+  /** Created objects. */
+  createdIds: string[];
+  /** Modified objects (content, membership or position changed; IDs kept). */
+  modifiedIds: string[];
+  /** Removed objects (descendants included). */
+  removedIds: string[];
+  /** The drawing revision after the change. */
+  rev: number | bigint;
+  /** Hint codes (`drawing.strokesHidden` for invisible strokes while Show Strokes is off). */
   hints: string[];
 }
 
+/** A point `{x, y}` in drawing units. */
+export interface draw_stroke_set_Point {
+  /** X (du). */
+  x: number;
+  /** Y (du, up). */
+  y: number;
+}
+
+/** A pressure sample `{t, p}` (02 §3.2). */
+export interface draw_stroke_set_PressureIn {
+  /** Normalised arc-length position 0–1. */
+  t: number;
+  /** Pressure 0–1. */
+  p: number;
+}
+
+/** Kind conversion of `draw.stroke.set`. */
+export type draw_stroke_set_LineKind = 'pencil' | 'invisible';
+
+/** `draw.stroke.set` parameters (02 §13.5). */
 export interface draw_stroke_set_params {
-  /** object ID or path reference (10 §3) */
+  /** The stroke (`<drawingId>/<localId>`, or local with `drawingId` / the current drawing). */
   strokeId: string;
-  bezier?: ({
-    x: number;
-    y: number;
-  })[];
-  closed?: boolean;
-  pressure?: ({
-    t: number;
-    p: number;
-  })[];
-  thickness?: number;
-  kind?: 'pencil' | 'invisible';
-  expectRev?: number | bigint;
+  /** The drawing holding a local stroke ID (default: `elementId` + `frame`, else the current drawing). */
+  drawingId?: string | null;
+  /** The element whose cell exposes the drawing (02 §13.1 item 4; with a local ID). */
+  elementId?: string | null;
+  /** The frame of that cell (default: the current frame). */
+  frame?: number | null;
+  /** New geometry (02 §13.4 Bézier list): a brush stroke's spine (the outline is swept again), or its outline when the spine was discarded; a pencil or invisible stroke's path. */
+  bezier?: draw_stroke_set_Point[] | null;
+  /** Closed path (with `bezier`). */
+  closed?: boolean | null;
+  /** New pressure map of a brush stroke's spine. */
+  pressure?: draw_stroke_set_PressureIn[] | null;
+  /** New line thickness of a pencil line (du). */
+  thickness?: number | null;
+  /** Make a pencil line invisible or an invisible stroke a pencil line. */
+  kind?: draw_stroke_set_LineKind | null;
+  /** The drawing revision the caller read (02 §3.12; `drawing.staleRevision` when it changed). */
+  expectRev?: number | bigint | null;
 }
 
+/** `{strokeIds, removedIds, rev}`. */
 export interface draw_stroke_set_result {
+  /** The drawing. */
+  drawingId: string;
+  /** The edited stroke (its ID is kept, 02 §3.12 item 4). */
   strokeIds: string[];
+  /** Created objects. */
+  createdIds: string[];
+  /** Modified objects (content, membership or position changed; IDs kept). */
+  modifiedIds: string[];
+  /** Removed objects (descendants included). */
   removedIds: string[];
-  rev: number;
+  /** The drawing revision after the change. */
+  rev: number | bigint;
 }
 
-export interface draw_text_add_params {
-  /** object ID or path reference (10 §3) */
-  drawingId?: string;
-  position: {
-    x: number;
-    y: number;
-  };
-  text: string;
-  /** (fixed width; omit = auto) */
-  width?: number;
-  /** (Text panel fields) — shape not defined by the owning section (spec issue); only {} is accepted until it is */
-  format?: Record<string, unknown>;
-  /** object ID or path reference (10 §3) */
-  colourId?: string;
+/** A point `{x, y}` in drawing units. */
+export interface draw_text_add_Point {
+  /** X (du). */
+  x: number;
+  /** Y (du, up). */
+  y: number;
 }
 
-export interface draw_text_add_result {
-  /** object ID or path reference (10 §3) */
-  textId: string;
-  bounds: {
-    x: number;
-    y: number;
-    width: number;
-    height: number;
-  };
-  rev: number;
-}
-
-export interface draw_text_set_params {
-  /** object ID or path reference (10 §3) */
-  textId: string;
-  text?: string;
-  insert?: {
-    at: number | bigint;
-    text: string;
-  };
-  delete?: {
-    start: number | bigint;
-    length: number | bigint;
-  };
-  widthMode?: 'auto' | 'fixed';
-  width?: number;
-  position?: {
-    x: number;
-    y: number;
-  };
-}
-
-export interface draw_text_set_result {
-  /** object ID or path reference (10 §3) */
-  textId: string;
-  bounds: {
-    x: number;
-    y: number;
-    width: number;
-    height: number;
-  };
-  rev: number;
-}
-
-export interface draw_textFormat_set_params {
-  /** object ID or path reference (10 §3) */
-  textId: string;
-  start?: number | bigint;
-  /** (default to end) */
-  length?: number | bigint;
-  font?: string;
-  size?: number;
-  bold?: boolean;
-  italic?: boolean;
-  baseline?: 'normal' | 'subscript' | 'superscript';
-  kerning?: number;
-  autoKern?: boolean;
-  align?: 'left' | 'centre' | 'right' | 'justify';
-  leftMargin?: number;
-  rightMargin?: number;
-  indent?: number;
-  lineSpacing?: number;
-  /** object ID or path reference (10 §3) */
-  colourId?: string;
+/** The Text panel fields (02 §7.6.1; SI-026 `format`). */
+export interface draw_text_add_TextFormat {
+  /** Font family (kept when missing). */
+  font?: string | null;
+  /** Size (du). */
+  size?: number | null;
+  /** Bold. */
+  bold?: boolean | null;
+  /** Italic. */
+  italic?: boolean | null;
+  /** Baseline. */
+  baseline?: draw_text_add_Baseline | null;
+  /** Manual kerning (1/100 em). */
+  kerning?: number | null;
+  /** Font kerning pairs. */
+  autoKern?: boolean | null;
+  /** Alignment. */
+  align?: draw_text_add_Align | null;
+  /** Left margin (du). */
+  leftMargin?: number | null;
+  /** Right margin (du). */
+  rightMargin?: number | null;
+  /** First-line indent (du). */
+  indent?: number | null;
+  /** Additional line spacing (du). */
+  lineSpacing?: number | null;
+  /** Outline colour: only `null` (10 §4.9 runs store no outline colour; SI-055). */
   outlineColourId?: string | null;
 }
 
-export interface draw_textFormat_set_result {
-  /** object ID or path reference (10 §3) */
+/** Baseline (`script` in the project format). */
+export type draw_text_add_Baseline = 'normal' | 'subscript' | 'superscript';
+
+/** Paragraph alignment. */
+export type draw_text_add_Align = 'left' | 'centre' | 'right' | 'justify';
+
+/** `draw.text.add` parameters (02 §13.5). */
+export interface draw_text_add_params {
+  /** The drawing (default: `elementId` + `frame`, else the current drawing). */
+  drawingId?: string | null;
+  /** The element whose cell receives the text. */
+  elementId?: string | null;
+  /** The frame of that cell. */
+  frame?: number | null;
+  /** Create a drawing in an empty addressed cell. */
+  createDrawing?: boolean;
+  /** Top-left corner of the text box (du). */
+  position: draw_text_add_Point;
+  /** The characters (`\n` starts a paragraph). */
+  text: string;
+  /** Fixed width with word wrap (du); omitted = auto width. */
+  width?: number | null;
+  /** Text panel fields (default: the Text panel defaults, 02 §7.6.1). */
+  format?: draw_text_add_TextFormat | null;
+  /** Text colour (default: the current colour). */
+  colourId?: string | null;
+}
+
+/** `{x, y, width, height}`. */
+export interface draw_text_add_Bounds {
+  /** Minimum x (du). */
+  x: number;
+  /** Minimum y (du). */
+  y: number;
+  /** Width (du). */
+  width: number;
+  /** Height (du). */
+  height: number;
+}
+
+/** `{textId, bounds, rev}`. */
+export interface draw_text_add_result {
+  /** The drawing. */
+  drawingId: string;
+  /** The text object. */
   textId: string;
-  rev: number;
-}
-
-export interface draw_transform_apply_params {
-  /** object ID or path reference (10 §3) */
-  drawingId?: string;
-  /** Default: selection. */
-  ids?: string[];
-  translate?: {
-    x: number;
-    y: number;
-  };
-  scale?: {
-    x: number;
-    y: number;
-  };
-  /** (degrees, CCW) */
-  rotate?: number;
-  /** (degrees) */
-  skew?: {
-    x: number;
-    y: number;
-  };
-  /** Default: selection bounds centre. */
-  pivot?: {
-    x: number;
-    y: number;
-  };
-  /** (overrides the others) */
-  matrix?: number[];
-  copy?: boolean;
-}
-
-export interface draw_transform_apply_result {
-  ids: string[];
+  /** Its bounds in drawing space (laid out with the installed fonts). */
+  bounds: draw_text_add_Bounds;
+  /** Created objects. */
+  createdIds: string[];
+  /** Modified objects (content, membership or position changed; IDs kept). */
+  modifiedIds: string[];
+  /** Removed objects (descendants included). */
   removedIds: string[];
-  rev: number;
+  /** The drawing revision after the change. */
+  rev: number | bigint;
+}
+
+/** `{at, text}` of an insertion. */
+export interface draw_text_set_Insert {
+  /** Code-point position. */
+  at: number;
+  /** The characters. */
+  text: string;
+}
+
+/** `{start, length}` of a deletion. */
+export interface draw_text_set_Delete {
+  /** First code point. */
+  start: number;
+  /** Number of code points. */
+  length: number;
+}
+
+/** Width mode parameter. */
+export type draw_text_set_WidthModeParam = 'auto' | 'fixed';
+
+/** A point `{x, y}` in drawing units. */
+export interface draw_text_set_Point {
+  /** X (du). */
+  x: number;
+  /** Y (du, up). */
+  y: number;
+}
+
+/** `draw.text.set` parameters (02 §13.5). */
+export interface draw_text_set_params {
+  /** The text object (`<drawingId>/<localId>`, or local with `drawingId` / the current drawing). */
+  textId: string;
+  /** The drawing holding a local ID (default: `elementId` + `frame`, else the current drawing). */
+  drawingId?: string | null;
+  /** The element whose cell exposes the drawing (02 §13.1 item 4; with a local ID). */
+  elementId?: string | null;
+  /** The frame of that cell (default: the current frame). */
+  frame?: number | null;
+  /** Replace the whole text (the first run's and paragraph's format is kept). */
+  text?: string | null;
+  /** Insert characters. */
+  insert?: draw_text_set_Insert | null;
+  /** Delete characters. */
+  delete?: draw_text_set_Delete | null;
+  /** Auto or fixed width. */
+  widthMode?: draw_text_set_WidthModeParam | null;
+  /** Fixed width (du); switches to fixed width (02 §7.6). */
+  width?: number | null;
+  /** New top-left corner (du). */
+  position?: draw_text_set_Point | null;
+  /** The drawing revision the caller read (02 §3.12). */
+  expectRev?: number | bigint | null;
+}
+
+/** `{x, y, width, height}`. */
+export interface draw_text_set_Bounds {
+  /** Minimum x (du). */
+  x: number;
+  /** Minimum y (du). */
+  y: number;
+  /** Width (du). */
+  width: number;
+  /** Height (du). */
+  height: number;
+}
+
+/** `{textId, bounds, rev}`. */
+export interface draw_text_set_result {
+  /** The drawing. */
+  drawingId: string;
+  /** The text object. */
+  textId: string;
+  /** Its bounds in drawing space (laid out with the installed fonts). */
+  bounds: draw_text_set_Bounds;
+  /** Created objects. */
+  createdIds: string[];
+  /** Modified objects (content, membership or position changed; IDs kept). */
+  modifiedIds: string[];
+  /** Removed objects (descendants included). */
+  removedIds: string[];
+  /** The drawing revision after the change. */
+  rev: number | bigint;
+}
+
+/** Baseline (`script` in the project format). */
+export type draw_textFormat_set_Baseline = 'normal' | 'subscript' | 'superscript';
+
+/** Paragraph alignment. */
+export type draw_textFormat_set_Align = 'left' | 'centre' | 'right' | 'justify';
+
+/** `draw.textFormat.set` parameters (02 §13.5). */
+export interface draw_textFormat_set_params {
+  /** The text object. */
+  textId: string;
+  /** The drawing holding a local ID (default: `elementId` + `frame`, else the current drawing). */
+  drawingId?: string | null;
+  /** The element whose cell exposes the drawing (02 §13.1 item 4; with a local ID). */
+  elementId?: string | null;
+  /** The frame of that cell (default: the current frame). */
+  frame?: number | null;
+  /** First code point. */
+  start?: number;
+  /** Number of code points (default: to the end). */
+  length?: number | null;
+  /** Font family. */
+  font?: string | null;
+  /** Size (du). */
+  size?: number | null;
+  /** Bold. */
+  bold?: boolean | null;
+  /** Italic. */
+  italic?: boolean | null;
+  /** Baseline. */
+  baseline?: draw_textFormat_set_Baseline | null;
+  /** Manual kerning (1/100 em). */
+  kerning?: number | null;
+  /** Font kerning pairs. */
+  autoKern?: boolean | null;
+  /** Alignment. */
+  align?: draw_textFormat_set_Align | null;
+  /** Left margin (du). */
+  leftMargin?: number | null;
+  /** Right margin (du). */
+  rightMargin?: number | null;
+  /** First-line indent (du). */
+  indent?: number | null;
+  /** Additional line spacing (du). */
+  lineSpacing?: number | null;
+  /** Fill colour. */
+  colourId?: string | null;
+  /** Outline colour: only `null` (SI-055). */
+  outlineColourId?: string | null;
+  /** The drawing revision the caller read (02 §3.12). */
+  expectRev?: number | bigint | null;
+}
+
+/** `{x, y, width, height}`. */
+export interface draw_textFormat_set_Bounds {
+  /** Minimum x (du). */
+  x: number;
+  /** Minimum y (du). */
+  y: number;
+  /** Width (du). */
+  width: number;
+  /** Height (du). */
+  height: number;
+}
+
+/** `{textId, rev}`. */
+export interface draw_textFormat_set_result {
+  /** The drawing. */
+  drawingId: string;
+  /** The text object. */
+  textId: string;
+  /** Created objects. */
+  createdIds: string[];
+  /** Modified objects (content, membership or position changed; IDs kept). */
+  modifiedIds: string[];
+  /** Removed objects (descendants included). */
+  removedIds: string[];
+  /** Its bounds after the change. */
+  bounds: draw_textFormat_set_Bounds;
+  /** The drawing revision after the change. */
+  rev: number | bigint;
+}
+
+/** An anchor of a stroke. */
+export interface draw_transform_apply_AnchorRef {
+  /** The stroke (local ID). */
+  strokeId: string;
+  /** The anchor index. */
+  anchor: number;
+}
+
+/** A point `{x, y}` in drawing units. */
+export interface draw_transform_apply_Point {
+  /** X (du). */
+  x: number;
+  /** Y (du, up). */
+  y: number;
+}
+
+/** `{x, y}` factors. */
+export interface draw_transform_apply_Xy {
+  /** x. */
+  x: number;
+  /** y. */
+  y: number;
+}
+
+/** `draw.transform.apply` parameters. */
+export interface draw_transform_apply_params {
+  /** The drawing (default: current). */
+  drawingId?: string | null;
+  /** Objects (default: the selection). */
+  ids?: string[] | null;
+  /** Anchors to move instead of whole objects (default: the Contour Editor's point selection when no object is selected; SI-070). */
+  points?: draw_transform_apply_AnchorRef[] | null;
+  /** Translation (du). */
+  translate?: draw_transform_apply_Point | null;
+  /** Scale factors. */
+  scale?: draw_transform_apply_Xy | null;
+  /** Rotation (degrees, counter-clockwise). */
+  rotate?: number | null;
+  /** Skew (degrees). */
+  skew?: draw_transform_apply_Xy | null;
+  /** Pivot (default: the centre of the selection's bounds). */
+  pivot?: draw_transform_apply_Point | null;
+  /** A full matrix `[a, b, c, d, e, f]` (overrides the others). */
+  matrix?: number[] | null;
+  /** Transform copies, leaving the originals. */
+  copy?: boolean;
+  /** The drawing revision the caller read. */
+  expectRev?: number | bigint | null;
+}
+
+/** `{ids, removedIds, rev}` and the changed IDs. */
+export interface draw_transform_apply_result {
+  /** The drawing. */
+  drawingId: string;
+  /** The transformed objects (the copies with `copy`; pieces where noding split them). */
+  ids: string[];
+  /** Created objects. */
+  createdIds: string[];
+  /** Modified objects (content, membership or position changed; IDs kept). */
+  modifiedIds: string[];
+  /** Removed objects (descendants included). */
+  removedIds: string[];
+  /** The drawing revision after the change. */
+  rev: number | bigint;
 }
 
 export interface draw_vectorFile_import_params {
@@ -80574,57 +87762,124 @@ export interface draw_vectorFile_import_result {
   jobId: string;
 }
 
+/** Vectorization type. */
+export type draw_vectorize_preview_VectorizeType = 'blackAndWhite' | 'withTexture';
+
+/** Pre-filter. */
+export type draw_vectorize_preview_FilterIn = 'none' | 'smooth' | 'smoothMore' | 'edgeEnhance' | 'sharpen';
+
+/** `draw.vectorize.preview` parameters. */
 export interface draw_vectorize_preview_params {
-  /** file-system path (11 §6.2) */
-  file?: string;
-  /** object ID or path reference (10 §3) */
-  imageElementId?: string;
-  frame?: number | bigint;
-  type?: 'blackAndWhite' | 'withTexture';
-  filter?: 'none' | 'smooth' | 'smoothMore' | 'edgeEnhance' | 'sharpen';
-  threshold?: number;
+  /** An image file. */
+  file?: string | null;
+  /** An image element (its bitmap at `frame`). */
+  imageElementId?: string | null;
+  /** The frame of the image element (default: current frame). */
+  frame?: number | bigint | null;
+  /** Vectorization type. */
+  type?: draw_vectorize_preview_VectorizeType;
+  /** Pre-filter. */
+  filter?: draw_vectorize_preview_FilterIn;
+  /** Threshold, % of white (0–100; `vectorize.thresholdOutOfRange` outside). */
+  threshold?: number | bigint;
+  /** Preview width in pixels (1–4096). */
   width?: number | bigint;
 }
 
+/** `{png, strokeCount}`. */
 export interface draw_vectorize_preview_result {
+  /** The rendered result, base64 PNG. */
   png: string;
+  /** Shapes the vectorization creates. */
   strokeCount: number | bigint;
 }
 
+/** Vectorization type. */
+export type draw_vectorize_run_VectorizeType = 'blackAndWhite' | 'withTexture';
+
+/** Pre-filter. */
+export type draw_vectorize_run_FilterIn = 'none' | 'smooth' | 'smoothMore' | 'edgeEnhance' | 'sharpen';
+
+/** What to do with cells that already hold drawings. */
+export type draw_vectorize_run_OnConflict = 'ask' | 'replace' | 'skip';
+
+/** `draw.vectorize.run` parameters. */
 export interface draw_vectorize_run_params {
-  files?: string[];
-  /** object ID or path reference (10 §3) */
-  imageElementId?: string;
-  /** object ID or path reference (10 §3) (default: selected; new element if none) */
-  targetElementId?: string;
-  /** Default: selected cell. */
-  startFrame?: number | bigint;
-  type?: 'blackAndWhite' | 'withTexture';
-  filter?: 'none' | 'smooth' | 'smoothMore' | 'edgeEnhance' | 'sharpen';
-  threshold?: number;
-  onConflict?: 'ask' | 'replace' | 'skip';
+  /** Image files, in order (one drawing each). */
+  files?: string[] | null;
+  /** An image element to convert into a new drawing element with matching exposure (§11.3). */
+  imageElementId?: string | null;
+  /** The target drawing element (default: the selected element; a new element if none). */
+  targetElementId?: string | null;
+  /** The first cell (default: the current frame). */
+  startFrame?: number | bigint | null;
+  /** Vectorization type. */
+  type?: draw_vectorize_run_VectorizeType;
+  /** Pre-filter. */
+  filter?: draw_vectorize_run_FilterIn;
+  /** Threshold, % of white (0–100; `vectorize.thresholdOutOfRange` outside). */
+  threshold?: number | bigint;
+  /** Occupied cells. */
+  onConflict?: draw_vectorize_run_OnConflict;
+}
+
+/** The final result of `draw.vectorize.run`. */
+export interface draw_vectorize_run_RunResult {
+  /** The drawing element that received the drawings. */
+  elementId: string;
+  /** The drawings created, in order. */
+  drawingIds: string[];
+  /** Images completed. */
+  completed: number | bigint;
+  /** The job was cancelled after `completed` images. */
+  cancelled: boolean;
+  /** Images not committed, in order: their cell was occupied (`onConflict: "skip"`) or the job was cancelled first (SI-083: reported beside the spec's fields). */
+  skipped: draw_vectorize_run_Skipped[];
+}
+
+/** An image a run did not commit. */
+export interface draw_vectorize_run_Skipped {
+  /** Its position in `files` (or among the image element's drawings), from 0. */
+  index: number | bigint;
+  /** The file, or the image element's drawing. */
+  source: string;
+  /** `occupied` or `cancelled`. */
+  reason: string;
 }
 
 export interface draw_vectorize_run_result {
-  /** object ID or path reference (10 §3) */
+  /** The job (11 §7.7). */
   jobId: string;
 }
 
+/** `draw.viewMapping.get` parameters. */
 export interface draw_viewMapping_get_params {
+  /** The view (`drawing`; views arrive with M4 C4.2). */
   view?: string;
 }
 
+/** `{width, height}`. */
+export interface draw_viewMapping_get_ViewSize {
+  /** Width. */
+  width: number;
+  /** Height. */
+  height: number;
+}
+
+/** The mapping between a view's pixels and drawing space. */
 export interface draw_viewMapping_get_result {
-  /** object ID or path reference (10 §3) */
-  drawingId: string;
+  /** The view's drawing (`null` without a current drawing). */
+  drawingId?: string | null;
+  /** Drawing space → view pixels. */
   drawingToView: number[];
+  /** View pixels → drawing space. */
   viewToDrawing: number[];
+  /** Zoom (1 = 100 %). */
   zoom: number;
+  /** Rotation (degrees). */
   rotation: number;
-  viewSize: {
-    width: number;
-    height: number;
-  };
+  /** The view's size in pixels. */
+  viewSize: draw_viewMapping_get_ViewSize;
 }
 
 export interface drawAid_autoLightTable_set_params {
@@ -89327,16 +96582,27 @@ export interface tool_snapToContour_set_result {
   enabled: boolean;
 }
 
+/** Symmetry mode. */
+export type tool_symmetry_set_Mode = 'none' | 'mirror' | 'kaleidoscope';
+
+/** `tool.symmetry.set` parameters. */
 export interface tool_symmetry_set_params {
-  mode?: 'none' | 'mirror' | 'kaleidoscope';
+  /** Mode. */
+  mode?: tool_symmetry_set_Mode;
+  /** Axis angle from +y, counter-clockwise, degrees (0–360). */
   angle?: number;
-  mirrors?: number;
+  /** Mirror lines of a kaleidoscope (2–16). */
+  mirrors?: number | bigint;
 }
 
+/** `{mode, angle, mirrors}`. */
 export interface tool_symmetry_set_result {
-  mode: string;
+  /** Mode. */
+  mode: tool_symmetry_set_Mode;
+  /** Axis angle (degrees). */
   angle: number;
-  mirrors: number;
+  /** Mirror lines. */
+  mirrors: number | bigint;
 }
 
 export interface tool_tablet_set_params {

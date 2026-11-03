@@ -1,0 +1,44 @@
+[
+  {
+    "name": "closure-debug",
+    "command": "cargo test --locked -p tt-vector --test c21_r4_closure -- --nocapture",
+    "exit": 0,
+    "wallSeconds": 1.4772491999901831
+  },
+  {
+    "name": "closure-release",
+    "command": "cargo test --release --locked -p tt-vector --test c21_r4_closure -- --nocapture",
+    "exit": 0,
+    "wallSeconds": 0.8458241000771523
+  },
+  {
+    "name": "golden",
+    "command": "cargo test --locked -p tt-executor --test c21_determinism -- --nocapture",
+    "exit": 0,
+    "wallSeconds": 0.5992201999761164
+  },
+  {
+    "name": "locks",
+    "command": "cargo test --locked -p tt-persist --lib lock -- --nocapture",
+    "exit": 0,
+    "wallSeconds": 0.2538967998698354
+  },
+  {
+    "name": "c13-locks",
+    "command": "cargo test --locked -p tt-persist --test c13_r4_lock -- --nocapture",
+    "exit": 0,
+    "wallSeconds": 1.350317900069058
+  },
+  {
+    "name": "c14-locks",
+    "command": "cargo test --locked -p tt-executor --test c14_lock_races -- --nocapture",
+    "exit": 0,
+    "wallSeconds": 16.52630509994924
+  },
+  {
+    "name": "fmt",
+    "command": "cargo fmt --all -- --check",
+    "exit": 0,
+    "wallSeconds": 1.1523747998289764
+  }
+]

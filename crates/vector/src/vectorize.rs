@@ -1,0 +1,403 @@
+//! Import and vectorize (02 §11.2; M2 C2.4): a bitmap becomes brush-type shapes in one layer.
+//!
+//! The pipeline is exact and integer up to the fit, so its result is identical on every platform:
+//!
+//! 1. **Greyscale** of the straight-alpha RGBA input composited over white (BT.601 integer weights).
+//! 2. **Filter** ([`Filter`]): an integer 3×3 kernel with clamped edges.
+//! 3. **Threshold:** a pixel is ink when its grey level is below `threshold` % of white.
+//! 4. **Trace:** ink is 8-connected and paper 4-connected, so boundaries never cross. Every pixel side between ink and
+//!    paper is a unit edge of the pixel-corner lattice, directed with ink on its right in image coordinates; at a
+//!    saddle vertex (two diagonal ink pixels) the walk turns left onto the other ink pixel. Each closed walk is an outer boundary or
+//!    a hole of exactly one ink region (the region of the ink pixel on its first edge, from an 8-connected labelling).
+//! 5. **Shape:** each boundary is taken through the midpoints of its unit edges (removing the half-pixel staircase),
+//!    mapped so the image width spans 1200 du centred on the origin (y up), the holes joined to the outer boundary
+//!    with zero-width bridges (10 §4.9 stores one closed path per stroke; SI-053), and fitted with Bézier curves at
+//!    smoothness 3 (02 §3.3).
+//!
+//! Every pass charges one work account ([`VECTORIZE_WORK_BUDGET`] per image), which also observes the watchdog's
+//! cancellation, so an image too large or too detailed is refused before the document worker is held too long.
+
+use std::collections::BTreeSet;
+
+use crate::fit::{self, Sample};
+use crate::geom::{P, signed_area};
+use crate::path::{Anchor, GeomError, MAX_ANCHORS, Path};
+use crate::work::Work;
+
+/// The work one image's vectorization may do, in units of about one pixel or vertex visit.
+pub const VECTORIZE_WORK_BUDGET: u64 = 1_500_000_000;
+
+/// The largest image vectorized, in pixels (larger decoded images are refused with `limit.exceeded`): 16 M pixels,
+/// e.g. an A4 page scanned at 400 dpi.
+pub const MAX_PIXELS: u64 = 16 << 20;
+
+/// The width the result spans: the camera frame width, 12 fields (02 §11.2).
+pub const FRAME_WIDTH: f64 = 1200.0;
+
+/// The fitting smoothness of traced boundaries (02 §11.2).
+pub const SMOOTHNESS: f64 = 3.0;
+
+/// The pre-filter (02 §11.2 Settings).
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Default)]
+pub enum Filter {
+    /// No filter.
+    #[default]
+    None,
+    /// Light mean blur: centre weight 4, neighbours 1 (÷ 12).
+    Smooth,
+    /// 3×3 box mean (÷ 9).
+    SmoothMore,
+    /// High-pass edge enhancement: centre 10, neighbours −1 (÷ 2).
+    EdgeEnhance,
+    /// Sharpening: centre 32, neighbours −2 (÷ 16).
+    Sharpen,
+}
+
+impl Filter {
+    /// `(centre weight, neighbour weight, divisor)`.
+    fn kernel(self) -> Option<(i32, i32, i32)> {
+        match self {
+            Self::None => None,
+            Self::Smooth => Some((4, 1, 12)),
+            Self::SmoothMore => Some((1, 1, 9)),
+            Self::EdgeEnhance => Some((10, -1, 2)),
+            Self::Sharpen => Some((32, -2, 16)),
+        }
+    }
+}
+
+fn charge(work: &mut Work, n: usize) -> Result<(), GeomError> {
+    work.spend_n(n)
+}
+
+fn too_large(what: &str, actual: u64, maximum: u64) -> GeomError {
+    GeomError {
+        code: "limit.exceeded",
+        message: format!("the image has {actual} {what}; vectorization accepts at most {maximum}"),
+        pointer: String::new(),
+    }
+}
+
+/// The grey levels of straight-alpha RGBA pixels composited over white.
+///
+/// # Errors
+/// `drawing.invalidGeometry` when `rgba` is not `width × height × 4` bytes; `limit.exceeded` past [`MAX_PIXELS`] or
+/// the work budget.
+pub fn grey(width: u32, height: u32, rgba: &[u8], work: &mut Work) -> Result<Vec<u8>, GeomError> {
+    let pixels = u64::from(width) * u64::from(height);
+    if pixels > MAX_PIXELS {
+        return Err(too_large("pixels", pixels, MAX_PIXELS));
+    }
+    let n = usize::try_from(pixels).map_err(|_| too_large("pixels", pixels, MAX_PIXELS))?;
+    if width == 0 || height == 0 || rgba.len() != n * 4 {
+        return Err(GeomError::invalid("/image", "the pixel buffer does not match the image size"));
+    }
+    charge(work, n)?;
+    Ok(rgba
+        .as_chunks::<4>()
+        .0
+        .iter()
+        .map(|&[r, g, b, a]| {
+            let y = (299 * u32::from(r) + 587 * u32::from(g) + 114 * u32::from(b) + 500) / 1000;
+            let a = u32::from(a);
+            u8::try_from((y * a + 255 * (255 - a) + 127) / 255).unwrap_or(255)
+        })
+        .collect())
+}
+
+/// Applies `filter` to a grey image.
+///
+/// # Errors
+/// `limit.exceeded` past the work budget.
+pub fn filter(grey: &[u8], width: u32, height: u32, filter: Filter, work: &mut Work) -> Result<Vec<u8>, GeomError> {
+    let Some((centre, side, div)) = filter.kernel() else { return Ok(grey.to_vec()) };
+    let (w, h) = (width as usize, height as usize);
+    charge(work, grey.len().saturating_mul(9))?;
+    let at = |x: isize, y: isize| -> i32 {
+        let cx = x.clamp(0, w as isize - 1) as usize;
+        let cy = y.clamp(0, h as isize - 1) as usize;
+        i32::from(grey.get(cy * w + cx).copied().unwrap_or(255))
+    };
+    let mut out = Vec::with_capacity(grey.len());
+    for y in 0..h as isize {
+        for x in 0..w as isize {
+            let mut sum = 0;
+            for dy in -1..=1 {
+                for dx in -1..=1 {
+                    sum += at(x + dx, y + dy) * if dx == 0 && dy == 0 { centre } else { side };
+                }
+            }
+            out.push(u8::try_from((sum + div / 2).div_euclid(div).clamp(0, 255)).unwrap_or(255));
+        }
+    }
+    Ok(out)
+}
+
+/// Ink pixels: grey level below `threshold` % (0–100) of white.
+#[must_use]
+pub fn threshold(grey: &[u8], threshold: u8) -> Vec<bool> {
+    let t = u32::from(threshold.min(100)) * 255;
+    grey.iter().map(|&g| u32::from(g) * 100 < t).collect()
+}
+
+/// One ink region: its outer boundary and its holes, as closed lattice polygons (pixel-corner coordinates, image y
+/// down) through every unit step.
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub struct Region {
+    /// The outer boundary.
+    pub outer: Vec<(u32, u32)>,
+    /// The holes (paper inside the region).
+    pub holes: Vec<Vec<(u32, u32)>>,
+}
+
+const E: u8 = 1;
+const S: u8 = 2;
+const W: u8 = 4;
+const N: u8 = 8;
+
+/// Traces the ink regions of a `width × height` ink mask, in a deterministic order (by the first pixel of each region
+/// in row-major order).
+///
+/// # Errors
+/// `drawing.invalidGeometry` for a mask of the wrong size; `limit.exceeded` past the work budget.
+pub fn trace(ink: &[bool], width: u32, height: u32, work: &mut Work) -> Result<Vec<Region>, GeomError> {
+    let (w, h) = (width as usize, height as usize);
+    if ink.len() != w * h {
+        return Err(GeomError::invalid("/image", "the ink mask does not match the image size"));
+    }
+    let is_ink = |x: isize, y: isize| {
+        x >= 0 && y >= 0 && (x as usize) < w && (y as usize) < h && ink[y as usize * w + x as usize]
+    };
+    // 8-connected labels of the ink pixels (0: paper), in order of each region's first pixel.
+    charge(work, ink.len().saturating_mul(2))?;
+    let mut label = vec![0u32; w * h];
+    let mut regions = 0u32;
+    let mut stack: Vec<(usize, usize)> = Vec::new();
+    for start in 0..w * h {
+        if !ink[start] || label[start] != 0 {
+            continue;
+        }
+        regions += 1;
+        label[start] = regions;
+        stack.push((start % w, start / w));
+        while let Some((x, y)) = stack.pop() {
+            for (dx, dy) in [(-1isize, -1isize), (0, -1), (1, -1), (-1, 0), (1, 0), (-1, 1), (0, 1), (1, 1)] {
+                let (nx, ny) = (x as isize + dx, y as isize + dy);
+                if is_ink(nx, ny) {
+                    let i = ny as usize * w + nx as usize;
+                    if label[i] == 0 {
+                        label[i] = regions;
+                        stack.push((nx as usize, ny as usize));
+                    }
+                }
+            }
+        }
+    }
+    // Outgoing unit edges at each lattice vertex ((w + 1) × (h + 1)), ink on the right (image coordinates).
+    let vw = w + 1;
+    let mut out = vec![0u8; vw * (h + 1)];
+    charge(work, ink.len().saturating_mul(4))?;
+    for y in 0..h {
+        for x in 0..w {
+            if !ink[y * w + x] {
+                continue;
+            }
+            let (xi, yi) = (x as isize, y as isize);
+            if !is_ink(xi, yi - 1) {
+                out[y * vw + x] |= E; // top side, west to east
+            }
+            if !is_ink(xi + 1, yi) {
+                out[y * vw + x + 1] |= S; // right side, north to south
+            }
+            if !is_ink(xi, yi + 1) {
+                out[(y + 1) * vw + x + 1] |= W; // bottom side, east to west
+            }
+            if !is_ink(xi - 1, yi) {
+                out[(y + 1) * vw + x] |= N; // left side, south to north
+            }
+        }
+    }
+    let mut outers: Vec<Option<Vec<(u32, u32)>>> = vec![None; regions as usize];
+    let mut holes: Vec<Vec<Vec<(u32, u32)>>> = vec![Vec::new(); regions as usize];
+    // Each edge's successor depends only on the original edges at its end vertex (at a saddle, the left turn onto the
+    // diagonal ink pixel), so the boundaries are exactly the cycles of that successor map.
+    let left = |d: u8| match d {
+        E => N,
+        S => E,
+        W => S,
+        _ => W,
+    };
+    let mut used = vec![0u8; out.len()];
+    let total_edges: usize = out.iter().map(|m| m.count_ones() as usize).sum();
+    for v0 in 0..out.len() {
+        for first in [E, S, W, N] {
+            if out[v0] & first == 0 || used[v0] & first != 0 {
+                continue;
+            }
+            let (x0, y0) = (v0 % vw, v0 / vw);
+            // The ink pixel on the right of the first edge names the region.
+            let px = match first {
+                E => Some((x0, y0)),
+                S => x0.checked_sub(1).map(|x| (x, y0)),
+                W => x0.checked_sub(1).zip(y0.checked_sub(1)),
+                _ => y0.checked_sub(1).map(|y| (x0, y)),
+            };
+            let region = px.and_then(|(x, y)| label.get(y * w + x)).copied().unwrap_or(0);
+            let mut poly: Vec<(u32, u32)> = Vec::new();
+            let (mut v, mut d) = (v0, first);
+            loop {
+                used[v] |= d;
+                poly.push(((v % vw) as u32, (v / vw) as u32));
+                v = match d {
+                    E => v + 1,
+                    S => v + vw,
+                    W => v - 1,
+                    _ => v - vw,
+                };
+                let m = out[v];
+                d = match m.count_ones() {
+                    1 => m,
+                    // A saddle: two diagonal ink pixels. Turning left crosses to the other one (8-connected ink).
+                    2 => left(d),
+                    _ => return Err(GeomError::invalid("/image", "internal: an open boundary")),
+                };
+                if (v == v0 && d == first) || poly.len() > total_edges {
+                    break;
+                }
+            }
+            charge(work, poly.len())?;
+            let Some(slot) = (region as usize).checked_sub(1) else { continue };
+            // Outer boundaries run clockwise on screen (positive area with y down); holes the other way.
+            if lattice_area2(&poly) > 0 {
+                if let Some(o) = outers.get_mut(slot) {
+                    *o = Some(poly);
+                }
+            } else if let Some(hs) = holes.get_mut(slot) {
+                hs.push(poly);
+            }
+        }
+    }
+    Ok(outers.into_iter().zip(holes).filter_map(|(outer, holes)| outer.map(|outer| Region { outer, holes })).collect())
+}
+
+/// Twice the signed area of a lattice polygon, positive when it runs clockwise on screen (image y down).
+fn lattice_area2(poly: &[(u32, u32)]) -> i64 {
+    let n = poly.len();
+    (0..n)
+        .map(|i| {
+            let (a, b) = (poly[i], poly[(i + 1) % n]);
+            i64::from(a.0) * i64::from(b.1) - i64::from(b.0) * i64::from(a.1)
+        })
+        .sum()
+}
+
+/// The midpoints of a lattice polygon's unit edges, in drawing coordinates.
+fn midpoints(poly: &[(u32, u32)], width: u32, height: u32) -> Vec<P> {
+    let s = FRAME_WIDTH / f64::from(width);
+    let (cx, cy) = (f64::from(width) / 2.0, f64::from(height) / 2.0);
+    let n = poly.len();
+    (0..n)
+        .map(|i| {
+            let (a, b) = (poly[i], poly[(i + 1) % n]);
+            let (mx, my) = ((f64::from(a.0) + f64::from(b.0)) / 2.0, (f64::from(a.1) + f64::from(b.1)) / 2.0);
+            P::new((mx - cx) * s, (cy - my) * s)
+        })
+        .collect()
+}
+
+/// The closed outline of a region: its boundaries through their unit-edge midpoints, holes bridged to the outer
+/// boundary, fitted at [`SMOOTHNESS`]. The contour runs between bridges are fitted separately and the bridges stay
+/// exact straight segments, so each bridge's two passes coincide and cancel (SI-053; the centre line and the fill
+/// rule rely on it).
+///
+/// # Errors
+/// `limit.exceeded` past the work budget or [`MAX_ANCHORS`].
+pub fn outline(region: &Region, width: u32, height: u32, work: &mut Work) -> Result<Path, GeomError> {
+    let mut contours: Vec<Vec<P>> = Vec::with_capacity(1 + region.holes.len());
+    for poly in std::iter::once(&region.outer).chain(&region.holes) {
+        charge(work, poly.len())?;
+        let c = midpoints(poly, width, height);
+        if c.len() >= 3 && signed_area(&c) != 0.0 {
+            contours.push(c);
+        }
+    }
+    let Some(merged) = crate::brush::bridge_charged(contours, &mut |n| work.spend(n))? else {
+        return Err(GeomError::invalid("/image", "the region has no area"));
+    };
+    let path = fit_bridged(&merged, work)?;
+    if path.anchors.len() > MAX_ANCHORS {
+        return Err(GeomError {
+            code: "limit.exceeded",
+            message: format!("a traced shape needs more than {MAX_ANCHORS} anchors"),
+            pointer: "/image".to_owned(),
+        });
+    }
+    Ok(path)
+}
+
+/// Fits a closed bridged polygon: one closed fit without bridges; otherwise each run of contour edges between bridge
+/// edges (an edge whose reverse is also an edge) is fitted open, its ends pinned to the run's end points, and the
+/// bridges join the runs as straight segments.
+fn fit_bridged(merged: &[P], work: &mut Work) -> Result<Path, GeomError> {
+    let n = merged.len();
+    let bits = |p: P| (p.x.to_bits(), p.y.to_bits());
+    let edges: BTreeSet<_> = (0..n).map(|i| (bits(merged[i]), bits(merged[(i + 1) % n]))).collect();
+    charge(work, n)?;
+    let bridge: Vec<bool> = (0..n).map(|i| edges.contains(&(bits(merged[(i + 1) % n]), bits(merged[i])))).collect();
+    let fit_run = |run: &[P], closed: bool, work: &mut Work| -> Result<Vec<Anchor>, GeomError> {
+        let samples: Vec<Sample> = run.iter().map(|p| Sample { p: *p, pressure: 1.0 }).collect();
+        let budget = VECTORIZE_WORK_BUDGET.saturating_sub(work.used());
+        let (f, used) = fit::fit_bounded(&samples, SMOOTHNESS, closed, budget)?;
+        work.spend(used)?;
+        Ok(f.path.anchors)
+    };
+    let Some(start) = (0..n).find(|&i| !bridge[i] && bridge[(i + n - 1) % n]) else {
+        return Ok(Path { anchors: fit_run(merged, true, work)?, closed: true });
+    };
+    let mut anchors: Vec<Anchor> = Vec::new();
+    let mut run: Vec<P> = vec![merged[start]];
+    for step in 0..n {
+        let i = (start + step) % n;
+        if bridge[i] {
+            // The run ends at this bridge's start; a bridge after a bridge leaves its one point as a corner.
+            if run.len() >= 2 {
+                let mut fitted = fit_run(&run, false, work)?;
+                if let (Some(first), Some(&p)) = (fitted.first_mut(), run.first()) {
+                    *first = Anchor { p, inh: P::default(), outh: first.outh };
+                }
+                if let (Some(last), Some(&p)) = (fitted.last_mut(), run.last()) {
+                    *last = Anchor { p, inh: last.inh, outh: P::default() };
+                }
+                anchors.extend(fitted);
+            } else {
+                anchors.extend(run.iter().map(|p| Anchor::corner(*p)));
+            }
+            run = vec![merged[(i + 1) % n]];
+        } else {
+            run.push(merged[(i + 1) % n]);
+        }
+    }
+    Ok(Path { anchors, closed: true })
+}
+
+/// Vectorizes straight-alpha RGBA pixels: one closed outline per ink region, in region order.
+///
+/// # Errors
+/// As [`grey`], [`trace`] and [`outline`].
+pub fn vectorize(
+    width: u32,
+    height: u32,
+    rgba: &[u8],
+    filter_kind: Filter,
+    threshold_pct: u8,
+    work: &mut Work,
+) -> Result<Vec<Path>, GeomError> {
+    let g = grey(width, height, rgba, work)?;
+    let g = filter(&g, width, height, filter_kind, work)?;
+    charge(work, g.len())?;
+    let ink = threshold(&g, threshold_pct);
+    drop(g);
+    let regions = trace(&ink, width, height, work)?;
+    drop(ink);
+    regions.iter().map(|r| outline(r, width, height, work)).collect()
+}

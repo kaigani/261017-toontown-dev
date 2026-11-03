@@ -203,6 +203,12 @@ impl JobTable {
                 let outcome = work(&progress).and_then(|v| check_final_result(&command, v));
                 let cancelled = progress.cancelled();
                 progress.table.update(&progress.job_id, |r| match outcome {
+                    // A job that stops at the cancellation and reports what it completed keeps that report
+                    // (`draw.vectorize.run` keeps its finished images, 02 §11.2).
+                    Ok(v) if cancelled => {
+                        r.state = JobState::Cancelled;
+                        r.result = Some(v);
+                    }
                     _ if cancelled => r.state = JobState::Cancelled,
                     Ok(v) => {
                         r.state = JobState::Succeeded;

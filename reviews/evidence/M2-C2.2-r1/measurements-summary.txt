@@ -1,0 +1,25 @@
+local-strokes-100k-windows.json
+strokeAdd {'strokeAdd.allocatedBytes': 7424896727.0, 'strokeAdd.retainedBytes': 31563.0, 'strokeAdd.wallMs': 9835.2561}
+strokeAddDryRun {'strokeAddDryRun.allocatedBytes': 6730585674.0, 'strokeAddDryRun.retainedBytes': -45427.0, 'strokeAddDryRun.wallMs': 9026.2137}
+strokeSet {'strokeSet.allocatedBytes': 3398895301.0, 'strokeSet.retainedBytes': 5415.0, 'strokeSet.wallMs': 4602.6713}
+patchProperty {'patchProperty.allocatedBytes': 2456591577.0, 'patchProperty.retainedBytes': 6112.0, 'patchProperty.wallMs': 3285.6813}
+brushAdd {'brushAdd.allocatedBytes': 3378501141.0, 'brushAdd.retainedBytes': 91799.0, 'brushAdd.wallMs': 4579.293}
+undo {'undo.allocatedBytes': 4657286160.0, 'undo.retainedBytes': 13038.0, 'undo.wallMs': 6106.4353}
+redo {'redo.allocatedBytes': 4004100254.0, 'redo.retainedBytes': 11160.0, 'redo.wallMs': 5254.1055}
+ci-41226587397-strokes-100k-windows.json
+strokeAdd {'strokeAdd.allocatedBytes': 7424886172.0, 'strokeAdd.retainedBytes': 33929.0, 'strokeAdd.wallMs': 21934.794400000002}
+strokeAddDryRun {'strokeAddDryRun.allocatedBytes': 6730586232.0, 'strokeAddDryRun.retainedBytes': -34806.0, 'strokeAddDryRun.wallMs': 21532.4787}
+strokeSet {'strokeSet.allocatedBytes': 3398897272.0, 'strokeSet.retainedBytes': 5415.0, 'strokeSet.wallMs': 10543.2405}
+patchProperty {'patchProperty.allocatedBytes': 2456591942.0, 'patchProperty.retainedBytes': 6112.0, 'patchProperty.wallMs': 7409.5287}
+brushAdd {'brushAdd.allocatedBytes': 3378512282.0, 'brushAdd.retainedBytes': 91849.0, 'brushAdd.wallMs': 10218.2732}
+undo {'undo.allocatedBytes': 4657502566.0, 'undo.retainedBytes': 13038.0, 'undo.wallMs': 13525.364599999999}
+redo {'redo.allocatedBytes': 4004100834.0, 'redo.retainedBytes': 20719.0, 'redo.wallMs': 12085.902}
+ci-41226587397-strokes-100k-macos.json
+strokeAdd {'strokeAdd.allocatedBytes': 7383270935.0, 'strokeAdd.retainedBytes': 27003.0, 'strokeAdd.wallMs': 8229.049207999999}
+strokeAddDryRun {'strokeAddDryRun.allocatedBytes': 6693762952.0, 'strokeAddDryRun.retainedBytes': -43151.0, 'strokeAddDryRun.wallMs': 7997.305584000001}
+strokeSet {'strokeSet.allocatedBytes': 3378084425.0, 'strokeSet.retainedBytes': 5345.0, 'strokeSet.wallMs': 3582.481417}
+patchProperty {'patchProperty.allocatedBytes': 2442182012.0, 'patchProperty.retainedBytes': 6048.0, 'patchProperty.wallMs': 2090.598833}
+brushAdd {'brushAdd.allocatedBytes': 3357688342.0, 'brushAdd.retainedBytes': 91719.0, 'brushAdd.wallMs': 2972.4922500000002}
+undo {'undo.allocatedBytes': 4626074048.0, 'undo.retainedBytes': 12958.0, 'undo.wallMs': 4543.648334}
+redo {'redo.allocatedBytes': 3977700217.0, 'redo.retainedBytes': 10154.0, 'redo.wallMs': 3554.448666}
+planar-worst-case-windows.json {'budgetUnits': 1200000000, 'os': 'windows', 'cases': [{'name': '100000-small-curves-plus-one', 'inputStrokes': 100001, 'runs': [{'wallMs': 2457.9665, 'units': 931042320, 'outcome': 'ok', 'zones': 0, 'strokes': 100001}, {'wallMs': 2434.7402, 'units': 931042320, 'outcome': 'ok', 'zones': 0, 'strokes': 100001}]}, {'name': 'grid-200x200-crossing-lines', 'inputStrokes': 400, 'runs': [{'wallMs': 488.1666, 'units': 317770926, 'outcome': 'ok', 'zones': 39601, 'strokes': 80400}, {'wallMs': 484.87019999999995, 'units': 317770926, 'outcome': 'ok', 'zones': 39601, 'strokes': 80400}]}, {'name': 'grid-600x600-crossing-lines', 'inputStrokes': 1200, 'runs': [{'wallMs': 2272.2443000000003, 'units': 1666747212, 'outcome': 'limit.exceeded: the planar map needs more than 1200000000 units of work', 'zones': 0

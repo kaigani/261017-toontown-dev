@@ -1,0 +1,93 @@
+{
+  "executor-reviewer": {
+    "passed": 46,
+    "failed": 0,
+    "ignored": 1,
+    "summaries": 17,
+    "targets": [
+      "c23_r1_colour.rs (target\\debug\\deps\\c23_r1_colour-c4024cf2ca61214d.exe)",
+      "c23_r1_commands.rs (target\\debug\\deps\\c23_r1_commands-acb039da2d4bf722.exe)",
+      "c23_r1_contracts.rs (target\\debug\\deps\\c23_r1_contracts-c880cdc2fdb59598.exe)",
+      "c23_r1_controls.rs (target\\debug\\deps\\c23_r1_controls-93e2c17bb30c2074.exe)",
+      "c23_r1_measure.rs (target\\debug\\deps\\c23_r1_measure-01aa72a867df4509.exe)",
+      "c23_r2_closure.rs (target\\debug\\deps\\c23_r2_closure-e0292732179ef7e4.exe)",
+      "c23_r2_limits.rs (target\\debug\\deps\\c23_r2_limits-f970292d3c116a56.exe)",
+      "c23_r2_watchdog.rs (target\\debug\\deps\\c23_r2_watchdog-303e8ffca78fcd11.exe)",
+      "c23_r3_budgets.rs (target\\debug\\deps\\c23_r3_budgets-9c9015b1927d895f.exe)",
+      "c23_r3_cancellation.rs (target\\debug\\deps\\c23_r3_cancellation-0275cba040fae120.exe)",
+      "c23_r3_closure.rs (target\\debug\\deps\\c23_r3_closure-0960724db8fbc16d.exe)",
+      "c23_r3_inputs.rs (target\\debug\\deps\\c23_r3_inputs-b1c3e1ccfaa3067c.exe)",
+      "c23_r3_profile.rs (target\\debug\\deps\\c23_r3_profile-a785ed710c6360b3.exe)",
+      "c23_r3_selection_cancel.rs (target\\debug\\deps\\c23_r3_selection_cancel-a1627e6cebf5c74c.exe)",
+      "c23_r3_session.rs (target\\debug\\deps\\c23_r3_session-4102f898e0fa2725.exe)",
+      "c23_r3_texture.rs (target\\debug\\deps\\c23_r3_texture-f505a51ccd0fb13b.exe)",
+      "c23_r3_topology.rs (target\\debug\\deps\\c23_r3_topology-56b4aac9d7f8200d.exe)"
+    ]
+  },
+  "mcp": {
+    "passed": 70,
+    "failed": 0,
+    "ignored": 3,
+    "summaries": 28,
+    "targets": [
+      "unittests src\\lib.rs (target\\debug\\deps\\tt_mcp-3384eddade6cb842.exe)",
+      "audit.rs (target\\debug\\deps\\audit-8901eea97f0db5b8.exe)",
+      "c14_r1_autosave.rs (target\\debug\\deps\\c14_r1_autosave-3a98cc37587b093a.exe)",
+      "c14_r1_limits.rs (target\\debug\\deps\\c14_r1_limits-6af5dba767c14dcc.exe)",
+      "c14_r2_replay.rs (target\\debug\\deps\\c14_r2_replay-0802d5cf9e0a7af9.exe)",
+      "c14_r3_groups.rs (target\\debug\\deps\\c14_r3_groups-a7e97beab1af755b.exe)",
+      "c14_r3_history_r1.rs (target\\debug\\deps\\c14_r3_history_r1-b1979f034e3773c3.exe)",
+      "c14_r3_history_r3.rs (target\\debug\\deps\\c14_r3_history_r3-87ca62a5cf971992.exe)",
+      "c14_r3_replay.rs (target\\debug\\deps\\c14_r3_replay-5de6de0fa7ea8bc7.exe)",
+      "c14_r4_closure.rs (target\\debug\\deps\\c14_r4_closure-7bc2c5f2423cc243.exe)",
+      "c14_r4_expect_rev.rs (target\\debug\\deps\\c14_r4_expect_rev-f760cf25d18a38cc.exe)",
+      "c14_r5_closure.rs (target\\debug\\deps\\c14_r5_closure-853274a0a6b07de1.exe)",
+      "c14_tickets.rs (target\\debug\\deps\\c14_tickets-f09876268ae71168.exe)",
+      "c21_history.rs (target\\debug\\deps\\c21_history-777bd264d48ed5dd.exe)",
+      "c21_r1_surfaces.rs (target\\debug\\deps\\c21_r1_surfaces-f3619cc1488b4829.exe)",
+      "c21_r2_events.rs (target\\debug\\deps\\c21_r2_events-7e47c2977aed46da.exe)",
+      "c21_r3_never_block.rs (target\\debug\\deps\\c21_r3_never_block-ce42c860bb7b734e.exe)",
+      "c21_replay.rs (target\\debug\\deps\\c21_replay-f825a2786fb67b62.exe)",
+      "c21_worked_examples.rs (target\\debug\\deps\\c21_worked_examples-e8f38cff9e23ed2f.exe)",
+      "c22_r1_surface.rs (target\\debug\\deps\\c22_r1_surface-9e088490c40a3772.exe)",
+      "c22_r2_surface.rs (target\\debug\\deps\\c22_r2_surface-9e558d8e7bbf348a.exe)",
+      "c22_r3_surface.rs (target\\debug\\deps\\c22_r3_surface-ea2c4121f9f536de.exe)",
+      "c22_replay.rs (target\\debug\\deps\\c22_replay-4aa6bb20671d89bc.exe)",
+      "c23_r2_timeout.rs (target\\debug\\deps\\c23_r2_timeout-164b3fba526cfbad.exe)",
+      "contracts.rs (target\\debug\\deps\\contracts-3e2fdd0a7b210f5b.exe)",
+      "never_block.rs (target\\debug\\deps\\never_block-842c590214334bd8.exe)",
+      "protocol.rs (target\\debug\\deps\\protocol-f81cfb91ce334ccc.exe)"
+    ]
+  },
+  "vector-reviewer": {
+    "passed": 6,
+    "failed": 0,
+    "ignored": 0,
+    "summaries": 3,
+    "targets": [
+      "c23_r1_geometry.rs (target\\debug\\deps\\c23_r1_geometry-cbe3061fe50803cb.exe)",
+      "c23_r2_predicates.rs (target\\debug\\deps\\c23_r2_predicates-7763fff9a880ed41.exe)",
+      "c23_r2_smooth.rs (target\\debug\\deps\\c23_r2_smooth-08d8c7703d638499.exe)"
+    ]
+  },
+  "render-reviewer": {
+    "passed": 4,
+    "failed": 0,
+    "ignored": 0,
+    "summaries": 3,
+    "targets": [
+      "c23_r1_texture.rs (target\\debug\\deps\\c23_r1_texture-872150c984c46f5a.exe)",
+      "c23_r2_texture.rs (target\\debug\\deps\\c23_r2_texture-c66e12c8ec19739a.exe)",
+      "c23_r3_cancel.rs (target\\debug\\deps\\c23_r3_cancel-5bd982203472f933.exe)"
+    ]
+  },
+  "closure-final": {
+    "passed": 3,
+    "failed": 0,
+    "ignored": 0,
+    "summaries": 1,
+    "targets": [
+      "c23_r4_closure.rs (target\\debug\\deps\\c23_r4_closure-2983f70342d8ef80.exe)"
+    ]
+  }
+}

@@ -1,0 +1,35 @@
+golden changed paths: [
+  "/sha256",
+  "/drawing1/nodes/7/children/0/strokes (length 3 -> 48)",
+  "/bytes"
+]
+changed node 7 kind drawingNode id nd_01K7JJN8006P9P725PDXR1TR0E stroke counts 0 0
+all other node values equal: True
+reviewer-owned changes:
+ci-41226587397-strokes-100k-macos.json {'os': 'macos', 'arch': 'aarch64', 'cpus': 3, 'profile': 'release', 'startedAt': '2026-10-31T17:56:12.643Z', 'timeOrigin': 'tMs: milliseconds since startedAt on a monotonic clock', 'summaryRule': 'nearest rank: sorted[round((n - 1) * q)]'}
+brushAdd.wallMs 2972.4922500000002 range 2331.951208 3277.690959
+patchProperty.wallMs 2090.598833 range 1725.426208 2754.7381250000003
+process.liveBytes 1425595674.0 range 732635785.0 1426111666.0
+redo.wallMs 3554.448666 range 2843.192083 5440.384916
+strokeAdd.wallMs 8229.049207999999 range 6432.341167 9597.41425
+strokeAddDryRun.wallMs 7997.305584000001 range 5881.4715 9600.74775
+strokeSet.wallMs 3582.481417 range 2696.419042 4288.556791999999
+undo.wallMs 4543.648334 range 3526.3986250000003 5557.970958
+ci-41226587397-strokes-100k-windows.json {'os': 'windows', 'arch': 'x86_64', 'cpus': 4, 'profile': 'release', 'startedAt': '2026-10-31T18:01:50.424Z', 'timeOrigin': 'tMs: milliseconds since startedAt on a monotonic clock', 'summaryRule': 'nearest rank: sorted[round((n - 1) * q)]'}
+brushAdd.wallMs 10218.2732 range 9827.0452 10627.1486
+patchProperty.wallMs 7409.5287 range 7167.7776 7907.732300000001
+process.liveBytes 1425402258.0 range 732435812.0 1425916743.0
+redo.wallMs 12085.902 range 11182.8743 13060.7299
+strokeAdd.wallMs 21934.794400000002 range 20115.874300000003 23598.5832
+strokeAddDryRun.wallMs 21532.4787 range 18725.878699999997 22109.2108
+strokeSet.wallMs 10543.2405 range 10151.83 10835.434799999999
+undo.wallMs 13525.364599999999 range 12955.8254 14031.0764
+strokes-100k-windows.json {'os': 'windows', 'arch': 'x86_64', 'cpus': 32, 'profile': 'release', 'startedAt': '2026-10-31T16:26:35.503Z', 'timeOrigin': 'tMs: milliseconds since startedAt on a monotonic clock', 'summaryRule': 'nearest rank: sorted[round((n - 1) * q)]'}
+brushAdd.wallMs 4486.490500000001 range 4242.7726 4660.2001
+patchProperty.wallMs 3240.7054 range 2970.2744000000002 3252.9441
+process.liveBytes 1425605246.0 range 732642349.0 1426123271.0
+redo.wallMs 5216.0255 range 4525.1258 5861.5036
+strokeAdd.wallMs 9587.643699999999 range 8896.49 10534.9495
+strokeAddDryRun.wallMs 9016.6176 range 8046.1875 9704.6024
+strokeSet.wallMs 4540.4130000000005 range 4257.5242 4666.900799999999
+undo.wallMs 5925.4463 range 5358.8384 6064.153700000001

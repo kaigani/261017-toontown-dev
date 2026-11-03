@@ -1,0 +1,113 @@
+{
+  "head": "0997205740eb97a0fa3f60601bb78022447271e0",
+  "priorReviewerPathsChecked": 77,
+  "priorReviewerDiffEmpty": true,
+  "ticketBodyIdenticalSince5983f29": true,
+  "ticketBodySha256": "4183bf650933f98e7516f4ff3b0fa5852e4f2bc062c49a036b246befa9e5f23d",
+  "licenses": {
+    "fontdb": {
+      "version": "0.24.0",
+      "license": "MIT"
+    },
+    "i_float": {
+      "version": "5.0.0",
+      "license": "MIT"
+    },
+    "i_key_sort": {
+      "version": "0.12.0",
+      "license": "MIT"
+    },
+    "i_overlay": {
+      "version": "9.1.0",
+      "license": "MIT OR Apache-2.0"
+    },
+    "i_shape": {
+      "version": "5.0.0",
+      "license": "MIT"
+    },
+    "i_tree": {
+      "version": "0.20.0",
+      "license": "MIT"
+    },
+    "libm": {
+      "version": "0.2.16",
+      "license": "MIT"
+    },
+    "skrifa": {
+      "version": "0.44.0",
+      "license": "MIT OR Apache-2.0"
+    },
+    "stats_alloc": {
+      "version": "0.1.10",
+      "license": "MIT"
+    }
+  },
+  "locations": {
+    "fn fit_run(": "crates/vector/src/fit.rs:323",
+    "fn corners(": "crates/vector/src/fit.rs:174",
+    "fn placements(": "crates/vector/src/brush.rs:124",
+    "pub fn outline(": "crates/vector/src/brush.rs:154",
+    "pub(crate) struct StrokeSetParams": "crates/executor/src/commands/draw_stroke.rs:504",
+    "pub(crate) struct StrokeSetResult": "crates/executor/src/commands/draw_stroke.rs:537",
+    "match (new.spine(), spine_changed, outline_changed)": "crates/executor/src/commands/draw_stroke.rs:814",
+    "if let (Some(text), Some(runs))": "crates/model/src/validate.rs:422",
+    "pub(crate) fn draw_text_add(": "crates/executor/src/commands/draw_text.rs:256",
+    "pub(crate) fn draw_text_set(": "crates/executor/src/commands/draw_text.rs:403",
+    "events.push(json!({": "crates/executor/src/run.rs:560",
+    "fn symmetry_setting(": "crates/executor/src/commands/draw_stroke.rs:319"
+  },
+  "productRustFilesInspected": 26,
+  "newProhibitedConstructsBeforeCfgTest": [],
+  "ciJobs": [
+    {
+      "name": "check (windows-latest)",
+      "conclusion": "success",
+      "url": "https://github.com/kaigani/261017-toontown-dev/actions/runs/41153287506/job/124394432128"
+    },
+    {
+      "name": "headless release (windows-latest)",
+      "conclusion": "success",
+      "url": "https://github.com/kaigani/261017-toontown-dev/actions/runs/41153287506/job/124394432296"
+    },
+    {
+      "name": "bundle (windows-latest)",
+      "conclusion": "success",
+      "url": "https://github.com/kaigani/261017-toontown-dev/actions/runs/41153287506/job/124394432395"
+    },
+    {
+      "name": "bundle (macos-latest)",
+      "conclusion": "success",
+      "url": "https://github.com/kaigani/261017-toontown-dev/actions/runs/41153287506/job/124394432398"
+    },
+    {
+      "name": "raster determinism (macos-latest)",
+      "conclusion": "success",
+      "url": "https://github.com/kaigani/261017-toontown-dev/actions/runs/41153287506/job/124394432400"
+    },
+    {
+      "name": "headless release (macos-latest)",
+      "conclusion": "success",
+      "url": "https://github.com/kaigani/261017-toontown-dev/actions/runs/41153287506/job/124394432430"
+    },
+    {
+      "name": "raster determinism (windows-latest)",
+      "conclusion": "success",
+      "url": "https://github.com/kaigani/261017-toontown-dev/actions/runs/41153287506/job/124394432443"
+    },
+    {
+      "name": "raster determinism (ubuntu-latest)",
+      "conclusion": "success",
+      "url": "https://github.com/kaigani/261017-toontown-dev/actions/runs/41153287506/job/124394432484"
+    },
+    {
+      "name": "check (macos-latest)",
+      "conclusion": "success",
+      "url": "https://github.com/kaigani/261017-toontown-dev/actions/runs/41153287506/job/124394432488"
+    },
+    {
+      "name": "headless without a display (ubuntu)",
+      "conclusion": "success",
+      "url": "https://github.com/kaigani/261017-toontown-dev/actions/runs/41153287506/job/124394432539"
+    }
+  ]
+}

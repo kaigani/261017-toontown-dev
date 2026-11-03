@@ -1,0 +1,29 @@
+cargo :    Compiling tt-executor v0.0.1 (C:\Users\kaiga\work\review\m2-c22-r2\crates\executor)
+At line:2 char:1
++ cargo test -p tt-executor --test c22_r2_commands tiled_texture_click_ ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (   Compiling tt...rates\executor):String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 1.92s
+     Running tests\c22_r2_commands.rs (target\debug\deps\c22_r2_commands-ac075e2a55a9422f.exe)
+
+running 1 test
+16x8 tiled texture click on 100x100 box: [100,0,0,100,1000,1000]
+
+thread 'tiled_texture_click_uses_native_pixel_dimensions' (28500) panicked at 
+crates\executor\tests\c22_r2_commands.rs:350:5:
+assertion `left == right` failed: 03 7.2 tile-on means native size, not box stretch
+  left: 100.0
+ right: 16.0
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+test tiled_texture_click_uses_native_pixel_dimensions ... FAILED
+
+failures:
+
+failures:
+    tiled_texture_click_uses_native_pixel_dimensions
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 10 filtered out; finished in 0.10s
+
+error: test failed, to rerun pass `-p tt-executor --test c22_r2_commands`

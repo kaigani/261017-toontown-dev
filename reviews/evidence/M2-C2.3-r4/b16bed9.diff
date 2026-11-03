@@ -1,0 +1,53 @@
+commit b16bed91b866298675010136eb9491e6e3733762
+Author: kaigani <kaigani@gmail.com>
+Date:   Sun Nov 1 16:38:15 2026 -0800
+
+    perf(c2.3 r3): snapshot only the agent-hub fields a refusal restores
+    
+    The Rollback snapshot cloned the whole agent hub, activity log included, on
+    every invocation and then dropped the log, which made the 10 000-operation
+    MCP history oracles quadratic (Windows headless release over its 55-minute
+    limit in CI runs 41352472933 and 41363091264). Copy the restored fields only.
+    
+    Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>
+
+diff --git a/crates/executor/src/run.rs b/crates/executor/src/run.rs
+index e71be94..00b1c5a 100644
+--- a/crates/executor/src/run.rs
++++ b/crates/executor/src/run.rs
+@@ -219,7 +219,20 @@ impl Rollback {
+             checkpoints: s.project.as_ref().map(|p| p.checkpoints.clone()),
+             clipboard: s.clipboard.clone(),
+             edit_options: s.edit_options.clone(),
+-            agents: crate::agents::AgentHub { pending: BTreeMap::new(), activity: Vec::new(), ..s.agents.clone() },
++            // Field by field: the activity log grows with every agent call and is never copied here.
++            agents: crate::agents::AgentHub {
++                sessions: s.agents.sessions.clone(),
++                limits: s.agents.limits.clone(),
++                pending: BTreeMap::new(),
++                activity: Vec::new(),
++                next_seq: s.agents.next_seq,
++                next_session: s.agents.next_session,
++                persist: s.agents.persist,
++                typed_tools: s.agents.typed_tools.clone(),
++                typed_tools_version: s.agents.typed_tools_version,
++                ttl: s.agents.ttl,
++                server_enabled: s.agents.server_enabled,
++            },
+             events: s.events.len(),
+         }
+     }
+diff --git a/reviews/M2-C2.3-r3-response.md b/reviews/M2-C2.3-r3-response.md
+index fcabaad..16de371 100644
+--- a/reviews/M2-C2.3-r3-response.md
++++ b/reviews/M2-C2.3-r3-response.md
+@@ -62,3 +62,9 @@ Full local gate (Windows): `cargo test --workspace --locked --no-fail-fast`, run
+ `tt-executor`, then `tt-executor`): **1092 passed, 0 failed, 18 ignored** (`round-3/workspace-tests.txt`). 29/29 reviewer Python suites, with
+ `c23-r3-finalize.py` listed as not a suite per §2; clippy clean; fmt clean; pnpm clean; allow inventory 98/40. The head
+ SHA and the green CI run are in the closing message.
++
++**Found by CI (runs 41352472933 and 41363091264, Windows `headless release` over its 55-minute limit):** the first
++version of the `Rollback` agent snapshot copied the whole hub, activity log included, on every call before dropping
++the log. That made the 10 000-operation MCP history oracles quadratic (`c21_history` 88 s → 501 s,
++`c14_r3_history_*` 45 s → 417 s). The snapshot now copies only the fields it restores; `c14_r3_history_r1` takes 20 s
++locally in release.

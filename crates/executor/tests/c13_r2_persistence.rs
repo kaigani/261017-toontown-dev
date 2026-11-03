@@ -187,14 +187,26 @@ fn gigabyte_package_inspection_is_bounded_with_and_without_validation() {
         std::fs::remove_dir_all(dir).unwrap();
         return;
     }
-    let script =
+    let committed =
         std::path::Path::new(env!("CARGO_MANIFEST_DIR")).join("../../reviews/evidence/M1-C1.3-r2/memory-probe.py");
+    // The probe writes its receipt beside itself. Routine runs execute a copy in a temporary directory, so the
+    // committed receipt changes only when TT_COMMIT_REVIEW_RECEIPTS=1 (M2 C2.3 reviewer-tooling ruling).
+    let receipts = std::env::temp_dir().join(format!("tt-c13-r2-receipt-{}", std::process::id()));
+    let script = if std::env::var("TT_COMMIT_REVIEW_RECEIPTS").as_deref() == Ok("1") {
+        committed
+    } else {
+        std::fs::create_dir_all(&receipts).unwrap();
+        let copy = receipts.join("memory-probe.py");
+        std::fs::copy(&committed, &copy).unwrap();
+        copy
+    };
     let result = std::process::Command::new(if cfg!(windows) { "python" } else { "python3" })
         .arg(script)
         .arg(std::env::current_exe().unwrap())
         .arg("gigabyte_package_inspection_is_bounded_with_and_without_validation")
         .output()
         .unwrap();
+    let _ = std::fs::remove_dir_all(&receipts);
     assert!(result.status.success(), "{}", String::from_utf8_lossy(&result.stdout));
 }
 

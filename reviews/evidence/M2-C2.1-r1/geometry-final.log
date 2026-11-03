@@ -1,0 +1,55 @@
+cargo :     Finished `test` profile [unoptimized + debuginfo] target(s) in 0.20s
+At line:2 char:55
++ ... egister.py; cargo test -p tt-vector --test c21_r1_geometry -- --nocap ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (    Finished `t...get(s) in 0.20s:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+     Running tests\c21_r1_geometry.rs (target\debug\deps\c21_r1_geometry-e8135ee546d83350.exe)
+
+running 10 tests
+test dense_input_worker ... ignored, subprocess worker; the parent runs this with a bounded timeout
+pressure peak outline bounds: Some(Rect { min_x: -25.465570963875138, min_y: -32.30749991636173, max_x: 
+45.90570753328226, max_y: 32.32964718931498 })
+
+thread 'brush_sweep_includes_pressure_peak_between_placements' (18812) panicked at 
+crates\vector\tests\c21_r1_geometry.rs:61:5:
+02 3.4: swept tip at pressure knot must be included
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+test invalid_sample_values_are_rejected_before_fitting ... ok
+test brush_sweep_includes_pressure_peak_between_placements ... FAILED
+maximum fitted-curve to input-polyline distance: 3.3126932006255214 du
+
+thread 'fitted_curve_stays_within_tolerance_of_input_polyline' (35528) panicked at 
+crates\vector\tests\c21_r1_geometry.rs:32:5:
+02 3.3 tolerance 0.25 du; got 3.3126932006255214
+test fitted_curve_stays_within_tolerance_of_input_polyline ... FAILED
+test brush_tips_dabs_pressure_extremes_and_reversals_remain_defined ... ok
+
+running 1 test
+test looping_brush_preserves_hole_and_clean_swept_area ... ok
+test curve_fixture_matrix_keeps_valid_paths_and_anchor_limit ... ok
+test text_edge_cases_are_finite_and_bounded ... ok
+
+thread 'closed_path_at_anchor_limit_reimports_its_own_bezier_list' (36192) panicked at 
+crates\vector\tests\c21_r1_geometry.rs:194:5:
+a valid closed path's read-back must remain valid input: Err(GeomError { code: "drawing.invalidGeometry", message: "at 
+most 100000 anchors per stroke", pointer: "/bezier" })
+test closed_path_at_anchor_limit_reimports_its_own_bezier_list ... FAILED
+
+thread 'dense_100k_input_finishes_within_document_watchdog_budget' (30068) panicked at 
+crates\vector\tests\c21_r1_geometry.rs:98:13:
+100000 distinct points on a .0001 du closed path exceeded 30 s; corners reach scans quadratically
+test dense_100k_input_finishes_within_document_watchdog_budget ... FAILED
+
+failures:
+
+failures:
+    brush_sweep_includes_pressure_peak_between_placements
+    closed_path_at_anchor_limit_reimports_its_own_bezier_list
+    dense_100k_input_finishes_within_document_watchdog_budget
+    fitted_curve_stays_within_tolerance_of_input_polyline
+
+test result: FAILED. 5 passed; 4 failed; 1 ignored; 0 measured; 0 filtered out; finished in 30.02s
+
+error: test failed, to rerun pass `-p tt-vector --test c21_r1_geometry`

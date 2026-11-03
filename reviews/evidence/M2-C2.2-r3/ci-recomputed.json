@@ -1,0 +1,96 @@
+{
+  "headSha": "094730033b5abb92645d77bebba82e12ab2a315b",
+  "conclusion": "success",
+  "jobs": [
+    {
+      "name": "raster determinism (macos-latest)",
+      "conclusion": "success",
+      "wallSeconds": 105.0,
+      "workspaceResultSummaries": 0,
+      "passed": 0,
+      "failed": 0,
+      "ignored": 0
+    },
+    {
+      "name": "headless release (windows-latest)",
+      "conclusion": "success",
+      "wallSeconds": 1747.0,
+      "workspaceResultSummaries": 0,
+      "passed": 0,
+      "failed": 0,
+      "ignored": 0
+    },
+    {
+      "name": "raster determinism (windows-latest)",
+      "conclusion": "success",
+      "wallSeconds": 174.0,
+      "workspaceResultSummaries": 0,
+      "passed": 0,
+      "failed": 0,
+      "ignored": 0
+    },
+    {
+      "name": "raster determinism (ubuntu-latest)",
+      "conclusion": "success",
+      "wallSeconds": 70.0,
+      "workspaceResultSummaries": 0,
+      "passed": 0,
+      "failed": 0,
+      "ignored": 0
+    },
+    {
+      "name": "headless release (macos-latest)",
+      "conclusion": "success",
+      "wallSeconds": 1146.0,
+      "workspaceResultSummaries": 0,
+      "passed": 0,
+      "failed": 0,
+      "ignored": 0
+    },
+    {
+      "name": "check (macos-latest)",
+      "conclusion": "success",
+      "wallSeconds": 2209.0,
+      "workspaceResultSummaries": 167,
+      "passed": 947,
+      "failed": 0,
+      "ignored": 16
+    },
+    {
+      "name": "headless without a display (ubuntu)",
+      "conclusion": "success",
+      "wallSeconds": 172.0,
+      "workspaceResultSummaries": 0,
+      "passed": 0,
+      "failed": 0,
+      "ignored": 0
+    },
+    {
+      "name": "check (windows-latest)",
+      "conclusion": "success",
+      "wallSeconds": 3034.0,
+      "workspaceResultSummaries": 167,
+      "passed": 952,
+      "failed": 0,
+      "ignored": 16
+    },
+    {
+      "name": "bundle (windows-latest)",
+      "conclusion": "success",
+      "wallSeconds": 551.0,
+      "workspaceResultSummaries": 0,
+      "passed": 0,
+      "failed": 0,
+      "ignored": 0
+    },
+    {
+      "name": "bundle (macos-latest)",
+      "conclusion": "success",
+      "wallSeconds": 378.0,
+      "workspaceResultSummaries": 0,
+      "passed": 0,
+      "failed": 0,
+      "ignored": 0
+    }
+  ]
+}

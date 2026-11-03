@@ -1,0 +1,12 @@
+{
+  "reviewedHead": "7a77138c6fb6531b67f4e840b765bd467bb76d28",
+  "reviewBranch": "review/m2-c23-r1",
+  "platform": "Windows-11-10.0.26200-SP0",
+  "python": "3.13.1 (tags/v3.13.1:0671451, Dec  3 2024, 19:06:28) [MSC v.1942 64 bit (AMD64)]",
+  "rustc": "rustc 1.98.1 (48a229cea 2026-09-01)\nbinary: rustc\ncommit-hash: 48a229ceaefd4985c50990b14116b6d856af0985\ncommit-date: 2026-09-01\nhost: x86_64-pc-windows-msvc\nrelease: 1.98.1\nLLVM version: 22.1.8\n",
+  "cargo": "cargo 1.98.1 (797e8a9bc 2026-08-05)",
+  "ciRun": 41303866582,
+  "TT_COMMIT_REVIEW_RECEIPTS": null,
+  "TT_UPDATE_GOLDEN": null,
+  "TT_MEASURE": null
+}

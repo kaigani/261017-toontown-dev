@@ -1,0 +1,29 @@
+diff --git a/Cargo.lock b/Cargo.lock
+index 6a45f5e..aac49b9 100644
+--- a/Cargo.lock
++++ b/Cargo.lock
+@@ -4690,6 +4690,9 @@ name = "tt-executor"
+ version = "0.0.1"
+ dependencies = [
+  "jsonschema",
++ "num-bigint",
++ "num-rational",
++ "num-traits",
+  "proptest",
+  "regex",
+  "schemars 1.2.3",
+diff --git a/crates/executor/Cargo.toml b/crates/executor/Cargo.toml
+index e0792fe..10ff0a1 100644
+--- a/crates/executor/Cargo.toml
++++ b/crates/executor/Cargo.toml
+@@ -31,6 +31,10 @@ tt-vector = { workspace = true, features = ["test-hooks"] }
+ trybuild.workspace = true
+ jsonschema.workspace = true
+ proptest.workspace = true
++# Arbitrary-precision rationals of the independent planar oracle shared with tt-vector's tests (C24-R1-01).
++num-bigint.workspace = true
++num-rational.workspace = true
++num-traits.workspace = true
+ # Counting allocator of the C2.1 measurement test binary only (MIT; never in a product graph).
+ stats_alloc = "0.1.10"
+ 

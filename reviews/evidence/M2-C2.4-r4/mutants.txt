@@ -1,0 +1,18 @@
+cargo :    Compiling tt-executor v0.0.1 (C:\Users\kaiga\work\review\m2-c24-r4\crates\executor)
+At line:4 char:1
++ cargo test --release -p tt-executor --locked -j 4 --test c24_r3_domai ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (   Compiling tt...rates\executor):String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+    Finished `release` profile [optimized + debuginfo] target(s) in 8.30s
+     Running tests\c24_r3_domains.rs (target\release\deps\c24_r3_domains-a67d9939a409db16.exe)
+
+running 2 tests
+correct-origin wrong-mask-boundary comparison: Err(Fail(Reason("stroke st_01K7JJN8022SPANEMXQ0645E8J's contours [[(-600.0, -600.0), (600.0, -600.0), (600.0, 600.0), (-600.0, 600.0)], [(-360.0, -40.0), (-360.0, 40.0), (360.0, 40.0), (360.0, -40.0)]] match no traced ink region [[[(-480.0, 600.0), (-240.0, 600.0), (0.0, 600.0), (240.0, 600.0), (480.0, 600.0), (600.0, 480.0), (600.0, 240.0), (600.0, 0.0), (600.0, -240.0), (600.0, -480.0), (480.0, -600.0), (240.0, -600.0), (0.0, -600.0), (-240.0, -600.0), (-480.0, -600.0), (-600.0, -480.0), (-600.0, -240.0), (-600.0, 0.0), (-600.0, 240.0), (-600.0, 480.0)], [(-120.0, 0.0), (0.0, -120.0), (120.0, 0.0), (0.0, 120.0)]]] at crates\\executor\\tests\\c24_r3_domains.rs:2094")))
+wrong-mask-boundary mutant comparison: Err(Fail(Reason("stroke st_01K7JJN8022SPANEMXQ0645E8J's contours [[(0.0, 0.0), (1200.0, 0.0), (1200.0, 1200.0), (0.0, 1200.0)], [(240.0, 560.0), (240.0, 640.0), (960.0, 640.0), (960.0, 560.0)]] match no traced ink region [[[(-480.0, 600.0), (-240.0, 600.0), (0.0, 600.0), (240.0, 600.0), (480.0, 600.0), (600.0, 480.0), (600.0, 240.0), (600.0, 0.0), (600.0, -240.0), (600.0, -480.0), (480.0, -600.0), (240.0, -600.0), (0.0, -600.0), (-240.0, -600.0), (-480.0, -600.0), (-600.0, -480.0), (-600.0, -240.0), (-600.0, 0.0), (-600.0, 240.0), (-600.0, 480.0)], [(-120.0, 0.0), (0.0, -120.0), (120.0, 0.0), (0.0, 120.0)]]] at crates\\executor\\tests\\c24_r3_domains.rs:2094")))
+test vectorize_comparison_rejects_a_wrong_boundary_with_the_right_area_and_probe ... ok
+test vectorize_comparison_rejects_a_wrong_boundary_at_the_correct_image_origin ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 12 filtered out; finished in 0.06s
+

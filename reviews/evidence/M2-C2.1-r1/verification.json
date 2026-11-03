@@ -1,0 +1,91 @@
+{
+  "builderHead": "0997205740eb97a0fa3f60601bb78022447271e0",
+  "verdict": "block",
+  "findings": {
+    "P0": 0,
+    "P1": 9,
+    "P2Defects": 1,
+    "P2Followups": 2
+  },
+  "conformance": {
+    "implemented": 71,
+    "deferred-with-owner": 229,
+    "divergent": 63,
+    "missing": 2
+  },
+  "workspace": {
+    "summaries": 134,
+    "passed": 779,
+    "failed": 6,
+    "ignored": 8,
+    "failedTargets": [
+      "tt-executor/c21_r1_contracts",
+      "tt-vector/c21_r1_geometry"
+    ],
+    "qualification": "Compiled an earlier reviewer-probe revision; all original targets pass. Final targeted logs cover all current regressions."
+  },
+  "finalTargets": {
+    "contracts-final.log": [
+      {
+        "passed": 0,
+        "failed": 6,
+        "ignored": 0
+      }
+    ],
+    "geometry-final.log": [
+      {
+        "passed": 5,
+        "failed": 4,
+        "ignored": 1
+      }
+    ],
+    "surfaces-final.log": [
+      {
+        "passed": 2,
+        "failed": 0,
+        "ignored": 0
+      }
+    ],
+    "retention-final.log": [
+      {
+        "passed": 1,
+        "failed": 0,
+        "ignored": 0
+      }
+    ],
+    "autosave.log": [
+      {
+        "passed": 1,
+        "failed": 0,
+        "ignored": 0
+      }
+    ],
+    "history.log": [
+      {
+        "passed": 2,
+        "failed": 0,
+        "ignored": 0
+      }
+    ]
+  },
+  "checks": {
+    "reviewerClippy": "finished without diagnostics",
+    "fmt": "clean",
+    "pythonSuites": "15/15",
+    "frontend": "333/333 plus 9/9 tooling; lint/typecheck/format/licences passed",
+    "cargoDeny": "advisories, bans, licences, sources OK",
+    "releaseGraphs": "no test-hooks"
+  },
+  "ci": "10/10 jobs successful at builder head; both check/release OSes plus Linux SDK verified",
+  "headlessRun": {
+    "status": "ok",
+    "script": "headless-script.json",
+    "fixture": "Geometry.animpkg",
+    "log": "headless-script.jsonl"
+  },
+  "specUnchanged": true,
+  "selfRewritingM1EvidenceRestored": true,
+  "productChanges": false,
+  "evidenceEncoding": "PowerShell UTF-16 text receipts converted losslessly to UTF-8; observations and intermediate failures retained.",
+  "cleanup": "Automatic approval review rejected deletion with blocked by policy. Isolated target/review-c21-ci-release, target/review-c21-cli-user and target/review-c21-fixture.animpkg remain. Relevant receipts and fixture copied into evidence."
+}

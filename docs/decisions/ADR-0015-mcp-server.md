@@ -227,3 +227,34 @@ transactions, idempotent requests and the never-block watchdog.
 - The server speaks 2025-06-18 and 2025-11-25. The SDK's newer revision (2026-07-28) replaces resource subscriptions
   and deprecates the logging capability. Following it is an open question for the spec owner (SI-049), because
   11 §4 requires both.
+
+## History
+
+- **M2 C2.3 round 1 (C23-R1-07): watchdog cancellation.** When a caller's wait passes the never-block budget, the
+  executor answers it with the typed `command.timeout` and marks the request the document thread is running as
+  cancelled (a per-request sequence number, so the mark never hits the next request). Every work account
+  (`tt_vector::work::Work`: planar settle, merge, Smooth) and the renderer's progress check observe the mark at their
+  next step and fail the call, which commits nothing; the worker then answers what is queued behind it. The MCP route
+  records its activity entry by queueing it without waiting, so a reply never blocks on a busy worker. Verified with
+  the dev-only `tt-vector/test-hooks` spin (`crates/executor/tests/c23_watchdog.rs`).
+- **M2 C2.3 round 2 (C23-R2-01): request tokens.** Each caller's request carries a cancellation token allocated
+  before it is queued. A caller that times out marks exactly that token: a queued request is dropped when the worker
+  dequeues it; a running one stops at its next work-account check, and the transaction commit and the effect commit
+  re-check the token, so a cancelled request never begins or commits after its caller has been answered. One
+  caller's timeout never cancels another caller's request (`crates/executor/tests/c23_watchdog.rs`,
+  `c23_r2_watchdog.rs`).
+- **M2 C2.3 round 3 (C23-R3-01): the session-state acceptance rule.** A command changes nothing but its
+  invocation's working state: the staged document, its deferred effects, and the session and UI state it writes
+  (drawing and point selection, tool memory, current frame and mode, panels and workspaces, clipboard, remembered
+  options, checkpoints, queued events, agent sessions and policy). Settings changes are deferred effects too. All of
+  it is accepted at one boundary, shared by single invocations and atomic batches (`run::Core::accept`), in this
+  order: the caller's cancellation (whether or not the call changes the document), the frozen guard, pending saves,
+  the document commit (which re-checks the cancellation before installing anything), then the effects. A refusal
+  at any of these restores the saved session state in full (`Rollback`) and removes staged files; a cancelled call
+  answers `command.timeout`. After the document commit the call is accepted: its effects apply, and a file that
+  cannot be published stays the call's post-commit error (§12). The agent hub's confirmation requests and activity
+  entries are records a refused call makes on purpose (11 §6.3, §11) and are kept. Selection, bounds and
+  point-selection scans charge a work account, so they stop at their caller's timeout. The watchdog hint says the
+  call was cancelled. Verified by `c23_r3_selection_cancel` (reviewer), `c23_round3.rs` and
+  `run::tests::the_acceptance_boundary_refuses_a_cancelled_request_and_restores_the_session` (handlers that charge no
+  work, an atomic batch, and the same calls accepted once not cancelled).

@@ -1,0 +1,206 @@
+{
+  "reviews\\evidence\\M2-C2.2-r3\\planar-worst-case-windows.json": {
+    "cases": [
+      {
+        "name": "100000-small-curves-plus-one",
+        "maxWallMs": 2580.987,
+        "maxUnits": 931042320
+      },
+      {
+        "name": "grid-200x200-crossing-lines",
+        "maxWallMs": 571.9599,
+        "maxUnits": 318410926
+      },
+      {
+        "name": "grid-600x600-crossing-lines",
+        "maxWallMs": 2775.8302000000003,
+        "maxUnits": 1672507212
+      },
+      {
+        "name": "10000-concentric-squares",
+        "maxWallMs": 2875.8046,
+        "maxUnits": 1200160000
+      },
+      {
+        "name": "20000-separate-closed-squares",
+        "maxWallMs": 314.7892,
+        "maxUnits": 137183593
+      },
+      {
+        "name": "1500-random-crossing-lines",
+        "maxWallMs": 2049.7715,
+        "maxUnits": 1208823546
+      },
+      {
+        "name": "5000-point-random-scribble",
+        "maxWallMs": 300.5603,
+        "maxUnits": 1515542416
+      },
+      {
+        "name": "100000-point-dense-zigzag",
+        "maxWallMs": 41.9536,
+        "maxUnits": 15000482029
+      },
+      {
+        "name": "100000-coincident-outlines-plus-one",
+        "maxWallMs": 453.2537,
+        "maxUnits": 60003200026
+      }
+    ],
+    "maxWallMs": 2875.8046,
+    "underTenSeconds": true
+  },
+  "reviews\\evidence\\M2-C2.2-r3\\ci-artifacts\\headless-macOS\\c22-planar-worst-case\\planar-worst-case-macos.json": {
+    "cases": [
+      {
+        "name": "100000-small-curves-plus-one",
+        "maxWallMs": 4836.626958,
+        "maxUnits": 931042320
+      },
+      {
+        "name": "grid-200x200-crossing-lines",
+        "maxWallMs": 647.69825,
+        "maxUnits": 318410926
+      },
+      {
+        "name": "grid-600x600-crossing-lines",
+        "maxWallMs": 6198.757750000001,
+        "maxUnits": 1672507212
+      },
+      {
+        "name": "10000-concentric-squares",
+        "maxWallMs": 2346.5967920000003,
+        "maxUnits": 1200160000
+      },
+      {
+        "name": "20000-separate-closed-squares",
+        "maxWallMs": 536.213334,
+        "maxUnits": 137183593
+      },
+      {
+        "name": "1500-random-crossing-lines",
+        "maxWallMs": 3042.169792,
+        "maxUnits": 1208823546
+      },
+      {
+        "name": "5000-point-random-scribble",
+        "maxWallMs": 342.477458,
+        "maxUnits": 1515542416
+      },
+      {
+        "name": "100000-point-dense-zigzag",
+        "maxWallMs": 150.731333,
+        "maxUnits": 15000482029
+      },
+      {
+        "name": "100000-coincident-outlines-plus-one",
+        "maxWallMs": 1475.604708,
+        "maxUnits": 60003200026
+      }
+    ],
+    "maxWallMs": 6198.757750000001,
+    "underTenSeconds": true
+  },
+  "reviews\\evidence\\M2-C2.2-r3\\ci-artifacts\\headless-Windows\\c22-planar-worst-case\\planar-worst-case-windows.json": {
+    "cases": [
+      {
+        "name": "100000-small-curves-plus-one",
+        "maxWallMs": 5284.0088,
+        "maxUnits": 931042320
+      },
+      {
+        "name": "grid-200x200-crossing-lines",
+        "maxWallMs": 1087.1702,
+        "maxUnits": 318410926
+      },
+      {
+        "name": "grid-600x600-crossing-lines",
+        "maxWallMs": 4634.438099999999,
+        "maxUnits": 1672507212
+      },
+      {
+        "name": "10000-concentric-squares",
+        "maxWallMs": 4092.9551,
+        "maxUnits": 1200160000
+      },
+      {
+        "name": "20000-separate-closed-squares",
+        "maxWallMs": 643.312,
+        "maxUnits": 137183593
+      },
+      {
+        "name": "1500-random-crossing-lines",
+        "maxWallMs": 3486.4463,
+        "maxUnits": 1208823546
+      },
+      {
+        "name": "5000-point-random-scribble",
+        "maxWallMs": 419.2031,
+        "maxUnits": 1515542416
+      },
+      {
+        "name": "100000-point-dense-zigzag",
+        "maxWallMs": 72.9945,
+        "maxUnits": 15000482029
+      },
+      {
+        "name": "100000-coincident-outlines-plus-one",
+        "maxWallMs": 1014.3371000000001,
+        "maxUnits": 60003200026
+      }
+    ],
+    "maxWallMs": 5284.0088,
+    "underTenSeconds": true
+  },
+  "reviews\\evidence\\M2-C2.2-r2\\planar-worst-case-windows.json": {
+    "cases": [
+      {
+        "name": "100000-small-curves-plus-one",
+        "maxWallMs": 3374.049,
+        "maxUnits": 931042320
+      },
+      {
+        "name": "grid-200x200-crossing-lines",
+        "maxWallMs": 663.1571,
+        "maxUnits": 318410926
+      },
+      {
+        "name": "grid-600x600-crossing-lines",
+        "maxWallMs": 3070.0214,
+        "maxUnits": 1672507212
+      },
+      {
+        "name": "10000-concentric-squares",
+        "maxWallMs": 1818.6741,
+        "maxUnits": 1200160000
+      },
+      {
+        "name": "20000-separate-closed-squares",
+        "maxWallMs": 334.0017,
+        "maxUnits": 137183593
+      },
+      {
+        "name": "1500-random-crossing-lines",
+        "maxWallMs": 2451.0081,
+        "maxUnits": 1208806567
+      },
+      {
+        "name": "5000-point-random-scribble",
+        "maxWallMs": 272.81460000000004,
+        "maxUnits": 1515558800
+      },
+      {
+        "name": "100000-point-dense-zigzag",
+        "maxWallMs": 43.201499999999996,
+        "maxUnits": 15000482029
+      },
+      {
+        "name": "100000-coincident-outlines-plus-one",
+        "maxWallMs": 474.5312,
+        "maxUnits": 60003200026
+      }
+    ],
+    "maxWallMs": 3374.049,
+    "underTenSeconds": true
+  }
+}

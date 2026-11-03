@@ -1,0 +1,149 @@
+cargo :    Compiling windows-sys v0.61.2
+At line:2 char:1
++ cargo test --release --locked -p tt-vector --test c22_worst_case --te ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (   Compiling windows-sys v0.61.2:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+
+   Compiling syn v2.0.119
+   Compiling tempfile v3.27.0
+   Compiling rusty-fork v0.3.1
+   Compiling proptest v1.12.0
+   Compiling strum_macros v0.28.0
+   Compiling strum v0.28.0
+   Compiling jsonschema v0.59.0
+   Compiling tt-model v0.0.1 (C:\Users\kaiga\work\review\m2-c22-r1\crates\model)
+   Compiling tt-vector v0.0.1 (C:\Users\kaiga\work\review\m2-c22-r1\crates\vector)
+    Finished `release` profile [optimized + debuginfo] target(s) in 26.87s
+     Running tests\c21_worst_case.rs (target\release\deps\c21_worst_case-83c52512bb9f3903.exe)
+
+running 2 tests
+dense-straight-closed: [Object {"wallMs": Number(1.2162), "visits": Number(799999), "anchors": Number(1)}, Object
+{"wallMs": Number(1.1618), "visits": Number(799999), "anchors": Number(1)}, Object {"wallMs":
+Number(1.2268999999999999), "visits": Number(799999), "anchors": Number(1)}]
+dense-circle-closed: [Object {"wallMs": Number(1.3219), "visits": Number(799999), "anchors": Number(1)}, Object
+{"wallMs": Number(1.2042000000000002), "visits": Number(799999), "anchors": Number(1)}, Object {"wallMs":
+Number(1.1217), "visits": Number(799999), "anchors": Number(1)}]
+straight-open: [Object {"wallMs": Number(14.888399999999999), "visits": Number(18399999), "anchors": Number(2)},
+Object {"wallMs": Number(15.1585), "visits": Number(18399999), "anchors": Number(2)}, Object {"wallMs":
+Number(15.4636), "visits": Number(18399999), "anchors": Number(2)}]
+zigzag-above-tolerance: [Object {"wallMs": Number(515.0445), "visits": Number(202241151), "anchors": Number(100000)},
+Object {"wallMs": Number(517.81), "visits": Number(202241151), "anchors": Number(100000)}, Object {"wallMs":
+Number(517.7351), "visits": Number(202241151), "anchors": Number(100000)}]
+wiggle-near-tolerance: [Object {"wallMs": Number(73.9038), "visits": Number(64814991), "anchors": Number(551)}, Object
+{"wallMs": Number(66.0887), "visits": Number(64814991), "anchors": Number(551)}, Object {"wallMs": Number(67.3471),
+"visits": Number(64814991), "anchors": Number(551)}]
+spiral-closed: [Object {"wallMs": Number(133.9237), "visits": Number(196114384), "anchors": Number(88870)}, Object
+{"wallMs": Number(133.6228), "visits": Number(196114384), "anchors": Number(88870)}, Object {"wallMs":
+Number(132.6857), "visits": Number(196114384), "anchors": Number(88870)}]
+random-walk-open: [Object {"wallMs": Number(53.8341), "visits": Number(51826825), "anchors": Number(4809)}, Object
+{"wallMs": Number(54.1022), "visits": Number(51826825), "anchors": Number(4809)}, Object {"wallMs": Number(58.0573),
+"visits": Number(51826825), "anchors": Number(4809)}]
+99000-alternating-knots-round-100: [Object {"wallMs": Number(855.2316), "outcome": String("ok"), "units":
+Number(555554356), "anchors": Number(20)}, Object {"wallMs": Number(864.9979), "outcome": String("ok"), "units":
+Number(555554356), "anchors": Number(20)}, Object {"wallMs": Number(863.6399), "outcome": String("ok"), "units":
+Number(555554356), "anchors": Number(20)}]
+random-walk-closed: [Object {"wallMs": Number(55.1416), "visits": Number(51964993), "anchors": Number(4810)}, Object
+{"wallMs": Number(57.513), "visits": Number(51964993), "anchors": Number(4810)}, Object {"wallMs":
+Number(55.395199999999996), "visits": Number(51964993), "anchors": Number(4810)}]
+uniform-noise-open: [Object {"wallMs": Number(108.4384), "visits": Number(40532873), "anchors": Number(100000)},
+Object {"wallMs": Number(108.3166), "visits": Number(40532873), "anchors": Number(100000)}, Object {"wallMs":
+Number(111.3671), "visits": Number(40532873), "anchors": Number(100000)}]
+uniform-noise-closed: [Object {"wallMs": Number(109.4969), "visits": Number(40339805), "anchors": Number(100000)},
+Object {"wallMs": Number(109.6571), "visits": Number(40339805), "anchors": Number(100000)}, Object {"wallMs":
+Number(108.732), "visits": Number(40339805), "anchors": Number(100000)}]
+worst ("zigzag-above-tolerance", 202241151, 517.81); observations in
+C:\Users\kaiga\work\review\m2-c22-r1\crates\vector\../../target/evidence/c21-fit\fit-worst-case-windows.json
+test adversarial_inputs_fit_within_the_work_budget ... ok
+99000-alternating-knots-square-100: [Object {"wallMs": Number(401.1539), "outcome": String("ok"), "units":
+Number(35148540), "anchors": Number(4)}, Object {"wallMs": Number(400.9213), "outcome": String("ok"), "units":
+Number(35148540), "anchors": Number(4)}, Object {"wallMs": Number(401.7458), "outcome": String("ok"), "units":
+Number(35148540), "anchors": Number(4)}]
+99000-alternating-knots-oval-100-angled: [Object {"wallMs": Number(900.9863), "outcome": String("ok"), "units":
+Number(555428084), "anchors": Number(18)}, Object {"wallMs": Number(896.7016), "outcome": String("ok"), "units":
+Number(555428084), "anchors": Number(18)}, Object {"wallMs": Number(894.7068), "outcome": String("ok"), "units":
+Number(555428084), "anchors": Number(18)}]
+30000-anchor-zigzag-round-100: [Object {"wallMs": Number(362.5756), "outcome": String("ok"), "units":
+Number(241379857), "anchors": Number(45)}, Object {"wallMs": Number(359.7756), "outcome": String("ok"), "units":
+Number(241379857), "anchors": Number(45)}, Object {"wallMs": Number(358.89779999999996), "outcome": String("ok"),
+"units": Number(241379857), "anchors": Number(45)}]
+30000-anchor-zigzag-round-2: [Object {"wallMs": Number(382.0564), "outcome": String("ok"), "units": Number(184090018),
+"anchors": Number(30010)}, Object {"wallMs": Number(384.124), "outcome": String("ok"), "units": Number(184090018),
+"anchors": Number(30010)}, Object {"wallMs": Number(384.76120000000003), "outcome": String("ok"), "units":
+Number(184090018), "anchors": Number(30010)}]
+45000-anchor-dense-zigzag-flat-50: [Object {"wallMs": Number(127.4316), "outcome": String("ok"), "units":
+Number(64192770), "anchors": Number(308)}, Object {"wallMs": Number(123.4836), "outcome": String("ok"), "units":
+Number(64192770), "anchors": Number(308)}, Object {"wallMs": Number(123.18039999999999), "outcome": String("ok"),
+"units": Number(64192770), "anchors": Number(308)}]
+coil-1500-loops-round-1: [Object {"wallMs": Number(1284.1100999999999), "outcome": String("ok"), "units":
+Number(746532353), "anchors": Number(51545)}, Object {"wallMs": Number(1289.8191), "outcome": String("ok"), "units":
+Number(746532353), "anchors": Number(51545)}, Object {"wallMs": Number(1284.5245), "outcome": String("ok"), "units":
+Number(746532353), "anchors": Number(51545)}]
+coil-3500-loops-round-1: [Object {"wallMs": Number(2443.2828999999997), "outcome": String("limit.exceeded: sweeping
+this brush stroke needs more than 1200000000 units of work"), "units": Number(1200000000), "anchors": Number(0)},
+Object {"wallMs": Number(2417.9694), "outcome": String("limit.exceeded: sweeping this brush stroke needs more than
+1200000000 units of work"), "units": Number(1200000000), "anchors": Number(0)}, Object {"wallMs": Number(2548.6299),
+"outcome": String("limit.exceeded: sweeping this brush stroke needs more than 1200000000 units of work"), "units":
+Number(1200000000), "anchors": Number(0)}]
+coil-1500-overlapping-loops-round-8: [Object {"wallMs": Number(248.2326), "outcome": String("ok"), "units":
+Number(118445152), "anchors": Number(58)}, Object {"wallMs": Number(245.6624), "outcome": String("ok"), "units":
+Number(118445152), "anchors": Number(58)}, Object {"wallMs": Number(250.1643), "outcome": String("ok"), "units":
+Number(118445152), "anchors": Number(58)}]
+long-line-tiny-tip: [Object {"wallMs": Number(2267.9130999999998), "outcome": String("limit.exceeded: sweeping this
+brush stroke needs more than 1200000000 units of work"), "units": Number(1200000000), "anchors": Number(0)}, Object
+{"wallMs": Number(2249.66), "outcome": String("limit.exceeded: sweeping this brush stroke needs more than 1200000000
+units of work"), "units": Number(1200000000), "anchors": Number(0)}, Object {"wallMs": Number(2261.7641000000003),
+"outcome": String("limit.exceeded: sweeping this brush stroke needs more than 1200000000 units of work"), "units":
+Number(1200000000), "anchors": Number(0)}]
+closed-decagon-99000-alternating-knots-round-100: [Object {"wallMs": Number(1759.7713), "outcome": String("ok"),
+"units": Number(574126571), "anchors": Number(39)}, Object {"wallMs": Number(1751.9363), "outcome": String("ok"),
+"units": Number(574126571), "anchors": Number(39)}, Object {"wallMs": Number(1748.7476), "outcome": String("ok"),
+"units": Number(574126571), "anchors": Number(39)}]
+worst ("coil-3500-loops-round-1", 1200000000, 2548.6299); observations in
+C:\Users\kaiga\work\review\m2-c22-r1\crates\vector\../../target/evidence/c21-fit\brush-worst-case-windows.json
+test adversarial_brush_outlines_finish_or_are_refused_within_the_work_budget ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 1 filtered out; finished in 33.15s
+
+     Running tests\c22_worst_case.rs (target\release\deps\c22_worst_case-842b9c35c3e37cf8.exe)
+
+running 1 test
+100000-small-curves-plus-one: [Object {"wallMs": Number(2457.9665), "units": Number(931042320), "outcome":
+String("ok"), "zones": Number(0), "strokes": Number(100001)}, Object {"wallMs": Number(2434.7402), "units":
+Number(931042320), "outcome": String("ok"), "zones": Number(0), "strokes": Number(100001)}]
+grid-200x200-crossing-lines: [Object {"wallMs": Number(488.1666), "units": Number(317770926), "outcome": String("ok"),
+"zones": Number(39601), "strokes": Number(80400)}, Object {"wallMs": Number(484.87019999999995), "units":
+Number(317770926), "outcome": String("ok"), "zones": Number(39601), "strokes": Number(80400)}]
+grid-600x600-crossing-lines: [Object {"wallMs": Number(2272.2443000000003), "units": Number(1666747212), "outcome":
+String("limit.exceeded: the planar map needs more than 1200000000 units of work"), "zones": Number(0), "strokes":
+Number(0)}, Object {"wallMs": Number(2295.9113), "units": Number(1666747212), "outcome": String("limit.exceeded: the
+planar map needs more than 1200000000 units of work"), "zones": Number(0), "strokes": Number(0)}]
+10000-concentric-squares: [Object {"wallMs": Number(1216.7927), "units": Number(1200160000), "outcome":
+String("limit.exceeded: the planar map needs more than 1200000000 units of work"), "zones": Number(0), "strokes":
+Number(0)}, Object {"wallMs": Number(1212.6157), "units": Number(1200160000), "outcome": String("limit.exceeded: the
+planar map needs more than 1200000000 units of work"), "zones": Number(0), "strokes": Number(0)}]
+20000-separate-closed-squares: [Object {"wallMs": Number(272.45419999999996), "units": Number(137183593), "outcome":
+String("ok"), "zones": Number(20000), "strokes": Number(20000)}, Object {"wallMs": Number(270.1608), "units":
+Number(137183593), "outcome": String("ok"), "zones": Number(20000), "strokes": Number(20000)}]
+1500-random-crossing-lines: [Object {"wallMs": Number(2248.5229000000004), "units": Number(1200002205), "outcome":
+String("limit.exceeded: the planar map needs more than 1200000000 units of work"), "zones": Number(0), "strokes":
+Number(0)}, Object {"wallMs": Number(2223.516), "units": Number(1200000298), "outcome": String("limit.exceeded: the
+planar map needs more than 1200000000 units of work"), "zones": Number(0), "strokes": Number(0)}]
+5000-point-random-scribble: [Object {"wallMs": Number(165.9453), "units": Number(1515558800), "outcome":
+String("limit.exceeded: the planar map needs more than 1200000000 units of work"), "zones": Number(0), "strokes":
+Number(0)}, Object {"wallMs": Number(166.9006), "units": Number(1515558800), "outcome": String("limit.exceeded: the
+planar map needs more than 1200000000 units of work"), "zones": Number(0), "strokes": Number(0)}]
+100000-point-dense-zigzag: [Object {"wallMs": Number(36.4219), "units": Number(15000482029), "outcome":
+String("limit.exceeded: the planar map needs more than 1200000000 units of work"), "zones": Number(0), "strokes":
+Number(0)}, Object {"wallMs": Number(36.309599999999996), "units": Number(15000482029), "outcome":
+String("limit.exceeded: the planar map needs more than 1200000000 units of work"), "zones": Number(0), "strokes":
+Number(0)}]
+100000-coincident-outlines-plus-one: [Object {"wallMs": Number(425.0219), "units": Number(60003200026), "outcome":
+String("limit.exceeded: the planar map needs more than 1200000000 units of work"), "zones": Number(0), "strokes":
+Number(0)}, Object {"wallMs": Number(396.0762), "units": Number(60003200026), "outcome": String("limit.exceeded: the
+planar map needs more than 1200000000 units of work"), "zones": Number(0), "strokes": Number(0)}]
+worst ("100000-small-curves-plus-one", 2457.9665); observations in
+C:\Users\kaiga\work\review\m2-c22-r1\crates\vector\../../target/evidence/c22-planar\planar-worst-case-windows.json
+test adversarial_layers_settle_or_are_refused_within_the_planar_budget ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 21.03s

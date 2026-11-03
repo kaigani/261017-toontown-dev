@@ -6552,7 +6552,7 @@ export const MODEL_DEFS: Readonly<Record<string, Schema>> = {
         },
         minItems: 6,
         maxItems: 6,
-        description: "Placement of a gradient/texture colour space for brush strokes.",
+        description: "Placement of a gradient/texture colour space (brush strokes and lines, 03 §7.2; SI-068).",
         "x-since": "1.0",
       },
       lineStyle: {
@@ -6649,9 +6649,6 @@ export const MODEL_DEFS: Readonly<Record<string, Schema>> = {
                 $ref: "#/$defs/LineStyle",
               },
               spine: {
-                type: "null",
-              },
-              fillMatrix: {
                 type: "null",
               },
             },
@@ -8866,7 +8863,7 @@ export interface Stroke {
   points: number[][];
   /** Brush: fill colour; pencil: line colour; `null` for invisible strokes. */
   colourId: Id | null;
-  /** Placement of a gradient/texture colour space for brush strokes. */
+  /** Placement of a gradient/texture colour space (brush strokes and lines, 03 §7.2; SI-068). */
   fillMatrix: number[] | null;
   /** Pencil strokes only. */
   lineStyle: LineStyle | null;

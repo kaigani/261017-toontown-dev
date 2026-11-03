@@ -1,0 +1,3 @@
+{"argv": ["python", "scripts/check-test-only-assets.py", "--bundle", "target/release/toontown-headless.exe"], "cwd": "C:\\Users\\kaiga\\work\\review\\m2-c24-r2", "env": {}, "startedAt": "2026-11-02T19:29:34.743874+00:00"}
+scanned 1 product file(s) under target\release\toontown-headless.exe for 3 samples
+ok: 1 test-only asset(s), licences beside them, none in product sources or the bundle

@@ -1,0 +1,164 @@
+{
+  "budgets.log": {
+    "summaries": 1,
+    "passed": 1,
+    "failed": 0,
+    "ignored": 0
+  },
+  "cancellation-replay.log": {
+    "summaries": 1,
+    "passed": 1,
+    "failed": 0,
+    "ignored": 0
+  },
+  "executor.log": {
+    "summaries": 74,
+    "passed": 456,
+    "failed": 0,
+    "ignored": 5
+  },
+  "mcp.log": {
+    "summaries": 28,
+    "passed": 70,
+    "failed": 0,
+    "ignored": 3
+  },
+  "measure-100k.log": {
+    "summaries": 1,
+    "passed": 1,
+    "failed": 0,
+    "ignored": 0
+  },
+  "measure-builder.log": {
+    "summaries": 1,
+    "passed": 1,
+    "failed": 0,
+    "ignored": 0
+  },
+  "measure-heavy.log": {
+    "summaries": 1,
+    "passed": 1,
+    "failed": 0,
+    "ignored": 0
+  },
+  "measure-planar.log": {
+    "summaries": 1,
+    "passed": 1,
+    "failed": 0,
+    "ignored": 0
+  },
+  "profile-unoptimized.log": {
+    "summaries": 1,
+    "passed": 1,
+    "failed": 0,
+    "ignored": 0
+  },
+  "render-cancel.log": {
+    "summaries": 1,
+    "passed": 1,
+    "failed": 0,
+    "ignored": 0
+  },
+  "render.log": {
+    "summaries": 7,
+    "passed": 10,
+    "failed": 0,
+    "ignored": 1
+  },
+  "round3-tests.log": {
+    "summaries": 3,
+    "passed": 5,
+    "failed": 0,
+    "ignored": 0
+  },
+  "selection-cancel.log": {
+    "summaries": 1,
+    "passed": 0,
+    "failed": 1,
+    "ignored": 0
+  },
+  "session.log": {
+    "summaries": 1,
+    "passed": 1,
+    "failed": 0,
+    "ignored": 0
+  },
+  "texture-diagnostic.log": {
+    "summaries": 1,
+    "passed": 0,
+    "failed": 1,
+    "ignored": 0
+  },
+  "texture-final.log": {
+    "summaries": 1,
+    "passed": 1,
+    "failed": 0,
+    "ignored": 0
+  },
+  "texture.log": {
+    "summaries": 1,
+    "passed": 0,
+    "failed": 1,
+    "ignored": 0
+  },
+  "topology-affected.log": {
+    "summaries": 1,
+    "passed": 1,
+    "failed": 0,
+    "ignored": 0
+  },
+  "topology-canonical.log": {
+    "summaries": 1,
+    "passed": 0,
+    "failed": 1,
+    "ignored": 0
+  },
+  "topology-diagnostic.log": {
+    "summaries": 1,
+    "passed": 0,
+    "failed": 1,
+    "ignored": 0
+  },
+  "topology-difference.log": {
+    "summaries": 1,
+    "passed": 0,
+    "failed": 1,
+    "ignored": 0
+  },
+  "topology-final.log": {
+    "summaries": 2,
+    "passed": 2,
+    "failed": 0,
+    "ignored": 0
+  },
+  "topology-raw.log": {
+    "summaries": 1,
+    "passed": 0,
+    "failed": 1,
+    "ignored": 0
+  },
+  "topology-renode.log": {
+    "summaries": 1,
+    "passed": 0,
+    "failed": 1,
+    "ignored": 0
+  },
+  "topology.log": {
+    "summaries": 1,
+    "passed": 0,
+    "failed": 1,
+    "ignored": 0
+  },
+  "vector.log": {
+    "summaries": 26,
+    "passed": 162,
+    "failed": 0,
+    "ignored": 8
+  },
+  "workspace.log": {
+    "summaries": 208,
+    "passed": 1088,
+    "failed": 0,
+    "ignored": 18
+  }
+}

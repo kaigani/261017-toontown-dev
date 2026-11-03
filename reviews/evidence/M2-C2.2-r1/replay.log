@@ -1,0 +1,13 @@
+cargo :     Finished `test` profile [unoptimized + debuginfo] target(s) in 0.16s
+At line:4 char:1
++ cargo test -p tt-mcp --test c22_replay --locked > .review-c22-temp/re ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (    Finished `t...get(s) in 0.16s:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+
+     Running tests\c22_replay.rs (target\debug\deps\c22_replay-c730bee4f97d57e4.exe)
+
+running 1 test
+test painting_sessions_replay_byte_for_byte_through_script_mode ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.31s

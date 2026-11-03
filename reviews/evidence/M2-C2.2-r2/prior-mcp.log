@@ -1,0 +1,18 @@
+cargo :    Compiling tt-mcp v0.0.1 (C:\Users\kaiga\work\review\m2-c22-r2\crates\mcp)
+At line:2 char:560
++ ... ecutor.log; cargo test -p tt-mcp --test c22_r1_surface --locked *> re ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (   Compiling tt...-r2\crates\mcp):String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 1.99s
+     Running tests\c22_r1_surface.rs (target\debug\deps\c22_r1_surface-b02afd41797f4e40.exe)
+
+running 4 tests
+test record_checkpoint_command_contracts_and_deferred_owners ... ok
+test an_agent_with_preferences_permission_can_set_gap_closing ... ok
+test retain_a_baseline_bundle_for_the_headless_paint_probe ... ok
+test typed_generic_atomic_sequential_and_script_paints_preserve_commit_contracts ... ok
+
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.18s
+
