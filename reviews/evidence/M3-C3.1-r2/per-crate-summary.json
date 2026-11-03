@@ -1,0 +1,132 @@
+{
+  "perCrateRuns": [
+    {
+      "log": "anim.txt",
+      "package": "tt-anim",
+      "exit": 0,
+      "summaries": 5,
+      "passed": 29,
+      "failed": 0,
+      "ignored": 0,
+      "sha256": "be3b7389d97703e7626e6fd0c2a7abd8eee6efb841d18b7ca89afe3e3f573b6f"
+    },
+    {
+      "log": "executor.txt",
+      "package": "tt-executor",
+      "exit": 0,
+      "summaries": 119,
+      "passed": 691,
+      "failed": 0,
+      "ignored": 8,
+      "sha256": "a467faefeeda47c1e3ca06cb431146a9744e02d7f464341e12e50dd46b8be654"
+    },
+    {
+      "log": "mcp.txt",
+      "package": "tt-mcp",
+      "exit": 101,
+      "summaries": 24,
+      "passed": 51,
+      "failed": 1,
+      "ignored": 3,
+      "sha256": "78caaf24857549bf1af8cf3f4b4b3ce1cf19c79e3a927d16e6831310b8788dcd"
+    },
+    {
+      "log": "mcp-complete.txt",
+      "package": "tt-mcp",
+      "exit": 101,
+      "summaries": 31,
+      "passed": 74,
+      "failed": 1,
+      "ignored": 3,
+      "sha256": "4fe3808d44fb6054ad0aa3a931c3498bf363c331f3278fb0626ea471b3465a8d"
+    },
+    {
+      "log": "inherited-timeout-isolated.txt",
+      "package": "tt-mcp",
+      "exit": 0,
+      "summaries": 1,
+      "passed": 1,
+      "failed": 0,
+      "ignored": 0,
+      "sha256": "86e9cd34f464f74e0c7ebbafd133b83ddc4a64e88ac7ed8bd5fce82b0c16764f"
+    }
+  ],
+  "round1Proving": [
+    {
+      "package": "tt-anim",
+      "target": "c31_r1_hierarchy",
+      "passed": 2,
+      "failed": 0,
+      "ignored": 0
+    },
+    {
+      "package": "tt-anim",
+      "target": "c31_r1_oracle",
+      "passed": 11,
+      "failed": 0,
+      "ignored": 0
+    },
+    {
+      "package": "tt-executor",
+      "target": "c31_r1_availability",
+      "passed": 1,
+      "failed": 0,
+      "ignored": 0
+    },
+    {
+      "package": "tt-executor",
+      "target": "c31_r1_contract",
+      "passed": 28,
+      "failed": 0,
+      "ignored": 0
+    },
+    {
+      "package": "tt-executor",
+      "target": "c31_r1_copy_settle",
+      "passed": 1,
+      "failed": 0,
+      "ignored": 0
+    },
+    {
+      "package": "tt-executor",
+      "target": "c31_r1_model_diff",
+      "passed": 2,
+      "failed": 0,
+      "ignored": 0
+    },
+    {
+      "package": "tt-executor",
+      "target": "c31_r1_mutations",
+      "passed": 1,
+      "failed": 0,
+      "ignored": 0
+    },
+    {
+      "package": "tt-executor",
+      "target": "c31_r1_notes",
+      "passed": 1,
+      "failed": 0,
+      "ignored": 0
+    },
+    {
+      "package": "tt-executor",
+      "target": "c31_r1_selection_budget",
+      "passed": 1,
+      "failed": 0,
+      "ignored": 0
+    },
+    {
+      "package": "tt-mcp",
+      "target": "c31_r1_protocol",
+      "passed": 3,
+      "failed": 0,
+      "ignored": 0
+    }
+  ],
+  "round1Totals": {
+    "passed": 51,
+    "failed": 0,
+    "ignored": 0
+  },
+  "note": "mcp setup timeout is retained from two full attempts; its unchanged target passed in isolation. Workspace result is separate."
+}
