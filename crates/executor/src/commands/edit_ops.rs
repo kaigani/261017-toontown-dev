@@ -1954,3 +1954,12 @@ pub(crate) fn paste_elements(cx: &mut Cx, scene: &Id) -> Result<Vec<String>, Com
     let r = paste(cx, EditContext::Timeline, &clip, &dest, Special::None)?;
     Ok(r.created_ids)
 }
+
+/// The fixes of the references an element's JSON holds to deleted elements (`element.delete`; SI-022), last
+/// pointer first.
+pub(crate) fn element_reference_fixes(v: &Value, ids: &BTreeSet<String>) -> Vec<PatchOp> {
+    let mut fixes = Vec::new();
+    reference_fixes(v, ids, "", None, &mut fixes);
+    fixes.sort_by_key(|o| std::cmp::Reverse(pointer_key(&o.path)));
+    fixes
+}

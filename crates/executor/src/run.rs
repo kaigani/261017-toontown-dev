@@ -516,6 +516,20 @@ fn frozen_guard(s: &Session, txns: &[Txn]) -> Result<(), CommandError> {
 /// returns `needs_confirmation` with the token, the summary and the consequences; `agent.confirmation.requested` tells
 /// the GUI (attached mode).
 fn needs_confirmation(session: &mut Session, e: CommandError, rev: Option<u64>) -> Envelope {
+    // A parameter-based confirmation (04 §17.1 item 6, `element.drawing.delete {ifInUse: "fail"}`): the call changed
+    // nothing and answers `needs_confirmation` with the consequences and the parameters that perform it; no token.
+    if e.details.get("x-needsConfirmation") == Some(&Value::Bool(true)) {
+        let result = json!({
+            "status": "needs_confirmation",
+            "code": e.code,
+            "summary": e.message,
+            "consequences": e.details.get("consequences"),
+            "retryWith": e.details.get("retryWith"),
+        });
+        let mut env = Envelope::ok(result, rev);
+        env.status = crate::types::Status::NeedsConfirmation;
+        return env;
+    }
     if e.code != "confirmation.required" {
         return Envelope::error(e, rev);
     }

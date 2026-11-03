@@ -198,6 +198,9 @@ pub(crate) struct Session {
     pub agents: crate::agents::AgentHub,
     /// The derived planar-map cache (M2 C2.2), shared by the session's invocations.
     pub planar: crate::planar::SharedCache,
+    /// Timeline and Exposure Sheet view state that is not document content (M3 C3.1): solo mode, category colours,
+    /// the static light tables (SI-085).
+    pub timeline: crate::commands::timing::TimelineState,
 }
 
 impl Session {

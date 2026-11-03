@@ -400,6 +400,7 @@ pub(crate) fn cell_range_add(cx: &mut Cx, p: RangeAddParams) -> Result<RangeAddR
         ));
     }
     let doc = cx.document()?.clone();
+    let mut shifted: Vec<Id> = Vec::new();
     let mut t = if p.all_elements && p.element_ids.is_none() {
         let f = match p.frame {
             Some(v) => frame(v, "/frame")?,
@@ -416,19 +417,15 @@ pub(crate) fn cell_range_add(cx: &mut Cx, p: RangeAddParams) -> Result<RangeAddR
         }
         .ok_or_else(no_target)?;
         let sc = doc.scene(&scene).ok_or_else(no_target)?;
-        // Every cell-based column; sound and media columns with content are M8's (SI-088).
+        // Every cell-based column. Sound placements and media sequences that start at or after the insertion point
+        // move later with the columns; one spanning it is not split (SI-088).
         let mut cols = Vec::new();
         for e in sc.column_order() {
             let Some(el) = doc.element(e) else { continue };
-            match el.element_type() {
-                ElementType::Sound if !el.placements().as_ref().is_none_or(Vec::is_empty) => {
-                    applicable(&doc, e, "cell.range.add", BLANKS)?;
-                }
-                ElementType::Media if !el.sequences().as_ref().is_none_or(Vec::is_empty) => {
-                    applicable(&doc, e, "cell.range.add", BLANKS)?;
-                }
-                t if t.has_exposure() => cols.push(e.clone()),
-                _ => {}
+            if el.element_type().has_exposure() {
+                cols.push(e.clone());
+            } else {
+                shifted.push(e.clone());
             }
         }
         t.elements = cols;
@@ -466,6 +463,34 @@ pub(crate) fn cell_range_add(cx: &mut Cx, p: RangeAddParams) -> Result<RangeAddR
         // Inserting past the last exposure pads with blanks only when drawings are inserted.
         let after = x::insert(&col.frames, at, &values);
         write_column(&col, &after, &mut changes, &mut out)?;
+    }
+    for e in &shifted {
+        let j = doc.entry_raw_json(&EntryKey::Element(e.clone())).map_err(super::timing::internal)?;
+        let mut ops = Vec::new();
+        let mut last = 0u64;
+        for slot in ["placements", "sequences"] {
+            for (i, item) in j.get(slot).and_then(Value::as_array).into_iter().flatten().enumerate() {
+                budget.spend(1)?;
+                let start = item.get("startFrame").and_then(Value::as_u64).unwrap_or(0);
+                let stop = item.get("stopFrame").and_then(Value::as_u64).unwrap_or(0);
+                if start < at as u64 {
+                    continue;
+                }
+                let (ns, ne) = (start + n as u64, stop + n as u64);
+                last = last.max(ne);
+                ops.push(op("replace", &format!("/{slot}/{i}/startFrame"), Some(json!(ns))));
+                ops.push(op("replace", &format!("/{slot}/{i}/stopFrame"), Some(json!(ne))));
+                // Lip-sync mouths keep their timing relative to the moved clip.
+                if let Some(pf) = item.pointer("/mouthTrack/producedFor/stopFrame").and_then(Value::as_u64) {
+                    ops.push(op("replace", &format!("/{slot}/{i}/mouthTrack/producedFor/stopFrame"), Some(json!(pf + n as u64))));
+                }
+            }
+        }
+        super::timing::check_length(usize::try_from(last).unwrap_or(usize::MAX), e)?;
+        if !ops.is_empty() {
+            out.push(CellChange { element_id: e.as_str().to_owned(), from: as_u32(at), to: as_u32(usize::try_from(last).unwrap_or(0)) });
+        }
+        changes.push(EntryKey::Element(e.clone()), ops);
     }
     changes.stage(cx)?;
     emit_cells(cx, &out)?;

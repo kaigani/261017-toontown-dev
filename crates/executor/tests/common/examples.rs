@@ -158,6 +158,9 @@ pub fn agent_placeholders(h: &ExecutorHandle, dir: &std::path::Path, params: &mu
 
 /// The clipboard a paste example expects (paste examples paste cells of `Bob`).
 pub fn clipboard_for(h: &ExecutorHandle, id: &str) {
+    if id == "cell.clipboard.apply" {
+        ok(h, "cell.clipboard.set", json!({ "elementIds": ["scene:\"Intro\"/element:\"Bob\""], "from": 1, "to": 8 }));
+    }
     if matches!(id, "edit.paste" | "edit.pasteSpecial" | "edit.pasteAsNewElement") {
         ok(h, "edit.copy", json!({ "context": "xsheet", "objectIds": ["scene:#1/element:\"Bob\"/cell:#1"] }));
     }

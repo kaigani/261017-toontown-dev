@@ -415,6 +415,469 @@
       "varies": []
     }
   ],
+  "cell.blank.add": [
+    {
+      "title": "Insert two blank cells at frame 3 of Bob",
+      "result": {
+        "changed": [
+          {
+            "elementId": "el_01K742SG11W3SGB8Q1H50W74VB",
+            "from": 3,
+            "to": 46
+          }
+        ]
+      },
+      "varies": []
+    }
+  ],
+  "cell.blank.remove": [
+    {
+      "title": "Delete the blank cell at frame 7 of Bob",
+      "result": {
+        "changed": [
+          {
+            "elementId": "el_01K742SG11W3SGB8Q1H50W74VB",
+            "from": 8,
+            "to": 44
+          }
+        ]
+      },
+      "varies": []
+    }
+  ],
+  "cell.clipboard.apply": [
+    {
+      "title": "Paste the copied cells at Bob's frame 45",
+      "result": {
+        "elementIds": [
+          "el_01K742SG11W3SGB8Q1H50W74VB"
+        ],
+        "from": 45,
+        "to": 52,
+        "createdDrawingIds": []
+      },
+      "varies": []
+    },
+    {
+      "title": "Paste as new drawings at frame 45",
+      "result": {
+        "elementIds": [
+          "el_01K742SG11W3SGB8Q1H50W74VB"
+        ],
+        "from": 45,
+        "to": 52,
+        "createdDrawingIds": [
+          "dr_01K7JJN800RXHD55052GG3NDRM"
+        ]
+      },
+      "varies": []
+    }
+  ],
+  "cell.clipboard.set": [
+    {
+      "title": "Copy Bob's frames 1-8",
+      "result": {
+        "contentType": "drawingCells",
+        "elementCount": 1,
+        "frames": 8
+      },
+      "varies": []
+    },
+    {
+      "title": "Cut frames 1-6 and close the gap",
+      "result": {
+        "contentType": "drawingCells",
+        "elementCount": 1,
+        "frames": 6
+      },
+      "varies": []
+    }
+  ],
+  "cell.columnate.apply": [
+    {
+      "title": "Write drawings 1 to 10 on twos, forward-backward twice, from frame 1",
+      "result": {
+        "from": 1,
+        "to": 16,
+        "totalFrames": 16,
+        "loops": 2,
+        "sequence": [
+          {
+            "drawing": "1",
+            "from": 1,
+            "to": 2
+          },
+          {
+            "drawing": "2",
+            "from": 3,
+            "to": 4
+          },
+          {
+            "drawing": "10",
+            "from": 5,
+            "to": 6
+          },
+          {
+            "drawing": "2",
+            "from": 7,
+            "to": 8
+          },
+          {
+            "drawing": "1",
+            "from": 9,
+            "to": 10
+          },
+          {
+            "drawing": "2",
+            "from": 11,
+            "to": 12
+          },
+          {
+            "drawing": "10",
+            "from": 13,
+            "to": 14
+          },
+          {
+            "drawing": "2",
+            "from": 15,
+            "to": 16
+          }
+        ]
+      },
+      "varies": []
+    },
+    {
+      "title": "Preview a 10-frame continuous cycle without applying it",
+      "result": {
+        "from": 1,
+        "to": 10,
+        "totalFrames": 10,
+        "loops": 4,
+        "sequence": [
+          {
+            "drawing": "1",
+            "from": 1,
+            "to": 1
+          },
+          {
+            "drawing": "2",
+            "from": 2,
+            "to": 2
+          },
+          {
+            "drawing": "10",
+            "from": 3,
+            "to": 3
+          },
+          {
+            "drawing": "1",
+            "from": 4,
+            "to": 4
+          },
+          {
+            "drawing": "2",
+            "from": 5,
+            "to": 5
+          },
+          {
+            "drawing": "10",
+            "from": 6,
+            "to": 6
+          },
+          {
+            "drawing": "1",
+            "from": 7,
+            "to": 7
+          },
+          {
+            "drawing": "2",
+            "from": 8,
+            "to": 8
+          },
+          {
+            "drawing": "10",
+            "from": 9,
+            "to": 9
+          },
+          {
+            "drawing": "1",
+            "from": 10,
+            "to": 10
+          }
+        ]
+      },
+      "varies": []
+    }
+  ],
+  "cell.cycle.create": [
+    {
+      "title": "Repeat Bob's frames 1-8 three times in total",
+      "result": {
+        "from": 1,
+        "to": 24
+      },
+      "varies": []
+    }
+  ],
+  "cell.drawing.duplicate": [
+    {
+      "title": "Duplicate the drawing at frames 3-4 of Bob and expose the copy there",
+      "result": {
+        "drawingId": "dr_01K7JJN800RXHD55052GG3NDRM",
+        "name": "11"
+      },
+      "varies": []
+    }
+  ],
+  "cell.exposure.add": [
+    {
+      "title": "Hold Bob's drawing at frame 1 one frame longer",
+      "result": {
+        "changed": [
+          {
+            "elementId": "el_01K742SG11W3SGB8Q1H50W74VB",
+            "from": 7,
+            "to": 45
+          }
+        ]
+      },
+      "varies": []
+    },
+    {
+      "title": "Add two frames to every exposure of frames 1-10",
+      "result": {
+        "changed": [
+          {
+            "elementId": "el_01K742SG11W3SGB8Q1H50W74VB",
+            "from": 7,
+            "to": 50
+          }
+        ]
+      },
+      "varies": []
+    }
+  ],
+  "cell.exposure.remove": [
+    {
+      "title": "Shorten the exposure at frame 9 by one frame",
+      "result": {
+        "changed": [
+          {
+            "elementId": "el_01K742SG11W3SGB8Q1H50W74VB",
+            "from": 20,
+            "to": 44
+          }
+        ]
+      },
+      "varies": []
+    }
+  ],
+  "cell.exposure.set": [
+    {
+      "title": "Put Bob's frames 1-20 on twos",
+      "result": {
+        "changed": [
+          {
+            "elementId": "el_01K742SG11W3SGB8Q1H50W74VB",
+            "from": 3,
+            "to": 44
+          }
+        ]
+      },
+      "varies": []
+    }
+  ],
+  "cell.fill.apply": [
+    {
+      "title": "Extend Bob's first drawing through frame 8, over the blank cells",
+      "result": {
+        "changed": [
+          {
+            "elementId": "el_01K742SG11W3SGB8Q1H50W74VB",
+            "from": 7,
+            "to": 8
+          }
+        ]
+      },
+      "varies": []
+    }
+  ],
+  "cell.label.set": [
+    {
+      "title": "Expose drawing 10 in Bob's frames 1-6",
+      "result": {
+        "drawingId": "dr_01K742SG0NG5HTFZRD7238FZXJ",
+        "name": "10",
+        "changed": [
+          {
+            "elementId": "el_01K742SG11W3SGB8Q1H50W74VB",
+            "from": 1,
+            "to": 6
+          }
+        ]
+      },
+      "varies": []
+    },
+    {
+      "title": "Create drawing 11 and expose it in frames 7-8",
+      "result": {
+        "drawingId": "dr_01K7JJN800RXHD55052GG3NDRM",
+        "name": "11",
+        "changed": [
+          {
+            "elementId": "el_01K742SG11W3SGB8Q1H50W74VB",
+            "from": 7,
+            "to": 8
+          }
+        ]
+      },
+      "varies": []
+    },
+    {
+      "title": "Step to the next drawing of the bank in frames 1-6",
+      "result": {
+        "drawingId": "dr_01K742SG0M5J3BAJSW8241WA87",
+        "name": "2",
+        "changed": [
+          {
+            "elementId": "el_01K742SG11W3SGB8Q1H50W74VB",
+            "from": 1,
+            "to": 6
+          }
+        ]
+      },
+      "varies": []
+    }
+  ],
+  "cell.note.set": [
+    {
+      "title": "Note on Bob's frame 9",
+      "result": {
+        "elementId": "el_01K742SG11W3SGB8Q1H50W74VB",
+        "frame": 9
+      },
+      "varies": []
+    },
+    {
+      "title": "Remove the note of frame 3",
+      "result": {
+        "elementId": "el_01K742SG11W3SGB8Q1H50W74VB",
+        "frame": 3
+      },
+      "varies": []
+    }
+  ],
+  "cell.range.add": [
+    {
+      "title": "Insert two named cells after frame 6 of Bob",
+      "result": {
+        "from": 7,
+        "to": 8,
+        "drawingIds": [
+          "dr_01K7JJN800RXHD55052GG3NDRM",
+          "dr_01K7JJN801N0AE1Z0RRCTVH07Z"
+        ]
+      },
+      "varies": []
+    },
+    {
+      "title": "Insert three blank cells before frame 1 in every column",
+      "result": {
+        "from": 1,
+        "to": 3,
+        "drawingIds": []
+      },
+      "varies": []
+    }
+  ],
+  "cell.range.delete": [
+    {
+      "title": "Clear frames 1-3 of Bob",
+      "result": {
+        "changed": [
+          {
+            "elementId": "el_01K742SG11W3SGB8Q1H50W74VB",
+            "from": 1,
+            "to": 3
+          }
+        ]
+      },
+      "varies": []
+    },
+    {
+      "title": "Remove frames 1-3 of Bob and close the gap",
+      "result": {
+        "changed": [
+          {
+            "elementId": "el_01K742SG11W3SGB8Q1H50W74VB",
+            "from": 4,
+            "to": 44
+          }
+        ]
+      },
+      "varies": []
+    }
+  ],
+  "cell.range.move": [
+    {
+      "title": "Move Bob's frames 1-6 to frame 45",
+      "result": {
+        "from": 39,
+        "to": 44,
+        "createdDrawingIds": []
+      },
+      "varies": []
+    },
+    {
+      "title": "Copy frames 1-6 of Bob into the Notes annotation column as new drawings",
+      "result": {
+        "from": 1,
+        "to": 6,
+        "createdDrawingIds": [
+          "dr_01K7JJN800RXHD55052GG3NDRM"
+        ]
+      },
+      "varies": []
+    }
+  ],
+  "cell.select": [
+    {
+      "title": "Select Bob's frames 1-6",
+      "result": {
+        "elementIds": [
+          "el_01K742SG11W3SGB8Q1H50W74VB"
+        ],
+        "from": 1,
+        "to": 6
+      },
+      "varies": []
+    },
+    {
+      "title": "Select Bob's whole track",
+      "result": {
+        "elementIds": [
+          "el_01K742SG11W3SGB8Q1H50W74VB"
+        ],
+        "from": 1,
+        "to": 44
+      },
+      "varies": []
+    }
+  ],
+  "cell.selection.get": [
+    {
+      "title": "The current cell selection and position",
+      "result": {
+        "elementIds": [],
+        "from": 0,
+        "to": 0,
+        "rowsSelected": 0,
+        "currentElementId": "el_01K742SG0ZZYY8HE4MW501XMJV",
+        "currentFrame": 1
+      },
+      "varies": []
+    }
+  ],
   "checkpoint.create": [
     {
       "title": "Checkpoint before an experiment",
@@ -5865,6 +6328,895 @@
       "varies": []
     }
   ],
+  "element.annotation.set": [
+    {
+      "title": "Turn Bob into an annotation element",
+      "result": {
+        "elementId": "el_01K742SG11W3SGB8Q1H50W74VB",
+        "type": "annotation"
+      },
+      "varies": []
+    }
+  ],
+  "element.childExposure.apply": [
+    {
+      "title": "Extend the exposure of Bob-P's children up to frame 60",
+      "result": {
+        "changed": [
+          {
+            "elementId": "el_01K742SG11W3SGB8Q1H50W74VB",
+            "from": 45,
+            "to": 60
+          }
+        ]
+      },
+      "varies": []
+    }
+  ],
+  "element.clone": [
+    {
+      "title": "Clone Bob (shared drawings, own timing)",
+      "result": {
+        "elementId": "el_01K7JJN800RXHD55052GG3NDRM",
+        "name": "Bob_1",
+        "cloneGroupId": "db_01K742SG0JW3TVZ32SQC03AMY1"
+      },
+      "varies": []
+    }
+  ],
+  "element.collapsed.set": [
+    {
+      "title": "Collapse the peg Bob-P",
+      "result": {
+        "elementIds": [
+          "el_01K742SG101DH4FAEWCWWK4QXC"
+        ]
+      },
+      "varies": []
+    }
+  ],
+  "element.colour.set": [
+    {
+      "title": "Mark Bob red",
+      "result": {
+        "elementIds": [
+          "el_01K742SG11W3SGB8Q1H50W74VB"
+        ]
+      },
+      "varies": []
+    },
+    {
+      "title": "Revert Bob's marker to the category default",
+      "result": {
+        "elementIds": [
+          "el_01K742SG11W3SGB8Q1H50W74VB"
+        ]
+      },
+      "varies": []
+    }
+  ],
+  "element.create": [
+    {
+      "title": "Add a drawing element to the current scene",
+      "result": {
+        "elementIds": [
+          "el_01K7JJN800RXHD55052GG3NDRM"
+        ],
+        "names": [
+          "Drawing"
+        ],
+        "warnings": []
+      },
+      "varies": []
+    },
+    {
+      "title": "Three pegs named Leg, Leg_1, Leg_2 under Bob-P",
+      "result": {
+        "elementIds": [
+          "el_01K7JJN800RXHD55052GG3NDRM",
+          "el_01K7JJN801N0AE1Z0RRCTVH07Z",
+          "el_01K7JJN8023FJ8358KMGS10XYV"
+        ],
+        "names": [
+          "Leg",
+          "Leg_1",
+          "Leg_2"
+        ],
+        "warnings": []
+      },
+      "varies": []
+    },
+    {
+      "title": "A clipping effect with its mask row",
+      "result": {
+        "elementIds": [
+          "el_01K7JJN800RXHD55052GG3NDRM"
+        ],
+        "names": [
+          "Clipping"
+        ],
+        "warnings": []
+      },
+      "varies": []
+    }
+  ],
+  "element.current.move": [
+    {
+      "title": "Next Exposure Sheet column",
+      "result": {
+        "elementId": "el_01K742SG11W3SGB8Q1H50W74VB"
+      },
+      "varies": []
+    }
+  ],
+  "element.current.set": [
+    {
+      "title": "Make Bob current",
+      "result": {
+        "elementId": "el_01K742SG11W3SGB8Q1H50W74VB"
+      },
+      "varies": []
+    }
+  ],
+  "element.delete": [
+    {
+      "title": "Delete the peg Bob-P; Bob moves to its level",
+      "result": {
+        "deletedIds": [
+          "el_01K742SG101DH4FAEWCWWK4QXC"
+        ],
+        "reparentedIds": [
+          "el_01K742SG11W3SGB8Q1H50W74VB"
+        ],
+        "deletedDrawingCount": 0
+      },
+      "varies": []
+    }
+  ],
+  "element.drawing.create": [
+    {
+      "title": "A new empty drawing in Bob's bank",
+      "result": {
+        "drawingId": "dr_01K7JJN800RXHD55052GG3NDRM",
+        "name": "11"
+      },
+      "varies": []
+    },
+    {
+      "title": "Drawing A exposed at frames 45-48",
+      "result": {
+        "drawingId": "dr_01K7JJN800RXHD55052GG3NDRM",
+        "name": "A"
+      },
+      "varies": []
+    }
+  ],
+  "element.drawing.delete": [
+    {
+      "title": "Delete Bob's unused drawing 10",
+      "result": {
+        "deletedIds": [
+          "dr_01K742SG0NG5HTFZRD7238FZXJ"
+        ],
+        "clearedCells": []
+      },
+      "varies": []
+    },
+    {
+      "title": "Delete drawing 1 and blank the cells showing it",
+      "result": {
+        "deletedIds": [
+          "dr_01K742SG0KKMCAP9X1E6Z5P4SW"
+        ],
+        "clearedCells": [
+          {
+            "elementId": "el_01K742SG11W3SGB8Q1H50W74VB",
+            "from": 1,
+            "to": 44
+          }
+        ]
+      },
+      "varies": []
+    }
+  ],
+  "element.drawing.duplicate": [
+    {
+      "title": "Copy Bob's drawing 1 into a new bank entry",
+      "result": {
+        "drawingId": "dr_01K7JJN800RXHD55052GG3NDRM",
+        "name": "11"
+      },
+      "varies": []
+    }
+  ],
+  "element.drawing.list": [
+    {
+      "title": "Bob's drawings with usage",
+      "result": {
+        "drawings": [
+          {
+            "id": "dr_01K742SG0KKMCAP9X1E6Z5P4SW",
+            "name": "1",
+            "exposures": [
+              {
+                "from": 1,
+                "to": 6
+              },
+              {
+                "from": 21,
+                "to": 44
+              }
+            ],
+            "useCount": 30,
+            "locked": false,
+            "empty": false,
+            "missing": false,
+            "contentType": "vector"
+          },
+          {
+            "id": "dr_01K742SG0M5J3BAJSW8241WA87",
+            "name": "2",
+            "exposures": [
+              {
+                "from": 9,
+                "to": 20
+              }
+            ],
+            "useCount": 12,
+            "locked": true,
+            "empty": false,
+            "missing": false,
+            "contentType": "bitmap"
+          },
+          {
+            "id": "dr_01K742SG0NG5HTFZRD7238FZXJ",
+            "name": "10",
+            "exposures": [],
+            "useCount": 0,
+            "locked": false,
+            "empty": true,
+            "missing": false,
+            "contentType": "empty"
+          }
+        ]
+      },
+      "varies": []
+    },
+    {
+      "title": "Bob's unused drawings with 32-pixel thumbnails",
+      "result": {
+        "drawings": []
+      },
+      "varies": []
+    }
+  ],
+  "element.drawing.rename": [
+    {
+      "title": "Rename Bob's drawing 10 to 3",
+      "result": {
+        "drawingId": "dr_01K742SG0NG5HTFZRD7238FZXJ",
+        "name": "3"
+      },
+      "varies": []
+    }
+  ],
+  "element.drawingContent.delete": [
+    {
+      "title": "Clear Bob's drawing 1 (cells keep their label)",
+      "result": {
+        "drawingIds": [
+          "dr_01K742SG0KKMCAP9X1E6Z5P4SW"
+        ]
+      },
+      "varies": []
+    }
+  ],
+  "element.drawingLock.set": [
+    {
+      "title": "Lock Bob's drawing 1",
+      "result": {
+        "drawingIds": [
+          "dr_01K742SG0KKMCAP9X1E6Z5P4SW"
+        ]
+      },
+      "varies": []
+    }
+  ],
+  "element.duplicate": [
+    {
+      "title": "Duplicate Bob with copies of his drawings",
+      "result": {
+        "elementIds": [
+          "el_01K7JJN800RXHD55052GG3NDRM"
+        ],
+        "names": [
+          "Bob_1"
+        ]
+      },
+      "varies": []
+    }
+  ],
+  "element.get": [
+    {
+      "title": "Bob's state",
+      "result": {
+        "id": "el_01K742SG11W3SGB8Q1H50W74VB",
+        "path": "scene:\"Intro\"/element:\"Bob\"",
+        "name": "Bob",
+        "elementType": "drawing",
+        "sceneId": "sc_01K742SG0YSRA1305J7887BDVZ",
+        "parentId": "el_01K742SG101DH4FAEWCWWK4QXC",
+        "childIds": [],
+        "depth": 1,
+        "timelineIndex": 2,
+        "xsheetIndex": 0,
+        "start": 1,
+        "duration": 44,
+        "loops": 1,
+        "annotation": false,
+        "role": "normal",
+        "deformable": false,
+        "visibleInScene": true,
+        "hiddenByParent": false,
+        "visibleInXsheet": true,
+        "locked": false,
+        "collapsed": false,
+        "markerColour": "#9DC3E6FF",
+        "backgroundColour": null,
+        "effectiveMarkerColour": "#9DC3E6FF",
+        "note": "main character",
+        "columnWidth": 80,
+        "cloneGroupId": null,
+        "cloneIds": [],
+        "drawingCount": 3,
+        "media": null
+      },
+      "varies": []
+    }
+  ],
+  "element.hierarchy.get": [
+    {
+      "title": "Where Bob hangs",
+      "result": {
+        "parentId": "el_01K742SG101DH4FAEWCWWK4QXC",
+        "childIds": [],
+        "previousSiblingId": null,
+        "nextSiblingId": null,
+        "depth": 1
+      },
+      "varies": []
+    }
+  ],
+  "element.hierarchy.select": [
+    {
+      "title": "Select Bob's parent",
+      "result": {
+        "selectedIds": [
+          "el_01K742SG101DH4FAEWCWWK4QXC"
+        ]
+      },
+      "varies": []
+    }
+  ],
+  "element.list": [
+    {
+      "title": "Elements of the Intro scene in Timeline order",
+      "result": {
+        "elements": [
+          {
+            "id": "el_01K742SG0ZZYY8HE4MW501XMJV",
+            "name": "Camera",
+            "type": "camera",
+            "parentId": null,
+            "depth": 0,
+            "index": 0
+          },
+          {
+            "id": "el_01K742SG101DH4FAEWCWWK4QXC",
+            "name": "Bob-P",
+            "type": "peg",
+            "parentId": null,
+            "depth": 0,
+            "index": 1
+          },
+          {
+            "id": "el_01K742SG11W3SGB8Q1H50W74VB",
+            "name": "Bob",
+            "type": "drawing",
+            "parentId": "el_01K742SG101DH4FAEWCWWK4QXC",
+            "depth": 1,
+            "index": 0
+          },
+          {
+            "id": "el_01K742SG12CTMHXEB7TY99G4XV",
+            "name": "Background",
+            "type": "image",
+            "parentId": null,
+            "depth": 0,
+            "index": 2
+          },
+          {
+            "id": "el_01K742SG16N99XRCS0QEBWMRXY",
+            "name": "Notes",
+            "type": "annotation",
+            "parentId": null,
+            "depth": 0,
+            "index": 3
+          },
+          {
+            "id": "el_01K742SG18FWWKH14N0RFB0V71",
+            "name": "Dialogue",
+            "type": "sound",
+            "parentId": null,
+            "depth": 0,
+            "index": 4
+          },
+          {
+            "id": "el_01K742SG1997BY67AWW1M4Q0ZJ",
+            "name": "Reference",
+            "type": "media",
+            "parentId": null,
+            "depth": 0,
+            "index": 5
+          },
+          {
+            "id": "el_01K742SG1AC44Z1PPR4WQ603NH",
+            "name": "Rig",
+            "type": "skeleton",
+            "parentId": null,
+            "depth": 0,
+            "index": 6
+          },
+          {
+            "id": "el_01K742SG1BRDWJ0WNJDQZ83WKE",
+            "name": "Rig-bones",
+            "type": "effectParameter",
+            "parentId": "el_01K742SG1AC44Z1PPR4WQ603NH",
+            "depth": 1,
+            "index": 0
+          },
+          {
+            "id": "el_01K742SG1DA6M66PRBFSTF1J1Y",
+            "name": "Arm",
+            "type": "bone",
+            "parentId": "el_01K742SG1BRDWJ0WNJDQZ83WKE",
+            "depth": 2,
+            "index": 0
+          },
+          {
+            "id": "el_01K742SG1C65EBSWTVDPTZ7EJ0",
+            "name": "Rig-skin",
+            "type": "effectParameter",
+            "parentId": "el_01K742SG1AC44Z1PPR4WQ603NH",
+            "depth": 1,
+            "index": 1
+          },
+          {
+            "id": "el_01K742SG1E231F7W54P5SD2AAB",
+            "name": "Clip",
+            "type": "clipping",
+            "parentId": null,
+            "depth": 0,
+            "index": 7
+          },
+          {
+            "id": "el_01K742SG1FGTQ1G2HBTRT3T0FR",
+            "name": "Clip-mask",
+            "type": "effectParameter",
+            "parentId": "el_01K742SG1E231F7W54P5SD2AAB",
+            "depth": 1,
+            "index": 0
+          },
+          {
+            "id": "el_01K742SG1G9A0XG0WHZYSGT4WG",
+            "name": "Fade",
+            "type": "colourTransform",
+            "parentId": null,
+            "depth": 0,
+            "index": 8
+          },
+          {
+            "id": "el_01K742SG1H4KS4Y1FG6WTW7EAH",
+            "name": "Shadow",
+            "type": "dropShadow",
+            "parentId": "el_01K742SG1G9A0XG0WHZYSGT4WG",
+            "depth": 1,
+            "index": 0
+          },
+          {
+            "id": "el_01K742SG1J3M0SDFTX818N3V2K",
+            "name": "Soft",
+            "type": "blur",
+            "parentId": "el_01K742SG1G9A0XG0WHZYSGT4WG",
+            "depth": 1,
+            "index": 1
+          },
+          {
+            "id": "el_01K742SG1KNSDQQH1EG9W2NJWJ",
+            "name": "Quake",
+            "type": "shake",
+            "parentId": "el_01K742SG1J3M0SDFTX818N3V2K",
+            "depth": 2,
+            "index": 0
+          },
+          {
+            "id": "el_01K742SG1M9CJZV12YYC0CWB8B",
+            "name": "Snow",
+            "type": "particleNature",
+            "parentId": null,
+            "depth": 0,
+            "index": 9
+          },
+          {
+            "id": "el_01K742SG1N7SQGF0AQF87N7SEP",
+            "name": "Snow-sprites",
+            "type": "effectParameter",
+            "parentId": "el_01K742SG1M9CJZV12YYC0CWB8B",
+            "depth": 1,
+            "index": 0
+          },
+          {
+            "id": "el_01K742SG1PHXPEHSG259WYPMBV",
+            "name": "Boom",
+            "type": "particleImpact",
+            "parentId": null,
+            "depth": 0,
+            "index": 10
+          }
+        ]
+      },
+      "varies": []
+    },
+    {
+      "title": "Exposure Sheet columns of the Intro scene",
+      "result": {
+        "elements": [
+          {
+            "id": "el_01K742SG11W3SGB8Q1H50W74VB",
+            "name": "Bob",
+            "type": "drawing",
+            "parentId": "el_01K742SG101DH4FAEWCWWK4QXC",
+            "depth": 1,
+            "index": 0
+          },
+          {
+            "id": "el_01K742SG12CTMHXEB7TY99G4XV",
+            "name": "Background",
+            "type": "image",
+            "parentId": null,
+            "depth": 0,
+            "index": 1
+          },
+          {
+            "id": "el_01K742SG16N99XRCS0QEBWMRXY",
+            "name": "Notes",
+            "type": "annotation",
+            "parentId": null,
+            "depth": 0,
+            "index": 2
+          },
+          {
+            "id": "el_01K742SG18FWWKH14N0RFB0V71",
+            "name": "Dialogue",
+            "type": "sound",
+            "parentId": null,
+            "depth": 0,
+            "index": 3
+          },
+          {
+            "id": "el_01K742SG1997BY67AWW1M4Q0ZJ",
+            "name": "Reference",
+            "type": "media",
+            "parentId": null,
+            "depth": 0,
+            "index": 4
+          }
+        ]
+      },
+      "varies": []
+    },
+    {
+      "title": "Direct children of the peg Bob-P",
+      "result": {
+        "elements": [
+          {
+            "id": "el_01K742SG11W3SGB8Q1H50W74VB",
+            "name": "Bob",
+            "type": "drawing",
+            "parentId": "el_01K742SG101DH4FAEWCWWK4QXC",
+            "depth": 1,
+            "index": 0
+          }
+        ]
+      },
+      "varies": []
+    }
+  ],
+  "element.lock.set": [
+    {
+      "title": "Lock Bob in the scene-planning views",
+      "result": {
+        "changedIds": [
+          "el_01K742SG11W3SGB8Q1H50W74VB"
+        ]
+      },
+      "varies": []
+    },
+    {
+      "title": "Unlock all",
+      "result": {
+        "changedIds": []
+      },
+      "varies": []
+    }
+  ],
+  "element.mediaLength.set": [
+    {
+      "title": "Set the Reference media to 30 frames",
+      "result": {
+        "elementId": "el_01K742SG1997BY67AWW1M4Q0ZJ",
+        "from": 1,
+        "to": 30
+      },
+      "varies": []
+    }
+  ],
+  "element.note.set": [
+    {
+      "title": "Note on Bob",
+      "result": {
+        "elementId": "el_01K742SG11W3SGB8Q1H50W74VB"
+      },
+      "varies": []
+    }
+  ],
+  "element.order.move": [
+    {
+      "title": "Bring the Background image to the front of its Timeline level",
+      "result": {
+        "changed": true,
+        "order": [
+          "el_01K742SG12CTMHXEB7TY99G4XV",
+          "el_01K742SG0ZZYY8HE4MW501XMJV",
+          "el_01K742SG101DH4FAEWCWWK4QXC",
+          "el_01K742SG16N99XRCS0QEBWMRXY",
+          "el_01K742SG18FWWKH14N0RFB0V71",
+          "el_01K742SG1997BY67AWW1M4Q0ZJ",
+          "el_01K742SG1AC44Z1PPR4WQ603NH",
+          "el_01K742SG1E231F7W54P5SD2AAB",
+          "el_01K742SG1G9A0XG0WHZYSGT4WG",
+          "el_01K742SG1M9CJZV12YYC0CWB8B",
+          "el_01K742SG1PHXPEHSG259WYPMBV"
+        ]
+      },
+      "varies": []
+    },
+    {
+      "title": "Move Bob's column one step to the right in the Exposure Sheet",
+      "result": {
+        "changed": true,
+        "order": [
+          "el_01K742SG12CTMHXEB7TY99G4XV",
+          "el_01K742SG11W3SGB8Q1H50W74VB",
+          "el_01K742SG16N99XRCS0QEBWMRXY",
+          "el_01K742SG18FWWKH14N0RFB0V71",
+          "el_01K742SG1997BY67AWW1M4Q0ZJ"
+        ]
+      },
+      "varies": []
+    }
+  ],
+  "element.order.set": [
+    {
+      "title": "Reorder the Exposure Sheet columns",
+      "result": {
+        "order": [
+          "el_01K742SG12CTMHXEB7TY99G4XV",
+          "el_01K742SG11W3SGB8Q1H50W74VB",
+          "el_01K742SG16N99XRCS0QEBWMRXY",
+          "el_01K742SG18FWWKH14N0RFB0V71",
+          "el_01K742SG1997BY67AWW1M4Q0ZJ"
+        ]
+      },
+      "varies": []
+    }
+  ],
+  "element.parent.remove": [
+    {
+      "title": "Detach Bob from Bob-P; Bob moves directly above it",
+      "result": {
+        "elementIds": [
+          "el_01K742SG11W3SGB8Q1H50W74VB"
+        ],
+        "parentId": null
+      },
+      "varies": []
+    }
+  ],
+  "element.parent.set": [
+    {
+      "title": "Attach the Background image to Bob-P",
+      "result": {
+        "elementIds": [
+          "el_01K742SG12CTMHXEB7TY99G4XV"
+        ],
+        "parentId": "el_01K742SG101DH4FAEWCWWK4QXC"
+      },
+      "varies": []
+    },
+    {
+      "title": "Attach to the nearest peg or effect above",
+      "result": {
+        "elementIds": [
+          "el_01K742SG12CTMHXEB7TY99G4XV"
+        ],
+        "parentId": "el_01K742SG101DH4FAEWCWWK4QXC"
+      },
+      "varies": []
+    }
+  ],
+  "element.parentPeg.create": [
+    {
+      "title": "Put the Background image under a new peg",
+      "result": {
+        "pegId": "el_01K7JJN800RXHD55052GG3NDRM",
+        "name": "Background-P"
+      },
+      "varies": []
+    }
+  ],
+  "element.properties.set": [
+    {
+      "title": "Make Bob a foreground element",
+      "result": {
+        "elementId": "el_01K742SG11W3SGB8Q1H50W74VB"
+      },
+      "varies": []
+    }
+  ],
+  "element.rename": [
+    {
+      "title": "Rename Bob to Robert",
+      "result": {
+        "elementId": "el_01K742SG11W3SGB8Q1H50W74VB",
+        "name": "Robert"
+      },
+      "varies": []
+    }
+  ],
+  "element.select": [
+    {
+      "title": "Select Bob",
+      "result": {
+        "selectedIds": [
+          "el_01K742SG11W3SGB8Q1H50W74VB"
+        ]
+      },
+      "varies": []
+    }
+  ],
+  "element.solo.set": [
+    {
+      "title": "Solo Bob",
+      "result": {
+        "enabled": true,
+        "elementIds": [
+          "el_01K742SG11W3SGB8Q1H50W74VB"
+        ]
+      },
+      "varies": []
+    },
+    {
+      "title": "Turn solo mode off",
+      "result": {
+        "enabled": false,
+        "elementIds": []
+      },
+      "varies": []
+    }
+  ],
+  "element.timing.set": [
+    {
+      "title": "Move the peg Bob-P to start at frame 5",
+      "result": {
+        "elements": [
+          {
+            "id": "el_01K742SG101DH4FAEWCWWK4QXC",
+            "start": 5,
+            "duration": 48,
+            "loops": 1
+          }
+        ]
+      },
+      "varies": []
+    },
+    {
+      "title": "Stretch Bob-P to 24 frames, scaling its keys",
+      "result": {
+        "elements": [
+          {
+            "id": "el_01K742SG101DH4FAEWCWWK4QXC",
+            "start": 1,
+            "duration": 24,
+            "loops": 1
+          }
+        ]
+      },
+      "varies": []
+    },
+    {
+      "title": "Loop the Fade effect twice",
+      "result": {
+        "elements": [
+          {
+            "id": "el_01K742SG1G9A0XG0WHZYSGT4WG",
+            "start": 1,
+            "duration": 96,
+            "loops": 2
+          }
+        ]
+      },
+      "varies": []
+    }
+  ],
+  "element.typeColour.get": [
+    {
+      "title": "Default colours of all element categories",
+      "result": {
+        "colours": {
+          "drawings": "#9DC3E6FF",
+          "images": "#A9D18EFF",
+          "sounds": "#F4B183FF",
+          "pegs": "#C9A0DCFF",
+          "skeletons": "#E6B9B8FF",
+          "media": "#FFE699FF",
+          "cameras": "#BFBFBFFF",
+          "effects": "#F8CBADFF",
+          "effectParameters": "#FBE5D6FF"
+        }
+      },
+      "varies": []
+    }
+  ],
+  "element.typeColour.set": [
+    {
+      "title": "Pegs in purple",
+      "result": {
+        "category": "pegs",
+        "colour": "#8064A2FF"
+      },
+      "varies": []
+    }
+  ],
+  "element.unusedDrawing.list": [
+    {
+      "title": "Unused drawings of the Intro scene",
+      "result": {
+        "items": []
+      },
+      "varies": []
+    }
+  ],
+  "element.visibility.set": [
+    {
+      "title": "Hide Bob in the scene",
+      "result": {
+        "changedIds": [
+          "el_01K742SG11W3SGB8Q1H50W74VB"
+        ]
+      },
+      "varies": []
+    },
+    {
+      "title": "Hide all annotation elements",
+      "result": {
+        "changedIds": [
+          "el_01K742SG16N99XRCS0QEBWMRXY"
+        ]
+      },
+      "varies": []
+    }
+  ],
   "job.cancel": [
     {
       "title": "Cancel a job",
@@ -8184,6 +9536,190 @@
       "title": "Switch to the Drawing workspace",
       "result": {
         "name": "Drawing"
+      },
+      "varies": []
+    }
+  ],
+  "xsheet.exposures.get": [
+    {
+      "title": "The Intro scene's exposure sheet, frames 1-24",
+      "result": {
+        "sceneId": "sc_01K742SG0YSRA1305J7887BDVZ",
+        "rev": 4,
+        "sceneLength": 48,
+        "from": 1,
+        "to": 24,
+        "columns": [
+          {
+            "elementId": "el_01K742SG11W3SGB8Q1H50W74VB",
+            "name": "Bob",
+            "elementType": "drawing",
+            "visible": true,
+            "exposures": [
+              {
+                "drawing": "1",
+                "drawingId": "dr_01K742SG0KKMCAP9X1E6Z5P4SW",
+                "from": 1,
+                "to": 6
+              },
+              {
+                "drawing": "2",
+                "drawingId": "dr_01K742SG0M5J3BAJSW8241WA87",
+                "from": 9,
+                "to": 20
+              },
+              {
+                "drawing": "1",
+                "drawingId": "dr_01K742SG0KKMCAP9X1E6Z5P4SW",
+                "from": 21,
+                "to": 24,
+                "continues": "after"
+              }
+            ]
+          },
+          {
+            "elementId": "el_01K742SG12CTMHXEB7TY99G4XV",
+            "name": "Background",
+            "elementType": "image",
+            "visible": true,
+            "exposures": [
+              {
+                "drawing": "1",
+                "drawingId": "dr_01K742SG14TNTV1TR99SQHVKVK",
+                "from": 1,
+                "to": 24,
+                "continues": "after"
+              }
+            ]
+          },
+          {
+            "elementId": "el_01K742SG16N99XRCS0QEBWMRXY",
+            "name": "Notes",
+            "elementType": "annotation",
+            "visible": false,
+            "exposures": []
+          },
+          {
+            "elementId": "el_01K742SG18FWWKH14N0RFB0V71",
+            "name": "Dialogue",
+            "elementType": "sound",
+            "visible": true,
+            "clips": [
+              {
+                "clipId": "pl_01K742SG26M7NBT20KCAM2NWXK",
+                "file": "line1.wav",
+                "from": 1,
+                "to": 8
+              }
+            ]
+          },
+          {
+            "elementId": "el_01K742SG1997BY67AWW1M4Q0ZJ",
+            "name": "Reference",
+            "elementType": "media",
+            "visible": true,
+            "exposures": [
+              {
+                "drawing": "reference.mov",
+                "drawingId": "ms_01K742SG27RRHRRZ5147YSZD8N",
+                "from": 1,
+                "to": 24
+              }
+            ]
+          }
+        ]
+      },
+      "varies": []
+    },
+    {
+      "title": "Bob's column with notes",
+      "result": {
+        "sceneId": "sc_01K742SG0YSRA1305J7887BDVZ",
+        "rev": 4,
+        "sceneLength": 48,
+        "from": 1,
+        "to": 48,
+        "columns": [
+          {
+            "elementId": "el_01K742SG11W3SGB8Q1H50W74VB",
+            "name": "Bob",
+            "elementType": "drawing",
+            "visible": true,
+            "exposures": [
+              {
+                "drawing": "1",
+                "drawingId": "dr_01K742SG0KKMCAP9X1E6Z5P4SW",
+                "from": 1,
+                "to": 6
+              },
+              {
+                "drawing": "2",
+                "drawingId": "dr_01K742SG0M5J3BAJSW8241WA87",
+                "from": 9,
+                "to": 20
+              },
+              {
+                "drawing": "1",
+                "drawingId": "dr_01K742SG0KKMCAP9X1E6Z5P4SW",
+                "from": 21,
+                "to": 44
+              }
+            ],
+            "notes": [
+              {
+                "frame": 3,
+                "text": "fix hand"
+              },
+              {
+                "frame": 12,
+                "text": "hold"
+              }
+            ]
+          }
+        ]
+      },
+      "varies": []
+    }
+  ],
+  "xsheet.exposures.set": [
+    {
+      "title": "Rewrite Bob's frames 1-24",
+      "result": {
+        "rev": 5,
+        "sceneLength": 48,
+        "changed": [
+          {
+            "elementId": "el_01K742SG11W3SGB8Q1H50W74VB",
+            "from": 7,
+            "to": 24
+          }
+        ],
+        "createdDrawings": [
+          {
+            "elementId": "el_01K742SG11W3SGB8Q1H50W74VB",
+            "drawingId": "dr_01K7JJN800RXHD55052GG3NDRM",
+            "name": "4"
+          }
+        ]
+      },
+      "varies": []
+    },
+    {
+      "title": "Preview a change without applying it",
+      "result": {
+        "rev": 4,
+        "sceneLength": 48,
+        "changed": [],
+        "createdDrawings": []
+      },
+      "varies": []
+    }
+  ],
+  "xsheet.lightTable.list": [
+    {
+      "title": "The current scene's static light table",
+      "result": {
+        "items": []
       },
       "varies": []
     }

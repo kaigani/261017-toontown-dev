@@ -30,6 +30,9 @@ pub(crate) mod draw_transform;
 pub(crate) mod draw_vectorize;
 pub(crate) mod edit;
 pub(crate) mod edit_ops;
+pub(crate) mod element;
+pub(crate) mod element_bank;
+pub(crate) mod element_read;
 pub(crate) mod inspect;
 pub(crate) mod job;
 pub(crate) mod project;
@@ -37,6 +40,7 @@ pub(crate) mod timing;
 pub(crate) mod tool_symmetry;
 pub(crate) mod window;
 pub(crate) mod workspace;
+pub(crate) mod xsheet;
 
 use tt_registry::Command;
 
@@ -272,4 +276,52 @@ pub(crate) static ALL: &[&Command] = &[
     &cell::CELL_SELECTION_GET,
     &cell::CELL_EXPOSURES_CHANGED,
     &cell::CELL_SELECTION_CHANGED,
+    // element (M3 C3.1)
+    &element::ELEMENT_CREATE,
+    &element::ELEMENT_PARENT_PEG_CREATE,
+    &element::ELEMENT_RENAME,
+    &element::ELEMENT_CLONE,
+    &element::ELEMENT_DUPLICATE,
+    &element::ELEMENT_DELETE,
+    &element::ELEMENT_ORDER_MOVE,
+    &element::ELEMENT_ORDER_SET,
+    &element::ELEMENT_PARENT_SET,
+    &element::ELEMENT_PARENT_REMOVE,
+    &element::ELEMENT_COLOUR_SET,
+    &element::ELEMENT_NOTE_SET,
+    &element::ELEMENT_PROPERTIES_SET,
+    &element::ELEMENT_TIMING_SET,
+    &element::ELEMENT_CHILD_EXPOSURE_APPLY,
+    &element::ELEMENT_MEDIA_LENGTH_SET,
+    &element::ELEMENT_VISIBILITY_SET,
+    &element::ELEMENT_LOCK_SET,
+    &element::ELEMENT_ANNOTATION_SET,
+    &element::ELEMENT_COLLAPSED_SET,
+    &element::ELEMENT_SOLO_SET,
+    &element::ELEMENT_STATE_CHANGED,
+    // element_read (M3 C3.1)
+    &element_read::ELEMENT_LIST,
+    &element_read::ELEMENT_GET,
+    &element_read::ELEMENT_HIERARCHY_GET,
+    &element_read::ELEMENT_TYPE_COLOUR_GET,
+    &element_read::ELEMENT_TYPE_COLOUR_SET,
+    &element_read::ELEMENT_SELECT,
+    &element_read::ELEMENT_HIERARCHY_SELECT,
+    &element_read::ELEMENT_CURRENT_SET,
+    &element_read::ELEMENT_CURRENT_MOVE,
+    // element_bank (M3 C3.1)
+    &element_bank::ELEMENT_DRAWING_LIST,
+    &element_bank::ELEMENT_UNUSED_DRAWING_LIST,
+    &element_bank::ELEMENT_DRAWING_CREATE,
+    &element_bank::ELEMENT_DRAWING_RENAME,
+    &element_bank::ELEMENT_DRAWING_DUPLICATE,
+    &element_bank::ELEMENT_DRAWING_DELETE,
+    &element_bank::ELEMENT_DRAWING_CONTENT_DELETE,
+    &element_bank::ELEMENT_DRAWING_LOCK_SET,
+    &element_bank::ELEMENT_DRAWING_CHANGED,
+    // xsheet (M3 C3.1)
+    &xsheet::XSHEET_EXPOSURES_GET,
+    &xsheet::XSHEET_EXPOSURES_SET,
+    &xsheet::XSHEET_LIGHT_TABLE_LIST,
+    &xsheet::XSHEET_LIGHT_TABLE_CHANGED,
 ];

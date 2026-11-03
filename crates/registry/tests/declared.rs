@@ -78,7 +78,7 @@ fn declarations_carry_owner_scopes_project_rule_undo_and_gui() {
     assert!(get("export.publish.run").scopes.contains(&Scope::Network));
     assert!(get("print.run").scopes.contains(&Scope::Print));
     assert!(!get("prefs.set").needs_project, "01 §1.3: preferences work without a project");
-    assert!(get("element.create").needs_project);
+    assert!(get("timeline.rows.list").needs_project);
     assert_eq!(owner_of("import.movie.run"), "M8 C8.3");
     assert_eq!(owner_of("anim.key.add"), "M3 C3.2");
 }
@@ -86,13 +86,13 @@ fn declarations_carry_owner_scopes_project_rule_undo_and_gui() {
 #[test]
 fn parameter_constraints_come_from_the_spec() {
     let at = |id: &str| declared_schema(DECLARED.iter().position(|c| c.decl.id == id).unwrap(), false);
-    let p = at("cell.select");
-    assert_eq!(p["properties"]["mode"]["enum"], json!(["replace", "add"]));
-    assert_eq!(p["properties"]["mode"]["default"], "replace");
-    assert_eq!(p["required"], json!(["elementIds", "from", "to"]));
-    assert_eq!(p["properties"]["elementIds"]["type"], "array");
-    let e =
-        validate_params("cell.select", &p, &json!({ "elementIds": [], "from": 1, "to": 2, "mode": "x" })).unwrap_err();
+    // `cell.select` was the example until M3 C3.1 implemented it.
+    let p = at("timeline.currentFrame.move");
+    assert_eq!(p["properties"]["unit"]["enum"], json!(["frame", "drawing"]));
+    assert_eq!(p["properties"]["unit"]["default"], "frame");
+    assert_eq!(p["required"], json!(["direction"]));
+    assert_eq!(p["properties"]["direction"]["type"], "string");
+    let e = validate_params("timeline.currentFrame.move", &p, &json!({ "direction": "next", "unit": "x" })).unwrap_err();
     assert_eq!(e.code, "arg.invalid");
     let p = at("lipsync.settings.set");
     assert_eq!(p["properties"]["minHoldFrames"]["minimum"], 0);

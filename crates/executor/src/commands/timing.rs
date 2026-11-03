@@ -445,11 +445,6 @@ pub(crate) fn bank_order(doc: &Document, bank: &Id) -> Vec<(Id, String)> {
 
 // ----- hierarchy ------------------------------------------------------------------------------------------------------
 
-/// The scene tree as model nodes.
-pub(crate) fn tree(scene: &Scene) -> Vec<TreeNode> {
-    scene.tree().clone()
-}
-
 /// The stored JSON of a tree.
 pub(crate) fn tree_json(t: &[TreeNode]) -> Result<Value, CommandError> {
     to_json(&t)
@@ -510,12 +505,6 @@ impl Changes {
         match self.0.iter_mut().find(|(k, _)| *k == key) {
             Some((_, v)) => v.extend(ops),
             None => self.0.push((key, ops)),
-        }
-    }
-
-    pub(crate) fn extend(&mut self, other: Vec<(EntryKey, Vec<PatchOp>)>) {
-        for (k, ops) in other {
-            self.push(k, ops);
         }
     }
 
@@ -593,4 +582,33 @@ pub(crate) fn drawing_not_found(name: &str, element: &Id, pointer: &str) -> Comm
         format!("the element's drawing bank has no drawing `{name}`"),
         json!({ "pointer": pointer, "drawing": name, "elementId": element.as_str() }),
     )
+}
+
+// ----- view state -------------------------------------------------------------------------------------------------------
+
+/// One static light-table item (04 §15.3).
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize, schemars::JsonSchema)]
+#[serde(rename_all = "camelCase")]
+pub(crate) struct LightItem {
+    /// Item ID.
+    pub item_id: String,
+    /// The source element.
+    pub element_id: String,
+    /// The drawing.
+    pub drawing_id: String,
+    /// Shown.
+    pub visible: bool,
+    /// `over` or `under` the Drawing View drawings.
+    pub placement: String,
+}
+
+/// Timeline and Exposure Sheet view state of the session (never document content, never undoable).
+#[derive(Debug, Clone, Default)]
+pub(crate) struct TimelineState {
+    /// Solo mode: the soloed elements while on (04 §10.3).
+    pub solo: Option<Vec<Id>>,
+    /// Category colours set by `element.typeColour.set` (preference; 04 §5.1), by category.
+    pub type_colours: BTreeMap<String, String>,
+    /// Static light tables by scene ID, in stacking order (04 §15; stored per scene with the session state, SI-085).
+    pub light_tables: BTreeMap<String, Vec<LightItem>>,
 }

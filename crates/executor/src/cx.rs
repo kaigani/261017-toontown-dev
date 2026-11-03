@@ -487,6 +487,11 @@ impl Cx {
         self.warnings.push(Warning { code: code.to_owned(), message: message.into(), object_ids });
     }
 
+    /// The warnings added so far (a result that repeats them in its own `warnings[]`, 04 §17.1 item 6).
+    pub(crate) fn peek_warnings(&self) -> Vec<Warning> {
+        self.warnings.clone()
+    }
+
     pub(crate) fn take_warnings(&mut self) -> Vec<Warning> {
         std::mem::take(&mut self.warnings)
     }

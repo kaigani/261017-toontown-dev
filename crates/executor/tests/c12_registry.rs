@@ -109,10 +109,10 @@ fn stubs_and_declarations_name_their_owners() {
         .collect();
     assert!(c13.is_empty(), "C1.3 stubs left: {c13:?}");
     // A later checkpoint's command stays a declared stub until it is implemented (`draw.vectorize.preview` was the
-    // example until M2 C2.4 implemented it).
+    // example until M2 C2.4 implemented it, `element.create` until M3 C3.1).
     assert_eq!(
-        registry().get("element.create").map(|e| e.status()),
-        Some(Status::NotImplemented { owner: tt_registry::owner_of("element.create") })
+        registry().get("timeline.rows.list").map(|e| e.status()),
+        Some(Status::NotImplemented { owner: tt_registry::owner_of("timeline.rows.list") })
     );
 }
 
