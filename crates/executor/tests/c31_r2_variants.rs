@@ -567,6 +567,25 @@ fn r16_image_lock_patch_ops_and_props_no_change_or_event() {
 }
 
 #[test]
+fn r16_image_lock_rfc_copy_must_use_the_same_kind_refusal() {
+    let h = seeded();
+    let image = get(&h, BG)["exposure"][0][0].clone();
+    ok(&h, "doc.object.patch", json!({"targets":[image],"props":{"meta":{"lockValue":true}}}));
+    let revision = rev(&h);
+    let e = run(
+        &h,
+        "doc.object.patch",
+        json!({"targets":[image],"ops":[{"op":"copy","from":"/meta/lockValue","path":"/locked"}]}),
+    );
+    assert_eq!(
+        e.error.as_ref().map(|e| e.code.as_str()),
+        Some("cell.notApplicable"),
+        "R1-16 availability applies to every delegated write: {e:?}"
+    );
+    assert_eq!(rev(&h), revision);
+}
+
+#[test]
 fn r04_generic_bridge_refuses_image_cells_into_vector_column() {
     let h = seeded();
     ok(&h, "cell.clipboard.set", json!({"elementIds":[BG],"from":1,"to":2}));

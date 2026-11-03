@@ -51,7 +51,7 @@ def register():
     current["deltaBasis"] = "All unchanged R1 proving suites plus independent R2 variants; findings outside the 64 C3.1 rows are recorded as adjacentCommands."
     units = {
         "01": ["C31-X01"],
-        "02": ["C31-X01", "C31-U328", "C31-U491", "C31-U494"],
+        "02": ["C31-X01", "C31-U312", "C31-U328", "C31-U491", "C31-U494"],
         "03": ["C31-U300", "C31-U327"],
         "04": ["C31-U168", "C31-U295", "C31-U299", "C31-U599"],
         "05": ["C31-U088", "C31-U110", "C31-U410", "C31-U299"],
