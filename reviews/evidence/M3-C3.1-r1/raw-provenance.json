@@ -1,0 +1,214 @@
+{
+  "runId": 41621608304,
+  "candidate": "8f44969741f8662831e25a01a8a024b686daf02e",
+  "download": "gh run download 41621608304 --pattern measurements*; --pattern e2*",
+  "artifacts": [
+    {
+      "id": 13226000474,
+      "name": "e2-macOS",
+      "size_in_bytes": 54249,
+      "created_at": "2026-11-03T11:12:44Z",
+      "updated_at": "2026-11-03T11:12:44Z",
+      "archive_download_url": "https://api.github.com/repos/kaigani/261017-toontown-dev/actions/artifacts/13226000474/zip",
+      "digest": "sha256:a5110531c3c6ccc34bdb9a41d73bfe8ce4913949a4c710cbb935ca3a97213887",
+      "workflow_run": {
+        "id": 41621608304,
+        "repository_id": 1423958410,
+        "head_repository_id": 1423958410,
+        "head_branch": "m3-elements-timing",
+        "head_sha": "8f44969741f8662831e25a01a8a024b686daf02e"
+      }
+    },
+    {
+      "id": 13225906303,
+      "name": "measurements-macOS",
+      "size_in_bytes": 2611,
+      "created_at": "2026-11-03T11:15:15Z",
+      "updated_at": "2026-11-03T11:15:15Z",
+      "archive_download_url": "https://api.github.com/repos/kaigani/261017-toontown-dev/actions/artifacts/13225906303/zip",
+      "digest": "sha256:edac42b9f86209dad49b92668641bebab9e3cb3bb3d0c6bf50fc80552ed0e184",
+      "workflow_run": {
+        "id": 41621608304,
+        "repository_id": 1423958410,
+        "head_repository_id": 1423958410,
+        "head_branch": "m3-elements-timing",
+        "head_sha": "8f44969741f8662831e25a01a8a024b686daf02e"
+      }
+    },
+    {
+      "id": 13225076521,
+      "name": "measurements-Windows",
+      "size_in_bytes": 2457,
+      "created_at": "2026-11-03T11:01:00Z",
+      "updated_at": "2026-11-03T11:01:00Z",
+      "archive_download_url": "https://api.github.com/repos/kaigani/261017-toontown-dev/actions/artifacts/13225076521/zip",
+      "digest": "sha256:ace7364714cc42812ffa06137f6c5853a13a6e5cf19bffc3b37749b42e406041",
+      "workflow_run": {
+        "id": 41621608304,
+        "repository_id": 1423958410,
+        "head_repository_id": 1423958410,
+        "head_branch": "m3-elements-timing",
+        "head_sha": "8f44969741f8662831e25a01a8a024b686daf02e"
+      }
+    },
+    {
+      "id": 13224611240,
+      "name": "e2-Windows",
+      "size_in_bytes": 54256,
+      "created_at": "2026-11-03T10:51:46Z",
+      "updated_at": "2026-11-03T10:51:46Z",
+      "archive_download_url": "https://api.github.com/repos/kaigani/261017-toontown-dev/actions/artifacts/13224611240/zip",
+      "digest": "sha256:4420cac4b3801383e5a0951e29cd098567b432885abda55a236bafaf00b14ad0",
+      "workflow_run": {
+        "id": 41621608304,
+        "repository_id": 1423958410,
+        "head_repository_id": 1423958410,
+        "head_branch": "m3-elements-timing",
+        "head_sha": "8f44969741f8662831e25a01a8a024b686daf02e"
+      }
+    }
+  ],
+  "extractedFilesBeforeGitNormalization": [
+    {
+      "path": "ci-artifacts/e2-macOS/1-preview.png",
+      "bytes": 3991,
+      "sha256": "1b6fcbba30dfb2985c8bb82aaa4998d6799f276b4e1e9855ccf31a5aedf35766"
+    },
+    {
+      "path": "ci-artifacts/e2-macOS/2-vectorized.png",
+      "bytes": 3991,
+      "sha256": "1b6fcbba30dfb2985c8bb82aaa4998d6799f276b4e1e9855ccf31a5aedf35766"
+    },
+    {
+      "path": "ci-artifacts/e2-macOS/3-painted.png",
+      "bytes": 5117,
+      "sha256": "a4124d1ce094e3dfc7249c22f57a6676a89adfd80b1434dc4a49e27a98ad1555"
+    },
+    {
+      "path": "ci-artifacts/e2-macOS/4-recoloured.png",
+      "bytes": 5186,
+      "sha256": "9732a6a246a95e902ba8ab76a1eb0f7c813fa3cd7f386545ae3d2545c691c60d"
+    },
+    {
+      "path": "ci-artifacts/e2-macOS/5-undone.png",
+      "bytes": 5117,
+      "sha256": "a4124d1ce094e3dfc7249c22f57a6676a89adfd80b1434dc4a49e27a98ad1555"
+    },
+    {
+      "path": "ci-artifacts/e2-macOS/6-redone.png",
+      "bytes": 5186,
+      "sha256": "9732a6a246a95e902ba8ab76a1eb0f7c813fa3cd7f386545ae3d2545c691c60d"
+    },
+    {
+      "path": "ci-artifacts/e2-macOS/7-reopened.png",
+      "bytes": 5186,
+      "sha256": "9732a6a246a95e902ba8ab76a1eb0f7c813fa3cd7f386545ae3d2545c691c60d"
+    },
+    {
+      "path": "ci-artifacts/e2-macOS/hashes.json",
+      "bytes": 589,
+      "sha256": "f267cb8df1cae283cb926c607380d536bbaaaf504d760371a7c02065e6279e82"
+    },
+    {
+      "path": "ci-artifacts/e2-macOS/live-export.json",
+      "bytes": 71696,
+      "sha256": "916602b9404cd5c683a0edbfc75d380640673993a661593982fff28a4f39ab53"
+    },
+    {
+      "path": "ci-artifacts/e2-macOS/replayed-export.json",
+      "bytes": 71696,
+      "sha256": "916602b9404cd5c683a0edbfc75d380640673993a661593982fff28a4f39ab53"
+    },
+    {
+      "path": "ci-artifacts/e2-macOS/report.json",
+      "bytes": 6032,
+      "sha256": "97586a519d8c858ae99beee7e605bcd03a432c40cbf00c7861fb9600c1d0b348"
+    },
+    {
+      "path": "ci-artifacts/e2-Windows/1-preview.png",
+      "bytes": 3991,
+      "sha256": "1b6fcbba30dfb2985c8bb82aaa4998d6799f276b4e1e9855ccf31a5aedf35766"
+    },
+    {
+      "path": "ci-artifacts/e2-Windows/2-vectorized.png",
+      "bytes": 3991,
+      "sha256": "1b6fcbba30dfb2985c8bb82aaa4998d6799f276b4e1e9855ccf31a5aedf35766"
+    },
+    {
+      "path": "ci-artifacts/e2-Windows/3-painted.png",
+      "bytes": 5117,
+      "sha256": "a4124d1ce094e3dfc7249c22f57a6676a89adfd80b1434dc4a49e27a98ad1555"
+    },
+    {
+      "path": "ci-artifacts/e2-Windows/4-recoloured.png",
+      "bytes": 5186,
+      "sha256": "9732a6a246a95e902ba8ab76a1eb0f7c813fa3cd7f386545ae3d2545c691c60d"
+    },
+    {
+      "path": "ci-artifacts/e2-Windows/5-undone.png",
+      "bytes": 5117,
+      "sha256": "a4124d1ce094e3dfc7249c22f57a6676a89adfd80b1434dc4a49e27a98ad1555"
+    },
+    {
+      "path": "ci-artifacts/e2-Windows/6-redone.png",
+      "bytes": 5186,
+      "sha256": "9732a6a246a95e902ba8ab76a1eb0f7c813fa3cd7f386545ae3d2545c691c60d"
+    },
+    {
+      "path": "ci-artifacts/e2-Windows/7-reopened.png",
+      "bytes": 5186,
+      "sha256": "9732a6a246a95e902ba8ab76a1eb0f7c813fa3cd7f386545ae3d2545c691c60d"
+    },
+    {
+      "path": "ci-artifacts/e2-Windows/hashes.json",
+      "bytes": 598,
+      "sha256": "4ab02fbe20fc322de3231cc5f823d21865c8c70bd8ba142d2722738c80c24a4d"
+    },
+    {
+      "path": "ci-artifacts/e2-Windows/live-export.json",
+      "bytes": 71696,
+      "sha256": "65b479fd25d8dbdc6cf5575322dbeee42d57fdcb02fa09e90c9f2c7f263829b9"
+    },
+    {
+      "path": "ci-artifacts/e2-Windows/replayed-export.json",
+      "bytes": 71696,
+      "sha256": "65b479fd25d8dbdc6cf5575322dbeee42d57fdcb02fa09e90c9f2c7f263829b9"
+    },
+    {
+      "path": "ci-artifacts/e2-Windows/report.json",
+      "bytes": 6196,
+      "sha256": "3ae68fb16267cdd4a8dc7145365a157d7b7d91a3989fa01e621c1d80da1beaa5"
+    },
+    {
+      "path": "ci-artifacts/measurements-macOS/c24-measurements/aggregate-macos.json",
+      "bytes": 4007,
+      "sha256": "c91cf8a7607ed91367b1ed003f893daca9a348f7e319f6ebee71448d2f98b10f"
+    },
+    {
+      "path": "ci-artifacts/measurements-macOS/c24-measurements/budgets-macos.json",
+      "bytes": 4053,
+      "sha256": "f68c038cd53c03526c44f5298de7f7e837a8d2606676fc7a9182be992c21075f"
+    },
+    {
+      "path": "ci-artifacts/measurements-macOS/c31-measurements/timing-budget.json",
+      "bytes": 2074,
+      "sha256": "672a9a136300627c290ec507b4054262490de7dcef16d4854e7ddfab2d2acad1"
+    },
+    {
+      "path": "ci-artifacts/measurements-Windows/c24-measurements/aggregate-windows.json",
+      "bytes": 3923,
+      "sha256": "acf6bc0cb456fa92e705403920d27b92a491c6fe3ae433087c09e4334535cde2"
+    },
+    {
+      "path": "ci-artifacts/measurements-Windows/c24-measurements/budgets-windows.json",
+      "bytes": 3961,
+      "sha256": "5b93b3e40c7a6b7667133acddd81cf64ec01e426d1bf051e536718dc40dfeec5"
+    },
+    {
+      "path": "ci-artifacts/measurements-Windows/c31-measurements/timing-budget.json",
+      "bytes": 2060,
+      "sha256": "667c755c626a91fb939131e45fc7566fe07dfaad33494b37e9c7308e23dae933"
+    }
+  ],
+  "rawArchiveSha256": "815129b4756ac3be9ab9f3f9ddfcb7ce9cf630526455dc0b966874baaebc85f2"
+}

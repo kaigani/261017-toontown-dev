@@ -5683,7 +5683,7 @@
         "C31-R1-03"
       ],
       "reproduction": [
-        "cargo test -p tt-executor --locked -j 4 --test c31_r1_contract delegated_; cargo test -p tt-executor --locked -j 4 --test c31_r1_contract patch_unlock_ops_matches_command; cargo test -p tt-executor --locked -j 4 --test c31_r1_contract automatic_position_changes_emit_selection_event"
+        "cargo test -p tt-executor --locked -j 4 --test c31_r1_contract delegated_; cargo test -p tt-executor --locked -j 4 --test c31_r1_contract patch_unlock_ops_matches_command; cargo test -p tt-executor --locked -j 4 --test c31_r1_contract automatic_position_changes_emit_selection_event; cargo test -p tt-executor --locked -j 4 --test c31_r1_contract multi_bank_named_insert_emits_only_each_banks_created_ids; cargo test -p tt-executor --locked -j 4 --test c31_r1_contract sheet_and_label_creation_emit_drawing_bank_events"
       ]
     },
     {
@@ -5913,7 +5913,7 @@
         "C31-R1-03"
       ],
       "reproduction": [
-        "cargo test -p tt-executor --locked -j 4 --test c31_r1_contract delegated_; cargo test -p tt-executor --locked -j 4 --test c31_r1_contract patch_unlock_ops_matches_command; cargo test -p tt-executor --locked -j 4 --test c31_r1_contract automatic_position_changes_emit_selection_event"
+        "cargo test -p tt-executor --locked -j 4 --test c31_r1_contract delegated_; cargo test -p tt-executor --locked -j 4 --test c31_r1_contract patch_unlock_ops_matches_command; cargo test -p tt-executor --locked -j 4 --test c31_r1_contract automatic_position_changes_emit_selection_event; cargo test -p tt-executor --locked -j 4 --test c31_r1_contract multi_bank_named_insert_emits_only_each_banks_created_ids; cargo test -p tt-executor --locked -j 4 --test c31_r1_contract sheet_and_label_creation_emit_drawing_bank_events"
       ]
     },
     {
@@ -6314,10 +6314,12 @@
       "owner": "M3 C3.1",
       "basis": "Implemented normal path, but independent reproductions fail; see findings. Other aspects remain covered by the common matrix.",
       "findings": [
-        "C31-R1-05"
+        "C31-R1-05",
+        "C31-R1-03"
       ],
       "reproduction": [
-        "cargo test -p tt-executor --locked -j 4 --test c31_r1_contract copied_cells_keep_notes; cargo test -p tt-executor --locked -j 4 --test c31_r1_contract inserted_cells_shift_existing_notes"
+        "cargo test -p tt-executor --locked -j 4 --test c31_r1_contract copied_cells_keep_notes; cargo test -p tt-executor --locked -j 4 --test c31_r1_contract inserted_cells_shift_existing_notes",
+        "cargo test -p tt-executor --locked -j 4 --test c31_r1_contract delegated_; cargo test -p tt-executor --locked -j 4 --test c31_r1_contract patch_unlock_ops_matches_command; cargo test -p tt-executor --locked -j 4 --test c31_r1_contract automatic_position_changes_emit_selection_event; cargo test -p tt-executor --locked -j 4 --test c31_r1_contract multi_bank_named_insert_emits_only_each_banks_created_ids; cargo test -p tt-executor --locked -j 4 --test c31_r1_contract sheet_and_label_creation_emit_drawing_bank_events"
       ]
     },
     {
@@ -6398,11 +6400,15 @@
       "clause": "17.4",
       "line": 1432,
       "text": "| `cell.label.set` | action | Change label / substitute the drawing in the range by name, id, or by stepping through the bank | `elementIds?: [id]; from?: int; to?: int; drawing?: string; drawingId?: id; step?: int; createMissing: bool = false` | `{drawingId, name, changed[]}` | yes |",
-      "status": "implemented",
+      "status": "divergent",
       "owner": "M3 C3.1",
-      "basis": "Model/handler inspection, builder c31 suites, independent c31_r1_mutations common-contract matrix and candidate CI.",
-      "findings": [],
-      "reproduction": []
+      "basis": "Implemented normal path, but independent reproductions fail; see findings. Other aspects remain covered by the common matrix.",
+      "findings": [
+        "C31-R1-03"
+      ],
+      "reproduction": [
+        "cargo test -p tt-executor --locked -j 4 --test c31_r1_contract delegated_; cargo test -p tt-executor --locked -j 4 --test c31_r1_contract patch_unlock_ops_matches_command; cargo test -p tt-executor --locked -j 4 --test c31_r1_contract automatic_position_changes_emit_selection_event; cargo test -p tt-executor --locked -j 4 --test c31_r1_contract multi_bank_named_insert_emits_only_each_banks_created_ids; cargo test -p tt-executor --locked -j 4 --test c31_r1_contract sheet_and_label_creation_emit_drawing_bank_events"
+      ]
     },
     {
       "id": "C31-U462",
@@ -6652,10 +6658,12 @@
       "owner": "M3 C3.1",
       "basis": "Implemented normal path, but independent reproductions fail; see findings. Other aspects remain covered by the common matrix.",
       "findings": [
-        "C31-R1-08"
+        "C31-R1-08",
+        "C31-R1-03"
       ],
       "reproduction": [
-        "cargo test -p tt-executor --locked -j 4 --test c31_r1_contract xsheet_missing_name_on_two_clones_is_created_once; cargo test -p tt-executor --locked -j 4 --test c31_r1_contract default_copy_name_works_for_maximum_length_source_name"
+        "cargo test -p tt-executor --locked -j 4 --test c31_r1_contract xsheet_missing_name_on_two_clones_is_created_once; cargo test -p tt-executor --locked -j 4 --test c31_r1_contract default_copy_name_works_for_maximum_length_source_name",
+        "cargo test -p tt-executor --locked -j 4 --test c31_r1_contract delegated_; cargo test -p tt-executor --locked -j 4 --test c31_r1_contract patch_unlock_ops_matches_command; cargo test -p tt-executor --locked -j 4 --test c31_r1_contract automatic_position_changes_emit_selection_event; cargo test -p tt-executor --locked -j 4 --test c31_r1_contract multi_bank_named_insert_emits_only_each_banks_created_ids; cargo test -p tt-executor --locked -j 4 --test c31_r1_contract sheet_and_label_creation_emit_drawing_bank_events"
       ]
     },
     {
@@ -6779,7 +6787,7 @@
         "C31-R1-03"
       ],
       "reproduction": [
-        "cargo test -p tt-executor --locked -j 4 --test c31_r1_contract delegated_; cargo test -p tt-executor --locked -j 4 --test c31_r1_contract patch_unlock_ops_matches_command; cargo test -p tt-executor --locked -j 4 --test c31_r1_contract automatic_position_changes_emit_selection_event"
+        "cargo test -p tt-executor --locked -j 4 --test c31_r1_contract delegated_; cargo test -p tt-executor --locked -j 4 --test c31_r1_contract patch_unlock_ops_matches_command; cargo test -p tt-executor --locked -j 4 --test c31_r1_contract automatic_position_changes_emit_selection_event; cargo test -p tt-executor --locked -j 4 --test c31_r1_contract multi_bank_named_insert_emits_only_each_banks_created_ids; cargo test -p tt-executor --locked -j 4 --test c31_r1_contract sheet_and_label_creation_emit_drawing_bank_events"
       ]
     },
     {
@@ -6795,7 +6803,7 @@
         "C31-R1-03"
       ],
       "reproduction": [
-        "cargo test -p tt-executor --locked -j 4 --test c31_r1_contract delegated_; cargo test -p tt-executor --locked -j 4 --test c31_r1_contract patch_unlock_ops_matches_command; cargo test -p tt-executor --locked -j 4 --test c31_r1_contract automatic_position_changes_emit_selection_event"
+        "cargo test -p tt-executor --locked -j 4 --test c31_r1_contract delegated_; cargo test -p tt-executor --locked -j 4 --test c31_r1_contract patch_unlock_ops_matches_command; cargo test -p tt-executor --locked -j 4 --test c31_r1_contract automatic_position_changes_emit_selection_event; cargo test -p tt-executor --locked -j 4 --test c31_r1_contract multi_bank_named_insert_emits_only_each_banks_created_ids; cargo test -p tt-executor --locked -j 4 --test c31_r1_contract sheet_and_label_creation_emit_drawing_bank_events"
       ]
     },
     {
@@ -6823,7 +6831,7 @@
         "C31-R1-03"
       ],
       "reproduction": [
-        "cargo test -p tt-executor --locked -j 4 --test c31_r1_contract delegated_; cargo test -p tt-executor --locked -j 4 --test c31_r1_contract patch_unlock_ops_matches_command; cargo test -p tt-executor --locked -j 4 --test c31_r1_contract automatic_position_changes_emit_selection_event"
+        "cargo test -p tt-executor --locked -j 4 --test c31_r1_contract delegated_; cargo test -p tt-executor --locked -j 4 --test c31_r1_contract patch_unlock_ops_matches_command; cargo test -p tt-executor --locked -j 4 --test c31_r1_contract automatic_position_changes_emit_selection_event; cargo test -p tt-executor --locked -j 4 --test c31_r1_contract multi_bank_named_insert_emits_only_each_banks_created_ids; cargo test -p tt-executor --locked -j 4 --test c31_r1_contract sheet_and_label_creation_emit_drawing_bank_events"
       ]
     },
     {
@@ -8315,7 +8323,7 @@
         "C31-R1-03"
       ],
       "reproduction": [
-        "cargo test -p tt-executor --locked -j 4 --test c31_r1_contract delegated_; cargo test -p tt-executor --locked -j 4 --test c31_r1_contract patch_unlock_ops_matches_command; cargo test -p tt-executor --locked -j 4 --test c31_r1_contract automatic_position_changes_emit_selection_event"
+        "cargo test -p tt-executor --locked -j 4 --test c31_r1_contract delegated_; cargo test -p tt-executor --locked -j 4 --test c31_r1_contract patch_unlock_ops_matches_command; cargo test -p tt-executor --locked -j 4 --test c31_r1_contract automatic_position_changes_emit_selection_event; cargo test -p tt-executor --locked -j 4 --test c31_r1_contract multi_bank_named_insert_emits_only_each_banks_created_ids; cargo test -p tt-executor --locked -j 4 --test c31_r1_contract sheet_and_label_creation_emit_drawing_bank_events"
       ]
     },
     {
@@ -8591,7 +8599,7 @@
         "C31-R1-03"
       ],
       "reproduction": [
-        "cargo test -p tt-executor --locked -j 4 --test c31_r1_contract delegated_; cargo test -p tt-executor --locked -j 4 --test c31_r1_contract patch_unlock_ops_matches_command; cargo test -p tt-executor --locked -j 4 --test c31_r1_contract automatic_position_changes_emit_selection_event"
+        "cargo test -p tt-executor --locked -j 4 --test c31_r1_contract delegated_; cargo test -p tt-executor --locked -j 4 --test c31_r1_contract patch_unlock_ops_matches_command; cargo test -p tt-executor --locked -j 4 --test c31_r1_contract automatic_position_changes_emit_selection_event; cargo test -p tt-executor --locked -j 4 --test c31_r1_contract multi_bank_named_insert_emits_only_each_banks_created_ids; cargo test -p tt-executor --locked -j 4 --test c31_r1_contract sheet_and_label_creation_emit_drawing_bank_events"
       ],
       "basis": "Declaration/schema/example and handler inspection; c31_r1_mutations (44 action/toggle examples), c31 builder suites and candidate never-block/example-results CI.",
       "deferredAspects": []
@@ -8635,7 +8643,7 @@
         "C31-R1-03"
       ],
       "reproduction": [
-        "cargo test -p tt-executor --locked -j 4 --test c31_r1_contract delegated_; cargo test -p tt-executor --locked -j 4 --test c31_r1_contract patch_unlock_ops_matches_command; cargo test -p tt-executor --locked -j 4 --test c31_r1_contract automatic_position_changes_emit_selection_event"
+        "cargo test -p tt-executor --locked -j 4 --test c31_r1_contract delegated_; cargo test -p tt-executor --locked -j 4 --test c31_r1_contract patch_unlock_ops_matches_command; cargo test -p tt-executor --locked -j 4 --test c31_r1_contract automatic_position_changes_emit_selection_event; cargo test -p tt-executor --locked -j 4 --test c31_r1_contract multi_bank_named_insert_emits_only_each_banks_created_ids; cargo test -p tt-executor --locked -j 4 --test c31_r1_contract sheet_and_label_creation_emit_drawing_bank_events"
       ],
       "basis": "Declaration/schema/example and handler inspection; c31_r1_mutations (44 action/toggle examples), c31 builder suites and candidate never-block/example-results CI.",
       "deferredAspects": []
@@ -8901,7 +8909,7 @@
         "C31-R1-03"
       ],
       "reproduction": [
-        "cargo test -p tt-executor --locked -j 4 --test c31_r1_contract delegated_; cargo test -p tt-executor --locked -j 4 --test c31_r1_contract patch_unlock_ops_matches_command; cargo test -p tt-executor --locked -j 4 --test c31_r1_contract automatic_position_changes_emit_selection_event"
+        "cargo test -p tt-executor --locked -j 4 --test c31_r1_contract delegated_; cargo test -p tt-executor --locked -j 4 --test c31_r1_contract patch_unlock_ops_matches_command; cargo test -p tt-executor --locked -j 4 --test c31_r1_contract automatic_position_changes_emit_selection_event; cargo test -p tt-executor --locked -j 4 --test c31_r1_contract multi_bank_named_insert_emits_only_each_banks_created_ids; cargo test -p tt-executor --locked -j 4 --test c31_r1_contract sheet_and_label_creation_emit_drawing_bank_events"
       ],
       "basis": "Declaration/schema/example and handler inspection; c31_r1_mutations (44 action/toggle examples), c31 builder suites and candidate never-block/example-results CI.",
       "deferredAspects": []
@@ -8963,7 +8971,7 @@
         "C31-R1-03"
       ],
       "reproduction": [
-        "cargo test -p tt-executor --locked -j 4 --test c31_r1_contract delegated_; cargo test -p tt-executor --locked -j 4 --test c31_r1_contract patch_unlock_ops_matches_command; cargo test -p tt-executor --locked -j 4 --test c31_r1_contract automatic_position_changes_emit_selection_event"
+        "cargo test -p tt-executor --locked -j 4 --test c31_r1_contract delegated_; cargo test -p tt-executor --locked -j 4 --test c31_r1_contract patch_unlock_ops_matches_command; cargo test -p tt-executor --locked -j 4 --test c31_r1_contract automatic_position_changes_emit_selection_event; cargo test -p tt-executor --locked -j 4 --test c31_r1_contract multi_bank_named_insert_emits_only_each_banks_created_ids; cargo test -p tt-executor --locked -j 4 --test c31_r1_contract sheet_and_label_creation_emit_drawing_bank_events"
       ],
       "basis": "Declaration/schema/example and handler inspection; c31_r1_mutations (44 action/toggle examples), c31 builder suites and candidate never-block/example-results CI.",
       "deferredAspects": []
@@ -9163,10 +9171,14 @@
     {
       "id": "cell.label.set",
       "kind": "action",
-      "status": "implemented",
+      "status": "divergent",
       "owner": "M3 C3.1",
-      "findings": [],
-      "reproduction": [],
+      "findings": [
+        "C31-R1-03"
+      ],
+      "reproduction": [
+        "cargo test -p tt-executor --locked -j 4 --test c31_r1_contract delegated_; cargo test -p tt-executor --locked -j 4 --test c31_r1_contract patch_unlock_ops_matches_command; cargo test -p tt-executor --locked -j 4 --test c31_r1_contract automatic_position_changes_emit_selection_event; cargo test -p tt-executor --locked -j 4 --test c31_r1_contract multi_bank_named_insert_emits_only_each_banks_created_ids; cargo test -p tt-executor --locked -j 4 --test c31_r1_contract sheet_and_label_creation_emit_drawing_bank_events"
+      ],
       "basis": "Declaration/schema/example and handler inspection; c31_r1_mutations (44 action/toggle examples), c31 builder suites and candidate never-block/example-results CI.",
       "deferredAspects": [
         "allowed sound/media cell operations: M8 C8.1/C8.3 (SI-088)"
@@ -9190,10 +9202,12 @@
       "status": "divergent",
       "owner": "M3 C3.1",
       "findings": [
-        "C31-R1-05"
+        "C31-R1-05",
+        "C31-R1-03"
       ],
       "reproduction": [
-        "cargo test -p tt-executor --locked -j 4 --test c31_r1_contract copied_cells_keep_notes; cargo test -p tt-executor --locked -j 4 --test c31_r1_contract inserted_cells_shift_existing_notes"
+        "cargo test -p tt-executor --locked -j 4 --test c31_r1_contract copied_cells_keep_notes; cargo test -p tt-executor --locked -j 4 --test c31_r1_contract inserted_cells_shift_existing_notes",
+        "cargo test -p tt-executor --locked -j 4 --test c31_r1_contract delegated_; cargo test -p tt-executor --locked -j 4 --test c31_r1_contract patch_unlock_ops_matches_command; cargo test -p tt-executor --locked -j 4 --test c31_r1_contract automatic_position_changes_emit_selection_event; cargo test -p tt-executor --locked -j 4 --test c31_r1_contract multi_bank_named_insert_emits_only_each_banks_created_ids; cargo test -p tt-executor --locked -j 4 --test c31_r1_contract sheet_and_label_creation_emit_drawing_bank_events"
       ],
       "basis": "Declaration/schema/example and handler inspection; c31_r1_mutations (44 action/toggle examples), c31 builder suites and candidate never-block/example-results CI.",
       "deferredAspects": [
@@ -9259,7 +9273,7 @@
         "C31-R1-03"
       ],
       "reproduction": [
-        "cargo test -p tt-executor --locked -j 4 --test c31_r1_contract delegated_; cargo test -p tt-executor --locked -j 4 --test c31_r1_contract patch_unlock_ops_matches_command; cargo test -p tt-executor --locked -j 4 --test c31_r1_contract automatic_position_changes_emit_selection_event"
+        "cargo test -p tt-executor --locked -j 4 --test c31_r1_contract delegated_; cargo test -p tt-executor --locked -j 4 --test c31_r1_contract patch_unlock_ops_matches_command; cargo test -p tt-executor --locked -j 4 --test c31_r1_contract automatic_position_changes_emit_selection_event; cargo test -p tt-executor --locked -j 4 --test c31_r1_contract multi_bank_named_insert_emits_only_each_banks_created_ids; cargo test -p tt-executor --locked -j 4 --test c31_r1_contract sheet_and_label_creation_emit_drawing_bank_events"
       ],
       "basis": "Declaration/schema/example and handler inspection; c31_r1_mutations (44 action/toggle examples), c31 builder suites and candidate never-block/example-results CI.",
       "deferredAspects": [
@@ -9294,10 +9308,12 @@
       "status": "divergent",
       "owner": "M3 C3.1",
       "findings": [
-        "C31-R1-08"
+        "C31-R1-08",
+        "C31-R1-03"
       ],
       "reproduction": [
-        "cargo test -p tt-executor --locked -j 4 --test c31_r1_contract xsheet_missing_name_on_two_clones_is_created_once; cargo test -p tt-executor --locked -j 4 --test c31_r1_contract default_copy_name_works_for_maximum_length_source_name"
+        "cargo test -p tt-executor --locked -j 4 --test c31_r1_contract xsheet_missing_name_on_two_clones_is_created_once; cargo test -p tt-executor --locked -j 4 --test c31_r1_contract default_copy_name_works_for_maximum_length_source_name",
+        "cargo test -p tt-executor --locked -j 4 --test c31_r1_contract delegated_; cargo test -p tt-executor --locked -j 4 --test c31_r1_contract patch_unlock_ops_matches_command; cargo test -p tt-executor --locked -j 4 --test c31_r1_contract automatic_position_changes_emit_selection_event; cargo test -p tt-executor --locked -j 4 --test c31_r1_contract multi_bank_named_insert_emits_only_each_banks_created_ids; cargo test -p tt-executor --locked -j 4 --test c31_r1_contract sheet_and_label_creation_emit_drawing_bank_events"
       ],
       "basis": "Declaration/schema/example and handler inspection; c31_r1_mutations (44 action/toggle examples), c31 builder suites and candidate never-block/example-results CI.",
       "deferredAspects": []
@@ -9325,14 +9341,14 @@
   ],
   "counts": {
     "requirements": {
-      "implemented": 414,
-      "divergent": 54,
+      "implemented": 413,
+      "divergent": 55,
       "missing": 0,
       "deferred-with-owner": 221
     },
     "commandsAndEvents": {
-      "implemented": 38,
-      "divergent": 25,
+      "implemented": 37,
+      "divergent": 26,
       "missing": 0,
       "deferred-with-owner": 1
     }

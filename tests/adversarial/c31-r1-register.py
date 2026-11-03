@@ -88,6 +88,10 @@ REPRO['03'] += '; cargo test -p tt-executor --locked -j 4 --test c31_r1_contract
 COMMAND_FINDINGS['element.clone']=['08']
 COMMAND_FINDINGS['element.duplicate']+=['08']
 REPRO['08']+='; cargo test -p tt-executor --locked -j 4 --test c31_r1_contract default_copy_name_works_for_maximum_length_source_name'
+COMMAND_FINDINGS['cell.label.set']=['03']
+COMMAND_FINDINGS['cell.range.add']+=['03']
+COMMAND_FINDINGS['xsheet.exposures.set']+=['03']
+REPRO['03']+='; cargo test -p tt-executor --locked -j 4 --test c31_r1_contract multi_bank_named_insert_emits_only_each_banks_created_ids; cargo test -p tt-executor --locked -j 4 --test c31_r1_contract sheet_and_label_creation_emit_drawing_bank_events'
 
 
 def assessment(u):

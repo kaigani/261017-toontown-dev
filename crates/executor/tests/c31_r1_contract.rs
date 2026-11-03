@@ -375,3 +375,49 @@ fn default_copy_name_works_for_maximum_length_source_name() {
         );
     }
 }
+
+#[test]
+fn multi_bank_named_insert_emits_only_each_banks_created_ids() {
+    let h = fixture();
+    let notes = "scene:\"Intro\"/element:\"Notes\"";
+    let rx = h.subscribe();
+    ok(&h, "cell.range.add", json!({"elementIds":[BOB,notes],"frame":1,"position":"before","count":1,"named":true}));
+    let events: Vec<_> = rx.try_iter().filter(|e| e.name == "element.drawing.changed").collect();
+    for element in [BOB, notes] {
+        let data = get(&h, element);
+        let id = data["id"].clone();
+        let expected = json!([data["exposure"][0][0]]);
+        let matching: Vec<_> = events.iter().filter(|e| e.payload["elementId"] == id).collect();
+        assert_eq!(matching.len(), 1, "04 §17.4 drawing creation event for each bank's element");
+        assert_eq!(
+            matching[0].payload["drawingIds"], expected,
+            "event must not include drawings from a different bank"
+        );
+    }
+}
+
+#[test]
+fn sheet_and_label_creation_emit_drawing_bank_events() {
+    for sheet in [true, false] {
+        let h = fixture();
+        let rx = h.subscribe();
+        if sheet {
+            ok(
+                &h,
+                "xsheet.exposures.set",
+                json!({"createMissingDrawings":true,"columns":[{"elementId":BOB,"from":1,"to":1,"exposures":[{"drawing":"NewReview","from":1,"to":1}]}]}),
+            );
+        } else {
+            ok(
+                &h,
+                "cell.label.set",
+                json!({"elementIds":[BOB],"from":1,"to":1,"drawing":"NewReview","createMissing":true}),
+            );
+        }
+        assert_eq!(
+            rx.try_iter().filter(|e| e.name == "element.drawing.changed").count(),
+            1,
+            "04 §17.4 created drawing needs bank event (sheet={sheet})"
+        );
+    }
+}
