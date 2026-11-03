@@ -208,6 +208,8 @@ struct Rollback {
     /// The agent hub's sessions, grants and policy (C23-R3-01). Its confirmation requests and activity log are
     /// records a refused call makes on purpose (11 §6.3, §11) and are kept.
     agents: crate::agents::AgentHub,
+    /// Timeline/Exposure Sheet view state (solo, category colours, light tables; C31-R1-02).
+    timeline: crate::commands::timing::TimelineState,
     events: usize,
 }
 
@@ -233,12 +235,14 @@ impl Rollback {
                 ttl: s.agents.ttl,
                 server_enabled: s.agents.server_enabled,
             },
+            timeline: s.timeline.clone(),
             events: s.events.len(),
         }
     }
 
     fn apply(self, s: &mut Session) {
         s.app = self.app;
+        s.timeline = self.timeline;
         s.ui = self.ui;
         s.clipboard = self.clipboard;
         s.edit_options = self.edit_options;

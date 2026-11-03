@@ -1775,16 +1775,17 @@ pub(crate) struct TimingParams {
     /// Bar elements (default: the selected rows, else the current element).
     #[serde(default)]
     element_ids: Option<Vec<String>>,
-    /// New start frame.
+    /// New start frame (1 … 100 000).
     #[serde(default)]
-    #[schemars(range(min = 1))]
+    #[schemars(range(min = 1, max = 100_000))]
     start: Option<i64>,
-    /// Move the start by this many frames.
+    /// Move the start by this many frames (−100 000 … 100 000).
     #[serde(default)]
+    #[schemars(range(min = -100_000, max = 100_000))]
     start_delta: Option<i64>,
-    /// New duration (of one cycle for `count` loops).
+    /// New duration (1 … 100 000).
     #[serde(default)]
-    #[schemars(range(min = 1))]
+    #[schemars(range(min = 1, max = 100_000))]
     duration: Option<i64>,
     /// Which end a duration change keeps.
     #[serde(default)]
@@ -1792,9 +1793,9 @@ pub(crate) struct TimingParams {
     /// Keep or scale keyframes.
     #[serde(default)]
     keyframes: KeyMode,
-    /// Loops (1 = not looped).
+    /// Loops (1 = not looped; at most 100 000).
     #[serde(default)]
-    #[schemars(range(min = 1))]
+    #[schemars(range(min = 1, max = 100_000))]
     loops: Option<i64>,
 }
 
@@ -1980,17 +1981,25 @@ pub(crate) fn element_timing_set(cx: &mut Cx, p: TimingParams) -> Result<TimingR
                 json!({ "elementId": id.as_str(), "elementType": t.as_str() }),
             ));
         }
-        let end = s + d - 1;
+        // Checked arithmetic throughout (C31-R1-10): any overflow is the typed out-of-range refusal, before staging.
+        let out_of_range = || {
+            err(
+                "cell.frameOutOfRange",
+                format!("the requested bar lies outside frames 1-{}", x::MAX_FRAMES),
+                json!({ "elementId": id.as_str(), "start": p.start, "startDelta": p.start_delta, "duration": p.duration, "loops": p.loops }),
+            )
+        };
+        let end = s.checked_add(d).and_then(|v| v.checked_sub(1)).ok_or_else(out_of_range)?;
         let mut ns = match (p.start, p.start_delta) {
             (Some(v), _) => v,
-            (None, Some(dv)) => s + dv,
+            (None, Some(dv)) => s.checked_add(dv).ok_or_else(out_of_range)?,
             _ => s,
         };
         let mut nd = p.duration.unwrap_or(d);
         if p.anchor == Anchor::End {
             match (p.duration, p.start.is_some() || p.start_delta.is_some()) {
-                (Some(v), _) => ns = end - v + 1,
-                (None, true) => nd = end - ns + 1,
+                (Some(v), _) => ns = end.checked_sub(v).and_then(|x| x.checked_add(1)).ok_or_else(out_of_range)?,
+                (None, true) => nd = end.checked_sub(ns).and_then(|x| x.checked_add(1)).ok_or_else(out_of_range)?,
                 _ => {}
             }
         }
@@ -1999,13 +2008,14 @@ pub(crate) fn element_timing_set(cx: &mut Cx, p: TimingParams) -> Result<TimingR
         let cycle = (d / loops).max(1);
         let count = *e.loop_type() == tt_model::entities::element::LoopType::Count;
         if p.loops.is_some() && p.duration.is_none() && count {
-            nd = cycle * nl;
+            nd = cycle.checked_mul(nl).ok_or_else(out_of_range)?;
         }
-        if ns < 1 || nd < 1 || ns + nd - 1 > x::MAX_FRAMES as i64 {
+        let last = ns.checked_add(nd).and_then(|v| v.checked_sub(1)).ok_or_else(out_of_range)?;
+        if ns < 1 || nd < 1 || nl < 1 || last > x::MAX_FRAMES as i64 || nl > x::MAX_FRAMES as i64 {
             return Err(err(
                 "cell.frameOutOfRange",
-                format!("the bar would span frames {ns}-{}; bars lie within 1-{}", ns + nd - 1, x::MAX_FRAMES),
-                json!({ "elementId": id.as_str(), "start": ns, "duration": nd }),
+                format!("the bar would span frames {ns}-{last}; bars lie within 1-{}", x::MAX_FRAMES),
+                json!({ "elementId": id.as_str(), "start": ns, "duration": nd, "loops": nl }),
             ));
         }
         let (ns, nd, nl) = (
@@ -2071,7 +2081,8 @@ pub(crate) struct ChangedResult {
 )]
 pub(crate) fn element_child_exposure_apply(cx: &mut Cx, p: ChildExposureParams) -> Result<ChangedResult, CommandError> {
     let peg = element_id(cx, &p.peg_id, "/pegId")?;
-    let to = super::timing::frame(p.to_frame, "/toFrame")?;
+    // "Extend children exposure": the target frame of 13.5 (1 … 9999).
+    let to = super::timing::target_frame(p.to_frame, x::MAX_COMMAND_FRAMES as usize, "/toFrame")?;
     let doc = cx.document()?.clone();
     let e = element(&doc, &peg)?;
     if *e.element_type() != ElementType::Peg {
@@ -2108,9 +2119,9 @@ pub(crate) fn element_child_exposure_apply(cx: &mut Cx, p: ChildExposureParams) 
 pub(crate) struct MediaLengthParams {
     /// The media element.
     element_id: String,
-    /// New length of the element's (last) sequence; omitted: the media's natural length.
+    /// New length of the element's (last) sequence (1 … 100 000); omitted: the media's natural length.
     #[serde(default)]
-    #[schemars(range(min = 1))]
+    #[schemars(range(min = 1, max = 100_000))]
     length: Option<i64>,
 }
 
@@ -2165,7 +2176,7 @@ pub(crate) fn element_media_length_set(cx: &mut Cx, p: MediaLengthParams) -> Res
     };
     let s = &seqs[last_i];
     let from = *s.start_frame();
-    let to = i64::from(from) + length - 1;
+    let to = i64::from(from).checked_add(length).and_then(|v| v.checked_sub(1)).unwrap_or(i64::MAX);
     if to > x::MAX_FRAMES as i64 {
         return Err(err(
             "doc.limitExceeded",

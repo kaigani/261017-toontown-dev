@@ -133,6 +133,8 @@ pub(crate) struct Savepoint {
     clipboard: Option<Value>,
     edit_options: std::collections::BTreeMap<String, serde_json::Map<String, Value>>,
     checkpoints: Option<Vec<Checkpoint>>,
+    /// Timeline/Exposure Sheet view state (C31-R1-02).
+    timeline: crate::commands::timing::TimelineState,
     painted: BTreeMap<(Id, String), BTreeMap<String, Option<Fill>>>,
     settled_doc: Option<Document>,
     lineage: BTreeMap<String, Vec<String>>,
@@ -352,6 +354,7 @@ impl Cx {
             clipboard: self.session.clipboard.clone(),
             edit_options: self.session.edit_options.clone(),
             checkpoints: self.session.project.as_ref().map(|p| p.checkpoints.clone()),
+            timeline: self.session.timeline.clone(),
             painted: self.painted.clone(),
             settled_doc: self.settled_doc.clone(),
             lineage: self.lineage.clone(),
@@ -370,6 +373,7 @@ impl Cx {
         self.session.ui = sp.ui;
         self.session.clipboard = sp.clipboard;
         self.session.edit_options = sp.edit_options;
+        self.session.timeline = sp.timeline;
         if let (Some(p), Some(c)) = (self.session.project.as_mut(), sp.checkpoints) {
             p.checkpoints = c;
         }

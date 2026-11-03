@@ -661,6 +661,10 @@ pub(crate) struct Clipboard {
     /// Cut-special options.
     #[serde(default)]
     pub(crate) options: Option<serde_json::Map<String, Value>>,
+    /// The copied artwork (drawings, binary entries, cell notes), so a paste never depends on the source document
+    /// (present only with `includeData`; C31-R1-04).
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub(crate) payload: Option<super::transfer::ArtPayload>,
 }
 
 fn clipboard_invalid(at: String, message: impl Into<String>) -> CommandError {
@@ -848,6 +852,7 @@ pub(crate) fn edit_clipboard_get(cx: &mut Cx, p: ClipboardGetParams) -> Result<O
     Ok(clip.map(|mut c| {
         if !p.include_data {
             c.items = None;
+            c.payload = None;
         }
         c
     }))

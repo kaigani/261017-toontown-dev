@@ -199,6 +199,19 @@ pub(crate) fn frame(v: i64, pointer: &str) -> Result<usize, CommandError> {
     }
 }
 
+/// Checks a target frame with the command's own maximum (04 §13.5: extend-exposure targets 1 … 9999;
+/// `cell.frameOutOfRange` stating the bounds; C31-R1-09).
+pub(crate) fn target_frame(v: i64, max: usize, pointer: &str) -> Result<usize, CommandError> {
+    match usize::try_from(v) {
+        Ok(f) if (1..=max).contains(&f) => Ok(f),
+        _ => Err(err(
+            "cell.frameOutOfRange",
+            format!("frame {v} is outside 1…{max}"),
+            json!({ "pointer": pointer, "frame": v, "minimum": 1, "maximum": max }),
+        )),
+    }
+}
+
 /// A change of one element's cells: `{elementId, from, to}`.
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize, schemars::JsonSchema)]
 #[serde(rename_all = "camelCase")]
@@ -645,4 +658,90 @@ pub(crate) struct TimelineState {
     pub type_colours: BTreeMap<String, String>,
     /// Static light tables by scene ID, in stacking order (04 §15; stored per scene with the session state, SI-085).
     pub light_tables: BTreeMap<String, Vec<LightItem>>,
+}
+
+// ----- cell notes (04 §7.2; SI-093) ------------------------------------------------------------------------------------
+
+/// How an exposure edit changes a column's cell notes (frame-keyed element data, 04 §7.2; SI-093): notes follow their
+/// cells through `map`; notes of removed cells go; `clear_old` ranges (old frames: cleared or cut cells) and
+/// `clear_new` ranges (new frames: cells overwritten by a paste or move) lose their notes; `set` writes notes carried
+/// by a copy (overwriting the destination's).
+#[derive(Debug, Default)]
+pub(crate) struct NoteEdit {
+    pub map: x::CellMap,
+    pub clear_old: Vec<(usize, usize)>,
+    pub clear_new: Vec<(usize, usize)>,
+    pub set: Vec<(usize, String)>,
+}
+
+impl NoteEdit {
+    /// Notes follow `map`.
+    pub(crate) fn moved(map: x::CellMap) -> Self {
+        Self { map, ..Self::default() }
+    }
+
+    /// No note moves.
+    pub(crate) fn none() -> Self {
+        Self::default()
+    }
+}
+
+/// Stages a column's re-timed notes when they change; records the changed window.
+pub(crate) fn write_notes(
+    doc: &Document,
+    id: &Id,
+    edit: &NoteEdit,
+    changes: &mut Changes,
+    out: &mut Vec<CellChange>,
+) -> Result<(), CommandError> {
+    let e = element(doc, id)?;
+    let old = e.cell_notes();
+    let inside = |f: usize, ranges: &[(usize, usize)]| ranges.iter().any(|(a, b)| f >= *a && f <= *b);
+    let mut next: BTreeMap<u32, String> = BTreeMap::new();
+    for (f, t) in old {
+        let f = *f as usize;
+        if inside(f, &edit.clear_old) {
+            continue;
+        }
+        let Some(nf) = edit.map.apply(f) else { continue };
+        if nf == 0 || nf > x::MAX_FRAMES || inside(nf, &edit.clear_new) {
+            continue;
+        }
+        next.insert(as_u32(nf), t.clone());
+    }
+    for (f, t) in &edit.set {
+        if (1..=x::MAX_FRAMES).contains(f) && !t.is_empty() {
+            next.insert(as_u32(*f), t.clone());
+        }
+    }
+    if next == *old {
+        return Ok(());
+    }
+    let frames: BTreeSet<u32> = old.keys().chain(next.keys()).copied().filter(|f| old.get(f) != next.get(f)).collect();
+    if let (Some(a), Some(b)) = (frames.first(), frames.last()) {
+        out.push(CellChange { element_id: id.as_str().to_owned(), from: *a, to: *b });
+    }
+    let value: serde_json::Map<String, Value> = next.into_iter().map(|(f, t)| (f.to_string(), json!(t))).collect();
+    changes.push(EntryKey::Element(id.clone()), vec![op("add", "/cellNotes", Some(Value::Object(value)))]);
+    Ok(())
+}
+
+/// The notes of an element over a frame window, keyed by offset from `from` (0-based), for a copy.
+pub(crate) fn notes_in(doc: &Document, id: &Id, from: usize, to: usize) -> Vec<(usize, String)> {
+    doc.element(id)
+        .map(|e| {
+            e.cell_notes()
+                .iter()
+                .filter(|(f, _)| (from..=to).contains(&(**f as usize)))
+                .map(|(f, t)| (*f as usize - from, t.clone()))
+                .collect()
+        })
+        .unwrap_or_default()
+}
+
+impl Changes {
+    /// The staged changes as entry patches (for callers that stage a plain list).
+    pub(crate) fn into_vec(self) -> Vec<(EntryKey, Vec<PatchOp>)> {
+        self.0
+    }
 }

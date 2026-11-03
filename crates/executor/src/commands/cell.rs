@@ -21,9 +21,10 @@ use tt_registry::{CommandError, codes, command};
 
 use super::common::NoParams;
 use super::timing::{
-    Budget, CellChange, CellTarget, Changes, Column, EXPOSED, LABELLED, VECTOR, add_drawing, applicable, as_u32,
-    bank_of_element, bank_order, cell_refs, cell_target, drawing_id, drawing_name, drawing_not_found, element,
-    element_id, emit_bank, emit_cells, err, frame, locked, no_target, op, selected_cells, write_column,
+    Budget, CellChange, CellTarget, Changes, Column, EXPOSED, LABELLED, NoteEdit, VECTOR, add_drawing, applicable,
+    as_u32, bank_of_element, bank_order, cell_refs, cell_target, drawing_id, drawing_name, drawing_not_found, element,
+    element_id, emit_bank, emit_cells, err, frame, locked, no_target, notes_in, op, selected_cells, write_column,
+    write_notes,
 };
 use crate::app::parse_cell_ref;
 use crate::cx::Cx;
@@ -40,8 +41,8 @@ pub(crate) struct ChangedResult {
     changed: Vec<CellChange>,
 }
 
-/// A per-element exposure edit: the column's new frames.
-type ColumnEdit<'a> = dyn FnMut(&Column, &mut Budget) -> Result<Vec<Option<u32>>, CommandError> + 'a;
+/// A per-element exposure edit: the column's new frames and how its cells (and their notes) move.
+type ColumnEdit<'a> = dyn FnMut(&Column, &mut Budget) -> Result<(Vec<Option<u32>>, NoteEdit), CommandError> + 'a;
 
 /// Runs a per-element exposure edit on every target element and stages it as one step.
 fn per_element(
@@ -58,9 +59,10 @@ fn per_element(
     for e in &t.elements {
         applicable(&doc, e, command, allowed)?;
         let col = Column::read(&doc, e, budget)?;
-        let after = f(&col, budget)?;
+        let (after, notes) = f(&col, budget)?;
         budget.spend(after.len())?;
         write_column(&col, &after, &mut changes, &mut out)?;
+        write_notes(&doc, e, &notes, &mut changes, &mut out)?;
     }
     changes.stage(cx)?;
     emit_cells(cx, &out)?;
@@ -124,14 +126,15 @@ fn exposure_step(cx: &mut Cx, p: &ExposureStepParams, add: bool) -> Result<Chang
     for e in &cells {
         applicable(&doc, e, command, EXPOSED)?;
         let col = Column::read(&doc, e, &mut budget)?;
-        let after = if add {
+        let (after, map) = if add {
             budget.spend(col.frames.len() + n * (t.to - t.from + 1))?;
-            x::add_exposure(&col.frames, t.from, t.to, n)
+            (x::add_exposure(&col.frames, t.from, t.to, n), x::add_exposure_map(&col.frames, t.from, t.to, n))
         } else {
-            x::remove_exposure(&col.frames, t.from, t.to, n)
+            (x::remove_exposure(&col.frames, t.from, t.to, n), x::remove_exposure_map(&col.frames, t.from, t.to, n))
         };
         budget.spend(after.len())?;
         write_column(&col, &after, &mut changes, &mut out)?;
+        write_notes(&doc, e, &NoteEdit::moved(map), &mut changes, &mut out)?;
     }
     changes.stage(cx)?;
     emit_cells(cx, &out)?;
@@ -202,7 +205,10 @@ pub(crate) fn cell_exposure_set(cx: &mut Cx, p: ExposureSetParams) -> Result<Cha
     let span = t.to - t.from + 1;
     let changed = per_element(cx, &t, "cell.exposure.set", EXPOSED, &mut budget, &mut |c, b| {
         b.spend(c.frames.len() + span.saturating_mul(len))?;
-        Ok(x::set_exposure(&c.frames, t.from, t.to, len))
+        Ok((
+            x::set_exposure(&c.frames, t.from, t.to, len),
+            NoteEdit::moved(x::set_exposure_map(&c.frames, t.from, t.to, len)),
+        ))
     })?;
     Ok(ChangedResult { changed })
 }
@@ -243,11 +249,11 @@ pub(crate) fn cell_fill_apply(cx: &mut Cx, p: FillParams) -> Result<ChangedResul
             json!({ "pointer": "/toFrame", "toFrame": to, "minimum": t.from }),
         ));
     }
-    let to = frame(p.to_frame, "/toFrame")?;
+    let to = super::timing::target_frame(p.to_frame, x::MAX_COMMAND_FRAMES as usize, "/toFrame")?;
     let mut budget = Budget::new("extending exposures");
     let changed = per_element(cx, &t, "cell.fill.apply", EXPOSED, &mut budget, &mut |c, b| {
         b.spend(c.frames.len().max(to))?;
-        x::fill(&c.frames, t.from, to).map_err(|e| match e {
+        x::fill(&c.frames, t.from, to).map(|f| (f, NoteEdit::none())).map_err(|e| match e {
             FillError::Blank => err(
                 "cell.notApplicable",
                 format!("the cell at frame {} of element `{}` is blank: there is no drawing to extend", t.from, c.id),
@@ -300,7 +306,7 @@ pub(crate) fn cell_blank_add(cx: &mut Cx, p: BlankParams) -> Result<ChangedResul
     let n = p.count as usize;
     let changed = per_element(cx, &t, "cell.blank.add", BLANKS, &mut budget, &mut |c, b| {
         b.spend(c.frames.len() + n)?;
-        Ok(x::insert_blank(&c.frames, t.from, n))
+        Ok((x::insert_blank(&c.frames, t.from, n), NoteEdit::moved(x::insert_map(t.from, n))))
     })?;
     Ok(ChangedResult { changed })
 }
@@ -321,13 +327,15 @@ pub(crate) fn cell_blank_remove(cx: &mut Cx, p: BlankParams) -> Result<ChangedRe
     let n = p.count as usize;
     let changed = per_element(cx, &t, "cell.blank.remove", BLANKS, &mut budget, &mut |c, b| {
         b.spend(c.frames.len() + n)?;
-        x::remove_blank(&c.frames, t.from, n).ok_or_else(|| {
-            err(
-                "cell.notBlank",
-                format!("a cell of frames {}-{} of element `{}` is not blank", t.from, t.from + n - 1, c.id),
-                json!({ "elementId": c.id.as_str(), "frame": t.from, "count": n }),
-            )
-        })
+        x::remove_blank(&c.frames, t.from, n)
+            .map(|f| (f, NoteEdit::moved(x::remove_map(t.from, t.from + n - 1))))
+            .ok_or_else(|| {
+                err(
+                    "cell.notBlank",
+                    format!("a cell of frames {}-{} of element `{}` is not blank", t.from, t.from + n - 1, c.id),
+                    json!({ "elementId": c.id.as_str(), "frame": t.from, "count": n }),
+                )
+            })
     })?;
     Ok(ChangedResult { changed })
 }
@@ -466,6 +474,7 @@ pub(crate) fn cell_range_add(cx: &mut Cx, p: RangeAddParams) -> Result<RangeAddR
         // Inserting past the last exposure pads with blanks only when drawings are inserted.
         let after = x::insert(&col.frames, at, &values);
         write_column(&col, &after, &mut changes, &mut out)?;
+        write_notes(&doc, e, &NoteEdit::moved(x::insert_map(at, n)), &mut changes, &mut out)?;
     }
     for e in &shifted {
         let j = doc.entry_raw_json(&EntryKey::Element(e.clone())).map_err(super::timing::internal)?;
@@ -548,7 +557,12 @@ pub(crate) fn cell_range_delete(cx: &mut Cx, p: RangeDeleteParams) -> Result<Cha
     let mut budget = Budget::new("deleting cells");
     let changed = per_element(cx, &t, "cell.range.delete", BLANKS, &mut budget, &mut |c, b| {
         b.spend(c.frames.len())?;
-        Ok(x::delete_range(&c.frames, t.from, t.to, p.shift))
+        let notes = if p.shift {
+            NoteEdit::moved(x::remove_map(t.from, t.to))
+        } else {
+            NoteEdit { clear_old: vec![(t.from, t.to)], ..NoteEdit::none() }
+        };
+        Ok((x::delete_range(&c.frames, t.from, t.to, p.shift), notes))
     })?;
     Ok(ChangedResult { changed })
 }
@@ -659,79 +673,6 @@ fn type_mismatch(from: &Id, to: &Id, a: ElementType, b: ElementType) -> CommandE
     )
 }
 
-/// Maps transferred drawings into a target bank (04 §13.16): the same drawing within the same bank (`same`),
-/// else a copy (`overwriteDrawings`: a same-named drawing of the target is overwritten; otherwise a same-named
-/// drawing gets a new copy under the next free name), or always a new copy under a new name (`fresh`).
-struct Mapper<'a> {
-    doc: &'a Document,
-    bank: Id,
-    same: bool,
-    fresh: bool,
-    overwrite: bool,
-    map: BTreeMap<Id, Id>,
-    names: Vec<String>,
-    created: Vec<String>,
-}
-
-impl<'a> Mapper<'a> {
-    fn new(doc: &'a Document, source_bank: &Id, bank: Id, fresh: bool, overwrite: bool) -> Self {
-        let names = super::timing::bank_names(doc, &bank);
-        Self {
-            doc,
-            same: *source_bank == bank && !fresh,
-            bank,
-            fresh,
-            overwrite,
-            map: BTreeMap::new(),
-            names,
-            created: Vec::new(),
-        }
-    }
-
-    fn map(&mut self, cx: &mut Cx, changes: &mut Changes, d: &Id) -> Result<Id, CommandError> {
-        if self.same {
-            return Ok(d.clone());
-        }
-        if let Some(m) = self.map.get(d) {
-            return Ok(m.clone());
-        }
-        let src = self.doc.drawing(d).ok_or_else(|| super::draw::not_found(d.as_str()))?;
-        let json = self.doc.entry_raw_json(&EntryKey::Drawing(d.clone())).map_err(super::timing::internal)?;
-        let existing = super::timing::drawing_named(self.doc, &self.bank, src.name());
-        let target = match existing {
-            Some(t) if !self.fresh && self.overwrite => {
-                if self.doc.drawing(&t).is_some_and(|x| *x.locked()) {
-                    return Err(locked(self.doc, &t));
-                }
-                let mut v = json.clone();
-                v["id"] = json!(t.as_str());
-                v["name"] = json!(src.name());
-                v["locked"] = json!(false);
-                if let Some(old) = self.doc.drawing(&t) {
-                    v["createdAt"] = super::timing::to_json(old.created_at())?;
-                    v["rev"] = json!(old.rev());
-                }
-                changes.push(EntryKey::Drawing(t.clone()), vec![op("replace", "", Some(v))]);
-                cx.keep_verbatim([t.clone()]);
-                t
-            }
-            _ => {
-                let name = if self.fresh || self.names.iter().any(|n| n == src.name()) {
-                    x::next_drawing_name(self.names.iter().map(String::as_str))
-                } else {
-                    src.name().clone()
-                };
-                let id = add_drawing(cx, changes, &self.bank, &name, Some(&json))?;
-                self.names.push(name);
-                self.created.push(id.as_str().to_owned());
-                id
-            }
-        };
-        self.map.insert(d.clone(), target.clone());
-        Ok(target)
-    }
-}
-
 // ----- cell.range.move ----------------------------------------------------------------------------------------------------
 
 /// Transfer mode (11.13).
@@ -839,12 +780,12 @@ pub(crate) fn cell_range_move(cx: &mut Cx, p: RangeMoveParams) -> Result<RangeMo
         }
     };
     let mut budget = Budget::new("moving cells");
-    let mut changes = Changes::default();
-    let mut out = Vec::new();
-    let mut created = Vec::new();
     let len = to - from + 1;
-    // Columns are read once and updated in place when a column is both a source and a target.
-    let mut cols: BTreeMap<Id, (Column, Vec<Option<u32>>)> = BTreeMap::new();
+    // 1. Validate every pair and snapshot every source once, from the document as it was (C31-R1-07): later
+    //    writes never feed later reads, whatever the overlap or iteration direction.
+    let mut picked: Vec<Vec<Option<Id>>> = Vec::with_capacity(sources.len());
+    let mut notes_of: Vec<Vec<(usize, String)>> = Vec::with_capacity(sources.len());
+    let mut payload = super::transfer::ArtPayload::of(&doc);
     for (s, t) in sources.iter().zip(targets.iter()) {
         applicable(&doc, s, "cell.range.move", LABELLED)?;
         applicable(&doc, t, "cell.range.move", LABELLED)?;
@@ -853,53 +794,76 @@ pub(crate) fn cell_range_move(cx: &mut Cx, p: RangeMoveParams) -> Result<RangeMo
         if !compatible(st, tt) {
             return Err(type_mismatch(s, t, st, tt));
         }
-        let sbank = bank_of_element(&doc, s)?;
-        let tbank = bank_of_element(&doc, t)?;
-        if p.mode == MoveMode::Link && sbank != tbank {
+        if p.mode == MoveMode::Link && bank_of_element(&doc, s)? != bank_of_element(&doc, t)? {
             return Err(err(
                 "cell.linkNotPossible",
                 "linked cells must stay within one element or clone group (shared drawing bank)",
                 json!({ "sourceElementId": s.as_str(), "targetElementId": t.as_str() }),
             ));
         }
-        for id in [s, t] {
-            if !cols.contains_key(id) {
-                let c = Column::read(&doc, id, &mut budget)?;
-                let f = c.frames.clone();
-                cols.insert(id.clone(), (c, f));
+        let col = Column::read(&doc, s, &mut budget)?;
+        budget.spend(len)?;
+        let cells: Vec<Option<Id>> =
+            x::slice(&col.frames, from, to).into_iter().map(|c| c.and_then(|i| col.drawing(i).cloned())).collect();
+        for d in cells.iter().flatten() {
+            payload.capture_drawing(cx, &doc, d)?;
+        }
+        picked.push(cells);
+        notes_of.push(notes_in(&doc, s, from, to));
+    }
+    // 2. Mutable destination columns, read once.
+    let mut cols: BTreeMap<Id, (Column, Vec<Option<u32>>, NoteEdit)> = BTreeMap::new();
+    for id in sources.iter().chain(targets.iter()) {
+        if !cols.contains_key(id) {
+            let c = Column::read(&doc, id, &mut budget)?;
+            let f = c.frames.clone();
+            cols.insert(id.clone(), (c, f, NoteEdit::none()));
+        }
+    }
+    // 3. Move: remove every source range first.
+    if p.mode == MoveMode::Move {
+        for s in &sources {
+            let (_, sf, notes) = cols.get_mut(s).ok_or_else(|| super::timing::internal("column"))?;
+            *sf = x::delete_range(sf, from, to, opts.exposure);
+            if opts.exposure {
+                notes.map.then(x::remove_map(from, to));
+            } else {
+                notes.clear_old.push((from, to));
             }
         }
-        budget.spend(len * 2)?;
-        let (scol, sframes) = cols.get(s).ok_or_else(|| super::timing::internal("column"))?;
-        let picked: Vec<Option<Id>> =
-            x::slice(sframes, from, to).into_iter().map(|c| c.and_then(|i| scol.drawing(i).cloned())).collect();
-        // Remove from the source first (move), then place at the target.
+    }
+    // 4. Place every snapshot; one drawing transfer per destination bank for the whole command.
+    let mut transfers: BTreeMap<Id, super::transfer::Transfer> = BTreeMap::new();
+    let mut changes = Changes::default();
+    let mut out = Vec::new();
+    for (i, t) in targets.iter().enumerate() {
+        // A target that was itself a moved source has lost the moved range: its target frame shifts with it.
         let mut tf = target_frame;
-        if p.mode == MoveMode::Move {
-            let (_, sf) = cols.get_mut(s).ok_or_else(|| super::timing::internal("column"))?;
-            *sf = x::delete_range(sf, from, to, opts.exposure);
-            if s == t && opts.exposure && tf > to {
+        if p.mode == MoveMode::Move && opts.exposure && sources.contains(t) {
+            if tf > to {
                 tf -= len;
-            } else if s == t && opts.exposure && tf > from {
+            } else if tf > from {
                 tf = from;
             }
         }
-        let mut mapper = Mapper::new(&doc, &sbank, tbank, p.mode == MoveMode::CopyNew, opts.overwrite_drawings);
-        let (tcol, tframes) = cols.get_mut(t).ok_or_else(|| super::timing::internal("column"))?;
-        let mut values = Vec::with_capacity(len);
-        for c in &picked {
-            values.push(match c {
-                Some(d) => {
-                    let m = if p.mode == MoveMode::Move && sbank == mapper.bank {
-                        d.clone()
-                    } else {
-                        mapper.map(cx, &mut changes, d)?
-                    };
-                    Some(tcol.intern(&m))
-                }
+        let tbank = bank_of_element(&doc, t)?;
+        let transfer = transfers.entry(tbank.clone()).or_insert_with(|| {
+            super::transfer::Transfer::new(&doc, tbank.clone(), super::transfer::Naming::NextNumeric)
+        });
+        let policy = super::transfer::Policy {
+            reuse: p.mode != MoveMode::CopyNew,
+            fresh: p.mode == MoveMode::CopyNew,
+            overwrite: opts.overwrite_drawings,
+        };
+        let mut mapped = Vec::with_capacity(len);
+        for c in &picked[i] {
+            mapped.push(match c {
+                Some(d) => Some(transfer.place(cx, &doc, &payload, &mut changes, d, policy)?),
                 None => None,
             });
         }
+        let (tcol, tframes, notes) = cols.get_mut(t).ok_or_else(|| super::timing::internal("column"))?;
+        let values: Vec<Option<u32>> = mapped.iter().map(|m| m.as_ref().map(|d| tcol.intern(d))).collect();
         if !opts.exposure {
             // Overwriting cells that show locked drawings is refused (04 §13.16).
             for c in x::slice(tframes, tf, tf + len - 1).into_iter().flatten() {
@@ -910,17 +874,28 @@ pub(crate) fn cell_range_move(cx: &mut Cx, p: RangeMoveParams) -> Result<RangeMo
                 }
             }
         }
+        budget.spend(tframes.len() + len)?;
         *tframes = if opts.exposure { x::insert(tframes, tf, &values) } else { x::overwrite(tframes, tf, &values) };
-        created.extend(mapper.created);
+        if opts.exposure {
+            notes.map.then(x::insert_map(tf, len));
+        } else {
+            notes.clear_new.push((tf, tf + len - 1));
+        }
+        notes.set.extend(notes_of[i].iter().map(|(k, text)| (tf + k, text.clone())));
         out.push((tf, tf + len - 1));
     }
     let mut cells = Vec::new();
-    for (col, after) in cols.values() {
+    for (col, after, notes) in cols.values() {
         budget.spend(after.len())?;
         write_column(col, after, &mut changes, &mut cells)?;
+        write_notes(&doc, &col.id, notes, &mut changes, &mut cells)?;
     }
+    let created: Vec<String> = transfers.values().flat_map(|t| t.created.clone()).collect();
     changes.stage(cx)?;
     emit_cells(cx, &cells)?;
+    for t in transfers.values() {
+        super::timing::emit_bank(cx, &doc, &t.bank, &t.created, "created");
+    }
     let (a, b) = out.first().copied().unwrap_or((target_frame, target_frame + len - 1));
     Ok(RangeMoveResult { from: as_u32(a), to: as_u32(b), created_drawing_ids: created })
 }
@@ -946,8 +921,9 @@ pub(crate) struct LabelParams {
     /// Drawing ID or path (it must belong to the element's bank).
     #[serde(default)]
     drawing_id: Option<String>,
-    /// Step through the bank (natural name order) from the drawing at `from`.
+    /// Step through the bank (natural name order) from the drawing at `from` (−1 000 000 … 1 000 000).
     #[serde(default)]
+    #[schemars(range(min = -1_000_000, max = 1_000_000))]
     step: Option<i64>,
     /// Create an empty drawing for an unknown name (drawing and annotation elements).
     #[serde(default)]
@@ -1031,18 +1007,21 @@ pub(crate) fn cell_label_set(cx: &mut Cx, p: LabelParams) -> Result<LabelResult,
                     json!({ "elementId": e.as_str(), "frame": t.from, "reason": "blank" }),
                 )
             })?;
-            let i = order.iter().position(|(d, _)| *d == cur).unwrap_or(0) as i64 + step;
-            let j = usize::try_from(i).ok().filter(|j| *j < order.len()).ok_or_else(|| {
-                err(
-                    "cell.drawingNotFound",
-                    format!(
-                        "stepping {step} from the drawing at frame {} leaves the bank ({} drawings)",
-                        t.from,
-                        order.len()
-                    ),
-                    json!({ "pointer": "/step", "elementId": e.as_str(), "step": step }),
-                )
-            })?;
+            let base = i64::try_from(order.iter().position(|(d, _)| *d == cur).unwrap_or(0)).unwrap_or(i64::MAX);
+            let j =
+                base.checked_add(step).and_then(|i| usize::try_from(i).ok()).filter(|j| *j < order.len()).ok_or_else(
+                    || {
+                        err(
+                            "cell.drawingNotFound",
+                            format!(
+                                "stepping {step} from the drawing at frame {} leaves the bank ({} drawings)",
+                                t.from,
+                                order.len()
+                            ),
+                            json!({ "pointer": "/step", "elementId": e.as_str(), "step": step }),
+                        )
+                    },
+                )?;
             order[j].0.clone()
         };
         let name = doc.drawing(&d).map(|x| x.name().clone()).or_else(|| p.drawing.clone()).unwrap_or_default();
@@ -1102,53 +1081,72 @@ pub(crate) struct DrawingResult {
 pub(crate) fn cell_drawing_duplicate(cx: &mut Cx, p: DuplicateParams) -> Result<DrawingResult, CommandError> {
     let one = p.element_id.as_ref().map(|e| vec![e.clone()]);
     let t = cell_target(cx, one.as_deref(), p.from, p.to)?;
-    let e = t.elements.first().cloned().ok_or_else(no_target)?;
     let doc = cx.document()?.clone();
-    applicable(&doc, &e, "cell.drawing.duplicate", VECTOR)?;
-    let bank = bank_of_element(&doc, &e)?;
     let mut budget = Budget::new("duplicating a drawing");
-    let mut col = Column::read(&doc, &e, &mut budget)?;
-    let orig_i = x::at(&col.frames, t.from).ok_or_else(|| {
-        err(
-            "cell.notApplicable",
-            format!("the cell at frame {} is blank: there is no drawing to duplicate", t.from),
-            json!({ "elementId": e.as_str(), "frame": t.from, "reason": "blank" }),
-        )
-    })?;
-    let orig = col.drawing(orig_i).cloned().ok_or_else(|| super::timing::internal("drawing index"))?;
-    let names = super::timing::bank_names(&doc, &bank);
-    budget.spend(names.len())?;
-    let name = match &p.name {
-        Some(n) => {
-            let n = drawing_name(n, "/name")?;
-            if names.contains(&n) {
+    let mut changes = Changes::default();
+    let mut out = Vec::new();
+    let mut first: Option<(Id, String)> = None;
+    let mut by_bank: BTreeMap<Id, Vec<String>> = BTreeMap::new();
+    let mut created_ids: BTreeMap<Id, Vec<String>> = BTreeMap::new();
+    // Every selected column independently (04 §13 general rule; C31-R1-15); clones duplicate into one bank.
+    for e in &t.elements {
+        applicable(&doc, e, "cell.drawing.duplicate", VECTOR)?;
+        let bank = bank_of_element(&doc, e)?;
+        let mut col = Column::read(&doc, e, &mut budget)?;
+        let orig_i = x::at(&col.frames, t.from).ok_or_else(|| {
+            err(
+                "cell.notApplicable",
+                format!("the cell at frame {} is blank: there is no drawing to duplicate", t.from),
+                json!({ "elementId": e.as_str(), "frame": t.from, "reason": "blank" }),
+            )
+        })?;
+        let orig = col.drawing(orig_i).cloned().ok_or_else(|| super::timing::internal("drawing index"))?;
+        let mut names = super::timing::bank_names(&doc, &bank);
+        names.extend(by_bank.get(&bank).into_iter().flatten().cloned());
+        budget.spend(names.len())?;
+        let name = match &p.name {
+            Some(n) if t.elements.len() == 1 => {
+                let n = drawing_name(n, "/name")?;
+                if names.contains(&n) {
+                    return Err(err(
+                        "drawing.nameDuplicate",
+                        format!("drawing `{n}` already exists in the bank; choose a different name"),
+                        json!({ "pointer": "/name", "name": n }),
+                    ));
+                }
+                n
+            }
+            Some(_) => {
                 return Err(err(
-                    "drawing.nameDuplicate",
-                    format!("drawing `{n}` already exists in the bank; choose a different name"),
-                    json!({ "pointer": "/name", "name": n }),
+                    codes::ARG_INVALID,
+                    "`name` names one copy; omit it when duplicating in several columns",
+                    json!({ "pointer": "/name", "columns": t.elements.len() }),
                 ));
             }
-            n
+            None => x::next_drawing_name(names.iter().map(String::as_str)),
+        };
+        let json = doc.entry_raw_json(&EntryKey::Drawing(orig.clone())).map_err(super::timing::internal)?;
+        let copy = add_drawing(cx, &mut changes, &bank, &name, Some(&json))?;
+        by_bank.entry(bank.clone()).or_default().push(name.clone());
+        created_ids.entry(bank.clone()).or_default().push(copy.as_str().to_owned());
+        let ci = col.intern(&copy);
+        let mut after = col.frames.clone();
+        budget.spend(after.len())?;
+        for c in after.iter_mut().take(t.to).skip(t.from - 1) {
+            if *c == Some(orig_i) {
+                *c = Some(ci);
+            }
         }
-        None => x::next_drawing_name(names.iter().map(String::as_str)),
-    };
-    let json = doc.entry_raw_json(&EntryKey::Drawing(orig.clone())).map_err(super::timing::internal)?;
-    let mut changes = Changes::default();
-    let copy = add_drawing(cx, &mut changes, &bank, &name, Some(&json))?;
-    let ci = col.intern(&copy);
-    let mut after = col.frames.clone();
-    budget.spend(after.len())?;
-    for c in after.iter_mut().take(t.to).skip(t.from - 1) {
-        if *c == Some(orig_i) {
-            *c = Some(ci);
-        }
+        write_column(&col, &after, &mut changes, &mut out)?;
+        first.get_or_insert((copy, name));
     }
-    let mut out = Vec::new();
-    write_column(&col, &after, &mut changes, &mut out)?;
+    let (d, name) = first.ok_or_else(no_target)?;
     changes.stage(cx)?;
     emit_cells(cx, &out)?;
-    emit_bank(cx, &doc, &bank, &[copy.as_str().to_owned()], "created");
-    Ok(DrawingResult { drawing_id: copy.as_str().to_owned(), name })
+    for (bank, ids) in &created_ids {
+        emit_bank(cx, &doc, bank, ids, "created");
+    }
+    Ok(DrawingResult { drawing_id: d.as_str().to_owned(), name })
 }
 
 // ----- cell.cycle.create -----------------------------------------------------------------------------------------------------
@@ -1192,19 +1190,19 @@ pub(crate) struct WindowResult {
 )]
 pub(crate) fn cell_cycle_create(cx: &mut Cx, p: CycleParams) -> Result<WindowResult, CommandError> {
     let one = p.element_id.as_ref().map(|e| vec![e.clone()]);
-    let mut t = cell_target(cx, one.as_deref(), p.from, p.to)?;
-    t.elements.truncate(1);
+    // Every selected column independently (04 §13 general rule; C31-R1-15).
+    let t = cell_target(cx, one.as_deref(), p.from, p.to)?;
     let len = t.to - t.from + 1;
     let k = p.cycles as usize;
     let mut budget = Budget::new("creating a cycle");
-    budget.spend(len.saturating_mul(k))?;
+    budget.spend(len.saturating_mul(k).saturating_mul(t.elements.len()))?;
     if t.to.saturating_add(len.saturating_mul(k - 1)) > x::MAX_FRAMES {
         let e = t.elements.first().cloned().ok_or_else(no_target)?;
-        super::timing::check_length(t.to + len * (k - 1), &e)?;
+        super::timing::check_length(t.to.saturating_add(len.saturating_mul(k - 1)), &e)?;
     }
     per_element(cx, &t, "cell.cycle.create", EXPOSED, &mut budget, &mut |c, b| {
         b.spend(c.frames.len() + len * k)?;
-        Ok(x::cycle(&c.frames, t.from, t.to, k))
+        Ok((x::cycle(&c.frames, t.from, t.to, k), NoteEdit::moved(x::insert_map(t.to + 1, len * (k - 1)))))
     })?;
     Ok(WindowResult { from: as_u32(t.from), to: as_u32(t.from + len * k - 1) })
 }
@@ -1318,19 +1316,7 @@ pub(crate) struct ColumnateResult {
 pub(crate) fn cell_columnate_apply(cx: &mut Cx, p: ColumnateParams) -> Result<ColumnateResult, CommandError> {
     let one = p.element_id.as_ref().map(|e| vec![e.clone()]);
     let t = cell_target(cx, one.as_deref(), p.frame, p.frame)?;
-    let e = t.elements.first().cloned().ok_or_else(no_target)?;
     let doc = cx.document()?.clone();
-    applicable(&doc, &e, "cell.columnate.apply", EXPOSED)?;
-    let bank = bank_of_element(&doc, &e)?;
-    let order = bank_order(&doc, &bank);
-    let mut budget = Budget::new("columnating");
-    budget.spend(order.len())?;
-    let find = |name: &str, pointer: &str| {
-        order.iter().position(|(_, n)| n == name).ok_or_else(|| drawing_not_found(name, &e, pointer))
-    };
-    let a = find(&p.first_drawing, "/firstDrawing")?;
-    let b = find(&p.last_drawing, "/lastDrawing")?;
-    let drawings: Vec<usize> = if a <= b { (a..=b).collect() } else { (b..=a).rev().collect() };
     let mode = match p.loop_mode {
         ColumnateLoop::None => LoopMode::None,
         ColumnateLoop::Continuous => LoopMode::Continuous,
@@ -1339,49 +1325,86 @@ pub(crate) fn cell_columnate_apply(cx: &mut Cx, p: ColumnateParams) -> Result<Co
     let each = p.expose_each as usize;
     let last = p.expose_last.map_or(each, |l| l as usize);
     let loops = p.loops.map_or(1, |l| l as usize);
-    // The cycle's length before it is built (refuse oversized cycles first).
-    let unit =
-        if mode == LoopMode::ForwardBackward && drawings.len() > 2 { 2 * drawings.len() - 2 } else { drawings.len() };
-    let predicted = match p.total_frames {
-        Some(tf) => tf as usize,
-        None => (unit * if mode == LoopMode::None { 1 } else { loops }).saturating_sub(1) * each + last,
-    };
-    if t.from + predicted - 1 > x::MAX_FRAMES {
-        super::timing::check_length(t.from + predicted - 1, &e)?;
-    }
-    budget.spend(predicted)?;
-    let c = x::columnate(&drawings, mode, each, last, loops, p.total_frames.map(|v| v as usize));
-    let mut col = Column::read(&doc, &e, &mut budget)?;
-    let mut sequence = Vec::new();
-    let mut f = t.from;
-    let mut values = Vec::with_capacity(c.total_frames);
-    for (i, n) in &c.sequence {
-        let (d, name) = &order[*i];
-        sequence.push(SequenceItem { drawing: name.clone(), from: as_u32(f), to: as_u32(f + n - 1) });
-        let idx = col.intern(d);
-        values.extend(std::iter::repeat_n(Some(idx), *n));
-        f += n;
-    }
-    let after = match p.placement {
-        Placement::Overwrite => x::overwrite(&col.frames, t.from, &values),
-        Placement::Insert => x::insert(&col.frames, t.from, &values),
-    };
-    budget.spend(after.len())?;
+    let mut budget = Budget::new("columnating");
     let mut changes = Changes::default();
     let mut out = Vec::new();
-    write_column(&col, &after, &mut changes, &mut out)?;
+    let mut result: Option<ColumnateResult> = None;
+    // Every selected column independently (04 §13 general rule; C31-R1-15); the drawings are named per bank.
+    for e in &t.elements {
+        applicable(&doc, e, "cell.columnate.apply", EXPOSED)?;
+        let bank = bank_of_element(&doc, e)?;
+        let order = bank_order(&doc, &bank);
+        budget.spend(order.len())?;
+        let find = |name: &str, pointer: &str| {
+            order.iter().position(|(_, n)| n == name).ok_or_else(|| drawing_not_found(name, e, pointer))
+        };
+        let a = find(&p.first_drawing, "/firstDrawing")?;
+        let b = find(&p.last_drawing, "/lastDrawing")?;
+        let drawings: Vec<usize> = if a <= b { (a..=b).collect() } else { (b..=a).rev().collect() };
+        // The cycle's length before it is built (refuse oversized cycles first; saturating products).
+        let unit = if mode == LoopMode::ForwardBackward && drawings.len() > 2 {
+            2 * drawings.len() - 2
+        } else {
+            drawings.len()
+        };
+        let pass = unit
+            .saturating_mul(if mode == LoopMode::None { 1 } else { loops })
+            .saturating_sub(1)
+            .saturating_mul(each)
+            .saturating_add(last);
+        // Total frames take precedence (SI-095); a single pass is never extended, so a larger count is refused.
+        if mode == LoopMode::None
+            && let Some(tf) = p.total_frames
+            && tf as usize > pass
+        {
+            return Err(err(
+                codes::ARG_INVALID,
+                format!(
+                    "one pass has {pass} frames; a larger total needs the continuous or forward-backward loop mode"
+                ),
+                json!({ "pointer": "/totalFrames", "maximum": pass, "loopMode": "none" }),
+            ));
+        }
+        let predicted = p.total_frames.map_or(pass, |tf| tf as usize);
+        if t.from.saturating_add(predicted).saturating_sub(1) > x::MAX_FRAMES {
+            super::timing::check_length(t.from.saturating_add(predicted).saturating_sub(1), e)?;
+        }
+        budget.spend(predicted)?;
+        let c = x::columnate(&drawings, mode, each, last, loops, p.total_frames.map(|v| v as usize));
+        let mut col = Column::read(&doc, e, &mut budget)?;
+        let mut sequence = Vec::new();
+        let mut f = t.from;
+        let mut values = Vec::with_capacity(c.total_frames);
+        for (i, n) in &c.sequence {
+            let (d, name) = &order[*i];
+            sequence.push(SequenceItem { drawing: name.clone(), from: as_u32(f), to: as_u32(f + n - 1) });
+            let idx = col.intern(d);
+            values.extend(std::iter::repeat_n(Some(idx), *n));
+            f += n;
+        }
+        let (after, notes) = match p.placement {
+            Placement::Overwrite => (x::overwrite(&col.frames, t.from, &values), NoteEdit::none()),
+            Placement::Insert => {
+                (x::insert(&col.frames, t.from, &values), NoteEdit::moved(x::insert_map(t.from, c.total_frames)))
+            }
+        };
+        budget.spend(after.len())?;
+        write_column(&col, &after, &mut changes, &mut out)?;
+        write_notes(&doc, e, &notes, &mut changes, &mut out)?;
+        result.get_or_insert(ColumnateResult {
+            from: as_u32(t.from),
+            to: as_u32(t.from + c.total_frames.max(1) - 1),
+            total_frames: as_u32(c.total_frames),
+            loops: as_u32(c.loops.max(1)),
+            sequence,
+        });
+    }
     changes.stage(cx)?;
     // A dry run (the command's own `dryRun`) is discarded by the executor after staging; it announces nothing.
     if !p.dry_run {
         emit_cells(cx, &out)?;
     }
-    Ok(ColumnateResult {
-        from: as_u32(t.from),
-        to: as_u32(t.from + c.total_frames.max(1) - 1),
-        total_frames: as_u32(c.total_frames),
-        loops: as_u32(c.loops.max(1)),
-        sequence,
-    })
+    result.ok_or_else(no_target)
 }
 
 // ----- cell.note.set -----------------------------------------------------------------------------------------------------------
@@ -1514,6 +1537,7 @@ pub(crate) fn cell_clipboard_set(cx: &mut Cx, p: ClipboardSetParams) -> Result<C
         });
     }
     let mut items = Vec::new();
+    let mut notes = Vec::new();
     let mut kind = "drawingCells";
     for e in &t.elements {
         applicable(&doc, e, "cell.clipboard.set", LABELLED)?;
@@ -1525,8 +1549,9 @@ pub(crate) fn cell_clipboard_set(cx: &mut Cx, p: ClipboardSetParams) -> Result<C
         for (k, c) in x::slice(&col.frames, t.from, t.to).into_iter().enumerate() {
             items.push((e.clone(), k, c.and_then(|i| col.drawing(i).cloned())));
         }
+        notes.extend(notes_in(&doc, e, t.from, t.to).into_iter().map(|(k, text)| (e.clone(), k, text)));
     }
-    super::edit_ops::store_cells(cx, &items)?;
+    super::edit_ops::store_cells(cx, &items, &notes)?;
     if p.cut {
         let mut changes = Changes::default();
         let mut out = Vec::new();
@@ -1534,6 +1559,13 @@ pub(crate) fn cell_clipboard_set(cx: &mut Cx, p: ClipboardSetParams) -> Result<C
             let col = Column::read(&doc, e, &mut budget)?;
             let after = x::delete_range(&col.frames, t.from, t.to, opts.exposure);
             write_column(&col, &after, &mut changes, &mut out)?;
+            // Cut cells take their notes (SI-093).
+            let edit = if opts.exposure {
+                NoteEdit::moved(x::remove_map(t.from, t.to))
+            } else {
+                NoteEdit { clear_old: vec![(t.from, t.to)], ..NoteEdit::none() }
+            };
+            write_notes(&doc, e, &edit, &mut changes, &mut out)?;
         }
         changes.stage(cx)?;
         emit_cells(cx, &out)?;
@@ -1605,8 +1637,8 @@ pub(crate) fn cell_clipboard_apply(cx: &mut Cx, p: ClipboardApplyParams) -> Resu
     let clip = super::edit_ops::clipboard_cells(cx)?;
     let doc = cx.document()?.clone();
     let one = p.element_id.as_ref().map(|e| vec![e.clone()]);
-    let clip = match clip {
-        super::edit_ops::CellClip::Cells(c) => c,
+    let (clip, payload) = match clip {
+        super::edit_ops::CellClip::Cells(c, payload) => (c, payload),
         super::edit_ops::CellClip::Elements => {
             // Whole elements on the clipboard: new elements in the target's scene (04 §13.16).
             let scene = match &p.element_id {
@@ -1646,19 +1678,37 @@ pub(crate) fn cell_clipboard_apply(cx: &mut Cx, p: ClipboardApplyParams) -> Resu
     budget.spend(clip.len())?;
     let mut changes = Changes::default();
     let mut out = Vec::new();
-    let mut created = Vec::new();
+    let mut transfers: BTreeMap<Id, super::transfer::Transfer> = BTreeMap::new();
     let mut width = 0usize;
+    let policy = super::transfer::Policy {
+        reuse: p.mode != PasteMode::NewDrawings,
+        fresh: p.mode == PasteMode::NewDrawings,
+        overwrite: opts.overwrite_drawings,
+    };
     for (s, tgt) in sources.iter().zip(targets.iter()) {
         applicable(&doc, tgt, "cell.clipboard.apply", LABELLED)?;
         let tt = *element(&doc, tgt)?.element_type();
-        let st = doc.element(s).map_or(tt, |e| *e.element_type());
+        // The source column may be gone (deleted, another project): its cells' drawings decide compatibility.
+        let st = match doc.element(s) {
+            Some(e) => *e.element_type(),
+            None => {
+                let bitmap = clip.iter().filter(|(e, _, _)| e == s).filter_map(|(_, _, d)| d.as_ref()).any(|d| {
+                    payload.drawing(&doc, d).is_some_and(|v| {
+                        v.get("nodes").and_then(Value::as_array).is_some_and(|n| {
+                            !n.is_empty() && n.iter().all(|x| x.get("kind").and_then(Value::as_str) == Some("bitmap"))
+                        })
+                    })
+                });
+                if bitmap { ElementType::Image } else { tt }
+            }
+        };
         if !compatible(st, tt) {
             return Err(type_mismatch(s, tgt, st, tt));
         }
         let tbank = bank_of_element(&doc, tgt)?;
-        let sbank = doc.element(s).and_then(|e| e.drawing_bank_id().clone()).unwrap_or_else(|| tbank.clone());
-        let mut mapper =
-            Mapper::new(&doc, &sbank, tbank.clone(), p.mode == PasteMode::NewDrawings, opts.overwrite_drawings);
+        let transfer = transfers.entry(tbank.clone()).or_insert_with(|| {
+            super::transfer::Transfer::new(&doc, tbank.clone(), super::transfer::Naming::NextNumeric)
+        });
         let mut col = Column::read(&doc, tgt, &mut budget)?;
         let cells: Vec<&(Id, usize, Option<Id>)> = clip.iter().filter(|(e, _, _)| e == s).collect();
         let w = cells.iter().map(|(_, k, _)| k + 1).max().unwrap_or(0);
@@ -1666,14 +1716,7 @@ pub(crate) fn cell_clipboard_apply(cx: &mut Cx, p: ClipboardApplyParams) -> Resu
         let mut values = vec![None; w];
         for (_, k, d) in cells {
             if let Some(d) = d {
-                if doc.drawing(d).is_none() {
-                    return Err(err(
-                        "cell.clipboardEmpty",
-                        "a copied drawing no longer exists",
-                        json!({ "drawingId": d.as_str() }),
-                    ));
-                }
-                let m = mapper.map(cx, &mut changes, d)?;
+                let m = transfer.place(cx, &doc, &payload, &mut changes, d, policy)?;
                 values[*k] = Some(col.intern(&m));
             }
         }
@@ -1693,10 +1736,27 @@ pub(crate) fn cell_clipboard_apply(cx: &mut Cx, p: ClipboardApplyParams) -> Resu
             x::overwrite(&col.frames, t.from, &values)
         };
         write_column(&col, &after, &mut changes, &mut out)?;
-        created.extend(mapper.created);
+        // Pasted cells carry their notes and overwrite the destination's in the pasted range (SI-093).
+        let carried: Vec<(usize, String)> = payload
+            .notes
+            .get(s.as_str())
+            .into_iter()
+            .flatten()
+            .filter_map(|(k, text)| k.parse::<usize>().ok().map(|k| (t.from + k, text.clone())))
+            .collect();
+        let edit = if opts.exposure {
+            NoteEdit { map: x::insert_map(t.from, w), set: carried, ..NoteEdit::none() }
+        } else {
+            NoteEdit { clear_new: vec![(t.from, t.from + w.max(1) - 1)], set: carried, ..NoteEdit::none() }
+        };
+        write_notes(&doc, tgt, &edit, &mut changes, &mut out)?;
     }
+    let created: Vec<String> = transfers.values().flat_map(|t| t.created.clone()).collect();
     changes.stage(cx)?;
     emit_cells(cx, &out)?;
+    for tr in transfers.values() {
+        super::timing::emit_bank(cx, &doc, &tr.bank, &tr.created, "created");
+    }
     Ok(ClipboardApplyResult {
         element_ids: targets.iter().map(|e| e.as_str().to_owned()).collect(),
         from: as_u32(t.from),

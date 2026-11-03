@@ -248,6 +248,7 @@ pub fn insert<D: Clone + PartialEq>(frames: &[Option<D>], at: usize, values: &[O
     let i = at.saturating_sub(1);
     if i > out.len() {
         if values.iter().all(Option::is_none) {
+            trim(&mut out);
             return out;
         }
         out.resize(i, None);
@@ -399,10 +400,18 @@ pub fn columnate<D: Clone>(
             Columnate { sequence, total_frames, loops }
         }
         Some(t) => {
+            // Total frames take precedence over `exposeLast` (SI-095): loops = ceil(frames ÷ frames-per-loop); the
+            // sequence is generated far enough to reach the requested count before the last loop is truncated (a
+            // short final hold must not leave a shortfall), so `exposeLast` applies only when the requested count
+            // ends exactly where the untruncated cycle ends. A single pass (`none`) is never extended: its callers
+            // refuse a larger count.
             let per_loop = (unit.len() * each).max(1);
             let k = if mode == LoopMode::None { 1 } else { t.div_ceil(per_loop).max(1) };
+            let reach = |s: &[(D, usize)]| s.iter().map(|(_, n)| n).sum::<usize>();
             let mut sequence = full(k);
-            // Truncate (or, for a single pass, never extend) to the requested frame count.
+            if mode != LoopMode::None && reach(&sequence) < t {
+                sequence = full(k + 1);
+            }
             let mut left = t;
             let mut out = Vec::new();
             for (d, n) in sequence.drain(..) {
@@ -589,4 +598,104 @@ pub fn unique_names(base: &str, taken: &dyn Fn(&str) -> bool, count: usize, skip
         k += 1;
     }
     out
+}
+
+/// One step of a cell movement: cells inserted before a frame, or a frame range removed.
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub enum Step {
+    /// `k` cells inserted before frame `at`: frames `at…` move `k` later.
+    Insert {
+        /// First frame that moves.
+        at: usize,
+        /// How many cells are inserted.
+        k: usize,
+    },
+    /// Frames `from…to` removed: they vanish and the following frames move earlier.
+    Remove {
+        /// First removed frame.
+        from: usize,
+        /// Last removed frame.
+        to: usize,
+    },
+}
+
+/// How an exposure edit moves the cells of a column (04 §7.2, §13: frame-keyed cell properties such as notes follow
+/// their cells): steps applied in order to an old frame give its new frame, or `None` when the cell is removed.
+#[derive(Debug, Clone, Default, PartialEq, Eq)]
+pub struct CellMap(pub Vec<Step>);
+
+impl CellMap {
+    /// The new frame of an old frame (`None`: the cell was removed).
+    #[must_use]
+    pub fn apply(&self, frame: usize) -> Option<usize> {
+        let mut f = frame;
+        for s in &self.0 {
+            match *s {
+                Step::Insert { at, k } if f >= at => f = f.checked_add(k)?,
+                Step::Remove { from, to } if f >= from && f <= to => return None,
+                Step::Remove { from, to } if f > to => f -= to - from + 1,
+                _ => {}
+            }
+        }
+        Some(f)
+    }
+
+    /// Appends the steps of a following edit.
+    pub fn then(&mut self, other: CellMap) {
+        self.0.extend(other.0);
+    }
+
+    /// Whether no cell moves.
+    #[must_use]
+    pub fn is_identity(&self) -> bool {
+        self.0.iter().all(|s| matches!(s, Step::Insert { k: 0, .. }))
+    }
+}
+
+/// The cell movement of [`add_exposure`]: `n` copies after the end of each intersecting run (back to front).
+#[must_use]
+pub fn add_exposure_map<D: Clone + PartialEq>(frames: &[Option<D>], from: usize, to: usize, n: usize) -> CellMap {
+    CellMap(intersecting(frames, from, to).into_iter().rev().map(|r| Step::Insert { at: r.to() + 1, k: n }).collect())
+}
+
+/// The cell movement of [`remove_exposure`]: the last `min(n, len)` cells of each intersecting run removed.
+#[must_use]
+pub fn remove_exposure_map<D: Clone + PartialEq>(frames: &[Option<D>], from: usize, to: usize, n: usize) -> CellMap {
+    CellMap(
+        intersecting(frames, from, to)
+            .into_iter()
+            .rev()
+            .map(|r| Step::Remove { from: r.to() + 1 - n.min(r.len), to: r.to() })
+            .collect(),
+    )
+}
+
+/// The cell movement of [`set_exposure`]: an exposure re-timed to `len` keeps its first cells; a longer one gains
+/// cells after its end, a shorter one loses its tail (blank runs keep their length).
+#[must_use]
+pub fn set_exposure_map<D: Clone + PartialEq>(frames: &[Option<D>], from: usize, to: usize, len: usize) -> CellMap {
+    let mut steps = Vec::new();
+    for r in intersecting(frames, from, to).into_iter().rev() {
+        if r.value.is_none() || r.len == len {
+            continue;
+        }
+        if len > r.len {
+            steps.push(Step::Insert { at: r.to() + 1, k: len - r.len });
+        } else {
+            steps.push(Step::Remove { from: r.from + len, to: r.to() });
+        }
+    }
+    CellMap(steps)
+}
+
+/// The cell movement of inserting `k` cells before frame `at`.
+#[must_use]
+pub fn insert_map(at: usize, k: usize) -> CellMap {
+    CellMap(vec![Step::Insert { at, k }])
+}
+
+/// The cell movement of removing frames `from…to`.
+#[must_use]
+pub fn remove_map(from: usize, to: usize) -> CellMap {
+    CellMap(vec![Step::Remove { from, to }])
 }
