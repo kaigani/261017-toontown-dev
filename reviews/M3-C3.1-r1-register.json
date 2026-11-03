@@ -2479,7 +2479,7 @@
         "C31-R1-05"
       ],
       "reproduction": [
-        "cargo test -p tt-executor --locked -j 4 --test c31_r1_contract copied_cells_keep_notes; cargo test -p tt-executor --locked -j 4 --test c31_r1_contract inserted_cells_shift_existing_notes"
+        "cargo test -p tt-executor --locked -j 4 --test c31_r1_contract copied_cells_keep_notes; cargo test -p tt-executor --locked -j 4 --test c31_r1_contract inserted_cells_shift_existing_notes; cargo test -p tt-executor --locked -j 4 --test c31_r1_notes"
       ]
     },
     {
@@ -4150,7 +4150,7 @@
       ],
       "reproduction": [
         "cargo test -p tt-executor --locked -j 4 --test c31_r1_contract clipboard_",
-        "cargo test -p tt-executor --locked -j 4 --test c31_r1_contract copied_cells_keep_notes; cargo test -p tt-executor --locked -j 4 --test c31_r1_contract inserted_cells_shift_existing_notes",
+        "cargo test -p tt-executor --locked -j 4 --test c31_r1_contract copied_cells_keep_notes; cargo test -p tt-executor --locked -j 4 --test c31_r1_contract inserted_cells_shift_existing_notes; cargo test -p tt-executor --locked -j 4 --test c31_r1_notes",
         "cargo test -p tt-executor --locked -j 4 --test c31_r1_contract generic_paste_bridge_overwrites_opaque_drawing_properties"
       ]
     },
@@ -4170,7 +4170,7 @@
       ],
       "reproduction": [
         "cargo test -p tt-executor --locked -j 4 --test c31_r1_contract clipboard_",
-        "cargo test -p tt-executor --locked -j 4 --test c31_r1_contract copied_cells_keep_notes; cargo test -p tt-executor --locked -j 4 --test c31_r1_contract inserted_cells_shift_existing_notes",
+        "cargo test -p tt-executor --locked -j 4 --test c31_r1_contract copied_cells_keep_notes; cargo test -p tt-executor --locked -j 4 --test c31_r1_contract inserted_cells_shift_existing_notes; cargo test -p tt-executor --locked -j 4 --test c31_r1_notes",
         "cargo test -p tt-executor --locked -j 4 --test c31_r1_contract generic_paste_bridge_overwrites_opaque_drawing_properties"
       ]
     },
@@ -4190,7 +4190,7 @@
       ],
       "reproduction": [
         "cargo test -p tt-executor --locked -j 4 --test c31_r1_contract clipboard_",
-        "cargo test -p tt-executor --locked -j 4 --test c31_r1_contract copied_cells_keep_notes; cargo test -p tt-executor --locked -j 4 --test c31_r1_contract inserted_cells_shift_existing_notes",
+        "cargo test -p tt-executor --locked -j 4 --test c31_r1_contract copied_cells_keep_notes; cargo test -p tt-executor --locked -j 4 --test c31_r1_contract inserted_cells_shift_existing_notes; cargo test -p tt-executor --locked -j 4 --test c31_r1_notes",
         "cargo test -p tt-executor --locked -j 4 --test c31_r1_contract generic_paste_bridge_overwrites_opaque_drawing_properties"
       ]
     },
@@ -4210,7 +4210,7 @@
       ],
       "reproduction": [
         "cargo test -p tt-executor --locked -j 4 --test c31_r1_contract clipboard_",
-        "cargo test -p tt-executor --locked -j 4 --test c31_r1_contract copied_cells_keep_notes; cargo test -p tt-executor --locked -j 4 --test c31_r1_contract inserted_cells_shift_existing_notes",
+        "cargo test -p tt-executor --locked -j 4 --test c31_r1_contract copied_cells_keep_notes; cargo test -p tt-executor --locked -j 4 --test c31_r1_contract inserted_cells_shift_existing_notes; cargo test -p tt-executor --locked -j 4 --test c31_r1_notes",
         "cargo test -p tt-executor --locked -j 4 --test c31_r1_contract generic_paste_bridge_overwrites_opaque_drawing_properties"
       ]
     },
@@ -4230,7 +4230,7 @@
       ],
       "reproduction": [
         "cargo test -p tt-executor --locked -j 4 --test c31_r1_contract clipboard_",
-        "cargo test -p tt-executor --locked -j 4 --test c31_r1_contract copied_cells_keep_notes; cargo test -p tt-executor --locked -j 4 --test c31_r1_contract inserted_cells_shift_existing_notes",
+        "cargo test -p tt-executor --locked -j 4 --test c31_r1_contract copied_cells_keep_notes; cargo test -p tt-executor --locked -j 4 --test c31_r1_contract inserted_cells_shift_existing_notes; cargo test -p tt-executor --locked -j 4 --test c31_r1_notes",
         "cargo test -p tt-executor --locked -j 4 --test c31_r1_contract generic_paste_bridge_overwrites_opaque_drawing_properties"
       ]
     },
@@ -4250,7 +4250,7 @@
       ],
       "reproduction": [
         "cargo test -p tt-executor --locked -j 4 --test c31_r1_contract clipboard_",
-        "cargo test -p tt-executor --locked -j 4 --test c31_r1_contract copied_cells_keep_notes; cargo test -p tt-executor --locked -j 4 --test c31_r1_contract inserted_cells_shift_existing_notes",
+        "cargo test -p tt-executor --locked -j 4 --test c31_r1_contract copied_cells_keep_notes; cargo test -p tt-executor --locked -j 4 --test c31_r1_contract inserted_cells_shift_existing_notes; cargo test -p tt-executor --locked -j 4 --test c31_r1_notes",
         "cargo test -p tt-executor --locked -j 4 --test c31_r1_contract generic_paste_bridge_overwrites_opaque_drawing_properties"
       ]
     },
@@ -6221,7 +6221,7 @@
         "C31-R1-05"
       ],
       "reproduction": [
-        "cargo test -p tt-executor --locked -j 4 --test c31_r1_contract copied_cells_keep_notes; cargo test -p tt-executor --locked -j 4 --test c31_r1_contract inserted_cells_shift_existing_notes"
+        "cargo test -p tt-executor --locked -j 4 --test c31_r1_contract copied_cells_keep_notes; cargo test -p tt-executor --locked -j 4 --test c31_r1_contract inserted_cells_shift_existing_notes; cargo test -p tt-executor --locked -j 4 --test c31_r1_notes"
       ]
     },
     {
@@ -6237,7 +6237,7 @@
         "C31-R1-05"
       ],
       "reproduction": [
-        "cargo test -p tt-executor --locked -j 4 --test c31_r1_contract copied_cells_keep_notes; cargo test -p tt-executor --locked -j 4 --test c31_r1_contract inserted_cells_shift_existing_notes"
+        "cargo test -p tt-executor --locked -j 4 --test c31_r1_contract copied_cells_keep_notes; cargo test -p tt-executor --locked -j 4 --test c31_r1_contract inserted_cells_shift_existing_notes; cargo test -p tt-executor --locked -j 4 --test c31_r1_notes"
       ]
     },
     {
@@ -6253,7 +6253,7 @@
         "C31-R1-05"
       ],
       "reproduction": [
-        "cargo test -p tt-executor --locked -j 4 --test c31_r1_contract copied_cells_keep_notes; cargo test -p tt-executor --locked -j 4 --test c31_r1_contract inserted_cells_shift_existing_notes"
+        "cargo test -p tt-executor --locked -j 4 --test c31_r1_contract copied_cells_keep_notes; cargo test -p tt-executor --locked -j 4 --test c31_r1_contract inserted_cells_shift_existing_notes; cargo test -p tt-executor --locked -j 4 --test c31_r1_notes"
       ]
     },
     {
@@ -6285,7 +6285,7 @@
         "C31-R1-05"
       ],
       "reproduction": [
-        "cargo test -p tt-executor --locked -j 4 --test c31_r1_contract copied_cells_keep_notes; cargo test -p tt-executor --locked -j 4 --test c31_r1_contract inserted_cells_shift_existing_notes"
+        "cargo test -p tt-executor --locked -j 4 --test c31_r1_contract copied_cells_keep_notes; cargo test -p tt-executor --locked -j 4 --test c31_r1_contract inserted_cells_shift_existing_notes; cargo test -p tt-executor --locked -j 4 --test c31_r1_notes"
       ]
     },
     {
@@ -6301,7 +6301,7 @@
         "C31-R1-05"
       ],
       "reproduction": [
-        "cargo test -p tt-executor --locked -j 4 --test c31_r1_contract copied_cells_keep_notes; cargo test -p tt-executor --locked -j 4 --test c31_r1_contract inserted_cells_shift_existing_notes"
+        "cargo test -p tt-executor --locked -j 4 --test c31_r1_contract copied_cells_keep_notes; cargo test -p tt-executor --locked -j 4 --test c31_r1_contract inserted_cells_shift_existing_notes; cargo test -p tt-executor --locked -j 4 --test c31_r1_notes"
       ]
     },
     {
@@ -6318,7 +6318,7 @@
         "C31-R1-03"
       ],
       "reproduction": [
-        "cargo test -p tt-executor --locked -j 4 --test c31_r1_contract copied_cells_keep_notes; cargo test -p tt-executor --locked -j 4 --test c31_r1_contract inserted_cells_shift_existing_notes",
+        "cargo test -p tt-executor --locked -j 4 --test c31_r1_contract copied_cells_keep_notes; cargo test -p tt-executor --locked -j 4 --test c31_r1_contract inserted_cells_shift_existing_notes; cargo test -p tt-executor --locked -j 4 --test c31_r1_notes",
         "cargo test -p tt-executor --locked -j 4 --test c31_r1_contract delegated_; cargo test -p tt-executor --locked -j 4 --test c31_r1_contract patch_unlock_ops_matches_command; cargo test -p tt-executor --locked -j 4 --test c31_r1_contract automatic_position_changes_emit_selection_event; cargo test -p tt-executor --locked -j 4 --test c31_r1_contract multi_bank_named_insert_emits_only_each_banks_created_ids; cargo test -p tt-executor --locked -j 4 --test c31_r1_contract sheet_and_label_creation_emit_drawing_bank_events"
       ]
     },
@@ -6335,7 +6335,7 @@
         "C31-R1-05"
       ],
       "reproduction": [
-        "cargo test -p tt-executor --locked -j 4 --test c31_r1_contract copied_cells_keep_notes; cargo test -p tt-executor --locked -j 4 --test c31_r1_contract inserted_cells_shift_existing_notes"
+        "cargo test -p tt-executor --locked -j 4 --test c31_r1_contract copied_cells_keep_notes; cargo test -p tt-executor --locked -j 4 --test c31_r1_contract inserted_cells_shift_existing_notes; cargo test -p tt-executor --locked -j 4 --test c31_r1_notes"
       ]
     },
     {
@@ -6352,7 +6352,7 @@
         "C31-R1-07"
       ],
       "reproduction": [
-        "cargo test -p tt-executor --locked -j 4 --test c31_r1_contract copied_cells_keep_notes; cargo test -p tt-executor --locked -j 4 --test c31_r1_contract inserted_cells_shift_existing_notes",
+        "cargo test -p tt-executor --locked -j 4 --test c31_r1_contract copied_cells_keep_notes; cargo test -p tt-executor --locked -j 4 --test c31_r1_contract inserted_cells_shift_existing_notes; cargo test -p tt-executor --locked -j 4 --test c31_r1_notes",
         "cargo test -p tt-executor --locked -j 4 --test c31_r1_contract multi_column_overlap_copies_original_source_values"
       ]
     },
@@ -6371,7 +6371,7 @@
       ],
       "reproduction": [
         "cargo test -p tt-executor --locked -j 4 --test c31_r1_contract clipboard_",
-        "cargo test -p tt-executor --locked -j 4 --test c31_r1_contract copied_cells_keep_notes; cargo test -p tt-executor --locked -j 4 --test c31_r1_contract inserted_cells_shift_existing_notes"
+        "cargo test -p tt-executor --locked -j 4 --test c31_r1_contract copied_cells_keep_notes; cargo test -p tt-executor --locked -j 4 --test c31_r1_contract inserted_cells_shift_existing_notes; cargo test -p tt-executor --locked -j 4 --test c31_r1_notes"
       ]
     },
     {
@@ -6390,7 +6390,7 @@
       ],
       "reproduction": [
         "cargo test -p tt-executor --locked -j 4 --test c31_r1_contract clipboard_",
-        "cargo test -p tt-executor --locked -j 4 --test c31_r1_contract copied_cells_keep_notes; cargo test -p tt-executor --locked -j 4 --test c31_r1_contract inserted_cells_shift_existing_notes",
+        "cargo test -p tt-executor --locked -j 4 --test c31_r1_contract copied_cells_keep_notes; cargo test -p tt-executor --locked -j 4 --test c31_r1_contract inserted_cells_shift_existing_notes; cargo test -p tt-executor --locked -j 4 --test c31_r1_notes",
         "cargo test -p tt-executor --locked -j 4 --test c31_r1_contract generic_paste_bridge_overwrites_opaque_drawing_properties"
       ]
     },
@@ -6436,7 +6436,7 @@
         "C31-R1-15"
       ],
       "reproduction": [
-        "cargo test -p tt-executor --locked -j 4 --test c31_r1_contract copied_cells_keep_notes; cargo test -p tt-executor --locked -j 4 --test c31_r1_contract inserted_cells_shift_existing_notes",
+        "cargo test -p tt-executor --locked -j 4 --test c31_r1_contract copied_cells_keep_notes; cargo test -p tt-executor --locked -j 4 --test c31_r1_contract inserted_cells_shift_existing_notes; cargo test -p tt-executor --locked -j 4 --test c31_r1_notes",
         "cargo test -p tt-executor --locked -j 4 --test c31_r1_contract cycle_selection_applies_to_every_selected_column"
       ]
     },
@@ -6450,10 +6450,12 @@
       "owner": "M3 C3.1",
       "basis": "Implemented normal path, but independent reproductions fail; see findings. Other aspects remain covered by the common matrix.",
       "findings": [
-        "C31-R1-01"
+        "C31-R1-01",
+        "C31-R1-05"
       ],
       "reproduction": [
-        "cargo test -p tt-anim --locked -j 4 --test c31_r1_oracle columnate_total_frames_short_last_reaches_requested_length"
+        "cargo test -p tt-anim --locked -j 4 --test c31_r1_oracle columnate_total_frames_short_last_reaches_requested_length",
+        "cargo test -p tt-executor --locked -j 4 --test c31_r1_contract copied_cells_keep_notes; cargo test -p tt-executor --locked -j 4 --test c31_r1_contract inserted_cells_shift_existing_notes; cargo test -p tt-executor --locked -j 4 --test c31_r1_notes"
       ]
     },
     {
@@ -8151,7 +8153,7 @@
         "C31-R1-05"
       ],
       "reproduction": [
-        "cargo test -p tt-executor --locked -j 4 --test c31_r1_contract copied_cells_keep_notes; cargo test -p tt-executor --locked -j 4 --test c31_r1_contract inserted_cells_shift_existing_notes"
+        "cargo test -p tt-executor --locked -j 4 --test c31_r1_contract copied_cells_keep_notes; cargo test -p tt-executor --locked -j 4 --test c31_r1_contract inserted_cells_shift_existing_notes; cargo test -p tt-executor --locked -j 4 --test c31_r1_notes"
       ]
     },
     {
@@ -8985,7 +8987,7 @@
         "C31-R1-05"
       ],
       "reproduction": [
-        "cargo test -p tt-executor --locked -j 4 --test c31_r1_contract copied_cells_keep_notes; cargo test -p tt-executor --locked -j 4 --test c31_r1_contract inserted_cells_shift_existing_notes"
+        "cargo test -p tt-executor --locked -j 4 --test c31_r1_contract copied_cells_keep_notes; cargo test -p tt-executor --locked -j 4 --test c31_r1_contract inserted_cells_shift_existing_notes; cargo test -p tt-executor --locked -j 4 --test c31_r1_notes"
       ],
       "basis": "Declaration/schema/example and handler inspection; c31_r1_mutations (44 action/toggle examples), c31 builder suites and candidate never-block/example-results CI.",
       "deferredAspects": [
@@ -9001,7 +9003,7 @@
         "C31-R1-05"
       ],
       "reproduction": [
-        "cargo test -p tt-executor --locked -j 4 --test c31_r1_contract copied_cells_keep_notes; cargo test -p tt-executor --locked -j 4 --test c31_r1_contract inserted_cells_shift_existing_notes"
+        "cargo test -p tt-executor --locked -j 4 --test c31_r1_contract copied_cells_keep_notes; cargo test -p tt-executor --locked -j 4 --test c31_r1_contract inserted_cells_shift_existing_notes; cargo test -p tt-executor --locked -j 4 --test c31_r1_notes"
       ],
       "basis": "Declaration/schema/example and handler inspection; c31_r1_mutations (44 action/toggle examples), c31 builder suites and candidate never-block/example-results CI.",
       "deferredAspects": [
@@ -9020,7 +9022,7 @@
       ],
       "reproduction": [
         "cargo test -p tt-executor --locked -j 4 --test c31_r1_contract clipboard_",
-        "cargo test -p tt-executor --locked -j 4 --test c31_r1_contract copied_cells_keep_notes; cargo test -p tt-executor --locked -j 4 --test c31_r1_contract inserted_cells_shift_existing_notes",
+        "cargo test -p tt-executor --locked -j 4 --test c31_r1_contract copied_cells_keep_notes; cargo test -p tt-executor --locked -j 4 --test c31_r1_contract inserted_cells_shift_existing_notes; cargo test -p tt-executor --locked -j 4 --test c31_r1_notes",
         "cargo test -p tt-executor --locked -j 4 --test c31_r1_contract generic_paste_bridge_overwrites_opaque_drawing_properties"
       ],
       "basis": "Declaration/schema/example and handler inspection; c31_r1_mutations (44 action/toggle examples), c31 builder suites and candidate never-block/example-results CI.",
@@ -9039,7 +9041,7 @@
       ],
       "reproduction": [
         "cargo test -p tt-executor --locked -j 4 --test c31_r1_contract clipboard_",
-        "cargo test -p tt-executor --locked -j 4 --test c31_r1_contract copied_cells_keep_notes; cargo test -p tt-executor --locked -j 4 --test c31_r1_contract inserted_cells_shift_existing_notes"
+        "cargo test -p tt-executor --locked -j 4 --test c31_r1_contract copied_cells_keep_notes; cargo test -p tt-executor --locked -j 4 --test c31_r1_contract inserted_cells_shift_existing_notes; cargo test -p tt-executor --locked -j 4 --test c31_r1_notes"
       ],
       "basis": "Declaration/schema/example and handler inspection; c31_r1_mutations (44 action/toggle examples), c31 builder suites and candidate never-block/example-results CI.",
       "deferredAspects": [
@@ -9052,10 +9054,12 @@
       "status": "divergent",
       "owner": "M3 C3.1",
       "findings": [
-        "C31-R1-01"
+        "C31-R1-01",
+        "C31-R1-05"
       ],
       "reproduction": [
-        "cargo test -p tt-anim --locked -j 4 --test c31_r1_oracle columnate_total_frames_short_last_reaches_requested_length"
+        "cargo test -p tt-anim --locked -j 4 --test c31_r1_oracle columnate_total_frames_short_last_reaches_requested_length",
+        "cargo test -p tt-executor --locked -j 4 --test c31_r1_contract copied_cells_keep_notes; cargo test -p tt-executor --locked -j 4 --test c31_r1_contract inserted_cells_shift_existing_notes; cargo test -p tt-executor --locked -j 4 --test c31_r1_notes"
       ],
       "basis": "Declaration/schema/example and handler inspection; c31_r1_mutations (44 action/toggle examples), c31 builder suites and candidate never-block/example-results CI.",
       "deferredAspects": [
@@ -9072,7 +9076,7 @@
         "C31-R1-15"
       ],
       "reproduction": [
-        "cargo test -p tt-executor --locked -j 4 --test c31_r1_contract copied_cells_keep_notes; cargo test -p tt-executor --locked -j 4 --test c31_r1_contract inserted_cells_shift_existing_notes",
+        "cargo test -p tt-executor --locked -j 4 --test c31_r1_contract copied_cells_keep_notes; cargo test -p tt-executor --locked -j 4 --test c31_r1_contract inserted_cells_shift_existing_notes; cargo test -p tt-executor --locked -j 4 --test c31_r1_notes",
         "cargo test -p tt-executor --locked -j 4 --test c31_r1_contract cycle_selection_applies_to_every_selected_column"
       ],
       "basis": "Declaration/schema/example and handler inspection; c31_r1_mutations (44 action/toggle examples), c31 builder suites and candidate never-block/example-results CI.",
@@ -9101,7 +9105,7 @@
         "C31-R1-05"
       ],
       "reproduction": [
-        "cargo test -p tt-executor --locked -j 4 --test c31_r1_contract copied_cells_keep_notes; cargo test -p tt-executor --locked -j 4 --test c31_r1_contract inserted_cells_shift_existing_notes"
+        "cargo test -p tt-executor --locked -j 4 --test c31_r1_contract copied_cells_keep_notes; cargo test -p tt-executor --locked -j 4 --test c31_r1_contract inserted_cells_shift_existing_notes; cargo test -p tt-executor --locked -j 4 --test c31_r1_notes"
       ],
       "basis": "Declaration/schema/example and handler inspection; c31_r1_mutations (44 action/toggle examples), c31 builder suites and candidate never-block/example-results CI.",
       "deferredAspects": [
@@ -9117,7 +9121,7 @@
         "C31-R1-05"
       ],
       "reproduction": [
-        "cargo test -p tt-executor --locked -j 4 --test c31_r1_contract copied_cells_keep_notes; cargo test -p tt-executor --locked -j 4 --test c31_r1_contract inserted_cells_shift_existing_notes"
+        "cargo test -p tt-executor --locked -j 4 --test c31_r1_contract copied_cells_keep_notes; cargo test -p tt-executor --locked -j 4 --test c31_r1_contract inserted_cells_shift_existing_notes; cargo test -p tt-executor --locked -j 4 --test c31_r1_notes"
       ],
       "basis": "Declaration/schema/example and handler inspection; c31_r1_mutations (44 action/toggle examples), c31 builder suites and candidate never-block/example-results CI.",
       "deferredAspects": [
@@ -9133,7 +9137,7 @@
         "C31-R1-05"
       ],
       "reproduction": [
-        "cargo test -p tt-executor --locked -j 4 --test c31_r1_contract copied_cells_keep_notes; cargo test -p tt-executor --locked -j 4 --test c31_r1_contract inserted_cells_shift_existing_notes"
+        "cargo test -p tt-executor --locked -j 4 --test c31_r1_contract copied_cells_keep_notes; cargo test -p tt-executor --locked -j 4 --test c31_r1_contract inserted_cells_shift_existing_notes; cargo test -p tt-executor --locked -j 4 --test c31_r1_notes"
       ],
       "basis": "Declaration/schema/example and handler inspection; c31_r1_mutations (44 action/toggle examples), c31 builder suites and candidate never-block/example-results CI.",
       "deferredAspects": [
@@ -9206,7 +9210,7 @@
         "C31-R1-03"
       ],
       "reproduction": [
-        "cargo test -p tt-executor --locked -j 4 --test c31_r1_contract copied_cells_keep_notes; cargo test -p tt-executor --locked -j 4 --test c31_r1_contract inserted_cells_shift_existing_notes",
+        "cargo test -p tt-executor --locked -j 4 --test c31_r1_contract copied_cells_keep_notes; cargo test -p tt-executor --locked -j 4 --test c31_r1_contract inserted_cells_shift_existing_notes; cargo test -p tt-executor --locked -j 4 --test c31_r1_notes",
         "cargo test -p tt-executor --locked -j 4 --test c31_r1_contract delegated_; cargo test -p tt-executor --locked -j 4 --test c31_r1_contract patch_unlock_ops_matches_command; cargo test -p tt-executor --locked -j 4 --test c31_r1_contract automatic_position_changes_emit_selection_event; cargo test -p tt-executor --locked -j 4 --test c31_r1_contract multi_bank_named_insert_emits_only_each_banks_created_ids; cargo test -p tt-executor --locked -j 4 --test c31_r1_contract sheet_and_label_creation_emit_drawing_bank_events"
       ],
       "basis": "Declaration/schema/example and handler inspection; c31_r1_mutations (44 action/toggle examples), c31 builder suites and candidate never-block/example-results CI.",
@@ -9223,7 +9227,7 @@
         "C31-R1-05"
       ],
       "reproduction": [
-        "cargo test -p tt-executor --locked -j 4 --test c31_r1_contract copied_cells_keep_notes; cargo test -p tt-executor --locked -j 4 --test c31_r1_contract inserted_cells_shift_existing_notes"
+        "cargo test -p tt-executor --locked -j 4 --test c31_r1_contract copied_cells_keep_notes; cargo test -p tt-executor --locked -j 4 --test c31_r1_contract inserted_cells_shift_existing_notes; cargo test -p tt-executor --locked -j 4 --test c31_r1_notes"
       ],
       "basis": "Declaration/schema/example and handler inspection; c31_r1_mutations (44 action/toggle examples), c31 builder suites and candidate never-block/example-results CI.",
       "deferredAspects": [
@@ -9240,7 +9244,7 @@
         "C31-R1-07"
       ],
       "reproduction": [
-        "cargo test -p tt-executor --locked -j 4 --test c31_r1_contract copied_cells_keep_notes; cargo test -p tt-executor --locked -j 4 --test c31_r1_contract inserted_cells_shift_existing_notes",
+        "cargo test -p tt-executor --locked -j 4 --test c31_r1_contract copied_cells_keep_notes; cargo test -p tt-executor --locked -j 4 --test c31_r1_contract inserted_cells_shift_existing_notes; cargo test -p tt-executor --locked -j 4 --test c31_r1_notes",
         "cargo test -p tt-executor --locked -j 4 --test c31_r1_contract multi_column_overlap_copies_original_source_values"
       ],
       "basis": "Declaration/schema/example and handler inspection; c31_r1_mutations (44 action/toggle examples), c31 builder suites and candidate never-block/example-results CI.",
