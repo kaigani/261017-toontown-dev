@@ -1,0 +1,17 @@
+{"argv": ["target\\debug\\deps\\c24_r3_domains-c34c7d24d4fb2eea.exe", "vectorize_comparison_rejects_a_wrong_boundary_with_the_right_area_and_probe", "--exact", "--nocapture"], "cwd": "C:\\Users\\kaiga\\work\\review\\m2-c24-r3", "env": {}, "startedAt": "2026-11-03T00:28:57.432131+00:00"}
+
+running 1 test
+wrong-mask-boundary mutant comparison: Ok(())
+
+thread 'vectorize_comparison_rejects_a_wrong_boundary_with_the_right_area_and_probe' (19952) panicked at crates\executor\tests\c24_r3_domains.rs:1980:5:
+the independent comparison must reject this non-corresponding paper boundary
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+test vectorize_comparison_rejects_a_wrong_boundary_with_the_right_area_and_probe ... FAILED
+
+failures:
+
+failures:
+    vectorize_comparison_rejects_a_wrong_boundary_with_the_right_area_and_probe
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 10 filtered out; finished in 0.08s
+

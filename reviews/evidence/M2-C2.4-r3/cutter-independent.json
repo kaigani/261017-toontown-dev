@@ -1,0 +1,38 @@
+{
+  "intersections": [
+    [
+      "160/9",
+      "320/9"
+    ],
+    [
+      "560/13",
+      "420/13"
+    ],
+    [
+      "40",
+      "30"
+    ]
+  ],
+  "before": {
+    "exactArea": "1400/9",
+    "snappedAreas": [
+      "2485/16"
+    ],
+    "deltaDu": 0.007764124921872504,
+    "perimeterDu": 132.35179177408628,
+    "boundDu2": 1.0277766898750709,
+    "signedSnappingErrorDu2": -0.24305555555555555
+  },
+  "after": {
+    "exactArea": "1400/9",
+    "snappedAreas": [
+      "6015/64",
+      "3945/64"
+    ],
+    "deltaDu": 0.007764124921872504,
+    "perimeterDu": 140.044099466394,
+    "boundDu2": 1.0877418542788386,
+    "signedSnappingErrorDu2": 0.06944444444444445
+  },
+  "areaChangeDu2": 0.3125
+}

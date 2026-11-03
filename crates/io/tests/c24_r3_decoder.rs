@@ -9,7 +9,9 @@ static GLOBAL: &StatsAlloc<System> = &INSTRUMENTED_SYSTEM;
 
 #[test]
 fn independent_corpus_and_seeded_mutations_stay_typed_and_bounded() {
-    let root = std::path::Path::new(env!("CARGO_MANIFEST_DIR")).join("../../tests/fixtures/vectorize/review-r1");
+    let root = std::env::var_os("TT_R3_CORPUS").map(std::path::PathBuf::from).unwrap_or_else(|| {
+        std::path::Path::new(env!("CARGO_MANIFEST_DIR")).join("../../tests/fixtures/vectorize/review-r1")
+    });
     let manifest: serde_json::Value =
         serde_json::from_slice(&std::fs::read(root.join("manifest.json")).unwrap()).unwrap();
     let files: Vec<_> =

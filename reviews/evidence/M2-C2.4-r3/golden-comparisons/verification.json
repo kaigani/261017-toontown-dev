@@ -1,0 +1,36 @@
+[
+  {
+    "name": "c21-determinism",
+    "receiptMatches": true,
+    "exit": 0,
+    "summary": "{\"pieces\": {\"added\": 0, \"removed\": 1, \"moved\": 45, \"resplit\": 0}, \"correspondingAnchorsMoved\": 82, \"maxAnchorDisplacementDu\": 0.39298975316045737, \"handleRowsChanged\": 44, \"leafChanges\": 2, \"rerouted\": 1}\n"
+  },
+  {
+    "name": "c22-determinism",
+    "receiptMatches": true,
+    "exit": 0,
+    "summary": "{\"pieces\": {\"added\": 4, \"removed\": 4, \"moved\": 0, \"resplit\": 0}, \"correspondingAnchorsMoved\": 22, \"maxAnchorDisplacementDu\": 0.006953215127509793, \"handleRowsChanged\": 34, \"leafChanges\": 16, \"rerouted\": 0}\n"
+  },
+  {
+    "name": "c24-symmetry",
+    "receiptMatches": true,
+    "exit": 0,
+    "summary": "{\"pieces\": {\"added\": 0, \"removed\": 0, \"moved\": 0, \"resplit\": 0}, \"correspondingAnchorsMoved\": 0, \"maxAnchorDisplacementDu\": 0.0, \"handleRowsChanged\": 0, \"leafChanges\": 2, \"rerouted\": 0}\n"
+  },
+  {
+    "name": "c24-symmetry-corpus",
+    "receiptMatches": true,
+    "exit": 0,
+    "summary": "{\"pieces\": {\"added\": 126, \"removed\": 126, \"moved\": 0, \"resplit\": 0}, \"correspondingAnchorsMoved\": 744, \"maxAnchorDisplacementDu\": 0.05170013269775943, \"handleRowsChanged\": 744, \"leafChanges\": 334, \"rerouted\": 0}\n"
+  },
+  {
+    "corpus": "6f72ee7",
+    "sha256": "fc3116b0a61936dbb16dcc786aca19313b4671183b8d5ccfdce3da5f05f96e36",
+    "matchesGolden": true
+  },
+  {
+    "corpus": "3c74c34",
+    "sha256": "fcaf9b702db54055f781e9385cdf4f753bba80f4a7ec9b7a76bf5f36882ad71b",
+    "matchesGolden": true
+  }
+]

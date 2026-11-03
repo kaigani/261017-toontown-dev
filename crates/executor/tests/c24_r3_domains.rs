@@ -1891,3 +1891,87 @@ fn flatten_keeps_a_pencil_piece_that_a_brush_only_partly_covers() {
     assert_eq!(after.zones[0].area, 687.5);
     assert_eq!(after.zones[0].colour, before.zones[0].colour);
 }
+
+// Copied verbatim from the builder vectorize semantic/exact comparison, 871e8bd.
+fn r3_shipped_vectorize_comparison(ls: Ls, mask: Vec<Vec<bool>>) -> Result<(), TestCaseError> {
+    let (wid, hgt) = (mask[0].len(), mask.len());
+    let comps = enclosed_paper(&mask);
+    prop_assert!(!ls.strokes.is_empty());
+    let outline: Vec<F2> =
+        ls.strokes.iter().flat_map(|s| s.outline.iter().flat_map(|c| route_oracle::flatten(c, true).0)).collect();
+    let (x0, y0, x1, y1) =
+        outline.iter().fold((f64::INFINITY, f64::INFINITY, f64::NEG_INFINITY, f64::NEG_INFINITY), |b, p| {
+            (b.0.min(p.0), b.1.min(p.1), b.2.max(p.0), b.3.max(p.1))
+        });
+    let (sx, sy) = ((x1 - x0) / wid as f64, (y1 - y0) / hgt as f64);
+    prop_assert!((sx - sy).abs() <= 0.02 * sx.max(sy), "pixel scale {} vs {}", sx, sy);
+    let px = sx.max(sy);
+    // Pixel (cx, cy) (row 0 at the top) covers [x0 + cx px, x0 + (cx + 1) px] × [y1 − (cy + 1) px, y1 − cy px]
+    // (y up), or with rows the other way: try both orientations and keep the one the frame fits.
+    prop_assert_eq!(ls.zones.len(), comps.len(), "zones {:?} for components {:?}", ls.zones, comps);
+    let inside = |z: &Zn, comp: &[(usize, usize)], flip: bool| {
+        comp.iter().any(|&(cx, cy)| {
+            let row = if flip { hgt - 1 - cy } else { cy };
+            let (ax, ay) = (x0 + cx as f64 * px, y0 + row as f64 * px);
+            z.interior.0 >= ax - px / 4.0
+                && z.interior.0 <= ax + px * 1.25
+                && z.interior.1 >= ay - px / 4.0
+                && z.interior.1 <= ay + px * 1.25
+        })
+    };
+    let pixel_perimeter = |comp: &[(usize, usize)]| {
+        let set: BTreeSet<(usize, usize)> = comp.iter().copied().collect();
+        comp.iter()
+            .map(|&(x, y)| {
+                [(x.wrapping_sub(1), y), (x + 1, y), (x, y.wrapping_sub(1)), (x, y + 1)]
+                    .iter()
+                    .filter(|n| !set.contains(n))
+                    .count()
+            })
+            .sum::<usize>() as f64
+    };
+    let fits = |flip: bool| {
+        let mut used = BTreeSet::new();
+        ls.zones.iter().all(|z| {
+            let m = (0..comps.len()).filter(|i| !used.contains(i)).find(|&i| {
+                inside(z, &comps[i], flip)
+                    && (z.area - comps[i].len() as f64 * px * px).abs() <= pixel_perimeter(&comps[i]) * px * px / 2.0
+            });
+            m.is_some_and(|i| used.insert(i))
+        })
+    };
+    prop_assert!(
+        fits(false) || fits(true),
+        "zones {:?} do not match the components {:?} (pixel {} du)",
+        ls.zones,
+        comps,
+        px
+    );
+    for z in &ls.zones {
+        prop_assert!(z.colour.is_none());
+    }
+    let map = SnapMap::build(inputs(&ls));
+    verify(&ls, &map, &map, &|_, _| None, "vectorized")?;
+    Ok(())
+}
+
+/// C24-R3-02 proving failure: correct count, probe, area and self-consistent IDs, wrong mask boundary.
+#[test]
+fn vectorize_comparison_rejects_a_wrong_boundary_with_the_right_area_and_probe() {
+    let h = fresh();
+    let c = json!(palette(&h)[0]);
+    let outer = rect(0.0, 0.0, 1200.0, 1200.0);
+    let inner = rect(240.0, 560.0, 960.0, 640.0);
+    let ring = vec![outer[0], outer[1], outer[2], outer[3], outer[0], inner[0], inner[3], inner[2], inner[1], inner[0]];
+    let (d, ids) = create(&h, vec![layer_json("r3_mutant", "brush", vec![brush("r3_ring", &[ring], &c)])]);
+    let mutant = layer(&h, &d, &ids[0]);
+    assert_eq!(mutant.zones.len(), 1);
+    assert_eq!(mutant.zones[0].area, 240.0 * 240.0);
+    let mut mask = vec![vec![true; 5]; 5];
+    mask[2][2] = false;
+    // The expected one-pixel hole is [480,720]?. This hole is [240,960]?[560,640]:
+    // equal area and centre, but it reaches a full pixel outside the expected boundary.
+    let result = r3_shipped_vectorize_comparison(mutant, mask);
+    println!("wrong-mask-boundary mutant comparison: {result:?}");
+    assert!(result.is_err(), "the independent comparison must reject this non-corresponding paper boundary");
+}

@@ -52,7 +52,7 @@ if __name__ == '__main__' and len(sys.argv) > 1:
         cargo('vector-4096', 'vector', ['c24_r3_properties'])
         cargo('noding-variants', 'vector', ['c24_r2_noding', 'c24_r3_noding'])
         cargo('cutter-regression', 'executor', ['c24_cutter_snapping'])
-        cargo('decode-30000', 'io', ['c24_r3_decoder'])
+        cargo('decode-30000', 'io', ['c24_r3_decoder'], env={'TT_R3_CORPUS': str(OUT / 'decoder-corpus')})
         run('headless-release-build', ['cargo', 'build', '--release', '-p', 'tt-headless', '--locked', '-j', '4'])
         run('e2-local-build', [sys.executable, 'scripts/e2-paint-by-id.py',
                              'target/release/toontown-headless.exe', str(OUT / 'e2-local-build')])
