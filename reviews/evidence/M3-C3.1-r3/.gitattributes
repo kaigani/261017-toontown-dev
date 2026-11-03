@@ -1,0 +1,4 @@
+# Raw receipts retain their original bytes across Windows and macOS checkouts.
+* -text
+*.md text eol=lf
+.gitattributes text eol=lf
