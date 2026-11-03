@@ -513,18 +513,30 @@ fn parse_runs(v: &Value) -> Result<(Vec<ExposureRun>, u64), RunsError> {
     Ok((runs, total))
 }
 
-/// Exposure runs expanded to one entry per frame; `None` unless [`parse_runs`] accepts them, so nothing larger than
-/// a scene is ever allocated.
-fn expand_runs(v: &Value) -> Option<Vec<Value>> {
+/// Exposure runs expanded to one entry per frame: an index into `cells`, the distinct cell values (a drawing ID or
+/// `null`) shared by every expansion of one comparison. `None` unless [`parse_runs`] accepts them, so nothing larger
+/// than a scene is ever allocated, and one frame costs four bytes rather than a string (M3 C3.1: a 100 000-frame
+/// column is diffed and patched several times per staged commit).
+fn expand_runs(v: &Value, cells: &mut Vec<Value>) -> Option<Vec<u32>> {
     let (runs, total) = parse_runs(v).ok()?;
     let mut out = Vec::with_capacity(usize::try_from(total).unwrap_or(0));
     for (d, c) in runs {
         let cell = d.map_or(Value::Null, |d| Value::String(d.as_str().to_owned()));
-        for _ in 0..c {
-            out.push(cell.clone());
-        }
+        let i = intern(cells, cell);
+        out.extend(std::iter::repeat_n(i, c as usize));
     }
     Some(out)
+}
+
+/// The index of a cell value in `cells`, adding it.
+fn intern(cells: &mut Vec<Value>, cell: Value) -> u32 {
+    match cells.iter().position(|c| *c == cell) {
+        Some(i) => u32::try_from(i).unwrap_or(u32::MAX),
+        None => {
+            cells.push(cell);
+            u32::try_from(cells.len() - 1).unwrap_or(u32::MAX)
+        }
+    }
 }
 
 fn limit_err(op: &PatchOp, msg: impl Into<String>) -> ModelError {
@@ -563,7 +575,7 @@ fn declared_frame_field(tokens: &[String]) -> Option<&'static str> {
 }
 
 /// Frames back to explicit runs (blanks kept, no canonicalisation: windows must invert exactly).
-fn frames_to_runs(frames: &[Value]) -> Value {
+fn frames_to_runs(frames: &[u32], cells: &[Value]) -> Value {
     let mut runs: Vec<Value> = Vec::new();
     let mut i = 0;
     while let Some(cell) = frames.get(i) {
@@ -571,7 +583,7 @@ fn frames_to_runs(frames: &[Value]) -> Value {
         while frames.get(i + n) == Some(cell) {
             n += 1;
         }
-        runs.push(json!([cell, n]));
+        runs.push(json!([cells.get(*cell as usize).cloned().unwrap_or(Value::Null), n]));
         i += n;
     }
     Value::Array(runs)
@@ -592,11 +604,13 @@ fn range_diff<'a, T: PartialEq + Clone>(a: &'a [T], b: &'a [T]) -> Option<(usize
 }
 
 fn exposure_patch(a: &Value, b: &Value, path: &str) -> Option<PatchOp> {
-    let mut fa = expand_runs(a)?;
-    let mut fb = expand_runs(b)?;
+    let mut cells = Vec::new();
+    let blank = intern(&mut cells, Value::Null);
+    let mut fa = expand_runs(a, &mut cells)?;
+    let mut fb = expand_runs(b, &mut cells)?;
     let n = fa.len().max(fb.len());
-    fa.resize(n, Value::Null);
-    fb.resize(n, Value::Null);
+    fa.resize(n, blank);
+    fb.resize(n, blank);
     let (p, old, new) = range_diff(&fa, &fb)?;
     let len = old.len().max(new.len()).max(1);
     Some(PatchOp {
@@ -604,8 +618,8 @@ fn exposure_patch(a: &Value, b: &Value, path: &str) -> Option<PatchOp> {
         from: None,
         path: path.to_owned(),
         range: Some(FrameRange { from: frame(p + 1), to: frame(p + len) }),
-        value: Some(frames_to_runs(new)),
-        old_value: Some(frames_to_runs(old)),
+        value: Some(frames_to_runs(new, &cells)),
+        old_value: Some(frames_to_runs(old, &cells)),
         elided: false,
     })
 }
@@ -1019,19 +1033,21 @@ fn apply_range(target: &mut Value, op: &PatchOp) -> Result<(), ModelError> {
                     format!("the exposure would cover {total} frames; at most {MAX_FRAMES} (10 §5)"),
                 ));
             }
-            let mut frames = expand_runs(target).ok_or_else(|| patch_err(op, "not exposure runs"))?;
-            let new = expand_runs(value).ok_or_else(|| patch_err(op, "value is not exposure runs"))?;
-            let old = expand_runs(old).ok_or_else(|| patch_err(op, "oldValue is not exposure runs"))?;
+            let mut cells = Vec::new();
+            let blank = intern(&mut cells, Value::Null);
+            let mut frames = expand_runs(target, &mut cells).ok_or_else(|| patch_err(op, "not exposure runs"))?;
+            let new = expand_runs(value, &mut cells).ok_or_else(|| patch_err(op, "value is not exposure runs"))?;
+            let old = expand_runs(old, &mut cells).ok_or_else(|| patch_err(op, "oldValue is not exposure runs"))?;
             // Frames past the end are blank (10 §4.7).
             if frames.len() < start + old.len() {
-                frames.resize(start + old.len(), Value::Null);
+                frames.resize(start + old.len(), blank);
             }
             if frames.get(start..start + old.len()) != Some(old.as_slice()) {
                 return Err(patch_err(op, "oldValue is not the current content of the range"));
             }
             frames.splice(start..start + old.len(), new);
             let runs: Vec<ExposureRun> =
-                serde_json::from_value(frames_to_runs(&frames)).map_err(|e| patch_err(op, e.to_string()))?;
+                serde_json::from_value(frames_to_runs(&frames, &cells)).map_err(|e| patch_err(op, e.to_string()))?;
             *target =
                 serde_json::to_value(crate::object::canonical_runs(&runs)).map_err(|e| patch_err(op, e.to_string()))?;
             Ok(())

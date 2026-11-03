@@ -100,7 +100,17 @@ fn timing_budget_raw_observations() {
         json!({ "allElements": true, "elementIds": [BOB], "frame": 1 }),
         &mut out,
     );
-    for s in [s1, s2] {
+    // Over the budget: every column re-timed to 9999-frame exposures (refused before any frame is written).
+    let (s3_status, s3) = case(
+        &h,
+        "set every exposure to 9999 frames on every column",
+        "cell.exposure.set",
+        json!({ "elementIds": all, "from": 1, "to": 100_000, "length": 9999 }),
+        &mut out,
+    );
+    assert_ne!(s3_status, Status::Ok);
+    assert!(matches!(out.last().unwrap()["outcome"].as_str(), Some("limit.exceeded" | "doc.limitExceeded")));
+    for s in [s1, s2, s3] {
         assert!(s < 30.0, "every case answers inside the watchdog: {s} s");
     }
     if st != Status::Ok {
