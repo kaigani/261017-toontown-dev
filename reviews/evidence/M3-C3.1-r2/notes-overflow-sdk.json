@@ -1,0 +1,336 @@
+{
+  "productHead": "ffffc73",
+  "calls": [
+    {
+      "id": "project.create",
+      "params": {
+        "name": "Note boundary731"
+      },
+      "envelope": {
+        "status": "ok",
+        "result": {
+          "projectId": "pr_01M6H3SFZXVV976274MS1ZXKA3",
+          "sceneId": "sc_01M6H3SFZYE7JJB4RTZ5KT6SBP",
+          "cameraId": "el_01M6H3SFZYE7JJB4RTZ5KT6SBR",
+          "elementId": "el_01M6H3SFZYE7JJB4RTZ5KT6SBS"
+        },
+        "changes": [],
+        "warnings": [],
+        "documentRev": 1
+      }
+    },
+    {
+      "id": "element.create",
+      "params": {
+        "type": "drawing",
+        "name": "Tail731"
+      },
+      "envelope": {
+        "status": "ok",
+        "result": {
+          "elementIds": [
+            "el_01K7JJN800KQQV36TV741S0Q7X"
+          ],
+          "names": [
+            "Tail731"
+          ],
+          "warnings": []
+        },
+        "changes": [
+          {
+            "id": "pr_01M6H3SFZXVV976274MS1ZXKA3",
+            "type": "project",
+            "op": "modified",
+            "rev": 2,
+            "patch": [
+              {
+                "op": "add",
+                "path": "/drawingBanks/1",
+                "value": {
+                  "id": "db_01K7JJN801G82GDGTCVBAQAQGQ",
+                  "type": "drawingBank"
+                }
+              }
+            ]
+          },
+          {
+            "id": "db_01K7JJN801G82GDGTCVBAQAQGQ",
+            "type": "drawingBank",
+            "op": "created",
+            "rev": 2,
+            "parentId": "pr_01M6H3SFZXVV976274MS1ZXKA3",
+            "index": 1
+          },
+          {
+            "id": "sc_01M6H3SFZYE7JJB4RTZ5KT6SBP",
+            "type": "scene",
+            "op": "modified",
+            "rev": 2,
+            "patch": [
+              {
+                "op": "add",
+                "path": "/tree/0",
+                "value": {
+                  "id": "el_01K7JJN800KQQV36TV741S0Q7X",
+                  "children": []
+                }
+              },
+              {
+                "op": "replace",
+                "path": "/columnOrder",
+                "value": [
+                  "el_01M6H3SFZYE7JJB4RTZ5KT6SBS",
+                  "el_01K7JJN800KQQV36TV741S0Q7X"
+                ],
+                "oldValue": [
+                  "el_01M6H3SFZYE7JJB4RTZ5KT6SBS"
+                ]
+              },
+              {
+                "op": "add",
+                "path": "/elements/3",
+                "value": {
+                  "id": "el_01K7JJN800KQQV36TV741S0Q7X",
+                  "type": "element"
+                }
+              }
+            ]
+          },
+          {
+            "id": "el_01K7JJN800KQQV36TV741S0Q7X",
+            "type": "element",
+            "op": "created",
+            "rev": 2,
+            "parentId": "sc_01M6H3SFZYE7JJB4RTZ5KT6SBP",
+            "index": 3
+          }
+        ],
+        "undo": {
+          "stepId": "u-1",
+          "label": "New Elements"
+        },
+        "warnings": [],
+        "documentRev": 2
+      }
+    },
+    {
+      "id": "cell.note.set",
+      "params": {
+        "elementId": "el_01K7JJN800KQQV36TV741S0Q7X",
+        "frame": 100000,
+        "text": "tail731"
+      },
+      "envelope": {
+        "status": "ok",
+        "result": {
+          "elementId": "el_01K7JJN800KQQV36TV741S0Q7X",
+          "frame": 100000
+        },
+        "changes": [
+          {
+            "id": "el_01K7JJN800KQQV36TV741S0Q7X",
+            "type": "element",
+            "op": "modified",
+            "rev": 3,
+            "patch": [
+              {
+                "op": "add",
+                "path": "/cellNotes",
+                "value": {
+                  "100000": "tail731"
+                }
+              }
+            ]
+          }
+        ],
+        "undo": {
+          "stepId": "u-2",
+          "label": "Set Cell Note"
+        },
+        "warnings": [],
+        "documentRev": 3
+      }
+    },
+    {
+      "id": "doc.object.get",
+      "params": {
+        "ref": "el_01K7JJN800KQQV36TV741S0Q7X"
+      },
+      "envelope": {
+        "status": "ok",
+        "result": {
+          "object": {
+            "id": "el_01K7JJN800KQQV36TV741S0Q7X",
+            "type": "element",
+            "rev": 3,
+            "name": "Tail731",
+            "path": "scene:\"Scene-1\"/element:\"Tail731\"",
+            "elementType": "drawing",
+            "loops": 1,
+            "loopType": "count",
+            "positionLoop": "cycle",
+            "role": "normal",
+            "deformable": false,
+            "visibleInScene": true,
+            "visibleInXsheet": true,
+            "locked": false,
+            "collapsed": false,
+            "markerColour": null,
+            "backgroundColour": null,
+            "columnWidth": 80,
+            "drawingBankId": "db_01K7JJN801G82GDGTCVBAQAQGQ",
+            "exposure": [],
+            "cellNotes": {
+              "100000": "tail731"
+            },
+            "transform": {
+              "offset": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+              },
+              "rotation": 0.0,
+              "skew": 0.0,
+              "scale": {
+                "x": 1.0,
+                "y": 1.0
+              },
+              "keepProportions": false,
+              "rotationPivot": {
+                "x": 0.0,
+                "y": 0.0
+              },
+              "scalePivot": {
+                "x": 0.0,
+                "y": 0.0
+              },
+              "rotateAboutPivot": false,
+              "lockDepth": false,
+              "orientToPath": false
+            },
+            "channels": {},
+            "createdAt": "2026-11-03T16:27:32.924Z"
+          }
+        },
+        "targets": {
+          "ids": [
+            "el_01K7JJN800KQQV36TV741S0Q7X"
+          ]
+        },
+        "changes": [],
+        "warnings": [],
+        "documentRev": 3
+      }
+    },
+    {
+      "id": "cell.range.add",
+      "params": {
+        "elementIds": [
+          "el_01K7JJN800KQQV36TV741S0Q7X"
+        ],
+        "frame": 1,
+        "position": "before",
+        "count": 1
+      },
+      "envelope": {
+        "status": "ok",
+        "result": {
+          "from": 1,
+          "to": 1,
+          "drawingIds": []
+        },
+        "changes": [
+          {
+            "id": "el_01K7JJN800KQQV36TV741S0Q7X",
+            "type": "element",
+            "op": "modified",
+            "rev": 4,
+            "patch": [
+              {
+                "op": "remove",
+                "path": "/cellNotes",
+                "oldValue": {
+                  "100000": "tail731"
+                }
+              }
+            ]
+          }
+        ],
+        "undo": {
+          "stepId": "u-3",
+          "label": "Insert Cells"
+        },
+        "warnings": [],
+        "documentRev": 4
+      }
+    },
+    {
+      "id": "doc.object.get",
+      "params": {
+        "ref": "el_01K7JJN800KQQV36TV741S0Q7X"
+      },
+      "envelope": {
+        "status": "ok",
+        "result": {
+          "object": {
+            "id": "el_01K7JJN800KQQV36TV741S0Q7X",
+            "type": "element",
+            "rev": 4,
+            "name": "Tail731",
+            "path": "scene:\"Scene-1\"/element:\"Tail731\"",
+            "elementType": "drawing",
+            "loops": 1,
+            "loopType": "count",
+            "positionLoop": "cycle",
+            "role": "normal",
+            "deformable": false,
+            "visibleInScene": true,
+            "visibleInXsheet": true,
+            "locked": false,
+            "collapsed": false,
+            "markerColour": null,
+            "backgroundColour": null,
+            "columnWidth": 80,
+            "drawingBankId": "db_01K7JJN801G82GDGTCVBAQAQGQ",
+            "exposure": [],
+            "transform": {
+              "offset": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+              },
+              "rotation": 0.0,
+              "skew": 0.0,
+              "scale": {
+                "x": 1.0,
+                "y": 1.0
+              },
+              "keepProportions": false,
+              "rotationPivot": {
+                "x": 0.0,
+                "y": 0.0
+              },
+              "scalePivot": {
+                "x": 0.0,
+                "y": 0.0
+              },
+              "rotateAboutPivot": false,
+              "lockDepth": false,
+              "orientToPath": false
+            },
+            "channels": {},
+            "createdAt": "2026-11-03T16:27:32.924Z"
+          }
+        },
+        "targets": {
+          "ids": [
+            "el_01K7JJN800KQQV36TV741S0Q7X"
+          ]
+        },
+        "changes": [],
+        "warnings": [],
+        "documentRev": 4
+      }
+    }
+  ]
+}

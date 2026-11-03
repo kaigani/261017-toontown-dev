@@ -1,0 +1,16 @@
+[
+  {
+    "target": "c23_r3_cancellation",
+    "binary": "C:\\Users\\kaiga\\work\\review\\m3-c31-r2\\target\\debug\\deps\\c23_r3_cancellation-1b132f8290ae99b0.exe",
+    "binarySha256": "b52b69a2b8ec8329391cd22b85f472b3ee14f14d80cd0e7bb1b513d3d8e65c09",
+    "exit": 0,
+    "receipt": "c23_r3_cancellation-isolated.txt"
+  },
+  {
+    "target": "c23_r4_closure",
+    "binary": "C:\\Users\\kaiga\\work\\review\\m3-c31-r2\\target\\debug\\deps\\c23_r4_closure-c77b8244902aad17.exe",
+    "binarySha256": "f86aec08b08ee724099d1030e1e0053543d52da60c12865f6172300166ea590d",
+    "exit": 0,
+    "receipt": "c23_r4_closure-isolated.txt"
+  }
+]

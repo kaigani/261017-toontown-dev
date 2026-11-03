@@ -1,0 +1,23 @@
+{
+  "candidate": "ffffc7387f03e2be125a634dd29f698598532d0d",
+  "preexistingFilesChanged": [],
+  "specDiff": "",
+  "productDiff": "",
+  "reportLinksChecked": [
+    "evidence/M3-C3.1-r2/register-complete.json",
+    "https://github.com/kaigani/261017-toontown-dev/actions/runs/41647392918",
+    "evidence/M3-C3.1-r2/performance.json",
+    "evidence/M3-C3.1-r2/validation-summary.json"
+  ],
+  "missingLinks": [],
+  "findingIds": [
+    "C31-R2-01",
+    "C31-R2-02",
+    "C31-R2-03",
+    "C31-R2-04",
+    "C31-R2-05",
+    "C31-R2-06"
+  ],
+  "sourceWhitespaceCheck": 0,
+  "rawReceiptWhitespace": "Original raw CI/deny logs retain their original whitespace; full diff --check reports that whitespace. It was not rewritten."
+}

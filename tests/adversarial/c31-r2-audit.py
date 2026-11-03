@@ -53,11 +53,11 @@ def register():
         "01": ["C31-X01"],
         "02": ["C31-X01", "C31-U312", "C31-U328", "C31-U491", "C31-U494"],
         "03": ["C31-U300", "C31-U327"],
-        "04": ["C31-U168", "C31-U295", "C31-U299", "C31-U599"],
+        "04": ["C31-U168", "C31-U295", "C31-U299", "C31-U456", "C31-U599"],
         "05": ["C31-U088", "C31-U110", "C31-U410", "C31-U299"],
         "06": ["C31-U296", "C31-U297", "C31-U298", "C31-U335", "C31-U460", "C31-X07"],
     }
-    commands = {"element.create":["05"], "cell.clipboard.apply":["06"],
+    commands = {"element.create":["05"], "cell.clipboard.apply":["06"], "cell.range.add":["04"],
                 "element.state.changed":["02"], "cell.selection.changed":["02"]}
     repro = {
         "01":"cargo test -p tt-executor --locked -j 4 --test c31_r2_variants r03_rfc_test",
@@ -74,6 +74,8 @@ def register():
             row["round1Findings"] = previous.get("findings", [])
             row["findings"] = ["C31-R2-"+n for n in refs]
             row["reproduction"] = [repro[n] for n in refs]
+            if "04" in refs:
+                row["reproduction"].append("cargo test -p tt-executor --locked -j 4 --test c31_r2_notes_boundary")
             if refs:
                 row["status"] = "divergent"
                 row["basis"] = "R2 retained failing reproductions; unaffected aspects retain R1 proving coverage."
