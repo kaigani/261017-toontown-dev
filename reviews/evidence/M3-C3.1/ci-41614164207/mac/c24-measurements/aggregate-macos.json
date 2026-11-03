@@ -1,0 +1,139 @@
+{
+  "os": "macos",
+  "arch": "aarch64",
+  "profile": "release",
+  "watchdogSeconds": 30,
+  "repetitions": 5,
+  "breakApart": {
+    "characters": 100000,
+    "textAddSeconds": 0.358532291,
+    "observations": [
+      {
+        "answeredSeconds": 0.001114583,
+        "status": "Error",
+        "error": "limit.exceeded",
+        "committed": false,
+        "followingReadSeconds": 0.000851,
+        "followingReadOk": true,
+        "queuedCallSeconds": 0.000753,
+        "queuedCallError": "limit.exceeded",
+        "queuedReadSeconds": 0.013698209,
+        "queuedReadOk": true
+      },
+      {
+        "answeredSeconds": 0.000697417,
+        "status": "Error",
+        "error": "limit.exceeded",
+        "committed": false,
+        "followingReadSeconds": 0.000426917,
+        "followingReadOk": true,
+        "queuedCallSeconds": 0.000754959,
+        "queuedCallError": "limit.exceeded",
+        "queuedReadSeconds": 0.02135125,
+        "queuedReadOk": true
+      },
+      {
+        "answeredSeconds": 0.000814458,
+        "status": "Error",
+        "error": "limit.exceeded",
+        "committed": false,
+        "followingReadSeconds": 0.000464,
+        "followingReadOk": true,
+        "queuedCallSeconds": 0.000735917,
+        "queuedCallError": "limit.exceeded",
+        "queuedReadSeconds": 0.018466917,
+        "queuedReadOk": true
+      },
+      {
+        "answeredSeconds": 0.000903375,
+        "status": "Error",
+        "error": "limit.exceeded",
+        "committed": false,
+        "followingReadSeconds": 0.000448167,
+        "followingReadOk": true,
+        "queuedCallSeconds": 0.000725959,
+        "queuedCallError": "limit.exceeded",
+        "queuedReadSeconds": 0.01302,
+        "queuedReadOk": true
+      },
+      {
+        "answeredSeconds": 0.000716125,
+        "status": "Error",
+        "error": "limit.exceeded",
+        "committed": false,
+        "followingReadSeconds": 0.000434791,
+        "followingReadOk": true,
+        "queuedCallSeconds": 0.000981,
+        "queuedCallError": "limit.exceeded",
+        "queuedReadSeconds": 0.017987,
+        "queuedReadOk": true
+      }
+    ]
+  },
+  "render": {
+    "width": 8192,
+    "height": 8192,
+    "observations": [
+      {
+        "answeredSeconds": 1.027526667,
+        "status": "Ok",
+        "error": null,
+        "committed": false,
+        "followingReadSeconds": 0.000500083,
+        "followingReadOk": true,
+        "queuedCallSeconds": 0.972204292,
+        "queuedCallError": null,
+        "queuedReadSeconds": 0.943041667,
+        "queuedReadOk": true
+      },
+      {
+        "answeredSeconds": 0.991191333,
+        "status": "Ok",
+        "error": null,
+        "committed": false,
+        "followingReadSeconds": 0.000497916,
+        "followingReadOk": true,
+        "queuedCallSeconds": 0.801073875,
+        "queuedCallError": null,
+        "queuedReadSeconds": 0.750170167,
+        "queuedReadOk": true
+      },
+      {
+        "answeredSeconds": 0.986710833,
+        "status": "Ok",
+        "error": null,
+        "committed": false,
+        "followingReadSeconds": 0.000866,
+        "followingReadOk": true,
+        "queuedCallSeconds": 0.849430708,
+        "queuedCallError": null,
+        "queuedReadSeconds": 0.776751916,
+        "queuedReadOk": true
+      },
+      {
+        "answeredSeconds": 0.937094,
+        "status": "Ok",
+        "error": null,
+        "committed": false,
+        "followingReadSeconds": 0.000519333,
+        "followingReadOk": true,
+        "queuedCallSeconds": 0.908057542,
+        "queuedCallError": null,
+        "queuedReadSeconds": 0.876207833,
+        "queuedReadOk": true
+      },
+      {
+        "answeredSeconds": 1.124646292,
+        "status": "Ok",
+        "error": null,
+        "committed": false,
+        "followingReadSeconds": 0.000530208,
+        "followingReadOk": true,
+        "queuedCallSeconds": 1.081992333,
+        "queuedCallError": null,
+        "queuedReadSeconds": 1.018874375,
+        "queuedReadOk": true
+      }
+    ]
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "question": "does the regenerated desktop/src/ipc/generated/commands.ts slow `eslint .` (reviewer test c01-r2-boundary, 30-s spawn limit)?",
+  "machine": "builder workstation, Windows 11, node 22, same worktree, warm cache, alternating order",
+  "fileOnlyMs": { "m2": 6339, "c31": 6363 },
+  "wholeTreeMs": [
+    { "file": "c31", "ms": 9893 }, { "file": "m2", "ms": 9763 },
+    { "file": "c31", "ms": 9798 }, { "file": "m2", "ms": 9870 }
+  ],
+  "ciObservations": {
+    "run 41610425235 check (macos-latest), m2-equivalent commands.ts": { "eslintStepSeconds": 12.7, "c01r2NodeTestSeconds": 13.2 },
+    "run 41614164207 check (macos-latest), regenerated commands.ts": { "eslintStepSeconds": 28.4, "c01r2NodeTestSeconds": 38.1, "failure": "spawnSync eslint ETIMEDOUT (30 s)" }
+  },
+  "conclusion": "no measurable difference locally; the CI failure is runner speed against the fixed 30-s limit; the job was re-run"
+}

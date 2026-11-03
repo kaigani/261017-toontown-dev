@@ -1,0 +1,145 @@
+{
+  "os": "windows",
+  "arch": "x86_64",
+  "profile": "release",
+  "strokes": 100000,
+  "repetitions": 5,
+  "memory": {
+    "rssBytes": {
+      "start": 174473216.0,
+      "afterOpen": 363728896.0,
+      "afterSeries": 2176344064.0
+    },
+    "liveBytes": {
+      "start": 146121807.0,
+      "afterOpen": 267527240.0,
+      "afterSeries": 1196622629.0
+    }
+  },
+  "series": [
+    {
+      "strokeAddSeconds": 18.4534104,
+      "undoSeconds": 12.23613,
+      "redoSeconds": 11.9241834,
+      "dryRunSeconds": 17.5688785,
+      "liveBytes": 686273994.0,
+      "rssBytes": 1801158656.0
+    },
+    {
+      "strokeAddSeconds": 19.7395199,
+      "undoSeconds": 13.403501200000001,
+      "redoSeconds": 11.5362158,
+      "dryRunSeconds": 19.0357021,
+      "liveBytes": 813852316.0,
+      "rssBytes": 2017767424.0
+    },
+    {
+      "strokeAddSeconds": 21.2145537,
+      "undoSeconds": 14.3761516,
+      "redoSeconds": 13.3236275,
+      "dryRunSeconds": 20.590817,
+      "liveBytes": 941439320.0,
+      "rssBytes": 2144468992.0
+    },
+    {
+      "strokeAddSeconds": 21.8778932,
+      "undoSeconds": 14.4899162,
+      "redoSeconds": 13.4942973,
+      "dryRunSeconds": 19.827344,
+      "liveBytes": 1069029182.0,
+      "rssBytes": 2179371008.0
+    },
+    {
+      "strokeAddSeconds": 21.3967633,
+      "undoSeconds": 15.3483325,
+      "redoSeconds": 13.4720291,
+      "dryRunSeconds": 19.5470747,
+      "liveBytes": 1196626094.0,
+      "rssBytes": 2176344064.0
+    }
+  ],
+  "queuedRead": [
+    {
+      "longCommandSeconds": 21.7329823,
+      "readSentAtSeconds": 0.0504677,
+      "readSeconds": 21.6835419,
+      "readAnsweredAfterLongSeconds": 0.0010273000000005084,
+      "readOk": true
+    },
+    {
+      "longCommandSeconds": 21.7612255,
+      "readSentAtSeconds": 0.050258,
+      "readSeconds": 21.7116304,
+      "readAnsweredAfterLongSeconds": 0.0006629000000017982,
+      "readOk": true
+    },
+    {
+      "longCommandSeconds": 22.7410902,
+      "readSentAtSeconds": 0.0506549,
+      "readSeconds": 22.6910166,
+      "readAnsweredAfterLongSeconds": 0.0005813000000038926,
+      "readOk": true
+    },
+    {
+      "longCommandSeconds": 23.0701283,
+      "readSentAtSeconds": 0.0505093,
+      "readSeconds": 23.0205855,
+      "readAnsweredAfterLongSeconds": 0.0009665000000005364,
+      "readOk": true
+    },
+    {
+      "longCommandSeconds": 23.2015639,
+      "readSentAtSeconds": 0.0506417,
+      "readSeconds": 23.1515095,
+      "readAnsweredAfterLongSeconds": 0.0005872999999994022,
+      "readOk": true
+    }
+  ],
+  "maintenance": [
+    {
+      "longCommandSeconds": 21.9528244,
+      "requestedAtSeconds": 0.0502731,
+      "behindLongSeconds": 21.9076221,
+      "autosaveSnapshotSeconds": 0.0001014,
+      "heartbeatSeconds": 0.0048205,
+      "idleSeconds": 0.0041456,
+      "idleAutosaveSnapshotSeconds": null
+    },
+    {
+      "longCommandSeconds": 21.8189207,
+      "requestedAtSeconds": 0.0504418,
+      "behindLongSeconds": 21.7795853,
+      "autosaveSnapshotSeconds": 0.0000821,
+      "heartbeatSeconds": 0.0109137,
+      "idleSeconds": 0.0101154,
+      "idleAutosaveSnapshotSeconds": null
+    },
+    {
+      "longCommandSeconds": 21.6671613,
+      "requestedAtSeconds": 0.0501909,
+      "behindLongSeconds": 21.6303002,
+      "autosaveSnapshotSeconds": 0.0000811,
+      "heartbeatSeconds": 0.0131362,
+      "idleSeconds": 0.0104236,
+      "idleAutosaveSnapshotSeconds": null
+    },
+    {
+      "longCommandSeconds": 23.1070037,
+      "requestedAtSeconds": 0.0501922,
+      "behindLongSeconds": 23.0696604,
+      "autosaveSnapshotSeconds": 0.0000898,
+      "heartbeatSeconds": 0.0126194,
+      "idleSeconds": 0.0153635,
+      "idleAutosaveSnapshotSeconds": null
+    },
+    {
+      "longCommandSeconds": 23.0738399,
+      "requestedAtSeconds": 0.0508559,
+      "behindLongSeconds": 23.0345054,
+      "autosaveSnapshotSeconds": 0.0000763,
+      "heartbeatSeconds": 0.0113334,
+      "idleSeconds": 0.0124666,
+      "idleAutosaveSnapshotSeconds": null
+    }
+  ]
+}

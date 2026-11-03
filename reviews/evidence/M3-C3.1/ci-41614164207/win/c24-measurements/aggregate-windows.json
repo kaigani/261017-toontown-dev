@@ -1,0 +1,139 @@
+{
+  "os": "windows",
+  "arch": "x86_64",
+  "profile": "release",
+  "watchdogSeconds": 30,
+  "repetitions": 5,
+  "breakApart": {
+    "characters": 100000,
+    "textAddSeconds": 1.7134254,
+    "observations": [
+      {
+        "answeredSeconds": 0.0015482,
+        "status": "Error",
+        "error": "limit.exceeded",
+        "committed": false,
+        "followingReadSeconds": 0.0012732,
+        "followingReadOk": true,
+        "queuedCallSeconds": 0.001236,
+        "queuedCallError": "limit.exceeded",
+        "queuedReadSeconds": 0.0279551,
+        "queuedReadOk": true
+      },
+      {
+        "answeredSeconds": 0.0010617,
+        "status": "Error",
+        "error": "limit.exceeded",
+        "committed": false,
+        "followingReadSeconds": 0.0007208,
+        "followingReadOk": true,
+        "queuedCallSeconds": 0.0011639,
+        "queuedCallError": "limit.exceeded",
+        "queuedReadSeconds": 0.0213511,
+        "queuedReadOk": true
+      },
+      {
+        "answeredSeconds": 0.0011397,
+        "status": "Error",
+        "error": "limit.exceeded",
+        "committed": false,
+        "followingReadSeconds": 0.0007437,
+        "followingReadOk": true,
+        "queuedCallSeconds": 0.0012276,
+        "queuedCallError": "limit.exceeded",
+        "queuedReadSeconds": 0.0216145,
+        "queuedReadOk": true
+      },
+      {
+        "answeredSeconds": 0.0012335,
+        "status": "Error",
+        "error": "limit.exceeded",
+        "committed": false,
+        "followingReadSeconds": 0.0007433,
+        "followingReadOk": true,
+        "queuedCallSeconds": 0.0013941,
+        "queuedCallError": "limit.exceeded",
+        "queuedReadSeconds": 0.0218923,
+        "queuedReadOk": true
+      },
+      {
+        "answeredSeconds": 0.0010459,
+        "status": "Error",
+        "error": "limit.exceeded",
+        "committed": false,
+        "followingReadSeconds": 0.000811,
+        "followingReadOk": true,
+        "queuedCallSeconds": 0.0012613,
+        "queuedCallError": "limit.exceeded",
+        "queuedReadSeconds": 0.0210428,
+        "queuedReadOk": true
+      }
+    ]
+  },
+  "render": {
+    "width": 8192,
+    "height": 8192,
+    "observations": [
+      {
+        "answeredSeconds": 1.6549946,
+        "status": "Ok",
+        "error": null,
+        "committed": false,
+        "followingReadSeconds": 0.0007968,
+        "followingReadOk": true,
+        "queuedCallSeconds": 1.6633396999999999,
+        "queuedCallError": null,
+        "queuedReadSeconds": 1.6440467,
+        "queuedReadOk": true
+      },
+      {
+        "answeredSeconds": 1.649374,
+        "status": "Ok",
+        "error": null,
+        "committed": false,
+        "followingReadSeconds": 0.0007622,
+        "followingReadOk": true,
+        "queuedCallSeconds": 1.6583917000000001,
+        "queuedCallError": null,
+        "queuedReadSeconds": 1.6390605,
+        "queuedReadOk": true
+      },
+      {
+        "answeredSeconds": 1.6684592,
+        "status": "Ok",
+        "error": null,
+        "committed": false,
+        "followingReadSeconds": 0.0007842,
+        "followingReadOk": true,
+        "queuedCallSeconds": 1.6485028000000002,
+        "queuedCallError": null,
+        "queuedReadSeconds": 1.6291164,
+        "queuedReadOk": true
+      },
+      {
+        "answeredSeconds": 1.6533560999999999,
+        "status": "Ok",
+        "error": null,
+        "committed": false,
+        "followingReadSeconds": 0.0008241,
+        "followingReadOk": true,
+        "queuedCallSeconds": 1.6587629000000002,
+        "queuedCallError": null,
+        "queuedReadSeconds": 1.6392446999999999,
+        "queuedReadOk": true
+      },
+      {
+        "answeredSeconds": 1.6552644,
+        "status": "Ok",
+        "error": null,
+        "committed": false,
+        "followingReadSeconds": 0.000793,
+        "followingReadOk": true,
+        "queuedCallSeconds": 1.6535206,
+        "queuedCallError": null,
+        "queuedReadSeconds": 1.634089,
+        "queuedReadOk": true
+      }
+    ]
+  }
+}

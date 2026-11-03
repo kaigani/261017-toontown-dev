@@ -1,0 +1,468 @@
+{
+  "source": {
+    "m2": "reviews\\evidence\\M2-C2.4-r3\\ci-artifacts",
+    "m3": "reviews\\evidence\\M3-C3.1\\ci-41614164207"
+  },
+  "os": {
+    "windows": {
+      "strokeAddSeconds": {
+        "m2r3Median": 21.3949171,
+        "c31Median": 21.2145537,
+        "ratio": 0.9915698014085784
+      },
+      "undoSeconds": {
+        "m2r3Median": 15.1897376,
+        "c31Median": 14.3761516,
+        "ratio": 0.9464384427549294
+      },
+      "redoSeconds": {
+        "m2r3Median": 12.9866124,
+        "c31Median": 13.3236275,
+        "ratio": 1.0259509631626489
+      },
+      "dryRunSeconds": {
+        "m2r3Median": 19.8106489,
+        "c31Median": 19.5470747,
+        "ratio": 0.9866953272792593
+      },
+      "liveBytes": {
+        "m2r3Median": 941439248.0,
+        "c31Median": 941439320.0,
+        "ratio": 1.0000000764786472
+      },
+      "rssBytes": {
+        "m2r3Median": 1993224192.0,
+        "c31Median": 2144468992.0,
+        "ratio": 1.0758794723679532
+      },
+      "memory": {
+        "m2r3": {
+          "rssBytes": {
+            "start": 174088192.0,
+            "afterOpen": 367226880.0,
+            "afterSeries": 2195542016.0
+          },
+          "liveBytes": {
+            "start": 146121735.0,
+            "afterOpen": 267527168.0,
+            "afterSeries": 1196622557.0
+          }
+        },
+        "c31": {
+          "rssBytes": {
+            "start": 174473216.0,
+            "afterOpen": 363728896.0,
+            "afterSeries": 2176344064.0
+          },
+          "liveBytes": {
+            "start": 146121807.0,
+            "afterOpen": 267527240.0,
+            "afterSeries": 1196622629.0
+          }
+        }
+      },
+      "queuedRead": {
+        "m2r3": [
+          {
+            "longCommandSeconds": 21.9193443,
+            "readSentAtSeconds": 0.0501287,
+            "readSeconds": 21.8703877,
+            "readAnsweredAfterLongSeconds": 0.0011720999999980108,
+            "readOk": true
+          },
+          {
+            "longCommandSeconds": 22.7407183,
+            "readSentAtSeconds": 0.0506863,
+            "readSeconds": 22.6908019,
+            "readAnsweredAfterLongSeconds": 0.0007698999999981027,
+            "readOk": true
+          },
+          {
+            "longCommandSeconds": 23.2873951,
+            "readSentAtSeconds": 0.0502841,
+            "readSeconds": 23.2377147,
+            "readAnsweredAfterLongSeconds": 0.0006036999999992076,
+            "readOk": true
+          },
+          {
+            "longCommandSeconds": 22.7169721,
+            "readSentAtSeconds": 0.0501563,
+            "readSeconds": 22.6673759,
+            "readAnsweredAfterLongSeconds": 0.0005601000000012846,
+            "readOk": true
+          },
+          {
+            "longCommandSeconds": 23.3137124,
+            "readSentAtSeconds": 0.0503355,
+            "readSeconds": 23.2642551,
+            "readAnsweredAfterLongSeconds": 0.0008781999999989409,
+            "readOk": true
+          }
+        ],
+        "c31": [
+          {
+            "longCommandSeconds": 21.7329823,
+            "readSentAtSeconds": 0.0504677,
+            "readSeconds": 21.6835419,
+            "readAnsweredAfterLongSeconds": 0.0010273000000005084,
+            "readOk": true
+          },
+          {
+            "longCommandSeconds": 21.7612255,
+            "readSentAtSeconds": 0.050258,
+            "readSeconds": 21.7116304,
+            "readAnsweredAfterLongSeconds": 0.0006629000000017982,
+            "readOk": true
+          },
+          {
+            "longCommandSeconds": 22.7410902,
+            "readSentAtSeconds": 0.0506549,
+            "readSeconds": 22.6910166,
+            "readAnsweredAfterLongSeconds": 0.0005813000000038926,
+            "readOk": true
+          },
+          {
+            "longCommandSeconds": 23.0701283,
+            "readSentAtSeconds": 0.0505093,
+            "readSeconds": 23.0205855,
+            "readAnsweredAfterLongSeconds": 0.0009665000000005364,
+            "readOk": true
+          },
+          {
+            "longCommandSeconds": 23.2015639,
+            "readSentAtSeconds": 0.0506417,
+            "readSeconds": 23.1515095,
+            "readAnsweredAfterLongSeconds": 0.0005872999999994022,
+            "readOk": true
+          }
+        ]
+      },
+      "maintenance": {
+        "m2r3": [
+          {
+            "longCommandSeconds": 22.0764484,
+            "requestedAtSeconds": 0.0506189,
+            "behindLongSeconds": 22.0302636,
+            "autosaveSnapshotSeconds": 0.0001099,
+            "heartbeatSeconds": 0.0041634,
+            "idleSeconds": 0.0036796,
+            "idleAutosaveSnapshotSeconds": null
+          },
+          {
+            "longCommandSeconds": 22.3936131,
+            "requestedAtSeconds": 0.0501743,
+            "behindLongSeconds": 22.3571715,
+            "autosaveSnapshotSeconds": 7.81e-05,
+            "heartbeatSeconds": 0.0135328,
+            "idleSeconds": 0.0086472,
+            "idleAutosaveSnapshotSeconds": null
+          },
+          {
+            "longCommandSeconds": 22.0541396,
+            "requestedAtSeconds": 0.0505332,
+            "behindLongSeconds": 22.0167582,
+            "autosaveSnapshotSeconds": 7.11e-05,
+            "heartbeatSeconds": 0.0129546,
+            "idleSeconds": 0.0122077,
+            "idleAutosaveSnapshotSeconds": null
+          },
+          {
+            "longCommandSeconds": 22.5639388,
+            "requestedAtSeconds": 0.050185,
+            "behindLongSeconds": 22.5240608,
+            "autosaveSnapshotSeconds": 7.39e-05,
+            "heartbeatSeconds": 0.010119,
+            "idleSeconds": 0.0126818,
+            "idleAutosaveSnapshotSeconds": null
+          },
+          {
+            "longCommandSeconds": 23.8347304,
+            "requestedAtSeconds": 0.0503143,
+            "behindLongSeconds": 23.798547,
+            "autosaveSnapshotSeconds": 7.51e-05,
+            "heartbeatSeconds": 0.013953,
+            "idleSeconds": 0.0107835,
+            "idleAutosaveSnapshotSeconds": null
+          }
+        ],
+        "c31": [
+          {
+            "longCommandSeconds": 21.9528244,
+            "requestedAtSeconds": 0.0502731,
+            "behindLongSeconds": 21.9076221,
+            "autosaveSnapshotSeconds": 0.0001014,
+            "heartbeatSeconds": 0.0048205,
+            "idleSeconds": 0.0041456,
+            "idleAutosaveSnapshotSeconds": null
+          },
+          {
+            "longCommandSeconds": 21.8189207,
+            "requestedAtSeconds": 0.0504418,
+            "behindLongSeconds": 21.7795853,
+            "autosaveSnapshotSeconds": 8.21e-05,
+            "heartbeatSeconds": 0.0109137,
+            "idleSeconds": 0.0101154,
+            "idleAutosaveSnapshotSeconds": null
+          },
+          {
+            "longCommandSeconds": 21.6671613,
+            "requestedAtSeconds": 0.0501909,
+            "behindLongSeconds": 21.6303002,
+            "autosaveSnapshotSeconds": 8.11e-05,
+            "heartbeatSeconds": 0.0131362,
+            "idleSeconds": 0.0104236,
+            "idleAutosaveSnapshotSeconds": null
+          },
+          {
+            "longCommandSeconds": 23.1070037,
+            "requestedAtSeconds": 0.0501922,
+            "behindLongSeconds": 23.0696604,
+            "autosaveSnapshotSeconds": 8.98e-05,
+            "heartbeatSeconds": 0.0126194,
+            "idleSeconds": 0.0153635,
+            "idleAutosaveSnapshotSeconds": null
+          },
+          {
+            "longCommandSeconds": 23.0738399,
+            "requestedAtSeconds": 0.0508559,
+            "behindLongSeconds": 23.0345054,
+            "autosaveSnapshotSeconds": 7.63e-05,
+            "heartbeatSeconds": 0.0113334,
+            "idleSeconds": 0.0124666,
+            "idleAutosaveSnapshotSeconds": null
+          }
+        ]
+      }
+    },
+    "macos": {
+      "strokeAddSeconds": {
+        "m2r3Median": 14.049530417,
+        "c31Median": 11.040857917,
+        "ratio": 0.7858524512421077
+      },
+      "undoSeconds": {
+        "m2r3Median": 8.828695125,
+        "c31Median": 5.949609583,
+        "ratio": 0.6738945561901483
+      },
+      "redoSeconds": {
+        "m2r3Median": 7.530100792,
+        "c31Median": 5.972769959,
+        "ratio": 0.793185924595523
+      },
+      "dryRunSeconds": {
+        "m2r3Median": 13.190559417,
+        "c31Median": 10.213194125,
+        "ratio": 0.7742805897858456
+      },
+      "liveBytes": {
+        "m2r3Median": 941639480.0,
+        "c31Median": 941639552.0,
+        "ratio": 1.0000000764623844
+      },
+      "rssBytes": {
+        "m2r3Median": 2819964928.0,
+        "c31Median": 2659532800.0,
+        "ratio": 0.9431084669149474
+      },
+      "memory": {
+        "m2r3": {
+          "rssBytes": {
+            "start": 1664598016.0,
+            "afterOpen": 2088730624.0,
+            "afterSeries": 2819964928.0
+          },
+          "liveBytes": {
+            "start": 146321824.0,
+            "afterOpen": 267728272.0,
+            "afterSeries": 1196822557.0
+          }
+        },
+        "c31": {
+          "rssBytes": {
+            "start": 1528512512.0,
+            "afterOpen": 2151448576.0,
+            "afterSeries": 2659532800.0
+          },
+          "liveBytes": {
+            "start": 146321896.0,
+            "afterOpen": 267728344.0,
+            "afterSeries": 1196822629.0
+          }
+        }
+      },
+      "queuedRead": {
+        "m2r3": [
+          {
+            "longCommandSeconds": 14.70289125,
+            "readSentAtSeconds": 0.106060708,
+            "readSeconds": 14.597883166999999,
+            "readAnsweredAfterLongSeconds": 0.0010526249999980308,
+            "readOk": true
+          },
+          {
+            "longCommandSeconds": 13.839954792,
+            "readSentAtSeconds": 0.065359958,
+            "readSeconds": 13.77575325,
+            "readAnsweredAfterLongSeconds": 0.0011584159999991073,
+            "readOk": true
+          },
+          {
+            "longCommandSeconds": 14.501960875,
+            "readSentAtSeconds": 0.17339775,
+            "readSeconds": 14.331537583,
+            "readAnsweredAfterLongSeconds": 0.0029744579999988474,
+            "readOk": true
+          },
+          {
+            "longCommandSeconds": 13.280592959,
+            "readSentAtSeconds": 0.13197175,
+            "readSeconds": 13.149177375,
+            "readAnsweredAfterLongSeconds": 0.0005561660000008573,
+            "readOk": true
+          },
+          {
+            "longCommandSeconds": 13.253820292,
+            "readSentAtSeconds": 0.166389,
+            "readSeconds": 13.087956292,
+            "readAnsweredAfterLongSeconds": 0.0005249999999996646,
+            "readOk": true
+          }
+        ],
+        "c31": [
+          {
+            "longCommandSeconds": 10.129904125,
+            "readSentAtSeconds": 0.062549333,
+            "readSeconds": 10.069443375,
+            "readAnsweredAfterLongSeconds": 0.00208858300000081,
+            "readOk": true
+          },
+          {
+            "longCommandSeconds": 11.956232583,
+            "readSentAtSeconds": 0.143137625,
+            "readSeconds": 11.813458458,
+            "readAnsweredAfterLongSeconds": 0.00036349999999885085,
+            "readOk": true
+          },
+          {
+            "longCommandSeconds": 9.142933916,
+            "readSentAtSeconds": 0.054829375,
+            "readSeconds": 9.088589708,
+            "readAnsweredAfterLongSeconds": 0.0004851670000007857,
+            "readOk": true
+          },
+          {
+            "longCommandSeconds": 8.547198292000001,
+            "readSentAtSeconds": 0.095229292,
+            "readSeconds": 8.451752209,
+            "readAnsweredAfterLongSeconds": -0.0002167909999997164,
+            "readOk": true
+          },
+          {
+            "longCommandSeconds": 18.649433417,
+            "readSentAtSeconds": 0.155487292,
+            "readSeconds": 18.495833625,
+            "readAnsweredAfterLongSeconds": 0.0018874999999987097,
+            "readOk": true
+          }
+        ]
+      },
+      "maintenance": {
+        "m2r3": [
+          {
+            "longCommandSeconds": 14.932842125,
+            "requestedAtSeconds": 0.059087708,
+            "behindLongSeconds": 14.886909333,
+            "autosaveSnapshotSeconds": 0.000312333,
+            "heartbeatSeconds": 0.012219292,
+            "idleSeconds": 0.004420916,
+            "idleAutosaveSnapshotSeconds": null
+          },
+          {
+            "longCommandSeconds": 9.213430166,
+            "requestedAtSeconds": 0.178243458,
+            "behindLongSeconds": 9.044790958,
+            "autosaveSnapshotSeconds": 0.000154459,
+            "heartbeatSeconds": 0.009492833,
+            "idleSeconds": 0.004296833,
+            "idleAutosaveSnapshotSeconds": null
+          },
+          {
+            "longCommandSeconds": 13.383798125,
+            "requestedAtSeconds": 0.132945458,
+            "behindLongSeconds": 13.266804708,
+            "autosaveSnapshotSeconds": 0.001005917,
+            "heartbeatSeconds": 0.015104333,
+            "idleSeconds": 0.010736959,
+            "idleAutosaveSnapshotSeconds": null
+          },
+          {
+            "longCommandSeconds": 10.703693375,
+            "requestedAtSeconds": 0.177159208,
+            "behindLongSeconds": 10.547388875,
+            "autosaveSnapshotSeconds": 0.000439375,
+            "heartbeatSeconds": 0.020559917,
+            "idleSeconds": 0.016067541,
+            "idleAutosaveSnapshotSeconds": null
+          },
+          {
+            "longCommandSeconds": 13.062405,
+            "requestedAtSeconds": 0.066118042,
+            "behindLongSeconds": 13.015972958,
+            "autosaveSnapshotSeconds": 0.00054025,
+            "heartbeatSeconds": 0.019304167,
+            "idleSeconds": 0.007080958,
+            "idleAutosaveSnapshotSeconds": null
+          }
+        ],
+        "c31": [
+          {
+            "longCommandSeconds": 11.264312625,
+            "requestedAtSeconds": 0.197418209,
+            "behindLongSeconds": 11.072065292,
+            "autosaveSnapshotSeconds": 0.000153167,
+            "heartbeatSeconds": 0.004371875,
+            "idleSeconds": 0.002245291,
+            "idleAutosaveSnapshotSeconds": null
+          },
+          {
+            "longCommandSeconds": 8.759912625,
+            "requestedAtSeconds": 0.076820167,
+            "behindLongSeconds": 8.698845083,
+            "autosaveSnapshotSeconds": 0.000183875,
+            "heartbeatSeconds": 0.015590709,
+            "idleSeconds": 0.011251,
+            "idleAutosaveSnapshotSeconds": null
+          },
+          {
+            "longCommandSeconds": 6.245828,
+            "requestedAtSeconds": 0.146097958,
+            "behindLongSeconds": 6.109792958,
+            "autosaveSnapshotSeconds": 0.000154084,
+            "heartbeatSeconds": 0.009944875,
+            "idleSeconds": 0.011918042,
+            "idleAutosaveSnapshotSeconds": null
+          },
+          {
+            "longCommandSeconds": 15.105755459,
+            "requestedAtSeconds": 0.106270209,
+            "behindLongSeconds": 15.041005625,
+            "autosaveSnapshotSeconds": 0.00019025,
+            "heartbeatSeconds": 0.041506625,
+            "idleSeconds": 0.017009917,
+            "idleAutosaveSnapshotSeconds": null
+          },
+          {
+            "longCommandSeconds": 10.98748925,
+            "requestedAtSeconds": 0.079968875,
+            "behindLongSeconds": 10.91663225,
+            "autosaveSnapshotSeconds": 0.000244833,
+            "heartbeatSeconds": 0.008880875,
+            "idleSeconds": 0.007764333,
+            "idleAutosaveSnapshotSeconds": null
+          }
+        ]
+      }
+    }
+  }
+}
