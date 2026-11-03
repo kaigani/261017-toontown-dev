@@ -1,0 +1,20 @@
+m3 properties release (windows-latest)	Exposure algebra properties, 4096 cases	﻿2026-11-03T10:45:46.9793289Z ##[group]Run TT_C31_CASES=4096 cargo test --release --locked -p tt-anim --test c31_exposure
+m3 properties release (windows-latest)	Exposure algebra properties, 4096 cases	2026-11-03T10:45:46.9794014Z ^[[36;1mTT_C31_CASES=4096 cargo test --release --locked -p tt-anim --test c31_exposure^[[0m
+m3 properties release (windows-latest)	Exposure algebra properties, 4096 cases	2026-11-03T10:47:15.6936347Z test add_then_remove_exposure_on_one_frame_is_identity ... ok
+m3 properties release (windows-latest)	Exposure algebra properties, 4096 cases	2026-11-03T10:47:15.6968289Z test cycle_inserts_k_minus_one_copies ... ok
+m3 properties release (windows-latest)	Exposure algebra properties, 4096 cases	2026-11-03T10:47:15.7012390Z test compress_expand_is_canonical ... ok
+m3 properties release (windows-latest)	Exposure algebra properties, 4096 cases	2026-11-03T10:47:15.7418387Z test diff_window_covers_every_change ... ok
+m3 properties release (windows-latest)	Exposure algebra properties, 4096 cases	2026-11-03T10:47:15.7437753Z test fill_never_shifts_later_cells ... ok
+m3 properties release (windows-latest)	Exposure algebra properties, 4096 cases	2026-11-03T10:47:15.7493272Z test insert_then_remove_blank_is_identity ... ok
+m3 properties release (windows-latest)	Exposure algebra properties, 4096 cases	2026-11-03T10:47:15.7600101Z test set_exposure_preserves_the_drawing_sequence ... ok
+m3 properties release (windows-latest)	Exposure algebra properties, 4096 cases	2026-11-03T10:47:15.7600908Z test result: ok. 16 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.14s
+m3 properties release (macos-latest)	Exposure algebra properties, 4096 cases	﻿2026-11-03T10:59:46.8295620Z ##[group]Run TT_C31_CASES=4096 cargo test --release --locked -p tt-anim --test c31_exposure
+m3 properties release (macos-latest)	Exposure algebra properties, 4096 cases	2026-11-03T10:59:46.8296170Z ^[[36;1mTT_C31_CASES=4096 cargo test --release --locked -p tt-anim --test c31_exposure^[[0m
+m3 properties release (macos-latest)	Exposure algebra properties, 4096 cases	2026-11-03T11:00:42.8942840Z test add_then_remove_exposure_on_one_frame_is_identity ... ok
+m3 properties release (macos-latest)	Exposure algebra properties, 4096 cases	2026-11-03T11:00:42.9024930Z test compress_expand_is_canonical ... ok
+m3 properties release (macos-latest)	Exposure algebra properties, 4096 cases	2026-11-03T11:00:42.9026040Z test cycle_inserts_k_minus_one_copies ... ok
+m3 properties release (macos-latest)	Exposure algebra properties, 4096 cases	2026-11-03T11:00:42.9027010Z test fill_never_shifts_later_cells ... ok
+m3 properties release (macos-latest)	Exposure algebra properties, 4096 cases	2026-11-03T11:00:42.9028860Z test insert_then_remove_blank_is_identity ... ok
+m3 properties release (macos-latest)	Exposure algebra properties, 4096 cases	2026-11-03T11:00:42.9152930Z test diff_window_covers_every_change ... ok
+m3 properties release (macos-latest)	Exposure algebra properties, 4096 cases	2026-11-03T11:00:42.9331580Z test set_exposure_preserves_the_drawing_sequence ... ok
+m3 properties release (macos-latest)	Exposure algebra properties, 4096 cases	2026-11-03T11:00:42.9333530Z test result: ok. 16 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.09s

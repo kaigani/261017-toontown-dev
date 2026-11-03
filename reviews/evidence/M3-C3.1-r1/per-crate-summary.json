@@ -1,0 +1,20 @@
+{
+  "anim-initial.txt": {
+    "passed": 16,
+    "failed": 0,
+    "ignored": 0,
+    "sha256": "77f800c383ef32a4447cab98415cd9ff8078e986e1cccab4b2cbf6b0fa6bdf4d"
+  },
+  "executor-initial.txt": {
+    "passed": 644,
+    "failed": 0,
+    "ignored": 8,
+    "sha256": "a8f37ce0b947991ab03c908223450f308a4a206cd763a8b15b97000566db858e"
+  },
+  "mcp-initial.txt": {
+    "passed": 70,
+    "failed": 0,
+    "ignored": 3,
+    "sha256": "14dcd4dfd7da4ea591543360284f8df750eea0777e3eb5f36bed4dd2b56b6974"
+  }
+}
