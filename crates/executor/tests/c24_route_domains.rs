@@ -983,6 +983,9 @@ struct MaskTrace {
     zones: Vec<(usize, usize, Vec<usize>)>,
 }
 
+/// A directed unit edge leaving a lattice vertex: its end, its ink region, the paper component on its left.
+type UnitEdge = ((i64, i64), usize, usize);
+
 fn trace_mask(mask: &[Vec<bool>]) -> MaskTrace {
     let (hgt, wid) = (mask.len() as i64, mask[0].len() as i64);
     let ink = |x: i64, y: i64| x >= 0 && y >= 0 && x < wid && y < hgt && mask[y as usize][x as usize];
@@ -1004,12 +1007,16 @@ fn trace_mask(mask: &[Vec<bool>]) -> MaskTrace {
                     border |= cx == 0 || cy == 0 || cx == wid - 1 || cy == hgt - 1;
                     for &(dx, dy) in neighbours {
                         let (nx, ny) = (cx + dx, cy + dy);
-                        if nx >= 0 && ny >= 0 && nx < wid && ny < hgt && ink(nx, ny) == is_ink {
-                            if lab[ny as usize][nx as usize] == usize::MAX - 1 {
-                                lab[ny as usize][nx as usize] = n;
-                                stack.push((nx, ny));
-                                comp.push((nx, ny));
-                            }
+                        if nx >= 0
+                            && ny >= 0
+                            && nx < wid
+                            && ny < hgt
+                            && ink(nx, ny) == is_ink
+                            && lab[ny as usize][nx as usize] == usize::MAX - 1
+                        {
+                            lab[ny as usize][nx as usize] = n;
+                            stack.push((nx, ny));
+                            comp.push((nx, ny));
                         }
                     }
                 }
@@ -1032,7 +1039,7 @@ fn trace_mask(mask: &[Vec<bool>]) -> MaskTrace {
         if x < 0 || y < 0 || x >= wid || y >= hgt { usize::MAX } else { paper_lab[y as usize][x as usize] }
     };
     // Directed unit edges, ink on the right: (start, end, ink region, paper component on the left).
-    let mut out: BTreeMap<(i64, i64), Vec<((i64, i64), usize, usize)>> = BTreeMap::new();
+    let mut out: BTreeMap<(i64, i64), Vec<UnitEdge>> = BTreeMap::new();
     for y in 0..hgt {
         for x in 0..wid {
             if !ink(x, y) {
