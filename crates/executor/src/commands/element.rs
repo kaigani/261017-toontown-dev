@@ -512,7 +512,7 @@ pub(crate) struct ParentPegResult {
 }
 
 /// The elements of an `elementIds?` parameter: given, else the selected rows, else the current element.
-fn targets(cx: &Cx, given: Option<&[String]>) -> Result<Vec<Id>, CommandError> {
+pub(crate) fn targets(cx: &Cx, given: Option<&[String]>) -> Result<Vec<Id>, CommandError> {
     match given {
         Some(list) => {
             let mut out = Vec::new();

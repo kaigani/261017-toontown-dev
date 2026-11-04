@@ -5,6 +5,8 @@
 //! parameters. Every other spec A entry has a generated declaration (`tt_registry::declared`, ADR-0013 §1).
 
 pub(crate) mod agent;
+pub(crate) mod anim_common;
+pub(crate) mod anim_eval;
 pub(crate) mod app;
 pub(crate) mod bundle;
 pub(crate) mod cell;
@@ -321,6 +323,10 @@ pub(crate) static ALL: &[&Command] = &[
     &element_bank::ELEMENT_DRAWING_LOCK_SET,
     &element_bank::ELEMENT_DRAWING_CHANGED,
     // xsheet (M3 C3.1)
+    &anim_eval::ANIM_EVALUATE,
+    &anim_eval::ANIM_PROJECTION_GET,
+    &anim_eval::ANIM_PATH_SAMPLE,
+    &anim_eval::ANIM_FUNCTION_SAMPLE,
     &xsheet::XSHEET_EXPOSURES_GET,
     &xsheet::XSHEET_EXPOSURES_SET,
     &xsheet::XSHEET_LIGHT_TABLE_LIST,

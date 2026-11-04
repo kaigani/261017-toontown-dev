@@ -46,7 +46,7 @@ fn find_in_tree<'a>(
     None
 }
 
-fn ancestors_hidden(doc: &Document, nodes: &[TreeNode], id: &Id) -> bool {
+pub(crate) fn ancestors_hidden(doc: &Document, nodes: &[TreeNode], id: &Id) -> bool {
     fn path<'a>(nodes: &'a [TreeNode], id: &Id, acc: &mut Vec<&'a Id>) -> bool {
         for n in nodes {
             if &n.id == id {
