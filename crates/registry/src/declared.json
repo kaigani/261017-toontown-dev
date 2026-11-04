@@ -19613,6 +19613,15 @@
        "description": "Cycle or offset.",
        "x-since": "1.0"
       },
+      "cycleLength": {
+       "type": "integer",
+       "maximum": 2147483647,
+       "minimum": 1,
+       "description": "`fill` loops: the cycle length in frames, which `duration` and `loops` cannot express when the last cycle is\npartial (SI-089).",
+       "x-unit": "frame",
+       "x-omitDefault": true,
+       "x-since": "1.0"
+      },
       "role": {
        "$ref": "#/$defs/Role",
        "description": "Composite role.",

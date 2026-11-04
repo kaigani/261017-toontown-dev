@@ -1168,9 +1168,9 @@ pub(crate) fn element_delete(cx: &mut Cx, p: DeleteParams) -> Result<DeleteResul
         ];
         // A scene keeps at least one camera; the first remaining in Timeline order replaces a deleted current one
         // (05 §12.1).
-        super::anim_camera::refuse_last_camera(&doc, &scene, &|c| gone.contains(c))?;
+        super::anim_camera::refuse_last_camera(&doc, scene, &|c| gone.contains(c))?;
         if sc.current_camera_id().as_ref().is_some_and(|c| gone.contains(c)) {
-            let next = super::anim_camera::next_current(&doc, &scene, &|c| gone.contains(c));
+            let next = super::anim_camera::next_current(&doc, scene, &|c| gone.contains(c));
             ops.push(op("replace", "/currentCameraId", Some(json!(next.as_ref().map(Id::as_str)))));
             if let Some(n) = next {
                 new_current.push((scene.clone(), n));

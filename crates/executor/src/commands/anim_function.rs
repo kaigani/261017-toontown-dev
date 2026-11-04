@@ -10,7 +10,7 @@ use serde_json::{Value, json};
 use tt_anim::function::preset_points;
 use tt_anim::node::NodeData;
 use tt_anim::num::tidy;
-use tt_anim::tcb::{self, Path};
+use tt_anim::tcb::Path;
 use tt_model::Id;
 use tt_model::entities::channel::{CurveType, Easing, HandleMode};
 use tt_model::entities::element::Element;
@@ -157,7 +157,7 @@ pub(crate) fn anim_function_list(cx: &mut Cx, p: NodeParams) -> Result<FunctionL
     let id = node_id(cx, &p.node_id)?;
     let e = node(&doc, &id)?;
     let stored = e.channels().clone().unwrap_or_default();
-    let has_path = stored.get("position").is_some();
+    let has_path = stored.contains_key("position");
     let channels = e
         .element_type()
         .allowed_channels()

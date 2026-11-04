@@ -2,7 +2,7 @@
 //! staged edit of an element's `channels`, and evaluator set-up. Command frames are scene frames (05 §19.1.4); keys are
 //! stored in local frames (05 §1.6).
 
-use std::collections::{BTreeMap, BTreeSet};
+use std::collections::BTreeSet;
 
 use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
@@ -454,6 +454,3 @@ impl From<[f64; 2]> for P2 {
         Self { x: tt_anim::num::tidy(p[0]), y: tt_anim::num::tidy(p[1]) }
     }
 }
-
-/// The current scene frame span of keys by name, for readers.
-pub(crate) type KeysByChannel = BTreeMap<String, Vec<Value>>;

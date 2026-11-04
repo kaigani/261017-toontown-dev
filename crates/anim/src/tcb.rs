@@ -388,7 +388,7 @@ pub fn travel(path: &Path, velocity: &Velocity, node_lock_depth: bool, f: f64) -
     if f >= path.key_frame(last) {
         let i = path.key_indices()[last];
         let tweened = last > 0 && !path.points[path.key_indices()[last - 1]].constant;
-        return Travel { position: path.points[i].pos, at: (tweened && i > 0).then_some((i - 1, 1.0)) };
+        return Travel { position: path.points[i].pos, at: (tweened && i > 0).then(|| (i - 1, 1.0)) };
     }
     let j = key_segment(path, f);
     let (a, b) = (path.key_indices()[j], path.key_indices()[j + 1]);

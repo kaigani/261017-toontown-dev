@@ -403,10 +403,11 @@ jobs:
         run: |
           mkdir -p out
           status=0
-          TT_MEASURE=1 cargo test --release --locked --no-fail-fast -p tt-executor --test c24_budgets --test c24_aggregate --test c31_budgets -- --ignored --nocapture || status=1
+          TT_MEASURE=1 cargo test --release --locked --no-fail-fast -p tt-executor --test c24_budgets --test c24_aggregate --test c31_budgets --test c32_budgets -- --ignored --nocapture || status=1
           # The raw observations are kept even when an assertion fails.
           cp -r target/evidence/c24 out/c24-measurements || true
           cp -r target/evidence/c31 out/c31-measurements || true
+          cp -r target/evidence/c32 out/c32-measurements || true
           exit $status
 
       - uses: actions/upload-artifact@v7
@@ -441,6 +442,9 @@ jobs:
 
       - name: Exposure algebra properties, 4096 cases
         run: TT_C31_CASES=4096 cargo test --release --locked -p tt-anim --test c31_exposure
+
+      - name: Evaluator properties, 4096 cases
+        run: TT_C32_CASES=4096 cargo test --release --locked -p tt-anim --test c32_maths
 
   # End-to-end scenario E2 (paint by id, 11 §14.8; M2 C2.4 readiness item 3) through the official Python SDK against the
   # release binary: vectorize, validate, paint by ID, recolour, render, undo/redo, save/open, `--run` replay from the
@@ -485,6 +489,66 @@ jobs:
           name: e2-${{ runner.os }}
           path: out/e2/
           if-no-files-found: error
+
+  # End-to-end scenario E4 numeric (11 §14.8; M3 C3.2 readiness item 11) through the official Python SDK against the
+  # release binary: a posed puppet compared within 1e-6 with the script's own formulas; the same requests from the same
+  # saved base in new processes answer the same bytes. Inputs, outputs, versions and the head SHA are kept as artifacts.
+  e4:
+    name: e4 release (${{ matrix.os }})
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [windows-latest, macos-latest]
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v7
+
+      - name: Rust toolchain (pinned in rust-toolchain.toml)
+        run: |
+          tc=$(sed -n 's/^channel = "\(.*\)"//p' rust-toolchain.toml)
+          rustup toolchain install "$tc" --profile minimal
+          rustup override set "$tc"
+          rustc --version
+
+      - uses: Swatinem/rust-cache@v2
+        with:
+          key: headless-release
+
+      - name: E4 cut-out rig, numeric (official Python SDK, release binary)
+        run: |
+          cargo build --release --locked -p tt-headless
+          exe=target/release/toontown-headless
+          PY=python3
+          if [ "$RUNNER_OS" = "Windows" ]; then exe="$exe.exe"; PY=python; fi
+          $PY -m venv .venv-e4
+          VPY=.venv-e4/bin/python
+          if [ "$RUNNER_OS" = "Windows" ]; then VPY=.venv-e4/Scripts/python.exe; fi
+          $VPY -m pip install --quiet "mcp==2.0.0"
+          PYTHONIOENCODING=utf-8 $VPY scripts/e4-cutout-numeric.py "$exe" out/e4
+
+      - uses: actions/upload-artifact@v7
+        if: always()
+        with:
+          name: e4-${{ runner.os }}
+          path: out/e4/
+          if-no-files-found: error
+
+  # ADR-0019: the evaluator's results are byte-identical across operating systems.
+  e4-cross-os:
+    name: e4 cross-OS
+    needs: e4
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/download-artifact@v8
+        with:
+          path: e4-out
+          pattern: e4-*
+      - name: Windows and macOS answer the same bytes
+        run: |
+          sha256sum e4-out/e4-Windows/evaluate.json e4-out/e4-macOS/evaluate.json
+          cmp e4-out/e4-Windows/evaluate.json e4-out/e4-macOS/evaluate.json
 
   # Unsigned desktop bundles + automated IPC round-trip benchmark in the real webview.
   bundle:

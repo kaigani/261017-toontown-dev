@@ -5,11 +5,16 @@
 
 use proptest::prelude::*;
 use tt_anim::camera::{CameraView, NEAR_PLANE};
-use tt_anim::function::{self, BEZIER_MAX_ITERATIONS, KeyView, preset_points};
+use tt_anim::function::{self, KeyView, preset_points};
 use tt_anim::matrix::Mat4;
 use tt_anim::node::local_matrix;
 use tt_anim::tcb::{self, Path, Point, Velocity};
 use tt_model::entities::channel::{CurveType, Easing};
+
+/// Property cases: 256 in `check`, 4096 in `m3 properties release`.
+fn cases() -> u32 {
+    std::env::var("TT_C32_CASES").ok().and_then(|v| v.parse().ok()).unwrap_or(256)
+}
 
 /// An exact rational (enough range for the small test inputs).
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
@@ -102,7 +107,7 @@ fn decomposition_reports_a_negative_sy_for_a_mirror() {
 }
 
 proptest! {
-    #![proptest_config(ProptestConfig::with_cases(256))]
+    #![proptest_config(ProptestConfig::with_cases(cases()))]
 
     #[test]
     fn decomposition_inverts_the_composition(
@@ -176,7 +181,8 @@ fn hermite_with_tcb_equals_the_exact_rational_formula() {
     let after = [xs[1] - xs[0], xs[2] - xs[1], xs[3] - xs[2], xs[3] - xs[2]];
     for seg in 0..3 {
         let (d0, _) = exact_tangents(before[seg], after[seg], tcbs[seg].0, tcbs[seg].1, tcbs[seg].2);
-        let (_, d1) = exact_tangents(before[seg + 1], after[seg + 1], tcbs[seg + 1].0, tcbs[seg + 1].1, tcbs[seg + 1].2);
+        let (_, d1) =
+            exact_tangents(before[seg + 1], after[seg + 1], tcbs[seg + 1].0, tcbs[seg + 1].1, tcbs[seg + 1].2);
         for k in 0..=8 {
             let s = Q::new(k, 8);
             let want = exact_hermite(xs[seg], d0, xs[seg + 1], d1, s);
@@ -241,14 +247,19 @@ fn arc_length_is_the_64_step_chord_sum_and_near_the_true_length() {
     let c = |seg: usize, s: f64| -> [f64; 3] {
         let p = [[0.0, 0.0, 0.0], [4.0, 3.0, 0.0], [8.0, 0.0, 2.0]];
         let m = |a: [f64; 3], b: [f64; 3]| [(b[0] - a[0]) / 2.0, (b[1] - a[1]) / 2.0, (b[2] - a[2]) / 2.0];
-        let reflect_start = [p[0][0] - (p[1][0] - p[0][0]), p[0][1] - (p[1][1] - p[0][1]), p[0][2] - (p[1][2] - p[0][2])];
+        let reflect_start =
+            [p[0][0] - (p[1][0] - p[0][0]), p[0][1] - (p[1][1] - p[0][1]), p[0][2] - (p[1][2] - p[0][2])];
         let reflect_end = [2.0 * p[2][0] - p[1][0], 2.0 * p[2][1] - p[1][1], 2.0 * p[2][2] - p[1][2]];
-        let (d0, d1) = if seg == 0 { (m(reflect_start, p[1]), m(p[0], p[2])) } else { (m(p[0], p[2]), m(p[1], reflect_end)) };
+        let (d0, d1) =
+            if seg == 0 { (m(reflect_start, p[1]), m(p[0], p[2])) } else { (m(p[0], p[2]), m(p[1], reflect_end)) };
         let (a, b) = (p[seg], p[seg + 1]);
         let (s2, s3) = (s * s, s * s * s);
         let mut q = [0.0; 3];
         for i in 0..3 {
-            q[i] = (2.0 * s3 - 3.0 * s2 + 1.0) * a[i] + (s3 - 2.0 * s2 + s) * d0[i] + (-2.0 * s3 + 3.0 * s2) * b[i] + (s3 - s2) * d1[i];
+            q[i] = (2.0 * s3 - 3.0 * s2 + 1.0) * a[i]
+                + (s3 - 2.0 * s2 + s) * d0[i]
+                + (-2.0 * s3 + 3.0 * s2) * b[i]
+                + (s3 - s2) * d1[i];
         }
         q
     };
@@ -371,11 +382,10 @@ fn spline_handles_constant_segments_and_holds() {
     let flat = |_: f64| 7.0;
     assert_eq!(function::evaluate(CurveType::VelocityBased, &vb, 3.0, Some(&flat)), Some(50.0));
     assert_eq!(function::evaluate(CurveType::VelocityBased, &vb, 3.0, None), Some(50.0));
-    assert!(BEZIER_MAX_ITERATIONS >= 30, "the time solve reaches 1e-9");
 }
 
 proptest! {
-    #![proptest_config(ProptestConfig::with_cases(256))]
+    #![proptest_config(ProptestConfig::with_cases(cases()))]
 
     /// x is monotone for clamped handles, so a later frame never has an earlier parameter; checked through an
     /// independent bisection on the same polynomial.
@@ -423,24 +433,30 @@ fn velocity_pins_clamping_and_intermediate_keys() {
     assert_eq!(linear.value(&path, 500.0), 10.0);
     assert_eq!(tcb::travel(&path, &linear, false, 500.0).position, [10.0, 0.0, 0.0]);
     // A pause: u stays 0.5 from frame 3 to frame 9 (stored normalised).
-    let pause = Velocity {
-        curve: CurveType::Interpolation,
-        keys: vec![KeyView::plain(3.0, 0.5), KeyView::plain(9.0, 0.5)],
-    };
+    let pause =
+        Velocity { curve: CurveType::Interpolation, keys: vec![KeyView::plain(3.0, 0.5), KeyView::plain(9.0, 0.5)] };
     assert_eq!(pause.value(&path, 3.0), 5.0);
     assert_eq!(pause.value(&path, 6.0), 5.0);
     assert_eq!(pause.value(&path, 2.0), 2.5);
     // A V outside the segment travels only to its end (05 §10.5: clamped), and may run backward inside it.
-    let over = Velocity {
-        curve: CurveType::Interpolation,
-        keys: vec![KeyView::plain(4.0, 1.5), KeyView::plain(8.0, -0.5)],
-    };
+    let over =
+        Velocity { curve: CurveType::Interpolation, keys: vec![KeyView::plain(4.0, 1.5), KeyView::plain(8.0, -0.5)] };
     assert_eq!(tcb::travel(&path, &over, false, 4.0).position, [10.0, 0.0, 0.0]);
     assert_eq!(tcb::travel(&path, &over, false, 8.0).position, [0.0, 0.0, 0.0]);
     assert_eq!(over.value(&path, 4.0), 15.0, "V itself is reported unclamped");
     // Zero-length segments stay put.
     let twin = Path::new(vec![point(2.0, 2.0, 0.0, Some(1.0)), point(2.0, 2.0, 0.0, Some(9.0))], false);
     assert_eq!(tcb::travel(&twin, &linear, false, 5.0).position, [2.0, 2.0, 0.0]);
+}
+
+#[test]
+fn a_single_keyframe_holds_on_both_sides() {
+    let one = Path::new(vec![point(3.0, 4.0, 5.0, Some(12.0))], false);
+    let v = Velocity::default();
+    for f in [1.0, 12.0, 13.0, 1000.0] {
+        assert_eq!(tcb::travel(&one, &v, false, f).position, [3.0, 4.0, 5.0], "frame {f}");
+        assert_eq!(v.value(&one, f), 0.0);
+    }
 }
 
 #[test]
@@ -457,10 +473,8 @@ fn passage_frames_are_found_to_the_stated_tolerance() {
     let eased_v = Velocity { curve: CurveType::Interpolation, keys: vec![eased(Easing::EaseInOut)] };
     assert_eq!(eased_v.passage(&path, 0, 5.0, &mut spend), Ok(6.0));
     // The smallest frame of a non-monotonic curve: V passes 8 on the way up at frame 3, not on the way back.
-    let back = Velocity {
-        curve: CurveType::Interpolation,
-        keys: vec![KeyView::plain(4.0, 1.2), KeyView::plain(8.0, 0.1)],
-    };
+    let back =
+        Velocity { curve: CurveType::Interpolation, keys: vec![KeyView::plain(4.0, 1.2), KeyView::plain(8.0, 0.1)] };
     assert_eq!(back.passage(&path, 0, 8.0, &mut spend), Ok(3.0));
     // An arc at or before the start is passed at the start; a zero-length segment too.
     assert_eq!(Velocity::default().passage(&path, 0, 0.0, &mut spend), Ok(1.0));
@@ -567,7 +581,7 @@ fn near_plane_roll_and_rigid_camera() {
 }
 
 proptest! {
-    #![proptest_config(ProptestConfig::with_cases(256))]
+    #![proptest_config(ProptestConfig::with_cases(cases()))]
 
     #[test]
     fn unprojecting_inverts_projection(

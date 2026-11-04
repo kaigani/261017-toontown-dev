@@ -104,8 +104,7 @@ impl<'d, E> Evaluator<'d, E> {
         }
         let mut chain = vec![id.clone()];
         let mut base = Mat4::IDENTITY;
-        loop {
-            let Some(top) = chain.last().cloned() else { break };
+        while let Some(top) = chain.last().cloned() {
             if let Some(m) = self.memo.get(&top) {
                 base = *m;
                 chain.pop();

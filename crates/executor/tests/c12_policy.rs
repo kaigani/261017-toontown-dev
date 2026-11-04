@@ -64,7 +64,14 @@ fn read_only_derived_transient_and_command_properties_are_refused() {
     // `anim.transform.set` is implemented (M3 C3.2): its properties now run through it, its refusals included.
     let e = patch_err(&h, &element, json!([{ "op": "replace", "path": "/transform/offset/x", "value": 2e7 }]));
     assert_eq!(e.code, "anim.valueOutOfRange");
-    assert!(run(&h, "doc.object.patch", json!({ "targets": [element], "ops": [{ "op": "replace", "path": "/transform/offset/x", "value": 1 }] })).is_ok());
+    assert!(
+        run(
+            &h,
+            "doc.object.patch",
+            json!({ "targets": [element], "ops": [{ "op": "replace", "path": "/transform/offset/x", "value": 1 }] })
+        )
+        .is_ok()
+    );
     assert_eq!(get(&h, &element)["transform"]["offset"]["x"], 1.0);
     // Replacing a value object that contains x-command properties is the same.
     let mut t = get(&h, &element)["transform"].clone();

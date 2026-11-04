@@ -496,7 +496,7 @@ pub(crate) fn anim_path_set(cx: &mut Cx, p: PathSetParams) -> Result<PathSetResu
         out.push(v);
     }
     // The integrity rule (05 §9.6): control points beyond the end keyframes become keyframes.
-    settle_ends(&mut out, &data, &mut warnings, &mut edit, cx)?;
+    settle_ends(&mut out, &data, &mut warnings, &mut edit)?;
     let ids: Vec<String> = out.iter().map(|v| v["id"].as_str().unwrap_or_default().to_owned()).collect();
     // Velocity keys outside the new span go; those inside keep their normalised timing.
     let lo = out.first().and_then(frame_of);
@@ -546,7 +546,6 @@ fn settle_ends(
     data: &NodeData,
     warnings: &mut Vec<String>,
     edit: &mut ChannelEdit,
-    _cx: &mut Cx,
 ) -> Result<(), CommandError> {
     let taken: Vec<u32> = points.iter().filter_map(frame_of).collect();
     let free = |from: u32, up: bool, taken: &[u32]| -> Option<u32> {
@@ -816,7 +815,6 @@ pub(crate) fn anim_path_point_set(cx: &mut Cx, p: PointSetParams) -> Result<Poin
         by_node.entry(e).or_default().push(pid);
     }
     let mut changes = Changes::default();
-    let mut warnings = Vec::new();
     let mut edits = Vec::new();
     for (id, pids) in &by_node {
         let data = data_of(&doc, id, &mut budget)?;
@@ -928,9 +926,7 @@ pub(crate) fn anim_path_point_set(cx: &mut Cx, p: PointSetParams) -> Result<Poin
     for (data, edit) in &edits {
         emit_changed(cx, data, edit);
     }
-    warnings.dedup();
-    let _ = &mut warnings;
-    Ok(PointSetResult { point_ids: p.point_ids, warnings })
+    Ok(PointSetResult { point_ids: p.point_ids, warnings: Vec::new() })
 }
 
 fn set_point_fields(m: &mut Map<String, Value>, p: &PointSetParams) {

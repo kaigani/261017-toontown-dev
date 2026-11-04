@@ -51127,6 +51127,15 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
         description: "Cycle or offset.",
         "x-since": "1.0",
       },
+      cycleLength: {
+        type: "integer",
+        maximum: 2147483647,
+        minimum: 1,
+        description: "`fill` loops: the cycle length in frames, which `duration` and `loops` cannot express when the last cycle is\npartial (SI-089).",
+        "x-unit": "frame",
+        "x-omitDefault": true,
+        "x-since": "1.0",
+      },
       role: {
         $ref: "#/$defs/fx.get.Role",
         description: "Composite role.",
@@ -93701,6 +93710,8 @@ export interface fx_get_Element {
   loopType: fx_get_LoopType;
   /** Cycle or offset. */
   positionLoop: fx_get_PositionLoop;
+  /** `fill` loops: the cycle length in frames, which `duration` and `loops` cannot express when the last cycle is partial (SI-089). */
+  cycleLength?: number;
   /** Composite role. */
   role: fx_get_Role;
   /** Deformable by a skeleton. */

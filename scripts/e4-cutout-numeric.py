@@ -4,8 +4,8 @@ Python SDK against the real `toontown-headless` binary.
 
 Usage: python scripts/e4-cutout-numeric.py <path to toontown-headless> <out dir>
 
-Chain: new project → a puppet (master peg → torso → head, arm peg with a mirror → forearm), element and peg pivots at
-the joints → three posed keyframes → `anim.evaluate` at the keyframes and between them → compared within 1e-6 with this
+Chain: new project → a puppet (master peg → torso peg → head, arm peg with a mirror → forearm; drawings are leaves, as
+04 §9.2 and SI-092 have it), element and peg pivots at the joints → three posed keyframes → `anim.evaluate` at the keyframes and between them → compared within 1e-6 with this
 script's own formulas (exact `fractions` where the angles allow, an independent evaluator otherwise; no product code) →
 undo and redo → save → the saved project opened twice in new processes, the same requests answering the same bytes.
 `evaluate.json` (IDs replaced by names, so it does not depend on the project's random ID) is byte-compared between
@@ -33,6 +33,7 @@ from mcp.client.stdio import stdio_client
 TOLERANCE = 1e-6
 CHECKS = []
 NAMES = ["Master", "Torso", "Head", "ArmPeg", "Forearm"]
+PEGS = ("Master", "Torso", "ArmPeg")
 PARENTS = {"Master": None, "Torso": "Master", "Head": "Torso", "ArmPeg": "Torso", "Forearm": "ArmPeg"}
 KEY_FRAMES = [1, 12, 24]
 BETWEEN = [6, 18.5, 3.25, 23]
@@ -40,7 +41,7 @@ BETWEEN = [6, 18.5, 3.25, 23]
 # Static values (05 §1.5). Pivots: the master's between the feet, each part's at its joint.
 STATIC = {
     "Master": {"offset": (0, 0, 0), "rotation": 0, "scale": (1, 1), "skew": 0, "cr": (0, -2), "cs": (0, -2)},
-    "Torso": {"offset": (0, 1, Q(1, 4)), "rotation": 0, "scale": (1, 1), "skew": 0, "cr": (0, -1), "cs": (0, 0)},
+    "Torso": {"offset": (0, 1, Q(1, 4)), "rotation": 0, "scale": (1, 1), "skew": 0, "cr": (0, -1), "cs": (0, -1)},
     "Head": {"offset": (0, 2, Q(1, 100)), "rotation": 0, "scale": (1, 1), "skew": 0, "cr": (0, Q(-1, 2)), "cs": (0, Q(-1, 2))},
     "ArmPeg": {"offset": (1, 1, 0), "rotation": 0, "scale": (-1, 1), "skew": 0, "cr": (0, 0), "cs": (0, 0)},
     "Forearm": {"offset": (Q(3, 2), 0, Q(-1, 100)), "rotation": 0, "scale": (1, 1), "skew": 0, "cr": (Q(-1, 2), 0), "cs": (Q(-1, 2), 0)},
@@ -268,7 +269,7 @@ async def build(binary, work):
             await done(await cmd("project.create", {"name": "E4", "path": str(pkg)}))
             ids = {}
             for name in NAMES:
-                kind = "peg" if name in ("Master", "ArmPeg") else "drawing"
+                kind = "peg" if name in PEGS else "drawing"
                 created = await cmd("element.create", {"type": kind, "name": name})
                 ids[name] = created["elementIds"][0]
                 if kind == "peg":
@@ -277,7 +278,7 @@ async def build(binary, work):
                 if parent:
                     await cmd("element.parent.set", {"elementIds": [ids[name]], "parentId": ids[parent]})
             # Content, so bounds and screen boxes exist: a 2 × 1 field rectangle on each drawing part.
-            for name in ("Torso", "Head", "Forearm"):
+            for name in ("Head", "Forearm"):
                 d = await cmd("element.drawing.create", {"elementId": ids[name], "name": "1", "exposeFrom": 1, "exposeTo": 24})
                 await cmd("draw.rectangle.add", {"drawingId": d["drawingId"], "from": {"x": -100, "y": -50}, "to": {"x": 100, "y": 50}})
             # Static values and pivots.
@@ -289,7 +290,7 @@ async def build(binary, work):
                     "rotation": float(st["rotation"]),
                     "scale": dict(zip("xy", (float(x) for x in st["scale"]))),
                 }
-                peg = name in ("Master", "ArmPeg")
+                peg = name in PEGS
                 if peg:
                     params["pivot"] = dict(zip("xy", (float(x) for x in st["cr"])))
                 else:

@@ -7,7 +7,6 @@ use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
 use serde_json::{Value, json};
 use tt_anim::hierarchy as h;
-use tt_anim::node::NodeData;
 use tt_anim::num::tidy;
 use tt_model::Id;
 use tt_model::entities::channel::Easing;
