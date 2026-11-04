@@ -593,7 +593,7 @@ model_struct! {
         /// `fill` loops: the cycle length in frames, which `duration` and `loops` cannot express when the last cycle is
         /// partial (SI-089).
         #[serde(default, skip_serializing_if = "Option::is_none")]
-        #[schemars(range(min = 1), extend("x-unit" = "frame", "x-kindSpecific" = true))]
+        #[schemars(range(min = 1), extend("x-unit" = "frame", "x-omitDefault" = true))]
         cycle_length: Option<u32>,
         /// Composite role.
         role: Role,

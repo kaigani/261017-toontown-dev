@@ -64,11 +64,8 @@ impl<'d, E> Evaluator<'d, E> {
     pub fn node(&mut self, id: &Id) -> Result<&NodeData, EvalError<E>> {
         if !self.nodes.contains_key(id) {
             let e = self.doc.element(id).ok_or_else(|| EvalError::NotFound(id.clone()))?;
-            let scene = self
-                .doc
-                .scene_of(id)
-                .and_then(|s| self.doc.scene(s))
-                .ok_or_else(|| EvalError::NotFound(id.clone()))?;
+            let scene =
+                self.doc.scene_of(id).and_then(|s| self.doc.scene(s)).ok_or_else(|| EvalError::NotFound(id.clone()))?;
             (self.spend)(NodeData::cost(e))?;
             let data = NodeData::read(self.doc, scene.tree(), e, self.doc.scene_length(scene));
             self.nodes.insert(id.clone(), data);

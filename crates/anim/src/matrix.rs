@@ -25,8 +25,7 @@ pub struct Decomposition {
 
 impl Mat4 {
     /// The identity.
-    pub const IDENTITY: Self =
-        Self([1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0]);
+    pub const IDENTITY: Self = Self([1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0]);
 
     /// T(x, y, z).
     #[must_use]

@@ -96,13 +96,7 @@ fn line(a: &KeyView, b: &KeyView, f: f64) -> f64 {
 /// The value of the segment `a → b` at `f`, strictly between their frames. `progress` is the node's `V(f)` for a
 /// `velocityBased` curve (none without a motion path: the time fraction applies, as for `V(t1) = V(t0)`).
 #[must_use]
-pub fn segment_value(
-    curve: CurveType,
-    a: &KeyView,
-    b: &KeyView,
-    f: f64,
-    progress: Option<&dyn Fn(f64) -> f64>,
-) -> f64 {
+pub fn segment_value(curve: CurveType, a: &KeyView, b: &KeyView, f: f64, progress: Option<&dyn Fn(f64) -> f64>) -> f64 {
     if a.constant {
         return a.value;
     }

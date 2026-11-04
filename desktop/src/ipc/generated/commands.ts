@@ -255,9 +255,17 @@ export const COMMAND_INDEX = {
     params: "anim.camera.create.params",
     result: "anim.camera.create.result",
     examples: [
-      {},
+      {
+        name: "Wide",
+        fov: 60,
+        position: {
+          x: 0,
+          y: 0,
+          z: 20,
+        },
+        makeCurrent: true,
+      },
     ],
-    milestone: "M3 C3.2",
   },
   "anim.camera.current.get": {
     kind: "query",
@@ -266,7 +274,6 @@ export const COMMAND_INDEX = {
     examples: [
       {},
     ],
-    milestone: "M3 C3.2",
   },
   "anim.camera.current.set": {
     kind: "action",
@@ -274,10 +281,9 @@ export const COMMAND_INDEX = {
     result: "anim.camera.current.set.result",
     examples: [
       {
-        cameraId: "scene:#1",
+        cameraId: "scene:\"Intro\"/element:\"Camera\"",
       },
     ],
-    milestone: "M3 C3.2",
   },
   "anim.camera.currentChanged": {
     kind: "event",
@@ -286,7 +292,6 @@ export const COMMAND_INDEX = {
     examples: [
       {},
     ],
-    milestone: "M3 C3.2",
     event: true,
   },
   "anim.camera.delete": {
@@ -295,19 +300,19 @@ export const COMMAND_INDEX = {
     result: "anim.camera.delete.result",
     examples: [
       {
-        cameraId: "scene:#1",
+        cameraId: "scene:\"Intro\"/element:\"Wide\"",
       },
     ],
-    milestone: "M3 C3.2",
   },
   "anim.camera.get": {
     kind: "query",
     params: "anim.camera.get.params",
     result: "anim.camera.get.result",
     examples: [
-      {},
+      {
+        frame: 1,
+      },
     ],
-    milestone: "M3 C3.2",
   },
   "anim.camera.list": {
     kind: "query",
@@ -316,7 +321,6 @@ export const COMMAND_INDEX = {
     examples: [
       {},
     ],
-    milestone: "M3 C3.2",
   },
   "anim.camera.select": {
     kind: "ui",
@@ -333,10 +337,11 @@ export const COMMAND_INDEX = {
     result: "anim.camera.set.result",
     examples: [
       {
-        cameraId: "scene:#1",
+        cameraId: "scene:\"Intro\"/element:\"Camera\"",
+        fov: 60,
+        roll: 5,
       },
     ],
-    milestone: "M3 C3.2",
   },
   "anim.changed": {
     kind: "event",
@@ -345,7 +350,6 @@ export const COMMAND_INDEX = {
     examples: [
       {},
     ],
-    milestone: "M3 C3.2",
     event: true,
   },
   "anim.channel.copy": {
@@ -507,10 +511,25 @@ export const COMMAND_INDEX = {
     result: "anim.evaluate.result",
     examples: [
       {
-        nodeIds: [],
+        nodeIds: [
+          "scene:\"Intro\"/element:\"Bob\"",
+        ],
+        frames: [
+          12,
+        ],
+        include: [
+          "world",
+        ],
+      },
+      {
+        nodeIds: [
+          "scene:\"Intro\"/element:\"Bob-P\"",
+        ],
+        frames: [
+          7.5,
+        ],
       },
     ],
-    milestone: "M3 C3.2",
   },
   "anim.flip.apply": {
     kind: "action",
@@ -529,12 +548,11 @@ export const COMMAND_INDEX = {
     result: "anim.function.curveType.set.result",
     examples: [
       {
-        nodeId: "scene:#1",
-        channel: "example",
+        nodeId: "scene:\"Intro\"/element:\"Bob\"",
+        channel: "rotation",
         curveType: "spline",
       },
     ],
-    milestone: "M3 C3.2",
   },
   "anim.function.get": {
     kind: "query",
@@ -542,11 +560,10 @@ export const COMMAND_INDEX = {
     result: "anim.function.get.result",
     examples: [
       {
-        nodeId: "scene:#1",
-        channel: "example",
+        nodeId: "scene:\"Intro\"/element:\"Bob\"",
+        channel: "rotation",
       },
     ],
-    milestone: "M3 C3.2",
   },
   "anim.function.key.add": {
     kind: "action",
@@ -554,12 +571,12 @@ export const COMMAND_INDEX = {
     result: "anim.function.key.add.result",
     examples: [
       {
-        nodeId: "scene:#1",
-        channel: "example",
-        frame: 1,
+        nodeId: "scene:\"Intro\"/element:\"Bob\"",
+        channel: "rotation",
+        frame: 6,
+        value: 10,
       },
     ],
-    milestone: "M3 C3.2",
   },
   "anim.function.key.duplicate": {
     kind: "action",
@@ -567,13 +584,12 @@ export const COMMAND_INDEX = {
     result: "anim.function.key.duplicate.result",
     examples: [
       {
-        nodeId: "scene:#1",
-        channel: "example",
+        nodeId: "scene:\"Intro\"/element:\"Bob\"",
+        channel: "rotation",
         frame: 1,
-        toFrame: 1,
+        toFrame: 6,
       },
     ],
-    milestone: "M3 C3.2",
   },
   "anim.function.key.remove": {
     kind: "action",
@@ -581,12 +597,13 @@ export const COMMAND_INDEX = {
     result: "anim.function.key.remove.result",
     examples: [
       {
-        nodeId: "scene:#1",
-        channel: "example",
-        frames: [],
+        nodeId: "scene:\"Intro\"/element:\"Bob\"",
+        channel: "rotation",
+        frames: [
+          1,
+        ],
       },
     ],
-    milestone: "M3 C3.2",
   },
   "anim.function.key.set": {
     kind: "action",
@@ -594,12 +611,16 @@ export const COMMAND_INDEX = {
     result: "anim.function.key.set.result",
     examples: [
       {
-        nodeId: "scene:#1",
-        channel: "example",
+        nodeId: "scene:\"Intro\"/element:\"Bob\"",
+        channel: "rotation",
         frame: 1,
+        value: 5,
+        right: {
+          dt: 2,
+          dv: 1,
+        },
       },
     ],
-    milestone: "M3 C3.2",
   },
   "anim.function.list": {
     kind: "query",
@@ -607,10 +628,9 @@ export const COMMAND_INDEX = {
     result: "anim.function.list.result",
     examples: [
       {
-        nodeId: "scene:#1",
+        nodeId: "scene:\"Intro\"/element:\"Bob\"",
       },
     ],
-    milestone: "M3 C3.2",
   },
   "anim.function.preset.apply": {
     kind: "action",
@@ -618,12 +638,12 @@ export const COMMAND_INDEX = {
     result: "anim.function.preset.apply.result",
     examples: [
       {
-        nodeId: "scene:#1",
-        channel: "example",
-        preset: "constant",
+        nodeId: "scene:\"Intro\"/element:\"Bob\"",
+        channel: "rotation",
+        preset: "easeInOut",
+        scope: "all",
       },
     ],
-    milestone: "M3 C3.2",
   },
   "anim.function.sample": {
     kind: "query",
@@ -631,13 +651,12 @@ export const COMMAND_INDEX = {
     result: "anim.function.sample.result",
     examples: [
       {
-        nodeId: "scene:#1",
-        channel: "example",
+        nodeId: "scene:\"Intro\"/element:\"Bob\"",
+        channel: "rotation",
         from: 1,
-        to: 1,
+        to: 6,
       },
     ],
-    milestone: "M3 C3.2",
   },
   "anim.function.set": {
     kind: "action",
@@ -645,12 +664,22 @@ export const COMMAND_INDEX = {
     result: "anim.function.set.result",
     examples: [
       {
-        nodeId: "scene:#1",
-        channel: "example",
-        keys: [],
+        nodeId: "scene:\"Intro\"/element:\"Bob\"",
+        channel: "rotation",
+        curveType: "interpolation",
+        keys: [
+          {
+            frame: 1,
+            value: 0,
+            preset: "easeInOut",
+          },
+          {
+            frame: 12,
+            value: 45,
+          },
+        ],
       },
     ],
-    milestone: "M3 C3.2",
   },
   "anim.functionEditor.get": {
     kind: "query",
@@ -750,9 +779,23 @@ export const COMMAND_INDEX = {
     params: "anim.key.add.params",
     result: "anim.key.add.result",
     examples: [
-      {},
+      {
+        nodeIds: [
+          "scene:\"Intro\"/element:\"Bob\"",
+        ],
+        frame: 6,
+      },
+      {
+        nodeIds: [
+          "scene:\"Intro\"/element:\"Bob\"",
+        ],
+        frame: 8,
+        channels: [
+          "rotation",
+          "scale",
+        ],
+      },
     ],
-    milestone: "M3 C3.2",
   },
   "anim.key.list": {
     kind: "query",
@@ -760,10 +803,15 @@ export const COMMAND_INDEX = {
     result: "anim.key.list.result",
     examples: [
       {
-        nodeId: "scene:#1",
+        nodeId: "scene:\"Intro\"/element:\"Bob\"",
+      },
+      {
+        nodeId: "scene:\"Intro\"/element:\"Bob-P\"",
+        from: 1,
+        to: 24,
+        includeDescendants: true,
       },
     ],
-    milestone: "M3 C3.2",
   },
   "anim.key.move": {
     kind: "action",
@@ -771,21 +819,30 @@ export const COMMAND_INDEX = {
     result: "anim.key.move.result",
     examples: [
       {
-        nodeId: "scene:#1",
-        fromFrame: 1,
-        toFrame: 1,
+        nodeId: "scene:\"Intro\"/element:\"Bob\"",
+        fromFrame: 12,
+        toFrame: 14,
       },
     ],
-    milestone: "M3 C3.2",
   },
   "anim.key.remove": {
     kind: "action",
     params: "anim.key.remove.params",
     result: "anim.key.remove.result",
     examples: [
-      {},
+      {
+        nodeIds: [
+          "scene:\"Intro\"/element:\"Bob\"",
+        ],
+        frame: 1,
+      },
+      {
+        nodeIds: [
+          "scene:\"Intro\"/element:\"Bob\"",
+        ],
+        all: true,
+      },
     ],
-    milestone: "M3 C3.2",
   },
   "anim.loop.set": {
     kind: "action",
@@ -793,10 +850,11 @@ export const COMMAND_INDEX = {
     result: "anim.loop.set.result",
     examples: [
       {
-        nodeId: "scene:#1",
+        nodeId: "scene:\"Intro\"/element:\"Bob-P\"",
+        loops: 2,
+        positionLoop: "offset",
       },
     ],
-    milestone: "M3 C3.2",
   },
   "anim.node.get": {
     kind: "query",
@@ -836,10 +894,9 @@ export const COMMAND_INDEX = {
     result: "anim.path.get.result",
     examples: [
       {
-        nodeId: "scene:#1",
+        nodeId: "scene:\"Intro\"/element:\"Bob\"",
       },
     ],
-    milestone: "M3 C3.2",
   },
   "anim.path.lockDepth.set": {
     kind: "action",
@@ -847,12 +904,11 @@ export const COMMAND_INDEX = {
     result: "anim.path.lockDepth.set.result",
     examples: [
       {
-        nodeId: "scene:#1",
+        nodeId: "scene:\"Intro\"/element:\"Bob\"",
         frame: 1,
         enabled: true,
       },
     ],
-    milestone: "M3 C3.2",
   },
   "anim.path.point.add": {
     kind: "action",
@@ -860,11 +916,16 @@ export const COMMAND_INDEX = {
     result: "anim.path.point.add.result",
     examples: [
       {
-        nodeId: "scene:#1",
+        nodeId: "scene:\"Intro\"/element:\"Bob\"",
         kind: "key",
+        frame: 6,
+        position: {
+          x: 1,
+          y: 2,
+          z: 0,
+        },
       },
     ],
-    milestone: "M3 C3.2",
   },
   "anim.path.point.remove": {
     kind: "action",
@@ -872,10 +933,11 @@ export const COMMAND_INDEX = {
     result: "anim.path.point.remove.result",
     examples: [
       {
-        pointIds: [],
+        pointIds: [
+          "scene:\"Intro\"/element:\"Bob\"/channel:\"position\"/key:\"24\"",
+        ],
       },
     ],
-    milestone: "M3 C3.2",
   },
   "anim.path.point.select": {
     kind: "ui",
@@ -892,10 +954,13 @@ export const COMMAND_INDEX = {
     result: "anim.path.point.set.result",
     examples: [
       {
-        pointIds: [],
+        pointIds: [
+          "scene:\"Intro\"/element:\"Bob\"/channel:\"position\"/key:\"24\"",
+        ],
+        x: 5,
+        tension: 0.5,
       },
     ],
-    milestone: "M3 C3.2",
   },
   "anim.path.sample": {
     kind: "query",
@@ -903,10 +968,19 @@ export const COMMAND_INDEX = {
     result: "anim.path.sample.result",
     examples: [
       {
-        nodeId: "scene:#1",
+        nodeId: "scene:\"Intro\"/element:\"Bob\"",
+        from: 1,
+        to: 6,
+      },
+      {
+        nodeId: "scene:\"Intro\"/element:\"Bob-P\"",
+        from: 1,
+        to: 3,
+        step: 0.5,
+        what: "pivot",
+        space: "parent",
       },
     ],
-    milestone: "M3 C3.2",
   },
   "anim.path.set": {
     kind: "action",
@@ -914,11 +988,31 @@ export const COMMAND_INDEX = {
     result: "anim.path.set.result",
     examples: [
       {
-        nodeId: "scene:#1",
-        points: [],
+        nodeId: "scene:\"Intro\"/element:\"Bob\"",
+        points: [
+          {
+            kind: "key",
+            frame: 1,
+            x: -4,
+            y: 0,
+            z: 0,
+          },
+          {
+            kind: "control",
+            x: 0,
+            y: 3,
+            z: 0,
+          },
+          {
+            kind: "key",
+            frame: 12,
+            x: 4,
+            y: 0,
+            z: 0,
+          },
+        ],
       },
     ],
-    milestone: "M3 C3.2",
   },
   "anim.peg.create": {
     kind: "action",
@@ -985,9 +1079,23 @@ export const COMMAND_INDEX = {
     params: "anim.projection.get.params",
     result: "anim.projection.get.result",
     examples: [
-      {},
+      {
+        frame: 1,
+        points: [
+          {
+            x: 0,
+            y: 0,
+            z: 0,
+          },
+        ],
+      },
+      {
+        frame: 1,
+        nodeIds: [
+          "scene:\"Intro\"/element:\"Bob\"",
+        ],
+      },
     ],
-    milestone: "M3 C3.2",
   },
   "anim.record.completed": {
     kind: "event",
@@ -1045,11 +1153,16 @@ export const COMMAND_INDEX = {
     result: "anim.segment.set.result",
     examples: [
       {
+        nodeIds: [
+          "scene:\"Intro\"/element:\"Bob\"",
+        ],
         frame: 1,
+        channels: [
+          "rotation",
+        ],
         constant: true,
       },
     ],
-    milestone: "M3 C3.2",
   },
   "anim.segment.uniform.apply": {
     kind: "action",
@@ -1057,12 +1170,11 @@ export const COMMAND_INDEX = {
     result: "anim.segment.uniform.apply.result",
     examples: [
       {
-        nodeId: "scene:#1",
+        nodeId: "scene:\"Intro\"/element:\"Bob\"",
         frame: 1,
-        side: "left",
+        side: "right",
       },
     ],
-    milestone: "M3 C3.2",
   },
   "anim.skeleton.create": {
     kind: "action",
@@ -1220,9 +1332,37 @@ export const COMMAND_INDEX = {
     params: "anim.transform.set.params",
     result: "anim.transform.set.result",
     examples: [
-      {},
+      {
+        nodeIds: [
+          "scene:\"Intro\"/element:\"Bob\"",
+        ],
+        target: "static",
+        position: {
+          x: 2,
+          y: -1,
+          z: 0,
+        },
+      },
+      {
+        nodeIds: [
+          "scene:\"Intro\"/element:\"Bob-P\"",
+        ],
+        frame: 12,
+        rotation: 45,
+      },
+      {
+        nodeIds: [
+          "scene:\"Intro\"/element:\"Bob\"",
+        ],
+        frame: 6,
+        position: {
+          x: 1,
+          y: 1,
+          z: 0,
+        },
+        positionSpace: "world",
+      },
     ],
-    milestone: "M3 C3.2",
   },
   "anim.view.coords.get": {
     kind: "query",
@@ -4203,7 +4343,7 @@ export const COMMAND_INDEX = {
       {
         context: "staging",
         objectIds: [
-          "scene:#1/element:#1",
+          "scene:\"Intro\"/element:\"Bob-P\"",
         ],
       },
     ],
@@ -10707,314 +10847,342 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
     "x-spec": "`{boneId}`",
     additionalProperties: false,
   },
+  "anim.camera.create.Xyz": {
+    description: "A partial 3-D point parameter.",
+    type: "object",
+    properties: {
+      x: {
+        description: "X.",
+        type: [
+          "number",
+          "null",
+        ],
+      },
+      y: {
+        description: "Y.",
+        type: [
+          "number",
+          "null",
+        ],
+      },
+      z: {
+        description: "Z.",
+        type: [
+          "number",
+          "null",
+        ],
+      },
+    },
+    additionalProperties: false,
+  },
   "anim.camera.create.params": {
-    title: "anim.camera.create parameters",
+    title: "CreateParams",
+    description: "`anim.camera.create` parameters.",
     type: "object",
     properties: {
       name: {
-        type: "string",
-        maxLength: 65536,
+        description: "Name; default: unique `Camera…`.",
+        type: [
+          "string",
+          "null",
+        ],
+        default: null,
       },
       parentId: {
-        type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
+        description: "Parent; default: the top level.",
+        type: [
+          "string",
+          "null",
+        ],
+        default: null,
       },
       position: {
-        type: "object",
-        properties: {
-          x: {
-            type: "number",
+        description: "Static position; default (0, 0, 16).",
+        anyOf: [
+          {
+            $ref: "#/$defs/anim.camera.create.Xyz",
           },
-          y: {
-            type: "number",
+          {
+            type: "null",
           },
-          z: {
-            type: "number",
-          },
-        },
-        required: [
-          "x",
-          "y",
-          "z",
         ],
-        additionalProperties: false,
-        description: "Default: {0,0,16}.",
+        default: null,
       },
       fov: {
-        type: "number",
-        minimum: 1,
-        maximum: 179,
-        default: 41.1121,
+        description: "Horizontal field of view, 1…179; default 41.1121.",
+        type: [
+          "number",
+          "null",
+        ],
+        default: null,
       },
       makeCurrent: {
+        description: "Make it the scene's current camera.",
         type: "boolean",
         default: false,
       },
     },
     additionalProperties: false,
-    "x-spec": "`name?: string; parentId?: id; position?: object {x,y,z} = {0,0,16}; fov?: number = 41.1121 (1..179); makeCurrent: bool = false`",
   },
   "anim.camera.create.result": {
-    title: "anim.camera.create result",
+    title: "CameraResult",
+    description: "`{cameraId}`.",
     type: "object",
     properties: {
       cameraId: {
+        description: "The camera.",
         type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
       },
     },
     required: [
       "cameraId",
     ],
-    "x-spec": "`{cameraId}`",
-    additionalProperties: false,
   },
   "anim.camera.current.get.params": {
-    title: "anim.camera.current.get parameters",
+    title: "SceneParam",
+    description: "A `sceneId?` parameter.",
     type: "object",
     properties: {
       sceneId: {
-        type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
+        description: "The scene; default: the current scene.",
+        type: [
+          "string",
+          "null",
+        ],
+        default: null,
       },
     },
     additionalProperties: false,
-    "x-spec": "`sceneId?: id`",
   },
   "anim.camera.current.get.result": {
-    title: "anim.camera.current.get result",
+    title: "CurrentResult",
+    description: "`anim.camera.current.get` result.",
     type: "object",
     properties: {
       cameraId: {
-        type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
+        description: "The current camera (`null` in a scene without cameras).",
+        type: [
+          "string",
+          "null",
+        ],
       },
     },
-    required: [
-      "cameraId",
-    ],
-    "x-spec": "`{cameraId}`",
-    additionalProperties: false,
   },
   "anim.camera.current.set.params": {
-    title: "anim.camera.current.set parameters",
+    title: "CameraParam",
+    description: "A `cameraId` parameter.",
     type: "object",
     properties: {
       cameraId: {
+        description: "The camera.",
         type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
       },
     },
+    additionalProperties: false,
     required: [
       "cameraId",
     ],
-    additionalProperties: false,
-    "x-spec": "`cameraId: id`",
   },
   "anim.camera.current.set.result": {
-    title: "anim.camera.current.set result",
+    title: "CameraResult",
+    description: "`{cameraId}`.",
     type: "object",
     properties: {
       cameraId: {
+        description: "The camera.",
         type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
       },
     },
     required: [
       "cameraId",
     ],
-    "x-spec": "`{cameraId}`",
-    additionalProperties: false,
   },
   "anim.camera.currentChanged.params": {
-    title: "anim.camera.currentChanged parameters",
+    title: "NoParams",
+    description: "No parameters.",
     type: "object",
-    properties: {},
     additionalProperties: false,
-    description: "Events take no parameters; subscribe to them (11 §9).",
-    "x-spec": "—",
   },
   "anim.camera.currentChanged.result": {
-    title: "anim.camera.currentChanged result",
+    title: "CurrentChanged",
+    description: "`anim.camera.currentChanged` payload.",
     type: "object",
     properties: {
       sceneId: {
         type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
       },
       cameraId: {
         type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
       },
     },
     required: [
       "sceneId",
       "cameraId",
     ],
-    description: "Event payload (delivered to subscribers).",
-    "x-spec": "`{sceneId, cameraId}`",
-    additionalProperties: false,
   },
   "anim.camera.delete.params": {
-    title: "anim.camera.delete parameters",
+    title: "CameraParam",
+    description: "A `cameraId` parameter.",
     type: "object",
     properties: {
       cameraId: {
+        description: "The camera.",
         type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
       },
     },
+    additionalProperties: false,
     required: [
       "cameraId",
     ],
-    additionalProperties: false,
-    "x-spec": "`cameraId: id`",
   },
   "anim.camera.delete.result": {
-    title: "anim.camera.delete result",
+    title: "DeleteResult",
+    description: "`{currentCameraId}`.",
     type: "object",
     properties: {
       currentCameraId: {
-        type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
+        description: "The scene's current camera after the deletion.",
+        type: [
+          "string",
+          "null",
+        ],
       },
     },
-    required: [
-      "currentCameraId",
-    ],
-    "x-spec": "`{currentCameraId}`",
-    additionalProperties: false,
   },
   "anim.camera.get.params": {
-    title: "anim.camera.get parameters",
+    title: "GetParams",
+    description: "`anim.camera.get` parameters.",
     type: "object",
     properties: {
       cameraId: {
-        type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
+        description: "The camera; default: the current scene's current camera.",
+        type: [
+          "string",
+          "null",
+        ],
+        default: null,
       },
       frame: {
-        type: "integer",
+        description: "Scene frame; default: the current frame.",
+        type: [
+          "integer",
+          "null",
+        ],
+        maximum: 9223372036854775807n,
+        default: null,
+        minimum: -9223372036854775808n,
       },
     },
     additionalProperties: false,
-    "x-spec": "`cameraId?: id; frame?: int`",
+  },
+  "anim.camera.get.P3": {
+    description: "A full 3-D result point.",
+    type: "object",
+    properties: {
+      x: {
+        description: "X.",
+        type: "number",
+      },
+      y: {
+        description: "Y.",
+        type: "number",
+      },
+      z: {
+        description: "Z.",
+        type: "number",
+      },
+    },
+    required: [
+      "x",
+      "y",
+      "z",
+    ],
+  },
+  "anim.camera.get.FovMode": {
+    description: "Camera FOV mode (05 §12.3).",
+    oneOf: [
+      {
+        description: "A single FOV value.",
+        type: "string",
+        const: "static",
+      },
+      {
+        description: "The `fov` channel.",
+        type: "string",
+        const: "dynamic",
+      },
+    ],
+  },
+  "anim.camera.get.Resolution": {
+    description: "Output size.",
+    type: "object",
+    properties: {
+      w: {
+        type: "integer",
+        maximum: 2147483647,
+        minimum: 0,
+      },
+      h: {
+        type: "integer",
+        maximum: 2147483647,
+        minimum: 0,
+      },
+    },
+    required: [
+      "w",
+      "h",
+    ],
   },
   "anim.camera.get.result": {
-    title: "anim.camera.get result",
+    title: "CameraGetResult",
+    description: "`anim.camera.get` result.",
     type: "object",
     properties: {
       id: {
         type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
       },
       position: {
-        type: "object",
-        properties: {
-          x: {
-            type: "number",
-          },
-          y: {
-            type: "number",
-          },
-          z: {
-            type: "number",
-          },
-        },
-        required: [
-          "x",
-          "y",
-          "z",
-        ],
-        additionalProperties: false,
-        description: "Default: {0,0,16}.",
+        description: "Static position.",
+        $ref: "#/$defs/anim.camera.get.P3",
       },
       roll: {
+        description: "Static roll.",
         type: "number",
       },
       fovMode: {
-        type: "string",
+        $ref: "#/$defs/anim.camera.get.FovMode",
       },
       fov: {
+        description: "Static field of view.",
         type: "number",
-        minimum: 1,
-        maximum: 179,
-        default: 41.1121,
       },
       effectiveFov: {
+        description: "Field of view at the frame.",
         type: "number",
       },
       worldPosition: {
-        type: "object",
-        properties: {
-          x: {
-            type: "number",
-          },
-          y: {
-            type: "number",
-          },
-        },
-        required: [
-          "x",
-          "y",
-        ],
-        additionalProperties: false,
+        description: "World position at the frame.",
+        $ref: "#/$defs/anim.camera.get.P3",
       },
       viewMatrix: {
+        description: "16 numbers row-major.",
         type: "array",
         items: {
           type: "number",
         },
-        minItems: 16,
-        maxItems: 16,
       },
       frameCornersAtZ0: {
-        type: "array",
+        description: "The frame's corners on Z = 0, top-left first, clockwise; `null` when the plane is not in front of the camera.",
+        type: [
+          "array",
+          "null",
+        ],
         items: {
-          type: "number",
+          $ref: "#/$defs/anim.camera.get.P3",
         },
-        minItems: 4,
-        maxItems: 4,
       },
       resolution: {
-        type: "object",
-        properties: {
-          w: {
-            type: "number",
-          },
-          h: {
-            type: "number",
-          },
-        },
-        required: [
-          "w",
-          "h",
-        ],
-        additionalProperties: false,
+        $ref: "#/$defs/anim.camera.get.Resolution",
       },
     },
     required: [
@@ -11026,64 +11194,60 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
       "effectiveFov",
       "worldPosition",
       "viewMatrix",
-      "frameCornersAtZ0",
       "resolution",
     ],
-    "x-spec": "`{id, position, roll, fovMode, fov, effectiveFov, worldPosition, viewMatrix[16], frameCornersAtZ0[4], resolution {w,h}}`",
-    additionalProperties: false,
   },
   "anim.camera.list.params": {
-    title: "anim.camera.list parameters",
+    title: "SceneParam",
+    description: "A `sceneId?` parameter.",
     type: "object",
     properties: {
       sceneId: {
-        type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
+        description: "The scene; default: the current scene.",
+        type: [
+          "string",
+          "null",
+        ],
+        default: null,
       },
     },
     additionalProperties: false,
-    "x-spec": "`sceneId?: id`",
+  },
+  "anim.camera.list.ListedCamera": {
+    description: "One camera of a scene.",
+    type: "object",
+    properties: {
+      id: {
+        type: "string",
+      },
+      name: {
+        type: "string",
+      },
+      current: {
+        type: "boolean",
+      },
+    },
+    required: [
+      "id",
+      "name",
+      "current",
+    ],
   },
   "anim.camera.list.result": {
-    title: "anim.camera.list result",
+    title: "CameraListResult",
+    description: "`anim.camera.list` result.",
     type: "object",
     properties: {
       cameras: {
         type: "array",
         items: {
-          type: "object",
-          properties: {
-            id: {
-              type: "string",
-              minLength: 1,
-              maxLength: 4096,
-              description: "object ID or path reference (10 §3)",
-            },
-            name: {
-              type: "string",
-              maxLength: 65536,
-            },
-            current: {
-              type: "boolean",
-            },
-          },
-          required: [
-            "id",
-            "name",
-            "current",
-          ],
-          additionalProperties: false,
+          $ref: "#/$defs/anim.camera.list.ListedCamera",
         },
-        maxItems: 100000,
       },
     },
     required: [
       "cameras",
     ],
-    "x-spec": "`{cameras: [{id, name, current}]}`",
-    additionalProperties: false,
   },
   "anim.camera.select.params": {
     title: "anim.camera.select parameters",
@@ -11109,132 +11273,183 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
     "x-spec": "`{cameraId}`",
     additionalProperties: false,
   },
+  "anim.camera.set.Xyz": {
+    description: "A partial 3-D point parameter.",
+    type: "object",
+    properties: {
+      x: {
+        description: "X.",
+        type: [
+          "number",
+          "null",
+        ],
+      },
+      y: {
+        description: "Y.",
+        type: [
+          "number",
+          "null",
+        ],
+      },
+      z: {
+        description: "Z.",
+        type: [
+          "number",
+          "null",
+        ],
+      },
+    },
+    additionalProperties: false,
+  },
+  "anim.camera.set.FovMode": {
+    description: "Camera FOV mode (05 §12.3).",
+    oneOf: [
+      {
+        description: "A single FOV value.",
+        type: "string",
+        const: "static",
+      },
+      {
+        description: "The `fov` channel.",
+        type: "string",
+        const: "dynamic",
+      },
+    ],
+  },
   "anim.camera.set.params": {
-    title: "anim.camera.set parameters",
+    title: "SetParams",
+    description: "`anim.camera.set` parameters.",
     type: "object",
     properties: {
       cameraId: {
+        description: "The camera.",
         type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
       },
       position: {
-        type: "object",
-        properties: {
-          x: {
-            type: "number",
+        description: "Static position; omitted axes keep their value.",
+        anyOf: [
+          {
+            $ref: "#/$defs/anim.camera.set.Xyz",
           },
-          y: {
-            type: "number",
+          {
+            type: "null",
           },
-          z: {
-            type: "number",
-          },
-        },
-        required: [
-          "x",
-          "y",
-          "z",
         ],
-        additionalProperties: false,
+        default: null,
       },
       roll: {
-        type: "number",
+        description: "Static roll, degrees.",
+        type: [
+          "number",
+          "null",
+        ],
+        default: null,
       },
       fovMode: {
-        type: "string",
-        enum: [
-          "static",
-          "dynamic",
+        description: "`static` or `dynamic`.",
+        anyOf: [
+          {
+            $ref: "#/$defs/anim.camera.set.FovMode",
+          },
+          {
+            type: "null",
+          },
         ],
+        default: null,
       },
       fov: {
-        type: "number",
-        minimum: 1,
-        maximum: 179,
+        description: "Field of view, 1…179: static, or keyed at `frame` when dynamic.",
+        type: [
+          "number",
+          "null",
+        ],
+        default: null,
       },
       frame: {
-        type: "integer",
+        description: "Scene frame of the `fov` key; default: the current frame.",
+        type: [
+          "integer",
+          "null",
+        ],
+        maximum: 9223372036854775807n,
+        default: null,
+        minimum: -9223372036854775808n,
       },
     },
+    additionalProperties: false,
     required: [
       "cameraId",
     ],
-    additionalProperties: false,
-    "x-spec": "`cameraId: id; position?: object {x,y,z}; roll?: number; fovMode?: enum \"static\"|\"dynamic\"; fov?: number (1..179); frame?: int`",
   },
   "anim.camera.set.result": {
-    title: "anim.camera.set result",
+    title: "CameraResult",
+    description: "`{cameraId}`.",
     type: "object",
     properties: {
       cameraId: {
+        description: "The camera.",
         type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
       },
     },
     required: [
       "cameraId",
     ],
-    "x-spec": "`{cameraId}`",
-    additionalProperties: false,
   },
   "anim.changed.params": {
-    title: "anim.changed parameters",
+    title: "NoParams",
+    description: "No parameters.",
     type: "object",
-    properties: {},
     additionalProperties: false,
-    description: "Events take no parameters; subscribe to them (11 §9).",
-    "x-spec": "—",
+  },
+  "anim.changed.FrameSpan": {
+    description: "A frame span.",
+    type: "object",
+    properties: {
+      from: {
+        type: "number",
+      },
+      to: {
+        type: "number",
+      },
+    },
+    required: [
+      "from",
+      "to",
+    ],
   },
   "anim.changed.result": {
-    title: "anim.changed result",
+    title: "AnimChanged",
+    description: "`anim.changed` payload.",
     type: "object",
     properties: {
       nodeIds: {
         type: "array",
         items: {
           type: "string",
-          minLength: 1,
-          maxLength: 4096,
-          description: "object ID or path reference (10 §3)",
         },
-        maxItems: 100000,
       },
       channels: {
         type: "array",
         items: {
           type: "string",
-          maxLength: 65536,
         },
-        maxItems: 100000,
       },
       frames: {
-        type: "object",
-        properties: {
-          from: {
-            type: "number",
+        description: "Scene frames touched.",
+        anyOf: [
+          {
+            $ref: "#/$defs/anim.changed.FrameSpan",
           },
-          to: {
-            type: "number",
+          {
+            type: "null",
           },
-        },
-        required: [
-          "from",
-          "to",
         ],
-        additionalProperties: false,
       },
     },
     required: [
       "nodeIds",
       "channels",
     ],
-    description: "Event payload (delivered to subscribers).",
-    "x-spec": "`{nodeIds[], channels[], frames?: {from, to}}`",
-    additionalProperties: false,
   },
   "anim.channel.copy.params": {
     title: "anim.channel.copy parameters",
@@ -11764,515 +11979,464 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
     "x-spec": "`{enabled}`",
     additionalProperties: false,
   },
+  "anim.evaluate.IncludePart": {
+    description: "A part of `NodeEval`.",
+    oneOf: [
+      {
+        description: "Static values.",
+        type: "string",
+        const: "static",
+      },
+      {
+        description: "Animated values.",
+        type: "string",
+        const: "animated",
+      },
+      {
+        description: "Effective local values and matrix.",
+        type: "string",
+        const: "local",
+      },
+      {
+        description: "World matrix and decomposition.",
+        type: "string",
+        const: "world",
+      },
+      {
+        description: "World-space box of the visible content.",
+        type: "string",
+        const: "bounds",
+      },
+      {
+        description: "Output-pixel box.",
+        type: "string",
+        const: "screen",
+      },
+    ],
+  },
   "anim.evaluate.params": {
-    title: "anim.evaluate parameters",
+    title: "EvaluateParams",
+    description: "`anim.evaluate` parameters.",
     type: "object",
     properties: {
       nodeIds: {
+        description: "Nodes to evaluate.",
         type: "array",
         items: {
           type: "string",
-          minLength: 1,
-          maxLength: 4096,
-          description: "object ID or path reference (10 §3)",
         },
-        maxItems: 100000,
+        minItems: 1,
+        maxItems: 10000,
       },
       frames: {
-        type: "array",
+        description: "Scene frames, fractional allowed (SI-098); default: the current frame.",
+        type: [
+          "array",
+          "null",
+        ],
         items: {
-          type: "integer",
+          type: "number",
         },
+        minItems: 1,
         maxItems: 100000,
+        default: null,
       },
       include: {
-        type: "array",
+        description: "What to report; default: everything.",
+        type: [
+          "array",
+          "null",
+        ],
         items: {
-          type: "string",
-          enum: [
-            "static",
-            "animated",
-            "local",
-            "world",
-            "bounds",
-            "screen",
-          ],
+          $ref: "#/$defs/anim.evaluate.IncludePart",
         },
-        maxItems: 100000,
-        description: "Default: all.",
       },
       cameraId: {
-        type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
+        description: "Camera for `screen`; default: the node's scene's current camera.",
+        type: [
+          "string",
+          "null",
+        ],
+        default: null,
       },
     },
+    additionalProperties: false,
     required: [
       "nodeIds",
     ],
-    additionalProperties: false,
-    "x-spec": "`nodeIds: [id]; frames?: [int]; include?: [enum \"static\"|\"animated\"|\"local\"|\"world\"|\"bounds\"|\"screen\"] = all; cameraId?: id`",
   },
-  "anim.evaluate.spec.NodeEval": {
+  "anim.evaluate.FrameEval": {
+    description: "One frame of `anim.evaluate`.",
+    type: "object",
+    properties: {
+      frame: {
+        type: "number",
+      },
+      nodes: {
+        type: "array",
+        items: {
+          $ref: "#/$defs/anim.evaluate.NodeEval",
+        },
+      },
+    },
+    required: [
+      "frame",
+      "nodes",
+    ],
+  },
+  "anim.evaluate.NodeEval": {
+    description: "One node at one frame (05 §19.4).",
     type: "object",
     properties: {
       id: {
         type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
       },
       kind: {
         type: "string",
-        maxLength: 65536,
       },
       localFrame: {
-        type: "integer",
+        description: "Local frame (before the cycle mapping).",
+        type: "number",
       },
       static: {
-        type: "object",
-        properties: {
-          position: {
-            type: "object",
-            properties: {
-              x: {
-                type: "number",
-              },
-              y: {
-                type: "number",
-              },
-              z: {
-                type: "number",
-              },
-            },
-            additionalProperties: false,
-            required: [
-              "x",
-              "y",
-              "z",
-            ],
+        anyOf: [
+          {
+            $ref: "#/$defs/anim.evaluate.StaticEval",
           },
-          rotation: {
-            type: "number",
+          {
+            type: "null",
           },
-          scale: {
-            type: "object",
-            properties: {
-              x: {
-                type: "number",
-              },
-              y: {
-                type: "number",
-              },
-            },
-            additionalProperties: false,
-            required: [
-              "x",
-              "y",
-            ],
-          },
-          skew: {
-            type: "number",
-          },
-          rotationPivot: {
-            type: "object",
-            properties: {
-              x: {
-                type: "number",
-              },
-              y: {
-                type: "number",
-              },
-            },
-            additionalProperties: false,
-            required: [
-              "x",
-              "y",
-            ],
-          },
-          scalePivot: {
-            type: "object",
-            properties: {
-              x: {
-                type: "number",
-              },
-              y: {
-                type: "number",
-              },
-            },
-            additionalProperties: false,
-            required: [
-              "x",
-              "y",
-            ],
-          },
-        },
-        additionalProperties: false,
-        required: [
-          "position",
-          "rotation",
-          "scale",
-          "skew",
-          "rotationPivot",
-          "scalePivot",
         ],
       },
       animated: {
-        type: "object",
-        properties: {
-          position: {
-            type: "object",
-            properties: {
-              x: {
-                type: "number",
-              },
-              y: {
-                type: "number",
-              },
-              z: {
-                type: "number",
-              },
-            },
-            additionalProperties: false,
-            required: [
-              "x",
-              "y",
-              "z",
-            ],
+        anyOf: [
+          {
+            $ref: "#/$defs/anim.evaluate.AnimatedEval",
           },
-          rotation: {
-            type: "number",
+          {
+            type: "null",
           },
-          scale: {
-            type: "object",
-            properties: {
-              x: {
-                type: "number",
-              },
-              y: {
-                type: "number",
-              },
-            },
-            additionalProperties: false,
-            required: [
-              "x",
-              "y",
-            ],
-          },
-          skew: {
-            type: "number",
-          },
-          pivot: {
-            type: "object",
-            properties: {
-              x: {
-                type: "number",
-              },
-              y: {
-                type: "number",
-              },
-            },
-            additionalProperties: false,
-            required: [
-              "x",
-              "y",
-            ],
-          },
-          velocity: {
-            type: "number",
-          },
-          orientAngle: {
-            type: "number",
-          },
-        },
-        additionalProperties: false,
-        required: [
-          "position",
-          "rotation",
-          "scale",
-          "skew",
-          "pivot",
-          "velocity",
-          "orientAngle",
         ],
       },
       local: {
-        type: "object",
-        properties: {
-          position: {
-            type: "object",
-            properties: {
-              x: {
-                type: "number",
-              },
-              y: {
-                type: "number",
-              },
-              z: {
-                type: "number",
-              },
-            },
-            additionalProperties: false,
-            required: [
-              "x",
-              "y",
-              "z",
-            ],
+        anyOf: [
+          {
+            $ref: "#/$defs/anim.evaluate.LocalPart",
           },
-          rotation: {
-            type: "number",
+          {
+            type: "null",
           },
-          scale: {
-            type: "object",
-            properties: {
-              x: {
-                type: "number",
-              },
-              y: {
-                type: "number",
-              },
-            },
-            additionalProperties: false,
-            required: [
-              "x",
-              "y",
-            ],
-          },
-          skew: {
-            type: "number",
-          },
-          rotationPivot: {
-            type: "object",
-            properties: {
-              x: {
-                type: "number",
-              },
-              y: {
-                type: "number",
-              },
-            },
-            additionalProperties: false,
-            required: [
-              "x",
-              "y",
-            ],
-          },
-          scalePivot: {
-            type: "object",
-            properties: {
-              x: {
-                type: "number",
-              },
-              y: {
-                type: "number",
-              },
-            },
-            additionalProperties: false,
-            required: [
-              "x",
-              "y",
-            ],
-          },
-          matrix: {
-            type: "array",
-            items: {
-              type: "number",
-            },
-            maxItems: 100000,
-          },
-        },
-        additionalProperties: false,
-        required: [
-          "position",
-          "rotation",
-          "scale",
-          "skew",
-          "rotationPivot",
-          "scalePivot",
-          "matrix",
         ],
       },
       world: {
-        type: "object",
-        properties: {
-          matrix: {
-            type: "array",
-            items: {
-              type: "number",
-            },
-            maxItems: 100000,
+        anyOf: [
+          {
+            $ref: "#/$defs/anim.evaluate.WorldPart",
           },
-          position: {
-            type: "object",
-            properties: {
-              x: {
-                type: "number",
-              },
-              y: {
-                type: "number",
-              },
-              z: {
-                type: "number",
-              },
-            },
-            additionalProperties: false,
-            required: [
-              "x",
-              "y",
-              "z",
-            ],
+          {
+            type: "null",
           },
-          rotation: {
-            type: "number",
-          },
-          scale: {
-            type: "object",
-            properties: {
-              x: {
-                type: "number",
-              },
-              y: {
-                type: "number",
-              },
-            },
-            additionalProperties: false,
-            required: [
-              "x",
-              "y",
-            ],
-          },
-          skew: {
-            type: "number",
-          },
-        },
-        additionalProperties: false,
-        required: [
-          "matrix",
-          "position",
-          "rotation",
-          "scale",
-          "skew",
         ],
       },
       bounds: {
-        type: "object",
-        properties: {
-          minX: {
-            type: "number",
+        description: "Absent for nodes without visible content at that frame (pegs, cameras, a blank cell).",
+        anyOf: [
+          {
+            $ref: "#/$defs/anim.evaluate.WorldBounds",
           },
-          minY: {
-            type: "number",
+          {
+            type: "null",
           },
-          maxX: {
-            type: "number",
-          },
-          maxY: {
-            type: "number",
-          },
-          z: {
-            type: "number",
-          },
-        },
-        additionalProperties: false,
-        required: [
-          "minX",
-          "minY",
-          "maxX",
-          "maxY",
-          "z",
         ],
       },
       screen: {
-        type: "object",
-        properties: {
-          visible: {
-            type: "boolean",
+        description: "Absent when no camera applies.",
+        anyOf: [
+          {
+            $ref: "#/$defs/anim.evaluate.ScreenPart",
           },
-          bbox: {
-            type: "object",
-            properties: {
-              x: {
-                type: "number",
-              },
-              y: {
-                type: "number",
-              },
-              width: {
-                type: "integer",
-              },
-              height: {
-                type: "integer",
-              },
-            },
-            additionalProperties: false,
-            required: [
-              "x",
-              "y",
-              "width",
-              "height",
-            ],
+          {
+            type: "null",
           },
-          depth: {
-            type: "integer",
-          },
-        },
-        additionalProperties: false,
-        required: [
-          "visible",
-          "bbox",
-          "depth",
         ],
       },
     },
-    additionalProperties: false,
     required: [
       "id",
       "kind",
       "localFrame",
-      "static",
-      "animated",
-      "local",
-      "world",
-      "bounds",
-      "screen",
     ],
-    "x-specSection": "05",
+  },
+  "anim.evaluate.StaticEval": {
+    description: "`static` of `NodeEval`.",
+    type: "object",
+    properties: {
+      position: {
+        $ref: "#/$defs/anim.evaluate.P3",
+      },
+      rotation: {
+        type: "number",
+      },
+      scale: {
+        $ref: "#/$defs/anim.evaluate.P2",
+      },
+      skew: {
+        type: "number",
+      },
+      rotationPivot: {
+        $ref: "#/$defs/anim.evaluate.P2",
+      },
+      scalePivot: {
+        $ref: "#/$defs/anim.evaluate.P2",
+      },
+    },
+    required: [
+      "position",
+      "rotation",
+      "scale",
+      "skew",
+      "rotationPivot",
+      "scalePivot",
+    ],
+  },
+  "anim.evaluate.P3": {
+    description: "A full 3-D result point.",
+    type: "object",
+    properties: {
+      x: {
+        description: "X.",
+        type: "number",
+      },
+      y: {
+        description: "Y.",
+        type: "number",
+      },
+      z: {
+        description: "Z.",
+        type: "number",
+      },
+    },
+    required: [
+      "x",
+      "y",
+      "z",
+    ],
+  },
+  "anim.evaluate.P2": {
+    description: "A full 2-D result point.",
+    type: "object",
+    properties: {
+      x: {
+        description: "X.",
+        type: "number",
+      },
+      y: {
+        description: "Y.",
+        type: "number",
+      },
+    },
+    required: [
+      "x",
+      "y",
+    ],
+  },
+  "anim.evaluate.AnimatedEval": {
+    description: "`animated` of `NodeEval`.",
+    type: "object",
+    properties: {
+      position: {
+        $ref: "#/$defs/anim.evaluate.P3",
+      },
+      rotation: {
+        type: "number",
+      },
+      scale: {
+        $ref: "#/$defs/anim.evaluate.P2",
+      },
+      skew: {
+        type: "number",
+      },
+      pivot: {
+        $ref: "#/$defs/anim.evaluate.P2",
+      },
+      velocity: {
+        type: "number",
+      },
+      orientAngle: {
+        type: "number",
+      },
+    },
+    required: [
+      "position",
+      "rotation",
+      "scale",
+      "skew",
+      "pivot",
+      "velocity",
+      "orientAngle",
+    ],
+  },
+  "anim.evaluate.LocalPart": {
+    description: "`local` of `NodeEval`.",
+    type: "object",
+    properties: {
+      position: {
+        $ref: "#/$defs/anim.evaluate.P3",
+      },
+      rotation: {
+        type: "number",
+      },
+      scale: {
+        $ref: "#/$defs/anim.evaluate.P2",
+      },
+      skew: {
+        type: "number",
+      },
+      rotationPivot: {
+        $ref: "#/$defs/anim.evaluate.P2",
+      },
+      scalePivot: {
+        $ref: "#/$defs/anim.evaluate.P2",
+      },
+      matrix: {
+        description: "M_local, 16 numbers row-major.",
+        type: "array",
+        items: {
+          type: "number",
+        },
+      },
+    },
+    required: [
+      "position",
+      "rotation",
+      "scale",
+      "skew",
+      "rotationPivot",
+      "scalePivot",
+      "matrix",
+    ],
+  },
+  "anim.evaluate.WorldPart": {
+    description: "`world` of `NodeEval`.",
+    type: "object",
+    properties: {
+      matrix: {
+        description: "World matrix, 16 numbers row-major.",
+        type: "array",
+        items: {
+          type: "number",
+        },
+      },
+      position: {
+        $ref: "#/$defs/anim.evaluate.P3",
+      },
+      rotation: {
+        type: "number",
+      },
+      scale: {
+        $ref: "#/$defs/anim.evaluate.P2",
+      },
+      skew: {
+        type: "number",
+      },
+    },
+    required: [
+      "matrix",
+      "position",
+      "rotation",
+      "scale",
+      "skew",
+    ],
+  },
+  "anim.evaluate.WorldBounds": {
+    description: "`bounds` of `NodeEval`.",
+    type: "object",
+    properties: {
+      minX: {
+        type: "number",
+      },
+      minY: {
+        type: "number",
+      },
+      maxX: {
+        type: "number",
+      },
+      maxY: {
+        type: "number",
+      },
+      z: {
+        type: "number",
+      },
+    },
+    required: [
+      "minX",
+      "minY",
+      "maxX",
+      "maxY",
+      "z",
+    ],
+  },
+  "anim.evaluate.ScreenPart": {
+    description: "`screen` of `NodeEval`.",
+    type: "object",
+    properties: {
+      visible: {
+        description: "In front of the near plane and overlapping the frame; for content nodes also not hidden, not an annotation,\nand with content at that frame (SI-100).",
+        type: "boolean",
+      },
+      bbox: {
+        $ref: "#/$defs/anim.evaluate.Bbox",
+      },
+      depth: {
+        description: "Depth of the node's origin in front of the camera.",
+        type: "number",
+      },
+    },
+    required: [
+      "visible",
+      "bbox",
+      "depth",
+    ],
+  },
+  "anim.evaluate.Bbox": {
+    description: "An output-pixel box.",
+    type: "object",
+    properties: {
+      x: {
+        type: "number",
+      },
+      y: {
+        type: "number",
+      },
+      width: {
+        type: "number",
+      },
+      height: {
+        type: "number",
+      },
+    },
+    required: [
+      "x",
+      "y",
+      "width",
+      "height",
+    ],
   },
   "anim.evaluate.result": {
-    title: "anim.evaluate result",
+    title: "EvaluateResult",
+    description: "`anim.evaluate` result.",
     type: "object",
     properties: {
       frames: {
         type: "array",
         items: {
-          type: "object",
-          properties: {
-            frame: {
-              type: "number",
-            },
-            nodes: {
-              type: "array",
-              items: {
-                $ref: "#/$defs/anim.evaluate.spec.NodeEval",
-              },
-              maxItems: 100000,
-            },
-          },
-          required: [
-            "frame",
-            "nodes",
-          ],
-          additionalProperties: false,
+          $ref: "#/$defs/anim.evaluate.FrameEval",
         },
-        maxItems: 100000,
       },
     },
     required: [
       "frames",
     ],
-    "x-spec": "`{frames: [{frame, nodes: [NodeEval]}]}` (§19.4)",
-    additionalProperties: false,
   },
   "anim.flip.apply.params": {
     title: "anim.flip.apply parameters",
@@ -12334,192 +12498,281 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
     "x-spec": "`{nodeIds}`",
     additionalProperties: false,
   },
+  "anim.function.curveType.set.CurveType": {
+    description: "Curve type of a 1-D channel (05 §10.3).",
+    oneOf: [
+      {
+        description: "Cubic Bézier with free handles.",
+        type: "string",
+        const: "spline",
+      },
+      {
+        description: "Bézier with an easing preset per segment.",
+        type: "string",
+        const: "interpolation",
+      },
+      {
+        description: "Progress follows the velocity channel.",
+        type: "string",
+        const: "velocityBased",
+      },
+    ],
+  },
   "anim.function.curveType.set.params": {
-    title: "anim.function.curveType.set parameters",
+    title: "CurveTypeParams",
+    description: "`anim.function.curveType.set` parameters.",
     type: "object",
     properties: {
       nodeId: {
+        description: "The node.",
         type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
       },
       channel: {
+        description: "The channel.",
         type: "string",
-        maxLength: 65536,
+        minLength: 1,
+        maxLength: 256,
       },
       curveType: {
+        description: "The curve type.",
+        $ref: "#/$defs/anim.function.curveType.set.CurveType",
+      },
+    },
+    additionalProperties: false,
+    required: [
+      "nodeId",
+      "channel",
+      "curveType",
+    ],
+  },
+  "anim.function.curveType.set.result": {
+    title: "CurveTypeResult",
+    description: "`anim.function.curveType.set` result.",
+    type: "object",
+    properties: {
+      channel: {
         type: "string",
-        enum: [
-          "spline",
-          "interpolation",
-          "velocityBased",
+      },
+      curveType: {
+        $ref: "#/$defs/anim.function.curveType.set.CurveType",
+      },
+    },
+    required: [
+      "channel",
+      "curveType",
+    ],
+  },
+  "anim.function.get.params": {
+    title: "ChannelParams",
+    description: "`anim.function.get` parameters.",
+    type: "object",
+    properties: {
+      nodeId: {
+        description: "The node.",
+        type: "string",
+      },
+      channel: {
+        description: "The channel (05 §1.6).",
+        type: "string",
+        minLength: 1,
+        maxLength: 256,
+      },
+    },
+    additionalProperties: false,
+    required: [
+      "nodeId",
+      "channel",
+    ],
+  },
+  "anim.function.get.CurveType": {
+    description: "Curve type of a 1-D channel (05 §10.3).",
+    oneOf: [
+      {
+        description: "Cubic Bézier with free handles.",
+        type: "string",
+        const: "spline",
+      },
+      {
+        description: "Bézier with an easing preset per segment.",
+        type: "string",
+        const: "interpolation",
+      },
+      {
+        description: "Progress follows the velocity channel.",
+        type: "string",
+        const: "velocityBased",
+      },
+    ],
+  },
+  "anim.function.get.FunctionKey": {
+    description: "A key point of `Function`.",
+    type: "object",
+    properties: {
+      frame: {
+        description: "Scene frame.",
+        type: "number",
+      },
+      value: {
+        description: "Value.",
+        type: "number",
+      },
+      constantSegment: {
+        type: "boolean",
+      },
+      handleMode: {
+        $ref: "#/$defs/anim.function.get.HandleMode",
+      },
+      left: {
+        $ref: "#/$defs/anim.function.get.Handle",
+      },
+      right: {
+        $ref: "#/$defs/anim.function.get.Handle",
+      },
+      preset: {
+        description: "The easing preset of the segment starting here.",
+        anyOf: [
+          {
+            $ref: "#/$defs/anim.function.get.Easing",
+          },
+          {
+            type: "null",
+          },
         ],
       },
     },
     required: [
-      "nodeId",
-      "channel",
-      "curveType",
+      "frame",
+      "value",
+      "constantSegment",
+      "handleMode",
+      "left",
+      "right",
     ],
-    additionalProperties: false,
-    "x-spec": "`nodeId: id; channel: string; curveType: enum \"spline\"|\"interpolation\"|\"velocityBased\"`",
   },
-  "anim.function.curveType.set.result": {
-    title: "anim.function.curveType.set result",
+  "anim.function.get.HandleMode": {
+    description: "Handle mode.",
+    oneOf: [
+      {
+        description: "Collinear handles (default).",
+        type: "string",
+        const: "smooth",
+      },
+      {
+        description: "Independent handles.",
+        type: "string",
+        const: "broken",
+      },
+    ],
+  },
+  "anim.function.get.Handle": {
+    description: "A handle.",
     type: "object",
     properties: {
-      channel: {
-        type: "string",
-        maxLength: 65536,
+      dt: {
+        description: "Frames from the key (left ≤ 0, right ≥ 0).",
+        type: "number",
       },
-      curveType: {
+      dv: {
+        description: "Value units from the key.",
+        type: "number",
+      },
+    },
+    additionalProperties: false,
+    required: [
+      "dt",
+      "dv",
+    ],
+  },
+  "anim.function.get.Easing": {
+    description: "Easing presets (05 §10.4).",
+    oneOf: [
+      {
+        description: "Hold, then step.",
         type: "string",
+        const: "constant",
+      },
+      {
+        description: "Straight line.",
+        type: "string",
+        const: "linear",
+      },
+      {
+        description: "Slow start, slow end.",
+        type: "string",
+        const: "easeInOut",
+      },
+      {
+        description: "Fast start, fast end.",
+        type: "string",
+        const: "fastInOut",
+      },
+      {
+        description: "Strong slow start and end.",
+        type: "string",
+        const: "extremeEaseInOut",
+      },
+      {
+        description: "Strong fast start and end.",
+        type: "string",
+        const: "extremeFastInOut",
+      },
+      {
+        description: "Ease in.",
+        type: "string",
+        const: "slowAcceleration",
+      },
+      {
+        description: "Ease out.",
+        type: "string",
+        const: "slowDeceleration",
+      },
+    ],
+  },
+  "anim.function.get.Pin": {
+    description: "A velocity pin.",
+    type: "object",
+    properties: {
+      frame: {
+        description: "Scene frame of the motion keyframe.",
+        type: "number",
+      },
+      value: {
+        description: "Arc length, fields.",
+        type: "number",
       },
     },
     required: [
-      "channel",
-      "curveType",
+      "frame",
+      "value",
     ],
-    "x-spec": "`{channel, curveType}`",
-    additionalProperties: false,
   },
-  "anim.function.get.params": {
-    title: "anim.function.get parameters",
+  "anim.function.get.result": {
+    title: "FunctionResult",
+    description: "`anim.function.get` result (05 §19.4).",
     type: "object",
     properties: {
       nodeId: {
         type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
       },
       channel: {
         type: "string",
-        maxLength: 65536,
-      },
-    },
-    required: [
-      "nodeId",
-      "channel",
-    ],
-    additionalProperties: false,
-    "x-spec": "`nodeId: id; channel: string`",
-  },
-  "anim.function.get.spec.Function": {
-    type: "object",
-    properties: {
-      nodeId: {
-        type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
-      },
-      channel: {
-        type: "string",
-        maxLength: 65536,
       },
       curveType: {
-        type: "string",
-        maxLength: 65536,
+        $ref: "#/$defs/anim.function.get.CurveType",
       },
       keys: {
         type: "array",
         items: {
-          type: "object",
-          properties: {
-            frame: {
-              type: "integer",
-            },
-            value: {
-              type: "number",
-            },
-            constantSegment: {
-              type: "boolean",
-            },
-            handleMode: {
-              type: "string",
-              maxLength: 65536,
-            },
-            left: {
-              type: "object",
-              properties: {
-                dt: {
-                  type: "number",
-                },
-                dv: {
-                  type: "number",
-                },
-              },
-              additionalProperties: false,
-              required: [
-                "dt",
-                "dv",
-              ],
-            },
-            right: {
-              type: "object",
-              properties: {
-                dt: {
-                  type: "number",
-                },
-                dv: {
-                  type: "number",
-                },
-              },
-              additionalProperties: false,
-              required: [
-                "dt",
-                "dv",
-              ],
-            },
-            preset: {
-              anyOf: [
-                {
-                  type: "string",
-                  maxLength: 65536,
-                },
-                {
-                  type: "null",
-                },
-              ],
-            },
-          },
-          additionalProperties: false,
-          required: [
-            "frame",
-            "value",
-            "constantSegment",
-            "handleMode",
-            "left",
-            "right",
-            "preset",
-          ],
+          $ref: "#/$defs/anim.function.get.FunctionKey",
         },
-        maxItems: 100000,
       },
       pins: {
         type: "array",
-        maxItems: 100000,
         items: {
-          type: "object",
-          properties: {
-            frame: {
-              type: "number",
-            },
-            value: {
-              type: "number",
-            },
-          },
-          required: [
-            "frame",
-            "value",
-          ],
-          additionalProperties: false,
+          $ref: "#/$defs/anim.function.get.Pin",
         },
       },
     },
-    additionalProperties: false,
     required: [
       "nodeId",
       "channel",
@@ -12527,50 +12780,53 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
       "keys",
       "pins",
     ],
-    "x-specSection": "05",
-  },
-  "anim.function.get.result": {
-    $ref: "#/$defs/anim.function.get.spec.Function",
-    title: "anim.function.get result",
-    "x-spec": "`Function` (§19.4)",
   },
   "anim.function.key.add.params": {
-    title: "anim.function.key.add parameters",
+    title: "KeyAddParams",
+    description: "`anim.function.key.add` parameters.",
     type: "object",
     properties: {
       nodeId: {
+        description: "The node.",
         type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
       },
       channel: {
+        description: "The channel.",
         type: "string",
-        maxLength: 65536,
+        minLength: 1,
+        maxLength: 256,
       },
       frame: {
+        description: "Scene frame (an integer: `anim.frameNotInteger`).",
         type: "number",
       },
       value: {
-        type: "number",
+        description: "Value; default: the curve's current value.",
+        type: [
+          "number",
+          "null",
+        ],
+        default: null,
       },
     },
+    additionalProperties: false,
     required: [
       "nodeId",
       "channel",
       "frame",
     ],
-    additionalProperties: false,
-    "x-spec": "`nodeId: id; channel: string; frame: number; value?: number`",
   },
   "anim.function.key.add.result": {
-    title: "anim.function.key.add result",
+    title: "FrameValue",
+    description: "`{frame, value}`.",
     type: "object",
     properties: {
       frame: {
+        description: "Scene frame.",
         type: "number",
       },
       value: {
+        description: "Value.",
         type: "number",
       },
     },
@@ -12578,183 +12834,495 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
       "frame",
       "value",
     ],
-    "x-spec": "`{frame, value}`",
-    additionalProperties: false,
   },
   "anim.function.key.duplicate.params": {
-    title: "anim.function.key.duplicate parameters",
+    title: "KeyDuplicateParams",
+    description: "`anim.function.key.duplicate` parameters.",
     type: "object",
     properties: {
       nodeId: {
+        description: "The node.",
         type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
       },
       channel: {
+        description: "The channel.",
         type: "string",
-        maxLength: 65536,
+        minLength: 1,
+        maxLength: 256,
       },
       frame: {
+        description: "Scene frame of the key.",
         type: "integer",
+        maximum: 9223372036854775807n,
+        minimum: -9223372036854775808n,
       },
       toFrame: {
+        description: "Scene frame of the copy.",
         type: "integer",
+        maximum: 9223372036854775807n,
+        minimum: -9223372036854775808n,
       },
     },
+    additionalProperties: false,
     required: [
       "nodeId",
       "channel",
       "frame",
       "toFrame",
     ],
-    additionalProperties: false,
-    "x-spec": "`nodeId: id; channel: string; frame: int; toFrame: int`",
   },
   "anim.function.key.duplicate.result": {
-    title: "anim.function.key.duplicate result",
+    title: "FrameResult",
+    description: "`{frame}`.",
     type: "object",
     properties: {
       frame: {
+        description: "The copy's scene frame.",
         type: "integer",
+        maximum: 9223372036854775807n,
+        minimum: -9223372036854775808n,
       },
     },
     required: [
       "frame",
     ],
-    "x-spec": "`{frame}`",
-    additionalProperties: false,
   },
   "anim.function.key.remove.params": {
-    title: "anim.function.key.remove parameters",
+    title: "KeyRemoveParams",
+    description: "`anim.function.key.remove` parameters.",
     type: "object",
     properties: {
       nodeId: {
+        description: "The node.",
         type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
       },
       channel: {
+        description: "The channel.",
         type: "string",
-        maxLength: 65536,
+        minLength: 1,
+        maxLength: 256,
       },
       frames: {
+        description: "Scene frames.",
         type: "array",
         items: {
           type: "number",
         },
+        minItems: 1,
         maxItems: 100000,
       },
     },
+    additionalProperties: false,
     required: [
       "nodeId",
       "channel",
       "frames",
     ],
-    additionalProperties: false,
-    "x-spec": "`nodeId: id; channel: string; frames: [number]`",
   },
   "anim.function.key.remove.result": {
-    title: "anim.function.key.remove result",
+    title: "RemovedResult",
+    description: "`{removed}`.",
     type: "object",
     properties: {
       removed: {
-        type: "array",
-        items: {
-          type: "string",
-          minLength: 1,
-          maxLength: 4096,
-          description: "object ID or path reference (10 §3)",
-        },
-        maxItems: 100000,
+        description: "How many keys went.",
+        type: "integer",
+        maximum: 2147483647,
+        minimum: 0,
       },
     },
     required: [
       "removed",
     ],
-    "x-spec": "`{removed}`",
+  },
+  "anim.function.key.set.Handle": {
+    description: "A handle.",
+    type: "object",
+    properties: {
+      dt: {
+        description: "Frames from the key (left ≤ 0, right ≥ 0).",
+        type: "number",
+      },
+      dv: {
+        description: "Value units from the key.",
+        type: "number",
+      },
+    },
     additionalProperties: false,
+    required: [
+      "dt",
+      "dv",
+    ],
+  },
+  "anim.function.key.set.HandleMode": {
+    description: "Handle mode.",
+    oneOf: [
+      {
+        description: "Collinear handles (default).",
+        type: "string",
+        const: "smooth",
+      },
+      {
+        description: "Independent handles.",
+        type: "string",
+        const: "broken",
+      },
+    ],
   },
   "anim.function.key.set.params": {
-    title: "anim.function.key.set parameters",
+    title: "KeySetParams",
+    description: "`anim.function.key.set` parameters.",
     type: "object",
     properties: {
       nodeId: {
+        description: "The node.",
         type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
       },
       channel: {
+        description: "The channel.",
         type: "string",
-        maxLength: 65536,
+        minLength: 1,
+        maxLength: 256,
       },
       frame: {
+        description: "Scene frame of the key (a control point's passage frame on a path projection).",
         type: "number",
       },
       newFrame: {
-        type: "number",
+        description: "Moves the key in time.",
+        type: [
+          "number",
+          "null",
+        ],
+        default: null,
       },
       value: {
-        type: "number",
+        description: "New value.",
+        type: [
+          "number",
+          "null",
+        ],
+        default: null,
       },
       left: {
-        type: "object",
-        properties: {
-          dt: {
-            type: "number",
+        anyOf: [
+          {
+            $ref: "#/$defs/anim.function.key.set.Handle",
           },
-          dv: {
-            type: "number",
+          {
+            type: "null",
           },
-        },
-        required: [
-          "dt",
-          "dv",
         ],
-        additionalProperties: false,
+        default: null,
       },
       right: {
-        type: "object",
-        properties: {
-          dt: {
-            type: "number",
+        anyOf: [
+          {
+            $ref: "#/$defs/anim.function.key.set.Handle",
           },
-          dv: {
-            type: "number",
+          {
+            type: "null",
           },
-        },
-        required: [
-          "dt",
-          "dv",
         ],
-        additionalProperties: false,
+        default: null,
       },
       handleMode: {
-        type: "string",
-        enum: [
-          "smooth",
-          "broken",
+        anyOf: [
+          {
+            $ref: "#/$defs/anim.function.key.set.HandleMode",
+          },
+          {
+            type: "null",
+          },
         ],
+        default: null,
       },
       constantSegment: {
-        type: "boolean",
+        type: [
+          "boolean",
+          "null",
+        ],
+        default: null,
       },
       lockInTime: {
-        type: "boolean",
+        description: "Path projections: lock a control point in time, or unlock a keyframe.",
+        type: [
+          "boolean",
+          "null",
+        ],
+        default: null,
       },
     },
+    additionalProperties: false,
     required: [
       "nodeId",
       "channel",
       "frame",
     ],
-    additionalProperties: false,
-    "x-spec": "`nodeId: id; channel: string; frame: number; newFrame?: number; value?: number; left?: object {dt,dv}; right?: object {dt,dv}; handleMode?: enum \"smooth\"|\"broken\"; constantSegment?: bool; lockInTime?: bool`",
   },
   "anim.function.key.set.result": {
-    title: "anim.function.key.set result",
+    title: "FrameValue",
+    description: "`{frame, value}`.",
+    type: "object",
+    properties: {
+      frame: {
+        description: "Scene frame.",
+        type: "number",
+      },
+      value: {
+        description: "Value.",
+        type: "number",
+      },
+    },
+    required: [
+      "frame",
+      "value",
+    ],
+  },
+  "anim.function.list.params": {
+    title: "NodeParams",
+    description: "A node-and-channel parameter.",
+    type: "object",
+    properties: {
+      nodeId: {
+        description: "The node.",
+        type: "string",
+      },
+    },
+    additionalProperties: false,
+    required: [
+      "nodeId",
+    ],
+  },
+  "anim.function.list.ListedChannel": {
+    description: "One channel of `anim.function.list`.",
+    type: "object",
+    properties: {
+      channel: {
+        type: "string",
+      },
+      curveType: {
+        description: "Curve type (`null` for the motion path).",
+        anyOf: [
+          {
+            $ref: "#/$defs/anim.function.list.CurveType",
+          },
+          {
+            type: "null",
+          },
+        ],
+      },
+      keyCount: {
+        description: "Keys, or motion keyframes for the path.",
+        type: "integer",
+        maximum: 2147483647,
+        minimum: 0,
+      },
+      allowedCurveTypes: {
+        type: "array",
+        items: {
+          $ref: "#/$defs/anim.function.list.CurveType",
+        },
+      },
+    },
+    required: [
+      "channel",
+      "keyCount",
+      "allowedCurveTypes",
+    ],
+  },
+  "anim.function.list.CurveType": {
+    description: "Curve type of a 1-D channel (05 §10.3).",
+    oneOf: [
+      {
+        description: "Cubic Bézier with free handles.",
+        type: "string",
+        const: "spline",
+      },
+      {
+        description: "Bézier with an easing preset per segment.",
+        type: "string",
+        const: "interpolation",
+      },
+      {
+        description: "Progress follows the velocity channel.",
+        type: "string",
+        const: "velocityBased",
+      },
+    ],
+  },
+  "anim.function.list.result": {
+    title: "FunctionListResult",
+    description: "`anim.function.list` result.",
+    type: "object",
+    properties: {
+      channels: {
+        type: "array",
+        items: {
+          $ref: "#/$defs/anim.function.list.ListedChannel",
+        },
+      },
+    },
+    required: [
+      "channels",
+    ],
+  },
+  "anim.function.preset.apply.Easing": {
+    description: "Easing presets (05 §10.4).",
+    oneOf: [
+      {
+        description: "Hold, then step.",
+        type: "string",
+        const: "constant",
+      },
+      {
+        description: "Straight line.",
+        type: "string",
+        const: "linear",
+      },
+      {
+        description: "Slow start, slow end.",
+        type: "string",
+        const: "easeInOut",
+      },
+      {
+        description: "Fast start, fast end.",
+        type: "string",
+        const: "fastInOut",
+      },
+      {
+        description: "Strong slow start and end.",
+        type: "string",
+        const: "extremeEaseInOut",
+      },
+      {
+        description: "Strong fast start and end.",
+        type: "string",
+        const: "extremeFastInOut",
+      },
+      {
+        description: "Ease in.",
+        type: "string",
+        const: "slowAcceleration",
+      },
+      {
+        description: "Ease out.",
+        type: "string",
+        const: "slowDeceleration",
+      },
+    ],
+  },
+  "anim.function.preset.apply.PresetScope": {
+    description: "Which segments a preset applies to.",
+    oneOf: [
+      {
+        description: "The segment at `frame`.",
+        type: "string",
+        const: "segment",
+      },
+      {
+        description: "Every segment.",
+        type: "string",
+        const: "all",
+      },
+    ],
+  },
+  "anim.function.preset.apply.params": {
+    title: "PresetParams",
+    description: "`anim.function.preset.apply` parameters.",
+    type: "object",
+    properties: {
+      nodeId: {
+        description: "The node.",
+        type: "string",
+      },
+      channel: {
+        description: "The channel.",
+        type: "string",
+        minLength: 1,
+        maxLength: 256,
+      },
+      preset: {
+        description: "The preset.",
+        $ref: "#/$defs/anim.function.preset.apply.Easing",
+      },
+      frame: {
+        description: "A scene frame in the segment; default: the current frame.",
+        type: [
+          "integer",
+          "null",
+        ],
+        maximum: 9223372036854775807n,
+        default: null,
+        minimum: -9223372036854775808n,
+      },
+      scope: {
+        description: "One segment or the whole curve.",
+        $ref: "#/$defs/anim.function.preset.apply.PresetScope",
+      },
+    },
+    additionalProperties: false,
+    required: [
+      "nodeId",
+      "channel",
+      "preset",
+    ],
+  },
+  "anim.function.preset.apply.result": {
+    title: "PresetResult",
+    description: "`{segments}`.",
+    type: "object",
+    properties: {
+      segments: {
+        description: "How many segments changed.",
+        type: "integer",
+        maximum: 2147483647,
+        minimum: 0,
+      },
+    },
+    required: [
+      "segments",
+    ],
+  },
+  "anim.function.sample.params": {
+    title: "FunctionSampleParams",
+    description: "`anim.function.sample` parameters.",
+    type: "object",
+    properties: {
+      nodeId: {
+        description: "The node.",
+        type: "string",
+      },
+      channel: {
+        description: "The channel (05 §1.6), including the `position.x/y/z` projections.",
+        type: "string",
+        minLength: 1,
+        maxLength: 256,
+      },
+      from: {
+        description: "First scene frame.",
+        type: "number",
+      },
+      to: {
+        description: "Last scene frame.",
+        type: "number",
+      },
+      step: {
+        description: "Frame step, above 0.",
+        type: "number",
+        default: 1,
+      },
+    },
+    additionalProperties: false,
+    required: [
+      "nodeId",
+      "channel",
+      "from",
+      "to",
+    ],
+  },
+  "anim.function.sample.ValueSample": {
+    description: "A channel sample.",
     type: "object",
     properties: {
       frame: {
@@ -12768,313 +13336,250 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
       "frame",
       "value",
     ],
-    "x-spec": "`{frame, value}`",
-    additionalProperties: false,
-  },
-  "anim.function.list.params": {
-    title: "anim.function.list parameters",
-    type: "object",
-    properties: {
-      nodeId: {
-        type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
-      },
-    },
-    required: [
-      "nodeId",
-    ],
-    additionalProperties: false,
-    "x-spec": "`nodeId: id`",
-  },
-  "anim.function.list.result": {
-    title: "anim.function.list result",
-    type: "object",
-    properties: {
-      channels: {
-        type: "array",
-        items: {
-          type: "object",
-          properties: {
-            channel: {
-              type: "string",
-              maxLength: 65536,
-            },
-            curveType: {
-              type: "string",
-            },
-            keyCount: {
-              type: "number",
-            },
-            allowedCurveTypes: {
-              type: "array",
-              items: {
-                type: "string",
-                maxLength: 65536,
-              },
-              maxItems: 100000,
-            },
-          },
-          required: [
-            "channel",
-            "curveType",
-            "keyCount",
-            "allowedCurveTypes",
-          ],
-          additionalProperties: false,
-        },
-        maxItems: 100000,
-      },
-    },
-    required: [
-      "channels",
-    ],
-    "x-spec": "`{channels: [{channel, curveType, keyCount, allowedCurveTypes[]}]}`",
-    additionalProperties: false,
-  },
-  "anim.function.preset.apply.params": {
-    title: "anim.function.preset.apply parameters",
-    type: "object",
-    properties: {
-      nodeId: {
-        type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
-      },
-      channel: {
-        type: "string",
-        maxLength: 65536,
-      },
-      preset: {
-        type: "string",
-        enum: [
-          "constant",
-          "linear",
-          "easeInOut",
-          "fastInOut",
-          "extremeEaseInOut",
-          "extremeFastInOut",
-          "slowAcceleration",
-          "slowDeceleration",
-        ],
-      },
-      frame: {
-        type: "integer",
-      },
-      scope: {
-        type: "string",
-        enum: [
-          "segment",
-          "all",
-        ],
-        default: "segment",
-      },
-    },
-    required: [
-      "nodeId",
-      "channel",
-      "preset",
-    ],
-    additionalProperties: false,
-    "x-spec": "`nodeId: id; channel: string; preset: enum \"constant\"|\"linear\"|\"easeInOut\"|\"fastInOut\"|\"extremeEaseInOut\"|\"extremeFastInOut\"|\"slowAcceleration\"|\"slowDeceleration\"; frame?: int; scope: enum \"segment\"|\"all\" = \"segment\"`",
-  },
-  "anim.function.preset.apply.result": {
-    title: "anim.function.preset.apply result",
-    type: "object",
-    properties: {
-      segments: {
-        type: [
-          "string",
-          "number",
-          "boolean",
-          "null",
-        ],
-        "x-placeholder": true,
-        description: "type not stated by the owning section (spec issue); a scalar",
-        "x-specIssue": "SI-023",
-      },
-    },
-    required: [
-      "segments",
-    ],
-    "x-spec": "`{segments}`",
-    additionalProperties: false,
-  },
-  "anim.function.sample.params": {
-    title: "anim.function.sample parameters",
-    type: "object",
-    properties: {
-      nodeId: {
-        type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
-      },
-      channel: {
-        type: "string",
-        maxLength: 65536,
-      },
-      from: {
-        type: "number",
-      },
-      to: {
-        type: "number",
-      },
-      step: {
-        type: "number",
-        default: 1,
-      },
-    },
-    required: [
-      "nodeId",
-      "channel",
-      "from",
-      "to",
-    ],
-    additionalProperties: false,
-    "x-spec": "`nodeId: id; channel: string; from: number; to: number; step: number = 1`",
   },
   "anim.function.sample.result": {
-    title: "anim.function.sample result",
+    title: "FunctionSampleResult",
+    description: "`anim.function.sample` result.",
     type: "object",
     properties: {
       samples: {
         type: "array",
         items: {
-          type: "object",
-          properties: {
-            frame: {
-              type: "number",
-            },
-            value: {
-              type: "number",
-            },
-          },
-          required: [
-            "frame",
-            "value",
-          ],
-          additionalProperties: false,
+          $ref: "#/$defs/anim.function.sample.ValueSample",
         },
-        maxItems: 100000,
       },
     },
     required: [
       "samples",
     ],
-    "x-spec": "`{samples: [{frame, value}]}`",
+  },
+  "anim.function.set.CurveType": {
+    description: "Curve type of a 1-D channel (05 §10.3).",
+    oneOf: [
+      {
+        description: "Cubic Bézier with free handles.",
+        type: "string",
+        const: "spline",
+      },
+      {
+        description: "Bézier with an easing preset per segment.",
+        type: "string",
+        const: "interpolation",
+      },
+      {
+        description: "Progress follows the velocity channel.",
+        type: "string",
+        const: "velocityBased",
+      },
+    ],
+  },
+  "anim.function.set.SetKey": {
+    description: "A key of `anim.function.set`.",
+    type: "object",
+    properties: {
+      frame: {
+        description: "Scene frame (an integer: `anim.frameNotInteger`).",
+        type: "number",
+      },
+      value: {
+        description: "Value.",
+        type: "number",
+      },
+      constantSegment: {
+        type: [
+          "boolean",
+          "null",
+        ],
+        default: null,
+      },
+      handleMode: {
+        anyOf: [
+          {
+            $ref: "#/$defs/anim.function.set.HandleMode",
+          },
+          {
+            type: "null",
+          },
+        ],
+        default: null,
+      },
+      left: {
+        anyOf: [
+          {
+            $ref: "#/$defs/anim.function.set.Handle",
+          },
+          {
+            type: "null",
+          },
+        ],
+        default: null,
+      },
+      right: {
+        anyOf: [
+          {
+            $ref: "#/$defs/anim.function.set.Handle",
+          },
+          {
+            type: "null",
+          },
+        ],
+        default: null,
+      },
+      preset: {
+        anyOf: [
+          {
+            $ref: "#/$defs/anim.function.set.Easing",
+          },
+          {
+            type: "null",
+          },
+        ],
+        default: null,
+      },
+    },
     additionalProperties: false,
+    required: [
+      "frame",
+      "value",
+    ],
+  },
+  "anim.function.set.HandleMode": {
+    description: "Handle mode.",
+    oneOf: [
+      {
+        description: "Collinear handles (default).",
+        type: "string",
+        const: "smooth",
+      },
+      {
+        description: "Independent handles.",
+        type: "string",
+        const: "broken",
+      },
+    ],
+  },
+  "anim.function.set.Handle": {
+    description: "A handle.",
+    type: "object",
+    properties: {
+      dt: {
+        description: "Frames from the key (left ≤ 0, right ≥ 0).",
+        type: "number",
+      },
+      dv: {
+        description: "Value units from the key.",
+        type: "number",
+      },
+    },
+    additionalProperties: false,
+    required: [
+      "dt",
+      "dv",
+    ],
+  },
+  "anim.function.set.Easing": {
+    description: "Easing presets (05 §10.4).",
+    oneOf: [
+      {
+        description: "Hold, then step.",
+        type: "string",
+        const: "constant",
+      },
+      {
+        description: "Straight line.",
+        type: "string",
+        const: "linear",
+      },
+      {
+        description: "Slow start, slow end.",
+        type: "string",
+        const: "easeInOut",
+      },
+      {
+        description: "Fast start, fast end.",
+        type: "string",
+        const: "fastInOut",
+      },
+      {
+        description: "Strong slow start and end.",
+        type: "string",
+        const: "extremeEaseInOut",
+      },
+      {
+        description: "Strong fast start and end.",
+        type: "string",
+        const: "extremeFastInOut",
+      },
+      {
+        description: "Ease in.",
+        type: "string",
+        const: "slowAcceleration",
+      },
+      {
+        description: "Ease out.",
+        type: "string",
+        const: "slowDeceleration",
+      },
+    ],
   },
   "anim.function.set.params": {
-    title: "anim.function.set parameters",
+    title: "FunctionSetParams",
+    description: "`anim.function.set` parameters.",
     type: "object",
     properties: {
       nodeId: {
+        description: "The node.",
         type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
       },
       channel: {
+        description: "The channel.",
         type: "string",
-        maxLength: 65536,
+        minLength: 1,
+        maxLength: 256,
       },
       curveType: {
-        type: "string",
-        enum: [
-          "spline",
-          "interpolation",
-          "velocityBased",
+        description: "The curve type.",
+        anyOf: [
+          {
+            $ref: "#/$defs/anim.function.set.CurveType",
+          },
+          {
+            type: "null",
+          },
         ],
+        default: null,
       },
       keys: {
+        description: "The whole key list; empty removes the channel.",
         type: "array",
         items: {
-          type: "object",
-          properties: {
-            frame: {
-              type: "number",
-            },
-            value: {
-              type: "number",
-            },
-            constantSegment: {
-              type: "boolean",
-            },
-            handleMode: {
-              type: "string",
-            },
-            left: {
-              type: "object",
-              properties: {
-                dt: {
-                  type: "number",
-                },
-                dv: {
-                  type: "number",
-                },
-              },
-              required: [
-                "dt",
-                "dv",
-              ],
-              additionalProperties: false,
-            },
-            right: {
-              type: "object",
-              properties: {
-                dt: {
-                  type: "number",
-                },
-                dv: {
-                  type: "number",
-                },
-              },
-              required: [
-                "dt",
-                "dv",
-              ],
-              additionalProperties: false,
-            },
-            preset: {
-              type: "string",
-            },
-          },
-          required: [
-            "frame",
-            "value",
-          ],
-          additionalProperties: false,
+          $ref: "#/$defs/anim.function.set.SetKey",
         },
         maxItems: 100000,
       },
     },
+    additionalProperties: false,
     required: [
       "nodeId",
       "channel",
       "keys",
     ],
-    additionalProperties: false,
-    "x-spec": "`nodeId: id; channel: string; curveType?: enum \"spline\"|\"interpolation\"|\"velocityBased\"; keys: [object {frame, value, constantSegment?, handleMode?, left?, right?, preset?}]`",
   },
   "anim.function.set.result": {
-    title: "anim.function.set result",
+    title: "FunctionSetResult",
+    description: "`anim.function.set` result.",
     type: "object",
     properties: {
       nodeId: {
         type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
       },
       channel: {
         type: "string",
-        maxLength: 65536,
       },
       keyCount: {
-        type: "number",
+        type: "integer",
+        maximum: 2147483647,
+        minimum: 0,
       },
     },
     required: [
@@ -13082,8 +13587,6 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
       "channel",
       "keyCount",
     ],
-    "x-spec": "`{nodeId, channel, keyCount}`",
-    additionalProperties: false,
   },
   "anim.functionEditor.get.params": {
     title: "anim.functionEditor.get parameters",
@@ -13539,327 +14042,413 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
     "x-spec": "`{selectedIds}`",
     additionalProperties: false,
   },
+  "anim.key.add.Bounds": {
+    description: "Which bounds of the selected segment get keys.",
+    oneOf: [
+      {
+        description: "The key at or before the frame.",
+        type: "string",
+        const: "left",
+      },
+      {
+        description: "The key after the frame.",
+        type: "string",
+        const: "right",
+      },
+      {
+        description: "Both.",
+        type: "string",
+        const: "both",
+      },
+    ],
+  },
   "anim.key.add.params": {
-    title: "anim.key.add parameters",
+    title: "KeyAddParams",
+    description: "`anim.key.add` parameters.",
     type: "object",
     properties: {
       nodeIds: {
-        type: "array",
+        description: "Nodes; default: the selected rows, else the current element.",
+        type: [
+          "array",
+          "null",
+        ],
         items: {
           type: "string",
-          minLength: 1,
-          maxLength: 4096,
-          description: "object ID or path reference (10 §3)",
         },
-        maxItems: 100000,
+        default: null,
       },
       frame: {
-        type: "integer",
+        description: "Scene frame; default: the current frame.",
+        type: [
+          "integer",
+          "null",
+        ],
+        maximum: 9223372036854775807n,
+        default: null,
+        minimum: -9223372036854775808n,
       },
       channels: {
-        type: "array",
+        description: "Channels; default: the full pose. `scale` and `pivot` name both axes.",
+        type: [
+          "array",
+          "null",
+        ],
         items: {
           type: "string",
-          maxLength: 65536,
         },
-        maxItems: 100000,
+        default: null,
       },
       includeDescendants: {
+        description: "Also key every transformable descendant (a collapsed hierarchy) whose range holds the frame.",
         type: "boolean",
         default: false,
       },
       atSegmentBounds: {
-        type: "string",
-        enum: [
-          "left",
-          "right",
-          "both",
+        description: "Key the bounding frames of the segment around `frame` instead.",
+        anyOf: [
+          {
+            $ref: "#/$defs/anim.key.add.Bounds",
+          },
+          {
+            type: "null",
+          },
         ],
       },
     },
     additionalProperties: false,
-    "x-spec": "`nodeIds?: [id]; frame?: int; channels?: [string]; includeDescendants: bool = false; atSegmentBounds?: enum \"left\"|\"right\"|\"both\"`",
   },
-  "anim.key.add.result": {
-    title: "anim.key.add result",
-    type: "object",
-    properties: {
-      keys: {
-        type: "array",
-        items: {
-          type: "object",
-          properties: {
-            nodeId: {
-              type: "string",
-              minLength: 1,
-              maxLength: 4096,
-              description: "object ID or path reference (10 §3)",
-            },
-            frame: {
-              type: "integer",
-            },
-            channels: {
-              type: "array",
-              items: {
-                type: "string",
-                maxLength: 65536,
-              },
-              maxItems: 100000,
-            },
-          },
-          required: [
-            "nodeId",
-            "frame",
-            "channels",
-          ],
-          additionalProperties: false,
-        },
-        maxItems: 100000,
-      },
-    },
-    required: [
-      "keys",
-    ],
-    "x-spec": "`{keys: [{nodeId, frame, channels[]}]}`",
-    additionalProperties: false,
-  },
-  "anim.key.list.params": {
-    title: "anim.key.list parameters",
+  "anim.key.add.AddedKeys": {
+    description: "Keys added on one node at one frame.",
     type: "object",
     properties: {
       nodeId: {
         type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
       },
-      from: {
-        type: "integer",
-      },
-      to: {
-        type: "integer",
-      },
-      includeDescendants: {
-        type: "boolean",
-        default: false,
-      },
-    },
-    required: [
-      "nodeId",
-    ],
-    additionalProperties: false,
-    "x-spec": "`nodeId: id; from?: int; to?: int; includeDescendants: bool = false`",
-  },
-  "anim.key.list.result": {
-    title: "anim.key.list result",
-    type: "object",
-    properties: {
-      keys: {
-        type: "array",
-        items: {
-          type: "object",
-          properties: {
-            frame: {
-              type: "integer",
-            },
-            channels: {
-              type: "array",
-              items: {
-                type: "string",
-                maxLength: 65536,
-              },
-              maxItems: 100000,
-            },
-            constant: {
-              type: "array",
-              items: {
-                type: "boolean",
-              },
-              maxItems: 100000,
-            },
-            descendantKeyed: {
-              type: "boolean",
-            },
-          },
-          required: [
-            "frame",
-            "channels",
-            "constant",
-            "descendantKeyed",
-          ],
-          additionalProperties: false,
-        },
-        maxItems: 100000,
-      },
-    },
-    required: [
-      "keys",
-    ],
-    "x-spec": "`{keys: [{frame, channels[], constant[], descendantKeyed}]}`",
-    additionalProperties: false,
-  },
-  "anim.key.move.params": {
-    title: "anim.key.move parameters",
-    type: "object",
-    properties: {
-      nodeId: {
-        type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
-      },
-      fromFrame: {
-        type: "integer",
-      },
-      toFrame: {
-        type: "integer",
+      frame: {
+        description: "Scene frame.",
+        type: "number",
       },
       channels: {
         type: "array",
         items: {
           type: "string",
-          maxLength: 65536,
         },
-        maxItems: 100000,
       },
     },
+    required: [
+      "nodeId",
+      "frame",
+      "channels",
+    ],
+  },
+  "anim.key.add.result": {
+    title: "KeyAddResult",
+    description: "`anim.key.add` result.",
+    type: "object",
+    properties: {
+      keys: {
+        type: "array",
+        items: {
+          $ref: "#/$defs/anim.key.add.AddedKeys",
+        },
+      },
+    },
+    required: [
+      "keys",
+    ],
+  },
+  "anim.key.list.params": {
+    title: "KeyListParams",
+    description: "`anim.key.list` parameters.",
+    type: "object",
+    properties: {
+      nodeId: {
+        description: "The node.",
+        type: "string",
+      },
+      from: {
+        description: "First scene frame.",
+        type: [
+          "integer",
+          "null",
+        ],
+        maximum: 9223372036854775807n,
+        default: null,
+        minimum: -9223372036854775808n,
+      },
+      to: {
+        description: "Last scene frame.",
+        type: [
+          "integer",
+          "null",
+        ],
+        maximum: 9223372036854775807n,
+        default: null,
+        minimum: -9223372036854775808n,
+      },
+      includeDescendants: {
+        description: "Report whether a descendant has a key at each frame (a collapsed parent, 05 §1.7).",
+        type: "boolean",
+        default: false,
+      },
+    },
+    additionalProperties: false,
+    required: [
+      "nodeId",
+    ],
+  },
+  "anim.key.list.ListedKey": {
+    description: "One keyed frame.",
+    type: "object",
+    properties: {
+      frame: {
+        description: "Scene frame.",
+        type: "number",
+      },
+      channels: {
+        description: "Channels of this node keyed there.",
+        type: "array",
+        items: {
+          type: "string",
+        },
+      },
+      constant: {
+        description: "Of those, the ones whose segment starting there is constant.",
+        type: "array",
+        items: {
+          type: "string",
+        },
+      },
+      descendantKeyed: {
+        description: "A descendant has a key there.",
+        type: "boolean",
+      },
+    },
+    required: [
+      "frame",
+      "channels",
+      "constant",
+      "descendantKeyed",
+    ],
+  },
+  "anim.key.list.result": {
+    title: "KeyListResult",
+    description: "`anim.key.list` result.",
+    type: "object",
+    properties: {
+      keys: {
+        type: "array",
+        items: {
+          $ref: "#/$defs/anim.key.list.ListedKey",
+        },
+      },
+    },
+    required: [
+      "keys",
+    ],
+  },
+  "anim.key.move.params": {
+    title: "KeyMoveParams",
+    description: "`anim.key.move` parameters.",
+    type: "object",
+    properties: {
+      nodeId: {
+        description: "The node.",
+        type: "string",
+      },
+      fromFrame: {
+        description: "Scene frame of the keys.",
+        type: "integer",
+        maximum: 9223372036854775807n,
+        minimum: -9223372036854775808n,
+      },
+      toFrame: {
+        description: "Scene frame to move them to.",
+        type: "integer",
+        maximum: 9223372036854775807n,
+        minimum: -9223372036854775808n,
+      },
+      channels: {
+        description: "Channels; default: every channel keyed at `fromFrame`.",
+        type: [
+          "array",
+          "null",
+        ],
+        items: {
+          type: "string",
+        },
+        default: null,
+      },
+    },
+    additionalProperties: false,
     required: [
       "nodeId",
       "fromFrame",
       "toFrame",
     ],
-    additionalProperties: false,
-    "x-spec": "`nodeId: id; fromFrame: int; toFrame: int; channels?: [string]`",
   },
   "anim.key.move.result": {
-    title: "anim.key.move result",
+    title: "KeyMoveResult",
+    description: "`anim.key.move` result.",
     type: "object",
     properties: {
       nodeId: {
         type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
       },
       toFrame: {
         type: "integer",
+        maximum: 9223372036854775807n,
+        minimum: -9223372036854775808n,
       },
     },
     required: [
       "nodeId",
       "toFrame",
     ],
-    "x-spec": "`{nodeId, toFrame}`",
-    additionalProperties: false,
   },
   "anim.key.remove.params": {
-    title: "anim.key.remove parameters",
+    title: "KeyRemoveParams",
+    description: "`anim.key.remove` parameters.",
     type: "object",
     properties: {
       nodeIds: {
-        type: "array",
+        description: "Nodes; default: the selected rows, else the current element.",
+        type: [
+          "array",
+          "null",
+        ],
         items: {
           type: "string",
-          minLength: 1,
-          maxLength: 4096,
-          description: "object ID or path reference (10 §3)",
         },
-        maxItems: 100000,
+        default: null,
       },
       frame: {
-        type: "integer",
+        description: "Scene frame; default: the current frame.",
+        type: [
+          "integer",
+          "null",
+        ],
+        maximum: 9223372036854775807n,
+        default: null,
+        minimum: -9223372036854775808n,
       },
       channels: {
-        type: "array",
+        description: "Channels; default: position, rotation, scale, skew (velocity and pivot keys are kept, 05 §10.1).",
+        type: [
+          "array",
+          "null",
+        ],
         items: {
           type: "string",
-          maxLength: 65536,
         },
-        maxItems: 100000,
+        default: null,
       },
       all: {
+        description: "Remove every key of every channel.",
         type: "boolean",
         default: false,
       },
     },
     additionalProperties: false,
-    "x-spec": "`nodeIds?: [id]; frame?: int; channels?: [string]; all: bool = false`",
   },
   "anim.key.remove.result": {
-    title: "anim.key.remove result",
+    title: "KeyRemoveResult",
+    description: "`{removed}`.",
     type: "object",
     properties: {
       removed: {
-        type: "array",
-        items: {
-          type: "string",
-          minLength: 1,
-          maxLength: 4096,
-          description: "object ID or path reference (10 §3)",
-        },
-        maxItems: 100000,
+        description: "Keys removed.",
+        type: "integer",
+        maximum: 2147483647,
+        minimum: 0,
       },
     },
     required: [
       "removed",
     ],
-    "x-spec": "`{removed}`",
-    additionalProperties: false,
+  },
+  "anim.loop.set.LoopType": {
+    description: "Loop type (05 §8.4).",
+    oneOf: [
+      {
+        description: "The duration becomes `loops × L`.",
+        type: "string",
+        const: "count",
+      },
+      {
+        description: "The cycle length is kept; cycles follow the duration.",
+        type: "string",
+        const: "fill",
+      },
+    ],
+  },
+  "anim.loop.set.PositionLoop": {
+    description: "Position looping mode (05 §8.4).",
+    oneOf: [
+      {
+        description: "Every cycle restarts from the first position.",
+        type: "string",
+        const: "cycle",
+      },
+      {
+        description: "Cycles advance by the first cycle's displacement.",
+        type: "string",
+        const: "offset",
+      },
+    ],
   },
   "anim.loop.set.params": {
-    title: "anim.loop.set parameters",
+    title: "LoopParams",
+    description: "`anim.loop.set` parameters.",
     type: "object",
     properties: {
       nodeId: {
+        description: "The node.",
         type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
       },
       loops: {
+        description: "`count`: the number of cycles. `fill`: ignored, the cycles follow from the duration.",
         type: "integer",
+        default: 1,
         minimum: 1,
         maximum: 10000,
-        default: 1,
       },
       loopType: {
-        type: "string",
-        enum: [
-          "count",
-          "fill",
-        ],
+        description: "`count` or `fill`.",
+        $ref: "#/$defs/anim.loop.set.LoopType",
         default: "count",
       },
       positionLoop: {
-        type: "string",
-        enum: [
-          "cycle",
-          "offset",
-        ],
+        description: "`cycle` or `offset`.",
+        $ref: "#/$defs/anim.loop.set.PositionLoop",
         default: "cycle",
       },
     },
+    additionalProperties: false,
     required: [
       "nodeId",
     ],
-    additionalProperties: false,
-    "x-spec": "`nodeId: id; loops: int = 1 (1..10000); loopType: enum \"count\"|\"fill\" = \"count\"; positionLoop: enum \"cycle\"|\"offset\" = \"cycle\"`",
   },
   "anim.loop.set.result": {
-    title: "anim.loop.set result",
+    title: "LoopResult",
+    description: "`anim.loop.set` result.",
     type: "object",
     properties: {
       nodeId: {
         type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
       },
       cycleLength: {
-        type: "number",
+        description: "L, in frames.",
+        type: "integer",
+        maximum: 2147483647,
+        minimum: 0,
       },
       duration: {
-        type: "number",
+        description: "The bar after the change.",
+        type: "integer",
+        maximum: 2147483647,
+        minimum: 0,
       },
     },
     required: [
@@ -13867,8 +14456,6 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
       "cycleLength",
       "duration",
     ],
-    "x-spec": "`{nodeId, cycleLength, duration}`",
-    additionalProperties: false,
   },
   "anim.node.get.params": {
     title: "anim.node.get parameters",
@@ -14089,30 +14676,93 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
     additionalProperties: false,
   },
   "anim.path.get.params": {
-    title: "anim.path.get parameters",
+    title: "PathGetParams",
+    description: "`anim.path.get` parameters.",
     type: "object",
     properties: {
       nodeId: {
+        description: "The node.",
         type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
       },
     },
+    additionalProperties: false,
     required: [
       "nodeId",
     ],
-    additionalProperties: false,
-    "x-spec": "`nodeId: id`",
   },
-  "anim.path.get.spec.Path": {
+  "anim.path.get.PathPoint": {
+    description: "A motion point (05 §19.4).",
+    type: "object",
+    properties: {
+      id: {
+        description: "`<channelId>/<pointId>`.",
+        type: "string",
+      },
+      kind: {
+        description: "`key` or `control`.",
+        type: "string",
+      },
+      frame: {
+        description: "Keyframe: its scene frame. Control point: the derived passage frame, 3 decimals.",
+        type: "number",
+      },
+      x: {
+        type: "number",
+      },
+      y: {
+        type: "number",
+      },
+      z: {
+        type: "number",
+      },
+      tension: {
+        type: "number",
+      },
+      continuity: {
+        type: "number",
+      },
+      bias: {
+        type: "number",
+      },
+      constantSegment: {
+        description: "Keyframes only.",
+        type: [
+          "boolean",
+          "null",
+        ],
+      },
+      lockDepth: {
+        description: "Keyframes only.",
+        type: [
+          "boolean",
+          "null",
+        ],
+      },
+      arcLength: {
+        description: "Arc length at this point.",
+        type: "number",
+      },
+    },
+    required: [
+      "id",
+      "kind",
+      "frame",
+      "x",
+      "y",
+      "z",
+      "tension",
+      "continuity",
+      "bias",
+      "arcLength",
+    ],
+  },
+  "anim.path.get.result": {
+    title: "PathResult",
+    description: "`anim.path.get` result (05 §19.4).",
     type: "object",
     properties: {
       nodeId: {
         type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
       },
       lockDepth: {
         type: "boolean",
@@ -14123,203 +14773,191 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
       points: {
         type: "array",
         items: {
-          type: "object",
-          properties: {
-            id: {
-              type: "string",
-              minLength: 1,
-              maxLength: 4096,
-              description: "object ID or path reference (10 §3)",
-            },
-            kind: {
-              type: "string",
-              maxLength: 65536,
-            },
-            frame: {
-              type: "number",
-            },
-            x: {
-              type: "number",
-            },
-            y: {
-              type: "number",
-            },
-            z: {
-              type: "number",
-            },
-            tension: {
-              type: "number",
-            },
-            continuity: {
-              type: "number",
-            },
-            bias: {
-              type: "number",
-            },
-            constantSegment: {
-              type: "boolean",
-            },
-            lockDepth: {
-              type: "boolean",
-            },
-            arcLength: {
-              type: "number",
-            },
-          },
-          additionalProperties: false,
-          required: [
-            "id",
-            "kind",
-            "frame",
-            "x",
-            "y",
-            "z",
-            "tension",
-            "continuity",
-            "bias",
-            "arcLength",
-          ],
+          $ref: "#/$defs/anim.path.get.PathPoint",
         },
-        maxItems: 100000,
       },
     },
-    additionalProperties: false,
     required: [
       "nodeId",
       "lockDepth",
       "length",
       "points",
     ],
-    "x-specSection": "05",
-  },
-  "anim.path.get.result": {
-    $ref: "#/$defs/anim.path.get.spec.Path",
-    title: "anim.path.get result",
-    "x-spec": "`Path` (§19.4)",
   },
   "anim.path.lockDepth.set.params": {
-    title: "anim.path.lockDepth.set parameters",
+    title: "LockDepthParams",
+    description: "`anim.path.lockDepth.set` parameters.",
     type: "object",
     properties: {
       nodeId: {
+        description: "The node.",
         type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
       },
       frame: {
+        description: "Scene frame of the keyframe starting the segment.",
         type: "integer",
+        maximum: 9223372036854775807n,
+        minimum: -9223372036854775808n,
       },
       enabled: {
+        description: "Constant Z on or off.",
         type: "boolean",
       },
     },
+    additionalProperties: false,
     required: [
       "nodeId",
       "frame",
       "enabled",
     ],
-    additionalProperties: false,
-    "x-spec": "`nodeId: id; frame: int; enabled: bool`",
   },
   "anim.path.lockDepth.set.result": {
-    title: "anim.path.lockDepth.set result",
+    title: "LockDepthResult",
+    description: "`anim.path.lockDepth.set` result.",
     type: "object",
     properties: {
       nodeId: {
         type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
       },
       frame: {
         type: "integer",
+        maximum: 9223372036854775807n,
+        minimum: -9223372036854775808n,
       },
     },
     required: [
       "nodeId",
       "frame",
     ],
-    "x-spec": "`{nodeId, frame}`",
+  },
+  "anim.path.point.add.PointKind": {
+    description: "A point of `anim.path.set`.",
+    oneOf: [
+      {
+        description: "Keyframe.",
+        type: "string",
+        const: "key",
+      },
+      {
+        description: "Control point.",
+        type: "string",
+        const: "control",
+      },
+    ],
+  },
+  "anim.path.point.add.CurveAt": {
+    description: "A curve location.",
+    type: "object",
+    properties: {
+      segment: {
+        description: "Curve segment index.",
+        type: "integer",
+        maximum: 2147483647,
+        minimum: 0,
+      },
+      s: {
+        description: "Parameter, 0…1.",
+        type: "number",
+        maximum: 1,
+        minimum: 0,
+      },
+    },
+    additionalProperties: false,
+    required: [
+      "segment",
+      "s",
+    ],
+  },
+  "anim.path.point.add.Xyz": {
+    description: "A partial 3-D point parameter.",
+    type: "object",
+    properties: {
+      x: {
+        description: "X.",
+        type: [
+          "number",
+          "null",
+        ],
+      },
+      y: {
+        description: "Y.",
+        type: [
+          "number",
+          "null",
+        ],
+      },
+      z: {
+        description: "Z.",
+        type: [
+          "number",
+          "null",
+        ],
+      },
+    },
     additionalProperties: false,
   },
   "anim.path.point.add.params": {
-    title: "anim.path.point.add parameters",
+    title: "PointAddParams",
+    description: "`anim.path.point.add` parameters.",
     type: "object",
     properties: {
       nodeId: {
+        description: "The node.",
         type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
       },
       kind: {
-        type: "string",
-        enum: [
-          "key",
-          "control",
-        ],
+        description: "Keyframe or control point.",
+        $ref: "#/$defs/anim.path.point.add.PointKind",
       },
       frame: {
-        type: "number",
+        description: "Scene frame; a keyframe's must be an integer, a control point's may be fractional. Default: the current frame.",
+        type: [
+          "number",
+          "null",
+        ],
+        default: null,
       },
       at: {
-        type: "object",
-        properties: {
-          segment: {
-            type: "integer",
+        description: "A curve location instead of a frame (control points).",
+        anyOf: [
+          {
+            $ref: "#/$defs/anim.path.point.add.CurveAt",
           },
-          s: {
-            type: "number",
-            minimum: 0,
-            maximum: 1,
+          {
+            type: "null",
           },
-        },
-        required: [
-          "segment",
-          "s",
         ],
-        additionalProperties: false,
       },
       position: {
-        type: "object",
-        properties: {
-          x: {
-            type: "number",
+        description: "The point's position; default: where the node is at that frame or location.",
+        anyOf: [
+          {
+            $ref: "#/$defs/anim.path.point.add.Xyz",
           },
-          y: {
-            type: "number",
+          {
+            type: "null",
           },
-          z: {
-            type: "number",
-          },
-        },
-        required: [
-          "x",
-          "y",
-          "z",
         ],
-        additionalProperties: false,
+        default: null,
       },
     },
+    additionalProperties: false,
     required: [
       "nodeId",
       "kind",
     ],
-    additionalProperties: false,
-    "x-spec": "`nodeId: id; kind: enum \"key\"|\"control\"; frame?: number; at?: object {segment: int, s: number (0..1)}; position?: object {x,y,z}`",
   },
   "anim.path.point.add.result": {
-    title: "anim.path.point.add result",
+    title: "PointAddResult",
+    description: "`anim.path.point.add` result.",
     type: "object",
     properties: {
       pointId: {
+        description: "The new point.",
         type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
       },
       frame: {
+        description: "Its frame (a control point's derived passage frame).",
         type: "number",
       },
     },
@@ -14327,83 +14965,49 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
       "pointId",
       "frame",
     ],
-    "x-spec": "`{pointId, frame}`",
-    additionalProperties: false,
   },
   "anim.path.point.remove.params": {
-    title: "anim.path.point.remove parameters",
+    title: "PointRemoveParams",
+    description: "`anim.path.point.remove` parameters.",
     type: "object",
     properties: {
       pointIds: {
+        description: "The points.",
         type: "array",
         items: {
           type: "string",
-          minLength: 1,
-          maxLength: 4096,
-          description: "object ID or path reference (10 §3)",
         },
+        minItems: 1,
         maxItems: 100000,
       },
     },
+    additionalProperties: false,
     required: [
       "pointIds",
     ],
-    additionalProperties: false,
-    "x-spec": "`pointIds: [id]`",
   },
   "anim.path.point.remove.result": {
-    title: "anim.path.point.remove result",
+    title: "PointRemoveResult",
+    description: "`anim.path.point.remove` result.",
     type: "object",
     properties: {
       removed: {
-        type: "array",
-        items: {
-          type: "string",
-          minLength: 1,
-          maxLength: 4096,
-          description: "object ID or path reference (10 §3)",
-        },
-        maxItems: 100000,
+        description: "How many points went.",
+        type: "integer",
+        maximum: 2147483647,
+        minimum: 0,
       },
       warnings: {
         type: "array",
         items: {
-          type: "object",
-          additionalProperties: false,
-          required: [
-            "code",
-            "message",
-          ],
-          properties: {
-            code: {
-              type: "string",
-              maxLength: 256,
-            },
-            message: {
-              type: "string",
-              maxLength: 65536,
-            },
-            objectIds: {
-              type: "array",
-              items: {
-                type: "string",
-                minLength: 1,
-                maxLength: 4096,
-                description: "object ID or path reference (10 §3)",
-              },
-              maxItems: 100000,
-            },
-          },
+          type: "string",
         },
-        maxItems: 100000,
       },
     },
     required: [
       "removed",
       "warnings",
     ],
-    "x-spec": "`{removed, warnings[]}`",
-    additionalProperties: false,
   },
   "anim.path.point.select.params": {
     title: "anim.path.point.select parameters",
@@ -14455,7 +15059,7 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
         maxItems: 100000,
       },
       frame: {
-        type: "integer",
+        type: "number",
       },
     },
     required: [
@@ -14465,19 +15069,251 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
     "x-spec": "`{pointIds, frame}`",
     additionalProperties: false,
   },
+  "anim.path.point.set.Xy": {
+    description: "A partial 2-D point parameter.",
+    type: "object",
+    properties: {
+      x: {
+        description: "X.",
+        type: [
+          "number",
+          "null",
+        ],
+      },
+      y: {
+        description: "Y.",
+        type: [
+          "number",
+          "null",
+        ],
+      },
+    },
+    additionalProperties: false,
+  },
   "anim.path.point.set.params": {
-    title: "anim.path.point.set parameters",
+    title: "PointSetParams",
+    description: "`anim.path.point.set` parameters.",
+    type: "object",
+    properties: {
+      pointIds: {
+        description: "The points.",
+        type: "array",
+        items: {
+          type: "string",
+        },
+        minItems: 1,
+        maxItems: 100000,
+      },
+      x: {
+        type: [
+          "number",
+          "null",
+        ],
+        default: null,
+      },
+      y: {
+        type: [
+          "number",
+          "null",
+        ],
+        default: null,
+      },
+      z: {
+        type: [
+          "number",
+          "null",
+        ],
+        default: null,
+      },
+      frame: {
+        description: "Moves a keyframe in time (scene frame).",
+        type: [
+          "number",
+          "null",
+        ],
+        default: null,
+      },
+      lockInTime: {
+        description: "On = keyframe, off = control point.",
+        type: [
+          "boolean",
+          "null",
+        ],
+        default: null,
+      },
+      tension: {
+        type: [
+          "number",
+          "null",
+        ],
+        default: null,
+      },
+      continuity: {
+        type: [
+          "number",
+          "null",
+        ],
+        default: null,
+      },
+      bias: {
+        type: [
+          "number",
+          "null",
+        ],
+        default: null,
+      },
+      constantSegment: {
+        type: [
+          "boolean",
+          "null",
+        ],
+        default: null,
+      },
+      rotation: {
+        description: "Keyframes only: the `rotation` key at that frame.",
+        type: [
+          "number",
+          "null",
+        ],
+        default: null,
+      },
+      scale: {
+        description: "Keyframes only: the `scale.*` keys at that frame.",
+        anyOf: [
+          {
+            $ref: "#/$defs/anim.path.point.set.Xy",
+          },
+          {
+            type: "null",
+          },
+        ],
+        default: null,
+      },
+      pivot: {
+        description: "Keyframes only: the `pivot.*` keys at that frame.",
+        anyOf: [
+          {
+            $ref: "#/$defs/anim.path.point.set.Xy",
+          },
+          {
+            type: "null",
+          },
+        ],
+        default: null,
+      },
+    },
+    additionalProperties: false,
+    required: [
+      "pointIds",
+    ],
+  },
+  "anim.path.point.set.result": {
+    title: "PointSetResult",
+    description: "`anim.path.point.set` result.",
     type: "object",
     properties: {
       pointIds: {
         type: "array",
         items: {
           type: "string",
-          minLength: 1,
-          maxLength: 4096,
-          description: "object ID or path reference (10 §3)",
         },
-        maxItems: 100000,
+      },
+      warnings: {
+        type: "array",
+        items: {
+          type: "string",
+        },
+      },
+    },
+    required: [
+      "pointIds",
+      "warnings",
+    ],
+  },
+  "anim.path.sample.SampleWhat": {
+    description: "What `anim.path.sample` follows.",
+    oneOf: [
+      {
+        description: "The node's origin.",
+        type: "string",
+        const: "origin",
+      },
+      {
+        description: "The node's rotation pivot.",
+        type: "string",
+        const: "pivot",
+      },
+    ],
+  },
+  "anim.path.sample.SampleSpace": {
+    description: "The space of a sample.",
+    oneOf: [
+      {
+        description: "Parent space.",
+        type: "string",
+        const: "parent",
+      },
+      {
+        description: "World space.",
+        type: "string",
+        const: "world",
+      },
+    ],
+  },
+  "anim.path.sample.params": {
+    title: "PathSampleParams",
+    description: "`anim.path.sample` parameters.",
+    type: "object",
+    properties: {
+      nodeId: {
+        description: "The node.",
+        type: "string",
+      },
+      from: {
+        description: "First scene frame; default: the bar's first.",
+        type: [
+          "integer",
+          "null",
+        ],
+        maximum: 9223372036854775807n,
+        default: null,
+        minimum: -9223372036854775808n,
+      },
+      to: {
+        description: "Last scene frame; default: the bar's last.",
+        type: [
+          "integer",
+          "null",
+        ],
+        maximum: 9223372036854775807n,
+        default: null,
+        minimum: -9223372036854775808n,
+      },
+      step: {
+        description: "Frame step, above 0.",
+        type: "number",
+        default: 1,
+      },
+      what: {
+        description: "Origin or pivot.",
+        $ref: "#/$defs/anim.path.sample.SampleWhat",
+      },
+      space: {
+        description: "Parent or world space.",
+        $ref: "#/$defs/anim.path.sample.SampleSpace",
+      },
+    },
+    additionalProperties: false,
+    required: [
+      "nodeId",
+    ],
+  },
+  "anim.path.sample.PositionSample": {
+    description: "A position sample.",
+    type: "object",
+    properties: {
+      frame: {
+        type: "number",
       },
       x: {
         type: "number",
@@ -14488,332 +15324,165 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
       z: {
         type: "number",
       },
-      frame: {
-        type: "integer",
-      },
-      lockInTime: {
-        type: "boolean",
-      },
-      tension: {
-        type: "number",
-        minimum: -1,
-        maximum: 1,
-      },
-      continuity: {
-        type: "number",
-        minimum: -1,
-        maximum: 1,
-      },
-      bias: {
-        type: "number",
-        minimum: -1,
-        maximum: 1,
-      },
-      constantSegment: {
-        type: "boolean",
-      },
-      rotation: {
-        type: "number",
-      },
-      scale: {
-        type: "object",
-        properties: {
-          x: {
-            type: "number",
-          },
-          y: {
-            type: "number",
-          },
-        },
-        required: [
-          "x",
-          "y",
-        ],
-        additionalProperties: false,
-      },
-      pivot: {
-        type: "object",
-        properties: {
-          x: {
-            type: "number",
-          },
-          y: {
-            type: "number",
-          },
-        },
-        required: [
-          "x",
-          "y",
-        ],
-        additionalProperties: false,
-      },
     },
     required: [
-      "pointIds",
+      "frame",
+      "x",
+      "y",
+      "z",
     ],
-    additionalProperties: false,
-    "x-spec": "`pointIds: [id]; x?: number; y?: number; z?: number; frame?: int; lockInTime?: bool; tension?: number (-1..1); continuity?: number (-1..1); bias?: number (-1..1); constantSegment?: bool; rotation?: number; scale?: point; pivot?: point`",
-  },
-  "anim.path.point.set.result": {
-    title: "anim.path.point.set result",
-    type: "object",
-    properties: {
-      pointIds: {
-        type: "array",
-        items: {
-          type: "string",
-          minLength: 1,
-          maxLength: 4096,
-          description: "object ID or path reference (10 §3)",
-        },
-        maxItems: 100000,
-      },
-      warnings: {
-        type: "array",
-        items: {
-          type: "object",
-          additionalProperties: false,
-          required: [
-            "code",
-            "message",
-          ],
-          properties: {
-            code: {
-              type: "string",
-              maxLength: 256,
-            },
-            message: {
-              type: "string",
-              maxLength: 65536,
-            },
-            objectIds: {
-              type: "array",
-              items: {
-                type: "string",
-                minLength: 1,
-                maxLength: 4096,
-                description: "object ID or path reference (10 §3)",
-              },
-              maxItems: 100000,
-            },
-          },
-        },
-        maxItems: 100000,
-      },
-    },
-    required: [
-      "pointIds",
-      "warnings",
-    ],
-    "x-spec": "`{pointIds, warnings[]}`",
-    additionalProperties: false,
-  },
-  "anim.path.sample.params": {
-    title: "anim.path.sample parameters",
-    type: "object",
-    properties: {
-      nodeId: {
-        type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
-      },
-      from: {
-        type: "integer",
-      },
-      to: {
-        type: "integer",
-      },
-      step: {
-        type: "number",
-        default: 1,
-      },
-      what: {
-        type: "string",
-        enum: [
-          "origin",
-          "pivot",
-        ],
-        default: "origin",
-      },
-      space: {
-        type: "string",
-        enum: [
-          "parent",
-          "world",
-        ],
-        default: "world",
-      },
-    },
-    required: [
-      "nodeId",
-    ],
-    additionalProperties: false,
-    "x-spec": "`nodeId: id; from?: int; to?: int; step: number = 1; what: enum \"origin\"|\"pivot\" = \"origin\"; space: enum \"parent\"|\"world\" = \"world\"`",
   },
   "anim.path.sample.result": {
-    title: "anim.path.sample result",
+    title: "PathSampleResult",
+    description: "`anim.path.sample` result.",
     type: "object",
     properties: {
       samples: {
         type: "array",
         items: {
-          type: "object",
-          properties: {
-            frame: {
-              type: "integer",
-            },
-            x: {
-              type: "number",
-            },
-            y: {
-              type: "number",
-            },
-            z: {
-              type: "number",
-            },
-          },
-          required: [
-            "frame",
-            "x",
-            "y",
-            "z",
-          ],
-          additionalProperties: false,
+          $ref: "#/$defs/anim.path.sample.PositionSample",
         },
-        maxItems: 100000,
       },
     },
     required: [
       "samples",
     ],
-    "x-spec": "`{samples: [{frame, x, y, z}]}`",
+  },
+  "anim.path.set.SetPoint": {
+    description: "A point of `anim.path.set`.",
+    type: "object",
+    properties: {
+      kind: {
+        description: "Keyframe or control point.",
+        $ref: "#/$defs/anim.path.set.PointKind",
+      },
+      frame: {
+        description: "Keyframe: its scene frame.",
+        type: [
+          "number",
+          "null",
+        ],
+        default: null,
+      },
+      x: {
+        type: "number",
+      },
+      y: {
+        type: "number",
+      },
+      z: {
+        type: "number",
+      },
+      tension: {
+        type: [
+          "number",
+          "null",
+        ],
+        default: null,
+      },
+      continuity: {
+        type: [
+          "number",
+          "null",
+        ],
+        default: null,
+      },
+      bias: {
+        type: [
+          "number",
+          "null",
+        ],
+        default: null,
+      },
+      constantSegment: {
+        type: [
+          "boolean",
+          "null",
+        ],
+        default: null,
+      },
+      lockDepth: {
+        type: [
+          "boolean",
+          "null",
+        ],
+        default: null,
+      },
+    },
     additionalProperties: false,
+    required: [
+      "kind",
+      "x",
+      "y",
+      "z",
+    ],
+  },
+  "anim.path.set.PointKind": {
+    description: "A point of `anim.path.set`.",
+    oneOf: [
+      {
+        description: "Keyframe.",
+        type: "string",
+        const: "key",
+      },
+      {
+        description: "Control point.",
+        type: "string",
+        const: "control",
+      },
+    ],
   },
   "anim.path.set.params": {
-    title: "anim.path.set parameters",
+    title: "PathSetParams",
+    description: "`anim.path.set` parameters.",
     type: "object",
     properties: {
       nodeId: {
+        description: "The node.",
         type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
       },
       points: {
+        description: "The points in path order; first and last are keyframes.",
         type: "array",
         items: {
-          type: "object",
-          properties: {
-            kind: {
-              type: "string",
-            },
-            frame: {
-              type: "integer",
-            },
-            x: {
-              type: "number",
-            },
-            y: {
-              type: "number",
-            },
-            z: {
-              type: "number",
-            },
-            tension: {
-              type: "number",
-              minimum: -1,
-              maximum: 1,
-            },
-            continuity: {
-              type: "number",
-              minimum: -1,
-              maximum: 1,
-            },
-            bias: {
-              type: "number",
-              minimum: -1,
-              maximum: 1,
-            },
-            constantSegment: {
-              type: "boolean",
-            },
-            lockDepth: {
-              type: "boolean",
-            },
-          },
-          required: [
-            "kind",
-            "x",
-            "y",
-            "z",
-          ],
-          additionalProperties: false,
+          $ref: "#/$defs/anim.path.set.SetPoint",
         },
         maxItems: 100000,
       },
       lockDepth: {
-        type: "boolean",
+        description: "Constant Z of the whole node.",
+        type: [
+          "boolean",
+          "null",
+        ],
+        default: null,
       },
     },
+    additionalProperties: false,
     required: [
       "nodeId",
       "points",
     ],
-    additionalProperties: false,
-    "x-spec": "`nodeId: id; points: [object {kind, frame?, x, y, z, tension?, continuity?, bias?, constantSegment?, lockDepth?}]; lockDepth?: bool`",
   },
   "anim.path.set.result": {
-    title: "anim.path.set result",
+    title: "PathSetResult",
+    description: "`anim.path.set` result.",
     type: "object",
     properties: {
       nodeId: {
         type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
       },
       pointIds: {
         type: "array",
         items: {
           type: "string",
-          minLength: 1,
-          maxLength: 4096,
-          description: "object ID or path reference (10 §3)",
         },
-        maxItems: 100000,
       },
       warnings: {
         type: "array",
         items: {
-          type: "object",
-          additionalProperties: false,
-          required: [
-            "code",
-            "message",
-          ],
-          properties: {
-            code: {
-              type: "string",
-              maxLength: 256,
-            },
-            message: {
-              type: "string",
-              maxLength: 65536,
-            },
-            objectIds: {
-              type: "array",
-              items: {
-                type: "string",
-                minLength: 1,
-                maxLength: 4096,
-                description: "object ID or path reference (10 §3)",
-              },
-              maxItems: 100000,
-            },
-          },
+          type: "string",
         },
-        maxItems: 100000,
       },
     },
     required: [
@@ -14821,8 +15490,6 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
       "pointIds",
       "warnings",
     ],
-    "x-spec": "`{nodeId, pointIds[], warnings[]}`",
-    additionalProperties: false,
   },
   "anim.peg.create.params": {
     title: "anim.peg.create parameters",
@@ -15157,132 +15824,182 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
     "x-spec": "`{prefs}`",
     additionalProperties: false,
   },
-  "anim.projection.get.params": {
-    title: "anim.projection.get parameters",
+  "anim.projection.get.Xyz": {
+    description: "A partial 3-D point parameter.",
     type: "object",
     properties: {
-      frame: {
-        type: "integer",
+      x: {
+        description: "X.",
+        type: [
+          "number",
+          "null",
+        ],
       },
-      cameraId: {
-        type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
+      y: {
+        description: "Y.",
+        type: [
+          "number",
+          "null",
+        ],
       },
-      points: {
-        type: "array",
-        items: {
-          type: "object",
-          properties: {},
-          additionalProperties: false,
-          "x-placeholder": true,
-          description: "shape not defined by the owning section (spec issue); only {} is accepted until it is",
-          "x-specIssue": "SI-023",
-        },
-        maxItems: 100000,
-      },
-      nodeIds: {
-        type: "array",
-        items: {
-          type: "string",
-          minLength: 1,
-          maxLength: 4096,
-          description: "object ID or path reference (10 §3)",
-        },
-        maxItems: 100000,
+      z: {
+        description: "Z.",
+        type: [
+          "number",
+          "null",
+        ],
       },
     },
     additionalProperties: false,
-    "x-spec": "`frame?: int; cameraId?: id; points?: [object]; nodeIds?: [id]`",
+  },
+  "anim.projection.get.params": {
+    title: "ProjectionParams",
+    description: "`anim.projection.get` parameters.",
+    type: "object",
+    properties: {
+      frame: {
+        description: "Scene frame; default: the current frame.",
+        type: [
+          "integer",
+          "null",
+        ],
+        maximum: 9223372036854775807n,
+        default: null,
+        minimum: -9223372036854775808n,
+      },
+      cameraId: {
+        description: "Camera; default: the current scene's current camera.",
+        type: [
+          "string",
+          "null",
+        ],
+        default: null,
+      },
+      points: {
+        description: "World points.",
+        type: [
+          "array",
+          "null",
+        ],
+        items: {
+          $ref: "#/$defs/anim.projection.get.Xyz",
+        },
+        maxItems: 100000,
+        default: null,
+      },
+      nodeIds: {
+        description: "Nodes whose bounds to project.",
+        type: [
+          "array",
+          "null",
+        ],
+        items: {
+          type: "string",
+        },
+        maxItems: 10000,
+        default: null,
+      },
+    },
+    additionalProperties: false,
+  },
+  "anim.projection.get.ProjectedPoint": {
+    description: "A projected point.",
+    type: "object",
+    properties: {
+      x: {
+        description: "Output pixel x, `null` at or behind the near plane (SI-100).",
+        type: [
+          "number",
+          "null",
+        ],
+      },
+      y: {
+        description: "Output pixel y, `null` at or behind the near plane.",
+        type: [
+          "number",
+          "null",
+        ],
+      },
+      depth: {
+        description: "Depth in front of the camera.",
+        type: "number",
+      },
+      visible: {
+        description: "In front of the near plane and inside the frame.",
+        type: "boolean",
+      },
+    },
+    required: [
+      "depth",
+      "visible",
+    ],
+  },
+  "anim.projection.get.ProjectedNode": {
+    description: "A projected node.",
+    type: "object",
+    properties: {
+      id: {
+        type: "string",
+      },
+      bbox: {
+        $ref: "#/$defs/anim.projection.get.Bbox",
+      },
+      visible: {
+        type: "boolean",
+      },
+    },
+    required: [
+      "id",
+      "bbox",
+      "visible",
+    ],
+  },
+  "anim.projection.get.Bbox": {
+    description: "An output-pixel box.",
+    type: "object",
+    properties: {
+      x: {
+        type: "number",
+      },
+      y: {
+        type: "number",
+      },
+      width: {
+        type: "number",
+      },
+      height: {
+        type: "number",
+      },
+    },
+    required: [
+      "x",
+      "y",
+      "width",
+      "height",
+    ],
   },
   "anim.projection.get.result": {
-    title: "anim.projection.get result",
+    title: "ProjectionResult",
+    description: "`anim.projection.get` result.",
     type: "object",
     properties: {
       points: {
         type: "array",
         items: {
-          type: "object",
-          properties: {
-            x: {
-              type: "number",
-            },
-            y: {
-              type: "number",
-            },
-            depth: {
-              type: "number",
-            },
-            visible: {
-              type: "boolean",
-            },
-          },
-          required: [
-            "x",
-            "y",
-            "depth",
-            "visible",
-          ],
-          additionalProperties: false,
+          $ref: "#/$defs/anim.projection.get.ProjectedPoint",
         },
-        maxItems: 100000,
       },
       nodes: {
         type: "array",
         items: {
-          type: "object",
-          properties: {
-            id: {
-              type: "string",
-              minLength: 1,
-              maxLength: 4096,
-              description: "object ID or path reference (10 §3)",
-            },
-            bbox: {
-              type: "object",
-              properties: {
-                x: {
-                  type: "number",
-                },
-                y: {
-                  type: "number",
-                },
-                width: {
-                  type: "number",
-                },
-                height: {
-                  type: "number",
-                },
-              },
-              required: [
-                "x",
-                "y",
-                "width",
-                "height",
-              ],
-              additionalProperties: false,
-            },
-            visible: {
-              type: "boolean",
-            },
-          },
-          required: [
-            "id",
-            "bbox",
-            "visible",
-          ],
-          additionalProperties: false,
+          $ref: "#/$defs/anim.projection.get.ProjectedNode",
         },
-        maxItems: 100000,
       },
     },
     required: [
       "points",
       "nodes",
     ],
-    "x-spec": "`{points: [{x, y, depth, visible}], nodes: [{id, bbox {x,y,width,height}, visible}]}`",
-    additionalProperties: false,
   },
   "anim.record.completed.params": {
     title: "anim.record.completed parameters",
@@ -15550,133 +16267,144 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
     additionalProperties: false,
   },
   "anim.segment.set.params": {
-    title: "anim.segment.set parameters",
+    title: "SegmentSetParams",
+    description: "`anim.segment.set` parameters.",
     type: "object",
     properties: {
       nodeIds: {
-        type: "array",
+        description: "Nodes; default: the selected rows, else the current element.",
+        type: [
+          "array",
+          "null",
+        ],
         items: {
           type: "string",
-          minLength: 1,
-          maxLength: 4096,
-          description: "object ID or path reference (10 §3)",
         },
-        maxItems: 100000,
+        default: null,
       },
       frame: {
+        description: "Scene frame of the keyframe starting the segment.",
         type: "integer",
+        maximum: 9223372036854775807n,
+        minimum: -9223372036854775808n,
       },
       channels: {
-        type: "array",
+        description: "Channels; default: every channel keyed at `frame`, except velocity.",
+        type: [
+          "array",
+          "null",
+        ],
         items: {
           type: "string",
-          maxLength: 65536,
         },
-        maxItems: 100000,
+        default: null,
       },
       constant: {
+        description: "Constant or tweened.",
         type: "boolean",
       },
     },
+    additionalProperties: false,
     required: [
       "frame",
       "constant",
     ],
-    additionalProperties: false,
-    "x-spec": "`nodeIds?: [id]; frame: int; channels?: [string]; constant: bool`",
   },
   "anim.segment.set.result": {
-    title: "anim.segment.set result",
+    title: "SegmentSetResult",
+    description: "`anim.segment.set` result.",
     type: "object",
     properties: {
       nodeIds: {
         type: "array",
         items: {
           type: "string",
-          minLength: 1,
-          maxLength: 4096,
-          description: "object ID or path reference (10 §3)",
         },
-        maxItems: 100000,
       },
       channels: {
         type: "array",
         items: {
           type: "string",
-          maxLength: 65536,
         },
-        maxItems: 100000,
       },
     },
     required: [
       "nodeIds",
       "channels",
     ],
-    "x-spec": "`{nodeIds, channels[]}`",
-    additionalProperties: false,
+  },
+  "anim.segment.uniform.apply.Side": {
+    description: "A side of a key.",
+    oneOf: [
+      {
+        description: "The segment ending at the key.",
+        type: "string",
+        const: "left",
+      },
+      {
+        description: "The segment starting at the key.",
+        type: "string",
+        const: "right",
+      },
+    ],
   },
   "anim.segment.uniform.apply.params": {
-    title: "anim.segment.uniform.apply parameters",
+    title: "UniformParams",
+    description: "`anim.segment.uniform.apply` parameters.",
     type: "object",
     properties: {
       nodeId: {
+        description: "The node.",
         type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
       },
       frame: {
+        description: "Scene frame of the key.",
         type: "integer",
+        maximum: 9223372036854775807n,
+        minimum: -9223372036854775808n,
       },
       side: {
-        type: "string",
-        enum: [
-          "left",
-          "right",
-        ],
+        description: "Which side.",
+        $ref: "#/$defs/anim.segment.uniform.apply.Side",
       },
       channels: {
-        type: "array",
+        description: "Channels; default: every 1-D channel keyed at `frame`, and velocity at a motion keyframe.",
+        type: [
+          "array",
+          "null",
+        ],
         items: {
           type: "string",
-          maxLength: 65536,
         },
-        maxItems: 100000,
+        default: null,
       },
     },
+    additionalProperties: false,
     required: [
       "nodeId",
       "frame",
       "side",
     ],
-    additionalProperties: false,
-    "x-spec": "`nodeId: id; frame: int; side: enum \"left\"|\"right\"; channels?: [string]`",
   },
   "anim.segment.uniform.apply.result": {
-    title: "anim.segment.uniform.apply result",
+    title: "UniformResult",
+    description: "`anim.segment.uniform.apply` result.",
     type: "object",
     properties: {
       nodeId: {
         type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
       },
       channels: {
         type: "array",
         items: {
           type: "string",
-          maxLength: 65536,
         },
-        maxItems: 100000,
       },
     },
     required: [
       "nodeId",
       "channels",
     ],
-    "x-spec": "`{nodeId, channels[]}`",
-    additionalProperties: false,
   },
   "anim.skeleton.create.params": {
     title: "anim.skeleton.create parameters",
@@ -16498,192 +17226,226 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
     "x-spec": "`{tool}`",
     additionalProperties: false,
   },
+  "anim.transform.set.Target": {
+    description: "What `anim.transform.set` writes.",
+    oneOf: [
+      {
+        description: "Static (layout) values: all frames, no keys.",
+        type: "string",
+        const: "static",
+      },
+      {
+        description: "Animated values, keyed at `frame`.",
+        type: "string",
+        const: "key",
+      },
+    ],
+  },
+  "anim.transform.set.Xyz": {
+    description: "A partial 3-D point parameter.",
+    type: "object",
+    properties: {
+      x: {
+        description: "X.",
+        type: [
+          "number",
+          "null",
+        ],
+      },
+      y: {
+        description: "Y.",
+        type: [
+          "number",
+          "null",
+        ],
+      },
+      z: {
+        description: "Z.",
+        type: [
+          "number",
+          "null",
+        ],
+      },
+    },
+    additionalProperties: false,
+  },
+  "anim.transform.set.PositionSpace": {
+    description: "The space of `position`.",
+    oneOf: [
+      {
+        description: "Parent space.",
+        type: "string",
+        const: "parent",
+      },
+      {
+        description: "World space: converted through the parent's world matrix at `frame`.",
+        type: "string",
+        const: "world",
+      },
+    ],
+  },
+  "anim.transform.set.Xy": {
+    description: "A partial 2-D point parameter.",
+    type: "object",
+    properties: {
+      x: {
+        description: "X.",
+        type: [
+          "number",
+          "null",
+        ],
+      },
+      y: {
+        description: "Y.",
+        type: [
+          "number",
+          "null",
+        ],
+      },
+    },
+    additionalProperties: false,
+  },
   "anim.transform.set.params": {
-    title: "anim.transform.set parameters",
+    title: "TransformParams",
+    description: "`anim.transform.set` parameters.",
     type: "object",
     properties: {
       nodeIds: {
-        type: "array",
+        description: "Nodes; default: the selected rows, else the current element.",
+        type: [
+          "array",
+          "null",
+        ],
         items: {
           type: "string",
-          minLength: 1,
-          maxLength: 4096,
-          description: "object ID or path reference (10 §3)",
         },
-        maxItems: 100000,
+        default: null,
       },
       target: {
-        type: "string",
-        enum: [
-          "static",
-          "key",
-        ],
-        default: "key",
+        description: "Static values or keys.",
+        $ref: "#/$defs/anim.transform.set.Target",
       },
       frame: {
-        type: "integer",
+        description: "Scene frame of the keys; default: the current frame.",
+        type: [
+          "integer",
+          "null",
+        ],
+        maximum: 9223372036854775807n,
+        default: null,
+        minimum: -9223372036854775808n,
       },
       position: {
-        type: "object",
-        properties: {
-          x: {
-            type: "number",
+        description: "Position; omitted axes keep their value.",
+        anyOf: [
+          {
+            $ref: "#/$defs/anim.transform.set.Xyz",
           },
-          y: {
-            type: "number",
+          {
+            type: "null",
           },
-          z: {
-            type: "number",
-          },
-        },
-        required: [
-          "x",
-          "y",
-          "z",
         ],
-        additionalProperties: false,
+        default: null,
       },
       positionSpace: {
-        type: "string",
-        enum: [
-          "parent",
-          "world",
-        ],
-        default: "parent",
+        description: "Parent or world space.",
+        $ref: "#/$defs/anim.transform.set.PositionSpace",
       },
       rotation: {
-        type: "number",
+        description: "Rotation, degrees.",
+        type: [
+          "number",
+          "null",
+        ],
+        default: null,
       },
       scale: {
-        type: "object",
-        properties: {
-          x: {
-            type: "number",
+        description: "Scale; omitted axes keep their value.",
+        anyOf: [
+          {
+            $ref: "#/$defs/anim.transform.set.Xy",
           },
-          y: {
-            type: "number",
+          {
+            type: "null",
           },
-        },
-        required: [
-          "x",
-          "y",
         ],
-        additionalProperties: false,
+        default: null,
       },
       skew: {
-        type: "number",
-        minimum: -89,
-        maximum: 89,
+        description: "Skew, degrees, −89…89.",
+        type: [
+          "number",
+          "null",
+        ],
+        default: null,
       },
       pivot: {
-        type: "object",
-        properties: {
-          x: {
-            type: "number",
+        description: "Peg and skeleton pivot (static), or the animated pivot offset of any node (key).",
+        anyOf: [
+          {
+            $ref: "#/$defs/anim.transform.set.Xy",
           },
-          y: {
-            type: "number",
+          {
+            type: "null",
           },
-        },
-        required: [
-          "x",
-          "y",
         ],
-        additionalProperties: false,
+        default: null,
       },
       rotationPivot: {
-        type: "object",
-        properties: {
-          x: {
-            type: "number",
+        description: "Element rotation pivot (static).",
+        anyOf: [
+          {
+            $ref: "#/$defs/anim.transform.set.Xy",
           },
-          y: {
-            type: "number",
+          {
+            type: "null",
           },
-        },
-        required: [
-          "x",
-          "y",
         ],
-        additionalProperties: false,
+        default: null,
       },
       scalePivot: {
-        type: "object",
-        properties: {
-          x: {
-            type: "number",
+        description: "Element scale pivot (static).",
+        anyOf: [
+          {
+            $ref: "#/$defs/anim.transform.set.Xy",
           },
-          y: {
-            type: "number",
+          {
+            type: "null",
           },
-        },
-        required: [
-          "x",
-          "y",
         ],
-        additionalProperties: false,
+        default: null,
       },
       relative: {
+        description: "Add to (position, rotation, skew, pivots) or multiply (scale) the current values.",
         type: "boolean",
         default: false,
       },
     },
     additionalProperties: false,
-    "x-spec": "`nodeIds?: [id]; target: enum \"static\"|\"key\" = \"key\"; frame?: int; position?: object {x,y,z}; positionSpace?: enum \"parent\"|\"world\" = \"parent\"; rotation?: number; scale?: point; skew?: number (-89..89); pivot?: point; rotationPivot?: point; scalePivot?: point; relative?: bool = false`",
   },
   "anim.transform.set.result": {
-    title: "anim.transform.set result",
+    title: "TransformResult",
+    description: "`anim.transform.set` result.",
     type: "object",
     properties: {
       nodeIds: {
         type: "array",
         items: {
           type: "string",
-          minLength: 1,
-          maxLength: 4096,
-          description: "object ID or path reference (10 §3)",
         },
-        maxItems: 100000,
       },
       keyedChannels: {
+        description: "The channels keyed (`target: \"key\"`).",
         type: "array",
         items: {
           type: "string",
-          maxLength: 65536,
         },
-        maxItems: 100000,
       },
       warnings: {
         type: "array",
         items: {
-          type: "object",
-          additionalProperties: false,
-          required: [
-            "code",
-            "message",
-          ],
-          properties: {
-            code: {
-              type: "string",
-              maxLength: 256,
-            },
-            message: {
-              type: "string",
-              maxLength: 65536,
-            },
-            objectIds: {
-              type: "array",
-              items: {
-                type: "string",
-                minLength: 1,
-                maxLength: 4096,
-                description: "object ID or path reference (10 §3)",
-              },
-              maxItems: 100000,
-            },
-          },
+          type: "string",
         },
-        maxItems: 100000,
       },
     },
     required: [
@@ -16691,8 +17453,6 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
       "keyedChannels",
       "warnings",
     ],
-    "x-spec": "`{nodeIds, keyedChannels[], warnings[]}`",
-    additionalProperties: false,
   },
   "anim.view.coords.get.params": {
     title: "anim.view.coords.get parameters",
@@ -81751,109 +82511,145 @@ export interface anim_bone_rest_set_result {
   boneId: string;
 }
 
+/** A partial 3-D point parameter. */
+export interface anim_camera_create_Xyz {
+  /** X. */
+  x?: number | null;
+  /** Y. */
+  y?: number | null;
+  /** Z. */
+  z?: number | null;
+}
+
+/** `anim.camera.create` parameters. */
 export interface anim_camera_create_params {
-  name?: string;
-  /** object ID or path reference (10 §3) */
-  parentId?: string;
-  /** Default: {0,0,16}. */
-  position?: {
-    x: number;
-    y: number;
-    z: number;
-  };
-  fov?: number;
+  /** Name; default: unique `Camera…`. */
+  name?: string | null;
+  /** Parent; default: the top level. */
+  parentId?: string | null;
+  /** Static position; default (0, 0, 16). */
+  position?: anim_camera_create_Xyz | null;
+  /** Horizontal field of view, 1…179; default 41.1121. */
+  fov?: number | null;
+  /** Make it the scene's current camera. */
   makeCurrent?: boolean;
 }
 
+/** `{cameraId}`. */
 export interface anim_camera_create_result {
-  /** object ID or path reference (10 §3) */
+  /** The camera. */
   cameraId: string;
 }
 
+/** A `sceneId?` parameter. */
 export interface anim_camera_current_get_params {
-  /** object ID or path reference (10 §3) */
-  sceneId?: string;
+  /** The scene; default: the current scene. */
+  sceneId?: string | null;
 }
 
+/** `anim.camera.current.get` result. */
 export interface anim_camera_current_get_result {
-  /** object ID or path reference (10 §3) */
-  cameraId: string;
+  /** The current camera (`null` in a scene without cameras). */
+  cameraId?: string | null;
 }
 
+/** A `cameraId` parameter. */
 export interface anim_camera_current_set_params {
-  /** object ID or path reference (10 §3) */
+  /** The camera. */
   cameraId: string;
 }
 
+/** `{cameraId}`. */
 export interface anim_camera_current_set_result {
-  /** object ID or path reference (10 §3) */
+  /** The camera. */
   cameraId: string;
 }
 
-/** Events take no parameters; subscribe to them (11 §9). */
+/** No parameters. */
 export type anim_camera_currentChanged_params = Record<string, unknown>;
 
-/** Event payload (delivered to subscribers). */
+/** `anim.camera.currentChanged` payload. */
 export interface anim_camera_currentChanged_result {
-  /** object ID or path reference (10 §3) */
   sceneId: string;
-  /** object ID or path reference (10 §3) */
   cameraId: string;
 }
 
+/** A `cameraId` parameter. */
 export interface anim_camera_delete_params {
-  /** object ID or path reference (10 §3) */
+  /** The camera. */
   cameraId: string;
 }
 
+/** `{currentCameraId}`. */
 export interface anim_camera_delete_result {
-  /** object ID or path reference (10 §3) */
-  currentCameraId: string;
+  /** The scene's current camera after the deletion. */
+  currentCameraId?: string | null;
 }
 
+/** `anim.camera.get` parameters. */
 export interface anim_camera_get_params {
-  /** object ID or path reference (10 §3) */
-  cameraId?: string;
-  frame?: number | bigint;
+  /** The camera; default: the current scene's current camera. */
+  cameraId?: string | null;
+  /** Scene frame; default: the current frame. */
+  frame?: number | bigint | null;
 }
 
+/** A full 3-D result point. */
+export interface anim_camera_get_P3 {
+  /** X. */
+  x: number;
+  /** Y. */
+  y: number;
+  /** Z. */
+  z: number;
+}
+
+/** Camera FOV mode (05 §12.3). */
+export type anim_camera_get_FovMode = 'static' | 'dynamic';
+
+/** Output size. */
+export interface anim_camera_get_Resolution {
+  w: number;
+  h: number;
+}
+
+/** `anim.camera.get` result. */
 export interface anim_camera_get_result {
-  /** object ID or path reference (10 §3) */
   id: string;
-  /** Default: {0,0,16}. */
-  position: {
-    x: number;
-    y: number;
-    z: number;
-  };
+  /** Static position. */
+  position: anim_camera_get_P3;
+  /** Static roll. */
   roll: number;
-  fovMode: string;
+  fovMode: anim_camera_get_FovMode;
+  /** Static field of view. */
   fov: number;
+  /** Field of view at the frame. */
   effectiveFov: number;
-  worldPosition: {
-    x: number;
-    y: number;
-  };
+  /** World position at the frame. */
+  worldPosition: anim_camera_get_P3;
+  /** 16 numbers row-major. */
   viewMatrix: number[];
-  frameCornersAtZ0: number[];
-  resolution: {
-    w: number;
-    h: number;
-  };
+  /** The frame's corners on Z = 0, top-left first, clockwise; `null` when the plane is not in front of the camera. */
+  frameCornersAtZ0?: anim_camera_get_P3[] | null;
+  resolution: anim_camera_get_Resolution;
 }
 
+/** A `sceneId?` parameter. */
 export interface anim_camera_list_params {
-  /** object ID or path reference (10 §3) */
-  sceneId?: string;
+  /** The scene; default: the current scene. */
+  sceneId?: string | null;
 }
 
+/** One camera of a scene. */
+export interface anim_camera_list_ListedCamera {
+  id: string;
+  name: string;
+  current: boolean;
+}
+
+/** `anim.camera.list` result. */
 export interface anim_camera_list_result {
-  cameras: ({
-    /** object ID or path reference (10 §3) */
-    id: string;
-    name: string;
-    current: boolean;
-  })[];
+  cameras: anim_camera_list_ListedCamera[];
 }
 
 export type anim_camera_select_params = Record<string, unknown>;
@@ -81863,36 +82659,56 @@ export interface anim_camera_select_result {
   cameraId: string;
 }
 
+/** A partial 3-D point parameter. */
+export interface anim_camera_set_Xyz {
+  /** X. */
+  x?: number | null;
+  /** Y. */
+  y?: number | null;
+  /** Z. */
+  z?: number | null;
+}
+
+/** Camera FOV mode (05 §12.3). */
+export type anim_camera_set_FovMode = 'static' | 'dynamic';
+
+/** `anim.camera.set` parameters. */
 export interface anim_camera_set_params {
-  /** object ID or path reference (10 §3) */
+  /** The camera. */
   cameraId: string;
-  position?: {
-    x: number;
-    y: number;
-    z: number;
-  };
-  roll?: number;
-  fovMode?: 'static' | 'dynamic';
-  fov?: number;
-  frame?: number | bigint;
+  /** Static position; omitted axes keep their value. */
+  position?: anim_camera_set_Xyz | null;
+  /** Static roll, degrees. */
+  roll?: number | null;
+  /** `static` or `dynamic`. */
+  fovMode?: anim_camera_set_FovMode | null;
+  /** Field of view, 1…179: static, or keyed at `frame` when dynamic. */
+  fov?: number | null;
+  /** Scene frame of the `fov` key; default: the current frame. */
+  frame?: number | bigint | null;
 }
 
+/** `{cameraId}`. */
 export interface anim_camera_set_result {
-  /** object ID or path reference (10 §3) */
+  /** The camera. */
   cameraId: string;
 }
 
-/** Events take no parameters; subscribe to them (11 §9). */
+/** No parameters. */
 export type anim_changed_params = Record<string, unknown>;
 
-/** Event payload (delivered to subscribers). */
+/** A frame span. */
+export interface anim_changed_FrameSpan {
+  from: number;
+  to: number;
+}
+
+/** `anim.changed` payload. */
 export interface anim_changed_result {
   nodeIds: string[];
   channels: string[];
-  frames?: {
-    from: number;
-    to: number;
-  };
+  /** Scene frames touched. */
+  frames?: anim_changed_FrameSpan | null;
 }
 
 export interface anim_channel_copy_params {
@@ -82028,120 +82844,133 @@ export interface anim_display_smoothPaths_set_result {
   enabled: boolean;
 }
 
+/** A part of `NodeEval`. */
+export type anim_evaluate_IncludePart = 'static' | 'animated' | 'local' | 'world' | 'bounds' | 'screen';
+
+/** `anim.evaluate` parameters. */
 export interface anim_evaluate_params {
+  /** Nodes to evaluate. */
   nodeIds: string[];
-  frames?: (number | bigint)[];
-  /** Default: all. */
-  include?: ('static' | 'animated' | 'local' | 'world' | 'bounds' | 'screen')[];
-  /** object ID or path reference (10 §3) */
-  cameraId?: string;
+  /** Scene frames, fractional allowed (SI-098); default: the current frame. */
+  frames?: number[] | null;
+  /** What to report; default: everything. */
+  include?: anim_evaluate_IncludePart[] | null;
+  /** Camera for `screen`; default: the node's scene's current camera. */
+  cameraId?: string | null;
 }
 
-export interface anim_evaluate_spec_NodeEval {
-  /** object ID or path reference (10 §3) */
+/** One frame of `anim.evaluate`. */
+export interface anim_evaluate_FrameEval {
+  frame: number;
+  nodes: anim_evaluate_NodeEval[];
+}
+
+/** One node at one frame (05 §19.4). */
+export interface anim_evaluate_NodeEval {
   id: string;
   kind: string;
-  localFrame: number | bigint;
-  static: {
-    position: {
-      x: number;
-      y: number;
-      z: number;
-    };
-    rotation: number;
-    scale: {
-      x: number;
-      y: number;
-    };
-    skew: number;
-    rotationPivot: {
-      x: number;
-      y: number;
-    };
-    scalePivot: {
-      x: number;
-      y: number;
-    };
-  };
-  animated: {
-    position: {
-      x: number;
-      y: number;
-      z: number;
-    };
-    rotation: number;
-    scale: {
-      x: number;
-      y: number;
-    };
-    skew: number;
-    pivot: {
-      x: number;
-      y: number;
-    };
-    velocity: number;
-    orientAngle: number;
-  };
-  local: {
-    position: {
-      x: number;
-      y: number;
-      z: number;
-    };
-    rotation: number;
-    scale: {
-      x: number;
-      y: number;
-    };
-    skew: number;
-    rotationPivot: {
-      x: number;
-      y: number;
-    };
-    scalePivot: {
-      x: number;
-      y: number;
-    };
-    matrix: number[];
-  };
-  world: {
-    matrix: number[];
-    position: {
-      x: number;
-      y: number;
-      z: number;
-    };
-    rotation: number;
-    scale: {
-      x: number;
-      y: number;
-    };
-    skew: number;
-  };
-  bounds: {
-    minX: number;
-    minY: number;
-    maxX: number;
-    maxY: number;
-    z: number;
-  };
-  screen: {
-    visible: boolean;
-    bbox: {
-      x: number;
-      y: number;
-      width: number | bigint;
-      height: number | bigint;
-    };
-    depth: number | bigint;
-  };
+  /** Local frame (before the cycle mapping). */
+  localFrame: number;
+  static?: anim_evaluate_StaticEval | null;
+  animated?: anim_evaluate_AnimatedEval | null;
+  local?: anim_evaluate_LocalPart | null;
+  world?: anim_evaluate_WorldPart | null;
+  /** Absent for nodes without visible content at that frame (pegs, cameras, a blank cell). */
+  bounds?: anim_evaluate_WorldBounds | null;
+  /** Absent when no camera applies. */
+  screen?: anim_evaluate_ScreenPart | null;
 }
 
+/** `static` of `NodeEval`. */
+export interface anim_evaluate_StaticEval {
+  position: anim_evaluate_P3;
+  rotation: number;
+  scale: anim_evaluate_P2;
+  skew: number;
+  rotationPivot: anim_evaluate_P2;
+  scalePivot: anim_evaluate_P2;
+}
+
+/** A full 3-D result point. */
+export interface anim_evaluate_P3 {
+  /** X. */
+  x: number;
+  /** Y. */
+  y: number;
+  /** Z. */
+  z: number;
+}
+
+/** A full 2-D result point. */
+export interface anim_evaluate_P2 {
+  /** X. */
+  x: number;
+  /** Y. */
+  y: number;
+}
+
+/** `animated` of `NodeEval`. */
+export interface anim_evaluate_AnimatedEval {
+  position: anim_evaluate_P3;
+  rotation: number;
+  scale: anim_evaluate_P2;
+  skew: number;
+  pivot: anim_evaluate_P2;
+  velocity: number;
+  orientAngle: number;
+}
+
+/** `local` of `NodeEval`. */
+export interface anim_evaluate_LocalPart {
+  position: anim_evaluate_P3;
+  rotation: number;
+  scale: anim_evaluate_P2;
+  skew: number;
+  rotationPivot: anim_evaluate_P2;
+  scalePivot: anim_evaluate_P2;
+  /** M_local, 16 numbers row-major. */
+  matrix: number[];
+}
+
+/** `world` of `NodeEval`. */
+export interface anim_evaluate_WorldPart {
+  /** World matrix, 16 numbers row-major. */
+  matrix: number[];
+  position: anim_evaluate_P3;
+  rotation: number;
+  scale: anim_evaluate_P2;
+  skew: number;
+}
+
+/** `bounds` of `NodeEval`. */
+export interface anim_evaluate_WorldBounds {
+  minX: number;
+  minY: number;
+  maxX: number;
+  maxY: number;
+  z: number;
+}
+
+/** `screen` of `NodeEval`. */
+export interface anim_evaluate_ScreenPart {
+  /** In front of the near plane and overlapping the frame; for content nodes also not hidden, not an annotation, and with content at that frame (SI-100). */
+  visible: boolean;
+  bbox: anim_evaluate_Bbox;
+  /** Depth of the node's origin in front of the camera. */
+  depth: number;
+}
+
+/** An output-pixel box. */
+export interface anim_evaluate_Bbox {
+  x: number;
+  y: number;
+  width: number;
+  height: number;
+}
+
+/** `anim.evaluate` result. */
 export interface anim_evaluate_result {
-  frames: ({
-    frame: number;
-    nodes: anim_evaluate_spec_NodeEval[];
-  })[];
+  frames: anim_evaluate_FrameEval[];
 }
 
 export interface anim_flip_apply_params {
@@ -82155,181 +82984,293 @@ export interface anim_flip_apply_result {
   nodeIds: string[];
 }
 
+/** Curve type of a 1-D channel (05 §10.3). */
+export type anim_function_curveType_set_CurveType = 'spline' | 'interpolation' | 'velocityBased';
+
+/** `anim.function.curveType.set` parameters. */
 export interface anim_function_curveType_set_params {
-  /** object ID or path reference (10 §3) */
+  /** The node. */
   nodeId: string;
+  /** The channel. */
   channel: string;
-  curveType: 'spline' | 'interpolation' | 'velocityBased';
+  /** The curve type. */
+  curveType: anim_function_curveType_set_CurveType;
 }
 
+/** `anim.function.curveType.set` result. */
 export interface anim_function_curveType_set_result {
   channel: string;
-  curveType: string;
+  curveType: anim_function_curveType_set_CurveType;
 }
 
+/** `anim.function.get` parameters. */
 export interface anim_function_get_params {
-  /** object ID or path reference (10 §3) */
+  /** The node. */
   nodeId: string;
+  /** The channel (05 §1.6). */
   channel: string;
 }
 
-export interface anim_function_get_spec_Function {
-  /** object ID or path reference (10 §3) */
-  nodeId: string;
-  channel: string;
-  curveType: string;
-  keys: ({
-    frame: number | bigint;
-    value: number;
-    constantSegment: boolean;
-    handleMode: string;
-    left: {
-      dt: number;
-      dv: number;
-    };
-    right: {
-      dt: number;
-      dv: number;
-    };
-    preset: string | null;
-  })[];
-  pins: ({
-    frame: number;
-    value: number;
-  })[];
-}
+/** Curve type of a 1-D channel (05 §10.3). */
+export type anim_function_get_CurveType = 'spline' | 'interpolation' | 'velocityBased';
 
-export type anim_function_get_result = anim_function_get_spec_Function;
-
-export interface anim_function_key_add_params {
-  /** object ID or path reference (10 §3) */
-  nodeId: string;
-  channel: string;
+/** A key point of `Function`. */
+export interface anim_function_get_FunctionKey {
+  /** Scene frame. */
   frame: number;
-  value?: number;
+  /** Value. */
+  value: number;
+  constantSegment: boolean;
+  handleMode: anim_function_get_HandleMode;
+  left: anim_function_get_Handle;
+  right: anim_function_get_Handle;
+  /** The easing preset of the segment starting here. */
+  preset?: anim_function_get_Easing | null;
 }
 
-export interface anim_function_key_add_result {
+/** Handle mode. */
+export type anim_function_get_HandleMode = 'smooth' | 'broken';
+
+/** A handle. */
+export interface anim_function_get_Handle {
+  /** Frames from the key (left ≤ 0, right ≥ 0). */
+  dt: number;
+  /** Value units from the key. */
+  dv: number;
+}
+
+/** Easing presets (05 §10.4). */
+export type anim_function_get_Easing = 'constant' | 'linear' | 'easeInOut' | 'fastInOut' | 'extremeEaseInOut' | 'extremeFastInOut' | 'slowAcceleration' | 'slowDeceleration';
+
+/** A velocity pin. */
+export interface anim_function_get_Pin {
+  /** Scene frame of the motion keyframe. */
   frame: number;
+  /** Arc length, fields. */
   value: number;
 }
 
-export interface anim_function_key_duplicate_params {
-  /** object ID or path reference (10 §3) */
+/** `anim.function.get` result (05 §19.4). */
+export interface anim_function_get_result {
   nodeId: string;
   channel: string;
+  curveType: anim_function_get_CurveType;
+  keys: anim_function_get_FunctionKey[];
+  pins: anim_function_get_Pin[];
+}
+
+/** `anim.function.key.add` parameters. */
+export interface anim_function_key_add_params {
+  /** The node. */
+  nodeId: string;
+  /** The channel. */
+  channel: string;
+  /** Scene frame (an integer: `anim.frameNotInteger`). */
+  frame: number;
+  /** Value; default: the curve's current value. */
+  value?: number | null;
+}
+
+/** `{frame, value}`. */
+export interface anim_function_key_add_result {
+  /** Scene frame. */
+  frame: number;
+  /** Value. */
+  value: number;
+}
+
+/** `anim.function.key.duplicate` parameters. */
+export interface anim_function_key_duplicate_params {
+  /** The node. */
+  nodeId: string;
+  /** The channel. */
+  channel: string;
+  /** Scene frame of the key. */
   frame: number | bigint;
+  /** Scene frame of the copy. */
   toFrame: number | bigint;
 }
 
+/** `{frame}`. */
 export interface anim_function_key_duplicate_result {
+  /** The copy's scene frame. */
   frame: number | bigint;
 }
 
+/** `anim.function.key.remove` parameters. */
 export interface anim_function_key_remove_params {
-  /** object ID or path reference (10 §3) */
+  /** The node. */
   nodeId: string;
+  /** The channel. */
   channel: string;
+  /** Scene frames. */
   frames: number[];
 }
 
+/** `{removed}`. */
 export interface anim_function_key_remove_result {
-  removed: string[];
+  /** How many keys went. */
+  removed: number;
 }
 
+/** A handle. */
+export interface anim_function_key_set_Handle {
+  /** Frames from the key (left ≤ 0, right ≥ 0). */
+  dt: number;
+  /** Value units from the key. */
+  dv: number;
+}
+
+/** Handle mode. */
+export type anim_function_key_set_HandleMode = 'smooth' | 'broken';
+
+/** `anim.function.key.set` parameters. */
 export interface anim_function_key_set_params {
-  /** object ID or path reference (10 §3) */
+  /** The node. */
   nodeId: string;
+  /** The channel. */
   channel: string;
+  /** Scene frame of the key (a control point's passage frame on a path projection). */
   frame: number;
-  newFrame?: number;
-  value?: number;
-  left?: {
-    dt: number;
-    dv: number;
-  };
-  right?: {
-    dt: number;
-    dv: number;
-  };
-  handleMode?: 'smooth' | 'broken';
-  constantSegment?: boolean;
-  lockInTime?: boolean;
+  /** Moves the key in time. */
+  newFrame?: number | null;
+  /** New value. */
+  value?: number | null;
+  left?: anim_function_key_set_Handle | null;
+  right?: anim_function_key_set_Handle | null;
+  handleMode?: anim_function_key_set_HandleMode | null;
+  constantSegment?: boolean | null;
+  /** Path projections: lock a control point in time, or unlock a keyframe. */
+  lockInTime?: boolean | null;
 }
 
+/** `{frame, value}`. */
 export interface anim_function_key_set_result {
+  /** Scene frame. */
+  frame: number;
+  /** Value. */
+  value: number;
+}
+
+/** A node-and-channel parameter. */
+export interface anim_function_list_params {
+  /** The node. */
+  nodeId: string;
+}
+
+/** One channel of `anim.function.list`. */
+export interface anim_function_list_ListedChannel {
+  channel: string;
+  /** Curve type (`null` for the motion path). */
+  curveType?: anim_function_list_CurveType | null;
+  /** Keys, or motion keyframes for the path. */
+  keyCount: number;
+  allowedCurveTypes: anim_function_list_CurveType[];
+}
+
+/** Curve type of a 1-D channel (05 §10.3). */
+export type anim_function_list_CurveType = 'spline' | 'interpolation' | 'velocityBased';
+
+/** `anim.function.list` result. */
+export interface anim_function_list_result {
+  channels: anim_function_list_ListedChannel[];
+}
+
+/** Easing presets (05 §10.4). */
+export type anim_function_preset_apply_Easing = 'constant' | 'linear' | 'easeInOut' | 'fastInOut' | 'extremeEaseInOut' | 'extremeFastInOut' | 'slowAcceleration' | 'slowDeceleration';
+
+/** Which segments a preset applies to. */
+export type anim_function_preset_apply_PresetScope = 'segment' | 'all';
+
+/** `anim.function.preset.apply` parameters. */
+export interface anim_function_preset_apply_params {
+  /** The node. */
+  nodeId: string;
+  /** The channel. */
+  channel: string;
+  /** The preset. */
+  preset: anim_function_preset_apply_Easing;
+  /** A scene frame in the segment; default: the current frame. */
+  frame?: number | bigint | null;
+  /** One segment or the whole curve. */
+  scope?: anim_function_preset_apply_PresetScope;
+}
+
+/** `{segments}`. */
+export interface anim_function_preset_apply_result {
+  /** How many segments changed. */
+  segments: number;
+}
+
+/** `anim.function.sample` parameters. */
+export interface anim_function_sample_params {
+  /** The node. */
+  nodeId: string;
+  /** The channel (05 §1.6), including the `position.x/y/z` projections. */
+  channel: string;
+  /** First scene frame. */
+  from: number;
+  /** Last scene frame. */
+  to: number;
+  /** Frame step, above 0. */
+  step?: number;
+}
+
+/** A channel sample. */
+export interface anim_function_sample_ValueSample {
   frame: number;
   value: number;
 }
 
-export interface anim_function_list_params {
-  /** object ID or path reference (10 §3) */
-  nodeId: string;
-}
-
-export interface anim_function_list_result {
-  channels: ({
-    channel: string;
-    curveType: string;
-    keyCount: number;
-    allowedCurveTypes: string[];
-  })[];
-}
-
-export interface anim_function_preset_apply_params {
-  /** object ID or path reference (10 §3) */
-  nodeId: string;
-  channel: string;
-  preset: 'constant' | 'linear' | 'easeInOut' | 'fastInOut' | 'extremeEaseInOut' | 'extremeFastInOut' | 'slowAcceleration' | 'slowDeceleration';
-  frame?: number | bigint;
-  scope?: 'segment' | 'all';
-}
-
-export interface anim_function_preset_apply_result {
-  /** type not stated by the owning section (spec issue); a scalar */
-  segments: string | number | boolean | null;
-}
-
-export interface anim_function_sample_params {
-  /** object ID or path reference (10 §3) */
-  nodeId: string;
-  channel: string;
-  from: number;
-  to: number;
-  step?: number;
-}
-
+/** `anim.function.sample` result. */
 export interface anim_function_sample_result {
-  samples: ({
-    frame: number;
-    value: number;
-  })[];
+  samples: anim_function_sample_ValueSample[];
 }
 
+/** Curve type of a 1-D channel (05 §10.3). */
+export type anim_function_set_CurveType = 'spline' | 'interpolation' | 'velocityBased';
+
+/** A key of `anim.function.set`. */
+export interface anim_function_set_SetKey {
+  /** Scene frame (an integer: `anim.frameNotInteger`). */
+  frame: number;
+  /** Value. */
+  value: number;
+  constantSegment?: boolean | null;
+  handleMode?: anim_function_set_HandleMode | null;
+  left?: anim_function_set_Handle | null;
+  right?: anim_function_set_Handle | null;
+  preset?: anim_function_set_Easing | null;
+}
+
+/** Handle mode. */
+export type anim_function_set_HandleMode = 'smooth' | 'broken';
+
+/** A handle. */
+export interface anim_function_set_Handle {
+  /** Frames from the key (left ≤ 0, right ≥ 0). */
+  dt: number;
+  /** Value units from the key. */
+  dv: number;
+}
+
+/** Easing presets (05 §10.4). */
+export type anim_function_set_Easing = 'constant' | 'linear' | 'easeInOut' | 'fastInOut' | 'extremeEaseInOut' | 'extremeFastInOut' | 'slowAcceleration' | 'slowDeceleration';
+
+/** `anim.function.set` parameters. */
 export interface anim_function_set_params {
-  /** object ID or path reference (10 §3) */
+  /** The node. */
   nodeId: string;
+  /** The channel. */
   channel: string;
-  curveType?: 'spline' | 'interpolation' | 'velocityBased';
-  keys: ({
-    frame: number;
-    value: number;
-    constantSegment?: boolean;
-    handleMode?: string;
-    left?: {
-      dt: number;
-      dv: number;
-    };
-    right?: {
-      dt: number;
-      dv: number;
-    };
-    preset?: string;
-  })[];
+  /** The curve type. */
+  curveType?: anim_function_set_CurveType | null;
+  /** The whole key list; empty removes the channel. */
+  keys: anim_function_set_SetKey[];
 }
 
+/** `anim.function.set` result. */
 export interface anim_function_set_result {
-  /** object ID or path reference (10 §3) */
   nodeId: string;
   channel: string;
   keyCount: number;
@@ -82445,77 +83386,125 @@ export interface anim_hierarchy_select_result {
   selectedIds: string[];
 }
 
+/** Which bounds of the selected segment get keys. */
+export type anim_key_add_Bounds = 'left' | 'right' | 'both';
+
+/** `anim.key.add` parameters. */
 export interface anim_key_add_params {
-  nodeIds?: string[];
-  frame?: number | bigint;
-  channels?: string[];
+  /** Nodes; default: the selected rows, else the current element. */
+  nodeIds?: string[] | null;
+  /** Scene frame; default: the current frame. */
+  frame?: number | bigint | null;
+  /** Channels; default: the full pose. `scale` and `pivot` name both axes. */
+  channels?: string[] | null;
+  /** Also key every transformable descendant (a collapsed hierarchy) whose range holds the frame. */
   includeDescendants?: boolean;
-  atSegmentBounds?: 'left' | 'right' | 'both';
+  /** Key the bounding frames of the segment around `frame` instead. */
+  atSegmentBounds?: anim_key_add_Bounds | null;
 }
 
+/** Keys added on one node at one frame. */
+export interface anim_key_add_AddedKeys {
+  nodeId: string;
+  /** Scene frame. */
+  frame: number;
+  channels: string[];
+}
+
+/** `anim.key.add` result. */
 export interface anim_key_add_result {
-  keys: ({
-    /** object ID or path reference (10 §3) */
-    nodeId: string;
-    frame: number | bigint;
-    channels: string[];
-  })[];
+  keys: anim_key_add_AddedKeys[];
 }
 
+/** `anim.key.list` parameters. */
 export interface anim_key_list_params {
-  /** object ID or path reference (10 §3) */
+  /** The node. */
   nodeId: string;
-  from?: number | bigint;
-  to?: number | bigint;
+  /** First scene frame. */
+  from?: number | bigint | null;
+  /** Last scene frame. */
+  to?: number | bigint | null;
+  /** Report whether a descendant has a key at each frame (a collapsed parent, 05 §1.7). */
   includeDescendants?: boolean;
 }
 
+/** One keyed frame. */
+export interface anim_key_list_ListedKey {
+  /** Scene frame. */
+  frame: number;
+  /** Channels of this node keyed there. */
+  channels: string[];
+  /** Of those, the ones whose segment starting there is constant. */
+  constant: string[];
+  /** A descendant has a key there. */
+  descendantKeyed: boolean;
+}
+
+/** `anim.key.list` result. */
 export interface anim_key_list_result {
-  keys: ({
-    frame: number | bigint;
-    channels: string[];
-    constant: boolean[];
-    descendantKeyed: boolean;
-  })[];
+  keys: anim_key_list_ListedKey[];
 }
 
+/** `anim.key.move` parameters. */
 export interface anim_key_move_params {
-  /** object ID or path reference (10 §3) */
+  /** The node. */
   nodeId: string;
+  /** Scene frame of the keys. */
   fromFrame: number | bigint;
+  /** Scene frame to move them to. */
   toFrame: number | bigint;
-  channels?: string[];
+  /** Channels; default: every channel keyed at `fromFrame`. */
+  channels?: string[] | null;
 }
 
+/** `anim.key.move` result. */
 export interface anim_key_move_result {
-  /** object ID or path reference (10 §3) */
   nodeId: string;
   toFrame: number | bigint;
 }
 
+/** `anim.key.remove` parameters. */
 export interface anim_key_remove_params {
-  nodeIds?: string[];
-  frame?: number | bigint;
-  channels?: string[];
+  /** Nodes; default: the selected rows, else the current element. */
+  nodeIds?: string[] | null;
+  /** Scene frame; default: the current frame. */
+  frame?: number | bigint | null;
+  /** Channels; default: position, rotation, scale, skew (velocity and pivot keys are kept, 05 §10.1). */
+  channels?: string[] | null;
+  /** Remove every key of every channel. */
   all?: boolean;
 }
 
+/** `{removed}`. */
 export interface anim_key_remove_result {
-  removed: string[];
+  /** Keys removed. */
+  removed: number;
 }
 
+/** Loop type (05 §8.4). */
+export type anim_loop_set_LoopType = 'count' | 'fill';
+
+/** Position looping mode (05 §8.4). */
+export type anim_loop_set_PositionLoop = 'cycle' | 'offset';
+
+/** `anim.loop.set` parameters. */
 export interface anim_loop_set_params {
-  /** object ID or path reference (10 §3) */
+  /** The node. */
   nodeId: string;
+  /** `count`: the number of cycles. `fill`: ignored, the cycles follow from the duration. */
   loops?: number;
-  loopType?: 'count' | 'fill';
-  positionLoop?: 'cycle' | 'offset';
+  /** `count` or `fill`. */
+  loopType?: anim_loop_set_LoopType;
+  /** `cycle` or `offset`. */
+  positionLoop?: anim_loop_set_PositionLoop;
 }
 
+/** `anim.loop.set` result. */
 export interface anim_loop_set_result {
-  /** object ID or path reference (10 §3) */
   nodeId: string;
+  /** L, in frames. */
   cycleLength: number;
+  /** The bar after the change. */
   duration: number;
 }
 
@@ -82566,81 +83555,112 @@ export interface anim_node_pathDisplay_set_result {
   nodeIds: string[];
 }
 
+/** `anim.path.get` parameters. */
 export interface anim_path_get_params {
-  /** object ID or path reference (10 §3) */
+  /** The node. */
   nodeId: string;
 }
 
-export interface anim_path_get_spec_Path {
-  /** object ID or path reference (10 §3) */
+/** A motion point (05 §19.4). */
+export interface anim_path_get_PathPoint {
+  /** `<channelId>/<pointId>`. */
+  id: string;
+  /** `key` or `control`. */
+  kind: string;
+  /** Keyframe: its scene frame. Control point: the derived passage frame, 3 decimals. */
+  frame: number;
+  x: number;
+  y: number;
+  z: number;
+  tension: number;
+  continuity: number;
+  bias: number;
+  /** Keyframes only. */
+  constantSegment?: boolean | null;
+  /** Keyframes only. */
+  lockDepth?: boolean | null;
+  /** Arc length at this point. */
+  arcLength: number;
+}
+
+/** `anim.path.get` result (05 §19.4). */
+export interface anim_path_get_result {
   nodeId: string;
   lockDepth: boolean;
   length: number;
-  points: ({
-    /** object ID or path reference (10 §3) */
-    id: string;
-    kind: string;
-    frame: number;
-    x: number;
-    y: number;
-    z: number;
-    tension: number;
-    continuity: number;
-    bias: number;
-    constantSegment?: boolean;
-    lockDepth?: boolean;
-    arcLength: number;
-  })[];
+  points: anim_path_get_PathPoint[];
 }
 
-export type anim_path_get_result = anim_path_get_spec_Path;
-
+/** `anim.path.lockDepth.set` parameters. */
 export interface anim_path_lockDepth_set_params {
-  /** object ID or path reference (10 §3) */
+  /** The node. */
   nodeId: string;
+  /** Scene frame of the keyframe starting the segment. */
   frame: number | bigint;
+  /** Constant Z on or off. */
   enabled: boolean;
 }
 
+/** `anim.path.lockDepth.set` result. */
 export interface anim_path_lockDepth_set_result {
-  /** object ID or path reference (10 §3) */
   nodeId: string;
   frame: number | bigint;
 }
 
-export interface anim_path_point_add_params {
-  /** object ID or path reference (10 §3) */
-  nodeId: string;
-  kind: 'key' | 'control';
-  frame?: number;
-  at?: {
-    segment: number | bigint;
-    s: number;
-  };
-  position?: {
-    x: number;
-    y: number;
-    z: number;
-  };
+/** A point of `anim.path.set`. */
+export type anim_path_point_add_PointKind = 'key' | 'control';
+
+/** A curve location. */
+export interface anim_path_point_add_CurveAt {
+  /** Curve segment index. */
+  segment: number;
+  /** Parameter, 0…1. */
+  s: number;
 }
 
+/** A partial 3-D point parameter. */
+export interface anim_path_point_add_Xyz {
+  /** X. */
+  x?: number | null;
+  /** Y. */
+  y?: number | null;
+  /** Z. */
+  z?: number | null;
+}
+
+/** `anim.path.point.add` parameters. */
+export interface anim_path_point_add_params {
+  /** The node. */
+  nodeId: string;
+  /** Keyframe or control point. */
+  kind: anim_path_point_add_PointKind;
+  /** Scene frame; a keyframe's must be an integer, a control point's may be fractional. Default: the current frame. */
+  frame?: number | null;
+  /** A curve location instead of a frame (control points). */
+  at?: anim_path_point_add_CurveAt | null;
+  /** The point's position; default: where the node is at that frame or location. */
+  position?: anim_path_point_add_Xyz | null;
+}
+
+/** `anim.path.point.add` result. */
 export interface anim_path_point_add_result {
-  /** object ID or path reference (10 §3) */
+  /** The new point. */
   pointId: string;
+  /** Its frame (a control point's derived passage frame). */
   frame: number;
 }
 
+/** `anim.path.point.remove` parameters. */
 export interface anim_path_point_remove_params {
+  /** The points. */
   pointIds: string[];
 }
 
+/** `anim.path.point.remove` result. */
 export interface anim_path_point_remove_result {
-  removed: string[];
-  warnings: ({
-    code: string;
-    message: string;
-    objectIds?: string[];
-  })[];
+  /** How many points went. */
+  removed: number;
+  warnings: string[];
 }
 
 export interface anim_path_point_select_params {
@@ -82653,86 +83673,115 @@ export interface anim_path_point_select_params {
 
 export interface anim_path_point_select_result {
   pointIds: string[];
-  frame: number | bigint;
+  frame: number;
 }
 
+/** A partial 2-D point parameter. */
+export interface anim_path_point_set_Xy {
+  /** X. */
+  x?: number | null;
+  /** Y. */
+  y?: number | null;
+}
+
+/** `anim.path.point.set` parameters. */
 export interface anim_path_point_set_params {
+  /** The points. */
   pointIds: string[];
-  x?: number;
-  y?: number;
-  z?: number;
-  frame?: number | bigint;
-  lockInTime?: boolean;
-  tension?: number;
-  continuity?: number;
-  bias?: number;
-  constantSegment?: boolean;
-  rotation?: number;
-  scale?: {
-    x: number;
-    y: number;
-  };
-  pivot?: {
-    x: number;
-    y: number;
-  };
+  x?: number | null;
+  y?: number | null;
+  z?: number | null;
+  /** Moves a keyframe in time (scene frame). */
+  frame?: number | null;
+  /** On = keyframe, off = control point. */
+  lockInTime?: boolean | null;
+  tension?: number | null;
+  continuity?: number | null;
+  bias?: number | null;
+  constantSegment?: boolean | null;
+  /** Keyframes only: the `rotation` key at that frame. */
+  rotation?: number | null;
+  /** Keyframes only: the `scale.*` keys at that frame. */
+  scale?: anim_path_point_set_Xy | null;
+  /** Keyframes only: the `pivot.*` keys at that frame. */
+  pivot?: anim_path_point_set_Xy | null;
 }
 
+/** `anim.path.point.set` result. */
 export interface anim_path_point_set_result {
   pointIds: string[];
-  warnings: ({
-    code: string;
-    message: string;
-    objectIds?: string[];
-  })[];
+  warnings: string[];
 }
 
+/** What `anim.path.sample` follows. */
+export type anim_path_sample_SampleWhat = 'origin' | 'pivot';
+
+/** The space of a sample. */
+export type anim_path_sample_SampleSpace = 'parent' | 'world';
+
+/** `anim.path.sample` parameters. */
 export interface anim_path_sample_params {
-  /** object ID or path reference (10 §3) */
+  /** The node. */
   nodeId: string;
-  from?: number | bigint;
-  to?: number | bigint;
+  /** First scene frame; default: the bar's first. */
+  from?: number | bigint | null;
+  /** Last scene frame; default: the bar's last. */
+  to?: number | bigint | null;
+  /** Frame step, above 0. */
   step?: number;
-  what?: 'origin' | 'pivot';
-  space?: 'parent' | 'world';
+  /** Origin or pivot. */
+  what?: anim_path_sample_SampleWhat;
+  /** Parent or world space. */
+  space?: anim_path_sample_SampleSpace;
 }
 
+/** A position sample. */
+export interface anim_path_sample_PositionSample {
+  frame: number;
+  x: number;
+  y: number;
+  z: number;
+}
+
+/** `anim.path.sample` result. */
 export interface anim_path_sample_result {
-  samples: ({
-    frame: number | bigint;
-    x: number;
-    y: number;
-    z: number;
-  })[];
+  samples: anim_path_sample_PositionSample[];
 }
 
+/** A point of `anim.path.set`. */
+export interface anim_path_set_SetPoint {
+  /** Keyframe or control point. */
+  kind: anim_path_set_PointKind;
+  /** Keyframe: its scene frame. */
+  frame?: number | null;
+  x: number;
+  y: number;
+  z: number;
+  tension?: number | null;
+  continuity?: number | null;
+  bias?: number | null;
+  constantSegment?: boolean | null;
+  lockDepth?: boolean | null;
+}
+
+/** A point of `anim.path.set`. */
+export type anim_path_set_PointKind = 'key' | 'control';
+
+/** `anim.path.set` parameters. */
 export interface anim_path_set_params {
-  /** object ID or path reference (10 §3) */
+  /** The node. */
   nodeId: string;
-  points: ({
-    kind: string;
-    frame?: number | bigint;
-    x: number;
-    y: number;
-    z: number;
-    tension?: number;
-    continuity?: number;
-    bias?: number;
-    constantSegment?: boolean;
-    lockDepth?: boolean;
-  })[];
-  lockDepth?: boolean;
+  /** The points in path order; first and last are keyframes. */
+  points: anim_path_set_SetPoint[];
+  /** Constant Z of the whole node. */
+  lockDepth?: boolean | null;
 }
 
+/** `anim.path.set` result. */
 export interface anim_path_set_result {
-  /** object ID or path reference (10 §3) */
   nodeId: string;
   pointIds: string[];
-  warnings: ({
-    code: string;
-    message: string;
-    objectIds?: string[];
-  })[];
+  warnings: string[];
 }
 
 export interface anim_peg_create_params {
@@ -82812,32 +83861,59 @@ export interface anim_prefs_set_result {
   prefs: string | number | boolean | null;
 }
 
-export interface anim_projection_get_params {
-  frame?: number | bigint;
-  /** object ID or path reference (10 §3) */
-  cameraId?: string;
-  points?: (Record<string, unknown>)[];
-  nodeIds?: string[];
+/** A partial 3-D point parameter. */
+export interface anim_projection_get_Xyz {
+  /** X. */
+  x?: number | null;
+  /** Y. */
+  y?: number | null;
+  /** Z. */
+  z?: number | null;
 }
 
+/** `anim.projection.get` parameters. */
+export interface anim_projection_get_params {
+  /** Scene frame; default: the current frame. */
+  frame?: number | bigint | null;
+  /** Camera; default: the current scene's current camera. */
+  cameraId?: string | null;
+  /** World points. */
+  points?: anim_projection_get_Xyz[] | null;
+  /** Nodes whose bounds to project. */
+  nodeIds?: string[] | null;
+}
+
+/** A projected point. */
+export interface anim_projection_get_ProjectedPoint {
+  /** Output pixel x, `null` at or behind the near plane (SI-100). */
+  x?: number | null;
+  /** Output pixel y, `null` at or behind the near plane. */
+  y?: number | null;
+  /** Depth in front of the camera. */
+  depth: number;
+  /** In front of the near plane and inside the frame. */
+  visible: boolean;
+}
+
+/** A projected node. */
+export interface anim_projection_get_ProjectedNode {
+  id: string;
+  bbox: anim_projection_get_Bbox;
+  visible: boolean;
+}
+
+/** An output-pixel box. */
+export interface anim_projection_get_Bbox {
+  x: number;
+  y: number;
+  width: number;
+  height: number;
+}
+
+/** `anim.projection.get` result. */
 export interface anim_projection_get_result {
-  points: ({
-    x: number;
-    y: number;
-    depth: number;
-    visible: boolean;
-  })[];
-  nodes: ({
-    /** object ID or path reference (10 §3) */
-    id: string;
-    bbox: {
-      x: number;
-      y: number;
-      width: number;
-      height: number;
-    };
-    visible: boolean;
-  })[];
+  points: anim_projection_get_ProjectedPoint[];
+  nodes: anim_projection_get_ProjectedNode[];
 }
 
 /** Events take no parameters; subscribe to them (11 §9). */
@@ -82904,28 +83980,41 @@ export interface anim_reset_apply_result {
   nodeIds: string[];
 }
 
+/** `anim.segment.set` parameters. */
 export interface anim_segment_set_params {
-  nodeIds?: string[];
+  /** Nodes; default: the selected rows, else the current element. */
+  nodeIds?: string[] | null;
+  /** Scene frame of the keyframe starting the segment. */
   frame: number | bigint;
-  channels?: string[];
+  /** Channels; default: every channel keyed at `frame`, except velocity. */
+  channels?: string[] | null;
+  /** Constant or tweened. */
   constant: boolean;
 }
 
+/** `anim.segment.set` result. */
 export interface anim_segment_set_result {
   nodeIds: string[];
   channels: string[];
 }
 
+/** A side of a key. */
+export type anim_segment_uniform_apply_Side = 'left' | 'right';
+
+/** `anim.segment.uniform.apply` parameters. */
 export interface anim_segment_uniform_apply_params {
-  /** object ID or path reference (10 §3) */
+  /** The node. */
   nodeId: string;
+  /** Scene frame of the key. */
   frame: number | bigint;
-  side: 'left' | 'right';
-  channels?: string[];
+  /** Which side. */
+  side: anim_segment_uniform_apply_Side;
+  /** Channels; default: every 1-D channel keyed at `frame`, and velocity at a motion keyframe. */
+  channels?: string[] | null;
 }
 
+/** `anim.segment.uniform.apply` result. */
 export interface anim_segment_uniform_apply_result {
-  /** object ID or path reference (10 §3) */
   nodeId: string;
   channels: string[];
 }
@@ -83130,45 +84219,64 @@ export interface anim_tool_set_result {
   tool: string;
 }
 
+/** What `anim.transform.set` writes. */
+export type anim_transform_set_Target = 'static' | 'key';
+
+/** A partial 3-D point parameter. */
+export interface anim_transform_set_Xyz {
+  /** X. */
+  x?: number | null;
+  /** Y. */
+  y?: number | null;
+  /** Z. */
+  z?: number | null;
+}
+
+/** The space of `position`. */
+export type anim_transform_set_PositionSpace = 'parent' | 'world';
+
+/** A partial 2-D point parameter. */
+export interface anim_transform_set_Xy {
+  /** X. */
+  x?: number | null;
+  /** Y. */
+  y?: number | null;
+}
+
+/** `anim.transform.set` parameters. */
 export interface anim_transform_set_params {
-  nodeIds?: string[];
-  target?: 'static' | 'key';
-  frame?: number | bigint;
-  position?: {
-    x: number;
-    y: number;
-    z: number;
-  };
-  positionSpace?: 'parent' | 'world';
-  rotation?: number;
-  scale?: {
-    x: number;
-    y: number;
-  };
-  skew?: number;
-  pivot?: {
-    x: number;
-    y: number;
-  };
-  rotationPivot?: {
-    x: number;
-    y: number;
-  };
-  scalePivot?: {
-    x: number;
-    y: number;
-  };
+  /** Nodes; default: the selected rows, else the current element. */
+  nodeIds?: string[] | null;
+  /** Static values or keys. */
+  target?: anim_transform_set_Target;
+  /** Scene frame of the keys; default: the current frame. */
+  frame?: number | bigint | null;
+  /** Position; omitted axes keep their value. */
+  position?: anim_transform_set_Xyz | null;
+  /** Parent or world space. */
+  positionSpace?: anim_transform_set_PositionSpace;
+  /** Rotation, degrees. */
+  rotation?: number | null;
+  /** Scale; omitted axes keep their value. */
+  scale?: anim_transform_set_Xy | null;
+  /** Skew, degrees, −89…89. */
+  skew?: number | null;
+  /** Peg and skeleton pivot (static), or the animated pivot offset of any node (key). */
+  pivot?: anim_transform_set_Xy | null;
+  /** Element rotation pivot (static). */
+  rotationPivot?: anim_transform_set_Xy | null;
+  /** Element scale pivot (static). */
+  scalePivot?: anim_transform_set_Xy | null;
+  /** Add to (position, rotation, skew, pivots) or multiply (scale) the current values. */
   relative?: boolean;
 }
 
+/** `anim.transform.set` result. */
 export interface anim_transform_set_result {
   nodeIds: string[];
+  /** The channels keyed (`target: "key"`). */
   keyedChannels: string[];
-  warnings: ({
-    code: string;
-    message: string;
-    objectIds?: string[];
-  })[];
+  warnings: string[];
 }
 
 export interface anim_view_coords_get_params {

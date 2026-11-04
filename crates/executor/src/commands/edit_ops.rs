@@ -683,10 +683,21 @@ pub(crate) fn delete_elements(cx: &mut Cx, ids: Vec<String>) -> Result<(), Comma
     if ids.is_empty() {
         return Ok(());
     }
-    delete(cx, &Picked::Elements(ids), false, false).map(|_| ())
+    // A replacing import brings its own cameras, so the last-camera rule does not apply here.
+    delete_with(cx, &Picked::Elements(ids), false, false, true).map(|_| ())
 }
 
 fn delete(cx: &mut Cx, picked: &Picked, remove_frames: bool, descendants: bool) -> Result<Vec<String>, CommandError> {
+    delete_with(cx, picked, remove_frames, descendants, false)
+}
+
+fn delete_with(
+    cx: &mut Cx,
+    picked: &Picked,
+    remove_frames: bool,
+    descendants: bool,
+    replacing: bool,
+) -> Result<Vec<String>, CommandError> {
     let doc = cx.document()?.clone();
     match picked {
         Picked::Drawing(keys) => {
@@ -733,6 +744,9 @@ fn delete(cx: &mut Cx, picked: &Picked, remove_frames: bool, descendants: bool) 
                 let sid = Id::parse(&scene)?;
                 let sj = doc.entry_raw_json(&EntryKey::Scene(sid.clone()))?;
                 let gone = roots;
+                if !replacing {
+                    super::anim_camera::refuse_last_camera(&doc, &sid, &|c| gone.contains(c.as_str()))?;
+                }
                 let stubs: Vec<Value> = sj["elements"]
                     .as_array()
                     .into_iter()
@@ -752,8 +766,16 @@ fn delete(cx: &mut Cx, picked: &Picked, remove_frames: bool, descendants: bool) 
                     op("replace", "/tree", Some(tree_without(&sj["tree"], &gone))),
                     op("replace", "/columnOrder", Some(Value::Array(columns))),
                 ];
+                // The first remaining camera in Timeline order replaces a deleted current one (05 §12.1).
                 if sj["currentCameraId"].as_str().is_some_and(|c| gone.contains(c)) {
-                    ops.push(op("replace", "/currentCameraId", Some(Value::Null)));
+                    let next = super::anim_camera::next_current(&doc, &sid, &|c| gone.contains(c.as_str()));
+                    ops.push(op("replace", "/currentCameraId", Some(json!(next.as_ref().map(Id::as_str)))));
+                    if let Some(n) = next {
+                        cx.emit(
+                            "anim.camera.currentChanged",
+                            json!({ "sceneId": sid.as_str(), "cameraId": n.as_str() }),
+                        );
+                    }
                 }
                 changes.push((EntryKey::Scene(sid.clone()), ops));
                 for id in &gone {
@@ -1532,7 +1554,7 @@ pub(crate) struct ClipResult {
     scopes = [edit],
     undo = "Cut",
     needs_project,
-    example(title = "Cut the first scene's first element", params = r#"{"context": "staging", "objectIds": ["scene:#1/element:#1"]}"#),
+    example(title = "Cut the peg Bob-P with what is attached to it", params = r#"{"context": "staging", "objectIds": ["scene:\"Intro\"/element:\"Bob-P\""]}"#),
 )]
 pub(crate) fn edit_cut(cx: &mut Cx, p: ObjectsParams) -> Result<ClipResult, CommandError> {
     let context = resolve_context(cx, p.context);

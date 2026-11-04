@@ -235,7 +235,12 @@ impl ChannelEdit {
 
     /// The points of the motion path (empty when there is none).
     pub(crate) fn points(&self) -> Vec<Value> {
-        self.channels.get("position").and_then(|c| c.get("points")).and_then(Value::as_array).cloned().unwrap_or_default()
+        self.channels
+            .get("position")
+            .and_then(|c| c.get("points"))
+            .and_then(Value::as_array)
+            .cloned()
+            .unwrap_or_default()
     }
 
     /// Writes the keys of a 1-D channel, creating or removing it as needed.

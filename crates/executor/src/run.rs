@@ -752,10 +752,17 @@ pub(crate) const GROUP_STEP: &str = "batch";
 /// Applies the deferred effects of a committed call. A simulation applies none. A file that cannot be published
 /// (moved from its stage onto its target) after the commit is the call's error (C14-R2-01, ADR-0015 §12): every
 /// other effect still applies, the target keeps what it had, and the stage is removed.
-fn apply_effects(s: &mut Session, effects: Vec<Effect>, simulating: bool, origin: &Origin) -> Result<(), CommandError> {
+fn apply_effects(
+    s: &mut Session,
+    mut effects: Vec<Effect>,
+    simulating: bool,
+    origin: &Origin,
+) -> Result<(), CommandError> {
     if simulating {
         return Ok(());
     }
+    // One `anim.changed` per undo step (05 §19.4).
+    crate::commands::anim_camera::coalesce_changed(&mut effects);
     let mut failure: Option<CommandError> = None;
     for e in effects {
         match e {

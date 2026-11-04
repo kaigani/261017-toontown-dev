@@ -374,6 +374,10 @@ fn clipboard_for(h: &ExecutorHandle, id: &str) {
     if id == "cell.clipboard.apply" {
         ok(h, "cell.clipboard.set", json!({ "elementIds": ["scene:\"Intro\"/element:\"Bob\""], "from": 1, "to": 8 }));
     }
+    if id == "anim.camera.delete" {
+        // A scene keeps at least one camera (05 §12.1): the example deletes a second one.
+        ok(h, "anim.camera.create", json!({ "name": "Wide" }));
+    }
     if matches!(id, "edit.paste" | "edit.pasteSpecial" | "edit.pasteAsNewElement") {
         ok(h, "edit.copy", json!({ "context": "xsheet", "objectIds": ["scene:#1/element:\"Bob\"/cell:#1"] }));
     }

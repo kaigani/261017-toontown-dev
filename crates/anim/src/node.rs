@@ -292,11 +292,8 @@ impl NodeData {
         let scale = [statics.scale[0] * animated.scale[0], statics.scale[1] * animated.scale[1]];
         let skew = (statics.skew + animated.skew).clamp(-89.0, 89.0);
         let (cr, cs) = statics.pivots(animated.pivot);
-        let matrix = if self.statics.is_some() {
-            local_matrix(position, rotation, skew, scale, cr, cs)
-        } else {
-            Mat4::IDENTITY
-        };
+        let matrix =
+            if self.statics.is_some() { local_matrix(position, rotation, skew, scale, cr, cs) } else { Mat4::IDENTITY };
         Ok(LocalEval {
             local_frame: local,
             statics,

@@ -326,7 +326,7 @@ pub(crate) struct CreateParams {
 #[serde(rename_all = "camelCase")]
 pub(crate) struct CreateResult {
     /// The created elements (parameter elements of effects excluded), first = current.
-    element_ids: Vec<String>,
+    pub(crate) element_ids: Vec<String>,
     /// Their names.
     names: Vec<String>,
     /// Non-blocking warnings (`element.hiddenInDrawingMode`).
@@ -1136,6 +1136,7 @@ pub(crate) fn element_delete(cx: &mut Cx, p: DeleteParams) -> Result<DeleteResul
     let mut changes = Changes::default();
     let mut reparented = Vec::new();
     let mut by_scene: BTreeMap<Id, Vec<Id>> = BTreeMap::new();
+    let mut new_current: Vec<(Id, Id)> = Vec::new();
     for id in &gone {
         by_scene.entry(doc.scene_of(id).cloned().ok_or_else(|| internal("scene"))?).or_default().push(id.clone());
     }
@@ -1165,12 +1166,15 @@ pub(crate) fn element_delete(cx: &mut Cx, p: DeleteParams) -> Result<DeleteResul
             op("replace", "/tree", Some(tree_json(&tree)?)),
             op("replace", "/columnOrder", Some(to_json(&columns)?)),
         ];
+        // A scene keeps at least one camera; the first remaining in Timeline order replaces a deleted current one
+        // (05 §12.1).
+        super::anim_camera::refuse_last_camera(&doc, &scene, &|c| gone.contains(c))?;
         if sc.current_camera_id().as_ref().is_some_and(|c| gone.contains(c)) {
-            let next = h::placed(&tree)
-                .into_iter()
-                .find(|q| doc.element(&q.id).is_some_and(|e| *e.element_type() == ElementType::Camera))
-                .map(|q| q.id.as_str().to_owned());
-            ops.push(op("replace", "/currentCameraId", Some(json!(next))));
+            let next = super::anim_camera::next_current(&doc, &scene, &|c| gone.contains(c));
+            ops.push(op("replace", "/currentCameraId", Some(json!(next.as_ref().map(Id::as_str)))));
+            if let Some(n) = next {
+                new_current.push((scene.clone(), n));
+            }
         }
         changes.push(EntryKey::Scene(scene.clone()), ops);
         for id in list {
@@ -1216,6 +1220,9 @@ pub(crate) fn element_delete(cx: &mut Cx, p: DeleteParams) -> Result<DeleteResul
         changes.push(EntryKey::Project, vec![op("replace", "/drawingBanks", Some(Value::Array(stubs)))]);
     }
     changes.stage(cx)?;
+    for (scene, camera) in &new_current {
+        cx.emit("anim.camera.currentChanged", json!({ "sceneId": scene.as_str(), "cameraId": camera.as_str() }));
+    }
     for (scene, list) in &by_scene {
         emit_state(cx, scene, &list.iter().map(|i| i.as_str().to_owned()).collect::<Vec<_>>(), "deleted");
     }
@@ -1924,7 +1931,7 @@ pub(crate) struct TimingResult {
 }
 
 /// Whether an element type loops (05 §8.4, 06 §2.6: pegs, skeletons, bones and the non-particle effects).
-const fn loopable(t: ElementType) -> bool {
+pub(crate) const fn loopable(t: ElementType) -> bool {
     matches!(
         t,
         ElementType::Peg
@@ -1939,10 +1946,15 @@ const fn loopable(t: ElementType) -> bool {
 }
 
 /// Re-times the keys of one element's channels (local frames, 05 §2.10) from a cycle of `old` frames to `new`:
-/// `keep` removes keys beyond `new`; `scale` maps local frame k to round(1 + (k − 1)(new − 1)/(old − 1)) with the
-/// later key winning a collision (05 §8.4). Motion-path keyframes follow the same rule; control points between
-/// removed keyframes go with them. Returns the patch of the `channels` map, if anything changed.
+/// `keep` removes keys beyond `new`, first evaluating the original curve at the new end and keeping that value there
+/// (SI-089, 05 §8.4: 1-D channels get a key at `new`; a motion path gets a keyframe at the position evaluated there,
+/// keeps the control points the node has already passed, and its velocity keys are renormalised to the shorter
+/// segment); `scale` maps local frame k to round(1 + (k − 1)(new − 1)/(old − 1)) with the later key winning a collision
+/// (05 §8.4). Keys are local frames, so moving the start never touches them. Returns the patch of the `channels` map,
+/// if anything changed.
 fn retimed_channels(
+    cx: &mut Cx,
+    data: &tt_anim::node::NodeData,
     channels: &Value,
     old: u32,
     new: u32,
@@ -1950,6 +1962,27 @@ fn retimed_channels(
     budget: &mut Budget,
 ) -> Result<Option<Value>, CommandError> {
     let Value::Object(map) = channels else { return Ok(None) };
+    let end = f64::from(new);
+    // The path's truncation: the keyframe segment the new end falls in, and the arc length there.
+    let cut = data.path.as_ref().filter(|_| mode == KeyMode::Keep).and_then(|path| {
+        let keys = path.key_indices().len();
+        let last = (keys > 0).then(|| path.key_frame(keys - 1))?;
+        if last <= end {
+            return None;
+        }
+        let lock = data.statics.as_ref().is_some_and(|s| s.lock_depth);
+        let position = tt_anim::tcb::travel(path, &data.velocity, lock, end).position;
+        let on_key = (0..keys).any(|j| path.key_frame(j) == end);
+        let inside = keys >= 2 && end > path.key_frame(0);
+        let (segment, arc) = if inside {
+            let j = tt_anim::tcb::key_segment(path, end);
+            let (s0, s1) = (path.key_arc(j), path.key_arc(j + 1));
+            (Some(j), data.velocity.value(path, end).clamp(s0, s1.max(s0)))
+        } else {
+            (None, path.key_arc(0))
+        };
+        Some((position, on_key, segment, arc))
+    });
     let map_frame = |k: u64| -> u64 {
         match mode {
             KeyMode::Keep => k,
@@ -1968,6 +2001,27 @@ fn retimed_channels(
         if let Some(Value::Array(keys)) = c.get_mut("keys") {
             budget.spend(keys.len())?;
             let mut by_frame: BTreeMap<u64, Value> = BTreeMap::new();
+            // The held value: the original curve at the new end, before anything is removed (SI-089).
+            if mode == KeyMode::Keep
+                && name != "velocity"
+                && keys.iter().any(|k| k.get("frame").and_then(Value::as_u64).is_some_and(|f| f > u64::from(new)))
+                && !keys.iter().any(|k| k.get("frame").and_then(Value::as_u64) == Some(u64::from(new)))
+                && let Some(value) = data.curve_at(name, end)
+            {
+                let mut held =
+                    super::anim_common::new_key(cx, new, value, tt_model::entities::channel::Easing::Linear)?;
+                held["constantSegment"] = json!(false);
+                by_frame.insert(u64::from(new), held);
+            }
+            // Velocity keys are normalised to their keyframe segment: the shorter last segment rescales them.
+            let rescale = (name == "velocity")
+                .then(|| {
+                    let (_, _, segment, arc) = cut?;
+                    let path = data.path.as_ref()?;
+                    let j = segment?;
+                    Some((path.key_frame(j), path.key_arc(j), path.key_arc(j + 1), arc))
+                })
+                .flatten();
             for k in keys.iter() {
                 let f = k.get("frame").and_then(Value::as_u64).unwrap_or(1);
                 let nf = map_frame(f);
@@ -1976,6 +2030,12 @@ fn retimed_channels(
                 }
                 let mut k = k.clone();
                 k["frame"] = json!(nf);
+                if let Some((f0, s0, s1, arc)) = rescale
+                    && (nf as f64) > f0
+                {
+                    let v = k["value"].as_f64().unwrap_or(0.0) * (s1 - s0);
+                    k["value"] = json!(if arc > s0 { v / (arc - s0) } else { 0.0 });
+                }
                 // Keys arrive sorted, so a later key replaces an earlier one at the same frame.
                 by_frame.insert(nf, k);
             }
@@ -1993,7 +2053,7 @@ fn retimed_channels(
             budget.spend(points.len())?;
             let mut next: Vec<Value> = Vec::new();
             let mut last_key: Option<u64> = None;
-            for pt in points.iter() {
+            for (i, pt) in points.iter().enumerate() {
                 match pt.get("frame").and_then(Value::as_u64) {
                     Some(f) => {
                         let nf = map_frame(f);
@@ -2012,8 +2072,21 @@ fn retimed_channels(
                         last_key = Some(nf);
                         next.push(pt);
                     }
-                    None => next.push(pt.clone()),
+                    // Past the new end the control points go: the node never reaches them (SI-089).
+                    None => {
+                        let passed = match (&cut, &data.path) {
+                            (Some((_, _, _, arc)), Some(path)) => path.arc_of_point(i) <= *arc,
+                            _ => true,
+                        };
+                        if passed {
+                            next.push(pt.clone());
+                        }
+                    }
                 }
+            }
+            // The keyframe at the new end, at the position evaluated there (SI-089).
+            if let Some((position, false, _, _)) = cut {
+                next.push(super::anim_path::point_json(cx, Some(new), position)?);
             }
             // A path ends on a keyframe (10 §4.12).
             while next.last().is_some_and(|p| p.get("frame").is_none_or(Value::is_null)) {
@@ -2104,10 +2177,18 @@ pub(crate) fn element_timing_set(cx: &mut Cx, p: TimingParams) -> Result<TimingR
                 _ => {}
             }
         }
-        // Loops (05 §8.4): with `count` the bar is loops × L; with `fill` the bar stays and L follows.
-        let nl = p.loops.unwrap_or(loops);
-        let cycle = (d / loops).max(1);
+        // Loops (05 §8.4): with `count` the bar is loops × L. With `fill` a new duration keeps L and the number of
+        // cycles follows from it (SI-089); an explicit `loops` keeps the bar and L follows.
         let count = *e.loop_type() == tt_model::entities::element::LoopType::Count;
+        let cycle = i64::from(tt_anim::timing::cycle_length(e, as_u32(usize::try_from(d).unwrap_or(1))));
+        let nl = match p.loops {
+            Some(n) => n,
+            None if count => loops,
+            None => {
+                let filled = nd.max(1) / cycle + i64::from(nd.max(1) % cycle != 0);
+                filled.max(1)
+            }
+        };
         if p.loops.is_some() && p.duration.is_none() && count {
             nd = cycle.checked_mul(nl).ok_or_else(out_of_range)?;
         }
@@ -2128,14 +2209,22 @@ pub(crate) fn element_timing_set(cx: &mut Cx, p: TimingParams) -> Result<TimingR
         if i64::from(ns) != s {
             ops.push(op("replace", "/start", Some(json!(ns))));
         }
+        let old_cycle = as_u32(usize::try_from(cycle).unwrap_or(1));
+        let new_cycle = if count || p.loops.is_some() { (nd / nl.max(1)).max(1) } else { old_cycle };
         if i64::from(nd) != d {
             ops.push(op("replace", "/duration", Some(json!(nd))));
-            let old_cycle = as_u32(usize::try_from(cycle).unwrap_or(1));
-            let new_cycle = (nd / nl.max(1)).max(1);
+        }
+        if !count && *e.cycle_length() != Some(new_cycle) {
+            // `duration` and `loops` cannot express a partial last cycle (SI-089).
+            ops.push(op("add", "/cycleLength", Some(json!(new_cycle))));
+        }
+        if new_cycle != old_cycle {
+            let data = super::anim_common::data_of(&doc, id, &mut budget)?;
             if let Some(ch) = doc.entry_raw_json(&EntryKey::Element(id.clone())).map_err(internal)?.get("channels")
-                && let Some(next) = retimed_channels(ch, old_cycle, new_cycle, p.keyframes, &mut budget)?
+                && let Some(next) = retimed_channels(cx, &data, ch, old_cycle, new_cycle, p.keyframes, &mut budget)?
             {
                 ops.push(op("replace", "/channels", Some(next)));
+                super::anim_common::emit_static(cx, id, &["channels"]);
             }
         }
         if i64::from(nl) != loops {

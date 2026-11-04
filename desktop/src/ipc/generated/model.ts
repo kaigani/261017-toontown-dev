@@ -1795,6 +1795,15 @@ export const MODEL_DEFS: Readonly<Record<string, Schema>> = {
         description: "Cycle or offset.",
         "x-since": "1.0",
       },
+      cycleLength: {
+        type: "integer",
+        maximum: 2147483647,
+        minimum: 1,
+        description: "`fill` loops: the cycle length in frames, which `duration` and `loops` cannot express when the last cycle is\npartial (SI-089).",
+        "x-unit": "frame",
+        "x-omitDefault": true,
+        "x-since": "1.0",
+      },
       role: {
         $ref: "#/$defs/Role",
         description: "Composite role.",
@@ -7952,6 +7961,8 @@ export interface Element {
   loopType: LoopType;
   /** Cycle or offset. */
   positionLoop: PositionLoop;
+  /** `fill` loops: the cycle length in frames, which `duration` and `loops` cannot express when the last cycle is partial (SI-089). */
+  cycleLength?: number;
   /** Composite role. */
   role: Role;
   /** Deformable by a skeleton. */

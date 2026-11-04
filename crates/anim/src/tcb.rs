@@ -445,7 +445,13 @@ pub fn orient_angle<E>(
         None if path.key_indices().is_empty() => (0, 0),
         None => {
             let n = path.key_indices().len();
-            let j = if f <= path.key_frame(0) { 0 } else if f >= path.key_frame(n - 1) { n - 1 } else { key_segment(path, f) };
+            let j = if f <= path.key_frame(0) {
+                0
+            } else if f >= path.key_frame(n - 1) {
+                n - 1
+            } else {
+                key_segment(path, f)
+            };
             (path.key_indices()[j].min(segments - 1), 0)
         }
     };

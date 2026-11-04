@@ -848,6 +848,9 @@ fn delegated(command: &str) -> bool {
             | "element.lock.set"
             | "element.drawing.rename"
             | "element.drawingLock.set"
+            | "anim.transform.set"
+            | "anim.camera.set"
+            | "anim.camera.current.set"
     )
 }
 
@@ -886,6 +889,33 @@ fn delegated_op(ty: ObjectType, key: &str, o: &PatchOp) -> Option<Delegated> {
         (ObjectType::Drawing, "/locked", _) if set => {
             ("element.drawingLock.set", json!({ "drawingIds": [key], "locked": v }))
         }
+        (ObjectType::Element, "/transform/offset", _) if set => {
+            ("anim.transform.set", json!({ "nodeIds": [key], "target": "static", "position": v }))
+        }
+        (ObjectType::Element, "/transform/offset/x" | "/transform/offset/y" | "/transform/offset/z", _) if set => {
+            let axis = o.path.rsplit('/').next().unwrap_or("x");
+            ("anim.transform.set", json!({ "nodeIds": [key], "target": "static", "position": { axis: v } }))
+        }
+        (ObjectType::Element, "/transform/rotation", _) if set => {
+            ("anim.transform.set", json!({ "nodeIds": [key], "target": "static", "rotation": v }))
+        }
+        (ObjectType::Element, "/transform/skew", _) if set => {
+            ("anim.transform.set", json!({ "nodeIds": [key], "target": "static", "skew": v }))
+        }
+        (ObjectType::Element, "/transform/scale", _) if set => {
+            ("anim.transform.set", json!({ "nodeIds": [key], "target": "static", "scale": v }))
+        }
+        (ObjectType::Element, "/transform/scale/x" | "/transform/scale/y", _) if set => {
+            let axis = o.path.rsplit('/').next().unwrap_or("x");
+            ("anim.transform.set", json!({ "nodeIds": [key], "target": "static", "scale": { axis: v } }))
+        }
+        (ObjectType::Element, "/camera/fov", _) if set => ("anim.camera.set", json!({ "cameraId": key, "fov": v })),
+        (ObjectType::Element, "/camera/fovMode", _) if set => {
+            ("anim.camera.set", json!({ "cameraId": key, "fovMode": v }))
+        }
+        (ObjectType::Scene, "/currentCameraId", _) if set && v.is_string() => {
+            ("anim.camera.current.set", json!({ "cameraId": v }))
+        }
         _ => return None,
     };
     Some(Delegated { command, params })
@@ -911,6 +941,9 @@ fn apply_delegated(cx: &mut Cx, d: &Delegated) -> Result<(), CommandError> {
         "element.lock.set" => super::element::element_lock_set(cx, delegated_params(d)?).map(drop),
         "element.drawing.rename" => super::element_bank::element_drawing_rename(cx, delegated_params(d)?).map(drop),
         "element.drawingLock.set" => super::element_bank::element_drawing_lock_set(cx, delegated_params(d)?).map(drop),
+        "anim.transform.set" => super::anim_transform::anim_transform_set(cx, delegated_params(d)?).map(drop),
+        "anim.camera.set" => super::anim_camera::anim_camera_set(cx, delegated_params(d)?).map(drop),
+        "anim.camera.current.set" => super::anim_camera::anim_camera_current_set(cx, delegated_params(d)?).map(drop),
         other => Err(CommandError::internal(format!("`{other}` is not a delegated command"))),
     }
 }
@@ -928,10 +961,7 @@ enum Step {
 /// delegated property stays one ordinary operation with the model's own RFC 6902 semantics.
 fn delegated_steps(cx: &Cx, ty: ObjectType, key: &str, o: PatchOp) -> Result<Vec<Step>, CommandError> {
     let Some(from) = o.from.clone().filter(|_| matches!(o.op, "copy" | "move")) else {
-        return Ok(vec![match delegated_op(ty, key, &o) {
-            Some(d) => Step::Delegated(d),
-            None => Step::Ordinary(o),
-        }]);
+        return Ok(routed(ty, key, o));
     };
     if !touches_delegated(ty, key, &o) {
         return Ok(vec![Step::Ordinary(o)]);
@@ -948,26 +978,57 @@ fn delegated_steps(cx: &Cx, ty: ObjectType, key: &str, o: PatchOp) -> Result<Vec
     })?;
     let mut steps = Vec::new();
     for op in (o.op == "move").then_some(removal).into_iter().chain([write(value)]) {
-        steps.push(match delegated_op(ty, key, &op) {
-            Some(d) => Step::Delegated(d),
-            None => Step::Ordinary(op),
-        });
+        steps.extend(routed(ty, key, op));
     }
     Ok(steps)
+}
+
+/// Whether a write replaces a whole value object holding delegated properties (10 AG-02: "anywhere inside the replaced
+/// value"): the transform block or the camera block of an element.
+fn whole_block(ty: ObjectType, o: &PatchOp) -> bool {
+    ty == ObjectType::Element
+        && matches!(o.path.as_str(), "/transform" | "/camera")
+        && matches!(o.op, "add" | "replace")
+        && o.value.as_ref().is_some_and(Value::is_object)
+}
+
+/// One operation as steps: a whole transform or camera block is written field by field, each field through its owner
+/// when it is delegated.
+fn routed(ty: ObjectType, key: &str, o: PatchOp) -> Vec<Step> {
+    if whole_block(ty, &o) {
+        let fields = o.value.as_ref().and_then(Value::as_object).cloned().unwrap_or_default();
+        let mut steps = Vec::with_capacity(fields.len());
+        for (k, v) in fields {
+            let field = PatchOp {
+                op: "add",
+                path: format!("{}/{}", o.path, tt_model::pointer::escape(&k)),
+                value: Some(v),
+                ..o.clone()
+            };
+            steps.extend(routed(ty, key, field));
+        }
+        return steps;
+    }
+    match delegated_op(ty, key, &o) {
+        Some(d) => vec![Step::Delegated(d)],
+        None => vec![Step::Ordinary(o)],
+    }
 }
 
 /// Whether an operation is applied (wholly or partly) by an owning handler: a delegated write, or a `copy`/`move`
 /// with a delegated destination or a delegated `move` source.
 fn touches_delegated(ty: ObjectType, key: &str, o: &PatchOp) -> bool {
     let Some(from) = o.from.as_ref().filter(|_| matches!(o.op, "copy" | "move")) else {
-        return delegated_op(ty, key, o).is_some();
+        return whole_block(ty, o) || delegated_op(ty, key, o).is_some();
     };
     if o.op == "move" && *from == o.path {
         return false;
     }
     let write = PatchOp { op: "add", from: None, value: Some(Value::Null), ..o.clone() };
     let removal = PatchOp { op: "remove", from: None, path: from.clone(), value: None, ..o.clone() };
-    delegated_op(ty, key, &write).is_some() || o.op == "move" && delegated_op(ty, key, &removal).is_some()
+    matches!(o.path.as_str(), "/transform" | "/camera") && ty == ObjectType::Element
+        || delegated_op(ty, key, &write).is_some()
+        || o.op == "move" && delegated_op(ty, key, &removal).is_some()
 }
 
 /// Stages a run of ordinary operations on one object; a content edit of a locked drawing is refused (unlocking it

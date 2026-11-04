@@ -5,8 +5,13 @@
 //! parameters. Every other spec A entry has a generated declaration (`tt_registry::declared`, ADR-0013 §1).
 
 pub(crate) mod agent;
+pub(crate) mod anim_camera;
 pub(crate) mod anim_common;
 pub(crate) mod anim_eval;
+pub(crate) mod anim_function;
+pub(crate) mod anim_key;
+pub(crate) mod anim_path;
+pub(crate) mod anim_transform;
 pub(crate) mod app;
 pub(crate) mod bundle;
 pub(crate) mod cell;
@@ -323,6 +328,38 @@ pub(crate) static ALL: &[&Command] = &[
     &element_bank::ELEMENT_DRAWING_LOCK_SET,
     &element_bank::ELEMENT_DRAWING_CHANGED,
     // xsheet (M3 C3.1)
+    &anim_transform::ANIM_TRANSFORM_SET,
+    &anim_transform::ANIM_LOOP_SET,
+    &anim_path::ANIM_PATH_GET,
+    &anim_path::ANIM_PATH_SET,
+    &anim_path::ANIM_PATH_POINT_ADD,
+    &anim_path::ANIM_PATH_POINT_SET,
+    &anim_path::ANIM_PATH_POINT_REMOVE,
+    &anim_path::ANIM_PATH_LOCK_DEPTH_SET,
+    &anim_function::ANIM_FUNCTION_LIST,
+    &anim_function::ANIM_FUNCTION_GET,
+    &anim_function::ANIM_FUNCTION_SET,
+    &anim_function::ANIM_FUNCTION_KEY_ADD,
+    &anim_function::ANIM_FUNCTION_KEY_SET,
+    &anim_function::ANIM_FUNCTION_KEY_REMOVE,
+    &anim_function::ANIM_FUNCTION_KEY_DUPLICATE,
+    &anim_function::ANIM_FUNCTION_CURVE_TYPE_SET,
+    &anim_function::ANIM_FUNCTION_PRESET_APPLY,
+    &anim_key::ANIM_KEY_ADD,
+    &anim_key::ANIM_KEY_LIST,
+    &anim_key::ANIM_KEY_MOVE,
+    &anim_key::ANIM_KEY_REMOVE,
+    &anim_key::ANIM_SEGMENT_SET,
+    &anim_key::ANIM_SEGMENT_UNIFORM_APPLY,
+    &anim_camera::ANIM_CAMERA_CREATE,
+    &anim_camera::ANIM_CAMERA_DELETE,
+    &anim_camera::ANIM_CAMERA_LIST,
+    &anim_camera::ANIM_CAMERA_GET,
+    &anim_camera::ANIM_CAMERA_SET,
+    &anim_camera::ANIM_CAMERA_CURRENT_GET,
+    &anim_camera::ANIM_CAMERA_CURRENT_SET,
+    &anim_camera::ANIM_CHANGED,
+    &anim_camera::ANIM_CAMERA_CURRENT_CHANGED,
     &anim_eval::ANIM_EVALUATE,
     &anim_eval::ANIM_PROJECTION_GET,
     &anim_eval::ANIM_PATH_SAMPLE,

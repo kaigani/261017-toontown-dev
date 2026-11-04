@@ -4627,6 +4627,7 @@ dependencies = [
 name = "tt-anim"
 version = "0.0.1"
 dependencies = [
+ "libm",
  "proptest",
  "tt-model",
 ]

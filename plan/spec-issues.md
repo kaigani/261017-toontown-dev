@@ -197,10 +197,8 @@ Reserved by the M0 closure for "measured deterministic-format incompatibility" (
 
 - **Section:** 05 and spec A (`anim.*` command rows).
 - **Positions** (in `crates/registry/src/declared.json`, `placeholders`):
-  - `anim.function.preset.apply` `/result/segments`: a member whose type is not stated (`segments`)
   - `anim.node.get` `/result/static`: a member whose type is not stated (`static`)
   - `anim.prefs.set` `/result/prefs`: a member whose type is not stated (`prefs`)
-  - `anim.projection.get` `/params/points/*`: an object whose fields are not listed
   - `anim.view.coords.get` `/params/points/*`: an object whose fields are not listed
   - `anim.view.coords.get` `/result/points/*`: an object whose fields are not listed
 - **Decision taken (ADR-0013 §1, C12-R2-02):** each position is a strict placeholder: an object accepts only `{}`, a member accepts only a scalar (never an object or a list), so nothing undefined is accepted silently. The implementing checkpoint replaces it with the shape the section gives.

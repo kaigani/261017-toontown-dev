@@ -244,9 +244,9 @@ fn content_box(doc: &Document, e: &Element, frame: f64, memo: &mut BTreeMap<Id, 
         return None;
     }
     let cell = AppContext::exposed_drawing(doc, e.id(), frame.floor() as u32)?;
-    *memo.entry(cell.clone()).or_insert_with(|| {
-        doc.drawing(&cell).and_then(|d| tt_vector::drawing::drawing_bounds(d, false))
-    })
+    *memo
+        .entry(cell.clone())
+        .or_insert_with(|| doc.drawing(&cell).and_then(|d| tt_vector::drawing::drawing_bounds(d, false)))
 }
 
 /// The world box of a drawing box under `world` (05 §1.3: 1 field = 100 du; the box of the four transformed corners).
