@@ -1,0 +1,6 @@
+{
+  "exitCode": 0,
+  "completedAt": "2026-11-04T00:46:20.7429553Z",
+  "startedAt": "2026-11-03T23:43:45.6836068Z",
+  "command": "cargo test --workspace --locked -j 4 --no-fail-fast"
+}

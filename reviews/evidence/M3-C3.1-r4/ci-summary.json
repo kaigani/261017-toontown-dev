@@ -1,0 +1,27 @@
+{
+  "run": 41716646042,
+  "attempt": 2,
+  "head": "864b70d3d6da55179346d174abf2466ca825c90c",
+  "jobs": 22,
+  "allGreen": true,
+  "windowsDurations": [
+    {
+      "name": "check properties (windows-latest)",
+      "seconds": 2154.0,
+      "minutes": 35.9,
+      "above55Minutes": false
+    },
+    {
+      "name": "m3 properties release (windows-latest)",
+      "seconds": 236.0,
+      "minutes": 3.933333333333333,
+      "above55Minutes": false
+    },
+    {
+      "name": "check (windows-latest)",
+      "seconds": 2471.0,
+      "minutes": 41.18333333333333,
+      "above55Minutes": false
+    }
+  ]
+}

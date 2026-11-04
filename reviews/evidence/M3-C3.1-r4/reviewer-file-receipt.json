@@ -1,0 +1,28 @@
+{
+  "command": [
+    "git",
+    "diff",
+    "--stat",
+    "3a3fd85..864b70d",
+    "--",
+    "tests/adversarial",
+    "crates/*/tests/c0*_r*",
+    "crates/*/tests/c1*_r*",
+    "crates/*/tests/c2*_r*",
+    "crates/*/tests/c31_r1_*",
+    "crates/*/tests/c31_r2_*",
+    "crates/*/tests/c31_r3_*",
+    "desktop/src/test"
+  ],
+  "exitCode": 0,
+  "stdout": "",
+  "empty": true,
+  "builderTests": "Only new c31_round3.rs; no existing assertion edited",
+  "TT_COMMIT_REVIEW_RECEIPTS": null,
+  "pnpmInstall": {
+    "command": "pnpm install --frozen-lockfile",
+    "cwd": "desktop",
+    "exitCode": 0,
+    "beforeReviewerPythonGuards": true
+  }
+}

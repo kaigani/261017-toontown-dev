@@ -1,0 +1,49 @@
+{
+  "head": "864b70d3d6da55179346d174abf2466ca825c90c",
+  "sourceReview": [
+    {
+      "path": "crates/executor/src/commands/doc.rs",
+      "sha256": "ab89e640d16ef9c2491634c461068d2eac75fc8472c93b14caf36a520aa6e3af"
+    },
+    {
+      "path": "crates/executor/src/commands/timing.rs",
+      "sha256": "584786ce2f2c5ac561c92e5bf28c21bc7c77acdeeedcb7ab79f5be9876ccc119"
+    },
+    {
+      "path": "crates/executor/src/commands/cell.rs",
+      "sha256": "b38e96647709529971cb0eaef8c167aa3d3f0595f953a86831d96e893a80c74b"
+    },
+    {
+      "path": "crates/executor/src/commands/edit_ops.rs",
+      "sha256": "d50a2c37828e14e5fbfa0569e30d887cd7c8b2f0fd45d1e9eb1a1a5e2784fdb4"
+    },
+    {
+      "path": "crates/executor/src/commands/transfer.rs",
+      "sha256": "b1f6f9802a692bac1c1ec2fe4cc11be971b22593e24cf03aae3aa92e7adabc5b"
+    },
+    {
+      "path": "crates/executor/src/cx.rs",
+      "sha256": "4317d64332bcff7622616c676b9e127cc218b06bd5d2519f01feec7bcda00b90"
+    },
+    {
+      "path": "crates/persist/src/load.rs",
+      "sha256": "2d7233e253453059566fc6b7f58f7cb2b35491e7c06398c458adb8eff9a71d1b"
+    },
+    {
+      "path": "crates/executor/src/commands/colour_recovery.rs",
+      "sha256": "0a5b7cba008a45907a92c2e8f48ac9eded1090597178a048e9e091960b4b2124"
+    },
+    {
+      "path": "docs/decisions/ADR-0014-persistence.md",
+      "sha256": "d3bd2667ec6aa141dd392360d741eba3244fb887d451435280429ae333bcc577"
+    }
+  ],
+  "fixes": {
+    "R3_01": "touches_delegated flushes ordinary runs before source resolution; existing props ordering and transactional acceptance preserved",
+    "R3_02": "provenance checked at all live drawing/bank/type reuse paths and fallback payload",
+    "R3_03": "capture_drawing reads Cx blob overlay shared with placement; effects discarded with refused/dry batch",
+    "R3_04": "persist refs includes drawing colourRecovery textures, keeps opaque namespaces and unreferenced media policy"
+  },
+  "setupAttempts": "closure.txt: missing required batch label and overly broad texture-name assertion; closure-corrected.txt: same colour IDs as live swatches refresh to current definitions on save; closure-final.txt: editor load legitimately restores missing colours into live palettes; closure-verified.txt: two conflicting copies of one colour identity converge to its live swatch on resave (10 section 4.11). Final fixtures use distinct colour identities with colliding texture entry names, and direct persistence round trips independently assert no live palette reference. Preliminary files are retained, superseded by closure-final-variants.txt and final workspace. Final source revision is verified by closure-accepted.txt (5/5); no product code or historical file was edited.",
+  "newProductFindings": []
+}
