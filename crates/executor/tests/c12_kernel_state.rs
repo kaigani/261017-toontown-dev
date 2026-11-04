@@ -495,6 +495,6 @@ fn every_generated_declaration_answers_with_its_owner() {
     }
     println!("generated declarations: {n}");
     // A floor against an empty table: the count falls as checkpoints implement declared commands (599 after M2 C2.4
-    // implemented `draw.vectorize.*`).
-    assert!(n > 500, "{n}");
+    // implemented `draw.vectorize.*`, 498 after M3 C3.2 implemented its `anim.*`).
+    assert!(n > 400, "{n}");
 }

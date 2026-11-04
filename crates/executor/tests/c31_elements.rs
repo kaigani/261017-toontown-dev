@@ -515,13 +515,9 @@ fn patch_applies_the_owning_command_rules() {
     );
     ok(&h, "doc.object.patch", json!({ "targets": [d2], "props": { "name": "B" } }));
     assert_eq!(get(&h, "scene:\"Intro\"/element:\"Robert\"/drawing:\"B\"")["locked"], false);
-    // Properties of commands not yet implemented still name their owner.
-    let e = err(
-        &h,
-        "doc.object.patch",
-        json!({ "targets": [bob], "ops": [{ "op": "replace", "path": "/transform/offset/x", "value": 1 }] }),
-    );
-    assert_eq!(e.details["commandId"], "anim.transform.set");
+    // Properties of commands not yet implemented still name their owner (`anim.transform.set` is C3.2's, implemented).
+    let e = err(&h, "doc.object.patch", json!({ "targets": [first(&h, "scene")], "props": { "visible": false } }));
+    assert_eq!(e.details["commandId"], "storyline.scene.visible.set");
 }
 
 #[test]

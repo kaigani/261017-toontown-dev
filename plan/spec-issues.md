@@ -1021,18 +1021,24 @@ Reserved by the M0 closure for "measured deterministic-format incompatibility" (
   `type` for the sound column only).
 - **Question:** none for the spec owner; M8 C8.1/C8.3 implement the remaining sound/media cell edits.
 
-## SI-089 — key re-timing when a bar's duration changes (found in M3 C3.1; decided by 05 §8.4)
+## SI-089 — key re-timing when a bar's duration changes (found in M3 C3.1; decided by 05 §8.4 and the orchestrator's C3.2 ruling)
 
 - **Sections:** 04 §11.10 (change duration removes keys beyond the end; stretching scales keys); 05 §8.4 (keys are
   local frames; proportional re-timing maps local frame k to round(1 + (k − 1)(D′ − 1)/(D − 1)), the later key wins
-  a collision; truncation holds the value at the new end); 06 §2.6.
-- **Decision (builder, C3.1):** `element.timing.set {keyframes: "keep"}` removes keys (and motion-path keyframes, with
-  the control points after the last kept keyframe) beyond the new cycle length; `{keyframes: "scale"}` applies 05
-  §8.4's mapping with half-up rounding and later-wins collisions. Keys are local frames, so moving the start moves
-  them. With `count` loops the bar is `loops × L` (the stored `duration` is the bar; L = duration ÷ loops).
-  **Partial:** 05 §8.4's "the value at the new end is held" needs curve evaluation (`anim.evaluate`, C3.2); C3.1
-  truncates, and the held-value key at the new end is added in C3.2.
-- **Question:** store the cycle length L explicitly for `fill` loops (10 §4.5 has only `duration` and `loops`).
+  a collision; truncation holds the value at the new end); 06 §2.6; 10 §4.5.
+- **Decision (orchestrator ruling, C3.2 readiness item 7):** before truncation, evaluate the original curve at the new
+  local end and preserve that held value there; moving the start must not shift local key coordinates.
+  `element.timing.set {keyframes: "keep"}`: a 1-D channel with a key beyond the new cycle gets a key at the new end
+  with the original curve's value there (also when every key lay beyond it); a motion path gets a keyframe at the
+  position evaluated there, keeps the control points the node has already passed, drops the rest, and its velocity keys
+  are renormalised to the shorter segment. `{keyframes: "scale"}` applies 05 §8.4's mapping with half-up rounding and
+  later-wins collisions. Keys are local frames, so moving the start moves them with the bar.
+- **Cycle length (decided, C3.2, readiness item 8):** `count`: L = ⌊duration ÷ loops⌋ (at least 1), a remainder plays as a
+  partial cycle; `anim.loop.set` makes the bar `loops × L`, refusing past frame 100 000. `fill`: 10 §4.5 has only
+  `duration` and `loops`, which cannot express L with a partial last cycle, so `Element.cycleLength` is added (optional,
+  written only for `fill`, omitted otherwise; a `fill` element without it uses ⌊duration ÷ loops⌋). A new duration keeps L
+  and `loops` becomes ⌈duration ÷ L⌉; an explicit `loops` in `element.timing.set` keeps the bar and L follows.
+- **Question:** add `cycleLength` to 10 §4.5.
 
 ## SI-090 — drawing-name codes of 02 and 04 (found in M3 C3.1; decided by section ownership)
 
@@ -1106,3 +1112,79 @@ Reserved by the M0 closure for "measured deterministic-format incompatibility" (
   single pass (`loopMode: none`) is never extended: a larger `totalFrames` is refused (`arg.invalid`, the pass length
   stated), a smaller one truncates it.
 - **Question:** confirm, or specify how `exposeLast` combines with a truncated cycle.
+
+## SI-096 — per-axis position channels, D-5 (raised in the M3 plan; unresolved, spec owner)
+
+- **Sections:** 05 §1.6, §9, §11.4; 10 §4.12.
+- **Decision (orchestrator ruling, C3.2):** build to 05 as it stands: `position` is a motion path with TCB points,
+  `position.x/y/z` are projections, not stored. M6 C6.2 is the second owner.
+- **Migration if the amendment is adopted:** a format step (versioned manifest, a fixture folder under
+  `crates/persist/tests/fixtures/migrations/`) rewrites each `position` channel into `position.x`, `.y`, `.z` 1-D channels.
+  Each keyframe becomes one key per axis at the same local frame, with an ID derived deterministically from the point's;
+  control points and non-linear velocity are baked into sampled per-axis keys at each frame of the affected segment
+  (TCB parameters have no per-axis form, so a segment with non-default TCB is baked too); `constantSegment` and
+  `lockDepth` map to `constantSegment` per axis; `meta`/`ext` move to the `x` channel. `velocity` keys are dropped once baked.
+- **IPC types the amendment would break (not frozen; repeated in the C3.2 handoff):** `anim.path.get/.set/.point.*`,
+  `anim.path.lockDepth.set`, the `position.*` projection form of `anim.function.*`, `NodeEval.animated.velocity`.
+- **Question:** D-5 itself.
+
+## SI-097 — E4's bones (found in M3 C3.2; decided by the plan's milestones)
+
+- **Sections:** 11 §14 E4 ("create body-part elements, pegs and bones"); plan §4 (C3.2 "E4 numeric"; C6.3 bones, "E4
+  interactive"); generator owners (`anim.bone.*`, `anim.skeleton.*`: M6 C6.3).
+- **Decision (builder, C3.2):** E4 numeric poses pegs and elements. The bone part of E4 runs with M6 C6.3.
+  `anim.evaluate` refuses a bone (`anim.notTransformable`, hint names C6.3).
+- **Question:** none.
+
+## SI-098 — `anim.evaluate` frames and frame reporting (found in M3 C3.2; decided by the readiness list)
+
+- **Sections:** 05 §19.1.4 ("fractional only where stated"), §19.3 (`frames?: [int]`).
+- **Decision (builder, C3.2; readiness item 10):** `anim.evaluate {frames}` also accepts fractional scene frames, a superset
+  of the table. Every other frame parameter is as its table row says. All results report scene frames, including
+  `anim.path.get`, `anim.function.get`, `anim.key.list`; `NodeEval.localFrame` is the local frame before the cycle mapping.
+- **Question:** confirm the superset.
+
+## SI-099 — Constant Z, constant segments and timing (found in M3 C3.2; decided by 05 §9.3)
+
+- **Sections:** 05 §9.2, §9.3 ("The Z of control points is ignored where Constant Z applies"), §10.5.
+- **Decision (builder, C3.2):** the arc length of a locked keyframe segment is measured in its X/Y plane, so control-point Z
+  does not change timing there. A control point inside a constant segment is "ignored for timing": its reported passage
+  frame is the segment's start frame.
+- **Question:** confirm the plane measure.
+
+## SI-100 — visibility, clipped points and frame corners (found in M3 C3.2; decided for agents)
+
+- **Sections:** 05 §2.6, §19.3, §19.4 (the `NodeEval` example gives a peg `bounds` and a visible `screen`; the text below it
+  says pegs and cameras report only their origin).
+- **Decision (builder, C3.2):** the text wins: pegs and cameras have no `bounds`; their `screen` box is their origin.
+  `visible` = in front of the near plane and overlapping the frame; for content nodes also not hidden (itself or an
+  ancestor), not an annotation (04 §2.6, final render excludes them by default) and with content at that frame. In
+  `anim.projection.get` a clipped point reports `x`, `y` as `null`. In `anim.camera.get`, `frameCornersAtZ0` is `null` when
+  the table plane is at or behind the near plane. `bounds` come from the exposed drawing at 1 field = 100 du (02 §3);
+  bitmap native-size mapping (05 §1.3) arrives with C3.3's render list.
+- **Question:** confirm `visible` for pegs (origin in frame).
+
+## SI-101 — numeric bounds of animation values (found in M3 C3.2; decided by the builder)
+
+- **Sections:** 05 §2.1, §8, §18 (`anim.valueOutOfRange`); C31-R1-10.
+- **Decision (builder, C3.2):** beyond the spec's ranges (skew ±89, |scale| ≥ 0.001, FOV 1–179, TCB ±1): positions and pivots
+  ±1 000 000 fields, |scale| ≤ 1 000 000, rotation and generic 1-D values ±1e9. All `anim.valueOutOfRange` with limits, so
+  finite documents cannot overflow casually; an evaluation that still overflows (a deep chain of large scales) is refused
+  with `reason: nonFinite`.
+- **Question:** none beyond confirming the limits.
+
+## SI-102 — default FOV and "exactly 12 fields" (found in M3 C3.2; decided by the tables)
+
+- **Sections:** 05 §2.7 (2·atan(0.375) ≈ 41.1121°, "exactly fills"), §12.3, §19.3, 10 §4.6 (default 41.1121).
+- **Decision (builder, C3.2):** the stored default stays the tables' 41.1121, as M1 wrote it. With it the 12-field table
+  width fills the frame to about 4e-6 field. A camera given the exact value fills it exactly.
+- **Question:** store the exact value instead?
+
+## SI-103 — default curve types (found in M3 C3.2; decided by 05 §10.2)
+
+- **Sections:** 05 §10.2, §19.4 (the `Function` example is a `spline`); 10 §4.12 ("per preference").
+- **Decision (builder, C3.2):** a new channel is `interpolation`, its keys eased `linear`, or `easeInOut` when
+  `staging.keyframes.linearVelocity` is off. A later `anim.function.curveType.set` to `spline` starts with zero handles,
+  which are straight lines. `anim.function.*` on `position.x/y/z` reads keyframes and edits values through the path
+  (05 §11.4); key addition, removal and duplication there are refused (`anim.channelUnsupported`, use `anim.path.*`).
+- **Question:** none.

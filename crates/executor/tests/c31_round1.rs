@@ -121,14 +121,10 @@ fn r03_patch_ops_and_props_match_the_owning_commands() {
         "drawing.nameDuplicate"
     );
     // Properties whose commands are later checkpoints still name their owner.
-    let e = err(
-        &h,
-        "doc.object.patch",
-        json!({ "targets": [BOB], "ops": [{ "op": "replace", "path": "/transform/rotation", "value": 5 }] }),
-    );
+    let e = err(&h, "doc.object.patch", json!({ "targets": [first(&h, "scene")], "props": { "visible": false } }));
     assert_eq!(
         (e.code.as_str(), e.details["commandId"].as_str()),
-        ("command.notImplemented", Some("anim.transform.set"))
+        ("command.notImplemented", Some("storyline.scene.visible.set"))
     );
     // A content edit of a locked drawing is still refused; unlocking is the lock command's.
     let d2 = "scene:\"Intro\"/element:\"Bob\"/drawing:\"2\"";
