@@ -11,7 +11,7 @@ use tt_registry::{Kind, Scope, Status, declared_sample, declared_schema, owner_o
 #[test]
 fn declarations_follow_the_current_spec_columns() {
     // A floor against an empty table: the count falls as checkpoints implement declared commands (599 after M2 C2.4).
-    assert!(DECLARED.len() > 500, "{}", DECLARED.len());
+    assert!(DECLARED.len() > 400, "{}", DECLARED.len());
     for (i, c) in DECLARED.iter().enumerate() {
         let spec =
             INVENTORY.iter().find(|e| e.id == c.decl.id).unwrap_or_else(|| panic!("{} not in spec A", c.decl.id));
@@ -101,10 +101,8 @@ fn parameter_constraints_come_from_the_spec() {
     assert!(validate_params("lipsync.settings.set", &p, &json!({ "minHoldFrames": 7 })).is_err());
     let p = at("timeline.currentFrame.set");
     assert_eq!(p["properties"]["frame"]["minimum"], 1);
-    let p = at("anim.camera.create");
-    assert_eq!(p["properties"]["fov"]["minimum"], 1);
-    assert_eq!(p["properties"]["fov"]["maximum"], 179);
-    assert_eq!(p["properties"]["fov"]["default"], 41.1121);
+    let p = at("anim.bone.rest.set");
+    assert_eq!(p["properties"]["length"]["minimum"], 0.01);
 }
 
 /// Scalar leaves of a value, as JSON Pointers.

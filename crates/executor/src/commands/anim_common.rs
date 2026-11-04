@@ -209,6 +209,8 @@ pub(crate) struct ChannelEdit {
     pub id: Id,
     pub channels: Map<String, Value>,
     pub changed: BTreeSet<String>,
+    /// The channels the element had when read: a channel made and removed within the call stages nothing.
+    existed: BTreeSet<String>,
     /// The local frames touched.
     pub from: Option<u32>,
     pub to: Option<u32>,
@@ -219,7 +221,8 @@ impl ChannelEdit {
     pub(crate) fn read(doc: &Document, id: &Id) -> Result<Self, CommandError> {
         let v = doc.entry_raw_json(&EntryKey::Element(id.clone())).map_err(internal)?;
         let channels = v.get("channels").and_then(Value::as_object).cloned().unwrap_or_default();
-        Ok(Self { id: id.clone(), channels, changed: BTreeSet::new(), from: None, to: None })
+        let existed = channels.keys().cloned().collect();
+        Ok(Self { id: id.clone(), channels, changed: BTreeSet::new(), existed, from: None, to: None })
     }
 
     /// Records a touched local frame.
@@ -291,28 +294,14 @@ impl ChannelEdit {
             let path = format!("/channels/{}", tt_model::pointer::escape(name));
             match self.channels.get(name) {
                 Some(c) => ops.push(op("add", &path, Some(c.clone()))),
-                None => ops.push(op("remove", &path, None)),
+                None if self.existed.contains(name) => ops.push(op("remove", &path, None)),
+                None => {}
             }
         }
         if !ops.is_empty() {
             changes.push(EntryKey::Element(self.id.clone()), ops);
         }
     }
-}
-
-/// The original element JSON has its channel removed only if it existed: an absent channel stays absent.
-pub(crate) fn drop_absent_removals(doc: &Document, edit: &mut ChannelEdit) -> Result<(), CommandError> {
-    let before = ChannelEdit::read(doc, &edit.id)?;
-    let gone: Vec<String> = edit
-        .changed
-        .iter()
-        .filter(|n| !edit.channels.contains_key(*n) && !before.channels.contains_key(*n))
-        .cloned()
-        .collect();
-    for n in gone {
-        edit.changed.remove(&n);
-    }
-    Ok(())
 }
 
 /// `anim.changed` (05 §19.4): coalesced into one event per undo step when the call is accepted.

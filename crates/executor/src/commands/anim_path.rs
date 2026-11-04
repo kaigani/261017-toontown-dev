@@ -513,7 +513,6 @@ pub(crate) fn anim_path_set(cx: &mut Cx, p: PathSetParams) -> Result<PathSetResu
         edit.set_keys(cx, "velocity", kept)?;
     }
     edit.set_points(cx, out)?;
-    super::anim_common::drop_absent_removals(&doc, &mut edit)?;
     let mut changes = Changes::default();
     edit.stage(&mut changes);
     if let Some(lock) = p.lock_depth {
@@ -806,6 +805,9 @@ pub(crate) fn anim_path_point_set(cx: &mut Cx, p: PointSetParams) -> Result<Poin
         if let Some(v) = v {
             check_value(n, v)?;
         }
+    }
+    if p.frame.is_some() && p.lock_in_time == Some(false) {
+        return Err(frame_invalid(p.frame.unwrap_or(0.0), "a control point's frame is derived: give one or the other"));
     }
     let mut budget = Budget::new("editing motion points");
     budget.spend(p.point_ids.len())?;

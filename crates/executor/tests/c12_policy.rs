@@ -36,6 +36,9 @@ fn whole_object_and_structural_patches_are_refused() {
     assert_eq!(rev(&h), r0, "nothing changed");
 }
 
+/// A transformable element.
+const BOB_REF: &str = "scene:\"Intro\"/element:\"Bob\"";
+
 #[test]
 fn read_only_derived_transient_and_command_properties_are_refused() {
     let h = fixture();
@@ -62,21 +65,21 @@ fn read_only_derived_transient_and_command_properties_are_refused() {
     assert_eq!(e.details["commandId"], "storyline.scene.rename");
     assert_eq!(e.details["milestone"], tt_registry::owner_of("storyline.scene.rename"));
     // `anim.transform.set` is implemented (M3 C3.2): its properties now run through it, its refusals included.
-    let e = patch_err(&h, &element, json!([{ "op": "replace", "path": "/transform/offset/x", "value": 2e7 }]));
+    let e = patch_err(&h, BOB_REF, json!([{ "op": "replace", "path": "/transform/offset/x", "value": 2e7 }]));
     assert_eq!(e.code, "anim.valueOutOfRange");
     assert!(
         run(
             &h,
             "doc.object.patch",
-            json!({ "targets": [element], "ops": [{ "op": "replace", "path": "/transform/offset/x", "value": 1 }] })
+            json!({ "targets": [BOB_REF], "ops": [{ "op": "replace", "path": "/transform/offset/x", "value": 1 }] })
         )
         .is_ok()
     );
-    assert_eq!(get(&h, &element)["transform"]["offset"]["x"], 1.0);
+    assert_eq!(get(&h, BOB_REF)["transform"]["offset"]["x"], 1.0);
     // Replacing a value object that contains x-command properties is the same.
-    let mut t = get(&h, &element)["transform"].clone();
+    let mut t = get(&h, BOB_REF)["transform"].clone();
     t["skew"] = json!(120);
-    let e = patch_err(&h, &element, json!([{ "op": "replace", "path": "/transform", "value": t }]));
+    let e = patch_err(&h, BOB_REF, json!([{ "op": "replace", "path": "/transform", "value": t }]));
     assert_eq!(e.code, "anim.valueOutOfRange");
     // `test` reads anything.
     let id = get(&h, &scene)["id"].clone();

@@ -489,7 +489,6 @@ pub(crate) fn anim_function_set(cx: &mut Cx, p: FunctionSetParams) -> Result<Fun
     if let (Some(c), Some(ch)) = (p.curve_type, edit.channels.get_mut(&p.channel)) {
         ch["curveType"] = json!(c);
     }
-    super::anim_common::drop_absent_removals(&doc, &mut edit)?;
     let mut changes = Changes::default();
     edit.stage(&mut changes);
     changes.stage(cx)?;

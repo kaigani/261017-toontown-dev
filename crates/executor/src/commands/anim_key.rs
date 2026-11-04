@@ -538,6 +538,20 @@ pub(crate) fn anim_key_move(cx: &mut Cx, p: KeyMoveParams) -> Result<KeyMoveResu
                 if lo.is_some_and(|l| to <= *l) || hi.is_some_and(|h| to >= *h) {
                     return Err(frame_invalid(p.to_frame as f64, "the move would cross a neighbouring key"));
                 }
+                // A velocity key is normalised to its keyframe segment and stays inside it (05 §10.5).
+                if c == "velocity"
+                    && let Some(path) = &data.path
+                {
+                    let pins = motion_frames(path);
+                    let s = pins.partition_point(|q| *q <= f64::from(from));
+                    let below = s.checked_sub(1).and_then(|a| pins.get(a));
+                    if below.is_some_and(|a| f64::from(to) <= *a) || pins.get(s).is_some_and(|b| f64::from(to) >= *b) {
+                        return Err(frame_invalid(
+                            p.to_frame as f64,
+                            "a velocity key stays inside its keyframe segment",
+                        ));
+                    }
+                }
                 keys[i]["frame"] = json!(to);
                 edit.set_keys(cx, c, keys)?;
             }

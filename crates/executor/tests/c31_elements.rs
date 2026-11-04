@@ -357,7 +357,7 @@ fn bar_timing_and_key_retiming() {
     ok(&h, "element.timing.set", json!({ "elementIds": [PEG], "duration": 24, "keyframes": "scale" }));
     assert_eq!(ch(&h), [1, 24], "round(1 + (48 − 1)(24 − 1)/(48 − 1)) = 24");
     ok(&h, "element.timing.set", json!({ "elementIds": [PEG], "duration": 12 }));
-    assert_eq!(ch(&h), [1], "keys beyond the new end are removed");
+    assert_eq!(ch(&h), [1, 12], "keys beyond the new end go, the value there is held (SI-089, C3.2 ruling)");
     // Stretch from the start keeps the end.
     let r = ok(&h, "element.timing.set", json!({ "elementIds": [PEG], "duration": 4, "anchor": "end" }));
     assert_eq!((r["elements"][0]["start"].as_u64(), r["elements"][0]["duration"].as_u64()), (Some(13), Some(4)));
