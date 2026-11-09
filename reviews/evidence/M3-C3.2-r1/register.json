@@ -188,7 +188,9 @@
   ],
   "source_units": null,
   "findings": [
-    "C32-R1-01",
-    "C32-R1-02"
-  ]
+    "C32-R1-01"
+  ],
+  "withdrawn_findings": {
+    "C32-R1-02": "withdrawn by orchestrator ruling (charter glob error)"
+  }
 }
