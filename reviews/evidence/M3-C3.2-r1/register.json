@@ -1,0 +1,194 @@
+{
+  "reviewed_head": "142226d8da9139c685f576a079c78865022dc70b",
+  "complete": false,
+  "counts": {
+    "pending": 36
+  },
+  "registry": [
+    {
+      "id": "anim.evaluate",
+      "status": "pending",
+      "note": "Full independent contract adjudication not completed."
+    },
+    {
+      "id": "anim.projection.get",
+      "status": "pending",
+      "note": "Full independent contract adjudication not completed."
+    },
+    {
+      "id": "anim.path.sample",
+      "status": "pending",
+      "note": "Full independent contract adjudication not completed."
+    },
+    {
+      "id": "anim.function.sample",
+      "status": "pending",
+      "note": "Full independent contract adjudication not completed."
+    },
+    {
+      "id": "anim.transform.set",
+      "status": "pending",
+      "note": "Full independent contract adjudication not completed."
+    },
+    {
+      "id": "anim.loop.set",
+      "status": "pending",
+      "note": "Full independent contract adjudication not completed."
+    },
+    {
+      "id": "anim.path.get",
+      "status": "pending",
+      "note": "Full independent contract adjudication not completed."
+    },
+    {
+      "id": "anim.path.set",
+      "status": "pending",
+      "note": "Full independent contract adjudication not completed."
+    },
+    {
+      "id": "anim.path.point.add",
+      "status": "pending",
+      "note": "Full independent contract adjudication not completed."
+    },
+    {
+      "id": "anim.path.point.set",
+      "status": "pending",
+      "note": "Full independent contract adjudication not completed."
+    },
+    {
+      "id": "anim.path.point.remove",
+      "status": "pending",
+      "note": "Full independent contract adjudication not completed."
+    },
+    {
+      "id": "anim.path.lockDepth.set",
+      "status": "pending",
+      "note": "Full independent contract adjudication not completed."
+    },
+    {
+      "id": "anim.function.list",
+      "status": "pending",
+      "note": "Full independent contract adjudication not completed."
+    },
+    {
+      "id": "anim.function.get",
+      "status": "pending",
+      "note": "Full independent contract adjudication not completed."
+    },
+    {
+      "id": "anim.function.set",
+      "status": "pending",
+      "note": "Full independent contract adjudication not completed."
+    },
+    {
+      "id": "anim.function.curveType.set",
+      "status": "pending",
+      "note": "Full independent contract adjudication not completed."
+    },
+    {
+      "id": "anim.function.preset.apply",
+      "status": "pending",
+      "note": "Full independent contract adjudication not completed."
+    },
+    {
+      "id": "anim.function.key.add",
+      "status": "pending",
+      "note": "Full independent contract adjudication not completed."
+    },
+    {
+      "id": "anim.function.key.set",
+      "status": "pending",
+      "note": "Full independent contract adjudication not completed."
+    },
+    {
+      "id": "anim.function.key.remove",
+      "status": "pending",
+      "note": "Full independent contract adjudication not completed."
+    },
+    {
+      "id": "anim.function.key.duplicate",
+      "status": "pending",
+      "note": "Full independent contract adjudication not completed."
+    },
+    {
+      "id": "anim.key.add",
+      "status": "pending",
+      "note": "Full independent contract adjudication not completed."
+    },
+    {
+      "id": "anim.key.list",
+      "status": "pending",
+      "note": "Full independent contract adjudication not completed."
+    },
+    {
+      "id": "anim.key.move",
+      "status": "pending",
+      "note": "Full independent contract adjudication not completed."
+    },
+    {
+      "id": "anim.key.remove",
+      "status": "pending",
+      "note": "Full independent contract adjudication not completed."
+    },
+    {
+      "id": "anim.segment.set",
+      "status": "pending",
+      "note": "Full independent contract adjudication not completed."
+    },
+    {
+      "id": "anim.uniform.apply",
+      "status": "pending",
+      "note": "Full independent contract adjudication not completed."
+    },
+    {
+      "id": "anim.camera.create",
+      "status": "pending",
+      "note": "Full independent contract adjudication not completed."
+    },
+    {
+      "id": "anim.camera.delete",
+      "status": "pending",
+      "note": "Full independent contract adjudication not completed."
+    },
+    {
+      "id": "anim.camera.list",
+      "status": "pending",
+      "note": "Full independent contract adjudication not completed."
+    },
+    {
+      "id": "anim.camera.get",
+      "status": "pending",
+      "note": "Full independent contract adjudication not completed."
+    },
+    {
+      "id": "anim.camera.set",
+      "status": "pending",
+      "note": "Full independent contract adjudication not completed."
+    },
+    {
+      "id": "anim.camera.current.get",
+      "status": "pending",
+      "note": "Full independent contract adjudication not completed."
+    },
+    {
+      "id": "anim.camera.current.set",
+      "status": "pending",
+      "note": "Full independent contract adjudication not completed."
+    },
+    {
+      "id": "anim.changed",
+      "status": "pending",
+      "note": "Full independent contract adjudication not completed."
+    },
+    {
+      "id": "anim.camera.currentChanged",
+      "status": "pending",
+      "note": "Full independent contract adjudication not completed."
+    }
+  ],
+  "source_units": null,
+  "findings": [
+    "C32-R1-01",
+    "C32-R1-02"
+  ]
+}
