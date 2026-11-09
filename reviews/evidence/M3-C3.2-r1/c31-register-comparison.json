@@ -1,0 +1,14 @@
+[
+  {
+    "path": "reviews/evidence/M3-C3.1-r3/register-complete.json",
+    "baseSha256": "04195b77b7ae92bd30b66abfc589308de7ad066902c6fba45a7bceb04dfa284e",
+    "handoffSha256": "04195b77b7ae92bd30b66abfc589308de7ad066902c6fba45a7bceb04dfa284e",
+    "identical": true
+  },
+  {
+    "path": "reviews/evidence/M3-C3.1-r4/register-complete.json",
+    "baseSha256": "b87cd851e5ce409983b47caeccb49d495a81a0e5578b526ebc569c62a4472aa1",
+    "handoffSha256": "b87cd851e5ce409983b47caeccb49d495a81a0e5578b526ebc569c62a4472aa1",
+    "identical": true
+  }
+]

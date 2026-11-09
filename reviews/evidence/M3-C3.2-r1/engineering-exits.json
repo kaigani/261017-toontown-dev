@@ -1,0 +1,32 @@
+[
+  {
+    "command": [
+      "python",
+      "scripts/check-product-allows.py"
+    ],
+    "exitCode": 0
+  },
+  {
+    "command": [
+      "python",
+      "scripts/check-release-features.py"
+    ],
+    "exitCode": 0
+  },
+  {
+    "command": [
+      "python",
+      "scripts/check-test-only-assets.py"
+    ],
+    "exitCode": 0
+  },
+  {
+    "command": [
+      "cargo",
+      "deny",
+      "--locked",
+      "check"
+    ],
+    "exitCode": 0
+  }
+]

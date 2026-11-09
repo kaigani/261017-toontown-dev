@@ -1,0 +1,1 @@
+Generator ran: 498 declarations. git diff --exit-code -- crates/registry/src/declared.rs crates/registry/src/declared.json plan/spec-issues.md => 0
