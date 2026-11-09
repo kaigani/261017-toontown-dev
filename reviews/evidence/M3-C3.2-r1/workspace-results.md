@@ -1,0 +1,299 @@
+# Final workspace results
+
+Native exit 101; 295 binary results; 1547 passed / 3 failed / 24 ignored.
+
+- Running unittests src\lib.rs (target\debug\deps\tt_anim-9d61250b642a32ff.exe): test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+- Running tests\c31_exposure.rs (target\debug\deps\c31_exposure-9287665d127cacce.exe): test result: ok. 16 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.02s
+- Running tests\c31_r1_hierarchy.rs (target\debug\deps\c31_r1_hierarchy-71cca2156e5803dd.exe): test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.10s
+- Running tests\c31_r1_oracle.rs (target\debug\deps\c31_r1_oracle-2576f174fe713e1c.exe): test result: ok. 11 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.04s
+- Running tests\c31_r2_variants.rs (target\debug\deps\c31_r2_variants-0aea3ca25b5ae01b.exe): test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+- Running tests\c32_maths.rs (target\debug\deps\c32_maths-73659c37efa8ce65.exe): test result: ok. 20 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+- Running tests\c32_r1_affine.rs (target\debug\deps\c32_r1_affine-6dde9ebd362f8bbd.exe): test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+- Running tests\c32_r1_closed_forms.rs (target\debug\deps\c32_r1_closed_forms-a091f50c3f19b8ff.exe): test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.22s
+- Running tests\c32_r1_corpus.rs (target\debug\deps\c32_r1_corpus-ba4a08bf0c7d15e2.exe): test result: FAILED. 1 passed; 1 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.02s
+- Running tests\c32_r1_default_frame.rs (target\debug\deps\c32_r1_default_frame-87a74d81e68db3e3.exe): test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+- Running tests\c32_r1_passage.rs (target\debug\deps\c32_r1_passage-c972894ca9723129.exe): test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+- Running unittests src\lib.rs (target\debug\deps\tt_audio-262b03114f445c2b.exe): test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+- Running unittests src\lib.rs (target\debug\deps\tt_colour-e572dde9d5c3808c.exe): test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+- Running unittests src\lib.rs (target\debug\deps\tt_desktop-80c6b03e3639fe9a.exe): test result: ok. 38 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.32s
+- Running unittests src\main.rs (target\debug\deps\toontown-eb6e23f16c6dbaab.exe): test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+- Running ..\..\tests\adversarial\c03-r2-encoder.rs (target\debug\deps\c03_r2_encoder-d9fc97b5b4b4429d.exe): test result: ok. 11 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.31s
+- Running unittests src\lib.rs (target\debug\deps\tt_engine-67a00c58e3649696.exe): test result: ok. 19 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 2.89s
+- Running tests\c11_r1_wire.rs (target\debug\deps\c11_r1_wire-b0563fe6f9b6448b.exe): test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+- Running tests\c11_r2_wire.rs (target\debug\deps\c11_r2_wire-03104723cad9531a.exe): test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+- Running tests\c11_r3_wire.rs (target\debug\deps\c11_r3_wire-3c23d9f7b8d6eeab.exe): test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+- Running tests\frontend_schemas.rs (target\debug\deps\frontend_schemas-327348d2098bdafa.exe): test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.17s
+- Running tests\wire_corpus.rs (target\debug\deps\wire_corpus-7e2e297fa222633f.exe): test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+- Running unittests src\lib.rs (target\debug\deps\tt_executor-d01a90aaa62fdeff.exe): test result: ok. 7 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.07s
+- Running tests\c12_checkpoint_property.rs (target\debug\deps\c12_checkpoint_property-c9635db1f65e7dff.exe): test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.95s
+- Running tests\c12_edit_ops.rs (target\debug\deps\c12_edit_ops-c6f3f62113b0f0e7.exe): test result: ok. 16 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.37s
+- Running tests\c12_invalidation_property.rs (target\debug\deps\c12_invalidation_property-7a966558fe47a9c8.exe): test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.75s
+- Running tests\c12_kernel_state.rs (target\debug\deps\c12_kernel_state-1b8f3b2dd2e9508e.exe): test result: ok. 7 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 41.99s
+- Running tests\c12_never_block.rs (target\debug\deps\c12_never_block-1ef0aa000fc99f12.exe): test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.82s
+- Running tests\c12_policy.rs (target\debug\deps\c12_policy-b91ed1f4e6a0086f.exe): test result: ok. 11 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.64s
+- Running tests\c12_r1_contracts.rs (target\debug\deps\c12_r1_contracts-cb246c4792c6b427.exe): test result: ok. 36 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 19.30s
+- Running tests\c12_r1_macro.rs (target\debug\deps\c12_r1_macro-fb777af901df6957.exe): test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 40.69s
+- Running tests\c12_r1_scale.rs (target\debug\deps\c12_r1_scale-2ac8f1ab4d3ccc0d.exe): test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 16.17s
+- Running tests\c12_r1_stress.rs (target\debug\deps\c12_r1_stress-811c378f6aea547f.exe): test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 31.33s
+- Running tests\c12_r2_contracts.rs (target\debug\deps\c12_r2_contracts-cb8b45038cf02646.exe): test result: ok. 40 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.47s
+- Running tests\c12_r2_registry.rs (target\debug\deps\c12_r2_registry-82e0e406841e3711.exe): test result: ok. 7 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.14s
+- Running tests\c12_r2_scale.rs (target\debug\deps\c12_r2_scale-b0c435da5ad0da56.exe): test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 19.06s
+- Running tests\c12_r3_contracts.rs (target\debug\deps\c12_r3_contracts-d6543dcc4baffd98.exe): test result: ok. 15 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.41s
+- Running tests\c12_r3_registry.rs (target\debug\deps\c12_r3_registry-c69582fdec3e7335.exe): test result: ok. 12 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.11s
+- Running tests\c12_r3_stress.rs (target\debug\deps\c12_r3_stress-4cc8f0353c48764c.exe): test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 33.52s
+- Running tests\c12_r4_closure.rs (target\debug\deps\c12_r4_closure-f3ed30422c969b57.exe): test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.20s
+- Running tests\c12_registry.rs (target\debug\deps\c12_registry-1ea6ae8d84de1681.exe): test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.13s
+- Running tests\c12_transactions.rs (target\debug\deps\c12_transactions-48378eb7d086f8c5.exe): test result: ok. 14 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.45s
+- Running tests\c13_doc.rs (target\debug\deps\c13_doc-ea23080db267fd4f.exe): test result: ok. 9 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 3.49s
+- Running tests\c13_projects.rs (target\debug\deps\c13_projects-17a7c50e10d79416.exe): test result: ok. 13 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 3.71s
+- Running tests\c13_r1_persistence.rs (target\debug\deps\c13_r1_persistence-3b21041b3a2dbe9b.exe): test result: ok. 18 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.20s
+- Running tests\c13_r2_persistence.rs (target\debug\deps\c13_r2_persistence-b67d82306553b5ce.exe): test result: ok. 14 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 2.84s
+- Running tests\c13_r3_history_r1.rs (target\debug\deps\c13_r3_history_r1-6a7de3d420498271.exe): test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 32.06s
+- Running tests\c13_r3_history_r3.rs (target\debug\deps\c13_r3_history_r3-b89773ccb9cefea0.exe): test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 33.00s
+- Running tests\c13_r3_persistence.rs (target\debug\deps\c13_r3_persistence-a99f79e384a5ea2c.exe): test result: ok. 10 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 4.62s
+- Running tests\c13_r4_closure.rs (target\debug\deps\c13_r4_closure-35910922cd9048fd.exe): test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.29s
+- Running tests\c14_lock_races.rs (target\debug\deps\c14_lock_races-41bb8ac53a890cbe.exe): test result: ok. 9 passed; 0 failed; 1 ignored; 0 measured; 0 filtered out; finished in 17.12s
+- Running tests\c14_measurements.rs (target\debug\deps\c14_measurements-1df395b76c2b64e2.exe): test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 22.96s
+- Running tests\c14_obligations.rs (target\debug\deps\c14_obligations-678644e72e6ef84c.exe): test result: ok. 7 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 4.83s
+- Running tests\c14_r2_contracts.rs (target\debug\deps\c14_r2_contracts-75e83ecc27992bd5.exe): test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.33s
+- Running tests\c14_r2_effects.rs (target\debug\deps\c14_r2_effects-8b75756fa37daa4d.exe): test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.22s
+- Running tests\c21_determinism.rs (target\debug\deps\c21_determinism-c4a0fbc9750318bc.exe): test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.51s
+- Running tests\c21_draw.rs (target\debug\deps\c21_draw-2113a9a2103de1da.exe): test result: ok. 11 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.24s
+- Running tests\c21_example_results.rs (target\debug\deps\c21_example_results-d92bcf69e0b8ed6d.exe): test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 8.94s
+- Running tests\c21_measurements.rs (target\debug\deps\c21_measurements-5fec58d972456747.exe): test result: ok. 0 passed; 0 failed; 1 ignored; 0 measured; 0 filtered out; finished in 0.00s
+- Running tests\c21_obligations.rs (target\debug\deps\c21_obligations-3fab87d42164408d.exe): test result: ok. 7 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.43s
+- Running tests\c21_r1_autosave.rs (target\debug\deps\c21_r1_autosave-f85b771b79378199.exe): test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 22.08s
+- Running tests\c21_r1_contracts.rs (target\debug\deps\c21_r1_contracts-f2cac38c28fde780.exe): test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.23s
+- Running tests\c21_r1_retention.rs (target\debug\deps\c21_r1_retention-4ec2e0dc02446d30.exe): test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 20.25s
+- Running tests\c21_r2_contracts.rs (target\debug\deps\c21_r2_contracts-006558ed1d7f35d9.exe): test result: ok. 8 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.28s
+- Running tests\c21_r3_contracts.rs (target\debug\deps\c21_r3_contracts-050e62ad03a08bab.exe): test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 6 filtered out; finished in 2.61s
+- Running tests\c21_r3_contracts.rs (target\debug\deps\c21_r3_contracts-050e62ad03a08bab.exe): test result: ok. 6 passed; 0 failed; 1 ignored; 0 measured; 0 filtered out; finished in 4.25s
+- Running tests\c22_determinism.rs (target\debug\deps\c22_determinism-71c67ed8bb256d1a.exe): test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 2.41s
+- Running tests\c22_planar.rs (target\debug\deps\c22_planar-2d6e7e8d81a82fb1.exe): test result: ok. 11 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.93s
+- Running tests\c22_r1_cache.rs (target\debug\deps\c22_r1_cache-a452869b8c750517.exe): test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.51s
+- Running tests\c22_r1_commands.rs (target\debug\deps\c22_r1_commands-90d8c0b079e20608.exe): test result: ok. 8 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.25s
+- Running tests\c22_r2_commands.rs (target\debug\deps\c22_r2_commands-eaf51a4ced703353.exe): test result: ok. 12 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.31s
+- Running tests\c22_r3_cache.rs (target\debug\deps\c22_r3_cache-1ad9b626491c3f30.exe): test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 28.80s
+- Running tests\c22_r3_commands.rs (target\debug\deps\c22_r3_commands-238e136098fb052b.exe): test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.31s
+- Running tests\c22_r4_closure.rs (target\debug\deps\c22_r4_closure-ef2a78bc25ecd4b2.exe): test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.25s
+- Running tests\c22_recovery.rs (target\debug\deps\c22_recovery-89a799e86e9eb835.exe): test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.32s
+- Running tests\c23_colour.rs (target\debug\deps\c23_colour-a19c7ca1ef13a287.exe): test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.30s
+- Running tests\c23_contracts.rs (target\debug\deps\c23_contracts-37bed6fe87c5dc02.exe): test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 3.12s
+- Running tests\c23_cut.rs (target\debug\deps\c23_cut-f8cd4c2462880162.exe): test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.27s
+- Running tests\c23_layers.rs (target\debug\deps\c23_layers-9a49c17bd454d1be.exe): test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.31s
+- Running tests\c23_measure.rs (target\debug\deps\c23_measure-95ce613f722a3af5.exe): test result: ok. 0 passed; 0 failed; 1 ignored; 0 measured; 0 filtered out; finished in 0.00s
+- Running tests\c23_r1_colour.rs (target\debug\deps\c23_r1_colour-ef50e96ca853d151.exe): test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.27s
+- Running tests\c23_r1_commands.rs (target\debug\deps\c23_r1_commands-65fe647948f1aff1.exe): test result: ok. 10 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.27s
+- Running tests\c23_r1_contracts.rs (target\debug\deps\c23_r1_contracts-93ffa7422b6b52d1.exe): test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.71s
+- Running tests\c23_r1_controls.rs (target\debug\deps\c23_r1_controls-a44e5139263bf068.exe): test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.31s
+- Running tests\c23_r1_measure.rs (target\debug\deps\c23_r1_measure-b03c8a10f1493c31.exe): test result: ok. 0 passed; 0 failed; 1 ignored; 0 measured; 0 filtered out; finished in 0.00s
+- Running tests\c23_r2_closure.rs (target\debug\deps\c23_r2_closure-b3a512826cb93a10.exe): test result: ok. 15 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.33s
+- Running tests\c23_r2_limits.rs (target\debug\deps\c23_r2_limits-49ca609bfea77952.exe): test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.49s
+- Running tests\c23_r2_watchdog.rs (target\debug\deps\c23_r2_watchdog-1ca60564798e8d6f.exe): test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 2.58s
+- Running tests\c23_r3_budgets.rs (target\debug\deps\c23_r3_budgets-1dbf3e7979c98444.exe): test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 6.38s
+- Running tests\c23_r3_cancellation.rs (target\debug\deps\c23_r3_cancellation-cb1f3b88edc0fd8f.exe): test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 3.19s
+- Running tests\c23_r3_closure.rs (target\debug\deps\c23_r3_closure-986f43cc5ea3c1e7.exe): test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.30s
+- Running tests\c23_r3_inputs.rs (target\debug\deps\c23_r3_inputs-d4d4b031066bb0e5.exe): test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+- Running tests\c23_r3_profile.rs (target\debug\deps\c23_r3_profile-ad41c96d7036c506.exe): test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.28s
+- Running tests\c23_r3_selection_cancel.rs (target\debug\deps\c23_r3_selection_cancel-7eba4112e2ca0c0a.exe): test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.51s
+- Running tests\c23_r3_session.rs (target\debug\deps\c23_r3_session-fef6eb44c1c6b753.exe): test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.32s
+- Running tests\c23_r3_texture.rs (target\debug\deps\c23_r3_texture-994ee5fc903bf218.exe): test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.22s
+- Running tests\c23_r3_topology.rs (target\debug\deps\c23_r3_topology-6fba1b7a52467ff5.exe): test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.37s
+- Running tests\c23_r4_closure.rs (target\debug\deps\c23_r4_closure-4312e638ad31135a.exe): test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 2.11s
+- Running tests\c23_render.rs (target\debug\deps\c23_render-cdd9e16b82a19691.exe): test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.32s
+- Running tests\c23_round2.rs (target\debug\deps\c23_round2-e989b1ef95e0d4bc.exe): test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.32s
+- Running tests\c23_round3.rs (target\debug\deps\c23_round3-6f3981f96e23a172.exe): test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 6.74s
+- Running tests\c23_select.rs (target\debug\deps\c23_select-253b05169979cf40.exe): test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.26s
+- Running tests\c23_strokeops.rs (target\debug\deps\c23_strokeops-b06e2f6efaf008cc.exe): test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.35s
+- Running tests\c23_transform.rs (target\debug\deps\c23_transform-61dd799cbc815ea8.exe): test result: ok. 9 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.31s
+- Running tests\c23_watchdog.rs (target\debug\deps\c23_watchdog-4711b0840df6081b.exe): test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.57s
+- Running tests\c24_aggregate.rs (target\debug\deps\c24_aggregate-0281510323abf3df.exe): test result: ok. 1 passed; 0 failed; 1 ignored; 0 measured; 0 filtered out; finished in 0.32s
+- Running tests\c24_budgets.rs (target\debug\deps\c24_budgets-b1e5019065db93c9.exe): test result: ok. 0 passed; 0 failed; 1 ignored; 0 measured; 0 filtered out; finished in 0.00s
+- Running tests\c24_centre_line.rs (target\debug\deps\c24_centre_line-ea16301332391b15.exe): test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 3.36s
+- Running tests\c24_contracts.rs (target\debug\deps\c24_contracts-acb00928bf773b06.exe): test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.44s
+- Running tests\c24_cutter_snapping.rs (target\debug\deps\c24_cutter_snapping-0973437648e87b86.exe): test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.26s
+- Running tests\c24_measure.rs (target\debug\deps\c24_measure-3a6d2867d9db1d9e.exe): test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+- Running tests\c24_oracle_routes.rs (target\debug\deps\c24_oracle_routes-cd034aa9c5730e5e.exe): test result: ok. 12 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 365.74s
+- Running tests\c24_r1_lifecycle.rs (target\debug\deps\c24_r1_lifecycle-b3dd8cf6e56377d2.exe): test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.28s
+- Running tests\c24_r1_topology.rs (target\debug\deps\c24_r1_topology-86b8ef6379f291fa.exe): test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 125.12s
+- Running tests\c24_r2_routes.rs (target\debug\deps\c24_r2_routes-62699f201a833cda.exe): test result: ok. 13 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 176.93s
+- Running tests\c24_r2_topology.rs (target\debug\deps\c24_r2_topology-f3d5cc5cac56520f.exe): test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 103.81s
+- Running tests\c24_r2_variants.rs (target\debug\deps\c24_r2_variants-ff97e1eeae02777c.exe): test result: ok. 9 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.26s
+- Running tests\c24_r3_domains.rs (target\debug\deps\c24_r3_domains-2b2c78fc76cf155a.exe): test result: ok. 14 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 429.75s
+- Running tests\c24_r3_routes.rs (target\debug\deps\c24_r3_routes-ffe090346a2f79f2.exe): test result: ok. 13 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 186.17s
+- Running tests\c24_r3_topology.rs (target\debug\deps\c24_r3_topology-d4e3e7b157c5b3ff.exe): test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 59.31s
+- Running tests\c24_r4_closure.rs (target\debug\deps\c24_r4_closure-a5994fb5cf225c0e.exe): test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 352.67s
+- Running tests\c24_route_domains.rs (target\debug\deps\c24_route_domains-c94f30fefd736104.exe): test result: ok. 10 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 266.12s
+- Running tests\c24_symmetry.rs (target\debug\deps\c24_symmetry-f93d7ae0331ebf07.exe): test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.70s
+- Running tests\c24_text_layout.rs (target\debug\deps\c24_text_layout-a25941b0d10a7031.exe): test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.32s
+- Running tests\c24_topology.rs (target\debug\deps\c24_topology-5f79eef1613365f2.exe): test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.56s
+- Running tests\c24_vectorize.rs (target\debug\deps\c24_vectorize-317f62f89d18878e.exe): test result: ok. 11 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.40s
+- Running tests\c31_bank_xsheet.rs (target\debug\deps\c31_bank_xsheet-bf5457ae94cf5b4f.exe): test result: ok. 9 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.26s
+- Running tests\c31_budgets.rs (target\debug\deps\c31_budgets-32f8c4904172f8eb.exe): test result: ok. 0 passed; 0 failed; 1 ignored; 0 measured; 0 filtered out; finished in 0.00s
+- Running tests\c31_cells.rs (target\debug\deps\c31_cells-9d73ada3c5e9d79c.exe): test result: ok. 16 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.27s
+- Running tests\c31_elements.rs (target\debug\deps\c31_elements-ece14e242c69bf34.exe): test result: ok. 16 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.26s
+- Running tests\c31_obligations.rs (target\debug\deps\c31_obligations-a94adea8161d87a2.exe): test result: ok. 9 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 4.54s
+- Running tests\c31_r1_availability.rs (target\debug\deps\c31_r1_availability-d27986b5fddca674.exe): test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.23s
+- Running tests\c31_r1_contract.rs (target\debug\deps\c31_r1_contract-9d8c1e2baa3b98d1.exe): test result: ok. 28 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.27s
+- Running tests\c31_r1_copy_settle.rs (target\debug\deps\c31_r1_copy_settle-2ee9699ffbb5ced2.exe): test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.27s
+- Running tests\c31_r1_model_diff.rs (target\debug\deps\c31_r1_model_diff-270cdbfcd020bba9.exe): test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.33s
+- Running tests\c31_r1_mutations.rs (target\debug\deps\c31_r1_mutations-b225bd2cccfd0769.exe): test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 3.12s
+- Running tests\c31_r1_notes.rs (target\debug\deps\c31_r1_notes-2ea382d5aa44254d.exe): test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.35s
+- Running tests\c31_r1_selection_budget.rs (target\debug\deps\c31_r1_selection_budget-cf01950a8c740e7c.exe): test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.34s
+- Running tests\c31_r2_cancellation.rs (target\debug\deps\c31_r2_cancellation-8bc01802ec679737.exe): test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.92s
+- Running tests\c31_r2_notes_boundary.rs (target\debug\deps\c31_r2_notes_boundary-46e734a6cfa05121.exe): test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.27s
+- Running tests\c31_r2_persistence.rs (target\debug\deps\c31_r2_persistence-08fd6093ef22cc4f.exe): test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.32s
+- Running tests\c31_r2_variants.rs (target\debug\deps\c31_r2_variants-a3133b5bc9be157b.exe): test result: ok. 21 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.54s
+- Running tests\c31_r3_binary.rs (target\debug\deps\c31_r3_binary-2856254077753d46.exe): test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.42s
+- Running tests\c31_r3_closure.rs (target\debug\deps\c31_r3_closure-e6328bcff7abfcf5.exe): test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.34s
+- Running tests\c31_r3_delegation.rs (target\debug\deps\c31_r3_delegation-c682b9174bea76e4.exe): test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.12s
+- Running tests\c31_r3_hierarchy.rs (target\debug\deps\c31_r3_hierarchy-571025feef96c172.exe): test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 22.65s
+- Running tests\c31_r3_patch.rs (target\debug\deps\c31_r3_patch-06477ba7aee27ac3.exe): test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.19s
+- Running tests\c31_r3_selection.rs (target\debug\deps\c31_r3_selection-77cef8511e2a8384.exe): test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.02s
+- Running tests\c31_r3_sequences.rs (target\debug\deps\c31_r3_sequences-56709f729737cab5.exe): test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 281.15s
+- Running tests\c31_r4_closure.rs (target\debug\deps\c31_r4_closure-4760c87fb6c963ca.exe): test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.66s
+- Running tests\c31_round1.rs (target\debug\deps\c31_round1-78c4922a06210a1c.exe): test result: ok. 11 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.37s
+- Running tests\c31_round2.rs (target\debug\deps\c31_round2-fd6a5cd10e7dd291.exe): test result: ok. 10 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.33s
+- Running tests\c31_round3.rs (target\debug\deps\c31_round3-6c9eff9882310477.exe): test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.35s
+- Running tests\c32_budgets.rs (target\debug\deps\c32_budgets-4f67845868557d39.exe): test result: ok. 0 passed; 0 failed; 1 ignored; 0 measured; 0 filtered out; finished in 0.00s
+- Running tests\c32_contract.rs (target\debug\deps\c32_contract-a18132cea0e3ce0a.exe): test result: ok. 8 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 2.46s
+- Running tests\c32_r1_delegation.rs (target\debug\deps\c32_r1_delegation-f66fee3dccbb744e.exe): test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.14s
+- Running tests\c32_r1_queries.rs (target\debug\deps\c32_r1_queries-819167494ad570dd.exe): test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.27s
+- Running tests\c32_readiness.rs (target\debug\deps\c32_readiness-85c887a265a2c70e.exe): test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.30s
+- Running tests\c32_semantics.rs (target\debug\deps\c32_semantics-70fc88e3756ed68b.exe): test result: ok. 22 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.35s
+- Running tests\compile_fail.rs (target\debug\deps\compile_fail-ec7d2724334ad097.exe): test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 32.59s
+- Running unittests src\lib.rs (target\debug\deps\tt_fx-5ee580aab0b4da25.exe): test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+- Running unittests src\main.rs (target\debug\deps\toontown_headless-78851b35e8e709ec.exe): test result: ok. 8 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.24s
+- Running ..\..\tests\adversarial\c01.rs (target\debug\deps\adversarial_c01-97929ae060551fd3.exe): test result: ok. 7 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 9.65s
+- Running tests\c14_r1.rs (target\debug\deps\c14_r1-11fb527222b9c943.exe): test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 3.62s
+- Running tests\c14_r2.rs (target\debug\deps\c14_r2-b59b85dbd5c5fc86.exe): test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 13.80s
+- Running tests\c14_r3.rs (target\debug\deps\c14_r3-8005072673ede272.exe): test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 2.11s
+- Running tests\cancel_phases.rs (target\debug\deps\cancel_phases-2ec822d7b742fb8c.exe): test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 40.35s
+- Running tests\cli.rs (target\debug\deps\cli-dd6c11a85b9317e0.exe): test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.08s
+- Running tests\guard_fixtures.rs (target\debug\deps\guard_fixtures-d8a05cb9fcba115c.exe): test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.82s
+- Running tests\mcp.rs (target\debug\deps\mcp-e0b746d2943bae15.exe): test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.26s
+- Running unittests src\lib.rs (target\debug\deps\tt_io-3ad34adbf8a91cb6.exe): test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+- Running tests\c24_decode_fuzz.rs (target\debug\deps\c24_decode_fuzz-18c2d668296d3ad3.exe): test result: ok. 2 passed; 0 failed; 1 ignored; 0 measured; 0 filtered out; finished in 0.07s
+- Running tests\c24_image.rs (target\debug\deps\c24_image-b21db8f69060cd69.exe): test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+- Running tests\c24_r1_decoder.rs (target\debug\deps\c24_r1_decoder-f29c427cc70f6144.exe): test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.31s
+- Running tests\c24_r3_decoder.rs (target\debug\deps\c24_r3_decoder-ac71a8ae452c457a.exe): test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.16s
+- Running unittests src\lib.rs (target\debug\deps\tt_lipsync-b8b2fa58ec401941.exe): test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+- Running unittests src\lib.rs (target\debug\deps\tt_mcp-ddd1b1b3ceffe6aa.exe): test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.03s
+- Running tests\audit.rs (target\debug\deps\audit-2f3123f2f8af59b9.exe): test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.52s
+- Running tests\c14_r1_autosave.rs (target\debug\deps\c14_r1_autosave-4ca3e55b80c34f7c.exe): test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 3.46s
+- Running tests\c14_r1_limits.rs (target\debug\deps\c14_r1_limits-e0b400ee45fb3e46.exe): test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.14s
+- Running tests\c14_r2_replay.rs (target\debug\deps\c14_r2_replay-156dbfed5d888b1e.exe): test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.32s
+- Running tests\c14_r3_groups.rs (target\debug\deps\c14_r3_groups-d71201ed3bcff407.exe): test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.30s
+- Running tests\c14_r3_history_r1.rs (target\debug\deps\c14_r3_history_r1-db3a5868e2b89f93.exe): test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 27.36s
+- Running tests\c14_r3_history_r3.rs (target\debug\deps\c14_r3_history_r3-053bfec0aacf61ea.exe): test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 27.18s
+- Running tests\c14_r3_replay.rs (target\debug\deps\c14_r3_replay-f98979e09253f4a5.exe): test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.34s
+- Running tests\c14_r4_closure.rs (target\debug\deps\c14_r4_closure-b1a664fa6041dd1c.exe): test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.33s
+- Running tests\c14_r4_expect_rev.rs (target\debug\deps\c14_r4_expect_rev-d2ac77e5a36ea302.exe): test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.32s
+- Running tests\c14_r5_closure.rs (target\debug\deps\c14_r5_closure-2e537403a9b745d6.exe): test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.33s
+- Running tests\c14_tickets.rs (target\debug\deps\c14_tickets-d50d857405b07a30.exe): test result: ok. 1 passed; 0 failed; 1 ignored; 0 measured; 0 filtered out; finished in 0.21s
+- Running tests\c21_history.rs (target\debug\deps\c21_history-2a32f3d7fa8a2560.exe): test result: ok. 0 passed; 0 failed; 2 ignored; 0 measured; 0 filtered out; finished in 0.00s
+- Running tests\c21_r1_surfaces.rs (target\debug\deps\c21_r1_surfaces-277022c5ace22fb7.exe): test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 2.75s
+- Running tests\c21_r2_events.rs (target\debug\deps\c21_r2_events-fddbb5c9cae2e17c.exe): test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.63s
+- Running tests\c21_r3_never_block.rs (target\debug\deps\c21_r3_never_block-c5c2b4f8ef1b89c8.exe): test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.26s
+- Running tests\c21_replay.rs (target\debug\deps\c21_replay-467d97361cc59aa2.exe): test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.38s
+- Running tests\c21_worked_examples.rs (target\debug\deps\c21_worked_examples-bc6e35a80599080f.exe): test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.98s
+- Running tests\c22_r1_surface.rs (target\debug\deps\c22_r1_surface-62e022b70de7ac69.exe): test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.25s
+- Running tests\c22_r2_surface.rs (target\debug\deps\c22_r2_surface-16ae9affd173d1b5.exe): test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.30s
+- Running tests\c22_r3_surface.rs (target\debug\deps\c22_r3_surface-2b12ea43afea1089.exe): test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.47s
+- Running tests\c22_replay.rs (target\debug\deps\c22_replay-f1b696f876c60cf5.exe): test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.39s
+- Running tests\c23_r2_timeout.rs (target\debug\deps\c23_r2_timeout-5459607e59d35304.exe): test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.16s
+- Running tests\c31_r1_protocol.rs (target\debug\deps\c31_r1_protocol-7812c5c433ca604b.exe): test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.30s
+- Running tests\c31_r2_protocol.rs (target\debug\deps\c31_r2_protocol-32acd01b36cbdaf9.exe): test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.41s
+- Running tests\c31_round1_protocol.rs (target\debug\deps\c31_round1_protocol-ed26edde5762c65f.exe): test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.34s
+- Running tests\c32_protocol.rs (target\debug\deps\c32_protocol-6266e15d89b5f810.exe): test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.52s
+- Running tests\contracts.rs (target\debug\deps\contracts-cb1d23bf14e64f4a.exe): test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.66s
+- Running tests\never_block.rs (target\debug\deps\never_block-7b5ca4f318fe98bb.exe): test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.50s
+- Running tests\protocol.rs (target\debug\deps\protocol-52cb65159e10bb08.exe): test result: ok. 14 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 3.81s
+- Running unittests src\lib.rs (target\debug\deps\tt_model-9a22e56c29ff0bfc.exe): test result: ok. 43 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.05s
+- Running tests\c11_r1_adversarial.rs (target\debug\deps\c11_r1_adversarial-1059533fb926b72c.exe): test result: ok. 39 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.66s
+- Running tests\c11_r2_adversarial.rs (target\debug\deps\c11_r2_adversarial-70b8ba532749e484.exe): test result: ok. 39 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.80s
+- Running tests\c11_r3_adversarial.rs (target\debug\deps\c11_r3_adversarial-602e7fec20cf677b.exe): test result: ok. 11 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.05s
+- Running tests\c11_r3_random.rs (target\debug\deps\c11_r3_random-47aee3f6e6eb167e.exe): test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.49s
+- Running tests\c11_r3_register.rs (target\debug\deps\c11_r3_register-e02de36dffb195e4.exe): test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.09s
+- Running tests\c11_r4_exposure_bounds.rs (target\debug\deps\c11_r4_exposure_bounds-4f06df90404c097d.exe): test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+- Running tests\c11_r5_write_bounds.rs (target\debug\deps\c11_r5_write_bounds-83ca7d4f97d23771.exe): test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+- Running tests\c11_r6_staged_inverse.rs (target\debug\deps\c11_r6_staged_inverse-8360f235c8579287.exe): test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.05s
+- Running tests\c12_kernel_support.rs (target\debug\deps\c12_kernel_support-4974d3e64fc5147b.exe): test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.05s
+- Running tests\conformance.rs (target\debug\deps\conformance-9c7ee9b3bdcb8a55.exe): test result: ok. 15 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.19s
+- Running tests\properties.rs (target\debug\deps\properties-354f0731f2ef61e5.exe): test result: ok. 18 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.07s
+- Running tests\staged_commit.rs (target\debug\deps\staged_commit-a4cf37d367ac791c.exe): test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 5.24s
+- Running tests\staged_inverse.rs (target\debug\deps\staged_inverse-15ba747b9d269c73.exe): test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 3.46s
+- Running unittests src\lib.rs (target\debug\deps\tt_persist-4fd8c2fc90ddc7a8.exe): test result: ok. 19 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.04s
+- Running tests\c13_r1_format.rs (target\debug\deps\c13_r1_format-3255c071d53e545d.exe): test result: ok. 8 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.20s
+- Running tests\c13_r2_format.rs (target\debug\deps\c13_r2_format-9410ce534832eafc.exe): test result: ok. 7 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.44s
+- Running tests\c13_r3_format.rs (target\debug\deps\c13_r3_format-381eac786764ff71.exe): test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 2.20s
+- Running tests\c13_r4_lock.rs (target\debug\deps\c13_r4_lock-c1ad3bfe07572b4b.exe): test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.13s
+- Running tests\hostile.rs (target\debug\deps\hostile-9cdbe5338663d46f.exe): test result: ok. 13 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.79s
+- Running tests\journal.rs (target\debug\deps\journal-5abb42d959a4c33b.exe): test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.24s
+- Running tests\migrations.rs (target\debug\deps\migrations-9a66f60e0bac8b75.exe): test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+- Running tests\round_trip.rs (target\debug\deps\round_trip-103c125128416612.exe): test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.22s
+- Running tests\zip64.rs (target\debug\deps\zip64-c25b6e3ec81b7a3e.exe): test result: ok. 1 passed; 0 failed; 1 ignored; 0 measured; 0 filtered out; finished in 0.86s
+- Running unittests src\lib.rs (target\debug\deps\tt_registry-e8dcd10564f71c9c.exe): test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+- Running tests\declared.rs (target\debug\deps\declared-2d6b089b8bea5adc.exe): test result: ok. 9 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.18s
+- Running tests\inventory.rs (target\debug\deps\inventory-3e80c350c0ac70a6.exe): test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+- Running unittests src\lib.rs (target\debug\deps\tt_registry_macros-76b3092343e3343a.exe): test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+- Running unittests src\lib.rs (target\debug\deps\tt_render-81b9c22d67e89932.exe): test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+- Running tests\c03_fixed_configurations.rs (target\debug\deps\c03_fixed_configurations-8a8b09081987fece.exe): test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.75s
+- Running tests\c03_r1_stress.rs (target\debug\deps\c03_r1_stress-8f9a9ea9f19f5b89.exe): test result: ok. 2 passed; 0 failed; 1 ignored; 0 measured; 0 filtered out; finished in 0.97s
+- Running tests\c03_r2_quality.rs (target\debug\deps\c03_r2_quality-070939eab7d777da.exe): test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.64s
+- Running tests\c23_r1_texture.rs (target\debug\deps\c23_r1_texture-0ffebd2607110218.exe): test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+- Running tests\c23_r2_texture.rs (target\debug\deps\c23_r2_texture-760bc4ddbf5e9997.exe): test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+- Running tests\c23_r3_cancel.rs (target\debug\deps\c23_r3_cancel-dbf428fe6d89a543.exe): test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+- Running unittests src\lib.rs (target\debug\deps\tt_vector-8812c5f00d2da46b.exe): test result: ok. 74 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.03s
+- Running tests\c21_r1_geometry.rs (target\debug\deps\c21_r1_geometry-e579e9746361f9d5.exe): test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 9 filtered out; finished in 0.02s
+- Running tests\c21_r1_geometry.rs (target\debug\deps\c21_r1_geometry-e579e9746361f9d5.exe): test result: ok. 9 passed; 0 failed; 1 ignored; 0 measured; 0 filtered out; finished in 0.14s
+- Running tests\c21_r2_geometry.rs (target\debug\deps\c21_r2_geometry-8830976670c1b368.exe): test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 10 filtered out; finished in 0.02s
+- Running tests\c21_r2_geometry.rs (target\debug\deps\c21_r2_geometry-8830976670c1b368.exe): test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 10 filtered out; finished in 1.01s
+- Running tests\c21_r2_geometry.rs (target\debug\deps\c21_r2_geometry-8830976670c1b368.exe): test result: ok. 9 passed; 0 failed; 2 ignored; 0 measured; 0 filtered out; finished in 15.92s
+- Running tests\c21_r3_geometry.rs (target\debug\deps\c21_r3_geometry-472751f895733ba9.exe): test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 7 filtered out; finished in 1.79s
+- Running tests\c21_r3_geometry.rs (target\debug\deps\c21_r3_geometry-472751f895733ba9.exe): test result: ok. 6 passed; 0 failed; 2 ignored; 0 measured; 0 filtered out; finished in 1.82s
+- Running tests\c21_r4_closure.rs (target\debug\deps\c21_r4_closure-d15a2273c96d96e0.exe): test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+- Running tests\c21_worst_case.rs (target\debug\deps\c21_worst_case-df5c9c84b06e4a83.exe): test result: ok. 1 passed; 0 failed; 2 ignored; 0 measured; 0 filtered out; finished in 0.03s
+- Running tests\c22_bridges.rs (target\debug\deps\c22_bridges-98a976fe8a79e1cb.exe): test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.31s
+- Running tests\c22_exact_overlap.rs (target\debug\deps\c22_exact_overlap-fe746c2df9d94105.exe): test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.11s
+- Running tests\c22_planar.rs (target\debug\deps\c22_planar-c9273d0c27cf08cb.exe): test result: ok. 11 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.23s
+- Running tests\c22_properties.rs (target\debug\deps\c22_properties-a59c9e1942f1e490.exe): test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.99s
+- Running tests\c22_r1_geometry.rs (target\debug\deps\c22_r1_geometry-1eaaed45008b569c.exe): test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+- Running tests\c22_r2_geometry.rs (target\debug\deps\c22_r2_geometry-5f45af755b1b1fec.exe): test result: ok. 9 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+- Running tests\c22_r3_geometry.rs (target\debug\deps\c22_r3_geometry-3d597c25e995238e.exe): test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+- Running tests\c22_r4_closure.rs (target\debug\deps\c22_r4_closure-83d56de8832a4fad.exe): test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+- Running tests\c22_settle.rs (target\debug\deps\c22_settle-46f84751453176b0.exe): test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+- Running tests\c22_worst_case.rs (target\debug\deps\c22_worst_case-17e3545e25256046.exe): test result: ok. 0 passed; 0 failed; 1 ignored; 0 measured; 0 filtered out; finished in 0.00s
+- Running tests\c23_predicates.rs (target\debug\deps\c23_predicates-35d243eb224c6b48.exe): test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+- Running tests\c23_r1_geometry.rs (target\debug\deps\c23_r1_geometry-4fbbe0315bd5f4a5.exe): test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+- Running tests\c23_r2_predicates.rs (target\debug\deps\c23_r2_predicates-cabb7ee5a6e42af6.exe): test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+- Running tests\c23_r2_smooth.rs (target\debug\deps\c23_r2_smooth-98bed73e25b2c725.exe): test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 3.58s
+- Running tests\c24_centre.rs (target\debug\deps\c24_centre-f45043e3e1592aa2.exe): test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+- Running tests\c24_flatten_phases.rs (target\debug\deps\c24_flatten_phases-6fcc8184e2015539.exe): test result: ok. 0 passed; 0 failed; 1 ignored; 0 measured; 0 filtered out; finished in 0.00s
+- Running tests\c24_noding_regressions.rs (target\debug\deps\c24_noding_regressions-875e598d0e099904.exe): test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+- Running tests\c24_properties.rs (target\debug\deps\c24_properties-7802852fe8846e68.exe): test result: ok. 8 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 2.07s
+- Running tests\c24_r1_geometry.rs (target\debug\deps\c24_r1_geometry-d387090be2195d2d.exe): test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+- Running tests\c24_r1_properties.rs (target\debug\deps\c24_r1_properties-e057844950b23eb7.exe): test result: ok. 9 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 66.71s
+- Running tests\c24_r2_noding.rs (target\debug\deps\c24_r2_noding-01ddceaa9b50cf2a.exe): test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+- Running tests\c24_r2_properties.rs (target\debug\deps\c24_r2_properties-18bfc0bf3d785bc1.exe): test result: ok. 11 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 67.10s
+- Running tests\c24_r3_noding.rs (target\debug\deps\c24_r3_noding-569e41e3322fd16f.exe): test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.19s
+- Running tests\c24_r3_properties.rs (target\debug\deps\c24_r3_properties-297aaa6ccbeb6af9.exe): test result: ok. 11 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 108.07s
+- Running tests\c24_trace.rs (target\debug\deps\c24_trace-d94e46497f7034bb.exe): test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.03s
+- Running tests\c24_vectorize_unit.rs (target\debug\deps\c24_vectorize_unit-de2958af0a5dbd53.exe): test result: ok. 7 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+- Running tests\properties.rs (target\debug\deps\properties-08a68e577d807b7a.exe): test result: ok. 7 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.66s
+- Doc-tests tt_anim: test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+- Doc-tests tt_audio: test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+- Doc-tests tt_colour: test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+- Doc-tests tt_desktop: test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+- Doc-tests tt_engine: test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+- Doc-tests tt_executor: test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+- Doc-tests tt_fx: test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+- Doc-tests tt_io: test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+- Doc-tests tt_lipsync: test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+- Doc-tests tt_mcp: test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+- Doc-tests tt_model: test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+- Doc-tests tt_persist: test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+- Doc-tests tt_registry: test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+- Doc-tests tt_registry_macros: test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+- Doc-tests tt_render: test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+- Doc-tests tt_vector: test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s

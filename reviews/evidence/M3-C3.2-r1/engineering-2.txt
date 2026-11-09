@@ -1,0 +1,1 @@
+ok: 1 test-only asset(s), licences beside them, none in product sources

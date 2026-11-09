@@ -1,0 +1,10 @@
+[
+  {
+    "file": "live-export.json",
+    "equal_without_timestamps": false
+  },
+  {
+    "file": "replayed-export.json",
+    "equal_without_timestamps": false
+  }
+]

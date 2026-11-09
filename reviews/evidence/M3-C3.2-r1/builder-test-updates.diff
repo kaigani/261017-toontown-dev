@@ -1,0 +1,138 @@
+﻿diff --git a/crates/executor/tests/c12_kernel_state.rs b/crates/executor/tests/c12_kernel_state.rs
+index 21b9316..e3a29a4 100644
+--- a/crates/executor/tests/c12_kernel_state.rs
++++ b/crates/executor/tests/c12_kernel_state.rs
+@@ -374,6 +374,10 @@ fn clipboard_for(h: &ExecutorHandle, id: &str) {
+     if id == "cell.clipboard.apply" {
+         ok(h, "cell.clipboard.set", json!({ "elementIds": ["scene:\"Intro\"/element:\"Bob\""], "from": 1, "to": 8 }));
+     }
++    if id == "anim.camera.delete" {
++        // A scene keeps at least one camera (05 §12.1): the example deletes a second one.
++        ok(h, "anim.camera.create", json!({ "name": "Wide" }));
++    }
+     if matches!(id, "edit.paste" | "edit.pasteSpecial" | "edit.pasteAsNewElement") {
+         ok(h, "edit.copy", json!({ "context": "xsheet", "objectIds": ["scene:#1/element:\"Bob\"/cell:#1"] }));
+     }
+@@ -491,6 +495,6 @@ fn every_generated_declaration_answers_with_its_owner() {
+     }
+     println!("generated declarations: {n}");
+     // A floor against an empty table: the count falls as checkpoints implement declared commands (599 after M2 C2.4
+-    // implemented `draw.vectorize.*`).
+-    assert!(n > 500, "{n}");
++    // implemented `draw.vectorize.*`, 498 after M3 C3.2 implemented its `anim.*`).
++    assert!(n > 400, "{n}");
+ }
+diff --git a/crates/executor/tests/c12_policy.rs b/crates/executor/tests/c12_policy.rs
+index eace03c..a7ebc6e 100644
+--- a/crates/executor/tests/c12_policy.rs
++++ b/crates/executor/tests/c12_policy.rs
+@@ -36,6 +36,9 @@ fn whole_object_and_structural_patches_are_refused() {
+     assert_eq!(rev(&h), r0, "nothing changed");
+ }
+ 
++/// A transformable element.
++const BOB_REF: &str = "scene:\"Intro\"/element:\"Bob\"";
++
+ #[test]
+ fn read_only_derived_transient_and_command_properties_are_refused() {
+     let h = fixture();
+@@ -61,12 +64,23 @@ fn read_only_derived_transient_and_command_properties_are_refused() {
+     assert_eq!(e.code, "command.notImplemented");
+     assert_eq!(e.details["commandId"], "storyline.scene.rename");
+     assert_eq!(e.details["milestone"], tt_registry::owner_of("storyline.scene.rename"));
+-    let e = patch_err(&h, &element, json!([{ "op": "replace", "path": "/transform/offset/x", "value": 1 }]));
+-    assert_eq!(e.details["commandId"], "anim.transform.set");
++    // `anim.transform.set` is implemented (M3 C3.2): its properties now run through it, its refusals included.
++    let e = patch_err(&h, BOB_REF, json!([{ "op": "replace", "path": "/transform/offset/x", "value": 2e7 }]));
++    assert_eq!(e.code, "anim.valueOutOfRange");
++    assert!(
++        run(
++            &h,
++            "doc.object.patch",
++            json!({ "targets": [BOB_REF], "ops": [{ "op": "replace", "path": "/transform/offset/x", "value": 1 }] })
++        )
++        .is_ok()
++    );
++    assert_eq!(get(&h, BOB_REF)["transform"]["offset"]["x"], 1.0);
+     // Replacing a value object that contains x-command properties is the same.
+-    let t = get(&h, &element)["transform"].clone();
+-    let e = patch_err(&h, &element, json!([{ "op": "replace", "path": "/transform", "value": t }]));
+-    assert_eq!(e.details["commandId"], "anim.transform.set");
++    let mut t = get(&h, BOB_REF)["transform"].clone();
++    t["skew"] = json!(120);
++    let e = patch_err(&h, BOB_REF, json!([{ "op": "replace", "path": "/transform", "value": t }]));
++    assert_eq!(e.code, "anim.valueOutOfRange");
+     // `test` reads anything.
+     let id = get(&h, &scene)["id"].clone();
+     assert!(run(&h, "doc.object.patch", json!({ "targets": [scene], "ops": [{ "op": "test", "path": "/id", "value": id }, { "op": "add", "path": "/meta", "value": { "ok": true } }] })).is_ok());
+diff --git a/crates/executor/tests/c31_elements.rs b/crates/executor/tests/c31_elements.rs
+index c4301ba..ff8bfc4 100644
+--- a/crates/executor/tests/c31_elements.rs
++++ b/crates/executor/tests/c31_elements.rs
+@@ -357,7 +357,7 @@ fn bar_timing_and_key_retiming() {
+     ok(&h, "element.timing.set", json!({ "elementIds": [PEG], "duration": 24, "keyframes": "scale" }));
+     assert_eq!(ch(&h), [1, 24], "round(1 + (48 − 1)(24 − 1)/(48 − 1)) = 24");
+     ok(&h, "element.timing.set", json!({ "elementIds": [PEG], "duration": 12 }));
+-    assert_eq!(ch(&h), [1], "keys beyond the new end are removed");
++    assert_eq!(ch(&h), [1, 12], "keys beyond the new end go, the value there is held (SI-089, C3.2 ruling)");
+     // Stretch from the start keeps the end.
+     let r = ok(&h, "element.timing.set", json!({ "elementIds": [PEG], "duration": 4, "anchor": "end" }));
+     assert_eq!((r["elements"][0]["start"].as_u64(), r["elements"][0]["duration"].as_u64()), (Some(13), Some(4)));
+@@ -515,13 +515,9 @@ fn patch_applies_the_owning_command_rules() {
+     );
+     ok(&h, "doc.object.patch", json!({ "targets": [d2], "props": { "name": "B" } }));
+     assert_eq!(get(&h, "scene:\"Intro\"/element:\"Robert\"/drawing:\"B\"")["locked"], false);
+-    // Properties of commands not yet implemented still name their owner.
+-    let e = err(
+-        &h,
+-        "doc.object.patch",
+-        json!({ "targets": [bob], "ops": [{ "op": "replace", "path": "/transform/offset/x", "value": 1 }] }),
+-    );
+-    assert_eq!(e.details["commandId"], "anim.transform.set");
++    // Properties of commands not yet implemented still name their owner (`anim.transform.set` is C3.2's, implemented).
++    let e = err(&h, "doc.object.patch", json!({ "targets": [first(&h, "scene")], "props": { "visible": false } }));
++    assert_eq!(e.details["commandId"], "storyline.scene.visible.set");
+ }
+ 
+ #[test]
+diff --git a/crates/executor/tests/common/examples.rs b/crates/executor/tests/common/examples.rs
+index 1e970d0..c1c5e91 100644
+--- a/crates/executor/tests/common/examples.rs
++++ b/crates/executor/tests/common/examples.rs
+@@ -158,6 +158,10 @@ pub fn agent_placeholders(h: &ExecutorHandle, dir: &std::path::Path, params: &mu
+ 
+ /// The clipboard a paste example expects (paste examples paste cells of `Bob`).
+ pub fn clipboard_for(h: &ExecutorHandle, id: &str) {
++    if id == "anim.camera.delete" {
++        // A scene keeps at least one camera (05 §12.1): the example deletes a second one.
++        ok(h, "anim.camera.create", json!({ "name": "Wide" }));
++    }
+     if id == "cell.clipboard.apply" {
+         ok(h, "cell.clipboard.set", json!({ "elementIds": ["scene:\"Intro\"/element:\"Bob\""], "from": 1, "to": 8 }));
+     }
+diff --git a/crates/registry/tests/declared.rs b/crates/registry/tests/declared.rs
+index bd89b87..78a3095 100644
+--- a/crates/registry/tests/declared.rs
++++ b/crates/registry/tests/declared.rs
+@@ -11,7 +11,7 @@ use tt_registry::{Kind, Scope, Status, declared_sample, declared_schema, owner_o
+ #[test]
+ fn declarations_follow_the_current_spec_columns() {
+     // A floor against an empty table: the count falls as checkpoints implement declared commands (599 after M2 C2.4).
+-    assert!(DECLARED.len() > 500, "{}", DECLARED.len());
++    assert!(DECLARED.len() > 400, "{}", DECLARED.len());
+     for (i, c) in DECLARED.iter().enumerate() {
+         let spec =
+             INVENTORY.iter().find(|e| e.id == c.decl.id).unwrap_or_else(|| panic!("{} not in spec A", c.decl.id));
+@@ -101,10 +101,8 @@ fn parameter_constraints_come_from_the_spec() {
+     assert!(validate_params("lipsync.settings.set", &p, &json!({ "minHoldFrames": 7 })).is_err());
+     let p = at("timeline.currentFrame.set");
+     assert_eq!(p["properties"]["frame"]["minimum"], 1);
+-    let p = at("anim.camera.create");
+-    assert_eq!(p["properties"]["fov"]["minimum"], 1);
+-    assert_eq!(p["properties"]["fov"]["maximum"], 179);
+-    assert_eq!(p["properties"]["fov"]["default"], 41.1121);
++    let p = at("anim.bone.rest.set");
++    assert_eq!(p["properties"]["length"]["minimum"], 0.01);
+ }
+ 
+ /// Scalar leaves of a value, as JSON Pointers.
