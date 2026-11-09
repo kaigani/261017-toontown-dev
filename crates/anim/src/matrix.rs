@@ -125,7 +125,7 @@ impl Mat4 {
     pub fn decompose(&self) -> Decomposition {
         let m = &self.0;
         let (a, c, b, d) = (m[0], m[1], m[4], m[5]);
-        let sx = (a * a + b * b).sqrt();
+        let sx = norm(a, b);
         let rotation = num::atan2_deg(b, a);
         let (cos, sin) = if sx == 0.0 { (1.0, 0.0) } else { (a / sx, b / sx) };
         let c2 = cos * c + sin * d;
@@ -139,4 +139,22 @@ impl Mat4 {
     pub fn is_finite(&self) -> bool {
         self.0.iter().all(|v| v.is_finite())
     }
+}
+
+/// √(a² + b²) of finite `a`, `b` (C32-R1-06). The plain sum of squares is used whenever it is a finite normal number,
+/// so those results keep their bits; when it overflows or underflows, the coefficients are first divided by the larger
+/// magnitude k (the same correctly rounded IEEE operations, in a fixed order) and the result is k · √((a/k)² + (b/k)²),
+/// finite for every finite input.
+#[must_use]
+pub fn norm(a: f64, b: f64) -> f64 {
+    let sum = a * a + b * b;
+    if sum.is_finite() && sum >= f64::MIN_POSITIVE {
+        return sum.sqrt();
+    }
+    let k = a.abs().max(b.abs());
+    if k == 0.0 || !k.is_finite() {
+        return if k == 0.0 { 0.0 } else { sum.sqrt() };
+    }
+    let (x, y) = (a / k, b / k);
+    k * (x * x + y * y).sqrt()
 }

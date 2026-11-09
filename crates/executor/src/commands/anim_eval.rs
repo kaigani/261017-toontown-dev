@@ -7,7 +7,7 @@ use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
 use serde_json::json;
 use tt_anim::camera::CameraView;
-use tt_anim::eval::Evaluator;
+use tt_anim::eval::{EvalError, Evaluator};
 use tt_anim::exposure as x;
 use tt_anim::matrix::Mat4;
 use tt_anim::num::tidy;
@@ -326,15 +326,18 @@ fn node_eval(
         scale_pivot: l.scale_pivot.into(),
         matrix: matrix(&l.matrix),
     });
-    let world_part = wants(parts, IncludePart::World).then(|| {
-        let d = world.decompose();
-        WorldPart {
-            matrix: matrix(&world),
-            position: d.position.into(),
-            rotation: tidy(d.rotation),
-            scale: [d.sx, d.sy].into(),
-            skew: tidy(d.skew),
-        }
+    let world_part = wants(parts, IncludePart::World).then(|| world.decompose());
+    // ADR-0019 rule 5: a value that left the finite range is a typed refusal, never an encoding failure (C32-R1-06).
+    let finite = |xs: &[f64]| xs.iter().all(|x| x.is_finite());
+    if world_part.as_ref().is_some_and(|d| !finite(&[d.sx, d.sy, d.rotation, d.skew])) {
+        return Err(eval_error(EvalError::NonFinite(id.clone())));
+    }
+    let world_part = world_part.map(|d| WorldPart {
+        matrix: matrix(&world),
+        position: d.position.into(),
+        rotation: tidy(d.rotation),
+        scale: [d.sx, d.sy].into(),
+        skew: tidy(d.skew),
     });
     let want_bounds = wants(parts, IncludePart::Bounds);
     let want_screen = wants(parts, IncludePart::Screen);
@@ -343,6 +346,9 @@ fn node_eval(
     } else {
         None
     };
+    if corners.as_ref().is_some_and(|c| !c.iter().all(|p| finite(p))) {
+        return Err(eval_error(EvalError::NonFinite(id.clone())));
+    }
     let bounds = corners.filter(|_| want_bounds).map(|c| {
         let xs = c.iter().map(|p| p[0]);
         let ys = c.iter().map(|p| p[1]);

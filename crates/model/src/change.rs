@@ -1056,6 +1056,40 @@ fn apply_range(target: &mut Value, op: &PatchOp) -> Result<(), ModelError> {
     }
 }
 
+/// JSON equality as RFC 6902 §4.6 defines it for `test`: numbers are equal when their values are, whatever their
+/// spelling or storage (`0` and `0.0`, `100` and `1e2`), compared exactly (an integer is never rounded through a float,
+/// so integers above 2^53 that differ are unequal); arrays element by element in order, objects by the same member names
+/// with equal values in any order, and strings, booleans and `null` as themselves. Unlike types are unequal.
+#[must_use]
+pub fn json_equal(a: &Value, b: &Value) -> bool {
+    match (a, b) {
+        (Value::Number(x), Value::Number(y)) => number_equal(x, y),
+        (Value::Array(x), Value::Array(y)) => x.len() == y.len() && x.iter().zip(y).all(|(p, q)| json_equal(p, q)),
+        (Value::Object(x), Value::Object(y)) => {
+            x.len() == y.len() && x.iter().all(|(k, p)| y.get(k).is_some_and(|q| json_equal(p, q)))
+        }
+        _ => a == b,
+    }
+}
+
+/// Exact numeric equality of two JSON numbers (integers as `i128`; an integer equals a float only when the float is
+/// integral and has that exact value).
+fn number_equal(x: &serde_json::Number, y: &serde_json::Number) -> bool {
+    let int = |n: &serde_json::Number| n.as_i64().map(i128::from).or_else(|| n.as_u64().map(i128::from));
+    // Every JSON integer lies in [−2^63, 2^64); a float outside that range, or with a fraction, equals no integer.
+    // `i64::MIN as f64` is −2^63 and `u64::MAX as f64` rounds to 2^64, both exact; inside that range an integral float
+    // converts to `i128` exactly.
+    let int_float =
+        |i: i128, f: f64| f.trunc() == f && (i64::MIN as f64..u64::MAX as f64).contains(&f) && f as i128 == i;
+    match (int(x), int(y), x.as_f64(), y.as_f64()) {
+        (Some(i), Some(j), _, _) => i == j,
+        (Some(i), None, _, Some(g)) => int_float(i, g),
+        (None, Some(j), Some(f), _) => int_float(j, f),
+        (None, None, Some(f), Some(g)) => f == g,
+        _ => false,
+    }
+}
+
 /// Applies one operation and returns its concrete inverse against the state it was applied to.
 fn apply_op(v: &mut Value, op: &PatchOp) -> Result<Vec<PatchOp>, ModelError> {
     // 10 §2.6: an elided value is unknown, never `null`; the receiver rereads the object instead.
@@ -1121,7 +1155,7 @@ fn apply_op(v: &mut Value, op: &PatchOp) -> Result<Vec<PatchOp>, ModelError> {
         "test" => {
             let expected = value()?;
             let tokens = pointer::parse(&op.path)?;
-            if pointer::get(v, &tokens) != Some(&expected) {
+            if !pointer::get(v, &tokens).is_some_and(|actual| json_equal(actual, &expected)) {
                 return Err(ModelError::with_details(
                     codes::PATCH_TEST_FAILED,
                     format!("test failed at `{}`", op.path),

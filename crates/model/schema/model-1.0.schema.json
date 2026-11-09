@@ -614,7 +614,7 @@
         "fov": {
           "type": "number",
           "x-command": "anim.camera.set",
-          "description": "FOV 1–179 degrees (default 41.1121).",
+          "description": "FOV 1–179 degrees (default 2·atan(0.375) ≈ 41.1121, 05 §2.7).",
           "minimum": 1,
           "maximum": 179,
           "x-unit": "degree",

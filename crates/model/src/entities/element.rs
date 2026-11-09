@@ -411,14 +411,14 @@ pub struct CameraBlock {
     /// Static or dynamic FOV.
     #[schemars(extend("x-command" = "anim.camera.set"))]
     pub fov_mode: FovMode,
-    /// FOV 1–179 degrees (default 41.1121).
+    /// FOV 1–179 degrees (default 2·atan(0.375) ≈ 41.1121, 05 §2.7).
     #[schemars(range(min = 1.0, max = 179.0), extend("x-unit" = "degree", "x-command" = "anim.camera.set"))]
     pub fov: f64,
 }
 
 impl Default for CameraBlock {
     fn default() -> Self {
-        Self { fov_mode: FovMode::Static, fov: 41.1121 }
+        Self { fov_mode: FovMode::Static, fov: crate::defaults::DEFAULT_FOV }
     }
 }
 

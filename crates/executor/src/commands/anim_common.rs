@@ -211,6 +211,8 @@ pub(crate) struct ChannelEdit {
     pub changed: BTreeSet<String>,
     /// The channels the element had when read: a channel made and removed within the call stages nothing.
     existed: BTreeSet<String>,
+    /// The channels as read, for the affected frame range of `anim.changed`.
+    original: Map<String, Value>,
     /// The local frames touched.
     pub from: Option<u32>,
     pub to: Option<u32>,
@@ -222,13 +224,62 @@ impl ChannelEdit {
         let v = doc.entry_raw_json(&EntryKey::Element(id.clone())).map_err(internal)?;
         let channels = v.get("channels").and_then(Value::as_object).cloned().unwrap_or_default();
         let existed = channels.keys().cloned().collect();
-        Ok(Self { id: id.clone(), channels, changed: BTreeSet::new(), existed, from: None, to: None })
+        let original = channels.clone();
+        Ok(Self { id: id.clone(), channels, changed: BTreeSet::new(), existed, original, from: None, to: None })
     }
 
     /// Records a touched local frame.
     pub(crate) fn touch(&mut self, frame: u32) {
         self.from = Some(self.from.map_or(frame, |f| f.min(frame)));
         self.to = Some(self.to.map_or(frame, |f| f.max(frame)));
+    }
+
+    /// The local frames whose evaluated values the edit can change, `None` when that is not one finite range of the
+    /// first cycle (C32-R1-05). For each changed channel the touched frames are widened to the neighbouring key frames,
+    /// among the channel's keys before and after the edit: one on each side for a 1-D curve (a segment depends on its two
+    /// keys only) and for `velocity` (whose sub-segments end at its keys and at the motion keyframes), two motion
+    /// keyframes for `position` (a TCB tangent reaches one key further, and a keyframe segment's arc length spreads a
+    /// change over the whole segment). With no key on one side the hold before the first or after the last key changes,
+    /// so the range is unbounded; so it is when it reaches either end of the bar (scene frames outside the bar hold its
+    /// ends, 05 §2.10), when the node loops (every cycle repeats the change), and when `position` or `velocity` change
+    /// on a node with a `velocityBased` 1-D channel (whose progress is normalised over its whole key segment).
+    pub(crate) fn affected(&self, bar: &tt_anim::timing::Bar) -> Option<(f64, f64)> {
+        let (lo, hi) = (f64::from(self.from?), f64::from(self.to?));
+        if bar.cycle.is_some() {
+            return None;
+        }
+        let frames_of = |c: Option<&Value>| -> Vec<f64> {
+            let list = |k: &str| c.and_then(|c| c.get(k)).and_then(Value::as_array).cloned().unwrap_or_default();
+            list("keys").iter().chain(list("points").iter()).filter_map(|k| k.get("frame")?.as_f64()).collect()
+        };
+        let velocity_based = [&self.original, &self.channels]
+            .iter()
+            .flat_map(|m| m.values())
+            .any(|c| c.get("curveType").and_then(Value::as_str) == Some("velocityBased"));
+        let (mut a, mut b) = (lo, hi);
+        for name in &self.changed {
+            let motion = name == "position" || name == "velocity";
+            if motion && velocity_based {
+                return None;
+            }
+            let reach = if name == "position" { 2 } else { 1 };
+            let mut frames = Vec::new();
+            for map in [&self.original, &self.channels] {
+                frames.extend(frames_of(map.get(name)));
+                if name == "velocity" {
+                    frames.extend(frames_of(map.get("position")));
+                }
+            }
+            frames.sort_by(f64::total_cmp);
+            frames.dedup();
+            let before: Vec<f64> = frames.iter().copied().filter(|f| *f < lo).collect();
+            let after: Vec<f64> = frames.iter().copied().filter(|f| *f > hi).collect();
+            let first = *before.get(before.len().saturating_sub(reach))?;
+            let last = *after.get(reach.min(after.len()).checked_sub(1)?)?;
+            a = a.min(first);
+            b = b.max(last);
+        }
+        (a > 1.0 && b < bar.duration).then_some((a, b))
     }
 
     /// The keys of a 1-D channel (empty when it does not exist).
@@ -304,14 +355,15 @@ impl ChannelEdit {
     }
 }
 
-/// `anim.changed` (05 §19.4): coalesced into one event per undo step when the call is accepted.
+/// `anim.changed` (05 §19.4): coalesced into one event per undo step when the call is accepted. `frames` is the scene
+/// range the edit can change ([`ChannelEdit::affected`]); without it the event covers every frame.
 pub(crate) fn emit_changed(cx: &mut Cx, data: &NodeData, edit: &ChannelEdit) {
     if edit.changed.is_empty() {
         return;
     }
-    let frames = match (edit.from, edit.to) {
-        (Some(a), Some(b)) => json!({ "from": data.bar.scene(f64::from(a)), "to": data.bar.scene(f64::from(b)) }),
-        _ => Value::Null,
+    let frames = match edit.affected(&data.bar) {
+        Some((a, b)) => json!({ "from": data.bar.scene(a), "to": data.bar.scene(b) }),
+        None => Value::Null,
     };
     let mut payload = json!({ "nodeIds": [edit.id.as_str()], "channels": edit.changed.iter().collect::<Vec<_>>() });
     if !frames.is_null() {

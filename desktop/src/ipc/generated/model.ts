@@ -682,7 +682,7 @@ export const MODEL_DEFS: Readonly<Record<string, Schema>> = {
       fov: {
         type: "number",
         "x-command": "anim.camera.set",
-        description: "FOV 1–179 degrees (default 41.1121).",
+        description: "FOV 1–179 degrees (default 2·atan(0.375) ≈ 41.1121, 05 §2.7).",
         minimum: 1,
         maximum: 179,
         "x-unit": "degree",
@@ -7712,7 +7712,7 @@ export interface BoneRest {
 export interface CameraBlock {
   /** Static or dynamic FOV. */
   fovMode: FovMode;
-  /** FOV 1–179 degrees (default 41.1121). */
+  /** FOV 1–179 degrees (default 2·atan(0.375) ≈ 41.1121, 05 §2.7). */
   fov: number;
 }
 

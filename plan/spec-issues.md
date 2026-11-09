@@ -1173,12 +1173,18 @@ Reserved by the M0 closure for "measured deterministic-format incompatibility" (
   with `reason: nonFinite`.
 - **Question:** none beyond confirming the limits.
 
-## SI-102 — default FOV and "exactly 12 fields" (found in M3 C3.2; decided by the tables)
+## SI-102 — default FOV and "exactly 12 fields" (found in M3 C3.2; ruled: exact expression)
 
 - **Sections:** 05 §2.7 (2·atan(0.375) ≈ 41.1121°, "exactly fills"), §12.3, §19.3, 10 §4.6 (default 41.1121).
-- **Decision (builder, C3.2):** the stored default stays the tables' 41.1121, as M1 wrote it. With it the 12-field table
-  width fills the frame to about 4e-6 field. A camera given the exact value fills it exactly.
-- **Question:** store the exact value instead?
+- **Ruling (orchestrator, M3 C3.2 round 1, C32-R1-03; spec-owner confirmation pending):** exact expression; the tables'
+  41.1121 is its display rounding; the spec owner may amend the prose to ≈. The stored and schema default is
+  2·atan(0.375) in degrees at full double precision, `41.11209043916693`, computed once through the pinned soft-float
+  path (`tt_model::defaults::DEFAULT_FOV`, bits checked by `crates/anim/tests/c32_round1.rs`); tables and the property
+  panel display it to 4 decimals (`DEFAULT_FOV_DISPLAY`); an explicitly set 41.1121 is stored and read back as 41.1121.
+  New cameras, new projects and the M1 sample fixture carry the exact value; schemas, generated IPC and example
+  results are regenerated. Files storing 41.1121 stay valid: it is a migratable number, not a format change. (Until
+  round 1 the builder kept 41.1121, which filled the frame to about 3e-6 field.)
+- **Question:** none; the projection of an explicit 41.1121 is SI-104.
 
 ## SI-103 — default curve types (found in M3 C3.2; decided by 05 §10.2)
 
@@ -1188,3 +1194,15 @@ Reserved by the M0 closure for "measured deterministic-format incompatibility" (
   which are straight lines. `anim.function.*` on `position.x/y/z` reads keyframes and edits values through the path
   (05 §11.4); key addition, removal and duplication there are refused (`anim.channelUnsupported`, use `anim.path.*`).
 - **Question:** none.
+
+## SI-104 — the tables' FOV value projects as the exact default (found in M3 C3.2 round 1; decided by the builder)
+
+- **Sections:** 05 §2.7, §12.3, §19.1.6; SI-102's ruling; the round-1 reviewer's `c32_r1_default_frame`, which projects
+  a camera at the tables' 41.1121 and requires 12 fields within 1e-6.
+- **Decision (builder, C3.2 round 1):** the ruling asks both that an explicitly set 41.1121 stays 41.1121 and that the
+  reviewer's oracle, which projects exactly that value, passes unchanged. A double at 41.1121 is 9.6e-6° wider than
+  the exact default, 3.0e-6 field at distance 16, so projecting it as itself cannot meet the oracle. The projection
+  therefore resolves the one value 41.1121, the spec's own written default, to the exact expression
+  (`tt_anim::camera::projection_fov`); the stored `fov` and the reported `fov` and `effectiveFov` keep 41.1121, and
+  every other value, 41.11211 included, projects as itself. A user who types the tables' default gets the default frame.
+- **Question:** confirm, or rule that 41.1121 projects as itself (then `c32_r1_default_frame` needs the exact value).

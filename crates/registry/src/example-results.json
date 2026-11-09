@@ -30,7 +30,7 @@
     {
       "title": "Accept a request",
       "result": {
-        "confirmationId": "cf_f1c05226903f8e89ad08e8db",
+        "confirmationId": "cf_05f6d8124d760482296b92cb",
         "accepted": true
       },
       "varies": [
@@ -71,7 +71,7 @@
         "endpoint": null,
         "sessions": [
           {
-            "sessionId": "s1-a6f3d5",
+            "sessionId": "s1-02b1c4",
             "client": "Example agent",
             "policy": "assist",
             "scopes": [
@@ -83,7 +83,7 @@
               "files.write",
               "library.global"
             ],
-            "connectedAt": "2026-11-02T07:29:50.172Z",
+            "connectedAt": "2026-11-09T21:36:37.004Z",
             "lastActivity": null,
             "paused": false,
             "transport": ""
@@ -91,15 +91,15 @@
         ],
         "pendingConfirmations": [
           {
-            "confirmationId": "cf_374de05cb75b658aeac904d8",
-            "sessionId": "s1-a6f3d5",
+            "confirmationId": "cf_8eacd4a089f238cec2ca090f",
+            "sessionId": "s1-02b1c4",
             "commandId": "project.saveAs",
             "summary": "Overwrite `/tmp/Short.animpkg`",
             "consequences": [
               {
                 "kind": "overwrite",
                 "path": "/tmp/Short.animpkg",
-                "bytes": 28439
+                "bytes": 28449
               }
             ],
             "category": "overwrite",
@@ -127,7 +127,7 @@
     {
       "title": "Let a session edit",
       "result": {
-        "sessionId": "s1-7b6069",
+        "sessionId": "s1-c16bde",
         "policy": "assist",
         "scopes": [
           "read",
@@ -145,7 +145,7 @@
       "title": "Pause every session",
       "result": {
         "paused": [
-          "s1-341fc0"
+          "s1-a2feec"
         ]
       },
       "varies": [
@@ -228,8 +228,8 @@
         },
         "roll": 0.0,
         "fovMode": "static",
-        "fov": 41.1121,
-        "effectiveFov": 41.1121,
+        "fov": 41.11209043916693,
+        "effectiveFov": 41.11209043916693,
         "worldPosition": {
           "x": 0.0,
           "y": 0.0,
@@ -255,23 +255,23 @@
         ],
         "frameCornersAtZ0": [
           {
-            "x": -6.000001522670695,
-            "y": 3.3750008565022664,
+            "x": -5.999999999999999,
+            "y": 3.3749999999999996,
             "z": 0.0
           },
           {
-            "x": 6.000001522670695,
-            "y": 3.3750008565022664,
+            "x": 5.999999999999999,
+            "y": 3.3749999999999996,
             "z": 0.0
           },
           {
-            "x": 6.000001522670695,
-            "y": -3.3750008565022664,
+            "x": 5.999999999999999,
+            "y": -3.3749999999999996,
             "z": 0.0
           },
           {
-            "x": -6.000001522670695,
-            "y": -3.3750008565022664,
+            "x": -5.999999999999999,
+            "y": -3.3749999999999996,
             "z": 0.0
           }
         ],
@@ -481,7 +481,7 @@
                 "screen": {
                   "visible": true,
                   "bbox": {
-                    "x": 962.3820459371585,
+                    "x": 962.3820465416705,
                     "y": 540.0,
                     "width": 0.0,
                     "height": 0.0
@@ -1103,10 +1103,10 @@
           {
             "id": "el_01K742SG11W3SGB8Q1H50W74VB",
             "bbox": {
-              "x": 160.00020302270784,
-              "y": 220.00008120908316,
-              "width": 639.9998375818336,
-              "height": 401.19989818411193
+              "x": 159.99999999999986,
+              "y": 219.99999999999997,
+              "width": 640.0,
+              "height": 401.20000000000005
             },
             "visible": true
           }
@@ -1902,7 +1902,7 @@
       "result": [
         {
           "name": "before-walk",
-          "createdAt": "2026-11-02T07:29:50.643Z",
+          "createdAt": "2026-11-09T21:36:38.384Z",
           "documentRev": 1,
           "origin": "user"
         }
@@ -2315,7 +2315,7 @@
             "version": "0.0.1",
             "platform": "windows-x64"
           },
-          "exportedAt": "2026-11-02T07:29:51.201Z",
+          "exportedAt": "2026-11-09T21:36:39.030Z",
           "sourceProjectId": "pr_01K742SG00BK0VXTWDM5JRXV37",
           "scope": {
             "kind": "scenes",
@@ -2488,7 +2488,7 @@
                   },
                   "camera": {
                     "fovMode": "static",
-                    "fov": 41.1121
+                    "fov": 41.11209043916693
                   },
                   "channels": {},
                   "createdAt": "2026-10-17T09:30:12.345Z"
@@ -4339,7 +4339,7 @@
           ],
           "blobs": {}
         },
-        "bytes": 25880,
+        "bytes": 25890,
         "objectCount": 7
       },
       "varies": [
@@ -4787,7 +4787,7 @@
           },
           "camera": {
             "fovMode": "static",
-            "fov": 41.1121
+            "fov": 41.11209043916693
           },
           "channels": {},
           "createdAt": "2026-10-17T09:30:12.345Z",
@@ -5077,8 +5077,8 @@
     {
       "title": "The element schema",
       "resultDigest": {
-        "bytes": 133880,
-        "sha256": "6d569026075052effd7fd0e44fc0364c53fc1fd8a81032cad6ca949eb4f14d61"
+        "bytes": 133909,
+        "sha256": "1667df2c4b7db4742ccb069a1ef651f993530224f4921ffbcdcddd62ee0307c0"
       },
       "varies": [
         "/schema/$defs/LibraryItem/then/allOf/0/else/properties/createdAt",
@@ -7185,7 +7185,7 @@
             "stepId": "u-1",
             "label": "Set meta",
             "source": "user",
-            "time": "2026-11-02T07:29:52.582Z",
+            "time": "2026-11-09T21:36:40.454Z",
             "objectCount": 1
           },
           {
@@ -7193,7 +7193,7 @@
             "stepId": "u-2",
             "label": "Set meta",
             "source": "user",
-            "time": "2026-11-02T07:29:52.583Z",
+            "time": "2026-11-09T21:36:40.455Z",
             "objectCount": 1
           }
         ],
@@ -8227,7 +8227,7 @@
         "state": "succeeded",
         "progress": 1.0,
         "message": "",
-        "startedAt": "2026-11-02T07:29:52.707Z",
+        "startedAt": "2026-11-09T21:36:41.221Z",
         "result": {},
         "session": "user"
       },
@@ -8246,7 +8246,7 @@
           "state": "succeeded",
           "progress": 1.0,
           "message": "",
-          "startedAt": "2026-11-02T07:29:52.719Z",
+          "startedAt": "2026-11-09T21:36:41.233Z",
           "result": {},
           "session": "user"
         }
@@ -8265,7 +8265,7 @@
         "state": "succeeded",
         "progress": 1.0,
         "message": "",
-        "startedAt": "2026-11-02T07:29:52.730Z",
+        "startedAt": "2026-11-09T21:36:41.244Z",
         "result": {},
         "session": "user"
       },
@@ -8312,10 +8312,10 @@
     {
       "title": "A 1920×1080, 24 fps project",
       "result": {
-        "projectId": "pr_01M6DJM9BGP63P6X5VP7Q750YC",
-        "sceneId": "sc_01M6DJM9BGP63P6X5VP7Q7512G",
-        "cameraId": "el_01M6DJM9BGP63P6X5VP7Q7512J",
-        "elementId": "el_01M6DJM9BGP63P6X5VP7Q7512K"
+        "projectId": "pr_01M713VW244BRY98EYTV2ZHCXY",
+        "sceneId": "sc_01M713VW25X6W6R2P6YSW8630Q",
+        "cameraId": "el_01M713VW25X6W6R2P6YSW8630S",
+        "elementId": "el_01M713VW25X6W6R2P6YSW8630T"
       },
       "varies": [
         "/cameraId",
@@ -8571,7 +8571,7 @@
         {
           "path": "/tmp/Sample.animpkg",
           "name": "Sample",
-          "lastOpened": "2026-11-02T07:29:53.323Z",
+          "lastOpened": "2026-11-09T21:36:41.929Z",
           "exists": true
         }
       ],

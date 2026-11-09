@@ -1086,20 +1086,21 @@ fn cameras_list_get_set_and_project() {
     let current = ok(&h, "anim.camera.current.get", json!({}));
     assert_eq!(current["cameraId"], list["cameras"][0]["id"]);
     let got = ok(&h, "anim.camera.get", json!({ "frame": 1 }));
-    assert_eq!(got["fov"], 41.1121);
-    assert_eq!(got["effectiveFov"], 41.1121);
+    // The exact default 2·atan(0.375) (C32-R1-03, SI-102).
+    assert_eq!(got["fov"], tt_model::defaults::DEFAULT_FOV);
+    assert_eq!(got["effectiveFov"], tt_model::defaults::DEFAULT_FOV);
     assert_eq!(got["position"]["z"], 16.0);
     let (w, hh) = (got["resolution"]["w"].as_f64().unwrap(), got["resolution"]["h"].as_f64().unwrap());
-    // Corners on the table plane: 12 fields wide through the default camera (to 4e-6, SI-102), height by aspect.
+    // Corners on the table plane: exactly 12 fields wide through the default camera (to rounding), height by aspect.
     let c = &got["frameCornersAtZ0"];
-    assert!((c[0]["x"].as_f64().unwrap() + 6.0).abs() < 1e-5, "{c}");
-    assert!((c[1]["x"].as_f64().unwrap() - 6.0).abs() < 1e-5, "{c}");
-    assert!((c[0]["y"].as_f64().unwrap() - 6.0 * hh / w).abs() < 1e-5, "{c}");
+    assert!((c[0]["x"].as_f64().unwrap() + 6.0).abs() < 1e-12, "{c}");
+    assert!((c[1]["x"].as_f64().unwrap() - 6.0).abs() < 1e-12, "{c}");
+    assert!((c[0]["y"].as_f64().unwrap() - 6.0 * hh / w).abs() < 1e-12, "{c}");
     // The view matrix takes the camera to the origin.
     let v: Vec<f64> = got["viewMatrix"].as_array().unwrap().iter().map(|x| x.as_f64().unwrap()).collect();
     assert_eq!(v[11], -16.0);
     // Projection through it (05 §2.6).
-    let tan = (41.1121_f64 / 2.0).to_radians().tan();
+    let tan = 0.375;
     let r = ok(
         &h,
         "anim.projection.get",
@@ -1168,7 +1169,7 @@ fn camera_creation_current_replacement_and_last_camera_refusal() {
     // Defaults.
     let w = get(&h, &wide);
     assert_eq!(w["transform"]["offset"]["z"], 16.0);
-    assert_eq!(w["camera"]["fov"], 41.1121);
+    assert_eq!(w["camera"]["fov"], tt_model::defaults::DEFAULT_FOV);
     let rx = h.subscribe();
     ok(&h, "anim.camera.current.set", json!({ "cameraId": wide }));
     let events: Vec<_> = rx.try_iter().filter(|e| e.name == "anim.camera.currentChanged").collect();

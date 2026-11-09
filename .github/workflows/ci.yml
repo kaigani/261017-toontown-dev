@@ -80,7 +80,10 @@ jobs:
           pnpm --dir desktop build:diagnostics
           pnpm --dir desktop build
 
-      - run: cargo fmt --all --check
+      - name: rustfmt — every workspace source except the reviewer-owned c<k>_r<j>_*.rs tests, kept as committed (plan §5.3)
+        run: |
+          unformatted=$(cargo fmt --all --check -- --files-with-diff | grep -vE '[/\]tests[/\]c[0-9]+_r[0-9]+_[^/\]*[.]rs$' || true)
+          if [ -n "$unformatted" ]; then echo "$unformatted"; cargo fmt --all --check || true; exit 1; fi
 
       - name: Generated command declarations are current (C12-R1-12)
         run: |
@@ -92,13 +95,16 @@ jobs:
       # Product code (libraries, binaries, examples) is linted with every warning denied. All targets, tests included,
       # likewise except one style lint: the reviewer-owned `c24_r4_closure.rs` has blank lines after doc comments, and
       # reviewer-owned files are not edited (M2 merge candidate, declared CI edit; drop the `-A` once that file is fixed).
+      # Likewise `needless_range_loop`: the reviewer-owned `c32_r1_closed_forms.rs` indexes in a loop (M3 C3.2 round 1).
       - run: |
           cargo clippy --workspace --lib --bins --examples --locked -- -D warnings
-          cargo clippy --workspace --all-targets --locked -- -D warnings -A clippy::empty_line_after_doc_comments
+          cargo clippy --workspace --all-targets --locked -- -D warnings -A clippy::empty_line_after_doc_comments -A clippy::needless_range_loop
       # The six 10 000-operation history oracles (C1.2-C1.4) run in release in `history-oracles` (moved in M2 C2.3 round 1:
       # Windows `check` reached 55 min 02 s in run 41320596822); everything else in their binaries runs here. The seeded
       # topology properties (C24-R1-01: 256 cases each) run in `check-properties` (split in M2 C2.4 round 1: Windows
-      # `check` reached its 60-minute limit in run 41475164426); the rest of their binaries runs here too.
+      # `check` reached its 60-minute limit in run 41475164426); the rest of their binaries runs here too. The reviewer's
+      # C3.1 round-3 4096-sequence property runs in `review-properties` (moved in M3 C3.2 round 1: it took 10 min 41 s of
+      # Windows `check`'s 57 min 42 s in run 42692563454).
       - name: Run cargo test --workspace --locked
         run: |
           cargo test --workspace --locked -- --skip ten_thousand_history_operations_match_independent_content_oracle_and_replay \
@@ -134,7 +140,7 @@ jobs:
             --skip non_parallelogram_envelopes_map_the_layer_projectively \
             --skip snapping_onto_a_curved_contour_reaches_its_nearest_point \
             --skip integer_translations_and_compositions_preserve_all_snapped_anchor_sequences \
-            --skip side_fills_read_back_beside_collinear_overlaps
+            --skip side_fills_read_back_beside_collinear_overlaps             --skip independent_sequences_4096_persist_canonical_runs_and_notes
 
       - name: Desktop host with the M0 diagnostics feature (C0.4 gating) — clippy and tests
         run: |
@@ -252,6 +258,8 @@ jobs:
           # Round-4 closure (C2.4): its two seeded properties share names with `check`'s skip list, so they run here.
           cargo test --release --locked -p tt-executor --test c24_r4_closure
           cargo test --release --locked -p tt-vector --test c24_r3_properties --test c24_r3_noding
+          # C3.1 round 3: the 4096 independent exposure sequences, skipped in `check` (moved in M3 C3.2 round 1).
+          cargo test --release --locked -p tt-executor --test c31_r3_sequences
 
   headless:
     name: headless release (${{ matrix.os }})
@@ -444,7 +452,7 @@ jobs:
         run: TT_C31_CASES=4096 cargo test --release --locked -p tt-anim --test c31_exposure
 
       - name: Evaluator properties, 4096 cases
-        run: TT_C32_CASES=4096 cargo test --release --locked -p tt-anim --test c32_maths
+        run: TT_C32_CASES=4096 cargo test --release --locked -p tt-anim --test c32_maths --test c32_passage
 
   # End-to-end scenario E2 (paint by id, 11 §14.8; M2 C2.4 readiness item 3) through the official Python SDK against the
   # release binary: vectorize, validate, paint by ID, recolour, render, undo/redo, save/open, `--run` replay from the
@@ -515,7 +523,7 @@ jobs:
         with:
           key: headless-release
 
-      - name: E4 cut-out rig, numeric (official Python SDK, release binary)
+      - name: E4 cut-out rig, numeric (official Python SDK, release binary), base and reviewer variant (C3.2 r1)
         run: |
           cargo build --release --locked -p tt-headless
           exe=target/release/toontown-headless
@@ -525,7 +533,11 @@ jobs:
           VPY=.venv-e4/bin/python
           if [ "$RUNNER_OS" = "Windows" ]; then VPY=.venv-e4/Scripts/python.exe; fi
           $VPY -m pip install --quiet "mcp==2.0.0"
-          PYTHONIOENCODING=utf-8 $VPY scripts/e4-cutout-numeric.py "$exe" out/e4
+          status=0
+          PYTHONIOENCODING=utf-8 $VPY scripts/e4-cutout-numeric.py "$exe" out/e4 || status=1
+          # Changed middle pose and a second current camera (the round-1 reviewer's variant).
+          PYTHONIOENCODING=utf-8 $VPY scripts/e4-cutout-numeric.py --variant "$exe" out/e4/variant || status=1
+          exit $status
 
       - uses: actions/upload-artifact@v7
         if: always()
@@ -545,10 +557,12 @@ jobs:
         with:
           path: e4-out
           pattern: e4-*
-      - name: Windows and macOS answer the same bytes
+      - name: Windows and macOS answer the same bytes (base and variant scenarios)
         run: |
           sha256sum e4-out/e4-Windows/evaluate.json e4-out/e4-macOS/evaluate.json
           cmp e4-out/e4-Windows/evaluate.json e4-out/e4-macOS/evaluate.json
+          sha256sum e4-out/e4-Windows/variant/evaluate.json e4-out/e4-macOS/variant/evaluate.json
+          cmp e4-out/e4-Windows/variant/evaluate.json e4-out/e4-macOS/variant/evaluate.json
 
   # Unsigned desktop bundles + automated IPC round-trip benchmark in the real webview.
   bundle:

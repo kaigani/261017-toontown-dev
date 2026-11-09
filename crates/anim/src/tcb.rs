@@ -9,12 +9,15 @@ use crate::function::{self, KeyView};
 /// Parameter steps per segment (05 §9.2): 65 samples.
 pub const SAMPLES_PER_SEGMENT: usize = 64;
 
-/// Passage frames are found by bisection to this width (05 §10.5), then reported to 3 decimals.
+/// The accuracy 05 §10.5 requires of a passage frame before it is reported to 3 decimals. The bisection goes past it,
+/// to the bracket's floating-point resolution, so the 3-decimal rounding is that of the crossing itself and a crossing
+/// within 1e-4 below a rounding boundary is not carried across it (C32-R1-01).
 pub const PASSAGE_TOLERANCE: f64 = 1e-4;
 
-/// Upper bound of the passage bisection: a bracket is at most one keyframe segment, at most 100 000 frames, and halving
-/// that 40 times leaves under 1e-7 frame, below [`PASSAGE_TOLERANCE`] (ADR-0019).
-pub const PASSAGE_MAX_ITERATIONS: u32 = 40;
+/// Upper bound of the passage bisection: a bracket is one monotone piece of a keyframe segment, at most 100 000 frames,
+/// and halving that 64 times leaves under 1e-14 frame, below the spacing of doubles there; the bisection stops earlier
+/// when the midpoint is no longer strictly inside the bracket (ADR-0019).
+pub const PASSAGE_MAX_ITERATIONS: u32 = 64;
 
 /// A tangent below this length has no direction (05 §8.3).
 pub const MIN_TANGENT: f64 = 1e-9;
@@ -318,7 +321,7 @@ impl Velocity {
         s0 + self.u(f0, f1, f) * (s1 - s0)
     }
 
-    /// The smallest frame in the keyframe segment `[f0, f1]` with `V(f) ≥ arc`, to [`PASSAGE_TOLERANCE`], rounded to 3
+    /// The smallest frame in the keyframe segment `[f0, f1]` with `V(f) ≥ arc`, within [`PASSAGE_TOLERANCE`], rounded to 3
     /// decimals (05 §10.5). Each velocity sub-segment (between consecutive nodes) is a cubic or a line in its
     /// parameter; its value extrema ([`function::extremum_frames`]) split it into monotone pieces. The candidate frames
     /// — every node and every extremum, in order — are evaluated until the first one with `V ≥ arc`; the crossing lies
@@ -354,11 +357,11 @@ impl Velocity {
             lo = f;
         }
         for _ in 0..PASSAGE_MAX_ITERATIONS {
-            if hi - lo <= PASSAGE_TOLERANCE {
+            let mid = (lo + hi) / 2.0;
+            if mid <= lo || mid >= hi {
                 break;
             }
             spend(1)?;
-            let mid = (lo + hi) / 2.0;
             if self.value(path, mid) >= arc {
                 hi = mid;
             } else {

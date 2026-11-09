@@ -21,8 +21,13 @@ use crate::id::{Id, IdGenerator};
 use crate::object::from_json;
 use crate::types::ObjectType;
 
-/// Default FOV (05 §2.7): 2·atan(0.375) in degrees.
-pub const DEFAULT_FOV: f64 = 41.1121;
+/// Default FOV (05 §2.7): the exact value of 2·atan(0.375) in degrees, at which the 12-field width exactly fills the
+/// frame at distance 16. It is computed once through the pinned soft-float path (`2 · tt_anim::num::atan_deg(0.375)`;
+/// `c32_round1` checks the bits); the 41.1121 of 05 §12.3, §19.3 and 10 §4.6 is its 4-decimal display (SI-102).
+pub const DEFAULT_FOV: f64 = 41.112_090_439_166_93;
+
+/// The 4-decimal rendering of [`DEFAULT_FOV`] in the spec's tables and property panel (05 §12.3, SI-102).
+pub const DEFAULT_FOV_DISPLAY: f64 = 41.1121;
 
 /// The new-project form values (01 §3.1).
 #[derive(Debug, Clone, PartialEq)]

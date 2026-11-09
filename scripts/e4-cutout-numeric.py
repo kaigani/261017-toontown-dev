@@ -2,7 +2,11 @@
 """End-to-end scenario E4 "cut-out rig", numeric part (11 §14.8; M3 C3.2 readiness item 11) through the official MCP
 Python SDK against the real `toontown-headless` binary.
 
-Usage: python scripts/e4-cutout-numeric.py <path to toontown-headless> <out dir>
+Usage: python scripts/e4-cutout-numeric.py [--variant] <path to toontown-headless> <out dir>
+
+`--variant` runs the C3.2 round-1 reviewer's variant: the middle pose changed (Master rotated 45°, Head skewed 15° at
+frame 12) and a second camera (FOV 90 at (2, −3, 20)) made current before the poses, so the screen parts of
+`anim.evaluate` come from a camera other than the scene's default one. The oracle and every check are the same.
 
 Chain: new project → a puppet (master peg → torso peg → head, arm peg with a mirror → forearm; drawings are leaves, as
 04 §9.2 and SI-092 have it), element and peg pivots at the joints → three posed keyframes → `anim.evaluate` at the keyframes and between them → compared within 1e-6 with this
@@ -299,6 +303,8 @@ async def build(binary, work):
                 await cmd("anim.transform.set", params)
                 options = {"applyPivotTo": "both"} if peg else {"rotateAboutPivot": True}
                 await cmd("doc.object.patch", {"targets": [ids[name]], "props": {"transform": options}})
+            if VARIANT:
+                await cmd("anim.camera.create", {"name": "Second", "fov": 90, "position": {"x": 2, "y": -3, "z": 20}, "makeCurrent": True})
             # The three poses.
             for frame in KEY_FRAMES:
                 for name, pose in POSES.items():
@@ -398,11 +404,26 @@ async def run(binary, out, work):
     return worst
 
 
+VARIANT = False
+
+
+def apply_variant():
+    """The round-1 reviewer's changed middle pose; `build` adds the second current camera."""
+    global VARIANT
+    VARIANT = True
+    POSES["Master"]["rotation"][12] = 45
+    POSES["Head"]["skew"][12] = 15
+
+
 def main():
-    if len(sys.argv) < 3:
+    args = sys.argv[1:]
+    if args[:1] == ["--variant"]:
+        apply_variant()
+        args = args[1:]
+    if len(args) < 2:
         print(__doc__)
         return 2
-    binary, out = sys.argv[1], Path(sys.argv[2])
+    binary, out = args[0], Path(args[1])
     out.mkdir(parents=True, exist_ok=True)
     work = Path(tempfile.mkdtemp(prefix="tt-e4-"))
     t = time.time()
@@ -431,6 +452,7 @@ def main():
         "python": platform.python_version(),
         "mcp": importlib.metadata.version("mcp"),
         "evaluateSha256": hashlib.sha256(evaluate.read_bytes()).hexdigest() if evaluate.exists() else None,
+        "variant": VARIANT,
     }
     (out / "report.json").write_text(json.dumps(report, indent=1), encoding="utf-8", newline="\n")
     shutil.rmtree(work, ignore_errors=True)

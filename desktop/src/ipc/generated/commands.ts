@@ -10909,7 +10909,7 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
         default: null,
       },
       fov: {
-        description: "Horizontal field of view, 1…179; default 41.1121.",
+        description: "Horizontal field of view, 1…179; default 2·atan(0.375) ≈ 41.1121 (05 §2.7).",
         type: [
           "number",
           "null",
@@ -50649,7 +50649,7 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
       fov: {
         type: "number",
         "x-command": "anim.camera.set",
-        description: "FOV 1–179 degrees (default 41.1121).",
+        description: "FOV 1–179 degrees (default 2·atan(0.375) ≈ 41.1121, 05 §2.7).",
         minimum: 1,
         maximum: 179,
         "x-unit": "degree",
@@ -82538,7 +82538,7 @@ export interface anim_camera_create_params {
   parentId?: string | null;
   /** Static position; default (0, 0, 16). */
   position?: anim_camera_create_Xyz | null;
-  /** Horizontal field of view, 1…179; default 41.1121. */
+  /** Horizontal field of view, 1…179; default 2·atan(0.375) ≈ 41.1121 (05 §2.7). */
   fov?: number | null;
   /** Make it the scene's current camera. */
   makeCurrent?: boolean;
@@ -93593,7 +93593,7 @@ export interface fx_get_BoneRest {
 export interface fx_get_CameraBlock {
   /** Static or dynamic FOV. */
   fovMode: fx_get_FovMode;
-  /** FOV 1–179 degrees (default 41.1121). */
+  /** FOV 1–179 degrees (default 2·atan(0.375) ≈ 41.1121, 05 §2.7). */
   fov: number;
 }
 

@@ -83,7 +83,7 @@ pub(crate) struct CreateParams {
     /// Static position; default (0, 0, 16).
     #[serde(default)]
     position: Option<Xyz>,
-    /// Horizontal field of view, 1…179; default 41.1121.
+    /// Horizontal field of view, 1…179; default 2·atan(0.375) ≈ 41.1121 (05 §2.7).
     #[serde(default)]
     fov: Option<f64>,
     /// Make it the scene's current camera.
@@ -544,15 +544,20 @@ pub(crate) fn coalesce_changed(effects: &mut Vec<crate::cx::Effect>) {
                         }
                     }
                 }
-                if let Some(f) = ev.payload.get("frames") {
-                    match m.get("frames") {
-                        Some(o) => {
-                            let lo = o["from"].as_f64().unwrap_or(0.0).min(f["from"].as_f64().unwrap_or(0.0));
-                            let hi = o["to"].as_f64().unwrap_or(0.0).max(f["to"].as_f64().unwrap_or(0.0));
-                            m["frames"] = json!({ "from": lo, "to": hi });
-                        }
-                        None => m["frames"] = f.clone(),
+                // An event without `frames` covers every frame, and absorbs any range (C32-R1-05); two ranges merge
+                // into the one spanning both.
+                match (m.get("frames").cloned(), ev.payload.get("frames")) {
+                    (Some(o), Some(f)) => {
+                        let lo = o["from"].as_f64().unwrap_or(0.0).min(f["from"].as_f64().unwrap_or(0.0));
+                        let hi = o["to"].as_f64().unwrap_or(0.0).max(f["to"].as_f64().unwrap_or(0.0));
+                        m["frames"] = json!({ "from": lo, "to": hi });
                     }
+                    (Some(_), None) => {
+                        if let Some(o) = m.as_object_mut() {
+                            o.remove("frames");
+                        }
+                    }
+                    (None, _) => {}
                 }
                 remove.push(i);
             }

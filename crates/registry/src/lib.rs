@@ -709,6 +709,26 @@ pub fn encode_result<T: Serialize>(r: &T) -> Result<Value, CommandError> {
     tt_model::canonical::to_value(r).map_err(|e| CommandError::internal(format!("result encoding failed: {e}")))
 }
 
+/// Encodes the result of command `id`: as [`encode_result`], except that a NaN or an infinity in an `anim.*` result is
+/// the typed refusal `anim.valueOutOfRange` with `reason: nonFinite` (ADR-0019 rule 5, C32-R1-06), the backstop behind
+/// each evaluator query's own checks. Registered handlers encode through this.
+///
+/// # Errors
+/// That refusal, or `internal` if any other result cannot be encoded.
+pub fn encode_command_result<T: Serialize>(id: &str, r: &T) -> Result<Value, CommandError> {
+    tt_model::canonical::to_value(r).map_err(|e| {
+        if id.starts_with("anim.") && e.code() == tt_model::error::codes::ARG_INVALID {
+            CommandError::with_details(
+                "anim.valueOutOfRange",
+                format!("a result value of `{id}` left the finite range"),
+                json!({ "reason": "nonFinite" }),
+            )
+        } else {
+            CommandError::internal(format!("result encoding failed: {e}"))
+        }
+    })
+}
+
 /// Downcasts the handler context (the executor passes its invocation context).
 ///
 /// # Errors
