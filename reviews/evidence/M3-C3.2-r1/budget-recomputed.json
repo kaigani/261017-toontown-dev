@@ -1,0 +1,20 @@
+{
+  "windows": {
+    "source": "reviews\\evidence\\M3-C3.2\\ci-42650981858\\c32-measurements-windows\\evaluator-budget.json",
+    "sha256": "155148874ba25b9d1d35ea013ab99ac9fc2d677077f98519c94c37d20f9647cb",
+    "cases": 6,
+    "allCompleted": true,
+    "allUnder30Seconds": true,
+    "maxSeconds": 6.2531268,
+    "minimumHeadroomSeconds": 23.7468732
+  },
+  "macos": {
+    "source": "reviews\\evidence\\M3-C3.2\\ci-42650981858\\c32-measurements-macos\\evaluator-budget.json",
+    "sha256": "8cb70ded2c255768bebebfa0ada17ce044bfbaf6be41c2ba110d020f9f18a70a",
+    "cases": 6,
+    "allCompleted": true,
+    "allUnder30Seconds": true,
+    "maxSeconds": 8.421715125,
+    "minimumHeadroomSeconds": 21.578284875
+  }
+}
