@@ -1,0 +1,17 @@
+{
+  "chainLength": 26,
+  "perNodeScale": 1000000,
+  "analyticScale": 1e+156,
+  "ok": false,
+  "observed": {
+    "status": "error",
+    "changes": [],
+    "warnings": [],
+    "documentRev": 78,
+    "error": {
+      "code": "internal",
+      "message": "result encoding failed: arg.invalid: NaN and infinities are not valid JSON numbers (10 \u00a71.1)",
+      "details": {}
+    }
+  }
+}

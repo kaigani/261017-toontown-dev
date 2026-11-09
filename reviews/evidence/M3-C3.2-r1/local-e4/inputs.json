@@ -1,0 +1,596 @@
+[
+ {
+  "id": "project.create",
+  "params": {
+   "name": "E4",
+   "path": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-e4-k6i2_bcn\\E4.animpkg"
+  }
+ },
+ {
+  "id": "element.create",
+  "params": {
+   "type": "peg",
+   "name": "Master"
+  }
+ },
+ {
+  "id": "element.timing.set",
+  "params": {
+   "elementIds": [
+    "el_01K7JJN800CRMG2MYY8TRTMY8S"
+   ],
+   "duration": 24
+  }
+ },
+ {
+  "id": "element.create",
+  "params": {
+   "type": "peg",
+   "name": "Torso"
+  }
+ },
+ {
+  "id": "element.timing.set",
+  "params": {
+   "elementIds": [
+    "el_01K7JJN800AQC490F89J05FW60"
+   ],
+   "duration": 24
+  }
+ },
+ {
+  "id": "element.create",
+  "params": {
+   "type": "drawing",
+   "name": "Head"
+  }
+ },
+ {
+  "id": "element.create",
+  "params": {
+   "type": "peg",
+   "name": "ArmPeg"
+  }
+ },
+ {
+  "id": "element.timing.set",
+  "params": {
+   "elementIds": [
+    "el_01K7JJN8008NSRRVMJB3H4Y7TP"
+   ],
+   "duration": 24
+  }
+ },
+ {
+  "id": "element.create",
+  "params": {
+   "type": "drawing",
+   "name": "Forearm"
+  }
+ },
+ {
+  "id": "element.parent.set",
+  "params": {
+   "elementIds": [
+    "el_01K7JJN800AQC490F89J05FW60"
+   ],
+   "parentId": "el_01K7JJN800CRMG2MYY8TRTMY8S"
+  }
+ },
+ {
+  "id": "element.parent.set",
+  "params": {
+   "elementIds": [
+    "el_01K7JJN8007SS2QH93DA20EZE0"
+   ],
+   "parentId": "el_01K7JJN800AQC490F89J05FW60"
+  }
+ },
+ {
+  "id": "element.parent.set",
+  "params": {
+   "elementIds": [
+    "el_01K7JJN8008NSRRVMJB3H4Y7TP"
+   ],
+   "parentId": "el_01K7JJN800AQC490F89J05FW60"
+  }
+ },
+ {
+  "id": "element.parent.set",
+  "params": {
+   "elementIds": [
+    "el_01K7JJN8008SD44EDBPQZ20QMJ"
+   ],
+   "parentId": "el_01K7JJN8008NSRRVMJB3H4Y7TP"
+  }
+ },
+ {
+  "id": "element.drawing.create",
+  "params": {
+   "elementId": "el_01K7JJN8007SS2QH93DA20EZE0",
+   "name": "1",
+   "exposeFrom": 1,
+   "exposeTo": 24
+  }
+ },
+ {
+  "id": "draw.rectangle.add",
+  "params": {
+   "drawingId": "dr_01K7JJN80095580BHCNZ8AY6KN",
+   "from": {
+    "x": -100,
+    "y": -50
+   },
+   "to": {
+    "x": 100,
+    "y": 50
+   }
+  }
+ },
+ {
+  "id": "element.drawing.create",
+  "params": {
+   "elementId": "el_01K7JJN8008SD44EDBPQZ20QMJ",
+   "name": "1",
+   "exposeFrom": 1,
+   "exposeTo": 24
+  }
+ },
+ {
+  "id": "draw.rectangle.add",
+  "params": {
+   "drawingId": "dr_01K7JJN800EP9WF6FT9MWNZV05",
+   "from": {
+    "x": -100,
+    "y": -50
+   },
+   "to": {
+    "x": 100,
+    "y": 50
+   }
+  }
+ },
+ {
+  "id": "anim.transform.set",
+  "params": {
+   "nodeIds": [
+    "el_01K7JJN800CRMG2MYY8TRTMY8S"
+   ],
+   "target": "static",
+   "position": {
+    "x": 0.0,
+    "y": 0.0,
+    "z": 0.0
+   },
+   "rotation": 0.0,
+   "scale": {
+    "x": 1.0,
+    "y": 1.0
+   },
+   "pivot": {
+    "x": 0.0,
+    "y": -2.0
+   }
+  }
+ },
+ {
+  "id": "doc.object.patch",
+  "params": {
+   "targets": [
+    "el_01K7JJN800CRMG2MYY8TRTMY8S"
+   ],
+   "props": {
+    "transform": {
+     "applyPivotTo": "both"
+    }
+   }
+  }
+ },
+ {
+  "id": "anim.transform.set",
+  "params": {
+   "nodeIds": [
+    "el_01K7JJN800AQC490F89J05FW60"
+   ],
+   "target": "static",
+   "position": {
+    "x": 0.0,
+    "y": 1.0,
+    "z": 0.25
+   },
+   "rotation": 0.0,
+   "scale": {
+    "x": 1.0,
+    "y": 1.0
+   },
+   "pivot": {
+    "x": 0.0,
+    "y": -1.0
+   }
+  }
+ },
+ {
+  "id": "doc.object.patch",
+  "params": {
+   "targets": [
+    "el_01K7JJN800AQC490F89J05FW60"
+   ],
+   "props": {
+    "transform": {
+     "applyPivotTo": "both"
+    }
+   }
+  }
+ },
+ {
+  "id": "anim.transform.set",
+  "params": {
+   "nodeIds": [
+    "el_01K7JJN8007SS2QH93DA20EZE0"
+   ],
+   "target": "static",
+   "position": {
+    "x": 0.0,
+    "y": 2.0,
+    "z": 0.01
+   },
+   "rotation": 0.0,
+   "scale": {
+    "x": 1.0,
+    "y": 1.0
+   },
+   "rotationPivot": {
+    "x": 0.0,
+    "y": -0.5
+   },
+   "scalePivot": {
+    "x": 0.0,
+    "y": -0.5
+   }
+  }
+ },
+ {
+  "id": "doc.object.patch",
+  "params": {
+   "targets": [
+    "el_01K7JJN8007SS2QH93DA20EZE0"
+   ],
+   "props": {
+    "transform": {
+     "rotateAboutPivot": true
+    }
+   }
+  }
+ },
+ {
+  "id": "anim.transform.set",
+  "params": {
+   "nodeIds": [
+    "el_01K7JJN8008NSRRVMJB3H4Y7TP"
+   ],
+   "target": "static",
+   "position": {
+    "x": 1.0,
+    "y": 1.0,
+    "z": 0.0
+   },
+   "rotation": 0.0,
+   "scale": {
+    "x": -1.0,
+    "y": 1.0
+   },
+   "pivot": {
+    "x": 0.0,
+    "y": 0.0
+   }
+  }
+ },
+ {
+  "id": "doc.object.patch",
+  "params": {
+   "targets": [
+    "el_01K7JJN8008NSRRVMJB3H4Y7TP"
+   ],
+   "props": {
+    "transform": {
+     "applyPivotTo": "both"
+    }
+   }
+  }
+ },
+ {
+  "id": "anim.transform.set",
+  "params": {
+   "nodeIds": [
+    "el_01K7JJN8008SD44EDBPQZ20QMJ"
+   ],
+   "target": "static",
+   "position": {
+    "x": 1.5,
+    "y": 0.0,
+    "z": -0.01
+   },
+   "rotation": 0.0,
+   "scale": {
+    "x": 1.0,
+    "y": 1.0
+   },
+   "rotationPivot": {
+    "x": -0.5,
+    "y": 0.0
+   },
+   "scalePivot": {
+    "x": -0.5,
+    "y": 0.0
+   }
+  }
+ },
+ {
+  "id": "doc.object.patch",
+  "params": {
+   "targets": [
+    "el_01K7JJN8008SD44EDBPQZ20QMJ"
+   ],
+   "props": {
+    "transform": {
+     "rotateAboutPivot": true
+    }
+   }
+  }
+ },
+ {
+  "id": "anim.transform.set",
+  "params": {
+   "nodeIds": [
+    "el_01K7JJN800CRMG2MYY8TRTMY8S"
+   ],
+   "frame": 1,
+   "rotation": 0.0,
+   "position": {
+    "x": -4.0,
+    "y": 0.0,
+    "z": 0.0
+   }
+  }
+ },
+ {
+  "id": "anim.transform.set",
+  "params": {
+   "nodeIds": [
+    "el_01K7JJN800AQC490F89J05FW60"
+   ],
+   "frame": 1,
+   "rotation": 0.0,
+   "scale": {
+    "x": 1.0,
+    "y": 1.0
+   }
+  }
+ },
+ {
+  "id": "anim.transform.set",
+  "params": {
+   "nodeIds": [
+    "el_01K7JJN8007SS2QH93DA20EZE0"
+   ],
+   "frame": 1,
+   "rotation": 90.0,
+   "skew": 0.0
+  }
+ },
+ {
+  "id": "anim.transform.set",
+  "params": {
+   "nodeIds": [
+    "el_01K7JJN8008NSRRVMJB3H4Y7TP"
+   ],
+   "frame": 1,
+   "rotation": 0.0
+  }
+ },
+ {
+  "id": "anim.transform.set",
+  "params": {
+   "nodeIds": [
+    "el_01K7JJN8008SD44EDBPQZ20QMJ"
+   ],
+   "frame": 1,
+   "rotation": 90.0
+  }
+ },
+ {
+  "id": "anim.transform.set",
+  "params": {
+   "nodeIds": [
+    "el_01K7JJN800CRMG2MYY8TRTMY8S"
+   ],
+   "frame": 12,
+   "rotation": 90.0,
+   "position": {
+    "x": 0.0,
+    "y": 3.0,
+    "z": 0.0
+   }
+  }
+ },
+ {
+  "id": "anim.transform.set",
+  "params": {
+   "nodeIds": [
+    "el_01K7JJN800AQC490F89J05FW60"
+   ],
+   "frame": 12,
+   "rotation": -90.0,
+   "scale": {
+    "x": 2.0,
+    "y": 1.0
+   }
+  }
+ },
+ {
+  "id": "anim.transform.set",
+  "params": {
+   "nodeIds": [
+    "el_01K7JJN8007SS2QH93DA20EZE0"
+   ],
+   "frame": 12,
+   "rotation": 0.0,
+   "skew": 30.0
+  }
+ },
+ {
+  "id": "anim.transform.set",
+  "params": {
+   "nodeIds": [
+    "el_01K7JJN8008NSRRVMJB3H4Y7TP"
+   ],
+   "frame": 12,
+   "rotation": 180.0
+  }
+ },
+ {
+  "id": "anim.transform.set",
+  "params": {
+   "nodeIds": [
+    "el_01K7JJN8008SD44EDBPQZ20QMJ"
+   ],
+   "frame": 12,
+   "rotation": 90.0
+  }
+ },
+ {
+  "id": "anim.transform.set",
+  "params": {
+   "nodeIds": [
+    "el_01K7JJN800CRMG2MYY8TRTMY8S"
+   ],
+   "frame": 24,
+   "rotation": 180.0,
+   "position": {
+    "x": 4.0,
+    "y": 0.0,
+    "z": 2.0
+   }
+  }
+ },
+ {
+  "id": "anim.transform.set",
+  "params": {
+   "nodeIds": [
+    "el_01K7JJN800AQC490F89J05FW60"
+   ],
+   "frame": 24,
+   "rotation": 90.0,
+   "scale": {
+    "x": 2.0,
+    "y": 0.5
+   }
+  }
+ },
+ {
+  "id": "anim.transform.set",
+  "params": {
+   "nodeIds": [
+    "el_01K7JJN8007SS2QH93DA20EZE0"
+   ],
+   "frame": 24,
+   "rotation": -90.0,
+   "skew": 0.0
+  }
+ },
+ {
+  "id": "anim.transform.set",
+  "params": {
+   "nodeIds": [
+    "el_01K7JJN8008NSRRVMJB3H4Y7TP"
+   ],
+   "frame": 24,
+   "rotation": 270.0
+  }
+ },
+ {
+  "id": "anim.transform.set",
+  "params": {
+   "nodeIds": [
+    "el_01K7JJN8008SD44EDBPQZ20QMJ"
+   ],
+   "frame": 24,
+   "rotation": 0.0
+  }
+ },
+ {
+  "id": "anim.evaluate",
+  "params": {
+   "nodeIds": [
+    "el_01K7JJN800CRMG2MYY8TRTMY8S",
+    "el_01K7JJN800AQC490F89J05FW60",
+    "el_01K7JJN8007SS2QH93DA20EZE0",
+    "el_01K7JJN8008NSRRVMJB3H4Y7TP",
+    "el_01K7JJN8008SD44EDBPQZ20QMJ"
+   ],
+   "frames": [
+    1,
+    12,
+    24,
+    6,
+    18.5,
+    3.25,
+    23
+   ]
+  }
+ },
+ {
+  "id": "edit.undo",
+  "params": {}
+ },
+ {
+  "id": "anim.evaluate",
+  "params": {
+   "nodeIds": [
+    "el_01K7JJN800CRMG2MYY8TRTMY8S",
+    "el_01K7JJN800AQC490F89J05FW60",
+    "el_01K7JJN8007SS2QH93DA20EZE0",
+    "el_01K7JJN8008NSRRVMJB3H4Y7TP",
+    "el_01K7JJN8008SD44EDBPQZ20QMJ"
+   ],
+   "frames": [
+    1,
+    12,
+    24,
+    6,
+    18.5,
+    3.25,
+    23
+   ]
+  }
+ },
+ {
+  "id": "edit.redo",
+  "params": {}
+ },
+ {
+  "id": "anim.evaluate",
+  "params": {
+   "nodeIds": [
+    "el_01K7JJN800CRMG2MYY8TRTMY8S",
+    "el_01K7JJN800AQC490F89J05FW60",
+    "el_01K7JJN8007SS2QH93DA20EZE0",
+    "el_01K7JJN8008NSRRVMJB3H4Y7TP",
+    "el_01K7JJN8008SD44EDBPQZ20QMJ"
+   ],
+   "frames": [
+    1,
+    12,
+    24,
+    6,
+    18.5,
+    3.25,
+    23
+   ]
+  }
+ },
+ {
+  "id": "project.save",
+  "params": {}
+ }
+]

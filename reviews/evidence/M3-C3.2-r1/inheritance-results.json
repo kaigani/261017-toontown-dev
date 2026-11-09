@@ -1,0 +1,38 @@
+[
+  {
+    "file": "inheritance-ci\\history-oracles-macOS\\history-oracles-executor.log",
+    "results": [
+      "test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 4 filtered out; finished in 28.12s",
+      "test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 4 filtered out; finished in 26.09s",
+      "test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 21.77s",
+      "test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 23.41s"
+    ],
+    "failed": false
+  },
+  {
+    "file": "inheritance-ci\\history-oracles-macOS\\history-oracles-mcp.log",
+    "results": [
+      "test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 35.53s",
+      "test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 31.98s"
+    ],
+    "failed": false
+  },
+  {
+    "file": "inheritance-ci\\history-oracles-Windows\\history-oracles-executor.log",
+    "results": [
+      "test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 4 filtered out; finished in 15.29s",
+      "test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 4 filtered out; finished in 15.15s",
+      "test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 15.26s",
+      "test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 15.25s"
+    ],
+    "failed": false
+  },
+  {
+    "file": "inheritance-ci\\history-oracles-Windows\\history-oracles-mcp.log",
+    "results": [
+      "test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 24.71s",
+      "test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 25.94s"
+    ],
+    "failed": false
+  }
+]
