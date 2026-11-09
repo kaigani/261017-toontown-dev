@@ -506,7 +506,7 @@ jobs:
 
       - name: Rust toolchain (pinned in rust-toolchain.toml)
         run: |
-          tc=$(sed -n 's/^channel = "\(.*\)"//p' rust-toolchain.toml)
+          tc=$(sed -n 's/^channel = "\(.*\)"/\1/p' rust-toolchain.toml)
           rustup toolchain install "$tc" --profile minimal
           rustup override set "$tc"
           rustc --version
