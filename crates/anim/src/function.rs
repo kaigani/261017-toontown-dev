@@ -136,6 +136,75 @@ pub fn segment_value(curve: CurveType, a: &KeyView, b: &KeyView, f: f64, progres
     }
 }
 
+/// The Bézier control points `(x, y)` of the segment `a → b` in frames and values, for the curve shapes that are
+/// cubics in their parameter (a spline with handles, an interpolation preset other than `linear`); `None` for the shapes
+/// that are straight or flat (zero handles, `linear`, `constant`, a constant segment) and for `velocityBased`. The handle
+/// frame offsets are clamped exactly as [`segment_value`] clamps them, so the two describe the same curve.
+#[must_use]
+pub fn segment_bezier(curve: CurveType, a: &KeyView, b: &KeyView) -> Option<([f64; 4], [f64; 4])> {
+    if a.constant {
+        return None;
+    }
+    let t = b.frame - a.frame;
+    match curve {
+        CurveType::Spline => {
+            let (rt, rv) = a.right;
+            let (lt, lv) = b.left;
+            if rt == 0.0 && rv == 0.0 && lt == 0.0 && lv == 0.0 {
+                return None;
+            }
+            let x = [a.frame, a.frame + rt.clamp(0.0, t), b.frame + lt.clamp(-t, 0.0), b.frame];
+            Some((x, [a.value, a.value + rv, b.value + lv, b.value]))
+        }
+        CurveType::Interpolation => {
+            let e = a.easing.unwrap_or(Easing::Linear);
+            if e == Easing::Linear {
+                return None;
+            }
+            let ((x1, y1), (x2, y2)) = preset_points(e)?;
+            let d = b.value - a.value;
+            Some((
+                [a.frame, a.frame + x1 * t, a.frame + x2 * t, b.frame],
+                [a.value, a.value + y1 * d, a.value + y2 * d, b.value],
+            ))
+        }
+        CurveType::VelocityBased => None,
+    }
+}
+
+/// The frames strictly inside a Bézier segment where its value has a local extremum: the roots in (0, 1) of the
+/// derivative of the value's cubic, a quadratic solved in closed form, mapped to frames through the time cubic. Between
+/// two consecutive frames of `[start, extrema…, end]` the value is monotone.
+#[must_use]
+pub fn extremum_frames(x: [f64; 4], y: [f64; 4]) -> Vec<f64> {
+    // y′(s) is proportional to (y1 − y0)(1 − s)² + 2(y2 − y1)(1 − s)s + (y3 − y2)s² = A s² + B s + C.
+    let (p, q, r) = (y[1] - y[0], y[2] - y[1], y[3] - y[2]);
+    let (qa, qb, qc) = (p - 2.0 * q + r, 2.0 * (q - p), p);
+    // The cancellation-free form: h = −(B + sign(B)·√(B² − 4AC)) / 2, roots h / A and C / h. A near-zero A (a cubic
+    // that is almost a quadratic) then gives one huge root, filtered out, and an accurate one.
+    let mut roots = Vec::with_capacity(2);
+    let disc = qb * qb - 4.0 * qa * qc;
+    if disc >= 0.0 {
+        let sq = disc.sqrt();
+        let h = -(qb + if qb < 0.0 { -sq } else { sq }) / 2.0;
+        if qa != 0.0 {
+            roots.push(h / qa);
+        }
+        if h != 0.0 {
+            roots.push(qc / h);
+        }
+    }
+    let mut out: Vec<f64> = roots
+        .into_iter()
+        .filter(|s| *s > 0.0 && *s < 1.0)
+        .map(|s| bernstein(x[0], x[1], x[2], x[3], s))
+        .filter(|f| *f > x[0] && *f < x[3])
+        .collect();
+    out.sort_by(f64::total_cmp);
+    out.dedup();
+    out
+}
+
 /// The value of a key list at local frame `f`: held before the first and after the last key (05 §2.10), a key's own
 /// value at its frame. `None` for an empty list.
 #[must_use]

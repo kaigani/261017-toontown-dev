@@ -34,7 +34,7 @@ the 30-second watchdog.
    | `function::BEZIER_MAX_ITERATIONS` | 52 | Halving `u` 52 times reaches one unit in the last place of values near 1, inside the spec's 1e-9; the loop is fixed, so the count is the same on every platform |
    | `tcb::SAMPLES_PER_SEGMENT` | 64 | 05 §9.2 |
    | `tcb::PASSAGE_TOLERANCE` | 1e-4 frame | 05 §10.5 |
-   | `tcb::PASSAGE_MAX_ITERATIONS` | 40 | One frame halved 40 times is far below the tolerance; the bisection ends on whichever comes first |
+   | `tcb::PASSAGE_MAX_ITERATIONS` | 40 | The bracket is one monotone piece of a keyframe segment, at most 100 000 frames; halved 40 times it is under 1e-7 frame, below the tolerance; the bisection ends on whichever comes first |
    | `tcb::MIN_TANGENT` | 1e-9 | 05 §8.3 |
    | `eval::NODE_FRAME_COST` | 16 units | Per node-frame evaluated |
    | `anim_eval::MAX_RESULTS` | 1 000 000 | Frame × node results or samples of one query |
@@ -44,6 +44,11 @@ the 30-second watchdog.
    300-million-unit work account as C3.1 (`timing::TIMING_WORK_BUDGET`), which observes the caller's cancellation at each
    charge: an oversized request answers `limit.exceeded`, a cancelled one `command.timeout`, both before the watchdog.
    Paths are read once per call, world matrices memoised per scene frame. `c32_budgets` records the worst cases.
+   A passage frame (05 §10.5) is bracketed without sampling: each velocity sub-segment's value extrema are the roots of
+   its cubic's derivative, a quadratic solved in closed form in its cancellation-free form (`function::extremum_frames`),
+   so nodes and extrema split the segment into monotone pieces; the candidates are evaluated in order up to the first
+   with `V >= arc`, and the piece before it is bisected (C32-R1-01). Each candidate evaluation and each bisection step is
+   one passage-frame step.
 8. **Channel model.** As 05 and 10 §4.12 stand: `position` is a motion path, `position.x/y/z` projections, the rest 1-D.
    Keys are stored in local frames; every command frame is a scene frame in the first cycle. D-5 (per-axis position) is
    unresolved: SI-096 records the migration and the IPC types it would break.

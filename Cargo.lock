@@ -4628,6 +4628,9 @@ name = "tt-anim"
 version = "0.0.1"
 dependencies = [
  "libm",
+ "num-bigint",
+ "num-rational",
+ "num-traits",
  "proptest",
  "tt-model",
 ]

@@ -12,7 +12,8 @@ pub const SAMPLES_PER_SEGMENT: usize = 64;
 /// Passage frames are found by bisection to this width (05 §10.5), then reported to 3 decimals.
 pub const PASSAGE_TOLERANCE: f64 = 1e-4;
 
-/// Upper bound of the passage bisection: one frame halved this often is far below [`PASSAGE_TOLERANCE`] (ADR-0019).
+/// Upper bound of the passage bisection: a bracket is at most one keyframe segment, at most 100 000 frames, and halving
+/// that 40 times leaves under 1e-7 frame, below [`PASSAGE_TOLERANCE`] (ADR-0019).
 pub const PASSAGE_MAX_ITERATIONS: u32 = 40;
 
 /// A tangent below this length has no direction (05 §8.3).
@@ -251,6 +252,24 @@ impl Default for Velocity {
 
 impl Velocity {
     /// `u(f)` in the keyframe segment `[f0, f1]`, strictly inside it.
+    /// The curve's nodes in the keyframe segment `[f0, f1]`: the start pin (u = 0), the keys strictly inside, the end
+    /// pin (u = 1), each pin with the shape of a key record at its frame.
+    fn nodes(&self, f0: f64, f1: f64) -> Vec<KeyView> {
+        let shape = |frame: f64, u: f64| -> KeyView {
+            let i = self.keys.partition_point(|k| k.frame < frame);
+            match self.keys.get(i).filter(|k| k.frame == frame) {
+                Some(k) => KeyView { frame, value: u, constant: false, ..*k },
+                None => KeyView::plain(frame, u),
+            }
+        };
+        let mut out = vec![shape(f0, 0.0)];
+        out.extend(
+            self.keys.iter().filter(|k| k.frame > f0 && k.frame < f1).map(|k| KeyView { constant: false, ..*k }),
+        );
+        out.push(shape(f1, 1.0));
+        out
+    }
+
     fn u(&self, f0: f64, f1: f64, f: f64) -> f64 {
         let shape = |frame: f64, u: f64| -> KeyView {
             let i = self.keys.partition_point(|k| k.frame < frame);
@@ -300,8 +319,11 @@ impl Velocity {
     }
 
     /// The smallest frame in the keyframe segment `[f0, f1]` with `V(f) ≥ arc`, to [`PASSAGE_TOLERANCE`], rounded to 3
-    /// decimals (05 §10.5). Whole frames are scanned forward first, so an earlier crossing of a non-monotonic curve
-    /// is found; `spend` is charged per curve evaluation.
+    /// decimals (05 §10.5). Each velocity sub-segment (between consecutive nodes) is a cubic or a line in its
+    /// parameter; its value extrema ([`function::extremum_frames`]) split it into monotone pieces. The candidate frames
+    /// — every node and every extremum, in order — are evaluated until the first one with `V ≥ arc`; the crossing lies
+    /// in the monotone piece before it, which is bisected (C32-R1-01: a sub-frame excursion is not skipped). A crossing
+    /// exactly at a candidate frame reports that frame. `spend` is charged per curve evaluation.
     pub fn passage<E>(
         &self,
         path: &Path,
@@ -313,16 +335,23 @@ impl Velocity {
         if path.key_arc(j + 1) <= path.key_arc(j) || arc <= path.key_arc(j) {
             return Ok(round3(f0));
         }
+        let nodes = self.nodes(f0, f1);
+        let mut candidates: Vec<f64> = Vec::with_capacity(nodes.len() * 3);
+        for w in nodes.windows(2) {
+            candidates.push(w[0].frame);
+            if let Some((x, y)) = function::segment_bezier(self.curve, &w[0], &w[1]) {
+                candidates.extend(function::extremum_frames(x, y));
+            }
+        }
+        candidates.push(f1);
         let (mut lo, mut hi) = (f0, f1);
-        let mut f = f0 + 1.0;
-        while f < f1 {
+        for f in candidates.into_iter().skip(1) {
             spend(1)?;
             if self.value(path, f) >= arc {
                 hi = f;
                 break;
             }
             lo = f;
-            f += 1.0;
         }
         for _ in 0..PASSAGE_MAX_ITERATIONS {
             if hi - lo <= PASSAGE_TOLERANCE {
