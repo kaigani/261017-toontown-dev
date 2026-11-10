@@ -100,7 +100,9 @@ jobs:
       # topology properties (C24-R1-01: 256 cases each) run in `check-properties` (split in M2 C2.4 round 1: Windows
       # `check` reached its 60-minute limit in run 41475164426); the rest of their binaries runs here too. The reviewer's
       # C3.1 round-3 4096-sequence property runs in `review-properties` (moved in M3 C3.2 round 1: it took 10 min 41 s of
-      # Windows `check`'s 57 min 42 s in run 42692563454).
+      # Windows `check`'s 57 min 42 s in run 42692563454). The trybuild suites `compile_fail` (176 s) and the reviewer-owned
+      # `c12_r1_macro` (65 s) run in release in `history-oracles` (moved in M3 C3.2 round 3 by ruling; Windows `check` took
+      # 47 min 59 s in run 42738948001).
       - name: Run cargo test --workspace --locked
         run: |
           cargo test --workspace --locked -- --skip ten_thousand_history_operations_match_independent_content_oracle_and_replay \
@@ -136,7 +138,7 @@ jobs:
             --skip non_parallelogram_envelopes_map_the_layer_projectively \
             --skip snapping_onto_a_curved_contour_reaches_its_nearest_point \
             --skip integer_translations_and_compositions_preserve_all_snapped_anchor_sequences \
-            --skip side_fills_read_back_beside_collinear_overlaps             --skip independent_sequences_4096_persist_canonical_runs_and_notes
+            --skip side_fills_read_back_beside_collinear_overlaps             --skip independent_sequences_4096_persist_canonical_runs_and_notes             --skip exclusive_mutation_capability             --skip duplicate_ids_and_inventory_kind_drift_are_rejected             --skip missing_example_is_rejected_at_compile_time
 
       - name: Desktop host with the M0 diagnostics feature (C0.4 gating) — clippy and tests
         run: |
@@ -370,6 +372,11 @@ jobs:
           mkdir -p out
           cargo test --release --locked -p tt-executor --test c12_r1_stress --test c12_r3_stress --test c13_r3_history_r1 --test c13_r3_history_r3 -- ten_thousand_history_operations_match_independent_content_oracle_and_replay --exact --nocapture 2>&1 | tee out/history-oracles-executor.log
           cargo test --release --locked -p tt-mcp --test c14_r3_history_r1 --test c14_r3_history_r3 -- ten_thousand_history_operations_match_independent_content_oracle_and_replay --exact --nocapture 2>&1 | tee out/history-oracles-mcp.log
+
+      # Skipped in `check` (M3 C3.2 round 3 ruling): the compile-time capability proof and the reviewer's macro
+      # rejections, whole binaries, bodies unchanged; trybuild compiles each case under the release profile.
+      - name: Compile-time proofs (trybuild, release)
+        run: cargo test --release --locked -p tt-executor --test compile_fail --test c12_r1_macro 2>&1 | tee out/compile-time-proofs.log
 
       - uses: actions/upload-artifact@v7
         if: always()

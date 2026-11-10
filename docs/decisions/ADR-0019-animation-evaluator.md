@@ -48,7 +48,10 @@ the 30-second watchdog.
    hierarchy read, passage-frame step and orient-to-path search step to a meter closure. The executor passes the same
    300-million-unit work account as C3.1 (`timing::TIMING_WORK_BUDGET`), which observes the caller's cancellation at each
    charge: an oversized request answers `limit.exceeded`, a cancelled one `command.timeout`, both before the watchdog.
-   Paths are read once per call, world matrices memoised per scene frame. `c32_budgets` records the worst cases.
+   Paths are read once per call, world matrices memoised per scene frame. `c32_budgets` records the worst cases. Undo
+   and redo charge an unlimited work account once per replayed entry (`Cx::replay`), so a long replay of a large
+   animation step observes the caller's cancellation while it runs and commits nothing (C32-R3-01); no step becomes
+   impossible to undo.
    A passage frame (05 §10.5) is bracketed without sampling: each velocity sub-segment's value extrema are the roots of
    its cubic's derivative, a quadratic solved in closed form in its cancellation-free form (`function::extremum_frames`),
    so nodes and extrema split the segment into monotone pieces; the candidates are evaluated in order up to the first
