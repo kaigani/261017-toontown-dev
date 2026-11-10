@@ -1,0 +1,1 @@
+796 entries -> crates\registry\src\inventory.rs

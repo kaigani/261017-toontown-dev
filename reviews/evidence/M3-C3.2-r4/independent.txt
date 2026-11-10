@@ -1,0 +1,10 @@
+   Compiling tt-registry v0.0.1 (C:\Users\kaiga\work\review\m3-c32-r4\crates\registry)
+   Compiling tt-executor v0.0.1 (C:\Users\kaiga\work\review\m3-c32-r4\crates\executor)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 30.74s
+     Running tests\c32_r4_closure.rs (target\debug\deps\c32_r4_closure-afa613b2b7212e37.exe)
+
+running 1 test
+test canonical_rollback_running_replays_queued_deadline_and_acceptance ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 40.06s
+

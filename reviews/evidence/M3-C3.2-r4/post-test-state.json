@@ -1,0 +1,7 @@
+{
+  "tracked_diff": "",
+  "status_before_delivery_commit": "?? crates/executor/tests/c32_r4_closure.rs\n?? crates/mcp/tests/c32_r4_delivery.rs\n?? reviews/M3-C3.2-r4-closure.md\n?? reviews/evidence/M3-C3.2-r4/\n",
+  "TT_COMMIT_REVIEW_RECEIPTS": null,
+  "restoration_needed": false,
+  "only_new_reviewer_files": true
+}

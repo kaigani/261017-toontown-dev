@@ -1,0 +1,21 @@
+diff --git a/crates/executor/src/cx.rs b/crates/executor/src/cx.rs
+index ef05bfb..100f813 100644
+--- a/crates/executor/src/cx.rs
++++ b/crates/executor/src/cx.rs
+@@ -972,8 +972,16 @@ impl Cx {
+                         None => merged.push((c.key.clone(), p.clone())),
+                     }
+                 }
++                // Replay observes the caller's cancellation (and the work hooks) once per entry: a long undo or redo
++                // of a large step is cancelled while it runs and commits nothing (never-block rule; C32-R3-01). The
++                // account has no limit, so no step becomes impossible to undo.
++                let mut work = Work::unlimited("replaying the undo step");
+                 let mut patches = Vec::with_capacity(merged.len());
+                 for (key, ops) in merged {
++                    work.spend_n(ops.len().max(1)).map_err(|e| {
++                        CommandError::new(e.code, e.message)
++                            .hint("the caller's watchdog budget passed: the call was cancelled and changed nothing")
++                    })?;
+                     let ready = prepare(&before, &key, &ops)?;
+                     patches.push((key, ready));
+                 }

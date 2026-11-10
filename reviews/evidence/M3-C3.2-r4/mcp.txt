@@ -1,0 +1,37 @@
+   Compiling once_cell v1.21.4
+   Compiling getrandom v0.4.3
+   Compiling ahash v0.8.12
+   Compiling read-fonts v0.41.0
+   Compiling referencing v0.59.0
+   Compiling jsonschema-value v0.59.0
+   Compiling jsonschema v0.59.0
+   Compiling skrifa v0.44.0
+   Compiling tt-model v0.0.1 (C:\Users\kaiga\work\review\m3-c32-r4\crates\model)
+   Compiling tt-anim v0.0.1 (C:\Users\kaiga\work\review\m3-c32-r4\crates\anim)
+   Compiling tt-fx v0.0.1 (C:\Users\kaiga\work\review\m3-c32-r4\crates\fx)
+   Compiling tt-vector v0.0.1 (C:\Users\kaiga\work\review\m3-c32-r4\crates\vector)
+   Compiling tt-colour v0.0.1 (C:\Users\kaiga\work\review\m3-c32-r4\crates\colour)
+   Compiling tt-persist v0.0.1 (C:\Users\kaiga\work\review\m3-c32-r4\crates\persist)
+   Compiling tt-render v0.0.1 (C:\Users\kaiga\work\review\m3-c32-r4\crates\render)
+   Compiling tt-io v0.0.1 (C:\Users\kaiga\work\review\m3-c32-r4\crates\io)
+   Compiling tt-registry v0.0.1 (C:\Users\kaiga\work\review\m3-c32-r4\crates\registry)
+   Compiling tt-audio v0.0.1 (C:\Users\kaiga\work\review\m3-c32-r4\crates\audio)
+   Compiling tt-lipsync v0.0.1 (C:\Users\kaiga\work\review\m3-c32-r4\crates\lipsync)
+   Compiling tt-executor v0.0.1 (C:\Users\kaiga\work\review\m3-c32-r4\crates\executor)
+   Compiling tt-engine v0.0.1 (C:\Users\kaiga\work\review\m3-c32-r4\crates\engine)
+   Compiling tt-mcp v0.0.1 (C:\Users\kaiga\work\review\m3-c32-r4\crates\mcp)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 1m 53s
+     Running tests\c32_r4_delivery.rs (target\debug\deps\c32_r4_delivery-1d5bee5bb121f2f6.exe)
+
+running 1 test
+test replies_are_unique_owned_typed_and_cancelled_requests_remain_silent ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 7.42s
+
+     Running tests\c32_round3_protocol.rs (target\debug\deps\c32_round3_protocol-ab94c8e78809d790.exe)
+
+running 1 test
+test long_and_refused_evaluations_answer_their_own_requests_only ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 6.59s
+

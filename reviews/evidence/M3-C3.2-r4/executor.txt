@@ -1,0 +1,164 @@
+timeout.exe :    Compiling tt-registry v0.0.1 (C:\Users\kaiga\work\review\m3-c32-r4\crates\registry)
+At line:2 char:469
++ ... ommand.txt; & 'C:/Program Files/Git/usr/bin/timeout.exe' 530 cargo @c ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (   Compiling tt...rates\registry):String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+   Compiling tt-executor v0.0.1 (C:\Users\kaiga\work\review\m3-c32-r4\crates\executor)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 2m 02s
+     Running tests\c32_contract.rs (target\debug\deps\c32_contract-4673e191be76c0be.exe)
+
+running 8 tests
+test a_running_evaluation_is_cancelled_by_its_callers_budget_and_frees_the_worker ... ok
+test every_action_is_one_undo_step_and_a_dry_run_changes_nothing ... ok
+test stale_guards_and_guarded_replay_apply ... ok
+test atomic_batches_roll_everything_back_and_share_one_step_and_one_event ... ok
+test oversized_requests_are_refused_before_the_watchdog ... ok
+test queries_answer_their_shapes ... ok
+test channels_survive_save_and_open_with_their_ids ... ok
+test omitted_targets_use_the_selection_then_the_current_element_and_the_current_frame ... ok
+
+test result: ok. 8 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 7.57s
+
+     Running tests\c32_r1_delegation.rs (target\debug\deps\c32_r1_delegation-ed45ac81b8ff2cfa.exe)
+
+running 1 test
+test rotation_patch_matches_owner_and_future_owner_is_named ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.23s
+
+     Running tests\c32_r1_queries.rs (target\debug\deps\c32_r1_queries-5593b6a737fd94f1.exe)
+
+running 1 test
+test query_purity_and_transaction_event_boundaries ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.07s
+
+     Running tests\c32_r2_c21_golden.rs (target\debug\deps\c32_r2_c21_golden-6ed2a2bf30e687fb.exe)
+
+running 1 test
+test command_created_geometry_is_identical_across_runs_and_platforms ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 2.18s
+
+     Running tests\c32_r2_c22_golden.rs (target\debug\deps\c32_r2_c22_golden-f3c58908397129e8.exe)
+
+running 1 test
+test planar_graph_side_assignments_zone_ids_fills_and_membership_are_identical_across_runs_and_platforms ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 3.28s
+
+     Running tests\c32_r2_camera.rs (target\debug\deps\c32_r2_camera-5927805352db188a.exe)
+
+running 2 tests
+test default_camera_reports_exact_fov_and_twelve_fields ... ok
+test keyed_fov_and_arbitrary_roll_use_reported_effective_fov ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.42s
+
+     Running tests\c32_r2_events.rs (target\debug\deps\c32_r2_events-808559d95af23943.exe)
+
+running 4 tests
+test all_frame_scope_both_orders_and_separate_transactions ... ok
+undo/redo event counts: [1, 1]
+duplicate undo/redo event counts: [1, 1]
+test duplicated_function_key_reports_its_neighbour_interval ... ok
+test interpolation_interval_survives_undo_redo ... ok
+test key_move_remove_and_segment_intervals ... ok
+
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.60s
+
+     Running tests\c32_r2_finite.rs (target\debug\deps\c32_r2_finite-4c9b41c8e13aea11.exe)
+
+running 1 test
+test hierarchy_remains_finite_or_returns_typed_refusal ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.34s
+
+     Running tests\c32_r2_numeric.rs (target\debug\deps\c32_r2_numeric-baf0263f20b8a3c8.exe)
+
+running 1 test
+test exact_large_integer_test_and_failed_test_rollback ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.83s
+
+     Running tests\c32_r2_path_budget.rs (target\debug\deps\c32_r2_path_budget-32454e91037c0251.exe)
+
+running 1 test
+long path seconds=3.0255932 status=Error error=Some(CommandError { code: "command.timeout", message: "`anim.path.get` 
+did not answer within 3000 ms", details: Object {"commandId": String("anim.path.get"), "budgetMs": Number(3000)}, 
+hint: Some("the call was cancelled: unless it had already committed, it changed nothing; read doc.state.get before 
+retrying") })
+test long_passage_queries_release_the_worker_before_watchdog ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 6.18s
+
+     Running tests\c32_r3_camera.rs (target\debug\deps\c32_r3_camera-099995fcc9b280f7.exe)
+
+running 1 test
+test display_fov_is_one_value_through_dynamic_history ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.85s
+
+     Running tests\c32_r3_history.rs (target\debug\deps\c32_r3_history-c9e29d000e8d2bb5.exe)
+
+running 5 tests
+R3 non-horizontal passage payload: {"nodeId":"el_01K7JJN800J6GZ68MHS01HNTDM","lockDepth":false,"length":8.0444491015876
+22,"points":[{"id":"ch_01K7JJN803N2HAQ4SXZVV8MYK2/mp_01K7JJN800FJRWFM4KTPMG2Y8P","kind":"key","frame":1.0,"x":0.0,"y":0
+.0,"z":0.0,"tension":0.0,"continuity":0.0,"bias":0.0,"constantSegment":false,"lockDepth":false,"arcLength":0.0},{"id":"
+ch_01K7JJN803N2HAQ4SXZVV8MYK2/mp_01K7JJN8018RJF5HKPPPGQJ5BC","kind":"control","frame":11.798,"x":2.0,"y":3.0,"z":1.0,"t
+ension":0.0,"continuity":0.0,"bias":0.0,"arcLength":3.776558209009814},{"id":"ch_01K7JJN803N2HAQ4SXZVV8MYK2/mp_01K7JJN8
+022SPANEMXQ0645E8J","kind":"key","frame":24.0,"x":6.0,"y":4.0,"z":2.0,"tension":0.0,"continuity":0.0,"bias":0.0,"consta
+ntSegment":false,"lockDepth":false,"arcLength":8.044449101587622}]}
+R3 passage payload: {"nodeId":"el_01K7JJN800J6GZ68MHS01HNTDM","lockDepth":false,"length":0.0,"points":[]}
+test non_horizontal_passage_payload_is_repeatable_and_recorded ... ok
+test several_steps_replay_their_own_scope_and_discarded_branch_never_returns ... ok
+test loop_scope_and_fractional_samples_survive_history ... ok
+test camera_whole_block_and_hidden_annotation_replay_keep_evaluation ... ok
+test open_has_no_preopen_undo_or_replay_event ... ok
+
+test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.55s
+
+     Running tests\c32_r4_closure.rs (target\debug\deps\c32_r4_closure-afa613b2b7212e37.exe)
+
+running 1 test
+test canonical_rollback_running_replays_queued_deadline_and_acceptance ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 41.58s
+
+     Running tests\c32_round1.rs (target\debug\deps\c32_round1-dfac310e89f21898.exe)
+
+running 8 tests
+test json_equal_is_rfc_numeric_equality ... ok
+test a_non_finite_number_in_any_anim_result_is_a_typed_refusal ... ok
+test separate_transactions_keep_separate_events ... ok
+test an_all_frame_change_absorbs_a_keyed_range_in_either_order ... ok
+test a_new_camera_has_the_exact_default_and_the_tables_value_stays_as_set ... ok
+test keyed_changes_report_their_interpolation_intervals_and_merge_them ... ok
+test rfc_test_compares_numbers_by_value_exactly_and_recursively ... ok
+test a_finite_world_matrix_reads_back_and_a_non_finite_one_is_a_typed_refusal ... ok
+
+test result: ok. 8 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.99s
+
+     Running tests\c32_round2.rs (target\debug\deps\c32_round2-dfec43e09c12123d.exe)
+
+running 4 tests
+test steps_without_animation_replay_no_animation_event_and_direct_edits_are_not_doubled ... ok
+test replayed_scopes_are_the_original_intervals_and_all_frame_forms ... ok
+test every_animation_action_replays_its_event_on_undo_and_redo ... ok
+test replay_survives_save_and_a_reopened_project_records_new_steps ... ok
+
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.52s
+
+     Running tests\c32_round3.rs (target\debug\deps\c32_round3-08e203bf2302dafa.exe)
+
+running 5 tests
+test running_undo_and_redo_of_a_large_animation_step_are_cancelled_atomically ... ok
+test a_cancelled_animation_edit_restores_the_session_state_in_full ... ok
+test animation_events_reach_every_subscriber_whoever_issued_the_call ... ok
+test a_queued_undo_behind_a_running_evaluation_keeps_its_own_deadline_and_is_atomic ... ok
+test animation_mutations_pass_the_same_acceptance_rules_as_any_command_for_user_and_agent ... ok
+
+test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 35.31s
+

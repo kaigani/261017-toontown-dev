@@ -1,0 +1,202 @@
+{
+  "head": "8c640d18e8b1d8562145f6aa88dc75fd6dee1b25",
+  "conclusion": "success",
+  "jobs": [
+    {
+      "name": "history oracles release (windows-latest)",
+      "conclusion": "success",
+      "seconds": 1482.0
+    },
+    {
+      "name": "m3 properties release (macos-latest)",
+      "conclusion": "success",
+      "seconds": 99.0
+    },
+    {
+      "name": "e4 release (macos-latest)",
+      "conclusion": "success",
+      "seconds": 295.0
+    },
+    {
+      "name": "check properties (macos-latest)",
+      "conclusion": "success",
+      "seconds": 1422.0
+    },
+    {
+      "name": "raster determinism (macos-latest)",
+      "conclusion": "success",
+      "seconds": 136.0
+    },
+    {
+      "name": "history oracles release (macos-latest)",
+      "conclusion": "success",
+      "seconds": 933.0
+    },
+    {
+      "name": "e2 release (macos-latest)",
+      "conclusion": "success",
+      "seconds": 305.0
+    },
+    {
+      "name": "e2 release (windows-latest)",
+      "conclusion": "success",
+      "seconds": 346.0
+    },
+    {
+      "name": "review properties release (windows-latest)",
+      "conclusion": "success",
+      "seconds": 2331.0
+    },
+    {
+      "name": "measurements release (macos-latest)",
+      "conclusion": "success",
+      "seconds": 563.0
+    },
+    {
+      "name": "check properties (windows-latest)",
+      "conclusion": "success",
+      "seconds": 1672.0
+    },
+    {
+      "name": "headless release (windows-latest)",
+      "conclusion": "success",
+      "seconds": 2393.0
+    },
+    {
+      "name": "check (windows-latest)",
+      "conclusion": "success",
+      "seconds": 2736.0
+    },
+    {
+      "name": "m3 properties release (windows-latest)",
+      "conclusion": "success",
+      "seconds": 188.0
+    },
+    {
+      "name": "headless without a display (ubuntu)",
+      "conclusion": "success",
+      "seconds": 176.0
+    },
+    {
+      "name": "measurements release (windows-latest)",
+      "conclusion": "success",
+      "seconds": 1089.0
+    },
+    {
+      "name": "check (macos-latest)",
+      "conclusion": "success",
+      "seconds": 1791.0
+    },
+    {
+      "name": "review properties release (macos-latest)",
+      "conclusion": "success",
+      "seconds": 1715.0
+    },
+    {
+      "name": "bundle (macos-latest)",
+      "conclusion": "success",
+      "seconds": 418.0
+    },
+    {
+      "name": "raster determinism (windows-latest)",
+      "conclusion": "success",
+      "seconds": 197.0
+    },
+    {
+      "name": "headless release (macos-latest)",
+      "conclusion": "success",
+      "seconds": 1836.0
+    },
+    {
+      "name": "raster determinism (ubuntu-latest)",
+      "conclusion": "success",
+      "seconds": 104.0
+    },
+    {
+      "name": "bundle (windows-latest)",
+      "conclusion": "success",
+      "seconds": 742.0
+    },
+    {
+      "name": "e4 release (windows-latest)",
+      "conclusion": "success",
+      "seconds": 352.0
+    },
+    {
+      "name": "e4 cross-OS",
+      "conclusion": "success",
+      "seconds": 3.0
+    }
+  ],
+  "debug_above_60": [],
+  "prior_debug_above_60": [
+    {
+      "job": "check (windows-latest)",
+      "name": "tests\\c12_r1_macro.rs",
+      "occurrence": 1,
+      "executable": "target\\debug\\deps\\c12_r1_macro-fb777af901df6957.exe",
+      "seconds": 64.74,
+      "result": "ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out",
+      "nested_harness_summaries": []
+    },
+    {
+      "job": "check (windows-latest)",
+      "name": "tests\\compile_fail.rs",
+      "occurrence": 1,
+      "executable": "target\\debug\\deps\\compile_fail-ec7d2724334ad097.exe",
+      "seconds": 176.04,
+      "result": "ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out",
+      "nested_harness_summaries": []
+    },
+    {
+      "job": "check (macos-latest)",
+      "name": "tests/c12_r1_macro.rs",
+      "occurrence": 1,
+      "executable": "target/debug/deps/c12_r1_macro-3195cb898ac19585",
+      "seconds": 60.18,
+      "result": "ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out",
+      "nested_harness_summaries": []
+    },
+    {
+      "job": "check (macos-latest)",
+      "name": "tests/compile_fail.rs",
+      "occurrence": 1,
+      "executable": "target/debug/deps/compile_fail-3cd689aac67a0963",
+      "seconds": 107.21,
+      "result": "ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out",
+      "nested_harness_summaries": []
+    }
+  ],
+  "properties_18_test_binaries": [
+    {
+      "run": "42738948001",
+      "job": "check (windows-latest)",
+      "name": "tests\\properties.rs",
+      "occurrence": 1,
+      "executable": "target\\debug\\deps\\properties-354f0731f2ef61e5.exe",
+      "seconds": 0.26,
+      "result": "ok. 18 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out",
+      "nested_harness_summaries": []
+    },
+    {
+      "run": "42738948001",
+      "job": "check (macos-latest)",
+      "name": "tests/properties.rs",
+      "occurrence": 1,
+      "executable": "target/debug/deps/properties-8ed04348ee7a04eb",
+      "seconds": 0.11,
+      "result": "ok. 18 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out",
+      "nested_harness_summaries": []
+    },
+    {
+      "run": "42762495633",
+      "job": "check (windows-latest)",
+      "name": "tests\\properties.rs",
+      "occurrence": 1,
+      "executable": "target\\debug\\deps\\properties-354f0731f2ef61e5.exe",
+      "seconds": 0.26,
+      "result": "ok. 18 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out",
+      "nested_harness_summaries": []
+    }
+  ]
+}

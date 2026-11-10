@@ -1,0 +1,768 @@
+history oracles release (windows-latest)	Compile-time proofs (trybuild, release)	﻿2026-11-10T05:47:05.4584662Z ##[group]Run cargo test --release --locked -p tt-executor --test compile_fail --test c12_r1_macro 2>&1 | tee out/compile-time-proofs.log
+history oracles release (windows-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:47:05.4585792Z ^[[36;1mcargo test --release --locked -p tt-executor --test compile_fail --test c12_r1_macro 2>&1 | tee out/compile-time-proofs.log^[[0m
+history oracles release (windows-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:47:05.4602691Z shell: C:\Program Files\Git\bin\bash.EXE --noprofile --norc -e -o pipefail {0}
+history oracles release (windows-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:47:05.4603157Z env:
+history oracles release (windows-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:47:05.4603395Z   CARGO_TERM_COLOR: always
+history oracles release (windows-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:47:05.4603716Z   CARGO_INCREMENTAL: 0
+history oracles release (windows-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:47:05.4603976Z   RUST_BACKTRACE: 1
+history oracles release (windows-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:47:05.4604226Z   CACHE_ON_FAILURE: false
+history oracles release (windows-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:47:05.4604510Z ##[endgroup]
+history oracles release (windows-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:47:06.0105506Z ^[[1m^[[92m   Compiling^[[0m tt-executor v0.0.1 (D:\a\261017-toontown-dev\261017-toontown-dev\crates\executor)
+history oracles release (windows-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:47:07.9308529Z ^[[1m^[[92m    Finished^[[0m `release` profile [optimized + debuginfo] target(s) in 2.37s
+history oracles release (windows-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:47:07.9466832Z ^[[1m^[[92m     Running^[[0m tests\c12_r1_macro.rs (target\release\deps\c12_r1_macro-45b34adec095a388.exe)
+history oracles release (windows-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:47:07.9623055Z 
+history oracles release (windows-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:47:07.9624009Z running 2 tests
+history oracles release (windows-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:47:07.9624639Z test duplicate_ids_and_inventory_kind_drift_are_rejected ... ok
+history oracles release (windows-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:47:08.3993324Z ^[[1m^[[92m   Compiling^[[0m proc-macro2 v1.0.107
+history oracles release (windows-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:47:08.3994816Z ^[[1m^[[92m   Compiling^[[0m unicode-ident v1.0.27
+history oracles release (windows-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:47:08.3995569Z ^[[1m^[[92m   Compiling^[[0m quote v1.0.47
+history oracles release (windows-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:47:08.4022090Z ^[[1m^[[92m    Checking^[[0m cfg-if v1.0.5
+history oracles release (windows-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:47:08.4534508Z ^[[1m^[[92m   Compiling^[[0m autocfg v1.5.1
+history oracles release (windows-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:47:08.5063584Z ^[[1m^[[92m   Compiling^[[0m serde_core v1.0.229
+history oracles release (windows-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:47:08.8682821Z ^[[1m^[[92m    Checking^[[0m foldhash v0.2.0
+history oracles release (windows-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:47:09.0027330Z ^[[1m^[[92m    Checking^[[0m equivalent v1.0.3
+history oracles release (windows-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:47:09.0753293Z ^[[1m^[[92m   Compiling^[[0m version_check v0.9.5
+history oracles release (windows-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:47:09.5116167Z ^[[1m^[[92m   Compiling^[[0m num-traits v0.2.19
+history oracles release (windows-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:47:10.2184954Z ^[[1m^[[92m   Compiling^[[0m syn v3.0.9
+history oracles release (windows-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:47:10.6409083Z ^[[1m^[[92m   Compiling^[[0m syn v2.0.119
+history oracles release (windows-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:47:11.0173930Z ^[[1m^[[92m    Checking^[[0m allocator-api2 v0.2.21
+history oracles release (windows-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:47:11.4797280Z ^[[1m^[[92m    Checking^[[0m once_cell v1.21.4
+history oracles release (windows-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:47:11.6880325Z ^[[1m^[[92m   Compiling^[[0m serde v1.0.229
+history oracles release (windows-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:47:12.2421422Z ^[[1m^[[92m    Checking^[[0m smallvec v1.16.3
+history oracles release (windows-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:47:12.2422508Z ^[[1m^[[92m    Checking^[[0m memchr v2.8.3
+history oracles release (windows-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:47:12.4660448Z ^[[1m^[[92m   Compiling^[[0m zerocopy v0.8.63
+history oracles release (windows-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:47:12.9268554Z ^[[1m^[[92m    Checking^[[0m windows-link v0.2.1
+history oracles release (windows-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:47:12.9749605Z ^[[1m^[[92m    Checking^[[0m hashbrown v0.17.1
+history oracles release (windows-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:47:13.3078148Z ^[[1m^[[92m    Checking^[[0m num-integer v0.1.47
+history oracles release (windows-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:47:13.6152712Z ^[[1m^[[92m    Checking^[[0m rand_core v0.10.1
+history oracles release (windows-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:47:13.8141143Z ^[[1m^[[92m   Compiling^[[0m zmij v1.0.23
+history oracles release (windows-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:47:13.8443905Z ^[[1m^[[92m   Compiling^[[0m getrandom v0.4.3
+history oracles release (windows-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:47:14.2169067Z ^[[1m^[[92m   Compiling^[[0m getrandom v0.3.4
+history oracles release (windows-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:47:14.2877412Z ^[[1m^[[92m   Compiling^[[0m serde_json v1.0.154
+history oracles release (windows-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:47:14.5433908Z ^[[1m^[[92m   Compiling^[[0m ref-cast v1.0.27
+history oracles release (windows-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:47:14.7791679Z ^[[1m^[[92m    Checking^[[0m regex-syntax v0.8.11
+history oracles release (windows-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:47:15.5389455Z ^[[1m^[[92m    Checking^[[0m indexmap v2.14.2
+history oracles release (windows-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:47:16.4981835Z ^[[1m^[[92m    Checking^[[0m num-bigint v0.4.8
+history oracles release (windows-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:47:16.7677736Z ^[[1m^[[92m   Compiling^[[0m serde_derive v1.0.229
+history oracles release (windows-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:47:17.1392367Z ^[[1m^[[92m   Compiling^[[0m ref-cast-impl v1.0.27
+history oracles release (windows-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:47:18.1136039Z ^[[1m^[[92m   Compiling^[[0m ahash v0.8.12
+history oracles release (windows-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:47:18.1137218Z ^[[1m^[[92m   Compiling^[[0m parking_lot_core v0.9.12
+history oracles release (windows-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:47:18.4047817Z ^[[1m^[[92m    Checking^[[0m itoa v1.0.18
+history oracles release (windows-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:47:18.5393120Z ^[[1m^[[92m    Checking^[[0m num-rational v0.4.2
+history oracles release (windows-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:47:19.3197577Z ^[[1m^[[92m    Checking^[[0m num-iter v0.1.46
+history oracles release (windows-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:47:19.4427427Z ^[[1m^[[92m    Checking^[[0m aho-corasick v1.1.5
+history oracles release (windows-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:47:19.8886346Z ^[[1m^[[92m    Checking^[[0m num-complex v0.4.6
+history oracles release (windows-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:47:20.4736011Z ^[[1m^[[92m   Compiling^[[0m thiserror v2.0.21
+history oracles release (windows-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:47:20.6039636Z ^[[1m^[[92m    Checking^[[0m scopeguard v1.2.0
+history oracles release (windows-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:47:20.6781458Z ^[[1m^[[92m    Checking^[[0m lock_api v0.4.14
+history oracles release (windows-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:47:20.7327844Z ^[[1m^[[92m   Compiling^[[0m zerocopy-derive v0.8.63
+history oracles release (windows-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:47:20.9561654Z ^[[1m^[[92m    Checking^[[0m regex-automata v0.4.18
+history oracles release (windows-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:47:21.2407975Z ^[[1m^[[92m    Checking^[[0m num v0.4.3
+history oracles release (windows-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:47:21.5526978Z ^[[1m^[[92m   Compiling^[[0m bytemuck_derive v1.12.1
+history oracles release (windows-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:47:24.0826505Z ^[[1m^[[92m   Compiling^[[0m thiserror-impl v2.0.21
+history oracles release (windows-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:47:24.4818325Z ^[[1m^[[92m   Compiling^[[0m jsonschema-value v0.59.0
+history oracles release (windows-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:47:24.7689644Z ^[[1m^[[92m   Compiling^[[0m heck v0.5.0
+history oracles release (windows-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:47:25.2391484Z ^[[1m^[[92m   Compiling^[[0m unicode-general-category v1.1.0
+history oracles release (windows-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:47:25.6741604Z ^[[1m^[[92m    Checking^[[0m borrow-or-share v0.2.4
+history oracles release (windows-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:47:25.7502044Z ^[[1m^[[92m    Checking^[[0m bit-vec v0.8.0
+history oracles release (windows-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:47:26.1206893Z ^[[1m^[[92m    Checking^[[0m bit-set v0.8.0
+history oracles release (windows-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:47:26.3451854Z ^[[1m^[[92m    Checking^[[0m fluent-uri v0.4.1
+history oracles release (windows-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:47:26.7337955Z ^[[1m^[[92m   Compiling^[[0m strum_macros v0.28.0
+history oracles release (windows-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:47:27.0948038Z ^[[1m^[[92m    Checking^[[0m bytemuck v1.25.2
+history oracles release (windows-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:47:27.3714192Z ^[[1m^[[92m    Checking^[[0m parking_lot v0.12.5
+history oracles release (windows-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:47:27.6426819Z ^[[1m^[[92m    Checking^[[0m fraction v0.17.0
+history oracles release (windows-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:47:28.1003000Z ^[[1m^[[92m   Compiling^[[0m serde_derive_internals v0.30.0
+history oracles release (windows-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:47:28.3255286Z ^[[1m^[[92m    Checking^[[0m vsimd v0.8.0
+history oracles release (windows-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:47:28.9553261Z ^[[1m^[[92m   Compiling^[[0m crossbeam-utils v0.8.23
+history oracles release (windows-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:47:29.4937317Z ^[[1m^[[92m    Checking^[[0m num-cmp v0.1.0
+history oracles release (windows-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:47:29.8977896Z ^[[1m^[[92m    Checking^[[0m outref v0.5.2
+history oracles release (windows-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:47:29.9731824Z ^[[1m^[[92m    Checking^[[0m micromap v0.3.0
+history oracles release (windows-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:47:30.3094645Z ^[[1m^[[92m    Checking^[[0m tinyvec v1.13.3
+history oracles release (windows-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:47:30.8230485Z ^[[1m^[[92m    Checking^[[0m bytecount v0.6.9
+history oracles release (windows-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:47:30.9607148Z ^[[1m^[[92m    Checking^[[0m percent-encoding v2.3.2
+history oracles release (windows-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:47:30.9905925Z ^[[1m^[[92m   Compiling^[[0m schemars_derive v1.2.3
+history oracles release (windows-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:47:31.1026013Z ^[[1m^[[92m    Checking^[[0m uuid-simd v0.8.0
+history oracles release (windows-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:47:32.1890376Z ^[[1m^[[92m    Checking^[[0m fancy-regex v0.19.2
+history oracles release (windows-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:47:32.5928064Z ^[[1m^[[92m    Checking^[[0m strum v0.28.0
+history oracles release (windows-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:47:32.6898887Z ^[[1m^[[92m    Checking^[[0m email_address v0.2.9
+history oracles release (windows-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:47:32.8481468Z ^[[1m^[[92m    Checking^[[0m regex v1.13.1
+history oracles release (windows-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:47:32.9192539Z ^[[1m^[[92m    Checking^[[0m referencing v0.59.0
+history oracles release (windows-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:47:33.4602037Z ^[[1m^[[92m    Checking^[[0m jsonschema-regex v0.59.0
+history oracles release (windows-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:47:33.5613530Z ^[[1m^[[92m    Checking^[[0m simd-adler32 v0.3.10
+history oracles release (windows-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:47:33.6874835Z ^[[1m^[[92m    Checking^[[0m data-encoding v2.11.1
+history oracles release (windows-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:47:33.7198019Z ^[[1m^[[92m   Compiling^[[0m libm v0.2.16
+history oracles release (windows-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:47:33.7198949Z ^[[1m^[[92m    Checking^[[0m dyn-clone v1.0.20
+history oracles release (windows-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:47:34.0739877Z ^[[1m^[[92m    Checking^[[0m jsonschema v0.59.0
+history oracles release (windows-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:47:34.2647681Z ^[[1m^[[92m    Checking^[[0m unicode-normalization v0.1.26
+history oracles release (windows-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:47:34.3549650Z ^[[1m^[[92m    Checking^[[0m typenum v1.20.1
+history oracles release (windows-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:47:34.8708870Z ^[[1m^[[92m   Compiling^[[0m crc32fast v1.5.2
+history oracles release (windows-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:47:35.3084849Z ^[[1m^[[92m    Checking^[[0m adler2 v2.0.1
+history oracles release (windows-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:47:35.4024576Z ^[[1m^[[92m    Checking^[[0m ryu v1.0.23
+history oracles release (windows-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:47:35.8331886Z ^[[1m^[[92m    Checking^[[0m hybrid-array v0.4.15
+history oracles release (windows-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:47:36.2812533Z ^[[1m^[[92m    Checking^[[0m schemars v1.2.3
+history oracles release (windows-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:47:36.7455273Z ^[[1m^[[92m   Compiling^[[0m crossbeam-epoch v0.9.21
+history oracles release (windows-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:47:37.1591728Z ^[[1m^[[92m    Checking^[[0m miniz_oxide v0.9.1
+history oracles release (windows-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:47:37.2396031Z ^[[1m^[[92m    Checking^[[0m cpufeatures v0.3.1
+history oracles release (windows-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:47:37.3125271Z ^[[1m^[[92m    Checking^[[0m arrayvec v0.7.8
+history oracles release (windows-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:47:37.3343096Z ^[[1m^[[92m   Compiling^[[0m crossbeam-deque v0.8.8
+history oracles release (windows-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:47:37.5467616Z ^[[1m^[[92m    Checking^[[0m polycool v0.4.0
+history oracles release (windows-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:47:37.7044932Z ^[[1m^[[92m    Checking^[[0m flate2 v1.1.10
+history oracles release (windows-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:47:37.7790452Z ^[[1m^[[92m    Checking^[[0m crypto-common v0.2.2
+history oracles release (windows-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:47:38.0525867Z ^[[1m^[[92m    Checking^[[0m block-buffer v0.12.1
+history oracles release (windows-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:47:38.1625268Z ^[[1m^[[92m   Compiling^[[0m slotmap v1.1.1
+history oracles release (windows-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:47:38.2092424Z ^[[1m^[[92m    Checking^[[0m log v0.4.34
+history oracles release (windows-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:47:38.4006796Z ^[[1m^[[92m   Compiling^[[0m rayon-core v1.13.0
+history oracles release (windows-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:47:38.4233811Z ^[[1m^[[92m    Checking^[[0m const-oid v0.10.2
+history oracles release (windows-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:47:38.7000492Z ^[[1m^[[92m    Checking^[[0m kurbo v0.13.1
+history oracles release (windows-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:47:38.7812934Z ^[[1m^[[92m    Checking^[[0m digest v0.11.3
+history oracles release (windows-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:47:38.8607731Z ^[[1m^[[92m    Checking^[[0m i_float v5.0.0
+history oracles release (windows-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:47:38.9579023Z ^[[1m^[[92m    Checking^[[0m font-types v0.12.7
+history oracles release (windows-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:47:39.3852071Z ^[[1m^[[92m    Checking^[[0m color v0.3.3
+history oracles release (windows-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:47:39.4854452Z ^[[1m^[[92m    Checking^[[0m euclid v0.22.14
+history oracles release (windows-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:47:39.8413189Z ^[[1m^[[92m    Checking^[[0m bitflags v2.13.2
+history oracles release (windows-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:47:39.9762988Z ^[[1m^[[92m    Checking^[[0m linebender_resource_handle v0.1.1
+history oracles release (windows-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:47:40.0326175Z ^[[1m^[[92m    Checking^[[0m read-fonts v0.41.0
+history oracles release (windows-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:47:40.0952257Z ^[[1m^[[92m    Checking^[[0m peniko v0.6.1
+history oracles release (windows-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:47:40.3346267Z ^[[1m^[[92m    Checking^[[0m guillotiere v0.7.0
+history oracles release (windows-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:47:40.3347280Z ^[[1m^[[92m    Checking^[[0m i_shape v5.0.0
+history oracles release (windows-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:47:40.5417398Z ^[[1m^[[92m    Checking^[[0m sha2 v0.11.1
+history oracles release (windows-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:47:40.7906862Z ^[[1m^[[92m    Checking^[[0m tt-model v0.0.1 (D:\a\261017-toontown-dev\261017-toontown-dev\crates\model)
+history oracles release (windows-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:47:41.5558062Z ^[[1m^[[92m    Checking^[[0m miniz_oxide v0.8.9
+history oracles release (windows-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:47:41.7299440Z ^[[1m^[[92m    Checking^[[0m crossbeam-channel v0.5.17
+history oracles release (windows-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:47:42.1275433Z ^[[1m^[[92m    Checking^[[0m fdeflate v0.3.7
+history oracles release (windows-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:47:42.2587907Z ^[[1m^[[92m    Checking^[[0m hashbrown v0.16.1
+history oracles release (windows-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:47:42.4622073Z ^[[1m^[[92m    Checking^[[0m fearless_simd v0.7.0
+history oracles release (windows-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:47:43.0473927Z ^[[1m^[[92m    Checking^[[0m i_key_sort v0.12.0
+history oracles release (windows-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:47:43.2697895Z ^[[1m^[[92m    Checking^[[0m weezl v0.1.12
+history oracles release (windows-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:47:43.5855124Z ^[[1m^[[92m    Checking^[[0m i_tree v0.20.0
+history oracles release (windows-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:47:43.8431608Z ^[[1m^[[92m    Checking^[[0m robust v1.2.0
+history oracles release (windows-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:47:44.2343166Z ^[[1m^[[92m    Checking^[[0m either v1.19.0
+history oracles release (windows-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:47:44.4528751Z ^[[1m^[[92m    Checking^[[0m zune-core v0.5.3
+history oracles release (windows-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:47:44.7307368Z ^[[1m^[[92m    Checking^[[0m memmap2 v0.9.11
+history oracles release (windows-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:47:44.8972587Z ^[[1m^[[92m    Checking^[[0m fontdb v0.24.0
+history oracles release (windows-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:47:45.3301083Z ^[[1m^[[92m    Checking^[[0m zune-jpeg v0.5.15
+history oracles release (windows-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:47:46.1601545Z ^[[1m^[[92m    Checking^[[0m rayon v1.12.0
+history oracles release (windows-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:47:47.7286505Z ^[[1m^[[92m    Checking^[[0m skrifa v0.44.0
+history oracles release (windows-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:47:48.9288378Z ^[[1m^[[92m    Checking^[[0m spade v2.15.1
+history oracles release (windows-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:47:50.3749859Z ^[[1m^[[92m    Checking^[[0m i_overlay v9.1.0
+history oracles release (windows-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:47:50.6401414Z ^[[1m^[[92m    Checking^[[0m png v0.18.1
+history oracles release (windows-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:47:50.7052415Z ^[[1m^[[92m    Checking^[[0m tt-anim v0.0.1 (D:\a\261017-toontown-dev\261017-toontown-dev\crates\anim)
+history oracles release (windows-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:47:51.2683943Z ^[[1m^[[92m    Checking^[[0m ordered-channel v1.2.0
+history oracles release (windows-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:47:51.3634345Z ^[[1m^[[92m    Checking^[[0m half v2.7.1
+history oracles release (windows-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:47:51.5763856Z ^[[1m^[[92m    Checking^[[0m vello_common v0.3.0
+history oracles release (windows-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:47:51.7003810Z ^[[1m^[[92m    Checking^[[0m thread_local v1.1.10
+history oracles release (windows-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:47:51.7880713Z ^[[1m^[[92m    Checking^[[0m color_quant v1.1.0
+history oracles release (windows-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:47:51.8562552Z ^[[1m^[[92m    Checking^[[0m fax v0.2.7
+history oracles release (windows-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:47:51.9156807Z ^[[1m^[[92m    Checking^[[0m quick-error v2.0.1
+history oracles release (windows-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:47:51.9963950Z ^[[1m^[[92m    Checking^[[0m pxfm v0.1.30
+history oracles release (windows-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:47:52.1820964Z ^[[1m^[[92m    Checking^[[0m tiff v0.11.3
+history oracles release (windows-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:47:52.2205770Z ^[[1m^[[92m    Checking^[[0m tt-vector v0.0.1 (D:\a\261017-toontown-dev\261017-toontown-dev\crates\vector)
+history oracles release (windows-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:47:52.8998668Z ^[[1m^[[92m    Checking^[[0m vello_cpu v0.3.0
+history oracles release (windows-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:47:53.5591563Z ^[[1m^[[92m    Checking^[[0m gif v0.14.2
+history oracles release (windows-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:47:53.9789862Z ^[[1m^[[92m    Checking^[[0m tt-fx v0.0.1 (D:\a\261017-toontown-dev\261017-toontown-dev\crates\fx)
+history oracles release (windows-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:47:54.0408746Z ^[[1m^[[92m    Checking^[[0m tt-colour v0.0.1 (D:\a\261017-toontown-dev\261017-toontown-dev\crates\colour)
+history oracles release (windows-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:47:54.1034966Z ^[[1m^[[92m    Checking^[[0m windows-sys v0.61.2
+history oracles release (windows-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:47:54.5015483Z ^[[1m^[[92m    Checking^[[0m byteorder-lite v0.1.0
+history oracles release (windows-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:47:54.7876178Z ^[[1m^[[92m    Checking^[[0m fastrand v2.5.0
+history oracles release (windows-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:47:55.0358643Z ^[[1m^[[92m    Checking^[[0m tt-persist v0.0.1 (D:\a\261017-toontown-dev\261017-toontown-dev\crates\persist)
+history oracles release (windows-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:47:55.4286160Z ^[[1m^[[92m    Checking^[[0m moxcms v0.8.1
+history oracles release (windows-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:47:55.6742140Z ^[[1m^[[92m    Checking^[[0m tempfile v3.27.0
+history oracles release (windows-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:47:55.8420715Z ^[[1m^[[92m    Checking^[[0m tt-render v0.0.1 (D:\a\261017-toontown-dev\261017-toontown-dev\crates\render)
+history oracles release (windows-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:47:55.9122383Z ^[[1m^[[92m   Compiling^[[0m tt-registry-macros v0.0.1 (D:\a\261017-toontown-dev\261017-toontown-dev\crates\registry-macros)
+history oracles release (windows-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:47:56.0725466Z ^[[1m^[[92m    Checking^[[0m quick-error v1.2.3
+history oracles release (windows-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:47:56.1334676Z ^[[1m^[[92m    Checking^[[0m fnv v1.0.7
+history oracles release (windows-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:47:56.2124516Z ^[[1m^[[92m    Checking^[[0m wait-timeout v0.2.1
+history oracles release (windows-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:47:56.2937636Z ^[[1m^[[92m    Checking^[[0m bit-vec v0.10.1
+history oracles release (windows-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:47:56.5523114Z ^[[1m^[[92m    Checking^[[0m bit-set v0.11.1
+history oracles release (windows-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:47:56.7367992Z ^[[1m^[[92m    Checking^[[0m rusty-fork v0.3.1
+history oracles release (windows-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:47:56.9589574Z ^[[1m^[[92m    Checking^[[0m chacha20 v0.10.2
+history oracles release (windows-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:47:57.1968979Z ^[[1m^[[92m    Checking^[[0m rand v0.10.3
+history oracles release (windows-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:47:57.2190133Z ^[[1m^[[92m    Checking^[[0m tt-registry v0.0.1 (D:\a\261017-toontown-dev\261017-toontown-dev\crates\registry)
+history oracles release (windows-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:47:57.2770071Z ^[[1m^[[92m    Checking^[[0m rand_xorshift v0.5.0
+history oracles release (windows-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:47:57.3735943Z ^[[1m^[[92m    Checking^[[0m core_detect v1.0.0
+history oracles release (windows-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:47:57.4838415Z ^[[1m^[[92m    Checking^[[0m unarray v0.1.4
+history oracles release (windows-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:47:57.5822890Z ^[[1m^[[92m    Checking^[[0m stats_alloc v0.1.10
+history oracles release (windows-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:47:57.9256417Z ^[[1m^[[92m    Checking^[[0m proptest v1.12.0
+history oracles release (windows-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:47:59.4003343Z ^[[1m^[[92m    Checking^[[0m image v0.25.10
+history oracles release (windows-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:48:01.3071307Z ^[[1m^[[92m    Checking^[[0m tt-io v0.0.1 (D:\a\261017-toontown-dev\261017-toontown-dev\crates\io)
+history oracles release (windows-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:48:01.4632086Z ^[[1m^[[92m    Checking^[[0m tt-executor v0.0.1 (D:\a\261017-toontown-dev\261017-toontown-dev\crates\executor)
+history oracles release (windows-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:48:07.9667965Z test missing_example_is_rejected_at_compile_time has been running for over 60 seconds
+history oracles release (windows-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:48:22.9917664Z ^[[1m^[[92m    Checking^[[0m tt-executor-tests v0.0.0 (D:\a\261017-toontown-dev\261017-toontown-dev\target\tests\trybuild\tt-executor)
+history oracles release (windows-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:48:23.0258555Z ^[[1m^[[92m    Finished^[[0m `dev` profile [unoptimized + debuginfo] target(s) in 1m 15s
+history oracles release (windows-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:48:23.3411736Z 
+history oracles release (windows-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:48:23.3411979Z 
+history oracles release (windows-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:49:19.7192152Z test ^[[0m^[[1mtests\c12-r1-ui\missing_example.rs^[[0m ... ^[[0m^[[32mok
+history oracles release (windows-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:49:19.7193046Z ^[[0m
+history oracles release (windows-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:49:19.7193249Z 
+history oracles release (windows-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:49:19.7193610Z test missing_example_is_rejected_at_compile_time ... ok
+history oracles release (windows-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:49:19.7194076Z 
+history oracles release (windows-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:49:19.7194487Z test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 131.76s
+history oracles release (windows-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:49:19.7195226Z 
+history oracles release (windows-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:49:19.7195839Z ^[[1m^[[92m     Running^[[0m tests\compile_fail.rs (target\release\deps\compile_fail-5a2424d7cfb69668.exe)
+history oracles release (windows-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:49:19.7345453Z 
+history oracles release (windows-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:49:19.7345973Z running 1 test
+history oracles release (windows-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:49:20.0665644Z ^[[1m^[[92m   Compiling^[[0m cfg-if v1.0.5
+history oracles release (windows-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:49:20.0666466Z ^[[1m^[[92m   Compiling^[[0m num-traits v0.2.19
+history oracles release (windows-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:49:20.0667152Z ^[[1m^[[92m   Compiling^[[0m foldhash v0.2.0
+history oracles release (windows-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:49:20.0667843Z ^[[1m^[[92m   Compiling^[[0m serde_core v1.0.229
+history oracles release (windows-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:49:20.1464417Z ^[[1m^[[92m   Compiling^[[0m equivalent v1.0.3
+history oracles release (windows-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:49:20.1982579Z ^[[1m^[[92m   Compiling^[[0m allocator-api2 v0.2.21
+history oracles release (windows-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:49:20.2809572Z ^[[1m^[[92m   Compiling^[[0m once_cell v1.21.4
+history oracles release (windows-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:49:20.5442416Z ^[[1m^[[92m   Compiling^[[0m smallvec v1.16.3
+history oracles release (windows-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:49:20.6899503Z ^[[1m^[[92m   Compiling^[[0m memchr v2.8.3
+history oracles release (windows-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:49:20.8699493Z ^[[1m^[[92m   Compiling^[[0m windows-link v0.2.1
+history oracles release (windows-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:49:20.9307600Z ^[[1m^[[92m   Compiling^[[0m zerocopy v0.8.63
+history oracles release (windows-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:49:21.3022867Z ^[[1m^[[92m   Compiling^[[0m num-integer v0.1.47
+history oracles release (windows-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:49:21.9207263Z ^[[1m^[[92m   Compiling^[[0m hashbrown v0.17.1
+history oracles release (windows-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:49:22.0811631Z ^[[1m^[[92m   Compiling^[[0m rand_core v0.10.1
+history oracles release (windows-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:49:22.2874908Z ^[[1m^[[92m   Compiling^[[0m regex-syntax v0.8.11
+history oracles release (windows-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:49:22.8928681Z ^[[1m^[[92m   Compiling^[[0m zmij v1.0.23
+history oracles release (windows-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:49:23.4077284Z ^[[1m^[[92m   Compiling^[[0m num-bigint v0.4.8
+history oracles release (windows-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:49:23.8336017Z ^[[1m^[[92m   Compiling^[[0m serde v1.0.229
+history oracles release (windows-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:49:24.8704052Z ^[[1m^[[92m   Compiling^[[0m indexmap v2.14.2
+history oracles release (windows-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:49:25.9965118Z ^[[1m^[[92m   Compiling^[[0m itoa v1.0.18
+history oracles release (windows-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:49:26.2621615Z ^[[1m^[[92m   Compiling^[[0m serde_json v1.0.154
+history oracles release (windows-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:49:26.3318409Z ^[[1m^[[92m   Compiling^[[0m ref-cast v1.0.27
+history oracles release (windows-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:49:26.4289177Z ^[[1m^[[92m   Compiling^[[0m num-rational v0.4.2
+history oracles release (windows-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:49:27.4509100Z ^[[1m^[[92m   Compiling^[[0m getrandom v0.4.3
+history oracles release (windows-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:49:27.6863335Z ^[[1m^[[92m   Compiling^[[0m getrandom v0.3.4
+history oracles release (windows-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:49:27.8096951Z ^[[1m^[[92m   Compiling^[[0m num-iter v0.1.46
+history oracles release (windows-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:49:27.8705343Z ^[[1m^[[92m   Compiling^[[0m aho-corasick v1.1.5
+history oracles release (windows-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:49:27.9198198Z ^[[1m^[[92m   Compiling^[[0m num-complex v0.4.6
+history oracles release (windows-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:49:28.4279277Z ^[[1m^[[92m   Compiling^[[0m scopeguard v1.2.0
+history oracles release (windows-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:49:28.5297863Z ^[[1m^[[92m   Compiling^[[0m lock_api v0.4.14
+history oracles release (windows-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:49:28.6529349Z ^[[1m^[[92m   Compiling^[[0m num v0.4.3
+history oracles release (windows-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:49:28.7274815Z ^[[1m^[[92m   Compiling^[[0m ahash v0.8.12
+history oracles release (windows-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:49:28.8576355Z ^[[1m^[[92m   Compiling^[[0m parking_lot_core v0.9.12
+history oracles release (windows-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:49:29.0620365Z ^[[1m^[[92m   Compiling^[[0m bit-vec v0.8.0
+history oracles release (windows-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:49:29.3285054Z ^[[1m^[[92m   Compiling^[[0m borrow-or-share v0.2.4
+history oracles release (windows-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:49:29.4220570Z ^[[1m^[[92m   Compiling^[[0m regex-automata v0.4.18
+history oracles release (windows-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:49:29.4376860Z ^[[1m^[[92m   Compiling^[[0m fluent-uri v0.4.1
+history oracles release (windows-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:49:29.5887543Z ^[[1m^[[92m   Compiling^[[0m bit-set v0.8.0
+history oracles release (windows-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:49:29.7676065Z ^[[1m^[[92m   Compiling^[[0m parking_lot v0.12.5
+history oracles release (windows-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:49:30.6294000Z ^[[1m^[[92m   Compiling^[[0m thiserror v2.0.21
+history oracles release (windows-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:49:30.7295505Z ^[[1m^[[92m   Compiling^[[0m bytemuck v1.25.2
+history oracles release (windows-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:49:30.8863436Z ^[[1m^[[92m   Compiling^[[0m fraction v0.17.0
+history oracles release (windows-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:49:31.1263532Z ^[[1m^[[92m   Compiling^[[0m tinyvec v1.13.3
+history oracles release (windows-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:49:31.6671013Z ^[[1m^[[92m   Compiling^[[0m micromap v0.3.0
+history oracles release (windows-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:49:31.6844009Z ^[[1m^[[92m   Compiling^[[0m outref v0.5.2
+history oracles release (windows-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:49:31.7736778Z ^[[1m^[[92m   Compiling^[[0m percent-encoding v2.3.2
+history oracles release (windows-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:49:32.0597420Z ^[[1m^[[92m   Compiling^[[0m vsimd v0.8.0
+history oracles release (windows-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:49:32.0792566Z ^[[1m^[[92m   Compiling^[[0m num-cmp v0.1.0
+history oracles release (windows-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:49:32.5367567Z ^[[1m^[[92m   Compiling^[[0m bytecount v0.6.9
+history oracles release (windows-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:49:32.7257955Z ^[[1m^[[92m   Compiling^[[0m uuid-simd v0.8.0
+history oracles release (windows-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:49:32.8176761Z ^[[1m^[[92m   Compiling^[[0m jsonschema-value v0.59.0
+history oracles release (windows-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:49:32.8943213Z ^[[1m^[[92m   Compiling^[[0m referencing v0.59.0
+history oracles release (windows-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:49:33.4400111Z ^[[1m^[[92m   Compiling^[[0m regex v1.13.1
+history oracles release (windows-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:49:33.8197489Z ^[[1m^[[92m   Compiling^[[0m fancy-regex v0.19.2
+history oracles release (windows-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:49:34.2485627Z ^[[1m^[[92m   Compiling^[[0m strum v0.28.0
+history oracles release (windows-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:49:34.3644055Z ^[[1m^[[92m   Compiling^[[0m unicode-general-category v1.1.0
+history oracles release (windows-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:49:35.2953348Z ^[[1m^[[92m   Compiling^[[0m jsonschema-regex v0.59.0
+history oracles release (windows-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:49:36.1965221Z ^[[1m^[[92m   Compiling^[[0m email_address v0.2.9
+history oracles release (windows-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:49:36.3495368Z ^[[1m^[[92m   Compiling^[[0m dyn-clone v1.0.20
+history oracles release (windows-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:49:36.5206846Z ^[[1m^[[92m   Compiling^[[0m simd-adler32 v0.3.10
+history oracles release (windows-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:49:36.5961039Z ^[[1m^[[92m   Compiling^[[0m data-encoding v2.11.1
+history oracles release (windows-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:49:36.8421315Z ^[[1m^[[92m   Compiling^[[0m schemars v1.2.3
+history oracles release (windows-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:49:38.4255231Z ^[[1m^[[92m   Compiling^[[0m jsonschema v0.59.0
+history oracles release (windows-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:49:38.6792150Z ^[[1m^[[92m   Compiling^[[0m crossbeam-utils v0.8.23
+history oracles release (windows-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:49:39.0669545Z ^[[1m^[[92m   Compiling^[[0m unicode-normalization v0.1.26
+history oracles release (windows-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:49:39.5578309Z ^[[1m^[[92m   Compiling^[[0m typenum v1.20.1
+history oracles release (windows-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:49:39.8647186Z ^[[1m^[[92m   Compiling^[[0m ryu v1.0.23
+history oracles release (windows-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:49:40.1108128Z ^[[1m^[[92m   Compiling^[[0m adler2 v2.0.1
+history oracles release (windows-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:49:40.2564128Z ^[[1m^[[92m   Compiling^[[0m libm v0.2.16
+history oracles release (windows-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:49:40.5073438Z ^[[1m^[[92m   Compiling^[[0m crc32fast v1.5.2
+history oracles release (windows-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:49:40.8205042Z ^[[1m^[[92m   Compiling^[[0m miniz_oxide v0.9.1
+history oracles release (windows-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:49:41.1194212Z ^[[1m^[[92m   Compiling^[[0m hybrid-array v0.4.15
+history oracles release (windows-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:49:42.0286807Z ^[[1m^[[92m   Compiling^[[0m cpufeatures v0.3.1
+history oracles release (windows-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:49:42.0964209Z ^[[1m^[[92m   Compiling^[[0m arrayvec v0.7.8
+history oracles release (windows-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:49:42.2728260Z ^[[1m^[[92m   Compiling^[[0m block-buffer v0.12.1
+history oracles release (windows-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:49:42.3547675Z ^[[1m^[[92m   Compiling^[[0m polycool v0.4.0
+history oracles release (windows-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:49:42.4524375Z ^[[1m^[[92m   Compiling^[[0m crypto-common v0.2.2
+history oracles release (windows-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:49:42.8274698Z ^[[1m^[[92m   Compiling^[[0m flate2 v1.1.10
+history oracles release (windows-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:49:43.1389471Z ^[[1m^[[92m   Compiling^[[0m crossbeam-epoch v0.9.21
+history oracles release (windows-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:49:43.5556460Z ^[[1m^[[92m   Compiling^[[0m log v0.4.34
+history oracles release (windows-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:49:43.7308189Z ^[[1m^[[92m   Compiling^[[0m const-oid v0.10.2
+history oracles release (windows-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:49:43.8230734Z ^[[1m^[[92m   Compiling^[[0m crossbeam-deque v0.8.8
+history oracles release (windows-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:49:44.0151798Z ^[[1m^[[92m   Compiling^[[0m digest v0.11.3
+history oracles release (windows-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:49:44.0479788Z ^[[1m^[[92m   Compiling^[[0m kurbo v0.13.1
+history oracles release (windows-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:49:44.2078578Z ^[[1m^[[92m   Compiling^[[0m i_float v5.0.0
+history oracles release (windows-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:49:44.7244750Z ^[[1m^[[92m   Compiling^[[0m color v0.3.3
+history oracles release (windows-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:49:44.8544131Z ^[[1m^[[92m   Compiling^[[0m font-types v0.12.7
+history oracles release (windows-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:49:45.5661980Z ^[[1m^[[92m   Compiling^[[0m euclid v0.22.14
+history oracles release (windows-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:49:45.9538947Z ^[[1m^[[92m   Compiling^[[0m bitflags v2.13.2
+history oracles release (windows-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:49:46.2688042Z ^[[1m^[[92m   Compiling^[[0m linebender_resource_handle v0.1.1
+history oracles release (windows-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:49:46.4077970Z ^[[1m^[[92m   Compiling^[[0m peniko v0.6.1
+history oracles release (windows-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:49:46.5814330Z ^[[1m^[[92m   Compiling^[[0m guillotiere v0.7.0
+history oracles release (windows-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:49:46.9089243Z ^[[1m^[[92m   Compiling^[[0m read-fonts v0.41.0
+history oracles release (windows-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:49:47.0465774Z ^[[1m^[[92m   Compiling^[[0m i_shape v5.0.0
+history oracles release (windows-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:49:47.1774214Z ^[[1m^[[92m   Compiling^[[0m sha2 v0.11.1
+history oracles release (windows-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:49:47.4867240Z ^[[1m^[[92m   Compiling^[[0m rayon-core v1.13.0
+history oracles release (windows-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:49:48.8036829Z ^[[1m^[[92m   Compiling^[[0m tt-model v0.0.1 (D:\a\261017-toontown-dev\261017-toontown-dev\crates\model)
+history oracles release (windows-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:49:49.0193315Z ^[[1m^[[92m   Compiling^[[0m slotmap v1.1.1
+history oracles release (windows-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:49:49.6128123Z ^[[1m^[[92m   Compiling^[[0m miniz_oxide v0.8.9
+history oracles release (windows-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:49:51.0465531Z ^[[1m^[[92m   Compiling^[[0m crossbeam-channel v0.5.17
+history oracles release (windows-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:49:51.8826581Z ^[[1m^[[92m   Compiling^[[0m fdeflate v0.3.7
+history oracles release (windows-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:49:52.7153473Z ^[[1m^[[92m   Compiling^[[0m hashbrown v0.16.1
+history oracles release (windows-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:49:53.6851422Z ^[[1m^[[92m   Compiling^[[0m i_key_sort v0.12.0
+history oracles release (windows-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:49:53.9505000Z ^[[1m^[[92m   Compiling^[[0m zune-core v0.5.3
+history oracles release (windows-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:49:54.3645537Z ^[[1m^[[92m   Compiling^[[0m fearless_simd v0.7.0
+history oracles release (windows-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:50:04.3516061Z ^[[1m^[[92m   Compiling^[[0m i_tree v0.20.0
+history oracles release (windows-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:50:04.6472708Z ^[[1m^[[92m   Compiling^[[0m weezl v0.1.12
+history oracles release (windows-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:50:05.6068976Z ^[[1m^[[92m   Compiling^[[0m robust v1.2.0
+history oracles release (windows-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:50:06.1304925Z ^[[1m^[[92m   Compiling^[[0m memmap2 v0.9.11
+history oracles release (windows-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:50:06.4744337Z ^[[1m^[[92m   Compiling^[[0m either v1.19.0
+history oracles release (windows-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:50:06.7136499Z ^[[1m^[[92m   Compiling^[[0m rayon v1.12.0
+history oracles release (windows-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:50:08.3649728Z ^[[1m^[[92m   Compiling^[[0m fontdb v0.24.0
+history oracles release (windows-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:50:09.9866084Z ^[[1m^[[92m   Compiling^[[0m spade v2.15.1
+history oracles release (windows-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:50:10.2406649Z ^[[1m^[[92m   Compiling^[[0m i_overlay v9.1.0
+history oracles release (windows-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:50:11.8745453Z ^[[1m^[[92m   Compiling^[[0m vello_common v0.3.0
+history oracles release (windows-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:50:12.4061597Z ^[[1m^[[92m   Compiling^[[0m tt-anim v0.0.1 (D:\a\261017-toontown-dev\261017-toontown-dev\crates\anim)
+history oracles release (windows-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:50:14.5571298Z ^[[1m^[[92m   Compiling^[[0m skrifa v0.44.0
+history oracles release (windows-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:50:14.7121590Z ^[[1m^[[92m   Compiling^[[0m zune-jpeg v0.5.15
+history oracles release (windows-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:50:16.4087743Z ^[[1m^[[92m   Compiling^[[0m png v0.18.1
+history oracles release (windows-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:50:18.9891258Z ^[[1m^[[92m   Compiling^[[0m ordered-channel v1.2.0
+history oracles release (windows-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:50:19.1028347Z ^[[1m^[[92m   Compiling^[[0m half v2.7.1
+history oracles release (windows-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:50:19.7353923Z test exclusive_mutation_capability has been running for over 60 seconds
+history oracles release (windows-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:50:19.8461201Z ^[[1m^[[92m   Compiling^[[0m thread_local v1.1.10
+history oracles release (windows-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:50:20.2217960Z ^[[1m^[[92m   Compiling^[[0m color_quant v1.1.0
+history oracles release (windows-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:50:20.5342258Z ^[[1m^[[92m   Compiling^[[0m fax v0.2.7
+history oracles release (windows-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:50:21.0066710Z ^[[1m^[[92m   Compiling^[[0m quick-error v2.0.1
+history oracles release (windows-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:50:21.1094761Z ^[[1m^[[92m   Compiling^[[0m pxfm v0.1.30
+history oracles release (windows-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:50:21.2195927Z ^[[1m^[[92m   Compiling^[[0m tiff v0.11.3
+history oracles release (windows-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:50:24.9424204Z ^[[1m^[[92m   Compiling^[[0m moxcms v0.8.1
+history oracles release (windows-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:50:26.1373737Z ^[[1m^[[92m   Compiling^[[0m gif v0.14.2
+history oracles release (windows-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:50:27.7439356Z ^[[1m^[[92m   Compiling^[[0m vello_cpu v0.3.0
+history oracles release (windows-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:50:28.4841017Z ^[[1m^[[92m   Compiling^[[0m tt-vector v0.0.1 (D:\a\261017-toontown-dev\261017-toontown-dev\crates\vector)
+history oracles release (windows-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:50:31.6487480Z ^[[1m^[[92m   Compiling^[[0m tt-fx v0.0.1 (D:\a\261017-toontown-dev\261017-toontown-dev\crates\fx)
+history oracles release (windows-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:50:31.7201335Z ^[[1m^[[92m   Compiling^[[0m tt-colour v0.0.1 (D:\a\261017-toontown-dev\261017-toontown-dev\crates\colour)
+history oracles release (windows-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:50:31.7860536Z ^[[1m^[[92m   Compiling^[[0m windows-sys v0.61.2
+history oracles release (windows-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:50:33.7822490Z ^[[1m^[[92m   Compiling^[[0m fastrand v2.5.0
+history oracles release (windows-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:50:34.0986436Z ^[[1m^[[92m   Compiling^[[0m byteorder-lite v0.1.0
+history oracles release (windows-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:50:34.4293558Z ^[[1m^[[92m   Compiling^[[0m image v0.25.10
+history oracles release (windows-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:50:43.9849994Z ^[[1m^[[92m   Compiling^[[0m tt-render v0.0.1 (D:\a\261017-toontown-dev\261017-toontown-dev\crates\render)
+history oracles release (windows-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:50:44.9579309Z ^[[1m^[[92m   Compiling^[[0m tempfile v3.27.0
+history oracles release (windows-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:50:45.8061014Z ^[[1m^[[92m   Compiling^[[0m tt-persist v0.0.1 (D:\a\261017-toontown-dev\261017-toontown-dev\crates\persist)
+history oracles release (windows-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:50:51.3857798Z ^[[1m^[[92m   Compiling^[[0m quick-error v1.2.3
+history oracles release (windows-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:50:51.4811344Z ^[[1m^[[92m   Compiling^[[0m fnv v1.0.7
+history oracles release (windows-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:50:51.5622290Z ^[[1m^[[92m   Compiling^[[0m bit-vec v0.10.1
+history oracles release (windows-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:50:51.9630661Z ^[[1m^[[92m   Compiling^[[0m wait-timeout v0.2.1
+history oracles release (windows-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:50:52.0988213Z ^[[1m^[[92m   Compiling^[[0m rusty-fork v0.3.1
+history oracles release (windows-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:50:52.3245551Z ^[[1m^[[92m   Compiling^[[0m bit-set v0.11.1
+history oracles release (windows-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:50:52.5162435Z ^[[1m^[[92m   Compiling^[[0m tt-registry v0.0.1 (D:\a\261017-toontown-dev\261017-toontown-dev\crates\registry)
+history oracles release (windows-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:50:52.7961204Z ^[[1m^[[92m   Compiling^[[0m tt-io v0.0.1 (D:\a\261017-toontown-dev\261017-toontown-dev\crates\io)
+history oracles release (windows-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:50:53.2289312Z ^[[1m^[[92m   Compiling^[[0m chacha20 v0.10.2
+history oracles release (windows-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:50:53.6162274Z ^[[1m^[[92m   Compiling^[[0m rand v0.10.3
+history oracles release (windows-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:50:54.5121989Z ^[[1m^[[92m   Compiling^[[0m rand_xorshift v0.5.0
+history oracles release (windows-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:50:54.6846036Z ^[[1m^[[92m   Compiling^[[0m unarray v0.1.4
+history oracles release (windows-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:50:54.7833430Z ^[[1m^[[92m   Compiling^[[0m core_detect v1.0.0
+history oracles release (windows-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:50:54.9399966Z ^[[1m^[[92m   Compiling^[[0m proptest v1.12.0
+history oracles release (windows-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:50:56.0150808Z ^[[1m^[[92m   Compiling^[[0m tt-executor v0.0.1 (D:\a\261017-toontown-dev\261017-toontown-dev\crates\executor)
+history oracles release (windows-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:50:59.1496714Z ^[[1m^[[92m   Compiling^[[0m stats_alloc v0.1.10
+history oracles release (windows-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:51:57.5179646Z ^[[1m^[[92m   Compiling^[[0m tt-executor-tests v0.0.0 (D:\a\261017-toontown-dev\261017-toontown-dev\target\tests\trybuild\tt-executor)
+history oracles release (windows-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:51:57.6603647Z ^[[1m^[[92m    Finished^[[0m `dev` profile [unoptimized + debuginfo] target(s) in 2m 37s
+history oracles release (windows-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:51:57.9782810Z 
+history oracles release (windows-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:51:57.9782878Z 
+history oracles release (windows-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:54:36.0190125Z test ^[[0m^[[1mtests\ui\core_install.rs^[[0m [should fail to compile] ... ^[[0m^[[32mok
+history oracles release (windows-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:54:36.6531622Z ^[[0mtest ^[[0m^[[1mtests\ui\cx_clone_default.rs^[[0m [should fail to compile] ... ^[[0m^[[32mok
+history oracles release (windows-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:54:37.1928703Z ^[[0mtest ^[[0m^[[1mtests\ui\cx_constructor.rs^[[0m [should fail to compile] ... ^[[0m^[[32mok
+history oracles release (windows-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:54:37.6985880Z ^[[0mtest ^[[0m^[[1mtests\ui\cx_struct_literal.rs^[[0m [should fail to compile] ... ^[[0m^[[32mok
+history oracles release (windows-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:54:38.2032383Z ^[[0mtest ^[[0m^[[1mtests\ui\document_fields.rs^[[0m [should fail to compile] ... ^[[0m^[[32mok
+history oracles release (windows-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:54:38.7295279Z ^[[0mtest ^[[0m^[[1mtests\ui\enablement_read_only.rs^[[0m [should fail to compile] ... ^[[0m^[[32mok
+history oracles release (windows-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:54:39.2348694Z ^[[0mtest ^[[0m^[[1mtests\ui\entity_fields.rs^[[0m [should fail to compile] ... ^[[0m^[[32mok
+history oracles release (windows-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:54:39.7591930Z ^[[0mtest ^[[0m^[[1mtests\ui\handle_channel.rs^[[0m [should fail to compile] ... ^[[0m^[[32mok
+history oracles release (windows-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:54:40.2673073Z ^[[0mtest ^[[0m^[[1mtests\ui\job_keeps_context.rs^[[0m [should fail to compile] ... ^[[0m^[[32mok
+history oracles release (windows-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:54:40.7758610Z ^[[0mtest ^[[0m^[[1mtests\ui\load_grant_forged.rs^[[0m [should fail to compile] ... ^[[0m^[[32mok
+history oracles release (windows-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:54:41.2811056Z ^[[0mtest ^[[0m^[[1mtests\ui\request_type.rs^[[0m [should fail to compile] ... ^[[0m^[[32mok
+history oracles release (windows-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:54:41.8204324Z ^[[0mtest ^[[0m^[[1mtests\ui\session_private.rs^[[0m [should fail to compile] ... ^[[0m^[[32mok
+history oracles release (windows-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:54:51.7948774Z ^[[0mtest ^[[0m^[[1mtests\ui-pass\read_snapshots.rs^[[0m [should pass] ... ^[[0m^[[32mok
+history oracles release (windows-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:54:51.7949604Z ^[[0m
+history oracles release (windows-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:54:51.7949773Z 
+history oracles release (windows-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:54:51.7949994Z test exclusive_mutation_capability ... ok
+history oracles release (windows-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:54:51.7950362Z 
+history oracles release (windows-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:54:51.7950780Z test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 332.07s
+history oracles release (windows-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:54:51.7951739Z 
+history oracles release (macos-latest)	Compile-time proofs (trybuild, release)	﻿2026-11-10T05:46:42.5584370Z ##[group]Run cargo test --release --locked -p tt-executor --test compile_fail --test c12_r1_macro 2>&1 | tee out/compile-time-proofs.log
+history oracles release (macos-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:46:42.5585310Z ^[[36;1mcargo test --release --locked -p tt-executor --test compile_fail --test c12_r1_macro 2>&1 | tee out/compile-time-proofs.log^[[0m
+history oracles release (macos-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:46:42.5835280Z shell: /bin/bash --noprofile --norc -e -o pipefail {0}
+history oracles release (macos-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:46:42.5835710Z env:
+history oracles release (macos-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:46:42.5836000Z   CARGO_TERM_COLOR: always
+history oracles release (macos-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:46:42.5844550Z   CARGO_INCREMENTAL: 0
+history oracles release (macos-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:46:42.5845810Z   RUST_BACKTRACE: 1
+history oracles release (macos-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:46:42.5846460Z   CACHE_ON_FAILURE: false
+history oracles release (macos-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:46:42.5847550Z ##[endgroup]
+history oracles release (macos-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:46:43.4556170Z ^[[1m^[[92m   Compiling^[[0m tt-executor v0.0.1 (/Users/runner/work/261017-toontown-dev/261017-toontown-dev/crates/executor)
+history oracles release (macos-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:46:44.6784460Z ^[[1m^[[92m    Finished^[[0m `release` profile [optimized + debuginfo] target(s) in 1.98s
+history oracles release (macos-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:46:44.6950880Z ^[[1m^[[92m     Running^[[0m tests/c12_r1_macro.rs (target/release/deps/c12_r1_macro-1e348ac1c5302ffc)
+history oracles release (macos-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:46:44.7043800Z 
+history oracles release (macos-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:46:44.7044600Z running 2 tests
+history oracles release (macos-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:46:44.7045710Z test duplicate_ids_and_inventory_kind_drift_are_rejected ... ok
+history oracles release (macos-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:46:45.0367920Z ^[[1m^[[92m   Compiling^[[0m proc-macro2 v1.0.107
+history oracles release (macos-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:46:45.0373130Z ^[[1m^[[92m   Compiling^[[0m quote v1.0.47
+history oracles release (macos-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:46:45.0375900Z ^[[1m^[[92m   Compiling^[[0m unicode-ident v1.0.27
+history oracles release (macos-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:46:45.1486850Z ^[[1m^[[92m    Checking^[[0m cfg-if v1.0.5
+history oracles release (macos-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:46:45.1901090Z ^[[1m^[[92m   Compiling^[[0m libc v0.2.191
+history oracles release (macos-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:46:45.3785590Z ^[[1m^[[92m   Compiling^[[0m autocfg v1.5.1
+history oracles release (macos-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:46:45.8875730Z ^[[1m^[[92m   Compiling^[[0m num-traits v0.2.19
+history oracles release (macos-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:46:46.2027930Z ^[[1m^[[92m   Compiling^[[0m syn v3.0.9
+history oracles release (macos-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:46:46.2555790Z ^[[1m^[[92m   Compiling^[[0m syn v2.0.119
+history oracles release (macos-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:46:46.7801050Z ^[[1m^[[92m   Compiling^[[0m serde_core v1.0.229
+history oracles release (macos-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:46:48.1987260Z ^[[1m^[[92m    Checking^[[0m foldhash v0.2.0
+history oracles release (macos-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:46:48.2101760Z ^[[1m^[[92m   Compiling^[[0m version_check v0.9.5
+history oracles release (macos-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:46:48.2723620Z ^[[1m^[[92m    Checking^[[0m equivalent v1.0.3
+history oracles release (macos-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:46:48.3228590Z ^[[1m^[[92m    Checking^[[0m allocator-api2 v0.2.21
+history oracles release (macos-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:46:48.4661120Z ^[[1m^[[92m    Checking^[[0m memchr v2.8.3
+history oracles release (macos-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:46:48.4970030Z ^[[1m^[[92m   Compiling^[[0m serde v1.0.229
+history oracles release (macos-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:46:48.7123360Z ^[[1m^[[92m    Checking^[[0m smallvec v1.16.3
+history oracles release (macos-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:46:48.7224000Z ^[[1m^[[92m    Checking^[[0m once_cell v1.21.4
+history oracles release (macos-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:46:48.8190800Z ^[[1m^[[92m   Compiling^[[0m zerocopy v0.8.63
+history oracles release (macos-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:46:48.8567130Z ^[[1m^[[92m   Compiling^[[0m serde_derive v1.0.229
+history oracles release (macos-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:46:49.1894870Z ^[[1m^[[92m    Checking^[[0m hashbrown v0.17.1
+history oracles release (macos-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:46:49.2767750Z ^[[1m^[[92m   Compiling^[[0m zerocopy-derive v0.8.63
+history oracles release (macos-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:46:49.5224680Z ^[[1m^[[92m    Checking^[[0m num-integer v0.1.47
+history oracles release (macos-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:46:49.6537250Z ^[[1m^[[92m   Compiling^[[0m zmij v1.0.23
+history oracles release (macos-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:46:49.8929500Z ^[[1m^[[92m    Checking^[[0m rand_core v0.10.1
+history oracles release (macos-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:46:50.0244590Z ^[[1m^[[92m    Checking^[[0m regex-syntax v0.8.11
+history oracles release (macos-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:46:50.9738780Z ^[[1m^[[92m   Compiling^[[0m serde_json v1.0.154
+history oracles release (macos-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:46:51.1494780Z ^[[1m^[[92m   Compiling^[[0m getrandom v0.3.4
+history oracles release (macos-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:46:51.4803100Z ^[[1m^[[92m   Compiling^[[0m getrandom v0.4.3
+history oracles release (macos-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:46:51.6352490Z ^[[1m^[[92m   Compiling^[[0m ref-cast v1.0.27
+history oracles release (macos-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:46:51.8592590Z ^[[1m^[[92m    Checking^[[0m num-bigint v0.4.8
+history oracles release (macos-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:46:51.9013190Z ^[[1m^[[92m    Checking^[[0m indexmap v2.14.2
+history oracles release (macos-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:46:52.2720650Z ^[[1m^[[92m   Compiling^[[0m ahash v0.8.12
+history oracles release (macos-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:46:52.4552670Z ^[[1m^[[92m   Compiling^[[0m ref-cast-impl v1.0.27
+history oracles release (macos-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:46:52.4666700Z ^[[1m^[[92m    Checking^[[0m itoa v1.0.18
+history oracles release (macos-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:46:52.5383330Z ^[[1m^[[92m   Compiling^[[0m parking_lot_core v0.9.12
+history oracles release (macos-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:46:52.8676570Z ^[[1m^[[92m    Checking^[[0m num-rational v0.4.2
+history oracles release (macos-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:46:53.1948990Z ^[[1m^[[92m    Checking^[[0m num-iter v0.1.46
+history oracles release (macos-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:46:53.2517430Z ^[[1m^[[92m    Checking^[[0m aho-corasick v1.1.5
+history oracles release (macos-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:46:53.2589040Z ^[[1m^[[92m    Checking^[[0m num-complex v0.4.6
+history oracles release (macos-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:46:53.2607980Z ^[[1m^[[92m   Compiling^[[0m thiserror v2.0.21
+history oracles release (macos-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:46:53.4864730Z ^[[1m^[[92m    Checking^[[0m scopeguard v1.2.0
+history oracles release (macos-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:46:53.5045270Z ^[[1m^[[92m    Checking^[[0m num v0.4.3
+history oracles release (macos-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:46:53.5339050Z ^[[1m^[[92m    Checking^[[0m lock_api v0.4.14
+history oracles release (macos-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:46:53.7419180Z ^[[1m^[[92m   Compiling^[[0m thiserror-impl v2.0.21
+history oracles release (macos-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:46:53.7536790Z ^[[1m^[[92m    Checking^[[0m regex-automata v0.4.18
+history oracles release (macos-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:46:53.7613400Z ^[[1m^[[92m   Compiling^[[0m bytemuck_derive v1.12.1
+history oracles release (macos-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:46:54.6505430Z ^[[1m^[[92m    Checking^[[0m borrow-or-share v0.2.4
+history oracles release (macos-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:46:54.7008210Z ^[[1m^[[92m   Compiling^[[0m heck v0.5.0
+history oracles release (macos-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:46:54.8785990Z ^[[1m^[[92m    Checking^[[0m bit-vec v0.8.0
+history oracles release (macos-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:46:54.8887870Z ^[[1m^[[92m   Compiling^[[0m jsonschema-value v0.59.0
+history oracles release (macos-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:46:54.9999090Z ^[[1m^[[92m   Compiling^[[0m unicode-general-category v1.1.0
+history oracles release (macos-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:46:55.0545060Z ^[[1m^[[92m    Checking^[[0m bit-set v0.8.0
+history oracles release (macos-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:46:55.1249260Z ^[[1m^[[92m   Compiling^[[0m strum_macros v0.28.0
+history oracles release (macos-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:46:55.1351530Z ^[[1m^[[92m    Checking^[[0m fluent-uri v0.4.1
+history oracles release (macos-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:46:55.4432370Z ^[[1m^[[92m    Checking^[[0m bytemuck v1.25.2
+history oracles release (macos-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:46:55.5760900Z ^[[1m^[[92m    Checking^[[0m parking_lot v0.12.5
+history oracles release (macos-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:46:55.6786190Z ^[[1m^[[92m    Checking^[[0m fraction v0.17.0
+history oracles release (macos-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:46:55.7068190Z ^[[1m^[[92m   Compiling^[[0m serde_derive_internals v0.30.0
+history oracles release (macos-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:46:56.0344930Z ^[[1m^[[92m    Checking^[[0m percent-encoding v2.3.2
+history oracles release (macos-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:46:56.1169450Z ^[[1m^[[92m    Checking^[[0m vsimd v0.8.0
+history oracles release (macos-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:46:56.3851990Z ^[[1m^[[92m    Checking^[[0m tinyvec v1.13.3
+history oracles release (macos-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:46:56.7032650Z ^[[1m^[[92m    Checking^[[0m bytecount v0.6.9
+history oracles release (macos-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:46:56.7684570Z ^[[1m^[[92m   Compiling^[[0m crossbeam-utils v0.8.23
+history oracles release (macos-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:46:56.8389140Z ^[[1m^[[92m    Checking^[[0m num-cmp v0.1.0
+history oracles release (macos-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:46:57.0633800Z ^[[1m^[[92m    Checking^[[0m micromap v0.3.0
+history oracles release (macos-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:46:57.0849620Z ^[[1m^[[92m    Checking^[[0m outref v0.5.2
+history oracles release (macos-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:46:57.1458560Z ^[[1m^[[92m    Checking^[[0m uuid-simd v0.8.0
+history oracles release (macos-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:46:57.2361030Z ^[[1m^[[92m    Checking^[[0m strum v0.28.0
+history oracles release (macos-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:46:57.2868180Z ^[[1m^[[92m   Compiling^[[0m schemars_derive v1.2.3
+history oracles release (macos-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:46:57.3186650Z ^[[1m^[[92m    Checking^[[0m referencing v0.59.0
+history oracles release (macos-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:46:57.6635620Z ^[[1m^[[92m    Checking^[[0m fancy-regex v0.19.2
+history oracles release (macos-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:46:57.6737520Z ^[[1m^[[92m    Checking^[[0m regex v1.13.1
+history oracles release (macos-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:46:57.8494740Z ^[[1m^[[92m    Checking^[[0m email_address v0.2.9
+history oracles release (macos-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:46:57.9327080Z ^[[1m^[[92m    Checking^[[0m jsonschema-regex v0.59.0
+history oracles release (macos-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:46:58.0369180Z ^[[1m^[[92m    Checking^[[0m simd-adler32 v0.3.10
+history oracles release (macos-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:46:58.1183180Z ^[[1m^[[92m    Checking^[[0m dyn-clone v1.0.20
+history oracles release (macos-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:46:58.1298310Z ^[[1m^[[92m    Checking^[[0m data-encoding v2.11.1
+history oracles release (macos-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:46:58.1739840Z ^[[1m^[[92m   Compiling^[[0m libm v0.2.16
+history oracles release (macos-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:46:58.3002310Z ^[[1m^[[92m    Checking^[[0m jsonschema v0.59.0
+history oracles release (macos-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:46:58.6866680Z ^[[1m^[[92m    Checking^[[0m unicode-normalization v0.1.26
+history oracles release (macos-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:46:58.9312160Z ^[[1m^[[92m    Checking^[[0m schemars v1.2.3
+history oracles release (macos-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:46:59.0016670Z ^[[1m^[[92m    Checking^[[0m ryu v1.0.23
+history oracles release (macos-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:46:59.0831460Z ^[[1m^[[92m    Checking^[[0m typenum v1.20.1
+history oracles release (macos-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:46:59.3605230Z ^[[1m^[[92m    Checking^[[0m adler2 v2.0.1
+history oracles release (macos-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:46:59.4158440Z ^[[1m^[[92m   Compiling^[[0m crc32fast v1.5.2
+history oracles release (macos-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:46:59.6103530Z ^[[1m^[[92m    Checking^[[0m hybrid-array v0.4.15
+history oracles release (macos-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:47:00.0090140Z ^[[1m^[[92m   Compiling^[[0m crossbeam-epoch v0.9.21
+history oracles release (macos-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:47:00.2954140Z ^[[1m^[[92m    Checking^[[0m bitflags v2.13.2
+history oracles release (macos-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:47:00.4056170Z ^[[1m^[[92m    Checking^[[0m miniz_oxide v0.9.1
+history oracles release (macos-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:47:00.4458630Z ^[[1m^[[92m    Checking^[[0m arrayvec v0.7.8
+history oracles release (macos-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:47:00.5684440Z ^[[1m^[[92m   Compiling^[[0m crossbeam-deque v0.8.8
+history oracles release (macos-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:47:00.6699250Z ^[[1m^[[92m    Checking^[[0m flate2 v1.1.10
+history oracles release (macos-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:47:00.8051620Z ^[[1m^[[92m    Checking^[[0m polycool v0.4.0
+history oracles release (macos-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:47:00.9154730Z ^[[1m^[[92m    Checking^[[0m block-buffer v0.12.1
+history oracles release (macos-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:47:01.0048100Z ^[[1m^[[92m    Checking^[[0m crypto-common v0.2.2
+history oracles release (macos-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:47:01.0565950Z ^[[1m^[[92m   Compiling^[[0m slotmap v1.1.1
+history oracles release (macos-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:47:01.2516370Z ^[[1m^[[92m    Checking^[[0m log v0.4.34
+history oracles release (macos-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:47:01.3371090Z ^[[1m^[[92m   Compiling^[[0m rayon-core v1.13.0
+history oracles release (macos-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:47:01.4124310Z ^[[1m^[[92m    Checking^[[0m const-oid v0.10.2
+history oracles release (macos-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:47:01.5279890Z ^[[1m^[[92m    Checking^[[0m digest v0.11.3
+history oracles release (macos-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:47:01.5491840Z ^[[1m^[[92m    Checking^[[0m tt-model v0.0.1 (/Users/runner/work/261017-toontown-dev/261017-toontown-dev/crates/model)
+history oracles release (macos-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:47:01.6575550Z ^[[1m^[[92m    Checking^[[0m kurbo v0.13.1
+history oracles release (macos-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:47:01.7581440Z ^[[1m^[[92m    Checking^[[0m i_float v5.0.0
+history oracles release (macos-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:47:01.9932090Z ^[[1m^[[92m    Checking^[[0m color v0.3.3
+history oracles release (macos-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:47:02.1468000Z ^[[1m^[[92m    Checking^[[0m font-types v0.12.7
+history oracles release (macos-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:47:02.2788730Z ^[[1m^[[92m    Checking^[[0m euclid v0.22.14
+history oracles release (macos-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:47:02.4192860Z ^[[1m^[[92m    Checking^[[0m cpufeatures v0.3.1
+history oracles release (macos-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:47:02.4754350Z ^[[1m^[[92m    Checking^[[0m linebender_resource_handle v0.1.1
+history oracles release (macos-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:47:02.5362110Z ^[[1m^[[92m    Checking^[[0m peniko v0.6.1
+history oracles release (macos-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:47:02.6401140Z ^[[1m^[[92m    Checking^[[0m guillotiere v0.7.0
+history oracles release (macos-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:47:02.6502000Z ^[[1m^[[92m    Checking^[[0m sha2 v0.11.1
+history oracles release (macos-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:47:02.7431970Z ^[[1m^[[92m    Checking^[[0m read-fonts v0.41.0
+history oracles release (macos-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:47:03.0100440Z ^[[1m^[[92m    Checking^[[0m i_shape v5.0.0
+history oracles release (macos-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:47:03.6184540Z ^[[1m^[[92m    Checking^[[0m miniz_oxide v0.8.9
+history oracles release (macos-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:47:03.8336210Z ^[[1m^[[92m    Checking^[[0m crossbeam-channel v0.5.17
+history oracles release (macos-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:47:04.0570280Z ^[[1m^[[92m    Checking^[[0m fdeflate v0.3.7
+history oracles release (macos-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:47:04.2198780Z ^[[1m^[[92m    Checking^[[0m hashbrown v0.16.1
+history oracles release (macos-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:47:04.7928570Z ^[[1m^[[92m    Checking^[[0m memmap2 v0.9.11
+history oracles release (macos-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:47:04.9071930Z ^[[1m^[[92m    Checking^[[0m robust v1.2.0
+history oracles release (macos-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:47:05.1535250Z ^[[1m^[[92m    Checking^[[0m either v1.19.0
+history oracles release (macos-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:47:05.2880870Z ^[[1m^[[92m    Checking^[[0m zune-core v0.5.3
+history oracles release (macos-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:47:05.4119180Z ^[[1m^[[92m   Compiling^[[0m rustix v1.1.5
+history oracles release (macos-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:47:05.7163780Z ^[[1m^[[92m    Checking^[[0m i_key_sort v0.12.0
+history oracles release (macos-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:47:05.8291560Z ^[[1m^[[92m    Checking^[[0m weezl v0.1.12
+history oracles release (macos-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:47:05.9694360Z ^[[1m^[[92m    Checking^[[0m fearless_simd v0.7.0
+history oracles release (macos-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:47:06.0786910Z ^[[1m^[[92m    Checking^[[0m i_tree v0.20.0
+history oracles release (macos-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:47:06.1836370Z ^[[1m^[[92m    Checking^[[0m skrifa v0.44.0
+history oracles release (macos-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:47:06.2038430Z ^[[1m^[[92m    Checking^[[0m i_overlay v9.1.0
+history oracles release (macos-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:47:06.9411460Z ^[[1m^[[92m    Checking^[[0m tt-anim v0.0.1 (/Users/runner/work/261017-toontown-dev/261017-toontown-dev/crates/anim)
+history oracles release (macos-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:47:07.2792850Z ^[[1m^[[92m    Checking^[[0m zune-jpeg v0.5.15
+history oracles release (macos-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:47:07.3061360Z ^[[1m^[[92m    Checking^[[0m rayon v1.12.0
+history oracles release (macos-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:47:07.6432510Z ^[[1m^[[92m    Checking^[[0m spade v2.15.1
+history oracles release (macos-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:47:07.9147760Z ^[[1m^[[92m    Checking^[[0m vello_common v0.3.0
+history oracles release (macos-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:47:08.4282280Z ^[[1m^[[92m    Checking^[[0m fontdb v0.24.0
+history oracles release (macos-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:47:08.5588330Z ^[[1m^[[92m    Checking^[[0m png v0.18.1
+history oracles release (macos-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:47:08.6290750Z ^[[1m^[[92m    Checking^[[0m ordered-channel v1.2.0
+history oracles release (macos-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:47:08.6803680Z ^[[1m^[[92m    Checking^[[0m half v2.7.1
+history oracles release (macos-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:47:08.8611380Z ^[[1m^[[92m    Checking^[[0m errno v0.3.14
+history oracles release (macos-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:47:08.8918600Z ^[[1m^[[92m    Checking^[[0m thread_local v1.1.10
+history oracles release (macos-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:47:08.9324400Z ^[[1m^[[92m    Checking^[[0m fax v0.2.7
+history oracles release (macos-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:47:08.9933090Z ^[[1m^[[92m    Checking^[[0m quick-error v2.0.1
+history oracles release (macos-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:47:09.0541160Z ^[[1m^[[92m    Checking^[[0m pxfm v0.1.30
+history oracles release (macos-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:47:09.0944810Z ^[[1m^[[92m    Checking^[[0m color_quant v1.1.0
+history oracles release (macos-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:47:09.1650420Z ^[[1m^[[92m    Checking^[[0m gif v0.14.2
+history oracles release (macos-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:47:09.2937180Z ^[[1m^[[92m    Checking^[[0m tiff v0.11.3
+history oracles release (macos-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:47:09.3974630Z ^[[1m^[[92m    Checking^[[0m vello_cpu v0.3.0
+history oracles release (macos-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:47:10.0244530Z ^[[1m^[[92m    Checking^[[0m tt-vector v0.0.1 (/Users/runner/work/261017-toontown-dev/261017-toontown-dev/crates/vector)
+history oracles release (macos-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:47:10.3937030Z ^[[1m^[[92m    Checking^[[0m moxcms v0.8.1
+history oracles release (macos-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:47:10.4640510Z ^[[1m^[[92m    Checking^[[0m tt-fx v0.0.1 (/Users/runner/work/261017-toontown-dev/261017-toontown-dev/crates/fx)
+history oracles release (macos-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:47:10.5175110Z ^[[1m^[[92m    Checking^[[0m tt-colour v0.0.1 (/Users/runner/work/261017-toontown-dev/261017-toontown-dev/crates/colour)
+history oracles release (macos-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:47:10.5592580Z ^[[1m^[[92m    Checking^[[0m fastrand v2.5.0
+history oracles release (macos-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:47:10.6634810Z ^[[1m^[[92m    Checking^[[0m byteorder-lite v0.1.0
+history oracles release (macos-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:47:10.8305150Z ^[[1m^[[92m    Checking^[[0m tempfile v3.27.0
+history oracles release (macos-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:47:10.9612170Z ^[[1m^[[92m    Checking^[[0m tt-persist v0.0.1 (/Users/runner/work/261017-toontown-dev/261017-toontown-dev/crates/persist)
+history oracles release (macos-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:47:11.5441130Z ^[[1m^[[92m    Checking^[[0m tt-render v0.0.1 (/Users/runner/work/261017-toontown-dev/261017-toontown-dev/crates/render)
+history oracles release (macos-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:47:11.6573890Z ^[[1m^[[92m   Compiling^[[0m tt-registry-macros v0.0.1 (/Users/runner/work/261017-toontown-dev/261017-toontown-dev/crates/registry-macros)
+history oracles release (macos-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:47:11.7704910Z ^[[1m^[[92m    Checking^[[0m wait-timeout v0.2.1
+history oracles release (macos-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:47:11.8503880Z ^[[1m^[[92m    Checking^[[0m bit-vec v0.10.1
+history oracles release (macos-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:47:12.0283060Z ^[[1m^[[92m    Checking^[[0m fnv v1.0.7
+history oracles release (macos-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:47:12.0996220Z ^[[1m^[[92m    Checking^[[0m quick-error v1.2.3
+history oracles release (macos-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:47:12.1199640Z ^[[1m^[[92m    Checking^[[0m tt-registry v0.0.1 (/Users/runner/work/261017-toontown-dev/261017-toontown-dev/crates/registry)
+history oracles release (macos-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:47:12.1542130Z ^[[1m^[[92m    Checking^[[0m rusty-fork v0.3.1
+history oracles release (macos-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:47:12.2904110Z ^[[1m^[[92m    Checking^[[0m bit-set v0.11.1
+history oracles release (macos-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:47:12.3839350Z ^[[1m^[[92m    Checking^[[0m rand v0.10.3
+history oracles release (macos-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:47:12.4041410Z ^[[1m^[[92m    Checking^[[0m image v0.25.10
+history oracles release (macos-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:47:12.6292400Z ^[[1m^[[92m    Checking^[[0m rand_xorshift v0.5.0
+history oracles release (macos-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:47:12.6932280Z ^[[1m^[[92m    Checking^[[0m chacha20 v0.10.2
+history oracles release (macos-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:47:12.7340580Z ^[[1m^[[92m    Checking^[[0m core_detect v1.0.0
+history oracles release (macos-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:47:12.7991650Z ^[[1m^[[92m    Checking^[[0m unarray v0.1.4
+history oracles release (macos-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:47:12.8094570Z ^[[1m^[[92m    Checking^[[0m stats_alloc v0.1.10
+history oracles release (macos-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:47:12.8632760Z ^[[1m^[[92m    Checking^[[0m proptest v1.12.0
+history oracles release (macos-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:47:13.6707950Z ^[[1m^[[92m    Checking^[[0m tt-io v0.0.1 (/Users/runner/work/261017-toontown-dev/261017-toontown-dev/crates/io)
+history oracles release (macos-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:47:13.7688080Z ^[[1m^[[92m    Checking^[[0m tt-executor v0.0.1 (/Users/runner/work/261017-toontown-dev/261017-toontown-dev/crates/executor)
+history oracles release (macos-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:47:27.2121990Z ^[[1m^[[92m    Checking^[[0m tt-executor-tests v0.0.0 (/Users/runner/work/261017-toontown-dev/261017-toontown-dev/target/tests/trybuild/tt-executor)
+history oracles release (macos-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:47:27.2722990Z ^[[1m^[[92m    Finished^[[0m `dev` profile [unoptimized + debuginfo] target(s) in 42.54s
+history oracles release (macos-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:47:27.4900580Z 
+history oracles release (macos-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:47:27.4918610Z 
+history oracles release (macos-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:47:44.8254620Z test missing_example_is_rejected_at_compile_time has been running for over 60 seconds
+history oracles release (macos-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:47:59.6742480Z test tests/c12-r1-ui/missing_example.rs ... ok
+history oracles release (macos-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:47:59.6743110Z 
+history oracles release (macos-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:47:59.6743320Z 
+history oracles release (macos-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:47:59.6744590Z test missing_example_is_rejected_at_compile_time ... ok
+history oracles release (macos-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:47:59.6744930Z 
+history oracles release (macos-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:47:59.6750650Z test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 74.98s
+history oracles release (macos-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:47:59.6751120Z 
+history oracles release (macos-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:47:59.6762500Z ^[[1m^[[92m     Running^[[0m tests/compile_fail.rs (target/release/deps/compile_fail-53106cbf27e925f6)
+history oracles release (macos-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:47:59.6871230Z 
+history oracles release (macos-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:47:59.6871600Z running 1 test
+history oracles release (macos-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:47:59.8733870Z ^[[1m^[[92m   Compiling^[[0m cfg-if v1.0.5
+history oracles release (macos-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:47:59.8736830Z ^[[1m^[[92m   Compiling^[[0m libc v0.2.191
+history oracles release (macos-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:47:59.8765040Z ^[[1m^[[92m   Compiling^[[0m num-traits v0.2.19
+history oracles release (macos-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:47:59.9319900Z ^[[1m^[[92m   Compiling^[[0m serde_core v1.0.229
+history oracles release (macos-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:48:00.4112260Z ^[[1m^[[92m   Compiling^[[0m foldhash v0.2.0
+history oracles release (macos-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:48:00.5122600Z ^[[1m^[[92m   Compiling^[[0m allocator-api2 v0.2.21
+history oracles release (macos-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:48:00.5327660Z ^[[1m^[[92m   Compiling^[[0m equivalent v1.0.3
+history oracles release (macos-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:48:00.5957670Z ^[[1m^[[92m   Compiling^[[0m smallvec v1.16.3
+history oracles release (macos-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:48:00.7696340Z ^[[1m^[[92m   Compiling^[[0m memchr v2.8.3
+history oracles release (macos-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:48:00.7799130Z ^[[1m^[[92m   Compiling^[[0m once_cell v1.21.4
+history oracles release (macos-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:48:00.9562970Z ^[[1m^[[92m   Compiling^[[0m zerocopy v0.8.63
+history oracles release (macos-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:48:01.2882430Z ^[[1m^[[92m   Compiling^[[0m hashbrown v0.17.1
+history oracles release (macos-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:48:01.7541060Z ^[[1m^[[92m   Compiling^[[0m serde v1.0.229
+history oracles release (macos-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:48:01.7750080Z ^[[1m^[[92m   Compiling^[[0m num-integer v0.1.47
+history oracles release (macos-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:48:02.0377330Z ^[[1m^[[92m   Compiling^[[0m rand_core v0.10.1
+history oracles release (macos-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:48:02.1519910Z ^[[1m^[[92m   Compiling^[[0m regex-syntax v0.8.11
+history oracles release (macos-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:48:02.1841170Z ^[[1m^[[92m   Compiling^[[0m zmij v1.0.23
+history oracles release (macos-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:48:02.4280860Z ^[[1m^[[92m   Compiling^[[0m num-bigint v0.4.8
+history oracles release (macos-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:48:03.4263170Z ^[[1m^[[92m   Compiling^[[0m indexmap v2.14.2
+history oracles release (macos-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:48:03.6145220Z ^[[1m^[[92m   Compiling^[[0m itoa v1.0.18
+history oracles release (macos-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:48:03.7475150Z ^[[1m^[[92m   Compiling^[[0m ref-cast v1.0.27
+history oracles release (macos-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:48:03.8205110Z ^[[1m^[[92m   Compiling^[[0m num-rational v0.4.2
+history oracles release (macos-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:48:03.9292970Z ^[[1m^[[92m   Compiling^[[0m serde_json v1.0.154
+history oracles release (macos-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:48:04.2644610Z ^[[1m^[[92m   Compiling^[[0m getrandom v0.3.4
+history oracles release (macos-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:48:04.3548920Z ^[[1m^[[92m   Compiling^[[0m getrandom v0.4.3
+history oracles release (macos-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:48:04.3819870Z ^[[1m^[[92m   Compiling^[[0m num-iter v0.1.46
+history oracles release (macos-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:48:04.4590910Z ^[[1m^[[92m   Compiling^[[0m aho-corasick v1.1.5
+history oracles release (macos-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:48:04.4731470Z ^[[1m^[[92m   Compiling^[[0m num-complex v0.4.6
+history oracles release (macos-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:48:04.7732070Z ^[[1m^[[92m   Compiling^[[0m scopeguard v1.2.0
+history oracles release (macos-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:48:04.8393920Z ^[[1m^[[92m   Compiling^[[0m lock_api v0.4.14
+history oracles release (macos-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:48:05.0205250Z ^[[1m^[[92m   Compiling^[[0m num v0.4.3
+history oracles release (macos-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:48:05.0814020Z ^[[1m^[[92m   Compiling^[[0m ahash v0.8.12
+history oracles release (macos-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:48:05.2220460Z ^[[1m^[[92m   Compiling^[[0m parking_lot_core v0.9.12
+history oracles release (macos-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:48:05.2621870Z ^[[1m^[[92m   Compiling^[[0m regex-automata v0.4.18
+history oracles release (macos-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:48:05.4722730Z ^[[1m^[[92m   Compiling^[[0m borrow-or-share v0.2.4
+history oracles release (macos-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:48:05.5425180Z ^[[1m^[[92m   Compiling^[[0m bit-vec v0.8.0
+history oracles release (macos-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:48:05.7232130Z ^[[1m^[[92m   Compiling^[[0m bit-set v0.8.0
+history oracles release (macos-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:48:05.8450900Z ^[[1m^[[92m   Compiling^[[0m fluent-uri v0.4.1
+history oracles release (macos-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:48:06.2125120Z ^[[1m^[[92m   Compiling^[[0m bytemuck v1.25.2
+history oracles release (macos-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:48:06.3988550Z ^[[1m^[[92m   Compiling^[[0m thiserror v2.0.21
+history oracles release (macos-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:48:06.4790780Z ^[[1m^[[92m   Compiling^[[0m parking_lot v0.12.5
+history oracles release (macos-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:48:06.4892460Z ^[[1m^[[92m   Compiling^[[0m fraction v0.17.0
+history oracles release (macos-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:48:06.7767510Z ^[[1m^[[92m   Compiling^[[0m outref v0.5.2
+history oracles release (macos-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:48:06.8273880Z ^[[1m^[[92m   Compiling^[[0m percent-encoding v2.3.2
+history oracles release (macos-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:48:06.8476950Z ^[[1m^[[92m   Compiling^[[0m bytecount v0.6.9
+history oracles release (macos-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:48:06.9580900Z ^[[1m^[[92m   Compiling^[[0m vsimd v0.8.0
+history oracles release (macos-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:48:06.9682830Z ^[[1m^[[92m   Compiling^[[0m tinyvec v1.13.3
+history oracles release (macos-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:48:07.2661000Z ^[[1m^[[92m   Compiling^[[0m num-cmp v0.1.0
+history oracles release (macos-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:48:07.2763890Z ^[[1m^[[92m   Compiling^[[0m micromap v0.3.0
+history oracles release (macos-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:48:07.4329350Z ^[[1m^[[92m   Compiling^[[0m jsonschema-value v0.59.0
+history oracles release (macos-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:48:07.4434160Z ^[[1m^[[92m   Compiling^[[0m referencing v0.59.0
+history oracles release (macos-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:48:07.8065460Z ^[[1m^[[92m   Compiling^[[0m fancy-regex v0.19.2
+history oracles release (macos-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:48:08.5565510Z ^[[1m^[[92m   Compiling^[[0m regex v1.13.1
+history oracles release (macos-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:48:08.8739370Z ^[[1m^[[92m   Compiling^[[0m uuid-simd v0.8.0
+history oracles release (macos-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:48:09.0465380Z ^[[1m^[[92m   Compiling^[[0m unicode-general-category v1.1.0
+history oracles release (macos-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:48:09.2612680Z ^[[1m^[[92m   Compiling^[[0m strum v0.28.0
+history oracles release (macos-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:48:09.3449730Z ^[[1m^[[92m   Compiling^[[0m jsonschema-regex v0.59.0
+history oracles release (macos-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:48:09.3969370Z ^[[1m^[[92m   Compiling^[[0m email_address v0.2.9
+history oracles release (macos-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:48:09.4186230Z ^[[1m^[[92m   Compiling^[[0m data-encoding v2.11.1
+history oracles release (macos-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:48:09.5593970Z ^[[1m^[[92m   Compiling^[[0m dyn-clone v1.0.20
+history oracles release (macos-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:48:09.6503670Z ^[[1m^[[92m   Compiling^[[0m simd-adler32 v0.3.10
+history oracles release (macos-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:48:09.6813340Z ^[[1m^[[92m   Compiling^[[0m jsonschema v0.59.0
+history oracles release (macos-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:48:09.7554990Z ^[[1m^[[92m   Compiling^[[0m schemars v1.2.3
+history oracles release (macos-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:48:10.1010310Z ^[[1m^[[92m   Compiling^[[0m crossbeam-utils v0.8.23
+history oracles release (macos-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:48:10.4186790Z ^[[1m^[[92m   Compiling^[[0m unicode-normalization v0.1.26
+history oracles release (macos-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:48:10.7179420Z ^[[1m^[[92m   Compiling^[[0m ryu v1.0.23
+history oracles release (macos-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:48:10.8442340Z ^[[1m^[[92m   Compiling^[[0m adler2 v2.0.1
+history oracles release (macos-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:48:10.9301860Z ^[[1m^[[92m   Compiling^[[0m typenum v1.20.1
+history oracles release (macos-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:48:10.9611420Z ^[[1m^[[92m   Compiling^[[0m libm v0.2.16
+history oracles release (macos-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:48:11.4801110Z ^[[1m^[[92m   Compiling^[[0m hybrid-array v0.4.15
+history oracles release (macos-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:48:11.8574490Z ^[[1m^[[92m   Compiling^[[0m bitflags v2.13.2
+history oracles release (macos-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:48:11.8680090Z ^[[1m^[[92m   Compiling^[[0m crc32fast v1.5.2
+history oracles release (macos-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:48:12.0190550Z ^[[1m^[[92m   Compiling^[[0m miniz_oxide v0.9.1
+history oracles release (macos-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:48:12.0602350Z ^[[1m^[[92m   Compiling^[[0m arrayvec v0.7.8
+history oracles release (macos-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:48:12.1960430Z ^[[1m^[[92m   Compiling^[[0m polycool v0.4.0
+history oracles release (macos-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:48:12.4527100Z ^[[1m^[[92m   Compiling^[[0m flate2 v1.1.10
+history oracles release (macos-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:48:12.5341430Z ^[[1m^[[92m   Compiling^[[0m crossbeam-epoch v0.9.21
+history oracles release (macos-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:48:12.7421000Z ^[[1m^[[92m   Compiling^[[0m crypto-common v0.2.2
+history oracles release (macos-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:48:12.7623460Z ^[[1m^[[92m   Compiling^[[0m block-buffer v0.12.1
+history oracles release (macos-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:48:12.8566430Z ^[[1m^[[92m   Compiling^[[0m const-oid v0.10.2
+history oracles release (macos-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:48:12.9982060Z ^[[1m^[[92m   Compiling^[[0m log v0.4.34
+history oracles release (macos-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:48:13.1146180Z ^[[1m^[[92m   Compiling^[[0m crossbeam-deque v0.8.8
+history oracles release (macos-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:48:13.2408030Z ^[[1m^[[92m   Compiling^[[0m digest v0.11.3
+history oracles release (macos-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:48:13.3430790Z ^[[1m^[[92m   Compiling^[[0m kurbo v0.13.1
+history oracles release (macos-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:48:13.5062050Z ^[[1m^[[92m   Compiling^[[0m i_float v5.0.0
+history oracles release (macos-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:48:13.7641320Z ^[[1m^[[92m   Compiling^[[0m tt-model v0.0.1 (/Users/runner/work/261017-toontown-dev/261017-toontown-dev/crates/model)
+history oracles release (macos-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:48:14.4598670Z ^[[1m^[[92m   Compiling^[[0m font-types v0.12.7
+history oracles release (macos-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:48:14.7627610Z ^[[1m^[[92m   Compiling^[[0m color v0.3.3
+history oracles release (macos-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:48:15.2243370Z ^[[1m^[[92m   Compiling^[[0m cpufeatures v0.3.1
+history oracles release (macos-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:48:15.2987270Z ^[[1m^[[92m   Compiling^[[0m euclid v0.22.14
+history oracles release (macos-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:48:15.9834700Z ^[[1m^[[92m   Compiling^[[0m linebender_resource_handle v0.1.1
+history oracles release (macos-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:48:16.0741490Z ^[[1m^[[92m   Compiling^[[0m peniko v0.6.1
+history oracles release (macos-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:48:16.3857740Z ^[[1m^[[92m   Compiling^[[0m guillotiere v0.7.0
+history oracles release (macos-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:48:16.6397910Z ^[[1m^[[92m   Compiling^[[0m sha2 v0.11.1
+history oracles release (macos-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:48:17.3333880Z ^[[1m^[[92m   Compiling^[[0m read-fonts v0.41.0
+history oracles release (macos-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:48:22.7803120Z ^[[1m^[[92m   Compiling^[[0m i_shape v5.0.0
+history oracles release (macos-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:48:23.0036000Z ^[[1m^[[92m   Compiling^[[0m rayon-core v1.13.0
+history oracles release (macos-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:48:23.5863490Z ^[[1m^[[92m   Compiling^[[0m slotmap v1.1.1
+history oracles release (macos-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:48:23.8415350Z ^[[1m^[[92m   Compiling^[[0m miniz_oxide v0.8.9
+history oracles release (macos-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:48:24.3534240Z ^[[1m^[[92m   Compiling^[[0m crossbeam-channel v0.5.17
+history oracles release (macos-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:48:24.6938160Z ^[[1m^[[92m   Compiling^[[0m fdeflate v0.3.7
+history oracles release (macos-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:48:25.0291320Z ^[[1m^[[92m   Compiling^[[0m hashbrown v0.16.1
+history oracles release (macos-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:48:25.4454780Z ^[[1m^[[92m   Compiling^[[0m memmap2 v0.9.11
+history oracles release (macos-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:48:25.5820320Z ^[[1m^[[92m   Compiling^[[0m i_tree v0.20.0
+history oracles release (macos-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:48:25.6152470Z ^[[1m^[[92m   Compiling^[[0m zune-core v0.5.3
+history oracles release (macos-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:48:25.7260090Z ^[[1m^[[92m   Compiling^[[0m either v1.19.0
+history oracles release (macos-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:48:25.7898080Z ^[[1m^[[92m   Compiling^[[0m weezl v0.1.12
+history oracles release (macos-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:48:25.8601140Z ^[[1m^[[92m   Compiling^[[0m robust v1.2.0
+history oracles release (macos-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:48:26.1081160Z ^[[1m^[[92m   Compiling^[[0m fearless_simd v0.7.0
+history oracles release (macos-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:48:26.1383620Z ^[[1m^[[92m   Compiling^[[0m i_key_sort v0.12.0
+history oracles release (macos-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:48:26.2714440Z ^[[1m^[[92m   Compiling^[[0m i_overlay v9.1.0
+history oracles release (macos-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:48:27.1199030Z ^[[1m^[[92m   Compiling^[[0m spade v2.15.1
+history oracles release (macos-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:48:27.9282260Z ^[[1m^[[92m   Compiling^[[0m rayon v1.12.0
+history oracles release (macos-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:48:28.1811320Z ^[[1m^[[92m   Compiling^[[0m vello_common v0.3.0
+history oracles release (macos-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:48:29.2363350Z ^[[1m^[[92m   Compiling^[[0m zune-jpeg v0.5.15
+history oracles release (macos-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:48:29.2687080Z ^[[1m^[[92m   Compiling^[[0m fontdb v0.24.0
+history oracles release (macos-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:48:29.9789070Z ^[[1m^[[92m   Compiling^[[0m png v0.18.1
+history oracles release (macos-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:48:30.2601940Z ^[[1m^[[92m   Compiling^[[0m ordered-channel v1.2.0
+history oracles release (macos-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:48:30.3407660Z ^[[1m^[[92m   Compiling^[[0m skrifa v0.44.0
+history oracles release (macos-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:48:30.8456220Z ^[[1m^[[92m   Compiling^[[0m tt-anim v0.0.1 (/Users/runner/work/261017-toontown-dev/261017-toontown-dev/crates/anim)
+history oracles release (macos-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:48:31.3625290Z ^[[1m^[[92m   Compiling^[[0m half v2.7.1
+history oracles release (macos-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:48:31.5968170Z ^[[1m^[[92m   Compiling^[[0m errno v0.3.14
+history oracles release (macos-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:48:31.6251010Z ^[[1m^[[92m   Compiling^[[0m thread_local v1.1.10
+history oracles release (macos-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:48:31.6995020Z ^[[1m^[[92m   Compiling^[[0m color_quant v1.1.0
+history oracles release (macos-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:48:31.7821190Z ^[[1m^[[92m   Compiling^[[0m quick-error v2.0.1
+history oracles release (macos-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:48:31.8200840Z ^[[1m^[[92m   Compiling^[[0m fax v0.2.7
+history oracles release (macos-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:48:31.8522130Z ^[[1m^[[92m   Compiling^[[0m pxfm v0.1.30
+history oracles release (macos-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:48:31.9987850Z ^[[1m^[[92m   Compiling^[[0m tt-vector v0.0.1 (/Users/runner/work/261017-toontown-dev/261017-toontown-dev/crates/vector)
+history oracles release (macos-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:48:34.0299890Z ^[[1m^[[92m   Compiling^[[0m moxcms v0.8.1
+history oracles release (macos-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:48:34.1137110Z ^[[1m^[[92m   Compiling^[[0m tiff v0.11.3
+history oracles release (macos-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:48:35.2460760Z ^[[1m^[[92m   Compiling^[[0m gif v0.14.2
+history oracles release (macos-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:48:35.7812300Z ^[[1m^[[92m   Compiling^[[0m vello_cpu v0.3.0
+history oracles release (macos-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:48:38.8268020Z ^[[1m^[[92m   Compiling^[[0m rustix v1.1.5
+history oracles release (macos-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:48:39.2594430Z ^[[1m^[[92m   Compiling^[[0m tt-fx v0.0.1 (/Users/runner/work/261017-toontown-dev/261017-toontown-dev/crates/fx)
+history oracles release (macos-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:48:39.3215050Z ^[[1m^[[92m   Compiling^[[0m tt-colour v0.0.1 (/Users/runner/work/261017-toontown-dev/261017-toontown-dev/crates/colour)
+history oracles release (macos-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:48:39.3812200Z ^[[1m^[[92m   Compiling^[[0m fastrand v2.5.0
+history oracles release (macos-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:48:39.5235930Z ^[[1m^[[92m   Compiling^[[0m byteorder-lite v0.1.0
+history oracles release (macos-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:48:39.6867140Z ^[[1m^[[92m   Compiling^[[0m image v0.25.10
+history oracles release (macos-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:48:39.7169200Z ^[[1m^[[92m   Compiling^[[0m tempfile v3.27.0
+history oracles release (macos-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:48:40.0278180Z ^[[1m^[[92m   Compiling^[[0m tt-render v0.0.1 (/Users/runner/work/261017-toontown-dev/261017-toontown-dev/crates/render)
+history oracles release (macos-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:48:40.3815440Z ^[[1m^[[92m   Compiling^[[0m tt-persist v0.0.1 (/Users/runner/work/261017-toontown-dev/261017-toontown-dev/crates/persist)
+history oracles release (macos-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:48:45.2171720Z ^[[1m^[[92m   Compiling^[[0m wait-timeout v0.2.1
+history oracles release (macos-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:48:45.3426520Z ^[[1m^[[92m   Compiling^[[0m fnv v1.0.7
+history oracles release (macos-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:48:45.4073000Z ^[[1m^[[92m   Compiling^[[0m bit-vec v0.10.1
+history oracles release (macos-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:48:45.4380360Z ^[[1m^[[92m   Compiling^[[0m quick-error v1.2.3
+history oracles release (macos-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:48:45.5067740Z ^[[1m^[[92m   Compiling^[[0m rusty-fork v0.3.1
+history oracles release (macos-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:48:45.5692220Z ^[[1m^[[92m   Compiling^[[0m bit-set v0.11.1
+history oracles release (macos-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:48:45.6816050Z ^[[1m^[[92m   Compiling^[[0m tt-registry v0.0.1 (/Users/runner/work/261017-toontown-dev/261017-toontown-dev/crates/registry)
+history oracles release (macos-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:48:45.7763140Z ^[[1m^[[92m   Compiling^[[0m tt-io v0.0.1 (/Users/runner/work/261017-toontown-dev/261017-toontown-dev/crates/io)
+history oracles release (macos-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:48:45.9661930Z ^[[1m^[[92m   Compiling^[[0m rand v0.10.3
+history oracles release (macos-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:48:46.3211500Z ^[[1m^[[92m   Compiling^[[0m rand_xorshift v0.5.0
+history oracles release (macos-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:48:46.4265090Z ^[[1m^[[92m   Compiling^[[0m chacha20 v0.10.2
+history oracles release (macos-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:48:46.5771120Z ^[[1m^[[92m   Compiling^[[0m core_detect v1.0.0
+history oracles release (macos-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:48:46.6631970Z ^[[1m^[[92m   Compiling^[[0m unarray v0.1.4
+history oracles release (macos-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:48:46.7419230Z ^[[1m^[[92m   Compiling^[[0m proptest v1.12.0
+history oracles release (macos-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:48:46.8067570Z ^[[1m^[[92m   Compiling^[[0m tt-executor v0.0.1 (/Users/runner/work/261017-toontown-dev/261017-toontown-dev/crates/executor)
+history oracles release (macos-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:48:49.8530550Z ^[[1m^[[92m   Compiling^[[0m stats_alloc v0.1.10
+history oracles release (macos-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:48:59.7743920Z test exclusive_mutation_capability has been running for over 60 seconds
+history oracles release (macos-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:49:15.4798270Z ^[[1m^[[92m   Compiling^[[0m tt-executor-tests v0.0.0 (/Users/runner/work/261017-toontown-dev/261017-toontown-dev/target/tests/trybuild/tt-executor)
+history oracles release (macos-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:49:15.7188460Z ^[[1m^[[92m    Finished^[[0m `dev` profile [unoptimized + debuginfo] target(s) in 1m 15s
+history oracles release (macos-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:49:16.1903370Z 
+history oracles release (macos-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:49:16.1925120Z 
+history oracles release (macos-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:50:32.1291100Z test tests/ui/core_install.rs [should fail to compile] ... ok
+history oracles release (macos-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:50:33.0861250Z test tests/ui/cx_clone_default.rs [should fail to compile] ... ok
+history oracles release (macos-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:50:33.3278570Z test tests/ui/cx_constructor.rs [should fail to compile] ... ok
+history oracles release (macos-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:50:33.5711610Z test tests/ui/cx_struct_literal.rs [should fail to compile] ... ok
+history oracles release (macos-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:50:33.8062360Z test tests/ui/document_fields.rs [should fail to compile] ... ok
+history oracles release (macos-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:50:34.0728150Z test tests/ui/enablement_read_only.rs [should fail to compile] ... ok
+history oracles release (macos-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:50:34.3400180Z test tests/ui/entity_fields.rs [should fail to compile] ... ok
+history oracles release (macos-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:50:34.5828390Z test tests/ui/handle_channel.rs [should fail to compile] ... ok
+history oracles release (macos-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:50:34.8273270Z test tests/ui/job_keeps_context.rs [should fail to compile] ... ok
+history oracles release (macos-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:50:35.0707600Z test tests/ui/load_grant_forged.rs [should fail to compile] ... ok
+history oracles release (macos-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:50:35.3188720Z test tests/ui/request_type.rs [should fail to compile] ... ok
+history oracles release (macos-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:50:35.5749070Z test tests/ui/session_private.rs [should fail to compile] ... ok
+history oracles release (macos-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:50:40.5288530Z test tests/ui-pass/read_snapshots.rs [should pass] ... ok
+history oracles release (macos-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:50:40.5288910Z 
+history oracles release (macos-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:50:40.5288920Z 
+history oracles release (macos-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:50:40.5294760Z test exclusive_mutation_capability ... ok
+history oracles release (macos-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:50:40.5294970Z 
+history oracles release (macos-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:50:40.5295260Z test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 160.84s
+history oracles release (macos-latest)	Compile-time proofs (trybuild, release)	2026-11-10T05:50:40.5295630Z 
