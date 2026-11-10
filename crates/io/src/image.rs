@@ -415,3 +415,54 @@ mod psd {
         Ok(Rgba { width, height, pixels })
     }
 }
+
+/// An encoded still format of the renderers (09 §11.2: `render.frame.run` and `render.range.run`; M3 C3.3). PNG is
+/// encoded by `tt_render::encode_png`; these are the others.
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub enum StillFormat {
+    /// Baseline JPEG; no alpha.
+    Jpeg,
+    /// 32-bit BMP with alpha.
+    Bmp,
+    /// 32-bit uncompressed TGA with alpha.
+    Tga,
+}
+
+/// Encodes a premultiplied RGBA8 buffer (the renderer's output) in `format`, deterministically (no timestamps or
+/// variable metadata). JPEG keeps the premultiplied colour, which is the image composited over black, and
+/// `jpeg_quality` (1–100); BMP and TGA keep straight alpha.
+///
+/// # Errors
+/// The encoder's message for a size it cannot write.
+pub fn encode_still(
+    format: StillFormat,
+    premultiplied: &[u8],
+    width: u32,
+    height: u32,
+    jpeg_quality: u8,
+) -> Result<Vec<u8>, String> {
+    use image::ImageEncoder;
+    let mut out = Vec::new();
+    match format {
+        StillFormat::Jpeg => {
+            let rgb: Vec<u8> = premultiplied.as_chunks::<4>().0.iter().flat_map(|p| [p[0], p[1], p[2]]).collect();
+            image::codecs::jpeg::JpegEncoder::new_with_quality(&mut out, jpeg_quality.clamp(1, 100))
+                .write_image(&rgb, width, height, image::ExtendedColorType::Rgb8)
+                .map_err(|e| e.to_string())?;
+        }
+        StillFormat::Bmp => {
+            let straight = tt_render::unpremultiply(premultiplied);
+            image::codecs::bmp::BmpEncoder::new(&mut out)
+                .write_image(&straight, width, height, image::ExtendedColorType::Rgba8)
+                .map_err(|e| e.to_string())?;
+        }
+        StillFormat::Tga => {
+            let straight = tt_render::unpremultiply(premultiplied);
+            image::codecs::tga::TgaEncoder::new(&mut out)
+                .disable_rle()
+                .write_image(&straight, width, height, image::ExtendedColorType::Rgba8)
+                .map_err(|e| e.to_string())?;
+        }
+    }
+    Ok(out)
+}

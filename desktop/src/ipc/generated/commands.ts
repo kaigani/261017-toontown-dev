@@ -6032,8 +6032,16 @@ export const COMMAND_INDEX = {
           step: 4,
         },
       },
+      {
+        frames: [
+          1,
+          12,
+          24,
+        ],
+        columns: 3,
+        cellWidth: 120,
+      },
     ],
-    milestone: "M3 C3.3",
   },
   "inspect.coordinates.convert": {
     kind: "query",
@@ -6050,8 +6058,17 @@ export const COMMAND_INDEX = {
           },
         ],
       },
+      {
+        from: "image",
+        to: "scene",
+        points: [
+          {
+            x: 960,
+            y: 540,
+          },
+        ],
+      },
     ],
-    milestone: "M3 C3.3",
   },
   "inspect.frame.describe": {
     kind: "query",
@@ -6059,8 +6076,11 @@ export const COMMAND_INDEX = {
     result: "inspect.frame.describe.result",
     examples: [
       {},
+      {
+        frame: 12,
+        detail: "full",
+      },
     ],
-    milestone: "M3 C3.3",
   },
   "inspect.hitTest": {
     kind: "query",
@@ -6074,8 +6094,15 @@ export const COMMAND_INDEX = {
           y: 0,
         },
       },
+      {
+        space: "image",
+        point: {
+          x: 960,
+          y: 540,
+        },
+        frame: 12,
+      },
     ],
-    milestone: "M3 C3.3",
   },
   "inspect.screenshot": {
     kind: "query",
@@ -7552,9 +7579,15 @@ export const COMMAND_INDEX = {
     params: "render.frame.run.params",
     result: "render.frame.run.result",
     examples: [
-      {},
+      {
+        scale: 0.25,
+      },
+      {
+        frame: 12,
+        width: 480,
+        background: "transparent",
+      },
     ],
-    milestone: "M3 C3.3",
   },
   "render.limits.get": {
     kind: "query",
@@ -7563,7 +7596,6 @@ export const COMMAND_INDEX = {
     examples: [
       {},
     ],
-    milestone: "M3 C3.3",
   },
   "render.range.run": {
     kind: "job",
@@ -7571,10 +7603,14 @@ export const COMMAND_INDEX = {
     result: "render.range.run.result",
     examples: [
       {
-        directory: "review/example.out",
+        from: 1,
+        to: 24,
+        scale: 0.25,
+        directory: "/tmp/tt-range",
+        createDirs: true,
+        onConflict: "overwrite",
       },
     ],
-    milestone: "M3 C3.3",
   },
   "sound.asset.get": {
     kind: "query",
@@ -34285,7 +34321,7 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
         type: "string",
       },
       warnings: {
-        description: "Objects not drawn and why (`render.colourMissing`, `render.textureMissing`, `render.bitmapSkipped`).",
+        description: "Objects not drawn and why (`render.colourMissing`, `render.textureMissing`, `render.bitmapMissing`).",
         type: "array",
         items: true,
       },
@@ -58669,7 +58705,7 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
     "x-spec": "`VectorizeSettings`",
   },
   "inspect.contactSheet.render.FrameSelection": {
-    description: "`inspect.contactSheet.render` parameters.\nThe frames of a contact sheet (spec A `inspect.contactSheet.render`): a list, or a stepped range.",
+    description: "The frames of a contact sheet (spec A `inspect.contactSheet.render`): a list, or a stepped range.",
     anyOf: [
       {
         description: "The frames listed.",
@@ -58718,6 +58754,7 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
   },
   "inspect.contactSheet.render.params": {
     title: "ContactSheetParams",
+    description: "`inspect.contactSheet.render` parameters.",
     type: "object",
     properties: {
       sceneId: {
@@ -58733,7 +58770,7 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
         $ref: "#/$defs/inspect.contactSheet.render.FrameSelection",
       },
       columns: {
-        description: "Columns.",
+        description: "Columns (default ⌈√n⌉).",
         type: [
           "integer",
           "null",
@@ -58743,7 +58780,7 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
         maximum: 64,
       },
       cellWidth: {
-        description: "Cell width.",
+        description: "Cell width (default 240).",
         type: [
           "integer",
           "null",
@@ -58753,7 +58790,7 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
         maximum: 2048,
       },
       labels: {
-        description: "Frame labels.",
+        description: "Frame labels (default true).",
         type: [
           "boolean",
           "null",
@@ -58766,10 +58803,101 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
       "frames",
     ],
   },
-  "inspect.contactSheet.render.result": {
-    title: "Map_of_AnyValue",
+  "inspect.contactSheet.render.Cell": {
+    description: "A cell of a contact sheet.",
     type: "object",
-    additionalProperties: true,
+    properties: {
+      frame: {
+        type: "integer",
+        maximum: 2147483647,
+        minimum: 0,
+      },
+      x: {
+        type: "integer",
+        maximum: 2147483647,
+        minimum: 0,
+      },
+      y: {
+        type: "integer",
+        maximum: 2147483647,
+        minimum: 0,
+      },
+      w: {
+        type: "integer",
+        maximum: 2147483647,
+        minimum: 0,
+      },
+      h: {
+        type: "integer",
+        maximum: 2147483647,
+        minimum: 0,
+      },
+    },
+    required: [
+      "frame",
+      "x",
+      "y",
+      "w",
+      "h",
+    ],
+  },
+  "inspect.contactSheet.render.result": {
+    title: "ContactSheet",
+    description: "`inspect.contactSheet.render` result (11 §15.2).",
+    type: "object",
+    properties: {
+      png: {
+        description: "The PNG, base64.",
+        type: "string",
+      },
+      width: {
+        type: "integer",
+        maximum: 2147483647,
+        minimum: 0,
+      },
+      height: {
+        type: "integer",
+        maximum: 2147483647,
+        minimum: 0,
+      },
+      cells: {
+        description: "Frame cells, in order.",
+        type: "array",
+        items: {
+          $ref: "#/$defs/inspect.contactSheet.render.Cell",
+        },
+      },
+      bytes: {
+        description: "Encoded size.",
+        type: "integer",
+        maximum: 18446744073709551615n,
+        minimum: 0,
+      },
+      sha256: {
+        description: "SHA-256 of the PNG (hex).",
+        type: "string",
+      },
+      documentRevision: {
+        type: "integer",
+        maximum: 18446744073709551615n,
+        minimum: 0,
+      },
+      warnings: {
+        description: "Objects not drawn and why.",
+        type: "array",
+        items: true,
+      },
+    },
+    required: [
+      "png",
+      "width",
+      "height",
+      "cells",
+      "bytes",
+      "sha256",
+      "documentRevision",
+      "warnings",
+    ],
   },
   "inspect.coordinates.convert.Point3": {
     description: "A point with an optional depth.",
@@ -58803,11 +58931,11 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
     type: "object",
     properties: {
       from: {
-        description: "Source space.",
+        description: "Source space: `drawing`, `local`, `parent` (these three with `elementId`), `scene` (or `world`, `field`),\n`camera`, `cameraNormalized`, `image` (SI-109; `view`: owner M4 C4.2).",
         type: "string",
       },
       to: {
-        description: "Target space.",
+        description: "Target space (as `from`).",
         type: "string",
       },
       points: {
@@ -58838,7 +58966,7 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
         maximum: 100000,
       },
       elementId: {
-        description: "Element.",
+        description: "Element of `drawing`, `local` and `parent`.",
         type: [
           "string",
           "null",
@@ -58846,7 +58974,7 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
         default: null,
       },
       view: {
-        description: "View.",
+        description: "View (owner M4 C4.2).",
         type: [
           "string",
           "null",
@@ -58931,36 +59059,314 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
     },
     additionalProperties: false,
   },
-  "inspect.frame.describe.result": {
-    title: "Map_of_AnyValue",
+  "inspect.frame.describe.Described": {
+    description: "A visible element (11 §7.5).",
     type: "object",
-    additionalProperties: true,
+    properties: {
+      elementId: {
+        type: "string",
+      },
+      name: {
+        type: "string",
+      },
+      drawingId: {
+        description: "The drawing shown.",
+        type: [
+          "string",
+          "null",
+        ],
+      },
+      worldTransform: {
+        $ref: "#/$defs/inspect.frame.describe.WorldTransform",
+      },
+      cameraBounds: {
+        $ref: "#/$defs/inspect.frame.describe.CameraBounds",
+      },
+      opacity: {
+        description: "1: elements have no opacity until effects (M7).",
+        type: "number",
+      },
+      effects: {
+        description: "Active effects (none until M7).",
+        type: "array",
+        items: true,
+      },
+      kind: {
+        description: "`drawing`, `image` (full detail).",
+        type: [
+          "string",
+          "null",
+        ],
+      },
+      role: {
+        description: "`normal`, `foreground`, `background`, `envelope` (full detail).",
+        type: [
+          "string",
+          "null",
+        ],
+      },
+      depth: {
+        description: "World Z of the origin (full detail).",
+        type: [
+          "number",
+          "null",
+        ],
+      },
+      drawingToImage: {
+        description: "Drawing units → output pixels `[a, b, c, d, e, f]` (full detail).",
+        type: [
+          "array",
+          "null",
+        ],
+        items: {
+          type: "number",
+        },
+        minItems: 6,
+        maxItems: 6,
+      },
+      drawingBounds: {
+        description: "The drawing's bounds in drawing units (full detail).",
+        anyOf: [
+          {
+            $ref: "#/$defs/inspect.frame.describe.Box2",
+          },
+          {
+            type: "null",
+          },
+        ],
+      },
+    },
+    required: [
+      "elementId",
+      "name",
+      "worldTransform",
+      "cameraBounds",
+      "opacity",
+      "effects",
+    ],
+  },
+  "inspect.frame.describe.WorldTransform": {
+    description: "An element's world transform.",
+    type: "object",
+    properties: {
+      matrix: {
+        description: "16 numbers, row-major.",
+        type: "array",
+        items: {
+          type: "number",
+        },
+      },
+      position: {
+        description: "Origin (fields).",
+        type: "array",
+        items: {
+          type: "number",
+        },
+        minItems: 3,
+        maxItems: 3,
+      },
+      rotation: {
+        description: "Rotation (degrees).",
+        type: "number",
+      },
+      scale: {
+        description: "`[sx, sy]` (a mirror gives a negative `sy`, 05 §2.5).",
+        type: "array",
+        items: {
+          type: "number",
+        },
+        minItems: 2,
+        maxItems: 2,
+      },
+      skew: {
+        description: "Skew (degrees).",
+        type: "number",
+      },
+    },
+    required: [
+      "matrix",
+      "position",
+      "rotation",
+      "scale",
+      "skew",
+    ],
+  },
+  "inspect.frame.describe.CameraBounds": {
+    description: "Where an element is in the camera frame.",
+    type: "object",
+    properties: {
+      normalized: {
+        description: "0..1 from the frame's top-left (y down).",
+        $ref: "#/$defs/inspect.frame.describe.Box2",
+      },
+      fields: {
+        description: "Fields from the camera centre on the table plane (y up): `x`, `y` the bottom-left corner.",
+        $ref: "#/$defs/inspect.frame.describe.Box2",
+      },
+      pixels: {
+        description: "Output pixels of a render at the camera size.",
+        $ref: "#/$defs/inspect.frame.describe.Box2",
+      },
+    },
+    required: [
+      "normalized",
+      "fields",
+      "pixels",
+    ],
+  },
+  "inspect.frame.describe.Box2": {
+    description: "A rectangle `{x, y, width, height}`.",
+    type: "object",
+    properties: {
+      x: {
+        type: "number",
+      },
+      y: {
+        type: "number",
+      },
+      width: {
+        type: "number",
+      },
+      height: {
+        type: "number",
+      },
+    },
+    required: [
+      "x",
+      "y",
+      "width",
+      "height",
+    ],
+  },
+  "inspect.frame.describe.Omitted": {
+    description: "An element of the frame that is not drawn.",
+    type: "object",
+    properties: {
+      elementId: {
+        type: "string",
+      },
+      name: {
+        type: "string",
+      },
+      reason: {
+        description: "`hidden`, `annotation`, `noDrawing`, `empty`, `behindCamera`, `outOfFrame`.",
+        type: "string",
+      },
+      drawingId: {
+        type: [
+          "string",
+          "null",
+        ],
+      },
+    },
+    required: [
+      "elementId",
+      "name",
+      "reason",
+    ],
+  },
+  "inspect.frame.describe.result": {
+    title: "Description",
+    description: "`inspect.frame.describe` result (11 §7.5, §15.2).",
+    type: "object",
+    properties: {
+      sceneId: {
+        type: "string",
+      },
+      frame: {
+        type: "integer",
+        maximum: 2147483647,
+        minimum: 0,
+      },
+      cameraId: {
+        type: "string",
+      },
+      width: {
+        description: "The render size the pixel bounds refer to (the camera size).",
+        type: "integer",
+        maximum: 2147483647,
+        minimum: 0,
+      },
+      height: {
+        type: "integer",
+        maximum: 2147483647,
+        minimum: 0,
+      },
+      elements: {
+        description: "Visible elements in draw order, back to front.",
+        type: "array",
+        items: {
+          $ref: "#/$defs/inspect.frame.describe.Described",
+        },
+      },
+      omitted: {
+        description: "Elements of the frame not drawn, and why (out-of-frame elements included).",
+        type: "array",
+        items: {
+          $ref: "#/$defs/inspect.frame.describe.Omitted",
+        },
+      },
+      sounds: {
+        description: "Audible sounds (M8).",
+        type: "array",
+        items: true,
+      },
+      mouthShape: {
+        description: "The mouth shape at the frame (M8).",
+        type: [
+          "string",
+          "null",
+        ],
+      },
+      warnings: {
+        type: "array",
+        items: true,
+      },
+      documentRevision: {
+        description: "The document revision described.",
+        type: "integer",
+        maximum: 18446744073709551615n,
+        minimum: 0,
+      },
+    },
+    required: [
+      "sceneId",
+      "frame",
+      "cameraId",
+      "width",
+      "height",
+      "elements",
+      "omitted",
+      "sounds",
+      "warnings",
+      "documentRevision",
+    ],
   },
   "inspect.hitTest.Space": {
-    description: "Coordinate space.",
+    description: "Coordinate space of a hit test.",
     oneOf: [
       {
-        description: "View pixels.",
+        description: "View pixels (owner M4 C4.2).",
         type: "string",
         const: "view",
       },
       {
-        description: "Drawing space.",
+        description: "Drawing space (needs an element; convert to `scene` first).",
         type: "string",
         const: "drawing",
       },
       {
-        description: "Scene space.",
+        description: "Scene space, on the table plane (fields).",
         type: "string",
         const: "scene",
       },
       {
-        description: "Camera space.",
+        description: "Camera space: fields from the camera centre on the table plane, y up.",
         type: "string",
         const: "camera",
       },
       {
-        description: "Rendered image pixels.",
+        description: "Output pixels of a render at the camera size.",
         type: "string",
         const: "image",
       },
@@ -59017,7 +59423,7 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
         maximum: 100000,
       },
       view: {
-        description: "View.",
+        description: "View (owner M4 C4.2).",
         type: [
           "string",
           "null",
@@ -59031,17 +59437,53 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
       "point",
     ],
   },
+  "inspect.hitTest.HitOut": {
+    description: "One object under the point.",
+    type: "object",
+    properties: {
+      elementId: {
+        type: "string",
+      },
+      drawingId: {
+        type: "string",
+      },
+      layerId: {
+        type: [
+          "string",
+          "null",
+        ],
+      },
+      objectId: {
+        type: "string",
+      },
+      kind: {
+        description: "`zone`, `brush`, `pencil`, `text`, `bitmap`.",
+        type: "string",
+      },
+      colourId: {
+        type: [
+          "string",
+          "null",
+        ],
+      },
+    },
+    required: [
+      "elementId",
+      "drawingId",
+      "objectId",
+      "kind",
+    ],
+  },
   "inspect.hitTest.result": {
     title: "Hits",
     description: "`{hits}`.",
     type: "object",
     properties: {
       hits: {
-        description: "Hits, front to back.",
+        description: "Hits, top-most first.",
         type: "array",
         items: {
-          type: "object",
-          additionalProperties: true,
+          $ref: "#/$defs/inspect.hitTest.HitOut",
         },
       },
     },
@@ -69448,208 +69890,346 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
       "globalLibrarySaved",
     ],
   },
+  "render.frame.run.Composition": {
+    description: "Composition (09 §11.2).",
+    oneOf: [
+      {
+        description: "Through the scene's camera.",
+        type: "string",
+        const: "camera",
+      },
+      {
+        description: "The exposure-sheet composition (owner M5 C5.1).",
+        type: "string",
+        const: "xsheet",
+      },
+      {
+        description: "The given elements through the camera, or with `drawingId` one drawing in drawing space.",
+        type: "string",
+        const: "element",
+      },
+      {
+        description: "What the active view shows (owner M4 C4.2).",
+        type: "string",
+        const: "activeView",
+      },
+    ],
+  },
+  "render.frame.run.Quality": {
+    description: "Quality (09 §11.2).",
+    oneOf: [
+      {
+        description: "The final-quality renderer.",
+        type: "string",
+        const: "final",
+      },
+      {
+        description: "The interactive renderer's output (until M4 C4.2: as final, SI-107).",
+        type: "string",
+        const: "draft",
+      },
+    ],
+  },
+  "render.frame.run.FrameFormat": {
+    description: "Image format of `render.frame.run`.",
+    oneOf: [
+      {
+        description: "PNG.",
+        type: "string",
+        const: "png",
+      },
+      {
+        description: "JPEG.",
+        type: "string",
+        const: "jpeg",
+      },
+    ],
+  },
+  "render.frame.run.Output": {
+    description: "Inline or file output.",
+    oneOf: [
+      {
+        description: "Base64 in the result.",
+        type: "string",
+        const: "inline",
+      },
+      {
+        description: "Written to `path`.",
+        type: "string",
+        const: "file",
+      },
+    ],
+  },
+  "render.frame.run.OnConflict": {
+    description: "What to do with an existing output file (09 §11.1 item 5).",
+    oneOf: [
+      {
+        description: "Refuse (`export.fileExists`).",
+        type: "string",
+        const: "fail",
+      },
+      {
+        description: "Replace (confirmable under Assist, 11 §6.2).",
+        type: "string",
+        const: "overwrite",
+      },
+      {
+        description: "Append ` (n)` before the extension.",
+        type: "string",
+        const: "rename",
+      },
+    ],
+  },
   "render.frame.run.params": {
-    title: "render.frame.run parameters",
+    title: "FrameParams",
+    description: "`render.frame.run` parameters (09 §11.2).",
     type: "object",
     properties: {
       sceneId: {
-        type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
+        description: "Scene (default current).",
+        type: [
+          "string",
+          "null",
+        ],
+        default: null,
       },
       frame: {
-        type: "integer",
+        description: "Scene frame (default current).",
+        type: [
+          "integer",
+          "null",
+        ],
+        default: null,
+        minimum: 1,
+        maximum: 100000,
       },
       composition: {
-        type: "string",
-        enum: [
-          "camera",
-          "xsheet",
-          "element",
-          "activeView",
-        ],
-        default: "camera",
+        description: "Composition.",
+        $ref: "#/$defs/render.frame.run.Composition",
       },
       elementIds: {
-        type: "array",
+        description: "Elements of the `element` composition.",
+        type: [
+          "array",
+          "null",
+        ],
         items: {
           type: "string",
-          minLength: 1,
-          maxLength: 4096,
-          description: "object ID or path reference (10 §3)",
         },
-        maxItems: 100000,
+        default: null,
       },
       drawingId: {
-        type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
+        description: "The drawing of the `element` composition in drawing space.",
+        type: [
+          "string",
+          "null",
+        ],
+        default: null,
       },
       width: {
-        type: "integer",
+        description: "Width in pixels (default the camera's).",
+        type: [
+          "integer",
+          "null",
+        ],
+        default: null,
+        minimum: 1,
+        maximum: 8192,
       },
       height: {
-        type: "integer",
+        description: "Height in pixels (default by the camera aspect).",
+        type: [
+          "integer",
+          "null",
+        ],
+        default: null,
+        minimum: 1,
+        maximum: 8192,
       },
       scale: {
+        description: "Scale of the size.",
         type: "number",
+        default: 1,
         minimum: 0.05,
         maximum: 8,
-        default: 1,
       },
       quality: {
-        type: "string",
-        enum: [
-          "final",
-          "draft",
-        ],
-        default: "final",
+        description: "Quality.",
+        $ref: "#/$defs/render.frame.run.Quality",
       },
       background: {
-        anyOf: [
-          {
-            type: "string",
-            enum: [
-              "scene",
-              "transparent",
-            ],
-          },
-          {
-            type: "string",
-            pattern: "^#[0-9A-Fa-f]{6}([0-9A-Fa-f]{2})?$",
-            description: "#RRGGBB or #RRGGBBAA",
-          },
-        ],
+        description: "`scene`, `transparent` or a colour.",
+        type: "string",
         default: "scene",
       },
       cameraFrame: {
+        description: "Outline the camera frame (compositions larger than the frame; SI-107).",
         type: "boolean",
         default: false,
       },
       format: {
-        type: "string",
-        enum: [
-          "png",
-          "jpeg",
-        ],
-        default: "png",
+        description: "Format.",
+        $ref: "#/$defs/render.frame.run.FrameFormat",
       },
       jpegQuality: {
+        description: "JPEG quality.",
         type: "integer",
+        default: 90,
         minimum: 0,
         maximum: 100,
-        default: 90,
       },
       output: {
-        type: "string",
-        enum: [
-          "inline",
-          "file",
-        ],
-        default: "inline",
+        description: "Inline or file.",
+        $ref: "#/$defs/render.frame.run.Output",
       },
       path: {
-        type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "file-system path (11 §6.2)",
+        description: "Output file (absolute).",
+        type: [
+          "string",
+          "null",
+        ],
+        default: null,
       },
       onConflict: {
-        type: "string",
-        enum: [
-          "fail",
-          "overwrite",
-          "rename",
+        description: "Existing file.",
+        $ref: "#/$defs/render.frame.run.OnConflict",
+      },
+      cameraId: {
+        description: "Camera (default the scene's current camera; the generic `render_frame` tool's `camera`, SI-107).",
+        type: [
+          "string",
+          "null",
         ],
-        default: "fail",
+        default: null,
       },
     },
     additionalProperties: false,
-    "x-spec": "`sceneId?: id; frame?: int; composition: \"camera\"|\"xsheet\"|\"element\"|\"activeView\" = \"camera\"; elementIds?: [id]; drawingId?: id; width?: int; height?: int; scale: number = 1 (0.05–8); quality: \"final\"|\"draft\" = \"final\"; background: \"scene\"|\"transparent\"|colour = \"scene\"; cameraFrame: bool = false; format: \"png\"|\"jpeg\" = \"png\"; jpegQuality: int = 90 (0–100); output: \"inline\"|\"file\" = \"inline\"; path?: path; onConflict: \"fail\"|\"overwrite\"|\"rename\" = \"fail\"`",
   },
-  "render.frame.run.spec.RenderResult": {
+  "render.frame.run.result": {
+    title: "RenderResult",
+    description: "`RenderResult` (09 §11.4).",
     type: "object",
     properties: {
       mimeType: {
+        description: "`image/png` or `image/jpeg`.",
         type: "string",
-        maxLength: 65536,
       },
       width: {
+        description: "Width in pixels.",
         type: "integer",
+        maximum: 2147483647,
+        minimum: 0,
       },
       height: {
+        description: "Height in pixels.",
         type: "integer",
+        maximum: 2147483647,
+        minimum: 0,
       },
       bytes: {
+        description: "Encoded size.",
         type: "integer",
+        maximum: 18446744073709551615n,
+        minimum: 0,
       },
       sha256: {
+        description: "SHA-256 of the encoded image (hex).",
         type: "string",
-        maxLength: 65536,
       },
       data: {
-        type: "string",
-        maxLength: 65536,
+        description: "The image, base64 (inline output).",
+        type: [
+          "string",
+          "null",
+        ],
       },
       path: {
-        type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "file-system path (11 §6.2)",
+        description: "The written file (file output).",
+        type: [
+          "string",
+          "null",
+        ],
       },
       documentRevision: {
+        description: "The document revision rendered.",
         type: "integer",
+        maximum: 18446744073709551615n,
+        minimum: 0,
+      },
+      frame: {
+        description: "The scene frame rendered.",
+        type: "integer",
+        maximum: 2147483647,
+        minimum: 0,
+      },
+      imageToCamera: {
+        description: "Output pixels → camera space (fields from the camera centre on the table plane, y up) `[a, b, c, d, e, f]`\n(11 §7.5 `imageToCamera`); for a drawing-space render, output pixels → drawing units.",
+        type: "array",
+        items: {
+          type: "number",
+        },
+        minItems: 6,
+        maxItems: 6,
+      },
+      warnings: {
+        description: "Objects not drawn and why, and notes (`render.draftAsFinal`).",
+        type: "array",
+        items: true,
       },
     },
-    additionalProperties: false,
     required: [
       "mimeType",
       "width",
       "height",
       "bytes",
       "sha256",
-      "path",
       "documentRevision",
+      "frame",
+      "imageToCamera",
+      "warnings",
     ],
-    "x-specSection": "09",
-  },
-  "render.frame.run.result": {
-    $ref: "#/$defs/render.frame.run.spec.RenderResult",
-    title: "render.frame.run result",
-    "x-spec": "`RenderResult`",
   },
   "render.limits.get.params": {
-    title: "render.limits.get parameters",
+    title: "NoParams",
+    description: "No parameters.",
     type: "object",
-    properties: {},
     additionalProperties: false,
-    "x-spec": "—",
   },
   "render.limits.get.result": {
-    title: "render.limits.get result",
+    title: "Limits",
+    description: "`render.limits.get` result (09 §11.2).",
     type: "object",
     properties: {
       maxInlinePixels: {
-        type: "number",
+        description: "Longest side of an inline image.",
+        type: "integer",
+        maximum: 2147483647,
+        minimum: 0,
       },
       maxInlineBytes: {
-        type: "number",
+        description: "Largest encoded inline image.",
+        type: "integer",
+        maximum: 18446744073709551615n,
+        minimum: 0,
       },
       maxWidth: {
-        type: "number",
+        description: "Largest width.",
+        type: "integer",
+        maximum: 2147483647,
+        minimum: 0,
       },
       maxHeight: {
-        type: "number",
+        description: "Largest height.",
+        type: "integer",
+        maximum: 2147483647,
+        minimum: 0,
       },
       formats: {
+        description: "Supported formats.",
         type: "array",
         items: {
           type: "string",
-          maxLength: 65536,
         },
-        maxItems: 100000,
       },
     },
     required: [
@@ -69659,280 +70239,287 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
       "maxHeight",
       "formats",
     ],
-    "x-spec": "`{maxInlinePixels, maxInlineBytes, maxWidth, maxHeight, formats[]}`",
-    additionalProperties: false,
+  },
+  "render.range.run.Composition": {
+    description: "Composition (09 §11.2).",
+    oneOf: [
+      {
+        description: "Through the scene's camera.",
+        type: "string",
+        const: "camera",
+      },
+      {
+        description: "The exposure-sheet composition (owner M5 C5.1).",
+        type: "string",
+        const: "xsheet",
+      },
+      {
+        description: "The given elements through the camera, or with `drawingId` one drawing in drawing space.",
+        type: "string",
+        const: "element",
+      },
+      {
+        description: "What the active view shows (owner M4 C4.2).",
+        type: "string",
+        const: "activeView",
+      },
+    ],
+  },
+  "render.range.run.Quality": {
+    description: "Quality (09 §11.2).",
+    oneOf: [
+      {
+        description: "The final-quality renderer.",
+        type: "string",
+        const: "final",
+      },
+      {
+        description: "The interactive renderer's output (until M4 C4.2: as final, SI-107).",
+        type: "string",
+        const: "draft",
+      },
+    ],
+  },
+  "render.range.run.SequenceFormat": {
+    description: "Image format of `render.range.run`.",
+    oneOf: [
+      {
+        description: "PNG.",
+        type: "string",
+        const: "png",
+      },
+      {
+        description: "JPEG.",
+        type: "string",
+        const: "jpeg",
+      },
+      {
+        description: "TGA.",
+        type: "string",
+        const: "tga",
+      },
+      {
+        description: "BMP.",
+        type: "string",
+        const: "bmp",
+      },
+    ],
+  },
+  "render.range.run.OnConflict": {
+    description: "What to do with an existing output file (09 §11.1 item 5).",
+    oneOf: [
+      {
+        description: "Refuse (`export.fileExists`).",
+        type: "string",
+        const: "fail",
+      },
+      {
+        description: "Replace (confirmable under Assist, 11 §6.2).",
+        type: "string",
+        const: "overwrite",
+      },
+      {
+        description: "Append ` (n)` before the extension.",
+        type: "string",
+        const: "rename",
+      },
+    ],
   },
   "render.range.run.params": {
-    title: "render.range.run parameters",
+    title: "RangeParams",
+    description: "`render.range.run` parameters (09 §11.2).",
     type: "object",
     properties: {
       sceneId: {
-        type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
+        description: "Scene (default current).",
+        type: [
+          "string",
+          "null",
+        ],
+        default: null,
       },
       from: {
-        type: "integer",
+        description: "First frame (default 1).",
+        type: [
+          "integer",
+          "null",
+        ],
+        default: null,
+        minimum: 1,
+        maximum: 100000,
       },
       to: {
-        type: "integer",
+        description: "Last frame (default the scene length).",
+        type: [
+          "integer",
+          "null",
+        ],
+        default: null,
+        minimum: 1,
+        maximum: 100000,
       },
       step: {
+        description: "Every `step` frames.",
         type: "integer",
         default: 1,
+        minimum: 1,
+        maximum: 100000,
       },
       composition: {
-        type: "string",
-        enum: [
-          "camera",
-          "xsheet",
-          "element",
-        ],
-        default: "camera",
+        description: "Composition (`camera` or `element`; `xsheet`: owner M5 C5.1).",
+        $ref: "#/$defs/render.range.run.Composition",
       },
       elementIds: {
-        type: "array",
+        description: "Elements of the `element` composition.",
+        type: [
+          "array",
+          "null",
+        ],
         items: {
           type: "string",
-          minLength: 1,
-          maxLength: 4096,
-          description: "object ID or path reference (10 §3)",
         },
-        maxItems: 100000,
+        default: null,
       },
       width: {
-        type: "integer",
+        description: "Width in pixels (default the camera's).",
+        type: [
+          "integer",
+          "null",
+        ],
+        default: null,
+        minimum: 1,
+        maximum: 8192,
       },
       height: {
-        type: "integer",
+        description: "Height in pixels (default by the camera aspect).",
+        type: [
+          "integer",
+          "null",
+        ],
+        default: null,
+        minimum: 1,
+        maximum: 8192,
       },
       scale: {
+        description: "Scale of the size.",
         type: "number",
         default: 1,
+        minimum: 0.05,
+        maximum: 8,
       },
       quality: {
-        type: "string",
-        enum: [
-          "final",
-          "draft",
-        ],
-        default: "final",
+        description: "Quality.",
+        $ref: "#/$defs/render.range.run.Quality",
       },
       background: {
-        anyOf: [
-          {
-            type: "string",
-            enum: [
-              "scene",
-              "transparent",
-            ],
-          },
-          {
-            type: "string",
-            pattern: "^#[0-9A-Fa-f]{6}([0-9A-Fa-f]{2})?$",
-            description: "#RRGGBB or #RRGGBBAA",
-          },
-        ],
+        description: "`scene`, `transparent` or a colour.",
+        type: "string",
         default: "scene",
       },
       format: {
-        type: "string",
-        enum: [
-          "png",
-          "jpeg",
-          "tga",
-          "bmp",
-        ],
-        default: "png",
+        description: "Format.",
+        $ref: "#/$defs/render.range.run.SequenceFormat",
       },
       directory: {
+        description: "Output directory (absolute).",
         type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "file-system path (11 §6.2)",
       },
       namePattern: {
+        description: "File name pattern: `{name}` (the scene name), `{frame}` or `{frame:N}` (zero-padded to N digits).",
         type: "string",
-        maxLength: 65536,
+        minLength: 1,
+        maxLength: 200,
         default: "{name}_{frame:4}",
       },
       onConflict: {
-        type: "string",
-        maxLength: 65536,
-        default: "fail",
+        description: "Existing files.",
+        $ref: "#/$defs/render.range.run.OnConflict",
       },
       createDirs: {
+        description: "Create the directory when missing.",
         type: "boolean",
         default: false,
       },
       wait: {
+        description: "Accepted; the call answers `{jobId}` and `job.wait` waits (SI-107).",
         type: "boolean",
         default: false,
       },
     },
+    additionalProperties: false,
     required: [
       "directory",
     ],
-    additionalProperties: false,
-    "x-spec": "`sceneId?: id; from?: int; to?: int; step: int = 1; composition: \"camera\"|\"xsheet\"|\"element\" = \"camera\"; elementIds?: [id]; width?: int; height?: int; scale: number = 1; quality: \"final\"|\"draft\" = \"final\"; background: \"scene\"|\"transparent\"|colour = \"scene\"; format: \"png\"|\"jpeg\"|\"tga\"|\"bmp\" = \"png\"; directory: path; namePattern: string = \"{name}_{frame:4}\"; onConflict = \"fail\"; createDirs: bool = false; wait: bool = false`",
   },
-  "render.range.run.spec.Manifest": {
+  "render.range.run.Manifest": {
+    description: "`Manifest` of a range (09 §11.4).",
     type: "object",
     properties: {
-      jobId: {
-        type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
-      },
       status: {
+        description: "`succeeded`.",
         type: "string",
-        maxLength: 65536,
       },
       format: {
+        description: "`png`, `jpeg`, `tga` or `bmp`.",
         type: "string",
-        maxLength: 65536,
       },
       outputPath: {
+        description: "The output directory.",
         type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "file-system path (11 §6.2)",
       },
       frameCount: {
+        description: "Frames written.",
         type: "integer",
+        maximum: 2147483647,
+        minimum: 0,
       },
       fps: {
+        description: "Project frame rate.",
         type: "number",
       },
       durationSec: {
+        description: "Frames divided by fps.",
         type: "number",
       },
       width: {
+        description: "Width in pixels.",
         type: "integer",
+        maximum: 2147483647,
+        minimum: 0,
       },
       height: {
+        description: "Height in pixels.",
         type: "integer",
+        maximum: 2147483647,
+        minimum: 0,
       },
       range: {
-        type: "object",
-        properties: {
-          type: {
-            type: "string",
-            maxLength: 65536,
-          },
-          range: {
-            type: "string",
-            maxLength: 65536,
-          },
-          from: {
-            type: "integer",
-          },
-          to: {
-            type: "integer",
-          },
-        },
-        additionalProperties: false,
-        required: [
-          "type",
-          "range",
-          "from",
-          "to",
-        ],
+        description: "`{from, to, step}`.",
+      },
+      documentRevision: {
+        description: "The document revision rendered.",
+        type: "integer",
+        maximum: 18446744073709551615n,
+        minimum: 0,
       },
       files: {
+        description: "One entry per frame file.",
         type: "array",
         items: {
-          type: "object",
-          properties: {
-            role: {
-              type: "string",
-              maxLength: 65536,
-            },
-            path: {
-              type: "string",
-              minLength: 1,
-              maxLength: 4096,
-              description: "file-system path (11 §6.2)",
-            },
-            bytes: {
-              type: "integer",
-            },
-            sha256: {
-              type: "string",
-              maxLength: 65536,
-            },
-            width: {
-              type: "integer",
-            },
-            height: {
-              type: "integer",
-            },
-            durationSec: {
-              type: "number",
-            },
-            audio: {
-              type: "object",
-              properties: {
-                codec: {
-                  type: "string",
-                  maxLength: 65536,
-                },
-                sampleRate: {
-                  type: "integer",
-                },
-                channels: {
-                  type: "number",
-                },
-              },
-              additionalProperties: false,
-              required: [
-                "codec",
-                "sampleRate",
-                "channels",
-              ],
-            },
-          },
-          additionalProperties: false,
-          required: [
-            "role",
-            "path",
-            "bytes",
-            "sha256",
-          ],
+          $ref: "#/$defs/render.range.run.ManifestFile",
         },
-        maxItems: 100000,
+      },
+      manifestPath: {
+        description: "The companion manifest file written with the frames (this manifest without itself).",
+        type: "string",
       },
       warnings: {
+        description: "Objects not drawn and why.",
         type: "array",
-        items: {
-          type: "object",
-          properties: {
-            code: {
-              type: "string",
-              maxLength: 65536,
-            },
-            message: {
-              type: "string",
-              maxLength: 65536,
-            },
-          },
-          additionalProperties: false,
-          required: [
-            "code",
-            "message",
-          ],
-        },
-        maxItems: 100000,
-      },
-      elapsedMs: {
-        type: "integer",
+        items: true,
       },
     },
-    additionalProperties: false,
     required: [
-      "jobId",
       "status",
       "format",
       "outputPath",
@@ -69942,31 +70529,80 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
       "width",
       "height",
       "range",
+      "documentRevision",
       "files",
+      "manifestPath",
       "warnings",
-      "elapsedMs",
     ],
-    "x-specSection": "09",
+  },
+  "render.range.run.ManifestFile": {
+    description: "One file of a manifest (09 §11.4).",
+    type: "object",
+    properties: {
+      role: {
+        description: "`frame`.",
+        type: "string",
+      },
+      path: {
+        description: "Absolute path.",
+        type: "string",
+      },
+      bytes: {
+        description: "Size.",
+        type: "integer",
+        maximum: 18446744073709551615n,
+        minimum: 0,
+      },
+      sha256: {
+        description: "SHA-256 (hex).",
+        type: "string",
+      },
+      width: {
+        description: "Width in pixels.",
+        type: "integer",
+        maximum: 2147483647,
+        minimum: 0,
+      },
+      height: {
+        description: "Height in pixels.",
+        type: "integer",
+        maximum: 2147483647,
+        minimum: 0,
+      },
+      frame: {
+        description: "Scene frame.",
+        type: "integer",
+        maximum: 2147483647,
+        minimum: 0,
+      },
+    },
+    required: [
+      "role",
+      "path",
+      "bytes",
+      "sha256",
+      "width",
+      "height",
+      "frame",
+    ],
   },
   "render.range.run.result": {
-    title: "render.range.run result",
+    title: "Job_Manifest",
     type: "object",
     properties: {
       jobId: {
+        description: "The job (11 §7.7).",
         type: "string",
         minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
       },
     },
     required: [
       "jobId",
     ],
-    "x-jobResult": {
-      $ref: "#/$defs/render.range.run.spec.Manifest",
-    },
-    "x-spec": "`{jobId}` → `Manifest`",
     additionalProperties: false,
+    "x-jobResult": {
+      $ref: "#/$defs/render.range.run.Manifest",
+    },
   },
   "sound.asset.get.params": {
     title: "sound.asset.get parameters",
@@ -89168,7 +89804,7 @@ export interface draw_drawing_render_result {
   rev: number | bigint;
   /** SHA-256 of the premultiplied RGBA8 buffer (hex), for determinism checks. */
   pixelsSha256: string;
-  /** Objects not drawn and why (`render.colourMissing`, `render.textureMissing`, `render.bitmapSkipped`). */
+  /** Objects not drawn and why (`render.colourMissing`, `render.textureMissing`, `render.bitmapMissing`). */
   warnings: unknown[];
 }
 
@@ -95270,7 +95906,7 @@ export interface import_vectorize_settings_set_spec_VectorizeSettings {
 
 export type import_vectorize_settings_set_result = import_vectorize_settings_set_spec_VectorizeSettings;
 
-/** `inspect.contactSheet.render` parameters. The frames of a contact sheet (spec A `inspect.contactSheet.render`): a list, or a stepped range. */
+/** The frames of a contact sheet (spec A `inspect.contactSheet.render`): a list, or a stepped range. */
 export type inspect_contactSheet_render_FrameSelection = number[] | {
   /** First frame. */
   from: number;
@@ -95280,20 +95916,45 @@ export type inspect_contactSheet_render_FrameSelection = number[] | {
   step?: number | null;
 };
 
+/** `inspect.contactSheet.render` parameters. */
 export interface inspect_contactSheet_render_params {
   /** Scene. */
   sceneId?: string | null;
   /** Frames: a list, or `{from, to, step}`. */
   frames: inspect_contactSheet_render_FrameSelection;
-  /** Columns. */
+  /** Columns (default ⌈√n⌉). */
   columns?: number | null;
-  /** Cell width. */
+  /** Cell width (default 240). */
   cellWidth?: number | null;
-  /** Frame labels. */
+  /** Frame labels (default true). */
   labels?: boolean | null;
 }
 
-export type inspect_contactSheet_render_result = Record<string, unknown>;
+/** A cell of a contact sheet. */
+export interface inspect_contactSheet_render_Cell {
+  frame: number;
+  x: number;
+  y: number;
+  w: number;
+  h: number;
+}
+
+/** `inspect.contactSheet.render` result (11 §15.2). */
+export interface inspect_contactSheet_render_result {
+  /** The PNG, base64. */
+  png: string;
+  width: number;
+  height: number;
+  /** Frame cells, in order. */
+  cells: inspect_contactSheet_render_Cell[];
+  /** Encoded size. */
+  bytes: number | bigint;
+  /** SHA-256 of the PNG (hex). */
+  sha256: string;
+  documentRevision: number | bigint;
+  /** Objects not drawn and why. */
+  warnings: unknown[];
+}
 
 /** A point with an optional depth. */
 export interface inspect_coordinates_convert_Point3 {
@@ -95307,9 +95968,9 @@ export interface inspect_coordinates_convert_Point3 {
 
 /** `inspect.coordinates.convert` parameters. */
 export interface inspect_coordinates_convert_params {
-  /** Source space. */
+  /** Source space: `drawing`, `local`, `parent` (these three with `elementId`), `scene` (or `world`, `field`), `camera`, `cameraNormalized`, `image` (SI-109; `view`: owner M4 C4.2). */
   from: string;
-  /** Target space. */
+  /** Target space (as `from`). */
   to: string;
   /** Points. */
   points: inspect_coordinates_convert_Point3[];
@@ -95317,9 +95978,9 @@ export interface inspect_coordinates_convert_params {
   sceneId?: string | null;
   /** Frame. */
   frame?: number | null;
-  /** Element. */
+  /** Element of `drawing`, `local` and `parent`. */
   elementId?: string | null;
-  /** View. */
+  /** View (owner M4 C4.2). */
   view?: string | null;
 }
 
@@ -95344,9 +96005,93 @@ export interface inspect_frame_describe_params {
   detail?: inspect_frame_describe_Detail;
 }
 
-export type inspect_frame_describe_result = Record<string, unknown>;
+/** A visible element (11 §7.5). */
+export interface inspect_frame_describe_Described {
+  elementId: string;
+  name: string;
+  /** The drawing shown. */
+  drawingId?: string | null;
+  worldTransform: inspect_frame_describe_WorldTransform;
+  cameraBounds: inspect_frame_describe_CameraBounds;
+  /** 1: elements have no opacity until effects (M7). */
+  opacity: number;
+  /** Active effects (none until M7). */
+  effects: unknown[];
+  /** `drawing`, `image` (full detail). */
+  kind?: string | null;
+  /** `normal`, `foreground`, `background`, `envelope` (full detail). */
+  role?: string | null;
+  /** World Z of the origin (full detail). */
+  depth?: number | null;
+  /** Drawing units → output pixels `[a, b, c, d, e, f]` (full detail). */
+  drawingToImage?: number[] | null;
+  /** The drawing's bounds in drawing units (full detail). */
+  drawingBounds?: inspect_frame_describe_Box2 | null;
+}
 
-/** Coordinate space. */
+/** An element's world transform. */
+export interface inspect_frame_describe_WorldTransform {
+  /** 16 numbers, row-major. */
+  matrix: number[];
+  /** Origin (fields). */
+  position: number[];
+  /** Rotation (degrees). */
+  rotation: number;
+  /** `[sx, sy]` (a mirror gives a negative `sy`, 05 §2.5). */
+  scale: number[];
+  /** Skew (degrees). */
+  skew: number;
+}
+
+/** Where an element is in the camera frame. */
+export interface inspect_frame_describe_CameraBounds {
+  /** 0..1 from the frame's top-left (y down). */
+  normalized: inspect_frame_describe_Box2;
+  /** Fields from the camera centre on the table plane (y up): `x`, `y` the bottom-left corner. */
+  fields: inspect_frame_describe_Box2;
+  /** Output pixels of a render at the camera size. */
+  pixels: inspect_frame_describe_Box2;
+}
+
+/** A rectangle `{x, y, width, height}`. */
+export interface inspect_frame_describe_Box2 {
+  x: number;
+  y: number;
+  width: number;
+  height: number;
+}
+
+/** An element of the frame that is not drawn. */
+export interface inspect_frame_describe_Omitted {
+  elementId: string;
+  name: string;
+  /** `hidden`, `annotation`, `noDrawing`, `empty`, `behindCamera`, `outOfFrame`. */
+  reason: string;
+  drawingId?: string | null;
+}
+
+/** `inspect.frame.describe` result (11 §7.5, §15.2). */
+export interface inspect_frame_describe_result {
+  sceneId: string;
+  frame: number;
+  cameraId: string;
+  /** The render size the pixel bounds refer to (the camera size). */
+  width: number;
+  height: number;
+  /** Visible elements in draw order, back to front. */
+  elements: inspect_frame_describe_Described[];
+  /** Elements of the frame not drawn, and why (out-of-frame elements included). */
+  omitted: inspect_frame_describe_Omitted[];
+  /** Audible sounds (M8). */
+  sounds: unknown[];
+  /** The mouth shape at the frame (M8). */
+  mouthShape?: string | null;
+  warnings: unknown[];
+  /** The document revision described. */
+  documentRevision: number | bigint;
+}
+
+/** Coordinate space of a hit test. */
 export type inspect_hitTest_Space = 'view' | 'drawing' | 'scene' | 'camera' | 'image';
 
 /** A 2-D point. */
@@ -95367,14 +96112,25 @@ export interface inspect_hitTest_params {
   sceneId?: string | null;
   /** Frame. */
   frame?: number | null;
-  /** View. */
+  /** View (owner M4 C4.2). */
   view?: string | null;
+}
+
+/** One object under the point. */
+export interface inspect_hitTest_HitOut {
+  elementId: string;
+  drawingId: string;
+  layerId?: string | null;
+  objectId: string;
+  /** `zone`, `brush`, `pencil`, `text`, `bitmap`. */
+  kind: string;
+  colourId?: string | null;
 }
 
 /** `{hits}`. */
 export interface inspect_hitTest_result {
-  /** Hits, front to back. */
-  hits: (Record<string, unknown>)[];
+  /** Hits, top-most first. */
+  hits: inspect_hitTest_HitOut[];
 }
 
 /** A rectangle. */
@@ -98084,116 +98840,202 @@ export interface project_saved_result {
   globalLibrarySaved: boolean;
 }
 
+/** Composition (09 §11.2). */
+export type render_frame_run_Composition = 'camera' | 'xsheet' | 'element' | 'activeView';
+
+/** Quality (09 §11.2). */
+export type render_frame_run_Quality = 'final' | 'draft';
+
+/** Image format of `render.frame.run`. */
+export type render_frame_run_FrameFormat = 'png' | 'jpeg';
+
+/** Inline or file output. */
+export type render_frame_run_Output = 'inline' | 'file';
+
+/** What to do with an existing output file (09 §11.1 item 5). */
+export type render_frame_run_OnConflict = 'fail' | 'overwrite' | 'rename';
+
+/** `render.frame.run` parameters (09 §11.2). */
 export interface render_frame_run_params {
-  /** object ID or path reference (10 §3) */
-  sceneId?: string;
-  frame?: number | bigint;
-  composition?: 'camera' | 'xsheet' | 'element' | 'activeView';
-  elementIds?: string[];
-  /** object ID or path reference (10 §3) */
-  drawingId?: string;
-  width?: number | bigint;
-  height?: number | bigint;
+  /** Scene (default current). */
+  sceneId?: string | null;
+  /** Scene frame (default current). */
+  frame?: number | null;
+  /** Composition. */
+  composition?: render_frame_run_Composition;
+  /** Elements of the `element` composition. */
+  elementIds?: string[] | null;
+  /** The drawing of the `element` composition in drawing space. */
+  drawingId?: string | null;
+  /** Width in pixels (default the camera's). */
+  width?: number | null;
+  /** Height in pixels (default by the camera aspect). */
+  height?: number | null;
+  /** Scale of the size. */
   scale?: number;
-  quality?: 'final' | 'draft';
+  /** Quality. */
+  quality?: render_frame_run_Quality;
+  /** `scene`, `transparent` or a colour. */
   background?: string;
+  /** Outline the camera frame (compositions larger than the frame; SI-107). */
   cameraFrame?: boolean;
-  format?: 'png' | 'jpeg';
+  /** Format. */
+  format?: render_frame_run_FrameFormat;
+  /** JPEG quality. */
   jpegQuality?: number;
-  output?: 'inline' | 'file';
-  /** file-system path (11 §6.2) */
-  path?: string;
-  onConflict?: 'fail' | 'overwrite' | 'rename';
+  /** Inline or file. */
+  output?: render_frame_run_Output;
+  /** Output file (absolute). */
+  path?: string | null;
+  /** Existing file. */
+  onConflict?: render_frame_run_OnConflict;
+  /** Camera (default the scene's current camera; the generic `render_frame` tool's `camera`, SI-107). */
+  cameraId?: string | null;
 }
 
-export interface render_frame_run_spec_RenderResult {
+/** `RenderResult` (09 §11.4). */
+export interface render_frame_run_result {
+  /** `image/png` or `image/jpeg`. */
   mimeType: string;
-  width: number | bigint;
-  height: number | bigint;
+  /** Width in pixels. */
+  width: number;
+  /** Height in pixels. */
+  height: number;
+  /** Encoded size. */
   bytes: number | bigint;
+  /** SHA-256 of the encoded image (hex). */
   sha256: string;
-  data?: string;
-  /** file-system path (11 §6.2) */
-  path: string;
+  /** The image, base64 (inline output). */
+  data?: string | null;
+  /** The written file (file output). */
+  path?: string | null;
+  /** The document revision rendered. */
   documentRevision: number | bigint;
+  /** The scene frame rendered. */
+  frame: number;
+  /** Output pixels → camera space (fields from the camera centre on the table plane, y up) `[a, b, c, d, e, f]` (11 §7.5 `imageToCamera`); for a drawing-space render, output pixels → drawing units. */
+  imageToCamera: number[];
+  /** Objects not drawn and why, and notes (`render.draftAsFinal`). */
+  warnings: unknown[];
 }
 
-export type render_frame_run_result = render_frame_run_spec_RenderResult;
-
+/** No parameters. */
 export type render_limits_get_params = Record<string, unknown>;
 
+/** `render.limits.get` result (09 §11.2). */
 export interface render_limits_get_result {
+  /** Longest side of an inline image. */
   maxInlinePixels: number;
-  maxInlineBytes: number;
+  /** Largest encoded inline image. */
+  maxInlineBytes: number | bigint;
+  /** Largest width. */
   maxWidth: number;
+  /** Largest height. */
   maxHeight: number;
+  /** Supported formats. */
   formats: string[];
 }
 
+/** Composition (09 §11.2). */
+export type render_range_run_Composition = 'camera' | 'xsheet' | 'element' | 'activeView';
+
+/** Quality (09 §11.2). */
+export type render_range_run_Quality = 'final' | 'draft';
+
+/** Image format of `render.range.run`. */
+export type render_range_run_SequenceFormat = 'png' | 'jpeg' | 'tga' | 'bmp';
+
+/** What to do with an existing output file (09 §11.1 item 5). */
+export type render_range_run_OnConflict = 'fail' | 'overwrite' | 'rename';
+
+/** `render.range.run` parameters (09 §11.2). */
 export interface render_range_run_params {
-  /** object ID or path reference (10 §3) */
-  sceneId?: string;
-  from?: number | bigint;
-  to?: number | bigint;
-  step?: number | bigint;
-  composition?: 'camera' | 'xsheet' | 'element';
-  elementIds?: string[];
-  width?: number | bigint;
-  height?: number | bigint;
+  /** Scene (default current). */
+  sceneId?: string | null;
+  /** First frame (default 1). */
+  from?: number | null;
+  /** Last frame (default the scene length). */
+  to?: number | null;
+  /** Every `step` frames. */
+  step?: number;
+  /** Composition (`camera` or `element`; `xsheet`: owner M5 C5.1). */
+  composition?: render_range_run_Composition;
+  /** Elements of the `element` composition. */
+  elementIds?: string[] | null;
+  /** Width in pixels (default the camera's). */
+  width?: number | null;
+  /** Height in pixels (default by the camera aspect). */
+  height?: number | null;
+  /** Scale of the size. */
   scale?: number;
-  quality?: 'final' | 'draft';
+  /** Quality. */
+  quality?: render_range_run_Quality;
+  /** `scene`, `transparent` or a colour. */
   background?: string;
-  format?: 'png' | 'jpeg' | 'tga' | 'bmp';
-  /** file-system path (11 §6.2) */
+  /** Format. */
+  format?: render_range_run_SequenceFormat;
+  /** Output directory (absolute). */
   directory: string;
+  /** File name pattern: `{name}` (the scene name), `{frame}` or `{frame:N}` (zero-padded to N digits). */
   namePattern?: string;
-  onConflict?: string;
+  /** Existing files. */
+  onConflict?: render_range_run_OnConflict;
+  /** Create the directory when missing. */
   createDirs?: boolean;
+  /** Accepted; the call answers `{jobId}` and `job.wait` waits (SI-107). */
   wait?: boolean;
 }
 
-export interface render_range_run_spec_Manifest {
-  /** object ID or path reference (10 §3) */
-  jobId: string;
+/** `Manifest` of a range (09 §11.4). */
+export interface render_range_run_Manifest {
+  /** `succeeded`. */
   status: string;
+  /** `png`, `jpeg`, `tga` or `bmp`. */
   format: string;
-  /** file-system path (11 §6.2) */
+  /** The output directory. */
   outputPath: string;
-  frameCount: number | bigint;
+  /** Frames written. */
+  frameCount: number;
+  /** Project frame rate. */
   fps: number;
+  /** Frames divided by fps. */
   durationSec: number;
-  width: number | bigint;
-  height: number | bigint;
-  range: {
-    type: string;
-    range: string;
-    from: number | bigint;
-    to: number | bigint;
-  };
-  files: ({
-    role: string;
-    /** file-system path (11 §6.2) */
-    path: string;
-    bytes: number | bigint;
-    sha256: string;
-    width?: number | bigint;
-    height?: number | bigint;
-    durationSec?: number;
-    audio?: {
-      codec: string;
-      sampleRate: number | bigint;
-      channels: number;
-    };
-  })[];
-  warnings: ({
-    code: string;
-    message: string;
-  })[];
-  elapsedMs: number | bigint;
+  /** Width in pixels. */
+  width: number;
+  /** Height in pixels. */
+  height: number;
+  /** `{from, to, step}`. */
+  range: unknown;
+  /** The document revision rendered. */
+  documentRevision: number | bigint;
+  /** One entry per frame file. */
+  files: render_range_run_ManifestFile[];
+  /** The companion manifest file written with the frames (this manifest without itself). */
+  manifestPath: string;
+  /** Objects not drawn and why. */
+  warnings: unknown[];
+}
+
+/** One file of a manifest (09 §11.4). */
+export interface render_range_run_ManifestFile {
+  /** `frame`. */
+  role: string;
+  /** Absolute path. */
+  path: string;
+  /** Size. */
+  bytes: number | bigint;
+  /** SHA-256 (hex). */
+  sha256: string;
+  /** Width in pixels. */
+  width: number;
+  /** Height in pixels. */
+  height: number;
+  /** Scene frame. */
+  frame: number;
 }
 
 export interface render_range_run_result {
-  /** object ID or path reference (10 §3) */
+  /** The job (11 §7.7). */
   jobId: string;
 }
 

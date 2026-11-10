@@ -115,7 +115,7 @@ fn check_kernel() -> CheckResult {
     let patched =
         run("doc.object.patch", serde_json::json!({ "targets": [scene], "props": { "meta": { "selftest": true } } }));
     let undone = run("edit.undo", serde_json::json!({}));
-    let stub = run("render.frame.run", serde_json::json!({}));
+    let stub = run("inspect.ui.tree", serde_json::json!({}));
     let ok = registry.len() == 796
         && opened.is_ok()
         && patched.document_rev == Some(rev + 1)

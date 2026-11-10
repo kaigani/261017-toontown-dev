@@ -1,6 +1,6 @@
-//! `inspect.*` (11 §15.2): visual and structural inspection. Declared with typed parameters; the frame, hit-test,
-//! coordinate and contact-sheet commands come with the renderer (M3 C3.3), the GUI tree and screenshots with the
-//! desktop shell (M4 C4.2).
+//! `inspect.*` (11 §15.2): visual and structural inspection. The frame description, hit test, coordinate conversion
+//! and contact sheet read the compositor's render list (`render_list.rs`; M3 C3.3, ADR-0020), so they agree with the
+//! rendered pixels; the GUI tree and screenshots come with the desktop shell (M4 C4.2).
 
 #![allow(
     dead_code,
@@ -9,14 +9,20 @@
 
 use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
-use serde_json::{Map, Value};
+use serde_json::{Map, Value, json};
+use tt_anim::num::tidy;
+use tt_model::document::Document;
+use tt_model::entities::element::ElementType;
 use tt_registry::{CommandError, command};
+use tt_vector::geom::{Affine, P};
 
 use super::common::{Point, Rect};
+use super::render;
+use super::render_list::{self, DU_PER_FIELD, RenderList, Request, Verdict};
 use crate::cx::Cx;
 
 /// Description detail.
-#[derive(Debug, Clone, Copy, Default, Deserialize, JsonSchema)]
+#[derive(Debug, Clone, Copy, Default, PartialEq, Eq, Deserialize, JsonSchema)]
 #[serde(rename_all = "camelCase")]
 pub(crate) enum Detail {
     /// Summary.
@@ -45,33 +51,248 @@ pub(crate) struct FrameParams {
     detail: Detail,
 }
 
+/// A rectangle `{x, y, width, height}`.
+#[derive(Debug, Clone, Copy, Serialize, JsonSchema)]
+pub(crate) struct Box2 {
+    x: f64,
+    y: f64,
+    width: f64,
+    height: f64,
+}
+
+impl Box2 {
+    fn of(r: &tt_vector::geom::Rect) -> Self {
+        Self { x: tidy(r.min_x), y: tidy(r.min_y), width: tidy(r.max_x - r.min_x), height: tidy(r.max_y - r.min_y) }
+    }
+}
+
+/// Where an element is in the camera frame.
+#[derive(Debug, Clone, Serialize, JsonSchema)]
+pub(crate) struct CameraBounds {
+    /// 0..1 from the frame's top-left (y down).
+    normalized: Box2,
+    /// Fields from the camera centre on the table plane (y up): `x`, `y` the bottom-left corner.
+    fields: Box2,
+    /// Output pixels of a render at the camera size.
+    pixels: Box2,
+}
+
+/// An element's world transform.
+#[derive(Debug, Clone, Serialize, JsonSchema)]
+pub(crate) struct WorldTransform {
+    /// 16 numbers, row-major.
+    matrix: Vec<f64>,
+    /// Origin (fields).
+    position: [f64; 3],
+    /// Rotation (degrees).
+    rotation: f64,
+    /// `[sx, sy]` (a mirror gives a negative `sy`, 05 §2.5).
+    scale: [f64; 2],
+    /// Skew (degrees).
+    skew: f64,
+}
+
+/// A visible element (11 §7.5).
+#[derive(Debug, Clone, Serialize, JsonSchema)]
+#[serde(rename_all = "camelCase")]
+pub(crate) struct Described {
+    element_id: String,
+    name: String,
+    /// The drawing shown.
+    #[serde(skip_serializing_if = "Option::is_none")]
+    drawing_id: Option<String>,
+    world_transform: WorldTransform,
+    camera_bounds: CameraBounds,
+    /// 1: elements have no opacity until effects (M7).
+    opacity: f64,
+    /// Active effects (none until M7).
+    effects: Vec<Value>,
+    /// `drawing`, `image` (full detail).
+    #[serde(skip_serializing_if = "Option::is_none")]
+    kind: Option<String>,
+    /// `normal`, `foreground`, `background`, `envelope` (full detail).
+    #[serde(skip_serializing_if = "Option::is_none")]
+    role: Option<String>,
+    /// World Z of the origin (full detail).
+    #[serde(skip_serializing_if = "Option::is_none")]
+    depth: Option<f64>,
+    /// Drawing units → output pixels `[a, b, c, d, e, f]` (full detail).
+    #[serde(skip_serializing_if = "Option::is_none")]
+    drawing_to_image: Option<[f64; 6]>,
+    /// The drawing's bounds in drawing units (full detail).
+    #[serde(skip_serializing_if = "Option::is_none")]
+    drawing_bounds: Option<Box2>,
+}
+
+/// An element of the frame that is not drawn.
+#[derive(Debug, Clone, Serialize, JsonSchema)]
+#[serde(rename_all = "camelCase")]
+pub(crate) struct Omitted {
+    element_id: String,
+    name: String,
+    /// `hidden`, `annotation`, `noDrawing`, `empty`, `behindCamera`, `outOfFrame`.
+    reason: String,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    drawing_id: Option<String>,
+}
+
+/// `inspect.frame.describe` result (11 §7.5, §15.2).
+#[derive(Debug, Clone, Serialize, JsonSchema)]
+#[serde(rename_all = "camelCase")]
+pub(crate) struct Description {
+    scene_id: String,
+    frame: u32,
+    camera_id: String,
+    /// The render size the pixel bounds refer to (the camera size).
+    width: u32,
+    height: u32,
+    /// Visible elements in draw order, back to front.
+    elements: Vec<Described>,
+    /// Elements of the frame not drawn, and why (out-of-frame elements included).
+    omitted: Vec<Omitted>,
+    /// Audible sounds (M8).
+    sounds: Vec<Value>,
+    /// The mouth shape at the frame (M8).
+    #[serde(skip_serializing_if = "Option::is_none")]
+    mouth_shape: Option<String>,
+    warnings: Vec<Value>,
+    /// The document revision described.
+    document_revision: u64,
+}
+
+/// The render list of a frame at the camera size, through a camera (default the scene's current one).
+fn frame_list(
+    cx: &Cx,
+    scene: Option<&str>,
+    frame: Option<u32>,
+    camera: Option<&str>,
+) -> Result<(Document, RenderList), CommandError> {
+    let scene = render::scene_param(cx, scene)?;
+    let frame = render::frame_param(cx, frame)?;
+    let doc = cx.document()?.clone();
+    let camera = camera.map(|r| super::anim_common::node_id(cx, r)).transpose()?;
+    let (w, h) = render::output_size(&doc, None, None, 1.0)?;
+    let req = Request { scene: &scene, frame, camera: camera.as_ref(), width: w, height: h, only: None };
+    let mut ev = super::anim_common::evaluator(&doc, "describing a frame");
+    let list = render_list::build(&doc, &req, &mut ev)?;
+    drop(ev);
+    Ok((doc, list))
+}
+
+fn role_str(r: tt_model::entities::element::Role) -> &'static str {
+    use tt_model::entities::element::Role;
+    match r {
+        Role::Normal => "normal",
+        Role::Foreground => "foreground",
+        Role::Background => "background",
+        Role::Envelope => "envelope",
+    }
+}
+
 #[command(
     id = "inspect.frame.describe",
     kind = query,
     label = "Describe frame",
     scopes = [read],
     needs_project,
-    not_implemented = "M3 C3.3",
     example(title = "What the current frame shows", params = "{}"),
+    example(title = "Frame 12 in full detail", params = r#"{"frame": 12, "detail": "full"}"#),
     agent_only = "agents verify frames structurally (11 §7.5 describe_frame)",
 )]
-pub(crate) fn inspect_frame_describe(_cx: &mut Cx, _p: FrameParams) -> Result<Map<String, Value>, CommandError> {
-    Err(CommandError::not_implemented("inspect.frame.describe", "M3 C3.3"))
+pub(crate) fn inspect_frame_describe(cx: &mut Cx, p: FrameParams) -> Result<Description, CommandError> {
+    let (doc, list) = frame_list(cx, p.scene_id.as_deref(), p.frame, p.camera_id.as_deref())?;
+    let full = p.detail == Detail::Full;
+    let to_cam = render::image_to_camera(&list);
+    let cam = Affine(to_cam);
+    let (w, h) = (f64::from(list.width), f64::from(list.height));
+    let mut elements = Vec::new();
+    let mut omitted = Vec::new();
+    let mut warnings = Vec::new();
+    for en in &list.entries {
+        let drawing_id = en.drawing.as_ref().map(|d| d.as_str().to_owned());
+        if en.verdict != Verdict::Drawn {
+            if en.verdict == Verdict::Empty {
+                warnings.push(
+                    json!({ "code": "describe.emptyExposure", "elementId": en.id.as_str(), "drawingId": drawing_id }),
+                );
+            }
+            omitted.push(Omitted {
+                element_id: en.id.as_str().to_owned(),
+                name: en.name.clone(),
+                reason: en.verdict.as_str().to_owned(),
+                drawing_id,
+            });
+            continue;
+        }
+        let Some(px) = en.pixel_box else { continue };
+        let d = en.world.decompose();
+        let fields = render_list::map_rect(&cam, &px);
+        elements.push(Described {
+            element_id: en.id.as_str().to_owned(),
+            name: en.name.clone(),
+            drawing_id,
+            world_transform: WorldTransform {
+                matrix: en.world.0.iter().map(|v| tidy(*v)).collect(),
+                position: d.position.map(tidy),
+                rotation: tidy(d.rotation),
+                scale: [tidy(d.sx), tidy(d.sy)],
+                skew: tidy(d.skew),
+            },
+            camera_bounds: CameraBounds {
+                normalized: Box2 {
+                    x: tidy(px.min_x / w),
+                    y: tidy(px.min_y / h),
+                    width: tidy((px.max_x - px.min_x) / w),
+                    height: tidy((px.max_y - px.min_y) / h),
+                },
+                fields: Box2::of(&fields),
+                pixels: Box2::of(&px),
+            },
+            opacity: 1.0,
+            effects: Vec::new(),
+            kind: full.then(|| en.kind.as_str().to_owned()),
+            role: full.then(|| role_str(en.role).to_owned()),
+            depth: full.then(|| tidy(en.z)),
+            drawing_to_image: if full { en.to_pixel.map(|m| m.0.map(tidy)) } else { None },
+            drawing_bounds: if full { en.bounds.as_ref().map(Box2::of) } else { None },
+        });
+    }
+    let has_sound = doc.scene(&list.scene).is_some_and(|s| {
+        s.elements().ids().iter().any(|e| doc.element(e).is_some_and(|e| *e.element_type() == ElementType::Sound))
+    });
+    if has_sound {
+        warnings.push(
+            json!({ "code": "describe.soundUnavailable", "message": "audible sounds and mouth shapes arrive with M8" }),
+        );
+    }
+    Ok(Description {
+        scene_id: list.scene.as_str().to_owned(),
+        frame: list.frame,
+        camera_id: list.camera.as_str().to_owned(),
+        width: list.width,
+        height: list.height,
+        elements,
+        omitted,
+        sounds: Vec::new(),
+        mouth_shape: None,
+        warnings,
+        document_revision: doc.document_rev(),
+    })
 }
 
-/// Coordinate space.
-#[derive(Debug, Clone, Copy, Deserialize, JsonSchema)]
+/// Coordinate space of a hit test.
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Deserialize, JsonSchema)]
 #[serde(rename_all = "camelCase")]
 pub(crate) enum Space {
-    /// View pixels.
+    /// View pixels (owner M4 C4.2).
     View,
-    /// Drawing space.
+    /// Drawing space (needs an element; convert to `scene` first).
     Drawing,
-    /// Scene space.
+    /// Scene space, on the table plane (fields).
     Scene,
-    /// Camera space.
+    /// Camera space: fields from the camera centre on the table plane, y up.
     Camera,
-    /// Rendered image pixels.
+    /// Output pixels of a render at the camera size.
     Image,
 }
 
@@ -90,16 +311,72 @@ pub(crate) struct HitParams {
     #[serde(default)]
     #[schemars(range(min = 1, max = 100_000))]
     frame: Option<u32>,
-    /// View.
+    /// View (owner M4 C4.2).
     #[serde(default)]
     view: Option<String>,
+}
+
+/// One object under the point.
+#[derive(Debug, Clone, Serialize, JsonSchema)]
+#[serde(rename_all = "camelCase")]
+pub(crate) struct HitOut {
+    element_id: String,
+    drawing_id: String,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    layer_id: Option<String>,
+    object_id: String,
+    /// `zone`, `brush`, `pencil`, `text`, `bitmap`.
+    kind: String,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    colour_id: Option<String>,
 }
 
 /// `{hits}`.
 #[derive(Debug, Serialize, JsonSchema)]
 pub(crate) struct Hits {
-    /// Hits, front to back.
-    hits: Vec<Map<String, Value>>,
+    /// Hits, top-most first.
+    hits: Vec<HitOut>,
+}
+
+fn space_unavailable(space: &str, why: &str) -> CommandError {
+    CommandError::with_details(
+        "inspect.spaceUnavailable",
+        format!("the `{space}` space {why}"),
+        json!({ "space": space }),
+    )
+}
+
+/// The node with `id`, at any depth.
+fn find_node<'a>(
+    nodes: &'a [tt_model::entities::drawing::DrawingNode],
+    id: &str,
+) -> Option<&'a tt_model::entities::drawing::DrawingNode> {
+    nodes.iter().find_map(|n| {
+        if n.id().as_str() == id { Some(n) } else { n.children().as_deref().and_then(|c| find_node(c, id)) }
+    })
+}
+
+/// Whether a bitmap node is opaque at drawing-space point `p` (06 §6.8: fully transparent pixels are not hit).
+fn bitmap_opaque(cx: &Cx, d: &tt_model::entities::drawing::Drawing, node_id: &str, p: P) -> bool {
+    let Some(n) = find_node(d.nodes(), node_id) else { return false };
+    let (Some(w), Some(h), Some(image)) = (*n.width(), *n.height(), n.image().as_ref()) else { return false };
+    let m = n.transform().unwrap_or([1.0, 0.0, 0.0, 1.0, 0.0, 0.0]);
+    let q = Affine(render::invert(m)).apply(p);
+    if !(q.x >= 0.0 && q.y >= 0.0 && q.x < w && q.y < h) {
+        return false;
+    }
+    let Ok(project) = cx.project() else { return false };
+    let Some((bw, bh, px)) =
+        project.store.blobs.read(&image.entry, 256 << 20).ok().and_then(|b| tt_render::decode_png(&b, 16_384))
+    else {
+        return false;
+    };
+    let ix = ((q.x / w) * f64::from(bw)).floor() as usize;
+    let iy = ((q.y / h) * f64::from(bh)).floor() as usize;
+    let i = (iy.min(usize::from(bh).saturating_sub(1)) * usize::from(bw) + ix.min(usize::from(bw).saturating_sub(1)))
+        * 4
+        + 3;
+    px.get(i).is_some_and(|a| *a > 0)
 }
 
 #[command(
@@ -108,12 +385,56 @@ pub(crate) struct Hits {
     label = "Hit test",
     scopes = [read],
     needs_project,
-    not_implemented = "M3 C3.3",
     example(title = "What is at the camera centre", params = r#"{"space": "camera", "point": {"x": 0, "y": 0}}"#),
+    example(title = "What is under an image pixel of frame 12", params = r#"{"space": "image", "point": {"x": 960, "y": 540}, "frame": 12}"#),
     agent_only = "agents locate objects by position (11 §7.5 hit_test)",
 )]
-pub(crate) fn inspect_hit_test(_cx: &mut Cx, _p: HitParams) -> Result<Hits, CommandError> {
-    Err(CommandError::not_implemented("inspect.hitTest", "M3 C3.3"))
+pub(crate) fn inspect_hit_test(cx: &mut Cx, p: HitParams) -> Result<Hits, CommandError> {
+    if p.space == Space::View || p.view.is_some() {
+        return Err(space_unavailable("view", "needs views, which arrive with M4 C4.2"));
+    }
+    if p.space == Space::Drawing {
+        return Err(space_unavailable("drawing", "names no element; convert the point to `scene` first"));
+    }
+    if !(p.point.x.is_finite() && p.point.y.is_finite()) {
+        return Err(super::common::invalid("/point", "the point must be finite"));
+    }
+    let (doc, list) = frame_list(cx, p.scene_id.as_deref(), p.frame, None)?;
+    let pixel = match p.space {
+        Space::Image => P::new(p.point.x, p.point.y),
+        Space::Camera => Affine(render::invert(render::image_to_camera(&list))).apply(P::new(p.point.x, p.point.y)),
+        _ => match list.view.project([p.point.x, p.point.y, 0.0]).pixel {
+            Some(q) => P::new(q[0], q[1]),
+            None => return Err(behind_camera(&[0])),
+        },
+    };
+    let cache = cx.planar_cache();
+    let mut hits = Vec::new();
+    for en in list.entries.iter().rev().filter(|en| en.verdict == Verdict::Drawn) {
+        let (Some(m), Some(did)) = (en.to_pixel, en.drawing.as_ref()) else { continue };
+        let Some(d) = doc.drawing(did) else { continue };
+        let inv = render::invert(m.0);
+        if inv == [1.0, 0.0, 0.0, 1.0, 0.0, 0.0] && m.det() == 0.0 {
+            continue;
+        }
+        let q = Affine(inv).apply(pixel);
+        let zones = crate::planar::drawing_zones(&cache, d)?;
+        for hit in super::colour::hits(d, &zones, q, 0.0, false)? {
+            let kind = hit.kind.as_str();
+            if kind == "bitmap" && !bitmap_opaque(cx, d, &hit.id, q) {
+                continue;
+            }
+            hits.push(HitOut {
+                element_id: en.id.as_str().to_owned(),
+                drawing_id: did.as_str().to_owned(),
+                layer_id: hit.layer.clone(),
+                object_id: hit.id.clone(),
+                kind: kind.to_owned(),
+                colour_id: hit.colour.clone(),
+            });
+        }
+    }
+    Ok(Hits { hits })
 }
 
 /// A point with an optional depth.
@@ -133,9 +454,10 @@ pub(crate) struct Point3 {
 #[derive(Debug, Deserialize, JsonSchema)]
 #[serde(deny_unknown_fields, rename_all = "camelCase")]
 pub(crate) struct ConvertParams {
-    /// Source space.
+    /// Source space: `drawing`, `local`, `parent` (these three with `elementId`), `scene` (or `world`, `field`),
+    /// `camera`, `cameraNormalized`, `image` (SI-109; `view`: owner M4 C4.2).
     from: String,
-    /// Target space.
+    /// Target space (as `from`).
     to: String,
     /// Points.
     #[schemars(length(min = 1, max = 100_000))]
@@ -147,10 +469,10 @@ pub(crate) struct ConvertParams {
     #[serde(default)]
     #[schemars(range(min = 1, max = 100_000))]
     frame: Option<u32>,
-    /// Element.
+    /// Element of `drawing`, `local` and `parent`.
     #[serde(default)]
     element_id: Option<String>,
-    /// View.
+    /// View (owner M4 C4.2).
     #[serde(default)]
     view: Option<String>,
 }
@@ -162,23 +484,158 @@ pub(crate) struct Points {
     points: Vec<Point3>,
 }
 
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+enum CSpace {
+    Drawing,
+    Local,
+    Parent,
+    Scene,
+    Camera,
+    CameraNormalized,
+    Image,
+}
+
+fn cspace(s: &str, pointer: &str) -> Result<CSpace, CommandError> {
+    Ok(match s {
+        "drawing" => CSpace::Drawing,
+        "local" => CSpace::Local,
+        "parent" => CSpace::Parent,
+        "scene" | "world" | "field" => CSpace::Scene,
+        "camera" => CSpace::Camera,
+        "cameraNormalized" => CSpace::CameraNormalized,
+        "image" => CSpace::Image,
+        "view" => return Err(space_unavailable("view", "needs views, which arrive with M4 C4.2")),
+        other => {
+            return Err(super::common::invalid(
+                pointer,
+                format!("unknown space `{other}` (drawing, local, parent, scene, camera, cameraNormalized, image)"),
+            ));
+        }
+    })
+}
+
+fn behind_camera(indexes: &[usize]) -> CommandError {
+    CommandError::with_details(
+        "inspect.behindCamera",
+        "a point is at or behind the camera's near plane",
+        json!({ "points": indexes }),
+    )
+}
+
+fn singular(what: &str) -> CommandError {
+    CommandError::with_details(
+        "inspect.singularTransform",
+        format!("the {what} transform is singular, so points cannot be mapped into it"),
+        json!({ "transform": what }),
+    )
+}
+
 #[command(
     id = "inspect.coordinates.convert",
     kind = query,
     label = "Convert coordinates",
     scopes = [read],
     needs_project,
-    not_implemented = "M3 C3.3",
     example(title = "Field units to camera space", params = r#"{"from": "field", "to": "camera", "points": [{"x": 1, "y": 1}]}"#),
+    example(title = "An image pixel onto the table plane", params = r#"{"from": "image", "to": "scene", "points": [{"x": 960, "y": 540}]}"#),
     agent_only = "agents convert between coordinate spaces (11 §7.5 convert_coordinates)",
 )]
-pub(crate) fn inspect_coordinates_convert(_cx: &mut Cx, _p: ConvertParams) -> Result<Points, CommandError> {
-    Err(CommandError::not_implemented("inspect.coordinates.convert", "M3 C3.3"))
+pub(crate) fn inspect_coordinates_convert(cx: &mut Cx, p: ConvertParams) -> Result<Points, CommandError> {
+    if p.view.is_some() {
+        return Err(space_unavailable("view", "needs views, which arrive with M4 C4.2"));
+    }
+    let from = cspace(&p.from, "/from")?;
+    let to = cspace(&p.to, "/to")?;
+    if p.points.iter().any(|q| !(q.x.is_finite() && q.y.is_finite() && q.z.is_none_or(f64::is_finite))) {
+        return Err(super::common::invalid("/points", "points must be finite"));
+    }
+    let (doc, list) = frame_list(cx, p.scene_id.as_deref(), p.frame, None)?;
+    let needs_element = |s: CSpace| matches!(s, CSpace::Drawing | CSpace::Local | CSpace::Parent);
+    let (world, parent) = if needs_element(from) || needs_element(to) {
+        let r = p.element_id.as_deref().ok_or_else(|| {
+            super::common::invalid("/elementId", "the drawing, local and parent spaces need elementId")
+        })?;
+        let id = super::anim_common::node_id(cx, r)?;
+        let mut ev = super::anim_common::evaluator(&doc, "converting coordinates");
+        let f = f64::from(list.frame);
+        let w = ev.world(&id, f).map_err(super::anim_common::eval_error)?;
+        let pw = ev.parent_world(&id, f).map_err(super::anim_common::eval_error)?;
+        (Some(w), Some(pw))
+    } else {
+        (None, None)
+    };
+    let to_cam = render::image_to_camera(&list);
+    let (w, h) = (f64::from(list.width), f64::from(list.height));
+    let cam_z = list.view.position[2];
+    let mut behind = Vec::new();
+    let mut out = Vec::with_capacity(p.points.len());
+    for (i, q) in p.points.iter().enumerate() {
+        let z = q.z.unwrap_or(0.0);
+        // Into scene space.
+        let s: [f64; 3] = match from {
+            CSpace::Scene => [q.x, q.y, z],
+            CSpace::Drawing => world.map_or([0.0; 3], |m| m.apply([q.x / DU_PER_FIELD, q.y / DU_PER_FIELD, 0.0])),
+            CSpace::Local => world.map_or([0.0; 3], |m| m.apply([q.x, q.y, z])),
+            CSpace::Parent => parent.map_or([0.0; 3], |m| m.apply([q.x, q.y, z])),
+            CSpace::Image | CSpace::Camera | CSpace::CameraNormalized => {
+                let px = match from {
+                    CSpace::Image => [q.x, q.y],
+                    CSpace::CameraNormalized => [q.x * w, q.y * h],
+                    _ => {
+                        let r = Affine(render::invert(to_cam)).apply(P::new(q.x, q.y));
+                        [r.x, r.y]
+                    }
+                };
+                // Onto the plane Z = z (default the table plane).
+                let depth = cam_z - z;
+                match (depth > tt_anim::camera::NEAR_PLANE).then(|| list.view.unproject(px, depth)).flatten() {
+                    Some(s) => s,
+                    None => {
+                        behind.push(i);
+                        continue;
+                    }
+                }
+            }
+        };
+        // Out of scene space.
+        let r = match to {
+            CSpace::Scene => Point3 { x: tidy(s[0]), y: tidy(s[1]), z: Some(tidy(s[2])) },
+            CSpace::Drawing | CSpace::Local | CSpace::Parent => {
+                let m = if to == CSpace::Parent { parent } else { world };
+                let inv = m
+                    .and_then(|m| m.inverse())
+                    .ok_or_else(|| singular(if to == CSpace::Parent { "parent" } else { "element" }))?;
+                let l = inv.apply(s);
+                if to == CSpace::Drawing {
+                    Point3 { x: tidy(l[0] * DU_PER_FIELD), y: tidy(l[1] * DU_PER_FIELD), z: None }
+                } else {
+                    Point3 { x: tidy(l[0]), y: tidy(l[1]), z: Some(tidy(l[2])) }
+                }
+            }
+            CSpace::Image | CSpace::Camera | CSpace::CameraNormalized => {
+                let Some(px) = list.view.project(s).pixel else {
+                    behind.push(i);
+                    continue;
+                };
+                match to {
+                    CSpace::Image => Point3 { x: tidy(px[0]), y: tidy(px[1]), z: None },
+                    CSpace::CameraNormalized => Point3 { x: tidy(px[0] / w), y: tidy(px[1] / h), z: None },
+                    _ => {
+                        let c = Affine(to_cam).apply(P::new(px[0], px[1]));
+                        Point3 { x: tidy(c.x), y: tidy(c.y), z: None }
+                    }
+                }
+            }
+        };
+        out.push(r);
+    }
+    if !behind.is_empty() {
+        return Err(behind_camera(&behind));
+    }
+    Ok(Points { points: out })
 }
 
-/// `inspect.contactSheet.render` parameters.
 /// The frames of a contact sheet (spec A `inspect.contactSheet.render`): a list, or a stepped range.
-#[allow(dead_code, reason = "decoded and validated now; read by the handler of M3 C3.3")]
 #[derive(Debug, Deserialize, JsonSchema)]
 #[serde(untagged)]
 pub(crate) enum FrameSelection {
@@ -199,6 +656,7 @@ pub(crate) enum FrameSelection {
     },
 }
 
+/// `inspect.contactSheet.render` parameters.
 #[derive(Debug, Deserialize, JsonSchema)]
 #[serde(deny_unknown_fields, rename_all = "camelCase")]
 pub(crate) struct ContactSheetParams {
@@ -207,17 +665,89 @@ pub(crate) struct ContactSheetParams {
     scene_id: Option<String>,
     /// Frames: a list, or `{from, to, step}`.
     frames: FrameSelection,
-    /// Columns.
+    /// Columns (default ⌈√n⌉).
     #[serde(default)]
     #[schemars(range(min = 1, max = 64))]
     columns: Option<u32>,
-    /// Cell width.
+    /// Cell width (default 240).
     #[serde(default)]
     #[schemars(range(min = 16, max = 2048))]
     cell_width: Option<u32>,
-    /// Frame labels.
+    /// Frame labels (default true).
     #[serde(default)]
     labels: Option<bool>,
+}
+
+/// A cell of a contact sheet.
+#[derive(Debug, Clone, Serialize, JsonSchema)]
+pub(crate) struct Cell {
+    frame: u32,
+    x: u32,
+    y: u32,
+    w: u32,
+    h: u32,
+}
+
+/// `inspect.contactSheet.render` result (11 §15.2).
+#[derive(Debug, Serialize, JsonSchema)]
+#[serde(rename_all = "camelCase")]
+pub(crate) struct ContactSheet {
+    /// The PNG, base64.
+    png: String,
+    width: u32,
+    height: u32,
+    /// Frame cells, in order.
+    cells: Vec<Cell>,
+    /// Encoded size.
+    bytes: u64,
+    /// SHA-256 of the PNG (hex).
+    sha256: String,
+    document_revision: u64,
+    /// Objects not drawn and why.
+    warnings: Vec<Value>,
+}
+
+/// Gap between cells and around the sheet (pixels).
+const SHEET_GAP: u32 = 4;
+/// Height of a label band under a cell (pixels).
+const LABEL_BAND: u32 = 14;
+/// Digits 0–9 as 3 x 5 bitmaps (rows top to bottom, bit 2 = left), drawn at 2 x 2 pixels per dot (SI-108).
+const DIGITS: [[u8; 5]; 10] = [
+    [7, 5, 5, 5, 7],
+    [2, 6, 2, 2, 7],
+    [7, 1, 7, 4, 7],
+    [7, 1, 7, 1, 7],
+    [5, 5, 7, 1, 1],
+    [7, 4, 7, 1, 7],
+    [7, 4, 7, 5, 7],
+    [7, 1, 1, 1, 1],
+    [7, 5, 7, 5, 7],
+    [7, 5, 7, 1, 7],
+];
+
+/// Draws `text` (digits) with its top-left at (x, y) into a premultiplied RGBA buffer of width `w`.
+fn draw_digits(buf: &mut [u8], w: u32, x: u32, y: u32, text: &str) {
+    let mut cx = x;
+    for ch in text.chars() {
+        let Some(d) = ch.to_digit(10) else { continue };
+        for (row, bits) in DIGITS[d as usize].iter().enumerate() {
+            for col in 0..3u32 {
+                if bits & (4 >> col) == 0 {
+                    continue;
+                }
+                for dy in 0..2u32 {
+                    for dx in 0..2u32 {
+                        let (px, py) = (cx + col * 2 + dx, y + row as u32 * 2 + dy);
+                        let i = ((py * w + px) * 4) as usize;
+                        if let Some(p) = buf.get_mut(i..i + 4) {
+                            p.copy_from_slice(&[0, 0, 0, 255]);
+                        }
+                    }
+                }
+            }
+        }
+        cx += 8;
+    }
 }
 
 #[command(
@@ -226,15 +756,90 @@ pub(crate) struct ContactSheetParams {
     label = "Contact sheet",
     scopes = [read],
     needs_project,
-    not_implemented = "M3 C3.3",
     example(title = "Every fourth frame of 1–24", params = r#"{"frames": {"from": 1, "to": 24, "step": 4}}"#),
+    example(title = "Three frames in one row, 120 pixels wide", params = r#"{"frames": [1, 12, 24], "columns": 3, "cellWidth": 120}"#),
     agent_only = "agents review motion in one image (11 §7.5 render_contact_sheet)",
 )]
-pub(crate) fn inspect_contact_sheet_render(
-    _cx: &mut Cx,
-    _p: ContactSheetParams,
-) -> Result<Map<String, Value>, CommandError> {
-    Err(CommandError::not_implemented("inspect.contactSheet.render", "M3 C3.3"))
+pub(crate) fn inspect_contact_sheet_render(cx: &mut Cx, p: ContactSheetParams) -> Result<ContactSheet, CommandError> {
+    let frames: Vec<u32> = match &p.frames {
+        FrameSelection::List(l) => l.clone(),
+        FrameSelection::Range { from, to, step } => {
+            if to < from {
+                return Err(super::common::invalid("/frames/to", "`to` is before `from`"));
+            }
+            (*from..=*to).step_by(step.unwrap_or(1).max(1) as usize).collect()
+        }
+    };
+    if frames.is_empty() || frames.len() > 1000 || frames.iter().any(|f| !(1..=100_000).contains(f)) {
+        return Err(super::common::invalid("/frames", "1-1000 frames, each 1-100000"));
+    }
+    let scene = render::scene_param(cx, p.scene_id.as_deref())?;
+    let doc = cx.document()?.clone();
+    let n = u32::try_from(frames.len()).unwrap_or(1000);
+    let cols = p.columns.unwrap_or_else(|| (f64::from(n)).sqrt().ceil() as u32).clamp(1, 64).min(n);
+    let rows = n.div_ceil(cols);
+    let cw = p.cell_width.unwrap_or(240).clamp(16, 2048);
+    let (camw, camh) = (f64::from(*doc.project().camera_width()), f64::from(*doc.project().camera_height()));
+    let ch = ((f64::from(cw) * camh / camw).round() as u32).max(1);
+    let band = if p.labels.unwrap_or(true) { LABEL_BAND } else { 0 };
+    let sheet_w = cols * cw + (cols + 1) * SHEET_GAP;
+    let sheet_h = rows * (ch + band) + (rows + 1) * SHEET_GAP;
+    if sheet_w > render::MAX_SIDE || sheet_h > render::MAX_SIDE {
+        return Err(CommandError::with_details(
+            "limit.exceeded",
+            format!("a contact sheet of {sheet_w} x {sheet_h} pixels is over {} on a side", render::MAX_SIDE),
+            json!({ "width": sheet_w, "height": sheet_h, "maxWidth": render::MAX_SIDE, "maxHeight": render::MAX_SIDE }),
+        ));
+    }
+    let bg = render::background(&doc, &scene, "scene")?;
+    let blobs = cx.project().ok().map(|pr| &pr.store.blobs);
+    let cache = cx.planar_cache();
+    let mut sheet = vec![255u8; (sheet_w * sheet_h * 4) as usize];
+    let mut cells = Vec::with_capacity(frames.len());
+    let mut warnings: Vec<Value> = Vec::new();
+    for (i, f) in frames.iter().enumerate() {
+        let i = u32::try_from(i).unwrap_or(0);
+        let (col, row) = (i % cols, i / cols);
+        let x = SHEET_GAP + col * (cw + SHEET_GAP);
+        let y = SHEET_GAP + row * (ch + band + SHEET_GAP);
+        let req = Request { scene: &scene, frame: *f, camera: None, width: cw, height: ch, only: None };
+        let r = render::render_frame(&doc, blobs, &cache, &req, bg, &|| false)?;
+        for w in r.warnings {
+            if !warnings.contains(&w) {
+                warnings.push(w);
+            }
+        }
+        for yy in 0..ch {
+            let src = (yy * cw * 4) as usize;
+            let dst = (((y + yy) * sheet_w + x) * 4) as usize;
+            sheet[dst..dst + (cw * 4) as usize].copy_from_slice(&r.pixels[src..src + (cw * 4) as usize]);
+        }
+        if band > 0 {
+            draw_digits(&mut sheet, sheet_w, x + 2, y + ch + 2, &f.to_string());
+        }
+        cells.push(Cell { frame: *f, x, y, w: cw, h: ch });
+    }
+    let png = tt_render::encode_png(&sheet, sheet_w, sheet_h)
+        .map_err(|e| CommandError::with_details("render.failed", e.to_string(), json!({})))?;
+    let (side, max_bytes) = render::inline_limits(cx);
+    if sheet_w.max(sheet_h) > side || png.len() as u64 > max_bytes {
+        return Err(CommandError::with_details(
+            "render.inlineTooLarge",
+            format!("a {sheet_w} x {sheet_h} contact sheet of {} bytes is over the inline limits", png.len()),
+            json!({ "maxInlinePixels": side, "maxInlineBytes": max_bytes, "width": sheet_w, "height": sheet_h, "bytes": png.len() }),
+        )
+        .hint("use fewer columns or a smaller cellWidth"));
+    }
+    Ok(ContactSheet {
+        sha256: render::sha256_hex(&png),
+        bytes: png.len() as u64,
+        png: tt_persist::b64::encode(&png),
+        width: sheet_w,
+        height: sheet_h,
+        cells,
+        document_revision: doc.document_rev(),
+        warnings,
+    })
 }
 
 /// `inspect.ui.tree` parameters.

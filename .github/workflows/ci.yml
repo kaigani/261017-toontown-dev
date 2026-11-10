@@ -567,6 +567,74 @@ jobs:
           sha256sum e4-out/e4-Windows/variant/evaluate.json e4-out/e4-macOS/variant/evaluate.json
           cmp e4-out/e4-Windows/variant/evaluate.json e4-out/e4-macOS/variant/evaluate.json
 
+  # M3 C3.3 (ADR-0020): golden images and PNG sequences in release on both OSes, and the render gate through the release
+  # headless binary over MCP (in-process and headless render the same bytes; the passage frames of a non-horizontal path).
+  c33-render:
+    name: c33 render release (${{ matrix.os }})
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [windows-latest, macos-latest]
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v7
+
+      - name: Rust toolchain (pinned in rust-toolchain.toml)
+        run: |
+          tc=$(sed -n 's/^channel = "\(.*\)"/\1/p' rust-toolchain.toml)
+          rustup toolchain install "$tc" --profile minimal
+          rustup override set "$tc"
+          rustc --version
+
+      - uses: Swatinem/rust-cache@v2
+        with:
+          key: headless-release
+
+      - name: Golden images and PNG sequences (release)
+        run: cargo test --release --locked -p tt-executor --test c33_goldens --test c33_range --test c33_bitmap
+
+      - name: Render gate (official Python SDK, release headless binary)
+        run: |
+          cargo build --release --locked -p tt-headless
+          exe=target/release/toontown-headless
+          PY=python3
+          if [ "$RUNNER_OS" = "Windows" ]; then exe="$exe.exe"; PY=python; fi
+          $PY -m venv .venv-c33
+          VPY=.venv-c33/bin/python
+          if [ "$RUNNER_OS" = "Windows" ]; then VPY=.venv-c33/Scripts/python.exe; fi
+          $VPY -m pip install --quiet "mcp==2.0.0"
+          PYTHONIOENCODING=utf-8 $VPY scripts/c33-render-gate.py "$exe" out/c33
+
+      - uses: actions/upload-artifact@v7
+        if: always()
+        with:
+          name: c33-${{ runner.os }}
+          path: out/c33/
+          if-no-files-found: error
+
+  # ADR-0020: renders, sequences and passage frames are byte-identical across operating systems.
+  c33-cross-os:
+    name: c33 cross-OS
+    needs: c33-render
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/download-artifact@v8
+        with:
+          path: c33-out
+          pattern: c33-*
+      - name: Windows and macOS answer the same bytes
+        run: |
+          cd c33-out
+          status=0
+          for f in $(cd c33-Windows && find . -type f ! -name report.json | sort); do
+            sha256sum "c33-Windows/$f" "c33-macOS/$f"
+            cmp "c33-Windows/$f" "c33-macOS/$f" || status=1
+          done
+          [ "$(cd c33-Windows && find . -type f | sort)" = "$(cd c33-macOS && find . -type f | sort)" ] || status=1
+          exit $status
+
   # Unsigned desktop bundles + automated IPC round-trip benchmark in the real webview.
   bundle:
     name: bundle (${{ matrix.os }})

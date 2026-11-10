@@ -243,7 +243,7 @@ fn edits(h: &ExecutorHandle) {
 /// with a backup `bk_1a2b3c4d`, recovery data `rc_1a2b3c4d`, `Short.animpkg` and a `media` folder in a temporary folder
 /// that stands for the examples' `/tmp`.
 fn with_files(id: &str) -> bool {
-    ["project.", "doc.asset.", "doc.blob.", "doc.package.", "agent.", "draw.vectorize."]
+    ["project.", "doc.asset.", "doc.blob.", "doc.package.", "agent.", "draw.vectorize.", "render.range."]
         .iter()
         .any(|p| id.starts_with(p))
 }

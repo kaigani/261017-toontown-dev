@@ -1,0 +1,63 @@
+{
+  "moving-contact-sheet": {
+    "command": "inspect.contactSheet.render",
+    "params": {
+      "frames": {
+        "from": 1,
+        "to": 24,
+        "step": 6
+      },
+      "cellWidth": 120
+    },
+    "sha256": "e3bc0f15341d95a0a24c37a6f4c3f79909ba393ac07f612ac5297dc1246ea9bd",
+    "bytes": 4345,
+    "width": 252,
+    "height": 176
+  },
+  "moving-frame-9": {
+    "command": "render.frame.run",
+    "params": {
+      "frame": 9,
+      "scale": 0.25
+    },
+    "sha256": "16522cf0a0504ccdecd859fd15018be71300b9933a88a509878eccb317545b57",
+    "bytes": 4482,
+    "width": 480,
+    "height": 270
+  },
+  "roll-dynamic-fov": {
+    "command": "render.frame.run",
+    "params": {
+      "frame": 7,
+      "scale": 0.25
+    },
+    "sha256": "cda1287654b0702dde7dca50ed838e41edef2911aacb1282cf3cdd9deb52619a",
+    "bytes": 5888,
+    "width": 480,
+    "height": 270
+  },
+  "staging": {
+    "command": "render.frame.run",
+    "params": {
+      "frame": 1,
+      "scale": 0.25
+    },
+    "sha256": "b7c1c18d97f059f53aebe3befcce51fbf1d8b1158c756b2d44096858f3fdb0a3",
+    "bytes": 7273,
+    "width": 480,
+    "height": 270
+  },
+  "staging-transparent": {
+    "command": "render.frame.run",
+    "params": {
+      "frame": 1,
+      "width": 320,
+      "height": 320,
+      "background": "transparent"
+    },
+    "sha256": "fd0da50e0da7bdd7356637e898ede0e6209e2ecc049a185f4d94dedc5616396e",
+    "bytes": 5240,
+    "width": 320,
+    "height": 320
+  }
+}

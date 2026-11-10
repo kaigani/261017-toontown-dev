@@ -571,15 +571,24 @@ pub fn plan(name: &str, args: &Map<String, Value>) -> Result<Plan, String> {
                 &[
                     ("scene", "sceneId"),
                     ("frame", "frame"),
+                    ("camera", "cameraId"),
                     ("width", "width"),
                     ("height", "height"),
                     ("quality", "quality"),
                     ("background", "background"),
-                    ("output", "path"),
                 ],
             );
             if let Some(m) = p.as_object_mut() {
                 m.insert("composition".into(), json!("camera"));
+                // 11 §7.5: `output` is "inline" or a path; a path writes the file (09 §11.1 item 3).
+                if let Some(out) = args.get("output").and_then(Value::as_str).filter(|o| *o != "inline") {
+                    m.insert("output".into(), json!("file"));
+                    m.insert("path".into(), json!(out));
+                }
+                // The tool's `sceneColour` is the command's `scene`.
+                if m.get("background").and_then(Value::as_str) == Some("sceneColour") {
+                    m.insert("background".into(), json!("scene"));
+                }
             }
             command("render.frame.run", p)
         }

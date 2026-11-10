@@ -1211,3 +1211,61 @@ Reserved by the M0 closure for "measured deterministic-format incompatibility" (
   `tt_anim::camera::projection_fov`; `effectiveFov` and every projection path use the same number. The reviewer amended
   `c32_r1_default_frame` to project `DEFAULT_FOV` and added `explicit_display_fov_is_not_aliased`.
 - **Question:** none. (The round-1 builder decision above is superseded.)
+
+## SI-105 — bitmap placement and native size (found in M3 C3.3; decided by 10 §4.9 and 05 §1.3)
+
+- **Sections:** 10 §4.9 (`transform` maps pixel space, origin top-left, y down, to drawing space), 05 §1.3 (native size:
+  one image pixel per output pixel through the default camera, 12 ÷ camera width fields per pixel), 06 §6.8.
+- **Decision (builder, C3.3):** the renderer and hit test honour any stored transform; *native size* is
+  `[s, 0, 0, −s, tx, ty]` with `s = 1200 / cameraWidth` du per pixel (the y flip keeps the image upright; 100 du per
+  field unchanged). Importers (M10) write that placement. The M1 fixture's sample node `[1, 0, 0, 1, −960, 540]` is
+  schema sample data: read by 10 §4.9 it lies above the frame, upside down (the compositor reports it `outOfFrame`).
+  Fully transparent pixels are not hit. `c33_bitmap` proves the pixel-for-pixel mapping and that bounds, render and hit
+  test agree.
+- **Question:** none.
+
+## SI-106 — composite order with roles (found in M3 C3.3; decided by the builder)
+
+- **Sections:** 05 §2.8 (depth sort, Timeline tie-break), 04 §6.1 (foreground/background composite in front of/behind
+  all normal elements; background auto-extends), 04 §9.1, 10 §4.3 (tree children top to bottom as displayed).
+- **Decision (builder, C3.3):** order = role tier (background; normal and envelope; foreground), then world Z of the
+  origin rounded to 1e-6 field (smaller first), then the Timeline order: back to front is the displayed rows bottom to
+  top (index 0 of a level is the front; a parent's row is above its children, so it is in front of them at equal depth).
+  A background element extends its last exposure to the scene length at render time. Envelope elements draw as normal
+  until bones (SI-097).
+- **Question:** confirm the role tiers outrank depth.
+
+## SI-107 — `render.frame.run` coverage (found in M3 C3.3; decided by the builder)
+
+- **Sections:** 09 §11.1–§11.4, 11 §7.5, §7.8, 06 §6.10.
+- **Decision (builder, C3.3):** compositions `camera` and `element` (`elementIds` through the camera; `drawingId` in
+  drawing space at the camera's table-plane scale, colours through the scene's styles); `xsheet` (owner M5 C5.1) and
+  `activeView` (owner M4 C4.2) are refused `render.compositionUnavailable` with the owner. `quality: "draft"` renders as
+  final with a `render.draftAsFinal` warning until the interactive renderer (M4 C4.2). `cameraFrame` has no effect on
+  compositions that are the camera frame (warning `render.cameraFrameNotApplicable`). `cameraId` is accepted so the
+  generic `render_frame` tool's `camera` keeps its meaning; the tool's `output` path writes a file and `sceneColour` is
+  `scene`. Overlays are never drawn in final renders. `RenderResult` adds `frame`, `imageToCamera` and `warnings`;
+  `renderMs` is not returned (results stay byte-comparable). `render.range.run` accepts `wait` and answers `{jobId}`
+  (`job.wait` waits); its companion manifest `<scene>_<from>-<to>.manifest.json` is written with the frames.
+- **Question:** none.
+
+## SI-108 — contact-sheet layout and labels (found in M3 C3.3; decided by the builder)
+
+- **Sections:** 11 §7.5 `render_contact_sheet`, §15.2 `inspect.contactSheet.render`.
+- **Decision (builder, C3.3):** columns default ⌈√n⌉ (at most 64, at most n); cell height by the camera aspect; 4-pixel
+  gaps; a 14-pixel label band under each cell with the frame number drawn from built-in 3 × 5 digit bitmaps at 2 × 2
+  pixels per dot (no fonts, so the bytes are the same on every OS); white sheet, cells with the scene background; each
+  cell is exactly the frame rendered at the cell size. Results add `bytes`, `sha256`, `documentRevision`, `warnings`.
+- **Question:** none.
+
+## SI-109 — coordinate-space names (found in M3 C3.3; decided by the builder)
+
+- **Sections:** 11 §5.3, §7.5, §15.2.
+- **Decision (builder, C3.3):** `convert` accepts `drawing`, `local`, `parent` (these with `elementId`), `scene` (also
+  `world`, `field`), `camera` (fields from the camera centre on the table plane, y up, camera roll applied),
+  `cameraNormalized` (0..1 from the frame's top-left), `image` (pixels of a render at the camera size); image and camera
+  points go onto the plane Z = `z` (default the table plane). `hitTest` accepts `image`, `camera` and `scene` (table
+  plane); `drawing` names no element and is refused (`inspect.spaceUnavailable`, convert to `scene` first); `view` waits
+  for views (owner M4 C4.2). Points at or behind the near plane are `inspect.behindCamera`; a singular transform
+  (unreachable through the scale and skew limits) would be `inspect.singularTransform`.
+- **Question:** none.

@@ -30,7 +30,7 @@
     {
       "title": "Accept a request",
       "result": {
-        "confirmationId": "cf_05f6d8124d760482296b92cb",
+        "confirmationId": "cf_99b0028c190b2c8dd713c355",
         "accepted": true
       },
       "varies": [
@@ -71,7 +71,7 @@
         "endpoint": null,
         "sessions": [
           {
-            "sessionId": "s1-02b1c4",
+            "sessionId": "s1-3c65ac",
             "client": "Example agent",
             "policy": "assist",
             "scopes": [
@@ -83,7 +83,7 @@
               "files.write",
               "library.global"
             ],
-            "connectedAt": "2026-11-09T21:36:37.004Z",
+            "connectedAt": "2026-11-10T08:23:07.035Z",
             "lastActivity": null,
             "paused": false,
             "transport": ""
@@ -91,8 +91,8 @@
         ],
         "pendingConfirmations": [
           {
-            "confirmationId": "cf_8eacd4a089f238cec2ca090f",
-            "sessionId": "s1-02b1c4",
+            "confirmationId": "cf_334fd83e1f1cc33d409b001d",
+            "sessionId": "s1-3c65ac",
             "commandId": "project.saveAs",
             "summary": "Overwrite `/tmp/Short.animpkg`",
             "consequences": [
@@ -127,7 +127,7 @@
     {
       "title": "Let a session edit",
       "result": {
-        "sessionId": "s1-c16bde",
+        "sessionId": "s1-52b60a",
         "policy": "assist",
         "scopes": [
           "read",
@@ -145,7 +145,7 @@
       "title": "Pause every session",
       "result": {
         "paused": [
-          "s1-a2feec"
+          "s1-968066"
         ]
       },
       "varies": [
@@ -1902,7 +1902,7 @@
       "result": [
         {
           "name": "before-walk",
-          "createdAt": "2026-11-09T21:36:38.384Z",
+          "createdAt": "2026-11-10T08:23:08.396Z",
           "documentRev": 1,
           "origin": "user"
         }
@@ -2315,7 +2315,7 @@
             "version": "0.0.1",
             "platform": "windows-x64"
           },
-          "exportedAt": "2026-11-09T21:36:39.030Z",
+          "exportedAt": "2026-11-10T08:23:08.977Z",
           "sourceProjectId": "pr_01K742SG00BK0VXTWDM5JRXV37",
           "scope": {
             "kind": "scenes",
@@ -7185,7 +7185,7 @@
             "stepId": "u-1",
             "label": "Set meta",
             "source": "user",
-            "time": "2026-11-09T21:36:40.454Z",
+            "time": "2026-11-10T08:23:10.337Z",
             "objectCount": 1
           },
           {
@@ -7193,7 +7193,7 @@
             "stepId": "u-2",
             "label": "Set meta",
             "source": "user",
-            "time": "2026-11-09T21:36:40.455Z",
+            "time": "2026-11-10T08:23:10.338Z",
             "objectCount": 1
           }
         ],
@@ -8218,6 +8218,359 @@
       "varies": []
     }
   ],
+  "inspect.contactSheet.render": [
+    {
+      "title": "Every fourth frame of 1–24",
+      "result": {
+        "png": "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LlwYAFCPBDgAACSyQBIAABIJcAAASCTAAQAgkQAHAIBEAhwAABIJcAAASCTAAQAgkQAHAIBEAhwAABIJcAAASCTAAQAgkQAHAIBEAhwAABIJcAAASCTAAQAgkQAHAIBEAhwAABIJcAAASCTAAQAgkQAHAIBEAhwAABIJcAAASCTAAQAgkQAHAIBEAhwAABIJcAAASCTAAQAgkQAHAIBEAhwAABIJcAAASCTAAQAgkQAHAIBEAhwAABIJcAAASCTAAQAgkQAHAIBEAhwAABIJcAAASCTAAQAgkQAHAIBEAhwAABIJcAAASCTAAQAgkQAHAIBEAhwAABIJcAAASCTAAQAgkQAHAIBEAhwAABIJcAAASCTAAQAgkQAHAIBEAhwAABIJcAAASCTAAQAgkQAHAIBErZO9oFQqFdeVSiWAxnTrOL6d4xoaj+MZGp8JOAAAJJpwAj7RJ2ygcZmQQfO4dTx7v4bGYwIOAACJJpyA+2QNzef249lEHBqX92doXCbgAACQaNJdUIDGd/uk2+QMGpfjGRqfCTgAACSa8i4o9gOHxmVCBs3D8QyNzwQcAAASlSpG2gAAkMYEHAAAEglwAABIJMABACCRAAcAgEQCHAAAEglwAABIJMABACCRAAcAgEQCHAAAEglwAABIJMABACCRAAcAgEQCHAAAEglwAABIJMABACCRAAcAgEQCHAAAEglwAABIJMABACCRAAcAgEQCHAAAEglwAABIJMABACCRAAcAgEQCHAAAEglwAABIJMABACCRAAcAgEQCHAAAEglwAABIJMABACCRAAcAgEQCHAAAEglwAACa0o0bN+LmzZtRb1oDAACa0Ntvvx1vvPFGHD16NAYGBmLFihVRKpWK+21tbbF169ZYvnx5ZBPgAAA0pVOnTsX7778f+/fvj927d8fXX38dHR0dcfny5eL5JUuWxIEDB6KrqyuefvrpyGIJCgAATae/vz82btwYr7/+enF98ODBKJfLxQS8peWXBD59+nQ8//zzcebMmchUqowLAABoIlevXo3R0dFYtmxZHD58uIjvY8eOxfbt26O3tzdGRkbiwoULxTrxl19+uZiMZxHgAACQyBIUAABIJMABACCRAAcAgEQCHAAAEglwAABIJMABACCRAAcAgEQCHAAAEglwAABIJMABACCRAAcAgEQCHAAAEglwAABI1BoAAFBnxsbG4pt9X0drW1u0tpbHL61RHr/8druttbiu3v/D7er1+P1yuRz1SoADAFB3BvsHY9/eL6NWpVLp12gvF0F+79J74z/f/K+oBwIcAIC6MzQ4FDNRqVRiZGSkuMRgRHtHR9QLAQ4AQN2ZaYDfbsHCBVEvBDgAAHVn1gN8kQAHAIAJDZuAAwBAHktQAAAgkQAHAIBEAhwAABINDTRvgDsVPQAAdWdoaPIAr+713T/QH1MhwAEA4C4mm4BXT1V/+MSRaG9vj6nosAQFAAAmdrdtCIdvDMeJv52MLRsei5aWqc2T7QMOAAB3MdGPMK8P9Mf5nnPx+MYtMR1+hAkAABOp3HkN+NWfr8XlK72x+eHNMS2l8QBfIMABAOCOhoeHo3Kz8ofHLvVdiv7BgdiwfkNMV3WdeEu5fn76KMABAKgrty8/6f6xp9jx5J9Wr49a1NPykyoBDgBAXfn9Dihnu8/GogWLovPBzqhVvQW4bQgBAKgrt9Z/nzx7KpYsXjqj+K6qpy0Iq0zAAQCoK0MDg3H01HexduWaWLxoccyUJSgAADCB6gl2vvjrF/GX//hLLGjviNHRsfHLaIyNX0ZHRv94f/z2WPHYreeqj48V/8fv1VuAlyrVFe0AADDHqktPPvzww3jttdeio6MjalXN21sxXg3zcms5Fi5aGPVCgAMAMOeuXbsWe/fujV27dkW5XI5mJsABAJhTFy9ejAMHDsSrr74a84EABwBgzpw+fbq47Ny5M+YLAQ4AwJw4cuRIsfRkx44dMZ8IcAAA0h08eLBY671t27aYb2xDCABAqs8//zyWL18ejz76aMxHAhwAgDR79uyJxx57LNatWxfzlQAHAOBPV131XN3ju7reu7NzZqeWb3TWgAMA8Kfr7+8vInzx4pmfWr7RCXAAAEjUEgAAQBoBDgAAiQQ4AAAkEuAAAJBIgAMAQCIBDgAAiQQ4AAAkEuAAAJBIgAMAQCIBDgAAiQQ4AAAkEuAAAJBIgAMAQCIBDgAAiQQ4AAAkEuAAAJBIgAMAQCIBDgAAiQQ4AAAkEuAAAJBIgAMAQCIBDgAAiQQ4AAAkEuAAAJBIgAMAQCIBDgAAiQQ4AAAkEuAAAJBIgAMAQCIBDgAAiQQ4AAAkEuAAAJBIgAMAQCIBDgAAiQQ4AAAkEuAAAJBIgAMAQCIBDgAAiQQ4AAAkEuAAAJBIgAMAQCIBDgAAiQQ4AAAkEuAAAJBIgAMAQCIBDgAAiQQ4AAAkEuAAAJBIgAMAQCIBDgAAiQQ4AAAkEuAAAJBIgAMAQCIBDgAAiQQ4AAAkEuAAAJBIgAMAQCIBDgAAiVone0GpVCquK5XKHR+/3e2vA+qH4xka31SP14mOd2DumYADAECiCSfgE33CvmWqEzRg7jmeoXlMdrw6fqH+mYADAECiCSfgtz5hT/RJ2idsaByTHc9A45jqN1qOd6hfJuAAAJBo0l1QJmLNKADMHbubQOMyAQcAgERT3gXl9v1ETbyhcUx2PAON5/bjeqL3Z8c71B8TcAAASFSq+EgMAABpTMABACCRAAcAgEQCHAAAEglwAABIJMABACDRPwAyQMBpiZF2XQAAAABJRU5ErkJggg==",
+        "width": 736,
+        "height": 310,
+        "cells": [
+          {
+            "frame": 1,
+            "x": 4,
+            "y": 4,
+            "w": 240,
+            "h": 135
+          },
+          {
+            "frame": 5,
+            "x": 248,
+            "y": 4,
+            "w": 240,
+            "h": 135
+          },
+          {
+            "frame": 9,
+            "x": 492,
+            "y": 4,
+            "w": 240,
+            "h": 135
+          },
+          {
+            "frame": 13,
+            "x": 4,
+            "y": 157,
+            "w": 240,
+            "h": 135
+          },
+          {
+            "frame": 17,
+            "x": 248,
+            "y": 157,
+            "w": 240,
+            "h": 135
+          },
+          {
+            "frame": 21,
+            "x": 492,
+            "y": 157,
+            "w": 240,
+            "h": 135
+          }
+        ],
+        "bytes": 3898,
+        "sha256": "11fdccb2c1bd810addd0d245e3a186860aabc1cd5e95045291715a5e3431acda",
+        "documentRevision": 4,
+        "warnings": [
+          {
+            "code": "render.bitmapMissing",
+            "objectId": "nd_01K742SG0XC99E0A2JJ9D4VJ2J",
+            "colourId": null
+          }
+        ]
+      },
+      "varies": []
+    },
+    {
+      "title": "Three frames in one row, 120 pixels wide",
+      "result": {
+        "png": "iVBORw0KGgoAAAANSUhEUgAAAXgAAABaCAYAAACyjk0vAAAENElEQVR4nO3dS2tUZxjA8Wdy04l4ScYJuaAtJC66EDeFBmyhm+7bfb9F6arrrkq/T7fuRXBVaBRjNJdmIug4iUbBNGdsSpOZaWaamEkefz8YDoQ3s3mHfx5eTuYM7ewKANIZCABSEniApAQeICmBB0hK4AGSEniApAQeICmBB0hK4AGSEniApAQeICmBB0hK4AGSEniApAQeICmBB0hK4AGSGoo+WlpaisHBwebrzZs3zWu1Wo2RkZEA4Gj6GviHDx9GrVaLra2tGBsbi1evXsW1a9fi9u3bAcDRlPr5TNYi6IUXL17EpUuXYnt7O4aGhuLixYsBwH53796N8fHx5kBctLI47Th37lzH9X2d4Mvl8r7r6OhoANCqGIiL04579+7FlStX4t27d3Hjxo2Ym5uLy5cvt/2dvk7wAHSvyHWj0YiNjY1m4BcXF2N+fj4uXLjQdr3AAyTlNkmApAQeICmBB0hK4AGS+uC3Sf760y9drfvh5x8D4GO08Wct7vx2JyamJqI6OdG8jlXGojRQiqPo633wAEQ8efQkFv941HztGR4ejquTV6M6NfFP+KuT1RgeGe76fQUeoM9WHq+0/Ozt27ex+mS1+drzxdfz8eU3X0W3BB6gz1aWlrtaN3N9Jnoh8AB91Kg3ov68fvjC3eP4qevT0YsTv4tmtbYWALzXbnpv9wUDlWolzpfPRy9ONPBF3KeqkwHAeyuP9wf+2fNn8XKz0bJuusfjmcKJHdGIO0Cr5b8n+Nfbr6PeqEdlrBKDA4Mt66Z7PJ4pnEjgxR2gVXGnzPrqenNqHx4ajonKRMe105+csgm+OEcSd4D2Fn5fiLX1tY5T+57yaDnGK+PRqw/2dcHF296/fz9u3boVpdLR/hsLIJuFhYUony/H6O6rmOJrq7XmtXhtNTb3rZ39bC6+/f676NUHCby4A7RXPKJ0eXm5+SSm4pF77Wy+3NwN/m7s19ab1+uzn8bNz29Gr4498OIO0N6DBw+ajyidmen9PP3/ONYzeHEHaFWv1+Pp06cxOzv7nw/JPm7HNsGLO0B7xfNTBwZO/tvZjzXwzTcUd4BT4diOaIQd4HTxRCeApAQeICmBB0hK4AGSEniApAQeICmBB0hK4AGSEniApAQeICmBB0hK4AGSEniApAQeICmBB0hK4AGSEniApAQeICmBB0hK4AGSEniApAQeICmBB0hK4AGSEniApAQeICmBB0hK4AGSEniApIYOW1AqlZrXnZ2dIL9O+73384N8Ls6mw/bz4OdAB84mEzxAUh0n+E5/4cnpsP3udqLnbLCfHwcTPEBSHSf4g2dv5HbYfvsc5NLtftr3s80ED5DUoXfRwL+5iyKXTvvpjD4HEzxAUl3fReM+2Ny63e+D63wezjb7mZsJHiCp0o4/2QApmeABkhJ4gKQEHiApgQdISuABkvoLPLhG1sqqHSMAAAAASUVORK5CYII=",
+        "width": 376,
+        "height": 90,
+        "cells": [
+          {
+            "frame": 1,
+            "x": 4,
+            "y": 4,
+            "w": 120,
+            "h": 68
+          },
+          {
+            "frame": 12,
+            "x": 128,
+            "y": 4,
+            "w": 120,
+            "h": 68
+          },
+          {
+            "frame": 24,
+            "x": 252,
+            "y": 4,
+            "w": 120,
+            "h": 68
+          }
+        ],
+        "bytes": 1133,
+        "sha256": "2f31c76b125724e691ddf30a097e0c5e9393201467332f27fbeff6e35db6203d",
+        "documentRevision": 4,
+        "warnings": [
+          {
+            "code": "render.bitmapMissing",
+            "objectId": "nd_01K742SG0XC99E0A2JJ9D4VJ2J",
+            "colourId": null
+          }
+        ]
+      },
+      "varies": []
+    }
+  ],
+  "inspect.coordinates.convert": [
+    {
+      "title": "Field units to camera space",
+      "result": {
+        "points": [
+          {
+            "x": 1.0,
+            "y": 0.9999999999999996
+          }
+        ]
+      },
+      "varies": []
+    },
+    {
+      "title": "An image pixel onto the table plane",
+      "result": {
+        "points": [
+          {
+            "x": 0.0,
+            "y": 0.0,
+            "z": 0.0
+          }
+        ]
+      },
+      "varies": []
+    }
+  ],
+  "inspect.frame.describe": [
+    {
+      "title": "What the current frame shows",
+      "result": {
+        "sceneId": "sc_01K742SG0YSRA1305J7887BDVZ",
+        "frame": 1,
+        "cameraId": "el_01K742SG0ZZYY8HE4MW501XMJV",
+        "width": 1920,
+        "height": 1080,
+        "elements": [
+          {
+            "elementId": "el_01K742SG11W3SGB8Q1H50W74VB",
+            "name": "Bob",
+            "drawingId": "dr_01K742SG0KKMCAP9X1E6Z5P4SW",
+            "worldTransform": {
+              "matrix": [
+                1.0,
+                0.0,
+                0.0,
+                -4.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0
+              ],
+              "position": [
+                -4.0,
+                0.0,
+                0.0
+              ],
+              "rotation": 0.0,
+              "scale": [
+                1.0,
+                1.0
+              ],
+              "skew": 0.0
+            },
+            "cameraBounds": {
+              "normalized": {
+                "x": 0.08333333333333333,
+                "y": 0.2037037037037037,
+                "width": 0.3333333333333332,
+                "height": 0.3714814814814815
+              },
+              "fields": {
+                "x": -4.999999999999999,
+                "y": -0.5075000000000003,
+                "width": 3.9999999999999982,
+                "height": 2.5075000000000003
+              },
+              "pixels": {
+                "x": 160.0,
+                "y": 220.0,
+                "width": 639.9999999999998,
+                "height": 401.20000000000005
+              }
+            },
+            "opacity": 1.0,
+            "effects": []
+          }
+        ],
+        "omitted": [
+          {
+            "elementId": "el_01K742SG12CTMHXEB7TY99G4XV",
+            "name": "Background",
+            "reason": "outOfFrame",
+            "drawingId": "dr_01K742SG14TNTV1TR99SQHVKVK"
+          },
+          {
+            "elementId": "el_01K742SG16N99XRCS0QEBWMRXY",
+            "name": "Notes",
+            "reason": "annotation"
+          }
+        ],
+        "sounds": [],
+        "warnings": [
+          {
+            "code": "describe.soundUnavailable",
+            "message": "audible sounds and mouth shapes arrive with M8"
+          }
+        ],
+        "documentRevision": 4
+      },
+      "varies": []
+    },
+    {
+      "title": "Frame 12 in full detail",
+      "result": {
+        "sceneId": "sc_01K742SG0YSRA1305J7887BDVZ",
+        "frame": 12,
+        "cameraId": "el_01K742SG0ZZYY8HE4MW501XMJV",
+        "width": 1920,
+        "height": 1080,
+        "elements": [
+          {
+            "elementId": "el_01K742SG11W3SGB8Q1H50W74VB",
+            "name": "Bob",
+            "drawingId": "dr_01K742SG0M5J3BAJSW8241WA87",
+            "worldTransform": {
+              "matrix": [
+                0.7202153131918843,
+                -0.6939982491812108,
+                0.0,
+                0.02780739561712328,
+                0.7071067811865475,
+                0.7071067811865476,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0
+              ],
+              "position": [
+                0.02780739561712328,
+                0.0,
+                0.0
+              ],
+              "rotation": 44.47381011815112,
+              "scale": [
+                1.0093116948475747,
+                0.990774212866937
+              ],
+              "skew": 0.009845340611083987
+            },
+            "cameraBounds": {
+              "normalized": {
+                "x": 0.45535161131572827,
+                "y": 0.41619475185937216,
+                "width": 0.05691810334839946,
+                "height": 0.10056629776875338
+              },
+              "fields": {
+                "x": -0.5357806642112601,
+                "y": -0.11313708498984765,
+                "width": 0.683017240180793,
+                "height": 0.6788225099390854
+              },
+              "pixels": {
+                "x": 874.2750937261983,
+                "y": 449.4903320081219,
+                "width": 109.28275842892697,
+                "height": 108.61160159025366
+              }
+            },
+            "opacity": 1.0,
+            "effects": [],
+            "kind": "drawing",
+            "role": "normal",
+            "depth": 0.0,
+            "drawingToImage": [
+              1.1523445011070146,
+              -1.131370849898476,
+              -1.1103971986899375,
+              -1.131370849898476,
+              964.4491832987397,
+              540.0
+            ],
+            "drawingBounds": {
+              "x": -32.0,
+              "y": 16.0,
+              "width": 64.0,
+              "height": 32.0
+            }
+          }
+        ],
+        "omitted": [
+          {
+            "elementId": "el_01K742SG12CTMHXEB7TY99G4XV",
+            "name": "Background",
+            "reason": "outOfFrame",
+            "drawingId": "dr_01K742SG14TNTV1TR99SQHVKVK"
+          },
+          {
+            "elementId": "el_01K742SG16N99XRCS0QEBWMRXY",
+            "name": "Notes",
+            "reason": "annotation"
+          }
+        ],
+        "sounds": [],
+        "warnings": [
+          {
+            "code": "describe.soundUnavailable",
+            "message": "audible sounds and mouth shapes arrive with M8"
+          }
+        ],
+        "documentRevision": 4
+      },
+      "varies": []
+    }
+  ],
+  "inspect.hitTest": [
+    {
+      "title": "What is at the camera centre",
+      "result": {
+        "hits": []
+      },
+      "varies": []
+    },
+    {
+      "title": "What is under an image pixel of frame 12",
+      "result": {
+        "hits": []
+      },
+      "varies": []
+    }
+  ],
   "job.cancel": [
     {
       "title": "Cancel a job",
@@ -8227,7 +8580,7 @@
         "state": "succeeded",
         "progress": 1.0,
         "message": "",
-        "startedAt": "2026-11-09T21:36:41.221Z",
+        "startedAt": "2026-11-10T08:23:11.203Z",
         "result": {},
         "session": "user"
       },
@@ -8246,7 +8599,7 @@
           "state": "succeeded",
           "progress": 1.0,
           "message": "",
-          "startedAt": "2026-11-09T21:36:41.233Z",
+          "startedAt": "2026-11-10T08:23:11.214Z",
           "result": {},
           "session": "user"
         }
@@ -8265,7 +8618,7 @@
         "state": "succeeded",
         "progress": 1.0,
         "message": "",
-        "startedAt": "2026-11-09T21:36:41.244Z",
+        "startedAt": "2026-11-10T08:23:11.226Z",
         "result": {},
         "session": "user"
       },
@@ -8312,10 +8665,10 @@
     {
       "title": "A 1920×1080, 24 fps project",
       "result": {
-        "projectId": "pr_01M713VW244BRY98EYTV2ZHCXY",
-        "sceneId": "sc_01M713VW25X6W6R2P6YSW8630Q",
-        "cameraId": "el_01M713VW25X6W6R2P6YSW8630S",
-        "elementId": "el_01M713VW25X6W6R2P6YSW8630T"
+        "projectId": "pr_01M728VMWNRTH1X3RR1G6TF8PW",
+        "sceneId": "sc_01M728VMWP8WV13RXR1ZCYGQB1",
+        "cameraId": "el_01M728VMWP8WV13RXR1ZCYGQB3",
+        "elementId": "el_01M728VMWP8WV13RXR1ZCYGQB4"
       },
       "varies": [
         "/cameraId",
@@ -8571,7 +8924,7 @@
         {
           "path": "/tmp/Sample.animpkg",
           "name": "Sample",
-          "lastOpened": "2026-11-09T21:36:41.929Z",
+          "lastOpened": "2026-11-10T08:23:11.843Z",
           "exists": true
         }
       ],
@@ -8636,6 +8989,87 @@
   "project.saveAs": [
     {
       "title": "Save a copy",
+      "result": {
+        "jobId": "job-3"
+      },
+      "varies": []
+    }
+  ],
+  "render.frame.run": [
+    {
+      "title": "The current frame through the camera, inline, a quarter size",
+      "result": {
+        "mimeType": "image/png",
+        "width": 480,
+        "height": 270,
+        "bytes": 1938,
+        "sha256": "475adc03d4f3263c94447f32a4d5cf83d6f0e1be3c5b1c4283e3e898aba3a4fa",
+        "data": "iVBORw0KGgoAAAANSUhEUgAAAeAAAAEOCAYAAABRmsRnAAAHWUlEQVR4nO3au2uVeR7H8W+isnGn0EYRxUq0sNPOYgubdRtBLBREUQsVKy/LqrAgIm6hy4KNrf+ATRB2dxgslCm9oiCC9zsGBBETR0PMzHkYgxnmYmJyPonn9YLDc34Pz3PaN7/v+c0c/kkBAG3VXQBA2wkwAAQIMAAECDAABAgwAAQIMAAECDAABAgwAAQIMAAECDAABAgwAAQIMAAECDAABAgwAAQIMAAECDAABAgwAAQIMAAECDAABAgwAAQIMAAECDAABAgwAAQIMAAECDAABAgwAAQIMAAECDAABAgwAAQIMAAECDAABAgwAAQIMAAECDAABAgwAAQIMAAECDAABAgwAAQIMAAECDAABAgwAAQIMAAECDAABAgwAAQIMAAECDAABAgwAAQIMAAECDAABAgwAAQIMAAECDAABAgwAAQIMAAECDAABAjwNDU4OFh3794dde/Jkyf15s2bkXVfX1+9ePFiZH379u1RVwByBHiaunTpUh09enTUvZ07d9bz58+b7/39/bV79+768OFDs378+HEdOnSoCffWrVsLgCwBnqauXLlSK1asGFkPDQ3V/fv3a8mSJU10r127Vjt27KgFCxaMev7mzZu1fPny5t7w8HBduHChHj58WAC0lwBPU62gvn79us6ePdt8Tp8+XcuWLavu7u7av39/nTt3rp49e1a7du1qnr969WqtXLmyea91ffr0aW3atKlevnxZR44cqd7e3gKgfQR4mmrtcOfMmVOPHj1qPufPn2/C2hpN37hxo9asWdPsdO/cuVMDAwN1+fLlUQE+c+ZMHThwoNavX1+HDx9u1gC0z8xi2mntWmfMmFF79uwZuXfv3r0mrBcvXqylS5c2o+aWzZs3N8+2DmS1xtHXr1+vEydONNHdu3fvyO/NmzevAGgfO+Bp6OM4+VMfd7aLFy9u/g/esmVLcxCrNaZ+8OBBM55u7YS7urpq9uzZNWvWrGZX/O7duzp58mRt3LixAGgfO+Bp6O3bt7V27dqRdevQVWvcvGjRolq4cGHdunWrOem8evXq2r59ezOWXrduXXNCesOGDc07p06dqmPHjlVPT09t27atVq1aVQC0T9dw6ygsANBWRtAAECDAABAgwAAQIMAAECDAABAgwAAQIMAAECDAABAgwAAQIMAAECDAABAgwAAQIMAAECDAABAgwAAQIMAAECDAABAgwAAQIMAAECDAABAgwAAQIMAAECDAABAgwAAQIMAAECDAABAgwAAQIMAAECDAABAgwAAQMLP4Iv/5579rKvv7v/5RAEw9dsAAECDAABAgwAAQIMAAECDAABAgwAAQIMAAECDAABAgwAAQIMAAECDAABAgwAAQIMAAECDAABAgwAAQIMAAECDAABAgwAAQIMBTyA/vfqjBwcEC4OsnwFNE/0B//ff8/2vow1AB8PWbWcS14vvt99/V3/7y1+r5U08B8PUT4LBP4/vNn78pADqDAAeJL0DnEuAQ8QXobAIcIL4ACHCbiS8ALQLcRuILwEcC3CbiC8CnBLgNxBeAXxLgSSa+APwaAZ5E4gvAbxHgSSK+APweAZ4E4gvAHxHgCSa+AHwOAZ5A4gvA5xLgCSK+AIyFAE8A8QVgrAT4C4kvAOMhwF+gr69PfAEYFwEep1Z8Dx48WL3/66358+cXAIyFAI/Dx/geP35cfAEYFwEeI/EFYCII8BiILwATRYA/k/gCMJEE+DOILwATTYD/gPgCMBkE+HeILwCTRYB/g/gCMJkE+FeILwCTTYB/QXwBaAcB/oT4AtAuAvwz8QWgnQS4xBeA9uv4AIsvAAkdHWDxBSClYwMsvgAkdWSAxReAtI4LsPgCMBV0Df+kOsSrV69q37594gtAXEcFeGBgoN6/f19z584tAEjqqAADwFTRXQBA2wkwAAQIMAAECDAABAgwAAQIMAAECDAABAgwAAQIMAAECDAABAgwAAQIMAAECDAABAgwAAQIMAAECDAABAgwAAQIMAAECDAABAgwAAQIMAAECDAABAgwAAQIMAAECDAABAgwAAQIMAAECDAABAgwAAQIMAAECDAABAgwAAQIMAAECDAABAgwAAQIMAAECDAABAgwAAQIMAAECDAABAgwAAQIMAAECDAABAgwAAQIMAAECDAABAgwAAQIMAAECDAABAgwAAQIMAAECDAABAgwAAQIMAAECDAABAgwAAQIMAAECDAABAgwAAQIMAAECDAABAgwAAQIMAAECDAABAgwAAQIMAAECDAABAgwAAQIMAAECDAABAgwAAQIMAAECDAABAgwAAQIMAAECDAABAgwAAQIMAAECDAABAgwAAQIMAAECDAABAgwAAQIMAAECDAABAgwAAQIMAAECDAABAgwAAQIMAAECDAABAgwAAQIMAAECDAABAgwAAQIMAAECDAABAgwAAQIMAAECDAABAgwAAQIMAAECDAABAgwAAQIMAAECDAABAgwAAQIMAAECDAABAgwAAQIMAAECDAABAgwAAT8CA0T/A4wPYnoAAAAAElFTkSuQmCC",
+        "documentRevision": 4,
+        "frame": 1,
+        "imageToCamera": [
+          0.024999999999999998,
+          0.0,
+          0.0,
+          -0.024999999999999998,
+          -5.999999999999999,
+          3.3749999999999996
+        ],
+        "warnings": []
+      },
+      "varies": []
+    },
+    {
+      "title": "Frame 12 at 480 pixels wide on a transparent background",
+      "result": {
+        "mimeType": "image/png",
+        "width": 480,
+        "height": 270,
+        "bytes": 1094,
+        "sha256": "33f59884086c7309260430842adcb43627e7d99131015ede5d7c7405a9a74081",
+        "data": "iVBORw0KGgoAAAANSUhEUgAAAeAAAAEOCAYAAABRmsRnAAAEDUlEQVR4nO3VMREAAAgAIc/+oW3hL1CCHQDg3Q4A8E7AABAQMAAEBAwAAQEDQEDAABAQMAAEBAwAAQEDQEDAABAQMAAEBAwAAQEDQEDAABAQMAAEBAwAAQEDQEDAABAQMAAEBAwAAQEDQEDAABAQMAAEBAwAAQEDQEDAABAQMAAEBAwAAQEDQEDAABAQMAAEBAwAAQEDQEDAABAQMAAEBAwAAQEDQEDAABAQMAAEBAwAAQEDQEDAABAQMAAEBAwAAQEDQEDAABAQMAAEBAwAAQEDQEDAABAQMAAEBAwAAQEDQEDAABAQMAAEBAwAAQEDQEDAABAQMAAEBAwAAQEDQEDAABAQMAAEBAwAAQEDQEDAABAQMAAEBAwAAQEDQEDAABAQMAAEBAwAAQEDQEDAABAQMAAEBAwAAQEDQEDAABAQMAAEBAwAAQEDQEDAABAQMAAEBAwAAQEDQEDAABAQMAAEBAwAAQEDQEDAABAQMAAEBAwAAQEDQEDAABAQMAAEBAwAAQEDQEDAABAQMAAEBAwAAQEDQEDAABAQMAAEBAwAAQEDQEDAABAQMAAEBAwAAQEDQEDAABAQMAAEBAwAAQEDQEDAABAQMAAEBAwAAQEDQEDAABAQMAAEBAwAAQEDQEDAABAQMAAEBAwAAQEDQEDAABAQMAAEBAwAAQEDQEDAABAQMAAEBAwAAQEDQEDAABAQMAAEBAwAAQEDQEDAABAQMAAEBAwAAQEDQEDAABAQMAAEBAwAAQEDQEDAABAQMAAEBAwAAQEDQEDAABAQMAAEBAwAAQEDQEDAABAQMAAEBAwAAQEDQEDAABAQMAAEBAwAAQEDQEDAABAQMAAEBAwAAQEDQEDAABAQMAAEBAwAAQEDQEDAABAQMAAEBAwAAQEDQEDAABAQMAAEBAwAAQEDQEDAABAQMAAEBAwAAQEDQEDAABAQMAAEBAwAAQEDQEDAABAQMAAEBAwAAQEDQEDAABAQMAAEBAwAAQEDQEDAABAQMAAEBAwAAQEDQEDAABAQMAAEBAwAAQEDQEDAABAQMAAEBAwAAQEDQEDAABAQMAAEBAwAAQEDQEDAABAQMAAEBAwAAQEDQEDAABAQMAAEBAwAAQEDQEDAABAQMAAEBAwAAQEDQEDAABAQMAAEBAwAAQEDQEDAABAQMAAEBAwAAQEDQEDAABAQMAAEBAwAAQEDQEDAABAQMAAEBAwAAQEDQEDAABAQMAAEBAwAAQEDQEDAABAQMAAEBAwAAQEDQEDAABAQMAAEBAwAAQEDQEDAABAQMAAEBAwAAQEDQEDAABAQMAAEBAwAAQEDQEDAABAQMAAEBAwAAQEDQEDAABAQMAAEBAwAAQEDQEDAABAQMAAEBAwAAQEDQOAALQcCHShRVuMAAAAASUVORK5CYII=",
+        "documentRevision": 4,
+        "frame": 12,
+        "imageToCamera": [
+          0.024999999999999998,
+          0.0,
+          0.0,
+          -0.024999999999999998,
+          -5.999999999999999,
+          3.3749999999999996
+        ],
+        "warnings": [
+          {
+            "code": "render.bitmapMissing",
+            "objectId": "nd_01K742SG0XC99E0A2JJ9D4VJ2J",
+            "colourId": null
+          }
+        ]
+      },
+      "varies": []
+    }
+  ],
+  "render.limits.get": [
+    {
+      "title": "The inline and output limits",
+      "result": {
+        "maxInlinePixels": 2048,
+        "maxInlineBytes": 8388608,
+        "maxWidth": 8192,
+        "maxHeight": 8192,
+        "formats": [
+          "png",
+          "jpeg",
+          "tga",
+          "bmp"
+        ]
+      },
+      "varies": []
+    }
+  ],
+  "render.range.run": [
+    {
+      "title": "Frames 1-24 of the current scene as PNGs, a quarter size",
       "result": {
         "jobId": "job-3"
       },

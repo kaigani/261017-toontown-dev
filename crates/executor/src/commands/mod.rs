@@ -43,6 +43,8 @@ pub(crate) mod element_read;
 pub(crate) mod inspect;
 pub(crate) mod job;
 pub(crate) mod project;
+pub(crate) mod render;
+pub(crate) mod render_list;
 pub(crate) mod timing;
 pub(crate) mod tool_symmetry;
 pub(crate) mod transfer;
@@ -179,6 +181,10 @@ pub(crate) static ALL: &[&Command] = &[
     &draw_strokeops::DRAW_BREAK_APART_APPLY,
     &draw_strokeops::DRAW_CENTRE_LINE_APPLY,
     &draw_render::DRAW_DRAWING_RENDER,
+    // render (09 §11; M3 C3.3)
+    &render::RENDER_FRAME_RUN,
+    &render::RENDER_LIMITS_GET,
+    &render::RENDER_RANGE_RUN,
     &colour_edit::COLOUR_FILL_MAPPING_GET,
     &colour_edit::COLOUR_FILL_MAPPING_SET,
     &colour_edit::COLOUR_SELECTION_APPLY,

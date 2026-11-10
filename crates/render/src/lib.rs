@@ -121,6 +121,15 @@ pub enum Item {
         /// Paint.
         paint: Paint,
     },
+    /// Items drawn through an affine map (M3 C3.3, ADR-0020): their geometry, stroke widths and paint mappings are in
+    /// the layer's own space and `transform` (`[a, b, c, d, e, f]`, `x' = a x + c y + e`, `y' = b x + d y + f`) takes
+    /// it to the enclosing space, so a skewed or anisotropically scaled element strokes and paints exactly.
+    Layer {
+        /// The layer's space → the enclosing space.
+        transform: [f64; 6],
+        /// Items, back to front.
+        items: Vec<Item>,
+    },
 }
 
 /// A scene to render.
@@ -236,7 +245,52 @@ fn push_unit_clip(ctx: &mut RenderContext, paint: &Paint) -> bool {
     true
 }
 
-/// Renders a scene:/// Renders a scene: premultiplied RGBA8 rows, top first. `keep_going` is asked between items (cancellation and the
+/// Draws `items` under `base` (the transform of the enclosing layers); `keep_going` is asked before each item, with
+/// a running count over all nesting levels.
+fn draw_items(
+    ctx: &mut RenderContext,
+    items: &[Item],
+    base: kurbo::Affine,
+    keep_going: &mut dyn FnMut(usize) -> Result<(), String>,
+    counter: &mut usize,
+) -> Result<(), RenderError> {
+    for item in items {
+        keep_going(*counter).map_err(RenderError::Stopped)?;
+        *counter += 1;
+        match item {
+            Item::Fill { path, rule, paint } => {
+                ctx.set_transform(base);
+                let clip = push_unit_clip(ctx, paint);
+                set_paint(ctx, paint)?;
+                ctx.set_fill_rule(match rule {
+                    Rule::NonZero => PenikoFill::NonZero,
+                    Rule::EvenOdd => PenikoFill::EvenOdd,
+                });
+                ctx.fill_path(&bez(path));
+                if clip {
+                    ctx.pop_layer();
+                }
+            }
+            Item::Stroke { path, width, paint } => {
+                ctx.set_transform(base);
+                let clip = push_unit_clip(ctx, paint);
+                set_paint(ctx, paint)?;
+                ctx.set_stroke(kurbo::Stroke::new(*width).with_join(Join::Round).with_caps(Cap::Round));
+                ctx.stroke_path(&bez(path));
+                if clip {
+                    ctx.pop_layer();
+                }
+            }
+            Item::Layer { transform, items } => {
+                draw_items(ctx, items, base * kurbo::Affine::new(*transform), keep_going, counter)?;
+            }
+        }
+    }
+    ctx.set_transform(base);
+    Ok(())
+}
+
+/// Renders a scene: premultiplied RGBA8 rows, top first. `keep_going` is asked between items (cancellation and the
 /// caller's watchdog); it returns an error message to stop.
 ///
 /// # Errors
@@ -252,32 +306,8 @@ pub fn render(scene: &Scene, keep_going: &mut dyn FnMut(usize) -> Result<(), Str
     );
     let mut ctx = RenderContext::new_with(w16, h16, RenderSettings { level: Level::fallback(), num_threads: 0 });
     ctx.set_transform(kurbo::Affine::IDENTITY);
-    for (i, item) in scene.items.iter().enumerate() {
-        keep_going(i).map_err(RenderError::Stopped)?;
-        match item {
-            Item::Fill { path, rule, paint } => {
-                let clip = push_unit_clip(&mut ctx, paint);
-                set_paint(&mut ctx, paint)?;
-                ctx.set_fill_rule(match rule {
-                    Rule::NonZero => PenikoFill::NonZero,
-                    Rule::EvenOdd => PenikoFill::EvenOdd,
-                });
-                ctx.fill_path(&bez(path));
-                if clip {
-                    ctx.pop_layer();
-                }
-            }
-            Item::Stroke { path, width, paint } => {
-                let clip = push_unit_clip(&mut ctx, paint);
-                set_paint(&mut ctx, paint)?;
-                ctx.set_stroke(kurbo::Stroke::new(*width).with_join(Join::Round).with_caps(Cap::Round));
-                ctx.stroke_path(&bez(path));
-                if clip {
-                    ctx.pop_layer();
-                }
-            }
-        }
-    }
+    let mut counter = 0;
+    draw_items(&mut ctx, &scene.items, kurbo::Affine::IDENTITY, keep_going, &mut counter)?;
     ctx.flush();
     let mut pixmap = Pixmap::new(w16, h16);
     let settings = RasterizerSettings {
