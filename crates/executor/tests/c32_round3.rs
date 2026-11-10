@@ -93,7 +93,8 @@ fn code(env: &tt_executor::Envelope) -> Option<&str> {
 #[test]
 fn running_undo_and_redo_of_a_large_animation_step_are_cancelled_atomically() {
     let _t = turn();
-    let budget = Duration::from_secs(2);
+    // Generous enough for the rig's 24-node edits on shared CI runners in debug; the hooks make the calls overrun it.
+    let budget = Duration::from_secs(8);
     let h = fixture_with(ExecutorConfig { budget });
     let nodes = rig(&h);
     ok(&h, "element.select", json!({ "elementIds": [nodes[3]] }));
@@ -107,10 +108,10 @@ fn running_undo_and_redo_of_a_large_animation_step_are_cancelled_atomically() {
     for (cmd, label) in [("edit.undo", "undo"), ("edit.redo", "redo")] {
         let before = snapshot(&h, &nodes);
         let rx = h.subscribe();
-        // Each replayed entry spins 150 ms: 24 entries overrun the 2 s budget while the replay runs.
+        // Each replayed entry spins 500 ms: 24 entries overrun the 8 s budget while the replay runs.
         let t = Instant::now();
         let env = {
-            let _spin = Spin::on(150_000);
+            let _spin = Spin::on(500_000);
             run(&h, cmd, json!({}))
         };
         let answered = t.elapsed();
@@ -138,7 +139,8 @@ fn running_undo_and_redo_of_a_large_animation_step_are_cancelled_atomically() {
 #[test]
 fn a_queued_undo_behind_a_running_evaluation_keeps_its_own_deadline_and_is_atomic() {
     let _t = turn();
-    let budget = Duration::from_secs(2);
+    // Generous enough for the rig's 24-node edits on shared CI runners in debug; the hooks make the calls overrun it.
+    let budget = Duration::from_secs(8);
     let h = fixture_with(ExecutorConfig { budget });
     let nodes = rig(&h);
     let rx = h.subscribe();
