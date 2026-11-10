@@ -1,0 +1,57 @@
+{
+  "chainLength": 26,
+  "perNodeScale": 1000000,
+  "analyticScale": 1e+156,
+  "ok": true,
+  "observed": {
+    "status": "ok",
+    "result": {
+      "frames": [
+        {
+          "frame": 1.0,
+          "nodes": [
+            {
+              "id": "el_01K7JJN8000WA4K7ZHM7YK3M1E",
+              "kind": "peg",
+              "localFrame": 1.0,
+              "world": {
+                "matrix": [
+                  1.0000000000000002e+156,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  1.0000000000000002e+156,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  1.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  1.0
+                ],
+                "position": {
+                  "x": 0.0,
+                  "y": 0.0,
+                  "z": 0.0
+                },
+                "rotation": 0.0,
+                "scale": {
+                  "x": 1.0000000000000002e+156,
+                  "y": 1.0000000000000002e+156
+                },
+                "skew": 0.0
+              }
+            }
+          ]
+        }
+      ]
+    },
+    "changes": [],
+    "warnings": [],
+    "documentRev": 78
+  }
+}

@@ -1,0 +1,74 @@
+[
+  {
+    "file": "reviews/M3-C3.1-r1-register.json",
+    "identical": true
+  },
+  {
+    "file": "reviews/M3-C3.1-r1-register.md",
+    "identical": true
+  },
+  {
+    "file": "reviews/evidence/M3-C3.1-r1/register-final.txt",
+    "identical": true
+  },
+  {
+    "file": "reviews/evidence/M3-C3.1-r1/register-tests.txt",
+    "identical": true
+  },
+  {
+    "file": "reviews/evidence/M3-C3.1-r1/register-verified.txt",
+    "identical": true
+  },
+  {
+    "file": "reviews/evidence/M3-C3.1-r2/guards/c22-r2-register.txt",
+    "identical": true
+  },
+  {
+    "file": "reviews/evidence/M3-C3.1-r2/guards/c23-r1-register.txt",
+    "identical": true
+  },
+  {
+    "file": "reviews/evidence/M3-C3.1-r2/guards/c23-r2-register.txt",
+    "identical": true
+  },
+  {
+    "file": "reviews/evidence/M3-C3.1-r2/guards/c24-r1-register.txt",
+    "identical": true
+  },
+  {
+    "file": "reviews/evidence/M3-C3.1-r2/guards/c24-r3-register.txt",
+    "identical": true
+  },
+  {
+    "file": "reviews/evidence/M3-C3.1-r2/guards/c31-r1-register.txt",
+    "identical": true
+  },
+  {
+    "file": "reviews/evidence/M3-C3.1-r2/register-complete.json",
+    "identical": true
+  },
+  {
+    "file": "reviews/evidence/M3-C3.1-r2/register-final.json",
+    "identical": true
+  },
+  {
+    "file": "reviews/evidence/M3-C3.1-r2/register-verified.json",
+    "identical": true
+  },
+  {
+    "file": "reviews/evidence/M3-C3.1-r2/register.json",
+    "identical": true
+  },
+  {
+    "file": "reviews/evidence/M3-C3.1-r3/register-complete.json",
+    "identical": true
+  },
+  {
+    "file": "reviews/evidence/M3-C3.1-r4/register-complete.json",
+    "identical": true
+  },
+  {
+    "file": "reviews/evidence/M3-C3.1-r4/register-summary.json",
+    "identical": true
+  }
+]

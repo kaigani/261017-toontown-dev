@@ -1,0 +1,21 @@
+{
+  "windows": [
+    "1-preview.png",
+    "2-vectorized.png",
+    "3-painted.png",
+    "4-recoloured.png",
+    "5-undone.png",
+    "6-redone.png",
+    "7-reopened.png"
+  ],
+  "macos": [
+    "1-preview.png",
+    "2-vectorized.png",
+    "3-painted.png",
+    "4-recoloured.png",
+    "5-undone.png",
+    "6-redone.png",
+    "7-reopened.png"
+  ],
+  "same_png_inventory": true
+}

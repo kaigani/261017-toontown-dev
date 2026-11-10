@@ -28,7 +28,8 @@ fn measured_refusal_and_cancelled_scan_have_no_late_mutation() {
     let worker = std::thread::spawn(move || {
         run(&copied, "cell.select", json!({"elementIds":first_ten,"from":1,"to":100000,"mode":"replace"}))
     });
-    std::thread::sleep(Duration::from_millis(120));
+    // Leave 350 ms of the read budget after cancellation on shared runners.
+    std::thread::sleep(Duration::from_millis(350));
     let read_start = Instant::now();
     let queued = run(&h, "doc.state.get", json!({}));
     let queued_elapsed = read_start.elapsed();

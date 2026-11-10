@@ -1,0 +1,13 @@
+{
+  "command": "cargo test --workspace --locked -j 4 --no-fail-fast",
+  "native_exit": 101,
+  "result_summaries": 310,
+  "passed": 1583,
+  "failed": 3,
+  "ignored": 24,
+  "failing_tests": [
+    "explicit_display_fov_is_not_aliased",
+    "duplicated_function_key_reports_its_neighbour_interval",
+    "interpolation_interval_survives_undo_redo"
+  ]
+}

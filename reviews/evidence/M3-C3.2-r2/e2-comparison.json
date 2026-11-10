@@ -1,0 +1,30 @@
+[
+  {
+    "file": "1-preview.png",
+    "identical": true
+  },
+  {
+    "file": "2-vectorized.png",
+    "identical": true
+  },
+  {
+    "file": "3-painted.png",
+    "identical": true
+  },
+  {
+    "file": "4-recoloured.png",
+    "identical": true
+  },
+  {
+    "file": "5-undone.png",
+    "identical": true
+  },
+  {
+    "file": "6-redone.png",
+    "identical": true
+  },
+  {
+    "file": "7-reopened.png",
+    "identical": true
+  }
+]

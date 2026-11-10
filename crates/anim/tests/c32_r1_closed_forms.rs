@@ -38,18 +38,18 @@ fn c32_r1_closed_forms_4096() {
                 let u = j as f64 / 64.;
                 let v = 1. - u;
                 let mut want = [0.; 3];
-                for a in 0..3 {
+                for (a, wanted) in want.iter_mut().enumerate() {
                     let before = if seg == 0 { q.pos[a] - p.pos[a] } else { p.pos[a] - ps[seg - 1].pos[a] };
                     let after = q.pos[a] - p.pos[a];
                     let following = if seg == 2 { after } else { ps[seg + 2].pos[a] - q.pos[a] };
                     let out = (1. - p.t) * ((1. + p.b) * (1. + p.c) * before + (1. - p.b) * (1. - p.c) * after) / 2.;
                     let incoming =
                         (1. - q.t) * ((1. + q.b) * (1. - q.c) * after + (1. - q.b) * (1. + q.c) * following) / 2.;
-                    want[a] = v * v * v * p.pos[a]
+                    *wanted = v * v * v * p.pos[a]
                         + 3. * v * v * u * (p.pos[a] + out / 3.)
                         + 3. * v * u * u * (q.pos[a] - incoming / 3.)
                         + u * u * u * q.pos[a];
-                    close(path.curve(seg, u)[a], want[a]);
+                    close(path.curve(seg, u)[a], *wanted);
                 }
                 if j > 0 {
                     chord += ((want[0] - prev[0]).powi(2) + (want[1] - prev[1]).powi(2) + (want[2] - prev[2]).powi(2))

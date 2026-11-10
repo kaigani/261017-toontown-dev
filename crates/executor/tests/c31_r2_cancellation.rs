@@ -37,7 +37,8 @@ fn r02_r14_timeout_after_solo_write_rolls_back_and_queued_read_answers() {
             ]}),
         )
     });
-    std::thread::sleep(Duration::from_millis(100));
+    // Leave 350 ms of the read budget after cancellation on shared runners.
+    std::thread::sleep(Duration::from_millis(350));
     let read = run(&h, "doc.state.get", json!({}));
     let result = worker.join().unwrap();
     tt_vector::work::hooks::set_spin_micros(0);

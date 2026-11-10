@@ -1,0 +1,212 @@
+ci-failed-attempt1.log
+bundle (macos-latest)	UNKNOWN STEP	2026-11-09T16:09:28.9959530Z ### Runs (p50 / p95 / max)
+bundle (macos-latest)	UNKNOWN STEP	2026-11-09T16:09:28.9959880Z 
+bundle (macos-latest)	UNKNOWN STEP	2026-11-09T16:09:28.9961750Z | back end | scene | GPU | canvas px | MB / transfer | transfer ms | MB/s | encode ms | decode ms | upload ms (cpu / complete) | refresh ms | fps | interval ms | long frames | CPU frame ms | GPU frame ms | 60 fps target | IPC-per-frame ceiling fps |
+bundle (macos-latest)	UNKNOWN STEP	2026-11-09T16:09:28.9963010Z |---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+bundle (macos-latest)	UNKNOWN STEP	2026-11-09T16:09:29.0003190Z | webgpu | paths100k | **FAILED**: webgpu unavailable: navigator.gpu.requestAdapter() returned null | | | | | | | | | | | | | | | |
+bundle (macos-latest)	UNKNOWN STEP	2026-11-09T16:09:29.0008670Z | webgpu | groups1k | **FAILED**: webgpu unavailable: navigator.gpu.requestAdapter() returned null | | | | | | | | | | | | | | | |
+bundle (macos-latest)	UNKNOWN STEP	2026-11-09T16:09:29.0010330Z | webgpu | brush10k | **FAILED**: webgpu unavailable: navigator.gpu.requestAdapter() returned null | | | | | | | | | | | | | | | |
+bundle (macos-latest)	UNKNOWN STEP	2026-11-09T16:09:29.0016310Z | webgl2 | paths100k | Apple GPU | 1008x417 | 8.70 | 7.0 / 17.0 / 17.0 | 1036 | 2.72 / 4.37 / 4.37 | 442.0 | 81.0 / 81.0 | 16.56 | 19.8 | 48.00 / 78.00 / 221.00 | 198 of 199 | 0.00 / 0.00 / 1.00 | - | missed | 142.9 |
+bundle (macos-latest)	UNKNOWN STEP	2026-11-09T16:09:29.0017800Z | webgl2 | groups1k | Apple GPU | 1008x417 | 2.02 | 4.0 / 35.0 / 35.0 | 198 | 0.73 / 5.00 / 5.00 | 116.0 | 4.0 / 4.0 | 16.66 | 59.9 | 17.00 / 18.00 / 30.00 | 1 of 598 | 0.00 / 0.00 / 1.00 | - | met | 250.0 |
+bundle (macos-latest)	UNKNOWN STEP	2026-11-09T16:09:29.0019840Z | webgl2 | brush10k | Apple GPU | 1008x417 | 10.09 | 13.0 / 59.0 / 59.0 | 560 | 3.67 / 9.16 / 9.16 | 614.0 | 24.0 / 24.0 | 16.67 | 59.8 | 17.00 / 19.00 / 34.00 | 6 of 597 | 0.00 / 1.00 / 1.00 | - | met | 76.9 |
+bundle (macos-latest)	UNKNOWN STEP	2026-11-09T16:09:29.0020330Z 
+bundle (macos-latest)	UNKNOWN STEP	2026-11-09T16:09:29.0020730Z Decode details (segments = stroke instances; triangles = fill triangles):
+bundle (macos-latest)	UNKNOWN STEP	2026-11-09T16:09:29.0021010Z 
+bundle (macos-latest)	UNKNOWN STEP	2026-11-09T16:09:29.0021610Z - webgl2 paths100k: paths 100000, cubics 200000, segments 2832713, fill vertices 0, triangles 0, GPU bytes 90.6 MB, tolerance 0.5
+bundle (macos-latest)	UNKNOWN STEP	2026-11-09T16:09:29.0023090Z - webgl2 groups1k: paths 20000, cubics 50000, segments 101961, fill vertices 175915, triangles 145915, GPU bytes 7.8 MB, tolerance 0.5
+bundle (macos-latest)	UNKNOWN STEP	2026-11-09T16:09:29.0024130Z - webgl2 brush10k: paths 10000, cubics 0, segments 0, fill vertices 1088402, triangles 1062652, GPU bytes 30.2 MB, tolerance 0.5
+bundle (macos-latest)	UNKNOWN STEP	2026-11-09T16:09:29.0024860Z 
+bundle (macos-latest)	UNKNOWN STEP	2026-11-09T16:09:29.0025160Z ### Pixel-frame transfer (host-raster fallback, transfer + texture upload only)
+bundle (macos-latest)	UNKNOWN STEP	2026-11-09T16:09:29.0025650Z 
+bundle (macos-latest)	UNKNOWN STEP	2026-11-09T16:09:29.0026010Z | back end | size | MB / frame | transfer ms | upload ms | MB/s | transfer + upload p50 ms |
+bundle (macos-latest)	UNKNOWN STEP	2026-11-09T16:09:29.0026440Z |---|---|---|---|---|---|---|
+bundle (macos-latest)	UNKNOWN STEP	2026-11-09T16:09:29.0027030Z | webgpu | **FAILED**: webgpu unavailable: navigator.gpu.requestAdapter() returned null | | | | | |
+bundle (macos-latest)	UNKNOWN STEP	2026-11-09T16:09:29.0028290Z | webgl2 | 1008x417 | 1.68 | 2.0 / 3.0 / 31.0 | 0.0 / 1.0 / 1.0 | 448 | 2.0 |
+bundle (macos-latest)	UNKNOWN STEP	2026-11-09T16:09:29.0028650Z 
+bundle (macos-latest)	UNKNOWN STEP	2026-11-09T16:09:29.0028830Z ### Decision (ADR-0007 canvas rule set)
+bundle (macos-latest)	UNKNOWN STEP	2026-11-09T16:09:29.0028990Z 
+bundle (macos-latest)	UNKNOWN STEP	2026-11-09T16:09:29.0029360Z | back end | paths100k | groups1k | brush10k | score (worst fps) |
+bundle (macos-latest)	UNKNOWN STEP	2026-11-09T16:09:29.0029960Z |---|---|---|---|---|
+bundle (macos-latest)	UNKNOWN STEP	2026-11-09T16:09:29.0030280Z | webgpu | unavailable | unavailable | unavailable | - |
+bundle (macos-latest)	UNKNOWN STEP	2026-11-09T16:09:29.0030680Z | webgl2 | missed | met | met | 19.8 |
+bundle (macos-latest)	UNKNOWN STEP	2026-11-09T16:09:29.0030930Z 
+bundle (macos-latest)	UNKNOWN STEP	2026-11-09T16:09:29.0031110Z - selected back end: webgl2
+bundle (macos-latest)	UNKNOWN STEP	2026-11-09T16:09:29.0031720Z - outcome: **go; M4 adds culling and level-of-detail for drawings of the paths100k size**
+check (macos-latest)	UNKNOWN STEP	2026-11-09T16:44:43.3069450Z ^[[1m^[[92m     Running^[[0m tests/c31_r2_cancellation.rs (target/debug/deps/c31_r2_cancellation-c1ab9197551e25dd)
+check (macos-latest)	UNKNOWN STEP	2026-11-09T16:44:43.3277100Z 
+check (macos-latest)	UNKNOWN STEP	2026-11-09T16:44:43.3277970Z running 2 tests
+check (macos-latest)	UNKNOWN STEP	2026-11-09T16:44:43.6322620Z test r14_over_million_selection_refuses_before_scan_and_next_read_answers ... ok
+check (macos-latest)	UNKNOWN STEP	2026-11-09T16:44:44.7518570Z test r02_r14_timeout_after_solo_write_rolls_back_and_queued_read_answers ... FAILED
+check (macos-latest)	UNKNOWN STEP	2026-11-09T16:44:44.7519120Z 
+check (macos-latest)	UNKNOWN STEP	2026-11-09T16:44:44.7519310Z failures:
+check (macos-latest)	UNKNOWN STEP	2026-11-09T16:44:44.7519540Z 
+check (macos-latest)	UNKNOWN STEP	2026-11-09T16:44:44.7520040Z ---- r02_r14_timeout_after_solo_write_rolls_back_and_queued_read_answers stdout ----
+check (macos-latest)	UNKNOWN STEP	2026-11-09T16:44:44.7521770Z 
+check (macos-latest)	UNKNOWN STEP	2026-11-09T16:44:44.7522750Z thread 'r02_r14_timeout_after_solo_write_rolls_back_and_queued_read_answers' (215548) panicked at crates/executor/tests/c31_r2_cancellation.rs:45:5:
+check (macos-latest)	UNKNOWN STEP	2026-11-09T16:44:44.7526450Z assertion `left == right` failed: queued read after cancellation: Envelope { status: Error, result: None, targets: None, changes: [], changes_truncated: false, changes_since: None, undo: None, warnings: [], document_rev: None, error: Some(CommandError { code: "command.timeout", message: "`doc.state.get` did not answer within 600 ms", details: Object {"commandId": String("doc.state.get"), "budgetMs": Number(600)}, hint: Some("the call was cancelled: unless it had already committed, it changed nothing; read doc.state.get before retrying") }), dry_run: false, steps: None, committed: false }
+check (macos-latest)	UNKNOWN STEP	2026-11-09T16:44:44.7528390Z   left: Error
+check (macos-latest)	UNKNOWN STEP	2026-11-09T16:44:44.7528710Z  right: Ok
+check (macos-latest)	UNKNOWN STEP	2026-11-09T16:44:44.7528940Z stack backtrace:
+check (macos-latest)	UNKNOWN STEP	2026-11-09T16:44:44.7542430Z    0: __rustc::rust_begin_unwind
+check (macos-latest)	UNKNOWN STEP	2026-11-09T16:44:44.7544000Z              at /rustc/48a229ceaefd4985c50990b14116b6d856af0985/library/std/src/panicking.rs:679:5
+check (macos-latest)	UNKNOWN STEP	2026-11-09T16:44:44.7545310Z    1: core::panicking::panic_fmt
+check (macos-latest)	UNKNOWN STEP	2026-11-09T16:44:44.7546810Z              at /rustc/48a229ceaefd4985c50990b14116b6d856af0985/library/core/src/panicking.rs:80:14
+check (macos-latest)	UNKNOWN STEP	2026-11-09T16:44:44.7548210Z    2: core::panicking::assert_failed_inner
+check (macos-latest)	UNKNOWN STEP	2026-11-09T16:44:44.7549500Z    3: core::panicking::assert_failed::<tt_executor::types::Status, tt_executor::types::Status>
+check (macos-latest)	UNKNOWN STEP	2026-11-09T16:44:44.7551340Z              at /rustc/48a229ceaefd4985c50990b14116b6d856af0985/library/core/src/panicking.rs:394:5
+check (macos-latest)	UNKNOWN STEP	2026-11-09T16:44:44.7553230Z    4: c31_r2_cancellation::r02_r14_timeout_after_solo_write_rolls_back_and_queued_read_answers
+check (macos-latest)	UNKNOWN STEP	2026-11-09T16:44:44.7569720Z 
+check (macos-latest)	UNKNOWN STEP	2026-11-09T16:44:44.7570070Z failures:
+check (macos-latest)	UNKNOWN STEP	2026-11-09T16:44:44.7571030Z     r02_r14_timeout_after_solo_write_rolls_back_and_queued_read_answers
+check (macos-latest)	UNKNOWN STEP	2026-11-09T16:44:44.7571680Z 
+check (macos-latest)	UNKNOWN STEP	2026-11-09T16:44:44.7572940Z test result: FAILED. 1 passed; 1 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.42s
+check (macos-latest)	UNKNOWN STEP	2026-11-09T16:44:44.7577410Z ^[[1m^[[91merror^[[0m: test failed, to rerun pass `-p tt-executor --test c31_r2_cancellation`
+check (macos-latest)	UNKNOWN STEP	2026-11-09T16:44:44.7578360Z 
+check (macos-latest)	UNKNOWN STEP	2026-11-09T16:44:44.8126320Z ##[error]Process completed with exit code 101.
+check (macos-latest)	UNKNOWN STEP	2026-11-09T16:44:44.8687190Z Post job cleanup.
+check (macos-latest)	UNKNOWN STEP	2026-11-09T16:44:45.5809180Z Pruning is unnecessary.
+check (macos-latest)	UNKNOWN STEP	2026-11-09T16:44:45.6128050Z Post job cleanup.
+check (macos-latest)	UNKNOWN STEP	2026-11-09T16:44:46.0955380Z [command]/opt/homebrew/bin/git version
+check (macos-latest)	UNKNOWN STEP	2026-11-09T16:44:46.1888320Z git version 2.56.0
+check (macos-latest)	UNKNOWN STEP	2026-11-09T16:44:46.1920210Z Copying '/Users/runner/.gitconfig' to '/Users/runner/work/_temp/9a4ea052-c3ff-45e5-9573-3d23eefa3692/.gitconfig'
+check (macos-latest)	UNKNOWN STEP	2026-11-09T16:44:46.1965080Z Temporarily overriding HOME='/Users/runner/work/_temp/9a4ea052-c3ff-45e5-9573-3d23eefa3692' before making global git config changes
+check (macos-latest)	UNKNOWN STEP	2026-11-09T16:44:46.1968680Z Adding repository directory to the temporary git global config as a safe directory
+bundle (windows-latest)	UNKNOWN STEP	2026-11-09T16:16:51.5110765Z ### Runs (p50 / p95 / max)
+bundle (windows-latest)	UNKNOWN STEP	2026-11-09T16:16:51.5111123Z 
+bundle (windows-latest)	UNKNOWN STEP	2026-11-09T16:16:51.5112784Z | back end | scene | GPU | canvas px | MB / transfer | transfer ms | MB/s | encode ms | decode ms | upload ms (cpu / complete) | refresh ms | fps | interval ms | long frames | CPU frame ms | GPU frame ms | 60 fps target | IPC-per-frame ceiling fps |
+bundle (windows-latest)	UNKNOWN STEP	2026-11-09T16:16:51.5114705Z |---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+bundle (windows-latest)	UNKNOWN STEP	2026-11-09T16:16:51.5116070Z | webgpu | paths100k | **FAILED**: webgpu unavailable: navigator.gpu.requestAdapter() returned null | | | | | | | | | | | | | | | |
+bundle (windows-latest)	UNKNOWN STEP	2026-11-09T16:16:51.5117959Z | webgpu | groups1k | **FAILED**: webgpu unavailable: navigator.gpu.requestAdapter() returned null | | | | | | | | | | | | | | | |
+bundle (windows-latest)	UNKNOWN STEP	2026-11-09T16:16:51.5119797Z | webgpu | brush10k | **FAILED**: webgpu unavailable: navigator.gpu.requestAdapter() returned null | | | | | | | | | | | | | | | |
+bundle (windows-latest)	UNKNOWN STEP	2026-11-09T16:16:51.5122690Z | webgl2 | paths100k | ANGLE (Microsoft, Microsoft Basic Render Driver (0x0000008C) Direct3D11 vs_5_0 ps_5_0, D3D11) | 1008x445 | 8.70 | 99.8 / 3139.8 / 3139.8 | 21 | 5.56 / 9.10 / 9.10 | 163.4 | 50.0 / 50.0 | 15.63 | 0.6 | 1796.90 / 1828.10 / 1828.10 | 7 of 7 | 0.10 / 0.20 / 0.20 | - | missed | 10.0 |
+bundle (windows-latest)	UNKNOWN STEP	2026-11-09T16:16:51.5127327Z | webgl2 | groups1k | ANGLE (Microsoft, Microsoft Basic Render Driver (0x0000008C) Direct3D11 vs_5_0 ps_5_0, D3D11) | 1008x445 | 2.02 | 26.3 / 354.0 / 354.0 | 34 | 1.36 / 23.58 / 23.58 | 74.2 | 3.9 / 3.9 | 15.63 | 13.8 | 78.10 / 93.80 / 93.80 | 138 of 138 | 0.10 / 0.60 / 8.80 | - | missed | 38.0 |
+bundle (windows-latest)	UNKNOWN STEP	2026-11-09T16:16:51.5133254Z | webgl2 | brush10k | ANGLE (Microsoft, Microsoft Basic Render Driver (0x0000008C) Direct3D11 vs_5_0 ps_5_0, D3D11) | 1008x445 | 10.09 | 113.4 / 137.7 / 137.7 | 87 | 5.93 / 6.41 / 6.41 | 483.5 | 19.2 / 19.2 | 15.62 | 7.5 | 140.60 / 171.90 / 187.40 | 76 of 76 | 0.10 / 9.70 / 11.80 | - | missed | 8.8 |
+bundle (windows-latest)	UNKNOWN STEP	2026-11-09T16:16:51.5134880Z 
+bundle (windows-latest)	UNKNOWN STEP	2026-11-09T16:16:51.5135451Z Decode details (segments = stroke instances; triangles = fill triangles):
+bundle (windows-latest)	UNKNOWN STEP	2026-11-09T16:16:51.5136071Z 
+bundle (windows-latest)	UNKNOWN STEP	2026-11-09T16:16:51.5136978Z - webgl2 paths100k: paths 100000, cubics 200000, segments 2832713, fill vertices 0, triangles 0, GPU bytes 90.6 MB, tolerance 0.5
+bundle (windows-latest)	UNKNOWN STEP	2026-11-09T16:16:51.5138706Z - webgl2 groups1k: paths 20000, cubics 50000, segments 101961, fill vertices 175915, triangles 145915, GPU bytes 7.8 MB, tolerance 0.5
+bundle (windows-latest)	UNKNOWN STEP	2026-11-09T16:16:51.5140488Z - webgl2 brush10k: paths 10000, cubics 0, segments 0, fill vertices 1088402, triangles 1062652, GPU bytes 30.2 MB, tolerance 0.5
+bundle (windows-latest)	UNKNOWN STEP	2026-11-09T16:16:51.5141433Z 
+bundle (windows-latest)	UNKNOWN STEP	2026-11-09T16:16:51.5142030Z ### Pixel-frame transfer (host-raster fallback, transfer + texture upload only)
+bundle (windows-latest)	UNKNOWN STEP	2026-11-09T16:16:51.5142631Z 
+bundle (windows-latest)	UNKNOWN STEP	2026-11-09T16:16:51.5143150Z | back end | size | MB / frame | transfer ms | upload ms | MB/s | transfer + upload p50 ms |
+bundle (windows-latest)	UNKNOWN STEP	2026-11-09T16:16:51.5144034Z |---|---|---|---|---|---|---|
+bundle (windows-latest)	UNKNOWN STEP	2026-11-09T16:16:51.5145034Z | webgpu | **FAILED**: webgpu unavailable: navigator.gpu.requestAdapter() returned null | | | | | |
+bundle (windows-latest)	UNKNOWN STEP	2026-11-09T16:16:51.5146235Z | webgl2 | 1008x445 | 1.79 | 23.8 / 26.0 / 27.9 | 0.1 / 0.5 / 1.3 | 74 | 23.9 |
+bundle (windows-latest)	UNKNOWN STEP	2026-11-09T16:16:51.5146773Z 
+bundle (windows-latest)	UNKNOWN STEP	2026-11-09T16:16:51.5147317Z ### Decision (ADR-0007 canvas rule set)
+bundle (windows-latest)	UNKNOWN STEP	2026-11-09T16:16:51.5148052Z 
+bundle (windows-latest)	UNKNOWN STEP	2026-11-09T16:16:51.5148530Z | back end | paths100k | groups1k | brush10k | score (worst fps) |
+bundle (windows-latest)	UNKNOWN STEP	2026-11-09T16:16:51.5149226Z |---|---|---|---|---|
+bundle (windows-latest)	UNKNOWN STEP	2026-11-09T16:16:51.5150196Z | webgpu | unavailable | unavailable | unavailable | - |
+bundle (windows-latest)	UNKNOWN STEP	2026-11-09T16:16:51.5150945Z | webgl2 | missed | missed | missed | 0.6 |
+bundle (windows-latest)	UNKNOWN STEP	2026-11-09T16:16:51.5151404Z 
+bundle (windows-latest)	UNKNOWN STEP	2026-11-09T16:16:51.5151692Z - selected back end: webgl2
+bundle (windows-latest)	UNKNOWN STEP	2026-11-09T16:16:51.5153056Z - outcome: **no-go for the webview canvas as designed: native-wgpu integration prototype required in M4**
+
+ci-selection-attempt1.log
+check (macos-latest)	UNKNOWN STEP	2026-11-09T17:51:22.9961300Z 
+check (macos-latest)	UNKNOWN STEP	2026-11-09T17:51:22.9965030Z ^[[1m^[[92m     Running^[[0m tests/c31_r3_selection.rs (target/debug/deps/c31_r3_selection-35835478c538a303)
+check (macos-latest)	UNKNOWN STEP	2026-11-09T17:51:23.0111580Z 
+check (macos-latest)	UNKNOWN STEP	2026-11-09T17:51:23.0111900Z running 1 test
+check (macos-latest)	UNKNOWN STEP	2026-11-09T17:51:24.3235970Z test measured_refusal_and_cancelled_scan_have_no_late_mutation ... FAILED
+check (macos-latest)	UNKNOWN STEP	2026-11-09T17:51:24.3236510Z 
+check (macos-latest)	UNKNOWN STEP	2026-11-09T17:51:24.3236710Z failures:
+check (macos-latest)	UNKNOWN STEP	2026-11-09T17:51:24.3236990Z 
+check (macos-latest)	UNKNOWN STEP	2026-11-09T17:51:24.3237460Z ---- measured_refusal_and_cancelled_scan_have_no_late_mutation stdout ----
+check (macos-latest)	UNKNOWN STEP	2026-11-09T17:51:24.3238210Z 
+check (macos-latest)	UNKNOWN STEP	2026-11-09T17:51:24.3239040Z thread 'measured_refusal_and_cancelled_scan_have_no_late_mutation' (123694) panicked at crates/executor/tests/c31_r3_selection.rs:38:5:
+check (macos-latest)	UNKNOWN STEP	2026-11-09T17:51:24.3242630Z assertion `left == right` failed: Envelope { status: Error, result: None, targets: None, changes: [], changes_truncated: false, changes_since: None, undo: None, warnings: [], document_rev: None, error: Some(CommandError { code: "command.timeout", message: "`doc.state.get` did not answer within 700 ms", details: Object {"commandId": String("doc.state.get"), "budgetMs": Number(700)}, hint: Some("the call was cancelled: unless it had already committed, it changed nothing; read doc.state.get before retrying") }), dry_run: false, steps: None, committed: false }
+check (macos-latest)	UNKNOWN STEP	2026-11-09T17:51:24.3245940Z   left: Error
+check (macos-latest)	UNKNOWN STEP	2026-11-09T17:51:24.3246560Z  right: Ok
+check (macos-latest)	UNKNOWN STEP	2026-11-09T17:51:24.3247400Z stack backtrace:
+check (macos-latest)	UNKNOWN STEP	2026-11-09T17:51:24.3249700Z    0: __rustc::rust_begin_unwind
+check (macos-latest)	UNKNOWN STEP	2026-11-09T17:51:24.3250470Z              at /rustc/48a229ceaefd4985c50990b14116b6d856af0985/library/std/src/panicking.rs:679:5
+check (macos-latest)	UNKNOWN STEP	2026-11-09T17:51:24.3251140Z    1: core::panicking::panic_fmt
+check (macos-latest)	UNKNOWN STEP	2026-11-09T17:51:24.3252210Z              at /rustc/48a229ceaefd4985c50990b14116b6d856af0985/library/core/src/panicking.rs:80:14
+check (macos-latest)	UNKNOWN STEP	2026-11-09T17:51:24.3252950Z    2: core::panicking::assert_failed_inner
+check (macos-latest)	UNKNOWN STEP	2026-11-09T17:51:24.3253680Z    3: core::panicking::assert_failed::<tt_executor::types::Status, tt_executor::types::Status>
+check (macos-latest)	UNKNOWN STEP	2026-11-09T17:51:24.3254880Z              at /rustc/48a229ceaefd4985c50990b14116b6d856af0985/library/core/src/panicking.rs:394:5
+check (macos-latest)	UNKNOWN STEP	2026-11-09T17:51:24.3264220Z 
+check (macos-latest)	UNKNOWN STEP	2026-11-09T17:51:24.3264370Z failures:
+check (macos-latest)	UNKNOWN STEP	2026-11-09T17:51:24.3264900Z     measured_refusal_and_cancelled_scan_have_no_late_mutation
+check (macos-latest)	UNKNOWN STEP	2026-11-09T17:51:24.3266290Z 
+check (macos-latest)	UNKNOWN STEP	2026-11-09T17:51:24.3266940Z test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.31s
+check (macos-latest)	UNKNOWN STEP	2026-11-09T17:51:24.3268340Z 
+check (macos-latest)	UNKNOWN STEP	2026-11-09T17:51:24.3451660Z ^[[1m^[[91merror^[[0m: test failed, to rerun pass `-p tt-executor --test c31_r3_selection`
+check (macos-latest)	UNKNOWN STEP	2026-11-09T17:51:24.4112190Z ##[error]Process completed with exit code 101.
+check (macos-latest)	UNKNOWN STEP	2026-11-09T17:51:24.4722510Z Post job cleanup.
+check (macos-latest)	UNKNOWN STEP	2026-11-09T17:51:25.3625850Z Pruning is unnecessary.
+check (macos-latest)	UNKNOWN STEP	2026-11-09T17:51:25.3826940Z Post job cleanup.
+check (macos-latest)	UNKNOWN STEP	2026-11-09T17:51:25.6560330Z [command]/opt/homebrew/bin/git version
+check (macos-latest)	UNKNOWN STEP	2026-11-09T17:51:25.7045980Z git version 2.56.0
+check (macos-latest)	UNKNOWN STEP	2026-11-09T17:51:25.7119170Z Copying '/Users/runner/.gitconfig' to '/Users/runner/work/_temp/a27feec3-69ca-4988-853c-ad6dd9b8c88a/.gitconfig'
+check (macos-latest)	UNKNOWN STEP	2026-11-09T17:51:25.7131610Z Temporarily overriding HOME='/Users/runner/work/_temp/a27feec3-69ca-4988-853c-ad6dd9b8c88a' before making global git config changes
+check (macos-latest)	UNKNOWN STEP	2026-11-09T17:51:25.7132460Z Adding repository directory to the temporary git global config as a safe directory
+bundle (windows-latest)	UNKNOWN STEP	2026-11-09T17:37:59.6541113Z ### Runs (p50 / p95 / max)
+bundle (windows-latest)	UNKNOWN STEP	2026-11-09T17:37:59.6541254Z 
+bundle (windows-latest)	UNKNOWN STEP	2026-11-09T17:37:59.6542044Z | back end | scene | GPU | canvas px | MB / transfer | transfer ms | MB/s | encode ms | decode ms | upload ms (cpu / complete) | refresh ms | fps | interval ms | long frames | CPU frame ms | GPU frame ms | 60 fps target | IPC-per-frame ceiling fps |
+bundle (windows-latest)	UNKNOWN STEP	2026-11-09T17:37:59.6542944Z |---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+bundle (windows-latest)	UNKNOWN STEP	2026-11-09T17:37:59.6543582Z | webgpu | paths100k | **FAILED**: webgpu unavailable: navigator.gpu.requestAdapter() returned null | | | | | | | | | | | | | | | |
+bundle (windows-latest)	UNKNOWN STEP	2026-11-09T17:37:59.6544418Z | webgpu | groups1k | **FAILED**: webgpu unavailable: navigator.gpu.requestAdapter() returned null | | | | | | | | | | | | | | | |
+bundle (windows-latest)	UNKNOWN STEP	2026-11-09T17:37:59.6545464Z | webgpu | brush10k | **FAILED**: webgpu unavailable: navigator.gpu.requestAdapter() returned null | | | | | | | | | | | | | | | |
+bundle (windows-latest)	UNKNOWN STEP	2026-11-09T17:37:59.6547731Z | webgl2 | paths100k | ANGLE (Microsoft, Microsoft Basic Render Driver (0x0000008C) Direct3D11 vs_5_0 ps_5_0, D3D11) | 1008x445 | 8.70 | 48.2 / 2987.9 / 2987.9 | 25 | 3.14 / 5.15 / 5.15 | 103.6 | 34.3 / 34.3 | 15.63 | 1.1 | 890.60 / 1125.00 / 1125.00 | 12 of 12 | 0.10 / 0.30 / 0.30 | - | missed | 20.7 |
+bundle (windows-latest)	UNKNOWN STEP	2026-11-09T17:37:59.6549324Z | webgl2 | groups1k | ANGLE (Microsoft, Microsoft Basic Render Driver (0x0000008C) Direct3D11 vs_5_0 ps_5_0, D3D11) | 1008x445 | 2.02 | 13.0 / 210.0 / 210.0 | 62 | 0.73 / 14.19 / 14.19 | 45.7 | 2.5 / 2.5 | 15.63 | 22.5 | 46.80 / 62.50 / 78.10 | 224 of 226 | 0.10 / 0.20 / 5.70 | - | missed | 76.9 |
+bundle (windows-latest)	UNKNOWN STEP	2026-11-09T17:37:59.6552705Z | webgl2 | brush10k | ANGLE (Microsoft, Microsoft Basic Render Driver (0x0000008C) Direct3D11 vs_5_0 ps_5_0, D3D11) | 1008x445 | 10.09 | 59.6 / 76.7 / 76.7 | 163 | 4.41 / 5.04 / 5.04 | 343.4 | 12.3 / 12.4 | 15.62 | 12.0 | 78.20 / 109.40 / 109.50 | 120 of 120 | 0.10 / 0.20 / 6.00 | - | missed | 16.8 |
+bundle (windows-latest)	UNKNOWN STEP	2026-11-09T17:37:59.6553525Z 
+bundle (windows-latest)	UNKNOWN STEP	2026-11-09T17:37:59.6553795Z Decode details (segments = stroke instances; triangles = fill triangles):
+bundle (windows-latest)	UNKNOWN STEP	2026-11-09T17:37:59.6554079Z 
+bundle (windows-latest)	UNKNOWN STEP	2026-11-09T17:37:59.6554534Z - webgl2 paths100k: paths 100000, cubics 200000, segments 2832713, fill vertices 0, triangles 0, GPU bytes 90.6 MB, tolerance 0.5
+bundle (windows-latest)	UNKNOWN STEP	2026-11-09T17:37:59.6555424Z - webgl2 groups1k: paths 20000, cubics 50000, segments 101961, fill vertices 175915, triangles 145915, GPU bytes 7.8 MB, tolerance 0.5
+bundle (windows-latest)	UNKNOWN STEP	2026-11-09T17:37:59.6556333Z - webgl2 brush10k: paths 10000, cubics 0, segments 0, fill vertices 1088402, triangles 1062652, GPU bytes 30.2 MB, tolerance 0.5
+bundle (windows-latest)	UNKNOWN STEP	2026-11-09T17:37:59.6556752Z 
+bundle (windows-latest)	UNKNOWN STEP	2026-11-09T17:37:59.6557023Z ### Pixel-frame transfer (host-raster fallback, transfer + texture upload only)
+bundle (windows-latest)	UNKNOWN STEP	2026-11-09T17:37:59.6557310Z 
+bundle (windows-latest)	UNKNOWN STEP	2026-11-09T17:37:59.6557591Z | back end | size | MB / frame | transfer ms | upload ms | MB/s | transfer + upload p50 ms |
+bundle (windows-latest)	UNKNOWN STEP	2026-11-09T17:37:59.6558009Z |---|---|---|---|---|---|---|
+bundle (windows-latest)	UNKNOWN STEP	2026-11-09T17:37:59.6558470Z | webgpu | **FAILED**: webgpu unavailable: navigator.gpu.requestAdapter() returned null | | | | | |
+bundle (windows-latest)	UNKNOWN STEP	2026-11-09T17:37:59.6559026Z | webgl2 | 1008x445 | 1.79 | 12.8 / 17.0 / 17.3 | 0.1 / 0.5 / 0.6 | 133 | 12.9 |
+bundle (windows-latest)	UNKNOWN STEP	2026-11-09T17:37:59.6559259Z 
+bundle (windows-latest)	UNKNOWN STEP	2026-11-09T17:37:59.6559389Z ### Decision (ADR-0007 canvas rule set)
+bundle (windows-latest)	UNKNOWN STEP	2026-11-09T17:37:59.6559560Z 
+bundle (windows-latest)	UNKNOWN STEP	2026-11-09T17:37:59.6559767Z | back end | paths100k | groups1k | brush10k | score (worst fps) |
+bundle (windows-latest)	UNKNOWN STEP	2026-11-09T17:37:59.6560071Z |---|---|---|---|---|
+bundle (windows-latest)	UNKNOWN STEP	2026-11-09T17:37:59.6560367Z | webgpu | unavailable | unavailable | unavailable | - |
+bundle (windows-latest)	UNKNOWN STEP	2026-11-09T17:37:59.6560702Z | webgl2 | missed | missed | missed | 1.1 |
+bundle (windows-latest)	UNKNOWN STEP	2026-11-09T17:37:59.6560880Z 
+bundle (windows-latest)	UNKNOWN STEP	2026-11-09T17:37:59.6560983Z - selected back end: webgl2
+bundle (windows-latest)	UNKNOWN STEP	2026-11-09T17:37:59.6561462Z - outcome: **no-go for the webview canvas as designed: native-wgpu integration prototype required in M4**
+bundle (macos-latest)	UNKNOWN STEP	2026-11-09T17:53:49.8129730Z ### Runs (p50 / p95 / max)
+bundle (macos-latest)	UNKNOWN STEP	2026-11-09T17:53:49.8130460Z 
+bundle (macos-latest)	UNKNOWN STEP	2026-11-09T17:53:49.8139270Z | back end | scene | GPU | canvas px | MB / transfer | transfer ms | MB/s | encode ms | decode ms | upload ms (cpu / complete) | refresh ms | fps | interval ms | long frames | CPU frame ms | GPU frame ms | 60 fps target | IPC-per-frame ceiling fps |
+bundle (macos-latest)	UNKNOWN STEP	2026-11-09T17:53:49.8150240Z |---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+bundle (macos-latest)	UNKNOWN STEP	2026-11-09T17:53:49.8153310Z | webgpu | paths100k | **FAILED**: webgpu unavailable: navigator.gpu.requestAdapter() returned null | | | | | | | | | | | | | | | |
+bundle (macos-latest)	UNKNOWN STEP	2026-11-09T17:53:49.8154790Z | webgpu | groups1k | **FAILED**: webgpu unavailable: navigator.gpu.requestAdapter() returned null | | | | | | | | | | | | | | | |
+bundle (macos-latest)	UNKNOWN STEP	2026-11-09T17:53:49.8156040Z | webgpu | brush10k | **FAILED**: webgpu unavailable: navigator.gpu.requestAdapter() returned null | | | | | | | | | | | | | | | |
+bundle (macos-latest)	UNKNOWN STEP	2026-11-09T17:53:49.8157550Z | webgl2 | paths100k | Apple GPU | 1008x417 | 8.70 | 18.0 / 27.0 / 27.0 | 458 | 4.59 / 9.26 / 9.26 | 669.0 | 75.0 / 75.0 | 17.22 | 22.0 | 42.00 / 66.00 / 165.00 | 217 of 220 | 0.00 / 1.00 / 1.00 | - | missed | 55.6 |
+bundle (macos-latest)	UNKNOWN STEP	2026-11-09T17:53:49.8162880Z | webgl2 | groups1k | Apple GPU | 1008x417 | 2.02 | 6.0 / 28.0 / 28.0 | 218 | 0.95 / 2.39 / 2.39 | 188.0 | 3.0 / 3.0 | 18.12 | 59.7 | 17.00 / 19.00 / 45.00 | 4 of 597 | 0.00 / 1.00 / 1.00 | - | met | 166.7 |
+bundle (macos-latest)	UNKNOWN STEP	2026-11-09T17:53:49.8168810Z | webgl2 | brush10k | Apple GPU | 1008x417 | 10.09 | 28.0 / 121.0 / 121.0 | 232 | 7.17 / 12.87 / 12.87 | 1042.0 | 17.0 / 17.0 | 16.72 | 58.2 | 17.00 / 20.00 / 77.00 | 17 of 580 | 0.00 / 1.00 / 2.00 | - | met | 35.7 |
+bundle (macos-latest)	UNKNOWN STEP	2026-11-09T17:53:49.8170980Z 
+bundle (macos-latest)	UNKNOWN STEP	2026-11-09T17:53:49.8172770Z Decode details (segments = stroke instances; triangles = fill triangles):
+bundle (macos-latest)	UNKNOWN STEP	2026-11-09T17:53:49.8173910Z 
+bundle (macos-latest)	UNKNOWN STEP	2026-11-09T17:53:49.8175650Z - webgl2 paths100k: paths 100000, cubics 200000, segments 2832713, fill vertices 0, triangles 0, GPU bytes 90.6 MB, tolerance 0.5
+bundle (macos-latest)	UNKNOWN STEP	2026-11-09T17:53:49.8181040Z - webgl2 groups1k: paths 20000, cubics 50000, segments 101961, fill vertices 175915, triangles 145915, GPU bytes 7.8 MB, tolerance 0.5
+bundle (macos-latest)	UNKNOWN STEP	2026-11-09T17:53:49.8189380Z - webgl2 brush10k: paths 10000, cubics 0, segments 0, fill vertices 1088402, triangles 1062652, GPU bytes 30.2 MB, tolerance 0.5
+bundle (macos-latest)	UNKNOWN STEP	2026-11-09T17:53:49.8190830Z 
+bundle (macos-latest)	UNKNOWN STEP	2026-11-09T17:53:49.8194010Z ### Pixel-frame transfer (host-raster fallback, transfer + texture upload only)
+bundle (macos-latest)	UNKNOWN STEP	2026-11-09T17:53:49.8195300Z 
+bundle (macos-latest)	UNKNOWN STEP	2026-11-09T17:53:49.8196340Z | back end | size | MB / frame | transfer ms | upload ms | MB/s | transfer + upload p50 ms |
+bundle (macos-latest)	UNKNOWN STEP	2026-11-09T17:53:49.8197820Z |---|---|---|---|---|---|---|
+bundle (macos-latest)	UNKNOWN STEP	2026-11-09T17:53:49.8199610Z | webgpu | **FAILED**: webgpu unavailable: navigator.gpu.requestAdapter() returned null | | | | | |
+bundle (macos-latest)	UNKNOWN STEP	2026-11-09T17:53:49.8201040Z | webgl2 | 1008x417 | 1.68 | 4.0 / 7.0 / 35.0 | 0.0 / 1.0 / 1.0 | 290 | 4.0 |
+bundle (macos-latest)	UNKNOWN STEP	2026-11-09T17:53:49.8201520Z 
+bundle (macos-latest)	UNKNOWN STEP	2026-11-09T17:53:49.8202230Z ### Decision (ADR-0007 canvas rule set)
+bundle (macos-latest)	UNKNOWN STEP	2026-11-09T17:53:49.8202550Z 
+bundle (macos-latest)	UNKNOWN STEP	2026-11-09T17:53:49.8203150Z | back end | paths100k | groups1k | brush10k | score (worst fps) |
+bundle (macos-latest)	UNKNOWN STEP	2026-11-09T17:53:49.8203730Z |---|---|---|---|---|
+bundle (macos-latest)	UNKNOWN STEP	2026-11-09T17:53:49.8204130Z | webgpu | unavailable | unavailable | unavailable | - |
+bundle (macos-latest)	UNKNOWN STEP	2026-11-09T17:53:49.8205840Z | webgl2 | missed | met | met | 22.0 |
+bundle (macos-latest)	UNKNOWN STEP	2026-11-09T17:53:49.8206770Z 
+bundle (macos-latest)	UNKNOWN STEP	2026-11-09T17:53:49.8207030Z - selected back end: webgl2
+bundle (macos-latest)	UNKNOWN STEP	2026-11-09T17:53:49.8207930Z - outcome: **go; M4 adds culling and level-of-detail for drawings of the paths100k size**

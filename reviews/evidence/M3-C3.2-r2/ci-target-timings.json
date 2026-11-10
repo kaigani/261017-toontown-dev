@@ -1,0 +1,264 @@
+[
+  {
+    "log": "ci-42650981858.log",
+    "start": "check (macos-latest)\tUNKNOWN STEP\t2026-11-09T17:14:31.4750080Z ^[[1m^[[92m     Running^[[0m tests/c31_r2_cancellation.rs (target/debug/deps/c31_r2_cancellation-c1ab9197551e25dd)",
+    "result": "check (macos-latest)\tUNKNOWN STEP\t2026-11-09T17:14:32.3584480Z test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.87s",
+    "tests": [
+      "check (macos-latest)\tUNKNOWN STEP\t2026-11-09T17:14:32.3494590Z test r02_r14_timeout_after_solo_write_rolls_back_and_queued_read_answers ... ok",
+      "check (macos-latest)\tUNKNOWN STEP\t2026-11-09T17:14:32.3583740Z test r14_over_million_selection_refuses_before_scan_and_next_read_answers ... ok"
+    ]
+  },
+  {
+    "log": "ci-42650981858.log",
+    "start": "check (macos-latest)\tUNKNOWN STEP\t2026-11-09T17:14:57.7611970Z ^[[1m^[[92m     Running^[[0m tests/c31_r3_selection.rs (target/debug/deps/c31_r3_selection-35835478c538a303)",
+    "result": "check (macos-latest)\tUNKNOWN STEP\t2026-11-09T17:14:58.8945840Z test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.12s",
+    "tests": [
+      "check (macos-latest)\tUNKNOWN STEP\t2026-11-09T17:14:58.8944750Z test measured_refusal_and_cancelled_scan_have_no_late_mutation ... ok"
+    ]
+  },
+  {
+    "log": "ci-42650981858.log",
+    "start": "check (macos-latest)\tUNKNOWN STEP\t2026-11-09T17:14:58.8957260Z ^[[1m^[[92m     Running^[[0m tests/c31_r3_sequences.rs (target/debug/deps/c31_r3_sequences-abc82a9644e92236)",
+    "result": "check (macos-latest)\tUNKNOWN STEP\t2026-11-09T17:17:30.3891950Z test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 151.48s",
+    "tests": [
+      "check (macos-latest)\tUNKNOWN STEP\t2026-11-09T17:17:30.3890900Z test independent_sequences_4096_persist_canonical_runs_and_notes ... ok"
+    ]
+  },
+  {
+    "log": "ci-42650981858.log",
+    "start": "check (windows-latest)\tUNKNOWN STEP\t2026-11-09T16:27:08.9359603Z ^[[1m^[[92m     Running^[[0m tests\\c31_r2_cancellation.rs (target\\debug\\deps\\c31_r2_cancellation-8bc01802ec679737.exe)",
+    "result": "check (windows-latest)\tUNKNOWN STEP\t2026-11-09T16:27:09.6452335Z test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.70s",
+    "tests": [
+      "check (windows-latest)\tUNKNOWN STEP\t2026-11-09T16:27:09.6337930Z test r02_r14_timeout_after_solo_write_rolls_back_and_queued_read_answers ... ok",
+      "check (windows-latest)\tUNKNOWN STEP\t2026-11-09T16:27:09.6451918Z test r14_over_million_selection_refuses_before_scan_and_next_read_answers ... ok"
+    ]
+  },
+  {
+    "log": "ci-42650981858.log",
+    "start": "check (windows-latest)\tUNKNOWN STEP\t2026-11-09T16:27:39.9479355Z ^[[1m^[[92m     Running^[[0m tests\\c31_r3_selection.rs (target\\debug\\deps\\c31_r3_selection-77cef8511e2a8384.exe)",
+    "result": "check (windows-latest)\tUNKNOWN STEP\t2026-11-09T16:27:40.8737847Z test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.91s",
+    "tests": [
+      "check (windows-latest)\tUNKNOWN STEP\t2026-11-09T16:27:40.8737269Z test measured_refusal_and_cancelled_scan_have_no_late_mutation ... ok"
+    ]
+  },
+  {
+    "log": "ci-42650981858.log",
+    "start": "check (windows-latest)\tUNKNOWN STEP\t2026-11-09T16:27:40.8783006Z ^[[1m^[[92m     Running^[[0m tests\\c31_r3_sequences.rs (target\\debug\\deps\\c31_r3_sequences-56709f729737cab5.exe)",
+    "result": "check (windows-latest)\tUNKNOWN STEP\t2026-11-09T16:31:54.3015391Z test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 253.40s",
+    "tests": [
+      "check (windows-latest)\tUNKNOWN STEP\t2026-11-09T16:31:54.3014401Z test independent_sequences_4096_persist_canonical_runs_and_notes ... ok"
+    ]
+  },
+  {
+    "log": "ci-42675376647.log",
+    "start": "check (macos-latest)\tUNKNOWN STEP\t2026-11-09T18:56:05.6513890Z ^[[1m^[[92m     Running^[[0m tests/c31_r2_cancellation.rs (target/debug/deps/c31_r2_cancellation-c1ab9197551e25dd)",
+    "result": "check (macos-latest)\tUNKNOWN STEP\t2026-11-09T18:56:06.7203750Z test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.03s",
+    "tests": [
+      "check (macos-latest)\tUNKNOWN STEP\t2026-11-09T18:56:06.6984860Z test r02_r14_timeout_after_solo_write_rolls_back_and_queued_read_answers ... ok",
+      "check (macos-latest)\tUNKNOWN STEP\t2026-11-09T18:56:06.7201820Z test r14_over_million_selection_refuses_before_scan_and_next_read_answers ... ok"
+    ]
+  },
+  {
+    "log": "ci-42675376647.log",
+    "start": "check (macos-latest)\tUNKNOWN STEP\t2026-11-09T18:56:50.0274870Z ^[[1m^[[92m     Running^[[0m tests/c31_r3_selection.rs (target/debug/deps/c31_r3_selection-35835478c538a303)",
+    "result": "check (macos-latest)\tUNKNOWN STEP\t2026-11-09T18:56:51.3477160Z test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.30s",
+    "tests": [
+      "check (macos-latest)\tUNKNOWN STEP\t2026-11-09T18:56:51.3475430Z test measured_refusal_and_cancelled_scan_have_no_late_mutation ... ok"
+    ]
+  },
+  {
+    "log": "ci-42675376647.log",
+    "start": "check (macos-latest)\tUNKNOWN STEP\t2026-11-09T18:56:51.3492420Z ^[[1m^[[92m     Running^[[0m tests/c31_r3_sequences.rs (target/debug/deps/c31_r3_sequences-abc82a9644e92236)",
+    "result": "check (macos-latest)\tUNKNOWN STEP\t2026-11-09T19:00:34.1605730Z test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 222.79s",
+    "tests": [
+      "check (macos-latest)\tUNKNOWN STEP\t2026-11-09T19:00:34.1604530Z test independent_sequences_4096_persist_canonical_runs_and_notes ... ok"
+    ]
+  },
+  {
+    "log": "ci-42675376647.log",
+    "start": "check (windows-latest)\tUNKNOWN STEP\t2026-11-09T19:04:49.3341638Z ^[[1m^[[92m     Running^[[0m tests\\c31_r2_cancellation.rs (target\\debug\\deps\\c31_r2_cancellation-8bc01802ec679737.exe)",
+    "result": "check (windows-latest)\tUNKNOWN STEP\t2026-11-09T19:04:50.1693209Z test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.82s",
+    "tests": [
+      "check (windows-latest)\tUNKNOWN STEP\t2026-11-09T19:04:50.1560390Z test r02_r14_timeout_after_solo_write_rolls_back_and_queued_read_answers ... ok",
+      "check (windows-latest)\tUNKNOWN STEP\t2026-11-09T19:04:50.1692642Z test r14_over_million_selection_refuses_before_scan_and_next_read_answers ... ok"
+    ]
+  },
+  {
+    "log": "ci-42675376647.log",
+    "start": "check (windows-latest)\tUNKNOWN STEP\t2026-11-09T19:05:33.7231526Z ^[[1m^[[92m     Running^[[0m tests\\c31_r3_selection.rs (target\\debug\\deps\\c31_r3_selection-77cef8511e2a8384.exe)",
+    "result": "check (windows-latest)\tUNKNOWN STEP\t2026-11-09T19:05:34.6943049Z test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.96s",
+    "tests": [
+      "check (windows-latest)\tUNKNOWN STEP\t2026-11-09T19:05:34.6942212Z test measured_refusal_and_cancelled_scan_have_no_late_mutation ... ok"
+    ]
+  },
+  {
+    "log": "ci-42675376647.log",
+    "start": "check (windows-latest)\tUNKNOWN STEP\t2026-11-09T19:05:34.6996007Z ^[[1m^[[92m     Running^[[0m tests\\c31_r3_sequences.rs (target\\debug\\deps\\c31_r3_sequences-56709f729737cab5.exe)",
+    "result": "check (windows-latest)\tUNKNOWN STEP\t2026-11-09T19:13:58.1573557Z test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 503.45s",
+    "tests": [
+      "check (windows-latest)\tUNKNOWN STEP\t2026-11-09T19:13:58.1572905Z test independent_sequences_4096_persist_canonical_runs_and_notes ... ok"
+    ]
+  },
+  {
+    "log": "ci-42692563454.log",
+    "start": "check (macos-latest)\tUNKNOWN STEP\t2026-11-09T21:19:21.4031220Z ^[[1m^[[92m     Running^[[0m tests/c31_r2_cancellation.rs (target/debug/deps/c31_r2_cancellation-c1ab9197551e25dd)",
+    "result": "check (macos-latest)\tUNKNOWN STEP\t2026-11-09T21:19:22.4454380Z test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.02s",
+    "tests": [
+      "check (macos-latest)\tUNKNOWN STEP\t2026-11-09T21:19:22.4351450Z test r02_r14_timeout_after_solo_write_rolls_back_and_queued_read_answers ... ok",
+      "check (macos-latest)\tUNKNOWN STEP\t2026-11-09T21:19:22.4452720Z test r14_over_million_selection_refuses_before_scan_and_next_read_answers ... ok"
+    ]
+  },
+  {
+    "log": "ci-42692563454.log",
+    "start": "check (macos-latest)\tUNKNOWN STEP\t2026-11-09T21:19:58.8165020Z ^[[1m^[[92m     Running^[[0m tests/c31_r3_selection.rs (target/debug/deps/c31_r3_selection-35835478c538a303)",
+    "result": "check (macos-latest)\tUNKNOWN STEP\t2026-11-09T21:20:00.0181530Z test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.18s",
+    "tests": [
+      "check (macos-latest)\tUNKNOWN STEP\t2026-11-09T21:20:00.0180130Z test measured_refusal_and_cancelled_scan_have_no_late_mutation ... ok"
+    ]
+  },
+  {
+    "log": "ci-42692563454.log",
+    "start": "check (macos-latest)\tUNKNOWN STEP\t2026-11-09T21:20:00.0210510Z ^[[1m^[[92m     Running^[[0m tests/c31_r3_sequences.rs (target/debug/deps/c31_r3_sequences-abc82a9644e92236)",
+    "result": "check (macos-latest)\tUNKNOWN STEP\t2026-11-09T21:23:29.2111850Z test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 209.17s",
+    "tests": [
+      "check (macos-latest)\tUNKNOWN STEP\t2026-11-09T21:23:29.2110540Z test independent_sequences_4096_persist_canonical_runs_and_notes ... ok"
+    ]
+  },
+  {
+    "log": "ci-42692563454.log",
+    "start": "check (windows-latest)\tUNKNOWN STEP\t2026-11-09T20:54:54.0261551Z ^[[1m^[[92m     Running^[[0m tests\\c31_r2_cancellation.rs (target\\debug\\deps\\c31_r2_cancellation-8bc01802ec679737.exe)",
+    "result": "check (windows-latest)\tUNKNOWN STEP\t2026-11-09T20:54:54.8841468Z test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.84s",
+    "tests": [
+      "check (windows-latest)\tUNKNOWN STEP\t2026-11-09T20:54:54.8707773Z test r02_r14_timeout_after_solo_write_rolls_back_and_queued_read_answers ... ok",
+      "check (windows-latest)\tUNKNOWN STEP\t2026-11-09T20:54:54.8840228Z test r14_over_million_selection_refuses_before_scan_and_next_read_answers ... ok"
+    ]
+  },
+  {
+    "log": "ci-42692563454.log",
+    "start": "check (windows-latest)\tUNKNOWN STEP\t2026-11-09T20:55:40.2661879Z ^[[1m^[[92m     Running^[[0m tests\\c31_r3_selection.rs (target\\debug\\deps\\c31_r3_selection-77cef8511e2a8384.exe)",
+    "result": "check (windows-latest)\tUNKNOWN STEP\t2026-11-09T20:55:41.2468805Z test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.97s",
+    "tests": [
+      "check (windows-latest)\tUNKNOWN STEP\t2026-11-09T20:55:41.2468222Z test measured_refusal_and_cancelled_scan_have_no_late_mutation ... ok"
+    ]
+  },
+  {
+    "log": "ci-42692563454.log",
+    "start": "check (windows-latest)\tUNKNOWN STEP\t2026-11-09T20:55:41.2519177Z ^[[1m^[[92m     Running^[[0m tests\\c31_r3_sequences.rs (target\\debug\\deps\\c31_r3_sequences-56709f729737cab5.exe)",
+    "result": "check (windows-latest)\tUNKNOWN STEP\t2026-11-09T21:06:22.2187657Z test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 640.94s",
+    "tests": [
+      "check (windows-latest)\tUNKNOWN STEP\t2026-11-09T21:06:22.2186794Z test independent_sequences_4096_persist_canonical_runs_and_notes ... ok"
+    ]
+  },
+  {
+    "log": "ci-closure.log",
+    "start": "check (macos-latest)\tRun cargo test --workspace --locked\t2026-11-03T22:31:58.2695020Z ^[[1m^[[92m     Running^[[0m tests/c31_r2_cancellation.rs (target/debug/deps/c31_r2_cancellation-5efb87afecadb0cd)",
+    "result": "check (macos-latest)\tRun cargo test --workspace --locked\t2026-11-03T22:31:59.2091020Z test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.92s",
+    "tests": [
+      "check (macos-latest)\tRun cargo test --workspace --locked\t2026-11-03T22:31:58.5613980Z test r14_over_million_selection_refuses_before_scan_and_next_read_answers ... ok",
+      "check (macos-latest)\tRun cargo test --workspace --locked\t2026-11-03T22:31:59.2080530Z test r02_r14_timeout_after_solo_write_rolls_back_and_queued_read_answers ... ok"
+    ]
+  },
+  {
+    "log": "ci-closure.log",
+    "start": "check (macos-latest)\tRun cargo test --workspace --locked\t2026-11-03T22:32:38.9843700Z ^[[1m^[[92m     Running^[[0m tests/c31_r3_selection.rs (target/debug/deps/c31_r3_selection-27263cf3069cf26e)",
+    "result": "check (macos-latest)\tRun cargo test --workspace --locked\t2026-11-03T22:32:40.2014710Z test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.20s",
+    "tests": [
+      "check (macos-latest)\tRun cargo test --workspace --locked\t2026-11-03T22:32:40.2012310Z test measured_refusal_and_cancelled_scan_have_no_late_mutation ... ok"
+    ]
+  },
+  {
+    "log": "ci-closure.log",
+    "start": "check (macos-latest)\tRun cargo test --workspace --locked\t2026-11-03T22:32:40.2023260Z ^[[1m^[[92m     Running^[[0m tests/c31_r3_sequences.rs (target/debug/deps/c31_r3_sequences-8b2358a6ece37617)",
+    "result": "check (macos-latest)\tRun cargo test --workspace --locked\t2026-11-03T22:37:03.9996000Z test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 263.78s",
+    "tests": [
+      "check (macos-latest)\tRun cargo test --workspace --locked\t2026-11-03T22:37:03.9994370Z test independent_sequences_4096_persist_canonical_runs_and_notes ... ok"
+    ]
+  },
+  {
+    "log": "ci-closure.log",
+    "start": "check (windows-latest)\tUNKNOWN STEP\t2026-11-03T21:18:21.7843472Z ^[[1m^[[92m     Running^[[0m tests\\c31_r2_cancellation.rs (target\\debug\\deps\\c31_r2_cancellation-d195f3b9f32260da.exe)",
+    "result": "check (windows-latest)\tUNKNOWN STEP\t2026-11-03T21:18:22.6182903Z test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.82s",
+    "tests": [
+      "check (windows-latest)\tUNKNOWN STEP\t2026-11-03T21:18:22.6066668Z test r02_r14_timeout_after_solo_write_rolls_back_and_queued_read_answers ... ok",
+      "check (windows-latest)\tUNKNOWN STEP\t2026-11-03T21:18:22.6181488Z test r14_over_million_selection_refuses_before_scan_and_next_read_answers ... ok"
+    ]
+  },
+  {
+    "log": "ci-closure.log",
+    "start": "check (windows-latest)\tUNKNOWN STEP\t2026-11-03T21:18:55.3979009Z ^[[1m^[[92m     Running^[[0m tests\\c31_r3_selection.rs (target\\debug\\deps\\c31_r3_selection-c3130d8023dc94a7.exe)",
+    "result": "check (windows-latest)\tUNKNOWN STEP\t2026-11-03T21:18:56.3812971Z test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.97s",
+    "tests": [
+      "check (windows-latest)\tUNKNOWN STEP\t2026-11-03T21:18:56.3811372Z test measured_refusal_and_cancelled_scan_have_no_late_mutation ... ok"
+    ]
+  },
+  {
+    "log": "ci-closure.log",
+    "start": "check (windows-latest)\tUNKNOWN STEP\t2026-11-03T21:18:56.3868550Z ^[[1m^[[92m     Running^[[0m tests\\c31_r3_sequences.rs (target\\debug\\deps\\c31_r3_sequences-d83128ca6cb1b008.exe)",
+    "result": "check (windows-latest)\tUNKNOWN STEP\t2026-11-03T21:24:37.5369269Z test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 341.13s",
+    "tests": [
+      "check (windows-latest)\tUNKNOWN STEP\t2026-11-03T21:24:37.5368673Z test independent_sequences_4096_persist_canonical_runs_and_notes ... ok"
+    ]
+  },
+  {
+    "log": "ci-current.log",
+    "start": "check (macos-latest)\tRun cargo test --workspace --locked\t2026-11-09T23:09:06.6307880Z ^[[1m^[[92m     Running^[[0m tests/c31_r2_cancellation.rs (target/debug/deps/c31_r2_cancellation-c1ab9197551e25dd)",
+    "result": "check (macos-latest)\tRun cargo test --workspace --locked\t2026-11-09T23:09:07.6144290Z test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.96s",
+    "tests": [
+      "check (macos-latest)\tRun cargo test --workspace --locked\t2026-11-09T23:09:06.9037180Z test r14_over_million_selection_refuses_before_scan_and_next_read_answers ... ok",
+      "check (macos-latest)\tRun cargo test --workspace --locked\t2026-11-09T23:09:07.6142360Z test r02_r14_timeout_after_solo_write_rolls_back_and_queued_read_answers ... ok"
+    ]
+  },
+  {
+    "log": "ci-current.log",
+    "start": "check (macos-latest)\tRun cargo test --workspace --locked\t2026-11-09T23:09:40.0483140Z ^[[1m^[[92m     Running^[[0m tests/c31_r3_selection.rs (target/debug/deps/c31_r3_selection-35835478c538a303)",
+    "result": "check (macos-latest)\tRun cargo test --workspace --locked\t2026-11-09T23:09:41.2610810Z test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.19s",
+    "tests": [
+      "check (macos-latest)\tRun cargo test --workspace --locked\t2026-11-09T23:09:41.2609840Z test measured_refusal_and_cancelled_scan_have_no_late_mutation ... ok"
+    ]
+  },
+  {
+    "log": "ci-current.log",
+    "start": "check (macos-latest)\tRun cargo test --workspace --locked\t2026-11-09T23:09:41.2618470Z ^[[1m^[[92m     Running^[[0m tests/c31_r3_sequences.rs (target/debug/deps/c31_r3_sequences-abc82a9644e92236)",
+    "result": "check (macos-latest)\tRun cargo test --workspace --locked\t2026-11-09T23:09:41.2882570Z test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 1 filtered out; finished in 0.00s",
+    "tests": []
+  },
+  {
+    "log": "ci-current.log",
+    "start": "review properties release (windows-latest)\tReviewer round-2 seed variants\t2026-11-09T23:03:08.8240553Z ^[[1m^[[92m     Running^[[0m tests\\c31_r3_sequences.rs (target\\release\\deps\\c31_r3_sequences-8d91a03a5505501e.exe)",
+    "result": "review properties release (windows-latest)\tReviewer round-2 seed variants\t2026-11-09T23:07:28.2384632Z test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 259.40s",
+    "tests": [
+      "review properties release (windows-latest)\tReviewer round-2 seed variants\t2026-11-09T23:07:28.2382905Z test independent_sequences_4096_persist_canonical_runs_and_notes ... ok"
+    ]
+  },
+  {
+    "log": "ci-current.log",
+    "start": "check (windows-latest)\tRun cargo test --workspace --locked\t2026-11-09T23:10:26.6410524Z ^[[1m^[[92m     Running^[[0m tests\\c31_r2_cancellation.rs (target\\debug\\deps\\c31_r2_cancellation-8bc01802ec679737.exe)",
+    "result": "check (windows-latest)\tRun cargo test --workspace --locked\t2026-11-09T23:10:27.4764941Z test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.82s",
+    "tests": [
+      "check (windows-latest)\tRun cargo test --workspace --locked\t2026-11-09T23:10:27.4631623Z test r02_r14_timeout_after_solo_write_rolls_back_and_queued_read_answers ... ok",
+      "check (windows-latest)\tRun cargo test --workspace --locked\t2026-11-09T23:10:27.4764272Z test r14_over_million_selection_refuses_before_scan_and_next_read_answers ... ok"
+    ]
+  },
+  {
+    "log": "ci-current.log",
+    "start": "check (windows-latest)\tRun cargo test --workspace --locked\t2026-11-09T23:11:10.8821352Z ^[[1m^[[92m     Running^[[0m tests\\c31_r3_selection.rs (target\\debug\\deps\\c31_r3_selection-77cef8511e2a8384.exe)",
+    "result": "check (windows-latest)\tRun cargo test --workspace --locked\t2026-11-09T23:11:11.8648086Z test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.97s",
+    "tests": [
+      "check (windows-latest)\tRun cargo test --workspace --locked\t2026-11-09T23:11:11.8647479Z test measured_refusal_and_cancelled_scan_have_no_late_mutation ... ok"
+    ]
+  },
+  {
+    "log": "ci-current.log",
+    "start": "check (windows-latest)\tRun cargo test --workspace --locked\t2026-11-09T23:11:11.8697010Z ^[[1m^[[92m     Running^[[0m tests\\c31_r3_sequences.rs (target\\debug\\deps\\c31_r3_sequences-56709f729737cab5.exe)",
+    "result": "check (windows-latest)\tRun cargo test --workspace --locked\t2026-11-09T23:11:11.8844747Z test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 1 filtered out; finished in 0.00s",
+    "tests": []
+  },
+  {
+    "log": "ci-current.log",
+    "start": "review properties release (macos-latest)\tReviewer round-2 seed variants\t2026-11-09T23:23:41.5650380Z ^[[1m^[[92m     Running^[[0m tests/c31_r3_sequences.rs (target/release/deps/c31_r3_sequences-70bacf219990d56a)",
+    "result": "review properties release (macos-latest)\tReviewer round-2 seed variants\t2026-11-09T23:26:27.5299890Z test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 165.96s",
+    "tests": [
+      "review properties release (macos-latest)\tReviewer round-2 seed variants\t2026-11-09T23:26:27.5297600Z test independent_sequences_4096_persist_canonical_runs_and_notes ... ok"
+    ]
+  }
+]
