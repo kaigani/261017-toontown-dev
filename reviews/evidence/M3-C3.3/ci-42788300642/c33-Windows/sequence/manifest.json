@@ -1,0 +1,45 @@
+{
+ "documentRevision": 21,
+ "durationSec": 0.125,
+ "files": [
+  {
+   "bytes": 5036,
+   "frame": 1,
+   "height": 108,
+   "path": "Scene-1_0001.png",
+   "role": "frame",
+   "sha256": "24d8717bfc37dd60d93ca7e5b91bcf438a820b0e5201f57b19181b5fd487ad84",
+   "width": 192
+  },
+  {
+   "bytes": 3900,
+   "frame": 9,
+   "height": 108,
+   "path": "Scene-1_0009.png",
+   "role": "frame",
+   "sha256": "e421225b42de6eaff77d1500dd576ddb8adb23895c95b2364d043dfd6418f57b",
+   "width": 192
+  },
+  {
+   "bytes": 3421,
+   "frame": 17,
+   "height": 108,
+   "path": "Scene-1_0017.png",
+   "role": "frame",
+   "sha256": "517f4674743a0e373fb229ef13fc8c016584e1c0f8e54c458cffb17adfcb45bb",
+   "width": 192
+  }
+ ],
+ "format": "png",
+ "fps": 24.0,
+ "frameCount": 3,
+ "height": 108,
+ "range": {
+  "from": 1,
+  "step": 8,
+  "to": 24
+ },
+ "status": "succeeded",
+ "warnings": [],
+ "width": 192
+}
