@@ -121,16 +121,17 @@ fn scenes_without_layers_render_as_before_and_the_count_reaches_nested_items() {
     let b = draw(10, 10, vec![Item::Layer { transform: [1.0, 0.0, 0.0, 1.0, 0.0, 0.0], items }]);
     assert_eq!(a, b, "an identity layer changes nothing");
     // Cancellation sees every item, nested ones included.
-    let mut seen = 0;
+    let mut seen = Vec::new();
     let nested =
         Item::Layer { transform: [1.0, 0.0, 0.0, 1.0, 0.0, 0.0], items: vec![fill(rect(0.0, 0.0, 1.0, 1.0), RED); 3] };
     let scene = Scene { width: 4, height: 4, background: CLEAR, items: vec![nested] };
     render(&scene, &mut |i| {
-        seen = i + 1;
+        seen.push(i);
         Ok(())
     })
     .unwrap();
-    assert_eq!(seen, 4, "the layer and its three items");
+    // The entry check, the layer and its three items, then the checks before the flush and the rasterisation.
+    assert_eq!(seen, vec![0, 1, 2, 3, 4, 4], "every item, nested ones included, and every boundary");
     let stopped = render(&scene, &mut |i| if i == 2 { Err("stop".into()) } else { Ok(()) });
     assert!(matches!(stopped, Err(tt_render::RenderError::Stopped(_))));
 }

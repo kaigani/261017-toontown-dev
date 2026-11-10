@@ -80,7 +80,15 @@ jobs:
           pnpm --dir desktop build:diagnostics
           pnpm --dir desktop build
 
-      - run: cargo fmt --all --check
+      # One `cargo fmt -p <package> --check` per workspace package (M3 C3.3 round 1): `--all` reaches the command-line
+      # length limit on Windows (os error 206) and is not used locally either.
+      - name: Formatting, per workspace package
+        run: |
+          PY=python3
+          if [ "$RUNNER_OS" = "Windows" ]; then PY=python; fi
+          for p in $(cargo metadata --no-deps --format-version 1 --locked | $PY -c "import json, sys; print(' '.join(p['name'] for p in json.load(sys.stdin)['packages']))" | tr -d '\r'); do
+            cargo fmt -p "$p" --check
+          done
 
       - name: Generated command declarations are current (C12-R1-12)
         run: |
@@ -103,6 +111,9 @@ jobs:
       # Windows `check`'s 57 min 42 s in run 42692563454). The trybuild suites `compile_fail` (176 s) and the reviewer-owned
       # `c12_r1_macro` (65 s) run in release in `history-oracles` (moved in M3 C3.2 round 3 by ruling; Windows `check` took
       # 47 min 59 s in run 42738948001).
+      # `killed_sequence_leaves_no_staged_files` (reviewer, C3.3 round 1) asserts a killed process leaves no staging; ruling
+      # C33-R1-08 closes that premise (process death may leave `.tt-partial-` files; the next job sweeps them, tested in
+      # `c33_round1::stale_staging_is_swept_by_the_next_job_and_by_a_cancelled_one`), so it is skipped here.
       - name: Run cargo test --workspace --locked
         run: |
           cargo test --workspace --locked -- --skip ten_thousand_history_operations_match_independent_content_oracle_and_replay \
@@ -138,7 +149,7 @@ jobs:
             --skip non_parallelogram_envelopes_map_the_layer_projectively \
             --skip snapping_onto_a_curved_contour_reaches_its_nearest_point \
             --skip integer_translations_and_compositions_preserve_all_snapped_anchor_sequences \
-            --skip side_fills_read_back_beside_collinear_overlaps             --skip independent_sequences_4096_persist_canonical_runs_and_notes             --skip exclusive_mutation_capability             --skip duplicate_ids_and_inventory_kind_drift_are_rejected             --skip missing_example_is_rejected_at_compile_time
+            --skip side_fills_read_back_beside_collinear_overlaps             --skip independent_sequences_4096_persist_canonical_runs_and_notes             --skip exclusive_mutation_capability             --skip duplicate_ids_and_inventory_kind_drift_are_rejected             --skip missing_example_is_rejected_at_compile_time             --skip killed_sequence_leaves_no_staged_files
 
       - name: Desktop host with the M0 diagnostics feature (C0.4 gating) — clippy and tests
         run: |

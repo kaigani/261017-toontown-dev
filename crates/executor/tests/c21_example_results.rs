@@ -27,8 +27,19 @@ use tt_executor::{Invocation, Status};
 /// the example).
 const DIGEST_ABOVE: usize = 32 * 1024;
 
+/// A digest of a result with its volatile render time zeroed (`renderMs` is excluded from deterministic byte
+/// comparisons; the image bytes and their `sha256` are the contract, C33-R1-06).
 fn digest(v: &Value) -> Value {
-    let text = serde_json::to_string(v).unwrap();
+    fn steady(v: &mut Value) {
+        match v {
+            Value::Object(m) => m.iter_mut().for_each(|(k, x)| if k == "renderMs" { *x = json!(0) } else { steady(x) }),
+            Value::Array(a) => a.iter_mut().for_each(steady),
+            _ => {}
+        }
+    }
+    let mut v = v.clone();
+    steady(&mut v);
+    let text = serde_json::to_string(&v).unwrap();
     json!({ "bytes": text.len(), "sha256": tt_persist::fsx::sha256(text.as_bytes()) })
 }
 
@@ -103,7 +114,7 @@ fn every_implemented_example_has_a_retained_executed_result() {
                     let varies = recorded::varying(a, b);
                     let text = serde_json::to_string(a).unwrap();
                     if text.len() > DIGEST_ABOVE {
-                        assert_eq!(a, b, "{id} `{title}`: a digest needs a reproducible result");
+                        assert_eq!(digest(a), digest(b), "{id} `{title}`: a digest needs a reproducible result");
                         json!({ "title": title, "resultDigest": digest(a), "varies": varies })
                     } else {
                         json!({ "title": title, "result": a, "varies": varies })

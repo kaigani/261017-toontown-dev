@@ -16,11 +16,11 @@ pub(crate) fn unavailable(ty: ObjectType) -> &'static [(&'static str, &'static s
         ObjectType::Project => &[
             ("sceneStartFrames", "M9 (storyline timing)"),
             ("globalLength", "M9 (storyline timing)"),
-            ("thumbnail", "M3 C3.3"),
+            ("thumbnail", "M5 C5.2 (Exposure Sheet thumbnails)"),
         ],
         ObjectType::Scene => &[("paddedLength", "M9 (storyline timing)")],
         ObjectType::Element => &[("effectiveMarkerColour", "M4 C4.1 (preferences)")],
-        ObjectType::Drawing => &[("thumbnail", "M3 C3.3")],
+        ObjectType::Drawing => &[("thumbnail", "M5 C5.2 (Exposure Sheet thumbnails)")],
         ObjectType::Asset => &[("info", "M8"), ("refs", "M1 C1.3"), ("status", "M1 C1.3")],
         ObjectType::SoundPlacement => &[("naturalEndFrame", "M8")],
         ObjectType::MediaSequence => &[("sourceLength", "M10"), ("missing", "M10")],

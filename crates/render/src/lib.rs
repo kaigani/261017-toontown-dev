@@ -306,9 +306,13 @@ pub fn render(scene: &Scene, keep_going: &mut dyn FnMut(usize) -> Result<(), Str
     );
     let mut ctx = RenderContext::new_with(w16, h16, RenderSettings { level: Level::fallback(), num_threads: 0 });
     ctx.set_transform(kurbo::Affine::IDENTITY);
+    // Cancellation is observed before each item, then before the flush (so an empty render observes it too,
+    // C33-R1-07) and before the rasterisation, which run without callbacks.
     let mut counter = 0;
     draw_items(&mut ctx, &scene.items, kurbo::Affine::IDENTITY, keep_going, &mut counter)?;
+    keep_going(counter).map_err(RenderError::Stopped)?;
     ctx.flush();
+    keep_going(counter).map_err(RenderError::Stopped)?;
     let mut pixmap = Pixmap::new(w16, h16);
     let settings = RasterizerSettings {
         render_mode: RenderMode::OptimizeQuality,

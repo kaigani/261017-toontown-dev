@@ -232,10 +232,13 @@ pub fn generic() -> Vec<ToolDef> {
         t(
             "render_frame",
             "Render frame",
-            "A rendered frame of a scene (`render.frame.run` with `composition: \"camera\"`).",
+            "A rendered frame of a scene (`render.frame.run` with `composition: \"camera\"`; the same result as the command with default parameters, 09 §11.1 item 1).",
             obj(
                 json!({ "scene": { "type": "string" }, "frame": { "type": "integer", "minimum": 1 }, "camera": { "type": "string" },
-            "width": { "type": "integer", "minimum": 1 }, "height": { "type": "integer", "minimum": 1 }, "background": { "type": "string" },
+            "width": { "type": "integer", "minimum": 1, "description": "Output width in pixels; default = the camera width (SI-110)" },
+            "height": { "type": "integer", "minimum": 1, "description": "Output height; default by the camera aspect" }, "background": { "type": "string" },
+            "include": { "type": "array", "items": { "type": "string" }, "description": "Elements to show although hidden (render-time only)" },
+            "exclude": { "type": "array", "items": { "type": "string" }, "description": "Elements to leave out, with their descendants (render-time only)" },
             "quality": { "type": "string", "enum": ["draft", "final"] }, "output": { "type": "string" } }),
                 &[],
             ),
@@ -576,6 +579,8 @@ pub fn plan(name: &str, args: &Map<String, Value>) -> Result<Plan, String> {
                     ("height", "height"),
                     ("quality", "quality"),
                     ("background", "background"),
+                    ("include", "include"),
+                    ("exclude", "exclude"),
                 ],
             );
             if let Some(m) = p.as_object_mut() {

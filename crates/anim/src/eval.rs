@@ -86,6 +86,8 @@ impl<'d, E> Evaluator<'d, E> {
 
     /// The node at a scene frame.
     pub fn local(&mut self, id: &Id, frame: f64) -> Result<LocalEval, EvalError<E>> {
+        #[cfg(feature = "test-hooks")]
+        hooks::record(id, frame);
         self.node(id)?;
         (self.spend)(NODE_FRAME_COST)?;
         let data = self.nodes.get(id).ok_or_else(|| EvalError::NotFound(id.clone()))?;
@@ -153,5 +155,43 @@ impl<'d, E> Evaluator<'d, E> {
         let fov = self.fov(id, block, frame)?;
         let p = doc.project();
         Ok(CameraView::new(&world, fov, f64::from(*p.camera_width()), f64::from(*p.camera_height())))
+    }
+}
+
+/// Test hooks (never in products): the node evaluations `(node, frame)` of the process between [`hooks::start`] and
+/// [`hooks::take`], so a test can prove that a query evaluates each node once per frame (C3.3 round 1). Off unless
+/// started, so other tests record nothing.
+#[cfg(feature = "test-hooks")]
+pub mod hooks {
+    use std::sync::Mutex;
+    use std::sync::atomic::{AtomicBool, Ordering};
+
+    use tt_model::Id;
+
+    static ON: AtomicBool = AtomicBool::new(false);
+    static EVALUATIONS: Mutex<Vec<(String, u64)>> = Mutex::new(Vec::new());
+
+    pub(crate) fn record(id: &Id, frame: f64) {
+        if ON.load(Ordering::Acquire) {
+            EVALUATIONS
+                .lock()
+                .unwrap_or_else(std::sync::PoisonError::into_inner)
+                .push((id.as_str().to_owned(), frame.to_bits()));
+        }
+    }
+
+    /// Starts recording (and clears what was recorded).
+    pub fn start() {
+        EVALUATIONS.lock().unwrap_or_else(std::sync::PoisonError::into_inner).clear();
+        ON.store(true, Ordering::Release);
+    }
+
+    /// Stops recording and takes the evaluations: `(node ID, frame)`, in order.
+    pub fn take() -> Vec<(String, f64)> {
+        ON.store(false, Ordering::Release);
+        std::mem::take(&mut *EVALUATIONS.lock().unwrap_or_else(std::sync::PoisonError::into_inner))
+            .into_iter()
+            .map(|(id, f)| (id, f64::from_bits(f)))
+            .collect()
     }
 }

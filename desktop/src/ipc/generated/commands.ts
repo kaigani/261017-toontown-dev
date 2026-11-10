@@ -58797,6 +58797,28 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
         ],
         default: null,
       },
+      include: {
+        description: "Elements to show although hidden or annotations (11 §7.5; render-time only).",
+        type: [
+          "array",
+          "null",
+        ],
+        items: {
+          type: "string",
+        },
+        default: null,
+      },
+      exclude: {
+        description: "Elements to leave out, with their descendants (11 §7.5; render-time only).",
+        type: [
+          "array",
+          "null",
+        ],
+        items: {
+          type: "string",
+        },
+        default: null,
+      },
     },
     additionalProperties: false,
     required: [
@@ -59055,6 +59077,28 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
       detail: {
         description: "Detail.",
         $ref: "#/$defs/inspect.frame.describe.Detail",
+      },
+      include: {
+        description: "Elements to show although hidden or annotations (11 §7.5; the description of a render with the same overrides).",
+        type: [
+          "array",
+          "null",
+        ],
+        items: {
+          type: "string",
+        },
+        default: null,
+      },
+      exclude: {
+        description: "Elements to leave out, with their descendants (11 §7.5).",
+        type: [
+          "array",
+          "null",
+        ],
+        items: {
+          type: "string",
+        },
+        default: null,
       },
     },
     additionalProperties: false,
@@ -70102,6 +70146,28 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
         ],
         default: null,
       },
+      include: {
+        description: "Elements to show although hidden or annotations (11 §7.5; render-time only, the document is not changed).",
+        type: [
+          "array",
+          "null",
+        ],
+        items: {
+          type: "string",
+        },
+        default: null,
+      },
+      exclude: {
+        description: "Elements to leave out, with their descendants (11 §7.5; render-time only).",
+        type: [
+          "array",
+          "null",
+        ],
+        items: {
+          type: "string",
+        },
+        default: null,
+      },
     },
     additionalProperties: false,
   },
@@ -70162,6 +70228,12 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
         maximum: 2147483647,
         minimum: 0,
       },
+      renderMs: {
+        description: "Wall-clock time of the call in milliseconds (11 §7.5): volatile, not part of the determinism contract (the image\nbytes and `sha256` are; SI-107).",
+        type: "integer",
+        maximum: 18446744073709551615n,
+        minimum: 0,
+      },
       imageToCamera: {
         description: "Output pixels → camera space (fields from the camera centre on the table plane, y up) `[a, b, c, d, e, f]`\n(11 §7.5 `imageToCamera`); for a drawing-space render, output pixels → drawing units.",
         type: "array",
@@ -70185,6 +70257,7 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
       "sha256",
       "documentRevision",
       "frame",
+      "renderMs",
       "imageToCamera",
       "warnings",
     ],
@@ -70441,9 +70514,31 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
         default: false,
       },
       wait: {
-        description: "Accepted; the call answers `{jobId}` and `job.wait` waits (SI-107).",
+        description: "Wait for the job and answer its manifest (09 §11.1 item 4): the caller's thread waits, bounded by the call's\nwatchdog budget; at the timeout the answer is `job.waitTimeout` with the `jobId` (SI-107).",
         type: "boolean",
         default: false,
+      },
+      include: {
+        description: "Elements to show although hidden or annotations (11 §7.5; render-time only).",
+        type: [
+          "array",
+          "null",
+        ],
+        items: {
+          type: "string",
+        },
+        default: null,
+      },
+      exclude: {
+        description: "Elements to leave out, with their descendants (11 §7.5; render-time only).",
+        type: [
+          "array",
+          "null",
+        ],
+        items: {
+          type: "string",
+        },
+        default: null,
       },
     },
     additionalProperties: false,
@@ -95928,6 +96023,10 @@ export interface inspect_contactSheet_render_params {
   cellWidth?: number | null;
   /** Frame labels (default true). */
   labels?: boolean | null;
+  /** Elements to show although hidden or annotations (11 §7.5; render-time only). */
+  include?: string[] | null;
+  /** Elements to leave out, with their descendants (11 §7.5; render-time only). */
+  exclude?: string[] | null;
 }
 
 /** A cell of a contact sheet. */
@@ -96003,6 +96102,10 @@ export interface inspect_frame_describe_params {
   cameraId?: string | null;
   /** Detail. */
   detail?: inspect_frame_describe_Detail;
+  /** Elements to show although hidden or annotations (11 §7.5; the description of a render with the same overrides). */
+  include?: string[] | null;
+  /** Elements to leave out, with their descendants (11 §7.5). */
+  exclude?: string[] | null;
 }
 
 /** A visible element (11 §7.5). */
@@ -98891,6 +98994,10 @@ export interface render_frame_run_params {
   onConflict?: render_frame_run_OnConflict;
   /** Camera (default the scene's current camera; the generic `render_frame` tool's `camera`, SI-107). */
   cameraId?: string | null;
+  /** Elements to show although hidden or annotations (11 §7.5; render-time only, the document is not changed). */
+  include?: string[] | null;
+  /** Elements to leave out, with their descendants (11 §7.5; render-time only). */
+  exclude?: string[] | null;
 }
 
 /** `RenderResult` (09 §11.4). */
@@ -98913,6 +99020,8 @@ export interface render_frame_run_result {
   documentRevision: number | bigint;
   /** The scene frame rendered. */
   frame: number;
+  /** Wall-clock time of the call in milliseconds (11 §7.5): volatile, not part of the determinism contract (the image bytes and `sha256` are; SI-107). */
+  renderMs: number | bigint;
   /** Output pixels → camera space (fields from the camera centre on the table plane, y up) `[a, b, c, d, e, f]` (11 §7.5 `imageToCamera`); for a drawing-space render, output pixels → drawing units. */
   imageToCamera: number[];
   /** Objects not drawn and why, and notes (`render.draftAsFinal`). */
@@ -98982,8 +99091,12 @@ export interface render_range_run_params {
   onConflict?: render_range_run_OnConflict;
   /** Create the directory when missing. */
   createDirs?: boolean;
-  /** Accepted; the call answers `{jobId}` and `job.wait` waits (SI-107). */
+  /** Wait for the job and answer its manifest (09 §11.1 item 4): the caller's thread waits, bounded by the call's watchdog budget; at the timeout the answer is `job.waitTimeout` with the `jobId` (SI-107). */
   wait?: boolean;
+  /** Elements to show although hidden or annotations (11 §7.5; render-time only). */
+  include?: string[] | null;
+  /** Elements to leave out, with their descendants (11 §7.5; render-time only). */
+  exclude?: string[] | null;
 }
 
 /** `Manifest` of a range (09 §11.4). */

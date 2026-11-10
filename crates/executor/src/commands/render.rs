@@ -25,7 +25,7 @@ use tt_render::Scene;
 
 use super::anim_common::evaluator;
 use super::common::{Job, NoParams, invalid};
-use super::render_list::{self, RenderList, Request};
+use super::render_list::{self, Overrides, RenderList, Request};
 use super::timing::err;
 use crate::cx::Cx;
 
@@ -188,6 +188,12 @@ pub(crate) struct FrameParams {
     /// Camera (default the scene's current camera; the generic `render_frame` tool's `camera`, SI-107).
     #[serde(default)]
     camera_id: Option<String>,
+    /// Elements to show although hidden or annotations (11 §7.5; render-time only, the document is not changed).
+    #[serde(default)]
+    include: Option<Vec<String>>,
+    /// Elements to leave out, with their descendants (11 §7.5; render-time only).
+    #[serde(default)]
+    exclude: Option<Vec<String>>,
 }
 
 /// `RenderResult` (09 §11.4).
@@ -214,6 +220,9 @@ pub(crate) struct RenderResult {
     pub document_revision: u64,
     /// The scene frame rendered.
     pub frame: u32,
+    /// Wall-clock time of the call in milliseconds (11 §7.5): volatile, not part of the determinism contract (the image
+    /// bytes and `sha256` are; SI-107).
+    pub render_ms: u64,
     /// Output pixels → camera space (fields from the camera centre on the table plane, y up) `[a, b, c, d, e, f]`
     /// (11 §7.5 `imageToCamera`); for a drawing-space render, output pixels → drawing units.
     pub image_to_camera: [f64; 6],
@@ -435,6 +444,46 @@ fn element_set(cx: &Cx, given: Option<&[String]>) -> Result<BTreeSet<Id>, Comman
         .collect()
 }
 
+/// The render-time visibility overrides of an `include`/`exclude` pair (11 §7.5; C33-R1-05).
+///
+/// # Errors
+/// `arg.invalid` for an element that does not resolve.
+pub(crate) fn overrides(
+    cx: &Cx,
+    include: Option<&[String]>,
+    exclude: Option<&[String]>,
+) -> Result<Overrides, CommandError> {
+    let set = |list: Option<&[String]>, pointer: &str| -> Result<BTreeSet<Id>, CommandError> {
+        list.unwrap_or_default()
+            .iter()
+            .enumerate()
+            .map(|(i, r)| {
+                cx.resolve_as(r, ObjectType::Element)
+                    .map_err(|_| invalid(&format!("{pointer}/{i}"), format!("no element `{r}`")))
+                    .and_then(|k| Ok(Id::parse(&k)?))
+            })
+            .collect()
+    };
+    Ok(Overrides { include: set(include, "/include")?, exclude: set(exclude, "/exclude")? })
+}
+
+/// The inline long-side limit, checked from the requested size before any work (09 §11.1 item 3; C33-R1-04).
+///
+/// # Errors
+/// `render.inlineTooLarge`.
+pub(crate) fn inline_side(cx: &Cx, width: u32, height: u32) -> Result<(), CommandError> {
+    let (side, max_bytes) = inline_limits(cx);
+    if width.max(height) <= side {
+        return Ok(());
+    }
+    Err(err(
+        "render.inlineTooLarge",
+        format!("a {width} x {height} image is over the inline limit of {side} pixels on the long side"),
+        json!({ "maxInlinePixels": side, "maxInlineBytes": max_bytes, "width": width, "height": height }),
+    )
+    .hint("use output: \"file\" with a path, or a smaller size"))
+}
+
 #[command(
     id = "render.frame.run",
     kind = query,
@@ -446,6 +495,7 @@ fn element_set(cx: &Cx, given: Option<&[String]>) -> Result<BTreeSet<Id>, Comman
     gui = "File > Export render actions (09); Export Snapshot (M10)",
 )]
 pub(crate) fn render_frame_run(cx: &mut Cx, p: FrameParams) -> Result<RenderResult, CommandError> {
+    let started = std::time::Instant::now();
     if matches!(p.composition, Composition::Xsheet | Composition::ActiveView) {
         return Err(unavailable(p.composition));
     }
@@ -465,8 +515,21 @@ pub(crate) fn render_frame_run(cx: &mut Cx, p: FrameParams) -> Result<RenderResu
         None => None,
     };
     let (width, height) = output_size(&doc, p.width, p.height, p.scale)?;
+    // Known size limits before any evaluation, rasterisation or encoding (C33-R1-04).
+    if p.output == Output::Inline {
+        inline_side(cx, width, height)?;
+    }
     let bg = background(&doc, &scene, &p.background)?;
-    let req = Request { scene: &scene, frame, camera: camera.as_ref(), width, height, only: only.as_ref() };
+    let overrides = overrides(cx, p.include.as_deref(), p.exclude.as_deref())?;
+    let req = Request {
+        scene: &scene,
+        frame,
+        camera: camera.as_ref(),
+        width,
+        height,
+        only: only.as_ref(),
+        overrides: &overrides,
+    };
     let blobs = cx.project().ok().map(|pr| &pr.store.blobs);
     let rendered = render_frame(&doc, blobs, &cx.planar_cache(), &req, bg, &|| false)?;
     let mut warnings = rendered.warnings;
@@ -486,6 +549,7 @@ pub(crate) fn render_frame_run(cx: &mut Cx, p: FrameParams) -> Result<RenderResu
         frame,
         image_to_camera: image_to_camera(&rendered.list),
         warnings,
+        started,
     };
     deliver(cx, &p, image)
 }
@@ -500,21 +564,41 @@ struct Image {
     frame: u32,
     image_to_camera: [f64; 6],
     warnings: Vec<Value>,
+    started: std::time::Instant,
 }
 
+/// The caller's cancellation (its watchdog budget passed, or its request was cancelled) as a typed error.
+///
+/// # Errors
+/// `command.timeout` when cancellation was requested.
+pub(crate) fn observe_cancel() -> Result<(), CommandError> {
+    if tt_vector::work::cancel_requested() {
+        return Err(CommandError::new(
+            tt_registry::codes::COMMAND_TIMEOUT,
+            "the render was cancelled: the call overran its watchdog budget or was cancelled",
+        ));
+    }
+    Ok(())
+}
+
+/// Encodes a rendered frame. The work is bounded by the size limits checked before rendering; the caller's
+/// cancellation is observed before and after it (C33-R1-04).
 fn encode(f: FrameFormat, pixels: &[u8], w: u32, h: u32, q: u8) -> Result<(Vec<u8>, &'static str), CommandError> {
-    match f {
+    observe_cancel()?;
+    let encoded = match f {
         FrameFormat::Png => tt_render::encode_png(pixels, w, h)
             .map(|b| (b, "image/png"))
             .map_err(|e| err("render.failed", e.to_string(), json!({}))),
         FrameFormat::Jpeg => tt_io::image::encode_still(tt_io::image::StillFormat::Jpeg, pixels, w, h, q)
             .map(|b| (b, "image/jpeg"))
             .map_err(|e| err("render.failed", e, json!({}))),
-    }
+    }?;
+    observe_cancel()?;
+    Ok(encoded)
 }
 
 fn deliver(cx: &mut Cx, p: &FrameParams, image: Image) -> Result<RenderResult, CommandError> {
-    let Image { bytes, mime, width, height, rev, frame, image_to_camera, warnings } = image;
+    let Image { bytes, mime, width, height, rev, frame, image_to_camera, warnings, started } = image;
     let sha256 = sha256_hex(&bytes);
     let size = bytes.len() as u64;
     let (data, path) = match (p.output, &p.path) {
@@ -560,6 +644,7 @@ fn deliver(cx: &mut Cx, p: &FrameParams, image: Image) -> Result<RenderResult, C
         path,
         document_revision: rev,
         frame,
+        render_ms: u64::try_from(started.elapsed().as_millis()).unwrap_or(u64::MAX),
         image_to_camera,
         warnings,
     })
@@ -620,6 +705,7 @@ fn drawing_space(cx: &mut Cx, p: &FrameParams, doc: &Document, frame: u32) -> Re
         frame,
         image_to_camera: invert(d2p),
         warnings,
+        started: std::time::Instant::now(),
     };
     deliver(cx, p, image)
 }
@@ -736,9 +822,16 @@ pub(crate) struct RangeParams {
     /// Create the directory when missing.
     #[serde(default)]
     create_dirs: bool,
-    /// Accepted; the call answers `{jobId}` and `job.wait` waits (SI-107).
+    /// Wait for the job and answer its manifest (09 §11.1 item 4): the caller's thread waits, bounded by the call's
+    /// watchdog budget; at the timeout the answer is `job.waitTimeout` with the `jobId` (SI-107).
     #[serde(default)]
     wait: bool,
+    /// Elements to show although hidden or annotations (11 §7.5; render-time only).
+    #[serde(default)]
+    include: Option<Vec<String>>,
+    /// Elements to leave out, with their descendants (11 §7.5; render-time only).
+    #[serde(default)]
+    exclude: Option<Vec<String>>,
 }
 
 /// One file of a manifest (09 §11.4).
@@ -851,6 +944,7 @@ struct RangeJob {
     cache: crate::planar::SharedCache,
     scene: Id,
     only: Option<BTreeSet<Id>>,
+    overrides: Overrides,
     frames: Vec<u32>,
     targets: Vec<PathBuf>,
     manifest_target: PathBuf,
@@ -862,6 +956,8 @@ struct RangeJob {
     format_name: &'static str,
     quality: Quality,
     range: Value,
+    /// The staging token of this job (its staged files end with `.tt-partial-<token>`).
+    token: String,
 }
 
 impl RangeJob {
@@ -869,9 +965,14 @@ impl RangeJob {
         if !self.dir.is_dir() {
             std::fs::create_dir_all(&self.dir).map_err(|e| io_error("create", &self.dir, &e))?;
         }
-        let token = tt_persist::fsx::random_token(6);
+        let token = &self.token;
         let mut files = Vec::with_capacity(self.frames.len());
         let mut warnings: Vec<Value> = Vec::new();
+        // Staging left by a job that did not finish (a killed process) is removed first, and listed (C33-R1-08).
+        let swept = sweep(&self.dir);
+        if !swept.is_empty() {
+            warnings.push(json!({ "code": "render.staleStagingRemoved", "files": swept }));
+        }
         if self.quality == Quality::Draft {
             warnings.push(json!({ "code": "render.draftAsFinal" }));
         }
@@ -889,6 +990,7 @@ impl RangeJob {
                 width: self.width,
                 height: self.height,
                 only: self.only.as_ref(),
+                overrides: &self.overrides,
             };
             let r = render_frame(&self.doc, Some(&self.blobs), &self.cache, &req, self.background, &cancelled)?;
             for w in r.warnings {
@@ -936,12 +1038,137 @@ impl RangeJob {
         if !progress.commit() {
             return Err(CommandError::new("job.cancelled", "the range was cancelled; nothing was published"));
         }
-        for s in staged.iter() {
-            std::fs::rename(&s.tmp, &s.target).map_err(|e| io_error("publish", &s.target, &e))?;
-        }
+        publish(staged, token)?;
         progress.report(1.0, "Done");
         Ok(manifest)
     }
+}
+
+/// The staging and backup markers of range jobs: `.<name>.tt-partial-<token>` and `.<name>.tt-backup-<token>`.
+const STAGING_MARKERS: [&str; 2] = [".tt-partial-", ".tt-backup-"];
+
+/// Staging tokens of the range jobs running in this process: the sweep never removes a live job's files.
+static LIVE_TOKENS: std::sync::Mutex<BTreeSet<String>> = std::sync::Mutex::new(BTreeSet::new());
+
+fn live_tokens() -> std::sync::MutexGuard<'static, BTreeSet<String>> {
+    LIVE_TOKENS.lock().unwrap_or_else(std::sync::PoisonError::into_inner)
+}
+
+/// Marks a job's staging token live until dropped.
+struct LiveToken(String);
+
+impl LiveToken {
+    fn new() -> Self {
+        let token = tt_persist::fsx::random_token(6);
+        live_tokens().insert(token.clone());
+        Self(token)
+    }
+}
+
+impl Drop for LiveToken {
+    fn drop(&mut self) {
+        live_tokens().remove(&self.0);
+    }
+}
+
+/// The staging token of a file name the range jobs write, if it is one.
+fn staging_token(name: &str) -> Option<&str> {
+    if !name.starts_with('.') {
+        return None;
+    }
+    STAGING_MARKERS
+        .iter()
+        .find_map(|m| name.rfind(m).map(|i| &name[i + m.len()..]))
+        .filter(|t| !t.is_empty() && t.chars().all(|c| c.is_ascii_alphanumeric()))
+}
+
+/// Removes the staging and backup files of range jobs in `dir` that no running job of this process owns (a process
+/// killed mid-job leaves them; ADR-0020, C33-R1-08). Returns the names removed, sorted.
+pub(crate) fn sweep(dir: &Path) -> Vec<String> {
+    let Ok(rd) = std::fs::read_dir(dir) else { return Vec::new() };
+    let live = live_tokens().clone();
+    let mut removed = Vec::new();
+    for e in rd.flatten() {
+        let name = e.file_name().to_string_lossy().into_owned();
+        let Some(token) = staging_token(&name) else { continue };
+        if live.contains(token) || !e.file_type().is_ok_and(|t| t.is_file()) {
+            continue;
+        }
+        // A backup whose target is missing is an original moved aside by a publication that died before its staged
+        // file took the place: it is put back, not deleted.
+        if let Some(original) = backup_target(&name, token) {
+            let target = dir.join(original);
+            if !target.exists() && std::fs::rename(e.path(), &target).is_ok() {
+                removed.push(name);
+                continue;
+            }
+        }
+        if std::fs::remove_file(e.path()).is_ok() {
+            removed.push(name);
+        }
+    }
+    removed.sort();
+    removed
+}
+
+/// The original name of a backup file `.<name>.tt-backup-<token>`.
+fn backup_target<'a>(name: &'a str, token: &str) -> Option<&'a str> {
+    name.strip_prefix('.')?.strip_suffix(token)?.strip_suffix(STAGING_MARKERS[1]).filter(|n| !n.is_empty())
+}
+
+fn target_invalid(path: &Path, why: &str) -> CommandError {
+    err(
+        "export.targetInvalid",
+        format!("`{}` {why}; nothing was published", path.display()),
+        json!({ "path": path.to_string_lossy() }),
+    )
+}
+
+/// Publishes staged files as one transaction (C33-R1-03): every target is checked first (an existing target must be a
+/// writable regular file); then each existing original is moved aside to a backup and the staged file renamed onto
+/// the target. On any failure the published targets are removed and the originals restored, so the destination is as
+/// it was; backups are deleted only when every rename succeeded. The caller deletes the staging on failure.
+fn publish(staged: &[Staged], token: &str) -> Result<(), CommandError> {
+    for s in staged {
+        if let Ok(meta) = std::fs::symlink_metadata(&s.target) {
+            if !meta.is_file() {
+                return Err(target_invalid(&s.target, "exists and is not a file"));
+            }
+            if meta.permissions().readonly() {
+                return Err(target_invalid(&s.target, "is read-only"));
+            }
+        }
+    }
+    let mut backups: Vec<(PathBuf, PathBuf)> = Vec::new();
+    let mut published: Vec<PathBuf> = Vec::new();
+    let rollback = |published: &[PathBuf], backups: &[(PathBuf, PathBuf)]| {
+        for t in published {
+            let _ = std::fs::remove_file(t);
+        }
+        for (target, backup) in backups {
+            let _ = std::fs::rename(backup, target);
+        }
+    };
+    for s in staged {
+        if s.target.exists() {
+            let name = s.target.file_name().map(|n| n.to_string_lossy().into_owned()).unwrap_or_default();
+            let backup = s.target.with_file_name(format!(".{name}.tt-backup-{token}"));
+            if let Err(e) = std::fs::rename(&s.target, &backup) {
+                rollback(&published, &backups);
+                return Err(io_error("set aside", &s.target, &e));
+            }
+            backups.push((s.target.clone(), backup));
+        }
+        if let Err(e) = std::fs::rename(&s.tmp, &s.target) {
+            rollback(&published, &backups);
+            return Err(io_error("publish", &s.target, &e));
+        }
+        published.push(s.target.clone());
+    }
+    for (_, backup) in &backups {
+        let _ = std::fs::remove_file(backup);
+    }
+    Ok(())
 }
 
 fn encode_sequence(format: SequenceFormat, pixels: &[u8], w: u32, h: u32) -> Result<Vec<u8>, CommandError> {
@@ -988,6 +1215,7 @@ pub(crate) fn render_range_run(cx: &mut Cx, p: RangeParams) -> Result<Job<Manife
         (p.composition == Composition::Element).then(|| element_set(cx, p.element_ids.as_deref())).transpose()?;
     let (width, height) = output_size(&doc, p.width, p.height, p.scale)?;
     let bg = background(&doc, &scene, &p.background)?;
+    let overrides = overrides(cx, p.include.as_deref(), p.exclude.as_deref())?;
     let dir = crate::persistence::path_param(cx, &p.directory, "/directory")?;
     files_write(cx, "render.range.run")?;
     if !dir.is_dir() && !p.create_dirs {
@@ -1035,12 +1263,15 @@ pub(crate) fn render_range_run(cx: &mut Cx, p: RangeParams) -> Result<Job<Manife
     if cx.dry_run() {
         return Ok(Job::dry());
     }
+    let live = LiveToken::new();
     let job = RangeJob {
         blobs: cx.project()?.store.blobs.clone(),
         cache: cx.planar_cache(),
         doc,
         scene,
         only,
+        overrides,
+        token: live.0.clone(),
         frames,
         targets,
         manifest_target,
@@ -1055,11 +1286,15 @@ pub(crate) fn render_range_run(cx: &mut Cx, p: RangeParams) -> Result<Job<Manife
     };
     let origin = cx.origin().clone();
     let id = cx.session().jobs.submit("render.range.run", &origin.session_key(), move |progress| {
+        // The token stays live, so no sweep removes this job's files, until the job ends.
+        let _live = live;
         let mut staged: Vec<Staged> = Vec::new();
         match job.run(progress, &mut staged) {
             Ok(m) => Ok(serde_json::to_value(m).unwrap_or(Value::Null)),
             Err(e) => {
+                // A failed or cancelled job deletes its staging and sweeps stale staging of the directory (C33-R1-08).
                 discard(&staged);
+                sweep(&job.dir);
                 Err(e)
             }
         }

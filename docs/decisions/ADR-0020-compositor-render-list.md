@@ -1,6 +1,6 @@
 # ADR-0020 — Compositor and render list
 
-Status: accepted (M3 C3.3).
+Status: accepted (M3 C3.3; amended in C3.3 round 1).
 
 ## Context
 
@@ -19,10 +19,17 @@ thread); ADR-0019 fixes the evaluation order of transforms.
    drawing → pixel map, bounds and a visibility verdict. Renders, `inspect.frame.describe`, `inspect.hitTest`,
    `inspect.coordinates.convert`, the contact sheet and the range job read only this list.
 2. **Order** (SI-106): role tier (background, normal and envelope, foreground; 04 §6.1), then the world Z of the origin
-   rounded to 1e-6 field (05 §2.8, smaller first), then the Timeline order (back to front = displayed rows bottom to top).
-   The key is a total order, so sorting is stable and platform-independent.
+   (05 §2.8, smaller first), then the Timeline order (back to front = displayed rows bottom to top). Depths are not
+   rounded (ruling C33-R1-01): within a tier the entries are sorted by Z and grouped from the smallest; a group takes
+   each following entry whose Z is less than 1e-6 field from the group's first (smallest-Z) member, its anchor, and is
+   ordered by the Timeline alone. **Chain rule:** a long run of near-equal depths splits where the distance from the
+   anchor reaches 1e-6, although each step is smaller (0, 0.6e-6 and 1.2e-6 make two groups). Sorting and grouping use
+   only comparisons of exact f64 values, so the order is platform-independent.
 3. **Visibility** as `anim.evaluate` (SI-100): hidden (itself or an ancestor), annotation (view-only), no drawing at the
-   frame, empty drawing, plane at or behind the near plane, out of frame. Background elements extend their last exposure
+   frame, empty drawing, plane at or behind the near plane, out of frame. A request may carry a render-time override
+   (ruling C33-R1-05): `include` draws an element although hidden or an annotation, `exclude` leaves an element and its
+   descendants out (verdict `excluded`; exclusion wins). The override is part of the request, never of the document, so
+   `exclude: [e]` renders the bytes of hiding `e`. Background elements extend their last exposure
    to the scene length. Effects pass the transform through (M7); bones are absent (SI-097).
 4. **Projection per plane.** Elements rotate about Z only, so each lies in a plane parallel to the table plane and the
    rigid camera's perspective maps that plane to output pixels affinely. Three projected points (origin, +1 field in x
@@ -40,10 +47,34 @@ thread); ADR-0019 fixes the evaluation order of transforms.
    BMP through the pinned `image` crate (`tt_io::image::encode_still`; JPEG keeps the premultiplied colour, i.e. over
    black).
 8. **Never block.** Every frame charges a work account (path elements and pixels / 1024, 200 M units) and observes the
-   caller's cancellation inside the rasteriser; sizes over 8192, frames over 100 000 and inline images over the session
-   limits are refused before work starts. `render.range.run` runs as a job on a document snapshot, one frame at a time,
-   checking cancellation; frames and the companion manifest are staged beside their targets and published together at
-   the job's commit point, and a cancelled or failed job deletes what it staged.
+   caller's cancellation inside the rasteriser, an empty frame included (the check runs before each item and before
+   and after the flush). Known sizes are refused before any evaluation, allocation or encoding (ruling
+   C33-R1-04): sizes over 8192 and frames over 100 000 (`limit.exceeded`; per frame at a range's preflight), and an
+   inline frame or contact sheet whose long side or pixel count is over the session's inline limit
+   (`render.inlineTooLarge`). The encoded-byte limit is checked after encoding, which is bounded and cancellable.
+   `render.range.run` runs as a job on a document snapshot, one frame at a time, checking cancellation. With
+   `wait: true` the caller's request (never the document thread) waits for the job, bounded by the call's budget and
+   cancellable; it answers the manifest with the `jobId`, or `job.waitTimeout` with the `jobId` while the job runs on
+   (ruling C33-R1-02).
+10. **Publication is a transaction** (ruling C33-R1-03). Frames and the companion manifest are staged beside their
+   targets as `.<name>.tt-partial-<token>` (the token is the job's). At the commit point every target is preflighted
+   (an existing target must be a writable regular file, else `export.targetInvalid`; the conflict policy was applied
+   at submission); then each existing original is moved aside to `.<name>.tt-backup-<token>` and the staged file renamed
+   onto the target. On any failure the published subset is removed, the originals are restored, the staging is
+   deleted and the job is `failed` with the cause; backups are deleted only when every rename succeeded. The manifest
+   exists only after full success.
+11. **Recovery contract** (ruling C33-R1-08). Process death between staging and commit may leave `.tt-partial-` and
+   `.tt-backup-` files with a job token. The product never publishes them; the next range job into that directory, and
+   a cancelled or failed job, sweep the staging and backup files whose token no running job of the process owns, and
+   the next job lists the swept names in its warnings (`render.staleStagingRemoved`, `files`). A swept backup whose
+   target is missing (death between moving the original aside and renaming the staged file) is renamed back onto its
+   target; one whose target exists is deleted (the target holds a frame the dead job published, re-renderable from
+   the saved document).
+12. **Volatile fields** (ruling C33-R1-06). `renderMs` (in `render.frame.run`, the generic `render_frame` result and
+   per run), job IDs and job timestamps are volatile and excluded from deterministic byte comparisons; the PNG bytes
+   and their `sha256` are the determinism contract. The retained example results record `renderMs` as varying.
+13. **Invalidation.** `anim.changed` is conservative: every frame whose render can change is covered by the announced
+   range (all-frame edits announce every frame); a frame inside the range may render unchanged.
 9. **Determinism gates.** Golden PNGs (`crates/executor/tests/golden/c33/`) are compared byte for byte on both OSes in
    debug (`check`) and release (`c33 render release`); the render gate (`scripts/c33-render-gate.py`) replays
    `tests/fixtures/c33/gate-scene.json` on the release headless binary and checks the in-process hashes

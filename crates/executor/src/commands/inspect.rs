@@ -18,7 +18,7 @@ use tt_vector::geom::{Affine, P};
 
 use super::common::{Point, Rect};
 use super::render;
-use super::render_list::{self, DU_PER_FIELD, RenderList, Request, Verdict};
+use super::render_list::{self, DU_PER_FIELD, Overrides, RenderList, Request, Verdict};
 use crate::cx::Cx;
 
 /// Description detail.
@@ -49,6 +49,12 @@ pub(crate) struct FrameParams {
     /// Detail.
     #[serde(default)]
     detail: Detail,
+    /// Elements to show although hidden or annotations (11 §7.5; the description of a render with the same overrides).
+    #[serde(default)]
+    include: Option<Vec<String>>,
+    /// Elements to leave out, with their descendants (11 §7.5).
+    #[serde(default)]
+    exclude: Option<Vec<String>>,
 }
 
 /// A rectangle `{x, y, width, height}`.
@@ -166,13 +172,14 @@ fn frame_list(
     scene: Option<&str>,
     frame: Option<u32>,
     camera: Option<&str>,
+    overrides: &Overrides,
 ) -> Result<(Document, RenderList), CommandError> {
     let scene = render::scene_param(cx, scene)?;
     let frame = render::frame_param(cx, frame)?;
     let doc = cx.document()?.clone();
     let camera = camera.map(|r| super::anim_common::node_id(cx, r)).transpose()?;
     let (w, h) = render::output_size(&doc, None, None, 1.0)?;
-    let req = Request { scene: &scene, frame, camera: camera.as_ref(), width: w, height: h, only: None };
+    let req = Request { scene: &scene, frame, camera: camera.as_ref(), width: w, height: h, only: None, overrides };
     let mut ev = super::anim_common::evaluator(&doc, "describing a frame");
     let list = render_list::build(&doc, &req, &mut ev)?;
     drop(ev);
@@ -200,7 +207,8 @@ fn role_str(r: tt_model::entities::element::Role) -> &'static str {
     agent_only = "agents verify frames structurally (11 §7.5 describe_frame)",
 )]
 pub(crate) fn inspect_frame_describe(cx: &mut Cx, p: FrameParams) -> Result<Description, CommandError> {
-    let (doc, list) = frame_list(cx, p.scene_id.as_deref(), p.frame, p.camera_id.as_deref())?;
+    let overrides = render::overrides(cx, p.include.as_deref(), p.exclude.as_deref())?;
+    let (doc, list) = frame_list(cx, p.scene_id.as_deref(), p.frame, p.camera_id.as_deref(), &overrides)?;
     let full = p.detail == Detail::Full;
     let to_cam = render::image_to_camera(&list);
     let cam = Affine(to_cam);
@@ -399,7 +407,7 @@ pub(crate) fn inspect_hit_test(cx: &mut Cx, p: HitParams) -> Result<Hits, Comman
     if !(p.point.x.is_finite() && p.point.y.is_finite()) {
         return Err(super::common::invalid("/point", "the point must be finite"));
     }
-    let (doc, list) = frame_list(cx, p.scene_id.as_deref(), p.frame, None)?;
+    let (doc, list) = frame_list(cx, p.scene_id.as_deref(), p.frame, None, &Overrides::NONE)?;
     let pixel = match p.space {
         Space::Image => P::new(p.point.x, p.point.y),
         Space::Camera => Affine(render::invert(render::image_to_camera(&list))).apply(P::new(p.point.x, p.point.y)),
@@ -549,7 +557,7 @@ pub(crate) fn inspect_coordinates_convert(cx: &mut Cx, p: ConvertParams) -> Resu
     if p.points.iter().any(|q| !(q.x.is_finite() && q.y.is_finite() && q.z.is_none_or(f64::is_finite))) {
         return Err(super::common::invalid("/points", "points must be finite"));
     }
-    let (doc, list) = frame_list(cx, p.scene_id.as_deref(), p.frame, None)?;
+    let (doc, list) = frame_list(cx, p.scene_id.as_deref(), p.frame, None, &Overrides::NONE)?;
     let needs_element = |s: CSpace| matches!(s, CSpace::Drawing | CSpace::Local | CSpace::Parent);
     let (world, parent) = if needs_element(from) || needs_element(to) {
         let r = p.element_id.as_deref().ok_or_else(|| {
@@ -676,6 +684,12 @@ pub(crate) struct ContactSheetParams {
     /// Frame labels (default true).
     #[serde(default)]
     labels: Option<bool>,
+    /// Elements to show although hidden or annotations (11 §7.5; render-time only).
+    #[serde(default)]
+    include: Option<Vec<String>>,
+    /// Elements to leave out, with their descendants (11 §7.5; render-time only).
+    #[serde(default)]
+    exclude: Option<Vec<String>>,
 }
 
 /// A cell of a contact sheet.
@@ -791,6 +805,9 @@ pub(crate) fn inspect_contact_sheet_render(cx: &mut Cx, p: ContactSheetParams) -
             json!({ "width": sheet_w, "height": sheet_h, "maxWidth": render::MAX_SIDE, "maxHeight": render::MAX_SIDE }),
         ));
     }
+    // The sheet is inline: its size is known before any frame is evaluated or rendered (C33-R1-04).
+    render::inline_side(cx, sheet_w, sheet_h)?;
+    let overrides = render::overrides(cx, p.include.as_deref(), p.exclude.as_deref())?;
     let bg = render::background(&doc, &scene, "scene")?;
     let blobs = cx.project().ok().map(|pr| &pr.store.blobs);
     let cache = cx.planar_cache();
@@ -802,7 +819,15 @@ pub(crate) fn inspect_contact_sheet_render(cx: &mut Cx, p: ContactSheetParams) -
         let (col, row) = (i % cols, i / cols);
         let x = SHEET_GAP + col * (cw + SHEET_GAP);
         let y = SHEET_GAP + row * (ch + band + SHEET_GAP);
-        let req = Request { scene: &scene, frame: *f, camera: None, width: cw, height: ch, only: None };
+        let req = Request {
+            scene: &scene,
+            frame: *f,
+            camera: None,
+            width: cw,
+            height: ch,
+            only: None,
+            overrides: &overrides,
+        };
         let r = render::render_frame(&doc, blobs, &cache, &req, bg, &|| false)?;
         for w in r.warnings {
             if !warnings.contains(&w) {
@@ -819,8 +844,11 @@ pub(crate) fn inspect_contact_sheet_render(cx: &mut Cx, p: ContactSheetParams) -
         }
         cells.push(Cell { frame: *f, x, y, w: cw, h: ch });
     }
+    // Encoding is bounded by the sheet size checked above; the caller's cancellation is observed around it.
+    render::observe_cancel()?;
     let png = tt_render::encode_png(&sheet, sheet_w, sheet_h)
         .map_err(|e| CommandError::with_details("render.failed", e.to_string(), json!({})))?;
+    render::observe_cancel()?;
     let (side, max_bytes) = render::inline_limits(cx);
     if sheet_w.max(sheet_h) > side || png.len() as u64 > max_bytes {
         return Err(CommandError::with_details(

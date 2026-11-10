@@ -392,6 +392,58 @@ impl ExecutorHandle {
         self.invoke_served(inv).0
     }
 
+    /// `wait: true` of a job command (09 §11.1 item 4; C33-R1-02): the call is answered on the document thread with
+    /// `{jobId}` as usual, then the caller's thread (never the document thread) waits for the job, bounded by the call's
+    /// watchdog budget, and the envelope carries the job's final result (its manifest, with `jobId`) or its failure. A
+    /// job still running at the timeout answers `job.waitTimeout` with the `jobId`, which stays addressable
+    /// (`job.wait`, `job.cancel`).
+    fn waited(&self, params: &Value, env: Envelope) -> Envelope {
+        if params.get("wait") != Some(&Value::Bool(true)) || !env.is_ok() {
+            return env;
+        }
+        let Some(job) = env
+            .result
+            .as_ref()
+            .and_then(|r| r.get("jobId"))
+            .and_then(Value::as_str)
+            .filter(|j| *j != "dryRun")
+            .map(str::to_owned)
+        else {
+            return env;
+        };
+        let rev = env.document_rev;
+        match self.jobs.wait(&job, self.config.budget) {
+            Ok((record, false)) if record.state == JobState::Succeeded => {
+                let mut result = record.result.unwrap_or(Value::Null);
+                if let Some(m) = result.as_object_mut() {
+                    m.insert("jobId".into(), Value::String(job));
+                }
+                Envelope::ok(result, rev)
+            }
+            Ok((record, false)) => {
+                let mut e = record.error.unwrap_or_else(|| {
+                    CommandError::new("job.failed", format!("job `{job}` ended {:?}", record.state))
+                });
+                if let Some(m) = e.details.as_object_mut() {
+                    m.insert("jobId".into(), Value::String(job));
+                } else {
+                    *e.details = serde_json::json!({ "jobId": job });
+                }
+                Envelope::error(e, rev)
+            }
+            Ok((_, true)) => Envelope::error(
+                CommandError::with_details(
+                    "job.waitTimeout",
+                    format!("job `{job}` is still running after {} ms; it continues", self.config.budget.as_millis()),
+                    serde_json::json!({ "jobId": job, "timeoutMs": u64::try_from(self.config.budget.as_millis()).unwrap_or(u64::MAX) }),
+                )
+                .hint("wait for it with job.wait, or cancel it with job.cancel"),
+                rev,
+            ),
+            Err(e) => Envelope::error(e, rev),
+        }
+    }
+
     /// [`ExecutorHandle::invoke`], also saying whether the answer came from the `requestId` cache: a retry that
     /// executed nothing (C14-R2-03; the envelope is the remembered one, identical to the first answer).
     #[must_use]
@@ -400,7 +452,10 @@ impl ExecutorHandle {
             return (self.job_wait(inv), false);
         }
         let what = inv.command.clone();
-        self.call(&what, |r| Request::Invoke(inv, r)).unwrap_or_else(|e| (Envelope::error(e, None), false))
+        let params = inv.params.clone();
+        let (env, cached) =
+            self.call(&what, |r| Request::Invoke(inv, r)).unwrap_or_else(|e| (Envelope::error(e, None), false));
+        (self.waited(&params, env), cached)
     }
 
     /// Runs a batch (11 §7.3).

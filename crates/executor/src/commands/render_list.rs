@@ -53,6 +53,8 @@ pub(crate) enum Verdict {
     BehindCamera,
     /// Entirely outside the camera frame.
     OutOfFrame,
+    /// Left out by the request's `exclude` override (itself or an ancestor; 11 §7.5).
+    Excluded,
 }
 
 impl Verdict {
@@ -65,6 +67,7 @@ impl Verdict {
             Verdict::Empty => "empty",
             Verdict::BehindCamera => "behindCamera",
             Verdict::OutOfFrame => "outOfFrame",
+            Verdict::Excluded => "excluded",
         }
     }
 }
@@ -116,6 +119,33 @@ pub(crate) struct Request<'a> {
     pub height: u32,
     /// Only these elements (composition `element`); `None`: every element.
     pub only: Option<&'a BTreeSet<Id>>,
+    /// Render-time visibility overrides (11 §7.5 `include`/`exclude`); never written to the document.
+    pub overrides: &'a Overrides,
+}
+
+/// Render-time visibility overrides (11 §7.5; C33-R1-05): `exclude` leaves out the listed elements and their
+/// descendants, as hiding them would; `include` shows the listed elements even when they are hidden, under a hidden
+/// ancestor, or annotations (view-only). An element in both lists is excluded. The document is never changed.
+#[derive(Debug, Clone, Default)]
+pub(crate) struct Overrides {
+    pub include: BTreeSet<Id>,
+    pub exclude: BTreeSet<Id>,
+}
+
+impl Overrides {
+    /// No override.
+    pub(crate) const NONE: Overrides = Overrides { include: BTreeSet::new(), exclude: BTreeSet::new() };
+}
+
+/// The excluded elements with their descendants.
+fn excluded_subtrees(nodes: &[TreeNode], exclude: &BTreeSet<Id>, inherited: bool, out: &mut BTreeSet<Id>) {
+    for n in nodes {
+        let x = inherited || exclude.contains(&n.id);
+        if x {
+            out.insert(n.id.clone());
+        }
+        excluded_subtrees(&n.children, exclude, x, out);
+    }
 }
 
 /// The scene's elements in displayed Timeline order (front first, a parent before its children).
@@ -153,6 +183,28 @@ fn tier(role: Role) -> u8 {
         Role::Background => 0,
         Role::Normal | Role::Envelope => 1,
         Role::Foreground => 2,
+    }
+}
+
+/// Depths closer than this to a group's anchor are ties, ordered by the Timeline (05 §2.8).
+pub(crate) const DEPTH_TIE: f64 = 1e-6;
+
+/// Sorts entries back to front (SI-106, C33-R1-01): by role tier, then by world Z, where a group starts at its smallest
+/// Z (the anchor) and takes every following entry whose Z is less than [`DEPTH_TIE`] above the anchor; a group is drawn
+/// in Timeline order. Grouping from the anchor, not between neighbours, keeps the rule transitive: a long chain of
+/// near-equal depths splits where the distance from the group's anchor reaches 1e-6 field. Equal inputs give one order
+/// on every platform (a total order on `(tier, z, rank)` first, then a deterministic grouping pass).
+pub(crate) fn composite_order(entries: &mut [Entry]) {
+    entries.sort_by(|a, b| tier(a.role).cmp(&tier(b.role)).then(a.z.total_cmp(&b.z)).then(a.rank.cmp(&b.rank)));
+    let mut start = 0;
+    while start < entries.len() {
+        let (t, anchor) = (tier(entries[start].role), entries[start].z);
+        let mut end = start + 1;
+        while end < entries.len() && tier(entries[end].role) == t && entries[end].z - anchor < DEPTH_TIE {
+            end += 1;
+        }
+        entries[start..end].sort_by_key(|en| en.rank);
+        start = end;
     }
 }
 
@@ -209,6 +261,10 @@ pub(crate) fn build(
     displayed(scene.tree(), &mut order);
     let n = order.len();
     let frame_rect = Rect { min_x: 0.0, min_y: 0.0, max_x: f64::from(req.width), max_y: f64::from(req.height) };
+    let mut excluded = BTreeSet::new();
+    if !req.overrides.exclude.is_empty() {
+        excluded_subtrees(scene.tree(), &req.overrides.exclude, false, &mut excluded);
+    }
     let mut entries = Vec::new();
     for (i, id) in order.iter().enumerate() {
         if req.only.is_some_and(|only| !only.contains(id)) {
@@ -228,9 +284,12 @@ pub(crate) fn build(
             (Some(m), Some(b)) => Some(map_rect(m, b)),
             _ => None,
         };
-        let verdict = if hidden(doc, scene.tree(), e) {
+        let included = req.overrides.include.contains(id);
+        let verdict = if excluded.contains(id) {
+            Verdict::Excluded
+        } else if !included && hidden(doc, scene.tree(), e) {
             Verdict::Hidden
-        } else if kind == ElementType::Annotation {
+        } else if !included && kind == ElementType::Annotation {
             Verdict::Annotation
         } else if drawing.is_none() {
             Verdict::NoDrawing
@@ -263,8 +322,7 @@ pub(crate) fn build(
             verdict,
         });
     }
-    // Z rounded to 1e-6 field: equal depths fall back to the Timeline order (a total order, so sorting is stable).
-    entries.sort_by_key(|en| (tier(en.role), (en.z * 1e6).round() as i64, en.rank));
+    composite_order(&mut entries);
     Ok(RenderList {
         scene: req.scene.clone(),
         frame: req.frame,

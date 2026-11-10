@@ -1228,9 +1228,13 @@ Reserved by the M0 closure for "measured deterministic-format incompatibility" (
 
 - **Sections:** 05 §2.8 (depth sort, Timeline tie-break), 04 §6.1 (foreground/background composite in front of/behind
   all normal elements; background auto-extends), 04 §9.1, 10 §4.3 (tree children top to bottom as displayed).
-- **Decision (builder, C3.3):** order = role tier (background; normal and envelope; foreground), then world Z of the
-  origin rounded to 1e-6 field (smaller first), then the Timeline order: back to front is the displayed rows bottom to
-  top (index 0 of a level is the front; a parent's row is above its children, so it is in front of them at equal depth).
+- **Decision (builder, C3.3; depth ties by ruling C33-R1-01):** order = role tier (background; normal and envelope;
+  foreground), then world Z of the origin (smaller first), then the Timeline order: back to front is the displayed rows
+  bottom to top (index 0 of a level is the front; a parent's row is above its children, so it is in front of them at
+  equal depth). Depths are not rounded: within a tier the nodes are sorted by Z and grouped from the smallest; a group
+  takes each following node whose Z is less than 1e-6 field from the group's *first* (smallest-Z) member, and a group
+  is ordered by the Timeline alone. Chain rule: a long run of near-equal depths splits where the distance from the
+  group's anchor reaches 1e-6, even though each step is smaller (0, 0.6e-6, 1.2e-6 is two groups).
   A background element extends its last exposure to the scene length at render time. Envelope elements draw as normal
   until bones (SI-097).
 - **Question:** confirm the role tiers outrank depth.
@@ -1244,9 +1248,20 @@ Reserved by the M0 closure for "measured deterministic-format incompatibility" (
   final with a `render.draftAsFinal` warning until the interactive renderer (M4 C4.2). `cameraFrame` has no effect on
   compositions that are the camera frame (warning `render.cameraFrameNotApplicable`). `cameraId` is accepted so the
   generic `render_frame` tool's `camera` keeps its meaning; the tool's `output` path writes a file and `sceneColour` is
-  `scene`. Overlays are never drawn in final renders. `RenderResult` adds `frame`, `imageToCamera` and `warnings`;
-  `renderMs` is not returned (results stay byte-comparable). `render.range.run` accepts `wait` and answers `{jobId}`
-  (`job.wait` waits); its companion manifest `<scene>_<from>-<to>.manifest.json` is written with the frames.
+  `scene`. Overlays are never drawn in final renders. `RenderResult` adds `frame`, `imageToCamera` and `warnings`, and
+  returns `renderMs` (ruling C33-R1-06; also in the generic `render_frame` result). Volatile fields (`renderMs`, job
+  timestamps, job IDs) are excluded from deterministic byte comparisons; the PNG bytes and their `sha256` are the
+  determinism contract. `include`/`exclude` (element refs) are a render-time visibility override on
+  `render.frame.run`, `render.range.run`, `inspect.contactSheet.render` and `inspect.frame.describe` (ruling C33-R1-05):
+  an included element is drawn although hidden or an annotation, an excluded one is left out with its descendants
+  (verdict `excluded`; exclusion wins), and the document is never changed. Known output sizes are checked before any
+  evaluation, allocation or encoding: an inline image (a frame or a contact sheet) whose long side or pixel count is
+  over the inline limit is `render.inlineTooLarge`, a general resource limit is `limit.exceeded`; the encoded-byte check
+  stays after encoding (ruling C33-R1-04). `render.range.run` without `wait` answers `{jobId}` (`job.wait` waits); with
+  `wait: true` the caller's request waits for the job off the document thread, bounded by the call's budget and
+  cancellable, and answers the manifest with its `jobId`; at the timeout it answers `job.waitTimeout` with the `jobId`,
+  and the job runs on (ruling C33-R1-02). Its companion manifest `<scene>_<from>-<to>.manifest.json` is written with the
+  frames, only when every frame is published: publication is a transaction (ruling C33-R1-03; ADR-0020).
 - **Question:** none.
 
 ## SI-108 — contact-sheet layout and labels (found in M3 C3.3; decided by the builder)
@@ -1267,5 +1282,15 @@ Reserved by the M0 closure for "measured deterministic-format incompatibility" (
   points go onto the plane Z = `z` (default the table plane). `hitTest` accepts `image`, `camera` and `scene` (table
   plane); `drawing` names no element and is refused (`inspect.spaceUnavailable`, convert to `scene` first); `view` waits
   for views (owner M4 C4.2). Points at or behind the near plane are `inspect.behindCamera`; a singular transform
-  (unreachable through the scale and skew limits) would be `inspect.singularTransform`.
+  (unreachable through the scale and skew limits) would be `inspect.singularTransform`. Inspection frames are integers,
+  as the registry rows bind them (`frame?: int`); a fractional frame is a typed `arg.invalid` (C3.3 round 1).
+  `inspect.frame.describe` takes the same `include`/`exclude` as `render.frame.run` and describes that render (SI-107).
+- **Question:** none.
+
+## SI-110 — generic `render_frame` default width (found in M3 C3.3 round 1; decided by ruling)
+
+- **Sections:** 11 §7.5 (`render_frame`), 09 §11.1 item 1 (the generic tool equals the owning command).
+- **Decision (ruling, C3.3 round 1):** parity wins: the generic `render_frame` tool maps to `render.frame.run` with
+  `composition: "camera"`, and its default width is the owning command's, the camera width; the tool schema says
+  "default = the camera width". No product change beyond the schema text.
 - **Question:** none.
