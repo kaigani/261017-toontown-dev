@@ -49,6 +49,9 @@ jobs:
       - uses: Swatinem/rust-cache@v2
         with:
           key: check
+          # Saved even when the job fails or reaches its time limit: a Cargo.toml change gives a new key, and a
+          # cold dependency build can exceed the limit (M3 C3.3 round 1, run 42828985635).
+          cache-on-failure: true
 
       - uses: pnpm/action-setup@v6
       - uses: actions/setup-node@v7
@@ -256,6 +259,9 @@ jobs:
       - uses: Swatinem/rust-cache@v2
         with:
           key: review-properties
+          # Saved even when the job fails or reaches its time limit: a Cargo.toml change gives a new key, and a
+          # cold dependency build can exceed the limit (M3 C3.3 round 1, run 42828985635).
+          cache-on-failure: true
 
       - name: Reviewer round-2 seed variants
         run: |
@@ -291,6 +297,9 @@ jobs:
       - uses: Swatinem/rust-cache@v2
         with:
           key: headless-release
+          # Saved even when the job fails or reaches its time limit: a Cargo.toml change gives a new key, and a
+          # cold dependency build can exceed the limit (M3 C3.3 round 1, run 42828985635).
+          cache-on-failure: true
 
       - name: Headless binary — build, self-test (twice, compared), linked-library proof
         run: |
