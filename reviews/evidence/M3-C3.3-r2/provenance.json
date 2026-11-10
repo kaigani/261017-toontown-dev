@@ -1,0 +1,16 @@
+{
+  "head": "669ddc3d0dc4efc148c9adf78b53c21b5d1b9fcf",
+  "branch": "review/m3-c33-r2",
+  "reviewSources": {
+    "crates\\executor\\tests\\c33_r2_depth.rs": "0049af1cff752b6a99c08a05bca388c5c09ca2e8ccac7809dd2394bf246f2105",
+    "crates\\executor\\tests\\c33_r2_recovery.rs": "5154ab7d78391d5251f6c13c7d120365deeb8a173dcc75c8541a81a5006e7fdf",
+    "crates\\executor\\tests\\c33_r2_stress.rs": "c82fbe47592b697829ae94fd0dbe094266b0f85e89c03d4b68106a79a48f8f90",
+    "crates\\executor\\tests\\c33_r2_visibility.rs": "aebd81c969212a138bc6822439a0677eac5b0dad5f7e29c4d8237d6d53a93ef3",
+    "crates\\executor\\tests\\c33_r2_wait.rs": "21275eee6c3cb78e381f255f92e42924efc5ddd77bff7ed210fced16a3d0daca",
+    "crates\\render\\tests\\c33_r2_cancel.rs": "c57f1ecea482c959b869d47fafcb5b47ddef09c3e3662bf0b7eab24c095368d8"
+  },
+  "commitReviewReceipts": null,
+  "sdkVersion": "2.0.0",
+  "goldenChanges": [],
+  "priorRegistersDiff": ""
+}

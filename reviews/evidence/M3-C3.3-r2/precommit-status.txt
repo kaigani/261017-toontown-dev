@@ -1,0 +1,8 @@
+﻿?? crates/executor/tests/c33_r2_depth.rs
+?? crates/executor/tests/c33_r2_recovery.rs
+?? crates/executor/tests/c33_r2_stress.rs
+?? crates/executor/tests/c33_r2_visibility.rs
+?? crates/executor/tests/c33_r2_wait.rs
+?? crates/render/tests/c33_r2_cancel.rs
+?? reviews/M3-C3.3-r2.md
+?? reviews/evidence/M3-C3.3-r2/
