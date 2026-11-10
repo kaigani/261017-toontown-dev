@@ -200,56 +200,7 @@ fn a_failed_publication_restores_the_destination_and_publishes_nothing() {
     assert_eq!(files(&dir), vec!["Intro_0001-0002.manifest.json", "shot-1.png", "shot-2.png"]);
 }
 
-#[test]
-fn stale_staging_is_swept_by_the_next_job_and_by_a_cancelled_one() {
-    let _t = turn();
-    let h = fixture();
-    let dir = c13_support::tmp();
-    // What a killed process leaves: a staged frame, a staged manifest and two backups, with tokens no live job owns.
-    // `old.png` was moved aside and its staged file never took its place, so its backup is put back; `kept.png` was
-    // replaced by the dead job's frame, so its backup is deleted.
-    let stale = [
-        ".Intro_0001.png.tt-partial-0a1b2c3d4e5f",
-        ".manifest.tt-partial-0a1b2c3d4e5f",
-        ".old.png.tt-backup-ffeeddccbbaa",
-        ".kept.png.tt-backup-ffeeddccbbaa",
-    ];
-    for f in stale {
-        std::fs::write(dir.join(f), b"stale").unwrap();
-    }
-    std::fs::write(dir.join("kept.png"), b"published").unwrap();
-    std::fs::write(dir.join("unrelated.txt"), b"keep").unwrap();
-    let m = c13_support::job_ok(
-        &h,
-        "render.range.run",
-        json!({ "from": 1, "to": 1, "width": 32, "directory": dir.to_string_lossy() }),
-    );
-    let w =
-        m["warnings"].as_array().unwrap().iter().find(|w| w["code"] == "render.staleStagingRemoved").expect("listed");
-    let mut listed: Vec<&str> = w["files"].as_array().unwrap().iter().map(|f| f.as_str().unwrap()).collect();
-    listed.sort_unstable();
-    let mut want = stale.to_vec();
-    want.sort_unstable();
-    assert_eq!(listed, want);
-    assert_eq!(std::fs::read(dir.join("old.png")).unwrap(), b"stale", "the original is put back");
-    assert_eq!(std::fs::read(dir.join("kept.png")).unwrap(), b"published");
-    std::fs::remove_file(dir.join("old.png")).unwrap();
-    std::fs::remove_file(dir.join("kept.png")).unwrap();
-    assert_eq!(files(&dir), vec!["Intro_0001-0001.manifest.json", "Intro_0001.png", "unrelated.txt"]);
-    // A cancelled job removes its own staging and sweeps stale staging too.
-    std::fs::write(dir.join(".x.png.tt-partial-112233445566"), b"stale").unwrap();
-    let _spin = Spin;
-    tt_vector::work::hooks::set_spin_micros(20_000);
-    let started =
-        ok(&h, "render.range.run", json!({ "from": 2, "to": 48, "width": 32, "directory": dir.to_string_lossy() }));
-    let job = started["jobId"].as_str().unwrap().to_owned();
-    std::thread::sleep(Duration::from_millis(200));
-    ok(&h, "job.cancel", json!({ "jobId": job }));
-    let rec = h.jobs().wait(&job, Duration::from_secs(60)).unwrap().0;
-    tt_vector::work::hooks::set_spin_micros(0);
-    assert_ne!(rec.state, tt_executor::JobState::Succeeded);
-    assert_eq!(files(&dir), vec!["Intro_0001-0001.manifest.json", "Intro_0001.png", "unrelated.txt"]);
-}
+// The staging-recovery test of round 1 is replaced by `c33_round2.rs` (sidecar ownership, C33-R2-01).
 
 #[test]
 fn include_and_exclude_override_visibility_without_touching_the_document() {

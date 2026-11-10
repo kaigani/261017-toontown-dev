@@ -927,14 +927,13 @@ struct Staged {
     target: PathBuf,
 }
 
-fn discard(staged: &[Staged]) {
-    for s in staged {
-        let _ = std::fs::remove_file(&s.tmp);
-    }
-}
-
 fn io_error(what: &str, path: &Path, e: &std::io::Error) -> CommandError {
     err("fs.io", format!("cannot {what} `{}`: {e}", path.display()), json!({ "path": path.to_string_lossy() }))
+}
+
+/// The file name of a path (empty when it has none).
+fn file_name(p: &Path) -> String {
+    p.file_name().map(|n| n.to_string_lossy().into_owned()).unwrap_or_default()
 }
 
 /// Everything a range job needs, owned (the job runs off the document thread on a snapshot).
@@ -956,26 +955,40 @@ struct RangeJob {
     format_name: &'static str,
     quality: Quality,
     range: Value,
-    /// The staging token of this job (its staged files end with `.tt-partial-<token>`).
+    /// The staging token of this job: its staged files are `.<target>.tt-partial-<token>` (ADR-0020 decision 11).
     token: String,
 }
 
 impl RangeJob {
-    fn run(&self, progress: &crate::jobs::JobProgress, staged: &mut Vec<Staged>) -> Result<Manifest, CommandError> {
+    /// The job's staging sidecar, listing every target it may write (the frames and the manifest).
+    fn sidecar(&self, job_id: &str) -> Sidecar {
+        let targets = self.targets.iter().chain(std::iter::once(&self.manifest_target)).map(|t| file_name(t)).collect();
+        Sidecar::new(&self.token, job_id, targets)
+    }
+
+    fn run(
+        &self,
+        progress: &crate::jobs::JobProgress,
+        sidecar: &mut Sidecar,
+        staged: &mut Vec<Staged>,
+    ) -> Result<Manifest, CommandError> {
         if !self.dir.is_dir() {
             std::fs::create_dir_all(&self.dir).map_err(|e| io_error("create", &self.dir, &e))?;
         }
         let token = &self.token;
         let mut files = Vec::with_capacity(self.frames.len());
         let mut warnings: Vec<Value> = Vec::new();
-        // Staging left by a job that did not finish (a killed process) is removed first, and listed (C33-R1-08).
-        let swept = sweep(&self.dir);
-        if !swept.is_empty() {
-            warnings.push(json!({ "code": "render.staleStagingRemoved", "files": swept }));
+        // Staging of range jobs that did not finish (a killed process), proven by their sidecars and only theirs, is
+        // recovered first and listed (C33-R1-08, C33-R2-01).
+        if let Some(w) = sweep(&self.dir).warning("render.staleStagingRemoved") {
+            progress.warn(w.clone());
+            warnings.push(w);
         }
         if self.quality == Quality::Draft {
             warnings.push(json!({ "code": "render.draftAsFinal" }));
         }
+        // The sidecar exists before the first staged file and is removed last.
+        sidecar.write(&self.dir)?;
         let cancelled = || progress.cancelled();
         let total = self.frames.len() as f64;
         for (i, (f, target)) in self.frames.iter().zip(&self.targets).enumerate() {
@@ -999,8 +1012,7 @@ impl RangeJob {
                 }
             }
             let bytes = encode_sequence(self.format, &r.pixels, self.width, self.height)?;
-            let name = target.file_name().map(|n| n.to_string_lossy().into_owned()).unwrap_or_default();
-            let tmp = target.with_file_name(format!(".{name}.tt-partial-{token}"));
+            let tmp = target.with_file_name(staged_name(&file_name(target), token));
             std::fs::write(&tmp, &bytes).map_err(|e| io_error("write", &tmp, &e))?;
             staged.push(Staged { tmp, target: target.clone() });
             files.push(ManifestFile {
@@ -1031,23 +1043,149 @@ impl RangeJob {
         };
         let text =
             serde_json::to_string_pretty(&manifest).map_err(|e| err("render.failed", e.to_string(), json!({})))?;
-        let tmp = self.manifest_target.with_file_name(format!(".manifest.tt-partial-{token}"));
+        let tmp = self.manifest_target.with_file_name(staged_name(&file_name(&self.manifest_target), token));
         std::fs::write(&tmp, text.as_bytes()).map_err(|e| io_error("write", &tmp, &e))?;
         staged.push(Staged { tmp, target: self.manifest_target.clone() });
         // The commit point: past it the job publishes every file and can no longer be cancelled.
         if !progress.commit() {
             return Err(CommandError::new("job.cancelled", "the range was cancelled; nothing was published"));
         }
-        publish(staged, token)?;
+        for w in publish(&self.dir, staged, sidecar)? {
+            progress.warn(w);
+        }
         progress.report(1.0, "Done");
         Ok(manifest)
     }
 }
 
-/// The staging and backup markers of range jobs: `.<name>.tt-partial-<token>` and `.<name>.tt-backup-<token>`.
-const STAGING_MARKERS: [&str; 2] = [".tt-partial-", ".tt-backup-"];
+/// The staging marker: a staged file is `.<target name>.tt-partial-<token>`.
+const PARTIAL: &str = ".tt-partial-";
+/// The backup marker: an original moved aside during publication is `.<target name>.tt-backup-<token>`.
+const BACKUP: &str = ".tt-backup-";
+/// A job's staging sidecar is `.tt-partial-<token>.job`.
+const SIDECAR_EXT: &str = ".job";
+/// The `kind` of a staging sidecar.
+const SIDECAR_KIND: &str = "toontown.render.range.staging";
+/// Sidecars larger than this are not read (a job's sidecar lists at most 100 001 short names).
+const SIDECAR_MAX_BYTES: u64 = 64 << 20;
 
-/// Staging tokens of the range jobs running in this process: the sweep never removes a live job's files.
+fn staged_name(target: &str, token: &str) -> String {
+    format!(".{target}{PARTIAL}{token}")
+}
+
+fn backup_name(target: &str, token: &str) -> String {
+    format!(".{target}{BACKUP}{token}")
+}
+
+fn sidecar_name(token: &str) -> String {
+    format!("{PARTIAL}{token}{SIDECAR_EXT}")
+}
+
+/// Whether `t` has the exact format of the staging token generator: 12 lowercase hexadecimal characters.
+fn valid_token(t: &str) -> bool {
+    t.len() == 12 && t.bytes().all(|b| b.is_ascii_digit() || (b'a'..=b'f').contains(&b))
+}
+
+/// A new staging token in the exact format (six random bytes as lowercase hex).
+fn new_token() -> String {
+    let t = tt_persist::fsx::random_token(6);
+    if valid_token(&t) {
+        return t;
+    }
+    // The generator's time-and-counter fallback (no system randomness), brought to the same format.
+    sha256_hex(format!("{t}-{}", std::process::id()).as_bytes()).chars().take(12).collect()
+}
+
+/// Whether a name listed in a sidecar is a plain file name in the job's directory, never a path.
+fn plain_name(n: &str) -> bool {
+    !n.is_empty() && n != "." && n != ".." && !n.contains(['/', '\\', ':']) && !n.chars().any(char::is_control)
+}
+
+/// A range job's staging sidecar: the ownership proof recovery requires (ADR-0020 decision 11, C33-R2-01). A
+/// recovery acts only on the files a valid sidecar lists, derived from its targets and its own token.
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
+#[serde(rename_all = "camelCase", deny_unknown_fields)]
+struct Sidecar {
+    kind: String,
+    version: u32,
+    token: String,
+    job_id: String,
+    /// The product revision that wrote it (the CI commit; `unknown` in local builds).
+    head: String,
+    product_version: String,
+    host: String,
+    pid: u32,
+    /// Set once every staged file took its target's place: a recovery then keeps the targets and drops the backups.
+    published: bool,
+    /// Target file names (frames, then the manifest).
+    targets: Vec<String>,
+    /// `.<target>.tt-partial-<token>` for each target.
+    staged: Vec<String>,
+    /// `.<target>.tt-backup-<token>` for each target.
+    backups: Vec<String>,
+}
+
+impl Sidecar {
+    fn new(token: &str, job_id: &str, targets: Vec<String>) -> Self {
+        Self {
+            kind: SIDECAR_KIND.to_owned(),
+            version: 1,
+            token: token.to_owned(),
+            job_id: job_id.to_owned(),
+            head: option_env!("GITHUB_SHA").unwrap_or("unknown").to_owned(),
+            product_version: env!("CARGO_PKG_VERSION").to_owned(),
+            host: tt_persist::host::host(),
+            pid: std::process::id(),
+            published: false,
+            staged: targets.iter().map(|t| staged_name(t, token)).collect(),
+            backups: targets.iter().map(|t| backup_name(t, token)).collect(),
+            targets,
+        }
+    }
+
+    fn write(&self, dir: &Path) -> Result<(), CommandError> {
+        let path = dir.join(sidecar_name(&self.token));
+        let text = serde_json::to_vec_pretty(self).map_err(|e| err("render.failed", e.to_string(), json!({})))?;
+        std::fs::write(&path, text).map_err(|e| io_error("write", &path, &e))
+    }
+
+    /// The sidecar `name` in `dir`, if it is exactly what a range job writes: the name `.tt-partial-<token>.job`
+    /// with a well-formed token, a regular file, the kind and version, the same token inside, plain target names and
+    /// staged/backup names derived from them. Anything else is not ours and is never acted on.
+    fn read(dir: &Path, name: &str) -> Option<Self> {
+        let token = name.strip_prefix(PARTIAL)?.strip_suffix(SIDECAR_EXT)?;
+        if !valid_token(token) {
+            return None;
+        }
+        let path = dir.join(name);
+        let meta = std::fs::symlink_metadata(&path).ok()?;
+        if !meta.is_file() || meta.len() > SIDECAR_MAX_BYTES {
+            return None;
+        }
+        let s: Self = serde_json::from_slice(&std::fs::read(&path).ok()?).ok()?;
+        let owned = s.kind == SIDECAR_KIND
+            && s.version == 1
+            && s.token == token
+            && s.targets.iter().all(|t| plain_name(t))
+            && s.staged.iter().eq(s.targets.iter().map(|t| staged_name(t, token)).collect::<Vec<_>>().iter())
+            && s.backups.iter().eq(s.targets.iter().map(|t| backup_name(t, token)).collect::<Vec<_>>().iter());
+        owned.then_some(s)
+    }
+
+    /// Whether the job that wrote it may still run: a job of this process while its token is live, a job of another
+    /// process on this machine unless that process is known to be gone, and any job of another machine.
+    fn alive(&self) -> bool {
+        if self.host != tt_persist::host::host() {
+            return true;
+        }
+        if self.pid == std::process::id() {
+            return live_tokens().contains(&self.token);
+        }
+        tt_persist::host::process_alive(self.pid) != Some(false)
+    }
+}
+
+/// Staging tokens of the range jobs running in this process: a sweep never recovers a live job's files.
 static LIVE_TOKENS: std::sync::Mutex<BTreeSet<String>> = std::sync::Mutex::new(BTreeSet::new());
 
 fn live_tokens() -> std::sync::MutexGuard<'static, BTreeSet<String>> {
@@ -1059,8 +1197,12 @@ struct LiveToken(String);
 
 impl LiveToken {
     fn new() -> Self {
-        let token = tt_persist::fsx::random_token(6);
-        live_tokens().insert(token.clone());
+        let mut live = live_tokens();
+        let mut token = new_token();
+        while live.contains(&token) {
+            token = new_token();
+        }
+        live.insert(token.clone());
         Self(token)
     }
 }
@@ -1071,49 +1213,121 @@ impl Drop for LiveToken {
     }
 }
 
-/// The staging token of a file name the range jobs write, if it is one.
-fn staging_token(name: &str) -> Option<&str> {
-    if !name.starts_with('.') {
-        return None;
-    }
-    STAGING_MARKERS
-        .iter()
-        .find_map(|m| name.rfind(m).map(|i| &name[i + m.len()..]))
-        .filter(|t| !t.is_empty() && t.chars().all(|c| c.is_ascii_alphanumeric()))
+/// What a recovery did: files removed, targets whose original came back, and files left because the file system
+/// refused (the sidecar is then kept, so a later job retries).
+#[derive(Debug, Default)]
+struct Recovery {
+    removed: Vec<String>,
+    restored: Vec<String>,
+    failed: Vec<String>,
 }
 
-/// Removes the staging and backup files of range jobs in `dir` that no running job of this process owns (a process
-/// killed mid-job leaves them; ADR-0020, C33-R1-08). Returns the names removed, sorted.
-pub(crate) fn sweep(dir: &Path) -> Vec<String> {
-    let Ok(rd) = std::fs::read_dir(dir) else { return Vec::new() };
-    let live = live_tokens().clone();
-    let mut removed = Vec::new();
-    for e in rd.flatten() {
-        let name = e.file_name().to_string_lossy().into_owned();
-        let Some(token) = staging_token(&name) else { continue };
-        if live.contains(token) || !e.file_type().is_ok_and(|t| t.is_file()) {
-            continue;
+impl Recovery {
+    fn is_empty(&self) -> bool {
+        self.removed.is_empty() && self.restored.is_empty() && self.failed.is_empty()
+    }
+
+    fn merge(&mut self, other: Recovery) {
+        self.removed.extend(other.removed);
+        self.restored.extend(other.restored);
+        self.failed.extend(other.failed);
+    }
+
+    /// The receipt as a warning: `files` (names removed or moved back onto their targets), `restored` (targets whose
+    /// original came back) and `unrestored` (names left in place).
+    fn warning(mut self, code: &str) -> Option<Value> {
+        if self.is_empty() {
+            return None;
         }
-        // A backup whose target is missing is an original moved aside by a publication that died before its staged
-        // file took the place: it is put back, not deleted.
-        if let Some(original) = backup_target(&name, token) {
-            let target = dir.join(original);
-            if !target.exists() && std::fs::rename(e.path(), &target).is_ok() {
-                removed.push(name);
-                continue;
+        self.removed.sort();
+        self.restored.sort();
+        self.failed.sort();
+        let mut w = json!({ "code": code, "files": self.removed });
+        if !self.restored.is_empty() {
+            w["restored"] = json!(self.restored);
+        }
+        if !self.failed.is_empty() {
+            w["unrestored"] = json!(self.failed);
+        }
+        Some(w)
+    }
+}
+
+fn is_file(p: &Path) -> bool {
+    std::fs::symlink_metadata(p).is_ok_and(|m| m.is_file())
+}
+
+/// Puts an original back from its backup, replacing the file an interrupted publication left at the target.
+fn restore(backup: &Path, target: &Path) -> bool {
+    tt_persist::lock::boundary(tt_persist::lock::Boundary::RangeRestore, target);
+    match std::fs::symlink_metadata(target) {
+        Ok(m) if m.is_file() => {
+            if std::fs::remove_file(target).is_err() {
+                return false;
             }
         }
-        if std::fs::remove_file(e.path()).is_ok() {
-            removed.push(name);
-        }
+        Ok(_) => return false,
+        Err(_) => {}
     }
-    removed.sort();
-    removed
+    std::fs::rename(backup, target).is_ok()
 }
 
-/// The original name of a backup file `.<name>.tt-backup-<token>`.
-fn backup_target<'a>(name: &'a str, token: &str) -> Option<&'a str> {
-    name.strip_prefix('.')?.strip_suffix(token)?.strip_suffix(STAGING_MARKERS[1]).filter(|n| !n.is_empty())
+/// Recovers the staging a sidecar lists, and nothing else (ADR-0020 decision 11): staged files are removed; a backup
+/// is deleted when the publication had completed (`published`), otherwise its original goes back to its name in
+/// place of what the interrupted publication put there. The sidecar is removed last, only when nothing failed.
+fn recover(dir: &Path, s: &Sidecar) -> Recovery {
+    let mut r = Recovery::default();
+    for ((target, staged), backup) in s.targets.iter().zip(&s.staged).zip(&s.backups) {
+        let staged_path = dir.join(staged);
+        if is_file(&staged_path) {
+            match std::fs::remove_file(&staged_path) {
+                Ok(()) => r.removed.push(staged.clone()),
+                Err(_) => r.failed.push(staged.clone()),
+            }
+        }
+        let backup_path = dir.join(backup);
+        if !is_file(&backup_path) {
+            continue;
+        }
+        if s.published {
+            match std::fs::remove_file(&backup_path) {
+                Ok(()) => r.removed.push(backup.clone()),
+                Err(_) => r.failed.push(backup.clone()),
+            }
+        } else if restore(&backup_path, &dir.join(target)) {
+            r.removed.push(backup.clone());
+            r.restored.push(target.clone());
+        } else {
+            r.failed.push(backup.clone());
+        }
+    }
+    if r.failed.is_empty() {
+        let name = sidecar_name(&s.token);
+        match std::fs::remove_file(dir.join(&name)) {
+            Ok(()) => r.removed.push(name),
+            Err(e) if e.kind() == std::io::ErrorKind::NotFound => {}
+            Err(_) => r.failed.push(name),
+        }
+    }
+    r
+}
+
+/// Recovers the staging of the range jobs in `dir` whose sidecars are valid and whose jobs are not alive (a process
+/// killed mid-job; C33-R1-08). Files no valid sidecar lists, malformed tokens and marker-like names are never
+/// touched and never reported (C33-R2-01).
+fn sweep(dir: &Path) -> Recovery {
+    let Ok(rd) = std::fs::read_dir(dir) else { return Recovery::default() };
+    let mut names: Vec<String> = rd.flatten().map(|e| e.file_name().to_string_lossy().into_owned()).collect();
+    names.sort();
+    let mut r = Recovery::default();
+    for name in names {
+        if let Some(s) = Sidecar::read(dir, &name)
+            && !s.alive()
+        {
+            r.merge(recover(dir, &s));
+        }
+    }
+    r
 }
 
 fn target_invalid(path: &Path, why: &str) -> CommandError {
@@ -1124,11 +1338,42 @@ fn target_invalid(path: &Path, why: &str) -> CommandError {
     )
 }
 
+/// Undoes a failed publication: published targets without an original are removed, originals are restored from
+/// their backups. Returns `cause` when everything was undone, else `export.rollbackIncomplete` naming the targets
+/// that could not be restored (the sidecar stays, so the next range job into the directory retries).
+fn rolled_back(cause: CommandError, published: &[PathBuf], backups: &[(PathBuf, PathBuf)]) -> CommandError {
+    let mut unrestored: Vec<String> = Vec::new();
+    for t in published.iter().filter(|t| !backups.iter().any(|(target, _)| target == *t)) {
+        match std::fs::remove_file(t) {
+            Err(e) if e.kind() != std::io::ErrorKind::NotFound => unrestored.push(t.to_string_lossy().into_owned()),
+            _ => {}
+        }
+    }
+    for (target, backup) in backups {
+        if !restore(backup, target) {
+            unrestored.push(target.to_string_lossy().into_owned());
+        }
+    }
+    if unrestored.is_empty() {
+        return cause;
+    }
+    err(
+        "export.rollbackIncomplete",
+        format!(
+            "publishing failed ({}) and {} target(s) could not be restored; the job's staging sidecar is kept so the \
+             next range job into this directory retries",
+            cause.message,
+            unrestored.len()
+        ),
+        json!({ "cause": { "code": cause.code, "message": cause.message }, "unrestored": unrestored }),
+    )
+}
+
 /// Publishes staged files as one transaction (C33-R1-03): every target is checked first (an existing target must be a
-/// writable regular file); then each existing original is moved aside to a backup and the staged file renamed onto
-/// the target. On any failure the published targets are removed and the originals restored, so the destination is as
-/// it was; backups are deleted only when every rename succeeded. The caller deletes the staging on failure.
-fn publish(staged: &[Staged], token: &str) -> Result<(), CommandError> {
+/// writable regular file); then each existing original is moved aside to its backup and the staged file renamed onto
+/// the target. On any failure the publication is undone ([`rolled_back`]). On success the sidecar is marked
+/// `published`, the backups are deleted and the sidecar removed; leftovers are returned as a warning, never dropped.
+fn publish(dir: &Path, staged: &[Staged], sidecar: &mut Sidecar) -> Result<Vec<Value>, CommandError> {
     for s in staged {
         if let Ok(meta) = std::fs::symlink_metadata(&s.target) {
             if !meta.is_file() {
@@ -1139,36 +1384,44 @@ fn publish(staged: &[Staged], token: &str) -> Result<(), CommandError> {
             }
         }
     }
+    let token = sidecar.token.clone();
     let mut backups: Vec<(PathBuf, PathBuf)> = Vec::new();
     let mut published: Vec<PathBuf> = Vec::new();
-    let rollback = |published: &[PathBuf], backups: &[(PathBuf, PathBuf)]| {
-        for t in published {
-            let _ = std::fs::remove_file(t);
-        }
-        for (target, backup) in backups {
-            let _ = std::fs::rename(backup, target);
-        }
-    };
     for s in staged {
         if s.target.exists() {
-            let name = s.target.file_name().map(|n| n.to_string_lossy().into_owned()).unwrap_or_default();
-            let backup = s.target.with_file_name(format!(".{name}.tt-backup-{token}"));
+            let backup = s.target.with_file_name(backup_name(&file_name(&s.target), &token));
             if let Err(e) = std::fs::rename(&s.target, &backup) {
-                rollback(&published, &backups);
-                return Err(io_error("set aside", &s.target, &e));
+                return Err(rolled_back(io_error("set aside", &s.target, &e), &published, &backups));
             }
             backups.push((s.target.clone(), backup));
         }
+        tt_persist::lock::boundary(tt_persist::lock::Boundary::RangePublish, &s.target);
         if let Err(e) = std::fs::rename(&s.tmp, &s.target) {
-            rollback(&published, &backups);
-            return Err(io_error("publish", &s.target, &e));
+            return Err(rolled_back(io_error("publish", &s.target, &e), &published, &backups));
         }
         published.push(s.target.clone());
     }
-    for (_, backup) in &backups {
-        let _ = std::fs::remove_file(backup);
+    let mut left: Vec<String> = Vec::new();
+    sidecar.published = true;
+    if sidecar.write(dir).is_err() {
+        left.push(sidecar_name(&token));
     }
-    Ok(())
+    for (_, backup) in &backups {
+        if std::fs::remove_file(backup).is_err() {
+            left.push(file_name(backup));
+        }
+    }
+    if std::fs::remove_file(dir.join(sidecar_name(&token))).is_err() {
+        left.push(sidecar_name(&token));
+    }
+    left.dedup();
+    Ok(if left.is_empty() {
+        Vec::new()
+    } else {
+        vec![
+            json!({ "code": "render.stagingLeft", "message": "published; these staging files could not be removed", "files": left }),
+        ]
+    })
 }
 
 fn encode_sequence(format: SequenceFormat, pixels: &[u8], w: u32, h: u32) -> Result<Vec<u8>, CommandError> {
@@ -1286,15 +1539,18 @@ pub(crate) fn render_range_run(cx: &mut Cx, p: RangeParams) -> Result<Job<Manife
     };
     let origin = cx.origin().clone();
     let id = cx.session().jobs.submit("render.range.run", &origin.session_key(), move |progress| {
-        // The token stays live, so no sweep removes this job's files, until the job ends.
+        // The token stays live, so no sweep recovers this job's files, until the job ends.
         let _live = live;
+        let mut sidecar = job.sidecar(progress.job_id());
         let mut staged: Vec<Staged> = Vec::new();
-        match job.run(progress, &mut staged) {
+        match job.run(progress, &mut sidecar, &mut staged) {
             Ok(m) => Ok(serde_json::to_value(m).unwrap_or(Value::Null)),
             Err(e) => {
-                // A failed or cancelled job deletes its staging and sweeps stale staging of the directory (C33-R1-08).
-                discard(&staged);
-                sweep(&job.dir);
+                // A failed or cancelled job recovers its own staging and only its own (C33-R2-01); the receipt stays in
+                // the job record with the state and, when failed, the error (C33-R2-02).
+                if let Some(w) = recover(&job.dir, &sidecar).warning("render.stagingDiscarded") {
+                    progress.warn(w);
+                }
                 Err(e)
             }
         }

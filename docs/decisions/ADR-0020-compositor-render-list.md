@@ -1,6 +1,6 @@
 # ADR-0020 — Compositor and render list
 
-Status: accepted (M3 C3.3; amended in C3.3 round 1).
+Status: accepted (M3 C3.3; amended in C3.3 rounds 1 and 2).
 
 ## Context
 
@@ -56,20 +56,44 @@ thread); ADR-0019 fixes the evaluation order of transforms.
    `wait: true` the caller's request (never the document thread) waits for the job, bounded by the call's budget and
    cancellable; it answers the manifest with the `jobId`, or `job.waitTimeout` with the `jobId` while the job runs on
    (ruling C33-R1-02).
-10. **Publication is a transaction** (ruling C33-R1-03). Frames and the companion manifest are staged beside their
-   targets as `.<name>.tt-partial-<token>` (the token is the job's). At the commit point every target is preflighted
-   (an existing target must be a writable regular file, else `export.targetInvalid`; the conflict policy was applied
-   at submission); then each existing original is moved aside to `.<name>.tt-backup-<token>` and the staged file renamed
-   onto the target. On any failure the published subset is removed, the originals are restored, the staging is
-   deleted and the job is `failed` with the cause; backups are deleted only when every rename succeeded. The manifest
-   exists only after full success.
-11. **Recovery contract** (ruling C33-R1-08). Process death between staging and commit may leave `.tt-partial-` and
-   `.tt-backup-` files with a job token. The product never publishes them; the next range job into that directory, and
-   a cancelled or failed job, sweep the staging and backup files whose token no running job of the process owns, and
-   the next job lists the swept names in its warnings (`render.staleStagingRemoved`, `files`). A swept backup whose
-   target is missing (death between moving the original aside and renaming the staged file) is renamed back onto its
-   target; one whose target exists is deleted (the target holds a frame the dead job published, re-renderable from
-   the saved document).
+10. **Publication is a transaction** (ruling C33-R1-03; amended in round 2). Frames and the companion manifest are
+   staged beside their targets as `.<target name>.tt-partial-<token>`. At the commit point every target is
+   preflighted (an existing target must be a writable regular file, else `export.targetInvalid`; the conflict policy
+   was applied at submission); then each existing original is moved aside to `.<target name>.tt-backup-<token>` and the
+   staged file renamed onto the target. On any failure the publication is undone: published targets without an
+   original are removed and the originals restored. If the file system refuses part of that undo, the job is `failed`
+   with `export.rollbackIncomplete` (`details.cause`: the failure that started it; `details.unrestored`: the targets
+   not restored), never silently; the backups and the sidecar are kept, so the next range job into the directory
+   retries (decision 11). On success the sidecar is marked `published`, the backups are deleted and the sidecar is
+   removed last; files that cannot be removed are reported (`render.stagingLeft`). The manifest exists only after full
+   success.
+11. **Recovery contract** (rulings C33-R1-08, C33-R2-01, C33-R2-02). Recovery acts only on files the product can prove
+   it owns.
+   - **Exact names.** A job's token is exactly 12 lowercase hexadecimal characters (six random bytes; the generator's
+     no-randomness fallback is hashed into the same format). Its files are `.<target>.tt-partial-<token>` and
+     `.<target>.tt-backup-<token>`, where each `<target>` is a file name the job's own pattern and range produce for
+     the directory (the frames and the manifest).
+   - **Owned sidecar.** Before its first staged write a job writes `.tt-partial-<token>.job` in the directory: JSON with
+     `kind` `toontown.render.range.staging`, `version` 1, `token`, `jobId`, `head` (the CI commit the product was built
+     from, `unknown` in local builds), `productVersion`, `host`, `pid`, `published`, `targets`, and the `staged` and
+     `backups` names derived from them. It is removed last.
+   - **Who recovers what.** A recovery reads only sidecars whose name has a well-formed token, which are regular files,
+     whose `kind`, `version` and inner `token` match, whose targets are plain file names (never paths) and whose
+     staged and backup names are exactly the derived ones; it acts only on the files such a sidecar lists. Files not
+     listed, malformed tokens, marker-like names and invalid sidecars are never touched and never reported. The next
+     range job into a directory recovers the sidecars whose job is not alive: a job of this process whose token is no
+     longer live, or a job of another process on this machine that is known to have exited; a job of another machine,
+     or of a process whose state is unknown, is left alone. A cancelled or failed job recovers its own sidecar only.
+   - **What recovery does.** Listed staged files are removed. A listed backup is deleted when the sidecar is
+     `published` (the publication completed); otherwise its original is put back onto the target, replacing the file
+     the interrupted publication left there (the backup proves the job moved the original aside). The sidecar is
+     removed only when nothing failed, so a refused step is retried by a later job.
+   - **Receipts.** The next job lists what it recovered in its warnings (`render.staleStagingRemoved`: `files` removed
+     or moved back, `restored` targets, `unrestored` names left). A cancelled or failed job records its own recovery
+     (`render.stagingDiscarded`, same fields) in its job record's `warnings`, kept with the state and, when failed,
+     the typed error, and readable through `job.list` and `job.wait` after completion. Neither state becomes success.
+   - Process death may leave a job's staged files, backups and sidecar; they are never published, and the next job
+     into the directory recovers them as above.
 12. **Volatile fields** (ruling C33-R1-06). `renderMs` (in `render.frame.run`, the generic `render_frame` result and
    per run), job IDs and job timestamps are volatile and excluded from deterministic byte comparisons; the PNG bytes
    and their `sha256` are the determinism contract. The retained example results record `renderMs` as varying.

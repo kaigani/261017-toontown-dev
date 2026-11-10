@@ -113,7 +113,12 @@ jobs:
       # 47 min 59 s in run 42738948001).
       # `killed_sequence_leaves_no_staged_files` (reviewer, C3.3 round 1) asserts a killed process leaves no staging; ruling
       # C33-R1-08 closes that premise (process death may leave `.tt-partial-` files; the next job sweeps them, tested in
-      # `c33_round1::stale_staging_is_swept_by_the_next_job_and_by_a_cancelled_one`), so it is skipped here.
+      # `c33_round2::a_dead_jobs_listed_staging_is_recovered_and_reported`), so it is skipped here.
+      # C3.3 round 2: `c33_r2_wait::waiting_caller_does_not_block_document_reads` and
+      # `c33_r2_recovery::stale_stage_is_reported_and_orphan_backup_restored` (reviewer) inject staging files that no
+      # sidecar lists and assert that recovery removes and reports them; ruling C33-R2-01 requires such files to be never
+      # touched and never reported, so both are skipped here, bodies unchanged. What they also check (a waiting caller
+      # leaves document reads free; cancel and orphan-backup receipts) is covered with owned staging in `c33_round2`.
       - name: Run cargo test --workspace --locked
         run: |
           cargo test --workspace --locked -- --skip ten_thousand_history_operations_match_independent_content_oracle_and_replay \
@@ -149,7 +154,7 @@ jobs:
             --skip non_parallelogram_envelopes_map_the_layer_projectively \
             --skip snapping_onto_a_curved_contour_reaches_its_nearest_point \
             --skip integer_translations_and_compositions_preserve_all_snapped_anchor_sequences \
-            --skip side_fills_read_back_beside_collinear_overlaps             --skip independent_sequences_4096_persist_canonical_runs_and_notes             --skip exclusive_mutation_capability             --skip duplicate_ids_and_inventory_kind_drift_are_rejected             --skip missing_example_is_rejected_at_compile_time             --skip killed_sequence_leaves_no_staged_files
+            --skip side_fills_read_back_beside_collinear_overlaps             --skip independent_sequences_4096_persist_canonical_runs_and_notes             --skip exclusive_mutation_capability             --skip duplicate_ids_and_inventory_kind_drift_are_rejected             --skip missing_example_is_rejected_at_compile_time             --skip killed_sequence_leaves_no_staged_files             --skip waiting_caller_does_not_block_document_reads             --skip stale_stage_is_reported_and_orphan_backup_restored
 
       - name: Desktop host with the M0 diagnostics feature (C0.4 gating) — clippy and tests
         run: |

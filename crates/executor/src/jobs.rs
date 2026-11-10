@@ -60,6 +60,9 @@ pub struct JobRecord {
     pub error: Option<CommandError>,
     /// Session that started it.
     pub session: String,
+    /// Warnings the job recorded (recovery receipts of `render.range.run`, C33-R2-02); kept in every final state.
+    #[serde(default, skip_serializing_if = "Vec::is_empty")]
+    pub warnings: Vec<Value>,
 }
 
 /// A job is running and cancellable.
@@ -126,6 +129,11 @@ impl JobProgress {
         }
     }
 
+    /// Records a warning in the job's record, kept whatever the final state (a recovery receipt, C33-R2-02).
+    pub fn warn(&self, warning: Value) {
+        self.table.update(&self.job_id, |r| r.warnings.push(warning));
+    }
+
     /// The job's ID.
     #[must_use]
     pub fn job_id(&self) -> &str {
@@ -189,6 +197,7 @@ impl JobTable {
                     result: None,
                     error: None,
                     session: session.to_owned(),
+                    warnings: Vec::new(),
                 },
             );
             t.cancel.insert(id.clone(), cancel.clone());

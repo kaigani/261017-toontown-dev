@@ -59749,6 +59749,11 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
         description: "Session that started it.",
         type: "string",
       },
+      warnings: {
+        description: "Warnings the job recorded (recovery receipts of `render.range.run`, C33-R2-02); kept in every final state.",
+        type: "array",
+        items: true,
+      },
     },
     required: [
       "jobId",
@@ -59872,6 +59877,11 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
         description: "Session that started it.",
         type: "string",
       },
+      warnings: {
+        description: "Warnings the job recorded (recovery receipts of `render.range.run`, C33-R2-02); kept in every final state.",
+        type: "array",
+        items: true,
+      },
     },
     required: [
       "jobId",
@@ -59949,6 +59959,11 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
       session: {
         description: "Session that started it.",
         type: "string",
+      },
+      warnings: {
+        description: "Warnings the job recorded (recovery receipts of `render.range.run`, C33-R2-02); kept in every final state.",
+        type: "array",
+        items: true,
       },
     },
     required: [
@@ -60139,6 +60154,11 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
         description: "Session that started it.",
         type: "string",
       },
+      warnings: {
+        description: "Warnings the job recorded (recovery receipts of `render.range.run`, C33-R2-02); kept in every final state.",
+        type: "array",
+        items: true,
+      },
     },
     required: [
       "jobId",
@@ -60277,6 +60297,11 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
       session: {
         description: "Session that started it.",
         type: "string",
+      },
+      warnings: {
+        description: "Warnings the job recorded (recovery receipts of `render.range.run`, C33-R2-02); kept in every final state.",
+        type: "array",
+        items: true,
       },
       timedOut: {
         description: "`true` when the job was still running when the timeout passed; absent otherwise (A / 11 §15.2 `timedOut?`;\nC12-R1-13).",
@@ -96309,6 +96334,8 @@ export interface job_cancel_result {
   error?: job_cancel_CommandError | null;
   /** Session that started it. */
   session: string;
+  /** Warnings the job recorded (recovery receipts of `render.range.run`, C33-R2-02); kept in every final state. */
+  warnings?: unknown[];
 }
 
 /** No parameters. */
@@ -96349,6 +96376,8 @@ export interface job_finished_result {
   error?: job_finished_CommandError | null;
   /** Session that started it. */
   session: string;
+  /** Warnings the job recorded (recovery receipts of `render.range.run`, C33-R2-02); kept in every final state. */
+  warnings?: unknown[];
 }
 
 /** `job.list` parameters. */
@@ -96379,6 +96408,8 @@ export interface job_list_JobRecord {
   error?: job_list_CommandError | null;
   /** Session that started it. */
   session: string;
+  /** Warnings the job recorded (recovery receipts of `render.range.run`, C33-R2-02); kept in every final state. */
+  warnings?: unknown[];
 }
 
 /** Job state (11 §7.7). */
@@ -96436,6 +96467,8 @@ export interface job_progress_result {
   error?: job_progress_CommandError | null;
   /** Session that started it. */
   session: string;
+  /** Warnings the job recorded (recovery receipts of `render.range.run`, C33-R2-02); kept in every final state. */
+  warnings?: unknown[];
 }
 
 /** `job.wait` parameters. */
@@ -96481,6 +96514,8 @@ export interface job_wait_result {
   error?: job_wait_CommandError | null;
   /** Session that started it. */
   session: string;
+  /** Warnings the job recorded (recovery receipts of `render.range.run`, C33-R2-02); kept in every final state. */
+  warnings?: unknown[];
   /** `true` when the job was still running when the timeout passed; absent otherwise (A / 11 §15.2 `timedOut?`; C12-R1-13). */
   timedOut?: boolean | null;
 }
