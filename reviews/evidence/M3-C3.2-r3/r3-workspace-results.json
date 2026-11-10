@@ -1,0 +1,10 @@
+[
+  {
+    "binary": "Running tests\\c32_r3_camera.rs (target\\debug\\deps\\c32_r3_camera-30196200286559c0.exe)",
+    "result": "test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.24s"
+  },
+  {
+    "binary": "Running tests\\c32_r3_history.rs (target\\debug\\deps\\c32_r3_history-4232f21473ee3539.exe)",
+    "result": "test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.31s"
+  }
+]

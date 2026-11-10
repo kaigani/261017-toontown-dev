@@ -1,0 +1,10 @@
+{
+  "head": "96c630290098e6458279b546e21fa5a2f4af8554",
+  "run": 42738948001,
+  "compare_run": 42714347825,
+  "receipts_env_unset": true,
+  "inherited_registers_fixed_heads": [
+    "197bbe2",
+    "96c6302"
+  ]
+}
