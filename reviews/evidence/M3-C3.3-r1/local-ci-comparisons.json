@@ -1,0 +1,110 @@
+[
+  {
+    "family": "c33",
+    "file": "gate-contact-sheet.png",
+    "equal": true,
+    "sha256": "9115ca0ec3cd9f3bdd0563723bd8d0ab6b33f525775c78aa6957f6f19ce4f87f"
+  },
+  {
+    "family": "c33",
+    "file": "gate-frame-1.png",
+    "equal": true,
+    "sha256": "c7200e1a6fef38885a4977c074c782bee890029d470623c096512acb4f0c2fbc"
+  },
+  {
+    "family": "c33",
+    "file": "gate-frame-17.png",
+    "equal": true,
+    "sha256": "cae435e50dadafa416a5dbe3102becc874eb5c3710ea8a0be613c192cfb7abe7"
+  },
+  {
+    "family": "c33",
+    "file": "gate-frame-9.png",
+    "equal": true,
+    "sha256": "1c922bc148c309cb91e8f265732a000de4eb79c4557e014de5636b3a2bbb59b7"
+  },
+  {
+    "family": "c33",
+    "file": "gate-path.json",
+    "equal": true,
+    "sha256": "593ad263bea3239c98f4d57641c3d1fe4a3ed2203ed9bacdd6002f6e0f161984"
+  },
+  {
+    "family": "c33",
+    "file": "sequence/manifest.json",
+    "equal": true,
+    "sha256": "2d942944b47b177a2258d744e491fb223cb77d78b3b68222d60873a3be5c6d2c"
+  },
+  {
+    "family": "c33",
+    "file": "sequence/Scene-1_0001.png",
+    "equal": true,
+    "sha256": "24d8717bfc37dd60d93ca7e5b91bcf438a820b0e5201f57b19181b5fd487ad84"
+  },
+  {
+    "family": "c33",
+    "file": "sequence/Scene-1_0009.png",
+    "equal": true,
+    "sha256": "e421225b42de6eaff77d1500dd576ddb8adb23895c95b2364d043dfd6418f57b"
+  },
+  {
+    "family": "c33",
+    "file": "sequence/Scene-1_0017.png",
+    "equal": true,
+    "sha256": "517f4674743a0e373fb229ef13fc8c016584e1c0f8e54c458cffb17adfcb45bb"
+  },
+  {
+    "family": "e2",
+    "file": "1-preview.png",
+    "equal": true,
+    "sha256": "1b6fcbba30dfb2985c8bb82aaa4998d6799f276b4e1e9855ccf31a5aedf35766"
+  },
+  {
+    "family": "e2",
+    "file": "2-vectorized.png",
+    "equal": true,
+    "sha256": "1b6fcbba30dfb2985c8bb82aaa4998d6799f276b4e1e9855ccf31a5aedf35766"
+  },
+  {
+    "family": "e2",
+    "file": "3-painted.png",
+    "equal": true,
+    "sha256": "a4124d1ce094e3dfc7249c22f57a6676a89adfd80b1434dc4a49e27a98ad1555"
+  },
+  {
+    "family": "e2",
+    "file": "4-recoloured.png",
+    "equal": true,
+    "sha256": "9732a6a246a95e902ba8ab76a1eb0f7c813fa3cd7f386545ae3d2545c691c60d"
+  },
+  {
+    "family": "e2",
+    "file": "5-undone.png",
+    "equal": true,
+    "sha256": "a4124d1ce094e3dfc7249c22f57a6676a89adfd80b1434dc4a49e27a98ad1555"
+  },
+  {
+    "family": "e2",
+    "file": "6-redone.png",
+    "equal": true,
+    "sha256": "9732a6a246a95e902ba8ab76a1eb0f7c813fa3cd7f386545ae3d2545c691c60d"
+  },
+  {
+    "family": "e2",
+    "file": "7-reopened.png",
+    "equal": true,
+    "sha256": "9732a6a246a95e902ba8ab76a1eb0f7c813fa3cd7f386545ae3d2545c691c60d"
+  },
+  {
+    "family": "e4",
+    "file": "evaluate.json",
+    "equal": true,
+    "sha256": "eae7bcae41a8873efade57c33751ed9cd5878fe0a2a4a8da064a95013bdc9c4f"
+  },
+  {
+    "family": "e4-variant",
+    "file": "evaluate.json",
+    "equal": true,
+    "sha256": "5708fccab82424510fb5c23b96712ad916403a93a27e4d81702d9e2cbd394ebe"
+  }
+]

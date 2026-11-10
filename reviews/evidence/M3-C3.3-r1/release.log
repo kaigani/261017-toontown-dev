@@ -1,0 +1,173 @@
+cargo :    Compiling proc-macro2 v1.0.107
+At C:\Users\kaiga\AppData\Local\Temp\toontown-c33-r1\pipeline.ps1:10 char:1
++ cargo build --release --locked -p tt-headless -j 4 *> "$r\release.log ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (   Compiling proc-macro2 v1.0.107:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+
+   Compiling quote v1.0.47
+   Compiling unicode-ident v1.0.27
+   Compiling autocfg v1.5.1
+   Compiling cfg-if v1.0.5
+   Compiling serde_core v1.0.229
+   Compiling allocator-api2 v0.2.21
+   Compiling num-traits v0.2.19
+   Compiling foldhash v0.2.0
+   Compiling equivalent v1.0.3
+   Compiling syn v3.0.9
+   Compiling syn v2.0.119
+   Compiling version_check v0.9.5
+   Compiling serde v1.0.229
+   Compiling memchr v2.8.3
+   Compiling smallvec v1.16.3
+   Compiling zerocopy v0.8.63
+   Compiling num-integer v0.1.47
+   Compiling hashbrown v0.17.1
+   Compiling zmij v1.0.23
+   Compiling serde_json v1.0.154
+   Compiling zerocopy-derive v0.8.63
+   Compiling serde_derive v1.0.229
+   Compiling ref-cast v1.0.27
+   Compiling getrandom v0.3.4
+   Compiling once_cell v1.21.4
+   Compiling ref-cast-impl v1.0.27
+   Compiling indexmap v2.14.2
+   Compiling num-bigint v0.4.8
+   Compiling ahash v0.8.12
+   Compiling heck v0.5.0
+   Compiling itoa v1.0.18
+   Compiling regex-syntax v0.8.11
+   Compiling parking_lot_core v0.9.12
+   Compiling num-rational v0.4.2
+   Compiling num-iter v0.1.46
+   Compiling aho-corasick v1.1.5
+   Compiling num-complex v0.4.6
+   Compiling scopeguard v1.2.0
+   Compiling thiserror v2.0.21
+   Compiling windows-link v0.2.1
+   Compiling regex-automata v0.4.18
+   Compiling lock_api v0.4.14
+   Compiling num v0.4.3
+   Compiling thiserror-impl v2.0.21
+   Compiling borrow-or-share v0.2.4
+   Compiling unicode-general-category v1.1.0
+   Compiling jsonschema-value v0.59.0
+   Compiling bit-vec v0.8.0
+   Compiling bit-set v0.8.0
+   Compiling fluent-uri v0.4.1
+   Compiling fraction v0.17.0
+   Compiling parking_lot v0.12.5
+   Compiling strum_macros v0.28.0
+   Compiling serde_derive_internals v0.30.0
+   Compiling vsimd v0.8.0
+   Compiling getrandom v0.4.3
+   Compiling num-cmp v0.1.0
+   Compiling tinyvec v1.13.3
+   Compiling bytecount v0.6.9
+   Compiling micromap v0.3.0
+   Compiling outref v0.5.2
+   Compiling percent-encoding v2.3.2
+   Compiling referencing v0.59.0
+   Compiling uuid-simd v0.8.0
+   Compiling strum v0.28.0
+   Compiling schemars_derive v1.2.3
+   Compiling fancy-regex v0.19.2
+   Compiling regex v1.13.1
+   Compiling jsonschema-regex v0.59.0
+   Compiling email_address v0.2.9
+   Compiling bytemuck_derive v1.12.1
+   Compiling dyn-clone v1.0.20
+   Compiling data-encoding v2.11.1
+   Compiling schemars v1.2.3
+   Compiling jsonschema v0.59.0
+   Compiling bytemuck v1.25.2
+   Compiling unicode-normalization v0.1.26
+   Compiling crossbeam-utils v0.8.23
+   Compiling ryu v1.0.23
+   Compiling simd-adler32 v0.3.10
+   Compiling libm v0.2.16
+   Compiling crc32fast v1.5.2
+   Compiling adler2 v2.0.1
+   Compiling typenum v1.20.1
+   Compiling hybrid-array v0.4.15
+   Compiling crossbeam-epoch v0.9.21
+   Compiling tt-model v0.0.1 (C:\Users\kaiga\work\review\m3-c33-r1\crates\model)
+   Compiling miniz_oxide v0.9.1
+   Compiling arrayvec v0.7.8
+   Compiling crossbeam-deque v0.8.8
+   Compiling polycool v0.4.0
+   Compiling flate2 v1.1.10
+   Compiling crypto-common v0.2.2
+   Compiling block-buffer v0.12.1
+   Compiling slotmap v1.1.1
+   Compiling rayon-core v1.13.0
+   Compiling const-oid v0.10.2
+   Compiling log v0.4.34
+   Compiling digest v0.11.3
+   Compiling kurbo v0.13.1
+   Compiling i_float v5.0.0
+   Compiling color v0.3.3
+   Compiling font-types v0.12.7
+   Compiling euclid v0.22.14
+   Compiling cpufeatures v0.3.1
+   Compiling linebender_resource_handle v0.1.1
+   Compiling peniko v0.6.1
+   Compiling sha2 v0.11.1
+   Compiling guillotiere v0.7.0
+   Compiling read-fonts v0.41.0
+   Compiling i_shape v5.0.0
+   Compiling miniz_oxide v0.8.9
+   Compiling crossbeam-channel v0.5.17
+   Compiling fdeflate v0.3.7
+   Compiling hashbrown v0.16.1
+   Compiling memmap2 v0.9.11
+   Compiling i_tree v0.20.0
+   Compiling either v1.19.0
+   Compiling i_key_sort v0.12.0
+   Compiling weezl v0.1.12
+   Compiling bitflags v2.13.2
+   Compiling fearless_simd v0.7.0
+   Compiling robust v1.2.0
+   Compiling zune-core v0.5.3
+   Compiling zune-jpeg v0.5.15
+   Compiling spade v2.15.1
+   Compiling vello_common v0.3.0
+   Compiling png v0.18.1
+   Compiling i_overlay v9.1.0
+   Compiling rayon v1.12.0
+   Compiling fontdb v0.24.0
+   Compiling ordered-channel v1.2.0
+   Compiling skrifa v0.44.0
+   Compiling tt-anim v0.0.1 (C:\Users\kaiga\work\review\m3-c33-r1\crates\anim)
+   Compiling half v2.7.1
+   Compiling thread_local v1.1.10
+   Compiling color_quant v1.1.0
+   Compiling quick-error v2.0.1
+   Compiling pxfm v0.1.30
+   Compiling fax v0.2.7
+   Compiling tiff v0.11.3
+   Compiling moxcms v0.8.1
+   Compiling gif v0.14.2
+   Compiling vello_cpu v0.3.0
+   Compiling tt-vector v0.0.1 (C:\Users\kaiga\work\review\m3-c33-r1\crates\vector)
+   Compiling tt-fx v0.0.1 (C:\Users\kaiga\work\review\m3-c33-r1\crates\fx)
+   Compiling tt-colour v0.0.1 (C:\Users\kaiga\work\review\m3-c33-r1\crates\colour)
+   Compiling byteorder-lite v0.1.0
+   Compiling image v0.25.10
+   Compiling tt-render v0.0.1 (C:\Users\kaiga\work\review\m3-c33-r1\crates\render)
+   Compiling tt-persist v0.0.1 (C:\Users\kaiga\work\review\m3-c33-r1\crates\persist)
+   Compiling tt-registry-macros v0.0.1 (C:\Users\kaiga\work\review\m3-c33-r1\crates\registry-macros)
+   Compiling tt-registry v0.0.1 (C:\Users\kaiga\work\review\m3-c33-r1\crates\registry)
+   Compiling tt-io v0.0.1 (C:\Users\kaiga\work\review\m3-c33-r1\crates\io)
+   Compiling tt-audio v0.0.1 (C:\Users\kaiga\work\review\m3-c33-r1\crates\audio)
+   Compiling tt-lipsync v0.0.1 (C:\Users\kaiga\work\review\m3-c33-r1\crates\lipsync)
+   Compiling tt-executor v0.0.1 (C:\Users\kaiga\work\review\m3-c33-r1\crates\executor)
+   Compiling anstyle v1.0.14
+   Compiling clap_lex v1.1.1
+   Compiling clap_builder v4.6.7
+   Compiling clap_derive v4.6.7
+   Compiling clap v4.6.7
+   Compiling tt-engine v0.0.1 (C:\Users\kaiga\work\review\m3-c33-r1\crates\engine)
+   Compiling tt-mcp v0.0.1 (C:\Users\kaiga\work\review\m3-c33-r1\crates\mcp)
+   Compiling tt-headless v0.0.1 (C:\Users\kaiga\work\review\m3-c33-r1\bins\headless)
+    Finished `release` profile [optimized + debuginfo] target(s) in 3m 11s

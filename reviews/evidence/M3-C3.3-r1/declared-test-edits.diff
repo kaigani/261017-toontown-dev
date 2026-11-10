@@ -1,0 +1,41 @@
+diff --git a/crates/executor/tests/c12_kernel_state.rs b/crates/executor/tests/c12_kernel_state.rs
+index e3a29a4..a97815b 100644
+--- a/crates/executor/tests/c12_kernel_state.rs
++++ b/crates/executor/tests/c12_kernel_state.rs
+@@ -243,7 +243,7 @@ fn edits(h: &ExecutorHandle) {
+ /// with a backup `bk_1a2b3c4d`, recovery data `rc_1a2b3c4d`, `Short.animpkg` and a `media` folder in a temporary folder
+ /// that stands for the examples' `/tmp`.
+ fn with_files(id: &str) -> bool {
+-    ["project.", "doc.asset.", "doc.blob.", "doc.package.", "agent.", "draw.vectorize."]
++    ["project.", "doc.asset.", "doc.blob.", "doc.package.", "agent.", "draw.vectorize.", "render.range."]
+         .iter()
+         .any(|p| id.starts_with(p))
+ }
+diff --git a/crates/executor/tests/c12_registry.rs b/crates/executor/tests/c12_registry.rs
+index cbed2eb..94747cd 100644
+--- a/crates/executor/tests/c12_registry.rs
++++ b/crates/executor/tests/c12_registry.rs
+@@ -198,7 +198,8 @@ fn describe_reports_declarations() {
+     assert_eq!(d["needsProject"], true);
+     assert!(d["enablement"].as_str().unwrap().contains("undo"));
+     assert_eq!(d["paramsSchema"]["properties"]["steps"]["maximum"], 1000);
+-    let stub = registry().get("render.frame.run").unwrap().describe();
++    // `render.frame.run` was the stub sample until M3 C3.3 implemented it; `inspect.ui.tree` waits for M4 C4.2.
++    let stub = registry().get("inspect.ui.tree").unwrap().describe();
+     assert_eq!(stub["status"], "notImplemented");
+-    assert_eq!(stub["milestone"], "M3 C3.3");
++    assert_eq!(stub["milestone"], "M4 C4.2");
+ }
+diff --git a/crates/executor/tests/common/examples.rs b/crates/executor/tests/common/examples.rs
+index c1c5e91..fddbeb8 100644
+--- a/crates/executor/tests/common/examples.rs
++++ b/crates/executor/tests/common/examples.rs
+@@ -30,7 +30,7 @@ pub fn edits(h: &ExecutorHandle) {
+ /// with a backup `bk_1a2b3c4d`, recovery data `rc_1a2b3c4d`, `Short.animpkg` and a `media` folder in a temporary folder
+ /// that stands for the examples' `/tmp`.
+ pub fn with_files(id: &str) -> bool {
+-    ["project.", "doc.asset.", "doc.blob.", "doc.package.", "agent.", "draw.vectorize."]
++    ["project.", "doc.asset.", "doc.blob.", "doc.package.", "agent.", "draw.vectorize.", "render.range."]
+         .iter()
+         .any(|p| id.starts_with(p))
+ }

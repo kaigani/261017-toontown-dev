@@ -1,0 +1,2253 @@
+cargo : warning[duplicate]: found 2 duplicate entries for crate 'base64'
+At C:\Users\kaiga\AppData\Local\Temp\toontown-c33-r1\pipeline.ps1:14 char:1
++ cargo deny check *> "$r\deny.log"
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (warning[duplica... crate 'base64':String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+
+   ΓöîΓöÇ C:\Users\kaiga\work\review\m3-c33-r1/Cargo.lock:11:1
+   Γöé
+11 Γöé Γò¡ base64 0.21.7 registry+https://github.com/rust-lang/crates.io-index
+12 Γöé Γöé base64 0.23.1 registry+https://github.com/rust-lang/crates.io-index
+   Γöé Γò░ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓ
+öÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÿ lock entries
+   Γöé
+   Γö£ base64 v0.21.7
+     ΓööΓöÇΓöÇ swift-rs v1.0.9
+         ΓööΓöÇΓöÇ tauri-utils v2.10.2
+             Γö£ΓöÇΓöÇ tauri v2.12.4
+             Γöé   ΓööΓöÇΓöÇ tt-desktop v0.0.1
+             Γö£ΓöÇΓöÇ tauri-build v2.7.3
+             Γöé   Γö£ΓöÇΓöÇ (build) tauri v2.12.4 (*)
+             Γöé   ΓööΓöÇΓöÇ (build) tt-desktop v0.0.1 (*)
+             Γö£ΓöÇΓöÇ tauri-codegen v2.7.3
+             Γöé   ΓööΓöÇΓöÇ tauri-macros v2.7.3
+             Γöé       ΓööΓöÇΓöÇ tauri v2.12.4 (*)
+             Γö£ΓöÇΓöÇ tauri-macros v2.7.3 (*)
+             Γö£ΓöÇΓöÇ tauri-runtime v2.12.2
+             Γöé   Γö£ΓöÇΓöÇ tauri v2.12.4 (*)
+             Γöé   ΓööΓöÇΓöÇ tauri-runtime-wry v2.12.2
+             Γöé       ΓööΓöÇΓöÇ tauri v2.12.4 (*)
+             ΓööΓöÇΓöÇ tauri-runtime-wry v2.12.2 (*)
+   Γö£ base64 v0.23.1
+     Γö£ΓöÇΓöÇ plist v1.10.1
+     Γöé   Γö£ΓöÇΓöÇ tauri v2.12.4
+     Γöé   Γöé   ΓööΓöÇΓöÇ tt-desktop v0.0.1
+     Γöé   Γö£ΓöÇΓöÇ tauri-codegen v2.7.3
+     Γöé   Γöé   ΓööΓöÇΓöÇ tauri-macros v2.7.3
+     Γöé   Γöé       ΓööΓöÇΓöÇ tauri v2.12.4 (*)
+     Γöé   ΓööΓöÇΓöÇ tauri-utils v2.10.2
+     Γöé       Γö£ΓöÇΓöÇ tauri v2.12.4 (*)
+     Γöé       Γö£ΓöÇΓöÇ tauri-build v2.7.3
+     Γöé       Γöé   Γö£ΓöÇΓöÇ (build) tauri v2.12.4 (*)
+     Γöé       Γöé   ΓööΓöÇΓöÇ (build) tt-desktop v0.0.1 (*)
+     Γöé       Γö£ΓöÇΓöÇ tauri-codegen v2.7.3 (*)
+     Γöé       Γö£ΓöÇΓöÇ tauri-macros v2.7.3 (*)
+     Γöé       Γö£ΓöÇΓöÇ tauri-runtime v2.12.2
+     Γöé       Γöé   Γö£ΓöÇΓöÇ tauri v2.12.4 (*)
+     Γöé       Γöé   ΓööΓöÇΓöÇ tauri-runtime-wry v2.12.2
+     Γöé       Γöé       ΓööΓöÇΓöÇ tauri v2.12.4 (*)
+     Γöé       ΓööΓöÇΓöÇ tauri-runtime-wry v2.12.2 (*)
+     ΓööΓöÇΓöÇ tauri-codegen v2.7.3 (*)
+
+warning[duplicate]: found 2 duplicate entries for crate 'bitflags'
+   ΓöîΓöÇ C:\Users\kaiga\work\review\m3-c33-r1/Cargo.lock:17:1
+   Γöé
+17 Γöé Γò¡ bitflags 1.3.2 registry+https://github.com/rust-lang/crates.io-index
+18 Γöé Γöé bitflags 2.13.2 registry+https://github.com/rust-lang/crates.io-index
+   Γöé Γò░ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓ
+öÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÿ lock entries
+   Γöé
+   Γö£ bitflags v1.3.2
+     ΓööΓöÇΓöÇ png v0.17.16
+         ΓööΓöÇΓöÇ ico v0.5.0
+             ΓööΓöÇΓöÇ tauri-codegen v2.7.3
+                 ΓööΓöÇΓöÇ tauri-macros v2.7.3
+                     ΓööΓöÇΓöÇ tauri v2.12.4
+                         ΓööΓöÇΓöÇ tt-desktop v0.0.1
+   Γö£ bitflags v2.13.2
+     Γö£ΓöÇΓöÇ core-graphics v0.25.0
+     Γöé   ΓööΓöÇΓöÇ tao v0.37.1
+     Γöé       ΓööΓöÇΓöÇ tauri-runtime-wry v2.12.2
+     Γöé           ΓööΓöÇΓöÇ tauri v2.12.4
+     Γöé               ΓööΓöÇΓöÇ tt-desktop v0.0.1
+     Γö£ΓöÇΓöÇ core-graphics-types v0.2.0
+     Γöé   ΓööΓöÇΓöÇ core-graphics v0.25.0 (*)
+     Γö£ΓöÇΓöÇ dispatch2 v0.3.1
+     Γöé   ΓööΓöÇΓöÇ tao v0.37.1 (*)
+     Γö£ΓöÇΓöÇ keyboard-types v0.8.3
+     Γöé   ΓööΓöÇΓöÇ muda v0.20.0
+     Γöé       ΓööΓöÇΓöÇ tauri v2.12.4 (*)
+     Γö£ΓöÇΓöÇ objc2-app-kit v0.3.2
+     Γöé   Γö£ΓöÇΓöÇ muda v0.20.0 (*)
+     Γöé   Γö£ΓöÇΓöÇ objc2-web-kit v0.3.2
+     Γöé   Γöé   Γö£ΓöÇΓöÇ tauri v2.12.4 (*)
+     Γöé   Γöé   Γö£ΓöÇΓöÇ tauri-runtime v2.12.2
+     Γöé   Γöé   Γöé   Γö£ΓöÇΓöÇ tauri v2.12.4 (*)
+     Γöé   Γöé   Γöé   ΓööΓöÇΓöÇ tauri-runtime-wry v2.12.2 (*)
+     Γöé   Γöé   ΓööΓöÇΓöÇ wry v0.57.0
+     Γöé   Γöé       ΓööΓöÇΓöÇ tauri-runtime-wry v2.12.2 (*)
+     Γöé   Γö£ΓöÇΓöÇ tao v0.37.1 (*)
+     Γöé   Γö£ΓöÇΓöÇ tauri v2.12.4 (*)
+     Γöé   Γö£ΓöÇΓöÇ tauri-runtime-wry v2.12.2 (*)
+     Γöé   Γö£ΓöÇΓöÇ tt-desktop v0.0.1 (*)
+     Γöé   Γö£ΓöÇΓöÇ window-vibrancy v0.8.1
+     Γöé   Γöé   ΓööΓöÇΓöÇ tauri v2.12.4 (*)
+     Γöé   ΓööΓöÇΓöÇ wry v0.57.0 (*)
+     Γö£ΓöÇΓöÇ objc2-core-foundation v0.3.2
+     Γöé   Γö£ΓöÇΓöÇ muda v0.20.0 (*)
+     Γöé   Γö£ΓöÇΓöÇ objc2-app-kit v0.3.2 (*)
+     Γöé   Γö£ΓöÇΓöÇ objc2-core-graphics v0.3.2
+     Γöé   Γöé   ΓööΓöÇΓöÇ softbuffer v0.4.8
+     Γöé   Γöé       ΓööΓöÇΓöÇ tauri-runtime-wry v2.12.2 (*)
+     Γöé   Γö£ΓöÇΓöÇ objc2-foundation v0.3.2
+     Γöé   Γöé   Γö£ΓöÇΓöÇ muda v0.20.0 (*)
+     Γöé   Γöé   Γö£ΓöÇΓöÇ objc2-app-kit v0.3.2 (*)
+     Γöé   Γöé   Γö£ΓöÇΓöÇ objc2-quartz-core v0.3.2
+     Γöé   Γöé   Γöé   Γö£ΓöÇΓöÇ objc2-app-kit v0.3.2 (*)
+     Γöé   Γöé   Γöé   Γö£ΓöÇΓöÇ softbuffer v0.4.8 (*)
+     Γöé   Γöé   Γöé   ΓööΓöÇΓöÇ window-vibrancy v0.8.1 (*)
+     Γöé   Γöé   Γö£ΓöÇΓöÇ objc2-web-kit v0.3.2 (*)
+     Γöé   Γöé   Γö£ΓöÇΓöÇ softbuffer v0.4.8 (*)
+     Γöé   Γöé   Γö£ΓöÇΓöÇ tao v0.37.1 (*)
+     Γöé   Γöé   Γö£ΓöÇΓöÇ tauri v2.12.4 (*)
+     Γöé   Γöé   Γö£ΓöÇΓöÇ window-vibrancy v0.8.1 (*)
+     Γöé   Γöé   ΓööΓöÇΓöÇ (build) wry v0.57.0 (*)
+     Γöé   Γö£ΓöÇΓöÇ objc2-quartz-core v0.3.2 (*)
+     Γöé   Γö£ΓöÇΓöÇ objc2-web-kit v0.3.2 (*)
+     Γöé   Γö£ΓöÇΓöÇ softbuffer v0.4.8 (*)
+     Γöé   Γö£ΓöÇΓöÇ window-vibrancy v0.8.1 (*)
+     Γöé   ΓööΓöÇΓöÇ wry v0.57.0 (*)
+     Γö£ΓöÇΓöÇ objc2-core-graphics v0.3.2 (*)
+     Γö£ΓöÇΓöÇ objc2-foundation v0.3.2 (*)
+     Γö£ΓöÇΓöÇ objc2-quartz-core v0.3.2 (*)
+     Γö£ΓöÇΓöÇ objc2-web-kit v0.3.2 (*)
+     Γö£ΓöÇΓöÇ octotablet v0.1.0
+     Γöé   ΓööΓöÇΓöÇ tt-desktop v0.0.1 (*)
+     Γö£ΓöÇΓöÇ png v0.18.1
+     Γöé   Γö£ΓöÇΓöÇ image v0.25.10
+     Γöé   Γöé   ΓööΓöÇΓöÇ tt-io v0.0.1
+     Γöé   Γöé       Γö£ΓöÇΓöÇ tt-engine v0.0.1
+     Γöé   Γöé       Γöé   Γö£ΓöÇΓöÇ tt-desktop v0.0.1 (*)
+     Γöé   Γöé       Γöé   Γö£ΓöÇΓöÇ tt-headless v0.0.1
+     Γöé   Γöé       Γöé   ΓööΓöÇΓöÇ tt-mcp v0.0.1
+     Γöé   Γöé       Γöé       ΓööΓöÇΓöÇ tt-headless v0.0.1 (*)
+     Γöé   Γöé       ΓööΓöÇΓöÇ tt-executor v0.0.1
+     Γöé   Γöé           Γö£ΓöÇΓöÇ tt-engine v0.0.1 (*)
+     Γöé   Γöé           Γö£ΓöÇΓöÇ tt-headless v0.0.1 (*)
+     Γöé   Γöé           ΓööΓöÇΓöÇ tt-mcp v0.0.1 (*)
+     Γöé   Γö£ΓöÇΓöÇ muda v0.20.0 (*)
+     Γöé   Γö£ΓöÇΓöÇ tauri-codegen v2.7.3
+     Γöé   Γöé   ΓööΓöÇΓöÇ tauri-macros v2.7.3
+     Γöé   Γöé       ΓööΓöÇΓöÇ tauri v2.12.4 (*)
+     Γöé   Γö£ΓöÇΓöÇ (dev) tt-io v0.0.1 (*)
+     Γöé   ΓööΓöÇΓöÇ tt-render v0.0.1
+     Γöé       Γö£ΓöÇΓöÇ tt-engine v0.0.1 (*)
+     Γöé       Γö£ΓöÇΓöÇ tt-executor v0.0.1 (*)
+     Γöé       ΓööΓöÇΓöÇ tt-io v0.0.1 (*)
+     Γö£ΓöÇΓöÇ proptest v1.12.0
+     Γöé   Γö£ΓöÇΓöÇ (dev) tt-anim v0.0.1
+     Γöé   Γöé   Γö£ΓöÇΓöÇ tt-engine v0.0.1 (*)
+     Γöé   Γöé   Γö£ΓöÇΓöÇ tt-executor v0.0.1 (*)
+     Γöé   Γöé   Γö£ΓöÇΓöÇ tt-fx v0.0.1
+     Γöé   Γöé   Γöé   Γö£ΓöÇΓöÇ tt-engine v0.0.1 (*)
+     Γöé   Γöé   Γöé   ΓööΓöÇΓöÇ tt-render v0.0.1 (*)
+     Γöé   Γöé   ΓööΓöÇΓöÇ tt-render v0.0.1 (*)
+     Γöé   Γö£ΓöÇΓöÇ (dev) tt-executor v0.0.1 (*)
+     Γöé   Γö£ΓöÇΓöÇ (dev) tt-model v0.0.1
+     Γöé   Γöé   Γö£ΓöÇΓöÇ tt-anim v0.0.1 (*)
+     Γöé   Γöé   Γö£ΓöÇΓöÇ tt-audio v0.0.1
+     Γöé   Γöé   Γöé   Γö£ΓöÇΓöÇ tt-engine v0.0.1 (*)
+     Γöé   Γöé   Γöé   ΓööΓöÇΓöÇ tt-lipsync v0.0.1
+     Γöé   Γöé   Γöé       ΓööΓöÇΓöÇ tt-engine v0.0.1 (*)
+     Γöé   Γöé   Γö£ΓöÇΓöÇ tt-colour v0.0.1
+     Γöé   Γöé   Γöé   Γö£ΓöÇΓöÇ tt-engine v0.0.1 (*)
+     Γöé   Γöé   Γöé   ΓööΓöÇΓöÇ tt-render v0.0.1 (*)
+     Γöé   Γöé   Γö£ΓöÇΓöÇ tt-engine v0.0.1 (*)
+     Γöé   Γöé   Γö£ΓöÇΓöÇ tt-executor v0.0.1 (*)
+     Γöé   Γöé   Γö£ΓöÇΓöÇ tt-fx v0.0.1 (*)
+     Γöé   Γöé   Γö£ΓöÇΓöÇ tt-io v0.0.1 (*)
+     Γöé   Γöé   Γö£ΓöÇΓöÇ tt-lipsync v0.0.1 (*)
+     Γöé   Γöé   Γö£ΓöÇΓöÇ tt-mcp v0.0.1 (*)
+     Γöé   Γöé   Γö£ΓöÇΓöÇ tt-persist v0.0.1
+     Γöé   Γöé   Γöé   Γö£ΓöÇΓöÇ tt-engine v0.0.1 (*)
+     Γöé   Γöé   Γöé   Γö£ΓöÇΓöÇ tt-executor v0.0.1 (*)
+     Γöé   Γöé   Γöé   Γö£ΓöÇΓöÇ tt-io v0.0.1 (*)
+     Γöé   Γöé   Γöé   ΓööΓöÇΓöÇ tt-mcp v0.0.1 (*)
+     Γöé   Γöé   Γö£ΓöÇΓöÇ tt-registry v0.0.1
+     Γöé   Γöé   Γöé   Γö£ΓöÇΓöÇ tt-engine v0.0.1 (*)
+     Γöé   Γöé   Γöé   Γö£ΓöÇΓöÇ tt-executor v0.0.1 (*)
+     Γöé   Γöé   Γöé   ΓööΓöÇΓöÇ tt-mcp v0.0.1 (*)
+     Γöé   Γöé   Γö£ΓöÇΓöÇ tt-render v0.0.1 (*)
+     Γöé   Γöé   ΓööΓöÇΓöÇ tt-vector v0.0.1
+     Γöé   Γöé       Γö£ΓöÇΓöÇ tt-engine v0.0.1 (*)
+     Γöé   Γöé       Γö£ΓöÇΓöÇ tt-executor v0.0.1 (*)
+     Γöé   Γöé       ΓööΓöÇΓöÇ tt-render v0.0.1 (*)
+     Γöé   Γö£ΓöÇΓöÇ (dev) tt-persist v0.0.1 (*)
+     Γöé   ΓööΓöÇΓöÇ (dev) tt-vector v0.0.1 (*)
+     Γö£ΓöÇΓöÇ rustix v1.1.5
+     Γöé   ΓööΓöÇΓöÇ tempfile v3.27.0
+     Γöé       Γö£ΓöÇΓöÇ proptest v1.12.0 (*)
+     Γöé       ΓööΓöÇΓöÇ rusty-fork v0.3.1
+     Γöé           ΓööΓöÇΓöÇ proptest v1.12.0 (*)
+     Γö£ΓöÇΓöÇ selectors v0.38.0
+     Γöé   ΓööΓöÇΓöÇ dom_query v0.28.0
+     Γöé       ΓööΓöÇΓöÇ tauri-utils v2.10.2
+     Γöé           Γö£ΓöÇΓöÇ tauri v2.12.4 (*)
+     Γöé           Γö£ΓöÇΓöÇ tauri-build v2.7.3
+     Γöé           Γöé   Γö£ΓöÇΓöÇ (build) tauri v2.12.4 (*)
+     Γöé           Γöé   ΓööΓöÇΓöÇ (build) tt-desktop v0.0.1 (*)
+     Γöé           Γö£ΓöÇΓöÇ tauri-codegen v2.7.3 (*)
+     Γöé           Γö£ΓöÇΓöÇ tauri-macros v2.7.3 (*)
+     Γöé           Γö£ΓöÇΓöÇ tauri-runtime v2.12.2 (*)
+     Γöé           ΓööΓöÇΓöÇ tauri-runtime-wry v2.12.2 (*)
+     ΓööΓöÇΓöÇ tao v0.37.1 (*)
+
+warning[duplicate]: found 2 duplicate entries for crate 'block-buffer'
+   ΓöîΓöÇ C:\Users\kaiga\work\review\m3-c33-r1/Cargo.lock:19:1
+   Γöé
+19 Γöé Γò¡ block-buffer 0.10.4 registry+https://github.com/rust-lang/crates.io-index
+20 Γöé Γöé block-buffer 0.12.1 registry+https://github.com/rust-lang/crates.io-index
+   Γöé Γò░ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓ
+öÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÿ lock
+entries
+   Γöé
+   Γö£ block-buffer v0.10.4
+     ΓööΓöÇΓöÇ digest v0.10.7
+         ΓööΓöÇΓöÇ sha2 v0.10.9
+             ΓööΓöÇΓöÇ tauri-codegen v2.7.3
+                 ΓööΓöÇΓöÇ tauri-macros v2.7.3
+                     ΓööΓöÇΓöÇ tauri v2.12.4
+                         ΓööΓöÇΓöÇ tt-desktop v0.0.1
+   Γö£ block-buffer v0.12.1
+     ΓööΓöÇΓöÇ digest v0.11.3
+         ΓööΓöÇΓöÇ sha2 v0.11.1
+             Γö£ΓöÇΓöÇ tt-engine v0.0.1
+             Γöé   Γö£ΓöÇΓöÇ tt-desktop v0.0.1
+             Γöé   Γö£ΓöÇΓöÇ tt-headless v0.0.1
+             Γöé   ΓööΓöÇΓöÇ tt-mcp v0.0.1
+             Γöé       ΓööΓöÇΓöÇ tt-headless v0.0.1 (*)
+             Γö£ΓöÇΓöÇ tt-executor v0.0.1
+             Γöé   Γö£ΓöÇΓöÇ tt-engine v0.0.1 (*)
+             Γöé   Γö£ΓöÇΓöÇ tt-headless v0.0.1 (*)
+             Γöé   ΓööΓöÇΓöÇ tt-mcp v0.0.1 (*)
+             Γö£ΓöÇΓöÇ (dev) tt-mcp v0.0.1 (*)
+             Γö£ΓöÇΓöÇ tt-persist v0.0.1
+             Γöé   Γö£ΓöÇΓöÇ tt-engine v0.0.1 (*)
+             Γöé   Γö£ΓöÇΓöÇ tt-executor v0.0.1 (*)
+             Γöé   Γö£ΓöÇΓöÇ tt-io v0.0.1
+             Γöé   Γöé   Γö£ΓöÇΓöÇ tt-engine v0.0.1 (*)
+             Γöé   Γöé   ΓööΓöÇΓöÇ tt-executor v0.0.1 (*)
+             Γöé   ΓööΓöÇΓöÇ tt-mcp v0.0.1 (*)
+             Γö£ΓöÇΓöÇ (dev) tt-render v0.0.1
+             Γöé   Γö£ΓöÇΓöÇ tt-engine v0.0.1 (*)
+             Γöé   Γö£ΓöÇΓöÇ tt-executor v0.0.1 (*)
+             Γöé   ΓööΓöÇΓöÇ tt-io v0.0.1 (*)
+             ΓööΓöÇΓöÇ tt-vector v0.0.1
+                 Γö£ΓöÇΓöÇ tt-engine v0.0.1 (*)
+                 Γö£ΓöÇΓöÇ tt-executor v0.0.1 (*)
+                 ΓööΓöÇΓöÇ tt-render v0.0.1 (*)
+
+warning[duplicate]: found 2 duplicate entries for crate 'cpufeatures'
+   ΓöîΓöÇ C:\Users\kaiga\work\review\m3-c33-r1/Cargo.lock:53:1
+   Γöé
+53 Γöé Γò¡ cpufeatures 0.2.17 registry+https://github.com/rust-lang/crates.io-index
+54 Γöé Γöé cpufeatures 0.3.1 registry+https://github.com/rust-lang/crates.io-index
+   Γöé Γò░ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓ
+öÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÿ lock
+entries
+   Γöé
+   Γö£ cpufeatures v0.2.17
+     ΓööΓöÇΓöÇ sha2 v0.10.9
+         ΓööΓöÇΓöÇ tauri-codegen v2.7.3
+             ΓööΓöÇΓöÇ tauri-macros v2.7.3
+                 ΓööΓöÇΓöÇ tauri v2.12.4
+                     ΓööΓöÇΓöÇ tt-desktop v0.0.1
+   Γö£ cpufeatures v0.3.1
+     Γö£ΓöÇΓöÇ chacha20 v0.10.2
+     Γöé   ΓööΓöÇΓöÇ proptest v1.12.0
+     Γöé       Γö£ΓöÇΓöÇ (dev) tt-anim v0.0.1
+     Γöé       Γöé   Γö£ΓöÇΓöÇ tt-engine v0.0.1
+     Γöé       Γöé   Γöé   Γö£ΓöÇΓöÇ tt-desktop v0.0.1
+     Γöé       Γöé   Γöé   Γö£ΓöÇΓöÇ tt-headless v0.0.1
+     Γöé       Γöé   Γöé   ΓööΓöÇΓöÇ tt-mcp v0.0.1
+     Γöé       Γöé   Γöé       ΓööΓöÇΓöÇ tt-headless v0.0.1 (*)
+     Γöé       Γöé   Γö£ΓöÇΓöÇ tt-executor v0.0.1
+     Γöé       Γöé   Γöé   Γö£ΓöÇΓöÇ tt-engine v0.0.1 (*)
+     Γöé       Γöé   Γöé   Γö£ΓöÇΓöÇ tt-headless v0.0.1 (*)
+     Γöé       Γöé   Γöé   ΓööΓöÇΓöÇ tt-mcp v0.0.1 (*)
+     Γöé       Γöé   Γö£ΓöÇΓöÇ tt-fx v0.0.1
+     Γöé       Γöé   Γöé   Γö£ΓöÇΓöÇ tt-engine v0.0.1 (*)
+     Γöé       Γöé   Γöé   ΓööΓöÇΓöÇ tt-render v0.0.1
+     Γöé       Γöé   Γöé       Γö£ΓöÇΓöÇ tt-engine v0.0.1 (*)
+     Γöé       Γöé   Γöé       Γö£ΓöÇΓöÇ tt-executor v0.0.1 (*)
+     Γöé       Γöé   Γöé       ΓööΓöÇΓöÇ tt-io v0.0.1
+     Γöé       Γöé   Γöé           Γö£ΓöÇΓöÇ tt-engine v0.0.1 (*)
+     Γöé       Γöé   Γöé           ΓööΓöÇΓöÇ tt-executor v0.0.1 (*)
+     Γöé       Γöé   ΓööΓöÇΓöÇ tt-render v0.0.1 (*)
+     Γöé       Γö£ΓöÇΓöÇ (dev) tt-executor v0.0.1 (*)
+     Γöé       Γö£ΓöÇΓöÇ (dev) tt-model v0.0.1
+     Γöé       Γöé   Γö£ΓöÇΓöÇ tt-anim v0.0.1 (*)
+     Γöé       Γöé   Γö£ΓöÇΓöÇ tt-audio v0.0.1
+     Γöé       Γöé   Γöé   Γö£ΓöÇΓöÇ tt-engine v0.0.1 (*)
+     Γöé       Γöé   Γöé   ΓööΓöÇΓöÇ tt-lipsync v0.0.1
+     Γöé       Γöé   Γöé       ΓööΓöÇΓöÇ tt-engine v0.0.1 (*)
+     Γöé       Γöé   Γö£ΓöÇΓöÇ tt-colour v0.0.1
+     Γöé       Γöé   Γöé   Γö£ΓöÇΓöÇ tt-engine v0.0.1 (*)
+     Γöé       Γöé   Γöé   ΓööΓöÇΓöÇ tt-render v0.0.1 (*)
+     Γöé       Γöé   Γö£ΓöÇΓöÇ tt-engine v0.0.1 (*)
+     Γöé       Γöé   Γö£ΓöÇΓöÇ tt-executor v0.0.1 (*)
+     Γöé       Γöé   Γö£ΓöÇΓöÇ tt-fx v0.0.1 (*)
+     Γöé       Γöé   Γö£ΓöÇΓöÇ tt-io v0.0.1 (*)
+     Γöé       Γöé   Γö£ΓöÇΓöÇ tt-lipsync v0.0.1 (*)
+     Γöé       Γöé   Γö£ΓöÇΓöÇ tt-mcp v0.0.1 (*)
+     Γöé       Γöé   Γö£ΓöÇΓöÇ tt-persist v0.0.1
+     Γöé       Γöé   Γöé   Γö£ΓöÇΓöÇ tt-engine v0.0.1 (*)
+     Γöé       Γöé   Γöé   Γö£ΓöÇΓöÇ tt-executor v0.0.1 (*)
+     Γöé       Γöé   Γöé   Γö£ΓöÇΓöÇ tt-io v0.0.1 (*)
+     Γöé       Γöé   Γöé   ΓööΓöÇΓöÇ tt-mcp v0.0.1 (*)
+     Γöé       Γöé   Γö£ΓöÇΓöÇ tt-registry v0.0.1
+     Γöé       Γöé   Γöé   Γö£ΓöÇΓöÇ tt-engine v0.0.1 (*)
+     Γöé       Γöé   Γöé   Γö£ΓöÇΓöÇ tt-executor v0.0.1 (*)
+     Γöé       Γöé   Γöé   ΓööΓöÇΓöÇ tt-mcp v0.0.1 (*)
+     Γöé       Γöé   Γö£ΓöÇΓöÇ tt-render v0.0.1 (*)
+     Γöé       Γöé   ΓööΓöÇΓöÇ tt-vector v0.0.1
+     Γöé       Γöé       Γö£ΓöÇΓöÇ tt-engine v0.0.1 (*)
+     Γöé       Γöé       Γö£ΓöÇΓöÇ tt-executor v0.0.1 (*)
+     Γöé       Γöé       ΓööΓöÇΓöÇ tt-render v0.0.1 (*)
+     Γöé       Γö£ΓöÇΓöÇ (dev) tt-persist v0.0.1 (*)
+     Γöé       ΓööΓöÇΓöÇ (dev) tt-vector v0.0.1 (*)
+     ΓööΓöÇΓöÇ sha2 v0.11.1
+         Γö£ΓöÇΓöÇ tt-engine v0.0.1 (*)
+         Γö£ΓöÇΓöÇ tt-executor v0.0.1 (*)
+         Γö£ΓöÇΓöÇ (dev) tt-mcp v0.0.1 (*)
+         Γö£ΓöÇΓöÇ tt-persist v0.0.1 (*)
+         Γö£ΓöÇΓöÇ (dev) tt-render v0.0.1 (*)
+         ΓööΓöÇΓöÇ tt-vector v0.0.1 (*)
+
+warning[duplicate]: found 2 duplicate entries for crate 'crypto-common'
+   ΓöîΓöÇ C:\Users\kaiga\work\review\m3-c33-r1/Cargo.lock:60:1
+   Γöé
+60 Γöé Γò¡ crypto-common 0.1.7 registry+https://github.com/rust-lang/crates.io-index
+61 Γöé Γöé crypto-common 0.2.2 registry+https://github.com/rust-lang/crates.io-index
+   Γöé Γò░ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓ
+öÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÿ lock
+entries
+   Γöé
+   Γö£ crypto-common v0.1.7
+     ΓööΓöÇΓöÇ digest v0.10.7
+         ΓööΓöÇΓöÇ sha2 v0.10.9
+             ΓööΓöÇΓöÇ tauri-codegen v2.7.3
+                 ΓööΓöÇΓöÇ tauri-macros v2.7.3
+                     ΓööΓöÇΓöÇ tauri v2.12.4
+                         ΓööΓöÇΓöÇ tt-desktop v0.0.1
+   Γö£ crypto-common v0.2.2
+     ΓööΓöÇΓöÇ digest v0.11.3
+         ΓööΓöÇΓöÇ sha2 v0.11.1
+             Γö£ΓöÇΓöÇ tt-engine v0.0.1
+             Γöé   Γö£ΓöÇΓöÇ tt-desktop v0.0.1
+             Γöé   Γö£ΓöÇΓöÇ tt-headless v0.0.1
+             Γöé   ΓööΓöÇΓöÇ tt-mcp v0.0.1
+             Γöé       ΓööΓöÇΓöÇ tt-headless v0.0.1 (*)
+             Γö£ΓöÇΓöÇ tt-executor v0.0.1
+             Γöé   Γö£ΓöÇΓöÇ tt-engine v0.0.1 (*)
+             Γöé   Γö£ΓöÇΓöÇ tt-headless v0.0.1 (*)
+             Γöé   ΓööΓöÇΓöÇ tt-mcp v0.0.1 (*)
+             Γö£ΓöÇΓöÇ (dev) tt-mcp v0.0.1 (*)
+             Γö£ΓöÇΓöÇ tt-persist v0.0.1
+             Γöé   Γö£ΓöÇΓöÇ tt-engine v0.0.1 (*)
+             Γöé   Γö£ΓöÇΓöÇ tt-executor v0.0.1 (*)
+             Γöé   Γö£ΓöÇΓöÇ tt-io v0.0.1
+             Γöé   Γöé   Γö£ΓöÇΓöÇ tt-engine v0.0.1 (*)
+             Γöé   Γöé   ΓööΓöÇΓöÇ tt-executor v0.0.1 (*)
+             Γöé   ΓööΓöÇΓöÇ tt-mcp v0.0.1 (*)
+             Γö£ΓöÇΓöÇ (dev) tt-render v0.0.1
+             Γöé   Γö£ΓöÇΓöÇ tt-engine v0.0.1 (*)
+             Γöé   Γö£ΓöÇΓöÇ tt-executor v0.0.1 (*)
+             Γöé   ΓööΓöÇΓöÇ tt-io v0.0.1 (*)
+             ΓööΓöÇΓöÇ tt-vector v0.0.1
+                 Γö£ΓöÇΓöÇ tt-engine v0.0.1 (*)
+                 Γö£ΓöÇΓöÇ tt-executor v0.0.1 (*)
+                 ΓööΓöÇΓöÇ tt-render v0.0.1 (*)
+
+warning[duplicate]: found 2 duplicate entries for crate 'digest'
+   ΓöîΓöÇ C:\Users\kaiga\work\review\m3-c33-r1/Cargo.lock:72:1
+   Γöé
+72 Γöé Γò¡ digest 0.10.7 registry+https://github.com/rust-lang/crates.io-index
+73 Γöé Γöé digest 0.11.3 registry+https://github.com/rust-lang/crates.io-index
+   Γöé Γò░ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓ
+öÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÿ lock entries
+   Γöé
+   Γö£ digest v0.10.7
+     ΓööΓöÇΓöÇ sha2 v0.10.9
+         ΓööΓöÇΓöÇ tauri-codegen v2.7.3
+             ΓööΓöÇΓöÇ tauri-macros v2.7.3
+                 ΓööΓöÇΓöÇ tauri v2.12.4
+                     ΓööΓöÇΓöÇ tt-desktop v0.0.1
+   Γö£ digest v0.11.3
+     ΓööΓöÇΓöÇ sha2 v0.11.1
+         Γö£ΓöÇΓöÇ tt-engine v0.0.1
+         Γöé   Γö£ΓöÇΓöÇ tt-desktop v0.0.1
+         Γöé   Γö£ΓöÇΓöÇ tt-headless v0.0.1
+         Γöé   ΓööΓöÇΓöÇ tt-mcp v0.0.1
+         Γöé       ΓööΓöÇΓöÇ tt-headless v0.0.1 (*)
+         Γö£ΓöÇΓöÇ tt-executor v0.0.1
+         Γöé   Γö£ΓöÇΓöÇ tt-engine v0.0.1 (*)
+         Γöé   Γö£ΓöÇΓöÇ tt-headless v0.0.1 (*)
+         Γöé   ΓööΓöÇΓöÇ tt-mcp v0.0.1 (*)
+         Γö£ΓöÇΓöÇ (dev) tt-mcp v0.0.1 (*)
+         Γö£ΓöÇΓöÇ tt-persist v0.0.1
+         Γöé   Γö£ΓöÇΓöÇ tt-engine v0.0.1 (*)
+         Γöé   Γö£ΓöÇΓöÇ tt-executor v0.0.1 (*)
+         Γöé   Γö£ΓöÇΓöÇ tt-io v0.0.1
+         Γöé   Γöé   Γö£ΓöÇΓöÇ tt-engine v0.0.1 (*)
+         Γöé   Γöé   ΓööΓöÇΓöÇ tt-executor v0.0.1 (*)
+         Γöé   ΓööΓöÇΓöÇ tt-mcp v0.0.1 (*)
+         Γö£ΓöÇΓöÇ (dev) tt-render v0.0.1
+         Γöé   Γö£ΓöÇΓöÇ tt-engine v0.0.1 (*)
+         Γöé   Γö£ΓöÇΓöÇ tt-executor v0.0.1 (*)
+         Γöé   ΓööΓöÇΓöÇ tt-io v0.0.1 (*)
+         ΓööΓöÇΓöÇ tt-vector v0.0.1
+             Γö£ΓöÇΓöÇ tt-engine v0.0.1 (*)
+             Γö£ΓöÇΓöÇ tt-executor v0.0.1 (*)
+             ΓööΓöÇΓöÇ tt-render v0.0.1 (*)
+
+warning[duplicate]: found 2 duplicate entries for crate 'getrandom'
+    ΓöîΓöÇ C:\Users\kaiga\work\review\m3-c33-r1/Cargo.lock:111:1
+    Γöé
+111 Γöé Γò¡ getrandom 0.3.4 registry+https://github.com/rust-lang/crates.io-index
+112 Γöé Γöé getrandom 0.4.3 registry+https://github.com/rust-lang/crates.io-index
+    Γöé Γò░ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÿ lock entries
+    Γöé
+    Γö£ getrandom v0.3.4
+      Γö£ΓöÇΓöÇ ahash v0.8.12
+      Γöé   Γö£ΓöÇΓöÇ jsonschema v0.59.0
+      Γöé   Γöé   Γö£ΓöÇΓöÇ (dev) tt-executor v0.0.1
+      Γöé   Γöé   Γöé   Γö£ΓöÇΓöÇ tt-engine v0.0.1
+      Γöé   Γöé   Γöé   Γöé   Γö£ΓöÇΓöÇ tt-desktop v0.0.1
+      Γöé   Γöé   Γöé   Γöé   Γö£ΓöÇΓöÇ tt-headless v0.0.1
+      Γöé   Γöé   Γöé   Γöé   ΓööΓöÇΓöÇ tt-mcp v0.0.1
+      Γöé   Γöé   Γöé   Γöé       ΓööΓöÇΓöÇ tt-headless v0.0.1 (*)
+      Γöé   Γöé   Γöé   Γö£ΓöÇΓöÇ tt-headless v0.0.1 (*)
+      Γöé   Γöé   Γöé   ΓööΓöÇΓöÇ tt-mcp v0.0.1 (*)
+      Γöé   Γöé   Γö£ΓöÇΓöÇ (dev) tt-mcp v0.0.1 (*)
+      Γöé   Γöé   Γö£ΓöÇΓöÇ tt-model v0.0.1
+      Γöé   Γöé   Γöé   Γö£ΓöÇΓöÇ tt-anim v0.0.1
+      Γöé   Γöé   Γöé   Γöé   Γö£ΓöÇΓöÇ tt-engine v0.0.1 (*)
+      Γöé   Γöé   Γöé   Γöé   Γö£ΓöÇΓöÇ tt-executor v0.0.1 (*)
+      Γöé   Γöé   Γöé   Γöé   Γö£ΓöÇΓöÇ tt-fx v0.0.1
+      Γöé   Γöé   Γöé   Γöé   Γöé   Γö£ΓöÇΓöÇ tt-engine v0.0.1 (*)
+      Γöé   Γöé   Γöé   Γöé   Γöé   ΓööΓöÇΓöÇ tt-render v0.0.1
+      Γöé   Γöé   Γöé   Γöé   Γöé       Γö£ΓöÇΓöÇ tt-engine v0.0.1 (*)
+      Γöé   Γöé   Γöé   Γöé   Γöé       Γö£ΓöÇΓöÇ tt-executor v0.0.1 (*)
+      Γöé   Γöé   Γöé   Γöé   Γöé       ΓööΓöÇΓöÇ tt-io v0.0.1
+      Γöé   Γöé   Γöé   Γöé   Γöé           Γö£ΓöÇΓöÇ tt-engine v0.0.1 (*)
+      Γöé   Γöé   Γöé   Γöé   Γöé           ΓööΓöÇΓöÇ tt-executor v0.0.1 (*)
+      Γöé   Γöé   Γöé   Γöé   ΓööΓöÇΓöÇ tt-render v0.0.1 (*)
+      Γöé   Γöé   Γöé   Γö£ΓöÇΓöÇ tt-audio v0.0.1
+      Γöé   Γöé   Γöé   Γöé   Γö£ΓöÇΓöÇ tt-engine v0.0.1 (*)
+      Γöé   Γöé   Γöé   Γöé   ΓööΓöÇΓöÇ tt-lipsync v0.0.1
+      Γöé   Γöé   Γöé   Γöé       ΓööΓöÇΓöÇ tt-engine v0.0.1 (*)
+      Γöé   Γöé   Γöé   Γö£ΓöÇΓöÇ tt-colour v0.0.1
+      Γöé   Γöé   Γöé   Γöé   Γö£ΓöÇΓöÇ tt-engine v0.0.1 (*)
+      Γöé   Γöé   Γöé   Γöé   ΓööΓöÇΓöÇ tt-render v0.0.1 (*)
+      Γöé   Γöé   Γöé   Γö£ΓöÇΓöÇ tt-engine v0.0.1 (*)
+      Γöé   Γöé   Γöé   Γö£ΓöÇΓöÇ tt-executor v0.0.1 (*)
+      Γöé   Γöé   Γöé   Γö£ΓöÇΓöÇ tt-fx v0.0.1 (*)
+      Γöé   Γöé   Γöé   Γö£ΓöÇΓöÇ tt-io v0.0.1 (*)
+      Γöé   Γöé   Γöé   Γö£ΓöÇΓöÇ tt-lipsync v0.0.1 (*)
+      Γöé   Γöé   Γöé   Γö£ΓöÇΓöÇ tt-mcp v0.0.1 (*)
+      Γöé   Γöé   Γöé   Γö£ΓöÇΓöÇ tt-persist v0.0.1
+      Γöé   Γöé   Γöé   Γöé   Γö£ΓöÇΓöÇ tt-engine v0.0.1 (*)
+      Γöé   Γöé   Γöé   Γöé   Γö£ΓöÇΓöÇ tt-executor v0.0.1 (*)
+      Γöé   Γöé   Γöé   Γöé   Γö£ΓöÇΓöÇ tt-io v0.0.1 (*)
+      Γöé   Γöé   Γöé   Γöé   ΓööΓöÇΓöÇ tt-mcp v0.0.1 (*)
+      Γöé   Γöé   Γöé   Γö£ΓöÇΓöÇ tt-registry v0.0.1
+      Γöé   Γöé   Γöé   Γöé   Γö£ΓöÇΓöÇ tt-engine v0.0.1 (*)
+      Γöé   Γöé   Γöé   Γöé   Γö£ΓöÇΓöÇ tt-executor v0.0.1 (*)
+      Γöé   Γöé   Γöé   Γöé   ΓööΓöÇΓöÇ tt-mcp v0.0.1 (*)
+      Γöé   Γöé   Γöé   Γö£ΓöÇΓöÇ tt-render v0.0.1 (*)
+      Γöé   Γöé   Γöé   ΓööΓöÇΓöÇ tt-vector v0.0.1
+      Γöé   Γöé   Γöé       Γö£ΓöÇΓöÇ tt-engine v0.0.1 (*)
+      Γöé   Γöé   Γöé       Γö£ΓöÇΓöÇ tt-executor v0.0.1 (*)
+      Γöé   Γöé   Γöé       ΓööΓöÇΓöÇ tt-render v0.0.1 (*)
+      Γöé   Γöé   ΓööΓöÇΓöÇ tt-registry v0.0.1 (*)
+      Γöé   Γö£ΓöÇΓöÇ jsonschema-value v0.59.0
+      Γöé   Γöé   ΓööΓöÇΓöÇ jsonschema v0.59.0 (*)
+      Γöé   ΓööΓöÇΓöÇ referencing v0.59.0
+      Γöé       ΓööΓöÇΓöÇ jsonschema v0.59.0 (*)
+      ΓööΓöÇΓöÇ tauri v2.12.4
+          ΓööΓöÇΓöÇ tt-desktop v0.0.1 (*)
+    Γö£ getrandom v0.4.3
+      Γö£ΓöÇΓöÇ rand v0.10.3
+      Γöé   ΓööΓöÇΓöÇ proptest v1.12.0
+      Γöé       Γö£ΓöÇΓöÇ (dev) tt-anim v0.0.1
+      Γöé       Γöé   Γö£ΓöÇΓöÇ tt-engine v0.0.1
+      Γöé       Γöé   Γöé   Γö£ΓöÇΓöÇ tt-desktop v0.0.1
+      Γöé       Γöé   Γöé   Γö£ΓöÇΓöÇ tt-headless v0.0.1
+      Γöé       Γöé   Γöé   ΓööΓöÇΓöÇ tt-mcp v0.0.1
+      Γöé       Γöé   Γöé       ΓööΓöÇΓöÇ tt-headless v0.0.1 (*)
+      Γöé       Γöé   Γö£ΓöÇΓöÇ tt-executor v0.0.1
+      Γöé       Γöé   Γöé   Γö£ΓöÇΓöÇ tt-engine v0.0.1 (*)
+      Γöé       Γöé   Γöé   Γö£ΓöÇΓöÇ tt-headless v0.0.1 (*)
+      Γöé       Γöé   Γöé   ΓööΓöÇΓöÇ tt-mcp v0.0.1 (*)
+      Γöé       Γöé   Γö£ΓöÇΓöÇ tt-fx v0.0.1
+      Γöé       Γöé   Γöé   Γö£ΓöÇΓöÇ tt-engine v0.0.1 (*)
+      Γöé       Γöé   Γöé   ΓööΓöÇΓöÇ tt-render v0.0.1
+      Γöé       Γöé   Γöé       Γö£ΓöÇΓöÇ tt-engine v0.0.1 (*)
+      Γöé       Γöé   Γöé       Γö£ΓöÇΓöÇ tt-executor v0.0.1 (*)
+      Γöé       Γöé   Γöé       ΓööΓöÇΓöÇ tt-io v0.0.1
+      Γöé       Γöé   Γöé           Γö£ΓöÇΓöÇ tt-engine v0.0.1 (*)
+      Γöé       Γöé   Γöé           ΓööΓöÇΓöÇ tt-executor v0.0.1 (*)
+      Γöé       Γöé   ΓööΓöÇΓöÇ tt-render v0.0.1 (*)
+      Γöé       Γö£ΓöÇΓöÇ (dev) tt-executor v0.0.1 (*)
+      Γöé       Γö£ΓöÇΓöÇ (dev) tt-model v0.0.1
+      Γöé       Γöé   Γö£ΓöÇΓöÇ tt-anim v0.0.1 (*)
+      Γöé       Γöé   Γö£ΓöÇΓöÇ tt-audio v0.0.1
+      Γöé       Γöé   Γöé   Γö£ΓöÇΓöÇ tt-engine v0.0.1 (*)
+      Γöé       Γöé   Γöé   ΓööΓöÇΓöÇ tt-lipsync v0.0.1
+      Γöé       Γöé   Γöé       ΓööΓöÇΓöÇ tt-engine v0.0.1 (*)
+      Γöé       Γöé   Γö£ΓöÇΓöÇ tt-colour v0.0.1
+      Γöé       Γöé   Γöé   Γö£ΓöÇΓöÇ tt-engine v0.0.1 (*)
+      Γöé       Γöé   Γöé   ΓööΓöÇΓöÇ tt-render v0.0.1 (*)
+      Γöé       Γöé   Γö£ΓöÇΓöÇ tt-engine v0.0.1 (*)
+      Γöé       Γöé   Γö£ΓöÇΓöÇ tt-executor v0.0.1 (*)
+      Γöé       Γöé   Γö£ΓöÇΓöÇ tt-fx v0.0.1 (*)
+      Γöé       Γöé   Γö£ΓöÇΓöÇ tt-io v0.0.1 (*)
+      Γöé       Γöé   Γö£ΓöÇΓöÇ tt-lipsync v0.0.1 (*)
+      Γöé       Γöé   Γö£ΓöÇΓöÇ tt-mcp v0.0.1 (*)
+      Γöé       Γöé   Γö£ΓöÇΓöÇ tt-persist v0.0.1
+      Γöé       Γöé   Γöé   Γö£ΓöÇΓöÇ tt-engine v0.0.1 (*)
+      Γöé       Γöé   Γöé   Γö£ΓöÇΓöÇ tt-executor v0.0.1 (*)
+      Γöé       Γöé   Γöé   Γö£ΓöÇΓöÇ tt-io v0.0.1 (*)
+      Γöé       Γöé   Γöé   ΓööΓöÇΓöÇ tt-mcp v0.0.1 (*)
+      Γöé       Γöé   Γö£ΓöÇΓöÇ tt-registry v0.0.1
+      Γöé       Γöé   Γöé   Γö£ΓöÇΓöÇ tt-engine v0.0.1 (*)
+      Γöé       Γöé   Γöé   Γö£ΓöÇΓöÇ tt-executor v0.0.1 (*)
+      Γöé       Γöé   Γöé   ΓööΓöÇΓöÇ tt-mcp v0.0.1 (*)
+      Γöé       Γöé   Γö£ΓöÇΓöÇ tt-render v0.0.1 (*)
+      Γöé       Γöé   ΓööΓöÇΓöÇ tt-vector v0.0.1
+      Γöé       Γöé       Γö£ΓöÇΓöÇ tt-engine v0.0.1 (*)
+      Γöé       Γöé       Γö£ΓöÇΓöÇ tt-executor v0.0.1 (*)
+      Γöé       Γöé       ΓööΓöÇΓöÇ tt-render v0.0.1 (*)
+      Γöé       Γö£ΓöÇΓöÇ (dev) tt-persist v0.0.1 (*)
+      Γöé       ΓööΓöÇΓöÇ (dev) tt-vector v0.0.1 (*)
+      Γö£ΓöÇΓöÇ tempfile v3.27.0
+      Γöé   Γö£ΓöÇΓöÇ proptest v1.12.0 (*)
+      Γöé   ΓööΓöÇΓöÇ rusty-fork v0.3.1
+      Γöé       ΓööΓöÇΓöÇ proptest v1.12.0 (*)
+      Γö£ΓöÇΓöÇ tt-model v0.0.1 (*)
+      Γö£ΓöÇΓöÇ tt-persist v0.0.1 (*)
+      ΓööΓöÇΓöÇ uuid v1.28.0
+          Γö£ΓöÇΓöÇ cfb v0.14.0
+          Γöé   ΓööΓöÇΓöÇ infer v0.22.0
+          Γöé       ΓööΓöÇΓöÇ tauri-utils v2.10.2
+          Γöé           Γö£ΓöÇΓöÇ tauri v2.12.4
+          Γöé           Γöé   ΓööΓöÇΓöÇ tt-desktop v0.0.1 (*)
+          Γöé           Γö£ΓöÇΓöÇ tauri-build v2.7.3
+          Γöé           Γöé   Γö£ΓöÇΓöÇ (build) tauri v2.12.4 (*)
+          Γöé           Γöé   ΓööΓöÇΓöÇ (build) tt-desktop v0.0.1 (*)
+          Γöé           Γö£ΓöÇΓöÇ tauri-codegen v2.7.3
+          Γöé           Γöé   ΓööΓöÇΓöÇ tauri-macros v2.7.3
+          Γöé           Γöé       ΓööΓöÇΓöÇ tauri v2.12.4 (*)
+          Γöé           Γö£ΓöÇΓöÇ tauri-macros v2.7.3 (*)
+          Γöé           Γö£ΓöÇΓöÇ tauri-runtime v2.12.2
+          Γöé           Γöé   Γö£ΓöÇΓöÇ tauri v2.12.4 (*)
+          Γöé           Γöé   ΓööΓöÇΓöÇ tauri-runtime-wry v2.12.2
+          Γöé           Γöé       ΓööΓöÇΓöÇ tauri v2.12.4 (*)
+          Γöé           ΓööΓöÇΓöÇ tauri-runtime-wry v2.12.2 (*)
+          Γö£ΓöÇΓöÇ schemars v0.8.22
+          Γöé   Γö£ΓöÇΓöÇ tauri-build v2.7.3 (*)
+          Γöé   ΓööΓöÇΓöÇ tauri-utils v2.10.2 (*)
+          Γö£ΓöÇΓöÇ tauri-codegen v2.7.3 (*)
+          ΓööΓöÇΓöÇ tauri-utils v2.10.2 (*)
+
+warning[duplicate]: found 3 duplicate entries for crate 'hashbrown'
+    ΓöîΓöÇ C:\Users\kaiga\work\review\m3-c33-r1/Cargo.lock:117:1
+    Γöé
+117 Γöé Γò¡ hashbrown 0.12.3 registry+https://github.com/rust-lang/crates.io-index
+118 Γöé Γöé hashbrown 0.16.1 registry+https://github.com/rust-lang/crates.io-index
+119 Γöé Γöé hashbrown 0.17.1 registry+https://github.com/rust-lang/crates.io-index
+    Γöé Γò░ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÿ lock entries
+    Γöé
+    Γö£ hashbrown v0.12.3
+      ΓööΓöÇΓöÇ indexmap v1.9.3
+          ΓööΓöÇΓöÇ schemars v0.8.22
+              Γö£ΓöÇΓöÇ tauri-build v2.7.3
+              Γöé   Γö£ΓöÇΓöÇ (build) tauri v2.12.4
+              Γöé   Γöé   ΓööΓöÇΓöÇ tt-desktop v0.0.1
+              Γöé   ΓööΓöÇΓöÇ (build) tt-desktop v0.0.1 (*)
+              ΓööΓöÇΓöÇ tauri-utils v2.10.2
+                  Γö£ΓöÇΓöÇ tauri v2.12.4 (*)
+                  Γö£ΓöÇΓöÇ tauri-build v2.7.3 (*)
+                  Γö£ΓöÇΓöÇ tauri-codegen v2.7.3
+                  Γöé   ΓööΓöÇΓöÇ tauri-macros v2.7.3
+                  Γöé       ΓööΓöÇΓöÇ tauri v2.12.4 (*)
+                  Γö£ΓöÇΓöÇ tauri-macros v2.7.3 (*)
+                  Γö£ΓöÇΓöÇ tauri-runtime v2.12.2
+                  Γöé   Γö£ΓöÇΓöÇ tauri v2.12.4 (*)
+                  Γöé   ΓööΓöÇΓöÇ tauri-runtime-wry v2.12.2
+                  Γöé       ΓööΓöÇΓöÇ tauri v2.12.4 (*)
+                  ΓööΓöÇΓöÇ tauri-runtime-wry v2.12.2 (*)
+    Γö£ hashbrown v0.16.1
+      ΓööΓöÇΓöÇ spade v2.15.1
+          ΓööΓöÇΓöÇ tt-vector v0.0.1
+              Γö£ΓöÇΓöÇ tt-engine v0.0.1
+              Γöé   Γö£ΓöÇΓöÇ tt-desktop v0.0.1
+              Γöé   Γö£ΓöÇΓöÇ tt-headless v0.0.1
+              Γöé   ΓööΓöÇΓöÇ tt-mcp v0.0.1
+              Γöé       ΓööΓöÇΓöÇ tt-headless v0.0.1 (*)
+              Γö£ΓöÇΓöÇ tt-executor v0.0.1
+              Γöé   Γö£ΓöÇΓöÇ tt-engine v0.0.1 (*)
+              Γöé   Γö£ΓöÇΓöÇ tt-headless v0.0.1 (*)
+              Γöé   ΓööΓöÇΓöÇ tt-mcp v0.0.1 (*)
+              ΓööΓöÇΓöÇ tt-render v0.0.1
+                  Γö£ΓöÇΓöÇ tt-engine v0.0.1 (*)
+                  Γö£ΓöÇΓöÇ tt-executor v0.0.1 (*)
+                  ΓööΓöÇΓöÇ tt-io v0.0.1
+                      Γö£ΓöÇΓöÇ tt-engine v0.0.1 (*)
+                      ΓööΓöÇΓöÇ tt-executor v0.0.1 (*)
+    Γö£ hashbrown v0.17.1
+      Γö£ΓöÇΓöÇ indexmap v2.14.2
+      Γöé   Γö£ΓöÇΓöÇ plist v1.10.1
+      Γöé   Γöé   Γö£ΓöÇΓöÇ tauri v2.12.4
+      Γöé   Γöé   Γöé   ΓööΓöÇΓöÇ tt-desktop v0.0.1
+      Γöé   Γöé   Γö£ΓöÇΓöÇ tauri-codegen v2.7.3
+      Γöé   Γöé   Γöé   ΓööΓöÇΓöÇ tauri-macros v2.7.3
+      Γöé   Γöé   Γöé       ΓööΓöÇΓöÇ tauri v2.12.4 (*)
+      Γöé   Γöé   ΓööΓöÇΓöÇ tauri-utils v2.10.2
+      Γöé   Γöé       Γö£ΓöÇΓöÇ tauri v2.12.4 (*)
+      Γöé   Γöé       Γö£ΓöÇΓöÇ tauri-build v2.7.3
+      Γöé   Γöé       Γöé   Γö£ΓöÇΓöÇ (build) tauri v2.12.4 (*)
+      Γöé   Γöé       Γöé   ΓööΓöÇΓöÇ (build) tt-desktop v0.0.1 (*)
+      Γöé   Γöé       Γö£ΓöÇΓöÇ tauri-codegen v2.7.3 (*)
+      Γöé   Γöé       Γö£ΓöÇΓöÇ tauri-macros v2.7.3 (*)
+      Γöé   Γöé       Γö£ΓöÇΓöÇ tauri-runtime v2.12.2
+      Γöé   Γöé       Γöé   Γö£ΓöÇΓöÇ tauri v2.12.4 (*)
+      Γöé   Γöé       Γöé   ΓööΓöÇΓöÇ tauri-runtime-wry v2.12.2
+      Γöé   Γöé       Γöé       ΓööΓöÇΓöÇ tauri v2.12.4 (*)
+      Γöé   Γöé       ΓööΓöÇΓöÇ tauri-runtime-wry v2.12.2 (*)
+      Γöé   Γö£ΓöÇΓöÇ schemars v1.2.3
+      Γöé   Γöé   Γö£ΓöÇΓöÇ tt-engine v0.0.1
+      Γöé   Γöé   Γöé   Γö£ΓöÇΓöÇ tt-desktop v0.0.1 (*)
+      Γöé   Γöé   Γöé   Γö£ΓöÇΓöÇ tt-headless v0.0.1
+      Γöé   Γöé   Γöé   ΓööΓöÇΓöÇ tt-mcp v0.0.1
+      Γöé   Γöé   Γöé       ΓööΓöÇΓöÇ tt-headless v0.0.1 (*)
+      Γöé   Γöé   Γö£ΓöÇΓöÇ tt-executor v0.0.1
+      Γöé   Γöé   Γöé   Γö£ΓöÇΓöÇ tt-engine v0.0.1 (*)
+      Γöé   Γöé   Γöé   Γö£ΓöÇΓöÇ tt-headless v0.0.1 (*)
+      Γöé   Γöé   Γöé   ΓööΓöÇΓöÇ tt-mcp v0.0.1 (*)
+      Γöé   Γöé   Γö£ΓöÇΓöÇ tt-model v0.0.1
+      Γöé   Γöé   Γöé   Γö£ΓöÇΓöÇ tt-anim v0.0.1
+      Γöé   Γöé   Γöé   Γöé   Γö£ΓöÇΓöÇ tt-engine v0.0.1 (*)
+      Γöé   Γöé   Γöé   Γöé   Γö£ΓöÇΓöÇ tt-executor v0.0.1 (*)
+      Γöé   Γöé   Γöé   Γöé   Γö£ΓöÇΓöÇ tt-fx v0.0.1
+      Γöé   Γöé   Γöé   Γöé   Γöé   Γö£ΓöÇΓöÇ tt-engine v0.0.1 (*)
+      Γöé   Γöé   Γöé   Γöé   Γöé   ΓööΓöÇΓöÇ tt-render v0.0.1
+      Γöé   Γöé   Γöé   Γöé   Γöé       Γö£ΓöÇΓöÇ tt-engine v0.0.1 (*)
+      Γöé   Γöé   Γöé   Γöé   Γöé       Γö£ΓöÇΓöÇ tt-executor v0.0.1 (*)
+      Γöé   Γöé   Γöé   Γöé   Γöé       ΓööΓöÇΓöÇ tt-io v0.0.1
+      Γöé   Γöé   Γöé   Γöé   Γöé           Γö£ΓöÇΓöÇ tt-engine v0.0.1 (*)
+      Γöé   Γöé   Γöé   Γöé   Γöé           ΓööΓöÇΓöÇ tt-executor v0.0.1 (*)
+      Γöé   Γöé   Γöé   Γöé   ΓööΓöÇΓöÇ tt-render v0.0.1 (*)
+      Γöé   Γöé   Γöé   Γö£ΓöÇΓöÇ tt-audio v0.0.1
+      Γöé   Γöé   Γöé   Γöé   Γö£ΓöÇΓöÇ tt-engine v0.0.1 (*)
+      Γöé   Γöé   Γöé   Γöé   ΓööΓöÇΓöÇ tt-lipsync v0.0.1
+      Γöé   Γöé   Γöé   Γöé       ΓööΓöÇΓöÇ tt-engine v0.0.1 (*)
+      Γöé   Γöé   Γöé   Γö£ΓöÇΓöÇ tt-colour v0.0.1
+      Γöé   Γöé   Γöé   Γöé   Γö£ΓöÇΓöÇ tt-engine v0.0.1 (*)
+      Γöé   Γöé   Γöé   Γöé   ΓööΓöÇΓöÇ tt-render v0.0.1 (*)
+      Γöé   Γöé   Γöé   Γö£ΓöÇΓöÇ tt-engine v0.0.1 (*)
+      Γöé   Γöé   Γöé   Γö£ΓöÇΓöÇ tt-executor v0.0.1 (*)
+      Γöé   Γöé   Γöé   Γö£ΓöÇΓöÇ tt-fx v0.0.1 (*)
+      Γöé   Γöé   Γöé   Γö£ΓöÇΓöÇ tt-io v0.0.1 (*)
+      Γöé   Γöé   Γöé   Γö£ΓöÇΓöÇ tt-lipsync v0.0.1 (*)
+      Γöé   Γöé   Γöé   Γö£ΓöÇΓöÇ tt-mcp v0.0.1 (*)
+      Γöé   Γöé   Γöé   Γö£ΓöÇΓöÇ tt-persist v0.0.1
+      Γöé   Γöé   Γöé   Γöé   Γö£ΓöÇΓöÇ tt-engine v0.0.1 (*)
+      Γöé   Γöé   Γöé   Γöé   Γö£ΓöÇΓöÇ tt-executor v0.0.1 (*)
+      Γöé   Γöé   Γöé   Γöé   Γö£ΓöÇΓöÇ tt-io v0.0.1 (*)
+      Γöé   Γöé   Γöé   Γöé   ΓööΓöÇΓöÇ tt-mcp v0.0.1 (*)
+      Γöé   Γöé   Γöé   Γö£ΓöÇΓöÇ tt-registry v0.0.1
+      Γöé   Γöé   Γöé   Γöé   Γö£ΓöÇΓöÇ tt-engine v0.0.1 (*)
+      Γöé   Γöé   Γöé   Γöé   Γö£ΓöÇΓöÇ tt-executor v0.0.1 (*)
+      Γöé   Γöé   Γöé   Γöé   ΓööΓöÇΓöÇ tt-mcp v0.0.1 (*)
+      Γöé   Γöé   Γöé   Γö£ΓöÇΓöÇ tt-render v0.0.1 (*)
+      Γöé   Γöé   Γöé   ΓööΓöÇΓöÇ tt-vector v0.0.1
+      Γöé   Γöé   Γöé       Γö£ΓöÇΓöÇ tt-engine v0.0.1 (*)
+      Γöé   Γöé   Γöé       Γö£ΓöÇΓöÇ tt-executor v0.0.1 (*)
+      Γöé   Γöé   Γöé       ΓööΓöÇΓöÇ tt-render v0.0.1 (*)
+      Γöé   Γöé   Γö£ΓöÇΓöÇ tt-registry v0.0.1 (*)
+      Γöé   Γöé   ΓööΓöÇΓöÇ tt-vector v0.0.1 (*)
+      Γöé   Γö£ΓöÇΓöÇ serde_json v1.0.154
+      Γöé   Γöé   Γö£ΓöÇΓöÇ cargo_metadata v0.19.2
+      Γöé   Γöé   Γöé   ΓööΓöÇΓöÇ tauri-utils v2.10.2 (*)
+      Γöé   Γöé   Γö£ΓöÇΓöÇ json-patch v4.2.0
+      Γöé   Γöé   Γöé   Γö£ΓöÇΓöÇ tauri-build v2.7.3 (*)
+      Γöé   Γöé   Γöé   Γö£ΓöÇΓöÇ tauri-codegen v2.7.3 (*)
+      Γöé   Γöé   Γöé   ΓööΓöÇΓöÇ tauri-utils v2.10.2 (*)
+      Γöé   Γöé   Γö£ΓöÇΓöÇ jsonptr v0.7.1
+      Γöé   Γöé   Γöé   ΓööΓöÇΓöÇ json-patch v4.2.0 (*)
+      Γöé   Γöé   Γö£ΓöÇΓöÇ jsonschema v0.59.0
+      Γöé   Γöé   Γöé   Γö£ΓöÇΓöÇ (dev) tt-executor v0.0.1 (*)
+      Γöé   Γöé   Γöé   Γö£ΓöÇΓöÇ (dev) tt-mcp v0.0.1 (*)
+      Γöé   Γöé   Γöé   Γö£ΓöÇΓöÇ tt-model v0.0.1 (*)
+      Γöé   Γöé   Γöé   ΓööΓöÇΓöÇ tt-registry v0.0.1 (*)
+      Γöé   Γöé   Γö£ΓöÇΓöÇ jsonschema-value v0.59.0
+      Γöé   Γöé   Γöé   ΓööΓöÇΓöÇ jsonschema v0.59.0 (*)
+      Γöé   Γöé   Γö£ΓöÇΓöÇ referencing v0.59.0
+      Γöé   Γöé   Γöé   ΓööΓöÇΓöÇ jsonschema v0.59.0 (*)
+      Γöé   Γöé   Γö£ΓöÇΓöÇ schemars v0.8.22
+      Γöé   Γöé   Γöé   Γö£ΓöÇΓöÇ tauri-build v2.7.3 (*)
+      Γöé   Γöé   Γöé   ΓööΓöÇΓöÇ tauri-utils v2.10.2 (*)
+      Γöé   Γöé   Γö£ΓöÇΓöÇ schemars v1.2.3 (*)
+      Γöé   Γöé   Γö£ΓöÇΓöÇ serialize-to-javascript v0.1.2
+      Γöé   Γöé   Γöé   ΓööΓöÇΓöÇ tauri v2.12.4 (*)
+      Γöé   Γöé   Γö£ΓöÇΓöÇ swift-rs v1.0.9
+      Γöé   Γöé   Γöé   ΓööΓöÇΓöÇ tauri-utils v2.10.2 (*)
+      Γöé   Γöé   Γö£ΓöÇΓöÇ tauri v2.12.4 (*)
+      Γöé   Γöé   Γö£ΓöÇΓöÇ tauri-build v2.7.3 (*)
+      Γöé   Γöé   Γö£ΓöÇΓöÇ tauri-codegen v2.7.3 (*)
+      Γöé   Γöé   Γö£ΓöÇΓöÇ tauri-runtime v2.12.2 (*)
+      Γöé   Γöé   Γö£ΓöÇΓöÇ tauri-utils v2.10.2 (*)
+      Γöé   Γöé   Γö£ΓöÇΓöÇ trybuild v1.0.122
+      Γöé   Γöé   Γöé   ΓööΓöÇΓöÇ (dev) tt-executor v0.0.1 (*)
+      Γöé   Γöé   Γö£ΓöÇΓöÇ tt-desktop v0.0.1 (*)
+      Γöé   Γöé   Γö£ΓöÇΓöÇ tt-engine v0.0.1 (*)
+      Γöé   Γöé   Γö£ΓöÇΓöÇ tt-executor v0.0.1 (*)
+      Γöé   Γöé   Γö£ΓöÇΓöÇ tt-headless v0.0.1 (*)
+      Γöé   Γöé   Γö£ΓöÇΓöÇ (dev) tt-io v0.0.1 (*)
+      Γöé   Γöé   Γö£ΓöÇΓöÇ tt-mcp v0.0.1 (*)
+      Γöé   Γöé   Γö£ΓöÇΓöÇ tt-model v0.0.1 (*)
+      Γöé   Γöé   Γö£ΓöÇΓöÇ tt-persist v0.0.1 (*)
+      Γöé   Γöé   Γö£ΓöÇΓöÇ tt-registry v0.0.1 (*)
+      Γöé   Γöé   Γö£ΓöÇΓöÇ (dev) tt-render v0.0.1 (*)
+      Γöé   Γöé   ΓööΓöÇΓöÇ tt-vector v0.0.1 (*)
+      Γöé   ΓööΓöÇΓöÇ tt-model v0.0.1 (*)
+      Γö£ΓöÇΓöÇ referencing v0.59.0 (*)
+      ΓööΓöÇΓöÇ vello_cpu v0.3.0
+          ΓööΓöÇΓöÇ tt-render v0.0.1 (*)
+
+warning[duplicate]: found 2 duplicate entries for crate 'indexmap'
+    ΓöîΓöÇ C:\Users\kaiga\work\review\m3-c33-r1/Cargo.lock:141:1
+    Γöé
+141 Γöé Γò¡ indexmap 1.9.3 registry+https://github.com/rust-lang/crates.io-index
+142 Γöé Γöé indexmap 2.14.2 registry+https://github.com/rust-lang/crates.io-index
+    Γöé Γò░ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÿ lock entries
+    Γöé
+    Γö£ indexmap v1.9.3
+      ΓööΓöÇΓöÇ schemars v0.8.22
+          Γö£ΓöÇΓöÇ tauri-build v2.7.3
+          Γöé   Γö£ΓöÇΓöÇ (build) tauri v2.12.4
+          Γöé   Γöé   ΓööΓöÇΓöÇ tt-desktop v0.0.1
+          Γöé   ΓööΓöÇΓöÇ (build) tt-desktop v0.0.1 (*)
+          ΓööΓöÇΓöÇ tauri-utils v2.10.2
+              Γö£ΓöÇΓöÇ tauri v2.12.4 (*)
+              Γö£ΓöÇΓöÇ tauri-build v2.7.3 (*)
+              Γö£ΓöÇΓöÇ tauri-codegen v2.7.3
+              Γöé   ΓööΓöÇΓöÇ tauri-macros v2.7.3
+              Γöé       ΓööΓöÇΓöÇ tauri v2.12.4 (*)
+              Γö£ΓöÇΓöÇ tauri-macros v2.7.3 (*)
+              Γö£ΓöÇΓöÇ tauri-runtime v2.12.2
+              Γöé   Γö£ΓöÇΓöÇ tauri v2.12.4 (*)
+              Γöé   ΓööΓöÇΓöÇ tauri-runtime-wry v2.12.2
+              Γöé       ΓööΓöÇΓöÇ tauri v2.12.4 (*)
+              ΓööΓöÇΓöÇ tauri-runtime-wry v2.12.2 (*)
+    Γö£ indexmap v2.14.2
+      Γö£ΓöÇΓöÇ plist v1.10.1
+      Γöé   Γö£ΓöÇΓöÇ tauri v2.12.4
+      Γöé   Γöé   ΓööΓöÇΓöÇ tt-desktop v0.0.1
+      Γöé   Γö£ΓöÇΓöÇ tauri-codegen v2.7.3
+      Γöé   Γöé   ΓööΓöÇΓöÇ tauri-macros v2.7.3
+      Γöé   Γöé       ΓööΓöÇΓöÇ tauri v2.12.4 (*)
+      Γöé   ΓööΓöÇΓöÇ tauri-utils v2.10.2
+      Γöé       Γö£ΓöÇΓöÇ tauri v2.12.4 (*)
+      Γöé       Γö£ΓöÇΓöÇ tauri-build v2.7.3
+      Γöé       Γöé   Γö£ΓöÇΓöÇ (build) tauri v2.12.4 (*)
+      Γöé       Γöé   ΓööΓöÇΓöÇ (build) tt-desktop v0.0.1 (*)
+      Γöé       Γö£ΓöÇΓöÇ tauri-codegen v2.7.3 (*)
+      Γöé       Γö£ΓöÇΓöÇ tauri-macros v2.7.3 (*)
+      Γöé       Γö£ΓöÇΓöÇ tauri-runtime v2.12.2
+      Γöé       Γöé   Γö£ΓöÇΓöÇ tauri v2.12.4 (*)
+      Γöé       Γöé   ΓööΓöÇΓöÇ tauri-runtime-wry v2.12.2
+      Γöé       Γöé       ΓööΓöÇΓöÇ tauri v2.12.4 (*)
+      Γöé       ΓööΓöÇΓöÇ tauri-runtime-wry v2.12.2 (*)
+      Γö£ΓöÇΓöÇ schemars v1.2.3
+      Γöé   Γö£ΓöÇΓöÇ tt-engine v0.0.1
+      Γöé   Γöé   Γö£ΓöÇΓöÇ tt-desktop v0.0.1 (*)
+      Γöé   Γöé   Γö£ΓöÇΓöÇ tt-headless v0.0.1
+      Γöé   Γöé   ΓööΓöÇΓöÇ tt-mcp v0.0.1
+      Γöé   Γöé       ΓööΓöÇΓöÇ tt-headless v0.0.1 (*)
+      Γöé   Γö£ΓöÇΓöÇ tt-executor v0.0.1
+      Γöé   Γöé   Γö£ΓöÇΓöÇ tt-engine v0.0.1 (*)
+      Γöé   Γöé   Γö£ΓöÇΓöÇ tt-headless v0.0.1 (*)
+      Γöé   Γöé   ΓööΓöÇΓöÇ tt-mcp v0.0.1 (*)
+      Γöé   Γö£ΓöÇΓöÇ tt-model v0.0.1
+      Γöé   Γöé   Γö£ΓöÇΓöÇ tt-anim v0.0.1
+      Γöé   Γöé   Γöé   Γö£ΓöÇΓöÇ tt-engine v0.0.1 (*)
+      Γöé   Γöé   Γöé   Γö£ΓöÇΓöÇ tt-executor v0.0.1 (*)
+      Γöé   Γöé   Γöé   Γö£ΓöÇΓöÇ tt-fx v0.0.1
+      Γöé   Γöé   Γöé   Γöé   Γö£ΓöÇΓöÇ tt-engine v0.0.1 (*)
+      Γöé   Γöé   Γöé   Γöé   ΓööΓöÇΓöÇ tt-render v0.0.1
+      Γöé   Γöé   Γöé   Γöé       Γö£ΓöÇΓöÇ tt-engine v0.0.1 (*)
+      Γöé   Γöé   Γöé   Γöé       Γö£ΓöÇΓöÇ tt-executor v0.0.1 (*)
+      Γöé   Γöé   Γöé   Γöé       ΓööΓöÇΓöÇ tt-io v0.0.1
+      Γöé   Γöé   Γöé   Γöé           Γö£ΓöÇΓöÇ tt-engine v0.0.1 (*)
+      Γöé   Γöé   Γöé   Γöé           ΓööΓöÇΓöÇ tt-executor v0.0.1 (*)
+      Γöé   Γöé   Γöé   ΓööΓöÇΓöÇ tt-render v0.0.1 (*)
+      Γöé   Γöé   Γö£ΓöÇΓöÇ tt-audio v0.0.1
+      Γöé   Γöé   Γöé   Γö£ΓöÇΓöÇ tt-engine v0.0.1 (*)
+      Γöé   Γöé   Γöé   ΓööΓöÇΓöÇ tt-lipsync v0.0.1
+      Γöé   Γöé   Γöé       ΓööΓöÇΓöÇ tt-engine v0.0.1 (*)
+      Γöé   Γöé   Γö£ΓöÇΓöÇ tt-colour v0.0.1
+      Γöé   Γöé   Γöé   Γö£ΓöÇΓöÇ tt-engine v0.0.1 (*)
+      Γöé   Γöé   Γöé   ΓööΓöÇΓöÇ tt-render v0.0.1 (*)
+      Γöé   Γöé   Γö£ΓöÇΓöÇ tt-engine v0.0.1 (*)
+      Γöé   Γöé   Γö£ΓöÇΓöÇ tt-executor v0.0.1 (*)
+      Γöé   Γöé   Γö£ΓöÇΓöÇ tt-fx v0.0.1 (*)
+      Γöé   Γöé   Γö£ΓöÇΓöÇ tt-io v0.0.1 (*)
+      Γöé   Γöé   Γö£ΓöÇΓöÇ tt-lipsync v0.0.1 (*)
+      Γöé   Γöé   Γö£ΓöÇΓöÇ tt-mcp v0.0.1 (*)
+      Γöé   Γöé   Γö£ΓöÇΓöÇ tt-persist v0.0.1
+      Γöé   Γöé   Γöé   Γö£ΓöÇΓöÇ tt-engine v0.0.1 (*)
+      Γöé   Γöé   Γöé   Γö£ΓöÇΓöÇ tt-executor v0.0.1 (*)
+      Γöé   Γöé   Γöé   Γö£ΓöÇΓöÇ tt-io v0.0.1 (*)
+      Γöé   Γöé   Γöé   ΓööΓöÇΓöÇ tt-mcp v0.0.1 (*)
+      Γöé   Γöé   Γö£ΓöÇΓöÇ tt-registry v0.0.1
+      Γöé   Γöé   Γöé   Γö£ΓöÇΓöÇ tt-engine v0.0.1 (*)
+      Γöé   Γöé   Γöé   Γö£ΓöÇΓöÇ tt-executor v0.0.1 (*)
+      Γöé   Γöé   Γöé   ΓööΓöÇΓöÇ tt-mcp v0.0.1 (*)
+      Γöé   Γöé   Γö£ΓöÇΓöÇ tt-render v0.0.1 (*)
+      Γöé   Γöé   ΓööΓöÇΓöÇ tt-vector v0.0.1
+      Γöé   Γöé       Γö£ΓöÇΓöÇ tt-engine v0.0.1 (*)
+      Γöé   Γöé       Γö£ΓöÇΓöÇ tt-executor v0.0.1 (*)
+      Γöé   Γöé       ΓööΓöÇΓöÇ tt-render v0.0.1 (*)
+      Γöé   Γö£ΓöÇΓöÇ tt-registry v0.0.1 (*)
+      Γöé   ΓööΓöÇΓöÇ tt-vector v0.0.1 (*)
+      Γö£ΓöÇΓöÇ serde_json v1.0.154
+      Γöé   Γö£ΓöÇΓöÇ cargo_metadata v0.19.2
+      Γöé   Γöé   ΓööΓöÇΓöÇ tauri-utils v2.10.2 (*)
+      Γöé   Γö£ΓöÇΓöÇ json-patch v4.2.0
+      Γöé   Γöé   Γö£ΓöÇΓöÇ tauri-build v2.7.3 (*)
+      Γöé   Γöé   Γö£ΓöÇΓöÇ tauri-codegen v2.7.3 (*)
+      Γöé   Γöé   ΓööΓöÇΓöÇ tauri-utils v2.10.2 (*)
+      Γöé   Γö£ΓöÇΓöÇ jsonptr v0.7.1
+      Γöé   Γöé   ΓööΓöÇΓöÇ json-patch v4.2.0 (*)
+      Γöé   Γö£ΓöÇΓöÇ jsonschema v0.59.0
+      Γöé   Γöé   Γö£ΓöÇΓöÇ (dev) tt-executor v0.0.1 (*)
+      Γöé   Γöé   Γö£ΓöÇΓöÇ (dev) tt-mcp v0.0.1 (*)
+      Γöé   Γöé   Γö£ΓöÇΓöÇ tt-model v0.0.1 (*)
+      Γöé   Γöé   ΓööΓöÇΓöÇ tt-registry v0.0.1 (*)
+      Γöé   Γö£ΓöÇΓöÇ jsonschema-value v0.59.0
+      Γöé   Γöé   ΓööΓöÇΓöÇ jsonschema v0.59.0 (*)
+      Γöé   Γö£ΓöÇΓöÇ referencing v0.59.0
+      Γöé   Γöé   ΓööΓöÇΓöÇ jsonschema v0.59.0 (*)
+      Γöé   Γö£ΓöÇΓöÇ schemars v0.8.22
+      Γöé   Γöé   Γö£ΓöÇΓöÇ tauri-build v2.7.3 (*)
+      Γöé   Γöé   ΓööΓöÇΓöÇ tauri-utils v2.10.2 (*)
+      Γöé   Γö£ΓöÇΓöÇ schemars v1.2.3 (*)
+      Γöé   Γö£ΓöÇΓöÇ serialize-to-javascript v0.1.2
+      Γöé   Γöé   ΓööΓöÇΓöÇ tauri v2.12.4 (*)
+      Γöé   Γö£ΓöÇΓöÇ swift-rs v1.0.9
+      Γöé   Γöé   ΓööΓöÇΓöÇ tauri-utils v2.10.2 (*)
+      Γöé   Γö£ΓöÇΓöÇ tauri v2.12.4 (*)
+      Γöé   Γö£ΓöÇΓöÇ tauri-build v2.7.3 (*)
+      Γöé   Γö£ΓöÇΓöÇ tauri-codegen v2.7.3 (*)
+      Γöé   Γö£ΓöÇΓöÇ tauri-runtime v2.12.2 (*)
+      Γöé   Γö£ΓöÇΓöÇ tauri-utils v2.10.2 (*)
+      Γöé   Γö£ΓöÇΓöÇ trybuild v1.0.122
+      Γöé   Γöé   ΓööΓöÇΓöÇ (dev) tt-executor v0.0.1 (*)
+      Γöé   Γö£ΓöÇΓöÇ tt-desktop v0.0.1 (*)
+      Γöé   Γö£ΓöÇΓöÇ tt-engine v0.0.1 (*)
+      Γöé   Γö£ΓöÇΓöÇ tt-executor v0.0.1 (*)
+      Γöé   Γö£ΓöÇΓöÇ tt-headless v0.0.1 (*)
+      Γöé   Γö£ΓöÇΓöÇ (dev) tt-io v0.0.1 (*)
+      Γöé   Γö£ΓöÇΓöÇ tt-mcp v0.0.1 (*)
+      Γöé   Γö£ΓöÇΓöÇ tt-model v0.0.1 (*)
+      Γöé   Γö£ΓöÇΓöÇ tt-persist v0.0.1 (*)
+      Γöé   Γö£ΓöÇΓöÇ tt-registry v0.0.1 (*)
+      Γöé   Γö£ΓöÇΓöÇ (dev) tt-render v0.0.1 (*)
+      Γöé   ΓööΓöÇΓöÇ tt-vector v0.0.1 (*)
+      ΓööΓöÇΓöÇ tt-model v0.0.1 (*)
+
+warning[duplicate]: found 2 duplicate entries for crate 'miniz_oxide'
+    ΓöîΓöÇ C:\Users\kaiga\work\review\m3-c33-r1/Cargo.lock:163:1
+    Γöé
+163 Γöé Γò¡ miniz_oxide 0.8.9 registry+https://github.com/rust-lang/crates.io-index
+164 Γöé Γöé miniz_oxide 0.9.1 registry+https://github.com/rust-lang/crates.io-index
+    Γöé Γò░ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÿ lock
+entries
+    Γöé
+    Γö£ miniz_oxide v0.8.9
+      Γö£ΓöÇΓöÇ png v0.17.16
+      Γöé   ΓööΓöÇΓöÇ ico v0.5.0
+      Γöé       ΓööΓöÇΓöÇ tauri-codegen v2.7.3
+      Γöé           ΓööΓöÇΓöÇ tauri-macros v2.7.3
+      Γöé               ΓööΓöÇΓöÇ tauri v2.12.4
+      Γöé                   ΓööΓöÇΓöÇ tt-desktop v0.0.1
+      ΓööΓöÇΓöÇ png v0.18.1
+          Γö£ΓöÇΓöÇ image v0.25.10
+          Γöé   ΓööΓöÇΓöÇ tt-io v0.0.1
+          Γöé       Γö£ΓöÇΓöÇ tt-engine v0.0.1
+          Γöé       Γöé   Γö£ΓöÇΓöÇ tt-desktop v0.0.1 (*)
+          Γöé       Γöé   Γö£ΓöÇΓöÇ tt-headless v0.0.1
+          Γöé       Γöé   ΓööΓöÇΓöÇ tt-mcp v0.0.1
+          Γöé       Γöé       ΓööΓöÇΓöÇ tt-headless v0.0.1 (*)
+          Γöé       ΓööΓöÇΓöÇ tt-executor v0.0.1
+          Γöé           Γö£ΓöÇΓöÇ tt-engine v0.0.1 (*)
+          Γöé           Γö£ΓöÇΓöÇ tt-headless v0.0.1 (*)
+          Γöé           ΓööΓöÇΓöÇ tt-mcp v0.0.1 (*)
+          Γö£ΓöÇΓöÇ muda v0.20.0
+          Γöé   ΓööΓöÇΓöÇ tauri v2.12.4 (*)
+          Γö£ΓöÇΓöÇ tauri-codegen v2.7.3 (*)
+          Γö£ΓöÇΓöÇ (dev) tt-io v0.0.1 (*)
+          ΓööΓöÇΓöÇ tt-render v0.0.1
+              Γö£ΓöÇΓöÇ tt-engine v0.0.1 (*)
+              Γö£ΓöÇΓöÇ tt-executor v0.0.1 (*)
+              ΓööΓöÇΓöÇ tt-io v0.0.1 (*)
+    Γö£ miniz_oxide v0.9.1
+      ΓööΓöÇΓöÇ flate2 v1.1.10
+          Γö£ΓöÇΓöÇ png v0.17.16
+          Γöé   ΓööΓöÇΓöÇ ico v0.5.0
+          Γöé       ΓööΓöÇΓöÇ tauri-codegen v2.7.3
+          Γöé           ΓööΓöÇΓöÇ tauri-macros v2.7.3
+          Γöé               ΓööΓöÇΓöÇ tauri v2.12.4
+          Γöé                   ΓööΓöÇΓöÇ tt-desktop v0.0.1
+          Γö£ΓöÇΓöÇ png v0.18.1
+          Γöé   Γö£ΓöÇΓöÇ image v0.25.10
+          Γöé   Γöé   ΓööΓöÇΓöÇ tt-io v0.0.1
+          Γöé   Γöé       Γö£ΓöÇΓöÇ tt-engine v0.0.1
+          Γöé   Γöé       Γöé   Γö£ΓöÇΓöÇ tt-desktop v0.0.1 (*)
+          Γöé   Γöé       Γöé   Γö£ΓöÇΓöÇ tt-headless v0.0.1
+          Γöé   Γöé       Γöé   ΓööΓöÇΓöÇ tt-mcp v0.0.1
+          Γöé   Γöé       Γöé       ΓööΓöÇΓöÇ tt-headless v0.0.1 (*)
+          Γöé   Γöé       ΓööΓöÇΓöÇ tt-executor v0.0.1
+          Γöé   Γöé           Γö£ΓöÇΓöÇ tt-engine v0.0.1 (*)
+          Γöé   Γöé           Γö£ΓöÇΓöÇ tt-headless v0.0.1 (*)
+          Γöé   Γöé           ΓööΓöÇΓöÇ tt-mcp v0.0.1 (*)
+          Γöé   Γö£ΓöÇΓöÇ muda v0.20.0
+          Γöé   Γöé   ΓööΓöÇΓöÇ tauri v2.12.4 (*)
+          Γöé   Γö£ΓöÇΓöÇ tauri-codegen v2.7.3 (*)
+          Γöé   Γö£ΓöÇΓöÇ (dev) tt-io v0.0.1 (*)
+          Γöé   ΓööΓöÇΓöÇ tt-render v0.0.1
+          Γöé       Γö£ΓöÇΓöÇ tt-engine v0.0.1 (*)
+          Γöé       Γö£ΓöÇΓöÇ tt-executor v0.0.1 (*)
+          Γöé       ΓööΓöÇΓöÇ tt-io v0.0.1 (*)
+          Γö£ΓöÇΓöÇ tiff v0.11.3
+          Γöé   ΓööΓöÇΓöÇ image v0.25.10 (*)
+          ΓööΓöÇΓöÇ tt-persist v0.0.1
+              Γö£ΓöÇΓöÇ tt-engine v0.0.1 (*)
+              Γö£ΓöÇΓöÇ tt-executor v0.0.1 (*)
+              Γö£ΓöÇΓöÇ tt-io v0.0.1 (*)
+              ΓööΓöÇΓöÇ tt-mcp v0.0.1 (*)
+
+warning[duplicate]: found 2 duplicate entries for crate 'png'
+    ΓöîΓöÇ C:\Users\kaiga\work\review\m3-c33-r1/Cargo.lock:202:1
+    Γöé
+202 Γöé Γò¡ png 0.17.16 registry+https://github.com/rust-lang/crates.io-index
+203 Γöé Γöé png 0.18.1 registry+https://github.com/rust-lang/crates.io-index
+    Γöé Γò░ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÿ lock entries
+    Γöé
+    Γö£ png v0.17.16
+      ΓööΓöÇΓöÇ ico v0.5.0
+          ΓööΓöÇΓöÇ tauri-codegen v2.7.3
+              ΓööΓöÇΓöÇ tauri-macros v2.7.3
+                  ΓööΓöÇΓöÇ tauri v2.12.4
+                      ΓööΓöÇΓöÇ tt-desktop v0.0.1
+    Γö£ png v0.18.1
+      Γö£ΓöÇΓöÇ image v0.25.10
+      Γöé   ΓööΓöÇΓöÇ tt-io v0.0.1
+      Γöé       Γö£ΓöÇΓöÇ tt-engine v0.0.1
+      Γöé       Γöé   Γö£ΓöÇΓöÇ tt-desktop v0.0.1
+      Γöé       Γöé   Γö£ΓöÇΓöÇ tt-headless v0.0.1
+      Γöé       Γöé   ΓööΓöÇΓöÇ tt-mcp v0.0.1
+      Γöé       Γöé       ΓööΓöÇΓöÇ tt-headless v0.0.1 (*)
+      Γöé       ΓööΓöÇΓöÇ tt-executor v0.0.1
+      Γöé           Γö£ΓöÇΓöÇ tt-engine v0.0.1 (*)
+      Γöé           Γö£ΓöÇΓöÇ tt-headless v0.0.1 (*)
+      Γöé           ΓööΓöÇΓöÇ tt-mcp v0.0.1 (*)
+      Γö£ΓöÇΓöÇ muda v0.20.0
+      Γöé   ΓööΓöÇΓöÇ tauri v2.12.4
+      Γöé       ΓööΓöÇΓöÇ tt-desktop v0.0.1 (*)
+      Γö£ΓöÇΓöÇ tauri-codegen v2.7.3
+      Γöé   ΓööΓöÇΓöÇ tauri-macros v2.7.3
+      Γöé       ΓööΓöÇΓöÇ tauri v2.12.4 (*)
+      Γö£ΓöÇΓöÇ (dev) tt-io v0.0.1 (*)
+      ΓööΓöÇΓöÇ tt-render v0.0.1
+          Γö£ΓöÇΓöÇ tt-engine v0.0.1 (*)
+          Γö£ΓöÇΓöÇ tt-executor v0.0.1 (*)
+          ΓööΓöÇΓöÇ tt-io v0.0.1 (*)
+
+warning[duplicate]: found 2 duplicate entries for crate 'schemars'
+    ΓöîΓöÇ C:\Users\kaiga\work\review\m3-c33-r1/Cargo.lock:236:1
+    Γöé
+236 Γöé Γò¡ schemars 0.8.22 registry+https://github.com/rust-lang/crates.io-index
+237 Γöé Γöé schemars 1.2.3 registry+https://github.com/rust-lang/crates.io-index
+    Γöé Γò░ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÿ lock entries
+    Γöé
+    Γö£ schemars v0.8.22
+      Γö£ΓöÇΓöÇ tauri-build v2.7.3
+      Γöé   Γö£ΓöÇΓöÇ (build) tauri v2.12.4
+      Γöé   Γöé   ΓööΓöÇΓöÇ tt-desktop v0.0.1
+      Γöé   ΓööΓöÇΓöÇ (build) tt-desktop v0.0.1 (*)
+      ΓööΓöÇΓöÇ tauri-utils v2.10.2
+          Γö£ΓöÇΓöÇ tauri v2.12.4 (*)
+          Γö£ΓöÇΓöÇ tauri-build v2.7.3 (*)
+          Γö£ΓöÇΓöÇ tauri-codegen v2.7.3
+          Γöé   ΓööΓöÇΓöÇ tauri-macros v2.7.3
+          Γöé       ΓööΓöÇΓöÇ tauri v2.12.4 (*)
+          Γö£ΓöÇΓöÇ tauri-macros v2.7.3 (*)
+          Γö£ΓöÇΓöÇ tauri-runtime v2.12.2
+          Γöé   Γö£ΓöÇΓöÇ tauri v2.12.4 (*)
+          Γöé   ΓööΓöÇΓöÇ tauri-runtime-wry v2.12.2
+          Γöé       ΓööΓöÇΓöÇ tauri v2.12.4 (*)
+          ΓööΓöÇΓöÇ tauri-runtime-wry v2.12.2 (*)
+    Γö£ schemars v1.2.3
+      Γö£ΓöÇΓöÇ tt-engine v0.0.1
+      Γöé   Γö£ΓöÇΓöÇ tt-desktop v0.0.1
+      Γöé   Γö£ΓöÇΓöÇ tt-headless v0.0.1
+      Γöé   ΓööΓöÇΓöÇ tt-mcp v0.0.1
+      Γöé       ΓööΓöÇΓöÇ tt-headless v0.0.1 (*)
+      Γö£ΓöÇΓöÇ tt-executor v0.0.1
+      Γöé   Γö£ΓöÇΓöÇ tt-engine v0.0.1 (*)
+      Γöé   Γö£ΓöÇΓöÇ tt-headless v0.0.1 (*)
+      Γöé   ΓööΓöÇΓöÇ tt-mcp v0.0.1 (*)
+      Γö£ΓöÇΓöÇ tt-model v0.0.1
+      Γöé   Γö£ΓöÇΓöÇ tt-anim v0.0.1
+      Γöé   Γöé   Γö£ΓöÇΓöÇ tt-engine v0.0.1 (*)
+      Γöé   Γöé   Γö£ΓöÇΓöÇ tt-executor v0.0.1 (*)
+      Γöé   Γöé   Γö£ΓöÇΓöÇ tt-fx v0.0.1
+      Γöé   Γöé   Γöé   Γö£ΓöÇΓöÇ tt-engine v0.0.1 (*)
+      Γöé   Γöé   Γöé   ΓööΓöÇΓöÇ tt-render v0.0.1
+      Γöé   Γöé   Γöé       Γö£ΓöÇΓöÇ tt-engine v0.0.1 (*)
+      Γöé   Γöé   Γöé       Γö£ΓöÇΓöÇ tt-executor v0.0.1 (*)
+      Γöé   Γöé   Γöé       ΓööΓöÇΓöÇ tt-io v0.0.1
+      Γöé   Γöé   Γöé           Γö£ΓöÇΓöÇ tt-engine v0.0.1 (*)
+      Γöé   Γöé   Γöé           ΓööΓöÇΓöÇ tt-executor v0.0.1 (*)
+      Γöé   Γöé   ΓööΓöÇΓöÇ tt-render v0.0.1 (*)
+      Γöé   Γö£ΓöÇΓöÇ tt-audio v0.0.1
+      Γöé   Γöé   Γö£ΓöÇΓöÇ tt-engine v0.0.1 (*)
+      Γöé   Γöé   ΓööΓöÇΓöÇ tt-lipsync v0.0.1
+      Γöé   Γöé       ΓööΓöÇΓöÇ tt-engine v0.0.1 (*)
+      Γöé   Γö£ΓöÇΓöÇ tt-colour v0.0.1
+      Γöé   Γöé   Γö£ΓöÇΓöÇ tt-engine v0.0.1 (*)
+      Γöé   Γöé   ΓööΓöÇΓöÇ tt-render v0.0.1 (*)
+      Γöé   Γö£ΓöÇΓöÇ tt-engine v0.0.1 (*)
+      Γöé   Γö£ΓöÇΓöÇ tt-executor v0.0.1 (*)
+      Γöé   Γö£ΓöÇΓöÇ tt-fx v0.0.1 (*)
+      Γöé   Γö£ΓöÇΓöÇ tt-io v0.0.1 (*)
+      Γöé   Γö£ΓöÇΓöÇ tt-lipsync v0.0.1 (*)
+      Γöé   Γö£ΓöÇΓöÇ tt-mcp v0.0.1 (*)
+      Γöé   Γö£ΓöÇΓöÇ tt-persist v0.0.1
+      Γöé   Γöé   Γö£ΓöÇΓöÇ tt-engine v0.0.1 (*)
+      Γöé   Γöé   Γö£ΓöÇΓöÇ tt-executor v0.0.1 (*)
+      Γöé   Γöé   Γö£ΓöÇΓöÇ tt-io v0.0.1 (*)
+      Γöé   Γöé   ΓööΓöÇΓöÇ tt-mcp v0.0.1 (*)
+      Γöé   Γö£ΓöÇΓöÇ tt-registry v0.0.1
+      Γöé   Γöé   Γö£ΓöÇΓöÇ tt-engine v0.0.1 (*)
+      Γöé   Γöé   Γö£ΓöÇΓöÇ tt-executor v0.0.1 (*)
+      Γöé   Γöé   ΓööΓöÇΓöÇ tt-mcp v0.0.1 (*)
+      Γöé   Γö£ΓöÇΓöÇ tt-render v0.0.1 (*)
+      Γöé   ΓööΓöÇΓöÇ tt-vector v0.0.1
+      Γöé       Γö£ΓöÇΓöÇ tt-engine v0.0.1 (*)
+      Γöé       Γö£ΓöÇΓöÇ tt-executor v0.0.1 (*)
+      Γöé       ΓööΓöÇΓöÇ tt-render v0.0.1 (*)
+      Γö£ΓöÇΓöÇ tt-registry v0.0.1 (*)
+      ΓööΓöÇΓöÇ tt-vector v0.0.1 (*)
+
+warning[duplicate]: found 2 duplicate entries for crate 'schemars_derive'
+    ΓöîΓöÇ C:\Users\kaiga\work\review\m3-c33-r1/Cargo.lock:238:1
+    Γöé
+238 Γöé Γò¡ schemars_derive 0.8.22 registry+https://github.com/rust-lang/crates.io-index
+239 Γöé Γöé schemars_derive 1.2.3 registry+https://github.com/rust-lang/crates.io-index
+    Γöé Γò░ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓö
+ÿ lock entries
+    Γöé
+    Γö£ schemars_derive v0.8.22
+      ΓööΓöÇΓöÇ schemars v0.8.22
+          Γö£ΓöÇΓöÇ tauri-build v2.7.3
+          Γöé   Γö£ΓöÇΓöÇ (build) tauri v2.12.4
+          Γöé   Γöé   ΓööΓöÇΓöÇ tt-desktop v0.0.1
+          Γöé   ΓööΓöÇΓöÇ (build) tt-desktop v0.0.1 (*)
+          ΓööΓöÇΓöÇ tauri-utils v2.10.2
+              Γö£ΓöÇΓöÇ tauri v2.12.4 (*)
+              Γö£ΓöÇΓöÇ tauri-build v2.7.3 (*)
+              Γö£ΓöÇΓöÇ tauri-codegen v2.7.3
+              Γöé   ΓööΓöÇΓöÇ tauri-macros v2.7.3
+              Γöé       ΓööΓöÇΓöÇ tauri v2.12.4 (*)
+              Γö£ΓöÇΓöÇ tauri-macros v2.7.3 (*)
+              Γö£ΓöÇΓöÇ tauri-runtime v2.12.2
+              Γöé   Γö£ΓöÇΓöÇ tauri v2.12.4 (*)
+              Γöé   ΓööΓöÇΓöÇ tauri-runtime-wry v2.12.2
+              Γöé       ΓööΓöÇΓöÇ tauri v2.12.4 (*)
+              ΓööΓöÇΓöÇ tauri-runtime-wry v2.12.2 (*)
+    Γö£ schemars_derive v1.2.3
+      ΓööΓöÇΓöÇ schemars v1.2.3
+          Γö£ΓöÇΓöÇ tt-engine v0.0.1
+          Γöé   Γö£ΓöÇΓöÇ tt-desktop v0.0.1
+          Γöé   Γö£ΓöÇΓöÇ tt-headless v0.0.1
+          Γöé   ΓööΓöÇΓöÇ tt-mcp v0.0.1
+          Γöé       ΓööΓöÇΓöÇ tt-headless v0.0.1 (*)
+          Γö£ΓöÇΓöÇ tt-executor v0.0.1
+          Γöé   Γö£ΓöÇΓöÇ tt-engine v0.0.1 (*)
+          Γöé   Γö£ΓöÇΓöÇ tt-headless v0.0.1 (*)
+          Γöé   ΓööΓöÇΓöÇ tt-mcp v0.0.1 (*)
+          Γö£ΓöÇΓöÇ tt-model v0.0.1
+          Γöé   Γö£ΓöÇΓöÇ tt-anim v0.0.1
+          Γöé   Γöé   Γö£ΓöÇΓöÇ tt-engine v0.0.1 (*)
+          Γöé   Γöé   Γö£ΓöÇΓöÇ tt-executor v0.0.1 (*)
+          Γöé   Γöé   Γö£ΓöÇΓöÇ tt-fx v0.0.1
+          Γöé   Γöé   Γöé   Γö£ΓöÇΓöÇ tt-engine v0.0.1 (*)
+          Γöé   Γöé   Γöé   ΓööΓöÇΓöÇ tt-render v0.0.1
+          Γöé   Γöé   Γöé       Γö£ΓöÇΓöÇ tt-engine v0.0.1 (*)
+          Γöé   Γöé   Γöé       Γö£ΓöÇΓöÇ tt-executor v0.0.1 (*)
+          Γöé   Γöé   Γöé       ΓööΓöÇΓöÇ tt-io v0.0.1
+          Γöé   Γöé   Γöé           Γö£ΓöÇΓöÇ tt-engine v0.0.1 (*)
+          Γöé   Γöé   Γöé           ΓööΓöÇΓöÇ tt-executor v0.0.1 (*)
+          Γöé   Γöé   ΓööΓöÇΓöÇ tt-render v0.0.1 (*)
+          Γöé   Γö£ΓöÇΓöÇ tt-audio v0.0.1
+          Γöé   Γöé   Γö£ΓöÇΓöÇ tt-engine v0.0.1 (*)
+          Γöé   Γöé   ΓööΓöÇΓöÇ tt-lipsync v0.0.1
+          Γöé   Γöé       ΓööΓöÇΓöÇ tt-engine v0.0.1 (*)
+          Γöé   Γö£ΓöÇΓöÇ tt-colour v0.0.1
+          Γöé   Γöé   Γö£ΓöÇΓöÇ tt-engine v0.0.1 (*)
+          Γöé   Γöé   ΓööΓöÇΓöÇ tt-render v0.0.1 (*)
+          Γöé   Γö£ΓöÇΓöÇ tt-engine v0.0.1 (*)
+          Γöé   Γö£ΓöÇΓöÇ tt-executor v0.0.1 (*)
+          Γöé   Γö£ΓöÇΓöÇ tt-fx v0.0.1 (*)
+          Γöé   Γö£ΓöÇΓöÇ tt-io v0.0.1 (*)
+          Γöé   Γö£ΓöÇΓöÇ tt-lipsync v0.0.1 (*)
+          Γöé   Γö£ΓöÇΓöÇ tt-mcp v0.0.1 (*)
+          Γöé   Γö£ΓöÇΓöÇ tt-persist v0.0.1
+          Γöé   Γöé   Γö£ΓöÇΓöÇ tt-engine v0.0.1 (*)
+          Γöé   Γöé   Γö£ΓöÇΓöÇ tt-executor v0.0.1 (*)
+          Γöé   Γöé   Γö£ΓöÇΓöÇ tt-io v0.0.1 (*)
+          Γöé   Γöé   ΓööΓöÇΓöÇ tt-mcp v0.0.1 (*)
+          Γöé   Γö£ΓöÇΓöÇ tt-registry v0.0.1
+          Γöé   Γöé   Γö£ΓöÇΓöÇ tt-engine v0.0.1 (*)
+          Γöé   Γöé   Γö£ΓöÇΓöÇ tt-executor v0.0.1 (*)
+          Γöé   Γöé   ΓööΓöÇΓöÇ tt-mcp v0.0.1 (*)
+          Γöé   Γö£ΓöÇΓöÇ tt-render v0.0.1 (*)
+          Γöé   ΓööΓöÇΓöÇ tt-vector v0.0.1
+          Γöé       Γö£ΓöÇΓöÇ tt-engine v0.0.1 (*)
+          Γöé       Γö£ΓöÇΓöÇ tt-executor v0.0.1 (*)
+          Γöé       ΓööΓöÇΓöÇ tt-render v0.0.1 (*)
+          Γö£ΓöÇΓöÇ tt-registry v0.0.1 (*)
+          ΓööΓöÇΓöÇ tt-vector v0.0.1 (*)
+
+warning[duplicate]: found 2 duplicate entries for crate 'serde_derive_internals'
+    ΓöîΓöÇ C:\Users\kaiga\work\review\m3-c33-r1/Cargo.lock:247:1
+    Γöé
+247 Γöé Γò¡ serde_derive_internals 0.29.1 registry+https://github.com/rust-lang/crates.io-index
+248 Γöé Γöé serde_derive_internals 0.30.0 registry+https://github.com/rust-lang/crates.io-index
+    Γöé Γò░ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓö
+ÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÿ lock entries
+    Γöé
+    Γö£ serde_derive_internals v0.29.1
+      ΓööΓöÇΓöÇ schemars_derive v0.8.22
+          ΓööΓöÇΓöÇ schemars v0.8.22
+              Γö£ΓöÇΓöÇ tauri-build v2.7.3
+              Γöé   Γö£ΓöÇΓöÇ (build) tauri v2.12.4
+              Γöé   Γöé   ΓööΓöÇΓöÇ tt-desktop v0.0.1
+              Γöé   ΓööΓöÇΓöÇ (build) tt-desktop v0.0.1 (*)
+              ΓööΓöÇΓöÇ tauri-utils v2.10.2
+                  Γö£ΓöÇΓöÇ tauri v2.12.4 (*)
+                  Γö£ΓöÇΓöÇ tauri-build v2.7.3 (*)
+                  Γö£ΓöÇΓöÇ tauri-codegen v2.7.3
+                  Γöé   ΓööΓöÇΓöÇ tauri-macros v2.7.3
+                  Γöé       ΓööΓöÇΓöÇ tauri v2.12.4 (*)
+                  Γö£ΓöÇΓöÇ tauri-macros v2.7.3 (*)
+                  Γö£ΓöÇΓöÇ tauri-runtime v2.12.2
+                  Γöé   Γö£ΓöÇΓöÇ tauri v2.12.4 (*)
+                  Γöé   ΓööΓöÇΓöÇ tauri-runtime-wry v2.12.2
+                  Γöé       ΓööΓöÇΓöÇ tauri v2.12.4 (*)
+                  ΓööΓöÇΓöÇ tauri-runtime-wry v2.12.2 (*)
+    Γö£ serde_derive_internals v0.30.0
+      ΓööΓöÇΓöÇ schemars_derive v1.2.3
+          ΓööΓöÇΓöÇ schemars v1.2.3
+              Γö£ΓöÇΓöÇ tt-engine v0.0.1
+              Γöé   Γö£ΓöÇΓöÇ tt-desktop v0.0.1
+              Γöé   Γö£ΓöÇΓöÇ tt-headless v0.0.1
+              Γöé   ΓööΓöÇΓöÇ tt-mcp v0.0.1
+              Γöé       ΓööΓöÇΓöÇ tt-headless v0.0.1 (*)
+              Γö£ΓöÇΓöÇ tt-executor v0.0.1
+              Γöé   Γö£ΓöÇΓöÇ tt-engine v0.0.1 (*)
+              Γöé   Γö£ΓöÇΓöÇ tt-headless v0.0.1 (*)
+              Γöé   ΓööΓöÇΓöÇ tt-mcp v0.0.1 (*)
+              Γö£ΓöÇΓöÇ tt-model v0.0.1
+              Γöé   Γö£ΓöÇΓöÇ tt-anim v0.0.1
+              Γöé   Γöé   Γö£ΓöÇΓöÇ tt-engine v0.0.1 (*)
+              Γöé   Γöé   Γö£ΓöÇΓöÇ tt-executor v0.0.1 (*)
+              Γöé   Γöé   Γö£ΓöÇΓöÇ tt-fx v0.0.1
+              Γöé   Γöé   Γöé   Γö£ΓöÇΓöÇ tt-engine v0.0.1 (*)
+              Γöé   Γöé   Γöé   ΓööΓöÇΓöÇ tt-render v0.0.1
+              Γöé   Γöé   Γöé       Γö£ΓöÇΓöÇ tt-engine v0.0.1 (*)
+              Γöé   Γöé   Γöé       Γö£ΓöÇΓöÇ tt-executor v0.0.1 (*)
+              Γöé   Γöé   Γöé       ΓööΓöÇΓöÇ tt-io v0.0.1
+              Γöé   Γöé   Γöé           Γö£ΓöÇΓöÇ tt-engine v0.0.1 (*)
+              Γöé   Γöé   Γöé           ΓööΓöÇΓöÇ tt-executor v0.0.1 (*)
+              Γöé   Γöé   ΓööΓöÇΓöÇ tt-render v0.0.1 (*)
+              Γöé   Γö£ΓöÇΓöÇ tt-audio v0.0.1
+              Γöé   Γöé   Γö£ΓöÇΓöÇ tt-engine v0.0.1 (*)
+              Γöé   Γöé   ΓööΓöÇΓöÇ tt-lipsync v0.0.1
+              Γöé   Γöé       ΓööΓöÇΓöÇ tt-engine v0.0.1 (*)
+              Γöé   Γö£ΓöÇΓöÇ tt-colour v0.0.1
+              Γöé   Γöé   Γö£ΓöÇΓöÇ tt-engine v0.0.1 (*)
+              Γöé   Γöé   ΓööΓöÇΓöÇ tt-render v0.0.1 (*)
+              Γöé   Γö£ΓöÇΓöÇ tt-engine v0.0.1 (*)
+              Γöé   Γö£ΓöÇΓöÇ tt-executor v0.0.1 (*)
+              Γöé   Γö£ΓöÇΓöÇ tt-fx v0.0.1 (*)
+              Γöé   Γö£ΓöÇΓöÇ tt-io v0.0.1 (*)
+              Γöé   Γö£ΓöÇΓöÇ tt-lipsync v0.0.1 (*)
+              Γöé   Γö£ΓöÇΓöÇ tt-mcp v0.0.1 (*)
+              Γöé   Γö£ΓöÇΓöÇ tt-persist v0.0.1
+              Γöé   Γöé   Γö£ΓöÇΓöÇ tt-engine v0.0.1 (*)
+              Γöé   Γöé   Γö£ΓöÇΓöÇ tt-executor v0.0.1 (*)
+              Γöé   Γöé   Γö£ΓöÇΓöÇ tt-io v0.0.1 (*)
+              Γöé   Γöé   ΓööΓöÇΓöÇ tt-mcp v0.0.1 (*)
+              Γöé   Γö£ΓöÇΓöÇ tt-registry v0.0.1
+              Γöé   Γöé   Γö£ΓöÇΓöÇ tt-engine v0.0.1 (*)
+              Γöé   Γöé   Γö£ΓöÇΓöÇ tt-executor v0.0.1 (*)
+              Γöé   Γöé   ΓööΓöÇΓöÇ tt-mcp v0.0.1 (*)
+              Γöé   Γö£ΓöÇΓöÇ tt-render v0.0.1 (*)
+              Γöé   ΓööΓöÇΓöÇ tt-vector v0.0.1
+              Γöé       Γö£ΓöÇΓöÇ tt-engine v0.0.1 (*)
+              Γöé       Γö£ΓöÇΓöÇ tt-executor v0.0.1 (*)
+              Γöé       ΓööΓöÇΓöÇ tt-render v0.0.1 (*)
+              Γö£ΓöÇΓöÇ tt-registry v0.0.1 (*)
+              ΓööΓöÇΓöÇ tt-vector v0.0.1 (*)
+
+warning[duplicate]: found 2 duplicate entries for crate 'sha2'
+    ΓöîΓöÇ C:\Users\kaiga\work\review\m3-c33-r1/Cargo.lock:257:1
+    Γöé
+257 Γöé Γò¡ sha2 0.10.9 registry+https://github.com/rust-lang/crates.io-index
+258 Γöé Γöé sha2 0.11.1 registry+https://github.com/rust-lang/crates.io-index
+    Γöé Γò░ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÿ lock entries
+    Γöé
+    Γö£ sha2 v0.10.9
+      ΓööΓöÇΓöÇ tauri-codegen v2.7.3
+          ΓööΓöÇΓöÇ tauri-macros v2.7.3
+              ΓööΓöÇΓöÇ tauri v2.12.4
+                  ΓööΓöÇΓöÇ tt-desktop v0.0.1
+    Γö£ sha2 v0.11.1
+      Γö£ΓöÇΓöÇ tt-engine v0.0.1
+      Γöé   Γö£ΓöÇΓöÇ tt-desktop v0.0.1
+      Γöé   Γö£ΓöÇΓöÇ tt-headless v0.0.1
+      Γöé   ΓööΓöÇΓöÇ tt-mcp v0.0.1
+      Γöé       ΓööΓöÇΓöÇ tt-headless v0.0.1 (*)
+      Γö£ΓöÇΓöÇ tt-executor v0.0.1
+      Γöé   Γö£ΓöÇΓöÇ tt-engine v0.0.1 (*)
+      Γöé   Γö£ΓöÇΓöÇ tt-headless v0.0.1 (*)
+      Γöé   ΓööΓöÇΓöÇ tt-mcp v0.0.1 (*)
+      Γö£ΓöÇΓöÇ (dev) tt-mcp v0.0.1 (*)
+      Γö£ΓöÇΓöÇ tt-persist v0.0.1
+      Γöé   Γö£ΓöÇΓöÇ tt-engine v0.0.1 (*)
+      Γöé   Γö£ΓöÇΓöÇ tt-executor v0.0.1 (*)
+      Γöé   Γö£ΓöÇΓöÇ tt-io v0.0.1
+      Γöé   Γöé   Γö£ΓöÇΓöÇ tt-engine v0.0.1 (*)
+      Γöé   Γöé   ΓööΓöÇΓöÇ tt-executor v0.0.1 (*)
+      Γöé   ΓööΓöÇΓöÇ tt-mcp v0.0.1 (*)
+      Γö£ΓöÇΓöÇ (dev) tt-render v0.0.1
+      Γöé   Γö£ΓöÇΓöÇ tt-engine v0.0.1 (*)
+      Γöé   Γö£ΓöÇΓöÇ tt-executor v0.0.1 (*)
+      Γöé   ΓööΓöÇΓöÇ tt-io v0.0.1 (*)
+      ΓööΓöÇΓöÇ tt-vector v0.0.1
+          Γö£ΓöÇΓöÇ tt-engine v0.0.1 (*)
+          Γö£ΓöÇΓöÇ tt-executor v0.0.1 (*)
+          ΓööΓöÇΓöÇ tt-render v0.0.1 (*)
+
+warning[duplicate]: found 2 duplicate entries for crate 'strum'
+    ΓöîΓöÇ C:\Users\kaiga\work\review\m3-c33-r1/Cargo.lock:273:1
+    Γöé
+273 Γöé Γò¡ strum 0.26.3 registry+https://github.com/rust-lang/crates.io-index
+274 Γöé Γöé strum 0.28.0 registry+https://github.com/rust-lang/crates.io-index
+    Γöé Γò░ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÿ lock entries
+    Γöé
+    Γö£ strum v0.26.3
+      ΓööΓöÇΓöÇ octotablet v0.1.0
+          ΓööΓöÇΓöÇ tt-desktop v0.0.1
+    Γö£ strum v0.28.0
+      ΓööΓöÇΓöÇ jsonschema v0.59.0
+          Γö£ΓöÇΓöÇ (dev) tt-executor v0.0.1
+          Γöé   Γö£ΓöÇΓöÇ tt-engine v0.0.1
+          Γöé   Γöé   Γö£ΓöÇΓöÇ tt-desktop v0.0.1
+          Γöé   Γöé   Γö£ΓöÇΓöÇ tt-headless v0.0.1
+          Γöé   Γöé   ΓööΓöÇΓöÇ tt-mcp v0.0.1
+          Γöé   Γöé       ΓööΓöÇΓöÇ tt-headless v0.0.1 (*)
+          Γöé   Γö£ΓöÇΓöÇ tt-headless v0.0.1 (*)
+          Γöé   ΓööΓöÇΓöÇ tt-mcp v0.0.1 (*)
+          Γö£ΓöÇΓöÇ (dev) tt-mcp v0.0.1 (*)
+          Γö£ΓöÇΓöÇ tt-model v0.0.1
+          Γöé   Γö£ΓöÇΓöÇ tt-anim v0.0.1
+          Γöé   Γöé   Γö£ΓöÇΓöÇ tt-engine v0.0.1 (*)
+          Γöé   Γöé   Γö£ΓöÇΓöÇ tt-executor v0.0.1 (*)
+          Γöé   Γöé   Γö£ΓöÇΓöÇ tt-fx v0.0.1
+          Γöé   Γöé   Γöé   Γö£ΓöÇΓöÇ tt-engine v0.0.1 (*)
+          Γöé   Γöé   Γöé   ΓööΓöÇΓöÇ tt-render v0.0.1
+          Γöé   Γöé   Γöé       Γö£ΓöÇΓöÇ tt-engine v0.0.1 (*)
+          Γöé   Γöé   Γöé       Γö£ΓöÇΓöÇ tt-executor v0.0.1 (*)
+          Γöé   Γöé   Γöé       ΓööΓöÇΓöÇ tt-io v0.0.1
+          Γöé   Γöé   Γöé           Γö£ΓöÇΓöÇ tt-engine v0.0.1 (*)
+          Γöé   Γöé   Γöé           ΓööΓöÇΓöÇ tt-executor v0.0.1 (*)
+          Γöé   Γöé   ΓööΓöÇΓöÇ tt-render v0.0.1 (*)
+          Γöé   Γö£ΓöÇΓöÇ tt-audio v0.0.1
+          Γöé   Γöé   Γö£ΓöÇΓöÇ tt-engine v0.0.1 (*)
+          Γöé   Γöé   ΓööΓöÇΓöÇ tt-lipsync v0.0.1
+          Γöé   Γöé       ΓööΓöÇΓöÇ tt-engine v0.0.1 (*)
+          Γöé   Γö£ΓöÇΓöÇ tt-colour v0.0.1
+          Γöé   Γöé   Γö£ΓöÇΓöÇ tt-engine v0.0.1 (*)
+          Γöé   Γöé   ΓööΓöÇΓöÇ tt-render v0.0.1 (*)
+          Γöé   Γö£ΓöÇΓöÇ tt-engine v0.0.1 (*)
+          Γöé   Γö£ΓöÇΓöÇ tt-executor v0.0.1 (*)
+          Γöé   Γö£ΓöÇΓöÇ tt-fx v0.0.1 (*)
+          Γöé   Γö£ΓöÇΓöÇ tt-io v0.0.1 (*)
+          Γöé   Γö£ΓöÇΓöÇ tt-lipsync v0.0.1 (*)
+          Γöé   Γö£ΓöÇΓöÇ tt-mcp v0.0.1 (*)
+          Γöé   Γö£ΓöÇΓöÇ tt-persist v0.0.1
+          Γöé   Γöé   Γö£ΓöÇΓöÇ tt-engine v0.0.1 (*)
+          Γöé   Γöé   Γö£ΓöÇΓöÇ tt-executor v0.0.1 (*)
+          Γöé   Γöé   Γö£ΓöÇΓöÇ tt-io v0.0.1 (*)
+          Γöé   Γöé   ΓööΓöÇΓöÇ tt-mcp v0.0.1 (*)
+          Γöé   Γö£ΓöÇΓöÇ tt-registry v0.0.1
+          Γöé   Γöé   Γö£ΓöÇΓöÇ tt-engine v0.0.1 (*)
+          Γöé   Γöé   Γö£ΓöÇΓöÇ tt-executor v0.0.1 (*)
+          Γöé   Γöé   ΓööΓöÇΓöÇ tt-mcp v0.0.1 (*)
+          Γöé   Γö£ΓöÇΓöÇ tt-render v0.0.1 (*)
+          Γöé   ΓööΓöÇΓöÇ tt-vector v0.0.1
+          Γöé       Γö£ΓöÇΓöÇ tt-engine v0.0.1 (*)
+          Γöé       Γö£ΓöÇΓöÇ tt-executor v0.0.1 (*)
+          Γöé       ΓööΓöÇΓöÇ tt-render v0.0.1 (*)
+          ΓööΓöÇΓöÇ tt-registry v0.0.1 (*)
+
+warning[duplicate]: found 2 duplicate entries for crate 'strum_macros'
+    ΓöîΓöÇ C:\Users\kaiga\work\review\m3-c33-r1/Cargo.lock:275:1
+    Γöé
+275 Γöé Γò¡ strum_macros 0.26.4 registry+https://github.com/rust-lang/crates.io-index
+276 Γöé Γöé strum_macros 0.28.0 registry+https://github.com/rust-lang/crates.io-index
+    Γöé Γò░ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÿ
+lock entries
+    Γöé
+    Γö£ strum_macros v0.26.4
+      ΓööΓöÇΓöÇ strum v0.26.3
+          ΓööΓöÇΓöÇ octotablet v0.1.0
+              ΓööΓöÇΓöÇ tt-desktop v0.0.1
+    Γö£ strum_macros v0.28.0
+      ΓööΓöÇΓöÇ strum v0.28.0
+          ΓööΓöÇΓöÇ jsonschema v0.59.0
+              Γö£ΓöÇΓöÇ (dev) tt-executor v0.0.1
+              Γöé   Γö£ΓöÇΓöÇ tt-engine v0.0.1
+              Γöé   Γöé   Γö£ΓöÇΓöÇ tt-desktop v0.0.1
+              Γöé   Γöé   Γö£ΓöÇΓöÇ tt-headless v0.0.1
+              Γöé   Γöé   ΓööΓöÇΓöÇ tt-mcp v0.0.1
+              Γöé   Γöé       ΓööΓöÇΓöÇ tt-headless v0.0.1 (*)
+              Γöé   Γö£ΓöÇΓöÇ tt-headless v0.0.1 (*)
+              Γöé   ΓööΓöÇΓöÇ tt-mcp v0.0.1 (*)
+              Γö£ΓöÇΓöÇ (dev) tt-mcp v0.0.1 (*)
+              Γö£ΓöÇΓöÇ tt-model v0.0.1
+              Γöé   Γö£ΓöÇΓöÇ tt-anim v0.0.1
+              Γöé   Γöé   Γö£ΓöÇΓöÇ tt-engine v0.0.1 (*)
+              Γöé   Γöé   Γö£ΓöÇΓöÇ tt-executor v0.0.1 (*)
+              Γöé   Γöé   Γö£ΓöÇΓöÇ tt-fx v0.0.1
+              Γöé   Γöé   Γöé   Γö£ΓöÇΓöÇ tt-engine v0.0.1 (*)
+              Γöé   Γöé   Γöé   ΓööΓöÇΓöÇ tt-render v0.0.1
+              Γöé   Γöé   Γöé       Γö£ΓöÇΓöÇ tt-engine v0.0.1 (*)
+              Γöé   Γöé   Γöé       Γö£ΓöÇΓöÇ tt-executor v0.0.1 (*)
+              Γöé   Γöé   Γöé       ΓööΓöÇΓöÇ tt-io v0.0.1
+              Γöé   Γöé   Γöé           Γö£ΓöÇΓöÇ tt-engine v0.0.1 (*)
+              Γöé   Γöé   Γöé           ΓööΓöÇΓöÇ tt-executor v0.0.1 (*)
+              Γöé   Γöé   ΓööΓöÇΓöÇ tt-render v0.0.1 (*)
+              Γöé   Γö£ΓöÇΓöÇ tt-audio v0.0.1
+              Γöé   Γöé   Γö£ΓöÇΓöÇ tt-engine v0.0.1 (*)
+              Γöé   Γöé   ΓööΓöÇΓöÇ tt-lipsync v0.0.1
+              Γöé   Γöé       ΓööΓöÇΓöÇ tt-engine v0.0.1 (*)
+              Γöé   Γö£ΓöÇΓöÇ tt-colour v0.0.1
+              Γöé   Γöé   Γö£ΓöÇΓöÇ tt-engine v0.0.1 (*)
+              Γöé   Γöé   ΓööΓöÇΓöÇ tt-render v0.0.1 (*)
+              Γöé   Γö£ΓöÇΓöÇ tt-engine v0.0.1 (*)
+              Γöé   Γö£ΓöÇΓöÇ tt-executor v0.0.1 (*)
+              Γöé   Γö£ΓöÇΓöÇ tt-fx v0.0.1 (*)
+              Γöé   Γö£ΓöÇΓöÇ tt-io v0.0.1 (*)
+              Γöé   Γö£ΓöÇΓöÇ tt-lipsync v0.0.1 (*)
+              Γöé   Γö£ΓöÇΓöÇ tt-mcp v0.0.1 (*)
+              Γöé   Γö£ΓöÇΓöÇ tt-persist v0.0.1
+              Γöé   Γöé   Γö£ΓöÇΓöÇ tt-engine v0.0.1 (*)
+              Γöé   Γöé   Γö£ΓöÇΓöÇ tt-executor v0.0.1 (*)
+              Γöé   Γöé   Γö£ΓöÇΓöÇ tt-io v0.0.1 (*)
+              Γöé   Γöé   ΓööΓöÇΓöÇ tt-mcp v0.0.1 (*)
+              Γöé   Γö£ΓöÇΓöÇ tt-registry v0.0.1
+              Γöé   Γöé   Γö£ΓöÇΓöÇ tt-engine v0.0.1 (*)
+              Γöé   Γöé   Γö£ΓöÇΓöÇ tt-executor v0.0.1 (*)
+              Γöé   Γöé   ΓööΓöÇΓöÇ tt-mcp v0.0.1 (*)
+              Γöé   Γö£ΓöÇΓöÇ tt-render v0.0.1 (*)
+              Γöé   ΓööΓöÇΓöÇ tt-vector v0.0.1
+              Γöé       Γö£ΓöÇΓöÇ tt-engine v0.0.1 (*)
+              Γöé       Γö£ΓöÇΓöÇ tt-executor v0.0.1 (*)
+              Γöé       ΓööΓöÇΓöÇ tt-render v0.0.1 (*)
+              ΓööΓöÇΓöÇ tt-registry v0.0.1 (*)
+
+warning[duplicate]: found 2 duplicate entries for crate 'syn'
+    ΓöîΓöÇ C:\Users\kaiga\work\review\m3-c33-r1/Cargo.lock:278:1
+    Γöé
+278 Γöé Γò¡ syn 2.0.119 registry+https://github.com/rust-lang/crates.io-index
+279 Γöé Γöé syn 3.0.9 registry+https://github.com/rust-lang/crates.io-index
+    Γöé Γò░ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÿ lock entries
+    Γöé
+    Γö£ syn v2.0.119
+      Γö£ΓöÇΓöÇ derive_more-impl v2.1.1
+      Γöé   ΓööΓöÇΓöÇ derive_more v2.1.1
+      Γöé       ΓööΓöÇΓöÇ selectors v0.38.0
+      Γöé           ΓööΓöÇΓöÇ dom_query v0.28.0
+      Γöé               ΓööΓöÇΓöÇ tauri-utils v2.10.2
+      Γöé                   Γö£ΓöÇΓöÇ tauri v2.12.4
+      Γöé                   Γöé   ΓööΓöÇΓöÇ tt-desktop v0.0.1
+      Γöé                   Γö£ΓöÇΓöÇ tauri-build v2.7.3
+      Γöé                   Γöé   Γö£ΓöÇΓöÇ (build) tauri v2.12.4 (*)
+      Γöé                   Γöé   ΓööΓöÇΓöÇ (build) tt-desktop v0.0.1 (*)
+      Γöé                   Γö£ΓöÇΓöÇ tauri-codegen v2.7.3
+      Γöé                   Γöé   ΓööΓöÇΓöÇ tauri-macros v2.7.3
+      Γöé                   Γöé       ΓööΓöÇΓöÇ tauri v2.12.4 (*)
+      Γöé                   Γö£ΓöÇΓöÇ tauri-macros v2.7.3 (*)
+      Γöé                   Γö£ΓöÇΓöÇ tauri-runtime v2.12.2
+      Γöé                   Γöé   Γö£ΓöÇΓöÇ tauri v2.12.4 (*)
+      Γöé                   Γöé   ΓööΓöÇΓöÇ tauri-runtime-wry v2.12.2
+      Γöé                   Γöé       ΓööΓöÇΓöÇ tauri v2.12.4 (*)
+      Γöé                   ΓööΓöÇΓöÇ tauri-runtime-wry v2.12.2 (*)
+      Γö£ΓöÇΓöÇ enum_dispatch v0.3.13
+      Γöé   ΓööΓöÇΓöÇ octotablet v0.1.0
+      Γöé       ΓööΓöÇΓöÇ tt-desktop v0.0.1 (*)
+      Γö£ΓöÇΓöÇ phf_macros v0.13.1
+      Γöé   ΓööΓöÇΓöÇ phf v0.13.1
+      Γöé       Γö£ΓöÇΓöÇ cssparser v0.37.0
+      Γöé       Γöé   Γö£ΓöÇΓöÇ dom_query v0.28.0 (*)
+      Γöé       Γöé   ΓööΓöÇΓöÇ selectors v0.38.0 (*)
+      Γöé       Γö£ΓöÇΓöÇ selectors v0.38.0 (*)
+      Γöé       Γö£ΓöÇΓöÇ tauri-utils v2.10.2 (*)
+      Γöé       ΓööΓöÇΓöÇ web_atoms v0.2.6
+      Γöé           ΓööΓöÇΓöÇ markup5ever v0.39.0
+      Γöé               ΓööΓöÇΓöÇ html5ever v0.39.0
+      Γöé                   ΓööΓöÇΓöÇ dom_query v0.28.0 (*)
+      Γö£ΓöÇΓöÇ schemars_derive v0.8.22
+      Γöé   ΓööΓöÇΓöÇ schemars v0.8.22
+      Γöé       Γö£ΓöÇΓöÇ tauri-build v2.7.3 (*)
+      Γöé       ΓööΓöÇΓöÇ tauri-utils v2.10.2 (*)
+      Γö£ΓöÇΓöÇ serde_derive_internals v0.29.1
+      Γöé   ΓööΓöÇΓöÇ schemars_derive v0.8.22 (*)
+      Γö£ΓöÇΓöÇ serialize-to-javascript-impl v0.1.2
+      Γöé   ΓööΓöÇΓöÇ serialize-to-javascript v0.1.2
+      Γöé       ΓööΓöÇΓöÇ tauri v2.12.4 (*)
+      Γö£ΓöÇΓöÇ strum_macros v0.26.4
+      Γöé   ΓööΓöÇΓöÇ strum v0.26.3
+      Γöé       ΓööΓöÇΓöÇ octotablet v0.1.0 (*)
+      Γö£ΓöÇΓöÇ strum_macros v0.28.0
+      Γöé   ΓööΓöÇΓöÇ strum v0.28.0
+      Γöé       ΓööΓöÇΓöÇ jsonschema v0.59.0
+      Γöé           Γö£ΓöÇΓöÇ (dev) tt-executor v0.0.1
+      Γöé           Γöé   Γö£ΓöÇΓöÇ tt-engine v0.0.1
+      Γöé           Γöé   Γöé   Γö£ΓöÇΓöÇ tt-desktop v0.0.1 (*)
+      Γöé           Γöé   Γöé   Γö£ΓöÇΓöÇ tt-headless v0.0.1
+      Γöé           Γöé   Γöé   ΓööΓöÇΓöÇ tt-mcp v0.0.1
+      Γöé           Γöé   Γöé       ΓööΓöÇΓöÇ tt-headless v0.0.1 (*)
+      Γöé           Γöé   Γö£ΓöÇΓöÇ tt-headless v0.0.1 (*)
+      Γöé           Γöé   ΓööΓöÇΓöÇ tt-mcp v0.0.1 (*)
+      Γöé           Γö£ΓöÇΓöÇ (dev) tt-mcp v0.0.1 (*)
+      Γöé           Γö£ΓöÇΓöÇ tt-model v0.0.1
+      Γöé           Γöé   Γö£ΓöÇΓöÇ tt-anim v0.0.1
+      Γöé           Γöé   Γöé   Γö£ΓöÇΓöÇ tt-engine v0.0.1 (*)
+      Γöé           Γöé   Γöé   Γö£ΓöÇΓöÇ tt-executor v0.0.1 (*)
+      Γöé           Γöé   Γöé   Γö£ΓöÇΓöÇ tt-fx v0.0.1
+      Γöé           Γöé   Γöé   Γöé   Γö£ΓöÇΓöÇ tt-engine v0.0.1 (*)
+      Γöé           Γöé   Γöé   Γöé   ΓööΓöÇΓöÇ tt-render v0.0.1
+      Γöé           Γöé   Γöé   Γöé       Γö£ΓöÇΓöÇ tt-engine v0.0.1 (*)
+      Γöé           Γöé   Γöé   Γöé       Γö£ΓöÇΓöÇ tt-executor v0.0.1 (*)
+      Γöé           Γöé   Γöé   Γöé       ΓööΓöÇΓöÇ tt-io v0.0.1
+      Γöé           Γöé   Γöé   Γöé           Γö£ΓöÇΓöÇ tt-engine v0.0.1 (*)
+      Γöé           Γöé   Γöé   Γöé           ΓööΓöÇΓöÇ tt-executor v0.0.1 (*)
+      Γöé           Γöé   Γöé   ΓööΓöÇΓöÇ tt-render v0.0.1 (*)
+      Γöé           Γöé   Γö£ΓöÇΓöÇ tt-audio v0.0.1
+      Γöé           Γöé   Γöé   Γö£ΓöÇΓöÇ tt-engine v0.0.1 (*)
+      Γöé           Γöé   Γöé   ΓööΓöÇΓöÇ tt-lipsync v0.0.1
+      Γöé           Γöé   Γöé       ΓööΓöÇΓöÇ tt-engine v0.0.1 (*)
+      Γöé           Γöé   Γö£ΓöÇΓöÇ tt-colour v0.0.1
+      Γöé           Γöé   Γöé   Γö£ΓöÇΓöÇ tt-engine v0.0.1 (*)
+      Γöé           Γöé   Γöé   ΓööΓöÇΓöÇ tt-render v0.0.1 (*)
+      Γöé           Γöé   Γö£ΓöÇΓöÇ tt-engine v0.0.1 (*)
+      Γöé           Γöé   Γö£ΓöÇΓöÇ tt-executor v0.0.1 (*)
+      Γöé           Γöé   Γö£ΓöÇΓöÇ tt-fx v0.0.1 (*)
+      Γöé           Γöé   Γö£ΓöÇΓöÇ tt-io v0.0.1 (*)
+      Γöé           Γöé   Γö£ΓöÇΓöÇ tt-lipsync v0.0.1 (*)
+      Γöé           Γöé   Γö£ΓöÇΓöÇ tt-mcp v0.0.1 (*)
+      Γöé           Γöé   Γö£ΓöÇΓöÇ tt-persist v0.0.1
+      Γöé           Γöé   Γöé   Γö£ΓöÇΓöÇ tt-engine v0.0.1 (*)
+      Γöé           Γöé   Γöé   Γö£ΓöÇΓöÇ tt-executor v0.0.1 (*)
+      Γöé           Γöé   Γöé   Γö£ΓöÇΓöÇ tt-io v0.0.1 (*)
+      Γöé           Γöé   Γöé   ΓööΓöÇΓöÇ tt-mcp v0.0.1 (*)
+      Γöé           Γöé   Γö£ΓöÇΓöÇ tt-registry v0.0.1
+      Γöé           Γöé   Γöé   Γö£ΓöÇΓöÇ tt-engine v0.0.1 (*)
+      Γöé           Γöé   Γöé   Γö£ΓöÇΓöÇ tt-executor v0.0.1 (*)
+      Γöé           Γöé   Γöé   ΓööΓöÇΓöÇ tt-mcp v0.0.1 (*)
+      Γöé           Γöé   Γö£ΓöÇΓöÇ tt-render v0.0.1 (*)
+      Γöé           Γöé   ΓööΓöÇΓöÇ tt-vector v0.0.1
+      Γöé           Γöé       Γö£ΓöÇΓöÇ tt-engine v0.0.1 (*)
+      Γöé           Γöé       Γö£ΓöÇΓöÇ tt-executor v0.0.1 (*)
+      Γöé           Γöé       ΓööΓöÇΓöÇ tt-render v0.0.1 (*)
+      Γöé           ΓööΓöÇΓöÇ tt-registry v0.0.1 (*)
+      Γö£ΓöÇΓöÇ tauri-codegen v2.7.3 (*)
+      Γö£ΓöÇΓöÇ tauri-macros v2.7.3 (*)
+      Γö£ΓöÇΓöÇ thiserror-impl v1.0.69
+      Γöé   ΓööΓöÇΓöÇ thiserror v1.0.69
+      Γöé       ΓööΓöÇΓöÇ octotablet v0.1.0 (*)
+      Γö£ΓöÇΓöÇ tt-registry-macros v0.0.1
+      Γöé   ΓööΓöÇΓöÇ tt-registry v0.0.1 (*)
+      Γö£ΓöÇΓöÇ webview2-com-macros v0.8.1
+      Γöé   ΓööΓöÇΓöÇ webview2-com v0.39.1
+      Γöé       Γö£ΓöÇΓöÇ tauri v2.12.4 (*)
+      Γöé       Γö£ΓöÇΓöÇ tauri-runtime v2.12.2 (*)
+      Γöé       Γö£ΓöÇΓöÇ tauri-runtime-wry v2.12.2 (*)
+      Γöé       ΓööΓöÇΓöÇ wry v0.57.0
+      Γöé           ΓööΓöÇΓöÇ tauri-runtime-wry v2.12.2 (*)
+      Γö£ΓöÇΓöÇ windows-implement v0.53.0
+      Γöé   ΓööΓöÇΓöÇ windows v0.54.0
+      Γöé       ΓööΓöÇΓöÇ octotablet v0.1.0 (*)
+      Γö£ΓöÇΓöÇ windows-implement v0.60.2
+      Γöé   ΓööΓöÇΓöÇ windows-core v0.62.2
+      Γöé       Γö£ΓöÇΓöÇ tao v0.37.1
+      Γöé       Γöé   ΓööΓöÇΓöÇ tauri-runtime-wry v2.12.2 (*)
+      Γöé       Γö£ΓöÇΓöÇ webview2-com v0.39.1 (*)
+      Γöé       Γö£ΓöÇΓöÇ webview2-com-sys v0.39.1
+      Γöé       Γöé   ΓööΓöÇΓöÇ webview2-com v0.39.1 (*)
+      Γöé       Γö£ΓöÇΓöÇ windows v0.62.2
+      Γöé       Γöé   Γö£ΓöÇΓöÇ tao v0.37.1 (*)
+      Γöé       Γöé   Γö£ΓöÇΓöÇ tauri v2.12.4 (*)
+      Γöé       Γöé   Γö£ΓöÇΓöÇ tauri-runtime v2.12.2 (*)
+      Γöé       Γöé   Γö£ΓöÇΓöÇ tauri-runtime-wry v2.12.2 (*)
+      Γöé       Γöé   Γö£ΓöÇΓöÇ tt-desktop v0.0.1 (*)
+      Γöé       Γöé   Γö£ΓöÇΓöÇ webview2-com v0.39.1 (*)
+      Γöé       Γöé   Γö£ΓöÇΓöÇ webview2-com-sys v0.39.1 (*)
+      Γöé       Γöé   ΓööΓöÇΓöÇ wry v0.57.0 (*)
+      Γöé       Γö£ΓöÇΓöÇ windows-collections v0.3.2
+      Γöé       Γöé   ΓööΓöÇΓöÇ windows v0.62.2 (*)
+      Γöé       Γö£ΓöÇΓöÇ windows-future v0.3.2
+      Γöé       Γöé   ΓööΓöÇΓöÇ windows v0.62.2 (*)
+      Γöé       Γö£ΓöÇΓöÇ windows-numerics v0.3.1
+      Γöé       Γöé   ΓööΓöÇΓöÇ windows v0.62.2 (*)
+      Γöé       ΓööΓöÇΓöÇ wry v0.57.0 (*)
+      Γö£ΓöÇΓöÇ windows-interface v0.53.0
+      Γöé   ΓööΓöÇΓöÇ windows v0.54.0 (*)
+      Γö£ΓöÇΓöÇ windows-interface v0.59.3
+      Γöé   ΓööΓöÇΓöÇ windows-core v0.62.2 (*)
+      ΓööΓöÇΓöÇ zerocopy-derive v0.8.63
+          ΓööΓöÇΓöÇ zerocopy v0.8.63
+              Γö£ΓöÇΓöÇ ahash v0.8.12
+              Γöé   Γö£ΓöÇΓöÇ jsonschema v0.59.0 (*)
+              Γöé   Γö£ΓöÇΓöÇ jsonschema-value v0.59.0
+              Γöé   Γöé   ΓööΓöÇΓöÇ jsonschema v0.59.0 (*)
+              Γöé   ΓööΓöÇΓöÇ referencing v0.59.0
+              Γöé       ΓööΓöÇΓöÇ jsonschema v0.59.0 (*)
+              ΓööΓöÇΓöÇ half v2.7.1
+                  ΓööΓöÇΓöÇ tiff v0.11.3
+                      ΓööΓöÇΓöÇ image v0.25.10
+                          ΓööΓöÇΓöÇ tt-io v0.0.1 (*)
+    Γö£ syn v3.0.9
+      Γö£ΓöÇΓöÇ bytemuck_derive v1.12.1
+      Γöé   ΓööΓöÇΓöÇ bytemuck v1.25.2
+      Γöé       Γö£ΓöÇΓöÇ color v0.3.3
+      Γöé       Γöé   ΓööΓöÇΓöÇ peniko v0.6.1
+      Γöé       Γöé       ΓööΓöÇΓöÇ vello_common v0.3.0
+      Γöé       Γöé           ΓööΓöÇΓöÇ vello_cpu v0.3.0
+      Γöé       Γöé               ΓööΓöÇΓöÇ tt-render v0.0.1
+      Γöé       Γöé                   Γö£ΓöÇΓöÇ tt-engine v0.0.1
+      Γöé       Γöé                   Γöé   Γö£ΓöÇΓöÇ tt-desktop v0.0.1
+      Γöé       Γöé                   Γöé   Γö£ΓöÇΓöÇ tt-headless v0.0.1
+      Γöé       Γöé                   Γöé   ΓööΓöÇΓöÇ tt-mcp v0.0.1
+      Γöé       Γöé                   Γöé       ΓööΓöÇΓöÇ tt-headless v0.0.1 (*)
+      Γöé       Γöé                   Γö£ΓöÇΓöÇ tt-executor v0.0.1
+      Γöé       Γöé                   Γöé   Γö£ΓöÇΓöÇ tt-engine v0.0.1 (*)
+      Γöé       Γöé                   Γöé   Γö£ΓöÇΓöÇ tt-headless v0.0.1 (*)
+      Γöé       Γöé                   Γöé   ΓööΓöÇΓöÇ tt-mcp v0.0.1 (*)
+      Γöé       Γöé                   ΓööΓöÇΓöÇ tt-io v0.0.1
+      Γöé       Γöé                       Γö£ΓöÇΓöÇ tt-engine v0.0.1 (*)
+      Γöé       Γöé                       ΓööΓöÇΓöÇ tt-executor v0.0.1 (*)
+      Γöé       Γö£ΓöÇΓöÇ font-types v0.12.7
+      Γöé       Γöé   ΓööΓöÇΓöÇ read-fonts v0.41.0
+      Γöé       Γöé       ΓööΓöÇΓöÇ skrifa v0.44.0
+      Γöé       Γöé           ΓööΓöÇΓöÇ tt-vector v0.0.1
+      Γöé       Γöé               Γö£ΓöÇΓöÇ tt-engine v0.0.1 (*)
+      Γöé       Γöé               Γö£ΓöÇΓöÇ tt-executor v0.0.1 (*)
+      Γöé       Γöé               ΓööΓöÇΓöÇ tt-render v0.0.1 (*)
+      Γöé       Γö£ΓöÇΓöÇ image v0.25.10
+      Γöé       Γöé   ΓööΓöÇΓöÇ tt-io v0.0.1 (*)
+      Γöé       Γö£ΓöÇΓöÇ peniko v0.6.1 (*)
+      Γöé       Γö£ΓöÇΓöÇ read-fonts v0.41.0 (*)
+      Γöé       Γö£ΓöÇΓöÇ skrifa v0.44.0 (*)
+      Γöé       Γö£ΓöÇΓöÇ vello_common v0.3.0 (*)
+      Γöé       ΓööΓöÇΓöÇ vello_cpu v0.3.0 (*)
+      Γö£ΓöÇΓöÇ clap_derive v4.6.7
+      Γöé   ΓööΓöÇΓöÇ clap v4.6.7
+      Γöé       ΓööΓöÇΓöÇ tt-headless v0.0.1 (*)
+      Γö£ΓöÇΓöÇ cssparser-macros v0.7.1
+      Γöé   ΓööΓöÇΓöÇ cssparser v0.37.0
+      Γöé       Γö£ΓöÇΓöÇ dom_query v0.28.0
+      Γöé       Γöé   ΓööΓöÇΓöÇ tauri-utils v2.10.2
+      Γöé       Γöé       Γö£ΓöÇΓöÇ tauri v2.12.4
+      Γöé       Γöé       Γöé   ΓööΓöÇΓöÇ tt-desktop v0.0.1 (*)
+      Γöé       Γöé       Γö£ΓöÇΓöÇ tauri-build v2.7.3
+      Γöé       Γöé       Γöé   Γö£ΓöÇΓöÇ (build) tauri v2.12.4 (*)
+      Γöé       Γöé       Γöé   ΓööΓöÇΓöÇ (build) tt-desktop v0.0.1 (*)
+      Γöé       Γöé       Γö£ΓöÇΓöÇ tauri-codegen v2.7.3
+      Γöé       Γöé       Γöé   ΓööΓöÇΓöÇ tauri-macros v2.7.3
+      Γöé       Γöé       Γöé       ΓööΓöÇΓöÇ tauri v2.12.4 (*)
+      Γöé       Γöé       Γö£ΓöÇΓöÇ tauri-macros v2.7.3 (*)
+      Γöé       Γöé       Γö£ΓöÇΓöÇ tauri-runtime v2.12.2
+      Γöé       Γöé       Γöé   Γö£ΓöÇΓöÇ tauri v2.12.4 (*)
+      Γöé       Γöé       Γöé   ΓööΓöÇΓöÇ tauri-runtime-wry v2.12.2
+      Γöé       Γöé       Γöé       ΓööΓöÇΓöÇ tauri v2.12.4 (*)
+      Γöé       Γöé       ΓööΓöÇΓöÇ tauri-runtime-wry v2.12.2 (*)
+      Γöé       ΓööΓöÇΓöÇ selectors v0.38.0
+      Γöé           ΓööΓöÇΓöÇ dom_query v0.28.0 (*)
+      Γö£ΓöÇΓöÇ darling_core v0.24.1
+      Γöé   Γö£ΓöÇΓöÇ darling v0.24.1
+      Γöé   Γöé   ΓööΓöÇΓöÇ serde_with_macros v3.24.0
+      Γöé   Γöé       ΓööΓöÇΓöÇ serde_with v3.24.0
+      Γöé   Γöé           ΓööΓöÇΓöÇ tauri-utils v2.10.2 (*)
+      Γöé   ΓööΓöÇΓöÇ darling_macro v0.24.1
+      Γöé       ΓööΓöÇΓöÇ darling v0.24.1 (*)
+      Γö£ΓöÇΓöÇ darling_macro v0.24.1 (*)
+      Γö£ΓöÇΓöÇ displaydoc v0.2.7
+      Γöé   Γö£ΓöÇΓöÇ icu_collections v2.3.0
+      Γöé   Γöé   Γö£ΓöÇΓöÇ icu_normalizer v2.3.0
+      Γöé   Γöé   Γöé   ΓööΓöÇΓöÇ idna_adapter v1.2.2
+      Γöé   Γöé   Γöé       ΓööΓöÇΓöÇ idna v1.1.0
+      Γöé   Γöé   Γöé           ΓööΓöÇΓöÇ url v2.5.8
+      Γöé   Γöé   Γöé               Γö£ΓöÇΓöÇ schemars v0.8.22
+      Γöé   Γöé   Γöé               Γöé   Γö£ΓöÇΓöÇ tauri-build v2.7.3 (*)
+      Γöé   Γöé   Γöé               Γöé   ΓööΓöÇΓöÇ tauri-utils v2.10.2 (*)
+      Γöé   Γöé   Γöé               Γö£ΓöÇΓöÇ tao v0.37.1
+      Γöé   Γöé   Γöé               Γöé   ΓööΓöÇΓöÇ tauri-runtime-wry v2.12.2 (*)
+      Γöé   Γöé   Γöé               Γö£ΓöÇΓöÇ tauri v2.12.4 (*)
+      Γöé   Γöé   Γöé               Γö£ΓöÇΓöÇ tauri-codegen v2.7.3 (*)
+      Γöé   Γöé   Γöé               Γö£ΓöÇΓöÇ tauri-runtime v2.12.2 (*)
+      Γöé   Γöé   Γöé               Γö£ΓöÇΓöÇ tauri-runtime-wry v2.12.2 (*)
+      Γöé   Γöé   Γöé               Γö£ΓöÇΓöÇ tauri-utils v2.10.2 (*)
+      Γöé   Γöé   Γöé               Γö£ΓöÇΓöÇ urlpattern v0.6.0
+      Γöé   Γöé   Γöé               Γöé   ΓööΓöÇΓöÇ tauri-utils v2.10.2 (*)
+      Γöé   Γöé   Γöé               ΓööΓöÇΓöÇ wry v0.57.0
+      Γöé   Γöé   Γöé                   ΓööΓöÇΓöÇ tauri-runtime-wry v2.12.2 (*)
+      Γöé   Γöé   ΓööΓöÇΓöÇ icu_properties v2.3.0
+      Γöé   Γöé       Γö£ΓöÇΓöÇ idna_adapter v1.2.2 (*)
+      Γöé   Γöé       ΓööΓöÇΓöÇ urlpattern v0.6.0 (*)
+      Γöé   Γö£ΓöÇΓöÇ icu_locale_core v2.3.0
+      Γöé   Γöé   Γö£ΓöÇΓöÇ icu_properties v2.3.0 (*)
+      Γöé   Γöé   ΓööΓöÇΓöÇ icu_provider v2.3.1
+      Γöé   Γöé       Γö£ΓöÇΓöÇ icu_normalizer v2.3.0 (*)
+      Γöé   Γöé       ΓööΓöÇΓöÇ icu_properties v2.3.0 (*)
+      Γöé   Γö£ΓöÇΓöÇ icu_properties v2.3.0 (*)
+      Γöé   Γö£ΓöÇΓöÇ icu_provider v2.3.1 (*)
+      Γöé   Γö£ΓöÇΓöÇ tinystr v0.8.4
+      Γöé   Γöé   ΓööΓöÇΓöÇ icu_locale_core v2.3.0 (*)
+      Γöé   ΓööΓöÇΓöÇ zerotrie v0.2.5
+      Γöé       Γö£ΓöÇΓöÇ icu_properties v2.3.0 (*)
+      Γöé       ΓööΓöÇΓöÇ icu_provider v2.3.1 (*)
+      Γö£ΓöÇΓöÇ foreign-types-macros v0.2.4
+      Γöé   ΓööΓöÇΓöÇ foreign-types v0.5.0
+      Γöé       ΓööΓöÇΓöÇ core-graphics v0.25.0
+      Γöé           ΓööΓöÇΓöÇ tao v0.37.1 (*)
+      Γö£ΓöÇΓöÇ ref-cast-impl v1.0.27
+      Γöé   ΓööΓöÇΓöÇ ref-cast v1.0.27
+      Γöé       Γö£ΓöÇΓöÇ fluent-uri v0.4.1
+      Γöé       Γöé   ΓööΓöÇΓöÇ referencing v0.59.0
+      Γöé       Γöé       ΓööΓöÇΓöÇ jsonschema v0.59.0
+      Γöé       Γöé           Γö£ΓöÇΓöÇ (dev) tt-executor v0.0.1 (*)
+      Γöé       Γöé           Γö£ΓöÇΓöÇ (dev) tt-mcp v0.0.1 (*)
+      Γöé       Γöé           Γö£ΓöÇΓöÇ tt-model v0.0.1
+      Γöé       Γöé           Γöé   Γö£ΓöÇΓöÇ tt-anim v0.0.1
+      Γöé       Γöé           Γöé   Γöé   Γö£ΓöÇΓöÇ tt-engine v0.0.1 (*)
+      Γöé       Γöé           Γöé   Γöé   Γö£ΓöÇΓöÇ tt-executor v0.0.1 (*)
+      Γöé       Γöé           Γöé   Γöé   Γö£ΓöÇΓöÇ tt-fx v0.0.1
+      Γöé       Γöé           Γöé   Γöé   Γöé   Γö£ΓöÇΓöÇ tt-engine v0.0.1 (*)
+      Γöé       Γöé           Γöé   Γöé   Γöé   ΓööΓöÇΓöÇ tt-render v0.0.1 (*)
+      Γöé       Γöé           Γöé   Γöé   ΓööΓöÇΓöÇ tt-render v0.0.1 (*)
+      Γöé       Γöé           Γöé   Γö£ΓöÇΓöÇ tt-audio v0.0.1
+      Γöé       Γöé           Γöé   Γöé   Γö£ΓöÇΓöÇ tt-engine v0.0.1 (*)
+      Γöé       Γöé           Γöé   Γöé   ΓööΓöÇΓöÇ tt-lipsync v0.0.1
+      Γöé       Γöé           Γöé   Γöé       ΓööΓöÇΓöÇ tt-engine v0.0.1 (*)
+      Γöé       Γöé           Γöé   Γö£ΓöÇΓöÇ tt-colour v0.0.1
+      Γöé       Γöé           Γöé   Γöé   Γö£ΓöÇΓöÇ tt-engine v0.0.1 (*)
+      Γöé       Γöé           Γöé   Γöé   ΓööΓöÇΓöÇ tt-render v0.0.1 (*)
+      Γöé       Γöé           Γöé   Γö£ΓöÇΓöÇ tt-engine v0.0.1 (*)
+      Γöé       Γöé           Γöé   Γö£ΓöÇΓöÇ tt-executor v0.0.1 (*)
+      Γöé       Γöé           Γöé   Γö£ΓöÇΓöÇ tt-fx v0.0.1 (*)
+      Γöé       Γöé           Γöé   Γö£ΓöÇΓöÇ tt-io v0.0.1 (*)
+      Γöé       Γöé           Γöé   Γö£ΓöÇΓöÇ tt-lipsync v0.0.1 (*)
+      Γöé       Γöé           Γöé   Γö£ΓöÇΓöÇ tt-mcp v0.0.1 (*)
+      Γöé       Γöé           Γöé   Γö£ΓöÇΓöÇ tt-persist v0.0.1
+      Γöé       Γöé           Γöé   Γöé   Γö£ΓöÇΓöÇ tt-engine v0.0.1 (*)
+      Γöé       Γöé           Γöé   Γöé   Γö£ΓöÇΓöÇ tt-executor v0.0.1 (*)
+      Γöé       Γöé           Γöé   Γöé   Γö£ΓöÇΓöÇ tt-io v0.0.1 (*)
+      Γöé       Γöé           Γöé   Γöé   ΓööΓöÇΓöÇ tt-mcp v0.0.1 (*)
+      Γöé       Γöé           Γöé   Γö£ΓöÇΓöÇ tt-registry v0.0.1
+      Γöé       Γöé           Γöé   Γöé   Γö£ΓöÇΓöÇ tt-engine v0.0.1 (*)
+      Γöé       Γöé           Γöé   Γöé   Γö£ΓöÇΓöÇ tt-executor v0.0.1 (*)
+      Γöé       Γöé           Γöé   Γöé   ΓööΓöÇΓöÇ tt-mcp v0.0.1 (*)
+      Γöé       Γöé           Γöé   Γö£ΓöÇΓöÇ tt-render v0.0.1 (*)
+      Γöé       Γöé           Γöé   ΓööΓöÇΓöÇ tt-vector v0.0.1 (*)
+      Γöé       Γöé           ΓööΓöÇΓöÇ tt-registry v0.0.1 (*)
+      Γöé       ΓööΓöÇΓöÇ schemars v1.2.3
+      Γöé           Γö£ΓöÇΓöÇ tt-engine v0.0.1 (*)
+      Γöé           Γö£ΓöÇΓöÇ tt-executor v0.0.1 (*)
+      Γöé           Γö£ΓöÇΓöÇ tt-model v0.0.1 (*)
+      Γöé           Γö£ΓöÇΓöÇ tt-registry v0.0.1 (*)
+      Γöé           ΓööΓöÇΓöÇ tt-vector v0.0.1 (*)
+      Γö£ΓöÇΓöÇ schemars_derive v1.2.3
+      Γöé   ΓööΓöÇΓöÇ schemars v1.2.3 (*)
+      Γö£ΓöÇΓöÇ serde_derive v1.0.229
+      Γöé   Γö£ΓöÇΓöÇ serde v1.0.229
+      Γöé   Γöé   Γö£ΓöÇΓöÇ ahash v0.8.12
+      Γöé   Γöé   Γöé   Γö£ΓöÇΓöÇ jsonschema v0.59.0 (*)
+      Γöé   Γöé   Γöé   Γö£ΓöÇΓöÇ jsonschema-value v0.59.0
+      Γöé   Γöé   Γöé   Γöé   ΓööΓöÇΓöÇ jsonschema v0.59.0 (*)
+      Γöé   Γöé   Γöé   ΓööΓöÇΓöÇ referencing v0.59.0 (*)
+      Γöé   Γöé   Γö£ΓöÇΓöÇ cargo-platform v0.1.9
+      Γöé   Γöé   Γöé   ΓööΓöÇΓöÇ cargo_metadata v0.19.2
+      Γöé   Γöé   Γöé       ΓööΓöÇΓöÇ tauri-utils v2.10.2 (*)
+      Γöé   Γöé   Γö£ΓöÇΓöÇ cargo_metadata v0.19.2 (*)
+      Γöé   Γöé   Γö£ΓöÇΓöÇ cargo_toml v1.0.1
+      Γöé   Γöé   Γöé   ΓööΓöÇΓöÇ tauri-build v2.7.3 (*)
+      Γöé   Γöé   Γö£ΓöÇΓöÇ dpi v0.1.2
+      Γöé   Γöé   Γöé   Γö£ΓöÇΓöÇ muda v0.20.0
+      Γöé   Γöé   Γöé   Γöé   ΓööΓöÇΓöÇ tauri v2.12.4 (*)
+      Γöé   Γöé   Γöé   Γö£ΓöÇΓöÇ tao v0.37.1 (*)
+      Γöé   Γöé   Γöé   Γö£ΓöÇΓöÇ tauri-runtime v2.12.2 (*)
+      Γöé   Γöé   Γöé   ΓööΓöÇΓöÇ wry v0.57.0 (*)
+      Γöé   Γöé   Γö£ΓöÇΓöÇ email_address v0.2.9
+      Γöé   Γöé   Γöé   ΓööΓöÇΓöÇ jsonschema v0.59.0 (*)
+      Γöé   Γöé   Γö£ΓöÇΓöÇ fluent-uri v0.4.1 (*)
+      Γöé   Γöé   Γö£ΓöÇΓöÇ indexmap v1.9.3
+      Γöé   Γöé   Γöé   ΓööΓöÇΓöÇ schemars v0.8.22 (*)
+      Γöé   Γöé   Γö£ΓöÇΓöÇ json-patch v4.2.0
+      Γöé   Γöé   Γöé   Γö£ΓöÇΓöÇ tauri-build v2.7.3 (*)
+      Γöé   Γöé   Γöé   Γö£ΓöÇΓöÇ tauri-codegen v2.7.3 (*)
+      Γöé   Γöé   Γöé   ΓööΓöÇΓöÇ tauri-utils v2.10.2 (*)
+      Γöé   Γöé   Γö£ΓöÇΓöÇ jsonptr v0.7.1
+      Γöé   Γöé   Γöé   ΓööΓöÇΓöÇ json-patch v4.2.0 (*)
+      Γöé   Γöé   Γö£ΓöÇΓöÇ jsonschema v0.59.0 (*)
+      Γöé   Γöé   Γö£ΓöÇΓöÇ keyboard-types v0.8.3
+      Γöé   Γöé   Γöé   ΓööΓöÇΓöÇ muda v0.20.0 (*)
+      Γöé   Γöé   Γö£ΓöÇΓöÇ muda v0.20.0 (*)
+      Γöé   Γöé   Γö£ΓöÇΓöÇ plist v1.10.1
+      Γöé   Γöé   Γöé   Γö£ΓöÇΓöÇ tauri v2.12.4 (*)
+      Γöé   Γöé   Γöé   Γö£ΓöÇΓöÇ tauri-codegen v2.7.3 (*)
+      Γöé   Γöé   Γöé   ΓööΓöÇΓöÇ tauri-utils v2.10.2 (*)
+      Γöé   Γöé   Γö£ΓöÇΓöÇ schemars v0.8.22 (*)
+      Γöé   Γöé   Γö£ΓöÇΓöÇ schemars v1.2.3 (*)
+      Γöé   Γöé   Γö£ΓöÇΓöÇ serialize-to-javascript v0.1.2
+      Γöé   Γöé   Γöé   ΓööΓöÇΓöÇ tauri v2.12.4 (*)
+      Γöé   Γöé   Γö£ΓöÇΓöÇ swift-rs v1.0.9
+      Γöé   Γöé   Γöé   ΓööΓöÇΓöÇ tauri-utils v2.10.2 (*)
+      Γöé   Γöé   Γö£ΓöÇΓöÇ tauri v2.12.4 (*)
+      Γöé   Γöé   Γö£ΓöÇΓöÇ tauri-build v2.7.3 (*)
+      Γöé   Γöé   Γö£ΓöÇΓöÇ tauri-codegen v2.7.3 (*)
+      Γöé   Γöé   Γö£ΓöÇΓöÇ tauri-runtime v2.12.2 (*)
+      Γöé   Γöé   Γö£ΓöÇΓöÇ tauri-utils v2.10.2 (*)
+      Γöé   Γöé   Γö£ΓöÇΓöÇ trybuild v1.0.122
+      Γöé   Γöé   Γöé   ΓööΓöÇΓöÇ (dev) tt-executor v0.0.1 (*)
+      Γöé   Γöé   Γö£ΓöÇΓöÇ tt-desktop v0.0.1 (*)
+      Γöé   Γöé   Γö£ΓöÇΓöÇ tt-engine v0.0.1 (*)
+      Γöé   Γöé   Γö£ΓöÇΓöÇ tt-executor v0.0.1 (*)
+      Γöé   Γöé   Γö£ΓöÇΓöÇ tt-headless v0.0.1 (*)
+      Γöé   Γöé   Γö£ΓöÇΓöÇ tt-mcp v0.0.1 (*)
+      Γöé   Γöé   Γö£ΓöÇΓöÇ tt-model v0.0.1 (*)
+      Γöé   Γöé   Γö£ΓöÇΓöÇ tt-persist v0.0.1 (*)
+      Γöé   Γöé   Γö£ΓöÇΓöÇ tt-registry v0.0.1 (*)
+      Γöé   Γöé   Γö£ΓöÇΓöÇ tt-vector v0.0.1 (*)
+      Γöé   Γöé   Γö£ΓöÇΓöÇ url v2.5.8 (*)
+      Γöé   Γöé   ΓööΓöÇΓöÇ urlpattern v0.6.0 (*)
+      Γöé   Γö£ΓöÇΓöÇ trybuild v1.0.122 (*)
+      Γöé   ΓööΓöÇΓöÇ url v2.5.8 (*)
+      Γö£ΓöÇΓöÇ serde_derive_internals v0.30.0
+      Γöé   ΓööΓöÇΓöÇ schemars_derive v1.2.3 (*)
+      Γö£ΓöÇΓöÇ serde_repr v0.1.21
+      Γöé   ΓööΓöÇΓöÇ tauri v2.12.4 (*)
+      Γö£ΓöÇΓöÇ serde_with_macros v3.24.0 (*)
+      Γö£ΓöÇΓöÇ synstructure v0.14.0
+      Γöé   Γö£ΓöÇΓöÇ yoke-derive v0.8.4
+      Γöé   Γöé   ΓööΓöÇΓöÇ yoke v0.8.3
+      Γöé   Γöé       Γö£ΓöÇΓöÇ icu_collections v2.3.0 (*)
+      Γöé   Γöé       Γö£ΓöÇΓöÇ icu_provider v2.3.1 (*)
+      Γöé   Γöé       Γö£ΓöÇΓöÇ zerotrie v0.2.5 (*)
+      Γöé   Γöé       ΓööΓöÇΓöÇ zerovec v0.11.8
+      Γöé   Γöé           Γö£ΓöÇΓöÇ icu_collections v2.3.0 (*)
+      Γöé   Γöé           Γö£ΓöÇΓöÇ icu_locale_core v2.3.0 (*)
+      Γöé   Γöé           Γö£ΓöÇΓöÇ icu_normalizer v2.3.0 (*)
+      Γöé   Γöé           Γö£ΓöÇΓöÇ icu_properties v2.3.0 (*)
+      Γöé   Γöé           Γö£ΓöÇΓöÇ icu_provider v2.3.1 (*)
+      Γöé   Γöé           Γö£ΓöÇΓöÇ potential_utf v0.1.6
+      Γöé   Γöé           Γöé   ΓööΓöÇΓöÇ icu_collections v2.3.0 (*)
+      Γöé   Γöé           ΓööΓöÇΓöÇ tinystr v0.8.4 (*)
+      Γöé   ΓööΓöÇΓöÇ zerofrom-derive v0.1.8
+      Γöé       ΓööΓöÇΓöÇ zerofrom v0.1.8
+      Γöé           Γö£ΓöÇΓöÇ icu_collections v2.3.0 (*)
+      Γöé           Γö£ΓöÇΓöÇ icu_provider v2.3.1 (*)
+      Γöé           Γö£ΓöÇΓöÇ yoke v0.8.3 (*)
+      Γöé           Γö£ΓöÇΓöÇ zerotrie v0.2.5 (*)
+      Γöé           ΓööΓöÇΓöÇ zerovec v0.11.8 (*)
+      Γö£ΓöÇΓöÇ thiserror-impl v2.0.21
+      Γöé   ΓööΓöÇΓöÇ thiserror v2.0.21
+      Γöé       Γö£ΓöÇΓöÇ cargo_metadata v0.19.2 (*)
+      Γöé       Γö£ΓöÇΓöÇ json-patch v4.2.0 (*)
+      Γöé       Γö£ΓöÇΓöÇ muda v0.20.0 (*)
+      Γöé       Γö£ΓöÇΓöÇ tauri v2.12.4 (*)
+      Γöé       Γö£ΓöÇΓöÇ tauri-codegen v2.7.3 (*)
+      Γöé       Γö£ΓöÇΓöÇ tauri-runtime v2.12.2 (*)
+      Γöé       Γö£ΓöÇΓöÇ tauri-utils v2.10.2 (*)
+      Γöé       Γö£ΓöÇΓöÇ tt-desktop v0.0.1 (*)
+      Γöé       Γö£ΓöÇΓöÇ tt-engine v0.0.1 (*)
+      Γöé       Γö£ΓöÇΓöÇ tt-headless v0.0.1 (*)
+      Γöé       Γö£ΓöÇΓöÇ tt-model v0.0.1 (*)
+      Γöé       Γö£ΓöÇΓöÇ tt-render v0.0.1 (*)
+      Γöé       Γö£ΓöÇΓöÇ vello_common v0.3.0 (*)
+      Γöé       Γö£ΓöÇΓöÇ (build) webview2-com-sys v0.39.1
+      Γöé       Γöé   ΓööΓöÇΓöÇ webview2-com v0.39.1
+      Γöé       Γöé       Γö£ΓöÇΓöÇ tauri v2.12.4 (*)
+      Γöé       Γöé       Γö£ΓöÇΓöÇ tauri-runtime v2.12.2 (*)
+      Γöé       Γöé       Γö£ΓöÇΓöÇ tauri-runtime-wry v2.12.2 (*)
+      Γöé       Γöé       ΓööΓöÇΓöÇ wry v0.57.0 (*)
+      Γöé       ΓööΓöÇΓöÇ wry v0.57.0 (*)
+      Γö£ΓöÇΓöÇ yoke-derive v0.8.4 (*)
+      Γö£ΓöÇΓöÇ zerofrom-derive v0.1.8 (*)
+      ΓööΓöÇΓöÇ zerovec-derive v0.11.6
+          ΓööΓöÇΓöÇ zerovec v0.11.8 (*)
+
+warning[duplicate]: found 2 duplicate entries for crate 'thiserror'
+    ΓöîΓöÇ C:\Users\kaiga\work\review\m3-c33-r1/Cargo.lock:294:1
+    Γöé
+294 Γöé Γò¡ thiserror 1.0.69 registry+https://github.com/rust-lang/crates.io-index
+295 Γöé Γöé thiserror 2.0.21 registry+https://github.com/rust-lang/crates.io-index
+    Γöé Γò░ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÿ lock entries
+    Γöé
+    Γö£ thiserror v1.0.69
+      ΓööΓöÇΓöÇ octotablet v0.1.0
+          ΓööΓöÇΓöÇ tt-desktop v0.0.1
+    Γö£ thiserror v2.0.21
+      Γö£ΓöÇΓöÇ cargo_metadata v0.19.2
+      Γöé   ΓööΓöÇΓöÇ tauri-utils v2.10.2
+      Γöé       Γö£ΓöÇΓöÇ tauri v2.12.4
+      Γöé       Γöé   ΓööΓöÇΓöÇ tt-desktop v0.0.1
+      Γöé       Γö£ΓöÇΓöÇ tauri-build v2.7.3
+      Γöé       Γöé   Γö£ΓöÇΓöÇ (build) tauri v2.12.4 (*)
+      Γöé       Γöé   ΓööΓöÇΓöÇ (build) tt-desktop v0.0.1 (*)
+      Γöé       Γö£ΓöÇΓöÇ tauri-codegen v2.7.3
+      Γöé       Γöé   ΓööΓöÇΓöÇ tauri-macros v2.7.3
+      Γöé       Γöé       ΓööΓöÇΓöÇ tauri v2.12.4 (*)
+      Γöé       Γö£ΓöÇΓöÇ tauri-macros v2.7.3 (*)
+      Γöé       Γö£ΓöÇΓöÇ tauri-runtime v2.12.2
+      Γöé       Γöé   Γö£ΓöÇΓöÇ tauri v2.12.4 (*)
+      Γöé       Γöé   ΓööΓöÇΓöÇ tauri-runtime-wry v2.12.2
+      Γöé       Γöé       ΓööΓöÇΓöÇ tauri v2.12.4 (*)
+      Γöé       ΓööΓöÇΓöÇ tauri-runtime-wry v2.12.2 (*)
+      Γö£ΓöÇΓöÇ json-patch v4.2.0
+      Γöé   Γö£ΓöÇΓöÇ tauri-build v2.7.3 (*)
+      Γöé   Γö£ΓöÇΓöÇ tauri-codegen v2.7.3 (*)
+      Γöé   ΓööΓöÇΓöÇ tauri-utils v2.10.2 (*)
+      Γö£ΓöÇΓöÇ muda v0.20.0
+      Γöé   ΓööΓöÇΓöÇ tauri v2.12.4 (*)
+      Γö£ΓöÇΓöÇ tauri v2.12.4 (*)
+      Γö£ΓöÇΓöÇ tauri-codegen v2.7.3 (*)
+      Γö£ΓöÇΓöÇ tauri-runtime v2.12.2 (*)
+      Γö£ΓöÇΓöÇ tauri-utils v2.10.2 (*)
+      Γö£ΓöÇΓöÇ tt-desktop v0.0.1 (*)
+      Γö£ΓöÇΓöÇ tt-engine v0.0.1
+      Γöé   Γö£ΓöÇΓöÇ tt-desktop v0.0.1 (*)
+      Γöé   Γö£ΓöÇΓöÇ tt-headless v0.0.1
+      Γöé   ΓööΓöÇΓöÇ tt-mcp v0.0.1
+      Γöé       ΓööΓöÇΓöÇ tt-headless v0.0.1 (*)
+      Γö£ΓöÇΓöÇ tt-headless v0.0.1 (*)
+      Γö£ΓöÇΓöÇ tt-model v0.0.1
+      Γöé   Γö£ΓöÇΓöÇ tt-anim v0.0.1
+      Γöé   Γöé   Γö£ΓöÇΓöÇ tt-engine v0.0.1 (*)
+      Γöé   Γöé   Γö£ΓöÇΓöÇ tt-executor v0.0.1
+      Γöé   Γöé   Γöé   Γö£ΓöÇΓöÇ tt-engine v0.0.1 (*)
+      Γöé   Γöé   Γöé   Γö£ΓöÇΓöÇ tt-headless v0.0.1 (*)
+      Γöé   Γöé   Γöé   ΓööΓöÇΓöÇ tt-mcp v0.0.1 (*)
+      Γöé   Γöé   Γö£ΓöÇΓöÇ tt-fx v0.0.1
+      Γöé   Γöé   Γöé   Γö£ΓöÇΓöÇ tt-engine v0.0.1 (*)
+      Γöé   Γöé   Γöé   ΓööΓöÇΓöÇ tt-render v0.0.1
+      Γöé   Γöé   Γöé       Γö£ΓöÇΓöÇ tt-engine v0.0.1 (*)
+      Γöé   Γöé   Γöé       Γö£ΓöÇΓöÇ tt-executor v0.0.1 (*)
+      Γöé   Γöé   Γöé       ΓööΓöÇΓöÇ tt-io v0.0.1
+      Γöé   Γöé   Γöé           Γö£ΓöÇΓöÇ tt-engine v0.0.1 (*)
+      Γöé   Γöé   Γöé           ΓööΓöÇΓöÇ tt-executor v0.0.1 (*)
+      Γöé   Γöé   ΓööΓöÇΓöÇ tt-render v0.0.1 (*)
+      Γöé   Γö£ΓöÇΓöÇ tt-audio v0.0.1
+      Γöé   Γöé   Γö£ΓöÇΓöÇ tt-engine v0.0.1 (*)
+      Γöé   Γöé   ΓööΓöÇΓöÇ tt-lipsync v0.0.1
+      Γöé   Γöé       ΓööΓöÇΓöÇ tt-engine v0.0.1 (*)
+      Γöé   Γö£ΓöÇΓöÇ tt-colour v0.0.1
+      Γöé   Γöé   Γö£ΓöÇΓöÇ tt-engine v0.0.1 (*)
+      Γöé   Γöé   ΓööΓöÇΓöÇ tt-render v0.0.1 (*)
+      Γöé   Γö£ΓöÇΓöÇ tt-engine v0.0.1 (*)
+      Γöé   Γö£ΓöÇΓöÇ tt-executor v0.0.1 (*)
+      Γöé   Γö£ΓöÇΓöÇ tt-fx v0.0.1 (*)
+      Γöé   Γö£ΓöÇΓöÇ tt-io v0.0.1 (*)
+      Γöé   Γö£ΓöÇΓöÇ tt-lipsync v0.0.1 (*)
+      Γöé   Γö£ΓöÇΓöÇ tt-mcp v0.0.1 (*)
+      Γöé   Γö£ΓöÇΓöÇ tt-persist v0.0.1
+      Γöé   Γöé   Γö£ΓöÇΓöÇ tt-engine v0.0.1 (*)
+      Γöé   Γöé   Γö£ΓöÇΓöÇ tt-executor v0.0.1 (*)
+      Γöé   Γöé   Γö£ΓöÇΓöÇ tt-io v0.0.1 (*)
+      Γöé   Γöé   ΓööΓöÇΓöÇ tt-mcp v0.0.1 (*)
+      Γöé   Γö£ΓöÇΓöÇ tt-registry v0.0.1
+      Γöé   Γöé   Γö£ΓöÇΓöÇ tt-engine v0.0.1 (*)
+      Γöé   Γöé   Γö£ΓöÇΓöÇ tt-executor v0.0.1 (*)
+      Γöé   Γöé   ΓööΓöÇΓöÇ tt-mcp v0.0.1 (*)
+      Γöé   Γö£ΓöÇΓöÇ tt-render v0.0.1 (*)
+      Γöé   ΓööΓöÇΓöÇ tt-vector v0.0.1
+      Γöé       Γö£ΓöÇΓöÇ tt-engine v0.0.1 (*)
+      Γöé       Γö£ΓöÇΓöÇ tt-executor v0.0.1 (*)
+      Γöé       ΓööΓöÇΓöÇ tt-render v0.0.1 (*)
+      Γö£ΓöÇΓöÇ tt-render v0.0.1 (*)
+      Γö£ΓöÇΓöÇ vello_common v0.3.0
+      Γöé   ΓööΓöÇΓöÇ vello_cpu v0.3.0
+      Γöé       ΓööΓöÇΓöÇ tt-render v0.0.1 (*)
+      Γö£ΓöÇΓöÇ (build) webview2-com-sys v0.39.1
+      Γöé   ΓööΓöÇΓöÇ webview2-com v0.39.1
+      Γöé       Γö£ΓöÇΓöÇ tauri v2.12.4 (*)
+      Γöé       Γö£ΓöÇΓöÇ tauri-runtime v2.12.2 (*)
+      Γöé       Γö£ΓöÇΓöÇ tauri-runtime-wry v2.12.2 (*)
+      Γöé       ΓööΓöÇΓöÇ wry v0.57.0
+      Γöé           ΓööΓöÇΓöÇ tauri-runtime-wry v2.12.2 (*)
+      ΓööΓöÇΓöÇ wry v0.57.0 (*)
+
+warning[duplicate]: found 2 duplicate entries for crate 'thiserror-impl'
+    ΓöîΓöÇ C:\Users\kaiga\work\review\m3-c33-r1/Cargo.lock:296:1
+    Γöé
+296 Γöé Γò¡ thiserror-impl 1.0.69 registry+https://github.com/rust-lang/crates.io-index
+297 Γöé Γöé thiserror-impl 2.0.21 registry+https://github.com/rust-lang/crates.io-index
+    Γöé Γò░ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓö
+ÿ lock entries
+    Γöé
+    Γö£ thiserror-impl v1.0.69
+      ΓööΓöÇΓöÇ thiserror v1.0.69
+          ΓööΓöÇΓöÇ octotablet v0.1.0
+              ΓööΓöÇΓöÇ tt-desktop v0.0.1
+    Γö£ thiserror-impl v2.0.21
+      ΓööΓöÇΓöÇ thiserror v2.0.21
+          Γö£ΓöÇΓöÇ cargo_metadata v0.19.2
+          Γöé   ΓööΓöÇΓöÇ tauri-utils v2.10.2
+          Γöé       Γö£ΓöÇΓöÇ tauri v2.12.4
+          Γöé       Γöé   ΓööΓöÇΓöÇ tt-desktop v0.0.1
+          Γöé       Γö£ΓöÇΓöÇ tauri-build v2.7.3
+          Γöé       Γöé   Γö£ΓöÇΓöÇ (build) tauri v2.12.4 (*)
+          Γöé       Γöé   ΓööΓöÇΓöÇ (build) tt-desktop v0.0.1 (*)
+          Γöé       Γö£ΓöÇΓöÇ tauri-codegen v2.7.3
+          Γöé       Γöé   ΓööΓöÇΓöÇ tauri-macros v2.7.3
+          Γöé       Γöé       ΓööΓöÇΓöÇ tauri v2.12.4 (*)
+          Γöé       Γö£ΓöÇΓöÇ tauri-macros v2.7.3 (*)
+          Γöé       Γö£ΓöÇΓöÇ tauri-runtime v2.12.2
+          Γöé       Γöé   Γö£ΓöÇΓöÇ tauri v2.12.4 (*)
+          Γöé       Γöé   ΓööΓöÇΓöÇ tauri-runtime-wry v2.12.2
+          Γöé       Γöé       ΓööΓöÇΓöÇ tauri v2.12.4 (*)
+          Γöé       ΓööΓöÇΓöÇ tauri-runtime-wry v2.12.2 (*)
+          Γö£ΓöÇΓöÇ json-patch v4.2.0
+          Γöé   Γö£ΓöÇΓöÇ tauri-build v2.7.3 (*)
+          Γöé   Γö£ΓöÇΓöÇ tauri-codegen v2.7.3 (*)
+          Γöé   ΓööΓöÇΓöÇ tauri-utils v2.10.2 (*)
+          Γö£ΓöÇΓöÇ muda v0.20.0
+          Γöé   ΓööΓöÇΓöÇ tauri v2.12.4 (*)
+          Γö£ΓöÇΓöÇ tauri v2.12.4 (*)
+          Γö£ΓöÇΓöÇ tauri-codegen v2.7.3 (*)
+          Γö£ΓöÇΓöÇ tauri-runtime v2.12.2 (*)
+          Γö£ΓöÇΓöÇ tauri-utils v2.10.2 (*)
+          Γö£ΓöÇΓöÇ tt-desktop v0.0.1 (*)
+          Γö£ΓöÇΓöÇ tt-engine v0.0.1
+          Γöé   Γö£ΓöÇΓöÇ tt-desktop v0.0.1 (*)
+          Γöé   Γö£ΓöÇΓöÇ tt-headless v0.0.1
+          Γöé   ΓööΓöÇΓöÇ tt-mcp v0.0.1
+          Γöé       ΓööΓöÇΓöÇ tt-headless v0.0.1 (*)
+          Γö£ΓöÇΓöÇ tt-headless v0.0.1 (*)
+          Γö£ΓöÇΓöÇ tt-model v0.0.1
+          Γöé   Γö£ΓöÇΓöÇ tt-anim v0.0.1
+          Γöé   Γöé   Γö£ΓöÇΓöÇ tt-engine v0.0.1 (*)
+          Γöé   Γöé   Γö£ΓöÇΓöÇ tt-executor v0.0.1
+          Γöé   Γöé   Γöé   Γö£ΓöÇΓöÇ tt-engine v0.0.1 (*)
+          Γöé   Γöé   Γöé   Γö£ΓöÇΓöÇ tt-headless v0.0.1 (*)
+          Γöé   Γöé   Γöé   ΓööΓöÇΓöÇ tt-mcp v0.0.1 (*)
+          Γöé   Γöé   Γö£ΓöÇΓöÇ tt-fx v0.0.1
+          Γöé   Γöé   Γöé   Γö£ΓöÇΓöÇ tt-engine v0.0.1 (*)
+          Γöé   Γöé   Γöé   ΓööΓöÇΓöÇ tt-render v0.0.1
+          Γöé   Γöé   Γöé       Γö£ΓöÇΓöÇ tt-engine v0.0.1 (*)
+          Γöé   Γöé   Γöé       Γö£ΓöÇΓöÇ tt-executor v0.0.1 (*)
+          Γöé   Γöé   Γöé       ΓööΓöÇΓöÇ tt-io v0.0.1
+          Γöé   Γöé   Γöé           Γö£ΓöÇΓöÇ tt-engine v0.0.1 (*)
+          Γöé   Γöé   Γöé           ΓööΓöÇΓöÇ tt-executor v0.0.1 (*)
+          Γöé   Γöé   ΓööΓöÇΓöÇ tt-render v0.0.1 (*)
+          Γöé   Γö£ΓöÇΓöÇ tt-audio v0.0.1
+          Γöé   Γöé   Γö£ΓöÇΓöÇ tt-engine v0.0.1 (*)
+          Γöé   Γöé   ΓööΓöÇΓöÇ tt-lipsync v0.0.1
+          Γöé   Γöé       ΓööΓöÇΓöÇ tt-engine v0.0.1 (*)
+          Γöé   Γö£ΓöÇΓöÇ tt-colour v0.0.1
+          Γöé   Γöé   Γö£ΓöÇΓöÇ tt-engine v0.0.1 (*)
+          Γöé   Γöé   ΓööΓöÇΓöÇ tt-render v0.0.1 (*)
+          Γöé   Γö£ΓöÇΓöÇ tt-engine v0.0.1 (*)
+          Γöé   Γö£ΓöÇΓöÇ tt-executor v0.0.1 (*)
+          Γöé   Γö£ΓöÇΓöÇ tt-fx v0.0.1 (*)
+          Γöé   Γö£ΓöÇΓöÇ tt-io v0.0.1 (*)
+          Γöé   Γö£ΓöÇΓöÇ tt-lipsync v0.0.1 (*)
+          Γöé   Γö£ΓöÇΓöÇ tt-mcp v0.0.1 (*)
+          Γöé   Γö£ΓöÇΓöÇ tt-persist v0.0.1
+          Γöé   Γöé   Γö£ΓöÇΓöÇ tt-engine v0.0.1 (*)
+          Γöé   Γöé   Γö£ΓöÇΓöÇ tt-executor v0.0.1 (*)
+          Γöé   Γöé   Γö£ΓöÇΓöÇ tt-io v0.0.1 (*)
+          Γöé   Γöé   ΓööΓöÇΓöÇ tt-mcp v0.0.1 (*)
+          Γöé   Γö£ΓöÇΓöÇ tt-registry v0.0.1
+          Γöé   Γöé   Γö£ΓöÇΓöÇ tt-engine v0.0.1 (*)
+          Γöé   Γöé   Γö£ΓöÇΓöÇ tt-executor v0.0.1 (*)
+          Γöé   Γöé   ΓööΓöÇΓöÇ tt-mcp v0.0.1 (*)
+          Γöé   Γö£ΓöÇΓöÇ tt-render v0.0.1 (*)
+          Γöé   ΓööΓöÇΓöÇ tt-vector v0.0.1
+          Γöé       Γö£ΓöÇΓöÇ tt-engine v0.0.1 (*)
+          Γöé       Γö£ΓöÇΓöÇ tt-executor v0.0.1 (*)
+          Γöé       ΓööΓöÇΓöÇ tt-render v0.0.1 (*)
+          Γö£ΓöÇΓöÇ tt-render v0.0.1 (*)
+          Γö£ΓöÇΓöÇ vello_common v0.3.0
+          Γöé   ΓööΓöÇΓöÇ vello_cpu v0.3.0
+          Γöé       ΓööΓöÇΓöÇ tt-render v0.0.1 (*)
+          Γö£ΓöÇΓöÇ (build) webview2-com-sys v0.39.1
+          Γöé   ΓööΓöÇΓöÇ webview2-com v0.39.1
+          Γöé       Γö£ΓöÇΓöÇ tauri v2.12.4 (*)
+          Γöé       Γö£ΓöÇΓöÇ tauri-runtime v2.12.2 (*)
+          Γöé       Γö£ΓöÇΓöÇ tauri-runtime-wry v2.12.2 (*)
+          Γöé       ΓööΓöÇΓöÇ wry v0.57.0
+          Γöé           ΓööΓöÇΓöÇ tauri-runtime-wry v2.12.2 (*)
+          ΓööΓöÇΓöÇ wry v0.57.0 (*)
+
+warning[duplicate]: found 2 duplicate entries for crate 'windows'
+    ΓöîΓöÇ C:\Users\kaiga\work\review\m3-c33-r1/Cargo.lock:358:1
+    Γöé
+358 Γöé Γò¡ windows 0.54.0 registry+https://github.com/rust-lang/crates.io-index
+359 Γöé Γöé windows 0.62.2 registry+https://github.com/rust-lang/crates.io-index
+    Γöé Γò░ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÿ lock entries
+    Γöé
+    Γö£ windows v0.54.0
+      ΓööΓöÇΓöÇ octotablet v0.1.0
+          ΓööΓöÇΓöÇ tt-desktop v0.0.1
+    Γö£ windows v0.62.2
+      Γö£ΓöÇΓöÇ tao v0.37.1
+      Γöé   ΓööΓöÇΓöÇ tauri-runtime-wry v2.12.2
+      Γöé       ΓööΓöÇΓöÇ tauri v2.12.4
+      Γöé           ΓööΓöÇΓöÇ tt-desktop v0.0.1
+      Γö£ΓöÇΓöÇ tauri v2.12.4 (*)
+      Γö£ΓöÇΓöÇ tauri-runtime v2.12.2
+      Γöé   Γö£ΓöÇΓöÇ tauri v2.12.4 (*)
+      Γöé   ΓööΓöÇΓöÇ tauri-runtime-wry v2.12.2 (*)
+      Γö£ΓöÇΓöÇ tauri-runtime-wry v2.12.2 (*)
+      Γö£ΓöÇΓöÇ tt-desktop v0.0.1 (*)
+      Γö£ΓöÇΓöÇ webview2-com v0.39.1
+      Γöé   Γö£ΓöÇΓöÇ tauri v2.12.4 (*)
+      Γöé   Γö£ΓöÇΓöÇ tauri-runtime v2.12.2 (*)
+      Γöé   Γö£ΓöÇΓöÇ tauri-runtime-wry v2.12.2 (*)
+      Γöé   ΓööΓöÇΓöÇ wry v0.57.0
+      Γöé       ΓööΓöÇΓöÇ tauri-runtime-wry v2.12.2 (*)
+      Γö£ΓöÇΓöÇ webview2-com-sys v0.39.1
+      Γöé   ΓööΓöÇΓöÇ webview2-com v0.39.1 (*)
+      ΓööΓöÇΓöÇ wry v0.57.0 (*)
+
+warning[duplicate]: found 2 duplicate entries for crate 'windows-core'
+    ΓöîΓöÇ C:\Users\kaiga\work\review\m3-c33-r1/Cargo.lock:361:1
+    Γöé
+361 Γöé Γò¡ windows-core 0.54.0 registry+https://github.com/rust-lang/crates.io-index
+362 Γöé Γöé windows-core 0.62.2 registry+https://github.com/rust-lang/crates.io-index
+    Γöé Γò░ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÿ
+lock entries
+    Γöé
+    Γö£ windows-core v0.54.0
+      ΓööΓöÇΓöÇ windows v0.54.0
+          ΓööΓöÇΓöÇ octotablet v0.1.0
+              ΓööΓöÇΓöÇ tt-desktop v0.0.1
+    Γö£ windows-core v0.62.2
+      Γö£ΓöÇΓöÇ tao v0.37.1
+      Γöé   ΓööΓöÇΓöÇ tauri-runtime-wry v2.12.2
+      Γöé       ΓööΓöÇΓöÇ tauri v2.12.4
+      Γöé           ΓööΓöÇΓöÇ tt-desktop v0.0.1
+      Γö£ΓöÇΓöÇ webview2-com v0.39.1
+      Γöé   Γö£ΓöÇΓöÇ tauri v2.12.4 (*)
+      Γöé   Γö£ΓöÇΓöÇ tauri-runtime v2.12.2
+      Γöé   Γöé   Γö£ΓöÇΓöÇ tauri v2.12.4 (*)
+      Γöé   Γöé   ΓööΓöÇΓöÇ tauri-runtime-wry v2.12.2 (*)
+      Γöé   Γö£ΓöÇΓöÇ tauri-runtime-wry v2.12.2 (*)
+      Γöé   ΓööΓöÇΓöÇ wry v0.57.0
+      Γöé       ΓööΓöÇΓöÇ tauri-runtime-wry v2.12.2 (*)
+      Γö£ΓöÇΓöÇ webview2-com-sys v0.39.1
+      Γöé   ΓööΓöÇΓöÇ webview2-com v0.39.1 (*)
+      Γö£ΓöÇΓöÇ windows v0.62.2
+      Γöé   Γö£ΓöÇΓöÇ tao v0.37.1 (*)
+      Γöé   Γö£ΓöÇΓöÇ tauri v2.12.4 (*)
+      Γöé   Γö£ΓöÇΓöÇ tauri-runtime v2.12.2 (*)
+      Γöé   Γö£ΓöÇΓöÇ tauri-runtime-wry v2.12.2 (*)
+      Γöé   Γö£ΓöÇΓöÇ tt-desktop v0.0.1 (*)
+      Γöé   Γö£ΓöÇΓöÇ webview2-com v0.39.1 (*)
+      Γöé   Γö£ΓöÇΓöÇ webview2-com-sys v0.39.1 (*)
+      Γöé   ΓööΓöÇΓöÇ wry v0.57.0 (*)
+      Γö£ΓöÇΓöÇ windows-collections v0.3.2
+      Γöé   ΓööΓöÇΓöÇ windows v0.62.2 (*)
+      Γö£ΓöÇΓöÇ windows-future v0.3.2
+      Γöé   ΓööΓöÇΓöÇ windows v0.62.2 (*)
+      Γö£ΓöÇΓöÇ windows-numerics v0.3.1
+      Γöé   ΓööΓöÇΓöÇ windows v0.62.2 (*)
+      ΓööΓöÇΓöÇ wry v0.57.0 (*)
+
+warning[duplicate]: found 2 duplicate entries for crate 'windows-implement'
+    ΓöîΓöÇ C:\Users\kaiga\work\review\m3-c33-r1/Cargo.lock:364:1
+    Γöé
+364 Γöé Γò¡ windows-implement 0.53.0 registry+https://github.com/rust-lang/crates.io-index
+365 Γöé Γöé windows-implement 0.60.2 registry+https://github.com/rust-lang/crates.io-index
+    Γöé Γò░ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓö
+ÇΓöÇΓöÇΓöÿ lock entries
+    Γöé
+    Γö£ windows-implement v0.53.0
+      ΓööΓöÇΓöÇ windows v0.54.0
+          ΓööΓöÇΓöÇ octotablet v0.1.0
+              ΓööΓöÇΓöÇ tt-desktop v0.0.1
+    Γö£ windows-implement v0.60.2
+      ΓööΓöÇΓöÇ windows-core v0.62.2
+          Γö£ΓöÇΓöÇ tao v0.37.1
+          Γöé   ΓööΓöÇΓöÇ tauri-runtime-wry v2.12.2
+          Γöé       ΓööΓöÇΓöÇ tauri v2.12.4
+          Γöé           ΓööΓöÇΓöÇ tt-desktop v0.0.1
+          Γö£ΓöÇΓöÇ webview2-com v0.39.1
+          Γöé   Γö£ΓöÇΓöÇ tauri v2.12.4 (*)
+          Γöé   Γö£ΓöÇΓöÇ tauri-runtime v2.12.2
+          Γöé   Γöé   Γö£ΓöÇΓöÇ tauri v2.12.4 (*)
+          Γöé   Γöé   ΓööΓöÇΓöÇ tauri-runtime-wry v2.12.2 (*)
+          Γöé   Γö£ΓöÇΓöÇ tauri-runtime-wry v2.12.2 (*)
+          Γöé   ΓööΓöÇΓöÇ wry v0.57.0
+          Γöé       ΓööΓöÇΓöÇ tauri-runtime-wry v2.12.2 (*)
+          Γö£ΓöÇΓöÇ webview2-com-sys v0.39.1
+          Γöé   ΓööΓöÇΓöÇ webview2-com v0.39.1 (*)
+          Γö£ΓöÇΓöÇ windows v0.62.2
+          Γöé   Γö£ΓöÇΓöÇ tao v0.37.1 (*)
+          Γöé   Γö£ΓöÇΓöÇ tauri v2.12.4 (*)
+          Γöé   Γö£ΓöÇΓöÇ tauri-runtime v2.12.2 (*)
+          Γöé   Γö£ΓöÇΓöÇ tauri-runtime-wry v2.12.2 (*)
+          Γöé   Γö£ΓöÇΓöÇ tt-desktop v0.0.1 (*)
+          Γöé   Γö£ΓöÇΓöÇ webview2-com v0.39.1 (*)
+          Γöé   Γö£ΓöÇΓöÇ webview2-com-sys v0.39.1 (*)
+          Γöé   ΓööΓöÇΓöÇ wry v0.57.0 (*)
+          Γö£ΓöÇΓöÇ windows-collections v0.3.2
+          Γöé   ΓööΓöÇΓöÇ windows v0.62.2 (*)
+          Γö£ΓöÇΓöÇ windows-future v0.3.2
+          Γöé   ΓööΓöÇΓöÇ windows v0.62.2 (*)
+          Γö£ΓöÇΓöÇ windows-numerics v0.3.1
+          Γöé   ΓööΓöÇΓöÇ windows v0.62.2 (*)
+          ΓööΓöÇΓöÇ wry v0.57.0 (*)
+
+warning[duplicate]: found 2 duplicate entries for crate 'windows-interface'
+    ΓöîΓöÇ C:\Users\kaiga\work\review\m3-c33-r1/Cargo.lock:366:1
+    Γöé
+366 Γöé Γò¡ windows-interface 0.53.0 registry+https://github.com/rust-lang/crates.io-index
+367 Γöé Γöé windows-interface 0.59.3 registry+https://github.com/rust-lang/crates.io-index
+    Γöé Γò░ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓö
+ÇΓöÇΓöÇΓöÿ lock entries
+    Γöé
+    Γö£ windows-interface v0.53.0
+      ΓööΓöÇΓöÇ windows v0.54.0
+          ΓööΓöÇΓöÇ octotablet v0.1.0
+              ΓööΓöÇΓöÇ tt-desktop v0.0.1
+    Γö£ windows-interface v0.59.3
+      ΓööΓöÇΓöÇ windows-core v0.62.2
+          Γö£ΓöÇΓöÇ tao v0.37.1
+          Γöé   ΓööΓöÇΓöÇ tauri-runtime-wry v2.12.2
+          Γöé       ΓööΓöÇΓöÇ tauri v2.12.4
+          Γöé           ΓööΓöÇΓöÇ tt-desktop v0.0.1
+          Γö£ΓöÇΓöÇ webview2-com v0.39.1
+          Γöé   Γö£ΓöÇΓöÇ tauri v2.12.4 (*)
+          Γöé   Γö£ΓöÇΓöÇ tauri-runtime v2.12.2
+          Γöé   Γöé   Γö£ΓöÇΓöÇ tauri v2.12.4 (*)
+          Γöé   Γöé   ΓööΓöÇΓöÇ tauri-runtime-wry v2.12.2 (*)
+          Γöé   Γö£ΓöÇΓöÇ tauri-runtime-wry v2.12.2 (*)
+          Γöé   ΓööΓöÇΓöÇ wry v0.57.0
+          Γöé       ΓööΓöÇΓöÇ tauri-runtime-wry v2.12.2 (*)
+          Γö£ΓöÇΓöÇ webview2-com-sys v0.39.1
+          Γöé   ΓööΓöÇΓöÇ webview2-com v0.39.1 (*)
+          Γö£ΓöÇΓöÇ windows v0.62.2
+          Γöé   Γö£ΓöÇΓöÇ tao v0.37.1 (*)
+          Γöé   Γö£ΓöÇΓöÇ tauri v2.12.4 (*)
+          Γöé   Γö£ΓöÇΓöÇ tauri-runtime v2.12.2 (*)
+          Γöé   Γö£ΓöÇΓöÇ tauri-runtime-wry v2.12.2 (*)
+          Γöé   Γö£ΓöÇΓöÇ tt-desktop v0.0.1 (*)
+          Γöé   Γö£ΓöÇΓöÇ webview2-com v0.39.1 (*)
+          Γöé   Γö£ΓöÇΓöÇ webview2-com-sys v0.39.1 (*)
+          Γöé   ΓööΓöÇΓöÇ wry v0.57.0 (*)
+          Γö£ΓöÇΓöÇ windows-collections v0.3.2
+          Γöé   ΓööΓöÇΓöÇ windows v0.62.2 (*)
+          Γö£ΓöÇΓöÇ windows-future v0.3.2
+          Γöé   ΓööΓöÇΓöÇ windows v0.62.2 (*)
+          Γö£ΓöÇΓöÇ windows-numerics v0.3.1
+          Γöé   ΓööΓöÇΓöÇ windows v0.62.2 (*)
+          ΓööΓöÇΓöÇ wry v0.57.0 (*)
+
+warning[duplicate]: found 2 duplicate entries for crate 'windows-result'
+    ΓöîΓöÇ C:\Users\kaiga\work\review\m3-c33-r1/Cargo.lock:370:1
+    Γöé
+370 Γöé Γò¡ windows-result 0.1.2 registry+https://github.com/rust-lang/crates.io-index
+371 Γöé Γöé windows-result 0.4.1 registry+https://github.com/rust-lang/crates.io-index
+    Γöé Γò░ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÿ
+lock entries
+    Γöé
+    Γö£ windows-result v0.1.2
+      ΓööΓöÇΓöÇ windows-core v0.54.0
+          ΓööΓöÇΓöÇ windows v0.54.0
+              ΓööΓöÇΓöÇ octotablet v0.1.0
+                  ΓööΓöÇΓöÇ tt-desktop v0.0.1
+    Γö£ windows-result v0.4.1
+      ΓööΓöÇΓöÇ windows-core v0.62.2
+          Γö£ΓöÇΓöÇ tao v0.37.1
+          Γöé   ΓööΓöÇΓöÇ tauri-runtime-wry v2.12.2
+          Γöé       ΓööΓöÇΓöÇ tauri v2.12.4
+          Γöé           ΓööΓöÇΓöÇ tt-desktop v0.0.1
+          Γö£ΓöÇΓöÇ webview2-com v0.39.1
+          Γöé   Γö£ΓöÇΓöÇ tauri v2.12.4 (*)
+          Γöé   Γö£ΓöÇΓöÇ tauri-runtime v2.12.2
+          Γöé   Γöé   Γö£ΓöÇΓöÇ tauri v2.12.4 (*)
+          Γöé   Γöé   ΓööΓöÇΓöÇ tauri-runtime-wry v2.12.2 (*)
+          Γöé   Γö£ΓöÇΓöÇ tauri-runtime-wry v2.12.2 (*)
+          Γöé   ΓööΓöÇΓöÇ wry v0.57.0
+          Γöé       ΓööΓöÇΓöÇ tauri-runtime-wry v2.12.2 (*)
+          Γö£ΓöÇΓöÇ webview2-com-sys v0.39.1
+          Γöé   ΓööΓöÇΓöÇ webview2-com v0.39.1 (*)
+          Γö£ΓöÇΓöÇ windows v0.62.2
+          Γöé   Γö£ΓöÇΓöÇ tao v0.37.1 (*)
+          Γöé   Γö£ΓöÇΓöÇ tauri v2.12.4 (*)
+          Γöé   Γö£ΓöÇΓöÇ tauri-runtime v2.12.2 (*)
+          Γöé   Γö£ΓöÇΓöÇ tauri-runtime-wry v2.12.2 (*)
+          Γöé   Γö£ΓöÇΓöÇ tt-desktop v0.0.1 (*)
+          Γöé   Γö£ΓöÇΓöÇ webview2-com v0.39.1 (*)
+          Γöé   Γö£ΓöÇΓöÇ webview2-com-sys v0.39.1 (*)
+          Γöé   ΓööΓöÇΓöÇ wry v0.57.0 (*)
+          Γö£ΓöÇΓöÇ windows-collections v0.3.2
+          Γöé   ΓööΓöÇΓöÇ windows v0.62.2 (*)
+          Γö£ΓöÇΓöÇ windows-future v0.3.2
+          Γöé   ΓööΓöÇΓöÇ windows v0.62.2 (*)
+          Γö£ΓöÇΓöÇ windows-numerics v0.3.1
+          Γöé   ΓööΓöÇΓöÇ windows v0.62.2 (*)
+          ΓööΓöÇΓöÇ wry v0.57.0 (*)
+
+advisories ok, bans ok, licenses ok, sources ok

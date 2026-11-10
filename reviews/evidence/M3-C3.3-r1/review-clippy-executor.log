@@ -1,0 +1,8 @@
+cargo :     Checking tt-executor v0.0.1 (C:\Users\kaiga\work\review\m3-c33-r1\crates\executor)
+At C:\Users\kaiga\AppData\Local\Temp\toontown-c33-r1\final-checks.ps1:6 char:1
++ cargo clippy -p tt-executor --test c33_r1_bitmap --test c33_r1_contra ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (    Checking tt...rates\executor):String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 3.14s

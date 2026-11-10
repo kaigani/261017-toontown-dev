@@ -1,0 +1,8 @@
+
+running 1 test
+PIN 0 0 "531575ecf8fa9b0fd969cd143959297ffa60d19636a1a6bdaa06c84025c3aaab"
+PIN 0 0.05 "e6130113f9b2a264487cdcdd31a1bd2fcbd4d148653bba7e6078beabec42c1a0"
+PIN 37 0 "58317fd335465043c65931a91360a0dc3a0e7af40a3755e29f54d17239db6dbb"
+test transformed_rectangle_centres_match_analytic_inverse ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 5 filtered out; finished in 0.15s

@@ -1,0 +1,373 @@
+[1m[92m   Compiling[0m tt-executor v0.0.1 (D:\a\261017-toontown-dev\261017-toontown-dev\crates\executor)
+[1m[92m    Finished[0m `release` profile [optimized + debuginfo] target(s) in 2.34s
+[1m[92m     Running[0m tests\c12_r1_macro.rs (target\release\deps\c12_r1_macro-45b34adec095a388.exe)
+
+running 2 tests
+test duplicate_ids_and_inventory_kind_drift_are_rejected ... ok
+[1m[92m   Compiling[0m proc-macro2 v1.0.107
+[1m[92m   Compiling[0m unicode-ident v1.0.27
+[1m[92m   Compiling[0m quote v1.0.47
+[1m[92m    Checking[0m cfg-if v1.0.5
+[1m[92m   Compiling[0m autocfg v1.5.1
+[1m[92m   Compiling[0m serde_core v1.0.229
+[1m[92m    Checking[0m allocator-api2 v0.2.21
+[1m[92m    Checking[0m foldhash v0.2.0
+[1m[92m    Checking[0m equivalent v1.0.3
+[1m[92m   Compiling[0m num-traits v0.2.19
+[1m[92m   Compiling[0m version_check v0.9.5
+[1m[92m   Compiling[0m syn v3.0.9
+[1m[92m   Compiling[0m syn v2.0.119
+[1m[92m    Checking[0m once_cell v1.21.4
+[1m[92m   Compiling[0m serde v1.0.229
+[1m[92m   Compiling[0m zerocopy v0.8.63
+[1m[92m    Checking[0m memchr v2.8.3
+[1m[92m    Checking[0m smallvec v1.16.3
+[1m[92m    Checking[0m windows-link v0.2.1
+[1m[92m    Checking[0m num-integer v0.1.47
+[1m[92m    Checking[0m hashbrown v0.17.1
+[1m[92m   Compiling[0m zmij v1.0.23
+[1m[92m    Checking[0m rand_core v0.10.1
+[1m[92m   Compiling[0m getrandom v0.4.3
+[1m[92m   Compiling[0m ref-cast v1.0.27
+[1m[92m    Checking[0m regex-syntax v0.8.11
+[1m[92m   Compiling[0m serde_json v1.0.154
+[1m[92m   Compiling[0m getrandom v0.3.4
+[1m[92m    Checking[0m indexmap v2.14.2
+[1m[92m   Compiling[0m serde_derive v1.0.229
+[1m[92m   Compiling[0m ref-cast-impl v1.0.27
+[1m[92m    Checking[0m num-bigint v0.4.8
+[1m[92m   Compiling[0m ahash v0.8.12
+[1m[92m    Checking[0m itoa v1.0.18
+[1m[92m   Compiling[0m parking_lot_core v0.9.12
+[1m[92m    Checking[0m num-rational v0.4.2
+[1m[92m    Checking[0m num-iter v0.1.46
+[1m[92m    Checking[0m aho-corasick v1.1.5
+[1m[92m    Checking[0m num-complex v0.4.6
+[1m[92m    Checking[0m scopeguard v1.2.0
+[1m[92m   Compiling[0m zerocopy-derive v0.8.63
+[1m[92m   Compiling[0m thiserror v2.0.21
+[1m[92m    Checking[0m regex-automata v0.4.18
+[1m[92m    Checking[0m lock_api v0.4.14
+[1m[92m    Checking[0m num v0.4.3
+[1m[92m   Compiling[0m bytemuck_derive v1.12.1
+[1m[92m   Compiling[0m thiserror-impl v2.0.21
+[1m[92m   Compiling[0m unicode-general-category v1.1.0
+[1m[92m   Compiling[0m heck v0.5.0
+[1m[92m   Compiling[0m jsonschema-value v0.59.0
+[1m[92m    Checking[0m borrow-or-share v0.2.4
+[1m[92m    Checking[0m bit-vec v0.8.0
+[1m[92m    Checking[0m fluent-uri v0.4.1
+[1m[92m    Checking[0m bit-set v0.8.0
+[1m[92m   Compiling[0m strum_macros v0.28.0
+[1m[92m    Checking[0m bytemuck v1.25.2
+[1m[92m    Checking[0m parking_lot v0.12.5
+[1m[92m    Checking[0m fraction v0.17.0
+[1m[92m   Compiling[0m serde_derive_internals v0.30.0
+[1m[92m    Checking[0m bytecount v0.6.9
+[1m[92m   Compiling[0m crossbeam-utils v0.8.23
+[1m[92m    Checking[0m tinyvec v1.13.3
+[1m[92m    Checking[0m vsimd v0.8.0
+[1m[92m    Checking[0m micromap v0.3.0
+[1m[92m    Checking[0m percent-encoding v2.3.2
+[1m[92m    Checking[0m num-cmp v0.1.0
+[1m[92m    Checking[0m outref v0.5.2
+[1m[92m    Checking[0m uuid-simd v0.8.0
+[1m[92m   Compiling[0m schemars_derive v1.2.3
+[1m[92m    Checking[0m fancy-regex v0.19.2
+[1m[92m    Checking[0m strum v0.28.0
+[1m[92m    Checking[0m email_address v0.2.9
+[1m[92m    Checking[0m referencing v0.59.0
+[1m[92m    Checking[0m regex v1.13.1
+[1m[92m    Checking[0m jsonschema-regex v0.59.0
+[1m[92m    Checking[0m data-encoding v2.11.1
+[1m[92m   Compiling[0m libm v0.2.16
+[1m[92m    Checking[0m dyn-clone v1.0.20
+[1m[92m    Checking[0m simd-adler32 v0.3.10
+[1m[92m    Checking[0m jsonschema v0.59.0
+[1m[92m    Checking[0m unicode-normalization v0.1.26
+[1m[92m    Checking[0m typenum v1.20.1
+[1m[92m    Checking[0m adler2 v2.0.1
+[1m[92m    Checking[0m ryu v1.0.23
+[1m[92m   Compiling[0m crc32fast v1.5.2
+[1m[92m    Checking[0m hybrid-array v0.4.15
+[1m[92m    Checking[0m schemars v1.2.3
+[1m[92m   Compiling[0m crossbeam-epoch v0.9.21
+[1m[92m    Checking[0m miniz_oxide v0.9.1
+[1m[92m    Checking[0m cpufeatures v0.3.1
+[1m[92m   Compiling[0m crossbeam-deque v0.8.8
+[1m[92m    Checking[0m arrayvec v0.7.8
+[1m[92m    Checking[0m polycool v0.4.0
+[1m[92m    Checking[0m flate2 v1.1.10
+[1m[92m    Checking[0m crypto-common v0.2.2
+[1m[92m    Checking[0m block-buffer v0.12.1
+[1m[92m   Compiling[0m slotmap v1.1.1
+[1m[92m    Checking[0m const-oid v0.10.2
+[1m[92m   Compiling[0m rayon-core v1.13.0
+[1m[92m    Checking[0m log v0.4.34
+[1m[92m    Checking[0m kurbo v0.13.1
+[1m[92m    Checking[0m digest v0.11.3
+[1m[92m    Checking[0m i_float v5.0.0
+[1m[92m    Checking[0m color v0.3.3
+[1m[92m    Checking[0m font-types v0.12.7
+[1m[92m    Checking[0m euclid v0.22.14
+[1m[92m    Checking[0m bitflags v2.13.2
+[1m[92m    Checking[0m linebender_resource_handle v0.1.1
+[1m[92m    Checking[0m read-fonts v0.41.0
+[1m[92m    Checking[0m peniko v0.6.1
+[1m[92m    Checking[0m i_shape v5.0.0
+[1m[92m    Checking[0m guillotiere v0.7.0
+[1m[92m    Checking[0m sha2 v0.11.1
+[1m[92m    Checking[0m tt-model v0.0.1 (D:\a\261017-toontown-dev\261017-toontown-dev\crates\model)
+[1m[92m    Checking[0m miniz_oxide v0.8.9
+[1m[92m    Checking[0m crossbeam-channel v0.5.17
+[1m[92m    Checking[0m fdeflate v0.3.7
+[1m[92m    Checking[0m hashbrown v0.16.1
+[1m[92m    Checking[0m memmap2 v0.9.11
+[1m[92m    Checking[0m i_key_sort v0.12.0
+[1m[92m    Checking[0m weezl v0.1.12
+[1m[92m    Checking[0m either v1.19.0
+[1m[92m    Checking[0m zune-core v0.5.3
+[1m[92m    Checking[0m i_tree v0.20.0
+[1m[92m    Checking[0m fearless_simd v0.7.0
+[1m[92m    Checking[0m robust v1.2.0
+[1m[92m    Checking[0m spade v2.15.1
+[1m[92m    Checking[0m i_overlay v9.1.0
+[1m[92m    Checking[0m zune-jpeg v0.5.15
+[1m[92m    Checking[0m skrifa v0.44.0
+[1m[92m    Checking[0m rayon v1.12.0
+[1m[92m    Checking[0m fontdb v0.24.0
+[1m[92m    Checking[0m tt-anim v0.0.1 (D:\a\261017-toontown-dev\261017-toontown-dev\crates\anim)
+[1m[92m    Checking[0m png v0.18.1
+[1m[92m    Checking[0m ordered-channel v1.2.0
+[1m[92m    Checking[0m half v2.7.1
+[1m[92m    Checking[0m thread_local v1.1.10
+[1m[92m    Checking[0m color_quant v1.1.0
+[1m[92m    Checking[0m quick-error v2.0.1
+[1m[92m    Checking[0m pxfm v0.1.30
+[1m[92m    Checking[0m fax v0.2.7
+[1m[92m    Checking[0m tiff v0.11.3
+[1m[92m    Checking[0m gif v0.14.2
+[1m[92m    Checking[0m vello_common v0.3.0
+[1m[92m    Checking[0m tt-fx v0.0.1 (D:\a\261017-toontown-dev\261017-toontown-dev\crates\fx)
+[1m[92m    Checking[0m tt-vector v0.0.1 (D:\a\261017-toontown-dev\261017-toontown-dev\crates\vector)
+[1m[92m    Checking[0m tt-colour v0.0.1 (D:\a\261017-toontown-dev\261017-toontown-dev\crates\colour)
+[1m[92m    Checking[0m windows-sys v0.61.2
+[1m[92m    Checking[0m vello_cpu v0.3.0
+[1m[92m    Checking[0m moxcms v0.8.1
+[1m[92m    Checking[0m fastrand v2.5.0
+[1m[92m    Checking[0m byteorder-lite v0.1.0
+[1m[92m    Checking[0m tempfile v3.27.0
+[1m[92m    Checking[0m tt-persist v0.0.1 (D:\a\261017-toontown-dev\261017-toontown-dev\crates\persist)
+[1m[92m   Compiling[0m tt-registry-macros v0.0.1 (D:\a\261017-toontown-dev\261017-toontown-dev\crates\registry-macros)
+[1m[92m    Checking[0m tt-render v0.0.1 (D:\a\261017-toontown-dev\261017-toontown-dev\crates\render)
+[1m[92m    Checking[0m bit-vec v0.10.1
+[1m[92m    Checking[0m quick-error v1.2.3
+[1m[92m    Checking[0m wait-timeout v0.2.1
+[1m[92m    Checking[0m fnv v1.0.7
+[1m[92m    Checking[0m tt-registry v0.0.1 (D:\a\261017-toontown-dev\261017-toontown-dev\crates\registry)
+[1m[92m    Checking[0m rusty-fork v0.3.1
+[1m[92m    Checking[0m bit-set v0.11.1
+[1m[92m    Checking[0m chacha20 v0.10.2
+[1m[92m    Checking[0m rand v0.10.3
+[1m[92m    Checking[0m rand_xorshift v0.5.0
+[1m[92m    Checking[0m core_detect v1.0.0
+[1m[92m    Checking[0m unarray v0.1.4
+[1m[92m    Checking[0m stats_alloc v0.1.10
+[1m[92m    Checking[0m proptest v1.12.0
+[1m[92m    Checking[0m image v0.25.10
+[1m[92m    Checking[0m tt-io v0.0.1 (D:\a\261017-toontown-dev\261017-toontown-dev\crates\io)
+[1m[92m    Checking[0m tt-executor v0.0.1 (D:\a\261017-toontown-dev\261017-toontown-dev\crates\executor)
+test missing_example_is_rejected_at_compile_time has been running for over 60 seconds
+[1m[92m    Checking[0m tt-executor-tests v0.0.0 (D:\a\261017-toontown-dev\261017-toontown-dev\target\tests\trybuild\tt-executor)
+[1m[92m    Finished[0m `dev` profile [unoptimized + debuginfo] target(s) in 1m 16s
+
+
+test [0m[1mtests\c12-r1-ui\missing_example.rs[0m ... [0m[32mok
+[0m
+
+test missing_example_is_rejected_at_compile_time ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 136.31s
+
+[1m[92m     Running[0m tests\compile_fail.rs (target\release\deps\compile_fail-5a2424d7cfb69668.exe)
+
+running 1 test
+[1m[92m   Compiling[0m cfg-if v1.0.5
+[1m[92m   Compiling[0m num-traits v0.2.19
+[1m[92m   Compiling[0m equivalent v1.0.3
+[1m[92m   Compiling[0m serde_core v1.0.229
+[1m[92m   Compiling[0m foldhash v0.2.0
+[1m[92m   Compiling[0m allocator-api2 v0.2.21
+[1m[92m   Compiling[0m once_cell v1.21.4
+[1m[92m   Compiling[0m smallvec v1.16.3
+[1m[92m   Compiling[0m memchr v2.8.3
+[1m[92m   Compiling[0m windows-link v0.2.1
+[1m[92m   Compiling[0m zerocopy v0.8.63
+[1m[92m   Compiling[0m num-integer v0.1.47
+[1m[92m   Compiling[0m hashbrown v0.17.1
+[1m[92m   Compiling[0m rand_core v0.10.1
+[1m[92m   Compiling[0m regex-syntax v0.8.11
+[1m[92m   Compiling[0m zmij v1.0.23
+[1m[92m   Compiling[0m num-bigint v0.4.8
+[1m[92m   Compiling[0m serde v1.0.229
+[1m[92m   Compiling[0m indexmap v2.14.2
+[1m[92m   Compiling[0m itoa v1.0.18
+[1m[92m   Compiling[0m serde_json v1.0.154
+[1m[92m   Compiling[0m ref-cast v1.0.27
+[1m[92m   Compiling[0m num-rational v0.4.2
+[1m[92m   Compiling[0m getrandom v0.4.3
+[1m[92m   Compiling[0m getrandom v0.3.4
+[1m[92m   Compiling[0m num-iter v0.1.46
+[1m[92m   Compiling[0m aho-corasick v1.1.5
+[1m[92m   Compiling[0m num-complex v0.4.6
+[1m[92m   Compiling[0m scopeguard v1.2.0
+[1m[92m   Compiling[0m lock_api v0.4.14
+[1m[92m   Compiling[0m num v0.4.3
+[1m[92m   Compiling[0m ahash v0.8.12
+[1m[92m   Compiling[0m parking_lot_core v0.9.12
+[1m[92m   Compiling[0m borrow-or-share v0.2.4
+[1m[92m   Compiling[0m bit-vec v0.8.0
+[1m[92m   Compiling[0m fluent-uri v0.4.1
+[1m[92m   Compiling[0m regex-automata v0.4.18
+[1m[92m   Compiling[0m bit-set v0.8.0
+[1m[92m   Compiling[0m bytemuck v1.25.2
+[1m[92m   Compiling[0m thiserror v2.0.21
+[1m[92m   Compiling[0m parking_lot v0.12.5
+[1m[92m   Compiling[0m fraction v0.17.0
+[1m[92m   Compiling[0m tinyvec v1.13.3
+[1m[92m   Compiling[0m outref v0.5.2
+[1m[92m   Compiling[0m bytecount v0.6.9
+[1m[92m   Compiling[0m num-cmp v0.1.0
+[1m[92m   Compiling[0m vsimd v0.8.0
+[1m[92m   Compiling[0m micromap v0.3.0
+[1m[92m   Compiling[0m percent-encoding v2.3.2
+[1m[92m   Compiling[0m uuid-simd v0.8.0
+[1m[92m   Compiling[0m referencing v0.59.0
+[1m[92m   Compiling[0m jsonschema-value v0.59.0
+[1m[92m   Compiling[0m strum v0.28.0
+[1m[92m   Compiling[0m fancy-regex v0.19.2
+[1m[92m   Compiling[0m regex v1.13.1
+[1m[92m   Compiling[0m unicode-general-category v1.1.0
+[1m[92m   Compiling[0m jsonschema-regex v0.59.0
+[1m[92m   Compiling[0m email_address v0.2.9
+[1m[92m   Compiling[0m data-encoding v2.11.1
+[1m[92m   Compiling[0m dyn-clone v1.0.20
+[1m[92m   Compiling[0m simd-adler32 v0.3.10
+[1m[92m   Compiling[0m jsonschema v0.59.0
+[1m[92m   Compiling[0m schemars v1.2.3
+[1m[92m   Compiling[0m crossbeam-utils v0.8.23
+[1m[92m   Compiling[0m unicode-normalization v0.1.26
+[1m[92m   Compiling[0m ryu v1.0.23
+[1m[92m   Compiling[0m typenum v1.20.1
+[1m[92m   Compiling[0m adler2 v2.0.1
+[1m[92m   Compiling[0m libm v0.2.16
+[1m[92m   Compiling[0m hybrid-array v0.4.15
+[1m[92m   Compiling[0m crc32fast v1.5.2
+[1m[92m   Compiling[0m miniz_oxide v0.9.1
+[1m[92m   Compiling[0m cpufeatures v0.3.1
+[1m[92m   Compiling[0m arrayvec v0.7.8
+[1m[92m   Compiling[0m flate2 v1.1.10
+[1m[92m   Compiling[0m polycool v0.4.0
+[1m[92m   Compiling[0m crypto-common v0.2.2
+[1m[92m   Compiling[0m block-buffer v0.12.1
+[1m[92m   Compiling[0m crossbeam-epoch v0.9.21
+[1m[92m   Compiling[0m const-oid v0.10.2
+[1m[92m   Compiling[0m log v0.4.34
+[1m[92m   Compiling[0m crossbeam-deque v0.8.8
+[1m[92m   Compiling[0m kurbo v0.13.1
+[1m[92m   Compiling[0m i_float v5.0.0
+[1m[92m   Compiling[0m digest v0.11.3
+[1m[92m   Compiling[0m font-types v0.12.7
+[1m[92m   Compiling[0m color v0.3.3
+[1m[92m   Compiling[0m euclid v0.22.14
+[1m[92m   Compiling[0m tt-model v0.0.1 (D:\a\261017-toontown-dev\261017-toontown-dev\crates\model)
+[1m[92m   Compiling[0m bitflags v2.13.2
+[1m[92m   Compiling[0m linebender_resource_handle v0.1.1
+[1m[92m   Compiling[0m guillotiere v0.7.0
+[1m[92m   Compiling[0m peniko v0.6.1
+[1m[92m   Compiling[0m read-fonts v0.41.0
+[1m[92m   Compiling[0m sha2 v0.11.1
+[1m[92m   Compiling[0m i_shape v5.0.0
+[1m[92m   Compiling[0m rayon-core v1.13.0
+[1m[92m   Compiling[0m slotmap v1.1.1
+[1m[92m   Compiling[0m miniz_oxide v0.8.9
+[1m[92m   Compiling[0m crossbeam-channel v0.5.17
+[1m[92m   Compiling[0m fdeflate v0.3.7
+[1m[92m   Compiling[0m hashbrown v0.16.1
+[1m[92m   Compiling[0m i_key_sort v0.12.0
+[1m[92m   Compiling[0m zune-core v0.5.3
+[1m[92m   Compiling[0m memmap2 v0.9.11
+[1m[92m   Compiling[0m either v1.19.0
+[1m[92m   Compiling[0m weezl v0.1.12
+[1m[92m   Compiling[0m fearless_simd v0.7.0
+[1m[92m   Compiling[0m i_tree v0.20.0
+[1m[92m   Compiling[0m robust v1.2.0
+[1m[92m   Compiling[0m i_overlay v9.1.0
+[1m[92m   Compiling[0m spade v2.15.1
+[1m[92m   Compiling[0m vello_common v0.3.0
+[1m[92m   Compiling[0m tt-anim v0.0.1 (D:\a\261017-toontown-dev\261017-toontown-dev\crates\anim)
+[1m[92m   Compiling[0m rayon v1.12.0
+[1m[92m   Compiling[0m fontdb v0.24.0
+[1m[92m   Compiling[0m skrifa v0.44.0
+[1m[92m   Compiling[0m zune-jpeg v0.5.15
+[1m[92m   Compiling[0m png v0.18.1
+test exclusive_mutation_capability has been running for over 60 seconds
+[1m[92m   Compiling[0m ordered-channel v1.2.0
+[1m[92m   Compiling[0m half v2.7.1
+[1m[92m   Compiling[0m thread_local v1.1.10
+[1m[92m   Compiling[0m pxfm v0.1.30
+[1m[92m   Compiling[0m fax v0.2.7
+[1m[92m   Compiling[0m color_quant v1.1.0
+[1m[92m   Compiling[0m quick-error v2.0.1
+[1m[92m   Compiling[0m tiff v0.11.3
+[1m[92m   Compiling[0m moxcms v0.8.1
+[1m[92m   Compiling[0m gif v0.14.2
+[1m[92m   Compiling[0m vello_cpu v0.3.0
+[1m[92m   Compiling[0m tt-vector v0.0.1 (D:\a\261017-toontown-dev\261017-toontown-dev\crates\vector)
+[1m[92m   Compiling[0m tt-fx v0.0.1 (D:\a\261017-toontown-dev\261017-toontown-dev\crates\fx)
+[1m[92m   Compiling[0m tt-colour v0.0.1 (D:\a\261017-toontown-dev\261017-toontown-dev\crates\colour)
+[1m[92m   Compiling[0m windows-sys v0.61.2
+[1m[92m   Compiling[0m fastrand v2.5.0
+[1m[92m   Compiling[0m byteorder-lite v0.1.0
+[1m[92m   Compiling[0m image v0.25.10
+[1m[92m   Compiling[0m tt-render v0.0.1 (D:\a\261017-toontown-dev\261017-toontown-dev\crates\render)
+[1m[92m   Compiling[0m tempfile v3.27.0
+[1m[92m   Compiling[0m tt-persist v0.0.1 (D:\a\261017-toontown-dev\261017-toontown-dev\crates\persist)
+[1m[92m   Compiling[0m wait-timeout v0.2.1
+[1m[92m   Compiling[0m bit-vec v0.10.1
+[1m[92m   Compiling[0m fnv v1.0.7
+[1m[92m   Compiling[0m quick-error v1.2.3
+[1m[92m   Compiling[0m rusty-fork v0.3.1
+[1m[92m   Compiling[0m tt-io v0.0.1 (D:\a\261017-toontown-dev\261017-toontown-dev\crates\io)
+[1m[92m   Compiling[0m bit-set v0.11.1
+[1m[92m   Compiling[0m tt-registry v0.0.1 (D:\a\261017-toontown-dev\261017-toontown-dev\crates\registry)
+[1m[92m   Compiling[0m chacha20 v0.10.2
+[1m[92m   Compiling[0m rand v0.10.3
+[1m[92m   Compiling[0m rand_xorshift v0.5.0
+[1m[92m   Compiling[0m unarray v0.1.4
+[1m[92m   Compiling[0m core_detect v1.0.0
+[1m[92m   Compiling[0m proptest v1.12.0
+[1m[92m   Compiling[0m tt-executor v0.0.1 (D:\a\261017-toontown-dev\261017-toontown-dev\crates\executor)
+[1m[92m   Compiling[0m stats_alloc v0.1.10
+[1m[92m   Compiling[0m tt-executor-tests v0.0.0 (D:\a\261017-toontown-dev\261017-toontown-dev\target\tests\trybuild\tt-executor)
+[1m[92m    Finished[0m `dev` profile [unoptimized + debuginfo] target(s) in 2m 42s
+
+
+test [0m[1mtests\ui\core_install.rs[0m [should fail to compile] ... [0m[32mok
+[0mtest [0m[1mtests\ui\cx_clone_default.rs[0m [should fail to compile] ... [0m[32mok
+[0mtest [0m[1mtests\ui\cx_constructor.rs[0m [should fail to compile] ... [0m[32mok
+[0mtest [0m[1mtests\ui\cx_struct_literal.rs[0m [should fail to compile] ... [0m[32mok
+[0mtest [0m[1mtests\ui\document_fields.rs[0m [should fail to compile] ... [0m[32mok
+[0mtest [0m[1mtests\ui\enablement_read_only.rs[0m [should fail to compile] ... [0m[32mok
+[0mtest [0m[1mtests\ui\entity_fields.rs[0m [should fail to compile] ... [0m[32mok
+[0mtest [0m[1mtests\ui\handle_channel.rs[0m [should fail to compile] ... [0m[32mok
+[0mtest [0m[1mtests\ui\job_keeps_context.rs[0m [should fail to compile] ... [0m[32mok
+[0mtest [0m[1mtests\ui\load_grant_forged.rs[0m [should fail to compile] ... [0m[32mok
+[0mtest [0m[1mtests\ui\request_type.rs[0m [should fail to compile] ... [0m[32mok
+[0mtest [0m[1mtests\ui\session_private.rs[0m [should fail to compile] ... [0m[32mok
+[0mtest [0m[1mtests\ui-pass\read_snapshots.rs[0m [should pass] ... [0m[32mok
+[0m
+
+test exclusive_mutation_capability ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 342.60s

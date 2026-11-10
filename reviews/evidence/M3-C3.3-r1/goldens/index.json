@@ -1,0 +1,30 @@
+{
+  "reviewedHead": "e61c2651feb83c7e03174bedd10fa2cf563c4ad8",
+  "source": "crates/executor/tests/c33_r1_pixels.rs",
+  "images": [
+    {
+      "name": "transparent-32x18.png",
+      "width": 32,
+      "height": 18,
+      "sha256": "43b6c3ea64e44fb4b2195b086533047442b635f2cebeb6ecf52e21c1d826f238"
+    },
+    {
+      "name": "solid-32x18.png",
+      "width": 32,
+      "height": 18,
+      "sha256": "187b989d25ae7ae51211c215bf156816e96854313178964ff70460245d432442"
+    },
+    {
+      "name": "rectangle-0-0.05.png",
+      "width": 120,
+      "height": 68,
+      "sha256": "e6130113f9b2a264487cdcdd31a1bd2fcbd4d148653bba7e6078beabec42c1a0"
+    },
+    {
+      "name": "rectangle-37-0.png",
+      "width": 120,
+      "height": 68,
+      "sha256": "58317fd335465043c65931a91360a0dc3a0e7af40a3755e29f54d17239db6dbb"
+    }
+  ]
+}

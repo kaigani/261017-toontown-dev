@@ -1,0 +1,11 @@
+ok   gate-frame-1: the headless binary renders the in-process bytes
+ok   gate-frame-9: the headless binary renders the in-process bytes
+ok   gate-frame-17: the headless binary renders the in-process bytes
+ok   gate-contact-sheet: the headless binary renders the in-process bytes
+ok   gate-path: passage frames of the control points
+ok   render.range.run succeeded
+ok   frames and manifest are published together
+ok   sequence Scene-1_0001.png: manifest SHA-256
+ok   sequence Scene-1_0009.png: manifest SHA-256
+ok   sequence Scene-1_0017.png: manifest SHA-256
+10/10 checks passed

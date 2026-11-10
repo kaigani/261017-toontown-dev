@@ -1,0 +1,38 @@
+
+running 4 tests
+c33_r1_contract-4b82a05c6d7b2f37.exe :
+At line:2 char:117
++ ... y FullName; & $reviewExe --nocapture *> $env:TEMP\toontown-c33-r1\con ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+
+thread 'sub_microfield_depth_difference_uses_timeline_order' (30084) panicked at
+crates\executor\tests\c33_r1_contract.rs:100:5:
+assertion `left == right` failed: 05 section 2.8: depths differ by less than 1e-6 field
+  left: [String("el_01K7JJN8005M46N69J9RMJ0RVX"), String("el_01K7JJN800DDW44SJVC40KANBT")]
+ right: [String("el_01K7JJN800DDW44SJVC40KANBT"), String("el_01K7JJN8005M46N69J9RMJ0RVX")]
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+thread 'wait_true_returns_completed_manifest' (31372) panicked at crates\executor\tests\c33_r1_contract.rs:43:5:
+assertion `left == right` failed: 09 section 11.1 item 4 requires the final result for wait:true: {"jobId":"job-1"}
+  left: Null
+ right: 1
+test sub_microfield_depth_difference_uses_timeline_order ... FAILED
+test every_query_preserves_document_history_and_app_state ... ok
+test wait_true_returns_completed_manifest ... FAILED
+
+thread 'failed_sequence_publication_leaves_no_frames' (21856) panicked at
+crates\executor\tests\c33_r1_contract.rs:59:5:
+09 section 11.1 item 4 / ADR-0020 decision 8: failed delivery published frame 1 in
+C:\Users\kaiga\AppData\Local\Temp\c33-r1-publication-520236f58932
+test failed_sequence_publication_leaves_no_frames ... FAILED
+
+failures:
+
+failures:
+    failed_sequence_publication_leaves_no_frames
+    sub_microfield_depth_difference_uses_timeline_order
+    wait_true_returns_completed_manifest
+
+test result: FAILED. 1 passed; 3 failed; 0 ignored; 0 measured; 0 filtered out; finished in 2.51s

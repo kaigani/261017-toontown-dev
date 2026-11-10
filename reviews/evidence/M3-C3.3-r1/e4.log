@@ -1,0 +1,9 @@
+ok   undo changes the pose, redo restores the same bytes
+ok   world matrices within 1e-06 of the independent values
+ok   the comparison covered every node at every frame
+ok   the requested angles read back
+ok   the mirror reads back as a negative sy
+ok   positive frames between keys are reported as asked
+ok   the same requests from the same base answer the same bytes
+ok   save and open keep the evaluation
+8/8 checks passed; worst error 8.881784197001252e-16

@@ -1,0 +1,23 @@
+cargo :     Checking once_cell v1.21.4
+At C:\Users\kaiga\AppData\Local\Temp\toontown-c33-r1\final-checks.ps1:9 char:1
++ cargo clippy -p tt-render --test c33_r1_cancel --locked -j 4 -- -D wa ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (    Checking once_cell v1.21.4:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+
+    Checking zerocopy v0.8.63
+    Checking strum v0.28.0
+    Checking getrandom v0.4.3
+    Checking read-fonts v0.41.0
+    Checking ahash v0.8.12
+    Checking jsonschema-value v0.59.0
+    Checking referencing v0.59.0
+    Checking jsonschema v0.59.0
+    Checking skrifa v0.44.0
+    Checking tt-model v0.0.1 (C:\Users\kaiga\work\review\m3-c33-r1\crates\model)
+    Checking tt-anim v0.0.1 (C:\Users\kaiga\work\review\m3-c33-r1\crates\anim)
+    Checking tt-vector v0.0.1 (C:\Users\kaiga\work\review\m3-c33-r1\crates\vector)
+    Checking tt-colour v0.0.1 (C:\Users\kaiga\work\review\m3-c33-r1\crates\colour)
+    Checking tt-fx v0.0.1 (C:\Users\kaiga\work\review\m3-c33-r1\crates\fx)
+    Checking tt-render v0.0.1 (C:\Users\kaiga\work\review\m3-c33-r1\crates\render)
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 9.49s

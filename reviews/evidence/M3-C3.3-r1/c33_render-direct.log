@@ -1,0 +1,13 @@
+
+running 9 tests
+test compositions_and_formats ... ok
+test a_render_past_the_callers_budget_is_cancelled_and_frees_the_worker ... ok
+test a_render_is_a_pure_read ... ok
+test a_render_inside_an_atomic_batch_sees_the_staged_edit ... ok
+test file_output_and_conflicts ... ok
+test renders_are_deterministic_across_repeats_history_and_save_open ... ok
+test sizes_scale_and_limits ... ok
+test invalidation_scope_matches_the_frames_whose_renders_change ... ok
+test pixels_show_the_painted_colour_on_the_background ... ok
+
+test result: ok. 9 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 2.08s

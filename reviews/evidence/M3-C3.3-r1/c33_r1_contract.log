@@ -1,0 +1,41 @@
+
+running 7 tests
+test fractional_inspection_frame_is_a_typed_registry_refusal ... ok
+test every_query_honors_stale_expect_rev ... ok
+c33_r1_contract.exe :
+At line:2 char:644
++ ... DE -eq 0) { & "$r\c33_r1_contract.exe" --nocapture *> "$r\c33_r1_cont ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+
+thread 'wait_true_returns_completed_manifest' (34448) panicked at crates/executor/tests/c33_r1_contract.rs:84:5:
+assertion `left == right` failed: 09 section 11.1 item 4 requires the final result for wait:true: {"jobId":"job-1"}
+  left: Null
+ right: 1
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+test wait_true_returns_completed_manifest ... FAILED
+
+thread 'failed_sequence_publication_leaves_no_frames' (37172) panicked at
+crates/executor/tests/c33_r1_contract.rs:100:5:
+09 section 11.1 item 4 / ADR-0020 decision 8: failed delivery published frame 1 in
+C:\Users\kaiga\AppData\Local\Temp\c33-r1-publication-1472d7c4d9f0
+test failed_sequence_publication_leaves_no_frames ... FAILED
+test every_query_preserves_document_history_and_app_state ... ok
+
+thread 'sub_microfield_depth_difference_uses_timeline_order' (13328) panicked at
+crates/executor/tests/c33_r1_contract.rs:177:5:
+assertion `left == right` failed: 05 section 2.8: depths differ by less than 1e-6 field
+  left: [String("el_01K7JJN8005M46N69J9RMJ0RVX"), String("el_01K7JJN800DDW44SJVC40KANBT")]
+ right: [String("el_01K7JJN800DDW44SJVC40KANBT"), String("el_01K7JJN8005M46N69J9RMJ0RVX")]
+test sub_microfield_depth_difference_uses_timeline_order ... FAILED
+test range_snapshot_does_not_observe_a_later_edit ... ok
+
+failures:
+
+failures:
+    failed_sequence_publication_leaves_no_frames
+    sub_microfield_depth_difference_uses_timeline_order
+    wait_true_returns_completed_manifest
+
+test result: FAILED. 4 passed; 3 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.38s

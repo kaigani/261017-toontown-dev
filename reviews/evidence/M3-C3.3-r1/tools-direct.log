@@ -1,0 +1,41 @@
+
+running 3 tests
+test inspection_wrappers_return_every_command_field ... ok
+c33_r1_tools-6728fe3d4f1a5df2.exe :
+At line:2 char:156
++ ... y FullName; & $reviewExe --nocapture *> "$r\tools-direct.log"; $LASTE ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+
+thread 'render_frame_reports_render_ms' (36168) panicked at crates\mcp\tests\c33_r1_tools.rs:66:5:
+11 section 7.5 render_frame output: {"content":[{"type":"text","text":"render_frame: `render.frame.run` ok; 0
+change(s); documentRev 1"}],"structuredContent":{"status":"ok","result":{"mimeType":"image/png","width":64,"height":36,
+"bytes":270,"sha256":"f8a6578bba62ce92071bb5cbc2410769015c18ff7b2386872eea7fd50ea74247","data":"iVBORw0KGgoAAAANSUhEUgA
+AAEAAAAAkCAYAAAA5DDySAAAA1UlEQVR4nO3XMQqDMBiG4S9FITrqHdqltys9Qs/SvT1SoR2lZlAwoW2yCjW6Jd//gCji8r9EicXnB8R2ICcBQE4CgBx9gA
+Ib9X0PY0y4btsWWmukaHMA5xy6roNSCnVdJxtAyUaInHwEYx80b4PX4zm7vz8ekLLoAH74+/U2u3+6nJEyeQWw0mSncC6LEjlYtQL88NbabIb3olfAOI5h+
+EpXyEnURmgYhnA0TYPcLK6AnIf3/gbwiyPn4T35FwA5CQByEgDkJADISQCQkwAgJwFAjj7AF57MSXD9MtpvAAAAAElFTkSuQmCC","documentRevision"
+:1,"frame":1,"imageToCamera":[0.18749999999999997,0.0,0.0,-0.18749999999999997,-5.999999999999999,3.3749999999999996],"
+warnings":[]},"changes":[],"warnings":[],"documentRev":1},"isError":false}
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+thread 'render_frame_accepts_exclude_override' (23792) panicked at crates\mcp\tests\c33_r1_tools.rs:47:5:
+assertion `left == right` failed: 11 section 7.5 requires include/exclude overrides:
+{"content":[{"type":"text","text":"render_frame: `render_frame` failed: arg.unknown — `tool:render_frame`: Additional
+properties are not allowed ('exclude' was unexpected)"}],"structuredContent":{"status":"error","changes":[],"warnings":
+[],"documentRev":null,"error":{"code":"arg.unknown","message":"`tool:render_frame`: Additional properties are not
+allowed ('exclude' was unexpected)","details":{"pointer":"/exclude","message":"Additional properties are not allowed
+('exclude' was unexpected)","allowed":null,"violations":[{"pointer":"/exclude","message":"Additional properties are
+not allowed ('exclude' was unexpected)","allowed":null,"code":"arg.unknown"}]}}},"isError":true}
+  left: String("error")
+ right: "ok"
+test render_frame_reports_render_ms ... FAILED
+test render_frame_accepts_exclude_override ... FAILED
+
+failures:
+
+failures:
+    render_frame_accepts_exclude_override
+    render_frame_reports_render_ms
+
+test result: FAILED. 1 passed; 2 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.13s
