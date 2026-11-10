@@ -584,8 +584,16 @@ fn cancelled_check(what: &str) -> Result<(), CommandError> {
 }
 
 /// Commits transactions: installs each stamped snapshot, records undo steps or moves the history position, logs
-/// the revision and emits `doc.changed`.
-fn commit(s: &mut Session, txns: Vec<Txn>, origin: &Origin, command: &str) -> Result<Option<UndoRef>, CommandError> {
+/// the revision and emits `doc.changed`. `anim` is the call's coalesced `anim.changed` payload: a new step keeps it, and
+/// an undo or redo of a step emits the step's again after its `doc.changed` (05 §19.4: one animation invalidation per
+/// undo step, a replayed step included; C32-R2-02).
+fn commit(
+    s: &mut Session,
+    txns: Vec<Txn>,
+    origin: &Origin,
+    command: &str,
+    anim: Option<&Value>,
+) -> Result<Option<UndoRef>, CommandError> {
     if txns.is_empty() {
         return Ok(None);
     }
@@ -599,6 +607,7 @@ fn commit(s: &mut Session, txns: Vec<Txn>, origin: &Origin, command: &str) -> Re
         for t in txns {
             let drawing = drawing_events(&t.changes, t.rev, command, &t.before, &t.after, &cache);
             p.log_commit(t.rev, back_of(&t), t.before.clone(), &t.after, earlier_revs(&t));
+            let mut replayed_anim = None;
             let step_id = match t.kind {
                 TxnKind::Step => {
                     let id = p.history.next_step_id();
@@ -610,6 +619,7 @@ fn commit(s: &mut Session, txns: Vec<Txn>, origin: &Origin, command: &str) -> Re
                         edit: t.edit,
                         touched: t.touched,
                         structural: t.structural,
+                        anim: anim.cloned(),
                     });
                     undo_ref = Some(UndoRef { step_id: id.clone(), label: t.label.clone() });
                     id
@@ -617,11 +627,13 @@ fn commit(s: &mut Session, txns: Vec<Txn>, origin: &Origin, command: &str) -> Re
                 TxnKind::Undo(i) => {
                     p.history.replace_edit(i, t.edit);
                     p.history.moved_back();
+                    replayed_anim = p.history.steps().get(i).and_then(|st| st.anim.clone());
                     p.history.steps().get(i).map(|st| st.id.clone()).unwrap_or_default()
                 }
                 TxnKind::Redo(i) => {
                     p.history.replace_edit(i, t.edit);
                     p.history.moved_forward();
+                    replayed_anim = p.history.steps().get(i).and_then(|st| st.anim.clone());
                     p.history.steps().get(i).map(|st| st.id.clone()).unwrap_or_default()
                 }
                 TxnKind::System => String::new(),
@@ -640,6 +652,9 @@ fn commit(s: &mut Session, txns: Vec<Txn>, origin: &Origin, command: &str) -> Re
                 }),
             ));
             events.extend(drawing.into_iter().map(|e| ("draw.drawing.changed", e)));
+            if let Some(a) = replayed_anim {
+                events.push(("anim.changed", a));
+            }
         }
     }
     for (name, e) in events {
@@ -1710,10 +1725,16 @@ impl Core {
     ) -> Result<(Option<UndoRef>, Result<(), CommandError>), CommandError> {
         // Pending saves are written only now that every step succeeded, and before anything commits; a failed write
         // rolls the invocation back (C13-R1-01).
+        // One `anim.changed` per undo step (05 §19.4); the step keeps it for its undo and redo.
+        crate::commands::anim_camera::coalesce_changed(&mut effects);
+        let anim = effects.iter().find_map(|e| match e {
+            Effect::Event(ev) if ev.name == "anim.changed" => Some(ev.payload.clone()),
+            _ => None,
+        });
         let committed = cancelled_check(command)
             .and_then(|()| frozen_guard(session, &txns))
             .and_then(|()| self.write_pending(session, txns.last().map(|t| &t.after), &mut effects))
-            .and_then(|()| commit(session, txns, origin, command));
+            .and_then(|()| commit(session, txns, origin, command, anim.as_ref()));
         match committed {
             Ok(u) => Ok((u, apply_effects(session, effects, self.simulating, origin))),
             Err(e) => {
@@ -1757,7 +1778,7 @@ impl Core {
         let mut session = cx.into_session();
         let committed = outcome
             .and_then(|()| self.write_pending(&session, txns.last().map(|t| &t.after), &mut effects))
-            .and_then(|()| commit(&mut session, txns, origin, "project.save").map(|_| ()));
+            .and_then(|()| commit(&mut session, txns, origin, "project.save", None).map(|_| ()));
         let committed = match committed {
             Ok(()) => apply_effects(&mut session, effects, self.simulating, origin),
             Err(e) => {
@@ -1936,7 +1957,7 @@ mod tests {
         let txn = cx.finish_staged("Add Stroke".into()).unwrap().unwrap();
         let changes = txn.changes.clone();
         let mut session = cx.into_session();
-        commit(&mut session, vec![txn], &Origin::User, "draw.stroke.add").unwrap();
+        commit(&mut session, vec![txn], &Origin::User, "draw.stroke.add", None).unwrap();
         core.session = Some(session);
         changes
     }

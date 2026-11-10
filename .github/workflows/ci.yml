@@ -80,10 +80,7 @@ jobs:
           pnpm --dir desktop build:diagnostics
           pnpm --dir desktop build
 
-      - name: rustfmt — every workspace source except the reviewer-owned c<k>_r<j>_*.rs tests, kept as committed (plan §5.3)
-        run: |
-          unformatted=$(cargo fmt --all --check -- --files-with-diff | grep -vE '[/\]tests[/\]c[0-9]+_r[0-9]+_[^/\]*[.]rs$' || true)
-          if [ -n "$unformatted" ]; then echo "$unformatted"; cargo fmt --all --check || true; exit 1; fi
+      - run: cargo fmt --all --check
 
       - name: Generated command declarations are current (C12-R1-12)
         run: |
@@ -95,10 +92,9 @@ jobs:
       # Product code (libraries, binaries, examples) is linted with every warning denied. All targets, tests included,
       # likewise except one style lint: the reviewer-owned `c24_r4_closure.rs` has blank lines after doc comments, and
       # reviewer-owned files are not edited (M2 merge candidate, declared CI edit; drop the `-A` once that file is fixed).
-      # Likewise `needless_range_loop`: the reviewer-owned `c32_r1_closed_forms.rs` indexes in a loop (M3 C3.2 round 1).
       - run: |
           cargo clippy --workspace --lib --bins --examples --locked -- -D warnings
-          cargo clippy --workspace --all-targets --locked -- -D warnings -A clippy::empty_line_after_doc_comments -A clippy::needless_range_loop
+          cargo clippy --workspace --all-targets --locked -- -D warnings -A clippy::empty_line_after_doc_comments
       # The six 10 000-operation history oracles (C1.2-C1.4) run in release in `history-oracles` (moved in M2 C2.3 round 1:
       # Windows `check` reached 55 min 02 s in run 41320596822); everything else in their binaries runs here. The seeded
       # topology properties (C24-R1-01: 256 cases each) run in `check-properties` (split in M2 C2.4 round 1: Windows

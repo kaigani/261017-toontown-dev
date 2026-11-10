@@ -32,6 +32,9 @@ pub(crate) struct Step {
     pub touched: Vec<String>,
     /// The step creates, deletes or moves objects (its change records come from entry diffs).
     pub structural: bool,
+    /// The step's `anim.changed` payload (the union its call emitted, 05 §19.4), emitted again by each undo and redo
+    /// of the step (C32-R2-02); `None` when the step changed no animation.
+    pub anim: Option<serde_json::Value>,
 }
 
 /// Maximum number of steps kept; the oldest are discarded first (01 §6.1: at least 200).

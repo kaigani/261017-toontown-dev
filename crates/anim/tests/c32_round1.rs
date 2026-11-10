@@ -3,7 +3,7 @@
 //! (C32-R1-01) are in `c32_passage.rs`.
 #![allow(clippy::unwrap_used, clippy::expect_used, clippy::panic, missing_docs, reason = "test")]
 
-use tt_anim::camera::{CameraView, projection_fov};
+use tt_anim::camera::CameraView;
 use tt_anim::matrix::{Mat4, norm};
 use tt_anim::num;
 use tt_model::defaults::{DEFAULT_FOV, DEFAULT_FOV_DISPLAY};
@@ -30,17 +30,18 @@ fn the_default_frame_is_twelve_fields_wide_at_distance_sixteen() {
     // "The 12-field width exactly fills the frame" (05 §2.7): to rounding, far inside the 1e-6 numeric tolerance.
     let w = table_width(DEFAULT_FOV);
     assert!((w - 12.0).abs() < 1e-12, "{w:.17}");
-    // The tables' 41.1121 is the display of that value and projects as it (SI-104), not 12.000003.
-    assert_eq!(projection_fov(DEFAULT_FOV_DISPLAY).to_bits(), DEFAULT_FOV.to_bits());
-    assert_eq!(table_width(DEFAULT_FOV_DISPLAY).to_bits(), w.to_bits());
-    // Any other value projects as itself: 41.1122 is wider by the expected amount, 60 is 2·16·tan 30°.
-    assert_eq!(projection_fov(41.1122), 41.1122);
+    // SI-104, ruled "no alias": the tables' 41.1121, set explicitly, projects as itself, 2·16·tan(41.1121°/2) ≈
+    // 12.0000031 fields; only the exact default spans 12.
+    let display = table_width(DEFAULT_FOV_DISPLAY);
+    assert!((display - 32.0 * num::tan_deg(DEFAULT_FOV_DISPLAY / 2.0)).abs() < 1e-12, "{display:.17}");
+    assert!((display - 12.000_003_045).abs() < 1e-8 && display - w > 3e-6, "{display:.17}");
+    // Every value projects as itself: 41.1122 is wider by the expected amount, 60 is 2·16·tan 30°.
     let near = table_width(41.1122);
     let want = 32.0 * num::tan_deg(41.1122 / 2.0);
     assert!((near - want).abs() < 1e-12 && near > 12.0 + 1e-6, "{near}");
     let wide = table_width(60.0);
     assert!((wide - 32.0 / 3f64.sqrt()).abs() < 1e-12, "{wide}");
-    // The view keeps the FOV as set.
+    // The view keeps the FOV as set, and that value is the one it projects with.
     let view = CameraView::new(&Mat4::translate(0.0, 0.0, 16.0), DEFAULT_FOV_DISPLAY, 1920.0, 1080.0);
     assert_eq!(view.fov, DEFAULT_FOV_DISPLAY);
 }

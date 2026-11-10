@@ -7,15 +7,6 @@ use crate::num;
 /// The near plane, in fields (05 §2.6): points at this depth or closer are not drawn.
 pub const NEAR_PLANE: f64 = 0.1;
 
-/// The field of view a camera projects with for a given FOV value: the spec's tables give the default as 41.1121, the
-/// 4-decimal display of 2·atan(0.375) (05 §2.7, §12.3), so that value projects as the exact default, whose 12-field
-/// width exactly fills the frame at distance 16; every other value projects as itself (SI-102, SI-104). The stored and
-/// reported FOV stay as set.
-#[must_use]
-pub fn projection_fov(fov: f64) -> f64 {
-    if fov == tt_model::defaults::DEFAULT_FOV_DISPLAY { tt_model::defaults::DEFAULT_FOV } else { fov }
-}
-
 /// A camera at one frame.
 #[derive(Debug, Clone, Copy, PartialEq)]
 pub struct CameraView {
@@ -25,7 +16,7 @@ pub struct CameraView {
     pub roll: f64,
     /// View matrix (world → camera space).
     pub view: Mat4,
-    /// Effective horizontal field of view, degrees, as set (projection uses [`projection_fov`] of it).
+    /// Effective horizontal field of view, degrees: the reported value is the projected value (SI-104).
     pub fov: f64,
     /// Output width in pixels.
     pub width: f64,
@@ -73,7 +64,7 @@ impl CameraView {
 
     /// tan(FOV / 2) of the projection.
     fn half_tan(&self) -> f64 {
-        num::tan_deg(projection_fov(self.fov) / 2.0)
+        num::tan_deg(self.fov / 2.0)
     }
 
     /// Projects a world point (05 §2.6).

@@ -64,12 +64,15 @@ the 30-second watchdog.
 11. **Default field of view.** The stored and schema default is the exact 2·atan(0.375) in degrees,
     `41.11209043916693` (`tt_model::defaults::DEFAULT_FOV`, computed through `num::atan_deg`; a test checks the bits), so
     the 12-field width fills the frame at distance 16 to rounding (05 §2.7). The tables' 41.1121 is its 4-decimal
-    display; a camera set to exactly 41.1121 keeps and reports 41.1121 and projects with the exact default
-    (`camera::projection_fov`; SI-102, SI-104). Files that store 41.1121 need no migration.
+    display. Every FOV, an explicitly set 41.1121 included, is stored, reported and projected as itself: the reported
+    `effectiveFov` is the projected value, so an explicit 41.1121 spans about 12.0000031 fields and only the exact
+    default spans 12 (SI-102; SI-104 ruled "no alias", C32-R2-01). Files that store 41.1121 need no migration.
 12. **Events.** `anim.changed` carries `frames` only when the change is one finite scene range: the touched frames
     widened to the neighbouring keys (two motion keyframes for `position`), inside the bar, on an unlooped node. Otherwise
     it omits `frames`, the all-frame form, and in the per-transaction union an all-frame event absorbs any range
-    (05 §19.4, C32-R1-05).
+    (05 §19.4, C32-R1-05). The undo step keeps that union (`history::Step::anim`); each undo and redo of the step emits it
+    again, after the replay's `doc.changed`, so a replayed step invalidates exactly what the original did (C32-R2-02).
+    History lives with the open project: saving keeps it, opening starts a fresh one.
 
 ## Consequences
 

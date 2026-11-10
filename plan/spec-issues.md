@@ -1195,7 +1195,7 @@ Reserved by the M0 closure for "measured deterministic-format incompatibility" (
   (05 §11.4); key addition, removal and duplication there are refused (`anim.channelUnsupported`, use `anim.path.*`).
 - **Question:** none.
 
-## SI-104 — the tables' FOV value projects as the exact default (found in M3 C3.2 round 1; decided by the builder)
+## SI-104 — an explicit 41.1121 is not an alias of the default (found in M3 C3.2 round 1; ruled: no alias)
 
 - **Sections:** 05 §2.7, §12.3, §19.1.6; SI-102's ruling; the round-1 reviewer's `c32_r1_default_frame`, which projects
   a camera at the tables' 41.1121 and requires 12 fields within 1e-6.
@@ -1205,4 +1205,9 @@ Reserved by the M0 closure for "measured deterministic-format incompatibility" (
   therefore resolves the one value 41.1121, the spec's own written default, to the exact expression
   (`tt_anim::camera::projection_fov`); the stored `fov` and the reported `fov` and `effectiveFov` keep 41.1121, and
   every other value, 41.11211 included, projects as itself. A user who types the tables' default gets the default frame.
-- **Question:** confirm, or rule that 41.1121 projects as itself (then `c32_r1_default_frame` needs the exact value).
+- **Ruling (orchestrator, 2026-11-09, C32-R2-01):** no alias; the reported value is the projected value. An explicit
+  41.1121 is stored, reported and projected as itself (about 12.0000031 fields at distance 16); only the default
+  camera, which carries the exact `DEFAULT_FOV`, spans exactly 12 fields. Round 2 removed
+  `tt_anim::camera::projection_fov`; `effectiveFov` and every projection path use the same number. The reviewer amended
+  `c32_r1_default_frame` to project `DEFAULT_FOV` and added `explicit_display_fov_is_not_aliased`.
+- **Question:** none. (The round-1 builder decision above is superseded.)

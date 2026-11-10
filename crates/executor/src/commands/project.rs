@@ -412,6 +412,7 @@ pub(crate) fn project_from_loaded(
             edit: crate::history::StepEdit::Snapshot { before: Box::new(doc.clone()), after: Box::new(doc.clone()) },
             touched: Vec::new(),
             structural: true,
+            anim: None,
         });
         project.permanent_dirty = true;
         let mut changes: Vec<Value> = Vec::new();

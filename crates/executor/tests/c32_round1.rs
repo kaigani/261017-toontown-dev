@@ -34,7 +34,8 @@ fn a_new_camera_has_the_exact_default_and_the_tables_value_stays_as_set() {
     assert_eq!(cam["effectiveFov"].as_f64().unwrap().to_bits(), DEFAULT_FOV.to_bits());
     assert!((width(&cam) - 12.0).abs() < 1e-12, "{}", width(&cam));
     assert_eq!(get(&h, &id)["camera"]["fov"].as_f64().unwrap().to_bits(), DEFAULT_FOV.to_bits());
-    // An agent that sets the tables' 41.1121 gets 41.1121 back, and the frame it projects is the default's (SI-104).
+    // An agent that sets the tables' 41.1121 gets 41.1121 back and projects with it (SI-104, ruled "no alias"):
+    // 2·16·tan(41.1121°/2) ≈ 12.0000031 fields, not the default's 12.
     let set = ok(&h, "anim.camera.create", json!({ "name": "Table", "fov": DEFAULT_FOV_DISPLAY }))["cameraId"]
         .as_str()
         .unwrap()
@@ -42,7 +43,8 @@ fn a_new_camera_has_the_exact_default_and_the_tables_value_stays_as_set() {
     let cam = ok(&h, "anim.camera.get", json!({ "cameraId": set, "frame": 1 }));
     assert_eq!(cam["fov"], json!(41.1121));
     assert_eq!(cam["effectiveFov"], json!(41.1121));
-    assert!((width(&cam) - 12.0).abs() < 1e-12, "{}", width(&cam));
+    let want = 32.0 * tt_anim::num::tan_deg(DEFAULT_FOV_DISPLAY / 2.0);
+    assert!((width(&cam) - want).abs() < 1e-12 && (width(&cam) - 12.000_003_045).abs() < 1e-8, "{}", width(&cam));
     // A new project's camera has the exact default too (M1's defaults).
     let fixture_camera = get(&h, "scene:\"Intro\"/element:\"Camera\"");
     assert_eq!(fixture_camera["camera"]["fov"].as_f64().unwrap().to_bits(), DEFAULT_FOV.to_bits());
