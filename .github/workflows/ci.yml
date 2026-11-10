@@ -31,9 +31,7 @@ jobs:
     # C1.3: the workspace tests took 17-20 min of the former 30-min budget on 2026-10-26 (run 40419016272).
     # C1.4: on Windows they took 32.7 min and the job hit 45 min in the release build that follows (run 41003361353,
     # every step green until the cancellation); the race, liveness and measurement suites and the SDK step need 60.
-    # Temporary (M3 C3.3 round 1): one cold run to completion so the rust cache of `check` is saved whole; restored
-    # to 60 in the next commit.
-    timeout-minutes: 90
+    timeout-minutes: 60
     steps:
       - uses: actions/checkout@v7
         with:
