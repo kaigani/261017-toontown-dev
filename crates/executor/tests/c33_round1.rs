@@ -56,6 +56,8 @@ fn timeline_back_to_front(h: &ExecutorHandle, ids: &[String]) -> Vec<String> {
 
 #[test]
 fn depth_ties_group_from_the_smallest_depth_and_follow_the_timeline() {
+    // Serialised with the evaluation-count test: the evaluator's test recorder is process-wide.
+    let _t = turn();
     let h = fixture();
     clear(&h);
     let c = solids(&h, 1)[0].0.clone();
