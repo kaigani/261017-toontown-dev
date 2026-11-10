@@ -58,6 +58,12 @@ jobs:
 
       - run: pnpm install --frozen-lockfile
 
+      # The front-end step's reviewer tooling test `c03-r1-tooling` runs `cargo tree --locked` under a 60-second limit; the
+      # rust cache prunes index entries for other platforms' crates, so it fetched them from crates.io and timed out on
+      # Windows twice in run 42906464263 (18-23 s before). The locked dependencies are fetched first, without that limit.
+      - name: Fetch the locked dependencies
+        run: cargo fetch --locked
+
       - name: Front end — lint, type-check, test, format, licences
         run: |
           pnpm lint
