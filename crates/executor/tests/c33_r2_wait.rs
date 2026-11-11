@@ -20,6 +20,8 @@ fn waiting_caller_does_not_block_document_reads() -> Result<(), Box<dyn std::err
     let inject_stale = stale.clone();
     let inject_dir = dir.clone();
     let _reset = Reset;
+    dead_sidecar(&inject_dir, "abcdef123456", "cancel.png").map_err(|_| "inject sidecar")?;
+    std::fs::write(&inject_stale, b"dead job staging").map_err(|_| "inject stale")?;
     tt_vector::work::hooks::set_spin_micros(20_000);
     let env = std::thread::scope(|scope| {
         let h = &h;
@@ -27,8 +29,6 @@ fn waiting_caller_does_not_block_document_reads() -> Result<(), Box<dyn std::err
             common::run(h, "render.range.run", json!({"from":1,"to":48,"width":32,"directory":dir,"wait":true}))
         });
         std::thread::sleep(Duration::from_millis(100));
-        dead_sidecar(&inject_dir, "abcdef123456", "cancel.png").map_err(|_| "inject sidecar")?;
-        std::fs::write(&inject_stale, b"dead job staging").map_err(|_| "inject stale")?;
         let start = Instant::now();
         ok(h, "app.state.get", json!({}));
         assert!(start.elapsed() < Duration::from_millis(300));
