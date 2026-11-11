@@ -50,6 +50,29 @@ async def main():
                 audit['result']=[{k:v for k,v in a.items() if k not in ['params','result','arguments']} for a in audit['result']]
                 evidence.append({'kind':kind,'following_state':state['status'],'jobs':[{k:j.get(k) for k in ['jobId','commandId','state','progress','error']} for j in jobs],'activity':audit,'terminal':settled})
                 assert not out.exists() or not any('.tt-partial-' in p.name for p in out.iterdir())
+    seen=asyncio.Event();release=asyncio.Event()
+    async def elicit(context,params):
+        seen.set();await release.wait()
+        return types.ElicitResult(action='accept',content={'confirm':True})
+    confirmation_params=StdioServerParameters(command=params.command,args=['--headless','--mcp-stdio','--user-dir',str(work/'confirm-user'),'--policy','assist'])
+    async with stdio_client(confirmation_params) as (read,write):
+        async with ClientSession(read,write,list_roots_callback=roots,elicitation_callback=elicit) as s:
+            await s.initialize();await asyncio.sleep(.5)
+            async def command(id,p):return sc(await s.call_tool('run_command',{'id':id,'params':p}))
+            assert (await command('project.create',{'name':'Confirmation'}))['status']=='ok'
+            target=work/'Existing.animpkg';target.write_bytes(b'preserve-existing')
+            task=asyncio.create_task(s.call_tool('run_command',{'id':'project.saveAs','params':{'path':str(target),'onExists':'overwrite'}}))
+            await asyncio.wait_for(seen.wait(),10)
+            task.cancel()
+            try:await task
+            except asyncio.CancelledError:pass
+            release.set();await asyncio.sleep(.2)
+            assert (await command('doc.state.get',{}))['status']=='ok'
+            assert target.read_bytes()==b'preserve-existing'
+            audit=await command('agent.activity.list',{'limit':100})
+            entries=[{k:v for k,v in a.items() if k not in ['params','result']} for a in audit['result'] if a['commandId']=='project.saveAs']
+            assert len(entries)==1,entries
+            evidence.append({'kind':'confirmation-between-invocations','original_unchanged':True,'following_state':'ok','activity':entries})
     (root/'reviews/evidence/M3-C3.4-r2/sdk.json').write_text(json.dumps({'sdk':importlib.metadata.version('mcp'),'calls':evidence},indent=2)+'\n')
     print('SDK cancellation/session/staging probes completed')
 if __name__=='__main__':asyncio.run(main())

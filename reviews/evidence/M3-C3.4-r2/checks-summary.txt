@@ -1,0 +1,10 @@
+reviewer exit=101 elapsed=00:00:43.3651689
+wire exit=0 elapsed=00:00:12.2294536
+fmt exit=0 elapsed=00:00:03.0948904
+clippy-product exit=0 elapsed=00:00:19.4374392
+clippy-targets exit=0 elapsed=00:00:28.5872407
+release exit=0 elapsed=00:01:55.9038878
+direct-followup exit=101 elapsed=00:00:06.2585112
+batch-followup exit=101 elapsed=00:00:02.9151758
+fmt-final exit=0 elapsed=00:00:01.4276878
+clippy-reviewer-final exit=0 elapsed=00:00:00.4973736

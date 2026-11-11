@@ -160,3 +160,35 @@ fn discarded_queued_cancellation_does_not_report_a_dead_document_thread() {
     eprintln!("QUEUED_ERROR code={} message={}", error.code, error.message);
     assert_ne!(error.code, "internal", "intentional request cancellation is not a dead document thread");
 }
+
+#[test]
+fn completed_batch_then_late_cancellation_does_not_poison_next_request() {
+    let h = fixture();
+    let flag = AtomicBool::new(false);
+    let dir = c13_support::tmp().join("short");
+    let request:BatchRequest=serde_json::from_value(json!({"label":"short job","atomic":false,"steps":[{"id":"render.range.run","params":{"from":1,"to":1,"width":32,"directory":dir,"createDirs":true,"wait":true}}]})).unwrap();
+    let at = Instant::now();
+    let env = h.batch_until(request, Origin::User, &|| flag.load(Ordering::SeqCst));
+    assert!(env.is_ok());
+    eprintln!("SHORT_BATCH_MS {}", at.elapsed().as_secs_f64() * 1000.0);
+    flag.store(true, Ordering::SeqCst);
+    let before = rev(&h);
+    assert!(run(&h, "element.create", json!({"type":"peg","name":"AfterLateCancel","sceneId":"scene:#1"})).is_ok());
+    assert_eq!(rev(&h), before + 1);
+    assert!(
+        !std::fs::read_dir(dir).unwrap().flatten().any(|p| p.file_name().to_string_lossy().contains(".tt-partial-"))
+    );
+}
+
+#[test]
+fn short_waited_batch_cannot_commit_with_an_already_cancelled_probe() {
+    let h = fixture();
+    let before = rev(&h);
+    let dir = c13_support::tmp().join("short-cancel");
+    let request:BatchRequest=serde_json::from_value(json!({"label":"same poll slice","atomic":false,"steps":[{"id":"render.range.run","params":{"from":1,"to":1,"width":32,"directory":dir,"createDirs":true,"wait":true}},{"id":"element.create","params":{"type":"peg","name":"TooLate","sceneId":"scene:#1"}}]})).unwrap();
+    let at = Instant::now();
+    let env = h.batch_until(request, Origin::User, &|| true);
+    eprintln!("SHORT_CANCELLED_BATCH_MS {} status={:?}", at.elapsed().as_secs_f64() * 1000.0, env.status);
+    assert!(run(&h, "doc.state.get", json!({})).is_ok());
+    assert_eq!(rev(&h), before, "C34-R2-01: short job completion must not mask pre-existing request cancellation");
+}

@@ -27,10 +27,22 @@ fn direct_job_wait_observes_cancellation_probe() {
         ok(&h, "render.range.run", json!({"from":1,"to":100000,"width":32,"directory":dir,"createDirs":true}));
     let job = submitted["jobId"].as_str().unwrap();
     let started = Instant::now();
-    let (env, _) = h.invoke_served_until(Invocation::user("job.wait", json!({"jobId":job,"timeoutMs":500})), &|| true);
+    let env = std::thread::scope(|scope| {
+        let first = scope.spawn(|| {
+            h.invoke_served_until(Invocation::user("job.wait", json!({"jobId":job,"timeoutMs":500})), &|| true).0
+        });
+        std::thread::sleep(Duration::from_millis(20));
+        let other = run(&h, "job.wait", json!({"jobId":job,"timeoutMs":0}));
+        assert!(other.is_ok());
+        assert_eq!(other.result.as_ref().unwrap()["jobId"], job);
+        assert!(run(&h, "doc.state.get", json!({})).is_ok());
+        first.join().unwrap()
+    });
     let elapsed = started.elapsed();
     ok(&h, "job.cancel", json!({"jobId":job}));
     h.jobs().wait(job, Duration::from_secs(60)).unwrap();
+    let terminal = ok(&h, "job.wait", json!({"jobId":job,"timeoutMs":0}));
+    assert_eq!(terminal["state"], "cancelled");
     eprintln!("direct_job_wait elapsed_ms={} status={:?}", elapsed.as_secs_f64() * 1000.0, env.status);
     assert_eq!(env.error.as_ref().map(|e| e.code.as_str()), Some("command.timeout"));
     assert_eq!(env.error.unwrap().details["reason"], "cancelled");
