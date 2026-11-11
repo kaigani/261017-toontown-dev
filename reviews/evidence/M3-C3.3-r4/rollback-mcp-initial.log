@@ -1,0 +1,18 @@
+   Compiling tt-mcp v0.0.1 (C:\Users\kaiga\work\review\m3-c33-r4\crates\mcp)
+error[E0432]: unresolved import `tt_persist::lock::hooks`
+   --> crates\mcp\tests\c33_r4_rollback.rs:10:38
+    |
+ 10 |     use tt_persist::lock::{Boundary, hooks};
+    |                                      ^^^^^ no `hooks` in `lock`
+    |
+note: found an item that was configured out
+   --> crates\persist\src\lock.rs:136:9
+    |
+134 | #[cfg(feature = "test-hooks")]
+    |       ---------------------- the item is gated behind the `test-hooks` feature
+135 | #[doc(hidden)]
+136 | pub mod hooks {
+    |         ^^^^^
+
+For more information about this error, try `rustc --explain E0432`.
+error: could not compile `tt-mcp` (test "c33_r4_rollback") due to 1 previous error

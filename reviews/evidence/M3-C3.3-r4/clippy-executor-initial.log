@@ -1,0 +1,55 @@
+    Checking tt-model v0.0.1 (C:\Users\kaiga\work\review\m3-c33-r4\crates\model)
+   Compiling tt-registry-macros v0.0.1 (C:\Users\kaiga\work\review\m3-c33-r4\crates\registry-macros)
+    Checking tt-anim v0.0.1 (C:\Users\kaiga\work\review\m3-c33-r4\crates\anim)
+    Checking tt-vector v0.0.1 (C:\Users\kaiga\work\review\m3-c33-r4\crates\vector)
+    Checking tt-colour v0.0.1 (C:\Users\kaiga\work\review\m3-c33-r4\crates\colour)
+    Checking tt-persist v0.0.1 (C:\Users\kaiga\work\review\m3-c33-r4\crates\persist)
+    Checking tt-registry v0.0.1 (C:\Users\kaiga\work\review\m3-c33-r4\crates\registry)
+    Checking tt-fx v0.0.1 (C:\Users\kaiga\work\review\m3-c33-r4\crates\fx)
+    Checking tt-render v0.0.1 (C:\Users\kaiga\work\review\m3-c33-r4\crates\render)
+    Checking tt-io v0.0.1 (C:\Users\kaiga\work\review\m3-c33-r4\crates\io)
+    Checking tt-executor v0.0.1 (C:\Users\kaiga\work\review\m3-c33-r4\crates\executor)
+error: this `if` statement can be collapsed
+  --> crates\executor\tests\c33_r4_rollback.rs:26:17
+   |
+26 | /                 if record.command_id == "render.range.run" {
+27 | |                     if let Ok(answer) = hook_h.jobs().cancel(&record.job_id) {
+28 | |                         if let Ok(mut answers) = hook_answers.lock() {
+29 | |                             answers.push(answer.state);
+...  |
+32 | |                 }
+   | |_________________^
+   |
+   = help: for further information visit https://rust-lang.github.io/rust-clippy/rust-1.98.0/index.html#collapsible_if
+   = note: `-D clippy::collapsible-if` implied by `-D warnings`
+   = help: to override `-D warnings` add `#[allow(clippy::collapsible_if)]`
+help: collapse nested if block
+   |
+26 ~                 if record.command_id == "render.range.run"
+27 ~                     && let Ok(answer) = hook_h.jobs().cancel(&record.job_id) {
+28 |                         if let Ok(mut answers) = hook_answers.lock() {
+29 |                             answers.push(answer.state);
+30 |                         }
+31 ~                     }
+   |
+
+error: this `if` statement can be collapsed
+  --> crates\executor\tests\c33_r4_rollback.rs:27:21
+   |
+27 | /                     if let Ok(answer) = hook_h.jobs().cancel(&record.job_id) {
+28 | |                         if let Ok(mut answers) = hook_answers.lock() {
+29 | |                             answers.push(answer.state);
+30 | |                         }
+31 | |                     }
+   | |_____________________^
+   |
+   = help: for further information visit https://rust-lang.github.io/rust-clippy/rust-1.98.0/index.html#collapsible_if
+help: collapse nested if block
+   |
+27 ~                     if let Ok(answer) = hook_h.jobs().cancel(&record.job_id)
+28 ~                         && let Ok(mut answers) = hook_answers.lock() {
+29 |                             answers.push(answer.state);
+30 ~                         }
+   |
+
+error: could not compile `tt-executor` (test "c33_r4_rollback") due to 2 previous errors

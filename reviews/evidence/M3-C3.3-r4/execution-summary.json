@@ -1,0 +1,2260 @@
+{
+  "allows": {
+    "exit": "not-recorded",
+    "targets": {},
+    "totals": {},
+    "failedLines": []
+  },
+  "clippy-executor-initial": {
+    "exit": "101",
+    "targets": {},
+    "totals": {},
+    "failedLines": []
+  },
+  "clippy-executor": {
+    "exit": "0",
+    "targets": {},
+    "totals": {},
+    "failedLines": []
+  },
+  "clippy-mcp-initial": {
+    "exit": "101",
+    "targets": {},
+    "totals": {},
+    "failedLines": []
+  },
+  "clippy-mcp": {
+    "exit": "0",
+    "targets": {},
+    "totals": {},
+    "failedLines": []
+  },
+  "deny": {
+    "exit": "0",
+    "targets": {},
+    "totals": {},
+    "failedLines": []
+  },
+  "df": {
+    "exit": "0",
+    "targets": {},
+    "totals": {},
+    "failedLines": []
+  },
+  "fmt-executor-initial": {
+    "exit": "0",
+    "targets": {},
+    "totals": {},
+    "failedLines": []
+  },
+  "fmt-executor": {
+    "exit": "0",
+    "targets": {},
+    "totals": {},
+    "failedLines": []
+  },
+  "fmt-mcp-initial": {
+    "exit": "0",
+    "targets": {},
+    "totals": {},
+    "failedLines": []
+  },
+  "fmt-mcp": {
+    "exit": "0",
+    "targets": {},
+    "totals": {},
+    "failedLines": []
+  },
+  "generator": {
+    "exit": "not-recorded",
+    "targets": {},
+    "totals": {},
+    "failedLines": []
+  },
+  "new-executor": {
+    "exit": "0",
+    "targets": {
+      "Running tests\\c33_r4_closure.rs (target\\debug\\deps\\c33_r4_closure-6b383395ab7d5f8f.exe)": [
+        1,
+        0,
+        0,
+        0
+      ]
+    },
+    "totals": {
+      "passed": 1,
+      "failed": 0,
+      "ignored": 0,
+      "filtered": 0
+    },
+    "failedLines": []
+  },
+  "new-mcp": {
+    "exit": "0",
+    "targets": {
+      "Running tests\\c33_r4_closure.rs (target\\debug\\deps\\c33_r4_closure-6cd6d203055e1bdd.exe)": [
+        1,
+        0,
+        0,
+        0
+      ]
+    },
+    "totals": {
+      "passed": 1,
+      "failed": 0,
+      "ignored": 0,
+      "filtered": 0
+    },
+    "failedLines": []
+  },
+  "ownership": {
+    "exit": "not-recorded",
+    "targets": {},
+    "totals": {},
+    "failedLines": []
+  },
+  "python": {
+    "exit": "0",
+    "targets": {},
+    "totals": {},
+    "failedLines": []
+  },
+  "rollback-executor": {
+    "exit": "0",
+    "targets": {
+      "Running tests\\c33_r4_rollback.rs (target\\debug\\deps\\c33_r4_rollback-1443292d473768c7.exe)": [
+        1,
+        0,
+        0,
+        0
+      ]
+    },
+    "totals": {
+      "passed": 1,
+      "failed": 0,
+      "ignored": 0,
+      "filtered": 0
+    },
+    "failedLines": []
+  },
+  "rollback-mcp-initial": {
+    "exit": "101",
+    "targets": {},
+    "totals": {},
+    "failedLines": []
+  },
+  "rollback-mcp": {
+    "exit": "0",
+    "targets": {
+      "Running tests\\c33_r4_rollback.rs (target\\debug\\deps\\c33_r4_rollback-f0d6ec8e8a227d61.exe)": [
+        1,
+        0,
+        0,
+        0
+      ]
+    },
+    "totals": {
+      "passed": 1,
+      "failed": 0,
+      "ignored": 0,
+      "filtered": 0
+    },
+    "failedLines": []
+  },
+  "sdk": {
+    "exit": "0",
+    "targets": {},
+    "totals": {},
+    "failedLines": []
+  },
+  "tooling": {
+    "exit": "0",
+    "targets": {},
+    "totals": {},
+    "failedLines": []
+  },
+  "workspace": {
+    "exit": "101",
+    "targets": {
+      "Running unittests src\\lib.rs (target\\debug\\deps\\tt_anim-6a28d2ba3360b95a.exe)": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "Running tests\\c31_exposure.rs (target\\debug\\deps\\c31_exposure-7fdc6576389c952b.exe)": [
+        16,
+        0,
+        0,
+        0
+      ],
+      "Running tests\\c31_r1_hierarchy.rs (target\\debug\\deps\\c31_r1_hierarchy-d6e3a33a03981774.exe)": [
+        2,
+        0,
+        0,
+        0
+      ],
+      "Running tests\\c31_r1_oracle.rs (target\\debug\\deps\\c31_r1_oracle-4b4479391c76963a.exe)": [
+        11,
+        0,
+        0,
+        0
+      ],
+      "Running tests\\c31_r2_variants.rs (target\\debug\\deps\\c31_r2_variants-b2ab506a4fadb01d.exe)": [
+        3,
+        0,
+        0,
+        0
+      ],
+      "Running tests\\c32_maths.rs (target\\debug\\deps\\c32_maths-357c01850bfbb2a4.exe)": [
+        20,
+        0,
+        0,
+        0
+      ],
+      "Running tests\\c32_passage.rs (target\\debug\\deps\\c32_passage-394253927472cf70.exe)": [
+        5,
+        0,
+        0,
+        0
+      ],
+      "Running tests\\c32_r1_affine.rs (target\\debug\\deps\\c32_r1_affine-d31646ca993ee6e5.exe)": [
+        1,
+        0,
+        0,
+        0
+      ],
+      "Running tests\\c32_r1_closed_forms.rs (target\\debug\\deps\\c32_r1_closed_forms-827679ec0286634a.exe)": [
+        2,
+        0,
+        0,
+        0
+      ],
+      "Running tests\\c32_r1_corpus.rs (target\\debug\\deps\\c32_r1_corpus-99cc510e179b9953.exe)": [
+        2,
+        0,
+        0,
+        0
+      ],
+      "Running tests\\c32_r1_default_frame.rs (target\\debug\\deps\\c32_r1_default_frame-8b4fa22b3b496d51.exe)": [
+        2,
+        0,
+        0,
+        0
+      ],
+      "Running tests\\c32_r1_passage.rs (target\\debug\\deps\\c32_r1_passage-018b1ecb81d5f4d8.exe)": [
+        1,
+        0,
+        0,
+        0
+      ],
+      "Running tests\\c32_r2_camera.rs (target\\debug\\deps\\c32_r2_camera-2dc8af37c0a9a1aa.exe)": [
+        1,
+        0,
+        0,
+        0
+      ],
+      "Running tests\\c32_r2_corpus.rs (target\\debug\\deps\\c32_r2_corpus-81b5e6fdd08f1fb3.exe)": [
+        2,
+        0,
+        0,
+        0
+      ],
+      "Running tests\\c32_r2_passage.rs (target\\debug\\deps\\c32_r2_passage-b644b121b3339559.exe)": [
+        2,
+        0,
+        0,
+        0
+      ],
+      "Running tests\\c32_r2_tcb.rs (target\\debug\\deps\\c32_r2_tcb-d7996a5f1f1a8e76.exe)": [
+        1,
+        0,
+        0,
+        0
+      ],
+      "Running tests\\c32_round1.rs (target\\debug\\deps\\c32_round1-2415b5ccbbafc6e7.exe)": [
+        4,
+        0,
+        0,
+        0
+      ],
+      "Running unittests src\\lib.rs (target\\debug\\deps\\tt_audio-20069dfb33b008d5.exe)": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "Running unittests src\\lib.rs (target\\debug\\deps\\tt_colour-c2b88d80e276356c.exe)": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "Running unittests src\\lib.rs (target\\debug\\deps\\tt_desktop-5bf8cb8b0c7b4657.exe)": [
+        38,
+        0,
+        0,
+        0
+      ],
+      "Running unittests src\\main.rs (target\\debug\\deps\\toontown-dcd1999ecaf5ecfe.exe)": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "Running ..\\..\\tests\\adversarial\\c03-r2-encoder.rs (target\\debug\\deps\\c03_r2_encoder-c5ea456bfc44c7f2.exe)": [
+        11,
+        0,
+        0,
+        0
+      ],
+      "Running unittests src\\lib.rs (target\\debug\\deps\\tt_engine-c0d1bf7cf47ba8e3.exe)": [
+        19,
+        0,
+        0,
+        0
+      ],
+      "Running tests\\c11_r1_wire.rs (target\\debug\\deps\\c11_r1_wire-31ca137056700292.exe)": [
+        4,
+        0,
+        0,
+        0
+      ],
+      "Running tests\\c11_r2_wire.rs (target\\debug\\deps\\c11_r2_wire-b38299f4e5741142.exe)": [
+        6,
+        0,
+        0,
+        0
+      ],
+      "Running tests\\c11_r3_wire.rs (target\\debug\\deps\\c11_r3_wire-ee90cd6d32721209.exe)": [
+        2,
+        0,
+        0,
+        0
+      ],
+      "Running tests\\frontend_schemas.rs (target\\debug\\deps\\frontend_schemas-cce9c5ab7aee86f8.exe)": [
+        3,
+        0,
+        0,
+        0
+      ],
+      "Running tests\\wire_corpus.rs (target\\debug\\deps\\wire_corpus-7c8fd569dffac8db.exe)": [
+        4,
+        0,
+        0,
+        0
+      ],
+      "Running unittests src\\lib.rs (target\\debug\\deps\\tt_executor-478d092951c0e766.exe)": [
+        7,
+        0,
+        0,
+        0
+      ],
+      "Running tests\\c12_checkpoint_property.rs (target\\debug\\deps\\c12_checkpoint_property-7b3328cf4c46296d.exe)": [
+        1,
+        0,
+        0,
+        0
+      ],
+      "Running tests\\c12_edit_ops.rs (target\\debug\\deps\\c12_edit_ops-cd6e55b17d3e233e.exe)": [
+        16,
+        0,
+        0,
+        0
+      ],
+      "Running tests\\c12_invalidation_property.rs (target\\debug\\deps\\c12_invalidation_property-0982c5a5b8211215.exe)": [
+        1,
+        0,
+        0,
+        0
+      ],
+      "Running tests\\c12_kernel_state.rs (target\\debug\\deps\\c12_kernel_state-a6b02ce90c73004c.exe)": [
+        7,
+        0,
+        0,
+        0
+      ],
+      "Running tests\\c12_never_block.rs (target\\debug\\deps\\c12_never_block-b46ce6412b402e0c.exe)": [
+        1,
+        0,
+        0,
+        0
+      ],
+      "Running tests\\c12_policy.rs (target\\debug\\deps\\c12_policy-82d473c3c1159261.exe)": [
+        11,
+        0,
+        0,
+        0
+      ],
+      "Running tests\\c12_r1_contracts.rs (target\\debug\\deps\\c12_r1_contracts-5f1e8638cca8addc.exe)": [
+        36,
+        0,
+        0,
+        0
+      ],
+      "Running tests\\c12_r1_macro.rs (target\\debug\\deps\\c12_r1_macro-86a6529d7f82b167.exe)": [
+        2,
+        0,
+        0,
+        0
+      ],
+      "Running tests\\c12_r1_scale.rs (target\\debug\\deps\\c12_r1_scale-c98e176b2ca6dfe8.exe)": [
+        1,
+        0,
+        0,
+        0
+      ],
+      "Running tests\\c12_r1_stress.rs (target\\debug\\deps\\c12_r1_stress-eadb921bbd831157.exe)": [
+        5,
+        0,
+        0,
+        0
+      ],
+      "Running tests\\c12_r2_contracts.rs (target\\debug\\deps\\c12_r2_contracts-a8d1f3bfa9d1744f.exe)": [
+        40,
+        0,
+        0,
+        0
+      ],
+      "Running tests\\c12_r2_registry.rs (target\\debug\\deps\\c12_r2_registry-2cb20bf6b02758c6.exe)": [
+        7,
+        0,
+        0,
+        0
+      ],
+      "Running tests\\c12_r2_scale.rs (target\\debug\\deps\\c12_r2_scale-01c500fcb33039c1.exe)": [
+        1,
+        0,
+        0,
+        0
+      ],
+      "Running tests\\c12_r3_contracts.rs (target\\debug\\deps\\c12_r3_contracts-863b0aac130afc65.exe)": [
+        15,
+        0,
+        0,
+        0
+      ],
+      "Running tests\\c12_r3_registry.rs (target\\debug\\deps\\c12_r3_registry-4b41a27dc0aaacc9.exe)": [
+        12,
+        0,
+        0,
+        0
+      ],
+      "Running tests\\c12_r3_stress.rs (target\\debug\\deps\\c12_r3_stress-8a700d0ed1600042.exe)": [
+        5,
+        0,
+        0,
+        0
+      ],
+      "Running tests\\c12_r4_closure.rs (target\\debug\\deps\\c12_r4_closure-17d8886da0d00267.exe)": [
+        4,
+        0,
+        0,
+        0
+      ],
+      "Running tests\\c12_registry.rs (target\\debug\\deps\\c12_registry-155fa0e27e047d2c.exe)": [
+        6,
+        0,
+        0,
+        0
+      ],
+      "Running tests\\c12_transactions.rs (target\\debug\\deps\\c12_transactions-aa60a120cb465394.exe)": [
+        14,
+        0,
+        0,
+        0
+      ],
+      "Running tests\\c13_doc.rs (target\\debug\\deps\\c13_doc-fde9103a2549d348.exe)": [
+        9,
+        0,
+        0,
+        0
+      ],
+      "Running tests\\c13_projects.rs (target\\debug\\deps\\c13_projects-fe8282c35fd99d4b.exe)": [
+        13,
+        0,
+        0,
+        0
+      ],
+      "Running tests\\c13_r1_persistence.rs (target\\debug\\deps\\c13_r1_persistence-86b74d8ad376ad4a.exe)": [
+        18,
+        0,
+        0,
+        0
+      ],
+      "Running tests\\c13_r2_persistence.rs (target\\debug\\deps\\c13_r2_persistence-dc29558bedfb82c6.exe)": [
+        14,
+        0,
+        0,
+        0
+      ],
+      "Running tests\\c13_r3_history_r1.rs (target\\debug\\deps\\c13_r3_history_r1-a1f288e7d37afa8c.exe)": [
+        1,
+        0,
+        0,
+        0
+      ],
+      "Running tests\\c13_r3_history_r3.rs (target\\debug\\deps\\c13_r3_history_r3-a9ed0bceeb23dd9b.exe)": [
+        1,
+        0,
+        0,
+        0
+      ],
+      "Running tests\\c13_r3_persistence.rs (target\\debug\\deps\\c13_r3_persistence-50a8922d5689826e.exe)": [
+        10,
+        0,
+        0,
+        0
+      ],
+      "Running tests\\c13_r4_closure.rs (target\\debug\\deps\\c13_r4_closure-a67e5cd1f30fd7b3.exe)": [
+        2,
+        0,
+        0,
+        0
+      ],
+      "Running tests\\c14_lock_races.rs (target\\debug\\deps\\c14_lock_races-36acfd86ec4dd8ae.exe)": [
+        9,
+        0,
+        1,
+        0
+      ],
+      "Running tests\\c14_measurements.rs (target\\debug\\deps\\c14_measurements-7c9ef6a37464a47c.exe)": [
+        2,
+        0,
+        0,
+        0
+      ],
+      "Running tests\\c14_obligations.rs (target\\debug\\deps\\c14_obligations-079b98ed92e1a991.exe)": [
+        7,
+        0,
+        0,
+        0
+      ],
+      "Running tests\\c14_r2_contracts.rs (target\\debug\\deps\\c14_r2_contracts-33069e625831be32.exe)": [
+        3,
+        0,
+        0,
+        0
+      ],
+      "Running tests\\c14_r2_effects.rs (target\\debug\\deps\\c14_r2_effects-545fb72134e57d2c.exe)": [
+        4,
+        0,
+        0,
+        0
+      ],
+      "Running tests\\c21_determinism.rs (target\\debug\\deps\\c21_determinism-095ef029fa2aaac3.exe)": [
+        1,
+        0,
+        0,
+        0
+      ],
+      "Running tests\\c21_draw.rs (target\\debug\\deps\\c21_draw-58bb3f446db3f1c2.exe)": [
+        11,
+        0,
+        0,
+        0
+      ],
+      "Running tests\\c21_example_results.rs (target\\debug\\deps\\c21_example_results-b8de947e1426422a.exe)": [
+        2,
+        0,
+        0,
+        0
+      ],
+      "Running tests\\c21_measurements.rs (target\\debug\\deps\\c21_measurements-af306d748642acf8.exe)": [
+        0,
+        0,
+        1,
+        0
+      ],
+      "Running tests\\c21_obligations.rs (target\\debug\\deps\\c21_obligations-68d13df19a79358a.exe)": [
+        7,
+        0,
+        0,
+        0
+      ],
+      "Running tests\\c21_r1_autosave.rs (target\\debug\\deps\\c21_r1_autosave-add07b52d93af535.exe)": [
+        1,
+        0,
+        0,
+        0
+      ],
+      "Running tests\\c21_r1_contracts.rs (target\\debug\\deps\\c21_r1_contracts-d7a95ef4e3ac83bc.exe)": [
+        6,
+        0,
+        0,
+        0
+      ],
+      "Running tests\\c21_r1_retention.rs (target\\debug\\deps\\c21_r1_retention-8b6c5070c0031918.exe)": [
+        1,
+        0,
+        0,
+        0
+      ],
+      "Running tests\\c21_r2_contracts.rs (target\\debug\\deps\\c21_r2_contracts-940f2c7cbcfc4e36.exe)": [
+        8,
+        0,
+        0,
+        0
+      ],
+      "Running tests\\c21_r3_contracts.rs (target\\debug\\deps\\c21_r3_contracts-fa92f88b0a801770.exe)": [
+        6,
+        0,
+        1,
+        0
+      ],
+      "Running tests\\c22_determinism.rs (target\\debug\\deps\\c22_determinism-6fdeb39491a4afcf.exe)": [
+        1,
+        0,
+        0,
+        0
+      ],
+      "Running tests\\c22_planar.rs (target\\debug\\deps\\c22_planar-54772345cfc12469.exe)": [
+        11,
+        0,
+        0,
+        0
+      ],
+      "Running tests\\c22_r1_cache.rs (target\\debug\\deps\\c22_r1_cache-f6c90a3cb78ec122.exe)": [
+        1,
+        0,
+        0,
+        0
+      ],
+      "Running tests\\c22_r1_commands.rs (target\\debug\\deps\\c22_r1_commands-fb33a6eddfd5f0d8.exe)": [
+        8,
+        0,
+        0,
+        0
+      ],
+      "Running tests\\c22_r2_commands.rs (target\\debug\\deps\\c22_r2_commands-ad699f0f07644975.exe)": [
+        12,
+        0,
+        0,
+        0
+      ],
+      "Running tests\\c22_r3_cache.rs (target\\debug\\deps\\c22_r3_cache-1065883b154bc461.exe)": [
+        1,
+        0,
+        0,
+        0
+      ],
+      "Running tests\\c22_r3_commands.rs (target\\debug\\deps\\c22_r3_commands-fb097c4224c85b44.exe)": [
+        5,
+        0,
+        0,
+        0
+      ],
+      "Running tests\\c22_r4_closure.rs (target\\debug\\deps\\c22_r4_closure-44d3a969dff7f13f.exe)": [
+        2,
+        0,
+        0,
+        0
+      ],
+      "Running tests\\c22_recovery.rs (target\\debug\\deps\\c22_recovery-ab43fc94d5af8896.exe)": [
+        5,
+        0,
+        0,
+        0
+      ],
+      "Running tests\\c23_colour.rs (target\\debug\\deps\\c23_colour-3de44e4ff1f102d5.exe)": [
+        5,
+        0,
+        0,
+        0
+      ],
+      "Running tests\\c23_contracts.rs (target\\debug\\deps\\c23_contracts-e18e44497636d86d.exe)": [
+        3,
+        0,
+        0,
+        0
+      ],
+      "Running tests\\c23_cut.rs (target\\debug\\deps\\c23_cut-cbf7fb785d48d46b.exe)": [
+        4,
+        0,
+        0,
+        0
+      ],
+      "Running tests\\c23_layers.rs (target\\debug\\deps\\c23_layers-b7114101423c3c4a.exe)": [
+        5,
+        0,
+        0,
+        0
+      ],
+      "Running tests\\c23_measure.rs (target\\debug\\deps\\c23_measure-42913380ea209907.exe)": [
+        0,
+        0,
+        1,
+        0
+      ],
+      "Running tests\\c23_r1_colour.rs (target\\debug\\deps\\c23_r1_colour-addcba51e2b8a94b.exe)": [
+        3,
+        0,
+        0,
+        0
+      ],
+      "Running tests\\c23_r1_commands.rs (target\\debug\\deps\\c23_r1_commands-1409883814cf7d06.exe)": [
+        10,
+        0,
+        0,
+        0
+      ],
+      "Running tests\\c23_r1_contracts.rs (target\\debug\\deps\\c23_r1_contracts-18145c52870105df.exe)": [
+        2,
+        0,
+        0,
+        0
+      ],
+      "Running tests\\c23_r1_controls.rs (target\\debug\\deps\\c23_r1_controls-c259e534264adeca.exe)": [
+        3,
+        0,
+        0,
+        0
+      ],
+      "Running tests\\c23_r1_measure.rs (target\\debug\\deps\\c23_r1_measure-7385c4e35fb3b0a6.exe)": [
+        0,
+        0,
+        1,
+        0
+      ],
+      "Running tests\\c23_r2_closure.rs (target\\debug\\deps\\c23_r2_closure-ff717973783fdaf9.exe)": [
+        15,
+        0,
+        0,
+        0
+      ],
+      "Running tests\\c23_r2_limits.rs (target\\debug\\deps\\c23_r2_limits-d0273b26e290e2a5.exe)": [
+        1,
+        0,
+        0,
+        0
+      ],
+      "Running tests\\c23_r2_watchdog.rs (target\\debug\\deps\\c23_r2_watchdog-5379ce2bcc43ea15.exe)": [
+        1,
+        0,
+        0,
+        0
+      ],
+      "Running tests\\c23_r3_budgets.rs (target\\debug\\deps\\c23_r3_budgets-3f374f79db879e1a.exe)": [
+        1,
+        0,
+        0,
+        0
+      ],
+      "Running tests\\c23_r3_cancellation.rs (target\\debug\\deps\\c23_r3_cancellation-f8f9433bafc8f2c4.exe)": [
+        1,
+        0,
+        0,
+        0
+      ],
+      "Running tests\\c23_r3_closure.rs (target\\debug\\deps\\c23_r3_closure-b039de21bb0e2636.exe)": [
+        3,
+        0,
+        0,
+        0
+      ],
+      "Running tests\\c23_r3_inputs.rs (target\\debug\\deps\\c23_r3_inputs-7a4d90b3f5537105.exe)": [
+        1,
+        0,
+        0,
+        0
+      ],
+      "Running tests\\c23_r3_profile.rs (target\\debug\\deps\\c23_r3_profile-dc4cfbb25e1fe8bc.exe)": [
+        1,
+        0,
+        0,
+        0
+      ],
+      "Running tests\\c23_r3_selection_cancel.rs (target\\debug\\deps\\c23_r3_selection_cancel-804a80aa223931e4.exe)": [
+        1,
+        0,
+        0,
+        0
+      ],
+      "Running tests\\c23_r3_session.rs (target\\debug\\deps\\c23_r3_session-4ed30fead593dd2c.exe)": [
+        1,
+        0,
+        0,
+        0
+      ],
+      "Running tests\\c23_r3_texture.rs (target\\debug\\deps\\c23_r3_texture-697fea01140819de.exe)": [
+        1,
+        0,
+        0,
+        0
+      ],
+      "Running tests\\c23_r3_topology.rs (target\\debug\\deps\\c23_r3_topology-f5516556282fb705.exe)": [
+        1,
+        0,
+        0,
+        0
+      ],
+      "Running tests\\c23_r4_closure.rs (target\\debug\\deps\\c23_r4_closure-9d3d90d9c608fd6f.exe)": [
+        3,
+        0,
+        0,
+        0
+      ],
+      "Running tests\\c23_render.rs (target\\debug\\deps\\c23_render-7226322a6ad3c5c2.exe)": [
+        4,
+        0,
+        0,
+        0
+      ],
+      "Running tests\\c23_round2.rs (target\\debug\\deps\\c23_round2-8b6aced3365c0776.exe)": [
+        3,
+        0,
+        0,
+        0
+      ],
+      "Running tests\\c23_round3.rs (target\\debug\\deps\\c23_round3-cbf28fec0844eaf4.exe)": [
+        2,
+        0,
+        0,
+        0
+      ],
+      "Running tests\\c23_select.rs (target\\debug\\deps\\c23_select-d25ca8f5d1e286ab.exe)": [
+        5,
+        0,
+        0,
+        0
+      ],
+      "Running tests\\c23_strokeops.rs (target\\debug\\deps\\c23_strokeops-a8119bf66d43211a.exe)": [
+        6,
+        0,
+        0,
+        0
+      ],
+      "Running tests\\c23_transform.rs (target\\debug\\deps\\c23_transform-b36a06704ee71ab9.exe)": [
+        9,
+        0,
+        0,
+        0
+      ],
+      "Running tests\\c23_watchdog.rs (target\\debug\\deps\\c23_watchdog-09c4c02d84613b90.exe)": [
+        2,
+        0,
+        0,
+        0
+      ],
+      "Running tests\\c24_aggregate.rs (target\\debug\\deps\\c24_aggregate-96c26bc5a7acb55b.exe)": [
+        1,
+        0,
+        1,
+        0
+      ],
+      "Running tests\\c24_budgets.rs (target\\debug\\deps\\c24_budgets-d4324059486660a9.exe)": [
+        0,
+        0,
+        1,
+        0
+      ],
+      "Running tests\\c24_centre_line.rs (target\\debug\\deps\\c24_centre_line-e7aa5d940584dbe0.exe)": [
+        3,
+        0,
+        0,
+        0
+      ],
+      "Running tests\\c24_contracts.rs (target\\debug\\deps\\c24_contracts-304cdf4b2a4f0fe7.exe)": [
+        2,
+        0,
+        0,
+        0
+      ],
+      "Running tests\\c24_cutter_snapping.rs (target\\debug\\deps\\c24_cutter_snapping-ed09cbf580530d84.exe)": [
+        2,
+        0,
+        0,
+        0
+      ],
+      "Running tests\\c24_measure.rs (target\\debug\\deps\\c24_measure-43d39a4f52f33f39.exe)": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "Running tests\\c24_oracle_routes.rs (target\\debug\\deps\\c24_oracle_routes-6ce65875329c58c0.exe)": [
+        12,
+        0,
+        0,
+        0
+      ],
+      "Running tests\\c24_r1_lifecycle.rs (target\\debug\\deps\\c24_r1_lifecycle-4d48064e8dbd8f57.exe)": [
+        3,
+        0,
+        0,
+        0
+      ],
+      "Running tests\\c24_r1_topology.rs (target\\debug\\deps\\c24_r1_topology-22e6bebe21b1e6ad.exe)": [
+        5,
+        0,
+        0,
+        0
+      ],
+      "Running tests\\c24_r2_routes.rs (target\\debug\\deps\\c24_r2_routes-3b5f13dca8752dc5.exe)": [
+        13,
+        0,
+        0,
+        0
+      ],
+      "Running tests\\c24_r2_topology.rs (target\\debug\\deps\\c24_r2_topology-da19e687c11f0f98.exe)": [
+        6,
+        0,
+        0,
+        0
+      ],
+      "Running tests\\c24_r2_variants.rs (target\\debug\\deps\\c24_r2_variants-bccf5ba454c0bf2c.exe)": [
+        9,
+        0,
+        0,
+        0
+      ],
+      "Running tests\\c24_r3_domains.rs (target\\debug\\deps\\c24_r3_domains-4d8cf1d24abcac22.exe)": [
+        14,
+        0,
+        0,
+        0
+      ],
+      "Running tests\\c24_r3_routes.rs (target\\debug\\deps\\c24_r3_routes-2a8ab6ef7760a64a.exe)": [
+        13,
+        0,
+        0,
+        0
+      ],
+      "Running tests\\c24_r3_topology.rs (target\\debug\\deps\\c24_r3_topology-3a91ea78d076caf4.exe)": [
+        6,
+        0,
+        0,
+        0
+      ],
+      "Running tests\\c24_r4_closure.rs (target\\debug\\deps\\c24_r4_closure-810938573aef75f9.exe)": [
+        4,
+        0,
+        0,
+        0
+      ],
+      "Running tests\\c24_route_domains.rs (target\\debug\\deps\\c24_route_domains-6593a5c48834d382.exe)": [
+        10,
+        0,
+        0,
+        0
+      ],
+      "Running tests\\c24_symmetry.rs (target\\debug\\deps\\c24_symmetry-5157d9beab446583.exe)": [
+        2,
+        0,
+        0,
+        0
+      ],
+      "Running tests\\c24_text_layout.rs (target\\debug\\deps\\c24_text_layout-51241a08ec1a3ae2.exe)": [
+        2,
+        0,
+        0,
+        0
+      ],
+      "Running tests\\c24_topology.rs (target\\debug\\deps\\c24_topology-f0c16a9cb54e41a5.exe)": [
+        4,
+        0,
+        0,
+        0
+      ],
+      "Running tests\\c24_vectorize.rs (target\\debug\\deps\\c24_vectorize-cccad5ca0083cb3c.exe)": [
+        11,
+        0,
+        0,
+        0
+      ],
+      "Running tests\\c31_bank_xsheet.rs (target\\debug\\deps\\c31_bank_xsheet-d5d5cf549a6b2f61.exe)": [
+        9,
+        0,
+        0,
+        0
+      ],
+      "Running tests\\c31_budgets.rs (target\\debug\\deps\\c31_budgets-0827e8af1203ab17.exe)": [
+        0,
+        0,
+        1,
+        0
+      ],
+      "Running tests\\c31_cells.rs (target\\debug\\deps\\c31_cells-b0a07681010c56c4.exe)": [
+        16,
+        0,
+        0,
+        0
+      ],
+      "Running tests\\c31_elements.rs (target\\debug\\deps\\c31_elements-4723029d4fdd1d78.exe)": [
+        16,
+        0,
+        0,
+        0
+      ],
+      "Running tests\\c31_obligations.rs (target\\debug\\deps\\c31_obligations-f405bbaa45e32a1b.exe)": [
+        9,
+        0,
+        0,
+        0
+      ],
+      "Running tests\\c31_r1_availability.rs (target\\debug\\deps\\c31_r1_availability-7b0882b305ce1633.exe)": [
+        1,
+        0,
+        0,
+        0
+      ],
+      "Running tests\\c31_r1_contract.rs (target\\debug\\deps\\c31_r1_contract-09be4e051557af81.exe)": [
+        28,
+        0,
+        0,
+        0
+      ],
+      "Running tests\\c31_r1_copy_settle.rs (target\\debug\\deps\\c31_r1_copy_settle-70c391a925cfa0a6.exe)": [
+        1,
+        0,
+        0,
+        0
+      ],
+      "Running tests\\c31_r1_model_diff.rs (target\\debug\\deps\\c31_r1_model_diff-9c9155239825826e.exe)": [
+        2,
+        0,
+        0,
+        0
+      ],
+      "Running tests\\c31_r1_mutations.rs (target\\debug\\deps\\c31_r1_mutations-91a28cf433c32630.exe)": [
+        1,
+        0,
+        0,
+        0
+      ],
+      "Running tests\\c31_r1_notes.rs (target\\debug\\deps\\c31_r1_notes-d1f3eef9e2137c6a.exe)": [
+        1,
+        0,
+        0,
+        0
+      ],
+      "Running tests\\c31_r1_selection_budget.rs (target\\debug\\deps\\c31_r1_selection_budget-6dd3e36ea1c8668d.exe)": [
+        1,
+        0,
+        0,
+        0
+      ],
+      "Running tests\\c31_r2_cancellation.rs (target\\debug\\deps\\c31_r2_cancellation-ac5996a4d1ba76a9.exe)": [
+        2,
+        0,
+        0,
+        0
+      ],
+      "Running tests\\c31_r2_notes_boundary.rs (target\\debug\\deps\\c31_r2_notes_boundary-a6b218b92faa3202.exe)": [
+        1,
+        0,
+        0,
+        0
+      ],
+      "Running tests\\c31_r2_persistence.rs (target\\debug\\deps\\c31_r2_persistence-d2aa48fc42a241a4.exe)": [
+        3,
+        0,
+        0,
+        0
+      ],
+      "Running tests\\c31_r2_variants.rs (target\\debug\\deps\\c31_r2_variants-8241fd720068f355.exe)": [
+        21,
+        0,
+        0,
+        0
+      ],
+      "Running tests\\c31_r3_binary.rs (target\\debug\\deps\\c31_r3_binary-85d9390b745bd9ea.exe)": [
+        5,
+        0,
+        0,
+        0
+      ],
+      "Running tests\\c31_r3_closure.rs (target\\debug\\deps\\c31_r3_closure-362c39e99cb5a2af.exe)": [
+        4,
+        0,
+        0,
+        0
+      ],
+      "Running tests\\c31_r3_delegation.rs (target\\debug\\deps\\c31_r3_delegation-eb8ae8e9da5e9910.exe)": [
+        2,
+        0,
+        0,
+        0
+      ],
+      "Running tests\\c31_r3_hierarchy.rs (target\\debug\\deps\\c31_r3_hierarchy-596feaf0c9e79585.exe)": [
+        1,
+        0,
+        0,
+        0
+      ],
+      "Running tests\\c31_r3_patch.rs (target\\debug\\deps\\c31_r3_patch-15f6babef1aafb82.exe)": [
+        4,
+        0,
+        0,
+        0
+      ],
+      "Running tests\\c31_r3_selection.rs (target\\debug\\deps\\c31_r3_selection-81ec6c9d018f5820.exe)": [
+        1,
+        0,
+        0,
+        0
+      ],
+      "Running tests\\c31_r3_sequences.rs (target\\debug\\deps\\c31_r3_sequences-28360ab7a0e2aaa3.exe)": [
+        1,
+        0,
+        0,
+        0
+      ],
+      "Running tests\\c31_r4_closure.rs (target\\debug\\deps\\c31_r4_closure-1208d5ed2fed4c19.exe)": [
+        5,
+        0,
+        0,
+        0
+      ],
+      "Running tests\\c31_round1.rs (target\\debug\\deps\\c31_round1-05419cf6bc5903d0.exe)": [
+        11,
+        0,
+        0,
+        0
+      ],
+      "Running tests\\c31_round2.rs (target\\debug\\deps\\c31_round2-b6e4182a655c28bc.exe)": [
+        10,
+        0,
+        0,
+        0
+      ],
+      "Running tests\\c31_round3.rs (target\\debug\\deps\\c31_round3-a97f15eec6b4e8c7.exe)": [
+        4,
+        0,
+        0,
+        0
+      ],
+      "Running tests\\c32_budgets.rs (target\\debug\\deps\\c32_budgets-3bab265550b3216c.exe)": [
+        0,
+        0,
+        1,
+        0
+      ],
+      "Running tests\\c32_contract.rs (target\\debug\\deps\\c32_contract-d1be14712f055f38.exe)": [
+        8,
+        0,
+        0,
+        0
+      ],
+      "Running tests\\c32_r1_delegation.rs (target\\debug\\deps\\c32_r1_delegation-a62b436e2d59ee5b.exe)": [
+        1,
+        0,
+        0,
+        0
+      ],
+      "Running tests\\c32_r1_queries.rs (target\\debug\\deps\\c32_r1_queries-ba2166c01feb8681.exe)": [
+        1,
+        0,
+        0,
+        0
+      ],
+      "Running tests\\c32_r2_c21_golden.rs (target\\debug\\deps\\c32_r2_c21_golden-bced3debf1a9b13c.exe)": [
+        1,
+        0,
+        0,
+        0
+      ],
+      "Running tests\\c32_r2_c22_golden.rs (target\\debug\\deps\\c32_r2_c22_golden-cd67fa2978119283.exe)": [
+        1,
+        0,
+        0,
+        0
+      ],
+      "Running tests\\c32_r2_camera.rs (target\\debug\\deps\\c32_r2_camera-740b1e455308ca90.exe)": [
+        2,
+        0,
+        0,
+        0
+      ],
+      "Running tests\\c32_r2_events.rs (target\\debug\\deps\\c32_r2_events-7875bbe5e6415037.exe)": [
+        4,
+        0,
+        0,
+        0
+      ],
+      "Running tests\\c32_r2_finite.rs (target\\debug\\deps\\c32_r2_finite-f47cbd0224b16707.exe)": [
+        1,
+        0,
+        0,
+        0
+      ],
+      "Running tests\\c32_r2_numeric.rs (target\\debug\\deps\\c32_r2_numeric-7f4305686d66066f.exe)": [
+        1,
+        0,
+        0,
+        0
+      ],
+      "Running tests\\c32_r2_path_budget.rs (target\\debug\\deps\\c32_r2_path_budget-fdc9faa2ccfe6625.exe)": [
+        1,
+        0,
+        0,
+        0
+      ],
+      "Running tests\\c32_r3_camera.rs (target\\debug\\deps\\c32_r3_camera-87bd18dade248b43.exe)": [
+        1,
+        0,
+        0,
+        0
+      ],
+      "Running tests\\c32_r3_history.rs (target\\debug\\deps\\c32_r3_history-164ef4667b975c49.exe)": [
+        5,
+        0,
+        0,
+        0
+      ],
+      "Running tests\\c32_r4_closure.rs (target\\debug\\deps\\c32_r4_closure-d57622ef11178521.exe)": [
+        1,
+        0,
+        0,
+        0
+      ],
+      "Running tests\\c32_readiness.rs (target\\debug\\deps\\c32_readiness-3f53977eea38a1c7.exe)": [
+        3,
+        0,
+        0,
+        0
+      ],
+      "Running tests\\c32_round1.rs (target\\debug\\deps\\c32_round1-29b4c9ea52abf996.exe)": [
+        8,
+        0,
+        0,
+        0
+      ],
+      "Running tests\\c32_round2.rs (target\\debug\\deps\\c32_round2-b2f7d24d2467c4d2.exe)": [
+        4,
+        0,
+        0,
+        0
+      ],
+      "Running tests\\c32_round3.rs (target\\debug\\deps\\c32_round3-aeb04990884ca84b.exe)": [
+        5,
+        0,
+        0,
+        0
+      ],
+      "Running tests\\c32_semantics.rs (target\\debug\\deps\\c32_semantics-a43df0edc3140107.exe)": [
+        22,
+        0,
+        0,
+        0
+      ],
+      "Running tests\\c33_bitmap.rs (target\\debug\\deps\\c33_bitmap-7b4da97682471f9f.exe)": [
+        2,
+        0,
+        0,
+        0
+      ],
+      "Running tests\\c33_goldens.rs (target\\debug\\deps\\c33_goldens-50c2584a1f0c5fae.exe)": [
+        2,
+        0,
+        0,
+        0
+      ],
+      "Running tests\\c33_inspect.rs (target\\debug\\deps\\c33_inspect-7436f70406da9301.exe)": [
+        6,
+        0,
+        0,
+        0
+      ],
+      "Running tests\\c33_r1_bitmap.rs (target\\debug\\deps\\c33_r1_bitmap-467bcf2bbb4d011c.exe)": [
+        1,
+        0,
+        0,
+        0
+      ],
+      "Running tests\\c33_r1_contract.rs (target\\debug\\deps\\c33_r1_contract-e42fd7f50a3d75c8.exe)": [
+        7,
+        0,
+        0,
+        0
+      ],
+      "Running tests\\c33_r1_crash.rs (target\\debug\\deps\\c33_r1_crash-5ef83a986213e1b1.exe)": [
+        1,
+        1,
+        0,
+        0
+      ],
+      "Running tests\\c33_r1_limits.rs (target\\debug\\deps\\c33_r1_limits-edba01fafaa59eda.exe)": [
+        2,
+        0,
+        0,
+        0
+      ],
+      "Running tests\\c33_r1_pixels.rs (target\\debug\\deps\\c33_r1_pixels-4067c9854c7cdfee.exe)": [
+        6,
+        0,
+        0,
+        0
+      ],
+      "Running tests\\c33_r2_depth.rs (target\\debug\\deps\\c33_r2_depth-99253635ef97485b.exe)": [
+        1,
+        0,
+        0,
+        0
+      ],
+      "Running tests\\c33_r2_recovery.rs (target\\debug\\deps\\c33_r2_recovery-6dc606051ad2eec2.exe)": [
+        3,
+        0,
+        0,
+        0
+      ],
+      "Running tests\\c33_r2_stress.rs (target\\debug\\deps\\c33_r2_stress-c1af32979d6bf25b.exe)": [
+        2,
+        0,
+        0,
+        0
+      ],
+      "Running tests\\c33_r2_visibility.rs (target\\debug\\deps\\c33_r2_visibility-52d492022a1bfa48.exe)": [
+        3,
+        0,
+        0,
+        0
+      ],
+      "Running tests\\c33_r2_wait.rs (target\\debug\\deps\\c33_r2_wait-94b2827c057d637e.exe)": [
+        3,
+        0,
+        0,
+        0
+      ],
+      "Running tests\\c33_r3_live.rs (target\\debug\\deps\\c33_r3_live-7b6d81e8dfb30918.exe)": [
+        2,
+        0,
+        0,
+        0
+      ],
+      "Running tests\\c33_r3_recovery.rs (target\\debug\\deps\\c33_r3_recovery-94118c7814a6ded7.exe)": [
+        2,
+        0,
+        0,
+        0
+      ],
+      "Running tests\\c33_r3_transaction.rs (target\\debug\\deps\\c33_r3_transaction-fed269ca1c2d0bed.exe)": [
+        2,
+        0,
+        0,
+        0
+      ],
+      "Running tests\\c33_r4_closure.rs (target\\debug\\deps\\c33_r4_closure-a323c1e359240de9.exe)": [
+        1,
+        0,
+        0,
+        0
+      ],
+      "Running tests\\c33_r4_rollback.rs (target\\debug\\deps\\c33_r4_rollback-f36d6e1e87263eb6.exe)": [
+        1,
+        0,
+        0,
+        0
+      ],
+      "Running tests\\c33_range.rs (target\\debug\\deps\\c33_range-46cfa65352978fbf.exe)": [
+        3,
+        0,
+        0,
+        0
+      ],
+      "Running tests\\c33_render.rs (target\\debug\\deps\\c33_render-80959ed04b59bd9b.exe)": [
+        9,
+        0,
+        0,
+        0
+      ],
+      "Running tests\\c33_render_list.rs (target\\debug\\deps\\c33_render_list-d72db0908937803d.exe)": [
+        5,
+        0,
+        0,
+        0
+      ],
+      "Running tests\\c33_round1.rs (target\\debug\\deps\\c33_round1-72d140edcb81ada1.exe)": [
+        6,
+        0,
+        0,
+        0
+      ],
+      "Running tests\\c33_round2.rs (target\\debug\\deps\\c33_round2-fb9cf4f09708bf48.exe)": [
+        9,
+        0,
+        0,
+        0
+      ],
+      "Running tests\\c33_round3.rs (target\\debug\\deps\\c33_round3-e4689abf782261a2.exe)": [
+        2,
+        0,
+        0,
+        0
+      ],
+      "Running tests\\compile_fail.rs (target\\debug\\deps\\compile_fail-b20c4ea5f2a97d52.exe)": [
+        1,
+        0,
+        0,
+        0
+      ],
+      "Running unittests src\\lib.rs (target\\debug\\deps\\tt_fx-0a55f0ee41648737.exe)": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "Running unittests src\\main.rs (target\\debug\\deps\\toontown_headless-9257c83a249a1df9.exe)": [
+        8,
+        0,
+        0,
+        0
+      ],
+      "Running ..\\..\\tests\\adversarial\\c01.rs (target\\debug\\deps\\adversarial_c01-4ec8ffd7dbaa78ba.exe)": [
+        7,
+        0,
+        0,
+        0
+      ],
+      "Running tests\\c14_r1.rs (target\\debug\\deps\\c14_r1-f51148f7ac83fcf7.exe)": [
+        1,
+        0,
+        0,
+        0
+      ],
+      "Running tests\\c14_r2.rs (target\\debug\\deps\\c14_r2-b4a39c4b6c6915e3.exe)": [
+        1,
+        0,
+        0,
+        0
+      ],
+      "Running tests\\c14_r3.rs (target\\debug\\deps\\c14_r3-5853337f2102b74e.exe)": [
+        1,
+        0,
+        0,
+        0
+      ],
+      "Running tests\\cancel_phases.rs (target\\debug\\deps\\cancel_phases-39d686f963ba2539.exe)": [
+        3,
+        0,
+        0,
+        0
+      ],
+      "Running tests\\cli.rs (target\\debug\\deps\\cli-9b951271484e44e9.exe)": [
+        6,
+        0,
+        0,
+        0
+      ],
+      "Running tests\\guard_fixtures.rs (target\\debug\\deps\\guard_fixtures-a643e232c2007320.exe)": [
+        1,
+        0,
+        0,
+        0
+      ],
+      "Running tests\\mcp.rs (target\\debug\\deps\\mcp-f011a447f0163e27.exe)": [
+        2,
+        0,
+        0,
+        0
+      ],
+      "Running unittests src\\lib.rs (target\\debug\\deps\\tt_io-fbff6664a1edd267.exe)": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "Running tests\\c24_decode_fuzz.rs (target\\debug\\deps\\c24_decode_fuzz-37b7b3c467d8384b.exe)": [
+        2,
+        0,
+        1,
+        0
+      ],
+      "Running tests\\c24_image.rs (target\\debug\\deps\\c24_image-6b38a96f556cacff.exe)": [
+        4,
+        0,
+        0,
+        0
+      ],
+      "Running tests\\c24_r1_decoder.rs (target\\debug\\deps\\c24_r1_decoder-620c250d37e22fa3.exe)": [
+        1,
+        0,
+        0,
+        0
+      ],
+      "Running tests\\c24_r3_decoder.rs (target\\debug\\deps\\c24_r3_decoder-81da16de5af2159e.exe)": [
+        1,
+        0,
+        0,
+        0
+      ],
+      "Running unittests src\\lib.rs (target\\debug\\deps\\tt_lipsync-a871a5f365c636ca.exe)": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "Running unittests src\\lib.rs (target\\debug\\deps\\tt_mcp-1770684931ac7f3a.exe)": [
+        4,
+        0,
+        0,
+        0
+      ],
+      "Running tests\\audit.rs (target\\debug\\deps\\audit-b1e82c76672a8ec6.exe)": [
+        2,
+        0,
+        0,
+        0
+      ],
+      "Running tests\\c14_r1_autosave.rs (target\\debug\\deps\\c14_r1_autosave-2c52535e78e170e0.exe)": [
+        1,
+        0,
+        0,
+        0
+      ],
+      "Running tests\\c14_r1_limits.rs (target\\debug\\deps\\c14_r1_limits-d41bea6122003a5f.exe)": [
+        2,
+        0,
+        0,
+        0
+      ],
+      "Running tests\\c14_r2_replay.rs (target\\debug\\deps\\c14_r2_replay-f66aeaf0a603da45.exe)": [
+        3,
+        0,
+        0,
+        0
+      ],
+      "Running tests\\c14_r3_groups.rs (target\\debug\\deps\\c14_r3_groups-18102916a5cd7a73.exe)": [
+        3,
+        0,
+        0,
+        0
+      ],
+      "Running tests\\c14_r3_history_r1.rs (target\\debug\\deps\\c14_r3_history_r1-7860b9509140592a.exe)": [
+        1,
+        0,
+        0,
+        0
+      ],
+      "Running tests\\c14_r3_history_r3.rs (target\\debug\\deps\\c14_r3_history_r3-99a481617e2172fa.exe)": [
+        1,
+        0,
+        0,
+        0
+      ],
+      "Running tests\\c14_r3_replay.rs (target\\debug\\deps\\c14_r3_replay-ebc2bd785fbfc66e.exe)": [
+        5,
+        0,
+        0,
+        0
+      ],
+      "Running tests\\c14_r4_closure.rs (target\\debug\\deps\\c14_r4_closure-9f7c9e7763cd396e.exe)": [
+        4,
+        0,
+        0,
+        0
+      ],
+      "Running tests\\c14_r4_expect_rev.rs (target\\debug\\deps\\c14_r4_expect_rev-bda368cc1ed7292c.exe)": [
+        3,
+        0,
+        0,
+        0
+      ],
+      "Running tests\\c14_r5_closure.rs (target\\debug\\deps\\c14_r5_closure-16a1a90d6abfd087.exe)": [
+        4,
+        0,
+        0,
+        0
+      ],
+      "Running tests\\c14_tickets.rs (target\\debug\\deps\\c14_tickets-c2a734a39c8d96a2.exe)": [
+        1,
+        0,
+        1,
+        0
+      ],
+      "Running tests\\c21_history.rs (target\\debug\\deps\\c21_history-b93b6e03fa59afb5.exe)": [
+        0,
+        0,
+        2,
+        0
+      ],
+      "Running tests\\c21_r1_surfaces.rs (target\\debug\\deps\\c21_r1_surfaces-66667a11187d205c.exe)": [
+        2,
+        0,
+        0,
+        0
+      ],
+      "Running tests\\c21_r2_events.rs (target\\debug\\deps\\c21_r2_events-1b5c15856c0578ec.exe)": [
+        1,
+        0,
+        0,
+        0
+      ],
+      "Running tests\\c21_r3_never_block.rs (target\\debug\\deps\\c21_r3_never_block-eef5e6540690448b.exe)": [
+        1,
+        0,
+        0,
+        0
+      ],
+      "Running tests\\c21_replay.rs (target\\debug\\deps\\c21_replay-7976f3a1b8c519f9.exe)": [
+        1,
+        0,
+        0,
+        0
+      ],
+      "Running tests\\c21_worked_examples.rs (target\\debug\\deps\\c21_worked_examples-6839dfe562535b85.exe)": [
+        2,
+        0,
+        0,
+        0
+      ],
+      "Running tests\\c22_r1_surface.rs (target\\debug\\deps\\c22_r1_surface-09ee5318ec92ce1f.exe)": [
+        4,
+        0,
+        0,
+        0
+      ],
+      "Running tests\\c22_r2_surface.rs (target\\debug\\deps\\c22_r2_surface-02d117c4991db7fb.exe)": [
+        3,
+        0,
+        0,
+        0
+      ],
+      "Running tests\\c22_r3_surface.rs (target\\debug\\deps\\c22_r3_surface-9d52d073536ed112.exe)": [
+        2,
+        0,
+        0,
+        0
+      ],
+      "Running tests\\c22_replay.rs (target\\debug\\deps\\c22_replay-318ec1ba060757a5.exe)": [
+        1,
+        0,
+        0,
+        0
+      ],
+      "Running tests\\c23_r2_timeout.rs (target\\debug\\deps\\c23_r2_timeout-0bea940eeec71dcc.exe)": [
+        1,
+        0,
+        0,
+        0
+      ],
+      "Running tests\\c31_r1_protocol.rs (target\\debug\\deps\\c31_r1_protocol-efe800f7f5756754.exe)": [
+        3,
+        0,
+        0,
+        0
+      ],
+      "Running tests\\c31_r2_protocol.rs (target\\debug\\deps\\c31_r2_protocol-c01380cbdec98e57.exe)": [
+        1,
+        0,
+        0,
+        0
+      ],
+      "Running tests\\c31_round1_protocol.rs (target\\debug\\deps\\c31_round1_protocol-1581322c9f59b09b.exe)": [
+        1,
+        0,
+        0,
+        0
+      ],
+      "Running tests\\c32_protocol.rs (target\\debug\\deps\\c32_protocol-215e16f64bcd3a86.exe)": [
+        1,
+        0,
+        0,
+        0
+      ],
+      "Running tests\\c32_r4_delivery.rs (target\\debug\\deps\\c32_r4_delivery-5ade363c343dc3ae.exe)": [
+        1,
+        0,
+        0,
+        0
+      ],
+      "Running tests\\c32_round3_protocol.rs (target\\debug\\deps\\c32_round3_protocol-0f397b0d8fc94393.exe)": [
+        1,
+        0,
+        0,
+        0
+      ],
+      "Running tests\\c33_protocol.rs (target\\debug\\deps\\c33_protocol-234b6a8210d5bb63.exe)": [
+        1,
+        0,
+        0,
+        0
+      ],
+      "Running tests\\c33_r1_tools.rs (target\\debug\\deps\\c33_r1_tools-31c1d817919abca7.exe)": [
+        3,
+        0,
+        0,
+        0
+      ],
+      "Running tests\\c33_r3_jobs.rs (target\\debug\\deps\\c33_r3_jobs-a3130583812242f5.exe)": [
+        2,
+        0,
+        0,
+        0
+      ],
+      "Running tests\\c33_r4_closure.rs (target\\debug\\deps\\c33_r4_closure-b57c109c9216295d.exe)": [
+        1,
+        0,
+        0,
+        0
+      ],
+      "Running tests\\c33_r4_rollback.rs (target\\debug\\deps\\c33_r4_rollback-409a6afb955acf4c.exe)": [
+        1,
+        0,
+        0,
+        0
+      ],
+      "Running tests\\c33_round3.rs (target\\debug\\deps\\c33_round3-2e4731b85b7b19f1.exe)": [
+        1,
+        0,
+        0,
+        0
+      ],
+      "Running tests\\contracts.rs (target\\debug\\deps\\contracts-32bd18d217f82709.exe)": [
+        2,
+        0,
+        0,
+        0
+      ],
+      "Running tests\\never_block.rs (target\\debug\\deps\\never_block-0e95d6047e308acb.exe)": [
+        2,
+        0,
+        0,
+        0
+      ],
+      "Running tests\\protocol.rs (target\\debug\\deps\\protocol-6098cae6449fa3f1.exe)": [
+        14,
+        0,
+        0,
+        0
+      ],
+      "Running unittests src\\lib.rs (target\\debug\\deps\\tt_model-d0d6b4f6ffe37b6b.exe)": [
+        43,
+        0,
+        0,
+        0
+      ],
+      "Running tests\\c11_r1_adversarial.rs (target\\debug\\deps\\c11_r1_adversarial-71ca33140e7c0ff7.exe)": [
+        39,
+        0,
+        0,
+        0
+      ],
+      "Running tests\\c11_r2_adversarial.rs (target\\debug\\deps\\c11_r2_adversarial-7811d02d3bfd4e20.exe)": [
+        39,
+        0,
+        0,
+        0
+      ],
+      "Running tests\\c11_r3_adversarial.rs (target\\debug\\deps\\c11_r3_adversarial-0178e0a5e18ab203.exe)": [
+        11,
+        0,
+        0,
+        0
+      ],
+      "Running tests\\c11_r3_random.rs (target\\debug\\deps\\c11_r3_random-f50afb5b52ef64a5.exe)": [
+        1,
+        0,
+        0,
+        0
+      ],
+      "Running tests\\c11_r3_register.rs (target\\debug\\deps\\c11_r3_register-5825c3d3f1fd00b9.exe)": [
+        4,
+        0,
+        0,
+        0
+      ],
+      "Running tests\\c11_r4_exposure_bounds.rs (target\\debug\\deps\\c11_r4_exposure_bounds-fd04b62cc6296344.exe)": [
+        2,
+        0,
+        0,
+        0
+      ],
+      "Running tests\\c11_r5_write_bounds.rs (target\\debug\\deps\\c11_r5_write_bounds-3ce0df96130c6768.exe)": [
+        4,
+        0,
+        0,
+        0
+      ],
+      "Running tests\\c11_r6_staged_inverse.rs (target\\debug\\deps\\c11_r6_staged_inverse-e659a06eb5a7bb99.exe)": [
+        2,
+        0,
+        0,
+        0
+      ],
+      "Running tests\\c12_kernel_support.rs (target\\debug\\deps\\c12_kernel_support-d0e2cf4789d216a5.exe)": [
+        6,
+        0,
+        0,
+        0
+      ],
+      "Running tests\\c32_r2_numeric.rs (target\\debug\\deps\\c32_r2_numeric-1eb98e4b850d1e0a.exe)": [
+        1,
+        0,
+        0,
+        0
+      ],
+      "Running tests\\conformance.rs (target\\debug\\deps\\conformance-3ceb56039b8e3398.exe)": [
+        15,
+        0,
+        0,
+        0
+      ],
+      "Running tests\\properties.rs (target\\debug\\deps\\properties-d00e4be6dbbc096e.exe)": [
+        18,
+        0,
+        0,
+        0
+      ],
+      "Running tests\\staged_commit.rs (target\\debug\\deps\\staged_commit-ef3303bebb2194c1.exe)": [
+        3,
+        0,
+        0,
+        0
+      ],
+      "Running tests\\staged_inverse.rs (target\\debug\\deps\\staged_inverse-8ff0d89416368b28.exe)": [
+        2,
+        0,
+        0,
+        0
+      ],
+      "Running unittests src\\lib.rs (target\\debug\\deps\\tt_persist-4b06de88d85fdccf.exe)": [
+        19,
+        0,
+        0,
+        0
+      ],
+      "Running tests\\c13_r1_format.rs (target\\debug\\deps\\c13_r1_format-d307e45aa89ba420.exe)": [
+        8,
+        0,
+        0,
+        0
+      ],
+      "Running tests\\c13_r2_format.rs (target\\debug\\deps\\c13_r2_format-ddf2c995915cf46f.exe)": [
+        7,
+        0,
+        0,
+        0
+      ],
+      "Running tests\\c13_r3_format.rs (target\\debug\\deps\\c13_r3_format-3dee23ef8ce39a80.exe)": [
+        3,
+        0,
+        0,
+        0
+      ],
+      "Running tests\\c13_r4_lock.rs (target\\debug\\deps\\c13_r4_lock-3e25cb64a7f8a300.exe)": [
+        1,
+        0,
+        0,
+        0
+      ],
+      "Running tests\\hostile.rs (target\\debug\\deps\\hostile-990c74869507423f.exe)": [
+        13,
+        0,
+        0,
+        0
+      ],
+      "Running tests\\journal.rs (target\\debug\\deps\\journal-b894eb17a8d4fc01.exe)": [
+        3,
+        0,
+        0,
+        0
+      ],
+      "Running tests\\migrations.rs (target\\debug\\deps\\migrations-f04e7f0c93527c79.exe)": [
+        4,
+        0,
+        0,
+        0
+      ],
+      "Running tests\\round_trip.rs (target\\debug\\deps\\round_trip-449fb9eaff30a26e.exe)": [
+        3,
+        0,
+        0,
+        0
+      ],
+      "Running tests\\zip64.rs (target\\debug\\deps\\zip64-b918df9ab6e3c88a.exe)": [
+        1,
+        0,
+        1,
+        0
+      ],
+      "Running unittests src\\lib.rs (target\\debug\\deps\\tt_registry-76c8ec7f16a3a4ce.exe)": [
+        1,
+        0,
+        0,
+        0
+      ],
+      "Running tests\\declared.rs (target\\debug\\deps\\declared-cce051256b1d783b.exe)": [
+        9,
+        0,
+        0,
+        0
+      ],
+      "Running tests\\inventory.rs (target\\debug\\deps\\inventory-5f61092bfcfe3033.exe)": [
+        1,
+        0,
+        0,
+        0
+      ],
+      "Running unittests src\\lib.rs (target\\debug\\deps\\tt_registry_macros-f5aae99aa21227bf.exe)": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "Running unittests src\\lib.rs (target\\debug\\deps\\tt_render-925a9f3949aa6791.exe)": [
+        2,
+        0,
+        0,
+        0
+      ],
+      "Running tests\\c03_fixed_configurations.rs (target\\debug\\deps\\c03_fixed_configurations-8baebe6060e674b2.exe)": [
+        2,
+        0,
+        0,
+        0
+      ],
+      "Running tests\\c03_r1_stress.rs (target\\debug\\deps\\c03_r1_stress-35912ed8b6ef23dc.exe)": [
+        2,
+        0,
+        1,
+        0
+      ],
+      "Running tests\\c03_r2_quality.rs (target\\debug\\deps\\c03_r2_quality-868e2359e5e1af8f.exe)": [
+        1,
+        0,
+        0,
+        0
+      ],
+      "Running tests\\c23_r1_texture.rs (target\\debug\\deps\\c23_r1_texture-9ac475e3a70afca7.exe)": [
+        1,
+        0,
+        0,
+        0
+      ],
+      "Running tests\\c23_r2_texture.rs (target\\debug\\deps\\c23_r2_texture-db2d644ccbcbefae.exe)": [
+        2,
+        0,
+        0,
+        0
+      ],
+      "Running tests\\c23_r3_cancel.rs (target\\debug\\deps\\c23_r3_cancel-32328dc7e3869329.exe)": [
+        1,
+        0,
+        0,
+        0
+      ],
+      "Running tests\\c33_layer.rs (target\\debug\\deps\\c33_layer-a099fe34a76d53c6.exe)": [
+        6,
+        0,
+        0,
+        0
+      ],
+      "Running tests\\c33_r1_cancel.rs (target\\debug\\deps\\c33_r1_cancel-9ffce9b8edfc3cd3.exe)": [
+        1,
+        0,
+        0,
+        0
+      ],
+      "Running tests\\c33_r2_cancel.rs (target\\debug\\deps\\c33_r2_cancel-fcd161798f72ac80.exe)": [
+        1,
+        0,
+        0,
+        0
+      ],
+      "Running unittests src\\lib.rs (target\\debug\\deps\\tt_vector-6f4cca668c213e80.exe)": [
+        74,
+        0,
+        0,
+        0
+      ],
+      "Running tests\\c21_r1_geometry.rs (target\\debug\\deps\\c21_r1_geometry-c81ab52f82fb797f.exe)": [
+        9,
+        0,
+        1,
+        0
+      ],
+      "Running tests\\c21_r2_geometry.rs (target\\debug\\deps\\c21_r2_geometry-20eab9c5cd64b09c.exe)": [
+        9,
+        0,
+        2,
+        0
+      ],
+      "Running tests\\c21_r3_geometry.rs (target\\debug\\deps\\c21_r3_geometry-1946cccd4305d1d3.exe)": [
+        6,
+        0,
+        2,
+        0
+      ],
+      "Running tests\\c21_r4_closure.rs (target\\debug\\deps\\c21_r4_closure-aeecf8decf1dc085.exe)": [
+        4,
+        0,
+        0,
+        0
+      ],
+      "Running tests\\c21_worst_case.rs (target\\debug\\deps\\c21_worst_case-00318af038293c67.exe)": [
+        1,
+        0,
+        2,
+        0
+      ],
+      "Running tests\\c22_bridges.rs (target\\debug\\deps\\c22_bridges-2fbc3d94dc27f4a3.exe)": [
+        1,
+        0,
+        0,
+        0
+      ],
+      "Running tests\\c22_exact_overlap.rs (target\\debug\\deps\\c22_exact_overlap-4969fc3afdeb47b8.exe)": [
+        1,
+        0,
+        0,
+        0
+      ],
+      "Running tests\\c22_planar.rs (target\\debug\\deps\\c22_planar-f44ae6bd94ebf273.exe)": [
+        11,
+        0,
+        0,
+        0
+      ],
+      "Running tests\\c22_properties.rs (target\\debug\\deps\\c22_properties-ef842601f643b6d9.exe)": [
+        3,
+        0,
+        0,
+        0
+      ],
+      "Running tests\\c22_r1_geometry.rs (target\\debug\\deps\\c22_r1_geometry-e8303a32050c828c.exe)": [
+        6,
+        0,
+        0,
+        0
+      ],
+      "Running tests\\c22_r2_geometry.rs (target\\debug\\deps\\c22_r2_geometry-208b96642b8b4609.exe)": [
+        9,
+        0,
+        0,
+        0
+      ],
+      "Running tests\\c22_r3_geometry.rs (target\\debug\\deps\\c22_r3_geometry-cdd9eb41deb33df5.exe)": [
+        5,
+        0,
+        0,
+        0
+      ],
+      "Running tests\\c22_r4_closure.rs (target\\debug\\deps\\c22_r4_closure-fe15c86b8029f2b4.exe)": [
+        2,
+        0,
+        0,
+        0
+      ],
+      "Running tests\\c22_settle.rs (target\\debug\\deps\\c22_settle-7e64a089faa6ec4b.exe)": [
+        4,
+        0,
+        0,
+        0
+      ],
+      "Running tests\\c22_worst_case.rs (target\\debug\\deps\\c22_worst_case-54f64e079cde0c5e.exe)": [
+        0,
+        0,
+        1,
+        0
+      ],
+      "Running tests\\c23_predicates.rs (target\\debug\\deps\\c23_predicates-5f534a1654b8f527.exe)": [
+        3,
+        0,
+        0,
+        0
+      ],
+      "Running tests\\c23_r1_geometry.rs (target\\debug\\deps\\c23_r1_geometry-d4a5309f7254e9c1.exe)": [
+        3,
+        0,
+        0,
+        0
+      ],
+      "Running tests\\c23_r2_predicates.rs (target\\debug\\deps\\c23_r2_predicates-314c3e8cf51a3967.exe)": [
+        2,
+        0,
+        0,
+        0
+      ],
+      "Running tests\\c23_r2_smooth.rs (target\\debug\\deps\\c23_r2_smooth-dacf4ce78d1910c5.exe)": [
+        1,
+        0,
+        0,
+        0
+      ],
+      "Running tests\\c24_centre.rs (target\\debug\\deps\\c24_centre-eb46e7efd142bf50.exe)": [
+        6,
+        0,
+        0,
+        0
+      ],
+      "Running tests\\c24_flatten_phases.rs (target\\debug\\deps\\c24_flatten_phases-813c7efafcddce2f.exe)": [
+        0,
+        0,
+        1,
+        0
+      ],
+      "Running tests\\c24_noding_regressions.rs (target\\debug\\deps\\c24_noding_regressions-18ebcd9eefac059b.exe)": [
+        1,
+        0,
+        0,
+        0
+      ],
+      "Running tests\\c24_properties.rs (target\\debug\\deps\\c24_properties-bd787c8f713b6617.exe)": [
+        8,
+        0,
+        0,
+        0
+      ],
+      "Running tests\\c24_r1_geometry.rs (target\\debug\\deps\\c24_r1_geometry-de4b344d4fda02f4.exe)": [
+        2,
+        0,
+        0,
+        0
+      ],
+      "Running tests\\c24_r1_properties.rs (target\\debug\\deps\\c24_r1_properties-5329c7d209872824.exe)": [
+        9,
+        0,
+        0,
+        0
+      ],
+      "Running tests\\c24_r2_noding.rs (target\\debug\\deps\\c24_r2_noding-f401c8ddc288d9f7.exe)": [
+        3,
+        0,
+        0,
+        0
+      ],
+      "Running tests\\c24_r2_properties.rs (target\\debug\\deps\\c24_r2_properties-574cdf5b4a4132c2.exe)": [
+        11,
+        0,
+        0,
+        0
+      ],
+      "Running tests\\c24_r3_noding.rs (target\\debug\\deps\\c24_r3_noding-63ae8efce44833db.exe)": [
+        1,
+        0,
+        0,
+        0
+      ],
+      "Running tests\\c24_r3_properties.rs (target\\debug\\deps\\c24_r3_properties-f9ecee0cd4c80e68.exe)": [
+        11,
+        0,
+        0,
+        0
+      ],
+      "Running tests\\c24_trace.rs (target\\debug\\deps\\c24_trace-4220eaf055c186db.exe)": [
+        3,
+        0,
+        0,
+        0
+      ],
+      "Running tests\\c24_vectorize_unit.rs (target\\debug\\deps\\c24_vectorize_unit-d6e6f48398e10200.exe)": [
+        7,
+        0,
+        0,
+        0
+      ],
+      "Running tests\\properties.rs (target\\debug\\deps\\properties-ea9f66e01f0b95c3.exe)": [
+        7,
+        0,
+        0,
+        0
+      ],
+      "Doc-tests tt_anim": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "Doc-tests tt_audio": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "Doc-tests tt_colour": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "Doc-tests tt_desktop": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "Doc-tests tt_engine": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "Doc-tests tt_executor": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "Doc-tests tt_fx": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "Doc-tests tt_io": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "Doc-tests tt_lipsync": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "Doc-tests tt_mcp": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "Doc-tests tt_model": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "Doc-tests tt_persist": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "Doc-tests tt_registry": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "Doc-tests tt_registry_macros": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "Doc-tests tt_render": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "Doc-tests tt_vector": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    "totals": {
+      "passed": 1697,
+      "failed": 1,
+      "ignored": 24,
+      "filtered": 0
+    },
+    "failedLines": [
+      "test killed_sequence_leaves_no_staged_files ... FAILED"
+    ]
+  }
+}

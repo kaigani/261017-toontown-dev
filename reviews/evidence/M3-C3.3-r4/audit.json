@@ -1,0 +1,176 @@
+{
+  "head": "4984c253713553fd686e6876dc8a9b13b236e6da",
+  "ownership": " crates/executor/tests/c33_r2_wait.rs | 4 ++--\n 1 file changed, 2 insertions(+), 2 deletions(-)\n",
+  "sequencingPatch": "diff --git a/crates/executor/tests/c33_r2_wait.rs b/crates/executor/tests/c33_r2_wait.rs\nindex 6991c24..8e6280a 100644\n--- a/crates/executor/tests/c33_r2_wait.rs\n+++ b/crates/executor/tests/c33_r2_wait.rs\n@@ -20,6 +20,8 @@ fn waiting_caller_does_not_block_document_reads() -> Result<(), Box<dyn std::err\n     let inject_stale = stale.clone();\n     let inject_dir = dir.clone();\n     let _reset = Reset;\n+    dead_sidecar(&inject_dir, \"abcdef123456\", \"cancel.png\").map_err(|_| \"inject sidecar\")?;\n+    std::fs::write(&inject_stale, b\"dead job staging\").map_err(|_| \"inject stale\")?;\n     tt_vector::work::hooks::set_spin_micros(20_000);\n     let env = std::thread::scope(|scope| {\n         let h = &h;\n@@ -27,8 +29,6 @@ fn waiting_caller_does_not_block_document_reads() -> Result<(), Box<dyn std::err\n             common::run(h, \"render.range.run\", json!({\"from\":1,\"to\":48,\"width\":32,\"directory\":dir,\"wait\":true}))\n         });\n         std::thread::sleep(Duration::from_millis(100));\n-        dead_sidecar(&inject_dir, \"abcdef123456\", \"cancel.png\").map_err(|_| \"inject sidecar\")?;\n-        std::fs::write(&inject_stale, b\"dead job staging\").map_err(|_| \"inject stale\")?;\n         let start = Instant::now();\n         ok(h, \"app.state.get\", json!({}));\n         assert!(start.elapsed() < Duration::from_millis(300));\n",
+  "assertions": [
+    "assert!(start.elapsed() < Duration::from_millis(300));",
+    "assert_eq!(e.code, \"job.waitTimeout\");",
+    "assert_eq!(record.state, tt_executor::JobState::Cancelled);",
+    "assert!(!stale.exists(), \"cancel sweeps staging injected after the entry sweep\");",
+    "assert!( receipt.contains(\"render.staleStagingRemoved\") && receipt.contains(\".cancel.png.tt-partial-abcdef123456\"), \"cancelled recovery must report swept files in warnings: {receipt}\" );",
+    "assert_eq!(common::err(&h, command, params).code, code);",
+    "assert!(start.elapsed() < Duration::from_millis(200));",
+    "assert_eq!(e.code, \"render.inlineTooLarge\");",
+    "assert!(e.details[\"bytes\"].as_u64().is_some_and(|n| n > 1), \"{e:?}\");"
+  ],
+  "assertionsEqual": true,
+  "productForbiddenAdditions": [],
+  "numstat": "1\t6\t.github/workflows/ci.yml\n10\t3\tcrates/executor/src/commands/render.rs\n6\t1\tcrates/executor/src/jobs.rs\n2\t2\tcrates/executor/tests/c33_r2_wait.rs\n121\t0\tcrates/executor/tests/c33_round3.rs\n35\t0\tcrates/mcp/tests/c33_round3.rs\n6\t3\tdocs/decisions/ADR-0020-compositor-render-list.md\n1\t0\tplan/traceability.csv\n12\t1\treviews/M3-C3.3-handoff.md\n89\t0\treviews/M3-C3.3-r3-response.md\n",
+  "cargoChanges": "",
+  "goldenChanges": "",
+  "siChanges": "",
+  "pins": {
+    "crates/executor/tests/golden/c33/gate-contact-sheet.png": {
+      "expected": "9115ca0ec3cd9f3bdd0563723bd8d0ab6b33f525775c78aa6957f6f19ce4f87f",
+      "actual": "9115ca0ec3cd9f3bdd0563723bd8d0ab6b33f525775c78aa6957f6f19ce4f87f"
+    },
+    "crates/executor/tests/golden/c33/gate-frame-1.png": {
+      "expected": "c7200e1a6fef38885a4977c074c782bee890029d470623c096512acb4f0c2fbc",
+      "actual": "c7200e1a6fef38885a4977c074c782bee890029d470623c096512acb4f0c2fbc"
+    },
+    "crates/executor/tests/golden/c33/gate-frame-17.png": {
+      "expected": "cae435e50dadafa416a5dbe3102becc874eb5c3710ea8a0be613c192cfb7abe7",
+      "actual": "cae435e50dadafa416a5dbe3102becc874eb5c3710ea8a0be613c192cfb7abe7"
+    },
+    "crates/executor/tests/golden/c33/gate-frame-9.png": {
+      "expected": "1c922bc148c309cb91e8f265732a000de4eb79c4557e014de5636b3a2bbb59b7",
+      "actual": "1c922bc148c309cb91e8f265732a000de4eb79c4557e014de5636b3a2bbb59b7"
+    },
+    "crates/executor/tests/golden/c33/gate-index.json": {
+      "expected": "2004135ca8811382c5d0039d5e47735ad39de73a21765bf9931ee1aaf109692c",
+      "actual": "2004135ca8811382c5d0039d5e47735ad39de73a21765bf9931ee1aaf109692c"
+    },
+    "crates/executor/tests/golden/c33/index.json": {
+      "expected": "4d812579ccaa04ad48ffdb93e7370c7a135e8c8b8be8da6f5c9f8b07c1af2373",
+      "actual": "4d812579ccaa04ad48ffdb93e7370c7a135e8c8b8be8da6f5c9f8b07c1af2373"
+    },
+    "crates/executor/tests/golden/c33/moving-contact-sheet.png": {
+      "expected": "e3bc0f15341d95a0a24c37a6f4c3f79909ba393ac07f612ac5297dc1246ea9bd",
+      "actual": "e3bc0f15341d95a0a24c37a6f4c3f79909ba393ac07f612ac5297dc1246ea9bd"
+    },
+    "crates/executor/tests/golden/c33/moving-frame-9.png": {
+      "expected": "16522cf0a0504ccdecd859fd15018be71300b9933a88a509878eccb317545b57",
+      "actual": "16522cf0a0504ccdecd859fd15018be71300b9933a88a509878eccb317545b57"
+    },
+    "crates/executor/tests/golden/c33/roll-dynamic-fov.png": {
+      "expected": "cda1287654b0702dde7dca50ed838e41edef2911aacb1282cf3cdd9deb52619a",
+      "actual": "cda1287654b0702dde7dca50ed838e41edef2911aacb1282cf3cdd9deb52619a"
+    },
+    "crates/executor/tests/golden/c33/staging-transparent.png": {
+      "expected": "fd0da50e0da7bdd7356637e898ede0e6209e2ecc049a185f4d94dedc5616396e",
+      "actual": "fd0da50e0da7bdd7356637e898ede0e6209e2ecc049a185f4d94dedc5616396e"
+    },
+    "crates/executor/tests/golden/c33/staging.png": {
+      "expected": "b7c1c18d97f059f53aebe3befcce51fbf1d8b1158c756b2d44096858f3fdb0a3",
+      "actual": "b7c1c18d97f059f53aebe3befcce51fbf1d8b1158c756b2d44096858f3fdb0a3"
+    },
+    "reviews/M3-C3.1-r1-register.json": {
+      "expected": "81f9e3857a55c4c79bd13f29b779bfbae0c664e808b6ebbb6ce4f787fd20cef5",
+      "actual": "81f9e3857a55c4c79bd13f29b779bfbae0c664e808b6ebbb6ce4f787fd20cef5"
+    },
+    "reviews/M3-C3.1-r1-register.md": {
+      "expected": "6697435693f47552e74806fac2f4fe985f2b18924ac8d77b91c2b19ccc1ae329",
+      "actual": "6697435693f47552e74806fac2f4fe985f2b18924ac8d77b91c2b19ccc1ae329"
+    }
+  },
+  "fixedRegisters": {
+    "reviews/M3-C3.1-r1-register.json": {
+      "base": "81f9e3857a55c4c79bd13f29b779bfbae0c664e808b6ebbb6ce4f787fd20cef5",
+      "current": "81f9e3857a55c4c79bd13f29b779bfbae0c664e808b6ebbb6ce4f787fd20cef5"
+    },
+    "reviews/M3-C3.1-r1-register.md": {
+      "base": "6697435693f47552e74806fac2f4fe985f2b18924ac8d77b91c2b19ccc1ae329",
+      "current": "6697435693f47552e74806fac2f4fe985f2b18924ac8d77b91c2b19ccc1ae329"
+    },
+    "reviews/evidence/M3-C3.1-r1/register-final.txt": {
+      "base": "8201575e8ea5683eb8d3f02fb8c697caa75861ee3a08ef41da0fb772238e625e",
+      "current": "8201575e8ea5683eb8d3f02fb8c697caa75861ee3a08ef41da0fb772238e625e"
+    },
+    "reviews/evidence/M3-C3.1-r1/register-tests.txt": {
+      "base": "cc352dde5c21018b35f8c2ef897339ce5305edde5f0fab36b21089a45fe3f622",
+      "current": "cc352dde5c21018b35f8c2ef897339ce5305edde5f0fab36b21089a45fe3f622"
+    },
+    "reviews/evidence/M3-C3.1-r1/register-verified.txt": {
+      "base": "c64f87dd16dd6ac6474f7099600d42ff3d080525ac2e5277ebe277cfeb441534",
+      "current": "c64f87dd16dd6ac6474f7099600d42ff3d080525ac2e5277ebe277cfeb441534"
+    },
+    "reviews/evidence/M3-C3.1-r2/guards/c22-r2-register.txt": {
+      "base": "de24e6490c7e5e498bf9842015ba66deb8c614526cd0d3c8ea624ac79a17d3a5",
+      "current": "de24e6490c7e5e498bf9842015ba66deb8c614526cd0d3c8ea624ac79a17d3a5"
+    },
+    "reviews/evidence/M3-C3.1-r2/guards/c23-r1-register.txt": {
+      "base": "da32dffbe30226755eac241f523d01ff8b42482d231a35409d755a01b66091ce",
+      "current": "da32dffbe30226755eac241f523d01ff8b42482d231a35409d755a01b66091ce"
+    },
+    "reviews/evidence/M3-C3.1-r2/guards/c23-r2-register.txt": {
+      "base": "70b55e3d6c3c83aa756ed585290a84b9e2adebba38bf3b75ebdd41f8e28e500b",
+      "current": "70b55e3d6c3c83aa756ed585290a84b9e2adebba38bf3b75ebdd41f8e28e500b"
+    },
+    "reviews/evidence/M3-C3.1-r2/guards/c24-r1-register.txt": {
+      "base": "fb184ea57734512b1f088f9181209901b9cd46df3eb7eaa2500ea9e48dde20b5",
+      "current": "fb184ea57734512b1f088f9181209901b9cd46df3eb7eaa2500ea9e48dde20b5"
+    },
+    "reviews/evidence/M3-C3.1-r2/guards/c24-r3-register.txt": {
+      "base": "459da0a026a55fed23299b4a2592012b03540ebbe8683119ba796989daef65fd",
+      "current": "459da0a026a55fed23299b4a2592012b03540ebbe8683119ba796989daef65fd"
+    },
+    "reviews/evidence/M3-C3.1-r2/guards/c31-r1-register.txt": {
+      "base": "4b1ef37938a667843d3a295c088a6dc5bc502ef2c4d3ea87e532f332e257442b",
+      "current": "4b1ef37938a667843d3a295c088a6dc5bc502ef2c4d3ea87e532f332e257442b"
+    },
+    "reviews/evidence/M3-C3.1-r2/register-complete.json": {
+      "base": "8c30882c1a58ecc10d210c8596c4ce151dd56e2e5498fddcb3531e026d7f3d51",
+      "current": "8c30882c1a58ecc10d210c8596c4ce151dd56e2e5498fddcb3531e026d7f3d51"
+    },
+    "reviews/evidence/M3-C3.1-r2/register-final.json": {
+      "base": "c963deb2386ffdb43e7113f0e376e8c981a270396ae62e77b1feb49e34812ddb",
+      "current": "c963deb2386ffdb43e7113f0e376e8c981a270396ae62e77b1feb49e34812ddb"
+    },
+    "reviews/evidence/M3-C3.1-r2/register-verified.json": {
+      "base": "5b11855f718d84bdd19683e41414c9ee736b982586b38b0197b5be6ac442100c",
+      "current": "5b11855f718d84bdd19683e41414c9ee736b982586b38b0197b5be6ac442100c"
+    },
+    "reviews/evidence/M3-C3.1-r2/register.json": {
+      "base": "10eac7af4be27de2322dc567914cbdfdb1952b895e331f809d189d7d1936dc58",
+      "current": "10eac7af4be27de2322dc567914cbdfdb1952b895e331f809d189d7d1936dc58"
+    },
+    "reviews/evidence/M3-C3.1-r3/register-complete.json": {
+      "base": "04195b77b7ae92bd30b66abfc589308de7ad066902c6fba45a7bceb04dfa284e",
+      "current": "04195b77b7ae92bd30b66abfc589308de7ad066902c6fba45a7bceb04dfa284e"
+    },
+    "reviews/evidence/M3-C3.1-r4/register-complete.json": {
+      "base": "b87cd851e5ce409983b47caeccb49d495a81a0e5578b526ebc569c62a4472aa1",
+      "current": "b87cd851e5ce409983b47caeccb49d495a81a0e5578b526ebc569c62a4472aa1"
+    },
+    "reviews/evidence/M3-C3.1-r4/register-summary.json": {
+      "base": "9e5a4f285827499f5f5f170f6f3ef78241733c435fc5968c810602ee246ae649",
+      "current": "9e5a4f285827499f5f5f170f6f3ef78241733c435fc5968c810602ee246ae649"
+    },
+    "reviews/evidence/M3-C3.2-r1/register.json": {
+      "base": "a83b97148265b77804ae2ac0bfc975df9dc74b3d97818acc55992d9121c0de55",
+      "current": "a83b97148265b77804ae2ac0bfc975df9dc74b3d97818acc55992d9121c0de55"
+    },
+    "reviews/evidence/M3-C3.2-r1/register.md": {
+      "base": "f0c8cb970f8852c860508f0077fe5513a2c12b2aceaf9250315deb20f90fa65e",
+      "current": "f0c8cb970f8852c860508f0077fe5513a2c12b2aceaf9250315deb20f90fa65e"
+    },
+    "reviews/evidence/M3-C3.2-r2/register.json": {
+      "base": "8492b2fdb4ec7f78e6107fd44efed5bcf65faf000faf1a6dff6d2f215dea128b",
+      "current": "8492b2fdb4ec7f78e6107fd44efed5bcf65faf000faf1a6dff6d2f215dea128b"
+    },
+    "reviews/evidence/M3-C3.2-r2/register.md": {
+      "base": "94ba161a6d417930dfbcce9acc81d9b5efde6e7d3fc6e16310a8648b74aa9f49",
+      "current": "94ba161a6d417930dfbcce9acc81d9b5efde6e7d3fc6e16310a8648b74aa9f49"
+    },
+    "reviews/evidence/M3-C3.2-r3/register.json": {
+      "base": "3a4deaf6f2ed4872da1bbfc512e29949a0825029ce3531ad1fffaa330e248424",
+      "current": "3a4deaf6f2ed4872da1bbfc512e29949a0825029ce3531ad1fffaa330e248424"
+    },
+    "reviews/evidence/M3-C3.2-r3/register.md": {
+      "base": "a070b9af7f26af03eb87054fd4c6dec50b237e2b3b52e7c3018da557b94703b0",
+      "current": "a070b9af7f26af03eb87054fd4c6dec50b237e2b3b52e7c3018da557b94703b0"
+    }
+  },
+  "documentDiff": "diff --git a/docs/decisions/ADR-0020-compositor-render-list.md b/docs/decisions/ADR-0020-compositor-render-list.md\nindex ec84b06..4142f1b 100644\n--- a/docs/decisions/ADR-0020-compositor-render-list.md\n+++ b/docs/decisions/ADR-0020-compositor-render-list.md\n@@ -1,6 +1,6 @@\n # ADR-0020 \u2014 Compositor and render list\n \n-Status: accepted (M3 C3.3; amended in C3.3 rounds 1 and 2).\n+Status: accepted (M3 C3.3; amended in C3.3 rounds 1-3).\n \n ## Context\n \n@@ -90,8 +90,11 @@ thread); ADR-0019 fixes the evaluation order of transforms.\n      removed only when nothing failed, so a refused step is retried by a later job.\n    - **Receipts.** The next job lists what it recovered in its warnings (`render.staleStagingRemoved`: `files` removed\n      or moved back, `restored` targets, `unrestored` names left). A cancelled or failed job records its own recovery\n-     (`render.stagingDiscarded`, same fields) in its job record's `warnings`, kept with the state and, when failed,\n-     the typed error, and readable through `job.list` and `job.wait` after completion. Neither state becomes success.\n+     (`render.stagingDiscarded`, same fields) in its job record's `warnings`, kept with the state and the typed\n+     error (a cancelled record keeps `job.cancelled`, or what met the cancellation, such as\n+     `export.rollbackIncomplete`; C33-R3-01), readable through `job.list`, `job.wait` and MCP `job_status` after\n+     completion. Neither state becomes success. Dead jobs are recovered by the entry recovery of the next job into the\n+     directory; a cancellation recovers only the cancelled job's own token.\n    - Process death may leave a job's staged files, backups and sidecar; they are never published, and the next job\n      into the directory recovers them as above.\n 12. **Volatile fields** (ruling C33-R1-06). `renderMs` (in `render.frame.run`, the generic `render_frame` result and\ndiff --git a/plan/traceability.csv b/plan/traceability.csv\nindex caa01fa..922bcd0 100644\n--- a/plan/traceability.csv\n+++ b/plan/traceability.csv\n@@ -29,6 +29,7 @@ spec_section,requirement_id_or_quote,milestone,checkpoint,status,test\n 09 \u00a711.4,\"recovery contract: stale .tt-partial-/.tt-backup- files swept by the next job and at cancel, listed in warnings, never published (ADR-0020; ruling C33-R1-08)\",M3,C3.3,implemented (round 1),crates/executor/tests/c33_round2.rs::a_dead_jobs_listed_staging_is_recovered_and_reported\n 09 \u00a711.4,\"recovery acts only on sidecar-owned staging: exact names, 12-hex tokens, owned sidecar; unlisted, malformed and marker-like files never touched or reported; live and remote jobs left alone (ADR-0020 decision 11; ruling C33-R2-01)\",M3,C3.3,implemented (round 2),crates/executor/tests/c33_round2.rs; crates/executor/tests/c33_r2_recovery.rs::recovery_preserves_non_product_marker_files\n 11 \u00a77.7; 09 \u00a711.4,\"cancelled and failed job records keep recovery warnings, and the typed error when failed, readable through job.list and job.wait (ruling C33-R2-02)\",M3,C3.3,implemented (round 2),crates/executor/tests/c33_round2.rs::a_failed_jobs_record_carries_its_error_and_recovery_receipt; crates/executor/tests/c33_round2.rs::a_waiting_caller_leaves_reads_free_and_the_cancelled_record_keeps_its_receipt\n+11 \u00a77.7,\"a cancelled job record keeps its typed error with its state and warnings (job.cancelled, or export.rollbackIncomplete when a cancellation meets a refused rollback), through job.list, job.wait and MCP job_status (ruling C33-R3-01)\",M3,C3.3,implemented (round 3),crates/executor/tests/c33_round3.rs; crates/mcp/tests/c33_round3.rs; crates/executor/tests/c33_r3_recovery.rs::cancelled_record_keeps_typed_error; crates/mcp/tests/c33_r3_jobs.rs::cancelled_error_is_visible_through_job_status\n 09 \u00a711.4,\"a rollback the file system refuses fails the job with export.rollbackIncomplete and the unrestored targets; the next job retries from the kept sidecar (round-2 item 1)\",M3,C3.3,implemented (round 2),crates/executor/tests/c33_round2.rs::a_refused_rollback_fails_the_job_with_the_unrestored_targets_and_the_next_job_retries\n 05 \u00a712; 06 \u00a76.1,\"one evaluation per node per frame for a render-list query (dev-only evaluator counter)\",M3,C3.3,implemented (round 1),crates/executor/tests/c33_round1.rs::a_render_list_query_evaluates_each_node_once_per_frame\n 11 \u00a714 item 5,\"attached-app frame rendering equals headless on both OSes: same saved fixture/revision/frames through the running app's adapter and headless; PNG bytes and metadata compared with volatile fields identified; attached-session receipts (readiness item 4)\",M4,C4.2,deferred (C3.3 round-1 ruling),\ndiff --git a/reviews/M3-C3.3-handoff.md b/reviews/M3-C3.3-handoff.md\nindex c0f63e6..a14b189 100644\n--- a/reviews/M3-C3.3-handoff.md\n+++ b/reviews/M3-C3.3-handoff.md\n@@ -98,7 +98,18 @@ Scope: the 7 registry rows the generator assigns to C3.3 (`render.frame.run`, `r\n | `.github/workflows/ci.yml` | `check` also skips the reviewer tests `c33_r2_wait::waiting_caller_does_not_block_document_reads` and `c33_r2_recovery::stale_stage_is_reported_and_orphan_backup_restored` by name, bodies unchanged, with a comment citing ruling C33-R2-01 (both inject staging no sidecar lists and assert it is removed and reported); a `cargo fetch --locked` step before the front-end step (the reviewer tooling test `c03-r1-tooling` runs `cargo tree` under a 60-second limit and timed out twice on Windows in run 42906464263 while fetching index entries) | C33-R2-01; CI |\n | `docs/decisions/ADR-0020-compositor-render-list.md`, `plan/traceability.csv` | decisions 10 and 11 rewritten (sidecar ownership, receipts, rollback failures); round-2 rows | rulings |\n \n-No reviewer-owned file is edited. No M2 golden changes (`c23_render`, E2 and raster determinism unchanged). No `unwrap`,\n+**Round 3 (reviews/M3-C3.3-r3-response.md):**\n+\n+| File | Edit | Cause |\n+|---|---|---|\n+| `crates/executor/src/jobs.rs` | a cancelled job keeps its typed error (`Err(e) if cancelled`), with its state and warnings | C33-R3-01 |\n+| `crates/executor/src/commands/render.rs` | a frame stopped by the range job's own cancellation is `job.cancelled` (was the rasteriser's `command.timeout`); `range_cancelled` | C33-R3-01 |\n+| **Reviewer-owned** `crates/executor/tests/c33_r2_wait.rs` | **authorized one-time sequencing edit** (round-3 ruling): in `waiting_caller_does_not_block_document_reads` the dead-token sidecar and partial are injected before the job starts (two lines move, no assertion changes), commit `c3ce737` | waiting-test ruling |\n+| Builder tests `crates/executor/tests/c33_round3.rs`, `crates/mcp/tests/c33_round3.rs` (new) | the cancelled record through `job.list`, `job.wait` and MCP `job_status`; a cancellation meeting a refused rollback | C33-R3-01 |\n+| `.github/workflows/ci.yml` | the two round-2 skips (`waiting_caller_does_not_block_document_reads`, `stale_stage_is_reported_and_orphan_backup_restored`) removed; only `killed_sequence_leaves_no_staged_files` stays skipped | waiting-test ruling |\n+| `docs/decisions/ADR-0020-compositor-render-list.md`, `plan/traceability.csv` | decision 11 receipts: the cancelled record's typed error; who recovers dead jobs | C33-R3-01 |\n+\n+Reviewer-owned files are not edited, except the authorized sequencing edit in round 3. No M2 golden changes (`c23_render`, E2 and raster determinism unchanged). No `unwrap`,\n `expect`, `panic`, `unsafe` or lint attribute was added to product code.\n \n ## 4. Readiness list (reviews/M3-C3.2-r4-closure.md, items 2\u201312)\n",
+  "receiptFlag": null
+}

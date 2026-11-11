@@ -1,0 +1,338 @@
+[
+  {
+    "file": "reviews/M3-C3.1-r1-register.json",
+    "head": "197bbe2",
+    "current": "81f9e3857a55c4c79bd13f29b779bfbae0c664e808b6ebbb6ce4f787fd20cef5",
+    "fixed": "81f9e3857a55c4c79bd13f29b779bfbae0c664e808b6ebbb6ce4f787fd20cef5",
+    "equal": true
+  },
+  {
+    "file": "reviews/M3-C3.1-r1-register.json",
+    "head": "96c6302",
+    "current": "81f9e3857a55c4c79bd13f29b779bfbae0c664e808b6ebbb6ce4f787fd20cef5",
+    "fixed": "81f9e3857a55c4c79bd13f29b779bfbae0c664e808b6ebbb6ce4f787fd20cef5",
+    "equal": true
+  },
+  {
+    "file": "reviews/M3-C3.1-r1-register.md",
+    "head": "197bbe2",
+    "current": "6697435693f47552e74806fac2f4fe985f2b18924ac8d77b91c2b19ccc1ae329",
+    "fixed": "6697435693f47552e74806fac2f4fe985f2b18924ac8d77b91c2b19ccc1ae329",
+    "equal": true
+  },
+  {
+    "file": "reviews/M3-C3.1-r1-register.md",
+    "head": "96c6302",
+    "current": "6697435693f47552e74806fac2f4fe985f2b18924ac8d77b91c2b19ccc1ae329",
+    "fixed": "6697435693f47552e74806fac2f4fe985f2b18924ac8d77b91c2b19ccc1ae329",
+    "equal": true
+  },
+  {
+    "file": "reviews/evidence/M3-C3.1-r1/register-final.txt",
+    "head": "197bbe2",
+    "current": "8201575e8ea5683eb8d3f02fb8c697caa75861ee3a08ef41da0fb772238e625e",
+    "fixed": "8201575e8ea5683eb8d3f02fb8c697caa75861ee3a08ef41da0fb772238e625e",
+    "equal": true
+  },
+  {
+    "file": "reviews/evidence/M3-C3.1-r1/register-final.txt",
+    "head": "96c6302",
+    "current": "8201575e8ea5683eb8d3f02fb8c697caa75861ee3a08ef41da0fb772238e625e",
+    "fixed": "8201575e8ea5683eb8d3f02fb8c697caa75861ee3a08ef41da0fb772238e625e",
+    "equal": true
+  },
+  {
+    "file": "reviews/evidence/M3-C3.1-r1/register-tests.txt",
+    "head": "197bbe2",
+    "current": "cc352dde5c21018b35f8c2ef897339ce5305edde5f0fab36b21089a45fe3f622",
+    "fixed": "cc352dde5c21018b35f8c2ef897339ce5305edde5f0fab36b21089a45fe3f622",
+    "equal": true
+  },
+  {
+    "file": "reviews/evidence/M3-C3.1-r1/register-tests.txt",
+    "head": "96c6302",
+    "current": "cc352dde5c21018b35f8c2ef897339ce5305edde5f0fab36b21089a45fe3f622",
+    "fixed": "cc352dde5c21018b35f8c2ef897339ce5305edde5f0fab36b21089a45fe3f622",
+    "equal": true
+  },
+  {
+    "file": "reviews/evidence/M3-C3.1-r1/register-verified.txt",
+    "head": "197bbe2",
+    "current": "c64f87dd16dd6ac6474f7099600d42ff3d080525ac2e5277ebe277cfeb441534",
+    "fixed": "c64f87dd16dd6ac6474f7099600d42ff3d080525ac2e5277ebe277cfeb441534",
+    "equal": true
+  },
+  {
+    "file": "reviews/evidence/M3-C3.1-r1/register-verified.txt",
+    "head": "96c6302",
+    "current": "c64f87dd16dd6ac6474f7099600d42ff3d080525ac2e5277ebe277cfeb441534",
+    "fixed": "c64f87dd16dd6ac6474f7099600d42ff3d080525ac2e5277ebe277cfeb441534",
+    "equal": true
+  },
+  {
+    "file": "reviews/evidence/M3-C3.1-r2/guards/c22-r2-register.txt",
+    "head": "197bbe2",
+    "current": "de24e6490c7e5e498bf9842015ba66deb8c614526cd0d3c8ea624ac79a17d3a5",
+    "fixed": "de24e6490c7e5e498bf9842015ba66deb8c614526cd0d3c8ea624ac79a17d3a5",
+    "equal": true
+  },
+  {
+    "file": "reviews/evidence/M3-C3.1-r2/guards/c22-r2-register.txt",
+    "head": "96c6302",
+    "current": "de24e6490c7e5e498bf9842015ba66deb8c614526cd0d3c8ea624ac79a17d3a5",
+    "fixed": "de24e6490c7e5e498bf9842015ba66deb8c614526cd0d3c8ea624ac79a17d3a5",
+    "equal": true
+  },
+  {
+    "file": "reviews/evidence/M3-C3.1-r2/guards/c23-r1-register.txt",
+    "head": "197bbe2",
+    "current": "da32dffbe30226755eac241f523d01ff8b42482d231a35409d755a01b66091ce",
+    "fixed": "da32dffbe30226755eac241f523d01ff8b42482d231a35409d755a01b66091ce",
+    "equal": true
+  },
+  {
+    "file": "reviews/evidence/M3-C3.1-r2/guards/c23-r1-register.txt",
+    "head": "96c6302",
+    "current": "da32dffbe30226755eac241f523d01ff8b42482d231a35409d755a01b66091ce",
+    "fixed": "da32dffbe30226755eac241f523d01ff8b42482d231a35409d755a01b66091ce",
+    "equal": true
+  },
+  {
+    "file": "reviews/evidence/M3-C3.1-r2/guards/c23-r2-register.txt",
+    "head": "197bbe2",
+    "current": "70b55e3d6c3c83aa756ed585290a84b9e2adebba38bf3b75ebdd41f8e28e500b",
+    "fixed": "70b55e3d6c3c83aa756ed585290a84b9e2adebba38bf3b75ebdd41f8e28e500b",
+    "equal": true
+  },
+  {
+    "file": "reviews/evidence/M3-C3.1-r2/guards/c23-r2-register.txt",
+    "head": "96c6302",
+    "current": "70b55e3d6c3c83aa756ed585290a84b9e2adebba38bf3b75ebdd41f8e28e500b",
+    "fixed": "70b55e3d6c3c83aa756ed585290a84b9e2adebba38bf3b75ebdd41f8e28e500b",
+    "equal": true
+  },
+  {
+    "file": "reviews/evidence/M3-C3.1-r2/guards/c24-r1-register.txt",
+    "head": "197bbe2",
+    "current": "fb184ea57734512b1f088f9181209901b9cd46df3eb7eaa2500ea9e48dde20b5",
+    "fixed": "fb184ea57734512b1f088f9181209901b9cd46df3eb7eaa2500ea9e48dde20b5",
+    "equal": true
+  },
+  {
+    "file": "reviews/evidence/M3-C3.1-r2/guards/c24-r1-register.txt",
+    "head": "96c6302",
+    "current": "fb184ea57734512b1f088f9181209901b9cd46df3eb7eaa2500ea9e48dde20b5",
+    "fixed": "fb184ea57734512b1f088f9181209901b9cd46df3eb7eaa2500ea9e48dde20b5",
+    "equal": true
+  },
+  {
+    "file": "reviews/evidence/M3-C3.1-r2/guards/c24-r3-register.txt",
+    "head": "197bbe2",
+    "current": "459da0a026a55fed23299b4a2592012b03540ebbe8683119ba796989daef65fd",
+    "fixed": "459da0a026a55fed23299b4a2592012b03540ebbe8683119ba796989daef65fd",
+    "equal": true
+  },
+  {
+    "file": "reviews/evidence/M3-C3.1-r2/guards/c24-r3-register.txt",
+    "head": "96c6302",
+    "current": "459da0a026a55fed23299b4a2592012b03540ebbe8683119ba796989daef65fd",
+    "fixed": "459da0a026a55fed23299b4a2592012b03540ebbe8683119ba796989daef65fd",
+    "equal": true
+  },
+  {
+    "file": "reviews/evidence/M3-C3.1-r2/guards/c31-r1-register.txt",
+    "head": "197bbe2",
+    "current": "4b1ef37938a667843d3a295c088a6dc5bc502ef2c4d3ea87e532f332e257442b",
+    "fixed": "4b1ef37938a667843d3a295c088a6dc5bc502ef2c4d3ea87e532f332e257442b",
+    "equal": true
+  },
+  {
+    "file": "reviews/evidence/M3-C3.1-r2/guards/c31-r1-register.txt",
+    "head": "96c6302",
+    "current": "4b1ef37938a667843d3a295c088a6dc5bc502ef2c4d3ea87e532f332e257442b",
+    "fixed": "4b1ef37938a667843d3a295c088a6dc5bc502ef2c4d3ea87e532f332e257442b",
+    "equal": true
+  },
+  {
+    "file": "reviews/evidence/M3-C3.1-r2/register-complete.json",
+    "head": "197bbe2",
+    "current": "8c30882c1a58ecc10d210c8596c4ce151dd56e2e5498fddcb3531e026d7f3d51",
+    "fixed": "8c30882c1a58ecc10d210c8596c4ce151dd56e2e5498fddcb3531e026d7f3d51",
+    "equal": true
+  },
+  {
+    "file": "reviews/evidence/M3-C3.1-r2/register-complete.json",
+    "head": "96c6302",
+    "current": "8c30882c1a58ecc10d210c8596c4ce151dd56e2e5498fddcb3531e026d7f3d51",
+    "fixed": "8c30882c1a58ecc10d210c8596c4ce151dd56e2e5498fddcb3531e026d7f3d51",
+    "equal": true
+  },
+  {
+    "file": "reviews/evidence/M3-C3.1-r2/register-final.json",
+    "head": "197bbe2",
+    "current": "c963deb2386ffdb43e7113f0e376e8c981a270396ae62e77b1feb49e34812ddb",
+    "fixed": "c963deb2386ffdb43e7113f0e376e8c981a270396ae62e77b1feb49e34812ddb",
+    "equal": true
+  },
+  {
+    "file": "reviews/evidence/M3-C3.1-r2/register-final.json",
+    "head": "96c6302",
+    "current": "c963deb2386ffdb43e7113f0e376e8c981a270396ae62e77b1feb49e34812ddb",
+    "fixed": "c963deb2386ffdb43e7113f0e376e8c981a270396ae62e77b1feb49e34812ddb",
+    "equal": true
+  },
+  {
+    "file": "reviews/evidence/M3-C3.1-r2/register-verified.json",
+    "head": "197bbe2",
+    "current": "5b11855f718d84bdd19683e41414c9ee736b982586b38b0197b5be6ac442100c",
+    "fixed": "5b11855f718d84bdd19683e41414c9ee736b982586b38b0197b5be6ac442100c",
+    "equal": true
+  },
+  {
+    "file": "reviews/evidence/M3-C3.1-r2/register-verified.json",
+    "head": "96c6302",
+    "current": "5b11855f718d84bdd19683e41414c9ee736b982586b38b0197b5be6ac442100c",
+    "fixed": "5b11855f718d84bdd19683e41414c9ee736b982586b38b0197b5be6ac442100c",
+    "equal": true
+  },
+  {
+    "file": "reviews/evidence/M3-C3.1-r2/register.json",
+    "head": "197bbe2",
+    "current": "10eac7af4be27de2322dc567914cbdfdb1952b895e331f809d189d7d1936dc58",
+    "fixed": "10eac7af4be27de2322dc567914cbdfdb1952b895e331f809d189d7d1936dc58",
+    "equal": true
+  },
+  {
+    "file": "reviews/evidence/M3-C3.1-r2/register.json",
+    "head": "96c6302",
+    "current": "10eac7af4be27de2322dc567914cbdfdb1952b895e331f809d189d7d1936dc58",
+    "fixed": "10eac7af4be27de2322dc567914cbdfdb1952b895e331f809d189d7d1936dc58",
+    "equal": true
+  },
+  {
+    "file": "reviews/evidence/M3-C3.1-r3/register-complete.json",
+    "head": "197bbe2",
+    "current": "04195b77b7ae92bd30b66abfc589308de7ad066902c6fba45a7bceb04dfa284e",
+    "fixed": "04195b77b7ae92bd30b66abfc589308de7ad066902c6fba45a7bceb04dfa284e",
+    "equal": true
+  },
+  {
+    "file": "reviews/evidence/M3-C3.1-r3/register-complete.json",
+    "head": "96c6302",
+    "current": "04195b77b7ae92bd30b66abfc589308de7ad066902c6fba45a7bceb04dfa284e",
+    "fixed": "04195b77b7ae92bd30b66abfc589308de7ad066902c6fba45a7bceb04dfa284e",
+    "equal": true
+  },
+  {
+    "file": "reviews/evidence/M3-C3.1-r4/register-complete.json",
+    "head": "197bbe2",
+    "current": "b87cd851e5ce409983b47caeccb49d495a81a0e5578b526ebc569c62a4472aa1",
+    "fixed": "b87cd851e5ce409983b47caeccb49d495a81a0e5578b526ebc569c62a4472aa1",
+    "equal": true
+  },
+  {
+    "file": "reviews/evidence/M3-C3.1-r4/register-complete.json",
+    "head": "96c6302",
+    "current": "b87cd851e5ce409983b47caeccb49d495a81a0e5578b526ebc569c62a4472aa1",
+    "fixed": "b87cd851e5ce409983b47caeccb49d495a81a0e5578b526ebc569c62a4472aa1",
+    "equal": true
+  },
+  {
+    "file": "reviews/evidence/M3-C3.1-r4/register-summary.json",
+    "head": "197bbe2",
+    "current": "9e5a4f285827499f5f5f170f6f3ef78241733c435fc5968c810602ee246ae649",
+    "fixed": "9e5a4f285827499f5f5f170f6f3ef78241733c435fc5968c810602ee246ae649",
+    "equal": true
+  },
+  {
+    "file": "reviews/evidence/M3-C3.1-r4/register-summary.json",
+    "head": "96c6302",
+    "current": "9e5a4f285827499f5f5f170f6f3ef78241733c435fc5968c810602ee246ae649",
+    "fixed": "9e5a4f285827499f5f5f170f6f3ef78241733c435fc5968c810602ee246ae649",
+    "equal": true
+  },
+  {
+    "file": "reviews/evidence/M3-C3.2-r1/register.json",
+    "head": "fd14a8e73d44132568b45f0563963513ba861e97",
+    "current": "a83b97148265b77804ae2ac0bfc975df9dc74b3d97818acc55992d9121c0de55",
+    "fixed": "a83b97148265b77804ae2ac0bfc975df9dc74b3d97818acc55992d9121c0de55",
+    "equal": true
+  },
+  {
+    "file": "reviews/evidence/M3-C3.2-r1/register.json",
+    "head": "8c640d18e8b1d8562145f6aa88dc75fd6dee1b25",
+    "current": "a83b97148265b77804ae2ac0bfc975df9dc74b3d97818acc55992d9121c0de55",
+    "fixed": "a83b97148265b77804ae2ac0bfc975df9dc74b3d97818acc55992d9121c0de55",
+    "equal": true
+  },
+  {
+    "file": "reviews/evidence/M3-C3.2-r1/register.md",
+    "head": "fd14a8e73d44132568b45f0563963513ba861e97",
+    "current": "f0c8cb970f8852c860508f0077fe5513a2c12b2aceaf9250315deb20f90fa65e",
+    "fixed": "f0c8cb970f8852c860508f0077fe5513a2c12b2aceaf9250315deb20f90fa65e",
+    "equal": true
+  },
+  {
+    "file": "reviews/evidence/M3-C3.2-r1/register.md",
+    "head": "8c640d18e8b1d8562145f6aa88dc75fd6dee1b25",
+    "current": "f0c8cb970f8852c860508f0077fe5513a2c12b2aceaf9250315deb20f90fa65e",
+    "fixed": "f0c8cb970f8852c860508f0077fe5513a2c12b2aceaf9250315deb20f90fa65e",
+    "equal": true
+  },
+  {
+    "file": "reviews/evidence/M3-C3.2-r2/register.json",
+    "head": "fd14a8e73d44132568b45f0563963513ba861e97",
+    "current": "8492b2fdb4ec7f78e6107fd44efed5bcf65faf000faf1a6dff6d2f215dea128b",
+    "fixed": "8492b2fdb4ec7f78e6107fd44efed5bcf65faf000faf1a6dff6d2f215dea128b",
+    "equal": true
+  },
+  {
+    "file": "reviews/evidence/M3-C3.2-r2/register.json",
+    "head": "8c640d18e8b1d8562145f6aa88dc75fd6dee1b25",
+    "current": "8492b2fdb4ec7f78e6107fd44efed5bcf65faf000faf1a6dff6d2f215dea128b",
+    "fixed": "8492b2fdb4ec7f78e6107fd44efed5bcf65faf000faf1a6dff6d2f215dea128b",
+    "equal": true
+  },
+  {
+    "file": "reviews/evidence/M3-C3.2-r2/register.md",
+    "head": "fd14a8e73d44132568b45f0563963513ba861e97",
+    "current": "94ba161a6d417930dfbcce9acc81d9b5efde6e7d3fc6e16310a8648b74aa9f49",
+    "fixed": "94ba161a6d417930dfbcce9acc81d9b5efde6e7d3fc6e16310a8648b74aa9f49",
+    "equal": true
+  },
+  {
+    "file": "reviews/evidence/M3-C3.2-r2/register.md",
+    "head": "8c640d18e8b1d8562145f6aa88dc75fd6dee1b25",
+    "current": "94ba161a6d417930dfbcce9acc81d9b5efde6e7d3fc6e16310a8648b74aa9f49",
+    "fixed": "94ba161a6d417930dfbcce9acc81d9b5efde6e7d3fc6e16310a8648b74aa9f49",
+    "equal": true
+  },
+  {
+    "file": "reviews/evidence/M3-C3.2-r3/register.json",
+    "head": "fd14a8e73d44132568b45f0563963513ba861e97",
+    "current": "3a4deaf6f2ed4872da1bbfc512e29949a0825029ce3531ad1fffaa330e248424",
+    "fixed": "3a4deaf6f2ed4872da1bbfc512e29949a0825029ce3531ad1fffaa330e248424",
+    "equal": true
+  },
+  {
+    "file": "reviews/evidence/M3-C3.2-r3/register.json",
+    "head": "8c640d18e8b1d8562145f6aa88dc75fd6dee1b25",
+    "current": "3a4deaf6f2ed4872da1bbfc512e29949a0825029ce3531ad1fffaa330e248424",
+    "fixed": "3a4deaf6f2ed4872da1bbfc512e29949a0825029ce3531ad1fffaa330e248424",
+    "equal": true
+  },
+  {
+    "file": "reviews/evidence/M3-C3.2-r3/register.md",
+    "head": "fd14a8e73d44132568b45f0563963513ba861e97",
+    "current": "a070b9af7f26af03eb87054fd4c6dec50b237e2b3b52e7c3018da557b94703b0",
+    "fixed": "a070b9af7f26af03eb87054fd4c6dec50b237e2b3b52e7c3018da557b94703b0",
+    "equal": true
+  },
+  {
+    "file": "reviews/evidence/M3-C3.2-r3/register.md",
+    "head": "8c640d18e8b1d8562145f6aa88dc75fd6dee1b25",
+    "current": "a070b9af7f26af03eb87054fd4c6dec50b237e2b3b52e7c3018da557b94703b0",
+    "fixed": "a070b9af7f26af03eb87054fd4c6dec50b237e2b3b52e7c3018da557b94703b0",
+    "equal": true
+  }
+]

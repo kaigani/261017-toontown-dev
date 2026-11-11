@@ -1,0 +1,6 @@
+    Checking tt-persist v0.0.1 (C:\Users\kaiga\work\review\m3-c33-r4\crates\persist)
+    Checking tt-io v0.0.1 (C:\Users\kaiga\work\review\m3-c33-r4\crates\io)
+    Checking tt-executor v0.0.1 (C:\Users\kaiga\work\review\m3-c33-r4\crates\executor)
+    Checking tt-engine v0.0.1 (C:\Users\kaiga\work\review\m3-c33-r4\crates\engine)
+    Checking tt-mcp v0.0.1 (C:\Users\kaiga\work\review\m3-c33-r4\crates\mcp)
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 14.95s
