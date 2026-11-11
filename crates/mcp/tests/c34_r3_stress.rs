@@ -19,7 +19,8 @@ fn concurrent_wire_cancellation_sixty_seconds() {
         for _ in 0..24 {
             let id = c.send("tools/call", json!({"name":"run_command","arguments":{"id":"edit.selection.set","params":{"context":"drawing","ids":[]}}}));
             seed = seed.wrapping_mul(6364136223846793005).wrapping_add(1);
-            if seed % 3 != 0 {
+            if !seed.is_multiple_of(3) {
+                std::thread::sleep(Duration::from_micros((seed >> 16) % 300));
                 c.notify("notifications/cancelled", json!({"requestId":id}));
             } else {
                 ids.push(id);
