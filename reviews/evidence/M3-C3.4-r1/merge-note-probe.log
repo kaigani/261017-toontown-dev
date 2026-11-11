@@ -1,0 +1,14 @@
+F
+======================================================================
+FAIL: test_open_issue_inventory_covers_register_headings (__main__.MergeReceipt.test_open_issue_inventory_covers_register_headings)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\kaiga\work\review\m3-c34-r1\tests\adversarial\c34-r1-merge-note.py", line 21, in test_open_issue_inventory_covers_register_headings
+    self.assertFalse(missing, 'C34-R1-01: merge note omits open issues: ' + ', '.join(missing))
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: ['SI-001', 'SI-008'] is not false : C34-R1-01: merge note omits open issues: SI-001, SI-008
+
+----------------------------------------------------------------------
+Ran 1 test in 0.083s
+
+FAILED (failures=1)

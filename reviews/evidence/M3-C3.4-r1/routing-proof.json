@@ -1,0 +1,30 @@
+{
+  "ci-routing": {
+    "seeded_anchor_groups_4096": [
+      "c33 render release (windows-latest)\tUNKNOWN STEP\t2026-11-11T03:42:22.1982487Z test seeded_anchor_groups_4096 ... ok",
+      "c33 render release (macos-latest)\tUNKNOWN STEP\t2026-11-11T03:56:27.1569010Z test seeded_anchor_groups_4096 ... ok"
+    ],
+    "deep_and_broad_scene": [
+      "c33 render release (windows-latest)\tUNKNOWN STEP\t2026-11-11T03:42:44.9001108Z test deep_and_broad_scene ... ok",
+      "c33 render release (macos-latest)\tUNKNOWN STEP\t2026-11-11T03:56:49.8195850Z test deep_and_broad_scene ... ok"
+    ],
+    "random_hierarchy_edits_4096_keep_independent_parent_and_level_model": [
+      "review properties release (windows-latest)\tUNKNOWN STEP\t2026-11-11T04:11:39.9113311Z test random_hierarchy_edits_4096_keep_independent_parent_and_level_model ... ok",
+      "review properties release (macos-latest)\tUNKNOWN STEP\t2026-11-11T04:16:00.0408580Z test random_hierarchy_edits_4096_keep_independent_parent_and_level_model ... ok"
+    ]
+  },
+  "ci-final": {
+    "seeded_anchor_groups_4096": [
+      "c33 render release (macos-latest)\tReviewer render corpora (release)\t2026-11-11T06:06:20.0850390Z test seeded_anchor_groups_4096 ... ok",
+      "c33 render release (windows-latest)\tReviewer render corpora (release)\t2026-11-11T06:00:58.6411651Z test seeded_anchor_groups_4096 ... ok"
+    ],
+    "deep_and_broad_scene": [
+      "c33 render release (macos-latest)\tReviewer render corpora (release)\t2026-11-11T06:06:35.7605160Z test deep_and_broad_scene ... ok",
+      "c33 render release (windows-latest)\tReviewer render corpora (release)\t2026-11-11T06:01:26.3437542Z test deep_and_broad_scene ... ok"
+    ],
+    "random_hierarchy_edits_4096_keep_independent_parent_and_level_model": [
+      "review properties release (macos-latest)\tReviewer round-2 seed variants\t2026-11-11T06:28:06.1585800Z test random_hierarchy_edits_4096_keep_independent_parent_and_level_model ... ok",
+      "review properties release (windows-latest)\tReviewer round-2 seed variants\t2026-11-11T06:26:35.3890360Z test random_hierarchy_edits_4096_keep_independent_parent_and_level_model ... ok"
+    ]
+  }
+}

@@ -1,0 +1,62 @@
+[
+  {
+    "name": "fmt-reviewer",
+    "command": "rustfmt --check --edition 2024 crates/executor/tests/c34_r1_contract.rs",
+    "exitCode": 0,
+    "durationSeconds": 0.037
+  },
+  {
+    "name": "clippy-reviewer",
+    "command": "cargo clippy --locked -p tt-executor --tests -- -D warnings -A clippy::empty_line_after_doc_comments",
+    "exitCode": 0,
+    "durationSeconds": 32.399
+  },
+  {
+    "name": "contract-reviewer",
+    "command": "cargo test --locked -p tt-executor -j 4 --test c34_r1_contract",
+    "exitCode": 101,
+    "durationSeconds": 13.966
+  },
+  {
+    "name": "fmt-reviewer",
+    "command": "rustfmt --check --edition 2024 crates/executor/tests/c34_r1_contract.rs",
+    "exitCode": 0,
+    "durationSeconds": 0.05
+  },
+  {
+    "name": "clippy-reviewer",
+    "command": "cargo clippy --locked -p tt-executor --tests -- -D warnings -A clippy::empty_line_after_doc_comments",
+    "exitCode": 101,
+    "durationSeconds": 0.469
+  },
+  {
+    "name": "contract-reviewer",
+    "command": "cargo test --locked -p tt-executor -j 4 --test c34_r1_contract",
+    "exitCode": 0,
+    "durationSeconds": 3.219
+  },
+  {
+    "name": "numeric-reviewer",
+    "command": "C:\\Users\\kaiga\\work\\review\\m3-c34-r1\\.venv\\Scripts\\python.exe tests/adversarial/c34-r1-numeric.py",
+    "exitCode": 0,
+    "durationSeconds": 0.057
+  },
+  {
+    "name": "merge-note-probe",
+    "command": "C:\\Users\\kaiga\\work\\review\\m3-c34-r1\\.venv\\Scripts\\python.exe tests/adversarial/c34-r1-merge-note.py",
+    "exitCode": 1,
+    "durationSeconds": 0.227
+  },
+  {
+    "name": "df-workspace",
+    "command": "\"C:/Program Files/Git/bin/bash.exe\" -lc \"df -h /c\"",
+    "exitCode": 0,
+    "durationSeconds": 0.129
+  },
+  {
+    "name": "workspace",
+    "command": "cargo test --workspace --locked -j 4 --no-fail-fast",
+    "exitCode": 101,
+    "durationSeconds": 2803.677
+  }
+]

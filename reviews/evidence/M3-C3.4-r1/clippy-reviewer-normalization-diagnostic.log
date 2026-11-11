@@ -1,0 +1,12 @@
+    Checking tt-executor v0.0.1 (C:\Users\kaiga\work\review\m3-c34-r1\crates\executor)
+error: used `expect()` on an `Option` value
+ --> crates\executor\tests\c34_r1_contract.rs:9:5
+  |
+9 |     exported["bundle"].as_object_mut().expect("bundle object").remove("exportedAt");
+  |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  |
+  = note: if this value is `None`, it will panic
+  = help: for further information visit https://rust-lang.github.io/rust-clippy/rust-1.98.0/index.html#expect_used
+  = note: requested on the command line with `-D clippy::expect-used`
+
+error: could not compile `tt-executor` (test "c34_r1_contract") due to 1 previous error

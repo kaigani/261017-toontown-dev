@@ -1,0 +1,8 @@
+{
+  "rustc": "rustc 1.98.1 (48a229cea 2026-09-01)",
+  "rustfmt": "rustfmt 1.9.0-stable (48a229ceae 2026-09-01)",
+  "python": "Python 3.13.1",
+  "git": "git version 2.41.0.windows.3",
+  "packages": "Name: mcp\nVersion: 2.0.0\nSummary: Model Context Protocol SDK\nHome-page: https://modelcontextprotocol.io\nAuthor: Model Context Protocol a Series of LF Projects, LLC.\nAuthor-email: \nLicense: MIT\nLocation: C:\\Users\\kaiga\\work\\review\\m3-c34-r1\\.venv\\Lib\\site-packages\nRequires: anyio, httpx2, jsonschema, mcp-types, opentelemetry-api, pydantic, pyjwt, python-multipart, pywin32, sse-starlette, starlette, typing-extensions, typing-inspection, uvicorn\nRequired-by: \n---\nName: pillow\nVersion: 13.0.0\nSummary: Python Imaging Library (fork)\nHome-page: https://python-pillow.org\nAuthor: \nAuthor-email: Jeffrey 'Alex' Clark <aclark@aclark.net>\nLicense: \nLocation: C:\\Users\\kaiga\\work\\review\\m3-c34-r1\\.venv\\Lib\\site-packages\nRequires: \nRequired-by:",
+  "cargo": "cargo 1.98.1 (797e8a9bc 2026-08-05)"
+}

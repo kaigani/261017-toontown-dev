@@ -1,0 +1,7 @@
+import json
+from pathlib import Path
+p=Path('reviews/evidence/M3-C3.4-r1');d=json.loads((p/'register.json').read_text());specific={6:'tests/adversarial/c34-r1-numeric.py; independent-artifacts.json',7:'independent-artifacts.json; expectations.log',8:'independent-artifacts.json; expectations.log',9:'tests/adversarial/c34-r1-numeric.py; local-a/report.json',10:'independent-artifacts.json',11:'independent-cell-parity.json',13:'workspace.log (c33_r1_limits and c33_r2_wait); local-a/report.json',23:'independent-variant.json; local-a/report.json',24:'executor.log (c34_e1); workspace.log (c34_r1_contract)',25:'workspace.log (c34_r1_contract)',26:'workspace.log (c34_r1_contract); crates/executor/src/run.rs; crates/executor/src/lib.rs',27:'sdk-environment.log; executor.log; workspace.log; product-diff-audit.json',28:'executor.log (c34_e1)',29:'ci-summary.json; routing-proof.json; release-oracles.log; workspace.log',30:'allows.log; deny.log; generator.log; clippy-product.log; clippy-tests.log; historical-registers.json; workspace.log'}
+for i,e in specific.items():
+ next(x for x in d['rows'] if x['id']==f'E1-{i:02}')['evidence']=e
+(p/'register.json').write_text(json.dumps(d,indent=2)+'\n')
+(p/'register.md').write_text('# C3.4 round 1 register\n\n'+str(d['counts'])+'\n\n| ID | Clause | Requirement | State | Evidence / owner |\n|---|---|---|---|---|\n'+'\n'.join('| '+' | '.join([r['id'],r['clause'],r['requirement'],r['state'],r['evidence']+(' / '+r['owner'] if r['owner'] else '')])+' |' for r in d['rows'])+'\n')

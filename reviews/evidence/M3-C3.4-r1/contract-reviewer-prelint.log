@@ -1,0 +1,10 @@
+   Compiling tt-executor v0.0.1 (C:\Users\kaiga\work\review\m3-c34-r1\crates\executor)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 2.21s
+     Running tests\c34_r1_contract.rs (target\debug\deps\c34_r1_contract-869030574320d17c.exe)
+
+running 2 tests
+test swatch_refusals_preserve_canonical_document_and_atomic_jobs_are_refused ... ok
+test sequential_wait_timeout_retains_job_identity ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.52s
+
