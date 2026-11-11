@@ -24,6 +24,12 @@ NOT_SUITES = {
     "reviews/evidence/M0-C0.1-r1/",
     # Orchestrator ruling, M2 C2.3 round 3: a round receipt, not a product invariant.
     "c23-r3-finalize.py": "round-3 collector pinned to 989233e; receipts retained under reviews/evidence/M2-C2.3-r3",
+    # M3 C3.4 round 2 (declared in reviews/M3-C3.4-r2-response.md): two round collectors, not product invariants.
+    "c34-r2-sdk.py": "SDK 2.0.0 probe collector: needs `pip install mcp` and the release binary at a Windows path; "
+    "receipts retained under reviews/evidence/M3-C3.4-r2",
+    "c34-r2-inventory.py": "round-2 receipt pinned to 1cbd190..967229a that writes reviews/evidence/M3-C3.4-r2/"
+    "inventory.json and asserts the register ends at SI-110 (SI-111 is ruled in round 2); its live counterpart is "
+    "scripts/check-merge-note-inventory.py",
 }
 # Single tests of a suite that are fixed-commit receipts of a finding rather than live checks: the suite runs every other
 # test (by name). Each entry names its live counterpart.

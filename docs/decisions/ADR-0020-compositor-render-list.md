@@ -53,17 +53,45 @@ thread); ADR-0019 fixes the evaluation order of transforms.
    inline frame or contact sheet whose long side or pixel count is over the session's inline limit
    (`render.inlineTooLarge`). The encoded-byte limit is checked after encoding, which is bounded and cancellable.
    `render.range.run` runs as a job on a document snapshot, one frame at a time, checking cancellation. With
-   `wait: true` the caller's request (never the document thread) waits for the job, bounded by the call's budget and
-   cancellable; it answers the manifest with the `jobId`, or `job.waitTimeout` with the `jobId` while the job runs on
-   (ruling C33-R1-02).
-   **Request cancellation during a waited job** (M3 C3.4 round 1, O-1). A caller that cancels its request (an MCP
-   `notifications/cancelled`; the executor's `invoke_served_until` / `batch_until` probe) cancels the request, not the
-   job. The call's watchdog token is marked as for a timed-out caller. A `wait: true` (direct, or a sequential batch's
-   step, or a batch's `job.wait` step) stops waiting within 20 ms and answers `command.timeout` with
-   `reason: "cancelled"` and the `jobId`. Every later step of the batch is refused at its acceptance boundary, so
-   nothing after the cancellation changes the document. The job is the job system's: it stays in `job.list` /
-   `job_status`, runs on to its own terminal state or stops at `job.cancel`, and leaves no staging once terminal
-   (decision 11). An MCP client receives no answer to the cancelled request (11 §4).
+   `wait: true` it answers the manifest with the `jobId`, or `job.waitTimeout` with the `jobId` while the job runs on
+   (ruling C33-R1-02). Where the wait runs:
+   - A direct call's wait is on the caller's request, never the document thread, and is bounded by the call's
+     watchdog budget.
+   - **Exception (C34-R2-03): a sequential batch's waited job step and its `job.wait` step wait on the document
+     thread.** They are bounded by the batch's remaining watchdog budget minus its margin, and they end on the
+     batch's request cancellation. Measured in C3.4 round 2: a concurrent read waited 740 ms of a 1000 ms budget while
+     an uncancelled batched waited step ran, and about 33 ms after the batch's cancellation.
+   - Off-thread batch continuations are not planned; M11 C11.1 re-measures this bound with the attached UI.
+   **Request cancellation** (M3 C3.4 rounds 1 and 2: O-1, rulings C34-R2-01, C34-R2-02, C34-R2-04; code SI-111). A
+   caller can cancel its request: an MCP `notifications/cancelled`, or the executor's `invoke_served_until`,
+   `batch_until` and `batch_audited_until` with a cancellation probe. The contract:
+   1. *Acceptance.* A request that may change something (an action, a job, a batch) and whose cancellation is
+      observable when the call is made never begins: the probe is checked before enqueue. There is no document
+      change, no undo step, no event and no job, and nothing is remembered under its `requestId`, so a retry executes
+      once. A query changes nothing: it is not refused before it begins, and a cancellation stops it at its next
+      work-account check.
+   2. *Boundaries.* After acceptance, the cancellation is arbitrated at the executor's boundaries: dequeue, the start
+      of every invocation and batch step (before its handler runs, so a job step whose request is cancelled never
+      starts its job), every acceptance check, immediately before commit, and every work-account check. At dequeue,
+      at each start, at acceptance and before commit, the worker asks the caller **directly**: a link carried by the
+      request, which the waiting caller answers by evaluating its probe at once. A worker never passes one of these
+      boundaries once the cancellation is observable. The caller also marks the call's watchdog token when it sees the
+      cancellation, which stops work-account checks; a refusal for cancellation is not remembered under the
+      `requestId`.
+   3. *A commit that got there first stands.* A commit that passed its pre-commit check before the cancellation was
+      observable stands whole: one undo step, one event set, its envelope remembered under its `requestId`. This is
+      not a defect.
+   4. *Jobs.* Request cancellation never cancels a job. A wait on a job (a direct `wait: true`, a batch's waited step,
+      a batch's `job.wait` step, a direct `job.wait` and its attached retry) ends with `command.timeout`,
+      `details.reason: "cancelled"` and `details.jobId`. The job stays in `job.list` / `job_status`, runs on to its own
+      terminal state or stops at `job.cancel`, and leaves no staging once terminal (decision 11).
+   5. *Timing.* Waits and the caller's token mark poll the probe every 20 ms (`CANCEL_POLL`). That is a wake-up
+      interval, not an end-to-end bound. C3.4 round 2 measured 100 direct waited-job cancellations at min 0.67 ms,
+      median 3.6 ms, p95 4.8 ms, p99 20.2 ms and max 20.3 ms.
+
+   A queued request discarded because it was cancelled answers that cancellation, never `internal`; a worker that
+   really stops still answers `internal` (C34-R2-04). An MCP client receives no answer to a cancelled request (11 §4).
+   Watchdog tokens are bounded to outstanding calls: marking a token the worker already forgot does nothing.
 10. **Publication is a transaction** (ruling C33-R1-03; amended in round 2). Frames and the companion manifest are
    staged beside their targets as `.<target name>.tt-partial-<token>`. At the commit point every target is
    preflighted (an existing target must be a writable regular file, else `export.targetInvalid`; the conflict policy

@@ -573,7 +573,7 @@ fn needs_confirmation(session: &mut Session, e: CommandError, rev: Option<u64>) 
 /// A request whose caller timed out is not accepted (C23-R2-01, C23-R3-01): checked at the acceptance boundary, before
 /// any session state, document transaction or effect is kept, and again by `commit` before it installs anything.
 fn cancelled_check(what: &str) -> Result<(), CommandError> {
-    if tt_vector::work::cancel_requested() {
+    if crate::request_cancelled() {
         return Err(CommandError::with_details(
             tt_registry::codes::COMMAND_TIMEOUT,
             format!("`{what}` was cancelled: its caller's watchdog budget passed or its caller cancelled the request"),
@@ -1117,6 +1117,11 @@ impl Core {
     /// One invocation, with `requestId` idempotency (C12-R1-06/22).
     pub(crate) fn invoke(&mut self, inv: &Invocation) -> Envelope {
         self.served_from_cache = false;
+        // Before the handler runs (a job command would start its job) and before its `requestId` is looked up or
+        // remembered: a cancelled request is not run (ADR-0020 decision 8, C34-R2-01).
+        if let Err(e) = cancelled_check(&inv.command) {
+            return Envelope::error(e, self.rev());
+        }
         let Some(id) = inv.options.request_id.clone().filter(|_| !self.simulating) else { return self.run(inv) };
         let session = inv.origin.session_key();
         let fp = fingerprint(inv);
@@ -1151,7 +1156,12 @@ impl Core {
             ),
             Lookup::Miss => {
                 let env = self.run(inv);
-                self.requests.insert(&session, &id, fp, &inv.command, env.clone());
+                // A request refused because it was cancelled before its commit never happened: nothing is remembered,
+                // so a retry executes once (ADR-0020 decision 8, C34-R2-01). A commit that got there first stands and
+                // is remembered.
+                if !(env.status == crate::types::Status::Error && crate::request_cancelled()) {
+                    self.requests.insert(&session, &id, fp, &inv.command, env.clone());
+                }
                 env
             }
         }
@@ -1485,7 +1495,7 @@ impl Core {
         }
         let Some(jobs) = self.session.as_ref().map(|s| s.jobs.clone()) else { return env };
         // A `job.wait` step stops waiting when the batch's request is cancelled, like a waited job step.
-        let Some(waited) = crate::wait_sliced(&jobs, &p.job_id, wait, &tt_vector::work::cancel_requested) else {
+        let Some(waited) = crate::wait_sliced(&jobs, &p.job_id, wait, &crate::request_cancelled) else {
             return Envelope::error(
                 CommandError::with_details(
                     tt_registry::codes::COMMAND_TIMEOUT,
@@ -1524,7 +1534,7 @@ impl Core {
         let Some(jobs) = self.session.as_ref().map(|s| s.jobs.clone()) else { return env };
         // The batch's own request cancellation (its watchdog token, marked by a timed-out or cancelling caller) ends
         // the wait (ADR-0020 decision 8).
-        crate::wait_envelope(&jobs, &job, left, self.rev(), &tt_vector::work::cancel_requested)
+        crate::wait_envelope(&jobs, &job, left, self.rev(), &crate::request_cancelled)
     }
 
     fn batch_atomic(&mut self, req: &BatchRequest, origin: &Origin) -> Envelope {
@@ -1773,7 +1783,10 @@ impl Core {
             .and_then(|()| self.write_pending(session, txns.last().map(|t| &t.after), &mut effects))
             .and_then(|()| commit(session, txns, origin, command, anim.as_ref()));
         match committed {
-            Ok(u) => Ok((u, apply_effects(session, effects, self.simulating, origin))),
+            Ok(u) => {
+                tt_persist::lock::boundary(tt_persist::lock::Boundary::Committed, std::path::Path::new(""));
+                Ok((u, apply_effects(session, effects, self.simulating, origin)))
+            }
             Err(e) => {
                 discard_files(&effects);
                 rollback.apply(session);

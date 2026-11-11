@@ -23,19 +23,36 @@ pub struct CancelState {
     pending: std::sync::atomic::AtomicBool,
     /// Tokens whose callers timed out, still queued or running.
     queued: std::sync::Mutex<std::collections::BTreeSet<u64>>,
+    /// Tokens handed out and not yet forgotten: only these can be marked, so a caller that marks its token after the
+    /// worker forgot it leaves nothing behind (M3 C3.4 round 2).
+    outstanding: std::sync::Mutex<std::collections::BTreeSet<u64>>,
 }
 
 impl CancelState {
     /// A fresh request token (never 0).
     pub fn token(&self) -> u64 {
-        self.next.fetch_add(1, Ordering::AcqRel).wrapping_add(1).max(1)
+        let token = self.next.fetch_add(1, Ordering::AcqRel).wrapping_add(1).max(1);
+        if let Ok(mut o) = self.outstanding.lock() {
+            o.insert(token);
+            #[cfg(feature = "test-hooks")]
+            hooks::count_outstanding(1);
+        }
+        token
     }
 
-    /// Marks exactly `token` cancelled: its caller has been answered. Another caller's request is never affected.
+    /// Marks exactly `token` cancelled: its caller has been answered. Another caller's request is never affected. A
+    /// token the worker already forgot (the request finished) is not marked: nothing would ever forget it again.
     pub fn mark(&self, token: u64) {
-        if let Ok(mut q) = self.queued.lock() {
-            q.insert(token);
+        let Ok(outstanding) = self.outstanding.lock() else { return };
+        if !outstanding.contains(&token) {
+            return;
+        }
+        if let Ok(mut q) = self.queued.lock()
+            && q.insert(token)
+        {
             self.pending.store(true, Ordering::Release);
+            #[cfg(feature = "test-hooks")]
+            hooks::count_queued(1);
         }
         self.cancel.store(token, Ordering::Release);
     }
@@ -49,8 +66,18 @@ impl CancelState {
 
     /// Forgets `token` once the worker is done with it.
     pub fn forget(&self, token: u64) {
+        // The same lock order as `mark` (outstanding, then queued), so a mark either precedes the forget (and is
+        // removed here) or finds the token gone.
+        let Ok(mut outstanding) = self.outstanding.lock() else { return };
+        if outstanding.remove(&token) {
+            #[cfg(feature = "test-hooks")]
+            hooks::count_outstanding(-1);
+        }
         if let Ok(mut q) = self.queued.lock() {
-            q.remove(&token);
+            if q.remove(&token) {
+                #[cfg(feature = "test-hooks")]
+                hooks::count_queued(-1);
+            }
             self.pending.store(!q.is_empty(), Ordering::Release);
         }
     }
@@ -74,7 +101,30 @@ pub fn cancel_requested() -> bool {
 /// Test hooks (never in products): make every work charge spin, so any work-charging command overruns on demand.
 #[cfg(feature = "test-hooks")]
 pub mod hooks {
-    use std::sync::atomic::{AtomicU64, Ordering};
+    use std::sync::atomic::{AtomicI64, AtomicU64, Ordering};
+
+    static QUEUED: AtomicI64 = AtomicI64::new(0);
+    static OUTSTANDING: AtomicI64 = AtomicI64::new(0);
+
+    pub(super) fn count_queued(delta: i64) {
+        QUEUED.fetch_add(delta, Ordering::AcqRel);
+    }
+
+    pub(super) fn count_outstanding(delta: i64) {
+        OUTSTANDING.fetch_add(delta, Ordering::AcqRel);
+    }
+
+    /// Marked (cancelled) tokens not yet forgotten, over every [`super::CancelState`] of the process.
+    #[must_use]
+    pub fn queued_tokens() -> i64 {
+        QUEUED.load(Ordering::Acquire)
+    }
+
+    /// Tokens handed out and not yet forgotten, over every [`super::CancelState`] of the process.
+    #[must_use]
+    pub fn outstanding_tokens() -> i64 {
+        OUTSTANDING.load(Ordering::Acquire)
+    }
 
     static SPIN_MICROS: AtomicU64 = AtomicU64::new(0);
 

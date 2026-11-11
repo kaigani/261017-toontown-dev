@@ -50,11 +50,12 @@ The orchestrator merges and tags; the builder does not.
 | Importers writing native-size bitmaps | M10 | SI-105 |
 | C22-T2, R1-12 (performance) | M11 C11.1 | inherited from M2 |
 | Lock files compare host names case-sensitively (a stale lock of the same machine is not recognised) | M11 C11.1 (settled at C3.4 round 1) | found in C3.4 (handoff §5); stays case-sensitive until then, the safe direction |
+| Off-thread continuations for a sequential batch's waited job step and `job.wait` step (they wait on the document thread, bounded by the batch's remaining budget, ending on request cancellation; ADR-0020 decision 8) | not planned; **M11 C11.1** re-measures the bound with the attached UI | measured in C3.4 round 2: a concurrent read waited 740 ms of a 1000 ms budget uncancelled, about 33 ms after cancellation |
 
 ## 4. Open spec issues for the spec owner
 
-`plan/spec-issues.md` (next free id **SI-111**). This inventory follows every `## SI-` heading of the register, SI-001
-to SI-110.
+`plan/spec-issues.md` (next free id **SI-112**). This inventory follows every `## SI-` heading of the register, SI-001
+to SI-111.
 
 **Open, unresolved or awaiting the spec owner** (heading status in the register):
 
@@ -66,6 +67,7 @@ to SI-110.
 | SI-049 | MCP revision 2026-07-28 removes resource subscriptions and deprecates logging | **open** |
 | SI-077 | feather colours | **deferred by orchestrator, awaiting spec owner**; ticket C23-T2, owner M7 C7.2 |
 | SI-096 | per-axis position channels (D-5) | **unresolved, spec owner**; M6 C6.2 depends on it |
+| SI-111 | a caller-cancelled request has no code in 11 §10 (found in M3 C3.4 round 2) | **interim, awaiting spec owner**; interim decision by orchestrator ruling: `command.timeout` with `details.reason: "cancelled"` (plus `details.jobId` on waited-job paths); seen only by in-process callers, batch step envelopes and the activity log |
 
 **Interim decisions** (decided for now, with a question for the spec owner, or a declared deferral):
 
@@ -90,7 +92,7 @@ question in their entries, so they are not pending.
 - SI-106 (role tiers outrank depth).
 - The M1/M2 amendment candidates listed in the register (for example SI-044, SI-084).
 
-Every other SI from SI-001 to SI-110 is decided, ruled, resolved or closed in the register, and SI-002 is reserved.
+Every other SI from SI-001 to SI-111 is decided, ruled, resolved or closed in the register, and SI-002 is reserved.
 
 ## 5. Reviewer-owned tests, permanent in CI
 

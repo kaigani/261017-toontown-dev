@@ -1294,3 +1294,13 @@ Reserved by the M0 closure for "measured deterministic-format incompatibility" (
   `composition: "camera"`, and its default width is the owning command's, the camera width; the tool schema says
   "default = the camera width". No product change beyond the schema text.
 - **Question:** none.
+
+## SI-111 — a caller-cancelled request has no code in 11 §10 (found in M3 C3.4 round 2; interim, awaiting spec owner)
+
+- **Sections:** 11 §4 (MCP cancellation: no answer to a cancelled request), 11 §10 (error codes), 09 §11.1 item 4
+  (`wait: true`).
+- **Interim decision (orchestrator ruling, C3.4 round 2):** reuse `command.timeout` with `details.reason: "cancelled"`
+  (plus `details.jobId` on waited-job paths). An MCP client gets no answer to a cancelled request, so the code is seen
+  only by in-process callers, batch step envelopes and the activity log. The contract is ADR-0020 decision 8.
+- **Question:** add a code for a request its caller cancelled to 11 §10, or confirm `command.timeout` with
+  `reason: "cancelled"`.

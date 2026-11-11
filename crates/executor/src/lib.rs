@@ -122,8 +122,9 @@ enum Request {
     List(Origin, Sender<Vec<Value>>),
     /// Work posted by a job thread (installing a loaded project, finishing a save; C1.3).
     Run(Box<dyn FnOnce(&mut run::Core) + Send>),
-    /// A caller's request with its cancellation token, allocated before enqueueing (C23-R2-01).
-    Tagged(u64, Box<Request>),
+    /// A caller's request with its cancellation token, allocated before enqueueing (C23-R2-01), and the link to a caller
+    /// that can cancel it (the worker asks it directly at its boundaries; C34-R2-01).
+    Tagged(u64, Option<Sender<CallerMsg>>, Box<Request>),
     /// Background maintenance: autosave, heartbeats, external-change detection.
     Tick,
     /// Maintenance now (forcing autosave or not), answered after its events are delivered.
@@ -224,6 +225,7 @@ pub struct AuditCall<'a> {
 #[derive(Clone)]
 pub struct ExecutorHandle {
     tx: Sender<Request>,
+    registry: &'static Registry,
     jobs: Arc<JobTable>,
     subscribers: Arc<Mutex<Vec<Sender<Event>>>>,
     config: ExecutorConfig,
@@ -327,7 +329,7 @@ impl ExecutorHandle {
                 .map_err(|e| CommandError::internal(format!("cannot start the maintenance thread: {e}")))?;
         }
         let guard = Arc::new(ShutdownGuard(tx.clone(), Mutex::new(Some(done_rx))));
-        Ok(Self { tx, jobs, subscribers, config, cancel, _guard: guard })
+        Ok(Self { tx, registry, jobs, subscribers, config, cancel, _guard: guard })
     }
 
     /// Grants an agent session file-system roots (11 §6.2): paths given by that session must lie inside one of them
@@ -367,42 +369,102 @@ impl ExecutorHandle {
     }
 
     fn call<T>(&self, what: &str, make: impl FnOnce(Sender<T>) -> Request) -> Result<T, CommandError> {
-        self.call_until(what, make, &not_cancelled)
+        self.call_with(what, make, &not_cancelled, Link::None)
     }
 
-    /// [`ExecutorHandle::call`] for a caller that can cancel its request (`cancelled`, polled while the call runs): the
-    /// call's token is then marked like a timed-out caller's, so the request never begins if queued, and if running
-    /// stops at its next work-account check, before any commit, and refuses its remaining batch steps at their
-    /// acceptance boundary (ADR-0020 decision 8; M3 C3.4 round 1, O-1). The call still answers when the worker replies.
+    /// [`ExecutorHandle::call`] for a caller that can cancel a request that may change something (an action, a job, a
+    /// batch; ADR-0020 decision 8, C34-R2-01):
+    /// - a request already cancelled when the call is made never begins (no token, nothing enqueued, nothing
+    ///   remembered under its `requestId`);
+    /// - the worker asks the caller directly, through a link, at dequeue, before each invocation or batch step, and at
+    ///   each acceptance and commit check, so once the cancellation is observable no later boundary is passed;
+    /// - the caller also marks the call's watchdog token when it sees the cancellation (polled every [`CANCEL_POLL`]),
+    ///   which stops work-account checks and wakes waits.
     fn call_until<T>(
         &self,
         what: &str,
         make: impl FnOnce(Sender<T>) -> Request,
         cancelled: Cancelled<'_>,
     ) -> Result<T, CommandError> {
+        if cancelled() {
+            return Err(request_cancelled_error(what));
+        }
+        self.call_with(what, make, cancelled, Link::Direct)
+    }
+
+    /// The caller's side of a call: enqueue with a token (and a link when `link` is direct), then wait for the reply,
+    /// answering the worker's questions, polling `cancelled` and enforcing the watchdog budget.
+    fn call_with<T>(
+        &self,
+        what: &str,
+        make: impl FnOnce(Sender<T>) -> Request,
+        cancelled: Cancelled<'_>,
+        link: Link,
+    ) -> Result<T, CommandError> {
         let (reply, rx) = mpsc::channel();
+        let (asks, questions) = mpsc::channel::<CallerMsg>();
+        let direct = matches!(link, Link::Direct);
+        let link = direct.then_some(asks);
         // The token travels with the request: a timeout cancels exactly this request, queued or running (C23-R2-01).
         let token = self.cancel.token();
-        self.tx.send(Request::Tagged(token, Box::new(make(reply)))).map_err(|_| stopped())?;
+        self.tx.send(Request::Tagged(token, link, Box::new(make(reply)))).map_err(|_| stopped())?;
         let deadline = std::time::Instant::now() + self.config.budget;
         let mut marked = false;
+        // While the worker holds the link, the caller waits on it (questions, a discard notice, or its release right
+        // after the reply); otherwise on the reply itself.
+        let mut link_open = direct;
         loop {
-            let left = deadline.saturating_duration_since(std::time::Instant::now());
-            match rx.recv_timeout(left.min(CANCEL_POLL)) {
+            match rx.try_recv() {
                 Ok(v) => return Ok(v),
-                Err(RecvTimeoutError::Disconnected) => return Err(stopped()),
-                Err(RecvTimeoutError::Timeout) if left <= CANCEL_POLL => {
-                    // Queued: the worker drops it at dequeue. Running: it stops at its next work-account check and
-                    // before any commit. Either way it never begins or commits after this answer (ADR-0015 history).
-                    self.cancel.mark(token);
-                    return Err(timeout(what, self.config.budget));
+                Err(mpsc::TryRecvError::Disconnected) => {
+                    // The worker dropped the request without answering: a request it discarded because it was
+                    // cancelled (marked here, or the caller said so at dequeue) is an honest cancellation; anything
+                    // else is a worker that stopped (C34-R2-04).
+                    let discarded = questions.try_iter().any(|m| matches!(m, CallerMsg::Discarded));
+                    return Err(if discarded || marked { request_cancelled_error(what) } else { stopped() });
                 }
-                Err(RecvTimeoutError::Timeout) => {
-                    if !marked && cancelled() {
-                        self.cancel.mark(token);
-                        marked = true;
+                Err(mpsc::TryRecvError::Empty) => {}
+            }
+            let left = deadline.saturating_duration_since(std::time::Instant::now());
+            if left.is_zero() {
+                // Queued: the worker drops it at dequeue. Running: it stops at its next work-account check and before
+                // any commit. Either way it never begins or commits after this answer (ADR-0015 history).
+                self.cancel.mark(token);
+                return Err(timeout(what, self.config.budget));
+            }
+            let wait = left.min(CANCEL_POLL);
+            if link_open {
+                match questions.recv_timeout(wait) {
+                    Ok(CallerMsg::Ask(answer)) => {
+                        let c = cancelled();
+                        if c && !marked {
+                            self.cancel.mark(token);
+                            marked = true;
+                        }
+                        let _ = answer.send(c);
+                        continue;
                     }
+                    Ok(CallerMsg::Discarded) => return Err(request_cancelled_error(what)),
+                    // The worker released the link: the reply was sent first.
+                    Err(RecvTimeoutError::Disconnected) => {
+                        link_open = false;
+                        continue;
+                    }
+                    Err(RecvTimeoutError::Timeout) => {}
                 }
+            } else {
+                match rx.recv_timeout(wait) {
+                    Ok(v) => return Ok(v),
+                    Err(RecvTimeoutError::Disconnected) => {
+                        let discarded = questions.try_iter().any(|m| matches!(m, CallerMsg::Discarded));
+                        return Err(if discarded || marked { request_cancelled_error(what) } else { stopped() });
+                    }
+                    Err(RecvTimeoutError::Timeout) => {}
+                }
+            }
+            if !marked && cancelled() {
+                self.cancel.mark(token);
+                marked = true;
             }
         }
     }
@@ -452,13 +514,19 @@ impl ExecutorHandle {
     #[must_use]
     pub fn invoke_served_until(&self, inv: Invocation, cancelled: Cancelled<'_>) -> (Envelope, bool) {
         if inv.command == "job.wait" {
-            return (self.job_wait(inv), false);
+            return (self.job_wait_until(inv, cancelled), false);
         }
         let what = inv.command.clone();
         let params = inv.params.clone();
-        let (env, cached) = self
-            .call_until(&what, |r| Request::Invoke(inv, r), cancelled)
-            .unwrap_or_else(|e| (Envelope::error(e, None), false));
+        // A query changes nothing: it is not refused before it begins and the worker does not ask its caller; a
+        // cancellation marks its token, which stops it at its next work-account check (ADR-0020 decision 8).
+        let query = self.registry.get(&what).is_some_and(|e| e.spec.kind == tt_registry::Kind::Query);
+        let called = if query {
+            self.call_with(&what, |r| Request::Invoke(inv, r), cancelled, Link::None)
+        } else {
+            self.call_until(&what, |r| Request::Invoke(inv, r), cancelled)
+        };
+        let (env, cached) = called.unwrap_or_else(|e| (Envelope::error(e, None), false));
         (self.waited(&params, env, cancelled), cached)
     }
 
@@ -686,6 +754,13 @@ impl ExecutorHandle {
     /// parameters, `expectRev`, ownership); the wait itself happens on the caller's thread (11 P5), bounded by the
     /// command's own `timeoutMs` (11 §15.2), and the envelope is completed and remembered on the document thread.
     fn job_wait(&self, inv: Invocation) -> Envelope {
+        self.job_wait_until(inv, &not_cancelled)
+    }
+
+    /// `job.wait` for a caller that can cancel its request (C34-R2-02): the wait (and the attached retry's wait) ends
+    /// on cancellation with `command.timeout`, `reason: "cancelled"` and the `jobId`; the job is untouched. The two
+    /// bookkeeping halves on the document thread run as usual, so the call in flight is always finished.
+    fn job_wait_until(&self, inv: Invocation, cancelled: Cancelled<'_>) -> Envelope {
         let start = match self.call("job.wait", |r| Request::WaitBegin(inv.clone(), r)) {
             Ok(s) => s,
             Err(e) => return Envelope::error(e, None),
@@ -696,15 +771,25 @@ impl ExecutorHandle {
             // An identical retry gets the envelope of the call in flight (C12-R3-03), at most the owner's wait plus
             // one watchdog budget later.
             run::WaitStart::Attached { envelope, timeout: owner_wait } => {
-                return envelope
-                    .recv_timeout(owner_wait.saturating_add(self.config.budget))
-                    .unwrap_or_else(|_| Envelope::error(timeout("job.wait", self.config.budget), None));
+                let job = inv.params.get("jobId").and_then(Value::as_str).unwrap_or_default().to_owned();
+                let deadline = std::time::Instant::now() + owner_wait.saturating_add(self.config.budget);
+                loop {
+                    let left = deadline.saturating_duration_since(std::time::Instant::now());
+                    match envelope.recv_timeout(left.min(CANCEL_POLL)) {
+                        Ok(env) => return env,
+                        Err(RecvTimeoutError::Timeout) if cancelled() => {
+                            return Envelope::error(wait_cancelled_error(&job), None);
+                        }
+                        Err(RecvTimeoutError::Timeout) if !left.is_zero() => {}
+                        Err(_) => return Envelope::error(timeout("job.wait", self.config.budget), None),
+                    }
+                }
             }
         };
-        let outcome = self
-            .jobs
-            .wait(&job_id, timeout)
-            .and_then(|(record, timed_out)| commands::job::wait_result(record, timed_out));
+        let outcome = match wait_sliced(&self.jobs, &job_id, timeout, cancelled) {
+            Some(waited) => waited.and_then(|(record, timed_out)| commands::job::wait_result(record, timed_out)),
+            None => Err(wait_cancelled_error(&job_id)),
+        };
         self.call("job.wait", |r| Request::WaitFinish(inv, outcome, r)).unwrap_or_else(|e| Envelope::error(e, None))
     }
 }
@@ -719,16 +804,21 @@ fn document_thread(
     let flush = |core: &mut run::Core| broadcast(subscribers, &core.take_events());
     tt_vector::work::set_cancel_state(Some(cancel.clone()));
     while let Ok(req) = rx.recv() {
-        let (token, req) = match req {
-            Request::Tagged(t, r) => (t, *r),
-            r => (0, r),
+        let (token, link, req) = match req {
+            Request::Tagged(t, link, r) => (t, link, *r),
+            r => (0, None, r),
         };
-        // A request whose caller already timed out never begins (C23-R2-01).
-        if token != 0 && cancel.is_cancelled(token) {
+        // A request whose caller already timed out never begins (C23-R2-01), nor one whose caller says at dequeue that
+        // it cancelled (C34-R2-01); that caller is told it was discarded, not that the worker stopped (C34-R2-04).
+        if token != 0 && (cancel.is_cancelled(token) || caller::asks(link.as_ref())) {
+            if let Some(l) = &link {
+                let _ = l.send(CallerMsg::Discarded);
+            }
             cancel.forget(token);
             continue;
         }
         cancel.current.store(token, std::sync::atomic::Ordering::Release);
+        caller::set(link.clone());
         let shutdown = matches!(req, Request::Shutdown);
         match req {
             Request::Invoke(inv, reply) => {
@@ -777,6 +867,9 @@ fn document_thread(
             }
             Request::Shutdown | Request::Tagged(..) => {}
         }
+        // The link is released only after the reply was sent, so a caller woken by its release finds the reply.
+        caller::set(None);
+        drop(link);
         cancel.current.store(0, std::sync::atomic::Ordering::Release);
         if token != 0 {
             cancel.forget(token);
@@ -874,17 +967,7 @@ pub(crate) fn wait_envelope(
 ) -> Envelope {
     let outcome = match wait_sliced(jobs, job, wait, cancelled) {
         Some(o) => o,
-        None => {
-            return Envelope::error(
-                CommandError::with_details(
-                    tt_registry::codes::COMMAND_TIMEOUT,
-                    format!("the request was cancelled by its caller; job `{job}` continues"),
-                    serde_json::json!({ "jobId": job, "reason": "cancelled" }),
-                )
-                .hint("wait for it with job.wait, or cancel it with job.cancel"),
-                document_rev,
-            );
-        }
+        None => return Envelope::error(wait_cancelled_error(job), document_rev),
     };
     match outcome {
         Ok((record, false)) if record.state == JobState::Succeeded => {
@@ -947,4 +1030,82 @@ pub(crate) fn wait_sliced(
             other => return Some(other),
         }
     }
+}
+
+/// Whether a call carries a link to its caller (a caller that can cancel a request that may change something).
+#[derive(Clone, Copy)]
+enum Link {
+    None,
+    Direct,
+}
+
+/// What the worker sends a cancellable caller (C34-R2-01, C34-R2-04).
+enum CallerMsg {
+    /// "Is the request cancelled?": the caller answers its probe at once.
+    Ask(Sender<bool>),
+    /// The request was discarded at dequeue because it was cancelled.
+    Discarded,
+}
+
+/// The link to the caller of the request the document thread is running.
+mod caller {
+    use std::cell::RefCell;
+    use std::sync::mpsc::{self, Sender};
+    use std::time::Duration;
+
+    use super::CallerMsg;
+
+    thread_local! {
+        static LINK: RefCell<Option<Sender<CallerMsg>>> = const { RefCell::new(None) };
+    }
+
+    /// How long the worker waits for its caller's answer before treating the request as cancelled (the caller answers at
+    /// once while it waits; it is gone only after its watchdog budget, when the token is marked anyway).
+    const ANSWER: Duration = Duration::from_secs(5);
+
+    pub(super) fn set(link: Option<Sender<CallerMsg>>) {
+        LINK.with(|l| *l.borrow_mut() = link);
+    }
+
+    /// Asks `link`'s caller whether it cancelled the request: `false` without a link.
+    pub(super) fn asks(link: Option<&Sender<CallerMsg>>) -> bool {
+        let Some(link) = link else { return false };
+        let (tx, rx) = mpsc::channel();
+        if link.send(CallerMsg::Ask(tx)).is_err() {
+            return true;
+        }
+        rx.recv_timeout(ANSWER).unwrap_or(true)
+    }
+
+    /// Asks the caller of the running request.
+    pub(super) fn cancelled() -> bool {
+        let link = LINK.with(|l| l.borrow().clone());
+        asks(link.as_ref())
+    }
+}
+
+/// Whether the request the document thread is running is cancelled: its watchdog token is marked (a timed-out
+/// caller, or a cancelling caller's poll), or its caller says so when asked (ADR-0020 decision 8). Consulted at every
+/// invocation's and batch step's start, at acceptance and before commit, and by waits on the document thread.
+pub(crate) fn request_cancelled() -> bool {
+    tt_vector::work::cancel_requested() || caller::cancelled()
+}
+
+/// The refusal of a request its caller cancelled (SI-111: `command.timeout`, `details.reason: "cancelled"`).
+fn request_cancelled_error(what: &str) -> CommandError {
+    CommandError::with_details(
+        tt_registry::codes::COMMAND_TIMEOUT,
+        format!("`{what}` was not run: its caller cancelled the request"),
+        serde_json::json!({ "commandId": what, "reason": "cancelled" }),
+    )
+}
+
+/// A wait its caller cancelled; the job continues (SI-111).
+fn wait_cancelled_error(job: &str) -> CommandError {
+    CommandError::with_details(
+        tt_registry::codes::COMMAND_TIMEOUT,
+        format!("the request was cancelled by its caller; job `{job}` continues"),
+        serde_json::json!({ "jobId": job, "reason": "cancelled" }),
+    )
+    .hint("wait for it with job.wait, or cancel it with job.cancel")
 }

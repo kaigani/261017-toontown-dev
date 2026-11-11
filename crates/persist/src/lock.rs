@@ -129,6 +129,9 @@ pub enum Boundary {
     /// A range export's publication, before it renames a staged file onto its target (the path is the target; M3
     /// C3.3 round 2).
     RangePublish,
+    /// An invocation or batch step committed on the document thread, before the next boundary (the path is empty; M3
+    /// C3.4 round 2: request cancellation between steps).
+    Committed,
 }
 
 #[cfg(feature = "test-hooks")]
