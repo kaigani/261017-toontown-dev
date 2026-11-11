@@ -694,7 +694,9 @@ jobs:
             cmp "e1-Windows/$f" "e1-macOS/$f" || status=1
           done
           [ "$(list e1-Windows)" = "$(list e1-macOS)" ] || status=1
-          [ "$(list e1-Windows | wc -l)" -ge 40 ] || status=1
+          # 24 sequence frames, 6 single frames, the contact sheet and its cells, the normalised manifest, the evaluation,
+          # the recorded script and the hashes.
+          [ "$(list e1-Windows | wc -l)" -eq 36 ] || status=1
           exit $status
 
   # Unsigned desktop bundles + automated IPC round-trip benchmark in the real webview.
