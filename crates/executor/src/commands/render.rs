@@ -993,7 +993,7 @@ impl RangeJob {
         let total = self.frames.len() as f64;
         for (i, (f, target)) in self.frames.iter().zip(&self.targets).enumerate() {
             if progress.cancelled() {
-                return Err(CommandError::new("job.cancelled", "the range was cancelled; nothing was published"));
+                return Err(range_cancelled());
             }
             progress.report(i as f64 / total, &format!("Rendering frame {f}"));
             let req = Request {
@@ -1005,7 +1005,9 @@ impl RangeJob {
                 only: self.only.as_ref(),
                 overrides: &self.overrides,
             };
-            let r = render_frame(&self.doc, Some(&self.blobs), &self.cache, &req, self.background, &cancelled)?;
+            // A frame stopped by this job's cancellation is the job's cancellation, not a watchdog timeout (C33-R3-01).
+            let r = render_frame(&self.doc, Some(&self.blobs), &self.cache, &req, self.background, &cancelled)
+                .map_err(|e| if progress.cancelled() { range_cancelled() } else { e })?;
             for w in r.warnings {
                 if !warnings.contains(&w) {
                     warnings.push(w);
@@ -1048,7 +1050,7 @@ impl RangeJob {
         staged.push(Staged { tmp, target: self.manifest_target.clone() });
         // The commit point: past it the job publishes every file and can no longer be cancelled.
         if !progress.commit() {
-            return Err(CommandError::new("job.cancelled", "the range was cancelled; nothing was published"));
+            return Err(range_cancelled());
         }
         for w in publish(&self.dir, staged, sidecar)? {
             progress.warn(w);
@@ -1056,6 +1058,11 @@ impl RangeJob {
         progress.report(1.0, "Done");
         Ok(manifest)
     }
+}
+
+/// The typed error of a cancelled range job.
+fn range_cancelled() -> CommandError {
+    CommandError::new("job.cancelled", "the range was cancelled; nothing was published")
 }
 
 /// The staging marker: a staged file is `.<target name>.tt-partial-<token>`.

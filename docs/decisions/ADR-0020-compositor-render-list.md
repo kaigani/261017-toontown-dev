@@ -1,6 +1,6 @@
 # ADR-0020 — Compositor and render list
 
-Status: accepted (M3 C3.3; amended in C3.3 rounds 1 and 2).
+Status: accepted (M3 C3.3; amended in C3.3 rounds 1-3).
 
 ## Context
 
@@ -90,8 +90,11 @@ thread); ADR-0019 fixes the evaluation order of transforms.
      removed only when nothing failed, so a refused step is retried by a later job.
    - **Receipts.** The next job lists what it recovered in its warnings (`render.staleStagingRemoved`: `files` removed
      or moved back, `restored` targets, `unrestored` names left). A cancelled or failed job records its own recovery
-     (`render.stagingDiscarded`, same fields) in its job record's `warnings`, kept with the state and, when failed,
-     the typed error, and readable through `job.list` and `job.wait` after completion. Neither state becomes success.
+     (`render.stagingDiscarded`, same fields) in its job record's `warnings`, kept with the state and the typed
+     error (a cancelled record keeps `job.cancelled`, or what met the cancellation, such as
+     `export.rollbackIncomplete`; C33-R3-01), readable through `job.list`, `job.wait` and MCP `job_status` after
+     completion. Neither state becomes success. Dead jobs are recovered by the entry recovery of the next job into the
+     directory; a cancellation recovers only the cancelled job's own token.
    - Process death may leave a job's staged files, backups and sidecar; they are never published, and the next job
      into the directory recovers them as above.
 12. **Volatile fields** (ruling C33-R1-06). `renderMs` (in `render.frame.run`, the generic `render_frame` result and

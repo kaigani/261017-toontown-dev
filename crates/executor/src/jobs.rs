@@ -218,7 +218,12 @@ impl JobTable {
                         r.state = JobState::Cancelled;
                         r.result = Some(v);
                     }
-                    _ if cancelled => r.state = JobState::Cancelled,
+                    // A cancelled job keeps its typed error (C33-R3-01): the cancellation itself, or what met it
+                    // (a rollback the file system refused stays `export.rollbackIncomplete`); its warnings stay too.
+                    Err(e) if cancelled => {
+                        r.state = JobState::Cancelled;
+                        r.error = Some(e);
+                    }
                     Ok(v) => {
                         r.state = JobState::Succeeded;
                         r.progress = 1.0;
