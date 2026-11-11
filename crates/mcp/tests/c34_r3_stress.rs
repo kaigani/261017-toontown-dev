@@ -16,16 +16,20 @@ fn concurrent_wire_cancellation_sixty_seconds() {
     let mut seed = 731u64;
     while start.elapsed() < Duration::from_secs(60) {
         let mut ids = Vec::new();
+        let mut cancellations = Vec::new();
         for _ in 0..24 {
             let id = c.send("tools/call", json!({"name":"run_command","arguments":{"id":"edit.selection.set","params":{"context":"drawing","ids":[]}}}));
             seed = seed.wrapping_mul(6364136223846793005).wrapping_add(1);
             if !seed.is_multiple_of(3) {
-                std::thread::sleep(Duration::from_micros((seed >> 16) % 300));
-                c.notify("notifications/cancelled", json!({"requestId":id}));
+                cancellations.push((id, (seed >> 16) % 300));
             } else {
                 ids.push(id);
             }
             count += 1;
+        }
+        for (id, delay) in cancellations {
+            std::thread::sleep(Duration::from_micros(delay));
+            c.notify("notifications/cancelled", json!({"requestId":id}));
         }
         for id in ids {
             assert!(c.wait(id, Duration::from_secs(10)).is_some(), "server stalled");
