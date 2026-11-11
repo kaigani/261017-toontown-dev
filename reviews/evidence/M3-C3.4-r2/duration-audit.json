@@ -1,0 +1,117 @@
+{
+  "run": 42968758950,
+  "jobs": [
+    {
+      "name": "headless release (macos-latest)",
+      "minutes": 34.1
+    },
+    {
+      "name": "check (windows-latest)",
+      "minutes": 42.5
+    },
+    {
+      "name": "m3 properties release (windows-latest)",
+      "minutes": 3.1
+    },
+    {
+      "name": "check properties (macos-latest)",
+      "minutes": 21.8
+    },
+    {
+      "name": "e2 release (windows-latest)",
+      "minutes": 7.0
+    },
+    {
+      "name": "check (macos-latest)",
+      "minutes": 37.4
+    },
+    {
+      "name": "headless without a display (ubuntu)",
+      "minutes": 3.8
+    },
+    {
+      "name": "bundle (macos-latest)",
+      "minutes": 8.4
+    },
+    {
+      "name": "c33 render release (macos-latest)",
+      "minutes": 7.2
+    },
+    {
+      "name": "c33 render release (windows-latest)",
+      "minutes": 13.9
+    },
+    {
+      "name": "e2 release (macos-latest)",
+      "minutes": 4.3
+    },
+    {
+      "name": "headless release (windows-latest)",
+      "minutes": 41.1
+    },
+    {
+      "name": "m3 properties release (macos-latest)",
+      "minutes": 2.1
+    },
+    {
+      "name": "history oracles release (macos-latest)",
+      "minutes": 12.0
+    },
+    {
+      "name": "review properties release (macos-latest)",
+      "minutes": 21.8
+    },
+    {
+      "name": "history oracles release (windows-latest)",
+      "minutes": 17.2
+    },
+    {
+      "name": "bundle (windows-latest)",
+      "minutes": 10.1
+    },
+    {
+      "name": "review properties release (windows-latest)",
+      "minutes": 32.4
+    },
+    {
+      "name": "e4 release (macos-latest)",
+      "minutes": 6.0
+    },
+    {
+      "name": "e4 release (windows-latest)",
+      "minutes": 6.4
+    },
+    {
+      "name": "raster determinism (macos-latest)",
+      "minutes": 3.1
+    },
+    {
+      "name": "measurements release (macos-latest)",
+      "minutes": 9.9
+    },
+    {
+      "name": "raster determinism (ubuntu-latest)",
+      "minutes": 1.8
+    },
+    {
+      "name": "raster determinism (windows-latest)",
+      "minutes": 2.7
+    },
+    {
+      "name": "check properties (windows-latest)",
+      "minutes": 27.5
+    },
+    {
+      "name": "measurements release (windows-latest)",
+      "minutes": 13.4
+    },
+    {
+      "name": "c33 cross-OS",
+      "minutes": 0.1
+    },
+    {
+      "name": "e4 cross-OS",
+      "minutes": 0.1
+    }
+  ]
+}
