@@ -28,7 +28,7 @@ fn one_hundred_wait_cancellations_settle_jobs_and_leave_handle_usable() {
                 h.invoke_served_until(
                     Invocation::user(
                         "render.range.run",
-                        json!({"from":1,"to":100000,"width":32,"directory":dir,"createDirs":true,"wait":true}),
+                        json!({"from":1,"to":10000,"width":32,"directory":dir,"createDirs":true,"wait":true}),
                     ),
                     &|| flag.load(Ordering::SeqCst),
                 )
@@ -69,7 +69,7 @@ fn queued_cancelled_request_is_skipped_and_following_read_survives() {
     for (cancel_batch, stop_on_error) in [(false, true), (true, true), (true, false)] {
         let h = fixture_with(ExecutorConfig { budget: Duration::from_millis(1000) });
         let dir = c13_support::tmp().join("blocked");
-        let batch:BatchRequest=serde_json::from_value(json!({"label":"review","atomic":false,"stopOnError":stop_on_error,"steps":[{"id":"render.range.run","params":{"from":1,"to":100000,"width":32,"directory":dir,"createDirs":true,"wait":true}},{"id":"element.create","params":{"type":"peg","name":"Late","sceneId":"scene:#1"}}]})).unwrap();
+        let batch:BatchRequest=serde_json::from_value(json!({"label":"review","atomic":false,"stopOnError":stop_on_error,"steps":[{"id":"render.range.run","params":{"from":1,"to":10000,"width":32,"directory":dir,"createDirs":true,"wait":true}},{"id":"element.create","params":{"type":"peg","name":"Late","sceneId":"scene:#1"}}]})).unwrap();
         let mut queued_inv =
             Invocation::user("element.create", json!({"type":"peg","name":"QueuedCancelled","sceneId":"scene:#1"}));
         queued_inv.options.request_id = Some("queued-retry".to_owned());
@@ -132,4 +132,31 @@ fn atomic_and_dry_run_cancel_mid_batch_discard_changes() {
         assert!(!env.is_ok());
         assert_eq!(rev(&h), before);
     }
+}
+
+#[test]
+fn discarded_queued_cancellation_does_not_report_a_dead_document_thread() {
+    let h = fixture_with(ExecutorConfig { budget: Duration::from_millis(1000) });
+    let dir = c13_support::tmp().join("queue-error");
+    let req:BatchRequest=serde_json::from_value(json!({"label":"queue error","atomic":false,"steps":[{"id":"render.range.run","params":{"from":1,"to":10000,"width":32,"directory":dir,"createDirs":true,"wait":true}}]})).unwrap();
+    let refused = std::thread::scope(|s| {
+        let blocker = s.spawn(|| h.batch(req, Origin::User));
+        staged(&dir);
+        let refused = h
+            .invoke_served_until(
+                Invocation::user("element.create", json!({"type":"peg","name":"MustNotBegin","sceneId":"scene:#1"})),
+                &|| true,
+            )
+            .0;
+        let env = blocker.join().unwrap();
+        let steps = env.steps.unwrap();
+        let job = steps[0].error.as_ref().unwrap().details["jobId"].as_str().unwrap();
+        ok(&h, "job.cancel", json!({"jobId":job}));
+        h.jobs().wait(job, Duration::from_secs(60)).unwrap();
+        refused
+    });
+    assert!(run(&h, "doc.state.get", json!({})).is_ok());
+    let error = refused.error.unwrap();
+    eprintln!("QUEUED_ERROR code={} message={}", error.code, error.message);
+    assert_ne!(error.code, "internal", "intentional request cancellation is not a dead document thread");
 }

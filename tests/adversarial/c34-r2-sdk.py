@@ -39,12 +39,16 @@ async def main():
                 state=await run('doc.state.get',{})
                 assert state['status']=='ok',state
                 jobs=sc(await s.call_tool('job_status',{}))['result']
+                settled=[]
                 for j in jobs:
                     if j['state'] in ['queued','running']:
                         await run('job.cancel',{'jobId':j['jobId']})
-                        await run('job.wait',{'jobId':j['jobId'],'timeoutMs':60000})
+                        terminal=await run('job.wait',{'jobId':j['jobId'],'timeoutMs':60000})
+                        assert terminal['status']=='ok',terminal
+                        settled.append({k:terminal['result'].get(k) for k in ['jobId','state','error','warnings']})
                 audit=await run('agent.activity.list',{'limit':100})
-                evidence.append({'kind':kind,'following_state':state['status'],'jobs':jobs,'activity':audit})
+                audit['result']=[{k:v for k,v in a.items() if k not in ['params','result','arguments']} for a in audit['result']]
+                evidence.append({'kind':kind,'following_state':state['status'],'jobs':[{k:j.get(k) for k in ['jobId','commandId','state','progress','error']} for j in jobs],'activity':audit,'terminal':settled})
                 assert not out.exists() or not any('.tt-partial-' in p.name for p in out.iterdir())
     (root/'reviews/evidence/M3-C3.4-r2/sdk.json').write_text(json.dumps({'sdk':importlib.metadata.version('mcp'),'calls':evidence},indent=2)+'\n')
     print('SDK cancellation/session/staging probes completed')

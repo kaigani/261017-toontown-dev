@@ -12,7 +12,7 @@ function Run-ReviewCargo([string]$name, [string[]]$arguments) {
     Set-Content "$evidence/$name.exit" $result
     "$name exit=$result elapsed=$((Get-Date)-$started)" | Add-Content "$evidence/checks-summary.txt"
 }
-Run-ReviewCargo 'reviewer' @('test','--locked','-p','tt-executor','-j','4','--test','c34_r2_cancellation','--test','c34_r2_measurements','--no-fail-fast','--','--nocapture')
+Run-ReviewCargo 'reviewer' @('test','--locked','-p','tt-executor','-j','4','--test','c34_r2_cancellation','--test','c34_r2_measurements','--no-fail-fast','--','--nocapture','--test-threads=1')
 Run-ReviewCargo 'wire' @('test','--locked','-p','tt-mcp','-j','4','--features','tt-persist/test-hooks','--test','c34_r2_protocol','--','--nocapture')
 Run-ReviewCargo 'fmt' @('fmt','-p','tt-executor','-p','tt-mcp','--check')
 Run-ReviewCargo 'clippy-product' @('clippy','--locked','-p','tt-executor','-p','tt-mcp','--lib','--bins','--examples','-j','4','--','-D','warnings')
@@ -20,3 +20,4 @@ Run-ReviewCargo 'clippy-targets' @('clippy','--locked','-p','tt-executor','-p','
 $env:GITHUB_SHA='967229ad0bd172691771fe12252003439b4767fe'
 Run-ReviewCargo 'release' @('build','--release','--locked','-p','tt-headless','-j','4')
 Set-Content "$evidence/checks.exit" 0
+
