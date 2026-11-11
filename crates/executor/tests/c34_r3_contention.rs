@@ -73,6 +73,29 @@ fn mark_after_forget_and_mixed_call_contention_leave_no_tokens() {
             });
         }
     });
+    std::thread::scope(|s| {
+        for _ in 0..4 {
+            s.spawn(|| {
+                let short = fixture_with(tt_executor::ExecutorConfig { budget: Duration::from_millis(100) });
+                let n = AtomicUsize::new(0);
+                let e = short
+                    .invoke_served_until(
+                        Invocation::user("edit.selection.set", json!({"context":"drawing","ids":[]})),
+                        &|| {
+                            if n.fetch_add(1, Ordering::SeqCst) == 1 {
+                                std::thread::sleep(Duration::from_millis(200));
+                            }
+                            false
+                        },
+                    )
+                    .0;
+                assert_eq!(e.error.unwrap().code, "command.timeout");
+            });
+        }
+    });
+    let dir = std::env::temp_dir().join(format!("c34-r3-token-job-{}", std::process::id()));
+    let job = ok(&h, "render.range.run", json!({"from":1,"to":1,"width":8,"directory":dir,"createDirs":true}));
+    h.jobs().wait(job["jobId"].as_str().unwrap(), Duration::from_secs(30)).unwrap();
     assert!(run(&h, "doc.state.get", json!({})).is_ok());
     std::thread::sleep(Duration::from_millis(100));
     assert_eq!(tt_vector::work::hooks::queued_tokens(), 0);
