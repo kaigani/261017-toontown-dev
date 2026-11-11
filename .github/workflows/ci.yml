@@ -120,6 +120,10 @@ jobs:
       # `killed_sequence_leaves_no_staged_files` (reviewer, C3.3 round 1) asserts a killed process leaves no staging; ruling
       # C33-R1-08 closes that premise (process death may leave `.tt-partial-` files; the next job sweeps them, tested in
       # `c33_round2::a_dead_jobs_listed_staging_is_recovered_and_reported`), so it is skipped here.
+      # M3 C3.3 closure budget ruling (Windows `check` 49 min 19 s in run 42938979758): the reviewer corpora
+      # `c33_r2_depth::seeded_anchor_groups_4096` and `c33_r2_stress::deep_and_broad_scene` run whole-binary in release in
+      # `c33 render release`, and `c31_r3_hierarchy::random_hierarchy_edits_4096_keep_independent_parent_and_level_model`
+      # in `review properties release`, bodies unchanged; `last_target_readonly_preserves_originals` also stays here.
       - name: Run cargo test --workspace --locked
         run: |
           cargo test --workspace --locked -- --skip ten_thousand_history_operations_match_independent_content_oracle_and_replay \
@@ -155,7 +159,7 @@ jobs:
             --skip non_parallelogram_envelopes_map_the_layer_projectively \
             --skip snapping_onto_a_curved_contour_reaches_its_nearest_point \
             --skip integer_translations_and_compositions_preserve_all_snapped_anchor_sequences \
-            --skip side_fills_read_back_beside_collinear_overlaps             --skip independent_sequences_4096_persist_canonical_runs_and_notes             --skip exclusive_mutation_capability             --skip duplicate_ids_and_inventory_kind_drift_are_rejected             --skip missing_example_is_rejected_at_compile_time             --skip killed_sequence_leaves_no_staged_files
+            --skip side_fills_read_back_beside_collinear_overlaps             --skip independent_sequences_4096_persist_canonical_runs_and_notes             --skip exclusive_mutation_capability             --skip duplicate_ids_and_inventory_kind_drift_are_rejected             --skip missing_example_is_rejected_at_compile_time             --skip killed_sequence_leaves_no_staged_files             --skip seeded_anchor_groups_4096             --skip deep_and_broad_scene             --skip random_hierarchy_edits_4096_keep_independent_parent_and_level_model
 
       - name: Desktop host with the M0 diagnostics feature (C0.4 gating) — clippy and tests
         run: |
@@ -275,6 +279,8 @@ jobs:
           cargo test --release --locked -p tt-vector --test c24_r3_properties --test c24_r3_noding
           # C3.1 round 3: the 4096 independent exposure sequences, skipped in `check` (moved in M3 C3.2 round 1).
           cargo test --release --locked -p tt-executor --test c31_r3_sequences
+          # C3.3 closure budget ruling: the 4096 random hierarchy edits, skipped in `check`.
+          cargo test --release --locked -p tt-executor --test c31_r3_hierarchy
 
   headless:
     name: headless release (${{ matrix.os }})
@@ -610,6 +616,10 @@ jobs:
 
       - name: Golden images and PNG sequences (release)
         run: cargo test --release --locked -p tt-executor --test c33_goldens --test c33_range --test c33_bitmap
+
+      # C3.3 closure budget ruling: the reviewer's 4096-case anchor-group corpus and deep/broad scene, skipped in `check`.
+      - name: Reviewer render corpora (release)
+        run: cargo test --release --locked -p tt-executor --test c33_r2_depth --test c33_r2_stress
 
       - name: Render gate (official Python SDK, release headless binary)
         run: |
