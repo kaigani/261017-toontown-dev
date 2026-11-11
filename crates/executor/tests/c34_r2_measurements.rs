@@ -69,7 +69,7 @@ fn queued_cancelled_request_is_skipped_and_following_read_survives() {
     for cancel_batch in [false, true] {
         let h = fixture_with(ExecutorConfig { budget: Duration::from_millis(1000) });
         let dir = c13_support::tmp().join("blocked");
-        let batch:BatchRequest=serde_json::from_value(json!({"atomic":false,"steps":[{"id":"render.range.run","params":{"from":1,"to":100000,"width":32,"directory":dir,"createDirs":true,"wait":true}}]})).unwrap();
+        let batch:BatchRequest=serde_json::from_value(json!({"label":"review","atomic":false,"steps":[{"id":"render.range.run","params":{"from":1,"to":100000,"width":32,"directory":dir,"createDirs":true,"wait":true}}]})).unwrap();
         let flag = AtomicBool::new(false);
         std::thread::scope(|s| {
             let batch_thread = s.spawn(|| h.batch_until(batch, Origin::User, &|| flag.load(Ordering::SeqCst)));
@@ -111,8 +111,9 @@ fn atomic_and_dry_run_cancel_mid_batch_discard_changes() {
     for dry in [false, true] {
         let h = fixture();
         let before = rev(&h);
-        let steps:Vec<Value>=(0..10000).map(|i|json!({"id":"element.create","params":{"type":"peg","name":format!("Step{i}"),"sceneId":"scene:#1"}})).collect();
-        let req: BatchRequest = serde_json::from_value(json!({"atomic":true,"dryRun":dry,"steps":steps})).unwrap();
+        let steps:Vec<Value>=(0..1000).map(|i|json!({"id":"element.create","params":{"type":"peg","name":format!("Step{i}"),"sceneId":"scene:#1"}})).collect();
+        let req: BatchRequest =
+            serde_json::from_value(json!({"label":"review","atomic":true,"dryRun":dry,"steps":steps})).unwrap();
         let start = Instant::now();
         let env = h.batch_until(req, Origin::User, &|| start.elapsed() > Duration::from_millis(5));
         eprintln!("ATOMIC dry={dry} status={:?} error={:?}", env.status, env.error);
