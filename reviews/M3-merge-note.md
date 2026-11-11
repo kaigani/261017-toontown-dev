@@ -1,0 +1,115 @@
+# M3 merge note — elements, timing, staging maths, final renderer
+
+Merge candidate: branch `m3-elements-timing` into `main`, then tag `m3`, after C3.4 passes. Builder: Claude Opus 5.5.
+The candidate head, its green run and the counts are in the C3.4 closing message, and are added here at the closure.
+The orchestrator merges and tags; the builder does not.
+
+## 1. Checkpoints and closures
+
+| Checkpoint | Scope (plan §4 row M3) | Closure | Final register |
+|---|---|---|---|
+| C3.1 | element types, exposure runs, cells, clone/duplicate, hierarchy, `element.*`, `cell.*`, `xsheet.*` JSON | round 4 scoped closure **pass** ([M3-C3.1-r4-closure.md](M3-C3.1-r4-closure.md); builder `864b70d`, review `ac47998`) | source units 467 implemented / 0 divergent / 0 missing / 227 deferred; commands and events 63 / 0 / 0 / 1 |
+| C3.2 | transforms, pivots, TCB paths, velocity, channels, easing, cameras, projection, `anim.evaluate`, E4 numeric | round 4 scoped closure **pass** ([M3-C3.2-r4-closure.md](M3-C3.2-r4-closure.md); builder `8c640d1`, review `2184ae8`) | 36 rows / 383 units: 36 rows implemented; 293 units implemented, 90 deferred with owner; 0 divergent, 0 missing |
+| C3.3 | compositor, render list, deterministic `render_frame`, contact sheet, `describe_frame`, `hit_test`, `convert_coordinates`, PNG sequence export, golden images | round 4 scoped closure **pass** ([M3-C3.3-r4-closure.md](M3-C3.3-r4-closure.md); builder `4984c25`, review `2daaf99`) | 183 implemented / 0 divergent / 0 missing / 14 deferred with owner / 1 closed (198 units) |
+| C3.4 | E1 headless (minus MP4) | handed off ([M3-C3.4-handoff.md](M3-C3.4-handoff.md)); closure pending | — |
+
+## 2. Merge-readiness conditions at the candidate
+
+1. **Every M3 checkpoint passes.** C3.1-C3.3 are closed (round 4); C3.4 closes in its review rounds.
+2. **No open P0/P1/P2.** Every finding of C3.1-C3.3 is closed. All original proving tests, every round's variants
+   and the closure evidence are retained (`reviews/evidence/M3-*`).
+3. **Green Windows and macOS CI at the candidate**, all 28 jobs. These cover:
+   - debug `check` (fmt per package, both clippy invocations, workspace tests, reviewer Python suites, ownership,
+     front end, generator and schema freshness, examples);
+   - release history oracles, properties, measurements, E2, E4 and E1;
+   - golden and cross-OS byte gates;
+   - bundles, raster determinism and headless without a display.
+
+   Windows `check` must stay under 55 min.
+4. **Receipts and ownership preserved:**
+   - raw receipts under `reviews/evidence/`;
+   - reviewer ownership by file (§5): the only reviewer-file edit of M3 is the authorized C3.3 round-3 sequencing
+     edit (`c3ce737`);
+   - `spec/` read-only;
+   - the allow inventory at 97 lints / 40 files, 0 new.
+5. **Orchestrator:** merge, verify that `main` builds on both OSes, and tag the verified commit `m3`.
+
+## 3. Declared later-milestone deferrals (named owners)
+
+| Item | Owner | State |
+|---|---|---|
+| MP4/MOV/GIF export (E1's movie step) | M10 C10.1 (ADR-0008; sidecar M8 C8.3) | E1 delivers the PNG sequence and its manifest. The C3.4 brief named M9; plan §4 and ADR-0008 name M10 C10.1. |
+| Attached-session frame rendering = headless (readiness item 12) | M4 C4.2 | Gate: the same saved fixture, revision and frames through the running app's adapter and headless on both OSes; PNG bytes and metadata compared, with the volatile fields identified; attached-session receipts retained. |
+| Project and drawing thumbnails | M5 C5.2 | `derived.rs` names the owner. |
+| Views, `activeView` composition, draft quality, `view` space | M4 C4.2 | refused with the owner |
+| `xsheet` composition | M5 C5.1 | refused with the owner |
+| Bones and envelopes | M6 C6.3 | SI-097 |
+| Path/function/velocity IPC final shape (D-5) | M6 C6.2, SI-096 | spec owner |
+| Effects in the render list | M7 | — |
+| Sounds and mouth shapes in `describe_frame` | M8 | — |
+| Importers writing native-size bitmaps | M10 | SI-105 |
+| C22-T2, R1-12 (performance) | M11 C11.1 | inherited from M2 |
+| Lock files compare host names case-sensitively | M11 C11.1, or earlier by ruling | found in C3.4 (handoff §5); the safe direction |
+
+## 4. Open spec issues for the spec owner
+
+`plan/spec-issues.md` (next free id **SI-111**). Issues from M3 that still carry a question for the spec owner:
+
+| Issue | Subject | Register state |
+|---|---|---|
+| SI-085 | where the static light table is stored | interim decided |
+| SI-086, SI-087, SI-090 | error-code names (hierarchy cycle, batch count, duplicate drawing name) | decided by section ownership; unification asked |
+| SI-089 | key re-timing when a bar's duration changes (`cycleLength` in 10 §4.5) | decided |
+| SI-091, SI-092 | default drawing names; which elements may have children | decided for 04; alignment asked |
+| SI-094, SI-095 | duplicating children; columnate with `exposeLast` | decided by ruling; confirmation asked |
+| SI-096 | per-axis position channels (D-5) | **unresolved, spec owner** |
+| SI-098, SI-099, SI-100 | `anim.evaluate` frame reporting; Constant Z measure; `visible` for pegs | decided; confirmation asked |
+| SI-106 | role tiers outrank depth in the composite order | decided; confirmation asked |
+
+Inherited open issues: SI-047 (RO-02 detection, interim ruling), SI-049 (MCP revision 2026-07-28), SI-077 (feather
+colours, awaiting the spec owner). Every other SI from SI-001 to SI-110 is decided, and the amendment candidates are
+listed in the file.
+
+## 5. Reviewer-owned tests, permanent in CI
+
+**Rust** (every file runs in CI):
+- **C3.1:** `c31_r1_*`, `c31_r2_*`, `c31_r3_*`, `c31_r4_closure`, and the MCP `c31_r*_protocol`.
+- **C3.2:** `c32_r1_*`, `c32_r2_*`, `c32_r3_*`, `c32_r4_*`.
+- **C3.3:** `c33_r1_*`, `c33_r2_*`, `c33_r3_*`, `c33_r4_*` (executor, MCP, render).
+
+Placements outside debug `check`:
+- `c31_r3_sequences` and `c31_r3_hierarchy` run in `review properties release`.
+- `c33_r2_depth` and `c33_r2_stress` run in `c33 render release`.
+- The trybuild suites run in `history oracles release`.
+- `check` skips by exact name only what those jobs run, plus `c33_r1_crash::killed_sequence_leaves_no_staged_files`
+  (premise closed by ruling C33-R1-08; body unchanged).
+
+**Python:** `tests/adversarial/c31-*.py` and `c33-r1-audit.py`, through `scripts/run-reviewer-python-suites.py`.
+
+## 6. CI job layout and budgets
+
+Times are from run 42938979758 (C3.3 round 3, before the C3.3 closure budget routing). The candidate run is in the C3.4
+closing message.
+
+| Job (Windows / macOS unless noted) | Budget (min) | Run 42938979758, Windows / macOS (min) |
+|---|---|---|
+| `check` | 60 (ceiling 55 by ruling) | 49.3 / 29.7; after the routing of three corpora (`7216cb9`, run 42953847540) 41.7 / 34.7 |
+| `check properties` | 45 | 29.7 / 18.6 |
+| `review properties release` | 45 | 31.1 / 25.2; with `c31_r3_hierarchy` (run 42953847540) 35.4 / 24.1 |
+| `headless release` | 55 | 46.7 / 30.8 |
+| `history oracles release` | 40 | 20.5 / 14.8 |
+| `measurements release` | 45 | 18.0 / 10.9 |
+| `m3 properties release` | 20 | 3.1 / 1.8 |
+| `e2 release` | 30 | 6.9 / 5.8 |
+| `e4 release`, `e4 cross-OS` | 30, 10 | 6.9 / 6.9; 0.1 |
+| `c33 render release` (goldens, range, bitmap, render gate, reviewer corpora, E1), `c33 cross-OS` | 30, 10 | 10.3 / 9.6; 0.1 |
+| `bundle` | 30 | 10.8 / 8.3 |
+| `raster determinism` (Windows, macOS, Linux) | 20 | 2.7 / 1.6 / 1.6 |
+| `headless without a display` (Linux) | 15 | 3.1 |
+
+## 7. User-only items
+
+- **Spec owner:** the questions in §4, SI-096 (D-5) first, because M6 C6.2 depends on it.
+- **Orchestrator:** the merge and the `m3` tag (§2.5). Choose the MP4 owner where the C3.4 brief (M9) differs from
+  plan §4 and ADR-0008 (M10 C10.1). Rule on the lock-file host-name comparison owner (§3).
+- No hardware, credential or licence action is needed for M3.

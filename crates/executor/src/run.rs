@@ -1467,8 +1467,11 @@ impl Core {
     /// for the rest of the batch), so the caller still gets an answer. Ownership and parameters were checked by the
     /// invocation that returned the pending record.
     fn finish_batched_wait(&mut self, inv: &Invocation, env: Envelope, started: std::time::Instant) -> Envelope {
+        if inv.command != "job.wait" {
+            return self.finish_batched_job(inv, env, started);
+        }
         let pending = env.result.as_ref().is_some_and(|r| r.get("timedOut") == Some(&Value::Bool(true)));
-        if inv.command != "job.wait" || !env.is_ok() || !pending {
+        if !env.is_ok() || !pending {
             return env;
         }
         let Ok(p) = tt_registry::decode_params::<crate::commands::job::WaitParams>(inv.params.clone()) else {
@@ -1488,6 +1491,29 @@ impl Core {
             Ok(result) => Envelope::ok(result, self.rev()),
             Err(e) => Envelope::error(e, self.rev()),
         }
+    }
+
+    /// `wait: true` of a job command in a sequential batch (09 §11.1 item 4; found by E1 in M3 C3.4): the step waits
+    /// for its job like a `job.wait` step, bounded by what remains of the batch's watchdog budget minus the margin, and
+    /// answers as a direct call does ([`crate::wait_envelope`]).
+    fn finish_batched_job(&mut self, inv: &Invocation, env: Envelope, started: std::time::Instant) -> Envelope {
+        if inv.params.get("wait") != Some(&Value::Bool(true)) || !env.is_ok() {
+            return env;
+        }
+        let Some(job) = env
+            .result
+            .as_ref()
+            .and_then(|r| r.get("jobId"))
+            .and_then(Value::as_str)
+            .filter(|j| *j != "dryRun")
+            .map(str::to_owned)
+        else {
+            return env;
+        };
+        let margin = self.budget / 10;
+        let left = self.budget.saturating_sub(started.elapsed()).saturating_sub(margin);
+        let Some(jobs) = self.session.as_ref().map(|s| s.jobs.clone()) else { return env };
+        crate::wait_envelope(&jobs, &job, left, self.rev())
     }
 
     fn batch_atomic(&mut self, req: &BatchRequest, origin: &Origin) -> Envelope {

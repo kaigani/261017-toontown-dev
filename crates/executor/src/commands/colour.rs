@@ -1021,7 +1021,7 @@ pub(crate) struct PaintResult {
 pub(crate) fn resolve_colour(cx: &Cx, given: Option<&str>) -> Result<(Option<String>, SwatchKind), CommandError> {
     let doc = cx.document()?;
     let colour = match given {
-        Some(c) => Some(c.to_owned()),
+        Some(c) => Some(super::draw_stroke::swatch_colour(cx, c)),
         None => super::draw_stroke::current_colour(doc),
     };
     let Some(c) = colour else {

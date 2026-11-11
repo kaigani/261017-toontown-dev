@@ -411,37 +411,7 @@ impl ExecutorHandle {
         else {
             return env;
         };
-        let rev = env.document_rev;
-        match self.jobs.wait(&job, self.config.budget) {
-            Ok((record, false)) if record.state == JobState::Succeeded => {
-                let mut result = record.result.unwrap_or(Value::Null);
-                if let Some(m) = result.as_object_mut() {
-                    m.insert("jobId".into(), Value::String(job));
-                }
-                Envelope::ok(result, rev)
-            }
-            Ok((record, false)) => {
-                let mut e = record.error.unwrap_or_else(|| {
-                    CommandError::new("job.failed", format!("job `{job}` ended {:?}", record.state))
-                });
-                if let Some(m) = e.details.as_object_mut() {
-                    m.insert("jobId".into(), Value::String(job));
-                } else {
-                    *e.details = serde_json::json!({ "jobId": job });
-                }
-                Envelope::error(e, rev)
-            }
-            Ok((_, true)) => Envelope::error(
-                CommandError::with_details(
-                    "job.waitTimeout",
-                    format!("job `{job}` is still running after {} ms; it continues", self.config.budget.as_millis()),
-                    serde_json::json!({ "jobId": job, "timeoutMs": u64::try_from(self.config.budget.as_millis()).unwrap_or(u64::MAX) }),
-                )
-                .hint("wait for it with job.wait, or cancel it with job.cancel"),
-                rev,
-            ),
-            Err(e) => Envelope::error(e, rev),
-        }
+        wait_envelope(&self.jobs, &job, self.config.budget, env.document_rev)
     }
 
     /// [`ExecutorHandle::invoke`], also saying whether the answer came from the `requestId` cache: a retry that
@@ -833,5 +803,46 @@ pub mod hooks {
     pub(crate) fn merge_work_budget() -> Option<u64> {
         let b = MERGE_BUDGET.load(Ordering::Acquire);
         (b > 0).then_some(b)
+    }
+}
+
+/// The answer of a waited job (09 §11.1 item 4; C33-R1-02): the job's final result with its `jobId` when it
+/// succeeded, its error with the `jobId` when it failed or was cancelled, `job.waitTimeout` with the `jobId` when it is
+/// still running after `wait` (it continues). Used by `wait: true` on a direct call and in a sequential batch.
+pub(crate) fn wait_envelope(
+    jobs: &JobTable,
+    job: &str,
+    wait: std::time::Duration,
+    document_rev: Option<u64>,
+) -> Envelope {
+    match jobs.wait(job, wait) {
+        Ok((record, false)) if record.state == JobState::Succeeded => {
+            let mut result = record.result.unwrap_or(Value::Null);
+            if let Some(m) = result.as_object_mut() {
+                m.insert("jobId".into(), Value::String(job.to_owned()));
+            }
+            Envelope::ok(result, document_rev)
+        }
+        Ok((record, false)) => {
+            let mut e = record
+                .error
+                .unwrap_or_else(|| CommandError::new("job.failed", format!("job `{job}` ended {:?}", record.state)));
+            if let Some(m) = e.details.as_object_mut() {
+                m.insert("jobId".into(), Value::String(job.to_owned()));
+            } else {
+                *e.details = serde_json::json!({ "jobId": job });
+            }
+            Envelope::error(e, document_rev)
+        }
+        Ok((_, true)) => Envelope::error(
+            CommandError::with_details(
+                "job.waitTimeout",
+                format!("job `{job}` is still running after {} ms; it continues", wait.as_millis()),
+                serde_json::json!({ "jobId": job, "timeoutMs": u64::try_from(wait.as_millis()).unwrap_or(u64::MAX) }),
+            )
+            .hint("wait for it with job.wait, or cancel it with job.cancel"),
+            document_rev,
+        ),
+        Err(e) => Envelope::error(e, document_rev),
     }
 }

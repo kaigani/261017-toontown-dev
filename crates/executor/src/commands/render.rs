@@ -1182,7 +1182,7 @@ impl Sidecar {
     /// Whether the job that wrote it may still run: a job of this process while its token is live, a job of another
     /// process on this machine unless that process is known to be gone, and any job of another machine.
     fn alive(&self) -> bool {
-        if self.host != tt_persist::host::host() {
+        if !tt_persist::host::is_this_host(&self.host) {
             return true;
         }
         if self.pid == std::process::id() {

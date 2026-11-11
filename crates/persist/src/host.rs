@@ -57,6 +57,14 @@ pub fn host() -> String {
     .clone()
 }
 
+/// Whether a recorded host name names this machine. Host names compare case-insensitively (RFC 4343): `COMPUTERNAME`
+/// and `hostname` can spell the same Windows machine `K-AI` and `k-AI`, and a process started with a reduced
+/// environment reads the second (found by scenario E1 in M3 C3.4).
+#[must_use]
+pub fn is_this_host(name: &str) -> bool {
+    name.trim().eq_ignore_ascii_case(&host())
+}
+
 /// This process's ID.
 #[must_use]
 pub fn pid() -> u32 {

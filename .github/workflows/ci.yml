@@ -633,11 +633,27 @@ jobs:
           $VPY -m pip install --quiet "mcp==2.0.0"
           PYTHONIOENCODING=utf-8 $VPY scripts/c33-render-gate.py "$exe" out/c33
 
+      # M3 C3.4: scenario E1 (11 §14.8) end to end on the release binary through the official SDK; MP4 is M9 (ADR-0008),
+      # the movie step is the PNG sequence and its manifest. The delivery folder is uploaded and compared across OSes.
+      - name: E1 bouncing ball (official Python SDK, release headless binary)
+        run: |
+          exe=target/release/toontown-headless
+          VPY=.venv-c33/bin/python
+          if [ "$RUNNER_OS" = "Windows" ]; then exe="$exe.exe"; VPY=.venv-c33/Scripts/python.exe; fi
+          PYTHONIOENCODING=utf-8 $VPY scripts/e1-bouncing-ball.py "$exe" out/e1
+
       - uses: actions/upload-artifact@v7
         if: always()
         with:
           name: c33-${{ runner.os }}
           path: out/c33/
+          if-no-files-found: error
+
+      - uses: actions/upload-artifact@v7
+        if: always()
+        with:
+          name: e1-${{ runner.os }}
+          path: out/e1/
           if-no-files-found: error
 
   # ADR-0020: renders, sequences and passage frames are byte-identical across operating systems.
@@ -660,6 +676,25 @@ jobs:
             cmp "c33-Windows/$f" "c33-macOS/$f" || status=1
           done
           [ "$(cd c33-Windows && find . -type f | sort)" = "$(cd c33-macOS && find . -type f | sort)" ] || status=1
+          exit $status
+      - uses: actions/download-artifact@v8
+        with:
+          path: e1-out
+          pattern: e1-*
+      # E1 (M3 C3.4): frames, contact sheet, sequence, normalised manifest, evaluation, recorded script and hashes are
+      # byte-identical; report.json, the saved packages (IDs, times) and the delivered manifest (absolute paths) are not
+      # compared.
+      - name: E1 outputs are byte-identical on Windows and macOS
+        run: |
+          cd e1-out
+          status=0
+          list() { (cd "$1" && find . -type f ! -name report.json ! -path './projects/*' ! -name '*.manifest.json' | sort); }
+          for f in $(list e1-Windows); do
+            sha256sum "e1-Windows/$f" "e1-macOS/$f"
+            cmp "e1-Windows/$f" "e1-macOS/$f" || status=1
+          done
+          [ "$(list e1-Windows)" = "$(list e1-macOS)" ] || status=1
+          [ "$(list e1-Windows | wc -l)" -ge 40 ] || status=1
           exit $status
 
   # Unsigned desktop bundles + automated IPC round-trip benchmark in the real webview.

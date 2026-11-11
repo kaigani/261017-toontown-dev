@@ -276,6 +276,20 @@ pub(crate) fn colour_exists(doc: &Document, id: &str) -> bool {
     doc.palettes().any(|p| p.swatches().iter().any(|s| s.colour_id().as_str() == id))
 }
 
+/// A colour given where a colour ID is accepted: the ID itself, or the colour ID of the swatch a path names
+/// (`palette:"Main"/swatch:"Skin light"`, `palette:#1/swatch:#3`; 11 §5: wherever an ID is accepted, a path is too).
+/// Anything else is returned unchanged, for the caller's `colour.notFound`.
+pub(crate) fn swatch_colour(cx: &Cx, given: &str) -> String {
+    if !given.contains(':') {
+        return given.to_owned();
+    }
+    let Ok(doc) = cx.document() else { return given.to_owned() };
+    if colour_exists(doc, given) {
+        return given.to_owned();
+    }
+    cx.resolve_as(given, ObjectType::Swatch).unwrap_or_else(|_| given.to_owned())
+}
+
 /// The current colour (03 §2.4): the session has no `colour.current.set` before M7 C7.1, so it is the first swatch
 /// of the first visible palette.
 pub(crate) fn current_colour(doc: &Document) -> Option<String> {
@@ -292,7 +306,8 @@ pub(crate) fn colour_of(
     pointer: &str,
 ) -> Result<Option<String>, CommandError> {
     let doc = cx.document()?.clone();
-    match given {
+    let resolved = given.map(|c| swatch_colour(cx, c));
+    match resolved.as_deref() {
         Some(c) => {
             if !colour_exists(&doc, c) {
                 return Err(err(
