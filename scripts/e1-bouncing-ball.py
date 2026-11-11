@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """End-to-end scenario E1 "bouncing ball" (11 §14.8; M3 C3.4) through the official MCP Python SDK (`mcp==2.0.0`)
-against the real `toontown-headless` binary. MP4 export is deferred to M9 (ADR-0008): the movie step is the PNG
-sequence with its companion manifest (09 §11.1 items 4-6).
+against the real `toontown-headless` binary. MP4 export is deferred to M10 C10.1 (ADR-0008; sidecar M8 C8.3): the
+movie step is the PNG sequence with its companion manifest (09 §11.1 items 4-6).
 
 Usage: python scripts/e1-bouncing-ball.py <path to toontown-headless> <delivery dir>
 

@@ -633,7 +633,7 @@ jobs:
           $VPY -m pip install --quiet "mcp==2.0.0"
           PYTHONIOENCODING=utf-8 $VPY scripts/c33-render-gate.py "$exe" out/c33
 
-      # M3 C3.4: scenario E1 (11 §14.8) end to end on the release binary through the official SDK; MP4 is M9 (ADR-0008),
+      # M3 C3.4: scenario E1 (11 §14.8) end to end on the release binary through the official SDK; MP4 is M10 C10.1 (ADR-0008),
       # the movie step is the PNG sequence and its manifest. The delivery folder is uploaded and compared across OSes.
       - name: E1 bouncing ball (official Python SDK, release headless binary)
         run: |

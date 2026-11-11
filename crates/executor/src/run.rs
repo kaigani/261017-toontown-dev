@@ -576,7 +576,7 @@ fn cancelled_check(what: &str) -> Result<(), CommandError> {
     if tt_vector::work::cancel_requested() {
         return Err(CommandError::with_details(
             tt_registry::codes::COMMAND_TIMEOUT,
-            format!("`{what}` was cancelled: its caller's watchdog budget passed"),
+            format!("`{what}` was cancelled: its caller's watchdog budget passed or its caller cancelled the request"),
             serde_json::json!({ "commandId": what }),
         ));
     }
@@ -1484,9 +1484,18 @@ impl Core {
             return env;
         }
         let Some(jobs) = self.session.as_ref().map(|s| s.jobs.clone()) else { return env };
-        let outcome = jobs
-            .wait(&p.job_id, wait)
-            .and_then(|(record, timed_out)| crate::commands::job::wait_result(record, timed_out));
+        // A `job.wait` step stops waiting when the batch's request is cancelled, like a waited job step.
+        let Some(waited) = crate::wait_sliced(&jobs, &p.job_id, wait, &tt_vector::work::cancel_requested) else {
+            return Envelope::error(
+                CommandError::with_details(
+                    tt_registry::codes::COMMAND_TIMEOUT,
+                    format!("the request was cancelled by its caller; job `{}` continues", p.job_id),
+                    json!({ "jobId": p.job_id, "reason": "cancelled" }),
+                ),
+                self.rev(),
+            );
+        };
+        let outcome = waited.and_then(|(record, timed_out)| crate::commands::job::wait_result(record, timed_out));
         match outcome {
             Ok(result) => Envelope::ok(result, self.rev()),
             Err(e) => Envelope::error(e, self.rev()),
@@ -1513,7 +1522,9 @@ impl Core {
         let margin = self.budget / 10;
         let left = self.budget.saturating_sub(started.elapsed()).saturating_sub(margin);
         let Some(jobs) = self.session.as_ref().map(|s| s.jobs.clone()) else { return env };
-        crate::wait_envelope(&jobs, &job, left, self.rev())
+        // The batch's own request cancellation (its watchdog token, marked by a timed-out or cancelling caller) ends
+        // the wait (ADR-0020 decision 8).
+        crate::wait_envelope(&jobs, &job, left, self.rev(), &tt_vector::work::cancel_requested)
     }
 
     fn batch_atomic(&mut self, req: &BatchRequest, origin: &Origin) -> Envelope {

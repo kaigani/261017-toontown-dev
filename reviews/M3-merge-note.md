@@ -38,7 +38,7 @@ The orchestrator merges and tags; the builder does not.
 
 | Item | Owner | State |
 |---|---|---|
-| MP4/MOV/GIF export (E1's movie step) | M10 C10.1 (ADR-0008; sidecar M8 C8.3) | E1 delivers the PNG sequence and its manifest. The C3.4 brief named M9; plan §4 and ADR-0008 name M10 C10.1. |
+| MP4/MOV/GIF export (E1's movie step) | M10 C10.1 (ADR-0008; sidecar M8 C8.3; settled at C3.4 round 1) | E1 delivers the PNG sequence and its manifest. |
 | Attached-session frame rendering = headless (readiness item 12) | M4 C4.2 | Gate: the same saved fixture, revision and frames through the running app's adapter and headless on both OSes; PNG bytes and metadata compared, with the volatile fields identified; attached-session receipts retained. |
 | Project and drawing thumbnails | M5 C5.2 | `derived.rs` names the owner. |
 | Views, `activeView` composition, draft quality, `view` space | M4 C4.2 | refused with the owner |
@@ -49,26 +49,48 @@ The orchestrator merges and tags; the builder does not.
 | Sounds and mouth shapes in `describe_frame` | M8 | — |
 | Importers writing native-size bitmaps | M10 | SI-105 |
 | C22-T2, R1-12 (performance) | M11 C11.1 | inherited from M2 |
-| Lock files compare host names case-sensitively | M11 C11.1, or earlier by ruling | found in C3.4 (handoff §5); the safe direction |
+| Lock files compare host names case-sensitively (a stale lock of the same machine is not recognised) | M11 C11.1 (settled at C3.4 round 1) | found in C3.4 (handoff §5); stays case-sensitive until then, the safe direction |
 
 ## 4. Open spec issues for the spec owner
 
-`plan/spec-issues.md` (next free id **SI-111**). Issues from M3 that still carry a question for the spec owner:
+`plan/spec-issues.md` (next free id **SI-111**). This inventory follows every `## SI-` heading of the register, SI-001
+to SI-110.
 
-| Issue | Subject | Register state |
+**Open, unresolved or awaiting the spec owner** (heading status in the register):
+
+| Issue | Subject | Register disposition |
 |---|---|---|
-| SI-085 | where the static light table is stored | interim decided |
-| SI-086, SI-087, SI-090 | error-code names (hierarchy cycle, batch count, duplicate drawing name) | decided by section ownership; unification asked |
-| SI-089 | key re-timing when a bar's duration changes (`cycleLength` in 10 §4.5) | decided |
-| SI-091, SI-092 | default drawing names; which elements may have children | decided for 04; alignment asked |
-| SI-094, SI-095 | duplicating children; columnate with `exposeLast` | decided by ruling; confirmation asked |
-| SI-096 | per-axis position channels (D-5) | **unresolved, spec owner** |
-| SI-098, SI-099, SI-100 | `anim.evaluate` frame reporting; Constant Z measure; `visible` for pegs | decided; confirmation asked |
-| SI-106 | role tiers outrank depth in the composite order | decided; confirmation asked |
+| SI-001 | 09 §4.4 "≈ CRF 18 equivalent" under platform H.264 encoders | **open**; decision taken in ADR-0008 (M10 C10.1 maps the quality levels to each encoder's quality mode); the spec owner is asked to confirm the meaning |
+| SI-008 | `importOptions` of image elements is undefined | **open**, interim decision: an opaque JSON object, never interpreted, until section 09 (M10) defines it |
+| SI-047 | RO-02 cannot see an edit that keeps size and modification time | **interim ruling, open** |
+| SI-049 | MCP revision 2026-07-28 removes resource subscriptions and deprecates logging | **open** |
+| SI-077 | feather colours | **deferred by orchestrator, awaiting spec owner**; ticket C23-T2, owner M7 C7.2 |
+| SI-096 | per-axis position channels (D-5) | **unresolved, spec owner**; M6 C6.2 depends on it |
 
-Inherited open issues: SI-047 (RO-02 detection, interim ruling), SI-049 (MCP revision 2026-07-28), SI-077 (feather
-colours, awaiting the spec owner). Every other SI from SI-001 to SI-110 is decided, and the amendment candidates are
-listed in the file.
+**Interim decisions** (decided for now, with a question for the spec owner, or a declared deferral):
+
+| Issue | Subject | Register disposition |
+|---|---|---|
+| SI-060 | fills of zones bounded only by brush-outline stretches | ruled, interim (ADR-0017 §4); amendment proposal |
+| SI-080 | `VectorizeSettings` example versus the command rows | interim decided; align the 09 example |
+| SI-081 | the `draw.vectorize.preview` PNG result limit | interim decided |
+| SI-085 | where the static light table is stored | interim decided |
+| SI-088 | media and sound cells before M8 | interim decided, declared deferral (M8 C8.1/C8.3); no question |
+
+**M3 orchestrator rulings:** SI-102 (exact default FOV) is ruled and its register entry says **spec-owner confirmation
+pending**. SI-104 (an explicit 41.1121 is no alias) and SI-110 (generic `render_frame` default width) are ruled with no
+question in their entries, so they are not pending.
+
+**Decided, with a confirmation or alignment asked of the spec owner:**
+- SI-086, SI-087, SI-090 (error-code names).
+- SI-089 (`cycleLength`).
+- SI-091, SI-092 (drawing names, parents).
+- SI-094, SI-095 (duplicating children, columnate).
+- SI-098, SI-099, SI-100 (`anim.evaluate` frames, Constant Z, `visible` for pegs).
+- SI-106 (role tiers outrank depth).
+- The M1/M2 amendment candidates listed in the register (for example SI-044, SI-084).
+
+Every other SI from SI-001 to SI-110 is decided, ruled, resolved or closed in the register, and SI-002 is reserved.
 
 ## 5. Reviewer-owned tests, permanent in CI
 
@@ -88,28 +110,30 @@ Placements outside debug `check`:
 
 ## 6. CI job layout and budgets
 
-Times are from run 42938979758 (C3.3 round 3, before the C3.3 closure budget routing). The candidate run is in the C3.4
-closing message.
+Times are from run 42968758950 at the C3.4 handoff head `45b41da` (after the C3.3 closure budget routing `7216cb9`).
+The C3.4 closure row and the candidate run are added at the closure.
 
-| Job (Windows / macOS unless noted) | Budget (min) | Run 42938979758, Windows / macOS (min) |
+| Job (Windows / macOS unless noted) | Budget (min) | Run 42968758950, Windows / macOS (min) |
 |---|---|---|
-| `check` | 60 (ceiling 55 by ruling) | 49.3 / 29.7; after the routing of three corpora (`7216cb9`, run 42953847540) 41.7 / 34.7 |
-| `check properties` | 45 | 29.7 / 18.6 |
-| `review properties release` | 45 | 31.1 / 25.2; with `c31_r3_hierarchy` (run 42953847540) 35.4 / 24.1 |
-| `headless release` | 55 | 46.7 / 30.8 |
-| `history oracles release` | 40 | 20.5 / 14.8 |
-| `measurements release` | 45 | 18.0 / 10.9 |
-| `m3 properties release` | 20 | 3.1 / 1.8 |
-| `e2 release` | 30 | 6.9 / 5.8 |
-| `e4 release`, `e4 cross-OS` | 30, 10 | 6.9 / 6.9; 0.1 |
-| `c33 render release` (goldens, range, bitmap, render gate, reviewer corpora, E1), `c33 cross-OS` | 30, 10 | 10.3 / 9.6; 0.1 |
-| `bundle` | 30 | 10.8 / 8.3 |
-| `raster determinism` (Windows, macOS, Linux) | 20 | 2.7 / 1.6 / 1.6 |
-| `headless without a display` (Linux) | 15 | 3.1 |
+| `check` | 60 (ceiling 55 by ruling) | 42.5 / 37.4 |
+| `check properties` | 45 | 27.5 / 21.8 |
+| `review properties release` (with `c31_r3_hierarchy`) | 45 | 32.3 / 21.8 |
+| `headless release` | 55 | 41.1 / 34.0 |
+| `history oracles release` | 40 | 17.1 / 12.0 |
+| `measurements release` | 45 | 13.4 / 9.9 |
+| `m3 properties release` | 20 | 3.0 / 2.1 |
+| `e2 release` | 30 | 6.9 / 4.3 |
+| `e4 release`, `e4 cross-OS` | 30, 10 | 6.3 / 6.0; 0.0 |
+| `c33 render release` (goldens, range, bitmap, render gate, reviewer corpora, E1), `c33 cross-OS` | 30, 10 | 13.9 / 7.1; 0.1 |
+| `bundle` | 30 | 10.1 / 8.3 |
+| `raster determinism` (Windows, macOS, Linux) | 20 | 2.6 / 3.0 / 1.7 |
+| `headless without a display` (Linux) | 15 | 3.7 |
 
 ## 7. User-only items
 
-- **Spec owner:** the questions in §4, SI-096 (D-5) first, because M6 C6.2 depends on it.
-- **Orchestrator:** the merge and the `m3` tag (§2.5). Choose the MP4 owner where the C3.4 brief (M9) differs from
-  plan §4 and ADR-0008 (M10 C10.1). Rule on the lock-file host-name comparison owner (§3).
+- **Spec owner:** the open issues and questions in §4, SI-096 (D-5) first, because M6 C6.2 depends on it.
+- **Orchestrator:** the merge and the `m3` tag (§2.5).
+- Settled by the orchestrator at C3.4 round 1, so no longer requests:
+  - The MP4 export owner is **M10 C10.1** (ADR-0008; sidecar M8 C8.3).
+  - The lock-file host comparison stays case-sensitive; the stale-same-machine gap is owned by **M11 C11.1** (§3).
 - No hardware, credential or licence action is needed for M3.

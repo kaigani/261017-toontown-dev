@@ -367,19 +367,43 @@ impl ExecutorHandle {
     }
 
     fn call<T>(&self, what: &str, make: impl FnOnce(Sender<T>) -> Request) -> Result<T, CommandError> {
+        self.call_until(what, make, &not_cancelled)
+    }
+
+    /// [`ExecutorHandle::call`] for a caller that can cancel its request (`cancelled`, polled while the call runs): the
+    /// call's token is then marked like a timed-out caller's, so the request never begins if queued, and if running
+    /// stops at its next work-account check, before any commit, and refuses its remaining batch steps at their
+    /// acceptance boundary (ADR-0020 decision 8; M3 C3.4 round 1, O-1). The call still answers when the worker replies.
+    fn call_until<T>(
+        &self,
+        what: &str,
+        make: impl FnOnce(Sender<T>) -> Request,
+        cancelled: Cancelled<'_>,
+    ) -> Result<T, CommandError> {
         let (reply, rx) = mpsc::channel();
         // The token travels with the request: a timeout cancels exactly this request, queued or running (C23-R2-01).
         let token = self.cancel.token();
         self.tx.send(Request::Tagged(token, Box::new(make(reply)))).map_err(|_| stopped())?;
-        match rx.recv_timeout(self.config.budget) {
-            Ok(v) => Ok(v),
-            Err(RecvTimeoutError::Timeout) => {
-                // Queued: the worker drops it at dequeue. Running: it stops at its next work-account check and before
-                // any commit. Either way it never begins or commits after this answer (ADR-0015 history).
-                self.cancel.mark(token);
-                Err(timeout(what, self.config.budget))
+        let deadline = std::time::Instant::now() + self.config.budget;
+        let mut marked = false;
+        loop {
+            let left = deadline.saturating_duration_since(std::time::Instant::now());
+            match rx.recv_timeout(left.min(CANCEL_POLL)) {
+                Ok(v) => return Ok(v),
+                Err(RecvTimeoutError::Disconnected) => return Err(stopped()),
+                Err(RecvTimeoutError::Timeout) if left <= CANCEL_POLL => {
+                    // Queued: the worker drops it at dequeue. Running: it stops at its next work-account check and
+                    // before any commit. Either way it never begins or commits after this answer (ADR-0015 history).
+                    self.cancel.mark(token);
+                    return Err(timeout(what, self.config.budget));
+                }
+                Err(RecvTimeoutError::Timeout) => {
+                    if !marked && cancelled() {
+                        self.cancel.mark(token);
+                        marked = true;
+                    }
+                }
             }
-            Err(RecvTimeoutError::Disconnected) => Err(stopped()),
         }
     }
 
@@ -397,7 +421,7 @@ impl ExecutorHandle {
     /// watchdog budget, and the envelope carries the job's final result (its manifest, with `jobId`) or its failure. A
     /// job still running at the timeout answers `job.waitTimeout` with the `jobId`, which stays addressable
     /// (`job.wait`, `job.cancel`).
-    fn waited(&self, params: &Value, env: Envelope) -> Envelope {
+    fn waited(&self, params: &Value, env: Envelope, cancelled: Cancelled<'_>) -> Envelope {
         if params.get("wait") != Some(&Value::Bool(true)) || !env.is_ok() {
             return env;
         }
@@ -411,27 +435,47 @@ impl ExecutorHandle {
         else {
             return env;
         };
-        wait_envelope(&self.jobs, &job, self.config.budget, env.document_rev)
+        wait_envelope(&self.jobs, &job, self.config.budget, env.document_rev, cancelled)
     }
 
     /// [`ExecutorHandle::invoke`], also saying whether the answer came from the `requestId` cache: a retry that
     /// executed nothing (C14-R2-03; the envelope is the remembered one, identical to the first answer).
     #[must_use]
     pub fn invoke_served(&self, inv: Invocation) -> (Envelope, bool) {
+        self.invoke_served_until(inv, &not_cancelled)
+    }
+
+    /// [`ExecutorHandle::invoke_served`] for a caller that can cancel its request (an MCP request the client cancelled,
+    /// 11 §4): `cancelled` is polled while the command runs and while a `wait: true` waits. A cancelled wait answers
+    /// `command.timeout` with `reason: "cancelled"` and the `jobId`; the job is not the request's and continues
+    /// (`job.list`, `job.wait`, `job.cancel`; ADR-0020 decision 8).
+    #[must_use]
+    pub fn invoke_served_until(&self, inv: Invocation, cancelled: Cancelled<'_>) -> (Envelope, bool) {
         if inv.command == "job.wait" {
             return (self.job_wait(inv), false);
         }
         let what = inv.command.clone();
         let params = inv.params.clone();
-        let (env, cached) =
-            self.call(&what, |r| Request::Invoke(inv, r)).unwrap_or_else(|e| (Envelope::error(e, None), false));
-        (self.waited(&params, env), cached)
+        let (env, cached) = self
+            .call_until(&what, |r| Request::Invoke(inv, r), cancelled)
+            .unwrap_or_else(|e| (Envelope::error(e, None), false));
+        (self.waited(&params, env, cancelled), cached)
     }
 
     /// Runs a batch (11 §7.3).
     #[must_use]
     pub fn batch(&self, req: BatchRequest, origin: Origin) -> Envelope {
-        self.call("batch", |r| Request::Batch(req, origin, r)).unwrap_or_else(|e| Envelope::error(e, None))
+        self.batch_until(req, origin, &not_cancelled)
+    }
+
+    /// [`ExecutorHandle::batch`] for a caller that can cancel its request: once `cancelled` holds, the step running
+    /// stops at its next safe point (a waited job step within [`CANCEL_POLL`]) and every later step is refused at its
+    /// acceptance boundary, so nothing after the cancellation changes the document. Jobs the batch started continue
+    /// (ADR-0020 decision 8).
+    #[must_use]
+    pub fn batch_until(&self, req: BatchRequest, origin: Origin, cancelled: Cancelled<'_>) -> Envelope {
+        self.call_until("batch", |r| Request::Batch(req, origin, r), cancelled)
+            .unwrap_or_else(|e| Envelope::error(e, None))
     }
 
     /// Registers an agent session with the hub (11 §6.1; `agent.session.connected`). Its grant is authoritative for
@@ -503,9 +547,21 @@ impl ExecutorHandle {
     /// Runs one agent batch and appends its activity entry (one for the batch; 11 §11 groups by batch).
     #[must_use]
     pub fn batch_audited(&self, req: BatchRequest, origin: Origin, tool: &str) -> Envelope {
+        self.batch_audited_until(req, origin, tool, &not_cancelled)
+    }
+
+    /// [`ExecutorHandle::batch_audited`] for a caller that can cancel its request ([`ExecutorHandle::batch_until`]).
+    #[must_use]
+    pub fn batch_audited_until(
+        &self,
+        req: BatchRequest,
+        origin: Origin,
+        tool: &str,
+        cancelled: Cancelled<'_>,
+    ) -> Envelope {
         let started = std::time::Instant::now();
         let params = serde_json::to_value(&req).unwrap_or(Value::Null);
-        let env = self.batch(req, origin.clone());
+        let env = self.batch_until(req, origin.clone(), cancelled);
         self.audit_call(&origin, tool, "batch", &params, &env, started.elapsed());
         env
     }
@@ -814,8 +870,23 @@ pub(crate) fn wait_envelope(
     job: &str,
     wait: std::time::Duration,
     document_rev: Option<u64>,
+    cancelled: Cancelled<'_>,
 ) -> Envelope {
-    match jobs.wait(job, wait) {
+    let outcome = match wait_sliced(jobs, job, wait, cancelled) {
+        Some(o) => o,
+        None => {
+            return Envelope::error(
+                CommandError::with_details(
+                    tt_registry::codes::COMMAND_TIMEOUT,
+                    format!("the request was cancelled by its caller; job `{job}` continues"),
+                    serde_json::json!({ "jobId": job, "reason": "cancelled" }),
+                )
+                .hint("wait for it with job.wait, or cancel it with job.cancel"),
+                document_rev,
+            );
+        }
+    };
+    match outcome {
         Ok((record, false)) if record.state == JobState::Succeeded => {
             let mut result = record.result.unwrap_or(Value::Null);
             if let Some(m) = result.as_object_mut() {
@@ -844,5 +915,36 @@ pub(crate) fn wait_envelope(
             document_rev,
         ),
         Err(e) => Envelope::error(e, document_rev),
+    }
+}
+
+/// A caller's cancellation probe: `true` once the caller cancelled its request (an MCP `notifications/cancelled`, 11 §4).
+pub type Cancelled<'a> = &'a (dyn Fn() -> bool + Sync);
+
+/// How often a call and a wait look at their caller's cancellation probe.
+pub const CANCEL_POLL: Duration = Duration::from_millis(20);
+
+fn not_cancelled() -> bool {
+    false
+}
+
+/// Waits for a job up to `wait`, looking at `cancelled` every [`CANCEL_POLL`]: `None` when the caller cancelled first,
+/// else the job table's answer (the record and whether the wait timed out).
+pub(crate) fn wait_sliced(
+    jobs: &JobTable,
+    job: &str,
+    wait: Duration,
+    cancelled: Cancelled<'_>,
+) -> Option<Result<(JobRecord, bool), CommandError>> {
+    let deadline = std::time::Instant::now() + wait;
+    loop {
+        let left = deadline.saturating_duration_since(std::time::Instant::now());
+        let slice = left.min(CANCEL_POLL);
+        match jobs.wait(job, slice) {
+            Ok((_, true)) if cancelled() => return None,
+            Ok((record, true)) if slice >= left => return Some(Ok((record, true))),
+            Ok((_, true)) => {}
+            other => return Some(other),
+        }
     }
 }

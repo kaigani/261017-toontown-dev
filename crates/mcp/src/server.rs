@@ -959,7 +959,7 @@ fn call_tool(
             }
             let options = InvokeOptions { dry_run, expect_rev: expect, request_id, confirm_token, confirm };
             let inv = Invocation { command: id.clone(), params: params.clone(), options, origin: origin.clone() };
-            let (mut env, mut cached) = shared.handle.invoke_served(inv.clone());
+            let (mut env, mut cached) = shared.handle.invoke_served_until(inv.clone(), &|| shared.is_cancelled(rid));
             if name == "get_state" {
                 env = project_state(env, args);
             }
@@ -981,7 +981,7 @@ fn call_tool(
                 }
                 let mut again = inv;
                 again.options.confirm_token = Some(token);
-                (env, cached) = shared.handle.invoke_served(again);
+                (env, cached) = shared.handle.invoke_served_until(again, &|| shared.is_cancelled(rid));
             }
             // One activity entry for the logical call, with its final status and whole duration (C14-R1-12).
             // A requestId retry answered from the cache is recorded as such: it executed nothing (C14-R2-03).
@@ -1032,7 +1032,7 @@ fn call_tool(
                         return ToolOutcome::Result(tool_result(
                             name,
                             "batch",
-                            &shared.handle.batch_audited(req, origin, name),
+                            &shared.handle.batch_audited_until(req, origin, name, &|| shared.is_cancelled(rid)),
                         ));
                     }
                 };

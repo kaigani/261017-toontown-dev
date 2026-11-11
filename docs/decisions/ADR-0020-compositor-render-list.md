@@ -1,6 +1,6 @@
 # ADR-0020 — Compositor and render list
 
-Status: accepted (M3 C3.3; amended in C3.3 rounds 1-3).
+Status: accepted (M3 C3.3; amended in C3.3 rounds 1-3 and C3.4 round 1).
 
 ## Context
 
@@ -56,6 +56,14 @@ thread); ADR-0019 fixes the evaluation order of transforms.
    `wait: true` the caller's request (never the document thread) waits for the job, bounded by the call's budget and
    cancellable; it answers the manifest with the `jobId`, or `job.waitTimeout` with the `jobId` while the job runs on
    (ruling C33-R1-02).
+   **Request cancellation during a waited job** (M3 C3.4 round 1, O-1). A caller that cancels its request (an MCP
+   `notifications/cancelled`; the executor's `invoke_served_until` / `batch_until` probe) cancels the request, not the
+   job. The call's watchdog token is marked as for a timed-out caller. A `wait: true` (direct, or a sequential batch's
+   step, or a batch's `job.wait` step) stops waiting within 20 ms and answers `command.timeout` with
+   `reason: "cancelled"` and the `jobId`. Every later step of the batch is refused at its acceptance boundary, so
+   nothing after the cancellation changes the document. The job is the job system's: it stays in `job.list` /
+   `job_status`, runs on to its own terminal state or stops at `job.cancel`, and leaves no staging once terminal
+   (decision 11). An MCP client receives no answer to the cancelled request (11 §4).
 10. **Publication is a transaction** (ruling C33-R1-03; amended in round 2). Frames and the companion manifest are
    staged beside their targets as `.<target name>.tt-partial-<token>`. At the commit point every target is
    preflighted (an existing target must be a writable regular file, else `export.targetInvalid`; the conflict policy
