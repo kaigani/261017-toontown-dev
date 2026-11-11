@@ -51,3 +51,33 @@ fn retry_cache_and_late_cancellation_are_stable_for_three_thousand_calls() {
         assert!(run(&h, "doc.state.get", json!({})).is_ok());
     }
 }
+
+#[test]
+fn fast_commit_cancel_retry_matrix_preserves_one_change_and_one_answer() {
+    for trial in 0..100 {
+        let h = fixture();
+        let events = h.subscribe();
+        let mut inv = Invocation::user("element.create", json!({"type":"peg","name":"Race","sceneId":"scene:#1"}));
+        inv.options.request_id = Some(format!("race-{trial}"));
+        let start = Instant::now();
+        let delay = [Duration::ZERO, Duration::from_micros(50), Duration::from_millis(20)][trial % 3];
+        let (first, _) = h.invoke_served_until(inv.clone(), &|| start.elapsed() >= delay);
+        let emitted: Vec<_> = events.try_iter().collect();
+        if first.is_ok() {
+            assert!(first.undo.is_some());
+            assert_eq!(emitted.iter().filter(|e| e.name == "doc.changed").count(), 1);
+            let at = rev(&h);
+            let (again, cached) = h.invoke_served_until(inv, &|| false);
+            assert!(cached);
+            assert_eq!(serde_json::to_value(first).unwrap(), serde_json::to_value(again).unwrap());
+            assert_eq!(rev(&h), at);
+            assert_eq!(events.try_iter().filter(|e| e.name == "doc.changed").count(), 0);
+        } else {
+            assert_eq!(rev(&h), 1);
+            let (retry, _) = h.invoke_served_until(inv.clone(), &|| false);
+            assert!(retry.is_ok());
+            assert!(h.invoke_served_until(inv, &|| false).1);
+            assert_eq!(rev(&h), 2);
+        }
+    }
+}
