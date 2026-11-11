@@ -11,6 +11,12 @@
     "failures": [],
     "measurements": []
   },
+  "e1": {
+    "exit": 0,
+    "results": [],
+    "failures": [],
+    "measurements": []
+  },
   "executor": {
     "exit": 101,
     "results": [
@@ -402,6 +408,26 @@
       "STRESS requests=284304 seconds=60.0034335"
     ]
   },
+  "new-tests-final": {
+    "exit": 101,
+    "results": [
+      "test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 3.72s\r",
+      "test result: FAILED. 2 passed; 2 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.40s\r",
+      "test result: FAILED. 3 passed; 1 failed; 0 ignored; 0 measured; 0 filtered out; finished in 13.97s\r"
+    ],
+    "failures": [
+      "cancelled_queued_request_reports_real_worker_death_as_internal",
+      "worker_boundary_refusal_identifies_cancellation_reason",
+      "blocked_probe_does_not_starve_other_callers_past_watchdog"
+    ],
+    "measurements": [
+      "blocked probe: unrelated query 812.2404ms: Envelope { status: Error, result: None, targets: None, changes: [], ",
+      "PERF direct=false n=10000 ms=3654.2812",
+      "PERF batch direct=false n=1000 ms=334.09689999999995",
+      "PERF direct=true n=10000 ms=3584.7682",
+      "PERF batch direct=true n=1000 ms=327.8213"
+    ]
+  },
   "probes": {
     "exit": 101,
     "results": [
@@ -416,6 +442,34 @@
       "PERF batch direct=false n=1000 ms=332.5005",
       "PERF direct=true n=10000 ms=3374.3572999999997",
       "PERF batch direct=true n=1000 ms=316.0866"
+    ]
+  },
+  "release-features": {
+    "exit": 0,
+    "results": [],
+    "failures": [],
+    "measurements": []
+  },
+  "release": {
+    "exit": 0,
+    "results": [],
+    "failures": [],
+    "measurements": []
+  },
+  "sdk": {
+    "exit": 0,
+    "results": [],
+    "failures": [],
+    "measurements": []
+  },
+  "stress-final": {
+    "exit": 0,
+    "results": [
+      "test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 60.14s\r"
+    ],
+    "failures": [],
+    "measurements": [
+      "STRESS requests=152544 seconds=60.007302"
     ]
   },
   "vector": {
@@ -473,6 +527,16 @@
     "failures": [],
     "measurements": []
   },
+  "feature-process-start": {
+    "results": [],
+    "failures": [],
+    "measurements": []
+  },
+  "final-targets-process-start": {
+    "results": [],
+    "failures": [],
+    "measurements": []
+  },
   "generator": {
     "results": [],
     "failures": [],
@@ -488,7 +552,12 @@
     "failures": [],
     "measurements": []
   },
-  "release": {
+  "stress-process-start": {
+    "results": [],
+    "failures": [],
+    "measurements": []
+  },
+  "summary": {
     "results": [],
     "failures": [],
     "measurements": []
