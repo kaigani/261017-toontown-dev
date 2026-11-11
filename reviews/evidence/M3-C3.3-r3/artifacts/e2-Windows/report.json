@@ -1,0 +1,137 @@
+{
+  "seconds": 2.691,
+  "passed": 26,
+  "failed": 0,
+  "checks": [
+    {
+      "check": "project.create",
+      "ok": true,
+      "detail": "{'status': 'ok', 'result': {'projectId': 'pr_01M73SPR0N0JBJP8TAQMJRGG6D', 'path': 'C:\\\\Users\\\\RUNNER~1\\\\AppData\\\\Local\\\\Temp\\\\tt-e2-arthapzh\\\\E2.animpkg', 'sceneId': 'sc_01M73SPR0N0JBJP8TAQMJRGGAH', 'cameraId': 'el_01M73SPR0N0JBJP8TAQMJRGGAK', 'elementId': 'el_01M73SPR0N0JBJP8TAQMJRGGAM'}, 'changes': [], 'warnings': [], 'documentRev': 1}"
+    },
+    {
+      "check": "vectorize preview",
+      "ok": true,
+      "detail": "3"
+    },
+    {
+      "check": "vectorize run started",
+      "ok": true,
+      "detail": "{'status': 'ok', 'result': {'jobId': 'job-1'}, 'changes': [], 'warnings': [], 'documentRev': 1}"
+    },
+    {
+      "check": "vectorize job succeeded",
+      "ok": true,
+      "detail": "{'jobId': 'job-1', 'commandId': 'draw.vectorize.run', 'state': 'succeeded', 'progress': 1.0, 'message': 'vectorizing image 1 of 1', 'startedAt': '2026-11-10T22:36:51.345Z', 'result': {'elementId': 'el_01M73SPR0N0JBJP8TAQMJRGGAM', 'drawingIds': ['dr_01K7JJN8034YZ53G0WJM4R72F7'], 'completed': 1, 'cancelled': False, 'skipped': []}, 'session': 'agent:s1-f9981b'}"
+    },
+    {
+      "check": "job progress",
+      "ok": true,
+      "detail": "[(1000.0, 1000.0, 'vectorizing image 1 of 1'), (1000.0, 1000.0, 'finished')]"
+    },
+    {
+      "check": "known pixel: the frame line is ink",
+      "ok": true,
+      "detail": "(0, 0, 0, 255)"
+    },
+    {
+      "check": "known pixel: inside the ring is paper",
+      "ok": true,
+      "detail": "(255, 255, 255, 255)"
+    },
+    {
+      "check": "save the base",
+      "ok": true,
+      "detail": "{'jobId': 'job-2', 'commandId': 'project.save', 'state': 'succeeded', 'progress': 1.0, 'message': 'Replace', 'startedAt': '2026-11-10T22:36:51.680Z', 'result': {'path': 'C:\\\\Users\\\\RUNNER~1\\\\AppData\\\\Local\\\\Temp\\\\tt-e2-arthapzh\\\\E2.animpkg', 'projectSaved': True, 'globalLibrarySaved': False, 'backupId': 'bk_1541a184528c0965'}, 'session': 'agent:s1-f9981b'}"
+    },
+    {
+      "check": "doc.validate reports the unpainted zones",
+      "ok": true,
+      "detail": "4"
+    },
+    {
+      "check": "hit test finds the ring's inside zone",
+      "ok": true,
+      "detail": "('zn_288D1K24JYKGFZPFDC5PCVRM7B', ['zn_JMFMHEVPA5NBJ56YNM6XQMA578', 'zn_ZKSYG59XTR7Y2CVBPPHMR1MFE8', 'zn_NBV53S97V7NK4MTRZFA2G990KQ', 'zn_288D1K24JYKGFZPFDC5PCVRM7B'])"
+    },
+    {
+      "check": "each zone painted by ID in one revision",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "check": "validation clean after painting",
+      "ok": true,
+      "detail": "[]"
+    },
+    {
+      "check": "known pixel: the ring's inside is red",
+      "ok": true,
+      "detail": "(255, 0, 0, 255)"
+    },
+    {
+      "check": "render_drawing (generic tool) twice: identical hashes",
+      "ok": true,
+      "detail": "['00cbb6368c5a1b4872b7782483e380094754f24b6ac27fbcb405f6fc3dca75a0', '00cbb6368c5a1b4872b7782483e380094754f24b6ac27fbcb405f6fc3dca75a0']"
+    },
+    {
+      "check": "recolour",
+      "ok": true,
+      "detail": "{'status': 'ok', 'result': {'changed': [{'drawingId': 'dr_01K7JJN8034YZ53G0WJM4R72F7', 'count': 4}], 'pensChanged': [], 'skippedLocked': [], 'skippedProtected': []}, 'changes': [{'id': 'dr_01K7JJN8034YZ53G0WJM4R72F7/st_01K7JJN805G3XQ352THS5G28P4', 'type': 'stroke', 'op': 'modified', 'rev': 8, 'patch': [{'op': 'replace', 'path': '/ext/dev.toontown.zones/exterior/0/fill/colourId', 'value': 'col_01M7"
+    },
+    {
+      "check": "known pixel: recoloured green",
+      "ok": true,
+      "detail": "(0, 255, 0, 255)"
+    },
+    {
+      "check": "a stale zone ID is refused",
+      "ok": true,
+      "detail": "{'code': 'colour.staleZoneId', 'message': \"zone `zn_00000000000000000000000000` is not a zone of the drawing's current revision\", 'details': {'zoneId': 'zn_00000000000000000000000000', 'rev': 8}, 'hint': 'read the zones again with draw.drawing.get, or paint by point'}"
+    },
+    {
+      "check": "a stale revision is refused",
+      "ok": true,
+      "detail": "{'code': 'rev.conflict', 'message': '`dr_01K7JJN8034YZ53G0WJM4R72F7` changed: rev 8, expected 1', 'details': {'ref': 'dr_01K7JJN8034YZ53G0WJM4R72F7', 'id': 'dr_01K7JJN8034YZ53G0WJM4R72F7', 'expectedRev': 1, 'currentRev': 8, 'documentRev': 8, 'current': {'id': 'dr_01K7JJN8034YZ53G0WJM4R72F7', 'type': 'drawing', 'rev': 8, 'name': '1', 'locked': False, 'pivot': {'x': 0.0, 'y': 0.0}, 'mouthShape': Non"
+    },
+    {
+      "check": "undo restores red",
+      "ok": true,
+      "detail": "(255, 0, 0, 255)"
+    },
+    {
+      "check": "redo restores green",
+      "ok": true,
+      "detail": "(0, 255, 0, 255)"
+    },
+    {
+      "check": "save",
+      "ok": true,
+      "detail": "{'jobId': 'job-3', 'commandId': 'project.save', 'state': 'succeeded', 'progress': 1.0, 'message': 'Replace', 'startedAt': '2026-11-10T22:36:52.459Z', 'result': {'path': 'C:\\\\Users\\\\RUNNER~1\\\\AppData\\\\Local\\\\Temp\\\\tt-e2-arthapzh\\\\E2.animpkg', 'projectSaved': True, 'globalLibrarySaved': False, 'backupId': 'bk_57889f3652250937'}, 'session': 'agent:s1-f9981b'}"
+    },
+    {
+      "check": "reopen",
+      "ok": true,
+      "detail": "{'jobId': 'job-4', 'commandId': 'project.open', 'state': 'succeeded', 'progress': 1.0, 'message': 'Finalisation', 'startedAt': '2026-11-10T22:36:52.543Z', 'result': {'projectId': 'pr_01M73SPR0N0JBJP8TAQMJRGG6D', 'readOnly': True, 'formatVersion': '1.0', 'warnings': [{'id': 'project.lockedByOther', 'message': 'the project is open on runnervmm7ud1 by runneradmin; it opens read-only', 'details': {'lo"
+    },
+    {
+      "check": "save/open: identical doc.export.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "check": "reopened render equals the redone render",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "check": "--run replay exits 0",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "check": "replay from the saved base reproduces the document",
+      "ok": true,
+      "detail": ""
+    }
+  ]
+}

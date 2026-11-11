@@ -38,6 +38,8 @@ fn stale_stage_is_reported_and_orphan_backup_restored() -> Result<(), Box<dyn st
     let dir = c13_support::tmp();
     let partial = ".dead.png.tt-partial-012345abcdef";
     let backup = ".original.png.tt-backup-abcdef012345";
+    dead_sidecar(&dir, "012345abcdef", "dead.png")?;
+    dead_sidecar(&dir, "abcdef012345", "original.png")?;
     std::fs::write(dir.join(partial), b"never publish")?;
     std::fs::write(dir.join(backup), b"original bytes")?;
     std::fs::write(dir.join("artist.txt"), b"untouched")?;
@@ -50,4 +52,13 @@ fn stale_stage_is_reported_and_orphan_backup_restored() -> Result<(), Box<dyn st
     let files = swept["files"].as_array().ok_or("files")?;
     assert!(files.contains(&json!(partial)) && files.contains(&json!(backup)));
     Ok(())
+}
+
+fn dead_sidecar(dir: &std::path::Path, token: &str, target: &str) -> std::io::Result<()> {
+    let body = json!({"kind":"toontown.render.range.staging","version":1,"token":token,
+        "jobId":"job-dead-review","head":"unknown","productVersion":"0.0.1",
+        "host":tt_persist::host::host(),"pid":std::process::id(),"published":false,
+        "targets":[target],"staged":[format!(".{target}.tt-partial-{token}")],
+        "backups":[format!(".{target}.tt-backup-{token}")]});
+    std::fs::write(dir.join(format!(".tt-partial-{token}.job")), body.to_string())
 }

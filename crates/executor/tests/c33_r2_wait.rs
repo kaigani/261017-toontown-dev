@@ -18,6 +18,7 @@ fn waiting_caller_does_not_block_document_reads() -> Result<(), Box<dyn std::err
     let dir = c13_support::tmp();
     let stale = dir.join(".cancel.png.tt-partial-abcdef123456");
     let inject_stale = stale.clone();
+    let inject_dir = dir.clone();
     let _reset = Reset;
     tt_vector::work::hooks::set_spin_micros(20_000);
     let env = std::thread::scope(|scope| {
@@ -26,6 +27,7 @@ fn waiting_caller_does_not_block_document_reads() -> Result<(), Box<dyn std::err
             common::run(h, "render.range.run", json!({"from":1,"to":48,"width":32,"directory":dir,"wait":true}))
         });
         std::thread::sleep(Duration::from_millis(100));
+        dead_sidecar(&inject_dir, "abcdef123456", "cancel.png").map_err(|_| "inject sidecar")?;
         std::fs::write(&inject_stale, b"dead job staging").map_err(|_| "inject stale")?;
         let start = Instant::now();
         ok(h, "app.state.get", json!({}));
@@ -78,4 +80,13 @@ fn encoded_byte_limit_is_checked_after_encoding() {
     let e = common::err(&h, "render.frame.run", json!({"width":32}));
     assert_eq!(e.code, "render.inlineTooLarge");
     assert!(e.details["bytes"].as_u64().is_some_and(|n| n > 1), "{e:?}");
+}
+
+fn dead_sidecar(dir: &std::path::Path, token: &str, target: &str) -> std::io::Result<()> {
+    let body = json!({"kind":"toontown.render.range.staging","version":1,"token":token,
+        "jobId":"job-dead-review","head":"unknown","productVersion":"0.0.1",
+        "host":tt_persist::host::host(),"pid":std::process::id(),"published":false,
+        "targets":[target],"staged":[format!(".{target}.tt-partial-{token}")],
+        "backups":[format!(".{target}.tt-backup-{token}")]});
+    std::fs::write(dir.join(format!(".tt-partial-{token}.job")), body.to_string())
 }

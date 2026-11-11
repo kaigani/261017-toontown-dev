@@ -1,0 +1,16 @@
+{
+  "uninspectedDistributionArtifacts": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-c33-r3-other-downloads-5fw18irz",
+  "retained": [
+    "c33-Windows",
+    "c33-macOS",
+    "e2-Windows",
+    "e2-macOS",
+    "e4-Windows",
+    "e4-macOS",
+    "history-oracles-Windows",
+    "history-oracles-macOS",
+    "measurements-Windows",
+    "measurements-macOS"
+  ],
+  "note": "Full download hash inventory retained; binary distributions moved to temporary storage, not committed."
+}

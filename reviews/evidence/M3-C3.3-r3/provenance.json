@@ -1,0 +1,27 @@
+{
+  "reviewedHead": "5d97bd7360c9174da5efad995255024b177d4db9",
+  "mcp": "2.0.0",
+  "TT_COMMIT_REVIEW_RECEIPTS": null,
+  "files": {
+    "crates/executor/src/commands/render.rs": "358b4bb3e9798617636c0aa5f466631542cd1b896b85fb8a102a26b56fef9034",
+    "crates/executor/src/jobs.rs": "145b7dbd3f63b60febb1c8836e46ff1b4a8cda8af4786a3e066236bcfec2a54b",
+    "crates/persist/src/host.rs": "2322412e1d17b26b56bc98eeaaeffdd0b7568d77b75cd578c8af5b9e8bd7eb9e",
+    "crates/persist/src/lock.rs": "dd3652fc0edfcb8eb5aaca001dec968152bf9e626929b1688e6a61bbe036a0ae",
+    ".github/workflows/ci.yml": "369de95286fa2bf6a53357de4216b32dfefd2fdd6193a84c5648c9db26652104",
+    "docs/decisions/ADR-0020-compositor-render-list.md": "058aba1ed9e2f0dba98a73b237b95a0f22ff3a9d9f4e5899f36fcc9125fc4ad6",
+    "plan/traceability.csv": "2d1eaff88614af5c09407e7ce9431c0eed3939fc5c65b18adc8891f06d0f603e",
+    "crates/executor/tests/golden/c33/gate-contact-sheet.png": "9115ca0ec3cd9f3bdd0563723bd8d0ab6b33f525775c78aa6957f6f19ce4f87f",
+    "crates/executor/tests/golden/c33/gate-frame-1.png": "c7200e1a6fef38885a4977c074c782bee890029d470623c096512acb4f0c2fbc",
+    "crates/executor/tests/golden/c33/gate-frame-17.png": "cae435e50dadafa416a5dbe3102becc874eb5c3710ea8a0be613c192cfb7abe7",
+    "crates/executor/tests/golden/c33/gate-frame-9.png": "1c922bc148c309cb91e8f265732a000de4eb79c4557e014de5636b3a2bbb59b7",
+    "crates/executor/tests/golden/c33/gate-index.json": "2004135ca8811382c5d0039d5e47735ad39de73a21765bf9931ee1aaf109692c",
+    "crates/executor/tests/golden/c33/index.json": "4d812579ccaa04ad48ffdb93e7370c7a135e8c8b8be8da6f5c9f8b07c1af2373",
+    "crates/executor/tests/golden/c33/moving-contact-sheet.png": "e3bc0f15341d95a0a24c37a6f4c3f79909ba393ac07f612ac5297dc1246ea9bd",
+    "crates/executor/tests/golden/c33/moving-frame-9.png": "16522cf0a0504ccdecd859fd15018be71300b9933a88a509878eccb317545b57",
+    "crates/executor/tests/golden/c33/roll-dynamic-fov.png": "cda1287654b0702dde7dca50ed838e41edef2911aacb1282cf3cdd9deb52619a",
+    "crates/executor/tests/golden/c33/staging-transparent.png": "fd0da50e0da7bdd7356637e898ede0e6209e2ecc049a185f4d94dedc5616396e",
+    "crates/executor/tests/golden/c33/staging.png": "b7c1c18d97f059f53aebe3befcce51fbf1d8b1158c756b2d44096858f3fdb0a3",
+    "reviews/M3-C3.1-r1-register.json": "81f9e3857a55c4c79bd13f29b779bfbae0c664e808b6ebbb6ce4f787fd20cef5",
+    "reviews/M3-C3.1-r1-register.md": "6697435693f47552e74806fac2f4fe985f2b18924ac8d77b91c2b19ccc1ae329"
+  }
+}

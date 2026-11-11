@@ -1,0 +1,65 @@
+[1m[92m   Compiling[0m tt-executor v0.0.1 (/Users/runner/work/261017-toontown-dev/261017-toontown-dev/crates/executor)
+[1m[92m    Finished[0m `release` profile [optimized + debuginfo] target(s) in 1.84s
+[1m[92m     Running[0m tests/c12_r1_macro.rs (target/release/deps/c12_r1_macro-799a7398762415b8)
+
+running 2 tests
+test duplicate_ids_and_inventory_kind_drift_are_rejected ... ok
+[1m[92m    Checking[0m tt-model v0.0.1 (/Users/runner/work/261017-toontown-dev/261017-toontown-dev/crates/model)
+[1m[92m   Compiling[0m tt-registry-macros v0.0.1 (/Users/runner/work/261017-toontown-dev/261017-toontown-dev/crates/registry-macros)
+[1m[92m    Checking[0m tt-anim v0.0.1 (/Users/runner/work/261017-toontown-dev/261017-toontown-dev/crates/anim)
+[1m[92m    Checking[0m tt-vector v0.0.1 (/Users/runner/work/261017-toontown-dev/261017-toontown-dev/crates/vector)
+[1m[92m    Checking[0m tt-colour v0.0.1 (/Users/runner/work/261017-toontown-dev/261017-toontown-dev/crates/colour)
+[1m[92m    Checking[0m tt-persist v0.0.1 (/Users/runner/work/261017-toontown-dev/261017-toontown-dev/crates/persist)
+[1m[92m    Checking[0m tt-fx v0.0.1 (/Users/runner/work/261017-toontown-dev/261017-toontown-dev/crates/fx)
+[1m[92m    Checking[0m tt-registry v0.0.1 (/Users/runner/work/261017-toontown-dev/261017-toontown-dev/crates/registry)
+[1m[92m    Checking[0m tt-render v0.0.1 (/Users/runner/work/261017-toontown-dev/261017-toontown-dev/crates/render)
+[1m[92m    Checking[0m tt-io v0.0.1 (/Users/runner/work/261017-toontown-dev/261017-toontown-dev/crates/io)
+[1m[92m    Checking[0m tt-executor v0.0.1 (/Users/runner/work/261017-toontown-dev/261017-toontown-dev/crates/executor)
+[1m[92m    Checking[0m tt-executor-tests v0.0.0 (/Users/runner/work/261017-toontown-dev/261017-toontown-dev/target/tests/trybuild/tt-executor)
+[1m[92m    Finished[0m `dev` profile [unoptimized + debuginfo] target(s) in 20.76s
+
+
+test tests/c12-r1-ui/missing_example.rs ... ok
+
+
+test missing_example_is_rejected_at_compile_time ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 43.07s
+
+[1m[92m     Running[0m tests/compile_fail.rs (target/release/deps/compile_fail-a196bd7bce317618)
+
+running 1 test
+[1m[92m   Compiling[0m tt-model v0.0.1 (/Users/runner/work/261017-toontown-dev/261017-toontown-dev/crates/model)
+[1m[92m   Compiling[0m tt-anim v0.0.1 (/Users/runner/work/261017-toontown-dev/261017-toontown-dev/crates/anim)
+[1m[92m   Compiling[0m tt-colour v0.0.1 (/Users/runner/work/261017-toontown-dev/261017-toontown-dev/crates/colour)
+[1m[92m   Compiling[0m tt-vector v0.0.1 (/Users/runner/work/261017-toontown-dev/261017-toontown-dev/crates/vector)
+[1m[92m   Compiling[0m tt-fx v0.0.1 (/Users/runner/work/261017-toontown-dev/261017-toontown-dev/crates/fx)
+[1m[92m   Compiling[0m tt-persist v0.0.1 (/Users/runner/work/261017-toontown-dev/261017-toontown-dev/crates/persist)
+[1m[92m   Compiling[0m tt-render v0.0.1 (/Users/runner/work/261017-toontown-dev/261017-toontown-dev/crates/render)
+[1m[92m   Compiling[0m tt-io v0.0.1 (/Users/runner/work/261017-toontown-dev/261017-toontown-dev/crates/io)
+[1m[92m   Compiling[0m tt-registry v0.0.1 (/Users/runner/work/261017-toontown-dev/261017-toontown-dev/crates/registry)
+[1m[92m   Compiling[0m tt-executor v0.0.1 (/Users/runner/work/261017-toontown-dev/261017-toontown-dev/crates/executor)
+test exclusive_mutation_capability has been running for over 60 seconds
+[1m[92m   Compiling[0m tt-executor-tests v0.0.0 (/Users/runner/work/261017-toontown-dev/261017-toontown-dev/target/tests/trybuild/tt-executor)
+[1m[92m    Finished[0m `dev` profile [unoptimized + debuginfo] target(s) in 1m 04s
+
+
+test tests/ui/core_install.rs [should fail to compile] ... ok
+test tests/ui/cx_clone_default.rs [should fail to compile] ... ok
+test tests/ui/cx_constructor.rs [should fail to compile] ... ok
+test tests/ui/cx_struct_literal.rs [should fail to compile] ... ok
+test tests/ui/document_fields.rs [should fail to compile] ... ok
+test tests/ui/enablement_read_only.rs [should fail to compile] ... ok
+test tests/ui/entity_fields.rs [should fail to compile] ... ok
+test tests/ui/handle_channel.rs [should fail to compile] ... ok
+test tests/ui/job_keeps_context.rs [should fail to compile] ... ok
+test tests/ui/load_grant_forged.rs [should fail to compile] ... ok
+test tests/ui/request_type.rs [should fail to compile] ... ok
+test tests/ui/session_private.rs [should fail to compile] ... ok
+test tests/ui-pass/read_snapshots.rs [should pass] ... ok
+
+
+test exclusive_mutation_capability ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 146.74s
+

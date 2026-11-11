@@ -1,0 +1,208 @@
+{
+  "all-targets-clippy": {
+    "exit": "0",
+    "totals": {},
+    "topLevelTotals": {},
+    "failedLines": []
+  },
+  "allows": {
+    "exit": "not-recorded",
+    "totals": {},
+    "topLevelTotals": {},
+    "failedLines": []
+  },
+  "clippy": {
+    "exit": "0",
+    "totals": {},
+    "topLevelTotals": {},
+    "failedLines": []
+  },
+  "deny": {
+    "exit": "0",
+    "totals": {},
+    "topLevelTotals": {},
+    "failedLines": []
+  },
+  "features": {
+    "exit": "not-recorded",
+    "totals": {},
+    "topLevelTotals": {},
+    "failedLines": []
+  },
+  "fmt": {
+    "exit": "0",
+    "totals": {},
+    "topLevelTotals": {},
+    "failedLines": []
+  },
+  "generator": {
+    "exit": "not-recorded",
+    "totals": {},
+    "topLevelTotals": {},
+    "failedLines": []
+  },
+  "initial-tests": {
+    "exit": "101",
+    "totals": {
+      "passed": 14,
+      "failed": 1,
+      "ignored": 0,
+      "filtered": 0
+    },
+    "topLevelTotals": {
+      "passed": 14,
+      "failed": 1,
+      "ignored": 0,
+      "filtered": 0
+    },
+    "failedLines": [
+      "test waiting_caller_does_not_block_document_reads ... FAILED\r"
+    ]
+  },
+  "mcp-clippy": {
+    "exit": "0",
+    "totals": {},
+    "topLevelTotals": {},
+    "failedLines": []
+  },
+  "mcp-fmt": {
+    "exit": "0",
+    "totals": {},
+    "topLevelTotals": {},
+    "failedLines": []
+  },
+  "mcp-harness-initial": {
+    "exit": "101",
+    "totals": {
+      "passed": 0,
+      "failed": 2,
+      "ignored": 0,
+      "filtered": 0
+    },
+    "topLevelTotals": {
+      "passed": 0,
+      "failed": 2,
+      "ignored": 0,
+      "filtered": 0
+    },
+    "failedLines": [
+      "test cancelled_error_is_visible_through_job_status ... FAILED\r",
+      "test failed_error_and_warnings_survive_job_status ... FAILED\r"
+    ]
+  },
+  "mcp-harness-second": {
+    "exit": "101",
+    "totals": {
+      "passed": 1,
+      "failed": 1,
+      "ignored": 0,
+      "filtered": 0
+    },
+    "topLevelTotals": {
+      "passed": 1,
+      "failed": 1,
+      "ignored": 0,
+      "filtered": 0
+    },
+    "failedLines": [
+      "test cancelled_error_is_visible_through_job_status ... FAILED\r"
+    ]
+  },
+  "mcp": {
+    "exit": "101",
+    "totals": {
+      "passed": 1,
+      "failed": 1,
+      "ignored": 0,
+      "filtered": 0
+    },
+    "topLevelTotals": {
+      "passed": 1,
+      "failed": 1,
+      "ignored": 0,
+      "filtered": 0
+    },
+    "failedLines": [
+      "test cancelled_error_is_visible_through_job_status ... FAILED\r"
+    ]
+  },
+  "new-roots-clippy": {
+    "exit": "0",
+    "totals": {},
+    "topLevelTotals": {},
+    "failedLines": []
+  },
+  "new-tests": {
+    "exit": "101",
+    "totals": {
+      "passed": 1,
+      "failed": 1,
+      "ignored": 0,
+      "filtered": 0
+    },
+    "topLevelTotals": {
+      "passed": 1,
+      "failed": 1,
+      "ignored": 0,
+      "filtered": 0
+    },
+    "failedLines": [
+      "test cancelled_record_keeps_typed_error ... FAILED\r"
+    ]
+  },
+  "ownership": {
+    "exit": "not-recorded",
+    "totals": {},
+    "topLevelTotals": {},
+    "failedLines": []
+  },
+  "per-crate": {
+    "exit": "0",
+    "totals": {
+      "passed": 163,
+      "failed": 0,
+      "ignored": 5,
+      "filtered": 0
+    },
+    "topLevelTotals": {
+      "passed": 163,
+      "failed": 0,
+      "ignored": 5,
+      "filtered": 0
+    },
+    "failedLines": []
+  },
+  "python": {
+    "exit": "0",
+    "totals": {},
+    "topLevelTotals": {},
+    "failedLines": []
+  },
+  "tooling-guard": {
+    "exit": "0",
+    "totals": {},
+    "topLevelTotals": {},
+    "failedLines": []
+  },
+  "workspace": {
+    "exit": "101",
+    "totals": {
+      "passed": 1692,
+      "failed": 3,
+      "ignored": 24,
+      "filtered": 43
+    },
+    "topLevelTotals": {
+      "passed": 1686,
+      "failed": 3,
+      "ignored": 24,
+      "filtered": 0
+    },
+    "failedLines": [
+      "test killed_sequence_leaves_no_staged_files ... FAILED\r",
+      "test waiting_caller_does_not_block_document_reads ... FAILED\r",
+      "test cancelled_record_keeps_typed_error ... FAILED\r"
+    ]
+  },
+  "trackedStatus": " M crates/executor/tests/c33_r2_recovery.rs\n M crates/executor/tests/c33_r2_wait.rs\n?? crates/executor/tests/c33_r3_live.rs\n?? crates/executor/tests/c33_r3_recovery.rs\n?? crates/executor/tests/c33_r3_transaction.rs\n?? crates/mcp/tests/c33_r3_jobs.rs\n?? reviews/M3-C3.3-r3.md\n?? reviews/evidence/M3-C3.3-r3/\n"
+}
