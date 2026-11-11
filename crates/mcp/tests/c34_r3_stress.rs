@@ -19,14 +19,18 @@ fn concurrent_wire_cancellation_sixty_seconds() {
         for _ in 0..24 {
             let id = c.send("tools/call", json!({"name":"run_command","arguments":{"id":"edit.selection.set","params":{"context":"drawing","ids":[]}}}));
             seed = seed.wrapping_mul(6364136223846793005).wrapping_add(1);
-            if seed % 3 != 0 { c.notify("notifications/cancelled", json!({"requestId":id})); }
-            else { ids.push(id); }
+            if seed % 3 != 0 {
+                c.notify("notifications/cancelled", json!({"requestId":id}));
+            } else {
+                ids.push(id);
+            }
             count += 1;
         }
-        for id in ids { assert!(c.wait(id, Duration::from_secs(10)).is_some(), "server stalled"); }
+        for id in ids {
+            assert!(c.wait(id, Duration::from_secs(10)).is_some(), "server stalled");
+        }
     }
     assert_eq!(c.run("doc.state.get", json!({}))["status"], "ok");
     eprintln!("STRESS requests={count} seconds={}", start.elapsed().as_secs_f64());
     c.close().unwrap();
 }
-

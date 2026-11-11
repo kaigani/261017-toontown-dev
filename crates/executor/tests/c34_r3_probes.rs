@@ -15,13 +15,15 @@ fn blocked_probe_does_not_starve_other_callers_past_watchdog() {
     let (tx, rx) = std::sync::mpsc::channel();
     let n = AtomicUsize::new(0);
     let (other, elapsed) = std::thread::scope(|s| {
-        let caller = s.spawn(|| h.invoke_served_until(edit(), &|| {
-            if n.fetch_add(1, Ordering::SeqCst) == 1 {
-                tx.send(()).unwrap();
-                std::thread::sleep(Duration::from_secs(6));
-            }
-            false
-        }));
+        let caller = s.spawn(|| {
+            h.invoke_served_until(edit(), &|| {
+                if n.fetch_add(1, Ordering::SeqCst) == 1 {
+                    tx.send(()).unwrap();
+                    std::thread::sleep(Duration::from_secs(6));
+                }
+                false
+            })
+        });
         rx.recv_timeout(Duration::from_secs(10)).unwrap();
         let start = Instant::now();
         let other = run(&h, "doc.state.get", json!({}));
@@ -70,12 +72,15 @@ fn overhead_ten_thousand_small_actions_and_thousand_step_batch() {
             let e = if direct { h.invoke_served_until(inv(), &|| false).0 } else { h.invoke(inv()) };
             assert!(e.is_ok(), "{e:?}");
         }
-        eprintln!("PERF direct={direct} n=10000 ms={}", start.elapsed().as_secs_f64()*1000.0);
+        eprintln!("PERF direct={direct} n=10000 ms={}", start.elapsed().as_secs_f64() * 1000.0);
         let req = serde_json::from_value(json!({"label":"measure","atomic":false,"steps":(0..1000).map(|_| json!({"id":"edit.selection.set","params":{"context":"drawing","ids":[]}})).collect::<Vec<_>>()})).unwrap();
         let start = Instant::now();
-        let e = if direct { h.batch_until(req, tt_executor::Origin::User, &|| false) } else {h.batch(req, tt_executor::Origin::User)};
+        let e = if direct {
+            h.batch_until(req, tt_executor::Origin::User, &|| false)
+        } else {
+            h.batch(req, tt_executor::Origin::User)
+        };
         assert!(e.is_ok(), "{e:?}");
-        eprintln!("PERF batch direct={direct} n=1000 ms={}", start.elapsed().as_secs_f64()*1000.0);
+        eprintln!("PERF batch direct={direct} n=1000 ms={}", start.elapsed().as_secs_f64() * 1000.0);
     }
 }
-
