@@ -66,31 +66,35 @@ fn one_hundred_wait_cancellations_settle_jobs_and_leave_handle_usable() {
 
 #[test]
 fn queued_cancelled_request_is_skipped_and_following_read_survives() {
-    for cancel_batch in [false, true] {
+    for (cancel_batch, stop_on_error) in [(false, true), (true, true), (true, false)] {
         let h = fixture_with(ExecutorConfig { budget: Duration::from_millis(1000) });
         let dir = c13_support::tmp().join("blocked");
-        let batch:BatchRequest=serde_json::from_value(json!({"label":"review","atomic":false,"steps":[{"id":"render.range.run","params":{"from":1,"to":100000,"width":32,"directory":dir,"createDirs":true,"wait":true}}]})).unwrap();
+        let batch:BatchRequest=serde_json::from_value(json!({"label":"review","atomic":false,"stopOnError":stop_on_error,"steps":[{"id":"render.range.run","params":{"from":1,"to":100000,"width":32,"directory":dir,"createDirs":true,"wait":true}},{"id":"element.create","params":{"type":"peg","name":"Late","sceneId":"scene:#1"}}]})).unwrap();
+        let mut queued_inv =
+            Invocation::user("element.create", json!({"type":"peg","name":"QueuedCancelled","sceneId":"scene:#1"}));
+        queued_inv.options.request_id = Some("queued-retry".to_owned());
         let flag = AtomicBool::new(false);
         std::thread::scope(|s| {
             let batch_thread = s.spawn(|| h.batch_until(batch, Origin::User, &|| flag.load(Ordering::SeqCst)));
             staged(&dir);
             let at = Instant::now();
-            let cancelled = s.spawn(|| {
-                h.invoke_served_until(
-                    Invocation::user(
-                        "element.create",
-                        json!({"type":"peg","name":"QueuedCancelled","sceneId":"scene:#1"}),
-                    ),
-                    &|| true,
-                )
-                .0
-            });
+            let cancelled = s.spawn(|| h.invoke_served_until(queued_inv.clone(), &|| true).0);
             std::thread::sleep(Duration::from_millis(50));
-            let read = s.spawn(|| run(&h, "doc.state.get", json!({})));
+            let read = s.spawn(|| {
+                let start = Instant::now();
+                let env = run(&h, "doc.state.get", json!({}));
+                (env, start.elapsed())
+            });
             if cancel_batch {
                 flag.store(true, Ordering::SeqCst);
             }
-            assert!(read.join().unwrap().is_ok());
+            let (read_env, read_elapsed) = read.join().unwrap();
+            assert!(read_env.is_ok());
+            eprintln!(
+                "READ_MS cancellation={cancel_batch} stopOnError={stop_on_error} elapsed={}",
+                read_elapsed.as_secs_f64() * 1000.0
+            );
+            assert!(read_elapsed < Duration::from_millis(1000));
             eprintln!("BLOCKING_MS cancellation={cancel_batch} read_and_queue={}", at.elapsed().as_secs_f64() * 1000.0);
             assert!(!cancelled.join().unwrap().is_ok());
             let env = batch_thread.join().unwrap();
@@ -99,10 +103,18 @@ fn queued_cancelled_request_is_skipped_and_following_read_survives() {
             ok(&h, "job.cancel", json!({"jobId":job}));
             h.jobs().wait(job, Duration::from_secs(60)).unwrap();
         });
+        assert_eq!(err(&h, "doc.object.get", json!({"ref":"scene:#1/element:\"Late\""})).code, "ref.notFound");
         assert_eq!(
             err(&h, "doc.object.get", json!({"ref":"scene:#1/element:\"QueuedCancelled\""})).code,
             "ref.notFound"
         );
+        let before = rev(&h);
+        let (retry, cached) = h.invoke_served(queued_inv.clone());
+        assert!(retry.is_ok());
+        assert!(!cached);
+        assert!(retry.undo.is_some());
+        assert!(h.invoke_served(queued_inv).1);
+        assert_eq!(rev(&h), before + 1);
     }
 }
 
