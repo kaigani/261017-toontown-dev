@@ -26,6 +26,18 @@ pub struct CancelState {
     /// Tokens handed out and not yet forgotten: only these can be marked, so a caller that marks its token after the
     /// worker forgot it leaves nothing behind (M3 C3.4 round 2).
     outstanding: std::sync::Mutex<std::collections::BTreeSet<u64>>,
+    /// Marked tokens whose caller cancelled its request (the rest of `queued` timed out): the cause a refusal reports
+    /// (M3 C3.4 round 3, C34-R3-02).
+    by_caller: std::sync::Mutex<std::collections::BTreeSet<u64>>,
+}
+
+/// Why a request's token was marked.
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub enum Cause {
+    /// Its caller's watchdog budget passed.
+    Timeout,
+    /// Its caller cancelled the request.
+    Cancelled,
 }
 
 impl CancelState {
@@ -43,9 +55,32 @@ impl CancelState {
     /// Marks exactly `token` cancelled: its caller has been answered. Another caller's request is never affected. A
     /// token the worker already forgot (the request finished) is not marked: nothing would ever forget it again.
     pub fn mark(&self, token: u64) {
+        self.mark_for(token, Cause::Timeout);
+    }
+
+    /// Marks exactly `token` cancelled because its caller cancelled the request ([`CancelState::mark`] otherwise).
+    pub fn mark_cancelled(&self, token: u64) {
+        self.mark_for(token, Cause::Cancelled);
+    }
+
+    /// Why `token` was marked, if it was.
+    pub fn cause(&self, token: u64) -> Option<Cause> {
+        if !self.is_cancelled(token) {
+            return None;
+        }
+        let by_caller = self.by_caller.lock().is_ok_and(|c| c.contains(&token));
+        Some(if by_caller { Cause::Cancelled } else { Cause::Timeout })
+    }
+
+    fn mark_for(&self, token: u64, cause: Cause) {
         let Ok(outstanding) = self.outstanding.lock() else { return };
         if !outstanding.contains(&token) {
             return;
+        }
+        if cause == Cause::Cancelled
+            && let Ok(mut c) = self.by_caller.lock()
+        {
+            c.insert(token);
         }
         if let Ok(mut q) = self.queued.lock()
             && q.insert(token)
@@ -73,6 +108,9 @@ impl CancelState {
             #[cfg(feature = "test-hooks")]
             hooks::count_outstanding(-1);
         }
+        if let Ok(mut c) = self.by_caller.lock() {
+            c.remove(&token);
+        }
         if let Ok(mut q) = self.queued.lock() {
             if q.remove(&token) {
                 #[cfg(feature = "test-hooks")]
@@ -95,7 +133,27 @@ pub fn set_cancel_state(state: Option<Arc<CancelState>>) {
 /// Whether the request the calling thread runs has been cancelled by the watchdog.
 #[must_use]
 pub fn cancel_requested() -> bool {
-    CANCEL.with(|c| c.borrow().as_ref().is_some_and(|s| s.is_cancelled(s.current.load(Ordering::Acquire))))
+    cancel_cause().is_some()
+}
+
+/// Why the request the calling thread runs was cancelled, if it was (C34-R3-02).
+#[must_use]
+pub fn cancel_cause() -> Option<Cause> {
+    CANCEL.with(|c| c.borrow().as_ref().and_then(|s| s.cause(s.current.load(Ordering::Acquire))))
+}
+
+/// The `details.reason` of a refusal for the calling thread's cancellation: `"cancelled"` when its caller cancelled
+/// the request (SI-111), none for a watchdog timeout.
+#[must_use]
+pub fn cancel_reason() -> Option<&'static str> {
+    (cancel_cause() == Some(Cause::Cancelled)).then_some("cancelled")
+}
+
+/// Counts one question a worker asks its caller (a no-op unless `test-hooks`; C34-R3-01).
+#[inline]
+pub fn note_ask() {
+    #[cfg(feature = "test-hooks")]
+    hooks::count_ask();
 }
 
 /// Test hooks (never in products): make every work charge spin, so any work-charging command overruns on demand.
@@ -124,6 +182,23 @@ pub mod hooks {
     #[must_use]
     pub fn outstanding_tokens() -> i64 {
         OUTSTANDING.load(Ordering::Acquire)
+    }
+
+    static ASKS: AtomicI64 = AtomicI64::new(0);
+
+    pub(super) fn count_ask() {
+        ASKS.fetch_add(1, Ordering::AcqRel);
+    }
+
+    /// Questions workers asked their callers since the last [`reset_asks`] (C34-R3-01).
+    #[must_use]
+    pub fn asks() -> i64 {
+        ASKS.load(Ordering::Acquire)
+    }
+
+    /// Resets [`asks`].
+    pub fn reset_asks() {
+        ASKS.store(0, Ordering::Release);
     }
 
     static SPIN_MICROS: AtomicU64 = AtomicU64::new(0);

@@ -126,6 +126,14 @@ jobs:
       # `c33_r2_depth::seeded_anchor_groups_4096` and `c33_r2_stress::deep_and_broad_scene` run whole-binary in release in
       # `c33 render release`, and `c31_r3_hierarchy::random_hierarchy_edits_4096_keep_independent_parent_and_level_model`
       # in `review properties release`, bodies unchanged; `last_target_readonly_preserves_originals` also stays here.
+      # M3 C3.4 round 3 budget ruling (O-4; Windows `check` 48 min 37 s in run 43104817713): the request-cancellation stress
+      # and measurement loops run whole-binary in release in `c33 render release`, bodies unchanged:
+      # `c34_r3_stress::concurrent_wire_cancellation_sixty_seconds`,
+      # `c34_r3_probes::overhead_ten_thousand_small_actions_and_thousand_step_batch`,
+      # `c34_r2_measurements::one_hundred_wait_cancellations_settle_jobs_and_leave_handle_usable`,
+      # `c34_r2_cancellation::fast_commit_cancel_retry_matrix_preserves_one_change_and_one_answer`,
+      # `c34_round2::a_cancellation_between_two_steps_refuses_the_second_every_time`. Every short deterministic acceptance,
+      # error-shape, discard, death and token test stays here.
       - name: Run cargo test --workspace --locked
         run: |
           cargo test --workspace --locked -- --skip ten_thousand_history_operations_match_independent_content_oracle_and_replay \
@@ -161,7 +169,7 @@ jobs:
             --skip non_parallelogram_envelopes_map_the_layer_projectively \
             --skip snapping_onto_a_curved_contour_reaches_its_nearest_point \
             --skip integer_translations_and_compositions_preserve_all_snapped_anchor_sequences \
-            --skip side_fills_read_back_beside_collinear_overlaps             --skip independent_sequences_4096_persist_canonical_runs_and_notes             --skip exclusive_mutation_capability             --skip duplicate_ids_and_inventory_kind_drift_are_rejected             --skip missing_example_is_rejected_at_compile_time             --skip killed_sequence_leaves_no_staged_files             --skip seeded_anchor_groups_4096             --skip deep_and_broad_scene             --skip random_hierarchy_edits_4096_keep_independent_parent_and_level_model
+            --skip side_fills_read_back_beside_collinear_overlaps             --skip independent_sequences_4096_persist_canonical_runs_and_notes             --skip exclusive_mutation_capability             --skip duplicate_ids_and_inventory_kind_drift_are_rejected             --skip missing_example_is_rejected_at_compile_time             --skip killed_sequence_leaves_no_staged_files             --skip seeded_anchor_groups_4096             --skip deep_and_broad_scene             --skip random_hierarchy_edits_4096_keep_independent_parent_and_level_model             --skip concurrent_wire_cancellation_sixty_seconds             --skip overhead_ten_thousand_small_actions_and_thousand_step_batch             --skip one_hundred_wait_cancellations_settle_jobs_and_leave_handle_usable             --skip fast_commit_cancel_retry_matrix_preserves_one_change_and_one_answer             --skip a_cancellation_between_two_steps_refuses_the_second_every_time
 
       - name: Desktop host with the M0 diagnostics feature (C0.4 gating) — clippy and tests
         run: |
@@ -622,6 +630,12 @@ jobs:
       # C3.3 closure budget ruling: the reviewer's 4096-case anchor-group corpus and deep/broad scene, skipped in `check`.
       - name: Reviewer render corpora (release)
         run: cargo test --release --locked -p tt-executor --test c33_r2_depth --test c33_r2_stress
+
+      # M3 C3.4 round 3 budget ruling (O-4): the request-cancellation stress and measurement loops, skipped in `check`.
+      - name: Request-cancellation stress and measurement loops (release)
+        run: |
+          cargo test --release --locked -p tt-executor --test c34_r3_probes --test c34_r2_measurements --test c34_r2_cancellation --test c34_round2
+          cargo test --release --locked -p tt-mcp --test c34_r3_stress
 
       - name: Render gate (official Python SDK, release headless binary)
         run: |

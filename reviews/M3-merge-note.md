@@ -11,7 +11,21 @@ The orchestrator merges and tags; the builder does not.
 | C3.1 | element types, exposure runs, cells, clone/duplicate, hierarchy, `element.*`, `cell.*`, `xsheet.*` JSON | round 4 scoped closure **pass** ([M3-C3.1-r4-closure.md](M3-C3.1-r4-closure.md); builder `864b70d`, review `ac47998`) | source units 467 implemented / 0 divergent / 0 missing / 227 deferred; commands and events 63 / 0 / 0 / 1 |
 | C3.2 | transforms, pivots, TCB paths, velocity, channels, easing, cameras, projection, `anim.evaluate`, E4 numeric | round 4 scoped closure **pass** ([M3-C3.2-r4-closure.md](M3-C3.2-r4-closure.md); builder `8c640d1`, review `2184ae8`) | 36 rows / 383 units: 36 rows implemented; 293 units implemented, 90 deferred with owner; 0 divergent, 0 missing |
 | C3.3 | compositor, render list, deterministic `render_frame`, contact sheet, `describe_frame`, `hit_test`, `convert_coordinates`, PNG sequence export, golden images | round 4 scoped closure **pass** ([M3-C3.3-r4-closure.md](M3-C3.3-r4-closure.md); builder `4984c25`, review `2daaf99`) | 183 implemented / 0 divergent / 0 missing / 14 deferred with owner / 1 closed (198 units) |
-| C3.4 | E1 headless (minus MP4) | handed off ([M3-C3.4-handoff.md](M3-C3.4-handoff.md)); closure pending | — |
+| C3.4 | E1 headless (minus MP4) | handed off ([M3-C3.4-handoff.md](M3-C3.4-handoff.md), `45b41da`); closure pending | — |
+| C3.4 round 1 | merge-note inventory; request cancellation reaches the executor (O-1) | response ([M3-C3.4-r1-response.md](M3-C3.4-r1-response.md); builder `967229a`, review `1cbd190`) | 42 implemented / 0 divergent / 3 deferred with owner |
+| C3.4 round 2 | the cancellation contract at the worker's boundaries; direct `job.wait`; honest discard; token hygiene; SI-111 | response ([M3-C3.4-r2-response.md](M3-C3.4-r2-response.md); builder `0146e1a`, review `a2253cb`) | the four round-2 findings implemented |
+| C3.4 round 3 | bounded probe questions; refusal causes; positive discard notice; CI budget routing | response ([M3-C3.4-r3-response.md](M3-C3.4-r3-response.md); review `0a374c9`) | the three round-3 findings implemented |
+
+**What M3 delivered:**
+- The element, timing and staging maths, and the deterministic final renderer.
+- E1 end to end headless, with every output byte-identical on Windows and macOS.
+- A request-cancellation contract (ADR-0020 decision 8):
+  - an already-cancelled request never begins;
+  - the worker asks a probed caller directly, each question bounded by min(250 ms, budget/4), and silence counts as
+    not cancelled;
+  - a commit that got there first stands;
+  - request cancellation never cancels a job;
+  - refusals carry `reason: "cancelled"` (SI-111).
 
 ## 2. Merge-readiness conditions at the candidate
 
@@ -126,7 +140,7 @@ The C3.4 closure row and the candidate run are added at the closure.
 | `m3 properties release` | 20 | 3.0 / 2.1 |
 | `e2 release` | 30 | 6.9 / 4.3 |
 | `e4 release`, `e4 cross-OS` | 30, 10 | 6.3 / 6.0; 0.0 |
-| `c33 render release` (goldens, range, bitmap, render gate, reviewer corpora, E1), `c33 cross-OS` | 30, 10 | 13.9 / 7.1; 0.1 |
+| `c33 render release` (goldens, range, bitmap, render gate, reviewer corpora, E1, request-cancellation loops and stress from C3.4 round 3), `c33 cross-OS` | 30, 10 | 13.9 / 7.1; 0.1 |
 | `bundle` | 30 | 10.1 / 8.3 |
 | `raster determinism` (Windows, macOS, Linux) | 20 | 2.6 / 3.0 / 1.7 |
 | `headless without a display` (Linux) | 15 | 3.7 |

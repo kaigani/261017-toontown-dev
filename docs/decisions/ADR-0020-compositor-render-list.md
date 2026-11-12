@@ -1,6 +1,6 @@
 # ADR-0020 — Compositor and render list
 
-Status: accepted (M3 C3.3; amended in C3.3 rounds 1-3 and C3.4 round 1).
+Status: accepted (M3 C3.3; amended in C3.3 rounds 1-3 and C3.4 rounds 1-3).
 
 ## Context
 
@@ -75,7 +75,10 @@ thread); ADR-0019 fixes the evaluation order of transforms.
       starts its job), every acceptance check, immediately before commit, and every work-account check. At dequeue,
       at each start, at acceptance and before commit, the worker asks the caller **directly**: a link carried by the
       request, which the waiting caller answers by evaluating its probe at once. A worker never passes one of these
-      boundaries once the cancellation is observable. The caller also marks the call's watchdog token when it sees the
+      boundaries once the cancellation is observable. A call made without a probe (`invoke`, `invoke_served`,
+      `batch`, `batch_audited`) carries no link and costs no question. A probed query carries a notice-only link: it
+      is never asked, but is told when it is discarded. A probed action asks once at dequeue and three times per
+      committing step (start, acceptance, pre-commit); a step that changes no document asks twice. The caller also marks the call's watchdog token when it sees the
       cancellation, which stops work-account checks; a refusal for cancellation is not remembered under the
       `requestId`.
    3. *A commit that got there first stands.* A commit that passed its pre-commit check before the cancellation was
@@ -89,8 +92,24 @@ thread); ADR-0019 fixes the evaluation order of transforms.
       interval, not an end-to-end bound. C3.4 round 2 measured 100 direct waited-job cancellations at min 0.67 ms,
       median 3.6 ms, p95 4.8 ms, p99 20.2 ms and max 20.3 ms.
 
-   A queued request discarded because it was cancelled answers that cancellation, never `internal`; a worker that
-   really stops still answers `internal` (C34-R2-04). An MCP client receives no answer to a cancelled request (11 §4).
+   **Probes must not block** (C34-R3-01). The document thread never depends on caller code for longer than one bound:
+   each question waits at most `ASK_BOUND_MAX` (250 ms) or a quarter of the watchdog budget, whichever is smaller.
+   Silence is not cancellation. A caller that does not answer in time is taken as not cancelled at that boundary, and
+   its link is latched unresponsive, so the worker asks it nothing more for that request. One request therefore stalls
+   the document thread by at most one bound, whatever its step count. From then on its cancellation is seen only
+   through its marked token; seen late, it is like a commit that got there first (rule 3). A caller that is gone
+   (disconnected link) counts as cancelled. A caller held past its own watchdog budget (inside its probe, say) answers
+   the timeout even if the reply has arrived; a commit that happened stands.
+
+   **Causes** (C34-R3-02). A token remembers why it was marked: by its caller's watchdog timeout, or by its caller's
+   cancellation. Every refusal whose cause is the caller's cancellation carries `details.reason: "cancelled"`
+   (SI-111): before enqueue, at dequeue, at an invocation's or step's start, at acceptance, before commit, and at a
+   work-account check. A watchdog timeout is never relabelled.
+
+   A queued request discarded because it was cancelled answers that cancellation, never `internal`. Only the worker's
+   positive notice that it discarded the request makes a dropped reply a cancellation; a marked token alone does not,
+   so a worker that really stops answers `internal`, also for a request cancelled while queued (C34-R2-04,
+   C34-R3-03). An MCP client receives no answer to a cancelled request (11 §4).
    Watchdog tokens are bounded to outstanding calls: marking a token the worker already forgot does nothing.
 10. **Publication is a transaction** (ruling C33-R1-03; amended in round 2). Frames and the companion manifest are
    staged beside their targets as `.<target name>.tt-partial-<token>`. At the commit point every target is

@@ -573,14 +573,21 @@ fn needs_confirmation(session: &mut Session, e: CommandError, rev: Option<u64>) 
 /// A request whose caller timed out is not accepted (C23-R2-01, C23-R3-01): checked at the acceptance boundary, before
 /// any session state, document transaction or effect is kept, and again by `commit` before it installs anything.
 fn cancelled_check(what: &str) -> Result<(), CommandError> {
-    if crate::request_cancelled() {
-        return Err(CommandError::with_details(
+    match crate::cancellation() {
+        None => Ok(()),
+        // The caller cancelled its request (SI-111).
+        Some(tt_vector::work::Cause::Cancelled) => Err(CommandError::with_details(
             tt_registry::codes::COMMAND_TIMEOUT,
-            format!("`{what}` was cancelled: its caller's watchdog budget passed or its caller cancelled the request"),
+            format!("`{what}` was cancelled by its caller"),
+            serde_json::json!({ "commandId": what, "reason": "cancelled" }),
+        )),
+        // The caller's watchdog budget passed (never relabelled as a cancellation; C34-R3-02).
+        Some(tt_vector::work::Cause::Timeout) => Err(CommandError::with_details(
+            tt_registry::codes::COMMAND_TIMEOUT,
+            format!("`{what}` was cancelled: its caller's watchdog budget passed"),
             serde_json::json!({ "commandId": what }),
-        ));
+        )),
     }
-    Ok(())
 }
 
 /// Commits transactions: installs each stamped snapshot, records undo steps or moves the history position, logs
@@ -1116,6 +1123,12 @@ impl Core {
 
     /// One invocation, with `requestId` idempotency (C12-R1-06/22).
     pub(crate) fn invoke(&mut self, inv: &Invocation) -> Envelope {
+        let mut env = self.invoke_inner(inv);
+        crate::label_cancellation(&mut env);
+        env
+    }
+
+    fn invoke_inner(&mut self, inv: &Invocation) -> Envelope {
         self.served_from_cache = false;
         // Before the handler runs (a job command would start its job) and before its `requestId` is looked up or
         // remembered: a cancelled request is not run (ADR-0020 decision 8, C34-R2-01).
@@ -1319,6 +1332,12 @@ impl Core {
 
     /// A batch (11 §7.3).
     pub(crate) fn batch(&mut self, req: &BatchRequest, origin: &Origin) -> Envelope {
+        let mut env = self.batch_inner(req, origin);
+        crate::label_cancellation(&mut env);
+        env
+    }
+
+    fn batch_inner(&mut self, req: &BatchRequest, origin: &Origin) -> Envelope {
         let resolved = self.effective_origin(origin);
         let origin = &resolved;
         if req.steps.is_empty() || req.steps.len() > MAX_BATCH_STEPS {
