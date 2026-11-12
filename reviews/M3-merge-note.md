@@ -172,7 +172,7 @@ changes only this note. The C3.4 closure row and the candidate run are added at 
 | `e4 release`, `e4 cross-OS` | 30, 10 | 5.5 / 5.8; 0.2 |
 | `c33 render release` (goldens, range, bitmap, render gate, reviewer corpora, E1, request-cancellation loops and stress from C3.4 rounds 3 and 4), `c33 cross-OS` | 30, 10 | 26.4 / 20.6; 0.1 |
 | `bundle` (carried the C0.4 desktop step with M0 diagnostics in this run; it moved to its own job in C3.4 round 5) | 30 | 23.8 / 27.4 |
-| `desktop diagnostics` (C0.4 desktop host with M0 diagnostics; new in C3.4 round 5) | 40 | not in this run; first times in the C3.4 round-5 closing message |
+| `desktop diagnostics` (C0.4 desktop host with M0 diagnostics; new in C3.4 round 5) | 40 | not in this run; 25.6 / 20.9 in run 43315096638 (C3.4 round 5) |
 | `raster determinism` (Windows, macOS, Linux) | 20 | 2.6 / 2.2 / 1.5 |
 | `headless without a display` (Linux) | 15 | 3.9 |
 
