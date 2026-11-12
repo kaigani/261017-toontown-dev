@@ -20,3 +20,13 @@ mcp 101
 stress 0
 headless 0
 e1 0
+mcp-ci-features 0
+r5-probes 101
+queued-job 0
+executor-tail 0
+executor-doc 0
+fmt-executor 0
+fmt-vector 0
+clippy 0
+clippy-all 0
+features 0

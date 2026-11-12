@@ -1,0 +1,32 @@
+{
+  "executor": {
+    "passed": 952,
+    "failed": 1,
+    "ignored": 9,
+    "groups": 188
+  },
+  "executor-tail": {
+    "passed": 17,
+    "failed": 0,
+    "ignored": 0,
+    "groups": 5
+  },
+  "executor-doc": {
+    "passed": 0,
+    "failed": 0,
+    "ignored": 0,
+    "groups": 1
+  },
+  "mcp-ci-features": {
+    "passed": 90,
+    "failed": 0,
+    "ignored": 3,
+    "groups": 43
+  },
+  "r5-probes": {
+    "passed": 5,
+    "failed": 1,
+    "ignored": 0,
+    "groups": 2
+  }
+}
