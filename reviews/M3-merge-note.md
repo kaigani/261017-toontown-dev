@@ -16,7 +16,8 @@ The orchestrator merges and tags; the builder does not.
 | C3.4 round 1 | merge-note inventory; request cancellation reaches the executor (O-1) | response ([M3-C3.4-r1-response.md](M3-C3.4-r1-response.md); builder `967229a`, review `1cbd190`) | 42 implemented / 0 divergent / 3 deferred with owner |
 | C3.4 round 2 | the cancellation contract at the worker's boundaries; direct `job.wait`; honest discard; token hygiene; SI-111 | response ([M3-C3.4-r2-response.md](M3-C3.4-r2-response.md); builder `0146e1a`, review `a2253cb`) | the four round-2 findings implemented |
 | C3.4 round 3 | bounded probe questions; refusal causes; positive discard notice; CI budget routing | response ([M3-C3.4-r3-response.md](M3-C3.4-r3-response.md); builder `1ef439b`, review `0a374c9`) | the three round-3 findings implemented |
-| C3.4 round 4 | cause carried into every copy of a cancellation refusal; late answers latch; cumulative question bound; CI backtraces restored; one more release routing | response ([M3-C3.4-r4-response.md](M3-C3.4-r4-response.md); review `62d21ea`, closure [M3-C3.4-r4-closure.md](M3-C3.4-r4-closure.md): C34-R3-01..03 closed) | C34-R4-01, C34-R4-02 and O-6 implemented |
+| C3.4 round 4 | cause carried into every copy of a cancellation refusal; late answers latch; cumulative question bound; CI backtraces restored; one more release routing | response ([M3-C3.4-r4-response.md](M3-C3.4-r4-response.md); builder `8312694`, product-code head `1a19692`; review `62d21ea`, closure [M3-C3.4-r4-closure.md](M3-C3.4-r4-closure.md): C34-R3-01..03 closed) | C34-R4-01, C34-R4-02 and O-6 implemented |
+| C3.4 round 5 | the activity entry declared as `agent.activity.list`'s typed result (optional `errorReason`); receipt corrections | response ([M3-C3.4-r5-response.md](M3-C3.4-r5-response.md); review `9f1a76f`, closure [M3-C3.4-r5-closure.md](M3-C3.4-r5-closure.md): C34-R4-01, C34-R4-02 closed) | C34-R5-01 implemented |
 
 **What M3 delivered:**
 - The element, timing and staging maths, and the deterministic final renderer.
@@ -70,6 +71,8 @@ The orchestrator merges and tags; the builder does not.
 | Lock files compare host names case-sensitively (a stale lock of the same machine is not recognised) | M11 C11.1 (settled at C3.4 round 1) | found in C3.4 (handoff §5); stays case-sensitive until then, the safe direction |
 | Off-thread continuations for a sequential batch's waited job step and `job.wait` step (they wait on the document thread, bounded by the batch's remaining budget, ending on request cancellation; ADR-0020 decision 8) | not planned; **M11 C11.1** re-measures the bound with the attached UI | measured in C3.4 round 2: a concurrent read waited 740 ms of a 1000 ms budget uncancelled, about 33 ms after cancellation |
 | Probed-call overhead in a product build | M11 C11.1 (orchestrator item O-10, C3.4 round 4) | C3.4 round-4 closure, release with test hooks on: probed versus plain calls +10 % for 10,000 actions (4805 / 5291 ms) and +13 % for a 1,000-step batch (422 / 477 ms). To be re-measured in a product build with the attached UI. |
+| O-6 cumulative-bound test: a measurement limit (C3.4 round 5 closure) | M11 C11.1, with the other timing re-measurements | The builder test discards a trial whose answer reached 225 ms (0.9 × the 250 ms bound) and asserts the looser limit of budget + 2 × bound. It shows the guarantee with margin, not at its exact edge. |
+| The waiting-caller late-wake path (C3.4 round 4) | M11 C11.1 | At its deadline a waiting caller takes a reply already delivered. No deterministic hook can force the late wake; reviewed by reading only. |
 
 ## 4. Open spec issues for the spec owner
 

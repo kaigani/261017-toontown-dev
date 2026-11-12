@@ -2,7 +2,7 @@
 //! - C34-R4-01: every copy of a caller-cancellation refusal says `reason: "cancelled"` with the same hint: the step,
 //!   the error nested in `batch.stepFailed` (atomic and sequential batches) and the activity-log entry. A watchdog
 //!   expiry in the same atomic shape is unlabelled in every copy.
-//! - C34-R4-02: an answer at or after the question bound latches the link; a late `true` is honoured.
+//! - C34-R4-02: an answer at or after the question bound is silence, whatever it says, and latches the link.
 //! - O-6: a probe that always answers just inside the bound holds the document thread for at most the request's own
 //!   budget plus one bound in questions; the request ends by its watchdog, the document is whole, and an unrelated caller
 //!   is served at once afterwards.

@@ -1,6 +1,6 @@
 # ADR-0020 — Compositor and render list
 
-Status: accepted (M3 C3.3; amended in C3.3 rounds 1-3 and C3.4 rounds 1-3).
+Status: accepted (M3 C3.3; amended in C3.3 rounds 1-3 and C3.4 rounds 1-5).
 
 ## Context
 
@@ -124,6 +124,12 @@ thread); ADR-0019 fixes the evaluation order of transforms.
    cancellation. Every refusal whose cause is the caller's cancellation carries `details.reason: "cancelled"`
    (SI-111): before enqueue, at dequeue, at an invocation's or step's start, at acceptance, before commit, and at a
    work-account check. A watchdog timeout is never relabelled.
+
+   Every copy of such a refusal carries the cause (C34-R4-01): the step's error, the copy nested in an atomic or
+   sequential batch's `batch.stepFailed` (`details.error`), and the agent activity-log entry. The entry has an optional
+   `errorReason`, declared in the typed result of `agent.activity.list` (C34-R5-01). It holds the error's
+   `details.reason`, or, for a `batch.stepFailed`, the reason of the step error it wraps. It is absent when there is no
+   reason, as on a watchdog expiry, and entries written before it existed still read.
 
    A queued request discarded because it was cancelled answers that cancellation, never `internal`. Only the worker's
    positive notice that it discarded the request makes a dropped reply a cancellation; a marked token alone does not,

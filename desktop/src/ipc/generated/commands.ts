@@ -9892,11 +9892,120 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
     additionalProperties: false,
   },
   "agent.activity.list.result": {
-    title: "Array_of_Map_of_AnyValue",
+    title: "Array_of_ActivityEntry",
     type: "array",
     items: {
+      description: "One activity-log entry (11 §11). Its schema is the declared result item of `agent.activity.list` (C34-R5-01):\noptional fields are omitted when absent, and entries written before a field existed still read.",
       type: "object",
-      additionalProperties: true,
+      properties: {
+        seq: {
+          description: "Sequence number (per process).",
+          type: "integer",
+          maximum: 18446744073709551615n,
+          minimum: 0,
+        },
+        time: {
+          description: "When the call finished.",
+          type: "string",
+        },
+        sessionId: {
+          description: "Session id.",
+          type: "string",
+        },
+        client: {
+          description: "Client name.",
+          type: "string",
+        },
+        tool: {
+          description: "MCP tool (or `batch-script`).",
+          type: "string",
+        },
+        commandId: {
+          description: "Command id (`batch` for batches).",
+          type: "string",
+        },
+        params: {
+          description: "Parameters, with inline media replaced by a hash.",
+        },
+        status: {
+          description: "`ok`, `needs_confirmation` or `error`.",
+          type: "string",
+        },
+        errorCode: {
+          description: "Error code.",
+          type: [
+            "string",
+            "null",
+          ],
+        },
+        errorReason: {
+          description: "The error's `details.reason`, or that of the step error a `batch.stepFailed` wraps (`\"cancelled\"`: its caller\ncancelled the request; C34-R4-01).",
+          type: [
+            "string",
+            "null",
+          ],
+        },
+        undoStepId: {
+          description: "Undo step.",
+          type: [
+            "string",
+            "null",
+          ],
+        },
+        changedCount: {
+          description: "Changed objects.",
+          type: "integer",
+          format: "uint",
+          minimum: 0,
+        },
+        dryRun: {
+          description: "The call was a dry run (it changed nothing; a replay must not turn it into an edit; C14-R1-15).",
+          type: "boolean",
+        },
+        cachedRetry: {
+          description: "The answer came from the `requestId` cache: a retry of an earlier call, which executed nothing (C14-R2-03).",
+          type: "boolean",
+        },
+        committedSteps: {
+          description: "A batch: the indexes of the steps it committed (all or none for an atomic batch; the successful ones of a\nsequential batch, which commits step by step; C14-R2-02).",
+          type: [
+            "array",
+            "null",
+          ],
+          items: {
+            type: "integer",
+            format: "uint",
+            minimum: 0,
+          },
+        },
+        documentRev: {
+          description: "Document revision after the call.",
+          type: [
+            "integer",
+            "null",
+          ],
+          maximum: 18446744073709551615n,
+          minimum: 0,
+        },
+        durationMs: {
+          description: "Duration.",
+          type: "integer",
+          maximum: 18446744073709551615n,
+          minimum: 0,
+        },
+      },
+      required: [
+        "seq",
+        "time",
+        "sessionId",
+        "client",
+        "tool",
+        "commandId",
+        "params",
+        "status",
+        "changedCount",
+        "durationMs",
+      ],
     },
   },
   "agent.activity.persist.set.params": {
@@ -82991,7 +83100,42 @@ export interface agent_activity_list_params {
   limit?: number | null;
 }
 
-export type agent_activity_list_result = (Record<string, unknown>)[];
+export type agent_activity_list_result = ({
+  /** Sequence number (per process). */
+  seq: number | bigint;
+  /** When the call finished. */
+  time: string;
+  /** Session id. */
+  sessionId: string;
+  /** Client name. */
+  client: string;
+  /** MCP tool (or `batch-script`). */
+  tool: string;
+  /** Command id (`batch` for batches). */
+  commandId: string;
+  /** Parameters, with inline media replaced by a hash. */
+  params: unknown;
+  /** `ok`, `needs_confirmation` or `error`. */
+  status: string;
+  /** Error code. */
+  errorCode?: string | null;
+  /** The error's `details.reason`, or that of the step error a `batch.stepFailed` wraps (`"cancelled"`: its caller cancelled the request; C34-R4-01). */
+  errorReason?: string | null;
+  /** Undo step. */
+  undoStepId?: string | null;
+  /** Changed objects. */
+  changedCount: number | bigint;
+  /** The call was a dry run (it changed nothing; a replay must not turn it into an edit; C14-R1-15). */
+  dryRun?: boolean;
+  /** The answer came from the `requestId` cache: a retry of an earlier call, which executed nothing (C14-R2-03). */
+  cachedRetry?: boolean;
+  /** A batch: the indexes of the steps it committed (all or none for an atomic batch; the successful ones of a sequential batch, which commits step by step; C14-R2-02). */
+  committedSteps?: (number | bigint)[] | null;
+  /** Document revision after the call. */
+  documentRev?: number | bigint | null;
+  /** Duration. */
+  durationMs: number | bigint;
+})[];
 
 /** `{enabled}`. */
 export interface agent_activity_persist_set_params {

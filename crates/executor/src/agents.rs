@@ -251,9 +251,12 @@ pub(crate) struct Pending {
     pub binding: Option<Value>,
 }
 
-/// One activity-log entry (11 §11).
-#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
+/// One activity-log entry (11 §11). Its schema is the declared result item of `agent.activity.list` (C34-R5-01):
+/// optional fields are omitted when absent, and entries written before a field existed still read.
+// Inlined, so a consumer finds every field at the result's `items.properties`.
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize, schemars::JsonSchema)]
 #[serde(rename_all = "camelCase")]
+#[schemars(inline)]
 pub struct ActivityEntry {
     /// Sequence number (per process).
     pub seq: u64,
