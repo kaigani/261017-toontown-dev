@@ -36,7 +36,8 @@ The orchestrator merges and tags; the builder does not.
 1. **Every M3 checkpoint passes.** C3.1-C3.3 are closed (round 4); C3.4 closes in its review rounds.
 2. **No open P0/P1/P2.** Every finding of C3.1-C3.3 is closed. All original proving tests, every round's variants
    and the closure evidence are retained (`reviews/evidence/M3-*`).
-3. **Green Windows and macOS CI at the candidate**, all 28 jobs. These cover:
+3. **Green Windows and macOS CI at the candidate**, all 30 jobs (28 until C3.4 round 5 added `desktop
+   diagnostics`). These cover:
    - debug `check` (fmt per package, both clippy invocations, workspace tests, reviewer Python suites, ownership,
      front end, generator and schema freshness, examples);
    - release history oracles, properties, measurements, E2, E4 and E1;
@@ -144,7 +145,8 @@ Placements outside debug `check`:
 - The trybuild suites run in `history oracles release`.
 - For `check`'s budget (C3.4 round 4), three builder binaries leave debug `check`: `c32_round3` and
   `c12_kernel_state` run in debug in `check properties`, and `cancel_phases` runs in release in `headless release`.
-  The C0.4 step "Desktop host with the M0 diagnostics feature" runs in `bundle`.
+  The C0.4 step "Desktop host with the M0 diagnostics feature" runs in its own job, `desktop diagnostics` (C3.4
+  round 5, after it overran `bundle`'s 30 minutes on Windows).
 - `check` skips by exact name only what those jobs run, plus `c33_r1_crash::killed_sequence_leaves_no_staged_files`
   (premise closed by ruling C33-R1-08; body unchanged).
 
@@ -169,7 +171,8 @@ changes only this note. The C3.4 closure row and the candidate run are added at 
 | `e2 release` | 30 | 7.4 / 5.9 |
 | `e4 release`, `e4 cross-OS` | 30, 10 | 5.5 / 5.8; 0.2 |
 | `c33 render release` (goldens, range, bitmap, render gate, reviewer corpora, E1, request-cancellation loops and stress from C3.4 rounds 3 and 4), `c33 cross-OS` | 30, 10 | 26.4 / 20.6; 0.1 |
-| `bundle` (with the C0.4 desktop step with M0 diagnostics from C3.4 round 4) | 30 | 23.8 / 27.4 |
+| `bundle` (carried the C0.4 desktop step with M0 diagnostics in this run; it moved to its own job in C3.4 round 5) | 30 | 23.8 / 27.4 |
+| `desktop diagnostics` (C0.4 desktop host with M0 diagnostics; new in C3.4 round 5) | 40 | not in this run; first times in the C3.4 round-5 closing message |
 | `raster determinism` (Windows, macOS, Linux) | 20 | 2.6 / 2.2 / 1.5 |
 | `headless without a display` (Linux) | 15 | 3.9 |
 

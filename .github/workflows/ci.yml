@@ -726,6 +726,47 @@ jobs:
           [ "$(list e1-Windows | wc -l)" -eq 36 ] || status=1
           exit $status
 
+  # C0.4 gating: the desktop host with the M0 diagnostics feature passes clippy and its tests. Moved out of `check` for
+  # its budget in M3 C3.4 round 4; a job of its own (CI rule: add jobs, not minutes) after it overran `bundle`'s
+  # 30 minutes on Windows (run 43308576107).
+  desktop-diagnostics:
+    name: desktop diagnostics (${{ matrix.os }})
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [windows-latest, macos-latest]
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@v7
+
+      - name: Rust toolchain (pinned in rust-toolchain.toml)
+        run: |
+          tc=$(sed -n 's/^channel = "\(.*\)"/\1/p' rust-toolchain.toml)
+          rustup toolchain install "$tc" --profile minimal --component clippy
+          rustup override set "$tc"
+          rustc --version
+
+      - uses: Swatinem/rust-cache@v2
+        with:
+          key: desktop-diagnostics
+
+      - uses: pnpm/action-setup@v6
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 22
+          cache: pnpm
+
+      - run: pnpm install --frozen-lockfile
+
+      - name: Front end — default build (frontendDist is embedded by the Tauri host)
+        run: pnpm --dir desktop build
+
+      - name: Desktop host with the M0 diagnostics feature (C0.4 gating) — clippy and tests
+        run: |
+          cargo clippy -p tt-desktop --all-targets --locked --features m0-diagnostics -- -D warnings
+          cargo test -p tt-desktop --locked --features m0-diagnostics
+
   # Unsigned desktop bundles + automated IPC round-trip benchmark in the real webview.
   bundle:
     name: bundle (${{ matrix.os }})
@@ -764,14 +805,6 @@ jobs:
       # the diagnostics build (tauri.diagnostics.conf.json) then runs the measurements and is the manual-test artifact.
       - name: Tauri build, default (unsigned; no M0 diagnostics)
         run: pnpm --dir desktop tauri build --bundles ${{ matrix.bundles }} -- --locked
-
-      # C0.4 gating, moved here from `check` for its budget in M3 C3.4 round 4: the desktop host with the M0 diagnostics
-      # feature passes clippy and its tests, after the default build above produced the front end it embeds.
-      - name: Desktop host with the M0 diagnostics feature (C0.4 gating) — clippy and tests
-        run: |
-          rustup component add clippy
-          cargo clippy -p tt-desktop --all-targets --locked --features m0-diagnostics -- -D warnings
-          cargo test -p tt-desktop --locked --features m0-diagnostics
 
       - name: The default build carries no test-only asset (ADR-0003 rule 7)
         run: |
