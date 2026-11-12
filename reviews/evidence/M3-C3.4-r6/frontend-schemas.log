@@ -1,0 +1,23 @@
+   Compiling tt-model v0.0.1 (C:\Users\kaiga\work\review\m3-c34-r6\crates\model)
+   Compiling tt-anim v0.0.1 (C:\Users\kaiga\work\review\m3-c34-r6\crates\anim)
+   Compiling tt-colour v0.0.1 (C:\Users\kaiga\work\review\m3-c34-r6\crates\colour)
+   Compiling tt-vector v0.0.1 (C:\Users\kaiga\work\review\m3-c34-r6\crates\vector)
+   Compiling tt-persist v0.0.1 (C:\Users\kaiga\work\review\m3-c34-r6\crates\persist)
+   Compiling tt-fx v0.0.1 (C:\Users\kaiga\work\review\m3-c34-r6\crates\fx)
+   Compiling tt-audio v0.0.1 (C:\Users\kaiga\work\review\m3-c34-r6\crates\audio)
+   Compiling tt-registry v0.0.1 (C:\Users\kaiga\work\review\m3-c34-r6\crates\registry)
+   Compiling tt-render v0.0.1 (C:\Users\kaiga\work\review\m3-c34-r6\crates\render)
+   Compiling tt-io v0.0.1 (C:\Users\kaiga\work\review\m3-c34-r6\crates\io)
+   Compiling tt-executor v0.0.1 (C:\Users\kaiga\work\review\m3-c34-r6\crates\executor)
+   Compiling tt-lipsync v0.0.1 (C:\Users\kaiga\work\review\m3-c34-r6\crates\lipsync)
+   Compiling tt-engine v0.0.1 (C:\Users\kaiga\work\review\m3-c34-r6\crates\engine)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 1m 05s
+     Running tests\frontend_schemas.rs (target\debug\deps\frontend_schemas-6f0d2ea38b2ac1af.exe)
+
+running 3 tests
+test wire_module_is_current ... ok
+test model_module_is_current ... ok
+test commands_module_is_current ... ok
+
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.06s
+
