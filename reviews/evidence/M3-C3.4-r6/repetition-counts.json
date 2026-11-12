@@ -1,0 +1,17 @@
+{
+  "debug": {
+    "passes": 30,
+    "failures": 0,
+    "runs": 30,
+    "min_seconds": 5.986,
+    "max_seconds": 15.879
+  },
+  "release": {
+    "passes": 30,
+    "failures": 0,
+    "runs": 30,
+    "min_seconds": 5.953,
+    "max_seconds": 129.643
+  },
+  "load": "cargo -j 4; --test-threads=4; three additional CPU-bound processes during all repetitions"
+}

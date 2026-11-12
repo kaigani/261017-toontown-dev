@@ -1,0 +1,19 @@
+   Compiling tt-model v0.0.1 (C:\Users\kaiga\work\review\m3-c34-r6\crates\model)
+   Compiling tt-registry-macros v0.0.1 (C:\Users\kaiga\work\review\m3-c34-r6\crates\registry-macros)
+   Compiling tt-anim v0.0.1 (C:\Users\kaiga\work\review\m3-c34-r6\crates\anim)
+   Compiling tt-colour v0.0.1 (C:\Users\kaiga\work\review\m3-c34-r6\crates\colour)
+   Compiling tt-vector v0.0.1 (C:\Users\kaiga\work\review\m3-c34-r6\crates\vector)
+   Compiling tt-persist v0.0.1 (C:\Users\kaiga\work\review\m3-c34-r6\crates\persist)
+   Compiling tt-fx v0.0.1 (C:\Users\kaiga\work\review\m3-c34-r6\crates\fx)
+   Compiling tt-registry v0.0.1 (C:\Users\kaiga\work\review\m3-c34-r6\crates\registry)
+   Compiling tt-render v0.0.1 (C:\Users\kaiga\work\review\m3-c34-r6\crates\render)
+   Compiling tt-io v0.0.1 (C:\Users\kaiga\work\review\m3-c34-r6\crates\io)
+   Compiling tt-executor v0.0.1 (C:\Users\kaiga\work\review\m3-c34-r6\crates\executor)
+    Finished `release` profile [optimized + debuginfo] target(s) in 2m 03s
+     Running tests\c34_r5_deadlines.rs (target\release\deps\c34_r5_deadlines-1ee3c6da28f09711.exe)
+
+running 1 test
+test queued_job_wait_step_uses_enqueue_deadline ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 2 filtered out; finished in 5.73s
+
