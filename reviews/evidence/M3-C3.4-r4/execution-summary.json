@@ -1,0 +1,140 @@
+{
+  "allows": {
+    "exit": 0,
+    "totals": {
+      "passed": 0,
+      "failed": 0,
+      "ignored": 0,
+      "measured": 0,
+      "filtered": 0
+    },
+    "failure_lines": [],
+    "test_summaries": 0
+  },
+  "contract-r2": {
+    "exit": 0,
+    "totals": {
+      "passed": 0,
+      "failed": 0,
+      "ignored": 0,
+      "measured": 0,
+      "filtered": 0
+    },
+    "failure_lines": [],
+    "test_summaries": 0
+  },
+  "contract-r3": {
+    "exit": 0,
+    "totals": {
+      "passed": 0,
+      "failed": 0,
+      "ignored": 0,
+      "measured": 0,
+      "filtered": 0
+    },
+    "failure_lines": [],
+    "test_summaries": 0
+  },
+  "executor": {
+    "exit": 101,
+    "totals": {
+      "passed": 957,
+      "failed": 2,
+      "ignored": 9,
+      "measured": 0,
+      "filtered": 7
+    },
+    "failure_lines": [
+      "test killed_sequence_leaves_no_staged_files ... FAILED",
+      "error: test failed, to rerun pass `-p tt-executor --test c33_r1_crash`",
+      "test consistently_slow_answers_on_each_probe_call_are_bounded_and_latched ... FAILED",
+      "error: test failed, to rerun pass `-p tt-executor --test c34_r4_closure`",
+      "error: 2 targets failed:"
+    ],
+    "test_summaries": 189
+  },
+  "generator": {
+    "exit": 0,
+    "totals": {
+      "passed": 0,
+      "failed": 0,
+      "ignored": 0,
+      "measured": 0,
+      "filtered": 0
+    },
+    "failure_lines": [],
+    "test_summaries": 0
+  },
+  "inventory": {
+    "exit": 0,
+    "totals": {
+      "passed": 0,
+      "failed": 0,
+      "ignored": 0,
+      "measured": 0,
+      "filtered": 0
+    },
+    "failure_lines": [],
+    "test_summaries": 0
+  },
+  "mcp": {
+    "exit": 0,
+    "totals": {
+      "passed": 90,
+      "failed": 0,
+      "ignored": 3,
+      "measured": 0,
+      "filtered": 0
+    },
+    "failure_lines": [],
+    "test_summaries": 43
+  },
+  "panic-0": {
+    "exit": 0,
+    "totals": {
+      "passed": 1,
+      "failed": 0,
+      "ignored": 0,
+      "measured": 0,
+      "filtered": 3
+    },
+    "failure_lines": [],
+    "test_summaries": 1
+  },
+  "panic-1": {
+    "exit": 0,
+    "totals": {
+      "passed": 1,
+      "failed": 0,
+      "ignored": 0,
+      "measured": 0,
+      "filtered": 3
+    },
+    "failure_lines": [],
+    "test_summaries": 1
+  },
+  "reviewer-release": {
+    "exit": 0,
+    "totals": {
+      "passed": 25,
+      "failed": 0,
+      "ignored": 0,
+      "measured": 0,
+      "filtered": 0
+    },
+    "failure_lines": [],
+    "test_summaries": 6
+  },
+  "stress-release": {
+    "exit": 0,
+    "totals": {
+      "passed": 1,
+      "failed": 0,
+      "ignored": 0,
+      "measured": 0,
+      "filtered": 0
+    },
+    "failure_lines": [],
+    "test_summaries": 1
+  }
+}
