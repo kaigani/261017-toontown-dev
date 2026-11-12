@@ -769,6 +769,7 @@ jobs:
       # feature passes clippy and its tests, after the default build above produced the front end it embeds.
       - name: Desktop host with the M0 diagnostics feature (C0.4 gating) — clippy and tests
         run: |
+          rustup component add clippy
           cargo clippy -p tt-desktop --all-targets --locked --features m0-diagnostics -- -D warnings
           cargo test -p tt-desktop --locked --features m0-diagnostics
 
