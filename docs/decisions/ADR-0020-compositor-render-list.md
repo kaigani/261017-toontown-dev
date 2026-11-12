@@ -58,8 +58,10 @@ thread); ADR-0019 fixes the evaluation order of transforms.
    - A direct call's wait is on the caller's request, never the document thread, and is bounded by the call's
      watchdog budget.
    - **Exception (C34-R2-03): a sequential batch's waited job step and its `job.wait` step wait on the document
-     thread.** They are bounded by the batch's remaining watchdog budget minus its margin, and they end on the
-     batch's request cancellation. Measured in C3.4 round 2: a concurrent read waited 740 ms of a 1000 ms budget while
+     thread.** They are bounded by the batch's remaining watchdog budget minus its margin (a tenth of the budget),
+     measured from when the caller enqueued the request, which is when its deadline starts. Queueing therefore does not
+     consume the margin left for the rest of the batch and its reply (C3.4 round 4). They end on the batch's request
+     cancellation. Measured in C3.4 round 2: a concurrent read waited 740 ms of a 1000 ms budget while
      an uncancelled batched waited step ran, and about 33 ms after the batch's cancellation.
    - Off-thread batch continuations are not planned; M11 C11.1 re-measures this bound with the attached UI.
    **Request cancellation** (M3 C3.4 rounds 1 and 2: O-1, rulings C34-R2-01, C34-R2-02, C34-R2-04; code SI-111). A

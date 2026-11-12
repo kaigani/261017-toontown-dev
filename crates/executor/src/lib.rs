@@ -124,7 +124,8 @@ enum Request {
     Run(Box<dyn FnOnce(&mut run::Core) + Send>),
     /// A caller's request with its cancellation token, allocated before enqueueing (C23-R2-01), and the link to a caller
     /// that can cancel it (the worker asks it directly at its boundaries; C34-R2-01).
-    Tagged(u64, Option<CallerLink>, Box<Request>),
+    /// The `Instant` is when the request was enqueued (its caller's deadline is that plus the budget).
+    Tagged(u64, Option<CallerLink>, std::time::Instant, Box<Request>),
     /// Background maintenance: autosave, heartbeats, external-change detection.
     Tick,
     /// Maintenance now (forcing autosave or not), answered after its events are delivered.
@@ -409,8 +410,9 @@ impl ExecutorHandle {
         let link = linked.then_some(CallerLink { tx: asks, ask: matches!(link, Link::Direct) });
         // The token travels with the request: a timeout cancels exactly this request, queued or running (C23-R2-01).
         let token = self.cancel.token();
-        self.tx.send(Request::Tagged(token, link, Box::new(make(reply)))).map_err(|_| stopped())?;
-        let deadline = std::time::Instant::now() + self.config.budget;
+        let queued = std::time::Instant::now();
+        self.tx.send(Request::Tagged(token, link, queued, Box::new(make(reply)))).map_err(|_| stopped())?;
+        let deadline = queued + self.config.budget;
         let mut marked = false;
         // While the worker holds the link, the caller waits on it (questions, a discard notice, or its release right
         // after the reply); otherwise on the reply itself.
@@ -823,9 +825,9 @@ fn document_thread(
     let flush = |core: &mut run::Core| broadcast(subscribers, &core.take_events());
     tt_vector::work::set_cancel_state(Some(cancel.clone()));
     while let Ok(req) = rx.recv() {
-        let (token, link, req) = match req {
-            Request::Tagged(t, link, r) => (t, link, *r),
-            r => (0, None, r),
+        let (token, link, queued, req) = match req {
+            Request::Tagged(t, link, at, r) => (t, link, Some(at), *r),
+            r => (0, None, None, r),
         };
         // A request whose caller already timed out never begins (C23-R2-01), nor one whose caller says at dequeue that
         // it cancelled (C34-R2-01); that caller is told it was discarded, not that the worker stopped (C34-R2-04).
@@ -847,6 +849,7 @@ fn document_thread(
             continue;
         }
         cancel.current.store(token, std::sync::atomic::Ordering::Release);
+        core.set_call_start(queued);
         let shutdown = matches!(req, Request::Shutdown);
         match req {
             Request::Invoke(inv, reply) => {
@@ -898,6 +901,7 @@ fn document_thread(
         // The link is released only after the reply was sent, so a caller woken by its release finds the reply.
         caller::set(None, bound);
         drop(link);
+        core.set_call_start(None);
         cancel.current.store(0, std::sync::atomic::Ordering::Release);
         if token != 0 {
             cancel.forget(token);

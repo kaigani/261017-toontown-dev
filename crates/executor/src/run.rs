@@ -328,6 +328,9 @@ pub(crate) struct Core {
     budget: Duration,
     /// The last `invoke` was answered from the `requestId` cache (read and cleared by `take_served_from_cache`).
     served_from_cache: bool,
+    /// When the running caller's request was enqueued: its caller's watchdog deadline is this plus `budget`, so waits on
+    /// the document thread are bounded from here, not from when the request began.
+    call_start: Option<std::time::Instant>,
 }
 
 fn unknown(id: &str, registry: &Registry) -> CommandError {
@@ -972,7 +975,13 @@ impl Core {
             simulating: false,
             budget,
             served_from_cache: false,
+            call_start: None,
         }
+    }
+
+    /// The enqueue instant of the caller's request about to run (none for internal work).
+    pub(crate) fn set_call_start(&mut self, at: Option<std::time::Instant>) {
+        self.call_start = at;
     }
 
     /// Whether the last `invoke` was answered from the `requestId` cache (C14-R2-03); clears the flag.
@@ -1466,7 +1475,9 @@ impl Core {
             }
             return env;
         }
-        let started = std::time::Instant::now();
+        // The batch's waits are bounded by its caller's deadline: measured from when the request was enqueued, so the
+        // margin is left for the rest of the batch and the reply, not spent on queueing.
+        let started = self.call_start.unwrap_or_else(std::time::Instant::now);
         let mut steps: Vec<Envelope> = Vec::new();
         let mut names: BTreeMap<String, usize> = BTreeMap::new();
         let mut failed: Option<(usize, CommandError)> = None;

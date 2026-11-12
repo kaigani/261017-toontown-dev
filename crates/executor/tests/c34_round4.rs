@@ -210,3 +210,49 @@ fn answers_just_inside_the_bound_hold_the_thread_at_most_the_budget_plus_one_bou
     );
     assert!(unrelated < bound, "an unrelated caller is served at once afterwards: {unrelated:?}");
 }
+
+#[test]
+fn a_queued_batch_wait_is_bounded_from_its_callers_enqueue_not_from_its_start() {
+    let _t = turn();
+    let _reset = Reset;
+    let budget = Duration::from_millis(1000);
+    let h = fixture_with(ExecutorConfig { budget });
+    let base = std::env::temp_dir().join(format!("c34-round4-queued-wait-{}", std::process::id()));
+    let waited = |dir: &std::path::Path| -> BatchRequest {
+        serde_json::from_value(json!({
+            "label": "waited", "atomic": false,
+            "steps": [{ "id": "render.range.run", "params": { "from": 1, "to": 10000, "width": 32, "directory": dir.to_string_lossy(), "createDirs": true, "wait": true } }]
+        }))
+        .unwrap()
+    };
+    let (first_dir, second_dir) = (base.join("first"), base.join("second"));
+    work::set_spin_micros(20_000);
+    let (first, second, queued_for) = std::thread::scope(|s| {
+        // The first batch holds the document thread for most of its budget, waiting on its job.
+        let first = s.spawn(|| h.batch(waited(&first_dir), Origin::User));
+        let start = Instant::now();
+        while std::fs::read_dir(&first_dir).map_or(true, |mut d| d.next().is_none()) {
+            assert!(start.elapsed() < Duration::from_secs(30));
+            std::thread::sleep(Duration::from_millis(2));
+        }
+        // The second is enqueued behind it, so it starts several hundred milliseconds into its own budget.
+        let enqueued = Instant::now();
+        let second = h.batch(waited(&second_dir), Origin::User);
+        let took = enqueued.elapsed();
+        (first.join().unwrap(), second, took)
+    });
+    work::set_spin_micros(0);
+    let mut jobs = Vec::new();
+    for env in [&first, &second] {
+        let steps = env.steps.as_ref().unwrap_or_else(|| panic!("the batch answered with its steps: {:?}", env.error));
+        let e = steps[0].error.as_ref().expect("its waited step timed out");
+        assert_eq!(e.code, "job.waitTimeout", "{e:?}");
+        jobs.push(e.details["jobId"].as_str().unwrap().to_owned());
+    }
+    assert!(queued_for < budget, "the queued batch answered within its caller's budget: {queued_for:?}");
+    for job in jobs {
+        ok(&h, "job.cancel", json!({ "jobId": job }));
+        h.jobs().wait(&job, Duration::from_secs(60)).unwrap();
+    }
+    let _ = std::fs::remove_dir_all(&base);
+}
