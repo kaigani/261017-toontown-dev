@@ -1,0 +1,32 @@
+{
+  "windows-latest": {
+    "old_unique": 1594,
+    "new_unique": 1610,
+    "missing": [
+      "a_cancellation_between_two_steps_refuses_the_second_every_time",
+      "fast_commit_cancel_retry_matrix_preserves_one_change_and_one_answer",
+      "one_hundred_wait_cancellations_settle_jobs_and_leave_handle_usable"
+    ],
+    "covered_in_release": [
+      "a_cancellation_between_two_steps_refuses_the_second_every_time",
+      "fast_commit_cancel_retry_matrix_preserves_one_change_and_one_answer",
+      "one_hundred_wait_cancellations_settle_jobs_and_leave_handle_usable"
+    ],
+    "unaccounted": []
+  },
+  "macos-latest": {
+    "old_unique": 1589,
+    "new_unique": 1605,
+    "missing": [
+      "a_cancellation_between_two_steps_refuses_the_second_every_time",
+      "fast_commit_cancel_retry_matrix_preserves_one_change_and_one_answer",
+      "one_hundred_wait_cancellations_settle_jobs_and_leave_handle_usable"
+    ],
+    "covered_in_release": [
+      "a_cancellation_between_two_steps_refuses_the_second_every_time",
+      "fast_commit_cancel_retry_matrix_preserves_one_change_and_one_answer",
+      "one_hundred_wait_cancellations_settle_jobs_and_leave_handle_usable"
+    ],
+    "unaccounted": []
+  }
+}
