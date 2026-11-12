@@ -110,7 +110,11 @@ fn consistently_slow_answers_on_each_probe_call_are_bounded_and_latched() {
         let env = h
             .invoke_served_until(edit(), &|| {
                 if n.fetch_add(1, Ordering::SeqCst) > 0 {
-                    std::thread::sleep(Duration::from_millis(delay));
+                    let at = Instant::now();
+                    let hold = Duration::from_millis(delay);
+                    while at.elapsed() < hold {
+                        std::thread::sleep(hold.saturating_sub(at.elapsed()));
+                    }
                 }
                 false
             })
