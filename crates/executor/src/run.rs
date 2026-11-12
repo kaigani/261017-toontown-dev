@@ -573,8 +573,16 @@ fn needs_confirmation(session: &mut Session, e: CommandError, rev: Option<u64>) 
 /// A request whose caller timed out is not accepted (C23-R2-01, C23-R3-01): checked at the acceptance boundary, before
 /// any session state, document transaction or effect is kept, and again by `commit` before it installs anything.
 fn cancelled_check(what: &str) -> Result<(), CommandError> {
+    cancelled_check_for(what, false)
+}
+
+/// [`cancelled_check`] for a command that may be a query: a query changes nothing, so its caller's cancellation does
+/// not refuse it at a boundary (it stops at its next work-account check); a timed-out caller's still does
+/// (ADR-0020 decision 8, rule 1).
+fn cancelled_check_for(what: &str, query: bool) -> Result<(), CommandError> {
     match crate::cancellation() {
         None => Ok(()),
+        Some(tt_vector::work::Cause::Cancelled) if query => Ok(()),
         // The caller cancelled its request (SI-111).
         Some(tt_vector::work::Cause::Cancelled) => Err(CommandError::with_details(
             tt_registry::codes::COMMAND_TIMEOUT,
@@ -1122,6 +1130,13 @@ impl Core {
     }
 
     /// One invocation, with `requestId` idempotency (C12-R1-06/22).
+    /// Whether `command` is a query (registry kind): it changes nothing.
+    /// A standalone probed query (a notice-only link): its caller's cancellation does not refuse it at a boundary. A
+    /// query step of a cancelled batch is refused like any later step.
+    fn is_query(&self, command: &str) -> bool {
+        crate::notice_only_link() && self.registry.get(command).is_some_and(|e| e.spec.kind == tt_registry::Kind::Query)
+    }
+
     pub(crate) fn invoke(&mut self, inv: &Invocation) -> Envelope {
         let mut env = self.invoke_inner(inv);
         crate::label_cancellation(&mut env);
@@ -1132,7 +1147,7 @@ impl Core {
         self.served_from_cache = false;
         // Before the handler runs (a job command would start its job) and before its `requestId` is looked up or
         // remembered: a cancelled request is not run (ADR-0020 decision 8, C34-R2-01).
-        if let Err(e) = cancelled_check(&inv.command) {
+        if let Err(e) = cancelled_check_for(&inv.command, self.is_query(&inv.command)) {
             return Envelope::error(e, self.rev());
         }
         let Some(id) = inv.options.request_id.clone().filter(|_| !self.simulating) else { return self.run(inv) };
@@ -1797,7 +1812,7 @@ impl Core {
             Effect::Event(ev) if ev.name == "anim.changed" => Some(ev.payload.clone()),
             _ => None,
         });
-        let committed = cancelled_check(command)
+        let committed = cancelled_check_for(command, self.is_query(command))
             .and_then(|()| frozen_guard(session, &txns))
             .and_then(|()| self.write_pending(session, txns.last().map(|t| &t.after), &mut effects))
             .and_then(|()| commit(session, txns, origin, command, anim.as_ref()));

@@ -68,8 +68,9 @@ thread); ADR-0019 fixes the evaluation order of transforms.
    1. *Acceptance.* A request that may change something (an action, a job, a batch) and whose cancellation is
       observable when the call is made never begins: the probe is checked before enqueue. There is no document
       change, no undo step, no event and no job, and nothing is remembered under its `requestId`, so a retry executes
-      once. A query changes nothing: it is not refused before it begins, and a cancellation stops it at its next
-      work-account check.
+      once. A query changes nothing: a standalone probed query is not refused for its caller's cancellation before it
+      begins, at dequeue, at its start or at acceptance; the cancellation stops it at its next work-account check. A
+      query step of a cancelled batch is refused like any later step, and a timed-out caller's query is dropped.
    2. *Boundaries.* After acceptance, the cancellation is arbitrated at the executor's boundaries: dequeue, the start
       of every invocation and batch step (before its handler runs, so a job step whose request is cancelled never
       starts its job), every acceptance check, immediately before commit, and every work-account check. At dequeue,

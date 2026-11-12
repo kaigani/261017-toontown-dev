@@ -197,3 +197,61 @@ fn a_watchdog_timeout_on_the_work_account_path_is_not_a_cancellation() {
     assert_eq!(state.cause(a), None);
     assert!(run(&h, "doc.state.get", json!({})).is_ok());
 }
+
+#[test]
+fn a_probed_query_cancelled_while_queued_still_runs_and_a_cancelled_batch_refuses_its_query_step() {
+    let _t = turn();
+    let _reset = Reset;
+    let h = fixture_with(ExecutorConfig { budget: Duration::from_millis(1500) });
+    let dir = std::env::temp_dir().join(format!("c34-round3-busy-{}", std::process::id()));
+    work::set_spin_micros(20_000);
+    let busy: BatchRequest = serde_json::from_value(json!({
+        "label": "busy", "atomic": false,
+        "steps": [{ "id": "render.range.run", "params": { "from": 1, "to": 10000, "width": 32, "directory": dir.to_string_lossy(), "createDirs": true, "wait": true } }]
+    }))
+    .unwrap();
+    let (query, cached) = std::thread::scope(|s| {
+        let blocker = s.spawn(|| h.batch(busy, Origin::User));
+        let start = Instant::now();
+        while std::fs::read_dir(&dir).map_or(true, |mut d| d.next().is_none()) {
+            assert!(start.elapsed() < Duration::from_secs(30));
+            std::thread::sleep(Duration::from_millis(2));
+        }
+        // Cancelled from the start, so its caller marks it while it waits behind the busy batch.
+        let mut inv = Invocation::user("doc.state.get", json!({}));
+        inv.options.request_id = Some("queued-query".to_owned());
+        let (query, _) = h.invoke_served_until(inv.clone(), &|| true);
+        let job = blocker.join().unwrap().steps.unwrap()[0].error.as_ref().unwrap().details["jobId"]
+            .as_str()
+            .unwrap()
+            .to_owned();
+        ok(&h, "job.cancel", json!({ "jobId": job }));
+        work::set_spin_micros(0);
+        h.jobs().wait(&job, Duration::from_secs(60)).unwrap();
+        let (_, cached) = h.invoke_served_until(inv, &|| false);
+        (query, cached)
+    });
+    assert!(query.is_ok(), "a query is not refused for its caller's cancellation: {:?}", query.error);
+    assert!(cached, "and its answer is remembered under its requestId");
+    // The same query as a step of a cancelled batch is refused, like every later step.
+    let req: BatchRequest = serde_json::from_value(json!({
+        "label": "q", "atomic": false, "stopOnError": false,
+        "steps": [{ "id": "element.create", "params": { "type": "peg", "name": "Q", "sceneId": "scene:#1" } }, { "id": "doc.state.get", "params": {} }]
+    }))
+    .unwrap();
+    // The probe flips on the document thread right after step 1 commits (the `Committed` boundary hook).
+    let flipped = std::sync::Arc::new(std::sync::atomic::AtomicBool::new(false));
+    let f = flipped.clone();
+    tt_persist::lock::hooks::set(Some(std::sync::Arc::new(
+        move |at: tt_persist::lock::Boundary, _: &std::path::Path| {
+            if at == tt_persist::lock::Boundary::Committed {
+                f.store(true, Ordering::SeqCst);
+            }
+        },
+    )));
+    let env = h.batch_until(req, Origin::User, &|| flipped.load(Ordering::SeqCst));
+    tt_persist::lock::hooks::set(None);
+    let steps = env.steps.unwrap();
+    assert!(steps[0].is_ok(), "{:?}", steps[0]);
+    assert_eq!(steps[1].error.as_ref().map(|e| e.code.as_str()), Some("command.timeout"), "{:?}", steps[1]);
+}

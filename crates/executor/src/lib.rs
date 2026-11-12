@@ -829,7 +829,15 @@ fn document_thread(
         // A request whose caller already timed out never begins (C23-R2-01), nor one whose caller says at dequeue that
         // it cancelled (C34-R2-01); that caller is told it was discarded, not that the worker stopped (C34-R2-04).
         caller::set(link.clone(), bound);
-        if token != 0 && (cancel.is_cancelled(token) || caller::cancelled()) {
+        // A probed query (a notice-only link) is not discarded for its caller's cancellation: it changes nothing and
+        // stops at its next work-account check; a timed-out caller's request is discarded whatever it is.
+        let query = link.as_ref().is_some_and(|l| !l.ask);
+        let marked = match cancel.cause(token) {
+            Some(tt_vector::work::Cause::Cancelled) => !query,
+            Some(tt_vector::work::Cause::Timeout) => true,
+            None => false,
+        };
+        if token != 0 && (marked || caller::cancelled()) {
             if let Some(l) = &link {
                 let _ = l.tx.send(CallerMsg::Discarded);
             }
@@ -1107,6 +1115,11 @@ mod caller {
         UNRESPONSIVE.with(|u| u.set(false));
     }
 
+    /// Whether the running request carries a notice-only link (a probed standalone query).
+    pub(super) fn notice_only() -> bool {
+        LINK.with(|l| l.borrow().as_ref().is_some_and(|link| !link.ask))
+    }
+
     /// Asks the caller of the running request whether it cancelled. No link, a notice-only link or a caller that once
     /// failed to answer in time: `false` without asking. An answer within the bound: that answer. Silence: `false`
     /// (the request proceeds as not cancelled; a cancellation seen late is like a commit that got there first) and the
@@ -1136,6 +1149,11 @@ mod caller {
 /// caller, or a cancelling caller's mark), else its caller's answer when asked (ADR-0020 decision 8; C34-R3-02).
 pub(crate) fn cancellation() -> Option<tt_vector::work::Cause> {
     tt_vector::work::cancel_cause().or_else(|| caller::cancelled().then_some(tt_vector::work::Cause::Cancelled))
+}
+
+/// Whether the running request is a probed standalone query (its link carries notices only).
+pub(crate) fn notice_only_link() -> bool {
+    caller::notice_only()
 }
 
 /// Whether the request the document thread is running is cancelled ([`cancellation`]). Consulted at every
