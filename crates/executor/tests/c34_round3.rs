@@ -202,7 +202,9 @@ fn a_watchdog_timeout_on_the_work_account_path_is_not_a_cancellation() {
 fn a_probed_query_cancelled_while_queued_still_runs_and_a_cancelled_batch_refuses_its_query_step() {
     let _t = turn();
     let _reset = Reset;
-    let h = fixture_with(ExecutorConfig { budget: Duration::from_millis(1500) });
+    // 3000 ms: the busy batch's waited step leaves a tenth of the budget for the rest of the batch, which must cover a
+    // slow runner's scheduling; at 1500 ms a macOS runner once overran it (run 43164814284).
+    let h = fixture_with(ExecutorConfig { budget: Duration::from_millis(3000) });
     let dir = std::env::temp_dir().join(format!("c34-round3-busy-{}", std::process::id()));
     work::set_spin_micros(20_000);
     let busy: BatchRequest = serde_json::from_value(json!({
@@ -221,10 +223,9 @@ fn a_probed_query_cancelled_while_queued_still_runs_and_a_cancelled_batch_refuse
         let mut inv = Invocation::user("doc.state.get", json!({}));
         inv.options.request_id = Some("queued-query".to_owned());
         let (query, _) = h.invoke_served_until(inv.clone(), &|| true);
-        let job = blocker.join().unwrap().steps.unwrap()[0].error.as_ref().unwrap().details["jobId"]
-            .as_str()
-            .unwrap()
-            .to_owned();
+        let env = blocker.join().unwrap();
+        let steps = env.steps.unwrap_or_else(|| panic!("the busy batch answered no steps: {:?}", env.error));
+        let job = steps[0].error.as_ref().unwrap().details["jobId"].as_str().unwrap().to_owned();
         ok(&h, "job.cancel", json!({ "jobId": job }));
         work::set_spin_micros(0);
         h.jobs().wait(&job, Duration::from_secs(60)).unwrap();

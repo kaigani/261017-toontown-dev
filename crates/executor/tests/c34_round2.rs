@@ -85,7 +85,9 @@ fn a_cancellation_between_two_steps_refuses_the_second_every_time() {
 fn a_queued_request_discarded_after_its_cancellation_answers_an_honest_refusal() {
     let _t = turn();
     let _reset = Reset;
-    let h = fixture_with(ExecutorConfig { budget: Duration::from_millis(1500) });
+    // 3000 ms: the busy batch's waited step leaves a tenth of the budget for the rest of the batch, which must cover a
+    // slow runner's scheduling; at 1500 ms a macOS runner once overran it (run 43164814284).
+    let h = fixture_with(ExecutorConfig { budget: Duration::from_millis(3000) });
     let dir = c13_support::tmp().join("busy");
     tt_vector::work::hooks::set_spin_micros(20_000);
     let busy: BatchRequest = serde_json::from_value(json!({
@@ -110,7 +112,8 @@ fn a_queued_request_discarded_after_its_cancellation_answers_an_honest_refusal()
             )
             .0;
         let env = blocker.join().unwrap();
-        let job = env.steps.unwrap()[0].error.as_ref().unwrap().details["jobId"].as_str().unwrap().to_owned();
+        let steps = env.steps.unwrap_or_else(|| panic!("the busy batch answered no steps: {:?}", env.error));
+        let job = steps[0].error.as_ref().unwrap().details["jobId"].as_str().unwrap().to_owned();
         ok(&h, "job.cancel", json!({ "jobId": job }));
         tt_vector::work::hooks::set_spin_micros(0);
         h.jobs().wait(&job, Duration::from_secs(60)).unwrap();
