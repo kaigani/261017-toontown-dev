@@ -134,13 +134,9 @@ jobs:
       # `c34_r2_cancellation::fast_commit_cancel_retry_matrix_preserves_one_change_and_one_answer`,
       # `c34_round2::a_cancellation_between_two_steps_refuses_the_second_every_time`. Every short deterministic acceptance,
       # error-shape, discard, death and token test stays here.
-      # M3 C3.4 round 3: this step runs without backtrace capture. The reviewer's
-      # `c34_r3_probes::panicking_probe_leaves_worker_alive` needs a probe's panic to reach the worker within the 250 ms
-      # question bound; with RUST_BACKTRACE=1 the Windows panic hook symbolises for longer, and the worker fails open as
-      # ruling C34-R3-01 requires. Panic messages keep their file and line.
+      # M3 C3.4 round 4 (O-8): `c34_r4_late_probe::two_hundred_answers_after_the_bound_must_latch_after_one_question`
+      # (reviewer, about a minute in debug) runs whole-binary in release in `c33 render release`, body unchanged.
       - name: Run cargo test --workspace --locked
-        env:
-          RUST_BACKTRACE: "0"
         run: |
           cargo test --workspace --locked -- --skip ten_thousand_history_operations_match_independent_content_oracle_and_replay \
             --skip stroke_add_matches_the_oracle \
@@ -175,7 +171,7 @@ jobs:
             --skip non_parallelogram_envelopes_map_the_layer_projectively \
             --skip snapping_onto_a_curved_contour_reaches_its_nearest_point \
             --skip integer_translations_and_compositions_preserve_all_snapped_anchor_sequences \
-            --skip side_fills_read_back_beside_collinear_overlaps             --skip independent_sequences_4096_persist_canonical_runs_and_notes             --skip exclusive_mutation_capability             --skip duplicate_ids_and_inventory_kind_drift_are_rejected             --skip missing_example_is_rejected_at_compile_time             --skip killed_sequence_leaves_no_staged_files             --skip seeded_anchor_groups_4096             --skip deep_and_broad_scene             --skip random_hierarchy_edits_4096_keep_independent_parent_and_level_model             --skip concurrent_wire_cancellation_sixty_seconds             --skip overhead_ten_thousand_small_actions_and_thousand_step_batch             --skip one_hundred_wait_cancellations_settle_jobs_and_leave_handle_usable             --skip fast_commit_cancel_retry_matrix_preserves_one_change_and_one_answer             --skip a_cancellation_between_two_steps_refuses_the_second_every_time
+            --skip side_fills_read_back_beside_collinear_overlaps             --skip independent_sequences_4096_persist_canonical_runs_and_notes             --skip exclusive_mutation_capability             --skip duplicate_ids_and_inventory_kind_drift_are_rejected             --skip missing_example_is_rejected_at_compile_time             --skip killed_sequence_leaves_no_staged_files             --skip seeded_anchor_groups_4096             --skip deep_and_broad_scene             --skip random_hierarchy_edits_4096_keep_independent_parent_and_level_model             --skip concurrent_wire_cancellation_sixty_seconds             --skip overhead_ten_thousand_small_actions_and_thousand_step_batch             --skip one_hundred_wait_cancellations_settle_jobs_and_leave_handle_usable             --skip fast_commit_cancel_retry_matrix_preserves_one_change_and_one_answer             --skip a_cancellation_between_two_steps_refuses_the_second_every_time             --skip two_hundred_answers_after_the_bound_must_latch_after_one_question
 
       - name: Desktop host with the M0 diagnostics feature (C0.4 gating) — clippy and tests
         run: |
@@ -637,10 +633,11 @@ jobs:
       - name: Reviewer render corpora (release)
         run: cargo test --release --locked -p tt-executor --test c33_r2_depth --test c33_r2_stress
 
-      # M3 C3.4 round 3 budget ruling (O-4): the request-cancellation stress and measurement loops, skipped in `check`.
+      # M3 C3.4 round 3 budget ruling (O-4) and round 4 (O-8): the request-cancellation stress and measurement loops,
+      # skipped in `check`.
       - name: Request-cancellation stress and measurement loops (release)
         run: |
-          cargo test --release --locked -p tt-executor --test c34_r3_probes --test c34_r2_measurements --test c34_r2_cancellation --test c34_round2
+          cargo test --release --locked -p tt-executor --test c34_r3_probes --test c34_r2_measurements --test c34_r2_cancellation --test c34_round2 --test c34_r4_late_probe
           cargo test --release --locked -p tt-mcp --test c34_r3_stress
 
       - name: Render gate (official Python SDK, release headless binary)

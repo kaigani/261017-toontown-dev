@@ -1624,7 +1624,10 @@ impl Core {
                     env.dry_run = preview;
                     steps.push(env);
                 }
-                Err(e) => {
+                Err(mut e) => {
+                    // The cause is carried before the error is copied into the step and the `batch.stepFailed`
+                    // wrapper (C34-R4-01).
+                    crate::label_cancelled_error(&mut e);
                     let mut env = Envelope::error(e.clone(), rev_before);
                     env.warnings = cx.take_warnings();
                     steps.push(env);

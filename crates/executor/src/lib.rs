@@ -700,6 +700,7 @@ impl ExecutorHandle {
             }
             .to_owned(),
             error_code: env.error.as_ref().map(|e| e.code.clone()),
+            error_reason: env.error.as_ref().and_then(|e| error_reason(&e.details)),
             undo_step_id: env.undo.as_ref().map(|u| u.step_id.clone()),
             changed_count: env.changes.len(),
             dry_run: env.dry_run,
@@ -1097,7 +1098,7 @@ pub fn ask_bound(budget: Duration) -> Duration {
 mod caller {
     use std::cell::{Cell, RefCell};
     use std::sync::mpsc::{self, RecvTimeoutError};
-    use std::time::Duration;
+    use std::time::{Duration, Instant};
 
     use super::{CallerLink, CallerMsg};
 
@@ -1121,21 +1122,31 @@ mod caller {
     }
 
     /// Asks the caller of the running request whether it cancelled. No link, a notice-only link or a caller that once
-    /// failed to answer in time: `false` without asking. An answer within the bound: that answer. Silence: `false`
-    /// (the request proceeds as not cancelled; a cancellation seen late is like a commit that got there first) and the
-    /// link is latched. A caller that is gone: `true` (C34-R3-01).
+    /// failed to answer in time: `false` without asking. An answer within the bound, measured with `Instant`: that
+    /// answer. Silence: `false` (the request proceeds as not cancelled; a cancellation seen late is like a commit that
+    /// got there first) and the link is latched. An answer at or after the bound is silence, whatever it says
+    /// (C34-R4-02). A caller that is gone: `true` (C34-R3-01).
     pub(super) fn cancelled() -> bool {
         let Some(link) = LINK.with(|l| l.borrow().clone()) else { return false };
         if !link.ask || UNRESPONSIVE.with(Cell::get) {
             return false;
         }
         tt_vector::work::note_ask();
+        let bound = BOUND.with(Cell::get);
+        let asked = Instant::now();
         let (tx, rx) = mpsc::channel();
         if link.tx.send(CallerMsg::Ask(tx)).is_err() {
             return true;
         }
-        match rx.recv_timeout(BOUND.with(Cell::get)) {
-            Ok(answer) => answer,
+        match rx.recv_timeout(bound) {
+            Ok(answer) if asked.elapsed() < bound => answer,
+            // An answer at or after the bound (a receive that overshot its timer) is late, and late is silence
+            // whatever it says (C34-R4-02): not cancelled at this boundary, and the link latches. A caller that did
+            // cancel has marked its token, which every later boundary sees.
+            Ok(_) => {
+                UNRESPONSIVE.with(|u| u.set(true));
+                false
+            }
             Err(RecvTimeoutError::Timeout) => {
                 UNRESPONSIVE.with(|u| u.set(true));
                 false
@@ -1162,28 +1173,69 @@ pub(crate) fn request_cancelled() -> bool {
     cancellation().is_some()
 }
 
-/// Labels a refusal of the running request whose cause is its caller's cancellation, wherever it was refused (a
-/// work-account check included): `details.reason: "cancelled"` (SI-111). A watchdog timeout is not relabelled.
+/// Labels a request's refusals for its caller's cancellation (C34-R3-02, C34-R4-01): when the running token's cause is
+/// the caller, every `command.timeout` in the envelope says `details.reason: "cancelled"` with a matching hint: the
+/// envelope's error, each step's, and every copy nested in a `details.error` (an atomic batch's or group's
+/// `batch.stepFailed`). A watchdog timeout is never relabelled.
 pub(crate) fn label_cancellation(env: &mut Envelope) {
-    if tt_vector::work::cancel_cause() != Some(tt_vector::work::Cause::Cancelled) {
-        return;
-    }
-    let label = |e: &mut CommandError| {
-        if e.code == tt_registry::codes::COMMAND_TIMEOUT {
-            if let Some(m) = e.details.as_object_mut() {
-                m.entry("reason").or_insert_with(|| Value::String("cancelled".to_owned()));
-            } else {
-                *e.details = serde_json::json!({ "reason": "cancelled" });
-            }
-        }
-    };
     if let Some(e) = env.error.as_mut() {
-        label(e);
+        label_cancelled_error(e);
     }
     for step in env.steps.iter_mut().flatten() {
         if let Some(e) = step.error.as_mut() {
-            label(e);
+            label_cancelled_error(e);
         }
+    }
+}
+
+/// The `details.reason` of an error, or of the error nested in its `details.error` (a `batch.stepFailed` whose step was
+/// refused for its caller's cancellation says `"cancelled"`; C34-R4-01).
+fn error_reason(details: &Value) -> Option<String> {
+    match details.get("reason").and_then(Value::as_str) {
+        Some(r) => Some(r.to_owned()),
+        None => details.get("error").and_then(|e| e.get("details")).and_then(error_reason),
+    }
+}
+
+/// The hint of a `command.timeout` its caller's cancellation caused.
+const CANCELLED_HINT: &str = "its caller cancelled the request: the call stopped before it changed anything";
+
+/// Labels one refusal, and the copies nested in its `details.error`, for the caller's cancellation (see
+/// [`label_cancellation`]). Called before an error is cloned or wrapped, so every copy carries the cause. A no-op unless
+/// the running token's cause is the caller.
+pub(crate) fn label_cancelled_error(e: &mut CommandError) {
+    if tt_vector::work::cancel_cause() != Some(tt_vector::work::Cause::Cancelled) {
+        return;
+    }
+    if e.code == tt_registry::codes::COMMAND_TIMEOUT
+        && e.details.get("reason").and_then(Value::as_str) != Some("cancelled")
+    {
+        if let Some(m) = e.details.as_object_mut() {
+            m.insert("reason".to_owned(), Value::String("cancelled".to_owned()));
+        } else {
+            *e.details = serde_json::json!({ "reason": "cancelled" });
+        }
+        e.hint = Some(CANCELLED_HINT.to_owned());
+    }
+    label_nested(&mut e.details);
+}
+
+/// [`label_cancelled_error`] on a serialized error nested at `details.error`, at any depth.
+fn label_nested(details: &mut Value) {
+    let Some(inner) = details.get_mut("error").and_then(Value::as_object_mut) else { return };
+    if inner.get("code").and_then(Value::as_str) == Some(tt_registry::codes::COMMAND_TIMEOUT) {
+        let d = inner.entry("details").or_insert_with(|| serde_json::json!({}));
+        if d.get("reason").and_then(Value::as_str) != Some("cancelled") {
+            if let Some(m) = d.as_object_mut() {
+                m.insert("reason".to_owned(), Value::String("cancelled".to_owned()));
+            } else {
+                *d = serde_json::json!({ "reason": "cancelled" });
+            }
+            inner.insert("hint".to_owned(), Value::String(CANCELLED_HINT.to_owned()));
+        }
+    }
+    if let Some(d) = inner.get_mut("details") {
+        label_nested(d);
     }
 }
 

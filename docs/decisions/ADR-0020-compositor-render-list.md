@@ -96,14 +96,25 @@ thread); ADR-0019 fixes the evaluation order of transforms.
       interval, not an end-to-end bound. C3.4 round 2 measured 100 direct waited-job cancellations at min 0.67 ms,
       median 3.6 ms, p95 4.8 ms, p99 20.2 ms and max 20.3 ms.
 
-   **Probes must not block** (C34-R3-01). The document thread never depends on caller code for longer than one bound:
-   each question waits at most `ASK_BOUND_MAX` (250 ms) or a quarter of the watchdog budget, whichever is smaller.
-   Silence is not cancellation. A caller that does not answer in time is taken as not cancelled at that boundary, and
-   its link is latched unresponsive, so the worker asks it nothing more for that request. One request therefore stalls
-   the document thread by at most one bound, whatever its step count. From then on its cancellation is seen only
-   through its marked token; seen late, it is like a commit that got there first (rule 3). A caller that is gone
-   (disconnected link) counts as cancelled. A caller held past its own watchdog budget (inside its probe, say) answers
-   the timeout even if the reply has arrived; a commit that happened stands.
+   **Probes must not block** (C34-R3-01, C34-R4-02). No single question holds the document thread longer than one bound:
+   each question waits at most `ASK_BOUND_MAX` (250 ms) or a quarter of the watchdog budget, whichever is smaller,
+   measured with `Instant` from when the question is sent. Silence is not cancellation. A caller that does not answer
+   in time is taken as not cancelled at that boundary, and its link is latched unresponsive, so the worker asks it
+   nothing more for that request. An answer that arrives at or after the bound (a receive that overshot its timer)
+   is late, and late is silence whatever the answer says: not cancelled at that boundary, and the link latches. A caller
+   that did cancel has marked its token, which every later boundary and work-account check sees; if the request
+   committed first, rule 3 applies. Unanswered questions therefore cost one bound each, latched after the first: a request stalls the
+   document thread through unanswered questions by at most one bound, whatever its step count. From then on its
+   cancellation is seen only through its marked token; seen late, it is like a commit that got there first (rule 3).
+   A caller that is gone (disconnected link) counts as cancelled. A caller held past its own watchdog budget (inside
+   its probe, say) answers the timeout even if the reply has arrived; a commit that happened stands.
+
+   **Cumulative bound** (O-6). Answered questions do not latch, so a probe that always answers just inside the bound
+   costs up to one bound per question. The total time one request holds the document thread through caller questions
+   is bounded by that request's own watchdog budget plus one question bound. The caller stops answering at its
+   deadline: it marks its token (timeout) and returns, dropping its end of the link. A question in flight then ends at
+   once (a gone caller) or at its bound. Every later boundary sees the marked token and asks nothing. The worker stops
+   at its next boundary or work-account check. No separate per-request question budget is needed.
 
    **Causes** (C34-R3-02). A token remembers why it was marked: by its caller's watchdog timeout, or by its caller's
    cancellation. Every refusal whose cause is the caller's cancellation carries `details.reason: "cancelled"`

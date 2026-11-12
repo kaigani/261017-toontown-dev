@@ -259,7 +259,11 @@ impl Work {
         if cancel_requested() {
             return Err(GeomError {
                 code: "command.timeout",
-                message: format!("{} was cancelled: the call overran its watchdog budget", self.what),
+                message: if cancel_cause() == Some(Cause::Cancelled) {
+                    format!("{} was cancelled: its caller cancelled the request", self.what)
+                } else {
+                    format!("{} was cancelled: the call overran its watchdog budget", self.what)
+                },
                 pointer: String::new(),
             });
         }

@@ -10,22 +10,25 @@ The orchestrator merges and tags; the builder does not.
 |---|---|---|---|
 | C3.1 | element types, exposure runs, cells, clone/duplicate, hierarchy, `element.*`, `cell.*`, `xsheet.*` JSON | round 4 scoped closure **pass** ([M3-C3.1-r4-closure.md](M3-C3.1-r4-closure.md); builder `864b70d`, review `ac47998`) | source units 467 implemented / 0 divergent / 0 missing / 227 deferred; commands and events 63 / 0 / 0 / 1 |
 | C3.2 | transforms, pivots, TCB paths, velocity, channels, easing, cameras, projection, `anim.evaluate`, E4 numeric | round 4 scoped closure **pass** ([M3-C3.2-r4-closure.md](M3-C3.2-r4-closure.md); builder `8c640d1`, review `2184ae8`) | 36 rows / 383 units: 36 rows implemented; 293 units implemented, 90 deferred with owner; 0 divergent, 0 missing |
+| C3.2 correction (C3.4 round 3) | passage frames at a tangent touch | `tcb::PASSAGE_TOUCH` (1e-12 relative): a velocity extremum equal to the arc is the passage frame, found by CI's 4096-case property in C3.4 round 3 (builder `2c7e592`); adjudicated in C3.4 round 4 against an 80-digit oracle (no at-or-above-arc maximum missed; below-arc touches only inside the documented band) | ADR-0019 constants table; builder `c32_passage::a_tangent_touch_at_an_extremum_is_the_passage`, reviewer `c34_r4_passage` |
 | C3.3 | compositor, render list, deterministic `render_frame`, contact sheet, `describe_frame`, `hit_test`, `convert_coordinates`, PNG sequence export, golden images | round 4 scoped closure **pass** ([M3-C3.3-r4-closure.md](M3-C3.3-r4-closure.md); builder `4984c25`, review `2daaf99`) | 183 implemented / 0 divergent / 0 missing / 14 deferred with owner / 1 closed (198 units) |
 | C3.4 | E1 headless (minus MP4) | handed off ([M3-C3.4-handoff.md](M3-C3.4-handoff.md), `45b41da`); closure pending | — |
 | C3.4 round 1 | merge-note inventory; request cancellation reaches the executor (O-1) | response ([M3-C3.4-r1-response.md](M3-C3.4-r1-response.md); builder `967229a`, review `1cbd190`) | 42 implemented / 0 divergent / 3 deferred with owner |
 | C3.4 round 2 | the cancellation contract at the worker's boundaries; direct `job.wait`; honest discard; token hygiene; SI-111 | response ([M3-C3.4-r2-response.md](M3-C3.4-r2-response.md); builder `0146e1a`, review `a2253cb`) | the four round-2 findings implemented |
-| C3.4 round 3 | bounded probe questions; refusal causes; positive discard notice; CI budget routing | response ([M3-C3.4-r3-response.md](M3-C3.4-r3-response.md); review `0a374c9`) | the three round-3 findings implemented |
+| C3.4 round 3 | bounded probe questions; refusal causes; positive discard notice; CI budget routing | response ([M3-C3.4-r3-response.md](M3-C3.4-r3-response.md); builder `1ef439b`, review `0a374c9`) | the three round-3 findings implemented |
+| C3.4 round 4 | cause carried into every copy of a cancellation refusal; late answers latch; cumulative question bound; CI backtraces restored; one more release routing | response ([M3-C3.4-r4-response.md](M3-C3.4-r4-response.md); review `62d21ea`, closure [M3-C3.4-r4-closure.md](M3-C3.4-r4-closure.md): C34-R3-01..03 closed) | C34-R4-01, C34-R4-02 and O-6 implemented |
 
 **What M3 delivered:**
 - The element, timing and staging maths, and the deterministic final renderer.
 - E1 end to end headless, with every output byte-identical on Windows and macOS.
 - A request-cancellation contract (ADR-0020 decision 8):
   - an already-cancelled request never begins;
-  - the worker asks a probed caller directly, each question bounded by min(250 ms, budget/4), and silence counts as
-    not cancelled;
+  - the worker asks a probed caller directly, each question bounded by min(250 ms, budget/4); silence and a late
+    answer count as not cancelled and latch the link, and all questions together hold the document thread for at most
+    the request's budget plus one bound;
   - a commit that got there first stands;
   - request cancellation never cancels a job;
-  - refusals carry `reason: "cancelled"` (SI-111).
+  - every copy of a caller-cancellation refusal carries `reason: "cancelled"` (SI-111).
 
 ## 2. Merge-readiness conditions at the candidate
 
@@ -42,8 +45,9 @@ The orchestrator merges and tags; the builder does not.
    Windows `check` must stay under 55 min.
 4. **Receipts and ownership preserved:**
    - raw receipts under `reviews/evidence/`;
-   - reviewer ownership by file (§5): the only reviewer-file edit of M3 is the authorized C3.3 round-3 sequencing
-     edit (`c3ce737`);
+   - reviewer ownership by file (§5): the only reviewer-file edits of M3 are the authorized C3.3 round-3 sequencing
+     edit (`c3ce737`) and the authorized C3.4 round-4 amendment of `c34_r3_probes::panicking_probe_leaves_worker_alive`
+     (made by the reviewer in `62d21ea`);
    - `spec/` read-only;
    - the allow inventory at 97 lints / 40 files, 0 new.
 5. **Orchestrator:** merge, verify that `main` builds on both OSes, and tag the verified commit `m3`.
@@ -65,6 +69,7 @@ The orchestrator merges and tags; the builder does not.
 | C22-T2, R1-12 (performance) | M11 C11.1 | inherited from M2 |
 | Lock files compare host names case-sensitively (a stale lock of the same machine is not recognised) | M11 C11.1 (settled at C3.4 round 1) | found in C3.4 (handoff §5); stays case-sensitive until then, the safe direction |
 | Off-thread continuations for a sequential batch's waited job step and `job.wait` step (they wait on the document thread, bounded by the batch's remaining budget, ending on request cancellation; ADR-0020 decision 8) | not planned; **M11 C11.1** re-measures the bound with the attached UI | measured in C3.4 round 2: a concurrent read waited 740 ms of a 1000 ms budget uncancelled, about 33 ms after cancellation |
+| Probed-call overhead in a product build | M11 C11.1 (orchestrator item O-10, C3.4 round 4) | C3.4 round-4 closure, release with test hooks on: probed versus plain calls +10 % for 10,000 actions (4805 / 5291 ms) and +13 % for a 1,000-step batch (422 / 477 ms). To be re-measured in a product build with the attached UI. |
 
 ## 4. Open spec issues for the spec owner
 
@@ -114,15 +119,31 @@ Every other SI from SI-001 to SI-111 is decided, ruled, resolved or closed in th
 - **C3.1:** `c31_r1_*`, `c31_r2_*`, `c31_r3_*`, `c31_r4_closure`, and the MCP `c31_r*_protocol`.
 - **C3.2:** `c32_r1_*`, `c32_r2_*`, `c32_r3_*`, `c32_r4_*`.
 - **C3.3:** `c33_r1_*`, `c33_r2_*`, `c33_r3_*`, `c33_r4_*` (executor, MCP, render).
+- **C3.4:** `c34_r1_contract`, `c34_r2_*`, `c34_r3_*`, `c34_r4_*` (executor, MCP `c34_r2_protocol` and
+  `c34_r3_stress`, animation `c34_r4_passage`).
+
+Authorized reviewer amendments:
+- C3.3 round 3: the sequencing edit of the `c33_r2_wait` injection (`c3ce737`).
+- C3.4 round 4: the body of `c34_r3_probes::panicking_probe_leaves_worker_alive` accepts an unchanged document or
+  exactly +1 revision with exactly one undo step, and passes with backtraces on and off (made by the reviewer in
+  `62d21ea`; CI's `check` runs it with `RUST_BACKTRACE=1` again).
 
 Placements outside debug `check`:
 - `c31_r3_sequences` and `c31_r3_hierarchy` run in `review properties release`.
 - `c33_r2_depth` and `c33_r2_stress` run in `c33 render release`.
+- Six request-cancellation loops run whole-binary in release in `c33 render release`, bodies unchanged:
+  `c34_r3_stress::concurrent_wire_cancellation_sixty_seconds`,
+  `c34_r3_probes::overhead_ten_thousand_small_actions_and_thousand_step_batch`,
+  `c34_r2_measurements::one_hundred_wait_cancellations_settle_jobs_and_leave_handle_usable`,
+  `c34_r2_cancellation::fast_commit_cancel_retry_matrix_preserves_one_change_and_one_answer`,
+  `c34_round2::a_cancellation_between_two_steps_refuses_the_second_every_time` (builder) (C3.4 round 3, O-4), and
+  `c34_r4_late_probe::two_hundred_answers_after_the_bound_must_latch_after_one_question` (C3.4 round 4, O-8).
 - The trybuild suites run in `history oracles release`.
 - `check` skips by exact name only what those jobs run, plus `c33_r1_crash::killed_sequence_leaves_no_staged_files`
   (premise closed by ruling C33-R1-08; body unchanged).
 
-**Python:** `tests/adversarial/c31-*.py` and `c33-r1-audit.py`, through `scripts/run-reviewer-python-suites.py`.
+**Python:** `tests/adversarial/c31-*.py`, `c33-r1-audit.py` and `c34-*.py` (except the two round-2 collectors
+`c34-r2-sdk.py` and `c34-r2-inventory.py`, listed as not suites), through `scripts/run-reviewer-python-suites.py`.
 
 ## 6. CI job layout and budgets
 
