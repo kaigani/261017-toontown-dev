@@ -16,3 +16,7 @@ cumulative-9 0
 cumulative-10 0
 schema-probe 101
 executor 101
+mcp 101
+stress 0
+headless 0
+e1 0

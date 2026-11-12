@@ -75,3 +75,43 @@ fn held_probe_timeout_keeps_one_remembered_commit() {
     assert!(cached);
     assert_eq!(rev(&h), before + 1);
 }
+#[test]
+fn queued_job_wait_step_uses_enqueue_deadline() {
+    let _guard = TURN.lock().unwrap_or_else(std::sync::PoisonError::into_inner);
+    let h = fixture_with(ExecutorConfig { budget: Duration::from_millis(1000) });
+    let directory = std::env::temp_dir().join(format!("c34-r5-wait-{}", std::process::id()));
+    tt_vector::work::hooks::set_spin_micros(20_000);
+    let job =
+        ok(&h, "render.range.run", json!({"from":1,"to":10000,"width":8,"directory":directory,"createDirs":true}));
+    let id = job["jobId"].as_str().unwrap();
+    let (tx, rx) = std::sync::mpsc::channel();
+    let (release, wait) = std::sync::mpsc::channel();
+    let wait = std::sync::Mutex::new(wait);
+    tt_persist::lock::hooks::set(Some(std::sync::Arc::new(move |at, _| {
+        if at == tt_persist::lock::Boundary::Committed {
+            tx.send(()).unwrap();
+            wait.lock().unwrap().recv_timeout(Duration::from_secs(10)).unwrap();
+        }
+    })));
+    std::thread::scope(|s| {
+        let blocker = s.spawn(|| {
+            h.invoke(Invocation::user("element.create", json!({"type":"peg","name":"hold","sceneId":"scene:#1"})))
+        });
+        rx.recv_timeout(Duration::from_secs(10)).unwrap();
+        tt_persist::lock::hooks::set(None);
+        let timer = s.spawn(|| {
+            std::thread::sleep(Duration::from_millis(700));
+            release.send(()).unwrap();
+        });
+        let req: BatchRequest=serde_json::from_value(json!({"label":"wait deadline","atomic":false,"steps":[{"id":"job.wait","params":{"jobId":id,"timeoutMs":10000}},{"id":"doc.state.get","params":{}}]})).unwrap();
+        let at = Instant::now();
+        let env = h.batch(req, Origin::User);
+        assert!(at.elapsed() < Duration::from_millis(1000), "{env:?}");
+        assert_eq!(env.steps.as_ref().unwrap().len(), 2, "{env:?}");
+        timer.join().unwrap();
+        blocker.join().unwrap();
+    });
+    tt_vector::work::hooks::set_spin_micros(0);
+    ok(&h, "job.cancel", json!({"jobId":id}));
+    h.jobs().wait(id, Duration::from_secs(60)).unwrap();
+}
