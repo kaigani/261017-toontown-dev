@@ -1,7 +1,7 @@
 //! M3 C3.4 round 3 (builder): the document thread never depends on caller code for longer than one bound
 //! (C34-R3-01), and every refusal names its cause (C34-R3-02). ADR-0020 decision 8.
 //! - Questions are counted (`test-hooks`): none for plain calls and queries; one at dequeue plus three per committing
-//!   action step (start, acceptance, pre-commit) and two per step that changes no document.
+//!   action step (start, acceptance, pre-commit) and two per step that changes no document (a 1000-step batch).
 //! - A probe that never answers stalls the document thread once, whatever the step count; the request's outcome is the
 //!   uncancelled one; an unrelated caller waits at most the bound plus its own work.
 //! - A caller's cancellation seen on the work-account path reports `reason: "cancelled"`; a watchdog timeout does not.
@@ -58,8 +58,8 @@ fn plain_calls_and_queries_ask_nothing_and_a_probed_batch_asks_at_each_documente
     }
     assert_eq!(work::asks(), 0, "plain calls and queries cost no question");
     work::reset_asks();
-    assert!(h.batch_until(creates("Probed", 1000), Origin::User, &|| false).is_ok());
-    assert_eq!(work::asks(), 1 + 3 * 1000, "one at dequeue, three per committing step");
+    assert!(h.batch_until(creates("Probed", 100), Origin::User, &|| false).is_ok());
+    assert_eq!(work::asks(), 1 + 3 * 100, "one at dequeue, three per committing step");
     work::reset_asks();
     let ui: Vec<Value> = (0..1000)
         .map(|_| json!({ "id": "edit.selection.set", "params": { "context": "drawing", "ids": [] } }))

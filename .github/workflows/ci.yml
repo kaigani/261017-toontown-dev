@@ -178,7 +178,9 @@ jobs:
       - name: Panicking-probe test (no backtrace capture)
         env:
           RUST_BACKTRACE: "0"
-        run: cargo test --locked -p tt-executor --test c34_r3_probes -- --exact panicking_probe_leaves_worker_alive
+        # `--workspace` keeps the workspace's feature resolution, so the main test step's artifacts are reused (with `-p`
+        # the step rebuilt the dependency graph: 438 s in run 43137048940).
+        run: cargo test --workspace --locked --test c34_r3_probes -- --exact panicking_probe_leaves_worker_alive
 
       - name: Desktop host with the M0 diagnostics feature (C0.4 gating) — clippy and tests
         run: |
