@@ -236,3 +236,42 @@ fn timed_out_queued_query_is_dropped_and_not_cached() {
     assert!(env.is_ok());
     assert!(!cached);
 }
+
+#[test]
+fn caller_cancelled_queued_notice_only_query_begins_and_is_remembered() {
+    let _guard = TURN.lock().unwrap_or_else(std::sync::PoisonError::into_inner);
+    let h = fixture_with(ExecutorConfig { budget: Duration::from_millis(2000) });
+    let (tx, rx) = std::sync::mpsc::channel();
+    let release = std::sync::Arc::new(std::sync::atomic::AtomicBool::new(false));
+    let flag = release.clone();
+    tt_persist::lock::hooks::set(Some(std::sync::Arc::new(move |at, _| {
+        if at == tt_persist::lock::Boundary::Committed {
+            tx.send(()).unwrap();
+            let start = Instant::now();
+            while !flag.load(Ordering::SeqCst) {
+                assert!(start.elapsed() < Duration::from_secs(10));
+                std::thread::yield_now();
+            }
+        }
+    })));
+    work::reset_asks();
+    let mut query = Invocation::user("doc.state.get", json!({}));
+    query.options.request_id = Some("r4-cancelled-query".into());
+    let env = std::thread::scope(|scope| {
+        let blocker = scope.spawn(|| h.invoke(edit()));
+        rx.recv_timeout(Duration::from_secs(10)).unwrap();
+        scope.spawn(|| {
+            std::thread::sleep(Duration::from_millis(100));
+            release.store(true, Ordering::SeqCst);
+        });
+        let env = h.invoke_served_until(query.clone(), &|| true).0;
+        blocker.join().unwrap();
+        env
+    });
+    tt_persist::lock::hooks::set(None);
+    assert!(env.is_ok(), "{env:?}");
+    let (retry, cached) = h.invoke_served(query);
+    assert!(retry.is_ok());
+    assert!(cached);
+    assert_eq!(work::asks(), 0, "notice-only query and plain blocker ask nothing");
+}
