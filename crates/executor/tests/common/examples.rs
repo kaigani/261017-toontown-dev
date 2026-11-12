@@ -23,7 +23,10 @@ pub fn edits(h: &ExecutorHandle) {
     ok(h, "doc.object.patch", json!({ "targets": [scene], "props": { "meta": { "p": 2 } } }));
     ok(h, "edit.undo", json!({}));
     ok(h, "workspace.create", json!({ "name": "Inking" }));
-    h.jobs().submit("test.job", "user", |_| Ok(json!({}))).unwrap();
+    // Finished before any example runs: the retained results of `job.*` show it succeeded, and a slow runner must not
+    // reach `job.cancel` while it is still running (macOS, run 43231502361).
+    let job = h.jobs().submit("test.job", "user", |_| Ok(json!({}))).unwrap();
+    h.jobs().wait(&job, std::time::Duration::from_secs(30)).unwrap();
 }
 
 /// Commands whose examples work with files (C1.3): they run on the fixture saved as a package with its embedded sound,
