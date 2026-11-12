@@ -139,6 +139,9 @@ Placements outside debug `check`:
   `c34_round2::a_cancellation_between_two_steps_refuses_the_second_every_time` (builder) (C3.4 round 3, O-4), and
   `c34_r4_late_probe::two_hundred_answers_after_the_bound_must_latch_after_one_question` (C3.4 round 4, O-8).
 - The trybuild suites run in `history oracles release`.
+- Five builder binaries leave debug `check` for its budget (C3.4 round 4): `c32_round3`, `c14_measurements`,
+  `c14_lock_races` and `c12_kernel_state` run in debug in `check properties`; `cancel_phases` runs in release in
+  `headless release`.
 - `check` skips by exact name only what those jobs run, plus `c33_r1_crash::killed_sequence_leaves_no_staged_files`
   (premise closed by ruling C33-R1-08; body unchanged).
 
