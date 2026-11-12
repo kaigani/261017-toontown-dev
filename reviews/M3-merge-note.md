@@ -150,24 +150,28 @@ Placements outside debug `check`:
 
 ## 6. CI job layout and budgets
 
-Times are from run 42968758950 at the C3.4 handoff head `45b41da` (after the C3.3 closure budget routing `7216cb9`).
-The C3.4 closure row and the candidate run are added at the closure.
+Times are from run 43239439281 at `d9661fc`, the code head of the C3.4 round-4 response: all 28 jobs green on Windows
+and macOS. The commit after it changes only this note. The C3.4 closure row and the candidate run are added at the
+closure.
 
-| Job (Windows / macOS unless noted) | Budget (min) | Run 42968758950, Windows / macOS (min) |
+| Job (Windows / macOS unless noted) | Budget (min) | Run 43239439281, Windows / macOS (min) |
 |---|---|---|
-| `check` | 60 (ceiling 55 by ruling) | 42.5 / 37.4 |
-| `check properties` | 45 | 27.5 / 21.8 |
-| `review properties release` (with `c31_r3_hierarchy`) | 45 | 32.3 / 21.8 |
-| `headless release` | 55 | 41.1 / 34.0 |
-| `history oracles release` | 40 | 17.1 / 12.0 |
-| `measurements release` | 45 | 13.4 / 9.9 |
-| `m3 properties release` | 20 | 3.0 / 2.1 |
-| `e2 release` | 30 | 6.9 / 4.3 |
-| `e4 release`, `e4 cross-OS` | 30, 10 | 6.3 / 6.0; 0.0 |
-| `c33 render release` (goldens, range, bitmap, render gate, reviewer corpora, E1, request-cancellation loops and stress from C3.4 round 3), `c33 cross-OS` | 30, 10 | 13.9 / 7.1; 0.1 |
-| `bundle` | 30 | 10.1 / 8.3 |
-| `raster determinism` (Windows, macOS, Linux) | 20 | 2.6 / 3.0 / 1.7 |
-| `headless without a display` (Linux) | 15 | 3.7 |
+| `check` | 60 (ceiling 55 by ruling; 47 target in C3.4 round 4) | 41.8 / 32.8 |
+| `check properties` (with four builder binaries from C3.4 round 4) | 45 | 31.4 / 25.7 |
+| `review properties release` (with `c31_r3_hierarchy`) | 45 | 39.3 / 26.6 |
+| `headless release` (with `cancel_phases` from C3.4 round 4) | 55 | 40.2 / 34.6 |
+| `history oracles release` | 40 | 21.4 / 17.9 |
+| `measurements release` | 45 | 16.4 / 13.5 |
+| `m3 properties release` | 20 | 3.3 / 1.7 |
+| `e2 release` | 30 | 6.2 / 5.6 |
+| `e4 release`, `e4 cross-OS` | 30, 10 | 7.2 / 7.0; 0.1 |
+| `c33 render release` (goldens, range, bitmap, render gate, reviewer corpora, E1, request-cancellation loops and stress from C3.4 rounds 3 and 4), `c33 cross-OS` | 30, 10 | 20.4 / 19.9; 0.1 |
+| `bundle` | 30 | 8.7 / 3.7 |
+| `raster determinism` (Windows, macOS, Linux) | 20 | 3.3 / 1.9 / 1.4 |
+| `headless without a display` (Linux) | 15 | 3.8 |
+
+`check` at that run: Windows 374 test binaries, 1670 passed, 0 failed, 24 ignored; macOS 374, 1659, 0, 24.
+`check properties`: 10 binaries, 71 passed, 1 ignored (the lock-race child helper) on each OS.
 
 ## 7. User-only items
 
