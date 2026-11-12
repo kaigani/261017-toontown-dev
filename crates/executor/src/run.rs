@@ -1137,6 +1137,11 @@ impl Core {
         crate::notice_only_link() && self.registry.get(command).is_some_and(|e| e.spec.kind == tt_registry::Kind::Query)
     }
 
+    /// Whether `command` is a job command (registry kind): its handler starts its job.
+    fn is_job(&self, command: &str) -> bool {
+        self.registry.get(command).is_some_and(|e| e.spec.kind == tt_registry::Kind::Job)
+    }
+
     pub(crate) fn invoke(&mut self, inv: &Invocation) -> Envelope {
         let mut env = self.invoke_inner(inv);
         crate::label_cancellation(&mut env);
@@ -1812,7 +1817,10 @@ impl Core {
             Effect::Event(ev) if ev.name == "anim.changed" => Some(ev.payload.clone()),
             _ => None,
         });
-        let committed = cancelled_check_for(command, self.is_query(command))
+        // A job command's commit is its job's start, which happened in its handler: at acceptance its caller's
+        // cancellation does not refuse it (the job started first and stays the caller's to wait on or cancel; ADR-0020
+        // decision 8, rules 3 and 4). A query is not refused for its caller's cancellation either.
+        let committed = cancelled_check_for(command, self.is_query(command) || self.is_job(command))
             .and_then(|()| frozen_guard(session, &txns))
             .and_then(|()| self.write_pending(session, txns.last().map(|t| &t.after), &mut effects))
             .and_then(|()| commit(session, txns, origin, command, anim.as_ref()));

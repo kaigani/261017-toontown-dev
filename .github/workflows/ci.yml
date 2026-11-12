@@ -134,7 +134,13 @@ jobs:
       # `c34_r2_cancellation::fast_commit_cancel_retry_matrix_preserves_one_change_and_one_answer`,
       # `c34_round2::a_cancellation_between_two_steps_refuses_the_second_every_time`. Every short deterministic acceptance,
       # error-shape, discard, death and token test stays here.
+      # M3 C3.4 round 3: this step runs without backtrace capture. The reviewer's
+      # `c34_r3_probes::panicking_probe_leaves_worker_alive` needs a probe's panic to reach the worker within the 250 ms
+      # question bound; with RUST_BACKTRACE=1 the Windows panic hook symbolises for longer, and the worker fails open as
+      # ruling C34-R3-01 requires. Panic messages keep their file and line.
       - name: Run cargo test --workspace --locked
+        env:
+          RUST_BACKTRACE: "0"
         run: |
           cargo test --workspace --locked -- --skip ten_thousand_history_operations_match_independent_content_oracle_and_replay \
             --skip stroke_add_matches_the_oracle \
@@ -169,21 +175,8 @@ jobs:
             --skip non_parallelogram_envelopes_map_the_layer_projectively \
             --skip snapping_onto_a_curved_contour_reaches_its_nearest_point \
             --skip integer_translations_and_compositions_preserve_all_snapped_anchor_sequences \
-            --skip side_fills_read_back_beside_collinear_overlaps             --skip independent_sequences_4096_persist_canonical_runs_and_notes             --skip exclusive_mutation_capability             --skip duplicate_ids_and_inventory_kind_drift_are_rejected             --skip missing_example_is_rejected_at_compile_time             --skip killed_sequence_leaves_no_staged_files             --skip seeded_anchor_groups_4096             --skip deep_and_broad_scene             --skip random_hierarchy_edits_4096_keep_independent_parent_and_level_model             --skip concurrent_wire_cancellation_sixty_seconds             --skip overhead_ten_thousand_small_actions_and_thousand_step_batch             --skip one_hundred_wait_cancellations_settle_jobs_and_leave_handle_usable             --skip fast_commit_cancel_retry_matrix_preserves_one_change_and_one_answer             --skip a_cancellation_between_two_steps_refuses_the_second_every_time             --skip panicking_probe_leaves_worker_alive
+            --skip side_fills_read_back_beside_collinear_overlaps             --skip independent_sequences_4096_persist_canonical_runs_and_notes             --skip exclusive_mutation_capability             --skip duplicate_ids_and_inventory_kind_drift_are_rejected             --skip missing_example_is_rejected_at_compile_time             --skip killed_sequence_leaves_no_staged_files             --skip seeded_anchor_groups_4096             --skip deep_and_broad_scene             --skip random_hierarchy_edits_4096_keep_independent_parent_and_level_model             --skip concurrent_wire_cancellation_sixty_seconds             --skip overhead_ten_thousand_small_actions_and_thousand_step_batch             --skip one_hundred_wait_cancellations_settle_jobs_and_leave_handle_usable             --skip fast_commit_cancel_retry_matrix_preserves_one_change_and_one_answer             --skip a_cancellation_between_two_steps_refuses_the_second_every_time
 
-      # M3 C3.4 round 3: `c34_r3_probes::panicking_probe_leaves_worker_alive` (reviewer, body unchanged) runs without
-      # backtrace capture. A probe that panics is seen by the worker only once the caller unwinds, after the panic hook;
-      # with RUST_BACKTRACE=1 the Windows hook symbolises for longer than the 250 ms question bound, and the worker then
-      # fails open as ruling C34-R3-01 requires (the request proceeds), which the test's no-commit assertion excludes.
-      - name: Panicking-probe test (no backtrace capture)
-        # The main step's own build: `--no-run` with the main step's arguments lists its test executables without
-        # building anything, and the probe binary runs directly (a separate `cargo test` with a target filter rebuilt:
-        # 438 s with `-p`, 183 s with `--workspace --test`, runs 43137048940 and 43144010462).
-        run: |
-          PY=python3
-          if [ "$RUNNER_OS" = "Windows" ]; then PY=python; fi
-          exe=$(cargo test --workspace --locked --no-run --message-format=json 2>/dev/null | $PY -c "import json, sys; print(next(m['executable'] for m in map(json.loads, sys.stdin) if m.get('reason') == 'compiler-artifact' and m.get('executable') and m['target']['name'] == 'c34_r3_probes'))" | tr -d '\r')
-          RUST_BACKTRACE=0 "$exe" --exact panicking_probe_leaves_worker_alive
       - name: Desktop host with the M0 diagnostics feature (C0.4 gating) — clippy and tests
         run: |
           cargo clippy -p tt-desktop --all-targets --locked --features m0-diagnostics -- -D warnings

@@ -88,7 +88,10 @@ thread); ADR-0019 fixes the evaluation order of transforms.
    4. *Jobs.* Request cancellation never cancels a job. A wait on a job (a direct `wait: true`, a batch's waited step,
       a batch's `job.wait` step, a direct `job.wait` and its attached retry) ends with `command.timeout`,
       `details.reason: "cancelled"` and `details.jobId`. The job stays in `job.list` / `job_status`, runs on to its own
-      terminal state or stops at `job.cancel`, and leaves no staging once terminal (decision 11).
+      terminal state or stops at `job.cancel`, and leaves no staging once terminal (decision 11). A job command's
+      commit is its job's start, in its handler: once the handler has started the job, a cancellation seen at that
+      invocation's acceptance does not refuse it, so the job is never orphaned and the answer names it (the wait's
+      `command.timeout` with `details.jobId`).
    5. *Timing.* Waits and the caller's token mark poll the probe every 20 ms (`CANCEL_POLL`). That is a wake-up
       interval, not an end-to-end bound. C3.4 round 2 measured 100 direct waited-job cancellations at min 0.67 ms,
       median 3.6 ms, p95 4.8 ms, p99 20.2 ms and max 20.3 ms.

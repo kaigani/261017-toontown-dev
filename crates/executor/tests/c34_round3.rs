@@ -255,3 +255,30 @@ fn a_probed_query_cancelled_while_queued_still_runs_and_a_cancelled_batch_refuse
     assert!(steps[0].is_ok(), "{:?}", steps[0]);
     assert_eq!(steps[1].error.as_ref().map(|e| e.code.as_str()), Some("command.timeout"), "{:?}", steps[1]);
 }
+
+#[test]
+fn a_job_command_cancelled_after_its_handler_started_the_job_commits_and_names_the_job() {
+    let _t = turn();
+    let _reset = Reset;
+    let h = fixture();
+    let dir = std::env::temp_dir().join(format!("c34-round3-job-{}", std::process::id()));
+    // The probe turns true once the handler has started the job (it is in the registry), so the question at acceptance
+    // and the caller's own poll both see a cancellation that came after the job started.
+    let env = h
+        .invoke_served_until(
+            Invocation::user(
+                "render.range.run",
+                json!({ "from": 1, "to": 10000, "width": 32, "directory": dir.to_string_lossy(), "createDirs": true, "wait": true }),
+            ),
+            &|| !h.jobs().list(None, None).is_empty(),
+        )
+        .0;
+    let e = env.error.expect("the wait is cancelled");
+    assert_eq!(e.code, "command.timeout", "{e:?}");
+    assert_eq!(e.details["reason"], "cancelled", "{e:?}");
+    let job = e.details["jobId"].as_str().expect("the started job is named").to_owned();
+    ok(&h, "job.cancel", json!({ "jobId": job }));
+    let record = h.jobs().wait(&job, Duration::from_secs(60)).unwrap().0;
+    assert_eq!(record.state, tt_executor::JobState::Cancelled);
+    assert!(run(&h, "doc.state.get", json!({})).is_ok());
+}
