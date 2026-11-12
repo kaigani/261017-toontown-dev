@@ -46,7 +46,7 @@ fn bounded_questions_latency_distribution_and_latch() {
     let _guard = TURN.lock().unwrap_or_else(std::sync::PoisonError::into_inner);
     let mut samples = Vec::new();
     for trial in 0..100 {
-        let h = fixture_with(ExecutorConfig { budget: Duration::from_millis(1000) });
+        let h = fixture_with(ExecutorConfig { budget: Duration::from_millis(800) });
         let (tx, rx) = std::sync::mpsc::channel();
         let n = AtomicUsize::new(0);
         let elapsed = std::thread::scope(|s| {
@@ -71,7 +71,7 @@ fn bounded_questions_latency_distribution_and_latch() {
     }
     samples.sort();
     eprintln!(
-        "LATENCY min={:?} median={:?} p95={:?} p99={:?} max={:?} bound=250ms",
+        "LATENCY min={:?} median={:?} p95={:?} p99={:?} max={:?} bound=200ms",
         samples[0], samples[50], samples[94], samples[98], samples[99]
     );
     for (stall, block_index) in [(240, 1), (260, 1), (350, 2)] {

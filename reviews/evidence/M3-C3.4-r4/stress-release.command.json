@@ -1,0 +1,1 @@
+{"command": ["cargo", "test", "--release", "--locked", "-p", "tt-mcp", "-j", "4", "--test", "c34_r3_stress", "--", "--nocapture"], "env": {}}

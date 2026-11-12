@@ -1,0 +1,30 @@
+   Compiling ahash v0.8.12
+   Compiling referencing v0.59.0
+   Compiling jsonschema-value v0.59.0
+   Compiling read-fonts v0.41.0
+   Compiling jsonschema v0.59.0
+   Compiling tt-model v0.0.1 (C:\Users\kaiga\work\review\m3-c34-r4\crates\model)
+   Compiling tt-anim v0.0.1 (C:\Users\kaiga\work\review\m3-c34-r4\crates\anim)
+   Compiling skrifa v0.44.0
+   Compiling tt-vector v0.0.1 (C:\Users\kaiga\work\review\m3-c34-r4\crates\vector)
+   Compiling tt-fx v0.0.1 (C:\Users\kaiga\work\review\m3-c34-r4\crates\fx)
+   Compiling tt-colour v0.0.1 (C:\Users\kaiga\work\review\m3-c34-r4\crates\colour)
+   Compiling tt-render v0.0.1 (C:\Users\kaiga\work\review\m3-c34-r4\crates\render)
+   Compiling tt-persist v0.0.1 (C:\Users\kaiga\work\review\m3-c34-r4\crates\persist)
+   Compiling tt-io v0.0.1 (C:\Users\kaiga\work\review\m3-c34-r4\crates\io)
+   Compiling tt-registry v0.0.1 (C:\Users\kaiga\work\review\m3-c34-r4\crates\registry)
+   Compiling tt-audio v0.0.1 (C:\Users\kaiga\work\review\m3-c34-r4\crates\audio)
+   Compiling tt-lipsync v0.0.1 (C:\Users\kaiga\work\review\m3-c34-r4\crates\lipsync)
+   Compiling tt-executor v0.0.1 (C:\Users\kaiga\work\review\m3-c34-r4\crates\executor)
+   Compiling tt-engine v0.0.1 (C:\Users\kaiga\work\review\m3-c34-r4\crates\engine)
+   Compiling tt-mcp v0.0.1 (C:\Users\kaiga\work\review\m3-c34-r4\crates\mcp)
+    Finished `release` profile [optimized + debuginfo] target(s) in 3m 48s
+     Running tests\c34_r3_stress.rs (target\release\deps\c34_r3_stress-27493c9b44184a0b.exe)
+
+running 1 test
+test concurrent_wire_cancellation_sixty_seconds has been running for over 60 seconds
+STRESS requests=128232 seconds=60.0073534
+test concurrent_wire_cancellation_sixty_seconds ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 60.14s
+
