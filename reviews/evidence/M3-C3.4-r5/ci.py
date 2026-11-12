@@ -10,7 +10,7 @@ for run in (43279940120,43169948278):
  with concurrent.futures.ThreadPoolExecutor(max_workers=6) as pool:
   for j,s in pool.map(fetch,jobs):
    s=re.sub(r'\x1b\[[0-9;]*m','',s)
-   names.update(re.findall(r'test ([^\r\n]+?) \.\.\. (?:ok|ignored|FAILED)',s))
+   names.update(re.findall(r'test ([^\r\n]+?) \.\.\. ok',s))
    if run==43279940120 and any(x in j['name'] for x in ['check properties','headless release','bundle','c33 render release']):
     lines=[l for l in s.splitlines() if ('test ' in l and ' ... ok' in l) or 'Desktop host with the M0' in l or 'test result:' in l]
     proof.extend([j['name'],*lines])

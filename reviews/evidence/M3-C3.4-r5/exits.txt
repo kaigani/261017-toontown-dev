@@ -1,2 +1,16 @@
 shape 0
 late-debug 0
+late-release 0
+closure-1 0
+closure-2 0
+closure-3 0
+cumulative-1 0
+cumulative-2 0
+cumulative-3 0
+cumulative-4 0
+cumulative-5 0
+cumulative-6 0
+cumulative-7 0
+cumulative-8 0
+cumulative-9 0
+cumulative-10 0
