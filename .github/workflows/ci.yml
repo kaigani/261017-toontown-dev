@@ -176,12 +176,14 @@ jobs:
       # with RUST_BACKTRACE=1 the Windows hook symbolises for longer than the 250 ms question bound, and the worker then
       # fails open as ruling C34-R3-01 requires (the request proceeds), which the test's no-commit assertion excludes.
       - name: Panicking-probe test (no backtrace capture)
-        env:
-          RUST_BACKTRACE: "0"
-        # `--workspace` keeps the workspace's feature resolution, so the main test step's artifacts are reused (with `-p`
-        # the step rebuilt the dependency graph: 438 s in run 43137048940).
-        run: cargo test --workspace --locked --test c34_r3_probes -- --exact panicking_probe_leaves_worker_alive
-
+        # The main step's own build: `--no-run` with the main step's arguments lists its test executables without
+        # building anything, and the probe binary runs directly (a separate `cargo test` with a target filter rebuilt:
+        # 438 s with `-p`, 183 s with `--workspace --test`, runs 43137048940 and 43144010462).
+        run: |
+          PY=python3
+          if [ "$RUNNER_OS" = "Windows" ]; then PY=python; fi
+          exe=$(cargo test --workspace --locked --no-run --message-format=json 2>/dev/null | $PY -c "import json, sys; print(next(m['executable'] for m in map(json.loads, sys.stdin) if m.get('reason') == 'compiler-artifact' and m.get('executable') and m['target']['name'] == 'c34_r3_probes'))" | tr -d '\r')
+          RUST_BACKTRACE=0 "$exe" --exact panicking_probe_leaves_worker_alive
       - name: Desktop host with the M0 diagnostics feature (C0.4 gating) — clippy and tests
         run: |
           cargo clippy -p tt-desktop --all-targets --locked --features m0-diagnostics -- -D warnings
