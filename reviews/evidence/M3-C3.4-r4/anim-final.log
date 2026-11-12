@@ -1,0 +1,194 @@
+   Compiling tt-anim v0.0.1 (C:\Users\kaiga\work\review\m3-c34-r4\crates\anim)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 2.34s
+     Running unittests src\lib.rs (target\debug\deps\tt_anim-d9e9c9f980617157.exe)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests\c31_exposure.rs (target\debug\deps\c31_exposure-4031fda0e6ebdec4.exe)
+
+running 16 tests
+test add_and_remove_exposure_13_1_13_2 ... ok
+test blanks_insert_delete_13_6_to_13_8 ... ok
+test columnate_formulas_13_10 ... ok
+test add_then_remove_exposure_on_one_frame_is_identity ... ok
+test fill_overwrites_without_shift_13_5 ... ok
+test names_natural_order_and_defaults_14_2 ... ok
+test runs_round_trip_and_canonical_form ... ok
+test set_exposure_on_ones_example_13_3 ... ok
+test cycle_example_13_9 ... ok
+test window_reads_flag_continuation_17_2 ... ok
+test compress_expand_is_canonical ... ok
+test cycle_inserts_k_minus_one_copies ... ok
+test fill_never_shifts_later_cells ... ok
+test insert_then_remove_blank_is_identity ... ok
+test set_exposure_preserves_the_drawing_sequence ... ok
+test diff_window_covers_every_change ... ok
+
+test result: ok. 16 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.02s
+
+     Running tests\c31_r1_hierarchy.rs (target\debug\deps\c31_r1_hierarchy-d2747562e20c5512.exe)
+
+running 2 tests
+test invalid_permutation_is_atomic_and_detach_attach_roundtrips ... ok
+test permutations_and_deletion_reattachment_4096 ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.10s
+
+     Running tests\c31_r1_oracle.rs (target\debug\deps\c31_r1_oracle-ca0ddb510a3e6742.exe)
+
+running 11 tests
+test columnate_total_frames_short_last_reaches_requested_length ... ok
+test cycle_4096 ... ok
+test fill_4096 ... ok
+test worked_examples_and_edges ... ok
+test insert_remove_canonical_4096 ... ok
+test insert_remove_4096 ... ok
+test diff_4096 ... ok
+test independently_enumerated_columnate_formulas ... ok
+test add_remove_4096 ... ok
+test set_length_4096 ... ok
+test canonical_4096 ... ok
+
+test result: ok. 11 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.05s
+
+     Running tests\c31_r2_variants.rs (target\debug\deps\c31_r2_variants-3733a4e916f37766.exe)
+
+running 3 tests
+test r08_unicode_suffix_crosses_one_to_two_digits ... ok
+test r11_insert_beyond_arbitrary_blank_tail_always_trims ... ok
+test r01_total_frames_boundary_grid_reverse_and_single_drawing ... ok
+
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+
+     Running tests\c32_maths.rs (target\debug\deps\c32_maths-a2b79b93234ed676.exe)
+
+running 20 tests
+test a_single_keyframe_holds_on_both_sides ... ok
+test curve_endpoints_and_special_cases ... ok
+test cycle_mapping_is_exact ... ok
+test decomposition_reports_a_negative_sy_for_a_mirror ... ok
+test elementary_matrices_follow_05_2_1 ... ok
+test hermite_with_tcb_equals_the_exact_rational_formula ... ok
+test local_matrix_order_is_scale_skew_rotate_translate_about_the_pivots ... ok
+test near_plane_roll_and_rigid_camera ... ok
+test orient_angle_follows_the_tangent_and_searches_past_constant_segments ... ok
+test passage_frames_are_found_to_the_stated_tolerance ... ok
+test spline_handles_constant_segments_and_holds ... ok
+test the_default_camera_fills_twelve_fields_of_the_table_plane ... ok
+test arc_length_is_the_64_step_chord_sum_and_near_the_true_length ... ok
+test the_time_solve_agrees_with_an_independent_bisection ... ok
+test presets_match_the_normative_table_and_their_endpoints ... ok
+test constant_z_measures_arc_length_in_the_plane ... ok
+test unprojecting_inverts_projection ... ok
+test velocity_pins_clamping_and_intermediate_keys ... ok
+test decomposition_inverts_the_composition ... ok
+test inverse_targets_any_world_point ... ok
+
+test result: ok. 20 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+
+     Running tests\c32_passage.rs (target\debug\deps\c32_passage-43f807fdd455f0e6.exe)
+
+running 6 tests
+test the_search_is_charged_and_a_refusing_meter_stops_it ... ok
+test crossings_exactly_at_whole_frames_report_those_frames ... ok
+test a_tangent_touch_at_an_extremum_is_the_passage ... ok
+test an_excursion_within_one_frame_is_found_at_its_first_crossing ... ok
+test a_rise_and_fall_twice_within_one_frame_reports_the_first_rise ... ok
+test passage_agrees_with_the_exact_oracle ... ok
+
+test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 2.56s
+
+     Running tests\c32_r1_affine.rs (target\debug\deps\c32_r1_affine-c8b98812c294332e.exe)
+
+running 1 test
+test c32_r1_integer_affine_oracle_4096 ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests\c32_r1_closed_forms.rs (target\debug\deps\c32_r1_closed_forms-8cad56598077dcf5.exe)
+
+running 2 tests
+test c32_r1_integer_cycle_mapping_4096 ... ok
+test c32_r1_closed_forms_4096 ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.22s
+
+     Running tests\c32_r1_corpus.rs (target\debug\deps\c32_r1_corpus-e336e5bc2c213a7c.exe)
+
+running 2 tests
+test exact_whole_frame_crossing ... ok
+test seeded_4096_earliest_crossings ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.12s
+
+     Running tests\c32_r1_default_frame.rs (target\debug\deps\c32_r1_default_frame-a426f1944c78f3c1.exe)
+
+running 2 tests
+test c32_r1_default_frame_is_twelve_fields_within_normative_tolerance ... ok
+test explicit_display_fov_is_not_aliased ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests\c32_r1_passage.rs (target\debug\deps\c32_r1_passage-d50172ca8aa7339d.exe)
+
+running 1 test
+test c32_r1_passage_must_find_subframe_first_crossing ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests\c32_r2_camera.rs (target\debug\deps\c32_r2_camera-3a85258d74d4f0f4.exe)
+
+running 1 test
+test arbitrary_roll_fov_and_near_plane ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests\c32_r2_corpus.rs (target\debug\deps\c32_r2_corpus-4ca8e21b9265097c.exe)
+
+running 2 tests
+test exact_whole_frame_crossing ... ok
+test seeded_4096_nonhorizontal_interior_extrema ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.12s
+
+     Running tests\c32_r2_passage.rs (target\debug\deps\c32_r2_passage-762ff9c512a254be.exe)
+
+running 2 tests
+test seeded_nonhorizontal_rounding_and_charged_refusal ... ok
+test preset_crossings_next_to_rounding_boundaries ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.15s
+
+     Running tests\c32_r2_tcb.rs (target\debug\deps\c32_r2_tcb-820e9ef278b5376b.exe)
+
+running 1 test
+test c32_r2_non_dyadic_4096 ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.20s
+
+     Running tests\c32_round1.rs (target\debug\deps\c32_round1-3a3fea385c72991b.exe)
+
+running 4 tests
+test a_finite_world_matrix_decomposes_to_finite_values ... ok
+test the_default_fov_is_the_exact_expression_through_the_pinned_path ... ok
+test the_default_frame_is_twelve_fields_wide_at_distance_sixteen ... ok
+test the_norm_keeps_ordinary_bits_and_scales_only_out_of_range_sums ... ok
+
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+
+     Running tests\c34_r4_passage.rs (target\debug\deps\c34_r4_passage-7249c1c67f0a6d92.exe)
+
+running 2 tests
+test node_at_arc_is_the_first_passage ... ok
+test exact_touch_and_near_touch_families_respect_the_documented_tolerance ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+
+   Doc-tests tt_anim
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+

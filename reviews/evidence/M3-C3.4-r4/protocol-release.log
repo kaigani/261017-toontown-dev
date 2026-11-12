@@ -1,0 +1,16 @@
+   Compiling tt-persist v0.0.1 (C:\Users\kaiga\work\review\m3-c34-r4\crates\persist)
+   Compiling tt-io v0.0.1 (C:\Users\kaiga\work\review\m3-c34-r4\crates\io)
+   Compiling tt-executor v0.0.1 (C:\Users\kaiga\work\review\m3-c34-r4\crates\executor)
+   Compiling tt-engine v0.0.1 (C:\Users\kaiga\work\review\m3-c34-r4\crates\engine)
+   Compiling tt-mcp v0.0.1 (C:\Users\kaiga\work\review\m3-c34-r4\crates\mcp)
+    Finished `release` profile [optimized + debuginfo] target(s) in 2m 11s
+     Running tests\c34_r2_protocol.rs (target\release\deps\c34_r2_protocol-553957e3b0f4286a.exe)
+
+running 1 test
+WIRE waited audit_status="error" errorCode="command.timeout"
+WIRE batch audit_status="error" errorCode="batch.stepFailed"
+WIRE nonjob audit_status="error" errorCode="command.timeout"
+test cancelled_calls_are_silent_and_following_calls_are_answered ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 9.61s
+

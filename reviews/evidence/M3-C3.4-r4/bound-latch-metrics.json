@@ -1,0 +1,32 @@
+{
+  "blocked_probe": {
+    "n": 100,
+    "min_ms": 205.7271,
+    "p50_ms": 213.2463,
+    "p95_ms": 222.1127,
+    "p99_ms": 222.44310000000002,
+    "max_ms": 223.0944,
+    "method": "nearest rank",
+    "question_bound_ms": 200
+  },
+  "late_answers": {
+    "n": 200,
+    "min_ms": 253.6875,
+    "p50_ms": 266.9548,
+    "p95_ms": 524.3802,
+    "p99_ms": 1047.1288000000002,
+    "max_ms": 1053.183,
+    "method": "nearest rank",
+    "question_bound_ms": 250,
+    "asks_histogram": {
+      "2": 71,
+      "1": 121,
+      "4": 5,
+      "3": 3
+    },
+    "violating_trials": 79,
+    "callback_count": 292,
+    "callback_min_ms": 260.0125,
+    "callback_max_ms": 268.35389999999995
+  }
+}

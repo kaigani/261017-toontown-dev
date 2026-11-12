@@ -1,0 +1,122 @@
+   Compiling tt-executor v0.0.1 (C:\Users\kaiga\work\review\m3-c34-r4\crates\executor)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 3.91s
+     Running tests\c34_r4_closure.rs (target\debug\deps\c34_r4_closure-306d3cb313b3e64b.exe)
+
+running 8 tests
+test bounded_questions_latency_distribution_and_latch ... LATENCY trial=0 ms=218.1362
+LATENCY trial=1 ms=209.56130000000002
+LATENCY trial=2 ms=216.6902
+LATENCY trial=3 ms=207.4596
+LATENCY trial=4 ms=212.2158
+LATENCY trial=5 ms=209.7108
+LATENCY trial=6 ms=208.917
+LATENCY trial=7 ms=209.7903
+LATENCY trial=8 ms=222.44310000000002
+LATENCY trial=9 ms=214.5896
+LATENCY trial=10 ms=208.1995
+LATENCY trial=11 ms=215.80540000000002
+LATENCY trial=12 ms=223.0944
+LATENCY trial=13 ms=209.07139999999998
+LATENCY trial=14 ms=222.1127
+LATENCY trial=15 ms=207.9723
+LATENCY trial=16 ms=208.6325
+LATENCY trial=17 ms=206.7526
+LATENCY trial=18 ms=208.0095
+LATENCY trial=19 ms=212.13119999999998
+LATENCY trial=20 ms=211.9213
+LATENCY trial=21 ms=212.7456
+LATENCY trial=22 ms=211.6769
+LATENCY trial=23 ms=217.3954
+LATENCY trial=24 ms=212.15429999999998
+LATENCY trial=25 ms=218.67239999999998
+LATENCY trial=26 ms=217.6081
+LATENCY trial=27 ms=212.94289999999998
+LATENCY trial=28 ms=213.7654
+LATENCY trial=29 ms=211.6505
+LATENCY trial=30 ms=215.13479999999998
+LATENCY trial=31 ms=221.69449999999998
+LATENCY trial=32 ms=212.9229
+LATENCY trial=33 ms=212.6768
+LATENCY trial=34 ms=216.7191
+LATENCY trial=35 ms=216.9356
+LATENCY trial=36 ms=207.07139999999998
+LATENCY trial=37 ms=208.4654
+LATENCY trial=38 ms=212.15970000000002
+LATENCY trial=39 ms=212.12349999999998
+LATENCY trial=40 ms=208.7616
+LATENCY trial=41 ms=215.9212
+LATENCY trial=42 ms=213.9269
+LATENCY trial=43 ms=222.3612
+LATENCY trial=44 ms=213.9752
+LATENCY trial=45 ms=221.6343
+LATENCY trial=46 ms=215.3264
+LATENCY trial=47 ms=219.17919999999998
+LATENCY trial=48 ms=214.7388
+LATENCY trial=49 ms=207.8638
+LATENCY trial=50 ms=207.41570000000002
+LATENCY trial=51 ms=219.3491
+LATENCY trial=52 ms=217.9942
+LATENCY trial=53 ms=212.721
+LATENCY trial=54 ms=214.607
+LATENCY trial=55 ms=222.44230000000002
+LATENCY trial=56 ms=212.25150000000002
+LATENCY trial=57 ms=211.31230000000002
+LATENCY trial=58 ms=208.09130000000002
+LATENCY trial=59 ms=215.4063
+LATENCY trial=60 ms=219.9564
+LATENCY trial=61 ms=211.25140000000002
+LATENCY trial=62 ms=211.1113
+LATENCY trial=63 ms=215.8449
+LATENCY trial=64 ms=210.1019
+LATENCY trial=65 ms=213.7225
+LATENCY trial=66 ms=206.05100000000002
+LATENCY trial=67 ms=208.3304
+LATENCY trial=68 ms=210.34130000000002
+LATENCY trial=69 ms=214.16080000000002
+LATENCY trial=70 ms=209.39450000000002
+LATENCY trial=71 ms=222.2479
+LATENCY trial=72 ms=211.5881
+LATENCY trial=73 ms=213.2938
+LATENCY trial=74 ms=220.6328
+LATENCY trial=75 ms=220.501
+LATENCY trial=76 ms=210.0231
+LATENCY trial=77 ms=214.1081
+LATENCY trial=78 ms=219.2929
+LATENCY trial=79 ms=211.20340000000002
+LATENCY trial=80 ms=216.3449
+LATENCY trial=81 ms=221.2581
+LATENCY trial=82 ms=212.5811
+LATENCY trial=83 ms=213.2463
+LATENCY trial=84 ms=220.4906
+LATENCY trial=85 ms=208.66660000000002
+LATENCY trial=86 ms=211.5896
+LATENCY trial=87 ms=213.7751
+LATENCY trial=88 ms=218.19369999999998
+LATENCY trial=89 ms=219.7213
+LATENCY trial=90 ms=218.0871
+LATENCY trial=91 ms=210.1712
+LATENCY trial=92 ms=215.3294
+LATENCY trial=93 ms=215.3708
+LATENCY trial=94 ms=218.2747
+LATENCY trial=95 ms=208.3494
+LATENCY trial=96 ms=216.8259
+LATENCY trial=97 ms=214.85989999999998
+LATENCY trial=98 ms=205.7271
+LATENCY trial=99 ms=208.63119999999998
+LATENCY min=205.7271ms median=213.2938ms p95=222.1127ms p99=222.4431ms max=223.0944ms bound=200ms
+LATCH stall=240 index=1 asks=2001
+LATCH stall=260 index=1 asks=1
+LATCH stall=350 index=2 asks=2
+ok
+test caller_cancelled_queued_notice_only_query_begins_and_is_remembered ... ok
+test consistently_slow_answers_on_each_probe_call_are_bounded_and_latched ... SLOW_EVERY delay=240 asks=4 probe_calls=5 elapsed=969.7268ms
+SLOW_EVERY delay=260 asks=1 probe_calls=2 elapsed=263.5112ms
+ok
+test deadline_precedes_reply_but_retry_recovers_exactly_one_commit ... ok
+test job_before_handler_refuses_and_after_start_keeps_identity ... ok
+test queries_ask_zero_and_work_cancellation_names_its_cause ... ok
+test sequential_job_start_cancellation_refuses_the_later_query ... ok
+test timed_out_queued_query_is_dropped_and_not_cached ... ok
+
+test result: ok. 8 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 41.64s
+

@@ -1,0 +1,110 @@
+[
+  {
+    "relative": 0.0,
+    "arc": "0.75",
+    "exact_peak": "0.75",
+    "exact_frame": "1.5",
+    "maximum_at_or_above_arc": true,
+    "below_arc_inside_documented_touch_band": false,
+    "product_frame": "1.5",
+    "frame_error": "0.0",
+    "permitted_touch": false,
+    "conforming": true
+  },
+  {
+    "relative": -1e-09,
+    "arc": "0.74999999925000004896702421319787390530109405517578125",
+    "exact_peak": "0.75",
+    "exact_frame": "1.4999841886122153158676126414122388102296794700032166345874129312003727987113908",
+    "maximum_at_or_above_arc": true,
+    "below_arc_inside_documented_touch_band": false,
+    "product_frame": "1.5",
+    "frame_error": "0.00001581138778468413238735858776",
+    "permitted_touch": false,
+    "conforming": true
+  },
+  {
+    "relative": -1e-12,
+    "arc": "0.74999999999925004434686570675694383680820465087890625",
+    "exact_peak": "0.75",
+    "exact_frame": "1.4999995000147825070914348896017355923232074509130227436707305819118875175940062",
+    "maximum_at_or_above_arc": true,
+    "below_arc_inside_documented_touch_band": false,
+    "product_frame": "1.5",
+    "frame_error": "4.999852174929085651103982644E-7",
+    "permitted_touch": false,
+    "conforming": true
+  },
+  {
+    "relative": -1e-13,
+    "arc": "0.749999999999924948923535339417867362499237060546875",
+    "exact_peak": "0.75",
+    "exact_frame": "1.4999998418322868338161941540008139055143391313288745853468196112662386185774442",
+    "maximum_at_or_above_arc": true,
+    "below_arc_inside_documented_touch_band": false,
+    "product_frame": "1.5",
+    "frame_error": "1.581677131661838058459991861E-7",
+    "permitted_touch": false,
+    "conforming": true
+  },
+  {
+    "relative": -1e-15,
+    "arc": "0.74999999999999922284388276239042170345783233642578125",
+    "exact_peak": "0.75",
+    "exact_frame": "1.4999999839049063662492726470878535606265151060988398714404638863817989880342255",
+    "maximum_at_or_above_arc": true,
+    "below_arc_inside_documented_touch_band": false,
+    "product_frame": "1.5",
+    "frame_error": "1.609509363375072735291214644E-8",
+    "permitted_touch": false,
+    "conforming": true
+  },
+  {
+    "relative": 1e-09,
+    "arc": "0.75000000075000006205527824931778013706207275390625",
+    "exact_peak": "0.75",
+    "exact_frame": "2.75000000075000006205527824931778013706207275390625",
+    "maximum_at_or_above_arc": false,
+    "below_arc_inside_documented_touch_band": false,
+    "product_frame": "2.75",
+    "frame_error": "7.500000620552782493177801371E-10",
+    "permitted_touch": false,
+    "conforming": true
+  },
+  {
+    "relative": 1e-12,
+    "arc": "0.750000000000750066675436755758710205554962158203125",
+    "exact_peak": "0.75",
+    "exact_frame": "2.750000000000750066675436755758710205554962158203125",
+    "maximum_at_or_above_arc": false,
+    "below_arc_inside_documented_touch_band": true,
+    "product_frame": "1.5",
+    "frame_error": "1.250000000000750066675436756",
+    "permitted_touch": true,
+    "conforming": true
+  },
+  {
+    "relative": 1e-13,
+    "arc": "0.75000000000007494005416219806647859513759613037109375",
+    "exact_peak": "0.75",
+    "exact_frame": "2.75000000000007494005416219806647859513759613037109375",
+    "maximum_at_or_above_arc": false,
+    "below_arc_inside_documented_touch_band": true,
+    "product_frame": "1.5",
+    "frame_error": "1.250000000000074940054162198",
+    "permitted_touch": true,
+    "conforming": true
+  },
+  {
+    "relative": 1e-15,
+    "arc": "0.75000000000000088817841970012523233890533447265625",
+    "exact_peak": "0.75",
+    "exact_frame": "2.75000000000000088817841970012523233890533447265625",
+    "maximum_at_or_above_arc": false,
+    "below_arc_inside_documented_touch_band": true,
+    "product_frame": "1.5",
+    "frame_error": "1.250000000000000888178419700",
+    "permitted_touch": true,
+    "conforming": true
+  }
+]

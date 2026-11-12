@@ -1,0 +1,1 @@
+["cargo", "clippy", "--locked", "-j", "4", "-p", "tt-executor", "-p", "tt-mcp", "-p", "tt-vector", "-p", "tt-anim", "--lib", "--bins", "--examples", "--", "-D", "warnings"]

@@ -1,0 +1,10 @@
+{
+  "product_doc_manifest_changes": [],
+  "inherited_reviewer_changes": [
+    "crates/executor/tests/c34_r3_probes.rs"
+  ],
+  "authorized_amendment": "panicking_probe_leaves_worker_alive body only",
+  "max_evidence_file_bytes": 122513,
+  "files_above_1MB": [],
+  "free_bytes": 277676871680
+}

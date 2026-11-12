@@ -1,0 +1,1 @@
+["cargo", "clippy", "--workspace", "--all-targets", "--locked", "-j", "4", "--", "-D", "warnings", "-A", "clippy::empty_line_after_doc_comments"]

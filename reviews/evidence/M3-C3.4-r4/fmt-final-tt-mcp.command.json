@@ -1,0 +1,1 @@
+["cargo", "fmt", "-p", "tt-mcp", "--check"]

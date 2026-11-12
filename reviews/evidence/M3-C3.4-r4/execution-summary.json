@@ -11,6 +11,97 @@
     "failure_lines": [],
     "test_summaries": 0
   },
+  "anim-final": {
+    "exit": 0,
+    "totals": {
+      "passed": 78,
+      "failed": 0,
+      "ignored": 0,
+      "measured": 0,
+      "filtered": 0
+    },
+    "failure_lines": [],
+    "test_summaries": 19
+  },
+  "anim": {
+    "exit": 101,
+    "totals": {
+      "passed": 0,
+      "failed": 0,
+      "ignored": 0,
+      "measured": 0,
+      "filtered": 0
+    },
+    "failure_lines": [
+      "error: could not compile `tt-anim` (test \"c34_r4_passage\") due to 1 previous error"
+    ],
+    "test_summaries": 0
+  },
+  "atomic-shape": {
+    "exit": 101,
+    "totals": {
+      "passed": 0,
+      "failed": 1,
+      "ignored": 0,
+      "measured": 0,
+      "filtered": 0
+    },
+    "failure_lines": [
+      "test atomic_work_account_cancellation_labels_the_nested_error_as_well_as_the_step ... FAILED",
+      "error: test failed, to rerun pass `-p tt-executor --test c34_r4_cancellation_shape`"
+    ],
+    "test_summaries": 1
+  },
+  "clippy-product": {
+    "exit": 0,
+    "totals": {
+      "passed": 0,
+      "failed": 0,
+      "ignored": 0,
+      "measured": 0,
+      "filtered": 0
+    },
+    "failure_lines": [],
+    "test_summaries": 0
+  },
+  "clippy-targets": {
+    "exit": 101,
+    "totals": {
+      "passed": 0,
+      "failed": 0,
+      "ignored": 0,
+      "measured": 0,
+      "filtered": 0
+    },
+    "failure_lines": [
+      "error: could not compile `tt-anim` (test \"c34_r4_passage\") due to 1 previous error"
+    ],
+    "test_summaries": 0
+  },
+  "clippy-workspace-product": {
+    "exit": 0,
+    "totals": {
+      "passed": 0,
+      "failed": 0,
+      "ignored": 0,
+      "measured": 0,
+      "filtered": 0
+    },
+    "failure_lines": [],
+    "test_summaries": 0
+  },
+  "clippy-workspace-targets": {
+    "exit": 0,
+    "totals": {
+      "passed": 0,
+      "failed": 0,
+      "ignored": 0,
+      "measured": 0,
+      "filtered": 0
+    },
+    "failure_lines": [],
+    "test_summaries": 0
+  },
   "contract-r2": {
     "exit": 0,
     "totals": {
@@ -24,6 +115,18 @@
     "test_summaries": 0
   },
   "contract-r3": {
+    "exit": 0,
+    "totals": {
+      "passed": 0,
+      "failed": 0,
+      "ignored": 0,
+      "measured": 0,
+      "filtered": 0
+    },
+    "failure_lines": [],
+    "test_summaries": 0
+  },
+  "e1": {
     "exit": 0,
     "totals": {
       "passed": 0,
@@ -53,7 +156,151 @@
     ],
     "test_summaries": 189
   },
+  "features": {
+    "exit": 0,
+    "totals": {
+      "passed": 0,
+      "failed": 0,
+      "ignored": 0,
+      "measured": 0,
+      "filtered": 0
+    },
+    "failure_lines": [],
+    "test_summaries": 0
+  },
+  "fmt-final-tt-anim": {
+    "exit": 0,
+    "totals": {
+      "passed": 0,
+      "failed": 0,
+      "ignored": 0,
+      "measured": 0,
+      "filtered": 0
+    },
+    "failure_lines": [],
+    "test_summaries": 0
+  },
+  "fmt-final-tt-executor": {
+    "exit": 0,
+    "totals": {
+      "passed": 0,
+      "failed": 0,
+      "ignored": 0,
+      "measured": 0,
+      "filtered": 0
+    },
+    "failure_lines": [],
+    "test_summaries": 0
+  },
+  "fmt-final-tt-mcp": {
+    "exit": 0,
+    "totals": {
+      "passed": 0,
+      "failed": 0,
+      "ignored": 0,
+      "measured": 0,
+      "filtered": 0
+    },
+    "failure_lines": [],
+    "test_summaries": 0
+  },
+  "fmt-final-tt-vector": {
+    "exit": 0,
+    "totals": {
+      "passed": 0,
+      "failed": 0,
+      "ignored": 0,
+      "measured": 0,
+      "filtered": 0
+    },
+    "failure_lines": [],
+    "test_summaries": 0
+  },
+  "fmt-tt-anim": {
+    "exit": 0,
+    "totals": {
+      "passed": 0,
+      "failed": 0,
+      "ignored": 0,
+      "measured": 0,
+      "filtered": 0
+    },
+    "failure_lines": [],
+    "test_summaries": 0
+  },
+  "fmt-tt-executor": {
+    "exit": 1,
+    "totals": {
+      "passed": 0,
+      "failed": 0,
+      "ignored": 0,
+      "measured": 0,
+      "filtered": 0
+    },
+    "failure_lines": [],
+    "test_summaries": 0
+  },
+  "fmt-tt-mcp": {
+    "exit": 0,
+    "totals": {
+      "passed": 0,
+      "failed": 0,
+      "ignored": 0,
+      "measured": 0,
+      "filtered": 0
+    },
+    "failure_lines": [],
+    "test_summaries": 0
+  },
+  "fmt-tt-vector": {
+    "exit": 0,
+    "totals": {
+      "passed": 0,
+      "failed": 0,
+      "ignored": 0,
+      "measured": 0,
+      "filtered": 0
+    },
+    "failure_lines": [],
+    "test_summaries": 0
+  },
+  "frontend-build": {
+    "exit": 0,
+    "totals": {
+      "passed": 0,
+      "failed": 0,
+      "ignored": 0,
+      "measured": 0,
+      "filtered": 0
+    },
+    "failure_lines": [],
+    "test_summaries": 0
+  },
+  "frontend-install": {
+    "exit": 0,
+    "totals": {
+      "passed": 0,
+      "failed": 0,
+      "ignored": 0,
+      "measured": 0,
+      "filtered": 0
+    },
+    "failure_lines": [],
+    "test_summaries": 0
+  },
   "generator": {
+    "exit": 0,
+    "totals": {
+      "passed": 0,
+      "failed": 0,
+      "ignored": 0,
+      "measured": 0,
+      "filtered": 0
+    },
+    "failure_lines": [],
+    "test_summaries": 0
+  },
+  "headless": {
     "exit": 0,
     "totals": {
       "passed": 0,
@@ -76,6 +323,21 @@
     },
     "failure_lines": [],
     "test_summaries": 0
+  },
+  "late-probes": {
+    "exit": 101,
+    "totals": {
+      "passed": 0,
+      "failed": 1,
+      "ignored": 0,
+      "measured": 0,
+      "filtered": 0
+    },
+    "failure_lines": [
+      "test two_hundred_answers_after_the_bound_must_latch_after_one_question ... FAILED",
+      "error: test failed, to rerun pass `-p tt-executor --test c34_r4_late_probe`"
+    ],
+    "test_summaries": 1
   },
   "mcp": {
     "exit": 0,
@@ -113,6 +375,104 @@
     "failure_lines": [],
     "test_summaries": 1
   },
+  "passage-adjudication": {
+    "exit": 0,
+    "totals": {
+      "passed": 0,
+      "failed": 0,
+      "ignored": 0,
+      "measured": 0,
+      "filtered": 0
+    },
+    "failure_lines": [],
+    "test_summaries": 0
+  },
+  "passage-oracle": {
+    "exit": 0,
+    "totals": {
+      "passed": 2,
+      "failed": 0,
+      "ignored": 0,
+      "measured": 0,
+      "filtered": 0
+    },
+    "failure_lines": [],
+    "test_summaries": 1
+  },
+  "protocol-release": {
+    "exit": 0,
+    "totals": {
+      "passed": 1,
+      "failed": 0,
+      "ignored": 0,
+      "measured": 0,
+      "filtered": 0
+    },
+    "failure_lines": [],
+    "test_summaries": 1
+  },
+  "r4-anim-final": {
+    "exit": 0,
+    "totals": {
+      "passed": 2,
+      "failed": 0,
+      "ignored": 0,
+      "measured": 0,
+      "filtered": 0
+    },
+    "failure_lines": [],
+    "test_summaries": 1
+  },
+  "r4-anim": {
+    "exit": 101,
+    "totals": {
+      "passed": 0,
+      "failed": 0,
+      "ignored": 0,
+      "measured": 0,
+      "filtered": 0
+    },
+    "failure_lines": [
+      "error: could not compile `tt-anim` (test \"c34_r4_passage\") due to 1 previous error"
+    ],
+    "test_summaries": 0
+  },
+  "r4-executor": {
+    "exit": 0,
+    "totals": {
+      "passed": 8,
+      "failed": 0,
+      "ignored": 0,
+      "measured": 0,
+      "filtered": 0
+    },
+    "failure_lines": [],
+    "test_summaries": 1
+  },
+  "reviewer-python-final": {
+    "exit": 0,
+    "totals": {
+      "passed": 0,
+      "failed": 0,
+      "ignored": 0,
+      "measured": 0,
+      "filtered": 0
+    },
+    "failure_lines": [],
+    "test_summaries": 0
+  },
+  "reviewer-python": {
+    "exit": 1,
+    "totals": {
+      "passed": 0,
+      "failed": 0,
+      "ignored": 0,
+      "measured": 0,
+      "filtered": 0
+    },
+    "failure_lines": [],
+    "test_summaries": 0
+  },
   "reviewer-release": {
     "exit": 0,
     "totals": {
@@ -136,5 +496,17 @@
     },
     "failure_lines": [],
     "test_summaries": 1
+  },
+  "vector": {
+    "exit": 0,
+    "totals": {
+      "passed": 227,
+      "failed": 0,
+      "ignored": 9,
+      "measured": 0,
+      "filtered": 36
+    },
+    "failure_lines": [],
+    "test_summaries": 38
   }
 }
