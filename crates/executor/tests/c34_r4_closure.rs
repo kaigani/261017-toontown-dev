@@ -261,7 +261,11 @@ fn caller_cancelled_queued_notice_only_query_begins_and_is_remembered() {
         let blocker = scope.spawn(|| h.invoke(edit()));
         rx.recv_timeout(Duration::from_secs(10)).unwrap();
         let releaser = scope.spawn(|| {
-            std::thread::sleep(Duration::from_millis(100));
+            let started = Instant::now();
+            while work::queued_tokens() == 0 {
+                assert!(started.elapsed() < Duration::from_secs(1), "the queued caller must mark cancellation");
+                std::thread::yield_now();
+            }
             release.store(true, Ordering::SeqCst);
         });
         let env = h.invoke_served_until(query.clone(), &|| true).0;
