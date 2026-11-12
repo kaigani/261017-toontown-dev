@@ -78,7 +78,9 @@ fn held_probe_timeout_keeps_one_remembered_commit() {
 #[test]
 fn queued_job_wait_step_uses_enqueue_deadline() {
     let _guard = TURN.lock().unwrap_or_else(std::sync::PoisonError::into_inner);
-    let h = fixture_with(ExecutorConfig { budget: Duration::from_millis(1000) });
+    let budget = Duration::from_secs(6);
+    let hold = Duration::from_secs(4);
+    let h = fixture_with(ExecutorConfig { budget });
     let directory = std::env::temp_dir().join(format!("c34-r5-wait-{}", std::process::id()));
     tt_vector::work::hooks::set_spin_micros(20_000);
     let job =
@@ -100,13 +102,17 @@ fn queued_job_wait_step_uses_enqueue_deadline() {
         rx.recv_timeout(Duration::from_secs(10)).unwrap();
         tt_persist::lock::hooks::set(None);
         let timer = s.spawn(|| {
-            std::thread::sleep(Duration::from_millis(700));
+            let held_at = Instant::now();
+            while held_at.elapsed() < hold {
+                std::thread::yield_now();
+            }
             release.send(()).unwrap();
         });
         let req: BatchRequest=serde_json::from_value(json!({"label":"wait deadline","atomic":false,"steps":[{"id":"job.wait","params":{"jobId":id,"timeoutMs":10000}},{"id":"doc.state.get","params":{}}]})).unwrap();
         let at = Instant::now();
         let env = h.batch(req, Origin::User);
-        assert!(at.elapsed() < Duration::from_millis(1000), "{env:?}");
+        assert!(at.elapsed() < budget, "{env:?}");
+        assert!(at.elapsed() >= hold, "the batch must spend most of its budget queued");
         assert_eq!(env.steps.as_ref().unwrap().len(), 2, "{env:?}");
         timer.join().unwrap();
         blocker.join().unwrap();
