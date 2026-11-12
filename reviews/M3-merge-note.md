@@ -150,28 +150,29 @@ Placements outside debug `check`:
 
 ## 6. CI job layout and budgets
 
-Times are from run 43239439281 at `d9661fc`, the code head of the C3.4 round-4 response: all 28 jobs green on Windows
-and macOS. The commit after it changes only this note. The C3.4 closure row and the candidate run are added at the
-closure.
+Times are from run 43262456390 at `1a19692`, the code head of the C3.4 round-4 response. All 28 jobs are green on
+Windows and macOS; three macOS jobs GitHub could not give a runner were rerun in attempts 2 and 3. The commit after it
+changes only this note. The C3.4 closure row and the candidate run are added at the closure.
 
-| Job (Windows / macOS unless noted) | Budget (min) | Run 43239439281, Windows / macOS (min) |
+| Job (Windows / macOS unless noted) | Budget (min) | Run 43262456390, Windows / macOS (min) |
 |---|---|---|
-| `check` | 60 (ceiling 55 by ruling; 47 target in C3.4 round 4) | 41.8 / 32.8 |
-| `check properties` (with four builder binaries from C3.4 round 4) | 45 | 31.4 / 25.7 |
-| `review properties release` (with `c31_r3_hierarchy`) | 45 | 39.3 / 26.6 |
-| `headless release` (with `cancel_phases` from C3.4 round 4) | 55 | 40.2 / 34.6 |
-| `history oracles release` | 40 | 21.4 / 17.9 |
-| `measurements release` | 45 | 16.4 / 13.5 |
-| `m3 properties release` | 20 | 3.3 / 1.7 |
-| `e2 release` | 30 | 6.2 / 5.6 |
-| `e4 release`, `e4 cross-OS` | 30, 10 | 7.2 / 7.0; 0.1 |
-| `c33 render release` (goldens, range, bitmap, render gate, reviewer corpora, E1, request-cancellation loops and stress from C3.4 rounds 3 and 4), `c33 cross-OS` | 30, 10 | 20.4 / 19.9; 0.1 |
-| `bundle` | 30 | 8.7 / 3.7 |
-| `raster determinism` (Windows, macOS, Linux) | 20 | 3.3 / 1.9 / 1.4 |
-| `headless without a display` (Linux) | 15 | 3.8 |
+| `check` | 60 (ceiling 55 by ruling; 47 target in C3.4 round 4) | 44.3 / 26.1 |
+| `check properties` (with `c32_round3` and `c12_kernel_state` from C3.4 round 4) | 45 | 37.1 / 20.5 |
+| `review properties release` (with `c31_r3_hierarchy`) | 45 | 35.4 / 30.3 |
+| `headless release` (with `cancel_phases` from C3.4 round 4) | 55 | 41.0 / 33.1 |
+| `history oracles release` | 40 | 16.4 / 16.2 |
+| `measurements release` | 45 | 14.9 / 13.0 |
+| `m3 properties release` | 20 | 2.8 / 2.6 |
+| `e2 release` | 30 | 7.4 / 5.9 |
+| `e4 release`, `e4 cross-OS` | 30, 10 | 5.5 / 5.8; 0.2 |
+| `c33 render release` (goldens, range, bitmap, render gate, reviewer corpora, E1, request-cancellation loops and stress from C3.4 rounds 3 and 4), `c33 cross-OS` | 30, 10 | 26.4 / 20.6; 0.1 |
+| `bundle` (with the C0.4 desktop step with M0 diagnostics from C3.4 round 4) | 30 | 23.8 / 27.4 |
+| `raster determinism` (Windows, macOS, Linux) | 20 | 2.6 / 2.2 / 1.5 |
+| `headless without a display` (Linux) | 15 | 3.9 |
 
-`check` at that run: Windows 374 test binaries, 1670 passed, 0 failed, 24 ignored; macOS 374, 1659, 0, 24.
-`check properties`: 10 binaries, 71 passed, 1 ignored (the lock-race child helper) on each OS.
+At that run, `check` ran 370 test binaries on each OS with 24 ignored: Windows 1632 passed, 0 failed; macOS 1627
+passed, 0 failed. `check properties` ran 8 binaries, 60 passed, on each OS. Windows `check` ranged from 36.7 to
+49.6 min across this round's runs; the 47-minute target is met at this run.
 
 ## 7. User-only items
 
