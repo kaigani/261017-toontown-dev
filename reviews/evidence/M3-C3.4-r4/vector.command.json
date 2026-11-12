@@ -1,0 +1,1 @@
+{"command": ["cargo", "test", "--locked", "-p", "tt-vector", "-j", "4", "--features", "test-hooks", "--no-fail-fast"], "env": {}}

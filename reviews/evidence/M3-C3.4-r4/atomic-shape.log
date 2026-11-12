@@ -1,0 +1,21 @@
+   Compiling tt-executor v0.0.1 (C:\Users\kaiga\work\review\m3-c34-r4\crates\executor)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 2.49s
+     Running tests\c34_r4_cancellation_shape.rs (target\debug\deps\c34_r4_cancellation_shape-d6de665efc28be41.exe)
+
+running 1 test
+
+thread 'atomic_work_account_cancellation_labels_the_nested_error_as_well_as_the_step' (26928) panicked at crates\executor\tests\c34_r4_cancellation_shape.rs:37:5:
+assertion `left == right` failed: C34-R4-01: the atomic wrapper must preserve the same cancellation cause: CommandError { code: "batch.stepFailed", message: "step 1 (`render.frame.run`) failed: rendering a frame was cancelled: the call overran its watchdog budget", details: Object {"stepIndex": Number(1), "commandId": String("render.frame.run"), "error": Object {"code": String("command.timeout"), "message": String("rendering a frame was cancelled: the call overran its watchdog budget"), "details": Object {"budget": Number(300000000)}, "hint": String("the caller's watchdog budget passed: the call was cancelled and changed nothing")}}, hint: None }
+  left: Null
+ right: "cancelled"
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+test atomic_work_account_cancellation_labels_the_nested_error_as_well_as_the_step ... FAILED
+
+failures:
+
+failures:
+    atomic_work_account_cancellation_labels_the_nested_error_as_well_as_the_step
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.14s
+
+error: test failed, to rerun pass `-p tt-executor --test c34_r4_cancellation_shape`

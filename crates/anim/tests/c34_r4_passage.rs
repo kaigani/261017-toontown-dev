@@ -29,7 +29,7 @@ fn exact_touch_and_near_touch_families_respect_the_documented_tolerance() {
     // These are arc offsets relative to the exact peak; expected times are analytic.
     let mut failures = Vec::new();
     for relative in [0.0, -1e-9, -1e-12, -1e-13, -1e-15, 1e-9, 1e-12, 1e-13, 1e-15] {
-        let arc = 0.75 * (1.0 + relative);
+        let arc: f64 = 0.75 * (1.0 + relative);
         let exact =
             if relative > 0.0 { 2.0 + arc } else { 1.0 + (1.0 - (1.0 - 4.0 * arc / 3.0).max(0.0).sqrt()) / 2.0 };
         let got = passage(arc);

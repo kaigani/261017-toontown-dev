@@ -1,0 +1,54 @@
+ok   1 doc.validate: no errors
+ok   1 read back: 24 fps
+ok   1 read back: camera 1920x1080
+ok   1 read back: drawing element Ball, a child of peg Bounce
+ok   1 read back: Ball under Bounce in the scene tree
+ok   1 read back: the circle is drawn and painted with the red swatch
+ok   1 read back: motion keyframes at frames 1, 12, 24
+ok   2 evaluated positions follow the easing presets along the sampled path of 05 §9.2 (|error| <= 1e-9 field)
+ok   2 the 64-sample arc length keeps the ball within 1e-3 field of the exact eased distance
+ok   2 extrema: the floor at frame 12, the top at the keys 1 and 24
+ok   2 hold after the last key: frames 25-30 at the top
+ok   2 the ball falls to frame 12 and rises to frame 24
+ok   2 explicit easing: slow start, fastest at the floor (bounce)
+ok   5 render.range.run succeeded
+ok   5 the delivery folder holds 24 frames and the manifest, nothing else
+ok   5 manifest: 24 frame files in frame order
+ok   5 manifest: count, size, fps, duration, range
+ok   5 the published manifest is the job's result
+ok   5 every frame's SHA-256 and byte count match the manifest
+ok   5 every frame is 1920x1080 (PNG header and manifest)
+ok   2 rendered ball centres (pixel centroids) match the eased positions within 0.05 px
+ok   2 the ball is a disc of the drawn radius (0.5 field = 80 px, plus half the line), the same area in every frame
+ok   3 render.frame.run frame 1 equals the sequence frame byte for byte
+ok   3 render.frame.run frame 12 equals the sequence frame byte for byte
+ok   3 render.frame.run frame 24 equals the sequence frame byte for byte
+ok   4 contact sheet: 5 columns, 24 cells, layout of SI-108
+ok   4 contact sheet: dimensions
+ok   4 every cell equals its frame rendered at the cell size, pixel for pixel
+ok   4 every cell has a frame label, and the 24 labels differ
+ok   6 onConflict fail (default): export.fileExists, nothing written
+ok   6 onConflict rename: new names, originals untouched
+ok   6 a late read-only target: failed, export.targetInvalid
+ok   6 the failed delivery keeps every original byte for byte and publishes no manifest
+ok   6 a dead job's sidecar-listed backup is restored and reported
+ok   6 an unowned look-alike is kept and not reported
+ok   6 a cancelled export publishes nothing
+ok   7 cancelled record: state, job.cancelled and the discard receipt through job_status, job.wait and job.list
+ok   7 failed record: state, export.targetInvalid and the discard receipt through job_status, job.wait and job.list
+ok   8 describe_frame: Ball at the floor (world position)
+ok   8 hit_test at the measured centre: Ball is the top hit
+ok   8 hit_test beside the ball: no hit on Ball
+ok   8 convert_coordinates: the measured centre maps to the ball's world position (<= 0.001 field)
+ok   10 undo changes the eased segment, redo restores it exactly
+ok   10 undo then redo: identical canonical document
+ok   10 save, close, reopen: identical canonical document
+ok   3 after reopening, frames 1, 6, 12, 18, 24 re-render identical bytes
+ok   7 the cancelled record survives save and reopen in the same session
+ok   3 variant: the camera keeps the default FOV (6 / tan(FOV/2) = 16, no alias)
+ok   3 variant: rendered centres match the rotated, scaled, rolled positions within 0.05 px
+ok   3 process B (--run replay into a fresh project) exits 0
+ok   3 the replayed project's canonical content equals the original's (stable symbolic references)
+ok   3 process B renders the 24 frames with identical bytes and SHA-256
+ok   7 a fresh session does not see the first session's job records
+53/53 checks passed

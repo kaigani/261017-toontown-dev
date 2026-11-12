@@ -1,0 +1,470 @@
+   Compiling tt-model v0.0.1 (C:\Users\kaiga\work\review\m3-c34-r4\crates\model)
+   Compiling tt-vector v0.0.1 (C:\Users\kaiga\work\review\m3-c34-r4\crates\vector)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 1m 50s
+     Running unittests src\lib.rs (target\debug\deps\tt_vector-772691824c4d53d1.exe)
+
+running 74 tests
+test brush::tests::a_dab_is_one_tip ... ok
+test brush::tests::a_straight_stroke_outlines_a_capsule ... ok
+test brush::tests::pressure_varies_the_width ... ok
+test brush::tests::outlines_are_reproducible ... ok
+test brush::tests::zero_width_is_invalid_geometry ... ok
+test fit::tests::a_closed_polyline_keeps_its_last_vertex_at_its_own_position ... ok
+test brush::tests::a_looping_stroke_is_one_clean_closed_path ... ok
+test fit::tests::a_rotated_loop_keeps_its_closing_pressure_before_the_first_sample ... ok
+test fit::tests::a_straight_drag_fits_one_segment ... ok
+test fit::tests::closed_loops_return_to_the_start ... ok
+test fit::tests::fitting_error_is_within_tolerance ... ok
+test fit::tests::pressure_maps_are_ordered_and_span_the_spine ... ok
+test geom::tests::affine_composition ... ok
+test geom::tests::bounds_cover_bulging_curves ... ok
+test geom::tests::line_length_and_bounds ... ok
+test num::tests::golden_values_are_platform_independent ... ok
+test num::tests::reflection_about_the_y_axis ... ok
+test ops::cut::tests::winding_inside_and_the_boundary_is_a_closed_invisible_stroke ... ok
+test ops::glyphs::tests::bridging_keeps_both_contours_and_their_anchor_count ... ok
+test ops::transform::tests::a_reflection_swaps_sides_and_maps_matrices ... ok
+test ops::transform::tests::a_rigid_map_turns_a_flat_tip_and_a_mirror_reflects_it ... ok
+test ops::transform::tests::a_scaled_brush_drops_its_spine_and_a_moved_or_turned_one_keeps_it ... ok
+test ops::transform::tests::envelopes_hit_their_corners_projectively_and_bilinearly ... ok
+test ops::smooth::tests::collinear_points_go_and_the_shape_stays_within_tolerance ... ok
+test ops::transform::tests::quarter_turns_are_exact_and_about_moves_the_pivot ... ok
+test path::tests::bezier_lists_round_trip_open_and_closed ... ok
+test path::tests::malformed_lists_are_invalid_geometry ... ok
+test fit::tests::a_click_is_a_dab ... ok
+test fit::tests::stationary_pressure_peaks_survive_cleaning_at_the_start_middle_and_end ... ok
+test planar::along::tests::a_path_crosses_a_zone_narrower_than_any_sampling_step ... ok
+test planar::along::tests::the_account_is_shared ... ok
+test fit::tests::a_square_keeps_its_corners ... ok
+test planar::exact::tests::a_dangling_edge_inside_both_zones_bounds_no_area ... ok
+test planar::exact::tests::holes_and_a_sloping_cut_are_exact ... ok
+test planar::exact::tests::identical_shared_and_disjoint_squares ... ok
+test ops::smooth::tests::a_closed_circle_of_many_anchors_keeps_at_least_three_and_stays_close ... ok
+test planar::fill::tests::disagreeing_sides_resolve_to_the_longest_bounding_length ... ok
+test planar::fill::tests::a_split_zone_gives_both_parts_its_fill_and_a_merge_takes_the_larger_part ... ok
+test planar::flat::tests::a_closed_path_does_not_repeat_its_start ... ok
+test planar::fill::tests::the_largest_overlap_wins_even_when_no_interior_point_lies_in_the_other_zone ... ok
+test planar::fill::tests::written_fills_read_back ... ok
+test planar::flat::tests::a_repeated_closing_anchor_keeps_the_closing_edge_parameter ... ok
+test planar::flat::tests::a_straight_segment_is_one_edge_and_a_curve_is_within_tolerance ... ok
+test planar::gap::tests::close_gap_prefers_ends ... ok
+test planar::gap::tests::a_small_opening_closes_with_one_kept_segment ... ok
+test planar::node::tests::a_changed_end_near_a_line_snaps_onto_it_and_splits_it ... ok
+test planar::node::tests::a_closed_loop_split_twice_gives_two_open_pieces ... ok
+test planar::node::tests::a_line_looping_through_its_own_crossing_is_cut_on_both_passes ... ok
+test planar::node::tests::a_line_through_another_lines_anchor_splits_both_there ... ok
+test planar::node::tests::a_line_through_the_meeting_point_of_two_pieces_is_split_there ... ok
+test planar::node::tests::a_t_junction_is_on_the_grid_and_translates_exactly ... ok
+test planar::node::tests::an_unchanged_anchor_near_a_crossing_is_the_junction_for_every_stroke ... ok
+test planar::node::tests::brush_outlines_are_never_split ... ok
+test planar::node::tests::crossing_lines_split_both_at_one_shared_point ... ok
+test planar::node::tests::noding_a_noded_layer_changes_nothing ... ok
+test planar::node::tests::three_lines_crossing_near_one_point_share_one_junction ... ok
+test planar::node::tests::touching_or_retracing_at_a_vertex_is_not_a_crossing ... ok
+test planar::predicates::tests::a_unit_determinant_on_the_grid_is_exact ... ok
+test symmetry::tests::kaleidoscope_gives_two_n_images ... ok
+test symmetry::tests::mirror_at_zero_is_left_right ... ok
+test text::nfc_tests::a_class_zero_composition_keeps_unrelated_formats ... ok
+test text::nfc_tests::a_combining_mark_typed_after_a_base_joins_the_base_and_its_run ... ok
+test text::nfc_tests::decomposed_input_is_composed_and_runs_follow ... ok
+test text::nfc_tests::deleting_between_a_base_and_a_mark_composes_them ... ok
+test text::nfc_tests::hangul_jamo_compose_into_one_syllable ... ok
+test text::nfc_tests::origins_follow_reordering_and_blocking ... ok
+test ops::glyphs::tests::placed_glyphs_follow_the_layout_and_carry_the_run_colour ... ok
+test text::tests::format_splits_and_merges_runs ... ok
+test text::tests::layout_wraps_at_a_fixed_width ... ok
+test text::tests::new_text_has_one_run_and_one_paragraph_per_line ... ok
+test text::tests::paragraph_format_follows_split_lines ... ok
+test text::tests::typing_and_deleting_keep_runs_covering_the_text ... ok
+test work::tests::a_mark_cancels_exactly_its_own_token ... ok
+test text::nfc_tests::nfc_with_origins_matches_the_library_on_random_text ... ok
+
+test result: ok. 74 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.05s
+
+     Running tests\c21_r1_geometry.rs (target\debug\deps\c21_r1_geometry-5417bb1e604b04a9.exe)
+
+running 10 tests
+test dense_input_worker ... ignored, subprocess worker; the parent runs this with a bounded timeout
+test invalid_sample_values_are_rejected_before_fitting ... ok
+test fitted_curve_stays_within_tolerance_of_input_polyline ... ok
+test brush_sweep_includes_pressure_peak_between_placements ... ok
+test brush_tips_dabs_pressure_extremes_and_reversals_remain_defined ... ok
+test looping_brush_preserves_hole_and_clean_swept_area ... ok
+
+running 1 test
+100000 dense straight samples: 18.0764ms, 1 anchors
+test dense_input_worker ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 9 filtered out; finished in 0.02s
+
+test curve_fixture_matrix_keeps_valid_paths_and_anchor_limit ... ok
+test text_edge_cases_are_finite_and_bounded ... ok
+test dense_100k_input_finishes_within_document_watchdog_budget ... ok
+test closed_path_at_anchor_limit_reimports_its_own_bezier_list ... ok
+
+test result: ok. 9 passed; 0 failed; 1 ignored; 0 measured; 0 filtered out; finished in 0.14s
+
+     Running tests\c21_r2_geometry.rs (target\debug\deps\c21_r2_geometry-df9ab880d6b110e5.exe)
+
+running 11 tests
+test alternating_pressure_worker ... ignored, subprocess worker run by the bounded parent
+test many_pressure_knots_brush_worker ... ignored, subprocess worker run by the bounded parent
+test nfc_composition_preserves_unaffected_character_formats ... ok
+test spatial_dedupe_preserves_pressure_extrema_for_the_brush_sweep ... ok
+
+running 1 test
+
+running 1 test
+test swept_tip_containment_matrix_at_and_between_knots ... ok
+test round_loop_union_grid_error_is_within_outline_tolerance ... ok
+alternating pressure: 25.1665ms, charged visits=20787858, knots=100000
+test alternating_pressure_worker ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 10 filtered out; finished in 0.03s
+
+test alternating_pressure_fitting_respects_watchdog ... ok
+test hundred_thousand_collinear_samples_respect_polyline_tolerance ... ok
+test open_and_closed_anchor_limit_boundaries ... ok
+99000-knot brush: 1.0214673s, result anchors/error=Ok(20)
+test many_pressure_knots_brush_worker ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 10 filtered out; finished in 1.02s
+
+test many_pressure_knots_brush_respects_watchdog ... ok
+test dense_bidirectional_fitting_corpus ... ok
+
+test result: ok. 9 passed; 0 failed; 2 ignored; 0 measured; 0 filtered out; finished in 33.18s
+
+     Running tests\c21_r3_geometry.rs (target\debug\deps\c21_r3_geometry-17e079458728c088.exe)
+
+running 8 tests
+test bridge_threshold_closed_spine_and_symmetry_work_variants ... ignored, release-only bridge and symmetry work observations
+test maximum_spine_and_pressure_worker ... ignored, bounded subprocess worker
+test canonical_reordering_preserves_each_marks_own_format ... ok
+test closing_near_duplicate_pressure_stays_at_the_end_of_the_loop ... ok
+test nfc_reference_and_origin_coverage_corpus ... ok
+test exact_stationary_samples_keep_pressure_extrema_after_command_cleaning ... ok
+test merged_pressure_moving_average_matches_input_window_at_every_smoothness ... ok
+
+running 1 test
+maximum spine + pressure complete outline 1.9460252s: Err(GeomError { code: "limit.exceeded", message: "the brush stroke needs more than 100000 tip placements", pointer: "/points" })
+test maximum_spine_and_pressure_worker ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 7 filtered out; finished in 1.95s
+
+test maximum_spine_and_pressure_return_within_watchdog ... ok
+
+test result: ok. 6 passed; 0 failed; 2 ignored; 0 measured; 0 filtered out; finished in 1.97s
+
+     Running tests\c21_r4_closure.rs (target\debug\deps\c21_r4_closure-573fd64143a160ff.exe)
+
+running 4 tests
+test distinct_return_groups_keep_their_arc_positions_and_tail_rotates_with_geometry ... ok
+test reordered_marks_composites_and_paragraph_boundaries_keep_owners ... ok
+test several_closing_samples_form_ordered_seam_and_open_return_stays_open ... ok
+test closed_stationary_samples_keep_every_pressure ... ok
+
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests\c21_worst_case.rs (target\debug\deps\c21_worst_case-1415cc7528a26037.exe)
+
+running 3 tests
+test adversarial_brush_outlines_finish_or_are_refused_within_the_work_budget ... ignored, release-only measurement (about a minute); CI runs it in the headless job with the fitting corpus
+test adversarial_inputs_fit_within_the_work_budget ... ignored, release-only measurement (about a minute); CI runs it in the headless job with `cargo test --release -p tt-vector --test c21_worst_case -- --ignored --nocapture` and keeps the observations
+test input_needing_more_work_than_the_budget_is_refused_with_limit_exceeded ... ok
+
+test result: ok. 1 passed; 0 failed; 2 ignored; 0 measured; 0 filtered out; finished in 0.03s
+
+     Running tests\c22_bridges.rs (target\debug\deps\c22_bridges-3429cdc5da085cad.exe)
+
+running 1 test
+test holes_pieces_and_bridges_match_the_swept_union_and_the_planar_map ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.32s
+
+     Running tests\c22_exact_overlap.rs (target\debug\deps\c22_exact_overlap-fa4404916db83447.exe)
+
+running 1 test
+test exact_overlap_areas_match_a_big_rational_reference ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.11s
+
+     Running tests\c22_planar.rs (target\debug\deps\c22_planar-39d2f1c5dcc618ad.exe)
+
+running 11 tests
+test a_nested_square_is_a_hole_and_a_child_zone ... ok
+test a_dangling_line_inside_a_zone_does_not_split_it ... ok
+test a_figure_eight_line_bounds_two_zones ... ok
+test zone_ids_do_not_depend_on_where_tracing_starts_or_on_stroke_order ... ok
+test four_lines_meeting_at_corners_bound_one_zone ... ok
+test zone_ids_follow_the_boundary_only_and_are_reproducible ... ok
+test crossing_squares_make_three_zones ... ok
+test a_closed_circle_is_one_zone_with_its_area ... ok
+test a_pencil_line_across_a_brush_stroke_meets_it_in_the_graph ... ok
+test a_brush_ring_fills_itself_and_bounds_its_hole ... ok
+test the_work_budget_refuses_large_input ... ok
+
+test result: ok. 11 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.24s
+
+     Running tests\c22_properties.rs (target\debug\deps\c22_properties-5b6ad8835307867d.exe)
+
+running 3 tests
+test the_map_is_deterministic_order_independent_and_interior_points_locate_their_zones ... ok
+test zones_an_edit_leaves_alone_keep_their_id_and_fill ... ok
+test settling_is_idempotent_and_painted_fills_read_back ... ok
+
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.02s
+
+     Running tests\c22_r1_geometry.rs (target\debug\deps\c22_r1_geometry-8cb4608d7d5aa154.exe)
+
+running 6 tests
+test a_crossing_near_an_existing_anchor_has_one_shared_junction ... ok
+test topology_changes_at_the_documented_snap_grid_are_repeatable ... ok
+test changing_a_boundarys_geometry_changes_its_zone_id ... ok
+test analytic_holes_parents_sides_retracing_tangency_and_brush_winding ... ok
+test overlapping_zones_carry_fill_even_when_neither_interior_point_is_in_the_other ... ok
+test fixed_seed_line_arrangements_match_independent_convex_clipping ... ok
+
+test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests\c22_r2_geometry.rs (target\debug\deps\c22_r2_geometry-062a9fd69a7ce126.exe)
+
+running 9 tests
+test vertex_touches_turnbacks_overlaps_and_degenerate_anchors ... ok
+test along_edge_vertex_reentry_and_brush ... ok
+test junction_clusters_do_not_chain_and_a_cut_can_end_at_a_shared_junction ... ok
+test shared_anchor_rotated_reversed_and_at_tolerance ... ok
+test overlap_ranking_keeps_rational_intersection_area_before_grid_rounding ... ok
+test brush_exterior_fill_survives_split_to_sides_and_merge_back ... ok
+test overlap_equal_merge_three_way_split_sliver_and_holes ... ok
+test zone_identity_hole_spur_straight_elision_and_nonboundary_edits ... ok
+test vertex_crossing_uses_exact_orientation_for_grid_coordinates ... ok
+
+test result: ok. 9 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests\c22_r3_geometry.rs (target\debug\deps\c22_r3_geometry-9f5900f97ddf9e4c.exe)
+
+running 5 tests
+test exact_interior_endpoint_and_snapped_collinear_controls ... ok
+test nonconvex_holed_sloping_shared_edges_have_analytic_areas ... ok
+test three_subcell_differences_and_exact_ties_rank_before_ids ... ok
+test large_candidate_set_charges_and_refuses_without_partial_result ... ok
+test exact_near_collinear_crossings_in_every_quadrant_and_both_vertex_forms ... ok
+
+test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+
+     Running tests\c22_r4_closure.rs (target\debug\deps\c22_r4_closure-e2cb4f49e585415c.exe)
+
+running 2 tests
+test end_joins_existing_three_stroke_junction_with_unchanged_anchor_authority ... ok
+test continuation_oblique_parallel_and_original_collinear_cases ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests\c22_settle.rs (target\debug\deps\c22_settle-dfb73d0d4ebf9f50.exe)
+
+running 4 tests
+test painting_a_zone_writes_its_fill_on_the_bounding_sides ... ok
+test a_crossing_line_splits_strokes_and_both_zone_parts_keep_the_fill ... ok
+test a_pencil_crossing_a_brush_splits_at_the_outline_and_leaves_the_brush_byte_identical ... ok
+test a_brush_only_zone_keeps_its_fill_in_exterior_records ... ok
+
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+
+     Running tests\c22_worst_case.rs (target\debug\deps\c22_worst_case-22bb25ed2cd0d51d.exe)
+
+running 1 test
+test adversarial_layers_settle_or_are_refused_within_the_planar_budget ... ignored, release-only measurement (a few minutes); CI runs it in the headless job with `cargo test --release -p tt-vector --test c22_worst_case -- --ignored --nocapture` and keeps the observations
+
+test result: ok. 0 passed; 0 failed; 1 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests\c23_predicates.rs (target\debug\deps\c23_predicates-dbb28c6143ce5f2d.exe)
+
+running 3 tests
+test containment_is_exact_on_and_off_the_boundary ... ok
+test endpoint_contact_and_collinear_overlap_are_not_crossings_but_do_meet ... ok
+test unit_determinants_far_from_the_origin_are_decided_exactly ... ok
+
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests\c23_r1_geometry.rs (target\debug\deps\c23_r1_geometry-8198ddfe066cd7ff.exe)
+
+running 3 tests
+test cutter_overlap_classification_keeps_exact_grid_crossings ... ok
+test rich_rtl_and_combining_glyphs_match_the_same_font_layout ... ok
+test smooth_dense_bidirectional_distance_and_selected_anchors ... ok
+
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+
+     Running tests\c23_r2_predicates.rs (target\debug\deps\c23_r2_predicates-1435bebb388d930f.exe)
+
+running 2 tests
+test every_work_account_observes_request_cancellation_and_next_request_is_clean ... ok
+test translated_reversed_unit_determinants_and_shared_edges ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests\c23_r2_smooth.rs (target\debug\deps\c23_r2_smooth-6886df85d776eb68.exe)
+
+running 1 test
+test twenty_thousand_anchor_work_observations ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 4.57s
+
+     Running tests\c24_centre.rs (target\debug\deps\c24_centre-8fef57ac8a4e0cd8.exe)
+
+running 6 tests
+test refusals_are_typed ... ok
+test a_bar_gives_one_line_along_its_middle_with_its_width ... ok
+test a_plus_gives_branches_meeting_at_a_junction ... ok
+test a_ring_with_a_bridged_hole_gives_a_closed_line ... ok
+test the_result_is_deterministic ... ok
+test a_frame_split_by_a_bar_gives_three_lines_between_two_junctions ... ok
+
+test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests\c24_flatten_phases.rs (target\debug\deps\c24_flatten_phases-72e4f29a5bfe6650.exe)
+
+running 1 test
+test flatten_settle_phases_raw_observations ... ignored, measurement; run with TT_MEASURE=1 and --ignored in release
+
+test result: ok. 0 passed; 0 failed; 1 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests\c24_noding_regressions.rs (target\debug\deps\c24_noding_regressions-043da11f45b04fac.exe)
+
+running 1 test
+test a_fold_through_piece_ends_is_cut_at_every_pass ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests\c24_properties.rs (target\debug\deps\c24_properties-a45df56cdc5f4f5e.exe)
+
+running 8 tests
+test fixed_regressions ... ok
+test side_fills_read_back_beside_collinear_overlaps ... ok
+test zone_ids_and_areas_do_not_depend_on_stroke_order_and_settling_is_idempotent ... ok
+test a_settled_layer_is_a_fixpoint_of_noding ... ok
+test zones_are_the_oracles_bounded_faces_on_degenerate_arrangements ... ok
+test adding_strokes_carries_each_fill_into_the_zones_it_splits ... ok
+test side_fills_read_back_after_adding_strokes ... ok
+test determinant_plus_and_minus_one_maps_keep_the_faces ... ok
+
+test result: ok. 8 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 2.20s
+
+     Running tests\c24_r1_geometry.rs (target\debug\deps\c24_r1_geometry-3916f8ccb6619f1d.exe)
+
+running 2 tests
+test three_way_owner_deletion_split_and_import_keep_fill_and_opaque_namespaces ... ok
+test thin_neck_t_and_subunit_bars_have_finite_axes_and_independent_average_width ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests\c24_r1_properties.rs (target\debug\deps\c24_r1_properties-3def78c1381fc15a.exe)
+
+running 9 tests
+test shrunk_determinant_case ... ok
+test fixed_regressions ... ok
+test side_fills_read_back_beside_collinear_overlaps ... ok
+test a_settled_layer_is_a_fixpoint_of_noding ... ok
+test zone_ids_and_areas_do_not_depend_on_stroke_order_and_settling_is_idempotent ... ok
+test zones_are_the_oracles_bounded_faces_on_degenerate_arrangements ... ok
+test adding_strokes_carries_each_fill_into_the_zones_it_splits ... ok
+test side_fills_read_back_after_adding_strokes ... ok
+test determinant_plus_and_minus_one_maps_keep_the_faces has been running for over 60 seconds
+test determinant_plus_and_minus_one_maps_keep_the_faces ... ok
+
+test result: ok. 9 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 108.87s
+
+     Running tests\c24_r2_noding.rs (target\debug\deps\c24_r2_noding-caa8aa0af363113e.exe)
+
+running 3 tests
+test a_closed_zero_length_last_segment_is_not_part_of_the_nonzero_closing_edge_parameter_range ... ok
+test a_closed_fold_with_a_repeated_terminal_anchor_keeps_two_passes ... ok
+test a_closed_fold_without_a_repeated_terminal_anchor_keeps_two_passes ... ok
+
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests\c24_r2_properties.rs (target\debug\deps\c24_r2_properties-d22d7b483ef83ed7.exe)
+
+running 11 tests
+test independent_snapping_envelope_matches_a_rectangles_analytic_formula ... ok
+test integer_translations_and_compositions_preserve_all_snapped_anchor_sequences ... ok
+test fixed_regressions ... ok
+test shrunk_determinant_case ... ok
+test side_fills_read_back_beside_collinear_overlaps ... ok
+test a_settled_layer_is_a_fixpoint_of_noding ... ok
+test zone_ids_and_areas_do_not_depend_on_stroke_order_and_settling_is_idempotent ... ok
+test zones_are_the_oracles_bounded_faces_on_degenerate_arrangements ... ok
+test adding_strokes_carries_each_fill_into_the_zones_it_splits ... ok
+test side_fills_read_back_after_adding_strokes ... ok
+test determinant_plus_and_minus_one_maps_keep_the_faces has been running for over 60 seconds
+test determinant_plus_and_minus_one_maps_keep_the_faces ... ok
+
+test result: ok. 11 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 107.80s
+
+     Running tests\c24_r3_noding.rs (target\debug\deps\c24_r3_noding-658df06ac8b70fdc.exe)
+
+running 1 test
+test repeated_interior_consecutive_and_terminal_anchors_with_crossings_4096 ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.18s
+
+     Running tests\c24_r3_properties.rs (target\debug\deps\c24_r3_properties-9446d8d66fdaed6b.exe)
+
+running 11 tests
+test independent_snapping_envelope_matches_a_rectangles_analytic_formula ... ok
+test integer_translations_and_compositions_preserve_all_snapped_anchor_sequences ... ok
+test shrunk_determinant_case ... ok
+test side_fills_read_back_beside_collinear_overlaps ... ok
+test fixed_regressions ... ok
+test a_settled_layer_is_a_fixpoint_of_noding ... ok
+test zone_ids_and_areas_do_not_depend_on_stroke_order_and_settling_is_idempotent ... ok
+test zones_are_the_oracles_bounded_faces_on_degenerate_arrangements ... ok
+test adding_strokes_carries_each_fill_into_the_zones_it_splits ... ok
+test side_fills_read_back_after_adding_strokes ... ok
+test determinant_plus_and_minus_one_maps_keep_the_faces has been running for over 60 seconds
+test determinant_plus_and_minus_one_maps_keep_the_faces ... ok
+
+test result: ok. 11 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 108.68s
+
+     Running tests\c24_trace.rs (target\debug\deps\c24_trace-e7e27aa74025c994.exe)
+
+running 3 tests
+test a_tiny_budget_refuses_before_finishing ... ok
+test traced_regions_match_the_independent_oracle ... ok
+test random_images_vectorize_or_refuse_typed_and_never_panic ... ok
+
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.03s
+
+     Running tests\c24_vectorize_unit.rs (target\debug\deps\c24_vectorize_unit-900afb168baf0534.exe)
+
+running 7 tests
+test a_ring_is_one_region_with_one_hole ... ok
+test diagonal_ink_is_connected_and_paper_is_not ... ok
+test oversize_and_mismatched_input_is_refused ... ok
+test filters_and_threshold ... ok
+test an_image_becomes_one_outline_per_region_spanning_the_frame_width ... ok
+test transparent_pixels_are_paper ... ok
+test separate_regions_come_in_row_major_order ... ok
+
+test result: ok. 7 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests\properties.rs (target\debug\deps\properties-b0443c109bd1b29c.exe)
+
+running 7 tests
+test pressure_interpolation_stays_in_range ... ok
+test text_edits_keep_runs_covering_and_one_paragraph_per_line ... ok
+test bezier_lists_round_trip ... ok
+test fitting_ignores_timing_only_positions_and_pressures_matter ... ok
+test outlines_contain_every_swept_tip_including_holes_and_separate_pieces ... ok
+test fitting_is_deterministic_and_within_tolerance ... ok
+test outlines_are_closed_finite_and_cover_every_tip ... ok
+
+test result: ok. 7 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.65s
+
+   Doc-tests tt_vector
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
