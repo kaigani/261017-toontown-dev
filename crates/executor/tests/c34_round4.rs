@@ -166,8 +166,8 @@ fn answers_just_inside_the_bound_hold_the_thread_at_most_the_budget_plus_one_bou
     let _t = turn();
     let budget = Duration::from_millis(1500);
     let bound = Duration::from_millis(250);
-    // A trial is valid only if every answer stayed inside the bound. A runner whose sleep overshoots past it makes that
-    // answer late, which latches the link as designed (C34-R4-02) and leaves the premise untested; such a trial is
+    // A trial is valid only if every answer stayed inside the bound. A runner that deschedules the probe past it makes
+    // that answer late, which latches the link as designed (C34-R4-02) and leaves the premise untested; such a trial is
     // retried, up to five times.
     for attempt in 1..=5 {
         let h = fixture_with(ExecutorConfig { budget });
@@ -187,8 +187,12 @@ fn answers_just_inside_the_bound_hold_the_thread_at_most_the_budget_plus_one_bou
             let asks = work::asks();
             if asks > answered.load(Ordering::SeqCst) {
                 answered.store(asks, Ordering::SeqCst);
+                // A yielding spin, not a sleep: macOS runners overshoot a 200 ms sleep by 70-120 ms (run 43213759353),
+                // past the bound.
                 let at = Instant::now();
-                std::thread::sleep(bound * 4 / 5);
+                while at.elapsed() < bound * 4 / 5 {
+                    std::thread::yield_now();
+                }
                 let mut l = longest.lock().unwrap();
                 *l = (*l).max(at.elapsed());
             }
