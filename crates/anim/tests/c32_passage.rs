@@ -191,6 +191,20 @@ fn check(nodes: &[Node], arc: R) {
     assert_eq!(got, round3(got), "reported to 3 decimals");
 }
 
+/// M3 C3.4 round 3: the passage property's counterexample. The second sub-segment's maximum equals the arc exactly
+/// (0.9 at s = 1/2, frame 3, a tangent touch); the curve falls back and crosses again near frame 3.6. The earliest
+/// frame with V ≥ arc is the touch, which doubles evaluate one rounding error low (`tcb::PASSAGE_TOUCH`).
+#[test]
+fn a_tangent_touch_at_an_extremum_is_the_passage() {
+    let nodes = [
+        node(1, q(0, 1), q(0, 1), q(0, 10)),
+        node(2, q(5, 10), q(0, 10), q(7, 10)),
+        node(4, q(1, 1), q(-3, 10), q(0, 1)),
+    ];
+    check(&nodes, q(90, 100));
+    assert_eq!(product(&nodes, 0.9), 3.0);
+}
+
 #[test]
 fn an_excursion_within_one_frame_is_found_at_its_first_crossing() {
     // Frames 1 → 3: u rises from 0 to a peak of 0.75 at frame 1.5 and is back to 0 at frame 2, then rises linearly to 1.

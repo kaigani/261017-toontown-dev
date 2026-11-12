@@ -40,6 +40,7 @@ the 30-second watchdog.
    | `tcb::SAMPLES_PER_SEGMENT` | 64 | 05 §9.2 |
    | `tcb::PASSAGE_TOLERANCE` | 1e-4 frame | 05 §10.5's required accuracy; the bisection goes past it, to the bracket's floating-point resolution, so the 3-decimal rounding is that of the crossing itself (a crossing within 1e-4 below a rounding boundary is not carried across it, C32-R1-01) |
    | `tcb::PASSAGE_MAX_ITERATIONS` | 64 | The bracket is one monotone piece of a keyframe segment, at most 100 000 frames; halved 64 times it is under 1e-14 frame, below the spacing of doubles there; the bisection stops earlier when the midpoint is no longer strictly inside the bracket |
+   | `tcb::PASSAGE_TOUCH` | 1e-12 (relative to max(1, \|arc\|)) | A node or extremum candidate within this below the arc reaches it: an extremum equal to the arc (a tangent touch) evaluates a rounding error low in doubles (M3 C3.4 round 3; the passage property's counterexample, a maximum of exactly 0.9 at frame 3) |
    | `tcb::MIN_TANGENT` | 1e-9 | 05 §8.3 |
    | `eval::NODE_FRAME_COST` | 16 units | Per node-frame evaluated |
    | `anim_eval::MAX_RESULTS` | 1 000 000 | Frame × node results or samples of one query |

@@ -19,6 +19,12 @@ pub const PASSAGE_TOLERANCE: f64 = 1e-4;
 /// when the midpoint is no longer strictly inside the bracket (ADR-0019).
 pub const PASSAGE_MAX_ITERATIONS: u32 = 64;
 
+/// Relative tolerance of a touch: a candidate frame (a node or an extremum of the velocity curve) whose value is within
+/// `PASSAGE_TOUCH · max(1, |arc|)` below the arc reaches it. An extremum that equals the arc exactly (a tangent touch)
+/// evaluates one rounding error below it in doubles; without this the touch is missed and the later crossing reported
+/// (found by the 4096-case passage property in M3 C3.4 round 3: a maximum of exactly 0.9 at frame 3 reported 3.6).
+pub const PASSAGE_TOUCH: f64 = 1e-12;
+
 /// A tangent below this length has no direction (05 §8.3).
 pub const MIN_TANGENT: f64 = 1e-9;
 
@@ -348,9 +354,10 @@ impl Velocity {
         }
         candidates.push(f1);
         let (mut lo, mut hi) = (f0, f1);
+        let touch = PASSAGE_TOUCH * arc.abs().max(1.0);
         for f in candidates.into_iter().skip(1) {
             spend(1)?;
-            if self.value(path, f) >= arc {
+            if self.value(path, f) >= arc - touch {
                 hi = f;
                 break;
             }
