@@ -100,6 +100,35 @@ fn bounded_questions_latency_distribution_and_latch() {
     }
 }
 #[test]
+fn consistently_slow_answers_on_each_probe_call_are_bounded_and_latched() {
+    let _guard = TURN.lock().unwrap_or_else(std::sync::PoisonError::into_inner);
+    for delay in [240, 260] {
+        let h = fixture();
+        let n = AtomicUsize::new(0);
+        work::reset_asks();
+        let start = Instant::now();
+        let env = h
+            .invoke_served_until(edit(), &|| {
+                if n.fetch_add(1, Ordering::SeqCst) > 0 {
+                    std::thread::sleep(Duration::from_millis(delay));
+                }
+                false
+            })
+            .0;
+        eprintln!(
+            "SLOW_EVERY delay={delay} asks={} probe_calls={} elapsed={:?}",
+            work::asks(),
+            n.load(Ordering::SeqCst),
+            start.elapsed()
+        );
+        assert!(env.is_ok(), "{env:?}");
+        if delay > 250 {
+            assert_eq!(work::asks(), 1);
+        }
+    }
+}
+
+#[test]
 fn queries_ask_zero_and_work_cancellation_names_its_cause() {
     let _guard = TURN.lock().unwrap_or_else(std::sync::PoisonError::into_inner);
     let h = fixture();

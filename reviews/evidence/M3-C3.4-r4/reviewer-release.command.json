@@ -1,0 +1,1 @@
+{"command": ["cargo", "test", "--release", "--locked", "-p", "tt-executor", "-j", "4", "--test", "c34_r2_cancellation", "--test", "c34_r2_measurements", "--test", "c34_r3_contention", "--test", "c34_r3_edges", "--test", "c34_r3_probes", "--test", "c34_round2", "--", "--nocapture", "--test-threads=1"], "env": {}}
