@@ -414,14 +414,21 @@ impl ExecutorHandle {
         self.tx.send(Request::Tagged(token, link, queued, Box::new(make(reply)))).map_err(|_| stopped())?;
         let deadline = queued + self.config.budget;
         let mut marked = false;
+        // Whether a probe evaluation ended at or after the deadline: the caller was held inside its own probe.
+        let mut held = false;
         // While the worker holds the link, the caller waits on it (questions, a discard notice, or its release right
         // after the reply); otherwise on the reply itself.
         let mut link_open = linked;
         loop {
-            // The watchdog first: a caller held past its budget (inside its own probe, say) answers the timeout even if
-            // the reply has arrived meanwhile; a commit that happened stands and is remembered under its `requestId`.
+            // The watchdog first: a caller held past its budget inside its own probe answers the timeout even if the
+            // reply has arrived meanwhile; a commit that happened stands and is remembered under its `requestId`. A
+            // caller that was waiting takes a reply already delivered when it sees its deadline, since its thread
+            // may wake late on a loaded machine (C3.4 round 4).
             let left = deadline.saturating_duration_since(std::time::Instant::now());
             if left.is_zero() {
+                if !held && let Ok(v) = rx.try_recv() {
+                    return Ok(v);
+                }
                 // Queued: the worker drops it at dequeue. Running: it stops at its next work-account check and before
                 // any commit. Either way it never begins or commits after this answer (ADR-0015 history).
                 self.cancel.mark(token);
@@ -443,6 +450,7 @@ impl ExecutorHandle {
                 match questions.recv_timeout(wait) {
                     Ok(CallerMsg::Ask(answer)) => {
                         let c = cancelled();
+                        held |= std::time::Instant::now() >= deadline;
                         if c && !marked {
                             self.cancel.mark_cancelled(token);
                             marked = true;
@@ -468,9 +476,13 @@ impl ExecutorHandle {
                     Err(RecvTimeoutError::Timeout) => {}
                 }
             }
-            if !marked && cancelled() {
-                self.cancel.mark_cancelled(token);
-                marked = true;
+            if !marked {
+                let c = cancelled();
+                held |= std::time::Instant::now() >= deadline;
+                if c {
+                    self.cancel.mark_cancelled(token);
+                    marked = true;
+                }
             }
         }
     }

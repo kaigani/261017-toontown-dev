@@ -108,8 +108,10 @@ thread); ADR-0019 fixes the evaluation order of transforms.
    committed first, rule 3 applies. Unanswered questions therefore cost one bound each, latched after the first: a request stalls the
    document thread through unanswered questions by at most one bound, whatever its step count. From then on its
    cancellation is seen only through its marked token; seen late, it is like a commit that got there first (rule 3).
-   A caller that is gone (disconnected link) counts as cancelled. A caller held past its own watchdog budget (inside
-   its probe, say) answers the timeout even if the reply has arrived; a commit that happened stands.
+   A caller that is gone (disconnected link) counts as cancelled. A caller held past its own watchdog budget inside its
+   own probe answers the timeout even if the reply has arrived; a commit that happened stands. A caller that was
+   waiting takes a reply already delivered when it sees its deadline, since on a loaded machine its thread may wake
+   after the deadline that the reply beat (C3.4 round 4).
 
    **Cumulative bound** (O-6). Answered questions do not latch, so a probe that always answers just inside the bound
    costs up to one bound per question. The total time one request holds the document thread through caller questions

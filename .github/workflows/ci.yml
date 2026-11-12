@@ -136,10 +136,10 @@ jobs:
       # error-shape, discard, death and token test stays here.
       # M3 C3.4 round 4 (O-8): `c34_r4_late_probe::two_hundred_answers_after_the_bound_must_latch_after_one_question`
       # (reviewer, about a minute in debug) runs whole-binary in release in `c33 render release`, body unchanged.
-      # M3 C3.4 round 4 budget (Windows `check` 49 min 38 s in run 43222005625): five builder binaries move out of this
-      # step whole, bodies unchanged, skipped here by exact name: `c32_round3`, `c14_measurements`, `c14_lock_races`
-      # and `c12_kernel_state` run in debug in `check properties`; `cancel_phases` (tt-headless) runs in release in
-      # `headless release`, against the binary that job builds.
+      # M3 C3.4 round 4 budget (Windows `check` 49 min 38 s in run 43222005625): three builder binaries move out of this
+      # step whole, bodies unchanged, skipped here by exact name: `c32_round3` and `c12_kernel_state` run in debug in
+      # `check properties`; `cancel_phases` (tt-headless) runs in release in `headless release`, against the binary that
+      # job builds. (`c14_measurements` and `c14_lock_races` stay: their C1.4 evidence is analysed and uploaded below.)
       - name: Run cargo test --workspace --locked
         run: |
           cargo test --workspace --locked -- --skip ten_thousand_history_operations_match_independent_content_oracle_and_replay \
@@ -175,12 +175,7 @@ jobs:
             --skip non_parallelogram_envelopes_map_the_layer_projectively \
             --skip snapping_onto_a_curved_contour_reaches_its_nearest_point \
             --skip integer_translations_and_compositions_preserve_all_snapped_anchor_sequences \
-            --skip side_fills_read_back_beside_collinear_overlaps             --skip independent_sequences_4096_persist_canonical_runs_and_notes             --skip exclusive_mutation_capability             --skip duplicate_ids_and_inventory_kind_drift_are_rejected             --skip missing_example_is_rejected_at_compile_time             --skip killed_sequence_leaves_no_staged_files             --skip seeded_anchor_groups_4096             --skip deep_and_broad_scene             --skip random_hierarchy_edits_4096_keep_independent_parent_and_level_model             --skip concurrent_wire_cancellation_sixty_seconds             --skip overhead_ten_thousand_small_actions_and_thousand_step_batch             --skip one_hundred_wait_cancellations_settle_jobs_and_leave_handle_usable             --skip fast_commit_cancel_retry_matrix_preserves_one_change_and_one_answer             --skip a_cancellation_between_two_steps_refuses_the_second_every_time             --skip two_hundred_answers_after_the_bound_must_latch_after_one_question             --skip running_undo_and_redo_of_a_large_animation_step_are_cancelled_atomically             --skip a_queued_undo_behind_a_running_evaluation_keeps_its_own_deadline_and_is_atomic             --skip animation_mutations_pass_the_same_acceptance_rules_as_any_command_for_user_and_agent             --skip a_cancelled_animation_edit_restores_the_session_state_in_full             --skip animation_events_reach_every_subscriber_whoever_issued_the_call             --skip folder_fingerprint_cost_at_the_watch_interval_and_the_size_mtime_blind_spot             --skip autosave_snapshot_latency_during_batches_queued_requests_and_large_media             --skip a_publisher_suspended_at_each_publication_boundary_is_never_raced_into_two_owners             --skip a_suspended_heartbeat_is_not_taken_over_and_resumes_as_the_owner             --skip a_suspended_release_hands_over_cleanly             --skip a_suspended_takeover_leaves_exactly_one_owner             --skip a_paused_arbiter_past_its_abandonment_age_is_not_removed_and_resumes             --skip a_resumed_heartbeat_whose_lock_was_replaced_fails_closed             --skip liveness_does_not_depend_on_process_ids_or_clocks             --skip crashed_holder_is_detected_at_once_and_liveness_is_measured             --skip ownership_lost_during_a_suspended_save_never_advances_the_save             --skip window_and_panel_state_is_queryable_and_settable             --skip workspaces_are_kernel_state             --skip the_application_context_follows_commands             --skip jobs_run_off_the_document_thread             --skip the_watchdog_answers_within_its_budget             --skip every_example_runs_on_the_fixture_under_the_watchdog             --skip every_generated_declaration_answers_with_its_owner             --skip cancellation_before_the_elicitation_is_sent_asks_nothing             --skip cancellation_while_waiting_and_before_a_late_accept_authorises_nothing             --skip an_accept_racing_a_cancellation_always_ends_consistently
-
-      - name: Desktop host with the M0 diagnostics feature (C0.4 gating) — clippy and tests
-        run: |
-          cargo clippy -p tt-desktop --all-targets --locked --features m0-diagnostics -- -D warnings
-          cargo test -p tt-desktop --locked --features m0-diagnostics
+            --skip side_fills_read_back_beside_collinear_overlaps             --skip independent_sequences_4096_persist_canonical_runs_and_notes             --skip exclusive_mutation_capability             --skip duplicate_ids_and_inventory_kind_drift_are_rejected             --skip missing_example_is_rejected_at_compile_time             --skip killed_sequence_leaves_no_staged_files             --skip seeded_anchor_groups_4096             --skip deep_and_broad_scene             --skip random_hierarchy_edits_4096_keep_independent_parent_and_level_model             --skip concurrent_wire_cancellation_sixty_seconds             --skip overhead_ten_thousand_small_actions_and_thousand_step_batch             --skip one_hundred_wait_cancellations_settle_jobs_and_leave_handle_usable             --skip fast_commit_cancel_retry_matrix_preserves_one_change_and_one_answer             --skip a_cancellation_between_two_steps_refuses_the_second_every_time             --skip two_hundred_answers_after_the_bound_must_latch_after_one_question             --skip running_undo_and_redo_of_a_large_animation_step_are_cancelled_atomically             --skip a_queued_undo_behind_a_running_evaluation_keeps_its_own_deadline_and_is_atomic             --skip animation_mutations_pass_the_same_acceptance_rules_as_any_command_for_user_and_agent             --skip a_cancelled_animation_edit_restores_the_session_state_in_full             --skip animation_events_reach_every_subscriber_whoever_issued_the_call             --skip window_and_panel_state_is_queryable_and_settable             --skip workspaces_are_kernel_state             --skip the_application_context_follows_commands             --skip jobs_run_off_the_document_thread             --skip the_watchdog_answers_within_its_budget             --skip every_example_runs_on_the_fixture_under_the_watchdog             --skip every_generated_declaration_answers_with_its_owner             --skip cancellation_before_the_elicitation_is_sent_asks_nothing             --skip cancellation_while_waiting_and_before_a_late_accept_authorises_nothing             --skip an_accept_racing_a_cancellation_always_ends_consistently
 
       - uses: taiki-e/install-action@v2
         with:
@@ -260,7 +255,7 @@ jobs:
 
       # M3 C3.4 round 4 budget: builder debug binaries moved whole out of `check` (skipped there by exact name).
       - name: Builder binaries moved out of check (debug)
-        run: cargo test --locked -p tt-executor --test c32_round3 --test c14_measurements --test c14_lock_races --test c12_kernel_state
+        run: cargo test --locked -p tt-executor --test c32_round3 --test c12_kernel_state
 
   # The reviewer's round-2 and round-3 seed variants (C2.4 rounds 2 and 3): the route properties with seeds XOR 0x5D (256 cases), the
   # topology and vector properties at the 4096 cases their files fix, the closed-fold noding controls. Release, in a job
@@ -769,6 +764,13 @@ jobs:
       # the diagnostics build (tauri.diagnostics.conf.json) then runs the measurements and is the manual-test artifact.
       - name: Tauri build, default (unsigned; no M0 diagnostics)
         run: pnpm --dir desktop tauri build --bundles ${{ matrix.bundles }} -- --locked
+
+      # C0.4 gating, moved here from `check` for its budget in M3 C3.4 round 4: the desktop host with the M0 diagnostics
+      # feature passes clippy and its tests, after the default build above produced the front end it embeds.
+      - name: Desktop host with the M0 diagnostics feature (C0.4 gating) — clippy and tests
+        run: |
+          cargo clippy -p tt-desktop --all-targets --locked --features m0-diagnostics -- -D warnings
+          cargo test -p tt-desktop --locked --features m0-diagnostics
 
       - name: The default build carries no test-only asset (ADR-0003 rule 7)
         run: |
