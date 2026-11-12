@@ -48,7 +48,15 @@ fn panicking_probe_leaves_worker_alive() {
     }));
     assert!(caught.is_err());
     assert!(run(&h, "doc.state.get", json!({})).is_ok());
-    assert_eq!(rev(&h), before);
+    let after = rev(&h);
+    assert!(after == before || after == before + 1, "whole revision: {before} -> {after}");
+    if after == before + 1 {
+        let undone = run(&h, "edit.undo", json!({}));
+        assert!(undone.is_ok(), "the committed change has one undo step: {undone:?}");
+        // Removing the one committed element must leave the original scene.
+        assert!(!run(&h, "edit.undo", json!({})).is_ok(), "exactly one undo step");
+    }
+    assert!(run(&h, "doc.state.get", json!({})).is_ok());
 }
 #[test]
 fn cancellation_is_latched_even_if_probe_flips_back() {
