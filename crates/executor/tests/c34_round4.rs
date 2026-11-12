@@ -166,49 +166,68 @@ fn answers_just_inside_the_bound_hold_the_thread_at_most_the_budget_plus_one_bou
     let _t = turn();
     let budget = Duration::from_millis(1500);
     let bound = Duration::from_millis(250);
-    let h = fixture_with(ExecutorConfig { budget });
-    let before = rev(&h);
-    let steps: Vec<Value> = (0..200)
-        .map(|i| json!({ "id": "element.create", "params": { "type": "peg", "name": format!("C{i}"), "sceneId": "scene:#1" } }))
-        .collect();
-    // A sequential batch: three questions per committing step (start, acceptance, pre-commit).
-    let req: BatchRequest =
-        serde_json::from_value(json!({ "label": "slow answers", "atomic": false, "steps": steps })).unwrap();
-    work::reset_asks();
-    // Each new question is answered after 0.8 x the bound; the caller's own polls between questions return at once.
-    let answered = AtomicI64::new(0);
-    let start = Instant::now();
-    let env = h.batch_until(req, Origin::User, &|| {
-        let asks = work::asks();
-        if asks > answered.load(Ordering::SeqCst) {
-            answered.store(asks, Ordering::SeqCst);
-            std::thread::sleep(bound * 4 / 5);
+    // A trial is valid only if every answer stayed inside the bound. A runner whose sleep overshoots past it makes that
+    // answer late, which latches the link as designed (C34-R4-02) and leaves the premise untested; such a trial is
+    // retried, up to five times.
+    for attempt in 1..=5 {
+        let h = fixture_with(ExecutorConfig { budget });
+        let before = rev(&h);
+        let steps: Vec<Value> = (0..200)
+            .map(|i| json!({ "id": "element.create", "params": { "type": "peg", "name": format!("C{i}"), "sceneId": "scene:#1" } }))
+            .collect();
+        // A sequential batch: three questions per committing step (start, acceptance, pre-commit).
+        let req: BatchRequest =
+            serde_json::from_value(json!({ "label": "slow answers", "atomic": false, "steps": steps })).unwrap();
+        work::reset_asks();
+        // Each new question is answered after 0.8 x the bound; the caller's own polls between questions return at once.
+        let answered = AtomicI64::new(0);
+        let longest = Mutex::new(Duration::ZERO);
+        let start = Instant::now();
+        let env = h.batch_until(req, Origin::User, &|| {
+            let asks = work::asks();
+            if asks > answered.load(Ordering::SeqCst) {
+                answered.store(asks, Ordering::SeqCst);
+                let at = Instant::now();
+                std::thread::sleep(bound * 4 / 5);
+                let mut l = longest.lock().unwrap();
+                *l = (*l).max(at.elapsed());
+            }
+            false
+        });
+        let took = start.elapsed();
+        let unrelated = Instant::now();
+        assert!(run(&h, "doc.state.get", json!({})).is_ok());
+        let unrelated = unrelated.elapsed();
+        let longest = *longest.lock().unwrap();
+        eprintln!(
+            "CUMULATIVE attempt={attempt} budget_ms={} bound_ms={} asks={} longest_answer_ms={} took_ms={} committed={} unrelated_ms={}",
+            budget.as_millis(),
+            bound.as_millis(),
+            work::asks(),
+            longest.as_secs_f64() * 1000.0,
+            took.as_secs_f64() * 1000.0,
+            rev(&h) - before,
+            unrelated.as_secs_f64() * 1000.0
+        );
+        // A late answer latched the link: by the probe's own clock, or (a finished batch that asked fewer than its
+        // 1 + 3 x 200 questions) by the worker's.
+        if longest >= bound * 9 / 10 || (env.is_ok() && work::asks() < 1 + 3 * 200) {
+            continue;
         }
-        false
-    });
-    let took = start.elapsed();
-    let unrelated = Instant::now();
-    assert!(run(&h, "doc.state.get", json!({})).is_ok());
-    let unrelated = unrelated.elapsed();
-    let e = env.error.expect("ended by its watchdog");
-    assert_eq!(e.code, "command.timeout", "{e:?}");
-    assert_eq!(e.details["reason"], Value::Null, "a watchdog timeout, not a cancellation: {e:?}");
-    assert!(work::asks() >= 3, "several questions answered inside the bound: {}", work::asks());
-    assert!(took <= budget + bound * 2, "the request ended by its watchdog within budget + 2 x bound: {took:?}");
-    // Whole: every step that committed is one revision and one element; the rest changed nothing.
-    let committed = rev(&h) - before;
-    assert!(committed < 200, "the watchdog stopped the batch: {committed} steps committed");
-    let validate = ok(&h, "doc.validate", json!({ "minSeverity": "error" }));
-    assert_eq!(validate["issues"], json!([]), "{validate}");
-    eprintln!(
-        "CUMULATIVE budget_ms={} bound_ms={} asks={} took_ms={} committed={committed} unrelated_ms={}",
-        budget.as_millis(),
-        bound.as_millis(),
-        work::asks(),
-        took.as_secs_f64() * 1000.0,
-        unrelated.as_secs_f64() * 1000.0
-    );
-    assert!(unrelated < bound, "an unrelated caller is served at once afterwards: {unrelated:?}");
+        let e = env.error.expect("every answer was inside the bound, so the request ended by its watchdog");
+        assert_eq!(e.code, "command.timeout", "{e:?}");
+        assert_eq!(e.details["reason"], Value::Null, "a watchdog timeout, not a cancellation: {e:?}");
+        assert!(work::asks() >= 3, "several questions answered inside the bound: {}", work::asks());
+        assert!(took <= budget + bound * 2, "the request ended by its watchdog within budget + 2 x bound: {took:?}");
+        // Whole: every step that committed is one revision and one element; the rest changed nothing.
+        let committed = rev(&h) - before;
+        assert!(committed < 200, "the watchdog stopped the batch: {committed} steps committed");
+        let validate = ok(&h, "doc.validate", json!({ "minSeverity": "error" }));
+        assert_eq!(validate["issues"], json!([]), "{validate}");
+        assert!(unrelated < bound, "an unrelated caller is served at once afterwards: {unrelated:?}");
+        return;
+    }
+    panic!("no trial in five kept every answer inside the bound on this runner");
 }
 
 #[test]
