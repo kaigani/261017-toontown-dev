@@ -260,12 +260,13 @@ fn caller_cancelled_queued_notice_only_query_begins_and_is_remembered() {
     let env = std::thread::scope(|scope| {
         let blocker = scope.spawn(|| h.invoke(edit()));
         rx.recv_timeout(Duration::from_secs(10)).unwrap();
-        scope.spawn(|| {
+        let releaser = scope.spawn(|| {
             std::thread::sleep(Duration::from_millis(100));
             release.store(true, Ordering::SeqCst);
         });
         let env = h.invoke_served_until(query.clone(), &|| true).0;
         blocker.join().unwrap();
+        releaser.join().unwrap();
         env
     });
     tt_persist::lock::hooks::set(None);
