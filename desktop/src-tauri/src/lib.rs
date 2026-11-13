@@ -139,6 +139,7 @@ pub fn run() -> Result<(), DesktopError> {
         .setup(move |app| {
             let handle = app.handle().clone();
             shell::start_event_pump(&handle);
+            shell::restore_window(&handle);
             menu::refresh(&handle);
             shell::sync_agent_server(&handle);
             if let Some((listener, key)) = listener {

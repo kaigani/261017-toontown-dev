@@ -893,6 +893,53 @@ jobs:
           path: out/
           if-no-files-found: error
 
+  # M4 C4.1: the real desktop application on both product platforms, driven through attached mode (ADR-0022) with the
+  # official Python SDK client: the shell reflects agent commands, user priority, settings persistence across a
+  # restart, and MCP conformance over Streamable HTTP. It runs the product build the bundle job made (nothing is built
+  # twice). Receipts: the desktop-gui-<OS> artifact (transcript, UI trees, best-effort screen captures, manifest).
+  desktop-gui:
+    name: desktop gui (${{ matrix.os }})
+    needs: bundle
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [windows-latest, macos-latest]
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/download-artifact@v7
+        with:
+          name: desktop-${{ runner.os }}
+          path: desktop-artifact
+      - name: Python with the official MCP SDK
+        run: |
+          if [ "$RUNNER_OS" = "Windows" ]; then PY=python; else PY=python3; fi
+          $PY -m venv .venv-gui
+          if [ "$RUNNER_OS" = "Windows" ]; then .venv-gui/Scripts/python -m pip install --quiet "mcp==2.0.0"; else .venv-gui/bin/python -m pip install --quiet "mcp==2.0.0"; fi
+      - name: Running application end to end (attached mode, both a session and a restart)
+        run: |
+          if [ "$RUNNER_OS" = "Windows" ]; then
+            app=desktop-artifact/default-build/toontown.exe; VPY=.venv-gui/Scripts/python
+          else
+            tar -xzf desktop-artifact/default-build/Toontown-macos-arm64.app.tar.gz -C desktop-artifact
+            app=desktop-artifact/Toontown.app/Contents/MacOS/toontown; VPY=.venv-gui/bin/python
+          fi
+          PYTHONIOENCODING=utf-8 $VPY scripts/c41-gui-e2e.py "$app" "desktop-gui/e2e"
+      - name: MCP conformance over Streamable HTTP against the running application
+        run: |
+          if [ "$RUNNER_OS" = "Windows" ]; then
+            app=desktop-artifact/default-build/toontown.exe; VPY=.venv-gui/Scripts/python
+          else
+            app=desktop-artifact/Toontown.app/Contents/MacOS/toontown; VPY=.venv-gui/bin/python
+          fi
+          PYTHONIOENCODING=utf-8 $VPY scripts/mcp-conformance.py --http "$app" "desktop-gui/mcp-conformance-http.json"
+      - uses: actions/upload-artifact@v7
+        if: always()
+        with:
+          name: desktop-gui-${{ runner.os }}
+          path: desktop-gui/
+
   # The strongest "no window system" evidence: Linux runners have no X/Wayland server at all.
   headless-no-display:
     name: headless without a display (ubuntu)

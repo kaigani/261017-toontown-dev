@@ -33,6 +33,9 @@ const CanvasSpike = __TT_M0_DIAGNOSTICS__
   ? lazy(() => import('./spikes/canvas/CanvasSpike').then((m) => ({ default: m.CanvasSpike })))
   : null;
 
+/** Start-up runs once per application, even when React mounts the shell twice (development). */
+const startupDone = { value: false };
+
 /** How long after the last change the rendered UI tree is reported (a frame or two; product value). */
 export const TREE_REPORT_MS = 30;
 
@@ -163,6 +166,41 @@ function Window() {
       unlisten?.();
     };
   }, [services]);
+
+  // Start-up (01 §1.1 rules 7-8): documents requested before the window existed take precedence over the start-up
+  // behaviour preference. Runs once per application (React may mount twice in development).
+  useEffect(() => {
+    if (startupDone.value) return;
+    startupDone.value = true;
+    void (async () => {
+      const { open } = await host.startup();
+      if (open.length > 0) {
+        for (const path of open) await actions.perform('project.open', { path });
+        return;
+      }
+      const env = await services.engine.run('prefs.get', { keys: ['general.startup.behaviour'] }).done;
+      const values = (env.result as { values?: Record<string, unknown> } | undefined)?.values ?? {};
+      switch (values['general.startup.behaviour']) {
+        case 'lastProject': {
+          const recent = await services.engine.run('project.recent.list', {}).done;
+          const first = Array.isArray(recent.result) ? (recent.result[0] as { path?: unknown } | undefined) : undefined;
+          if (typeof first?.path === 'string') await actions.perform('project.open', { path: first.path });
+          break;
+        }
+        case 'openDialog':
+          await actions.perform('project.open');
+          break;
+        case 'newDialog':
+          await actions.perform('project.create');
+          break;
+        case 'newDefaultProject':
+          await actions.perform('project.create', { name: 'Untitled' });
+          break;
+        default:
+          break;
+      }
+    })();
+  }, [actions, host, services]);
 
   // Host notices: open the preferences window or the help viewer when a command asks for them.
   const openPreferences = useCallback(

@@ -1299,3 +1299,70 @@ Reserved by the M0 closure for "measured deterministic-format incompatibility" (
   only by in-process callers, batch step envelopes and the activity log. The contract is ADR-0020 decision 8.
 - **Question:** add a code for a request its caller cancelled to 11 §10, or confirm `command.timeout` with
   `reason: "cancelled"`.
+
+## SI-112 — virtual view creation and view ids (found in M4 C4.1; decided by the builder)
+
+- **Sections:** 11 §7.6 ("the agent can create them with `ui.view.create {type, width, height}` (section 01)"), 01 §12.2
+  (`view.*`), spec A.
+- **Problem:** `ui.view.create` is named in 11 but exists in neither 01 §12.2 nor spec A; `viewId` has no defined
+  value.
+- **Decision taken:** the view windows are the four view panels of 01 §5.2 (`cameraView`, `drawingView`, `topView`,
+  `sideView`), in attached and headless mode alike, and `viewId` is the panel id; each window can switch its type
+  (01 §4). No creation command is added (the registry stays equal to spec A). Owner of any change: M4 C4.2.
+- **Question:** confirm, or add `ui.view.create` to 01 §12.2 and spec A with its semantics.
+
+## SI-113 — facts only the shell knows have no command (found in M4 C4.1; decided by the builder)
+
+- **Sections:** 01 §12.1 rule 8, §12.4 (`modal`), §9.1 (description and pointer segments), 11 §6.4, §7.5
+  (`inspect_ui`).
+- **Problem:** modal state, a gesture in progress, text-field focus, hover description, pointer text, view canvas
+  sizes, screens and the rendered UI tree are read by commands but set by nothing in spec A.
+- **Decision taken:** the desktop host reports them through a kernel API (`ExecutorHandle::report_shell`), not a
+  command; a report changes no document, setting, layout or history, and agents cannot send one (ADR-0021,
+  `reviews/M4-design-busy-arbitration.md`).
+- **Question:** confirm that these are shell inputs outside the command layer.
+
+## SI-114 — two names for one user-busy state, and the main toolbar's visibility (found in M4 C4.1; decided by the builder)
+
+- **Sections:** 01 §12.4 (`modal`), §12.1 rule 8 (`ui.busy`); 11 §6.4 (`get_state.ui.userBusy`, `ui.modalOpen`);
+  01 §5.7 and §7.3 (`interface.mainToolbar.visible`, toolbar configuration per workspace).
+- **Decisions taken:** `app.state.get` reports `modal` as 01 defines it (`ui.userBusy` is not added: it is `modal`
+  being non-null); agent changes that conflict with a dialog or a gesture wait and fail with `ui.busy`, and
+  focus-changing agent `ui` commands under a user dialog fail with `ui.modalOpen` (both codes, each where its section
+  says). The main toolbar's visibility follows `interface.mainToolbar.visible` in both directions (`window.toolbar.set
+  {toolbarId: "main"}` writes the preference); its items stay per workspace.
+- **Question:** confirm, and say whether toolbar visibility is per workspace or global.
+
+## SI-115 — UI conventions awaiting spec amendments where the spec is silent (found in M4 C4.1; defaults taken)
+
+- **Context:** the orchestrator's design review lists conventions that wait for spec-owner approval (reviews/
+  M4-C4.1-plan.md §12). Where 01 already requires a behaviour it is built; where it is silent, nothing is invented.
+- **Silent in the spec, not built (attach points recorded in the plan §12):** an add-panel control on every tab bar,
+  collapsible dock areas, maximise one panel, a panel menu in every header, a message log panel, preferences
+  export/import, a shortcut sheet, user-saved resolution presets on the start screen, focus-follows-pointer, tap/hold
+  tool keys, bundled alternative keymap sets.
+- **Additive members taken now:** `ui.theme.list` items carry `colours` for user themes (the front end needs the
+  tokens; 01 §12.2 lists `{themeId, name, builtIn, dark}`).
+- **Question:** approve or reject each convention so the owning checkpoint can build it.
+
+## SI-116 — `waitForUserMs` has no command, toggles bound without their state (found in M4 C4.1; decided by the builder)
+
+- **Sections:** 01 §12.1 rule 8, 11 §6.4 (`waitForUserMs`, default 10 000); 01 §8.1 (a binding is a command reference
+  with fixed parameters); 01 §8.2 (full screen F11 / Ctrl+Cmd+F toggles).
+- **Problems:** no command sets `waitForUserMs`; the toggle commands take an explicit state (`window.fullScreen.set
+  {enabled}`, never a toggle; readiness bullet 4), yet a key or a menu item toggles.
+- **Decisions taken:** `waitForUserMs` is an executor setting (default 10 000 ms) the host and tests set; a binding or
+  menu item that leaves a toggle's state parameter out gets the negation of the current state at dispatch (the kernel
+  completes the reference; `window.panel.set {panelId}` shows a hidden or background panel and hides a front one).
+- **Question:** add `waitForUserMs` to `agent.policy.defaults.set` or the session grant; confirm the toggle completion.
+
+## SI-117 — preferences other sections use without a key in 01 §7.3 (found in M4 C4.1; decided by the builder)
+
+- **Sections:** 05 §16 (depth-nudge step, peg-only mode), 03 (paint gap closing), 02 (drawing preview), 01 §7.3.
+- **Decision taken:** keys in the 01 style: `staging.depthNudgeStep` (number 0.0001–1, default 0.01),
+  `staging.pegOnlyMode` (bool, default off), `paint.gapClosing` (enum off/small/medium/large, the kernel key of
+  `colour.gap.mode.set`), `drawing.inspectorPreview` (bool, the kernel key of `draw.inspectorPreview.set`).
+  `interface.background.timeline`'s "theme default" is the empty string. Motion-recording options (05 §14.2) are
+  registered by M6.
+- **Conflicts noted:** "Selection always visible" defaults to on in 01 §7.3 and 05 §16, off in 02 §10.7; 01 governs.
+- **Question:** add the keys to 01 §7.3 and settle the default of 02 §10.7.

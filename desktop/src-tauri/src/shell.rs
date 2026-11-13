@@ -6,8 +6,8 @@
 //!   window), and closing the main window runs the quit flow in the front end (unsaved-changes rule, 01 §1.2).
 
 use std::sync::atomic::{AtomicBool, Ordering};
-use std::sync::{Arc, Mutex, PoisonError};
-use std::time::{Duration, Instant};
+use std::sync::{Mutex, PoisonError};
+use std::time::Duration;
 
 use serde_json::{Value, json};
 use tauri::{AppHandle, Emitter, Manager, PhysicalPosition, PhysicalSize, WebviewWindow, WindowEvent};
@@ -16,6 +16,13 @@ use crate::host::Host;
 
 /// Event name of the forwarded engine events.
 pub const ENGINE_EVENT: &str = "engine-event";
+
+/// A menu refresh is scheduled.
+static MENU_PENDING: AtomicBool = AtomicBool::new(false);
+
+/// The latest geometry the user gave the window, sent once the drag pauses (a drag moves the window many times a
+/// second; one `window.geometry.set` per pause is enough).
+static PENDING_GEOMETRY: Mutex<Option<Value>> = Mutex::new(None);
 
 /// Set while the host applies a geometry the executor asked for, so the resulting OS events are not reported back as
 /// user gestures (the kernel ignores equal values anyway; this keeps the reports quiet).
@@ -96,7 +103,6 @@ pub fn start_event_pump(app: &AppHandle) {
     let rx = host.exec.subscribe();
     let app = app.clone();
     let _ = std::thread::Builder::new().name("tt-event-pump".into()).spawn(move || {
-        let menu_dirty = Arc::new(Mutex::new(Instant::now()));
         while let Ok(e) = rx.recv() {
             let host = app.state::<Host>();
             let seq = host.next_seq();
@@ -131,12 +137,31 @@ pub fn start_event_pump(app: &AppHandle) {
                 }
                 _ => {}
             }
-            if crate::menu::refreshes(&e.name) {
-                *menu_dirty.lock().unwrap_or_else(PoisonError::into_inner) = Instant::now();
-                crate::menu::refresh(&app);
+            // The menu re-reads its facts once per burst of state changes (100 ms), not once per event.
+            if crate::menu::refreshes(&e.name) && !MENU_PENDING.swap(true, Ordering::AcqRel) {
+                let a = app.clone();
+                let _ = std::thread::Builder::new().name("tt-menu".into()).spawn(move || {
+                    std::thread::sleep(Duration::from_millis(100));
+                    MENU_PENDING.store(false, Ordering::Release);
+                    crate::menu::refresh(&a);
+                });
             }
         }
     });
+}
+
+/// Applies the geometry the executor restored from the settings (01 §11) to the main window at start.
+pub fn restore_window(app: &AppHandle) {
+    let host = app.state::<Host>();
+    let g = host.run("window.geometry.get", json!({}), false, None).result.unwrap_or(Value::Null);
+    if g.is_object() {
+        let mut p = g;
+        if let Some(m) = p.as_object_mut() {
+            m.insert("minimized".into(), Value::Bool(false));
+        }
+        let a = app.clone();
+        let _ = app.run_on_main_thread(move || apply_window(&a, &p));
+    }
 }
 
 /// Starts or stops attached mode after `agent.server.enabled` (or `--mcp-http`) (11 §4).
@@ -194,10 +219,17 @@ pub fn on_window_event(window: &tauri::Window, event: &WindowEvent) {
                 "maximized": window.is_maximized().unwrap_or(false),
             });
             let app = window.app_handle().clone();
-            // The gesture produces the command (ADR-0021), off the main thread.
-            tauri::async_runtime::spawn_blocking(move || {
-                let _ = app.state::<Host>().run("window.geometry.set", params, false, None);
-            });
+            // The gesture produces the command (ADR-0021), off the main thread, once the drag pauses.
+            let first = PENDING_GEOMETRY.lock().unwrap_or_else(PoisonError::into_inner).replace(params).is_none();
+            if first {
+                let _ = std::thread::Builder::new().name("tt-geometry".into()).spawn(move || {
+                    std::thread::sleep(Duration::from_millis(250));
+                    let latest = PENDING_GEOMETRY.lock().unwrap_or_else(PoisonError::into_inner).take();
+                    if let Some(p) = latest {
+                        let _ = app.state::<Host>().run("window.geometry.set", p, false, None);
+                    }
+                });
+            }
         }
         _ => {}
     }
