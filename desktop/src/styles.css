@@ -431,10 +431,18 @@ select:focus-visible {
 
 .field {
   display: grid;
-  grid-template-columns: 120px 1fr;
+  /* The control column may shrink below a long option's width: the control then fits its card. */
+  grid-template-columns: 120px minmax(0, 1fr);
   align-items: center;
   gap: 4px 10px;
   margin: 6px 0;
+}
+
+.field > input,
+.field > select {
+  min-width: 0;
+  max-width: 100%;
+  box-sizing: border-box;
 }
 
 .field-problem {
