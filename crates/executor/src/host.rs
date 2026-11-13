@@ -30,8 +30,9 @@ pub(crate) struct Bus {
 pub(crate) struct ShellShared {
     /// The reported modal state (also kept in the session for `app.state.get`).
     modal: Mutex<Option<ModalReport>>,
-    /// The last engine event the front end has rendered (with its reported UI tree).
-    rendered: AtomicU64,
+    /// The reported UI tree with the engine event number it reflects, as one value (C41-R1-14): `None` before any
+    /// report; a tree reported without a number is kept with `seq: None` and is never fresh.
+    rendered: Mutex<Option<Rendered>>,
     /// `waitForUserMs` (01 §12.1 rule 8, 11 §6.4), in milliseconds.
     wait_for_user_ms: AtomicU64,
     /// A host window renders the UI (attached mode).
@@ -42,7 +43,7 @@ impl Default for ShellShared {
     fn default() -> Self {
         Self {
             modal: Mutex::new(None),
-            rendered: AtomicU64::new(0),
+            rendered: Mutex::new(None),
             wait_for_user_ms: AtomicU64::new(10_000),
             attached: std::sync::atomic::AtomicBool::new(false),
         }
@@ -72,6 +73,23 @@ where
 {
     Option::<T>::deserialize(d).map(Some)
 }
+
+/// An engine's recovery ownership token and its fence (C41-R1-15).
+#[derive(Debug)]
+pub(crate) struct RecoveryFence {
+    pub engine: String,
+    pub fence: std::sync::Arc<std::sync::atomic::AtomicBool>,
+}
+
+/// The recovery ownership of an abandoned engine, named for the engine that replaces it.
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub struct RecoveryOwner {
+    engine: String,
+}
+
+/// Engines abandoned in this process ([`ExecutorHandle::abandon`]); [`ExecutorHandle::release_abandoned_recovery`]
+/// releases theirs, never a live engine's.
+static ABANDONED: Mutex<Vec<String>> = Mutex::new(Vec::new());
 
 /// A sensor report (ADR-0021): every member present replaces that fact; absent members are left as they are.
 #[derive(Debug, Clone, Default, PartialEq, Serialize, Deserialize)]
@@ -267,6 +285,24 @@ fn ui_busy(m: &ModalReport, waited: Duration) -> CommandError {
     .hint("retry when the user is done; app.state.get reports `modal`")
 }
 
+/// The UI tree the front end rendered and the engine event number it vouches for.
+#[derive(Debug, Clone, PartialEq)]
+pub(crate) struct Rendered {
+    /// The last engine event the tree reflects (`None`: not vouched for, never fresh).
+    pub seq: Option<u64>,
+}
+
+/// Whether a reported tree replaces the stored one (C41-R1-14): a sequence from the future (beyond the last broadcast
+/// event) is refused; an older one than the stored tree's does not replace it; a tree without a sequence is kept but
+/// never fresh.
+fn accept_tree(stored: Option<&Rendered>, seq: Option<u64>, broadcast: u64) -> bool {
+    match seq {
+        Some(n) if n > broadcast => false,
+        Some(n) => stored.and_then(|r| r.seq).is_none_or(|old| n >= old),
+        None => true,
+    }
+}
+
 impl ExecutorHandle {
     /// Applies a sensor report from the desktop host (ADR-0021). Never blocks: the modal flag is shared at once, the
     /// rest is posted to the document thread and applied between requests.
@@ -274,9 +310,18 @@ impl ExecutorHandle {
         if let Some(m) = &report.modal {
             *self.shell.modal.lock().unwrap_or_else(PoisonError::into_inner) = m.clone();
         }
-        if let Some(seq) = report.rendered_seq {
-            self.shell.rendered.fetch_max(seq, Ordering::AcqRel);
+        // The tree and its sequence are judged together, once, here; a refused tree is not posted.
+        let mut report = report;
+        if report.ui_tree.is_some() {
+            let mut stored = self.shell.rendered.lock().unwrap_or_else(PoisonError::into_inner);
+            if accept_tree(stored.as_ref(), report.rendered_seq, self.events_broadcast()) {
+                *stored = Some(Rendered { seq: report.rendered_seq });
+            } else {
+                report.ui_tree = None;
+            }
         }
+        // A sequence without a tree vouches for nothing.
+        let tree_seq = report.rendered_seq.take();
         if let Some(a) = report.attached {
             self.shell.attached.store(a, Ordering::Release);
         }
@@ -317,8 +362,13 @@ impl ExecutorHandle {
                 let clamped = sh.clamp(sh.window);
                 sh.window = clamped;
             }
-            if let Some(tree) = report.ui_tree {
+            // The same order rule on the document thread, where reports posted from several threads may arrive out of
+            // order: a newer tree is never replaced by an older one.
+            if let Some(tree) = report.ui_tree
+                && accept_tree(Some(&Rendered { seq: sh.sensors.ui_tree_seq }), tree_seq, u64::MAX)
+            {
                 sh.sensors.ui_tree = Some(tree);
+                sh.sensors.ui_tree_seq = tree_seq;
             }
             if let Some(msg) = report.message_shown {
                 let mut m = msg.as_object().cloned().unwrap_or_default();
@@ -366,10 +416,38 @@ impl ExecutorHandle {
     /// # Errors
     /// `command.timeout` when the document thread does not answer within the budget.
     pub fn release_abandoned_recovery(&self) -> Result<usize, CommandError> {
-        crate::Poster(self.tx.clone()).run(self.config.budget, |core| {
+        let abandoned: Vec<String> = ABANDONED.lock().unwrap_or_else(PoisonError::into_inner).clone();
+        let mut released = 0;
+        for engine in abandoned.iter().filter(|e| **e != self.recovery.engine) {
+            released += self.release_recovery_of(&RecoveryOwner { engine: engine.clone() })?;
+        }
+        Ok(released)
+    }
+
+    /// Abandons this engine (it stopped answering; reviews/M4-design-engine-restart.md): fences it at once, without its
+    /// document thread, so it writes no autosave, recovery data or heartbeat if it wakes up, and names its recovery
+    /// ownership for the engine that replaces it ([`ExecutorHandle::release_recovery_of`]).
+    #[must_use]
+    pub fn abandon(&self) -> RecoveryOwner {
+        self.recovery.fence.store(true, Ordering::Release);
+        let mut list = ABANDONED.lock().unwrap_or_else(PoisonError::into_inner);
+        if !list.contains(&self.recovery.engine) {
+            list.push(self.recovery.engine.clone());
+        }
+        RecoveryOwner { engine: self.recovery.engine.clone() }
+    }
+
+    /// Releases the recovery data of the named abandoned engine only (C41-R1-15): it becomes recoverable work this
+    /// engine offers. Other engines' data, live or not, is untouched. Returns the number of entries released.
+    ///
+    /// # Errors
+    /// `command.timeout`.
+    pub fn release_recovery_of(&self, owner: &RecoveryOwner) -> Result<usize, CommandError> {
+        let engine = owner.engine.clone();
+        crate::Poster(self.tx.clone()).run(self.config.budget, move |core| {
             let Some(s) = core.session() else { return 0 };
             let keep = s.project.as_ref().map(|p| p.store.recovery_id.clone());
-            tt_persist::recovery::release_process(&s.env.dirs.recovery, std::process::id(), keep.as_deref())
+            tt_persist::recovery::release_engine(&s.env.dirs.recovery, &engine, keep.as_deref())
         })
     }
 
@@ -401,7 +479,8 @@ impl ExecutorHandle {
         let target = self.events_broadcast();
         let start = Instant::now();
         loop {
-            if self.shell.rendered.load(Ordering::Acquire) >= target {
+            let seq = self.shell.rendered.lock().unwrap_or_else(PoisonError::into_inner).as_ref().and_then(|r| r.seq);
+            if seq.is_some_and(|n| n >= target) {
                 return true;
             }
             if start.elapsed() >= bound {

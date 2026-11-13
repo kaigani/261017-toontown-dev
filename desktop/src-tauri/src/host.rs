@@ -105,10 +105,13 @@ impl Host {
     /// The new executor's start error.
     pub fn restart(&self) -> Result<u64, tt_executor::CommandError> {
         let (exec, _) = Self::spawn_executor(&self.options)?;
+        // Once its replacement runs, the stuck engine is fenced and named, so only its recovery data is released and it
+        // writes nothing if it wakes up (C41-R1-15).
+        let owner = self.exec().abandon();
         let was_serving = self.http.lock().unwrap_or_else(PoisonError::into_inner).is_some();
         self.stop_http();
         // The stuck executor's autosave becomes recoverable work for the new one.
-        let _ = exec.release_abandoned_recovery();
+        let _ = exec.release_recovery_of(&owner);
         *self.exec.write().unwrap_or_else(PoisonError::into_inner) = exec;
         *self.watchdog.lock().unwrap_or_else(PoisonError::into_inner) = crate::watchdog::Watchdog::default();
         let generation = self.generation.fetch_add(1, Ordering::AcqRel) + 1;

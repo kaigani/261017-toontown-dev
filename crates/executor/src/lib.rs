@@ -244,6 +244,8 @@ pub struct ExecutorHandle {
     config: ExecutorConfig,
     /// The document thread's watchdog cancellation state (C23-R1-07).
     cancel: Arc<tt_vector::work::CancelState>,
+    /// This engine's recovery ownership token and its fence (C41-R1-15), reachable without the document thread.
+    recovery: Arc<host::RecoveryFence>,
     _guard: Arc<ShutdownGuard>,
 }
 
@@ -305,6 +307,7 @@ impl ExecutorHandle {
         let job_subs = subscribers.clone();
         let jobs = Arc::new(JobTable::with_notifier(Box::new(move |e| broadcast(&job_subs, std::slice::from_ref(&e)))));
         let mut env = store::Env::new(&persist);
+        let recovery = Arc::new(host::RecoveryFence { engine: env.engine.clone(), fence: env.fence.clone() });
         env.poster = Some(Poster(tx.clone()));
         let mut session = session::Session { jobs: jobs.clone(), env, ..session::Session::default() };
         // The saved agent policy defaults and limits (`agent.policy.defaults.set`; C14-R1-06).
@@ -353,7 +356,7 @@ impl ExecutorHandle {
         }
         let guard = Arc::new(ShutdownGuard(tx.clone(), Mutex::new(Some(done_rx))));
         let shell = Arc::new(host::ShellShared::default());
-        Ok(Self { tx, registry, jobs, subscribers, shell, config, cancel, _guard: guard })
+        Ok(Self { tx, registry, jobs, subscribers, shell, config, cancel, recovery, _guard: guard })
     }
 
     /// Grants an agent session file-system roots (11 §6.2): paths given by that session must lie inside one of them

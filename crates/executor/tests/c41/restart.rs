@@ -56,8 +56,23 @@ fn a_restarted_executor_offers_the_abandoned_autosave() {
     // The first executor is abandoned alive: its recovery data belongs to a live process and is not offered yet.
     let second = over(&dir);
     assert!(ok(&second, "project.recovery.list", json!({})).as_array().unwrap().is_empty());
-    // The restart releases it.
-    assert_eq!(second.release_abandoned_recovery().unwrap(), 1);
+    // Nothing is released before the first engine is named as abandoned (C41-R1-15).
+    assert_eq!(second.release_abandoned_recovery().unwrap(), 0);
+    let owner = first.abandon();
+    // The fenced engine writes nothing more, even when its maintenance runs (it "wakes up").
+    let info = |d: &std::path::Path| {
+        std::fs::read_dir(d.join("Recovery"))
+            .unwrap()
+            .filter_map(Result::ok)
+            .map(|e| std::fs::read(e.path().join("recovery.json")).unwrap_or_default())
+            .collect::<Vec<_>>()
+    };
+    let before_wake = info(&dir);
+    ok(&first, "doc.object.patch", json!({ "targets": [scene], "props": { "meta": { "unsaved": 43 } } }));
+    first.run_maintenance(true).unwrap();
+    assert_eq!(info(&dir), before_wake, "an abandoned engine writes no autosave or heartbeat");
+    // The restart releases exactly the named engine's data.
+    assert_eq!(second.release_recovery_of(&owner).unwrap(), 1);
     let list = ok(&second, "project.recovery.list", json!({}));
     let entry = &list.as_array().unwrap()[0];
     assert_eq!(entry["projectName"], "Lost work");

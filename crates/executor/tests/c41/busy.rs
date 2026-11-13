@@ -248,3 +248,32 @@ fn a_shown_message_report_emits_ui_message_shown_and_sensors_feed_the_status_bar
     assert_eq!(shown[0].payload["source"], "user");
     assert_eq!(shown[0].payload["suppressed"], false);
 }
+
+#[test]
+fn a_tree_is_fresh_only_with_its_own_sequence() {
+    let h = fixture();
+    h.report_shell(wire(r#"{"attached":true}"#));
+    ok(&h, "prefs.set", json!({ "values": { "interface.theme": "dark" } }));
+    let now = h.events_broadcast();
+    let label = |h: &tt_executor::ExecutorHandle| {
+        ok(h, "inspect.ui.tree", json!({}))["root"]["label"].as_str().map(str::to_owned)
+    };
+    // From the future: refused, nothing stored.
+    h.report_shell(wire(&format!(r#"{{"uiTree":{{"id":"main","label":"future"}},"renderedSeq":{}}}"#, now + 5)));
+    assert!(!h.await_rendered(Duration::ZERO));
+    assert_ne!(label(&h).as_deref(), Some("future"));
+    // Current: fresh.
+    h.report_shell(wire(&format!(r#"{{"uiTree":{{"id":"main","label":"current"}},"renderedSeq":{now}}}"#)));
+    assert!(h.await_rendered(Duration::ZERO));
+    assert_eq!(label(&h).as_deref(), Some("current"));
+    // Older: does not replace.
+    h.report_shell(wire(r#"{"uiTree":{"id":"main","label":"older"},"renderedSeq":0}"#));
+    assert_eq!(label(&h).as_deref(), Some("current"));
+    assert!(h.await_rendered(Duration::ZERO));
+    // A sequence without a tree vouches for nothing; a tree without a sequence is kept but never fresh.
+    h.report_shell(wire(r#"{"uiTree":{"id":"main","label":"unvouched"}}"#));
+    assert_eq!(label(&h).as_deref(), Some("unvouched"));
+    assert!(!h.await_rendered(Duration::ZERO));
+    h.report_shell(wire(&format!(r#"{{"renderedSeq":{now}}}"#)));
+    assert!(!h.await_rendered(Duration::ZERO));
+}

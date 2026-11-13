@@ -62089,7 +62089,6 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
       path: {
         description: "Absolute file path.",
         type: "string",
-        minLength: 1,
         maxLength: 4096,
       },
       onExists: {
@@ -62291,7 +62290,6 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
       path: {
         description: "Absolute file path.",
         type: "string",
-        minLength: 1,
         maxLength: 4096,
       },
       mode: {
@@ -62522,9 +62520,8 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
     type: "object",
     properties: {
       commandId: {
-        description: "Command whose bindings to remove.",
+        description: "Command whose bindings to remove (empty or unknown: `keymap.unknownCommand`).",
         type: "string",
-        minLength: 1,
         maxLength: 256,
       },
       keys: {
@@ -62687,9 +62684,8 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
     type: "object",
     properties: {
       commandId: {
-        description: "Command to bind.",
+        description: "Command to bind (an empty or unknown id is `keymap.unknownCommand`, not a schema error: C41-R1-13).",
         type: "string",
-        minLength: 1,
         maxLength: 256,
       },
       params: {
@@ -62702,9 +62698,8 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
         default: null,
       },
       keys: {
-        description: "Key sequence (01 §12.1 rule 17).",
+        description: "Key sequence (01 §12.1 rule 17); an empty one is `keymap.invalidSequence` (C41-R1-13).",
         type: "string",
-        minLength: 1,
         maxLength: 64,
       },
       context: {
@@ -69415,12 +69410,11 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
     type: "object",
     properties: {
       keys: {
-        description: "Keys to read.",
+        description: "Keys to read (an empty list reads nothing; spec A sets no minimum: C41-R1-13 audit).",
         type: "array",
         items: {
           type: "string",
         },
-        minItems: 1,
         maxItems: 1000,
       },
     },
@@ -82787,15 +82781,13 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
     type: "object",
     properties: {
       name: {
-        description: "Workspace name.",
+        description: "Workspace name (empty or unknown: `workspace.notFound`; C41-R1-13 audit).",
         type: "string",
-        minLength: 1,
         maxLength: 256,
       },
       path: {
         description: "Absolute target path.",
         type: "string",
-        minLength: 1,
         maxLength: 4096,
       },
       onExists: {
@@ -83189,7 +83181,6 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
       path: {
         description: "Absolute source path.",
         type: "string",
-        minLength: 1,
         maxLength: 4096,
       },
       onExists: {
@@ -98620,7 +98611,7 @@ export type keymap_remove_Context = 'global' | 'drawing' | 'staging';
 
 /** `keymap.remove` parameters. */
 export interface keymap_remove_params {
-  /** Command whose bindings to remove. */
+  /** Command whose bindings to remove (empty or unknown: `keymap.unknownCommand`). */
   commandId: string;
   /** Only this sequence. */
   keys?: string | null;
@@ -98670,11 +98661,11 @@ export type keymap_set_OnConflict = 'fail' | 'override';
 
 /** `keymap.set` parameters. */
 export interface keymap_set_params {
-  /** Command to bind. */
+  /** Command to bind (an empty or unknown id is `keymap.unknownCommand`, not a schema error: C41-R1-13). */
   commandId: string;
   /** Fixed parameters of the command reference. */
   params?: Record<string, unknown> | null;
-  /** Key sequence (01 §12.1 rule 17). */
+  /** Key sequence (01 §12.1 rule 17); an empty one is `keymap.invalidSequence` (C41-R1-13). */
   keys: string;
   /** Context. */
   context?: keymap_set_Context;
@@ -100321,7 +100312,7 @@ export interface prefs_changed_result {
 
 /** `prefs.get` parameters. */
 export interface prefs_get_params {
-  /** Keys to read. */
+  /** Keys to read (an empty list reads nothing; spec A sets no minimum: C41-R1-13 audit). */
   keys: string[];
 }
 
@@ -104074,7 +104065,7 @@ export type workspace_export_OnExists = 'fail' | 'overwrite';
 
 /** `workspace.export` parameters. */
 export interface workspace_export_params {
-  /** Workspace name. */
+  /** Workspace name (empty or unknown: `workspace.notFound`; C41-R1-13 audit). */
   name: string;
   /** Absolute target path. */
   path: string;

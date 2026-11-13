@@ -1213,7 +1213,11 @@ pub(crate) fn project_recovery_open(cx: &mut Cx, p: RecoveryOpenParams) -> Resul
     persistence::resolve_unsaved(cx, p.on_unsaved)?;
     // Claim the data now, so that a second session is refused at once (C13-R1-08).
     let previous = match recovery::claim(&root, &p.recovery_id) {
-        recovery::Claim::Claimed(prev) => prev,
+        recovery::Claim::Claimed(prev) => {
+            // The claimed data is this engine's now (C41-R1-15).
+            let _ = recovery::set_engine(&root, &p.recovery_id, &cx.session().env.engine);
+            prev
+        }
         recovery::Claim::InUse(info) => {
             return Err(CommandError::with_details(
                 "project.recoveryInUse",

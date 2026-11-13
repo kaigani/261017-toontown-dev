@@ -93,8 +93,8 @@ pub(crate) fn prefs_list(cx: &mut Cx, p: ListParams) -> Result<Vec<PrefEntry>, C
 #[derive(Debug, Deserialize, JsonSchema)]
 #[serde(deny_unknown_fields)]
 pub(crate) struct GetParams {
-    /// Keys to read.
-    #[schemars(length(min = 1, max = 1000))]
+    /// Keys to read (an empty list reads nothing; spec A sets no minimum: C41-R1-13 audit).
+    #[schemars(length(max = 1000))]
     keys: Vec<String>,
 }
 

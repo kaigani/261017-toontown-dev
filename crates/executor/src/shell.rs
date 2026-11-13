@@ -213,6 +213,8 @@ pub struct Sensors {
     pub attached: bool,
     /// The UI tree the front end rendered last (11 §7.5 `inspect_ui`).
     pub ui_tree: Option<serde_json::Value>,
+    /// The engine event number that tree reflects (`None`: not vouched for).
+    pub ui_tree_seq: Option<u64>,
 }
 
 /// Everything in this module, part of [`crate::ui::UiState`] so that rollback and savepoints carry it.

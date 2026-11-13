@@ -62,7 +62,14 @@ pub(crate) fn tick(core: &mut Core, force_autosave: bool) -> Timings {
     t
 }
 
+fn fenced(s: &Session) -> bool {
+    s.env.fence.load(std::sync::atomic::Ordering::Acquire)
+}
+
 fn heartbeat(s: &mut Session) {
+    if fenced(s) {
+        return;
+    }
     let root = s.env.dirs.recovery.clone();
     let Some(p) = s.project.as_mut() else { return };
     if let Some(l) = &p.store.lock
@@ -132,7 +139,7 @@ fn watch(s: &mut Session) {
 
 /// Starts an autosave when one is due; `true` when it took a snapshot.
 fn autosave(s: &mut Session, force: bool) -> bool {
-    if !s.env.pref_bool("files.autosave.enabled") && !force {
+    if fenced(s) || (!s.env.pref_bool("files.autosave.enabled") && !force) {
         return false;
     }
     let interval = s.env.maintenance.autosave.unwrap_or_else(|| {
@@ -166,7 +173,12 @@ fn autosave(s: &mut Session, force: bool) -> bool {
     let preserved = p.store.preserved.clone();
     let blobs = p.store.blobs.clone();
     let session = crate::persistence::session_json(&doc, &s.app);
+    let (engine, fence) = (s.env.engine.clone(), s.env.fence.clone());
     let spawned = std::thread::Builder::new().name("tt-autosave".to_owned()).spawn(move || {
+        // An engine abandoned while the snapshot waited writes nothing (C41-R1-15).
+        if fence.load(std::sync::atomic::Ordering::Acquire) {
+            return;
+        }
         let input = tt_persist::SaveInput {
             doc: &doc,
             preserved: &preserved,
@@ -174,7 +186,8 @@ fn autosave(s: &mut Session, force: bool) -> bool {
             session: Some(&session),
             saved_at: saved_at.clone(),
         };
-        let outcome = recovery::write(&root, &info, &input);
+        let outcome = recovery::write(&root, &info, &input)
+            .and_then(|saved| recovery::set_engine(&root, &info.recovery_id, &engine).map(|()| saved));
         let id = info.recovery_id.clone();
         let _ = poster.run(std::time::Duration::from_secs(600), move |core| {
             let Some(s) = core.session_mut() else { return };

@@ -118,6 +118,11 @@ pub(crate) struct Env {
     pub roots: BTreeMap<String, Vec<PathBuf>>,
     pub last_heartbeat: Option<Instant>,
     pub last_watch: Option<Instant>,
+    /// This engine's recovery ownership token (written beside each recovery entry; C41-R1-15).
+    pub engine: String,
+    /// Set when the host abandons this engine (it stopped answering): from then on it writes no autosave, recovery
+    /// data or heartbeat, so the restarted engine's release of its data stays true if it wakes up.
+    pub fence: std::sync::Arc<std::sync::atomic::AtomicBool>,
 }
 
 impl Default for Env {
@@ -138,6 +143,8 @@ impl Default for Env {
             roots: BTreeMap::new(),
             last_heartbeat: None,
             last_watch: None,
+            engine: format!("en_{}", tt_persist::fsx::random_token(12)),
+            fence: std::sync::Arc::new(std::sync::atomic::AtomicBool::new(false)),
         }
     }
 }

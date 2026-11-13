@@ -227,14 +227,14 @@ pub(crate) enum OnConflict {
 #[derive(Debug, Deserialize, JsonSchema)]
 #[serde(deny_unknown_fields, rename_all = "camelCase")]
 pub(crate) struct SetParams {
-    /// Command to bind.
-    #[schemars(length(min = 1, max = 256))]
+    /// Command to bind (an empty or unknown id is `keymap.unknownCommand`, not a schema error: C41-R1-13).
+    #[schemars(length(max = 256))]
     command_id: String,
     /// Fixed parameters of the command reference.
     #[serde(default)]
     params: Option<Map<String, Value>>,
-    /// Key sequence (01 §12.1 rule 17).
-    #[schemars(length(min = 1, max = 64))]
+    /// Key sequence (01 §12.1 rule 17); an empty one is `keymap.invalidSequence` (C41-R1-13).
+    #[schemars(length(max = 64))]
     keys: String,
     /// Context.
     #[serde(default = "global")]
@@ -316,8 +316,8 @@ pub(crate) fn keymap_set(cx: &mut Cx, p: SetParams) -> Result<SetResult, Command
 #[derive(Debug, Deserialize, JsonSchema)]
 #[serde(deny_unknown_fields, rename_all = "camelCase")]
 pub(crate) struct RemoveParams {
-    /// Command whose bindings to remove.
-    #[schemars(length(min = 1, max = 256))]
+    /// Command whose bindings to remove (empty or unknown: `keymap.unknownCommand`).
+    #[schemars(length(max = 256))]
     command_id: String,
     /// Only this sequence.
     #[serde(default)]
@@ -436,7 +436,7 @@ pub(crate) enum OnExists {
 #[serde(deny_unknown_fields, rename_all = "camelCase")]
 pub(crate) struct ExportParams {
     /// Absolute file path.
-    #[schemars(length(min = 1, max = 4096))]
+    #[schemars(length(max = 4096))]
     path: String,
     /// When the file exists.
     #[serde(default)]
@@ -499,7 +499,7 @@ pub(crate) enum ImportMode {
 #[serde(deny_unknown_fields, rename_all = "camelCase")]
 pub(crate) struct ImportParams {
     /// Absolute file path.
-    #[schemars(length(min = 1, max = 4096))]
+    #[schemars(length(max = 4096))]
     path: String,
     /// Merge or replace.
     #[serde(default)]
@@ -542,17 +542,33 @@ fn read_exchange(path: &std::path::Path, shown: &str) -> Result<Vec<Binding>, Co
     }
     let list = v.get("bindings").and_then(Value::as_array).ok_or_else(|| bad("no bindings".into()))?;
     let mut out: Vec<Binding> = Vec::new();
+    // A binding's own domain error keeps its code, with the binding's index (C41-R1-12); only the file's structure is
+    // `keymap.invalidFile`.
+    let at = |i: usize, mut e: CommandError| {
+        if let Some(m) = e.details.as_object_mut() {
+            m.insert("index".into(), json!(i));
+            m.insert("path".into(), json!(shown));
+        }
+        e.message = format!("binding {i} of `{shown}`: {}", e.message);
+        e
+    };
     for (i, b) in list.iter().enumerate() {
         let mut b = b.clone();
         if let Some(m) = b.as_object_mut() {
             m.insert("isDefault".into(), json!(false));
         }
         let mut binding: Binding = serde_json::from_value(b).map_err(|e| bad(format!("binding {i}: {e}")))?;
-        binding.keys = canonical(&binding.keys).map_err(|e| bad(format!("binding {i}: {}", e.message)))?;
-        check_reference(&binding.command_id, binding.params.as_ref())
-            .map_err(|e| bad(format!("binding {i}: {}", e.message)))?;
+        binding.keys = canonical(&binding.keys).map_err(|e| at(i, e))?;
+        check_reference(&binding.command_id, binding.params.as_ref()).map_err(|e| at(i, e))?;
         if let Some(c) = keymap::conflicts(&out, &binding).first() {
-            return Err(bad(format!("binding {i} conflicts with {} on {}", c.command_id, c.keys)));
+            return Err(at(
+                i,
+                CommandError::with_details(
+                    kcodes::CONFLICT,
+                    format!("it conflicts with {} on {}", c.command_id, c.keys),
+                    json!({ "conflicts": [{ "commandId": c.command_id, "keys": c.keys }] }),
+                ),
+            ));
         }
         if !out.iter().any(|o| o == &binding) {
             out.push(binding);

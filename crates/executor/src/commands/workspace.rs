@@ -240,11 +240,11 @@ pub(crate) fn workspace_layout_set(cx: &mut Cx, p: LayoutParams) -> Result<Layou
 #[derive(Debug, Deserialize, JsonSchema)]
 #[serde(deny_unknown_fields, rename_all = "camelCase")]
 pub(crate) struct ExportParams {
-    /// Workspace name.
-    #[schemars(length(min = 1, max = 256))]
+    /// Workspace name (empty or unknown: `workspace.notFound`; C41-R1-13 audit).
+    #[schemars(length(max = 256))]
     name: String,
     /// Absolute target path.
-    #[schemars(length(min = 1, max = 4096))]
+    #[schemars(length(max = 4096))]
     path: String,
     /// Overwrite policy.
     #[serde(default)]
@@ -308,7 +308,7 @@ pub(crate) enum ImportOnExists {
 #[serde(deny_unknown_fields, rename_all = "camelCase")]
 pub(crate) struct ImportParams {
     /// Absolute source path.
-    #[schemars(length(min = 1, max = 4096))]
+    #[schemars(length(max = 4096))]
     path: String,
     /// Name-conflict policy.
     #[serde(default)]
