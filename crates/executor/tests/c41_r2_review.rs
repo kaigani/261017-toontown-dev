@@ -18,6 +18,145 @@ fn ok(h: &ExecutorHandle, cmd: &str, p: Value) -> Value {
     assert!(e.error.is_none(), "{cmd}: {e:?}");
     e.result.unwrap_or(Value::Null)
 }
+mod part_b_preferences {
+    use super::*;
+    #[test]
+    fn stale_policy_member_does_not_poison_other_members() {
+        let r = root();
+        let d = UserDirs::under(&r).settings;
+        tt_persist::settings::write(
+            &d,
+            "preferences",
+            &json!({"agent.policy.defaults":{"maxJobs":99,"maxBatchSteps":42}}),
+        )
+        .unwrap();
+        let h = over(&r);
+        let v = ok(&h, "prefs.get", json!({"keys":["agent.policy.defaults"]}));
+        drop(h);
+        std::fs::remove_dir_all(r).unwrap();
+        assert_eq!(v["values"]["agent.policy.defaults"]["maxJobs"], 2);
+        assert_eq!(v["values"]["agent.policy.defaults"]["maxBatchSteps"], 42);
+    }
+    #[test]
+    fn empty_arguments_never_panic_or_create_empty_bindings() {
+        let h = ExecutorHandle::spawn(Default::default()).unwrap();
+        let registry = tt_executor::registry().unwrap();
+        for entry in registry
+            .entries()
+            .filter(|e| ["keymap.", "prefs.", "workspace.", "window."].iter().any(|p| e.id().starts_with(p)))
+        {
+            for params in [
+                json!([]),
+                json!({}),
+                json!({"commandId":""}),
+                json!({"keys":""}),
+                json!({"keys":[]}),
+                json!({"values":{}}),
+            ] {
+                let mut inv = Invocation::user(entry.id(), params);
+                inv.options.dry_run = true;
+                let e = h.invoke(inv);
+                if let Some(error) = e.error {
+                    assert_ne!(error.code, "internal", "{}: {error:?}", entry.id());
+                }
+            }
+        }
+        let map = ok(&h, "keymap.list", json!({}));
+        for b in map.as_array().unwrap() {
+            assert!(!b["commandId"].as_str().unwrap().is_empty());
+            assert!(!b["keys"].as_str().unwrap().is_empty());
+        }
+    }
+    #[test]
+    fn partial_policy_preserves_stored_members() {
+        let h = ExecutorHandle::spawn(Default::default()).unwrap();
+        ok(&h, "prefs.set", json!({"values":{"agent.policy.defaults":{"maxJobs":7}}}));
+        ok(&h, "prefs.set", json!({"values":{"agent.policy.defaults":{"maxBatchSteps":42}}}));
+        let v = ok(&h, "prefs.get", json!({"keys":["agent.policy.defaults"]}));
+        assert_eq!(v["values"]["agent.policy.defaults"]["maxJobs"], 7, "partial policy must retain the stored choice");
+    }
+    #[test]
+    fn policy_bounds_both_paths() {
+        let h = ExecutorHandle::spawn(Default::default()).unwrap();
+        for (member, min, max) in [
+            ("maxJobs", 1i64, 8i64),
+            ("maxBatchSteps", 1, 100000),
+            ("maxInlineImagePx", 256, 8192),
+            ("maxInlineBytes", 1, 1073741824),
+        ] {
+            for n in [min - 1, min, max, max + 1] {
+                for cmd in ["prefs.set", "agent.policy.defaults.set"] {
+                    let obj = json!({member:n});
+                    let p = if cmd == "prefs.set" { json!({"values":{"agent.policy.defaults":obj}}) } else { obj };
+                    let e = h.invoke(Invocation::user(cmd, p));
+                    assert_eq!(e.error.is_none(), (min..=max).contains(&n), "{cmd} {member} {n}: {e:?}");
+                }
+            }
+        }
+    }
+    #[test]
+    fn prefs_noops_write_nothing_and_agent_source() {
+        let r = root();
+        let h = over(&r);
+        let ev = h.subscribe();
+        ok(&h, "prefs.set", json!({"values":{"interface.theme":"system"}}));
+        ok(&h, "prefs.reset", json!({"keys":["interface.theme"]}));
+        assert!(!r.join("Settings/preferences.json").exists());
+        assert!(ev.try_iter().all(|e| e.name != "prefs.changed"));
+        let mut inv = Invocation::user(
+            "prefs.set",
+            json!({"values":{"interface.theme":"dark","files.backups.count":4,"interface.statusBar.visible":true}}),
+        );
+        inv.origin = tt_executor::Origin::Agent {
+            session: "review".into(),
+            name: "review".into(),
+            scopes: [tt_registry::Scope::Prefs].into_iter().collect(),
+        };
+        assert!(h.invoke(inv).error.is_none());
+        let changes: Vec<_> = ev.try_iter().filter(|e| e.name == "prefs.changed").collect();
+        assert_eq!(changes.len(), 1);
+        assert_eq!(changes[0].payload["source"], "agent");
+        let mut keys = changes[0].payload["keys"].as_array().unwrap().clone();
+        keys.sort_by_key(Value::to_string);
+        assert_eq!(keys, vec![json!("files.backups.count"), json!("interface.theme")]);
+        let p = r.join("Settings/preferences.json");
+        let before = std::fs::read(&p).unwrap();
+        let modified = std::fs::metadata(&p).unwrap().modified().unwrap();
+        ok(&h, "prefs.set", json!({"values":{"interface.theme":"dark"}}));
+        assert_eq!(std::fs::read(&p).unwrap(), before);
+        assert_eq!(std::fs::metadata(&p).unwrap().modified().unwrap(), modified);
+        drop(h);
+        std::fs::remove_dir_all(r).unwrap();
+    }
+    #[test]
+    fn import_errors_are_indexed_atomic_and_identical_import_is_silent() {
+        let r = root();
+        let h = over(&r);
+        let p = r.join("keys.json");
+        ok(&h, "keymap.set", json!({"commandId":"project.save","keys":"F2"}));
+        let disk = std::fs::read(r.join("Settings/keymap.json")).unwrap();
+        let before = ok(&h, "keymap.list", json!({}));
+        for mode in ["merge", "replace"] {
+            for (command, keys, code) in
+                [("", "F3", "keymap.unknownCommand"), ("project.save", "", "keymap.invalidSequence")]
+            {
+                let data = json!({"format":"toontown-keymap","formatVersion":"1.0","bindings":[{"commandId":"project.save","keys":"F4","context":"global"},{"commandId":command,"keys":keys,"context":"global"}]});
+                std::fs::write(&p, data.to_string()).unwrap();
+                let e = h.invoke(Invocation::user("keymap.import", json!({"path":p,"mode":mode}))).error.unwrap();
+                assert_eq!(e.code, code);
+                assert_eq!(e.details["index"], 1);
+                assert_eq!(ok(&h, "keymap.list", json!({})), before);
+                assert_eq!(std::fs::read(r.join("Settings/keymap.json")).unwrap(), disk);
+            }
+        }
+        ok(&h, "keymap.export", json!({"path":p,"onExists":"overwrite"}));
+        let ev = h.subscribe();
+        ok(&h, "keymap.import", json!({"path":p,"mode":"replace"}));
+        assert!(ev.try_iter().all(|e| e.name != "keymap.changed"));
+        drop(h);
+        std::fs::remove_dir_all(r).unwrap();
+    }
+}
 mod part_b_settings {
     use super::*;
     #[test]
