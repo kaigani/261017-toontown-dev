@@ -45,6 +45,8 @@ pub struct Host {
     pub settings_dir: PathBuf,
     /// Documents to open once the front end is ready (taken once).
     pending_open: Mutex<Vec<PathBuf>>,
+    /// Serialises restarts (ruling O-14): a second one waits for the first and does not run.
+    restart_lock: Mutex<()>,
 }
 
 impl std::fmt::Debug for Host {
@@ -68,6 +70,7 @@ impl Host {
             seq: AtomicU64::new(0),
             http: Mutex::new(None),
             pending_open: Mutex::new(options.open.clone()),
+            restart_lock: Mutex::new(()),
             options,
             settings_dir,
         })
@@ -103,7 +106,17 @@ impl Host {
     ///
     /// # Errors
     /// The new executor's start error.
-    pub fn restart(&self) -> Result<u64, tt_executor::CommandError> {
+    pub fn restart(&self) -> Result<(u64, bool), tt_executor::CommandError> {
+        self.restart_from(self.generation())
+    }
+
+    /// [`Host::restart`] for a caller that saw generation `asked`: serialised (ruling O-14), so a restart asked while
+    /// another runs waits for it and answers with the new generation without restarting again.
+    fn restart_from(&self, asked: u64) -> Result<(u64, bool), tt_executor::CommandError> {
+        let _serial = self.restart_lock.lock().unwrap_or_else(PoisonError::into_inner);
+        if self.generation() != asked {
+            return Ok((self.generation(), false));
+        }
         let (exec, _) = Self::spawn_executor(&self.options)?;
         // Once its replacement runs, the stuck engine is fenced and named, so only its recovery data is released and it
         // writes nothing if it wakes up (C41-R1-15).
@@ -114,11 +127,14 @@ impl Host {
         let _ = exec.release_recovery_of(&owner);
         *self.exec.write().unwrap_or_else(PoisonError::into_inner) = exec;
         *self.watchdog.lock().unwrap_or_else(PoisonError::into_inner) = crate::watchdog::Watchdog::default();
+        // The new generation numbers its events from 1; the old one's cancellation flags are dropped (ruling O-14).
+        self.seq.store(0, Ordering::Release);
+        self.cancels.lock().unwrap_or_else(PoisonError::into_inner).clear();
         let generation = self.generation.fetch_add(1, Ordering::AcqRel) + 1;
         if was_serving {
             let _ = self.start_http();
         }
-        Ok(generation)
+        Ok((generation, true))
     }
 
     /// Runs one command as the user. With a token, the request carries a cancellation flag that `cancel` sets; the
@@ -130,8 +146,15 @@ impl Host {
             options: InvokeOptions { dry_run, ..InvokeOptions::default() },
             origin: tt_executor::Origin::User,
         };
-        match token {
-            None => self.exec().invoke(inv),
+        // A request answers from the generation it started on (ruling O-14): the probe also sees a restart, so a
+        // request in flight on a replaced engine is answered at once and its late result is never shown as applied.
+        let generation = self.generation();
+        let exec = self.exec();
+        let env = match token {
+            None => {
+                let probe = || self.generation() != generation;
+                exec.invoke_served_until(inv, &probe).0
+            }
             Some(t) => {
                 let Some(guard) = TokenGuard::claim(&self.cancels, t) else {
                     return Envelope::error(
@@ -144,12 +167,34 @@ impl Host {
                     );
                 };
                 let flag = guard.flag.clone();
-                let probe = move || flag.load(Ordering::Acquire);
-                let (env, _) = self.exec().invoke_served_until(inv, &probe);
+                let probe = || flag.load(Ordering::Acquire) || self.generation() != generation;
+                let env = exec.invoke_served_until(inv, &probe).0;
                 drop(guard);
                 env
             }
+        };
+        answer_of(env, generation, self.generation())
+    }
+
+    /// Applies a sensor report from the window (`report_shell`): one that names another engine generation than the
+    /// current one is ignored (ruling O-14). Returns what the window is told.
+    ///
+    /// # Errors
+    /// The JSON text of `arg.invalid` for a malformed report.
+    pub fn report(&self, mut value: Value) -> Result<Value, String> {
+        let generation = value.as_object_mut().and_then(|m| m.remove("generation"));
+        if let Some(g) = generation
+            && g.as_u64() != Some(self.generation())
+        {
+            return Ok(json!({ "ignored": "staleGeneration", "generation": self.generation() }));
         }
+        let report: tt_executor::host::ShellReport = serde_json::from_value(value).map_err(|e| {
+            serde_json::to_string(&json!({ "code": "arg.invalid", "message": format!("malformed sensor report: {e}"),
+                "details": { "pointer": "" } }))
+            .unwrap_or_default()
+        })?;
+        self.exec().report_shell(report);
+        Ok(json!({}))
     }
 
     /// The documents still to open at start (empty after the first call).
@@ -292,6 +337,23 @@ impl Host {
     }
 }
 
+/// The answer to a request that started on engine generation `started` when generation `now` is current (ruling
+/// O-14): its own envelope, or, after a restart, `command.timeout` with `reason: "engineRestarted"`, so a late result of
+/// the replaced engine is never shown as applied.
+fn answer_of(env: Envelope, started: u64, now: u64) -> Envelope {
+    if now == started {
+        return env;
+    }
+    Envelope::error(
+        tt_executor::CommandError::with_details(
+            "command.timeout",
+            "the engine was restarted while this request ran; its outcome is unknown and nothing of it is shown",
+            json!({ "reason": "engineRestarted", "generation": started, "currentGeneration": now }),
+        ),
+        None,
+    )
+}
+
 /// One request's cancellation flag under its token (C41-R1-07): claimed only when the token is not in flight, and
 /// removed by its own owner only, also when the invocation unwinds.
 struct TokenGuard<'a> {
@@ -383,6 +445,65 @@ mod tests {
         drop(held);
         assert!(h.run("app.state.get", json!({}), false, Some("busy")).is_ok());
         assert!(h.cancels.lock().unwrap_or_else(PoisonError::into_inner).is_empty());
+        let _ = std::fs::remove_dir_all(dir);
+    }
+
+    #[test]
+    fn restarts_are_serialised_and_a_waiting_one_does_not_restart_again() {
+        let (h, dir) = host();
+        let h = std::sync::Arc::new(h);
+        // Both callers saw generation 0; the lock is held so both are waiting when the first one runs.
+        let held = h.restart_lock.lock().unwrap_or_else(PoisonError::into_inner);
+        let callers: Vec<_> = (0..2)
+            .map(|_| {
+                let h = h.clone();
+                std::thread::spawn(move || h.restart_from(0).map_err(|e| e.message))
+            })
+            .collect();
+        drop(held);
+        let mut outcomes: Vec<(u64, bool)> =
+            callers.into_iter().filter_map(|c| c.join().ok()).filter_map(Result::ok).collect();
+        outcomes.sort_unstable();
+        assert_eq!(outcomes, vec![(1, false), (1, true)], "one restart; the other waited and answered with it");
+        assert_eq!(h.generation(), 1);
+        let _ = std::fs::remove_dir_all(dir);
+    }
+
+    #[test]
+    fn a_restart_drops_old_flags_renumbers_events_and_answers_in_flight_requests_as_restarted() {
+        let (h, dir) = host();
+        let _ = h.next_seq();
+        let _ = h.next_seq();
+        let held = TokenGuard::claim(&h.cancels, "old");
+        assert!(held.is_some());
+        assert_eq!(h.restart().map_err(|e| e.message), Ok((1, true)));
+        assert!(h.cancels.lock().unwrap_or_else(PoisonError::into_inner).is_empty(), "old flags dropped");
+        assert_eq!(h.next_seq(), 1, "the new generation numbers its events from 1");
+        drop(held);
+        // A request that started on generation 0 and answers now is not shown as applied.
+        let late = answer_of(Envelope::ok(json!({ "applied": true }), None), 0, 1);
+        let e = late.error.map(|e| (e.code, e.details["reason"].clone(), e.details["currentGeneration"].clone()));
+        assert_eq!(e, Some(("command.timeout".to_owned(), json!("engineRestarted"), json!(1))));
+        assert!(answer_of(Envelope::ok(json!({}), None), 1, 1).is_ok());
+        let _ = std::fs::remove_dir_all(dir);
+    }
+
+    #[test]
+    fn a_report_of_another_generation_is_ignored() {
+        let (h, dir) = host();
+        let state = |h: &Host| h.run("app.state.get", json!({}), false, None).result.unwrap_or_default();
+        assert_eq!(
+            h.report(json!({ "generation": 0, "modal": { "kind": "dialog", "title": "Preferences" } })),
+            Ok(json!({}))
+        );
+        assert_eq!(state(&h)["modal"]["kind"], "dialog");
+        assert_eq!(h.restart().map_err(|e| e.message), Ok((1, true)));
+        // The new engine starts without the old window's facts; a report still naming generation 0 is ignored.
+        assert_eq!(state(&h)["modal"], Value::Null);
+        let r = h.report(json!({ "generation": 0, "modal": { "kind": "dialog", "title": "Preferences" } }));
+        assert_eq!(r.map(|v| v["ignored"].clone()), Ok(json!("staleGeneration")));
+        assert_eq!(state(&h)["modal"], Value::Null);
+        assert_eq!(h.report(json!({ "generation": 1, "modal": null })), Ok(json!({})));
         let _ = std::fs::remove_dir_all(dir);
     }
 

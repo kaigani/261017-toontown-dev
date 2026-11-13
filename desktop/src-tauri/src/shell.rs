@@ -111,7 +111,8 @@ pub fn start_event_pump(app: &AppHandle) {
                 break;
             }
             let seq = host.next_seq();
-            let payload = json!({ "seq": seq, "name": e.name, "payload": e.payload });
+            // Each generation numbers its events from 1; the window resyncs on a new generation (ruling O-14).
+            let payload = json!({ "seq": seq, "generation": generation, "name": e.name, "payload": e.payload });
             match tt_engine::wire::to_wire_json(&payload) {
                 Ok(text) => {
                     if let Err(err) = app.emit(ENGINE_EVENT, text) {

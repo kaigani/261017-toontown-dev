@@ -7,7 +7,9 @@ export { createHostApi, HostError, MENU_COMMAND_EVENT, toHostError, type HostApi
 export {
   createEngineApi,
   ENGINE_EVENT,
+  GENERATION_EVENT,
   isCancelled,
+  isRestarted,
   localFailure,
   paramProblems,
   type CommandFailure,

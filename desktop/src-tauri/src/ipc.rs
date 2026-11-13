@@ -129,9 +129,9 @@ pub fn cancel_request(host: State<'_, Host>, json: String) -> Result<Response, S
 /// The JSON text of an `arg.invalid` error for a malformed report.
 #[tauri::command]
 pub fn report_shell(host: State<'_, Host>, json: String) -> Result<Response, String> {
-    let report: tt_executor::host::ShellReport = parse(&json)?;
-    host.exec().report_shell(report);
-    respond(&json!({}))
+    let value: Value = parse(&json)?;
+    // A report names the engine generation the window last saw; one of another generation is ignored (ruling O-14).
+    respond(&host.report(value)?)
 }
 
 /// `dispatch_key` request.
@@ -270,11 +270,14 @@ pub fn startup(host: State<'_, Host>) -> Result<Response, String> {
 #[tauri::command]
 pub async fn restart_engine(app: AppHandle) -> Result<Response, String> {
     let app2 = app.clone();
-    let generation = tauri::async_runtime::spawn_blocking(move || app2.state::<Host>().restart())
+    let (generation, restarted) = tauri::async_runtime::spawn_blocking(move || app2.state::<Host>().restart())
         .await
         .map_err(|e| internal(e.to_string()))?
         .map_err(|e| error_json(&tt_engine::ErrorInfo { code: e.code, message: e.message, details: *e.details }))?;
-    crate::shell::start_event_pump(&app);
+    // Only the call that restarted starts the new generation's event pump (a waiting second call does not).
+    if restarted {
+        crate::shell::start_event_pump(&app);
+    }
     crate::menu::refresh(&app);
     respond(&json!({ "generation": generation }))
 }

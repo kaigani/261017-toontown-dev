@@ -132,6 +132,7 @@ pub(crate) const MESSAGES: &[(&str, &str)] = &[
         "prefs.saveFailed",
         "A settings file could not be saved (SI-119, interim id): the change applies until the application quits. The message names the file and the reason.",
     ),
+    ("engine.restartConfirm", "Restarting a stuck engine loses work after the last autosave; it names that time."),
     ("agent.serverFailed", "The agent server (attached mode) did not start; the message says why."),
     ("keymap.unknownCommand", "There is no command with that id to bind."),
     ("keymap.invalidSequence", "The key sequence is not valid."),

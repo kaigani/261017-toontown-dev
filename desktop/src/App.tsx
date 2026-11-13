@@ -6,7 +6,7 @@ import { lazy, Suspense, useCallback, useEffect, useMemo, useRef, useState } fro
 
 import { maybeRunIpcBench } from './diagnostics/ipcBench';
 import { DockArea } from './dock/DockArea';
-import { useHost, type Envelope, type SpikeMode } from './ipc';
+import { GENERATION_EVENT, useHost, type Envelope, type SpikeMode } from './ipc';
 import { isMac, isUnmodified, sequenceOf } from './keys/sequence';
 import { PreferencesDialog } from './prefs/PreferencesDialog';
 import { ActionsProvider } from './shell/actions';
@@ -352,9 +352,12 @@ function Window() {
     };
     window.addEventListener('focusin', report);
     window.addEventListener('focusout', report);
+    // A new engine generation starts without this window's facts (ruling O-9, O-14).
+    window.addEventListener(GENERATION_EVENT, report);
     return () => {
       window.removeEventListener('focusin', report);
       window.removeEventListener('focusout', report);
+      window.removeEventListener(GENERATION_EVENT, report);
     };
   }, [services]);
 
@@ -432,11 +435,29 @@ function Window() {
 }
 
 /** The engine stopped answering (reviews/M4-design-engine-restart.md): Wait or Restart, the user's choice. */
+/** "12:34:56" in local time, from an ISO timestamp. */
+function clockTime(iso: string): string {
+  const d = new Date(iso);
+  return Number.isNaN(d.getTime()) ? iso : d.toLocaleTimeString();
+}
+
 function EngineBanner() {
   const host = useHost();
-  const { store } = useShell();
+  const { store, engine } = useShell();
+  const messages = useMessages();
   const [stuck, setStuck] = useState(false);
   const [dismissed, setDismissed] = useState(false);
+  // The last autosave the window saw (the confirmation names it: work after it is lost; ruling O-14).
+  const [autosaved, setAutosaved] = useState<string | null>(null);
+  useEffect(
+    () =>
+      store.onEvent((e) => {
+        const p = (e.payload ?? {}) as Record<string, unknown>;
+        if (e.name === 'project.autosaved' && typeof p['savedAt'] === 'string') setAutosaved(p['savedAt']);
+        if (e.name === 'project.closed' || e.name === 'project.opened') setAutosaved(null);
+      }),
+    [store],
+  );
   useEffect(() => {
     let unlisten: (() => void) | null = null;
     let disposed = false;
@@ -458,7 +479,8 @@ function EngineBanner() {
   return (
     <div className="engine-banner" role="alert" data-tt-role="dialog" data-tt-id="engineNotResponding">
       <strong>The engine is not responding.</strong> A command may still be running. Work since the last
-      autosave is only in the engine; restarting offers the autosave as recoverable work.
+      autosave{autosaved ? ` (${clockTime(autosaved)})` : ''} is only in the engine; restarting offers the
+      autosave as recoverable work.
       <button
         type="button"
         data-tt-role="button"
@@ -474,10 +496,26 @@ function EngineBanner() {
         data-tt-role="button"
         data-tt-id="engine.restart"
         onClick={() => {
-          void host.restartEngine().then(() => {
+          void (async () => {
+            const since = autosaved
+              ? `Work after the last autosave (${clockTime(autosaved)}) will be lost; the autosave is offered as recoverable work.`
+              : 'No autosave was made in this session: unsaved work will be lost.';
+            const answer = await messages.show({
+              severity: 'warning',
+              messageId: 'engine.restartConfirm',
+              title: 'Restart the engine?',
+              text: `The engine is not responding. ${since}`,
+              buttons: [
+                { id: 'restart', label: 'Restart', role: 'default' },
+                { id: 'cancel', label: 'Cancel', role: 'cancel' },
+              ],
+            });
+            if (answer.button !== 'restart') return;
+            const { generation } = await host.restartEngine();
+            engine.setGeneration(generation);
             setStuck(false);
-            void store.resync();
-          });
+            await store.resync();
+          })();
         }}
       >
         Restart the engine

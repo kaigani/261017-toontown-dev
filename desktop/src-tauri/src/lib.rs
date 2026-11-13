@@ -233,6 +233,7 @@ mod tests {
                 "cancel_request",
                 "report_shell",
                 "dispatch_key",
+                "availability",
                 "pick_path",
                 "startup",
                 "restart_engine"
@@ -249,7 +250,7 @@ mod tests {
     fn diagnostics_build_registers_the_m0_commands() {
         let names = names();
         assert_eq!(
-            &names[..9],
+            &names[..10],
             [
                 "ping",
                 "app_info",
@@ -257,6 +258,7 @@ mod tests {
                 "cancel_request",
                 "report_shell",
                 "dispatch_key",
+                "availability",
                 "pick_path",
                 "startup",
                 "restart_engine"

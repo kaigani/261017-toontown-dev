@@ -1397,3 +1397,15 @@ Reserved by the M0 closure for "measured deterministic-format incompatibility" (
 - **Interim decision:** `prefs.saveFailed` (severity warning; details `kind`, `path`, `reason`, `message`), also used
   when a per-user folder cannot be created. It has a help entry like every other message id.
 - **Question:** add `prefs.saveFailed` (or another id) to 01 §11 and the message list.
+
+## SI-120 — the answer to a request cut off by an engine restart (found in M4 C4.1 round 1; interim)
+
+- **Sections:** 11 §10 (generic codes), 11 P5 (never block), reviews/M4-design-engine-restart.md.
+- **Problem:** when the user restarts an engine that stopped answering, a request still in flight on the old engine
+  has no specified answer. Its outcome is unknown (the old engine may have applied it, and may still apply it if it
+  wakes up, though it is fenced from writing recovery data).
+- **Interim decision (ruling O-14):** `command.timeout` with `details.reason: "engineRestarted"`,
+  `details.generation` (the generation the request started on) and `details.currentGeneration`, by analogy with the
+  caller-cancelled request of SI-111. The window shows it as a status line ("the engine restarted while it ran; check
+  the result"), never as applied.
+- **Question:** confirm, or define a dedicated code (for example `engine.restarted`) in 11 §10.

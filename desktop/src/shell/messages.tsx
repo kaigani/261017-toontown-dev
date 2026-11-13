@@ -3,7 +3,7 @@
 // line, and the modal-state reports the executor needs for user priority (ADR-0021).
 import { useCallback, useEffect, useMemo, useRef, useState, type ReactNode } from 'react';
 
-import { isCancelled, type EngineApi } from '../ipc';
+import { GENERATION_EVENT, isCancelled, isRestarted, type EngineApi } from '../ipc';
 import {
   MessagesContext,
   NOTIFICATION_MS,
@@ -48,6 +48,17 @@ export function MessageHost({
       })
       .catch(() => undefined);
   }, [engine]);
+
+  // A new engine generation starts without this window's facts (ruling O-9, O-14): the modal state is reported again.
+  useEffect(() => {
+    const on = () => {
+      reportModal();
+    };
+    window.addEventListener(GENERATION_EVENT, on);
+    return () => {
+      window.removeEventListener(GENERATION_EVENT, on);
+    };
+  }, [reportModal]);
 
   const enterModal = useCallback(
     (kind: 'dialog' | 'progress' | 'gesture', title: string) => {
@@ -110,6 +121,11 @@ export function MessageHost({
         if (isCancelled(env)) {
           // A cancelled request is the user's choice, never shown as a timeout (SI-111).
           setLine({ text: `${what}: cancelled`, kind: 'info' });
+          return;
+        }
+        if (isRestarted(env)) {
+          // Cut off by an engine restart (ruling O-14): its outcome is unknown, nothing of it is shown as applied.
+          setLine({ text: `${what}: the engine restarted while it ran; check the result`, kind: 'warning' });
           return;
         }
         const e = env.error;

@@ -79,6 +79,12 @@ export interface ScriptedHost extends HostTransport {
   skip(): void;
   /** Emits a menu command. */
   menu(command: string, params?: Record<string, unknown>): void;
+  /** Emits any host event (for example `engine-status`). */
+  emit(event: string, payload: unknown): void;
+  /** The engine generation; `restart_engine` replaces the engine (ruling O-14) and numbers events from 1 again. */
+  generation: number;
+  /** How many restarts were asked. */
+  restarts: number;
   /** Answers to `dispatch_key`. */
   keys: Record<string, unknown>;
   /** Answers to `availability` (ruling O-10): the kernel's facts for one reference. */
@@ -217,6 +223,11 @@ export function createScriptedHost(overrides: Record<string, Handler> = {}): Scr
         }
         case 'pick_path':
           return Promise.resolve({ path: host.picked });
+        case 'restart_engine':
+          host.restarts += 1;
+          host.generation += 1;
+          seq = 0;
+          return Promise.resolve({ generation: host.generation });
         case 'startup':
           return Promise.resolve({ open: [] });
         case 'app_info':
@@ -243,8 +254,14 @@ export function createScriptedHost(overrides: Record<string, Handler> = {}): Scr
     },
     event(name, payload) {
       seq += 1;
-      for (const h of listeners.get('engine-event') ?? []) h({ seq, name, payload });
+      for (const h of listeners.get('engine-event') ?? [])
+        h({ seq, generation: host.generation, name, payload });
     },
+    emit(event, payload) {
+      for (const h of listeners.get(event) ?? []) h(payload);
+    },
+    generation: 0,
+    restarts: 0,
     skip() {
       seq += 1;
     },

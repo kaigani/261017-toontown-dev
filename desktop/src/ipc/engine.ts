@@ -32,9 +32,14 @@ export interface Envelope {
 /** One engine event (11 §9.2), numbered by the host in delivery order. */
 export interface EngineEvent {
   readonly seq: number;
+  /** The engine generation that emitted it (0 at start, +1 per restart; ruling O-14). */
+  readonly generation?: number;
   readonly name: string;
   readonly payload: unknown;
 }
+
+/** Window event fired when the window adopts a new engine generation (reports must be made again). */
+export const GENERATION_EVENT = 'tt-engine-generation';
 
 /** What a key press resolved to and, when it ran a command, its envelope. */
 export interface KeyOutcome {
@@ -95,6 +100,10 @@ export interface EngineApi {
   cancel(token: string): Promise<void>;
   dispatchKey(keys: string): Promise<KeyOutcome>;
   report(report: ShellReport): Promise<void>;
+  /** The engine generation the window follows; sensor reports name it (ruling O-14). */
+  readonly generation: () => number;
+  /** Adopts a new engine generation (after a restart): later reports name it and the window re-reports its facts. */
+  setGeneration(generation: number): void;
   /** The availability of command references (ruling O-10): the kernel's one answer for every GUI surface. */
   availability(refs: readonly CommandRef[]): Promise<Availability[]>;
   pickPath(request: PickRequest): Promise<string | null>;
@@ -124,6 +133,15 @@ export function isCancelled(env: Envelope): boolean {
   if (env.error?.code !== 'command.timeout') return false;
   const d = env.error.details;
   return typeof d === 'object' && d !== null && (d as Record<string, unknown>)['reason'] === 'cancelled';
+}
+
+/** Whether a failure is a request the engine restart cut off (ruling O-14: `reason: "engineRestarted"`). */
+export function isRestarted(env: Envelope): boolean {
+  if (env.error?.code !== 'command.timeout') return false;
+  const d = env.error.details;
+  return (
+    typeof d === 'object' && d !== null && (d as Record<string, unknown>)['reason'] === 'engineRestarted'
+  );
 }
 
 /** Checks parameters against a command's generated schema; returns the problems (empty when valid). */
@@ -172,8 +190,16 @@ let nextToken = 1;
 export function createEngineApi(transport: HostTransport): EngineApi {
   const invoke = async (command: string, args: unknown): Promise<unknown> =>
     transport.invoke(command, { json: stringifyWireJson(args) });
+  let generation = 0;
 
   return {
+    generation: () => generation,
+    setGeneration(next) {
+      if (next === generation) return;
+      generation = next;
+      if (typeof window !== 'undefined')
+        window.dispatchEvent(new CustomEvent(GENERATION_EVENT, { detail: next }));
+    },
     run(command, params = {}, options = {}) {
       const problems = paramProblems(command, params);
       if (problems.length > 0) {
@@ -206,7 +232,7 @@ export function createEngineApi(transport: HostTransport): EngineApi {
       return v as KeyOutcome;
     },
     async report(report) {
-      await invoke('report_shell', report);
+      await invoke('report_shell', { ...report, generation });
     },
     async availability(refs) {
       const v = decode(await invoke('availability', { refs }));
@@ -227,7 +253,13 @@ export function createEngineApi(transport: HostTransport): EngineApi {
           if (typeof v !== 'object' || v === null) return;
           const o = v as Record<string, unknown>;
           if (typeof o['seq'] !== 'number' || typeof o['name'] !== 'string') return;
-          handler({ seq: o['seq'], name: o['name'], payload: o['payload'] });
+          const g = o['generation'];
+          handler({
+            seq: o['seq'],
+            name: o['name'],
+            payload: o['payload'],
+            ...(typeof g === 'number' ? { generation: g } : {}),
+          });
         } catch {
           // A malformed event can only come from a version mismatch; it is dropped.
         }

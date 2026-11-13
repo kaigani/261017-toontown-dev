@@ -182,7 +182,7 @@ describe('typed errors and cancellation (M3 merge note §8 item 1)', () => {
     });
   });
 
-  it('closing a message box sends exactly {"modal":null} (C41-R1-01)', async () => {
+  it('closing a message box sends exactly {"modal":null} with its generation (C41-R1-01)', async () => {
     const host = createScriptedHost({
       'workspace.select': () => fail('workspace.notFound', 'no workspace named Nope', { name: 'Nope' }),
     });
@@ -193,12 +193,16 @@ describe('typed errors and cancellation (M3 merge note §8 item 1)', () => {
     });
     const box = await screen.findByRole('alertdialog');
     await vi.waitFor(() => {
-      expect(host.rawReports.some((r) => r.startsWith('{"modal":{"kind":"dialog","title":'))).toBe(true);
+      expect(
+        host.rawReports.some(
+          (r) => r.startsWith('{"modal":{"kind":"dialog","title":') && r.endsWith(',"generation":0}'),
+        ),
+      ).toBe(true);
     });
     const before = host.rawReports.length;
     fireEvent.click(within(box).getByRole('button', { name: 'OK' }));
     await vi.waitFor(() => {
-      expect(host.rawReports.slice(before)).toContain('{"modal":null}');
+      expect(host.rawReports.slice(before)).toContain('{"modal":null,"generation":0}');
     });
   });
 
@@ -307,7 +311,7 @@ describe('shortcuts (01 §8.4)', () => {
 });
 
 describe('preferences (01 §7.1)', () => {
-  it('a dialog opened by the engine takes the focus: Escape closes it and {"modal":null} is sent (C41-R1-01)', async () => {
+  it('a dialog opened by the engine takes the focus: Escape closes it and {"modal":null} is sent with its generation (C41-R1-01)', async () => {
     const host = renderApp();
     await screen.findByRole('toolbar', { name: 'Main toolbar' });
     act(() => {
@@ -321,7 +325,7 @@ describe('preferences (01 §7.1)', () => {
       expect(screen.queryByRole('dialog', { name: 'Preferences' })).toBeNull();
     });
     await vi.waitFor(() => {
-      expect(host.rawReports.slice(before)).toContain('{"modal":null}');
+      expect(host.rawReports.slice(before)).toContain('{"modal":null,"generation":0}');
     });
     expect(host.actions().some((a) => a.command === 'prefs.set')).toBe(false);
   });
@@ -495,5 +499,63 @@ describe('one source of availability (ruling O-10)', () => {
       expect(screen.getByRole('button', { name: 'Undo Move Peg' })).toHaveProperty('disabled', false);
     });
     compare(host);
+  });
+});
+
+describe('engine restart is a generation change (ruling O-14)', () => {
+  it('the confirmation names the last autosave; after the restart reports name the new generation', async () => {
+    const host = renderApp(createScriptedHost({ 'app.state.get': () => ok(PROJECT_STATE) }));
+    await screen.findByRole('toolbar', { name: 'Main toolbar' });
+    act(() => {
+      host.event('project.autosaved', {
+        projectId: 'pr_1',
+        recoveryId: 'rc_1',
+        savedAt: '2026-11-13T10:20:30Z',
+      });
+      host.emit('engine-status', { notResponding: true, generation: 0 });
+    });
+    const banner = await vi.waitFor(() => {
+      const b = document.querySelector('[data-tt-id="engineNotResponding"]');
+      if (!(b instanceof HTMLElement)) throw new Error('no banner');
+      return b;
+    });
+    const shown = new Date('2026-11-13T10:20:30Z').toLocaleTimeString();
+    await vi.waitFor(() => {
+      expect(banner.textContent).toContain(shown);
+    });
+    fireEvent.click(within(banner).getByRole('button', { name: 'Restart the engine' }));
+    const box = await screen.findByRole('alertdialog');
+    expect(box.textContent).toContain(`last autosave (${shown})`);
+    fireEvent.click(within(box).getByRole('button', { name: 'Restart' }));
+    await vi.waitFor(() => {
+      expect(host.restarts).toBe(1);
+    });
+    // The window now names generation 1 in its reports, and an event of generation 1 is applied from seq 1.
+    const before = host.rawReports.length;
+    act(() => {
+      host.event('app.state.changed', { changed: ['modal'], state: PROJECT_STATE });
+    });
+    await vi.waitFor(() => {
+      expect(host.rawReports.slice(before).some((r) => r.includes('"generation":1'))).toBe(true);
+    });
+    expect(host.rawReports.slice(before).every((r) => !r.includes('"generation":0'))).toBe(true);
+  });
+
+  it('a request cut off by a restart is shown as such, not as an error box', async () => {
+    const host = createScriptedHost({
+      'workspace.select': () =>
+        fail('command.timeout', 'the engine was restarted while this request ran', {
+          reason: 'engineRestarted',
+          generation: 0,
+          currentGeneration: 1,
+        }),
+    });
+    renderApp(host);
+    await screen.findByRole('toolbar', { name: 'Main toolbar' });
+    act(() => {
+      host.menu('workspace.select', { name: 'Drawing' });
+    });
+    await screen.findByText(/the engine restarted while it ran/);
+    expect(screen.queryByRole('alertdialog')).toBeNull();
   });
 });

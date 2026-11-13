@@ -71,6 +71,8 @@ export interface StoreState {
   readonly errors: Partial<Record<SliceName, string>>;
   /** The last engine event applied. */
   readonly seq: number;
+  /** The engine generation of those events (ruling O-14). */
+  readonly generation: number;
   /** Agents acting now (from `shell.agentActing`). */
   readonly acting: readonly AgentActivity[];
 }
@@ -96,7 +98,7 @@ export interface Store {
 }
 
 export function createStore(engine: EngineApi): Store {
-  let state: StoreState = { slices: {}, errors: {}, seq: 0, acting: [] };
+  let state: StoreState = { slices: {}, errors: {}, seq: 0, generation: 0, acting: [] };
   const listeners = new Set<Listener>();
   const hooks = new Set<EventHook>();
   const set = (next: StoreState) => {
@@ -159,6 +161,17 @@ export function createStore(engine: EngineApi): Store {
       };
     },
     async apply(event) {
+      // A new engine generation numbers its events from 1 again: the numbering restarts and everything is read anew.
+      if (event.generation !== undefined && event.generation !== state.generation) {
+        engine.setGeneration(event.generation);
+        set({ ...state, generation: event.generation, seq: 0, acting: [] });
+        await store.resync();
+        set({ ...state, seq: event.seq });
+        hooks.forEach((h) => {
+          h(event);
+        });
+        return;
+      }
       const gap = state.seq !== 0 && event.seq > state.seq + 1;
       if (event.name === 'shell.agentActing') {
         const p = (event.payload ?? {}) as Record<string, unknown>;
