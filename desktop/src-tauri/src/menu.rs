@@ -427,7 +427,7 @@ pub fn on_event(app: &AppHandle, id: &str) {
     let app = app.clone();
     tauri::async_runtime::spawn_blocking(move || {
         let host = app.state::<Host>();
-        let params = match host.exec.complete_reference(&command, params.clone()) {
+        let params = match host.exec().complete_reference(&command, params.clone()) {
             Ok(tt_executor::host::KeyResolution::Command { params: Value::Object(p), .. }) => p,
             _ => params,
         };

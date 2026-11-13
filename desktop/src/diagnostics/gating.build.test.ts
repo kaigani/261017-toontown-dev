@@ -66,6 +66,7 @@ describe('M0 diagnostics gating (C0.4)', () => {
       'dispatch_key',
       'pick_path',
       'startup',
+      'restart_engine',
     ]);
     expect(DIAGNOSTIC).toContain('bench_plan');
     expect(DIAGNOSTIC).toContain('spike_canvas_scene');

@@ -26,8 +26,12 @@ pub struct HostOptions {
 
 /// The engine connection, managed Tauri state.
 pub struct Host {
-    /// The executor (document thread); every GUI command goes through it.
-    pub exec: ExecutorHandle,
+    /// The executor (document thread); every GUI command goes through it. Replaced only by [`Host::restart`].
+    exec: std::sync::RwLock<ExecutorHandle>,
+    /// Restarts so far (the event pump of an earlier generation stops forwarding).
+    generation: AtomicU64,
+    /// Heartbeat state (reviews/M4-design-engine-restart.md).
+    pub watchdog: Mutex<crate::watchdog::Watchdog>,
     /// Cancellation flags of cancellable requests in flight, by request token. A probe reads only the flag
     /// (ADR-0020 decision 8: probes must not block).
     cancels: Mutex<HashMap<String, Arc<AtomicBool>>>,
@@ -55,6 +59,21 @@ impl Host {
     /// # Errors
     /// The executor's start error.
     pub fn start(options: HostOptions) -> Result<Self, tt_registry::CommandError> {
+        let (exec, settings_dir) = Self::spawn_executor(&options)?;
+        Ok(Self {
+            exec: std::sync::RwLock::new(exec),
+            generation: AtomicU64::new(0),
+            watchdog: Mutex::new(crate::watchdog::Watchdog::default()),
+            cancels: Mutex::new(HashMap::new()),
+            seq: AtomicU64::new(0),
+            http: Mutex::new(None),
+            pending_open: Mutex::new(options.open.clone()),
+            options,
+            settings_dir,
+        })
+    }
+
+    fn spawn_executor(options: &HostOptions) -> Result<(ExecutorHandle, PathBuf), tt_registry::CommandError> {
         let dirs = match &options.user_dir {
             Some(d) => tt_executor::UserDirs::under(d),
             None => tt_executor::UserDirs::platform().unwrap_or_else(|| {
@@ -66,15 +85,38 @@ impl Host {
             config: tt_executor::ExecutorConfig::default(),
             persist: tt_executor::PersistOptions { user_dirs: Some(dirs), ..Default::default() },
         })?;
-        Ok(Self {
-            exec,
-            cancels: Mutex::new(HashMap::new()),
-            seq: AtomicU64::new(0),
-            http: Mutex::new(None),
-            pending_open: Mutex::new(options.open.clone()),
-            options,
-            settings_dir,
-        })
+        Ok((exec, settings_dir))
+    }
+
+    /// The executor handle (a cheap clone).
+    pub fn exec(&self) -> ExecutorHandle {
+        self.exec.read().unwrap_or_else(PoisonError::into_inner).clone()
+    }
+
+    /// The executor generation (0 at start, +1 per restart).
+    pub fn generation(&self) -> u64 {
+        self.generation.load(Ordering::Acquire)
+    }
+
+    /// Replaces a stuck executor with a new one over the same user folders (reviews/M4-design-engine-restart.md). The
+    /// stuck document thread is abandoned; its autosave recovery data is offered by the new executor. The HTTP server is
+    /// restarted over the new executor. Returns the new generation.
+    ///
+    /// # Errors
+    /// The new executor's start error.
+    pub fn restart(&self) -> Result<u64, tt_registry::CommandError> {
+        let (exec, _) = Self::spawn_executor(&self.options)?;
+        let was_serving = self.http.lock().unwrap_or_else(PoisonError::into_inner).is_some();
+        self.stop_http();
+        // The stuck executor's autosave becomes recoverable work for the new one.
+        let _ = exec.release_abandoned_recovery();
+        *self.exec.write().unwrap_or_else(PoisonError::into_inner) = exec;
+        *self.watchdog.lock().unwrap_or_else(PoisonError::into_inner) = crate::watchdog::Watchdog::default();
+        let generation = self.generation.fetch_add(1, Ordering::AcqRel) + 1;
+        if was_serving {
+            let _ = self.start_http();
+        }
+        Ok(generation)
     }
 
     /// Runs one command as the user. With a token, the request carries a cancellation flag that `cancel` sets; the
@@ -87,12 +129,12 @@ impl Host {
             origin: tt_executor::Origin::User,
         };
         match token {
-            None => self.exec.invoke(inv),
+            None => self.exec().invoke(inv),
             Some(t) => {
                 let flag = Arc::new(AtomicBool::new(false));
                 self.cancels.lock().unwrap_or_else(PoisonError::into_inner).insert(t.to_owned(), flag.clone());
                 let probe = move || flag.load(Ordering::Acquire);
-                let (env, _) = self.exec.invoke_served_until(inv, &probe);
+                let (env, _) = self.exec().invoke_served_until(inv, &probe);
                 self.cancels.lock().unwrap_or_else(PoisonError::into_inner).remove(t);
                 env
             }
@@ -162,7 +204,7 @@ impl Host {
                 token: token.clone(),
                 server: tt_mcp::ServerOptions { run_mode: "attached".to_owned(), ..Default::default() },
             };
-            match tt_mcp::http::start(self.exec.clone(), opts) {
+            match tt_mcp::http::start(self.exec(), opts) {
                 Ok(server) => {
                     let url = server.url();
                     self.write_discovery(&url, &token);

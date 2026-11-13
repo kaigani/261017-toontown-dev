@@ -18,6 +18,7 @@ pub mod instance;
 pub mod ipc;
 pub mod menu;
 pub mod shell;
+pub mod watchdog;
 // Spike code is compiled into a build only with the feature; unit tests always compile it so its tests keep running.
 #[cfg(any(test, feature = "m0-diagnostics"))]
 pub mod spikes;
@@ -49,6 +50,7 @@ command_registry![
     ipc::dispatch_key,
     ipc::pick_path,
     ipc::startup,
+    ipc::restart_engine,
 ];
 
 #[cfg(feature = "m0-diagnostics")]
@@ -61,6 +63,7 @@ command_registry![
     ipc::dispatch_key,
     ipc::pick_path,
     ipc::startup,
+    ipc::restart_engine,
     diagnostics::bench_plan,
     diagnostics::bench_report,
     spikes::tablet::spike_mode,
@@ -140,6 +143,7 @@ pub fn run() -> Result<(), DesktopError> {
             let handle = app.handle().clone();
             shell::start_event_pump(&handle);
             shell::restore_window(&handle);
+            watchdog::start(&handle);
             menu::refresh(&handle);
             shell::sync_agent_server(&handle);
             if let Some((listener, key)) = listener {
@@ -209,7 +213,7 @@ mod tests {
     #[cfg(not(feature = "m0-diagnostics"))]
     #[test]
     fn default_build_registers_no_diagnostic_commands() {
-        assert_eq!(names(), ["ping", "app_info", "run_command", "cancel_request", "report_shell", "dispatch_key", "pick_path", "startup"]);
+        assert_eq!(names(), ["ping", "app_info", "run_command", "cancel_request", "report_shell", "dispatch_key", "pick_path", "startup", "restart_engine"]);
         for path in COMMANDS {
             assert!(!path.contains("spike") && !path.contains("bench") && !path.contains("diagnostics"), "{path}");
         }
@@ -220,7 +224,7 @@ mod tests {
     #[test]
     fn diagnostics_build_registers_the_m0_commands() {
         let names = names();
-        assert_eq!(&names[..8], ["ping", "app_info", "run_command", "cancel_request", "report_shell", "dispatch_key", "pick_path", "startup"]);
+        assert_eq!(&names[..9], ["ping", "app_info", "run_command", "cancel_request", "report_shell", "dispatch_key", "pick_path", "startup", "restart_engine"]);
         assert!(names.contains(&"bench_plan") && names.contains(&"bench_report"));
         assert_eq!(names.iter().filter(|n| n.starts_with("spike_")).count(), 10);
     }

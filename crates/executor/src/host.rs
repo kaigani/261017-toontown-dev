@@ -345,6 +345,19 @@ impl ExecutorHandle {
         })?
     }
 
+    /// Releases the recovery data an earlier executor of this process left when it stopped answering, so this
+    /// executor offers it as recoverable work (reviews/M4-design-engine-restart.md). Returns the number of entries.
+    ///
+    /// # Errors
+    /// `command.timeout` when the document thread does not answer within the budget.
+    pub fn release_abandoned_recovery(&self) -> Result<usize, CommandError> {
+        crate::Poster(self.tx.clone()).run(self.config.budget, |core| {
+            let Some(s) = core.session() else { return 0 };
+            let keep = s.project.as_ref().map(|p| p.store.recovery_id.clone());
+            tt_persist::recovery::release_process(&s.env.dirs.recovery, std::process::id(), keep.as_deref())
+        })
+    }
+
     /// Sets `waitForUserMs` (01 §12.1 rule 8): how long a conflicting agent change waits for the user's modal
     /// interaction to end before `ui.busy`. 0 fails at once.
     pub fn set_wait_for_user(&self, wait: Duration) {

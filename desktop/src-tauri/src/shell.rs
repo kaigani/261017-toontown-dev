@@ -100,11 +100,16 @@ fn raise_all(app: &AppHandle) {
 /// of the application.
 pub fn start_event_pump(app: &AppHandle) {
     let host = app.state::<Host>();
-    let rx = host.exec.subscribe();
+    let rx = host.exec().subscribe();
+    let generation = host.generation();
     let app = app.clone();
     let _ = std::thread::Builder::new().name("tt-event-pump".into()).spawn(move || {
         while let Ok(e) = rx.recv() {
             let host = app.state::<Host>();
+            // After a restart the old executor's events are not forwarded (reviews/M4-design-engine-restart.md).
+            if host.generation() != generation {
+                break;
+            }
             let seq = host.next_seq();
             let payload = json!({ "seq": seq, "name": e.name, "payload": e.payload });
             match tt_engine::wire::to_wire_json(&payload) {

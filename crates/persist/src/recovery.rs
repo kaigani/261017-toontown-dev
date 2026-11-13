@@ -100,6 +100,33 @@ pub fn heartbeat(root: &Path, recovery_id: &str) {
     }
 }
 
+/// Releases the recovery data of an executor of this process that stopped answering (M4 C4.1,
+/// reviews/M4-design-engine-restart.md): every entry of `process_id` on this host, except `keep`, gets a heartbeat
+/// time so old that the entry counts as orphaned, so the restarted executor offers it as recoverable work. Returns the
+/// number of entries released.
+pub fn release_process(root: &Path, process_id: u32, keep: Option<&str>) -> usize {
+    let Ok(rd) = fs::read_dir(root) else { return 0 };
+    let mut released = 0;
+    for e in rd.flatten() {
+        let name = e.file_name().to_string_lossy().into_owned();
+        if !valid_id(&name) || keep == Some(name.as_str()) {
+            continue;
+        }
+        let p = e.path().join("recovery.json");
+        let Some(mut info) = read_info(&p) else { continue };
+        if info.process_id != process_id || (!info.host.is_empty() && info.host != host::host()) {
+            continue;
+        }
+        "1970-01-01T00:00:00Z".clone_into(&mut info.heartbeat_at);
+        if let Ok(text) = serde_json::to_vec_pretty(&info)
+            && fsx::write_atomic(&p, &text, fsx::fs_error).is_ok()
+        {
+            released += 1;
+        }
+    }
+    released
+}
+
 fn read_info(p: &Path) -> Option<RecoveryInfo> {
     let b = fsx::read_limited(p, 1 << 20).ok()?;
     serde_json::from_slice(&b).ok()

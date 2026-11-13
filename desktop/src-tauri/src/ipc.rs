@@ -130,7 +130,7 @@ pub fn cancel_request(host: State<'_, Host>, json: String) -> Result<Response, S
 #[tauri::command]
 pub fn report_shell(host: State<'_, Host>, json: String) -> Result<Response, String> {
     let report: tt_executor::host::ShellReport = parse(&json)?;
-    host.exec.report_shell(report);
+    host.exec().report_shell(report);
     respond(&json!({}))
 }
 
@@ -149,7 +149,7 @@ struct KeyRequest {
 #[tauri::command]
 pub async fn dispatch_key(app: AppHandle, json: String) -> Result<Response, String> {
     let req: KeyRequest = parse(&json)?;
-    let r = tauri::async_runtime::spawn_blocking(move || app.state::<Host>().exec.resolve_key(&req.keys))
+    let r = tauri::async_runtime::spawn_blocking(move || app.state::<Host>().exec().resolve_key(&req.keys))
         .await
         .map_err(|e| internal(e.to_string()))?;
     match r {
@@ -220,4 +220,22 @@ pub async fn pick_path(app: AppHandle, json: String) -> Result<Response, String>
 pub fn startup(host: State<'_, Host>) -> Result<Response, String> {
     let open: Vec<String> = host.take_pending_open().iter().map(|p| p.to_string_lossy().into_owned()).collect();
     respond(&json!({ "open": open }))
+}
+
+/// Restarts a stuck engine at the user's request (reviews/M4-design-engine-restart.md): a new executor over the same
+/// user folders, a new event pump, the HTTP server restarted; the front end resyncs and offers the autosave as
+/// recoverable work. Never called automatically.
+///
+/// # Errors
+/// The JSON text of the new executor's start error.
+#[tauri::command]
+pub async fn restart_engine(app: AppHandle) -> Result<Response, String> {
+    let app2 = app.clone();
+    let generation = tauri::async_runtime::spawn_blocking(move || app2.state::<Host>().restart())
+        .await
+        .map_err(|e| internal(e.to_string()))?
+        .map_err(|e| error_json(&tt_engine::ErrorInfo { code: e.code, message: e.message, details: Some(*e.details) }))?;
+    crate::shell::start_event_pump(&app);
+    crate::menu::refresh(&app);
+    respond(&json!({ "generation": generation }))
 }

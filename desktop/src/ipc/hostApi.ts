@@ -44,6 +44,10 @@ export interface HostApi extends BenchApi {
   readonly engine: EngineApi;
   /** Documents to open at start (01 §1.1 rule 8), taken once. */
   startup(): Promise<{ open: string[] }>;
+  /** The engine stopped answering or answers again (reviews/M4-design-engine-restart.md). */
+  onEngineStatus(handler: (status: { notResponding: boolean; generation: number }) => void): Promise<Unlisten>;
+  /** Restarts a stuck engine (the user's choice, never automatic). */
+  restartEngine(): Promise<{ generation: number }>;
   ping(request: PingRequest): Promise<PingResponse>;
   appInfo(): Promise<EngineInfo>;
   onMenuCommand(handler: (event: MenuCommandEvent) => void): Promise<Unlisten>;
@@ -140,6 +144,28 @@ const STARTUP_SCHEMA: Schema = {
   additionalProperties: false,
 };
 
+const ENGINE_STATUS_SCHEMA: Schema = {
+  type: 'object',
+  properties: { notResponding: { type: 'boolean' }, generation: { type: 'integer', minimum: 0 } },
+  required: ['notResponding', 'generation'],
+  additionalProperties: false,
+};
+
+function isEngineStatus(v: unknown): v is { notResponding: boolean; generation: number } {
+  return typeof v === 'object' && v !== null && typeof (v as { notResponding?: unknown }).notResponding === 'boolean';
+}
+
+const GENERATION_SCHEMA: Schema = {
+  type: 'object',
+  properties: { generation: { type: 'integer', minimum: 0 } },
+  required: ['generation'],
+  additionalProperties: false,
+};
+
+function isGeneration(v: unknown): v is { generation: number } {
+  return typeof v === 'object' && v !== null && typeof (v as { generation?: unknown }).generation === 'number';
+}
+
 function isStartup(v: unknown): v is { open: string[] } {
   return typeof v === 'object' && v !== null && Array.isArray((v as { open?: unknown }).open);
 }
@@ -152,6 +178,12 @@ export function createHostApi(transport: HostTransport): HostApi {
       call(transport, 'startup', undefined, STARTUP_SCHEMA, isStartup).catch(() => ({
         open: [] as string[],
       })),
+    onEngineStatus: (handler) =>
+      transport.listen('engine-status', (payload) => {
+        const v = acceptWire(payload, ENGINE_STATUS_SCHEMA, isEngineStatus);
+        if (v !== undefined) handler(v);
+      }),
+    restartEngine: () => call(transport, 'restart_engine', undefined, GENERATION_SCHEMA, isGeneration),
     ping: (request) => call(transport, 'ping', request, pingResponseSchema, isPingResponse),
     appInfo: () => call(transport, 'app_info', undefined, engineInfoSchema, isEngineInfo),
     onMenuCommand: (handler) =>

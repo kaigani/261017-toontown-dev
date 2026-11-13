@@ -368,7 +368,63 @@ function Window() {
       </div>
       <StatusBar />
       {appState?.startScreenVisible && <StartScreen />}
+      <EngineBanner />
       <RefreshErrors errors={state.errors} />
+    </div>
+  );
+}
+
+/** The engine stopped answering (reviews/M4-design-engine-restart.md): Wait or Restart, the user's choice. */
+function EngineBanner() {
+  const host = useHost();
+  const { store } = useShell();
+  const [stuck, setStuck] = useState(false);
+  const [dismissed, setDismissed] = useState(false);
+  useEffect(() => {
+    let unlisten: (() => void) | null = null;
+    let disposed = false;
+    void host
+      .onEngineStatus((s) => {
+        setStuck(s.notResponding);
+        if (!s.notResponding) setDismissed(false);
+      })
+      .then((u) => {
+        if (disposed) u();
+        else unlisten = u;
+      });
+    return () => {
+      disposed = true;
+      unlisten?.();
+    };
+  }, [host]);
+  if (!stuck || dismissed) return null;
+  return (
+    <div className="engine-banner" role="alert" data-tt-role="dialog" data-tt-id="engineNotResponding">
+      <strong>The engine is not responding.</strong> A command may still be running. Work since the last autosave is
+      only in the engine; restarting offers the autosave as recoverable work.
+      <button
+        type="button"
+        data-tt-role="button"
+        data-tt-id="engine.wait"
+        onClick={() => {
+          setDismissed(true);
+        }}
+      >
+        Wait
+      </button>
+      <button
+        type="button"
+        data-tt-role="button"
+        data-tt-id="engine.restart"
+        onClick={() => {
+          void host.restartEngine().then(() => {
+            setStuck(false);
+            void store.resync();
+          });
+        }}
+      >
+        Restart the engine
+      </button>
     </div>
   );
 }
