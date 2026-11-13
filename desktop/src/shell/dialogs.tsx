@@ -3,6 +3,7 @@
 import { useCallback, useMemo, useRef, useState, type ReactNode } from 'react';
 
 import { DialogsContext, type Close, type DialogsApi } from './dialogsApi';
+import { useModalFocus } from './modalFocus';
 import { useMessages } from './messagesApi';
 
 interface Entry {
@@ -64,8 +65,12 @@ export function Dialog({
   submitDisabled?: boolean;
   wide?: boolean;
 }) {
+  const ref = useRef<HTMLDivElement>(null);
+  useModalFocus(ref);
   return (
     <div
+      ref={ref}
+      tabIndex={-1}
       className={wide ? 'dialog dialog-wide' : 'dialog'}
       role="dialog"
       aria-modal="true"

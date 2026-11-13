@@ -14,6 +14,7 @@ import {
   type Notification,
   type StatusLine,
 } from './messagesApi';
+import { useModalFocus } from './modalFocus';
 
 interface Pending {
   readonly spec: MessageSpec;
@@ -185,9 +186,13 @@ function MessageBox({
   const buttons = spec.buttons ?? OK;
   const cancel =
     buttons.find((b) => b.role === 'cancel') ?? buttons.find((b) => b.role === 'default') ?? buttons[0];
+  const ref = useRef<HTMLDivElement>(null);
+  useModalFocus(ref);
   return (
     <div className="modal-backdrop">
       <div
+        ref={ref}
+        tabIndex={-1}
         className={`message-box message-${spec.severity}`}
         role="alertdialog"
         aria-modal="true"

@@ -771,3 +771,9 @@ select:focus-visible {
   flex: 0 0 160px;
   overflow: auto;
 }
+
+/* A dialog takes the keyboard focus when it opens (shell/modalFocus.ts); the container itself draws no ring. */
+.dialog:focus,
+.message-box:focus {
+  outline: none;
+}

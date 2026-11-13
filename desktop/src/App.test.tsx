@@ -306,6 +306,25 @@ describe('shortcuts (01 §8.4)', () => {
 });
 
 describe('preferences (01 §7.1)', () => {
+  it('a dialog opened by the engine takes the focus: Escape closes it and {"modal":null} is sent (C41-R1-01)', async () => {
+    const host = renderApp();
+    await screen.findByRole('toolbar', { name: 'Main toolbar' });
+    act(() => {
+      host.event('shell.preferences', { category: 'files' });
+    });
+    const dialog = await screen.findByRole('dialog', { name: 'Preferences' });
+    expect(dialog.contains(document.activeElement)).toBe(true);
+    const before = host.rawReports.length;
+    fireEvent.keyDown(document.activeElement ?? document.body, { key: 'Escape' });
+    await vi.waitFor(() => {
+      expect(screen.queryByRole('dialog', { name: 'Preferences' })).toBeNull();
+    });
+    await vi.waitFor(() => {
+      expect(host.rawReports.slice(before)).toContain('{"modal":null}');
+    });
+    expect(host.actions().some((a) => a.command === 'prefs.set')).toBe(false);
+  });
+
   it('OK applies the staged values with one prefs.set; Cancel sends nothing', async () => {
     const host = renderApp();
     await screen.findByRole('toolbar', { name: 'Main toolbar' });
