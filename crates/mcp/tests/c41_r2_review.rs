@@ -227,3 +227,44 @@ fn refused_connections_do_not_escape_thread_cap() -> Result<(), Box<dyn Error>> 
     );
     Ok(())
 }
+
+mod support;
+mod part_c1_keys {
+    use super::support::Client;
+    use serde_json::json;
+    use tt_executor::{ExecutorHandle, host::ShellReport};
+    #[test]
+    fn disabled_key_is_typed_error() -> Result<(), Box<dyn std::error::Error>> {
+        let h = ExecutorHandle::spawn(Default::default())?;
+        let (mut c, _) = Client::connect(&h, Default::default(), json!({}));
+        let r = c.call("key", json!({"keys":"Primary+Z"}));
+        assert_eq!(r["structuredContent"]["error"]["code"], "command.disabled", "{r}");
+        Ok(())
+    }
+    #[test]
+    fn modal_key_is_typed_error() -> Result<(), Box<dyn std::error::Error>> {
+        let h = ExecutorHandle::spawn(Default::default())?;
+        h.report_shell(serde_json::from_value::<ShellReport>(
+            json!({"modal":{"kind":"dialog","title":"Preferences"}}),
+        )?);
+        let (mut c, _) = Client::connect(&h, Default::default(), json!({}));
+        let r = c.call("key", json!({"keys":"Primary+Z"}));
+        let code = r["structuredContent"]["error"]["code"].as_str();
+        assert!(matches!(code, Some("ui.busy" | "ui.modalOpen")), "{r}");
+        Ok(())
+    }
+    #[test]
+    fn stale_inspect_is_bounded_and_keeps_last_tree() -> Result<(), Box<dyn std::error::Error>> {
+        let h = ExecutorHandle::spawn(Default::default())?;
+        h.report_shell(serde_json::from_value::<ShellReport>(
+            json!({"attached":true,"uiTree":{"id":"main","label":"last"}}),
+        )?);
+        let (mut c, _) = Client::connect(&h, Default::default(), json!({}));
+        let start = std::time::Instant::now();
+        let r = c.call("inspect_ui", json!({}));
+        assert!((std::time::Duration::from_millis(1950)..std::time::Duration::from_secs(3)).contains(&start.elapsed()));
+        assert_eq!(r["structuredContent"]["result"]["stale"], true, "{r}");
+        assert_eq!(r["structuredContent"]["result"]["root"]["label"], "last");
+        Ok(())
+    }
+}

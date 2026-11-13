@@ -384,3 +384,167 @@ mod part_b_splitter {
         );
     }
 }
+
+mod part_c1_freshness {
+    use super::*;
+    use std::time::{Duration, Instant};
+    use tt_executor::host::ShellReport;
+    #[test]
+    fn report_order_and_wait_bounds() {
+        let h = ExecutorHandle::spawn(Default::default()).unwrap();
+        ok(&h, "prefs.set", json!({"values":{"interface.theme":"dark"}}));
+        let seq = h.events_broadcast();
+        let report = |label: &str, n| {
+            h.report_shell(ShellReport {
+                attached: Some(true),
+                ui_tree: Some(json!({"id":"main","label":label})),
+                rendered_seq: n,
+                ..Default::default()
+            })
+        };
+        for (label, n, want, fresh) in [
+            ("old", Some(0), "old", false),
+            ("new", Some(seq), "new", true),
+            ("older", Some(0), "new", true),
+            ("equal", Some(seq), "equal", true),
+            ("future", Some(seq + 1), "equal", true),
+            ("none", None, "none", false),
+        ] {
+            report(label, n);
+            assert_eq!(ok(&h, "inspect.ui.tree", json!({}))["root"]["label"], want);
+            assert_eq!(h.await_rendered(Duration::ZERO), fresh);
+        }
+        let start = Instant::now();
+        assert!(!h.await_rendered(Duration::from_secs(2)));
+        assert!((Duration::from_millis(1950)..Duration::from_secs(3)).contains(&start.elapsed()));
+        let other = h.clone();
+        let waiter = std::thread::spawn(move || other.await_rendered(Duration::from_secs(2)));
+        assert!(h.invoke(Invocation::user("app.state.get", json!({}))).is_ok());
+        let release = Instant::now();
+        report("fresh", Some(seq));
+        assert!(waiter.join().unwrap());
+        assert!(release.elapsed() < Duration::from_millis(500));
+    }
+    #[test]
+    fn tree_exposes_its_vouching_sequence() {
+        let h = ExecutorHandle::spawn(Default::default()).unwrap();
+        let seq = h.events_broadcast();
+        h.report_shell(ShellReport {
+            attached: Some(true),
+            ui_tree: Some(json!({"id":"main"})),
+            rendered_seq: Some(seq),
+            ..Default::default()
+        });
+        let tree = ok(&h, "inspect.ui.tree", json!({}));
+        assert_eq!(tree["renderedSeq"], seq, "the agent must know which events this tree reflects: {tree}");
+    }
+}
+
+mod part_c1_restart {
+    use super::*;
+    use std::time::{Duration, Instant};
+    #[test]
+    fn released_engine_cannot_refresh_and_third_cannot_steal() {
+        let r = root();
+        let first = over(&r);
+        let c = ok(&first, "project.create", json!({"name":"Recovery fence"}));
+        ok(&first, "doc.object.patch", json!({"targets":[c["sceneId"]],"props":{"meta":{"value":"Before"}}}));
+        first.run_maintenance(true).unwrap();
+        let start = Instant::now();
+        let file = loop {
+            if let Some(p) = std::fs::read_dir(r.join("Recovery"))
+                .unwrap()
+                .filter_map(Result::ok)
+                .map(|e| e.path().join("recovery.json"))
+                .find(|p| p.exists())
+            {
+                break p;
+            }
+            assert!(start.elapsed() < Duration::from_secs(30));
+            std::thread::yield_now();
+        };
+        let second = over(&r);
+        let owner = first.abandon();
+        assert_eq!(second.release_recovery_of(&owner).unwrap(), 1);
+        let before = std::fs::read(&file).unwrap();
+        ok(&first, "doc.object.patch", json!({"targets":[c["sceneId"]],"props":{"meta":{"value":"After"}}}));
+        first.run_maintenance(true).unwrap();
+        assert_eq!(std::fs::read(&file).unwrap(), before);
+        let list = ok(&second, "project.recovery.list", json!({}));
+        let started = ok(&second, "project.recovery.open", json!({"recoveryId":list[0]["recoveryId"]}));
+        ok(&second, "job.wait", json!({"jobId":started["jobId"],"timeoutMs":60000}));
+        let claimed = std::fs::read(&file).unwrap();
+        let third = over(&r);
+        assert_eq!(third.release_recovery_of(&owner).unwrap(), 0);
+        assert_eq!(std::fs::read(file).unwrap(), claimed);
+        drop(third);
+        drop(second);
+        drop(first);
+        std::fs::remove_dir_all(r).unwrap();
+    }
+}
+
+mod part_c1_availability {
+    use super::*;
+    #[test]
+    fn disabled_key_has_typed_refusal() {
+        let h = ExecutorHandle::spawn(Default::default()).unwrap();
+        assert!(h.resolve_key("Primary+Z").is_err(), "disabled Undo must give a typed refusal");
+    }
+    #[test]
+    fn availability_matches_dry_run_in_three_states() {
+        let h = ExecutorHandle::spawn(Default::default()).unwrap();
+        let registry = tt_executor::registry().unwrap();
+        let mut mismatches = Vec::new();
+        for state in 0..3 {
+            if state == 1 {
+                ok(&h, "project.create", json!({"name":"Availability"}));
+            }
+            if state == 2 {
+                ok(&h, "project.properties.set", json!({"frameRate":12}));
+            }
+            for entry in registry.entries() {
+                let a = h.availability(vec![(entry.id().to_owned(), Default::default())]).unwrap().remove(0);
+                if !a.enabled || !a.dialog {
+                    let mut inv = Invocation::user(entry.id(), a.params.clone());
+                    inv.options.dry_run = true;
+                    let e = h.invoke(inv);
+                    if !a.enabled && e.is_ok() {
+                        mismatches.push(format!("state {state} {} disabled but succeeds", entry.id()));
+                    }
+                    if a.enabled
+                        && let Some(err) = e.error
+                        && ["command.disabled", "project.notOpen", "command.notImplemented"]
+                            .contains(&err.code.as_str())
+                    {
+                        mismatches.push(format!("state {state} {} enabled but {}", entry.id(), err.code));
+                    }
+                }
+            }
+        }
+        assert!(mismatches.is_empty(), "{}", mismatches.join("\n"));
+    }
+    #[test]
+    fn undo_redo_labels_and_toggle_follow_state() {
+        let h = ExecutorHandle::spawn(Default::default()).unwrap();
+        let facts = || {
+            h.availability(vec![
+                ("edit.undo".into(), Default::default()),
+                ("edit.redo".into(), Default::default()),
+                ("ui.statusBar.set".into(), Default::default()),
+            ])
+            .unwrap()
+        };
+        assert!(!facts()[0].enabled);
+        ok(&h, "project.create", json!({"name":"History"}));
+        assert!(!facts()[0].enabled);
+        ok(&h, "project.properties.set", json!({"frameRate":12}));
+        assert!(facts()[0].enabled);
+        assert!(facts()[0].label.as_ref().unwrap().starts_with("Undo "));
+        ok(&h, "edit.undo", json!({}));
+        assert!(facts()[1].enabled);
+        assert!(facts()[1].label.as_ref().unwrap().starts_with("Redo "));
+        ok(&h, "ui.statusBar.set", json!({"visible":false}));
+        assert_eq!(facts()[2].checked, Some(false));
+    }
+}
