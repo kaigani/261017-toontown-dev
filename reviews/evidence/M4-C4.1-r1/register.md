@@ -31,3 +31,4 @@ Status covers the charter item, including explicit remaining limitations.
 | B Bypass | 1 | implemented | part-c-bypass.md; part-c-invokes.txt; trusted-webview and diagnostic exceptions explicitly documented |
 | C User priority | 8 | divergent | existing C41-R1-01; two part_c_priority tests pass, measured 80 ms waits; caller-side ordering limitation recorded |
 | D Cancellation | 9 | divergent | C41-R1-07 P3; host.rs:121-152; App.test.tsx:184-201; collision/unwind source trace |
+| E Settings remainder | 5 | divergent | C41-R1-08/09; part_d_settings (2 expected failures); part-d-settings.txt; source matrix in report |

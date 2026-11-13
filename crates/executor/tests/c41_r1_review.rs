@@ -140,3 +140,49 @@ mod part_c_priority {
         Ok(())
     }
 }
+
+mod part_d_settings {
+    use super::*;
+
+    #[test]
+    fn malformed_shapes_are_quarantined_independently() -> Result<(), Box<dyn Error>> {
+        let root = std::env::temp_dir().join(format!("tt-c41-shapes-{}", tt_executor::random_token(8)));
+        let dirs = tt_executor::UserDirs::under(&root);
+        std::fs::create_dir_all(&dirs.settings)?;
+        for kind in ["preferences", "keymap", "state", "recent", "workspaces"] {
+            let bad = if kind == "recent" { json!({"wrong": true}) } else { json!(42) };
+            tt_persist::settings::write(&dirs.settings, kind, &bad)?;
+        }
+        let h = ExecutorHandle::spawn_with_options(tt_executor::ExecutorOptions {
+            persist: tt_executor::PersistOptions { user_dirs: Some(dirs.clone()), ..Default::default() },
+            ..Default::default()
+        })?;
+        let retained: Vec<_> = ["preferences", "keymap", "state", "recent", "workspaces"]
+            .into_iter()
+            .filter(|k| dirs.settings.join(format!("{k}.json")).exists())
+            .collect();
+        drop(h);
+        std::fs::remove_dir_all(root)?;
+        assert!(retained.is_empty(), "invalid shapes silently retained: {retained:?}");
+        Ok(())
+    }
+
+    #[test]
+    fn abandoned_settings_temporary_is_cleaned_on_load() -> Result<(), Box<dyn Error>> {
+        let root = std::env::temp_dir().join(format!("tt-c41-temp-{}", tt_executor::random_token(8)));
+        let dirs = tt_executor::UserDirs::under(&root);
+        std::fs::create_dir_all(&dirs.settings)?;
+        tt_persist::settings::write(&dirs.settings, "preferences", &json!({"interface.theme":"dark"}))?;
+        let abandoned = dirs.settings.join(".preferences.json.0123456789ab.tmp");
+        std::fs::write(&abandoned, b"interrupted replacement")?;
+        let h = ExecutorHandle::spawn_with_options(tt_executor::ExecutorOptions {
+            persist: tt_executor::PersistOptions { user_dirs: Some(dirs), ..Default::default() },
+            ..Default::default()
+        })?;
+        let remains = abandoned.exists();
+        drop(h);
+        std::fs::remove_dir_all(root)?;
+        assert!(!remains, "interrupted settings write leaves an orphan forever");
+        Ok(())
+    }
+}
