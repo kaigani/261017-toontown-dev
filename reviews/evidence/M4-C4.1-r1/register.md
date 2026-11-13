@@ -29,3 +29,4 @@ Status covers the charter item, including explicit remaining limitations.
 |---|---|---|---|
 | A HTTP remainder | 10 | divergent | C41-R1-06; authority_matrix; part-c-http.txt; part-c-lifecycle.json; source reasoning and residual risks in report |
 | B Bypass | 1 | implemented | part-c-bypass.md; part-c-invokes.txt; trusted-webview and diagnostic exceptions explicitly documented |
+| C User priority | 8 | divergent | existing C41-R1-01; two part_c_priority tests pass, measured 80 ms waits; caller-side ordering limitation recorded |
