@@ -59,7 +59,8 @@ class Run:
 
     def shot(self, name: str, pid: int | None = None) -> None:
         """Best-effort capture of the application window (not gated: runners may refuse screen capture). On Windows
-        only the window of `pid` is captured, so no other window of a workstation appears in the receipts; on macOS
+        only the visible frame of the window of `pid` is captured (DWM extended frame bounds, without the invisible
+        resize border), so no other window of a workstation appears in the receipts; on macOS
         (CI runners only) the screen."""
         path = self.out / f"{name}.png"
         try:
@@ -69,9 +70,10 @@ class Run:
                     "Add-Type -TypeDefinition 'using System;using System.Runtime.InteropServices;"
                     "public struct R{public int L,T,Ri,B;}"
                     "public static class W{[DllImport(\"user32.dll\")]public static extern bool GetWindowRect(IntPtr h,out R r);"
-                    "[DllImport(\"user32.dll\")]public static extern bool SetForegroundWindow(IntPtr h);}';"
+                    "[DllImport(\"user32.dll\")]public static extern bool SetForegroundWindow(IntPtr h);"
+                    "[DllImport(\"dwmapi.dll\")]public static extern int DwmGetWindowAttribute(IntPtr h,int a,out R r,int n);}';"
                     f"$p=Get-Process -Id {pid};$h=$p.MainWindowHandle;[W]::SetForegroundWindow($h)|Out-Null;Start-Sleep -Milliseconds 300;"
-                    "$r=New-Object R;[W]::GetWindowRect($h,[ref]$r)|Out-Null;$w=$r.Ri-$r.L;$t=$r.B-$r.T;"
+                    "$r=New-Object R;if([W]::DwmGetWindowAttribute($h,9,[ref]$r,16) -ne 0){[W]::GetWindowRect($h,[ref]$r)|Out-Null};$w=$r.Ri-$r.L;$t=$r.B-$r.T;"
                     "$i=New-Object System.Drawing.Bitmap $w,$t;$g=[System.Drawing.Graphics]::FromImage($i);"
                     "$g.CopyFromScreen($r.L,$r.T,0,0,$i.Size);"
                     f"$i.Save('{path}');"
@@ -325,13 +327,21 @@ def main() -> int:
         manifest = {
             "kind": "toontown.c41.gui-e2e",
             "os": platform.platform(),
-            "app": app,
+            "app": Path(app).name,
             "durationS": round(time.monotonic() - started, 1),
             "checks": sum(1 for t in run.transcript if "check" in t),
             "failed": run.failures,
             "screenshots": run.shots,
             "files": sorted(p.name for p in out.iterdir()),
         }
+        # The evidence keeps the discovery file's shape but never its bearer token (secrets stay out of artifacts).
+        if discovery.exists():
+            try:
+                disc = json.loads(discovery.read_text(encoding="utf-8"))
+                disc["token"] = "<redacted>"
+                discovery.write_text(json.dumps(disc, indent=2), encoding="utf-8")
+            except (OSError, ValueError):
+                discovery.unlink(missing_ok=True)
         run.save("transcript.json", run.transcript)
         run.save("manifest.json", manifest)
         shutil.rmtree(user, ignore_errors=True)
