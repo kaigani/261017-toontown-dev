@@ -28,3 +28,4 @@ Status covers the charter item, including explicit remaining limitations.
 | Part C item | Charter | Final status | Evidence |
 |---|---|---|---|
 | A HTTP remainder | 10 | divergent | C41-R1-06; authority_matrix; part-c-http.txt; part-c-lifecycle.json; source reasoning and residual risks in report |
+| B Bypass | 1 | implemented | part-c-bypass.md; part-c-invokes.txt; trusted-webview and diagnostic exceptions explicitly documented |
