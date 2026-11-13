@@ -13,7 +13,7 @@ Status covers the charter item, including explicit remaining limitations.
 | 7 | pending | declared in-window floats and splitter loss confirmed by source; native-window permanent probe pending |
 | 8 | divergent | C41-R1-01 JSON null cannot clear modal; stale-report expiry and arbitration races pending |
 | 9 | pending | host AtomicBool probe confirmed by inspection; lifetime/cross-window tests pending |
-| 10 | divergent | C41-R1-02/03 real socket failures; remaining security charter not certified |
+| 10 | divergent | C41-R1-02/03 and C41-R1-05 real socket failures; admission allocation confirmed; remaining security charter pending (http-continuation.json) |
 | 11 | pending | main-only event capability and CSP inspected; full hardening matrix pending |
 | 12 | divergent | C41-R1-01 modal suspension cannot clear; freshness race testing pending |
 | 13 | pending | watchdog and restart code read; live heartbeat/recovery races not probed |

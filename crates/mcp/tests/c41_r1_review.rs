@@ -68,3 +68,23 @@ fn ambiguous_transfer_framing_is_refused() -> Result<(), Box<dyn Error>> {
     assert!(response.contains("400"), "ambiguous framing reached session lookup: {response}");
     Ok(())
 }
+
+/// An unauthenticated header must not reserve a maximum-sized body while waiting for bytes.
+#[test]
+fn unauthenticated_large_body_is_refused_before_reading_payload() -> Result<(), Box<dyn Error>> {
+    let server = start("127.0.0.1:0")?;
+    let mut socket = TcpStream::connect(server.addr)?;
+    socket.set_read_timeout(Some(Duration::from_secs(2)))?;
+    write!(socket, "POST /mcp HTTP/1.1\r\nHost: localhost\r\nContent-Length: 67108864\r\n\r\n")?;
+    let began = std::time::Instant::now();
+    let mut response = String::new();
+    let result = BufReader::new(socket.try_clone()?).read_line(&mut response);
+    // Release the one test connection even when the server is still waiting for the body.
+    socket.shutdown(std::net::Shutdown::Both)?;
+    assert!(
+        result.is_ok() && response.contains("401"),
+        "unauthenticated request held awaiting payload for {:?}: {result:?}, {response:?}",
+        began.elapsed()
+    );
+    Ok(())
+}

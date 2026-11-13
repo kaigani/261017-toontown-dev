@@ -47,7 +47,7 @@
   {
     "item": 10,
     "status": "divergent",
-    "evidence": "C41-R1-02/03 real socket failures; remaining security charter not certified"
+    "evidence": "C41-R1-02/03 and C41-R1-05 real socket failures; admission allocation confirmed; remaining security charter pending (http-continuation.json)"
   },
   {
     "item": 11,
