@@ -1,0 +1,23 @@
+    Checking once_cell v1.21.4
+    Checking getrandom v0.4.3
+    Checking ahash v0.8.12
+    Checking read-fonts v0.41.0
+    Checking jsonschema-value v0.59.0
+    Checking referencing v0.59.0
+    Checking jsonschema v0.59.0
+    Checking tt-model v0.0.1 (C:\Users\kaiga\work\review\m3-c32-r4\crates\model)
+    Checking skrifa v0.44.0
+    Checking tt-anim v0.0.1 (C:\Users\kaiga\work\review\m3-c32-r4\crates\anim)
+    Checking tt-colour v0.0.1 (C:\Users\kaiga\work\review\m3-c32-r4\crates\colour)
+    Checking tt-vector v0.0.1 (C:\Users\kaiga\work\review\m3-c32-r4\crates\vector)
+    Checking tt-persist v0.0.1 (C:\Users\kaiga\work\review\m3-c32-r4\crates\persist)
+    Checking tt-registry v0.0.1 (C:\Users\kaiga\work\review\m3-c32-r4\crates\registry)
+    Checking tt-fx v0.0.1 (C:\Users\kaiga\work\review\m3-c32-r4\crates\fx)
+    Checking tt-audio v0.0.1 (C:\Users\kaiga\work\review\m3-c32-r4\crates\audio)
+    Checking tt-lipsync v0.0.1 (C:\Users\kaiga\work\review\m3-c32-r4\crates\lipsync)
+    Checking tt-render v0.0.1 (C:\Users\kaiga\work\review\m3-c32-r4\crates\render)
+    Checking tt-io v0.0.1 (C:\Users\kaiga\work\review\m3-c32-r4\crates\io)
+    Checking tt-executor v0.0.1 (C:\Users\kaiga\work\review\m3-c32-r4\crates\executor)
+    Checking tt-engine v0.0.1 (C:\Users\kaiga\work\review\m3-c32-r4\crates\engine)
+    Checking tt-mcp v0.0.1 (C:\Users\kaiga\work\review\m3-c32-r4\crates\mcp)
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 21.97s

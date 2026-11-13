@@ -1,0 +1,236 @@
+{
+  "status": "succeeded",
+  "format": "png",
+  "outputPath": "C:\\Users\\kaiga\\work\\review\\m3-c34-r4\\reviews\\evidence\\M3-C3.4-r4\\E1\\sequence",
+  "frameCount": 24,
+  "fps": 24.0,
+  "durationSec": 1.0,
+  "width": 1920,
+  "height": 1080,
+  "range": {
+    "from": 1,
+    "to": 24,
+    "step": 1
+  },
+  "documentRevision": 11,
+  "files": [
+    {
+      "role": "frame",
+      "path": "C:\\Users\\kaiga\\work\\review\\m3-c34-r4\\reviews\\evidence\\M3-C3.4-r4\\E1\\sequence\\Scene-1_0001.png",
+      "bytes": 13400,
+      "sha256": "a72d362f9df3b30d188093e57ade17d2ce2104ac2681442083bb317d57f32545",
+      "width": 1920,
+      "height": 1080,
+      "frame": 1
+    },
+    {
+      "role": "frame",
+      "path": "C:\\Users\\kaiga\\work\\review\\m3-c34-r4\\reviews\\evidence\\M3-C3.4-r4\\E1\\sequence\\Scene-1_0002.png",
+      "bytes": 13473,
+      "sha256": "c47d97e3b7aba01590b9ed22552ffd5b73703acff5b38c77a410420eade19e99",
+      "width": 1920,
+      "height": 1080,
+      "frame": 2
+    },
+    {
+      "role": "frame",
+      "path": "C:\\Users\\kaiga\\work\\review\\m3-c34-r4\\reviews\\evidence\\M3-C3.4-r4\\E1\\sequence\\Scene-1_0003.png",
+      "bytes": 13463,
+      "sha256": "bafd371b5ed87344a4ebab49a56c71e93479d49cee5abb783088dca74e34abdb",
+      "width": 1920,
+      "height": 1080,
+      "frame": 3
+    },
+    {
+      "role": "frame",
+      "path": "C:\\Users\\kaiga\\work\\review\\m3-c34-r4\\reviews\\evidence\\M3-C3.4-r4\\E1\\sequence\\Scene-1_0004.png",
+      "bytes": 13495,
+      "sha256": "83205276f66042f5c425cb247a732cadc7200c52e0bba7a4b4ed8a31f3aca24b",
+      "width": 1920,
+      "height": 1080,
+      "frame": 4
+    },
+    {
+      "role": "frame",
+      "path": "C:\\Users\\kaiga\\work\\review\\m3-c34-r4\\reviews\\evidence\\M3-C3.4-r4\\E1\\sequence\\Scene-1_0005.png",
+      "bytes": 13509,
+      "sha256": "023037a0332219693cf384adf522725f28cede252a29c40686689fc7f61aa646",
+      "width": 1920,
+      "height": 1080,
+      "frame": 5
+    },
+    {
+      "role": "frame",
+      "path": "C:\\Users\\kaiga\\work\\review\\m3-c34-r4\\reviews\\evidence\\M3-C3.4-r4\\E1\\sequence\\Scene-1_0006.png",
+      "bytes": 13446,
+      "sha256": "889bda334887a6af0e79af2e53e6bbba8d38270fbab7385dda129704aa1c74c3",
+      "width": 1920,
+      "height": 1080,
+      "frame": 6
+    },
+    {
+      "role": "frame",
+      "path": "C:\\Users\\kaiga\\work\\review\\m3-c34-r4\\reviews\\evidence\\M3-C3.4-r4\\E1\\sequence\\Scene-1_0007.png",
+      "bytes": 13415,
+      "sha256": "b7570441cf1ecb578bed17e290cd5938e5346079e83b451ce27442516197fe1f",
+      "width": 1920,
+      "height": 1080,
+      "frame": 7
+    },
+    {
+      "role": "frame",
+      "path": "C:\\Users\\kaiga\\work\\review\\m3-c34-r4\\reviews\\evidence\\M3-C3.4-r4\\E1\\sequence\\Scene-1_0008.png",
+      "bytes": 13494,
+      "sha256": "2b31babc20cac3cd581eb8bc2e67309dbfe374d5092b843d1179bff282ec9587",
+      "width": 1920,
+      "height": 1080,
+      "frame": 8
+    },
+    {
+      "role": "frame",
+      "path": "C:\\Users\\kaiga\\work\\review\\m3-c34-r4\\reviews\\evidence\\M3-C3.4-r4\\E1\\sequence\\Scene-1_0009.png",
+      "bytes": 13550,
+      "sha256": "dd0d1f2c8aaf1e8d969c07a455ae6c6c34de008beed9b390fd811bd2556751f2",
+      "width": 1920,
+      "height": 1080,
+      "frame": 9
+    },
+    {
+      "role": "frame",
+      "path": "C:\\Users\\kaiga\\work\\review\\m3-c34-r4\\reviews\\evidence\\M3-C3.4-r4\\E1\\sequence\\Scene-1_0010.png",
+      "bytes": 13553,
+      "sha256": "ab648a9dfded08e433de7578f68fce9e96bc82b3cc33ceff989580513b808059",
+      "width": 1920,
+      "height": 1080,
+      "frame": 10
+    },
+    {
+      "role": "frame",
+      "path": "C:\\Users\\kaiga\\work\\review\\m3-c34-r4\\reviews\\evidence\\M3-C3.4-r4\\E1\\sequence\\Scene-1_0011.png",
+      "bytes": 13346,
+      "sha256": "a00048bb9d48833e906895171f9dba41126f5c5e15125c4f1ec3c439436ffc51",
+      "width": 1920,
+      "height": 1080,
+      "frame": 11
+    },
+    {
+      "role": "frame",
+      "path": "C:\\Users\\kaiga\\work\\review\\m3-c34-r4\\reviews\\evidence\\M3-C3.4-r4\\E1\\sequence\\Scene-1_0012.png",
+      "bytes": 13307,
+      "sha256": "37482857e2cfdfff1311091975d40e1b2ce3885045807e12de1fc60e00dc34cf",
+      "width": 1920,
+      "height": 1080,
+      "frame": 12
+    },
+    {
+      "role": "frame",
+      "path": "C:\\Users\\kaiga\\work\\review\\m3-c34-r4\\reviews\\evidence\\M3-C3.4-r4\\E1\\sequence\\Scene-1_0013.png",
+      "bytes": 13366,
+      "sha256": "e8e01d71c16ee9a0c13b058b46991cc57276939233c0d50e741c948331f52c2e",
+      "width": 1920,
+      "height": 1080,
+      "frame": 13
+    },
+    {
+      "role": "frame",
+      "path": "C:\\Users\\kaiga\\work\\review\\m3-c34-r4\\reviews\\evidence\\M3-C3.4-r4\\E1\\sequence\\Scene-1_0014.png",
+      "bytes": 13507,
+      "sha256": "49435efa5daaee89884cd4e13399c58146b153a9f5c356f9ecd1eaa80a19ca44",
+      "width": 1920,
+      "height": 1080,
+      "frame": 14
+    },
+    {
+      "role": "frame",
+      "path": "C:\\Users\\kaiga\\work\\review\\m3-c34-r4\\reviews\\evidence\\M3-C3.4-r4\\E1\\sequence\\Scene-1_0015.png",
+      "bytes": 13570,
+      "sha256": "561a48ea993faf57c889db548b9c0f671cda0716aac0d426bde983c6404f4de2",
+      "width": 1920,
+      "height": 1080,
+      "frame": 15
+    },
+    {
+      "role": "frame",
+      "path": "C:\\Users\\kaiga\\work\\review\\m3-c34-r4\\reviews\\evidence\\M3-C3.4-r4\\E1\\sequence\\Scene-1_0016.png",
+      "bytes": 13502,
+      "sha256": "4fd7d0c986ee68bcdd54da5d4f5383b4bcd1bcffa4f6ae55afa442ffbab02128",
+      "width": 1920,
+      "height": 1080,
+      "frame": 16
+    },
+    {
+      "role": "frame",
+      "path": "C:\\Users\\kaiga\\work\\review\\m3-c34-r4\\reviews\\evidence\\M3-C3.4-r4\\E1\\sequence\\Scene-1_0017.png",
+      "bytes": 13418,
+      "sha256": "b6775a3582f2efe0c13fde32f6d4799d135a414b9e9f642699d5de2e9bd198ef",
+      "width": 1920,
+      "height": 1080,
+      "frame": 17
+    },
+    {
+      "role": "frame",
+      "path": "C:\\Users\\kaiga\\work\\review\\m3-c34-r4\\reviews\\evidence\\M3-C3.4-r4\\E1\\sequence\\Scene-1_0018.png",
+      "bytes": 13490,
+      "sha256": "4b14aa5a7e27ffe7ae0f7349024d4444966b2bfd04202823dbaf3d0958651586",
+      "width": 1920,
+      "height": 1080,
+      "frame": 18
+    },
+    {
+      "role": "frame",
+      "path": "C:\\Users\\kaiga\\work\\review\\m3-c34-r4\\reviews\\evidence\\M3-C3.4-r4\\E1\\sequence\\Scene-1_0019.png",
+      "bytes": 13415,
+      "sha256": "a6748ef36a4659f848aa9c224a657a05b643d74fb9514af1fce8f2f47ca07aff",
+      "width": 1920,
+      "height": 1080,
+      "frame": 19
+    },
+    {
+      "role": "frame",
+      "path": "C:\\Users\\kaiga\\work\\review\\m3-c34-r4\\reviews\\evidence\\M3-C3.4-r4\\E1\\sequence\\Scene-1_0020.png",
+      "bytes": 13462,
+      "sha256": "950c40339addb417c65edaef0d67b3e4337a2cf1a434a47226ee27ff98861380",
+      "width": 1920,
+      "height": 1080,
+      "frame": 20
+    },
+    {
+      "role": "frame",
+      "path": "C:\\Users\\kaiga\\work\\review\\m3-c34-r4\\reviews\\evidence\\M3-C3.4-r4\\E1\\sequence\\Scene-1_0021.png",
+      "bytes": 13449,
+      "sha256": "4a1f4370d69be804c1710b61b967ed17eb83a8c9ef08668115ed01631a829471",
+      "width": 1920,
+      "height": 1080,
+      "frame": 21
+    },
+    {
+      "role": "frame",
+      "path": "C:\\Users\\kaiga\\work\\review\\m3-c34-r4\\reviews\\evidence\\M3-C3.4-r4\\E1\\sequence\\Scene-1_0022.png",
+      "bytes": 13444,
+      "sha256": "a9243b2acb8ef63fb03110aab8b6322eb9f1abfc9288571119e7d58d778916f0",
+      "width": 1920,
+      "height": 1080,
+      "frame": 22
+    },
+    {
+      "role": "frame",
+      "path": "C:\\Users\\kaiga\\work\\review\\m3-c34-r4\\reviews\\evidence\\M3-C3.4-r4\\E1\\sequence\\Scene-1_0023.png",
+      "bytes": 13444,
+      "sha256": "c552411629809b0ef74416fa132be1d7e11a16606d2283d5b68be728e9e55af0",
+      "width": 1920,
+      "height": 1080,
+      "frame": 23
+    },
+    {
+      "role": "frame",
+      "path": "C:\\Users\\kaiga\\work\\review\\m3-c34-r4\\reviews\\evidence\\M3-C3.4-r4\\E1\\sequence\\Scene-1_0024.png",
+      "bytes": 13400,
+      "sha256": "a72d362f9df3b30d188093e57ade17d2ce2104ac2681442083bb317d57f32545",
+      "width": 1920,
+      "height": 1080,
+      "frame": 24
+    }
+  ],
+  "manifestPath": "C:\\Users\\kaiga\\work\\review\\m3-c34-r4\\reviews\\evidence\\M3-C3.4-r4\\E1\\sequence\\Scene-1_0001-0024.manifest.json",
+  "warnings": []
+}

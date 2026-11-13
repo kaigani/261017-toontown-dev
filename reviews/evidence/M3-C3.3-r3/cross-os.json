@@ -1,0 +1,164 @@
+[
+  {
+    "file": "c33/gate-contact-sheet.png",
+    "windows": "9115ca0ec3cd9f3bdd0563723bd8d0ab6b33f525775c78aa6957f6f19ce4f87f",
+    "macOS": "9115ca0ec3cd9f3bdd0563723bd8d0ab6b33f525775c78aa6957f6f19ce4f87f",
+    "equal": true
+  },
+  {
+    "file": "c33/gate-frame-1.png",
+    "windows": "c7200e1a6fef38885a4977c074c782bee890029d470623c096512acb4f0c2fbc",
+    "macOS": "c7200e1a6fef38885a4977c074c782bee890029d470623c096512acb4f0c2fbc",
+    "equal": true
+  },
+  {
+    "file": "c33/gate-frame-17.png",
+    "windows": "cae435e50dadafa416a5dbe3102becc874eb5c3710ea8a0be613c192cfb7abe7",
+    "macOS": "cae435e50dadafa416a5dbe3102becc874eb5c3710ea8a0be613c192cfb7abe7",
+    "equal": true
+  },
+  {
+    "file": "c33/gate-frame-9.png",
+    "windows": "1c922bc148c309cb91e8f265732a000de4eb79c4557e014de5636b3a2bbb59b7",
+    "macOS": "1c922bc148c309cb91e8f265732a000de4eb79c4557e014de5636b3a2bbb59b7",
+    "equal": true
+  },
+  {
+    "file": "c33/gate-path.json",
+    "windows": "593ad263bea3239c98f4d57641c3d1fe4a3ed2203ed9bacdd6002f6e0f161984",
+    "macOS": "593ad263bea3239c98f4d57641c3d1fe4a3ed2203ed9bacdd6002f6e0f161984",
+    "equal": true
+  },
+  {
+    "file": "c33/report.json",
+    "windows": "e3645f60484cce314f340ac89944526fc575ccbf2a24ddec15bf03bae3e9ac6b",
+    "macOS": "9913ae04dfd98e4e25fb6a10923dd5740d40a9be642cd971afee497a3eb02641",
+    "equal": false
+  },
+  {
+    "file": "c33/sequence\\manifest.json",
+    "windows": "2d942944b47b177a2258d744e491fb223cb77d78b3b68222d60873a3be5c6d2c",
+    "macOS": "2d942944b47b177a2258d744e491fb223cb77d78b3b68222d60873a3be5c6d2c",
+    "equal": true
+  },
+  {
+    "file": "c33/sequence\\Scene-1_0001.png",
+    "windows": "24d8717bfc37dd60d93ca7e5b91bcf438a820b0e5201f57b19181b5fd487ad84",
+    "macOS": "24d8717bfc37dd60d93ca7e5b91bcf438a820b0e5201f57b19181b5fd487ad84",
+    "equal": true
+  },
+  {
+    "file": "c33/sequence\\Scene-1_0009.png",
+    "windows": "e421225b42de6eaff77d1500dd576ddb8adb23895c95b2364d043dfd6418f57b",
+    "macOS": "e421225b42de6eaff77d1500dd576ddb8adb23895c95b2364d043dfd6418f57b",
+    "equal": true
+  },
+  {
+    "file": "c33/sequence\\Scene-1_0017.png",
+    "windows": "517f4674743a0e373fb229ef13fc8c016584e1c0f8e54c458cffb17adfcb45bb",
+    "macOS": "517f4674743a0e373fb229ef13fc8c016584e1c0f8e54c458cffb17adfcb45bb",
+    "equal": true
+  },
+  {
+    "file": "e2/1-preview.png",
+    "windows": "1b6fcbba30dfb2985c8bb82aaa4998d6799f276b4e1e9855ccf31a5aedf35766",
+    "macOS": "1b6fcbba30dfb2985c8bb82aaa4998d6799f276b4e1e9855ccf31a5aedf35766",
+    "equal": true
+  },
+  {
+    "file": "e2/2-vectorized.png",
+    "windows": "1b6fcbba30dfb2985c8bb82aaa4998d6799f276b4e1e9855ccf31a5aedf35766",
+    "macOS": "1b6fcbba30dfb2985c8bb82aaa4998d6799f276b4e1e9855ccf31a5aedf35766",
+    "equal": true
+  },
+  {
+    "file": "e2/3-painted.png",
+    "windows": "a4124d1ce094e3dfc7249c22f57a6676a89adfd80b1434dc4a49e27a98ad1555",
+    "macOS": "a4124d1ce094e3dfc7249c22f57a6676a89adfd80b1434dc4a49e27a98ad1555",
+    "equal": true
+  },
+  {
+    "file": "e2/4-recoloured.png",
+    "windows": "9732a6a246a95e902ba8ab76a1eb0f7c813fa3cd7f386545ae3d2545c691c60d",
+    "macOS": "9732a6a246a95e902ba8ab76a1eb0f7c813fa3cd7f386545ae3d2545c691c60d",
+    "equal": true
+  },
+  {
+    "file": "e2/5-undone.png",
+    "windows": "a4124d1ce094e3dfc7249c22f57a6676a89adfd80b1434dc4a49e27a98ad1555",
+    "macOS": "a4124d1ce094e3dfc7249c22f57a6676a89adfd80b1434dc4a49e27a98ad1555",
+    "equal": true
+  },
+  {
+    "file": "e2/6-redone.png",
+    "windows": "9732a6a246a95e902ba8ab76a1eb0f7c813fa3cd7f386545ae3d2545c691c60d",
+    "macOS": "9732a6a246a95e902ba8ab76a1eb0f7c813fa3cd7f386545ae3d2545c691c60d",
+    "equal": true
+  },
+  {
+    "file": "e2/7-reopened.png",
+    "windows": "9732a6a246a95e902ba8ab76a1eb0f7c813fa3cd7f386545ae3d2545c691c60d",
+    "macOS": "9732a6a246a95e902ba8ab76a1eb0f7c813fa3cd7f386545ae3d2545c691c60d",
+    "equal": true
+  },
+  {
+    "file": "e2/hashes.json",
+    "windows": "4ab02fbe20fc322de3231cc5f823d21865c8c70bd8ba142d2722738c80c24a4d",
+    "macOS": "f267cb8df1cae283cb926c607380d536bbaaaf504d760371a7c02065e6279e82",
+    "equal": false
+  },
+  {
+    "file": "e2/live-export.json",
+    "windows": "4960b19a0db609f8ddc1c5fecb0134b89d633f3845b6d82a53684635b338e338",
+    "macOS": "5a6a64d4f829e3ffb691731b669294c40bdad4524034a38b8e3a87195d29252c",
+    "equal": false
+  },
+  {
+    "file": "e2/replayed-export.json",
+    "windows": "4960b19a0db609f8ddc1c5fecb0134b89d633f3845b6d82a53684635b338e338",
+    "macOS": "5a6a64d4f829e3ffb691731b669294c40bdad4524034a38b8e3a87195d29252c",
+    "equal": false
+  },
+  {
+    "file": "e2/report.json",
+    "windows": "9f82ab2a4007e24c2981ab6a246d968b1a42f939998753505e3b3bd76c255389",
+    "macOS": "0596159c4e9645a483b0ae9ed46c50012fceed682e35e574bee10b2617a19cf6",
+    "equal": false
+  },
+  {
+    "file": "e4/evaluate.json",
+    "windows": "eae7bcae41a8873efade57c33751ed9cd5878fe0a2a4a8da064a95013bdc9c4f",
+    "macOS": "eae7bcae41a8873efade57c33751ed9cd5878fe0a2a4a8da064a95013bdc9c4f",
+    "equal": true
+  },
+  {
+    "file": "e4/inputs.json",
+    "windows": "5b6a9647e39ff790c7961bb5e33c426a028fda57819ee4d0b7fdea1c168e3528",
+    "macOS": "7f2fdde979e36e2420dfc603d2b18a0a8398a5545f2cf8d417b09d3f074c6617",
+    "equal": false
+  },
+  {
+    "file": "e4/report.json",
+    "windows": "db38d9a6a08fc8d7a4f68931ab42962cab10506514ddebc2f2f5b2997018c0d4",
+    "macOS": "35c6483af0a748732791eb8614c1266b28a55bbb6e2956576dd1fea46115b0cb",
+    "equal": false
+  },
+  {
+    "file": "e4/variant\\evaluate.json",
+    "windows": "5708fccab82424510fb5c23b96712ad916403a93a27e4d81702d9e2cbd394ebe",
+    "macOS": "5708fccab82424510fb5c23b96712ad916403a93a27e4d81702d9e2cbd394ebe",
+    "equal": true
+  },
+  {
+    "file": "e4/variant\\inputs.json",
+    "windows": "5d0b92d9552dd73535acb83a8c39f4b313d37869f6761748100d3cf9dd822f42",
+    "macOS": "376537b4f818b8add754f706adc3678957639ad020daff1e144ab0061ae4432a",
+    "equal": false
+  },
+  {
+    "file": "e4/variant\\report.json",
+    "windows": "82b208191d35992052890165db1b97323457ceba30ec6671f35add0ea993905c",
+    "macOS": "8d5474fde5e65c499947eedd400d35f4f811f0c0d480f0769c3a3e34becfb29d",
+    "equal": false
+  }
+]

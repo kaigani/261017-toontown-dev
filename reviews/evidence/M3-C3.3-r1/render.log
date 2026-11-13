@@ -1,0 +1,215 @@
+cargo :    Compiling proc-macro2 v1.0.107
+At C:\Users\kaiga\AppData\Local\Temp\toontown-c33-r1\render.ps1:2 char:1
++ cargo test -p tt-render --locked -j 4 *> 'C:\Users\kaiga\AppData\Loca ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (   Compiling proc-macro2 v1.0.107:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+
+   Compiling quote v1.0.47
+   Compiling unicode-ident v1.0.27
+   Compiling autocfg v1.5.1
+   Compiling cfg-if v1.0.5
+   Compiling serde_core v1.0.229
+   Compiling version_check v0.9.5
+   Compiling num-traits v0.2.19
+   Compiling syn v3.0.9
+   Compiling foldhash v0.2.0
+   Compiling equivalent v1.0.3
+   Compiling allocator-api2 v0.2.21
+   Compiling memchr v2.8.3
+   Compiling smallvec v1.16.3
+   Compiling serde v1.0.229
+   Compiling hashbrown v0.17.1
+   Compiling num-integer v0.1.47
+   Compiling zmij v1.0.23
+   Compiling serde_json v1.0.154
+   Compiling getrandom v0.3.4
+   Compiling zerocopy v0.8.63
+   Compiling once_cell v1.21.4
+   Compiling ref-cast v1.0.27
+   Compiling num-bigint v0.4.8
+   Compiling indexmap v2.14.2
+   Compiling ahash v0.8.12
+   Compiling regex-syntax v0.8.11
+   Compiling parking_lot_core v0.9.12
+   Compiling itoa v1.0.18
+   Compiling num-rational v0.4.2
+   Compiling num-iter v0.1.46
+   Compiling aho-corasick v1.1.5
+   Compiling num-complex v0.4.6
+   Compiling windows-link v0.2.1
+   Compiling crossbeam-utils v0.8.23
+   Compiling scopeguard v1.2.0
+   Compiling thiserror v2.0.21
+   Compiling lock_api v0.4.14
+   Compiling serde_derive v1.0.229
+   Compiling ref-cast-impl v1.0.27
+   Compiling bytemuck_derive v1.12.1
+   Compiling thiserror-impl v2.0.21
+   Compiling num v0.4.3
+   Compiling regex-automata v0.4.18
+   Compiling bytemuck v1.25.2
+   Compiling syn v2.0.119
+   Compiling libm v0.2.16
+   Compiling borrow-or-share v0.2.4
+   Compiling jsonschema-value v0.59.0
+   Compiling unicode-general-category v1.1.0
+   Compiling bit-vec v0.8.0
+   Compiling heck v0.5.0
+   Compiling fluent-uri v0.4.1
+   Compiling bit-set v0.8.0
+   Compiling fraction v0.17.0
+   Compiling parking_lot v0.12.5
+   Compiling serde_derive_internals v0.30.0
+   Compiling micromap v0.3.0
+   Compiling outref v0.5.2
+   Compiling tinyvec v1.13.3
+   Compiling num-cmp v0.1.0
+   Compiling percent-encoding v2.3.2
+   Compiling getrandom v0.4.3
+   Compiling vsimd v0.8.0
+   Compiling bytecount v0.6.9
+   Compiling strum_macros v0.28.0
+   Compiling uuid-simd v0.8.0
+   Compiling referencing v0.59.0
+   Compiling fancy-regex v0.19.2
+   Compiling schemars_derive v1.2.3
+   Compiling email_address v0.2.9
+   Compiling regex v1.13.1
+   Compiling strum v0.28.0
+   Compiling jsonschema-regex v0.59.0
+   Compiling data-encoding v2.11.1
+   Compiling typenum v1.20.1
+   Compiling crossbeam-epoch v0.9.21
+   Compiling dyn-clone v1.0.20
+   Compiling hybrid-array v0.4.15
+   Compiling jsonschema v0.59.0
+   Compiling unicode-normalization v0.1.26
+   Compiling crossbeam-deque v0.8.8
+   Compiling ryu v1.0.23
+   Compiling arrayvec v0.7.8
+   Compiling simd-adler32 v0.3.10
+   Compiling polycool v0.4.0
+   Compiling schemars v1.2.3
+   Compiling slotmap v1.1.1
+   Compiling rayon-core v1.13.0
+   Compiling adler2 v2.0.1
+   Compiling log v0.4.34
+   Compiling crc32fast v1.5.2
+   Compiling kurbo v0.13.1
+   Compiling block-buffer v0.12.1
+   Compiling crypto-common v0.2.2
+   Compiling i_float v5.0.0
+   Compiling color v0.3.3
+   Compiling tt-model v0.0.1 (C:\Users\kaiga\work\review\m3-c33-r1\crates\model)
+   Compiling font-types v0.12.7
+   Compiling euclid v0.22.14
+   Compiling linebender_resource_handle v0.1.1
+   Compiling const-oid v0.10.2
+   Compiling digest v0.11.3
+   Compiling peniko v0.6.1
+   Compiling guillotiere v0.7.0
+   Compiling read-fonts v0.41.0
+   Compiling i_shape v5.0.0
+   Compiling miniz_oxide v0.9.1
+   Compiling crossbeam-channel v0.5.17
+   Compiling hashbrown v0.16.1
+   Compiling cpufeatures v0.3.1
+   Compiling either v1.19.0
+   Compiling fearless_simd v0.7.0
+   Compiling i_tree v0.20.0
+   Compiling i_key_sort v0.12.0
+   Compiling robust v1.2.0
+   Compiling memmap2 v0.9.11
+   Compiling fontdb v0.24.0
+   Compiling spade v2.15.1
+   Compiling i_overlay v9.1.0
+   Compiling vello_common v0.3.0
+   Compiling rayon v1.12.0
+   Compiling sha2 v0.11.1
+   Compiling skrifa v0.44.0
+   Compiling ordered-channel v1.2.0
+   Compiling flate2 v1.1.10
+   Compiling tt-anim v0.0.1 (C:\Users\kaiga\work\review\m3-c33-r1\crates\anim)
+   Compiling miniz_oxide v0.8.9
+   Compiling fdeflate v0.3.7
+   Compiling thread_local v1.1.10
+   Compiling bitflags v2.13.2
+   Compiling png v0.18.1
+   Compiling vello_cpu v0.3.0
+   Compiling tt-fx v0.0.1 (C:\Users\kaiga\work\review\m3-c33-r1\crates\fx)
+   Compiling tt-vector v0.0.1 (C:\Users\kaiga\work\review\m3-c33-r1\crates\vector)
+   Compiling tt-colour v0.0.1 (C:\Users\kaiga\work\review\m3-c33-r1\crates\colour)
+   Compiling tt-render v0.0.1 (C:\Users\kaiga\work\review\m3-c33-r1\crates\render)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 2m 24s
+     Running unittests src\lib.rs (target\debug\deps\tt_render-fd88e505192f7aef.exe)
+
+running 2 tests
+test tests::bad_sizes_images_and_a_stop_are_refused ... ok
+test tests::an_opaque_square_covers_its_pixels_and_alpha_stays_255 ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests\c03_fixed_configurations.rs (target\debug\deps\c03_fixed_configurations-081a71c695a5776b.exe)
+
+running 2 tests
+test u8_pipeline_loses_opacity_over_an_opaque_background_known_limitation ... ok
+test fixed_scalar_configuration_hashes_identically_across_oses ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.77s
+
+     Running tests\c03_r1_stress.rs (target\debug\deps\c03_r1_stress-bfab5d61cdfd927f.exe)
+
+running 3 tests
+test c03_r1_04_simd_dispatch_must_not_change_final_pixels ... ignored, C0.4 ticket: SIMD policy for the final renderer
+test c03_r1_05_source_over_an_opaque_background_stays_opaque ... ok
+test extended_corpus_repeats_and_cross_os_hashes ... ok
+
+test result: ok. 2 passed; 0 failed; 1 ignored; 0 measured; 0 filtered out; finished in 0.97s
+
+     Running tests\c03_r2_quality.rs (target\debug\deps\c03_r2_quality-210341da1de92571.exe)
+
+running 1 test
+test quality_pipeline_opacity_full_corpus ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.64s
+
+     Running tests\c23_r1_texture.rs (target\debug\deps\c23_r1_texture-166039e0d4652506.exe)
+
+running 1 test
+test tile_off_is_transparent_outside_the_mapped_unit_square ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests\c23_r2_texture.rs (target\debug\deps\c23_r2_texture-8ca8cdfbe695f159.exe)
+
+running 2 tests
+test renderer_observes_cancellation_before_drawing ... ok
+test rotated_skewed_and_reflected_tile_off_alpha_has_transparent_exterior ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests\c23_r3_cancel.rs (target\debug\deps\c23_r3_cancel-94e420c2c762977a.exe)
+
+running 1 test
+test render_stops_between_processed_items ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests\c33_layer.rs (target\debug\deps\c33_layer-a0e68157dcc238f2.exe)
+
+running 6 tests
+test nested_layers_compose_outer_after_inner ... ok
+test scenes_without_layers_render_as_before_and_the_count_reaches_nested_items ... ok
+test paint_mappings_are_in_the_layer_space ... ok
+test a_scaled_and_translated_layer_places_geometry_exactly ... ok
+test rotation_and_skew_map_area_by_the_determinant ... ok
+test stroke_widths_scale_with_the_layer_anisotropically ... ok
+
+test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+   Doc-tests tt_render
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s

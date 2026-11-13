@@ -1,0 +1,10 @@
+$ python scripts/check-merge-note-inventory.py
+108 headings, 13 active; consistent
+exit 0
+$ python tests/adversarial/c34-r1-merge-note.py
+.
+----------------------------------------------------------------------
+Ran 1 test in 0.002s
+
+OK
+exit 0

@@ -1,0 +1,91 @@
+{
+  "windows-latest": {
+    "expected_cases": [
+      "tests/ui/core_install.rs",
+      "tests/ui/cx_clone_default.rs",
+      "tests/ui/cx_constructor.rs",
+      "tests/ui/cx_struct_literal.rs",
+      "tests/ui/document_fields.rs",
+      "tests/ui/enablement_read_only.rs",
+      "tests/ui/entity_fields.rs",
+      "tests/ui/handle_channel.rs",
+      "tests/ui/job_keeps_context.rs",
+      "tests/ui/load_grant_forged.rs",
+      "tests/ui/request_type.rs",
+      "tests/ui/session_private.rs",
+      "tests/ui-pass/read_snapshots.rs",
+      "tests/c12-r1-ui/missing_example.rs"
+    ],
+    "matched_cases": [
+      "tests/ui/core_install.rs",
+      "tests/ui/cx_clone_default.rs",
+      "tests/ui/cx_constructor.rs",
+      "tests/ui/cx_struct_literal.rs",
+      "tests/ui/document_fields.rs",
+      "tests/ui/enablement_read_only.rs",
+      "tests/ui/entity_fields.rs",
+      "tests/ui/handle_channel.rs",
+      "tests/ui/job_keeps_context.rs",
+      "tests/ui/load_grant_forged.rs",
+      "tests/ui/request_type.rs",
+      "tests/ui/session_private.rs",
+      "tests/ui-pass/read_snapshots.rs",
+      "tests/c12-r1-ui/missing_example.rs"
+    ],
+    "all_cases_matched": true,
+    "named_tests": {
+      "duplicate_ids_and_inventory_kind_drift_are_rejected": true,
+      "missing_example_is_rejected_at_compile_time": true,
+      "exclusive_mutation_capability": true
+    },
+    "result_summaries": [
+      "test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 131.76s",
+      "test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 332.07s"
+    ]
+  },
+  "macos-latest": {
+    "expected_cases": [
+      "tests/ui/core_install.rs",
+      "tests/ui/cx_clone_default.rs",
+      "tests/ui/cx_constructor.rs",
+      "tests/ui/cx_struct_literal.rs",
+      "tests/ui/document_fields.rs",
+      "tests/ui/enablement_read_only.rs",
+      "tests/ui/entity_fields.rs",
+      "tests/ui/handle_channel.rs",
+      "tests/ui/job_keeps_context.rs",
+      "tests/ui/load_grant_forged.rs",
+      "tests/ui/request_type.rs",
+      "tests/ui/session_private.rs",
+      "tests/ui-pass/read_snapshots.rs",
+      "tests/c12-r1-ui/missing_example.rs"
+    ],
+    "matched_cases": [
+      "tests/ui/core_install.rs",
+      "tests/ui/cx_clone_default.rs",
+      "tests/ui/cx_constructor.rs",
+      "tests/ui/cx_struct_literal.rs",
+      "tests/ui/document_fields.rs",
+      "tests/ui/enablement_read_only.rs",
+      "tests/ui/entity_fields.rs",
+      "tests/ui/handle_channel.rs",
+      "tests/ui/job_keeps_context.rs",
+      "tests/ui/load_grant_forged.rs",
+      "tests/ui/request_type.rs",
+      "tests/ui/session_private.rs",
+      "tests/ui-pass/read_snapshots.rs",
+      "tests/c12-r1-ui/missing_example.rs"
+    ],
+    "all_cases_matched": true,
+    "named_tests": {
+      "duplicate_ids_and_inventory_kind_drift_are_rejected": true,
+      "missing_example_is_rejected_at_compile_time": true,
+      "exclusive_mutation_capability": true
+    },
+    "result_summaries": [
+      "test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 74.98s",
+      "test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 160.84s"
+    ]
+  },
+  "bodies_unchanged": true
+}

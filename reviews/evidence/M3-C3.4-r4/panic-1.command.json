@@ -1,0 +1,1 @@
+{"command": ["cargo", "test", "--locked", "-p", "tt-executor", "-j", "4", "--test", "c34_r3_probes", "panicking_probe_leaves_worker_alive", "--", "--exact", "--nocapture"], "env": {"RUST_BACKTRACE": "1"}}

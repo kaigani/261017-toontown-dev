@@ -1,0 +1,64 @@
+{
+  "comparedFiles": [
+    "contact-sheet.json",
+    "contact-sheet.png",
+    "e1-commands.json",
+    "evaluate.json",
+    "frames/frame-01.png",
+    "frames/frame-12.png",
+    "frames/frame-24.png",
+    "frames/variant-01.png",
+    "frames/variant-12.png",
+    "frames/variant-24.png",
+    "hashes.json",
+    "manifest.normalized.json",
+    "sequence/Scene-1_0001.png",
+    "sequence/Scene-1_0002.png",
+    "sequence/Scene-1_0003.png",
+    "sequence/Scene-1_0004.png",
+    "sequence/Scene-1_0005.png",
+    "sequence/Scene-1_0006.png",
+    "sequence/Scene-1_0007.png",
+    "sequence/Scene-1_0008.png",
+    "sequence/Scene-1_0009.png",
+    "sequence/Scene-1_0010.png",
+    "sequence/Scene-1_0011.png",
+    "sequence/Scene-1_0012.png",
+    "sequence/Scene-1_0013.png",
+    "sequence/Scene-1_0014.png",
+    "sequence/Scene-1_0015.png",
+    "sequence/Scene-1_0016.png",
+    "sequence/Scene-1_0017.png",
+    "sequence/Scene-1_0018.png",
+    "sequence/Scene-1_0019.png",
+    "sequence/Scene-1_0020.png",
+    "sequence/Scene-1_0021.png",
+    "sequence/Scene-1_0022.png",
+    "sequence/Scene-1_0023.png",
+    "sequence/Scene-1_0024.png"
+  ],
+  "ci-Windows": {
+    "bytesEqual": true,
+    "numericError": 2.1094237467877974e-15,
+    "centroidErrorPx": 0.00033610868331379606,
+    "labelsDistinct": 24
+  },
+  "ci-macOS": {
+    "bytesEqual": true,
+    "numericError": 2.1094237467877974e-15,
+    "centroidErrorPx": 0.00033610868331379606,
+    "labelsDistinct": 24
+  },
+  "local-a": {
+    "bytesEqual": true,
+    "numericError": 2.1094237467877974e-15,
+    "centroidErrorPx": 0.00033610868331379606,
+    "labelsDistinct": 24
+  },
+  "local-b": {
+    "bytesEqual": true,
+    "numericError": 2.1094237467877974e-15,
+    "centroidErrorPx": 0.00033610868331379606,
+    "labelsDistinct": 24
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "productHead": "967229ad0bd172691771fe12252003439b4767fe",
+  "reviewHeadAtBuild": "73553910b4e87bc888f7c81035b39dc7adfe1050",
+  "binarySha256": "cc6e9da52cf3e4ec107afea3f66facc7d3a0c353e38abf4528b10a848993db11",
+  "sourceDiffFromProductHead": "empty for executor/mcp product trees and Cargo.lock",
+  "buildCommand": "cargo build --release --locked -p tt-headless -j 4",
+  "buildExit": 0,
+  "E1": {
+    "passed": 53,
+    "failed": 0,
+    "comparedFiles": 36,
+    "allByteIdentical": true
+  }
+}

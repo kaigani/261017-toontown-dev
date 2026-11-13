@@ -11,7 +11,7 @@ use tt_registry::{Kind, Scope, Status, declared_sample, declared_schema, owner_o
 #[test]
 fn declarations_follow_the_current_spec_columns() {
     // A floor against an empty table: the count falls as checkpoints implement declared commands (599 after M2 C2.4).
-    assert!(DECLARED.len() > 500, "{}", DECLARED.len());
+    assert!(DECLARED.len() > 400, "{}", DECLARED.len());
     for (i, c) in DECLARED.iter().enumerate() {
         let spec =
             INVENTORY.iter().find(|e| e.id == c.decl.id).unwrap_or_else(|| panic!("{} not in spec A", c.decl.id));
@@ -78,7 +78,7 @@ fn declarations_carry_owner_scopes_project_rule_undo_and_gui() {
     assert!(get("export.publish.run").scopes.contains(&Scope::Network));
     assert!(get("print.run").scopes.contains(&Scope::Print));
     assert!(!get("prefs.set").needs_project, "01 §1.3: preferences work without a project");
-    assert!(get("element.create").needs_project);
+    assert!(get("timeline.rows.list").needs_project);
     assert_eq!(owner_of("import.movie.run"), "M8 C8.3");
     assert_eq!(owner_of("anim.key.add"), "M3 C3.2");
 }
@@ -86,13 +86,14 @@ fn declarations_carry_owner_scopes_project_rule_undo_and_gui() {
 #[test]
 fn parameter_constraints_come_from_the_spec() {
     let at = |id: &str| declared_schema(DECLARED.iter().position(|c| c.decl.id == id).unwrap(), false);
-    let p = at("cell.select");
-    assert_eq!(p["properties"]["mode"]["enum"], json!(["replace", "add"]));
-    assert_eq!(p["properties"]["mode"]["default"], "replace");
-    assert_eq!(p["required"], json!(["elementIds", "from", "to"]));
-    assert_eq!(p["properties"]["elementIds"]["type"], "array");
+    // `cell.select` was the example until M3 C3.1 implemented it.
+    let p = at("timeline.currentFrame.move");
+    assert_eq!(p["properties"]["unit"]["enum"], json!(["frame", "drawing"]));
+    assert_eq!(p["properties"]["unit"]["default"], "frame");
+    assert_eq!(p["required"], json!(["direction"]));
+    assert_eq!(p["properties"]["direction"]["type"], "string");
     let e =
-        validate_params("cell.select", &p, &json!({ "elementIds": [], "from": 1, "to": 2, "mode": "x" })).unwrap_err();
+        validate_params("timeline.currentFrame.move", &p, &json!({ "direction": "next", "unit": "x" })).unwrap_err();
     assert_eq!(e.code, "arg.invalid");
     let p = at("lipsync.settings.set");
     assert_eq!(p["properties"]["minHoldFrames"]["minimum"], 0);
@@ -100,10 +101,8 @@ fn parameter_constraints_come_from_the_spec() {
     assert!(validate_params("lipsync.settings.set", &p, &json!({ "minHoldFrames": 7 })).is_err());
     let p = at("timeline.currentFrame.set");
     assert_eq!(p["properties"]["frame"]["minimum"], 1);
-    let p = at("anim.camera.create");
-    assert_eq!(p["properties"]["fov"]["minimum"], 1);
-    assert_eq!(p["properties"]["fov"]["maximum"], 179);
-    assert_eq!(p["properties"]["fov"]["default"], 41.1121);
+    let p = at("anim.bone.rest.set");
+    assert_eq!(p["properties"]["length"]["minimum"], 0.01);
 }
 
 /// Scalar leaves of a value, as JSON Pointers.

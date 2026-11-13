@@ -232,10 +232,13 @@ pub fn generic() -> Vec<ToolDef> {
         t(
             "render_frame",
             "Render frame",
-            "A rendered frame of a scene (`render.frame.run` with `composition: \"camera\"`).",
+            "A rendered frame of a scene (`render.frame.run` with `composition: \"camera\"`; the same result as the command with default parameters, 09 §11.1 item 1).",
             obj(
                 json!({ "scene": { "type": "string" }, "frame": { "type": "integer", "minimum": 1 }, "camera": { "type": "string" },
-            "width": { "type": "integer", "minimum": 1 }, "height": { "type": "integer", "minimum": 1 }, "background": { "type": "string" },
+            "width": { "type": "integer", "minimum": 1, "description": "Output width in pixels; default = the camera width (SI-110)" },
+            "height": { "type": "integer", "minimum": 1, "description": "Output height; default by the camera aspect" }, "background": { "type": "string" },
+            "include": { "type": "array", "items": { "type": "string" }, "description": "Elements to show although hidden (render-time only)" },
+            "exclude": { "type": "array", "items": { "type": "string" }, "description": "Elements to leave out, with their descendants (render-time only)" },
             "quality": { "type": "string", "enum": ["draft", "final"] }, "output": { "type": "string" } }),
                 &[],
             ),
@@ -571,15 +574,26 @@ pub fn plan(name: &str, args: &Map<String, Value>) -> Result<Plan, String> {
                 &[
                     ("scene", "sceneId"),
                     ("frame", "frame"),
+                    ("camera", "cameraId"),
                     ("width", "width"),
                     ("height", "height"),
                     ("quality", "quality"),
                     ("background", "background"),
-                    ("output", "path"),
+                    ("include", "include"),
+                    ("exclude", "exclude"),
                 ],
             );
             if let Some(m) = p.as_object_mut() {
                 m.insert("composition".into(), json!("camera"));
+                // 11 §7.5: `output` is "inline" or a path; a path writes the file (09 §11.1 item 3).
+                if let Some(out) = args.get("output").and_then(Value::as_str).filter(|o| *o != "inline") {
+                    m.insert("output".into(), json!("file"));
+                    m.insert("path".into(), json!(out));
+                }
+                // The tool's `sceneColour` is the command's `scene`.
+                if m.get("background").and_then(Value::as_str) == Some("sceneColour") {
+                    m.insert("background".into(), json!("scene"));
+                }
             }
             command("render.frame.run", p)
         }

@@ -1,0 +1,83 @@
+{
+  "top10": [
+    {
+      "binary": "tests\\c32_r4_closure.rs",
+      "seconds": 46.4
+    },
+    {
+      "binary": "tests\\c34_r2_measurements.rs",
+      "seconds": 44.29
+    },
+    {
+      "binary": "tests\\c32_round3.rs",
+      "seconds": 42.38
+    },
+    {
+      "binary": "tests\\cancel_phases.rs",
+      "seconds": 40.26
+    },
+    {
+      "binary": "tests\\c22_r3_cache.rs",
+      "seconds": 31.14
+    },
+    {
+      "binary": "tests\\c21_r1_autosave.rs",
+      "seconds": 29.3
+    },
+    {
+      "binary": "tests\\c12_kernel_state.rs",
+      "seconds": 28.44
+    },
+    {
+      "binary": "tests\\c12_r2_scale.rs",
+      "seconds": 27.17
+    },
+    {
+      "binary": "tests\\c12_r1_contracts.rs",
+      "seconds": 26.5
+    },
+    {
+      "binary": "tests\\c21_r1_retention.rs",
+      "seconds": 25.61
+    }
+  ],
+  "c34": [
+    {
+      "binary": "tests\\c34_cancel.rs",
+      "seconds": 0.8
+    },
+    {
+      "binary": "tests\\c34_e1.rs",
+      "seconds": 1.76
+    },
+    {
+      "binary": "tests\\c34_r1_contract.rs",
+      "seconds": 0.73
+    },
+    {
+      "binary": "tests\\c34_r2_cancellation.rs",
+      "seconds": 5.84
+    },
+    {
+      "binary": "tests\\c34_r2_measurements.rs",
+      "seconds": 44.29
+    },
+    {
+      "binary": "tests\\c34_round2.rs",
+      "seconds": 20.27
+    },
+    {
+      "binary": "tests\\c34_tokens.rs",
+      "seconds": 4.06
+    },
+    {
+      "binary": "tests\\c34_cancel.rs",
+      "seconds": 1.94
+    },
+    {
+      "binary": "tests\\c34_r2_protocol.rs",
+      "seconds": 9.88
+    }
+  ],
+  "binaries": 341
+}

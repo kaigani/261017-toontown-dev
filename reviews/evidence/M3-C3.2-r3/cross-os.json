@@ -1,0 +1,47 @@
+[
+  {
+    "file": "e2/1-preview.png",
+    "equal": true,
+    "sha256": "1b6fcbba30dfb2985c8bb82aaa4998d6799f276b4e1e9855ccf31a5aedf35766"
+  },
+  {
+    "file": "e2/2-vectorized.png",
+    "equal": true,
+    "sha256": "1b6fcbba30dfb2985c8bb82aaa4998d6799f276b4e1e9855ccf31a5aedf35766"
+  },
+  {
+    "file": "e2/3-painted.png",
+    "equal": true,
+    "sha256": "a4124d1ce094e3dfc7249c22f57a6676a89adfd80b1434dc4a49e27a98ad1555"
+  },
+  {
+    "file": "e2/4-recoloured.png",
+    "equal": true,
+    "sha256": "9732a6a246a95e902ba8ab76a1eb0f7c813fa3cd7f386545ae3d2545c691c60d"
+  },
+  {
+    "file": "e2/5-undone.png",
+    "equal": true,
+    "sha256": "a4124d1ce094e3dfc7249c22f57a6676a89adfd80b1434dc4a49e27a98ad1555"
+  },
+  {
+    "file": "e2/6-redone.png",
+    "equal": true,
+    "sha256": "9732a6a246a95e902ba8ab76a1eb0f7c813fa3cd7f386545ae3d2545c691c60d"
+  },
+  {
+    "file": "e2/7-reopened.png",
+    "equal": true,
+    "sha256": "9732a6a246a95e902ba8ab76a1eb0f7c813fa3cd7f386545ae3d2545c691c60d"
+  },
+  {
+    "file": "e4/evaluate.json",
+    "equal": true,
+    "sha256": "eae7bcae41a8873efade57c33751ed9cd5878fe0a2a4a8da064a95013bdc9c4f"
+  },
+  {
+    "file": "e4/variant\\evaluate.json",
+    "equal": true,
+    "sha256": "5708fccab82424510fb5c23b96712ad916403a93a27e4d81702d9e2cbd394ebe"
+  }
+]

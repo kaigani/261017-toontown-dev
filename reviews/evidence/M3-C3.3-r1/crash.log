@@ -1,0 +1,22 @@
+
+running 2 tests
+test crash_child_receipt ... ok
+crash.exe :
+At line:2 char:568
++ ... $r\crash.exe"; & "$r\crash.exe" --nocapture *> "$r\crash.log"; $LASTE ...
++                    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+
+thread 'killed_sequence_leaves_no_staged_files' (23492) panicked at crates/executor/tests/c33_r1_crash.rs:45:5:
+charter item 6: killed sequence retained [".Intro_0001.png.tt-partial-e862fd9c41eb"] in
+C:\Users\kaiga\AppData\Local\Temp\c33-r1-crash-aa71543767d0
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+test killed_sequence_leaves_no_staged_files ... FAILED
+
+failures:
+
+failures:
+    killed_sequence_leaves_no_staged_files
+
+test result: FAILED. 1 passed; 1 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.06s

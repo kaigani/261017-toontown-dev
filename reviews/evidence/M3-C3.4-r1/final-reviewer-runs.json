@@ -1,0 +1,26 @@
+[
+  {
+    "name": "fmt-reviewer-apply",
+    "command": "rustfmt --edition 2024 crates\\executor\\tests\\c34_r1_contract.rs",
+    "exitCode": 0,
+    "durationSeconds": 0.047
+  },
+  {
+    "name": "fmt-reviewer",
+    "command": "rustfmt --check --edition 2024 crates\\executor\\tests\\c34_r1_contract.rs",
+    "exitCode": 0,
+    "durationSeconds": 0.046
+  },
+  {
+    "name": "clippy-reviewer",
+    "command": "cargo clippy --locked -p tt-executor --tests -- -D warnings -A clippy::empty_line_after_doc_comments",
+    "exitCode": 0,
+    "durationSeconds": 0.644
+  },
+  {
+    "name": "contract-reviewer",
+    "command": "cargo test --locked -p tt-executor -j 4 --test c34_r1_contract",
+    "exitCode": 0,
+    "durationSeconds": 3.411
+  }
+]

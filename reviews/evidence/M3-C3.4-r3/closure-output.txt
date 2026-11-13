@@ -1,0 +1,68 @@
+     Running tests\c34_r2_cancellation.rs (target\debug\deps\c34_r2_cancellation-bcfc4186288a5495.exe)
+
+running 4 tests
+test already_cancelled_mutation_never_commits ... ok
+test fast_commit_cancel_retry_matrix_preserves_one_change_and_one_answer ... ok
+test retry_cache_and_late_cancellation_are_stable_for_three_thousand_calls ... ok
+test direct_job_wait_observes_cancellation_probe ... ok
+
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 2.54s
+
+     Running tests\c34_r2_measurements.rs (target\debug\deps\c34_r2_measurements-2d7d45d4701cb4a4.exe)
+
+running 6 tests
+test short_waited_batch_cannot_commit_with_an_already_cancelled_probe ... ok
+test completed_batch_then_late_cancellation_does_not_poison_next_request ... ok
+test atomic_and_dry_run_cancel_mid_batch_discard_changes ... ok
+test discarded_queued_cancellation_does_not_report_a_dead_document_thread ... ok
+test queued_cancelled_request_is_skipped_and_following_read_survives ... ok
+test one_hundred_wait_cancellations_settle_jobs_and_leave_handle_usable ... ok
+
+test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 24.94s
+
+     Running tests\c34_r3_contention.rs (target\debug\deps\c34_r3_contention-d53ddebe59fe668d.exe)
+
+running 4 tests
+test live_retry_racing_cancelled_original_executes_once ... ok
+test cancelled_file_effect_and_job_cancel_retry_once ... ok
+test mark_after_forget_and_mixed_call_contention_leave_no_tokens ... ok
+test pre_cancelled_undo_redo_are_not_cached ... ok
+
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 3.50s
+
+     Running tests\c34_r3_edges.rs (target\debug\deps\c34_r3_edges-e374ae6fd72b45bf.exe)
+
+running 4 tests
+test cancelled_queued_request_reports_real_worker_death_as_internal ... FAILED
+test commit_wins_returns_success_and_cached_envelope ... ok
+test pre_cancelled_batch_modes_and_job_submission_retry_once ... ok
+test worker_boundary_refusal_identifies_cancellation_reason ... FAILED
+
+failures:
+
+---- cancelled_queued_request_reports_real_worker_death_as_internal stdout ----
+
+thread 'tt-document' (14016) panicked at crates\executor\tests\c34_r3_edges.rs:64:13:
+review worker death
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+thread 'cancelled_queued_request_reports_real_worker_death_as_internal' (12780) panicked at crates\executor\tests\c34_r3_edges.rs:77:5:
+assertion `left == right` failed: a marked token cannot prove intentional discard
+  left: "command.timeout"
+ right: "internal"
+
+---- worker_boundary_refusal_identifies_cancellation_reason stdout ----
+
+thread 'worker_boundary_refusal_identifies_cancellation_reason' (22208) panicked at crates\executor\tests\c34_r3_edges.rs:28:5:
+assertion `left == right` failed
+  left: Null
+ right: "cancelled"
+
+
+failures:
+    cancelled_queued_request_reports_real_worker_death_as_internal
+    worker_boundary_refusal_identifies_cancellation_reason
+
+test result: FAILED. 2 passed; 2 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.40s
+
+error: test failed, to rerun pass `-p tt-executor --test c34_r3_edges`

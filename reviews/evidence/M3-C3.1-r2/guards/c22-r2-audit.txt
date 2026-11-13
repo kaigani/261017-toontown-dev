@@ -1,0 +1,10 @@
+test_analyzer_rejects_malformed_and_recomputes (__main__.Audit.test_analyzer_rejects_malformed_and_recomputes) ... ok
+test_c22_golden_only_zone_ids_and_number_representation (__main__.Audit.test_c22_golden_only_zone_ids_and_number_representation) ... ok
+test_no_forbidden_new_product_constructs (__main__.Audit.test_no_forbidden_new_product_constructs) ... ok
+test_planar_raw_observations_and_malformed_rejection (__main__.Audit.test_planar_raw_observations_and_malformed_rejection) ... ok
+test_reviewer_tests_unchanged_after_merge (__main__.Audit.test_reviewer_tests_unchanged_after_merge) ... ok
+
+----------------------------------------------------------------------
+Ran 5 tests in 0.332s
+
+OK

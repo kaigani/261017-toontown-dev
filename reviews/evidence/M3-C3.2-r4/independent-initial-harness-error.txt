@@ -1,0 +1,29 @@
+   Compiling tt-model v0.0.1 (C:\Users\kaiga\work\review\m3-c32-r4\crates\model)
+   Compiling tt-registry-macros v0.0.1 (C:\Users\kaiga\work\review\m3-c32-r4\crates\registry-macros)
+   Compiling tt-anim v0.0.1 (C:\Users\kaiga\work\review\m3-c32-r4\crates\anim)
+   Compiling tt-colour v0.0.1 (C:\Users\kaiga\work\review\m3-c32-r4\crates\colour)
+   Compiling tt-vector v0.0.1 (C:\Users\kaiga\work\review\m3-c32-r4\crates\vector)
+   Compiling tt-persist v0.0.1 (C:\Users\kaiga\work\review\m3-c32-r4\crates\persist)
+   Compiling tt-fx v0.0.1 (C:\Users\kaiga\work\review\m3-c32-r4\crates\fx)
+   Compiling tt-registry v0.0.1 (C:\Users\kaiga\work\review\m3-c32-r4\crates\registry)
+   Compiling tt-render v0.0.1 (C:\Users\kaiga\work\review\m3-c32-r4\crates\render)
+   Compiling tt-io v0.0.1 (C:\Users\kaiga\work\review\m3-c32-r4\crates\io)
+   Compiling tt-executor v0.0.1 (C:\Users\kaiga\work\review\m3-c32-r4\crates\executor)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 1m 42s
+     Running tests\c32_r4_closure.rs (target\debug\deps\c32_r4_closure-afa613b2b7212e37.exe)
+
+running 1 test
+
+thread 'canonical_rollback_running_replays_queued_deadline_and_acceptance' (1932) panicked at crates\executor\tests\common\mod.rs:45:57:
+called `Result::unwrap()` on an `Err` value: Error("missing field `label`", line: 0, column: 0)
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+test canonical_rollback_running_replays_queued_deadline_and_acceptance ... FAILED
+
+failures:
+
+failures:
+    canonical_rollback_running_replays_queued_deadline_and_acceptance
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 0 filtered out; finished in 32.04s
+
+error: test failed, to rerun pass `-p tt-executor --test c32_r4_closure`

@@ -1,0 +1,68 @@
+{
+  "native_exit": 0,
+  "result_summaries": 312,
+  "raw_harness_summaries": 317,
+  "passed": 1599,
+  "failed": 0,
+  "ignored": 24,
+  "filtered": 0,
+  "recorded_test_seconds": 2969.7,
+  "raw_harness_totals": {
+    "passed": 1604,
+    "failed": 0,
+    "ignored": 24,
+    "filtered": 42
+  },
+  "metadata": {
+    "command": [
+      "cargo",
+      "test",
+      "--workspace",
+      "--locked",
+      "-j",
+      "4",
+      "--no-fail-fast"
+    ],
+    "cwd": "C:\\Users\\kaiga\\work\\review\\m3-c32-r4",
+    "head": "8c640d18e8b1d8562145f6aa88dc75fd6dee1b25",
+    "started_utc": "2026-11-10T06:34:04.738018+00:00",
+    "supervisor_pid": 41952,
+    "platform": "Windows-11-10.0.26200-SP0",
+    "TT_COMMIT_REVIEW_RECEIPTS": null,
+    "test_sha256": {
+      "crates/executor/tests/c32_r4_closure.rs": "1bdefdd2c9c264114bd1bc0541fab0716c2b570a9db0b6099ddf54379943397c",
+      "crates/mcp/tests/c32_r4_delivery.rs": "91972ece17a12b90fefc3755de7ea9831d21b937474635db4af77a12a4e6cbf4"
+    },
+    "cargo_pid": 2608,
+    "native_exit": 0,
+    "finished_utc": "2026-11-10T07:52:27.514841+00:00"
+  },
+  "all_inherited_c32_targets_present": true,
+  "inherited_targets": {
+    "c32_contract": 1,
+    "c32_r1_delegation": 1,
+    "c32_r1_queries": 1,
+    "c32_r2_c21_golden": 1,
+    "c32_r2_c22_golden": 1,
+    "c32_r2_camera": 2,
+    "c32_r2_events": 1,
+    "c32_r2_finite": 1,
+    "c32_r2_numeric": 2,
+    "c32_r2_path_budget": 1,
+    "c32_r3_camera": 1,
+    "c32_r3_history": 1,
+    "c32_round1": 2,
+    "c32_round2": 1,
+    "c32_round3": 1,
+    "c32_passage": 1,
+    "c32_r1_affine": 1,
+    "c32_r1_closed_forms": 1,
+    "c32_r1_corpus": 1,
+    "c32_r1_default_frame": 1,
+    "c32_r1_passage": 1,
+    "c32_r2_corpus": 1,
+    "c32_r2_passage": 1,
+    "c32_r2_tcb": 1,
+    "c32_round3_protocol": 1
+  }
+}

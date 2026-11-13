@@ -1,0 +1,137 @@
+{
+  "seconds": 2.964,
+  "passed": 26,
+  "failed": 0,
+  "checks": [
+    {
+      "check": "project.create",
+      "ok": true,
+      "detail": "{'status': 'ok', 'result': {'projectId': 'pr_01M73CNBS5417WCVGTNEXGASG3', 'path': '/var/folders/h5/t85nd63d71x27_8gl5gw3l_w0000gn/T/tt-e2-s9nu9jvn/E2.animpkg', 'sceneId': 'sc_01M73CNBSBEPJP17RC03J6MFYG', 'cameraId': 'el_01M73CNBSBEPJP17RC03J6MFYJ', 'elementId': 'el_01M73CNBSBEPJP17RC03J6MFYK'}, 'changes': [], 'warnings': [], 'documentRev': 1}"
+    },
+    {
+      "check": "vectorize preview",
+      "ok": true,
+      "detail": "3"
+    },
+    {
+      "check": "vectorize run started",
+      "ok": true,
+      "detail": "{'status': 'ok', 'result': {'jobId': 'job-1'}, 'changes': [], 'warnings': [], 'documentRev': 1}"
+    },
+    {
+      "check": "vectorize job succeeded",
+      "ok": true,
+      "detail": "{'jobId': 'job-1', 'commandId': 'draw.vectorize.run', 'state': 'succeeded', 'progress': 1.0, 'message': 'vectorizing image 1 of 1', 'startedAt': '2026-11-10T18:48:54.706Z', 'result': {'elementId': 'el_01M73CNBSBEPJP17RC03J6MFYK', 'drawingIds': ['dr_01K7JJN8035KW6RCZXVFBERV8V'], 'completed': 1, 'cancelled': False, 'skipped': []}, 'session': 'agent:s1-b56dee'}"
+    },
+    {
+      "check": "job progress",
+      "ok": true,
+      "detail": "[(1000.0, 1000.0, 'vectorizing image 1 of 1'), (1000.0, 1000.0, 'finished')]"
+    },
+    {
+      "check": "known pixel: the frame line is ink",
+      "ok": true,
+      "detail": "(0, 0, 0, 255)"
+    },
+    {
+      "check": "known pixel: inside the ring is paper",
+      "ok": true,
+      "detail": "(255, 255, 255, 255)"
+    },
+    {
+      "check": "save the base",
+      "ok": true,
+      "detail": "{'jobId': 'job-2', 'commandId': 'project.save', 'state': 'succeeded', 'progress': 1.0, 'message': 'Replace', 'startedAt': '2026-11-10T18:48:55.054Z', 'result': {'path': '/var/folders/h5/t85nd63d71x27_8gl5gw3l_w0000gn/T/tt-e2-s9nu9jvn/E2.animpkg', 'projectSaved': True, 'globalLibrarySaved': False, 'backupId': 'bk_95ea404370a991cd'}, 'session': 'agent:s1-b56dee'}"
+    },
+    {
+      "check": "doc.validate reports the unpainted zones",
+      "ok": true,
+      "detail": "4"
+    },
+    {
+      "check": "hit test finds the ring's inside zone",
+      "ok": true,
+      "detail": "('zn_B7F52A4NHW960APBYXY5XWT8TH', ['zn_Q83Y5GGB4EW5V9BJ8B4YQ70RVW', 'zn_6Y41C6ND47S9JHDQVTY6CG6N31', 'zn_ZEZS74MECG6BDQD1YV91V2F0PA', 'zn_B7F52A4NHW960APBYXY5XWT8TH'])"
+    },
+    {
+      "check": "each zone painted by ID in one revision",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "check": "validation clean after painting",
+      "ok": true,
+      "detail": "[]"
+    },
+    {
+      "check": "known pixel: the ring's inside is red",
+      "ok": true,
+      "detail": "(255, 0, 0, 255)"
+    },
+    {
+      "check": "render_drawing (generic tool) twice: identical hashes",
+      "ok": true,
+      "detail": "['00cbb6368c5a1b4872b7782483e380094754f24b6ac27fbcb405f6fc3dca75a0', '00cbb6368c5a1b4872b7782483e380094754f24b6ac27fbcb405f6fc3dca75a0']"
+    },
+    {
+      "check": "recolour",
+      "ok": true,
+      "detail": "{'status': 'ok', 'result': {'changed': [{'drawingId': 'dr_01K7JJN8035KW6RCZXVFBERV8V', 'count': 4}], 'pensChanged': [], 'skippedLocked': [], 'skippedProtected': []}, 'changes': [{'id': 'dr_01K7JJN8035KW6RCZXVFBERV8V/st_01K7JJN805NDY2GG56ECR247AH', 'type': 'stroke', 'op': 'modified', 'rev': 8, 'patch': [{'op': 'replace', 'path': '/ext/dev.toontown.zones/exterior/0/fill/colourId', 'value': 'col_01M7"
+    },
+    {
+      "check": "known pixel: recoloured green",
+      "ok": true,
+      "detail": "(0, 255, 0, 255)"
+    },
+    {
+      "check": "a stale zone ID is refused",
+      "ok": true,
+      "detail": "{'code': 'colour.staleZoneId', 'message': \"zone `zn_00000000000000000000000000` is not a zone of the drawing's current revision\", 'details': {'zoneId': 'zn_00000000000000000000000000', 'rev': 8}, 'hint': 'read the zones again with draw.drawing.get, or paint by point'}"
+    },
+    {
+      "check": "a stale revision is refused",
+      "ok": true,
+      "detail": "{'code': 'rev.conflict', 'message': '`dr_01K7JJN8035KW6RCZXVFBERV8V` changed: rev 8, expected 1', 'details': {'ref': 'dr_01K7JJN8035KW6RCZXVFBERV8V', 'id': 'dr_01K7JJN8035KW6RCZXVFBERV8V', 'expectedRev': 1, 'currentRev': 8, 'documentRev': 8, 'current': {'id': 'dr_01K7JJN8035KW6RCZXVFBERV8V', 'type': 'drawing', 'rev': 8, 'name': '1', 'locked': False, 'pivot': {'x': 0.0, 'y': 0.0}, 'mouthShape': Non"
+    },
+    {
+      "check": "undo restores red",
+      "ok": true,
+      "detail": "(255, 0, 0, 255)"
+    },
+    {
+      "check": "redo restores green",
+      "ok": true,
+      "detail": "(0, 255, 0, 255)"
+    },
+    {
+      "check": "save",
+      "ok": true,
+      "detail": "{'jobId': 'job-3', 'commandId': 'project.save', 'state': 'succeeded', 'progress': 1.0, 'message': 'Replace', 'startedAt': '2026-11-10T18:48:55.660Z', 'result': {'path': '/var/folders/h5/t85nd63d71x27_8gl5gw3l_w0000gn/T/tt-e2-s9nu9jvn/E2.animpkg', 'projectSaved': True, 'globalLibrarySaved': False, 'backupId': 'bk_4fa39db8dda3c58f'}, 'session': 'agent:s1-b56dee'}"
+    },
+    {
+      "check": "reopen",
+      "ok": true,
+      "detail": "{'jobId': 'job-4', 'commandId': 'project.open', 'state': 'succeeded', 'progress': 1.0, 'message': 'Finalisation', 'startedAt': '2026-11-10T18:48:55.733Z', 'result': {'projectId': 'pr_01M73CNBS5417WCVGTNEXGASG3', 'readOnly': True, 'formatVersion': '1.0', 'warnings': [{'id': 'project.lockedByOther', 'message': 'the project is open on iad20-fj917-72890d3a-0dbf-4fa8-94ec-4c43c227396a-1E04F77D4C4A.loca"
+    },
+    {
+      "check": "save/open: identical doc.export.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "check": "reopened render equals the redone render",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "check": "--run replay exits 0",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "check": "replay from the saved base reproduces the document",
+      "ok": true,
+      "detail": ""
+    }
+  ]
+}

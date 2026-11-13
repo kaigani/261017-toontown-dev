@@ -1,0 +1,44 @@
+[
+  {
+    "name": "1-preview.png",
+    "windows": "1b6fcbba30dfb2985c8bb82aaa4998d6799f276b4e1e9855ccf31a5aedf35766",
+    "macos": "1b6fcbba30dfb2985c8bb82aaa4998d6799f276b4e1e9855ccf31a5aedf35766",
+    "identical": true
+  },
+  {
+    "name": "2-vectorized.png",
+    "windows": "1b6fcbba30dfb2985c8bb82aaa4998d6799f276b4e1e9855ccf31a5aedf35766",
+    "macos": "1b6fcbba30dfb2985c8bb82aaa4998d6799f276b4e1e9855ccf31a5aedf35766",
+    "identical": true
+  },
+  {
+    "name": "3-painted.png",
+    "windows": "a4124d1ce094e3dfc7249c22f57a6676a89adfd80b1434dc4a49e27a98ad1555",
+    "macos": "a4124d1ce094e3dfc7249c22f57a6676a89adfd80b1434dc4a49e27a98ad1555",
+    "identical": true
+  },
+  {
+    "name": "4-recoloured.png",
+    "windows": "9732a6a246a95e902ba8ab76a1eb0f7c813fa3cd7f386545ae3d2545c691c60d",
+    "macos": "9732a6a246a95e902ba8ab76a1eb0f7c813fa3cd7f386545ae3d2545c691c60d",
+    "identical": true
+  },
+  {
+    "name": "5-undone.png",
+    "windows": "a4124d1ce094e3dfc7249c22f57a6676a89adfd80b1434dc4a49e27a98ad1555",
+    "macos": "a4124d1ce094e3dfc7249c22f57a6676a89adfd80b1434dc4a49e27a98ad1555",
+    "identical": true
+  },
+  {
+    "name": "6-redone.png",
+    "windows": "9732a6a246a95e902ba8ab76a1eb0f7c813fa3cd7f386545ae3d2545c691c60d",
+    "macos": "9732a6a246a95e902ba8ab76a1eb0f7c813fa3cd7f386545ae3d2545c691c60d",
+    "identical": true
+  },
+  {
+    "name": "7-reopened.png",
+    "windows": "9732a6a246a95e902ba8ab76a1eb0f7c813fa3cd7f386545ae3d2545c691c60d",
+    "macos": "9732a6a246a95e902ba8ab76a1eb0f7c813fa3cd7f386545ae3d2545c691c60d",
+    "identical": true
+  }
+]

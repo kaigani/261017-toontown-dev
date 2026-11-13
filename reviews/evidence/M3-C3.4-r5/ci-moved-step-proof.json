@@ -1,0 +1,170 @@
+[
+  {
+    "job": "c33 render release (windows-latest)",
+    "job_conclusion": "success",
+    "step": {
+      "completedAt": "2026-11-12T18:34:29Z",
+      "conclusion": "success",
+      "name": "Reviewer render corpora (release)",
+      "number": 6,
+      "startedAt": "2026-11-12T18:33:14Z",
+      "status": "completed"
+    }
+  },
+  {
+    "job": "c33 render release (windows-latest)",
+    "job_conclusion": "success",
+    "step": {
+      "completedAt": "2026-11-12T18:44:24Z",
+      "conclusion": "success",
+      "name": "Request-cancellation stress and measurement loops (release)",
+      "number": 7,
+      "startedAt": "2026-11-12T18:34:29Z",
+      "status": "completed"
+    }
+  },
+  {
+    "job": "headless release (macos-latest)",
+    "job_conclusion": "success",
+    "step": {
+      "completedAt": "2026-11-12T18:56:38Z",
+      "conclusion": "success",
+      "name": "MCP cancellation phases against the release binary",
+      "number": 6,
+      "startedAt": "2026-11-12T18:55:50Z",
+      "status": "completed"
+    }
+  },
+  {
+    "job": "c33 render release (macos-latest)",
+    "job_conclusion": "success",
+    "step": {
+      "completedAt": "2026-11-12T18:45:24Z",
+      "conclusion": "success",
+      "name": "Reviewer render corpora (release)",
+      "number": 6,
+      "startedAt": "2026-11-12T18:44:49Z",
+      "status": "completed"
+    }
+  },
+  {
+    "job": "c33 render release (macos-latest)",
+    "job_conclusion": "success",
+    "step": {
+      "completedAt": "2026-11-12T18:51:19Z",
+      "conclusion": "success",
+      "name": "Request-cancellation stress and measurement loops (release)",
+      "number": 7,
+      "startedAt": "2026-11-12T18:45:24Z",
+      "status": "completed"
+    }
+  },
+  {
+    "job": "headless release (windows-latest)",
+    "job_conclusion": "success",
+    "step": {
+      "completedAt": "2026-11-12T18:34:44Z",
+      "conclusion": "success",
+      "name": "MCP cancellation phases against the release binary",
+      "number": 6,
+      "startedAt": "2026-11-12T18:34:01Z",
+      "status": "completed"
+    }
+  },
+  {
+    "job": "bundle (macos-latest)",
+    "job_conclusion": "success",
+    "step": {
+      "completedAt": "2026-11-12T18:57:55Z",
+      "conclusion": "success",
+      "name": "Tauri build, default (unsigned; no M0 diagnostics)",
+      "number": 8,
+      "startedAt": "2026-11-12T18:52:19Z",
+      "status": "completed"
+    }
+  },
+  {
+    "job": "bundle (macos-latest)",
+    "job_conclusion": "success",
+    "step": {
+      "completedAt": "2026-11-12T19:13:06Z",
+      "conclusion": "success",
+      "name": "Desktop host with the M0 diagnostics feature (C0.4 gating) \u2014 clippy and tests",
+      "number": 9,
+      "startedAt": "2026-11-12T18:57:55Z",
+      "status": "completed"
+    }
+  },
+  {
+    "job": "bundle (macos-latest)",
+    "job_conclusion": "success",
+    "step": {
+      "completedAt": "2026-11-12T19:13:09Z",
+      "conclusion": "success",
+      "name": "Default build registers no M0 diagnostic command and refuses the flags",
+      "number": 11,
+      "startedAt": "2026-11-12T19:13:08Z",
+      "status": "completed"
+    }
+  },
+  {
+    "job": "bundle (macos-latest)",
+    "job_conclusion": "success",
+    "step": {
+      "completedAt": "2026-11-12T19:14:10Z",
+      "conclusion": "success",
+      "name": "Tauri build with M0 diagnostics (unsigned; for the measurements below and the manual tests)",
+      "number": 12,
+      "startedAt": "2026-11-12T19:13:09Z",
+      "status": "completed"
+    }
+  },
+  {
+    "job": "bundle (windows-latest)",
+    "job_conclusion": "success",
+    "step": {
+      "completedAt": "2026-11-12T18:34:22Z",
+      "conclusion": "success",
+      "name": "Tauri build, default (unsigned; no M0 diagnostics)",
+      "number": 8,
+      "startedAt": "2026-11-12T18:28:32Z",
+      "status": "completed"
+    }
+  },
+  {
+    "job": "bundle (windows-latest)",
+    "job_conclusion": "success",
+    "step": {
+      "completedAt": "2026-11-12T18:52:27Z",
+      "conclusion": "success",
+      "name": "Desktop host with the M0 diagnostics feature (C0.4 gating) \u2014 clippy and tests",
+      "number": 9,
+      "startedAt": "2026-11-12T18:34:22Z",
+      "status": "completed"
+    }
+  },
+  {
+    "job": "bundle (windows-latest)",
+    "job_conclusion": "success",
+    "step": {
+      "completedAt": "2026-11-12T18:52:29Z",
+      "conclusion": "success",
+      "name": "Default build registers no M0 diagnostic command and refuses the flags",
+      "number": 11,
+      "startedAt": "2026-11-12T18:52:29Z",
+      "status": "completed"
+    }
+  },
+  {
+    "job": "bundle (windows-latest)",
+    "job_conclusion": "success",
+    "step": {
+      "completedAt": "2026-11-12T18:53:44Z",
+      "conclusion": "success",
+      "name": "Tauri build with M0 diagnostics (unsigned; for the measurements below and the manual tests)",
+      "number": 12,
+      "startedAt": "2026-11-12T18:52:29Z",
+      "status": "completed"
+    }
+  }
+]

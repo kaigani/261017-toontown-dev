@@ -1,0 +1,10 @@
+?? crates/executor/tests/c33_r1_bitmap.rs
+?? crates/executor/tests/c33_r1_contract.rs
+?? crates/executor/tests/c33_r1_crash.rs
+?? crates/executor/tests/c33_r1_limits.rs
+?? crates/executor/tests/c33_r1_pixels.rs
+?? crates/mcp/tests/c33_r1_tools.rs
+?? crates/render/tests/c33_r1_cancel.rs
+?? reviews/M3-C3.3-r1.md
+?? reviews/evidence/M3-C3.3-r1/
+?? tests/adversarial/c33-r1-audit.py

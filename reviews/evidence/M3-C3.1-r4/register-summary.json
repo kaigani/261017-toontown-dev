@@ -1,0 +1,179 @@
+{
+  "candidate": "864b70d3d6da55179346d174abf2466ca825c90c",
+  "counts": {
+    "requirements": {
+      "implemented": 467,
+      "divergent": 0,
+      "missing": 0,
+      "deferred-with-owner": 227
+    },
+    "commandsAndEvents": {
+      "implemented": 63,
+      "divergent": 0,
+      "missing": 0,
+      "deferred-with-owner": 1
+    }
+  },
+  "deltas": [
+    {
+      "group": "requirements",
+      "id": "C31-U296",
+      "before": "divergent",
+      "after": "implemented",
+      "closedFindings": [
+        "C31-R3-03"
+      ]
+    },
+    {
+      "group": "requirements",
+      "id": "C31-U297",
+      "before": "divergent",
+      "after": "implemented",
+      "closedFindings": [
+        "C31-R3-02",
+        "C31-R3-04"
+      ]
+    },
+    {
+      "group": "requirements",
+      "id": "C31-U298",
+      "before": "divergent",
+      "after": "implemented",
+      "closedFindings": [
+        "C31-R3-04"
+      ]
+    },
+    {
+      "group": "requirements",
+      "id": "C31-U335",
+      "before": "divergent",
+      "after": "implemented",
+      "closedFindings": [
+        "C31-R3-04"
+      ]
+    },
+    {
+      "group": "requirements",
+      "id": "C31-U459",
+      "before": "divergent",
+      "after": "implemented",
+      "closedFindings": [
+        "C31-R3-03"
+      ]
+    },
+    {
+      "group": "requirements",
+      "id": "C31-U460",
+      "before": "divergent",
+      "after": "implemented",
+      "closedFindings": [
+        "C31-R3-02",
+        "C31-R3-04"
+      ]
+    },
+    {
+      "group": "requirements",
+      "id": "C31-U609",
+      "before": "divergent",
+      "after": "implemented",
+      "closedFindings": [
+        "C31-R3-04"
+      ]
+    },
+    {
+      "group": "requirements",
+      "id": "C31-X01",
+      "before": "divergent",
+      "after": "implemented",
+      "closedFindings": [
+        "C31-R3-01"
+      ]
+    },
+    {
+      "group": "requirements",
+      "id": "C31-X07",
+      "before": "divergent",
+      "after": "implemented",
+      "closedFindings": [
+        "C31-R3-02",
+        "C31-R3-03",
+        "C31-R3-04"
+      ]
+    },
+    {
+      "group": "commandsAndEvents",
+      "id": "cell.clipboard.apply",
+      "before": "divergent",
+      "after": "implemented",
+      "closedFindings": [
+        "C31-R3-02",
+        "C31-R3-04"
+      ]
+    },
+    {
+      "group": "commandsAndEvents",
+      "id": "cell.clipboard.set",
+      "before": "divergent",
+      "after": "implemented",
+      "closedFindings": [
+        "C31-R3-03"
+      ]
+    },
+    {
+      "group": "adjacentCommands",
+      "id": "doc.object.patch",
+      "before": "divergent",
+      "after": "implemented",
+      "closedFindings": [
+        "C31-R3-01"
+      ]
+    },
+    {
+      "group": "adjacentCommands",
+      "id": "edit.paste",
+      "before": "divergent",
+      "after": "implemented",
+      "closedFindings": [
+        "C31-R3-02",
+        "C31-R3-04"
+      ]
+    },
+    {
+      "group": "adjacentCommands",
+      "id": "edit.pasteSpecial",
+      "before": "divergent",
+      "after": "implemented",
+      "closedFindings": [
+        "C31-R3-02",
+        "C31-R3-04"
+      ]
+    },
+    {
+      "group": "adjacentCommands",
+      "id": "edit.copy",
+      "before": "divergent",
+      "after": "implemented",
+      "closedFindings": [
+        "C31-R3-03"
+      ]
+    },
+    {
+      "group": "adjacentCommands",
+      "id": "project.save",
+      "before": "divergent",
+      "after": "implemented",
+      "closedFindings": [
+        "C31-R3-04"
+      ]
+    },
+    {
+      "group": "adjacentCommands",
+      "id": "project.saveAs",
+      "before": "divergent",
+      "after": "implemented",
+      "closedFindings": [
+        "C31-R3-04"
+      ]
+    }
+  ]
+}

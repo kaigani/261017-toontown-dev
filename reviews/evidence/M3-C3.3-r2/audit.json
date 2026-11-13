@@ -1,0 +1,331 @@
+{
+  "ownership": "",
+  "goldenDiff": "",
+  "declaredDiff": " .github/workflows/ci.yml                          |  15 +-\n crates/anim/Cargo.toml                            |   4 +\n crates/anim/src/eval.rs                           |  40 +++\n crates/executor/Cargo.toml                        |   1 +\n crates/executor/src/commands/derived.rs           |   4 +-\n crates/executor/src/commands/inspect.rs           |  40 ++-\n crates/executor/src/commands/render.rs            | 255 +++++++++++++++-\n crates/executor/src/commands/render_list.rs       |  66 ++++-\n crates/executor/src/lib.rs                        |  57 +++-\n crates/executor/tests/c21_example_results.rs      |  15 +-\n crates/executor/tests/c33_round1.rs               | 341 ++++++++++++++++++++++\n crates/executor/tests/common/recorded.rs          |   3 +-\n crates/mcp/src/tools.rs                           |   9 +-\n crates/registry/src/example-results.json          |  48 +--\n crates/render/src/lib.rs                          |   4 +\n crates/render/tests/c33_layer.rs                  |   7 +-\n desktop/src/ipc/generated/commands.ts             | 117 +++++++-\n docs/decisions/ADR-0020-compositor-render-list.md |  47 ++-\n plan/spec-issues.md                               |  39 ++-\n plan/traceability.csv                             |  11 +\n reviews/M3-C3.3-handoff.md                        |  27 +-\n reviews/M3-C3.3-r1-response.md                    | 111 +++++++\n 22 files changed, 1188 insertions(+), 73 deletions(-)\n",
+  "newForbidden": [],
+  "comparisons": [
+    {
+      "family": "c33",
+      "path": "gate-contact-sheet.png",
+      "sha256": "9115ca0ec3cd9f3bdd0563723bd8d0ab6b33f525775c78aa6957f6f19ce4f87f",
+      "otherSha256": "9115ca0ec3cd9f3bdd0563723bd8d0ab6b33f525775c78aa6957f6f19ce4f87f",
+      "byteEqual": true,
+      "parsedEqual": null
+    },
+    {
+      "family": "c33",
+      "path": "gate-frame-1.png",
+      "sha256": "c7200e1a6fef38885a4977c074c782bee890029d470623c096512acb4f0c2fbc",
+      "otherSha256": "c7200e1a6fef38885a4977c074c782bee890029d470623c096512acb4f0c2fbc",
+      "byteEqual": true,
+      "parsedEqual": null
+    },
+    {
+      "family": "c33",
+      "path": "gate-frame-17.png",
+      "sha256": "cae435e50dadafa416a5dbe3102becc874eb5c3710ea8a0be613c192cfb7abe7",
+      "otherSha256": "cae435e50dadafa416a5dbe3102becc874eb5c3710ea8a0be613c192cfb7abe7",
+      "byteEqual": true,
+      "parsedEqual": null
+    },
+    {
+      "family": "c33",
+      "path": "gate-frame-9.png",
+      "sha256": "1c922bc148c309cb91e8f265732a000de4eb79c4557e014de5636b3a2bbb59b7",
+      "otherSha256": "1c922bc148c309cb91e8f265732a000de4eb79c4557e014de5636b3a2bbb59b7",
+      "byteEqual": true,
+      "parsedEqual": null
+    },
+    {
+      "family": "c33",
+      "path": "gate-path.json",
+      "sha256": "593ad263bea3239c98f4d57641c3d1fe4a3ed2203ed9bacdd6002f6e0f161984",
+      "otherSha256": "593ad263bea3239c98f4d57641c3d1fe4a3ed2203ed9bacdd6002f6e0f161984",
+      "byteEqual": true,
+      "parsedEqual": true
+    },
+    {
+      "family": "c33",
+      "path": "sequence/manifest.json",
+      "sha256": "2d942944b47b177a2258d744e491fb223cb77d78b3b68222d60873a3be5c6d2c",
+      "otherSha256": "2d942944b47b177a2258d744e491fb223cb77d78b3b68222d60873a3be5c6d2c",
+      "byteEqual": true,
+      "parsedEqual": true
+    },
+    {
+      "family": "c33",
+      "path": "sequence/Scene-1_0001.png",
+      "sha256": "24d8717bfc37dd60d93ca7e5b91bcf438a820b0e5201f57b19181b5fd487ad84",
+      "otherSha256": "24d8717bfc37dd60d93ca7e5b91bcf438a820b0e5201f57b19181b5fd487ad84",
+      "byteEqual": true,
+      "parsedEqual": null
+    },
+    {
+      "family": "c33",
+      "path": "sequence/Scene-1_0009.png",
+      "sha256": "e421225b42de6eaff77d1500dd576ddb8adb23895c95b2364d043dfd6418f57b",
+      "otherSha256": "e421225b42de6eaff77d1500dd576ddb8adb23895c95b2364d043dfd6418f57b",
+      "byteEqual": true,
+      "parsedEqual": null
+    },
+    {
+      "family": "c33",
+      "path": "sequence/Scene-1_0017.png",
+      "sha256": "517f4674743a0e373fb229ef13fc8c016584e1c0f8e54c458cffb17adfcb45bb",
+      "otherSha256": "517f4674743a0e373fb229ef13fc8c016584e1c0f8e54c458cffb17adfcb45bb",
+      "byteEqual": true,
+      "parsedEqual": null
+    },
+    {
+      "family": "e2",
+      "path": "1-preview.png",
+      "sha256": "1b6fcbba30dfb2985c8bb82aaa4998d6799f276b4e1e9855ccf31a5aedf35766",
+      "otherSha256": "1b6fcbba30dfb2985c8bb82aaa4998d6799f276b4e1e9855ccf31a5aedf35766",
+      "byteEqual": true,
+      "parsedEqual": null
+    },
+    {
+      "family": "e2",
+      "path": "2-vectorized.png",
+      "sha256": "1b6fcbba30dfb2985c8bb82aaa4998d6799f276b4e1e9855ccf31a5aedf35766",
+      "otherSha256": "1b6fcbba30dfb2985c8bb82aaa4998d6799f276b4e1e9855ccf31a5aedf35766",
+      "byteEqual": true,
+      "parsedEqual": null
+    },
+    {
+      "family": "e2",
+      "path": "3-painted.png",
+      "sha256": "a4124d1ce094e3dfc7249c22f57a6676a89adfd80b1434dc4a49e27a98ad1555",
+      "otherSha256": "a4124d1ce094e3dfc7249c22f57a6676a89adfd80b1434dc4a49e27a98ad1555",
+      "byteEqual": true,
+      "parsedEqual": null
+    },
+    {
+      "family": "e2",
+      "path": "4-recoloured.png",
+      "sha256": "9732a6a246a95e902ba8ab76a1eb0f7c813fa3cd7f386545ae3d2545c691c60d",
+      "otherSha256": "9732a6a246a95e902ba8ab76a1eb0f7c813fa3cd7f386545ae3d2545c691c60d",
+      "byteEqual": true,
+      "parsedEqual": null
+    },
+    {
+      "family": "e2",
+      "path": "5-undone.png",
+      "sha256": "a4124d1ce094e3dfc7249c22f57a6676a89adfd80b1434dc4a49e27a98ad1555",
+      "otherSha256": "a4124d1ce094e3dfc7249c22f57a6676a89adfd80b1434dc4a49e27a98ad1555",
+      "byteEqual": true,
+      "parsedEqual": null
+    },
+    {
+      "family": "e2",
+      "path": "6-redone.png",
+      "sha256": "9732a6a246a95e902ba8ab76a1eb0f7c813fa3cd7f386545ae3d2545c691c60d",
+      "otherSha256": "9732a6a246a95e902ba8ab76a1eb0f7c813fa3cd7f386545ae3d2545c691c60d",
+      "byteEqual": true,
+      "parsedEqual": null
+    },
+    {
+      "family": "e2",
+      "path": "7-reopened.png",
+      "sha256": "9732a6a246a95e902ba8ab76a1eb0f7c813fa3cd7f386545ae3d2545c691c60d",
+      "otherSha256": "9732a6a246a95e902ba8ab76a1eb0f7c813fa3cd7f386545ae3d2545c691c60d",
+      "byteEqual": true,
+      "parsedEqual": null
+    },
+    {
+      "family": "e2",
+      "path": "hashes.json",
+      "sha256": "4ab02fbe20fc322de3231cc5f823d21865c8c70bd8ba142d2722738c80c24a4d",
+      "otherSha256": "f267cb8df1cae283cb926c607380d536bbaaaf504d760371a7c02065e6279e82",
+      "byteEqual": false,
+      "parsedEqual": true
+    },
+    {
+      "family": "e4",
+      "path": "evaluate.json",
+      "sha256": "eae7bcae41a8873efade57c33751ed9cd5878fe0a2a4a8da064a95013bdc9c4f",
+      "otherSha256": "eae7bcae41a8873efade57c33751ed9cd5878fe0a2a4a8da064a95013bdc9c4f",
+      "byteEqual": true,
+      "parsedEqual": true
+    },
+    {
+      "family": "e4",
+      "path": "variant/evaluate.json",
+      "sha256": "5708fccab82424510fb5c23b96712ad916403a93a27e4d81702d9e2cbd394ebe",
+      "otherSha256": "5708fccab82424510fb5c23b96712ad916403a93a27e4d81702d9e2cbd394ebe",
+      "byteEqual": true,
+      "parsedEqual": true
+    }
+  ],
+  "ciHead": "669ddc3d0dc4efc148c9adf78b53c21b5d1b9fcf",
+  "jobs": [
+    {
+      "name": "check (windows-latest)",
+      "conclusion": "success",
+      "start": "2026-11-10T18:31:53Z",
+      "end": "2026-11-10T19:11:25Z"
+    },
+    {
+      "name": "check properties (windows-latest)",
+      "conclusion": "success",
+      "start": "2026-11-10T18:31:53Z",
+      "end": "2026-11-10T18:50:24Z"
+    },
+    {
+      "name": "headless release (windows-latest)",
+      "conclusion": "success",
+      "start": "2026-11-10T18:31:54Z",
+      "end": "2026-11-10T19:20:24Z"
+    },
+    {
+      "name": "review properties release (macos-latest)",
+      "conclusion": "success",
+      "start": "2026-11-10T18:50:34Z",
+      "end": "2026-11-10T19:15:15Z"
+    },
+    {
+      "name": "history oracles release (macos-latest)",
+      "conclusion": "success",
+      "start": "2026-11-10T18:31:55Z",
+      "end": "2026-11-10T18:50:51Z"
+    },
+    {
+      "name": "measurements release (macos-latest)",
+      "conclusion": "success",
+      "start": "2026-11-10T18:31:54Z",
+      "end": "2026-11-10T18:43:34Z"
+    },
+    {
+      "name": "e4 release (macos-latest)",
+      "conclusion": "success",
+      "start": "2026-11-10T18:34:19Z",
+      "end": "2026-11-10T18:39:18Z"
+    },
+    {
+      "name": "headless without a display (ubuntu)",
+      "conclusion": "success",
+      "start": "2026-11-10T18:31:55Z",
+      "end": "2026-11-10T18:35:44Z"
+    },
+    {
+      "name": "raster determinism (macos-latest)",
+      "conclusion": "success",
+      "start": "2026-11-10T18:31:54Z",
+      "end": "2026-11-10T18:34:16Z"
+    },
+    {
+      "name": "headless release (macos-latest)",
+      "conclusion": "success",
+      "start": "2026-11-10T18:38:30Z",
+      "end": "2026-11-10T18:50:32Z"
+    },
+    {
+      "name": "raster determinism (windows-latest)",
+      "conclusion": "success",
+      "start": "2026-11-10T18:31:54Z",
+      "end": "2026-11-10T18:34:59Z"
+    },
+    {
+      "name": "e2 release (macos-latest)",
+      "conclusion": "success",
+      "start": "2026-11-10T18:43:36Z",
+      "end": "2026-11-10T18:49:04Z"
+    },
+    {
+      "name": "m3 properties release (macos-latest)",
+      "conclusion": "success",
+      "start": "2026-11-10T18:36:55Z",
+      "end": "2026-11-10T18:38:26Z"
+    },
+    {
+      "name": "e2 release (windows-latest)",
+      "conclusion": "success",
+      "start": "2026-11-10T18:31:53Z",
+      "end": "2026-11-10T18:38:48Z"
+    },
+    {
+      "name": "c33 render release (windows-latest)",
+      "conclusion": "success",
+      "start": "2026-11-10T18:31:54Z",
+      "end": "2026-11-10T18:45:28Z"
+    },
+    {
+      "name": "c33 render release (macos-latest)",
+      "conclusion": "success",
+      "start": "2026-11-10T18:55:19Z",
+      "end": "2026-11-10T18:59:00Z"
+    },
+    {
+      "name": "bundle (macos-latest)",
+      "conclusion": "success",
+      "start": "2026-11-10T18:39:29Z",
+      "end": "2026-11-10T18:49:01Z"
+    },
+    {
+      "name": "check properties (macos-latest)",
+      "conclusion": "success",
+      "start": "2026-11-10T18:31:54Z",
+      "end": "2026-11-10T18:52:31Z"
+    },
+    {
+      "name": "m3 properties release (windows-latest)",
+      "conclusion": "success",
+      "start": "2026-11-10T18:31:53Z",
+      "end": "2026-11-10T18:34:14Z"
+    },
+    {
+      "name": "history oracles release (windows-latest)",
+      "conclusion": "success",
+      "start": "2026-11-10T18:31:54Z",
+      "end": "2026-11-10T18:52:33Z"
+    },
+    {
+      "name": "bundle (windows-latest)",
+      "conclusion": "success",
+      "start": "2026-11-10T18:31:53Z",
+      "end": "2026-11-10T18:44:48Z"
+    },
+    {
+      "name": "raster determinism (ubuntu-latest)",
+      "conclusion": "success",
+      "start": "2026-11-10T18:31:54Z",
+      "end": "2026-11-10T18:33:08Z"
+    },
+    {
+      "name": "check (macos-latest)",
+      "conclusion": "success",
+      "start": "2026-11-10T18:49:07Z",
+      "end": "2026-11-10T19:18:43Z"
+    },
+    {
+      "name": "e4 release (windows-latest)",
+      "conclusion": "success",
+      "start": "2026-11-10T18:31:53Z",
+      "end": "2026-11-10T18:37:29Z"
+    },
+    {
+      "name": "review properties release (windows-latest)",
+      "conclusion": "success",
+      "start": "2026-11-10T18:31:53Z",
+      "end": "2026-11-10T19:02:41Z"
+    },
+    {
+      "name": "measurements release (windows-latest)",
+      "conclusion": "success",
+      "start": "2026-11-10T18:31:54Z",
+      "end": "2026-11-10T18:47:00Z"
+    },
+    {
+      "name": "e4 cross-OS",
+      "conclusion": "success",
+      "start": "2026-11-10T18:39:20Z",
+      "end": "2026-11-10T18:39:24Z"
+    },
+    {
+      "name": "c33 cross-OS",
+      "conclusion": "success",
+      "start": "2026-11-10T18:59:02Z",
+      "end": "2026-11-10T18:59:06Z"
+    }
+  ]
+}

@@ -1,0 +1,114 @@
+{
+  "windows": {
+    "queuedRead": {
+      "longCommandSeconds": {
+        "m2r3Median": 22.7407183,
+        "candidateMedian": 22.0969764,
+        "ratio": 0.9716921034987711
+      },
+      "readSentAtSeconds": {
+        "m2r3Median": 0.0502841,
+        "candidateMedian": 0.0503574,
+        "ratio": 1.001457717250582
+      },
+      "readSeconds": {
+        "m2r3Median": 22.6908019,
+        "candidateMedian": 22.0469765,
+        "ratio": 0.971626150418245
+      },
+      "readAnsweredAfterLongSeconds": {
+        "m2r3Median": 0.0007698999999981027,
+        "candidateMedian": 0.0006328999999993812,
+        "ratio": 0.8220548123145095
+      }
+    },
+    "maintenance": {
+      "longCommandSeconds": {
+        "m2r3Median": 22.3936131,
+        "candidateMedian": 21.5488974,
+        "ratio": 0.962278722230849
+      },
+      "requestedAtSeconds": {
+        "m2r3Median": 0.0503143,
+        "candidateMedian": 0.0503309,
+        "ratio": 1.000329926084632
+      },
+      "behindLongSeconds": {
+        "m2r3Median": 22.3571715,
+        "candidateMedian": 21.5143882,
+        "ratio": 0.9623036706588756
+      },
+      "autosaveSnapshotSeconds": {
+        "m2r3Median": 7.51e-05,
+        "candidateMedian": 8.38e-05,
+        "ratio": 1.1158455392809588
+      },
+      "heartbeatSeconds": {
+        "m2r3Median": 0.0129546,
+        "candidateMedian": 0.0122107,
+        "ratio": 0.9425763821345313
+      },
+      "idleSeconds": {
+        "m2r3Median": 0.0107835,
+        "candidateMedian": 0.0133294,
+        "ratio": 1.23609217786433
+      }
+    }
+  },
+  "macos": {
+    "queuedRead": {
+      "longCommandSeconds": {
+        "m2r3Median": 13.839954792,
+        "candidateMedian": 11.263436959,
+        "ratio": 0.8138348085869961
+      },
+      "readSentAtSeconds": {
+        "m2r3Median": 0.13197175,
+        "candidateMedian": 0.143076,
+        "ratio": 1.0841411135337677
+      },
+      "readSeconds": {
+        "m2r3Median": 13.77575325,
+        "candidateMedian": 11.070921334,
+        "ratio": 0.803652702911182
+      },
+      "readAnsweredAfterLongSeconds": {
+        "m2r3Median": 0.0010526249999980308,
+        "candidateMedian": 0.0013199589999999262,
+        "ratio": 1.2539688873078214
+      }
+    },
+    "maintenance": {
+      "longCommandSeconds": {
+        "m2r3Median": 13.062405,
+        "candidateMedian": 9.968303958,
+        "ratio": 0.7631292980121195
+      },
+      "requestedAtSeconds": {
+        "m2r3Median": 0.132945458,
+        "candidateMedian": 0.1648175,
+        "ratio": 1.2397377276326358
+      },
+      "behindLongSeconds": {
+        "m2r3Median": 13.015972958,
+        "candidateMedian": 9.785026584,
+        "ratio": 0.7517706602168249
+      },
+      "autosaveSnapshotSeconds": {
+        "m2r3Median": 0.000439375,
+        "candidateMedian": 0.000195833,
+        "ratio": 0.4457081081081081
+      },
+      "heartbeatSeconds": {
+        "m2r3Median": 0.015104333,
+        "candidateMedian": 0.026170792,
+        "ratio": 1.732667837765494
+      },
+      "idleSeconds": {
+        "m2r3Median": 0.007080958,
+        "candidateMedian": 0.007634625,
+        "ratio": 1.078190973594251
+      }
+    }
+  }
+}

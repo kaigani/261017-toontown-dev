@@ -1,0 +1,26 @@
+[
+  {
+    "run": "42915011320",
+    "file": "ci-old.log",
+    "bytes": 3515018,
+    "sha256": "8216facc8c96d34b5c8cc9ae0f633eea37c89d2dfc9f019a113fcf14b11c79c7"
+  },
+  {
+    "run": "42915011320",
+    "file": "ci-old.json",
+    "bytes": 62153,
+    "sha256": "e86c4eba0e14fff5e46702a493bbcf2b7a4e8b214c62ff6d8631de36d5c237b6"
+  },
+  {
+    "run": "42938979758",
+    "file": "ci-new.log",
+    "bytes": 4219996,
+    "sha256": "b7bf5482b6edfc782877661c0e82ed82f79e41219108cc9386cf89dd4f984b32"
+  },
+  {
+    "run": "42938979758",
+    "file": "ci-new.json",
+    "bytes": 62153,
+    "sha256": "63ddf16e87a0bca82edfd6ebc87c6ed055477e575e80c3891a656b39d5828efa"
+  }
+]

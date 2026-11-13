@@ -1,0 +1,10 @@
+test_all_implemented_mutations_are_in_the_claimed_common_contract (__main__.Audit.test_all_implemented_mutations_are_in_the_claimed_common_contract) ... ok
+test_c22_golden_has_only_the_ruled_axis_change_and_derived_receipt (__main__.Audit.test_c22_golden_has_only_the_ruled_axis_change_and_derived_receipt) ... ok
+test_generated_declaration_delta_matches_the_reviewed_handler_inventory (__main__.Audit.test_generated_declaration_delta_matches_the_reviewed_handler_inventory) ... ok
+test_measurement_parser_rejects_malformed_input (__main__.Audit.test_measurement_parser_rejects_malformed_input) ... ok
+test_planar_analyzer_rejects_bad_observations (__main__.Audit.test_planar_analyzer_rejects_bad_observations) ... ok
+
+----------------------------------------------------------------------
+Ran 5 tests in 1.064s
+
+OK

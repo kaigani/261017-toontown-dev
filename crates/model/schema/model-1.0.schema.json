@@ -614,7 +614,7 @@
         "fov": {
           "type": "number",
           "x-command": "anim.camera.set",
-          "description": "FOV 1–179 degrees (default 41.1121).",
+          "description": "FOV 1–179 degrees (default 2·atan(0.375) ≈ 41.1121, 05 §2.7).",
           "minimum": 1,
           "maximum": 179,
           "x-unit": "degree",
@@ -1619,6 +1619,15 @@
         "positionLoop": {
           "$ref": "#/$defs/PositionLoop",
           "description": "Cycle or offset.",
+          "x-since": "1.0"
+        },
+        "cycleLength": {
+          "type": "integer",
+          "maximum": 2147483647,
+          "minimum": 1,
+          "description": "`fill` loops: the cycle length in frames, which `duration` and `loops` cannot express when the last cycle is\npartial (SI-089).",
+          "x-unit": "frame",
+          "x-omitDefault": true,
           "x-since": "1.0"
         },
         "role": {

@@ -1,0 +1,142 @@
+[
+  {
+    "name": "check (windows-latest)",
+    "conclusion": "success",
+    "seconds": 2441.0
+  },
+  {
+    "name": "history oracles release (windows-latest)",
+    "conclusion": "success",
+    "seconds": 1225.0
+  },
+  {
+    "name": "history oracles release (macos-latest)",
+    "conclusion": "success",
+    "seconds": 845.0
+  },
+  {
+    "name": "e4 release (macos-latest)",
+    "conclusion": "success",
+    "seconds": 307.0
+  },
+  {
+    "name": "check properties (windows-latest)",
+    "conclusion": "success",
+    "seconds": 1594.0
+  },
+  {
+    "name": "c33 render release (macos-latest)",
+    "conclusion": "success",
+    "seconds": 608.0
+  },
+  {
+    "name": "c33 render release (windows-latest)",
+    "conclusion": "success",
+    "seconds": 658.0
+  },
+  {
+    "name": "review properties release (windows-latest)",
+    "conclusion": "success",
+    "seconds": 2297.0
+  },
+  {
+    "name": "e2 release (windows-latest)",
+    "conclusion": "success",
+    "seconds": 430.0
+  },
+  {
+    "name": "measurements release (windows-latest)",
+    "conclusion": "success",
+    "seconds": 1102.0
+  },
+  {
+    "name": "headless release (macos-latest)",
+    "conclusion": "success",
+    "seconds": 1932.0
+  },
+  {
+    "name": "check (macos-latest)",
+    "conclusion": "success",
+    "seconds": 1997.0
+  },
+  {
+    "name": "e4 release (windows-latest)",
+    "conclusion": "success",
+    "seconds": 445.0
+  },
+  {
+    "name": "m3 properties release (windows-latest)",
+    "conclusion": "success",
+    "seconds": 194.0
+  },
+  {
+    "name": "e2 release (macos-latest)",
+    "conclusion": "success",
+    "seconds": 280.0
+  },
+  {
+    "name": "measurements release (macos-latest)",
+    "conclusion": "success",
+    "seconds": 777.0
+  },
+  {
+    "name": "raster determinism (macos-latest)",
+    "conclusion": "success",
+    "seconds": 104.0
+  },
+  {
+    "name": "headless without a display (ubuntu)",
+    "conclusion": "success",
+    "seconds": 184.0
+  },
+  {
+    "name": "raster determinism (ubuntu-latest)",
+    "conclusion": "success",
+    "seconds": 108.0
+  },
+  {
+    "name": "m3 properties release (macos-latest)",
+    "conclusion": "success",
+    "seconds": 171.0
+  },
+  {
+    "name": "bundle (macos-latest)",
+    "conclusion": "success",
+    "seconds": 607.0
+  },
+  {
+    "name": "bundle (windows-latest)",
+    "conclusion": "success",
+    "seconds": 791.0
+  },
+  {
+    "name": "headless release (windows-latest)",
+    "conclusion": "success",
+    "seconds": 2843.0
+  },
+  {
+    "name": "check properties (macos-latest)",
+    "conclusion": "success",
+    "seconds": 1640.0
+  },
+  {
+    "name": "raster determinism (windows-latest)",
+    "conclusion": "success",
+    "seconds": 215.0
+  },
+  {
+    "name": "review properties release (macos-latest)",
+    "conclusion": "success",
+    "seconds": 1646.0
+  },
+  {
+    "name": "c33 cross-OS",
+    "conclusion": "success",
+    "seconds": 5.0
+  },
+  {
+    "name": "e4 cross-OS",
+    "conclusion": "success",
+    "seconds": 6.0
+  }
+]

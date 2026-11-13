@@ -1,0 +1,18 @@
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.15s
+     Running tests\c34_r4_passage.rs (target\debug\deps\c34_r4_passage-7249c1c67f0a6d92.exe)
+
+running 2 tests
+relative=0e0 arc=test node_at_arc_is_the_first_passage ... 0.75000000000000000 got=1.5 exact=1.50000000000000000
+ok
+relative=-1e-9 arc=0.74999999925000005 got=1.5 exact=1.49998418861192273
+relative=-1e-12 arc=0.74999999999925004 got=1.5 exact=1.49999950000553040
+relative=-1e-13 arc=0.74999999999992495 got=1.5 exact=1.49999984186153656
+relative=-1e-15 arc=0.74999999999999922 got=1.5 exact=1.49999998419493186
+relative=1e-9 arc=0.75000000075000006 got=2.75 exact=2.75000000075000006
+relative=1e-12 arc=0.75000000000075007 got=1.5 exact=2.75000000000075007
+relative=1e-13 arc=0.75000000000007494 got=1.5 exact=2.75000000000007505
+relative=1e-15 arc=0.75000000000000089 got=1.5 exact=2.75000000000000089
+test exact_touch_and_near_touch_families_respect_the_documented_tolerance ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+

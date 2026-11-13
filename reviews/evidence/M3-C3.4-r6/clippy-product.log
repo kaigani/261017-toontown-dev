@@ -1,0 +1,12 @@
+    Checking tt-model v0.0.1 (C:\Users\kaiga\work\review\m3-c34-r6\crates\model)
+   Compiling tt-registry-macros v0.0.1 (C:\Users\kaiga\work\review\m3-c34-r6\crates\registry-macros)
+    Checking tt-anim v0.0.1 (C:\Users\kaiga\work\review\m3-c34-r6\crates\anim)
+    Checking tt-vector v0.0.1 (C:\Users\kaiga\work\review\m3-c34-r6\crates\vector)
+    Checking tt-colour v0.0.1 (C:\Users\kaiga\work\review\m3-c34-r6\crates\colour)
+    Checking tt-persist v0.0.1 (C:\Users\kaiga\work\review\m3-c34-r6\crates\persist)
+    Checking tt-registry v0.0.1 (C:\Users\kaiga\work\review\m3-c34-r6\crates\registry)
+    Checking tt-fx v0.0.1 (C:\Users\kaiga\work\review\m3-c34-r6\crates\fx)
+    Checking tt-render v0.0.1 (C:\Users\kaiga\work\review\m3-c34-r6\crates\render)
+    Checking tt-io v0.0.1 (C:\Users\kaiga\work\review\m3-c34-r6\crates\io)
+    Checking tt-executor v0.0.1 (C:\Users\kaiga\work\review\m3-c34-r6\crates\executor)
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 20.32s

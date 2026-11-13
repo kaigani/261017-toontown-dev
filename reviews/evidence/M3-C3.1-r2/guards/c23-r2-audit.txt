@@ -1,0 +1,9 @@
+test_derived_contract_inventory_has_no_gaps (__main__.Audit.test_derived_contract_inventory_has_no_gaps) ... ok
+test_only_new_inset_golden_was_added (__main__.Audit.test_only_new_inset_golden_was_added) ... ok
+test_protected_files_are_unchanged (__main__.Audit.test_protected_files_are_unchanged) ... ok
+test_symmetry_owner_agrees_with_declaration_and_handoff (__main__.Audit.test_symmetry_owner_agrees_with_declaration_and_handoff) ... ok
+
+----------------------------------------------------------------------
+Ran 4 tests in 3.709s
+
+OK

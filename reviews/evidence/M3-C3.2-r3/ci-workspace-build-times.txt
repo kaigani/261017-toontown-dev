@@ -1,0 +1,10 @@
+old
+check (windows-latest)	Run cargo test --workspace --locked	﻿2026-11-09T22:49:20.4993123Z ##[group]Run cargo test --workspace --locked -- --skip ten_thousand_history_operations_match_independent_content_oracle_and_replay \
+check (windows-latest)	Run cargo test --workspace --locked	2026-11-09T23:02:59.4285515Z ^[[1m^[[92m    Finished^[[0m `test` profile [unoptimized + debuginfo] target(s) in 13m 38s
+check (windows-latest)	Run cargo test --workspace --locked	2026-11-09T23:04:27.0465867Z ^[[1m^[[92m    Finished^[[0m `dev` profile [unoptimized + debuginfo] target(s) in 28.23s
+check (windows-latest)	Run cargo test --workspace --locked	2026-11-09T23:12:18.3258584Z ^[[1m^[[92m    Finished^[[0m `dev` profile [unoptimized + debuginfo] target(s) in 59.63s
+new
+check (windows-latest)	Run cargo test --workspace --locked	﻿2026-11-10T02:00:54.6291221Z ##[group]Run cargo test --workspace --locked -- --skip ten_thousand_history_operations_match_independent_content_oracle_and_replay \
+check (windows-latest)	Run cargo test --workspace --locked	2026-11-10T02:17:09.2346406Z ^[[1m^[[92m    Finished^[[0m `test` profile [unoptimized + debuginfo] target(s) in 16m 14s
+check (windows-latest)	Run cargo test --workspace --locked	2026-11-10T02:18:57.8775025Z ^[[1m^[[92m    Finished^[[0m `dev` profile [unoptimized + debuginfo] target(s) in 33.99s
+check (windows-latest)	Run cargo test --workspace --locked	2026-11-10T02:28:43.7622150Z ^[[1m^[[92m    Finished^[[0m `dev` profile [unoptimized + debuginfo] target(s) in 1m 17s

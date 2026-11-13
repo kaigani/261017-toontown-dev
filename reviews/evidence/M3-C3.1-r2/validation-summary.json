@@ -1,0 +1,2726 @@
+{
+  "candidate": "ffffc7387f03e2be125a634dd29f698598532d0d",
+  "workspace": {
+    "command": "cargo test --workspace --locked -j 4 --no-fail-fast",
+    "exit": 101,
+    "summaries": 271,
+    "passed": 1436,
+    "failed": 13,
+    "ignored": 23,
+    "log": "workspace.txt",
+    "sha256": "4721672ce7d0afd0b674dc0e6f4cc5883d1ec4ecd9cee6d0a38a0cf2567bc7db",
+    "groups": [
+      {
+        "package": "tt-anim",
+        "target": "unit",
+        "status": "ok",
+        "passed": 0,
+        "failed": 0,
+        "ignored": 0,
+        "binary": null
+      },
+      {
+        "package": "tt-anim",
+        "target": "c31_exposure",
+        "status": "ok",
+        "passed": 16,
+        "failed": 0,
+        "ignored": 0,
+        "binary": "target\\debug\\deps\\c31_exposure-d29038dc54996ac9.exe"
+      },
+      {
+        "package": "tt-anim",
+        "target": "c31_r1_hierarchy",
+        "status": "ok",
+        "passed": 2,
+        "failed": 0,
+        "ignored": 0,
+        "binary": "target\\debug\\deps\\c31_r1_hierarchy-348c08c17aa1a5b4.exe"
+      },
+      {
+        "package": "tt-anim",
+        "target": "c31_r1_oracle",
+        "status": "ok",
+        "passed": 11,
+        "failed": 0,
+        "ignored": 0,
+        "binary": "target\\debug\\deps\\c31_r1_oracle-28dde8194e5bf9a2.exe"
+      },
+      {
+        "package": "tt-anim",
+        "target": "c31_r2_variants",
+        "status": "ok",
+        "passed": 3,
+        "failed": 0,
+        "ignored": 0,
+        "binary": "target\\debug\\deps\\c31_r2_variants-e1d35c61c6b7cee5.exe"
+      },
+      {
+        "package": "tt-audio",
+        "target": "unit",
+        "status": "ok",
+        "passed": 0,
+        "failed": 0,
+        "ignored": 0,
+        "binary": null
+      },
+      {
+        "package": "tt-colour",
+        "target": "unit",
+        "status": "ok",
+        "passed": 0,
+        "failed": 0,
+        "ignored": 0,
+        "binary": null
+      },
+      {
+        "package": "tt-desktop",
+        "target": "unit",
+        "status": "ok",
+        "passed": 38,
+        "failed": 0,
+        "ignored": 0,
+        "binary": null
+      },
+      {
+        "package": "tt-desktop",
+        "target": "unit",
+        "status": "ok",
+        "passed": 0,
+        "failed": 0,
+        "ignored": 0,
+        "binary": null
+      },
+      {
+        "package": "tt-desktop",
+        "target": "c03-r2-encoder",
+        "status": "ok",
+        "passed": 11,
+        "failed": 0,
+        "ignored": 0,
+        "binary": "target\\debug\\deps\\c03_r2_encoder-6ab4ef6e01295edd.exe"
+      },
+      {
+        "package": "tt-engine",
+        "target": "unit",
+        "status": "ok",
+        "passed": 19,
+        "failed": 0,
+        "ignored": 0,
+        "binary": null
+      },
+      {
+        "package": "tt-engine",
+        "target": "c11_r1_wire",
+        "status": "ok",
+        "passed": 4,
+        "failed": 0,
+        "ignored": 0,
+        "binary": "target\\debug\\deps\\c11_r1_wire-c8105dacbd66f862.exe"
+      },
+      {
+        "package": "tt-engine",
+        "target": "c11_r2_wire",
+        "status": "ok",
+        "passed": 6,
+        "failed": 0,
+        "ignored": 0,
+        "binary": "target\\debug\\deps\\c11_r2_wire-d798348ad1a7371e.exe"
+      },
+      {
+        "package": "tt-engine",
+        "target": "c11_r3_wire",
+        "status": "ok",
+        "passed": 2,
+        "failed": 0,
+        "ignored": 0,
+        "binary": "target\\debug\\deps\\c11_r3_wire-6e8ec50496462bcd.exe"
+      },
+      {
+        "package": "tt-engine",
+        "target": "frontend_schemas",
+        "status": "ok",
+        "passed": 3,
+        "failed": 0,
+        "ignored": 0,
+        "binary": "target\\debug\\deps\\frontend_schemas-5994c207c988fc51.exe"
+      },
+      {
+        "package": "tt-engine",
+        "target": "wire_corpus",
+        "status": "ok",
+        "passed": 4,
+        "failed": 0,
+        "ignored": 0,
+        "binary": "target\\debug\\deps\\wire_corpus-c9b0aaf57f52d3e0.exe"
+      },
+      {
+        "package": "tt-executor",
+        "target": "unit",
+        "status": "ok",
+        "passed": 7,
+        "failed": 0,
+        "ignored": 0,
+        "binary": null
+      },
+      {
+        "package": "tt-executor",
+        "target": "c12_checkpoint_property",
+        "status": "ok",
+        "passed": 1,
+        "failed": 0,
+        "ignored": 0,
+        "binary": "target\\debug\\deps\\c12_checkpoint_property-32d26e2ffcb979d7.exe"
+      },
+      {
+        "package": "tt-executor",
+        "target": "c12_edit_ops",
+        "status": "ok",
+        "passed": 16,
+        "failed": 0,
+        "ignored": 0,
+        "binary": "target\\debug\\deps\\c12_edit_ops-fcc51ba5f14df0cf.exe"
+      },
+      {
+        "package": "tt-executor",
+        "target": "c12_invalidation_property",
+        "status": "ok",
+        "passed": 1,
+        "failed": 0,
+        "ignored": 0,
+        "binary": "target\\debug\\deps\\c12_invalidation_property-5370572bed798cbd.exe"
+      },
+      {
+        "package": "tt-executor",
+        "target": "c12_kernel_state",
+        "status": "ok",
+        "passed": 7,
+        "failed": 0,
+        "ignored": 0,
+        "binary": "target\\debug\\deps\\c12_kernel_state-0e6d85687bda33c4.exe"
+      },
+      {
+        "package": "tt-executor",
+        "target": "c12_never_block",
+        "status": "ok",
+        "passed": 1,
+        "failed": 0,
+        "ignored": 0,
+        "binary": "target\\debug\\deps\\c12_never_block-57f0df8476682920.exe"
+      },
+      {
+        "package": "tt-executor",
+        "target": "c12_policy",
+        "status": "ok",
+        "passed": 11,
+        "failed": 0,
+        "ignored": 0,
+        "binary": "target\\debug\\deps\\c12_policy-f851d9c8e4ac6816.exe"
+      },
+      {
+        "package": "tt-executor",
+        "target": "c12_r1_contracts",
+        "status": "ok",
+        "passed": 36,
+        "failed": 0,
+        "ignored": 0,
+        "binary": "target\\debug\\deps\\c12_r1_contracts-596751b19f203a98.exe"
+      },
+      {
+        "package": "tt-executor",
+        "target": "c12_r1_macro",
+        "status": "ok",
+        "passed": 2,
+        "failed": 0,
+        "ignored": 0,
+        "binary": "target\\debug\\deps\\c12_r1_macro-47c25d4303ecff17.exe"
+      },
+      {
+        "package": "tt-executor",
+        "target": "c12_r1_scale",
+        "status": "ok",
+        "passed": 1,
+        "failed": 0,
+        "ignored": 0,
+        "binary": "target\\debug\\deps\\c12_r1_scale-dd6f43bc982917f6.exe"
+      },
+      {
+        "package": "tt-executor",
+        "target": "c12_r1_stress",
+        "status": "ok",
+        "passed": 5,
+        "failed": 0,
+        "ignored": 0,
+        "binary": "target\\debug\\deps\\c12_r1_stress-0f280f8d603ef9fc.exe"
+      },
+      {
+        "package": "tt-executor",
+        "target": "c12_r2_contracts",
+        "status": "ok",
+        "passed": 40,
+        "failed": 0,
+        "ignored": 0,
+        "binary": "target\\debug\\deps\\c12_r2_contracts-fc7ded88e4dc4d87.exe"
+      },
+      {
+        "package": "tt-executor",
+        "target": "c12_r2_registry",
+        "status": "ok",
+        "passed": 7,
+        "failed": 0,
+        "ignored": 0,
+        "binary": "target\\debug\\deps\\c12_r2_registry-30b7a0e1176f67c5.exe"
+      },
+      {
+        "package": "tt-executor",
+        "target": "c12_r2_scale",
+        "status": "ok",
+        "passed": 1,
+        "failed": 0,
+        "ignored": 0,
+        "binary": "target\\debug\\deps\\c12_r2_scale-9edb5bf611514308.exe"
+      },
+      {
+        "package": "tt-executor",
+        "target": "c12_r3_contracts",
+        "status": "ok",
+        "passed": 15,
+        "failed": 0,
+        "ignored": 0,
+        "binary": "target\\debug\\deps\\c12_r3_contracts-be93363ed0c5aee0.exe"
+      },
+      {
+        "package": "tt-executor",
+        "target": "c12_r3_registry",
+        "status": "ok",
+        "passed": 12,
+        "failed": 0,
+        "ignored": 0,
+        "binary": "target\\debug\\deps\\c12_r3_registry-f724ed641b0cc3eb.exe"
+      },
+      {
+        "package": "tt-executor",
+        "target": "c12_r3_stress",
+        "status": "ok",
+        "passed": 5,
+        "failed": 0,
+        "ignored": 0,
+        "binary": "target\\debug\\deps\\c12_r3_stress-30b7e7ee5fca4858.exe"
+      },
+      {
+        "package": "tt-executor",
+        "target": "c12_r4_closure",
+        "status": "ok",
+        "passed": 4,
+        "failed": 0,
+        "ignored": 0,
+        "binary": "target\\debug\\deps\\c12_r4_closure-de14fee7bf1a68a6.exe"
+      },
+      {
+        "package": "tt-executor",
+        "target": "c12_registry",
+        "status": "ok",
+        "passed": 6,
+        "failed": 0,
+        "ignored": 0,
+        "binary": "target\\debug\\deps\\c12_registry-d312bb6b171ad30a.exe"
+      },
+      {
+        "package": "tt-executor",
+        "target": "c12_transactions",
+        "status": "ok",
+        "passed": 14,
+        "failed": 0,
+        "ignored": 0,
+        "binary": "target\\debug\\deps\\c12_transactions-995b1d8a4d0f6d5e.exe"
+      },
+      {
+        "package": "tt-executor",
+        "target": "c13_doc",
+        "status": "ok",
+        "passed": 9,
+        "failed": 0,
+        "ignored": 0,
+        "binary": "target\\debug\\deps\\c13_doc-e1cda93ce5c0457e.exe"
+      },
+      {
+        "package": "tt-executor",
+        "target": "c13_projects",
+        "status": "ok",
+        "passed": 13,
+        "failed": 0,
+        "ignored": 0,
+        "binary": "target\\debug\\deps\\c13_projects-c32d619ff4bc72c3.exe"
+      },
+      {
+        "package": "tt-executor",
+        "target": "c13_r1_persistence",
+        "status": "ok",
+        "passed": 18,
+        "failed": 0,
+        "ignored": 0,
+        "binary": "target\\debug\\deps\\c13_r1_persistence-dc92e5280ea2703d.exe"
+      },
+      {
+        "package": "tt-executor",
+        "target": "c13_r2_persistence",
+        "status": "ok",
+        "passed": 14,
+        "failed": 0,
+        "ignored": 0,
+        "binary": "target\\debug\\deps\\c13_r2_persistence-933b8a0c69a5f4db.exe"
+      },
+      {
+        "package": "tt-executor",
+        "target": "c13_r3_history_r1",
+        "status": "ok",
+        "passed": 1,
+        "failed": 0,
+        "ignored": 0,
+        "binary": "target\\debug\\deps\\c13_r3_history_r1-7d9f42b82672839c.exe"
+      },
+      {
+        "package": "tt-executor",
+        "target": "c13_r3_history_r3",
+        "status": "ok",
+        "passed": 1,
+        "failed": 0,
+        "ignored": 0,
+        "binary": "target\\debug\\deps\\c13_r3_history_r3-69d3985d4a9965e8.exe"
+      },
+      {
+        "package": "tt-executor",
+        "target": "c13_r3_persistence",
+        "status": "ok",
+        "passed": 10,
+        "failed": 0,
+        "ignored": 0,
+        "binary": "target\\debug\\deps\\c13_r3_persistence-d89886162bebfd8f.exe"
+      },
+      {
+        "package": "tt-executor",
+        "target": "c13_r4_closure",
+        "status": "ok",
+        "passed": 2,
+        "failed": 0,
+        "ignored": 0,
+        "binary": "target\\debug\\deps\\c13_r4_closure-8e1b1fc734732679.exe"
+      },
+      {
+        "package": "tt-executor",
+        "target": "c14_lock_races",
+        "status": "ok",
+        "passed": 9,
+        "failed": 0,
+        "ignored": 1,
+        "binary": "target\\debug\\deps\\c14_lock_races-442351d285ed1d5b.exe"
+      },
+      {
+        "package": "tt-executor",
+        "target": "c14_measurements",
+        "status": "ok",
+        "passed": 2,
+        "failed": 0,
+        "ignored": 0,
+        "binary": "target\\debug\\deps\\c14_measurements-24bfb10de25d1be1.exe"
+      },
+      {
+        "package": "tt-executor",
+        "target": "c14_obligations",
+        "status": "ok",
+        "passed": 7,
+        "failed": 0,
+        "ignored": 0,
+        "binary": "target\\debug\\deps\\c14_obligations-5825f0cc677aab3f.exe"
+      },
+      {
+        "package": "tt-executor",
+        "target": "c14_r2_contracts",
+        "status": "ok",
+        "passed": 3,
+        "failed": 0,
+        "ignored": 0,
+        "binary": "target\\debug\\deps\\c14_r2_contracts-c04d28eae826fc0f.exe"
+      },
+      {
+        "package": "tt-executor",
+        "target": "c14_r2_effects",
+        "status": "ok",
+        "passed": 4,
+        "failed": 0,
+        "ignored": 0,
+        "binary": "target\\debug\\deps\\c14_r2_effects-1debed6b6f88f60b.exe"
+      },
+      {
+        "package": "tt-executor",
+        "target": "c21_determinism",
+        "status": "ok",
+        "passed": 1,
+        "failed": 0,
+        "ignored": 0,
+        "binary": "target\\debug\\deps\\c21_determinism-890ae2ca4c60a5a9.exe"
+      },
+      {
+        "package": "tt-executor",
+        "target": "c21_draw",
+        "status": "ok",
+        "passed": 11,
+        "failed": 0,
+        "ignored": 0,
+        "binary": "target\\debug\\deps\\c21_draw-2c39ede15cb50155.exe"
+      },
+      {
+        "package": "tt-executor",
+        "target": "c21_example_results",
+        "status": "ok",
+        "passed": 2,
+        "failed": 0,
+        "ignored": 0,
+        "binary": "target\\debug\\deps\\c21_example_results-dc8c9cc1a271102d.exe"
+      },
+      {
+        "package": "tt-executor",
+        "target": "c21_measurements",
+        "status": "ok",
+        "passed": 0,
+        "failed": 0,
+        "ignored": 1,
+        "binary": "target\\debug\\deps\\c21_measurements-a95eb1d43b73349f.exe"
+      },
+      {
+        "package": "tt-executor",
+        "target": "c21_obligations",
+        "status": "ok",
+        "passed": 7,
+        "failed": 0,
+        "ignored": 0,
+        "binary": "target\\debug\\deps\\c21_obligations-4546a36d2cbfb6fb.exe"
+      },
+      {
+        "package": "tt-executor",
+        "target": "c21_r1_autosave",
+        "status": "ok",
+        "passed": 1,
+        "failed": 0,
+        "ignored": 0,
+        "binary": "target\\debug\\deps\\c21_r1_autosave-340977152f391843.exe"
+      },
+      {
+        "package": "tt-executor",
+        "target": "c21_r1_contracts",
+        "status": "ok",
+        "passed": 6,
+        "failed": 0,
+        "ignored": 0,
+        "binary": "target\\debug\\deps\\c21_r1_contracts-fb6edc3752e3f578.exe"
+      },
+      {
+        "package": "tt-executor",
+        "target": "c21_r1_retention",
+        "status": "ok",
+        "passed": 1,
+        "failed": 0,
+        "ignored": 0,
+        "binary": "target\\debug\\deps\\c21_r1_retention-4a08ba272e0c0139.exe"
+      },
+      {
+        "package": "tt-executor",
+        "target": "c21_r2_contracts",
+        "status": "ok",
+        "passed": 8,
+        "failed": 0,
+        "ignored": 0,
+        "binary": "target\\debug\\deps\\c21_r2_contracts-49b4746cc4da1643.exe"
+      },
+      {
+        "package": "tt-executor",
+        "target": "c21_r3_contracts",
+        "status": "ok",
+        "passed": 1,
+        "failed": 0,
+        "ignored": 0,
+        "binary": "target\\debug\\deps\\c21_r3_contracts-2f980965d2d48faa.exe"
+      },
+      {
+        "package": "tt-executor",
+        "target": "c21_r3_contracts",
+        "status": "ok",
+        "passed": 6,
+        "failed": 0,
+        "ignored": 1,
+        "binary": "target\\debug\\deps\\c21_r3_contracts-2f980965d2d48faa.exe"
+      },
+      {
+        "package": "tt-executor",
+        "target": "c22_determinism",
+        "status": "ok",
+        "passed": 1,
+        "failed": 0,
+        "ignored": 0,
+        "binary": "target\\debug\\deps\\c22_determinism-dceb5bfadebfc90d.exe"
+      },
+      {
+        "package": "tt-executor",
+        "target": "c22_planar",
+        "status": "ok",
+        "passed": 11,
+        "failed": 0,
+        "ignored": 0,
+        "binary": "target\\debug\\deps\\c22_planar-4e34d0d5f7180fe9.exe"
+      },
+      {
+        "package": "tt-executor",
+        "target": "c22_r1_cache",
+        "status": "ok",
+        "passed": 1,
+        "failed": 0,
+        "ignored": 0,
+        "binary": "target\\debug\\deps\\c22_r1_cache-55472561f9c10d11.exe"
+      },
+      {
+        "package": "tt-executor",
+        "target": "c22_r1_commands",
+        "status": "ok",
+        "passed": 8,
+        "failed": 0,
+        "ignored": 0,
+        "binary": "target\\debug\\deps\\c22_r1_commands-6b3d596f5207409b.exe"
+      },
+      {
+        "package": "tt-executor",
+        "target": "c22_r2_commands",
+        "status": "ok",
+        "passed": 12,
+        "failed": 0,
+        "ignored": 0,
+        "binary": "target\\debug\\deps\\c22_r2_commands-70161cb8be2edb41.exe"
+      },
+      {
+        "package": "tt-executor",
+        "target": "c22_r3_cache",
+        "status": "ok",
+        "passed": 1,
+        "failed": 0,
+        "ignored": 0,
+        "binary": "target\\debug\\deps\\c22_r3_cache-1d219c994871cf67.exe"
+      },
+      {
+        "package": "tt-executor",
+        "target": "c22_r3_commands",
+        "status": "ok",
+        "passed": 5,
+        "failed": 0,
+        "ignored": 0,
+        "binary": "target\\debug\\deps\\c22_r3_commands-6883b40c215226ef.exe"
+      },
+      {
+        "package": "tt-executor",
+        "target": "c22_r4_closure",
+        "status": "ok",
+        "passed": 2,
+        "failed": 0,
+        "ignored": 0,
+        "binary": "target\\debug\\deps\\c22_r4_closure-5320d58e407b5c3f.exe"
+      },
+      {
+        "package": "tt-executor",
+        "target": "c22_recovery",
+        "status": "ok",
+        "passed": 5,
+        "failed": 0,
+        "ignored": 0,
+        "binary": "target\\debug\\deps\\c22_recovery-28207b83a417c4d9.exe"
+      },
+      {
+        "package": "tt-executor",
+        "target": "c23_colour",
+        "status": "ok",
+        "passed": 5,
+        "failed": 0,
+        "ignored": 0,
+        "binary": "target\\debug\\deps\\c23_colour-6f4c200d63f87290.exe"
+      },
+      {
+        "package": "tt-executor",
+        "target": "c23_contracts",
+        "status": "ok",
+        "passed": 3,
+        "failed": 0,
+        "ignored": 0,
+        "binary": "target\\debug\\deps\\c23_contracts-0c92f9cdab799ce1.exe"
+      },
+      {
+        "package": "tt-executor",
+        "target": "c23_cut",
+        "status": "ok",
+        "passed": 4,
+        "failed": 0,
+        "ignored": 0,
+        "binary": "target\\debug\\deps\\c23_cut-2d39c282f2e3aca8.exe"
+      },
+      {
+        "package": "tt-executor",
+        "target": "c23_layers",
+        "status": "ok",
+        "passed": 5,
+        "failed": 0,
+        "ignored": 0,
+        "binary": "target\\debug\\deps\\c23_layers-d72646093f4e3034.exe"
+      },
+      {
+        "package": "tt-executor",
+        "target": "c23_measure",
+        "status": "ok",
+        "passed": 0,
+        "failed": 0,
+        "ignored": 1,
+        "binary": "target\\debug\\deps\\c23_measure-4b66e895b87ad82b.exe"
+      },
+      {
+        "package": "tt-executor",
+        "target": "c23_r1_colour",
+        "status": "ok",
+        "passed": 3,
+        "failed": 0,
+        "ignored": 0,
+        "binary": "target\\debug\\deps\\c23_r1_colour-778d7def9e8ff4ec.exe"
+      },
+      {
+        "package": "tt-executor",
+        "target": "c23_r1_commands",
+        "status": "ok",
+        "passed": 10,
+        "failed": 0,
+        "ignored": 0,
+        "binary": "target\\debug\\deps\\c23_r1_commands-63558f2bba4f5634.exe"
+      },
+      {
+        "package": "tt-executor",
+        "target": "c23_r1_contracts",
+        "status": "ok",
+        "passed": 2,
+        "failed": 0,
+        "ignored": 0,
+        "binary": "target\\debug\\deps\\c23_r1_contracts-ba4aa1e92a6e15da.exe"
+      },
+      {
+        "package": "tt-executor",
+        "target": "c23_r1_controls",
+        "status": "ok",
+        "passed": 3,
+        "failed": 0,
+        "ignored": 0,
+        "binary": "target\\debug\\deps\\c23_r1_controls-90dddaf3f84a4716.exe"
+      },
+      {
+        "package": "tt-executor",
+        "target": "c23_r1_measure",
+        "status": "ok",
+        "passed": 0,
+        "failed": 0,
+        "ignored": 1,
+        "binary": "target\\debug\\deps\\c23_r1_measure-26e1aa68bf6aa002.exe"
+      },
+      {
+        "package": "tt-executor",
+        "target": "c23_r2_closure",
+        "status": "ok",
+        "passed": 15,
+        "failed": 0,
+        "ignored": 0,
+        "binary": "target\\debug\\deps\\c23_r2_closure-abbd3a3e73e3375e.exe"
+      },
+      {
+        "package": "tt-executor",
+        "target": "c23_r2_limits",
+        "status": "ok",
+        "passed": 1,
+        "failed": 0,
+        "ignored": 0,
+        "binary": "target\\debug\\deps\\c23_r2_limits-769cf3809eb2dc6d.exe"
+      },
+      {
+        "package": "tt-executor",
+        "target": "c23_r2_watchdog",
+        "status": "ok",
+        "passed": 1,
+        "failed": 0,
+        "ignored": 0,
+        "binary": "target\\debug\\deps\\c23_r2_watchdog-70af8326eac01723.exe"
+      },
+      {
+        "package": "tt-executor",
+        "target": "c23_r3_budgets",
+        "status": "ok",
+        "passed": 1,
+        "failed": 0,
+        "ignored": 0,
+        "binary": "target\\debug\\deps\\c23_r3_budgets-a69a3082b274dbad.exe"
+      },
+      {
+        "package": "tt-executor",
+        "target": "c23_r3_cancellation",
+        "status": "FAILED",
+        "passed": 0,
+        "failed": 1,
+        "ignored": 0,
+        "binary": "target\\debug\\deps\\c23_r3_cancellation-1b132f8290ae99b0.exe"
+      },
+      {
+        "package": "tt-executor",
+        "target": "c23_r3_closure",
+        "status": "ok",
+        "passed": 3,
+        "failed": 0,
+        "ignored": 0,
+        "binary": "target\\debug\\deps\\c23_r3_closure-34bf5984446bdeac.exe"
+      },
+      {
+        "package": "tt-executor",
+        "target": "c23_r3_inputs",
+        "status": "ok",
+        "passed": 1,
+        "failed": 0,
+        "ignored": 0,
+        "binary": "target\\debug\\deps\\c23_r3_inputs-16aaa234a2c8c60d.exe"
+      },
+      {
+        "package": "tt-executor",
+        "target": "c23_r3_profile",
+        "status": "ok",
+        "passed": 1,
+        "failed": 0,
+        "ignored": 0,
+        "binary": "target\\debug\\deps\\c23_r3_profile-436aca4c87ab0979.exe"
+      },
+      {
+        "package": "tt-executor",
+        "target": "c23_r3_selection_cancel",
+        "status": "ok",
+        "passed": 1,
+        "failed": 0,
+        "ignored": 0,
+        "binary": "target\\debug\\deps\\c23_r3_selection_cancel-b0bef52c506e699b.exe"
+      },
+      {
+        "package": "tt-executor",
+        "target": "c23_r3_session",
+        "status": "ok",
+        "passed": 1,
+        "failed": 0,
+        "ignored": 0,
+        "binary": "target\\debug\\deps\\c23_r3_session-6dd41f23a05968d4.exe"
+      },
+      {
+        "package": "tt-executor",
+        "target": "c23_r3_texture",
+        "status": "ok",
+        "passed": 1,
+        "failed": 0,
+        "ignored": 0,
+        "binary": "target\\debug\\deps\\c23_r3_texture-74a52ed46b90077f.exe"
+      },
+      {
+        "package": "tt-executor",
+        "target": "c23_r3_topology",
+        "status": "ok",
+        "passed": 1,
+        "failed": 0,
+        "ignored": 0,
+        "binary": "target\\debug\\deps\\c23_r3_topology-ed2e7bdae13b0fa5.exe"
+      },
+      {
+        "package": "tt-executor",
+        "target": "c23_r4_closure",
+        "status": "FAILED",
+        "passed": 0,
+        "failed": 3,
+        "ignored": 0,
+        "binary": "target\\debug\\deps\\c23_r4_closure-c77b8244902aad17.exe"
+      },
+      {
+        "package": "tt-executor",
+        "target": "c23_render",
+        "status": "ok",
+        "passed": 4,
+        "failed": 0,
+        "ignored": 0,
+        "binary": "target\\debug\\deps\\c23_render-903f6fa316bc0f7d.exe"
+      },
+      {
+        "package": "tt-executor",
+        "target": "c23_round2",
+        "status": "ok",
+        "passed": 3,
+        "failed": 0,
+        "ignored": 0,
+        "binary": "target\\debug\\deps\\c23_round2-4ab5dd4b6821c7b0.exe"
+      },
+      {
+        "package": "tt-executor",
+        "target": "c23_round3",
+        "status": "ok",
+        "passed": 2,
+        "failed": 0,
+        "ignored": 0,
+        "binary": "target\\debug\\deps\\c23_round3-30d27256007325a4.exe"
+      },
+      {
+        "package": "tt-executor",
+        "target": "c23_select",
+        "status": "ok",
+        "passed": 5,
+        "failed": 0,
+        "ignored": 0,
+        "binary": "target\\debug\\deps\\c23_select-59d899827aaac782.exe"
+      },
+      {
+        "package": "tt-executor",
+        "target": "c23_strokeops",
+        "status": "ok",
+        "passed": 6,
+        "failed": 0,
+        "ignored": 0,
+        "binary": "target\\debug\\deps\\c23_strokeops-a788d68a96703411.exe"
+      },
+      {
+        "package": "tt-executor",
+        "target": "c23_transform",
+        "status": "ok",
+        "passed": 9,
+        "failed": 0,
+        "ignored": 0,
+        "binary": "target\\debug\\deps\\c23_transform-d4ea8f0241d5aed0.exe"
+      },
+      {
+        "package": "tt-executor",
+        "target": "c23_watchdog",
+        "status": "ok",
+        "passed": 2,
+        "failed": 0,
+        "ignored": 0,
+        "binary": "target\\debug\\deps\\c23_watchdog-70ab54cc860c04e5.exe"
+      },
+      {
+        "package": "tt-executor",
+        "target": "c24_aggregate",
+        "status": "ok",
+        "passed": 1,
+        "failed": 0,
+        "ignored": 1,
+        "binary": "target\\debug\\deps\\c24_aggregate-e7f6976d9f08f0a8.exe"
+      },
+      {
+        "package": "tt-executor",
+        "target": "c24_budgets",
+        "status": "ok",
+        "passed": 0,
+        "failed": 0,
+        "ignored": 1,
+        "binary": "target\\debug\\deps\\c24_budgets-76472b93bd523047.exe"
+      },
+      {
+        "package": "tt-executor",
+        "target": "c24_centre_line",
+        "status": "ok",
+        "passed": 3,
+        "failed": 0,
+        "ignored": 0,
+        "binary": "target\\debug\\deps\\c24_centre_line-cdad34a1b08ced93.exe"
+      },
+      {
+        "package": "tt-executor",
+        "target": "c24_contracts",
+        "status": "ok",
+        "passed": 2,
+        "failed": 0,
+        "ignored": 0,
+        "binary": "target\\debug\\deps\\c24_contracts-d524d629126f6349.exe"
+      },
+      {
+        "package": "tt-executor",
+        "target": "c24_cutter_snapping",
+        "status": "ok",
+        "passed": 2,
+        "failed": 0,
+        "ignored": 0,
+        "binary": "target\\debug\\deps\\c24_cutter_snapping-8479125578a2bee5.exe"
+      },
+      {
+        "package": "tt-executor",
+        "target": "c24_measure",
+        "status": "ok",
+        "passed": 0,
+        "failed": 0,
+        "ignored": 0,
+        "binary": "target\\debug\\deps\\c24_measure-5d254a97caa5798d.exe"
+      },
+      {
+        "package": "tt-executor",
+        "target": "c24_oracle_routes",
+        "status": "ok",
+        "passed": 12,
+        "failed": 0,
+        "ignored": 0,
+        "binary": "target\\debug\\deps\\c24_oracle_routes-ac987a9c265fa5e4.exe"
+      },
+      {
+        "package": "tt-executor",
+        "target": "c24_r1_lifecycle",
+        "status": "ok",
+        "passed": 3,
+        "failed": 0,
+        "ignored": 0,
+        "binary": "target\\debug\\deps\\c24_r1_lifecycle-f0bbbfe208a833fd.exe"
+      },
+      {
+        "package": "tt-executor",
+        "target": "c24_r1_topology",
+        "status": "ok",
+        "passed": 5,
+        "failed": 0,
+        "ignored": 0,
+        "binary": "target\\debug\\deps\\c24_r1_topology-eb6c04f008389d9b.exe"
+      },
+      {
+        "package": "tt-executor",
+        "target": "c24_r2_routes",
+        "status": "ok",
+        "passed": 13,
+        "failed": 0,
+        "ignored": 0,
+        "binary": "target\\debug\\deps\\c24_r2_routes-9eca60dc8d8c8c19.exe"
+      },
+      {
+        "package": "tt-executor",
+        "target": "c24_r2_topology",
+        "status": "ok",
+        "passed": 6,
+        "failed": 0,
+        "ignored": 0,
+        "binary": "target\\debug\\deps\\c24_r2_topology-ccc573399d6b9e78.exe"
+      },
+      {
+        "package": "tt-executor",
+        "target": "c24_r2_variants",
+        "status": "ok",
+        "passed": 9,
+        "failed": 0,
+        "ignored": 0,
+        "binary": "target\\debug\\deps\\c24_r2_variants-ecfdc798021b4f11.exe"
+      },
+      {
+        "package": "tt-executor",
+        "target": "c24_r3_domains",
+        "status": "ok",
+        "passed": 14,
+        "failed": 0,
+        "ignored": 0,
+        "binary": "target\\debug\\deps\\c24_r3_domains-d37b11f2a503367f.exe"
+      },
+      {
+        "package": "tt-executor",
+        "target": "c24_r3_routes",
+        "status": "ok",
+        "passed": 13,
+        "failed": 0,
+        "ignored": 0,
+        "binary": "target\\debug\\deps\\c24_r3_routes-2813baf74ea97b40.exe"
+      },
+      {
+        "package": "tt-executor",
+        "target": "c24_r3_topology",
+        "status": "ok",
+        "passed": 6,
+        "failed": 0,
+        "ignored": 0,
+        "binary": "target\\debug\\deps\\c24_r3_topology-7e00c317f320b49f.exe"
+      },
+      {
+        "package": "tt-executor",
+        "target": "c24_r4_closure",
+        "status": "ok",
+        "passed": 4,
+        "failed": 0,
+        "ignored": 0,
+        "binary": "target\\debug\\deps\\c24_r4_closure-970d353e0243d0f0.exe"
+      },
+      {
+        "package": "tt-executor",
+        "target": "c24_route_domains",
+        "status": "ok",
+        "passed": 10,
+        "failed": 0,
+        "ignored": 0,
+        "binary": "target\\debug\\deps\\c24_route_domains-112f989cb2b94a0c.exe"
+      },
+      {
+        "package": "tt-executor",
+        "target": "c24_symmetry",
+        "status": "ok",
+        "passed": 2,
+        "failed": 0,
+        "ignored": 0,
+        "binary": "target\\debug\\deps\\c24_symmetry-c680ea13e3789544.exe"
+      },
+      {
+        "package": "tt-executor",
+        "target": "c24_text_layout",
+        "status": "ok",
+        "passed": 2,
+        "failed": 0,
+        "ignored": 0,
+        "binary": "target\\debug\\deps\\c24_text_layout-6ea3b2876d601278.exe"
+      },
+      {
+        "package": "tt-executor",
+        "target": "c24_topology",
+        "status": "ok",
+        "passed": 4,
+        "failed": 0,
+        "ignored": 0,
+        "binary": "target\\debug\\deps\\c24_topology-10e461b08e9f1c01.exe"
+      },
+      {
+        "package": "tt-executor",
+        "target": "c24_vectorize",
+        "status": "ok",
+        "passed": 11,
+        "failed": 0,
+        "ignored": 0,
+        "binary": "target\\debug\\deps\\c24_vectorize-b13f526a8c83daa2.exe"
+      },
+      {
+        "package": "tt-executor",
+        "target": "c31_bank_xsheet",
+        "status": "ok",
+        "passed": 9,
+        "failed": 0,
+        "ignored": 0,
+        "binary": "target\\debug\\deps\\c31_bank_xsheet-4002bdc657bdd7b7.exe"
+      },
+      {
+        "package": "tt-executor",
+        "target": "c31_budgets",
+        "status": "ok",
+        "passed": 0,
+        "failed": 0,
+        "ignored": 1,
+        "binary": "target\\debug\\deps\\c31_budgets-30cb32d885c32da0.exe"
+      },
+      {
+        "package": "tt-executor",
+        "target": "c31_cells",
+        "status": "ok",
+        "passed": 16,
+        "failed": 0,
+        "ignored": 0,
+        "binary": "target\\debug\\deps\\c31_cells-363ce0441350f440.exe"
+      },
+      {
+        "package": "tt-executor",
+        "target": "c31_elements",
+        "status": "ok",
+        "passed": 16,
+        "failed": 0,
+        "ignored": 0,
+        "binary": "target\\debug\\deps\\c31_elements-9e84f27e0277ffe7.exe"
+      },
+      {
+        "package": "tt-executor",
+        "target": "c31_obligations",
+        "status": "ok",
+        "passed": 9,
+        "failed": 0,
+        "ignored": 0,
+        "binary": "target\\debug\\deps\\c31_obligations-b06c3857419a56a6.exe"
+      },
+      {
+        "package": "tt-executor",
+        "target": "c31_r1_availability",
+        "status": "ok",
+        "passed": 1,
+        "failed": 0,
+        "ignored": 0,
+        "binary": "target\\debug\\deps\\c31_r1_availability-3bdbf63e45e24a97.exe"
+      },
+      {
+        "package": "tt-executor",
+        "target": "c31_r1_contract",
+        "status": "ok",
+        "passed": 28,
+        "failed": 0,
+        "ignored": 0,
+        "binary": "target\\debug\\deps\\c31_r1_contract-3c4f3b2ca29ce9e8.exe"
+      },
+      {
+        "package": "tt-executor",
+        "target": "c31_r1_copy_settle",
+        "status": "ok",
+        "passed": 1,
+        "failed": 0,
+        "ignored": 0,
+        "binary": "target\\debug\\deps\\c31_r1_copy_settle-a87a1ba6382d2d1c.exe"
+      },
+      {
+        "package": "tt-executor",
+        "target": "c31_r1_model_diff",
+        "status": "ok",
+        "passed": 2,
+        "failed": 0,
+        "ignored": 0,
+        "binary": "target\\debug\\deps\\c31_r1_model_diff-535936c9dd8eb4f9.exe"
+      },
+      {
+        "package": "tt-executor",
+        "target": "c31_r1_mutations",
+        "status": "ok",
+        "passed": 1,
+        "failed": 0,
+        "ignored": 0,
+        "binary": "target\\debug\\deps\\c31_r1_mutations-3c43aeac59dca2a2.exe"
+      },
+      {
+        "package": "tt-executor",
+        "target": "c31_r1_notes",
+        "status": "ok",
+        "passed": 1,
+        "failed": 0,
+        "ignored": 0,
+        "binary": "target\\debug\\deps\\c31_r1_notes-a95dc43f0ee8656b.exe"
+      },
+      {
+        "package": "tt-executor",
+        "target": "c31_r1_selection_budget",
+        "status": "ok",
+        "passed": 1,
+        "failed": 0,
+        "ignored": 0,
+        "binary": "target\\debug\\deps\\c31_r1_selection_budget-05f72c5a9a67a566.exe"
+      },
+      {
+        "package": "tt-executor",
+        "target": "c31_r2_cancellation",
+        "status": "ok",
+        "passed": 2,
+        "failed": 0,
+        "ignored": 0,
+        "binary": "target\\debug\\deps\\c31_r2_cancellation-3ef4252ebabc57ba.exe"
+      },
+      {
+        "package": "tt-executor",
+        "target": "c31_r2_persistence",
+        "status": "FAILED",
+        "passed": 2,
+        "failed": 1,
+        "ignored": 0,
+        "binary": "target\\debug\\deps\\c31_r2_persistence-39fe6d2a38e7d69e.exe"
+      },
+      {
+        "package": "tt-executor",
+        "target": "c31_r2_variants",
+        "status": "FAILED",
+        "passed": 13,
+        "failed": 8,
+        "ignored": 0,
+        "binary": "target\\debug\\deps\\c31_r2_variants-a237a9cb30450c07.exe"
+      },
+      {
+        "package": "tt-executor",
+        "target": "c31_round1",
+        "status": "ok",
+        "passed": 11,
+        "failed": 0,
+        "ignored": 0,
+        "binary": "target\\debug\\deps\\c31_round1-98e5967977bfbd6d.exe"
+      },
+      {
+        "package": "tt-executor",
+        "target": "compile_fail",
+        "status": "ok",
+        "passed": 1,
+        "failed": 0,
+        "ignored": 0,
+        "binary": "target\\debug\\deps\\compile_fail-b23b920acd900cf1.exe"
+      },
+      {
+        "package": "tt-fx",
+        "target": "unit",
+        "status": "ok",
+        "passed": 0,
+        "failed": 0,
+        "ignored": 0,
+        "binary": null
+      },
+      {
+        "package": "tt-fx",
+        "target": "unit",
+        "status": "ok",
+        "passed": 8,
+        "failed": 0,
+        "ignored": 0,
+        "binary": null
+      },
+      {
+        "package": "tt-fx",
+        "target": "c01",
+        "status": "ok",
+        "passed": 7,
+        "failed": 0,
+        "ignored": 0,
+        "binary": "target\\debug\\deps\\adversarial_c01-87c1bc6397e3415b.exe"
+      },
+      {
+        "package": "tt-fx",
+        "target": "c14_r1",
+        "status": "ok",
+        "passed": 1,
+        "failed": 0,
+        "ignored": 0,
+        "binary": "target\\debug\\deps\\c14_r1-ac71d01c58131b91.exe"
+      },
+      {
+        "package": "tt-fx",
+        "target": "c14_r2",
+        "status": "ok",
+        "passed": 1,
+        "failed": 0,
+        "ignored": 0,
+        "binary": "target\\debug\\deps\\c14_r2-532556a49e0cdaef.exe"
+      },
+      {
+        "package": "tt-fx",
+        "target": "c14_r3",
+        "status": "ok",
+        "passed": 1,
+        "failed": 0,
+        "ignored": 0,
+        "binary": "target\\debug\\deps\\c14_r3-585713b6cbfe63c3.exe"
+      },
+      {
+        "package": "tt-fx",
+        "target": "cancel_phases",
+        "status": "ok",
+        "passed": 3,
+        "failed": 0,
+        "ignored": 0,
+        "binary": "target\\debug\\deps\\cancel_phases-c70c56f649b6c12f.exe"
+      },
+      {
+        "package": "tt-fx",
+        "target": "cli",
+        "status": "ok",
+        "passed": 6,
+        "failed": 0,
+        "ignored": 0,
+        "binary": "target\\debug\\deps\\cli-230bbe4c15245260.exe"
+      },
+      {
+        "package": "tt-fx",
+        "target": "guard_fixtures",
+        "status": "ok",
+        "passed": 1,
+        "failed": 0,
+        "ignored": 0,
+        "binary": "target\\debug\\deps\\guard_fixtures-07f94ce6cfe72477.exe"
+      },
+      {
+        "package": "tt-fx",
+        "target": "mcp",
+        "status": "ok",
+        "passed": 2,
+        "failed": 0,
+        "ignored": 0,
+        "binary": "target\\debug\\deps\\mcp-9efb12832e9724b7.exe"
+      },
+      {
+        "package": "tt-io",
+        "target": "unit",
+        "status": "ok",
+        "passed": 0,
+        "failed": 0,
+        "ignored": 0,
+        "binary": null
+      },
+      {
+        "package": "tt-io",
+        "target": "c24_decode_fuzz",
+        "status": "ok",
+        "passed": 2,
+        "failed": 0,
+        "ignored": 1,
+        "binary": "target\\debug\\deps\\c24_decode_fuzz-1ca6ffc5b74bb5ac.exe"
+      },
+      {
+        "package": "tt-io",
+        "target": "c24_image",
+        "status": "ok",
+        "passed": 4,
+        "failed": 0,
+        "ignored": 0,
+        "binary": "target\\debug\\deps\\c24_image-70cb0308df88c565.exe"
+      },
+      {
+        "package": "tt-io",
+        "target": "c24_r1_decoder",
+        "status": "ok",
+        "passed": 1,
+        "failed": 0,
+        "ignored": 0,
+        "binary": "target\\debug\\deps\\c24_r1_decoder-ef80a6ff2af0291d.exe"
+      },
+      {
+        "package": "tt-io",
+        "target": "c24_r3_decoder",
+        "status": "ok",
+        "passed": 1,
+        "failed": 0,
+        "ignored": 0,
+        "binary": "target\\debug\\deps\\c24_r3_decoder-ab34b44587b32ffb.exe"
+      },
+      {
+        "package": "tt-lipsync",
+        "target": "unit",
+        "status": "ok",
+        "passed": 0,
+        "failed": 0,
+        "ignored": 0,
+        "binary": null
+      },
+      {
+        "package": "tt-mcp",
+        "target": "unit",
+        "status": "ok",
+        "passed": 4,
+        "failed": 0,
+        "ignored": 0,
+        "binary": null
+      },
+      {
+        "package": "tt-mcp",
+        "target": "audit",
+        "status": "ok",
+        "passed": 2,
+        "failed": 0,
+        "ignored": 0,
+        "binary": "target\\debug\\deps\\audit-0d5feca9eed30d35.exe"
+      },
+      {
+        "package": "tt-mcp",
+        "target": "c14_r1_autosave",
+        "status": "ok",
+        "passed": 1,
+        "failed": 0,
+        "ignored": 0,
+        "binary": "target\\debug\\deps\\c14_r1_autosave-ce3ce0bac0ebde06.exe"
+      },
+      {
+        "package": "tt-mcp",
+        "target": "c14_r1_limits",
+        "status": "ok",
+        "passed": 2,
+        "failed": 0,
+        "ignored": 0,
+        "binary": "target\\debug\\deps\\c14_r1_limits-ea2c4484103e26ec.exe"
+      },
+      {
+        "package": "tt-mcp",
+        "target": "c14_r2_replay",
+        "status": "ok",
+        "passed": 3,
+        "failed": 0,
+        "ignored": 0,
+        "binary": "target\\debug\\deps\\c14_r2_replay-dee83af029fa6a62.exe"
+      },
+      {
+        "package": "tt-mcp",
+        "target": "c14_r3_groups",
+        "status": "ok",
+        "passed": 3,
+        "failed": 0,
+        "ignored": 0,
+        "binary": "target\\debug\\deps\\c14_r3_groups-8f71a3c39bdec262.exe"
+      },
+      {
+        "package": "tt-mcp",
+        "target": "c14_r3_history_r1",
+        "status": "ok",
+        "passed": 1,
+        "failed": 0,
+        "ignored": 0,
+        "binary": "target\\debug\\deps\\c14_r3_history_r1-347735efe32f5a4e.exe"
+      },
+      {
+        "package": "tt-mcp",
+        "target": "c14_r3_history_r3",
+        "status": "ok",
+        "passed": 1,
+        "failed": 0,
+        "ignored": 0,
+        "binary": "target\\debug\\deps\\c14_r3_history_r3-9e63715e8c101f23.exe"
+      },
+      {
+        "package": "tt-mcp",
+        "target": "c14_r3_replay",
+        "status": "ok",
+        "passed": 5,
+        "failed": 0,
+        "ignored": 0,
+        "binary": "target\\debug\\deps\\c14_r3_replay-cb4570676c0f865b.exe"
+      },
+      {
+        "package": "tt-mcp",
+        "target": "c14_r4_closure",
+        "status": "ok",
+        "passed": 4,
+        "failed": 0,
+        "ignored": 0,
+        "binary": "target\\debug\\deps\\c14_r4_closure-97cde59154ce9229.exe"
+      },
+      {
+        "package": "tt-mcp",
+        "target": "c14_r4_expect_rev",
+        "status": "ok",
+        "passed": 3,
+        "failed": 0,
+        "ignored": 0,
+        "binary": "target\\debug\\deps\\c14_r4_expect_rev-9102c9a8dab363ab.exe"
+      },
+      {
+        "package": "tt-mcp",
+        "target": "c14_r5_closure",
+        "status": "ok",
+        "passed": 4,
+        "failed": 0,
+        "ignored": 0,
+        "binary": "target\\debug\\deps\\c14_r5_closure-dcec50199acc59a9.exe"
+      },
+      {
+        "package": "tt-mcp",
+        "target": "c14_tickets",
+        "status": "ok",
+        "passed": 1,
+        "failed": 0,
+        "ignored": 1,
+        "binary": "target\\debug\\deps\\c14_tickets-6e37d09f98239627.exe"
+      },
+      {
+        "package": "tt-mcp",
+        "target": "c21_history",
+        "status": "ok",
+        "passed": 0,
+        "failed": 0,
+        "ignored": 2,
+        "binary": "target\\debug\\deps\\c21_history-e6e89fdace25cdd9.exe"
+      },
+      {
+        "package": "tt-mcp",
+        "target": "c21_r1_surfaces",
+        "status": "ok",
+        "passed": 2,
+        "failed": 0,
+        "ignored": 0,
+        "binary": "target\\debug\\deps\\c21_r1_surfaces-66bb4438d5f5580a.exe"
+      },
+      {
+        "package": "tt-mcp",
+        "target": "c21_r2_events",
+        "status": "ok",
+        "passed": 1,
+        "failed": 0,
+        "ignored": 0,
+        "binary": "target\\debug\\deps\\c21_r2_events-b136ee9e7bef4bae.exe"
+      },
+      {
+        "package": "tt-mcp",
+        "target": "c21_r3_never_block",
+        "status": "ok",
+        "passed": 1,
+        "failed": 0,
+        "ignored": 0,
+        "binary": "target\\debug\\deps\\c21_r3_never_block-20c812b4d49b2257.exe"
+      },
+      {
+        "package": "tt-mcp",
+        "target": "c21_replay",
+        "status": "ok",
+        "passed": 1,
+        "failed": 0,
+        "ignored": 0,
+        "binary": "target\\debug\\deps\\c21_replay-7799fddeeb5ec63f.exe"
+      },
+      {
+        "package": "tt-mcp",
+        "target": "c21_worked_examples",
+        "status": "ok",
+        "passed": 2,
+        "failed": 0,
+        "ignored": 0,
+        "binary": "target\\debug\\deps\\c21_worked_examples-e048db21b6d3b559.exe"
+      },
+      {
+        "package": "tt-mcp",
+        "target": "c22_r1_surface",
+        "status": "ok",
+        "passed": 4,
+        "failed": 0,
+        "ignored": 0,
+        "binary": "target\\debug\\deps\\c22_r1_surface-713b2fd936564902.exe"
+      },
+      {
+        "package": "tt-mcp",
+        "target": "c22_r2_surface",
+        "status": "ok",
+        "passed": 3,
+        "failed": 0,
+        "ignored": 0,
+        "binary": "target\\debug\\deps\\c22_r2_surface-6d1eb79d84fdf21e.exe"
+      },
+      {
+        "package": "tt-mcp",
+        "target": "c22_r3_surface",
+        "status": "ok",
+        "passed": 2,
+        "failed": 0,
+        "ignored": 0,
+        "binary": "target\\debug\\deps\\c22_r3_surface-9f228b3f5945e667.exe"
+      },
+      {
+        "package": "tt-mcp",
+        "target": "c22_replay",
+        "status": "ok",
+        "passed": 1,
+        "failed": 0,
+        "ignored": 0,
+        "binary": "target\\debug\\deps\\c22_replay-2735b57759bf7fe7.exe"
+      },
+      {
+        "package": "tt-mcp",
+        "target": "c23_r2_timeout",
+        "status": "ok",
+        "passed": 1,
+        "failed": 0,
+        "ignored": 0,
+        "binary": "target\\debug\\deps\\c23_r2_timeout-e4a4c1da9b313810.exe"
+      },
+      {
+        "package": "tt-mcp",
+        "target": "c31_r1_protocol",
+        "status": "ok",
+        "passed": 3,
+        "failed": 0,
+        "ignored": 0,
+        "binary": "target\\debug\\deps\\c31_r1_protocol-0af4d7b6f68ec339.exe"
+      },
+      {
+        "package": "tt-mcp",
+        "target": "c31_r2_protocol",
+        "status": "ok",
+        "passed": 1,
+        "failed": 0,
+        "ignored": 0,
+        "binary": "target\\debug\\deps\\c31_r2_protocol-4fb58380df9a1f98.exe"
+      },
+      {
+        "package": "tt-mcp",
+        "target": "c31_round1_protocol",
+        "status": "ok",
+        "passed": 1,
+        "failed": 0,
+        "ignored": 0,
+        "binary": "target\\debug\\deps\\c31_round1_protocol-3d5c1994d2943384.exe"
+      },
+      {
+        "package": "tt-mcp",
+        "target": "contracts",
+        "status": "ok",
+        "passed": 2,
+        "failed": 0,
+        "ignored": 0,
+        "binary": "target\\debug\\deps\\contracts-dba3dbec2daa81aa.exe"
+      },
+      {
+        "package": "tt-mcp",
+        "target": "never_block",
+        "status": "ok",
+        "passed": 2,
+        "failed": 0,
+        "ignored": 0,
+        "binary": "target\\debug\\deps\\never_block-8cee645e49ec6dc4.exe"
+      },
+      {
+        "package": "tt-mcp",
+        "target": "protocol",
+        "status": "ok",
+        "passed": 14,
+        "failed": 0,
+        "ignored": 0,
+        "binary": "target\\debug\\deps\\protocol-8699a034cbf8b142.exe"
+      },
+      {
+        "package": "tt-model",
+        "target": "unit",
+        "status": "ok",
+        "passed": 43,
+        "failed": 0,
+        "ignored": 0,
+        "binary": null
+      },
+      {
+        "package": "tt-model",
+        "target": "c11_r1_adversarial",
+        "status": "ok",
+        "passed": 39,
+        "failed": 0,
+        "ignored": 0,
+        "binary": "target\\debug\\deps\\c11_r1_adversarial-71ca33140e7c0ff7.exe"
+      },
+      {
+        "package": "tt-model",
+        "target": "c11_r2_adversarial",
+        "status": "ok",
+        "passed": 39,
+        "failed": 0,
+        "ignored": 0,
+        "binary": "target\\debug\\deps\\c11_r2_adversarial-7811d02d3bfd4e20.exe"
+      },
+      {
+        "package": "tt-model",
+        "target": "c11_r3_adversarial",
+        "status": "ok",
+        "passed": 11,
+        "failed": 0,
+        "ignored": 0,
+        "binary": "target\\debug\\deps\\c11_r3_adversarial-0178e0a5e18ab203.exe"
+      },
+      {
+        "package": "tt-model",
+        "target": "c11_r3_random",
+        "status": "ok",
+        "passed": 1,
+        "failed": 0,
+        "ignored": 0,
+        "binary": "target\\debug\\deps\\c11_r3_random-f50afb5b52ef64a5.exe"
+      },
+      {
+        "package": "tt-model",
+        "target": "c11_r3_register",
+        "status": "ok",
+        "passed": 4,
+        "failed": 0,
+        "ignored": 0,
+        "binary": "target\\debug\\deps\\c11_r3_register-5825c3d3f1fd00b9.exe"
+      },
+      {
+        "package": "tt-model",
+        "target": "c11_r4_exposure_bounds",
+        "status": "ok",
+        "passed": 2,
+        "failed": 0,
+        "ignored": 0,
+        "binary": "target\\debug\\deps\\c11_r4_exposure_bounds-fd04b62cc6296344.exe"
+      },
+      {
+        "package": "tt-model",
+        "target": "c11_r5_write_bounds",
+        "status": "ok",
+        "passed": 4,
+        "failed": 0,
+        "ignored": 0,
+        "binary": "target\\debug\\deps\\c11_r5_write_bounds-3ce0df96130c6768.exe"
+      },
+      {
+        "package": "tt-model",
+        "target": "c11_r6_staged_inverse",
+        "status": "ok",
+        "passed": 2,
+        "failed": 0,
+        "ignored": 0,
+        "binary": "target\\debug\\deps\\c11_r6_staged_inverse-e659a06eb5a7bb99.exe"
+      },
+      {
+        "package": "tt-model",
+        "target": "c12_kernel_support",
+        "status": "ok",
+        "passed": 6,
+        "failed": 0,
+        "ignored": 0,
+        "binary": "target\\debug\\deps\\c12_kernel_support-d0e2cf4789d216a5.exe"
+      },
+      {
+        "package": "tt-model",
+        "target": "conformance",
+        "status": "ok",
+        "passed": 15,
+        "failed": 0,
+        "ignored": 0,
+        "binary": "target\\debug\\deps\\conformance-3ceb56039b8e3398.exe"
+      },
+      {
+        "package": "tt-model",
+        "target": "properties",
+        "status": "ok",
+        "passed": 18,
+        "failed": 0,
+        "ignored": 0,
+        "binary": "target\\debug\\deps\\properties-d00e4be6dbbc096e.exe"
+      },
+      {
+        "package": "tt-model",
+        "target": "staged_commit",
+        "status": "ok",
+        "passed": 3,
+        "failed": 0,
+        "ignored": 0,
+        "binary": "target\\debug\\deps\\staged_commit-ef3303bebb2194c1.exe"
+      },
+      {
+        "package": "tt-model",
+        "target": "staged_inverse",
+        "status": "ok",
+        "passed": 2,
+        "failed": 0,
+        "ignored": 0,
+        "binary": "target\\debug\\deps\\staged_inverse-8ff0d89416368b28.exe"
+      },
+      {
+        "package": "tt-persist",
+        "target": "unit",
+        "status": "ok",
+        "passed": 19,
+        "failed": 0,
+        "ignored": 0,
+        "binary": null
+      },
+      {
+        "package": "tt-persist",
+        "target": "c13_r1_format",
+        "status": "ok",
+        "passed": 8,
+        "failed": 0,
+        "ignored": 0,
+        "binary": "target\\debug\\deps\\c13_r1_format-d307e45aa89ba420.exe"
+      },
+      {
+        "package": "tt-persist",
+        "target": "c13_r2_format",
+        "status": "ok",
+        "passed": 7,
+        "failed": 0,
+        "ignored": 0,
+        "binary": "target\\debug\\deps\\c13_r2_format-ddf2c995915cf46f.exe"
+      },
+      {
+        "package": "tt-persist",
+        "target": "c13_r3_format",
+        "status": "ok",
+        "passed": 3,
+        "failed": 0,
+        "ignored": 0,
+        "binary": "target\\debug\\deps\\c13_r3_format-3dee23ef8ce39a80.exe"
+      },
+      {
+        "package": "tt-persist",
+        "target": "c13_r4_lock",
+        "status": "ok",
+        "passed": 1,
+        "failed": 0,
+        "ignored": 0,
+        "binary": "target\\debug\\deps\\c13_r4_lock-3e25cb64a7f8a300.exe"
+      },
+      {
+        "package": "tt-persist",
+        "target": "hostile",
+        "status": "ok",
+        "passed": 13,
+        "failed": 0,
+        "ignored": 0,
+        "binary": "target\\debug\\deps\\hostile-990c74869507423f.exe"
+      },
+      {
+        "package": "tt-persist",
+        "target": "journal",
+        "status": "ok",
+        "passed": 3,
+        "failed": 0,
+        "ignored": 0,
+        "binary": "target\\debug\\deps\\journal-b894eb17a8d4fc01.exe"
+      },
+      {
+        "package": "tt-persist",
+        "target": "migrations",
+        "status": "ok",
+        "passed": 4,
+        "failed": 0,
+        "ignored": 0,
+        "binary": "target\\debug\\deps\\migrations-f04e7f0c93527c79.exe"
+      },
+      {
+        "package": "tt-persist",
+        "target": "round_trip",
+        "status": "ok",
+        "passed": 3,
+        "failed": 0,
+        "ignored": 0,
+        "binary": "target\\debug\\deps\\round_trip-449fb9eaff30a26e.exe"
+      },
+      {
+        "package": "tt-persist",
+        "target": "zip64",
+        "status": "ok",
+        "passed": 1,
+        "failed": 0,
+        "ignored": 1,
+        "binary": "target\\debug\\deps\\zip64-b918df9ab6e3c88a.exe"
+      },
+      {
+        "package": "tt-registry",
+        "target": "unit",
+        "status": "ok",
+        "passed": 1,
+        "failed": 0,
+        "ignored": 0,
+        "binary": null
+      },
+      {
+        "package": "tt-registry",
+        "target": "declared",
+        "status": "ok",
+        "passed": 9,
+        "failed": 0,
+        "ignored": 0,
+        "binary": "target\\debug\\deps\\declared-cce051256b1d783b.exe"
+      },
+      {
+        "package": "tt-registry",
+        "target": "inventory",
+        "status": "ok",
+        "passed": 1,
+        "failed": 0,
+        "ignored": 0,
+        "binary": "target\\debug\\deps\\inventory-5f61092bfcfe3033.exe"
+      },
+      {
+        "package": "tt-registry-macros",
+        "target": "unit",
+        "status": "ok",
+        "passed": 0,
+        "failed": 0,
+        "ignored": 0,
+        "binary": null
+      },
+      {
+        "package": "tt-render",
+        "target": "unit",
+        "status": "ok",
+        "passed": 2,
+        "failed": 0,
+        "ignored": 0,
+        "binary": null
+      },
+      {
+        "package": "tt-render",
+        "target": "c03_fixed_configurations",
+        "status": "ok",
+        "passed": 2,
+        "failed": 0,
+        "ignored": 0,
+        "binary": "target\\debug\\deps\\c03_fixed_configurations-95a44b5a5943baf1.exe"
+      },
+      {
+        "package": "tt-render",
+        "target": "c03_r1_stress",
+        "status": "ok",
+        "passed": 2,
+        "failed": 0,
+        "ignored": 1,
+        "binary": "target\\debug\\deps\\c03_r1_stress-62654edb36ced1cc.exe"
+      },
+      {
+        "package": "tt-render",
+        "target": "c03_r2_quality",
+        "status": "ok",
+        "passed": 1,
+        "failed": 0,
+        "ignored": 0,
+        "binary": "target\\debug\\deps\\c03_r2_quality-6729bd24664b4fb6.exe"
+      },
+      {
+        "package": "tt-render",
+        "target": "c23_r1_texture",
+        "status": "ok",
+        "passed": 1,
+        "failed": 0,
+        "ignored": 0,
+        "binary": "target\\debug\\deps\\c23_r1_texture-72b8e2e7eadc90e9.exe"
+      },
+      {
+        "package": "tt-render",
+        "target": "c23_r2_texture",
+        "status": "ok",
+        "passed": 2,
+        "failed": 0,
+        "ignored": 0,
+        "binary": "target\\debug\\deps\\c23_r2_texture-d7117a7534ae0943.exe"
+      },
+      {
+        "package": "tt-render",
+        "target": "c23_r3_cancel",
+        "status": "ok",
+        "passed": 1,
+        "failed": 0,
+        "ignored": 0,
+        "binary": "target\\debug\\deps\\c23_r3_cancel-c8302c1e363a6e00.exe"
+      },
+      {
+        "package": "tt-vector",
+        "target": "unit",
+        "status": "ok",
+        "passed": 74,
+        "failed": 0,
+        "ignored": 0,
+        "binary": null
+      },
+      {
+        "package": "tt-vector",
+        "target": "c21_r1_geometry",
+        "status": "ok",
+        "passed": 1,
+        "failed": 0,
+        "ignored": 0,
+        "binary": "target\\debug\\deps\\c21_r1_geometry-c81ab52f82fb797f.exe"
+      },
+      {
+        "package": "tt-vector",
+        "target": "c21_r1_geometry",
+        "status": "ok",
+        "passed": 9,
+        "failed": 0,
+        "ignored": 1,
+        "binary": "target\\debug\\deps\\c21_r1_geometry-c81ab52f82fb797f.exe"
+      },
+      {
+        "package": "tt-vector",
+        "target": "c21_r2_geometry",
+        "status": "ok",
+        "passed": 1,
+        "failed": 0,
+        "ignored": 0,
+        "binary": "target\\debug\\deps\\c21_r2_geometry-20eab9c5cd64b09c.exe"
+      },
+      {
+        "package": "tt-vector",
+        "target": "c21_r2_geometry",
+        "status": "ok",
+        "passed": 1,
+        "failed": 0,
+        "ignored": 0,
+        "binary": "target\\debug\\deps\\c21_r2_geometry-20eab9c5cd64b09c.exe"
+      },
+      {
+        "package": "tt-vector",
+        "target": "c21_r2_geometry",
+        "status": "ok",
+        "passed": 9,
+        "failed": 0,
+        "ignored": 2,
+        "binary": "target\\debug\\deps\\c21_r2_geometry-20eab9c5cd64b09c.exe"
+      },
+      {
+        "package": "tt-vector",
+        "target": "c21_r3_geometry",
+        "status": "ok",
+        "passed": 1,
+        "failed": 0,
+        "ignored": 0,
+        "binary": "target\\debug\\deps\\c21_r3_geometry-1946cccd4305d1d3.exe"
+      },
+      {
+        "package": "tt-vector",
+        "target": "c21_r3_geometry",
+        "status": "ok",
+        "passed": 6,
+        "failed": 0,
+        "ignored": 2,
+        "binary": "target\\debug\\deps\\c21_r3_geometry-1946cccd4305d1d3.exe"
+      },
+      {
+        "package": "tt-vector",
+        "target": "c21_r4_closure",
+        "status": "ok",
+        "passed": 4,
+        "failed": 0,
+        "ignored": 0,
+        "binary": "target\\debug\\deps\\c21_r4_closure-aeecf8decf1dc085.exe"
+      },
+      {
+        "package": "tt-vector",
+        "target": "c21_worst_case",
+        "status": "ok",
+        "passed": 1,
+        "failed": 0,
+        "ignored": 2,
+        "binary": "target\\debug\\deps\\c21_worst_case-00318af038293c67.exe"
+      },
+      {
+        "package": "tt-vector",
+        "target": "c22_bridges",
+        "status": "ok",
+        "passed": 1,
+        "failed": 0,
+        "ignored": 0,
+        "binary": "target\\debug\\deps\\c22_bridges-2fbc3d94dc27f4a3.exe"
+      },
+      {
+        "package": "tt-vector",
+        "target": "c22_exact_overlap",
+        "status": "ok",
+        "passed": 1,
+        "failed": 0,
+        "ignored": 0,
+        "binary": "target\\debug\\deps\\c22_exact_overlap-4969fc3afdeb47b8.exe"
+      },
+      {
+        "package": "tt-vector",
+        "target": "c22_planar",
+        "status": "ok",
+        "passed": 11,
+        "failed": 0,
+        "ignored": 0,
+        "binary": "target\\debug\\deps\\c22_planar-f44ae6bd94ebf273.exe"
+      },
+      {
+        "package": "tt-vector",
+        "target": "c22_properties",
+        "status": "ok",
+        "passed": 3,
+        "failed": 0,
+        "ignored": 0,
+        "binary": "target\\debug\\deps\\c22_properties-ef842601f643b6d9.exe"
+      },
+      {
+        "package": "tt-vector",
+        "target": "c22_r1_geometry",
+        "status": "ok",
+        "passed": 6,
+        "failed": 0,
+        "ignored": 0,
+        "binary": "target\\debug\\deps\\c22_r1_geometry-e8303a32050c828c.exe"
+      },
+      {
+        "package": "tt-vector",
+        "target": "c22_r2_geometry",
+        "status": "ok",
+        "passed": 9,
+        "failed": 0,
+        "ignored": 0,
+        "binary": "target\\debug\\deps\\c22_r2_geometry-208b96642b8b4609.exe"
+      },
+      {
+        "package": "tt-vector",
+        "target": "c22_r3_geometry",
+        "status": "ok",
+        "passed": 5,
+        "failed": 0,
+        "ignored": 0,
+        "binary": "target\\debug\\deps\\c22_r3_geometry-cdd9eb41deb33df5.exe"
+      },
+      {
+        "package": "tt-vector",
+        "target": "c22_r4_closure",
+        "status": "ok",
+        "passed": 2,
+        "failed": 0,
+        "ignored": 0,
+        "binary": "target\\debug\\deps\\c22_r4_closure-fe15c86b8029f2b4.exe"
+      },
+      {
+        "package": "tt-vector",
+        "target": "c22_settle",
+        "status": "ok",
+        "passed": 4,
+        "failed": 0,
+        "ignored": 0,
+        "binary": "target\\debug\\deps\\c22_settle-7e64a089faa6ec4b.exe"
+      },
+      {
+        "package": "tt-vector",
+        "target": "c22_worst_case",
+        "status": "ok",
+        "passed": 0,
+        "failed": 0,
+        "ignored": 1,
+        "binary": "target\\debug\\deps\\c22_worst_case-54f64e079cde0c5e.exe"
+      },
+      {
+        "package": "tt-vector",
+        "target": "c23_predicates",
+        "status": "ok",
+        "passed": 3,
+        "failed": 0,
+        "ignored": 0,
+        "binary": "target\\debug\\deps\\c23_predicates-5f534a1654b8f527.exe"
+      },
+      {
+        "package": "tt-vector",
+        "target": "c23_r1_geometry",
+        "status": "ok",
+        "passed": 3,
+        "failed": 0,
+        "ignored": 0,
+        "binary": "target\\debug\\deps\\c23_r1_geometry-d4a5309f7254e9c1.exe"
+      },
+      {
+        "package": "tt-vector",
+        "target": "c23_r2_predicates",
+        "status": "ok",
+        "passed": 2,
+        "failed": 0,
+        "ignored": 0,
+        "binary": "target\\debug\\deps\\c23_r2_predicates-314c3e8cf51a3967.exe"
+      },
+      {
+        "package": "tt-vector",
+        "target": "c23_r2_smooth",
+        "status": "ok",
+        "passed": 1,
+        "failed": 0,
+        "ignored": 0,
+        "binary": "target\\debug\\deps\\c23_r2_smooth-dacf4ce78d1910c5.exe"
+      },
+      {
+        "package": "tt-vector",
+        "target": "c24_centre",
+        "status": "ok",
+        "passed": 6,
+        "failed": 0,
+        "ignored": 0,
+        "binary": "target\\debug\\deps\\c24_centre-eb46e7efd142bf50.exe"
+      },
+      {
+        "package": "tt-vector",
+        "target": "c24_flatten_phases",
+        "status": "ok",
+        "passed": 0,
+        "failed": 0,
+        "ignored": 1,
+        "binary": "target\\debug\\deps\\c24_flatten_phases-813c7efafcddce2f.exe"
+      },
+      {
+        "package": "tt-vector",
+        "target": "c24_noding_regressions",
+        "status": "ok",
+        "passed": 1,
+        "failed": 0,
+        "ignored": 0,
+        "binary": "target\\debug\\deps\\c24_noding_regressions-18ebcd9eefac059b.exe"
+      },
+      {
+        "package": "tt-vector",
+        "target": "c24_properties",
+        "status": "ok",
+        "passed": 8,
+        "failed": 0,
+        "ignored": 0,
+        "binary": "target\\debug\\deps\\c24_properties-bd787c8f713b6617.exe"
+      },
+      {
+        "package": "tt-vector",
+        "target": "c24_r1_geometry",
+        "status": "ok",
+        "passed": 2,
+        "failed": 0,
+        "ignored": 0,
+        "binary": "target\\debug\\deps\\c24_r1_geometry-de4b344d4fda02f4.exe"
+      },
+      {
+        "package": "tt-vector",
+        "target": "c24_r1_properties",
+        "status": "ok",
+        "passed": 9,
+        "failed": 0,
+        "ignored": 0,
+        "binary": "target\\debug\\deps\\c24_r1_properties-5329c7d209872824.exe"
+      },
+      {
+        "package": "tt-vector",
+        "target": "c24_r2_noding",
+        "status": "ok",
+        "passed": 3,
+        "failed": 0,
+        "ignored": 0,
+        "binary": "target\\debug\\deps\\c24_r2_noding-f401c8ddc288d9f7.exe"
+      },
+      {
+        "package": "tt-vector",
+        "target": "c24_r2_properties",
+        "status": "ok",
+        "passed": 11,
+        "failed": 0,
+        "ignored": 0,
+        "binary": "target\\debug\\deps\\c24_r2_properties-574cdf5b4a4132c2.exe"
+      },
+      {
+        "package": "tt-vector",
+        "target": "c24_r3_noding",
+        "status": "ok",
+        "passed": 1,
+        "failed": 0,
+        "ignored": 0,
+        "binary": "target\\debug\\deps\\c24_r3_noding-63ae8efce44833db.exe"
+      },
+      {
+        "package": "tt-vector",
+        "target": "c24_r3_properties",
+        "status": "ok",
+        "passed": 11,
+        "failed": 0,
+        "ignored": 0,
+        "binary": "target\\debug\\deps\\c24_r3_properties-f9ecee0cd4c80e68.exe"
+      },
+      {
+        "package": "tt-vector",
+        "target": "c24_trace",
+        "status": "ok",
+        "passed": 3,
+        "failed": 0,
+        "ignored": 0,
+        "binary": "target\\debug\\deps\\c24_trace-4220eaf055c186db.exe"
+      },
+      {
+        "package": "tt-vector",
+        "target": "c24_vectorize_unit",
+        "status": "ok",
+        "passed": 7,
+        "failed": 0,
+        "ignored": 0,
+        "binary": "target\\debug\\deps\\c24_vectorize_unit-d6e6f48398e10200.exe"
+      },
+      {
+        "package": "tt-vector",
+        "target": "properties",
+        "status": "ok",
+        "passed": 7,
+        "failed": 0,
+        "ignored": 0,
+        "binary": "target\\debug\\deps\\properties-ea9f66e01f0b95c3.exe"
+      },
+      {
+        "package": "tt-anim",
+        "target": "doc-tests",
+        "status": "ok",
+        "passed": 0,
+        "failed": 0,
+        "ignored": 0,
+        "binary": null
+      },
+      {
+        "package": "tt-audio",
+        "target": "doc-tests",
+        "status": "ok",
+        "passed": 0,
+        "failed": 0,
+        "ignored": 0,
+        "binary": null
+      },
+      {
+        "package": "tt-colour",
+        "target": "doc-tests",
+        "status": "ok",
+        "passed": 0,
+        "failed": 0,
+        "ignored": 0,
+        "binary": null
+      },
+      {
+        "package": "tt-desktop",
+        "target": "doc-tests",
+        "status": "ok",
+        "passed": 0,
+        "failed": 0,
+        "ignored": 0,
+        "binary": null
+      },
+      {
+        "package": "tt-engine",
+        "target": "doc-tests",
+        "status": "ok",
+        "passed": 0,
+        "failed": 0,
+        "ignored": 0,
+        "binary": null
+      },
+      {
+        "package": "tt-executor",
+        "target": "doc-tests",
+        "status": "ok",
+        "passed": 0,
+        "failed": 0,
+        "ignored": 0,
+        "binary": null
+      },
+      {
+        "package": "tt-fx",
+        "target": "doc-tests",
+        "status": "ok",
+        "passed": 0,
+        "failed": 0,
+        "ignored": 0,
+        "binary": null
+      },
+      {
+        "package": "tt-io",
+        "target": "doc-tests",
+        "status": "ok",
+        "passed": 0,
+        "failed": 0,
+        "ignored": 0,
+        "binary": null
+      },
+      {
+        "package": "tt-lipsync",
+        "target": "doc-tests",
+        "status": "ok",
+        "passed": 0,
+        "failed": 0,
+        "ignored": 0,
+        "binary": null
+      },
+      {
+        "package": "tt-mcp",
+        "target": "doc-tests",
+        "status": "ok",
+        "passed": 0,
+        "failed": 0,
+        "ignored": 0,
+        "binary": null
+      },
+      {
+        "package": "tt-model",
+        "target": "doc-tests",
+        "status": "ok",
+        "passed": 0,
+        "failed": 0,
+        "ignored": 0,
+        "binary": null
+      },
+      {
+        "package": "tt-persist",
+        "target": "doc-tests",
+        "status": "ok",
+        "passed": 0,
+        "failed": 0,
+        "ignored": 0,
+        "binary": null
+      },
+      {
+        "package": "tt-registry",
+        "target": "doc-tests",
+        "status": "ok",
+        "passed": 0,
+        "failed": 0,
+        "ignored": 0,
+        "binary": null
+      },
+      {
+        "package": "tt-registry-macros",
+        "target": "doc-tests",
+        "status": "ok",
+        "passed": 0,
+        "failed": 0,
+        "ignored": 0,
+        "binary": null
+      },
+      {
+        "package": "tt-render",
+        "target": "doc-tests",
+        "status": "ok",
+        "passed": 0,
+        "failed": 0,
+        "ignored": 0,
+        "binary": null
+      },
+      {
+        "package": "tt-vector",
+        "target": "doc-tests",
+        "status": "ok",
+        "passed": 0,
+        "failed": 0,
+        "ignored": 0,
+        "binary": null
+      }
+    ],
+    "failedTests": [
+      {
+        "package": "tt-executor",
+        "target": "c23_r3_cancellation",
+        "test": "cancellation_during_running_queued_call_batch_and_planar_settle",
+        "binary": "target\\debug\\deps\\c23_r3_cancellation-1b132f8290ae99b0.exe"
+      },
+      {
+        "package": "tt-executor",
+        "target": "c23_r4_closure",
+        "test": "cancelled_session_document_and_prefs_batch_exports_nothing",
+        "binary": "target\\debug\\deps\\c23_r4_closure-c77b8244902aad17.exe"
+      },
+      {
+        "package": "tt-executor",
+        "target": "c23_r4_closure",
+        "test": "queued_point_and_prefs_calls_timeout_without_late_changes",
+        "binary": "target\\debug\\deps\\c23_r4_closure-c77b8244902aad17.exe"
+      },
+      {
+        "package": "tt-executor",
+        "target": "c23_r4_closure",
+        "test": "nonempty_selection_is_preserved_and_success_emits_once",
+        "binary": "target\\debug\\deps\\c23_r4_closure-c77b8244902aad17.exe"
+      },
+      {
+        "package": "tt-executor",
+        "target": "c31_r2_persistence",
+        "test": "r04_binary_entry_collision_must_not_replace_copied_art_with_destination_bytes",
+        "binary": "target\\debug\\deps\\c31_r2_persistence-39fe6d2a38e7d69e.exe"
+      },
+      {
+        "package": "tt-executor",
+        "target": "c31_r2_variants",
+        "test": "r03_rfc_test_must_observe_the_preceding_delegated_write",
+        "binary": "target\\debug\\deps\\c31_r2_variants-a237a9cb30450c07.exe"
+      },
+      {
+        "package": "tt-executor",
+        "target": "c31_r2_variants",
+        "test": "r16_image_lock_rfc_copy_must_use_the_same_kind_refusal",
+        "binary": "target\\debug\\deps\\c31_r2_variants-a237a9cb30450c07.exe"
+      },
+      {
+        "package": "tt-executor",
+        "target": "c31_r2_variants",
+        "test": "r03_rfc_copy_to_visibility_has_the_owning_command_consequence",
+        "binary": "target\\debug\\deps\\c31_r2_variants-a237a9cb30450c07.exe"
+      },
+      {
+        "package": "tt-executor",
+        "target": "c31_r2_variants",
+        "test": "r08_max_length_effect_name_keeps_required_derived_rows_valid",
+        "binary": "target\\debug\\deps\\c31_r2_variants-a237a9cb30450c07.exe"
+      },
+      {
+        "package": "tt-executor",
+        "target": "c31_r2_variants",
+        "test": "r08_generic_new_drawing_copy_name_fits_64_characters",
+        "binary": "target\\debug\\deps\\c31_r2_variants-a237a9cb30450c07.exe"
+      },
+      {
+        "package": "tt-executor",
+        "target": "c31_r2_variants",
+        "test": "r05_generic_cut_special_retimes_remaining_notes",
+        "binary": "target\\debug\\deps\\c31_r2_variants-a237a9cb30450c07.exe"
+      },
+      {
+        "package": "tt-executor",
+        "target": "c31_r2_variants",
+        "test": "r05_generic_cut_clears_notes_and_retimes_remaining_notes",
+        "binary": "target\\debug\\deps\\c31_r2_variants-a237a9cb30450c07.exe"
+      },
+      {
+        "package": "tt-executor",
+        "target": "c31_r2_variants",
+        "test": "r04_generic_bridge_refuses_image_cells_into_vector_column",
+        "binary": "target\\debug\\deps\\c31_r2_variants-a237a9cb30450c07.exe"
+      }
+    ]
+  },
+  "round1Proving": {
+    "groups": [
+      {
+        "package": "tt-anim",
+        "target": "c31_r1_hierarchy",
+        "status": "ok",
+        "passed": 2,
+        "failed": 0,
+        "ignored": 0,
+        "binary": "target\\debug\\deps\\c31_r1_hierarchy-348c08c17aa1a5b4.exe"
+      },
+      {
+        "package": "tt-anim",
+        "target": "c31_r1_oracle",
+        "status": "ok",
+        "passed": 11,
+        "failed": 0,
+        "ignored": 0,
+        "binary": "target\\debug\\deps\\c31_r1_oracle-28dde8194e5bf9a2.exe"
+      },
+      {
+        "package": "tt-executor",
+        "target": "c31_r1_availability",
+        "status": "ok",
+        "passed": 1,
+        "failed": 0,
+        "ignored": 0,
+        "binary": "target\\debug\\deps\\c31_r1_availability-3bdbf63e45e24a97.exe"
+      },
+      {
+        "package": "tt-executor",
+        "target": "c31_r1_contract",
+        "status": "ok",
+        "passed": 28,
+        "failed": 0,
+        "ignored": 0,
+        "binary": "target\\debug\\deps\\c31_r1_contract-3c4f3b2ca29ce9e8.exe"
+      },
+      {
+        "package": "tt-executor",
+        "target": "c31_r1_copy_settle",
+        "status": "ok",
+        "passed": 1,
+        "failed": 0,
+        "ignored": 0,
+        "binary": "target\\debug\\deps\\c31_r1_copy_settle-a87a1ba6382d2d1c.exe"
+      },
+      {
+        "package": "tt-executor",
+        "target": "c31_r1_model_diff",
+        "status": "ok",
+        "passed": 2,
+        "failed": 0,
+        "ignored": 0,
+        "binary": "target\\debug\\deps\\c31_r1_model_diff-535936c9dd8eb4f9.exe"
+      },
+      {
+        "package": "tt-executor",
+        "target": "c31_r1_mutations",
+        "status": "ok",
+        "passed": 1,
+        "failed": 0,
+        "ignored": 0,
+        "binary": "target\\debug\\deps\\c31_r1_mutations-3c43aeac59dca2a2.exe"
+      },
+      {
+        "package": "tt-executor",
+        "target": "c31_r1_notes",
+        "status": "ok",
+        "passed": 1,
+        "failed": 0,
+        "ignored": 0,
+        "binary": "target\\debug\\deps\\c31_r1_notes-a95dc43f0ee8656b.exe"
+      },
+      {
+        "package": "tt-executor",
+        "target": "c31_r1_selection_budget",
+        "status": "ok",
+        "passed": 1,
+        "failed": 0,
+        "ignored": 0,
+        "binary": "target\\debug\\deps\\c31_r1_selection_budget-05f72c5a9a67a566.exe"
+      },
+      {
+        "package": "tt-mcp",
+        "target": "c31_r1_protocol",
+        "status": "ok",
+        "passed": 3,
+        "failed": 0,
+        "ignored": 0,
+        "binary": "target\\debug\\deps\\c31_r1_protocol-0af4d7b6f68ec339.exe"
+      }
+    ],
+    "passed": 51,
+    "failed": 0,
+    "ignored": 0
+  },
+  "round2DiscoveredByWorkspace": {
+    "groups": [
+      {
+        "package": "tt-anim",
+        "target": "c31_r2_variants",
+        "status": "ok",
+        "passed": 3,
+        "failed": 0,
+        "ignored": 0,
+        "binary": "target\\debug\\deps\\c31_r2_variants-e1d35c61c6b7cee5.exe"
+      },
+      {
+        "package": "tt-executor",
+        "target": "c31_r2_cancellation",
+        "status": "ok",
+        "passed": 2,
+        "failed": 0,
+        "ignored": 0,
+        "binary": "target\\debug\\deps\\c31_r2_cancellation-3ef4252ebabc57ba.exe"
+      },
+      {
+        "package": "tt-executor",
+        "target": "c31_r2_persistence",
+        "status": "FAILED",
+        "passed": 2,
+        "failed": 1,
+        "ignored": 0,
+        "binary": "target\\debug\\deps\\c31_r2_persistence-39fe6d2a38e7d69e.exe"
+      },
+      {
+        "package": "tt-executor",
+        "target": "c31_r2_variants",
+        "status": "FAILED",
+        "passed": 13,
+        "failed": 8,
+        "ignored": 0,
+        "binary": "target\\debug\\deps\\c31_r2_variants-a237a9cb30450c07.exe"
+      },
+      {
+        "package": "tt-mcp",
+        "target": "c31_r2_protocol",
+        "status": "ok",
+        "passed": 1,
+        "failed": 0,
+        "ignored": 0,
+        "binary": "target\\debug\\deps\\c31_r2_protocol-4fb58380df9a1f98.exe"
+      }
+    ],
+    "passed": 21,
+    "failed": 9,
+    "ignored": 0
+  },
+  "lateNotesBoundary": {
+    "command": "cargo test -p tt-executor --locked -j 4 --test c31_r2_notes_boundary",
+    "exit": 101,
+    "receipt": "notes-boundary.txt",
+    "passed": 0,
+    "failed": 1,
+    "ignored": 0,
+    "reason": "A note-only frame-cap loss was found through the official SDK while the final workspace run was completing; this target was authored after workspace discovery and run separately. No second workspace run was started."
+  },
+  "latestIndependentTotals": {
+    "passed": 21,
+    "failed": 10,
+    "ignored": 0,
+    "total": 31
+  },
+  "inheritedIsolation": [
+    {
+      "target": "c23_r3_cancellation",
+      "binary": "C:\\Users\\kaiga\\work\\review\\m3-c31-r2\\target\\debug\\deps\\c23_r3_cancellation-1b132f8290ae99b0.exe",
+      "binarySha256": "b52b69a2b8ec8329391cd22b85f472b3ee14f14d80cd0e7bb1b513d3d8e65c09",
+      "exit": 0,
+      "receipt": "c23_r3_cancellation-isolated.txt"
+    },
+    {
+      "target": "c23_r4_closure",
+      "binary": "C:\\Users\\kaiga\\work\\review\\m3-c31-r2\\target\\debug\\deps\\c23_r4_closure-c77b8244902aad17.exe",
+      "binarySha256": "f86aec08b08ee724099d1030e1e0053543d52da60c12865f6172300166ea590d",
+      "exit": 0,
+      "receipt": "c23_r4_closure-isolated.txt"
+    }
+  ],
+  "canonicalPythonSuites": {
+    "passed": 46,
+    "failed": 0,
+    "receipt": "canonical-python-verified.txt"
+  },
+  "verdict": "block",
+  "findings": {
+    "P0": 0,
+    "P1": 6,
+    "P2": 0
+  },
+  "notes": "The full run retains four inherited timing/poison failures plus nine finding assertions. All four inherited tests pass when the exact same compiled workspace binaries are run alone. The late boundary assertion is a tenth retained finding reproduction."
+}

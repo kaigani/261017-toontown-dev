@@ -1,0 +1,619 @@
+diff --git a/crates/anim/src/tcb.rs b/crates/anim/src/tcb.rs
+index ecee8e4..3cfdea5 100644
+--- a/crates/anim/src/tcb.rs
++++ b/crates/anim/src/tcb.rs
+@@ -19,6 +19,12 @@ pub const PASSAGE_TOLERANCE: f64 = 1e-4;
+ /// when the midpoint is no longer strictly inside the bracket (ADR-0019).
+ pub const PASSAGE_MAX_ITERATIONS: u32 = 64;
+ 
++/// Relative tolerance of a touch: a candidate frame (a node or an extremum of the velocity curve) whose value is within
++/// `PASSAGE_TOUCH · max(1, |arc|)` below the arc reaches it. An extremum that equals the arc exactly (a tangent touch)
++/// evaluates one rounding error below it in doubles; without this the touch is missed and the later crossing reported
++/// (found by the 4096-case passage property in M3 C3.4 round 3: a maximum of exactly 0.9 at frame 3 reported 3.6).
++pub const PASSAGE_TOUCH: f64 = 1e-12;
++
+ /// A tangent below this length has no direction (05 §8.3).
+ pub const MIN_TANGENT: f64 = 1e-9;
+ 
+@@ -348,9 +354,10 @@ impl Velocity {
+         }
+         candidates.push(f1);
+         let (mut lo, mut hi) = (f0, f1);
++        let touch = PASSAGE_TOUCH * arc.abs().max(1.0);
+         for f in candidates.into_iter().skip(1) {
+             spend(1)?;
+-            if self.value(path, f) >= arc {
++            if self.value(path, f) >= arc - touch {
+                 hi = f;
+                 break;
+             }
+diff --git a/crates/executor/src/lib.rs b/crates/executor/src/lib.rs
+index b51b33a..4a50f24 100644
+--- a/crates/executor/src/lib.rs
++++ b/crates/executor/src/lib.rs
+@@ -124,7 +124,7 @@ enum Request {
+     Run(Box<dyn FnOnce(&mut run::Core) + Send>),
+     /// A caller's request with its cancellation token, allocated before enqueueing (C23-R2-01), and the link to a caller
+     /// that can cancel it (the worker asks it directly at its boundaries; C34-R2-01).
+-    Tagged(u64, Option<Sender<CallerMsg>>, Box<Request>),
++    Tagged(u64, Option<CallerLink>, Box<Request>),
+     /// Background maintenance: autosave, heartbeats, external-change detection.
+     Tick,
+     /// Maintenance now (forcing autosave or not), answered after its events are delivered.
+@@ -310,7 +310,7 @@ impl ExecutorHandle {
+         std::thread::Builder::new()
+             .name("tt-document".to_owned())
+             .spawn(move || {
+-                document_thread(run::Core::new(registry, session, budget), &rx, &subs, &worker_cancel);
++                document_thread(run::Core::new(registry, session, budget), &rx, &subs, &worker_cancel, budget);
+                 let _ = done_tx.send(());
+             })
+             .map_err(|e| CommandError::internal(format!("cannot start the document thread: {e}")))?;
+@@ -379,7 +379,9 @@ impl ExecutorHandle {
+     /// - the worker asks the caller directly, through a link, at dequeue, before each invocation or batch step, and at
+     ///   each acceptance and commit check, so once the cancellation is observable no later boundary is passed;
+     /// - the caller also marks the call's watchdog token when it sees the cancellation (polled every [`CANCEL_POLL`]),
+-    ///   which stops work-account checks and wakes waits.
++    ///   which stops work-account checks and wakes waits;
++    /// - each question is bounded ([`ask_bound`]); a caller that does not answer in time is taken as not cancelled at
++    ///   that boundary and is not asked again for this request (C34-R3-01).
+     fn call_until<T>(
+         &self,
+         what: &str,
+@@ -403,8 +405,8 @@ impl ExecutorHandle {
+     ) -> Result<T, CommandError> {
+         let (reply, rx) = mpsc::channel();
+         let (asks, questions) = mpsc::channel::<CallerMsg>();
+-        let direct = matches!(link, Link::Direct);
+-        let link = direct.then_some(asks);
++        let linked = !matches!(link, Link::None);
++        let link = linked.then_some(CallerLink { tx: asks, ask: matches!(link, Link::Direct) });
+         // The token travels with the request: a timeout cancels exactly this request, queued or running (C23-R2-01).
+         let token = self.cancel.token();
+         self.tx.send(Request::Tagged(token, link, Box::new(make(reply)))).map_err(|_| stopped())?;
+@@ -412,19 +414,10 @@ impl ExecutorHandle {
+         let mut marked = false;
+         // While the worker holds the link, the caller waits on it (questions, a discard notice, or its release right
+         // after the reply); otherwise on the reply itself.
+-        let mut link_open = direct;
++        let mut link_open = linked;
+         loop {
+-            match rx.try_recv() {
+-                Ok(v) => return Ok(v),
+-                Err(mpsc::TryRecvError::Disconnected) => {
+-                    // The worker dropped the request without answering: a request it discarded because it was
+-                    // cancelled (marked here, or the caller said so at dequeue) is an honest cancellation; anything
+-                    // else is a worker that stopped (C34-R2-04).
+-                    let discarded = questions.try_iter().any(|m| matches!(m, CallerMsg::Discarded));
+-                    return Err(if discarded || marked { request_cancelled_error(what) } else { stopped() });
+-                }
+-                Err(mpsc::TryRecvError::Empty) => {}
+-            }
++            // The watchdog first: a caller held past its budget (inside its own probe, say) answers the timeout even if
++            // the reply has arrived meanwhile; a commit that happened stands and is remembered under its `requestId`.
+             let left = deadline.saturating_duration_since(std::time::Instant::now());
+             if left.is_zero() {
+                 // Queued: the worker drops it at dequeue. Running: it stops at its next work-account check and before
+@@ -432,13 +425,24 @@ impl ExecutorHandle {
+                 self.cancel.mark(token);
+                 return Err(timeout(what, self.config.budget));
+             }
++            match rx.try_recv() {
++                Ok(v) => return Ok(v),
++                Err(mpsc::TryRecvError::Disconnected) => {
++                    // The worker dropped the request without answering. Only its positive notice that it discarded a
++                    // cancelled request makes that a cancellation; a marked token alone proves nothing, and anything
++                    // else is a worker that stopped (C34-R2-04, C34-R3-03).
++                    let discarded = questions.try_iter().any(|m| matches!(m, CallerMsg::Discarded));
++                    return Err(if discarded { request_cancelled_error(what) } else { stopped() });
++                }
++                Err(mpsc::TryRecvError::Empty) => {}
++            }
+             let wait = left.min(CANCEL_POLL);
+             if link_open {
+                 match questions.recv_timeout(wait) {
+                     Ok(CallerMsg::Ask(answer)) => {
+                         let c = cancelled();
+                         if c && !marked {
+-                            self.cancel.mark(token);
++                            self.cancel.mark_cancelled(token);
+                             marked = true;
+                         }
+                         let _ = answer.send(c);
+@@ -457,13 +461,13 @@ impl ExecutorHandle {
+                     Ok(v) => return Ok(v),
+                     Err(RecvTimeoutError::Disconnected) => {
+                         let discarded = questions.try_iter().any(|m| matches!(m, CallerMsg::Discarded));
+-                        return Err(if discarded || marked { request_cancelled_error(what) } else { stopped() });
++                        return Err(if discarded { request_cancelled_error(what) } else { stopped() });
+                     }
+                     Err(RecvTimeoutError::Timeout) => {}
+                 }
+             }
+             if !marked && cancelled() {
+-                self.cancel.mark(token);
++                self.cancel.mark_cancelled(token);
+                 marked = true;
+             }
+         }
+@@ -504,7 +508,7 @@ impl ExecutorHandle {
+     /// executed nothing (C14-R2-03; the envelope is the remembered one, identical to the first answer).
+     #[must_use]
+     pub fn invoke_served(&self, inv: Invocation) -> (Envelope, bool) {
+-        self.invoke_served_until(inv, &not_cancelled)
++        self.serve(inv, None)
+     }
+ 
+     /// [`ExecutorHandle::invoke_served`] for a caller that can cancel its request (an MCP request the client cancelled,
+@@ -513,18 +517,26 @@ impl ExecutorHandle {
+     /// (`job.list`, `job.wait`, `job.cancel`; ADR-0020 decision 8).
+     #[must_use]
+     pub fn invoke_served_until(&self, inv: Invocation, cancelled: Cancelled<'_>) -> (Envelope, bool) {
++        self.serve(inv, Some(cancelled))
++    }
++
++    /// One command, with the caller's cancellation probe or none. Without a probe the call carries no link and costs no
++    /// question (C34-R3-01).
++    fn serve(&self, inv: Invocation, probe: Option<Cancelled<'_>>) -> (Envelope, bool) {
++        let cancelled = probe.unwrap_or(&not_cancelled);
+         if inv.command == "job.wait" {
+             return (self.job_wait_until(inv, cancelled), false);
+         }
+         let what = inv.command.clone();
+         let params = inv.params.clone();
+-        // A query changes nothing: it is not refused before it begins and the worker does not ask its caller; a
+-        // cancellation marks its token, which stops it at its next work-account check (ADR-0020 decision 8).
++        // A query changes nothing: it is not refused before it begins and the worker never asks its caller; a
++        // cancellation marks its token, which stops it at its next work-account check, and a link carries only the
++        // notice that it was discarded (ADR-0020 decision 8).
+         let query = self.registry.get(&what).is_some_and(|e| e.spec.kind == tt_registry::Kind::Query);
+-        let called = if query {
+-            self.call_with(&what, |r| Request::Invoke(inv, r), cancelled, Link::None)
+-        } else {
+-            self.call_until(&what, |r| Request::Invoke(inv, r), cancelled)
++        let called = match probe {
++            None => self.call(&what, |r| Request::Invoke(inv, r)),
++            Some(_) if query => self.call_with(&what, |r| Request::Invoke(inv, r), cancelled, Link::Notify),
++            Some(c) => self.call_until(&what, |r| Request::Invoke(inv, r), c),
+         };
+         let (env, cached) = called.unwrap_or_else(|e| (Envelope::error(e, None), false));
+         (self.waited(&params, env, cancelled), cached)
+@@ -533,7 +545,7 @@ impl ExecutorHandle {
+     /// Runs a batch (11 §7.3).
+     #[must_use]
+     pub fn batch(&self, req: BatchRequest, origin: Origin) -> Envelope {
+-        self.batch_until(req, origin, &not_cancelled)
++        self.call("batch", |r| Request::Batch(req, origin, r)).unwrap_or_else(|e| Envelope::error(e, None))
+     }
+ 
+     /// [`ExecutorHandle::batch`] for a caller that can cancel its request: once `cancelled` holds, the step running
+@@ -615,7 +627,11 @@ impl ExecutorHandle {
+     /// Runs one agent batch and appends its activity entry (one for the batch; 11 §11 groups by batch).
+     #[must_use]
+     pub fn batch_audited(&self, req: BatchRequest, origin: Origin, tool: &str) -> Envelope {
+-        self.batch_audited_until(req, origin, tool, &not_cancelled)
++        let started = std::time::Instant::now();
++        let params = serde_json::to_value(&req).unwrap_or(Value::Null);
++        let env = self.batch(req, origin.clone());
++        self.audit_call(&origin, tool, "batch", &params, &env, started.elapsed());
++        env
+     }
+ 
+     /// [`ExecutorHandle::batch_audited`] for a caller that can cancel its request ([`ExecutorHandle::batch_until`]).
+@@ -799,7 +815,9 @@ fn document_thread(
+     rx: &Receiver<Request>,
+     subscribers: &Mutex<Vec<Sender<Event>>>,
+     cancel: &Arc<tt_vector::work::CancelState>,
++    budget: Duration,
+ ) {
++    let bound = ask_bound(budget);
+     // A call's events are broadcast before its reply is sent, so a subscriber has them when the caller has the result.
+     let flush = |core: &mut run::Core| broadcast(subscribers, &core.take_events());
+     tt_vector::work::set_cancel_state(Some(cancel.clone()));
+@@ -810,15 +828,24 @@ fn document_thread(
+         };
+         // A request whose caller already timed out never begins (C23-R2-01), nor one whose caller says at dequeue that
+         // it cancelled (C34-R2-01); that caller is told it was discarded, not that the worker stopped (C34-R2-04).
+-        if token != 0 && (cancel.is_cancelled(token) || caller::asks(link.as_ref())) {
++        caller::set(link.clone(), bound);
++        // A probed query (a notice-only link) is not discarded for its caller's cancellation: it changes nothing and
++        // stops at its next work-account check; a timed-out caller's request is discarded whatever it is.
++        let query = link.as_ref().is_some_and(|l| !l.ask);
++        let marked = match cancel.cause(token) {
++            Some(tt_vector::work::Cause::Cancelled) => !query,
++            Some(tt_vector::work::Cause::Timeout) => true,
++            None => false,
++        };
++        if token != 0 && (marked || caller::cancelled()) {
+             if let Some(l) = &link {
+-                let _ = l.send(CallerMsg::Discarded);
++                let _ = l.tx.send(CallerMsg::Discarded);
+             }
++            caller::set(None, bound);
+             cancel.forget(token);
+             continue;
+         }
+         cancel.current.store(token, std::sync::atomic::Ordering::Release);
+-        caller::set(link.clone());
+         let shutdown = matches!(req, Request::Shutdown);
+         match req {
+             Request::Invoke(inv, reply) => {
+@@ -868,7 +895,7 @@ fn document_thread(
+             Request::Shutdown | Request::Tagged(..) => {}
+         }
+         // The link is released only after the reply was sent, so a caller woken by its release finds the reply.
+-        caller::set(None);
++        caller::set(None, bound);
+         drop(link);
+         cancel.current.store(0, std::sync::atomic::Ordering::Release);
+         if token != 0 {
+@@ -1032,13 +1059,23 @@ pub(crate) fn wait_sliced(
+     }
+ }
+ 
+-/// Whether a call carries a link to its caller (a caller that can cancel a request that may change something).
++/// Whether a call carries a link to its caller: none (no probe), a notice-only link (a probed query: the worker never
++/// asks, but tells the caller when it discards the request), or a link the worker asks (C34-R2-01, C34-R3-01).
+ #[derive(Clone, Copy)]
+ enum Link {
+     None,
++    Notify,
+     Direct,
+ }
+ 
++/// The link a request carries to its caller.
++#[derive(Clone)]
++struct CallerLink {
++    tx: Sender<CallerMsg>,
++    /// Whether the worker asks this caller at its boundaries.
++    ask: bool,
++}
++
+ /// What the worker sends a cancellable caller (C34-R2-01, C34-R2-04).
+ enum CallerMsg {
+     /// "Is the request cancelled?": the caller answers its probe at once.
+@@ -1047,48 +1084,107 @@ enum CallerMsg {
+     Discarded,
+ }
+ 
++/// The longest the document thread waits for one answer of a caller's probe (C34-R3-01).
++pub const ASK_BOUND_MAX: Duration = Duration::from_millis(250);
++
++/// One question's bound: [`ASK_BOUND_MAX`] or a quarter of the watchdog budget, whichever is smaller.
++#[must_use]
++pub fn ask_bound(budget: Duration) -> Duration {
++    ASK_BOUND_MAX.min(budget / 4)
++}
++
+ /// The link to the caller of the request the document thread is running.
+ mod caller {
+-    use std::cell::RefCell;
+-    use std::sync::mpsc::{self, Sender};
++    use std::cell::{Cell, RefCell};
++    use std::sync::mpsc::{self, RecvTimeoutError};
+     use std::time::Duration;
+ 
+-    use super::CallerMsg;
++    use super::{CallerLink, CallerMsg};
+ 
+     thread_local! {
+-        static LINK: RefCell<Option<Sender<CallerMsg>>> = const { RefCell::new(None) };
++        static LINK: RefCell<Option<CallerLink>> = const { RefCell::new(None) };
++        static BOUND: Cell<Duration> = const { Cell::new(Duration::ZERO) };
++        /// Latched when the caller did not answer in time: it is asked nothing more for this request.
++        static UNRESPONSIVE: Cell<bool> = const { Cell::new(false) };
+     }
+ 
+-    /// How long the worker waits for its caller's answer before treating the request as cancelled (the caller answers at
+-    /// once while it waits; it is gone only after its watchdog budget, when the token is marked anyway).
+-    const ANSWER: Duration = Duration::from_secs(5);
+-
+-    pub(super) fn set(link: Option<Sender<CallerMsg>>) {
++    /// The running request's link (or none) and the bound of one question.
++    pub(super) fn set(link: Option<CallerLink>, bound: Duration) {
+         LINK.with(|l| *l.borrow_mut() = link);
++        BOUND.with(|b| b.set(bound));
++        UNRESPONSIVE.with(|u| u.set(false));
+     }
+ 
+-    /// Asks `link`'s caller whether it cancelled the request: `false` without a link.
+-    pub(super) fn asks(link: Option<&Sender<CallerMsg>>) -> bool {
+-        let Some(link) = link else { return false };
++    /// Whether the running request carries a notice-only link (a probed standalone query).
++    pub(super) fn notice_only() -> bool {
++        LINK.with(|l| l.borrow().as_ref().is_some_and(|link| !link.ask))
++    }
++
++    /// Asks the caller of the running request whether it cancelled. No link, a notice-only link or a caller that once
++    /// failed to answer in time: `false` without asking. An answer within the bound: that answer. Silence: `false`
++    /// (the request proceeds as not cancelled; a cancellation seen late is like a commit that got there first) and the
++    /// link is latched. A caller that is gone: `true` (C34-R3-01).
++    pub(super) fn cancelled() -> bool {
++        let Some(link) = LINK.with(|l| l.borrow().clone()) else { return false };
++        if !link.ask || UNRESPONSIVE.with(Cell::get) {
++            return false;
++        }
++        tt_vector::work::note_ask();
+         let (tx, rx) = mpsc::channel();
+-        if link.send(CallerMsg::Ask(tx)).is_err() {
++        if link.tx.send(CallerMsg::Ask(tx)).is_err() {
+             return true;
+         }
+-        rx.recv_timeout(ANSWER).unwrap_or(true)
++        match rx.recv_timeout(BOUND.with(Cell::get)) {
++            Ok(answer) => answer,
++            Err(RecvTimeoutError::Timeout) => {
++                UNRESPONSIVE.with(|u| u.set(true));
++                false
++            }
++            Err(RecvTimeoutError::Disconnected) => true,
++        }
+     }
++}
+ 
+-    /// Asks the caller of the running request.
+-    pub(super) fn cancelled() -> bool {
+-        let link = LINK.with(|l| l.borrow().clone());
+-        asks(link.as_ref())
+-    }
++/// Why the request the document thread is running is cancelled, if it is: its watchdog token's cause (a timed-out
++/// caller, or a cancelling caller's mark), else its caller's answer when asked (ADR-0020 decision 8; C34-R3-02).
++pub(crate) fn cancellation() -> Option<tt_vector::work::Cause> {
++    tt_vector::work::cancel_cause().or_else(|| caller::cancelled().then_some(tt_vector::work::Cause::Cancelled))
++}
++
++/// Whether the running request is a probed standalone query (its link carries notices only).
++pub(crate) fn notice_only_link() -> bool {
++    caller::notice_only()
+ }
+ 
+-/// Whether the request the document thread is running is cancelled: its watchdog token is marked (a timed-out
+-/// caller, or a cancelling caller's poll), or its caller says so when asked (ADR-0020 decision 8). Consulted at every
++/// Whether the request the document thread is running is cancelled ([`cancellation`]). Consulted at every
+ /// invocation's and batch step's start, at acceptance and before commit, and by waits on the document thread.
+ pub(crate) fn request_cancelled() -> bool {
+-    tt_vector::work::cancel_requested() || caller::cancelled()
++    cancellation().is_some()
++}
++
++/// Labels a refusal of the running request whose cause is its caller's cancellation, wherever it was refused (a
++/// work-account check included): `details.reason: "cancelled"` (SI-111). A watchdog timeout is not relabelled.
++pub(crate) fn label_cancellation(env: &mut Envelope) {
++    if tt_vector::work::cancel_cause() != Some(tt_vector::work::Cause::Cancelled) {
++        return;
++    }
++    let label = |e: &mut CommandError| {
++        if e.code == tt_registry::codes::COMMAND_TIMEOUT {
++            if let Some(m) = e.details.as_object_mut() {
++                m.entry("reason").or_insert_with(|| Value::String("cancelled".to_owned()));
++            } else {
++                *e.details = serde_json::json!({ "reason": "cancelled" });
++            }
++        }
++    };
++    if let Some(e) = env.error.as_mut() {
++        label(e);
++    }
++    for step in env.steps.iter_mut().flatten() {
++        if let Some(e) = step.error.as_mut() {
++            label(e);
++        }
++    }
+ }
+ 
+ /// The refusal of a request its caller cancelled (SI-111: `command.timeout`, `details.reason: "cancelled"`).
+diff --git a/crates/executor/src/run.rs b/crates/executor/src/run.rs
+index bc1d181..1a56399 100644
+--- a/crates/executor/src/run.rs
++++ b/crates/executor/src/run.rs
+@@ -573,14 +573,29 @@ fn needs_confirmation(session: &mut Session, e: CommandError, rev: Option<u64>)
+ /// A request whose caller timed out is not accepted (C23-R2-01, C23-R3-01): checked at the acceptance boundary, before
+ /// any session state, document transaction or effect is kept, and again by `commit` before it installs anything.
+ fn cancelled_check(what: &str) -> Result<(), CommandError> {
+-    if crate::request_cancelled() {
+-        return Err(CommandError::with_details(
++    cancelled_check_for(what, false)
++}
++
++/// [`cancelled_check`] for a command that may be a query: a query changes nothing, so its caller's cancellation does
++/// not refuse it at a boundary (it stops at its next work-account check); a timed-out caller's still does
++/// (ADR-0020 decision 8, rule 1).
++fn cancelled_check_for(what: &str, query: bool) -> Result<(), CommandError> {
++    match crate::cancellation() {
++        None => Ok(()),
++        Some(tt_vector::work::Cause::Cancelled) if query => Ok(()),
++        // The caller cancelled its request (SI-111).
++        Some(tt_vector::work::Cause::Cancelled) => Err(CommandError::with_details(
++            tt_registry::codes::COMMAND_TIMEOUT,
++            format!("`{what}` was cancelled by its caller"),
++            serde_json::json!({ "commandId": what, "reason": "cancelled" }),
++        )),
++        // The caller's watchdog budget passed (never relabelled as a cancellation; C34-R3-02).
++        Some(tt_vector::work::Cause::Timeout) => Err(CommandError::with_details(
+             tt_registry::codes::COMMAND_TIMEOUT,
+-            format!("`{what}` was cancelled: its caller's watchdog budget passed or its caller cancelled the request"),
++            format!("`{what}` was cancelled: its caller's watchdog budget passed"),
+             serde_json::json!({ "commandId": what }),
+-        ));
++        )),
+     }
+-    Ok(())
+ }
+ 
+ /// Commits transactions: installs each stamped snapshot, records undo steps or moves the history position, logs
+@@ -1115,11 +1130,29 @@ impl Core {
+     }
+ 
+     /// One invocation, with `requestId` idempotency (C12-R1-06/22).
++    /// Whether `command` is a query (registry kind): it changes nothing.
++    /// A standalone probed query (a notice-only link): its caller's cancellation does not refuse it at a boundary. A
++    /// query step of a cancelled batch is refused like any later step.
++    fn is_query(&self, command: &str) -> bool {
++        crate::notice_only_link() && self.registry.get(command).is_some_and(|e| e.spec.kind == tt_registry::Kind::Query)
++    }
++
++    /// Whether `command` is a job command (registry kind): its handler starts its job.
++    fn is_job(&self, command: &str) -> bool {
++        self.registry.get(command).is_some_and(|e| e.spec.kind == tt_registry::Kind::Job)
++    }
++
+     pub(crate) fn invoke(&mut self, inv: &Invocation) -> Envelope {
++        let mut env = self.invoke_inner(inv);
++        crate::label_cancellation(&mut env);
++        env
++    }
++
++    fn invoke_inner(&mut self, inv: &Invocation) -> Envelope {
+         self.served_from_cache = false;
+         // Before the handler runs (a job command would start its job) and before its `requestId` is looked up or
+         // remembered: a cancelled request is not run (ADR-0020 decision 8, C34-R2-01).
+-        if let Err(e) = cancelled_check(&inv.command) {
++        if let Err(e) = cancelled_check_for(&inv.command, self.is_query(&inv.command)) {
+             return Envelope::error(e, self.rev());
+         }
+         let Some(id) = inv.options.request_id.clone().filter(|_| !self.simulating) else { return self.run(inv) };
+@@ -1319,6 +1352,12 @@ impl Core {
+ 
+     /// A batch (11 §7.3).
+     pub(crate) fn batch(&mut self, req: &BatchRequest, origin: &Origin) -> Envelope {
++        let mut env = self.batch_inner(req, origin);
++        crate::label_cancellation(&mut env);
++        env
++    }
++
++    fn batch_inner(&mut self, req: &BatchRequest, origin: &Origin) -> Envelope {
+         let resolved = self.effective_origin(origin);
+         let origin = &resolved;
+         if req.steps.is_empty() || req.steps.len() > MAX_BATCH_STEPS {
+@@ -1778,7 +1817,10 @@ impl Core {
+             Effect::Event(ev) if ev.name == "anim.changed" => Some(ev.payload.clone()),
+             _ => None,
+         });
+-        let committed = cancelled_check(command)
++        // A job command's commit is its job's start, which happened in its handler: at acceptance its caller's
++        // cancellation does not refuse it (the job started first and stays the caller's to wait on or cancel; ADR-0020
++        // decision 8, rules 3 and 4). A query is not refused for its caller's cancellation either.
++        let committed = cancelled_check_for(command, self.is_query(command) || self.is_job(command))
+             .and_then(|()| frozen_guard(session, &txns))
+             .and_then(|()| self.write_pending(session, txns.last().map(|t| &t.after), &mut effects))
+             .and_then(|()| commit(session, txns, origin, command, anim.as_ref()));
+diff --git a/crates/vector/src/work.rs b/crates/vector/src/work.rs
+index f0bd4a0..6ce4e0f 100644
+--- a/crates/vector/src/work.rs
++++ b/crates/vector/src/work.rs
+@@ -26,6 +26,18 @@ pub struct CancelState {
+     /// Tokens handed out and not yet forgotten: only these can be marked, so a caller that marks its token after the
+     /// worker forgot it leaves nothing behind (M3 C3.4 round 2).
+     outstanding: std::sync::Mutex<std::collections::BTreeSet<u64>>,
++    /// Marked tokens whose caller cancelled its request (the rest of `queued` timed out): the cause a refusal reports
++    /// (M3 C3.4 round 3, C34-R3-02).
++    by_caller: std::sync::Mutex<std::collections::BTreeSet<u64>>,
++}
++
++/// Why a request's token was marked.
++#[derive(Debug, Clone, Copy, PartialEq, Eq)]
++pub enum Cause {
++    /// Its caller's watchdog budget passed.
++    Timeout,
++    /// Its caller cancelled the request.
++    Cancelled,
+ }
+ 
+ impl CancelState {
+@@ -43,10 +55,33 @@ impl CancelState {
+     /// Marks exactly `token` cancelled: its caller has been answered. Another caller's request is never affected. A
+     /// token the worker already forgot (the request finished) is not marked: nothing would ever forget it again.
+     pub fn mark(&self, token: u64) {
++        self.mark_for(token, Cause::Timeout);
++    }
++
++    /// Marks exactly `token` cancelled because its caller cancelled the request ([`CancelState::mark`] otherwise).
++    pub fn mark_cancelled(&self, token: u64) {
++        self.mark_for(token, Cause::Cancelled);
++    }
++
++    /// Why `token` was marked, if it was.
++    pub fn cause(&self, token: u64) -> Option<Cause> {
++        if !self.is_cancelled(token) {
++            return None;
++        }
++        let by_caller = self.by_caller.lock().is_ok_and(|c| c.contains(&token));
++        Some(if by_caller { Cause::Cancelled } else { Cause::Timeout })
++    }
++
++    fn mark_for(&self, token: u64, cause: Cause) {
+         let Ok(outstanding) = self.outstanding.lock() else { return };
+         if !outstanding.contains(&token) {
+             return;
+         }
++        if cause == Cause::Cancelled
++            && let Ok(mut c) = self.by_caller.lock()
++        {
++            c.insert(token);
++        }
+         if let Ok(mut q) = self.queued.lock()
+             && q.insert(token)
+         {
+@@ -73,6 +108,9 @@ impl CancelState {
+             #[cfg(feature = "test-hooks")]
+             hooks::count_outstanding(-1);
+         }
++        if let Ok(mut c) = self.by_caller.lock() {
++            c.remove(&token);
++        }
+         if let Ok(mut q) = self.queued.lock() {
+             if q.remove(&token) {
+                 #[cfg(feature = "test-hooks")]
+@@ -95,7 +133,27 @@ pub fn set_cancel_state(state: Option<Arc<CancelState>>) {
+ /// Whether the request the calling thread runs has been cancelled by the watchdog.
+ #[must_use]
+ pub fn cancel_requested() -> bool {
+-    CANCEL.with(|c| c.borrow().as_ref().is_some_and(|s| s.is_cancelled(s.current.load(Ordering::Acquire))))
++    cancel_cause().is_some()
++}
++
++/// Why the request the calling thread runs was cancelled, if it was (C34-R3-02).
++#[must_use]
++pub fn cancel_cause() -> Option<Cause> {
++    CANCEL.with(|c| c.borrow().as_ref().and_then(|s| s.cause(s.current.load(Ordering::Acquire))))
++}
++
++/// The `details.reason` of a refusal for the calling thread's cancellation: `"cancelled"` when its caller cancelled
++/// the request (SI-111), none for a watchdog timeout.
++#[must_use]
++pub fn cancel_reason() -> Option<&'static str> {
++    (cancel_cause() == Some(Cause::Cancelled)).then_some("cancelled")
++}
++
++/// Counts one question a worker asks its caller (a no-op unless `test-hooks`; C34-R3-01).
++#[inline]
++pub fn note_ask() {
++    #[cfg(feature = "test-hooks")]
++    hooks::count_ask();
+ }
+ 
+ /// Test hooks (never in products): make every work charge spin, so any work-charging command overruns on demand.
+@@ -126,6 +184,23 @@ pub mod hooks {
+         OUTSTANDING.load(Ordering::Acquire)
+     }
+ 
++    static ASKS: AtomicI64 = AtomicI64::new(0);
++
++    pub(super) fn count_ask() {
++        ASKS.fetch_add(1, Ordering::AcqRel);
++    }
++
++    /// Questions workers asked their callers since the last [`reset_asks`] (C34-R3-01).
++    #[must_use]
++    pub fn asks() -> i64 {
++        ASKS.load(Ordering::Acquire)
++    }
++
++    /// Resets [`asks`].
++    pub fn reset_asks() {
++        ASKS.store(0, Ordering::Release);
++    }
++
+     static SPIN_MICROS: AtomicU64 = AtomicU64::new(0);
+ 
+     /// Each later charge spins this long (0: off).

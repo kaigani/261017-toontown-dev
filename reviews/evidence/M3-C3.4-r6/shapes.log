@@ -1,0 +1,21 @@
+   Compiling tt-model v0.0.1 (C:\Users\kaiga\work\review\m3-c34-r6\crates\model)
+   Compiling tt-registry-macros v0.0.1 (C:\Users\kaiga\work\review\m3-c34-r6\crates\registry-macros)
+   Compiling tt-anim v0.0.1 (C:\Users\kaiga\work\review\m3-c34-r6\crates\anim)
+   Compiling tt-colour v0.0.1 (C:\Users\kaiga\work\review\m3-c34-r6\crates\colour)
+   Compiling tt-vector v0.0.1 (C:\Users\kaiga\work\review\m3-c34-r6\crates\vector)
+   Compiling tt-persist v0.0.1 (C:\Users\kaiga\work\review\m3-c34-r6\crates\persist)
+   Compiling tt-fx v0.0.1 (C:\Users\kaiga\work\review\m3-c34-r6\crates\fx)
+   Compiling tt-registry v0.0.1 (C:\Users\kaiga\work\review\m3-c34-r6\crates\registry)
+   Compiling tt-render v0.0.1 (C:\Users\kaiga\work\review\m3-c34-r6\crates\render)
+   Compiling tt-io v0.0.1 (C:\Users\kaiga\work\review\m3-c34-r6\crates\io)
+   Compiling tt-executor v0.0.1 (C:\Users\kaiga\work\review\m3-c34-r6\crates\executor)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 1m 12s
+     Running tests\c34_r5_shapes.rs (target\debug\deps\c34_r5_shapes-9dba9d0afec15c36.exe)
+
+running 3 tests
+test activity_entries_read_old_and_new_reason_shapes ... ok
+test activity_reason_is_declared_for_consumers ... ok
+test cancellation_does_not_relabel_an_argument_error ... ok
+
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.05s
+

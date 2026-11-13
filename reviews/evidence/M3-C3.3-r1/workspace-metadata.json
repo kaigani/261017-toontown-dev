@@ -1,0 +1,17 @@
+{
+    "argv":  "cargo test --workspace --locked -j 4 --no-fail-fast",
+    "freeBytes":  348796891136,
+    "sourceHashes":  {
+                         "C:\\Users\\kaiga\\work\\review\\m3-c33-r1\\crates\\executor\\tests\\c33_r1_pixels.rs":  "b16e38e16173836f21a21adab3db8eb7c4dbcc4f89a45ebbf655dc601bf3023d",
+                         "C:\\Users\\kaiga\\work\\review\\m3-c33-r1\\tests\\adversarial\\c33-r1-audit.py":  "e6893afe9984027abf3a5c3b74fad55215e4b1d9bd916bc32f918cfaa128b061",
+                         "C:\\Users\\kaiga\\work\\review\\m3-c33-r1\\crates\\executor\\tests\\c33_r1_bitmap.rs":  "a754ae3f6440397a24cc7255d769516dc044625c46bf8dd18828813b9ab0fe33",
+                         "C:\\Users\\kaiga\\work\\review\\m3-c33-r1\\crates\\executor\\tests\\c33_r1_limits.rs":  "be7a9e974fff70578eb76517ce13eced67c51cc8a77c322eb50453d47d14fa14",
+                         "C:\\Users\\kaiga\\work\\review\\m3-c33-r1\\crates\\render\\tests\\c33_r1_cancel.rs":  "2ecd54bdfc730652b24790630aea0c24f0d8e59d55f86f4bddb1baa3c890760a",
+                         "C:\\Users\\kaiga\\work\\review\\m3-c33-r1\\crates\\executor\\tests\\c33_r1_crash.rs":  "bfadd9c5cdf69f89f74e2036cad190cbbccabb2aa964af7d0ade0b4261fe8ca1",
+                         "C:\\Users\\kaiga\\work\\review\\m3-c33-r1\\crates\\mcp\\tests\\c33_r1_tools.rs":  "6721a3eccbda85362a70a7773736ae7c28fe38b73ef07b4d2ea087e059965195",
+                         "C:\\Users\\kaiga\\work\\review\\m3-c33-r1\\crates\\executor\\tests\\c33_r1_contract.rs":  "92fcf7f703a618e37b00dad85064c26da78babd61bc560c8f039ea7219c867f8"
+                     },
+    "head":  "e61c2651feb83c7e03174bedd10fa2cf563c4ad8",
+    "receiptEnvironmentSet":  false,
+    "startedAt":  "2026-11-10T11:48:15.7248669Z"
+}

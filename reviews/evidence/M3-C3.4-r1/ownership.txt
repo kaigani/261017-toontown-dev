@@ -1,0 +1,1 @@
+Fixed-head gate empty: ['git', 'diff', '--stat', '2daaf99..45b41da', '--', 'crates/*/tests/c*_r[0-9]_*', 'tests/adversarial', 'desktop/src/test', 'reviews/evidence/M3-C3.[123]-r*', 'reviews/evidence/M3-C3.2-r*']

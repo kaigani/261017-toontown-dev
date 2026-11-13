@@ -1,0 +1,65 @@
+   Compiling tt-model v0.0.1 (C:\Users\kaiga\work\review\m3-c34-r4\crates\model)
+   Compiling tt-registry-macros v0.0.1 (C:\Users\kaiga\work\review\m3-c34-r4\crates\registry-macros)
+   Compiling tt-anim v0.0.1 (C:\Users\kaiga\work\review\m3-c34-r4\crates\anim)
+   Compiling tt-colour v0.0.1 (C:\Users\kaiga\work\review\m3-c34-r4\crates\colour)
+   Compiling tt-vector v0.0.1 (C:\Users\kaiga\work\review\m3-c34-r4\crates\vector)
+   Compiling tt-persist v0.0.1 (C:\Users\kaiga\work\review\m3-c34-r4\crates\persist)
+   Compiling tt-fx v0.0.1 (C:\Users\kaiga\work\review\m3-c34-r4\crates\fx)
+   Compiling tt-registry v0.0.1 (C:\Users\kaiga\work\review\m3-c34-r4\crates\registry)
+   Compiling tt-render v0.0.1 (C:\Users\kaiga\work\review\m3-c34-r4\crates\render)
+   Compiling tt-io v0.0.1 (C:\Users\kaiga\work\review\m3-c34-r4\crates\io)
+   Compiling tt-executor v0.0.1 (C:\Users\kaiga\work\review\m3-c34-r4\crates\executor)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 2m 21s
+     Running tests\c34_r3_probes.rs (target\debug\deps\c34_r3_probes-ac8b02aba13accb0.exe)
+
+running 1 test
+
+thread 'panicking_probe_leaves_worker_alive' (20156) panicked at crates\executor\tests\c34_r3_probes.rs:45:13:
+assertion `left != right` failed: probe panic
+  left: 1
+ right: 1
+stack backtrace:
+   0: std::panicking::panic_handler
+             at /rustc/48a229ceaefd4985c50990b14116b6d856af0985/library\std\src\panicking.rs:679
+   1: core::panicking::panic_fmt
+             at /rustc/48a229ceaefd4985c50990b14116b6d856af0985/library\core\src\panicking.rs:80
+   2: core::panicking::assert_failed_inner
+             at /rustc/48a229ceaefd4985c50990b14116b6d856af0985/library\core\src\panicking.rs:434
+   3: core::panicking::assert_failed<usize,usize>
+             at /rustc/48a229ceaefd4985c50990b14116b6d856af0985/library\core\src\panicking.rs:394
+   4: c34_r3_probes::panicking_probe_leaves_worker_alive::closure$0::closure$0
+             at .\tests\c34_r3_probes.rs:45
+   5: tt_executor::ExecutorHandle::call_with<tuple$<tt_executor::types::Envelope,bool>,tt_executor::impl$5::serve::closure_env$3>
+             at .\src\lib.rs:443
+   6: tt_executor::ExecutorHandle::call_until<tuple$<tt_executor::types::Envelope,bool>,tt_executor::impl$5::serve::closure_env$3>
+             at .\src\lib.rs:394
+   7: tt_executor::ExecutorHandle::serve
+             at .\src\lib.rs:539
+   8: tt_executor::ExecutorHandle::invoke_served_until
+             at .\src\lib.rs:520
+   9: c34_r3_probes::panicking_probe_leaves_worker_alive::closure$0
+             at .\tests\c34_r3_probes.rs:44
+  10: core::ops::function::FnOnce::call_once<c34_r3_probes::panicking_probe_leaves_worker_alive::closure_env$0,tuple$<> >
+             at /rustc/48a229ceaefd4985c50990b14116b6d856af0985/library\core\src\ops\function.rs:250
+  11: core::panic::unwind_safe::impl$25::call_once<tuple$<tt_executor::types::Envelope,bool>,c34_r3_probes::panicking_probe_leaves_worker_alive::closure_env$0>
+             at /rustc/48a229ceaefd4985c50990b14116b6d856af0985/library\core\src\panic\unwind_safe.rs:275
+  12: std::panicking::catch_unwind::do_call<core::panic::unwind_safe::AssertUnwindSafe<c34_r3_probes::panicking_probe_leaves_worker_alive::closure_env$0>,tuple$<tt_executor::types::Envelope,bool> >
+             at /rustc/48a229ceaefd4985c50990b14116b6d856af0985/library\std\src\panicking.rs:576
+  13: std::panic::catch_unwind<core::panic::unwind_safe::AssertUnwindSafe<c34_r3_probes::panicking_probe_leaves_worker_alive::closure_env$0>,tuple$<tt_executor::types::Envelope,bool> >
+  14: std::panicking::catch_unwind
+             at /rustc/48a229ceaefd4985c50990b14116b6d856af0985/library\std\src\panicking.rs:544
+  15: std::panic::catch_unwind<core::panic::unwind_safe::AssertUnwindSafe<c34_r3_probes::panicking_probe_leaves_worker_alive::closure_env$0>,tuple$<tt_executor::types::Envelope,bool> >
+             at /rustc/48a229ceaefd4985c50990b14116b6d856af0985/library\std\src\panic.rs:359
+  16: c34_r3_probes::panicking_probe_leaves_worker_alive
+             at .\tests\c34_r3_probes.rs:43
+  17: c34_r3_probes::panicking_probe_leaves_worker_alive::closure$0
+             at .\tests\c34_r3_probes.rs:39
+  18: core::ops::function::FnOnce::call_once<c34_r3_probes::panicking_probe_leaves_worker_alive::closure_env$0,tuple$<> >
+             at /rustc/48a229ceaefd4985c50990b14116b6d856af0985/library\core\src\ops\function.rs:250
+  19: core::ops::function::FnOnce::call_once
+             at /rustc/48a229ceaefd4985c50990b14116b6d856af0985/library\core\src\ops\function.rs:250
+note: Some details are omitted, run with `RUST_BACKTRACE=full` for a verbose backtrace.
+test panicking_probe_leaves_worker_alive ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 3 filtered out; finished in 0.24s
+

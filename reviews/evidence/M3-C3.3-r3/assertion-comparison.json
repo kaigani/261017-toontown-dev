@@ -1,0 +1,48 @@
+{
+  "c33_r2_wait.rs": {
+    "before": [
+      "assert!(start.elapsed() < Duration::from_millis(300));",
+      "assert_eq!(e.code, \"job.waitTimeout\");",
+      "assert_eq!(record.state, tt_executor::JobState::Cancelled);",
+      "assert!(!stale.exists(), \"cancel sweeps staging injected after the entry sweep\");",
+      "assert!( receipt.contains(\"render.staleStagingRemoved\") && receipt.contains(\".cancel.png.tt-partial-abcdef123456\"), \"cancelled recovery must report swept files in warnings: {receipt}\" );",
+      "assert_eq!(common::err(&h, command, params).code, code);",
+      "assert!(start.elapsed() < Duration::from_millis(200));",
+      "assert_eq!(e.code, \"render.inlineTooLarge\");",
+      "assert!(e.details[\"bytes\"].as_u64().is_some_and(|n| n > 1), \"{e:?}\");"
+    ],
+    "after": [
+      "assert!(start.elapsed() < Duration::from_millis(300));",
+      "assert_eq!(e.code, \"job.waitTimeout\");",
+      "assert_eq!(record.state, tt_executor::JobState::Cancelled);",
+      "assert!(!stale.exists(), \"cancel sweeps staging injected after the entry sweep\");",
+      "assert!( receipt.contains(\"render.staleStagingRemoved\") && receipt.contains(\".cancel.png.tt-partial-abcdef123456\"), \"cancelled recovery must report swept files in warnings: {receipt}\" );",
+      "assert_eq!(common::err(&h, command, params).code, code);",
+      "assert!(start.elapsed() < Duration::from_millis(200));",
+      "assert_eq!(e.code, \"render.inlineTooLarge\");",
+      "assert!(e.details[\"bytes\"].as_u64().is_some_and(|n| n > 1), \"{e:?}\");"
+    ],
+    "equal": true
+  },
+  "c33_r2_recovery.rs": {
+    "before": [
+      "assert_eq!(std::fs::read(dir.join(name))?, b\"user working material\");",
+      "assert!(!counts.is_empty());",
+      "assert!(counts.values().all(|n| *n == 1), \"{counts:?}\");",
+      "assert_eq!(std::fs::read(dir.join(\"original.png\"))?, b\"original bytes\");",
+      "assert_eq!(std::fs::read(dir.join(\"artist.txt\"))?, b\"untouched\");",
+      "assert!(!dir.join(partial).exists() && !dir.join(backup).exists() && !dir.join(\"dead.png\").exists());",
+      "assert!(files.contains(&json!(partial)) && files.contains(&json!(backup)));"
+    ],
+    "after": [
+      "assert_eq!(std::fs::read(dir.join(name))?, b\"user working material\");",
+      "assert!(!counts.is_empty());",
+      "assert!(counts.values().all(|n| *n == 1), \"{counts:?}\");",
+      "assert_eq!(std::fs::read(dir.join(\"original.png\"))?, b\"original bytes\");",
+      "assert_eq!(std::fs::read(dir.join(\"artist.txt\"))?, b\"untouched\");",
+      "assert!(!dir.join(partial).exists() && !dir.join(backup).exists() && !dir.join(\"dead.png\").exists());",
+      "assert!(files.contains(&json!(partial)) && files.contains(&json!(backup)));"
+    ],
+    "equal": true
+  }
+}

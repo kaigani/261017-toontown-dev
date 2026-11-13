@@ -1,0 +1,17 @@
+
+running 3 tests
+test dimension_preflight_precedes_slow_work ... ok
+
+thread 'waiting_caller_does_not_block_document_reads' (27220) panicked at crates/executor/tests/c33_r2_wait.rs:44:5:
+cancelled recovery must report swept files in warnings: {"jobId":"job-1","commandId":"render.range.run","state":"cancelled","progress":0.0,"message":"Rendering frame 1","startedAt":"2026-11-10T20:04:45.029Z","session":"user"}
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+test waiting_caller_does_not_block_document_reads ... FAILED
+test encoded_byte_limit_is_checked_after_encoding ... ok
+
+failures:
+
+failures:
+    waiting_caller_does_not_block_document_reads
+
+test result: FAILED. 2 passed; 1 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.60s
+

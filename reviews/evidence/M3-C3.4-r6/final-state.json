@@ -1,0 +1,9 @@
+{
+  "cargo.exe": "INFO: No tasks are running which match the specified criteria.",
+  "rustc.exe": "INFO: No tasks are running which match the specified criteria.",
+  "free_bytes": 232680595456,
+  "TT_UPDATE_GOLDEN_present": false,
+  "final_fmt_exit": 0,
+  "product_spec_builder_historical_diff": "",
+  "largest_evidence_file_bytes": 23854
+}

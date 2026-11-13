@@ -1,0 +1,250 @@
+{
+  "obligation": "C1.4 obligation 5 (AUTO-02 autosave latency)",
+  "fixture": "sample_document(901) (36 entries, embedded media 60 KiB each) + a 64 MiB preserved entry (extras/media.bin)",
+  "environment": {
+    "os": "windows",
+    "arch": "x86_64",
+    "cpus": 4,
+    "profile": "debug",
+    "startedAt": "2026-11-03T18:25:03.987Z",
+    "runId": "local-2026-11-03T18:25:03.987Z",
+    "timeOrigin": "tMs: milliseconds since startedAt on a monotonic clock",
+    "summaryRule": "nearest rank: sorted[round((n - 1) * q)]"
+  },
+  "series": {
+    "longBatchMs": {
+      "unit": "ms",
+      "samples": [
+        {
+          "tMs": 4621.3284,
+          "value": 866.0942
+        }
+      ],
+      "summary": {
+        "n": 1,
+        "p50": 866.0942,
+        "p90": 866.0942,
+        "p99": 866.0942,
+        "max": 866.0942
+      }
+    },
+    "queuedSchedulingDelayMs": {
+      "unit": "ms",
+      "samples": [
+        {
+          "tMs": 5658.6164,
+          "value": 3.2454
+        },
+        {
+          "tMs": 5859.9993,
+          "value": 16.4094
+        },
+        {
+          "tMs": 6119.1448,
+          "value": 12.378200000000001
+        },
+        {
+          "tMs": 6344.2173999999995,
+          "value": 21.2494
+        },
+        {
+          "tMs": 6586.4815,
+          "value": 20.7941
+        },
+        {
+          "tMs": 6838.5971,
+          "value": 15.782999999999998
+        },
+        {
+          "tMs": 7059.6297,
+          "value": 13.1367
+        },
+        {
+          "tMs": 7286.4259,
+          "value": 13.5624
+        },
+        {
+          "tMs": 7565.16,
+          "value": 18.639200000000002
+        },
+        {
+          "tMs": 7796.3936,
+          "value": 22.626299999999997
+        }
+      ],
+      "summary": {
+        "n": 10,
+        "p50": 16.4094,
+        "p90": 21.2494,
+        "p99": 22.626299999999997,
+        "max": 22.626299999999997
+      }
+    },
+    "queuedSnapshotMs": {
+      "unit": "ms",
+      "samples": [
+        {
+          "tMs": 5658.6164,
+          "value": 0.0987
+        },
+        {
+          "tMs": 5859.9993,
+          "value": 0.0948
+        },
+        {
+          "tMs": 6119.1448,
+          "value": 0.11299999999999999
+        },
+        {
+          "tMs": 6344.2173999999995,
+          "value": 0.10830000000000001
+        },
+        {
+          "tMs": 6586.4815,
+          "value": 0.1081
+        },
+        {
+          "tMs": 6838.5971,
+          "value": 0.1009
+        },
+        {
+          "tMs": 7059.6297,
+          "value": 0.1101
+        },
+        {
+          "tMs": 7286.4259,
+          "value": 0.1093
+        },
+        {
+          "tMs": 7565.16,
+          "value": 0.0942
+        },
+        {
+          "tMs": 7796.3936,
+          "value": 0.1104
+        }
+      ],
+      "summary": {
+        "n": 10,
+        "p50": 0.10830000000000001,
+        "p90": 0.1104,
+        "p99": 0.11299999999999999,
+        "max": 0.11299999999999999
+      }
+    },
+    "snapshotAfterLongBatchMs": {
+      "unit": "ms",
+      "samples": [
+        {
+          "tMs": 4641.6652,
+          "value": 0.0936
+        }
+      ],
+      "summary": {
+        "n": 1,
+        "p50": 0.0936,
+        "p90": 0.0936,
+        "p99": 0.0936,
+        "max": 0.0936
+      }
+    },
+    "snapshotMs": {
+      "unit": "ms",
+      "samples": [
+        {
+          "tMs": 21.3622,
+          "value": 0.112
+        },
+        {
+          "tMs": 1534.9971999999998,
+          "value": 0.1495
+        },
+        {
+          "tMs": 1783.2785,
+          "value": 0.077
+        },
+        {
+          "tMs": 2030.7488999999998,
+          "value": 0.1119
+        },
+        {
+          "tMs": 2273.8426999999997,
+          "value": 0.1234
+        },
+        {
+          "tMs": 2494.1103,
+          "value": 0.0966
+        },
+        {
+          "tMs": 2726.9456,
+          "value": 0.1034
+        },
+        {
+          "tMs": 2933.2557,
+          "value": 0.1101
+        },
+        {
+          "tMs": 3152.6048,
+          "value": 0.1003
+        },
+        {
+          "tMs": 3389.5213000000003,
+          "value": 0.0941
+        },
+        {
+          "tMs": 3638.8523,
+          "value": 0.0997
+        },
+        {
+          "tMs": 3846.5747,
+          "value": 0.08600000000000001
+        },
+        {
+          "tMs": 4030.8377,
+          "value": 0.1111
+        },
+        {
+          "tMs": 4216.9379,
+          "value": 0.09469999999999999
+        },
+        {
+          "tMs": 4397.8944,
+          "value": 0.0925
+        }
+      ],
+      "summary": {
+        "n": 15,
+        "p50": 0.1003,
+        "p90": 0.1234,
+        "p99": 0.1495,
+        "max": 0.1495
+      }
+    },
+    "waitBehindLongBatchMs": {
+      "unit": "ms",
+      "samples": [
+        {
+          "tMs": 4641.6652,
+          "value": 858.4201,
+          "label": "1000-step atomic batch ahead"
+        }
+      ],
+      "summary": {
+        "n": 1,
+        "p50": 858.4201,
+        "p90": 858.4201,
+        "p99": 858.4201,
+        "max": 858.4201
+      }
+    }
+  },
+  "facts": {
+    "longBatchSteps": 1000,
+    "committedRev": 17,
+    "recoveryRevs": [
+      17
+    ],
+    "queueThreads": 8,
+    "maximumSchedulingDelay": "one maintenance tick (1 s) plus the document-thread work queued ahead of it; an atomic batch is one request, so the autosave waits for the whole batch (each request is bounded by the executor's never-block budget)"
+  }
+}

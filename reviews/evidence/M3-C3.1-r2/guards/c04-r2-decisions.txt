@@ -1,0 +1,8 @@
+test_C04_R2_01_rate_intervals_cover_fractional_hz (__main__.DecisionContracts.test_C04_R2_01_rate_intervals_cover_fractional_hz) ... ok
+test_C04_R2_02_stationary_instruction_identifies_an_existing_contact_row (__main__.DecisionContracts.test_C04_R2_02_stationary_instruction_identifies_an_existing_contact_row) ... ok
+test_C04_R2_03_canvas_has_a_guard_for_analyzer_accepted_missing_scenes (__main__.DecisionContracts.test_C04_R2_03_canvas_has_a_guard_for_analyzer_accepted_missing_scenes) ... ok
+
+----------------------------------------------------------------------
+Ran 3 tests in 0.088s
+
+OK

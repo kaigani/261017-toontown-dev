@@ -5,7 +5,7 @@
 //! stay open), then brush strokes in stroke order (their outline, non-zero, so bridged holes stay open, SI-053), then
 //! pencil lines in stroke order (round joins and caps, the line thickness). Invisible strokes are not drawn. Zone
 //! fills are the planar map's, including fills stored as brush-exterior records (SI-060). Text is drawn from its
-//! glyph outlines; bitmap nodes are reported in `warnings` (`render.bitmapSkipped`) until their decoder lands (M3).
+//! glyph outlines; bitmap nodes are drawn from their PNG pixels through their placement (10 §4.9; M3 C3.3, SI-105).
 //!
 //! Text pixels depend on the machine's fonts (02 §3.7, ADR-0016), so cross-platform goldens avoid text.
 //!
@@ -140,22 +140,22 @@ pub(crate) struct RenderParams {
 pub(crate) struct RenderResult {
     /// The PNG, base64 (without `path`).
     #[serde(skip_serializing_if = "Option::is_none")]
-    png: Option<String>,
+    pub(crate) png: Option<String>,
     /// The written file (with `path`).
     #[serde(skip_serializing_if = "Option::is_none")]
-    path: Option<String>,
+    pub(crate) path: Option<String>,
     /// Width (px).
-    width: u32,
+    pub(crate) width: u32,
     /// Height (px).
-    height: u32,
+    pub(crate) height: u32,
     /// Drawing space → pixel space `[a, b, c, d, e, f]`.
-    drawing_to_pixel: [f64; 6],
+    pub(crate) drawing_to_pixel: [f64; 6],
     /// The drawing revision rendered.
-    rev: u64,
+    pub(crate) rev: u64,
     /// SHA-256 of the premultiplied RGBA8 buffer (hex), for determinism checks.
-    pixels_sha256: String,
-    /// Objects not drawn and why (`render.colourMissing`, `render.textureMissing`, `render.bitmapSkipped`).
-    warnings: Vec<Value>,
+    pub(crate) pixels_sha256: String,
+    /// Objects not drawn and why (`render.colourMissing`, `render.textureMissing`, `render.bitmapMissing`).
+    pub(crate) warnings: Vec<Value>,
 }
 
 fn invalid(pointer: &str, msg: impl Into<String>) -> CommandError {
@@ -165,15 +165,20 @@ fn invalid(pointer: &str, msg: impl Into<String>) -> CommandError {
 /// A decoded texture: width, height, straight RGBA8.
 type Texture = (u16, u16, Arc<Vec<u8>>);
 
-/// Builds render items.
-struct Builder<'a> {
+/// Largest bitmap-node side decoded (10 §4.9: 1–16384 pixels).
+const MAX_BITMAP_SIDE: u32 = 16_384;
+
+/// Builds render items of drawing content (shared with the scene compositor, `render_list.rs`, M3 C3.3).
+pub(crate) struct Builder<'a> {
     doc: &'a Document,
     blobs: Option<&'a tt_persist::container::Blobs>,
     style: Option<(Id, Id)>,
+    /// The scene's active style per palette (03 §4): used for palettes `style` does not name.
+    scene_styles: Option<BTreeMap<Id, Id>>,
     d2p: Affine,
     scale: f64,
-    items: Vec<Item>,
-    warnings: Vec<Value>,
+    pub(crate) items: Vec<Item>,
+    pub(crate) warnings: Vec<Value>,
     textures: BTreeMap<String, Option<Texture>>,
     work: u64,
 }
@@ -207,7 +212,40 @@ fn ring_els(rings: &[Vec<P>], m: &Affine) -> Vec<El> {
     out
 }
 
-impl Builder<'_> {
+impl<'a> Builder<'a> {
+    /// A builder in drawing units (identity map, unit scale) resolving colours through `scene_styles`: the scene
+    /// compositor wraps its items in a layer that takes drawing units to output pixels (ADR-0020). `work` starts the
+    /// shared work count of the frame.
+    pub(crate) fn in_drawing_units(
+        doc: &'a Document,
+        blobs: Option<&'a tt_persist::container::Blobs>,
+        scene_styles: Option<BTreeMap<Id, Id>>,
+        work: u64,
+    ) -> Self {
+        Self {
+            doc,
+            blobs,
+            style: None,
+            scene_styles,
+            d2p: Affine::IDENTITY,
+            scale: 1.0,
+            items: Vec::new(),
+            warnings: Vec::new(),
+            textures: BTreeMap::new(),
+            work,
+        }
+    }
+
+    /// The work units spent so far.
+    pub(crate) fn work(&self) -> u64 {
+        self.work
+    }
+
+    /// Takes the items built so far.
+    pub(crate) fn take_items(&mut self) -> Vec<Item> {
+        std::mem::take(&mut self.items)
+    }
+
     fn spend(&mut self, n: usize) -> Result<(), CommandError> {
         self.work = self.work.saturating_add(n as u64);
         if self.work > RENDER_WORK_BUDGET {
@@ -249,7 +287,11 @@ impl Builder<'_> {
         };
         let style = match &self.style {
             Some((p, st)) if p == pal.id() => Some(st.clone()),
-            _ => pal.styles().first().map(|s| s.id().clone()),
+            _ => self
+                .scene_styles
+                .as_ref()
+                .and_then(|m| m.get(pal.id()).cloned())
+                .or_else(|| pal.styles().first().map(|s| s.id().clone())),
         };
         let Some(value) = style.and_then(|st| sw.values().get(&st).cloned()) else {
             self.warn("render.colourMissing", object, Some(colour));
@@ -346,7 +388,51 @@ impl Builder<'_> {
         Ok(())
     }
 
-    fn nodes(
+    /// A bitmap node (10 §4.9; SI-105): its pixel space (origin top-left, y down) maps to drawing space through
+    /// `transform`; the image covers its quad, sampled through the unit square (row 0 at unit y = 0, SI-074), clipped
+    /// to the quad. A node whose pixels cannot be read is reported (`render.bitmapMissing`) and not drawn.
+    fn bitmap(&mut self, n: &DrawingNode) -> Result<(), CommandError> {
+        let (Some(w), Some(h), Some(image)) = (*n.width(), *n.height(), n.image().as_ref()) else {
+            self.warn("render.bitmapMissing", n.id().as_str(), None);
+            return Ok(());
+        };
+        let entry = image.entry.clone();
+        let decoded = match self.textures.get(&entry) {
+            Some(t) => t.clone(),
+            None => {
+                let t = self
+                    .blobs
+                    .and_then(|b| b.read(&entry, 256 << 20).ok())
+                    .and_then(|bytes| tt_render::decode_png(&bytes, MAX_BITMAP_SIDE))
+                    .map(|(bw, bh, px)| (bw, bh, Arc::new(px)));
+                self.textures.insert(entry.clone(), t.clone());
+                t
+            }
+        };
+        let Some((bw, bh, rgba)) = decoded else {
+            self.warn("render.bitmapMissing", n.id().as_str(), None);
+            return Ok(());
+        };
+        self.spend((usize::from(bw) * usize::from(bh)) / 1024 + 4)?;
+        let to_px = self.d2p.then_after(&n.transform().map_or(Affine::IDENTITY, Affine));
+        let quad = [P::new(0.0, 0.0), P::new(w, 0.0), P::new(w, h), P::new(0.0, h)];
+        let mut path: Vec<El> = quad
+            .iter()
+            .enumerate()
+            .map(|(i, c)| {
+                let q = to_px.apply(*c);
+                if i == 0 { El::MoveTo(q.x, q.y) } else { El::LineTo(q.x, q.y) }
+            })
+            .collect();
+        path.push(El::Close);
+        let unit_to_pixel = to_px.then_after(&Affine([w, 0.0, 0.0, h, 0.0, 0.0])).0;
+        let paint = Paint::Image { rgba, width: bw, height: bh, unit_to_pixel, repeat: false };
+        self.items.push(Item::Fill { path, rule: Rule::NonZero, paint });
+        Ok(())
+    }
+
+    /// Items of a drawing's nodes, back to front.
+    pub(crate) fn nodes(
         &mut self,
         list: &[DrawingNode],
         zones: &BTreeMap<String, crate::planar::LayerZones>,
@@ -356,7 +442,7 @@ impl Builder<'_> {
                 NodeKind::Layer => self.layer(n, zones.get(n.id().as_str()), &Affine::IDENTITY)?,
                 NodeKind::Group => self.nodes(n.children().as_deref().unwrap_or_default(), zones)?,
                 NodeKind::Text => self.text(n)?,
-                NodeKind::Bitmap => self.warn("render.bitmapSkipped", n.id().as_str(), None),
+                NodeKind::Bitmap => self.bitmap(n)?,
             }
         }
         Ok(())
@@ -456,6 +542,7 @@ pub(crate) fn draw_drawing_render(cx: &mut Cx, p: RenderParams) -> Result<Render
         doc: &doc,
         blobs: project.map(|p| &p.store.blobs),
         style,
+        scene_styles: None,
         d2p,
         scale: s,
         items: Vec::new(),

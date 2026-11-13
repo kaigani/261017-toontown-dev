@@ -246,7 +246,7 @@ fn expand(attr: TokenStream2, item: TokenStream2) -> syn::Result<TokenStream2> {
                 let cx = ::tt_registry::context::<#cx_ty>(cx)?;
                 let params: #p_ty = ::tt_registry::decode_params(v)?;
                 let out: #out_ty = #fn_name(cx, params)?;
-                ::tt_registry::encode_result(&out)
+                ::tt_registry::encode_command_result(#id, &out)
             },
         ),
     };

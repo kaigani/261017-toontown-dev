@@ -1,0 +1,19 @@
+{
+  "headings": 107,
+  "active_headings": [
+    "## SI-001 \u2014 09 \u00a74.4 \"\u2248 CRF 18 equivalent\" under platform H.264 encoders (found in C0.4; open)",
+    "## SI-008 \u2014 `importOptions` of image elements is undefined (found in C1.1; open)",
+    "## SI-044 \u2014 \"Repair on Open\" cannot be undone into an invalid document (found in C1.3; decided)",
+    "## SI-047 \u2014 RO-02 cannot see an edit that keeps size and modification time (found in C1.4; interim ruling, open)",
+    "## SI-049 \u2014 MCP revision 2026-07-28 removes resource subscriptions and deprecates logging (found in C1.4; open)",
+    "## SI-060 \u2014 fills of zones bounded only by brush-outline stretches (found in M2 C2.2; ruled, interim)",
+    "## SI-077 \u2014 feather colours (found in M2 C2.3; deferred by orchestrator, awaiting spec owner; ticket C23-T2, owner M7 C7.2)",
+    "## SI-080 \u2014 `VectorizeSettings` example versus the command rows (found in M2 C2.4; interim decided)",
+    "## SI-081 \u2014 the `draw.vectorize.preview` PNG result limit (found in M2 C2.4; interim decided)",
+    "## SI-085 \u2014 where the static light table is stored (found in M3 C3.1; interim decided)",
+    "## SI-088 \u2014 media and sound cells before M8 (found in M3 C3.1; interim decided, declared deferral)",
+    "## SI-096 \u2014 per-axis position channels, D-5 (raised in the M3 plan; unresolved, spec owner)"
+  ],
+  "unchanged_reviewer_files": true,
+  "product_gate": true
+}

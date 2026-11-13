@@ -1,0 +1,6 @@
+test_preserves_all_units_commands_and_deferred_owners (__main__.Register.test_preserves_all_units_commands_and_deferred_owners) ... ok
+
+----------------------------------------------------------------------
+Ran 1 test in 0.013s
+
+OK

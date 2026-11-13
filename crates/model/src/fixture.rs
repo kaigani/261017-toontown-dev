@@ -318,7 +318,7 @@ pub fn sample_parts(seed: u64) -> Result<DocumentParts, Vec<ModelError>> {
         merge(
             common(&camera, "Camera", "camera", false),
             json!({"transform": transform("camera"),
-            "camera": {"fovMode": "static", "fov": 41.1121}, "channels": {}}),
+            "camera": {"fovMode": "static", "fov": crate::defaults::DEFAULT_FOV}, "channels": {}}),
         ),
         merge(
             common(&peg, "Bob-P", "peg", false),

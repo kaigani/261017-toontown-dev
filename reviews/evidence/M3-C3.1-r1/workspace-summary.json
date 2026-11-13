@@ -1,0 +1,45 @@
+{
+  "candidate": "8f44969741f8662831e25a01a8a024b686daf02e",
+  "command": "cargo test --workspace --locked -j 4 --no-fail-fast",
+  "exitCode": 101,
+  "summaryLines": 259,
+  "passed": 1374,
+  "failed": 22,
+  "ignored": 23,
+  "failedTests": [
+    "test columnate_total_frames_short_last_reaches_requested_length ... FAILED",
+    "test insert_remove_4096 ... FAILED",
+    "test timeline_colour_dry_run_restores_session ... FAILED",
+    "test generic_paste_bridge_overwrites_opaque_drawing_properties ... FAILED",
+    "test patch_unlock_ops_matches_command ... FAILED",
+    "test columnate_exact_total_with_short_final_hold ... FAILED",
+    "test timeline_colour_failing_atomic_batch_restores_session ... FAILED",
+    "test delegated_note_emits_owning_event ... FAILED",
+    "test fill_target_above_spec_maximum_refuses ... FAILED",
+    "test delegated_hide_matches_command_current_position_and_event ... FAILED",
+    "test automatic_position_changes_emit_selection_event ... FAILED",
+    "test inserted_cells_shift_existing_notes ... FAILED",
+    "test xsheet_missing_name_on_two_clones_is_created_once ... FAILED",
+    "test copied_cells_keep_notes ... FAILED",
+    "test cycle_selection_applies_to_every_selected_column ... FAILED",
+    "test duplicate_clipping_preserves_required_parameter_row ... FAILED",
+    "test clipboard_survives_deleted_source_element ... FAILED",
+    "test clipboard_cross_project_copies_artwork ... FAILED",
+    "test multi_column_overlap_copies_original_source_values ... FAILED",
+    "test whole_element_clipboard_cross_project_contains_banks ... FAILED",
+    "test extreme_timing_parameters_do_not_stop_document_worker ... FAILED",
+    "test generic_tool_dry_run_does_not_leak_category_colour ... FAILED"
+  ],
+  "failedTargets": [
+    "-p tt-anim --test c31_r1_oracle",
+    "-p tt-executor --test c31_r1_contract",
+    "-p tt-mcp --test c31_r1_protocol"
+  ],
+  "rawSha256": "7a96ec277b2e552efcc5101b81356fbd63abf35a28a76bb7074b2a1b25a59e54",
+  "latestTargetedReviewTotals": {
+    "tests": 51,
+    "passed": 23,
+    "failed": 28
+  },
+  "qualification": "Workspace target discovery/build started during authorship of new review tests. Latest targeted runs supersede early fixture/source variants; no product edits were made."
+}

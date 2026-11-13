@@ -1,0 +1,1 @@
+local cargo test --workspace (CI skip list), Windows debug, -j 3: binaries 299 passed 1458 failed 0 ignored 24

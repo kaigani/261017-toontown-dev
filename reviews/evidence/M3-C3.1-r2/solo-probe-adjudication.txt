@@ -1,0 +1,27 @@
+Uncommitted exploratory probe, withdrawn before adjudication. Spec 11 section 13 permits state read-back OR explicit command control; element.solo.set supplies explicit control. No specific public solo query shape is mandated at C3.1. The absence of solo in app.state.get limits the runtime rollback oracle; the whole TimelineState snapshot/restore source is separately verified. This probe is not a conformance test or an additional finding. All nine valid finding assertions remain unchanged.
+
+#[test]
+fn r02_solo_view_state_must_be_observable_through_public_read_queries() {
+    let h = seeded();
+    let read = |h: &ExecutorHandle| -> Vec<Value> {
+        [
+            ("app.state.get", json!({})),
+            ("doc.state.get", json!({})),
+            ("element.get", json!({"elementId":B})),
+            ("element.list", json!({"sceneId":"scene:\"Intro\""})),
+            ("cell.selection.get", json!({})),
+            ("xsheet.exposures.get", json!({"elementIds":[B,N],"from":1,"to":24})),
+            ("xsheet.lightTable.list", json!({})),
+        ]
+        .into_iter()
+        .map(|(id, params)| ok(h, id, params))
+        .collect()
+    };
+    let before = read(&h);
+    ok(&h, "element.solo.set", json!({"enabled":true,"elementIds":[B]}));
+    assert_ne!(
+        read(&h),
+        before,
+        "11 §13: public state queries must distinguish solo off from solo on for Bob; the setter result alone cannot reveal another caller's state"
+    );
+}

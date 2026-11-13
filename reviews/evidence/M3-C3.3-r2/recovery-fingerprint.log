@@ -1,0 +1,14 @@
+
+running 3 tests
+test contact_sheet_evaluates_each_node_once_per_frame ... ok
+Error: Os { code: 2, kind: NotFound, message: "The system cannot find the file specified." }
+test recovery_preserves_non_product_marker_files ... FAILED
+test stale_stage_is_reported_and_orphan_backup_restored ... ok
+
+failures:
+
+failures:
+    recovery_preserves_non_product_marker_files
+
+test result: FAILED. 2 passed; 1 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.08s
+

@@ -1,0 +1,25 @@
+cargo :     Checking ahash v0.8.12
+At C:\Users\kaiga\AppData\Local\Temp\toontown-c33-r1\final-checks.ps1:12 char:1
++ cargo clippy -p tt-mcp --test c33_r1_tools --locked -j 4 -- -D warnin ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (    Checking ahash v0.8.12:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+
+    Checking referencing v0.59.0
+    Checking jsonschema-value v0.59.0
+    Checking jsonschema v0.59.0
+    Checking tt-model v0.0.1 (C:\Users\kaiga\work\review\m3-c33-r1\crates\model)
+    Checking tt-anim v0.0.1 (C:\Users\kaiga\work\review\m3-c33-r1\crates\anim)
+    Checking tt-vector v0.0.1 (C:\Users\kaiga\work\review\m3-c33-r1\crates\vector)
+    Checking tt-colour v0.0.1 (C:\Users\kaiga\work\review\m3-c33-r1\crates\colour)
+    Checking tt-persist v0.0.1 (C:\Users\kaiga\work\review\m3-c33-r1\crates\persist)
+    Checking tt-audio v0.0.1 (C:\Users\kaiga\work\review\m3-c33-r1\crates\audio)
+    Checking tt-registry v0.0.1 (C:\Users\kaiga\work\review\m3-c33-r1\crates\registry)
+    Checking tt-fx v0.0.1 (C:\Users\kaiga\work\review\m3-c33-r1\crates\fx)
+    Checking tt-lipsync v0.0.1 (C:\Users\kaiga\work\review\m3-c33-r1\crates\lipsync)
+    Checking tt-render v0.0.1 (C:\Users\kaiga\work\review\m3-c33-r1\crates\render)
+    Checking tt-io v0.0.1 (C:\Users\kaiga\work\review\m3-c33-r1\crates\io)
+    Checking tt-executor v0.0.1 (C:\Users\kaiga\work\review\m3-c33-r1\crates\executor)
+    Checking tt-engine v0.0.1 (C:\Users\kaiga\work\review\m3-c33-r1\crates\engine)
+    Checking tt-mcp v0.0.1 (C:\Users\kaiga\work\review\m3-c33-r1\crates\mcp)
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 21.07s

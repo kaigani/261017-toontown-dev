@@ -1,0 +1,1 @@
+Items 2–12 byte-identical after UTF-8 decoding; item 1 retains its text with an explicit closed marker.

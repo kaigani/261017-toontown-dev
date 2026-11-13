@@ -1,0 +1,1 @@
+{"command": "cargo test -p tt-mcp --locked -j 4", "nativeExitCode": 0}

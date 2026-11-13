@@ -1,0 +1,1 @@
+["cargo", "clippy", "--workspace", "--lib", "--bins", "--examples", "--locked", "-j", "4", "--", "-D", "warnings"]

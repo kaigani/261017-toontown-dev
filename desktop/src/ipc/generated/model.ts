@@ -682,7 +682,7 @@ export const MODEL_DEFS: Readonly<Record<string, Schema>> = {
       fov: {
         type: "number",
         "x-command": "anim.camera.set",
-        description: "FOV 1–179 degrees (default 41.1121).",
+        description: "FOV 1–179 degrees (default 2·atan(0.375) ≈ 41.1121, 05 §2.7).",
         minimum: 1,
         maximum: 179,
         "x-unit": "degree",
@@ -1793,6 +1793,15 @@ export const MODEL_DEFS: Readonly<Record<string, Schema>> = {
       positionLoop: {
         $ref: "#/$defs/PositionLoop",
         description: "Cycle or offset.",
+        "x-since": "1.0",
+      },
+      cycleLength: {
+        type: "integer",
+        maximum: 2147483647,
+        minimum: 1,
+        description: "`fill` loops: the cycle length in frames, which `duration` and `loops` cannot express when the last cycle is\npartial (SI-089).",
+        "x-unit": "frame",
+        "x-omitDefault": true,
         "x-since": "1.0",
       },
       role: {
@@ -7703,7 +7712,7 @@ export interface BoneRest {
 export interface CameraBlock {
   /** Static or dynamic FOV. */
   fovMode: FovMode;
-  /** FOV 1–179 degrees (default 41.1121). */
+  /** FOV 1–179 degrees (default 2·atan(0.375) ≈ 41.1121, 05 §2.7). */
   fov: number;
 }
 
@@ -7952,6 +7961,8 @@ export interface Element {
   loopType: LoopType;
   /** Cycle or offset. */
   positionLoop: PositionLoop;
+  /** `fill` loops: the cycle length in frames, which `duration` and `loops` cannot express when the last cycle is partial (SI-089). */
+  cycleLength?: number;
   /** Composite role. */
   role: Role;
   /** Deformable by a skeleton. */

@@ -1,0 +1,494 @@
+[
+  {
+    "id": "anim.transform.set",
+    "ok": true,
+    "checks": [
+      "dry document/session/history",
+      "stale guard",
+      "failing second step rollback",
+      "one revision",
+      "execution",
+      "undo",
+      "redo",
+      "save/open"
+    ]
+  },
+  {
+    "id": "anim.loop.set",
+    "ok": true,
+    "checks": [
+      "dry document/session/history",
+      "stale guard",
+      "failing second step rollback",
+      "one revision",
+      "execution",
+      "undo",
+      "redo",
+      "save/open"
+    ]
+  },
+  {
+    "id": "anim.path.set",
+    "ok": true,
+    "checks": [
+      "dry document/session/history",
+      "stale guard",
+      "failing second step rollback",
+      "one revision",
+      "execution",
+      "undo",
+      "redo",
+      "save/open"
+    ]
+  },
+  {
+    "id": "anim.path.point.add",
+    "ok": true,
+    "checks": [
+      "dry document/session/history",
+      "stale guard",
+      "failing second step rollback",
+      "one revision",
+      "execution",
+      "undo",
+      "redo",
+      "save/open"
+    ]
+  },
+  {
+    "id": "anim.path.point.set",
+    "ok": true,
+    "checks": [
+      "dry document/session/history",
+      "stale guard",
+      "failing second step rollback",
+      "one revision",
+      "execution",
+      "undo",
+      "redo",
+      "save/open"
+    ]
+  },
+  {
+    "id": "anim.path.point.remove",
+    "ok": true,
+    "checks": [
+      "dry document/session/history",
+      "stale guard",
+      "failing second step rollback",
+      "one revision",
+      "execution",
+      "undo",
+      "redo",
+      "save/open"
+    ]
+  },
+  {
+    "id": "anim.path.lockDepth.set",
+    "ok": true,
+    "checks": [
+      "dry document/session/history",
+      "stale guard",
+      "failing second step rollback",
+      "one revision",
+      "execution",
+      "undo",
+      "redo",
+      "save/open"
+    ]
+  },
+  {
+    "id": "anim.function.set",
+    "ok": true,
+    "checks": [
+      "dry document/session/history",
+      "stale guard",
+      "failing second step rollback",
+      "one revision",
+      "execution",
+      "undo",
+      "redo",
+      "save/open"
+    ]
+  },
+  {
+    "id": "anim.function.curveType.set",
+    "ok": true,
+    "checks": [
+      "dry document/session/history",
+      "stale guard",
+      "failing second step rollback",
+      "one revision",
+      "execution",
+      "undo",
+      "redo",
+      "save/open"
+    ]
+  },
+  {
+    "id": "anim.function.preset.apply",
+    "ok": true,
+    "checks": [
+      "dry document/session/history",
+      "stale guard",
+      "failing second step rollback",
+      "one revision",
+      "execution",
+      "undo",
+      "redo",
+      "save/open"
+    ]
+  },
+  {
+    "id": "anim.function.key.add",
+    "ok": true,
+    "checks": [
+      "dry document/session/history",
+      "stale guard",
+      "failing second step rollback",
+      "one revision",
+      "execution",
+      "undo",
+      "redo",
+      "save/open"
+    ]
+  },
+  {
+    "id": "anim.function.key.set",
+    "ok": true,
+    "checks": [
+      "dry document/session/history",
+      "stale guard",
+      "failing second step rollback",
+      "one revision",
+      "execution",
+      "undo",
+      "redo",
+      "save/open"
+    ]
+  },
+  {
+    "id": "anim.function.key.remove",
+    "ok": true,
+    "checks": [
+      "dry document/session/history",
+      "stale guard",
+      "failing second step rollback",
+      "one revision",
+      "execution",
+      "undo",
+      "redo",
+      "save/open"
+    ]
+  },
+  {
+    "id": "anim.function.key.duplicate",
+    "ok": true,
+    "checks": [
+      "dry document/session/history",
+      "stale guard",
+      "failing second step rollback",
+      "one revision",
+      "execution",
+      "undo",
+      "redo",
+      "save/open"
+    ]
+  },
+  {
+    "id": "anim.key.add",
+    "ok": true,
+    "checks": [
+      "dry document/session/history",
+      "stale guard",
+      "failing second step rollback",
+      "one revision",
+      "execution",
+      "undo",
+      "redo",
+      "save/open"
+    ]
+  },
+  {
+    "id": "anim.key.move",
+    "ok": true,
+    "checks": [
+      "dry document/session/history",
+      "stale guard",
+      "failing second step rollback",
+      "one revision",
+      "execution",
+      "undo",
+      "redo",
+      "save/open"
+    ]
+  },
+  {
+    "id": "anim.key.remove",
+    "ok": true,
+    "checks": [
+      "dry document/session/history",
+      "stale guard",
+      "failing second step rollback",
+      "one revision",
+      "execution",
+      "undo",
+      "redo",
+      "save/open"
+    ]
+  },
+  {
+    "id": "anim.segment.set",
+    "ok": true,
+    "checks": [
+      "dry document/session/history",
+      "stale guard",
+      "failing second step rollback",
+      "one revision",
+      "execution",
+      "undo",
+      "redo",
+      "save/open"
+    ]
+  },
+  {
+    "id": "anim.segment.uniform.apply",
+    "ok": true,
+    "checks": [
+      "dry document/session/history",
+      "stale guard",
+      "failing second step rollback",
+      "one revision",
+      "execution",
+      "undo",
+      "redo",
+      "save/open"
+    ]
+  },
+  {
+    "id": "anim.camera.create",
+    "ok": true,
+    "checks": [
+      "dry document/session/history",
+      "stale guard",
+      "failing second step rollback",
+      "one revision",
+      "execution",
+      "undo",
+      "redo",
+      "save/open"
+    ]
+  },
+  {
+    "id": "anim.camera.set",
+    "ok": true,
+    "checks": [
+      "dry document/session/history",
+      "stale guard",
+      "failing second step rollback",
+      "one revision",
+      "execution",
+      "undo",
+      "redo",
+      "save/open"
+    ]
+  },
+  {
+    "id": "anim.evaluate",
+    "ok": true,
+    "checks": [
+      "repeat bytes",
+      "read purity"
+    ]
+  },
+  {
+    "id": "anim.projection.get",
+    "ok": true,
+    "checks": [
+      "repeat bytes",
+      "read purity"
+    ]
+  },
+  {
+    "id": "anim.path.sample",
+    "ok": true,
+    "checks": [
+      "repeat bytes",
+      "read purity"
+    ]
+  },
+  {
+    "id": "anim.function.sample",
+    "ok": true,
+    "checks": [
+      "repeat bytes",
+      "read purity"
+    ]
+  },
+  {
+    "id": "anim.path.get",
+    "ok": true,
+    "checks": [
+      "repeat bytes",
+      "read purity"
+    ]
+  },
+  {
+    "id": "anim.function.list",
+    "ok": true,
+    "checks": [
+      "repeat bytes",
+      "read purity"
+    ]
+  },
+  {
+    "id": "anim.function.get",
+    "ok": true,
+    "checks": [
+      "repeat bytes",
+      "read purity"
+    ]
+  },
+  {
+    "id": "anim.key.list",
+    "ok": true,
+    "checks": [
+      "repeat bytes",
+      "read purity"
+    ]
+  },
+  {
+    "id": "anim.camera.list",
+    "ok": true,
+    "checks": [
+      "repeat bytes",
+      "read purity"
+    ]
+  },
+  {
+    "id": "anim.camera.get",
+    "ok": true,
+    "checks": [
+      "repeat bytes",
+      "read purity"
+    ]
+  },
+  {
+    "id": "anim.camera.current.get",
+    "ok": true,
+    "checks": [
+      "repeat bytes",
+      "read purity"
+    ]
+  },
+  {
+    "id": "element lock semantics",
+    "ok": true,
+    "clause": "05 6.6: explicit ID acts"
+  },
+  {
+    "id": "C32-R1-04 RFC numeric equality",
+    "ok": true,
+    "request": {
+      "op": "test",
+      "path": "/transform/skew",
+      "value": 0
+    },
+    "observed": {
+      "status": "ok",
+      "result": {
+        "changes": [],
+        "documentRev": 44
+      },
+      "targets": {
+        "ids": [
+          "el_01K7JJN800R6Q2KG4106KA9RH5"
+        ]
+      },
+      "changes": [],
+      "warnings": [],
+      "documentRev": 44
+    }
+  },
+  {
+    "id": "AG-02 props and RFC operations",
+    "ok": true,
+    "operations": [
+      "add",
+      "replace",
+      "remove",
+      "copy",
+      "move",
+      "test"
+    ]
+  },
+  {
+    "id": "sample/evaluate consistency",
+    "ok": true,
+    "samples": 47
+  },
+  {
+    "id": "anim.camera.current.set",
+    "ok": true,
+    "checks": [
+      "dry document",
+      "execution",
+      "undo",
+      "redo"
+    ]
+  },
+  {
+    "id": "anim.camera.delete",
+    "ok": true,
+    "checks": [
+      "dry document",
+      "execution",
+      "undo",
+      "redo"
+    ]
+  },
+  {
+    "id": "C32-R1-05 mixed event frame union",
+    "ok": true,
+    "reverse": false,
+    "observed": [
+      {
+        "seq": 1805,
+        "time": "2026-11-10T00:13:21.750Z",
+        "type": "anim.changed",
+        "origin": "system",
+        "payload": {
+          "nodeIds": [
+            "el_01K7JJN800R6Q2KG4106KA9RH5"
+          ],
+          "channels": [
+            "transform",
+            "skew"
+          ]
+        }
+      }
+    ]
+  },
+  {
+    "id": "C32-R1-05 mixed event frame union",
+    "ok": true,
+    "reverse": true,
+    "observed": [
+      {
+        "seq": 1831,
+        "time": "2026-11-10T00:13:22.066Z",
+        "type": "anim.changed",
+        "origin": "system",
+        "payload": {
+          "nodeIds": [
+            "el_01K7JJN800R6Q2KG4106KA9RH5"
+          ],
+          "channels": [
+            "skew",
+            "transform"
+          ]
+        }
+      }
+    ]
+  }
+]

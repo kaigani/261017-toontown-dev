@@ -1,0 +1,10 @@
+
+running 6 tests
+test empty_transparent_and_opaque_frames_are_exact ... ok
+test disc_pixel_centres_match_radius ... ok
+test contact_sheet_cells_and_metadata_match_single_frames ... ok
+test rolled_dynamic_camera_and_near_plane_match_polygon_oracle ... ok
+test roles_hidden_ancestors_empty_exposures_and_background_extension_have_expected_pixels ... ok
+test transformed_rectangle_centres_match_analytic_inverse ... ok
+
+test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.15s

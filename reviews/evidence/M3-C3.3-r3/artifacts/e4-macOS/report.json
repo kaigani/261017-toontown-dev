@@ -1,0 +1,55 @@
+{
+ "seconds": 3.894,
+ "passed": 8,
+ "failed": 0,
+ "checks": [
+  {
+   "check": "undo changes the pose, redo restores the same bytes",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "check": "world matrices within 1e-06 of the independent values",
+   "ok": true,
+   "detail": "worst 8.881784197001252e-16, 560 numbers, 14 node-frames exact"
+  },
+  {
+   "check": "the comparison covered every node at every frame",
+   "ok": true,
+   "detail": "560"
+  },
+  {
+   "check": "the requested angles read back",
+   "ok": true,
+   "detail": "[]"
+  },
+  {
+   "check": "the mirror reads back as a negative sy",
+   "ok": true,
+   "detail": "-1.0"
+  },
+  {
+   "check": "positive frames between keys are reported as asked",
+   "ok": true,
+   "detail": "[1.0, 12.0, 24.0, 6.0, 18.5, 3.25, 23.0]"
+  },
+  {
+   "check": "the same requests from the same base answer the same bytes",
+   "ok": true,
+   "detail": "1301d6cf933c2bce38714dadab6c2c08fda8dfd5b14388ae648a44557b6e9d69"
+  },
+  {
+   "check": "save and open keep the evaluation",
+   "ok": true,
+   "detail": ""
+  }
+ ],
+ "worstAbsoluteError": 8.881784197001252e-16,
+ "tolerance": 1e-06,
+ "headSha": "5d97bd7360c9174da5efad995255024b177d4db9",
+ "platform": "macOS-26.7.2-arm64-arm-64bit-Mach-O",
+ "python": "3.15.2",
+ "mcp": "2.0.0",
+ "evaluateSha256": "eae7bcae41a8873efade57c33751ed9cd5878fe0a2a4a8da064a95013bdc9c4f",
+ "variant": false
+}

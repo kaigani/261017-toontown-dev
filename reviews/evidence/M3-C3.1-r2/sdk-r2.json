@@ -1,0 +1,747 @@
+{
+  "sdkVersion": "2.0.0",
+  "binary": "C:\\Users\\kaiga\\work\\review\\m3-c31-r2\\target\\debug\\toontown-headless.exe",
+  "profile": "debug",
+  "productHead": "ffffc7387f03e2be125a634dd29f698598532d0d",
+  "calls": [
+    {
+      "command": "project.create",
+      "params": {
+        "name": "Round two SDK"
+      },
+      "envelope": {
+        "status": "ok",
+        "result": {
+          "projectId": "pr_01M6GYG8Y4Y7F0TMHVAP7XEBZP",
+          "sceneId": "sc_01M6GYG8Y4Y7F0TMHVAP7XEC3T",
+          "cameraId": "el_01M6GYG8Y4Y7F0TMHVAP7XEC3W",
+          "elementId": "el_01M6GYG8Y4Y7F0TMHVAP7XEC3X"
+        },
+        "changes": [],
+        "warnings": [],
+        "documentRev": 1
+      }
+    },
+    {
+      "command": "element.create",
+      "params": {
+        "type": "drawing",
+        "name": "Variant731"
+      },
+      "envelope": {
+        "status": "ok",
+        "result": {
+          "elementIds": [
+            "el_01K7JJN800JNH7KHQ0KY4BK1QA"
+          ],
+          "names": [
+            "Variant731"
+          ],
+          "warnings": []
+        },
+        "changes": [
+          {
+            "id": "pr_01M6GYG8Y4Y7F0TMHVAP7XEBZP",
+            "type": "project",
+            "op": "modified",
+            "rev": 2,
+            "patch": [
+              {
+                "op": "add",
+                "path": "/drawingBanks/1",
+                "value": {
+                  "id": "db_01K7JJN801P9XT8K3H723WN3FS",
+                  "type": "drawingBank"
+                }
+              }
+            ]
+          },
+          {
+            "id": "db_01K7JJN801P9XT8K3H723WN3FS",
+            "type": "drawingBank",
+            "op": "created",
+            "rev": 2,
+            "parentId": "pr_01M6GYG8Y4Y7F0TMHVAP7XEBZP",
+            "index": 1
+          },
+          {
+            "id": "sc_01M6GYG8Y4Y7F0TMHVAP7XEC3T",
+            "type": "scene",
+            "op": "modified",
+            "rev": 2,
+            "patch": [
+              {
+                "op": "add",
+                "path": "/tree/0",
+                "value": {
+                  "id": "el_01K7JJN800JNH7KHQ0KY4BK1QA",
+                  "children": []
+                }
+              },
+              {
+                "op": "replace",
+                "path": "/columnOrder",
+                "value": [
+                  "el_01M6GYG8Y4Y7F0TMHVAP7XEC3X",
+                  "el_01K7JJN800JNH7KHQ0KY4BK1QA"
+                ],
+                "oldValue": [
+                  "el_01M6GYG8Y4Y7F0TMHVAP7XEC3X"
+                ]
+              },
+              {
+                "op": "add",
+                "path": "/elements/3",
+                "value": {
+                  "id": "el_01K7JJN800JNH7KHQ0KY4BK1QA",
+                  "type": "element"
+                }
+              }
+            ]
+          },
+          {
+            "id": "el_01K7JJN800JNH7KHQ0KY4BK1QA",
+            "type": "element",
+            "op": "created",
+            "rev": 2,
+            "parentId": "sc_01M6GYG8Y4Y7F0TMHVAP7XEC3T",
+            "index": 3
+          }
+        ],
+        "undo": {
+          "stepId": "u-1",
+          "label": "New Elements"
+        },
+        "warnings": [],
+        "documentRev": 2
+      }
+    },
+    {
+      "command": "element.note.set",
+      "params": {
+        "elementId": "el_01K7JJN800JNH7KHQ0KY4BK1QA",
+        "text": "before731"
+      },
+      "envelope": {
+        "status": "ok",
+        "result": {
+          "elementId": "el_01K7JJN800JNH7KHQ0KY4BK1QA"
+        },
+        "changes": [
+          {
+            "id": "el_01K7JJN800JNH7KHQ0KY4BK1QA",
+            "type": "element",
+            "op": "modified",
+            "rev": 3,
+            "patch": [
+              {
+                "op": "add",
+                "path": "/note",
+                "value": "before731"
+              }
+            ]
+          }
+        ],
+        "undo": {
+          "stepId": "u-2",
+          "label": "Set Element Note"
+        },
+        "warnings": [],
+        "documentRev": 3
+      }
+    },
+    {
+      "command": "doc.object.patch",
+      "params": {
+        "targets": [
+          "el_01K7JJN800JNH7KHQ0KY4BK1QA"
+        ],
+        "ops": [
+          {
+            "op": "test",
+            "path": "/note",
+            "value": "before731"
+          },
+          {
+            "op": "replace",
+            "path": "/note",
+            "value": "after731"
+          }
+        ]
+      },
+      "envelope": {
+        "status": "error",
+        "changes": [],
+        "warnings": [],
+        "documentRev": 3,
+        "error": {
+          "code": "doc.patchTestFailed",
+          "message": "test failed at `/note`",
+          "details": {
+            "pointer": "/note"
+          }
+        }
+      }
+    },
+    {
+      "command": "element.current.set",
+      "params": {
+        "elementId": "el_01K7JJN800JNH7KHQ0KY4BK1QA"
+      },
+      "envelope": {
+        "status": "ok",
+        "result": {
+          "elementId": "el_01K7JJN800JNH7KHQ0KY4BK1QA"
+        },
+        "changes": [],
+        "warnings": [],
+        "documentRev": 3
+      }
+    },
+    {
+      "command": "element.visibility.set",
+      "params": {
+        "elementIds": [
+          "el_01K7JJN800JNH7KHQ0KY4BK1QA"
+        ],
+        "scope": "scene",
+        "visible": false
+      },
+      "envelope": {
+        "status": "ok",
+        "result": {
+          "changedIds": [
+            "el_01K7JJN800JNH7KHQ0KY4BK1QA"
+          ]
+        },
+        "changes": [
+          {
+            "id": "el_01K7JJN800JNH7KHQ0KY4BK1QA",
+            "type": "element",
+            "op": "modified",
+            "rev": 4,
+            "patch": [
+              {
+                "op": "replace",
+                "path": "/visibleInScene",
+                "value": false,
+                "oldValue": true
+              }
+            ]
+          }
+        ],
+        "undo": {
+          "stepId": "u-3",
+          "label": "Show/Hide Elements"
+        },
+        "warnings": [],
+        "documentRev": 4
+      }
+    },
+    {
+      "command": "doc.object.patch",
+      "params": {
+        "targets": [
+          "el_01K7JJN800JNH7KHQ0KY4BK1QA"
+        ],
+        "ops": [
+          {
+            "op": "copy",
+            "from": "/visibleInScene",
+            "path": "/visibleInXsheet"
+          }
+        ]
+      },
+      "envelope": {
+        "status": "ok",
+        "result": {
+          "changes": [
+            {
+              "id": "el_01K7JJN800JNH7KHQ0KY4BK1QA",
+              "type": "element",
+              "op": "modified",
+              "rev": 5,
+              "patch": [
+                {
+                  "op": "replace",
+                  "path": "/visibleInXsheet",
+                  "value": false,
+                  "oldValue": true
+                }
+              ]
+            }
+          ],
+          "documentRev": 5
+        },
+        "targets": {
+          "ids": [
+            "el_01K7JJN800JNH7KHQ0KY4BK1QA"
+          ]
+        },
+        "changes": [
+          {
+            "id": "el_01K7JJN800JNH7KHQ0KY4BK1QA",
+            "type": "element",
+            "op": "modified",
+            "rev": 5,
+            "patch": [
+              {
+                "op": "replace",
+                "path": "/visibleInXsheet",
+                "value": false,
+                "oldValue": true
+              }
+            ]
+          }
+        ],
+        "undo": {
+          "stepId": "u-4",
+          "label": "Set visibleInXsheet"
+        },
+        "warnings": [],
+        "documentRev": 5
+      }
+    },
+    {
+      "command": "cell.selection.get",
+      "params": {},
+      "envelope": {
+        "status": "ok",
+        "result": {
+          "elementIds": [
+            "el_01K7JJN800JNH7KHQ0KY4BK1QA"
+          ],
+          "from": 0,
+          "to": 0,
+          "rowsSelected": 1,
+          "currentElementId": "el_01K7JJN800JNH7KHQ0KY4BK1QA",
+          "currentFrame": 1
+        },
+        "changes": [],
+        "warnings": [],
+        "documentRev": 5
+      }
+    },
+    {
+      "command": "element.visibility.set",
+      "params": {
+        "elementIds": [
+          "el_01K7JJN800JNH7KHQ0KY4BK1QA"
+        ],
+        "scope": "xsheet",
+        "visible": true
+      },
+      "envelope": {
+        "status": "ok",
+        "result": {
+          "changedIds": [
+            "el_01K7JJN800JNH7KHQ0KY4BK1QA"
+          ]
+        },
+        "changes": [
+          {
+            "id": "el_01K7JJN800JNH7KHQ0KY4BK1QA",
+            "type": "element",
+            "op": "modified",
+            "rev": 6,
+            "patch": [
+              {
+                "op": "replace",
+                "path": "/visibleInXsheet",
+                "value": true,
+                "oldValue": false
+              }
+            ]
+          }
+        ],
+        "undo": {
+          "stepId": "u-5",
+          "label": "Show/Hide Elements"
+        },
+        "warnings": [],
+        "documentRev": 6
+      }
+    },
+    {
+      "command": "element.drawing.create",
+      "params": {
+        "elementId": "el_01K7JJN800JNH7KHQ0KY4BK1QA",
+        "name": "731",
+        "exposeFrom": 1,
+        "exposeTo": 6
+      },
+      "envelope": {
+        "status": "ok",
+        "result": {
+          "drawingId": "dr_01K7JJN80002E7XREBD4A6T4NH",
+          "name": "731"
+        },
+        "changes": [
+          {
+            "id": "db_01K7JJN801P9XT8K3H723WN3FS",
+            "type": "drawingBank",
+            "op": "modified",
+            "rev": 7,
+            "patch": [
+              {
+                "op": "add",
+                "path": "/drawings/0",
+                "value": {
+                  "id": "dr_01K7JJN80002E7XREBD4A6T4NH",
+                  "type": "drawing"
+                }
+              }
+            ]
+          },
+          {
+            "id": "dr_01K7JJN80002E7XREBD4A6T4NH",
+            "type": "drawing",
+            "op": "created",
+            "rev": 7,
+            "parentId": "db_01K7JJN801P9XT8K3H723WN3FS",
+            "index": 0
+          },
+          {
+            "id": "el_01K7JJN800JNH7KHQ0KY4BK1QA",
+            "type": "element",
+            "op": "modified",
+            "rev": 7,
+            "patch": [
+              {
+                "op": "replace",
+                "path": "/exposure",
+                "range": {
+                  "from": 1,
+                  "to": 6
+                },
+                "value": [
+                  [
+                    "dr_01K7JJN80002E7XREBD4A6T4NH",
+                    6
+                  ]
+                ],
+                "oldValue": [
+                  [
+                    null,
+                    6
+                  ]
+                ]
+              }
+            ]
+          }
+        ],
+        "undo": {
+          "stepId": "u-6",
+          "label": "Create Drawing"
+        },
+        "warnings": [],
+        "documentRev": 7
+      }
+    },
+    {
+      "command": "cell.note.set",
+      "params": {
+        "elementId": "el_01K7JJN800JNH7KHQ0KY4BK1QA",
+        "frame": 1,
+        "text": "cut731"
+      },
+      "envelope": {
+        "status": "ok",
+        "result": {
+          "elementId": "el_01K7JJN800JNH7KHQ0KY4BK1QA",
+          "frame": 1
+        },
+        "changes": [
+          {
+            "id": "el_01K7JJN800JNH7KHQ0KY4BK1QA",
+            "type": "element",
+            "op": "modified",
+            "rev": 8,
+            "patch": [
+              {
+                "op": "add",
+                "path": "/cellNotes",
+                "value": {
+                  "1": "cut731"
+                }
+              }
+            ]
+          }
+        ],
+        "undo": {
+          "stepId": "u-7",
+          "label": "Set Cell Note"
+        },
+        "warnings": [],
+        "documentRev": 8
+      }
+    },
+    {
+      "command": "cell.note.set",
+      "params": {
+        "elementId": "el_01K7JJN800JNH7KHQ0KY4BK1QA",
+        "frame": 4,
+        "text": "tail731"
+      },
+      "envelope": {
+        "status": "ok",
+        "result": {
+          "elementId": "el_01K7JJN800JNH7KHQ0KY4BK1QA",
+          "frame": 4
+        },
+        "changes": [
+          {
+            "id": "el_01K7JJN800JNH7KHQ0KY4BK1QA",
+            "type": "element",
+            "op": "modified",
+            "rev": 9,
+            "patch": [
+              {
+                "op": "add",
+                "path": "/cellNotes/4",
+                "value": "tail731"
+              }
+            ]
+          }
+        ],
+        "undo": {
+          "stepId": "u-8",
+          "label": "Set Cell Note"
+        },
+        "warnings": [],
+        "documentRev": 9
+      }
+    },
+    {
+      "command": "cell.select",
+      "params": {
+        "elementIds": [
+          "el_01K7JJN800JNH7KHQ0KY4BK1QA"
+        ],
+        "from": 1,
+        "to": 2
+      },
+      "envelope": {
+        "status": "ok",
+        "result": {
+          "elementIds": [
+            "el_01K7JJN800JNH7KHQ0KY4BK1QA"
+          ],
+          "from": 1,
+          "to": 2
+        },
+        "changes": [],
+        "warnings": [],
+        "documentRev": 9
+      }
+    },
+    {
+      "command": "edit.cut",
+      "params": {
+        "context": "xsheet"
+      },
+      "envelope": {
+        "status": "ok",
+        "result": {
+          "clipboard": {
+            "kind": "cells",
+            "itemCount": 2
+          }
+        },
+        "targets": {
+          "context": "xsheet",
+          "ids": [
+            "element:@el_01K7JJN800JNH7KHQ0KY4BK1QA/cell:#1",
+            "element:@el_01K7JJN800JNH7KHQ0KY4BK1QA/cell:#2"
+          ]
+        },
+        "changes": [
+          {
+            "id": "el_01K7JJN800JNH7KHQ0KY4BK1QA",
+            "type": "element",
+            "op": "modified",
+            "rev": 10,
+            "patch": [
+              {
+                "op": "replace",
+                "path": "/exposure",
+                "range": {
+                  "from": 1,
+                  "to": 2
+                },
+                "value": [
+                  [
+                    null,
+                    2
+                  ]
+                ],
+                "oldValue": [
+                  [
+                    "dr_01K7JJN80002E7XREBD4A6T4NH",
+                    2
+                  ]
+                ]
+              }
+            ]
+          }
+        ],
+        "undo": {
+          "stepId": "u-9",
+          "label": "Cut"
+        },
+        "warnings": [],
+        "documentRev": 10
+      }
+    },
+    {
+      "command": "doc.object.get",
+      "params": {
+        "ref": "el_01K7JJN800JNH7KHQ0KY4BK1QA"
+      },
+      "envelope": {
+        "status": "ok",
+        "result": {
+          "object": {
+            "id": "el_01K7JJN800JNH7KHQ0KY4BK1QA",
+            "type": "element",
+            "rev": 10,
+            "name": "Variant731",
+            "path": "scene:\"Scene-1\"/element:\"Variant731\"",
+            "elementType": "drawing",
+            "loops": 1,
+            "loopType": "count",
+            "positionLoop": "cycle",
+            "role": "normal",
+            "deformable": false,
+            "visibleInScene": false,
+            "visibleInXsheet": true,
+            "locked": false,
+            "collapsed": false,
+            "markerColour": null,
+            "backgroundColour": null,
+            "note": "before731",
+            "columnWidth": 80,
+            "drawingBankId": "db_01K7JJN801P9XT8K3H723WN3FS",
+            "exposure": [
+              [
+                null,
+                2
+              ],
+              [
+                "dr_01K7JJN80002E7XREBD4A6T4NH",
+                4
+              ]
+            ],
+            "cellNotes": {
+              "1": "cut731",
+              "4": "tail731"
+            },
+            "transform": {
+              "offset": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+              },
+              "rotation": 0.0,
+              "skew": 0.0,
+              "scale": {
+                "x": 1.0,
+                "y": 1.0
+              },
+              "keepProportions": false,
+              "rotationPivot": {
+                "x": 0.0,
+                "y": 0.0
+              },
+              "scalePivot": {
+                "x": 0.0,
+                "y": 0.0
+              },
+              "rotateAboutPivot": false,
+              "lockDepth": false,
+              "orientToPath": false
+            },
+            "channels": {},
+            "createdAt": "2026-11-03T14:55:07.804Z"
+          }
+        },
+        "targets": {
+          "ids": [
+            "el_01K7JJN800JNH7KHQ0KY4BK1QA"
+          ]
+        },
+        "changes": [],
+        "warnings": [],
+        "documentRev": 10
+      }
+    },
+    {
+      "command": "element.create",
+      "params": {
+        "type": "clipping",
+        "name": "\u6d77\u6d77\u6d77\u6d77\u6d77\u6d77\u6d77\u6d77\u6d77\u6d77\u6d77\u6d77\u6d77\u6d77\u6d77\u6d77\u6d77\u6d77\u6d77\u6d77\u6d77\u6d77\u6d77\u6d77\u6d77\u6d77\u6d77\u6d77\u6d77\u6d77\u6d77\u6d77\u6d77\u6d77\u6d77\u6d77\u6d77\u6d77\u6d77\u6d77\u6d77\u6d77\u6d77\u6d77\u6d77\u6d77\u6d77\u6d77\u6d77\u6d77\u6d77\u6d77\u6d77\u6d77\u6d77\u6d77\u6d77\u6d77\u6d77\u6d77\u6d77\u6d77\u6d77\u6d77"
+      },
+      "envelope": {
+        "status": "error",
+        "changes": [],
+        "warnings": [],
+        "documentRev": 10,
+        "error": {
+          "code": "doc.schemaViolation",
+          "message": "\"\u6d77\u6d77\u6d77\u6d77\u6d77\u6d77\u6d77\u6d77\u6d77\u6d77\u6d77\u6d77\u6d77\u6d77\u6d77\u6d77\u6d77\u6d77\u6d77\u6d77\u6d77\u6d77\u6d77\u6d77\u6d77\u6d77\u6d77\u6d77\u6d77\u6d77\u6d77\u6d77\u6d77\u6d77\u6d77\u6d77\u6d77\u6d77\u6d77\u6d77\u6d77\u6d77\u6d77\u6d77\u6d77\u6d77\u6d77\u6d77\u6d77\u6d77\u6d77\u6d77\u6d77\u6d77\u6d77\u6d77\u6d77\u6d77\u6d77\u6d77\u6d77\u6d77\u6d77\u6d77-mask\" is longer than 64 characters",
+          "details": {
+            "pointer": "/name",
+            "schemaPath": "/properties/name/maxLength",
+            "objectId": "el_01K7JJN801HG13V2RZ9QA9DEG8"
+          }
+        }
+      }
+    },
+    {
+      "command": "doc.state.get",
+      "params": {},
+      "envelope": {
+        "status": "ok",
+        "result": {
+          "projectId": "pr_01M6GYG8Y4Y7F0TMHVAP7XEBZP",
+          "path": null,
+          "form": null,
+          "formatVersion": "1.0",
+          "migratedFrom": null,
+          "documentRev": 10,
+          "savedRev": null,
+          "dirty": true,
+          "readOnly": false,
+          "lock": null,
+          "historyFromRev": 1
+        },
+        "changes": [],
+        "warnings": [],
+        "documentRev": 10
+      }
+    }
+  ],
+  "checks": [
+    {
+      "check": "C31-R2-01 RFC test precedes delegated replace",
+      "ok": false
+    },
+    {
+      "check": "C31-R2-02 RFC copy advances hidden current column",
+      "ok": false
+    },
+    {
+      "check": "C31-R2-04 generic cut clears cell note",
+      "ok": false
+    },
+    {
+      "check": "C31-R2-05 maximum name permits required parameter rows",
+      "ok": false
+    },
+    {
+      "check": "worker remains available",
+      "ok": true
+    }
+  ],
+  "allPassed": false
+}

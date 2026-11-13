@@ -1,0 +1,360 @@
+check properties (windows-latest)
+2026-11-12T18:31:18.9364704Z test a_snapping_sliver_below_the_documented_bound_carries_no_fill ... ok
+2026-11-12T18:31:48.2558946Z test affine_envelopes_match_the_oracle ... ok
+2026-11-12T18:31:58.9753718Z test break_apart_leaves_the_line_layer_to_the_oracle_and_makes_one_group_per_glyph ... ok
+2026-11-12T18:32:01.9778947Z test lines_to_brush_and_centre_line_keep_the_oracles_partition ... ok
+2026-11-12T18:32:17.6386661Z test optimize_and_smooth_keep_the_oracles_partition ... ok
+2026-11-12T18:33:02.7790808Z test region_erase_matches_the_oracle ... ok
+2026-11-12T18:33:07.9377856Z test point_moves_with_and_without_snapping_match_the_oracle ... ok
+2026-11-12T18:33:14.0130171Z test segment_cut_matches_the_oracle ... ok
+2026-11-12T18:33:40.0566753Z test transforms_match_the_oracles_transformed_geometry ... ok
+2026-11-12T18:33:46.7959364Z test stroke_set_and_delete_match_the_oracle ... ok
+2026-11-12T18:34:20.2348757Z test stroke_add_matches_the_oracle ... ok
+2026-11-12T18:39:25.9450772Z test flatten_of_overlapping_layers_matches_the_oracle ... ok
+2026-11-12T18:39:25.9451904Z test result: ok. 12 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 487.32s
+2026-11-12T18:39:26.1271766Z test shrunk_cutter_area_bound ... ok
+2026-11-12T18:42:05.3723433Z test transforms_with_determinant_plus_and_minus_one_keep_the_oracles_faces ... ok
+2026-11-12T18:42:14.1909122Z test vectorized_shapes_enclose_one_unpainted_zone_per_paper_component ... ok
+2026-11-12T18:42:16.8306840Z test the_cutter_splits_along_its_segment_like_the_oracle ... ok
+2026-11-12T18:42:24.0239808Z test flatten_of_disjoint_layers_has_the_faces_of_their_union ... ok
+2026-11-12T18:42:24.0243210Z test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 178.06s
+2026-11-12T18:42:24.2066802Z test flatten_keeps_a_pencil_piece_that_a_brush_only_partly_covers ... ok
+2026-11-12T18:42:40.2982644Z test break_apart_matches_the_fonts_glyph_outlines ... ok
+2026-11-12T18:42:42.1552162Z test erasing_polygonal_brushes_keeps_partly_covered_ones_whole ... ok
+2026-11-12T18:42:44.8388274Z test flatten_of_pencil_and_polygonal_brush_layers_is_exact ... ok
+2026-11-12T18:42:55.0987807Z test non_parallelogram_envelopes_map_the_layer_projectively ... ok
+2026-11-12T18:43:25.7332857Z test lines_to_brush_then_centre_line_on_closed_loops ... ok
+2026-11-12T18:44:39.7772458Z test smooth_changes_the_shape_within_its_tolerance ... ok
+2026-11-12T18:51:24.5925608Z test snapping_onto_a_curved_contour_reaches_its_nearest_point ... ok
+2026-11-12T18:53:43.1229724Z test centre_line_of_a_spineless_ring ... ok
+2026-11-12T18:57:45.8891481Z test vectorize_masks_enclose_the_predicted_paper_components ... ok
+2026-11-12T18:57:45.8892164Z test result: ok. 10 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 921.83s
+2026-11-12T18:57:46.5186432Z test vectorized_shapes_enclose_one_unpainted_zone_per_paper_component ... ok
+2026-11-12T18:57:46.6944855Z test flatten_of_disjoint_layers_has_the_faces_of_their_union ... ok
+2026-11-12T18:57:46.8284798Z test transforms_with_determinant_plus_and_minus_one_keep_the_oracles_faces ... ok
+2026-11-12T18:57:46.8731425Z test the_cutter_splits_along_its_segment_like_the_oracle ... ok
+2026-11-12T18:57:46.8732184Z test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.96s
+2026-11-12T18:59:44.9917310Z test fixed_regressions ... ok
+2026-11-12T18:59:45.7761730Z test a_settled_layer_is_a_fixpoint_of_noding ... ok
+2026-11-12T18:59:45.7996558Z test side_fills_read_back_beside_collinear_overlaps ... ok
+2026-11-12T18:59:46.4016715Z test zone_ids_and_areas_do_not_depend_on_stroke_order_and_settling_is_idempotent ... ok
+2026-11-12T18:59:46.9852418Z test adding_strokes_carries_each_fill_into_the_zones_it_splits ... ok
+2026-11-12T18:59:47.4199233Z test side_fills_read_back_after_adding_strokes ... ok
+2026-11-12T18:59:47.7604746Z test zones_are_the_oracles_bounded_faces_on_degenerate_arrangements ... ok
+2026-11-12T18:59:50.0430228Z test determinant_plus_and_minus_one_maps_keep_the_faces ... ok
+2026-11-12T18:59:50.0430893Z test result: ok. 8 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 5.06s
+2026-11-12T18:59:50.0639958Z test fixed_regressions ... ok
+2026-11-12T18:59:50.0691473Z test shrunk_determinant_case ... ok
+2026-11-12T18:59:55.4358956Z test a_settled_layer_is_a_fixpoint_of_noding ... ok
+2026-11-12T18:59:55.4437710Z test side_fills_read_back_beside_collinear_overlaps ... ok
+2026-11-12T19:00:03.9807886Z test zone_ids_and_areas_do_not_depend_on_stroke_order_and_settling_is_idempotent ... ok
+2026-11-12T19:00:20.4179855Z test zones_are_the_oracles_bounded_faces_on_degenerate_arrangements ... ok
+2026-11-12T19:00:26.7557305Z test adding_strokes_carries_each_fill_into_the_zones_it_splits ... ok
+2026-11-12T19:00:27.7446621Z test side_fills_read_back_after_adding_strokes ... ok
+2026-11-12T19:02:19.6468213Z test determinant_plus_and_minus_one_maps_keep_the_faces ... ok
+2026-11-12T19:02:19.6469280Z test result: ok. 9 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 149.59s
+2026-11-12T19:02:25.9193255Z test the_application_context_follows_commands ... ok
+2026-11-12T19:02:26.0283558Z test the_watchdog_answers_within_its_budget ... ok
+2026-11-12T19:02:26.0647205Z test window_and_panel_state_is_queryable_and_settable ... ok
+2026-11-12T19:02:26.1752321Z test workspaces_are_kernel_state ... ok
+2026-11-12T19:02:26.2096096Z test jobs_run_off_the_document_thread ... ok
+2026-11-12T19:02:26.2820280Z test every_generated_declaration_answers_with_its_owner ... ok
+2026-11-12T19:02:59.2516585Z test every_example_runs_on_the_fixture_under_the_watchdog ... ok
+2026-11-12T19:02:59.2517249Z test result: ok. 7 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 33.50s
+2026-11-12T19:03:00.2875589Z test a_cancelled_animation_edit_restores_the_session_state_in_full ... ok
+2026-11-12T19:03:16.1693890Z test a_queued_undo_behind_a_running_evaluation_keeps_its_own_deadline_and_is_atomic ... ok
+2026-11-12T19:03:16.1882646Z test animation_events_reach_every_subscriber_whoever_issued_the_call ... ok
+2026-11-12T19:03:16.3700094Z test animation_mutations_pass_the_same_acceptance_rules_as_any_command_for_user_and_agent ... ok
+2026-11-12T19:03:42.2913247Z test running_undo_and_redo_of_a_large_animation_step_are_cancelled_atomically ... ok
+2026-11-12T19:03:42.2913995Z test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 43.02s
+c33 render release (windows-latest)
+2026-11-12T18:33:13.5391908Z test hit_test_agrees_with_the_pixels_and_skips_transparent_ones ... ok
+2026-11-12T18:33:13.5879232Z test one_image_pixel_is_one_output_pixel_at_native_size ... ok
+2026-11-12T18:33:13.5880128Z test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.63s
+2026-11-12T18:33:13.7728840Z test gate_scene_images_match_the_gate_index ... ok
+2026-11-12T18:33:13.9264748Z test golden_images_match_byte_for_byte ... ok
+2026-11-12T18:33:13.9265777Z test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.32s
+2026-11-12T18:33:14.5931764Z test a_cancelled_range_publishes_nothing ... ok
+2026-11-12T18:33:14.6436527Z test a_range_writes_named_frames_equal_to_single_renders_and_a_companion_manifest ... ok
+2026-11-12T18:33:14.7137213Z test names_conflicts_and_formats ... ok
+2026-11-12T18:33:14.7139932Z test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.77s
+2026-11-12T18:34:01.2459120Z test seeded_anchor_groups_4096 ... ok
+2026-11-12T18:34:01.2459818Z test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 39.80s
+2026-11-12T18:34:01.3708708Z test last_target_readonly_preserves_originals ... ok
+2026-11-12T18:34:29.0979730Z test deep_and_broad_scene ... ok
+2026-11-12T18:34:29.0983016Z test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 27.83s
+2026-11-12T18:34:46.7162045Z test already_cancelled_mutation_never_commits ... ok
+2026-11-12T18:34:48.0119767Z test fast_commit_cancel_retry_matrix_preserves_one_change_and_one_answer ... ok
+2026-11-12T18:34:50.4898157Z test direct_job_wait_observes_cancellation_probe ... ok
+2026-11-12T18:34:50.5778981Z test retry_cache_and_late_cancellation_are_stable_for_three_thousand_calls ... ok
+2026-11-12T18:34:50.5780177Z test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 3.97s
+2026-11-12T18:34:50.7745438Z test completed_batch_then_late_cancellation_does_not_poison_next_request ... ok
+2026-11-12T18:34:50.8133441Z test atomic_and_dry_run_cancel_mid_batch_discard_changes ... ok
+2026-11-12T18:34:50.8485811Z test short_waited_batch_cannot_commit_with_an_already_cancelled_probe ... ok
+2026-11-12T18:34:52.2150653Z test discarded_queued_cancellation_does_not_report_a_dead_document_thread ... ok
+2026-11-12T18:34:53.3171096Z test queued_cancelled_request_is_skipped_and_following_read_survives ... ok
+2026-11-12T18:35:23.3177692Z test one_hundred_wait_cancellations_settle_jobs_and_leave_handle_usable ... ok
+2026-11-12T18:35:23.3178494Z test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 32.72s
+2026-11-12T18:35:23.4425254Z test cancellation_is_latched_even_if_probe_flips_back ... ok
+2026-11-12T18:35:23.5928046Z test panicking_probe_leaves_worker_alive ... ok
+2026-11-12T18:35:29.4435640Z test blocked_probe_does_not_starve_other_callers_past_watchdog ... ok
+2026-11-12T18:35:35.1932406Z test overhead_ten_thousand_small_actions_and_thousand_step_batch ... ok
+2026-11-12T18:35:35.1933088Z test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 11.86s
+2026-11-12T18:36:29.2855374Z test two_hundred_answers_after_the_bound_must_latch_after_one_question ... ok
+2026-11-12T18:36:29.2856154Z test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 54.07s
+2026-11-12T18:36:45.1836685Z test a_cancellation_between_two_steps_refuses_the_second_every_time ... ok
+2026-11-12T18:36:45.3248386Z test a_worker_that_really_dies_answers_internal ... ok
+2026-11-12T18:36:48.2806402Z test a_queued_request_discarded_after_its_cancellation_answers_an_honest_refusal ... ok
+2026-11-12T18:36:48.2807587Z test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 18.98s
+2026-11-12T18:44:24.6557278Z test concurrent_wire_cancellation_sixty_seconds ... ok
+2026-11-12T18:44:24.6557863Z test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 60.18s
+headless release (macos-latest)
+2026-11-12T18:55:57.8386050Z test cancellation_while_waiting_and_before_a_late_accept_authorises_nothing ... ok
+2026-11-12T18:56:10.7053380Z test cancellation_before_the_elicitation_is_sent_asks_nothing ... ok
+2026-11-12T18:56:37.9881910Z test an_accept_racing_a_cancellation_always_ends_consistently ... ok
+2026-11-12T18:56:38.0078030Z test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 42.16s
+2026-11-12T19:10:32.2412470Z test hundred_thousand_stroke_edit_undo_redo_and_dry_run_are_measured ... ok
+2026-11-12T19:10:32.2414150Z test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 547.02s
+2026-11-12T19:15:00.9432820Z test geometry_oracle_seed_a571_matches_and_replays ... ok
+2026-11-12T19:15:03.7391030Z test geometry_oracle_seed_b683_matches_and_replays ... ok
+2026-11-12T19:15:03.7392210Z test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 52.26s
+2026-11-12T19:16:16.2224650Z test adversarial_inputs_fit_within_the_work_budget ... ok
+2026-11-12T19:16:46.8272720Z test adversarial_brush_outlines_finish_or_are_refused_within_the_work_budget ... ok
+2026-11-12T19:16:46.8275300Z test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 1 filtered out; finished in 35.30s
+2026-11-12T19:17:20.6414090Z test adversarial_layers_settle_or_are_refused_within_the_planar_budget ... ok
+2026-11-12T19:17:20.6414850Z test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 31.64s
+2026-11-12T19:21:32.5544690Z test flatten_100k_raw_observations ... ok
+2026-11-12T19:21:32.5557770Z test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 135.84s
+2026-11-12T19:21:45.8721010Z test flatten_settle_phases_raw_observations ... ok
+2026-11-12T19:21:45.8733790Z test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 8.29s
+c33 render release (macos-latest)
+2026-11-12T18:44:48.6243730Z test hit_test_agrees_with_the_pixels_and_skips_transparent_ones ... ok
+2026-11-12T18:44:48.6414820Z test one_image_pixel_is_one_output_pixel_at_native_size ... ok
+2026-11-12T18:44:48.6415490Z test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.31s
+2026-11-12T18:44:48.7306040Z test gate_scene_images_match_the_gate_index ... ok
+2026-11-12T18:44:48.8103560Z test golden_images_match_byte_for_byte ... ok
+2026-11-12T18:44:48.8132130Z test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.16s
+2026-11-12T18:44:49.4010680Z test a_cancelled_range_publishes_nothing ... ok
+2026-11-12T18:44:49.4312430Z test names_conflicts_and_formats ... ok
+2026-11-12T18:44:49.4477320Z test a_range_writes_named_frames_equal_to_single_renders_and_a_companion_manifest ... ok
+2026-11-12T18:44:49.4490170Z test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.63s
+2026-11-12T18:45:10.0379250Z test seeded_anchor_groups_4096 ... ok
+2026-11-12T18:45:10.0581570Z test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 18.25s
+2026-11-12T18:45:10.1826000Z test last_target_readonly_preserves_originals ... ok
+2026-11-12T18:45:24.8045060Z test deep_and_broad_scene ... ok
+2026-11-12T18:45:24.8046800Z test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 14.75s
+2026-11-12T18:45:31.8327030Z test already_cancelled_mutation_never_commits ... ok
+2026-11-12T18:45:32.2826850Z test fast_commit_cancel_retry_matrix_preserves_one_change_and_one_answer ... ok
+2026-11-12T18:45:32.8011540Z test direct_job_wait_observes_cancellation_probe ... ok
+2026-11-12T18:45:33.1937720Z test retry_cache_and_late_cancellation_are_stable_for_three_thousand_calls ... ok
+2026-11-12T18:45:33.1944970Z test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.41s
+2026-11-12T18:45:33.2601750Z test completed_batch_then_late_cancellation_does_not_poison_next_request ... ok
+2026-11-12T18:45:33.3573080Z test atomic_and_dry_run_cancel_mid_batch_discard_changes ... ok
+2026-11-12T18:45:34.5458320Z test discarded_queued_cancellation_does_not_report_a_dead_document_thread ... ok
+2026-11-12T18:45:34.5558850Z test short_waited_batch_cannot_commit_with_an_already_cancelled_probe ... ok
+2026-11-12T18:45:35.1364780Z test queued_cancelled_request_is_skipped_and_following_read_survives ... ok
+2026-11-12T18:45:44.0959440Z test one_hundred_wait_cancellations_settle_jobs_and_leave_handle_usable ... ok
+2026-11-12T18:45:44.0960170Z test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 10.89s
+2026-11-12T18:45:44.1472450Z test cancellation_is_latched_even_if_probe_flips_back ... ok
+2026-11-12T18:45:44.2082820Z test panicking_probe_leaves_worker_alive ... ok
+2026-11-12T18:45:50.0642590Z test overhead_ten_thousand_small_actions_and_thousand_step_batch ... ok
+2026-11-12T18:45:50.2069090Z test blocked_probe_does_not_starve_other_callers_past_watchdog ... ok
+2026-11-12T18:45:50.2070060Z test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 6.10s
+2026-11-12T18:46:59.6169740Z test two_hundred_answers_after_the_bound_must_latch_after_one_question ... ok
+2026-11-12T18:46:59.6188070Z test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 69.37s
+2026-11-12T18:47:08.4305210Z test a_cancellation_between_two_steps_refuses_the_second_every_time ... ok
+2026-11-12T18:47:08.4910900Z test a_worker_that_really_dies_answers_internal ... ok
+2026-11-12T18:47:11.2829700Z test a_queued_request_discarded_after_its_cancellation_answers_an_honest_refusal ... ok
+2026-11-12T18:47:11.2830320Z test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 11.65s
+2026-11-12T18:51:19.0494310Z test concurrent_wire_cancellation_sixty_seconds ... ok
+2026-11-12T18:51:19.0506790Z test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 60.29s
+headless release (windows-latest)
+2026-11-12T18:34:05.8004588Z test cancellation_while_waiting_and_before_a_late_accept_authorises_nothing ... ok
+2026-11-12T18:34:17.1842216Z test cancellation_before_the_elicitation_is_sent_asks_nothing ... ok
+2026-11-12T18:34:44.2701370Z test an_accept_racing_a_cancellation_always_ends_consistently ... ok
+2026-11-12T18:34:44.2704684Z test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 40.21s
+2026-11-12T18:56:48.5075392Z test hundred_thousand_stroke_edit_undo_redo_and_dry_run_are_measured ... ok
+2026-11-12T18:56:48.5077450Z test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 968.41s
+2026-11-12T19:04:10.6843584Z test geometry_oracle_seed_a571_matches_and_replays ... ok
+2026-11-12T19:04:16.8587906Z test geometry_oracle_seed_b683_matches_and_replays ... ok
+2026-11-12T19:04:16.8589291Z test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 94.61s
+2026-11-12T19:06:05.4578979Z test adversarial_inputs_fit_within_the_work_budget ... ok
+2026-11-12T19:07:01.0455216Z test adversarial_brush_outlines_finish_or_are_refused_within_the_work_budget ... ok
+2026-11-12T19:07:01.0457090Z test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 1 filtered out; finished in 63.01s
+2026-11-12T19:07:54.3539009Z test adversarial_layers_settle_or_are_refused_within_the_planar_budget ... ok
+2026-11-12T19:07:54.3539953Z test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 50.10s
+2026-11-12T19:15:55.5867474Z test flatten_100k_raw_observations ... ok
+2026-11-12T19:15:55.5868437Z test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 280.48s
+2026-11-12T19:16:12.9399501Z test flatten_settle_phases_raw_observations ... ok
+2026-11-12T19:16:12.9400834Z test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 14.31s
+bundle (macos-latest)
+2026-11-12T19:13:05.0065190Z test bindings::tests::command_id_syntax ... ok
+2026-11-12T19:13:05.0068200Z test bindings::tests::enablement_without_project_follows_01_1_3 ... ok
+2026-11-12T19:13:05.0196110Z test bindings::tests::per_platform_accelerators ... ok
+2026-11-12T19:13:05.0298130Z test bindings::tests::embedded_manifest_is_valid ... ok
+2026-11-12T19:13:05.0421430Z test bindings::tests::platform_specific_duplicates_are_allowed ... ok
+2026-11-12T19:13:05.0524030Z test bindings::tests::rejects_duplicates_bad_ids_and_missing_milestones ... ok
+2026-11-12T19:13:05.0625800Z test bindings::tests::task_menus_exist_on_both_product_platforms ... ok
+2026-11-12T19:13:05.0727420Z test bindings::tests::quit_is_bound_on_every_platform ... ok
+2026-11-12T19:13:05.0829070Z test diagnostics::tests::bench_with_count ... ok
+2026-11-12T19:13:05.0931340Z test diagnostics::tests::errors ... ok
+2026-11-12T19:13:05.1033130Z test diagnostics::tests::no_arguments_is_interactive ... ok
+2026-11-12T19:13:05.1113070Z test diagnostics::tests::requested_diagnostic_names_the_flag ... ok
+2026-11-12T19:13:05.1232240Z test diagnostics::tests::spike_flags ... ok
+2026-11-12T19:13:05.1344230Z test menu::tests::event_serializes_camel_case ... ok
+2026-11-12T19:13:05.1447520Z test menu::tests::frontend_command_carries_params ... ok
+2026-11-12T19:13:05.1550880Z test menu::tests::pending_command_carries_milestone ... ok
+2026-11-12T19:13:05.1652540Z test spikes::canvas::renderlist::tests::encoder_refuses_invalid_geometry ... ok
+2026-11-12T19:13:05.1763900Z test menu::tests::unknown_and_platform_hidden_ids_are_unbound ... ok
+2026-11-12T19:13:05.1866380Z test menu::tests::host_commands ... ok
+2026-11-12T19:13:05.1968200Z test spikes::canvas::renderlist::tests::encoding_has_the_documented_layout ... ok
+2026-11-12T19:13:05.2765110Z test spikes::canvas::renderlist::tests::scenes_have_the_specified_sizes ... ok
+2026-11-12T19:13:05.2766070Z test spikes::canvas::renderlist::tests::tiny_fixture_matches_committed_bytes ... ok
+2026-11-12T19:13:05.2766740Z test spikes::tablet::tests::disabled_unless_tablet ... ok
+2026-11-12T19:13:05.2767240Z test spikes::tablet::tests::packet_serializes_camel_case ... ok
+2026-11-12T19:13:05.2767870Z test spikes::tablet::tests::request_rejects_unknown_fields ... ok
+2026-11-12T19:13:05.2768500Z test spikes::tablet::tests::sequencer_is_gap_free_and_wire_packets_flatten ... ok
+2026-11-12T19:13:05.2769040Z test spikes::tablet::tests::validates_simulation_requests ... ok
+2026-11-12T19:13:05.2769720Z test tests::diagnostics_build_registers_the_m0_commands ... ok
+2026-11-12T19:13:05.2770390Z test tests::diagnostics_overlay_config_enables_both_halves ... ok
+2026-11-12T19:13:05.2773630Z test tests::tauri_config_matches_workspace_and_plan ... ok
+2026-11-12T19:13:05.4593380Z test spikes::canvas::renderlist::tests::generated_scenes_are_valid_and_bounded_by_their_points ... ok
+2026-11-12T19:13:05.7015420Z test spikes::canvas::renderlist::tests::generation_is_reproducible ... ok
+2026-11-12T19:13:05.7222440Z test result: ok. 32 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.70s
+2026-11-12T19:13:05.7759100Z test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+2026-11-12T19:13:05.8164970Z test c03_r2_03_unpaired_coordinate_must_be_refused ... ok
+2026-11-12T19:13:05.8299820Z test adjacent_out_of_bounds_and_negative_width_are_refused ... ok
+2026-11-12T19:13:05.8402620Z test c03_r2_03_unknown_style_must_be_refused ... ok
+2026-11-12T19:13:05.8508970Z test nonfinite_points_and_bounds_return_typed_errors ... ok
+2026-11-12T19:13:05.8614230Z test renderlist::tests::encoder_refuses_invalid_geometry ... ok
+2026-11-12T19:13:05.8716270Z test renderlist::tests::encoding_has_the_documented_layout ... ok
+2026-11-12T19:13:06.0161570Z test renderlist::tests::scenes_have_the_specified_sizes ... ok
+2026-11-12T19:13:06.0264000Z test renderlist::tests::tiny_fixture_matches_committed_bytes ... ok
+2026-11-12T19:13:06.0366090Z test subnormal_and_empty_path_are_valid ... ok
+2026-11-12T19:13:06.3277370Z test renderlist::tests::generated_scenes_are_valid_and_bounded_by_their_points ... ok
+2026-11-12T19:13:06.3965970Z test renderlist::tests::generation_is_reproducible ... ok
+2026-11-12T19:13:06.3968290Z test result: ok. 11 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.68s
+2026-11-12T19:13:06.7690020Z test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+bundle (windows-latest)
+2026-11-12T18:52:25.9105653Z test bindings::tests::command_id_syntax ... ok
+2026-11-12T18:52:25.9111920Z test bindings::tests::per_platform_accelerators ... ok
+2026-11-12T18:52:25.9112532Z test bindings::tests::embedded_manifest_is_valid ... ok
+2026-11-12T18:52:25.9113426Z test bindings::tests::enablement_without_project_follows_01_1_3 ... ok
+2026-11-12T18:52:25.9114113Z test bindings::tests::platform_specific_duplicates_are_allowed ... ok
+2026-11-12T18:52:25.9117861Z test bindings::tests::quit_is_bound_on_every_platform ... ok
+2026-11-12T18:52:25.9119064Z test bindings::tests::rejects_duplicates_bad_ids_and_missing_milestones ... ok
+2026-11-12T18:52:25.9120193Z test diagnostics::tests::bench_with_count ... ok
+2026-11-12T18:52:25.9121561Z test bindings::tests::task_menus_exist_on_both_product_platforms ... ok
+2026-11-12T18:52:25.9122173Z test diagnostics::tests::errors ... ok
+2026-11-12T18:52:25.9122691Z test diagnostics::tests::no_arguments_is_interactive ... ok
+2026-11-12T18:52:25.9123758Z test diagnostics::tests::requested_diagnostic_names_the_flag ... ok
+2026-11-12T18:52:25.9125428Z test diagnostics::tests::spike_flags ... ok
+2026-11-12T18:52:25.9128992Z test menu::tests::frontend_command_carries_params ... ok
+2026-11-12T18:52:25.9130052Z test menu::tests::event_serializes_camel_case ... ok
+2026-11-12T18:52:25.9131116Z test menu::tests::pending_command_carries_milestone ... ok
+2026-11-12T18:52:25.9133292Z test spikes::canvas::renderlist::tests::encoder_refuses_invalid_geometry ... ok
+2026-11-12T18:52:25.9135637Z test menu::tests::host_commands ... ok
+2026-11-12T18:52:25.9136347Z test menu::tests::unknown_and_platform_hidden_ids_are_unbound ... ok
+2026-11-12T18:52:26.0077560Z test spikes::canvas::renderlist::tests::encoding_has_the_documented_layout ... ok
+2026-11-12T18:52:26.0084720Z test spikes::canvas::renderlist::tests::tiny_fixture_matches_committed_bytes ... ok
+2026-11-12T18:52:26.0089908Z test spikes::tablet::simulate_windows::tests::positions_stay_inside_the_rectangle ... ok
+2026-11-12T18:52:26.0093889Z test spikes::tablet::simulate_windows::tests::pressure_only_holds_tilt_and_rotation_and_position ... ok
+2026-11-12T18:52:26.0097777Z test spikes::tablet::simulate_windows::tests::pressure_steps_through_every_level ... ok
+2026-11-12T18:52:26.0102474Z test spikes::tablet::simulate_windows::tests::sine_repeats_pixels_where_the_review_found_missing_frames ... ok
+2026-11-12T18:52:26.0106605Z test spikes::tablet::simulate_windows::tests::tilt_and_rotation_stay_in_range ... ok
+2026-11-12T18:52:26.0111441Z test spikes::tablet::simulate_windows::tests::zigzag_never_repeats_a_pixel_in_adjacent_frames_and_stationary_always_does ... ok
+2026-11-12T18:52:26.0122419Z test spikes::tablet::tests::disabled_unless_tablet ... ok
+2026-11-12T18:52:26.0125631Z test spikes::tablet::tests::packet_serializes_camel_case ... ok
+2026-11-12T18:52:26.0128779Z test spikes::tablet::tests::request_rejects_unknown_fields ... ok
+2026-11-12T18:52:26.0136897Z test spikes::tablet::tests::sequencer_is_gap_free_and_wire_packets_flatten ... ok
+2026-11-12T18:52:26.0140263Z test spikes::tablet::tests::validates_simulation_requests ... ok
+2026-11-12T18:52:26.0143012Z test tests::diagnostics_build_registers_the_m0_commands ... ok
+2026-11-12T18:52:26.0146156Z test tests::diagnostics_overlay_config_enables_both_halves ... ok
+2026-11-12T18:52:26.0148797Z test tests::tauri_config_matches_workspace_and_plan ... ok
+2026-11-12T18:52:26.1940241Z test spikes::canvas::renderlist::tests::scenes_have_the_specified_sizes ... ok
+2026-11-12T18:52:26.4770418Z test spikes::canvas::renderlist::tests::generation_is_reproducible ... ok
+2026-11-12T18:52:26.5369506Z test spikes::canvas::renderlist::tests::generated_scenes_are_valid_and_bounded_by_their_points ... ok
+2026-11-12T18:52:26.5370472Z test result: ok. 38 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.63s
+2026-11-12T18:52:26.5504381Z test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+2026-11-12T18:52:26.5607615Z test c03_r2_03_unpaired_coordinate_must_be_refused ... ok
+2026-11-12T18:52:26.5608778Z test c03_r2_03_unknown_style_must_be_refused ... ok
+2026-11-12T18:52:26.5610321Z test nonfinite_points_and_bounds_return_typed_errors ... ok
+2026-11-12T18:52:26.5611126Z test adjacent_out_of_bounds_and_negative_width_are_refused ... ok
+2026-11-12T18:52:26.5611882Z test renderlist::tests::encoder_refuses_invalid_geometry ... ok
+2026-11-12T18:52:26.6242270Z test renderlist::tests::encoding_has_the_documented_layout ... ok
+2026-11-12T18:52:26.6248282Z test renderlist::tests::tiny_fixture_matches_committed_bytes ... ok
+2026-11-12T18:52:26.6250568Z test subnormal_and_empty_path_are_valid ... ok
+2026-11-12T18:52:26.8296628Z test renderlist::tests::scenes_have_the_specified_sizes ... ok
+2026-11-12T18:52:27.1274076Z test renderlist::tests::generation_is_reproducible ... ok
+2026-11-12T18:52:27.1816975Z test renderlist::tests::generated_scenes_are_valid_and_bounded_by_their_points ... ok
+2026-11-12T18:52:27.1818109Z test result: ok. 11 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.62s
+2026-11-12T18:52:27.4690380Z test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+check properties (macos-latest)
+2026-11-12T18:29:10.7720900Z test a_snapping_sliver_below_the_documented_bound_carries_no_fill ... ok
+2026-11-12T18:29:22.3709910Z test affine_envelopes_match_the_oracle ... ok
+2026-11-12T18:29:22.4514630Z test break_apart_leaves_the_line_layer_to_the_oracle_and_makes_one_group_per_glyph ... ok
+2026-11-12T18:29:33.2423750Z test optimize_and_smooth_keep_the_oracles_partition ... ok
+2026-11-12T18:29:37.6456650Z test lines_to_brush_and_centre_line_keep_the_oracles_partition ... ok
+2026-11-12T18:30:04.3192730Z test point_moves_with_and_without_snapping_match_the_oracle ... ok
+2026-11-12T18:30:04.4403890Z test region_erase_matches_the_oracle ... ok
+2026-11-12T18:30:28.1140950Z test segment_cut_matches_the_oracle ... ok
+2026-11-12T18:30:44.1030000Z test stroke_set_and_delete_match_the_oracle ... ok
+2026-11-12T18:30:45.3445400Z test stroke_add_matches_the_oracle ... ok
+2026-11-12T18:30:54.7216740Z test transforms_match_the_oracles_transformed_geometry ... ok
+2026-11-12T18:34:37.4517630Z test flatten_of_overlapping_layers_matches_the_oracle ... ok
+2026-11-12T18:34:37.4533700Z test result: ok. 12 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 326.91s
+2026-11-12T18:34:37.7149630Z test shrunk_cutter_area_bound ... ok
+2026-11-12T18:35:34.4689200Z test transforms_with_determinant_plus_and_minus_one_keep_the_oracles_faces ... ok
+2026-11-12T18:35:41.8879450Z test the_cutter_splits_along_its_segment_like_the_oracle ... ok
+2026-11-12T18:35:44.4386590Z test flatten_of_disjoint_layers_has_the_faces_of_their_union ... ok
+2026-11-12T18:36:26.9436040Z test vectorized_shapes_enclose_one_unpainted_zone_per_paper_component ... ok
+2026-11-12T18:36:26.9436850Z test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 109.47s
+2026-11-12T18:36:34.8040870Z test break_apart_matches_the_fonts_glyph_outlines ... ok
+2026-11-12T18:36:34.8348180Z test flatten_keeps_a_pencil_piece_that_a_brush_only_partly_covers ... ok
+2026-11-12T18:36:35.6030660Z test erasing_polygonal_brushes_keeps_partly_covered_ones_whole ... ok
+2026-11-12T18:36:45.7760730Z test flatten_of_pencil_and_polygonal_brush_layers_is_exact ... ok
+2026-11-12T18:36:50.9224560Z test non_parallelogram_envelopes_map_the_layer_projectively ... ok
+2026-11-12T18:36:59.5318550Z test lines_to_brush_then_centre_line_on_closed_loops ... ok
+2026-11-12T18:37:45.8799410Z test smooth_changes_the_shape_within_its_tolerance ... ok
+2026-11-12T18:41:57.5328800Z test snapping_onto_a_curved_contour_reaches_its_nearest_point ... ok
+2026-11-12T18:43:30.7504660Z test centre_line_of_a_spineless_ring ... ok
+2026-11-12T18:46:10.0124130Z test vectorize_masks_enclose_the_predicted_paper_components ... ok
+2026-11-12T18:46:10.0125790Z test result: ok. 10 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 583.05s
+2026-11-12T18:46:10.7098690Z test flatten_of_disjoint_layers_has_the_faces_of_their_union ... ok
+2026-11-12T18:46:10.7701020Z test transforms_with_determinant_plus_and_minus_one_keep_the_oracles_faces ... ok
+2026-11-12T18:46:10.8054410Z test the_cutter_splits_along_its_segment_like_the_oracle ... ok
+2026-11-12T18:46:10.9219130Z test vectorized_shapes_enclose_one_unpainted_zone_per_paper_component ... ok
+2026-11-12T18:46:10.9222050Z test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.89s
+2026-11-12T18:47:34.2132380Z test a_settled_layer_is_a_fixpoint_of_noding ... ok
+2026-11-12T18:47:34.2235450Z test fixed_regressions ... ok
+2026-11-12T18:47:34.8041540Z test adding_strokes_carries_each_fill_into_the_zones_it_splits ... ok
+2026-11-12T18:47:34.8143370Z test side_fills_read_back_beside_collinear_overlaps ... ok
+2026-11-12T18:47:35.0893800Z test zone_ids_and_areas_do_not_depend_on_stroke_order_and_settling_is_idempotent ... ok
+2026-11-12T18:47:35.4283850Z test side_fills_read_back_after_adding_strokes ... ok
+2026-11-12T18:47:35.9812090Z test zones_are_the_oracles_bounded_faces_on_degenerate_arrangements ... ok
+2026-11-12T18:47:37.1691320Z test determinant_plus_and_minus_one_maps_keep_the_faces ... ok
+2026-11-12T18:47:37.1695150Z test result: ok. 8 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 3.35s
+2026-11-12T18:47:41.2571640Z test a_settled_layer_is_a_fixpoint_of_noding ... ok
+2026-11-12T18:47:41.2669150Z test fixed_regressions ... ok
+2026-11-12T18:47:41.2771530Z test shrunk_determinant_case ... ok
+2026-11-12T18:47:57.9381200Z test adding_strokes_carries_each_fill_into_the_zones_it_splits ... ok
+2026-11-12T18:47:57.9483420Z test side_fills_read_back_beside_collinear_overlaps ... ok
+2026-11-12T18:47:59.7628360Z test side_fills_read_back_after_adding_strokes ... ok
+2026-11-12T18:48:01.0327600Z test zone_ids_and_areas_do_not_depend_on_stroke_order_and_settling_is_idempotent ... ok
+2026-11-12T18:48:07.2434470Z test zones_are_the_oracles_bounded_faces_on_degenerate_arrangements ... ok
+2026-11-12T18:49:04.3963570Z test determinant_plus_and_minus_one_maps_keep_the_faces ... ok
+2026-11-12T18:49:04.3965740Z test result: ok. 9 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 87.22s
+2026-11-12T18:49:08.3779060Z test every_generated_declaration_answers_with_its_owner ... ok
+2026-11-12T18:49:08.3948010Z test the_application_context_follows_commands ... ok
+2026-11-12T18:49:08.6263450Z test jobs_run_off_the_document_thread ... ok
+2026-11-12T18:49:08.6473630Z test window_and_panel_state_is_queryable_and_settable ... ok
+2026-11-12T18:49:08.6714130Z test workspaces_are_kernel_state ... ok
+2026-11-12T18:49:08.7322720Z test the_watchdog_answers_within_its_budget ... ok
+2026-11-12T18:49:23.5891510Z test every_example_runs_on_the_fixture_under_the_watchdog ... ok
+2026-11-12T18:49:23.5893720Z test result: ok. 7 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 15.51s
+2026-11-12T18:49:24.7296390Z test a_cancelled_animation_edit_restores_the_session_state_in_full ... ok
+2026-11-12T18:49:39.3218240Z test a_queued_undo_behind_a_running_evaluation_keeps_its_own_deadline_and_is_atomic ... ok
+2026-11-12T18:49:39.3430300Z test animation_events_reach_every_subscriber_whoever_issued_the_call ... ok
+2026-11-12T18:49:39.5213070Z test animation_mutations_pass_the_same_acceptance_rules_as_any_command_for_user_and_agent ... ok
+2026-11-12T18:50:03.8373270Z test running_undo_and_redo_of_a_large_animation_step_are_cancelled_atomically ... ok
+2026-11-12T18:50:03.8375960Z test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 40.23s

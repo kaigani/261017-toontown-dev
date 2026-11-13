@@ -1,0 +1,1 @@
+timeout 530 cargo test --locked -p tt-anim -j 4 --test c32_r1_affine --test c32_r1_closed_forms --test c32_r1_corpus --test c32_r1_default_frame --test c32_r1_passage --test c32_r2_camera --test c32_r2_corpus --test c32_r2_passage --test c32_r2_tcb --test c32_round1 --test c32_passage -- --nocapture

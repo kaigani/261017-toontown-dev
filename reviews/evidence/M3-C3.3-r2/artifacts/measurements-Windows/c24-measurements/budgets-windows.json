@@ -1,0 +1,145 @@
+{
+  "os": "windows",
+  "arch": "x86_64",
+  "profile": "release",
+  "strokes": 100000,
+  "repetitions": 5,
+  "memory": {
+    "rssBytes": {
+      "start": 173817856.0,
+      "afterOpen": 366432256.0,
+      "afterSeries": 2373443584.0
+    },
+    "liveBytes": {
+      "start": 146131507.0,
+      "afterOpen": 267536977.0,
+      "afterSeries": 1196632942.0
+    }
+  },
+  "series": [
+    {
+      "strokeAddSeconds": 15.845955,
+      "undoSeconds": 9.9683563,
+      "redoSeconds": 9.4102985,
+      "dryRunSeconds": 14.8928376,
+      "liveBytes": 686284019.0,
+      "rssBytes": 1793048576.0
+    },
+    {
+      "strokeAddSeconds": 17.7369776,
+      "undoSeconds": 11.322524,
+      "redoSeconds": 10.0890891,
+      "dryRunSeconds": 15.5877192,
+      "liveBytes": 813862341.0,
+      "rssBytes": 1147314176.0
+    },
+    {
+      "strokeAddSeconds": 18.2900563,
+      "undoSeconds": 11.9797265,
+      "redoSeconds": 10.6463676,
+      "dryRunSeconds": 16.6953055,
+      "liveBytes": 941449345.0,
+      "rssBytes": 2193780736.0
+    },
+    {
+      "strokeAddSeconds": 18.9430827,
+      "undoSeconds": 12.5132038,
+      "redoSeconds": 11.0299861,
+      "dryRunSeconds": 16.7591821,
+      "liveBytes": 1069039207.0,
+      "rssBytes": 2260463616.0
+    },
+    {
+      "strokeAddSeconds": 19.0993062,
+      "undoSeconds": 12.8871664,
+      "redoSeconds": 11.2907776,
+      "dryRunSeconds": 17.028239,
+      "liveBytes": 1196636407.0,
+      "rssBytes": 2373443584.0
+    }
+  ],
+  "queuedRead": [
+    {
+      "longCommandSeconds": 19.1554749,
+      "readSentAtSeconds": 0.0504285,
+      "readSeconds": 19.1058736,
+      "readAnsweredAfterLongSeconds": 0.0008271999999962532,
+      "readOk": true
+    },
+    {
+      "longCommandSeconds": 19.1557128,
+      "readSentAtSeconds": 0.0502295,
+      "readSeconds": 19.1059161,
+      "readAnsweredAfterLongSeconds": 0.0004328000000022314,
+      "readOk": true
+    },
+    {
+      "longCommandSeconds": 19.5219728,
+      "readSentAtSeconds": 0.0502544,
+      "readSeconds": 19.4720068,
+      "readAnsweredAfterLongSeconds": 0.0002883999999987452,
+      "readOk": true
+    },
+    {
+      "longCommandSeconds": 19.8919405,
+      "readSentAtSeconds": 0.0506796,
+      "readSeconds": 19.8415558,
+      "readAnsweredAfterLongSeconds": 0.00029489999999654515,
+      "readOk": true
+    },
+    {
+      "longCommandSeconds": 19.8971243,
+      "readSentAtSeconds": 0.0505719,
+      "readSeconds": 19.8470714,
+      "readAnsweredAfterLongSeconds": 0.0005190000000006023,
+      "readOk": true
+    }
+  ],
+  "maintenance": [
+    {
+      "longCommandSeconds": 20.3124112,
+      "requestedAtSeconds": 0.050541,
+      "behindLongSeconds": 20.2675022,
+      "autosaveSnapshotSeconds": 0.0000741,
+      "heartbeatSeconds": 0.00543,
+      "idleSeconds": 0.006703,
+      "idleAutosaveSnapshotSeconds": null
+    },
+    {
+      "longCommandSeconds": 18.9323093,
+      "requestedAtSeconds": 0.0502473,
+      "behindLongSeconds": 18.8954184,
+      "autosaveSnapshotSeconds": 0.0000866,
+      "heartbeatSeconds": 0.0131824,
+      "idleSeconds": 0.011324,
+      "idleAutosaveSnapshotSeconds": null
+    },
+    {
+      "longCommandSeconds": 18.9186038,
+      "requestedAtSeconds": 0.0505934,
+      "behindLongSeconds": 18.8801288,
+      "autosaveSnapshotSeconds": 0.000073,
+      "heartbeatSeconds": 0.0119602,
+      "idleSeconds": 0.0130041,
+      "idleAutosaveSnapshotSeconds": null
+    },
+    {
+      "longCommandSeconds": 19.9565895,
+      "requestedAtSeconds": 0.050266,
+      "behindLongSeconds": 19.9185365,
+      "autosaveSnapshotSeconds": 0.0000709,
+      "heartbeatSeconds": 0.0120788,
+      "idleSeconds": 0.0147603,
+      "idleAutosaveSnapshotSeconds": null
+    },
+    {
+      "longCommandSeconds": 19.9488774,
+      "requestedAtSeconds": 0.0502685,
+      "behindLongSeconds": 19.9125732,
+      "autosaveSnapshotSeconds": 0.0000761,
+      "heartbeatSeconds": 0.0138238,
+      "idleSeconds": 0.0112982,
+      "idleAutosaveSnapshotSeconds": null
+    }
+  ]
+}

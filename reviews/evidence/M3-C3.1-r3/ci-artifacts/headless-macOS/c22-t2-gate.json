@@ -1,0 +1,46 @@
+{
+  "gate": "C22-T2: 100k Flatten completes within the same run's 100k strokeAdd p50 and under the 30 s watchdog",
+  "os": "macos",
+  "arch": "aarch64",
+  "runId": "41689238994-1-macos",
+  "runStartedAt": "2026-11-03T18:04:19.138Z",
+  "flattenStartedAt": "2026-11-03T18:20:16.980Z",
+  "percentileRule": "upper nearest rank, as scripts/analyse-measurements.py",
+  "strokeAddP50Seconds": 12.130247,
+  "flattenUnbudgetedP50Seconds": 17.857550834,
+  "flattenUnbudgetedSeconds": [
+    22.157845959,
+    24.613728166,
+    16.587190875,
+    16.70737825,
+    17.857550834
+  ],
+  "flattenUnbudgetedAllCompleted": true,
+  "flattenBudgetedSeconds": [
+    0.62065425,
+    0.60211875,
+    0.6266455,
+    0.673732083,
+    0.627119333
+  ],
+  "flattenBudgetedOutcomes": [
+    {
+      "code": "limit.exceeded"
+    },
+    {
+      "code": "limit.exceeded"
+    },
+    {
+      "code": "limit.exceeded"
+    },
+    {
+      "code": "limit.exceeded"
+    },
+    {
+      "code": "limit.exceeded"
+    }
+  ],
+  "met": false,
+  "gapSeconds": 5.727303834000001,
+  "note": "C22-T2 and the interactive latency budget (R1-12) are the M11 C11.1 scale gate"
+}

@@ -1,0 +1,376 @@
+{
+  "gitHead": "18c1354f5ce93dc9da7c2ebd85a9dcfbcd42f376",
+  "artifacts": [
+    {
+      "path": "reviews/evidence/M3-C3.1-r3/ci-artifacts/check-macOS/c14-measurements/autosave-macos.json",
+      "sha256": "137b8896b6d541282316de440732ef34594b638859f2e5cef8fa8e24d2822c0d",
+      "gitMatchesDownloadedBytes": true
+    },
+    {
+      "path": "reviews/evidence/M3-C3.1-r3/ci-artifacts/check-macOS/c14-measurements/c21-r1-autosave-macos.json",
+      "sha256": "f84096c870d73b68e5cdd6e18b992ac6135825528ce49646feb2a3f41acc2f8d",
+      "gitMatchesDownloadedBytes": true
+    },
+    {
+      "path": "reviews/evidence/M3-C3.1-r3/ci-artifacts/check-macOS/c14-measurements/cache-bounds-macos.json",
+      "sha256": "c0f969baf063c5d3bec14198e5dca6a7254c8fcca75e1c638004d1cca209a951",
+      "gitMatchesDownloadedBytes": true
+    },
+    {
+      "path": "reviews/evidence/M3-C3.1-r3/ci-artifacts/check-macOS/c14-measurements/fingerprint-macos.json",
+      "sha256": "62c72df52704f69dc1c3944ee70c7b61885ef648ed0f5dfca7160bd24f1b5c20",
+      "gitMatchesDownloadedBytes": true
+    },
+    {
+      "path": "reviews/evidence/M3-C3.1-r3/ci-artifacts/check-macOS/c14-measurements/lock-liveness-macos.json",
+      "sha256": "7b90341e303579cecd6c77292388885fd73c586db7a374c890f078ceb1872f7a",
+      "gitMatchesDownloadedBytes": true
+    },
+    {
+      "path": "reviews/evidence/M3-C3.1-r3/ci-artifacts/check-macOS/c14-measurements/never-block-mcp-macos.json",
+      "sha256": "8ee04e30a7ae9485da55c0ca780be29cbcf420c2346bcb187e9f5d118e305a54",
+      "gitMatchesDownloadedBytes": true
+    },
+    {
+      "path": "reviews/evidence/M3-C3.1-r3/ci-artifacts/check-macOS/c14-measurements/queued-calls-macos.json",
+      "sha256": "6c825e22e7e472670519995ad7e8a053ac9ed152721f62db5069afa3f828bc78",
+      "gitMatchesDownloadedBytes": true
+    },
+    {
+      "path": "reviews/evidence/M3-C3.1-r3/ci-artifacts/check-macOS/c23-render/hashes.json",
+      "sha256": "6e87643e9e3e25cbc286217c2e6d59d9f927ae79303c53e3d6e2dfdedc56a11f",
+      "gitMatchesDownloadedBytes": true
+    },
+    {
+      "path": "reviews/evidence/M3-C3.1-r3/ci-artifacts/check-macOS/measurement-analysis.json",
+      "sha256": "035ad381d2007bf332d33e2cbf28f582fca9121f854e7c0e93e768c7fc311a38",
+      "gitMatchesDownloadedBytes": true
+    },
+    {
+      "path": "reviews/evidence/M3-C3.1-r3/ci-artifacts/check-macOS/release-features.log",
+      "sha256": "5d2bfa3d5f9d6b28985daf42bedad2d02b4df3bc2781b3ebf967afe794887cd0",
+      "gitMatchesDownloadedBytes": true
+    },
+    {
+      "path": "reviews/evidence/M3-C3.1-r3/ci-artifacts/check-macOS/sdk-conformance.json",
+      "sha256": "fee5d3cfd8cf56e5e5c7081003730586a4406952a92807458d15fa82adf76a9d",
+      "gitMatchesDownloadedBytes": true
+    },
+    {
+      "path": "reviews/evidence/M3-C3.1-r3/ci-artifacts/check-Windows/c14-measurements/autosave-windows.json",
+      "sha256": "7273ea1f1b499e3eb611457b3bc0d157d48dc90e8f536825b17ba9ab94727341",
+      "gitMatchesDownloadedBytes": true
+    },
+    {
+      "path": "reviews/evidence/M3-C3.1-r3/ci-artifacts/check-Windows/c14-measurements/c21-r1-autosave-windows.json",
+      "sha256": "eec1d8bf7746992d95efada117b243b7ca4188f4077631965080b47d5b6c1a96",
+      "gitMatchesDownloadedBytes": true
+    },
+    {
+      "path": "reviews/evidence/M3-C3.1-r3/ci-artifacts/check-Windows/c14-measurements/cache-bounds-windows.json",
+      "sha256": "f643aa0a4ffaafc4f7582578f25a426ee82d413a3d1fdfff7cba686501fb1ca6",
+      "gitMatchesDownloadedBytes": true
+    },
+    {
+      "path": "reviews/evidence/M3-C3.1-r3/ci-artifacts/check-Windows/c14-measurements/fingerprint-windows.json",
+      "sha256": "a4f7b396de45eab81ce820e80ce589448ad04c976381188722c6b0fb1dee3133",
+      "gitMatchesDownloadedBytes": true
+    },
+    {
+      "path": "reviews/evidence/M3-C3.1-r3/ci-artifacts/check-Windows/c14-measurements/lock-liveness-windows.json",
+      "sha256": "d98266c744f2bb582a8ae994b60ad2c735b1b06986a35463461bd68a7501ad45",
+      "gitMatchesDownloadedBytes": true
+    },
+    {
+      "path": "reviews/evidence/M3-C3.1-r3/ci-artifacts/check-Windows/c14-measurements/never-block-mcp-windows.json",
+      "sha256": "d2a8114c7b4a5d809664b9140eecfab79fa06e07e115f0010ed5bda4824ce04c",
+      "gitMatchesDownloadedBytes": true
+    },
+    {
+      "path": "reviews/evidence/M3-C3.1-r3/ci-artifacts/check-Windows/c14-measurements/queued-calls-windows.json",
+      "sha256": "295d65bca476f72c8c6815289366b62962ac7a1ee003ad3fd8e51fc32c4f96f9",
+      "gitMatchesDownloadedBytes": true
+    },
+    {
+      "path": "reviews/evidence/M3-C3.1-r3/ci-artifacts/check-Windows/c23-render/hashes.json",
+      "sha256": "6e87643e9e3e25cbc286217c2e6d59d9f927ae79303c53e3d6e2dfdedc56a11f",
+      "gitMatchesDownloadedBytes": true
+    },
+    {
+      "path": "reviews/evidence/M3-C3.1-r3/ci-artifacts/check-Windows/measurement-analysis.json",
+      "sha256": "1e10b8b910cd1f713aea9ba8818f22e15ea6407d8ad5f0feef5f9fe8b861d938",
+      "gitMatchesDownloadedBytes": true
+    },
+    {
+      "path": "reviews/evidence/M3-C3.1-r3/ci-artifacts/check-Windows/release-features.log",
+      "sha256": "9df73506074cdb4f92571662d55e13709f2beba11308f1b50fce132807016b09",
+      "gitMatchesDownloadedBytes": true
+    },
+    {
+      "path": "reviews/evidence/M3-C3.1-r3/ci-artifacts/check-Windows/sdk-conformance.json",
+      "sha256": "e50e5f5371cf673a72996db17a3d17cbf9ff50c1d1526c2bbc5d977a3a898f14",
+      "gitMatchesDownloadedBytes": true
+    },
+    {
+      "path": "reviews/evidence/M3-C3.1-r3/ci-artifacts/e2-macOS/1-preview.png",
+      "sha256": "1b6fcbba30dfb2985c8bb82aaa4998d6799f276b4e1e9855ccf31a5aedf35766",
+      "gitMatchesDownloadedBytes": true
+    },
+    {
+      "path": "reviews/evidence/M3-C3.1-r3/ci-artifacts/e2-macOS/2-vectorized.png",
+      "sha256": "1b6fcbba30dfb2985c8bb82aaa4998d6799f276b4e1e9855ccf31a5aedf35766",
+      "gitMatchesDownloadedBytes": true
+    },
+    {
+      "path": "reviews/evidence/M3-C3.1-r3/ci-artifacts/e2-macOS/3-painted.png",
+      "sha256": "a4124d1ce094e3dfc7249c22f57a6676a89adfd80b1434dc4a49e27a98ad1555",
+      "gitMatchesDownloadedBytes": true
+    },
+    {
+      "path": "reviews/evidence/M3-C3.1-r3/ci-artifacts/e2-macOS/4-recoloured.png",
+      "sha256": "9732a6a246a95e902ba8ab76a1eb0f7c813fa3cd7f386545ae3d2545c691c60d",
+      "gitMatchesDownloadedBytes": true
+    },
+    {
+      "path": "reviews/evidence/M3-C3.1-r3/ci-artifacts/e2-macOS/5-undone.png",
+      "sha256": "a4124d1ce094e3dfc7249c22f57a6676a89adfd80b1434dc4a49e27a98ad1555",
+      "gitMatchesDownloadedBytes": true
+    },
+    {
+      "path": "reviews/evidence/M3-C3.1-r3/ci-artifacts/e2-macOS/6-redone.png",
+      "sha256": "9732a6a246a95e902ba8ab76a1eb0f7c813fa3cd7f386545ae3d2545c691c60d",
+      "gitMatchesDownloadedBytes": true
+    },
+    {
+      "path": "reviews/evidence/M3-C3.1-r3/ci-artifacts/e2-macOS/7-reopened.png",
+      "sha256": "9732a6a246a95e902ba8ab76a1eb0f7c813fa3cd7f386545ae3d2545c691c60d",
+      "gitMatchesDownloadedBytes": true
+    },
+    {
+      "path": "reviews/evidence/M3-C3.1-r3/ci-artifacts/e2-macOS/hashes.json",
+      "sha256": "f267cb8df1cae283cb926c607380d536bbaaaf504d760371a7c02065e6279e82",
+      "gitMatchesDownloadedBytes": true
+    },
+    {
+      "path": "reviews/evidence/M3-C3.1-r3/ci-artifacts/e2-macOS/live-export.json",
+      "sha256": "7aaf02543c6e8df220486e62815a782bd22c5eb927af2c3100e26e4ec58eacd3",
+      "gitMatchesDownloadedBytes": true
+    },
+    {
+      "path": "reviews/evidence/M3-C3.1-r3/ci-artifacts/e2-macOS/replayed-export.json",
+      "sha256": "7aaf02543c6e8df220486e62815a782bd22c5eb927af2c3100e26e4ec58eacd3",
+      "gitMatchesDownloadedBytes": true
+    },
+    {
+      "path": "reviews/evidence/M3-C3.1-r3/ci-artifacts/e2-macOS/report.json",
+      "sha256": "8f78118a40b619792f0113080557f7ab1fb391cfcdc61719c6e6feedd35b5752",
+      "gitMatchesDownloadedBytes": true
+    },
+    {
+      "path": "reviews/evidence/M3-C3.1-r3/ci-artifacts/e2-Windows/1-preview.png",
+      "sha256": "1b6fcbba30dfb2985c8bb82aaa4998d6799f276b4e1e9855ccf31a5aedf35766",
+      "gitMatchesDownloadedBytes": true
+    },
+    {
+      "path": "reviews/evidence/M3-C3.1-r3/ci-artifacts/e2-Windows/2-vectorized.png",
+      "sha256": "1b6fcbba30dfb2985c8bb82aaa4998d6799f276b4e1e9855ccf31a5aedf35766",
+      "gitMatchesDownloadedBytes": true
+    },
+    {
+      "path": "reviews/evidence/M3-C3.1-r3/ci-artifacts/e2-Windows/3-painted.png",
+      "sha256": "a4124d1ce094e3dfc7249c22f57a6676a89adfd80b1434dc4a49e27a98ad1555",
+      "gitMatchesDownloadedBytes": true
+    },
+    {
+      "path": "reviews/evidence/M3-C3.1-r3/ci-artifacts/e2-Windows/4-recoloured.png",
+      "sha256": "9732a6a246a95e902ba8ab76a1eb0f7c813fa3cd7f386545ae3d2545c691c60d",
+      "gitMatchesDownloadedBytes": true
+    },
+    {
+      "path": "reviews/evidence/M3-C3.1-r3/ci-artifacts/e2-Windows/5-undone.png",
+      "sha256": "a4124d1ce094e3dfc7249c22f57a6676a89adfd80b1434dc4a49e27a98ad1555",
+      "gitMatchesDownloadedBytes": true
+    },
+    {
+      "path": "reviews/evidence/M3-C3.1-r3/ci-artifacts/e2-Windows/6-redone.png",
+      "sha256": "9732a6a246a95e902ba8ab76a1eb0f7c813fa3cd7f386545ae3d2545c691c60d",
+      "gitMatchesDownloadedBytes": true
+    },
+    {
+      "path": "reviews/evidence/M3-C3.1-r3/ci-artifacts/e2-Windows/7-reopened.png",
+      "sha256": "9732a6a246a95e902ba8ab76a1eb0f7c813fa3cd7f386545ae3d2545c691c60d",
+      "gitMatchesDownloadedBytes": true
+    },
+    {
+      "path": "reviews/evidence/M3-C3.1-r3/ci-artifacts/e2-Windows/hashes.json",
+      "sha256": "4ab02fbe20fc322de3231cc5f823d21865c8c70bd8ba142d2722738c80c24a4d",
+      "gitMatchesDownloadedBytes": true
+    },
+    {
+      "path": "reviews/evidence/M3-C3.1-r3/ci-artifacts/e2-Windows/live-export.json",
+      "sha256": "df06cff090a20d66b627d1da29cf80b5b0260450eec2fbca19ff2811bbfb8bd6",
+      "gitMatchesDownloadedBytes": true
+    },
+    {
+      "path": "reviews/evidence/M3-C3.1-r3/ci-artifacts/e2-Windows/replayed-export.json",
+      "sha256": "df06cff090a20d66b627d1da29cf80b5b0260450eec2fbca19ff2811bbfb8bd6",
+      "gitMatchesDownloadedBytes": true
+    },
+    {
+      "path": "reviews/evidence/M3-C3.1-r3/ci-artifacts/e2-Windows/report.json",
+      "sha256": "09f7aba64f53a39b03417d351d11dfea23a162c2039dd06ec2423fa6c8f9181d",
+      "gitMatchesDownloadedBytes": true
+    },
+    {
+      "path": "reviews/evidence/M3-C3.1-r3/ci-artifacts/headless-macOS/c21-fit-worst-case/brush-worst-case-macos.json",
+      "sha256": "fc5b1a7848b1a0548f7d6ee5446fe5776f9bf52876c4ef2ae1419a3e2d1c24b0",
+      "gitMatchesDownloadedBytes": true
+    },
+    {
+      "path": "reviews/evidence/M3-C3.1-r3/ci-artifacts/headless-macOS/c21-fit-worst-case/fit-worst-case-macos.json",
+      "sha256": "aa029cd0d1f853d0133ffd8cac38dc7598c76ab83582452b3e1bdf24b9a05605",
+      "gitMatchesDownloadedBytes": true
+    },
+    {
+      "path": "reviews/evidence/M3-C3.1-r3/ci-artifacts/headless-macOS/c21-measurement-analysis.json",
+      "sha256": "d2bd206a33f0067bb173c1c0286361d6ea8838b18fe661afcf3e4f72e552a15e",
+      "gitMatchesDownloadedBytes": true
+    },
+    {
+      "path": "reviews/evidence/M3-C3.1-r3/ci-artifacts/headless-macOS/c21-measurements/strokes-100k-macos.json",
+      "sha256": "b1777268be970a318091fe2179db080f93fe56b32ae1271e2178ace4d00bcf7a",
+      "gitMatchesDownloadedBytes": true
+    },
+    {
+      "path": "reviews/evidence/M3-C3.1-r3/ci-artifacts/headless-macOS/c22-planar-worst-case/planar-worst-case-macos.json",
+      "sha256": "3e6b494d96a5bf217cd9f3398dfdb82801ad02c357da0700415003daa5a448df",
+      "gitMatchesDownloadedBytes": true
+    },
+    {
+      "path": "reviews/evidence/M3-C3.1-r3/ci-artifacts/headless-macOS/c22-t2-gate.json",
+      "sha256": "59a3d79785483ca535fdb02d5249d7d30b92ee1dcd9b6a61d14f479fd8fb2e41",
+      "gitMatchesDownloadedBytes": true
+    },
+    {
+      "path": "reviews/evidence/M3-C3.1-r3/ci-artifacts/headless-macOS/c24-measurements/flatten-100k-macos.json",
+      "sha256": "cabe75f1e4595063830ef6fbd6c0ddea6ead05e41fa18f78a49d4ef7fe6434d0",
+      "gitMatchesDownloadedBytes": true
+    },
+    {
+      "path": "reviews/evidence/M3-C3.1-r3/ci-artifacts/headless-macOS/c24-measurements/flatten-phases-macos.json",
+      "sha256": "a871e37a67e9f6b5e354bd0e3802fe69d551a2e10f5698797bd863d5db43c13e",
+      "gitMatchesDownloadedBytes": true
+    },
+    {
+      "path": "reviews/evidence/M3-C3.1-r3/ci-artifacts/headless-macOS/sdk-conformance.json",
+      "sha256": "1bc4d8cb3d596abbcbd0850bc0903f62ef4f962f4ecb5d1f8961d2149db68173",
+      "gitMatchesDownloadedBytes": true
+    },
+    {
+      "path": "reviews/evidence/M3-C3.1-r3/ci-artifacts/headless-macOS/selftest-1.json",
+      "sha256": "87d94487ee0c3b34601b63cf7ac14bd3ec4d832640291803155c3bc77a818c92",
+      "gitMatchesDownloadedBytes": true
+    },
+    {
+      "path": "reviews/evidence/M3-C3.1-r3/ci-artifacts/headless-Windows/c21-fit-worst-case/brush-worst-case-windows.json",
+      "sha256": "a115df72795b92c124a7bc4c5e41036dc2bd1c7cdfec8c702bd0ec165f341098",
+      "gitMatchesDownloadedBytes": true
+    },
+    {
+      "path": "reviews/evidence/M3-C3.1-r3/ci-artifacts/headless-Windows/c21-fit-worst-case/fit-worst-case-windows.json",
+      "sha256": "d7a374d4d9a5314da612325c7e416530e8ca24ff2e928c5adb1e523b229379f5",
+      "gitMatchesDownloadedBytes": true
+    },
+    {
+      "path": "reviews/evidence/M3-C3.1-r3/ci-artifacts/headless-Windows/c21-measurement-analysis.json",
+      "sha256": "1f261590ba5f17e020c73e7e4f61299531162e148b78afbcf99de6ef2415863a",
+      "gitMatchesDownloadedBytes": true
+    },
+    {
+      "path": "reviews/evidence/M3-C3.1-r3/ci-artifacts/headless-Windows/c21-measurements/strokes-100k-windows.json",
+      "sha256": "d89942bfa7cd966721c724dc4d41f75abaa508a828b89340025e5f227d7afd8d",
+      "gitMatchesDownloadedBytes": true
+    },
+    {
+      "path": "reviews/evidence/M3-C3.1-r3/ci-artifacts/headless-Windows/c22-planar-worst-case/planar-worst-case-windows.json",
+      "sha256": "e45f7dedb018c6a97fbb85bcad5a24f4c7626adeddf1569c35d198b92ca2034b",
+      "gitMatchesDownloadedBytes": true
+    },
+    {
+      "path": "reviews/evidence/M3-C3.1-r3/ci-artifacts/headless-Windows/c22-t2-gate.json",
+      "sha256": "5a8653ee45bc1d39af8a21c031ef4c08bfddf2f5f1617e0d1cf5f7e6bde47f73",
+      "gitMatchesDownloadedBytes": true
+    },
+    {
+      "path": "reviews/evidence/M3-C3.1-r3/ci-artifacts/headless-Windows/c24-measurements/flatten-100k-windows.json",
+      "sha256": "72bbe3a9d83dc1b6f13872c959177b9c0101484a6ab2dfc6ad6f8ec4a276e928",
+      "gitMatchesDownloadedBytes": true
+    },
+    {
+      "path": "reviews/evidence/M3-C3.1-r3/ci-artifacts/headless-Windows/c24-measurements/flatten-phases-windows.json",
+      "sha256": "e1e1f61d561bfae27b9709a88a63ed22006b434876aa3a3515a946f9f7ff78b5",
+      "gitMatchesDownloadedBytes": true
+    },
+    {
+      "path": "reviews/evidence/M3-C3.1-r3/ci-artifacts/headless-Windows/sdk-conformance.json",
+      "sha256": "640288af4c06c3d670108dd31237d6c99df6a4df08ae9bb6f98dce1e4e75dd26",
+      "gitMatchesDownloadedBytes": true
+    },
+    {
+      "path": "reviews/evidence/M3-C3.1-r3/ci-artifacts/headless-Windows/selftest-1.json",
+      "sha256": "fbeadf361843cb7f2588227a57efb06d55828a6a85eba4a5f4034be7a5c3f3e0",
+      "gitMatchesDownloadedBytes": true
+    },
+    {
+      "path": "reviews/evidence/M3-C3.1-r3/ci-artifacts/history-oracles-macOS/history-oracles-executor.log",
+      "sha256": "0419ea2d0a62d29ad1c4c47d1324f38de080bb7f344611f5d94ae6ef75b10413",
+      "gitMatchesDownloadedBytes": true
+    },
+    {
+      "path": "reviews/evidence/M3-C3.1-r3/ci-artifacts/history-oracles-macOS/history-oracles-mcp.log",
+      "sha256": "93a23c5b4505290ecca166e91ae7aad58324f0c8a968860d04d5621673484504",
+      "gitMatchesDownloadedBytes": true
+    },
+    {
+      "path": "reviews/evidence/M3-C3.1-r3/ci-artifacts/history-oracles-Windows/history-oracles-executor.log",
+      "sha256": "34a77f45db5589d9febc9a574d9bfcc5a094d093ea462d791497b902d8fbe0f8",
+      "gitMatchesDownloadedBytes": true
+    },
+    {
+      "path": "reviews/evidence/M3-C3.1-r3/ci-artifacts/history-oracles-Windows/history-oracles-mcp.log",
+      "sha256": "a5cb004b2fb1630616789942b5dd4b74c733f69f278f9560fc5c6063aa137e9a",
+      "gitMatchesDownloadedBytes": true
+    },
+    {
+      "path": "reviews/evidence/M3-C3.1-r3/ci-artifacts/measurements-macOS/c24-measurements/aggregate-macos.json",
+      "sha256": "ffbce6f9515aaced9452a32124d81356c81fbce0ee142c4402c74cce2b9660ee",
+      "gitMatchesDownloadedBytes": true
+    },
+    {
+      "path": "reviews/evidence/M3-C3.1-r3/ci-artifacts/measurements-macOS/c24-measurements/budgets-macos.json",
+      "sha256": "2804d130fa71f4a65fb4e0e1683a477d61608d24ae73d436a2ab0bdab1712ca7",
+      "gitMatchesDownloadedBytes": true
+    },
+    {
+      "path": "reviews/evidence/M3-C3.1-r3/ci-artifacts/measurements-macOS/c31-measurements/timing-budget.json",
+      "sha256": "89aaa49141dfbd88b0852740c586f390a21778abaeb1d22636c93236388b3bbf",
+      "gitMatchesDownloadedBytes": true
+    },
+    {
+      "path": "reviews/evidence/M3-C3.1-r3/ci-artifacts/measurements-Windows/c24-measurements/aggregate-windows.json",
+      "sha256": "d5f57db99512c1944113625132fee4ffb1993ba63cfb5df29d8748bc2ae59e79",
+      "gitMatchesDownloadedBytes": true
+    },
+    {
+      "path": "reviews/evidence/M3-C3.1-r3/ci-artifacts/measurements-Windows/c24-measurements/budgets-windows.json",
+      "sha256": "4007b19a794aca795e21ee290287a1ff92bd8b77756025b32b524c4cc1810ff8",
+      "gitMatchesDownloadedBytes": true
+    },
+    {
+      "path": "reviews/evidence/M3-C3.1-r3/ci-artifacts/measurements-Windows/c31-measurements/timing-budget.json",
+      "sha256": "8e0f6fe72d8296cf2e6be293dc4d8076005fbfc00c212aae47025cfa0de0ed6c",
+      "gitMatchesDownloadedBytes": true
+    }
+  ],
+  "sdkArchivesVerified": 3
+}

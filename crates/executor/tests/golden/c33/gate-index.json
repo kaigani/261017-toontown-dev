@@ -1,0 +1,18 @@
+{
+  "gate-contact-sheet": {
+    "sha256": "9115ca0ec3cd9f3bdd0563723bd8d0ab6b33f525775c78aa6957f6f19ce4f87f",
+    "bytes": 8716
+  },
+  "gate-frame-1": {
+    "sha256": "c7200e1a6fef38885a4977c074c782bee890029d470623c096512acb4f0c2fbc",
+    "bytes": 13509
+  },
+  "gate-frame-17": {
+    "sha256": "cae435e50dadafa416a5dbe3102becc874eb5c3710ea8a0be613c192cfb7abe7",
+    "bytes": 7614
+  },
+  "gate-frame-9": {
+    "sha256": "1c922bc148c309cb91e8f265732a000de4eb79c4557e014de5636b3a2bbb59b7",
+    "bytes": 10463
+  }
+}

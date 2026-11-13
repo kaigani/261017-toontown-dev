@@ -1,0 +1,10 @@
+{
+  "candidate": "0146e1a26962a828c959c1054b612a2b76a50b0b",
+  "reviewer_files_byte_identical": true,
+  "product_tree_unchanged_by_reviewer": true,
+  "manifest_lock_unchanged": true,
+  "added_product_forbidden_constructs": [],
+  "added_unsafe_anywhere": [
+    "+Gates (local): allow inventory 97 lints / 40 files / 0 new; no `unwrap`, `expect`, `panic`, `unsafe` or `#[allow]`"
+  ]
+}

@@ -1,0 +1,11 @@
+{
+  "candidate": "1ef439bf43d3a1f0ddf78898348ad636d394b9b0",
+  "paths": [
+    "crates/executor/src/lib.rs",
+    "crates/executor/src/run.rs",
+    "crates/vector/src/work.rs",
+    "crates/anim/src/tcb.rs"
+  ],
+  "diff_bytes": 0,
+  "headless_sha256": "e2b2aa7afcaba12576096c9ff45d8fd2c8aa4e14237e0a940ae4b436fe85e3cc"
+}

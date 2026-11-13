@@ -1,0 +1,20 @@
+{
+  "executor": {
+    "resultBlocks": 132,
+    "passed": 750,
+    "failed": 0,
+    "ignored": 8
+  },
+  "anim": {
+    "resultBlocks": 6,
+    "passed": 32,
+    "failed": 0,
+    "ignored": 0
+  },
+  "mcp": {
+    "resultBlocks": 31,
+    "passed": 75,
+    "failed": 0,
+    "ignored": 3
+  }
+}

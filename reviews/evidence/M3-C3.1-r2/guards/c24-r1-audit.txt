@@ -1,0 +1,12 @@
+.....
+----------------------------------------------------------------------
+Ran 5 tests in 3.859s
+
+OK
+malformed False exit 2 malformed C22-T2 evidence: the stroke-add file has no environment of its run
+
+malformed inf exit 2 malformed C22-T2 evidence: the stroke-add file has no environment of its run
+
+malformed -1 exit 2 malformed C22-T2 evidence: the stroke-add file has no environment of its run
+
+seeded independent oracle routes ['crates\\executor\\tests\\c24_oracle_routes.rs', 'crates\\executor\\tests\\c24_r2_routes.rs', 'crates\\executor\\tests\\c24_r2_topology.rs', 'crates\\executor\\tests\\c24_r3_routes.rs', 'crates\\executor\\tests\\c24_r3_topology.rs', 'crates\\executor\\tests\\c24_topology.rs', 'crates\\vector\\tests\\c24_properties.rs', 'crates\\vector\\tests\\c24_r2_properties.rs', 'crates\\vector\\tests\\c24_r3_properties.rs'] missing []

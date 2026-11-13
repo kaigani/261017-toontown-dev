@@ -1,0 +1,27 @@
+ok   project.create
+ok   vectorize preview
+ok   vectorize run started
+ok   vectorize job succeeded
+ok   job progress
+ok   known pixel: the frame line is ink
+ok   known pixel: inside the ring is paper
+ok   save the base
+ok   doc.validate reports the unpainted zones
+ok   hit test finds the ring's inside zone
+ok   each zone painted by ID in one revision
+ok   validation clean after painting
+ok   known pixel: the ring's inside is red
+ok   render_drawing (generic tool) twice: identical hashes
+ok   recolour
+ok   known pixel: recoloured green
+ok   a stale zone ID is refused
+ok   a stale revision is refused
+ok   undo restores red
+ok   redo restores green
+ok   save
+ok   reopen
+ok   save/open: identical doc.export.json
+ok   reopened render equals the redone render
+ok   --run replay exits 0
+ok   replay from the saved base reproduces the document
+26/26 checks passed

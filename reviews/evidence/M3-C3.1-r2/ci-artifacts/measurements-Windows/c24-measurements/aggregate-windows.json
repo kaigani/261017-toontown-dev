@@ -1,0 +1,139 @@
+{
+  "os": "windows",
+  "arch": "x86_64",
+  "profile": "release",
+  "watchdogSeconds": 30,
+  "repetitions": 5,
+  "breakApart": {
+    "characters": 100000,
+    "textAddSeconds": 8.3953655,
+    "observations": [
+      {
+        "answeredSeconds": 0.0019801,
+        "status": "Error",
+        "error": "limit.exceeded",
+        "committed": false,
+        "followingReadSeconds": 0.0011244,
+        "followingReadOk": true,
+        "queuedCallSeconds": 0.0009605,
+        "queuedCallError": "limit.exceeded",
+        "queuedReadSeconds": 0.0748278,
+        "queuedReadOk": true
+      },
+      {
+        "answeredSeconds": 0.0008104,
+        "status": "Error",
+        "error": "limit.exceeded",
+        "committed": false,
+        "followingReadSeconds": 0.0005805,
+        "followingReadOk": true,
+        "queuedCallSeconds": 0.000985,
+        "queuedCallError": "limit.exceeded",
+        "queuedReadSeconds": 0.0179107,
+        "queuedReadOk": true
+      },
+      {
+        "answeredSeconds": 0.000777,
+        "status": "Error",
+        "error": "limit.exceeded",
+        "committed": false,
+        "followingReadSeconds": 0.0005632,
+        "followingReadOk": true,
+        "queuedCallSeconds": 0.0009327,
+        "queuedCallError": "limit.exceeded",
+        "queuedReadSeconds": 0.0182533,
+        "queuedReadOk": true
+      },
+      {
+        "answeredSeconds": 0.0008527,
+        "status": "Error",
+        "error": "limit.exceeded",
+        "committed": false,
+        "followingReadSeconds": 0.0005773,
+        "followingReadOk": true,
+        "queuedCallSeconds": 0.0013691,
+        "queuedCallError": "limit.exceeded",
+        "queuedReadSeconds": 0.0181655,
+        "queuedReadOk": true
+      },
+      {
+        "answeredSeconds": 0.0008614,
+        "status": "Error",
+        "error": "limit.exceeded",
+        "committed": false,
+        "followingReadSeconds": 0.0005476,
+        "followingReadOk": true,
+        "queuedCallSeconds": 0.0009405,
+        "queuedCallError": "limit.exceeded",
+        "queuedReadSeconds": 0.017734,
+        "queuedReadOk": true
+      }
+    ]
+  },
+  "render": {
+    "width": 8192,
+    "height": 8192,
+    "observations": [
+      {
+        "answeredSeconds": 1.154624,
+        "status": "Ok",
+        "error": null,
+        "committed": false,
+        "followingReadSeconds": 0.0006743,
+        "followingReadOk": true,
+        "queuedCallSeconds": 1.1576854,
+        "queuedCallError": null,
+        "queuedReadSeconds": 1.1384499,
+        "queuedReadOk": true
+      },
+      {
+        "answeredSeconds": 1.1698525,
+        "status": "Ok",
+        "error": null,
+        "committed": false,
+        "followingReadSeconds": 0.0007089,
+        "followingReadOk": true,
+        "queuedCallSeconds": 1.166406,
+        "queuedCallError": null,
+        "queuedReadSeconds": 1.1470371,
+        "queuedReadOk": true
+      },
+      {
+        "answeredSeconds": 1.1691265,
+        "status": "Ok",
+        "error": null,
+        "committed": false,
+        "followingReadSeconds": 0.0009146,
+        "followingReadOk": true,
+        "queuedCallSeconds": 1.181727,
+        "queuedCallError": null,
+        "queuedReadSeconds": 1.1621273,
+        "queuedReadOk": true
+      },
+      {
+        "answeredSeconds": 1.1771241,
+        "status": "Ok",
+        "error": null,
+        "committed": false,
+        "followingReadSeconds": 0.0007106,
+        "followingReadOk": true,
+        "queuedCallSeconds": 1.1814676,
+        "queuedCallError": null,
+        "queuedReadSeconds": 1.1620295999999999,
+        "queuedReadOk": true
+      },
+      {
+        "answeredSeconds": 1.1649703,
+        "status": "Ok",
+        "error": null,
+        "committed": false,
+        "followingReadSeconds": 0.0007188,
+        "followingReadOk": true,
+        "queuedCallSeconds": 1.1645699999999999,
+        "queuedCallError": null,
+        "queuedReadSeconds": 1.1451334,
+        "queuedReadOk": true
+      }
+    ]
+  }
+}

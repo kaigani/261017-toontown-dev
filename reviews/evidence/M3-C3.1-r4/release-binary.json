@@ -1,0 +1,9 @@
+{
+  "run": 41716646042,
+  "attempt": 2,
+  "artifact": "headless-Windows",
+  "head": "864b70d3d6da55179346d174abf2466ca825c90c",
+  "binary": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-c31-r4-release-864b70d\\toontown-headless.exe",
+  "bytes": 44422144,
+  "sha256": "2ab2778bf2b157d43ff074e34453cbed0f319e16ed7a944b5a99a8f7958b604a"
+}

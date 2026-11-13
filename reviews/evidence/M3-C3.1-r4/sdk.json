@@ -1,0 +1,1605 @@
+{
+  "head": "864b70d3d6da55179346d174abf2466ca825c90c",
+  "sdkVersion": "2.0.0",
+  "binary": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-c31-r4-release-864b70d\\toontown-headless.exe",
+  "calls": [
+    {
+      "command": "project.create",
+      "params": {
+        "name": "R4 closure"
+      },
+      "envelope": {
+        "status": "ok",
+        "result": {
+          "projectId": "pr_01M6HSXM882GSJDC7JDXETEMYM",
+          "sceneId": "sc_01M6HSXM8947V3P0Q4AW8NW9PA",
+          "cameraId": "el_01M6HSXM8947V3P0Q4AW8NW9PC",
+          "elementId": "el_01M6HSXM8947V3P0Q4AW8NW9PD"
+        },
+        "changes": [],
+        "warnings": [],
+        "documentRev": 1
+      }
+    },
+    {
+      "command": "element.create",
+      "params": {
+        "type": "drawing",
+        "name": "Source"
+      },
+      "envelope": {
+        "status": "ok",
+        "result": {
+          "elementIds": [
+            "el_01K7JJN800GM9DHXP8SKK0AEVF"
+          ],
+          "names": [
+            "Source"
+          ],
+          "warnings": []
+        },
+        "changes": [
+          {
+            "id": "pr_01M6HSXM882GSJDC7JDXETEMYM",
+            "type": "project",
+            "op": "modified",
+            "rev": 2,
+            "patch": [
+              {
+                "op": "add",
+                "path": "/drawingBanks/1",
+                "value": {
+                  "id": "db_01K7JJN801MTBCQ1DQWZS8SR8V",
+                  "type": "drawingBank"
+                }
+              }
+            ]
+          },
+          {
+            "id": "db_01K7JJN801MTBCQ1DQWZS8SR8V",
+            "type": "drawingBank",
+            "op": "created",
+            "rev": 2,
+            "parentId": "pr_01M6HSXM882GSJDC7JDXETEMYM",
+            "index": 1
+          },
+          {
+            "id": "sc_01M6HSXM8947V3P0Q4AW8NW9PA",
+            "type": "scene",
+            "op": "modified",
+            "rev": 2,
+            "patch": [
+              {
+                "op": "add",
+                "path": "/tree/0",
+                "value": {
+                  "id": "el_01K7JJN800GM9DHXP8SKK0AEVF",
+                  "children": []
+                }
+              },
+              {
+                "op": "replace",
+                "path": "/columnOrder",
+                "value": [
+                  "el_01M6HSXM8947V3P0Q4AW8NW9PD",
+                  "el_01K7JJN800GM9DHXP8SKK0AEVF"
+                ],
+                "oldValue": [
+                  "el_01M6HSXM8947V3P0Q4AW8NW9PD"
+                ]
+              },
+              {
+                "op": "add",
+                "path": "/elements/3",
+                "value": {
+                  "id": "el_01K7JJN800GM9DHXP8SKK0AEVF",
+                  "type": "element"
+                }
+              }
+            ]
+          },
+          {
+            "id": "el_01K7JJN800GM9DHXP8SKK0AEVF",
+            "type": "element",
+            "op": "created",
+            "rev": 2,
+            "parentId": "sc_01M6HSXM8947V3P0Q4AW8NW9PA",
+            "index": 3
+          }
+        ],
+        "undo": {
+          "stepId": "u-1",
+          "label": "New Elements"
+        },
+        "warnings": [],
+        "documentRev": 2
+      }
+    },
+    {
+      "command": "element.create",
+      "params": {
+        "type": "drawing",
+        "name": "Second"
+      },
+      "envelope": {
+        "status": "ok",
+        "result": {
+          "elementIds": [
+            "el_01K7JJN8003NVYS1XSWP2APRHV"
+          ],
+          "names": [
+            "Second"
+          ],
+          "warnings": []
+        },
+        "changes": [
+          {
+            "id": "pr_01M6HSXM882GSJDC7JDXETEMYM",
+            "type": "project",
+            "op": "modified",
+            "rev": 3,
+            "patch": [
+              {
+                "op": "add",
+                "path": "/drawingBanks/2",
+                "value": {
+                  "id": "db_01K7JJN801ECJJVE16C2VDT65M",
+                  "type": "drawingBank"
+                }
+              }
+            ]
+          },
+          {
+            "id": "db_01K7JJN801ECJJVE16C2VDT65M",
+            "type": "drawingBank",
+            "op": "created",
+            "rev": 3,
+            "parentId": "pr_01M6HSXM882GSJDC7JDXETEMYM",
+            "index": 2
+          },
+          {
+            "id": "sc_01M6HSXM8947V3P0Q4AW8NW9PA",
+            "type": "scene",
+            "op": "modified",
+            "rev": 3,
+            "patch": [
+              {
+                "op": "add",
+                "path": "/tree/0",
+                "value": {
+                  "id": "el_01K7JJN8003NVYS1XSWP2APRHV",
+                  "children": []
+                }
+              },
+              {
+                "op": "replace",
+                "path": "/columnOrder",
+                "value": [
+                  "el_01M6HSXM8947V3P0Q4AW8NW9PD",
+                  "el_01K7JJN800GM9DHXP8SKK0AEVF",
+                  "el_01K7JJN8003NVYS1XSWP2APRHV"
+                ],
+                "oldValue": [
+                  "el_01M6HSXM8947V3P0Q4AW8NW9PD",
+                  "el_01K7JJN800GM9DHXP8SKK0AEVF"
+                ]
+              },
+              {
+                "op": "add",
+                "path": "/elements/4",
+                "value": {
+                  "id": "el_01K7JJN8003NVYS1XSWP2APRHV",
+                  "type": "element"
+                }
+              }
+            ]
+          },
+          {
+            "id": "el_01K7JJN8003NVYS1XSWP2APRHV",
+            "type": "element",
+            "op": "created",
+            "rev": 3,
+            "parentId": "sc_01M6HSXM8947V3P0Q4AW8NW9PA",
+            "index": 4
+          }
+        ],
+        "undo": {
+          "stepId": "u-2",
+          "label": "New Elements"
+        },
+        "warnings": [],
+        "documentRev": 3
+      }
+    },
+    {
+      "command": "doc.object.patch",
+      "params": {
+        "targets": [
+          "el_01K7JJN800GM9DHXP8SKK0AEVF",
+          "el_01K7JJN8003NVYS1XSWP2APRHV"
+        ],
+        "props": {
+          "meta": {
+            "a": "old"
+          }
+        }
+      },
+      "envelope": {
+        "status": "ok",
+        "result": {
+          "changes": [
+            {
+              "id": "el_01K7JJN8003NVYS1XSWP2APRHV",
+              "type": "element",
+              "op": "modified",
+              "rev": 4,
+              "patch": [
+                {
+                  "op": "add",
+                  "path": "/meta",
+                  "value": {
+                    "a": "old"
+                  }
+                }
+              ]
+            },
+            {
+              "id": "el_01K7JJN800GM9DHXP8SKK0AEVF",
+              "type": "element",
+              "op": "modified",
+              "rev": 4,
+              "patch": [
+                {
+                  "op": "add",
+                  "path": "/meta",
+                  "value": {
+                    "a": "old"
+                  }
+                }
+              ]
+            }
+          ],
+          "documentRev": 4
+        },
+        "targets": {
+          "ids": [
+            "el_01K7JJN800GM9DHXP8SKK0AEVF",
+            "el_01K7JJN8003NVYS1XSWP2APRHV"
+          ]
+        },
+        "changes": [
+          {
+            "id": "el_01K7JJN8003NVYS1XSWP2APRHV",
+            "type": "element",
+            "op": "modified",
+            "rev": 4,
+            "patch": [
+              {
+                "op": "add",
+                "path": "/meta",
+                "value": {
+                  "a": "old"
+                }
+              }
+            ]
+          },
+          {
+            "id": "el_01K7JJN800GM9DHXP8SKK0AEVF",
+            "type": "element",
+            "op": "modified",
+            "rev": 4,
+            "patch": [
+              {
+                "op": "add",
+                "path": "/meta",
+                "value": {
+                  "a": "old"
+                }
+              }
+            ]
+          }
+        ],
+        "undo": {
+          "stepId": "u-3",
+          "label": "Set meta"
+        },
+        "warnings": [],
+        "documentRev": 4
+      }
+    },
+    {
+      "command": "doc.object.get",
+      "params": {
+        "ref": "el_01K7JJN800GM9DHXP8SKK0AEVF"
+      },
+      "envelope": {
+        "status": "ok",
+        "result": {
+          "object": {
+            "id": "el_01K7JJN800GM9DHXP8SKK0AEVF",
+            "type": "element",
+            "rev": 4,
+            "name": "Source",
+            "path": "scene:\"Scene-1\"/element:\"Source\"",
+            "elementType": "drawing",
+            "loops": 1,
+            "loopType": "count",
+            "positionLoop": "cycle",
+            "role": "normal",
+            "deformable": false,
+            "visibleInScene": true,
+            "visibleInXsheet": true,
+            "locked": false,
+            "collapsed": false,
+            "markerColour": null,
+            "backgroundColour": null,
+            "columnWidth": 80,
+            "drawingBankId": "db_01K7JJN801MTBCQ1DQWZS8SR8V",
+            "exposure": [],
+            "transform": {
+              "offset": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+              },
+              "rotation": 0.0,
+              "skew": 0.0,
+              "scale": {
+                "x": 1.0,
+                "y": 1.0
+              },
+              "keepProportions": false,
+              "rotationPivot": {
+                "x": 0.0,
+                "y": 0.0
+              },
+              "scalePivot": {
+                "x": 0.0,
+                "y": 0.0
+              },
+              "rotateAboutPivot": false,
+              "lockDepth": false,
+              "orientToPath": false
+            },
+            "channels": {},
+            "createdAt": "2026-11-03T22:54:16.926Z",
+            "meta": {
+              "a": "old"
+            }
+          }
+        },
+        "targets": {
+          "ids": [
+            "el_01K7JJN800GM9DHXP8SKK0AEVF"
+          ]
+        },
+        "changes": [],
+        "warnings": [],
+        "documentRev": 4
+      }
+    },
+    {
+      "command": "doc.object.get",
+      "params": {
+        "ref": "el_01K7JJN8003NVYS1XSWP2APRHV"
+      },
+      "envelope": {
+        "status": "ok",
+        "result": {
+          "object": {
+            "id": "el_01K7JJN8003NVYS1XSWP2APRHV",
+            "type": "element",
+            "rev": 4,
+            "name": "Second",
+            "path": "scene:\"Scene-1\"/element:\"Second\"",
+            "elementType": "drawing",
+            "loops": 1,
+            "loopType": "count",
+            "positionLoop": "cycle",
+            "role": "normal",
+            "deformable": false,
+            "visibleInScene": true,
+            "visibleInXsheet": true,
+            "locked": false,
+            "collapsed": false,
+            "markerColour": null,
+            "backgroundColour": null,
+            "columnWidth": 80,
+            "drawingBankId": "db_01K7JJN801ECJJVE16C2VDT65M",
+            "exposure": [],
+            "transform": {
+              "offset": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+              },
+              "rotation": 0.0,
+              "skew": 0.0,
+              "scale": {
+                "x": 1.0,
+                "y": 1.0
+              },
+              "keepProportions": false,
+              "rotationPivot": {
+                "x": 0.0,
+                "y": 0.0
+              },
+              "scalePivot": {
+                "x": 0.0,
+                "y": 0.0
+              },
+              "rotateAboutPivot": false,
+              "lockDepth": false,
+              "orientToPath": false
+            },
+            "channels": {},
+            "createdAt": "2026-11-03T22:54:16.928Z",
+            "meta": {
+              "a": "old"
+            }
+          }
+        },
+        "targets": {
+          "ids": [
+            "el_01K7JJN8003NVYS1XSWP2APRHV"
+          ]
+        },
+        "changes": [],
+        "warnings": [],
+        "documentRev": 4
+      }
+    },
+    {
+      "command": "edit.history.get",
+      "params": {},
+      "envelope": {
+        "status": "ok",
+        "result": {
+          "entries": [
+            {
+              "index": 1,
+              "stepId": "u-1",
+              "label": "New Elements",
+              "source": "agent",
+              "agentSessionId": "s1-c0c69f",
+              "agentName": "mcp",
+              "time": "2026-11-03T22:54:16.926Z",
+              "objectCount": 4
+            },
+            {
+              "index": 2,
+              "stepId": "u-2",
+              "label": "New Elements",
+              "source": "agent",
+              "agentSessionId": "s1-c0c69f",
+              "agentName": "mcp",
+              "time": "2026-11-03T22:54:16.928Z",
+              "objectCount": 4
+            },
+            {
+              "index": 3,
+              "stepId": "u-3",
+              "label": "Set meta",
+              "source": "agent",
+              "agentSessionId": "s1-c0c69f",
+              "agentName": "mcp",
+              "time": "2026-11-03T22:54:16.930Z",
+              "objectCount": 2
+            }
+          ],
+          "position": 3,
+          "cleanPosition": 0,
+          "total": 3
+        },
+        "changes": [],
+        "warnings": [],
+        "documentRev": 4
+      }
+    },
+    {
+      "command": "doc.state.get",
+      "params": {},
+      "envelope": {
+        "status": "ok",
+        "result": {
+          "projectId": "pr_01M6HSXM882GSJDC7JDXETEMYM",
+          "path": null,
+          "form": null,
+          "formatVersion": "1.0",
+          "migratedFrom": null,
+          "documentRev": 4,
+          "savedRev": null,
+          "dirty": true,
+          "readOnly": false,
+          "lock": null,
+          "historyFromRev": 1
+        },
+        "changes": [],
+        "warnings": [],
+        "documentRev": 4
+      }
+    },
+    {
+      "command": "doc.object.patch",
+      "params": {
+        "targets": [
+          "el_01K7JJN800GM9DHXP8SKK0AEVF",
+          "el_01K7JJN8003NVYS1XSWP2APRHV"
+        ],
+        "ops": [
+          {
+            "op": "replace",
+            "path": "/meta/a",
+            "value": "new"
+          },
+          {
+            "op": "copy",
+            "from": "/meta/a",
+            "path": "/note"
+          },
+          {
+            "op": "test",
+            "path": "/note",
+            "value": "new"
+          },
+          {
+            "op": "move",
+            "from": "/note",
+            "path": "/meta/c"
+          },
+          {
+            "op": "remove",
+            "path": "/meta/a"
+          }
+        ]
+      },
+      "envelope": {
+        "status": "ok",
+        "result": {
+          "changes": [
+            {
+              "id": "el_01K7JJN8003NVYS1XSWP2APRHV",
+              "type": "element",
+              "op": "modified",
+              "rev": 5,
+              "patch": [
+                {
+                  "op": "remove",
+                  "path": "/meta/a",
+                  "oldValue": "old"
+                },
+                {
+                  "op": "add",
+                  "path": "/meta/c",
+                  "value": "new"
+                }
+              ]
+            },
+            {
+              "id": "el_01K7JJN800GM9DHXP8SKK0AEVF",
+              "type": "element",
+              "op": "modified",
+              "rev": 5,
+              "patch": [
+                {
+                  "op": "remove",
+                  "path": "/meta/a",
+                  "oldValue": "old"
+                },
+                {
+                  "op": "add",
+                  "path": "/meta/c",
+                  "value": "new"
+                }
+              ]
+            }
+          ],
+          "documentRev": 5
+        },
+        "targets": {
+          "ids": [
+            "el_01K7JJN800GM9DHXP8SKK0AEVF",
+            "el_01K7JJN8003NVYS1XSWP2APRHV"
+          ]
+        },
+        "changes": [
+          {
+            "id": "el_01K7JJN8003NVYS1XSWP2APRHV",
+            "type": "element",
+            "op": "modified",
+            "rev": 5,
+            "patch": [
+              {
+                "op": "remove",
+                "path": "/meta/a",
+                "oldValue": "old"
+              },
+              {
+                "op": "add",
+                "path": "/meta/c",
+                "value": "new"
+              }
+            ]
+          },
+          {
+            "id": "el_01K7JJN800GM9DHXP8SKK0AEVF",
+            "type": "element",
+            "op": "modified",
+            "rev": 5,
+            "patch": [
+              {
+                "op": "remove",
+                "path": "/meta/a",
+                "oldValue": "old"
+              },
+              {
+                "op": "add",
+                "path": "/meta/c",
+                "value": "new"
+              }
+            ]
+          }
+        ],
+        "undo": {
+          "stepId": "u-4",
+          "label": "Set meta"
+        },
+        "warnings": [],
+        "documentRev": 5
+      }
+    },
+    {
+      "command": "doc.object.get",
+      "params": {
+        "ref": "el_01K7JJN800GM9DHXP8SKK0AEVF"
+      },
+      "envelope": {
+        "status": "ok",
+        "result": {
+          "object": {
+            "id": "el_01K7JJN800GM9DHXP8SKK0AEVF",
+            "type": "element",
+            "rev": 5,
+            "name": "Source",
+            "path": "scene:\"Scene-1\"/element:\"Source\"",
+            "elementType": "drawing",
+            "loops": 1,
+            "loopType": "count",
+            "positionLoop": "cycle",
+            "role": "normal",
+            "deformable": false,
+            "visibleInScene": true,
+            "visibleInXsheet": true,
+            "locked": false,
+            "collapsed": false,
+            "markerColour": null,
+            "backgroundColour": null,
+            "columnWidth": 80,
+            "drawingBankId": "db_01K7JJN801MTBCQ1DQWZS8SR8V",
+            "exposure": [],
+            "transform": {
+              "offset": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+              },
+              "rotation": 0.0,
+              "skew": 0.0,
+              "scale": {
+                "x": 1.0,
+                "y": 1.0
+              },
+              "keepProportions": false,
+              "rotationPivot": {
+                "x": 0.0,
+                "y": 0.0
+              },
+              "scalePivot": {
+                "x": 0.0,
+                "y": 0.0
+              },
+              "rotateAboutPivot": false,
+              "lockDepth": false,
+              "orientToPath": false
+            },
+            "channels": {},
+            "createdAt": "2026-11-03T22:54:16.926Z",
+            "meta": {
+              "c": "new"
+            }
+          }
+        },
+        "targets": {
+          "ids": [
+            "el_01K7JJN800GM9DHXP8SKK0AEVF"
+          ]
+        },
+        "changes": [],
+        "warnings": [],
+        "documentRev": 5
+      }
+    },
+    {
+      "command": "doc.object.get",
+      "params": {
+        "ref": "el_01K7JJN8003NVYS1XSWP2APRHV"
+      },
+      "envelope": {
+        "status": "ok",
+        "result": {
+          "object": {
+            "id": "el_01K7JJN8003NVYS1XSWP2APRHV",
+            "type": "element",
+            "rev": 5,
+            "name": "Second",
+            "path": "scene:\"Scene-1\"/element:\"Second\"",
+            "elementType": "drawing",
+            "loops": 1,
+            "loopType": "count",
+            "positionLoop": "cycle",
+            "role": "normal",
+            "deformable": false,
+            "visibleInScene": true,
+            "visibleInXsheet": true,
+            "locked": false,
+            "collapsed": false,
+            "markerColour": null,
+            "backgroundColour": null,
+            "columnWidth": 80,
+            "drawingBankId": "db_01K7JJN801ECJJVE16C2VDT65M",
+            "exposure": [],
+            "transform": {
+              "offset": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+              },
+              "rotation": 0.0,
+              "skew": 0.0,
+              "scale": {
+                "x": 1.0,
+                "y": 1.0
+              },
+              "keepProportions": false,
+              "rotationPivot": {
+                "x": 0.0,
+                "y": 0.0
+              },
+              "scalePivot": {
+                "x": 0.0,
+                "y": 0.0
+              },
+              "rotateAboutPivot": false,
+              "lockDepth": false,
+              "orientToPath": false
+            },
+            "channels": {},
+            "createdAt": "2026-11-03T22:54:16.928Z",
+            "meta": {
+              "c": "new"
+            }
+          }
+        },
+        "targets": {
+          "ids": [
+            "el_01K7JJN8003NVYS1XSWP2APRHV"
+          ]
+        },
+        "changes": [],
+        "warnings": [],
+        "documentRev": 5
+      }
+    },
+    {
+      "command": "edit.undo",
+      "params": {},
+      "envelope": {
+        "status": "ok",
+        "result": {
+          "undone": [
+            "Set meta"
+          ],
+          "position": 3
+        },
+        "changes": [
+          {
+            "id": "el_01K7JJN8003NVYS1XSWP2APRHV",
+            "type": "element",
+            "op": "modified",
+            "rev": 6,
+            "patch": [
+              {
+                "op": "remove",
+                "path": "/meta/c",
+                "oldValue": "new"
+              },
+              {
+                "op": "add",
+                "path": "/meta/a",
+                "value": "old"
+              }
+            ]
+          },
+          {
+            "id": "el_01K7JJN800GM9DHXP8SKK0AEVF",
+            "type": "element",
+            "op": "modified",
+            "rev": 6,
+            "patch": [
+              {
+                "op": "remove",
+                "path": "/meta/c",
+                "oldValue": "new"
+              },
+              {
+                "op": "add",
+                "path": "/meta/a",
+                "value": "old"
+              }
+            ]
+          }
+        ],
+        "warnings": [],
+        "documentRev": 6
+      }
+    },
+    {
+      "command": "doc.object.get",
+      "params": {
+        "ref": "el_01K7JJN800GM9DHXP8SKK0AEVF"
+      },
+      "envelope": {
+        "status": "ok",
+        "result": {
+          "object": {
+            "id": "el_01K7JJN800GM9DHXP8SKK0AEVF",
+            "type": "element",
+            "rev": 6,
+            "name": "Source",
+            "path": "scene:\"Scene-1\"/element:\"Source\"",
+            "elementType": "drawing",
+            "loops": 1,
+            "loopType": "count",
+            "positionLoop": "cycle",
+            "role": "normal",
+            "deformable": false,
+            "visibleInScene": true,
+            "visibleInXsheet": true,
+            "locked": false,
+            "collapsed": false,
+            "markerColour": null,
+            "backgroundColour": null,
+            "columnWidth": 80,
+            "drawingBankId": "db_01K7JJN801MTBCQ1DQWZS8SR8V",
+            "exposure": [],
+            "transform": {
+              "offset": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+              },
+              "rotation": 0.0,
+              "skew": 0.0,
+              "scale": {
+                "x": 1.0,
+                "y": 1.0
+              },
+              "keepProportions": false,
+              "rotationPivot": {
+                "x": 0.0,
+                "y": 0.0
+              },
+              "scalePivot": {
+                "x": 0.0,
+                "y": 0.0
+              },
+              "rotateAboutPivot": false,
+              "lockDepth": false,
+              "orientToPath": false
+            },
+            "channels": {},
+            "createdAt": "2026-11-03T22:54:16.926Z",
+            "meta": {
+              "a": "old"
+            }
+          }
+        },
+        "targets": {
+          "ids": [
+            "el_01K7JJN800GM9DHXP8SKK0AEVF"
+          ]
+        },
+        "changes": [],
+        "warnings": [],
+        "documentRev": 6
+      }
+    },
+    {
+      "command": "doc.object.get",
+      "params": {
+        "ref": "el_01K7JJN8003NVYS1XSWP2APRHV"
+      },
+      "envelope": {
+        "status": "ok",
+        "result": {
+          "object": {
+            "id": "el_01K7JJN8003NVYS1XSWP2APRHV",
+            "type": "element",
+            "rev": 6,
+            "name": "Second",
+            "path": "scene:\"Scene-1\"/element:\"Second\"",
+            "elementType": "drawing",
+            "loops": 1,
+            "loopType": "count",
+            "positionLoop": "cycle",
+            "role": "normal",
+            "deformable": false,
+            "visibleInScene": true,
+            "visibleInXsheet": true,
+            "locked": false,
+            "collapsed": false,
+            "markerColour": null,
+            "backgroundColour": null,
+            "columnWidth": 80,
+            "drawingBankId": "db_01K7JJN801ECJJVE16C2VDT65M",
+            "exposure": [],
+            "transform": {
+              "offset": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+              },
+              "rotation": 0.0,
+              "skew": 0.0,
+              "scale": {
+                "x": 1.0,
+                "y": 1.0
+              },
+              "keepProportions": false,
+              "rotationPivot": {
+                "x": 0.0,
+                "y": 0.0
+              },
+              "scalePivot": {
+                "x": 0.0,
+                "y": 0.0
+              },
+              "rotateAboutPivot": false,
+              "lockDepth": false,
+              "orientToPath": false
+            },
+            "channels": {},
+            "createdAt": "2026-11-03T22:54:16.928Z",
+            "meta": {
+              "a": "old"
+            }
+          }
+        },
+        "targets": {
+          "ids": [
+            "el_01K7JJN8003NVYS1XSWP2APRHV"
+          ]
+        },
+        "changes": [],
+        "warnings": [],
+        "documentRev": 6
+      }
+    },
+    {
+      "command": "edit.history.get",
+      "params": {},
+      "envelope": {
+        "status": "ok",
+        "result": {
+          "entries": [
+            {
+              "index": 1,
+              "stepId": "u-1",
+              "label": "New Elements",
+              "source": "agent",
+              "agentSessionId": "s1-c0c69f",
+              "agentName": "mcp",
+              "time": "2026-11-03T22:54:16.926Z",
+              "objectCount": 4
+            },
+            {
+              "index": 2,
+              "stepId": "u-2",
+              "label": "New Elements",
+              "source": "agent",
+              "agentSessionId": "s1-c0c69f",
+              "agentName": "mcp",
+              "time": "2026-11-03T22:54:16.928Z",
+              "objectCount": 4
+            },
+            {
+              "index": 3,
+              "stepId": "u-3",
+              "label": "Set meta",
+              "source": "agent",
+              "agentSessionId": "s1-c0c69f",
+              "agentName": "mcp",
+              "time": "2026-11-03T22:54:16.930Z",
+              "objectCount": 2
+            },
+            {
+              "index": 4,
+              "stepId": "u-4",
+              "label": "Set meta",
+              "source": "agent",
+              "agentSessionId": "s1-c0c69f",
+              "agentName": "mcp",
+              "time": "2026-11-03T22:54:16.935Z",
+              "objectCount": 2
+            }
+          ],
+          "position": 3,
+          "cleanPosition": 0,
+          "total": 4
+        },
+        "changes": [],
+        "warnings": [],
+        "documentRev": 6
+      }
+    },
+    {
+      "command": "doc.state.get",
+      "params": {},
+      "envelope": {
+        "status": "ok",
+        "result": {
+          "projectId": "pr_01M6HSXM882GSJDC7JDXETEMYM",
+          "path": null,
+          "form": null,
+          "formatVersion": "1.0",
+          "migratedFrom": null,
+          "documentRev": 6,
+          "savedRev": null,
+          "dirty": true,
+          "readOnly": false,
+          "lock": null,
+          "historyFromRev": 1
+        },
+        "changes": [],
+        "warnings": [],
+        "documentRev": 6
+      }
+    },
+    {
+      "command": "doc.object.patch",
+      "params": {
+        "targets": [
+          "el_01K7JJN800GM9DHXP8SKK0AEVF",
+          "el_01K7JJN8003NVYS1XSWP2APRHV"
+        ],
+        "ops": [
+          {
+            "op": "replace",
+            "path": "/meta/a",
+            "value": "new"
+          },
+          {
+            "op": "copy",
+            "from": "/meta/a",
+            "path": "/note"
+          },
+          {
+            "op": "test",
+            "path": "/note",
+            "value": "new"
+          },
+          {
+            "op": "move",
+            "from": "/note",
+            "path": "/meta/c"
+          },
+          {
+            "op": "remove",
+            "path": "/meta/a"
+          },
+          {
+            "op": "copy",
+            "from": "/meta/a",
+            "path": "/name"
+          }
+        ]
+      },
+      "envelope": {
+        "status": "error",
+        "changes": [],
+        "warnings": [],
+        "documentRev": 6,
+        "error": {
+          "code": "arg.invalid",
+          "message": "nothing to copy at `/meta/a`",
+          "details": {
+            "pointer": "/meta/a"
+          }
+        }
+      }
+    },
+    {
+      "command": "doc.object.get",
+      "params": {
+        "ref": "el_01K7JJN800GM9DHXP8SKK0AEVF"
+      },
+      "envelope": {
+        "status": "ok",
+        "result": {
+          "object": {
+            "id": "el_01K7JJN800GM9DHXP8SKK0AEVF",
+            "type": "element",
+            "rev": 6,
+            "name": "Source",
+            "path": "scene:\"Scene-1\"/element:\"Source\"",
+            "elementType": "drawing",
+            "loops": 1,
+            "loopType": "count",
+            "positionLoop": "cycle",
+            "role": "normal",
+            "deformable": false,
+            "visibleInScene": true,
+            "visibleInXsheet": true,
+            "locked": false,
+            "collapsed": false,
+            "markerColour": null,
+            "backgroundColour": null,
+            "columnWidth": 80,
+            "drawingBankId": "db_01K7JJN801MTBCQ1DQWZS8SR8V",
+            "exposure": [],
+            "transform": {
+              "offset": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+              },
+              "rotation": 0.0,
+              "skew": 0.0,
+              "scale": {
+                "x": 1.0,
+                "y": 1.0
+              },
+              "keepProportions": false,
+              "rotationPivot": {
+                "x": 0.0,
+                "y": 0.0
+              },
+              "scalePivot": {
+                "x": 0.0,
+                "y": 0.0
+              },
+              "rotateAboutPivot": false,
+              "lockDepth": false,
+              "orientToPath": false
+            },
+            "channels": {},
+            "createdAt": "2026-11-03T22:54:16.926Z",
+            "meta": {
+              "a": "old"
+            }
+          }
+        },
+        "targets": {
+          "ids": [
+            "el_01K7JJN800GM9DHXP8SKK0AEVF"
+          ]
+        },
+        "changes": [],
+        "warnings": [],
+        "documentRev": 6
+      }
+    },
+    {
+      "command": "doc.object.get",
+      "params": {
+        "ref": "el_01K7JJN8003NVYS1XSWP2APRHV"
+      },
+      "envelope": {
+        "status": "ok",
+        "result": {
+          "object": {
+            "id": "el_01K7JJN8003NVYS1XSWP2APRHV",
+            "type": "element",
+            "rev": 6,
+            "name": "Second",
+            "path": "scene:\"Scene-1\"/element:\"Second\"",
+            "elementType": "drawing",
+            "loops": 1,
+            "loopType": "count",
+            "positionLoop": "cycle",
+            "role": "normal",
+            "deformable": false,
+            "visibleInScene": true,
+            "visibleInXsheet": true,
+            "locked": false,
+            "collapsed": false,
+            "markerColour": null,
+            "backgroundColour": null,
+            "columnWidth": 80,
+            "drawingBankId": "db_01K7JJN801ECJJVE16C2VDT65M",
+            "exposure": [],
+            "transform": {
+              "offset": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+              },
+              "rotation": 0.0,
+              "skew": 0.0,
+              "scale": {
+                "x": 1.0,
+                "y": 1.0
+              },
+              "keepProportions": false,
+              "rotationPivot": {
+                "x": 0.0,
+                "y": 0.0
+              },
+              "scalePivot": {
+                "x": 0.0,
+                "y": 0.0
+              },
+              "rotateAboutPivot": false,
+              "lockDepth": false,
+              "orientToPath": false
+            },
+            "channels": {},
+            "createdAt": "2026-11-03T22:54:16.928Z",
+            "meta": {
+              "a": "old"
+            }
+          }
+        },
+        "targets": {
+          "ids": [
+            "el_01K7JJN8003NVYS1XSWP2APRHV"
+          ]
+        },
+        "changes": [],
+        "warnings": [],
+        "documentRev": 6
+      }
+    },
+    {
+      "command": "edit.history.get",
+      "params": {},
+      "envelope": {
+        "status": "ok",
+        "result": {
+          "entries": [
+            {
+              "index": 1,
+              "stepId": "u-1",
+              "label": "New Elements",
+              "source": "agent",
+              "agentSessionId": "s1-c0c69f",
+              "agentName": "mcp",
+              "time": "2026-11-03T22:54:16.926Z",
+              "objectCount": 4
+            },
+            {
+              "index": 2,
+              "stepId": "u-2",
+              "label": "New Elements",
+              "source": "agent",
+              "agentSessionId": "s1-c0c69f",
+              "agentName": "mcp",
+              "time": "2026-11-03T22:54:16.928Z",
+              "objectCount": 4
+            },
+            {
+              "index": 3,
+              "stepId": "u-3",
+              "label": "Set meta",
+              "source": "agent",
+              "agentSessionId": "s1-c0c69f",
+              "agentName": "mcp",
+              "time": "2026-11-03T22:54:16.930Z",
+              "objectCount": 2
+            },
+            {
+              "index": 4,
+              "stepId": "u-4",
+              "label": "Set meta",
+              "source": "agent",
+              "agentSessionId": "s1-c0c69f",
+              "agentName": "mcp",
+              "time": "2026-11-03T22:54:16.935Z",
+              "objectCount": 2
+            }
+          ],
+          "position": 3,
+          "cleanPosition": 0,
+          "total": 4
+        },
+        "changes": [],
+        "warnings": [],
+        "documentRev": 6
+      }
+    },
+    {
+      "command": "doc.object.patch",
+      "params": {
+        "targets": [
+          "el_01K7JJN800GM9DHXP8SKK0AEVF"
+        ],
+        "props": {
+          "meta": {
+            "source": "R4 props"
+          }
+        },
+        "ops": [
+          {
+            "op": "move",
+            "from": "/meta/source",
+            "path": "/note"
+          },
+          {
+            "op": "test",
+            "path": "/note",
+            "value": "R4 props"
+          }
+        ]
+      },
+      "envelope": {
+        "status": "ok",
+        "result": {
+          "changes": [
+            {
+              "id": "el_01K7JJN800GM9DHXP8SKK0AEVF",
+              "type": "element",
+              "op": "modified",
+              "rev": 7,
+              "patch": [
+                {
+                  "op": "add",
+                  "path": "/note",
+                  "value": "R4 props"
+                }
+              ]
+            }
+          ],
+          "documentRev": 7
+        },
+        "targets": {
+          "ids": [
+            "el_01K7JJN800GM9DHXP8SKK0AEVF"
+          ]
+        },
+        "changes": [
+          {
+            "id": "el_01K7JJN800GM9DHXP8SKK0AEVF",
+            "type": "element",
+            "op": "modified",
+            "rev": 7,
+            "patch": [
+              {
+                "op": "add",
+                "path": "/note",
+                "value": "R4 props"
+              }
+            ]
+          }
+        ],
+        "undo": {
+          "stepId": "u-5",
+          "label": "Set meta"
+        },
+        "warnings": [],
+        "documentRev": 7
+      }
+    },
+    {
+      "command": "doc.object.get",
+      "params": {
+        "ref": "el_01K7JJN800GM9DHXP8SKK0AEVF"
+      },
+      "envelope": {
+        "status": "ok",
+        "result": {
+          "object": {
+            "id": "el_01K7JJN800GM9DHXP8SKK0AEVF",
+            "type": "element",
+            "rev": 7,
+            "name": "Source",
+            "path": "scene:\"Scene-1\"/element:\"Source\"",
+            "elementType": "drawing",
+            "loops": 1,
+            "loopType": "count",
+            "positionLoop": "cycle",
+            "role": "normal",
+            "deformable": false,
+            "visibleInScene": true,
+            "visibleInXsheet": true,
+            "locked": false,
+            "collapsed": false,
+            "markerColour": null,
+            "backgroundColour": null,
+            "note": "R4 props",
+            "columnWidth": 80,
+            "drawingBankId": "db_01K7JJN801MTBCQ1DQWZS8SR8V",
+            "exposure": [],
+            "transform": {
+              "offset": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+              },
+              "rotation": 0.0,
+              "skew": 0.0,
+              "scale": {
+                "x": 1.0,
+                "y": 1.0
+              },
+              "keepProportions": false,
+              "rotationPivot": {
+                "x": 0.0,
+                "y": 0.0
+              },
+              "scalePivot": {
+                "x": 0.0,
+                "y": 0.0
+              },
+              "rotateAboutPivot": false,
+              "lockDepth": false,
+              "orientToPath": false
+            },
+            "channels": {},
+            "createdAt": "2026-11-03T22:54:16.926Z",
+            "meta": {
+              "a": "old"
+            }
+          }
+        },
+        "targets": {
+          "ids": [
+            "el_01K7JJN800GM9DHXP8SKK0AEVF"
+          ]
+        },
+        "changes": [],
+        "warnings": [],
+        "documentRev": 7
+      }
+    },
+    {
+      "command": "edit.undo",
+      "params": {},
+      "envelope": {
+        "status": "ok",
+        "result": {
+          "undone": [
+            "Set meta"
+          ],
+          "position": 3
+        },
+        "changes": [
+          {
+            "id": "el_01K7JJN800GM9DHXP8SKK0AEVF",
+            "type": "element",
+            "op": "modified",
+            "rev": 8,
+            "patch": [
+              {
+                "op": "remove",
+                "path": "/note",
+                "oldValue": "R4 props"
+              }
+            ]
+          }
+        ],
+        "warnings": [],
+        "documentRev": 8
+      }
+    },
+    {
+      "command": "doc.object.get",
+      "params": {
+        "ref": "el_01K7JJN800GM9DHXP8SKK0AEVF"
+      },
+      "envelope": {
+        "status": "ok",
+        "result": {
+          "object": {
+            "id": "el_01K7JJN800GM9DHXP8SKK0AEVF",
+            "type": "element",
+            "rev": 8,
+            "name": "Source",
+            "path": "scene:\"Scene-1\"/element:\"Source\"",
+            "elementType": "drawing",
+            "loops": 1,
+            "loopType": "count",
+            "positionLoop": "cycle",
+            "role": "normal",
+            "deformable": false,
+            "visibleInScene": true,
+            "visibleInXsheet": true,
+            "locked": false,
+            "collapsed": false,
+            "markerColour": null,
+            "backgroundColour": null,
+            "columnWidth": 80,
+            "drawingBankId": "db_01K7JJN801MTBCQ1DQWZS8SR8V",
+            "exposure": [],
+            "transform": {
+              "offset": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+              },
+              "rotation": 0.0,
+              "skew": 0.0,
+              "scale": {
+                "x": 1.0,
+                "y": 1.0
+              },
+              "keepProportions": false,
+              "rotationPivot": {
+                "x": 0.0,
+                "y": 0.0
+              },
+              "scalePivot": {
+                "x": 0.0,
+                "y": 0.0
+              },
+              "rotateAboutPivot": false,
+              "lockDepth": false,
+              "orientToPath": false
+            },
+            "channels": {},
+            "createdAt": "2026-11-03T22:54:16.926Z",
+            "meta": {
+              "a": "old"
+            }
+          }
+        },
+        "targets": {
+          "ids": [
+            "el_01K7JJN800GM9DHXP8SKK0AEVF"
+          ]
+        },
+        "changes": [],
+        "warnings": [],
+        "documentRev": 8
+      }
+    }
+  ],
+  "checks": [
+    {
+      "check": "ordered prefix succeeds",
+      "ok": true
+    },
+    {
+      "check": "prefix current copy move remove el_01K7JJN800GM9DHXP8SKK0AEVF",
+      "ok": true
+    },
+    {
+      "check": "prefix current copy move remove el_01K7JJN8003NVYS1XSWP2APRHV",
+      "ok": true
+    },
+    {
+      "check": "final source missing refuses",
+      "ok": true
+    },
+    {
+      "check": "all targets unchanged",
+      "ok": true
+    },
+    {
+      "check": "revision unchanged",
+      "ok": true
+    },
+    {
+      "check": "history unchanged",
+      "ok": true
+    },
+    {
+      "check": "props source delegated move",
+      "ok": true
+    },
+    {
+      "check": "props move one undo",
+      "ok": true
+    }
+  ],
+  "allPassed": true
+}

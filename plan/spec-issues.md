@@ -197,10 +197,8 @@ Reserved by the M0 closure for "measured deterministic-format incompatibility" (
 
 - **Section:** 05 and spec A (`anim.*` command rows).
 - **Positions** (in `crates/registry/src/declared.json`, `placeholders`):
-  - `anim.function.preset.apply` `/result/segments`: a member whose type is not stated (`segments`)
   - `anim.node.get` `/result/static`: a member whose type is not stated (`static`)
   - `anim.prefs.set` `/result/prefs`: a member whose type is not stated (`prefs`)
-  - `anim.projection.get` `/params/points/*`: an object whose fields are not listed
   - `anim.view.coords.get` `/params/points/*`: an object whose fields are not listed
   - `anim.view.coords.get` `/result/points/*`: an object whose fields are not listed
 - **Decision taken (ADR-0013 §1, C12-R2-02):** each position is a strict placeholder: an object accepts only `{}`, a member accepts only a scalar (never an object or a list), so nothing undefined is accepted silently. The implementing checkpoint replaces it with the shape the section gives.
@@ -392,9 +390,13 @@ Reserved by the M0 closure for "measured deterministic-format incompatibility" (
 - **Decision taken (ADR-0013 §1, C12-R2-02):** each position is a strict placeholder: an object accepts only `{}`, a member accepts only a scalar (never an object or a list), so nothing undefined is accepted silently. The implementing checkpoint replaces it with the shape the section gives.
 - **Question:** define these shapes in the owning section (field names and types).
 
-## SI-043 — `xsheet.*`: shapes the owning section leaves undefined (found in C1.2 r2; resolved)
+## SI-043 — `xsheet.*`: shapes the owning section leaves undefined (found in C1.2 r2; decided)
 
-- **Resolved in C1.2 r3 (C12-R3-01):** every position of `xsheet.*` is now typed from its owning section or its sibling commands; no placeholder remains.
+- **Section:** 04 and spec A (`xsheet.*` command rows).
+- **Positions** (in `crates/registry/src/declared.json`, `placeholders`):
+  - `xsheet.lightTable.add` `/params/items/*`: an object whose fields are not listed
+- **Decision taken (ADR-0013 §1, C12-R2-02):** each position is a strict placeholder: an object accepts only `{}`, a member accepts only a scalar (never an object or a list), so nothing undefined is accepted silently. The implementing checkpoint replaces it with the shape the section gives.
+- **Question:** define these shapes in the owning section (field names and types).
 
 <!-- end of generated placeholder issues -->
 
@@ -976,3 +978,329 @@ Reserved by the M0 closure for "measured deterministic-format incompatibility" (
   `c24_vectorize.rs` palette assertions). No behaviour change.
 - **Question (amendment candidate for the spec owner):** align 03 §11.6 and §7.4 with 02 §11.2 (colour choice, palette
   naming and lifetime, swatch naming), or rule the other way.
+
+## SI-085 — where the static light table is stored (found in M3 C3.1; interim decided)
+
+- **Sections:** 04 §15.3 ("the panel contents are saved with the scene"), §18 #13 (light-table changes are not
+  undoable); 10 §4.3 (the scene object has no light-table field), §6.12 (session state).
+- **Problem:** "saved with the scene" and "not undoable" cannot both hold for a document property: every persisted
+  property of the object model is part of revisions, change sets and undo (10 §2.5–§2.6).
+- **Interim decision (builder, C3.1, the spec's recommended default "not undoable"):** the light table is per-scene
+  view state of the session (`TimelineState.light_tables`, keyed by scene ID), outside revisions and undo;
+  `xsheet.lightTable.list` reads it and items whose drawing or element no longer exists drop out (04 §15.3). Writing
+  it into the project's session state (10 §6.12) arrives with `xsheet.lightTable.add/.remove/.set/.move` (M5 C5.2).
+- **Question:** add a `lightTable` field to the scene (10 §4.3) and accept undo, or confirm session state.
+
+## SI-086 — the hierarchy-cycle error code (found in M3 C3.1; decided by section ownership)
+
+- **Sections:** 04 §9.2, §17.6 (`element.hierarchyCycle`); 10 §5 (`anim.hierarchyCycle`).
+- **Decision (builder, C3.1):** each command uses its owning section's code: `element.parent.set` refuses with
+  `element.hierarchyCycle`; the `anim.*` hierarchy commands of C3.2 with `anim.hierarchyCycle`.
+- **Question:** name one code for both.
+
+## SI-087 — the batch-count error code (found in M3 C3.1; decided by section ownership)
+
+- **Sections:** 04 §3.2, §17.6 (`element.countOutOfRange`); 10 §5 (`element.tooMany`).
+- **Decision (builder, C3.1):** `element.create` refuses counts outside 1-99 with 04's `element.countOutOfRange`
+  (the count is validated by the handler, so the code is reachable; the schema states the range in its description).
+- **Question:** drop `element.tooMany` from 10 §5 or rename.
+
+## SI-088 — media and sound cells before M8 (found in M3 C3.1; interim decided, declared deferral)
+
+- **Sections:** 04 §13.20 (media and sound columns accept several cell commands), §12.8; 10 §4.14–§4.15 (their cells
+  derive from sound placements and media sequences, M8's model).
+- **Interim decision (builder, C3.1):** cell commands that 13.20 allows on media or sound columns refuse them with
+  `cell.notApplicable` naming the owner (`details.owner`: media → M8 C8.3, sound → M8 C8.1; `details.specIssue`).
+  Two exceptions are implemented now: `cell.range.add {allElements: true}` moves sound placements and media
+  sequences that start at or after the insertion point (and their lip-sync `producedFor.stopFrame`), so all columns
+  stay in sync; one spanning the point is not split. `element.mediaLength.set {length}` sets the last sequence's
+  length; without `length` (the media's natural length) it refuses with `command.disabled`
+  (`reason: sourceLengthUnknown`, owner M8 C8.3). `xsheet.exposures.set` treats media columns as read-only
+  (`xsheet.columnReadOnly`), like sound columns. `xsheet.exposures.get` reports media sequences as runs (drawing =
+  the asset name, drawingId = the sequence ID) and every column's type as `elementType` (the 17.2 example writes
+  `type` for the sound column only).
+- **Question:** none for the spec owner; M8 C8.1/C8.3 implement the remaining sound/media cell edits.
+
+## SI-089 — key re-timing when a bar's duration changes (found in M3 C3.1; decided by 05 §8.4 and the orchestrator's C3.2 ruling)
+
+- **Sections:** 04 §11.10 (change duration removes keys beyond the end; stretching scales keys); 05 §8.4 (keys are
+  local frames; proportional re-timing maps local frame k to round(1 + (k − 1)(D′ − 1)/(D − 1)), the later key wins
+  a collision; truncation holds the value at the new end); 06 §2.6; 10 §4.5.
+- **Decision (orchestrator ruling, C3.2 readiness item 7):** before truncation, evaluate the original curve at the new
+  local end and preserve that held value there; moving the start must not shift local key coordinates.
+  `element.timing.set {keyframes: "keep"}`: a 1-D channel with a key beyond the new cycle gets a key at the new end
+  with the original curve's value there (also when every key lay beyond it); a motion path gets a keyframe at the
+  position evaluated there, keeps the control points the node has already passed, drops the rest, and its velocity keys
+  are renormalised to the shorter segment. `{keyframes: "scale"}` applies 05 §8.4's mapping with half-up rounding and
+  later-wins collisions. Keys are local frames, so moving the start moves them with the bar.
+- **Cycle length (decided, C3.2, readiness item 8):** `count`: L = ⌊duration ÷ loops⌋ (at least 1), a remainder plays as a
+  partial cycle; `anim.loop.set` makes the bar `loops × L`, refusing past frame 100 000. `fill`: 10 §4.5 has only
+  `duration` and `loops`, which cannot express L with a partial last cycle, so `Element.cycleLength` is added (optional,
+  written only for `fill`, omitted otherwise; a `fill` element without it uses ⌊duration ÷ loops⌋). A new duration keeps L
+  and `loops` becomes ⌈duration ÷ L⌉; an explicit `loops` in `element.timing.set` keeps the bar and L follows.
+- **Question:** add `cycleLength` to 10 §4.5.
+
+## SI-090 — drawing-name codes of 02 and 04 (found in M3 C3.1; decided by section ownership)
+
+- **Sections:** 02 §9 (`draw.drawing.rename`: `drawing.nameExists`, `drawing.nameInvalid`); 04 §13.14, §17.6
+  (`element.drawing.rename`: `drawing.nameEmpty`, `drawing.nameInvalid`, `drawing.nameDuplicate`).
+- **Decision (builder, C3.1):** each command keeps its owning section's codes; `draw.drawing.rename` (M2, declared as
+  delegating to `element.drawing.rename`) keeps `drawing.nameExists`, which its M2 tests pin.
+- **Question:** unify the duplicate-name code.
+
+## SI-091 — default drawing names: 10 §1.3 versus 04 §14.2 (found in M3 C3.1; decided for 04)
+
+- **Sections:** 10 §1.3 (default pattern "the smallest positive integer that makes the name unique"); 04 §14.2 ("the
+  next integer after the highest purely numeric drawing name in the bank"), 02 §1.1 (drawing into a blank cell uses
+  14.2's name).
+- **Decision (builder, C3.1):** the C3.1 commands (named cells, `element.drawing.create/.duplicate`,
+  `cell.drawing.duplicate`, paste as new drawings) follow 04 §14.2 (`tt_anim::exposure::next_drawing_name`; after
+  `1`, `3` comes `4`). M2's drawing-into-a-blank-cell path (`draw.rs::next_name`) keeps 10 §1.3 until the spec
+  owner rules, so no M2 behaviour changes in C3.1.
+- **Question:** which rule governs; then align the remaining path.
+
+## SI-092 — which elements may have children: 04 §9.2 versus 10 §4.6 (found in M3 C3.1; decided for 04)
+
+- **Sections:** 04 §2.1, §9.2 (drawing, image, media, sound and annotation elements cannot have children,
+  `element.notParentable`); 10 §4.6 (drawing, annotation and image elements have children "yes (cut-out
+  hierarchies)").
+- **Decision (builder, C3.1):** the 04 commands (`element.parent.set`, `element.create {parentId}`) accept only pegs,
+  cameras, skeletons, bones and effects as parents; documents whose trees already hang elements under drawings stay
+  valid (the integrity gate follows 10 §4.6).
+- **Question:** whether cut-out rigs (M6) parent under drawings; then align 04 §9.2 or 10 §4.6.
+
+## SI-093 — cell notes through exposure edits (found in M3 C3.1 round 1; decided by orchestrator ruling)
+
+- **Sections:** 04 §7.2 (notes stored per element per frame), §13 (cells shift), §13.16 (cut/copy/paste carry
+  "labels, drawings, properties"); 10 §4.7 (`cellNotes`).
+- **Decision (orchestrator ruling, C31-R1-05):** notes are frame-keyed element data that follow their cells. Every
+  edit that moves cells moves their notes by the same mapping (`tt_anim::exposure::CellMap`: add/remove/set exposure,
+  blank cells, insert/remove cells, cycles, inserted columnate, moves); notes of removed cells (cut, shifting delete,
+  shortened exposures) go; clearing cells (`cell.range.delete {shift: false}`, cut without exposure change) clears
+  their notes; copy/paste and copying moves carry notes and **overwrite** the destination's notes in the pasted range
+  (an overwriting paste clears destination notes the copy does not carry); overwriting edits that move no cell
+  (extend exposure, change label, `xsheet.exposures.set`, overwriting columnate) keep notes where they are. Each edit
+  is one transaction with its exposure change; drawing and zone revisions are unchanged.
+- **Extension (orchestrator ruling, C31-R2-04):** the generic `edit.cut`, `edit.cutSpecial` and `edit.delete` of
+  cells use the same note edit as `cell.clipboard.set {cut: true}` (notes of cut or cleared cells go; a shifting cut
+  moves later notes with the cells), in the same transaction. **Overflow:** an edit that would move a note it does
+  not remove beyond frame 100 000 is refused as a whole (`cell.frameOutOfRange`, details `frame`, `movedTo`); the
+  note and the exposure stay as they were. A shift never discards a note silently.
+- **Question:** none for the spec owner beyond confirming the overwrite/clear rule.
+
+## SI-094 — what duplicating an element copies (found in M3 C3.1 round 1; decided by orchestrator ruling)
+
+- **Sections:** 04 §8.2 (an independent copy of the element, its drawings, exposure and transformation), §2.9–§2.10
+  (parameter rows required by effects and skeletons); 10 §4.6 (`effectParameter` created and deleted with its owner).
+- **Decision (orchestrator ruling, C31-R1-06):** `element.duplicate` copies the element's whole subtree: mandatory
+  parameter rows (clipping masks, particle sprite rows with their sprite drawing element, skeleton bones and skin
+  with their bones) and ordinary user children alike, each with a new ID, a unique `_n` name and, for cell-based
+  elements, a new bank with verbatim drawing copies (banks shared inside the subtree stay shared between the copies);
+  `x-ref: element` references between copied elements follow the copies. An element listed together with one of its
+  ancestors is copied once, with that ancestor. A parameter row alone is refused (`arg.invalid`): it never becomes an
+  unowned root.
+- **Question:** confirm that ordinary children are duplicated with their parent (04 §8.2 is silent on children).
+
+## SI-095 — columnate: total frames versus "expose last" (found in M3 C3.1 round 1; decided by orchestrator ruling)
+
+- **Sections:** 04 §13.10 (total frames recompute the loops; the last loop is truncated to the requested count;
+  "expose last drawing for" the final drawing of the whole cycle).
+- **Decision (orchestrator ruling, C31-R1-01):** total frames take precedence. With `totalFrames`, loops =
+  ceil(frames ÷ frames-per-loop) (frames-per-loop uses `exposeEach` for every drawing) and the sequence is generated
+  far enough to reach the requested count before the last loop is truncated, so a short `exposeLast` never leaves a
+  shortfall; `exposeLast` applies only when the requested count ends exactly where the untruncated cycle ends. A
+  single pass (`loopMode: none`) is never extended: a larger `totalFrames` is refused (`arg.invalid`, the pass length
+  stated), a smaller one truncates it.
+- **Question:** confirm, or specify how `exposeLast` combines with a truncated cycle.
+
+## SI-096 — per-axis position channels, D-5 (raised in the M3 plan; unresolved, spec owner)
+
+- **Sections:** 05 §1.6, §9, §11.4; 10 §4.12.
+- **Decision (orchestrator ruling, C3.2):** build to 05 as it stands: `position` is a motion path with TCB points,
+  `position.x/y/z` are projections, not stored. M6 C6.2 is the second owner.
+- **Migration if the amendment is adopted:** a format step (versioned manifest, a fixture folder under
+  `crates/persist/tests/fixtures/migrations/`) rewrites each `position` channel into `position.x`, `.y`, `.z` 1-D channels.
+  Each keyframe becomes one key per axis at the same local frame, with an ID derived deterministically from the point's;
+  control points and non-linear velocity are baked into sampled per-axis keys at each frame of the affected segment
+  (TCB parameters have no per-axis form, so a segment with non-default TCB is baked too); `constantSegment` and
+  `lockDepth` map to `constantSegment` per axis; `meta`/`ext` move to the `x` channel. `velocity` keys are dropped once baked.
+- **IPC types the amendment would break (not frozen; repeated in the C3.2 handoff):** `anim.path.get/.set/.point.*`,
+  `anim.path.lockDepth.set`, the `position.*` projection form of `anim.function.*`, `NodeEval.animated.velocity`.
+- **Question:** D-5 itself.
+
+## SI-097 — E4's bones (found in M3 C3.2; decided by the plan's milestones)
+
+- **Sections:** 11 §14 E4 ("create body-part elements, pegs and bones"); plan §4 (C3.2 "E4 numeric"; C6.3 bones, "E4
+  interactive"); generator owners (`anim.bone.*`, `anim.skeleton.*`: M6 C6.3).
+- **Decision (builder, C3.2):** E4 numeric poses pegs and elements. The bone part of E4 runs with M6 C6.3.
+  `anim.evaluate` refuses a bone (`anim.notTransformable`, hint names C6.3).
+- **Question:** none.
+
+## SI-098 — `anim.evaluate` frames and frame reporting (found in M3 C3.2; decided by the readiness list)
+
+- **Sections:** 05 §19.1.4 ("fractional only where stated"), §19.3 (`frames?: [int]`).
+- **Decision (builder, C3.2; readiness item 10):** `anim.evaluate {frames}` also accepts fractional scene frames, a superset
+  of the table. Every other frame parameter is as its table row says. All results report scene frames, including
+  `anim.path.get`, `anim.function.get`, `anim.key.list`; `NodeEval.localFrame` is the local frame before the cycle mapping.
+- **Question:** confirm the superset.
+
+## SI-099 — Constant Z, constant segments and timing (found in M3 C3.2; decided by 05 §9.3)
+
+- **Sections:** 05 §9.2, §9.3 ("The Z of control points is ignored where Constant Z applies"), §10.5.
+- **Decision (builder, C3.2):** the arc length of a locked keyframe segment is measured in its X/Y plane, so control-point Z
+  does not change timing there. A control point inside a constant segment is "ignored for timing": its reported passage
+  frame is the segment's start frame.
+- **Question:** confirm the plane measure.
+
+## SI-100 — visibility, clipped points and frame corners (found in M3 C3.2; decided for agents)
+
+- **Sections:** 05 §2.6, §19.3, §19.4 (the `NodeEval` example gives a peg `bounds` and a visible `screen`; the text below it
+  says pegs and cameras report only their origin).
+- **Decision (builder, C3.2):** the text wins: pegs and cameras have no `bounds`; their `screen` box is their origin.
+  `visible` = in front of the near plane and overlapping the frame; for content nodes also not hidden (itself or an
+  ancestor), not an annotation (04 §2.6, final render excludes them by default) and with content at that frame. In
+  `anim.projection.get` a clipped point reports `x`, `y` as `null`. In `anim.camera.get`, `frameCornersAtZ0` is `null` when
+  the table plane is at or behind the near plane. `bounds` come from the exposed drawing at 1 field = 100 du (02 §3);
+  bitmap native-size mapping (05 §1.3) arrives with C3.3's render list.
+- **Question:** confirm `visible` for pegs (origin in frame).
+
+## SI-101 — numeric bounds of animation values (found in M3 C3.2; decided by the builder)
+
+- **Sections:** 05 §2.1, §8, §18 (`anim.valueOutOfRange`); C31-R1-10.
+- **Decision (builder, C3.2):** beyond the spec's ranges (skew ±89, |scale| ≥ 0.001, FOV 1–179, TCB ±1): positions and pivots
+  ±1 000 000 fields, |scale| ≤ 1 000 000, rotation and generic 1-D values ±1e9. All `anim.valueOutOfRange` with limits, so
+  finite documents cannot overflow casually; an evaluation that still overflows (a deep chain of large scales) is refused
+  with `reason: nonFinite`.
+- **Question:** none beyond confirming the limits.
+
+## SI-102 — default FOV and "exactly 12 fields" (found in M3 C3.2; ruled: exact expression)
+
+- **Sections:** 05 §2.7 (2·atan(0.375) ≈ 41.1121°, "exactly fills"), §12.3, §19.3, 10 §4.6 (default 41.1121).
+- **Ruling (orchestrator, M3 C3.2 round 1, C32-R1-03; spec-owner confirmation pending):** exact expression; the tables'
+  41.1121 is its display rounding; the spec owner may amend the prose to ≈. The stored and schema default is
+  2·atan(0.375) in degrees at full double precision, `41.11209043916693`, computed once through the pinned soft-float
+  path (`tt_model::defaults::DEFAULT_FOV`, bits checked by `crates/anim/tests/c32_round1.rs`); tables and the property
+  panel display it to 4 decimals (`DEFAULT_FOV_DISPLAY`); an explicitly set 41.1121 is stored and read back as 41.1121.
+  New cameras, new projects and the M1 sample fixture carry the exact value; schemas, generated IPC and example
+  results are regenerated. Files storing 41.1121 stay valid: it is a migratable number, not a format change. (Until
+  round 1 the builder kept 41.1121, which filled the frame to about 3e-6 field.)
+- **Question:** none; the projection of an explicit 41.1121 is SI-104.
+
+## SI-103 — default curve types (found in M3 C3.2; decided by 05 §10.2)
+
+- **Sections:** 05 §10.2, §19.4 (the `Function` example is a `spline`); 10 §4.12 ("per preference").
+- **Decision (builder, C3.2):** a new channel is `interpolation`, its keys eased `linear`, or `easeInOut` when
+  `staging.keyframes.linearVelocity` is off. A later `anim.function.curveType.set` to `spline` starts with zero handles,
+  which are straight lines. `anim.function.*` on `position.x/y/z` reads keyframes and edits values through the path
+  (05 §11.4); key addition, removal and duplication there are refused (`anim.channelUnsupported`, use `anim.path.*`).
+- **Question:** none.
+
+## SI-104 — an explicit 41.1121 is not an alias of the default (found in M3 C3.2 round 1; ruled: no alias)
+
+- **Sections:** 05 §2.7, §12.3, §19.1.6; SI-102's ruling; the round-1 reviewer's `c32_r1_default_frame`, which projects
+  a camera at the tables' 41.1121 and requires 12 fields within 1e-6.
+- **Decision (builder, C3.2 round 1):** the ruling asks both that an explicitly set 41.1121 stays 41.1121 and that the
+  reviewer's oracle, which projects exactly that value, passes unchanged. A double at 41.1121 is 9.6e-6° wider than
+  the exact default, 3.0e-6 field at distance 16, so projecting it as itself cannot meet the oracle. The projection
+  therefore resolves the one value 41.1121, the spec's own written default, to the exact expression
+  (`tt_anim::camera::projection_fov`); the stored `fov` and the reported `fov` and `effectiveFov` keep 41.1121, and
+  every other value, 41.11211 included, projects as itself. A user who types the tables' default gets the default frame.
+- **Ruling (orchestrator, 2026-11-09, C32-R2-01):** no alias; the reported value is the projected value. An explicit
+  41.1121 is stored, reported and projected as itself (about 12.0000031 fields at distance 16); only the default
+  camera, which carries the exact `DEFAULT_FOV`, spans exactly 12 fields. Round 2 removed
+  `tt_anim::camera::projection_fov`; `effectiveFov` and every projection path use the same number. The reviewer amended
+  `c32_r1_default_frame` to project `DEFAULT_FOV` and added `explicit_display_fov_is_not_aliased`.
+- **Question:** none. (The round-1 builder decision above is superseded.)
+
+## SI-105 — bitmap placement and native size (found in M3 C3.3; decided by 10 §4.9 and 05 §1.3)
+
+- **Sections:** 10 §4.9 (`transform` maps pixel space, origin top-left, y down, to drawing space), 05 §1.3 (native size:
+  one image pixel per output pixel through the default camera, 12 ÷ camera width fields per pixel), 06 §6.8.
+- **Decision (builder, C3.3):** the renderer and hit test honour any stored transform; *native size* is
+  `[s, 0, 0, −s, tx, ty]` with `s = 1200 / cameraWidth` du per pixel (the y flip keeps the image upright; 100 du per
+  field unchanged). Importers (M10) write that placement. The M1 fixture's sample node `[1, 0, 0, 1, −960, 540]` is
+  schema sample data: read by 10 §4.9 it lies above the frame, upside down (the compositor reports it `outOfFrame`).
+  Fully transparent pixels are not hit. `c33_bitmap` proves the pixel-for-pixel mapping and that bounds, render and hit
+  test agree.
+- **Question:** none.
+
+## SI-106 — composite order with roles (found in M3 C3.3; decided by the builder)
+
+- **Sections:** 05 §2.8 (depth sort, Timeline tie-break), 04 §6.1 (foreground/background composite in front of/behind
+  all normal elements; background auto-extends), 04 §9.1, 10 §4.3 (tree children top to bottom as displayed).
+- **Decision (builder, C3.3; depth ties by ruling C33-R1-01):** order = role tier (background; normal and envelope;
+  foreground), then world Z of the origin (smaller first), then the Timeline order: back to front is the displayed rows
+  bottom to top (index 0 of a level is the front; a parent's row is above its children, so it is in front of them at
+  equal depth). Depths are not rounded: within a tier the nodes are sorted by Z and grouped from the smallest; a group
+  takes each following node whose Z is less than 1e-6 field from the group's *first* (smallest-Z) member, and a group
+  is ordered by the Timeline alone. Chain rule: a long run of near-equal depths splits where the distance from the
+  group's anchor reaches 1e-6, even though each step is smaller (0, 0.6e-6, 1.2e-6 is two groups).
+  A background element extends its last exposure to the scene length at render time. Envelope elements draw as normal
+  until bones (SI-097).
+- **Question:** confirm the role tiers outrank depth.
+
+## SI-107 — `render.frame.run` coverage (found in M3 C3.3; decided by the builder)
+
+- **Sections:** 09 §11.1–§11.4, 11 §7.5, §7.8, 06 §6.10.
+- **Decision (builder, C3.3):** compositions `camera` and `element` (`elementIds` through the camera; `drawingId` in
+  drawing space at the camera's table-plane scale, colours through the scene's styles); `xsheet` (owner M5 C5.1) and
+  `activeView` (owner M4 C4.2) are refused `render.compositionUnavailable` with the owner. `quality: "draft"` renders as
+  final with a `render.draftAsFinal` warning until the interactive renderer (M4 C4.2). `cameraFrame` has no effect on
+  compositions that are the camera frame (warning `render.cameraFrameNotApplicable`). `cameraId` is accepted so the
+  generic `render_frame` tool's `camera` keeps its meaning; the tool's `output` path writes a file and `sceneColour` is
+  `scene`. Overlays are never drawn in final renders. `RenderResult` adds `frame`, `imageToCamera` and `warnings`, and
+  returns `renderMs` (ruling C33-R1-06; also in the generic `render_frame` result). Volatile fields (`renderMs`, job
+  timestamps, job IDs) are excluded from deterministic byte comparisons; the PNG bytes and their `sha256` are the
+  determinism contract. `include`/`exclude` (element refs) are a render-time visibility override on
+  `render.frame.run`, `render.range.run`, `inspect.contactSheet.render` and `inspect.frame.describe` (ruling C33-R1-05):
+  an included element is drawn although hidden or an annotation, an excluded one is left out with its descendants
+  (verdict `excluded`; exclusion wins), and the document is never changed. Known output sizes are checked before any
+  evaluation, allocation or encoding: an inline image (a frame or a contact sheet) whose long side or pixel count is
+  over the inline limit is `render.inlineTooLarge`, a general resource limit is `limit.exceeded`; the encoded-byte check
+  stays after encoding (ruling C33-R1-04). `render.range.run` without `wait` answers `{jobId}` (`job.wait` waits); with
+  `wait: true` the caller's request waits for the job off the document thread, bounded by the call's budget and
+  cancellable, and answers the manifest with its `jobId`; at the timeout it answers `job.waitTimeout` with the `jobId`,
+  and the job runs on (ruling C33-R1-02). Its companion manifest `<scene>_<from>-<to>.manifest.json` is written with the
+  frames, only when every frame is published: publication is a transaction (ruling C33-R1-03; ADR-0020).
+- **Question:** none.
+
+## SI-108 — contact-sheet layout and labels (found in M3 C3.3; decided by the builder)
+
+- **Sections:** 11 §7.5 `render_contact_sheet`, §15.2 `inspect.contactSheet.render`.
+- **Decision (builder, C3.3):** columns default ⌈√n⌉ (at most 64, at most n); cell height by the camera aspect; 4-pixel
+  gaps; a 14-pixel label band under each cell with the frame number drawn from built-in 3 × 5 digit bitmaps at 2 × 2
+  pixels per dot (no fonts, so the bytes are the same on every OS); white sheet, cells with the scene background; each
+  cell is exactly the frame rendered at the cell size. Results add `bytes`, `sha256`, `documentRevision`, `warnings`.
+- **Question:** none.
+
+## SI-109 — coordinate-space names (found in M3 C3.3; decided by the builder)
+
+- **Sections:** 11 §5.3, §7.5, §15.2.
+- **Decision (builder, C3.3):** `convert` accepts `drawing`, `local`, `parent` (these with `elementId`), `scene` (also
+  `world`, `field`), `camera` (fields from the camera centre on the table plane, y up, camera roll applied),
+  `cameraNormalized` (0..1 from the frame's top-left), `image` (pixels of a render at the camera size); image and camera
+  points go onto the plane Z = `z` (default the table plane). `hitTest` accepts `image`, `camera` and `scene` (table
+  plane); `drawing` names no element and is refused (`inspect.spaceUnavailable`, convert to `scene` first); `view` waits
+  for views (owner M4 C4.2). Points at or behind the near plane are `inspect.behindCamera`; a singular transform
+  (unreachable through the scale and skew limits) would be `inspect.singularTransform`. Inspection frames are integers,
+  as the registry rows bind them (`frame?: int`); a fractional frame is a typed `arg.invalid` (C3.3 round 1).
+  `inspect.frame.describe` takes the same `include`/`exclude` as `render.frame.run` and describes that render (SI-107).
+- **Question:** none.
+
+## SI-110 — generic `render_frame` default width (found in M3 C3.3 round 1; decided by ruling)
+
+- **Sections:** 11 §7.5 (`render_frame`), 09 §11.1 item 1 (the generic tool equals the owning command).
+- **Decision (ruling, C3.3 round 1):** parity wins: the generic `render_frame` tool maps to `render.frame.run` with
+  `composition: "camera"`, and its default width is the owning command's, the camera width; the tool schema says
+  "default = the camera width". No product change beyond the schema text.
+- **Question:** none.
+
+## SI-111 — a caller-cancelled request has no code in 11 §10 (found in M3 C3.4 round 2; interim, awaiting spec owner)
+
+- **Sections:** 11 §4 (MCP cancellation: no answer to a cancelled request), 11 §10 (error codes), 09 §11.1 item 4
+  (`wait: true`).
+- **Interim decision (orchestrator ruling, C3.4 round 2):** reuse `command.timeout` with `details.reason: "cancelled"`
+  (plus `details.jobId` on waited-job paths). An MCP client gets no answer to a cancelled request, so the code is seen
+  only by in-process callers, batch step envelopes and the activity log. The contract is ADR-0020 decision 8.
+- **Question:** add a code for a request its caller cancelled to 11 §10, or confirm `command.timeout` with
+  `reason: "cancelled"`.

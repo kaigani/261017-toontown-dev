@@ -1,0 +1,1 @@
+["cargo", "test", "--release", "--locked", "-p", "tt-mcp", "-j", "4", "--features", "tt-persist/test-hooks", "--test", "c34_r2_protocol", "--", "--nocapture"]

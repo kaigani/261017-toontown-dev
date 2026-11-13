@@ -1,0 +1,28 @@
+test_accepted_elicitation_preserves_request_id_result (__main__.Protocol.test_accepted_elicitation_preserves_request_id_result) ... skipped 'runtime cases are wired through cargo test -p tt-headless --test c14_r1'
+test_activity_batch_export_does_not_turn_dry_runs_into_edits (__main__.Protocol.test_activity_batch_export_does_not_turn_dry_runs_into_edits) ... skipped 'runtime cases are wired through cargo test -p tt-headless --test c14_r1'
+test_activity_batch_export_keeps_committed_batch_operations (__main__.Protocol.test_activity_batch_export_keeps_committed_batch_operations) ... skipped 'runtime cases are wired through cargo test -p tt-headless --test c14_r1'
+test_atomic_failure_has_no_activity_export_effect (__main__.Protocol.test_atomic_failure_has_no_activity_export_effect) ... skipped 'runtime cases are wired through cargo test -p tt-headless --test c14_r1'
+test_closed_stdout_ends_the_unusable_session (__main__.Protocol.test_closed_stdout_ends_the_unusable_session) ... skipped 'runtime cases are wired through cargo test -p tt-headless --test c14_r1'
+test_elicitation_is_one_audit_entry_per_tool_call (__main__.Protocol.test_elicitation_is_one_audit_entry_per_tool_call) ... skipped 'runtime cases are wired through cargo test -p tt-headless --test c14_r1'
+test_eof_while_eliciting_ends_the_session (__main__.Protocol.test_eof_while_eliciting_ends_the_session) ... skipped 'runtime cases are wired through cargo test -p tt-headless --test c14_r1'
+test_filter_has_bounded_runtime (__main__.Protocol.test_filter_has_bounded_runtime) ... skipped 'runtime cases are wired through cargo test -p tt-headless --test c14_r1'
+test_get_state_matches_the_command_envelope (__main__.Protocol.test_get_state_matches_the_command_envelope) ... skipped 'runtime cases are wired through cargo test -p tt-headless --test c14_r1'
+test_invalid_utf8_frame_does_not_destroy_stream (__main__.Protocol.test_invalid_utf8_frame_does_not_destroy_stream) ... skipped 'runtime cases are wired through cargo test -p tt-headless --test c14_r1'
+test_malformed_elicitation_does_not_overwrite (__main__.Protocol.test_malformed_elicitation_does_not_overwrite) ... skipped 'runtime cases are wired through cargo test -p tt-headless --test c14_r1'
+test_non_object_tool_arguments_are_rejected (__main__.Protocol.test_non_object_tool_arguments_are_rejected) ... skipped 'runtime cases are wired through cargo test -p tt-headless --test c14_r1'
+test_nonreading_client_with_eof_does_not_pin_the_session (__main__.Protocol.test_nonreading_client_with_eof_does_not_pin_the_session) ... skipped 'runtime cases are wired through cargo test -p tt-headless --test c14_r1'
+test_project_resource_is_readable (__main__.Protocol.test_project_resource_is_readable) ... skipped 'runtime cases are wired through cargo test -p tt-headless --test c14_r1'
+test_second_initialize_is_rejected (__main__.Protocol.test_second_initialize_is_rejected) ... skipped 'runtime cases are wired through cargo test -p tt-headless --test c14_r1'
+test_size_and_mtime_preserving_edit_requires_confirmation (__main__.Protocol.test_size_and_mtime_preserving_edit_requires_confirmation) ... skipped 'runtime cases are wired through cargo test -p tt-headless --test c14_r1'
+test_undo_and_redo_emit_the_declared_events (__main__.Protocol.test_undo_and_redo_emit_the_declared_events) ... skipped 'runtime cases are wired through cargo test -p tt-headless --test c14_r1'
+test_unknown_cancellation_does_not_cancel_a_future_request (__main__.Protocol.test_unknown_cancellation_does_not_cancel_a_future_request) ... skipped 'runtime cases are wired through cargo test -p tt-headless --test c14_r1'
+test_unknown_tool_argument_is_rejected (__main__.Protocol.test_unknown_tool_argument_is_rejected) ... skipped 'runtime cases are wired through cargo test -p tt-headless --test c14_r1'
+test_wrong_dry_run_type_does_not_commit (__main__.Protocol.test_wrong_dry_run_type_does_not_commit) ... skipped 'runtime cases are wired through cargo test -p tt-headless --test c14_r1'
+test_wrong_expect_rev_type_does_not_commit (__main__.Protocol.test_wrong_expect_rev_type_does_not_commit) ... skipped 'runtime cases are wired through cargo test -p tt-headless --test c14_r1'
+test_percentile_evidence_retains_observations (__main__.ReleaseFeature.test_percentile_evidence_retains_observations) ... ok
+test_suspension_hooks_are_not_a_normal_dependency_feature (__main__.ReleaseFeature.test_suspension_hooks_are_not_a_normal_dependency_feature) ... ok
+
+----------------------------------------------------------------------
+Ran 23 tests in 0.048s
+
+OK (skipped=21)

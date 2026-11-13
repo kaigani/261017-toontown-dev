@@ -1,0 +1,6 @@
+test_base_is_an_existing_reusable_package (__main__.Format.test_base_is_an_existing_reusable_package) ... ok
+
+----------------------------------------------------------------------
+Ran 1 test in 0.063s
+
+OK

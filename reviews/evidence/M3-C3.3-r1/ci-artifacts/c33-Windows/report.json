@@ -1,0 +1,60 @@
+{
+ "passed": 10,
+ "failed": 0,
+ "checks": [
+  {
+   "check": "gate-frame-1: the headless binary renders the in-process bytes",
+   "ok": true,
+   "detail": "c7200e1a6fef38885a4977c074c782bee890029d470623c096512acb4f0c2fbc vs c7200e1a6fef38885a4977c074c782bee890029d470623c096512acb4f0c2fbc"
+  },
+  {
+   "check": "gate-frame-9: the headless binary renders the in-process bytes",
+   "ok": true,
+   "detail": "1c922bc148c309cb91e8f265732a000de4eb79c4557e014de5636b3a2bbb59b7 vs 1c922bc148c309cb91e8f265732a000de4eb79c4557e014de5636b3a2bbb59b7"
+  },
+  {
+   "check": "gate-frame-17: the headless binary renders the in-process bytes",
+   "ok": true,
+   "detail": "cae435e50dadafa416a5dbe3102becc874eb5c3710ea8a0be613c192cfb7abe7 vs cae435e50dadafa416a5dbe3102becc874eb5c3710ea8a0be613c192cfb7abe7"
+  },
+  {
+   "check": "gate-contact-sheet: the headless binary renders the in-process bytes",
+   "ok": true,
+   "detail": "9115ca0ec3cd9f3bdd0563723bd8d0ab6b33f525775c78aa6957f6f19ce4f87f vs 9115ca0ec3cd9f3bdd0563723bd8d0ab6b33f525775c78aa6957f6f19ce4f87f"
+  },
+  {
+   "check": "gate-path: passage frames of the control points",
+   "ok": true,
+   "detail": "[13.438, 19.146]"
+  },
+  {
+   "check": "render.range.run succeeded",
+   "ok": true,
+   "detail": "{'jobId': 'job-1', 'commandId': 'render.range.run', 'state': 'succeeded', 'progress': 1.0, 'message': 'Done', 'startedAt': '2026-11-10T10:11:48.415Z', 'result': {'status': 'succeeded', 'format': 'png', 'outputPath': 'C:\\\\Users\\\\RUNNER~1\\\\AppData\\\\Local\\\\Temp\\\\tt-c33-gate-u0_4xk5f\\\\sequence', 'frameCount': 3, 'fps': 24.0, 'durationSec': 0.125, 'width': 192, 'height': 108, 'range': {'from': 1, 'to':"
+  },
+  {
+   "check": "frames and manifest are published together",
+   "ok": true,
+   "detail": "['Scene-1_0001-0024.manifest.json', 'Scene-1_0001.png', 'Scene-1_0009.png', 'Scene-1_0017.png']"
+  },
+  {
+   "check": "sequence Scene-1_0001.png: manifest SHA-256",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "check": "sequence Scene-1_0009.png: manifest SHA-256",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "check": "sequence Scene-1_0017.png: manifest SHA-256",
+   "ok": true,
+   "detail": ""
+  }
+ ],
+ "headSha": "e61c2651feb83c7e03174bedd10fa2cf563c4ad8",
+ "platform": "Windows-2025Server-10.0.26100-SP0",
+ "python": "3.12.10",
+ "mcp": "2.0.0"
+}

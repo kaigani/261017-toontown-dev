@@ -6,8 +6,21 @@ edition.workspace = true
 rust-version.workspace = true
 publish.workspace = true
 
+[features]
+# Dev-only evaluation counters (never in a product build): the render-list evaluation-count test (C3.3 round 1).
+test-hooks = []
+
 [dependencies]
 tt-model.workspace = true
+# Pure-software transcendental functions (ADR-0004 rule 3, ADR-0019): the same pin as tt-vector.
+libm = { version = "0.2.16", default-features = false, features = ["force-soft-floats"] }
 
 [lints]
 workspace = true
+
+[dev-dependencies]
+proptest.workspace = true
+# Arbitrary-precision rationals of the independent passage-frame oracle (C32-R1-01), as tt-vector's tests use them.
+num-bigint.workspace = true
+num-rational.workspace = true
+num-traits.workspace = true

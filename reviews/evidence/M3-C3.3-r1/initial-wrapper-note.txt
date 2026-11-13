@@ -1,0 +1,1 @@
+The initial combined wrapper returned 1 after the audit attempted UTF-8 decoding of shell-written UTF-16 CI metadata. That receipt-reader issue was corrected. The accompanying Python-suite log reports 52/52 passing suites; final acceptance uses python-final.exit and its final-source witness rather than this superseded wrapper.

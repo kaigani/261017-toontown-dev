@@ -1,0 +1,33 @@
+Traceback (most recent call last):
+  File "C:\Users\kaiga\work\review\m3-c31-r2\tests\adversarial\collect_runtime_evidence.py", line 79, in <module>
+    main()
+    ~~~~^^
+  File "C:\Users\kaiga\work\review\m3-c31-r2\tests\adversarial\collect_runtime_evidence.py", line 60, in main
+    results = [run([HEADLESS, *args]) for args in cases]
+               ~~~^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\kaiga\work\review\m3-c31-r2\tests\adversarial\collect_runtime_evidence.py", line 21, in run
+    result = subprocess.run([str(arg) for arg in args], cwd=ROOT, capture_output=True, text=True, timeout=timeout)
+  File "C:\Python313\Lib\subprocess.py", line 554, in run
+    with Popen(*popenargs, **kwargs) as process:
+         ~~~~~^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Python313\Lib\subprocess.py", line 1036, in __init__
+    self._execute_child(args, executable, preexec_fn, close_fds,
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+                        pass_fds, cwd, env,
+                        ^^^^^^^^^^^^^^^^^^^
+    ...<5 lines>...
+                        gid, gids, uid, umask,
+                        ^^^^^^^^^^^^^^^^^^^^^^
+                        start_new_session, process_group)
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Python313\Lib\subprocess.py", line 1548, in _execute_child
+    hp, ht, pid, tid = _winapi.CreateProcess(executable, args,
+                       ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^
+                             # no special security
+                             ^^^^^^^^^^^^^^^^^^^^^
+    ...<4 lines>...
+                             cwd,
+                             ^^^^
+                             startupinfo)
+                             ^^^^^^^^^^^^
+FileNotFoundError: [WinError 2] The system cannot find the file specified

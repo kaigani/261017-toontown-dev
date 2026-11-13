@@ -1,0 +1,513 @@
+   Compiling tt-executor v0.0.1 (C:\Users\kaiga\work\review\m3-c34-r4\crates\executor)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 2.61s
+     Running tests\c34_r4_late_probe.rs (target\debug\deps\c34_r4_late_probe-c95915bc45473f6e.exe)
+
+running 1 test
+LATE_CALLBACK trial=0 index=0 asks_at_start=1 ms=260.02160000000003
+LATE_CALLBACK trial=0 index=1 asks_at_start=2 ms=260.5353
+LATE_TRIAL trial=0 asks=2 unrelated_ms=520.7442
+LATE_CALLBACK trial=1 index=0 asks_at_start=1 ms=260.22200000000004
+LATE_CALLBACK trial=1 index=1 asks_at_start=2 ms=260.4353
+LATE_TRIAL trial=1 asks=2 unrelated_ms=523.4505
+LATE_CALLBACK trial=2 index=0 asks_at_start=1 ms=260.36359999999996
+LATE_CALLBACK trial=2 index=1 asks_at_start=2 ms=260.2605
+LATE_TRIAL trial=2 asks=2 unrelated_ms=516.3006999999999
+LATE_CALLBACK trial=3 index=0 asks_at_start=1 ms=260.0928
+LATE_TRIAL trial=3 asks=1 unrelated_ms=264.9822
+LATE_CALLBACK trial=4 index=0 asks_at_start=1 ms=260.3799
+LATE_TRIAL trial=4 asks=1 unrelated_ms=259.5967
+LATE_CALLBACK trial=5 index=0 asks_at_start=1 ms=260.2332
+LATE_CALLBACK trial=5 index=1 asks_at_start=2 ms=260.4611
+LATE_TRIAL trial=5 asks=2 unrelated_ms=519.2422
+LATE_CALLBACK trial=6 index=0 asks_at_start=1 ms=260.1468
+LATE_CALLBACK trial=6 index=1 asks_at_start=2 ms=260.04319999999996
+LATE_TRIAL trial=6 asks=2 unrelated_ms=520.2234
+LATE_CALLBACK trial=7 index=0 asks_at_start=1 ms=260.1597
+LATE_CALLBACK trial=7 index=1 asks_at_start=2 ms=260.3212
+LATE_TRIAL trial=7 asks=2 unrelated_ms=519.9091
+LATE_CALLBACK trial=8 index=0 asks_at_start=1 ms=260.4835
+LATE_TRIAL trial=8 asks=1 unrelated_ms=268.76
+LATE_CALLBACK trial=9 index=0 asks_at_start=1 ms=260.1948
+LATE_CALLBACK trial=9 index=1 asks_at_start=2 ms=260.425
+LATE_CALLBACK trial=9 index=2 asks_at_start=3 ms=260.43149999999997
+LATE_CALLBACK trial=9 index=3 asks_at_start=4 ms=260.1461
+LATE_TRIAL trial=9 asks=4 unrelated_ms=1053.183
+LATE_CALLBACK trial=10 index=0 asks_at_start=1 ms=260.4214
+LATE_TRIAL trial=10 asks=1 unrelated_ms=270.61580000000004
+LATE_CALLBACK trial=11 index=0 asks_at_start=1 ms=260.5651
+LATE_TRIAL trial=11 asks=1 unrelated_ms=266.19759999999997
+LATE_CALLBACK trial=12 index=0 asks_at_start=1 ms=260.14029999999997
+LATE_CALLBACK trial=12 index=1 asks_at_start=2 ms=260.291
+LATE_TRIAL trial=12 asks=2 unrelated_ms=520.6479
+LATE_CALLBACK trial=13 index=0 asks_at_start=1 ms=260.945
+LATE_TRIAL trial=13 asks=1 unrelated_ms=268.6181
+LATE_CALLBACK trial=14 index=0 asks_at_start=1 ms=260.1365
+LATE_CALLBACK trial=14 index=1 asks_at_start=2 ms=260.0697
+LATE_TRIAL trial=14 asks=2 unrelated_ms=523.7515999999999
+LATE_CALLBACK trial=15 index=0 asks_at_start=1 ms=260.08500000000004
+LATE_TRIAL trial=15 asks=1 unrelated_ms=257.8494
+LATE_CALLBACK trial=16 index=0 asks_at_start=1 ms=260.3173
+LATE_TRIAL trial=16 asks=1 unrelated_ms=261.40029999999996
+LATE_CALLBACK trial=17 index=0 asks_at_start=1 ms=262.25939999999997
+LATE_TRIAL trial=17 asks=1 unrelated_ms=264.0401
+LATE_CALLBACK trial=18 index=0 asks_at_start=1 ms=260.0415
+LATE_CALLBACK trial=18 index=1 asks_at_start=2 ms=260.2403
+LATE_TRIAL trial=18 asks=2 unrelated_ms=519.7941000000001
+LATE_CALLBACK trial=19 index=0 asks_at_start=1 ms=260.6716
+LATE_TRIAL trial=19 asks=1 unrelated_ms=263.57000000000005
+LATE_CALLBACK trial=20 index=0 asks_at_start=1 ms=260.1404
+LATE_CALLBACK trial=20 index=1 asks_at_start=2 ms=260.1793
+LATE_TRIAL trial=20 asks=2 unrelated_ms=518.569
+LATE_CALLBACK trial=21 index=0 asks_at_start=1 ms=260.61560000000003
+LATE_TRIAL trial=21 asks=1 unrelated_ms=258.179
+LATE_CALLBACK trial=22 index=0 asks_at_start=1 ms=260.3447
+LATE_TRIAL trial=22 asks=1 unrelated_ms=264.2251
+LATE_CALLBACK trial=23 index=0 asks_at_start=1 ms=260.2472
+LATE_TRIAL trial=23 asks=1 unrelated_ms=266.7091
+LATE_CALLBACK trial=24 index=0 asks_at_start=1 ms=261.32349999999997
+LATE_TRIAL trial=24 asks=1 unrelated_ms=261.5077
+LATE_CALLBACK trial=25 index=0 asks_at_start=1 ms=261.1797
+LATE_TRIAL trial=25 asks=1 unrelated_ms=263.7873
+LATE_CALLBACK trial=26 index=0 asks_at_start=1 ms=260.1686
+LATE_CALLBACK trial=26 index=1 asks_at_start=2 ms=260.8368
+LATE_TRIAL trial=26 asks=2 unrelated_ms=523.5214
+LATE_CALLBACK trial=27 index=0 asks_at_start=1 ms=260.4035
+LATE_TRIAL trial=27 asks=1 unrelated_ms=263.1456
+LATE_CALLBACK trial=28 index=0 asks_at_start=1 ms=261.3449
+LATE_TRIAL trial=28 asks=1 unrelated_ms=263.7622
+LATE_CALLBACK trial=29 index=0 asks_at_start=1 ms=260.2503
+LATE_CALLBACK trial=29 index=1 asks_at_start=2 ms=260.79
+LATE_TRIAL trial=29 asks=2 unrelated_ms=522.3223
+LATE_CALLBACK trial=30 index=0 asks_at_start=1 ms=260.456
+LATE_CALLBACK trial=30 index=1 asks_at_start=2 ms=260.284
+LATE_TRIAL trial=30 asks=2 unrelated_ms=519.1555
+LATE_CALLBACK trial=31 index=0 asks_at_start=1 ms=260.1155
+LATE_TRIAL trial=31 asks=1 unrelated_ms=261.1259
+LATE_CALLBACK trial=32 index=0 asks_at_start=1 ms=260.5903
+LATE_TRIAL trial=32 asks=1 unrelated_ms=271.4554
+LATE_CALLBACK trial=33 index=0 asks_at_start=1 ms=260.0301
+LATE_TRIAL trial=33 asks=1 unrelated_ms=253.6875
+LATE_CALLBACK trial=34 index=0 asks_at_start=1 ms=260.3364
+LATE_TRIAL trial=34 asks=1 unrelated_ms=260.86359999999996
+LATE_CALLBACK trial=35 index=0 asks_at_start=1 ms=261.235
+LATE_TRIAL trial=35 asks=1 unrelated_ms=266.3021
+LATE_CALLBACK trial=36 index=0 asks_at_start=1 ms=260.1053
+LATE_CALLBACK trial=36 index=1 asks_at_start=2 ms=260.7207
+LATE_TRIAL trial=36 asks=2 unrelated_ms=523.8122
+LATE_CALLBACK trial=37 index=0 asks_at_start=1 ms=260.0996
+LATE_CALLBACK trial=37 index=1 asks_at_start=2 ms=260.08189999999996
+LATE_TRIAL trial=37 asks=2 unrelated_ms=518.6134
+LATE_CALLBACK trial=38 index=0 asks_at_start=1 ms=260.2369
+LATE_CALLBACK trial=38 index=1 asks_at_start=2 ms=260.0405
+LATE_CALLBACK trial=38 index=2 asks_at_start=3 ms=260.1628
+LATE_CALLBACK trial=38 index=3 asks_at_start=4 ms=260.9529
+LATE_TRIAL trial=38 asks=4 unrelated_ms=1048.2658000000001
+LATE_CALLBACK trial=39 index=0 asks_at_start=1 ms=260.7776
+LATE_TRIAL trial=39 asks=1 unrelated_ms=261.99420000000003
+LATE_CALLBACK trial=40 index=0 asks_at_start=1 ms=260.5824
+LATE_CALLBACK trial=40 index=1 asks_at_start=2 ms=260.0697
+LATE_TRIAL trial=40 asks=2 unrelated_ms=518.1339
+LATE_CALLBACK trial=41 index=0 asks_at_start=1 ms=260.1273
+LATE_TRIAL trial=41 asks=1 unrelated_ms=261.31919999999997
+LATE_CALLBACK trial=42 index=0 asks_at_start=1 ms=260.5034
+LATE_TRIAL trial=42 asks=1 unrelated_ms=260.478
+LATE_CALLBACK trial=43 index=0 asks_at_start=1 ms=260.22650000000004
+LATE_TRIAL trial=43 asks=1 unrelated_ms=259.1108
+LATE_CALLBACK trial=44 index=0 asks_at_start=1 ms=260.3836
+LATE_TRIAL trial=44 asks=1 unrelated_ms=255.75350000000003
+LATE_CALLBACK trial=45 index=0 asks_at_start=1 ms=260.4284
+LATE_TRIAL trial=45 asks=1 unrelated_ms=264.4047
+LATE_CALLBACK trial=46 index=0 asks_at_start=1 ms=260.6426
+LATE_TRIAL trial=46 asks=1 unrelated_ms=263.51439999999997
+LATE_CALLBACK trial=47 index=0 asks_at_start=1 ms=260.5323
+LATE_CALLBACK trial=47 index=1 asks_at_start=2 ms=260.0332
+LATE_TRIAL trial=47 asks=2 unrelated_ms=515.0827
+LATE_CALLBACK trial=48 index=0 asks_at_start=1 ms=260.0641
+LATE_TRIAL trial=48 asks=1 unrelated_ms=257.33660000000003
+LATE_CALLBACK trial=49 index=0 asks_at_start=1 ms=260.0211
+LATE_TRIAL trial=49 asks=1 unrelated_ms=257.928
+LATE_CALLBACK trial=50 index=0 asks_at_start=1 ms=260.1747
+LATE_TRIAL trial=50 asks=1 unrelated_ms=265.56600000000003
+LATE_CALLBACK trial=51 index=0 asks_at_start=1 ms=260.6256
+LATE_TRIAL trial=51 asks=1 unrelated_ms=267.9067
+LATE_CALLBACK trial=52 index=0 asks_at_start=1 ms=260.37690000000003
+LATE_CALLBACK trial=52 index=1 asks_at_start=2 ms=260.3552
+LATE_TRIAL trial=52 asks=2 unrelated_ms=518.4716000000001
+LATE_CALLBACK trial=53 index=0 asks_at_start=1 ms=261.2855
+LATE_TRIAL trial=53 asks=1 unrelated_ms=262.82349999999997
+LATE_CALLBACK trial=54 index=0 asks_at_start=1 ms=260.0587
+LATE_CALLBACK trial=54 index=1 asks_at_start=2 ms=260.8874
+LATE_TRIAL trial=54 asks=2 unrelated_ms=521.2579000000001
+LATE_CALLBACK trial=55 index=0 asks_at_start=1 ms=260.14730000000003
+LATE_TRIAL trial=55 asks=1 unrelated_ms=261.1392
+LATE_CALLBACK trial=56 index=0 asks_at_start=1 ms=260.30370000000005
+LATE_TRIAL trial=56 asks=1 unrelated_ms=255.18610000000004
+LATE_CALLBACK trial=57 index=0 asks_at_start=1 ms=260.4667
+LATE_TRIAL trial=57 asks=1 unrelated_ms=262.04179999999997
+LATE_CALLBACK trial=58 index=0 asks_at_start=1 ms=260.5075
+LATE_CALLBACK trial=58 index=1 asks_at_start=2 ms=260.2424
+LATE_TRIAL trial=58 asks=2 unrelated_ms=518.9575
+LATE_CALLBACK trial=59 index=0 asks_at_start=1 ms=260.268
+LATE_TRIAL trial=59 asks=1 unrelated_ms=267.671
+LATE_CALLBACK trial=60 index=0 asks_at_start=1 ms=260.3419
+LATE_TRIAL trial=60 asks=1 unrelated_ms=258.455
+LATE_CALLBACK trial=61 index=0 asks_at_start=1 ms=260.4688
+LATE_TRIAL trial=61 asks=1 unrelated_ms=258.9845
+LATE_CALLBACK trial=62 index=0 asks_at_start=1 ms=260.483
+LATE_TRIAL trial=62 asks=1 unrelated_ms=267.81719999999996
+LATE_CALLBACK trial=63 index=0 asks_at_start=1 ms=260.1646
+LATE_CALLBACK trial=63 index=1 asks_at_start=2 ms=260.0559
+LATE_TRIAL trial=63 asks=2 unrelated_ms=519.4088
+LATE_CALLBACK trial=64 index=0 asks_at_start=1 ms=261.7845
+LATE_TRIAL trial=64 asks=1 unrelated_ms=265.3457
+LATE_CALLBACK trial=65 index=0 asks_at_start=1 ms=260.0125
+LATE_CALLBACK trial=65 index=1 asks_at_start=2 ms=261.6481
+LATE_TRIAL trial=65 asks=2 unrelated_ms=523.5362
+LATE_CALLBACK trial=66 index=0 asks_at_start=1 ms=260.1466
+LATE_CALLBACK trial=66 index=1 asks_at_start=2 ms=260.17600000000004
+LATE_TRIAL trial=66 asks=2 unrelated_ms=518.753
+LATE_CALLBACK trial=67 index=0 asks_at_start=1 ms=260.25579999999997
+LATE_TRIAL trial=67 asks=1 unrelated_ms=261.16519999999997
+LATE_CALLBACK trial=68 index=0 asks_at_start=1 ms=260.4943
+LATE_TRIAL trial=68 asks=1 unrelated_ms=263.7269
+LATE_CALLBACK trial=69 index=0 asks_at_start=1 ms=260.4306
+LATE_TRIAL trial=69 asks=1 unrelated_ms=261.1363
+LATE_CALLBACK trial=70 index=0 asks_at_start=1 ms=260.2298
+LATE_CALLBACK trial=70 index=1 asks_at_start=2 ms=260.1119
+LATE_TRIAL trial=70 asks=2 unrelated_ms=519.1821
+LATE_CALLBACK trial=71 index=0 asks_at_start=1 ms=260.0165
+LATE_TRIAL trial=71 asks=1 unrelated_ms=257.5018
+LATE_CALLBACK trial=72 index=0 asks_at_start=1 ms=260.2702
+LATE_CALLBACK trial=72 index=1 asks_at_start=2 ms=260.35229999999996
+LATE_TRIAL trial=72 asks=2 unrelated_ms=523.0034
+LATE_CALLBACK trial=73 index=0 asks_at_start=1 ms=262.1731
+LATE_TRIAL trial=73 asks=1 unrelated_ms=265.7007
+LATE_CALLBACK trial=74 index=0 asks_at_start=1 ms=260.1259
+LATE_CALLBACK trial=74 index=1 asks_at_start=2 ms=266.91589999999997
+LATE_TRIAL trial=74 asks=2 unrelated_ms=520.5134999999999
+LATE_CALLBACK trial=75 index=0 asks_at_start=1 ms=260.1205
+LATE_TRIAL trial=75 asks=1 unrelated_ms=262.01390000000004
+LATE_CALLBACK trial=76 index=0 asks_at_start=1 ms=260.1347
+LATE_TRIAL trial=76 asks=1 unrelated_ms=260.7077
+LATE_CALLBACK trial=77 index=0 asks_at_start=1 ms=268.35389999999995
+LATE_TRIAL trial=77 asks=1 unrelated_ms=259.22790000000003
+LATE_CALLBACK trial=78 index=0 asks_at_start=1 ms=260.2368
+LATE_CALLBACK trial=78 index=1 asks_at_start=2 ms=260.4025
+LATE_TRIAL trial=78 asks=2 unrelated_ms=520.2027
+LATE_CALLBACK trial=79 index=0 asks_at_start=1 ms=260.355
+LATE_CALLBACK trial=79 index=1 asks_at_start=2 ms=260.4207
+LATE_TRIAL trial=79 asks=2 unrelated_ms=520.7363
+LATE_CALLBACK trial=80 index=0 asks_at_start=1 ms=260.5398
+LATE_TRIAL trial=80 asks=1 unrelated_ms=261.1688
+LATE_CALLBACK trial=81 index=0 asks_at_start=1 ms=260.2462
+LATE_CALLBACK trial=81 index=1 asks_at_start=2 ms=260.4168
+LATE_TRIAL trial=81 asks=2 unrelated_ms=517.8795
+LATE_CALLBACK trial=82 index=0 asks_at_start=1 ms=260.156
+LATE_CALLBACK trial=82 index=1 asks_at_start=2 ms=260.2426
+LATE_TRIAL trial=82 asks=2 unrelated_ms=518.583
+LATE_CALLBACK trial=83 index=0 asks_at_start=1 ms=260.1561
+LATE_CALLBACK trial=83 index=1 asks_at_start=2 ms=260.03090000000003
+LATE_TRIAL trial=83 asks=2 unrelated_ms=513.7838999999999
+LATE_CALLBACK trial=84 index=0 asks_at_start=1 ms=260.51039999999995
+LATE_CALLBACK trial=84 index=1 asks_at_start=2 ms=260.3996
+LATE_TRIAL trial=84 asks=2 unrelated_ms=523.0275
+LATE_CALLBACK trial=85 index=0 asks_at_start=1 ms=260.08480000000003
+LATE_CALLBACK trial=85 index=1 asks_at_start=2 ms=260.1846
+LATE_TRIAL trial=85 asks=2 unrelated_ms=519.4164999999999
+LATE_CALLBACK trial=86 index=0 asks_at_start=1 ms=260.49460000000005
+LATE_TRIAL trial=86 asks=1 unrelated_ms=264.7632
+LATE_CALLBACK trial=87 index=0 asks_at_start=1 ms=260.14639999999997
+LATE_CALLBACK trial=87 index=1 asks_at_start=2 ms=260.0443
+LATE_CALLBACK trial=87 index=2 asks_at_start=3 ms=260.4624
+LATE_TRIAL trial=87 asks=3 unrelated_ms=781.2888
+LATE_CALLBACK trial=88 index=0 asks_at_start=1 ms=260.152
+LATE_TRIAL trial=88 asks=1 unrelated_ms=261.7687
+LATE_CALLBACK trial=89 index=0 asks_at_start=1 ms=260.0489
+LATE_CALLBACK trial=89 index=1 asks_at_start=2 ms=261.0301
+LATE_TRIAL trial=89 asks=2 unrelated_ms=523.7065
+LATE_CALLBACK trial=90 index=0 asks_at_start=1 ms=260.2253
+LATE_CALLBACK trial=90 index=1 asks_at_start=2 ms=260.56170000000003
+LATE_TRIAL trial=90 asks=2 unrelated_ms=521.0907
+LATE_CALLBACK trial=91 index=0 asks_at_start=1 ms=260.8678
+LATE_TRIAL trial=91 asks=1 unrelated_ms=268.1565
+LATE_CALLBACK trial=92 index=0 asks_at_start=1 ms=260.4978
+LATE_CALLBACK trial=92 index=1 asks_at_start=2 ms=260.1293
+LATE_TRIAL trial=92 asks=2 unrelated_ms=519.4743000000001
+LATE_CALLBACK trial=93 index=0 asks_at_start=1 ms=260.0192
+LATE_CALLBACK trial=93 index=1 asks_at_start=2 ms=260.6673
+LATE_CALLBACK trial=93 index=2 asks_at_start=3 ms=260.1394
+LATE_TRIAL trial=93 asks=3 unrelated_ms=775.3786
+LATE_CALLBACK trial=94 index=0 asks_at_start=1 ms=260.5007
+LATE_TRIAL trial=94 asks=1 unrelated_ms=258.0426
+LATE_CALLBACK trial=95 index=0 asks_at_start=1 ms=260.7534
+LATE_TRIAL trial=95 asks=1 unrelated_ms=267.7081
+LATE_CALLBACK trial=96 index=0 asks_at_start=1 ms=260.4778
+LATE_TRIAL trial=96 asks=1 unrelated_ms=267.3804
+LATE_CALLBACK trial=97 index=0 asks_at_start=1 ms=260.0362
+LATE_CALLBACK trial=97 index=1 asks_at_start=2 ms=260.19989999999996
+LATE_TRIAL trial=97 asks=2 unrelated_ms=519.9878
+LATE_CALLBACK trial=98 index=0 asks_at_start=1 ms=260.5361
+LATE_TRIAL trial=98 asks=1 unrelated_ms=263.4768
+LATE_CALLBACK trial=99 index=0 asks_at_start=1 ms=260.3087
+LATE_TRIAL trial=99 asks=1 unrelated_ms=266.4495
+LATE_CALLBACK trial=100 index=0 asks_at_start=1 ms=261.1735
+LATE_TRIAL trial=100 asks=1 unrelated_ms=265.1629
+LATE_CALLBACK trial=101 index=0 asks_at_start=1 ms=260.1007
+LATE_CALLBACK trial=101 index=1 asks_at_start=2 ms=261.30199999999996
+LATE_TRIAL trial=101 asks=2 unrelated_ms=523.2063999999999
+LATE_CALLBACK trial=102 index=0 asks_at_start=1 ms=260.38800000000003
+LATE_CALLBACK trial=102 index=1 asks_at_start=2 ms=260.3276
+LATE_TRIAL trial=102 asks=2 unrelated_ms=520.9557
+LATE_CALLBACK trial=103 index=0 asks_at_start=1 ms=260.2551
+LATE_TRIAL trial=103 asks=1 unrelated_ms=261.8524
+LATE_CALLBACK trial=104 index=0 asks_at_start=1 ms=261.2148
+LATE_TRIAL trial=104 asks=1 unrelated_ms=263.581
+LATE_CALLBACK trial=105 index=0 asks_at_start=1 ms=260.50620000000004
+LATE_CALLBACK trial=105 index=1 asks_at_start=2 ms=260.44030000000004
+LATE_CALLBACK trial=105 index=2 asks_at_start=3 ms=260.17420000000004
+LATE_CALLBACK trial=105 index=3 asks_at_start=4 ms=260.1426
+LATE_TRIAL trial=105 asks=4 unrelated_ms=1046.02
+LATE_CALLBACK trial=106 index=0 asks_at_start=1 ms=260.4511
+LATE_TRIAL trial=106 asks=1 unrelated_ms=263.3545
+LATE_CALLBACK trial=107 index=0 asks_at_start=1 ms=260.0596
+LATE_CALLBACK trial=107 index=1 asks_at_start=2 ms=260.45410000000004
+LATE_CALLBACK trial=107 index=2 asks_at_start=3 ms=260.1885
+LATE_TRIAL trial=107 asks=3 unrelated_ms=779.3487
+LATE_CALLBACK trial=108 index=0 asks_at_start=1 ms=261.16679999999997
+LATE_TRIAL trial=108 asks=1 unrelated_ms=265.9146
+LATE_CALLBACK trial=109 index=0 asks_at_start=1 ms=260.1433
+LATE_TRIAL trial=109 asks=1 unrelated_ms=267.6364
+LATE_CALLBACK trial=110 index=0 asks_at_start=1 ms=260.053
+LATE_CALLBACK trial=110 index=1 asks_at_start=2 ms=260.94469999999995
+LATE_TRIAL trial=110 asks=2 unrelated_ms=523.3239
+LATE_CALLBACK trial=111 index=0 asks_at_start=1 ms=263.24649999999997
+LATE_TRIAL trial=111 asks=1 unrelated_ms=270.95439999999996
+LATE_CALLBACK trial=112 index=0 asks_at_start=1 ms=260.36740000000003
+LATE_TRIAL trial=112 asks=1 unrelated_ms=266.9768
+LATE_CALLBACK trial=113 index=0 asks_at_start=1 ms=260.1603
+LATE_TRIAL trial=113 asks=1 unrelated_ms=263.2362
+LATE_CALLBACK trial=114 index=0 asks_at_start=1 ms=260.23420000000004
+LATE_TRIAL trial=114 asks=1 unrelated_ms=264.6671
+LATE_CALLBACK trial=115 index=0 asks_at_start=1 ms=260.591
+LATE_CALLBACK trial=115 index=1 asks_at_start=2 ms=260.2108
+LATE_TRIAL trial=115 asks=2 unrelated_ms=520.4873
+LATE_CALLBACK trial=116 index=0 asks_at_start=1 ms=260.5598
+LATE_TRIAL trial=116 asks=1 unrelated_ms=262.6361
+LATE_CALLBACK trial=117 index=0 asks_at_start=1 ms=260.592
+LATE_TRIAL trial=117 asks=1 unrelated_ms=269.2859
+LATE_CALLBACK trial=118 index=0 asks_at_start=1 ms=260.2662
+LATE_TRIAL trial=118 asks=1 unrelated_ms=261.2783
+LATE_CALLBACK trial=119 index=0 asks_at_start=1 ms=260.4458
+LATE_CALLBACK trial=119 index=1 asks_at_start=2 ms=260.37890000000004
+LATE_TRIAL trial=119 asks=2 unrelated_ms=520.0739
+LATE_CALLBACK trial=120 index=0 asks_at_start=1 ms=260.4828
+LATE_TRIAL trial=120 asks=1 unrelated_ms=265.8981
+LATE_CALLBACK trial=121 index=0 asks_at_start=1 ms=260.226
+LATE_TRIAL trial=121 asks=1 unrelated_ms=264.258
+LATE_CALLBACK trial=122 index=0 asks_at_start=1 ms=260.7434
+LATE_TRIAL trial=122 asks=1 unrelated_ms=267.9857
+LATE_CALLBACK trial=123 index=0 asks_at_start=1 ms=260.5776
+LATE_TRIAL trial=123 asks=1 unrelated_ms=268.1741
+LATE_CALLBACK trial=124 index=0 asks_at_start=1 ms=260.1293
+LATE_CALLBACK trial=124 index=1 asks_at_start=2 ms=260.4755
+LATE_TRIAL trial=124 asks=2 unrelated_ms=518.4145
+LATE_CALLBACK trial=125 index=0 asks_at_start=1 ms=260.3223
+LATE_TRIAL trial=125 asks=1 unrelated_ms=266.2654
+LATE_CALLBACK trial=126 index=0 asks_at_start=1 ms=260.1547
+LATE_CALLBACK trial=126 index=1 asks_at_start=2 ms=260.40950000000004
+LATE_TRIAL trial=126 asks=2 unrelated_ms=519.9569
+LATE_CALLBACK trial=127 index=0 asks_at_start=1 ms=260.43719999999996
+LATE_TRIAL trial=127 asks=1 unrelated_ms=260.1518
+LATE_CALLBACK trial=128 index=0 asks_at_start=1 ms=260.08520000000004
+LATE_TRIAL trial=128 asks=1 unrelated_ms=262.8929
+LATE_CALLBACK trial=129 index=0 asks_at_start=1 ms=260.03540000000004
+LATE_CALLBACK trial=129 index=1 asks_at_start=2 ms=260.3474
+LATE_TRIAL trial=129 asks=2 unrelated_ms=524.3802
+LATE_CALLBACK trial=130 index=0 asks_at_start=1 ms=260.45210000000003
+LATE_TRIAL trial=130 asks=1 unrelated_ms=264.7056
+LATE_CALLBACK trial=131 index=0 asks_at_start=1 ms=260.2592
+LATE_CALLBACK trial=131 index=1 asks_at_start=2 ms=260.7144
+LATE_TRIAL trial=131 asks=2 unrelated_ms=521.7389000000001
+LATE_CALLBACK trial=132 index=0 asks_at_start=1 ms=260.1546
+LATE_CALLBACK trial=132 index=1 asks_at_start=2 ms=260.6092
+LATE_TRIAL trial=132 asks=2 unrelated_ms=521.4098
+LATE_CALLBACK trial=133 index=0 asks_at_start=1 ms=260.6621
+LATE_TRIAL trial=133 asks=1 unrelated_ms=266.9548
+LATE_CALLBACK trial=134 index=0 asks_at_start=1 ms=260.5729
+LATE_TRIAL trial=134 asks=1 unrelated_ms=260.05899999999997
+LATE_CALLBACK trial=135 index=0 asks_at_start=1 ms=260.1427
+LATE_CALLBACK trial=135 index=1 asks_at_start=2 ms=260.914
+LATE_TRIAL trial=135 asks=2 unrelated_ms=521.3504
+LATE_CALLBACK trial=136 index=0 asks_at_start=1 ms=260.5066
+LATE_TRIAL trial=136 asks=1 unrelated_ms=261.926
+LATE_CALLBACK trial=137 index=0 asks_at_start=1 ms=260.0541
+LATE_CALLBACK trial=137 index=1 asks_at_start=2 ms=260.17289999999997
+LATE_TRIAL trial=137 asks=2 unrelated_ms=518.4223
+LATE_CALLBACK trial=138 index=0 asks_at_start=1 ms=261.8587
+LATE_TRIAL trial=138 asks=1 unrelated_ms=262.1393
+LATE_CALLBACK trial=139 index=0 asks_at_start=1 ms=260.04290000000003
+LATE_CALLBACK trial=139 index=1 asks_at_start=2 ms=261.3378
+LATE_TRIAL trial=139 asks=2 unrelated_ms=522.4416
+LATE_CALLBACK trial=140 index=0 asks_at_start=1 ms=260.63989999999995
+LATE_CALLBACK trial=140 index=1 asks_at_start=2 ms=261.1513
+LATE_TRIAL trial=140 asks=2 unrelated_ms=522.0085
+LATE_CALLBACK trial=141 index=0 asks_at_start=1 ms=260.69219999999996
+LATE_TRIAL trial=141 asks=1 unrelated_ms=268.339
+LATE_CALLBACK trial=142 index=0 asks_at_start=1 ms=260.45889999999997
+LATE_TRIAL trial=142 asks=1 unrelated_ms=256.7347
+LATE_CALLBACK trial=143 index=0 asks_at_start=1 ms=260.4348
+LATE_TRIAL trial=143 asks=1 unrelated_ms=261.9726
+LATE_CALLBACK trial=144 index=0 asks_at_start=1 ms=260.1409
+LATE_CALLBACK trial=144 index=1 asks_at_start=2 ms=260.6956
+LATE_TRIAL trial=144 asks=2 unrelated_ms=525.1125
+LATE_CALLBACK trial=145 index=0 asks_at_start=1 ms=260.51619999999997
+LATE_TRIAL trial=145 asks=1 unrelated_ms=261.04110000000003
+LATE_CALLBACK trial=146 index=0 asks_at_start=1 ms=260.9341
+LATE_TRIAL trial=146 asks=1 unrelated_ms=272.827
+LATE_CALLBACK trial=147 index=0 asks_at_start=1 ms=260.5166
+LATE_TRIAL trial=147 asks=1 unrelated_ms=267.66970000000003
+LATE_CALLBACK trial=148 index=0 asks_at_start=1 ms=260.23269999999997
+LATE_CALLBACK trial=148 index=1 asks_at_start=2 ms=260.5017
+LATE_TRIAL trial=148 asks=2 unrelated_ms=520.8620999999999
+LATE_CALLBACK trial=149 index=0 asks_at_start=1 ms=260.4487
+LATE_TRIAL trial=149 asks=1 unrelated_ms=263.86749999999995
+LATE_CALLBACK trial=150 index=0 asks_at_start=1 ms=260.4458
+LATE_TRIAL trial=150 asks=1 unrelated_ms=261.8489
+LATE_CALLBACK trial=151 index=0 asks_at_start=1 ms=260.20910000000003
+LATE_TRIAL trial=151 asks=1 unrelated_ms=257.3935
+LATE_CALLBACK trial=152 index=0 asks_at_start=1 ms=260.55899999999997
+LATE_TRIAL trial=152 asks=1 unrelated_ms=265.35360000000003
+test two_hundred_answers_after_the_bound_must_latch_after_one_question has been running for over 60 seconds
+LATE_CALLBACK trial=153 index=0 asks_at_start=1 ms=260.3589
+LATE_TRIAL trial=153 asks=1 unrelated_ms=259.3596
+LATE_CALLBACK trial=154 index=0 asks_at_start=1 ms=261.818
+LATE_TRIAL trial=154 asks=1 unrelated_ms=261.9797
+LATE_CALLBACK trial=155 index=0 asks_at_start=1 ms=260.1563
+LATE_CALLBACK trial=155 index=1 asks_at_start=2 ms=260.2702
+LATE_TRIAL trial=155 asks=2 unrelated_ms=519.9949
+LATE_CALLBACK trial=156 index=0 asks_at_start=1 ms=260.3529
+LATE_TRIAL trial=156 asks=1 unrelated_ms=262.31300000000005
+LATE_CALLBACK trial=157 index=0 asks_at_start=1 ms=260.37100000000004
+LATE_TRIAL trial=157 asks=1 unrelated_ms=258.0715
+LATE_CALLBACK trial=158 index=0 asks_at_start=1 ms=260.5829
+LATE_CALLBACK trial=158 index=1 asks_at_start=2 ms=260.1343
+LATE_TRIAL trial=158 asks=2 unrelated_ms=522.4543
+LATE_CALLBACK trial=159 index=0 asks_at_start=1 ms=260.70759999999996
+LATE_TRIAL trial=159 asks=1 unrelated_ms=268.034
+LATE_CALLBACK trial=160 index=0 asks_at_start=1 ms=260.0915
+LATE_CALLBACK trial=160 index=1 asks_at_start=2 ms=260.1173
+LATE_TRIAL trial=160 asks=2 unrelated_ms=519.0231
+LATE_CALLBACK trial=161 index=0 asks_at_start=1 ms=260.3355
+LATE_TRIAL trial=161 asks=1 unrelated_ms=265.6657
+LATE_CALLBACK trial=162 index=0 asks_at_start=1 ms=260.2315
+LATE_TRIAL trial=162 asks=1 unrelated_ms=259.8238
+LATE_CALLBACK trial=163 index=0 asks_at_start=1 ms=260.2853
+LATE_TRIAL trial=163 asks=1 unrelated_ms=263.8356
+LATE_CALLBACK trial=164 index=0 asks_at_start=1 ms=260.3994
+LATE_CALLBACK trial=164 index=1 asks_at_start=2 ms=260.7058
+LATE_TRIAL trial=164 asks=2 unrelated_ms=522.7462
+LATE_CALLBACK trial=165 index=0 asks_at_start=1 ms=260.4728
+LATE_TRIAL trial=165 asks=1 unrelated_ms=265.95570000000004
+LATE_CALLBACK trial=166 index=0 asks_at_start=1 ms=260.14639999999997
+LATE_CALLBACK trial=166 index=1 asks_at_start=2 ms=260.9833
+LATE_TRIAL trial=166 asks=2 unrelated_ms=523.5559
+LATE_CALLBACK trial=167 index=0 asks_at_start=1 ms=260.809
+LATE_TRIAL trial=167 asks=1 unrelated_ms=263.2738
+LATE_CALLBACK trial=168 index=0 asks_at_start=1 ms=260.34180000000003
+LATE_CALLBACK trial=168 index=1 asks_at_start=2 ms=260.5505
+LATE_TRIAL trial=168 asks=2 unrelated_ms=522.4139
+LATE_CALLBACK trial=169 index=0 asks_at_start=1 ms=260.3696
+LATE_CALLBACK trial=169 index=1 asks_at_start=2 ms=260.9365
+LATE_TRIAL trial=169 asks=2 unrelated_ms=521.5173
+LATE_CALLBACK trial=170 index=0 asks_at_start=1 ms=260.0394
+LATE_CALLBACK trial=170 index=1 asks_at_start=2 ms=260.1736
+LATE_TRIAL trial=170 asks=2 unrelated_ms=517.3543000000001
+LATE_CALLBACK trial=171 index=0 asks_at_start=1 ms=261.4057
+LATE_TRIAL trial=171 asks=1 unrelated_ms=265.8241
+LATE_CALLBACK trial=172 index=0 asks_at_start=1 ms=260.1535
+LATE_CALLBACK trial=172 index=1 asks_at_start=2 ms=260.0612
+LATE_TRIAL trial=172 asks=2 unrelated_ms=517.7850000000001
+LATE_CALLBACK trial=173 index=0 asks_at_start=1 ms=260.50600000000003
+LATE_TRIAL trial=173 asks=1 unrelated_ms=257.8683
+LATE_CALLBACK trial=174 index=0 asks_at_start=1 ms=260.2409
+LATE_TRIAL trial=174 asks=1 unrelated_ms=264.816
+LATE_CALLBACK trial=175 index=0 asks_at_start=1 ms=260.6125
+LATE_TRIAL trial=175 asks=1 unrelated_ms=266.3967
+LATE_CALLBACK trial=176 index=0 asks_at_start=1 ms=260.3952
+LATE_TRIAL trial=176 asks=1 unrelated_ms=266.0802
+LATE_CALLBACK trial=177 index=0 asks_at_start=1 ms=260.4881
+LATE_TRIAL trial=177 asks=1 unrelated_ms=265.1384
+LATE_CALLBACK trial=178 index=0 asks_at_start=1 ms=260.04670000000004
+LATE_CALLBACK trial=178 index=1 asks_at_start=2 ms=260.3843
+LATE_CALLBACK trial=178 index=2 asks_at_start=3 ms=260.0476
+LATE_CALLBACK trial=178 index=3 asks_at_start=4 ms=260.2793
+LATE_TRIAL trial=178 asks=4 unrelated_ms=1045.8006
+LATE_CALLBACK trial=179 index=0 asks_at_start=1 ms=261.2185
+LATE_TRIAL trial=179 asks=1 unrelated_ms=263.5691
+LATE_CALLBACK trial=180 index=0 asks_at_start=1 ms=260.39250000000004
+LATE_TRIAL trial=180 asks=1 unrelated_ms=265.4393
+LATE_CALLBACK trial=181 index=0 asks_at_start=1 ms=260.5186
+LATE_CALLBACK trial=181 index=1 asks_at_start=2 ms=260.4355
+LATE_TRIAL trial=181 asks=2 unrelated_ms=523.2342
+LATE_CALLBACK trial=182 index=0 asks_at_start=1 ms=260.1567
+LATE_CALLBACK trial=182 index=1 asks_at_start=2 ms=260.3701
+LATE_TRIAL trial=182 asks=2 unrelated_ms=520.7466
+LATE_CALLBACK trial=183 index=0 asks_at_start=1 ms=260.2854
+LATE_CALLBACK trial=183 index=1 asks_at_start=2 ms=260.32620000000003
+LATE_TRIAL trial=183 asks=2 unrelated_ms=518.3993999999999
+LATE_CALLBACK trial=184 index=0 asks_at_start=1 ms=260.10650000000004
+LATE_TRIAL trial=184 asks=1 unrelated_ms=259.1134
+LATE_CALLBACK trial=185 index=0 asks_at_start=1 ms=260.28020000000004
+LATE_TRIAL trial=185 asks=1 unrelated_ms=261.786
+LATE_CALLBACK trial=186 index=0 asks_at_start=1 ms=260.602
+LATE_TRIAL trial=186 asks=1 unrelated_ms=265.5109
+LATE_CALLBACK trial=187 index=0 asks_at_start=1 ms=260.1447
+LATE_CALLBACK trial=187 index=1 asks_at_start=2 ms=261.2308
+LATE_TRIAL trial=187 asks=2 unrelated_ms=524.8753
+LATE_CALLBACK trial=188 index=0 asks_at_start=1 ms=260.2272
+LATE_CALLBACK trial=188 index=1 asks_at_start=2 ms=260.1834
+LATE_CALLBACK trial=188 index=2 asks_at_start=3 ms=260.0954
+LATE_CALLBACK trial=188 index=3 asks_at_start=4 ms=261.1424
+LATE_TRIAL trial=188 asks=4 unrelated_ms=1047.1288000000002
+LATE_CALLBACK trial=189 index=0 asks_at_start=1 ms=262.14140000000003
+LATE_TRIAL trial=189 asks=1 unrelated_ms=262.7964
+LATE_CALLBACK trial=190 index=0 asks_at_start=1 ms=260.1598
+LATE_CALLBACK trial=190 index=1 asks_at_start=2 ms=261.0802
+LATE_TRIAL trial=190 asks=2 unrelated_ms=521.4924
+LATE_CALLBACK trial=191 index=0 asks_at_start=1 ms=260.6027
+LATE_TRIAL trial=191 asks=1 unrelated_ms=267.9333
+LATE_CALLBACK trial=192 index=0 asks_at_start=1 ms=260.3232
+LATE_CALLBACK trial=192 index=1 asks_at_start=2 ms=260.4286
+LATE_TRIAL trial=192 asks=2 unrelated_ms=521.5986
+LATE_CALLBACK trial=193 index=0 asks_at_start=1 ms=260.78970000000004
+LATE_TRIAL trial=193 asks=1 unrelated_ms=264.4167
+LATE_CALLBACK trial=194 index=0 asks_at_start=1 ms=262.2907
+LATE_TRIAL trial=194 asks=1 unrelated_ms=266.1021
+LATE_CALLBACK trial=195 index=0 asks_at_start=1 ms=260.3591
+LATE_CALLBACK trial=195 index=1 asks_at_start=2 ms=261.9827
+LATE_TRIAL trial=195 asks=2 unrelated_ms=524.3085
+LATE_CALLBACK trial=196 index=0 asks_at_start=1 ms=260.4037
+LATE_CALLBACK trial=196 index=1 asks_at_start=2 ms=260.3232
+LATE_TRIAL trial=196 asks=2 unrelated_ms=518.8657
+LATE_CALLBACK trial=197 index=0 asks_at_start=1 ms=262.1416
+LATE_TRIAL trial=197 asks=1 unrelated_ms=263.92139999999995
+LATE_CALLBACK trial=198 index=0 asks_at_start=1 ms=260.1435
+LATE_CALLBACK trial=198 index=1 asks_at_start=2 ms=260.172
+LATE_TRIAL trial=198 asks=2 unrelated_ms=518.1814999999999
+LATE_CALLBACK trial=199 index=0 asks_at_start=1 ms=260.1959
+LATE_TRIAL trial=199 asks=1 unrelated_ms=262.9325
+LATE_SUMMARY trials=200 histogram={1: 121, 2: 71, 3: 3, 4: 5} min=253.6875ms median=266.9548ms p95=524.3802ms p99=1.0471288s max=1.053183s
+
+thread 'two_hundred_answers_after_the_bound_must_latch_after_one_question' (27824) panicked at crates\executor\tests\c34_r4_late_probe.rs:67:5:
+C34-R4-02: answers after the bound did not latch: [(0, 2), (1, 2), (2, 2), (5, 2), (6, 2), (7, 2), (9, 4), (12, 2), (14, 2), (18, 2), (20, 2), (26, 2), (29, 2), (30, 2), (36, 2), (37, 2), (38, 4), (40, 2), (47, 2), (52, 2), (54, 2), (58, 2), (63, 2), (65, 2), (66, 2), (70, 2), (72, 2), (74, 2), (78, 2), (79, 2), (81, 2), (82, 2), (83, 2), (84, 2), (85, 2), (87, 3), (89, 2), (90, 2), (92, 2), (93, 3), (97, 2), (101, 2), (102, 2), (105, 4), (107, 3), (110, 2), (115, 2), (119, 2), (124, 2), (126, 2), (129, 2), (131, 2), (132, 2), (135, 2), (137, 2), (139, 2), (140, 2), (144, 2), (148, 2), (155, 2), (158, 2), (160, 2), (164, 2), (166, 2), (168, 2), (169, 2), (170, 2), (172, 2), (178, 4), (181, 2), (182, 2), (183, 2), (187, 2), (188, 4), (190, 2), (192, 2), (195, 2), (196, 2), (198, 2)]
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+test two_hundred_answers_after_the_bound_must_latch_after_one_question ... FAILED
+
+failures:
+
+failures:
+    two_hundred_answers_after_the_bound_must_latch_after_one_question
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 0 filtered out; finished in 79.17s
+
+error: test failed, to rerun pass `-p tt-executor --test c34_r4_late_probe`

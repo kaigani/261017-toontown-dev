@@ -1,0 +1,19 @@
+    Checking tt-model v0.0.1 (C:\Users\kaiga\work\review\m3-c34-r4\crates\model)
+   Compiling tt-registry-macros v0.0.1 (C:\Users\kaiga\work\review\m3-c34-r4\crates\registry-macros)
+    Checking tt-vector v0.0.1 (C:\Users\kaiga\work\review\m3-c34-r4\crates\vector)
+    Checking tt-anim v0.0.1 (C:\Users\kaiga\work\review\m3-c34-r4\crates\anim)
+    Checking tt-colour v0.0.1 (C:\Users\kaiga\work\review\m3-c34-r4\crates\colour)
+    Checking tt-persist v0.0.1 (C:\Users\kaiga\work\review\m3-c34-r4\crates\persist)
+    Checking tt-registry v0.0.1 (C:\Users\kaiga\work\review\m3-c34-r4\crates\registry)
+    Checking tt-fx v0.0.1 (C:\Users\kaiga\work\review\m3-c34-r4\crates\fx)
+    Checking tt-audio v0.0.1 (C:\Users\kaiga\work\review\m3-c34-r4\crates\audio)
+    Checking tt-lipsync v0.0.1 (C:\Users\kaiga\work\review\m3-c34-r4\crates\lipsync)
+error[E0689]: can't call method `max` on ambiguous numeric type `{float}`
+  --> crates\anim\tests\c34_r4_passage.rs:34:89
+   |
+34 |             if relative > 0.0 { 2.0 + arc } else { 1.0 + (1.0 - (1.0 - 4.0 * arc / 3.0).max(0.0).sqrt()) / 2.0 };
+   |                                                                                         ^^^
+
+For more information about this error, try `rustc --explain E0689`.
+error: could not compile `tt-anim` (test "c34_r4_passage") due to 1 previous error
+warning: build failed, waiting for other jobs to finish...

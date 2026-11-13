@@ -1,0 +1,372 @@
+{
+  "reviewedHead": "45b41dad19538970bd8878d34d864f82fa4bfb28",
+  "counts": {
+    "implemented": 41,
+    "divergent": 1,
+    "missing": 0,
+    "deferred-with-owner": 3,
+    "pending": 0
+  },
+  "rows": [
+    {
+      "id": "E1-01",
+      "clause": "11 \u00a714.8; 10 \u00a73\u20134",
+      "requirement": "Fresh 1920x1080, 24 fps project",
+      "state": "implemented",
+      "evidence": "local-a/report.json; local-b/report.json; independent-artifacts.json",
+      "owner": null
+    },
+    {
+      "id": "E1-02",
+      "clause": "11 \u00a714.8; 04 \u00a72",
+      "requirement": "Ball drawing element and readback",
+      "state": "implemented",
+      "evidence": "local-a/report.json; local-b/report.json; independent-artifacts.json",
+      "owner": null
+    },
+    {
+      "id": "E1-03",
+      "clause": "11 \u00a714.8; 02 \u00a76",
+      "requirement": "Circle geometry and pen width",
+      "state": "implemented",
+      "evidence": "local-a/report.json; local-b/report.json; independent-artifacts.json",
+      "owner": null
+    },
+    {
+      "id": "E1-04",
+      "clause": "11 \u00a714.8; 03 \u00a78",
+      "requirement": "Paint via resolved swatch",
+      "state": "implemented",
+      "evidence": "local-a/report.json; local-b/report.json; independent-artifacts.json",
+      "owner": null
+    },
+    {
+      "id": "E1-05",
+      "clause": "04 \u00a79, \u00a717",
+      "requirement": "Peg parenting and exposure 1\u201330",
+      "state": "implemented",
+      "evidence": "local-a/report.json; local-b/report.json; independent-artifacts.json",
+      "owner": null
+    },
+    {
+      "id": "E1-06",
+      "clause": "05 \u00a79.1",
+      "requirement": "Reflected endpoint TCB at E1 zero parameters",
+      "state": "implemented",
+      "evidence": "tests/adversarial/c34-r1-numeric.py; independent-artifacts.json",
+      "owner": null
+    },
+    {
+      "id": "E1-07",
+      "clause": "05 \u00a79.2",
+      "requirement": "64-chord distance inversion",
+      "state": "implemented",
+      "evidence": "independent-artifacts.json; expectations.log",
+      "owner": null
+    },
+    {
+      "id": "E1-08",
+      "clause": "05 \u00a710.4\u201310.5",
+      "requirement": "Preset Bezier inversion and velocity pins",
+      "state": "implemented",
+      "evidence": "independent-artifacts.json; expectations.log",
+      "owner": null
+    },
+    {
+      "id": "E1-09",
+      "clause": "05 \u00a72.10",
+      "requirement": "Extrema, monotonic segments and 25\u201330 hold",
+      "state": "implemented",
+      "evidence": "tests/adversarial/c34-r1-numeric.py; local-a/report.json",
+      "owner": null
+    },
+    {
+      "id": "E1-10",
+      "clause": "11 \u00a77.5; SI-108",
+      "requirement": "5-column labelled sheet layout",
+      "state": "implemented",
+      "evidence": "independent-artifacts.json",
+      "owner": null
+    },
+    {
+      "id": "E1-11",
+      "clause": "11 \u00a77.5; SI-108",
+      "requirement": "24 cells equal independent CLI single-frame pixels",
+      "state": "implemented",
+      "evidence": "independent-cell-parity.json",
+      "owner": null
+    },
+    {
+      "id": "E1-12",
+      "clause": "09 \u00a711.1(1\u20132)",
+      "requirement": "PNG sequence and deterministic single frames",
+      "state": "implemented",
+      "evidence": "local-a/report.json; local-b/report.json; independent-artifacts.json",
+      "owner": null
+    },
+    {
+      "id": "E1-13",
+      "clause": "09 \u00a711.1(3); 11 \u00a76.5",
+      "requirement": "Inline dimensions and file policy",
+      "state": "implemented",
+      "evidence": "workspace.log (c33_r1_limits and c33_r2_wait); local-a/report.json",
+      "owner": null
+    },
+    {
+      "id": "E1-14",
+      "clause": "09 \u00a711.1(4); 11 \u00a77.3",
+      "requirement": "Sequential waited range job and fresh-process replay",
+      "state": "implemented",
+      "evidence": "local-a/report.json; local-b/report.json; independent-artifacts.json",
+      "owner": null
+    },
+    {
+      "id": "E1-15",
+      "clause": "09 \u00a711.1(5)",
+      "requirement": "Fail and rename policies preserve originals",
+      "state": "implemented",
+      "evidence": "local-a/report.json; local-b/report.json; independent-artifacts.json",
+      "owner": null
+    },
+    {
+      "id": "E1-16",
+      "clause": "09 \u00a711.1(5); ADR-0020",
+      "requirement": "Late read-only target rollback; no partial manifest",
+      "state": "implemented",
+      "evidence": "local-a/report.json; local-b/report.json; independent-artifacts.json",
+      "owner": null
+    },
+    {
+      "id": "E1-17",
+      "clause": "ADR-0020 decisions 10\u201311",
+      "requirement": "Sidecar ownership and recovery",
+      "state": "implemented",
+      "evidence": "local-a/report.json; local-b/report.json; independent-artifacts.json",
+      "owner": null
+    },
+    {
+      "id": "E1-18",
+      "clause": "09 \u00a711.1(4); 11 \u00a715",
+      "requirement": "Cancelled jobs and list/wait/status records",
+      "state": "implemented",
+      "evidence": "local-a/report.json; local-b/report.json; independent-artifacts.json",
+      "owner": null
+    },
+    {
+      "id": "E1-19",
+      "clause": "09 \u00a711.4",
+      "requirement": "24 names/order/count/dimensions/hashes/fps/duration",
+      "state": "implemented",
+      "evidence": "local-a/report.json; local-b/report.json; independent-artifacts.json",
+      "owner": null
+    },
+    {
+      "id": "E1-20",
+      "clause": "11 \u00a77.5, \u00a77.8",
+      "requirement": "Describe, hit test and convert at integer frame 12",
+      "state": "implemented",
+      "evidence": "local-a/report.json; local-b/report.json; independent-artifacts.json",
+      "owner": null
+    },
+    {
+      "id": "E1-21",
+      "clause": "11 \u00a714.3; 10 \u00a73\u20134",
+      "requirement": "Undo/redo and save-close-open canonical equality",
+      "state": "implemented",
+      "evidence": "local-a/report.json; local-b/report.json; independent-artifacts.json",
+      "owner": null
+    },
+    {
+      "id": "E1-22",
+      "clause": "11 \u00a714.5; 11 \u00a75, \u00a77.3",
+      "requirement": "Replay symbolic script with canonical and PNG equality",
+      "state": "implemented",
+      "evidence": "local-a/report.json; local-b/report.json; independent-artifacts.json",
+      "owner": null
+    },
+    {
+      "id": "E1-23",
+      "clause": "05 \u00a71.4, \u00a72.11",
+      "requirement": "Parent rotation/scale and positive camera roll; exact default FOV",
+      "state": "implemented",
+      "evidence": "independent-variant.json; local-a/report.json",
+      "owner": null
+    },
+    {
+      "id": "E1-24",
+      "clause": "11 \u00a75; 03 \u00a78",
+      "requirement": "Swatch index/name acceptance and typed refusal",
+      "state": "implemented",
+      "evidence": "executor.log (c34_e1); workspace.log (c34_r1_contract)",
+      "owner": null
+    },
+    {
+      "id": "E1-25",
+      "clause": "11 \u00a77.3",
+      "requirement": "Atomic job rejection; no document mutation",
+      "state": "implemented",
+      "evidence": "workspace.log (c34_r1_contract)",
+      "owner": null
+    },
+    {
+      "id": "E1-26",
+      "clause": "09 \u00a711.1(4)",
+      "requirement": "Shared direct/batch wait envelope and remaining budget",
+      "state": "implemented",
+      "evidence": "workspace.log (c34_r1_contract); crates/executor/src/run.rs; crates/executor/src/lib.rs",
+      "owner": null
+    },
+    {
+      "id": "E1-27",
+      "clause": "ADR-0020; host ruling",
+      "requirement": "Case-insensitive sidecar host liveness; lock unchanged",
+      "state": "implemented",
+      "evidence": "sdk-environment.log; executor.log; workspace.log; product-diff-audit.json",
+      "owner": null
+    },
+    {
+      "id": "E1-28",
+      "clause": "11 \u00a79; 05 \u00a719",
+      "requirement": "Changed-frame event coverage and one evaluation/node/frame",
+      "state": "implemented",
+      "evidence": "executor.log (c34_e1)",
+      "owner": null
+    },
+    {
+      "id": "E1-29",
+      "clause": "11 \u00a714; CI ruling",
+      "requirement": "Both-OS release E1 and inherited suites",
+      "state": "implemented",
+      "evidence": "ci-summary.json; routing-proof.json; release-oracles.log; workspace.log",
+      "owner": null
+    },
+    {
+      "id": "E1-30",
+      "clause": "Engineering",
+      "requirement": "Product lint/deny/generator/example/ownership and historical pins",
+      "state": "implemented",
+      "evidence": "allows.log; deny.log; generator.log; clippy-product.log; clippy-tests.log; historical-registers.json; workspace.log",
+      "owner": null
+    },
+    {
+      "id": "E1-31",
+      "clause": "11 \u00a714.8; ADR-0008",
+      "requirement": "MP4 movie encoding",
+      "state": "deferred-with-owner",
+      "evidence": "M3-merge-note.md \u00a73",
+      "owner": "M10 C10.1 (sidecar M8 C8.3)"
+    },
+    {
+      "id": "E1-32",
+      "clause": "11 \u00a714.5; readiness 12",
+      "requirement": "Attached/headless byte parity",
+      "state": "deferred-with-owner",
+      "evidence": "plan/traceability.csv row 41; M3-merge-note.md \u00a73",
+      "owner": "M4 C4.2"
+    },
+    {
+      "id": "E1-33",
+      "clause": "Merge-note audit",
+      "requirement": "Accurate open-SI inventory and ruled user actions",
+      "state": "divergent",
+      "evidence": "C34-R1-01; plan/spec-issues.md headings SI-001 and SI-008",
+      "owner": null
+    },
+    {
+      "id": "READY-01",
+      "clause": "C3.3 closure readiness 1",
+      "requirement": "Readiness item 1",
+      "state": "implemented",
+      "evidence": "M3-C3.4-r1.md; local-a/report.json; independent-artifacts.json; workspace.log",
+      "owner": null
+    },
+    {
+      "id": "READY-02",
+      "clause": "C3.3 closure readiness 2",
+      "requirement": "Readiness item 2",
+      "state": "implemented",
+      "evidence": "M3-C3.4-r1.md; local-a/report.json; independent-artifacts.json; workspace.log",
+      "owner": null
+    },
+    {
+      "id": "READY-03",
+      "clause": "C3.3 closure readiness 3",
+      "requirement": "Readiness item 3",
+      "state": "implemented",
+      "evidence": "M3-C3.4-r1.md; local-a/report.json; independent-artifacts.json; workspace.log",
+      "owner": null
+    },
+    {
+      "id": "READY-04",
+      "clause": "C3.3 closure readiness 4",
+      "requirement": "Readiness item 4",
+      "state": "implemented",
+      "evidence": "M3-C3.4-r1.md; local-a/report.json; independent-artifacts.json; workspace.log",
+      "owner": null
+    },
+    {
+      "id": "READY-05",
+      "clause": "C3.3 closure readiness 5",
+      "requirement": "Readiness item 5",
+      "state": "implemented",
+      "evidence": "M3-C3.4-r1.md; local-a/report.json; independent-artifacts.json; workspace.log",
+      "owner": null
+    },
+    {
+      "id": "READY-06",
+      "clause": "C3.3 closure readiness 6",
+      "requirement": "Readiness item 6",
+      "state": "implemented",
+      "evidence": "M3-C3.4-r1.md; local-a/report.json; independent-artifacts.json; workspace.log",
+      "owner": null
+    },
+    {
+      "id": "READY-07",
+      "clause": "C3.3 closure readiness 7",
+      "requirement": "Readiness item 7",
+      "state": "implemented",
+      "evidence": "M3-C3.4-r1.md; local-a/report.json; independent-artifacts.json; workspace.log",
+      "owner": null
+    },
+    {
+      "id": "READY-08",
+      "clause": "C3.3 closure readiness 8",
+      "requirement": "Readiness item 8",
+      "state": "implemented",
+      "evidence": "M3-C3.4-r1.md; local-a/report.json; independent-artifacts.json; workspace.log",
+      "owner": null
+    },
+    {
+      "id": "READY-09",
+      "clause": "C3.3 closure readiness 9",
+      "requirement": "Readiness item 9",
+      "state": "implemented",
+      "evidence": "M3-C3.4-r1.md; local-a/report.json; independent-artifacts.json; workspace.log",
+      "owner": null
+    },
+    {
+      "id": "READY-10",
+      "clause": "C3.3 closure readiness 10",
+      "requirement": "Readiness item 10",
+      "state": "implemented",
+      "evidence": "M3-C3.4-r1.md; local-a/report.json; independent-artifacts.json; workspace.log",
+      "owner": null
+    },
+    {
+      "id": "READY-11",
+      "clause": "C3.3 closure readiness 11",
+      "requirement": "Readiness item 11",
+      "state": "implemented",
+      "evidence": "M3-C3.4-r1.md; local-a/report.json; independent-artifacts.json; workspace.log",
+      "owner": null
+    },
+    {
+      "id": "READY-12",
+      "clause": "C3.3 closure readiness 12",
+      "requirement": "Readiness item 12",
+      "state": "deferred-with-owner",
+      "evidence": "M3-C3.4-r1.md; local-a/report.json; independent-artifacts.json; workspace.log",
+      "owner": "M4 C4.2"
+    }
+  ]
+}

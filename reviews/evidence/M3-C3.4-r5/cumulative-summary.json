@@ -1,0 +1,16 @@
+{
+  "trials": 10,
+  "needed_retry": 0,
+  "observations": [
+    "CUMULATIVE attempt=1 budget_ms=1500 bound_ms=250 asks=8 longest_answer_ms=200.0015 took_ms=1605.0056000000002 \r\ncommitted=2 unrelated_ms=1.2161",
+    "CUMULATIVE attempt=1 budget_ms=1500 bound_ms=250 asks=8 longest_answer_ms=200.0018 took_ms=1604.8572000000001 \r\ncommitted=2 unrelated_ms=1.8492",
+    "CUMULATIVE attempt=1 budget_ms=1500 bound_ms=250 asks=8 longest_answer_ms=200.0017 took_ms=1604.2794000000001 \r\ncommitted=2 unrelated_ms=1.1864",
+    "CUMULATIVE attempt=1 budget_ms=1500 bound_ms=250 asks=8 longest_answer_ms=200.0018 took_ms=1604.411 committed=2 ",
+    "CUMULATIVE attempt=1 budget_ms=1500 bound_ms=250 asks=8 longest_answer_ms=200.0017 took_ms=1604.2224 committed=2 ",
+    "CUMULATIVE attempt=1 budget_ms=1500 bound_ms=250 asks=8 longest_answer_ms=200.0015 took_ms=1604.2136999999998 \r\ncommitted=2 unrelated_ms=1.1822",
+    "CUMULATIVE attempt=1 budget_ms=1500 bound_ms=250 asks=8 longest_answer_ms=200.0017 took_ms=1605.3606 committed=2 ",
+    "CUMULATIVE attempt=1 budget_ms=1500 bound_ms=250 asks=8 longest_answer_ms=200.0034 took_ms=1604.3741 committed=2 ",
+    "CUMULATIVE attempt=1 budget_ms=1500 bound_ms=250 asks=8 longest_answer_ms=200.00709999999998 took_ms=1605.1348 \r\ncommitted=2 unrelated_ms=1.2163",
+    "CUMULATIVE attempt=1 budget_ms=1500 bound_ms=250 asks=8 longest_answer_ms=200.44029999999998 took_ms=1606.9121 \r\ncommitted=2 unrelated_ms=1.8541"
+  ]
+}

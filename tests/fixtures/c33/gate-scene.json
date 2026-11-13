@@ -1,0 +1,40 @@
+{
+  "comment": "Colours are written $swatch:N (the N-th swatch of the first palette, resolved through doc.object.get palette:#1/swatch:#N; the default palette is fixed, 03 §1.8). M3 C3.3 render gate (ADR-0020; readiness items 4 and 12): replayed on a new project by crates/executor/tests/c33_goldens.rs (in process) and by scripts/c33-render-gate.py (the release headless binary over MCP). References are paths only, so the steps are static. Outputs are compared with tests/golden/c33/index.json and across operating systems.",
+  "steps": [
+    { "id": "element.create", "params": { "type": "drawing", "name": "Back", "sceneId": "scene:#1" } },
+    { "id": "draw.rectangle.add", "params": { "elementId": "scene:#1/element:\"Back\"", "frame": 1, "from": { "x": -150, "y": -150 }, "to": { "x": 150, "y": 150 }, "layer": "new", "colourId": "$swatch:2" } },
+    { "id": "colour.paint.apply", "params": { "elementId": "scene:#1/element:\"Back\"", "frame": 1, "points": [{ "x": 0, "y": 0 }], "colourId": "$swatch:22" } },
+    { "id": "element.create", "params": { "type": "drawing", "name": "Front", "sceneId": "scene:#1" } },
+    { "id": "draw.rectangle.add", "params": { "elementId": "scene:#1/element:\"Front\"", "frame": 1, "from": { "x": -90, "y": -90 }, "to": { "x": 90, "y": 90 }, "layer": "new", "colourId": "$swatch:2" } },
+    { "id": "colour.paint.apply", "params": { "elementId": "scene:#1/element:\"Front\"", "frame": 1, "points": [{ "x": 0, "y": 0 }], "colourId": "$swatch:24" } },
+    { "id": "draw.stroke.add", "params": { "elementId": "scene:#1/element:\"Front\"", "frame": 1, "kind": "pencil", "fit": false, "layer": "new", "thickness": 8, "colourId": "$swatch:2", "points": [{ "x": -200, "y": -100 }, { "x": -60, "y": 60 }, { "x": 120, "y": -120 }] } },
+    { "id": "draw.stroke.add", "params": { "elementId": "scene:#1/element:\"Front\"", "frame": 1, "kind": "brush", "colourId": "$swatch:23", "points": [{ "x": -100, "y": 150, "pressure": 1 }, { "x": 150, "y": 180, "pressure": 0.4 }], "pen": { "tipShape": "round", "minSize": 4, "maxSize": 18, "tipAngle": 0 } } },
+    { "id": "xsheet.exposures.set", "params": { "columns": [
+      { "elementId": "scene:#1/element:\"Back\"", "from": 1, "to": 24, "exposures": [{ "drawing": "1", "from": 1, "to": 24 }] },
+      { "elementId": "scene:#1/element:\"Front\"", "from": 1, "to": 24, "exposures": [{ "drawing": "1", "from": 1, "to": 24 }] }
+    ] } },
+    { "id": "element.create", "params": { "type": "peg", "name": "Rig", "sceneId": "scene:#1" } },
+    { "id": "element.parent.set", "params": { "elementIds": ["scene:#1/element:\"Front\""], "parentId": "scene:#1/element:\"Rig\"" } },
+    { "id": "anim.transform.set", "params": { "nodeIds": ["scene:#1/element:\"Rig\""], "target": "static", "rotation": -12, "scale": { "x": -1.1, "y": 0.8 }, "skew": 10, "pivot": { "x": 0.5, "y": 0.25 } } },
+    { "id": "anim.transform.set", "params": { "nodeIds": ["scene:#1/element:\"Front\""], "frame": 1, "position": { "x": -2, "y": 0.5, "z": 1 }, "rotation": 0 } },
+    { "id": "anim.transform.set", "params": { "nodeIds": ["scene:#1/element:\"Front\""], "frame": 24, "position": { "x": 2.5, "y": -0.5, "z": 1 }, "rotation": 120 } },
+    { "id": "element.timing.set", "params": { "elementIds": ["scene:#1/element:\"Camera\""], "duration": 24 } },
+    { "id": "anim.camera.set", "params": { "cameraId": "scene:#1/element:\"Camera\"", "roll": 17, "fovMode": "dynamic", "fov": 35, "frame": 1 } },
+    { "id": "anim.camera.set", "params": { "cameraId": "scene:#1/element:\"Camera\"", "fov": 55, "frame": 24 } },
+    { "id": "element.create", "params": { "type": "peg", "name": "Path", "sceneId": "scene:#1" } },
+    { "id": "anim.path.set", "params": { "nodeId": "scene:#1/element:\"Path\"", "points": [
+      { "kind": "key", "frame": 1, "x": -3, "y": -1, "z": 0 },
+      { "kind": "control", "x": -1.25, "y": 2.5, "z": 0.5 },
+      { "kind": "control", "x": 0.75, "y": -2, "z": 0 },
+      { "kind": "key", "frame": 24, "x": 3, "y": 1.5, "z": 0 }
+    ] } },
+    { "id": "anim.function.key.add", "params": { "nodeId": "scene:#1/element:\"Path\"", "channel": "velocity", "frame": 9, "value": 0.15 } }
+  ],
+  "outputs": [
+    { "name": "gate-frame-1", "id": "render.frame.run", "params": { "frame": 1, "scale": 0.25 } },
+    { "name": "gate-frame-9", "id": "render.frame.run", "params": { "frame": 9, "scale": 0.25 } },
+    { "name": "gate-frame-17", "id": "render.frame.run", "params": { "frame": 17, "width": 400, "height": 400, "background": "transparent" } },
+    { "name": "gate-contact-sheet", "id": "inspect.contactSheet.render", "params": { "frames": { "from": 1, "to": 24, "step": 6 }, "cellWidth": 120 } },
+    { "name": "gate-path", "id": "anim.path.get", "params": { "nodeId": "scene:#1/element:\"Path\"" } }
+  ]
+}

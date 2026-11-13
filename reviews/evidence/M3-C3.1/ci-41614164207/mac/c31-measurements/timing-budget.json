@@ -1,0 +1,88 @@
+{
+  "columns": 1001,
+  "framesPerColumn": 100000,
+  "budget": 300000000,
+  "os": "macos",
+  "cases": [
+    {
+      "case": "read one 100k column",
+      "command": "xsheet.exposures.get",
+      "outcome": "ok",
+      "seconds": 0.001609042,
+      "revBefore": 33,
+      "revAfter": 33
+    },
+    {
+      "case": "cycle 999 x 100 frames",
+      "command": "cell.cycle.create",
+      "outcome": "ok",
+      "seconds": 0.013564125,
+      "revBefore": 35,
+      "revAfter": 36
+    },
+    {
+      "case": "cycle past the scene limit",
+      "command": "cell.cycle.create",
+      "outcome": "doc.limitExceeded",
+      "seconds": 0.000678208,
+      "revBefore": 36,
+      "revAfter": 36
+    },
+    {
+      "case": "set exposure on a tenth of the columns",
+      "command": "cell.exposure.set",
+      "outcome": "ok",
+      "seconds": 0.070172166,
+      "revBefore": 36,
+      "revAfter": 37
+    },
+    {
+      "case": "read the whole sheet",
+      "command": "xsheet.exposures.get",
+      "outcome": "ok",
+      "seconds": 0.24633175,
+      "revBefore": 37,
+      "revAfter": 37
+    },
+    {
+      "case": "element list",
+      "command": "element.list",
+      "outcome": "ok",
+      "seconds": 0.001279417,
+      "revBefore": 37,
+      "revAfter": 37
+    },
+    {
+      "case": "unused drawings of the scene",
+      "command": "element.unusedDrawing.list",
+      "outcome": "ok",
+      "seconds": 0.258251542,
+      "revBefore": 37,
+      "revAfter": 37
+    },
+    {
+      "case": "remove exposure on every column",
+      "command": "cell.exposure.remove",
+      "outcome": "ok",
+      "seconds": 0.982953875,
+      "revBefore": 37,
+      "revAfter": 38
+    },
+    {
+      "case": "insert a cell in all columns",
+      "command": "cell.range.add",
+      "outcome": "ok",
+      "seconds": 0.72028525,
+      "revBefore": 38,
+      "revAfter": 39
+    },
+    {
+      "case": "set every exposure to 9999 frames on every column",
+      "command": "cell.exposure.set",
+      "outcome": "limit.exceeded",
+      "seconds": 0.002623959,
+      "revBefore": 39,
+      "revAfter": 39
+    }
+  ]
+}

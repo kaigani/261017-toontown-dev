@@ -88,6 +88,9 @@ pub(crate) enum Effect {
     /// A save of the open project (`onUnsaved: "save"`): written after every step succeeded and before the commit,
     /// applied to the project after it (C13-R1-01).
     Save(Box<crate::persistence::PendingSave>),
+    /// A binary entry the call adds to the project's store (a pasted copy's artwork; C31-R2-06): inserted after the
+    /// commit, never for a dry run or a refused call.
+    Blob(String, std::sync::Arc<Vec<u8>>),
     /// A file the call writes outside the project (`agent.activity.export`; C14-R1-03): staged next to its target
     /// only when every step succeeded, moved into place after the commit, discarded when the call rolls back.
     WriteFile(Box<FileWrite>),
@@ -133,6 +136,8 @@ pub(crate) struct Savepoint {
     clipboard: Option<Value>,
     edit_options: std::collections::BTreeMap<String, serde_json::Map<String, Value>>,
     checkpoints: Option<Vec<Checkpoint>>,
+    /// Timeline/Exposure Sheet view state (C31-R1-02).
+    timeline: crate::commands::timing::TimelineState,
     painted: BTreeMap<(Id, String), BTreeMap<String, Option<Fill>>>,
     settled_doc: Option<Document>,
     lineage: BTreeMap<String, Vec<String>>,
@@ -337,6 +342,22 @@ impl Cx {
         crate::persistence::batch_save_time(&self.effects)
     }
 
+    /// Defers a binary entry to the call's acceptance ([`Effect::Blob`]).
+    pub(crate) fn stage_blob(&mut self, name: String, bytes: Vec<u8>) {
+        self.effects.push(Effect::Blob(name, std::sync::Arc::new(bytes)));
+    }
+
+    /// The bytes of a binary entry as this call sees it: one it staged, else the project's.
+    pub(crate) fn blob_bytes(&self, name: &str) -> Option<std::sync::Arc<Vec<u8>>> {
+        let staged = self.effects.iter().rev().find_map(|e| match e {
+            Effect::Blob(n, b) if n == name => Some(b.clone()),
+            _ => None,
+        });
+        staged.or_else(|| {
+            self.session.project.as_ref().and_then(|p| p.store.blobs.read(name, 1 << 32).ok()).map(std::sync::Arc::new)
+        })
+    }
+
     pub(crate) fn take_effects(&mut self) -> Vec<Effect> {
         std::mem::take(&mut self.effects)
     }
@@ -352,6 +373,7 @@ impl Cx {
             clipboard: self.session.clipboard.clone(),
             edit_options: self.session.edit_options.clone(),
             checkpoints: self.session.project.as_ref().map(|p| p.checkpoints.clone()),
+            timeline: self.session.timeline.clone(),
             painted: self.painted.clone(),
             settled_doc: self.settled_doc.clone(),
             lineage: self.lineage.clone(),
@@ -370,6 +392,7 @@ impl Cx {
         self.session.ui = sp.ui;
         self.session.clipboard = sp.clipboard;
         self.session.edit_options = sp.edit_options;
+        self.session.timeline = sp.timeline;
         if let (Some(p), Some(c)) = (self.session.project.as_mut(), sp.checkpoints) {
             p.checkpoints = c;
         }
@@ -487,6 +510,11 @@ impl Cx {
         self.warnings.push(Warning { code: code.to_owned(), message: message.into(), object_ids });
     }
 
+    /// The warnings added so far (a result that repeats them in its own `warnings[]`, 04 §17.1 item 6).
+    pub(crate) fn peek_warnings(&self) -> Vec<Warning> {
+        self.warnings.clone()
+    }
+
     pub(crate) fn take_warnings(&mut self) -> Vec<Warning> {
         std::mem::take(&mut self.warnings)
     }
@@ -554,7 +582,7 @@ impl Cx {
         for r in refs {
             if r == "@selection" {
                 let doc = self.document()?;
-                for k in &self.session.app.selection.ids {
+                for k in self.session.app.selection.ids.iter() {
                     if let Some(l) = doc.locate(k)
                         && !out.iter().any(|(_, x)| x == &l.key)
                     {
@@ -729,9 +757,9 @@ impl Cx {
         let mut changes: Vec<(EntryKey, Vec<PatchOp>)> = Vec::new();
         for id in ids {
             let Some(ad) = after.drawing(&id) else { continue };
-            // A drawing an import created is settled as it stands: its strokes are compared with themselves, so
-            // nothing is re-noded and only paint passes change it.
-            let bd = before.drawing(&id).or_else(|| self.verbatim.contains(&id).then_some(ad));
+            // A drawing an import or a copy created or overwrote is settled as it stands: its strokes are compared
+            // with themselves, so nothing is re-noded and only paint passes change it (C31-R1-13: overwrites too).
+            let bd = if self.verbatim.contains(&id) { Some(ad) } else { before.drawing(&id) };
             let has_paint = self.painted.keys().any(|(d, _)| *d == id);
             if bd == Some(ad) && !has_paint {
                 continue;
@@ -944,8 +972,16 @@ impl Cx {
                         None => merged.push((c.key.clone(), p.clone())),
                     }
                 }
+                // Replay observes the caller's cancellation (and the work hooks) once per entry: a long undo or redo
+                // of a large step is cancelled while it runs and commits nothing (never-block rule; C32-R3-01). The
+                // account has no limit, so no step becomes impossible to undo.
+                let mut work = Work::unlimited("replaying the undo step");
                 let mut patches = Vec::with_capacity(merged.len());
                 for (key, ops) in merged {
+                    work.spend_n(ops.len().max(1)).map_err(|e| {
+                        CommandError::new(e.code, e.message)
+                            .hint("the caller's watchdog budget passed: the call was cancelled and changed nothing")
+                    })?;
                     let ready = prepare(&before, &key, &ops)?;
                     patches.push((key, ready));
                 }

@@ -1,0 +1,101 @@
+timeout.exe :    Compiling tt-model v0.0.1 (C:\Users\kaiga\work\review\m3-c32-r4\crates\model)
+At line:2 char:408
++ ... ommand.txt; & 'C:/Program Files/Git/usr/bin/timeout.exe' 530 cargo @c ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (   Compiling tt...4\crates\model):String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+   Compiling tt-anim v0.0.1 (C:\Users\kaiga\work\review\m3-c32-r4\crates\anim)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 45.41s
+     Running tests\c32_passage.rs (target\debug\deps\c32_passage-c8929a81f9d16446.exe)
+
+running 5 tests
+test the_search_is_charged_and_a_refusing_meter_stops_it ... ok
+test crossings_exactly_at_whole_frames_report_those_frames ... ok
+proptest: FileFailurePersistence::SourceParallel set, but failed to find lib.rs or main.rs
+test an_excursion_within_one_frame_is_found_at_its_first_crossing ... ok
+test a_rise_and_fall_twice_within_one_frame_reports_the_first_rise ... ok
+test passage_agrees_with_the_exact_oracle ... ok
+
+test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 2.77s
+
+     Running tests\c32_r1_affine.rs (target\debug\deps\c32_r1_affine-2ec26020892b763f.exe)
+
+running 1 test
+test c32_r1_integer_affine_oracle_4096 ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests\c32_r1_closed_forms.rs (target\debug\deps\c32_r1_closed_forms-a368bfdc219eb041.exe)
+
+running 2 tests
+test c32_r1_integer_cycle_mapping_4096 ... ok
+test c32_r1_closed_forms_4096 ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.24s
+
+     Running tests\c32_r1_corpus.rs (target\debug\deps\c32_r1_corpus-68fee41e284b6392.exe)
+
+running 2 tests
+test exact_whole_frame_crossing ... ok
+seed=C32019AB6701 cases=4096 missed=0 first=None
+test seeded_4096_earliest_crossings ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.12s
+
+     Running tests\c32_r1_default_frame.rs (target\debug\deps\c32_r1_default_frame-366e4a43bf1bcfd0.exe)
+
+running 2 tests
+test c32_r1_default_frame_is_twelve_fields_within_normative_tolerance ... ok
+test explicit_display_fov_is_not_aliased ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests\c32_r1_passage.rs (target\debug\deps\c32_r1_passage-0db229d0abb19302.exe)
+
+running 1 test
+test c32_r1_passage_must_find_subframe_first_crossing ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests\c32_r2_camera.rs (target\debug\deps\c32_r2_camera-be6438e488ba199b.exe)
+
+running 1 test
+test arbitrary_roll_fov_and_near_plane ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests\c32_r2_corpus.rs (target\debug\deps\c32_r2_corpus-5e56609823e365ea.exe)
+
+running 2 tests
+test exact_whole_frame_crossing ... ok
+seed=C32219AB6702 cases=4096 missed=0 first=None
+test seeded_4096_nonhorizontal_interior_extrema ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.13s
+
+     Running tests\c32_r2_passage.rs (target\debug\deps\c32_r2_passage-2aa1b5e0f9c2fbc6.exe)
+
+running 2 tests
+test seeded_nonhorizontal_rounding_and_charged_refusal ... ok
+test preset_crossings_next_to_rounding_boundaries ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.16s
+
+     Running tests\c32_r2_tcb.rs (target\debug\deps\c32_r2_tcb-1d0b01278b88f5ab.exe)
+
+running 1 test
+test c32_r2_non_dyadic_4096 ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.20s
+
+     Running tests\c32_round1.rs (target\debug\deps\c32_round1-64a5d11d4957dd99.exe)
+
+running 4 tests
+test the_norm_keeps_ordinary_bits_and_scales_only_out_of_range_sums ... ok
+test a_finite_world_matrix_decomposes_to_finite_values ... ok
+test the_default_frame_is_twelve_fields_wide_at_distance_sixteen ... ok
+test the_default_fov_is_the_exact_expression_through_the_pinned_path ... ok
+
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+

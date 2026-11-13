@@ -18,6 +18,8 @@ tt-vector.workspace = true
 tt-render.workspace = true
 # Bitmap decoding for import and vectorize (M2 C2.4).
 tt-io.workspace = true
+# Exposure algebra and the scene hierarchy (M3 C3.1).
+tt-anim.workspace = true
 # Geometry keys of the derived planar-map cache (M2 C2.2).
 sha2.workspace = true
 serde.workspace = true
@@ -28,6 +30,7 @@ regex.workspace = true
 [dev-dependencies]
 tt-persist = { workspace = true, features = ["test-hooks"] }
 tt-vector = { workspace = true, features = ["test-hooks"] }
+tt-anim = { workspace = true, features = ["test-hooks"] }
 trybuild.workspace = true
 jsonschema.workspace = true
 proptest.workspace = true

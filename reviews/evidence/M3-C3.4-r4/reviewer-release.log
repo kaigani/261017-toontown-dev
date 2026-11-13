@@ -1,0 +1,105 @@
+   Compiling tt-model v0.0.1 (C:\Users\kaiga\work\review\m3-c34-r4\crates\model)
+   Compiling tt-registry-macros v0.0.1 (C:\Users\kaiga\work\review\m3-c34-r4\crates\registry-macros)
+   Compiling tt-anim v0.0.1 (C:\Users\kaiga\work\review\m3-c34-r4\crates\anim)
+   Compiling tt-colour v0.0.1 (C:\Users\kaiga\work\review\m3-c34-r4\crates\colour)
+   Compiling tt-vector v0.0.1 (C:\Users\kaiga\work\review\m3-c34-r4\crates\vector)
+   Compiling tt-persist v0.0.1 (C:\Users\kaiga\work\review\m3-c34-r4\crates\persist)
+   Compiling tt-fx v0.0.1 (C:\Users\kaiga\work\review\m3-c34-r4\crates\fx)
+   Compiling tt-registry v0.0.1 (C:\Users\kaiga\work\review\m3-c34-r4\crates\registry)
+   Compiling tt-render v0.0.1 (C:\Users\kaiga\work\review\m3-c34-r4\crates\render)
+   Compiling tt-io v0.0.1 (C:\Users\kaiga\work\review\m3-c34-r4\crates\io)
+   Compiling tt-executor v0.0.1 (C:\Users\kaiga\work\review\m3-c34-r4\crates\executor)
+    Finished `release` profile [optimized + debuginfo] target(s) in 3m 20s
+     Running tests\c34_r2_cancellation.rs (target\release\deps\c34_r2_cancellation-6cc31995e038de4f.exe)
+
+running 4 tests
+test already_cancelled_mutation_never_commits ... ok
+test direct_job_wait_observes_cancellation_probe ... direct_job_wait elapsed_ms=31.670499999999997 status=Error
+ok
+test fast_commit_cancel_retry_matrix_preserves_one_change_and_one_answer ... ok
+test retry_cache_and_late_cancellation_are_stable_for_three_thousand_calls ... ok
+
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 5.59s
+
+     Running tests\c34_r2_measurements.rs (target\release\deps\c34_r2_measurements-82a3e89856dcc310.exe)
+
+running 6 tests
+test atomic_and_dry_run_cancel_mid_batch_discard_changes ... ATOMIC dry=false status=Error error=Some(CommandError { code: "batch.stepFailed", message: "step 40 (`element.create`) failed: creating elements was cancelled: the call overran its watchdog budget", details: Object {"stepIndex": Number(40), "commandId": String("element.create"), "error": Object {"code": String("command.timeout"), "message": String("creating elements was cancelled: the call overran its watchdog budget"), "details": Object {"budget": Number(300000000)}, "hint": String("the caller's watchdog budget passed: the call was cancelled and changed nothing")}}, hint: None })
+ATOMIC dry=true status=Error error=Some(CommandError { code: "batch.stepFailed", message: "step 35 (`element.create`) failed: creating elements was cancelled: the call overran its watchdog budget", details: Object {"stepIndex": Number(35), "commandId": String("element.create"), "error": Object {"code": String("command.timeout"), "message": String("creating elements was cancelled: the call overran its watchdog budget"), "details": Object {"budget": Number(300000000)}, "hint": String("the caller's watchdog budget passed: the call was cancelled and changed nothing")}}, hint: None })
+ok
+test completed_batch_then_late_cancellation_does_not_poison_next_request ... SHORT_BATCH_MS 9.0314
+ok
+test discarded_queued_cancellation_does_not_report_a_dead_document_thread ... QUEUED_ERROR code=command.timeout message=`element.create` was not run: its caller cancelled the request
+ok
+test one_hundred_wait_cancellations_settle_jobs_and_leave_handle_usable ... LATENCY_MS n=100 min=6.2387 p50=11.2418 p95=14.215800000000002 p99=14.9635 max=15.222299999999999 samples=[6.2387, 7.3508000000000004, 8.3306, 9.3029, 9.323, 9.3232, 9.6599, 9.855300000000002, 10.0244, 10.071, 10.1503, 10.1721, 10.222800000000001, 10.2254, 10.230599999999999, 10.2438, 10.2495, 10.3275, 10.423, 10.4362, 10.4726, 10.5072, 10.508999999999999, 10.5366, 10.538499999999999, 10.5494, 10.5559, 10.5752, 10.5784, 10.5907, 10.595699999999999, 10.6292, 10.6727, 10.715499999999999, 10.798300000000001, 10.8062, 10.8875, 10.8934, 10.9314, 10.932, 10.9463, 10.963199999999999, 10.9671, 11.002400000000002, 11.022300000000001, 11.095799999999999, 11.1673, 11.1691, 11.1793, 11.2418, 11.261800000000001, 11.3089, 11.3257, 11.3427, 11.363, 11.3645, 11.3943, 11.4047, 11.4141, 11.422699999999999, 11.4268, 11.4439, 11.4578, 11.4644, 11.5237, 11.5377, 11.546000000000001, 11.6446, 11.7214, 11.8314, 11.8998, 11.9133, 11.9437, 11.944899999999999, 11.9638, 11.9788, 12.005099999999999, 12.0641, 12.0644, 12.0832, 12.100100000000001, 12.146600000000001, 12.1616, 12.1872, 12.2048, 12.2806, 12.304300000000001, 12.3386, 12.383, 12.3909, 12.4347, 12.5855, 12.7586, 14.047699999999999, 14.215800000000002, 14.4354, 14.8374, 14.8814, 14.9635, 15.222299999999999]
+ok
+test queued_cancelled_request_is_skipped_and_following_read_survives ... READ_MS cancellation=false stopOnError=true elapsed=664.2422
+BLOCKING_MS cancellation=false read_and_queue=714.9290000000001
+READ_MS cancellation=true stopOnError=true elapsed=10.016499999999999
+BLOCKING_MS cancellation=true read_and_queue=60.9844
+READ_MS cancellation=true stopOnError=false elapsed=1.7493999999999998
+BLOCKING_MS cancellation=true read_and_queue=52.6566
+ok
+test short_waited_batch_cannot_commit_with_an_already_cancelled_probe ... SHORT_CANCELLED_BATCH_MS 0.0031999999999999997 status=Error
+ok
+
+test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 56.71s
+
+     Running tests\c34_r3_contention.rs (target\release\deps\c34_r3_contention-b92f9df424f5310d.exe)
+
+running 4 tests
+test cancelled_file_effect_and_job_cancel_retry_once ... ok
+test live_retry_racing_cancelled_original_executes_once ... ok
+test mark_after_forget_and_mixed_call_contention_leave_no_tokens ... ok
+test pre_cancelled_undo_redo_are_not_cached ... ok
+
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 3.32s
+
+     Running tests\c34_r3_edges.rs (target\release\deps\c34_r3_edges-b942e9c156464634.exe)
+
+running 4 tests
+test cancelled_queued_request_reports_real_worker_death_as_internal ... 
+thread 'tt-document' (27064) panicked at crates\executor\tests\c34_r3_edges.rs:64:13:
+review worker death
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+ok
+test commit_wins_returns_success_and_cached_envelope ... ok
+test pre_cancelled_batch_modes_and_job_submission_retry_once ... ok
+test worker_boundary_refusal_identifies_cancellation_reason ... ok
+
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.43s
+
+     Running tests\c34_r3_probes.rs (target\release\deps\c34_r3_probes-e82469f00458bbb9.exe)
+
+running 4 tests
+test blocked_probe_does_not_starve_other_callers_past_watchdog ... blocked probe: unrelated query 204.9527ms: Envelope { status: Ok, result: Some(Object {"projectId": String("pr_01K742SG00BK0VXTWDM5JRXV37"), "path": Null, "form": Null, "formatVersion": String("1.0"), "migratedFrom": Null, "documentRev": Number(2), "savedRev": Null, "dirty": Bool(true), "readOnly": Bool(false), "lock": Null, "historyFromRev": Number(1)}), targets: None, changes: [], changes_truncated: false, changes_since: None, undo: None, warnings: [], document_rev: Some(2), error: None, dry_run: false, steps: None, committed: true }
+ok
+test cancellation_is_latched_even_if_probe_flips_back ... ok
+test overhead_ten_thousand_small_actions_and_thousand_step_batch ... PERF direct=false n=10000 ms=4805.135
+PERF batch direct=false n=1000 ms=422.00690000000003
+PERF direct=true n=10000 ms=5291.4174
+PERF batch direct=true n=1000 ms=477.3849
+ok
+test panicking_probe_leaves_worker_alive ... 
+thread 'panicking_probe_leaves_worker_alive' (23104) panicked at crates\executor\tests\c34_r3_probes.rs:45:13:
+assertion `left != right` failed: probe panic
+  left: 1
+ right: 1
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+ok
+
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 17.08s
+
+     Running tests\c34_round2.rs (target\release\deps\c34_round2-9dc1dfecd6ae9ba3.exe)
+
+running 3 tests
+test a_cancellation_between_two_steps_refuses_the_second_every_time ... ok
+test a_queued_request_discarded_after_its_cancellation_answers_an_honest_refusal ... ok
+test a_worker_that_really_dies_answers_internal ... 
+thread 'tt-document' (24184) panicked at crates\executor\tests\c34_round2.rs:137:13:
+test: the document thread dies
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+ok
+
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 14.38s
+

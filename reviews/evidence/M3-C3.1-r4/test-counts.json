@@ -1,0 +1,850 @@
+{
+  "executor": {
+    "resultBlocks": 132,
+    "passed": 750,
+    "failed": 0,
+    "ignored": 8,
+    "measured": 0,
+    "filteredOut": 6,
+    "c31Targets": [
+      {
+        "target": "c31_bank_xsheet",
+        "passed": 9,
+        "failed": 0,
+        "ignored": 0
+      },
+      {
+        "target": "c31_budgets",
+        "passed": 0,
+        "failed": 0,
+        "ignored": 1
+      },
+      {
+        "target": "c31_cells",
+        "passed": 16,
+        "failed": 0,
+        "ignored": 0
+      },
+      {
+        "target": "c31_elements",
+        "passed": 16,
+        "failed": 0,
+        "ignored": 0
+      },
+      {
+        "target": "c31_obligations",
+        "passed": 9,
+        "failed": 0,
+        "ignored": 0
+      },
+      {
+        "target": "c31_r1_availability",
+        "passed": 1,
+        "failed": 0,
+        "ignored": 0
+      },
+      {
+        "target": "c31_r1_contract",
+        "passed": 28,
+        "failed": 0,
+        "ignored": 0
+      },
+      {
+        "target": "c31_r1_copy_settle",
+        "passed": 1,
+        "failed": 0,
+        "ignored": 0
+      },
+      {
+        "target": "c31_r1_model_diff",
+        "passed": 2,
+        "failed": 0,
+        "ignored": 0
+      },
+      {
+        "target": "c31_r1_mutations",
+        "passed": 1,
+        "failed": 0,
+        "ignored": 0
+      },
+      {
+        "target": "c31_r1_notes",
+        "passed": 1,
+        "failed": 0,
+        "ignored": 0
+      },
+      {
+        "target": "c31_r1_selection_budget",
+        "passed": 1,
+        "failed": 0,
+        "ignored": 0
+      },
+      {
+        "target": "c31_r2_cancellation",
+        "passed": 2,
+        "failed": 0,
+        "ignored": 0
+      },
+      {
+        "target": "c31_r2_notes_boundary",
+        "passed": 1,
+        "failed": 0,
+        "ignored": 0
+      },
+      {
+        "target": "c31_r2_persistence",
+        "passed": 3,
+        "failed": 0,
+        "ignored": 0
+      },
+      {
+        "target": "c31_r2_variants",
+        "passed": 21,
+        "failed": 0,
+        "ignored": 0
+      },
+      {
+        "target": "c31_r3_binary",
+        "passed": 5,
+        "failed": 0,
+        "ignored": 0
+      },
+      {
+        "target": "c31_r3_closure",
+        "passed": 4,
+        "failed": 0,
+        "ignored": 0
+      },
+      {
+        "target": "c31_r3_delegation",
+        "passed": 2,
+        "failed": 0,
+        "ignored": 0
+      },
+      {
+        "target": "c31_r3_hierarchy",
+        "passed": 1,
+        "failed": 0,
+        "ignored": 0
+      },
+      {
+        "target": "c31_r3_patch",
+        "passed": 4,
+        "failed": 0,
+        "ignored": 0
+      },
+      {
+        "target": "c31_r3_selection",
+        "passed": 1,
+        "failed": 0,
+        "ignored": 0
+      },
+      {
+        "target": "c31_r3_sequences",
+        "passed": 1,
+        "failed": 0,
+        "ignored": 0
+      },
+      {
+        "target": "c31_round1",
+        "passed": 11,
+        "failed": 0,
+        "ignored": 0
+      },
+      {
+        "target": "c31_round2",
+        "passed": 10,
+        "failed": 0,
+        "ignored": 0
+      },
+      {
+        "target": "c31_round3",
+        "passed": 4,
+        "failed": 0,
+        "ignored": 0
+      }
+    ],
+    "nestedWorkerRuns": 1,
+    "nestedWorkerPasses": 1,
+    "topLevelPassed": 749,
+    "topLevelResultBlocks": 131
+  },
+  "anim": {
+    "resultBlocks": 6,
+    "passed": 32,
+    "failed": 0,
+    "ignored": 0,
+    "measured": 0,
+    "filteredOut": 0,
+    "c31Targets": [
+      {
+        "target": "c31_exposure",
+        "passed": 16,
+        "failed": 0,
+        "ignored": 0
+      },
+      {
+        "target": "c31_r1_hierarchy",
+        "passed": 2,
+        "failed": 0,
+        "ignored": 0
+      },
+      {
+        "target": "c31_r1_oracle",
+        "passed": 11,
+        "failed": 0,
+        "ignored": 0
+      },
+      {
+        "target": "c31_r2_variants",
+        "passed": 3,
+        "failed": 0,
+        "ignored": 0
+      }
+    ],
+    "nestedWorkerRuns": 0,
+    "nestedWorkerPasses": 0,
+    "topLevelPassed": 32,
+    "topLevelResultBlocks": 6
+  },
+  "mcp": {
+    "resultBlocks": 31,
+    "passed": 75,
+    "failed": 0,
+    "ignored": 3,
+    "measured": 0,
+    "filteredOut": 0,
+    "c31Targets": [
+      {
+        "target": "c31_r1_protocol",
+        "passed": 3,
+        "failed": 0,
+        "ignored": 0
+      },
+      {
+        "target": "c31_r2_protocol",
+        "passed": 1,
+        "failed": 0,
+        "ignored": 0
+      },
+      {
+        "target": "c31_round1_protocol",
+        "passed": 1,
+        "failed": 0,
+        "ignored": 0
+      }
+    ],
+    "nestedWorkerRuns": 0,
+    "nestedWorkerPasses": 0,
+    "topLevelPassed": 75,
+    "topLevelResultBlocks": 31
+  },
+  "closure": {
+    "resultBlocks": 1,
+    "passed": 5,
+    "failed": 0,
+    "ignored": 0,
+    "measured": 0,
+    "filteredOut": 0,
+    "c31Targets": [
+      {
+        "target": "c31_r4_closure",
+        "passed": 5,
+        "failed": 0,
+        "ignored": 0
+      }
+    ],
+    "nestedWorkerRuns": 0,
+    "nestedWorkerPasses": 0,
+    "topLevelPassed": 5,
+    "topLevelResultBlocks": 1
+  },
+  "workspace": {
+    "resultBlocks": 282,
+    "passed": 1487,
+    "failed": 0,
+    "ignored": 23,
+    "measured": 0,
+    "filteredOut": 42,
+    "c31Targets": [
+      {
+        "target": "c31_exposure",
+        "passed": 16,
+        "failed": 0,
+        "ignored": 0
+      },
+      {
+        "target": "c31_r1_hierarchy",
+        "passed": 2,
+        "failed": 0,
+        "ignored": 0
+      },
+      {
+        "target": "c31_r1_oracle",
+        "passed": 11,
+        "failed": 0,
+        "ignored": 0
+      },
+      {
+        "target": "c31_r2_variants",
+        "passed": 3,
+        "failed": 0,
+        "ignored": 0
+      },
+      {
+        "target": "c31_bank_xsheet",
+        "passed": 9,
+        "failed": 0,
+        "ignored": 0
+      },
+      {
+        "target": "c31_budgets",
+        "passed": 0,
+        "failed": 0,
+        "ignored": 1
+      },
+      {
+        "target": "c31_cells",
+        "passed": 16,
+        "failed": 0,
+        "ignored": 0
+      },
+      {
+        "target": "c31_elements",
+        "passed": 16,
+        "failed": 0,
+        "ignored": 0
+      },
+      {
+        "target": "c31_obligations",
+        "passed": 9,
+        "failed": 0,
+        "ignored": 0
+      },
+      {
+        "target": "c31_r1_availability",
+        "passed": 1,
+        "failed": 0,
+        "ignored": 0
+      },
+      {
+        "target": "c31_r1_contract",
+        "passed": 28,
+        "failed": 0,
+        "ignored": 0
+      },
+      {
+        "target": "c31_r1_copy_settle",
+        "passed": 1,
+        "failed": 0,
+        "ignored": 0
+      },
+      {
+        "target": "c31_r1_model_diff",
+        "passed": 2,
+        "failed": 0,
+        "ignored": 0
+      },
+      {
+        "target": "c31_r1_mutations",
+        "passed": 1,
+        "failed": 0,
+        "ignored": 0
+      },
+      {
+        "target": "c31_r1_notes",
+        "passed": 1,
+        "failed": 0,
+        "ignored": 0
+      },
+      {
+        "target": "c31_r1_selection_budget",
+        "passed": 1,
+        "failed": 0,
+        "ignored": 0
+      },
+      {
+        "target": "c31_r2_cancellation",
+        "passed": 2,
+        "failed": 0,
+        "ignored": 0
+      },
+      {
+        "target": "c31_r2_notes_boundary",
+        "passed": 1,
+        "failed": 0,
+        "ignored": 0
+      },
+      {
+        "target": "c31_r2_persistence",
+        "passed": 3,
+        "failed": 0,
+        "ignored": 0
+      },
+      {
+        "target": "c31_r2_variants",
+        "passed": 21,
+        "failed": 0,
+        "ignored": 0
+      },
+      {
+        "target": "c31_r3_binary",
+        "passed": 5,
+        "failed": 0,
+        "ignored": 0
+      },
+      {
+        "target": "c31_r3_closure",
+        "passed": 4,
+        "failed": 0,
+        "ignored": 0
+      },
+      {
+        "target": "c31_r3_delegation",
+        "passed": 2,
+        "failed": 0,
+        "ignored": 0
+      },
+      {
+        "target": "c31_r3_hierarchy",
+        "passed": 1,
+        "failed": 0,
+        "ignored": 0
+      },
+      {
+        "target": "c31_r3_patch",
+        "passed": 4,
+        "failed": 0,
+        "ignored": 0
+      },
+      {
+        "target": "c31_r3_selection",
+        "passed": 1,
+        "failed": 0,
+        "ignored": 0
+      },
+      {
+        "target": "c31_r3_sequences",
+        "passed": 1,
+        "failed": 0,
+        "ignored": 0
+      },
+      {
+        "target": "c31_r4_closure",
+        "passed": 5,
+        "failed": 0,
+        "ignored": 0
+      },
+      {
+        "target": "c31_round1",
+        "passed": 11,
+        "failed": 0,
+        "ignored": 0
+      },
+      {
+        "target": "c31_round2",
+        "passed": 10,
+        "failed": 0,
+        "ignored": 0
+      },
+      {
+        "target": "c31_round3",
+        "passed": 4,
+        "failed": 0,
+        "ignored": 0
+      },
+      {
+        "target": "c31_r1_protocol",
+        "passed": 3,
+        "failed": 0,
+        "ignored": 0
+      },
+      {
+        "target": "c31_r2_protocol",
+        "passed": 1,
+        "failed": 0,
+        "ignored": 0
+      },
+      {
+        "target": "c31_round1_protocol",
+        "passed": 1,
+        "failed": 0,
+        "ignored": 0
+      }
+    ],
+    "nestedWorkerRuns": 5,
+    "nestedWorkerPasses": 5,
+    "topLevelPassed": 1482,
+    "topLevelResultBlocks": 277
+  },
+  "workspaceInvocation": {
+    "exitCode": 0,
+    "completedAt": "2026-11-04T00:46:20.7429553Z",
+    "startedAt": "2026-11-03T23:43:45.6836068Z",
+    "command": "cargo test --workspace --locked -j 4 --no-fail-fast"
+  },
+  "workspaceSeconds": 3755.059349,
+  "releaseSdk": {
+    "version": "2.0.0",
+    "checks": 9,
+    "failed": 0
+  },
+  "reviewerPython": {
+    "predecessorSuites": 50,
+    "round4Suites": 1,
+    "round4HelperTests": 2,
+    "failedSuites": 0
+  },
+  "preliminarySetupLogs": [
+    "closure.txt",
+    "closure-corrected.txt",
+    "closure-final.txt",
+    "closure-verified.txt"
+  ],
+  "preliminarySetupDisposition": "Superseded fixture/setup attempts, explained in scope-review.json; excluded from final gate counts.",
+  "ciWorkspace": {
+    "windows": {
+      "stepStart": "2026-11-03T20:59:23Z",
+      "stepEnd": "2026-11-03T21:29:23Z",
+      "testResultBlocks": 281,
+      "passed": 1374,
+      "failed": 0,
+      "ignored": 23,
+      "c31Targets": {
+        "c31_exposure": {
+          "passed": 0,
+          "failed": 0,
+          "ignored": 0
+        },
+        "c31_r1_hierarchy": {
+          "passed": 2,
+          "failed": 0,
+          "ignored": 0
+        },
+        "c31_r1_oracle": {
+          "passed": 11,
+          "failed": 0,
+          "ignored": 0
+        },
+        "c31_r2_variants": {
+          "passed": 21,
+          "failed": 0,
+          "ignored": 0
+        },
+        "c31_bank_xsheet": {
+          "passed": 9,
+          "failed": 0,
+          "ignored": 0
+        },
+        "c31_budgets": {
+          "passed": 0,
+          "failed": 0,
+          "ignored": 1
+        },
+        "c31_cells": {
+          "passed": 16,
+          "failed": 0,
+          "ignored": 0
+        },
+        "c31_elements": {
+          "passed": 16,
+          "failed": 0,
+          "ignored": 0
+        },
+        "c31_obligations": {
+          "passed": 9,
+          "failed": 0,
+          "ignored": 0
+        },
+        "c31_r1_availability": {
+          "passed": 1,
+          "failed": 0,
+          "ignored": 0
+        },
+        "c31_r1_contract": {
+          "passed": 28,
+          "failed": 0,
+          "ignored": 0
+        },
+        "c31_r1_copy_settle": {
+          "passed": 1,
+          "failed": 0,
+          "ignored": 0
+        },
+        "c31_r1_model_diff": {
+          "passed": 2,
+          "failed": 0,
+          "ignored": 0
+        },
+        "c31_r1_mutations": {
+          "passed": 1,
+          "failed": 0,
+          "ignored": 0
+        },
+        "c31_r1_notes": {
+          "passed": 1,
+          "failed": 0,
+          "ignored": 0
+        },
+        "c31_r1_selection_budget": {
+          "passed": 1,
+          "failed": 0,
+          "ignored": 0
+        },
+        "c31_r2_cancellation": {
+          "passed": 2,
+          "failed": 0,
+          "ignored": 0
+        },
+        "c31_r2_notes_boundary": {
+          "passed": 1,
+          "failed": 0,
+          "ignored": 0
+        },
+        "c31_r2_persistence": {
+          "passed": 3,
+          "failed": 0,
+          "ignored": 0
+        },
+        "c31_r3_binary": {
+          "passed": 5,
+          "failed": 0,
+          "ignored": 0
+        },
+        "c31_r3_closure": {
+          "passed": 4,
+          "failed": 0,
+          "ignored": 0
+        },
+        "c31_r3_delegation": {
+          "passed": 2,
+          "failed": 0,
+          "ignored": 0
+        },
+        "c31_r3_hierarchy": {
+          "passed": 1,
+          "failed": 0,
+          "ignored": 0
+        },
+        "c31_r3_patch": {
+          "passed": 4,
+          "failed": 0,
+          "ignored": 0
+        },
+        "c31_r3_selection": {
+          "passed": 1,
+          "failed": 0,
+          "ignored": 0
+        },
+        "c31_r3_sequences": {
+          "passed": 1,
+          "failed": 0,
+          "ignored": 0
+        },
+        "c31_round1": {
+          "passed": 11,
+          "failed": 0,
+          "ignored": 0
+        },
+        "c31_round2": {
+          "passed": 10,
+          "failed": 0,
+          "ignored": 0
+        },
+        "c31_round3": {
+          "passed": 4,
+          "failed": 0,
+          "ignored": 0
+        },
+        "c31_r1_protocol": {
+          "passed": 3,
+          "failed": 0,
+          "ignored": 0
+        },
+        "c31_r2_protocol": {
+          "passed": 1,
+          "failed": 0,
+          "ignored": 0
+        },
+        "c31_round1_protocol": {
+          "passed": 1,
+          "failed": 0,
+          "ignored": 0
+        }
+      },
+      "filteredOut": 150
+    },
+    "macos": {
+      "stepStart": "2026-11-03T22:15:51Z",
+      "stepEnd": "2026-11-03T22:43:19Z",
+      "testResultBlocks": 281,
+      "passed": 1369,
+      "failed": 0,
+      "ignored": 23,
+      "c31Targets": {
+        "c31_exposure": {
+          "passed": 0,
+          "failed": 0,
+          "ignored": 0
+        },
+        "c31_r1_oracle": {
+          "passed": 2,
+          "failed": 0,
+          "ignored": 0
+        },
+        "c31_r2_variants": {
+          "passed": 21,
+          "failed": 0,
+          "ignored": 0
+        },
+        "c31_bank_xsheet": {
+          "passed": 9,
+          "failed": 0,
+          "ignored": 0
+        },
+        "c31_budgets": {
+          "passed": 0,
+          "failed": 0,
+          "ignored": 1
+        },
+        "c31_cells": {
+          "passed": 16,
+          "failed": 0,
+          "ignored": 0
+        },
+        "c31_elements": {
+          "passed": 16,
+          "failed": 0,
+          "ignored": 0
+        },
+        "c31_obligations": {
+          "passed": 9,
+          "failed": 0,
+          "ignored": 0
+        },
+        "c31_r1_availability": {
+          "passed": 1,
+          "failed": 0,
+          "ignored": 0
+        },
+        "c31_r1_contract": {
+          "passed": 28,
+          "failed": 0,
+          "ignored": 0
+        },
+        "c31_r1_copy_settle": {
+          "passed": 1,
+          "failed": 0,
+          "ignored": 0
+        },
+        "c31_r1_model_diff": {
+          "passed": 2,
+          "failed": 0,
+          "ignored": 0
+        },
+        "c31_r1_mutations": {
+          "passed": 1,
+          "failed": 0,
+          "ignored": 0
+        },
+        "c31_r1_notes": {
+          "passed": 1,
+          "failed": 0,
+          "ignored": 0
+        },
+        "c31_r1_selection_budget": {
+          "passed": 1,
+          "failed": 0,
+          "ignored": 0
+        },
+        "c31_r2_cancellation": {
+          "passed": 2,
+          "failed": 0,
+          "ignored": 0
+        },
+        "c31_r2_notes_boundary": {
+          "passed": 1,
+          "failed": 0,
+          "ignored": 0
+        },
+        "c31_r2_persistence": {
+          "passed": 3,
+          "failed": 0,
+          "ignored": 0
+        },
+        "c31_r3_binary": {
+          "passed": 5,
+          "failed": 0,
+          "ignored": 0
+        },
+        "c31_r3_closure": {
+          "passed": 4,
+          "failed": 0,
+          "ignored": 0
+        },
+        "c31_r3_delegation": {
+          "passed": 2,
+          "failed": 0,
+          "ignored": 0
+        },
+        "c31_r3_hierarchy": {
+          "passed": 1,
+          "failed": 0,
+          "ignored": 0
+        },
+        "c31_r3_patch": {
+          "passed": 4,
+          "failed": 0,
+          "ignored": 0
+        },
+        "c31_r3_selection": {
+          "passed": 1,
+          "failed": 0,
+          "ignored": 0
+        },
+        "c31_r3_sequences": {
+          "passed": 1,
+          "failed": 0,
+          "ignored": 0
+        },
+        "c31_round1": {
+          "passed": 11,
+          "failed": 0,
+          "ignored": 0
+        },
+        "c31_round2": {
+          "passed": 10,
+          "failed": 0,
+          "ignored": 0
+        },
+        "c31_round3": {
+          "passed": 4,
+          "failed": 0,
+          "ignored": 0
+        },
+        "c31_r1_protocol": {
+          "passed": 3,
+          "failed": 0,
+          "ignored": 0
+        },
+        "c31_round1_protocol": {
+          "passed": 1,
+          "failed": 0,
+          "ignored": 0
+        }
+      },
+      "filteredOut": 150
+    }
+  },
+  "ciWindowsCountReconciliation": {
+    "localPassed": 1487,
+    "ciPassed": 1374,
+    "ciFilteredOut": 150,
+    "newClosureTests": 5,
+    "localIgnored": 23,
+    "ciIgnored": 23,
+    "additionalCiFilteredTests": 108
+  },
+  "countingBasis": "Raw Cargo result summaries include nested worker invocations. For the local commands, which have no CLI test filter, the five workspace worker summaries (one in executor) are separated; their sibling filters total 42 (executor 6). No user-supplied skip/filter was used.",
+  "predecessorFailures": []
+}

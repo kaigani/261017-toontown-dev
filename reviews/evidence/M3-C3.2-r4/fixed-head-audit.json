@@ -1,0 +1,36 @@
+{
+  "reviews/evidence/M3-C3.2-r3/register.json": {
+    "fd14a8e": "3a4deaf6f2ed4872da1bbfc512e29949a0825029ce3531ad1fffaa330e248424",
+    "8c640d1": "3a4deaf6f2ed4872da1bbfc512e29949a0825029ce3531ad1fffaa330e248424"
+  },
+  "plan/spec-issues.md": {
+    "fd14a8e": "4009228d15d1785fd8b2f854d2ccfc3b8e872c81e2ca9b8770864bb5dd1f4b55",
+    "8c640d1": "4009228d15d1785fd8b2f854d2ccfc3b8e872c81e2ca9b8770864bb5dd1f4b55"
+  },
+  "scripts/product-allows.json": {
+    "fd14a8e": "b735aee9cafb2937eb84c4d56f6f8dff59d8d1c258ae435eda3871cd7db2380d",
+    "8c640d1": "b735aee9cafb2937eb84c4d56f6f8dff59d8d1c258ae435eda3871cd7db2380d"
+  },
+  "register": {
+    "registry_counts": {
+      "implemented": 36
+    },
+    "source_unit_counts": {
+      "implemented": 293,
+      "deferred-with-owner": 90
+    },
+    "registry_rows": 36,
+    "complete": true
+  },
+  "traceability": "diff --git a/plan/traceability.csv b/plan/traceability.csv\nindex 5085aa8..5f1b2eb 100644\n--- a/plan/traceability.csv\n+++ b/plan/traceability.csv\n@@ -325,7 +325,7 @@ ADR-0014 / 10 \u00a74.11 (C31-R3-04),\"texture references in drawing colour recovery\n 05 \u00a710.5,\"velocity pins, normalised keys, clamped travel, passage frames, pins turned into keys\",M3,C3.2,implemented,crates/anim/tests/c32_maths.rs::velocity_pins_clamping_and_intermediate_keys; crates/anim/tests/c32_maths.rs::passage_frames_are_found_to_the_stated_tolerance; crates/executor/tests/c32_semantics.rs::removing_a_pin_preserves_timing_and_end_control_points_convert_with_a_warning; crates/anim/tests/c32_passage.rs; crates/anim/tests/c32_r1_passage.rs; crates/anim/tests/c32_r1_corpus.rs\n 05 \u00a712,\"cameras: create, delete, list, set, current; last-camera refusal on every route; replacement\",M3,C3.2,implemented,crates/executor/tests/c32_semantics.rs::camera_creation_current_replacement_and_last_camera_refusal; crates/executor/tests/c32_semantics.rs::cameras_list_get_set_and_project\n 05 \u00a719.1, \u00a719.4,\"anim.evaluate shape; read-only; deterministic bytes\",M3,C3.2,implemented,crates/executor/tests/c32_semantics.rs::evaluate_reports_the_shape_and_changes_nothing; crates/executor/tests/c32_semantics.rs::the_same_requests_answer_the_same_bytes\n-05 \u00a719.1.7, \u00a717,\"one undo step; dry run; atomic rollback; one anim.changed per undo step; stale guards; cancellation\",M3,C3.2,implemented,crates/executor/tests/c32_contract.rs::every_action_is_one_undo_step_and_a_dry_run_changes_nothing; crates/executor/tests/c32_contract.rs::atomic_batches_roll_everything_back_and_share_one_step_and_one_event; crates/executor/tests/c32_contract.rs::a_running_evaluation_is_cancelled_by_its_callers_budget_and_frees_the_worker; crates/executor/tests/c32_contract.rs::oversized_requests_are_refused_before_the_watchdog; crates/executor/tests/c32_round1.rs::an_all_frame_change_absorbs_a_keyed_range_in_either_order; crates/executor/tests/c32_round1.rs::keyed_changes_report_their_interpolation_intervals_and_merge_them; crates/executor/tests/c32_round1.rs::separate_transactions_keep_separate_events; crates/executor/tests/c32_round2.rs; crates/executor/tests/c32_r2_events.rs\n+05 \u00a719.1.7, \u00a717,\"one undo step; dry run; atomic rollback; one anim.changed per undo step; stale guards; cancellation\",M3,C3.2,implemented,crates/executor/tests/c32_contract.rs::every_action_is_one_undo_step_and_a_dry_run_changes_nothing; crates/executor/tests/c32_contract.rs::atomic_batches_roll_everything_back_and_share_one_step_and_one_event; crates/executor/tests/c32_contract.rs::a_running_evaluation_is_cancelled_by_its_callers_budget_and_frees_the_worker; crates/executor/tests/c32_contract.rs::oversized_requests_are_refused_before_the_watchdog; crates/executor/tests/c32_round1.rs::an_all_frame_change_absorbs_a_keyed_range_in_either_order; crates/executor/tests/c32_round1.rs::keyed_changes_report_their_interpolation_intervals_and_merge_them; crates/executor/tests/c32_round1.rs::separate_transactions_keep_separate_events; crates/executor/tests/c32_round2.rs; crates/executor/tests/c32_r2_events.rs; crates/executor/tests/c32_round3.rs; crates/mcp/tests/c32_round3_protocol.rs\n 10 AG-02 / ADR-0013 \u00a72,\"transform and camera properties through the owning commands in doc.object.patch\",M3,C3.2,implemented,crates/executor/tests/c32_semantics.rs::generic_patches_of_transform_and_camera_properties_use_the_owning_commands\n 10 \u00a74.12,\"channels and keys persist with stable IDs\",M3,C3.2,implemented,crates/executor/tests/c32_contract.rs::channels_survive_save_and_open_with_their_ids; crates/executor/tests/c32_semantics.rs::channel_and_key_ids_are_stable_and_handles_follow_the_spec\n 11 \u00a714.8 E4 (numeric),\"a posed puppet within 1e-6 of independent values; the same bytes across runs and operating systems\",M3,C3.2,implemented,scripts/e4-cutout-numeric.py; .github/workflows/ci.yml (e4, e4-cross-os); scripts/e4-cutout-numeric.py --variant (CI e4 release and e4 cross-OS)\n",
+  "environment": {
+    "TT_COMMIT_REVIEW_RECEIPTS": null,
+    "mcp": "2.0.0"
+  },
+  "new_product_hazards": [],
+  "fixed_heads": {
+    "fd14a8e": "fd14a8e73d44132568b45f0563963513ba861e97",
+    "8c640d1": "8c640d18e8b1d8562145f6aa88dc75fd6dee1b25"
+  },
+  "largest_SI_reference": 104
+}

@@ -1,0 +1,26 @@
+{
+  "reviewedHead": "4984c253713553fd686e6876dc8a9b13b236e6da",
+  "branch": "review/m3-c33-r4",
+  "platform": "Windows-11-10.0.26200-SP0",
+  "flags": {
+    "TT_COMMIT_REVIEW_RECEIPTS": null,
+    "TT_UPDATE_GOLDEN": null,
+    "TT_RECORD_GOLDENS": null,
+    "TT_C12_REVIEW_ARTIFACT_DIR": null
+  },
+  "sdk": "2.0.0",
+  "files": {
+    "crates/executor/src/jobs.rs": "e6c3fce522f4f45d60f240c5bfaf6b50f3bbb4a54749c50164e2bf87caf3b97b",
+    "crates/executor/src/commands/render.rs": "1be55e5517ddfac208b209741bd29ca69397caadb669c258447186e041c13e86",
+    ".github/workflows/ci.yml": "68a67e0a766bec5b7e1076688e7fa9963d8952a1bbd26af442eea12cb9e78266",
+    "docs/decisions/ADR-0020-compositor-render-list.md": "329db68e80a6ef345558feede77a4ac06476004ffc8ad0c6ba3ad5e90db4e7c8",
+    "plan/traceability.csv": "f794bbde1898d695aec61c84510ea40d2c02e95a2a45f9ca1591f18426bdf024",
+    "plan/spec-issues.md": "e44b4eb966340bb42c896bc76506b5d9ca162be95b35fa59bee9ee9ffb40cd84"
+  },
+  "reviewProbeSourcesLfNormalizedSha256": {
+    "crates/executor/tests/c33_r4_closure.rs": "b52376eb9b0692634593f5d80b0165b8b747c39a8e3def0624a1cd890f068c8a",
+    "crates/executor/tests/c33_r4_rollback.rs": "f9225cabb1d5a04fc95bbd08c2e3a85e097b1550a75e4ec633b3f27fd7c42568",
+    "crates/mcp/tests/c33_r4_closure.rs": "01040212ac3ff5de4caa191181e75ab605f6bf096a50fc61e59497abb7690f04",
+    "crates/mcp/tests/c33_r4_rollback.rs": "ec48a7cde68f176713d342c17c4f112bb290bbffdbebae45fcfc244ef4b25ef3"
+  }
+}

@@ -521,6 +521,11 @@ fn refs(doc: &Document, only_used: bool) -> Vec<(String, String, Option<u64>, &'
     for d in doc.drawings() {
         if let Ok(v) = doc.entry_raw_json(&EntryKey::Drawing(d.id().clone())) {
             collect_blobs(&v, d.id().as_str(), &mut out, 0);
+            // A drawing's colour recovery data holds full swatch copies (10 §4.11, 03 §11.2): their texture images
+            // are reachable even when no live palette references them (ADR-0014 history; C31-R3-04).
+            if let Some(recovery) = v.get("colourRecovery") {
+                collect_textures(recovery, d.id().as_str(), &mut out, 0);
+            }
         }
     }
     for p in doc.palettes() {

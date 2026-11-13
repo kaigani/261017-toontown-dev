@@ -1,0 +1,1448 @@
+{
+  "reviewedHead": "5d97bd7360c9174da5efad995255024b177d4db9",
+  "counts": {
+    "implemented": 181,
+    "deferred-with-owner": 14,
+    "divergent": 2,
+    "closed": 1,
+    "pending": 0,
+    "missing": 0
+  },
+  "verificationNote": "Inherited units retained; round-three changes independently adjudicated. Two divergent units remain due to typed cancellation error loss, not unrelated-file deletion. See report for coverage limits.",
+  "rows": [
+    {
+      "id": "RF-001",
+      "requirement": "camera composition",
+      "clause": "09 11.1-11.4; registry render.frame.run",
+      "status": "implemented",
+      "evidence": "c33_render; c33_goldens; c33_r1_pixels"
+    },
+    {
+      "id": "RF-002",
+      "requirement": "element subset composition",
+      "clause": "09 11.1-11.4; registry render.frame.run",
+      "status": "implemented",
+      "evidence": "c33_render; c33_goldens; c33_r1_pixels"
+    },
+    {
+      "id": "RF-003",
+      "requirement": "drawing-space composition",
+      "clause": "09 11.1-11.4; registry render.frame.run",
+      "status": "implemented",
+      "evidence": "c33_render; c33_goldens; c33_r1_pixels"
+    },
+    {
+      "id": "RF-004",
+      "requirement": "scene/frame addressing",
+      "clause": "09 11.1-11.4; registry render.frame.run",
+      "status": "implemented",
+      "evidence": "c33_render; c33_goldens; c33_r1_pixels"
+    },
+    {
+      "id": "RF-005",
+      "requirement": "camera override",
+      "clause": "09 11.1-11.4; registry render.frame.run",
+      "status": "implemented",
+      "evidence": "c33_render; c33_goldens; c33_r1_pixels"
+    },
+    {
+      "id": "RF-006",
+      "requirement": "width and height",
+      "clause": "09 11.1-11.4; registry render.frame.run",
+      "status": "implemented",
+      "evidence": "c33_render; c33_goldens; c33_r1_pixels"
+    },
+    {
+      "id": "RF-007",
+      "requirement": "aspect-preserving single dimension",
+      "clause": "09 11.1-11.4; registry render.frame.run",
+      "status": "implemented",
+      "evidence": "c33_render; c33_goldens; c33_r1_pixels"
+    },
+    {
+      "id": "RF-008",
+      "requirement": "scale",
+      "clause": "09 11.1-11.4; registry render.frame.run",
+      "status": "implemented",
+      "evidence": "c33_render; c33_goldens; c33_r1_pixels"
+    },
+    {
+      "id": "RF-009",
+      "requirement": "scene background",
+      "clause": "09 11.1-11.4; registry render.frame.run",
+      "status": "implemented",
+      "evidence": "c33_render; c33_goldens; c33_r1_pixels"
+    },
+    {
+      "id": "RF-010",
+      "requirement": "transparent background",
+      "clause": "09 11.1-11.4; registry render.frame.run",
+      "status": "implemented",
+      "evidence": "c33_render; c33_goldens; c33_r1_pixels"
+    },
+    {
+      "id": "RF-011",
+      "requirement": "explicit colour background",
+      "clause": "09 11.1-11.4; registry render.frame.run",
+      "status": "implemented",
+      "evidence": "c33_render; c33_goldens; c33_r1_pixels"
+    },
+    {
+      "id": "RF-012",
+      "requirement": "PNG output",
+      "clause": "09 11.1-11.4; registry render.frame.run",
+      "status": "implemented",
+      "evidence": "c33_render; c33_goldens; c33_r1_pixels"
+    },
+    {
+      "id": "RF-013",
+      "requirement": "JPEG output",
+      "clause": "09 11.1-11.4; registry render.frame.run",
+      "status": "implemented",
+      "evidence": "c33_render; c33_goldens; c33_r1_pixels"
+    },
+    {
+      "id": "RF-014",
+      "requirement": "JPEG quality",
+      "clause": "09 11.1-11.4; registry render.frame.run",
+      "status": "implemented",
+      "evidence": "c33_render; c33_goldens; c33_r1_pixels"
+    },
+    {
+      "id": "RF-015",
+      "requirement": "inline base64",
+      "clause": "09 11.1-11.4; registry render.frame.run",
+      "status": "implemented",
+      "evidence": "c33_render; c33_goldens; c33_r1_pixels"
+    },
+    {
+      "id": "RF-016",
+      "requirement": "absolute file output",
+      "clause": "09 11.1-11.4; registry render.frame.run",
+      "status": "implemented",
+      "evidence": "c33_render; c33_goldens; c33_r1_pixels"
+    },
+    {
+      "id": "RF-017",
+      "requirement": "fail on conflict",
+      "clause": "09 11.1-11.4; registry render.frame.run",
+      "status": "implemented",
+      "evidence": "c33_render; c33_goldens; c33_r1_pixels"
+    },
+    {
+      "id": "RF-018",
+      "requirement": "overwrite on conflict",
+      "clause": "09 11.1-11.4; registry render.frame.run",
+      "status": "implemented",
+      "evidence": "c33_render; c33_goldens; c33_r1_pixels"
+    },
+    {
+      "id": "RF-019",
+      "requirement": "rename on conflict",
+      "clause": "09 11.1-11.4; registry render.frame.run",
+      "status": "implemented",
+      "evidence": "c33_render; c33_goldens; c33_r1_pixels"
+    },
+    {
+      "id": "RF-020",
+      "requirement": "file-access policy",
+      "clause": "09 11.1-11.4; registry render.frame.run",
+      "status": "implemented",
+      "evidence": "c33_render; c33_goldens; c33_r1_pixels"
+    },
+    {
+      "id": "RF-021",
+      "requirement": "width/height/bytes/SHA/revision metadata",
+      "clause": "09 11.1-11.4; registry render.frame.run",
+      "status": "implemented",
+      "evidence": "c33_render; c33_goldens; c33_r1_pixels"
+    },
+    {
+      "id": "RF-022",
+      "requirement": "repeat PNG identity",
+      "clause": "09 11.1-11.4; registry render.frame.run",
+      "status": "implemented",
+      "evidence": "c33_render; c33_goldens; c33_r1_pixels"
+    },
+    {
+      "id": "RF-023",
+      "requirement": "history re-render identity",
+      "clause": "09 11.1-11.4; registry render.frame.run",
+      "status": "implemented",
+      "evidence": "c33_render; c33_goldens; c33_r1_pixels"
+    },
+    {
+      "id": "RF-024",
+      "requirement": "save/open re-render identity",
+      "clause": "09 11.1-11.4; registry render.frame.run",
+      "status": "implemented",
+      "evidence": "c33_render; c33_goldens; c33_r1_pixels"
+    },
+    {
+      "id": "RF-025",
+      "requirement": "staged batch render",
+      "clause": "09 11.1-11.4; registry render.frame.run",
+      "status": "implemented",
+      "evidence": "c33_render; c33_goldens; c33_r1_pixels"
+    },
+    {
+      "id": "RF-026",
+      "requirement": "failed batch rollback",
+      "clause": "09 11.1-11.4; registry render.frame.run",
+      "status": "implemented",
+      "evidence": "c33_render; c33_goldens; c33_r1_pixels"
+    },
+    {
+      "id": "RF-027",
+      "requirement": "overlays excluded",
+      "clause": "09 11.1-11.4; registry render.frame.run",
+      "status": "implemented",
+      "evidence": "c33_render; c33_goldens; c33_r1_pixels"
+    },
+    {
+      "id": "LIMIT-028",
+      "requirement": "inline long-side limit value",
+      "clause": "09 11.1.3; 11 6.5; registry render.limits.get",
+      "status": "implemented",
+      "evidence": "c33_render::sizes_scale_and_limits; render.rs"
+    },
+    {
+      "id": "LIMIT-029",
+      "requirement": "inline byte limit value",
+      "clause": "09 11.1.3; 11 6.5; registry render.limits.get",
+      "status": "implemented",
+      "evidence": "c33_render::sizes_scale_and_limits; render.rs"
+    },
+    {
+      "id": "LIMIT-030",
+      "requirement": "max output side",
+      "clause": "09 11.1.3; 11 6.5; registry render.limits.get",
+      "status": "implemented",
+      "evidence": "c33_render::sizes_scale_and_limits; render.rs"
+    },
+    {
+      "id": "LIMIT-031",
+      "requirement": "supported formats",
+      "clause": "09 11.1.3; 11 6.5; registry render.limits.get",
+      "status": "implemented",
+      "evidence": "c33_render::sizes_scale_and_limits; render.rs"
+    },
+    {
+      "id": "LIMIT-032",
+      "requirement": "oversized side refusal",
+      "clause": "09 11.1.3; 11 6.5; registry render.limits.get",
+      "status": "implemented",
+      "evidence": "c33_render::sizes_scale_and_limits; render.rs"
+    },
+    {
+      "id": "LIMIT-033",
+      "requirement": "inline refusal code",
+      "clause": "09 11.1.3; 11 6.5; registry render.limits.get",
+      "status": "implemented",
+      "evidence": "c33_render::sizes_scale_and_limits; render.rs"
+    },
+    {
+      "id": "LIST-034",
+      "requirement": "evaluated scene input",
+      "clause": "06 6.1-6.2; 05 2.6-2.8; ADR-0019/0020",
+      "status": "implemented",
+      "evidence": "c33_render_list; c33_r1_pixels; render_list.rs"
+    },
+    {
+      "id": "LIST-035",
+      "requirement": "memoized ancestor evaluation",
+      "clause": "06 6.1-6.2; 05 2.6-2.8; ADR-0019/0020",
+      "status": "implemented",
+      "evidence": "c33_render_list; c33_r1_pixels; render_list.rs"
+    },
+    {
+      "id": "LIST-036",
+      "requirement": "drawing-to-pixel affine",
+      "clause": "06 6.1-6.2; 05 2.6-2.8; ADR-0019/0020",
+      "status": "implemented",
+      "evidence": "c33_render_list; c33_r1_pixels; render_list.rs"
+    },
+    {
+      "id": "LIST-037",
+      "requirement": "three projected points",
+      "clause": "06 6.1-6.2; 05 2.6-2.8; ADR-0019/0020",
+      "status": "implemented",
+      "evidence": "c33_render_list; c33_r1_pixels; render_list.rs"
+    },
+    {
+      "id": "LIST-038",
+      "requirement": "drawing bounds",
+      "clause": "06 6.1-6.2; 05 2.6-2.8; ADR-0019/0020",
+      "status": "implemented",
+      "evidence": "c33_render_list; c33_r1_pixels; render_list.rs"
+    },
+    {
+      "id": "LIST-039",
+      "requirement": "camera pixel bounds",
+      "clause": "06 6.1-6.2; 05 2.6-2.8; ADR-0019/0020",
+      "status": "implemented",
+      "evidence": "c33_render_list; c33_r1_pixels; render_list.rs"
+    },
+    {
+      "id": "LIST-040",
+      "requirement": "normal world-Z ordering",
+      "clause": "06 6.1-6.2; 05 2.6-2.8; ADR-0019/0020",
+      "status": "implemented",
+      "evidence": "c33_render_list; c33_r1_pixels; render_list.rs"
+    },
+    {
+      "id": "LIST-041",
+      "requirement": "exact-depth Timeline ordering",
+      "clause": "06 6.1-6.2; 05 2.6-2.8; ADR-0019/0020",
+      "status": "implemented",
+      "evidence": "c33_render_list; c33_r1_pixels; render_list.rs"
+    },
+    {
+      "id": "LIST-042",
+      "requirement": "background role tier",
+      "clause": "06 6.1-6.2; 05 2.6-2.8; ADR-0019/0020",
+      "status": "implemented",
+      "evidence": "c33_render_list; c33_r1_pixels; render_list.rs"
+    },
+    {
+      "id": "LIST-043",
+      "requirement": "foreground role tier",
+      "clause": "06 6.1-6.2; 05 2.6-2.8; ADR-0019/0020",
+      "status": "implemented",
+      "evidence": "c33_render_list; c33_r1_pixels; render_list.rs"
+    },
+    {
+      "id": "LIST-044",
+      "requirement": "envelope as normal",
+      "clause": "06 6.1-6.2; 05 2.6-2.8; ADR-0019/0020",
+      "status": "implemented",
+      "evidence": "c33_render_list; c33_r1_pixels; render_list.rs"
+    },
+    {
+      "id": "LIST-045",
+      "requirement": "hidden element",
+      "clause": "06 6.1-6.2; 05 2.6-2.8; ADR-0019/0020",
+      "status": "implemented",
+      "evidence": "c33_render_list; c33_r1_pixels; render_list.rs"
+    },
+    {
+      "id": "LIST-046",
+      "requirement": "hidden ancestor",
+      "clause": "06 6.1-6.2; 05 2.6-2.8; ADR-0019/0020",
+      "status": "implemented",
+      "evidence": "c33_render_list; c33_r1_pixels; render_list.rs"
+    },
+    {
+      "id": "LIST-047",
+      "requirement": "annotation omitted",
+      "clause": "06 6.1-6.2; 05 2.6-2.8; ADR-0019/0020",
+      "status": "implemented",
+      "evidence": "c33_render_list; c33_r1_pixels; render_list.rs"
+    },
+    {
+      "id": "LIST-048",
+      "requirement": "empty exposure",
+      "clause": "06 6.1-6.2; 05 2.6-2.8; ADR-0019/0020",
+      "status": "implemented",
+      "evidence": "c33_render_list; c33_r1_pixels; render_list.rs"
+    },
+    {
+      "id": "LIST-049",
+      "requirement": "empty geometry",
+      "clause": "06 6.1-6.2; 05 2.6-2.8; ADR-0019/0020",
+      "status": "implemented",
+      "evidence": "c33_render_list; c33_r1_pixels; render_list.rs"
+    },
+    {
+      "id": "LIST-050",
+      "requirement": "out-of-frame verdict",
+      "clause": "06 6.1-6.2; 05 2.6-2.8; ADR-0019/0020",
+      "status": "implemented",
+      "evidence": "c33_render_list; c33_r1_pixels; render_list.rs"
+    },
+    {
+      "id": "LIST-051",
+      "requirement": "near-plane culling",
+      "clause": "06 6.1-6.2; 05 2.6-2.8; ADR-0019/0020",
+      "status": "implemented",
+      "evidence": "c33_render_list; c33_r1_pixels; render_list.rs"
+    },
+    {
+      "id": "LIST-052",
+      "requirement": "background exposure extension",
+      "clause": "06 6.1-6.2; 05 2.6-2.8; ADR-0019/0020",
+      "status": "implemented",
+      "evidence": "c33_render_list; c33_r1_pixels; render_list.rs"
+    },
+    {
+      "id": "LIST-053",
+      "requirement": "mirrored scale",
+      "clause": "06 6.1-6.2; 05 2.6-2.8; ADR-0019/0020",
+      "status": "implemented",
+      "evidence": "c33_render_list; c33_r1_pixels; render_list.rs"
+    },
+    {
+      "id": "LIST-054",
+      "requirement": "skew",
+      "clause": "06 6.1-6.2; 05 2.6-2.8; ADR-0019/0020",
+      "status": "implemented",
+      "evidence": "c33_render_list; c33_r1_pixels; render_list.rs"
+    },
+    {
+      "id": "LIST-055",
+      "requirement": "nested parent transforms",
+      "clause": "06 6.1-6.2; 05 2.6-2.8; ADR-0019/0020",
+      "status": "implemented",
+      "evidence": "c33_render_list; c33_r1_pixels; render_list.rs"
+    },
+    {
+      "id": "LIST-056",
+      "requirement": "pivots",
+      "clause": "06 6.1-6.2; 05 2.6-2.8; ADR-0019/0020",
+      "status": "implemented",
+      "evidence": "c33_render_list; c33_r1_pixels; render_list.rs"
+    },
+    {
+      "id": "LIST-057",
+      "requirement": "camera roll",
+      "clause": "06 6.1-6.2; 05 2.6-2.8; ADR-0019/0020",
+      "status": "implemented",
+      "evidence": "c33_render_list; c33_r1_pixels; render_list.rs"
+    },
+    {
+      "id": "LIST-058",
+      "requirement": "dynamic FOV",
+      "clause": "06 6.1-6.2; 05 2.6-2.8; ADR-0019/0020",
+      "status": "implemented",
+      "evidence": "c33_render_list; c33_r1_pixels; render_list.rs"
+    },
+    {
+      "id": "BITMAP-059",
+      "requirement": "pixel-space origin/y direction",
+      "clause": "10 4.9; 05 1.3; SI-105; 06 6.4/6.8",
+      "status": "implemented",
+      "evidence": "c33_bitmap; draw_render.rs; inspect.rs"
+    },
+    {
+      "id": "BITMAP-060",
+      "requirement": "stored affine honored",
+      "clause": "10 4.9; 05 1.3; SI-105; 06 6.4/6.8",
+      "status": "implemented",
+      "evidence": "c33_bitmap; draw_render.rs; inspect.rs"
+    },
+    {
+      "id": "BITMAP-061",
+      "requirement": "native-size scale",
+      "clause": "10 4.9; 05 1.3; SI-105; 06 6.4/6.8",
+      "status": "implemented",
+      "evidence": "c33_bitmap; draw_render.rs; inspect.rs"
+    },
+    {
+      "id": "BITMAP-062",
+      "requirement": "one source pixel per output pixel",
+      "clause": "10 4.9; 05 1.3; SI-105; 06 6.4/6.8",
+      "status": "implemented",
+      "evidence": "c33_bitmap; draw_render.rs; inspect.rs"
+    },
+    {
+      "id": "BITMAP-063",
+      "requirement": "straight alpha import",
+      "clause": "10 4.9; 05 1.3; SI-105; 06 6.4/6.8",
+      "status": "implemented",
+      "evidence": "c33_bitmap; draw_render.rs; inspect.rs"
+    },
+    {
+      "id": "BITMAP-064",
+      "requirement": "full source resolution",
+      "clause": "10 4.9; 05 1.3; SI-105; 06 6.4/6.8",
+      "status": "implemented",
+      "evidence": "c33_bitmap; draw_render.rs; inspect.rs"
+    },
+    {
+      "id": "BITMAP-065",
+      "requirement": "bounds agree with render",
+      "clause": "10 4.9; 05 1.3; SI-105; 06 6.4/6.8",
+      "status": "implemented",
+      "evidence": "c33_bitmap; draw_render.rs; inspect.rs"
+    },
+    {
+      "id": "BITMAP-066",
+      "requirement": "transparent pixels not hit",
+      "clause": "10 4.9; 05 1.3; SI-105; 06 6.4/6.8",
+      "status": "implemented",
+      "evidence": "c33_bitmap; draw_render.rs; inspect.rs"
+    },
+    {
+      "id": "DESCRIBE-067",
+      "requirement": "same render-list input",
+      "clause": "11 7.5/15.2; registry inspect.frame.describe",
+      "status": "implemented",
+      "evidence": "c33_inspect; c33_r1_tools; inspect.rs"
+    },
+    {
+      "id": "DESCRIBE-068",
+      "requirement": "draw order",
+      "clause": "11 7.5/15.2; registry inspect.frame.describe",
+      "status": "implemented",
+      "evidence": "c33_inspect; c33_r1_tools; inspect.rs"
+    },
+    {
+      "id": "DESCRIBE-069",
+      "requirement": "drawing IDs",
+      "clause": "11 7.5/15.2; registry inspect.frame.describe",
+      "status": "implemented",
+      "evidence": "c33_inspect; c33_r1_tools; inspect.rs"
+    },
+    {
+      "id": "DESCRIBE-070",
+      "requirement": "world transform",
+      "clause": "11 7.5/15.2; registry inspect.frame.describe",
+      "status": "implemented",
+      "evidence": "c33_inspect; c33_r1_tools; inspect.rs"
+    },
+    {
+      "id": "DESCRIBE-071",
+      "requirement": "normalized bounds",
+      "clause": "11 7.5/15.2; registry inspect.frame.describe",
+      "status": "implemented",
+      "evidence": "c33_inspect; c33_r1_tools; inspect.rs"
+    },
+    {
+      "id": "DESCRIBE-072",
+      "requirement": "field bounds",
+      "clause": "11 7.5/15.2; registry inspect.frame.describe",
+      "status": "implemented",
+      "evidence": "c33_inspect; c33_r1_tools; inspect.rs"
+    },
+    {
+      "id": "DESCRIBE-073",
+      "requirement": "pixel bounds",
+      "clause": "11 7.5/15.2; registry inspect.frame.describe",
+      "status": "implemented",
+      "evidence": "c33_inspect; c33_r1_tools; inspect.rs"
+    },
+    {
+      "id": "DESCRIBE-074",
+      "requirement": "opacity",
+      "clause": "11 7.5/15.2; registry inspect.frame.describe",
+      "status": "implemented",
+      "evidence": "c33_inspect; c33_r1_tools; inspect.rs"
+    },
+    {
+      "id": "DESCRIBE-075",
+      "requirement": "roles",
+      "clause": "11 7.5/15.2; registry inspect.frame.describe",
+      "status": "implemented",
+      "evidence": "c33_inspect; c33_r1_tools; inspect.rs"
+    },
+    {
+      "id": "DESCRIBE-076",
+      "requirement": "omitted reasons",
+      "clause": "11 7.5/15.2; registry inspect.frame.describe",
+      "status": "implemented",
+      "evidence": "c33_inspect; c33_r1_tools; inspect.rs"
+    },
+    {
+      "id": "DESCRIBE-077",
+      "requirement": "empty-exposure warning",
+      "clause": "11 7.5/15.2; registry inspect.frame.describe",
+      "status": "implemented",
+      "evidence": "c33_inspect; c33_r1_tools; inspect.rs"
+    },
+    {
+      "id": "DESCRIBE-078",
+      "requirement": "revision",
+      "clause": "11 7.5/15.2; registry inspect.frame.describe",
+      "status": "implemented",
+      "evidence": "c33_inspect; c33_r1_tools; inspect.rs"
+    },
+    {
+      "id": "HIT-079",
+      "requirement": "image space",
+      "clause": "06 6.8; 11 7.5/15.2; registry inspect.hitTest",
+      "status": "implemented",
+      "evidence": "c33_inspect; c33_bitmap; c33_r1_tools"
+    },
+    {
+      "id": "HIT-080",
+      "requirement": "camera space",
+      "clause": "06 6.8; 11 7.5/15.2; registry inspect.hitTest",
+      "status": "implemented",
+      "evidence": "c33_inspect; c33_bitmap; c33_r1_tools"
+    },
+    {
+      "id": "HIT-081",
+      "requirement": "scene space",
+      "clause": "06 6.8; 11 7.5/15.2; registry inspect.hitTest",
+      "status": "implemented",
+      "evidence": "c33_inspect; c33_bitmap; c33_r1_tools"
+    },
+    {
+      "id": "HIT-082",
+      "requirement": "top-most first",
+      "clause": "06 6.8; 11 7.5/15.2; registry inspect.hitTest",
+      "status": "implemented",
+      "evidence": "c33_inspect; c33_bitmap; c33_r1_tools"
+    },
+    {
+      "id": "HIT-083",
+      "requirement": "mirrored geometry",
+      "clause": "06 6.8; 11 7.5/15.2; registry inspect.hitTest",
+      "status": "implemented",
+      "evidence": "c33_inspect; c33_bitmap; c33_r1_tools"
+    },
+    {
+      "id": "HIT-084",
+      "requirement": "overlapping nodes",
+      "clause": "06 6.8; 11 7.5/15.2; registry inspect.hitTest",
+      "status": "implemented",
+      "evidence": "c33_inspect; c33_bitmap; c33_r1_tools"
+    },
+    {
+      "id": "HIT-085",
+      "requirement": "depth/stacking",
+      "clause": "06 6.8; 11 7.5/15.2; registry inspect.hitTest",
+      "status": "implemented",
+      "evidence": "c33_inspect; c33_bitmap; c33_r1_tools"
+    },
+    {
+      "id": "HIT-086",
+      "requirement": "drawing/layer/object/colour IDs",
+      "clause": "06 6.8; 11 7.5/15.2; registry inspect.hitTest",
+      "status": "implemented",
+      "evidence": "c33_inspect; c33_bitmap; c33_r1_tools"
+    },
+    {
+      "id": "HIT-087",
+      "requirement": "transparent bitmap exclusion",
+      "clause": "06 6.8; 11 7.5/15.2; registry inspect.hitTest",
+      "status": "implemented",
+      "evidence": "c33_inspect; c33_bitmap; c33_r1_tools"
+    },
+    {
+      "id": "HIT-088",
+      "requirement": "drawing without context refusal",
+      "clause": "06 6.8; 11 7.5/15.2; registry inspect.hitTest",
+      "status": "implemented",
+      "evidence": "c33_inspect; c33_bitmap; c33_r1_tools"
+    },
+    {
+      "id": "CONVERT-089",
+      "requirement": "drawing space",
+      "clause": "11 5.3/7.5/15.2; SI-109; registry inspect.coordinates.convert",
+      "status": "implemented",
+      "evidence": "c33_inspect; c33_r1_tools; inspect.rs"
+    },
+    {
+      "id": "CONVERT-090",
+      "requirement": "local space",
+      "clause": "11 5.3/7.5/15.2; SI-109; registry inspect.coordinates.convert",
+      "status": "implemented",
+      "evidence": "c33_inspect; c33_r1_tools; inspect.rs"
+    },
+    {
+      "id": "CONVERT-091",
+      "requirement": "parent space",
+      "clause": "11 5.3/7.5/15.2; SI-109; registry inspect.coordinates.convert",
+      "status": "implemented",
+      "evidence": "c33_inspect; c33_r1_tools; inspect.rs"
+    },
+    {
+      "id": "CONVERT-092",
+      "requirement": "scene/world/field aliases",
+      "clause": "11 5.3/7.5/15.2; SI-109; registry inspect.coordinates.convert",
+      "status": "implemented",
+      "evidence": "c33_inspect; c33_r1_tools; inspect.rs"
+    },
+    {
+      "id": "CONVERT-093",
+      "requirement": "camera space",
+      "clause": "11 5.3/7.5/15.2; SI-109; registry inspect.coordinates.convert",
+      "status": "implemented",
+      "evidence": "c33_inspect; c33_r1_tools; inspect.rs"
+    },
+    {
+      "id": "CONVERT-094",
+      "requirement": "normalized camera space",
+      "clause": "11 5.3/7.5/15.2; SI-109; registry inspect.coordinates.convert",
+      "status": "implemented",
+      "evidence": "c33_inspect; c33_r1_tools; inspect.rs"
+    },
+    {
+      "id": "CONVERT-095",
+      "requirement": "image space",
+      "clause": "11 5.3/7.5/15.2; SI-109; registry inspect.coordinates.convert",
+      "status": "implemented",
+      "evidence": "c33_inspect; c33_r1_tools; inspect.rs"
+    },
+    {
+      "id": "CONVERT-096",
+      "requirement": "forward mapping",
+      "clause": "11 5.3/7.5/15.2; SI-109; registry inspect.coordinates.convert",
+      "status": "implemented",
+      "evidence": "c33_inspect; c33_r1_tools; inspect.rs"
+    },
+    {
+      "id": "CONVERT-097",
+      "requirement": "inverse round trip",
+      "clause": "11 5.3/7.5/15.2; SI-109; registry inspect.coordinates.convert",
+      "status": "implemented",
+      "evidence": "c33_inspect; c33_r1_tools; inspect.rs"
+    },
+    {
+      "id": "CONVERT-098",
+      "requirement": "16:9 corners",
+      "clause": "11 5.3/7.5/15.2; SI-109; registry inspect.coordinates.convert",
+      "status": "implemented",
+      "evidence": "c33_inspect; c33_r1_tools; inspect.rs"
+    },
+    {
+      "id": "CONVERT-099",
+      "requirement": "z-plane unprojection",
+      "clause": "11 5.3/7.5/15.2; SI-109; registry inspect.coordinates.convert",
+      "status": "implemented",
+      "evidence": "c33_inspect; c33_r1_tools; inspect.rs"
+    },
+    {
+      "id": "CONVERT-100",
+      "requirement": "near-plane refusal",
+      "clause": "11 5.3/7.5/15.2; SI-109; registry inspect.coordinates.convert",
+      "status": "implemented",
+      "evidence": "c33_inspect; c33_r1_tools; inspect.rs"
+    },
+    {
+      "id": "CONVERT-101",
+      "requirement": "element context required",
+      "clause": "11 5.3/7.5/15.2; SI-109; registry inspect.coordinates.convert",
+      "status": "implemented",
+      "evidence": "c33_inspect; c33_r1_tools; inspect.rs"
+    },
+    {
+      "id": "CONVERT-102",
+      "requirement": "finite point validation",
+      "clause": "11 5.3/7.5/15.2; SI-109; registry inspect.coordinates.convert",
+      "status": "implemented",
+      "evidence": "c33_inspect; c33_r1_tools; inspect.rs"
+    },
+    {
+      "id": "SHEET-103",
+      "requirement": "explicit frame list",
+      "clause": "11 7.5/15.2; SI-108; registry inspect.contactSheet.render",
+      "status": "implemented",
+      "evidence": "c33_inspect; c33_goldens; c33_r1_tools"
+    },
+    {
+      "id": "SHEET-104",
+      "requirement": "stepped range",
+      "clause": "11 7.5/15.2; SI-108; registry inspect.contactSheet.render",
+      "status": "implemented",
+      "evidence": "c33_inspect; c33_goldens; c33_r1_tools"
+    },
+    {
+      "id": "SHEET-105",
+      "requirement": "default ceil sqrt columns",
+      "clause": "11 7.5/15.2; SI-108; registry inspect.contactSheet.render",
+      "status": "implemented",
+      "evidence": "c33_inspect; c33_goldens; c33_r1_tools"
+    },
+    {
+      "id": "SHEET-106",
+      "requirement": "explicit columns",
+      "clause": "11 7.5/15.2; SI-108; registry inspect.contactSheet.render",
+      "status": "implemented",
+      "evidence": "c33_inspect; c33_goldens; c33_r1_tools"
+    },
+    {
+      "id": "SHEET-107",
+      "requirement": "aspect-derived cell height",
+      "clause": "11 7.5/15.2; SI-108; registry inspect.contactSheet.render",
+      "status": "implemented",
+      "evidence": "c33_inspect; c33_goldens; c33_r1_tools"
+    },
+    {
+      "id": "SHEET-108",
+      "requirement": "cell-width setting",
+      "clause": "11 7.5/15.2; SI-108; registry inspect.contactSheet.render",
+      "status": "implemented",
+      "evidence": "c33_inspect; c33_goldens; c33_r1_tools"
+    },
+    {
+      "id": "SHEET-109",
+      "requirement": "deterministic digit labels",
+      "clause": "11 7.5/15.2; SI-108; registry inspect.contactSheet.render",
+      "status": "implemented",
+      "evidence": "c33_inspect; c33_goldens; c33_r1_tools"
+    },
+    {
+      "id": "SHEET-110",
+      "requirement": "label toggle",
+      "clause": "11 7.5/15.2; SI-108; registry inspect.contactSheet.render",
+      "status": "implemented",
+      "evidence": "c33_inspect; c33_goldens; c33_r1_tools"
+    },
+    {
+      "id": "SHEET-111",
+      "requirement": "cell pixels equal frame pixels",
+      "clause": "11 7.5/15.2; SI-108; registry inspect.contactSheet.render",
+      "status": "implemented",
+      "evidence": "c33_inspect; c33_goldens; c33_r1_tools"
+    },
+    {
+      "id": "SHEET-112",
+      "requirement": "cell coordinates",
+      "clause": "11 7.5/15.2; SI-108; registry inspect.contactSheet.render",
+      "status": "implemented",
+      "evidence": "c33_inspect; c33_goldens; c33_r1_tools"
+    },
+    {
+      "id": "SHEET-113",
+      "requirement": "bytes/SHA/revision",
+      "clause": "11 7.5/15.2; SI-108; registry inspect.contactSheet.render",
+      "status": "implemented",
+      "evidence": "c33_inspect; c33_goldens; c33_r1_tools"
+    },
+    {
+      "id": "SHEET-114",
+      "requirement": "side-limit refusal",
+      "clause": "11 7.5/15.2; SI-108; registry inspect.contactSheet.render",
+      "status": "implemented",
+      "evidence": "c33_inspect; c33_goldens; c33_r1_tools"
+    },
+    {
+      "id": "SHEET-115",
+      "requirement": "inline-limit refusal",
+      "clause": "11 7.5/15.2; SI-108; registry inspect.contactSheet.render",
+      "status": "implemented",
+      "evidence": "c33_inspect; c33_goldens; c33_r1_tools"
+    },
+    {
+      "id": "RANGE-116",
+      "requirement": "snapshot-owned document",
+      "clause": "09 11.1/11.2/11.4; registry render.range.run",
+      "status": "implemented",
+      "evidence": "c33_range; render.rs; c33_r1_contract"
+    },
+    {
+      "id": "RANGE-117",
+      "requirement": "inclusive range",
+      "clause": "09 11.1/11.2/11.4; registry render.range.run",
+      "status": "implemented",
+      "evidence": "c33_range; render.rs; c33_r1_contract"
+    },
+    {
+      "id": "RANGE-118",
+      "requirement": "step",
+      "clause": "09 11.1/11.2/11.4; registry render.range.run",
+      "status": "implemented",
+      "evidence": "c33_range; render.rs; c33_r1_contract"
+    },
+    {
+      "id": "RANGE-119",
+      "requirement": "name token",
+      "clause": "09 11.1/11.2/11.4; registry render.range.run",
+      "status": "implemented",
+      "evidence": "c33_range; render.rs; c33_r1_contract"
+    },
+    {
+      "id": "RANGE-120",
+      "requirement": "scene token",
+      "clause": "09 11.1/11.2/11.4; registry render.range.run",
+      "status": "implemented",
+      "evidence": "c33_range; render.rs; c33_r1_contract"
+    },
+    {
+      "id": "RANGE-121",
+      "requirement": "frame token",
+      "clause": "09 11.1/11.2/11.4; registry render.range.run",
+      "status": "implemented",
+      "evidence": "c33_range; render.rs; c33_r1_contract"
+    },
+    {
+      "id": "RANGE-122",
+      "requirement": "zero padding",
+      "clause": "09 11.1/11.2/11.4; registry render.range.run",
+      "status": "implemented",
+      "evidence": "c33_range; render.rs; c33_r1_contract"
+    },
+    {
+      "id": "RANGE-123",
+      "requirement": "bad pattern refusal",
+      "clause": "09 11.1/11.2/11.4; registry render.range.run",
+      "status": "implemented",
+      "evidence": "c33_range; render.rs; c33_r1_contract"
+    },
+    {
+      "id": "RANGE-124",
+      "requirement": "duplicate name refusal",
+      "clause": "09 11.1/11.2/11.4; registry render.range.run",
+      "status": "implemented",
+      "evidence": "c33_range; render.rs; c33_r1_contract"
+    },
+    {
+      "id": "RANGE-125",
+      "requirement": "absolute directory",
+      "clause": "09 11.1/11.2/11.4; registry render.range.run",
+      "status": "implemented",
+      "evidence": "c33_range; render.rs; c33_r1_contract"
+    },
+    {
+      "id": "RANGE-126",
+      "requirement": "createDirs",
+      "clause": "09 11.1/11.2/11.4; registry render.range.run",
+      "status": "implemented",
+      "evidence": "c33_range; render.rs; c33_r1_contract"
+    },
+    {
+      "id": "RANGE-127",
+      "requirement": "missing-dir refusal",
+      "clause": "09 11.1/11.2/11.4; registry render.range.run",
+      "status": "implemented",
+      "evidence": "c33_range; render.rs; c33_r1_contract"
+    },
+    {
+      "id": "RANGE-128",
+      "requirement": "conflict fail",
+      "clause": "09 11.1/11.2/11.4; registry render.range.run",
+      "status": "implemented",
+      "evidence": "c33_range; render.rs; c33_r1_contract"
+    },
+    {
+      "id": "RANGE-129",
+      "requirement": "conflict overwrite",
+      "clause": "09 11.1/11.2/11.4; registry render.range.run",
+      "status": "implemented",
+      "evidence": "c33_range; render.rs; c33_r1_contract"
+    },
+    {
+      "id": "RANGE-130",
+      "requirement": "conflict rename",
+      "clause": "09 11.1/11.2/11.4; registry render.range.run",
+      "status": "implemented",
+      "evidence": "c33_range; render.rs; c33_r1_contract"
+    },
+    {
+      "id": "RANGE-131",
+      "requirement": "PNG format",
+      "clause": "09 11.1/11.2/11.4; registry render.range.run",
+      "status": "implemented",
+      "evidence": "c33_range; render.rs; c33_r1_contract"
+    },
+    {
+      "id": "RANGE-132",
+      "requirement": "JPEG format",
+      "clause": "09 11.1/11.2/11.4; registry render.range.run",
+      "status": "implemented",
+      "evidence": "c33_range; render.rs; c33_r1_contract"
+    },
+    {
+      "id": "RANGE-133",
+      "requirement": "BMP format",
+      "clause": "09 11.1/11.2/11.4; registry render.range.run",
+      "status": "implemented",
+      "evidence": "c33_range; render.rs; c33_r1_contract"
+    },
+    {
+      "id": "RANGE-134",
+      "requirement": "TGA format",
+      "clause": "09 11.1/11.2/11.4; registry render.range.run",
+      "status": "implemented",
+      "evidence": "c33_range; render.rs; c33_r1_contract"
+    },
+    {
+      "id": "RANGE-135",
+      "requirement": "lossless frame equivalence",
+      "clause": "09 11.1/11.2/11.4; registry render.range.run",
+      "status": "implemented",
+      "evidence": "c33_range; render.rs; c33_r1_contract"
+    },
+    {
+      "id": "RANGE-136",
+      "requirement": "companion manifest",
+      "clause": "09 11.1/11.2/11.4; registry render.range.run",
+      "status": "implemented",
+      "evidence": "c33_range; render.rs; c33_r1_contract"
+    },
+    {
+      "id": "RANGE-137",
+      "requirement": "manifest roles and hashes",
+      "clause": "09 11.1/11.2/11.4; registry render.range.run",
+      "status": "implemented",
+      "evidence": "c33_range; render.rs; c33_r1_contract"
+    },
+    {
+      "id": "RANGE-138",
+      "requirement": "per-frame progress",
+      "clause": "09 11.1/11.2/11.4; registry render.range.run",
+      "status": "implemented",
+      "evidence": "c33_range; render.rs; c33_r1_contract"
+    },
+    {
+      "id": "RANGE-139",
+      "requirement": "job cancellation",
+      "clause": "09 11.1/11.2/11.4; registry render.range.run",
+      "status": "implemented",
+      "evidence": "c33_range; render.rs; c33_r1_contract"
+    },
+    {
+      "id": "RANGE-140",
+      "requirement": "staging cleanup on cancellation",
+      "clause": "09 11.1/11.2/11.4; registry render.range.run",
+      "status": "implemented",
+      "evidence": "c33_range; render.rs; c33_r1_contract"
+    },
+    {
+      "id": "RANGE-141",
+      "requirement": "request ownership",
+      "clause": "09 11.1/11.2/11.4; registry render.range.run",
+      "status": "implemented",
+      "evidence": "c33_range; render.rs; c33_r1_contract"
+    },
+    {
+      "id": "RANGE-142",
+      "requirement": "concurrent edit isolation",
+      "clause": "09 11.1/11.2/11.4; registry render.range.run",
+      "status": "implemented",
+      "evidence": "c33_range; render.rs; c33_r1_contract"
+    },
+    {
+      "id": "COMMON-143",
+      "requirement": "query document-revision purity",
+      "clause": "plan 3.2; 11 14; charter items 7/10",
+      "status": "implemented",
+      "evidence": "c33_render; c33_r1_contract; CI 42795220374"
+    },
+    {
+      "id": "COMMON-144",
+      "requirement": "query history purity",
+      "clause": "plan 3.2; 11 14; charter items 7/10",
+      "status": "implemented",
+      "evidence": "c33_render; c33_r1_contract; CI 42795220374"
+    },
+    {
+      "id": "COMMON-145",
+      "requirement": "query selection/frame purity",
+      "clause": "plan 3.2; 11 14; charter items 7/10",
+      "status": "implemented",
+      "evidence": "c33_render; c33_r1_contract; CI 42795220374"
+    },
+    {
+      "id": "COMMON-146",
+      "requirement": "query event silence",
+      "clause": "plan 3.2; 11 14; charter items 7/10",
+      "status": "implemented",
+      "evidence": "c33_render; c33_r1_contract; CI 42795220374"
+    },
+    {
+      "id": "COMMON-147",
+      "requirement": "schema validation",
+      "clause": "plan 3.2; 11 14; charter items 7/10",
+      "status": "implemented",
+      "evidence": "c33_render; c33_r1_contract; CI 42795220374"
+    },
+    {
+      "id": "COMMON-148",
+      "requirement": "executed registry examples",
+      "clause": "plan 3.2; 11 14; charter items 7/10",
+      "status": "implemented",
+      "evidence": "c33_render; c33_r1_contract; CI 42795220374"
+    },
+    {
+      "id": "COMMON-149",
+      "requirement": "declaration freshness",
+      "clause": "plan 3.2; 11 14; charter items 7/10",
+      "status": "implemented",
+      "evidence": "c33_render; c33_r1_contract; CI 42795220374"
+    },
+    {
+      "id": "COMMON-150",
+      "requirement": "IPC freshness",
+      "clause": "plan 3.2; 11 14; charter items 7/10",
+      "status": "implemented",
+      "evidence": "c33_render; c33_r1_contract; CI 42795220374"
+    },
+    {
+      "id": "COMMON-151",
+      "requirement": "work-account charging",
+      "clause": "plan 3.2; 11 14; charter items 7/10",
+      "status": "implemented",
+      "evidence": "c33_render; c33_r1_contract; CI 42795220374"
+    },
+    {
+      "id": "COMMON-152",
+      "requirement": "request cancellation",
+      "clause": "plan 3.2; 11 14; charter items 7/10",
+      "status": "implemented",
+      "evidence": "c33_render; c33_r1_contract; CI 42795220374"
+    },
+    {
+      "id": "COMMON-153",
+      "requirement": "invalidation range keyed edits",
+      "clause": "plan 3.2; 11 14; charter items 7/10",
+      "status": "implemented",
+      "evidence": "c33_render; c33_r1_contract; CI 42795220374"
+    },
+    {
+      "id": "COMMON-154",
+      "requirement": "all-frame invalidation forms",
+      "clause": "plan 3.2; 11 14; charter items 7/10",
+      "status": "implemented",
+      "evidence": "c33_render; c33_r1_contract; CI 42795220374"
+    },
+    {
+      "id": "COMMON-155",
+      "requirement": "inherited reviewer ownership",
+      "clause": "plan 3.2; 11 14; charter items 7/10",
+      "status": "implemented",
+      "evidence": "c33_render; c33_r1_contract; CI 42795220374"
+    },
+    {
+      "id": "COMMON-156",
+      "requirement": "M2 goldens unchanged",
+      "clause": "plan 3.2; 11 14; charter items 7/10",
+      "status": "implemented",
+      "evidence": "c33_render; c33_r1_contract; CI 42795220374"
+    },
+    {
+      "id": "COMMON-157",
+      "requirement": "fixed raster configuration",
+      "clause": "plan 3.2; 11 14; charter items 7/10",
+      "status": "implemented",
+      "evidence": "c33_render; c33_r1_contract; CI 42795220374"
+    },
+    {
+      "id": "COMMON-158",
+      "requirement": "cross-OS gate bytes",
+      "clause": "plan 3.2; 11 14; charter items 7/10",
+      "status": "implemented",
+      "evidence": "c33_render; c33_r1_contract; CI 42795220374"
+    },
+    {
+      "id": "COMMON-159",
+      "requirement": "debug golden bytes",
+      "clause": "plan 3.2; 11 14; charter items 7/10",
+      "status": "implemented",
+      "evidence": "c33_render; c33_r1_contract; CI 42795220374"
+    },
+    {
+      "id": "COMMON-160",
+      "requirement": "release gate bytes",
+      "clause": "plan 3.2; 11 14; charter items 7/10",
+      "status": "implemented",
+      "evidence": "c33_render; c33_r1_contract; CI 42795220374"
+    },
+    {
+      "id": "COMMON-161",
+      "requirement": "headless SDK conformance",
+      "clause": "plan 3.2; 11 14; charter items 7/10",
+      "status": "implemented",
+      "evidence": "c33_render; c33_r1_contract; CI 42795220374"
+    },
+    {
+      "id": "COMMON-162",
+      "requirement": "test-hooks dev-only",
+      "clause": "plan 3.2; 11 14; charter items 7/10",
+      "status": "implemented",
+      "evidence": "c33_render; c33_r1_contract; CI 42795220374"
+    },
+    {
+      "id": "COMMON-163",
+      "requirement": "allow inventory 97/40/0",
+      "clause": "plan 3.2; 11 14; charter items 7/10",
+      "status": "implemented",
+      "evidence": "c33_render; c33_r1_contract; CI 42795220374"
+    },
+    {
+      "id": "COMMON-164",
+      "requirement": "no new forbidden product constructs",
+      "clause": "plan 3.2; 11 14; charter items 7/10",
+      "status": "implemented",
+      "evidence": "c33_render; c33_r1_contract; CI 42795220374"
+    },
+    {
+      "id": "COMMON-165",
+      "requirement": "dependency audit",
+      "clause": "plan 3.2; 11 14; charter items 7/10",
+      "status": "implemented",
+      "evidence": "c33_render; c33_r1_contract; CI 42795220374"
+    },
+    {
+      "id": "COMMON-166",
+      "requirement": "28 CI jobs green",
+      "clause": "plan 3.2; 11 14; charter items 7/10",
+      "status": "implemented",
+      "evidence": "c33_render; c33_r1_contract; CI 42795220374"
+    },
+    {
+      "id": "C33-R1-01",
+      "requirement": "sub-microfield depth tie",
+      "status": "implemented",
+      "clause": "05 2.8; SI-106",
+      "evidence": "c33_r2_depth::seeded_anchor_groups_4096; six controlled members, document-tree Timeline oracle, hit-order and perturbation samples",
+      "finding": "C33-R1-01",
+      "priorStatus": "divergent"
+    },
+    {
+      "id": "C33-R1-02",
+      "requirement": "wait true final result",
+      "status": "implemented",
+      "clause": "09 11.1 item 4; SI-107",
+      "evidence": "unchanged c33_r1_contract manifest probe; c33_round1 timeout/addressability; c33_r2_wait responsiveness and timeout/cancel assertions pass before the separate warning failure",
+      "finding": "C33-R1-02",
+      "priorStatus": "divergent"
+    },
+    {
+      "id": "C33-R1-03",
+      "requirement": "failed sequence atomic publication",
+      "status": "implemented",
+      "clause": "ADR-0020 decision 8; charter item 6",
+      "evidence": "unchanged failed-publication probe; c33_r2_stress::last_target_readonly_preserves_originals; builder original restoration",
+      "finding": "C33-R1-03",
+      "priorStatus": "divergent"
+    },
+    {
+      "id": "C33-R1-04",
+      "requirement": "known oversized inline refusal before work",
+      "status": "implemented",
+      "clause": "ADR-0020 decision 8; charter item 7",
+      "evidence": "c33_r2_wait::dimension_preflight_precedes_slow_work (frame/sheet/range); ::encoded_byte_limit_is_checked_after_encoding; unchanged c33_r1_limits",
+      "finding": "C33-R1-04",
+      "priorStatus": "divergent"
+    },
+    {
+      "id": "C33-R1-05",
+      "requirement": "generic render include/exclude override",
+      "status": "implemented",
+      "clause": "11 7.5",
+      "evidence": "c33_r2_visibility command parity, unknown refs, hidden ancestor and precedence; unchanged c33_r1_tools generic override probe",
+      "finding": "C33-R1-05",
+      "priorStatus": "divergent"
+    },
+    {
+      "id": "C33-R1-06",
+      "requirement": "generic render timing metadata",
+      "status": "implemented",
+      "clause": "11 7.5; SI-107",
+      "evidence": "unchanged c33_r1_tools timing probe; c33_r2_visibility renderMs; recorded example normalization source adjudicated",
+      "finding": "C33-R1-06",
+      "priorStatus": "divergent"
+    },
+    {
+      "id": "DEF-173",
+      "requirement": "attached in-app render parity",
+      "status": "deferred-with-owner",
+      "owner": "M4 C4.2",
+      "clause": "plan M3-M11; handoff section 5",
+      "evidence": "M3-C3.3-handoff.md"
+    },
+    {
+      "id": "DEF-174",
+      "requirement": "activeView composition",
+      "status": "deferred-with-owner",
+      "owner": "M4 C4.2",
+      "clause": "plan M3-M11; handoff section 5",
+      "evidence": "M3-C3.3-handoff.md"
+    },
+    {
+      "id": "DEF-175",
+      "requirement": "interactive draft quality",
+      "status": "deferred-with-owner",
+      "owner": "M4 C4.2",
+      "clause": "plan M3-M11; handoff section 5",
+      "evidence": "M3-C3.3-handoff.md"
+    },
+    {
+      "id": "DEF-176",
+      "requirement": "view coordinate space",
+      "status": "deferred-with-owner",
+      "owner": "M4 C4.2",
+      "clause": "plan M3-M11; handoff section 5",
+      "evidence": "M3-C3.3-handoff.md"
+    },
+    {
+      "id": "DEF-177",
+      "requirement": "view pick radius/handles",
+      "status": "deferred-with-owner",
+      "owner": "M4 C4.2",
+      "clause": "plan M3-M11; handoff section 5",
+      "evidence": "M3-C3.3-handoff.md"
+    },
+    {
+      "id": "DEF-178",
+      "requirement": "xsheet composition",
+      "status": "deferred-with-owner",
+      "owner": "M5 C5.1",
+      "clause": "plan M3-M11; handoff section 5",
+      "evidence": "M3-C3.3-handoff.md"
+    },
+    {
+      "id": "DEF-179",
+      "requirement": "bone/envelope deformation",
+      "status": "deferred-with-owner",
+      "owner": "M6 C6.3",
+      "clause": "plan M3-M11; handoff section 5",
+      "evidence": "M3-C3.3-handoff.md"
+    },
+    {
+      "id": "DEF-180",
+      "requirement": "path/function/velocity IPC final shape",
+      "status": "deferred-with-owner",
+      "owner": "M6 C6.2, SI-096",
+      "clause": "plan M3-M11; handoff section 5",
+      "evidence": "M3-C3.3-handoff.md"
+    },
+    {
+      "id": "DEF-181",
+      "requirement": "effect scopes/particles/filter options/cache",
+      "status": "deferred-with-owner",
+      "owner": "M7",
+      "clause": "plan M3-M11; handoff section 5",
+      "evidence": "M3-C3.3-handoff.md"
+    },
+    {
+      "id": "DEF-182",
+      "requirement": "sounds and mouth shapes",
+      "status": "deferred-with-owner",
+      "owner": "M8",
+      "clause": "plan M3-M11; handoff section 5",
+      "evidence": "M3-C3.3-handoff.md"
+    },
+    {
+      "id": "DEF-183",
+      "requirement": "native-size importer writing placement",
+      "status": "deferred-with-owner",
+      "owner": "M10",
+      "clause": "plan M3-M11; handoff section 5",
+      "evidence": "M3-C3.3-handoff.md"
+    },
+    {
+      "id": "DEF-184",
+      "requirement": "E1 saved-project replay",
+      "status": "deferred-with-owner",
+      "owner": "C3.4",
+      "clause": "plan M3-M11; handoff section 5",
+      "evidence": "M3-C3.3-handoff.md"
+    },
+    {
+      "id": "DEF-185",
+      "requirement": "C22-T2/R1-12 hardening",
+      "status": "deferred-with-owner",
+      "owner": "M11",
+      "clause": "plan M3-M11; handoff section 5",
+      "evidence": "M3-C3.3-handoff.md"
+    },
+    {
+      "id": "C33-R1-07",
+      "requirement": "cancellation for an empty render list",
+      "status": "implemented",
+      "clause": "ADR-0020 decision 8; charter items 6-7",
+      "evidence": "c33_r2_cancel::cancellation_at_every_empty_and_nonempty_boundary; unchanged c33_r1_cancel and c23_r3_cancel",
+      "finding": "C33-R1-07",
+      "priorStatus": "divergent"
+    },
+    {
+      "id": "C33-R1-08",
+      "requirement": "process-death staging cleanup",
+      "status": "divergent",
+      "clause": "ADR-0020 decision 8; charter items 6-7",
+      "evidence": "Positive ownership and warning retention verified; typed cancellation error absent: c33_r3_recovery::cancelled_record_keeps_typed_error. R2-01 closed; R2-02 partially closed.",
+      "finding": "C33-R3-01",
+      "priorStatus": "divergent"
+    },
+    {
+      "id": "REG-render.frame.run",
+      "requirement": "registry row render.frame.run",
+      "status": "implemented",
+      "clause": "A registry; 09 11; 11 15.2",
+      "evidence": "c33_render, c33_r1_pixels/bitmap/limits; c33_r2_visibility, c33_r2_wait limit/byte probes; golden equality",
+      "finding": "C33-R1-04",
+      "priorStatus": "divergent"
+    },
+    {
+      "id": "REG-render.limits.get",
+      "requirement": "registry row render.limits.get",
+      "status": "implemented",
+      "clause": "A registry; 09 11; 11 15.2",
+      "evidence": "named command suites and reviewer probes",
+      "finding": ""
+    },
+    {
+      "id": "REG-render.range.run",
+      "requirement": "registry row render.range.run",
+      "status": "divergent",
+      "clause": "A registry; 09 11; 11 15.2",
+      "evidence": "Positive ownership and warning retention verified; typed cancellation error absent: c33_r3_recovery::cancelled_record_keeps_typed_error. R2-01 closed; R2-02 partially closed.",
+      "finding": "C33-R3-01",
+      "priorStatus": "divergent"
+    },
+    {
+      "id": "REG-inspect.frame.describe",
+      "requirement": "registry row inspect.frame.describe",
+      "status": "implemented",
+      "clause": "A registry; 09 11; 11 15.2",
+      "evidence": "c33_r2_depth anchor oracle; c33_r2_visibility parity; unchanged inspection geometry suites",
+      "finding": "C33-R1-01",
+      "priorStatus": "divergent"
+    },
+    {
+      "id": "REG-inspect.hitTest",
+      "requirement": "registry row inspect.hitTest",
+      "status": "implemented",
+      "clause": "A registry; 09 11; 11 15.2",
+      "evidence": "c33_r2_depth reverse-order samples; unchanged c33_r1_pixels and c33_inspect geometry",
+      "finding": "C33-R1-01",
+      "priorStatus": "divergent"
+    },
+    {
+      "id": "REG-inspect.coordinates.convert",
+      "requirement": "registry row inspect.coordinates.convert",
+      "status": "implemented",
+      "clause": "A registry; 09 11; 11 15.2",
+      "evidence": "named command suites and reviewer probes",
+      "finding": ""
+    },
+    {
+      "id": "REG-inspect.contactSheet.render",
+      "requirement": "registry row inspect.contactSheet.render",
+      "status": "implemented",
+      "clause": "A registry; 09 11; 11 15.2",
+      "evidence": "c33_r2_visibility cell-byte parity; c33_r2_recovery evaluation counts; work-delay dimension preflight",
+      "finding": "C33-R1-04",
+      "priorStatus": "divergent"
+    },
+    {
+      "id": "READINESS-FRACTIONAL",
+      "requirement": "fractional-frame coordinate conversion acceptance probe",
+      "status": "closed",
+      "clause": "C3.2 closure readiness item 8; round-one charter item 4",
+      "evidence": "Integer registry ruling SI-109; unchanged typed-refusal probe",
+      "note": "The registry specifies integer frames. This is a readiness-evidence mismatch, not a claim that the integer schema violates its table; no extension or deferral is silently ruled.",
+      "priorStatus": "missing"
+    },
+    {
+      "id": "READINESS-EVALUATION-COUNT",
+      "requirement": "instrumented count of evaluations in an actual render-list command",
+      "status": "implemented",
+      "clause": "round-one charter item 3",
+      "evidence": "c33_round1 measured describe/render/hit per-node counts; c33_r2_recovery contact-sheet N-frame count (serialized recorder)",
+      "note": "Memoization is source-reviewed; a measured render-list evaluation count is not claimed.",
+      "priorStatus": "missing"
+    },
+    {
+      "id": "SPEC-WIDTH-DEFAULT",
+      "requirement": "disposition of conflicting generic render width defaults",
+      "status": "implemented",
+      "clause": "09 11.1 item 1 versus 11 7.5 table",
+      "evidence": "SI-110 ruling; generic and command use camera width",
+      "note": "Tool and owning command both return 1920 on the fresh default project, with identical PNGs. This honors explicit default parity but conflicts with the generic table default 960. No precedence ruling is made.",
+      "priorStatus": "missing"
+    },
+    {
+      "id": "DEF-THUMBNAILS",
+      "requirement": "project and drawing thumbnails",
+      "status": "deferred-with-owner",
+      "owner": "M5 C5.2",
+      "clause": "ruling; derived.rs",
+      "evidence": "explicit owner in derived.rs and traceability"
+    }
+  ]
+}

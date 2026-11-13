@@ -388,6 +388,7 @@ fn copy_content(
 ) -> Result<Clipboard, CommandError> {
     let doc = cx.document()?;
     let raw = |k: &str| -> Result<Map<String, Value>, CommandError> { Ok(obj(doc.object_raw_json(k)?.1)) };
+    let mut payload = super::transfer::ArtPayload::of(doc);
     let (kind, items): (ClipboardKind, Vec<Map<String, Value>>) = match picked {
         Picked::Drawing(keys) => {
             (ClipboardKind::DrawingObjects, top_level(doc, keys).iter().map(|k| raw(k)).collect::<Result<_, _>>()?)
@@ -399,6 +400,10 @@ fn copy_content(
                 for (id, parent) in picked {
                     let mut m = raw(&id)?;
                     m.insert("parentId".into(), json!(parent));
+                    // The copy carries the element's drawing bank (C31-R1-04).
+                    if let Some(b) = m.get("drawingBankId").and_then(Value::as_str).and_then(|b| Id::parse(b).ok()) {
+                        payload.capture_bank(cx, doc, &b)?;
+                    }
                     items.push(m);
                 }
             }
@@ -410,6 +415,17 @@ fn copy_content(
             for (e, f) in cells {
                 let frames = frames_of(doc, e);
                 let d = frames.get((*f as usize).saturating_sub(1)).cloned().flatten();
+                if let Some(id) = d.as_deref().and_then(|d| Id::parse(d).ok()) {
+                    payload.capture_drawing(cx, doc, &id)?;
+                }
+                if let Some(x) = Id::parse(e).ok().and_then(|id| doc.element(&id)) {
+                    payload.element_types.insert(e.clone(), x.element_type().as_str().to_owned());
+                }
+                if let Some(t) =
+                    Id::parse(e).ok().and_then(|id| doc.element(&id).and_then(|x| x.cell_notes().get(f).cloned()))
+                {
+                    payload.notes.entry(e.clone()).or_default().insert((f - first).to_string(), t);
+                }
                 items.push(obj(json!({ "elementId": e, "frameOffset": f - first, "drawingRef": d })));
             }
             (ClipboardKind::Cells, items)
@@ -447,6 +463,7 @@ fn copy_content(
             Some(o) => Some(obj(to_json(o)?)),
             None => None,
         },
+        payload: Some(payload),
     })
 }
 
@@ -593,7 +610,7 @@ const ELEMENT_DERIVED: [&str; 11] = [
 ];
 
 /// Rewrites element references (schema `x-ref: "element"` locations, never inside opaque data) through `map`.
-fn remap_element_refs(v: &mut Value, map: &BTreeMap<String, String>, at: &str) {
+pub(crate) fn remap_element_refs(v: &mut Value, map: &BTreeMap<String, String>, at: &str) {
     match v {
         Value::String(s) => {
             if let Some(new) = map.get(s.as_str())
@@ -666,10 +683,21 @@ pub(crate) fn delete_elements(cx: &mut Cx, ids: Vec<String>) -> Result<(), Comma
     if ids.is_empty() {
         return Ok(());
     }
-    delete(cx, &Picked::Elements(ids), false, false).map(|_| ())
+    // A replacing import brings its own cameras, so the last-camera rule does not apply here.
+    delete_with(cx, &Picked::Elements(ids), false, false, true).map(|_| ())
 }
 
 fn delete(cx: &mut Cx, picked: &Picked, remove_frames: bool, descendants: bool) -> Result<Vec<String>, CommandError> {
+    delete_with(cx, picked, remove_frames, descendants, false)
+}
+
+fn delete_with(
+    cx: &mut Cx,
+    picked: &Picked,
+    remove_frames: bool,
+    descendants: bool,
+    replacing: bool,
+) -> Result<Vec<String>, CommandError> {
     let doc = cx.document()?.clone();
     match picked {
         Picked::Drawing(keys) => {
@@ -716,6 +744,9 @@ fn delete(cx: &mut Cx, picked: &Picked, remove_frames: bool, descendants: bool) 
                 let sid = Id::parse(&scene)?;
                 let sj = doc.entry_raw_json(&EntryKey::Scene(sid.clone()))?;
                 let gone = roots;
+                if !replacing {
+                    super::anim_camera::refuse_last_camera(&doc, &sid, &|c| gone.contains(c.as_str()))?;
+                }
                 let stubs: Vec<Value> = sj["elements"]
                     .as_array()
                     .into_iter()
@@ -735,8 +766,16 @@ fn delete(cx: &mut Cx, picked: &Picked, remove_frames: bool, descendants: bool) 
                     op("replace", "/tree", Some(tree_without(&sj["tree"], &gone))),
                     op("replace", "/columnOrder", Some(Value::Array(columns))),
                 ];
+                // The first remaining camera in Timeline order replaces a deleted current one (05 §12.1).
                 if sj["currentCameraId"].as_str().is_some_and(|c| gone.contains(c)) {
-                    ops.push(op("replace", "/currentCameraId", Some(Value::Null)));
+                    let next = super::anim_camera::next_current(&doc, &sid, &|c| gone.contains(c.as_str()));
+                    ops.push(op("replace", "/currentCameraId", Some(json!(next.as_ref().map(Id::as_str)))));
+                    if let Some(n) = next {
+                        cx.emit(
+                            "anim.camera.currentChanged",
+                            json!({ "sceneId": sid.as_str(), "cameraId": n.as_str() }),
+                        );
+                    }
                 }
                 changes.push((EntryKey::Scene(sid.clone()), ops));
                 for id in &gone {
@@ -765,11 +804,21 @@ fn delete(cx: &mut Cx, picked: &Picked, remove_frames: bool, descendants: bool) 
             for (e, f) in cells {
                 by_element.entry(e.clone()).or_default().insert(*f);
             }
-            let mut changes = Vec::new();
+            let mut changes = super::timing::Changes::default();
+            let mut noted = Vec::new();
             for (e, frames) in &by_element {
+                let id = Id::parse(e)?;
                 let mut all = frames_of(&doc, e);
+                // Notes are frame-keyed cell data (SI-093): cleared with their cells, and following the cells a
+                // removal shifts, in the same transaction as the exposure (C31-R2-04).
+                let mut notes = super::timing::NoteEdit::none();
                 for f in frames.iter().rev() {
-                    let i = (*f as usize).saturating_sub(1);
+                    let at = *f as usize;
+                    notes.clear_old.push((at, at));
+                    if remove_frames {
+                        notes.map.then(tt_anim::exposure::remove_map(at, at));
+                    }
+                    let i = at.saturating_sub(1);
                     if i < all.len() {
                         if remove_frames {
                             all.remove(i);
@@ -778,9 +827,10 @@ fn delete(cx: &mut Cx, picked: &Picked, remove_frames: bool, descendants: bool) 
                         }
                     }
                 }
-                changes.push((EntryKey::Element(Id::parse(e)?), vec![op("replace", "/exposure", Some(runs_of(&all)))]));
+                changes.push(EntryKey::Element(id.clone()), vec![op("replace", "/exposure", Some(runs_of(&all)))]);
+                super::timing::write_notes(&doc, &id, &notes, &mut changes, &mut noted)?;
             }
-            cx.patch_entries(changes)?;
+            cx.patch_entries(changes.into_vec())?;
             Ok(cells.iter().map(|(e, f)| cell_ref(e, *f)).collect())
         }
     }
@@ -833,12 +883,9 @@ fn regenerate_slot(
     }
 }
 
-/// `name`, or `name-2`, `name-3`, … — the first not in `taken`.
+/// `name`, or `name-2`, `name-3`, … — the first not in `taken`, within 64 characters (C31-R2-05).
 fn unique(name: &str, taken: &BTreeSet<String>) -> String {
-    if !taken.contains(name) {
-        return name.to_owned();
-    }
-    (2..).map(|n| format!("{name}-{n}")).find(|n| !taken.contains(n)).unwrap_or_else(|| name.to_owned())
+    tt_anim::exposure::plan_names(name, "", "-", 2, &|n| taken.contains(n), 1, false).concat()
 }
 
 /// The pointer of the first layer node of a drawing.
@@ -915,40 +962,6 @@ fn current_scene(cx: &Cx, given: Option<&str>) -> Result<Id, CommandError> {
             })
         }
     }
-}
-
-/// Stages the copy of a drawing into a bank (new ID, unique name) and returns its ID.
-fn copy_drawing(
-    cx: &mut Cx,
-    doc: &Document,
-    source: &str,
-    bank: &Id,
-    taken: &mut BTreeSet<String>,
-    changes: &mut Vec<(EntryKey, Vec<PatchOp>)>,
-    content: Option<&Value>,
-) -> Result<String, CommandError> {
-    let mut v = match content {
-        Some(c) => c.clone(),
-        None => doc.entry_raw_json(&EntryKey::Drawing(Id::parse(source)?))?,
-    };
-    let id = cx.new_id(ObjectType::Drawing)?;
-    let name = unique(v.get("name").and_then(Value::as_str).unwrap_or("1"), taken);
-    taken.insert(name.clone());
-    v["id"] = json!(id.as_str());
-    v["rev"] = json!(0);
-    v["name"] = json!(name);
-    changes.push((EntryKey::Drawing(id.clone()), vec![op("add", "", Some(v))]));
-    changes.push((
-        EntryKey::Bank(bank.clone()),
-        vec![op("add", "/drawings/-", Some(json!({ "id": id.as_str(), "type": "drawing" })))],
-    ));
-    Ok(id.as_str().to_owned())
-}
-
-fn bank_names(doc: &Document, bank: &Id) -> BTreeSet<String> {
-    doc.bank(bank)
-        .map(|b| b.drawings().ids().iter().filter_map(|d| doc.drawing(d)).map(|d| d.name().clone()).collect())
-        .unwrap_or_default()
 }
 
 #[allow(clippy::too_many_lines)]
@@ -1045,6 +1058,9 @@ fn paste(
             }
             let mut children: BTreeMap<String, Vec<String>> = BTreeMap::new();
             let mut roots: Vec<String> = Vec::new();
+            let mut new_banks: BTreeMap<String, (Id, BTreeMap<String, String>)> = BTreeMap::new();
+            // A live bank with the copy's bank ID is the source bank only when the copy was made in this project.
+            let same_project = copied_here(clip, &doc);
             let mut scene_ops = Vec::new();
             for (old, parent, mut v) in prepared {
                 let id = map.get(&old).cloned().ok_or_else(|| internal("mapped id"))?;
@@ -1052,14 +1068,31 @@ fn paste(
                     Some(np) => children.entry(np.clone()).or_default().push(id.clone()),
                     None => roots.push(id.clone()),
                 }
-                if let Some(bank) = v.get("drawingBankId").and_then(Value::as_str)
-                    && !Id::parse(bank).ok().is_some_and(|b| doc.bank(&b).is_some())
+                if let Some(bank) = v.get("drawingBankId").and_then(Value::as_str).map(str::to_owned)
+                    && !(same_project && Id::parse(&bank).ok().is_some_and(|b| doc.bank(&b).is_some()))
                 {
-                    return Err(not_allowed(
-                        clip.kind,
-                        context,
-                        "the copied element's drawings are not in this project",
-                    ));
+                    // The source bank is not in this project (another project — even one using the same bank ID —
+                    // or its last user deleted): the copy carries it; it becomes a new bank here, once per source
+                    // bank (C31-R1-04, C31-R3-02).
+                    let payload = clip.payload.as_ref().filter(|p| p.banks.contains_key(&bank)).ok_or_else(|| {
+                        not_allowed(clip.kind, context, "the copied element's drawings are not in this project")
+                    })?;
+                    if !new_banks.contains_key(&bank) {
+                        let mut staged = super::timing::Changes::default();
+                        let made = super::transfer::new_bank_from(cx, payload, &mut staged, &bank)?;
+                        changes.extend(staged.into_vec());
+                        new_banks.insert(bank.clone(), made);
+                    }
+                    if let Some((nb, dmap)) = new_banks.get(&bank) {
+                        v["drawingBankId"] = json!(nb.as_str());
+                        if let Some(Value::Array(runs)) = v.get_mut("exposure") {
+                            for r in runs.iter_mut() {
+                                if let Some(d) = r.get(0).and_then(Value::as_str).and_then(|d| dmap.get(d)) {
+                                    r[0] = json!(d);
+                                }
+                            }
+                        }
+                    }
                 }
                 if let Some(m) = v.as_object_mut() {
                     for k in ELEMENT_DERIVED {
@@ -1137,15 +1170,22 @@ fn paste(
             let at = order.iter().position(|c| *c == tid).unwrap_or(0);
             let opts = topts.unwrap_or_default();
             let insert = topts.is_some() && opts.create_delete_exposure;
-            for (n, src) in sources.iter().enumerate() {
-                let t = if n == 0 {
+            // One drawing transfer per destination bank for the whole paste (C31-R1-07/-13).
+            let payload = clip.payload.clone().unwrap_or_else(|| fallback_payload(clip, &doc));
+            let mut transfers: BTreeMap<Id, super::transfer::Transfer> = BTreeMap::new();
+            let mut columns = Vec::with_capacity(sources.len());
+            for n in 0..sources.len() {
+                columns.push(if n == 0 {
                     tid.clone()
                 } else {
                     order.get(at + n).cloned().ok_or_else(|| {
                         not_allowed(clip.kind, context, "not enough columns to the right of the target")
                     })?
-                };
-                let tel = doc.element(&t).ok_or_else(|| internal("element"))?;
+                });
+            }
+            // The column types of the shared payload, for every pair before anything is placed (C31-R2-03).
+            for (src, t) in sources.iter().zip(&columns) {
+                let tel = doc.element(t).ok_or_else(|| internal("element"))?;
                 if !tel.element_type().has_exposure() {
                     return Err(CommandError::with_details(
                         "edit.wrongElementType",
@@ -1153,9 +1193,21 @@ fn paste(
                         json!({ "elementId": t.as_str() }),
                     ));
                 }
+                payload.check_column(&doc, src, t)?;
+            }
+            for (src, t) in sources.iter().zip(columns) {
+                let tel = doc.element(&t).ok_or_else(|| internal("element"))?;
                 let bank = tel.drawing_bank_id().clone().ok_or_else(|| internal("cell element without bank"))?;
-                let mut names = bank_names(&doc, &bank);
-                let mut mapped: BTreeMap<String, String> = BTreeMap::new();
+                // Full-drawing overwrite or verbatim copy, the copy's payload first (C31-R1-13).
+                let transfer = transfers.entry(bank.clone()).or_insert_with(|| {
+                    super::transfer::Transfer::new(&doc, bank.clone(), super::transfer::Naming::Dashed)
+                });
+                let policy = super::transfer::Policy {
+                    reuse: true,
+                    fresh: false,
+                    overwrite: opts.overwrite_drawings || topts.is_none(),
+                };
+                let mut staged = super::timing::Changes::default();
                 let mut frames = frames_of(&doc, t.as_str());
                 let block: Vec<(u32, Option<String>)> = items
                     .iter()
@@ -1173,55 +1225,43 @@ fn paste(
                     let resolved = match d {
                         None => None,
                         Some(d) => {
-                            if let Some(m) = mapped.get(d) {
-                                Some(m.clone())
-                            } else {
-                                let did = Id::parse(d)?;
-                                let in_bank = doc.bank_of(&did) == Some(&bank);
-                                let id = if in_bank {
-                                    d.clone()
-                                } else if let Some(src_drawing) = doc.drawing(&did) {
-                                    let same = doc.bank(&bank).and_then(|b| {
-                                        b.drawings()
-                                            .ids()
-                                            .iter()
-                                            .find(|x| doc.drawing(x).is_some_and(|y| y.name() == src_drawing.name()))
-                                            .cloned()
-                                    });
-                                    match same {
-                                        Some(existing) if opts.overwrite_drawings || topts.is_none() => {
-                                            // Overwriting content of a locked drawing is refused (04 §13.16).
-                                            check_drawing_unlocked(&doc, existing.as_str())?;
-                                            let nodes = to_json(src_drawing.nodes())?;
-                                            changes.push((
-                                                EntryKey::Drawing(existing.clone()),
-                                                vec![op("replace", "/nodes", Some(nodes))],
-                                            ));
-                                            out.modified_ids.push(existing.as_str().to_owned());
-                                            existing.as_str().to_owned()
-                                        }
-                                        _ => {
-                                            let id = copy_drawing(cx, &doc, d, &bank, &mut names, &mut changes, None)?;
-                                            out.created_ids.push(id.clone());
-                                            id
-                                        }
-                                    }
-                                } else {
-                                    return Err(not_allowed(
-                                        clip.kind,
-                                        context,
-                                        "a copied drawing is not in this project",
-                                    ));
-                                };
-                                mapped.insert(d.clone(), id.clone());
-                                Some(id)
+                            let did = Id::parse(d)?;
+                            if payload.drawing(&doc, &did).is_none() {
+                                return Err(not_allowed(clip.kind, context, "a copied drawing is not in this project"));
                             }
+                            Some(transfer.place(cx, &doc, &payload, &mut staged, &did, policy)?.as_str().to_owned())
                         }
                     };
                     if let Some(slot) = placed.get_mut(*offset as usize) {
                         *slot = resolved;
                     }
                 }
+
+                // Pasted cells carry their notes and overwrite the destination's in the pasted range (SI-093).
+                let first = start as usize;
+                let carried: Vec<(usize, String)> = payload
+                    .notes
+                    .get(src.as_str())
+                    .into_iter()
+                    .flatten()
+                    .filter_map(|(k, text)| k.parse::<usize>().ok().map(|k| (first + k, text.clone())))
+                    .collect();
+                let note_edit = if insert {
+                    super::timing::NoteEdit {
+                        map: tt_anim::exposure::insert_map(first, width),
+                        set: carried,
+                        ..super::timing::NoteEdit::none()
+                    }
+                } else {
+                    super::timing::NoteEdit {
+                        clear_new: vec![(first, first + width.max(1) - 1)],
+                        set: carried,
+                        ..super::timing::NoteEdit::none()
+                    }
+                };
+                let mut noted = Vec::new();
+                super::timing::write_notes(&doc, &t, &note_edit, &mut staged, &mut noted)?;
+                changes.extend(staged.into_vec());
                 let from = (start as usize).saturating_sub(1);
                 if from > frames.len() {
                     // Before the pasted block: blanks, or the last drawing extended (extendExposures).
@@ -1243,6 +1283,11 @@ fn paste(
                 }
                 changes.push((EntryKey::Element(t.clone()), vec![op("replace", "/exposure", Some(runs_of(&frames)))]));
                 out.modified_ids.push(t.as_str().to_owned());
+            }
+            for tr in transfers.values() {
+                out.created_ids.extend(tr.created.iter().cloned());
+                out.modified_ids.extend(tr.modified.iter().cloned());
+                super::timing::emit_bank(cx, &doc, &tr.bank, &tr.created, "created");
             }
         }
         ClipboardKind::Keyframes | ClipboardKind::FunctionPoints => {
@@ -1509,7 +1554,7 @@ pub(crate) struct ClipResult {
     scopes = [edit],
     undo = "Cut",
     needs_project,
-    example(title = "Cut the first scene's first element", params = r#"{"context": "staging", "objectIds": ["scene:#1/element:#1"]}"#),
+    example(title = "Cut the peg Bob-P with what is attached to it", params = r#"{"context": "staging", "objectIds": ["scene:\"Intro\"/element:\"Bob-P\""]}"#),
 )]
 pub(crate) fn edit_cut(cx: &mut Cx, p: ObjectsParams) -> Result<ClipResult, CommandError> {
     let context = resolve_context(cx, p.context);
@@ -1788,6 +1833,7 @@ pub(crate) fn edit_paste_as_new_element(cx: &mut Cx, p: PasteNewParams) -> Resul
                         v["id"] = json!(id.as_str());
                         v["rev"] = json!(0);
                         v["name"] = json!(name);
+                        cx.keep_verbatim([id.clone()]);
                         drawings.push(v);
                         mapped.insert(d.to_owned(), id.as_str().to_owned());
                         id.as_str().to_owned()
@@ -1868,4 +1914,141 @@ pub(crate) fn edit_paste_as_new_element(cx: &mut Cx, p: PasteNewParams) -> Resul
     ));
     cx.patch_entries(changes)?;
     Ok(NewElementResult { element_id: element.as_str().to_owned() })
+}
+
+// ----- bridges for the 04 cell clipboard commands (M3 C3.1) -----------------------------------------------------------
+
+/// Copies (or cuts, with the elements' descendants as `edit.cut` does) whole elements to the clipboard in the
+/// Timeline context: `cell.clipboard.set {wholeElements: true}` (04 §13.16).
+pub(crate) fn copy_elements(cx: &mut Cx, ids: &[String], cut: bool) -> Result<ClipboardSummary, CommandError> {
+    let picked = Picked::Elements(ids.to_vec());
+    let clip = copy_content(cx, EditContext::Timeline, &picked, None)?;
+    if cut {
+        delete(cx, &picked, false, true)?;
+    }
+    store(cx, &clip)
+}
+
+/// Puts copied cells on the clipboard: `(element, frame offset, drawing)` per cell (`cell.clipboard.set`).
+pub(crate) fn store_cells(
+    cx: &mut Cx,
+    cells: &[(Id, usize, Option<Id>)],
+    notes: &[(Id, usize, String)],
+) -> Result<ClipboardSummary, CommandError> {
+    let doc = cx.document()?.clone();
+    let mut payload = super::transfer::ArtPayload::of(&doc);
+    for (_, _, d) in cells {
+        if let Some(d) = d {
+            payload.capture_drawing(cx, &doc, d)?;
+        }
+    }
+    for (e, k, t) in notes {
+        payload.notes.entry(e.as_str().to_owned()).or_default().insert(k.to_string(), t.clone());
+    }
+    for (e, _, _) in cells {
+        if let Some(x) = doc.element(e) {
+            payload.element_types.insert(e.as_str().to_owned(), x.element_type().as_str().to_owned());
+        }
+    }
+    let items: Vec<Map<String, Value>> = cells
+        .iter()
+        .map(|(e, k, d)| {
+            obj(json!({ "elementId": e.as_str(), "frameOffset": k, "drawingRef": d.as_ref().map(Id::as_str) }))
+        })
+        .collect();
+    let clip = Clipboard {
+        kind: ClipboardKind::Cells,
+        source_context: Some(EditContext::Xsheet.as_str().to_owned()),
+        source_project_id: Some(doc.project().id().as_str().to_owned()),
+        item_count: u32::try_from(items.len()).unwrap_or(u32::MAX),
+        items: Some(items),
+        options: None,
+        payload: Some(payload),
+    };
+    store(cx, &clip)
+}
+
+/// Whether clipboard content was copied in the open project: the payload's provenance, else the clipboard's
+/// `sourceProjectId`, else (content placed without either) yes.
+fn copied_here(clip: &Clipboard, doc: &Document) -> bool {
+    match (&clip.payload, &clip.source_project_id) {
+        (Some(p), _) => p.same_project(doc),
+        (None, Some(id)) => id == doc.project().id().as_str(),
+        (None, None) => true,
+    }
+}
+
+/// The payload of clipboard content that carries none: empty, with the clipboard's provenance (so live objects are
+/// used only for a copy made in this project).
+fn fallback_payload(clip: &Clipboard, doc: &Document) -> super::transfer::ArtPayload {
+    let mut p = super::transfer::ArtPayload::of(doc);
+    if let Some(id) = &clip.source_project_id {
+        p.project_id.clone_from(id);
+    }
+    p
+}
+
+/// What a cell paste reads from the clipboard.
+pub(crate) enum CellClip {
+    /// Copied cells: `(element, frame offset, drawing)`, with their artwork.
+    Cells(Vec<(Id, usize, Option<Id>)>, super::transfer::ArtPayload),
+    /// Whole elements (pasted as new elements).
+    Elements,
+}
+
+/// The clipboard as cells or whole elements (`cell.clipboard.apply`); anything else is `cell.typeMismatch`, nothing
+/// is `cell.clipboardEmpty`.
+pub(crate) fn clipboard_cells(cx: &Cx) -> Result<CellClip, CommandError> {
+    let clip = clipboard(cx).map_err(|_| {
+        CommandError::with_details("cell.clipboardEmpty", "the clipboard holds nothing to paste", json!({}))
+    })?;
+    match clip.kind {
+        ClipboardKind::Elements => Ok(CellClip::Elements),
+        ClipboardKind::Cells => {
+            let mut out = Vec::new();
+            for item in clip.items.clone().unwrap_or_default() {
+                let e = item.get("elementId").and_then(Value::as_str).and_then(|s| Id::parse(s).ok());
+                let k = item.get("frameOffset").and_then(Value::as_u64).and_then(|v| usize::try_from(v).ok());
+                let d = item.get("drawingRef").and_then(Value::as_str).and_then(|s| Id::parse(s).ok());
+                if let (Some(e), Some(k)) = (e, k) {
+                    out.push((e, k, d));
+                }
+            }
+            if out.is_empty() {
+                return Err(CommandError::with_details(
+                    "cell.clipboardEmpty",
+                    "the clipboard holds no cells",
+                    json!({}),
+                ));
+            }
+            let payload = match clip.payload.clone() {
+                Some(p) => p,
+                None => fallback_payload(&clip, cx.document()?),
+            };
+            Ok(CellClip::Cells(out, payload))
+        }
+        other => Err(CommandError::with_details(
+            "cell.typeMismatch",
+            format!("the clipboard holds {}, not cells or elements", other.as_str()),
+            json!({ "kind": other.as_str() }),
+        )),
+    }
+}
+
+/// Pastes the whole elements on the clipboard into a scene as new elements (`cell.clipboard.apply` with elements on
+/// the clipboard); returns the created element IDs.
+pub(crate) fn paste_elements(cx: &mut Cx, scene: &Id) -> Result<Vec<String>, CommandError> {
+    let clip = clipboard(cx)?;
+    let dest = Destination { scene: Some(scene.as_str().to_owned()), ..Destination::default() };
+    let r = paste(cx, EditContext::Timeline, &clip, &dest, Special::None)?;
+    Ok(r.created_ids)
+}
+
+/// The fixes of the references an element's JSON holds to deleted elements (`element.delete`; SI-022), last
+/// pointer first.
+pub(crate) fn element_reference_fixes(v: &Value, ids: &BTreeSet<String>) -> Vec<PatchOp> {
+    let mut fixes = Vec::new();
+    reference_fixes(v, ids, "", None, &mut fixes);
+    fixes.sort_by_key(|o| std::cmp::Reverse(pointer_key(&o.path)));
+    fixes
 }

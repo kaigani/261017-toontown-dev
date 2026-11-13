@@ -411,14 +411,14 @@ pub struct CameraBlock {
     /// Static or dynamic FOV.
     #[schemars(extend("x-command" = "anim.camera.set"))]
     pub fov_mode: FovMode,
-    /// FOV 1–179 degrees (default 41.1121).
+    /// FOV 1–179 degrees (default 2·atan(0.375) ≈ 41.1121, 05 §2.7).
     #[schemars(range(min = 1.0, max = 179.0), extend("x-unit" = "degree", "x-command" = "anim.camera.set"))]
     pub fov: f64,
 }
 
 impl Default for CameraBlock {
     fn default() -> Self {
-        Self { fov_mode: FovMode::Static, fov: 41.1121 }
+        Self { fov_mode: FovMode::Static, fov: crate::defaults::DEFAULT_FOV }
     }
 }
 
@@ -590,6 +590,11 @@ model_struct! {
         loop_type: LoopType,
         /// Cycle or offset.
         position_loop: PositionLoop,
+        /// `fill` loops: the cycle length in frames, which `duration` and `loops` cannot express when the last cycle is
+        /// partial (SI-089).
+        #[serde(default, skip_serializing_if = "Option::is_none")]
+        #[schemars(range(min = 1), extend("x-unit" = "frame", "x-omitDefault" = true))]
+        cycle_length: Option<u32>,
         /// Composite role.
         role: Role,
         /// Deformable by a skeleton.
@@ -753,6 +758,7 @@ impl Element {
             loops: 1,
             loop_type: LoopType::Count,
             position_loop: PositionLoop::Cycle,
+            cycle_length: None,
             role: Role::Normal,
             deformable: false,
             visible_in_scene: true,

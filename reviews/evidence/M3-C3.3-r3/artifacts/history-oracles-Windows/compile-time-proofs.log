@@ -1,0 +1,66 @@
+[1m[92m   Compiling[0m tt-executor v0.0.1 (D:\a\261017-toontown-dev\261017-toontown-dev\crates\executor)
+[1m[92m    Finished[0m `release` profile [optimized + debuginfo] target(s) in 2.26s
+[1m[92m     Running[0m tests\c12_r1_macro.rs (target\release\deps\c12_r1_macro-d411386c7304c8e0.exe)
+
+running 2 tests
+test duplicate_ids_and_inventory_kind_drift_are_rejected ... ok
+[1m[92m    Checking[0m tt-model v0.0.1 (D:\a\261017-toontown-dev\261017-toontown-dev\crates\model)
+[1m[92m   Compiling[0m tt-registry-macros v0.0.1 (D:\a\261017-toontown-dev\261017-toontown-dev\crates\registry-macros)
+[1m[92m    Checking[0m tt-anim v0.0.1 (D:\a\261017-toontown-dev\261017-toontown-dev\crates\anim)
+[1m[92m    Checking[0m tt-vector v0.0.1 (D:\a\261017-toontown-dev\261017-toontown-dev\crates\vector)
+[1m[92m    Checking[0m tt-colour v0.0.1 (D:\a\261017-toontown-dev\261017-toontown-dev\crates\colour)
+[1m[92m    Checking[0m tt-persist v0.0.1 (D:\a\261017-toontown-dev\261017-toontown-dev\crates\persist)
+[1m[92m    Checking[0m tt-registry v0.0.1 (D:\a\261017-toontown-dev\261017-toontown-dev\crates\registry)
+[1m[92m    Checking[0m tt-fx v0.0.1 (D:\a\261017-toontown-dev\261017-toontown-dev\crates\fx)
+[1m[92m    Checking[0m tt-render v0.0.1 (D:\a\261017-toontown-dev\261017-toontown-dev\crates\render)
+[1m[92m    Checking[0m tt-io v0.0.1 (D:\a\261017-toontown-dev\261017-toontown-dev\crates\io)
+[1m[92m    Checking[0m tt-executor v0.0.1 (D:\a\261017-toontown-dev\261017-toontown-dev\crates\executor)
+[1m[92m    Checking[0m tt-executor-tests v0.0.0 (D:\a\261017-toontown-dev\261017-toontown-dev\target\tests\trybuild\tt-executor)
+[1m[92m    Finished[0m `dev` profile [unoptimized + debuginfo] target(s) in 30.01s
+
+
+test missing_example_is_rejected_at_compile_time has been running for over 60 seconds
+test [0m[1mtests\c12-r1-ui\missing_example.rs[0m ... [0m[32mok
+[0m
+
+test missing_example_is_rejected_at_compile_time ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 60.12s
+
+[1m[92m     Running[0m tests\compile_fail.rs (target\release\deps\compile_fail-3fd13f432255d5ac.exe)
+
+running 1 test
+[1m[92m   Compiling[0m tt-model v0.0.1 (D:\a\261017-toontown-dev\261017-toontown-dev\crates\model)
+[1m[92m   Compiling[0m tt-anim v0.0.1 (D:\a\261017-toontown-dev\261017-toontown-dev\crates\anim)
+[1m[92m   Compiling[0m tt-vector v0.0.1 (D:\a\261017-toontown-dev\261017-toontown-dev\crates\vector)
+[1m[92m   Compiling[0m tt-colour v0.0.1 (D:\a\261017-toontown-dev\261017-toontown-dev\crates\colour)
+[1m[92m   Compiling[0m tt-persist v0.0.1 (D:\a\261017-toontown-dev\261017-toontown-dev\crates\persist)
+[1m[92m   Compiling[0m tt-fx v0.0.1 (D:\a\261017-toontown-dev\261017-toontown-dev\crates\fx)
+[1m[92m   Compiling[0m tt-registry v0.0.1 (D:\a\261017-toontown-dev\261017-toontown-dev\crates\registry)
+[1m[92m   Compiling[0m tt-render v0.0.1 (D:\a\261017-toontown-dev\261017-toontown-dev\crates\render)
+[1m[92m   Compiling[0m tt-io v0.0.1 (D:\a\261017-toontown-dev\261017-toontown-dev\crates\io)
+[1m[92m   Compiling[0m tt-executor v0.0.1 (D:\a\261017-toontown-dev\261017-toontown-dev\crates\executor)
+test exclusive_mutation_capability has been running for over 60 seconds
+[1m[92m   Compiling[0m tt-executor-tests v0.0.0 (D:\a\261017-toontown-dev\261017-toontown-dev\target\tests\trybuild\tt-executor)
+[1m[92m    Finished[0m `dev` profile [unoptimized + debuginfo] target(s) in 1m 16s
+
+
+test [0m[1mtests\ui\core_install.rs[0m [should fail to compile] ... [0m[32mok
+[0mtest [0m[1mtests\ui\cx_clone_default.rs[0m [should fail to compile] ... [0m[32mok
+[0mtest [0m[1mtests\ui\cx_constructor.rs[0m [should fail to compile] ... [0m[32mok
+[0mtest [0m[1mtests\ui\cx_struct_literal.rs[0m [should fail to compile] ... [0m[32mok
+[0mtest [0m[1mtests\ui\document_fields.rs[0m [should fail to compile] ... [0m[32mok
+[0mtest [0m[1mtests\ui\enablement_read_only.rs[0m [should fail to compile] ... [0m[32mok
+[0mtest [0m[1mtests\ui\entity_fields.rs[0m [should fail to compile] ... [0m[32mok
+[0mtest [0m[1mtests\ui\handle_channel.rs[0m [should fail to compile] ... [0m[32mok
+[0mtest [0m[1mtests\ui\job_keeps_context.rs[0m [should fail to compile] ... [0m[32mok
+[0mtest [0m[1mtests\ui\load_grant_forged.rs[0m [should fail to compile] ... [0m[32mok
+[0mtest [0m[1mtests\ui\request_type.rs[0m [should fail to compile] ... [0m[32mok
+[0mtest [0m[1mtests\ui\session_private.rs[0m [should fail to compile] ... [0m[32mok
+[0mtest [0m[1mtests\ui-pass\read_snapshots.rs[0m [should pass] ... [0m[32mok
+[0m
+
+test exclusive_mutation_capability ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 169.13s
+

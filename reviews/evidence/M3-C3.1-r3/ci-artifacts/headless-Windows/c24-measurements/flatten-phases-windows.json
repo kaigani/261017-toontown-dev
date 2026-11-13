@@ -1,0 +1,34 @@
+{
+  "os": "windows",
+  "profile": "release",
+  "strokes": 100000,
+  "runs": [
+    {
+      "nodeMergedSeconds": 0.3019724,
+      "nodeLayer1Seconds": 0.1407137,
+      "nodeLayer2Seconds": 0.1398396,
+      "mapMergedSeconds": 0.4987679,
+      "mapLayer1Seconds": 0.2462055,
+      "settleSeconds": 2.8854604999999998,
+      "skippableNodingCeilingSeconds": 0.2805533
+    },
+    {
+      "nodeMergedSeconds": 0.2968148,
+      "nodeLayer1Seconds": 0.1419082,
+      "nodeLayer2Seconds": 0.1340196,
+      "mapMergedSeconds": 0.4777541,
+      "mapLayer1Seconds": 0.2342861,
+      "settleSeconds": 2.860756,
+      "skippableNodingCeilingSeconds": 0.2759278
+    },
+    {
+      "nodeMergedSeconds": 0.2940154,
+      "nodeLayer1Seconds": 0.1418406,
+      "nodeLayer2Seconds": 0.1378465,
+      "mapMergedSeconds": 0.5002524,
+      "mapLayer1Seconds": 0.2436969,
+      "settleSeconds": 2.8961049,
+      "skippableNodingCeilingSeconds": 0.2796871
+    }
+  ]
+}

@@ -167,6 +167,13 @@ saved, reopened, read back identically.
        copy (C13-R3-03);
      - closing or replacing a project empties the session cache, since nothing in it serves another project, except
        while that project is being saved. Stopping the executor removes the cache entirely.
+     - *History, M3 C3.1 round 3 (C31-R3-04): binary reachability.* An entry is reachable — saved, and checked as
+       missing media on load — when a typed reference names it: embedded assets that objects use, bitmap pixels of
+       drawings (`entry` with `mediaType`, `sha256`, `size`), texture `image` references of palette swatches **and of
+       the full swatch copies in drawings' colour recovery data** (10 §4.11, 03 §11.2; the only other persisted
+       `Swatch`), and library files and thumbnails. `meta` and `ext` are opaque and never scanned. A texture that only
+       recovery data references (its live swatch changed or deleted, or a copy pasted from another project) is
+       therefore kept across saves and reopenings (`c31_r3_binary::texture_recovery_*`, `c31_round3::r04_*`).
 
 9. **Backups (BAK-01…04).**
    - Backups live in `<user>/Backups/<projectId>/<savedAt>.animpkg`, indexed by `backup.json`.

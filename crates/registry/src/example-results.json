@@ -30,7 +30,7 @@
     {
       "title": "Accept a request",
       "result": {
-        "confirmationId": "cf_f1c05226903f8e89ad08e8db",
+        "confirmationId": "cf_7d80443a5017e0cb83f9183d",
         "accepted": true
       },
       "varies": [
@@ -71,7 +71,7 @@
         "endpoint": null,
         "sessions": [
           {
-            "sessionId": "s1-a6f3d5",
+            "sessionId": "s1-d1fc17",
             "client": "Example agent",
             "policy": "assist",
             "scopes": [
@@ -83,7 +83,7 @@
               "files.write",
               "library.global"
             ],
-            "connectedAt": "2026-11-02T07:29:50.172Z",
+            "connectedAt": "2026-11-10T21:04:02.733Z",
             "lastActivity": null,
             "paused": false,
             "transport": ""
@@ -91,15 +91,15 @@
         ],
         "pendingConfirmations": [
           {
-            "confirmationId": "cf_374de05cb75b658aeac904d8",
-            "sessionId": "s1-a6f3d5",
+            "confirmationId": "cf_8d5c24a74679c64df4c15523",
+            "sessionId": "s1-d1fc17",
             "commandId": "project.saveAs",
             "summary": "Overwrite `/tmp/Short.animpkg`",
             "consequences": [
               {
                 "kind": "overwrite",
                 "path": "/tmp/Short.animpkg",
-                "bytes": 28439
+                "bytes": 28449
               }
             ],
             "category": "overwrite",
@@ -127,7 +127,7 @@
     {
       "title": "Let a session edit",
       "result": {
-        "sessionId": "s1-7b6069",
+        "sessionId": "s1-f10ea3",
         "policy": "assist",
         "scopes": [
           "read",
@@ -145,7 +145,7 @@
       "title": "Pause every session",
       "result": {
         "paused": [
-          "s1-341fc0"
+          "s1-2191c5"
         ]
       },
       "varies": [
@@ -176,6 +176,1007 @@
       "title": "Expose doc and edit commands as tools",
       "result": {
         "toolCount": 40
+      },
+      "varies": []
+    }
+  ],
+  "anim.camera.create": [
+    {
+      "title": "A wide camera, made current",
+      "result": {
+        "cameraId": "el_01K7JJN800RXHD55052GG3NDRM"
+      },
+      "varies": []
+    }
+  ],
+  "anim.camera.current.get": [
+    {
+      "title": "The current camera of the current scene",
+      "result": {
+        "cameraId": "el_01K742SG0ZZYY8HE4MW501XMJV"
+      },
+      "varies": []
+    }
+  ],
+  "anim.camera.current.set": [
+    {
+      "title": "Make the Intro camera current",
+      "result": {
+        "cameraId": "el_01K742SG0ZZYY8HE4MW501XMJV"
+      },
+      "varies": []
+    }
+  ],
+  "anim.camera.delete": [
+    {
+      "title": "Delete the Wide camera",
+      "result": {
+        "currentCameraId": "el_01K742SG0ZZYY8HE4MW501XMJV"
+      },
+      "varies": []
+    }
+  ],
+  "anim.camera.get": [
+    {
+      "title": "The current camera at frame 1",
+      "result": {
+        "id": "el_01K742SG0ZZYY8HE4MW501XMJV",
+        "position": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 16.0
+        },
+        "roll": 0.0,
+        "fovMode": "static",
+        "fov": 41.11209043916693,
+        "effectiveFov": 41.11209043916693,
+        "worldPosition": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 16.0
+        },
+        "viewMatrix": [
+          1.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          1.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          1.0,
+          -16.0,
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ],
+        "frameCornersAtZ0": [
+          {
+            "x": -5.999999999999999,
+            "y": 3.3749999999999996,
+            "z": 0.0
+          },
+          {
+            "x": 5.999999999999999,
+            "y": 3.3749999999999996,
+            "z": 0.0
+          },
+          {
+            "x": 5.999999999999999,
+            "y": -3.3749999999999996,
+            "z": 0.0
+          },
+          {
+            "x": -5.999999999999999,
+            "y": -3.3749999999999996,
+            "z": 0.0
+          }
+        ],
+        "resolution": {
+          "w": 1920,
+          "h": 1080
+        }
+      },
+      "varies": []
+    }
+  ],
+  "anim.camera.list": [
+    {
+      "title": "Cameras of the current scene",
+      "result": {
+        "cameras": [
+          {
+            "id": "el_01K742SG0ZZYY8HE4MW501XMJV",
+            "name": "Camera",
+            "current": true
+          }
+        ]
+      },
+      "varies": []
+    }
+  ],
+  "anim.camera.set": [
+    {
+      "title": "Widen and roll the Intro camera",
+      "result": {
+        "cameraId": "el_01K742SG0ZZYY8HE4MW501XMJV"
+      },
+      "varies": []
+    }
+  ],
+  "anim.evaluate": [
+    {
+      "title": "World transform of Bob at frame 12",
+      "result": {
+        "frames": [
+          {
+            "frame": 12.0,
+            "nodes": [
+              {
+                "id": "el_01K742SG11W3SGB8Q1H50W74VB",
+                "kind": "drawing",
+                "localFrame": 12.0,
+                "world": {
+                  "matrix": [
+                    0.7202153131918843,
+                    -0.6939982491812108,
+                    0.0,
+                    0.02780739561712328,
+                    0.7071067811865475,
+                    0.7071067811865476,
+                    0.0,
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0,
+                    0.0,
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                  ],
+                  "position": {
+                    "x": 0.02780739561712328,
+                    "y": 0.0,
+                    "z": 0.0
+                  },
+                  "rotation": 44.47381011815112,
+                  "scale": {
+                    "x": 1.0093116948475747,
+                    "y": 0.990774212866937
+                  },
+                  "skew": 0.009845340611083987
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "varies": []
+    },
+    {
+      "title": "A peg at an in-between frame, everything",
+      "result": {
+        "frames": [
+          {
+            "frame": 7.5,
+            "nodes": [
+              {
+                "id": "el_01K742SG101DH4FAEWCWWK4QXC",
+                "kind": "peg",
+                "localFrame": 7.5,
+                "static": {
+                  "position": {
+                    "x": 0.0,
+                    "y": 0.0,
+                    "z": 0.0
+                  },
+                  "rotation": 0.0,
+                  "scale": {
+                    "x": 1.0,
+                    "y": 1.0
+                  },
+                  "skew": 0.0,
+                  "rotationPivot": {
+                    "x": 0.25,
+                    "y": -1.5
+                  },
+                  "scalePivot": {
+                    "x": 0.25,
+                    "y": -1.5
+                  }
+                },
+                "animated": {
+                  "position": {
+                    "x": 0.0,
+                    "y": 0.0,
+                    "z": 0.0
+                  },
+                  "rotation": 0.0,
+                  "scale": {
+                    "x": 1.0,
+                    "y": 1.0
+                  },
+                  "skew": 0.5686530505921554,
+                  "pivot": {
+                    "x": 0.0,
+                    "y": 0.0
+                  },
+                  "velocity": 0.0,
+                  "orientAngle": 0.0
+                },
+                "local": {
+                  "position": {
+                    "x": 0.0,
+                    "y": 0.0,
+                    "z": 0.0
+                  },
+                  "rotation": 0.0,
+                  "scale": {
+                    "x": 1.0,
+                    "y": 1.0
+                  },
+                  "skew": 0.5686530505921554,
+                  "rotationPivot": {
+                    "x": 0.25,
+                    "y": -1.5
+                  },
+                  "scalePivot": {
+                    "x": 0.25,
+                    "y": -1.5
+                  },
+                  "matrix": [
+                    1.0,
+                    0.00992519392362696,
+                    0.0,
+                    0.014887790885440455,
+                    0.0,
+                    1.0,
+                    0.0,
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0,
+                    0.0,
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                  ]
+                },
+                "world": {
+                  "matrix": [
+                    1.0,
+                    0.00992519392362696,
+                    0.0,
+                    0.014887790885440455,
+                    0.0,
+                    1.0,
+                    0.0,
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0,
+                    0.0,
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                  ],
+                  "position": {
+                    "x": 0.014887790885440455,
+                    "y": 0.0,
+                    "z": 0.0
+                  },
+                  "rotation": 0.0,
+                  "scale": {
+                    "x": 1.0,
+                    "y": 1.0
+                  },
+                  "skew": 0.5686530505921554
+                },
+                "screen": {
+                  "visible": true,
+                  "bbox": {
+                    "x": 962.3820465416705,
+                    "y": 540.0,
+                    "width": 0.0,
+                    "height": 0.0
+                  },
+                  "depth": 16.0
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "varies": []
+    }
+  ],
+  "anim.function.curveType.set": [
+    {
+      "title": "Make Bob's rotation a spline",
+      "result": {
+        "channel": "rotation",
+        "curveType": "spline"
+      },
+      "varies": []
+    }
+  ],
+  "anim.function.get": [
+    {
+      "title": "Bob's rotation keys",
+      "result": {
+        "nodeId": "el_01K742SG11W3SGB8Q1H50W74VB",
+        "channel": "rotation",
+        "curveType": "spline",
+        "keys": [
+          {
+            "frame": 1.0,
+            "value": 0.0,
+            "constantSegment": false,
+            "handleMode": "smooth",
+            "left": {
+              "dt": -4.0,
+              "dv": 0.0
+            },
+            "right": {
+              "dt": 4.0,
+              "dv": 0.0
+            },
+            "preset": null
+          },
+          {
+            "frame": 12.0,
+            "value": 45.0,
+            "constantSegment": false,
+            "handleMode": "smooth",
+            "left": {
+              "dt": -4.0,
+              "dv": 0.0
+            },
+            "right": {
+              "dt": 4.0,
+              "dv": 0.0
+            },
+            "preset": null
+          },
+          {
+            "frame": 24.0,
+            "value": -10.5,
+            "constantSegment": false,
+            "handleMode": "smooth",
+            "left": {
+              "dt": -4.0,
+              "dv": 0.0
+            },
+            "right": {
+              "dt": 4.0,
+              "dv": 0.0
+            },
+            "preset": null
+          }
+        ],
+        "pins": []
+      },
+      "varies": []
+    }
+  ],
+  "anim.function.key.add": [
+    {
+      "title": "Add a rotation key on Bob at frame 6",
+      "result": {
+        "frame": 6.0,
+        "value": 10.0
+      },
+      "varies": []
+    }
+  ],
+  "anim.function.key.duplicate": [
+    {
+      "title": "Copy Bob's rotation key at frame 1 to frame 6",
+      "result": {
+        "frame": 6
+      },
+      "varies": []
+    }
+  ],
+  "anim.function.key.remove": [
+    {
+      "title": "Remove Bob's rotation key at frame 1",
+      "result": {
+        "removed": 1
+      },
+      "varies": []
+    }
+  ],
+  "anim.function.key.set": [
+    {
+      "title": "Move Bob's first rotation key value and give it a right handle",
+      "result": {
+        "frame": 1.0,
+        "value": 5.0
+      },
+      "varies": []
+    }
+  ],
+  "anim.function.list": [
+    {
+      "title": "Channels of Bob",
+      "result": {
+        "channels": [
+          {
+            "channel": "position",
+            "curveType": null,
+            "keyCount": 2,
+            "allowedCurveTypes": []
+          },
+          {
+            "channel": "velocity",
+            "curveType": "interpolation",
+            "keyCount": 1,
+            "allowedCurveTypes": [
+              "spline",
+              "interpolation"
+            ]
+          },
+          {
+            "channel": "pivot.x",
+            "curveType": "interpolation",
+            "keyCount": 0,
+            "allowedCurveTypes": [
+              "spline",
+              "interpolation"
+            ]
+          },
+          {
+            "channel": "pivot.y",
+            "curveType": "interpolation",
+            "keyCount": 0,
+            "allowedCurveTypes": [
+              "spline",
+              "interpolation"
+            ]
+          },
+          {
+            "channel": "rotation",
+            "curveType": "spline",
+            "keyCount": 3,
+            "allowedCurveTypes": [
+              "spline",
+              "interpolation",
+              "velocityBased"
+            ]
+          },
+          {
+            "channel": "scale.x",
+            "curveType": "spline",
+            "keyCount": 1,
+            "allowedCurveTypes": [
+              "spline",
+              "interpolation",
+              "velocityBased"
+            ]
+          },
+          {
+            "channel": "scale.y",
+            "curveType": "interpolation",
+            "keyCount": 0,
+            "allowedCurveTypes": [
+              "spline",
+              "interpolation",
+              "velocityBased"
+            ]
+          },
+          {
+            "channel": "skew",
+            "curveType": "interpolation",
+            "keyCount": 0,
+            "allowedCurveTypes": [
+              "spline",
+              "interpolation",
+              "velocityBased"
+            ]
+          }
+        ]
+      },
+      "varies": []
+    }
+  ],
+  "anim.function.preset.apply": [
+    {
+      "title": "Ease Bob's rotation in and out",
+      "result": {
+        "segments": 2
+      },
+      "varies": []
+    }
+  ],
+  "anim.function.sample": [
+    {
+      "title": "Bob's rotation over frames 1-6",
+      "result": {
+        "samples": [
+          {
+            "frame": 1.0,
+            "value": 0.0
+          },
+          {
+            "frame": 2.0,
+            "value": 0.9209173412287387
+          },
+          {
+            "frame": 3.0,
+            "value": 3.5863271386591373
+          },
+          {
+            "frame": 4.0,
+            "value": 7.773760255637327
+          },
+          {
+            "frame": 5.0,
+            "value": 13.153574250009564
+          },
+          {
+            "frame": 6.0,
+            "value": 19.29680640264141
+          }
+        ]
+      },
+      "varies": []
+    }
+  ],
+  "anim.function.set": [
+    {
+      "title": "Rotate Bob 45 degrees over frames 1-12, easing in and out",
+      "result": {
+        "nodeId": "el_01K742SG11W3SGB8Q1H50W74VB",
+        "channel": "rotation",
+        "keyCount": 2
+      },
+      "varies": []
+    }
+  ],
+  "anim.key.add": [
+    {
+      "title": "Block Bob's full pose at frame 6",
+      "result": {
+        "keys": [
+          {
+            "nodeId": "el_01K742SG11W3SGB8Q1H50W74VB",
+            "frame": 6.0,
+            "channels": [
+              "position",
+              "rotation",
+              "scale.x",
+              "scale.y",
+              "skew",
+              "pivot.x",
+              "pivot.y"
+            ]
+          }
+        ]
+      },
+      "varies": []
+    },
+    {
+      "title": "Key only rotation and scale",
+      "result": {
+        "keys": [
+          {
+            "nodeId": "el_01K742SG11W3SGB8Q1H50W74VB",
+            "frame": 8.0,
+            "channels": [
+              "rotation",
+              "scale.x",
+              "scale.y"
+            ]
+          }
+        ]
+      },
+      "varies": []
+    }
+  ],
+  "anim.key.list": [
+    {
+      "title": "Keyed frames of Bob",
+      "result": {
+        "keys": [
+          {
+            "frame": 1.0,
+            "channels": [
+              "position",
+              "rotation",
+              "scale.x"
+            ],
+            "constant": [],
+            "descendantKeyed": false
+          },
+          {
+            "frame": 12.0,
+            "channels": [
+              "rotation",
+              "velocity"
+            ],
+            "constant": [],
+            "descendantKeyed": false
+          },
+          {
+            "frame": 24.0,
+            "channels": [
+              "position",
+              "rotation"
+            ],
+            "constant": [],
+            "descendantKeyed": false
+          }
+        ]
+      },
+      "varies": []
+    },
+    {
+      "title": "With descendants, over frames 1-24",
+      "result": {
+        "keys": [
+          {
+            "frame": 1.0,
+            "channels": [
+              "skew"
+            ],
+            "constant": [],
+            "descendantKeyed": true
+          },
+          {
+            "frame": 12.0,
+            "channels": [],
+            "constant": [],
+            "descendantKeyed": true
+          },
+          {
+            "frame": 24.0,
+            "channels": [],
+            "constant": [],
+            "descendantKeyed": true
+          }
+        ]
+      },
+      "varies": []
+    }
+  ],
+  "anim.key.move": [
+    {
+      "title": "Move Bob's keys at frame 12 to frame 14",
+      "result": {
+        "nodeId": "el_01K742SG11W3SGB8Q1H50W74VB",
+        "toFrame": 14
+      },
+      "varies": []
+    }
+  ],
+  "anim.key.remove": [
+    {
+      "title": "Remove Bob's keys at frame 1",
+      "result": {
+        "removed": 3
+      },
+      "varies": []
+    },
+    {
+      "title": "Remove all keyframes of Bob",
+      "result": {
+        "removed": 8
+      },
+      "varies": []
+    }
+  ],
+  "anim.loop.set": [
+    {
+      "title": "Loop Bob-P twice, advancing",
+      "result": {
+        "nodeId": "el_01K742SG101DH4FAEWCWWK4QXC",
+        "cycleLength": 48,
+        "duration": 96
+      },
+      "varies": []
+    }
+  ],
+  "anim.path.get": [
+    {
+      "title": "Bob's motion path",
+      "result": {
+        "nodeId": "el_01K742SG11W3SGB8Q1H50W74VB",
+        "lockDepth": false,
+        "length": 8.0,
+        "points": [
+          {
+            "id": "ch_01K742SG1XFEFQMBCSQ7D6AX3G/mp_01K742SG1YDDR34S3G0DS5PVPK",
+            "kind": "key",
+            "frame": 1.0,
+            "x": -4.0,
+            "y": 0.0,
+            "z": 0.0,
+            "tension": 0.0,
+            "continuity": 0.0,
+            "bias": 0.0,
+            "constantSegment": false,
+            "lockDepth": false,
+            "arcLength": 0.0
+          },
+          {
+            "id": "ch_01K742SG1XFEFQMBCSQ7D6AX3G/mp_01K742SG1Z9PEPA9753ZZ77JT4",
+            "kind": "control",
+            "frame": 12.0,
+            "x": 0.0,
+            "y": 0.0,
+            "z": 0.0,
+            "tension": 0.0,
+            "continuity": 0.0,
+            "bias": 0.0,
+            "arcLength": 4.0
+          },
+          {
+            "id": "ch_01K742SG1XFEFQMBCSQ7D6AX3G/mp_01K742SG20TE2N53WY0C9CNKZR",
+            "kind": "key",
+            "frame": 24.0,
+            "x": 4.0,
+            "y": 0.0,
+            "z": 0.0,
+            "tension": 0.0,
+            "continuity": 0.0,
+            "bias": 0.0,
+            "constantSegment": false,
+            "lockDepth": false,
+            "arcLength": 8.0
+          }
+        ]
+      },
+      "varies": []
+    }
+  ],
+  "anim.path.lockDepth.set": [
+    {
+      "title": "Keep Z constant in the segment starting at Bob's frame 1",
+      "result": {
+        "nodeId": "el_01K742SG11W3SGB8Q1H50W74VB",
+        "frame": 1
+      },
+      "varies": []
+    }
+  ],
+  "anim.path.point.add": [
+    {
+      "title": "Add a keyframe to Bob at frame 6",
+      "result": {
+        "pointId": "ch_01K742SG1XFEFQMBCSQ7D6AX3G/mp_01K7JJN800RXHD55052GG3NDRM",
+        "frame": 6.0
+      },
+      "varies": []
+    }
+  ],
+  "anim.path.point.remove": [
+    {
+      "title": "Remove Bob's last keyframe",
+      "result": {
+        "removed": 1,
+        "warnings": [
+          "a motion point became a keyframe at local frame 12 to end the path"
+        ]
+      },
+      "varies": []
+    }
+  ],
+  "anim.path.point.set": [
+    {
+      "title": "Move Bob's last keyframe and sharpen it",
+      "result": {
+        "pointIds": [
+          "scene:\"Intro\"/element:\"Bob\"/channel:\"position\"/key:\"24\""
+        ],
+        "warnings": []
+      },
+      "varies": []
+    }
+  ],
+  "anim.path.sample": [
+    {
+      "title": "Bob's world origin per frame over frames 1-6",
+      "result": {
+        "samples": [
+          {
+            "frame": 1.0,
+            "x": -4.0,
+            "y": 0.0,
+            "z": 0.0
+          },
+          {
+            "frame": 2.0,
+            "x": -3.635158273512319,
+            "y": 0.0,
+            "z": 0.0
+          },
+          {
+            "frame": 3.0,
+            "x": -3.2694695399584064,
+            "y": 0.0,
+            "z": 0.0
+          },
+          {
+            "frame": 4.0,
+            "x": -2.9034758813274606,
+            "y": 0.0,
+            "z": 0.0
+          },
+          {
+            "frame": 5.0,
+            "x": -2.5373115411964204,
+            "y": 0.0,
+            "z": 0.0
+          },
+          {
+            "frame": 6.0,
+            "x": -2.1710350131517266,
+            "y": 0.0,
+            "z": 0.0
+          }
+        ]
+      },
+      "varies": []
+    },
+    {
+      "title": "The pivot in parent space on half frames",
+      "result": {
+        "samples": [
+          {
+            "frame": 1.0,
+            "x": 0.25,
+            "y": -1.5,
+            "z": 0.0
+          },
+          {
+            "frame": 1.5,
+            "x": 0.25,
+            "y": -1.5,
+            "z": 0.0
+          },
+          {
+            "frame": 2.0,
+            "x": 0.25,
+            "y": -1.5,
+            "z": 0.0
+          },
+          {
+            "frame": 2.5,
+            "x": 0.25,
+            "y": -1.5,
+            "z": 0.0
+          },
+          {
+            "frame": 3.0,
+            "x": 0.25,
+            "y": -1.5,
+            "z": 0.0
+          }
+        ]
+      },
+      "varies": []
+    }
+  ],
+  "anim.path.set": [
+    {
+      "title": "Move Bob from left to right over frames 1-12",
+      "result": {
+        "nodeId": "el_01K742SG11W3SGB8Q1H50W74VB",
+        "pointIds": [
+          "ch_01K742SG1XFEFQMBCSQ7D6AX3G/mp_01K7JJN800RXHD55052GG3NDRM",
+          "ch_01K742SG1XFEFQMBCSQ7D6AX3G/mp_01K7JJN801N0AE1Z0RRCTVH07Z",
+          "ch_01K742SG1XFEFQMBCSQ7D6AX3G/mp_01K7JJN8023FJ8358KMGS10XYV"
+        ],
+        "warnings": []
+      },
+      "varies": []
+    }
+  ],
+  "anim.projection.get": [
+    {
+      "title": "Where the scene origin lands at frame 1",
+      "result": {
+        "points": [
+          {
+            "x": 960.0,
+            "y": 540.0,
+            "depth": 16.0,
+            "visible": true
+          }
+        ],
+        "nodes": []
+      },
+      "varies": []
+    },
+    {
+      "title": "Bob's box in output pixels",
+      "result": {
+        "points": [],
+        "nodes": [
+          {
+            "id": "el_01K742SG11W3SGB8Q1H50W74VB",
+            "bbox": {
+              "x": 159.99999999999986,
+              "y": 219.99999999999997,
+              "width": 640.0,
+              "height": 401.20000000000005
+            },
+            "visible": true
+          }
+        ]
+      },
+      "varies": []
+    }
+  ],
+  "anim.segment.set": [
+    {
+      "title": "Hold Bob's rotation from frame 1",
+      "result": {
+        "nodeIds": [
+          "el_01K742SG11W3SGB8Q1H50W74VB"
+        ],
+        "channels": [
+          "rotation"
+        ]
+      },
+      "varies": []
+    }
+  ],
+  "anim.segment.uniform.apply": [
+    {
+      "title": "Make the segment after Bob's frame 1 uniform",
+      "result": {
+        "nodeId": "el_01K742SG11W3SGB8Q1H50W74VB",
+        "channels": [
+          "rotation",
+          "velocity"
+        ]
+      },
+      "varies": []
+    }
+  ],
+  "anim.transform.set": [
+    {
+      "title": "Offset Bob statically",
+      "result": {
+        "nodeIds": [
+          "el_01K742SG11W3SGB8Q1H50W74VB"
+        ],
+        "keyedChannels": [],
+        "warnings": []
+      },
+      "varies": []
+    },
+    {
+      "title": "Key the peg's rotation at frame 12",
+      "result": {
+        "nodeIds": [
+          "el_01K742SG101DH4FAEWCWWK4QXC"
+        ],
+        "keyedChannels": [
+          "rotation"
+        ],
+        "warnings": []
+      },
+      "varies": []
+    },
+    {
+      "title": "Place Bob at a world position, keyed",
+      "result": {
+        "nodeIds": [
+          "el_01K742SG11W3SGB8Q1H50W74VB"
+        ],
+        "keyedChannels": [
+          "position"
+        ],
+        "warnings": []
       },
       "varies": []
     }
@@ -415,6 +1416,469 @@
       "varies": []
     }
   ],
+  "cell.blank.add": [
+    {
+      "title": "Insert two blank cells at frame 3 of Bob",
+      "result": {
+        "changed": [
+          {
+            "elementId": "el_01K742SG11W3SGB8Q1H50W74VB",
+            "from": 3,
+            "to": 46
+          }
+        ]
+      },
+      "varies": []
+    }
+  ],
+  "cell.blank.remove": [
+    {
+      "title": "Delete the blank cell at frame 7 of Bob",
+      "result": {
+        "changed": [
+          {
+            "elementId": "el_01K742SG11W3SGB8Q1H50W74VB",
+            "from": 8,
+            "to": 44
+          }
+        ]
+      },
+      "varies": []
+    }
+  ],
+  "cell.clipboard.apply": [
+    {
+      "title": "Paste the copied cells at Bob's frame 45",
+      "result": {
+        "elementIds": [
+          "el_01K742SG11W3SGB8Q1H50W74VB"
+        ],
+        "from": 45,
+        "to": 52,
+        "createdDrawingIds": []
+      },
+      "varies": []
+    },
+    {
+      "title": "Paste as new drawings at frame 45",
+      "result": {
+        "elementIds": [
+          "el_01K742SG11W3SGB8Q1H50W74VB"
+        ],
+        "from": 45,
+        "to": 52,
+        "createdDrawingIds": [
+          "dr_01K7JJN800RXHD55052GG3NDRM"
+        ]
+      },
+      "varies": []
+    }
+  ],
+  "cell.clipboard.set": [
+    {
+      "title": "Copy Bob's frames 1-8",
+      "result": {
+        "contentType": "drawingCells",
+        "elementCount": 1,
+        "frames": 8
+      },
+      "varies": []
+    },
+    {
+      "title": "Cut frames 1-6 and close the gap",
+      "result": {
+        "contentType": "drawingCells",
+        "elementCount": 1,
+        "frames": 6
+      },
+      "varies": []
+    }
+  ],
+  "cell.columnate.apply": [
+    {
+      "title": "Write drawings 1 to 10 on twos, forward-backward twice, from frame 1",
+      "result": {
+        "from": 1,
+        "to": 16,
+        "totalFrames": 16,
+        "loops": 2,
+        "sequence": [
+          {
+            "drawing": "1",
+            "from": 1,
+            "to": 2
+          },
+          {
+            "drawing": "2",
+            "from": 3,
+            "to": 4
+          },
+          {
+            "drawing": "10",
+            "from": 5,
+            "to": 6
+          },
+          {
+            "drawing": "2",
+            "from": 7,
+            "to": 8
+          },
+          {
+            "drawing": "1",
+            "from": 9,
+            "to": 10
+          },
+          {
+            "drawing": "2",
+            "from": 11,
+            "to": 12
+          },
+          {
+            "drawing": "10",
+            "from": 13,
+            "to": 14
+          },
+          {
+            "drawing": "2",
+            "from": 15,
+            "to": 16
+          }
+        ]
+      },
+      "varies": []
+    },
+    {
+      "title": "Preview a 10-frame continuous cycle without applying it",
+      "result": {
+        "from": 1,
+        "to": 10,
+        "totalFrames": 10,
+        "loops": 4,
+        "sequence": [
+          {
+            "drawing": "1",
+            "from": 1,
+            "to": 1
+          },
+          {
+            "drawing": "2",
+            "from": 2,
+            "to": 2
+          },
+          {
+            "drawing": "10",
+            "from": 3,
+            "to": 3
+          },
+          {
+            "drawing": "1",
+            "from": 4,
+            "to": 4
+          },
+          {
+            "drawing": "2",
+            "from": 5,
+            "to": 5
+          },
+          {
+            "drawing": "10",
+            "from": 6,
+            "to": 6
+          },
+          {
+            "drawing": "1",
+            "from": 7,
+            "to": 7
+          },
+          {
+            "drawing": "2",
+            "from": 8,
+            "to": 8
+          },
+          {
+            "drawing": "10",
+            "from": 9,
+            "to": 9
+          },
+          {
+            "drawing": "1",
+            "from": 10,
+            "to": 10
+          }
+        ]
+      },
+      "varies": []
+    }
+  ],
+  "cell.cycle.create": [
+    {
+      "title": "Repeat Bob's frames 1-8 three times in total",
+      "result": {
+        "from": 1,
+        "to": 24
+      },
+      "varies": []
+    }
+  ],
+  "cell.drawing.duplicate": [
+    {
+      "title": "Duplicate the drawing at frames 3-4 of Bob and expose the copy there",
+      "result": {
+        "drawingId": "dr_01K7JJN800RXHD55052GG3NDRM",
+        "name": "11"
+      },
+      "varies": []
+    }
+  ],
+  "cell.exposure.add": [
+    {
+      "title": "Hold Bob's drawing at frame 1 one frame longer",
+      "result": {
+        "changed": [
+          {
+            "elementId": "el_01K742SG11W3SGB8Q1H50W74VB",
+            "from": 7,
+            "to": 45
+          }
+        ]
+      },
+      "varies": []
+    },
+    {
+      "title": "Add two frames to every exposure of frames 1-10",
+      "result": {
+        "changed": [
+          {
+            "elementId": "el_01K742SG11W3SGB8Q1H50W74VB",
+            "from": 7,
+            "to": 50
+          }
+        ]
+      },
+      "varies": []
+    }
+  ],
+  "cell.exposure.remove": [
+    {
+      "title": "Shorten the exposure at frame 9 by one frame",
+      "result": {
+        "changed": [
+          {
+            "elementId": "el_01K742SG11W3SGB8Q1H50W74VB",
+            "from": 20,
+            "to": 44
+          }
+        ]
+      },
+      "varies": []
+    }
+  ],
+  "cell.exposure.set": [
+    {
+      "title": "Put Bob's frames 1-20 on twos",
+      "result": {
+        "changed": [
+          {
+            "elementId": "el_01K742SG11W3SGB8Q1H50W74VB",
+            "from": 3,
+            "to": 44
+          }
+        ]
+      },
+      "varies": []
+    }
+  ],
+  "cell.fill.apply": [
+    {
+      "title": "Extend Bob's first drawing through frame 8, over the blank cells",
+      "result": {
+        "changed": [
+          {
+            "elementId": "el_01K742SG11W3SGB8Q1H50W74VB",
+            "from": 7,
+            "to": 8
+          }
+        ]
+      },
+      "varies": []
+    }
+  ],
+  "cell.label.set": [
+    {
+      "title": "Expose drawing 10 in Bob's frames 1-6",
+      "result": {
+        "drawingId": "dr_01K742SG0NG5HTFZRD7238FZXJ",
+        "name": "10",
+        "changed": [
+          {
+            "elementId": "el_01K742SG11W3SGB8Q1H50W74VB",
+            "from": 1,
+            "to": 6
+          }
+        ]
+      },
+      "varies": []
+    },
+    {
+      "title": "Create drawing 11 and expose it in frames 7-8",
+      "result": {
+        "drawingId": "dr_01K7JJN800RXHD55052GG3NDRM",
+        "name": "11",
+        "changed": [
+          {
+            "elementId": "el_01K742SG11W3SGB8Q1H50W74VB",
+            "from": 7,
+            "to": 8
+          }
+        ]
+      },
+      "varies": []
+    },
+    {
+      "title": "Step to the next drawing of the bank in frames 1-6",
+      "result": {
+        "drawingId": "dr_01K742SG0M5J3BAJSW8241WA87",
+        "name": "2",
+        "changed": [
+          {
+            "elementId": "el_01K742SG11W3SGB8Q1H50W74VB",
+            "from": 1,
+            "to": 6
+          }
+        ]
+      },
+      "varies": []
+    }
+  ],
+  "cell.note.set": [
+    {
+      "title": "Note on Bob's frame 9",
+      "result": {
+        "elementId": "el_01K742SG11W3SGB8Q1H50W74VB",
+        "frame": 9
+      },
+      "varies": []
+    },
+    {
+      "title": "Remove the note of frame 3",
+      "result": {
+        "elementId": "el_01K742SG11W3SGB8Q1H50W74VB",
+        "frame": 3
+      },
+      "varies": []
+    }
+  ],
+  "cell.range.add": [
+    {
+      "title": "Insert two named cells after frame 6 of Bob",
+      "result": {
+        "from": 7,
+        "to": 8,
+        "drawingIds": [
+          "dr_01K7JJN800RXHD55052GG3NDRM",
+          "dr_01K7JJN801N0AE1Z0RRCTVH07Z"
+        ]
+      },
+      "varies": []
+    },
+    {
+      "title": "Insert three blank cells before frame 1 in every column",
+      "result": {
+        "from": 1,
+        "to": 3,
+        "drawingIds": []
+      },
+      "varies": []
+    }
+  ],
+  "cell.range.delete": [
+    {
+      "title": "Clear frames 1-3 of Bob",
+      "result": {
+        "changed": [
+          {
+            "elementId": "el_01K742SG11W3SGB8Q1H50W74VB",
+            "from": 1,
+            "to": 3
+          }
+        ]
+      },
+      "varies": []
+    },
+    {
+      "title": "Remove frames 1-3 of Bob and close the gap",
+      "result": {
+        "changed": [
+          {
+            "elementId": "el_01K742SG11W3SGB8Q1H50W74VB",
+            "from": 3,
+            "to": 44
+          }
+        ]
+      },
+      "varies": []
+    }
+  ],
+  "cell.range.move": [
+    {
+      "title": "Move Bob's frames 1-6 to frame 45",
+      "result": {
+        "from": 39,
+        "to": 44,
+        "createdDrawingIds": []
+      },
+      "varies": []
+    },
+    {
+      "title": "Copy frames 1-6 of Bob into the Notes annotation column as new drawings",
+      "result": {
+        "from": 1,
+        "to": 6,
+        "createdDrawingIds": [
+          "dr_01K7JJN800RXHD55052GG3NDRM"
+        ]
+      },
+      "varies": []
+    }
+  ],
+  "cell.select": [
+    {
+      "title": "Select Bob's frames 1-6",
+      "result": {
+        "elementIds": [
+          "el_01K742SG11W3SGB8Q1H50W74VB"
+        ],
+        "from": 1,
+        "to": 6
+      },
+      "varies": []
+    },
+    {
+      "title": "Select Bob's whole track",
+      "result": {
+        "elementIds": [
+          "el_01K742SG11W3SGB8Q1H50W74VB"
+        ],
+        "from": 1,
+        "to": 44
+      },
+      "varies": []
+    }
+  ],
+  "cell.selection.get": [
+    {
+      "title": "The current cell selection and position",
+      "result": {
+        "elementIds": [],
+        "from": 0,
+        "to": 0,
+        "rowsSelected": 0,
+        "currentElementId": "el_01K742SG0ZZYY8HE4MW501XMJV",
+        "currentFrame": 1
+      },
+      "varies": []
+    }
+  ],
   "checkpoint.create": [
     {
       "title": "Checkpoint before an experiment",
@@ -438,7 +1902,7 @@
       "result": [
         {
           "name": "before-walk",
-          "createdAt": "2026-11-02T07:29:50.643Z",
+          "createdAt": "2026-11-10T21:04:05.305Z",
           "documentRev": 1,
           "origin": "user"
         }
@@ -851,7 +2315,7 @@
             "version": "0.0.1",
             "platform": "windows-x64"
           },
-          "exportedAt": "2026-11-02T07:29:51.201Z",
+          "exportedAt": "2026-11-10T21:04:06.022Z",
           "sourceProjectId": "pr_01K742SG00BK0VXTWDM5JRXV37",
           "scope": {
             "kind": "scenes",
@@ -1024,7 +2488,7 @@
                   },
                   "camera": {
                     "fovMode": "static",
-                    "fov": 41.1121
+                    "fov": 41.11209043916693
                   },
                   "channels": {},
                   "createdAt": "2026-10-17T09:30:12.345Z"
@@ -2875,7 +4339,7 @@
           ],
           "blobs": {}
         },
-        "bytes": 25880,
+        "bytes": 25890,
         "objectCount": 7
       },
       "varies": [
@@ -3323,7 +4787,7 @@
           },
           "camera": {
             "fovMode": "static",
-            "fov": 41.1121
+            "fov": 41.11209043916693
           },
           "channels": {},
           "createdAt": "2026-10-17T09:30:12.345Z",
@@ -3613,8 +5077,8 @@
     {
       "title": "The element schema",
       "resultDigest": {
-        "bytes": 133352,
-        "sha256": "e6245882c810eb810bb858ad62062ef7167f011210294c0bfe7ff0607f66e47f"
+        "bytes": 133909,
+        "sha256": "1667df2c4b7db4742ccb069a1ef651f993530224f4921ffbcdcddd62ee0307c0"
       },
       "varies": [
         "/schema/$defs/LibraryItem/then/allOf/0/else/properties/createdAt",
@@ -5669,11 +7133,11 @@
   ],
   "edit.cut": [
     {
-      "title": "Cut the first scene's first element",
+      "title": "Cut the peg Bob-P with what is attached to it",
       "result": {
         "clipboard": {
           "kind": "elements",
-          "itemCount": 1
+          "itemCount": 2
         }
       },
       "varies": []
@@ -5721,7 +7185,7 @@
             "stepId": "u-1",
             "label": "Set meta",
             "source": "user",
-            "time": "2026-11-02T07:29:52.582Z",
+            "time": "2026-11-10T21:04:07.512Z",
             "objectCount": 1
           },
           {
@@ -5729,7 +7193,7 @@
             "stepId": "u-2",
             "label": "Set meta",
             "source": "user",
-            "time": "2026-11-02T07:29:52.583Z",
+            "time": "2026-11-10T21:04:07.513Z",
             "objectCount": 1
           }
         ],
@@ -5865,6 +7329,1248 @@
       "varies": []
     }
   ],
+  "element.annotation.set": [
+    {
+      "title": "Turn Bob into an annotation element",
+      "result": {
+        "elementId": "el_01K742SG11W3SGB8Q1H50W74VB",
+        "type": "annotation"
+      },
+      "varies": []
+    }
+  ],
+  "element.childExposure.apply": [
+    {
+      "title": "Extend the exposure of Bob-P's children up to frame 60",
+      "result": {
+        "changed": [
+          {
+            "elementId": "el_01K742SG11W3SGB8Q1H50W74VB",
+            "from": 45,
+            "to": 60
+          }
+        ]
+      },
+      "varies": []
+    }
+  ],
+  "element.clone": [
+    {
+      "title": "Clone Bob (shared drawings, own timing)",
+      "result": {
+        "elementId": "el_01K7JJN800RXHD55052GG3NDRM",
+        "name": "Bob_1",
+        "cloneGroupId": "db_01K742SG0JW3TVZ32SQC03AMY1"
+      },
+      "varies": []
+    }
+  ],
+  "element.collapsed.set": [
+    {
+      "title": "Collapse the peg Bob-P",
+      "result": {
+        "elementIds": [
+          "el_01K742SG101DH4FAEWCWWK4QXC"
+        ]
+      },
+      "varies": []
+    }
+  ],
+  "element.colour.set": [
+    {
+      "title": "Mark Bob red",
+      "result": {
+        "elementIds": [
+          "el_01K742SG11W3SGB8Q1H50W74VB"
+        ]
+      },
+      "varies": []
+    },
+    {
+      "title": "Revert Bob's marker to the category default",
+      "result": {
+        "elementIds": [
+          "el_01K742SG11W3SGB8Q1H50W74VB"
+        ]
+      },
+      "varies": []
+    }
+  ],
+  "element.create": [
+    {
+      "title": "Add a drawing element to the current scene",
+      "result": {
+        "elementIds": [
+          "el_01K7JJN800RXHD55052GG3NDRM"
+        ],
+        "names": [
+          "Drawing"
+        ],
+        "warnings": []
+      },
+      "varies": []
+    },
+    {
+      "title": "Three pegs named Leg, Leg_1, Leg_2 under Bob-P",
+      "result": {
+        "elementIds": [
+          "el_01K7JJN800RXHD55052GG3NDRM",
+          "el_01K7JJN801N0AE1Z0RRCTVH07Z",
+          "el_01K7JJN8023FJ8358KMGS10XYV"
+        ],
+        "names": [
+          "Leg",
+          "Leg_1",
+          "Leg_2"
+        ],
+        "warnings": []
+      },
+      "varies": []
+    },
+    {
+      "title": "A clipping effect with its mask row",
+      "result": {
+        "elementIds": [
+          "el_01K7JJN800RXHD55052GG3NDRM"
+        ],
+        "names": [
+          "Clipping"
+        ],
+        "warnings": []
+      },
+      "varies": []
+    }
+  ],
+  "element.current.move": [
+    {
+      "title": "Next Exposure Sheet column",
+      "result": {
+        "elementId": "el_01K742SG11W3SGB8Q1H50W74VB"
+      },
+      "varies": []
+    }
+  ],
+  "element.current.set": [
+    {
+      "title": "Make Bob current",
+      "result": {
+        "elementId": "el_01K742SG11W3SGB8Q1H50W74VB"
+      },
+      "varies": []
+    }
+  ],
+  "element.delete": [
+    {
+      "title": "Delete the peg Bob-P; Bob moves to its level",
+      "result": {
+        "deletedIds": [
+          "el_01K742SG101DH4FAEWCWWK4QXC"
+        ],
+        "reparentedIds": [
+          "el_01K742SG11W3SGB8Q1H50W74VB"
+        ],
+        "deletedDrawingCount": 0
+      },
+      "varies": []
+    }
+  ],
+  "element.drawing.create": [
+    {
+      "title": "A new empty drawing in Bob's bank",
+      "result": {
+        "drawingId": "dr_01K7JJN800RXHD55052GG3NDRM",
+        "name": "11"
+      },
+      "varies": []
+    },
+    {
+      "title": "Drawing A exposed at frames 45-48",
+      "result": {
+        "drawingId": "dr_01K7JJN800RXHD55052GG3NDRM",
+        "name": "A"
+      },
+      "varies": []
+    }
+  ],
+  "element.drawing.delete": [
+    {
+      "title": "Delete Bob's unused drawing 10",
+      "result": {
+        "deletedIds": [
+          "dr_01K742SG0NG5HTFZRD7238FZXJ"
+        ],
+        "clearedCells": []
+      },
+      "varies": []
+    },
+    {
+      "title": "Delete drawing 1 and blank the cells showing it",
+      "result": {
+        "deletedIds": [
+          "dr_01K742SG0KKMCAP9X1E6Z5P4SW"
+        ],
+        "clearedCells": [
+          {
+            "elementId": "el_01K742SG11W3SGB8Q1H50W74VB",
+            "from": 1,
+            "to": 44
+          }
+        ]
+      },
+      "varies": []
+    }
+  ],
+  "element.drawing.duplicate": [
+    {
+      "title": "Copy Bob's drawing 1 into a new bank entry",
+      "result": {
+        "drawingId": "dr_01K7JJN800RXHD55052GG3NDRM",
+        "name": "11"
+      },
+      "varies": []
+    }
+  ],
+  "element.drawing.list": [
+    {
+      "title": "Bob's drawings with usage",
+      "result": {
+        "drawings": [
+          {
+            "id": "dr_01K742SG0KKMCAP9X1E6Z5P4SW",
+            "name": "1",
+            "exposures": [
+              {
+                "from": 1,
+                "to": 6
+              },
+              {
+                "from": 21,
+                "to": 44
+              }
+            ],
+            "useCount": 30,
+            "locked": false,
+            "empty": false,
+            "missing": false,
+            "contentType": "vector"
+          },
+          {
+            "id": "dr_01K742SG0M5J3BAJSW8241WA87",
+            "name": "2",
+            "exposures": [
+              {
+                "from": 9,
+                "to": 20
+              }
+            ],
+            "useCount": 12,
+            "locked": true,
+            "empty": false,
+            "missing": false,
+            "contentType": "bitmap"
+          },
+          {
+            "id": "dr_01K742SG0NG5HTFZRD7238FZXJ",
+            "name": "10",
+            "exposures": [],
+            "useCount": 0,
+            "locked": false,
+            "empty": true,
+            "missing": false,
+            "contentType": "empty"
+          }
+        ]
+      },
+      "varies": []
+    },
+    {
+      "title": "Bob's unused drawings with 32-pixel thumbnails",
+      "result": {
+        "drawings": []
+      },
+      "varies": []
+    }
+  ],
+  "element.drawing.rename": [
+    {
+      "title": "Rename Bob's drawing 10 to 3",
+      "result": {
+        "drawingId": "dr_01K742SG0NG5HTFZRD7238FZXJ",
+        "name": "3"
+      },
+      "varies": []
+    }
+  ],
+  "element.drawingContent.delete": [
+    {
+      "title": "Clear Bob's drawing 1 (cells keep their label)",
+      "result": {
+        "drawingIds": [
+          "dr_01K742SG0KKMCAP9X1E6Z5P4SW"
+        ]
+      },
+      "varies": []
+    }
+  ],
+  "element.drawingLock.set": [
+    {
+      "title": "Lock Bob's drawing 1",
+      "result": {
+        "drawingIds": [
+          "dr_01K742SG0KKMCAP9X1E6Z5P4SW"
+        ]
+      },
+      "varies": []
+    }
+  ],
+  "element.duplicate": [
+    {
+      "title": "Duplicate Bob with copies of his drawings",
+      "result": {
+        "elementIds": [
+          "el_01K7JJN800RXHD55052GG3NDRM"
+        ],
+        "names": [
+          "Bob_1"
+        ]
+      },
+      "varies": []
+    }
+  ],
+  "element.get": [
+    {
+      "title": "Bob's state",
+      "result": {
+        "id": "el_01K742SG11W3SGB8Q1H50W74VB",
+        "path": "scene:\"Intro\"/element:\"Bob\"",
+        "name": "Bob",
+        "elementType": "drawing",
+        "sceneId": "sc_01K742SG0YSRA1305J7887BDVZ",
+        "parentId": "el_01K742SG101DH4FAEWCWWK4QXC",
+        "childIds": [],
+        "depth": 1,
+        "timelineIndex": 2,
+        "xsheetIndex": 0,
+        "start": 1,
+        "duration": 44,
+        "loops": 1,
+        "annotation": false,
+        "role": "normal",
+        "deformable": false,
+        "visibleInScene": true,
+        "hiddenByParent": false,
+        "visibleInXsheet": true,
+        "locked": false,
+        "collapsed": false,
+        "markerColour": "#9DC3E6FF",
+        "backgroundColour": null,
+        "effectiveMarkerColour": "#9DC3E6FF",
+        "note": "main character",
+        "columnWidth": 80,
+        "cloneGroupId": null,
+        "cloneIds": [],
+        "drawingCount": 3,
+        "media": null
+      },
+      "varies": []
+    }
+  ],
+  "element.hierarchy.get": [
+    {
+      "title": "Where Bob hangs",
+      "result": {
+        "parentId": "el_01K742SG101DH4FAEWCWWK4QXC",
+        "childIds": [],
+        "previousSiblingId": null,
+        "nextSiblingId": null,
+        "depth": 1
+      },
+      "varies": []
+    }
+  ],
+  "element.hierarchy.select": [
+    {
+      "title": "Select Bob's parent",
+      "result": {
+        "selectedIds": [
+          "el_01K742SG101DH4FAEWCWWK4QXC"
+        ]
+      },
+      "varies": []
+    }
+  ],
+  "element.list": [
+    {
+      "title": "Elements of the Intro scene in Timeline order",
+      "result": {
+        "elements": [
+          {
+            "id": "el_01K742SG0ZZYY8HE4MW501XMJV",
+            "name": "Camera",
+            "type": "camera",
+            "parentId": null,
+            "depth": 0,
+            "index": 0
+          },
+          {
+            "id": "el_01K742SG101DH4FAEWCWWK4QXC",
+            "name": "Bob-P",
+            "type": "peg",
+            "parentId": null,
+            "depth": 0,
+            "index": 1
+          },
+          {
+            "id": "el_01K742SG11W3SGB8Q1H50W74VB",
+            "name": "Bob",
+            "type": "drawing",
+            "parentId": "el_01K742SG101DH4FAEWCWWK4QXC",
+            "depth": 1,
+            "index": 0
+          },
+          {
+            "id": "el_01K742SG12CTMHXEB7TY99G4XV",
+            "name": "Background",
+            "type": "image",
+            "parentId": null,
+            "depth": 0,
+            "index": 2
+          },
+          {
+            "id": "el_01K742SG16N99XRCS0QEBWMRXY",
+            "name": "Notes",
+            "type": "annotation",
+            "parentId": null,
+            "depth": 0,
+            "index": 3
+          },
+          {
+            "id": "el_01K742SG18FWWKH14N0RFB0V71",
+            "name": "Dialogue",
+            "type": "sound",
+            "parentId": null,
+            "depth": 0,
+            "index": 4
+          },
+          {
+            "id": "el_01K742SG1997BY67AWW1M4Q0ZJ",
+            "name": "Reference",
+            "type": "media",
+            "parentId": null,
+            "depth": 0,
+            "index": 5
+          },
+          {
+            "id": "el_01K742SG1AC44Z1PPR4WQ603NH",
+            "name": "Rig",
+            "type": "skeleton",
+            "parentId": null,
+            "depth": 0,
+            "index": 6
+          },
+          {
+            "id": "el_01K742SG1BRDWJ0WNJDQZ83WKE",
+            "name": "Rig-bones",
+            "type": "effectParameter",
+            "parentId": "el_01K742SG1AC44Z1PPR4WQ603NH",
+            "depth": 1,
+            "index": 0
+          },
+          {
+            "id": "el_01K742SG1DA6M66PRBFSTF1J1Y",
+            "name": "Arm",
+            "type": "bone",
+            "parentId": "el_01K742SG1BRDWJ0WNJDQZ83WKE",
+            "depth": 2,
+            "index": 0
+          },
+          {
+            "id": "el_01K742SG1C65EBSWTVDPTZ7EJ0",
+            "name": "Rig-skin",
+            "type": "effectParameter",
+            "parentId": "el_01K742SG1AC44Z1PPR4WQ603NH",
+            "depth": 1,
+            "index": 1
+          },
+          {
+            "id": "el_01K742SG1E231F7W54P5SD2AAB",
+            "name": "Clip",
+            "type": "clipping",
+            "parentId": null,
+            "depth": 0,
+            "index": 7
+          },
+          {
+            "id": "el_01K742SG1FGTQ1G2HBTRT3T0FR",
+            "name": "Clip-mask",
+            "type": "effectParameter",
+            "parentId": "el_01K742SG1E231F7W54P5SD2AAB",
+            "depth": 1,
+            "index": 0
+          },
+          {
+            "id": "el_01K742SG1G9A0XG0WHZYSGT4WG",
+            "name": "Fade",
+            "type": "colourTransform",
+            "parentId": null,
+            "depth": 0,
+            "index": 8
+          },
+          {
+            "id": "el_01K742SG1H4KS4Y1FG6WTW7EAH",
+            "name": "Shadow",
+            "type": "dropShadow",
+            "parentId": "el_01K742SG1G9A0XG0WHZYSGT4WG",
+            "depth": 1,
+            "index": 0
+          },
+          {
+            "id": "el_01K742SG1J3M0SDFTX818N3V2K",
+            "name": "Soft",
+            "type": "blur",
+            "parentId": "el_01K742SG1G9A0XG0WHZYSGT4WG",
+            "depth": 1,
+            "index": 1
+          },
+          {
+            "id": "el_01K742SG1KNSDQQH1EG9W2NJWJ",
+            "name": "Quake",
+            "type": "shake",
+            "parentId": "el_01K742SG1J3M0SDFTX818N3V2K",
+            "depth": 2,
+            "index": 0
+          },
+          {
+            "id": "el_01K742SG1M9CJZV12YYC0CWB8B",
+            "name": "Snow",
+            "type": "particleNature",
+            "parentId": null,
+            "depth": 0,
+            "index": 9
+          },
+          {
+            "id": "el_01K742SG1N7SQGF0AQF87N7SEP",
+            "name": "Snow-sprites",
+            "type": "effectParameter",
+            "parentId": "el_01K742SG1M9CJZV12YYC0CWB8B",
+            "depth": 1,
+            "index": 0
+          },
+          {
+            "id": "el_01K742SG1PHXPEHSG259WYPMBV",
+            "name": "Boom",
+            "type": "particleImpact",
+            "parentId": null,
+            "depth": 0,
+            "index": 10
+          }
+        ]
+      },
+      "varies": []
+    },
+    {
+      "title": "Exposure Sheet columns of the Intro scene",
+      "result": {
+        "elements": [
+          {
+            "id": "el_01K742SG11W3SGB8Q1H50W74VB",
+            "name": "Bob",
+            "type": "drawing",
+            "parentId": "el_01K742SG101DH4FAEWCWWK4QXC",
+            "depth": 1,
+            "index": 0
+          },
+          {
+            "id": "el_01K742SG12CTMHXEB7TY99G4XV",
+            "name": "Background",
+            "type": "image",
+            "parentId": null,
+            "depth": 0,
+            "index": 1
+          },
+          {
+            "id": "el_01K742SG16N99XRCS0QEBWMRXY",
+            "name": "Notes",
+            "type": "annotation",
+            "parentId": null,
+            "depth": 0,
+            "index": 2
+          },
+          {
+            "id": "el_01K742SG18FWWKH14N0RFB0V71",
+            "name": "Dialogue",
+            "type": "sound",
+            "parentId": null,
+            "depth": 0,
+            "index": 3
+          },
+          {
+            "id": "el_01K742SG1997BY67AWW1M4Q0ZJ",
+            "name": "Reference",
+            "type": "media",
+            "parentId": null,
+            "depth": 0,
+            "index": 4
+          }
+        ]
+      },
+      "varies": []
+    },
+    {
+      "title": "Direct children of the peg Bob-P",
+      "result": {
+        "elements": [
+          {
+            "id": "el_01K742SG11W3SGB8Q1H50W74VB",
+            "name": "Bob",
+            "type": "drawing",
+            "parentId": "el_01K742SG101DH4FAEWCWWK4QXC",
+            "depth": 1,
+            "index": 0
+          }
+        ]
+      },
+      "varies": []
+    }
+  ],
+  "element.lock.set": [
+    {
+      "title": "Lock Bob in the scene-planning views",
+      "result": {
+        "changedIds": [
+          "el_01K742SG11W3SGB8Q1H50W74VB"
+        ]
+      },
+      "varies": []
+    },
+    {
+      "title": "Unlock all",
+      "result": {
+        "changedIds": []
+      },
+      "varies": []
+    }
+  ],
+  "element.mediaLength.set": [
+    {
+      "title": "Set the Reference media to 30 frames",
+      "result": {
+        "elementId": "el_01K742SG1997BY67AWW1M4Q0ZJ",
+        "from": 1,
+        "to": 30
+      },
+      "varies": []
+    }
+  ],
+  "element.note.set": [
+    {
+      "title": "Note on Bob",
+      "result": {
+        "elementId": "el_01K742SG11W3SGB8Q1H50W74VB"
+      },
+      "varies": []
+    }
+  ],
+  "element.order.move": [
+    {
+      "title": "Bring the Background image to the front of its Timeline level",
+      "result": {
+        "changed": true,
+        "order": [
+          "el_01K742SG12CTMHXEB7TY99G4XV",
+          "el_01K742SG0ZZYY8HE4MW501XMJV",
+          "el_01K742SG101DH4FAEWCWWK4QXC",
+          "el_01K742SG16N99XRCS0QEBWMRXY",
+          "el_01K742SG18FWWKH14N0RFB0V71",
+          "el_01K742SG1997BY67AWW1M4Q0ZJ",
+          "el_01K742SG1AC44Z1PPR4WQ603NH",
+          "el_01K742SG1E231F7W54P5SD2AAB",
+          "el_01K742SG1G9A0XG0WHZYSGT4WG",
+          "el_01K742SG1M9CJZV12YYC0CWB8B",
+          "el_01K742SG1PHXPEHSG259WYPMBV"
+        ]
+      },
+      "varies": []
+    },
+    {
+      "title": "Move Bob's column one step to the right in the Exposure Sheet",
+      "result": {
+        "changed": true,
+        "order": [
+          "el_01K742SG12CTMHXEB7TY99G4XV",
+          "el_01K742SG11W3SGB8Q1H50W74VB",
+          "el_01K742SG16N99XRCS0QEBWMRXY",
+          "el_01K742SG18FWWKH14N0RFB0V71",
+          "el_01K742SG1997BY67AWW1M4Q0ZJ"
+        ]
+      },
+      "varies": []
+    }
+  ],
+  "element.order.set": [
+    {
+      "title": "Reorder the Exposure Sheet columns",
+      "result": {
+        "order": [
+          "el_01K742SG12CTMHXEB7TY99G4XV",
+          "el_01K742SG11W3SGB8Q1H50W74VB",
+          "el_01K742SG16N99XRCS0QEBWMRXY",
+          "el_01K742SG18FWWKH14N0RFB0V71",
+          "el_01K742SG1997BY67AWW1M4Q0ZJ"
+        ]
+      },
+      "varies": []
+    }
+  ],
+  "element.parent.remove": [
+    {
+      "title": "Detach Bob from Bob-P; Bob moves directly above it",
+      "result": {
+        "elementIds": [
+          "el_01K742SG11W3SGB8Q1H50W74VB"
+        ],
+        "parentId": null
+      },
+      "varies": []
+    }
+  ],
+  "element.parent.set": [
+    {
+      "title": "Attach the Background image to Bob-P",
+      "result": {
+        "elementIds": [
+          "el_01K742SG12CTMHXEB7TY99G4XV"
+        ],
+        "parentId": "el_01K742SG101DH4FAEWCWWK4QXC"
+      },
+      "varies": []
+    },
+    {
+      "title": "Attach to the nearest peg or effect above",
+      "result": {
+        "elementIds": [
+          "el_01K742SG12CTMHXEB7TY99G4XV"
+        ],
+        "parentId": "el_01K742SG101DH4FAEWCWWK4QXC"
+      },
+      "varies": []
+    }
+  ],
+  "element.parentPeg.create": [
+    {
+      "title": "Put the Background image under a new peg",
+      "result": {
+        "pegId": "el_01K7JJN800RXHD55052GG3NDRM",
+        "name": "Background-P"
+      },
+      "varies": []
+    }
+  ],
+  "element.properties.set": [
+    {
+      "title": "Make Bob a foreground element",
+      "result": {
+        "elementId": "el_01K742SG11W3SGB8Q1H50W74VB"
+      },
+      "varies": []
+    }
+  ],
+  "element.rename": [
+    {
+      "title": "Rename Bob to Robert",
+      "result": {
+        "elementId": "el_01K742SG11W3SGB8Q1H50W74VB",
+        "name": "Robert"
+      },
+      "varies": []
+    }
+  ],
+  "element.select": [
+    {
+      "title": "Select Bob",
+      "result": {
+        "selectedIds": [
+          "el_01K742SG11W3SGB8Q1H50W74VB"
+        ]
+      },
+      "varies": []
+    }
+  ],
+  "element.solo.set": [
+    {
+      "title": "Solo Bob",
+      "result": {
+        "enabled": true,
+        "elementIds": [
+          "el_01K742SG11W3SGB8Q1H50W74VB"
+        ]
+      },
+      "varies": []
+    },
+    {
+      "title": "Turn solo mode off",
+      "result": {
+        "enabled": false,
+        "elementIds": []
+      },
+      "varies": []
+    }
+  ],
+  "element.timing.set": [
+    {
+      "title": "Move the peg Bob-P to start at frame 5",
+      "result": {
+        "elements": [
+          {
+            "id": "el_01K742SG101DH4FAEWCWWK4QXC",
+            "start": 5,
+            "duration": 48,
+            "loops": 1
+          }
+        ]
+      },
+      "varies": []
+    },
+    {
+      "title": "Stretch Bob-P to 24 frames, scaling its keys",
+      "result": {
+        "elements": [
+          {
+            "id": "el_01K742SG101DH4FAEWCWWK4QXC",
+            "start": 1,
+            "duration": 24,
+            "loops": 1
+          }
+        ]
+      },
+      "varies": []
+    },
+    {
+      "title": "Loop the Fade effect twice",
+      "result": {
+        "elements": [
+          {
+            "id": "el_01K742SG1G9A0XG0WHZYSGT4WG",
+            "start": 1,
+            "duration": 96,
+            "loops": 2
+          }
+        ]
+      },
+      "varies": []
+    }
+  ],
+  "element.typeColour.get": [
+    {
+      "title": "Default colours of all element categories",
+      "result": {
+        "colours": {
+          "drawings": "#9DC3E6FF",
+          "images": "#A9D18EFF",
+          "sounds": "#F4B183FF",
+          "pegs": "#C9A0DCFF",
+          "skeletons": "#E6B9B8FF",
+          "media": "#FFE699FF",
+          "cameras": "#BFBFBFFF",
+          "effects": "#F8CBADFF",
+          "effectParameters": "#FBE5D6FF"
+        }
+      },
+      "varies": []
+    }
+  ],
+  "element.typeColour.set": [
+    {
+      "title": "Pegs in purple",
+      "result": {
+        "category": "pegs",
+        "colour": "#8064A2FF"
+      },
+      "varies": []
+    }
+  ],
+  "element.unusedDrawing.list": [
+    {
+      "title": "Unused drawings of the Intro scene",
+      "result": {
+        "items": []
+      },
+      "varies": []
+    }
+  ],
+  "element.visibility.set": [
+    {
+      "title": "Hide Bob in the scene",
+      "result": {
+        "changedIds": [
+          "el_01K742SG11W3SGB8Q1H50W74VB"
+        ]
+      },
+      "varies": []
+    },
+    {
+      "title": "Hide all annotation elements",
+      "result": {
+        "changedIds": [
+          "el_01K742SG16N99XRCS0QEBWMRXY"
+        ]
+      },
+      "varies": []
+    }
+  ],
+  "inspect.contactSheet.render": [
+    {
+      "title": "Every fourth frame of 1–24",
+      "result": {
+        "png": "iVBORw0KGgoAAAANSUhEUgAAAuAAAAE2CAYAAAAgUSemAAAPAUlEQVR4nO3d22/UdZ/A8c90egBE8EShnDcRQcSNiG4My3rIJsQbD5E8ZLNZvfav2TuvNpuYeKGJiSYmEiXZ1SiPBJTEBIKcHw62KKWAPvREW+bp/BSjhNJ2Wj+dmb5eyWSOcPfrvOcz3/n+WivjAgAASNESAABAGgEOAACJBDgAACQS4AAAkEiAAwBAIgEOAACJBDgAACQS4AAAkEiAAwBAIgEOAACJBDgAACQS4AAAkEiAAwBAIgEOAACJBDgAACQS4AAAkEiAAwBAIgEOAACJBDgAACQS4AAAkEiAAwBAIgEOAACJBDgAACQS4AAAkEiAAwBAIgEOAACJBDgAACQS4AB3MDY2FgMDA3Ho0KHYs2dP8diZM2fi559/DgCYiVJlXADMc/39/dHR0RGXLl2Ka9euFfG9atWqIr7L5XJs3LixeP7gwYPx5ptvBgDUygQcYNzHH38cV65ciR9//DHOnz8f+/bti7feequYhLe1tRWPrV27trgNADPRGgBEa2trvPvuu8V1Z2dndHd3x5YtW+LmzZuxfPnyeOqpp+KLL76I3bt3BwDMxLxagvLZZ5/FCy+8EN98801s2rQpjh07Vlx/++23xfM7duwIYH766KOP4oknnoiWlpY4efJkDA0NxerVq4sIL5VKAQCzZV5NwL/88stYuXJlfPLJJ7F06dLiTXbJkiXx3XffFc/fc889xY+snnvuuXjooYcCmD+2bt0aDzzwQPF3oBreAPBnmTdrwEdGRoq1nD/99FNx/d5778XixYvj+PHjv73mxIkT8eyzz8b+/fsDmF/WrFlTxDcA/NnmzRKU6rS7r68vnnnmmXjnnXeivb29+Ir58ccfj8uXL8fo6GicO3cuFixYELt27Som4wAAMNtsQwgAAIlsQwgAAIkEOAAAJBLgAACQSIADAEAiAQ4AAIkEOAAAJBLgAACQSIADAEAiAQ4AAIkEOAAAJBLgAJO4/vP1OH74ePRevBQAMFOtAcBvKpVK9F3qi55z3fH9ue+L65+u/lQ89/S//Uss6+oMAJgJAQ7Ma6Ojo/HD9z8Uod1dDe7zPTE0OHTH13aPvwYAZkqAA/PK4MBgEdndv063f+j+IcZGx6b0b3/s+eW15dZyAECtGi7Av/q/v8Zs2v7v/xpA87p25dpv0+3qBLuvty+iEjWpxnc1wleuXRUAUKuGC/D9//9VzCYBDs1rsH8g/ve//6fm4L6TnnM9AhyAGbELCtC0Ft6zKO5/4P6YTT3nrQMHYGYEONDUVq6b3Wl19/meAICZEOBAU1u5dmXMpoHr/XGt72oAQK0EONDUVq2b/fXaPabgAMyAAAea2gPLHowFCxfEbOq2DhyAGRDgQFMrlUrRtaYrZlN1JxQAqJUAB5reVLcNvHjp4pRe13fpcgwPDQcA1EKAA01vKjuhXB/oj+GRqUV1pVKJi9aBA1CjpgzwnvEp1tjY1E4tDTS/rtVd0dJy9z93Z7vPxvpV62OqrAMHoFZNF+A9l6pTqUqUy+UAqGprb4tlXcsmfP7CxQuxpmtNTIedUACoVVMF+C/xPf51c+fs7vsLNL6J1oGPjI7EwNBgLF28JKbj4oWLcfPmzQCA6WqaABffwN1MFOAnz56MR9ZviOkauXEjen/oDQCYrqYIcPENTOZOZ8TsvdIbD973ULFVYS16rAMHoAYNH+DiG5iKJfctiXuX3vvb/epOJpf6emP5Q51RKzuhAFCL1mhg4huYjuoylOOHjxW3T507FRvWPzydf16cUbNrfJJePb39qnWrY8XqFQEA09WwAS6+gemq7gdeDfC/91+P9rb24nI3S+5fGqvGo33V+lVFdD/YWftyFQC4pSEDXHwDtVj16zrwcz3nYsuGx/7wXKmlFMtWLBt/zeoiuKvT8t8vWQGA2dJwAS6+gVot6+qMnt6eWNu1ttgbvHqCnpW/Liep/kizvaM9AODP1lABfujQoXj8qX+ORx5+JACma2hoKDZt3RwvvfRSdI7HeEu5KU8GDECdK1WqWwE0gGp8V23bti0AavHBBx/EK6+84ky5AMyphpiAi29gpo4ePRqbNm0S3wDMubr//lV8AzM1NjYWx44di82bNwcAzLW6noCLb2A2fPrpp/Hiiy8GANSDug1w8Q3Mhp6enrjvvvti0aJFAQD1oC6XoIhvYLZ89dVXsX379gCAelF3E3DxDcyWffv2xY4dOwIA6kldBbj4BmbL9evXi8uKFSsCAOpJ3SxBEd/AbNq7d2/s3LkzAKDe1MUEfHh4OEqlUjz55JMBMFNHjhwpthxsaXGmSwDqT128O3V0dIhvYFZU9/w+ceJEcdIdAKhHDXMqeoCpOH78eKxduzYWLlwYAFCPBDgAACSyQBIAABIJcAAASCTAAQAgkQAHAIBEAhwAABIJcAAASCTAAQAgkQAHAIBEAhwAABIJcAAASCTAAQAgkQAHAIBEAhwAABIJcAAASCTAAQAgkQAHAIBEAhwAABIJcAAASCTAAQAgkQAHAIBEAhwAABIJcAAASCTAAQAgkQAHAIBEAhwAABIJcAAASCTAAQAgkQAHAIBEAhwAABIJcAAASCTAAQAgkQAHAIBEAhwAABIJcAAASCTAAQAgkQAHAIBEAhwAABIJcAAASCTAAQAgkQAHAIBEAhwAABIJcAAASCTAAQAgkQAHAIBEAhwAABIJcAAASCTAAQAgkQAHAIBEAhwAABIJcAAASCTAAQAgkQAHAIBEAhwAABIJcAAASCTAAQAgkQAHAIBErZO9oFQqFdeVSiWAxnTrOL6d4xoaj+MZGp8JOAAAJJpwAj7RJ2ygcZmQQfO4dTx7v4bGYwIOAACJJpyA+2QNzef249lEHBqX92doXCbgAACQaNJdUIDGd/uk2+QMGpfjGRqfCTgAACSa8i4o9gOHxmVCBs3D8QyNzwQcAAASlSpG2gAAkMYEHAAAEglwAABIJMABACCRAAcAgEQCHAAAEglwAABIJMABACCRAAcAgEQCHAAAEglwAABIJMABACCRAAcAgEQCHAAAEglwAABIJMABACCRAAcAgEQCHAAAEglwAABIJMABACCRAAcAgEQCHAAAEglwAABIJMABACCRAAcAgEQCHAAAEglwAABIJMABACCRAAcAgEQCHAAAEglwAABIJMABACCRAAcAgEQCHAAAEglwAACa0o0bN+LmzZtRb1oDAACa0Ntvvx1vvPFGHD16NAYGBmLFihVRKpWK+21tbbF169ZYvnx5ZBPgAAA0pVOnTsX7778f+/fvj927d8fXX38dHR0dcfny5eL5JUuWxIEDB6KrqyuefvrpyGIJCgAATae/vz82btwYr7/+enF98ODBKJfLxQS8peWXBD59+nQ8//zzcebMmchUqowLAABoIlevXo3R0dFYtmxZHD58uIjvY8eOxfbt26O3tzdGRkbiwoULxTrxl19+uZiMZxHgAACQyBIUAABIJMABACCRAAcAgEQCHAAAEglwAABIJMABACCRAAcAgEQCHAAAEglwAABIJMABACCRAAcAgEQCHAAAEglwAABI1BoAAFBnxsbG4pt9X0drW1u0tpbHL61RHr/8druttbiu3v/D7er1+P1yuRz1SoADAFB3BvsHY9/eL6NWpVLp12gvF0F+79J74z/f/K+oBwIcAIC6MzQ4FDNRqVRiZGSkuMRgRHtHR9QLAQ4AQN2ZaYDfbsHCBVEvBDgAAHVn1gN8kQAHAIAJDZuAAwBAHktQAAAgkQAHAIBEAhwAABINDTRvgDsVPQAAdWdoaPIAr+713T/QH1MhwAEA4C4mm4BXT1V/+MSRaG9vj6nosAQFAAAmdrdtCIdvDMeJv52MLRsei5aWqc2T7QMOAAB3MdGPMK8P9Mf5nnPx+MYtMR1+hAkAABOp3HkN+NWfr8XlK72x+eHNMS2l8QBfIMABAOCOhoeHo3Kz8ofHLvVdiv7BgdiwfkNMV3WdeEu5fn76KMABAKgrty8/6f6xp9jx5J9Wr49a1NPykyoBDgBAXfn9Dihnu8/GogWLovPBzqhVvQW4bQgBAKgrt9Z/nzx7KpYsXjqj+K6qpy0Iq0zAAQCoK0MDg3H01HexduWaWLxoccyUJSgAADCB6gl2vvjrF/GX//hLLGjviNHRsfHLaIyNX0ZHRv94f/z2WPHYreeqj48V/8fv1VuAlyrVFe0AADDHqktPPvzww3jttdeio6MjalXN21sxXg3zcms5Fi5aGPVCgAMAMOeuXbsWe/fujV27dkW5XI5mJsABAJhTFy9ejAMHDsSrr74a84EABwBgzpw+fbq47Ny5M+YLAQ4AwJw4cuRIsfRkx44dMZ8IcAAA0h08eLBY671t27aYb2xDCABAqs8//zyWL18ejz76aMxHAhwAgDR79uyJxx57LNatWxfzlQAHAOBPV131XN3ju7reu7NzZqeWb3TWgAMA8Kfr7+8vInzx4pmfWr7RCXAAAEjUEgAAQBoBDgAAiQQ4AAAkEuAAAJBIgAMAQCIBDgAAiQQ4AAAkEuAAAJBIgAMAQCIBDgAAiQQ4AAAkEuAAAJBIgAMAQCIBDgAAiQQ4AAAkEuAAAJBIgAMAQCIBDgAAiQQ4AAAkEuAAAJBIgAMAQCIBDgAAiQQ4AAAkEuAAAJBIgAMAQCIBDgAAiQQ4AAAkEuAAAJBIgAMAQCIBDgAAiQQ4AAAkEuAAAJBIgAMAQCIBDgAAiQQ4AAAkEuAAAJBIgAMAQCIBDgAAiQQ4AAAkEuAAAJBIgAMAQCIBDgAAiQQ4AAAkEuAAAJBIgAMAQCIBDgAAiQQ4AAAkEuAAAJBIgAMAQCIBDgAAiQQ4AAAkEuAAAJBIgAMAQCIBDgAAiQQ4AAAkEuAAAJBIgAMAQCIBDgAAiVone0GpVCquK5XKHR+/3e2vA+qH4xka31SP14mOd2DumYADAECiCSfgE33CvmWqEzRg7jmeoXlMdrw6fqH+mYADAECiCSfgtz5hT/RJ2idsaByTHc9A45jqN1qOd6hfJuAAAJBo0l1QJmLNKADMHbubQOMyAQcAgERT3gXl9v1ETbyhcUx2PAON5/bjeqL3Z8c71B8TcAAASFSq+EgMAABpTMABACCRAAcAgEQCHAAAEglwAABIJMABACDRPwAyQMBpiZF2XQAAAABJRU5ErkJggg==",
+        "width": 736,
+        "height": 310,
+        "cells": [
+          {
+            "frame": 1,
+            "x": 4,
+            "y": 4,
+            "w": 240,
+            "h": 135
+          },
+          {
+            "frame": 5,
+            "x": 248,
+            "y": 4,
+            "w": 240,
+            "h": 135
+          },
+          {
+            "frame": 9,
+            "x": 492,
+            "y": 4,
+            "w": 240,
+            "h": 135
+          },
+          {
+            "frame": 13,
+            "x": 4,
+            "y": 157,
+            "w": 240,
+            "h": 135
+          },
+          {
+            "frame": 17,
+            "x": 248,
+            "y": 157,
+            "w": 240,
+            "h": 135
+          },
+          {
+            "frame": 21,
+            "x": 492,
+            "y": 157,
+            "w": 240,
+            "h": 135
+          }
+        ],
+        "bytes": 3898,
+        "sha256": "11fdccb2c1bd810addd0d245e3a186860aabc1cd5e95045291715a5e3431acda",
+        "documentRevision": 4,
+        "warnings": [
+          {
+            "code": "render.bitmapMissing",
+            "objectId": "nd_01K742SG0XC99E0A2JJ9D4VJ2J",
+            "colourId": null
+          }
+        ]
+      },
+      "varies": []
+    },
+    {
+      "title": "Three frames in one row, 120 pixels wide",
+      "result": {
+        "png": "iVBORw0KGgoAAAANSUhEUgAAAXgAAABaCAYAAACyjk0vAAAENElEQVR4nO3dS2tUZxjA8Wdy04l4ScYJuaAtJC66EDeFBmyhm+7bfb9F6arrrkq/T7fuRXBVaBRjNJdmIug4iUbBNGdsSpOZaWaamEkefz8YDoQ3s3mHfx5eTuYM7ewKANIZCABSEniApAQeICmBB0hK4AGSEniApAQeICmBB0hK4AGSEniApAQeICmBB0hK4AGSEniApAQeICmBB0hK4AGSGoo+WlpaisHBwebrzZs3zWu1Wo2RkZEA4Gj6GviHDx9GrVaLra2tGBsbi1evXsW1a9fi9u3bAcDRlPr5TNYi6IUXL17EpUuXYnt7O4aGhuLixYsBwH53796N8fHx5kBctLI47Th37lzH9X2d4Mvl8r7r6OhoANCqGIiL04579+7FlStX4t27d3Hjxo2Ym5uLy5cvt/2dvk7wAHSvyHWj0YiNjY1m4BcXF2N+fj4uXLjQdr3AAyTlNkmApAQeICmBB0hK4AGS+uC3Sf760y9drfvh5x8D4GO08Wct7vx2JyamJqI6OdG8jlXGojRQiqPo633wAEQ8efQkFv941HztGR4ejquTV6M6NfFP+KuT1RgeGe76fQUeoM9WHq+0/Ozt27ex+mS1+drzxdfz8eU3X0W3BB6gz1aWlrtaN3N9Jnoh8AB91Kg3ov68fvjC3eP4qevT0YsTv4tmtbYWALzXbnpv9wUDlWolzpfPRy9ONPBF3KeqkwHAeyuP9wf+2fNn8XKz0bJuusfjmcKJHdGIO0Cr5b8n+Nfbr6PeqEdlrBKDA4Mt66Z7PJ4pnEjgxR2gVXGnzPrqenNqHx4ajonKRMe105+csgm+OEcSd4D2Fn5fiLX1tY5T+57yaDnGK+PRqw/2dcHF296/fz9u3boVpdLR/hsLIJuFhYUony/H6O6rmOJrq7XmtXhtNTb3rZ39bC6+/f676NUHCby4A7RXPKJ0eXm5+SSm4pF77Wy+3NwN/m7s19ab1+uzn8bNz29Gr4498OIO0N6DBw+ajyidmen9PP3/ONYzeHEHaFWv1+Pp06cxOzv7nw/JPm7HNsGLO0B7xfNTBwZO/tvZjzXwzTcUd4BT4diOaIQd4HTxRCeApAQeICmBB0hK4AGSEniApAQeICmBB0hK4AGSEniApAQeICmBB0hK4AGSEniApAQeICmBB0hK4AGSEniApAQeICmBB0hK4AGSEniApAQeICmBB0hK4AGSEniApAQeICmBB0hK4AGSEniApIYOW1AqlZrXnZ2dIL9O+73384N8Ls6mw/bz4OdAB84mEzxAUh0n+E5/4cnpsP3udqLnbLCfHwcTPEBSHSf4g2dv5HbYfvsc5NLtftr3s80ED5DUoXfRwL+5iyKXTvvpjD4HEzxAUl3fReM+2Ny63e+D63wezjb7mZsJHiCp0o4/2QApmeABkhJ4gKQEHiApgQdISuABkvoLPLhG1sqqHSMAAAAASUVORK5CYII=",
+        "width": 376,
+        "height": 90,
+        "cells": [
+          {
+            "frame": 1,
+            "x": 4,
+            "y": 4,
+            "w": 120,
+            "h": 68
+          },
+          {
+            "frame": 12,
+            "x": 128,
+            "y": 4,
+            "w": 120,
+            "h": 68
+          },
+          {
+            "frame": 24,
+            "x": 252,
+            "y": 4,
+            "w": 120,
+            "h": 68
+          }
+        ],
+        "bytes": 1133,
+        "sha256": "2f31c76b125724e691ddf30a097e0c5e9393201467332f27fbeff6e35db6203d",
+        "documentRevision": 4,
+        "warnings": [
+          {
+            "code": "render.bitmapMissing",
+            "objectId": "nd_01K742SG0XC99E0A2JJ9D4VJ2J",
+            "colourId": null
+          }
+        ]
+      },
+      "varies": []
+    }
+  ],
+  "inspect.coordinates.convert": [
+    {
+      "title": "Field units to camera space",
+      "result": {
+        "points": [
+          {
+            "x": 1.0,
+            "y": 0.9999999999999996
+          }
+        ]
+      },
+      "varies": []
+    },
+    {
+      "title": "An image pixel onto the table plane",
+      "result": {
+        "points": [
+          {
+            "x": 0.0,
+            "y": 0.0,
+            "z": 0.0
+          }
+        ]
+      },
+      "varies": []
+    }
+  ],
+  "inspect.frame.describe": [
+    {
+      "title": "What the current frame shows",
+      "result": {
+        "sceneId": "sc_01K742SG0YSRA1305J7887BDVZ",
+        "frame": 1,
+        "cameraId": "el_01K742SG0ZZYY8HE4MW501XMJV",
+        "width": 1920,
+        "height": 1080,
+        "elements": [
+          {
+            "elementId": "el_01K742SG11W3SGB8Q1H50W74VB",
+            "name": "Bob",
+            "drawingId": "dr_01K742SG0KKMCAP9X1E6Z5P4SW",
+            "worldTransform": {
+              "matrix": [
+                1.0,
+                0.0,
+                0.0,
+                -4.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0
+              ],
+              "position": [
+                -4.0,
+                0.0,
+                0.0
+              ],
+              "rotation": 0.0,
+              "scale": [
+                1.0,
+                1.0
+              ],
+              "skew": 0.0
+            },
+            "cameraBounds": {
+              "normalized": {
+                "x": 0.08333333333333333,
+                "y": 0.2037037037037037,
+                "width": 0.3333333333333332,
+                "height": 0.3714814814814815
+              },
+              "fields": {
+                "x": -4.999999999999999,
+                "y": -0.5075000000000003,
+                "width": 3.9999999999999982,
+                "height": 2.5075000000000003
+              },
+              "pixels": {
+                "x": 160.0,
+                "y": 220.0,
+                "width": 639.9999999999998,
+                "height": 401.20000000000005
+              }
+            },
+            "opacity": 1.0,
+            "effects": []
+          }
+        ],
+        "omitted": [
+          {
+            "elementId": "el_01K742SG12CTMHXEB7TY99G4XV",
+            "name": "Background",
+            "reason": "outOfFrame",
+            "drawingId": "dr_01K742SG14TNTV1TR99SQHVKVK"
+          },
+          {
+            "elementId": "el_01K742SG16N99XRCS0QEBWMRXY",
+            "name": "Notes",
+            "reason": "annotation"
+          }
+        ],
+        "sounds": [],
+        "warnings": [
+          {
+            "code": "describe.soundUnavailable",
+            "message": "audible sounds and mouth shapes arrive with M8"
+          }
+        ],
+        "documentRevision": 4
+      },
+      "varies": []
+    },
+    {
+      "title": "Frame 12 in full detail",
+      "result": {
+        "sceneId": "sc_01K742SG0YSRA1305J7887BDVZ",
+        "frame": 12,
+        "cameraId": "el_01K742SG0ZZYY8HE4MW501XMJV",
+        "width": 1920,
+        "height": 1080,
+        "elements": [
+          {
+            "elementId": "el_01K742SG11W3SGB8Q1H50W74VB",
+            "name": "Bob",
+            "drawingId": "dr_01K742SG0M5J3BAJSW8241WA87",
+            "worldTransform": {
+              "matrix": [
+                0.7202153131918843,
+                -0.6939982491812108,
+                0.0,
+                0.02780739561712328,
+                0.7071067811865475,
+                0.7071067811865476,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0
+              ],
+              "position": [
+                0.02780739561712328,
+                0.0,
+                0.0
+              ],
+              "rotation": 44.47381011815112,
+              "scale": [
+                1.0093116948475747,
+                0.990774212866937
+              ],
+              "skew": 0.009845340611083987
+            },
+            "cameraBounds": {
+              "normalized": {
+                "x": 0.45535161131572827,
+                "y": 0.41619475185937216,
+                "width": 0.05691810334839946,
+                "height": 0.10056629776875338
+              },
+              "fields": {
+                "x": -0.5357806642112601,
+                "y": -0.11313708498984765,
+                "width": 0.683017240180793,
+                "height": 0.6788225099390854
+              },
+              "pixels": {
+                "x": 874.2750937261983,
+                "y": 449.4903320081219,
+                "width": 109.28275842892697,
+                "height": 108.61160159025366
+              }
+            },
+            "opacity": 1.0,
+            "effects": [],
+            "kind": "drawing",
+            "role": "normal",
+            "depth": 0.0,
+            "drawingToImage": [
+              1.1523445011070146,
+              -1.131370849898476,
+              -1.1103971986899375,
+              -1.131370849898476,
+              964.4491832987397,
+              540.0
+            ],
+            "drawingBounds": {
+              "x": -32.0,
+              "y": 16.0,
+              "width": 64.0,
+              "height": 32.0
+            }
+          }
+        ],
+        "omitted": [
+          {
+            "elementId": "el_01K742SG12CTMHXEB7TY99G4XV",
+            "name": "Background",
+            "reason": "outOfFrame",
+            "drawingId": "dr_01K742SG14TNTV1TR99SQHVKVK"
+          },
+          {
+            "elementId": "el_01K742SG16N99XRCS0QEBWMRXY",
+            "name": "Notes",
+            "reason": "annotation"
+          }
+        ],
+        "sounds": [],
+        "warnings": [
+          {
+            "code": "describe.soundUnavailable",
+            "message": "audible sounds and mouth shapes arrive with M8"
+          }
+        ],
+        "documentRevision": 4
+      },
+      "varies": []
+    }
+  ],
+  "inspect.hitTest": [
+    {
+      "title": "What is at the camera centre",
+      "result": {
+        "hits": []
+      },
+      "varies": []
+    },
+    {
+      "title": "What is under an image pixel of frame 12",
+      "result": {
+        "hits": []
+      },
+      "varies": []
+    }
+  ],
   "job.cancel": [
     {
       "title": "Cancel a job",
@@ -5874,7 +8580,7 @@
         "state": "succeeded",
         "progress": 1.0,
         "message": "",
-        "startedAt": "2026-11-02T07:29:52.707Z",
+        "startedAt": "2026-11-10T21:04:08.411Z",
         "result": {},
         "session": "user"
       },
@@ -5893,7 +8599,7 @@
           "state": "succeeded",
           "progress": 1.0,
           "message": "",
-          "startedAt": "2026-11-02T07:29:52.719Z",
+          "startedAt": "2026-11-10T21:04:08.422Z",
           "result": {},
           "session": "user"
         }
@@ -5912,7 +8618,7 @@
         "state": "succeeded",
         "progress": 1.0,
         "message": "",
-        "startedAt": "2026-11-02T07:29:52.730Z",
+        "startedAt": "2026-11-10T21:04:08.433Z",
         "result": {},
         "session": "user"
       },
@@ -5959,10 +8665,10 @@
     {
       "title": "A 1920×1080, 24 fps project",
       "result": {
-        "projectId": "pr_01M6DJM9BGP63P6X5VP7Q750YC",
-        "sceneId": "sc_01M6DJM9BGP63P6X5VP7Q7512G",
-        "cameraId": "el_01M6DJM9BGP63P6X5VP7Q7512J",
-        "elementId": "el_01M6DJM9BGP63P6X5VP7Q7512K"
+        "projectId": "pr_01M73MD003KJ8TEKKDP8APTZB0",
+        "sceneId": "sc_01M73MD003KJ8TEKKDP8APTZF4",
+        "cameraId": "el_01M73MD003KJ8TEKKDP8APTZF6",
+        "elementId": "el_01M73MD003KJ8TEKKDP8APTZF7"
       },
       "varies": [
         "/cameraId",
@@ -6218,7 +8924,7 @@
         {
           "path": "/tmp/Sample.animpkg",
           "name": "Sample",
-          "lastOpened": "2026-11-02T07:29:53.323Z",
+          "lastOpened": "2026-11-10T21:04:09.021Z",
           "exists": true
         }
       ],
@@ -6283,6 +8989,93 @@
   "project.saveAs": [
     {
       "title": "Save a copy",
+      "result": {
+        "jobId": "job-3"
+      },
+      "varies": []
+    }
+  ],
+  "render.frame.run": [
+    {
+      "title": "The current frame through the camera, inline, a quarter size",
+      "result": {
+        "mimeType": "image/png",
+        "width": 480,
+        "height": 270,
+        "bytes": 1938,
+        "sha256": "475adc03d4f3263c94447f32a4d5cf83d6f0e1be3c5b1c4283e3e898aba3a4fa",
+        "data": "iVBORw0KGgoAAAANSUhEUgAAAeAAAAEOCAYAAABRmsRnAAAHWUlEQVR4nO3au2uVeR7H8W+isnGn0EYRxUq0sNPOYgubdRtBLBREUQsVKy/LqrAgIm6hy4KNrf+ATRB2dxgslCm9oiCC9zsGBBETR0PMzHkYgxnmYmJyPonn9YLDc34Pz3PaN7/v+c0c/kkBAG3VXQBA2wkwAAQIMAAECDAABAgwAAQIMAAECDAABAgwAAQIMAAECDAABAgwAAQIMAAECDAABAgwAAQIMAAECDAABAgwAAQIMAAECDAABAgwAAQIMAAECDAABAgwAAQIMAAECDAABAgwAAQIMAAECDAABAgwAAQIMAAECDAABAgwAAQIMAAECDAABAgwAAQIMAAECDAABAgwAAQIMAAECDAABAgwAAQIMAAECDAABAgwAAQIMAAECDAABAgwAAQIMAAECDAABAgwAAQIMAAECDAABAgwAAQIMAAECDAABAjwNDU4OFh3794dde/Jkyf15s2bkXVfX1+9ePFiZH379u1RVwByBHiaunTpUh09enTUvZ07d9bz58+b7/39/bV79+768OFDs378+HEdOnSoCffWrVsLgCwBnqauXLlSK1asGFkPDQ3V/fv3a8mSJU10r127Vjt27KgFCxaMev7mzZu1fPny5t7w8HBduHChHj58WAC0lwBPU62gvn79us6ePdt8Tp8+XcuWLavu7u7av39/nTt3rp49e1a7du1qnr969WqtXLmyea91ffr0aW3atKlevnxZR44cqd7e3gKgfQR4mmrtcOfMmVOPHj1qPufPn2/C2hpN37hxo9asWdPsdO/cuVMDAwN1+fLlUQE+c+ZMHThwoNavX1+HDx9u1gC0z8xi2mntWmfMmFF79uwZuXfv3r0mrBcvXqylS5c2o+aWzZs3N8+2DmS1xtHXr1+vEydONNHdu3fvyO/NmzevAGgfO+Bp6OM4+VMfd7aLFy9u/g/esmVLcxCrNaZ+8OBBM55u7YS7urpq9uzZNWvWrGZX/O7duzp58mRt3LixAGgfO+Bp6O3bt7V27dqRdevQVWvcvGjRolq4cGHdunWrOem8evXq2r59ezOWXrduXXNCesOGDc07p06dqmPHjlVPT09t27atVq1aVQC0T9dw6ygsANBWRtAAECDAABAgwAAQIMAAECDAABAgwAAQIMAAECDAABAgwAAQIMAAECDAABAgwAAQIMAAECDAABAgwAAQIMAAECDAABAgwAAQIMAAECDAABAgwAAQIMAAECDAABAgwAAQIMAAECDAABAgwAAQIMAAECDAABAgwAAQMLP4Iv/5579rKvv7v/5RAEw9dsAAECDAABAgwAAQIMAAECDAABAgwAAQIMAAECDAABAgwAAQIMAAECDAABAgwAAQIMAAECDAABAgwAAQIMAAECDAABAgwAAQIMBTyA/vfqjBwcEC4OsnwFNE/0B//ff8/2vow1AB8PWbWcS14vvt99/V3/7y1+r5U08B8PUT4LBP4/vNn78pADqDAAeJL0DnEuAQ8QXobAIcIL4ACHCbiS8ALQLcRuILwEcC3CbiC8CnBLgNxBeAXxLgSSa+APwaAZ5E4gvAbxHgSSK+APweAZ4E4gvAHxHgCSa+AHwOAZ5A4gvA5xLgCSK+AIyFAE8A8QVgrAT4C4kvAOMhwF+gr69PfAEYFwEep1Z8Dx48WL3/66358+cXAIyFAI/Dx/geP35cfAEYFwEeI/EFYCII8BiILwATRYA/k/gCMJEE+DOILwATTYD/gPgCMBkE+HeILwCTRYB/g/gCMJkE+FeILwCTTYB/QXwBaAcB/oT4AtAuAvwz8QWgnQS4xBeA9uv4AIsvAAkdHWDxBSClYwMsvgAkdWSAxReAtI4LsPgCMBV0Df+kOsSrV69q37594gtAXEcFeGBgoN6/f19z584tAEjqqAADwFTRXQBA2wkwAAQIMAAECDAABAgwAAQIMAAECDAABAgwAAQIMAAECDAABAgwAAQIMAAECDAABAgwAAQIMAAECDAABAgwAAQIMAAECDAABAgwAAQIMAAECDAABAgwAAQIMAAECDAABAgwAAQIMAAECDAABAgwAAQIMAAECDAABAgwAAQIMAAECDAABAgwAAQIMAAECDAABAgwAAQIMAAECDAABAgwAAQIMAAECDAABAgwAAQIMAAECDAABAgwAAQIMAAECDAABAgwAAQIMAAECDAABAgwAAQIMAAECDAABAgwAAQIMAAECDAABAgwAAQIMAAECDAABAgwAAQIMAAECDAABAgwAAQIMAAECDAABAgwAAQIMAAECDAABAgwAAQIMAAECDAABAgwAAQIMAAECDAABAgwAAQIMAAECDAABAgwAAQIMAAECDAABAgwAAQIMAAECDAABAgwAAQIMAAECDAABAgwAAQIMAAECDAABAgwAAQIMAAECDAABAgwAAQIMAAECDAABAgwAAQIMAAECDAABAgwAAQIMAAECDAABAgwAAQIMAAECDAABAgwAAQIMAAECDAABAgwAAQIMAAECDAABAgwAAT8CA0T/A4wPYnoAAAAAElFTkSuQmCC",
+        "documentRevision": 4,
+        "frame": 1,
+        "renderMs": 7,
+        "imageToCamera": [
+          0.024999999999999998,
+          0.0,
+          0.0,
+          -0.024999999999999998,
+          -5.999999999999999,
+          3.3749999999999996
+        ],
+        "warnings": []
+      },
+      "varies": [
+        "/renderMs"
+      ]
+    },
+    {
+      "title": "Frame 12 at 480 pixels wide on a transparent background",
+      "result": {
+        "mimeType": "image/png",
+        "width": 480,
+        "height": 270,
+        "bytes": 1094,
+        "sha256": "33f59884086c7309260430842adcb43627e7d99131015ede5d7c7405a9a74081",
+        "data": "iVBORw0KGgoAAAANSUhEUgAAAeAAAAEOCAYAAABRmsRnAAAEDUlEQVR4nO3VMREAAAgAIc/+oW3hL1CCHQDg3Q4A8E7AABAQMAAEBAwAAQEDQEDAABAQMAAEBAwAAQEDQEDAABAQMAAEBAwAAQEDQEDAABAQMAAEBAwAAQEDQEDAABAQMAAEBAwAAQEDQEDAABAQMAAEBAwAAQEDQEDAABAQMAAEBAwAAQEDQEDAABAQMAAEBAwAAQEDQEDAABAQMAAEBAwAAQEDQEDAABAQMAAEBAwAAQEDQEDAABAQMAAEBAwAAQEDQEDAABAQMAAEBAwAAQEDQEDAABAQMAAEBAwAAQEDQEDAABAQMAAEBAwAAQEDQEDAABAQMAAEBAwAAQEDQEDAABAQMAAEBAwAAQEDQEDAABAQMAAEBAwAAQEDQEDAABAQMAAEBAwAAQEDQEDAABAQMAAEBAwAAQEDQEDAABAQMAAEBAwAAQEDQEDAABAQMAAEBAwAAQEDQEDAABAQMAAEBAwAAQEDQEDAABAQMAAEBAwAAQEDQEDAABAQMAAEBAwAAQEDQEDAABAQMAAEBAwAAQEDQEDAABAQMAAEBAwAAQEDQEDAABAQMAAEBAwAAQEDQEDAABAQMAAEBAwAAQEDQEDAABAQMAAEBAwAAQEDQEDAABAQMAAEBAwAAQEDQEDAABAQMAAEBAwAAQEDQEDAABAQMAAEBAwAAQEDQEDAABAQMAAEBAwAAQEDQEDAABAQMAAEBAwAAQEDQEDAABAQMAAEBAwAAQEDQEDAABAQMAAEBAwAAQEDQEDAABAQMAAEBAwAAQEDQEDAABAQMAAEBAwAAQEDQEDAABAQMAAEBAwAAQEDQEDAABAQMAAEBAwAAQEDQEDAABAQMAAEBAwAAQEDQEDAABAQMAAEBAwAAQEDQEDAABAQMAAEBAwAAQEDQEDAABAQMAAEBAwAAQEDQEDAABAQMAAEBAwAAQEDQEDAABAQMAAEBAwAAQEDQEDAABAQMAAEBAwAAQEDQEDAABAQMAAEBAwAAQEDQEDAABAQMAAEBAwAAQEDQEDAABAQMAAEBAwAAQEDQEDAABAQMAAEBAwAAQEDQEDAABAQMAAEBAwAAQEDQEDAABAQMAAEBAwAAQEDQEDAABAQMAAEBAwAAQEDQEDAABAQMAAEBAwAAQEDQEDAABAQMAAEBAwAAQEDQEDAABAQMAAEBAwAAQEDQEDAABAQMAAEBAwAAQEDQEDAABAQMAAEBAwAAQEDQEDAABAQMAAEBAwAAQEDQEDAABAQMAAEBAwAAQEDQEDAABAQMAAEBAwAAQEDQEDAABAQMAAEBAwAAQEDQEDAABAQMAAEBAwAAQEDQEDAABAQMAAEBAwAAQEDQEDAABAQMAAEBAwAAQEDQEDAABAQMAAEBAwAAQEDQOAALQcCHShRVuMAAAAASUVORK5CYII=",
+        "documentRevision": 4,
+        "frame": 12,
+        "renderMs": 4,
+        "imageToCamera": [
+          0.024999999999999998,
+          0.0,
+          0.0,
+          -0.024999999999999998,
+          -5.999999999999999,
+          3.3749999999999996
+        ],
+        "warnings": [
+          {
+            "code": "render.bitmapMissing",
+            "objectId": "nd_01K742SG0XC99E0A2JJ9D4VJ2J",
+            "colourId": null
+          }
+        ]
+      },
+      "varies": [
+        "/renderMs"
+      ]
+    }
+  ],
+  "render.limits.get": [
+    {
+      "title": "The inline and output limits",
+      "result": {
+        "maxInlinePixels": 2048,
+        "maxInlineBytes": 8388608,
+        "maxWidth": 8192,
+        "maxHeight": 8192,
+        "formats": [
+          "png",
+          "jpeg",
+          "tga",
+          "bmp"
+        ]
+      },
+      "varies": []
+    }
+  ],
+  "render.range.run": [
+    {
+      "title": "Frames 1-24 of the current scene as PNGs, a quarter size",
       "result": {
         "jobId": "job-3"
       },
@@ -8184,6 +10977,190 @@
       "title": "Switch to the Drawing workspace",
       "result": {
         "name": "Drawing"
+      },
+      "varies": []
+    }
+  ],
+  "xsheet.exposures.get": [
+    {
+      "title": "The Intro scene's exposure sheet, frames 1-24",
+      "result": {
+        "sceneId": "sc_01K742SG0YSRA1305J7887BDVZ",
+        "rev": 4,
+        "sceneLength": 48,
+        "from": 1,
+        "to": 24,
+        "columns": [
+          {
+            "elementId": "el_01K742SG11W3SGB8Q1H50W74VB",
+            "name": "Bob",
+            "elementType": "drawing",
+            "visible": true,
+            "exposures": [
+              {
+                "drawing": "1",
+                "drawingId": "dr_01K742SG0KKMCAP9X1E6Z5P4SW",
+                "from": 1,
+                "to": 6
+              },
+              {
+                "drawing": "2",
+                "drawingId": "dr_01K742SG0M5J3BAJSW8241WA87",
+                "from": 9,
+                "to": 20
+              },
+              {
+                "drawing": "1",
+                "drawingId": "dr_01K742SG0KKMCAP9X1E6Z5P4SW",
+                "from": 21,
+                "to": 24,
+                "continues": "after"
+              }
+            ]
+          },
+          {
+            "elementId": "el_01K742SG12CTMHXEB7TY99G4XV",
+            "name": "Background",
+            "elementType": "image",
+            "visible": true,
+            "exposures": [
+              {
+                "drawing": "1",
+                "drawingId": "dr_01K742SG14TNTV1TR99SQHVKVK",
+                "from": 1,
+                "to": 24,
+                "continues": "after"
+              }
+            ]
+          },
+          {
+            "elementId": "el_01K742SG16N99XRCS0QEBWMRXY",
+            "name": "Notes",
+            "elementType": "annotation",
+            "visible": false,
+            "exposures": []
+          },
+          {
+            "elementId": "el_01K742SG18FWWKH14N0RFB0V71",
+            "name": "Dialogue",
+            "elementType": "sound",
+            "visible": true,
+            "clips": [
+              {
+                "clipId": "pl_01K742SG26M7NBT20KCAM2NWXK",
+                "file": "line1.wav",
+                "from": 1,
+                "to": 8
+              }
+            ]
+          },
+          {
+            "elementId": "el_01K742SG1997BY67AWW1M4Q0ZJ",
+            "name": "Reference",
+            "elementType": "media",
+            "visible": true,
+            "exposures": [
+              {
+                "drawing": "reference.mov",
+                "drawingId": "ms_01K742SG27RRHRRZ5147YSZD8N",
+                "from": 1,
+                "to": 24
+              }
+            ]
+          }
+        ]
+      },
+      "varies": []
+    },
+    {
+      "title": "Bob's column with notes",
+      "result": {
+        "sceneId": "sc_01K742SG0YSRA1305J7887BDVZ",
+        "rev": 4,
+        "sceneLength": 48,
+        "from": 1,
+        "to": 48,
+        "columns": [
+          {
+            "elementId": "el_01K742SG11W3SGB8Q1H50W74VB",
+            "name": "Bob",
+            "elementType": "drawing",
+            "visible": true,
+            "exposures": [
+              {
+                "drawing": "1",
+                "drawingId": "dr_01K742SG0KKMCAP9X1E6Z5P4SW",
+                "from": 1,
+                "to": 6
+              },
+              {
+                "drawing": "2",
+                "drawingId": "dr_01K742SG0M5J3BAJSW8241WA87",
+                "from": 9,
+                "to": 20
+              },
+              {
+                "drawing": "1",
+                "drawingId": "dr_01K742SG0KKMCAP9X1E6Z5P4SW",
+                "from": 21,
+                "to": 44
+              }
+            ],
+            "notes": [
+              {
+                "frame": 3,
+                "text": "fix hand"
+              },
+              {
+                "frame": 12,
+                "text": "hold"
+              }
+            ]
+          }
+        ]
+      },
+      "varies": []
+    }
+  ],
+  "xsheet.exposures.set": [
+    {
+      "title": "Rewrite Bob's frames 1-24",
+      "result": {
+        "rev": 5,
+        "sceneLength": 48,
+        "changed": [
+          {
+            "elementId": "el_01K742SG11W3SGB8Q1H50W74VB",
+            "from": 7,
+            "to": 24
+          }
+        ],
+        "createdDrawings": [
+          {
+            "elementId": "el_01K742SG11W3SGB8Q1H50W74VB",
+            "drawingId": "dr_01K7JJN800RXHD55052GG3NDRM",
+            "name": "4"
+          }
+        ]
+      },
+      "varies": []
+    },
+    {
+      "title": "Preview a change without applying it",
+      "result": {
+        "rev": 4,
+        "sceneLength": 48,
+        "changed": [],
+        "createdDrawings": []
+      },
+      "varies": []
+    }
+  ],
+  "xsheet.lightTable.list": [
+    {
+      "title": "The current scene's static light table",
+      "result": {
+        "items": []
       },
       "varies": []
     }

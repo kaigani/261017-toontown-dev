@@ -23,14 +23,17 @@ pub fn edits(h: &ExecutorHandle) {
     ok(h, "doc.object.patch", json!({ "targets": [scene], "props": { "meta": { "p": 2 } } }));
     ok(h, "edit.undo", json!({}));
     ok(h, "workspace.create", json!({ "name": "Inking" }));
-    h.jobs().submit("test.job", "user", |_| Ok(json!({}))).unwrap();
+    // Finished before any example runs: the retained results of `job.*` show it succeeded, and a slow runner must not
+    // reach `job.cancel` while it is still running (macOS, run 43231502361).
+    let job = h.jobs().submit("test.job", "user", |_| Ok(json!({}))).unwrap();
+    h.jobs().wait(&job, std::time::Duration::from_secs(30)).unwrap();
 }
 
 /// Commands whose examples work with files (C1.3): they run on the fixture saved as a package with its embedded sound,
 /// with a backup `bk_1a2b3c4d`, recovery data `rc_1a2b3c4d`, `Short.animpkg` and a `media` folder in a temporary folder
 /// that stands for the examples' `/tmp`.
 pub fn with_files(id: &str) -> bool {
-    ["project.", "doc.asset.", "doc.blob.", "doc.package.", "agent.", "draw.vectorize."]
+    ["project.", "doc.asset.", "doc.blob.", "doc.package.", "agent.", "draw.vectorize.", "render.range."]
         .iter()
         .any(|p| id.starts_with(p))
 }
@@ -158,6 +161,13 @@ pub fn agent_placeholders(h: &ExecutorHandle, dir: &std::path::Path, params: &mu
 
 /// The clipboard a paste example expects (paste examples paste cells of `Bob`).
 pub fn clipboard_for(h: &ExecutorHandle, id: &str) {
+    if id == "anim.camera.delete" {
+        // A scene keeps at least one camera (05 §12.1): the example deletes a second one.
+        ok(h, "anim.camera.create", json!({ "name": "Wide" }));
+    }
+    if id == "cell.clipboard.apply" {
+        ok(h, "cell.clipboard.set", json!({ "elementIds": ["scene:\"Intro\"/element:\"Bob\""], "from": 1, "to": 8 }));
+    }
     if matches!(id, "edit.paste" | "edit.pasteSpecial" | "edit.pasteAsNewElement") {
         ok(h, "edit.copy", json!({ "context": "xsheet", "objectIds": ["scene:#1/element:\"Bob\"/cell:#1"] }));
     }

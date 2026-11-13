@@ -1,0 +1,691 @@
+reviews/evidence/M3-C3.3-r1/bitmap.log:6: new blank line at EOF.
+reviews/evidence/M3-C3.3-r1/c33_goldens-direct.log:7: new blank line at EOF.
+reviews/evidence/M3-C3.3-r1/c33_inspect-direct.log:11: new blank line at EOF.
+reviews/evidence/M3-C3.3-r1/c33_r1_bitmap.log:6: new blank line at EOF.
+reviews/evidence/M3-C3.3-r1/c33_r1_contract.log:5: trailing whitespace.
++c33_r1_contract.exe :
+reviews/evidence/M3-C3.3-r1/c33_r1_contract.log:11: trailing whitespace.
++
+reviews/evidence/M3-C3.3-r1/c33_r1_contract.log:19: trailing whitespace.
++thread 'failed_sequence_publication_leaves_no_frames' (37172) panicked at
+reviews/evidence/M3-C3.3-r1/c33_r1_contract.log:21: trailing whitespace.
++09 section 11.1 item 4 / ADR-0020 decision 8: failed delivery published frame 1 in
+reviews/evidence/M3-C3.3-r1/c33_r1_contract.log:26: trailing whitespace.
++thread 'sub_microfield_depth_difference_uses_timeline_order' (13328) panicked at
+reviews/evidence/M3-C3.3-r1/c33_r1_contract.log:42: new blank line at EOF.
+reviews/evidence/M3-C3.3-r1/c33_r1_crash.log:4: trailing whitespace.
++c33_r1_crash.exe :
+reviews/evidence/M3-C3.3-r1/c33_r1_crash.log:10: trailing whitespace.
++
+reviews/evidence/M3-C3.3-r1/c33_r1_crash.log:12: trailing whitespace.
++charter item 6: killed sequence retained [".Intro_0001.png.tt-partial-1e0fbaf75a9d"] in
+reviews/evidence/M3-C3.3-r1/c33_r1_crash.log:23: new blank line at EOF.
+reviews/evidence/M3-C3.3-r1/c33_r1_limits.log:3: trailing whitespace.
++c33_r1_limits.exe :
+reviews/evidence/M3-C3.3-r1/c33_r1_limits.log:9: trailing whitespace.
++
+reviews/evidence/M3-C3.3-r1/c33_r1_limits.log:10: trailing whitespace.
++thread 'oversized_contact_sheet_is_refused_before_any_slow_work' (38936) panicked at
+reviews/evidence/M3-C3.3-r1/c33_r1_limits.log:18: trailing whitespace.
++thread 'oversized_inline_frame_is_refused_before_any_slow_work' (36448) panicked at
+reviews/evidence/M3-C3.3-r1/c33_r1_limits.log:32: new blank line at EOF.
+reviews/evidence/M3-C3.3-r1/c33_r1_pixels.log:11: new blank line at EOF.
+reviews/evidence/M3-C3.3-r1/c33_range-direct.log:8: new blank line at EOF.
+reviews/evidence/M3-C3.3-r1/c33_render-direct.log:14: new blank line at EOF.
+reviews/evidence/M3-C3.3-r1/cancel.log:3: trailing whitespace.
++cancel.exe :
+reviews/evidence/M3-C3.3-r1/cancel.log:9: trailing whitespace.
++
+reviews/evidence/M3-C3.3-r1/cancel.log:21: new blank line at EOF.
+reviews/evidence/M3-C3.3-r1/ci-artifacts/history-oracles-Windows/compile-time-proofs.log:374: new blank line at EOF.
+reviews/evidence/M3-C3.3-r1/ci-artifacts/history-oracles-Windows/history-oracles-executor.log:45: new blank line at EOF.
+reviews/evidence/M3-C3.3-r1/ci-artifacts/history-oracles-Windows/history-oracles-mcp.log:31: new blank line at EOF.
+reviews/evidence/M3-C3.3-r1/ci-artifacts/history-oracles-macOS/compile-time-proofs.log:375: new blank line at EOF.
+reviews/evidence/M3-C3.3-r1/ci-artifacts/history-oracles-macOS/history-oracles-executor.log:45: new blank line at EOF.
+reviews/evidence/M3-C3.3-r1/ci-artifacts/history-oracles-macOS/history-oracles-mcp.log:31: new blank line at EOF.
+reviews/evidence/M3-C3.3-r1/clippy.log:7: trailing whitespace.
++
+reviews/evidence/M3-C3.3-r1/contract-direct.log:3: trailing whitespace.
++c33_r1_contract-4b82a05c6d7b2f37.exe :
+reviews/evidence/M3-C3.3-r1/contract-direct.log:9: trailing whitespace.
++
+reviews/evidence/M3-C3.3-r1/contract-direct.log:10: trailing whitespace.
++thread 'sub_microfield_depth_difference_uses_timeline_order' (30084) panicked at
+reviews/evidence/M3-C3.3-r1/contract-direct.log:25: trailing whitespace.
++thread 'failed_sequence_publication_leaves_no_frames' (21856) panicked at
+reviews/evidence/M3-C3.3-r1/contract-direct.log:27: trailing whitespace.
++09 section 11.1 item 4 / ADR-0020 decision 8: failed delivery published frame 1 in
+reviews/evidence/M3-C3.3-r1/contract-direct.log:39: new blank line at EOF.
+reviews/evidence/M3-C3.3-r1/crash.log:4: trailing whitespace.
++crash.exe :
+reviews/evidence/M3-C3.3-r1/crash.log:10: trailing whitespace.
++
+reviews/evidence/M3-C3.3-r1/crash.log:12: trailing whitespace.
++charter item 6: killed sequence retained [".Intro_0001.png.tt-partial-e862fd9c41eb"] in
+reviews/evidence/M3-C3.3-r1/crash.log:23: new blank line at EOF.
+reviews/evidence/M3-C3.3-r1/deny.log:7: trailing whitespace.
++
+reviews/evidence/M3-C3.3-r1/deny.log:9: trailing whitespace.
++   Γöé
+reviews/evidence/M3-C3.3-r1/deny.log:14: trailing whitespace.
++   Γöé
+reviews/evidence/M3-C3.3-r1/deny.log:55: trailing whitespace.
++   Γöé
+reviews/evidence/M3-C3.3-r1/deny.log:60: trailing whitespace.
++   Γöé
+reviews/evidence/M3-C3.3-r1/deny.log:208: trailing whitespace.
++   Γöé
+reviews/evidence/M3-C3.3-r1/deny.log:212: trailing whitespace.
++öÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÿ lock
+reviews/evidence/M3-C3.3-r1/deny.log:214: trailing whitespace.
++   Γöé
+reviews/evidence/M3-C3.3-r1/deny.log:253: trailing whitespace.
++   Γöé
+reviews/evidence/M3-C3.3-r1/deny.log:257: trailing whitespace.
++öÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÿ lock
+reviews/evidence/M3-C3.3-r1/deny.log:259: trailing whitespace.
++   Γöé
+reviews/evidence/M3-C3.3-r1/deny.log:330: trailing whitespace.
++   Γöé
+reviews/evidence/M3-C3.3-r1/deny.log:334: trailing whitespace.
++öÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÿ lock
+reviews/evidence/M3-C3.3-r1/deny.log:336: trailing whitespace.
++   Γöé
+reviews/evidence/M3-C3.3-r1/deny.log:375: trailing whitespace.
++   Γöé
+reviews/evidence/M3-C3.3-r1/deny.log:380: trailing whitespace.
++   Γöé
+reviews/evidence/M3-C3.3-r1/deny.log:417: trailing whitespace.
++    Γöé
+reviews/evidence/M3-C3.3-r1/deny.log:422: trailing whitespace.
++    Γöé
+reviews/evidence/M3-C3.3-r1/deny.log:568: trailing whitespace.
++    Γöé
+reviews/evidence/M3-C3.3-r1/deny.log:574: trailing whitespace.
++    Γöé
+reviews/evidence/M3-C3.3-r1/deny.log:735: trailing whitespace.
++    Γöé
+reviews/evidence/M3-C3.3-r1/deny.log:740: trailing whitespace.
++    Γöé
+reviews/evidence/M3-C3.3-r1/deny.log:878: trailing whitespace.
++    Γöé
+reviews/evidence/M3-C3.3-r1/deny.log:882: trailing whitespace.
++ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÿ lock
+reviews/evidence/M3-C3.3-r1/deny.log:884: trailing whitespace.
++    Γöé
+reviews/evidence/M3-C3.3-r1/deny.log:950: trailing whitespace.
++    Γöé
+reviews/evidence/M3-C3.3-r1/deny.log:955: trailing whitespace.
++    Γöé
+reviews/evidence/M3-C3.3-r1/deny.log:988: trailing whitespace.
++    Γöé
+reviews/evidence/M3-C3.3-r1/deny.log:993: trailing whitespace.
++    Γöé
+reviews/evidence/M3-C3.3-r1/deny.log:1066: trailing whitespace.
++    Γöé
+reviews/evidence/M3-C3.3-r1/deny.log:1072: trailing whitespace.
++    Γöé
+reviews/evidence/M3-C3.3-r1/deny.log:1147: trailing whitespace.
++    Γöé
+reviews/evidence/M3-C3.3-r1/deny.log:1153: trailing whitespace.
++    Γöé
+reviews/evidence/M3-C3.3-r1/deny.log:1230: trailing whitespace.
++    Γöé
+reviews/evidence/M3-C3.3-r1/deny.log:1235: trailing whitespace.
++    Γöé
+reviews/evidence/M3-C3.3-r1/deny.log:1270: trailing whitespace.
++    Γöé
+reviews/evidence/M3-C3.3-r1/deny.log:1275: trailing whitespace.
++    Γöé
+reviews/evidence/M3-C3.3-r1/deny.log:1334: trailing whitespace.
++    Γöé
+reviews/evidence/M3-C3.3-r1/deny.log:1338: trailing whitespace.
++ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÿ
+reviews/evidence/M3-C3.3-r1/deny.log:1340: trailing whitespace.
++    Γöé
+reviews/evidence/M3-C3.3-r1/deny.log:1401: trailing whitespace.
++    Γöé
+reviews/evidence/M3-C3.3-r1/deny.log:1406: trailing whitespace.
++    Γöé
+reviews/evidence/M3-C3.3-r1/deny.log:1834: trailing whitespace.
++    Γöé
+reviews/evidence/M3-C3.3-r1/deny.log:1839: trailing whitespace.
++    Γöé
+reviews/evidence/M3-C3.3-r1/deny.log:1935: trailing whitespace.
++    Γöé
+reviews/evidence/M3-C3.3-r1/deny.log:1941: trailing whitespace.
++    Γöé
+reviews/evidence/M3-C3.3-r1/deny.log:2039: trailing whitespace.
++    Γöé
+reviews/evidence/M3-C3.3-r1/deny.log:2044: trailing whitespace.
++    Γöé
+reviews/evidence/M3-C3.3-r1/deny.log:2071: trailing whitespace.
++    Γöé
+reviews/evidence/M3-C3.3-r1/deny.log:2075: trailing whitespace.
++ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÿ
+reviews/evidence/M3-C3.3-r1/deny.log:2077: trailing whitespace.
++    Γöé
+reviews/evidence/M3-C3.3-r1/deny.log:2116: trailing whitespace.
++    Γöé
+reviews/evidence/M3-C3.3-r1/deny.log:2122: trailing whitespace.
++    Γöé
+reviews/evidence/M3-C3.3-r1/deny.log:2162: trailing whitespace.
++    Γöé
+reviews/evidence/M3-C3.3-r1/deny.log:2168: trailing whitespace.
++    Γöé
+reviews/evidence/M3-C3.3-r1/deny.log:2208: trailing whitespace.
++    Γöé
+reviews/evidence/M3-C3.3-r1/deny.log:2212: trailing whitespace.
++ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÿ
+reviews/evidence/M3-C3.3-r1/deny.log:2214: trailing whitespace.
++    Γöé
+reviews/evidence/M3-C3.3-r1/disk.txt:4: new blank line at EOF.
+reviews/evidence/M3-C3.3-r1/executor.log:7: trailing whitespace.
++
+reviews/evidence/M3-C3.3-r1/mcp.log:7: trailing whitespace.
++
+reviews/evidence/M3-C3.3-r1/package-evidence.py:112: new blank line at EOF.
+reviews/evidence/M3-C3.3-r1/pin-cases.log:9: new blank line at EOF.
+reviews/evidence/M3-C3.3-r1/pin.rs:9: new blank line at EOF.
+reviews/evidence/M3-C3.3-r1/python-final.log:2: trailing whitespace.
++python : test_C02_R1_02_native_timestamp_association
+reviews/evidence/M3-C3.3-r1/python-final.log:9: trailing whitespace.
++
+reviews/evidence/M3-C3.3-r1/python-final.log:10: trailing whitespace.
++test_C02_R1_03_native_pose_only_contact_boundaries
+reviews/evidence/M3-C3.3-r1/python-final.log:12: trailing whitespace.
++test_C02_R1_07_nearest_rank_percentile_matches_frontend
+reviews/evidence/M3-C3.3-r1/python-final.log:21: trailing whitespace.
++test_C02_R2_01_empty_report_does_not_fabricate_zero_frame_success
+reviews/evidence/M3-C3.3-r1/python-final.log:24: trailing whitespace.
++test_C02_R2_01_successful_v2_run_without_raw_report_fails_loudly
+reviews/evidence/M3-C3.3-r1/python-final.log:26: trailing whitespace.
++test_C02_R2_02_achieved_rate_is_recomputed_or_rejected
+reviews/evidence/M3-C3.3-r1/python-final.log:28: trailing whitespace.
++test_C02_R2_04_offline_stroke_ranges_support_manual_tilt_threshold
+reviews/evidence/M3-C3.3-r1/python-final.log:30: trailing whitespace.
++test_explicit_failure_without_report_remains_analyzable
+reviews/evidence/M3-C3.3-r1/python-final.log:32: trailing whitespace.
++test_lossless_stationary_including_down_has_zero_missing
+reviews/evidence/M3-C3.3-r1/python-final.log:35: trailing whitespace.
++test_pause_segmentation_and_pose_only_native_reference_unknown
+reviews/evidence/M3-C3.3-r1/python-final.log:43: trailing whitespace.
++test_C02_R3_01_orphaned_synthetic_reports_are_not_manual_hardware_logs
+reviews/evidence/M3-C3.3-r1/python-final.log:63: trailing whitespace.
++test_C04_R2_01_rate_intervals_cover_fractional_hz
+reviews/evidence/M3-C3.3-r1/python-final.log:65: trailing whitespace.
++test_C04_R2_02_stationary_instruction_identifies_an_existing_contact_row
+reviews/evidence/M3-C3.3-r1/python-final.log:67: trailing whitespace.
++test_C04_R2_03_canvas_has_a_guard_for_analyzer_accepted_missing_scenes
+reviews/evidence/M3-C3.3-r1/python-final.log:75: trailing whitespace.
++test_C04_R3_01_outside_contact_must_not_flip_candidate
+reviews/evidence/M3-C3.3-r1/python-final.log:77: trailing whitespace.
++test_C04_R3_03_overlapping_native_marker_spans_must_be_rejected
+reviews/evidence/M3-C3.3-r1/python-final.log:79: trailing whitespace.
++test_C04_R3_04_binding_score_rule_has_no_unruled_core_filter
+reviews/evidence/M3-C3.3-r1/python-final.log:97: trailing whitespace.
++test_outside_packets_cannot_change_action_rate_or_platform_decision
+reviews/evidence/M3-C3.3-r1/python-final.log:111: trailing whitespace.
++test_accepted_elicitation_preserves_request_id_result
+reviews/evidence/M3-C3.3-r1/python-final.log:112: trailing whitespace.
++(__main__.Protocol.test_accepted_elicitation_preserves_request_id_result) ... skipped 'runtime cases are wired through
+reviews/evidence/M3-C3.3-r1/python-final.log:114: trailing whitespace.
++test_activity_batch_export_does_not_turn_dry_runs_into_edits
+reviews/evidence/M3-C3.3-r1/python-final.log:115: trailing whitespace.
++(__main__.Protocol.test_activity_batch_export_does_not_turn_dry_runs_into_edits) ... skipped 'runtime cases are wired
+reviews/evidence/M3-C3.3-r1/python-final.log:117: trailing whitespace.
++test_activity_batch_export_keeps_committed_batch_operations
+reviews/evidence/M3-C3.3-r1/python-final.log:118: trailing whitespace.
++(__main__.Protocol.test_activity_batch_export_keeps_committed_batch_operations) ... skipped 'runtime cases are wired
+reviews/evidence/M3-C3.3-r1/python-final.log:120: trailing whitespace.
++test_atomic_failure_has_no_activity_export_effect
+reviews/evidence/M3-C3.3-r1/python-final.log:121: trailing whitespace.
++(__main__.Protocol.test_atomic_failure_has_no_activity_export_effect) ... skipped 'runtime cases are wired through
+reviews/evidence/M3-C3.3-r1/python-final.log:123: trailing whitespace.
++test_closed_stdout_ends_the_unusable_session (__main__.Protocol.test_closed_stdout_ends_the_unusable_session) ...
+reviews/evidence/M3-C3.3-r1/python-final.log:125: trailing whitespace.
++test_elicitation_is_one_audit_entry_per_tool_call
+reviews/evidence/M3-C3.3-r1/python-final.log:126: trailing whitespace.
++(__main__.Protocol.test_elicitation_is_one_audit_entry_per_tool_call) ... skipped 'runtime cases are wired through
+reviews/evidence/M3-C3.3-r1/python-final.log:128: trailing whitespace.
++test_eof_while_eliciting_ends_the_session (__main__.Protocol.test_eof_while_eliciting_ends_the_session) ... skipped
+reviews/evidence/M3-C3.3-r1/python-final.log:130: trailing whitespace.
++test_filter_has_bounded_runtime (__main__.Protocol.test_filter_has_bounded_runtime) ... skipped 'runtime cases are
+reviews/evidence/M3-C3.3-r1/python-final.log:132: trailing whitespace.
++test_get_state_matches_the_command_envelope (__main__.Protocol.test_get_state_matches_the_command_envelope) ...
+reviews/evidence/M3-C3.3-r1/python-final.log:134: trailing whitespace.
++test_invalid_utf8_frame_does_not_destroy_stream (__main__.Protocol.test_invalid_utf8_frame_does_not_destroy_stream)
+reviews/evidence/M3-C3.3-r1/python-final.log:136: trailing whitespace.
++test_malformed_elicitation_does_not_overwrite (__main__.Protocol.test_malformed_elicitation_does_not_overwrite) ...
+reviews/evidence/M3-C3.3-r1/python-final.log:138: trailing whitespace.
++test_non_object_tool_arguments_are_rejected (__main__.Protocol.test_non_object_tool_arguments_are_rejected) ...
+reviews/evidence/M3-C3.3-r1/python-final.log:140: trailing whitespace.
++test_nonreading_client_with_eof_does_not_pin_the_session
+reviews/evidence/M3-C3.3-r1/python-final.log:141: trailing whitespace.
++(__main__.Protocol.test_nonreading_client_with_eof_does_not_pin_the_session) ... skipped 'runtime cases are wired
+reviews/evidence/M3-C3.3-r1/python-final.log:143: trailing whitespace.
++test_project_resource_is_readable (__main__.Protocol.test_project_resource_is_readable) ... skipped 'runtime cases are
+reviews/evidence/M3-C3.3-r1/python-final.log:145: trailing whitespace.
++test_second_initialize_is_rejected (__main__.Protocol.test_second_initialize_is_rejected) ... skipped 'runtime cases
+reviews/evidence/M3-C3.3-r1/python-final.log:147: trailing whitespace.
++test_size_and_mtime_preserving_edit_requires_confirmation
+reviews/evidence/M3-C3.3-r1/python-final.log:148: trailing whitespace.
++(__main__.Protocol.test_size_and_mtime_preserving_edit_requires_confirmation) ... skipped 'runtime cases are wired
+reviews/evidence/M3-C3.3-r1/python-final.log:150: trailing whitespace.
++test_undo_and_redo_emit_the_declared_events (__main__.Protocol.test_undo_and_redo_emit_the_declared_events) ...
+reviews/evidence/M3-C3.3-r1/python-final.log:152: trailing whitespace.
++test_unknown_cancellation_does_not_cancel_a_future_request
+reviews/evidence/M3-C3.3-r1/python-final.log:153: trailing whitespace.
++(__main__.Protocol.test_unknown_cancellation_does_not_cancel_a_future_request) ... skipped 'runtime cases are wired
+reviews/evidence/M3-C3.3-r1/python-final.log:155: trailing whitespace.
++test_unknown_tool_argument_is_rejected (__main__.Protocol.test_unknown_tool_argument_is_rejected) ... skipped 'runtime
+reviews/evidence/M3-C3.3-r1/python-final.log:157: trailing whitespace.
++test_wrong_dry_run_type_does_not_commit (__main__.Protocol.test_wrong_dry_run_type_does_not_commit) ... skipped
+reviews/evidence/M3-C3.3-r1/python-final.log:159: trailing whitespace.
++test_wrong_expect_rev_type_does_not_commit (__main__.Protocol.test_wrong_expect_rev_type_does_not_commit) ... skipped
+reviews/evidence/M3-C3.3-r1/python-final.log:161: trailing whitespace.
++test_percentile_evidence_retains_observations (__main__.ReleaseFeature.test_percentile_evidence_retains_observations)
+reviews/evidence/M3-C3.3-r1/python-final.log:163: trailing whitespace.
++test_suspension_hooks_are_not_a_normal_dependency_feature
+reviews/evidence/M3-C3.3-r1/python-final.log:171: trailing whitespace.
++test_analyzer_rejects_backwards_time_nonfinite_and_empty_series
+reviews/evidence/M3-C3.3-r1/python-final.log:173: trailing whitespace.
++test_all_state_include_combinations_are_command_projections
+reviews/evidence/M3-C3.3-r1/python-final.log:174: trailing whitespace.
++(__main__.Protocol.test_all_state_include_combinations_are_command_projections) ... skipped 'real binary supplied by
+reviews/evidence/M3-C3.3-r1/python-final.log:176: trailing whitespace.
++test_cancel_live_elicitation_releases_the_call_worker
+reviews/evidence/M3-C3.3-r1/python-final.log:177: trailing whitespace.
++(__main__.Protocol.test_cancel_live_elicitation_releases_the_call_worker) ... skipped 'real binary supplied by
+reviews/evidence/M3-C3.3-r1/python-final.log:179: trailing whitespace.
++test_close_with_save_offers_external_change_confirmation
+reviews/evidence/M3-C3.3-r1/python-final.log:180: trailing whitespace.
++(__main__.Protocol.test_close_with_save_offers_external_change_confirmation) ... skipped 'real binary supplied by
+reviews/evidence/M3-C3.3-r1/python-final.log:182: trailing whitespace.
++test_decline_cancel_and_invalid_accept_settle_request_id_and_audit_once
+reviews/evidence/M3-C3.3-r1/python-final.log:183: trailing whitespace.
++(__main__.Protocol.test_decline_cancel_and_invalid_accept_settle_request_id_and_audit_once) ... skipped 'real binary
+reviews/evidence/M3-C3.3-r1/python-final.log:185: trailing whitespace.
++test_export_publication_failure_is_not_a_successful_audit_record
+reviews/evidence/M3-C3.3-r1/python-final.log:186: trailing whitespace.
++(__main__.Protocol.test_export_publication_failure_is_not_a_successful_audit_record) ... skipped 'real binary supplied
+reviews/evidence/M3-C3.3-r1/python-final.log:188: trailing whitespace.
++test_idempotent_retry_is_not_a_second_replay_operation
+reviews/evidence/M3-C3.3-r1/python-final.log:189: trailing whitespace.
++(__main__.Protocol.test_idempotent_retry_is_not_a_second_replay_operation) ... skipped 'real binary supplied by
+reviews/evidence/M3-C3.3-r1/python-final.log:191: trailing whitespace.
++test_invalid_utf8_at_eof_is_a_parse_error_and_shutdown_is_bounded
+reviews/evidence/M3-C3.3-r1/python-final.log:192: trailing whitespace.
++(__main__.Protocol.test_invalid_utf8_at_eof_is_a_parse_error_and_shutdown_is_bounded) ... skipped 'real binary
+reviews/evidence/M3-C3.3-r1/python-final.log:194: trailing whitespace.
++test_invalid_utf8_mid_frame_and_oversized_frames_resynchronize
+reviews/evidence/M3-C3.3-r1/python-final.log:195: trailing whitespace.
++(__main__.Protocol.test_invalid_utf8_mid_frame_and_oversized_frames_resynchronize) ... skipped 'real binary supplied
+reviews/evidence/M3-C3.3-r1/python-final.log:197: trailing whitespace.
++test_long_unicode_and_nested_globs_keep_the_server_usable
+reviews/evidence/M3-C3.3-r1/python-final.log:198: trailing whitespace.
++(__main__.Protocol.test_long_unicode_and_nested_globs_keep_the_server_usable) ... skipped 'real binary supplied by
+reviews/evidence/M3-C3.3-r1/python-final.log:200: trailing whitespace.
++test_nested_wrapper_validation_never_edits (__main__.Protocol.test_nested_wrapper_validation_never_edits) ... skipped
+reviews/evidence/M3-C3.3-r1/python-final.log:202: trailing whitespace.
++test_nonreading_client_without_eof_is_closed_by_pressure_timeout
+reviews/evidence/M3-C3.3-r1/python-final.log:203: trailing whitespace.
++(__main__.Protocol.test_nonreading_client_without_eof_is_closed_by_pressure_timeout) ... skipped 'real binary supplied
+reviews/evidence/M3-C3.3-r1/python-final.log:205: trailing whitespace.
++test_partial_sequential_batch_keeps_its_committed_edits_in_replay
+reviews/evidence/M3-C3.3-r1/python-final.log:206: trailing whitespace.
++(__main__.Protocol.test_partial_sequential_batch_keeps_its_committed_edits_in_replay) ... skipped 'real binary
+reviews/evidence/M3-C3.3-r1/python-final.log:208: trailing whitespace.
++test_typed_tools_reject_nested_types_and_extra_options
+reviews/evidence/M3-C3.3-r1/python-final.log:209: trailing whitespace.
++(__main__.Protocol.test_typed_tools_reject_nested_types_and_extra_options) ... skipped 'real binary supplied by
+reviews/evidence/M3-C3.3-r1/python-final.log:217: trailing whitespace.
++test_cancelled_elicitation_does_not_authorize_a_late_accept
+reviews/evidence/M3-C3.3-r1/python-final.log:218: trailing whitespace.
++(__main__.Protocol.test_cancelled_elicitation_does_not_authorize_a_late_accept) ... skipped 'set TT_REVIEW_BINARY to a
+reviews/evidence/M3-C3.3-r1/python-final.log:220: trailing whitespace.
++test_close_keep_mine_completes_for_package_and_folder_and_quit_stays_scoped
+reviews/evidence/M3-C3.3-r1/python-final.log:221: trailing whitespace.
++(__main__.Protocol.test_close_keep_mine_completes_for_package_and_folder_and_quit_stays_scoped) ... skipped 'set
+reviews/evidence/M3-C3.3-r1/python-final.log:223: trailing whitespace.
++test_every_registered_command_rejects_malformed_params_within_watchdog
+reviews/evidence/M3-C3.3-r1/python-final.log:224: trailing whitespace.
++(__main__.Protocol.test_every_registered_command_rejects_malformed_params_within_watchdog) ... skipped 'set
+reviews/evidence/M3-C3.3-r1/python-final.log:226: trailing whitespace.
++test_generic_typed_and_atomic_exports_preserve_targets_on_later_failure
+reviews/evidence/M3-C3.3-r1/python-final.log:227: trailing whitespace.
++(__main__.Protocol.test_generic_typed_and_atomic_exports_preserve_targets_on_later_failure) ... skipped 'set
+reviews/evidence/M3-C3.3-r1/python-final.log:229: trailing whitespace.
++test_headless_run_rolls_back_export_on_later_failure
+reviews/evidence/M3-C3.3-r1/python-final.log:230: trailing whitespace.
++(__main__.Protocol.test_headless_run_rolls_back_export_on_later_failure) ... skipped 'set TT_REVIEW_BINARY to a built
+reviews/evidence/M3-C3.3-r1/python-final.log:238: trailing whitespace.
++test_boolean_summary_fields_are_not_valid_numeric_evidence
+reviews/evidence/M3-C3.3-r1/python-final.log:241: trailing whitespace.
++test_no_new_product_allow_attributes_since_round_two
+reviews/evidence/M3-C3.3-r1/python-final.log:250: trailing whitespace.
++test_c22_golden_only_zone_ids_and_number_representation
+reviews/evidence/M3-C3.3-r1/python-final.log:253: trailing whitespace.
++test_planar_raw_observations_and_malformed_rejection
+reviews/evidence/M3-C3.3-r1/python-final.log:264: trailing whitespace.
++test_c21_masks_only_explained_piece_list_and_digest
+reviews/evidence/M3-C3.3-r1/python-final.log:266: trailing whitespace.
++test_measurement_analyzer_rejects_bad_shape_types_and_quantiles
+reviews/evidence/M3-C3.3-r1/python-final.log:268: trailing whitespace.
++test_planar_analyzer_recomputes_and_rejects_malformed
+reviews/evidence/M3-C3.3-r1/python-final.log:270: trailing whitespace.
++test_predecessor_tests_unchanged_at_response_head (__main__.Audit.test_predecessor_tests_unchanged_at_response_head)
+reviews/evidence/M3-C3.3-r1/python-final.log:278: trailing whitespace.
++test_square_is_closed_and_explicitly_targeted (__main__.FormatTest.test_square_is_closed_and_explicitly_targeted) ...
+reviews/evidence/M3-C3.3-r1/python-final.log:286: trailing whitespace.
++test_all_implemented_mutations_are_in_the_claimed_common_contract
+reviews/evidence/M3-C3.3-r1/python-final.log:288: trailing whitespace.
++test_c22_golden_has_only_the_ruled_axis_change_and_derived_receipt
+reviews/evidence/M3-C3.3-r1/python-final.log:290: trailing whitespace.
++test_generated_declaration_delta_matches_the_reviewed_handler_inventory
+reviews/evidence/M3-C3.3-r1/python-final.log:319: trailing whitespace.
++test_symmetry_owner_agrees_with_declaration_and_handoff
+reviews/evidence/M3-C3.3-r1/python-final.log:327: trailing whitespace.
++test_preserves_all_units_commands_and_deferred_owners
+reviews/evidence/M3-C3.3-r1/python-final.log:360: trailing whitespace.
++test_signed_allocation_delta_and_nonnegative_time
+reviews/evidence/M3-C3.3-r1/python.log:2: trailing whitespace.
++python : test_C02_R1_02_native_timestamp_association
+reviews/evidence/M3-C3.3-r1/python.log:9: trailing whitespace.
++
+reviews/evidence/M3-C3.3-r1/python.log:10: trailing whitespace.
++test_C02_R1_03_native_pose_only_contact_boundaries
+reviews/evidence/M3-C3.3-r1/python.log:12: trailing whitespace.
++test_C02_R1_07_nearest_rank_percentile_matches_frontend
+reviews/evidence/M3-C3.3-r1/python.log:21: trailing whitespace.
++test_C02_R2_01_empty_report_does_not_fabricate_zero_frame_success
+reviews/evidence/M3-C3.3-r1/python.log:24: trailing whitespace.
++test_C02_R2_01_successful_v2_run_without_raw_report_fails_loudly
+reviews/evidence/M3-C3.3-r1/python.log:26: trailing whitespace.
++test_C02_R2_02_achieved_rate_is_recomputed_or_rejected
+reviews/evidence/M3-C3.3-r1/python.log:28: trailing whitespace.
++test_C02_R2_04_offline_stroke_ranges_support_manual_tilt_threshold
+reviews/evidence/M3-C3.3-r1/python.log:30: trailing whitespace.
++test_explicit_failure_without_report_remains_analyzable
+reviews/evidence/M3-C3.3-r1/python.log:32: trailing whitespace.
++test_lossless_stationary_including_down_has_zero_missing
+reviews/evidence/M3-C3.3-r1/python.log:35: trailing whitespace.
++test_pause_segmentation_and_pose_only_native_reference_unknown
+reviews/evidence/M3-C3.3-r1/python.log:43: trailing whitespace.
++test_C02_R3_01_orphaned_synthetic_reports_are_not_manual_hardware_logs
+reviews/evidence/M3-C3.3-r1/python.log:63: trailing whitespace.
++test_C04_R2_01_rate_intervals_cover_fractional_hz
+reviews/evidence/M3-C3.3-r1/python.log:65: trailing whitespace.
++test_C04_R2_02_stationary_instruction_identifies_an_existing_contact_row
+reviews/evidence/M3-C3.3-r1/python.log:67: trailing whitespace.
++test_C04_R2_03_canvas_has_a_guard_for_analyzer_accepted_missing_scenes
+reviews/evidence/M3-C3.3-r1/python.log:75: trailing whitespace.
++test_C04_R3_01_outside_contact_must_not_flip_candidate
+reviews/evidence/M3-C3.3-r1/python.log:77: trailing whitespace.
++test_C04_R3_03_overlapping_native_marker_spans_must_be_rejected
+reviews/evidence/M3-C3.3-r1/python.log:79: trailing whitespace.
++test_C04_R3_04_binding_score_rule_has_no_unruled_core_filter
+reviews/evidence/M3-C3.3-r1/python.log:97: trailing whitespace.
++test_outside_packets_cannot_change_action_rate_or_platform_decision
+reviews/evidence/M3-C3.3-r1/python.log:111: trailing whitespace.
++test_accepted_elicitation_preserves_request_id_result
+reviews/evidence/M3-C3.3-r1/python.log:112: trailing whitespace.
++(__main__.Protocol.test_accepted_elicitation_preserves_request_id_result) ... skipped 'runtime cases are wired through
+reviews/evidence/M3-C3.3-r1/python.log:114: trailing whitespace.
++test_activity_batch_export_does_not_turn_dry_runs_into_edits
+reviews/evidence/M3-C3.3-r1/python.log:115: trailing whitespace.
++(__main__.Protocol.test_activity_batch_export_does_not_turn_dry_runs_into_edits) ... skipped 'runtime cases are wired
+reviews/evidence/M3-C3.3-r1/python.log:117: trailing whitespace.
++test_activity_batch_export_keeps_committed_batch_operations
+reviews/evidence/M3-C3.3-r1/python.log:118: trailing whitespace.
++(__main__.Protocol.test_activity_batch_export_keeps_committed_batch_operations) ... skipped 'runtime cases are wired
+reviews/evidence/M3-C3.3-r1/python.log:120: trailing whitespace.
++test_atomic_failure_has_no_activity_export_effect
+reviews/evidence/M3-C3.3-r1/python.log:121: trailing whitespace.
++(__main__.Protocol.test_atomic_failure_has_no_activity_export_effect) ... skipped 'runtime cases are wired through
+reviews/evidence/M3-C3.3-r1/python.log:123: trailing whitespace.
++test_closed_stdout_ends_the_unusable_session (__main__.Protocol.test_closed_stdout_ends_the_unusable_session) ...
+reviews/evidence/M3-C3.3-r1/python.log:125: trailing whitespace.
++test_elicitation_is_one_audit_entry_per_tool_call
+reviews/evidence/M3-C3.3-r1/python.log:126: trailing whitespace.
++(__main__.Protocol.test_elicitation_is_one_audit_entry_per_tool_call) ... skipped 'runtime cases are wired through
+reviews/evidence/M3-C3.3-r1/python.log:128: trailing whitespace.
++test_eof_while_eliciting_ends_the_session (__main__.Protocol.test_eof_while_eliciting_ends_the_session) ... skipped
+reviews/evidence/M3-C3.3-r1/python.log:130: trailing whitespace.
++test_filter_has_bounded_runtime (__main__.Protocol.test_filter_has_bounded_runtime) ... skipped 'runtime cases are
+reviews/evidence/M3-C3.3-r1/python.log:132: trailing whitespace.
++test_get_state_matches_the_command_envelope (__main__.Protocol.test_get_state_matches_the_command_envelope) ...
+reviews/evidence/M3-C3.3-r1/python.log:134: trailing whitespace.
++test_invalid_utf8_frame_does_not_destroy_stream (__main__.Protocol.test_invalid_utf8_frame_does_not_destroy_stream)
+reviews/evidence/M3-C3.3-r1/python.log:136: trailing whitespace.
++test_malformed_elicitation_does_not_overwrite (__main__.Protocol.test_malformed_elicitation_does_not_overwrite) ...
+reviews/evidence/M3-C3.3-r1/python.log:138: trailing whitespace.
++test_non_object_tool_arguments_are_rejected (__main__.Protocol.test_non_object_tool_arguments_are_rejected) ...
+reviews/evidence/M3-C3.3-r1/python.log:140: trailing whitespace.
++test_nonreading_client_with_eof_does_not_pin_the_session
+reviews/evidence/M3-C3.3-r1/python.log:141: trailing whitespace.
++(__main__.Protocol.test_nonreading_client_with_eof_does_not_pin_the_session) ... skipped 'runtime cases are wired
+reviews/evidence/M3-C3.3-r1/python.log:143: trailing whitespace.
++test_project_resource_is_readable (__main__.Protocol.test_project_resource_is_readable) ... skipped 'runtime cases are
+reviews/evidence/M3-C3.3-r1/python.log:145: trailing whitespace.
++test_second_initialize_is_rejected (__main__.Protocol.test_second_initialize_is_rejected) ... skipped 'runtime cases
+reviews/evidence/M3-C3.3-r1/python.log:147: trailing whitespace.
++test_size_and_mtime_preserving_edit_requires_confirmation
+reviews/evidence/M3-C3.3-r1/python.log:148: trailing whitespace.
++(__main__.Protocol.test_size_and_mtime_preserving_edit_requires_confirmation) ... skipped 'runtime cases are wired
+reviews/evidence/M3-C3.3-r1/python.log:150: trailing whitespace.
++test_undo_and_redo_emit_the_declared_events (__main__.Protocol.test_undo_and_redo_emit_the_declared_events) ...
+reviews/evidence/M3-C3.3-r1/python.log:152: trailing whitespace.
++test_unknown_cancellation_does_not_cancel_a_future_request
+reviews/evidence/M3-C3.3-r1/python.log:153: trailing whitespace.
++(__main__.Protocol.test_unknown_cancellation_does_not_cancel_a_future_request) ... skipped 'runtime cases are wired
+reviews/evidence/M3-C3.3-r1/python.log:155: trailing whitespace.
++test_unknown_tool_argument_is_rejected (__main__.Protocol.test_unknown_tool_argument_is_rejected) ... skipped 'runtime
+reviews/evidence/M3-C3.3-r1/python.log:157: trailing whitespace.
++test_wrong_dry_run_type_does_not_commit (__main__.Protocol.test_wrong_dry_run_type_does_not_commit) ... skipped
+reviews/evidence/M3-C3.3-r1/python.log:159: trailing whitespace.
++test_wrong_expect_rev_type_does_not_commit (__main__.Protocol.test_wrong_expect_rev_type_does_not_commit) ... skipped
+reviews/evidence/M3-C3.3-r1/python.log:161: trailing whitespace.
++test_percentile_evidence_retains_observations (__main__.ReleaseFeature.test_percentile_evidence_retains_observations)
+reviews/evidence/M3-C3.3-r1/python.log:163: trailing whitespace.
++test_suspension_hooks_are_not_a_normal_dependency_feature
+reviews/evidence/M3-C3.3-r1/python.log:171: trailing whitespace.
++test_analyzer_rejects_backwards_time_nonfinite_and_empty_series
+reviews/evidence/M3-C3.3-r1/python.log:173: trailing whitespace.
++test_all_state_include_combinations_are_command_projections
+reviews/evidence/M3-C3.3-r1/python.log:174: trailing whitespace.
++(__main__.Protocol.test_all_state_include_combinations_are_command_projections) ... skipped 'real binary supplied by
+reviews/evidence/M3-C3.3-r1/python.log:176: trailing whitespace.
++test_cancel_live_elicitation_releases_the_call_worker
+reviews/evidence/M3-C3.3-r1/python.log:177: trailing whitespace.
++(__main__.Protocol.test_cancel_live_elicitation_releases_the_call_worker) ... skipped 'real binary supplied by
+reviews/evidence/M3-C3.3-r1/python.log:179: trailing whitespace.
++test_close_with_save_offers_external_change_confirmation
+reviews/evidence/M3-C3.3-r1/python.log:180: trailing whitespace.
++(__main__.Protocol.test_close_with_save_offers_external_change_confirmation) ... skipped 'real binary supplied by
+reviews/evidence/M3-C3.3-r1/python.log:182: trailing whitespace.
++test_decline_cancel_and_invalid_accept_settle_request_id_and_audit_once
+reviews/evidence/M3-C3.3-r1/python.log:183: trailing whitespace.
++(__main__.Protocol.test_decline_cancel_and_invalid_accept_settle_request_id_and_audit_once) ... skipped 'real binary
+reviews/evidence/M3-C3.3-r1/python.log:185: trailing whitespace.
++test_export_publication_failure_is_not_a_successful_audit_record
+reviews/evidence/M3-C3.3-r1/python.log:186: trailing whitespace.
++(__main__.Protocol.test_export_publication_failure_is_not_a_successful_audit_record) ... skipped 'real binary supplied
+reviews/evidence/M3-C3.3-r1/python.log:188: trailing whitespace.
++test_idempotent_retry_is_not_a_second_replay_operation
+reviews/evidence/M3-C3.3-r1/python.log:189: trailing whitespace.
++(__main__.Protocol.test_idempotent_retry_is_not_a_second_replay_operation) ... skipped 'real binary supplied by
+reviews/evidence/M3-C3.3-r1/python.log:191: trailing whitespace.
++test_invalid_utf8_at_eof_is_a_parse_error_and_shutdown_is_bounded
+reviews/evidence/M3-C3.3-r1/python.log:192: trailing whitespace.
++(__main__.Protocol.test_invalid_utf8_at_eof_is_a_parse_error_and_shutdown_is_bounded) ... skipped 'real binary
+reviews/evidence/M3-C3.3-r1/python.log:194: trailing whitespace.
++test_invalid_utf8_mid_frame_and_oversized_frames_resynchronize
+reviews/evidence/M3-C3.3-r1/python.log:195: trailing whitespace.
++(__main__.Protocol.test_invalid_utf8_mid_frame_and_oversized_frames_resynchronize) ... skipped 'real binary supplied
+reviews/evidence/M3-C3.3-r1/python.log:197: trailing whitespace.
++test_long_unicode_and_nested_globs_keep_the_server_usable
+reviews/evidence/M3-C3.3-r1/python.log:198: trailing whitespace.
++(__main__.Protocol.test_long_unicode_and_nested_globs_keep_the_server_usable) ... skipped 'real binary supplied by
+reviews/evidence/M3-C3.3-r1/python.log:200: trailing whitespace.
++test_nested_wrapper_validation_never_edits (__main__.Protocol.test_nested_wrapper_validation_never_edits) ... skipped
+reviews/evidence/M3-C3.3-r1/python.log:202: trailing whitespace.
++test_nonreading_client_without_eof_is_closed_by_pressure_timeout
+reviews/evidence/M3-C3.3-r1/python.log:203: trailing whitespace.
++(__main__.Protocol.test_nonreading_client_without_eof_is_closed_by_pressure_timeout) ... skipped 'real binary supplied
+reviews/evidence/M3-C3.3-r1/python.log:205: trailing whitespace.
++test_partial_sequential_batch_keeps_its_committed_edits_in_replay
+reviews/evidence/M3-C3.3-r1/python.log:206: trailing whitespace.
++(__main__.Protocol.test_partial_sequential_batch_keeps_its_committed_edits_in_replay) ... skipped 'real binary
+reviews/evidence/M3-C3.3-r1/python.log:208: trailing whitespace.
++test_typed_tools_reject_nested_types_and_extra_options
+reviews/evidence/M3-C3.3-r1/python.log:209: trailing whitespace.
++(__main__.Protocol.test_typed_tools_reject_nested_types_and_extra_options) ... skipped 'real binary supplied by
+reviews/evidence/M3-C3.3-r1/python.log:217: trailing whitespace.
++test_cancelled_elicitation_does_not_authorize_a_late_accept
+reviews/evidence/M3-C3.3-r1/python.log:218: trailing whitespace.
++(__main__.Protocol.test_cancelled_elicitation_does_not_authorize_a_late_accept) ... skipped 'set TT_REVIEW_BINARY to a
+reviews/evidence/M3-C3.3-r1/python.log:220: trailing whitespace.
++test_close_keep_mine_completes_for_package_and_folder_and_quit_stays_scoped
+reviews/evidence/M3-C3.3-r1/python.log:221: trailing whitespace.
++(__main__.Protocol.test_close_keep_mine_completes_for_package_and_folder_and_quit_stays_scoped) ... skipped 'set
+reviews/evidence/M3-C3.3-r1/python.log:223: trailing whitespace.
++test_every_registered_command_rejects_malformed_params_within_watchdog
+reviews/evidence/M3-C3.3-r1/python.log:224: trailing whitespace.
++(__main__.Protocol.test_every_registered_command_rejects_malformed_params_within_watchdog) ... skipped 'set
+reviews/evidence/M3-C3.3-r1/python.log:226: trailing whitespace.
++test_generic_typed_and_atomic_exports_preserve_targets_on_later_failure
+reviews/evidence/M3-C3.3-r1/python.log:227: trailing whitespace.
++(__main__.Protocol.test_generic_typed_and_atomic_exports_preserve_targets_on_later_failure) ... skipped 'set
+reviews/evidence/M3-C3.3-r1/python.log:229: trailing whitespace.
++test_headless_run_rolls_back_export_on_later_failure
+reviews/evidence/M3-C3.3-r1/python.log:230: trailing whitespace.
++(__main__.Protocol.test_headless_run_rolls_back_export_on_later_failure) ... skipped 'set TT_REVIEW_BINARY to a built
+reviews/evidence/M3-C3.3-r1/python.log:238: trailing whitespace.
++test_boolean_summary_fields_are_not_valid_numeric_evidence
+reviews/evidence/M3-C3.3-r1/python.log:241: trailing whitespace.
++test_no_new_product_allow_attributes_since_round_two
+reviews/evidence/M3-C3.3-r1/python.log:250: trailing whitespace.
++test_c22_golden_only_zone_ids_and_number_representation
+reviews/evidence/M3-C3.3-r1/python.log:253: trailing whitespace.
++test_planar_raw_observations_and_malformed_rejection
+reviews/evidence/M3-C3.3-r1/python.log:264: trailing whitespace.
++test_c21_masks_only_explained_piece_list_and_digest
+reviews/evidence/M3-C3.3-r1/python.log:266: trailing whitespace.
++test_measurement_analyzer_rejects_bad_shape_types_and_quantiles
+reviews/evidence/M3-C3.3-r1/python.log:268: trailing whitespace.
++test_planar_analyzer_recomputes_and_rejects_malformed
+reviews/evidence/M3-C3.3-r1/python.log:270: trailing whitespace.
++test_predecessor_tests_unchanged_at_response_head (__main__.Audit.test_predecessor_tests_unchanged_at_response_head)
+reviews/evidence/M3-C3.3-r1/python.log:278: trailing whitespace.
++test_square_is_closed_and_explicitly_targeted (__main__.FormatTest.test_square_is_closed_and_explicitly_targeted) ...
+reviews/evidence/M3-C3.3-r1/python.log:286: trailing whitespace.
++test_all_implemented_mutations_are_in_the_claimed_common_contract
+reviews/evidence/M3-C3.3-r1/python.log:288: trailing whitespace.
++test_c22_golden_has_only_the_ruled_axis_change_and_derived_receipt
+reviews/evidence/M3-C3.3-r1/python.log:290: trailing whitespace.
++test_generated_declaration_delta_matches_the_reviewed_handler_inventory
+reviews/evidence/M3-C3.3-r1/python.log:319: trailing whitespace.
++test_symmetry_owner_agrees_with_declaration_and_handoff
+reviews/evidence/M3-C3.3-r1/python.log:327: trailing whitespace.
++test_preserves_all_units_commands_and_deferred_owners
+reviews/evidence/M3-C3.3-r1/python.log:360: trailing whitespace.
++test_signed_allocation_delta_and_nonnegative_time
+reviews/evidence/M3-C3.3-r1/release-goldens.log:7: new blank line at EOF.
+reviews/evidence/M3-C3.3-r1/release.log:7: trailing whitespace.
++
+reviews/evidence/M3-C3.3-r1/render.log:7: trailing whitespace.
++
+reviews/evidence/M3-C3.3-r1/render.log:216: new blank line at EOF.
+reviews/evidence/M3-C3.3-r1/review-clippy-executor.log:7: trailing whitespace.
++
+reviews/evidence/M3-C3.3-r1/review-clippy-mcp.log:7: trailing whitespace.
++
+reviews/evidence/M3-C3.3-r1/review-clippy-render.log:7: trailing whitespace.
++
+reviews/evidence/M3-C3.3-r1/review-release-pixels.log:11: new blank line at EOF.
+reviews/evidence/M3-C3.3-r1/sdk.log:1: trailing whitespace.
++python : C:\Users\kaiga\work\review\m3-c33-r1\scripts\mcp-conformance.py:112: MCPDeprecationWarning:
+reviews/evidence/M3-C3.3-r1/sdk.log:8: trailing whitespace.
++
+reviews/evidence/M3-C3.3-r1/sdk.log:10: trailing whitespace.
++C:\Users\kaiga\work\review\m3-c33-r1\scripts\mcp-conformance.py:113: MCPDeprecationWarning: The logging capability is
+reviews/evidence/M3-C3.3-r1/tools-direct.log:4: trailing whitespace.
++c33_r1_tools-6728fe3d4f1a5df2.exe :
+reviews/evidence/M3-C3.3-r1/tools-direct.log:10: trailing whitespace.
++
+reviews/evidence/M3-C3.3-r1/tools-direct.log:12: trailing whitespace.
++11 section 7.5 render_frame output: {"content":[{"type":"text","text":"render_frame: `render.frame.run` ok; 0
+reviews/evidence/M3-C3.3-r1/tools-direct.log:23: trailing whitespace.
++assertion `left == right` failed: 11 section 7.5 requires include/exclude overrides:
+reviews/evidence/M3-C3.3-r1/tools-direct.log:24: trailing whitespace.
++{"content":[{"type":"text","text":"render_frame: `render_frame` failed: arg.unknown — `tool:render_frame`: Additional
+reviews/evidence/M3-C3.3-r1/tools-direct.log:26: trailing whitespace.
++[],"documentRev":null,"error":{"code":"arg.unknown","message":"`tool:render_frame`: Additional properties are not
+reviews/evidence/M3-C3.3-r1/tools-direct.log:27: trailing whitespace.
++allowed ('exclude' was unexpected)","details":{"pointer":"/exclude","message":"Additional properties are not allowed
+reviews/evidence/M3-C3.3-r1/tools-direct.log:28: trailing whitespace.
++('exclude' was unexpected)","allowed":null,"violations":[{"pointer":"/exclude","message":"Additional properties are
+reviews/evidence/M3-C3.3-r1/tools-direct.log:42: new blank line at EOF.
+reviews/evidence/M3-C3.3-r1/workspace.log:7: trailing whitespace.
++
+reviews/evidence/M3-C3.3-r1/workspace.log:2749: trailing whitespace.
++test_accepted_elicitation_preserves_request_id_result
+reviews/evidence/M3-C3.3-r1/workspace.log:2752: trailing whitespace.
++test_activity_batch_export_does_not_turn_dry_runs_into_edits
+reviews/evidence/M3-C3.3-r1/workspace.log:2790: trailing whitespace.
++test_activity_batch_export_keeps_committed_batch_operations
+reviews/evidence/M3-C3.3-r1/workspace.log:2793: trailing whitespace.
++test_atomic_failure_has_no_activity_export_effect
+reviews/evidence/M3-C3.3-r1/workspace.log:2797: trailing whitespace.
++test_elicitation_is_one_audit_entry_per_tool_call
+reviews/evidence/M3-C3.3-r1/workspace.log:2803: trailing whitespace.
++test_invalid_utf8_frame_does_not_destroy_stream (__main__.Protocol.test_invalid_utf8_frame_does_not_destroy_stream)
+reviews/evidence/M3-C3.3-r1/workspace.log:2809: trailing whitespace.
++test_nonreading_client_with_eof_does_not_pin_the_session
+reviews/evidence/M3-C3.3-r1/workspace.log:2815: trailing whitespace.
++test_size_and_mtime_preserving_edit_requires_confirmation
+reviews/evidence/M3-C3.3-r1/workspace.log:2819: trailing whitespace.
++test_unknown_cancellation_does_not_cancel_a_future_request
+reviews/evidence/M3-C3.3-r1/workspace.log:2827: trailing whitespace.
++test_percentile_evidence_retains_observations (__main__.ReleaseFeature.test_percentile_evidence_retains_observations)
+reviews/evidence/M3-C3.3-r1/workspace.log:2829: trailing whitespace.
++test_suspension_hooks_are_not_a_normal_dependency_feature
+reviews/evidence/M3-C3.3-r1/workspace.log:2843: trailing whitespace.
++test_analyzer_rejects_backwards_time_nonfinite_and_empty_series
+reviews/evidence/M3-C3.3-r1/workspace.log:2845: trailing whitespace.
++test_all_state_include_combinations_are_command_projections
+reviews/evidence/M3-C3.3-r1/workspace.log:2847: trailing whitespace.
++test_cancel_live_elicitation_releases_the_call_worker
+reviews/evidence/M3-C3.3-r1/workspace.log:2849: trailing whitespace.
++test_close_with_save_offers_external_change_confirmation
+reviews/evidence/M3-C3.3-r1/workspace.log:2851: trailing whitespace.
++test_decline_cancel_and_invalid_accept_settle_request_id_and_audit_once
+reviews/evidence/M3-C3.3-r1/workspace.log:2854: trailing whitespace.
++test_export_publication_failure_is_not_a_successful_audit_record
+reviews/evidence/M3-C3.3-r1/workspace.log:2857: trailing whitespace.
++test_idempotent_retry_is_not_a_second_replay_operation
+reviews/evidence/M3-C3.3-r1/workspace.log:2859: trailing whitespace.
++test_invalid_utf8_at_eof_is_a_parse_error_and_shutdown_is_bounded
+reviews/evidence/M3-C3.3-r1/workspace.log:2861: trailing whitespace.
++test_invalid_utf8_mid_frame_and_oversized_frames_resynchronize
+reviews/evidence/M3-C3.3-r1/workspace.log:2863: trailing whitespace.
++test_long_unicode_and_nested_globs_keep_the_server_usable
+reviews/evidence/M3-C3.3-r1/workspace.log:2866: trailing whitespace.
++test_nonreading_client_without_eof_is_closed_by_pressure_timeout
+reviews/evidence/M3-C3.3-r1/workspace.log:2869: trailing whitespace.
++test_partial_sequential_batch_keeps_its_committed_edits_in_replay
+reviews/evidence/M3-C3.3-r1/workspace.log:2871: trailing whitespace.
++test_typed_tools_reject_nested_types_and_extra_options
+reviews/evidence/M3-C3.3-r1/workspace.log:2885: trailing whitespace.
++test_cancelled_elicitation_does_not_authorize_a_late_accept
+reviews/evidence/M3-C3.3-r1/workspace.log:2887: trailing whitespace.
++test_close_keep_mine_completes_for_package_and_folder_and_quit_stays_scoped
+reviews/evidence/M3-C3.3-r1/workspace.log:2890: trailing whitespace.
++test_every_registered_command_rejects_malformed_params_within_watchdog
+reviews/evidence/M3-C3.3-r1/workspace.log:2892: trailing whitespace.
++test_generic_typed_and_atomic_exports_preserve_targets_on_later_failure
+reviews/evidence/M3-C3.3-r1/workspace.log:2894: trailing whitespace.
++test_headless_run_rolls_back_export_on_later_failure
+reviews/evidence/M3-C3.3-r1/workspace.log:3972: trailing whitespace.
++maximum spine + pressure complete outline 1.839649s: Err(GeomError { code: "limit.exceeded", message: "the brush

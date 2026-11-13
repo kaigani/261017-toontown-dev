@@ -1,0 +1,117 @@
+  "agent.activity.list.result": {
+    title: "Array_of_ActivityEntry",
+    type: "array",
+    items: {
+      description: "One activity-log entry (11 §11). Its schema is the declared result item of `agent.activity.list` (C34-R5-01):\noptional fields are omitted when absent, and entries written before a field existed still read.",
+      type: "object",
+      properties: {
+        seq: {
+          description: "Sequence number (per process).",
+          type: "integer",
+          maximum: 18446744073709551615n,
+          minimum: 0,
+        },
+        time: {
+          description: "When the call finished.",
+          type: "string",
+        },
+        sessionId: {
+          description: "Session id.",
+          type: "string",
+        },
+        client: {
+          description: "Client name.",
+          type: "string",
+        },
+        tool: {
+          description: "MCP tool (or `batch-script`).",
+          type: "string",
+        },
+        commandId: {
+          description: "Command id (`batch` for batches).",
+          type: "string",
+        },
+        params: {
+          description: "Parameters, with inline media replaced by a hash.",
+        },
+        status: {
+          description: "`ok`, `needs_confirmation` or `error`.",
+          type: "string",
+        },
+        errorCode: {
+          description: "Error code.",
+          type: [
+            "string",
+            "null",
+          ],
+        },
+        errorReason: {
+          description: "The error's `details.reason`, or that of the step error a `batch.stepFailed` wraps (`\"cancelled\"`: its caller\ncancelled the request; C34-R4-01).",
+          type: [
+            "string",
+            "null",
+          ],
+        },
+        undoStepId: {
+          description: "Undo step.",
+          type: [
+            "string",
+            "null",
+          ],
+        },
+        changedCount: {
+          description: "Changed objects.",
+          type: "integer",
+          format: "uint",
+          minimum: 0,
+        },
+        dryRun: {
+          description: "The call was a dry run (it changed nothing; a replay must not turn it into an edit; C14-R1-15).",
+          type: "boolean",
+        },
+        cachedRetry: {
+          description: "The answer came from the `requestId` cache: a retry of an earlier call, which executed nothing (C14-R2-03).",
+          type: "boolean",
+        },
+        committedSteps: {
+          description: "A batch: the indexes of the steps it committed (all or none for an atomic batch; the successful ones of a\nsequential batch, which commits step by step; C14-R2-02).",
+          type: [
+            "array",
+            "null",
+          ],
+          items: {
+            type: "integer",
+            format: "uint",
+            minimum: 0,
+          },
+        },
+        documentRev: {
+          description: "Document revision after the call.",
+          type: [
+            "integer",
+            "null",
+          ],
+          maximum: 18446744073709551615n,
+          minimum: 0,
+        },
+        durationMs: {
+          description: "Duration.",
+          type: "integer",
+          maximum: 18446744073709551615n,
+          minimum: 0,
+        },
+      },
+      required: [
+        "seq",
+        "time",
+        "sessionId",
+        "client",
+        "tool",
+        "commandId",
+        "params",
+        "status",
+        "changedCount",
+        "durationMs",
+      ],
+    },
+  },

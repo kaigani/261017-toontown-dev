@@ -1,0 +1,146 @@
+[
+  {
+    "file": "reviews/M3-C3.1-r1-register.json",
+    "equal": true,
+    "heads": [
+      "197bbe2",
+      "96c6302"
+    ]
+  },
+  {
+    "file": "reviews/M3-C3.1-r1-register.md",
+    "equal": true,
+    "heads": [
+      "197bbe2",
+      "96c6302"
+    ]
+  },
+  {
+    "file": "reviews/evidence/M3-C3.1-r1/register-final.txt",
+    "equal": true,
+    "heads": [
+      "197bbe2",
+      "96c6302"
+    ]
+  },
+  {
+    "file": "reviews/evidence/M3-C3.1-r1/register-tests.txt",
+    "equal": true,
+    "heads": [
+      "197bbe2",
+      "96c6302"
+    ]
+  },
+  {
+    "file": "reviews/evidence/M3-C3.1-r1/register-verified.txt",
+    "equal": true,
+    "heads": [
+      "197bbe2",
+      "96c6302"
+    ]
+  },
+  {
+    "file": "reviews/evidence/M3-C3.1-r2/guards/c22-r2-register.txt",
+    "equal": true,
+    "heads": [
+      "197bbe2",
+      "96c6302"
+    ]
+  },
+  {
+    "file": "reviews/evidence/M3-C3.1-r2/guards/c23-r1-register.txt",
+    "equal": true,
+    "heads": [
+      "197bbe2",
+      "96c6302"
+    ]
+  },
+  {
+    "file": "reviews/evidence/M3-C3.1-r2/guards/c23-r2-register.txt",
+    "equal": true,
+    "heads": [
+      "197bbe2",
+      "96c6302"
+    ]
+  },
+  {
+    "file": "reviews/evidence/M3-C3.1-r2/guards/c24-r1-register.txt",
+    "equal": true,
+    "heads": [
+      "197bbe2",
+      "96c6302"
+    ]
+  },
+  {
+    "file": "reviews/evidence/M3-C3.1-r2/guards/c24-r3-register.txt",
+    "equal": true,
+    "heads": [
+      "197bbe2",
+      "96c6302"
+    ]
+  },
+  {
+    "file": "reviews/evidence/M3-C3.1-r2/guards/c31-r1-register.txt",
+    "equal": true,
+    "heads": [
+      "197bbe2",
+      "96c6302"
+    ]
+  },
+  {
+    "file": "reviews/evidence/M3-C3.1-r2/register-complete.json",
+    "equal": true,
+    "heads": [
+      "197bbe2",
+      "96c6302"
+    ]
+  },
+  {
+    "file": "reviews/evidence/M3-C3.1-r2/register-final.json",
+    "equal": true,
+    "heads": [
+      "197bbe2",
+      "96c6302"
+    ]
+  },
+  {
+    "file": "reviews/evidence/M3-C3.1-r2/register-verified.json",
+    "equal": true,
+    "heads": [
+      "197bbe2",
+      "96c6302"
+    ]
+  },
+  {
+    "file": "reviews/evidence/M3-C3.1-r2/register.json",
+    "equal": true,
+    "heads": [
+      "197bbe2",
+      "96c6302"
+    ]
+  },
+  {
+    "file": "reviews/evidence/M3-C3.1-r3/register-complete.json",
+    "equal": true,
+    "heads": [
+      "197bbe2",
+      "96c6302"
+    ]
+  },
+  {
+    "file": "reviews/evidence/M3-C3.1-r4/register-complete.json",
+    "equal": true,
+    "heads": [
+      "197bbe2",
+      "96c6302"
+    ]
+  },
+  {
+    "file": "reviews/evidence/M3-C3.1-r4/register-summary.json",
+    "equal": true,
+    "heads": [
+      "197bbe2",
+      "96c6302"
+    ]
+  }
+]

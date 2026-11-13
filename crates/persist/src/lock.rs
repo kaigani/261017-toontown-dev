@@ -123,6 +123,15 @@ pub enum Boundary {
     SaveBeforeWrite,
     /// A save wrote the project, before it is applied to the session (the finish checks ownership again).
     SaveWritten,
+    /// A range export's rollback or recovery, before it puts an original back from its backup (the path is the
+    /// target; M3 C3.3 round 2).
+    RangeRestore,
+    /// A range export's publication, before it renames a staged file onto its target (the path is the target; M3
+    /// C3.3 round 2).
+    RangePublish,
+    /// An invocation or batch step committed on the document thread, before the next boundary (the path is empty; M3
+    /// C3.4 round 2: request cancellation between steps).
+    Committed,
 }
 
 #[cfg(feature = "test-hooks")]

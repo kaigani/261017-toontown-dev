@@ -1,0 +1,7 @@
+test_measurement_analyzer_rejects_malformed (__main__.Audit.test_measurement_analyzer_rejects_malformed) ... ok
+test_protected_diff_and_golden (__main__.Audit.test_protected_diff_and_golden) ... ok
+
+----------------------------------------------------------------------
+Ran 2 tests in 1.806s
+
+OK

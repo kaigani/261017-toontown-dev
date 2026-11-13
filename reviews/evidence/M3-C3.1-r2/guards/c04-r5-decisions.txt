@@ -1,0 +1,6 @@
+test_outside_packets_cannot_change_action_rate_or_platform_decision (__main__.OutsideNativeClock.test_outside_packets_cannot_change_action_rate_or_platform_decision) ... ok
+
+----------------------------------------------------------------------
+Ran 1 test in 0.057s
+
+OK

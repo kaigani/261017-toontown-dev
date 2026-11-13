@@ -208,6 +208,8 @@ struct Rollback {
     /// The agent hub's sessions, grants and policy (C23-R3-01). Its confirmation requests and activity log are
     /// records a refused call makes on purpose (11 §6.3, §11) and are kept.
     agents: crate::agents::AgentHub,
+    /// Timeline/Exposure Sheet view state (solo, category colours, light tables; C31-R1-02).
+    timeline: crate::commands::timing::TimelineState,
     events: usize,
 }
 
@@ -233,12 +235,14 @@ impl Rollback {
                 ttl: s.agents.ttl,
                 server_enabled: s.agents.server_enabled,
             },
+            timeline: s.timeline.clone(),
             events: s.events.len(),
         }
     }
 
     fn apply(self, s: &mut Session) {
         s.app = self.app;
+        s.timeline = self.timeline;
         s.ui = self.ui;
         s.clipboard = self.clipboard;
         s.edit_options = self.edit_options;
@@ -261,14 +265,27 @@ struct Observed {
     dirty: Option<bool>,
     /// The persisted form of the workspaces (written to the settings when it changes; 01 §11).
     workspaces: Value,
+    /// The reported selection (shared list: compared by pointer, then by content only when it was replaced).
+    selection: crate::app::Ids,
+    /// The Timeline/Exposure Sheet position and cell/row selection (`cell.selection.changed`, 04 §17.4).
+    cells: (Option<crate::app::Ids>, Option<crate::app::Ids>, Option<tt_model::Id>, u32),
 }
 
+/// The observed application state. The selection lists are kept as shared lists rather than serialised, so a large
+/// cell selection costs nothing per call; the full state is built only when something changed.
 fn observe(s: &Session) -> Observed {
     Observed {
-        state: serde_json::to_value(crate::commands::app::app_state(s)).unwrap_or(Value::Null),
+        state: crate::commands::app::app_state_without_selection_ids(s),
+        selection: s.app.selection.ids.clone(),
         history: s.project.as_ref().map(|p| (p.history.position(), p.history.len())),
         dirty: s.project.as_ref().map(OpenProject::dirty),
         workspaces: s.ui.persisted(),
+        cells: (
+            s.app.selections.get("xsheet").cloned(),
+            s.app.selections.get("timeline").cloned(),
+            s.app.element.clone(),
+            s.app.frame,
+        ),
     }
 }
 
@@ -311,6 +328,9 @@ pub(crate) struct Core {
     budget: Duration,
     /// The last `invoke` was answered from the `requestId` cache (read and cleared by `take_served_from_cache`).
     served_from_cache: bool,
+    /// When the running caller's request was enqueued: its caller's watchdog deadline is this plus `budget`, so waits on
+    /// the document thread are bounded from here, not from when the request began.
+    call_start: Option<std::time::Instant>,
 }
 
 fn unknown(id: &str, registry: &Registry) -> CommandError {
@@ -516,6 +536,20 @@ fn frozen_guard(s: &Session, txns: &[Txn]) -> Result<(), CommandError> {
 /// returns `needs_confirmation` with the token, the summary and the consequences; `agent.confirmation.requested` tells
 /// the GUI (attached mode).
 fn needs_confirmation(session: &mut Session, e: CommandError, rev: Option<u64>) -> Envelope {
+    // A parameter-based confirmation (04 §17.1 item 6, `element.drawing.delete {ifInUse: "fail"}`): the call changed
+    // nothing and answers `needs_confirmation` with the consequences and the parameters that perform it; no token.
+    if e.details.get("x-needsConfirmation") == Some(&Value::Bool(true)) {
+        let result = json!({
+            "status": "needs_confirmation",
+            "code": e.code,
+            "summary": e.message,
+            "consequences": e.details.get("consequences"),
+            "retryWith": e.details.get("retryWith"),
+        });
+        let mut env = Envelope::ok(result, rev);
+        env.status = crate::types::Status::NeedsConfirmation;
+        return env;
+    }
     if e.code != "confirmation.required" {
         return Envelope::error(e, rev);
     }
@@ -542,19 +576,42 @@ fn needs_confirmation(session: &mut Session, e: CommandError, rev: Option<u64>) 
 /// A request whose caller timed out is not accepted (C23-R2-01, C23-R3-01): checked at the acceptance boundary, before
 /// any session state, document transaction or effect is kept, and again by `commit` before it installs anything.
 fn cancelled_check(what: &str) -> Result<(), CommandError> {
-    if tt_vector::work::cancel_requested() {
-        return Err(CommandError::with_details(
+    cancelled_check_for(what, false)
+}
+
+/// [`cancelled_check`] for a command that may be a query: a query changes nothing, so its caller's cancellation does
+/// not refuse it at a boundary (it stops at its next work-account check); a timed-out caller's still does
+/// (ADR-0020 decision 8, rule 1).
+fn cancelled_check_for(what: &str, query: bool) -> Result<(), CommandError> {
+    match crate::cancellation() {
+        None => Ok(()),
+        Some(tt_vector::work::Cause::Cancelled) if query => Ok(()),
+        // The caller cancelled its request (SI-111).
+        Some(tt_vector::work::Cause::Cancelled) => Err(CommandError::with_details(
+            tt_registry::codes::COMMAND_TIMEOUT,
+            format!("`{what}` was cancelled by its caller"),
+            serde_json::json!({ "commandId": what, "reason": "cancelled" }),
+        )),
+        // The caller's watchdog budget passed (never relabelled as a cancellation; C34-R3-02).
+        Some(tt_vector::work::Cause::Timeout) => Err(CommandError::with_details(
             tt_registry::codes::COMMAND_TIMEOUT,
             format!("`{what}` was cancelled: its caller's watchdog budget passed"),
             serde_json::json!({ "commandId": what }),
-        ));
+        )),
     }
-    Ok(())
 }
 
 /// Commits transactions: installs each stamped snapshot, records undo steps or moves the history position, logs
-/// the revision and emits `doc.changed`.
-fn commit(s: &mut Session, txns: Vec<Txn>, origin: &Origin, command: &str) -> Result<Option<UndoRef>, CommandError> {
+/// the revision and emits `doc.changed`. `anim` is the call's coalesced `anim.changed` payload: a new step keeps it, and
+/// an undo or redo of a step emits the step's again after its `doc.changed` (05 §19.4: one animation invalidation per
+/// undo step, a replayed step included; C32-R2-02).
+fn commit(
+    s: &mut Session,
+    txns: Vec<Txn>,
+    origin: &Origin,
+    command: &str,
+    anim: Option<&Value>,
+) -> Result<Option<UndoRef>, CommandError> {
     if txns.is_empty() {
         return Ok(None);
     }
@@ -568,6 +625,7 @@ fn commit(s: &mut Session, txns: Vec<Txn>, origin: &Origin, command: &str) -> Re
         for t in txns {
             let drawing = drawing_events(&t.changes, t.rev, command, &t.before, &t.after, &cache);
             p.log_commit(t.rev, back_of(&t), t.before.clone(), &t.after, earlier_revs(&t));
+            let mut replayed_anim = None;
             let step_id = match t.kind {
                 TxnKind::Step => {
                     let id = p.history.next_step_id();
@@ -579,6 +637,7 @@ fn commit(s: &mut Session, txns: Vec<Txn>, origin: &Origin, command: &str) -> Re
                         edit: t.edit,
                         touched: t.touched,
                         structural: t.structural,
+                        anim: anim.cloned(),
                     });
                     undo_ref = Some(UndoRef { step_id: id.clone(), label: t.label.clone() });
                     id
@@ -586,11 +645,13 @@ fn commit(s: &mut Session, txns: Vec<Txn>, origin: &Origin, command: &str) -> Re
                 TxnKind::Undo(i) => {
                     p.history.replace_edit(i, t.edit);
                     p.history.moved_back();
+                    replayed_anim = p.history.steps().get(i).and_then(|st| st.anim.clone());
                     p.history.steps().get(i).map(|st| st.id.clone()).unwrap_or_default()
                 }
                 TxnKind::Redo(i) => {
                     p.history.replace_edit(i, t.edit);
                     p.history.moved_forward();
+                    replayed_anim = p.history.steps().get(i).and_then(|st| st.anim.clone());
                     p.history.steps().get(i).map(|st| st.id.clone()).unwrap_or_default()
                 }
                 TxnKind::System => String::new(),
@@ -609,6 +670,9 @@ fn commit(s: &mut Session, txns: Vec<Txn>, origin: &Origin, command: &str) -> Re
                 }),
             ));
             events.extend(drawing.into_iter().map(|e| ("draw.drawing.changed", e)));
+            if let Some(a) = replayed_anim {
+                events.push(("anim.changed", a));
+            }
         }
     }
     for (name, e) in events {
@@ -721,10 +785,17 @@ pub(crate) const GROUP_STEP: &str = "batch";
 /// Applies the deferred effects of a committed call. A simulation applies none. A file that cannot be published
 /// (moved from its stage onto its target) after the commit is the call's error (C14-R2-01, ADR-0015 §12): every
 /// other effect still applies, the target keeps what it had, and the stage is removed.
-fn apply_effects(s: &mut Session, effects: Vec<Effect>, simulating: bool, origin: &Origin) -> Result<(), CommandError> {
+fn apply_effects(
+    s: &mut Session,
+    mut effects: Vec<Effect>,
+    simulating: bool,
+    origin: &Origin,
+) -> Result<(), CommandError> {
     if simulating {
         return Ok(());
     }
+    // One `anim.changed` per undo step (05 §19.4).
+    crate::commands::anim_camera::coalesce_changed(&mut effects);
     let mut failure: Option<CommandError> = None;
     for e in effects {
         match e {
@@ -732,6 +803,11 @@ fn apply_effects(s: &mut Session, effects: Vec<Effect>, simulating: bool, origin
                 let _ = s.jobs.cancel(&id);
             }
             Effect::Event(ev) => s.events.push(ev),
+            Effect::Blob(name, bytes) => {
+                if let Some(p) = s.project.as_mut() {
+                    p.store.blobs.insert(name, tt_persist::container::BlobData::Bytes(bytes));
+                }
+            }
             Effect::Close => crate::persistence::close(s),
             Effect::Install(i) => {
                 // The handler checked the candidate; the gate runs again here (ADR-0013 §16).
@@ -899,7 +975,13 @@ impl Core {
             simulating: false,
             budget,
             served_from_cache: false,
+            call_start: None,
         }
+    }
+
+    /// The enqueue instant of the caller's request about to run (none for internal work).
+    pub(crate) fn set_call_start(&mut self, at: Option<std::time::Instant>) {
+        self.call_start = at;
     }
 
     /// Whether the last `invoke` was answered from the `requestId` cache (C14-R2-03); clears the flag.
@@ -992,13 +1074,29 @@ impl Core {
             let doc = p.doc.clone();
             let cache = s.planar.clone();
             let zones = |d: &str, z: &str| crate::planar::zone_exists(&cache, &doc, d, z);
-            s.app.repair_with(&doc, Some(&zones));
+            let lists = |app: &crate::app::AppContext| -> Vec<crate::app::Ids> {
+                std::iter::once(app.selection.ids.clone()).chain(app.selections.values().cloned()).collect()
+            };
+            let key = (doc.project().id().as_str().to_owned(), doc.document_rev());
+            let unchanged = s.selection_checked.as_ref().is_some_and(|(pid, rev, before)| {
+                let now = lists(&s.app);
+                *pid == key.0
+                    && *rev == key.1
+                    && before.len() == now.len()
+                    && before.iter().zip(&now).all(|(a, b)| std::sync::Arc::ptr_eq(a, b))
+            });
+            s.app.repair_checked(&doc, Some(&zones), !unchanged);
+            s.selection_checked = Some((key.0, key.1, lists(&s.app)));
         }
         let after = observe(s);
-        let changed = changed_fields(&before.state, &after.state);
+        let mut changed = changed_fields(&before.state, &after.state);
+        if after.selection != before.selection && !changed.iter().any(|c| c == "selection") {
+            changed.push("selection".to_owned());
+        }
         if !changed.is_empty() {
+            let full = serde_json::to_value(crate::commands::app::app_state(s)).unwrap_or(Value::Null);
             if changed.iter().any(|c| c == "selection")
-                && let Some(sel) = after.state.get("selection")
+                && let Some(sel) = full.get("selection")
             {
                 s.emit("edit.selection.changed", json!({ "context": sel.get("context"), "ids": sel.get("ids") }));
             }
@@ -1007,7 +1105,14 @@ impl Core {
             {
                 s.emit("workspace.changed", w.clone());
             }
-            s.emit("app.state.changed", json!({ "changed": changed, "state": after.state }));
+            s.emit("app.state.changed", json!({ "changed": changed, "state": full }));
+        }
+        // One `cell.selection.changed` per invocation that moved the current position or changed the cell or row
+        // selection, whichever command caused it (an explicit selection, a creation, a hidden current column, a
+        // deletion repaired here; C31-R1-03).
+        if after.cells != before.cells && s.project.is_some() {
+            let payload = crate::commands::timing::cell_selection_state(&s.app);
+            s.emit("cell.selection.changed", payload);
         }
         if after.history != before.history
             && let Some(p) = &s.project
@@ -1034,8 +1139,31 @@ impl Core {
     }
 
     /// One invocation, with `requestId` idempotency (C12-R1-06/22).
+    /// Whether `command` is a query (registry kind): it changes nothing.
+    /// A standalone probed query (a notice-only link): its caller's cancellation does not refuse it at a boundary. A
+    /// query step of a cancelled batch is refused like any later step.
+    fn is_query(&self, command: &str) -> bool {
+        crate::notice_only_link() && self.registry.get(command).is_some_and(|e| e.spec.kind == tt_registry::Kind::Query)
+    }
+
+    /// Whether `command` is a job command (registry kind): its handler starts its job.
+    fn is_job(&self, command: &str) -> bool {
+        self.registry.get(command).is_some_and(|e| e.spec.kind == tt_registry::Kind::Job)
+    }
+
     pub(crate) fn invoke(&mut self, inv: &Invocation) -> Envelope {
+        let mut env = self.invoke_inner(inv);
+        crate::label_cancellation(&mut env);
+        env
+    }
+
+    fn invoke_inner(&mut self, inv: &Invocation) -> Envelope {
         self.served_from_cache = false;
+        // Before the handler runs (a job command would start its job) and before its `requestId` is looked up or
+        // remembered: a cancelled request is not run (ADR-0020 decision 8, C34-R2-01).
+        if let Err(e) = cancelled_check_for(&inv.command, self.is_query(&inv.command)) {
+            return Envelope::error(e, self.rev());
+        }
         let Some(id) = inv.options.request_id.clone().filter(|_| !self.simulating) else { return self.run(inv) };
         let session = inv.origin.session_key();
         let fp = fingerprint(inv);
@@ -1070,7 +1198,12 @@ impl Core {
             ),
             Lookup::Miss => {
                 let env = self.run(inv);
-                self.requests.insert(&session, &id, fp, &inv.command, env.clone());
+                // A request refused because it was cancelled before its commit never happened: nothing is remembered,
+                // so a retry executes once (ADR-0020 decision 8, C34-R2-01). A commit that got there first stands and
+                // is remembered.
+                if !(env.status == crate::types::Status::Error && crate::request_cancelled()) {
+                    self.requests.insert(&session, &id, fp, &inv.command, env.clone());
+                }
                 env
             }
         }
@@ -1228,6 +1361,12 @@ impl Core {
 
     /// A batch (11 §7.3).
     pub(crate) fn batch(&mut self, req: &BatchRequest, origin: &Origin) -> Envelope {
+        let mut env = self.batch_inner(req, origin);
+        crate::label_cancellation(&mut env);
+        env
+    }
+
+    fn batch_inner(&mut self, req: &BatchRequest, origin: &Origin) -> Envelope {
         let resolved = self.effective_origin(origin);
         let origin = &resolved;
         if req.steps.is_empty() || req.steps.len() > MAX_BATCH_STEPS {
@@ -1336,7 +1475,9 @@ impl Core {
             }
             return env;
         }
-        let started = std::time::Instant::now();
+        // The batch's waits are bounded by its caller's deadline: measured from when the request was enqueued, so the
+        // margin is left for the rest of the batch and the reply, not spent on queueing.
+        let started = self.call_start.unwrap_or_else(std::time::Instant::now);
         let mut steps: Vec<Envelope> = Vec::new();
         let mut names: BTreeMap<String, usize> = BTreeMap::new();
         let mut failed: Option<(usize, CommandError)> = None;
@@ -1386,8 +1527,11 @@ impl Core {
     /// for the rest of the batch), so the caller still gets an answer. Ownership and parameters were checked by the
     /// invocation that returned the pending record.
     fn finish_batched_wait(&mut self, inv: &Invocation, env: Envelope, started: std::time::Instant) -> Envelope {
+        if inv.command != "job.wait" {
+            return self.finish_batched_job(inv, env, started);
+        }
         let pending = env.result.as_ref().is_some_and(|r| r.get("timedOut") == Some(&Value::Bool(true)));
-        if inv.command != "job.wait" || !env.is_ok() || !pending {
+        if !env.is_ok() || !pending {
             return env;
         }
         let Ok(p) = tt_registry::decode_params::<crate::commands::job::WaitParams>(inv.params.clone()) else {
@@ -1400,13 +1544,47 @@ impl Core {
             return env;
         }
         let Some(jobs) = self.session.as_ref().map(|s| s.jobs.clone()) else { return env };
-        let outcome = jobs
-            .wait(&p.job_id, wait)
-            .and_then(|(record, timed_out)| crate::commands::job::wait_result(record, timed_out));
+        // A `job.wait` step stops waiting when the batch's request is cancelled, like a waited job step.
+        let Some(waited) = crate::wait_sliced(&jobs, &p.job_id, wait, &crate::request_cancelled) else {
+            return Envelope::error(
+                CommandError::with_details(
+                    tt_registry::codes::COMMAND_TIMEOUT,
+                    format!("the request was cancelled by its caller; job `{}` continues", p.job_id),
+                    json!({ "jobId": p.job_id, "reason": "cancelled" }),
+                ),
+                self.rev(),
+            );
+        };
+        let outcome = waited.and_then(|(record, timed_out)| crate::commands::job::wait_result(record, timed_out));
         match outcome {
             Ok(result) => Envelope::ok(result, self.rev()),
             Err(e) => Envelope::error(e, self.rev()),
         }
+    }
+
+    /// `wait: true` of a job command in a sequential batch (09 §11.1 item 4; found by E1 in M3 C3.4): the step waits
+    /// for its job like a `job.wait` step, bounded by what remains of the batch's watchdog budget minus the margin, and
+    /// answers as a direct call does ([`crate::wait_envelope`]).
+    fn finish_batched_job(&mut self, inv: &Invocation, env: Envelope, started: std::time::Instant) -> Envelope {
+        if inv.params.get("wait") != Some(&Value::Bool(true)) || !env.is_ok() {
+            return env;
+        }
+        let Some(job) = env
+            .result
+            .as_ref()
+            .and_then(|r| r.get("jobId"))
+            .and_then(Value::as_str)
+            .filter(|j| *j != "dryRun")
+            .map(str::to_owned)
+        else {
+            return env;
+        };
+        let margin = self.budget / 10;
+        let left = self.budget.saturating_sub(started.elapsed()).saturating_sub(margin);
+        let Some(jobs) = self.session.as_ref().map(|s| s.jobs.clone()) else { return env };
+        // The batch's own request cancellation (its watchdog token, marked by a timed-out or cancelling caller) ends
+        // the wait (ADR-0020 decision 8).
+        crate::wait_envelope(&jobs, &job, left, self.rev(), &crate::request_cancelled)
     }
 
     fn batch_atomic(&mut self, req: &BatchRequest, origin: &Origin) -> Envelope {
@@ -1457,7 +1635,10 @@ impl Core {
                     env.dry_run = preview;
                     steps.push(env);
                 }
-                Err(e) => {
+                Err(mut e) => {
+                    // The cause is carried before the error is copied into the step and the `batch.stepFailed`
+                    // wrapper (C34-R4-01).
+                    crate::label_cancelled_error(&mut e);
                     let mut env = Envelope::error(e.clone(), rev_before);
                     env.warnings = cx.take_warnings();
                     steps.push(env);
@@ -1644,12 +1825,24 @@ impl Core {
     ) -> Result<(Option<UndoRef>, Result<(), CommandError>), CommandError> {
         // Pending saves are written only now that every step succeeded, and before anything commits; a failed write
         // rolls the invocation back (C13-R1-01).
-        let committed = cancelled_check(command)
+        // One `anim.changed` per undo step (05 §19.4); the step keeps it for its undo and redo.
+        crate::commands::anim_camera::coalesce_changed(&mut effects);
+        let anim = effects.iter().find_map(|e| match e {
+            Effect::Event(ev) if ev.name == "anim.changed" => Some(ev.payload.clone()),
+            _ => None,
+        });
+        // A job command's commit is its job's start, which happened in its handler: at acceptance its caller's
+        // cancellation does not refuse it (the job started first and stays the caller's to wait on or cancel; ADR-0020
+        // decision 8, rules 3 and 4). A query is not refused for its caller's cancellation either.
+        let committed = cancelled_check_for(command, self.is_query(command) || self.is_job(command))
             .and_then(|()| frozen_guard(session, &txns))
             .and_then(|()| self.write_pending(session, txns.last().map(|t| &t.after), &mut effects))
-            .and_then(|()| commit(session, txns, origin, command));
+            .and_then(|()| commit(session, txns, origin, command, anim.as_ref()));
         match committed {
-            Ok(u) => Ok((u, apply_effects(session, effects, self.simulating, origin))),
+            Ok(u) => {
+                tt_persist::lock::boundary(tt_persist::lock::Boundary::Committed, std::path::Path::new(""));
+                Ok((u, apply_effects(session, effects, self.simulating, origin)))
+            }
             Err(e) => {
                 discard_files(&effects);
                 rollback.apply(session);
@@ -1691,7 +1884,7 @@ impl Core {
         let mut session = cx.into_session();
         let committed = outcome
             .and_then(|()| self.write_pending(&session, txns.last().map(|t| &t.after), &mut effects))
-            .and_then(|()| commit(&mut session, txns, origin, "project.save").map(|_| ()));
+            .and_then(|()| commit(&mut session, txns, origin, "project.save", None).map(|_| ()));
         let committed = match committed {
             Ok(()) => apply_effects(&mut session, effects, self.simulating, origin),
             Err(e) => {
@@ -1870,7 +2063,7 @@ mod tests {
         let txn = cx.finish_staged("Add Stroke".into()).unwrap().unwrap();
         let changes = txn.changes.clone();
         let mut session = cx.into_session();
-        commit(&mut session, vec![txn], &Origin::User, "draw.stroke.add").unwrap();
+        commit(&mut session, vec![txn], &Origin::User, "draw.stroke.add", None).unwrap();
         core.session = Some(session);
         changes
     }

@@ -1,0 +1,120 @@
+{
+  "authoritativeReport": "../../M3-C3.1-r2.md",
+  "authoritativeRegister": "register-complete.json",
+  "candidate": "ffffc7387f03e2be125a634dd29f698598532d0d",
+  "records": [
+    {
+      "purpose": "Fixed-head CI metadata, all 22 job logs, cross-OS measurements and release history oracles",
+      "paths": [
+        "ci-run.json",
+        "ci-summary.json",
+        "ci-full.txt",
+        "ci-artifacts/"
+      ]
+    },
+    {
+      "purpose": "Strict performance recomputation vs round 1",
+      "paths": [
+        "performance.json",
+        "../M3-C3.1-r1/ci-artifacts/"
+      ]
+    },
+    {
+      "purpose": "Current requirement register and deltas",
+      "paths": [
+        "register-complete.json"
+      ]
+    },
+    {
+      "purpose": "Corrected new variants before final workspace; image lock bypass added separately",
+      "paths": [
+        "variants-verified.txt",
+        "image-copy-bypass.txt",
+        "mcp-complete.txt",
+        "anim-variants.txt"
+      ]
+    },
+    {
+      "purpose": "Official SDK original and new finding checks",
+      "paths": [
+        "sdk-r1-proving.json",
+        "sdk-r2.json"
+      ]
+    },
+    {
+      "purpose": "Original per-crate runs and final unfiltered workspace",
+      "paths": [
+        "anim.txt",
+        "executor.txt",
+        "mcp.txt",
+        "workspace.txt"
+      ]
+    },
+    {
+      "purpose": "Inherited MCP timeout rerun in isolation",
+      "paths": [
+        "inherited-timeout-isolated.txt"
+      ]
+    },
+    {
+      "purpose": "Canonical Python suites and engineering checks",
+      "paths": [
+        "canonical-python-final.txt",
+        "clippy-verified.txt",
+        "release-features.txt",
+        "guards/engineering-46.txt",
+        "guards/engineering-47.txt",
+        "guards/engineering-48.txt",
+        "guards/engineering-49.txt",
+        "ownership.txt"
+      ]
+    },
+    {
+      "purpose": "Superseded preliminary attempts retained for provenance; do not use their counts as final verdict",
+      "paths": [
+        "executor-variants-first.txt",
+        "executor-variants.txt",
+        "variants-final.txt",
+        "persistence.txt",
+        "persistence-bytes.txt",
+        "register.json",
+        "register-final.json",
+        "clippy.txt",
+        "guards/summary.json",
+        "register-verified.json",
+        "solo-readback.txt"
+      ]
+    },
+    {
+      "purpose": "Full-run result, exact inherited binary reruns and late note-boundary reproduction",
+      "paths": [
+        "validation-summary.json",
+        "workspace-inherited-isolation.json",
+        "c23_r3_cancellation-isolated.txt",
+        "c23_r4_closure-isolated.txt",
+        "notes-boundary.txt",
+        "notes-overflow-sdk.json"
+      ],
+      "note": "The late note-boundary test was not discovered by the full workspace run; it was run separately after the SDK revealed the loss."
+    },
+    {
+      "purpose": "Final complete-source audit, lint, formatting and original-file conservation",
+      "paths": [
+        "hygiene.json",
+        "audit-complete.txt",
+        "notes-boundary-clippy.txt",
+        "fmt-complete.txt",
+        "canonical-python-complete.txt",
+        "diff-check-source.txt"
+      ]
+    },
+    {
+      "purpose": "Supplementary raw whitespace diagnostic, not a code formatting failure",
+      "paths": [
+        "diff-check.txt"
+      ]
+    }
+  ],
+  "encodings": "PowerShell native redirection logs are UTF-16LE; Python-written JSON/text uses UTF-8. Logs retain their original encoding.",
+  "validationSummary": "validation-summary.json"
+}

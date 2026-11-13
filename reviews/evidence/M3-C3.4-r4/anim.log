@@ -1,0 +1,11 @@
+   Compiling libm v0.2.16
+   Compiling tt-anim v0.0.1 (C:\Users\kaiga\work\review\m3-c34-r4\crates\anim)
+error[E0689]: can't call method `max` on ambiguous numeric type `{float}`
+  --> crates\anim\tests\c34_r4_passage.rs:34:89
+   |
+34 |             if relative > 0.0 { 2.0 + arc } else { 1.0 + (1.0 - (1.0 - 4.0 * arc / 3.0).max(0.0).sqrt()) / 2.0 };
+   |                                                                                         ^^^
+
+For more information about this error, try `rustc --explain E0689`.
+error: could not compile `tt-anim` (test "c34_r4_passage") due to 1 previous error
+warning: build failed, waiting for other jobs to finish...

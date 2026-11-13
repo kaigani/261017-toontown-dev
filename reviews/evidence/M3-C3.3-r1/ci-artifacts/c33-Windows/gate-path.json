@@ -1,0 +1,59 @@
+{
+ "length": 13.385067508936078,
+ "lockDepth": false,
+ "nodeId": "<id1>",
+ "points": [
+  {
+   "arcLength": 0.0,
+   "bias": 0.0,
+   "constantSegment": false,
+   "continuity": 0.0,
+   "frame": 1.0,
+   "id": "<id2>",
+   "kind": "key",
+   "lockDepth": false,
+   "tension": 0.0,
+   "x": -3.0,
+   "y": -1.0,
+   "z": 0.0
+  },
+  {
+   "arcLength": 4.065662323967478,
+   "bias": 0.0,
+   "continuity": 0.0,
+   "frame": 13.438,
+   "id": "<id3>",
+   "kind": "control",
+   "tension": 0.0,
+   "x": -1.25,
+   "y": 2.5,
+   "z": 0.5
+  },
+  {
+   "arcLength": 9.102355664173322,
+   "bias": 0.0,
+   "continuity": 0.0,
+   "frame": 19.146,
+   "id": "<id4>",
+   "kind": "control",
+   "tension": 0.0,
+   "x": 0.75,
+   "y": -2.0,
+   "z": 0.0
+  },
+  {
+   "arcLength": 13.385067508936078,
+   "bias": 0.0,
+   "constantSegment": false,
+   "continuity": 0.0,
+   "frame": 24.0,
+   "id": "<id5>",
+   "kind": "key",
+   "lockDepth": false,
+   "tension": 0.0,
+   "x": 3.0,
+   "y": 1.5,
+   "z": 0.0
+  }
+ ]
+}

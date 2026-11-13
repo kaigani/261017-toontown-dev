@@ -820,17 +820,235 @@ fn classify(ty: ObjectType, pointer: &str, at: &str, test: bool) -> Result<(), C
                 json!({ "pointer": at, "property": prefix }),
             ));
         }
-        if let Some(c) = s.get("x-command").and_then(Value::as_str) {
+        if let Some(c) = s.get("x-command").and_then(Value::as_str)
+            && !delegated(c)
+        {
             return Err(x_command(c, &prefix, at));
         }
         last = Some(s);
     }
     if let Some(s) = last
         && let Some(c) = nested_command(&s, 0, &mut BTreeSet::new())
+        && !delegated(&c)
     {
         return Err(x_command(&c, pointer, at));
     }
     Ok(())
+}
+
+/// The `x-command` properties a patch applies itself, with the command's rules (AG-02: "patching an element's
+/// `name` ≡ `element.rename`"): implemented in M3 C3.1, applied by the owning handlers ([`apply_delegated`]).
+fn delegated(command: &str) -> bool {
+    matches!(
+        command,
+        "element.rename"
+            | "element.note.set"
+            | "element.colour.set"
+            | "element.visibility.set"
+            | "element.lock.set"
+            | "element.drawing.rename"
+            | "element.drawingLock.set"
+            | "anim.transform.set"
+            | "anim.camera.set"
+            | "anim.camera.current.set"
+    )
+}
+
+/// A delegated property write: the owning command and its parameters (10 AG-02: a patch of such a property is
+/// applied by that command's own handler — validation, side effects such as moving the current element, and its
+/// area event exactly once; C31-R1-03).
+struct Delegated {
+    command: &'static str,
+    params: Value,
+}
+
+/// The owning command of one operation on a delegated property (`props` merge or RFC 6902 `add`/`replace`, and
+/// `remove` where the property has an empty form), or `None` for an ordinary property.
+fn delegated_op(ty: ObjectType, key: &str, o: &PatchOp) -> Option<Delegated> {
+    let v = o.value.clone().unwrap_or(Value::Null);
+    let set = matches!(o.op, "add" | "replace");
+    let (command, params) = match (ty, o.path.as_str(), o.op) {
+        (ObjectType::Element, "/name", _) if set => ("element.rename", json!({ "elementId": key, "name": v })),
+        (ObjectType::Element, "/note", "remove") => ("element.note.set", json!({ "elementId": key, "text": "" })),
+        (ObjectType::Element, "/note", _) if set => ("element.note.set", json!({ "elementId": key, "text": v })),
+        (ObjectType::Element, "/markerColour", op) if set || op == "remove" => {
+            ("element.colour.set", json!({ "elementIds": [key], "marker": if v.is_null() { json!("") } else { v } }))
+        }
+        (ObjectType::Element, "/backgroundColour", op) if set || op == "remove" => (
+            "element.colour.set",
+            json!({ "elementIds": [key], "background": if v.is_null() { json!("") } else { v } }),
+        ),
+        (ObjectType::Element, "/visibleInScene", _) if set => {
+            ("element.visibility.set", json!({ "elementIds": [key], "scope": "scene", "visible": v }))
+        }
+        (ObjectType::Element, "/visibleInXsheet", _) if set => {
+            ("element.visibility.set", json!({ "elementIds": [key], "scope": "xsheet", "visible": v }))
+        }
+        (ObjectType::Element, "/locked", _) if set => ("element.lock.set", json!({ "elementIds": [key], "locked": v })),
+        (ObjectType::Drawing, "/name", _) if set => ("element.drawing.rename", json!({ "drawingId": key, "name": v })),
+        (ObjectType::Drawing, "/locked", _) if set => {
+            ("element.drawingLock.set", json!({ "drawingIds": [key], "locked": v }))
+        }
+        (ObjectType::Element, "/transform/offset", _) if set => {
+            ("anim.transform.set", json!({ "nodeIds": [key], "target": "static", "position": v }))
+        }
+        (ObjectType::Element, "/transform/offset/x" | "/transform/offset/y" | "/transform/offset/z", _) if set => {
+            let axis = o.path.rsplit('/').next().unwrap_or("x");
+            ("anim.transform.set", json!({ "nodeIds": [key], "target": "static", "position": { axis: v } }))
+        }
+        (ObjectType::Element, "/transform/rotation", _) if set => {
+            ("anim.transform.set", json!({ "nodeIds": [key], "target": "static", "rotation": v }))
+        }
+        (ObjectType::Element, "/transform/skew", _) if set => {
+            ("anim.transform.set", json!({ "nodeIds": [key], "target": "static", "skew": v }))
+        }
+        (ObjectType::Element, "/transform/scale", _) if set => {
+            ("anim.transform.set", json!({ "nodeIds": [key], "target": "static", "scale": v }))
+        }
+        (ObjectType::Element, "/transform/scale/x" | "/transform/scale/y", _) if set => {
+            let axis = o.path.rsplit('/').next().unwrap_or("x");
+            ("anim.transform.set", json!({ "nodeIds": [key], "target": "static", "scale": { axis: v } }))
+        }
+        (ObjectType::Element, "/camera/fov", _) if set => ("anim.camera.set", json!({ "cameraId": key, "fov": v })),
+        (ObjectType::Element, "/camera/fovMode", _) if set => {
+            ("anim.camera.set", json!({ "cameraId": key, "fovMode": v }))
+        }
+        (ObjectType::Scene, "/currentCameraId", _) if set && v.is_string() => {
+            ("anim.camera.current.set", json!({ "cameraId": v }))
+        }
+        _ => return None,
+    };
+    Some(Delegated { command, params })
+}
+
+fn delegated_params<T: serde::de::DeserializeOwned>(d: &Delegated) -> Result<T, CommandError> {
+    serde_json::from_value(d.params.clone()).map_err(|e| {
+        CommandError::with_details(
+            codes::ARG_INVALID,
+            format!("not a valid value for `{}`: {e}", d.command),
+            json!({ "commandId": d.command, "params": d.params }),
+        )
+    })
+}
+
+/// Applies one delegated write through its owning command's handler.
+fn apply_delegated(cx: &mut Cx, d: &Delegated) -> Result<(), CommandError> {
+    match d.command {
+        "element.rename" => super::element::element_rename(cx, delegated_params(d)?).map(drop),
+        "element.note.set" => super::element::element_note_set(cx, delegated_params(d)?).map(drop),
+        "element.colour.set" => super::element::element_colour_set(cx, delegated_params(d)?).map(drop),
+        "element.visibility.set" => super::element::element_visibility_set(cx, delegated_params(d)?).map(drop),
+        "element.lock.set" => super::element::element_lock_set(cx, delegated_params(d)?).map(drop),
+        "element.drawing.rename" => super::element_bank::element_drawing_rename(cx, delegated_params(d)?).map(drop),
+        "element.drawingLock.set" => super::element_bank::element_drawing_lock_set(cx, delegated_params(d)?).map(drop),
+        "anim.transform.set" => super::anim_transform::anim_transform_set(cx, delegated_params(d)?).map(drop),
+        "anim.camera.set" => super::anim_camera::anim_camera_set(cx, delegated_params(d)?).map(drop),
+        "anim.camera.current.set" => super::anim_camera::anim_camera_current_set(cx, delegated_params(d)?).map(drop),
+        other => Err(CommandError::internal(format!("`{other}` is not a delegated command"))),
+    }
+}
+
+/// One step of the ordered patch interpretation.
+enum Step {
+    /// Applied by the owning command's handler.
+    Delegated(Delegated),
+    /// Staged with the neighbouring ordinary operations.
+    Ordinary(PatchOp),
+}
+
+/// The steps of one operation. `copy` is a write of the staged source value; `move` is the removal of its source then
+/// that write. Each step goes to its owning handler when the property is delegated; an operation touching no
+/// delegated property stays one ordinary operation with the model's own RFC 6902 semantics.
+fn delegated_steps(cx: &Cx, ty: ObjectType, key: &str, o: PatchOp) -> Result<Vec<Step>, CommandError> {
+    let Some(from) = o.from.clone().filter(|_| matches!(o.op, "copy" | "move")) else {
+        return Ok(routed(ty, key, o));
+    };
+    if !touches_delegated(ty, key, &o) {
+        return Ok(vec![Step::Ordinary(o)]);
+    }
+    let write = |value: Value| PatchOp { op: "add", from: None, path: o.path.clone(), value: Some(value), ..o.clone() };
+    let removal = PatchOp { op: "remove", from: None, path: from.clone(), value: None, ..o.clone() };
+    let (_, current) = cx.document()?.object_raw_json(key)?;
+    let value = tt_model::pointer::get(&current, &tt_model::pointer::parse(&from)?).cloned().ok_or_else(|| {
+        CommandError::with_details(
+            codes::ARG_INVALID,
+            format!("nothing to {} at `{from}`", o.op),
+            json!({ "pointer": from }),
+        )
+    })?;
+    let mut steps = Vec::new();
+    for op in (o.op == "move").then_some(removal).into_iter().chain([write(value)]) {
+        steps.extend(routed(ty, key, op));
+    }
+    Ok(steps)
+}
+
+/// Whether a write replaces a whole value object holding delegated properties (10 AG-02: "anywhere inside the replaced
+/// value"): the transform block or the camera block of an element.
+fn whole_block(ty: ObjectType, o: &PatchOp) -> bool {
+    ty == ObjectType::Element
+        && matches!(o.path.as_str(), "/transform" | "/camera")
+        && matches!(o.op, "add" | "replace")
+        && o.value.as_ref().is_some_and(Value::is_object)
+}
+
+/// One operation as steps: a whole transform or camera block is written field by field, each field through its owner
+/// when it is delegated.
+fn routed(ty: ObjectType, key: &str, o: PatchOp) -> Vec<Step> {
+    if whole_block(ty, &o) {
+        let fields = o.value.as_ref().and_then(Value::as_object).cloned().unwrap_or_default();
+        let mut steps = Vec::with_capacity(fields.len());
+        for (k, v) in fields {
+            let field = PatchOp {
+                op: "add",
+                path: format!("{}/{}", o.path, tt_model::pointer::escape(&k)),
+                value: Some(v),
+                ..o.clone()
+            };
+            steps.extend(routed(ty, key, field));
+        }
+        return steps;
+    }
+    match delegated_op(ty, key, &o) {
+        Some(d) => vec![Step::Delegated(d)],
+        None => vec![Step::Ordinary(o)],
+    }
+}
+
+/// Whether an operation is applied (wholly or partly) by an owning handler: a delegated write, or a `copy`/`move`
+/// with a delegated destination or a delegated `move` source.
+fn touches_delegated(ty: ObjectType, key: &str, o: &PatchOp) -> bool {
+    let Some(from) = o.from.as_ref().filter(|_| matches!(o.op, "copy" | "move")) else {
+        return whole_block(ty, o) || delegated_op(ty, key, o).is_some();
+    };
+    if o.op == "move" && *from == o.path {
+        return false;
+    }
+    let write = PatchOp { op: "add", from: None, value: Some(Value::Null), ..o.clone() };
+    let removal = PatchOp { op: "remove", from: None, path: from.clone(), value: None, ..o.clone() };
+    matches!(o.path.as_str(), "/transform" | "/camera") && ty == ObjectType::Element
+        || delegated_op(ty, key, &write).is_some()
+        || o.op == "move" && delegated_op(ty, key, &removal).is_some()
+}
+
+/// Stages a run of ordinary operations on one object; a content edit of a locked drawing is refused (unlocking it
+/// is `element.drawingLock.set`'s, which may precede the run in the same patch). A run of `test`s only reads.
+fn stage_run(cx: &mut Cx, ty: ObjectType, key: &str, run: &mut Vec<PatchOp>) -> Result<(), CommandError> {
+    if run.is_empty() {
+        return Ok(());
+    }
+    let doc = cx.document()?;
+    if run.iter().any(|o| o.op != "test")
+        && let Some(d) = drawing_of(doc, ty, key)
+        && doc.drawing(&d).is_some_and(|x| *x.locked())
+    {
+        return Err(CommandError::with_details(
+            "drawing.locked",
+            format!("drawing `{d}` is locked"),
+            json!({ "drawingId": d.as_str(), "id": key }),
+        ));
+    }
+    cx.patch_objects(vec![(key.to_owned(), std::mem::take(run))])
 }
 
 /// A property with `x-command` follows that command's semantics (AG-02); until the command is implemented the patch
@@ -886,18 +1104,9 @@ pub(crate) fn doc_object_patch(cx: &mut Cx, p: PatchParams) -> Result<PatchResul
         };
         crate::run::check_expect_rev(cx, &pairs)?;
     }
-    let mut edits: Vec<(String, Vec<PatchOp>)> = Vec::with_capacity(targets.len());
     let mut first_property: Option<String> = None;
+    let mut planned: Vec<(ObjectType, String, Vec<PatchOp>)> = Vec::with_capacity(targets.len());
     for (ty, key) in &targets {
-        if let Some(d) = drawing_of(&doc, *ty, key)
-            && doc.drawing(&d).is_some_and(|x| *x.locked())
-        {
-            return Err(CommandError::with_details(
-                "drawing.locked",
-                format!("drawing `{d}` is locked"),
-                json!({ "drawingId": d.as_str(), "id": key }),
-            ));
-        }
         let mut ops: Vec<PatchOp> = Vec::new();
         if let Some(props) = &p.props {
             let (_, current) = doc.object_raw_json(key)?;
@@ -938,14 +1147,38 @@ pub(crate) fn doc_object_patch(cx: &mut Cx, p: PatchParams) -> Result<PatchResul
                 first_property = tt_model::pointer::parse(&op.path).ok().and_then(|t| t.into_iter().next());
             }
         }
-        edits.push((key.clone(), ops));
+        planned.push((*ty, key.clone(), ops));
     }
     let label = p.label.clone().unwrap_or_else(|| match &first_property {
         Some(f) => format!("Set {f}"),
         None => "Set properties".to_owned(),
     });
+    // The patch is interpreted in order (`props`, then `ops`, target by target) over the staged objects: a delegated
+    // operation is applied by its owning command's handler when it is reached, ordinary operations in between are
+    // staged as one run, so a `test` sees every earlier write and a failure anywhere rolls the whole call back
+    // (RFC 6902 §5; 10 AG-02; C31-R2-01). `copy`/`move` read their value from the staged object and write it, and
+    // remove `move`'s source, through the owning handler when either end is delegated (C31-R2-02).
+    for (ty, key, ops) in planned {
+        let mut run: Vec<PatchOp> = Vec::new();
+        for o in ops {
+            // Every earlier ordinary operation is staged before a delegated operation resolves anything, so a
+            // `copy`/`move` source is read from the fully current staged object (C31-R3-01).
+            if touches_delegated(ty, &key, &o) {
+                stage_run(cx, ty, &key, &mut run)?;
+            }
+            for step in delegated_steps(cx, ty, &key, o)? {
+                match step {
+                    Step::Delegated(d) => {
+                        stage_run(cx, ty, &key, &mut run)?;
+                        apply_delegated(cx, &d)?;
+                    }
+                    Step::Ordinary(o) => run.push(o),
+                }
+            }
+        }
+        stage_run(cx, ty, &key, &mut run)?;
+    }
     cx.set_label(label);
-    cx.patch_objects(edits)?;
     // 02 §13.6: patched strokes go through the same validation as `draw.stroke.set` (a brush outline is swept again
     // from an edited spine; an outline edited directly discards the spine).
     let strokes: Vec<String> =

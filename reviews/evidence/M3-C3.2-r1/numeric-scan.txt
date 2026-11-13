@@ -1,0 +1,2 @@
+﻿crates/executor/src/commands\draw_render.rs:266:                let stops: Vec<(f32, [u8; 4])> =
+crates/executor/src/commands\draw_render.rs:267:                    g.stops.iter().map(|st| (st.position as f32, st.rgba.channels())).collect();

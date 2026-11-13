@@ -1,0 +1,115 @@
+{
+  "head": "ffffc7387f03e2be125a634dd29f698598532d0d",
+  "jobs": [
+    {
+      "name": "measurements release (macos-latest)",
+      "conclusion": "success",
+      "seconds": 432.0
+    },
+    {
+      "name": "measurements release (windows-latest)",
+      "conclusion": "success",
+      "seconds": 797.0
+    },
+    {
+      "name": "headless release (windows-latest)",
+      "conclusion": "success",
+      "seconds": 2793.0
+    },
+    {
+      "name": "review properties release (macos-latest)",
+      "conclusion": "success",
+      "seconds": 1360.0
+    },
+    {
+      "name": "history oracles release (windows-latest)",
+      "conclusion": "success",
+      "seconds": 991.0
+    },
+    {
+      "name": "bundle (macos-latest)",
+      "conclusion": "success",
+      "seconds": 209.0
+    },
+    {
+      "name": "review properties release (windows-latest)",
+      "conclusion": "success",
+      "seconds": 1882.0
+    },
+    {
+      "name": "check (windows-latest)",
+      "conclusion": "success",
+      "seconds": 2397.0
+    },
+    {
+      "name": "check (macos-latest)",
+      "conclusion": "success",
+      "seconds": 2152.0
+    },
+    {
+      "name": "history oracles release (macos-latest)",
+      "conclusion": "success",
+      "seconds": 651.0
+    },
+    {
+      "name": "check properties (windows-latest)",
+      "conclusion": "success",
+      "seconds": 1654.0
+    },
+    {
+      "name": "m3 properties release (windows-latest)",
+      "conclusion": "success",
+      "seconds": 115.0
+    },
+    {
+      "name": "m3 properties release (macos-latest)",
+      "conclusion": "success",
+      "seconds": 96.0
+    },
+    {
+      "name": "check properties (macos-latest)",
+      "conclusion": "success",
+      "seconds": 1521.0
+    },
+    {
+      "name": "headless release (macos-latest)",
+      "conclusion": "success",
+      "seconds": 1718.0
+    },
+    {
+      "name": "raster determinism (windows-latest)",
+      "conclusion": "success",
+      "seconds": 156.0
+    },
+    {
+      "name": "e2 release (macos-latest)",
+      "conclusion": "success",
+      "seconds": 291.0
+    },
+    {
+      "name": "headless without a display (ubuntu)",
+      "conclusion": "success",
+      "seconds": 204.0
+    },
+    {
+      "name": "bundle (windows-latest)",
+      "conclusion": "success",
+      "seconds": 777.0
+    },
+    {
+      "name": "raster determinism (macos-latest)",
+      "conclusion": "success",
+      "seconds": 60.0
+    },
+    {
+      "name": "raster determinism (ubuntu-latest)",
+      "conclusion": "success",
+      "seconds": 73.0
+    },
+    {
+      "name": "e2 release (windows-latest)",
+      "conclusion": "success",
+      "seconds": 397.0
+    }
+  ]
+}

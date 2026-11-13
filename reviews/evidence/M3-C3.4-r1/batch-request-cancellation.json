@@ -1,0 +1,102 @@
+{
+  "afterCancellation": {
+    "status": "ok",
+    "result": {
+      "object": {
+        "id": "el_01K7JJN800QVJEJJERKDVH8XF7",
+        "type": "element",
+        "rev": 5,
+        "name": "Ball",
+        "path": "scene:\"Scene-1\"/element:\"Ball\"",
+        "elementType": "drawing",
+        "loops": 1,
+        "loopType": "count",
+        "positionLoop": "cycle",
+        "role": "normal",
+        "deformable": false,
+        "visibleInScene": true,
+        "visibleInXsheet": true,
+        "locked": false,
+        "collapsed": false,
+        "markerColour": null,
+        "backgroundColour": null,
+        "columnWidth": 80,
+        "drawingBankId": "db_01K7JJN801VVQB2FCGSC7WEGFE",
+        "exposure": [
+          [
+            "dr_01K7JJN80010R21VHD6MKC8P91",
+            30
+          ]
+        ],
+        "transform": {
+          "offset": {
+            "x": 0.0,
+            "y": 0.0,
+            "z": 0.0
+          },
+          "rotation": 0.0,
+          "skew": 0.0,
+          "scale": {
+            "x": 1.0,
+            "y": 1.0
+          },
+          "keepProportions": false,
+          "rotationPivot": {
+            "x": 0.0,
+            "y": 0.0
+          },
+          "scalePivot": {
+            "x": 0.0,
+            "y": 0.0
+          },
+          "rotateAboutPivot": false,
+          "lockDepth": false,
+          "orientToPath": false
+        },
+        "channels": {},
+        "createdAt": "2026-11-11T06:53:35.152Z"
+      }
+    },
+    "targets": {
+      "ids": [
+        "el_01K7JJN800QVJEJJERKDVH8XF7"
+      ]
+    },
+    "changes": [],
+    "warnings": [],
+    "documentRev": 14
+  },
+  "jobs": {
+    "status": "ok",
+    "result": [
+      {
+        "jobId": "job-1",
+        "commandId": "project.open",
+        "state": "succeeded",
+        "progress": 1.0,
+        "message": "Finalisation",
+        "startedAt": "2026-11-11T07:28:14.872Z",
+        "result": {
+          "projectId": "pr_01M74P499WT9P3C21WQNEZYR87",
+          "readOnly": false,
+          "formatVersion": "1.0",
+          "warnings": []
+        },
+        "session": "agent:s1-fca51f"
+      },
+      {
+        "jobId": "job-2",
+        "commandId": "render.range.run",
+        "state": "running",
+        "progress": 0.949,
+        "message": "Rendering frame 950",
+        "startedAt": "2026-11-11T07:28:15.218Z",
+        "session": "agent:s1-fca51f"
+      }
+    ],
+    "changes": [],
+    "warnings": [],
+    "documentRev": 14
+  },
+  "work": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\c34-r1-cancel-ixz3wntk"
+}

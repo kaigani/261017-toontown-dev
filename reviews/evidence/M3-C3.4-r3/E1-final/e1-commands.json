@@ -1,0 +1,149 @@
+{
+ "label": "E1 bouncing ball (recorded command script)",
+ "steps": [
+  {
+   "id": "project.create",
+   "params": {
+    "name": "E1",
+    "frameRate": 24,
+    "cameraWidth": 1920,
+    "cameraHeight": 1080
+   }
+  },
+  {
+   "id": "element.create",
+   "params": {
+    "type": "drawing",
+    "name": "Ball",
+    "sceneId": "scene:#1"
+   }
+  },
+  {
+   "id": "draw.ellipse.add",
+   "params": {
+    "elementId": "scene:#1/element:\"Ball\"",
+    "frame": 1,
+    "from": {
+     "x": -50,
+     "y": -50
+    },
+    "to": {
+     "x": 50,
+     "y": 50
+    },
+    "circle": true,
+    "layer": "new",
+    "colourId": "palette:#1/swatch:#22"
+   }
+  },
+  {
+   "id": "colour.paint.apply",
+   "params": {
+    "elementId": "scene:#1/element:\"Ball\"",
+    "frame": 1,
+    "points": [
+     {
+      "x": 0,
+      "y": 0
+     }
+    ],
+    "colourId": "palette:#1/swatch:#22"
+   }
+  },
+  {
+   "id": "xsheet.exposures.set",
+   "params": {
+    "columns": [
+     {
+      "elementId": "scene:#1/element:\"Ball\"",
+      "from": 1,
+      "to": 30,
+      "exposures": [
+       {
+        "drawing": "1",
+        "from": 1,
+        "to": 30
+       }
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "id": "element.create",
+   "params": {
+    "type": "peg",
+    "name": "Bounce",
+    "sceneId": "scene:#1"
+   }
+  },
+  {
+   "id": "element.parent.set",
+   "params": {
+    "elementIds": [
+     "scene:#1/element:\"Ball\""
+    ],
+    "parentId": "scene:#1/element:\"Bounce\""
+   }
+  },
+  {
+   "id": "element.timing.set",
+   "params": {
+    "elementIds": [
+     "scene:#1/element:\"Bounce\"",
+     "scene:#1/element:\"Camera\""
+    ],
+    "duration": 30
+   }
+  },
+  {
+   "id": "anim.path.set",
+   "params": {
+    "nodeId": "scene:#1/element:\"Bounce\"",
+    "points": [
+     {
+      "kind": "key",
+      "frame": 1,
+      "x": 0,
+      "y": 2.5,
+      "z": 0
+     },
+     {
+      "kind": "key",
+      "frame": 12,
+      "x": 0,
+      "y": -2.5,
+      "z": 0
+     },
+     {
+      "kind": "key",
+      "frame": 24,
+      "x": 0,
+      "y": 2.5,
+      "z": 0
+     }
+    ]
+   }
+  },
+  {
+   "id": "anim.function.preset.apply",
+   "params": {
+    "nodeId": "scene:#1/element:\"Bounce\"",
+    "channel": "velocity",
+    "preset": "slowAcceleration",
+    "frame": 1,
+    "scope": "segment"
+   }
+  },
+  {
+   "id": "anim.function.preset.apply",
+   "params": {
+    "nodeId": "scene:#1/element:\"Bounce\"",
+    "channel": "velocity",
+    "preset": "slowDeceleration",
+    "frame": 12,
+    "scope": "segment"
+   }
+  }
+ ]
+}

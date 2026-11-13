@@ -243,7 +243,7 @@ fn edits(h: &ExecutorHandle) {
 /// with a backup `bk_1a2b3c4d`, recovery data `rc_1a2b3c4d`, `Short.animpkg` and a `media` folder in a temporary folder
 /// that stands for the examples' `/tmp`.
 fn with_files(id: &str) -> bool {
-    ["project.", "doc.asset.", "doc.blob.", "doc.package.", "agent.", "draw.vectorize."]
+    ["project.", "doc.asset.", "doc.blob.", "doc.package.", "agent.", "draw.vectorize.", "render.range."]
         .iter()
         .any(|p| id.starts_with(p))
 }
@@ -371,6 +371,13 @@ fn agent_placeholders(h: &ExecutorHandle, dir: &std::path::Path, params: &mut Va
 
 /// The clipboard a paste example expects (paste examples paste cells of `Bob`).
 fn clipboard_for(h: &ExecutorHandle, id: &str) {
+    if id == "cell.clipboard.apply" {
+        ok(h, "cell.clipboard.set", json!({ "elementIds": ["scene:\"Intro\"/element:\"Bob\""], "from": 1, "to": 8 }));
+    }
+    if id == "anim.camera.delete" {
+        // A scene keeps at least one camera (05 §12.1): the example deletes a second one.
+        ok(h, "anim.camera.create", json!({ "name": "Wide" }));
+    }
     if matches!(id, "edit.paste" | "edit.pasteSpecial" | "edit.pasteAsNewElement") {
         ok(h, "edit.copy", json!({ "context": "xsheet", "objectIds": ["scene:#1/element:\"Bob\"/cell:#1"] }));
     }
@@ -488,6 +495,6 @@ fn every_generated_declaration_answers_with_its_owner() {
     }
     println!("generated declarations: {n}");
     // A floor against an empty table: the count falls as checkpoints implement declared commands (599 after M2 C2.4
-    // implemented `draw.vectorize.*`).
-    assert!(n > 500, "{n}");
+    // implemented `draw.vectorize.*`, 498 after M3 C3.2 implemented its `anim.*`).
+    assert!(n > 400, "{n}");
 }

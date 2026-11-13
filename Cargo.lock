@@ -4627,6 +4627,11 @@ dependencies = [
 name = "tt-anim"
 version = "0.0.1"
 dependencies = [
+ "libm",
+ "num-bigint",
+ "num-rational",
+ "num-traits",
+ "proptest",
  "tt-model",
 ]
 
@@ -4701,6 +4706,7 @@ dependencies = [
  "sha2 0.11.1",
  "stats_alloc",
  "trybuild",
+ "tt-anim",
  "tt-io",
  "tt-model",
  "tt-persist",

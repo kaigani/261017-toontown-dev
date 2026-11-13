@@ -1,0 +1,45 @@
+[1m[92m    Updating[0m crates.io index
+[1m[92m   Compiling[0m tt-model v0.0.1 (/Users/runner/work/261017-toontown-dev/261017-toontown-dev/crates/model)
+[1m[92m   Compiling[0m tt-registry-macros v0.0.1 (/Users/runner/work/261017-toontown-dev/261017-toontown-dev/crates/registry-macros)
+[1m[92m   Compiling[0m tt-anim v0.0.1 (/Users/runner/work/261017-toontown-dev/261017-toontown-dev/crates/anim)
+[1m[92m   Compiling[0m tt-vector v0.0.1 (/Users/runner/work/261017-toontown-dev/261017-toontown-dev/crates/vector)
+[1m[92m   Compiling[0m tt-fx v0.0.1 (/Users/runner/work/261017-toontown-dev/261017-toontown-dev/crates/fx)
+[1m[92m   Compiling[0m tt-colour v0.0.1 (/Users/runner/work/261017-toontown-dev/261017-toontown-dev/crates/colour)
+[1m[92m   Compiling[0m tt-persist v0.0.1 (/Users/runner/work/261017-toontown-dev/261017-toontown-dev/crates/persist)
+[1m[92m   Compiling[0m tt-render v0.0.1 (/Users/runner/work/261017-toontown-dev/261017-toontown-dev/crates/render)
+[1m[92m   Compiling[0m tt-io v0.0.1 (/Users/runner/work/261017-toontown-dev/261017-toontown-dev/crates/io)
+[1m[92m   Compiling[0m tt-registry v0.0.1 (/Users/runner/work/261017-toontown-dev/261017-toontown-dev/crates/registry)
+[1m[92m   Compiling[0m tt-executor v0.0.1 (/Users/runner/work/261017-toontown-dev/261017-toontown-dev/crates/executor)
+[1m[92m    Finished[0m `release` profile [optimized + debuginfo] target(s) in 4m 01s
+[1m[92m     Running[0m tests/c12_r1_stress.rs (target/release/deps/c12_r1_stress-de48f528f7741564)
+
+running 1 test
+{"seed":"0xc12020261019a571","operations":10000,"replayOperations":10000,"editsUndoRedoCreateRestoreDryRun":[5472,3911,528,1,1690,534],"documentRev":11230,"durationSeconds":36.069340709,"oracle":"independent before/after metadata stack; exact canonical all-entry byte checks every 100 operations; full fresh executor replay"}
+test ten_thousand_history_operations_match_independent_content_oracle_and_replay ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 4 filtered out; finished in 36.52s
+
+[1m[92m     Running[0m tests/c12_r3_stress.rs (target/release/deps/c12_r3_stress-96c6c7d037304997)
+
+running 1 test
+{"seed":"0xc12320261019b683","operations":10000,"replayOperations":10000,"editsUndoRedoCreateRestoreDryRun":[5494,3902,470,1,1724,511],"documentRev":11176,"durationSeconds":21.647311542,"oracle":"independent before/after metadata stack; exact canonical all-entry byte checks every 100 operations; full fresh executor replay"}
+test ten_thousand_history_operations_match_independent_content_oracle_and_replay ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 4 filtered out; finished in 21.84s
+
+[1m[92m     Running[0m tests/c13_r3_history_r1.rs (target/release/deps/c13_r3_history_r1-3b27f64042553035)
+
+running 1 test
+{"seed":"0xc12020261019a571","operations":10000,"replayOperations":10000,"editsUndoRedoCreateRestoreDryRun":[5472,3911,528,1,1690,534],"documentRev":11231,"durationSeconds":20.388818292,"oracle":"independent before/after metadata stack; exact canonical all-entry byte checks every 100 operations; full fresh executor replay"}
+test ten_thousand_history_operations_match_independent_content_oracle_and_replay ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 20.67s
+
+[1m[92m     Running[0m tests/c13_r3_history_r3.rs (target/release/deps/c13_r3_history_r3-e5b9fa3bf47c962f)
+
+running 1 test
+{"seed":"0xc12320261019b683","operations":10000,"replayOperations":10000,"editsUndoRedoCreateRestoreDryRun":[5494,3902,470,1,1724,511],"documentRev":11177,"durationSeconds":20.011655458,"oracle":"independent before/after metadata stack; exact canonical all-entry byte checks every 100 operations; full fresh executor replay"}
+test ten_thousand_history_operations_match_independent_content_oracle_and_replay ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 20.23s
+

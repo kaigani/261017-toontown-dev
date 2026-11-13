@@ -1,0 +1,187 @@
+{
+  "candidate": "ffffc7387f03e2be125a634dd29f698598532d0d",
+  "run": 41647392918,
+  "previousRun": 41621608304,
+  "observations": [
+    {
+      "os": "windows",
+      "case": "read one 100k column",
+      "seconds": 0.0015887,
+      "previousSeconds": 0.0018756,
+      "ratio": 0.8470356152697803,
+      "outcome": "ok",
+      "revisionUnchanged": true
+    },
+    {
+      "os": "windows",
+      "case": "cycle 999 x 100 frames",
+      "seconds": 0.0166352,
+      "previousSeconds": 0.0198807,
+      "ratio": 0.8367512210334646,
+      "outcome": "ok",
+      "revisionUnchanged": false
+    },
+    {
+      "os": "windows",
+      "case": "cycle past the scene limit",
+      "seconds": 0.0015968,
+      "previousSeconds": 0.0013467,
+      "ratio": 1.1857132249201754,
+      "outcome": "doc.limitExceeded",
+      "revisionUnchanged": true
+    },
+    {
+      "os": "windows",
+      "case": "set exposure on a tenth of the columns",
+      "seconds": 0.0918926,
+      "previousSeconds": 0.0890915,
+      "ratio": 1.0314407098320266,
+      "outcome": "ok",
+      "revisionUnchanged": false
+    },
+    {
+      "os": "windows",
+      "case": "read the whole sheet",
+      "seconds": 0.1385797,
+      "previousSeconds": 0.1473632,
+      "ratio": 0.940395566871512,
+      "outcome": "ok",
+      "revisionUnchanged": true
+    },
+    {
+      "os": "windows",
+      "case": "element list",
+      "seconds": 0.0018783,
+      "previousSeconds": 0.0022237,
+      "ratio": 0.8446732922606467,
+      "outcome": "ok",
+      "revisionUnchanged": true
+    },
+    {
+      "os": "windows",
+      "case": "unused drawings of the scene",
+      "seconds": 0.1227762,
+      "previousSeconds": 0.1581687,
+      "ratio": 0.7762357533443722,
+      "outcome": "ok",
+      "revisionUnchanged": true
+    },
+    {
+      "os": "windows",
+      "case": "remove exposure on every column",
+      "seconds": 0.7696129,
+      "previousSeconds": 0.8493979,
+      "ratio": 0.9060687576458571,
+      "outcome": "ok",
+      "revisionUnchanged": false
+    },
+    {
+      "os": "windows",
+      "case": "insert a cell in all columns",
+      "seconds": 0.7506549,
+      "previousSeconds": 1.1697641,
+      "ratio": 0.6417147696702267,
+      "outcome": "ok",
+      "revisionUnchanged": false
+    },
+    {
+      "os": "windows",
+      "case": "set every exposure to 9999 frames on every column",
+      "seconds": 0.0036493,
+      "previousSeconds": 0.0046339,
+      "ratio": 0.7875223893480653,
+      "outcome": "limit.exceeded",
+      "revisionUnchanged": true
+    },
+    {
+      "os": "macos",
+      "case": "read one 100k column",
+      "seconds": 0.001161166,
+      "previousSeconds": 0.001407333,
+      "ratio": 0.8250826208154004,
+      "outcome": "ok",
+      "revisionUnchanged": true
+    },
+    {
+      "os": "macos",
+      "case": "cycle 999 x 100 frames",
+      "seconds": 0.012398292,
+      "previousSeconds": 0.015389792,
+      "ratio": 0.8056179056870945,
+      "outcome": "ok",
+      "revisionUnchanged": false
+    },
+    {
+      "os": "macos",
+      "case": "cycle past the scene limit",
+      "seconds": 0.000693375,
+      "previousSeconds": 0.000861417,
+      "ratio": 0.8049237477319348,
+      "outcome": "doc.limitExceeded",
+      "revisionUnchanged": true
+    },
+    {
+      "os": "macos",
+      "case": "set exposure on a tenth of the columns",
+      "seconds": 0.084521167,
+      "previousSeconds": 0.084833375,
+      "ratio": 0.9963197503341107,
+      "outcome": "ok",
+      "revisionUnchanged": false
+    },
+    {
+      "os": "macos",
+      "case": "read the whole sheet",
+      "seconds": 0.212238208,
+      "previousSeconds": 0.273228042,
+      "ratio": 0.7767804740920407,
+      "outcome": "ok",
+      "revisionUnchanged": true
+    },
+    {
+      "os": "macos",
+      "case": "element list",
+      "seconds": 0.0011595,
+      "previousSeconds": 0.001889666,
+      "ratio": 0.6136004987124709,
+      "outcome": "ok",
+      "revisionUnchanged": true
+    },
+    {
+      "os": "macos",
+      "case": "unused drawings of the scene",
+      "seconds": 0.209550833,
+      "previousSeconds": 0.302335458,
+      "ratio": 0.6931070354308226,
+      "outcome": "ok",
+      "revisionUnchanged": true
+    },
+    {
+      "os": "macos",
+      "case": "remove exposure on every column",
+      "seconds": 1.0257535,
+      "previousSeconds": 1.500451542,
+      "ratio": 0.6836298749326755,
+      "outcome": "ok",
+      "revisionUnchanged": false
+    },
+    {
+      "os": "macos",
+      "case": "insert a cell in all columns",
+      "seconds": 0.66637375,
+      "previousSeconds": 1.24102,
+      "ratio": 0.5369564954634091,
+      "outcome": "ok",
+      "revisionUnchanged": false
+    },
+    {
+      "os": "macos",
+      "case": "set every exposure to 9999 frames on every column",
+      "seconds": 0.002204042,
+      "previousSeconds": 0.005984167,
+      "ratio": 0.3683122479703524,
+      "outcome": "limit.exceeded",
+      "revisionUnchanged": true
+    }
+  ]
+}

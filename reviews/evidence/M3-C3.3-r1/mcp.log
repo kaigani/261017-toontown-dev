@@ -1,0 +1,305 @@
+cargo :    Compiling ahash v0.8.12
+At C:\Users\kaiga\AppData\Local\Temp\toontown-c33-r1\pipeline.ps1:6 char:1
++ cargo test -p tt-mcp --locked -j 4 *> "$r\mcp.log"
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (   Compiling ahash v0.8.12:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+
+   Compiling jsonschema-value v0.59.0
+   Compiling referencing v0.59.0
+   Compiling jsonschema v0.59.0
+   Compiling tt-model v0.0.1 (C:\Users\kaiga\work\review\m3-c33-r1\crates\model)
+   Compiling tt-anim v0.0.1 (C:\Users\kaiga\work\review\m3-c33-r1\crates\anim)
+   Compiling tt-fx v0.0.1 (C:\Users\kaiga\work\review\m3-c33-r1\crates\fx)
+   Compiling tt-vector v0.0.1 (C:\Users\kaiga\work\review\m3-c33-r1\crates\vector)
+   Compiling tt-colour v0.0.1 (C:\Users\kaiga\work\review\m3-c33-r1\crates\colour)
+   Compiling tt-persist v0.0.1 (C:\Users\kaiga\work\review\m3-c33-r1\crates\persist)
+   Compiling tt-render v0.0.1 (C:\Users\kaiga\work\review\m3-c33-r1\crates\render)
+   Compiling tt-io v0.0.1 (C:\Users\kaiga\work\review\m3-c33-r1\crates\io)
+   Compiling tt-audio v0.0.1 (C:\Users\kaiga\work\review\m3-c33-r1\crates\audio)
+   Compiling tt-registry v0.0.1 (C:\Users\kaiga\work\review\m3-c33-r1\crates\registry)
+   Compiling tt-executor v0.0.1 (C:\Users\kaiga\work\review\m3-c33-r1\crates\executor)
+   Compiling tt-lipsync v0.0.1 (C:\Users\kaiga\work\review\m3-c33-r1\crates\lipsync)
+   Compiling tt-engine v0.0.1 (C:\Users\kaiga\work\review\m3-c33-r1\crates\engine)
+   Compiling tt-mcp v0.0.1 (C:\Users\kaiga\work\review\m3-c33-r1\crates\mcp)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 2m 54s
+     Running unittests src\lib.rs (target\debug\deps\tt_mcp-f5f7a3d9517dbea8.exe)
+
+running 4 tests
+test jsonrpc::tests::messages_are_classified_and_malformed_ones_answered ... ok
+test resources::tests::uris_resolve_to_commands_and_events_update_subscriptions ... ok
+test prompts::tests::prompts_reference_only_registered_commands ... ok
+test tools::tests::every_generic_tool_has_a_plan_and_wraps_a_registered_command ... ok
+
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests\audit.rs (target\debug\deps\audit-e7620ce434890336.exe)
+
+running 2 tests
+test one_entry_per_call_and_reproducible_from_the_committed_fixture ... ok
+test persisted_activity_log_beside_the_project ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.80s
+
+     Running tests\c14_r1_autosave.rs (target\debug\deps\c14_r1_autosave-595267f542ddaaaa.exe)
+
+running 1 test
+test autosave_under_queued_protocol_calls_and_background_export ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 12.66s
+
+     Running tests\c14_r1_limits.rs (target\debug\deps\c14_r1_limits-97ec45048732964f.exe)
+
+running 2 tests
+test saved_observe_policy_and_limits_survive_restart ... ok
+test configured_batch_limit_applies_to_batch_script ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.07s
+
+     Running tests\c14_r2_replay.rs (target\debug\deps\c14_r2_replay-7e6957034e31427f.exe)
+
+running 3 tests
+test idempotent_retry_replays_canonically ... ok
+test ordinary_edits_dry_runs_and_discovery_replay_canonically ... ok
+test partially_committed_batch_replays_canonically ... ok
+
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.26s
+
+     Running tests\c14_r3_groups.rs (target\debug\deps\c14_r3_groups-b6329c8c7023e98c.exe)
+
+running 3 tests
+test a_group_is_one_undo_step_like_an_atomic_batch ... ok
+test nested_and_non_atomic_groups_are_refused ... ok
+test undo_then_redo_after_an_atomic_batch_replays_the_same_document ... ok
+
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.18s
+
+     Running tests\c14_r3_history_r1.rs (target\debug\deps\c14_r3_history_r1-611cb1b041a8c3a8.exe)
+
+running 1 test
+test ten_thousand_history_operations_match_independent_content_oracle_and_replay ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 26.86s
+
+     Running tests\c14_r3_history_r3.rs (target\debug\deps\c14_r3_history_r3-8704b99067dcdcee.exe)
+
+running 1 test
+test ten_thousand_history_operations_match_independent_content_oracle_and_replay ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 26.93s
+
+     Running tests\c14_r3_replay.rs (target\debug\deps\c14_r3_replay-06e17a254cddf2a6.exe)
+
+running 5 tests
+test atomic_publication_failure_keeps_committed_edits_in_script_replay ... ok
+test two_edits_in_one_atomic_batch_replay_with_the_same_revision ... ok
+test checkpoint_restore_after_an_atomic_batch_replays_the_same_document ... ok
+test sequential_publication_failure_keeps_committed_edits_in_script_replay ... ok
+test undo_after_an_atomic_batch_replays_the_same_document ... ok
+
+test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.14s
+
+     Running tests\c14_r4_closure.rs (target\debug\deps\c14_r4_closure-cc5f359ea92751a7.exe)
+
+running 4 tests
+test group_accepts_a_matching_expect_rev ... ok
+test group_expect_rev_is_supported_and_conflicts_atomically ... ok
+test sequential_last_publication_failure_after_two_edits ... ok
+test two_atomic_batches_and_sequential_batch_keep_history ... ok
+
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.13s
+
+     Running tests\c14_r4_expect_rev.rs (target\debug\deps\c14_r4_expect_rev-74f63bd297b3c028.exe)
+
+running 3 tests
+test a_group_after_an_edit_to_its_guarded_object_is_refused_whole ... ok
+test a_sequential_batch_refuses_expect_rev ... ok
+test the_batch_tool_and_its_replayed_group_honour_expect_rev ... ok
+
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.12s
+
+     Running tests\c14_r5_closure.rs (target\debug\deps\c14_r5_closure-aa08707503d4b145.exe)
+
+running 4 tests
+test guarded_group_has_one_revision_and_one_undo ... ok
+test sequential_step_guard_still_matches_then_conflicts ... ok
+test wrong_type_group_guard_is_invalid_and_executes_no_steps ... ok
+test exported_guard_replays_exactly_and_refuses_changed_revision ... ok
+
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.12s
+
+     Running tests\c14_tickets.rs (target\debug\deps\c14_tickets-8ac46ab2f75bfbce.exe)
+
+running 2 tests
+test every_result_lists_its_effective_params ... ignored, C14-R1-16: result.effectiveParams changes the result contract of every command (719 result schemas, the generated IPC types) and its defaults include the GUI's last-used values, which arrive with the M4 dialogs; owner: builder, M4 C4.1 (traceability row 11 ┬º8)
+test namespace_docs_carry_a_worked_example_with_executed_results ... ok
+
+test result: ok. 1 passed; 0 failed; 1 ignored; 0 measured; 0 filtered out; finished in 0.07s
+
+     Running tests\c21_history.rs (target\debug\deps\c21_history-fe9770b1a54135aa.exe)
+
+running 2 tests
+test geometry_oracle_seed_a571_matches_and_replays ... ignored, 10 000-operation oracle (about 5 minutes per seed in a debug build on the Windows runner); CI runs both             seeds in release in the headless job: `cargo test --release -p tt-mcp --test c21_history -- --ignored`             (M2 C2.1 obligation 4)
+test geometry_oracle_seed_b683_matches_and_replays ... ignored, 10 000-operation oracle (about 5 minutes per seed in a debug build on the Windows runner); CI runs both             seeds in release in the headless job: `cargo test --release -p tt-mcp --test c21_history -- --ignored`             (M2 C2.1 obligation 4)
+
+test result: ok. 0 passed; 0 failed; 2 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests\c21_r1_surfaces.rs (target\debug\deps\c21_r1_surfaces-6a01eeb8c6abe36d.exe)
+
+running 2 tests
+test ingress_payload_limit_is_distinct_from_32_mib_readback_limit ... ok
+test typed_generic_batches_scripts_and_both_container_forms ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 2.53s
+
+     Running tests\c21_r2_events.rs (target\debug\deps\c21_r2_events-49ca574dad4ee01c.exe)
+
+running 1 test
+test drawing_events_reach_mcp_event_resource_subscribers ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.43s
+
+     Running tests\c21_r3_never_block.rs (target\debug\deps\c21_r3_never_block-762396eb4c64a3f1.exe)
+
+running 1 test
+test every_registered_command_answers_malformed_params_through_mcp ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.04s
+
+     Running tests\c21_replay.rs (target\debug\deps\c21_replay-ff12b6dbb69ea460.exe)
+
+running 1 test
+test drawing_edits_replay_byte_for_byte_through_script_mode ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.17s
+
+     Running tests\c21_worked_examples.rs (target\debug\deps\c21_worked_examples-509c8e56d0fbce06.exe)
+
+running 2 tests
+test namespace_docs_render_the_retained_worked_examples ... ok
+test every_kernel_namespace_has_a_retained_worked_example ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.81s
+
+     Running tests\c22_r1_surface.rs (target\debug\deps\c22_r1_surface-0811a2e0c6725342.exe)
+
+running 4 tests
+test record_checkpoint_command_contracts_and_deferred_owners ... ok
+test retain_a_baseline_bundle_for_the_headless_paint_probe ... ok
+test an_agent_with_preferences_permission_can_set_gap_closing ... ok
+test typed_generic_atomic_sequential_and_script_paints_preserve_commit_contracts ... ok
+
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.13s
+
+     Running tests\c22_r2_surface.rs (target\debug\deps\c22_r2_surface-fadee4099108c2a0.exe)
+
+running 3 tests
+test all_four_deferred_contracts_and_generated_types_name_c23 ... ok
+test prefs_agent_failed_atomic_batch_rolls_back_gap_setting ... ok
+test topology_oracle_checks_every_step_of_full_cut_stack_and_reverse_merge ... ok
+
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.17s
+
+     Running tests\c22_r3_surface.rs (target\debug\deps\c22_r3_surface-fd77c9ce282a220e.exe)
+
+running 2 tests
+test importing_ahead_revisions_stamps_preserved_ids_and_replays_from_the_same_base ... ok
+test e2_split_stale_fresh_ids_events_inspect_and_saved_readback ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.28s
+
+     Running tests\c22_replay.rs (target\debug\deps\c22_replay-1644a357ffde31ef.exe)
+
+running 1 test
+test painting_sessions_replay_byte_for_byte_through_script_mode ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.15s
+
+     Running tests\c23_r2_timeout.rs (target\debug\deps\c23_r2_timeout-b9d131f7e4d68a34.exe)
+
+running 1 test
+test smooth_watchdog_reaches_mcp_and_next_read_answers ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.95s
+
+     Running tests\c31_r1_protocol.rs (target\debug\deps\c31_r1_protocol-dc1a7919c67703e7.exe)
+
+running 3 tests
+test drawing_in_use_parameter_confirmation_is_read_only_and_retry_applies ... ok
+test generic_tool_dry_run_does_not_leak_category_colour ... ok
+test explicit_cell_edit_undo_and_invalid_reference_through_mcp ... ok
+
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.13s
+
+     Running tests\c31_r2_protocol.rs (target\debug\deps\c31_r2_protocol-22352fbb5544fbd5.exe)
+
+running 1 test
+test r10_all_timing_numeric_extrema_are_typed_and_worker_survives ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.20s
+
+     Running tests\c31_round1_protocol.rs (target\debug\deps\c31_round1_protocol-4dd9c6ae1ecc054f.exe)
+
+running 1 test
+test extreme_parameters_refuse_typed_and_the_worker_answers ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.14s
+
+     Running tests\c32_protocol.rs (target\debug\deps\c32_protocol-a5bb92f1d27e6275.exe)
+
+running 1 test
+test extreme_animation_parameters_refuse_typed_and_the_worker_answers ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.30s
+
+     Running tests\c32_r4_delivery.rs (target\debug\deps\c32_r4_delivery-1d5bee5bb121f2f6.exe)
+
+running 1 test
+test replies_are_unique_owned_typed_and_cancelled_requests_remain_silent ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 7.17s
+
+     Running tests\c32_round3_protocol.rs (target\debug\deps\c32_round3_protocol-ab94c8e78809d790.exe)
+
+running 1 test
+test long_and_refused_evaluations_answer_their_own_requests_only ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 6.43s
+
+     Running tests\c33_protocol.rs (target\debug\deps\c33_protocol-b5ef8dda90713d05.exe)
+
+running 1 test
+test generic_render_and_inspect_tools_match_their_commands ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.14s
+
+     Running tests\c33_r1_tools.rs (target\debug\deps\c33_r1_tools-6728fe3d4f1a5df2.exe)
+
+running 3 tests
+test render_frame_reports_render_ms ... FAILED
+test render_frame_accepts_exclude_override ... FAILED
+test inspection_wrappers_return_every_command_field ... ok
+
+failures:
+
+---- render_frame_reports_render_ms stdout ----
+
+thread 'render_frame_reports_render_ms' (38144) panicked at crates\mcp\tests\c33_r1_tools.rs:66:5:
+11 section 7.5 render_frame output: {"content":[{"type":"text","text":"render_frame: `render.frame.run` ok; 0 change(s); documentRev 1"}],"structuredContent":{"status":"ok","result":{"mimeType":"image/png","width":64,"height":36,"bytes":270,"sha256":"f8a6578bba62ce92071bb5cbc2410769015c18ff7b2386872eea7fd50ea74247","data":"iVBORw0KGgoAAAANSUhEUgAAAEAAAAAkCAYAAAA5DDySAAAA1UlEQVR4nO3XMQqDMBiG4S9FITrqHdqltys9Qs/SvT1SoR2lZlAwoW2yCjW6Jd//gCji8r9EicXnB8R2ICcBQE4CgBx9gAIb9X0PY0y4btsWWmukaHMA5xy6roNSCnVdJxtAyUaInHwEYx80b4PX4zm7vz8ekLLoAH74+/U2u3+6nJEyeQWw0mSncC6LEjlYtQL88NbabIb3olfAOI5h+EpXyEnURmgYhnA0TYPcLK6AnIf3/gbwiyPn4T35FwA5CQByEgDkJADISQCQkwAgJwFAjj7AF57MSXD9MtpvAAAAAElFTkSuQmCC","documentRevision":1,"frame":1,"imageToCamera":[0.18749999999999997,0.0,0.0,-0.18749999999999997,-5.999999999999999,3.3749999999999996],"warnings":[]},"changes":[],"warnings":[],"documentRev":1},"isError":false}
+
+---- render_frame_accepts_exclude_override stdout ----
+
+thread 'render_frame_accepts_exclude_override' (35376) panicked at crates\mcp\tests\c33_r1_tools.rs:47:5:
+assertion `left == right` failed: 11 section 7.5 requires include/exclude overrides: {"content":[{"type":"text","text":"render_frame: `render_frame` failed: arg.unknown ΓÇö `tool:render_frame`: Additional properties are not allowed ('exclude' was unexpected)"}],"structuredContent":{"status":"error","changes":[],"warnings":[],"documentRev":null,"error":{"code":"arg.unknown","message":"`tool:render_frame`: Additional properties are not allowed ('exclude' was unexpected)","details":{"pointer":"/exclude","message":"Additional properties are not allowed ('exclude' was unexpected)","allowed":null,"violations":[{"pointer":"/exclude","message":"Additional properties are not allowed ('exclude' was unexpected)","allowed":null,"code":"arg.unknown"}]}}},"isError":true}
+  left: String("error")
+ right: "ok"
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+
+failures:
+    render_frame_accepts_exclude_override
+    render_frame_reports_render_ms
+
+test result: FAILED. 1 passed; 2 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.13s
+
+error: test failed, to rerun pass `-p tt-mcp --test c33_r1_tools`

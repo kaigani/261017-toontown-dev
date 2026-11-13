@@ -1,0 +1,34 @@
+{
+  "os": "macos",
+  "profile": "release",
+  "strokes": 100000,
+  "runs": [
+    {
+      "nodeMergedSeconds": 0.119109916,
+      "nodeLayer1Seconds": 0.055470958,
+      "nodeLayer2Seconds": 0.054122583,
+      "mapMergedSeconds": 0.236601458,
+      "mapLayer1Seconds": 0.113274708,
+      "settleSeconds": 1.586058667,
+      "skippableNodingCeilingSeconds": 0.109593541
+    },
+    {
+      "nodeMergedSeconds": 0.107585667,
+      "nodeLayer1Seconds": 0.052893917,
+      "nodeLayer2Seconds": 0.077658041,
+      "mapMergedSeconds": 0.224435208,
+      "mapLayer1Seconds": 0.110250125,
+      "settleSeconds": 0.919332166,
+      "skippableNodingCeilingSeconds": 0.130551958
+    },
+    {
+      "nodeMergedSeconds": 0.097472667,
+      "nodeLayer1Seconds": 0.050168084,
+      "nodeLayer2Seconds": 0.052894708,
+      "mapMergedSeconds": 0.278649458,
+      "mapLayer1Seconds": 0.134458541,
+      "settleSeconds": 1.244798125,
+      "skippableNodingCeilingSeconds": 0.103062792
+    }
+  ]
+}

@@ -258,3 +258,37 @@ transactions, idempotent requests and the never-block watchdog.
   call was cancelled. Verified by `c23_r3_selection_cancel` (reviewer), `c23_round3.rs` and
   `run::tests::the_acceptance_boundary_refuses_a_cancelled_request_and_restores_the_session` (handlers that charge no
   work, an atomic batch, and the same calls accepted once not cancelled).
+- **M3 C3.1 round 1 (C31-R1-02, C31-R1-03, C31-R1-14): new session state, one selection event, shared selection
+  lists.** The Timeline/Exposure Sheet view state added in C3.1 (`Session.timeline`: solo, category colours, light
+  tables) is part of the same acceptance boundary as the rest of the session: `run::Rollback` and `cx::Savepoint`
+  carry it, so a dry run, a failed atomic group or a cancelled call leaves it as it was
+  (`c31_r1_contract::timeline_colour_*`, `c31_r1_protocol::generic_tool_dry_run_does_not_leak_category_colour`,
+  `c31_round1::r02_*`). `cell.selection.changed` has one producer: the executor emits it once per accepted call whose
+  current element, current frame, cell selection or row selection changed — whichever command caused it (an
+  explicit selection, a creation, a hidden current column, a deletion repaired after the commit) — and handlers no
+  longer emit it themselves. Selection lists are shared (`app::Ids`, an `Arc<Vec<String>>`): copying the context for
+  rollback, savepoints and observation costs nothing however many cells are selected, observation compares lists by
+  pointer before content, and the post-call context repair skips the lists while the project, the document revision
+  and the lists are those it last checked (`Session.selection_checked`). With a 100 000-cell selection a following
+  call costs under 1 ms instead of about 190 ms (debug), so a cancelled large selection frees the worker for the next
+  caller (`c31_r1_selection_budget`, `c31_obligations::r14_*`). `cell.select` itself is set-based, charges its work
+  in 4096-cell steps and observes the caller's cancellation at each charge.
+- **M3 C3.1 round 2 (C31-R2-06): binary entries a call adds are accepted with it.** A paste that brings binary
+  entries (a copy's bitmap or texture bytes) no longer writes them into the project's store while the handler runs:
+  each new entry is a deferred effect (`Effect::Blob`), visible to the rest of the call (`Cx::blob_bytes`) and
+  inserted only after the document commit, so a dry run, a refused call, a failed atomic group and a step rolled back
+  to its savepoint add no entry. Entry names are compared by bytes: a missing entry is added under its name, equal
+  bytes are shared, and different bytes under the same name give the copy a fresh deterministic entry
+  (`<name>-<sha256 prefix>.<ext>`) with its typed references rewritten (`c31_r2_persistence`,
+  `c31_round2::r06_*`).
+- **M3 C3.1 round 2, CI follow-up of C31-R1-14: post-call selection work.** The context repair, the selection
+  read-back and the `cell.selection.changed` payload read a large selection borrowed and parse cell references
+  without allocating; a list shared by the reported selection, its context and a mirror is checked once. The
+  uncharged work after a 100 000-cell `cell.select` fell from about 115 ms to 48 ms (debug, local), most of the rest
+  being the state events that carry the ids, so the next caller is not held past a short budget
+  (`c31_r1_selection_budget`).
+- **M3 C3.1 round 3 (C31-R3-03): one staged binary read view.** Every reader of binary entries within a call —
+  placement of a pasted copy and the capture of a new copy alike — reads through `Cx::blob_bytes` (entries staged by
+  earlier steps of the same call, then the project's store), so an atomic batch that pastes and then copies captures
+  the staged bytes. Staged entries are still accepted only with the call; a dry run or a failed batch discards them
+  and the clipboard it would have set (`c31_r3_binary::paste_then_copy_*`, `c31_round3::r03_*`).

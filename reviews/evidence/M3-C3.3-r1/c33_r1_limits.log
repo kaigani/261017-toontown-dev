@@ -1,0 +1,31 @@
+
+running 2 tests
+c33_r1_limits.exe :
+At line:2 char:706
++ ... it -eq 0) { & "$r\c33_r1_$case.exe" --nocapture *> "$r\c33_r1_$case.l ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+
+thread 'oversized_contact_sheet_is_refused_before_any_slow_work' (38936) panicked at
+crates/executor/tests/c33_r1_limits.rs:37:5:
+assertion `left == right` failed: ADR-0020 decision 8: sheet dimensions are known before rendering
+  left: "command.timeout"
+ right: "render.inlineTooLarge"
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+test oversized_contact_sheet_is_refused_before_any_slow_work ... FAILED
+
+thread 'oversized_inline_frame_is_refused_before_any_slow_work' (36448) panicked at
+crates/executor/tests/c33_r1_limits.rs:25:5:
+assertion `left == right` failed: ADR-0020 decision 8: dimensions are known before evaluation
+  left: "command.timeout"
+ right: "render.inlineTooLarge"
+test oversized_inline_frame_is_refused_before_any_slow_work ... FAILED
+
+failures:
+
+failures:
+    oversized_contact_sheet_is_refused_before_any_slow_work
+    oversized_inline_frame_is_refused_before_any_slow_work
+
+test result: FAILED. 0 passed; 2 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.67s

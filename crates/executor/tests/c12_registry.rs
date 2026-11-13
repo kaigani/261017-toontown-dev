@@ -109,10 +109,10 @@ fn stubs_and_declarations_name_their_owners() {
         .collect();
     assert!(c13.is_empty(), "C1.3 stubs left: {c13:?}");
     // A later checkpoint's command stays a declared stub until it is implemented (`draw.vectorize.preview` was the
-    // example until M2 C2.4 implemented it).
+    // example until M2 C2.4 implemented it, `element.create` until M3 C3.1).
     assert_eq!(
-        registry().get("element.create").map(|e| e.status()),
-        Some(Status::NotImplemented { owner: tt_registry::owner_of("element.create") })
+        registry().get("timeline.rows.list").map(|e| e.status()),
+        Some(Status::NotImplemented { owner: tt_registry::owner_of("timeline.rows.list") })
     );
 }
 
@@ -198,7 +198,8 @@ fn describe_reports_declarations() {
     assert_eq!(d["needsProject"], true);
     assert!(d["enablement"].as_str().unwrap().contains("undo"));
     assert_eq!(d["paramsSchema"]["properties"]["steps"]["maximum"], 1000);
-    let stub = registry().get("render.frame.run").unwrap().describe();
+    // `render.frame.run` was the stub sample until M3 C3.3 implemented it; `inspect.ui.tree` waits for M4 C4.2.
+    let stub = registry().get("inspect.ui.tree").unwrap().describe();
     assert_eq!(stub["status"], "notImplemented");
-    assert_eq!(stub["milestone"], "M3 C3.3");
+    assert_eq!(stub["milestone"], "M4 C4.2");
 }

@@ -1,0 +1,15 @@
+...........F.
+======================================================================
+FAIL: test_edit38_changes_only_the_two_ruled_union_assertions (__main__.Ownership.test_edit38_changes_only_the_two_ruled_union_assertions)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\kaiga\work\review\m3-c31-r2\tests\adversarial\c24-r2-audit.py", line 124, in test_edit38_changes_only_the_two_ruled_union_assertions
+    self.assertEqual(new, expected, 'Ruling permits two union bounds only; area-preservation must remain intact')
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: '// R[7420 chars]     let mut segs = segments(&list, 0);\n     [6439 chars]n}\n' != '// R[7420 chars]     prop_assert!((sa - sb).abs() <= 1e-3 * sb[6395 chars]n}\n'
+Diff is 14347 characters long. Set self.maxDiff to None to see it. : Ruling permits two union bounds only; area-preservation must remain intact
+
+----------------------------------------------------------------------
+Ran 13 tests in 0.952s
+
+FAILED (failures=1)

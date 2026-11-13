@@ -1,0 +1,145 @@
+{
+  "os": "windows",
+  "arch": "x86_64",
+  "profile": "release",
+  "strokes": 100000,
+  "repetitions": 5,
+  "memory": {
+    "rssBytes": {
+      "start": 174612480.0,
+      "afterOpen": 363053056.0,
+      "afterSeries": 2209013760.0
+    },
+    "liveBytes": {
+      "start": 146121887.0,
+      "afterOpen": 267527357.0,
+      "afterSeries": 1196622746.0
+    }
+  },
+  "series": [
+    {
+      "strokeAddSeconds": 17.9090369,
+      "undoSeconds": 11.7752059,
+      "redoSeconds": 10.6168009,
+      "dryRunSeconds": 16.9103786,
+      "liveBytes": 686274111.0,
+      "rssBytes": 1786339328.0
+    },
+    {
+      "strokeAddSeconds": 19.8731058,
+      "undoSeconds": 12.7211429,
+      "redoSeconds": 11.0029569,
+      "dryRunSeconds": 19.0132541,
+      "liveBytes": 813852433.0,
+      "rssBytes": 1120931840.0
+    },
+    {
+      "strokeAddSeconds": 20.3575099,
+      "undoSeconds": 12.9286083,
+      "redoSeconds": 11.6426445,
+      "dryRunSeconds": 18.4353468,
+      "liveBytes": 941439437.0,
+      "rssBytes": 2124824576.0
+    },
+    {
+      "strokeAddSeconds": 21.0772851,
+      "undoSeconds": 13.7612864,
+      "redoSeconds": 12.7723679,
+      "dryRunSeconds": 18.6072301,
+      "liveBytes": 1069029299.0,
+      "rssBytes": 2176978944.0
+    },
+    {
+      "strokeAddSeconds": 21.4579163,
+      "undoSeconds": 14.416569,
+      "redoSeconds": 12.4097625,
+      "dryRunSeconds": 18.3420133,
+      "liveBytes": 1196626211.0,
+      "rssBytes": 2210070528.0
+    }
+  ],
+  "queuedRead": [
+    {
+      "longCommandSeconds": 21.0920922,
+      "readSentAtSeconds": 0.0505326,
+      "readSeconds": 21.0426878,
+      "readAnsweredAfterLongSeconds": 0.0011282000000001347,
+      "readOk": true
+    },
+    {
+      "longCommandSeconds": 22.6925997,
+      "readSentAtSeconds": 0.0502942,
+      "readSeconds": 22.6430123,
+      "readAnsweredAfterLongSeconds": 0.0007067999999996744,
+      "readOk": true
+    },
+    {
+      "longCommandSeconds": 21.9826275,
+      "readSentAtSeconds": 0.050476,
+      "readSeconds": 21.9328324,
+      "readAnsweredAfterLongSeconds": 0.0006808999999989851,
+      "readOk": true
+    },
+    {
+      "longCommandSeconds": 22.3613316,
+      "readSentAtSeconds": 0.0502978,
+      "readSeconds": 22.3119701,
+      "readAnsweredAfterLongSeconds": 0.0009362999999993349,
+      "readOk": true
+    },
+    {
+      "longCommandSeconds": 21.7790976,
+      "readSentAtSeconds": 0.0503343,
+      "readSeconds": 21.7294627,
+      "readAnsweredAfterLongSeconds": 0.0006993999999984624,
+      "readOk": true
+    }
+  ],
+  "maintenance": [
+    {
+      "longCommandSeconds": 20.598338,
+      "requestedAtSeconds": 0.0503347,
+      "behindLongSeconds": 20.5521877,
+      "autosaveSnapshotSeconds": 0.0001249,
+      "heartbeatSeconds": 0.0038965,
+      "idleSeconds": 0.0030985,
+      "idleAutosaveSnapshotSeconds": null
+    },
+    {
+      "longCommandSeconds": 20.9509572,
+      "requestedAtSeconds": 0.0501879,
+      "behindLongSeconds": 20.9100821,
+      "autosaveSnapshotSeconds": 0.0001059,
+      "heartbeatSeconds": 0.0090701,
+      "idleSeconds": 0.0075381,
+      "idleAutosaveSnapshotSeconds": null
+    },
+    {
+      "longCommandSeconds": 21.157923,
+      "requestedAtSeconds": 0.0505845,
+      "behindLongSeconds": 21.1158017,
+      "autosaveSnapshotSeconds": 0.0001104,
+      "heartbeatSeconds": 0.008237,
+      "idleSeconds": 0.0078849,
+      "idleAutosaveSnapshotSeconds": null
+    },
+    {
+      "longCommandSeconds": 20.9252626,
+      "requestedAtSeconds": 0.0502322,
+      "behindLongSeconds": 20.8835535,
+      "autosaveSnapshotSeconds": 0.0001129,
+      "heartbeatSeconds": 0.0082907,
+      "idleSeconds": 0.0090155,
+      "idleAutosaveSnapshotSeconds": null
+    },
+    {
+      "longCommandSeconds": 21.6442385,
+      "requestedAtSeconds": 0.0507888,
+      "behindLongSeconds": 21.6016235,
+      "autosaveSnapshotSeconds": 0.0001058,
+      "heartbeatSeconds": 0.007969,
+      "idleSeconds": 0.0081109,
+      "idleAutosaveSnapshotSeconds": null
+    }
+  ]
+}

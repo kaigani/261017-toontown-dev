@@ -28,6 +28,23 @@ pub(crate) fn app_state(s: &Session) -> AppState {
     s.app.state(project, &s.ui)
 }
 
+/// [`app_state`] without the selection's object IDs and kinds (the executor observes those by fingerprint).
+pub(crate) fn app_state_without_selection_ids(s: &Session) -> serde_json::Value {
+    let app = s.app.clone_without_selection_ids();
+    let project = s.project.as_ref().map(|p| {
+        let info = ProjectRef {
+            id: p.doc.project().id().as_str().to_owned(),
+            name: p.doc.project().name().clone(),
+            path: p.path.clone(),
+            dirty: p.dirty(),
+            global_library_dirty: false,
+            read_only: p.read_only,
+        };
+        (&p.doc, info)
+    });
+    serde_json::to_value(app.state(project, &s.ui)).unwrap_or(serde_json::Value::Null)
+}
+
 #[command(
     id = "app.state.get",
     kind = query,

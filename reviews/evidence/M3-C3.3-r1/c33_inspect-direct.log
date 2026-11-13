@@ -1,0 +1,10 @@
+
+running 6 tests
+test conversions_refuse_the_near_plane_views_and_missing_elements ... ok
+test hits_name_the_drawing_layer_object_and_colour ... ok
+test conversions_round_trip_and_match_the_oracle ... ok
+test hit_test_follows_transformed_geometry_and_depth ... ok
+test the_contact_sheet_is_the_frames_laid_out_with_labels ... ok
+test the_description_agrees_with_the_rendered_pixels ... ok
+
+test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 2.97s

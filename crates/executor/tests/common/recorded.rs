@@ -63,8 +63,9 @@ pub fn differences(a: &Value, b: &Value, at: &str, out: &mut Vec<String>) {
 
 /// Keys whose values are times or durations (and, below, machine facts): always recorded as varying, even when two recording runs happened to
 /// agree (a duration of 0 ms twice).
-const TIME_KEYS: [&str; 12] = [
+const TIME_KEYS: [&str; 13] = [
     "durationMs",
+    "renderMs",
     "time",
     "startedAt",
     "finishedAt",

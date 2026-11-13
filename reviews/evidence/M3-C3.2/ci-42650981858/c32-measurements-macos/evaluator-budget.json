@@ -1,0 +1,38 @@
+{
+  "records": [
+    {
+      "case": "deepest node, 10 000 frames, world only",
+      "seconds": 0.8356095,
+      "outcome": "completed"
+    },
+    {
+      "case": "deepest node, 100 000 frames, world only",
+      "seconds": 8.421715125,
+      "outcome": "completed"
+    },
+    {
+      "case": "all 24 nodes, 10 000 frames, everything",
+      "seconds": 6.02646125,
+      "outcome": "completed"
+    },
+    {
+      "case": "path sample over the bar",
+      "seconds": 7.60785325,
+      "outcome": "completed"
+    },
+    {
+      "case": "function sample over the bar",
+      "seconds": 0.108041459,
+      "outcome": "completed"
+    },
+    {
+      "case": "path read back with passage frames",
+      "seconds": 0.00568225,
+      "outcome": "completed"
+    }
+  ],
+  "os": "macos",
+  "nodes": 24,
+  "pointsPerPath": 1000,
+  "keysPerChannel": 1000
+}

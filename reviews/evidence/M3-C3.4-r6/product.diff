@@ -1,0 +1,49 @@
+diff --git a/crates/executor/src/agents.rs b/crates/executor/src/agents.rs
+index a24147d..5876f66 100644
+--- a/crates/executor/src/agents.rs
++++ b/crates/executor/src/agents.rs
+@@ -251,9 +251,12 @@ pub(crate) struct Pending {
+     pub binding: Option<Value>,
+ }
+ 
+-/// One activity-log entry (11 §11).
+-#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
++/// One activity-log entry (11 §11). Its schema is the declared result item of `agent.activity.list` (C34-R5-01):
++/// optional fields are omitted when absent, and entries written before a field existed still read.
++// Inlined, so a consumer finds every field at the result's `items.properties`.
++#[derive(Debug, Clone, PartialEq, Serialize, Deserialize, schemars::JsonSchema)]
+ #[serde(rename_all = "camelCase")]
++#[schemars(inline)]
+ pub struct ActivityEntry {
+     /// Sequence number (per process).
+     pub seq: u64,
+diff --git a/crates/executor/src/commands/agent.rs b/crates/executor/src/commands/agent.rs
+index e99155c..07f74e8 100644
+--- a/crates/executor/src/commands/agent.rs
++++ b/crates/executor/src/commands/agent.rs
+@@ -527,7 +527,10 @@ pub(crate) struct ActivityListParams {
+     example(title = "The last 20 actions", params = r#"{"limit": 20}"#),
+     gui = "Agent activity panel (M4)",
+ )]
+-pub(crate) fn agent_activity_list(cx: &mut Cx, p: ActivityListParams) -> Result<Vec<Map<String, Value>>, CommandError> {
++pub(crate) fn agent_activity_list(
++    cx: &mut Cx,
++    p: ActivityListParams,
++) -> Result<Vec<crate::agents::ActivityEntry>, CommandError> {
+     let limit = usize::try_from(p.limit.unwrap_or(100)).unwrap_or(100);
+     let hub = &cx.session().agents;
+     let picked: Vec<&crate::agents::ActivityEntry> = hub
+@@ -537,11 +540,8 @@ pub(crate) fn agent_activity_list(cx: &mut Cx, p: ActivityListParams) -> Result<
+         .filter(|e| p.since.as_ref().is_none_or(|t| e.time.as_str() >= t.as_str()))
+         .collect();
+     let skip = picked.len().saturating_sub(limit);
+-    Ok(picked
+-        .into_iter()
+-        .skip(skip)
+-        .filter_map(|e| serde_json::to_value(e).ok().and_then(|v| v.as_object().cloned()))
+-        .collect())
++    // Typed entries (C34-R5-01): they serialize exactly as before, and the result schema declares their fields.
++    Ok(picked.into_iter().skip(skip).cloned().collect())
+ }
+ 
+ /// Export format.

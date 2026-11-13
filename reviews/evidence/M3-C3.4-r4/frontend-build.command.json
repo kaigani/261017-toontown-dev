@@ -1,0 +1,1 @@
+["cmd", "/d", "/c", "pnpm --dir desktop build"]

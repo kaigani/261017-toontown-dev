@@ -1,0 +1,2965 @@
+{
+  "profile": "release CI 9d42034",
+  "sdkVersion": "2.0.0",
+  "calls": [
+    {
+      "command": "cell.clipboard.set",
+      "params": {
+        "elementIds": [
+          "scene:\"Intro\"/element:\"Bob\""
+        ],
+        "from": 1,
+        "to": 1
+      },
+      "envelope": {
+        "status": "ok",
+        "result": {
+          "contentType": "drawingCells",
+          "elementCount": 1,
+          "frames": 1
+        },
+        "changes": [],
+        "warnings": [],
+        "documentRev": 1
+      }
+    },
+    {
+      "command": "edit.clipboard.get",
+      "params": {
+        "includeData": true
+      },
+      "envelope": {
+        "status": "ok",
+        "result": {
+          "kind": "cells",
+          "sourceContext": "xsheet",
+          "sourceProjectId": "pr_01K742SG00M49MNHXM6JRFX3Q5",
+          "itemCount": 1,
+          "items": [
+            {
+              "elementId": "el_01K742SG116N6QS302NRVED80W",
+              "frameOffset": 0,
+              "drawingRef": "dr_01K742SG0KQP4S3GDS9HV1HQQ5"
+            }
+          ],
+          "options": null,
+          "payload": {
+            "projectId": "pr_01K742SG00M49MNHXM6JRFX3Q5",
+            "drawings": {
+              "dr_01K742SG0KQP4S3GDS9HV1HQQ5": {
+                "id": "dr_01K742SG0KQP4S3GDS9HV1HQQ5",
+                "type": "drawing",
+                "rev": 1,
+                "name": "1",
+                "locked": false,
+                "pivot": {
+                  "x": 0.0,
+                  "y": -50.0
+                },
+                "mouthShape": null,
+                "nodes": [
+                  {
+                    "id": "nd_01K742SG0PWGJJ49VRZNNJHMXT",
+                    "type": "drawingNode",
+                    "rev": 1,
+                    "name": "Body",
+                    "kind": "layer",
+                    "hint": "brush",
+                    "strokes": [
+                      {
+                        "id": "st_01K742SG0QD5N56XJK48T69Z9C",
+                        "type": "stroke",
+                        "rev": 1,
+                        "kind": "brush",
+                        "closed": true,
+                        "points": [
+                          [
+                            0.0,
+                            0.0,
+                            0.0,
+                            0.0,
+                            10.5,
+                            0.0
+                          ],
+                          [
+                            100.0,
+                            0.0,
+                            -10.0,
+                            0.0,
+                            0.0,
+                            10.0
+                          ],
+                          [
+                            100.0,
+                            100.0,
+                            0.0,
+                            -10.0,
+                            0.0,
+                            0.0
+                          ],
+                          [
+                            0.0,
+                            100.0,
+                            0.0,
+                            0.0,
+                            0.0,
+                            -10.0
+                          ]
+                        ],
+                        "colourId": "col_01K742SG05B3FMEDJ0S30C9RPJ",
+                        "fillMatrix": null,
+                        "lineStyle": null,
+                        "spine": {
+                          "points": [
+                            [
+                              10.0,
+                              50.0,
+                              0.0,
+                              0.0,
+                              20.0,
+                              0.0
+                            ],
+                            [
+                              90.0,
+                              50.0,
+                              -20.0,
+                              0.0,
+                              0.0,
+                              0.0
+                            ]
+                          ],
+                          "pressure": [
+                            [
+                              0.0,
+                              0.2
+                            ],
+                            [
+                              0.5,
+                              1.0
+                            ],
+                            [
+                              1.0,
+                              0.4
+                            ]
+                          ],
+                          "pen": {
+                            "penId": null,
+                            "tip": "round",
+                            "minSize": 0.5,
+                            "maxSize": 2.0
+                          }
+                        },
+                        "sides": {
+                          "left": {
+                            "colourId": "col_01K742SG05B3FMEDJ0S30C9RPJ",
+                            "matrix": null
+                          },
+                          "right": null
+                        }
+                      },
+                      {
+                        "id": "st_01K742SG0RDAEGZRD2KHFY4SGG",
+                        "type": "stroke",
+                        "rev": 1,
+                        "kind": "pencil",
+                        "closed": false,
+                        "points": [
+                          [
+                            -50.0,
+                            -50.0,
+                            0.0,
+                            0.0,
+                            0.0,
+                            0.0
+                          ],
+                          [
+                            50.0,
+                            50.0,
+                            0.0,
+                            0.0,
+                            0.0,
+                            0.0
+                          ]
+                        ],
+                        "colourId": "col_01K742SG0960NRS9N70BCW32DA",
+                        "fillMatrix": null,
+                        "lineStyle": {
+                          "thickness": 1.5,
+                          "lineType": "solid"
+                        },
+                        "spine": null,
+                        "sides": {
+                          "left": null,
+                          "right": null
+                        }
+                      },
+                      {
+                        "id": "st_01K742SG0S8P4MXX7RTGHMQM7Y",
+                        "type": "stroke",
+                        "rev": 1,
+                        "kind": "invisible",
+                        "closed": false,
+                        "points": [
+                          [
+                            0.0,
+                            0.0,
+                            0.0,
+                            0.0,
+                            0.0,
+                            0.0
+                          ],
+                          [
+                            0.0,
+                            100.0,
+                            0.0,
+                            0.0,
+                            0.0,
+                            0.0
+                          ]
+                        ],
+                        "colourId": null,
+                        "fillMatrix": null,
+                        "lineStyle": null,
+                        "spine": null,
+                        "sides": {
+                          "left": {
+                            "colourId": "col_01K742SG0614PQ7Q1P5RK8MR09",
+                            "matrix": [
+                              1,
+                              0,
+                              0,
+                              1,
+                              0,
+                              0
+                            ]
+                          },
+                          "right": {
+                            "colourId": null,
+                            "matrix": null
+                          }
+                        },
+                        "meta": {
+                          "note": "closes the sky zone"
+                        }
+                      }
+                    ]
+                  },
+                  {
+                    "id": "nd_01K742SG0TKWEQN511SDDB1XTA",
+                    "type": "drawingNode",
+                    "rev": 1,
+                    "kind": "group",
+                    "children": [
+                      {
+                        "id": "nd_01K742SG0VYSVZ0REAM7096TSY",
+                        "type": "drawingNode",
+                        "rev": 1,
+                        "kind": "layer",
+                        "hint": "pencil",
+                        "strokes": []
+                      }
+                    ]
+                  },
+                  {
+                    "id": "nd_01K742SG0W7SK13D3RQ0E73F8Q",
+                    "type": "drawingNode",
+                    "rev": 1,
+                    "name": "Caption",
+                    "kind": "text",
+                    "transform": [
+                      1.0,
+                      0.0,
+                      0.0,
+                      1.0,
+                      -100.0,
+                      200.0
+                    ],
+                    "widthMode": "fixed",
+                    "width": 400.0,
+                    "text": "H\u00e9llo",
+                    "runs": [
+                      {
+                        "start": 0,
+                        "length": 5,
+                        "font": "Inter",
+                        "size": 24.0,
+                        "bold": false,
+                        "italic": true,
+                        "script": "normal",
+                        "kerning": 0.0,
+                        "autoKerning": true,
+                        "colourId": "col_01K742SG0960NRS9N70BCW32DA"
+                      }
+                    ],
+                    "paragraphs": [
+                      {
+                        "start": 0,
+                        "length": 5,
+                        "alignment": "centre",
+                        "marginLeft": 0.0,
+                        "marginRight": 0.0,
+                        "indent": 0.0,
+                        "lineSpacing": 1.2
+                      }
+                    ]
+                  }
+                ],
+                "colourRecovery": [
+                  {
+                    "colourId": "col_01K742SG05B3FMEDJ0S30C9RPJ",
+                    "paletteId": "pal_01K742SG02EZFVY9RTYD3T0DK8",
+                    "paletteName": "Main",
+                    "styles": [
+                      {
+                        "styleId": "sty_01K742SG03YX1MSB6Q3NPSH06B",
+                        "styleName": "Day"
+                      },
+                      {
+                        "styleId": "sty_01K742SG04E82SQ9B9R82MVP1B",
+                        "styleName": "Night"
+                      }
+                    ],
+                    "swatch": {
+                      "colourId": "col_01K742SG05B3FMEDJ0S30C9RPJ",
+                      "type": "swatch",
+                      "rev": 1,
+                      "name": "Skin",
+                      "kind": "texture",
+                      "deformable": false,
+                      "values": {
+                        "sty_01K742SG03YX1MSB6Q3NPSH06B": {
+                          "image": "textures/r3-shared.png",
+                          "tile": true,
+                          "width": 1,
+                          "height": 1
+                        },
+                        "sty_01K742SG04E82SQ9B9R82MVP1B": {
+                          "image": "textures/r3-shared.png",
+                          "tile": true,
+                          "width": 1,
+                          "height": 1
+                        }
+                      }
+                    }
+                  }
+                ],
+                "createdAt": "2026-10-17T09:30:12.345Z",
+                "ext": {
+                  "com.example.tool": {
+                    "pass": 2,
+                    "stage": "clean-up"
+                  }
+                }
+              }
+            },
+            "banks": {},
+            "blobs": {
+              "textures/r3-shared.png": "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR4nGPRDLz3HwAEawJcHQ9y7gAAAABJRU5ErkJggg=="
+            },
+            "notes": {},
+            "elementTypes": {
+              "el_01K742SG116N6QS302NRVED80W": "drawing"
+            }
+          }
+        },
+        "changes": [],
+        "warnings": [],
+        "documentRev": 1
+      }
+    },
+    {
+      "command": "project.open",
+      "params": {
+        "path": "C:\\Users\\kaiga\\work\\review\\m3-c31-r3\\reviews\\evidence\\M3-C3.1-r3\\repros\\texture-209.animpkg"
+      },
+      "envelope": {
+        "status": "ok",
+        "result": {
+          "jobId": "job-2"
+        },
+        "changes": [],
+        "warnings": [],
+        "documentRev": 1
+      }
+    },
+    {
+      "command": "job.wait",
+      "params": {
+        "jobId": "job-2",
+        "timeoutMs": 60000
+      },
+      "envelope": {
+        "status": "ok",
+        "result": {
+          "jobId": "job-2",
+          "commandId": "project.open",
+          "state": "succeeded",
+          "progress": 1.0,
+          "message": "Finalisation",
+          "startedAt": "2026-11-03T19:56:02.057Z",
+          "result": {
+            "projectId": "pr_01K742SG00M49MNHXM6JRFX3Q5",
+            "readOnly": false,
+            "formatVersion": "1.0",
+            "warnings": [
+              {
+                "id": "project.mediaMissing",
+                "message": "9 media file(s) referenced by the project are missing",
+                "details": {
+                  "missing": [
+                    {
+                      "objectId": "dr_01K742SG0MNEVB42XGQYPJ71BD",
+                      "location": "banks/db_01K742SG0JK1TWN9VHQNCQ0H5Z/dr_01K742SG0MNEVB42XGQYPJ71BD/nd_01K742SG0XDVVCCZG1X3FEWH0Z.png",
+                      "kind": "pixels"
+                    },
+                    {
+                      "objectId": "dr_01K742SG14ACGQYMQX71CS3TVC",
+                      "location": "banks/db_01K742SG1341AF9066GRBJ0C55/dr_01K742SG14ACGQYMQX71CS3TVC/nd_01K742SG156NMR61KB7AGNZ46T.png",
+                      "kind": "pixels"
+                    },
+                    {
+                      "objectId": "li_01K742SG2XT2D7G7VVY349481F",
+                      "location": "library/files/Sky.png",
+                      "kind": "libraryFile"
+                    },
+                    {
+                      "objectId": "li_01K742SG2WM41NTR460H8XBC77",
+                      "location": "library/files/walk.animtpl",
+                      "kind": "libraryFile"
+                    },
+                    {
+                      "objectId": "li_01K742SG2XT2D7G7VVY349481F",
+                      "location": "library/thumbnails/sky.png",
+                      "kind": "libraryFile"
+                    },
+                    {
+                      "objectId": "as_01K742SG0GDBG9G6EQND1CZA7T",
+                      "location": "media/as_01K742SG0GDBG9G6EQND1CZA7T.wav",
+                      "kind": "embedded"
+                    },
+                    {
+                      "objectId": "pal_01K742SG02EZFVY9RTYD3T0DK8",
+                      "location": "textures/fabric-day.png",
+                      "kind": "texture"
+                    },
+                    {
+                      "objectId": "pal_01K742SG02EZFVY9RTYD3T0DK8",
+                      "location": "textures/fabric-night.png",
+                      "kind": "texture"
+                    },
+                    {
+                      "objectId": "as_01K742SG0H6NYHA1E94EHMPZ2G",
+                      "location": "../ref/reference.mov",
+                      "kind": "linked"
+                    }
+                  ]
+                }
+              }
+            ]
+          },
+          "session": "agent:s1-a47b0c"
+        },
+        "changes": [],
+        "warnings": [],
+        "documentRev": 1
+      }
+    },
+    {
+      "command": "cell.clipboard.set",
+      "params": {
+        "elementIds": [
+          "scene:\"Intro\"/element:\"Bob\""
+        ],
+        "from": 1,
+        "to": 1
+      },
+      "envelope": {
+        "status": "ok",
+        "result": {
+          "contentType": "drawingCells",
+          "elementCount": 1,
+          "frames": 1
+        },
+        "changes": [],
+        "warnings": [],
+        "documentRev": 1
+      }
+    },
+    {
+      "command": "edit.clipboard.get",
+      "params": {
+        "includeData": true
+      },
+      "envelope": {
+        "status": "ok",
+        "result": {
+          "kind": "cells",
+          "sourceContext": "xsheet",
+          "sourceProjectId": "pr_01K742SG00M49MNHXM6JRFX3Q5",
+          "itemCount": 1,
+          "items": [
+            {
+              "elementId": "el_01K742SG116N6QS302NRVED80W",
+              "frameOffset": 0,
+              "drawingRef": "dr_01K742SG0KQP4S3GDS9HV1HQQ5"
+            }
+          ],
+          "options": null,
+          "payload": {
+            "projectId": "pr_01K742SG00M49MNHXM6JRFX3Q5",
+            "drawings": {
+              "dr_01K742SG0KQP4S3GDS9HV1HQQ5": {
+                "id": "dr_01K742SG0KQP4S3GDS9HV1HQQ5",
+                "type": "drawing",
+                "rev": 1,
+                "name": "1",
+                "locked": false,
+                "pivot": {
+                  "x": 0.0,
+                  "y": -50.0
+                },
+                "mouthShape": null,
+                "nodes": [
+                  {
+                    "id": "nd_01K742SG0PWGJJ49VRZNNJHMXT",
+                    "type": "drawingNode",
+                    "rev": 1,
+                    "name": "Body",
+                    "kind": "layer",
+                    "hint": "brush",
+                    "strokes": [
+                      {
+                        "id": "st_01K742SG0QD5N56XJK48T69Z9C",
+                        "type": "stroke",
+                        "rev": 1,
+                        "kind": "brush",
+                        "closed": true,
+                        "points": [
+                          [
+                            0.0,
+                            0.0,
+                            0.0,
+                            0.0,
+                            10.5,
+                            0.0
+                          ],
+                          [
+                            100.0,
+                            0.0,
+                            -10.0,
+                            0.0,
+                            0.0,
+                            10.0
+                          ],
+                          [
+                            100.0,
+                            100.0,
+                            0.0,
+                            -10.0,
+                            0.0,
+                            0.0
+                          ],
+                          [
+                            0.0,
+                            100.0,
+                            0.0,
+                            0.0,
+                            0.0,
+                            -10.0
+                          ]
+                        ],
+                        "colourId": "col_01K742SG05B3FMEDJ0S30C9RPJ",
+                        "fillMatrix": null,
+                        "lineStyle": null,
+                        "spine": {
+                          "points": [
+                            [
+                              10.0,
+                              50.0,
+                              0.0,
+                              0.0,
+                              20.0,
+                              0.0
+                            ],
+                            [
+                              90.0,
+                              50.0,
+                              -20.0,
+                              0.0,
+                              0.0,
+                              0.0
+                            ]
+                          ],
+                          "pressure": [
+                            [
+                              0.0,
+                              0.2
+                            ],
+                            [
+                              0.5,
+                              1.0
+                            ],
+                            [
+                              1.0,
+                              0.4
+                            ]
+                          ],
+                          "pen": {
+                            "penId": null,
+                            "tip": "round",
+                            "minSize": 0.5,
+                            "maxSize": 2.0
+                          }
+                        },
+                        "sides": {
+                          "left": {
+                            "colourId": "col_01K742SG05B3FMEDJ0S30C9RPJ",
+                            "matrix": null
+                          },
+                          "right": null
+                        }
+                      },
+                      {
+                        "id": "st_01K742SG0RDAEGZRD2KHFY4SGG",
+                        "type": "stroke",
+                        "rev": 1,
+                        "kind": "pencil",
+                        "closed": false,
+                        "points": [
+                          [
+                            -50.0,
+                            -50.0,
+                            0.0,
+                            0.0,
+                            0.0,
+                            0.0
+                          ],
+                          [
+                            50.0,
+                            50.0,
+                            0.0,
+                            0.0,
+                            0.0,
+                            0.0
+                          ]
+                        ],
+                        "colourId": "col_01K742SG0960NRS9N70BCW32DA",
+                        "fillMatrix": null,
+                        "lineStyle": {
+                          "thickness": 1.5,
+                          "lineType": "solid"
+                        },
+                        "spine": null,
+                        "sides": {
+                          "left": null,
+                          "right": null
+                        }
+                      },
+                      {
+                        "id": "st_01K742SG0S8P4MXX7RTGHMQM7Y",
+                        "type": "stroke",
+                        "rev": 1,
+                        "kind": "invisible",
+                        "closed": false,
+                        "points": [
+                          [
+                            0.0,
+                            0.0,
+                            0.0,
+                            0.0,
+                            0.0,
+                            0.0
+                          ],
+                          [
+                            0.0,
+                            100.0,
+                            0.0,
+                            0.0,
+                            0.0,
+                            0.0
+                          ]
+                        ],
+                        "colourId": null,
+                        "fillMatrix": null,
+                        "lineStyle": null,
+                        "spine": null,
+                        "sides": {
+                          "left": {
+                            "colourId": "col_01K742SG0614PQ7Q1P5RK8MR09",
+                            "matrix": [
+                              1,
+                              0,
+                              0,
+                              1,
+                              0,
+                              0
+                            ]
+                          },
+                          "right": {
+                            "colourId": null,
+                            "matrix": null
+                          }
+                        },
+                        "meta": {
+                          "note": "closes the sky zone"
+                        }
+                      }
+                    ]
+                  },
+                  {
+                    "id": "nd_01K742SG0TKWEQN511SDDB1XTA",
+                    "type": "drawingNode",
+                    "rev": 1,
+                    "kind": "group",
+                    "children": [
+                      {
+                        "id": "nd_01K742SG0VYSVZ0REAM7096TSY",
+                        "type": "drawingNode",
+                        "rev": 1,
+                        "kind": "layer",
+                        "hint": "pencil",
+                        "strokes": []
+                      }
+                    ]
+                  },
+                  {
+                    "id": "nd_01K742SG0W7SK13D3RQ0E73F8Q",
+                    "type": "drawingNode",
+                    "rev": 1,
+                    "name": "Caption",
+                    "kind": "text",
+                    "transform": [
+                      1.0,
+                      0.0,
+                      0.0,
+                      1.0,
+                      -100.0,
+                      200.0
+                    ],
+                    "widthMode": "fixed",
+                    "width": 400.0,
+                    "text": "H\u00e9llo",
+                    "runs": [
+                      {
+                        "start": 0,
+                        "length": 5,
+                        "font": "Inter",
+                        "size": 24.0,
+                        "bold": false,
+                        "italic": true,
+                        "script": "normal",
+                        "kerning": 0.0,
+                        "autoKerning": true,
+                        "colourId": "col_01K742SG0960NRS9N70BCW32DA"
+                      }
+                    ],
+                    "paragraphs": [
+                      {
+                        "start": 0,
+                        "length": 5,
+                        "alignment": "centre",
+                        "marginLeft": 0.0,
+                        "marginRight": 0.0,
+                        "indent": 0.0,
+                        "lineSpacing": 1.2
+                      }
+                    ]
+                  }
+                ],
+                "colourRecovery": [
+                  {
+                    "colourId": "col_01K742SG05B3FMEDJ0S30C9RPJ",
+                    "paletteId": "pal_01K742SG02EZFVY9RTYD3T0DK8",
+                    "paletteName": "Main",
+                    "styles": [
+                      {
+                        "styleId": "sty_01K742SG03YX1MSB6Q3NPSH06B",
+                        "styleName": "Day"
+                      },
+                      {
+                        "styleId": "sty_01K742SG04E82SQ9B9R82MVP1B",
+                        "styleName": "Night"
+                      }
+                    ],
+                    "swatch": {
+                      "colourId": "col_01K742SG05B3FMEDJ0S30C9RPJ",
+                      "type": "swatch",
+                      "rev": 1,
+                      "name": "Skin",
+                      "kind": "texture",
+                      "deformable": false,
+                      "values": {
+                        "sty_01K742SG03YX1MSB6Q3NPSH06B": {
+                          "image": "textures/r3-shared.png",
+                          "tile": true,
+                          "width": 1,
+                          "height": 1
+                        },
+                        "sty_01K742SG04E82SQ9B9R82MVP1B": {
+                          "image": "textures/r3-shared.png",
+                          "tile": true,
+                          "width": 1,
+                          "height": 1
+                        }
+                      }
+                    }
+                  }
+                ],
+                "createdAt": "2026-10-17T09:30:12.345Z",
+                "ext": {
+                  "com.example.tool": {
+                    "pass": 2,
+                    "stage": "clean-up"
+                  }
+                }
+              }
+            },
+            "banks": {},
+            "blobs": {
+              "textures/r3-shared.png": "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR4nGO5GHjvPwAHCwMEpas3DAAAAABJRU5ErkJggg=="
+            },
+            "notes": {},
+            "elementTypes": {
+              "el_01K742SG116N6QS302NRVED80W": "drawing"
+            }
+          }
+        },
+        "changes": [],
+        "warnings": [],
+        "documentRev": 1
+      }
+    },
+    {
+      "command": "project.create",
+      "params": {
+        "name": "Texture release928"
+      },
+      "envelope": {
+        "status": "ok",
+        "result": {
+          "projectId": "pr_01M6HFQ84ZEMYVEEGC3HXW9Z6V",
+          "sceneId": "sc_01M6HFQ84ZEMYVEEGC3HXW9ZAZ",
+          "cameraId": "el_01M6HFQ84ZEMYVEEGC3HXW9ZB1",
+          "elementId": "el_01M6HFQ84ZEMYVEEGC3HXW9ZB2"
+        },
+        "changes": [],
+        "warnings": [],
+        "documentRev": 1
+      }
+    },
+    {
+      "command": "element.create",
+      "params": {
+        "type": "drawing",
+        "name": "Texture928"
+      },
+      "envelope": {
+        "status": "ok",
+        "result": {
+          "elementIds": [
+            "el_01K7JJN800PQQQ4MK0DCQW0M0X"
+          ],
+          "names": [
+            "Texture928"
+          ],
+          "warnings": []
+        },
+        "changes": [
+          {
+            "id": "pr_01M6HFQ84ZEMYVEEGC3HXW9Z6V",
+            "type": "project",
+            "op": "modified",
+            "rev": 2,
+            "patch": [
+              {
+                "op": "add",
+                "path": "/drawingBanks/1",
+                "value": {
+                  "id": "db_01K7JJN801EZECJKVX33DYSENJ",
+                  "type": "drawingBank"
+                }
+              }
+            ]
+          },
+          {
+            "id": "db_01K7JJN801EZECJKVX33DYSENJ",
+            "type": "drawingBank",
+            "op": "created",
+            "rev": 2,
+            "parentId": "pr_01M6HFQ84ZEMYVEEGC3HXW9Z6V",
+            "index": 1
+          },
+          {
+            "id": "sc_01M6HFQ84ZEMYVEEGC3HXW9ZAZ",
+            "type": "scene",
+            "op": "modified",
+            "rev": 2,
+            "patch": [
+              {
+                "op": "add",
+                "path": "/tree/0",
+                "value": {
+                  "id": "el_01K7JJN800PQQQ4MK0DCQW0M0X",
+                  "children": []
+                }
+              },
+              {
+                "op": "replace",
+                "path": "/columnOrder",
+                "value": [
+                  "el_01M6HFQ84ZEMYVEEGC3HXW9ZB2",
+                  "el_01K7JJN800PQQQ4MK0DCQW0M0X"
+                ],
+                "oldValue": [
+                  "el_01M6HFQ84ZEMYVEEGC3HXW9ZB2"
+                ]
+              },
+              {
+                "op": "add",
+                "path": "/elements/3",
+                "value": {
+                  "id": "el_01K7JJN800PQQQ4MK0DCQW0M0X",
+                  "type": "element"
+                }
+              }
+            ]
+          },
+          {
+            "id": "el_01K7JJN800PQQQ4MK0DCQW0M0X",
+            "type": "element",
+            "op": "created",
+            "rev": 2,
+            "parentId": "sc_01M6HFQ84ZEMYVEEGC3HXW9ZAZ",
+            "index": 3
+          }
+        ],
+        "undo": {
+          "stepId": "u-1",
+          "label": "New Elements"
+        },
+        "warnings": [],
+        "documentRev": 2
+      }
+    },
+    {
+      "command": "edit.clipboard.set",
+      "params": {
+        "content": {
+          "kind": "cells",
+          "sourceContext": "xsheet",
+          "sourceProjectId": "pr_01K742SG00M49MNHXM6JRFX3Q5",
+          "itemCount": 1,
+          "items": [
+            {
+              "elementId": "el_01K742SG116N6QS302NRVED80W",
+              "frameOffset": 0,
+              "drawingRef": "dr_01K742SG0KQP4S3GDS9HV1HQQ5"
+            }
+          ],
+          "options": null,
+          "payload": {
+            "projectId": "pr_01K742SG00M49MNHXM6JRFX3Q5",
+            "drawings": {
+              "dr_01K742SG0KQP4S3GDS9HV1HQQ5": {
+                "id": "dr_01K742SG0KQP4S3GDS9HV1HQQ5",
+                "type": "drawing",
+                "rev": 1,
+                "name": "1",
+                "locked": false,
+                "pivot": {
+                  "x": 0.0,
+                  "y": -50.0
+                },
+                "mouthShape": null,
+                "nodes": [
+                  {
+                    "id": "nd_01K742SG0PWGJJ49VRZNNJHMXT",
+                    "type": "drawingNode",
+                    "rev": 1,
+                    "name": "Body",
+                    "kind": "layer",
+                    "hint": "brush",
+                    "strokes": [
+                      {
+                        "id": "st_01K742SG0QD5N56XJK48T69Z9C",
+                        "type": "stroke",
+                        "rev": 1,
+                        "kind": "brush",
+                        "closed": true,
+                        "points": [
+                          [
+                            0.0,
+                            0.0,
+                            0.0,
+                            0.0,
+                            10.5,
+                            0.0
+                          ],
+                          [
+                            100.0,
+                            0.0,
+                            -10.0,
+                            0.0,
+                            0.0,
+                            10.0
+                          ],
+                          [
+                            100.0,
+                            100.0,
+                            0.0,
+                            -10.0,
+                            0.0,
+                            0.0
+                          ],
+                          [
+                            0.0,
+                            100.0,
+                            0.0,
+                            0.0,
+                            0.0,
+                            -10.0
+                          ]
+                        ],
+                        "colourId": "col_01K742SG05B3FMEDJ0S30C9RPJ",
+                        "fillMatrix": null,
+                        "lineStyle": null,
+                        "spine": {
+                          "points": [
+                            [
+                              10.0,
+                              50.0,
+                              0.0,
+                              0.0,
+                              20.0,
+                              0.0
+                            ],
+                            [
+                              90.0,
+                              50.0,
+                              -20.0,
+                              0.0,
+                              0.0,
+                              0.0
+                            ]
+                          ],
+                          "pressure": [
+                            [
+                              0.0,
+                              0.2
+                            ],
+                            [
+                              0.5,
+                              1.0
+                            ],
+                            [
+                              1.0,
+                              0.4
+                            ]
+                          ],
+                          "pen": {
+                            "penId": null,
+                            "tip": "round",
+                            "minSize": 0.5,
+                            "maxSize": 2.0
+                          }
+                        },
+                        "sides": {
+                          "left": {
+                            "colourId": "col_01K742SG05B3FMEDJ0S30C9RPJ",
+                            "matrix": null
+                          },
+                          "right": null
+                        }
+                      },
+                      {
+                        "id": "st_01K742SG0RDAEGZRD2KHFY4SGG",
+                        "type": "stroke",
+                        "rev": 1,
+                        "kind": "pencil",
+                        "closed": false,
+                        "points": [
+                          [
+                            -50.0,
+                            -50.0,
+                            0.0,
+                            0.0,
+                            0.0,
+                            0.0
+                          ],
+                          [
+                            50.0,
+                            50.0,
+                            0.0,
+                            0.0,
+                            0.0,
+                            0.0
+                          ]
+                        ],
+                        "colourId": "col_01K742SG0960NRS9N70BCW32DA",
+                        "fillMatrix": null,
+                        "lineStyle": {
+                          "thickness": 1.5,
+                          "lineType": "solid"
+                        },
+                        "spine": null,
+                        "sides": {
+                          "left": null,
+                          "right": null
+                        }
+                      },
+                      {
+                        "id": "st_01K742SG0S8P4MXX7RTGHMQM7Y",
+                        "type": "stroke",
+                        "rev": 1,
+                        "kind": "invisible",
+                        "closed": false,
+                        "points": [
+                          [
+                            0.0,
+                            0.0,
+                            0.0,
+                            0.0,
+                            0.0,
+                            0.0
+                          ],
+                          [
+                            0.0,
+                            100.0,
+                            0.0,
+                            0.0,
+                            0.0,
+                            0.0
+                          ]
+                        ],
+                        "colourId": null,
+                        "fillMatrix": null,
+                        "lineStyle": null,
+                        "spine": null,
+                        "sides": {
+                          "left": {
+                            "colourId": "col_01K742SG0614PQ7Q1P5RK8MR09",
+                            "matrix": [
+                              1,
+                              0,
+                              0,
+                              1,
+                              0,
+                              0
+                            ]
+                          },
+                          "right": {
+                            "colourId": null,
+                            "matrix": null
+                          }
+                        },
+                        "meta": {
+                          "note": "closes the sky zone"
+                        }
+                      }
+                    ]
+                  },
+                  {
+                    "id": "nd_01K742SG0TKWEQN511SDDB1XTA",
+                    "type": "drawingNode",
+                    "rev": 1,
+                    "kind": "group",
+                    "children": [
+                      {
+                        "id": "nd_01K742SG0VYSVZ0REAM7096TSY",
+                        "type": "drawingNode",
+                        "rev": 1,
+                        "kind": "layer",
+                        "hint": "pencil",
+                        "strokes": []
+                      }
+                    ]
+                  },
+                  {
+                    "id": "nd_01K742SG0W7SK13D3RQ0E73F8Q",
+                    "type": "drawingNode",
+                    "rev": 1,
+                    "name": "Caption",
+                    "kind": "text",
+                    "transform": [
+                      1.0,
+                      0.0,
+                      0.0,
+                      1.0,
+                      -100.0,
+                      200.0
+                    ],
+                    "widthMode": "fixed",
+                    "width": 400.0,
+                    "text": "H\u00e9llo",
+                    "runs": [
+                      {
+                        "start": 0,
+                        "length": 5,
+                        "font": "Inter",
+                        "size": 24.0,
+                        "bold": false,
+                        "italic": true,
+                        "script": "normal",
+                        "kerning": 0.0,
+                        "autoKerning": true,
+                        "colourId": "col_01K742SG0960NRS9N70BCW32DA"
+                      }
+                    ],
+                    "paragraphs": [
+                      {
+                        "start": 0,
+                        "length": 5,
+                        "alignment": "centre",
+                        "marginLeft": 0.0,
+                        "marginRight": 0.0,
+                        "indent": 0.0,
+                        "lineSpacing": 1.2
+                      }
+                    ]
+                  }
+                ],
+                "colourRecovery": [
+                  {
+                    "colourId": "col_01K742SG05B3FMEDJ0S30C9RPJ",
+                    "paletteId": "pal_01K742SG02EZFVY9RTYD3T0DK8",
+                    "paletteName": "Main",
+                    "styles": [
+                      {
+                        "styleId": "sty_01K742SG03YX1MSB6Q3NPSH06B",
+                        "styleName": "Day"
+                      },
+                      {
+                        "styleId": "sty_01K742SG04E82SQ9B9R82MVP1B",
+                        "styleName": "Night"
+                      }
+                    ],
+                    "swatch": {
+                      "colourId": "col_01K742SG05B3FMEDJ0S30C9RPJ",
+                      "type": "swatch",
+                      "rev": 1,
+                      "name": "Skin",
+                      "kind": "texture",
+                      "deformable": false,
+                      "values": {
+                        "sty_01K742SG03YX1MSB6Q3NPSH06B": {
+                          "image": "textures/r3-shared.png",
+                          "tile": true,
+                          "width": 1,
+                          "height": 1
+                        },
+                        "sty_01K742SG04E82SQ9B9R82MVP1B": {
+                          "image": "textures/r3-shared.png",
+                          "tile": true,
+                          "width": 1,
+                          "height": 1
+                        }
+                      }
+                    }
+                  }
+                ],
+                "createdAt": "2026-10-17T09:30:12.345Z",
+                "ext": {
+                  "com.example.tool": {
+                    "pass": 2,
+                    "stage": "clean-up"
+                  }
+                }
+              }
+            },
+            "banks": {},
+            "blobs": {
+              "textures/r3-shared.png": "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR4nGPRDLz3HwAEawJcHQ9y7gAAAABJRU5ErkJggg=="
+            },
+            "notes": {},
+            "elementTypes": {
+              "el_01K742SG116N6QS302NRVED80W": "drawing"
+            }
+          }
+        }
+      },
+      "envelope": {
+        "status": "ok",
+        "result": {
+          "kind": "cells",
+          "itemCount": 1
+        },
+        "changes": [],
+        "warnings": [],
+        "documentRev": 2
+      }
+    },
+    {
+      "command": "cell.clipboard.apply",
+      "params": {
+        "elementId": "el_01K7JJN800PQQQ4MK0DCQW0M0X",
+        "frame": 1,
+        "mode": "newDrawings"
+      },
+      "envelope": {
+        "status": "ok",
+        "result": {
+          "elementIds": [
+            "el_01K7JJN800PQQQ4MK0DCQW0M0X"
+          ],
+          "from": 1,
+          "to": 1,
+          "createdDrawingIds": [
+            "dr_01K7JJN80069A5D749N2NJCYYA"
+          ]
+        },
+        "changes": [
+          {
+            "id": "db_01K7JJN801EZECJKVX33DYSENJ",
+            "type": "drawingBank",
+            "op": "modified",
+            "rev": 3,
+            "patch": [
+              {
+                "op": "add",
+                "path": "/drawings/0",
+                "value": {
+                  "id": "dr_01K7JJN80069A5D749N2NJCYYA",
+                  "type": "drawing"
+                }
+              }
+            ]
+          },
+          {
+            "id": "dr_01K7JJN80069A5D749N2NJCYYA/st_01K742SG0QD5N56XJK48T69Z9C",
+            "type": "stroke",
+            "op": "created",
+            "rev": 3,
+            "parentId": "dr_01K7JJN80069A5D749N2NJCYYA/nd_01K742SG0PWGJJ49VRZNNJHMXT",
+            "index": 0
+          },
+          {
+            "id": "dr_01K7JJN80069A5D749N2NJCYYA/st_01K742SG0RDAEGZRD2KHFY4SGG",
+            "type": "stroke",
+            "op": "created",
+            "rev": 3,
+            "parentId": "dr_01K7JJN80069A5D749N2NJCYYA/nd_01K742SG0PWGJJ49VRZNNJHMXT",
+            "index": 1
+          },
+          {
+            "id": "dr_01K7JJN80069A5D749N2NJCYYA/st_01K742SG0S8P4MXX7RTGHMQM7Y",
+            "type": "stroke",
+            "op": "created",
+            "rev": 3,
+            "parentId": "dr_01K7JJN80069A5D749N2NJCYYA/nd_01K742SG0PWGJJ49VRZNNJHMXT",
+            "index": 2
+          },
+          {
+            "id": "dr_01K7JJN80069A5D749N2NJCYYA/nd_01K742SG0PWGJJ49VRZNNJHMXT",
+            "type": "drawingNode",
+            "op": "created",
+            "rev": 3,
+            "parentId": "dr_01K7JJN80069A5D749N2NJCYYA",
+            "index": 0
+          },
+          {
+            "id": "dr_01K7JJN80069A5D749N2NJCYYA/nd_01K742SG0VYSVZ0REAM7096TSY",
+            "type": "drawingNode",
+            "op": "created",
+            "rev": 3,
+            "parentId": "dr_01K7JJN80069A5D749N2NJCYYA/nd_01K742SG0TKWEQN511SDDB1XTA",
+            "index": 0
+          },
+          {
+            "id": "dr_01K7JJN80069A5D749N2NJCYYA/nd_01K742SG0TKWEQN511SDDB1XTA",
+            "type": "drawingNode",
+            "op": "created",
+            "rev": 3,
+            "parentId": "dr_01K7JJN80069A5D749N2NJCYYA",
+            "index": 1
+          },
+          {
+            "id": "dr_01K7JJN80069A5D749N2NJCYYA/nd_01K742SG0W7SK13D3RQ0E73F8Q",
+            "type": "drawingNode",
+            "op": "created",
+            "rev": 3,
+            "parentId": "dr_01K7JJN80069A5D749N2NJCYYA",
+            "index": 2
+          },
+          {
+            "id": "dr_01K7JJN80069A5D749N2NJCYYA",
+            "type": "drawing",
+            "op": "created",
+            "rev": 3,
+            "parentId": "db_01K7JJN801EZECJKVX33DYSENJ",
+            "index": 0
+          },
+          {
+            "id": "el_01K7JJN800PQQQ4MK0DCQW0M0X",
+            "type": "element",
+            "op": "modified",
+            "rev": 3,
+            "patch": [
+              {
+                "op": "replace",
+                "path": "/exposure",
+                "range": {
+                  "from": 1,
+                  "to": 1
+                },
+                "value": [
+                  [
+                    "dr_01K7JJN80069A5D749N2NJCYYA",
+                    1
+                  ]
+                ],
+                "oldValue": [
+                  [
+                    null,
+                    1
+                  ]
+                ]
+              }
+            ]
+          }
+        ],
+        "undo": {
+          "stepId": "u-2",
+          "label": "Paste Cells"
+        },
+        "warnings": [],
+        "documentRev": 3
+      }
+    },
+    {
+      "command": "doc.object.get",
+      "params": {
+        "ref": "dr_01K7JJN80069A5D749N2NJCYYA",
+        "depth": -1
+      },
+      "envelope": {
+        "status": "ok",
+        "result": {
+          "object": {
+            "id": "dr_01K7JJN80069A5D749N2NJCYYA",
+            "type": "drawing",
+            "rev": 3,
+            "name": "1",
+            "path": "scene:\"Scene-1\"/element:\"Texture928\"/drawing:\"1\"",
+            "locked": false,
+            "pivot": {
+              "x": 0.0,
+              "y": -50.0
+            },
+            "mouthShape": null,
+            "nodes": [
+              {
+                "id": "nd_01K742SG0PWGJJ49VRZNNJHMXT",
+                "type": "drawingNode",
+                "rev": 3,
+                "name": "Body",
+                "path": "scene:\"Scene-1\"/element:\"Texture928\"/drawing:\"1\"/drawingNode:\"Body\"",
+                "kind": "layer",
+                "hint": "brush",
+                "strokes": [
+                  {
+                    "id": "st_01K742SG0QD5N56XJK48T69Z9C",
+                    "type": "stroke",
+                    "rev": 3,
+                    "path": "scene:\"Scene-1\"/element:\"Texture928\"/drawing:\"1\"/drawingNode:\"Body\"/stroke:@st_01K742SG0QD5N56XJK48T69Z9C",
+                    "kind": "brush",
+                    "closed": true,
+                    "points": [
+                      [
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.0,
+                        10.5,
+                        0.0
+                      ],
+                      [
+                        100.0,
+                        0.0,
+                        -10.0,
+                        0.0,
+                        0.0,
+                        10.0
+                      ],
+                      [
+                        100.0,
+                        100.0,
+                        0.0,
+                        -10.0,
+                        0.0,
+                        0.0
+                      ],
+                      [
+                        0.0,
+                        100.0,
+                        0.0,
+                        0.0,
+                        0.0,
+                        -10.0
+                      ]
+                    ],
+                    "colourId": "col_01K742SG05B3FMEDJ0S30C9RPJ",
+                    "fillMatrix": null,
+                    "lineStyle": null,
+                    "spine": {
+                      "points": [
+                        [
+                          10.0,
+                          50.0,
+                          0.0,
+                          0.0,
+                          20.0,
+                          0.0
+                        ],
+                        [
+                          90.0,
+                          50.0,
+                          -20.0,
+                          0.0,
+                          0.0,
+                          0.0
+                        ]
+                      ],
+                      "pressure": [
+                        [
+                          0.0,
+                          0.2
+                        ],
+                        [
+                          0.5,
+                          1.0
+                        ],
+                        [
+                          1.0,
+                          0.4
+                        ]
+                      ],
+                      "pen": {
+                        "penId": null,
+                        "tip": "round",
+                        "minSize": 0.5,
+                        "maxSize": 2.0
+                      }
+                    },
+                    "sides": {
+                      "left": {
+                        "colourId": "col_01K742SG05B3FMEDJ0S30C9RPJ",
+                        "matrix": null
+                      },
+                      "right": null
+                    }
+                  },
+                  {
+                    "id": "st_01K742SG0RDAEGZRD2KHFY4SGG",
+                    "type": "stroke",
+                    "rev": 3,
+                    "path": "scene:\"Scene-1\"/element:\"Texture928\"/drawing:\"1\"/drawingNode:\"Body\"/stroke:@st_01K742SG0RDAEGZRD2KHFY4SGG",
+                    "kind": "pencil",
+                    "closed": false,
+                    "points": [
+                      [
+                        -50.0,
+                        -50.0,
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.0
+                      ],
+                      [
+                        50.0,
+                        50.0,
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.0
+                      ]
+                    ],
+                    "colourId": "col_01K742SG0960NRS9N70BCW32DA",
+                    "fillMatrix": null,
+                    "lineStyle": {
+                      "thickness": 1.5,
+                      "lineType": "solid"
+                    },
+                    "spine": null,
+                    "sides": {
+                      "left": null,
+                      "right": null
+                    }
+                  },
+                  {
+                    "id": "st_01K742SG0S8P4MXX7RTGHMQM7Y",
+                    "type": "stroke",
+                    "rev": 3,
+                    "path": "scene:\"Scene-1\"/element:\"Texture928\"/drawing:\"1\"/drawingNode:\"Body\"/stroke:@st_01K742SG0S8P4MXX7RTGHMQM7Y",
+                    "kind": "invisible",
+                    "closed": false,
+                    "points": [
+                      [
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.0
+                      ],
+                      [
+                        0.0,
+                        100.0,
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.0
+                      ]
+                    ],
+                    "colourId": null,
+                    "fillMatrix": null,
+                    "lineStyle": null,
+                    "spine": null,
+                    "sides": {
+                      "left": {
+                        "colourId": "col_01K742SG0614PQ7Q1P5RK8MR09",
+                        "matrix": [
+                          1,
+                          0,
+                          0,
+                          1,
+                          0,
+                          0
+                        ]
+                      },
+                      "right": {
+                        "colourId": null,
+                        "matrix": null
+                      }
+                    },
+                    "meta": {
+                      "note": "closes the sky zone"
+                    }
+                  }
+                ]
+              },
+              {
+                "id": "nd_01K742SG0TKWEQN511SDDB1XTA",
+                "type": "drawingNode",
+                "rev": 3,
+                "path": "scene:\"Scene-1\"/element:\"Texture928\"/drawing:\"1\"/drawingNode:@nd_01K742SG0TKWEQN511SDDB1XTA",
+                "kind": "group",
+                "children": [
+                  {
+                    "id": "nd_01K742SG0VYSVZ0REAM7096TSY",
+                    "type": "drawingNode",
+                    "rev": 3,
+                    "path": "scene:\"Scene-1\"/element:\"Texture928\"/drawing:\"1\"/drawingNode:@nd_01K742SG0TKWEQN511SDDB1XTA/drawingNode:@nd_01K742SG0VYSVZ0REAM7096TSY",
+                    "kind": "layer",
+                    "hint": "pencil",
+                    "strokes": []
+                  }
+                ]
+              },
+              {
+                "id": "nd_01K742SG0W7SK13D3RQ0E73F8Q",
+                "type": "drawingNode",
+                "rev": 3,
+                "name": "Caption",
+                "path": "scene:\"Scene-1\"/element:\"Texture928\"/drawing:\"1\"/drawingNode:\"Caption\"",
+                "kind": "text",
+                "transform": [
+                  1.0,
+                  0.0,
+                  0.0,
+                  1.0,
+                  -100.0,
+                  200.0
+                ],
+                "widthMode": "fixed",
+                "width": 400.0,
+                "text": "H\u00e9llo",
+                "runs": [
+                  {
+                    "start": 0,
+                    "length": 5,
+                    "font": "Inter",
+                    "size": 24.0,
+                    "bold": false,
+                    "italic": true,
+                    "script": "normal",
+                    "kerning": 0.0,
+                    "autoKerning": true,
+                    "colourId": "col_01K742SG0960NRS9N70BCW32DA"
+                  }
+                ],
+                "paragraphs": [
+                  {
+                    "start": 0,
+                    "length": 5,
+                    "alignment": "centre",
+                    "marginLeft": 0.0,
+                    "marginRight": 0.0,
+                    "indent": 0.0,
+                    "lineSpacing": 1.2
+                  }
+                ]
+              }
+            ],
+            "colourRecovery": [
+              {
+                "colourId": "col_01K742SG05B3FMEDJ0S30C9RPJ",
+                "paletteId": "pal_01K742SG02EZFVY9RTYD3T0DK8",
+                "paletteName": "Main",
+                "styles": [
+                  {
+                    "styleId": "sty_01K742SG03YX1MSB6Q3NPSH06B",
+                    "styleName": "Day"
+                  },
+                  {
+                    "styleId": "sty_01K742SG04E82SQ9B9R82MVP1B",
+                    "styleName": "Night"
+                  }
+                ],
+                "swatch": {
+                  "colourId": "col_01K742SG05B3FMEDJ0S30C9RPJ",
+                  "type": "swatch",
+                  "rev": 1,
+                  "name": "Skin",
+                  "kind": "texture",
+                  "deformable": false,
+                  "values": {
+                    "sty_01K742SG03YX1MSB6Q3NPSH06B": {
+                      "image": "textures/r3-shared.png",
+                      "tile": true,
+                      "width": 1,
+                      "height": 1
+                    },
+                    "sty_01K742SG04E82SQ9B9R82MVP1B": {
+                      "image": "textures/r3-shared.png",
+                      "tile": true,
+                      "width": 1,
+                      "height": 1
+                    }
+                  }
+                }
+              }
+            ],
+            "createdAt": "2026-11-03T19:56:02.092Z",
+            "ext": {
+              "com.example.tool": {
+                "pass": 2,
+                "stage": "clean-up"
+              }
+            }
+          }
+        },
+        "targets": {
+          "ids": [
+            "dr_01K7JJN80069A5D749N2NJCYYA"
+          ]
+        },
+        "changes": [],
+        "warnings": [],
+        "documentRev": 3
+      }
+    },
+    {
+      "command": "edit.clipboard.set",
+      "params": {
+        "content": {
+          "kind": "cells",
+          "sourceContext": "xsheet",
+          "sourceProjectId": "pr_01K742SG00M49MNHXM6JRFX3Q5",
+          "itemCount": 1,
+          "items": [
+            {
+              "elementId": "el_01K742SG116N6QS302NRVED80W",
+              "frameOffset": 0,
+              "drawingRef": "dr_01K742SG0KQP4S3GDS9HV1HQQ5"
+            }
+          ],
+          "options": null,
+          "payload": {
+            "projectId": "pr_01K742SG00M49MNHXM6JRFX3Q5",
+            "drawings": {
+              "dr_01K742SG0KQP4S3GDS9HV1HQQ5": {
+                "id": "dr_01K742SG0KQP4S3GDS9HV1HQQ5",
+                "type": "drawing",
+                "rev": 1,
+                "name": "1",
+                "locked": false,
+                "pivot": {
+                  "x": 0.0,
+                  "y": -50.0
+                },
+                "mouthShape": null,
+                "nodes": [
+                  {
+                    "id": "nd_01K742SG0PWGJJ49VRZNNJHMXT",
+                    "type": "drawingNode",
+                    "rev": 1,
+                    "name": "Body",
+                    "kind": "layer",
+                    "hint": "brush",
+                    "strokes": [
+                      {
+                        "id": "st_01K742SG0QD5N56XJK48T69Z9C",
+                        "type": "stroke",
+                        "rev": 1,
+                        "kind": "brush",
+                        "closed": true,
+                        "points": [
+                          [
+                            0.0,
+                            0.0,
+                            0.0,
+                            0.0,
+                            10.5,
+                            0.0
+                          ],
+                          [
+                            100.0,
+                            0.0,
+                            -10.0,
+                            0.0,
+                            0.0,
+                            10.0
+                          ],
+                          [
+                            100.0,
+                            100.0,
+                            0.0,
+                            -10.0,
+                            0.0,
+                            0.0
+                          ],
+                          [
+                            0.0,
+                            100.0,
+                            0.0,
+                            0.0,
+                            0.0,
+                            -10.0
+                          ]
+                        ],
+                        "colourId": "col_01K742SG05B3FMEDJ0S30C9RPJ",
+                        "fillMatrix": null,
+                        "lineStyle": null,
+                        "spine": {
+                          "points": [
+                            [
+                              10.0,
+                              50.0,
+                              0.0,
+                              0.0,
+                              20.0,
+                              0.0
+                            ],
+                            [
+                              90.0,
+                              50.0,
+                              -20.0,
+                              0.0,
+                              0.0,
+                              0.0
+                            ]
+                          ],
+                          "pressure": [
+                            [
+                              0.0,
+                              0.2
+                            ],
+                            [
+                              0.5,
+                              1.0
+                            ],
+                            [
+                              1.0,
+                              0.4
+                            ]
+                          ],
+                          "pen": {
+                            "penId": null,
+                            "tip": "round",
+                            "minSize": 0.5,
+                            "maxSize": 2.0
+                          }
+                        },
+                        "sides": {
+                          "left": {
+                            "colourId": "col_01K742SG05B3FMEDJ0S30C9RPJ",
+                            "matrix": null
+                          },
+                          "right": null
+                        }
+                      },
+                      {
+                        "id": "st_01K742SG0RDAEGZRD2KHFY4SGG",
+                        "type": "stroke",
+                        "rev": 1,
+                        "kind": "pencil",
+                        "closed": false,
+                        "points": [
+                          [
+                            -50.0,
+                            -50.0,
+                            0.0,
+                            0.0,
+                            0.0,
+                            0.0
+                          ],
+                          [
+                            50.0,
+                            50.0,
+                            0.0,
+                            0.0,
+                            0.0,
+                            0.0
+                          ]
+                        ],
+                        "colourId": "col_01K742SG0960NRS9N70BCW32DA",
+                        "fillMatrix": null,
+                        "lineStyle": {
+                          "thickness": 1.5,
+                          "lineType": "solid"
+                        },
+                        "spine": null,
+                        "sides": {
+                          "left": null,
+                          "right": null
+                        }
+                      },
+                      {
+                        "id": "st_01K742SG0S8P4MXX7RTGHMQM7Y",
+                        "type": "stroke",
+                        "rev": 1,
+                        "kind": "invisible",
+                        "closed": false,
+                        "points": [
+                          [
+                            0.0,
+                            0.0,
+                            0.0,
+                            0.0,
+                            0.0,
+                            0.0
+                          ],
+                          [
+                            0.0,
+                            100.0,
+                            0.0,
+                            0.0,
+                            0.0,
+                            0.0
+                          ]
+                        ],
+                        "colourId": null,
+                        "fillMatrix": null,
+                        "lineStyle": null,
+                        "spine": null,
+                        "sides": {
+                          "left": {
+                            "colourId": "col_01K742SG0614PQ7Q1P5RK8MR09",
+                            "matrix": [
+                              1,
+                              0,
+                              0,
+                              1,
+                              0,
+                              0
+                            ]
+                          },
+                          "right": {
+                            "colourId": null,
+                            "matrix": null
+                          }
+                        },
+                        "meta": {
+                          "note": "closes the sky zone"
+                        }
+                      }
+                    ]
+                  },
+                  {
+                    "id": "nd_01K742SG0TKWEQN511SDDB1XTA",
+                    "type": "drawingNode",
+                    "rev": 1,
+                    "kind": "group",
+                    "children": [
+                      {
+                        "id": "nd_01K742SG0VYSVZ0REAM7096TSY",
+                        "type": "drawingNode",
+                        "rev": 1,
+                        "kind": "layer",
+                        "hint": "pencil",
+                        "strokes": []
+                      }
+                    ]
+                  },
+                  {
+                    "id": "nd_01K742SG0W7SK13D3RQ0E73F8Q",
+                    "type": "drawingNode",
+                    "rev": 1,
+                    "name": "Caption",
+                    "kind": "text",
+                    "transform": [
+                      1.0,
+                      0.0,
+                      0.0,
+                      1.0,
+                      -100.0,
+                      200.0
+                    ],
+                    "widthMode": "fixed",
+                    "width": 400.0,
+                    "text": "H\u00e9llo",
+                    "runs": [
+                      {
+                        "start": 0,
+                        "length": 5,
+                        "font": "Inter",
+                        "size": 24.0,
+                        "bold": false,
+                        "italic": true,
+                        "script": "normal",
+                        "kerning": 0.0,
+                        "autoKerning": true,
+                        "colourId": "col_01K742SG0960NRS9N70BCW32DA"
+                      }
+                    ],
+                    "paragraphs": [
+                      {
+                        "start": 0,
+                        "length": 5,
+                        "alignment": "centre",
+                        "marginLeft": 0.0,
+                        "marginRight": 0.0,
+                        "indent": 0.0,
+                        "lineSpacing": 1.2
+                      }
+                    ]
+                  }
+                ],
+                "colourRecovery": [
+                  {
+                    "colourId": "col_01K742SG05B3FMEDJ0S30C9RPJ",
+                    "paletteId": "pal_01K742SG02EZFVY9RTYD3T0DK8",
+                    "paletteName": "Main",
+                    "styles": [
+                      {
+                        "styleId": "sty_01K742SG03YX1MSB6Q3NPSH06B",
+                        "styleName": "Day"
+                      },
+                      {
+                        "styleId": "sty_01K742SG04E82SQ9B9R82MVP1B",
+                        "styleName": "Night"
+                      }
+                    ],
+                    "swatch": {
+                      "colourId": "col_01K742SG05B3FMEDJ0S30C9RPJ",
+                      "type": "swatch",
+                      "rev": 1,
+                      "name": "Skin",
+                      "kind": "texture",
+                      "deformable": false,
+                      "values": {
+                        "sty_01K742SG03YX1MSB6Q3NPSH06B": {
+                          "image": "textures/r3-shared.png",
+                          "tile": true,
+                          "width": 1,
+                          "height": 1
+                        },
+                        "sty_01K742SG04E82SQ9B9R82MVP1B": {
+                          "image": "textures/r3-shared.png",
+                          "tile": true,
+                          "width": 1,
+                          "height": 1
+                        }
+                      }
+                    }
+                  }
+                ],
+                "createdAt": "2026-10-17T09:30:12.345Z",
+                "ext": {
+                  "com.example.tool": {
+                    "pass": 2,
+                    "stage": "clean-up"
+                  }
+                }
+              }
+            },
+            "banks": {},
+            "blobs": {
+              "textures/r3-shared.png": "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR4nGO5GHjvPwAHCwMEpas3DAAAAABJRU5ErkJggg=="
+            },
+            "notes": {},
+            "elementTypes": {
+              "el_01K742SG116N6QS302NRVED80W": "drawing"
+            }
+          }
+        }
+      },
+      "envelope": {
+        "status": "ok",
+        "result": {
+          "kind": "cells",
+          "itemCount": 1
+        },
+        "changes": [],
+        "warnings": [],
+        "documentRev": 3
+      }
+    },
+    {
+      "command": "cell.clipboard.apply",
+      "params": {
+        "elementId": "el_01K7JJN800PQQQ4MK0DCQW0M0X",
+        "frame": 4,
+        "mode": "newDrawings"
+      },
+      "envelope": {
+        "status": "ok",
+        "result": {
+          "elementIds": [
+            "el_01K7JJN800PQQQ4MK0DCQW0M0X"
+          ],
+          "from": 4,
+          "to": 4,
+          "createdDrawingIds": [
+            "dr_01K7JJN800SHJPA4VHG2ERYDEN"
+          ]
+        },
+        "changes": [
+          {
+            "id": "db_01K7JJN801EZECJKVX33DYSENJ",
+            "type": "drawingBank",
+            "op": "modified",
+            "rev": 4,
+            "patch": [
+              {
+                "op": "add",
+                "path": "/drawings/1",
+                "value": {
+                  "id": "dr_01K7JJN800SHJPA4VHG2ERYDEN",
+                  "type": "drawing"
+                }
+              }
+            ]
+          },
+          {
+            "id": "dr_01K7JJN800SHJPA4VHG2ERYDEN/st_01K742SG0QD5N56XJK48T69Z9C",
+            "type": "stroke",
+            "op": "created",
+            "rev": 4,
+            "parentId": "dr_01K7JJN800SHJPA4VHG2ERYDEN/nd_01K742SG0PWGJJ49VRZNNJHMXT",
+            "index": 0
+          },
+          {
+            "id": "dr_01K7JJN800SHJPA4VHG2ERYDEN/st_01K742SG0RDAEGZRD2KHFY4SGG",
+            "type": "stroke",
+            "op": "created",
+            "rev": 4,
+            "parentId": "dr_01K7JJN800SHJPA4VHG2ERYDEN/nd_01K742SG0PWGJJ49VRZNNJHMXT",
+            "index": 1
+          },
+          {
+            "id": "dr_01K7JJN800SHJPA4VHG2ERYDEN/st_01K742SG0S8P4MXX7RTGHMQM7Y",
+            "type": "stroke",
+            "op": "created",
+            "rev": 4,
+            "parentId": "dr_01K7JJN800SHJPA4VHG2ERYDEN/nd_01K742SG0PWGJJ49VRZNNJHMXT",
+            "index": 2
+          },
+          {
+            "id": "dr_01K7JJN800SHJPA4VHG2ERYDEN/nd_01K742SG0PWGJJ49VRZNNJHMXT",
+            "type": "drawingNode",
+            "op": "created",
+            "rev": 4,
+            "parentId": "dr_01K7JJN800SHJPA4VHG2ERYDEN",
+            "index": 0
+          },
+          {
+            "id": "dr_01K7JJN800SHJPA4VHG2ERYDEN/nd_01K742SG0VYSVZ0REAM7096TSY",
+            "type": "drawingNode",
+            "op": "created",
+            "rev": 4,
+            "parentId": "dr_01K7JJN800SHJPA4VHG2ERYDEN/nd_01K742SG0TKWEQN511SDDB1XTA",
+            "index": 0
+          },
+          {
+            "id": "dr_01K7JJN800SHJPA4VHG2ERYDEN/nd_01K742SG0TKWEQN511SDDB1XTA",
+            "type": "drawingNode",
+            "op": "created",
+            "rev": 4,
+            "parentId": "dr_01K7JJN800SHJPA4VHG2ERYDEN",
+            "index": 1
+          },
+          {
+            "id": "dr_01K7JJN800SHJPA4VHG2ERYDEN/nd_01K742SG0W7SK13D3RQ0E73F8Q",
+            "type": "drawingNode",
+            "op": "created",
+            "rev": 4,
+            "parentId": "dr_01K7JJN800SHJPA4VHG2ERYDEN",
+            "index": 2
+          },
+          {
+            "id": "dr_01K7JJN800SHJPA4VHG2ERYDEN",
+            "type": "drawing",
+            "op": "created",
+            "rev": 4,
+            "parentId": "db_01K7JJN801EZECJKVX33DYSENJ",
+            "index": 1
+          },
+          {
+            "id": "el_01K7JJN800PQQQ4MK0DCQW0M0X",
+            "type": "element",
+            "op": "modified",
+            "rev": 4,
+            "patch": [
+              {
+                "op": "replace",
+                "path": "/exposure",
+                "range": {
+                  "from": 4,
+                  "to": 4
+                },
+                "value": [
+                  [
+                    "dr_01K7JJN800SHJPA4VHG2ERYDEN",
+                    1
+                  ]
+                ],
+                "oldValue": [
+                  [
+                    null,
+                    1
+                  ]
+                ]
+              }
+            ]
+          }
+        ],
+        "undo": {
+          "stepId": "u-3",
+          "label": "Paste Cells"
+        },
+        "warnings": [],
+        "documentRev": 4
+      }
+    },
+    {
+      "command": "doc.object.get",
+      "params": {
+        "ref": "dr_01K7JJN800SHJPA4VHG2ERYDEN",
+        "depth": -1
+      },
+      "envelope": {
+        "status": "ok",
+        "result": {
+          "object": {
+            "id": "dr_01K7JJN800SHJPA4VHG2ERYDEN",
+            "type": "drawing",
+            "rev": 4,
+            "name": "2",
+            "path": "scene:\"Scene-1\"/element:\"Texture928\"/drawing:\"2\"",
+            "locked": false,
+            "pivot": {
+              "x": 0.0,
+              "y": -50.0
+            },
+            "mouthShape": null,
+            "nodes": [
+              {
+                "id": "nd_01K742SG0PWGJJ49VRZNNJHMXT",
+                "type": "drawingNode",
+                "rev": 4,
+                "name": "Body",
+                "path": "scene:\"Scene-1\"/element:\"Texture928\"/drawing:\"2\"/drawingNode:\"Body\"",
+                "kind": "layer",
+                "hint": "brush",
+                "strokes": [
+                  {
+                    "id": "st_01K742SG0QD5N56XJK48T69Z9C",
+                    "type": "stroke",
+                    "rev": 4,
+                    "path": "scene:\"Scene-1\"/element:\"Texture928\"/drawing:\"2\"/drawingNode:\"Body\"/stroke:@st_01K742SG0QD5N56XJK48T69Z9C",
+                    "kind": "brush",
+                    "closed": true,
+                    "points": [
+                      [
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.0,
+                        10.5,
+                        0.0
+                      ],
+                      [
+                        100.0,
+                        0.0,
+                        -10.0,
+                        0.0,
+                        0.0,
+                        10.0
+                      ],
+                      [
+                        100.0,
+                        100.0,
+                        0.0,
+                        -10.0,
+                        0.0,
+                        0.0
+                      ],
+                      [
+                        0.0,
+                        100.0,
+                        0.0,
+                        0.0,
+                        0.0,
+                        -10.0
+                      ]
+                    ],
+                    "colourId": "col_01K742SG05B3FMEDJ0S30C9RPJ",
+                    "fillMatrix": null,
+                    "lineStyle": null,
+                    "spine": {
+                      "points": [
+                        [
+                          10.0,
+                          50.0,
+                          0.0,
+                          0.0,
+                          20.0,
+                          0.0
+                        ],
+                        [
+                          90.0,
+                          50.0,
+                          -20.0,
+                          0.0,
+                          0.0,
+                          0.0
+                        ]
+                      ],
+                      "pressure": [
+                        [
+                          0.0,
+                          0.2
+                        ],
+                        [
+                          0.5,
+                          1.0
+                        ],
+                        [
+                          1.0,
+                          0.4
+                        ]
+                      ],
+                      "pen": {
+                        "penId": null,
+                        "tip": "round",
+                        "minSize": 0.5,
+                        "maxSize": 2.0
+                      }
+                    },
+                    "sides": {
+                      "left": {
+                        "colourId": "col_01K742SG05B3FMEDJ0S30C9RPJ",
+                        "matrix": null
+                      },
+                      "right": null
+                    }
+                  },
+                  {
+                    "id": "st_01K742SG0RDAEGZRD2KHFY4SGG",
+                    "type": "stroke",
+                    "rev": 4,
+                    "path": "scene:\"Scene-1\"/element:\"Texture928\"/drawing:\"2\"/drawingNode:\"Body\"/stroke:@st_01K742SG0RDAEGZRD2KHFY4SGG",
+                    "kind": "pencil",
+                    "closed": false,
+                    "points": [
+                      [
+                        -50.0,
+                        -50.0,
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.0
+                      ],
+                      [
+                        50.0,
+                        50.0,
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.0
+                      ]
+                    ],
+                    "colourId": "col_01K742SG0960NRS9N70BCW32DA",
+                    "fillMatrix": null,
+                    "lineStyle": {
+                      "thickness": 1.5,
+                      "lineType": "solid"
+                    },
+                    "spine": null,
+                    "sides": {
+                      "left": null,
+                      "right": null
+                    }
+                  },
+                  {
+                    "id": "st_01K742SG0S8P4MXX7RTGHMQM7Y",
+                    "type": "stroke",
+                    "rev": 4,
+                    "path": "scene:\"Scene-1\"/element:\"Texture928\"/drawing:\"2\"/drawingNode:\"Body\"/stroke:@st_01K742SG0S8P4MXX7RTGHMQM7Y",
+                    "kind": "invisible",
+                    "closed": false,
+                    "points": [
+                      [
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.0
+                      ],
+                      [
+                        0.0,
+                        100.0,
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.0
+                      ]
+                    ],
+                    "colourId": null,
+                    "fillMatrix": null,
+                    "lineStyle": null,
+                    "spine": null,
+                    "sides": {
+                      "left": {
+                        "colourId": "col_01K742SG0614PQ7Q1P5RK8MR09",
+                        "matrix": [
+                          1,
+                          0,
+                          0,
+                          1,
+                          0,
+                          0
+                        ]
+                      },
+                      "right": {
+                        "colourId": null,
+                        "matrix": null
+                      }
+                    },
+                    "meta": {
+                      "note": "closes the sky zone"
+                    }
+                  }
+                ]
+              },
+              {
+                "id": "nd_01K742SG0TKWEQN511SDDB1XTA",
+                "type": "drawingNode",
+                "rev": 4,
+                "path": "scene:\"Scene-1\"/element:\"Texture928\"/drawing:\"2\"/drawingNode:@nd_01K742SG0TKWEQN511SDDB1XTA",
+                "kind": "group",
+                "children": [
+                  {
+                    "id": "nd_01K742SG0VYSVZ0REAM7096TSY",
+                    "type": "drawingNode",
+                    "rev": 4,
+                    "path": "scene:\"Scene-1\"/element:\"Texture928\"/drawing:\"2\"/drawingNode:@nd_01K742SG0TKWEQN511SDDB1XTA/drawingNode:@nd_01K742SG0VYSVZ0REAM7096TSY",
+                    "kind": "layer",
+                    "hint": "pencil",
+                    "strokes": []
+                  }
+                ]
+              },
+              {
+                "id": "nd_01K742SG0W7SK13D3RQ0E73F8Q",
+                "type": "drawingNode",
+                "rev": 4,
+                "name": "Caption",
+                "path": "scene:\"Scene-1\"/element:\"Texture928\"/drawing:\"2\"/drawingNode:\"Caption\"",
+                "kind": "text",
+                "transform": [
+                  1.0,
+                  0.0,
+                  0.0,
+                  1.0,
+                  -100.0,
+                  200.0
+                ],
+                "widthMode": "fixed",
+                "width": 400.0,
+                "text": "H\u00e9llo",
+                "runs": [
+                  {
+                    "start": 0,
+                    "length": 5,
+                    "font": "Inter",
+                    "size": 24.0,
+                    "bold": false,
+                    "italic": true,
+                    "script": "normal",
+                    "kerning": 0.0,
+                    "autoKerning": true,
+                    "colourId": "col_01K742SG0960NRS9N70BCW32DA"
+                  }
+                ],
+                "paragraphs": [
+                  {
+                    "start": 0,
+                    "length": 5,
+                    "alignment": "centre",
+                    "marginLeft": 0.0,
+                    "marginRight": 0.0,
+                    "indent": 0.0,
+                    "lineSpacing": 1.2
+                  }
+                ]
+              }
+            ],
+            "colourRecovery": [
+              {
+                "colourId": "col_01K742SG05B3FMEDJ0S30C9RPJ",
+                "paletteId": "pal_01K742SG02EZFVY9RTYD3T0DK8",
+                "paletteName": "Main",
+                "styles": [
+                  {
+                    "styleId": "sty_01K742SG03YX1MSB6Q3NPSH06B",
+                    "styleName": "Day"
+                  },
+                  {
+                    "styleId": "sty_01K742SG04E82SQ9B9R82MVP1B",
+                    "styleName": "Night"
+                  }
+                ],
+                "swatch": {
+                  "colourId": "col_01K742SG05B3FMEDJ0S30C9RPJ",
+                  "type": "swatch",
+                  "rev": 1,
+                  "name": "Skin",
+                  "kind": "texture",
+                  "deformable": false,
+                  "values": {
+                    "sty_01K742SG03YX1MSB6Q3NPSH06B": {
+                      "image": "textures/r3-shared-b3e7ff2fd6810c3a.png",
+                      "tile": true,
+                      "width": 1,
+                      "height": 1
+                    },
+                    "sty_01K742SG04E82SQ9B9R82MVP1B": {
+                      "image": "textures/r3-shared-b3e7ff2fd6810c3a.png",
+                      "tile": true,
+                      "width": 1,
+                      "height": 1
+                    }
+                  }
+                }
+              }
+            ],
+            "createdAt": "2026-11-03T19:56:02.096Z",
+            "ext": {
+              "com.example.tool": {
+                "pass": 2,
+                "stage": "clean-up"
+              }
+            }
+          }
+        },
+        "targets": {
+          "ids": [
+            "dr_01K7JJN800SHJPA4VHG2ERYDEN"
+          ]
+        },
+        "changes": [],
+        "warnings": [],
+        "documentRev": 4
+      }
+    },
+    {
+      "command": "doc.blob.get",
+      "params": {
+        "entry": "textures/r3-shared.png"
+      },
+      "envelope": {
+        "status": "ok",
+        "result": {
+          "mediaType": "image/png",
+          "size": 70,
+          "sha256": "2b464db4a472d41394f706b98f3954cc140793580ce5a292e8ed3d8834930f2e",
+          "base64": "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR4nGPRDLz3HwAEawJcHQ9y7gAAAABJRU5ErkJggg=="
+        },
+        "changes": [],
+        "warnings": [],
+        "documentRev": 4
+      }
+    },
+    {
+      "command": "doc.blob.get",
+      "params": {
+        "entry": "textures/r3-shared-b3e7ff2fd6810c3a.png"
+      },
+      "envelope": {
+        "status": "ok",
+        "result": {
+          "mediaType": "image/png",
+          "size": 70,
+          "sha256": "b3e7ff2fd6810c3aa19e4c08e38f3b79659a5d26bd537cbfae8c1603915bb211",
+          "base64": "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR4nGO5GHjvPwAHCwMEpas3DAAAAABJRU5ErkJggg=="
+        },
+        "changes": [],
+        "warnings": [],
+        "documentRev": 4
+      }
+    },
+    {
+      "command": "project.saveAs",
+      "params": {
+        "path": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-c31-r3-texture-du1zcltx\\textures.animpkg"
+      },
+      "envelope": {
+        "status": "ok",
+        "result": {
+          "jobId": "job-3"
+        },
+        "changes": [
+          {
+            "id": "pr_01M6HFQ84ZEMYVEEGC3HXW9Z6V",
+            "type": "project",
+            "op": "modified",
+            "rev": 5,
+            "patch": [
+              {
+                "op": "replace",
+                "path": "/modifiedAt",
+                "value": "2026-11-03T19:56:02.101Z",
+                "oldValue": "2026-11-03T19:56:02.079Z"
+              }
+            ]
+          },
+          {
+            "id": "dr_01K7JJN80069A5D749N2NJCYYA",
+            "type": "drawing",
+            "op": "modified",
+            "rev": 5,
+            "patch": [
+              {
+                "op": "add",
+                "path": "/colourRecovery/1",
+                "value": {
+                  "colourId": "col_01K742SG0614PQ7Q1P5RK8MR09",
+                  "paletteId": "pal_01K7JJN800VGTAE382YEZGNKAT",
+                  "paletteName": "Recovered",
+                  "styles": [
+                    {
+                      "styleId": "sty_01K7JJN80199SSJBWB1FGTCQKD",
+                      "styleName": "Default"
+                    }
+                  ],
+                  "swatch": {
+                    "colourId": "col_01K742SG0614PQ7Q1P5RK8MR09",
+                    "type": "swatch",
+                    "rev": 0,
+                    "name": "Deleted colour",
+                    "kind": "solid",
+                    "deformable": false,
+                    "values": {
+                      "sty_01K7JJN80199SSJBWB1FGTCQKD": {
+                        "rgba": "#808080FF"
+                      }
+                    }
+                  }
+                }
+              },
+              {
+                "op": "add",
+                "path": "/colourRecovery/2",
+                "value": {
+                  "colourId": "col_01K742SG0960NRS9N70BCW32DA",
+                  "paletteId": "pal_01K7JJN800VGTAE382YEZGNKAT",
+                  "paletteName": "Recovered",
+                  "styles": [
+                    {
+                      "styleId": "sty_01K7JJN80199SSJBWB1FGTCQKD",
+                      "styleName": "Default"
+                    }
+                  ],
+                  "swatch": {
+                    "colourId": "col_01K742SG0960NRS9N70BCW32DA",
+                    "type": "swatch",
+                    "rev": 0,
+                    "name": "Deleted colour",
+                    "kind": "solid",
+                    "deformable": false,
+                    "values": {
+                      "sty_01K7JJN80199SSJBWB1FGTCQKD": {
+                        "rgba": "#808080FF"
+                      }
+                    }
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "id": "dr_01K7JJN800SHJPA4VHG2ERYDEN",
+            "type": "drawing",
+            "op": "modified",
+            "rev": 5,
+            "patch": [
+              {
+                "op": "add",
+                "path": "/colourRecovery/1",
+                "value": {
+                  "colourId": "col_01K742SG0614PQ7Q1P5RK8MR09",
+                  "paletteId": "pal_01K7JJN800VGTAE382YEZGNKAT",
+                  "paletteName": "Recovered",
+                  "styles": [
+                    {
+                      "styleId": "sty_01K7JJN80199SSJBWB1FGTCQKD",
+                      "styleName": "Default"
+                    }
+                  ],
+                  "swatch": {
+                    "colourId": "col_01K742SG0614PQ7Q1P5RK8MR09",
+                    "type": "swatch",
+                    "rev": 0,
+                    "name": "Deleted colour",
+                    "kind": "solid",
+                    "deformable": false,
+                    "values": {
+                      "sty_01K7JJN80199SSJBWB1FGTCQKD": {
+                        "rgba": "#808080FF"
+                      }
+                    }
+                  }
+                }
+              },
+              {
+                "op": "add",
+                "path": "/colourRecovery/2",
+                "value": {
+                  "colourId": "col_01K742SG0960NRS9N70BCW32DA",
+                  "paletteId": "pal_01K7JJN800VGTAE382YEZGNKAT",
+                  "paletteName": "Recovered",
+                  "styles": [
+                    {
+                      "styleId": "sty_01K7JJN80199SSJBWB1FGTCQKD",
+                      "styleName": "Default"
+                    }
+                  ],
+                  "swatch": {
+                    "colourId": "col_01K742SG0960NRS9N70BCW32DA",
+                    "type": "swatch",
+                    "rev": 0,
+                    "name": "Deleted colour",
+                    "kind": "solid",
+                    "deformable": false,
+                    "values": {
+                      "sty_01K7JJN80199SSJBWB1FGTCQKD": {
+                        "rgba": "#808080FF"
+                      }
+                    }
+                  }
+                }
+              }
+            ]
+          }
+        ],
+        "warnings": [],
+        "documentRev": 5
+      }
+    },
+    {
+      "command": "job.wait",
+      "params": {
+        "jobId": "job-3",
+        "timeoutMs": 60000
+      },
+      "envelope": {
+        "status": "ok",
+        "result": {
+          "jobId": "job-3",
+          "commandId": "project.saveAs",
+          "state": "succeeded",
+          "progress": 1.0,
+          "message": "Replace",
+          "startedAt": "2026-11-03T19:56:02.157Z",
+          "result": {
+            "path": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-c31-r3-texture-du1zcltx\\textures.animpkg",
+            "projectSaved": true,
+            "globalLibrarySaved": false
+          },
+          "session": "agent:s1-a47b0c"
+        },
+        "changes": [],
+        "warnings": [],
+        "documentRev": 5
+      }
+    },
+    {
+      "command": "project.close",
+      "params": {},
+      "envelope": {
+        "status": "ok",
+        "result": {
+          "closed": true
+        },
+        "changes": [],
+        "warnings": [],
+        "documentRev": 5
+      }
+    },
+    {
+      "command": "project.open",
+      "params": {
+        "path": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-c31-r3-texture-du1zcltx\\textures.animpkg"
+      },
+      "envelope": {
+        "status": "ok",
+        "result": {
+          "jobId": "job-4"
+        },
+        "changes": [],
+        "warnings": [],
+        "documentRev": null
+      }
+    },
+    {
+      "command": "job.wait",
+      "params": {
+        "jobId": "job-4",
+        "timeoutMs": 60000
+      },
+      "envelope": {
+        "status": "ok",
+        "result": {
+          "jobId": "job-4",
+          "commandId": "project.open",
+          "state": "succeeded",
+          "progress": 1.0,
+          "message": "Finalisation",
+          "startedAt": "2026-11-03T19:56:02.184Z",
+          "result": {
+            "projectId": "pr_01M6HFQ84ZEMYVEEGC3HXW9Z6V",
+            "readOnly": false,
+            "formatVersion": "1.0",
+            "warnings": [
+              {
+                "id": "colour.recovered",
+                "message": "colour `col_01K742SG05B3FMEDJ0S30C9RPJ` was missing and was recreated from its recovery copy",
+                "details": {
+                  "colourId": "col_01K742SG05B3FMEDJ0S30C9RPJ",
+                  "paletteId": "pal_01K7JJN800EQ7ZXNXNS54Y2YKN"
+                }
+              },
+              {
+                "id": "colour.recovered",
+                "message": "colour `col_01K742SG0614PQ7Q1P5RK8MR09` was missing and was recreated from its recovery copy",
+                "details": {
+                  "colourId": "col_01K742SG0614PQ7Q1P5RK8MR09",
+                  "paletteId": "pal_01K7JJN803AD78K2FJ96NVRS34"
+                }
+              },
+              {
+                "id": "colour.recovered",
+                "message": "colour `col_01K742SG0960NRS9N70BCW32DA` was missing and was recreated from its recovery copy",
+                "details": {
+                  "colourId": "col_01K742SG0960NRS9N70BCW32DA",
+                  "paletteId": "pal_01K7JJN803AD78K2FJ96NVRS34"
+                }
+              }
+            ]
+          },
+          "session": "agent:s1-a47b0c"
+        },
+        "changes": [],
+        "warnings": [],
+        "documentRev": 6
+      }
+    },
+    {
+      "command": "doc.blob.get",
+      "params": {
+        "entry": "textures/r3-shared.png"
+      },
+      "envelope": {
+        "status": "error",
+        "changes": [],
+        "warnings": [],
+        "documentRev": 6,
+        "error": {
+          "code": "project.mediaMissing",
+          "message": "entry `textures/r3-shared.png` is missing",
+          "details": {
+            "entry": "textures/r3-shared.png"
+          }
+        }
+      }
+    },
+    {
+      "command": "doc.blob.get",
+      "params": {
+        "entry": "textures/r3-shared-b3e7ff2fd6810c3a.png"
+      },
+      "envelope": {
+        "status": "error",
+        "changes": [],
+        "warnings": [],
+        "documentRev": 6,
+        "error": {
+          "code": "project.mediaMissing",
+          "message": "entry `textures/r3-shared-b3e7ff2fd6810c3a.png` is missing",
+          "details": {
+            "entry": "textures/r3-shared-b3e7ff2fd6810c3a.png"
+          }
+        }
+      }
+    }
+  ],
+  "checks": [
+    {
+      "check": "texture collision remaps references",
+      "ok": true,
+      "entries": [
+        "textures/r3-shared.png",
+        "textures/r3-shared-b3e7ff2fd6810c3a.png"
+      ]
+    },
+    {
+      "check": "both texture blobs readable before save",
+      "ok": true
+    },
+    {
+      "check": "both texture blobs survive save/open",
+      "ok": false,
+      "observed": [
+        {
+          "status": "error",
+          "changes": [],
+          "warnings": [],
+          "documentRev": 6,
+          "error": {
+            "code": "project.mediaMissing",
+            "message": "entry `textures/r3-shared.png` is missing",
+            "details": {
+              "entry": "textures/r3-shared.png"
+            }
+          }
+        },
+        {
+          "status": "error",
+          "changes": [],
+          "warnings": [],
+          "documentRev": 6,
+          "error": {
+            "code": "project.mediaMissing",
+            "message": "entry `textures/r3-shared-b3e7ff2fd6810c3a.png` is missing",
+            "details": {
+              "entry": "textures/r3-shared-b3e7ff2fd6810c3a.png"
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

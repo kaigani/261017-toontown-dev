@@ -1,0 +1,276 @@
+{
+ "seconds": 17.577,
+ "passed": 53,
+ "failed": 0,
+ "checks": [
+  {
+   "check": "1 doc.validate: no errors",
+   "ok": true,
+   "detail": "[{'issueId': 'is_1', 'code': 'emptyExposure', 'severity': 'warning', 'objectId': 'el_01M74P499XQ6D8ANDK2SW4FR5A', 'path': 'scene:\"Scene-1\"/element:\"Drawing\"', 'message': '`Drawing` exposes no cell', 'details': {}, 'fixes': [{'fixId': 'fx_1', 'description': 'Delete the element', 'command': 'element.delete', 'params': {'elementIds': ['el_01M74P499XQ6D8ANDK2SW4FR5A']}, 'default': False}]}, {'issueId': 'is_2', 'code': 'unusedSwatches', 'severity': 'info', 'objectId': 'col_01M74P499WT9P3C21WQNEZYR8A', 'path': 'palette:\"Default\"/swatch:\"Colour 1\"', 'message': 'swatch `Colour 1` is used by no drawing"
+  },
+  {
+   "check": "1 read back: 24 fps",
+   "ok": true,
+   "detail": "24.0"
+  },
+  {
+   "check": "1 read back: camera 1920x1080",
+   "ok": true,
+   "detail": "{'w': 1920, 'h': 1080}"
+  },
+  {
+   "check": "1 read back: drawing element Ball, a child of peg Bounce",
+   "ok": true,
+   "detail": "('drawing', 'peg')"
+  },
+  {
+   "check": "1 read back: Ball under Bounce in the scene tree",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "check": "1 read back: the circle is drawn and painted with the red swatch",
+   "ok": true,
+   "detail": "{\"drawingId\": \"dr_01K7JJN80010R21VHD6MKC8P91\", \"elementId\": \"el_01K7JJN800QVJEJJERKDVH8XF7\", \"name\": \"1\", \"rev\": 4, \"locked\": false, \"space\": {\"units\": \"du\", \"duPerField\": 100, \"yAxis\": \"up\", \"origin\": \"drawingCentre\"}, \"pivot\": {\"x\": 0.0, \"y\": 0.0}, \"bounds\": {\"x\": -54.0, \"y\": -54.0, \"width\": 108.0"
+  },
+  {
+   "check": "1 read back: motion keyframes at frames 1, 12, 24",
+   "ok": true,
+   "detail": "{\"keys\": [{\"frame\": 1.0, \"channels\": [\"position\", \"velocity\"], \"constant\": [], \"descendantKeyed\": false}, {\"frame\": 12.0, \"channels\": [\"position\", \"velocity\"], \"constant\": [], \"descendantKeyed\": false}, {\"frame\": 24.0, \"channels\": [\"position\", \"velocity\"], \"constant\": [], \"descendantKeyed\": false}]}"
+  },
+  {
+   "check": "2 evaluated positions follow the easing presets along the sampled path of 05 \u00a79.2 (|error| <= 1e-9 field)",
+   "ok": true,
+   "detail": "max error 3.997e-15"
+  },
+  {
+   "check": "2 the 64-sample arc length keeps the ball within 1e-3 field of the exact eased distance",
+   "ok": true,
+   "detail": "3.443e-04"
+  },
+  {
+   "check": "2 extrema: the floor at frame 12, the top at the keys 1 and 24",
+   "ok": true,
+   "detail": "{1: 2.5, 12: -2.5, 24: 2.5}"
+  },
+  {
+   "check": "2 hold after the last key: frames 25-30 at the top",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "check": "2 the ball falls to frame 12 and rises to frame 24",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "check": "2 explicit easing: slow start, fastest at the floor (bounce)",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "check": "5 render.range.run succeeded",
+   "ok": true,
+   "detail": "{\"jobId\": \"job-1\", \"commandId\": \"render.range.run\", \"state\": \"succeeded\", \"progress\": 1.0, \"message\": \"Done\", \"startedAt\": \"2026-11-11T06:53:35.188Z\", \"result\": {\"status\": \"succeeded\", \"format\": \"png\", \"outputPath\": \"C:\\\\Users\\\\kaiga\\\\work\\\\review\\\\m3-c34-r1\\\\reviews\\\\evidence\\\\M3-C3.4-r1\\\\local-a\\\\"
+  },
+  {
+   "check": "5 the delivery folder holds 24 frames and the manifest, nothing else",
+   "ok": true,
+   "detail": "['Scene-1_0001-0024.manifest.json', 'Scene-1_0001.png', 'Scene-1_0002.png', 'Scene-1_0003.png']"
+  },
+  {
+   "check": "5 manifest: 24 frame files in frame order",
+   "ok": true,
+   "detail": "[1, 2, 3, 4, 5]"
+  },
+  {
+   "check": "5 manifest: count, size, fps, duration, range",
+   "ok": true,
+   "detail": "{'frameCount': 24, 'width': 1920, 'height': 1080, 'fps': 24.0, 'durationSec': 1.0, 'range': {'from': 1, 'to': 24, 'step': 1}}"
+  },
+  {
+   "check": "5 the published manifest is the job's result",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "check": "5 every frame's SHA-256 and byte count match the manifest",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "check": "5 every frame is 1920x1080 (PNG header and manifest)",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "check": "2 rendered ball centres (pixel centroids) match the eased positions within 0.05 px",
+   "ok": true,
+   "detail": "max error 0.0003 px"
+  },
+  {
+   "check": "2 the ball is a disc of the drawn radius (0.5 field = 80 px, plus half the line), the same area in every frame",
+   "ok": true,
+   "detail": "radius 86.266 px, area spread 0.1255"
+  },
+  {
+   "check": "3 render.frame.run frame 1 equals the sequence frame byte for byte",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "check": "3 render.frame.run frame 12 equals the sequence frame byte for byte",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "check": "3 render.frame.run frame 24 equals the sequence frame byte for byte",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "check": "4 contact sheet: 5 columns, 24 cells, layout of SI-108",
+   "ok": true,
+   "detail": "([{'frame': 1, 'x': 4, 'y': 4, 'w': 240, 'h': 135}, {'frame': 2, 'x': 248, 'y': 4, 'w': 240, 'h': 135}], [{'frame': 1, 'x': 4, 'y': 4, 'w': 240, 'h': 135}, {'frame': 2, 'x': 248, 'y': 4, 'w': 240, 'h': 135}])"
+  },
+  {
+   "check": "4 contact sheet: dimensions",
+   "ok": true,
+   "detail": "(1224, 769)"
+  },
+  {
+   "check": "4 every cell equals its frame rendered at the cell size, pixel for pixel",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "check": "4 every cell has a frame label, and the 24 labels differ",
+   "ok": true,
+   "detail": "24"
+  },
+  {
+   "check": "6 onConflict fail (default): export.fileExists, nothing written",
+   "ok": true,
+   "detail": "export.fileExists"
+  },
+  {
+   "check": "6 onConflict rename: new names, originals untouched",
+   "ok": true,
+   "detail": "['Scene-1_0001 (2).png', 'Scene-1_0001-0024.manifest (2).json', 'Scene-1_0013 (2).png']"
+  },
+  {
+   "check": "6 a late read-only target: failed, export.targetInvalid",
+   "ok": true,
+   "detail": "{\"code\": \"export.targetInvalid\", \"message\": \"`C:\\\\Users\\\\kaiga\\\\AppData\\\\Local\\\\Temp\\\\tt-e1-h1yt0g96\\\\late\\\\Scene-1_0024.png` is read-only; nothing was published\", \"details\": {\"path\": \"C:\\\\Users\\\\kaig"
+  },
+  {
+   "check": "6 the failed delivery keeps every original byte for byte and publishes no manifest",
+   "ok": true,
+   "detail": "[]"
+  },
+  {
+   "check": "6 a dead job's sidecar-listed backup is restored and reported",
+   "ok": true,
+   "detail": "[{\"code\": \"render.staleStagingRemoved\", \"files\": [\".old.png.tt-backup-e1e1e1e1e1e1\", \".tt-partial-e1e1e1e1e1e1.job\"], \"restored\": [\"old.png\"]}]"
+  },
+  {
+   "check": "6 an unowned look-alike is kept and not reported",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "check": "6 a cancelled export publishes nothing",
+   "ok": true,
+   "detail": "cancelled"
+  },
+  {
+   "check": "7 cancelled record: state, job.cancelled and the discard receipt through job_status, job.wait and job.list",
+   "ok": true,
+   "detail": "{\"jobId\": \"job-5\", \"commandId\": \"render.range.run\", \"state\": \"cancelled\", \"progress\": 0.0, \"message\": \"Rendering frame 1\", \"startedAt\": \"2026-11-11T06:53:47.656Z\", \"error\": {\"code\": \"job.cancelled\", \"message\": \"the range was cancelled; nothing was published\", \"details\": {}}, \"session\": \"agent:s1-233"
+  },
+  {
+   "check": "7 failed record: state, export.targetInvalid and the discard receipt through job_status, job.wait and job.list",
+   "ok": true,
+   "detail": "{\"jobId\": \"job-3\", \"commandId\": \"render.range.run\", \"state\": \"failed\", \"progress\": 0.9583333333333334, \"message\": \"Rendering frame 24\", \"startedAt\": \"2026-11-11T06:53:46.874Z\", \"error\": {\"code\": \"export.targetInvalid\", \"message\": \"`C:\\\\Users\\\\kaiga\\\\AppData\\\\Local\\\\Temp\\\\tt-e1-h1yt0g96\\\\late\\\\Scene-"
+  },
+  {
+   "check": "8 describe_frame: Ball at the floor (world position)",
+   "ok": true,
+   "detail": "[0.0, -2.5, 0.0]"
+  },
+  {
+   "check": "8 hit_test at the measured centre: Ball is the top hit",
+   "ok": true,
+   "detail": "{\"hits\": [{\"elementId\": \"el_01K7JJN800QVJEJJERKDVH8XF7\", \"drawingId\": \"dr_01K7JJN80010R21VHD6MKC8P91\", \"layerId\": \"nd_01K7JJN802F51WD5PKHRVCE1Y8\", \"objectId\": \"zn_SR4ZYJWT49Q1149ZHFXCGH9WEH\", \"kind\": "
+  },
+  {
+   "check": "8 hit_test beside the ball: no hit on Ball",
+   "ok": true,
+   "detail": "{\"hits\": []}"
+  },
+  {
+   "check": "8 convert_coordinates: the measured centre maps to the ball's world position (<= 0.001 field)",
+   "ok": true,
+   "detail": "{'x': 3.4281754501819245e-07, 'y': -2.5000000712892776, 'z': 0.0}"
+  },
+  {
+   "check": "10 undo changes the eased segment, redo restores it exactly",
+   "ok": true,
+   "detail": "((0.0, -3.985536143680246e-05), (0.0, 0.7181606110060619))"
+  },
+  {
+   "check": "10 undo then redo: identical canonical document",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "check": "10 save, close, reopen: identical canonical document",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "check": "3 after reopening, frames 1, 6, 12, 18, 24 re-render identical bytes",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "check": "7 the cancelled record survives save and reopen in the same session",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "check": "3 variant: the camera keeps the default FOV (6 / tan(FOV/2) = 16, no alias)",
+   "ok": true,
+   "detail": "41.11209043916693"
+  },
+  {
+   "check": "3 variant: rendered centres match the rotated, scaled, rolled positions within 0.05 px",
+   "ok": true,
+   "detail": "max error 0.0001 px"
+  },
+  {
+   "check": "3 process B (--run replay into a fresh project) exits 0",
+   "ok": true,
+   "detail": "        \"tipAngle\": 0.0,\n              \"colourId\": null\n            }\n          ],\n          \"assets\": [],\n          \"blobs\": {}\n        },\n        \"bytes\": 31580,\n        \"objectCount\": 12\n      },\n      \"changes\": [],\n      \"warnings\": [],\n      \"documentRev\": 12\n    },\n    {\n      \"status\": \"ok\",\n      \"result\": [],\n      \"changes\": [],\n      \"warnings\": [],\n      \"documentRev\": 12\n    }\n  ]\n}\n"
+  },
+  {
+   "check": "3 the replayed project's canonical content equals the original's (stable symbolic references)",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "check": "3 process B renders the 24 frames with identical bytes and SHA-256",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "check": "7 a fresh session does not see the first session's job records",
+   "ok": true,
+   "detail": "{\"status\": \"ok\", \"result\": [], \"changes\": [], \"warnings\": [], \"documentRev\": 12}"
+  }
+ ],
+ "headSha": "45b41dad19538970bd8878d34d864f82fa4bfb28",
+ "platform": "Windows-11-10.0.26200-SP0",
+ "python": "3.13.1",
+ "mcp": "2.0.0"
+}

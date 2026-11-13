@@ -1,0 +1,6 @@
+test_fixture_keeps_every_anchor (__main__.Format.test_fixture_keeps_every_anchor) ... ok
+
+----------------------------------------------------------------------
+Ran 1 test in 0.001s
+
+OK
