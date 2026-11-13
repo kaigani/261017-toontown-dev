@@ -4,6 +4,7 @@
 // UI tree with the last event it reflects) are reported to the executor.
 import { lazy, Suspense, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
+import { maybeRunIpcBench } from './diagnostics/ipcBench';
 import { DockArea } from './dock/DockArea';
 import { useHost, type Envelope, type SpikeMode } from './ipc';
 import { isMac, isUnmodified, sequenceOf } from './keys/sequence';
@@ -62,6 +63,15 @@ export function App() {
     host.spike.mode().then(setSpike, () => {
       setSpike(null);
     });
+  }, [host]);
+  // M0 diagnostics (C0.4): `--ipc-bench` runs the IPC benchmark at start-up; the host writes the report and exits
+  // (or exits with status 2 when no report arrives). Absent from the default build.
+  useEffect(() => {
+    if (!__TT_M0_DIAGNOSTICS__) return;
+    maybeRunIpcBench(host).then(
+      () => undefined,
+      () => undefined,
+    );
   }, [host]);
 
   const services = useMemo<ShellServices>(() => {

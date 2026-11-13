@@ -370,3 +370,24 @@ describe('history panel (01 §10)', () => {
     });
   });
 });
+
+describe('M0 diagnostics (C0.4)', () => {
+  it('runs the IPC benchmark the host asks for and sends the report', async () => {
+    const host = createScriptedHost();
+    const reports: unknown[] = [];
+    const invoke = host.invoke.bind(host);
+    host.invoke = (command, args) => {
+      if (command === 'bench_plan') return Promise.resolve({ count: 1, payloadBytes: [16] });
+      if (command === 'bench_report') {
+        reports.push(args?.['report']);
+        return Promise.resolve(null);
+      }
+      return invoke(command, args);
+    };
+    renderApp(host);
+    await vi.waitFor(() => {
+      expect(reports).toHaveLength(1);
+    });
+    expect(reports[0]).toMatchObject({ count: 1 });
+  });
+});
