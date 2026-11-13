@@ -1,0 +1,30 @@
+A1: both required ownership diffs empty. Earlier modified reviewer paths: only permitted three timeouts and allow-list entries.
+C: free 489 GiB before compilation. Sequential cargo invocations, exit 0 each.
+mcp: remote_bind_is_refused: PASS
+mcp: duplicate_authorization_is_refused: PASS
+mcp: duplicate_foreign_host_is_refused: PASS
+mcp: ambiguous_transfer_framing_is_refused: PASS
+mcp: unauthenticated_large_body_is_refused_before_reading_payload: PASS
+mcp: request: PASS
+mcp: authority_matrix: PASS
+mcp: dns_host_case_is_insensitive: PASS
+mcp: host_cannot_contain_url_path: PASS
+executor: closing_dialog_over_json_clears_modal_and_shortcuts: PASS
+executor: unknown_settings_version_is_quarantined: PASS
+executor: silent_busy_report_has_bounded_calls_and_user_remains_free: PASS
+executor: user_command_passes_waiting_agent_and_new_modal_is_observed: PASS
+executor: malformed_shapes_are_quarantined_independently: PASS
+executor: abandoned_settings_temporary_is_cleaned_on_load: PASS
+executor: call: PASS
+executor: catalogue_types_ranges_and_nonfinite_wire_values: PASS
+executor: accepted_calls_emit_only_actual_changed_keys: PASS
+executor: atomic_disk_defaults_reload_access_and_reset: PASS
+executor: generic_preferences_enforce_agent_policy_limits: PASS
+executor: call: PASS
+executor: import_preserves_typed_binding_errors: PASS
+executor: empty_sequence_has_keymap_error: PASS
+executor: canonical_conflicts_override_reset_and_defaults: PASS
+executor: older_tree_cannot_inherit_newer_acknowledgement: PASS
+executor: future_acknowledgement_cannot_make_tree_fresh: PASS
+executor: bounded_concurrent_waits_leave_document_thread_free: PASS
+executor: release_does_not_steal_another_live_engines_recovery: PASS
