@@ -571,6 +571,12 @@ fn stream_sse(
     if stream.write_all(head.as_bytes()).is_err() {
         return;
     }
+    write_events(stream, rx, until_response_for);
+    // The end of the stream is the end of the answer: the client learns it from the server's FIN.
+    let _ = stream.shutdown(std::net::Shutdown::Write);
+}
+
+fn write_events(stream: &mut TcpStream, rx: &Receiver<String>, until_response_for: Option<&str>) {
     loop {
         match rx.recv_timeout(KEEP_ALIVE) {
             Ok(line) => {
@@ -686,7 +692,12 @@ pub fn start_with(handle: ExecutorHandle, opts: HttpOptions, limits: Limits) -> 
                 let Some(unauth) = admit(&shared.unauthenticated, shared.limits.max_unauthenticated) else {
                     return busy(&mut stream);
                 };
-                serve_connection(&mut stream, &shared, accepted, unauth);
+                let read_all = std::cell::Cell::new(false);
+                serve_connection(&mut stream, &shared, accepted, unauth, &read_all);
+                if read_all.get() {
+                    // The whole request was read: the answer may end with the server's FIN.
+                    let _ = stream.shutdown(std::net::Shutdown::Write);
+                }
                 linger_close(&mut stream);
             });
         }
@@ -714,10 +725,13 @@ const LINGER_BYTES: usize = 256 << 10;
 /// How long the discarding lasts at most.
 const LINGER_TIME: Duration = Duration::from_secs(1);
 
-/// Ends a connection gracefully: no more output, then up to [`LINGER_BYTES`] of remaining input discarded through a
-/// fixed buffer within [`LINGER_TIME`] (nothing is reserved or parsed), then the socket closes.
+/// Ends a connection gracefully: up to [`LINGER_BYTES`] of remaining input are discarded through a fixed buffer until
+/// the client closes, within [`LINGER_TIME`] (nothing is reserved or parsed); then the socket closes. When the whole
+/// request was read the caller has already sent the server's FIN; after an early refusal (sent before the body was
+/// read) the connection stays open for the client to close first, so the refusal is not lost to a reset and a client
+/// that shuts its socket down after reading it finds it still connected. An SSE stream half-closes at its end
+/// ([`stream_sse`]), because that end is what tells the client the stream is over.
 fn linger_close(stream: &mut TcpStream) {
-    let _ = stream.shutdown(std::net::Shutdown::Write);
     let deadline = Instant::now() + LINGER_TIME;
     let mut sink = [0u8; 4096];
     let mut discarded = 0usize;
@@ -738,7 +752,15 @@ fn expire(sessions: &Mutex<HashMap<String, Session>>, idle: Duration) {
     });
 }
 
-fn serve_connection(stream: &mut TcpStream, shared: &Shared, accepted: Instant, unauth: Counted<'_>) {
+/// Serves one connection; `read_all` tells the caller whether the whole request was read (then the answer may end with
+/// the server's FIN; after an early refusal the client closes first, see [`linger_close`]).
+fn serve_connection(
+    stream: &mut TcpStream,
+    shared: &Shared,
+    accepted: Instant,
+    unauth: Counted<'_>,
+    read_all: &std::cell::Cell<bool>,
+) {
     let head_deadline = accepted + shared.limits.head_deadline;
     let (head, first) = match read_head(stream, head_deadline) {
         Ok(h) => h,
@@ -751,6 +773,7 @@ fn serve_connection(stream: &mut TcpStream, shared: &Shared, accepted: Instant, 
         }
         Err(HeadError::Malformed(why)) => return json_error(stream, "400 Bad Request", why),
     };
+    read_all.set(head.content_length == 0 && first.is_empty());
     if head.path != ENDPOINT {
         return respond(stream, "404 Not Found", &[], b"");
     }
@@ -764,7 +787,7 @@ fn serve_connection(stream: &mut TcpStream, shared: &Shared, accepted: Instant, 
     drop(unauth);
     let sid = head.header("mcp-session-id").map(str::to_owned);
     match head.method.as_str() {
-        "POST" => post(stream, shared, &head, first, sid, accepted),
+        "POST" => post(stream, shared, &head, first, sid, accepted, read_all),
         "GET" => {
             let Some(sid) = sid else { return json_error(stream, "400 Bad Request", "missing Mcp-Session-Id") };
             let (tx, rx) = mpsc::sync_channel::<String>(shared.limits.sse_backlog);
@@ -807,7 +830,15 @@ fn end_stream(shared: &Shared, sid: &str, routes: &Mutex<Routes>) {
     }
 }
 
-fn post(stream: &mut TcpStream, shared: &Shared, head: &Head, first: Vec<u8>, sid: Option<String>, accepted: Instant) {
+fn post(
+    stream: &mut TcpStream,
+    shared: &Shared,
+    head: &Head,
+    first: Vec<u8>,
+    sid: Option<String>,
+    accepted: Instant,
+    read_all: &std::cell::Cell<bool>,
+) {
     if head.content_length > shared.max_body {
         return json_error(stream, "413 Content Too Large", "the request body is larger than the inline payload limit");
     }
@@ -820,6 +851,7 @@ fn post(stream: &mut TcpStream, shared: &Shared, head: &Head, first: Vec<u8>, si
     let Some(body) = read_body(stream, first, head.content_length, accepted + shared.limits.request_deadline) else {
         return json_error(stream, "408 Request Timeout", "the request body did not arrive in time");
     };
+    read_all.set(true);
     let Ok(msg) = serde_json::from_slice::<Value>(&body) else {
         return json_error(stream, "400 Bad Request", "the body is not one JSON-RPC message");
     };

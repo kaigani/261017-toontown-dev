@@ -66,14 +66,6 @@ jobs:
       - name: Fetch the locked dependencies
         run: cargo fetch --locked
 
-      - name: Front end — lint, type-check, test, format, licences
-        run: |
-          pnpm lint
-          pnpm typecheck
-          pnpm test
-          pnpm format:check
-          pnpm licenses:check
-
       - name: Reviewer Python suites (every tests/adversarial/*.py)
         run: |
           PY=python3
@@ -181,22 +173,14 @@ jobs:
       - name: C22-T2 gate analyser rejects malformed evidence
         run: python scripts/test_c22_t2_gate.py || python3 scripts/test_c22_t2_gate.py
 
-      - name: MCP protocol conformance with the official Python SDK client (C1.4; 11 §14.7), measurements
+      - name: C1.4 measurements, C2.3 renders and the release-feature proof
         run: |
-          # The release build, self-test and linked-library proof run in the `headless` job (M2 C2.1 CI change: the
-          # check budget must not depend on a warm cache). Here the SDK client drives the debug binary the test steps
-          # above already compiled, so check keeps its C1.4 protocol coverage on both OSes.
-          cargo build --locked -p tt-headless
-          exe=target/debug/toontown-headless
+          # The SDK protocol conformance (C1.4; 11 §14.7) runs against the release binary in `headless` on both OSes;
+          # its former duplicate here against the debug binary moved out in M4 C4.1 round 1 (ruling O-4: Windows
+          # `check` within 50 minutes cold).
           PY=python3
-          if [ "$RUNNER_OS" = "Windows" ]; then exe="$exe.exe"; PY=python; fi
+          if [ "$RUNNER_OS" = "Windows" ]; then PY=python; fi
           mkdir -p out
-          # A virtual environment: system Pythons may refuse pip installs (PEP 668).
-          $PY -m venv .venv-mcp
-          VPY=.venv-mcp/bin/python
-          if [ "$RUNNER_OS" = "Windows" ]; then VPY=.venv-mcp/Scripts/python.exe; fi
-          $VPY -m pip install --quiet "mcp==2.0.0"
-          PYTHONIOENCODING=utf-8 $VPY scripts/mcp-conformance.py "$exe" out/sdk-conformance.json
           # The C1.4 measurements written by the test suite (lock liveness, cache, fingerprint, autosave, never-block),
           # recomputed from their observations (C14-R1-07), and the release-feature proof (C14-R1-10).
           $PY scripts/analyse-measurements.py target/evidence/c14 --out out/measurement-analysis.json
@@ -241,6 +225,15 @@ jobs:
           cache: pnpm
 
       - run: pnpm install --frozen-lockfile
+
+      # The front-end gates (moved from `check` in M4 C4.1 round 1, ruling O-4).
+      - name: Front end — lint, type-check, test, format, licences
+        run: |
+          pnpm lint
+          pnpm typecheck
+          pnpm test
+          pnpm format:check
+          pnpm licenses:check
 
       - name: Front end — build (frontendDist is embedded by the Tauri host)
         run: pnpm --dir desktop build
