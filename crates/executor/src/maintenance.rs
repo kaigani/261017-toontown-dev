@@ -186,8 +186,9 @@ fn autosave(s: &mut Session, force: bool) -> bool {
             session: Some(&session),
             saved_at: saved_at.clone(),
         };
-        let outcome = recovery::write(&root, &info, &input)
-            .and_then(|saved| recovery::set_engine(&root, &info.recovery_id, &engine).map(|()| saved));
+        // The owner is named before `recovery.json` exists, so whoever sees the entry also sees its owner (C41-R1-15).
+        let outcome = recovery::set_engine(&root, &info.recovery_id, &engine)
+            .and_then(|()| recovery::write(&root, &info, &input));
         let id = info.recovery_id.clone();
         let _ = poster.run(std::time::Duration::from_secs(600), move |core| {
             let Some(s) = core.session_mut() else { return };
