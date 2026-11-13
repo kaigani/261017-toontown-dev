@@ -4,6 +4,7 @@
 // owner in the tooltip.
 import { useSlice } from '../state/context';
 import type { Arrangement, Layout, WorkspaceEntry } from '../state/types';
+import { COMMAND_INDEX } from '../ipc/generated/commands';
 import { TOOL_PALETTES } from '../panels/catalogue';
 import { useActions } from './actionsApi';
 
@@ -22,6 +23,15 @@ const ITEM_LABELS: Readonly<Record<string, string>> = {
   sceneList: 'Scene',
   workspaceList: 'Workspace',
 };
+
+const INDEX = COMMAND_INDEX as unknown as Readonly<
+  Record<string, { readonly label?: string; readonly milestone?: string } | undefined>
+>;
+
+/** A command reference's display label (the registry's). */
+function commandLabel(id: string): string {
+  return INDEX[id]?.label ?? id;
+}
 
 /** Items whose behaviour belongs to a later checkpoint (shown disabled with the owner). */
 const ITEM_OWNERS: Readonly<Record<string, string>> = {
@@ -56,7 +66,8 @@ export function MainToolbar({ layout, fullScreen }: { layout: Layout | undefined
           previousFrame: { direction: 'previous' },
           nextFrame: { direction: 'next' },
         };
-        const owner = ITEM_OWNERS[item];
+        // A command whose implementation belongs to a later checkpoint stays visible, disabled, with its owner.
+        const owner = ITEM_OWNERS[item] ?? INDEX[item]?.milestone;
         const isCommand = item.includes('.');
         const command = isCommand
           ? item
@@ -66,7 +77,7 @@ export function MainToolbar({ layout, fullScreen }: { layout: Layout | undefined
               : 'app.frame.move'
             : null;
         const params = isCommand ? {} : (frameStep[item] ?? {});
-        const label = ITEM_LABELS[item] ?? item;
+        const label = ITEM_LABELS[item] ?? commandLabel(item);
         return (
           <button
             key={i}

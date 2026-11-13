@@ -55,7 +55,7 @@ use std::time::Duration;
 
 use serde_json::{Value, json};
 use tt_model::document::Document;
-use tt_registry::{AssemblyError, CommandError, Kind, Registry, Status as DeclStatus, codes};
+use tt_registry::{AssemblyError, Kind, Registry, Status as DeclStatus, codes};
 
 pub use app::{AppState, Mode};
 pub use cx::Cx;
@@ -67,6 +67,8 @@ pub use session::Event;
 pub use store::{Maintenance, PersistOptions};
 pub use tt_persist::fsx::random_token;
 pub use tt_persist::settings::UserDirs;
+/// The registry types hosts need without depending on the registry crate (M4 C4.1).
+pub use tt_registry::{CommandError, Status as DeclarationStatus};
 pub use types::{
     BatchRequest, BatchStep, ChangeRecord, Envelope, Invocation, InvokeOptions, OpenOptions, Origin, Status, UndoRef,
     UnsavedPolicy, Warning,

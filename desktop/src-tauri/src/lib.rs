@@ -100,7 +100,7 @@ pub enum DesktopError {
     Tauri(#[from] tauri::Error),
     /// The executor did not start.
     #[error("the executor did not start ({}): {}", .0.code, .0.message)]
-    Executor(tt_registry::CommandError),
+    Executor(tt_executor::CommandError),
 }
 
 /// Starts the desktop application and blocks until it exits.
@@ -213,7 +213,20 @@ mod tests {
     #[cfg(not(feature = "m0-diagnostics"))]
     #[test]
     fn default_build_registers_no_diagnostic_commands() {
-        assert_eq!(names(), ["ping", "app_info", "run_command", "cancel_request", "report_shell", "dispatch_key", "pick_path", "startup", "restart_engine"]);
+        assert_eq!(
+            names(),
+            [
+                "ping",
+                "app_info",
+                "run_command",
+                "cancel_request",
+                "report_shell",
+                "dispatch_key",
+                "pick_path",
+                "startup",
+                "restart_engine"
+            ]
+        );
         for path in COMMANDS {
             assert!(!path.contains("spike") && !path.contains("bench") && !path.contains("diagnostics"), "{path}");
         }
@@ -224,7 +237,20 @@ mod tests {
     #[test]
     fn diagnostics_build_registers_the_m0_commands() {
         let names = names();
-        assert_eq!(&names[..9], ["ping", "app_info", "run_command", "cancel_request", "report_shell", "dispatch_key", "pick_path", "startup", "restart_engine"]);
+        assert_eq!(
+            &names[..9],
+            [
+                "ping",
+                "app_info",
+                "run_command",
+                "cancel_request",
+                "report_shell",
+                "dispatch_key",
+                "pick_path",
+                "startup",
+                "restart_engine"
+            ]
+        );
         assert!(names.contains(&"bench_plan") && names.contains(&"bench_report"));
         assert_eq!(names.iter().filter(|n| n.starts_with("spike_")).count(), 10);
     }

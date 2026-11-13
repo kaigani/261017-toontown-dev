@@ -351,8 +351,11 @@ pub(crate) fn agent_restricted(key: &str) -> bool {
 
 #[cfg(test)]
 mod tests {
-    #![allow(clippy::unwrap_used, reason = "test")]
     use super::*;
+
+    fn code(key: &str, v: Value) -> Option<String> {
+        validate(key, &v, &[]).err().map(|e| e.code)
+    }
 
     #[test]
     fn the_bundled_catalogue_loads_and_every_default_validates() {
@@ -360,21 +363,21 @@ mod tests {
         assert!(c.error.is_none(), "{:?}", c.error);
         for d in &c.prefs {
             assert!(c.categories.iter().any(|x| x.id == d.category), "{}", d.key);
-            assert_eq!(validate(&d.key, &d.default, &[]).unwrap(), d.default, "{}", d.key);
+            assert_eq!(validate(&d.key, &d.default, &[]).ok(), Some(d.default.clone()), "{}", d.key);
         }
     }
 
     #[test]
     fn values_are_typed_and_ranged() {
-        assert_eq!(validate("files.backups.count", &json!(21), &[]).unwrap_err().code, codes::OUT_OF_RANGE);
-        assert_eq!(validate("files.backups.count", &json!(2.5), &[]).unwrap_err().code, codes::INVALID_VALUE);
-        assert_eq!(validate("display.bitmapPreviewMaxSize", &json!(100), &[]).unwrap_err().code, codes::OUT_OF_RANGE);
-        assert_eq!(validate("display.bitmapPreviewMaxSize", &json!(256), &[]).unwrap(), json!(256));
-        assert_eq!(validate("interface.elementColours.peg", &json!("#ab12cd"), &[]).unwrap(), json!("#AB12CDFF"));
-        assert_eq!(validate("interface.theme", &json!("mine"), &["mine".into()]).unwrap(), json!("mine"));
-        assert_eq!(validate("interface.theme", &json!("mine"), &[]).unwrap_err().code, codes::INVALID_VALUE);
-        assert_eq!(validate("nope.nope", &json!(1), &[]).unwrap_err().code, codes::UNKNOWN_KEY);
-        let merged = validate("edit.pasteSpecial.motionPoint", &json!({"x": false}), &[]).unwrap();
+        assert_eq!(code("files.backups.count", json!(21)).as_deref(), Some(codes::OUT_OF_RANGE));
+        assert_eq!(code("files.backups.count", json!(2.5)).as_deref(), Some(codes::INVALID_VALUE));
+        assert_eq!(code("display.bitmapPreviewMaxSize", json!(100)).as_deref(), Some(codes::OUT_OF_RANGE));
+        assert_eq!(validate("display.bitmapPreviewMaxSize", &json!(256), &[]).ok(), Some(json!(256)));
+        assert_eq!(validate("interface.elementColours.peg", &json!("#ab12cd"), &[]).ok(), Some(json!("#AB12CDFF")));
+        assert_eq!(validate("interface.theme", &json!("mine"), &["mine".into()]).ok(), Some(json!("mine")));
+        assert_eq!(code("interface.theme", json!("mine")).as_deref(), Some(codes::INVALID_VALUE));
+        assert_eq!(code("nope.nope", json!(1)).as_deref(), Some(codes::UNKNOWN_KEY));
+        let merged = validate("edit.pasteSpecial.motionPoint", &json!({"x": false}), &[]).unwrap_or_default();
         assert_eq!(merged["x"], json!(false));
         assert_eq!(merged["y"], json!(true));
     }

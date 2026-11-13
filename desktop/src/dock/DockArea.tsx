@@ -4,6 +4,8 @@
 // splitter drag stores the area sizes with `workspace.layout.set`. The grid is rebuilt from the kernel's answer.
 import {
   DockviewReact,
+  themeDark,
+  themeLight,
   type DockviewApi,
   type DockviewReadyEvent,
   type IDockviewPanelHeaderProps,
@@ -115,8 +117,25 @@ const components: Record<string, FunctionComponent<IDockviewPanelProps<{ panelId
   panel: PanelComponent,
 };
 
+/** Whether the applied theme is dark (theme.ts sets `data-theme` on the document element). */
+function useDarkTheme(): boolean {
+  const read = () => document.documentElement.getAttribute('data-theme') !== 'light';
+  const [dark, setDark] = useState(read);
+  useEffect(() => {
+    const observer = new MutationObserver(() => {
+      setDark(document.documentElement.getAttribute('data-theme') !== 'light');
+    });
+    observer.observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
+    return () => {
+      observer.disconnect();
+    };
+  }, []);
+  return dark;
+}
+
 export function DockArea({ layout, fullScreen }: { layout: Layout | undefined; fullScreen: boolean }) {
   const actions = useActions();
+  const dark = useDarkTheme();
   const apiRef = useRef<DockviewApi | null>(null);
   const shown = useRef<string>('');
   const arrangement: Arrangement | undefined = layout ? (fullScreen ? layout.fullScreen : layout) : undefined;
@@ -162,6 +181,7 @@ export function DockArea({ layout, fullScreen }: { layout: Layout | undefined; f
         defaultTabComponent={Tab}
         onReady={onReady}
         className="tt-dockview"
+        theme={dark ? themeDark : themeLight}
       />
     </div>
   );

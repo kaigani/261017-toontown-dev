@@ -45,7 +45,9 @@ export interface HostApi extends BenchApi {
   /** Documents to open at start (01 §1.1 rule 8), taken once. */
   startup(): Promise<{ open: string[] }>;
   /** The engine stopped answering or answers again (reviews/M4-design-engine-restart.md). */
-  onEngineStatus(handler: (status: { notResponding: boolean; generation: number }) => void): Promise<Unlisten>;
+  onEngineStatus(
+    handler: (status: { notResponding: boolean; generation: number }) => void,
+  ): Promise<Unlisten>;
   /** Restarts a stuck engine (the user's choice, never automatic). */
   restartEngine(): Promise<{ generation: number }>;
   ping(request: PingRequest): Promise<PingResponse>;
@@ -152,7 +154,11 @@ const ENGINE_STATUS_SCHEMA: Schema = {
 };
 
 function isEngineStatus(v: unknown): v is { notResponding: boolean; generation: number } {
-  return typeof v === 'object' && v !== null && typeof (v as { notResponding?: unknown }).notResponding === 'boolean';
+  return (
+    typeof v === 'object' &&
+    v !== null &&
+    typeof (v as { notResponding?: unknown }).notResponding === 'boolean'
+  );
 }
 
 const GENERATION_SCHEMA: Schema = {
@@ -163,7 +169,9 @@ const GENERATION_SCHEMA: Schema = {
 };
 
 function isGeneration(v: unknown): v is { generation: number } {
-  return typeof v === 'object' && v !== null && typeof (v as { generation?: unknown }).generation === 'number';
+  return (
+    typeof v === 'object' && v !== null && typeof (v as { generation?: unknown }).generation === 'number'
+  );
 }
 
 function isStartup(v: unknown): v is { open: string[] } {

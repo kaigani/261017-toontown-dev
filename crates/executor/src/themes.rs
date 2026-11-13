@@ -179,7 +179,6 @@ pub fn scan(dir: &Path) -> Vec<ThemeInfo> {
 
 #[cfg(test)]
 mod tests {
-    #![allow(clippy::unwrap_used, reason = "test")]
     use super::*;
 
     #[test]

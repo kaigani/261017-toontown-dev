@@ -154,11 +154,7 @@ pub async fn dispatch_key(app: AppHandle, json: String) -> Result<Response, Stri
         .map_err(|e| internal(e.to_string()))?;
     match r {
         Ok(resolution) => respond(&resolution),
-        Err(e) => Err(error_json(&tt_engine::ErrorInfo {
-            code: e.code,
-            message: e.message,
-            details: *e.details,
-        })),
+        Err(e) => Err(error_json(&tt_engine::ErrorInfo { code: e.code, message: e.message, details: *e.details })),
     }
 }
 

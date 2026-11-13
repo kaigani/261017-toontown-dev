@@ -35,7 +35,8 @@ import httpx2
 from mcp import ClientSession
 from mcp.client.streamable_http import streamable_http_client
 
-APP_START_BOUND_S = 120  # first webview start on a cold CI runner; generous on purpose
+APP_START_BOUND_S = 120
+APP_PID: dict = {"pid": None}  # first webview start on a cold CI runner; generous on purpose
 TREE_BOUND_S = 60
 
 
@@ -56,21 +57,27 @@ class Run:
     def save(self, name: str, value: object) -> None:
         (self.out / name).write_text(json.dumps(value, indent=2, default=str), encoding="utf-8")
 
-    def shot(self, name: str) -> None:
-        """Best-effort OS capture of the screen (not gated: runners may refuse screen capture)."""
+    def shot(self, name: str, pid: int | None = None) -> None:
+        """Best-effort capture of the application window (not gated: runners may refuse screen capture). On Windows
+        only the window of `pid` is captured, so no other window of a workstation appears in the receipts; on macOS
+        (CI runners only) the screen."""
         path = self.out / f"{name}.png"
         try:
-            if sys.platform == "win32":
+            if sys.platform == "win32" and pid is not None:
                 ps = (
-                    "Add-Type -AssemblyName System.Windows.Forms,System.Drawing;"
-                    "$b=[System.Windows.Forms.Screen]::PrimaryScreen.Bounds;"
-                    "$i=New-Object System.Drawing.Bitmap $b.Width,$b.Height;"
-                    "$g=[System.Drawing.Graphics]::FromImage($i);"
-                    "$g.CopyFromScreen($b.Location,[System.Drawing.Point]::Empty,$b.Size);"
+                    "Add-Type -AssemblyName System.Drawing;"
+                    "Add-Type -TypeDefinition 'using System;using System.Runtime.InteropServices;"
+                    "public struct R{public int L,T,Ri,B;}"
+                    "public static class W{[DllImport(\"user32.dll\")]public static extern bool GetWindowRect(IntPtr h,out R r);"
+                    "[DllImport(\"user32.dll\")]public static extern bool SetForegroundWindow(IntPtr h);}';"
+                    f"$p=Get-Process -Id {pid};$h=$p.MainWindowHandle;[W]::SetForegroundWindow($h)|Out-Null;Start-Sleep -Milliseconds 300;"
+                    "$r=New-Object R;[W]::GetWindowRect($h,[ref]$r)|Out-Null;$w=$r.Ri-$r.L;$t=$r.B-$r.T;"
+                    "$i=New-Object System.Drawing.Bitmap $w,$t;$g=[System.Drawing.Graphics]::FromImage($i);"
+                    "$g.CopyFromScreen($r.L,$r.T,0,0,$i.Size);"
                     f"$i.Save('{path}');"
                 )
                 subprocess.run(["powershell", "-NoProfile", "-Command", ps], timeout=30, check=False, capture_output=True)
-            elif sys.platform == "darwin":
+            elif sys.platform == "darwin" and os.environ.get("CI"):
                 subprocess.run(["screencapture", "-x", str(path)], timeout=30, check=False, capture_output=True)
             if path.exists() and path.stat().st_size > 0:
                 self.shots.append(path.name)
@@ -85,11 +92,13 @@ def launch(app: str, user: Path, discovery: Path) -> subprocess.Popen:
     if discovery.exists():
         discovery.unlink()
     log = open(discovery.with_suffix(".log"), "ab")
-    return subprocess.Popen(
+    proc = subprocess.Popen(
         [app, "--user-dir", str(user), "--mcp-http", "127.0.0.1:0", "--mcp-discovery", str(discovery)],
         stdout=log,
         stderr=subprocess.STDOUT,
     )
+    APP_PID["pid"] = proc.pid
+    return proc
 
 
 def wait_discovery(discovery: Path, proc: subprocess.Popen) -> dict:
@@ -118,8 +127,8 @@ def stop(proc: subprocess.Popen) -> None:
 
 
 def tool_result(r) -> dict:
-    sc = r.structuredContent or {}
-    return sc
+    """The structured content of a tool result (camelCase in SDK 1.x, snake_case in 2.x)."""
+    return getattr(r, "structuredContent", None) or getattr(r, "structured_content", None) or {}
 
 
 async def call(session: ClientSession, tool: str, args: dict) -> dict:
@@ -171,12 +180,13 @@ async def first_session(url: str, token: str, run: Run) -> None:
             read, write = streams[0], streams[1]
             async with ClientSession(read, write) as session:
                 init = await session.initialize()
-                run.check(init.serverInfo is not None, "initialize over Streamable HTTP", init.serverInfo.model_dump() if init.serverInfo else None)
+                info = getattr(init, "serverInfo", None) or getattr(init, "server_info", None)
+                run.check(info is not None, "initialize over Streamable HTTP", info.model_dump() if info else None)
 
                 # The front end reports its UI tree: panels, start screen, status bar, main toolbar.
                 root = await gui_tree(session, run, lambda r: by_id(r, "startScreen") is not None, "the GUI shows the start screen")
                 run.save("tree-01-start.json", root)
-                run.shot("01-start-screen")
+                run.shot("01-start-screen", APP_PID["pid"])
                 run.check(by_id(root, "startScreen") is not None, "start screen in the rendered tree")
                 run.check(by_id(root, "statusBar") is not None, "status bar in the rendered tree")
                 run.check(by_id(root, "mainToolbar") is not None, "main toolbar in the rendered tree")
@@ -200,7 +210,7 @@ async def first_session(url: str, token: str, run: Run) -> None:
                 root = await gui_tree(session, run, lambda r: by_id(r, "startScreen") is None, "the start screen closes")
                 run.check("Bounce" in str(root.get("label", "")), "the window title names the project", root.get("label"))
                 run.save("tree-02-project.json", root)
-                run.shot("02-project")
+                run.shot("02-project", APP_PID["pid"])
 
                 # Workspaces: selecting Drawing makes the Drawing view central.
                 env = await run_cmd(session, "workspace.select", {"name": "Drawing"})
@@ -230,7 +240,7 @@ async def first_session(url: str, token: str, run: Run) -> None:
                 # User priority: an open preferences dialog makes an agent change wait, then fail with ui.busy.
                 env = await run_cmd(session, "ui.preferences.open", {"category": "interface"})
                 root = await gui_tree(session, run, lambda r: by_id(r, "preferences") is not None, "the preferences dialog opens")
-                run.shot("03-preferences")
+                run.shot("03-preferences", APP_PID["pid"])
                 state = (await call(session, "get_state", {})).get("result") or {}
                 run.check((state.get("modal") or {}).get("kind") == "dialog", "app.state.get reports the modal dialog", state.get("modal"))
                 t0 = time.monotonic()
@@ -258,7 +268,7 @@ async def second_session(url: str, token: str, run: Run) -> None:
                 run.check((g.get("width"), g.get("height")) == (1100, 720), "the window geometry persisted", g)
                 root = await gui_tree(session, run, lambda r: by_id(r, "startScreen") is not None, "the restarted GUI shows the start screen")
                 run.save("tree-04-restart.json", root)
-                run.shot("04-restart")
+                run.shot("04-restart", APP_PID["pid"])
 
 
 def main() -> int:

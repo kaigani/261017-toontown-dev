@@ -58,7 +58,7 @@ impl Host {
     ///
     /// # Errors
     /// The executor's start error.
-    pub fn start(options: HostOptions) -> Result<Self, tt_registry::CommandError> {
+    pub fn start(options: HostOptions) -> Result<Self, tt_executor::CommandError> {
         let (exec, settings_dir) = Self::spawn_executor(&options)?;
         Ok(Self {
             exec: std::sync::RwLock::new(exec),
@@ -73,12 +73,11 @@ impl Host {
         })
     }
 
-    fn spawn_executor(options: &HostOptions) -> Result<(ExecutorHandle, PathBuf), tt_registry::CommandError> {
+    fn spawn_executor(options: &HostOptions) -> Result<(ExecutorHandle, PathBuf), tt_executor::CommandError> {
         let dirs = match &options.user_dir {
             Some(d) => tt_executor::UserDirs::under(d),
-            None => tt_executor::UserDirs::platform().unwrap_or_else(|| {
-                tt_executor::UserDirs::under(&std::env::temp_dir().join("Toontown"))
-            }),
+            None => tt_executor::UserDirs::platform()
+                .unwrap_or_else(|| tt_executor::UserDirs::under(&std::env::temp_dir().join("Toontown"))),
         };
         let settings_dir = dirs.settings.clone();
         let exec = ExecutorHandle::spawn_with_options(tt_executor::ExecutorOptions {
@@ -104,7 +103,7 @@ impl Host {
     ///
     /// # Errors
     /// The new executor's start error.
-    pub fn restart(&self) -> Result<u64, tt_registry::CommandError> {
+    pub fn restart(&self) -> Result<u64, tt_executor::CommandError> {
         let (exec, _) = Self::spawn_executor(&self.options)?;
         let was_serving = self.http.lock().unwrap_or_else(PoisonError::into_inner).is_some();
         self.stop_http();
@@ -195,7 +194,9 @@ impl Host {
         let candidates: Vec<std::net::SocketAddr> = match self.options.mcp_http {
             Some(a) => vec![a],
             // The documented port, then the next free ones (11 §4).
-            None => (0..16).map(|i| std::net::SocketAddr::from(([127, 0, 0, 1], pref_port.saturating_add(i)))).collect(),
+            None => {
+                (0..16).map(|i| std::net::SocketAddr::from(([127, 0, 0, 1], pref_port.saturating_add(i)))).collect()
+            }
         };
         let mut last = String::new();
         for bind in candidates {

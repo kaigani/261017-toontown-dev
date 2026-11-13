@@ -33,7 +33,8 @@ pub enum Start {
 pub fn claim(settings: &Path, open: &[PathBuf]) -> Start {
     if let Ok(text) = std::fs::read_to_string(record(settings))
         && let Ok(v) = serde_json::from_str::<Value>(&text)
-        && let (Some(port), Some(key)) = (v.get("port").and_then(Value::as_u64), v.get("secret").and_then(Value::as_str))
+        && let (Some(port), Some(key)) =
+            (v.get("port").and_then(Value::as_u64), v.get("secret").and_then(Value::as_str))
         && let Ok(port) = u16::try_from(port)
     {
         let addr = SocketAddr::from(([127, 0, 0, 1], port));

@@ -306,8 +306,7 @@ mod tests {
     #[test]
     fn every_panel_and_palette_has_a_checkable_item() {
         let m = Manifest::embedded().unwrap();
-        let checks: Vec<String> =
-            m.commands(Platform::Windows).iter().filter_map(|c| c.check.clone()).collect();
+        let checks: Vec<String> = m.commands(Platform::Windows).iter().filter_map(|c| c.check.clone()).collect();
         for (p, _) in tt_executor::PANEL_CATALOGUE {
             assert!(checks.contains(&format!("panel:{p}")), "{p}");
         }
@@ -320,7 +319,10 @@ mod tests {
         for c in m.commands(Platform::Windows) {
             let must_be_disabled = c.command.starts_with("edit.")
                 || c.command.starts_with("view.")
-                || matches!(c.command.as_str(), "project.save" | "project.saveAs" | "project.close" | "project.properties.set");
+                || matches!(
+                    c.command.as_str(),
+                    "project.save" | "project.saveAs" | "project.close" | "project.properties.set"
+                );
             if must_be_disabled {
                 assert!(!c.enabled_without_project, "{} must be disabled without a project", c.command);
             }

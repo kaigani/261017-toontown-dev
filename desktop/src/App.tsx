@@ -183,7 +183,9 @@ function Window() {
       switch (values['general.startup.behaviour']) {
         case 'lastProject': {
           const recent = await services.engine.run('project.recent.list', {}).done;
-          const first = Array.isArray(recent.result) ? (recent.result[0] as { path?: unknown } | undefined) : undefined;
+          const first = Array.isArray(recent.result)
+            ? (recent.result[0] as { path?: unknown } | undefined)
+            : undefined;
           if (typeof first?.path === 'string') await actions.perform('project.open', { path: first.path });
           break;
         }
@@ -327,21 +329,39 @@ function Window() {
     };
   }, [services]);
 
-  // The rendered UI tree, with the last engine event it reflects (inspect_ui freshness).
+  // The rendered UI tree, with the last engine event it reflects (inspect_ui freshness): reported after any change of
+  // the document (dialogs included, which render outside the shell's root) or of the store, a frame or two later.
   useEffect(() => {
-    const timer = setTimeout(() => {
-      if (!root.current) return;
-      const tree = collectUiTree(root.current, {
+    let timer: ReturnType<typeof setTimeout> | null = null;
+    const report = () => {
+      timer = null;
+      const st = services.store.getState();
+      const app = st.slices.appState as AppState | undefined;
+      const tree = collectUiTree(document.body, {
         role: 'window',
         id: 'main',
-        label: appState?.project ? `Toontown — ${appState.project.name}` : 'Toontown',
+        label: app?.project ? `Toontown — ${app.project.name}` : 'Toontown',
       });
-      void services.engine.report({ uiTree: tree, renderedSeq: state.seq }).catch(() => undefined);
-    }, TREE_REPORT_MS);
-    return () => {
-      clearTimeout(timer);
+      void services.engine.report({ uiTree: tree, renderedSeq: st.seq }).catch(() => undefined);
     };
-  });
+    const schedule = () => {
+      timer ??= setTimeout(report, TREE_REPORT_MS);
+    };
+    const observer = new MutationObserver(schedule);
+    observer.observe(document.body, {
+      subtree: true,
+      childList: true,
+      attributes: true,
+      characterData: true,
+    });
+    const unsubscribe = services.store.subscribe(schedule);
+    schedule();
+    return () => {
+      observer.disconnect();
+      unsubscribe();
+      if (timer !== null) clearTimeout(timer);
+    };
+  }, [services]);
 
   // The window title (01 §5.1): project, modified, read-only, scene, frame.
   useEffect(() => {
@@ -400,8 +420,8 @@ function EngineBanner() {
   if (!stuck || dismissed) return null;
   return (
     <div className="engine-banner" role="alert" data-tt-role="dialog" data-tt-id="engineNotResponding">
-      <strong>The engine is not responding.</strong> A command may still be running. Work since the last autosave is
-      only in the engine; restarting offers the autosave as recoverable work.
+      <strong>The engine is not responding.</strong> A command may still be running. Work since the last
+      autosave is only in the engine; restarting offers the autosave as recoverable work.
       <button
         type="button"
         data-tt-role="button"

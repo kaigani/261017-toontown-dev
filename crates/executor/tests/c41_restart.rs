@@ -43,6 +43,17 @@ fn a_restarted_executor_offers_the_abandoned_autosave() {
     let scene = created["sceneId"].as_str().unwrap().to_owned();
     ok(&first, "doc.object.patch", json!({ "targets": [scene], "props": { "meta": { "unsaved": 42 } } }));
     first.run_maintenance(true).unwrap();
+    // The recovery copy is written on its own thread (AUTO-02): wait for it, bounded (30 s, far above a local write).
+    let started = std::time::Instant::now();
+    let written = || {
+        std::fs::read_dir(dir.join("Recovery"))
+            .map(|rd| rd.filter_map(Result::ok).any(|e| e.path().join("recovery.json").exists()))
+            .unwrap_or(false)
+    };
+    while !written() {
+        assert!(started.elapsed() < Duration::from_secs(30), "no autosave was written");
+        std::thread::yield_now();
+    }
     // The first executor is abandoned alive: its recovery data belongs to a live process and is not offered yet.
     let second = over(&dir);
     assert!(ok(&second, "project.recovery.list", json!({})).as_array().unwrap().is_empty());

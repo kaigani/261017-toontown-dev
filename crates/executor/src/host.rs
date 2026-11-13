@@ -335,7 +335,11 @@ impl ExecutorHandle {
     ///
     /// # Errors
     /// `command.timeout` when the document thread does not answer within the budget.
-    pub fn complete_reference(&self, command_id: &str, params: Map<String, Value>) -> Result<KeyResolution, CommandError> {
+    pub fn complete_reference(
+        &self,
+        command_id: &str,
+        params: Map<String, Value>,
+    ) -> Result<KeyResolution, CommandError> {
         let id = command_id.to_owned();
         crate::Poster(self.tx.clone()).run(self.config.budget, move |core| {
             let registry = core.registry();

@@ -70,15 +70,15 @@ fn about_metadata<R: Runtime>(app: &AppHandle<R>) -> AboutMetadata<'static> {
     }
 }
 
-fn build_items(
-    app: &AppHandle,
+fn build_items<'a>(
+    app: &'a AppHandle,
     items: &[Item],
     platform: Platform,
-    mut sub: SubmenuBuilder<'_, Wry, AppHandle>,
+    mut sub: SubmenuBuilder<'a, Wry, AppHandle>,
     state: &mut MenuState,
     next: &mut usize,
     pending_dynamic: &mut Vec<(&'static str, String)>,
-) -> tauri::Result<SubmenuBuilder<'_, Wry, AppHandle>> {
+) -> tauri::Result<SubmenuBuilder<'a, Wry, AppHandle>> {
     for item in items.iter().filter(|i| i.on(platform)) {
         sub = match item {
             Item::Separator { .. } => sub.separator(),
@@ -267,7 +267,7 @@ fn checked(f: &Facts, check: &str) -> bool {
 fn enabled(f: &Facts, item: &CommandItem) -> bool {
     let Ok(registry) = tt_executor::registry() else { return false };
     let Some(e) = registry.get(&item.command) else { return false };
-    if !matches!(e.status(), tt_registry::Status::Implemented) {
+    if !matches!(e.status(), tt_executor::DeclarationStatus::Implemented) {
         return false;
     }
     if !f.project && !item.enabled_without_project {
@@ -351,7 +351,15 @@ fn apply(app: &AppHandle, f: &Facts) {
         })
         .collect();
     if let Some(sub) = st.recent.clone() {
-        rebuild_dynamic(app, &sub, "recent", &recent_paths.iter().map(|(p, n, e)| (p.clone(), if *e { n.clone() } else { format!("{n} (missing)") })).collect::<Vec<_>>());
+        rebuild_dynamic(
+            app,
+            &sub,
+            "recent",
+            &recent_paths
+                .iter()
+                .map(|(p, n, e)| (p.clone(), if *e { n.clone() } else { format!("{n} (missing)") }))
+                .collect::<Vec<_>>(),
+        );
     }
     st.recent_paths = recent_paths.into_iter().map(|(p, _, _)| p).collect();
     let names: Vec<(String, String)> = f
@@ -398,13 +406,19 @@ pub enum MenuAction {
 fn resolve(st: &MenuState, id: &str) -> MenuAction {
     if let Some(i) = id.strip_prefix("dyn:recent:").and_then(|n| n.parse::<usize>().ok()) {
         return match st.recent_paths.get(i) {
-            Some(p) => MenuAction::Command("project.open".into(), json!({ "path": p }).as_object().cloned().unwrap_or_default()),
+            Some(p) => MenuAction::Command(
+                "project.open".into(),
+                json!({ "path": p }).as_object().cloned().unwrap_or_default(),
+            ),
             None => MenuAction::Unbound(id.to_owned()),
         };
     }
     if let Some(i) = id.strip_prefix("dyn:workspace:").and_then(|n| n.parse::<usize>().ok()) {
         return match st.workspace_names.get(i) {
-            Some(n) => MenuAction::Command("workspace.select".into(), json!({ "name": n }).as_object().cloned().unwrap_or_default()),
+            Some(n) => MenuAction::Command(
+                "workspace.select".into(),
+                json!({ "name": n }).as_object().cloned().unwrap_or_default(),
+            ),
             None => MenuAction::Unbound(id.to_owned()),
         };
     }
@@ -463,7 +477,10 @@ mod tests {
             platforms: None,
         };
         assert_eq!(accelerator(&keymap, &item("edit.redo", None)).as_deref(), Some("CmdOrCtrl+Shift+Z"));
-        assert_eq!(accelerator(&keymap, &item("view.zoom.set", Some(json!({ "steps": 1 })))).as_deref(), Some("CmdOrCtrl+Equal"));
+        assert_eq!(
+            accelerator(&keymap, &item("view.zoom.set", Some(json!({ "steps": 1 })))).as_deref(),
+            Some("CmdOrCtrl+Equal")
+        );
         assert_eq!(accelerator(&keymap, &item("view.zoom.set", Some(json!({ "steps": -1 })))), None);
         assert_eq!(native_label("CmdOrCtrl+Shift+Z"), "Ctrl+Shift+Z");
     }
@@ -477,11 +494,17 @@ mod tests {
         };
         assert_eq!(
             resolve(&st, "dyn:recent:0"),
-            MenuAction::Command("project.open".into(), json!({ "path": "/a.animpkg" }).as_object().cloned().unwrap_or_default())
+            MenuAction::Command(
+                "project.open".into(),
+                json!({ "path": "/a.animpkg" }).as_object().cloned().unwrap_or_default()
+            )
         );
         assert_eq!(
             resolve(&st, "dyn:workspace:0"),
-            MenuAction::Command("workspace.select".into(), json!({ "name": "Default" }).as_object().cloned().unwrap_or_default())
+            MenuAction::Command(
+                "workspace.select".into(),
+                json!({ "name": "Default" }).as_object().cloned().unwrap_or_default()
+            )
         );
         assert_eq!(resolve(&st, "dyn:recent:5"), MenuAction::Unbound("dyn:recent:5".into()));
         assert_eq!(resolve(&st, "nope"), MenuAction::Unbound("nope".into()));
