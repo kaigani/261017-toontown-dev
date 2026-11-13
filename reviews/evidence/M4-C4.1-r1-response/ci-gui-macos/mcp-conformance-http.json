@@ -3,7 +3,7 @@
   "transport": "streamable-http",
   "server": "desktop-artifact/Toontown.app/Contents/MacOS/toontown",
   "platform": "darwin",
-  "seconds": 3.19,
+  "seconds": 3.17,
   "passed": 24,
   "failed": 0,
   "checks": [
@@ -45,17 +45,17 @@
     {
       "check": "tools/call run_command project.create (inside client roots)",
       "ok": true,
-      "detail": "{'status': 'ok', 'result': {'projectId': 'pr_01M7BAQ8XYTNE8M9VMNPXEM8Q4', 'path': '/var/folders/h5/t85nd63d71x27_8gl5gw3l_w0000gn/T/tt-c14-sdk-_wxl5n1_/Conformance.animpkg', 'sceneId': 'sc_01M7BAQ8Y1PJM2FN1TM6Y1PHCA', 'cameraId': 'el_01M7BAQ8Y1PJM2FN1TM6Y1PHCC', 'elementId': 'el_01M7BAQ8Y1PJM2FN1TM6Y1PHCD'}, 'changes': [], 'warnings': [], 'documentRev': 1}"
+      "detail": "{'status': 'ok', 'result': {'projectId': 'pr_01M7BG0RRTQTHVB6G49VW673N8', 'path': '/var/folders/h5/t85nd63d71x27_8gl5gw3l_w0000gn/T/tt-c14-sdk-dnjobn46/Conformance.animpkg', 'sceneId': 'sc_01M7BG0RRW54P5TNW1SM3C3C4D', 'cameraId': 'el_01M7BG0RRW54P5TNW1SM3C3C4F', 'elementId': 'el_01M7BG0RRW54P5TNW1SM3C3C4G'}, 'changes': [], 'warnings': [], 'documentRev': 1}"
     },
     {
       "check": "tools/call get_state",
       "ok": true,
-      "detail": "{'status': 'ok', 'result': {'project': {'id': 'pr_01M7BAQ8XYTNE8M9VMNPXEM8Q4', 'name': 'Conformance', 'path': '/var/folders/h5/t85nd63d71x27_8gl5gw3l_w0000gn/T/tt-c14-sdk-_wxl5n1_/Conformance.animpkg', 'dirty': False, 'globalLibraryDirty': False, 'readOnly': False}, 'scene': {'id': 'sc_01M7BAQ8Y1PJM2FN1TM6Y1PHCA', 'name': 'Scene-1', 'frameCount': 1}, 'frame': 1, 'element': {'id': 'el_01M7BAQ8Y1PJM"
+      "detail": "{'status': 'ok', 'result': {'project': {'id': 'pr_01M7BG0RRTQTHVB6G49VW673N8', 'name': 'Conformance', 'path': '/var/folders/h5/t85nd63d71x27_8gl5gw3l_w0000gn/T/tt-c14-sdk-dnjobn46/Conformance.animpkg', 'dirty': False, 'globalLibraryDirty': False, 'readOnly': False}, 'scene': {'id': 'sc_01M7BG0RRW54P5TNW1SM3C3C4D', 'name': 'Scene-1', 'frameCount': 1}, 'frame': 1, 'element': {'id': 'el_01M7BG0RRW54P"
     },
     {
       "check": "tools/call get_object",
       "ok": true,
-      "detail": "{'status': 'ok', 'result': {'object': {'id': 'sc_01M7BAQ8Y1PJM2FN1TM6Y1PHCA', 'type': 'scene', 'rev': 1, 'name': 'Scene-1', 'path': 'scene:\"Scene-1\"', 'visible': True, 'backgroundColour': '#FFFFFFFF', 'currentCameraId': 'el_01M7BAQ8Y1PJM2FN1TM6Y1PHCC', 'paletteStyles': {'pal_01M7BAQ8Y0EGZY7E50X536P0QC': 'sty_01M7BAQ8Y0EGZY7E50X536P0QD'}, 'outTransition': {'id': 'tr_01M7BAQ8Y1PJM2FN1TM6Y1PHCG', 'ty"
+      "detail": "{'status': 'ok', 'result': {'object': {'id': 'sc_01M7BG0RRW54P5TNW1SM3C3C4D', 'type': 'scene', 'rev': 1, 'name': 'Scene-1', 'path': 'scene:\"Scene-1\"', 'visible': True, 'backgroundColour': '#FFFFFFFF', 'currentCameraId': 'el_01M7BG0RRW54P5TNW1SM3C3C4F', 'paletteStyles': {'pal_01M7BG0RRTQTHVB6G49VW673N9': 'sty_01M7BG0RRTQTHVB6G49VW673NA'}, 'outTransition': {'id': 'tr_01M7BG0RRW54P5TNW1SM3C3C4K', 'ty"
     },
     {
       "check": "resources/list",
@@ -105,17 +105,17 @@
     {
       "check": "elicitation/create for a confirmation",
       "ok": true,
-      "detail": "[ElicitRequestFormParams(meta=None, mode='form', message='Overwrite `/var/folders/h5/t85nd63d71x27_8gl5gw3l_w0000gn/T/tt-c14-sdk-_wxl5n1_/Existing.animpkg`\\n\\nConsequences: [{\"kind\":\"overwrite\",\"path\":\"/var/folders/h5/t85nd63d71x27_8gl5gw3l_w0000gn/T/tt-c14-sdk-_wxl5n1_/Existing.animpkg\",\"bytes\":8}]', requested_schema={'type': 'object', 'properties': {'confirm': {'type': 'boolean', 'title': 'Proce"
+      "detail": "[ElicitRequestFormParams(meta=None, mode='form', message='Overwrite `/var/folders/h5/t85nd63d71x27_8gl5gw3l_w0000gn/T/tt-c14-sdk-dnjobn46/Existing.animpkg`\\n\\nConsequences: [{\"kind\":\"overwrite\",\"path\":\"/var/folders/h5/t85nd63d71x27_8gl5gw3l_w0000gn/T/tt-c14-sdk-dnjobn46/Existing.animpkg\",\"bytes\":8}]', requested_schema={'type': 'object', 'properties': {'confirm': {'type': 'boolean', 'title': 'Proce"
     },
     {
       "check": "accepted elicitation proceeds",
       "ok": true,
-      "detail": "{'status': 'ok', 'result': {'jobId': 'job-1'}, 'changes': [{'id': 'pr_01M7BAQ8XYTNE8M9VMNPXEM8Q4', 'type': 'project', 'op': 'modified', 'rev': 3, 'patch': [{'op': 'replace', 'path': '/modifiedAt', 'value': '2026-11-13T20:48:56.445Z', 'oldValue': '2026-11-13T20:48:55.230Z'}]}], 'warnings': [], 'documentRev': 3}"
+      "detail": "{'status': 'ok', 'result': {'jobId': 'job-1'}, 'changes': [{'id': 'pr_01M7BG0RRTQTHVB6G49VW673N8', 'type': 'project', 'op': 'modified', 'rev': 3, 'patch': [{'op': 'replace', 'path': '/modifiedAt', 'value': '2026-11-13T22:21:30.302Z', 'oldValue': '2026-11-13T22:21:29.242Z'}]}], 'warnings': [], 'documentRev': 3}"
     },
     {
       "check": "job_wait ok",
       "ok": true,
-      "detail": "{'status': 'ok', 'result': {'jobId': 'job-2', 'commandId': 'doc.package.export', 'state': 'succeeded', 'progress': 1.0, 'message': 'Write', 'startedAt': '2026-11-13T20:48:56.517Z', 'result': {'path': '/var/folders/h5/t85nd63d71x27_8gl5gw3l_w0000gn/T/tt-c14-sdk-_wxl5n1_/Export.animpkg', 'form': 'package', 'bytes': 6754, 'entries': 11}, 'session': 'agent:s1-f3978d'}, 'changes': [], 'warnings': [], '"
+      "detail": "{'status': 'ok', 'result': {'jobId': 'job-2', 'commandId': 'doc.package.export', 'state': 'succeeded', 'progress': 1.0, 'message': 'Write', 'startedAt': '2026-11-13T22:21:30.364Z', 'result': {'path': '/var/folders/h5/t85nd63d71x27_8gl5gw3l_w0000gn/T/tt-c14-sdk-dnjobn46/Export.animpkg', 'form': 'package', 'bytes': 6721, 'entries': 11}, 'session': 'agent:s1-cda3c6'}, 'changes': [], 'warnings': [], '"
     },
     {
       "check": "notifications/progress",

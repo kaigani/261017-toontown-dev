@@ -1,7 +1,7 @@
 {
   "format": "toontown-agent-discovery",
   "formatVersion": "1.0",
-  "endpoint": "http://127.0.0.1:49267/mcp",
+  "endpoint": "http://127.0.0.1:49264/mcp",
   "token": "<redacted>",
-  "processId": 1804
+  "processId": 1912
 }

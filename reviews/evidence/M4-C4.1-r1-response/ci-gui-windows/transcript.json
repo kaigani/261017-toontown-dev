@@ -3,8 +3,8 @@
     "check": "the application started and serves attached mode",
     "ok": true,
     "detail": {
-      "endpoint": "http://127.0.0.1:49917/mcp",
-      "startS": 4.3
+      "endpoint": "http://127.0.0.1:50693/mcp",
+      "startS": 4.7
     }
   },
   {
@@ -144,15 +144,15 @@
           "code": "project.pathRequired",
           "message": "the project has no location yet",
           "details": {
-            "projectId": "pr_01M7BAPMMEMQW52BW0CMSPZFDD"
+            "projectId": "pr_01M7BF04QAG0NB515X82801ARV"
           },
           "hint": "save with project.saveAs {path}"
         }
       },
       "activity": {
         "seq": 17,
-        "time": "2026-11-13T20:48:35.883Z",
-        "sessionId": "s1-3e6d5e",
+        "time": "2026-11-13T22:03:41.306Z",
+        "sessionId": "s1-e7bb60",
         "client": "mcp",
         "tool": "key",
         "commandId": "project.save",
@@ -162,7 +162,7 @@
         "undoStepId": null,
         "changedCount": 0,
         "documentRev": 1,
-        "durationMs": 4
+        "durationMs": 1
       }
     }
   },
@@ -253,7 +253,7 @@
           "hint": "retry when the user is done; app.state.get reports `modal`"
         }
       },
-      "waitedS": 10.01600000000002
+      "waitedS": 10.0
     }
   },
   {
@@ -304,8 +304,8 @@
       },
       "activity": {
         "seq": 31,
-        "time": "2026-11-13T20:48:48.035Z",
-        "sessionId": "s1-3e6d5e",
+        "time": "2026-11-13T22:03:53.438Z",
+        "sessionId": "s1-e7bb60",
         "client": "mcp",
         "tool": "key",
         "commandId": "ui.statusBar.set",
@@ -316,7 +316,7 @@
         "undoStepId": null,
         "changedCount": 0,
         "documentRev": 1,
-        "durationMs": 7
+        "durationMs": 14
       }
     }
   },
@@ -328,7 +328,7 @@
       "result": {
         "changes": [
           {
-            "id": "el_01M7BAPMMG6S9XF0RKEJKEPFA3",
+            "id": "el_01M7BF04QBD8MD6B3MVKW0J5NJ",
             "type": "element",
             "op": "modified",
             "rev": 2,
@@ -347,12 +347,12 @@
       },
       "targets": {
         "ids": [
-          "el_01M7BAPMMG6S9XF0RKEJKEPFA3"
+          "el_01M7BF04QBD8MD6B3MVKW0J5NJ"
         ]
       },
       "changes": [
         {
-          "id": "el_01M7BAPMMG6S9XF0RKEJKEPFA3",
+          "id": "el_01M7BF04QBD8MD6B3MVKW0J5NJ",
           "type": "element",
           "op": "modified",
           "rev": 2,
@@ -373,6 +373,15 @@
       },
       "warnings": [],
       "documentRev": 2
+    }
+  },
+  {
+    "check": "the same-place window.panel.move sets the area size only (kernel and GUI tabs unchanged)",
+    "ok": true,
+    "detail": {
+      "area": "right",
+      "panel": "xsheet",
+      "error": null
     }
   },
   {
@@ -549,8 +558,8 @@
           {
             "x": 0,
             "y": 0,
-            "width": 1024,
-            "height": 720,
+            "width": 1920,
+            "height": 1080,
             "scale": 1.0
           }
         ]
@@ -590,7 +599,7 @@
       ".settings.lock",
       "agent-discovery.json",
       "instance.json",
-      "keymap.corrupt-2026-11-13T20-48-56.621Z.json",
+      "keymap.corrupt-2026-11-13T22-04-05.660Z.json",
       "preferences.json",
       "state.json",
       "workspaces.json"

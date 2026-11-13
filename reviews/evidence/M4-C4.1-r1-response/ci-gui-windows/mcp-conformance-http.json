@@ -3,7 +3,7 @@
   "transport": "streamable-http",
   "server": "desktop-artifact/default-build/toontown.exe",
   "platform": "win32",
-  "seconds": 2.85,
+  "seconds": 2.15,
   "passed": 24,
   "failed": 0,
   "checks": [
@@ -45,17 +45,17 @@
     {
       "check": "tools/call run_command project.create (inside client roots)",
       "ok": true,
-      "detail": "{'status': 'ok', 'result': {'projectId': 'pr_01M7BAQECSXM8QSGKWN2BZ26CZ', 'path': 'C:\\\\Users\\\\RUNNER~1\\\\AppData\\\\Local\\\\Temp\\\\tt-c14-sdk-z2o2325k\\\\Conformance.animpkg', 'sceneId': 'sc_01M7BAQECTSSP8MAYB9VK3QR92', 'cameraId': 'el_01M7BAQECTSSP8MAYB9VK3QR94', 'elementId': 'el_01M7BAQECTSSP8MAYB9VK3QR95'}, 'changes': [], 'warnings': [], 'documentRev': 1}"
+      "detail": "{'status': 'ok', 'result': {'projectId': 'pr_01M7BF10SVFY876NGS549VVRXP', 'path': 'C:\\\\Users\\\\RUNNER~1\\\\AppData\\\\Local\\\\Temp\\\\tt-c14-sdk-cw38xd1l\\\\Conformance.animpkg', 'sceneId': 'sc_01M7BF10SXK44FW1FKEE0EV5WA', 'cameraId': 'el_01M7BF10SXK44FW1FKEE0EV5WC', 'elementId': 'el_01M7BF10SXK44FW1FKEE0EV5WD'}, 'changes': [], 'warnings': [], 'documentRev': 1}"
     },
     {
       "check": "tools/call get_state",
       "ok": true,
-      "detail": "{'status': 'ok', 'result': {'project': {'id': 'pr_01M7BAQECSXM8QSGKWN2BZ26CZ', 'name': 'Conformance', 'path': 'C:\\\\Users\\\\RUNNER~1\\\\AppData\\\\Local\\\\Temp\\\\tt-c14-sdk-z2o2325k\\\\Conformance.animpkg', 'dirty': False, 'globalLibraryDirty': False, 'readOnly': False}, 'scene': {'id': 'sc_01M7BAQECTSSP8MAYB9VK3QR92', 'name': 'Scene-1', 'frameCount': 1}, 'frame': 1, 'element': {'id': 'el_01M7BAQECTSSP8MAYB"
+      "detail": "{'status': 'ok', 'result': {'project': {'id': 'pr_01M7BF10SVFY876NGS549VVRXP', 'name': 'Conformance', 'path': 'C:\\\\Users\\\\RUNNER~1\\\\AppData\\\\Local\\\\Temp\\\\tt-c14-sdk-cw38xd1l\\\\Conformance.animpkg', 'dirty': False, 'globalLibraryDirty': False, 'readOnly': False}, 'scene': {'id': 'sc_01M7BF10SXK44FW1FKEE0EV5WA', 'name': 'Scene-1', 'frameCount': 1}, 'frame': 1, 'element': {'id': 'el_01M7BF10SXK44FW1FK"
     },
     {
       "check": "tools/call get_object",
       "ok": true,
-      "detail": "{'status': 'ok', 'result': {'object': {'id': 'sc_01M7BAQECTSSP8MAYB9VK3QR92', 'type': 'scene', 'rev': 1, 'name': 'Scene-1', 'path': 'scene:\"Scene-1\"', 'visible': True, 'backgroundColour': '#FFFFFFFF', 'currentCameraId': 'el_01M7BAQECTSSP8MAYB9VK3QR94', 'paletteStyles': {'pal_01M7BAQECSXM8QSGKWN2BZ26D0': 'sty_01M7BAQECSXM8QSGKWN2BZ26D1'}, 'outTransition': {'id': 'tr_01M7BAQECTSSP8MAYB9VK3QR98', 'ty"
+      "detail": "{'status': 'ok', 'result': {'object': {'id': 'sc_01M7BF10SXK44FW1FKEE0EV5WA', 'type': 'scene', 'rev': 1, 'name': 'Scene-1', 'path': 'scene:\"Scene-1\"', 'visible': True, 'backgroundColour': '#FFFFFFFF', 'currentCameraId': 'el_01M7BF10SXK44FW1FKEE0EV5WC', 'paletteStyles': {'pal_01M7BF10SVFY876NGS549VVRXQ': 'sty_01M7BF10SVFY876NGS549VVRXR'}, 'outTransition': {'id': 'tr_01M7BF10SXK44FW1FKEE0EV5WG', 'ty"
     },
     {
       "check": "resources/list",
@@ -105,17 +105,17 @@
     {
       "check": "elicitation/create for a confirmation",
       "ok": true,
-      "detail": "[ElicitRequestFormParams(meta=None, mode='form', message='Overwrite `C:\\\\Users\\\\RUNNER~1\\\\AppData\\\\Local\\\\Temp\\\\tt-c14-sdk-z2o2325k\\\\Existing.animpkg`\\n\\nConsequences: [{\"kind\":\"overwrite\",\"path\":\"C:\\\\\\\\Users\\\\\\\\RUNNER~1\\\\\\\\AppData\\\\\\\\Local\\\\\\\\Temp\\\\\\\\tt-c14-sdk-z2o2325k\\\\\\\\Existing.animpkg\",\"bytes\":8}]', requested_schema={'type': 'object', 'properties': {'confirm': {'type': 'boolean', 'title': 'P"
+      "detail": "[ElicitRequestFormParams(meta=None, mode='form', message='Overwrite `C:\\\\Users\\\\RUNNER~1\\\\AppData\\\\Local\\\\Temp\\\\tt-c14-sdk-cw38xd1l\\\\Existing.animpkg`\\n\\nConsequences: [{\"kind\":\"overwrite\",\"path\":\"C:\\\\\\\\Users\\\\\\\\RUNNER~1\\\\\\\\AppData\\\\\\\\Local\\\\\\\\Temp\\\\\\\\tt-c14-sdk-cw38xd1l\\\\\\\\Existing.animpkg\",\"bytes\":8}]', requested_schema={'type': 'object', 'properties': {'confirm': {'type': 'boolean', 'title': 'P"
     },
     {
       "check": "accepted elicitation proceeds",
       "ok": true,
-      "detail": "{'status': 'ok', 'result': {'jobId': 'job-1'}, 'changes': [{'id': 'pr_01M7BAQECSXM8QSGKWN2BZ26CZ', 'type': 'project', 'op': 'modified', 'rev': 3, 'patch': [{'op': 'replace', 'path': '/modifiedAt', 'value': '2026-11-13T20:49:01.865Z', 'oldValue': '2026-11-13T20:49:00.825Z'}]}], 'warnings': [], 'documentRev': 3}"
+      "detail": "{'status': 'ok', 'result': {'jobId': 'job-1'}, 'changes': [{'id': 'pr_01M7BF10SVFY876NGS549VVRXP', 'type': 'project', 'op': 'modified', 'rev': 3, 'patch': [{'op': 'replace', 'path': '/modifiedAt', 'value': '2026-11-13T22:04:09.749Z', 'oldValue': '2026-11-13T22:04:08.891Z'}]}], 'warnings': [], 'documentRev': 3}"
     },
     {
       "check": "job_wait ok",
       "ok": true,
-      "detail": "{'status': 'ok', 'result': {'jobId': 'job-2', 'commandId': 'doc.package.export', 'state': 'succeeded', 'progress': 1.0, 'message': 'Write', 'startedAt': '2026-11-13T20:49:01.920Z', 'result': {'path': 'C:\\\\Users\\\\RUNNER~1\\\\AppData\\\\Local\\\\Temp\\\\tt-c14-sdk-z2o2325k\\\\Export.animpkg', 'form': 'package', 'bytes': 6724, 'entries': 11}, 'session': 'agent:s1-659853'}, 'changes': [], 'warnings': [], 'docum"
+      "detail": "{'status': 'ok', 'result': {'jobId': 'job-2', 'commandId': 'doc.package.export', 'state': 'succeeded', 'progress': 1.0, 'message': 'Write', 'startedAt': '2026-11-13T22:04:09.801Z', 'result': {'path': 'C:\\\\Users\\\\RUNNER~1\\\\AppData\\\\Local\\\\Temp\\\\tt-c14-sdk-cw38xd1l\\\\Export.animpkg', 'form': 'package', 'bytes': 6724, 'entries': 11}, 'session': 'agent:s1-04a787'}, 'changes': [], 'warnings': [], 'docum"
     },
     {
       "check": "notifications/progress",
