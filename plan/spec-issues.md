@@ -1366,3 +1366,18 @@ Reserved by the M0 closure for "measured deterministic-format incompatibility" (
   registered by M6.
 - **Conflicts noted:** "Selection always visible" defaults to on in 01 §7.3 and 05 §16, off in 02 §10.7; 01 governs.
 - **Question:** add the keys to 01 §7.3 and settle the default of 02 §10.7.
+
+## SI-118 — a splitter drag has no user command (found in M4 C4.1; interim, awaiting the spec owner)
+
+- **Sections:** 01 §5.4 and §5.6 (a workspace stores "sizes" of the dock layout), 01 §12.2 (`window.panel.move
+  {size?}`, `workspace.layout.set`), spec A.
+- **Problem:** the only user command that carries a dock size is `window.panel.move`, whose `size` applies when a
+  panel is docked. Resizing a dock area by dragging its splitter, with every panel staying where it is, has no
+  command; `workspace.layout.set` is agent-only in the registry ("agents apply prepared layouts; users arrange panels
+  by dragging"). The GUI never mutates state outside a registered command.
+- **Interim decision:** a splitter drag resizes the area on screen only; the stored size changes when a panel is
+  docked with `window.panel.move {size}` or a layout is applied, and the drawn size returns to the stored one on the
+  next rebuild of the dock (workspace switch, panel move, restart). No command is added (the registry stays equal to
+  spec A).
+- **Question:** add a user command for dock area sizes (for example `window.dock.size.set {area, size}`), or make
+  `workspace.layout.set` a user command as well.

@@ -1,7 +1,8 @@
 // The dock area (01 §5.4; M4 C4.1): renders the kernel's arrangement with dockview and turns every docking gesture
 // into a command. Drops are vetoed and replaced by `window.panel.move`; a tab's close button is `window.panel.set
-// {visible: false}`; a double-click toggles floating; the tab bar's context menu is the panel checklist; a finished
-// splitter drag stores the area sizes with `workspace.layout.set`. The grid is rebuilt from the kernel's answer.
+// {visible: false}`; a double-click toggles floating; the tab bar's context menu is the panel checklist. A splitter
+// drag resizes on screen only: no user command stores dock sizes (SI-118). The grid is rebuilt from the kernel's
+// answer.
 import {
   DockviewReact,
   themeDark,
