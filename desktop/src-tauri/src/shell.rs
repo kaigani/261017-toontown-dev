@@ -64,6 +64,8 @@ fn apply_window(app: &AppHandle, p: &Value) {
     } else if w.is_minimized().unwrap_or(false) {
         let _ = w.unminimize();
     }
+    // The floats are tool windows of the main window: hidden while it is minimised (ruling O-2).
+    crate::floats::show_all(app, !minimized);
     if !full {
         let maximized = p.get("maximized").and_then(Value::as_bool).unwrap_or(false);
         if maximized {
@@ -143,13 +145,16 @@ pub fn start_event_pump(app: &AppHandle) {
                 }
                 _ => {}
             }
-            // The menu re-reads its facts once per burst of state changes (100 ms), not once per event.
-            if crate::menu::refreshes(&e.name) && !MENU_PENDING.swap(true, Ordering::AcqRel) {
+            // The menu re-reads its facts, and the float windows follow the kernel (ruling O-2), once per burst of
+            // state changes (100 ms), not once per event.
+            let layout_event = matches!(e.name.as_str(), "app.state.changed" | "workspace.changed");
+            if (crate::menu::refreshes(&e.name) || layout_event) && !MENU_PENDING.swap(true, Ordering::AcqRel) {
                 let a = app.clone();
                 let _ = std::thread::Builder::new().name("tt-menu".into()).spawn(move || {
                     std::thread::sleep(Duration::from_millis(100));
                     MENU_PENDING.store(false, Ordering::Release);
                     crate::menu::refresh(&a);
+                    crate::floats::reconcile(&a);
                 });
             }
         }
@@ -208,6 +213,10 @@ pub fn sync_agent_server(app: &AppHandle) {
 /// Window events of the main window: user moves and resizes become `window.geometry.set`; closing runs the quit flow
 /// in the front end (01 §1.2: closing the last main window is Quit, with the unsaved-changes rule).
 pub fn on_window_event(window: &tauri::Window, event: &WindowEvent) {
+    if window.label().starts_with(crate::floats::PREFIX) {
+        crate::floats::on_window_event(window, event);
+        return;
+    }
     if window.label() != "main" {
         return;
     }

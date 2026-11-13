@@ -83,7 +83,18 @@ fn yes() -> bool {
     gui = "Windows menu and panel tab menus (M4)",
 )]
 pub(crate) fn window_panel_set(cx: &mut Cx, p: PanelSetParams) -> Result<PanelEntry, CommandError> {
-    cx.ui_mut().set_panel(&p.panel_id, p.visible, p.floating, p.focus, p.geometry)
+    // A floating window's geometry is clamped to the reported screens like the main window's (ruling O-2).
+    let geometry = p.geometry.map(|g| {
+        let c = cx.ui().shell().clamp(crate::shell::WindowGeometry {
+            x: g.x,
+            y: g.y,
+            width: g.width,
+            height: g.height,
+            maximized: false,
+        });
+        crate::ui::Geometry { x: c.x, y: c.y, width: c.width, height: c.height }
+    });
+    cx.ui_mut().set_panel(&p.panel_id, p.visible, p.floating, p.focus, geometry)
 }
 
 /// Dock area.

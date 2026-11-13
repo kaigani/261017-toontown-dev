@@ -13,6 +13,7 @@
 
 pub mod bindings;
 pub mod diagnostics;
+pub mod floats;
 pub mod host;
 pub mod instance;
 pub mod ipc;
@@ -154,6 +155,8 @@ pub fn run() -> Result<(), DesktopError> {
             let handle = app.handle().clone();
             shell::start_event_pump(&handle);
             shell::restore_window(&handle);
+            // The floats of the restored workspace (ruling O-2).
+            floats::reconcile(&handle);
             watchdog::start(&handle);
             menu::refresh(&handle);
             shell::sync_agent_server(&handle);

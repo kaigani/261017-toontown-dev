@@ -265,6 +265,9 @@ pub(crate) struct Observed {
     dirty: Option<bool>,
     /// The persisted form of the workspaces (written to the settings when it changes; 01 §11).
     workspaces: Value,
+    /// The current arrangement (docks, floats and their geometry, toolbars): `workspace.changed` announces any change
+    /// of it, so every window and the host follow a panel moved or a float placed by any caller (ruling O-2).
+    arrangement: Value,
     /// The reported selection (shared list: compared by pointer, then by content only when it was replaced).
     selection: crate::app::Ids,
     /// The Timeline/Exposure Sheet position and cell/row selection (`cell.selection.changed`, 04 §17.4).
@@ -280,6 +283,7 @@ pub(crate) fn observe(s: &Session) -> Observed {
         history: s.project.as_ref().map(|p| (p.history.position(), p.history.len())),
         dirty: s.project.as_ref().map(OpenProject::dirty),
         workspaces: s.ui.persisted(),
+        arrangement: serde_json::to_value(s.ui.layout()).unwrap_or(Value::Null),
         cells: (
             s.app.selections.get("xsheet").cloned(),
             s.app.selections.get("timeline").cloned(),
@@ -1104,12 +1108,18 @@ impl Core {
             {
                 s.emit("edit.selection.changed", json!({ "context": sel.get("context"), "ids": sel.get("ids") }));
             }
-            if changed.iter().any(|c| c == "workspace")
+            if (changed.iter().any(|c| c == "workspace") || after.arrangement != before.arrangement)
                 && let Some(w) = after.state.get("workspace")
             {
                 s.emit("workspace.changed", w.clone());
             }
             s.emit("app.state.changed", json!({ "changed": changed, "state": full }));
+        } else if after.arrangement != before.arrangement
+            && let Some(w) = after.state.get("workspace")
+        {
+            // The arrangement changed without any app-state field (a float moved, a panel re-docked in a modified
+            // workspace): announced all the same.
+            s.emit("workspace.changed", w.clone());
         }
         // One `cell.selection.changed` per invocation that moved the current position or changed the cell or row
         // selection, whichever command caused it (an explicit selection, a creation, a hidden current column, a

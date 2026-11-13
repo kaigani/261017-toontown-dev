@@ -78,12 +78,14 @@ struct RunOptions {
 /// # Errors
 /// The JSON text of an `arg.invalid` error for a malformed request; command failures are envelopes, not errors.
 #[tauri::command]
-pub async fn run_command(app: AppHandle, json: String) -> Result<Response, String> {
+pub async fn run_command(app: AppHandle, window: tauri::Window, json: String) -> Result<Response, String> {
     let req: RunRequest = parse(&json)?;
     let app2 = app.clone();
+    let label = window.label().to_owned();
     let env = tauri::async_runtime::spawn_blocking(move || {
         let host = app2.state::<Host>();
-        host.run(
+        host.run_from(
+            &label,
             &req.command,
             Value::Object(req.params),
             req.options.unwrap_or_default().dry_run,
@@ -117,9 +119,9 @@ struct CancelRequest {
 /// # Errors
 /// The JSON text of an `arg.invalid` error for a malformed request.
 #[tauri::command]
-pub fn cancel_request(host: State<'_, Host>, json: String) -> Result<Response, String> {
+pub fn cancel_request(host: State<'_, Host>, window: tauri::Window, json: String) -> Result<Response, String> {
     let req: CancelRequest = parse(&json)?;
-    host.cancel(&req.token);
+    host.cancel_from(window.label(), &req.token);
     respond(&json!({}))
 }
 
@@ -128,10 +130,11 @@ pub fn cancel_request(host: State<'_, Host>, json: String) -> Result<Response, S
 /// # Errors
 /// The JSON text of an `arg.invalid` error for a malformed report.
 #[tauri::command]
-pub fn report_shell(host: State<'_, Host>, json: String) -> Result<Response, String> {
+pub fn report_shell(host: State<'_, Host>, window: tauri::Window, json: String) -> Result<Response, String> {
     let value: Value = parse(&json)?;
     // A report names the engine generation the window last saw; one of another generation is ignored (ruling O-14).
-    respond(&host.report(value)?)
+    // Each window's facts are its own; the executor gets their combination (ruling O-2).
+    respond(&host.report_from(window.label(), value)?)
 }
 
 /// `dispatch_key` request.

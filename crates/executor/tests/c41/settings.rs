@@ -85,3 +85,70 @@ fn a_failed_settings_write_is_told_once_per_file_and_the_change_stays_in_memory(
     drop(h);
     let _ = std::fs::remove_dir_all(&r);
 }
+
+#[test]
+fn a_floating_panel_survives_a_restart_with_its_geometry() {
+    let r = root("float");
+    let h = over(&r);
+    let env = h.invoke(Invocation::user(
+        "window.panel.set",
+        json!({ "panelId": "history", "floating": true, "geometry": { "x": 60, "y": 60, "width": 420, "height": 300 } }),
+    ));
+    assert_eq!(env.status, Status::Ok, "{:?}", env.error);
+    // The current workspace is stored when it is saved, at quit with autosave on, or before a switch (01 §1.2, §5.5).
+    assert_eq!(h.invoke(Invocation::user("workspace.save", json!({}))).status, Status::Ok);
+    drop(h);
+    let h = over(&r);
+    let panels = h.invoke(Invocation::user("window.panel.list", json!({}))).result.unwrap();
+    let history = panels.as_array().unwrap().iter().find(|p| p["panelId"] == "history").cloned().unwrap();
+    assert_eq!((history["floating"].clone(), history["visible"].clone()), (json!(true), json!(true)), "{history}");
+    assert_eq!(history["geometry"], json!({ "x": 60, "y": 60, "width": 420, "height": 300 }), "{history}");
+    drop(h);
+    let _ = std::fs::remove_dir_all(&r);
+}
+
+#[test]
+fn quitting_saves_a_modified_workspace_with_its_floats() {
+    let r = root("quit");
+    let h = over(&r);
+    let float =
+        json!({ "panelId": "colour", "floating": true, "geometry": { "x": 70, "y": 80, "width": 300, "height": 400 } });
+    assert_eq!(h.invoke(Invocation::user("window.panel.set", float)).status, Status::Ok);
+    let quit = h.invoke(Invocation::user("app.quit", json!({ "onUnsaved": "discard" })));
+    assert_eq!(quit.status, Status::Ok, "{:?}", quit.error);
+    drop(h);
+    let h = over(&r);
+    let panels = h.invoke(Invocation::user("window.panel.list", json!({}))).result.unwrap();
+    let colour = panels.as_array().unwrap().iter().find(|p| p["panelId"] == "colour").cloned().unwrap();
+    assert_eq!(colour["floating"], true, "{colour}");
+    assert_eq!(colour["geometry"]["width"], 300, "{colour}");
+    drop(h);
+    let _ = std::fs::remove_dir_all(&r);
+}
+
+#[test]
+fn moving_a_float_is_announced() {
+    let h = tt_executor::ExecutorHandle::spawn(Default::default()).unwrap();
+    let float = json!({ "panelId": "history", "floating": true, "geometry": { "x": 60, "y": 60, "width": 420, "height": 300 } });
+    assert_eq!(h.invoke(Invocation::user("window.panel.set", float)).status, Status::Ok);
+    let events = h.subscribe();
+    let moved = json!({ "panelId": "history", "geometry": { "x": 140, "y": 90, "width": 380, "height": 280 } });
+    assert_eq!(h.invoke(Invocation::user("window.panel.set", moved)).status, Status::Ok);
+    let names: Vec<String> = events.try_iter().map(|e| e.name).collect();
+    assert!(names.iter().any(|n| n == "workspace.changed"), "a float move is announced (ruling O-2): {names:?}");
+}
+
+#[test]
+fn a_float_is_clamped_to_the_reported_screens() {
+    let h = tt_executor::ExecutorHandle::spawn(Default::default()).unwrap();
+    h.report_shell(
+        serde_json::from_value(json!({ "screens": [{ "x": 0, "y": 0, "width": 1024, "height": 768, "scale": 1.0 }] }))
+            .unwrap(),
+    );
+    let off = json!({ "panelId": "history", "floating": true, "geometry": { "x": 5000, "y": 4000, "width": 3000, "height": 300 } });
+    let entry = h.invoke(Invocation::user("window.panel.set", off)).result.unwrap();
+    let g = &entry["geometry"];
+    assert!(g["width"].as_u64().unwrap() <= 1024, "{g}");
+    let (x, y) = (g["x"].as_i64().unwrap(), g["y"].as_i64().unwrap());
+    assert!((0..1024).contains(&x) && (0..768).contains(&y), "on a screen: {g}");
+}

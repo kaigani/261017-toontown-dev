@@ -1,7 +1,7 @@
 {
   "$schema": "../gen/schemas/desktop-schema.json",
   "identifier": "default",
-  "description": "Permissions of the main window. App commands (ping, app_info) need no plugin permission; only core event listening is granted.",
-  "windows": ["main"],
+  "description": "Permissions of the main window and of the floating-panel windows (float-*; the same set, no wider: ruling O-2). App commands need no plugin permission; only core event listening is granted.",
+  "windows": ["main", "float-*"],
   "permissions": ["core:event:allow-listen", "core:event:allow-unlisten"]
 }

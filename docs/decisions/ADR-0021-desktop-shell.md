@@ -72,11 +72,32 @@ the agent indicator, messages, persisted settings, and the user-priority rule of
 12. **Docking.** The kernel `Layout` is rendered with dockview: `corners` decides which areas run the full window length;
     areas stack their tab groups along their long side. Every drop is vetoed and replaced by the one
     `window.panel.move` an agent would send; a tab's close button is `window.panel.set {visible: false}`; double-click
-    floats. Floating panels as separate OS windows and splitter-size persistence are listed in the handoff with their
-    state.
+    floats. Floating panels are separate OS windows (round 1, ruling O-2; reviews/M4-design-floating-windows.md): the
+    kernel decides, the host reconciles one webview window per visible float, every window reports its own facts and
+    the host combines them. A splitter drag ends in the same-place `window.panel.move` where that command can express
+    it (SI-118, interim ruling O-3).
 13. **Settings persistence.** The executor writes versioned settings files (`preferences`, `keymap`, `state` with
     suppressed tips, first-run flags and the main window geometry, `recent`, `workspaces`) at its acceptance boundary,
     so dry runs, failed batches and cancelled requests write nothing; a corrupt file is set aside and its defaults apply.
+    Round 1 (C41-R1-04, -08, -09; rulings O-12, O-13):
+    - **Version policy, as for documents.** The same major version is read (a newer minor version's unknown members are
+      tolerated); a missing or malformed `formatVersion` makes the file corrupt (`badVersion`); another major version is
+      not read (`unsupportedVersion`). Either is kept aside with its defaults used; the other files are unaffected.
+    - **Corrupt file versus stale value.** A file is corrupt when it cannot be read, is not a settings envelope of its
+      kind, fails the version policy, or its whole `data` is not the kind's shape (preferences: an object; recent: a list
+      of `{path, name, lastOpened}`; state: an object whose `lastUsed`, `suppressedMessages`, `firstRun` and `window`
+      members have their types; keymap: an object with `baseSet`, `added`, `removed` of their types; workspaces: an
+      object with a `workspaces` list of named entries). Inside a well-shaped file, a value that fails its own
+      validation is stale, not corrupt: a preference falls back to its default (decision 10), a binding or a workspace
+      entry is skipped.
+    - **What happened is told.** `prefs.corrupt` names the file, the reason and where the copy was kept, or why it could
+      not be kept aside. Copies are created with create-new semantics (`<name>.corrupt-<time>.json`, then `-1`, `-2`):
+      an earlier copy is never replaced, and copies are never pruned. A settings write that fails (or a per-user folder
+      that cannot be created) is told once per file per session with the path and the OS reason (`prefs.saveFailed`,
+      SI-119 interim); the change stays in memory.
+    - **Interrupted writes.** Writers hold `<settings>/.settings.lock` shared while they write; at start the executor
+      removes `.<kind>.json.<hex>.tmp` files only when it holds that lock exclusively, so a temporary file another live
+      process of the application is writing is never removed.
 14. **Single instance** (01 §1.1): a loopback port and secret in `<settings>/instance.json`; a second instance forwards
     its documents and exits.
 

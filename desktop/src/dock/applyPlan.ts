@@ -34,21 +34,6 @@ export function applyPlan(api: DockviewApi, a: Arrangement): void {
       ...(s.initialHeight !== undefined ? { initialHeight: s.initialHeight } : {}),
     });
   }
-  // Floating panels (01 §5.4) float over the window at their kernel geometry. Separate OS windows are listed in the
-  // C4.1 handoff with their owner.
-  for (const f of a.floating) {
-    if (!f.visible || api.getPanel(f.panelId)) continue;
-    api.addPanel({
-      id: f.panelId,
-      component: 'panel',
-      title: title(f.panelId),
-      params: { panelId: f.panelId },
-      floating: {
-        position: { left: f.geometry.x, top: f.geometry.y },
-        width: f.geometry.width,
-        height: f.geometry.height,
-      },
-    });
-  }
+  // Floating panels are windows of their own, opened by the host from the kernel arrangement (01 §5.4; ruling O-2).
   for (const id of plan.active) api.getPanel(id)?.api.setActive();
 }

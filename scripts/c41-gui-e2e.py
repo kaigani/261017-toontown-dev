@@ -119,6 +119,13 @@ def os_escape(pid: int | None) -> dict:
 
 
 def os_window_size(pid: int | None) -> dict | None:
+    """The main window's size (the window titled Toontown...), as the OS reports it; see `os_windows`."""
+    rows = os_windows(pid) or []
+    main = next((r for r in rows if r["title"].startswith("Toontown")), None)
+    return {"width": main["width"], "height": main["height"], "frame": main["frame"]} if main else None
+
+
+def os_window_size_by_handle(pid: int | None) -> dict | None:
     """The application window's size as the operating system reports it, in logical pixels: Windows, the client area
     (GetClientRect, divided by the window's DPI scale); macOS, the outer frame from System Events (points, title bar
     included). `None` when it cannot be measured."""
@@ -147,6 +154,67 @@ def os_window_size(pid: int | None) -> dict | None:
     except (ValueError, OSError, subprocess.SubprocessError):
         return None
     return None
+
+
+def os_windows(pid: int | None) -> list[dict] | None:
+    """The application's visible top-level windows as the OS lists them: title and size in logical pixels (Windows:
+    client area via EnumWindows; macOS: outer frame via System Events). `None` when they cannot be listed."""
+    if pid is None:
+        return None
+    try:
+        if sys.platform == "win32":
+            ps = (
+                "Add-Type -TypeDefinition 'using System;using System.Text;using System.Runtime.InteropServices;"
+                "public struct R{public int L,T,Ri,B;}"
+                "public static class E{public delegate bool P(IntPtr h,IntPtr l);"
+                "[DllImport(\"user32.dll\")]public static extern bool EnumWindows(P p,IntPtr l);"
+                "[DllImport(\"user32.dll\")]public static extern uint GetWindowThreadProcessId(IntPtr h,out uint p);"
+                "[DllImport(\"user32.dll\")]public static extern bool IsWindowVisible(IntPtr h);"
+                "[DllImport(\"user32.dll\",CharSet=CharSet.Unicode)]public static extern int GetWindowText(IntPtr h,StringBuilder s,int n);"
+                "[DllImport(\"user32.dll\")]public static extern bool GetClientRect(IntPtr h,out R r);"
+                "[DllImport(\"user32.dll\")]public static extern uint GetDpiForWindow(IntPtr h);}';"
+                f"$out=@();[E]::EnumWindows({{param($h,$l) $q=0;[E]::GetWindowThreadProcessId($h,[ref]$q)|Out-Null;"
+                f"if($q -eq {pid} -and [E]::IsWindowVisible($h)){{$b=New-Object Text.StringBuilder 256;[E]::GetWindowText($h,$b,256)|Out-Null;"
+                "$r=New-Object R;[E]::GetClientRect($h,[ref]$r)|Out-Null;$d=[E]::GetDpiForWindow($h);if($d -eq 0){$d=96};"
+                "$s=$d/96.0;$script:out+=('{0}|{1}|{2}' -f $b.ToString(),[math]::Round(($r.Ri-$r.L)/$s),[math]::Round(($r.B-$r.T)/$s))};$true},[IntPtr]::Zero)|Out-Null;"
+                "$out -join \"`n\""
+            )
+            text = subprocess.run(["powershell", "-NoProfile", "-Command", ps], timeout=30, check=False, capture_output=True, text=True).stdout
+            rows = []
+            for line in text.splitlines():
+                parts = line.rsplit("|", 2)
+                if len(parts) == 3 and parts[0]:
+                    rows.append({"title": parts[0], "width": int(parts[1]), "height": int(parts[2]), "frame": "client"})
+            return rows
+        if sys.platform == "darwin":
+            script = (
+                f'tell application "System Events" to tell (first process whose unix id is {pid})\n'
+                'set out to ""\nrepeat with w in windows\nset s to size of w\n'
+                'set out to out & (name of w) & "|" & (item 1 of s) & "|" & (item 2 of s) & linefeed\nend repeat\nreturn out\nend tell'
+            )
+            text = subprocess.run(["osascript", "-e", script], timeout=30, check=False, capture_output=True, text=True).stdout
+            rows = []
+            for line in text.splitlines():
+                parts = line.rsplit("|", 2)
+                if len(parts) == 3 and parts[0]:
+                    rows.append({"title": parts[0], "width": int(parts[1]), "height": int(parts[2]), "frame": "outer"})
+            return rows
+    except (ValueError, OSError, subprocess.SubprocessError):
+        return None
+    return None
+
+
+async def os_window_titled(title: str, want, bound_s: float = 30.0) -> dict | None:
+    """The OS window titled `title` once `want(row)` holds (window managers apply changes asynchronously), bounded."""
+    start = time.monotonic()
+    last = None
+    while time.monotonic() - start < bound_s:
+        rows = os_windows(APP_PID["pid"]) or []
+        last = next((r for r in rows if r["title"] == title), None)
+        if want(last):
+            return last
+        await asyncio.sleep(0.25)
+    return last
 
 
 def size_matches(kernel: dict, os_size: dict | None) -> bool:
@@ -368,6 +436,23 @@ async def first_session(url: str, token: str, run: Run) -> None:
                 env = await run_cmd(session, "doc.object.patch", {"targets": ["@current"], "props": {"meta": {"e2e": True}}})
                 run.check(env.get("status") == "ok", "after the dialog closed, an agent action is accepted", env)
                 run.save("activity.json", (await run_cmd(session, "agent.activity.list", {"limit": 100})).get("result"))
+
+                # A floating panel is a window of its own (ruling O-2): the OS lists it, the one inspect_ui tree has its
+                # node, a geometry change moves it. It stays floating across the restart below.
+                env = await run_cmd(session, "window.panel.set", {"panelId": "history", "floating": True,
+                                                                   "geometry": {"x": 60, "y": 60, "width": 420, "height": 300}})
+                root = await gui_tree(session, run, lambda r: by_id(r, "float-history") is not None, "the float reports its tree")
+                run.check(env.get("status") == "ok" and by_id(root, "float-history") is not None,
+                          "window.panel.set floating: the combined inspect_ui tree has the float window", env.get("error"))
+                row = await os_window_titled("History", lambda r: r is not None)
+                run.check(row is not None, "the OS lists the History float as a window of the application", os_windows(APP_PID["pid"]))
+                env = await run_cmd(session, "window.panel.set", {"panelId": "history", "geometry": {"x": 140, "y": 90, "width": 380, "height": 280}})
+                row = await os_window_titled("History", lambda r: r is not None and size_matches({"width": 380, "height": 280}, r))
+                run.check(env.get("status") == "ok" and size_matches({"width": 380, "height": 280}, row),
+                          "window.panel.set geometry: the OS float window takes the size", {"os": row, "error": env.get("error")})
+                # Stored with the workspace (as at quit with autosave on, which agents cannot run), restored at start.
+                env = await run_cmd(session, "workspace.save", {})
+                run.check(env.get("status") == "ok", "workspace.save stores the arrangement with its float", env.get("error"))
                 # The geometry the kernel holds before the restart (the window's real size, reported by the host), and the
                 # size the operating system reports for the window itself.
                 run.geometry = (await run_cmd(session, "window.geometry.get")).get("result") or {}
@@ -391,6 +476,16 @@ async def second_session(url: str, token: str, run: Run) -> None:
                 run.check("E2E" in names, "the user workspace persisted", names)
                 g = (await run_cmd(session, "window.geometry.get")).get("result") or {}
                 before = {k: run.geometry.get(k) for k in ("x", "y", "width", "height")}
+                # The float was restored with the workspace (ruling O-2), then docks back: its window goes.
+                root = await gui_tree(session, run, lambda r: by_id(r, "float-history") is not None, "the restored float reports its tree")
+                row = await os_window_titled("History", lambda r: r is not None)
+                run.check(by_id(root, "float-history") is not None and row is not None,
+                          "after the restart the float is a window again (tree and OS)", {"os": os_windows(APP_PID["pid"])})
+                env = await run_cmd(session, "window.panel.set", {"panelId": "history", "floating": False})
+                root = await gui_tree(session, run, lambda r: by_id(r, "float-history") is None, "the docked float leaves the tree")
+                row = await os_window_titled("History", lambda r: r is None)
+                run.check(env.get("status") == "ok" and by_id(root, "float-history") is None and row is None,
+                          "window.panel.set floating false: the float window closes (tree and OS)", {"os": os_windows(APP_PID["pid"])})
                 measured = os_window_size(APP_PID["pid"])
                 run.check({k: g.get(k) for k in before} == before and size_matches(g, measured),
                           "the window geometry persisted: the restarted OS window has it", {"before": before, "after": g, "os": measured})

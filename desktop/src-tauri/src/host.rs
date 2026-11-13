@@ -47,6 +47,67 @@ pub struct Host {
     pending_open: Mutex<Vec<PathBuf>>,
     /// Serialises restarts (ruling O-14): a second one waits for the first and does not run.
     restart_lock: Mutex<()>,
+    /// Each window's sensor facts (ruling O-2, O-9), combined into the one report the executor sees.
+    windows: Mutex<Windows>,
+}
+
+/// The sensor facts of one window.
+#[derive(Debug, Default, Clone)]
+struct WindowFacts {
+    /// Its open modal state (`{kind, title}`), with the order it was reported in.
+    modal: Option<(u64, Value)>,
+    /// A text field of it has focus.
+    text_focus: bool,
+    /// Its rendered UI tree and the engine event number it vouches for.
+    tree: Option<(Value, Option<u64>)>,
+}
+
+/// The windows' facts and which window reported text focus last.
+#[derive(Debug, Default)]
+struct Windows {
+    facts: std::collections::BTreeMap<String, WindowFacts>,
+    order: u64,
+    focused: Option<String>,
+}
+
+impl Windows {
+    /// The combined facts as report members: `modal` (the most recent open modal of any window, or null), `textFocus`
+    /// (the focused window's) and, when any window reported a tree, `uiTree` (the main window's tree with each other
+    /// window's tree as a child) with `renderedSeq` (the smallest window number; absent when one is not vouched for).
+    fn combined(&self) -> serde_json::Map<String, Value> {
+        let mut m = serde_json::Map::new();
+        let modal =
+            self.facts.values().filter_map(|f| f.modal.as_ref()).max_by_key(|(o, _)| *o).map(|(_, v)| v.clone());
+        m.insert("modal".into(), modal.unwrap_or(Value::Null));
+        let focus = self.focused.as_ref().and_then(|l| self.facts.get(l)).is_some_and(|f| f.text_focus);
+        m.insert("textFocus".into(), Value::Bool(focus));
+        let trees: Vec<(&String, &(Value, Option<u64>))> =
+            self.facts.iter().filter_map(|(l, f)| f.tree.as_ref().map(|t| (l, t))).collect();
+        if !trees.is_empty() {
+            let mut root = self
+                .facts
+                .get("main")
+                .and_then(|f| f.tree.as_ref())
+                .map_or_else(|| json!({ "role": "window", "id": "main" }), |(t, _)| t.clone());
+            for (l, (t, _)) in trees.iter().filter(|(l, _)| l.as_str() != "main") {
+                let mut node = t.clone();
+                if let Some(o) = node.as_object_mut() {
+                    o.insert("id".into(), json!(l));
+                }
+                if let Some(children) = root.as_object_mut().map(|o| o.entry("children").or_insert_with(|| json!([]))) {
+                    if let Some(a) = children.as_array_mut() {
+                        a.push(node);
+                    }
+                }
+            }
+            m.insert("uiTree".into(), root);
+            let seqs: Option<Vec<u64>> = trees.iter().map(|(_, (_, s))| *s).collect();
+            if let Some(min) = seqs.and_then(|v| v.into_iter().min()) {
+                m.insert("renderedSeq".into(), json!(min));
+            }
+        }
+        m
+    }
 }
 
 impl std::fmt::Debug for Host {
@@ -71,6 +132,7 @@ impl Host {
             http: Mutex::new(None),
             pending_open: Mutex::new(options.open.clone()),
             restart_lock: Mutex::new(()),
+            windows: Mutex::new(Windows::default()),
             options,
             settings_dir,
         })
@@ -130,6 +192,8 @@ impl Host {
         // The new generation numbers its events from 1; the old one's cancellation flags are dropped (ruling O-14).
         self.seq.store(0, Ordering::Release);
         self.cancels.lock().unwrap_or_else(PoisonError::into_inner).clear();
+        // The new engine starts without any window's facts; the windows report them again (ruling O-9).
+        *self.windows.lock().unwrap_or_else(PoisonError::into_inner) = Windows::default();
         let generation = self.generation.fetch_add(1, Ordering::AcqRel) + 1;
         if was_serving {
             let _ = self.start_http();
@@ -140,6 +204,14 @@ impl Host {
     /// Runs one command as the user. With a token, the request carries a cancellation flag that `cancel` sets; the
     /// probe only loads it. Without one, the plain entry point (no link, no cost).
     pub fn run(&self, command: &str, params: Value, dry_run: bool, token: Option<&str>) -> Envelope {
+        self.run_from("main", command, params, dry_run, token)
+    }
+
+    /// [`Host::run`] for the window `window` (its label): a token is that window's own, so another window cannot
+    /// cancel the request even with the same token text (ruling O-2).
+    pub fn run_from(&self, window: &str, command: &str, params: Value, dry_run: bool, token: Option<&str>) -> Envelope {
+        let owned = token.map(|t| format!("{window}\u{1f}{t}"));
+        let token = owned.as_deref();
         let inv = Invocation {
             command: command.to_owned(),
             params,
@@ -160,7 +232,10 @@ impl Host {
                     return Envelope::error(
                         tt_executor::CommandError::with_details(
                             "arg.invalid",
-                            format!("the request token `{t}` is already in flight"),
+                            format!(
+                                "the request token `{}` is already in flight",
+                                t.rsplit('\u{1f}').next().unwrap_or(t)
+                            ),
                             json!({ "pointer": "/requestToken", "reason": "requestTokenInUse" }),
                         ),
                         None,
@@ -181,12 +256,44 @@ impl Host {
     ///
     /// # Errors
     /// The JSON text of `arg.invalid` for a malformed report.
-    pub fn report(&self, mut value: Value) -> Result<Value, String> {
+    pub fn report(&self, value: Value) -> Result<Value, String> {
+        self.report_from("main", value)
+    }
+
+    /// [`Host::report`] from the window `window` (its label): its modal state, text focus and UI tree are kept as that
+    /// window's and the executor gets the combination of every window's (ruling O-2; design note §3).
+    ///
+    /// # Errors
+    /// The JSON text of `arg.invalid` for a malformed report.
+    pub fn report_from(&self, window: &str, mut value: Value) -> Result<Value, String> {
         let generation = value.as_object_mut().and_then(|m| m.remove("generation"));
         if let Some(g) = generation
             && g.as_u64() != Some(self.generation())
         {
             return Ok(json!({ "ignored": "staleGeneration", "generation": self.generation() }));
+        }
+        if let Some(m) = value.as_object_mut() {
+            let (modal, focus, tree, seq) =
+                (m.remove("modal"), m.remove("textFocus"), m.remove("uiTree"), m.remove("renderedSeq"));
+            if modal.is_some() || focus.is_some() || tree.is_some() {
+                let mut w = self.windows.lock().unwrap_or_else(PoisonError::into_inner);
+                w.order += 1;
+                let order = w.order;
+                let f = w.facts.entry(window.to_owned()).or_default();
+                if let Some(v) = modal {
+                    f.modal = if v.is_null() { None } else { Some((order, v)) };
+                }
+                if let Some(v) = &focus {
+                    f.text_focus = v.as_bool().unwrap_or(false);
+                }
+                if let Some(t) = tree {
+                    f.tree = Some((t, seq.and_then(|s| s.as_u64())));
+                }
+                if focus.is_some() {
+                    w.focused = Some(window.to_owned());
+                }
+                m.extend(w.combined());
+            }
         }
         let report: tt_executor::host::ShellReport = serde_json::from_value(value).map_err(|e| {
             serde_json::to_string(&json!({ "code": "arg.invalid", "message": format!("malformed sensor report: {e}"),
@@ -204,18 +311,31 @@ impl Host {
 
     /// Marks a cancellable request cancelled (unknown or finished tokens are ignored).
     pub fn cancel(&self, token: &str) {
-        if let Some(f) = self.cancels.lock().unwrap_or_else(PoisonError::into_inner).get(token) {
+        self.cancel_from("main", token);
+    }
+
+    /// [`Host::cancel`] from the window `window`: only that window's requests (ruling O-2).
+    pub fn cancel_from(&self, window: &str, token: &str) {
+        let key = format!("{window}\u{1f}{token}");
+        if let Some(f) = self.cancels.lock().unwrap_or_else(PoisonError::into_inner).get(&key) {
             f.store(true, Ordering::Release);
         }
     }
 
     /// Clears the sensor facts a window reported (ruling O-9): its modal state and text focus end with it when it is
     /// destroyed, reloaded or replaced, so a report whose reporter went away cannot block agents or shortcuts.
-    /// Today every report comes from the main window; per-window composition arrives with the float windows (ruling
-    /// O-2; `reviews/M4-design-floating-windows.md`), where `label` selects the window's own reports.
-    pub fn forget_window_reports(&self, _label: &str) {
+    /// The other windows' facts stay; the executor gets the new combination (ruling O-2).
+    pub fn forget_window_reports(&self, label: &str) {
+        let combined = {
+            let mut w = self.windows.lock().unwrap_or_else(PoisonError::into_inner);
+            w.facts.remove(label);
+            if w.focused.as_deref() == Some(label) {
+                w.focused = None;
+            }
+            w.combined()
+        };
         let report: tt_executor::host::ShellReport =
-            serde_json::from_value(json!({ "modal": null, "textFocus": false })).unwrap_or_default();
+            serde_json::from_value(Value::Object(combined)).unwrap_or_default();
         self.exec().report_shell(report);
     }
 
@@ -438,7 +558,7 @@ mod tests {
     #[test]
     fn run_refuses_a_token_already_in_flight() {
         let (h, dir) = host();
-        let held = TokenGuard::claim(&h.cancels, "busy");
+        let held = TokenGuard::claim(&h.cancels, "main\u{1f}busy");
         let env = h.run("app.state.get", json!({}), false, Some("busy"));
         let e = env.error.map(|e| (e.code, e.details["reason"].clone()));
         assert_eq!(e, Some(("arg.invalid".to_owned(), json!("requestTokenInUse"))));
@@ -504,6 +624,51 @@ mod tests {
         assert_eq!(r.map(|v| v["ignored"].clone()), Ok(json!("staleGeneration")));
         assert_eq!(state(&h)["modal"], Value::Null);
         assert_eq!(h.report(json!({ "generation": 1, "modal": null })), Ok(json!({})));
+        let _ = std::fs::remove_dir_all(dir);
+    }
+
+    #[test]
+    fn reports_of_several_windows_combine_and_a_closed_window_releases_its_facts() {
+        let (h, dir) = host();
+        let state = |h: &Host| h.run("app.state.get", json!({}), false, None).result.unwrap_or_default();
+        let tree = |h: &Host| h.run("inspect.ui.tree", json!({}), false, None).result.unwrap_or_default();
+        h.exec().report_shell(serde_json::from_value(json!({ "attached": true })).unwrap_or_default());
+        let now = h.exec().events_broadcast();
+        assert_eq!(
+            h.report_from(
+                "main",
+                json!({ "uiTree": { "role": "window", "id": "main", "children": [] }, "renderedSeq": now })
+            ),
+            Ok(json!({}))
+        );
+        assert_eq!(
+            h.report_from(
+                "float-history",
+                json!({ "uiTree": { "role": "window", "label": "History" }, "renderedSeq": now })
+            ),
+            Ok(json!({}))
+        );
+        let t = tree(&h);
+        assert_eq!(t["root"]["children"][0]["id"], "float-history", "one tree with the float: {t}");
+        // A dialog in the float blocks like one in the main window; the main window's own null does not end it.
+        let _ = h.report_from("float-history", json!({ "modal": { "kind": "dialog", "title": "Rename" } }));
+        let _ = h.report_from("main", json!({ "modal": null }));
+        assert_eq!(state(&h)["modal"]["title"], "Rename");
+        // The float goes away: its facts go with it (ruling O-9); the tree loses its node.
+        h.forget_window_reports("float-history");
+        assert_eq!(state(&h)["modal"], Value::Null);
+        assert!(tree(&h)["root"]["children"].as_array().is_some_and(Vec::is_empty));
+        let _ = std::fs::remove_dir_all(dir);
+    }
+
+    #[test]
+    fn a_window_cannot_cancel_another_windows_request() {
+        let (h, dir) = host();
+        let mine = TokenGuard::claim(&h.cancels, "float-history\u{1f}t1");
+        h.cancel_from("main", "t1");
+        assert!(mine.as_ref().is_some_and(|g| !g.flag.load(Ordering::Acquire)), "the main window's cancel missed it");
+        h.cancel_from("float-history", "t1");
+        assert!(mine.as_ref().is_some_and(|g| g.flag.load(Ordering::Acquire)), "its own window cancels it");
         let _ = std::fs::remove_dir_all(dir);
     }
 

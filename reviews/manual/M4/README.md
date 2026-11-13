@@ -17,3 +17,7 @@ Build to use: the `desktop-<OS>` artifact of the CI run named in the handoff (`o
 | [C4.1-window-geometry-and-full-screen.md](C4.1-window-geometry-and-full-screen.md) | both | C4.1 |
 | [C4.1-theme-follow-system.md](C4.1-theme-follow-system.md) | both | C4.1 |
 | [C4.1-attached-agent.md](C4.1-attached-agent.md) | both | C4.1 |
+| [C4.1-keyboard-and-focus.md](C4.1-keyboard-and-focus.md) | both | C4.1 (round 1) |
+| [C4.1-display-scaling.md](C4.1-display-scaling.md) | both | C4.1 (round 1) |
+| [C4.1-dialog-then-shortcut.md](C4.1-dialog-then-shortcut.md) | both | C4.1 (round 1) |
+| [C4.1-floating-windows.md](C4.1-floating-windows.md) | both | C4.1 (round 1, ruling O-2) |

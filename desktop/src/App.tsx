@@ -6,8 +6,10 @@ import { lazy, Suspense, useCallback, useEffect, useMemo, useRef, useState } fro
 
 import { maybeRunIpcBench } from './diagnostics/ipcBench';
 import { DockArea } from './dock/DockArea';
-import { GENERATION_EVENT, useHost, type Envelope, type SpikeMode } from './ipc';
-import { isMac, isUnmodified, sequenceOf } from './keys/sequence';
+import { useHost, type Envelope, type SpikeMode } from './ipc';
+import { isMac } from './keys/sequence';
+import { panelInfo } from './panels/catalogue';
+import { PanelBody } from './panels/PanelBody';
 import { PreferencesDialog } from './prefs/PreferencesDialog';
 import { ActionsProvider } from './shell/actions';
 import { useActions } from './shell/actionsApi';
@@ -17,8 +19,9 @@ import { MessageHost } from './shell/messages';
 import { useMessages } from './shell/messagesApi';
 import { StatusBar } from './shell/StatusBar';
 import { MainToolbar, ToolPaletteRail } from './shell/Toolbars';
+import { useEngineMirror, useShortcuts, useTextFocusReport, useTreeReporter } from './shell/windowHooks';
 import { toolbarRefs } from './shell/toolbarItems';
-import { collectUiTree } from './shell/uiTree';
+import type { UiNode } from './shell/uiTree';
 import { StartScreen } from './start/StartScreen';
 import { useShell, useSlice, useStoreState, type ShellServices } from './state/context';
 import { ShellProvider } from './state/react';
@@ -38,26 +41,7 @@ const CanvasSpike = __TT_M0_DIAGNOSTICS__
 /** Start-up runs once per application, even when React mounts the shell twice (development). */
 const startupDone = { value: false };
 
-/** How long after the last change the rendered UI tree is reported (a frame or two; product value). */
-export const TREE_REPORT_MS = 30;
-
-/** Browser accelerators the webview must not act on outside text fields (reload, find, print, zoom, navigation). */
-function isBrowserAccelerator(seq: string): boolean {
-  return (
-    seq.includes('Primary+') || seq.startsWith('Alt+') || /^(Shift\+)?F\d+$/.test(seq) || seq === 'Backspace'
-  );
-}
-
-function isTextField(el: EventTarget | null): boolean {
-  if (!(el instanceof HTMLElement)) return false;
-  if (el.isContentEditable) return true;
-  if (el instanceof HTMLTextAreaElement || el instanceof HTMLSelectElement) return true;
-  return (
-    el instanceof HTMLInputElement && !['checkbox', 'radio', 'button', 'submit', 'reset'].includes(el.type)
-  );
-}
-
-export function App() {
+export function App({ floatPanel }: { floatPanel?: string } = {}) {
   const host = useHost();
   const [spike, setSpike] = useState<SpikeMode | null>(null);
   useEffect(() => {
@@ -93,12 +77,12 @@ export function App() {
   }
   return (
     <ShellProvider services={services}>
-      <Shell />
+      <Shell floatPanel={floatPanel} />
     </ShellProvider>
   );
 }
 
-function Shell() {
+function Shell({ floatPanel }: { floatPanel?: string | undefined }) {
   const services = useShell();
   const tips = useSlice('tips') as readonly Tip[] | undefined;
   const suppressed = useMemo(
@@ -108,18 +92,72 @@ function Shell() {
   return (
     <MessageHost engine={services.engine} suppressed={suppressed}>
       <DialogHost>
-        <ShellWithActions />
+        <ShellWithActions floatPanel={floatPanel} />
       </DialogHost>
     </MessageHost>
   );
 }
 
-function ShellWithActions() {
+function ShellWithActions({ floatPanel }: { floatPanel?: string | undefined }) {
   const services = useShell();
   return (
     <ActionsProvider services={services}>
-      <Window />
+      {floatPanel ? <FloatWindow panelId={floatPanel} /> : <Window />}
     </ActionsProvider>
+  );
+}
+
+/**
+ * A floating panel's own window (01 §5.4; ruling O-2): the panel, a title strip (double-click docks it), the shared
+ * mirror store, shortcuts, sensors and UI tree. Its OS gestures (move, resize, close, focus) are the host's to turn
+ * into `window.panel.set`; nothing here owns state.
+ */
+function FloatWindow({ panelId }: { panelId: string }) {
+  const services = useShell();
+  const actions = useActions();
+  const state = useStoreState();
+  const prefs = (state.slices.prefs as readonly PrefEntry[] | undefined) ?? [];
+  const themes = useMemo(
+    () => (state.slices.themes as readonly Theme[] | undefined) ?? [],
+    [state.slices.themes],
+  );
+  const keymap = useMemo(
+    () => (state.slices.keymap as readonly Binding[] | undefined) ?? [],
+    [state.slices.keymap],
+  );
+  const title = panelInfo(panelId)?.title ?? panelId;
+  useEngineMirror(services, false);
+  useShortcuts(services, actions, keymap, isMac());
+  useTextFocusReport(services);
+  const node = useCallback(
+    (): UiNode => ({ role: 'window', id: `float-${panelId}`, label: title }),
+    [panelId, title],
+  );
+  useTreeReporter(services, node);
+  const themeId = prefs.find((p) => p.key === 'interface.theme')?.value;
+  useEffect(() => {
+    applyTheme(typeof themeId === 'string' ? themeId : 'system', themes);
+  }, [themeId, themes]);
+  useEffect(() => {
+    document.title = title;
+  }, [title]);
+  return (
+    <div className="float-window" data-tt-role="group" data-tt-id={`float.${panelId}`}>
+      <div
+        className="float-title"
+        data-tt-role="text"
+        data-tt-id={`float.${panelId}.title`}
+        title="Double-click to dock"
+        onDoubleClick={() => {
+          void actions.run('window.panel.set', { panelId, floating: false });
+        }}
+      >
+        {title}
+      </div>
+      <div className="float-body">
+        <PanelBody panelId={panelId} />
+      </div>
+    </div>
   );
 }
 
@@ -144,39 +182,7 @@ function Window() {
   const root = useRef<HTMLDivElement | null>(null);
   const mac = isMac();
 
-  // Engine events, applied in order; a resync at start and after a gap (IPC freshness).
-  useEffect(() => {
-    let disposed = false;
-    let unlisten: (() => void) | null = null;
-    let chain: Promise<void> = Promise.resolve();
-    void services.engine
-      .onEvent((e) => {
-        chain = chain.then(() => services.store.apply(e)).catch(() => undefined);
-      })
-      .then((u) => {
-        if (disposed) u();
-        else unlisten = u;
-      });
-    void services.store.resync();
-    void services.engine
-      .report({
-        attached: true,
-        screens: [
-          {
-            x: 0,
-            y: 0,
-            width: Math.max(1, window.screen.availWidth || window.innerWidth),
-            height: Math.max(1, window.screen.availHeight || window.innerHeight),
-            scale: window.devicePixelRatio || 1,
-          },
-        ],
-      })
-      .catch(() => undefined);
-    return () => {
-      disposed = true;
-      unlisten?.();
-    };
-  }, [services]);
+  useEngineMirror(services, true);
 
   // Start-up (01 §1.1 rules 7-8): documents requested before the window existed take precedence over the start-up
   // behaviour preference. Runs once per application (React may mount twice in development).
@@ -317,83 +323,17 @@ function Window() {
     applyTheme(typeof themeId === 'string' ? themeId : 'system', themes);
   }, [themeId, themes]);
 
-  // Shortcuts (01 §8.4): the kernel's keymap decides; a text field keeps unmodified keys.
-  useEffect(() => {
-    const onKey = (e: KeyboardEvent) => {
-      if (e.defaultPrevented) return;
-      const seq = sequenceOf(e, mac);
-      if (!seq) return;
-      const field = isTextField(e.target);
-      if (field && isUnmodified(seq)) return;
-      const bound = keymap.some((b) => b.keys === seq);
-      if (!bound && !isBrowserAccelerator(seq)) return;
-      e.preventDefault();
-      if (!bound) return;
-      void services.engine
-        .dispatchKey(seq)
-        .then(async (outcome) => {
-          if (outcome.outcome !== 'command' || !outcome.commandId) return;
-          // A disabled command consumes its key silently (01 §8.4).
-          if (outcome.enabled === false) return;
-          await actions.perform(outcome.commandId, outcome.params ?? {});
-        })
-        .catch(() => undefined);
-    };
-    window.addEventListener('keydown', onKey);
-    return () => {
-      window.removeEventListener('keydown', onKey);
-    };
-  }, [actions, keymap, mac, services]);
-
-  // Text focus is a sensor fact (the kernel's key dispatch and the `key` tool respect it).
-  useEffect(() => {
-    const report = () => {
-      void services.engine.report({ textFocus: isTextField(document.activeElement) }).catch(() => undefined);
-    };
-    window.addEventListener('focusin', report);
-    window.addEventListener('focusout', report);
-    // A new engine generation starts without this window's facts (ruling O-9, O-14).
-    window.addEventListener(GENERATION_EVENT, report);
-    return () => {
-      window.removeEventListener('focusin', report);
-      window.removeEventListener('focusout', report);
-      window.removeEventListener(GENERATION_EVENT, report);
+  useShortcuts(services, actions, keymap, mac);
+  useTextFocusReport(services);
+  const mainNode = useCallback((): UiNode => {
+    const app = services.store.getState().slices.appState as AppState | undefined;
+    return {
+      role: 'window',
+      id: 'main',
+      label: app?.project ? `Toontown — ${app.project.name}` : 'Toontown',
     };
   }, [services]);
-
-  // The rendered UI tree, with the last engine event it reflects (inspect_ui freshness): reported after any change of
-  // the document (dialogs included, which render outside the shell's root) or of the store, a frame or two later.
-  useEffect(() => {
-    let timer: ReturnType<typeof setTimeout> | null = null;
-    const report = () => {
-      timer = null;
-      const st = services.store.getState();
-      const app = st.slices.appState as AppState | undefined;
-      const tree = collectUiTree(document.body, {
-        role: 'window',
-        id: 'main',
-        label: app?.project ? `Toontown — ${app.project.name}` : 'Toontown',
-      });
-      void services.engine.report({ uiTree: tree, renderedSeq: st.seq }).catch(() => undefined);
-    };
-    const schedule = () => {
-      timer ??= setTimeout(report, TREE_REPORT_MS);
-    };
-    const observer = new MutationObserver(schedule);
-    observer.observe(document.body, {
-      subtree: true,
-      childList: true,
-      attributes: true,
-      characterData: true,
-    });
-    const unsubscribe = services.store.subscribe(schedule);
-    schedule();
-    return () => {
-      observer.disconnect();
-      unsubscribe();
-      if (timer !== null) clearTimeout(timer);
-    };
-  }, [services]);
+  useTreeReporter(services, mainNode);
 
   // The window title (01 §5.1): project, modified, read-only, scene, frame.
   useEffect(() => {

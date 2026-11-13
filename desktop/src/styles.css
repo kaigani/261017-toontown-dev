@@ -777,3 +777,24 @@ select:focus-visible {
 .message-box:focus {
   outline: none;
 }
+
+/* A floating panel's own window (ruling O-2): a title strip over the panel. */
+.float-window {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  background: var(--tt-surface);
+  color: var(--tt-text);
+}
+.float-title {
+  padding: 4px 8px;
+  font-weight: 600;
+  border-bottom: 1px solid var(--tt-border);
+  background: var(--tt-surfaceAlt);
+  user-select: none;
+  cursor: default;
+}
+.float-body {
+  flex: 1;
+  overflow: auto;
+}

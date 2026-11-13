@@ -559,3 +559,26 @@ describe('engine restart is a generation change (ruling O-14)', () => {
     expect(screen.queryByRole('alertdialog')).toBeNull();
   });
 });
+
+describe('a floating panel window (ruling O-2)', () => {
+  it('renders its panel, reports its own tree and docks with a double-click on its title', async () => {
+    const host = createScriptedHost();
+    render(
+      <HostProvider api={createHostApi(host)}>
+        <App floatPanel="history" />
+      </HostProvider>,
+    );
+    const title = await screen.findByText('History', { selector: '.float-title' });
+    expect(screen.queryByRole('toolbar', { name: 'Main toolbar' })).toBeNull();
+    await vi.waitFor(() => {
+      expect(host.rawReports.some((r) => r.includes('"id":"float-history"'))).toBe(true);
+    });
+    fireEvent.doubleClick(title);
+    await vi.waitFor(() => {
+      expect(host.actions().find((a) => a.command === 'window.panel.set')?.params).toEqual({
+        panelId: 'history',
+        floating: false,
+      });
+    });
+  });
+});
