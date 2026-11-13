@@ -22,7 +22,7 @@ export interface Plan {
   readonly active: readonly string[];
 }
 
-type Area = 'left' | 'right' | 'top' | 'bottom';
+export type Area = 'left' | 'right' | 'top' | 'bottom';
 
 const EDGE: Record<Area, Direction> = { left: 'left', right: 'right', top: 'above', bottom: 'below' };
 
@@ -120,6 +120,46 @@ export function dropToMove(
     bottom: 'below',
   };
   return { panelId, area: place.area, relativeTo: target, position: relative[position] };
+}
+
+/**
+ * The `window.panel.move` that re-docks one panel of `area` exactly where it is, with the area's new `size` (SI-118,
+ * interim ruling O-3: the existing user command records a splitter drag). The command re-inserts the panel, so a
+ * same-place call exists only for (1) a single-tab group after another group, re-docked after its predecessor, (2) a
+ * group whose front tab is its last tab, re-tabbed into its own group, or (3) the area's only group with one tab.
+ * Null: no such panel in the area (every other call would reorder tabs, change a front tab or move the stored size);
+ * the drawn size then returns to the stored one on the next rebuild, as before.
+ */
+export function samePlaceResize(a: Arrangement, area: Area, size: number): Record<string, unknown> | null {
+  const groups = a.docks[area];
+  const s = Math.max(1, Math.round(size));
+  // (1) A single-tab group after another group: re-docked after its predecessor.
+  for (let i = 1; i < groups.length; i++) {
+    const g = groups[i];
+    const before = groups[i - 1];
+    if (g?.tabs.length === 1 && before) {
+      return {
+        panelId: g.tabs[0],
+        area,
+        relativeTo: before.tabs[before.tabs.length - 1],
+        position: 'after',
+        size: s,
+      };
+    }
+  }
+  // (2) A group whose front tab is its last tab: re-tabbed into its own group.
+  for (const g of groups) {
+    const last = g.tabs[g.tabs.length - 1];
+    const other = g.tabs.find((t) => t !== last);
+    if (last !== undefined && other !== undefined && g.current === last) {
+      return { panelId: last, area, relativeTo: other, position: 'tab', size: s };
+    }
+  }
+  // (3) The area's only group, with a single tab.
+  const only = groups.length === 1 ? groups[0] : undefined;
+  if (only?.tabs.length === 1) return { panelId: only.tabs[0], area, position: 'after', size: s };
+  // A first group re-docked before its successor would leave the area's size on the successor as well: no call.
+  return null;
 }
 
 /** A stable fingerprint of what the grid shows, to skip rebuilding when the kernel's layout did not change. */

@@ -1375,10 +1375,16 @@ Reserved by the M0 closure for "measured deterministic-format incompatibility" (
   panel is docked. Resizing a dock area by dragging its splitter, with every panel staying where it is, has no
   command; `workspace.layout.set` is agent-only in the registry ("agents apply prepared layouts; users arrange panels
   by dragging"). The GUI never mutates state outside a registered command.
-- **Interim decision:** a splitter drag resizes the area on screen only; the stored size changes when a panel is
-  docked with `window.panel.move {size}` or a layout is applied, and the drawn size returns to the stored one on the
-  next rebuild of the dock (workspace switch, panel move, restart). No command is added (the registry stays equal to
-  spec A).
+- **Interim decision (orchestrator ruling O-3, M4 C4.1 round 1):** at the end of a splitter drag the GUI runs the
+  existing user command `window.panel.move` for a panel of the resized area, with its present placement and the new
+  `size`. No command is added; the registry stays equal to spec A. As registered, `window.panel.move` re-inserts the
+  panel, so a call that leaves the arrangement unchanged exists only for (1) a single-tab group after another group,
+  (2) a group whose front tab is its last tab, or (3) an area's only group with one tab. In the built-in workspaces
+  that covers 3 side areas; the Default workspace's right and bottom areas and the Drawing workspace's right area have
+  no such call (any choice reorders tabs, changes a front tab or leaves the stored size on a second group), and there
+  a drag still returns to the stored size on the next rebuild. What the command lacks for a general same-place resize:
+  a way to re-dock a panel at its own index in its group (or a size change without a move). Reported to the
+  orchestrator before any change of the declaration.
 - **Question:** add a user command for dock area sizes (for example `window.dock.size.set {area, size}`), or make
   `workspace.layout.set` a user command as well.
 
