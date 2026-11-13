@@ -31,7 +31,9 @@ jobs:
     # C1.3: the workspace tests took 17-20 min of the former 30-min budget on 2026-10-26 (run 40419016272).
     # C1.4: on Windows they took 32.7 min and the job hit 45 min in the release build that follows (run 41003361353,
     # every step green until the cancellation); the race, liveness and measurement suites and the SDK step need 60.
-    timeout-minutes: 60
+    # M4 C4.1 round 1 (ruling O-4): formatting and clippy run in `lint`; limits are hang guards with at least 30 per cent
+    # over the measured cold duration (reviews/M4-C4.1-r1-response.md lists cold and warm durations per job).
+    timeout-minutes: 65
     steps:
       - uses: actions/checkout@v7
         with:
@@ -77,31 +79,22 @@ jobs:
           PY=python3
           if [ "$RUNNER_OS" = "Windows" ]; then PY=python; fi
           $PY scripts/run-reviewer-python-suites.py
+          # The M3 merge note's open-issue inventory follows the register (M3 C3.4 round 2).
+          $PY scripts/check-merge-note-inventory.py
+          # Reviewer-owned C2.4 files differ only by the ruled, declared edits (M2 C2.4 round 2, edit 57).
+          $PY scripts/check-reviewer-ownership.py
+
       - name: Every message id has help content (C4.1 ruling O-11)
         run: |
           PY=python3
           if [ "$RUNNER_OS" = "Windows" ]; then PY=python; fi
           $PY -I scripts/check-message-help.py
-          # The M3 merge note's open-issue inventory follows the register (M3 C3.4 round 2).
-          $PY scripts/check-merge-note-inventory.py
-          # Reviewer-owned C2.4 files differ only by the ruled, declared edits (M2 C2.4 round 2, edit 57).
-          $PY scripts/check-reviewer-ownership.py
 
       - name: Front end — build, diagnostics variant then default (frontendDist is embedded by the Tauri host)
         run: |
           # Both variants must pass the IPC boundary dist check; the default one stays in dist for the Rust steps.
           pnpm --dir desktop build:diagnostics
           pnpm --dir desktop build
-
-      # One `cargo fmt -p <package> --check` per workspace package (M3 C3.3 round 1): `--all` reaches the command-line
-      # length limit on Windows (os error 206) and is not used locally either.
-      - name: Formatting, per workspace package
-        run: |
-          PY=python3
-          if [ "$RUNNER_OS" = "Windows" ]; then PY=python; fi
-          for p in $(cargo metadata --no-deps --format-version 1 --locked | $PY -c "import json, sys; print(' '.join(p['name'] for p in json.load(sys.stdin)['packages']))" | tr -d '\r'); do
-            cargo fmt -p "$p" --check
-          done
 
       - name: Generated command declarations are current (C12-R1-12)
         run: |
@@ -110,12 +103,6 @@ jobs:
           PYTHONIOENCODING=utf-8 $PY scripts/gen-command-declarations.py
           git diff --exit-code -- crates/registry/src/declared.rs crates/registry/src/declared.json plan/spec-issues.md
 
-      # Product code (libraries, binaries, examples) is linted with every warning denied. All targets, tests included,
-      # likewise except one style lint: the reviewer-owned `c24_r4_closure.rs` has blank lines after doc comments, and
-      # reviewer-owned files are not edited (M2 merge candidate, declared CI edit; drop the `-A` once that file is fixed).
-      - run: |
-          cargo clippy --workspace --lib --bins --examples --locked -- -D warnings
-          cargo clippy --workspace --all-targets --locked -- -D warnings -A clippy::empty_line_after_doc_comments
       # The six 10 000-operation history oracles (C1.2-C1.4) run in release in `history-oracles` (moved in M2 C2.3 round 1:
       # Windows `check` reached 55 min 02 s in run 41320596822); everything else in their binaries runs here. The seeded
       # topology properties (C24-R1-01: 256 cases each) run in `check-properties` (split in M2 C2.4 round 1: Windows
@@ -225,6 +212,56 @@ jobs:
           path: out/
           if-no-files-found: error
 
+
+  # Formatting and clippy (moved out of `check` in M4 C4.1 round 1, ruling O-4, so `check` stays within 50 minutes on a
+  # cold cache). The Tauri host embeds the built front end, so it is built first. No Rust cache: clippy's check-mode
+  # artefacts share little with the test build, and the job fits its limit cold (cache budget, ruling O-4).
+  lint:
+    name: lint (${{ matrix.os }})
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [windows-latest, macos-latest]
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v7
+
+      - name: Rust toolchain (pinned in rust-toolchain.toml)
+        run: |
+          tc=$(sed -n 's/^channel = "\(.*\)"/\1/p' rust-toolchain.toml)
+          rustup toolchain install "$tc" --profile minimal --component rustfmt,clippy
+          rustup override set "$tc"
+          rustc --version
+
+      - uses: pnpm/action-setup@v6
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 22
+          cache: pnpm
+
+      - run: pnpm install --frozen-lockfile
+
+      - name: Front end — build (frontendDist is embedded by the Tauri host)
+        run: pnpm --dir desktop build
+
+      # One `cargo fmt -p <package> --check` per workspace package (M3 C3.3 round 1): `--all` reaches the command-line
+      # length limit on Windows (os error 206) and is not used locally either.
+      - name: Formatting, per workspace package
+        run: |
+          PY=python3
+          if [ "$RUNNER_OS" = "Windows" ]; then PY=python; fi
+          for p in $(cargo metadata --no-deps --format-version 1 --locked | $PY -c "import json, sys; print(' '.join(p['name'] for p in json.load(sys.stdin)['packages']))" | tr -d '\r'); do
+            cargo fmt -p "$p" --check
+          done
+
+      # Product code (libraries, binaries, examples) is linted with every warning denied. All targets, tests included,
+      # likewise except one style lint: the reviewer-owned `c24_r4_closure.rs` has blank lines after doc comments, and
+      # reviewer-owned files are not edited (M2 merge candidate, declared CI edit; drop the `-A` once that file is fixed).
+      - run: |
+          cargo clippy --workspace --lib --bins --examples --locked -- -D warnings
+          cargo clippy --workspace --all-targets --locked -- -D warnings -A clippy::empty_line_after_doc_comments
+
   # The headless release binary on both product platforms (moved out of `check` in M2 C2.1: on a cold cache the
   # release build pushed `check` past its 60-minute budget, run 41105899189 on main). Its own budget, so neither job's
   # time depends on cache warmth.
@@ -238,7 +275,7 @@ jobs:
       matrix:
         os: [windows-latest, macos-latest]
     runs-on: ${{ matrix.os }}
-    timeout-minutes: 45
+    timeout-minutes: 55
     steps:
       - uses: actions/checkout@v7
 
@@ -272,7 +309,7 @@ jobs:
       matrix:
         os: [windows-latest, macos-latest]
     runs-on: ${{ matrix.os }}
-    timeout-minutes: 45
+    timeout-minutes: 60
     steps:
       - uses: actions/checkout@v7
 
@@ -309,7 +346,7 @@ jobs:
       matrix:
         os: [windows-latest, macos-latest]
     runs-on: ${{ matrix.os }}
-    timeout-minutes: 55
+    timeout-minutes: 90
     steps:
       - uses: actions/checkout@v7
 
@@ -322,7 +359,8 @@ jobs:
 
       - uses: Swatinem/rust-cache@v2
         with:
-          key: headless-release
+          # One cache for the jobs that build the release headless binary (ruling O-4); `headless` saves it.
+          shared-key: headless-release
 
       - name: Headless binary — build, self-test (twice, compared), linked-library proof
         run: |
@@ -400,7 +438,7 @@ jobs:
       matrix:
         os: [windows-latest, macos-latest]
     runs-on: ${{ matrix.os }}
-    timeout-minutes: 40
+    timeout-minutes: 45
     steps:
       - uses: actions/checkout@v7
 
@@ -495,9 +533,7 @@ jobs:
           rustup override set "$tc"
           rustc --version
 
-      - uses: Swatinem/rust-cache@v2
-        with:
-          key: m3-properties
+      # No Rust cache: a few minutes cold, not worth its share of the cache budget (ruling O-4).
 
       - name: Exposure algebra properties, 4096 cases
         run: TT_C31_CASES=4096 cargo test --release --locked -p tt-anim --test c31_exposure
@@ -528,7 +564,9 @@ jobs:
 
       - uses: Swatinem/rust-cache@v2
         with:
-          key: headless-release
+          # One cache for the jobs that build the release headless binary (ruling O-4); `headless` saves it.
+          shared-key: headless-release
+          save-if: false
 
       - name: E2 paint by id (official Python SDK, release binary)
         run: |
@@ -572,7 +610,9 @@ jobs:
 
       - uses: Swatinem/rust-cache@v2
         with:
-          key: headless-release
+          # One cache for the jobs that build the release headless binary (ruling O-4); `headless` saves it.
+          shared-key: headless-release
+          save-if: false
 
       - name: E4 cut-out rig, numeric (official Python SDK, release binary), base and reviewer variant (C3.2 r1)
         run: |
@@ -624,7 +664,7 @@ jobs:
       matrix:
         os: [windows-latest, macos-latest]
     runs-on: ${{ matrix.os }}
-    timeout-minutes: 30
+    timeout-minutes: 60
     steps:
       - uses: actions/checkout@v7
 
@@ -637,7 +677,9 @@ jobs:
 
       - uses: Swatinem/rust-cache@v2
         with:
-          key: headless-release
+          # One cache for the jobs that build the release headless binary (ruling O-4); `headless` saves it.
+          shared-key: headless-release
+          save-if: false
 
       - name: Golden images and PNG sequences (release)
         run: cargo test --release --locked -p tt-executor --test c33_goldens --test c33_range --test c33_bitmap
@@ -754,7 +796,9 @@ jobs:
 
       - uses: Swatinem/rust-cache@v2
         with:
-          key: desktop-diagnostics
+          # One cache for the two desktop release builds (ruling O-4); `bundle` saves it.
+          shared-key: desktop-release
+          save-if: false
 
       - uses: pnpm/action-setup@v6
       - uses: actions/setup-node@v7
@@ -784,7 +828,7 @@ jobs:
           - os: macos-latest
             bundles: app
     runs-on: ${{ matrix.os }}
-    timeout-minutes: 30
+    timeout-minutes: 40
     steps:
       - uses: actions/checkout@v7
 
@@ -796,7 +840,8 @@ jobs:
 
       - uses: Swatinem/rust-cache@v2
         with:
-          key: bundle
+          # One cache for the two desktop release builds (ruling O-4); `bundle` saves it.
+          shared-key: desktop-release
 
       - uses: pnpm/action-setup@v6
       - uses: actions/setup-node@v7
@@ -966,9 +1011,7 @@ jobs:
           tc=$(sed -n 's/^channel = "\(.*\)"/\1/p' rust-toolchain.toml)
           rustup toolchain install "$tc" --profile minimal
           rustup override set "$tc"
-      - uses: Swatinem/rust-cache@v2
-        with:
-          key: headless
+      # No Rust cache: a few minutes cold, not worth its share of the cache budget (ruling O-4).
       - run: cargo build --release --locked -p tt-headless
       - name: Self-test with no display server
         run: |
@@ -1001,9 +1044,7 @@ jobs:
           tc=$(sed -n 's/^channel = "\(.*\)"/\1/p' rust-toolchain.toml)
           rustup toolchain install "$tc" --profile minimal
           rustup override set "$tc"
-      - uses: Swatinem/rust-cache@v2
-        with:
-          key: raster
+      # No Rust cache: a few minutes cold, not worth its share of the cache budget (ruling O-4).
       - run: cargo build --release --locked -p tt-render --example c03_raster
       - name: Render fixtures and check committed hashes (two processes)
         run: |
