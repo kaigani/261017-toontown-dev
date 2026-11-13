@@ -1,0 +1,49 @@
+{
+  "files": 39,
+  "scan": [
+    {
+      "path": "reviews/evidence/M4-C4.1/README.md",
+      "bytes": 1586,
+      "hits": {
+        "auth": 3
+      }
+    },
+    {
+      "path": "reviews/evidence/M4-C4.1/ci-gui-macos/discovery.json",
+      "bytes": 158,
+      "hits": {
+        "auth": 1
+      }
+    },
+    {
+      "path": "reviews/evidence/M4-C4.1/ci-gui-windows/discovery.json",
+      "bytes": 159,
+      "hits": {
+        "auth": 1
+      }
+    },
+    {
+      "path": "reviews/evidence/M4-C4.1/ci-gui-windows/mcp-conformance-http.json",
+      "bytes": 6363,
+      "hits": {
+        "home": 5
+      }
+    },
+    {
+      "path": "reviews/evidence/M4-C4.1/local-windows/discovery.json",
+      "bytes": 159,
+      "hits": {
+        "auth": 1
+      }
+    }
+  ],
+  "product_diff_files": 159,
+  "vitest_files": 41,
+  "rust_test_attributes": {
+    "crates\\executor\\tests\\c41\\kernel.rs": 12,
+    "crates\\executor\\tests\\c41\\busy.rs": 7,
+    "crates\\executor\\tests\\c41\\keymap.rs": 4,
+    "crates\\executor\\tests\\c41\\restart.rs": 1,
+    "crates\\mcp\\tests\\c41.rs": 2
+  }
+}
