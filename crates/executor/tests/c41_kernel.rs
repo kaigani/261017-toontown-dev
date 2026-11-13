@@ -187,15 +187,11 @@ fn agents_cannot_change_their_own_access() {
 fn keymap_set_conflicts_override_and_reserved_keys() {
     let dir = user_dir("keys");
     let h = over(&dir);
-    // Primary+S is Save's: a conflict without override, moved with it.
-    let e = err(&h, "keymap.set", json!({ "commandId": "project.saveAs", "keys": "ctrl+s" }));
-    if cfg!(target_os = "macos") {
-        // Ctrl is its own key on macOS: no conflict with Primary+S.
-        assert_ne!(e.code, "keymap.conflict");
-    } else {
-        assert_eq!(e.code, "keymap.conflict", "{e:?}");
-        assert_eq!(e.details["conflicts"][0]["commandId"], "project.save");
-    }
+    // Primary+S is Save's on every platform (written in any case): a conflict without override, moved with it. (Ctrl
+    // is the primary modifier on Windows only; on macOS it is its own key, so `ctrl+s` would not conflict there.)
+    let e = err(&h, "keymap.set", json!({ "commandId": "project.saveAs", "keys": "primary+s" }));
+    assert_eq!(e.code, "keymap.conflict", "{e:?}");
+    assert_eq!(e.details["conflicts"][0]["commandId"], "project.save");
     let r =
         ok(&h, "keymap.set", json!({ "commandId": "project.saveAs", "keys": "Primary+S", "onConflict": "override" }));
     assert_eq!(r["removed"][0]["commandId"], "project.save");
