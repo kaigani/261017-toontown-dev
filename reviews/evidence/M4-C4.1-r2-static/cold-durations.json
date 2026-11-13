@@ -1,0 +1,206 @@
+[
+  {
+    "job": "check (windows-latest)",
+    "minutes": 43.68,
+    "conclusion": "success",
+    "table_matches": true
+  },
+  {
+    "job": "lint (windows-latest)",
+    "minutes": 16.27,
+    "conclusion": "success",
+    "table_matches": true
+  },
+  {
+    "job": "lint (macos-latest)",
+    "minutes": 8.95,
+    "conclusion": "success",
+    "table_matches": true
+  },
+  {
+    "job": "history oracles release (macos-latest)",
+    "minutes": 23.63,
+    "conclusion": "success",
+    "table_matches": true
+  },
+  {
+    "job": "raster determinism (windows-latest)",
+    "minutes": 3.97,
+    "conclusion": "success",
+    "table_matches": true
+  },
+  {
+    "job": "measurements release (windows-latest)",
+    "minutes": 22.68,
+    "conclusion": "success",
+    "table_matches": true
+  },
+  {
+    "job": "headless release (macos-latest)",
+    "minutes": 40.78,
+    "conclusion": "success",
+    "table_matches": true
+  },
+  {
+    "job": "headless without a display (ubuntu)",
+    "minutes": 6.18,
+    "conclusion": "success",
+    "table_matches": true
+  },
+  {
+    "job": "check (macos-latest)",
+    "minutes": 34.0,
+    "conclusion": "success",
+    "table_matches": true
+  },
+  {
+    "job": "check properties (windows-latest)",
+    "minutes": 30.98,
+    "conclusion": "success",
+    "table_matches": true
+  },
+  {
+    "job": "review properties release (macos-latest)",
+    "minutes": 37.55,
+    "conclusion": "success",
+    "table_matches": true
+  },
+  {
+    "job": "m3 properties release (macos-latest)",
+    "minutes": 3.47,
+    "conclusion": "success",
+    "table_matches": true
+  },
+  {
+    "job": "e4 release (macos-latest)",
+    "minutes": 9.07,
+    "conclusion": "success",
+    "table_matches": true
+  },
+  {
+    "job": "check properties (macos-latest)",
+    "minutes": 27.58,
+    "conclusion": "success",
+    "table_matches": true
+  },
+  {
+    "job": "headless release (windows-latest)",
+    "minutes": 58.27,
+    "conclusion": "success",
+    "table_matches": true
+  },
+  {
+    "job": "measurements release (macos-latest)",
+    "minutes": 16.52,
+    "conclusion": "success",
+    "table_matches": true
+  },
+  {
+    "job": "e2 release (windows-latest)",
+    "minutes": 9.52,
+    "conclusion": "success",
+    "table_matches": true
+  },
+  {
+    "job": "raster determinism (macos-latest)",
+    "minutes": 1.82,
+    "conclusion": "success",
+    "table_matches": true
+  },
+  {
+    "job": "e4 release (windows-latest)",
+    "minutes": 11.2,
+    "conclusion": "success",
+    "table_matches": true
+  },
+  {
+    "job": "raster determinism (ubuntu-latest)",
+    "minutes": 2.82,
+    "conclusion": "success",
+    "table_matches": true
+  },
+  {
+    "job": "review properties release (windows-latest)",
+    "minutes": 46.62,
+    "conclusion": "success",
+    "table_matches": true
+  },
+  {
+    "job": "c33 render release (windows-latest)",
+    "minutes": 33.85,
+    "conclusion": "success",
+    "table_matches": true
+  },
+  {
+    "job": "m3 properties release (windows-latest)",
+    "minutes": 4.65,
+    "conclusion": "success",
+    "table_matches": true
+  },
+  {
+    "job": "e2 release (macos-latest)",
+    "minutes": 2.42,
+    "conclusion": "success",
+    "table_matches": true
+  },
+  {
+    "job": "c33 render release (macos-latest)",
+    "minutes": 24.13,
+    "conclusion": "success",
+    "table_matches": true
+  },
+  {
+    "job": "history oracles release (windows-latest)",
+    "minutes": 31.05,
+    "conclusion": "success",
+    "table_matches": true
+  },
+  {
+    "job": "bundle (macos-latest)",
+    "minutes": 13.62,
+    "conclusion": "success",
+    "table_matches": true
+  },
+  {
+    "job": "desktop diagnostics (windows-latest)",
+    "minutes": 14.63,
+    "conclusion": "success",
+    "table_matches": true
+  },
+  {
+    "job": "desktop diagnostics (macos-latest)",
+    "minutes": 7.95,
+    "conclusion": "success",
+    "table_matches": true
+  },
+  {
+    "job": "bundle (windows-latest)",
+    "minutes": 23.07,
+    "conclusion": "success",
+    "table_matches": true
+  },
+  {
+    "job": "e4 cross-OS",
+    "minutes": 0.08,
+    "conclusion": "success",
+    "table_matches": true
+  },
+  {
+    "job": "desktop gui (windows-latest)",
+    "minutes": 1.33,
+    "conclusion": "success",
+    "table_matches": true
+  },
+  {
+    "job": "desktop gui (macos-latest)",
+    "minutes": 1.3,
+    "conclusion": "success",
+    "table_matches": true
+  },
+  {
+    "job": "c33 cross-OS",
+    "minutes": 0.08,
+    "conclusion": "success",
+    "table_matches": true
+  }
+]
