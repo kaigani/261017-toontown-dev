@@ -1,0 +1,16 @@
+
+> @toontown/desktop@0.0.1 test C:\Users\kaiga\work\review\m4-c41-r1\desktop
+> vitest run --config vite.config.ts
+
+
+ RUN  v5.0.5 C:/Users/kaiga/work/review/m4-c41-r1/desktop
+
+
+ Test Files  41 passed (41)
+      Tests  354 passed (354)
+   Start at  07:51:30
+   Duration  161.27s (tests 70%, environment 17%, setup 7%, import 4%, transform 2%)
+
+    Isolate  41 workers spawned · ~779ms startup each (spawn + environment, per file)
+             at least ~31.16s faster with isolate: false — reuses workers across files instead of one per file
+

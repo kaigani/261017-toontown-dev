@@ -1,0 +1,27 @@
+running 2 tests
+test unknown_settings_version_is_quarantined ... FAILED
+test closing_dialog_over_json_clears_modal_and_shortcuts ... FAILED
+
+failures:
+
+---- unknown_settings_version_is_quarantined stdout ----
+
+thread 'unknown_settings_version_is_quarantined' (35420) panicked at crates\executor\tests\c41_r1_review.rs:43:5:
+unsupported version was accepted: Data(Object {"interface.theme": String("dark")})
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+---- closing_dialog_over_json_clears_modal_and_shortcuts stdout ----
+
+thread 'closing_dialog_over_json_clears_modal_and_shortcuts' (35052) panicked at crates\executor\tests\c41_r1_review.rs:23:5:
+assertion `left == right` failed: closing the actual JSON IPC dialog must release user priority: Envelope { status: Ok, result: Some(Object {"project": Null, "scene": Null, "frame": Null, "element": Null, "drawing": Null, "mode": Null, "activeView": Null, "focusedPanel": String("cameraView"), "activeTool": Null, "selection": Object {"context": String("staging"), "ids": Array [], "kinds": Array []}, "workspace": Object {"name": String("Default"), "modified": Bool(false)}, "playback": Object {"playing": Bool(false)}, "startScreenVisible": Bool(true), "modal": Object {"kind": String("dialog"), "title": String("Preferences")}, "agentSessions": Array [], "fullScreen": Bool(false)}), targets: None, changes: [], changes_truncated: false, changes_since: None, undo: None, warnings: [], document_rev: None, error: None, dry_run: false, steps: None, committed: true }
+  left: Some(Object {"kind": String("dialog"), "title": String("Preferences")})
+ right: Some(Null)
+
+
+failures:
+    closing_dialog_over_json_clears_modal_and_shortcuts
+    unknown_settings_version_is_quarantined
+
+test result: FAILED. 0 passed; 2 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.00s
+
+error: test failed, to rerun pass `-p tt-executor --test c41_r1_review`

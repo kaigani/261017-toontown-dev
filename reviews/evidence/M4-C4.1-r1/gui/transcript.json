@@ -1,0 +1,353 @@
+[
+  {
+    "check": "the application started and serves attached mode",
+    "ok": true,
+    "detail": {
+      "endpoint": "http://127.0.0.1:62262/mcp",
+      "startS": 1.0
+    }
+  },
+  {
+    "check": "initialize over Streamable HTTP",
+    "ok": true,
+    "detail": {
+      "name": "toontown",
+      "title": "Toontown",
+      "version": "0.0.1",
+      "description": null,
+      "website_url": null,
+      "icons": null
+    }
+  },
+  {
+    "screenshot": "01-start-screen.png"
+  },
+  {
+    "check": "start screen in the rendered tree",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "status bar in the rendered tree",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "main toolbar in the rendered tree",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "every visible panel is rendered",
+    "ok": true,
+    "detail": {
+      "visible": [
+        "cameraView",
+        "timeline",
+        "xsheet",
+        "functionEditor",
+        "properties",
+        "colour",
+        "pen",
+        "text",
+        "cells",
+        "library",
+        "storyline"
+      ],
+      "missing": []
+    }
+  },
+  {
+    "check": "window.panel.set history",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "project.create",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "the window title names the project",
+    "ok": true,
+    "detail": "Toontown \u2014 Bounce"
+  },
+  {
+    "screenshot": "02-project.png"
+  },
+  {
+    "check": "workspace.select Drawing",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "drawing mode follows the active view",
+    "ok": true,
+    "detail": {
+      "viewId": "drawingView",
+      "panelId": "drawingView",
+      "type": "drawing"
+    }
+  },
+  {
+    "check": "prefs.set",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "keymap.set F2",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "the key tool runs the bound command",
+    "ok": true,
+    "detail": {
+      "status": "error",
+      "changes": [],
+      "warnings": [],
+      "documentRev": 1,
+      "error": {
+        "code": "project.pathRequired",
+        "message": "the project has no location yet",
+        "details": {
+          "projectId": "pr_01M7ASX0A3C3P1J716KK7ZJ8D4"
+        },
+        "hint": "save with project.saveAs {path}"
+      }
+    }
+  },
+  {
+    "check": "workspace.create E2E",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "window.geometry.set",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "prefs.outOfRange",
+    "ok": true,
+    "detail": {
+      "status": "error",
+      "changes": [],
+      "warnings": [],
+      "documentRev": 1,
+      "error": {
+        "code": "prefs.outOfRange",
+        "message": "`files.backups.count` is out of range (0 to 20)",
+        "details": {
+          "key": "files.backups.count",
+          "value": 99,
+          "min": 0.0,
+          "max": 20.0,
+          "pointer": "/values/files.backups.count"
+        }
+      }
+    }
+  },
+  {
+    "check": "keymap.reservedKey",
+    "ok": true,
+    "detail": {
+      "status": "error",
+      "changes": [],
+      "warnings": [],
+      "documentRev": 1,
+      "error": {
+        "code": "keymap.reservedKey",
+        "message": "`Escape` is reserved (Escape alone cancels gestures, captures and dialogs) and cannot be bound",
+        "details": {
+          "keys": "Escape",
+          "reason": "Escape alone cancels gestures, captures and dialogs"
+        }
+      }
+    }
+  },
+  {
+    "screenshot": "03-preferences.png"
+  },
+  {
+    "check": "app.state.get reports the modal dialog",
+    "ok": true,
+    "detail": {
+      "kind": "dialog",
+      "title": "Preferences"
+    }
+  },
+  {
+    "check": "an agent change waits for the user and fails with ui.busy",
+    "ok": true,
+    "detail": {
+      "env": {
+        "status": "error",
+        "changes": [],
+        "warnings": [],
+        "documentRev": null,
+        "error": {
+          "code": "ui.busy",
+          "message": "the user is busy (dialog \u201cPreferences\u201d); the agent's change waited and gave up",
+          "details": {
+            "blockedBy": {
+              "kind": "dialog",
+              "title": "Preferences"
+            },
+            "waitedMs": 10001
+          },
+          "hint": "retry when the user is done; app.state.get reports `modal`"
+        }
+      },
+      "waitedS": 10.004959099984262
+    }
+  },
+  {
+    "check": "a focus change under a user dialog is ui.modalOpen",
+    "ok": true,
+    "detail": {
+      "status": "error",
+      "changes": [],
+      "warnings": [],
+      "documentRev": null,
+      "error": {
+        "code": "ui.modalOpen",
+        "message": "the user has a dialog open (\u201cPreferences\u201d); `window.panel.set` would change focus",
+        "details": {
+          "blockedBy": {
+            "kind": "dialog",
+            "title": "Preferences"
+          }
+        }
+      }
+    }
+  },
+  {
+    "check": "the window took the requested size",
+    "ok": true,
+    "detail": {
+      "x": 40,
+      "y": 30,
+      "width": 860,
+      "height": 600,
+      "maximized": false,
+      "fullScreen": false,
+      "screens": [
+        {
+          "x": 0,
+          "y": 0,
+          "width": 1920,
+          "height": 1032,
+          "scale": 1.0
+        }
+      ]
+    }
+  },
+  {
+    "check": "preferences persisted across a restart",
+    "ok": true,
+    "detail": {
+      "status": "ok",
+      "result": {
+        "values": {
+          "interface.theme": "dark",
+          "files.backups.count": 7
+        }
+      },
+      "changes": [],
+      "warnings": [],
+      "documentRev": null
+    }
+  },
+  {
+    "check": "the key binding persisted",
+    "ok": true,
+    "detail": {
+      "status": "ok",
+      "result": {
+        "bindings": [
+          {
+            "commandId": "project.save",
+            "keys": "F2",
+            "context": "global",
+            "isDefault": false
+          }
+        ],
+        "effectiveCommand": {
+          "commandId": "project.save"
+        }
+      },
+      "changes": [],
+      "warnings": [],
+      "documentRev": null
+    }
+  },
+  {
+    "check": "the user workspace persisted",
+    "ok": true,
+    "detail": [
+      "Default",
+      "Staging",
+      "Drawing",
+      "Focused drawing",
+      "E2E"
+    ]
+  },
+  {
+    "check": "the window geometry persisted",
+    "ok": true,
+    "detail": {
+      "before": {
+        "x": 40,
+        "y": 30,
+        "width": 860,
+        "height": 600
+      },
+      "after": {
+        "x": 40,
+        "y": 30,
+        "width": 860,
+        "height": 600,
+        "maximized": false,
+        "fullScreen": false,
+        "screens": [
+          {
+            "x": 0,
+            "y": 0,
+            "width": 1920,
+            "height": 1080,
+            "scale": 1.0
+          }
+        ]
+      }
+    }
+  },
+  {
+    "screenshot": "04-restart.png"
+  },
+  {
+    "check": "a corrupt keymap file falls back to the defaults",
+    "ok": true,
+    "detail": {
+      "status": "ok",
+      "result": {
+        "bindings": []
+      },
+      "changes": [],
+      "warnings": [],
+      "documentRev": null
+    }
+  },
+  {
+    "check": "the corrupt file was kept aside",
+    "ok": true,
+    "detail": [
+      "agent-discovery.json",
+      "instance.json",
+      "keymap.corrupt-2026-11-13T15-55-13.777Z.json",
+      "preferences.json",
+      "state.json",
+      "workspaces.json"
+    ]
+  }
+]

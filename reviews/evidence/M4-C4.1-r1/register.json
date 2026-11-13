@@ -2,101 +2,101 @@
   {
     "item": 1,
     "status": "pending",
-    "evidence": "Not yet independently verified"
+    "evidence": "sampled host/action-router and sensor paths; exhaustive mutation scan not completed"
   },
   {
     "item": 2,
     "status": "pending",
-    "evidence": "Not yet independently verified"
+    "evidence": "mechanical full registry-to-GUI and native enablement audit not completed"
   },
   {
     "item": 3,
     "status": "pending",
-    "evidence": "Not yet independently verified"
+    "evidence": "validation/staging code read; full catalogue comparison and adversarial values not completed"
   },
   {
     "item": 4,
     "status": "pending",
-    "evidence": "Not yet independently verified"
+    "evidence": "import/canonicalization code sampled; cross-platform hostile import probes not completed"
   },
   {
     "item": 5,
-    "status": "pending",
-    "evidence": "Not yet independently verified"
+    "status": "divergent",
+    "evidence": "C41-R1-04 unsupported settings versions; crash/read-only/shape matrix pending"
   },
   {
     "item": 6,
     "status": "pending",
-    "evidence": "Not yet independently verified"
+    "evidence": "bounded theme validation read; full UI/help/theme persistence adjudication pending"
   },
   {
     "item": 7,
     "status": "pending",
-    "evidence": "Not yet independently verified"
+    "evidence": "declared in-window floats and splitter loss confirmed by source; native-window permanent probe pending"
   },
   {
     "item": 8,
-    "status": "pending",
-    "evidence": "Not yet independently verified"
+    "status": "divergent",
+    "evidence": "C41-R1-01 JSON null cannot clear modal; stale-report expiry and arbitration races pending"
   },
   {
     "item": 9,
     "status": "pending",
-    "evidence": "Not yet independently verified"
+    "evidence": "host AtomicBool probe confirmed by inspection; lifetime/cross-window tests pending"
   },
   {
     "item": 10,
-    "status": "pending",
-    "evidence": "Not yet independently verified"
+    "status": "divergent",
+    "evidence": "C41-R1-02/03 real socket failures; remaining security charter not certified"
   },
   {
     "item": 11,
     "status": "pending",
-    "evidence": "Not yet independently verified"
+    "evidence": "main-only event capability and CSP inspected; full hardening matrix pending"
   },
   {
     "item": 12,
-    "status": "pending",
-    "evidence": "Not yet independently verified"
+    "status": "divergent",
+    "evidence": "C41-R1-01 modal suspension cannot clear; freshness race testing pending"
   },
   {
     "item": 13,
     "status": "pending",
-    "evidence": "Not yet independently verified"
+    "evidence": "watchdog and restart code read; live heartbeat/recovery races not probed"
   },
   {
     "item": 14,
-    "status": "pending",
-    "evidence": "Not yet independently verified"
+    "status": "implemented",
+    "evidence": "independent embedded debug GUI 28/28 and HTTP 24/24; script limitations in report"
   },
   {
     "item": 15,
     "status": "pending",
-    "evidence": "Not yet independently verified"
+    "evidence": "SI-112 through SI-118 read and provisional adjudication recorded; exhaustive code agreement pending"
   },
   {
     "item": 16,
     "status": "pending",
-    "evidence": "Not yet independently verified"
+    "evidence": "allow count 94/38 and reviewer fmt/clippy pass; all-target clippy blocked by inherited test comments; generator/schema audit pending"
   },
   {
     "item": 17,
-    "status": "pending",
-    "evidence": "Not yet independently verified"
+    "status": "implemented",
+    "evidence": "D-1 own commit/profile/backtrace locations; D-2 exactly two candidate builder binaries"
   },
   {
     "item": 18,
-    "status": "pending",
-    "evidence": "Not yet independently verified"
+    "status": "divergent",
+    "evidence": "CI structure unchanged except GUI job; cold Windows check 58:14 exceeds ceiling; live cache inventory pending"
   },
   {
     "item": 19,
     "status": "pending",
-    "evidence": "Not yet independently verified"
+    "evidence": "supplied evidence 39 files, no oversize/JSON token fields; manual scripts read, full secret/name/count audit pending"
   },
   {
     "item": 20,
-    "status": "pending",
-    "evidence": "Not yet independently verified"
+    "status": "divergent",
+    "evidence": "item 1 refuted by modal/settings defects; item 6 structure retained but cold ceiling missed; item 7 risks retained"
   }
 ]

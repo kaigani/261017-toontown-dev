@@ -1,0 +1,9 @@
+cargo :     Checking tt-executor v0.0.1 (C:\Users\kaiga\work\review\m4-c41-r1\crates\executor)
+At line:2 char:1
++ cargo clippy -p tt-executor -p tt-mcp --test c41_r1_review -- -D warn ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (    Checking tt...rates\executor):String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+    Checking tt-mcp v0.0.1 (C:\Users\kaiga\work\review\m4-c41-r1\crates\mcp)
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 6.38s

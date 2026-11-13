@@ -1,0 +1,43 @@
+Scope: all 2 workspace projects
+Lockfile is up to date, resolution step is skipped
+Progress: resolved 1, reused 0, downloaded 0, added 0
+Packages: +240
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+Progress: resolved 240, reused 109, downloaded 0, added 0
+Progress: resolved 240, reused 214, downloaded 0, added 6
+Progress: resolved 240, reused 227, downloaded 0, added 72
+Progress: resolved 240, reused 227, downloaded 0, added 73
+Progress: resolved 240, reused 232, downloaded 0, added 137
+Progress: resolved 240, reused 235, downloaded 0, added 188
+Progress: resolved 240, reused 235, downloaded 0, added 189
+Progress: resolved 240, reused 236, downloaded 0, added 222
+Progress: resolved 240, reused 236, downloaded 0, added 223
+Progress: resolved 240, reused 236, downloaded 0, added 230
+Progress: resolved 240, reused 236, downloaded 0, added 231
+Progress: resolved 240, reused 237, downloaded 0, added 233
+Progress: resolved 240, reused 237, downloaded 0, added 236
+Progress: resolved 240, reused 240, downloaded 0, added 237
+Progress: resolved 240, reused 240, downloaded 0, added 238
+Progress: resolved 240, reused 240, downloaded 0, added 240, done
+
+devDependencies:
++ spdx-exceptions 2.5.0
++ spdx-license-ids 3.0.24
+
+Done in 23.2s using pnpm v10.12.1
+
+> @toontown/desktop@0.0.1 build C:\Users\kaiga\work\review\m4-c41-r1\desktop
+> vite build --config vite.config.ts && node boundary/check-dist.mjs dist
+
+vite v8.3.4 building client environment for production...
+transforming...
+✓ 72 modules transformed.
+rendering chunks...
+computing gzip size...
+dist/index.html                              0.47 kB │ gzip:   0.29 kB
+dist/assets/index-av_1z3ev.css             144.38 kB │ gzip:  13.05 kB
+dist/assets/tauri-transport-CqPEAjyd.js      3.35 kB │ gzip:   1.45 kB │ map:    36.54 kB
+dist/assets/index-CyyMb95-.js            1,953.99 kB │ gzip: 359.58 kB │ map: 6,178.04 kB
+
+✓ built in 2.76s
+IPC boundary (dist check): ok (dist; Tauri code only in tauri-transport)

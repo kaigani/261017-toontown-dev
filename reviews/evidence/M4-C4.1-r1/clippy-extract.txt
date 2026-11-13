@@ -1,0 +1,102 @@
+error: empty lines after doc comment
+   --> crates\executor\tests\c24_r4_closure.rs:485:1
+    |
+485 | / /// A stroke's path flattened (du).
+...   |
+489 | |
+    | |_^
+490 |   /// A closed polygon as a flat Bézier point list (du).
+491 |   fn loop_bez(l: &[F2]) -> Vec<F2> {
+    |   ----------- the comment documents this function
+    |
+    = help: for further information visit 
+https://rust-lang.github.io/rust-clippy/rust-1.98.0/index.html#empty_line_after_doc_comments
+    = note: `-D clippy::empty-line-after-doc-comments` implied by `-D warnings`
+    = help: to override `-D warnings` add `#[allow(clippy::empty_line_after_doc_comments)]`
+    = help: if the empty lines are unintentional, remove them
+help: if the doc comment should not document function `loop_bez` then comment it out
+    |
+485 | // /// A stroke's path flattened (du).
+    | ++
+
+error: empty lines after doc comment
+   --> crates\executor\tests\c24_r4_closure.rs:896:1
+    |
+896 | / /// Douglas–Peucker on a closed polygon (fixed first vertex and the vertex farthest from it), within `tol`.
+...   |
+900 | |
+    | |_^
+901 |   type Spec = (bool, Vec<(i64, i64)>);
+    |   --------- the comment documents this type alias
+    |
+    = help: for further information visit 
+https://rust-lang.github.io/rust-clippy/rust-1.98.0/index.html#empty_line_after_doc_comments
+    = help: if the empty lines are unintentional, remove them
+help: if the doc comment should not document type alias `Spec` then comment it out
+    |
+896 | // /// Douglas–Peucker on a closed polygon (fixed first vertex and the vertex farthest from it), within `tol`.
+    | ++
+
+error: empty line after doc comment
+   --> crates\executor\tests\c24_r4_closure.rs:913:1
+    |
+913 | / /// Lattice brush rectangles: corners on a 10-du lattice, at least 10 du wide and high.
+914 | |
+    | |_^
+915 |   /// The expected inputs of a layer: pencil polylines and brush rectangles, named by their persisted strokes.
+916 |   fn expected_inputs(pencils: &[(Vec<F2>, bool)], brushes: &[Vec<F2>]) -> Vec<Input> {
+    |   ------------------ the comment documents this function
+    |
+    = help: for further information visit 
+https://rust-lang.github.io/rust-clippy/rust-1.98.0/index.html#empty_line_after_doc_comments
+    = help: if the empty line is unintentional, remove it
+help: if the documentation should include the empty line include it in the comment
+    |
+914 | ///
+    |
+
+error: empty lines after doc comment
+   --> crates\executor\tests\c24_r4_closure.rs:951:1
+    |
+951 | / /// snap-safety check and the expected map see the pieces the merge produces.
+952 | |
+953 | | /// Whether two edges of different inputs cross properly at a point exactly half a grid unit off the grid in a
+954 | | /// coordinate (a rounding tie).
+955 | |
+    | |_^
+956 |   /// Whether the snapped arrangement of `inputs` keeps its combinatorics (the round-1 oracle's snap-safety, 6 
+grid units).
+957 |   fn safe(inputs: &[Input]) -> bool {
+    |   ------- the comment documents this function
+    |
+    = help: for further information visit 
+https://rust-lang.github.io/rust-clippy/rust-1.98.0/index.html#empty_line_after_doc_comments
+    = help: if the empty lines are unintentional, remove them
+help: if the documentation should include the empty lines include them in the comment
+    |
+952 + ///
+953 | /// Whether two edges of different inputs cross properly at a point exactly half a grid unit off the grid in a
+954 | /// coordinate (a rounding tie).
+955 + ///
+    |
+
+error: empty line after doc comment
+    --> crates\executor\tests\c24_r4_closure.rs:1132:1
+     |
+1132 | / /// The nearest point of a cubic to `p`: dense sampling, then golden-section refinement.
+1133 | |
+     | |_^
+...
+1141 |   fn border_paper_and_diagonal_ink_bridge() {
+     |   --------------------------------------- the comment documents this function
+     |
+     = help: for further information visit 
+https://rust-lang.github.io/rust-clippy/rust-1.98.0/index.html#empty_line_after_doc_comments
+     = help: if the empty line is unintentional, remove it
+help: if the documentation should include the empty line include it in the comment
+     |
+1133 | ///
+     |
+
+error: could not compile `tt-executor` (test "c24_r4_closure") due to 5 previous errors
+warning: build failed, waiting for other jobs to finish...
