@@ -14,3 +14,5 @@ mod kernel;
 mod keymap;
 #[path = "c41/restart.rs"]
 mod restart;
+#[path = "c41/settings.rs"]
+mod settings;

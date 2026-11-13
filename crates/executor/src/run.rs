@@ -849,9 +849,13 @@ fn apply_effects(
                         s.env.settings.prefs.insert(k, v);
                     }
                 }
-                let _ = s.env.write("preferences");
+                s.env.save("preferences");
             }
         }
+    }
+    // A settings write that failed is told once per file per session (ruling O-12).
+    for n in s.env.take_notices() {
+        s.emit("ui.message.shown", n);
     }
     failure.map_or(Ok(()), Err)
 }
@@ -1134,7 +1138,10 @@ impl Core {
             s.emit("project.dirty.changed", json!({ "projectDirty": d, "globalLibraryDirty": false }));
         }
         if after.workspaces != before.workspaces {
-            let _ = tt_persist::settings::write(&s.env.dirs.settings, "workspaces", &after.workspaces);
+            s.env.save_workspaces(&after.workspaces);
+            for n in s.env.take_notices() {
+                s.emit("ui.message.shown", n);
+            }
         }
     }
 

@@ -1381,3 +1381,13 @@ Reserved by the M0 closure for "measured deterministic-format incompatibility" (
   spec A).
 - **Question:** add a user command for dock area sizes (for example `window.dock.size.set {area, size}`), or make
   `workspace.layout.set` a user command as well.
+
+## SI-119 — no message id for a settings file that could not be saved (found in M4 C4.1 round 1; interim)
+
+- **Sections:** 01 §11 (settings files, `prefs.corrupt`), 01 §12.2 message list.
+- **Problem:** 01 §11 names `prefs.corrupt` for a file that cannot be read, but no id for a write that fails (an
+  unwritable or full settings folder). Ruling O-12 requires the user to be told once per file per session, with the
+  path and the operating system's reason, while the change stays in memory.
+- **Interim decision:** `prefs.saveFailed` (severity warning; details `kind`, `path`, `reason`, `message`), also used
+  when a per-user folder cannot be created. It has a help entry like every other message id.
+- **Question:** add `prefs.saveFailed` (or another id) to 01 §11 and the message list.

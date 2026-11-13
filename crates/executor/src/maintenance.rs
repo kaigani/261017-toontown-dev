@@ -21,18 +21,8 @@ pub(crate) fn start(s: &mut Session) {
     if let Some(w) = s.env.stored_workspaces() {
         s.ui.restore(&w);
     }
-    for f in s.env.settings.corrupt.clone() {
-        s.emit(
-            "ui.message.shown",
-            json!({
-                "messageId": "prefs.corrupt",
-                "severity": "warning",
-                "text": "A settings file was damaged; it was kept aside and its defaults are used.",
-                "details": { "path": f },
-                "source": "user",
-                "suppressed": false,
-            }),
-        );
+    for n in s.env.take_notices() {
+        s.emit("ui.message.shown", n);
     }
 }
 

@@ -56,6 +56,11 @@ pub(crate) const MESSAGES: &[(&str, &str)] = &[
     ("prefs.invalidValue", "The value has the wrong type or is not one of the allowed values."),
     ("prefs.outOfRange", "The value is outside the preference's range."),
     ("prefs.corrupt", "A settings file was damaged; it was kept aside and its defaults are used."),
+    (
+        "prefs.saveFailed",
+        "A settings file could not be saved (SI-119, interim id): the change applies until the application quits. The message names the file and the reason.",
+    ),
+    ("agent.serverFailed", "The agent server (attached mode) did not start; the message says why."),
     ("keymap.unknownCommand", "There is no command with that id to bind."),
     ("keymap.invalidSequence", "The key sequence is not valid."),
     ("keymap.reservedKey", "The key sequence is reserved by the system or the application."),

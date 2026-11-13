@@ -330,9 +330,47 @@ fn validate_def(def: &PrefDef, value: &Value, user_themes: &[String]) -> Result<
             for (k, v) in obj {
                 merged.insert(k.clone(), v.clone());
             }
+            domain(key, &merged)?;
             Ok(Value::Object(merged))
         }
     }
+}
+
+/// The nested domain of a composite key, beyond member names and types (C41-R1-11). `agent.policy.defaults` follows
+/// 11 §15 (`agent.policy.defaults.set`): `policy` one of the presets, `maxJobs` 1..8, `maxBatchSteps` 1..100000,
+/// `maxInlineImagePx` 256..8192, `maxInlineBytes` 1..1 GiB. The `edit.*` option objects are booleans only, which the
+/// member-type check already enforces. Both `prefs.set` and `agent.policy.defaults.set` validate here.
+fn domain(key: &str, v: &serde_json::Map<String, Value>) -> Result<(), CommandError> {
+    if key != "agent.policy.defaults" {
+        return Ok(());
+    }
+    let presets = ["observe", "assist", "autonomous"];
+    if let Some(p) = v.get("policy").and_then(Value::as_str)
+        && !presets.contains(&p)
+    {
+        return Err(CommandError::with_details(
+            codes::INVALID_VALUE,
+            format!("`{key}`: `policy` must be one of {}", presets.join(", ")),
+            json!({ "key": key, "member": "policy", "values": presets }),
+        ));
+    }
+    for (member, min, max) in [
+        ("maxJobs", 1, 8),
+        ("maxBatchSteps", 1, 100_000),
+        ("maxInlineImagePx", 256, 8192),
+        ("maxInlineBytes", 1, 1_073_741_824_i64),
+    ] {
+        if let Some(n) = v.get(member).and_then(Value::as_i64)
+            && !(min..=max).contains(&n)
+        {
+            return Err(CommandError::with_details(
+                codes::OUT_OF_RANGE,
+                format!("`{key}`: `{member}` must be between {min} and {max}"),
+                json!({ "key": key, "member": member, "min": min, "max": max, "value": n }),
+            ));
+        }
+    }
+    Ok(())
 }
 
 /// The effective value of a key from a stored value: the stored one if it still validates, else the default.

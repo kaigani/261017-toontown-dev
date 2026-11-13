@@ -177,9 +177,20 @@ fn apply_consequences(cx: &mut Cx, values: &Map<String, Value>) -> Result<(), Co
     Ok(())
 }
 
+/// Two preference values are the same (numbers compare by value: `24` and `24.0` are one frame rate).
+fn same(a: &Value, b: &Value) -> bool {
+    match (a.as_f64(), b.as_f64()) {
+        (Some(x), Some(y)) => (x - y).abs() < f64::EPSILON,
+        _ => a == b,
+    }
+}
+
 /// Stages validated preference values, their consequences and `prefs.changed` (shared by `prefs.set`, `prefs.reset`
-/// and the commands that write a preference key, such as `ui.statusBar.set`).
+/// and the commands that write a preference key, such as `ui.statusBar.set`). Only keys whose effective value changes
+/// are staged and listed (C41-R1-10): a call that changes nothing writes nothing and emits nothing.
 pub(crate) fn stage(cx: &mut Cx, values: Map<String, Value>) -> Result<(), CommandError> {
+    let values: Map<String, Value> =
+        values.into_iter().filter(|(k, v)| cx.pref(k).is_none_or(|now| !same(&now, v))).collect();
     if values.is_empty() {
         return Ok(());
     }

@@ -345,7 +345,10 @@ pub(crate) fn agent_policy_defaults_set(
     cx: &mut Cx,
     p: PolicyDefaultsParams,
 ) -> Result<Map<String, Value>, CommandError> {
-    let l = &mut cx.session_mut().agents.limits;
+    // The session's present defaults with the given members, validated by the one validator `prefs.set` uses
+    // (C41-R1-11) and staged like any preference (the session follows through the staged consequences).
+    let mut limits = cx.session().agents.limits.clone();
+    let l = &mut limits;
     if let Some(v) = p.policy {
         l.policy = v;
     }
@@ -370,10 +373,11 @@ pub(crate) fn agent_policy_defaults_set(
     if let Some(v) = p.highlight_agent_changes {
         l.highlight_agent_changes = v;
     }
-    let v = serde_json::to_value(&*l).map_err(|e| CommandError::internal(e.to_string()))?;
+    let v = serde_json::to_value(&limits).map_err(|e| CommandError::internal(e.to_string()))?;
+    let v = crate::prefs::validate("agent.policy.defaults", &v, &[])?;
     let mut prefs = Map::new();
     prefs.insert("agent.policy.defaults".into(), v.clone());
-    cx.defer(Effect::Prefs(prefs));
+    super::prefs::stage(cx, prefs)?;
     Ok(v.as_object().cloned().unwrap_or_default())
 }
 
