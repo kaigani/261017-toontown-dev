@@ -92,6 +92,41 @@ class Run:
             self.transcript.append({"screenshot": path.name, "captured": False, "error": str(e)})
 
 
+def os_escape(pid: int | None) -> dict:
+    """Presses Escape in the application window through the operating system, as a user would (no command exists to
+    close a user dialog). Windows: SendKeys to the foreground window of `pid`; macOS: System Events."""
+    if pid is None:
+        return {"ok": False, "error": "no pid"}
+    if sys.platform == "win32":
+        ps = (
+            "Add-Type -AssemblyName System.Windows.Forms;"
+            "Add-Type -TypeDefinition 'using System;using System.Runtime.InteropServices;"
+            "public static class F{[DllImport(\"user32.dll\")]public static extern bool SetForegroundWindow(IntPtr h);}';"
+            f"$p=Get-Process -Id {pid};[F]::SetForegroundWindow($p.MainWindowHandle)|Out-Null;Start-Sleep -Milliseconds 300;"
+            "[System.Windows.Forms.SendKeys]::SendWait('{ESC}')"
+        )
+        r = subprocess.run(["powershell", "-NoProfile", "-Command", ps], timeout=30, check=False, capture_output=True, text=True)
+    elif sys.platform == "darwin":
+        script = (
+            f'tell application "System Events" to set frontmost of (first process whose unix id is {pid}) to true\n'
+            "delay 0.3\n"
+            'tell application "System Events" to key code 53'
+        )
+        r = subprocess.run(["osascript", "-e", script], timeout=30, check=False, capture_output=True, text=True)
+    else:
+        return {"ok": False, "error": f"unsupported platform {sys.platform}"}
+    return {"ok": r.returncode == 0, "stderr": r.stderr[-400:]}
+
+
+async def last_activity(session: ClientSession, tool: str) -> dict:
+    """The newest activity-log entry of `tool` (the command a `key` call resolved to is recorded there)."""
+    entries = (await run_cmd(session, "agent.activity.list", {"limit": 50})).get("result") or []
+    if isinstance(entries, dict):
+        entries = entries.get("entries") or []
+    mine = [e for e in entries if e.get("tool") == tool]
+    return max(mine, key=lambda e: e.get("seq", 0)) if mine else {}
+
+
 def launch(app: str, user: Path, discovery: Path) -> subprocess.Popen:
     if discovery.exists():
         discovery.unlink()
@@ -228,8 +263,14 @@ async def first_session(url: str, token: str, run: Run) -> None:
                 run.check(env.get("status") == "ok", "prefs.set", env.get("error"))
                 env = await run_cmd(session, "keymap.set", {"commandId": "project.save", "keys": "F2"})
                 run.check(env.get("status") == "ok", "keymap.set F2", env.get("error"))
+                # The key tool resolves through the kernel's keymap and runs the bound command: F2 runs project.save,
+                # which refuses an unsaved project without a path (the typed refusal is its effect).
                 env = await call(session, "key", {"keys": "F2"})
-                run.check(env.get("status") in ("ok", "error") and "save" in json.dumps(env), "the key tool runs the bound command", env)
+                act = await last_activity(session, "key")
+                run.check(act.get("commandId") == "project.save" and (env.get("error") or {}).get("code") == "project.pathRequired",
+                          "the key tool runs the command bound to F2 (project.save, refused without a path)", {"env": env, "activity": act})
+                env = await run_cmd(session, "keymap.set", {"commandId": "ui.statusBar.set", "params": {"visible": False}, "keys": "F3"})
+                run.check(env.get("status") == "ok", "keymap.set F3 (hide the status bar)", env.get("error"))
                 env = await run_cmd(session, "workspace.create", {"name": "E2E"})
                 run.check(env.get("status") == "ok", "workspace.create E2E", env.get("error"))
                 # A geometry that fits small runner displays (the Windows runner's is about 1024 x 768: the OS clamps a
@@ -255,6 +296,23 @@ async def first_session(url: str, token: str, run: Run) -> None:
                 run.check((env.get("error") or {}).get("code") == "ui.busy", "an agent change waits for the user and fails with ui.busy", {"env": env, "waitedS": waited})
                 env = await run_cmd(session, "window.panel.set", {"panelId": "colour", "visible": True})
                 run.check((env.get("error") or {}).get("code") == "ui.modalOpen", "a focus change under a user dialog is ui.modalOpen", env)
+
+                # The user closes Preferences (Escape through the OS): the GUI drops the dialog, the kernel sees the
+                # modal state end, a shortcut resolves again and an agent action is accepted (C41-R1-01).
+                pressed = os_escape(APP_PID["pid"])
+                run.check(pressed.get("ok") is True, "Escape pressed in the application window (OS input)", pressed)
+                root = await gui_tree(session, run, lambda r: by_id(r, "preferences") is None, "Escape closes Preferences in the GUI")
+                state = (await call(session, "get_state", {})).get("result") or {}
+                run.check(state.get("modal") is None, "the kernel sees the dialog closed (modal: null)", state.get("modal"))
+                env = await call(session, "key", {"keys": "F3"})
+                act = await last_activity(session, "key")
+                run.check(env.get("status") == "ok" and act.get("commandId") == "ui.statusBar.set",
+                          "after the dialog closed, F3 resolves to ui.statusBar.set and runs", {"env": env, "activity": act})
+                root = await gui_tree(session, run, lambda r: by_id(r, "statusBar") is None, "the F3 shortcut hides the status bar in the GUI")
+                env = await run_cmd(session, "ui.statusBar.set", {"visible": True})
+                await gui_tree(session, run, lambda r: by_id(r, "statusBar") is not None, "the status bar returns")
+                env = await run_cmd(session, "doc.object.patch", {"targets": ["@current"], "props": {"meta": {"e2e": True}}})
+                run.check(env.get("status") == "ok", "after the dialog closed, an agent action is accepted", env)
                 run.save("activity.json", (await run_cmd(session, "agent.activity.list", {"limit": 100})).get("result"))
                 # The geometry the kernel holds before the restart (the window's real size, reported by the host).
                 run.geometry = (await run_cmd(session, "window.geometry.get")).get("result") or {}

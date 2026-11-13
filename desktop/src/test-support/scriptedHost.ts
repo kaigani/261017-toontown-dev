@@ -84,6 +84,8 @@ export interface ScriptedHost extends HostTransport {
   /** Answers to `pick_path` (null: cancelled). */
   picked: string | null;
   readonly reports: Record<string, unknown>[];
+  /** The exact JSON text of each `report_shell` call, as the host receives it. */
+  readonly rawReports: string[];
   readonly cancelled: string[];
   /** Commands sent, in order, without the queries the store makes. */
   actions(): Sent[];
@@ -98,6 +100,7 @@ export function createScriptedHost(overrides: Record<string, Handler> = {}): Scr
     kind: 'mock',
     sent: [],
     reports: [],
+    rawReports: [],
     cancelled: [],
     keys: {},
     picked: null,
@@ -184,6 +187,7 @@ export function createScriptedHost(overrides: Record<string, Handler> = {}): Scr
           return Promise.resolve({});
         case 'report_shell':
           host.reports.push(json);
+          host.rawReports.push(String(args?.['json']));
           return Promise.resolve({});
         case 'dispatch_key':
           return Promise.resolve(

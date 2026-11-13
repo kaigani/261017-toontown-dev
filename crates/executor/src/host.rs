@@ -63,12 +63,23 @@ pub(crate) fn acting(bus: &Bus, origin: &Origin, command: &str, on: bool) {
     }
 }
 
+/// Reads a member that is present: `null` becomes `Some(None)`, a value `Some(Some(v))`; an absent member stays `None`
+/// through `#[serde(default)]`.
+fn present<'de, D, T>(d: D) -> Result<Option<Option<T>>, D::Error>
+where
+    D: serde::Deserializer<'de>,
+    T: Deserialize<'de>,
+{
+    Option::<T>::deserialize(d).map(Some)
+}
+
 /// A sensor report (ADR-0021): every member present replaces that fact; absent members are left as they are.
 #[derive(Debug, Clone, Default, PartialEq, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase", deny_unknown_fields)]
 pub struct ShellReport {
-    /// The modal state: `{kind, title}`, or `null` when it ended.
-    #[serde(default, skip_serializing_if = "Option::is_none")]
+    /// The modal state: `{kind, title}`, or `null` when it ended. Absent (`None`) and `null` (`Some(None)`) differ on
+    /// the wire: plain serde would read `null` as absent and a closed dialog would never be reported (C41-R1-01).
+    #[serde(default, deserialize_with = "present", skip_serializing_if = "Option::is_none")]
     pub modal: Option<Option<ModalReport>>,
     /// A text field has focus.
     #[serde(default, skip_serializing_if = "Option::is_none")]

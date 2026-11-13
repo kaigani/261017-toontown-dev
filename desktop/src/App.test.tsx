@@ -181,6 +181,26 @@ describe('typed errors and cancellation (M3 merge note §8 item 1)', () => {
     });
   });
 
+  it('closing a message box sends exactly {"modal":null} (C41-R1-01)', async () => {
+    const host = createScriptedHost({
+      'workspace.select': () => fail('workspace.notFound', 'no workspace named Nope', { name: 'Nope' }),
+    });
+    renderApp(host);
+    await screen.findByRole('toolbar', { name: 'Main toolbar' });
+    act(() => {
+      host.menu('workspace.select', { name: 'Nope' });
+    });
+    const box = await screen.findByRole('alertdialog');
+    await vi.waitFor(() => {
+      expect(host.rawReports.some((r) => r.startsWith('{"modal":{"kind":"dialog","title":'))).toBe(true);
+    });
+    const before = host.rawReports.length;
+    fireEvent.click(within(box).getByRole('button', { name: 'OK' }));
+    await vi.waitFor(() => {
+      expect(host.rawReports.slice(before)).toContain('{"modal":null}');
+    });
+  });
+
   it('a cancelled request is shown as cancelled, never as a timeout or an error box', async () => {
     const host = createScriptedHost({
       'workspace.save': () =>

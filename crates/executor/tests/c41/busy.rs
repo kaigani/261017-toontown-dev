@@ -15,15 +15,41 @@ use tt_executor::shell::ModalReport;
 use tt_executor::{Invocation, InvokeOptions, Status};
 use tt_registry::Scope;
 
+/// Reports are read from the JSON text the front end sends (`desktop/src/shell/messages.tsx` through `report_shell`),
+/// never built as structs: a struct skips the wire, where absent and `null` differ (C41-R1-01).
+fn wire(text: &str) -> ShellReport {
+    serde_json::from_str(text).unwrap()
+}
+
 fn modal(kind: &str) -> ShellReport {
-    ShellReport {
-        modal: Some(Some(ModalReport { kind: kind.into(), title: "Preferences".into() })),
-        ..Default::default()
-    }
+    wire(&format!(r#"{{"modal":{{"kind":"{kind}","title":"Preferences"}}}}"#))
 }
 
 fn clear() -> ShellReport {
-    ShellReport { modal: Some(None), ..Default::default() }
+    wire(r#"{"modal":null}"#)
+}
+
+#[test]
+fn modal_on_the_wire_distinguishes_absent_null_and_a_value() {
+    assert_eq!(wire("{}").modal, None, "absent leaves the fact as it is");
+    assert_eq!(wire(r#"{"modal":null}"#).modal, Some(None), "null ends the modal state");
+    assert_eq!(
+        wire(r#"{"modal":{"kind":"dialog","title":"Preferences"}}"#).modal,
+        Some(Some(ModalReport { kind: "dialog".into(), title: "Preferences".into() }))
+    );
+    // The host's own writer round-trips the three states.
+    for text in ["{}", r#"{"modal":null}"#, r#"{"modal":{"kind":"gesture","title":"Drag"}}"#] {
+        assert_eq!(serde_json::to_string(&wire(text)).unwrap(), text);
+    }
+    // Over JSON, closing the dialog releases shortcuts and agents (the reviewer's end-to-end case is
+    // c41_r1_review.rs).
+    let h = fixture();
+    h.report_shell(modal("dialog"));
+    assert!(matches!(h.resolve_key("primary+s").unwrap(), KeyResolution::Suspended { .. }));
+    h.report_shell(clear());
+    assert!(matches!(h.resolve_key("primary+s").unwrap(), KeyResolution::Command { .. }));
+    let env = h.invoke(agent_inv("doc.object.patch", json!({ "targets": ["@current"], "props": { "name": "After" } })));
+    assert_eq!(env.status, Status::Ok, "{:?}", env.error);
 }
 
 fn agent_inv(command: &str, params: Value) -> Invocation {
