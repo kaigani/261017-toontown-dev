@@ -24,3 +24,9 @@ Status covers the charter item, including explicit remaining limitations.
 | 18 | divergent | CI structure unchanged except GUI job; cold Windows check 58:14 exceeds ceiling; live cache inventory pending |
 | 19 | pending | supplied evidence 39 files, no oversize/JSON token fields; manual scripts read, full secret/name/count audit pending |
 | 20 | divergent | item 1 refuted by modal/settings defects; item 6 structure retained but cold ceiling missed; item 7 risks retained |
+
+| Part C item | Charter | Final status | Evidence |
+|---|---|---|---|
+| A HTTP remainder | 10 | divergent | C41-R1-06; authority_matrix; part-c-http.txt; part-c-lifecycle.json; source reasoning and residual risks in report |
+| B Bypass | 1 | implemented | part-c-bypass.md; part-c-invokes.txt; trusted-webview and diagnostic exceptions explicitly documented |
+| C User priority | 8 | divergent | existing C41-R1-01; two part_c_priority tests pass, measured 80 ms waits; caller-side ordering limitation recorded |

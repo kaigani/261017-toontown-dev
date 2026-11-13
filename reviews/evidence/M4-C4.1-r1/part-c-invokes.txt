@@ -1,0 +1,41 @@
+desktop/src\App.test.tsx:389:      return invoke(command, args);
+desktop/src\lib\latency.test.ts:40:        const value = (await mock.invoke(command, args)) as { payload: string | null };
+desktop/src\ipc\boundary.build.test.ts:46:const DIRECT = `import { invoke } from '${TAURI}';\nexport const b = () => invoke('app_info');\n`;
+desktop/src\ipc\boundary.build.test.ts:60:    `const { invoke } = require('${TAURI}');\nmodule.exports = () => invoke('app_info');\n`,
+desktop/src\ipc\boundary.build.test.ts:65:    `export const b = async () => (await import('${TAURI}')).invoke('app_info');\n`,
+desktop/src\ipc\boundary.build.test.ts:78:    `import { createTauriTransport } from '../../ipc/tauriTransport';\nexport const b = () => createTauriTransport().invoke('app_info');\n`,
+desktop/src\ipc\boundary.build.test.ts:192:  const mention = "window['__TAURI_INTERNALS__'].invoke('x');";
+desktop/src\ipc\boundary.build.test.ts:281:const g = (expr: string) => `export const b = () => window[${expr}].invoke('app_info');\n`;
+desktop/src\ipc\boundary.build.test.ts:351:      'window.__TAURI_INTERNALS__.invoke("x")',
+desktop/src\ipc\boundary.build.test.ts:370:    b.index.code += 'window.__TAURI_INTERNALS__.invoke("app_info")';
+desktop/src\ipc\boundary.build.test.ts:425:  const transport = { 'assets/tauri-transport-a1.js': 'window.__TAURI_INTERNALS__.invoke("x")' };
+desktop/src\ipc\boundary.build.test.ts:434:      'window.__TAURI_INTERNALS__.invoke("app_info")',
+desktop/src\ipc\boundary.build.test.ts:454:      writeFileSync(`${probes}worker/w.js`, `import { invoke } from '${TAURI}';\ninvoke('app_info');\n`);
+desktop/src\ipc\engine.ts:171:    transport.invoke(command, { json: stringifyWireJson(args) });
+desktop/src\ipc\engine.ts:190:      const done = invoke('run_command', request).then(
+desktop/src\ipc\engine.ts:199:      await invoke('cancel_request', { token });
+desktop/src\ipc\engine.ts:202:      const v = decode(await invoke('dispatch_key', { keys }));
+desktop/src\ipc\engine.ts:206:      await invoke('report_shell', report);
+desktop/src\ipc\engine.ts:209:      const v = decode(await invoke('pick_path', request));
+desktop/src\ipc\boundary.lint.test.ts:52:const DIRECT = `import { invoke } from '${TAURI}';\nexport const f = () => invoke('app_info');\n`;
+desktop/src\ipc\boundary.lint.test.ts:60:  'dynamic import': `export async function f() {\n  const m = await import('${TAURI}');\n  return m.invoke('app_info');\n}\n`,
+desktop/src\ipc\boundary.lint.test.ts:74:  'raw transport (static)': `import { createTauriTransport } from '../ipc/tauriTransport';\nexport const f = () => createTauriTransport().invoke('app_info');\n`,
+desktop/src\ipc\boundary.lint.test.ts:90:  'blanket line disable': `import { invoke } from '${TAURI}'; // eslint-disable-line\nexport const f = () => invoke('x');\n`,
+desktop/src\ipc\boundary.lint.test.ts:131:            ? `const { invoke } = require('${TAURI}');\nmodule.exports = () => invoke('app_info');\n`
+desktop/src\ipc\hostApi.ts:128:    value = await transport.invoke(
+desktop/src\ipc\mockTransport.ts:68:    invoke(command, args = {}) {
+desktop/src\ipc\mockTransport.ts:79:      return this.invoke(command, args);
+desktop/src\spikes\tablet\actions.test.tsx:81:    return invoke(command, args);
+desktop/src\test-support\scriptedHost.ts:165:    async invoke(command, args) {
+desktop/src\ipc\README.md:3:- `transport.ts` — `HostTransport`: `invoke(command, args) ? Promise<unknown>` and `listen(event, handler)`.
+desktop/src\ipc\transport.ts:12:  invoke(command: string, args?: Record<string, unknown>): Promise<unknown>;
+desktop/src\ipc\spikeApi.ts:100:    benchPlan: () => checked(transport.invoke('bench_plan'), 'bench_plan', isBenchPlanOrNull),
+desktop/src\ipc\spikeApi.ts:102:      await checked(transport.invoke('bench_report', { report }), 'bench_report', isNull);
+desktop/src\ipc\spikeApi.ts:109:    mode: () => checked(transport.invoke('spike_mode'), 'spike_mode', isSpikeModeOrNull),
+desktop/src\ipc\spikeApi.ts:111:      checked(transport.invoke('spike_environment'), 'spike_environment', isSpikeEnvironment),
+desktop/src\ipc\spikeApi.ts:129:      await checked(transport.invoke('spike_tablet_native_stop'), 'spike_tablet_native_stop', isNull);
+desktop/src\ipc\spikeApi.ts:132:      checked(transport.invoke('spike_pen_simulate', { request }), 'spike_pen_simulate', isPenSimReport),
+desktop/src\ipc\spikeApi.ts:135:        transport.invoke('spike_probe_native_window', { request, rts }),
+desktop/src\ipc\spikeApi.ts:140:      checked(transport.invoke('spike_raw_input_sink', { start }), 'spike_raw_input_sink', isProbeResult),
+desktop/src\ipc\spikeApi.ts:141:    saveLog: (log) => checked(transport.invoke('spike_save_log', { log }), 'spike_save_log', isSavedLog),
+desktop/src\test\c02-r1-measurement.test.tsx:133:    return invoke(command, args);
