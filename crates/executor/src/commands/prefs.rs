@@ -223,6 +223,8 @@ pub(crate) fn prefs_set(cx: &mut Cx, p: SetParams) -> Result<SetResult, CommandE
     // Validate everything first: one invalid value changes nothing (01 §12.1 rule 15).
     let mut staged = Map::new();
     for (k, v) in &p.values {
+        // An object is merged member by member over the present value, then validated whole (ruling O-16).
+        let v = &prefs::overlay(k, v, cx.pref(k));
         let value = prefs::validate(k, v, &themes).map_err(|e| {
             let mut e = e;
             if let Some(m) = e.details.as_object_mut() {

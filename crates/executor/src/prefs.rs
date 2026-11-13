@@ -314,14 +314,7 @@ fn validate_def(def: &PrefDef, value: &Value, user_themes: &[String]) -> Result<
                         json!({ "key": key, "member": k, "members": default.keys().collect::<Vec<_>>() }),
                     ));
                 };
-                let same_type = match d {
-                    Value::Bool(_) => v.is_boolean(),
-                    Value::Number(n) if n.is_i64() || n.is_u64() => v.is_i64() || v.is_u64(),
-                    Value::Number(_) => v.is_number(),
-                    Value::String(_) => v.is_string(),
-                    _ => false,
-                };
-                if !same_type {
+                if !same_type(d, v) {
                     return Err(invalid(key, &format!("member `{k}` of the default's type")));
                 }
             }
@@ -333,6 +326,17 @@ fn validate_def(def: &PrefDef, value: &Value, user_themes: &[String]) -> Result<
             domain(key, &merged)?;
             Ok(Value::Object(merged))
         }
+    }
+}
+
+/// Whether a member value has the type of the default's member.
+fn same_type(d: &Value, v: &Value) -> bool {
+    match d {
+        Value::Bool(_) => v.is_boolean(),
+        Value::Number(n) if n.is_i64() || n.is_u64() => v.is_i64() || v.is_u64(),
+        Value::Number(_) => v.is_number(),
+        Value::String(_) => v.is_string(),
+        _ => false,
     }
 }
 
@@ -373,12 +377,45 @@ fn domain(key: &str, v: &serde_json::Map<String, Value>) -> Result<(), CommandEr
     Ok(())
 }
 
-/// The effective value of a key from a stored value: the stored one if it still validates, else the default.
+/// The effective value of a key from a stored value: the stored one if it still validates, else the default
+/// (ADR-0021 decision 10). For an object-typed key the fallback is per member (ruling O-17): a member that is missing,
+/// of the wrong type or outside its domain takes its default, valid members are kept, unknown members are ignored.
 pub(crate) fn effective(key: &str, stored: Option<&Value>, user_themes: &[String]) -> Option<Value> {
     let def = catalogue().get(key)?;
-    match stored {
-        Some(v) => Some(validate_def(def, v, user_themes).unwrap_or_else(|_| def.default.clone())),
-        None => Some(def.default.clone()),
+    Some(match stored {
+        Some(v) if def.ty == PrefType::Object => salvage(def, v),
+        Some(v) => validate_def(def, v, user_themes).unwrap_or_else(|_| def.default.clone()),
+        None => def.default.clone(),
+    })
+}
+
+/// The per-member fallback of an object-typed preference (ruling O-17).
+fn salvage(def: &PrefDef, stored: &Value) -> Value {
+    let mut out = def.default.as_object().cloned().unwrap_or_default();
+    let Some(stored) = stored.as_object() else { return Value::Object(out) };
+    for (member, d) in out.iter_mut() {
+        let Some(v) = stored.get(member) else { continue };
+        let one: serde_json::Map<String, Value> = std::iter::once((member.clone(), v.clone())).collect();
+        if same_type(d, v) && domain(&def.key, &one).is_ok() {
+            *d = v.clone();
+        }
+    }
+    Value::Object(out)
+}
+
+/// A value supplied for `key` as the caller means it (ruling O-16): for an object-typed key, the supplied members over
+/// the present effective value `current` (members not supplied keep their present value; `prefs.reset` returns members
+/// to their defaults); any other value as given. The result is then validated as a whole.
+pub(crate) fn overlay(key: &str, supplied: &Value, current: Option<Value>) -> Value {
+    let is_object = catalogue().get(key).is_some_and(|d| d.ty == PrefType::Object);
+    match (is_object, supplied.as_object(), current) {
+        (true, Some(given), Some(Value::Object(mut base))) => {
+            for (k, v) in given {
+                base.insert(k.clone(), v.clone());
+            }
+            Value::Object(base)
+        }
+        _ => supplied.clone(),
     }
 }
 

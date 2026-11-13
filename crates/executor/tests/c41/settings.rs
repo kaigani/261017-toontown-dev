@@ -152,3 +152,74 @@ fn a_float_is_clamped_to_the_reported_screens() {
     let (x, y) = (g["x"].as_i64().unwrap(), g["y"].as_i64().unwrap());
     assert!((0..1024).contains(&x) && (0..768).contains(&y), "on a screen: {g}");
 }
+
+fn pref(h: &ExecutorHandle, key: &str) -> Value {
+    h.invoke(Invocation::user("prefs.get", json!({ "keys": [key] }))).result.unwrap()["values"][key].clone()
+}
+
+/// Ruling O-16: an object supplied for an object-typed preference is merged member by member over the present value,
+/// through `prefs.set` and `agent.policy.defaults.set` alike; `prefs.changed` names the key only when the merged value
+/// differs; `prefs.reset` returns the members to their defaults.
+#[test]
+fn a_partial_object_is_merged_over_the_present_value() {
+    let h = ExecutorHandle::spawn(Default::default()).unwrap();
+    let key = "edit.pasteSpecial.timeline";
+    let set = |members: Value| {
+        let e = h.invoke(Invocation::user("prefs.set", json!({ "values": { key: members } })));
+        assert_eq!(e.status, Status::Ok, "{e:?}");
+    };
+    set(json!({ "overwriteDrawings": false }));
+    set(json!({ "extendExposures": true }));
+    let v = pref(&h, key);
+    assert_eq!((v["overwriteDrawings"].clone(), v["extendExposures"].clone()), (json!(false), json!(true)));
+    let events = h.subscribe();
+    set(json!({ "overwriteDrawings": false }));
+    assert!(events.try_iter().all(|e| e.name != "prefs.changed"), "an unchanged merged value is not a change");
+    // A member of the wrong type refuses the whole call and changes nothing.
+    let e = h.invoke(Invocation::user("prefs.set", json!({ "values": { key: { "updateColours": 3 } } })));
+    assert_eq!(e.error.unwrap().code, "prefs.invalidValue");
+    assert_eq!(pref(&h, key), v);
+    // The agent policy setter merges the same way.
+    let policy = |p: Value| assert_eq!(h.invoke(Invocation::user("agent.policy.defaults.set", p)).status, Status::Ok);
+    policy(json!({ "maxJobs": 7 }));
+    policy(json!({ "maxBatchSteps": 42 }));
+    let p = pref(&h, "agent.policy.defaults");
+    assert_eq!((p["maxJobs"].clone(), p["maxBatchSteps"].clone()), (json!(7), json!(42)));
+    assert_eq!(h.invoke(Invocation::user("prefs.reset", json!({ "keys": [key] }))).status, Status::Ok);
+    assert_eq!(pref(&h, key)["overwriteDrawings"], true);
+}
+
+/// Ruling O-17: a stored object-typed preference falls back per member: an invalid member takes its default, valid
+/// members are kept, unknown members are ignored; for the timeline and motion-point composites and the agent policy.
+#[test]
+fn a_stale_member_falls_back_alone() {
+    let r = root("members");
+    let dirs = UserDirs::under(&r);
+    settings_file(
+        &dirs.settings,
+        "preferences",
+        "1.0",
+        &json!({
+            "edit.pasteSpecial.timeline": { "overwriteDrawings": "yes", "extendExposures": true, "gone": 1 },
+            "edit.cutSpecial.timeline": { "boundaryKeys": true, "pivotKeys": 0 },
+            "edit.dragDrop.timeline": "not an object",
+            "edit.pasteSpecial.motionPoint": { "x": false, "y": null },
+            "agent.policy.defaults": { "policy": "reckless", "maxJobs": 5, "maxInlineImagePx": 99 }
+        }),
+    );
+    let h = over(&r);
+    let paste = pref(&h, "edit.pasteSpecial.timeline");
+    assert_eq!((paste["overwriteDrawings"].clone(), paste["extendExposures"].clone()), (json!(true), json!(true)));
+    assert!(paste.get("gone").is_none());
+    let cut = pref(&h, "edit.cutSpecial.timeline");
+    assert_eq!((cut["boundaryKeys"].clone(), cut["pivotKeys"].clone()), (json!(true), json!(true)));
+    assert_eq!(pref(&h, "edit.dragDrop.timeline")["overwriteDrawings"], true);
+    let motion = pref(&h, "edit.pasteSpecial.motionPoint");
+    assert_eq!((motion["x"].clone(), motion["y"].clone()), (json!(false), json!(true)));
+    let policy = pref(&h, "agent.policy.defaults");
+    assert_eq!(policy["policy"], "assist");
+    assert_eq!(policy["maxJobs"], 5);
+    assert_eq!(policy["maxInlineImagePx"], 2048);
+    drop(h);
+    let _ = std::fs::remove_dir_all(&r);
+}

@@ -66,6 +66,15 @@ the agent indicator, messages, persisted settings, and the user-priority rule of
     longer validates falls back to the default for that key; agents cannot set `agent.*`. The Preferences window stages
     edits and applies them on OK with `prefs.reset` (restored categories), one `prefs.set` and the keymap edits in
     order; Cancel discards everything; theme changes preview live.
+    Object-typed keys (the four `edit.*` timeline and motion-point option sets, `agent.policy.defaults`), round 2:
+    - **A supplied object is a partial update (ruling O-16).** `prefs.set` merges its members over the key's present
+      effective value, then validates the merged object as a whole (member names, member types, the nested domain),
+      atomically with the call's other keys; `agent.policy.defaults.set` with members omitted does the same. Members
+      not supplied keep their present value; `prefs.reset` is how members return to their defaults. `prefs.changed`
+      names the key only when the merged value differs.
+    - **Stale values fall back per member (ruling O-17).** For an object-typed key the fallback above applies to each
+      member: a stored member that is missing, of the wrong type or outside its domain takes its default; valid members
+      are kept; unknown members are ignored. A stored value that is not an object at all falls back whole.
 11. **Themes.** `light`, `dark`, `system` (follows the OS appearance live), and user theme files in
     `<settings>/Themes/*.json` with a closed token set; invalid files are ignored. A theme is a set of CSS custom
     properties applied at once.
