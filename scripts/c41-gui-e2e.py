@@ -305,6 +305,13 @@ def find(node: dict, pred) -> dict | None:
     return None
 
 
+def _walk(node: dict):
+    """Every node of a tree, depth first."""
+    yield node
+    for c in node.get("children", []) or []:
+        yield from _walk(c)
+
+
 def by_id(node: dict, ident: str) -> dict | None:
     return find(node, lambda n: n.get("id") == ident)
 
@@ -436,6 +443,24 @@ async def first_session(url: str, token: str, run: Run) -> None:
                 env = await run_cmd(session, "doc.object.patch", {"targets": ["@current"], "props": {"meta": {"e2e": True}}})
                 run.check(env.get("status") == "ok", "after the dialog closed, an agent action is accepted", env)
                 run.save("activity.json", (await run_cmd(session, "agent.activity.list", {"limit": 100})).get("result"))
+
+                # A splitter drag's command (SI-118, ruling O-3a): a panel tabbed with itself sets its area's size and
+                # leaves everything else as it is, in the kernel and in the GUI.
+                lay = (await run_cmd(session, "workspace.get")).get("result") or {}
+                area = next((a for a in ("right", "bottom", "left", "top") if (lay.get("docks") or {}).get(a)), None)
+                tabs = lambda r: [(n.get("id"), n.get("checked")) for n in _walk(r) if n.get("role") == "tab"]
+                if area:
+                    panel = lay["docks"][area][0]["current"]
+                    tabs_before = tabs(await gui_tree(session, run, lambda r: True, "the GUI tree before the resize"))
+                    env = await run_cmd(session, "window.panel.move", {"panelId": panel, "area": area, "relativeTo": panel,
+                                                                        "position": "tab", "size": 300})
+                    after = (env.get("result") or {})
+                    expected = json.loads(json.dumps(lay))
+                    expected["docks"][area][0]["size"] = 300
+                    root = await gui_tree(session, run, lambda r: True, "the GUI tree after the resize")
+                    run.check(env.get("status") == "ok" and after.get("docks") == expected["docks"] and tabs(root) == tabs_before,
+                              "the same-place window.panel.move sets the area size only (kernel and GUI tabs unchanged)",
+                              {"area": area, "panel": panel, "error": env.get("error")})
 
                 # A floating panel is a window of its own (ruling O-2): the OS lists it, the one inspect_ui tree has its
                 # node, a geometry change moves it. It stays floating across the restart below.

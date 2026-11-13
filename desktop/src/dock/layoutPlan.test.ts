@@ -1,5 +1,6 @@
-// M4 C4.1 round 1 (ruling O-3, SI-118): the same-place `window.panel.move` that records a splitter drag. The kernel
-// side (the move leaves the arrangement unchanged except the area's size) is tests/c41/kernel.rs. Builder-owned.
+// M4 C4.1 round 1 (ruling O-3a, SI-118): the same-place `window.panel.move` that records a splitter drag. The kernel
+// side (the arrangement stays byte-equal except the area's size, in every built-in workspace and side area) is
+// crates/executor/tests/c41/kernel.rs. Builder-owned.
 import { describe, expect, it } from 'vitest';
 
 import type { Arrangement } from '../state/types';
@@ -17,51 +18,26 @@ function arrangement(right: { tabs: string[]; current: string; size?: number }[]
 }
 
 describe('samePlaceResize', () => {
-  it('re-docks a single-tab group after its predecessor, or a lone group', () => {
-    const a = arrangement([
-      { tabs: ['colour', 'properties'], current: 'colour', size: 320 },
-      { tabs: ['history'], current: 'history' },
-    ]);
-    expect(samePlaceResize(a, 'right', 401.6)).toEqual({
-      panelId: 'history',
-      area: 'right',
-      relativeTo: 'properties',
-      position: 'after',
-      size: 402,
-    });
-    expect(samePlaceResize(arrangement([{ tabs: ['history'], current: 'history' }]), 'right', 300)).toEqual({
-      panelId: 'history',
-      area: 'right',
-      position: 'after',
-      size: 300,
-    });
-    // A first group before a successor: no call (its size would stay on the successor too).
-    expect(
-      samePlaceResize(
-        arrangement([
-          { tabs: ['history'], current: 'history' },
-          { tabs: ['pen', 'text'], current: 'pen' },
-        ]),
-        'right',
-        250,
-      ),
-    ).toBeNull();
+  it('tabs the area’s first front panel with itself, with the new size, in any arrangement', () => {
+    for (const groups of [
+      [{ tabs: ['pen', 'text', 'cells'], current: 'pen' }],
+      [
+        { tabs: ['history'], current: 'history' },
+        { tabs: ['colour', 'properties'], current: 'properties' },
+      ],
+    ]) {
+      const first = groups[0]?.current;
+      expect(samePlaceResize(arrangement(groups), 'right', 401.6)).toEqual({
+        panelId: first,
+        area: 'right',
+        relativeTo: first,
+        position: 'tab',
+        size: 402,
+      });
+    }
   });
 
-  it('re-tabs a front tab that is its group’s last tab', () => {
-    const a = arrangement([{ tabs: ['pen', 'text', 'cells'], current: 'cells' }]);
-    expect(samePlaceResize(a, 'right', 280)).toEqual({
-      panelId: 'cells',
-      area: 'right',
-      relativeTo: 'pen',
-      position: 'tab',
-      size: 280,
-    });
-  });
-
-  it('gives no call when every re-insertion would reorder tabs or change a front tab', () => {
-    const a = arrangement([{ tabs: ['pen', 'text', 'cells'], current: 'pen' }]);
-    expect(samePlaceResize(a, 'right', 280)).toBeNull();
+  it('gives no call for an empty area', () => {
     expect(samePlaceResize(arrangement([]), 'right', 280)).toBeNull();
   });
 });

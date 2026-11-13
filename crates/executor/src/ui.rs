@@ -752,11 +752,12 @@ impl UiState {
         self.panels().into_iter().find(|p| p.panel_id == panel).ok_or_else(|| panel_not_found(&panel))
     }
 
-    /// `window.panel.move`: dock a panel into an area, next to or tabbed with another panel.
+    /// `window.panel.move`: dock a panel into an area, next to or tabbed with another panel. Tabbed with itself in its
+    /// own side area, it is the same-place call that only resizes the area (SI-118, ruling O-3a).
     ///
     /// # Errors
-    /// `window.panelNotFound`; `arg.invalid` for a non-view central panel, a panel moved relative to itself, or a
-    /// `relativeTo` panel that is not docked in `area`.
+    /// `window.panelNotFound`; `arg.invalid` for a non-view central panel, a panel moved relative to itself other than
+    /// the same-place call, or a `relativeTo` panel that is not docked in `area`.
     pub fn move_panel(
         &mut self,
         panel: &str,
@@ -766,6 +767,20 @@ impl UiState {
         size: Option<u32>,
     ) -> Result<Layout, CommandError> {
         Self::check_panel(panel)?;
+        // The same-place call (SI-118, interim ruling O-3a): a panel tabbed with itself in the side area it is docked in
+        // leaves the arrangement exactly as it is and applies `size` to that area (its first group's size); without
+        // `size` it changes nothing. Any other placement relative to itself stays an error.
+        if relative_to == Some(panel)
+            && position == "tab"
+            && Self::find(self.active(), panel).is_some_and(|(a, gi, _)| a == area && gi.is_some())
+        {
+            if let Some(s) = size
+                && let Some(first) = area_mut(&mut self.active_mut().docks, area).and_then(|g| g.first_mut())
+            {
+                first.size = Some(s);
+            }
+            return Ok(self.layout());
+        }
         if let Some(r) = relative_to {
             Self::check_panel(r)?;
             if r == panel {

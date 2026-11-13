@@ -3,8 +3,8 @@
     "check": "the application started and serves attached mode",
     "ok": true,
     "detail": {
-      "endpoint": "http://127.0.0.1:58596/mcp",
-      "startS": 1.2
+      "endpoint": "http://127.0.0.1:53308/mcp",
+      "startS": 1.0
     }
   },
   {
@@ -144,15 +144,15 @@
           "code": "project.pathRequired",
           "message": "the project has no location yet",
           "details": {
-            "projectId": "pr_01M7B2FD2G8QEBCYGVETE8JRQ3"
+            "projectId": "pr_01M7BDPC1VMSSD475WACJCY8G6"
           },
           "hint": "save with project.saveAs {path}"
         }
       },
       "activity": {
         "seq": 17,
-        "time": "2026-11-13T18:24:49.904Z",
-        "sessionId": "s1-464c56",
+        "time": "2026-11-13T21:40:52.453Z",
+        "sessionId": "s1-a23b8f",
         "client": "mcp",
         "tool": "key",
         "commandId": "project.save",
@@ -253,7 +253,7 @@
           "hint": "retry when the user is done; app.state.get reports `modal`"
         }
       },
-      "waitedS": 10.002460299991071
+      "waitedS": 10.004176499991445
     }
   },
   {
@@ -304,8 +304,8 @@
       },
       "activity": {
         "seq": 31,
-        "time": "2026-11-13T18:25:01.980Z",
-        "sessionId": "s1-464c56",
+        "time": "2026-11-13T21:41:04.139Z",
+        "sessionId": "s1-a23b8f",
         "client": "mcp",
         "tool": "key",
         "commandId": "ui.statusBar.set",
@@ -328,7 +328,7 @@
       "result": {
         "changes": [
           {
-            "id": "el_01M7B2FD2G8QEBCYGVETE8JRV8",
+            "id": "el_01M7BDPC1VMSSD475WACJCY8MB",
             "type": "element",
             "op": "modified",
             "rev": 2,
@@ -347,12 +347,12 @@
       },
       "targets": {
         "ids": [
-          "el_01M7B2FD2G8QEBCYGVETE8JRV8"
+          "el_01M7BDPC1VMSSD475WACJCY8MB"
         ]
       },
       "changes": [
         {
-          "id": "el_01M7B2FD2G8QEBCYGVETE8JRV8",
+          "id": "el_01M7BDPC1VMSSD475WACJCY8MB",
           "type": "element",
           "op": "modified",
           "rev": 2,
@@ -373,6 +373,15 @@
       },
       "warnings": [],
       "documentRev": 2
+    }
+  },
+  {
+    "check": "the same-place window.panel.move sets the area size only (kernel and GUI tabs unchanged)",
+    "ok": true,
+    "detail": {
+      "area": "right",
+      "panel": "xsheet",
+      "error": null
     }
   },
   {
@@ -590,7 +599,7 @@
       ".settings.lock",
       "agent-discovery.json",
       "instance.json",
-      "keymap.corrupt-2026-11-13T18-25-08.702Z.json",
+      "keymap.corrupt-2026-11-13T21-41-11.546Z.json",
       "preferences.json",
       "state.json",
       "workspaces.json"

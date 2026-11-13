@@ -504,9 +504,10 @@ fn settings_survive_a_restart_over_the_same_folder() {
     let _ = std::fs::remove_dir_all(&dir);
 }
 
-/// The same-place `window.panel.move` the GUI sends at the end of a splitter drag (ruling O-3, SI-118; the choice is
-/// `desktop/src/dock/layoutPlan.ts` `samePlaceResize`, mirrored here): the arrangement is unchanged except the area's
-/// stored size, in every built-in workspace and side area where such a call exists.
+/// The same-place `window.panel.move` the GUI sends at the end of a splitter drag (SI-118, interim ruling O-3a): a
+/// panel tabbed with itself in its own side area. In every built-in workspace and every side area the arrangement stays
+/// byte-equal except that area's size; without `size` nothing changes and nothing is announced; any other placement
+/// relative to itself is still refused.
 #[test]
 fn a_splitter_drag_is_recorded_by_a_same_place_panel_move() {
     let h = fixture();
@@ -518,56 +519,36 @@ fn a_splitter_drag_is_recorded_by_a_same_place_panel_move() {
         .map(|w| w["name"].as_str().unwrap().to_owned())
         .collect();
     let mut checked = 0;
-    let mut uncovered: Vec<String> = Vec::new();
     for name in names {
         ok(&h, "workspace.select", json!({ "name": name }));
         for area in ["left", "right", "top", "bottom"] {
             let before = ok(&h, "workspace.get", json!({}));
-            let groups = before["docks"][area].as_array().cloned().unwrap_or_default();
-            let tabs = |g: &Value| {
-                g["tabs"].as_array().unwrap().iter().map(|t| t.as_str().unwrap().to_owned()).collect::<Vec<_>>()
-            };
-            let mut params = None;
-            for i in 1..groups.len() {
-                let t = tabs(&groups[i]);
-                if t.len() == 1 {
-                    let prev = tabs(&groups[i - 1]);
-                    params = Some(
-                        json!({ "panelId": t[0], "area": area, "relativeTo": prev.last().unwrap(), "position": "after", "size": 333 }),
-                    );
-                    break;
-                }
-            }
-            if params.is_none() {
-                for g in &groups {
-                    let t = tabs(g);
-                    if t.len() > 1 && g["current"] == json!(t.last().unwrap()) {
-                        params = Some(
-                            json!({ "panelId": t.last().unwrap(), "area": area, "relativeTo": t[0], "position": "tab", "size": 333 }),
-                        );
-                        break;
-                    }
-                }
-            }
-            if params.is_none() && groups.len() == 1 && tabs(&groups[0]).len() == 1 {
-                params =
-                    Some(json!({ "panelId": tabs(&groups[0])[0], "area": area, "position": "after", "size": 333 }));
-            }
-            let Some(p) = params else {
-                if !groups.is_empty() {
-                    uncovered.push(format!("{name}/{area}"));
-                }
-                continue;
-            };
+            let Some(group) = before["docks"][area].as_array().and_then(|g| g.first()).cloned() else { continue };
+            let panel = group["current"].as_str().unwrap().to_owned();
+            // Without `size`: a no-op, not announced.
+            let events = h.subscribe();
+            ok(
+                &h,
+                "window.panel.move",
+                json!({ "panelId": panel, "area": area, "relativeTo": panel, "position": "tab" }),
+            );
+            assert_eq!(ok(&h, "workspace.get", json!({})), before, "{name} {area}: no-op");
+            assert!(events.try_iter().all(|e| e.name != "workspace.changed"), "{name} {area}: nothing announced");
+            // With `size`: only the area's size changes.
+            let p = json!({ "panelId": panel, "area": area, "relativeTo": panel, "position": "tab", "size": 333 });
             ok(&h, "window.panel.move", p.clone());
             let after = ok(&h, "workspace.get", json!({}));
             let mut expected = before.clone();
             expected["docks"][area][0]["size"] = json!(333);
-            assert_eq!(after["docks"], expected["docks"], "{name} {area}: {p}");
+            assert_eq!(after.to_string(), expected.to_string(), "{name} {area}: {p}");
+            // Any other self-relative placement, or another area, is still refused.
+            let e = h.invoke(tt_executor::Invocation::user(
+                "window.panel.move",
+                json!({ "panelId": panel, "area": area, "relativeTo": panel, "position": "after" }),
+            ));
+            assert_eq!(e.error.map(|e| e.code).as_deref(), Some("arg.invalid"), "{name} {area}");
             checked += 1;
         }
     }
-    // Reported in reviews/M4-C4.1-r1-response.md (O-3): where the registered command cannot express the resize.
-    eprintln!("same-place resize: {checked} areas covered; not expressible: {uncovered:?}");
-    assert!(checked >= 3, "the built-in workspaces have areas where the call exists ({checked})");
+    assert!(checked >= 6, "every side area of every built-in workspace ({checked})");
 }

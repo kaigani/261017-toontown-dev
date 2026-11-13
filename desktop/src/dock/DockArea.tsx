@@ -1,8 +1,8 @@
 // The dock area (01 §5.4; M4 C4.1): renders the kernel's arrangement with dockview and turns every docking gesture
 // into a command. Drops are vetoed and replaced by `window.panel.move`; a tab's close button is `window.panel.set
 // {visible: false}`; a double-click toggles floating; the tab bar's context menu is the panel checklist. A splitter
-// drag ends in the same-place `window.panel.move` that records the area's size where that command can express it
-// (SI-118, interim ruling O-3). The grid is rebuilt from the kernel's answer.
+// drag ends in the same-place `window.panel.move` (a panel tabbed with itself) that records the area's size in every
+// area (SI-118, interim ruling O-3a). The grid is rebuilt from the kernel's answer.
 import {
   DockviewReact,
   themeDark,
@@ -155,7 +155,7 @@ export function DockArea({ layout, fullScreen }: { layout: Layout | undefined; f
   useEffect(render, [arrangement, render]);
 
   // The end of a splitter drag records the side areas' new sizes with the same-place `window.panel.move` (SI-118,
-  // interim ruling O-3). Sizes are measured when the drag starts and when it ends; only a changed area is sent.
+  // interim ruling O-3a). Sizes are measured when the drag starts and when it ends; only a changed area is sent.
   const hostRef = useRef<HTMLDivElement>(null);
   useEffect(() => {
     const host = hostRef.current;
