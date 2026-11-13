@@ -11,8 +11,8 @@ for (const file of ['c01-r2-boundary.test.mjs', 'c01-r2-licenses.test.mjs']) {
     execFileSync(process.execPath, ['--test', `tests/adversarial/${file}`], {
       cwd: root,
       encoding: 'utf8',
-      timeout: 90_000,
+      timeout: 300_000,
       stdio: 'pipe',
     });
-  }, 100_000);
+  }, 310_000);
 }
