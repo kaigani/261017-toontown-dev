@@ -169,6 +169,17 @@ pub fn restore_window(app: &AppHandle) {
     }
 }
 
+/// Event name of the host's own notices to the front end.
+pub const HOST_NOTICE_EVENT: &str = "host-notice";
+
+/// Sends a notice of the host to the front end (shown as a non-modal message with its help entry).
+pub fn notice(app: &AppHandle, message_id: &str, severity: &str, text: &str) {
+    let payload = json!({ "messageId": message_id, "severity": severity, "text": text });
+    if let Ok(text) = tt_engine::wire::to_wire_json(&payload) {
+        let _ = app.emit(HOST_NOTICE_EVENT, text);
+    }
+}
+
 /// Starts or stops attached mode after `agent.server.enabled` (or `--mcp-http`) (11 §4).
 pub fn sync_agent_server(app: &AppHandle) {
     let host = app.state::<Host>();
@@ -181,7 +192,12 @@ pub fn sync_agent_server(app: &AppHandle) {
     if enabled {
         match host.start_http() {
             Ok(url) => log(&format!("agent server on {url}")),
-            Err(e) => log(&e),
+            Err(e) => {
+                log(&e);
+                // The user sees why attached mode is off (ruling O-6): the token could not be made, the address is
+                // not a loopback address, or no port could be bound.
+                notice(app, "agent.serverFailed", "error", &format!("The agent server did not start: {e}"));
+            }
         }
     } else {
         host.stop_http();

@@ -274,6 +274,24 @@ function Window() {
     [messages, openHelp, openPreferences, services],
   );
 
+  // Notices of the host (for example the agent server could not start): shown, non-modal.
+  useEffect(() => {
+    let unlisten: (() => void) | null = null;
+    let disposed = false;
+    void host
+      .onHostNotice((n) => {
+        messages.notify({ severity: n.severity, messageId: n.messageId, text: n.text });
+      })
+      .then((u) => {
+        if (disposed) u();
+        else unlisten = u;
+      });
+    return () => {
+      disposed = true;
+      unlisten?.();
+    };
+  }, [host, messages]);
+
   // Menu items forwarded by the host: one action each.
   useEffect(() => {
     let unlisten: (() => void) | null = null;

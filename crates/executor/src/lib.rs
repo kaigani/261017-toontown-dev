@@ -58,6 +58,7 @@ use tt_model::document::Document;
 use tt_registry::{AssemblyError, Kind, Registry, Status as DeclStatus, codes};
 
 pub use app::{AppState, Mode};
+pub use commands::agent::TOKEN_BYTES as AGENT_TOKEN_BYTES;
 pub use cx::Cx;
 pub use history::MAX_STEPS as MAX_UNDO_STEPS;
 pub use jobs::{JobNotifier, JobProgress, JobRecord, JobState, JobTable};
@@ -65,7 +66,7 @@ pub use maintenance::Timings as MaintenanceTimings;
 pub use run::LoadGrant;
 pub use session::Event;
 pub use store::{Maintenance, PersistOptions};
-pub use tt_persist::fsx::random_token;
+pub use tt_persist::fsx::{is_secret_token, random_token, secret_token};
 pub use tt_persist::settings::UserDirs;
 /// The registry types hosts need without depending on the registry crate (M4 C4.1).
 pub use tt_registry::{CommandError, Status as DeclarationStatus};

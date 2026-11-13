@@ -385,6 +385,9 @@ pub(crate) struct Discovery {
     discovery_file: String,
 }
 
+/// Bytes of the per-installation bearer token (48 hex characters; `tt_persist::fsx::is_secret_token` checks the form).
+pub const TOKEN_BYTES: usize = 24;
+
 #[command(
     id = "agent.token.regenerate",
     kind = ui,
@@ -398,9 +401,17 @@ pub(crate) fn agent_token_regenerate(cx: &mut Cx, _p: NoParams) -> Result<Discov
     // folder. HTTP sessions arrive with attached mode (M4); stdio sessions are not affected.
     let dir = cx.session().env.dirs.settings.clone();
     let path = dir.join("agent-discovery.json");
+    // Credentials fail closed (ruling O-6): no fallback when the operating system's random source fails.
+    let token = fsx::secret_token(TOKEN_BYTES).map_err(|e| {
+        CommandError::with_details(
+            tt_registry::codes::INTERNAL,
+            format!("cannot create the agent token: {e}"),
+            json!({ "reason": "randomUnavailable" }),
+        )
+    })?;
     let text = serde_json::to_vec_pretty(&json!({
         "format": "toontown-agent-discovery", "formatVersion": "1.0",
-        "endpoint": Value::Null, "token": fsx::random_token(24), "processId": std::process::id(),
+        "endpoint": Value::Null, "token": token, "processId": Value::Null,
     }))
     .map_err(|e| CommandError::internal(e.to_string()))?;
     // Published only when the call commits (C14-R2-05): a failing batch keeps the previous discovery file.

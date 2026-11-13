@@ -69,6 +69,9 @@ pub enum ArgsError {
     /// `--mcp-http` with something that is not a socket address.
     #[error("--mcp-http needs an address such as 127.0.0.1:0, got `{0}`")]
     BadAddress(String),
+    /// `--mcp-http` with an address that is not a loopback address (ADR-0022 decision 2; C41-R1-02).
+    #[error("--mcp-http refuses `{0}`: attached mode binds a loopback address only (127.0.0.1 or [::1])")]
+    RemoteAddress(String),
 }
 
 /// Parses `toontown` arguments (without the program name). `Ok(None)` = normal interactive start.
@@ -114,7 +117,11 @@ pub fn parse_args<I: IntoIterator<Item = String>>(args: I) -> Result<LaunchOptio
             "--user-dir" => user_dir = Some(PathBuf::from(it.next().ok_or(ArgsError::MissingValue("--user-dir"))?)),
             "--mcp-http" => {
                 let v = it.next().ok_or(ArgsError::MissingValue("--mcp-http"))?;
-                mcp_http = Some(v.parse::<std::net::SocketAddr>().map_err(|_| ArgsError::BadAddress(v))?);
+                let addr = v.parse::<std::net::SocketAddr>().map_err(|_| ArgsError::BadAddress(v.clone()))?;
+                if !tt_mcp::http::bind_allowed(&addr) {
+                    return Err(ArgsError::RemoteAddress(v));
+                }
+                mcp_http = Some(addr);
             }
             "--mcp-discovery" => {
                 mcp_discovery = Some(PathBuf::from(it.next().ok_or(ArgsError::MissingValue("--mcp-discovery"))?));
@@ -335,5 +342,15 @@ mod tests {
         );
         assert_eq!(parse_args(args(&["--nope"])), Err(ArgsError::Unknown("--nope".into())));
         assert_eq!(parse_args(args(&["-psn_0_12345"])), Ok(LaunchOptions::default()));
+    }
+
+    #[test]
+    fn mcp_http_accepts_loopback_only() {
+        for good in ["127.0.0.1:0", "[::1]:47215", "127.0.0.2:5"] {
+            assert!(parse_args(args(&["--mcp-http", good])).is_ok(), "{good}");
+        }
+        for bad in ["0.0.0.0:0", "[::]:0", "192.168.1.2:47215", "[fe80::1]:1"] {
+            assert_eq!(parse_args(args(&["--mcp-http", bad])), Err(ArgsError::RemoteAddress(bad.to_owned())), "{bad}");
+        }
     }
 }

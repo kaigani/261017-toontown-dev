@@ -157,22 +157,28 @@ impl Host {
         self.seq.fetch_add(1, Ordering::AcqRel) + 1
     }
 
-    /// The token of the HTTP endpoint: the discovery file's, or a new one written through `agent.token.regenerate`.
-    fn token(&self) -> Option<String> {
+    /// The token of the HTTP endpoint: the discovery file's when it has the generated form (48 lower-case hex
+    /// characters, ruling O-8: a planted file with another token is not trusted), else a new one written through
+    /// `agent.token.regenerate` from the operating system's random source (ruling O-6).
+    ///
+    /// # Errors
+    /// Why no token could be made (the random source failed, or the settings folder cannot be written).
+    fn token(&self) -> Result<String, String> {
         let read = || {
             std::fs::read_to_string(self.settings_dir.join("agent-discovery.json"))
                 .ok()
                 .and_then(|t| serde_json::from_str::<Value>(&t).ok())
                 .and_then(|v| v.get("token").and_then(Value::as_str).map(str::to_owned))
+                .filter(|t| tt_executor::is_secret_token(t, tt_executor::AGENT_TOKEN_BYTES))
         };
         if let Some(t) = read() {
-            return Some(t);
+            return Ok(t);
         }
         let env = self.run("agent.token.regenerate", json!({}), false, None);
-        if !env.is_ok() {
-            return None;
+        if let Some(e) = env.error {
+            return Err(format!("cannot create the agent token: {}", e.message));
         }
-        read()
+        read().ok_or_else(|| "cannot create the agent token: the discovery file was not written".to_owned())
     }
 
     /// Starts the attached-mode server if it is not running (11 §4: off until the user enables it or a flag asks).
@@ -184,7 +190,7 @@ impl Host {
         if let Some(s) = slot.as_ref() {
             return Ok(s.url());
         }
-        let token = self.token().ok_or("cannot create the agent token")?;
+        let token = self.token()?;
         let pref_port = self
             .run("prefs.get", json!({ "keys": ["agent.server.port"] }), false, None)
             .result
@@ -208,7 +214,7 @@ impl Host {
             match tt_mcp::http::start(self.exec(), opts) {
                 Ok(server) => {
                     let url = server.url();
-                    self.write_discovery(&url, &token);
+                    self.write_discovery(Some(&url), Some(&token));
                     *slot = Some(server);
                     return Ok(url);
                 }
@@ -218,18 +224,39 @@ impl Host {
         Err(format!("cannot bind the agent server: {last}"))
     }
 
-    /// Stops the attached-mode server; its sessions end.
+    /// Stops the attached-mode server; its sessions end and the discovery file no longer advertises an endpoint
+    /// (ruling O-8). Also called when the server is off at start, so a stale file of a dead process is replaced.
     pub fn stop_http(&self) {
         if let Some(s) = self.http.lock().unwrap_or_else(PoisonError::into_inner).take() {
             s.stop();
         }
+        self.clear_discovery();
     }
 
-    /// The discovery file (11 §4): endpoint and token, readable only by the user.
-    fn write_discovery(&self, url: &str, token: &str) {
+    /// Rewrites the discovery file without endpoint and process id, keeping a well-formed token (the
+    /// per-installation token stays where ADR-0022 stores it).
+    fn clear_discovery(&self) {
+        let path = self.settings_dir.join("agent-discovery.json");
+        let Some(v) = std::fs::read_to_string(&path).ok().and_then(|t| serde_json::from_str::<Value>(&t).ok()) else {
+            return;
+        };
+        let live = !v.get("endpoint").is_none_or(Value::is_null) || !v.get("processId").is_none_or(Value::is_null);
+        let token = v
+            .get("token")
+            .and_then(Value::as_str)
+            .filter(|t| tt_executor::is_secret_token(t, tt_executor::AGENT_TOKEN_BYTES));
+        if live || token.is_none() {
+            self.write_discovery(None, token);
+        }
+    }
+
+    /// The discovery file (11 §4): endpoint, token and process id while the server runs (`url` given), only the token
+    /// otherwise; readable only by the user (POSIX mode 0600; on Windows the per-user settings folder's inherited ACL).
+    fn write_discovery(&self, url: Option<&str>, token: Option<&str>) {
         let v = json!({
             "format": "toontown-agent-discovery", "formatVersion": "1.0",
-            "endpoint": url, "token": token, "processId": std::process::id(),
+            "endpoint": url, "token": token,
+            "processId": url.map(|_| std::process::id()),
         });
         let text = serde_json::to_vec_pretty(&v).unwrap_or_default();
         let mut targets = vec![self.settings_dir.join("agent-discovery.json")];

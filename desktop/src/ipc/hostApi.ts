@@ -48,6 +48,8 @@ export interface HostApi extends BenchApi {
   onEngineStatus(
     handler: (status: { notResponding: boolean; generation: number }) => void,
   ): Promise<Unlisten>;
+  /** Notices of the host itself (for example the agent server could not start; ruling O-6). */
+  onHostNotice(handler: (notice: HostNotice) => void): Promise<Unlisten>;
   /** Restarts a stuck engine (the user's choice, never automatic). */
   restartEngine(): Promise<{ generation: number }>;
   ping(request: PingRequest): Promise<PingResponse>;
@@ -146,6 +148,34 @@ const STARTUP_SCHEMA: Schema = {
   additionalProperties: false,
 };
 
+/** A notice of the host: a message id with its help entry, the severity and the text. */
+export interface HostNotice {
+  messageId: string;
+  severity: 'info' | 'warning' | 'error';
+  text: string;
+}
+
+const HOST_NOTICE_SCHEMA: Schema = {
+  type: 'object',
+  properties: {
+    messageId: { type: 'string', minLength: 1, maxLength: 128 },
+    severity: { enum: ['info', 'warning', 'error'] },
+    text: { type: 'string', maxLength: 4096 },
+  },
+  required: ['messageId', 'severity', 'text'],
+  additionalProperties: false,
+};
+
+function isHostNotice(v: unknown): v is HostNotice {
+  if (typeof v !== 'object' || v === null) return false;
+  const o = v as Record<string, unknown>;
+  return (
+    typeof o['messageId'] === 'string' &&
+    (o['severity'] === 'info' || o['severity'] === 'warning' || o['severity'] === 'error') &&
+    typeof o['text'] === 'string'
+  );
+}
+
 const ENGINE_STATUS_SCHEMA: Schema = {
   type: 'object',
   properties: { notResponding: { type: 'boolean' }, generation: { type: 'integer', minimum: 0 } },
@@ -189,6 +219,11 @@ export function createHostApi(transport: HostTransport): HostApi {
     onEngineStatus: (handler) =>
       transport.listen('engine-status', (payload) => {
         const v = acceptWire(payload, ENGINE_STATUS_SCHEMA, isEngineStatus);
+        if (v !== undefined) handler(v);
+      }),
+    onHostNotice: (handler) =>
+      transport.listen('host-notice', (payload) => {
+        const v = acceptWire(payload, HOST_NOTICE_SCHEMA, isHostNotice);
         if (v !== undefined) handler(v);
       }),
     restartEngine: () => call(transport, 'restart_engine', undefined, GENERATION_SCHEMA, isGeneration),
