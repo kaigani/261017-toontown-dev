@@ -35,7 +35,7 @@ in the last autosave.
 
 ## 4. Deterministic tests
 
-- An executor embedding test (`crates/executor/tests/c41_restart.rs`) uses the dev-only registry of `c12_never_block`
+- An executor embedding test (`crates/executor/tests/c41/restart.rs`) uses the dev-only registry of `c12_never_block`
   (a handler that never returns, released by the test at the end): heartbeats time out within their budget; a second
   executor over the same user folder starts, lists the recovery data the first one autosaved (forced maintenance before
   the hang), and opens it with `project.recovery.open`. Assertions are on outcomes and on budgets with a 3x margin, not

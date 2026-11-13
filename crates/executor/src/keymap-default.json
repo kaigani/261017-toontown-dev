@@ -1,5 +1,5 @@
 {
-  "$comment": "The bundled default keymap (01 §8.1-§8.2): the set `default`. Platform-standard shortcuts of 01 §8.2 plus single-key or simple-modifier defaults for frequent operations (design work). `platforms` limits a binding to the listed platforms (windows, macos, linux). Tool keys arrive with the tools (M4 C4.2). Conflict-free per context and platform (crates/executor/tests/c41_keymap.rs).",
+  "$comment": "The bundled default keymap (01 §8.1-§8.2): the set `default`. Platform-standard shortcuts of 01 §8.2 plus single-key or simple-modifier defaults for frequent operations (design work). `platforms` limits a binding to the listed platforms (windows, macos, linux). Tool keys arrive with the tools (M4 C4.2). Conflict-free per context and platform (crates/executor/tests/c41/keymap.rs).",
   "set": "default",
   "version": 1,
   "bindings": [

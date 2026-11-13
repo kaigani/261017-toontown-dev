@@ -409,7 +409,7 @@ struct DefaultFile {
     bindings: Vec<DefaultBinding>,
 }
 
-/// The parsed default file, or why it did not parse (a build defect; `c41_keymap` proves it parses).
+/// The parsed default file, or why it did not parse (a build defect; `tests/c41/keymap.rs` proves it parses).
 fn default_file() -> &'static Result<DefaultFile, String> {
     static FILE: OnceLock<Result<DefaultFile, String>> = OnceLock::new();
     FILE.get_or_init(|| {

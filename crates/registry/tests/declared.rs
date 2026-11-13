@@ -74,7 +74,7 @@ fn declarations_carry_owner_scopes_project_rule_undo_and_gui() {
     let get = |id: &str| DECLARED.iter().find(|c| c.decl.id == id).unwrap().decl;
     assert!(get("export.movie.run").scopes.contains(&Scope::FilesWrite));
     assert!(get("import.file.run").scopes.contains(&Scope::FilesRead));
-    // `prefs.set` was the sample until M4 C4.1 implemented it (its 01 §1.3 no-project rule: c41_kernel).
+    // `prefs.set` was the sample until M4 C4.1 implemented it (its 01 §1.3 no-project rule: tests/c41/kernel.rs).
     assert!(get("anim.prefs.set").scopes.contains(&Scope::Prefs));
     assert!(get("export.publish.run").scopes.contains(&Scope::Network));
     assert!(get("print.run").scopes.contains(&Scope::Print));

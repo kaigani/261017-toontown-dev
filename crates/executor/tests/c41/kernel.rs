@@ -1,14 +1,11 @@
 //! M4 C4.1 kernel: preferences (01 §7), the keymap (01 §8), `ui.*` (01 §2, §5.8, §9), the native-window commands as
 //! staged shell effects (ADR-0021) and settings persistence across an executor restart over the same user folder
 //! (01 §11). Builder-owned.
-#![allow(clippy::unwrap_used, clippy::expect_used, clippy::panic, missing_docs, reason = "test")]
-
-mod common;
 
 use std::path::PathBuf;
 use std::time::Duration;
 
-use common::*;
+use crate::common::*;
 use serde_json::{Value, json};
 use tt_executor::{ExecutorConfig, ExecutorHandle, ExecutorOptions, Invocation, InvokeOptions, Status};
 use tt_registry::Scope;

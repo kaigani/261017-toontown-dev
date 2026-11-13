@@ -3,15 +3,12 @@
 //!
 //! No assertion depends on a sleep fitting a bound: waiting callers are observed through their cancellation probe
 //! (the wait polls it), and refusals are asserted on their outcome, not on elapsed time.
-#![allow(clippy::unwrap_used, clippy::expect_used, clippy::panic, missing_docs, reason = "test")]
-
-mod common;
 
 use std::sync::Arc;
 use std::sync::atomic::{AtomicBool, AtomicUsize, Ordering};
 use std::time::{Duration, Instant};
 
-use common::*;
+use crate::common::*;
 use serde_json::{Value, json};
 use tt_executor::host::{KeyResolution, ShellReport};
 use tt_executor::shell::ModalReport;

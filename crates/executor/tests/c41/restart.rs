@@ -5,7 +5,6 @@
 //! recovery data and offers it; `project.recovery.open` brings the work back. The heartbeat side (a never-returning
 //! handler answers `command.timeout` within the budget) is `c12_never_block`'s; the host's three-strikes state machine
 //! is unit-tested in `tt-desktop`. Builder-owned.
-#![allow(clippy::unwrap_used, clippy::expect_used, clippy::panic, missing_docs, reason = "test")]
 
 use std::time::Duration;
 

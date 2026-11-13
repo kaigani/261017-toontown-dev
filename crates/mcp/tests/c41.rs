@@ -1,7 +1,8 @@
-//! M4 C4.1: the Streamable HTTP transport of attached mode (ADR-0022; 11 §4) over a real loopback socket. Refusals
-//! (token, Origin, Host, unknown session, wrong method), the session id on `initialize`, answers as SSE, tool calls,
-//! two sessions on one executor, and DELETE ending a session. The official SDK client runs against the desktop app in
-//! the `desktop gui` CI job (`scripts/mcp-conformance.py --http`). Builder-owned.
+//! M4 C4.1 builder tests of `tt-mcp`, one test binary for the checkpoint (orchestrator ruling D-2): the Streamable
+//! HTTP transport of attached mode (ADR-0022; 11 §4) over a real loopback socket. Refusals (token, Origin, Host,
+//! unknown session, wrong method), the session id on `initialize`, answers as SSE, tool calls, two sessions on one
+//! executor, and DELETE ending a session. The official SDK client runs against the desktop app in the `desktop gui` CI
+//! job (`scripts/mcp-conformance.py --http`). Builder-owned.
 #![allow(clippy::unwrap_used, clippy::expect_used, clippy::panic, missing_docs, reason = "test")]
 
 mod support;

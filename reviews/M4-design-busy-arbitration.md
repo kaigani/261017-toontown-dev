@@ -55,13 +55,15 @@ Status: decided before implementation (M4 C4.1). Owner: builder. Spec: 01 §12.1
 
 ## 4. Deterministic tests
 
-- Kernel (`crates/executor/tests/c41_busy.rs`): scripted reports through `report_shell` — an agent action waits and
+- Kernel (`crates/executor/tests/c41/busy.rs`): scripted reports through `report_shell` — an agent action waits and
   succeeds when the report clears before `waitForUserMs` (the clearing report is sent by the test after it observes
   the waiting caller through a step-ordered probe, not after a sleep); fails with `ui.busy` and nothing changed when it
   does not (`waitForUserMs` 50 ms, the assertion is on the outcome, not on elapsed time); `0` fails at once; queries
   and user calls run during a modal; a focus-changing agent `ui` command fails with `ui.modalOpen` only under a dialog;
   a cancelled waiting caller answers `reason: "cancelled"` and queues nothing.
-- MCP (`crates/mcp/tests/c41_http.rs`): the same through the HTTP transport with two clients.
+- MCP: `ui.busy` and `ui.modalOpen` reaching an agent over HTTP through the real application in the `desktop gui`
+  job (`scripts/c41-gui-e2e.py`); the transport itself, with two sessions on one executor, in
+  `crates/mcp/tests/c41.rs` (as built; the note first named a separate HTTP busy test).
 - Freshness: a test front end (scripted reporter thread) reports trees with sequence numbers; `inspect_ui` after a
   command returns the tree whose number covers that command's events, and marks a tree that never catches up as stale
   after the bound.

@@ -1,6 +1,5 @@
 //! M4 C4.1: the keymap module (01 §8): canonical sequences per platform, defaults conflict-free, mode precedence,
 //! overrides round trip. Builder-owned.
-#![allow(clippy::unwrap_used, clippy::expect_used, clippy::panic, missing_docs, reason = "test")]
 
 use tt_executor::keymap::*;
 #[test]
