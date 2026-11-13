@@ -14,7 +14,8 @@ import { useCallback, useEffect, useRef, useState, type FunctionComponent } from
 import { PANEL_CATALOGUE, panelInfo } from '../panels/catalogue';
 import { PanelBody } from '../panels/PanelBody';
 import { useActions } from '../shell/actionsApi';
-import type { Arrangement, Layout } from '../state/types';
+import { useSlice } from '../state/context';
+import type { Arrangement, Layout, PanelEntry } from '../state/types';
 import { applyPlan } from './applyPlan';
 import { dropToMove, fingerprint } from './layoutPlan';
 
@@ -29,6 +30,8 @@ function PanelComponent(props: IDockviewPanelProps<{ panelId: string }>) {
 function Tab(props: IDockviewPanelHeaderProps<{ panelId: string }>) {
   const actions = useActions();
   const id = props.params.panelId;
+  const panels = (useSlice('panels') as readonly PanelEntry[] | undefined) ?? [];
+  const floating = panels.find((p) => p.panelId === id)?.floating === true;
   const [menu, setMenu] = useState<{ x: number; y: number } | null>(null);
   return (
     <div
@@ -38,7 +41,7 @@ function Tab(props: IDockviewPanelHeaderProps<{ panelId: string }>) {
       data-tt-label={title(id)}
       onDoubleClick={() => {
         // Double-click toggles floating/docked (01 §5.4).
-        void actions.run('window.panel.set', { panelId: id, floating: true });
+        void actions.run('window.panel.set', { panelId: id, floating: !floating });
       }}
       onContextMenu={(e) => {
         e.preventDefault();
@@ -159,7 +162,6 @@ export function DockArea({ layout, fullScreen }: { layout: Layout | undefined; f
         defaultTabComponent={Tab}
         onReady={onReady}
         className="tt-dockview"
-        disableFloatingGroups
       />
     </div>
   );

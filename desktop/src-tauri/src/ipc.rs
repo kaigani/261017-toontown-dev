@@ -27,7 +27,7 @@ fn parse<T: serde::de::DeserializeOwned>(json: &str) -> Result<T, String> {
 }
 
 fn internal(message: impl Into<String>) -> String {
-    error_json(&tt_engine::ErrorInfo { code: "internal".into(), message: message.into(), details: None })
+    error_json(&tt_engine::ErrorInfo { code: "internal".into(), message: message.into(), details: json!({}) })
 }
 
 /// Round-trip probe for the IPC latency readout.
@@ -157,7 +157,7 @@ pub async fn dispatch_key(app: AppHandle, json: String) -> Result<Response, Stri
         Err(e) => Err(error_json(&tt_engine::ErrorInfo {
             code: e.code,
             message: e.message,
-            details: Some(*e.details),
+            details: *e.details,
         })),
     }
 }
@@ -234,7 +234,7 @@ pub async fn restart_engine(app: AppHandle) -> Result<Response, String> {
     let generation = tauri::async_runtime::spawn_blocking(move || app2.state::<Host>().restart())
         .await
         .map_err(|e| internal(e.to_string()))?
-        .map_err(|e| error_json(&tt_engine::ErrorInfo { code: e.code, message: e.message, details: Some(*e.details) }))?;
+        .map_err(|e| error_json(&tt_engine::ErrorInfo { code: e.code, message: e.message, details: *e.details }))?;
     crate::shell::start_event_pump(&app);
     crate::menu::refresh(&app);
     respond(&json!({ "generation": generation }))

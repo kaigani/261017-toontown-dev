@@ -124,5 +124,5 @@ export function dropToMove(
 
 /** A stable fingerprint of what the grid shows, to skip rebuilding when the kernel's layout did not change. */
 export function fingerprint(a: Arrangement): string {
-  return JSON.stringify([a.centralPanel, a.corners, a.docks]);
+  return JSON.stringify([a.centralPanel, a.corners, a.docks, a.floating]);
 }
