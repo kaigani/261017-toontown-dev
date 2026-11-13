@@ -86,6 +86,12 @@ print_stderr = "warn"
 codegen-units = 16
 debug = "line-tables-only"
 
+# Debug info of test and debug builds (M4 C4.1, orchestrator ruling): on Windows the ~360 test executables carried
+# about 124 GB of debug files (PDBs) in a 150 GB `target/`. Workspace crates keep line tables (file and line stay in
+# backtraces); dependencies carry no debug info (`debug = false` below).
+[profile.dev]
+debug = "line-tables-only"
+
 # Test builds optimise their dependencies (JSON, schema validation, compression, polygon unions; M2 C2.1): the suites
 # spend much of their time there and the Windows check job must fit its 60-minute budget. Workspace crates stay
 # unoptimised (their timing-based watchdog tests keep their margins) except the vector engine's geometry and the model
@@ -94,6 +100,7 @@ debug = "line-tables-only"
 # builds are unaffected.
 [profile.dev.package."*"]
 opt-level = 2
+debug = false
 
 [profile.dev.package.tt-vector]
 opt-level = 1
