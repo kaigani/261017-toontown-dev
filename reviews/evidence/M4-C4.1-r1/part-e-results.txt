@@ -1,0 +1,5 @@
+Product ac2e9ff; reviewer probes on unchanged product.
+Keymap: canonical_conflicts_override_reset_and_defaults PASS; empty_sequence_has_keymap_error FAIL arg.invalid; import_preserves_typed_binding_errors FAIL keymap.invalidFile in merge/replace.
+Freshness: older_tree_cannot_inherit_newer_acknowledgement FAIL old GUI tree fresh; future_acknowledgement_cannot_make_tree_fresh FAIL; bounded_concurrent_waits_leave_document_thread_free PASS (16 callers, 2-second bound, under 4 seconds total, user query under 1 second).
+Restart: release_does_not_steal_another_live_engines_recovery FAIL count 1 expected 0 (0.09 seconds).
+Final cargo fmt --all --check PASS. Final executor all-target clippy with test-hooks and required flags PASS.

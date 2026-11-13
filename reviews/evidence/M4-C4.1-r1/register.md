@@ -35,3 +35,9 @@ Status covers the charter item, including explicit remaining limitations.
 | F Preferences | 3 | divergent | C41-R1-10/11; complete 79-key part-d-preferences.md; 2 passing matrix tests, 2 expected failures |
 
 Part D final validation: workspace fmt and executor all-target clippy with test-hooks and required lint flags pass; frontend cancellation Vitest 1/1 passes. D/E/F all adjudicated; cumulative P0 0 / P1 1 / P2 9 / P3 1. Prior pending rows retain unrelated review scope only.
+
+| Part E item | Verdict | Evidence |
+|---|---|---|
+| G Keymap | divergent | C41-R1-12/13; part_e_keymap; report lists unexecuted matrix |
+| H1 Freshness | divergent | C41-R1-14; part_e_freshness; concurrent bound passes |
+| H2 Restart | divergent | C41-R1-15; part_e_restart; clause table in report; host runtime gaps remain |

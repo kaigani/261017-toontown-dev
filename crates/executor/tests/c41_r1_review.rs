@@ -499,7 +499,16 @@ mod part_e_restart {
             })
         };
         let first = over()?;
-        assert!(first.invoke(Invocation::user("project.create", json!({"name":"Still live"}))).is_ok());
+        let created =
+            first.invoke(Invocation::user("project.create", json!({"name":"Still live"}))).result.ok_or("create")?;
+        assert!(
+            first
+                .invoke(Invocation::user(
+                    "doc.object.patch",
+                    json!({"targets":[created["sceneId"]],"props":{"meta":{"unsaved":42}}})
+                ))
+                .is_ok()
+        );
         first.run_maintenance(true)?;
         let start = Instant::now();
         while !std::fs::read_dir(root.join("Recovery"))
