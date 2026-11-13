@@ -165,6 +165,35 @@ fn credential_format_and_uniqueness() -> Result<(), Box<dyn Error>> {
     Ok(())
 }
 
+#[test]
+fn session_is_not_expired_while_authenticated_body_is_in_flight() -> Result<(), Box<dyn Error>> {
+    let s = server(Limits {
+        session_idle: Duration::from_millis(300),
+        sweep: Duration::from_millis(10),
+        request_deadline: Duration::from_secs(3),
+        ..Default::default()
+    })?;
+    let init = initialize(&s)?;
+    let sid = init.lines().find_map(|l| l.strip_prefix("Mcp-Session-Id: ")).ok_or("missing session")?;
+    let body = r#"{"jsonrpc":"2.0","method":"notifications/initialized"}"#;
+    let mut c = socket(&s)?;
+    write!(
+        c,
+        "POST /mcp HTTP/1.1\r\nHost: localhost\r\nAuthorization: Bearer review\r\nMcp-Session-Id: {sid}\r\nContent-Length: {}\r\n\r\n{}",
+        body.len(),
+        &body[..1]
+    )?;
+    let began = Instant::now();
+    while began.elapsed() < Duration::from_millis(600) {
+        std::hint::spin_loop();
+    }
+    c.write_all(&body.as_bytes()[1..])?;
+    let mut answer = String::new();
+    BufReader::new(c).read_line(&mut answer)?;
+    assert!(answer.contains("202"), "session expired during body reception: {answer}");
+    Ok(())
+}
+
 #[cfg(windows)]
 #[test]
 fn refused_connections_do_not_escape_thread_cap() -> Result<(), Box<dyn Error>> {
