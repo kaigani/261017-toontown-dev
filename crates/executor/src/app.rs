@@ -11,12 +11,6 @@ use tt_model::{Id, ObjectType};
 
 use crate::ui::UiState;
 
-/// The mode a view type implies (01 §4): a drawing view is drawing mode; camera, top and side views are staging.
-#[must_use]
-pub fn mode_of_view(panel: &str) -> Mode {
-    if panel == "drawingView" { Mode::Drawing } else { Mode::Staging }
-}
-
 /// The working mode (01 §4.4).
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, JsonSchema)]
 #[serde(rename_all = "camelCase")]
@@ -480,7 +474,7 @@ impl AppContext {
             selection: SelectionState { context: self.selection.context.clone(), ids: Vec::new(), kinds: Vec::new() },
             workspace: WorkspaceState { name: workspace, modified },
             playback: PlaybackState { playing: false },
-            start_screen_visible: project.is_none(),
+            start_screen_visible: ui.shell().start_screen_visible(project.as_ref().map(|(_, info)| info.id.as_str())),
             modal: None,
             agent_sessions: Vec::new(),
             agent: None,
@@ -488,13 +482,14 @@ impl AppContext {
         };
         let Some((doc, info)) = project else { return st };
         st.project = Some(info);
-        // 01 §4: the mode is derived from the type of the active view (the central view of the arrangement in use).
-        st.mode = Some(mode_of_view(ui.central_panel()));
-        let central = ui.central_panel().to_owned();
+        // 01 §4: the mode is derived from the type of the active view window (M4 C4.1: the one focused last while
+        // shown, else the central view of the arrangement in use).
+        st.mode = Some(ui.mode());
+        let active = ui.active_view().to_owned();
         st.active_view = Some(ActiveView {
-            view_id: central.clone(),
-            ty: central.trim_end_matches("View").to_owned(),
-            panel_id: central,
+            view_id: active.clone(),
+            ty: ui.active_view_type().as_str().to_owned(),
+            panel_id: active,
         });
         if let Some(s) = self.scene.as_ref().and_then(|s| doc.scene(s)) {
             st.scene = Some(SceneRef {

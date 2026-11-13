@@ -77,6 +77,23 @@ pub(crate) struct Settings {
     pub last_used: Map<String, Value>,
     /// Settings files found corrupt at load (reported once, `prefs.corrupt`).
     pub corrupt: Vec<String>,
+    /// Keymap overrides relative to the bundled defaults (01 §8.1; `keymap.json`, M4 C4.1).
+    pub keymap: crate::keymap::Overrides,
+    /// Suppressed message ids (01 §9.4) and first-run flags (01 §11), kept in `state.json`.
+    pub suppressed: std::collections::BTreeSet<String>,
+    /// First-run flags (01 §1.1, §11).
+    pub first_run: Map<String, Value>,
+    /// The main window geometry restored at launch (01 §11).
+    pub window: Option<Value>,
+    /// Installed user themes (01 §5.8; `<settings>/Themes/*.json`), read at start and by `ui.theme.list`.
+    pub themes: Vec<crate::themes::ThemeInfo>,
+}
+
+impl Settings {
+    /// Ids of the valid installed user themes.
+    pub(crate) fn theme_ids(&self) -> Vec<String> {
+        self.themes.iter().filter(|t| t.valid).map(|t| t.theme_id.clone()).collect()
+    }
 }
 
 /// The per-executor persistence environment.
@@ -120,22 +137,12 @@ impl Default for Env {
     }
 }
 
-/// Preference defaults this kernel reads (01 §7.3).
+/// The default of a preference (01 §7.3): the catalogue's ([`crate::prefs`]).
 pub(crate) fn pref_default(key: &str) -> Option<Value> {
-    Some(match key {
-        "files.autosave.enabled" => json!(true),
-        "files.autosave.intervalMinutes" => json!(5),
-        "files.backups.count" => json!(3),
-        "general.recentProjects.maxCount" => json!(10),
-        "general.workspace.autoSave" => json!(true),
-        "project.defaults.frameRate" => json!(24),
-        "project.defaults.cameraWidth" => json!(1920),
-        "project.defaults.cameraHeight" => json!(1080),
-        _ => return None,
-    })
+    crate::prefs::default_of(key)
 }
 
-const KINDS: [&str; 4] = ["preferences", "recent", "state", "workspaces"];
+const KINDS: [&str; 5] = ["preferences", "recent", "state", "workspaces", "keymap"];
 
 impl Env {
     /// The environment for options; reads the settings files.
@@ -175,11 +182,20 @@ impl Env {
                         if let Some(m) = d.get("lastUsed").and_then(Value::as_object) {
                             self.settings.last_used = m.clone();
                         }
+                        if let Some(a) = d.get("suppressedMessages").and_then(Value::as_array) {
+                            self.settings.suppressed = a.iter().filter_map(Value::as_str).map(str::to_owned).collect();
+                        }
+                        if let Some(m) = d.get("firstRun").and_then(Value::as_object) {
+                            self.settings.first_run = m.clone();
+                        }
+                        self.settings.window = d.get("window").filter(|w| w.is_object()).cloned();
                     }
+                    "keymap" => self.settings.keymap = crate::keymap::Overrides::from_stored(&d),
                     _ => {}
                 },
             }
         }
+        self.settings.themes = crate::themes::scan(&self.dirs.settings.join("Themes"));
     }
 
     /// The stored workspaces (read when the executor starts).
@@ -190,9 +206,10 @@ impl Env {
         }
     }
 
-    /// A preference value (stored or default).
+    /// A preference value: the stored one while it still validates, else the default (M4 C4.1: a hand-edited or
+    /// stale entry never breaks a read).
     pub(crate) fn pref(&self, key: &str) -> Option<Value> {
-        self.settings.prefs.get(key).cloned().or_else(|| pref_default(key))
+        crate::prefs::effective(key, self.settings.prefs.get(key), &self.settings.theme_ids())
     }
 
     pub(crate) fn pref_u64(&self, key: &str) -> u64 {
@@ -212,7 +229,17 @@ impl Env {
         let data = match kind {
             "preferences" => Value::Object(self.settings.prefs.clone()),
             "recent" => serde_json::to_value(&self.settings.recent).unwrap_or(Value::Null),
-            "state" => json!({ "lastUsed": self.settings.last_used }),
+            "state" => {
+                let mut m = Map::new();
+                m.insert("lastUsed".into(), Value::Object(self.settings.last_used.clone()));
+                m.insert("suppressedMessages".into(), json!(self.settings.suppressed));
+                m.insert("firstRun".into(), Value::Object(self.settings.first_run.clone()));
+                if let Some(w) = &self.settings.window {
+                    m.insert("window".into(), w.clone());
+                }
+                Value::Object(m)
+            }
+            "keymap" => self.settings.keymap.to_stored(),
             _ => return Ok(()),
         };
         settings::write(&self.dirs.settings, kind, &data)
@@ -231,6 +258,18 @@ impl Env {
             crate::cx::SettingsChange::RemoveRecent(path) => {
                 self.settings.recent = recent_after_removal(&self.settings.recent, path.as_deref());
                 let _ = self.write("recent");
+            }
+            crate::cx::SettingsChange::Keymap(o) => {
+                self.settings.keymap = o;
+                let _ = self.write("keymap");
+            }
+            crate::cx::SettingsChange::Suppressed(s) => {
+                self.settings.suppressed = s;
+                let _ = self.write("state");
+            }
+            crate::cx::SettingsChange::Window(w) => {
+                self.settings.window = Some(w);
+                let _ = self.write("state");
             }
         }
     }

@@ -29,16 +29,21 @@ mod align;
 mod app;
 pub mod commands;
 mod cx;
+mod help;
 mod history;
 mod jobs;
+pub mod keymap;
 mod load_repair;
 mod maintenance;
 mod persistence;
 mod planar;
+mod prefs;
 mod rules;
 mod run;
 mod session;
+pub mod shell;
 mod store;
+mod themes;
 mod time;
 mod types;
 mod ui;
@@ -300,6 +305,16 @@ impl ExecutorHandle {
             && let Ok(limits) = serde_json::from_value::<agents::Limits>(saved)
         {
             session.agents.limits = limits;
+        }
+        // M4 C4.1: the start-screen rule follows `general.startup.behaviour`; the main window geometry saved at the
+        // last quit is restored (01 §1.1, §11), clamped to the screens when the host reports them.
+        let by_default = session.env.pref("general.startup.behaviour").and_then(|v| v.as_str().map(str::to_owned));
+        session.ui.shell_mut().start_screen_by_default = by_default.as_deref() == Some("startScreen");
+        if let Some(g) =
+            session.env.settings.window.clone().and_then(|w| serde_json::from_value::<shell::WindowGeometry>(w).ok())
+        {
+            let clamped = session.ui.shell().clamp(g);
+            session.ui.shell_mut().window = clamped;
         }
         maintenance::start(&mut session);
         let subs = subscribers.clone();

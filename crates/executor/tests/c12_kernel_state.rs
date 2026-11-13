@@ -243,9 +243,22 @@ fn edits(h: &ExecutorHandle) {
 /// with a backup `bk_1a2b3c4d`, recovery data `rc_1a2b3c4d`, `Short.animpkg` and a `media` folder in a temporary folder
 /// that stands for the examples' `/tmp`.
 fn with_files(id: &str) -> bool {
-    ["project.", "doc.asset.", "doc.blob.", "doc.package.", "agent.", "draw.vectorize.", "render.range."]
-        .iter()
-        .any(|p| id.starts_with(p))
+    [
+        "project.",
+        "doc.asset.",
+        "doc.blob.",
+        "doc.package.",
+        "agent.",
+        "draw.vectorize.",
+        "render.range.",
+        // M4 C4.1: keymap and workspace files.
+        "keymap.export",
+        "keymap.import",
+        "workspace.export",
+        "workspace.import",
+    ]
+    .iter()
+    .any(|p| id.starts_with(p))
 }
 
 fn wait_job(h: &ExecutorHandle, started: &Value) {
@@ -318,6 +331,18 @@ fn prepared_with_files(id: &str, dir: &std::path::Path) -> ExecutorHandle {
     .unwrap();
     wait_job(&h, &ok(&h, "project.open", json!({ "path": sample.to_string_lossy() })));
     edits(&h);
+    // M4 C4.1: the files the keymap and workspace import examples read.
+    if id == "keymap.import" {
+        let file = json!({ "format": "toontown-keymap", "formatVersion": "1.0", "baseSet": "default",
+            "bindings": [{ "commandId": "project.save", "keys": "F2", "context": "global" }] });
+        std::fs::write(dir.join("keymap.json"), serde_json::to_vec(&file).unwrap()).unwrap();
+    }
+    if id == "workspace.import" {
+        let layout = ok(&h, "workspace.get", json!({ "name": "Drawing" }));
+        let file =
+            json!({ "format": "toontown-workspace", "formatVersion": "1.0", "name": "Drawing", "layout": layout });
+        std::fs::write(dir.join("drawing.ttworkspace"), serde_json::to_vec(&file).unwrap()).unwrap();
+    }
     // Examples that replace the open project run on a saved one.
     if matches!(
         id,

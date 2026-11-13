@@ -231,7 +231,7 @@ Reserved by the M0 closure for "measured deterministic-format incompatibility" (
 
 ## SI-026 — `draw.*`: shapes the owning section leaves undefined (found in C1.2 r2; resolved)
 
-- **Resolved in C1.2 r3 (C12-R3-01):** every position of `draw.*` is now typed from its owning section or its sibling commands; no placeholder remains.
+- **Resolved:** no placeholder remains in `draw.*`. Its positions are typed from the owning section or the sibling commands (C1.2 r3, C12-R3-01), or by the hand-written declarations of the checkpoint that implemented the commands (for example `ui.*` in M4 C4.1).
 
 ## SI-027 — `drawAid.*`: shapes the owning section leaves undefined (found in C1.2 r2; decided)
 
@@ -243,7 +243,7 @@ Reserved by the M0 closure for "measured deterministic-format incompatibility" (
 
 ## SI-028 — `element.*`: shapes the owning section leaves undefined (found in C1.2 r2; resolved)
 
-- **Resolved in C1.2 r3 (C12-R3-01):** every position of `element.*` is now typed from its owning section or its sibling commands; no placeholder remains.
+- **Resolved:** no placeholder remains in `element.*`. Its positions are typed from the owning section or the sibling commands (C1.2 r3, C12-R3-01), or by the hand-written declarations of the checkpoint that implemented the commands (for example `ui.*` in M4 C4.1).
 
 ## SI-029 — `export.*`: shapes the owning section leaves undefined (found in C1.2 r2; decided)
 
@@ -298,11 +298,11 @@ Reserved by the M0 closure for "measured deterministic-format incompatibility" (
 
 ## SI-031 — `import.*`: shapes the owning section leaves undefined (found in C1.2 r2; resolved)
 
-- **Resolved in C1.2 r3 (C12-R3-01):** every position of `import.*` is now typed from its owning section or its sibling commands; no placeholder remains.
+- **Resolved:** no placeholder remains in `import.*`. Its positions are typed from the owning section or the sibling commands (C1.2 r3, C12-R3-01), or by the hand-written declarations of the checkpoint that implemented the commands (for example `ui.*` in M4 C4.1).
 
 ## SI-032 — `keymap.*`: shapes the owning section leaves undefined (found in C1.2 r2; resolved)
 
-- **Resolved in C1.2 r3 (C12-R3-01):** every position of `keymap.*` is now typed from its owning section or its sibling commands; no placeholder remains.
+- **Resolved:** no placeholder remains in `keymap.*`. Its positions are typed from the owning section or the sibling commands (C1.2 r3, C12-R3-01), or by the hand-written declarations of the checkpoint that implemented the commands (for example `ui.*` in M4 C4.1).
 
 ## SI-033 — `library.*`: shapes the owning section leaves undefined (found in C1.2 r2; decided)
 
@@ -336,11 +336,11 @@ Reserved by the M0 closure for "measured deterministic-format incompatibility" (
 
 ## SI-036 — `prefs.*`: shapes the owning section leaves undefined (found in C1.2 r2; resolved)
 
-- **Resolved in C1.2 r3 (C12-R3-01):** every position of `prefs.*` is now typed from its owning section or its sibling commands; no placeholder remains.
+- **Resolved:** no placeholder remains in `prefs.*`. Its positions are typed from the owning section or the sibling commands (C1.2 r3, C12-R3-01), or by the hand-written declarations of the checkpoint that implemented the commands (for example `ui.*` in M4 C4.1).
 
 ## SI-037 — `print.*`: shapes the owning section leaves undefined (found in C1.2 r2; resolved)
 
-- **Resolved in C1.2 r3 (C12-R3-01):** every position of `print.*` is now typed from its owning section or its sibling commands; no placeholder remains.
+- **Resolved:** no placeholder remains in `print.*`. Its positions are typed from the owning section or the sibling commands (C1.2 r3, C12-R3-01), or by the hand-written declarations of the checkpoint that implemented the commands (for example `ui.*` in M4 C4.1).
 
 ## SI-038 — `sound.*`: shapes the owning section leaves undefined (found in C1.2 r2; decided)
 
@@ -373,14 +373,9 @@ Reserved by the M0 closure for "measured deterministic-format incompatibility" (
 - **Decision taken (ADR-0013 §1, C12-R2-02):** each position is a strict placeholder: an object accepts only `{}`, a member accepts only a scalar (never an object or a list), so nothing undefined is accepted silently. The implementing checkpoint replaces it with the shape the section gives.
 - **Question:** define these shapes in the owning section (field names and types).
 
-## SI-041 — `ui.*`: shapes the owning section leaves undefined (found in C1.2 r2; decided)
+## SI-041 — `ui.*`: shapes the owning section leaves undefined (found in C1.2 r2; resolved)
 
-- **Section:** 01 and spec A (`ui.*` command rows).
-- **Positions** (in `crates/registry/src/declared.json`, `placeholders`):
-  - `ui.message.shown` `/result/details`: a member whose type is not stated (`details`)
-  - `ui.statusBar.get` `/result/pointer`: a member whose type is not stated (`pointer`)
-- **Decision taken (ADR-0013 §1, C12-R2-02):** each position is a strict placeholder: an object accepts only `{}`, a member accepts only a scalar (never an object or a list), so nothing undefined is accepted silently. The implementing checkpoint replaces it with the shape the section gives.
-- **Question:** define these shapes in the owning section (field names and types).
+- **Resolved:** no placeholder remains in `ui.*`. Its positions are typed from the owning section or the sibling commands (C1.2 r3, C12-R3-01), or by the hand-written declarations of the checkpoint that implemented the commands (for example `ui.*` in M4 C4.1).
 
 ## SI-042 — `view.*`: shapes the owning section leaves undefined (found in C1.2 r2; decided)
 

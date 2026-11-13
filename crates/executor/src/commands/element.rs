@@ -26,7 +26,7 @@ use super::timing::{
     Budget, CellChange, Changes, Column, as_u32, duplicate_name, element, element_id, element_name, emit_cells,
     emit_state, err, internal, op, parentable, scene_id, scene_names, to_json, tree_json, write_column,
 };
-use crate::app::{Mode, mode_of_view};
+use crate::app::Mode;
 use crate::cx::Cx;
 use crate::types::Warning;
 
@@ -283,7 +283,7 @@ fn scene_len(doc: &Document, scene: &Id) -> u32 {
 /// Warns that pegs, cameras and effects are hidden in drawing mode (04 §1.4).
 fn warn_drawing_mode(cx: &mut Cx, t: ElementType, ids: &[String]) {
     let staging_only = matches!(t, ElementType::Peg | ElementType::Camera | ElementType::Skeleton) || t.is_effect();
-    if staging_only && mode_of_view(cx.ui().central_panel()) == Mode::Drawing {
+    if staging_only && cx.ui().mode() == Mode::Drawing {
         cx.warn(
             "element.hiddenInDrawingMode",
             "the new elements cannot be seen or modified in drawing mode; switch to scene-planning mode to see them",

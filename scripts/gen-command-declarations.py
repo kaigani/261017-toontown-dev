@@ -1083,8 +1083,9 @@ def write_placeholder_issues(schemas: list, by_id: dict):
             lines += [
                 f"## {issue_of[f]} — `{f}.*`: shapes the owning section leaves undefined (found in C1.2 r2; resolved)",
                 "",
-                f"- **Resolved in C1.2 r3 (C12-R3-01):** every position of `{f}.*` is now typed from its owning section "
-                "or its sibling commands; no placeholder remains.",
+                f"- **Resolved:** no placeholder remains in `{f}.*`. Its positions are typed from the owning section or "
+                "the sibling commands (C1.2 r3, C12-R3-01), or by the hand-written declarations of the checkpoint that "
+                "implemented the commands (for example `ui.*` in M4 C4.1).",
                 "",
             ]
             continue

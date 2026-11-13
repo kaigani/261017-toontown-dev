@@ -42,12 +42,15 @@ pub(crate) mod element_bank;
 pub(crate) mod element_read;
 pub(crate) mod inspect;
 pub(crate) mod job;
+pub(crate) mod keymap;
+pub(crate) mod prefs;
 pub(crate) mod project;
 pub(crate) mod render;
 pub(crate) mod render_list;
 pub(crate) mod timing;
 pub(crate) mod tool_symmetry;
 pub(crate) mod transfer;
+pub(crate) mod ui_shell;
 pub(crate) mod window;
 pub(crate) mod workspace;
 pub(crate) mod xsheet;
@@ -56,6 +59,32 @@ use tt_registry::Command;
 
 /// Every typed declaration.
 pub(crate) static ALL: &[&Command] = &[
+    // prefs, keymap, ui (M4 C4.1)
+    &prefs::PREFS_LIST,
+    &prefs::PREFS_GET,
+    &prefs::PREFS_SET,
+    &prefs::PREFS_RESET,
+    &prefs::PREFS_CHANGED,
+    &keymap::KEYMAP_LIST,
+    &keymap::KEYMAP_GET,
+    &keymap::KEYMAP_SET,
+    &keymap::KEYMAP_REMOVE,
+    &keymap::KEYMAP_RESET,
+    &keymap::KEYMAP_EXPORT,
+    &keymap::KEYMAP_IMPORT,
+    &keymap::KEYMAP_CHANGED,
+    &ui_shell::UI_TIPS_LIST,
+    &ui_shell::UI_TIPS_SET,
+    &ui_shell::UI_TIPS_RESET,
+    &ui_shell::UI_STATUS_BAR_SET,
+    &ui_shell::UI_STATUS_BAR_GET,
+    &ui_shell::UI_THEME_LIST,
+    &ui_shell::UI_START_SCREEN_SET,
+    &ui_shell::UI_CONTEXT_HELP_MODE_SET,
+    &ui_shell::UI_HELP_GET,
+    &ui_shell::UI_HELP_OPEN,
+    &ui_shell::UI_PREFERENCES_OPEN,
+    &ui_shell::UI_MESSAGE_SHOWN,
     // app
     &app::APP_STATE_GET,
     &app::APP_CONTEXT_SET,

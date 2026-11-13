@@ -1,17 +1,15 @@
 //! `workspace.*` (01 §5.5, §12.1): named window arrangements, kept by the kernel so agents can list, read, select
 //! and edit them (readiness bullet 4). Persistence per user is part of the settings work (C1.3); file import and
-//! export follow with the shell (M4 C4.1).
+//! export arrived with the shell (M4 C4.1).
 
 use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
+use serde_json::json;
 use tt_registry::{CommandError, command};
 
 use super::common::{NoParams, OnExists, event_not_invocable};
 use crate::cx::Cx;
 use crate::ui::{Layout, WorkspaceEntry};
-
-/// Default of the preference `general.workspace.autoSave` (01 §7; C12-R1-16), used until preferences exist (M4).
-const AUTO_SAVE_DEFAULT: bool = true;
 
 #[command(
     id = "workspace.list",
@@ -75,7 +73,8 @@ pub(crate) struct SelectParams {
     gui = "Windows › Workspace menu and the workspace drop-down (M4)",
 )]
 pub(crate) fn workspace_select(cx: &mut Cx, p: SelectParams) -> Result<NameResult, CommandError> {
-    cx.ui_mut().select(&p.name, p.save_current.unwrap_or(AUTO_SAVE_DEFAULT))?;
+    let auto = cx.pref("general.workspace.autoSave").and_then(|v| v.as_bool()).unwrap_or(true);
+    cx.ui_mut().select(&p.name, p.save_current.unwrap_or(auto))?;
     Ok(NameResult { name: p.name })
 }
 
@@ -238,13 +237,14 @@ pub(crate) fn workspace_layout_set(cx: &mut Cx, p: LayoutParams) -> Result<Layou
 }
 
 /// `workspace.export` parameters.
-#[allow(dead_code, reason = "decoded and validated now; read by the handler of the owning checkpoint")]
 #[derive(Debug, Deserialize, JsonSchema)]
 #[serde(deny_unknown_fields, rename_all = "camelCase")]
 pub(crate) struct ExportParams {
     /// Workspace name.
+    #[schemars(length(min = 1, max = 256))]
     name: String,
     /// Absolute target path.
+    #[schemars(length(min = 1, max = 4096))]
     path: String,
     /// Overwrite policy.
     #[serde(default)]
@@ -258,21 +258,40 @@ pub(crate) struct PathResult {
     path: String,
 }
 
+/// The format of a workspace file.
+const FORMAT: &str = "toontown-workspace";
+
 #[command(
     id = "workspace.export",
     kind = ui,
     label = "Export workspace",
     scopes = [ui, files_write],
-    not_implemented = "M4 C4.1",
-    example(title = "Export the Drawing workspace", params = r#"{"name": "Drawing", "path": "/tmp/drawing.ttworkspace"}"#),
-    gui = "Workspace Manager (M4)",
+    confirm = ["overwrite"],
+    example(title = "Export the Drawing workspace", params = r#"{"name": "Drawing", "path": "/tmp/drawing.ttworkspace", "onExists": "overwrite"}"#),
+    gui = "Window › Workspace › Export… (native dialog; M4 C4.1)",
 )]
-pub(crate) fn workspace_export(_cx: &mut Cx, _p: ExportParams) -> Result<PathResult, CommandError> {
-    Err(CommandError::not_implemented("workspace.export", "M4 C4.1"))
+pub(crate) fn workspace_export(cx: &mut Cx, p: ExportParams) -> Result<PathResult, CommandError> {
+    let layout = cx.ui().workspace_layout(Some(&p.name))?;
+    let path = crate::persistence::path_param(cx, &p.path, "/path")?;
+    if path.exists() {
+        if matches!(p.on_exists, OnExists::Fail) {
+            return Err(CommandError::with_details(
+                "fs.exists",
+                format!("`{}` exists", p.path),
+                json!({ "path": p.path }),
+            )
+            .hint("pass onExists: \"overwrite\""));
+        }
+        crate::persistence::confirm_overwrite(cx, &path)?;
+    }
+    let file = json!({ "format": FORMAT, "formatVersion": "1.0", "name": p.name, "layout": layout });
+    let text = tt_model::canonical::to_canonical_string(&file).map_err(|e| CommandError::internal(e.to_string()))?;
+    cx.defer(crate::cx::Effect::WriteFile(Box::new(crate::cx::FileWrite::new(path.clone(), text.into_bytes()))));
+    Ok(PathResult { path: path.to_string_lossy().into_owned() })
 }
 
 /// Import conflict policy.
-#[derive(Debug, Clone, Copy, Default, Deserialize, JsonSchema)]
+#[derive(Debug, Clone, Copy, Default, PartialEq, Eq, Deserialize, JsonSchema)]
 #[serde(rename_all = "camelCase")]
 pub(crate) enum ImportOnExists {
     /// Fail.
@@ -285,11 +304,11 @@ pub(crate) enum ImportOnExists {
 }
 
 /// `workspace.import` parameters.
-#[allow(dead_code, reason = "decoded and validated now; read by the handler of the owning checkpoint")]
 #[derive(Debug, Deserialize, JsonSchema)]
 #[serde(deny_unknown_fields, rename_all = "camelCase")]
 pub(crate) struct ImportParams {
     /// Absolute source path.
+    #[schemars(length(min = 1, max = 4096))]
     path: String,
     /// Name-conflict policy.
     #[serde(default)]
@@ -301,12 +320,43 @@ pub(crate) struct ImportParams {
     kind = ui,
     label = "Import workspace",
     scopes = [ui, files_read],
-    not_implemented = "M4 C4.1",
     example(title = "Import a workspace file", params = r#"{"path": "/tmp/drawing.ttworkspace", "onExists": "rename"}"#),
-    gui = "Workspace Manager (M4)",
+    gui = "Window › Workspace › Import… (native dialog; M4 C4.1)",
 )]
-pub(crate) fn workspace_import(_cx: &mut Cx, _p: ImportParams) -> Result<NameResult, CommandError> {
-    Err(CommandError::not_implemented("workspace.import", "M4 C4.1"))
+pub(crate) fn workspace_import(cx: &mut Cx, p: ImportParams) -> Result<NameResult, CommandError> {
+    let path = crate::persistence::path_param(cx, &p.path, "/path")?;
+    let bad = |why: String| {
+        CommandError::with_details(
+            "workspace.invalidFile",
+            format!("`{}` is not a workspace file: {why}", p.path),
+            json!({ "path": p.path, "reason": why }),
+        )
+    };
+    let bytes = tt_persist::fsx::read_limited(&path, 4 << 20).map_err(|_| {
+        if path.exists() {
+            bad("unreadable or larger than 4 MiB".into())
+        } else {
+            CommandError::with_details("fs.notFound", format!("`{}` does not exist", p.path), json!({ "path": p.path }))
+        }
+    })?;
+    let text = String::from_utf8(bytes).map_err(|_| bad("not UTF-8".into()))?;
+    let v: serde_json::Value = tt_model::json_text::parse(&text).map_err(|e| bad(e.to_string()))?;
+    if v.get("format").and_then(serde_json::Value::as_str) != Some(FORMAT) {
+        return Err(bad(format!("format is not {FORMAT}")));
+    }
+    let name = v.get("name").and_then(serde_json::Value::as_str).ok_or_else(|| bad("no name".into()))?.to_owned();
+    let layout: Layout = v
+        .get("layout")
+        .cloned()
+        .ok_or_else(|| bad("no layout".into()))
+        .and_then(|l| serde_json::from_value(l).map_err(|e| bad(e.to_string())))?;
+    let name = cx.ui_mut().import(
+        &name,
+        layout,
+        p.on_exists == ImportOnExists::Overwrite,
+        p.on_exists == ImportOnExists::Rename,
+    )?;
+    Ok(NameResult { name })
 }
 
 /// `workspace.changed` payload.

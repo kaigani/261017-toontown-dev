@@ -4,6 +4,7 @@
 
 use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
+use serde_json::json;
 use tt_registry::{CommandError, command};
 
 use super::common::NoParams;
@@ -27,7 +28,12 @@ pub(crate) struct Enabled {
     example(title = "Leave full screen", params = r#"{"enabled": false}"#),
 )]
 pub(crate) fn window_full_screen_set(cx: &mut Cx, p: Enabled) -> Result<Enabled, CommandError> {
+    let was = cx.ui().full_screen();
     cx.ui_mut().set_full_screen(p.enabled);
+    if was != p.enabled {
+        // The host applies the native full-screen state after acceptance (M4 C4.1).
+        publish_window(cx);
+    }
     Ok(Enabled { enabled: cx.ui().full_screen() })
 }
 
@@ -314,6 +320,12 @@ pub(crate) struct ToolbarSetParams {
 pub(crate) fn window_toolbar_set(cx: &mut Cx, p: ToolbarSetParams) -> Result<ToolbarEntry, CommandError> {
     let id = p.toolbar_id.as_str();
     cx.ui_mut().set_toolbar(id, p.visible, p.floating, p.position)?;
+    // The main toolbar's visibility is also the preference `interface.mainToolbar.visible` (01 §7.3; SI-114).
+    if id == "main" && cx.pref("interface.mainToolbar.visible") != Some(json!(p.visible)) {
+        let mut m = serde_json::Map::new();
+        m.insert("interface.mainToolbar.visible".into(), json!(p.visible));
+        super::prefs::stage(cx, m)?;
+    }
     toolbars(cx).into_iter().find(|t| t.toolbar_id == id).ok_or_else(|| CommandError::internal("toolbar"))
 }
 
@@ -395,7 +407,7 @@ pub(crate) fn window_toolbar_items_reset(cx: &mut Cx, p: ToolbarResetParams) -> 
     Ok(ItemsResult { items })
 }
 
-/// Window geometry.
+/// Window geometry (01 §12.2 `window.geometry.get`).
 #[derive(Debug, Serialize, JsonSchema)]
 #[serde(rename_all = "camelCase")]
 pub(crate) struct WindowGeometry {
@@ -412,22 +424,38 @@ pub(crate) struct WindowGeometry {
     /// Full screen.
     full_screen: bool,
     /// Screens.
-    screens: Vec<Screen>,
+    screens: Vec<crate::shell::Screen>,
 }
 
-/// A screen.
-#[derive(Debug, Serialize, JsonSchema)]
-pub(crate) struct Screen {
-    /// Left.
-    x: i32,
-    /// Top.
-    y: i32,
-    /// Width.
-    width: u32,
-    /// Height.
-    height: u32,
-    /// Scale factor.
-    scale: f64,
+/// The window geometry as the kernel holds it: the host reports what the user does to the window and applies what
+/// commands set (ADR-0021); headless mode keeps a virtual window.
+fn geometry(cx: &Cx) -> WindowGeometry {
+    let sh = cx.ui().shell();
+    WindowGeometry {
+        x: sh.window.x,
+        y: sh.window.y,
+        width: sh.window.width,
+        height: sh.window.height,
+        maximized: sh.window.maximized,
+        full_screen: cx.ui().full_screen(),
+        screens: sh.screens.clone(),
+    }
+}
+
+/// Publishes the window state for the host after acceptance (`shell.window`; never forwarded to agents) and stages
+/// the geometry to restore at the next launch (01 §11).
+fn publish_window(cx: &mut Cx) {
+    let g = geometry(cx);
+    let minimized = cx.ui().shell().minimized;
+    let stored = json!({ "x": g.x, "y": g.y, "width": g.width, "height": g.height, "maximized": g.maximized });
+    cx.defer(crate::cx::Effect::Settings(crate::cx::SettingsChange::Window(stored)));
+    cx.emit(
+        "shell.window",
+        json!({
+            "x": g.x, "y": g.y, "width": g.width, "height": g.height, "maximized": g.maximized,
+            "fullScreen": g.full_screen, "minimized": minimized
+        }),
+    );
 }
 
 #[command(
@@ -435,16 +463,14 @@ pub(crate) struct Screen {
     kind = query,
     label = "Window geometry",
     scopes = [read],
-    not_implemented = "M4 C4.1",
     example(title = "Position, size and screens of the main window", params = "{}"),
     agent_only = "native window state read by agents",
 )]
-pub(crate) fn window_geometry_get(_cx: &mut Cx, _p: NoParams) -> Result<WindowGeometry, CommandError> {
-    Err(CommandError::not_implemented("window.geometry.get", "M4 C4.1"))
+pub(crate) fn window_geometry_get(cx: &mut Cx, _p: NoParams) -> Result<WindowGeometry, CommandError> {
+    Ok(geometry(cx))
 }
 
 /// `window.geometry.set` parameters.
-#[allow(dead_code, reason = "decoded and validated now; read by the handler of the owning checkpoint")]
 #[derive(Debug, Deserialize, JsonSchema)]
 #[serde(deny_unknown_fields)]
 pub(crate) struct GeometrySetParams {
@@ -472,12 +498,24 @@ pub(crate) struct GeometrySetParams {
     kind = ui,
     label = "Set window geometry",
     scopes = [ui],
-    not_implemented = "M4 C4.1",
     example(title = "Resize the main window", params = r#"{"width": 1600, "height": 1000}"#),
-    agent_only = "native window state set by agents; users drag the window",
+    gui = "Moving or resizing the main window (the host reports the gesture as this command; M4 C4.1)",
 )]
-pub(crate) fn window_geometry_set(_cx: &mut Cx, _p: GeometrySetParams) -> Result<WindowGeometry, CommandError> {
-    Err(CommandError::not_implemented("window.geometry.set", "M4 C4.1"))
+pub(crate) fn window_geometry_set(cx: &mut Cx, p: GeometrySetParams) -> Result<WindowGeometry, CommandError> {
+    let before = cx.ui().shell().window;
+    let mut g = before;
+    g.x = p.x.unwrap_or(g.x);
+    g.y = p.y.unwrap_or(g.y);
+    g.width = p.width.unwrap_or(g.width);
+    g.height = p.height.unwrap_or(g.height);
+    g.maximized = p.maximized.unwrap_or(g.maximized);
+    // 01 §5.4 visibility guarantee: the window stays reachable on the screens there are.
+    let g = cx.ui().shell().clamp(g);
+    if g != before {
+        cx.ui_mut().shell_mut().window = g;
+        publish_window(cx);
+    }
+    Ok(geometry(cx))
 }
 
 /// `{minimized}`.
@@ -493,12 +531,15 @@ pub(crate) struct Minimized {
     kind = toggle,
     label = "Minimise",
     scopes = [ui],
-    not_implemented = "M4 C4.1",
     example(title = "Minimise the main window", params = r#"{"minimized": true}"#),
-    gui = "Window menu (M4)",
+    gui = "Window menu › Minimise (macOS: Primary+M; M4 C4.1)",
 )]
-pub(crate) fn window_minimized_set(_cx: &mut Cx, _p: Minimized) -> Result<Minimized, CommandError> {
-    Err(CommandError::not_implemented("window.minimized.set", "M4 C4.1"))
+pub(crate) fn window_minimized_set(cx: &mut Cx, p: Minimized) -> Result<Minimized, CommandError> {
+    if cx.ui().shell().minimized != p.minimized {
+        cx.ui_mut().shell_mut().minimized = p.minimized;
+        publish_window(cx);
+    }
+    Ok(p)
 }
 
 #[command(
@@ -506,10 +547,11 @@ pub(crate) fn window_minimized_set(_cx: &mut Cx, _p: Minimized) -> Result<Minimi
     kind = ui,
     label = "Bring All to Front",
     scopes = [ui],
-    not_implemented = "M4 C4.1",
     example(title = "Raise every application window", params = "{}"),
-    gui = "Window menu (M4)",
+    gui = "Window menu › Bring All to Front (M4 C4.1)",
 )]
-pub(crate) fn window_raise_all_run(_cx: &mut Cx, _p: NoParams) -> Result<super::common::Empty, CommandError> {
-    Err(CommandError::not_implemented("window.raiseAll.run", "M4 C4.1"))
+pub(crate) fn window_raise_all_run(cx: &mut Cx, _p: NoParams) -> Result<super::common::Empty, CommandError> {
+    cx.ui_mut().shell_mut().minimized = false;
+    cx.emit("shell.raiseAll", json!({}));
+    Ok(super::common::Empty {})
 }

@@ -448,6 +448,8 @@ pub struct UiState {
     floating_hidden: bool,
     focused: Option<String>,
     remembered: BTreeMap<String, Place>,
+    /// View windows, the main window, start screen, context help and sensor facts (M4 C4.1; [`crate::shell`]).
+    shell: crate::shell::ShellState,
 }
 
 impl Default for UiState {
@@ -465,6 +467,7 @@ impl Default for UiState {
             floating_hidden: false,
             focused: Some("cameraView".to_owned()),
             remembered: BTreeMap::new(),
+            shell: crate::shell::ShellState::default(),
         }
     }
 }
@@ -526,6 +529,54 @@ impl UiState {
     #[must_use]
     pub fn layout(&self) -> Layout {
         Layout::from(&self.live)
+    }
+
+    /// The shell state (views, main window, start screen, sensors; M4 C4.1).
+    #[must_use]
+    pub fn shell(&self) -> &crate::shell::ShellState {
+        &self.shell
+    }
+
+    /// The shell state, mutable.
+    pub fn shell_mut(&mut self) -> &mut crate::shell::ShellState {
+        &mut self.shell
+    }
+
+    /// Whether a panel is shown in the arrangement in use (central, docked as any tab, or a visible floating panel).
+    #[must_use]
+    pub fn panel_visible(&self, panel: &str) -> bool {
+        let a = self.active();
+        Self::find(a, panel).is_some()
+            || (!self.floating_hidden && a.floating.iter().any(|f| f.panel_id == panel && f.visible))
+    }
+
+    /// The active view window (01 §4, M4 C4.1): the view window the user focused last while it is shown, else the
+    /// central view.
+    #[must_use]
+    pub fn active_view(&self) -> &str {
+        match self.shell.active_view.as_deref() {
+            Some(v) if self.panel_visible(v) => v,
+            _ => self.central_panel(),
+        }
+    }
+
+    /// The type of the active view window.
+    #[must_use]
+    pub fn active_view_type(&self) -> crate::shell::ViewType {
+        let id = self.active_view();
+        self.shell
+            .views
+            .iter()
+            .find(|v| v.view_id == id)
+            .map(|v| v.ty)
+            .or_else(|| crate::shell::ViewType::of_panel(id))
+            .unwrap_or(crate::shell::ViewType::Camera)
+    }
+
+    /// The working mode: the active view window's type decides (01 §4).
+    #[must_use]
+    pub fn mode(&self) -> crate::app::Mode {
+        self.active_view_type().mode()
     }
 
     /// The central view (the active view) of the arrangement in use.
@@ -992,6 +1043,37 @@ impl UiState {
         }
         self.workspaces.insert(at - 1, Workspace { name: n.clone(), built_in: false, bundled: None, layout });
         Ok((n, at))
+    }
+
+    /// `workspace.import` (M4 C4.1): stores an imported layout under `name`. `replace` overwrites the layout of an
+    /// existing workspace of that name (a built-in one stays restorable); `rename` picks the first free name
+    /// `<name> 2`, `<name> 3`, … Returns the name used.
+    ///
+    /// # Errors
+    /// `workspace.nameInvalid`, `workspace.exists` (neither `replace` nor `rename`), `arg.invalid` for an invalid
+    /// layout.
+    pub fn import(&mut self, name: &str, layout: Layout, replace: bool, rename: bool) -> Result<String, CommandError> {
+        let a = Arrangements::from(layout);
+        validate_layout(&a)?;
+        let n = name.trim();
+        if replace && let Some(w) = self.workspaces.iter_mut().find(|w| w.name == n) {
+            w.layout = a.clone();
+            if self.current == n {
+                self.live = a;
+            }
+            return Ok(n.to_owned());
+        }
+        let chosen = if rename && self.workspaces.iter().any(|w| w.name == n) {
+            (2..10_000)
+                .map(|i| format!("{n} {i}"))
+                .find(|c| !self.workspaces.iter().any(|w| &w.name == c))
+                .unwrap_or_else(|| format!("{n} copy"))
+        } else {
+            n.to_owned()
+        };
+        let checked = self.check_new_name(&chosen)?;
+        self.workspaces.push(Workspace { name: checked.clone(), built_in: false, bundled: None, layout: a });
+        Ok(checked)
     }
 
     /// `workspace.rename`.

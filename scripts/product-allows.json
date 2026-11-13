@@ -24,12 +24,6 @@
     "clippy::too_many_arguments": 1,
     "dead_code": 2
   },
-  "crates/executor/src/commands/window.rs": {
-    "dead_code": 1
-  },
-  "crates/executor/src/commands/workspace.rs": {
-    "dead_code": 2
-  },
   "crates/executor/src/run.rs": {
     "clippy::expect_used": 1,
     "clippy::panic": 1,

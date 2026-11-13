@@ -7,7 +7,7 @@ use tt_model::{Id, ObjectType};
 use tt_registry::{CommandError, codes, command};
 
 use super::common::{Direction, NoParams, OnUnsaved, event_not_invocable, invalid};
-use crate::app::{AppContext, AppState, Mode, ProjectRef, mode_of_view};
+use crate::app::{AppContext, AppState, Mode, ProjectRef};
 use crate::cx::Cx;
 use crate::rules;
 use crate::session::Session;
@@ -426,11 +426,12 @@ pub(crate) fn app_mode_set(cx: &mut Cx, p: ModeSetParams) -> Result<ModeResult, 
         ModeParam::Drawing => Mode::Drawing,
         ModeParam::Staging => Mode::Staging,
     };
-    let allowed: &[&str] = match mode {
-        Mode::Drawing => &["drawingView"],
-        Mode::Staging => &["cameraView", "topView", "sideView"],
-    };
+    // The view windows whose current type belongs to the mode (each window can switch its type, 01 §4).
+    let of_mode: Vec<String> =
+        cx.ui().shell().views.iter().filter(|v| v.ty.mode() == mode).map(|v| v.view_id.clone()).collect();
+    let allowed: Vec<&str> = of_mode.iter().map(String::as_str).collect();
     let current = cx.ui().central_panel().to_owned();
+    let active = cx.ui().active_view().to_owned();
     let view = match p.view_id {
         Some(v) if allowed.contains(&v.as_str()) => v,
         Some(v) => {
@@ -443,13 +444,25 @@ pub(crate) fn app_mode_set(cx: &mut Cx, p: ModeSetParams) -> Result<ModeResult, 
                 json!({ "pointer": "/viewId", "allowed": { "enum": allowed } }),
             ));
         }
+        None if allowed.contains(&active.as_str()) => active.clone(),
         None if allowed.contains(&current.as_str()) => current.clone(),
+        None if allowed.is_empty() => {
+            // No window shows a view of the mode: the active window switches its type (01 §4).
+            let ty =
+                if mode == Mode::Drawing { crate::shell::ViewType::Drawing } else { crate::shell::ViewType::Camera };
+            let w = cx.ui_mut().shell_mut().view_mut(&active)?;
+            w.previous = Some(w.ty);
+            w.ty = ty;
+            active.clone()
+        }
         None => allowed[0].to_owned(),
     };
+    // A mode switch makes that view window central (C1.2 behaviour, unchanged).
     if view != current {
         cx.ui_mut().move_panel(&view, "central", None, "tab", None)?;
     }
-    Ok(ModeResult { mode: mode_of_view(cx.ui().central_panel()), view_id: view })
+    cx.ui_mut().shell_mut().active_view = Some(view.clone());
+    Ok(ModeResult { mode: cx.ui().mode(), view_id: view })
 }
 
 /// `app.info.get` result.
