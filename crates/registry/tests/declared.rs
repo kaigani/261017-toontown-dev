@@ -74,10 +74,11 @@ fn declarations_carry_owner_scopes_project_rule_undo_and_gui() {
     let get = |id: &str| DECLARED.iter().find(|c| c.decl.id == id).unwrap().decl;
     assert!(get("export.movie.run").scopes.contains(&Scope::FilesWrite));
     assert!(get("import.file.run").scopes.contains(&Scope::FilesRead));
-    assert!(get("prefs.set").scopes.contains(&Scope::Prefs));
+    // `prefs.set` was the sample until M4 C4.1 implemented it (its 01 §1.3 no-project rule: c41_kernel).
+    assert!(get("anim.prefs.set").scopes.contains(&Scope::Prefs));
     assert!(get("export.publish.run").scopes.contains(&Scope::Network));
     assert!(get("print.run").scopes.contains(&Scope::Print));
-    assert!(!get("prefs.set").needs_project, "01 §1.3: preferences work without a project");
+    assert!(DECLARED.iter().all(|c| c.decl.id != "prefs.set"), "implemented in M4 C4.1");
     assert!(get("timeline.rows.list").needs_project);
     assert_eq!(owner_of("import.movie.run"), "M8 C8.3");
     assert_eq!(owner_of("anim.key.add"), "M3 C3.2");
