@@ -238,3 +238,149 @@ mod part_b_settings {
         std::fs::remove_dir_all(r).unwrap();
     }
 }
+mod part_b_splitter {
+    use super::*;
+    #[test]
+    fn all_builtin_tabs_resize_only_area_and_noop_is_silent() {
+        let r = root();
+        let h = over(&r);
+        let names = ok(&h, "workspace.list", json!({}));
+        let mut checked = 0;
+        for entry in names.as_array().unwrap().iter().filter(|w| w["builtIn"] == true) {
+            ok(&h, "workspace.select", json!({"name":entry["name"]}));
+            for area in ["left", "right", "top", "bottom"] {
+                let layout = ok(&h, "workspace.get", json!({}));
+                let Some(groups) = layout["docks"][area].as_array() else { continue };
+                let panels: Vec<_> =
+                    groups.iter().flat_map(|g| g["tabs"].as_array().unwrap().iter().cloned()).collect();
+                for panel in panels {
+                    ok(&h, "workspace.save", json!({}));
+                    let path = r.join("Settings/workspaces.json");
+                    let disk = std::fs::read(&path).ok();
+                    let modified = std::fs::metadata(&path).ok().and_then(|m| m.modified().ok());
+                    let before = ok(&h, "workspace.get", json!({}));
+                    let ev = h.subscribe();
+                    let mut p = json!({"panelId":panel,"area":area,"relativeTo":panel,"position":"tab"});
+                    ok(&h, "window.panel.move", p.clone());
+                    assert_eq!(ok(&h, "workspace.get", json!({})), before);
+                    assert!(ev.try_iter().all(|e| e.name != "workspace.changed"));
+                    assert_eq!(std::fs::read(&path).ok(), disk);
+                    assert_eq!(std::fs::metadata(&path).ok().and_then(|m| m.modified().ok()), modified);
+                    for size in [1, 32767, 333] {
+                        p["size"] = json!(size);
+                        let old = ok(&h, "workspace.get", json!({}));
+                        ok(&h, "window.panel.move", p.clone());
+                        let mut expected = old.clone();
+                        expected["docks"][area][0]["size"] = json!(size);
+                        assert_eq!(ok(&h, "workspace.get", json!({})), expected, "{} {area} {panel}", entry["name"]);
+                        let count = ev.try_iter().filter(|e| e.name == "workspace.changed").count();
+                        assert_eq!(count, usize::from(old != expected));
+                        ok(&h, "window.panel.move", p.clone());
+                        assert!(ev.try_iter().all(|e| e.name != "workspace.changed"));
+                    }
+                    for size in [0, 32768] {
+                        p["size"] = json!(size);
+                        assert!(h.invoke(Invocation::user("window.panel.move", p.clone())).error.is_some());
+                    }
+                    p.as_object_mut().unwrap().remove("size");
+                    for position in ["before", "after", "above", "below"] {
+                        p["position"] = json!(position);
+                        let e = h.invoke(Invocation::user("window.panel.move", p.clone())).error.unwrap();
+                        assert_eq!(e.code, "arg.invalid");
+                    }
+                    p["position"] = json!("tab");
+                    p["area"] = json!(if area == "left" { "right" } else { "left" });
+                    assert_eq!(h.invoke(Invocation::user("window.panel.move", p)).error.unwrap().code, "arg.invalid");
+                    checked += 1;
+                }
+            }
+        }
+        assert!(checked >= 6);
+        drop(h);
+        std::fs::remove_dir_all(r).unwrap();
+    }
+    #[test]
+    fn second_group_resize_and_saved_restore() {
+        let r = root();
+        let h = over(&r);
+        let mut layout = ok(&h, "workspace.get", json!({}));
+        layout["docks"]["left"] = json!([{"tabs":["history"],"current":"history","size":200},{"tabs":["colour","library"],"current":"library","size":100}]);
+        // Remove these panels from their original places before applying the fixture.
+        for area in ["right", "top", "bottom"] {
+            if let Some(groups) = layout["docks"][area].as_array_mut() {
+                groups.retain_mut(|g| {
+                    g["tabs"]
+                        .as_array_mut()
+                        .unwrap()
+                        .retain(|p| ![json!("history"), json!("colour"), json!("library")].contains(p));
+                    if g["tabs"].as_array().unwrap().is_empty() {
+                        return false;
+                    }
+                    if !g["tabs"].as_array().unwrap().contains(&g["current"]) {
+                        g["current"] = g["tabs"][0].clone();
+                    }
+                    true
+                });
+            }
+        }
+        ok(&h, "workspace.layout.set", json!({"layout":layout}));
+        for panel in ["colour", "library"] {
+            let before = ok(&h, "workspace.get", json!({}));
+            ok(
+                &h,
+                "window.panel.move",
+                json!({"panelId":panel,"relativeTo":panel,"position":"tab","area":"left","size":444}),
+            );
+            let mut expected = before;
+            expected["docks"]["left"][0]["size"] = json!(444);
+            assert_eq!(ok(&h, "workspace.get", json!({})), expected);
+        }
+        let current = ok(&h, "workspace.get", json!({}));
+        let list = ok(&h, "workspace.list", json!({}));
+        assert!(list.as_array().unwrap().iter().any(|e| e["modified"] == true));
+        // Workspace UI changes do not add document undo steps.
+        assert!(h.invoke(Invocation::user("edit.undo", json!({}))).error.is_some());
+        assert!(h.invoke(Invocation::user("edit.redo", json!({}))).error.is_some());
+        assert_eq!(ok(&h, "workspace.get", json!({})), current);
+        ok(&h, "workspace.save", json!({}));
+        drop(h);
+        let h = over(&r);
+        assert_eq!(ok(&h, "workspace.get", json!({})), current);
+        drop(h);
+        std::fs::remove_dir_all(r).unwrap();
+    }
+    #[test]
+    fn self_relative_special_panels_remain_refused() {
+        let h = ExecutorHandle::spawn(Default::default()).unwrap();
+        for (panel, area) in [("cameraView", "central"), ("no-such-panel", "left")] {
+            assert!(
+                h.invoke(Invocation::user(
+                    "window.panel.move",
+                    json!({"panelId":panel,"relativeTo":panel,"position":"tab","area":area,"size":333})
+                ))
+                .error
+                .is_some()
+            );
+        }
+        ok(&h, "window.panel.set", json!({"panelId":"history","floating":true}));
+        assert_eq!(
+            h.invoke(Invocation::user(
+                "window.panel.move",
+                json!({"panelId":"history","relativeTo":"history","position":"tab","area":"left","size":333})
+            ))
+            .error
+            .unwrap()
+            .code,
+            "arg.invalid"
+        );
+        ok(&h, "window.panel.set", json!({"panelId":"history","visible":false}));
+        assert!(
+            h.invoke(Invocation::user(
+                "window.panel.move",
+                json!({"panelId":"history","relativeTo":"history","position":"tab","area":"left","size":333})
+            ))
+            .error
+            .is_some()
+        );
+    }
+}
