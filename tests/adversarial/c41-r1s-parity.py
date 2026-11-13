@@ -2,7 +2,7 @@
 import json, pathlib, re
 root = pathlib.Path('.')
 index = (root/'desktop/src/ipc/generated/commands.ts').read_text(encoding='utf-8')
-ids = set(re.findall(r'^  "([\w.]+)": \{', index, re.M))
+ids = set(re.findall(r'^  "([\w.]+)": \{\n    kind:', index, re.M))
 manifest=json.loads((root/'desktop/src/ui-bindings/menu.json').read_text())
 def walk(x):
     if isinstance(x,dict):
@@ -24,3 +24,4 @@ for p in (root/'desktop/src').rglob('*.tsx'):
 keys=json.loads((root/'crates/executor/src/keymap-default.json').read_text())
 print(json.dumps({'registered':len(ids),'manifest_entries':len(items),'uncovered':sorted(ids-surfaces-just.keys()),'written_agent_only':just,'unknown_manifest':sorted({c['command'] for c in items}-ids),'keymap':keys},indent=2))
 assert all(c['command'] in ids for c in items)
+
