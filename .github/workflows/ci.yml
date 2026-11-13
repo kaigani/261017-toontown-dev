@@ -934,6 +934,15 @@ jobs:
             app=desktop-artifact/Toontown.app/Contents/MacOS/toontown; VPY=.venv-gui/bin/python
           fi
           PYTHONIOENCODING=utf-8 $VPY scripts/mcp-conformance.py --http "$app" "desktop-gui/mcp-conformance-http.json"
+      - name: Reviewer attached-mode lifecycle probe (C4.1 round 1) against the running application
+        if: always()
+        run: |
+          if [ "$RUNNER_OS" = "Windows" ]; then
+            app=desktop-artifact/default-build/toontown.exe; VPY=.venv-gui/Scripts/python
+          else
+            app=desktop-artifact/Toontown.app/Contents/MacOS/toontown; VPY=.venv-gui/bin/python
+          fi
+          PYTHONIOENCODING=utf-8 $VPY -I tests/adversarial/c41-r1-http-lifecycle.py "$app" "desktop-gui/c41-r1-http-lifecycle.json"
       - uses: actions/upload-artifact@v7
         if: always()
         with:

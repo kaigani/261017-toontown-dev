@@ -687,6 +687,7 @@ pub fn start_with(handle: ExecutorHandle, opts: HttpOptions, limits: Limits) -> 
                     return busy(&mut stream);
                 };
                 serve_connection(&mut stream, &shared, accepted, unauth);
+                linger_close(&mut stream);
             });
         }
     })?;
@@ -703,6 +704,29 @@ pub fn start_with(handle: ExecutorHandle, opts: HttpOptions, limits: Limits) -> 
 /// `503` for a connection over a cap (nothing is read).
 fn busy(stream: &mut TcpStream) {
     respond(stream, "503 Service Unavailable", &[("Retry-After", "1".to_owned())], b"");
+    linger_close(stream);
+}
+
+/// Bytes discarded at most after the answer, so an early refusal (sent before the request body was read) reaches the
+/// client: closing a socket with unread input makes the operating system reset the connection, and a reset can drop
+/// the answer before the client reads it.
+const LINGER_BYTES: usize = 256 << 10;
+/// How long the discarding lasts at most.
+const LINGER_TIME: Duration = Duration::from_secs(1);
+
+/// Ends a connection gracefully: no more output, then up to [`LINGER_BYTES`] of remaining input discarded through a
+/// fixed buffer within [`LINGER_TIME`] (nothing is reserved or parsed), then the socket closes.
+fn linger_close(stream: &mut TcpStream) {
+    let _ = stream.shutdown(std::net::Shutdown::Write);
+    let deadline = Instant::now() + LINGER_TIME;
+    let mut sink = [0u8; 4096];
+    let mut discarded = 0usize;
+    while discarded < LINGER_BYTES && arm(stream, deadline) {
+        match stream.read(&mut sink) {
+            Ok(0) | Err(_) => break,
+            Ok(n) => discarded += n,
+        }
+    }
 }
 
 /// Ends sessions with no open stream and no request in flight, idle for longer than `idle` (O-7).

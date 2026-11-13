@@ -27,6 +27,9 @@ NOT_SUITES = {
     # M3 C3.4 round 2 (declared in reviews/M3-C3.4-r2-response.md): two round collectors, not product invariants.
     "c34-r2-sdk.py": "SDK 2.0.0 probe collector: needs `pip install mcp` and the release binary at a Windows path; "
     "receipts retained under reviews/evidence/M3-C3.4-r2",
+    # M4 C4.1 round 1 (declared in reviews/M4-C4.1-r1-response.md): a probe of the running application.
+    "c41-r1-http-lifecycle.py": "attached-mode probe: needs the application binary and a receipt path; CI runs it in "
+    "the `desktop gui` job on both OSes against the bundled product build (receipt desktop-gui-<OS>)",
     "c34-r2-inventory.py": "round-2 receipt pinned to 1cbd190..967229a that writes reviews/evidence/M3-C3.4-r2/"
     "inventory.json and asserts the register ends at SI-110 (SI-111 is ruled in round 2); its live counterpart is "
     "scripts/check-merge-note-inventory.py",

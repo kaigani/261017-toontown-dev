@@ -30,7 +30,11 @@ class ReviewPolicy(unittest.TestCase):
                    "crates/engine/tests/c11_r1_wire.rs",
                    # Amended by the builder in round 2 per the orchestrator's C11-R2-01 ruling (2026-10-18): the
                    # guards.mjs MIT-0 edit "is accepted retroactively" and is declared in the round-2 response.
-                   "tests/adversarial/guards.mjs"}
+                   "tests/adversarial/guards.mjs",
+                   # Harness timeouts raised by the builder per the orchestrator's M4 C4.1 round-1 ruling O-1
+                   # (2026-11-13), declared in reviews/M4-C4.1-r1-response.md; no other change to either file.
+                   "tests/adversarial/c01-r2-boundary.test.mjs",
+                   "desktop/src/test/c01-r2-node.test.ts"}
         self.assertFalse(changed - allowed, "C11-R2-01: unauthorized reviewer-test edit: " + str(changed - allowed))
 
     def test_claimed_response_raw_logs_are_committed(self):
