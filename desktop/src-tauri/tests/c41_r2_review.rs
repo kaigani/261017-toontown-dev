@@ -60,3 +60,22 @@ mod part_c1_freshness {
         Ok(())
     }
 }
+
+mod part_c1_watchdog {
+    #[test]
+    fn supplied_clock_late_reply_resets_all_strikes() {
+        use tt_desktop::watchdog::{PERIOD, Watchdog, due};
+        let start = std::time::Instant::now();
+        let mut w = Watchdog::default();
+        for n in 2..=4 {
+            assert_eq!(due(start, n) - due(start, n - 1), PERIOD);
+            w.record(false);
+        }
+        assert!(w.not_responding());
+        assert_eq!(w.record(true), Some(false));
+        for _ in 0..2 {
+            assert_eq!(w.record(false), None);
+        }
+        assert!(!w.not_responding());
+    }
+}

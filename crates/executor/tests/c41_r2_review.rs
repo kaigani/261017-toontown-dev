@@ -439,3 +439,47 @@ mod part_c1_freshness {
         assert_eq!(tree["renderedSeq"], seq, "the agent must know which events this tree reflects: {tree}");
     }
 }
+
+mod part_c1_restart {
+    use super::*;
+    use std::time::{Duration, Instant};
+    #[test]
+    fn released_engine_cannot_refresh_and_third_cannot_steal() {
+        let r = root();
+        let first = over(&r);
+        let c = ok(&first, "project.create", json!({"name":"Recovery fence"}));
+        ok(&first, "doc.object.patch", json!({"targets":[c["sceneId"]],"props":{"meta":{"value":"Before"}}}));
+        first.run_maintenance(true).unwrap();
+        let start = Instant::now();
+        let file = loop {
+            if let Some(p) = std::fs::read_dir(r.join("Recovery"))
+                .unwrap()
+                .filter_map(Result::ok)
+                .map(|e| e.path().join("recovery.json"))
+                .find(|p| p.exists())
+            {
+                break p;
+            }
+            assert!(start.elapsed() < Duration::from_secs(30));
+            std::thread::yield_now();
+        };
+        let second = over(&r);
+        let owner = first.abandon();
+        assert_eq!(second.release_recovery_of(&owner).unwrap(), 1);
+        let before = std::fs::read(&file).unwrap();
+        ok(&first, "doc.object.patch", json!({"targets":[c["sceneId"]],"props":{"meta":{"value":"After"}}}));
+        first.run_maintenance(true).unwrap();
+        assert_eq!(std::fs::read(&file).unwrap(), before);
+        let list = ok(&second, "project.recovery.list", json!({}));
+        let started = ok(&second, "project.recovery.open", json!({"recoveryId":list[0]["recoveryId"]}));
+        ok(&second, "job.wait", json!({"jobId":started["jobId"],"timeoutMs":60000}));
+        let claimed = std::fs::read(&file).unwrap();
+        let third = over(&r);
+        assert_eq!(third.release_recovery_of(&owner).unwrap(), 0);
+        assert_eq!(std::fs::read(file).unwrap(), claimed);
+        drop(third);
+        drop(second);
+        drop(first);
+        std::fs::remove_dir_all(r).unwrap();
+    }
+}
