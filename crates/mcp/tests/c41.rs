@@ -6,6 +6,8 @@
 #![allow(clippy::unwrap_used, clippy::expect_used, clippy::panic, missing_docs, reason = "test")]
 
 mod support;
+#[path = "c41/transport.rs"]
+mod transport;
 
 use std::io::{Read, Write};
 use std::net::{SocketAddr, TcpStream};
@@ -269,7 +271,7 @@ fn connections_before_their_token_check_are_capped() {
     loop {
         let reply = raw(srv.addr, b"");
         if status_of(&reply) == 503 {
-            assert!(reply.contains("Retry-After: 1"), "{reply}");
+            assert!(reply.contains("Retry-After: 0"), "{reply}");
             break;
         }
         assert!(started.elapsed() < READ_BOUND, "no 503: {reply}");

@@ -1,7 +1,8 @@
 # M4 design note — HTTP admission, refusal and session lifetime (ruling O-15)
 
 Status: decided before implementation (M4 C4.1 round 2, ruling O-15), committed before `crates/mcp/src/http.rs`
-changes. Owner: builder. Findings answered: C41-R2-01 (idle unauthenticated sockets shut out authenticated callers),
+changes (commit `5b9ccf8`). Two mechanisms were corrected while implementing it, without changing an invariant: the
+eviction signal (§4: a flag, not a second socket handle) and the client check of a quiet stream (§6). Owner: builder. Findings answered: C41-R2-01 (idle unauthenticated sockets shut out authenticated callers),
 C41-R2-02 (refusals escape the connection cap), C41-R2-03 (a session expires while its own request body arrives).
 Spec and decisions: 11 §4 (Streamable HTTP), ADR-0022 decision 2 (resource bounds, O-6, O-7).
 
@@ -65,8 +66,11 @@ admitting it. So when the pending pool is full, the accept thread:
 1. answers the new connection `503 Service Unavailable` with `Retry-After: 0` (a non-blocking write, nothing read) and
    hands it to the closer; and
 2. **evicts the pending connection that has waited longest for its head**: it is removed from the pool under the pool
-   lock and its socket is shut down, so its worker's read ends at once and the worker ends. The pool has room again
-   immediately (the evicted worker's slot in C is freed when its thread ends).
+   lock and its eviction flag is set. Its worker reads the head in slices of 50 ms and checks the flag between them,
+   so it ends within one slice and closes the socket without an answer. The pool has room again immediately (the
+   evicted worker's slot in C is freed when its thread ends, at most 50 ms later). No second handle on a pending socket
+   is kept for this: on Windows, closing a duplicated socket handle resets the connection, which broke ordinary
+   answers in the first implementation of this note.
 
 So no connection can hold a pending slot past the next refusal: a pending connection lives until its head is complete,
 its head deadline, or the moment a newcomer needs room and it is the oldest. Idle sockets, however many and however
@@ -116,7 +120,8 @@ that is the token holder's own load.
   idle time starts when the last request ended. `Drop` runs on every return path: an answer written, a refusal, a body
   deadline, a client that went away mid-body or mid-stream (the read or write fails and the handler returns), and a
   panic in the handler (unwinding drops the guard). The guard is held until the answer, or the SSE stream, is fully
-  written.
+  written. A quiet stream checks every second that its client is still there (a non-blocking peek sees the end or an
+  error), so a client that went away releases the guard within a second, not at the next 15-second keep-alive.
 - **Expiry** removes a session only when `in_flight == 0` and `last_seen` is older than `session_idle`, under the map
   lock. A session with an admitted request is therefore never expired, from the moment its head is accepted until its
   answer is written (C41-R2-03).
@@ -144,12 +149,12 @@ There are three locks: the **pending pool** (`pending`), the **session map** (`s
 
 - Admission moves into the accept thread, before any thread is created; a worker is created only for an admitted
   socket (C41-R2-02).
-- The pending pool becomes a registry of the pending sockets (a clone of each, with its accept time) so that the
-  oldest can be evicted (C41-R2-01).
+- The pending pool becomes a registry of the pending connections (an eviction flag and the accept time of each) so
+  that the oldest can be evicted (C41-R2-01).
 - Lingering moves from the worker threads to one closer thread with its cap L; refusals from the accept thread are
   written there without a thread (C41-R2-02).
 - The session gains `in_flight` and an RAII guard; expiry checks `in_flight`; `DELETE`, the end of a session and stop
-  clear its routes (C41-R2-03).
+  clear its routes (C41-R2-03). A quiet SSE stream checks its client every second.
 - `HttpServer::stats()` reports the workers, pending connections, lingering sockets and sessions, so the tests check
   the bounds of §3 directly.
 
