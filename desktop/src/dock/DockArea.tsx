@@ -18,6 +18,7 @@ import { PANEL_CATALOGUE, panelInfo } from '../panels/catalogue';
 import { PanelBody } from '../panels/PanelBody';
 import { useActions } from '../shell/actionsApi';
 import { useSlice } from '../state/context';
+import { useAppliedTheme } from '../theme/theme';
 import type { Arrangement, Layout, PanelEntry } from '../state/types';
 import { applyPlan } from './applyPlan';
 import { dropToMove, fingerprint } from './layoutPlan';
@@ -36,9 +37,21 @@ function Tab(props: IDockviewPanelHeaderProps<{ panelId: string }>) {
   const panels = (useSlice('panels') as readonly PanelEntry[] | undefined) ?? [];
   const floating = panels.find((p) => p.panelId === id)?.floating === true;
   const [menu, setMenu] = useState<{ x: number; y: number } | null>(null);
+  // The shown tab of its group is reported as selected (the UI tree's `checked`; O-5).
+  const [shown, setShown] = useState(props.api.isVisible);
+  useEffect(() => {
+    const d = props.api.onDidVisibilityChange((e) => {
+      setShown(e.isVisible);
+    });
+    return () => {
+      d.dispose();
+    };
+  }, [props.api]);
   return (
     <div
       className="dock-tab"
+      role="tab"
+      aria-selected={shown}
       data-tt-role="tab"
       data-tt-id={`tab.${id}`}
       data-tt-label={title(id)}
@@ -118,25 +131,9 @@ const components: Record<string, FunctionComponent<IDockviewPanelProps<{ panelId
   panel: PanelComponent,
 };
 
-/** Whether the applied theme is dark (theme.ts sets `data-theme` on the document element). */
-function useDarkTheme(): boolean {
-  const read = () => document.documentElement.getAttribute('data-theme') !== 'light';
-  const [dark, setDark] = useState(read);
-  useEffect(() => {
-    const observer = new MutationObserver(() => {
-      setDark(document.documentElement.getAttribute('data-theme') !== 'light');
-    });
-    observer.observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
-    return () => {
-      observer.disconnect();
-    };
-  }, []);
-  return dark;
-}
-
 export function DockArea({ layout, fullScreen }: { layout: Layout | undefined; fullScreen: boolean }) {
   const actions = useActions();
-  const dark = useDarkTheme();
+  const dark = useAppliedTheme() === 'dark';
   const apiRef = useRef<DockviewApi | null>(null);
   const shown = useRef<string>('');
   const arrangement: Arrangement | undefined = layout ? (fullScreen ? layout.fullScreen : layout) : undefined;

@@ -23,7 +23,7 @@ import { useShell, useSlice, useStoreState, type ShellServices } from './state/c
 import { ShellProvider } from './state/react';
 import { createStore } from './state/store';
 import type { AppState, Binding, Layout, PrefEntry, Theme, Tip } from './state/types';
-import { applyTheme } from './theme/theme';
+import { applyTheme, useAppliedTheme } from './theme/theme';
 
 // M0 spike pages (C0.2 tablet, C0.3 canvas), loaded only when the host was started with --spike. They exist only in
 // the diagnostics build (src/m0Diagnostics.d.ts): the default bundle contains neither page nor its chunk (C0.4).
@@ -405,8 +405,10 @@ function Window() {
   }, [appState]);
 
   const fullScreen = appState?.fullScreen === true;
+  // The applied theme is part of the reported tree (the app group's value), so an agent sees what the user sees.
+  const appliedTheme = useAppliedTheme();
   return (
-    <div className="app" ref={root} data-tt-role="group" data-tt-id="app">
+    <div className="app" ref={root} data-tt-role="group" data-tt-id="app" data-tt-value={appliedTheme}>
       <MainToolbar layout={layout} fullScreen={fullScreen} />
       <div className="workspace-row">
         <ToolPaletteRail layout={layout} fullScreen={fullScreen} />

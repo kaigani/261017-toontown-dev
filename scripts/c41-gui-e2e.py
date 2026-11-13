@@ -118,6 +118,50 @@ def os_escape(pid: int | None) -> dict:
     return {"ok": r.returncode == 0, "stderr": r.stderr[-400:]}
 
 
+def os_window_size(pid: int | None) -> dict | None:
+    """The application window's size as the operating system reports it, in logical pixels: Windows, the client area
+    (GetClientRect, divided by the window's DPI scale); macOS, the outer frame from System Events (points, title bar
+    included). `None` when it cannot be measured."""
+    if pid is None:
+        return None
+    try:
+        if sys.platform == "win32":
+            ps = (
+                "Add-Type -TypeDefinition 'using System;using System.Runtime.InteropServices;"
+                "public struct R{public int L,T,Ri,B;}"
+                "public static class W{[DllImport(\"user32.dll\")]public static extern bool GetClientRect(IntPtr h,out R r);"
+                "[DllImport(\"user32.dll\")]public static extern uint GetDpiForWindow(IntPtr h);}';"
+                f"$h=(Get-Process -Id {pid}).MainWindowHandle;$r=New-Object R;[W]::GetClientRect($h,[ref]$r)|Out-Null;"
+                "$d=[W]::GetDpiForWindow($h);if($d -eq 0){$d=96};"
+                "Write-Output ('{0} {1} {2}' -f ($r.Ri-$r.L),($r.B-$r.T),$d)"
+            )
+            out = subprocess.run(["powershell", "-NoProfile", "-Command", ps], timeout=30, check=False, capture_output=True, text=True).stdout.split()
+            w, h, dpi = (int(x) for x in out[:3])
+            scale = dpi / 96.0
+            return {"width": round(w / scale), "height": round(h / scale), "frame": "client"}
+        if sys.platform == "darwin":
+            script = f'tell application "System Events" to get size of first window of (first process whose unix id is {pid})'
+            out = subprocess.run(["osascript", "-e", script], timeout=30, check=False, capture_output=True, text=True).stdout
+            w, h = (int(x.strip()) for x in out.split(",")[:2])
+            return {"width": w, "height": h, "frame": "outer"}
+    except (ValueError, OSError, subprocess.SubprocessError):
+        return None
+    return None
+
+
+def size_matches(kernel: dict, os_size: dict | None) -> bool:
+    """The kernel's geometry (inner size) is the OS window's: equal client size on Windows (1 px rounding); on macOS the
+    outer frame is the inner size plus a title bar of at most 40 points."""
+    if not os_size:
+        return False
+    w, h = kernel.get("width"), kernel.get("height")
+    if not isinstance(w, int) or not isinstance(h, int):
+        return False
+    if os_size["frame"] == "client":
+        return abs(os_size["width"] - w) <= 1 and abs(os_size["height"] - h) <= 1
+    return abs(os_size["width"] - w) <= 1 and 0 <= os_size["height"] - h <= 40
+
+
 async def last_activity(session: ClientSession, tool: str) -> dict:
     """The newest activity-log entry of `tool` (the command a `key` call resolved to is recorded there)."""
     entries = (await run_cmd(session, "agent.activity.list", {"limit": 50})).get("result") or []
@@ -236,31 +280,40 @@ async def first_session(url: str, token: str, run: Run) -> None:
 
                 # Agent commands change the GUI: the History panel appears, the status bar hides and returns.
                 env = await run_cmd(session, "window.panel.set", {"panelId": "history", "visible": True})
-                run.check(env.get("status") == "ok", "window.panel.set history", env.get("error"))
                 root = await gui_tree(session, run, lambda r: by_id(r, "tab.history") is not None, "the History tab appears")
+                run.check(env.get("status") == "ok" and by_id(root, "tab.history") is not None,
+                          "window.panel.set history: the History tab is in the rendered GUI", env.get("error"))
                 env = await run_cmd(session, "ui.statusBar.set", {"visible": False})
                 root = await gui_tree(session, run, lambda r: by_id(r, "statusBar") is None, "the status bar hides")
+                run.check(by_id(root, "statusBar") is None, "ui.statusBar.set false: the GUI drops the status bar")
                 env = await run_cmd(session, "ui.statusBar.set", {"visible": True})
                 root = await gui_tree(session, run, lambda r: by_id(r, "statusBar") is not None, "the status bar returns")
+                run.check(by_id(root, "statusBar") is not None, "ui.statusBar.set true: the GUI shows the status bar")
 
                 # A project: the start screen closes, the window title names the project.
                 env = await run_cmd(session, "project.create", {"name": "Bounce", "onUnsaved": "fail"})
-                run.check(env.get("status") == "ok", "project.create", env.get("error"))
                 root = await gui_tree(session, run, lambda r: by_id(r, "startScreen") is None, "the start screen closes")
+                run.check(env.get("status") == "ok" and by_id(root, "startScreen") is None and by_id(root, "dock") is not None,
+                          "project.create: the GUI closes the start screen and shows the workspace", env.get("error"))
                 run.check("Bounce" in str(root.get("label", "")), "the window title names the project", root.get("label"))
                 run.save("tree-02-project.json", root)
                 run.shot("02-project", APP_PID["pid"])
 
                 # Workspaces: selecting Drawing makes the Drawing view central.
                 env = await run_cmd(session, "workspace.select", {"name": "Drawing"})
-                run.check(env.get("status") == "ok", "workspace.select Drawing", env.get("error"))
-                root = await gui_tree(session, run, lambda r: by_id(r, "tab.drawingView") is not None, "the Drawing view is shown")
+                root = await gui_tree(session, run, lambda r: (by_id(r, "tab.drawingView") or {}).get("checked") is True, "the Drawing view is shown")
+                tab = by_id(root, "tab.drawingView") or {}
+                run.check(env.get("status") == "ok" and tab.get("checked") is True,
+                          "workspace.select Drawing: the GUI shows the Drawing view as its group's selected tab", tab)
                 state = (await call(session, "get_state", {})).get("result") or {}
-                run.check(state.get("mode") == "drawing", "drawing mode follows the active view", state.get("activeView"))
+                run.check(state.get("mode") == "drawing" and (state.get("activeView") or {}).get("viewId") == "drawingView",
+                          "the kernel's mode follows the view the GUI shows (drawing)", {"mode": state.get("mode"), "activeView": state.get("activeView")})
 
                 # Preferences, a key binding, a user workspace and the window geometry (persisted, read back later).
                 env = await run_cmd(session, "prefs.set", {"values": {"interface.theme": "dark", "files.backups.count": 7}})
-                run.check(env.get("status") == "ok", "prefs.set", env.get("error"))
+                root = await gui_tree(session, run, lambda r: (by_id(r, "app") or {}).get("value") == "dark", "the GUI applies the dark theme")
+                run.check(env.get("status") == "ok" and (by_id(root, "app") or {}).get("value") == "dark",
+                          "prefs.set interface.theme dark: the GUI applies the dark theme", env.get("error"))
                 env = await run_cmd(session, "keymap.set", {"commandId": "project.save", "keys": "F2"})
                 run.check(env.get("status") == "ok", "keymap.set F2", env.get("error"))
                 # The key tool resolves through the kernel's keymap and runs the bound command: F2 runs project.save,
@@ -276,7 +329,7 @@ async def first_session(url: str, token: str, run: Run) -> None:
                 # A geometry that fits small runner displays (the Windows runner's is about 1024 x 768: the OS clamps a
                 # larger window and the kernel then stores the real size, as it should).
                 env = await run_cmd(session, "window.geometry.set", GEOMETRY)
-                run.check(env.get("status") == "ok", "window.geometry.set", env.get("error"))
+                run.check(env.get("status") == "ok", "window.geometry.set accepted", env.get("error"))
 
                 # Typed refusals reach the agent with their codes.
                 env = await run_cmd(session, "prefs.set", {"values": {"files.backups.count": 99}})
@@ -289,7 +342,8 @@ async def first_session(url: str, token: str, run: Run) -> None:
                 root = await gui_tree(session, run, lambda r: by_id(r, "preferences") is not None, "the preferences dialog opens")
                 run.shot("03-preferences", APP_PID["pid"])
                 state = (await call(session, "get_state", {})).get("result") or {}
-                run.check((state.get("modal") or {}).get("kind") == "dialog", "app.state.get reports the modal dialog", state.get("modal"))
+                run.check(by_id(root, "preferences") is not None and (state.get("modal") or {}).get("kind") == "dialog",
+                          "the GUI shows Preferences and reports it: app.state.get has the modal dialog", state.get("modal"))
                 t0 = time.monotonic()
                 env = await run_cmd(session, "doc.object.patch", {"targets": ["@current"], "props": {"meta": {"e2e": True}}})
                 waited = time.monotonic() - t0
@@ -314,10 +368,13 @@ async def first_session(url: str, token: str, run: Run) -> None:
                 env = await run_cmd(session, "doc.object.patch", {"targets": ["@current"], "props": {"meta": {"e2e": True}}})
                 run.check(env.get("status") == "ok", "after the dialog closed, an agent action is accepted", env)
                 run.save("activity.json", (await run_cmd(session, "agent.activity.list", {"limit": 100})).get("result"))
-                # The geometry the kernel holds before the restart (the window's real size, reported by the host).
+                # The geometry the kernel holds before the restart (the window's real size, reported by the host), and the
+                # size the operating system reports for the window itself.
                 run.geometry = (await run_cmd(session, "window.geometry.get")).get("result") or {}
                 size = (run.geometry.get("width"), run.geometry.get("height"))
-                run.check(size == (GEOMETRY["width"], GEOMETRY["height"]), "the window took the requested size", run.geometry)
+                measured = os_window_size(APP_PID["pid"])
+                run.check(size == (GEOMETRY["width"], GEOMETRY["height"]) and size_matches(run.geometry, measured),
+                          "the OS window has the requested size, which the kernel holds", {"kernel": run.geometry, "os": measured})
 
 
 async def second_session(url: str, token: str, run: Run) -> None:
@@ -334,8 +391,12 @@ async def second_session(url: str, token: str, run: Run) -> None:
                 run.check("E2E" in names, "the user workspace persisted", names)
                 g = (await run_cmd(session, "window.geometry.get")).get("result") or {}
                 before = {k: run.geometry.get(k) for k in ("x", "y", "width", "height")}
-                run.check({k: g.get(k) for k in before} == before, "the window geometry persisted", {"before": before, "after": g})
+                measured = os_window_size(APP_PID["pid"])
+                run.check({k: g.get(k) for k in before} == before and size_matches(g, measured),
+                          "the window geometry persisted: the restarted OS window has it", {"before": before, "after": g, "os": measured})
                 root = await gui_tree(session, run, lambda r: by_id(r, "startScreen") is not None, "the restarted GUI shows the start screen")
+                root = await gui_tree(session, run, lambda r: (by_id(r, "app") or {}).get("value") == "dark", "the restarted GUI applies the dark theme")
+                run.check((by_id(root, "app") or {}).get("value") == "dark", "the persisted theme is applied by the restarted GUI")
                 run.save("tree-04-restart.json", root)
                 run.shot("04-restart", APP_PID["pid"])
 

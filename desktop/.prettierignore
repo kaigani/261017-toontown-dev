@@ -4,3 +4,6 @@ node_modules
 pnpm-lock.yaml
 # Generated from the Rust types (crates/engine/tests/frontend_schemas.rs); the generator owns their layout.
 src/ipc/generated
+# Reviewer-owned suites merged unchanged (C4.1 round 1 static audit); builders may not reformat them.
+src/test/c41-r1s-references.test.ts
+src/test/c41-r1s-toolbar.test.tsx

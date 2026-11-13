@@ -1,6 +1,8 @@
 // Themes (01 §5.8; M4 C4.1): light, dark, follow-system and user themes, applied at once as CSS custom properties
 // (`--tt-<token>`), no restart. The built-in palettes live in styles.css under `[data-theme]`; a user theme sets its
 // tokens inline over the matching built-in base.
+import { useEffect, useState } from 'react';
+
 import type { Theme } from '../state/types';
 
 /** The colour tokens a theme defines (crates/executor/src/themes.rs TOKENS). */
@@ -81,4 +83,21 @@ export function applyTheme(themeId: string, themes: readonly Theme[]): string {
     systemQuery.addEventListener('change', systemListener);
   }
   return 'system';
+}
+
+/** The theme applied to the document now (`light` or `dark`; `data-theme` on the root element), following changes. */
+export function useAppliedTheme(): 'light' | 'dark' {
+  const read = (): 'light' | 'dark' =>
+    document.documentElement.getAttribute('data-theme') === 'light' ? 'light' : 'dark';
+  const [theme, setTheme] = useState(read);
+  useEffect(() => {
+    const observer = new MutationObserver(() => {
+      setTheme(read());
+    });
+    observer.observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
+    return () => {
+      observer.disconnect();
+    };
+  }, []);
+  return theme;
 }
