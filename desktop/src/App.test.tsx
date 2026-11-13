@@ -166,15 +166,19 @@ describe('typed errors and cancellation (M3 merge note §8 item 1)', () => {
     const box = await screen.findByRole('alertdialog');
     expect(within(box).getByTestId('message-id').textContent).toBe('workspace.notFound');
     expect(within(box).getByText('no workspace named Nope')).toBeTruthy();
-    // The message was reported to the executor (ui.message.shown) and the dialog is a modal state while open.
-    expect(
-      host.reports.some(
-        (r) => (r['messageShown'] as { messageId?: string } | undefined)?.messageId === 'workspace.notFound',
-      ),
-    ).toBe(true);
-    expect(
-      host.reports.some((r) => (r['modal'] as { kind?: string } | null | undefined)?.kind === 'dialog'),
-    ).toBe(true);
+    // The message was reported to the executor (ui.message.shown) and the dialog is a modal state while open. The
+    // reports leave from effects after the render, so they are awaited (event-driven, no timer).
+    await vi.waitFor(() => {
+      expect(
+        host.reports.some(
+          (r) =>
+            (r['messageShown'] as { messageId?: string } | undefined)?.messageId === 'workspace.notFound',
+        ),
+      ).toBe(true);
+      expect(
+        host.reports.some((r) => (r['modal'] as { kind?: string } | null | undefined)?.kind === 'dialog'),
+      ).toBe(true);
+    });
   });
 
   it('a cancelled request is shown as cancelled, never as a timeout or an error box', async () => {
