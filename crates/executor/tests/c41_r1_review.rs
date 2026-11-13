@@ -140,3 +140,203 @@ mod part_c_priority {
         Ok(())
     }
 }
+
+mod part_d_settings {
+    use super::*;
+
+    #[test]
+    fn malformed_shapes_are_quarantined_independently() -> Result<(), Box<dyn Error>> {
+        let root = std::env::temp_dir().join(format!("tt-c41-shapes-{}", tt_executor::random_token(8)));
+        let dirs = tt_executor::UserDirs::under(&root);
+        std::fs::create_dir_all(&dirs.settings)?;
+        for kind in ["preferences", "keymap", "state", "recent", "workspaces"] {
+            let bad = if kind == "recent" { json!({"wrong": true}) } else { json!(42) };
+            tt_persist::settings::write(&dirs.settings, kind, &bad)?;
+        }
+        let h = ExecutorHandle::spawn_with_options(tt_executor::ExecutorOptions {
+            persist: tt_executor::PersistOptions { user_dirs: Some(dirs.clone()), ..Default::default() },
+            ..Default::default()
+        })?;
+        let retained: Vec<_> = ["preferences", "keymap", "state", "recent", "workspaces"]
+            .into_iter()
+            .filter(|k| dirs.settings.join(format!("{k}.json")).exists())
+            .collect();
+        drop(h);
+        std::fs::remove_dir_all(root)?;
+        assert!(retained.is_empty(), "invalid shapes silently retained: {retained:?}");
+        Ok(())
+    }
+
+    #[test]
+    fn abandoned_settings_temporary_is_cleaned_on_load() -> Result<(), Box<dyn Error>> {
+        let root = std::env::temp_dir().join(format!("tt-c41-temp-{}", tt_executor::random_token(8)));
+        let dirs = tt_executor::UserDirs::under(&root);
+        std::fs::create_dir_all(&dirs.settings)?;
+        tt_persist::settings::write(&dirs.settings, "preferences", &json!({"interface.theme":"dark"}))?;
+        let abandoned = dirs.settings.join(".preferences.json.0123456789ab.tmp");
+        std::fs::write(&abandoned, b"interrupted replacement")?;
+        let h = ExecutorHandle::spawn_with_options(tt_executor::ExecutorOptions {
+            persist: tt_executor::PersistOptions { user_dirs: Some(dirs), ..Default::default() },
+            ..Default::default()
+        })?;
+        let remains = abandoned.exists();
+        drop(h);
+        std::fs::remove_dir_all(root)?;
+        assert!(!remains, "interrupted settings write leaves an orphan forever");
+        Ok(())
+    }
+}
+
+mod part_d_preferences {
+    use super::*;
+    use serde_json::Value;
+    use tt_executor::{ExecutorOptions, PersistOptions, Status};
+
+    fn call(h: &ExecutorHandle, command: &str, params: Value) -> tt_executor::Envelope {
+        h.invoke(Invocation { command: command.into(), params, options: Default::default(), origin: Origin::User })
+    }
+
+    #[test]
+    fn catalogue_types_ranges_and_nonfinite_wire_values() -> Result<(), Box<dyn Error>> {
+        let h = ExecutorHandle::spawn(Default::default())?;
+        let catalogue: Value = serde_json::from_str(include_str!("../src/prefs.json"))?;
+        for d in catalogue["prefs"].as_array().ok_or("catalogue array")? {
+            let key = d["key"].as_str().ok_or("key")?;
+            let e = call(&h, "prefs.set", json!({"values":{key: null}}));
+            assert_ne!(e.status, Status::Ok, "null accepted for {key}");
+            for (edge, delta) in [("min", -1.0), ("max", 1.0)] {
+                if let Some(n) = d[edge].as_f64() {
+                    let outside = if d["type"] == "int" { json!((n + delta) as i64) } else { json!(n + delta) };
+                    assert_ne!(
+                        call(&h, "prefs.set", json!({"values":{key: outside}})).status,
+                        Status::Ok,
+                        "{key} {edge}"
+                    );
+                }
+            }
+        }
+        assert_ne!(call(&h, "prefs.set", json!({"values":{"unknown.review":true}})).status, Status::Ok);
+        // JSON cannot carry nonfinite numbers. The typed Value conversion becomes null and must be refused too.
+        for n in [f64::NAN, f64::INFINITY, f64::NEG_INFINITY] {
+            assert_ne!(call(&h, "prefs.set", json!({"values":{"project.defaults.frameRate":n}})).status, Status::Ok);
+        }
+        for literal in ["NaN", "Infinity", "-Infinity", "1e999"] {
+            assert!(
+                serde_json::from_str::<Value>(&format!("{{\"values\":{{\"project.defaults.frameRate\":{literal}}}}}"))
+                    .is_err()
+            );
+        }
+        Ok(())
+    }
+
+    #[test]
+    fn accepted_calls_emit_only_actual_changed_keys() -> Result<(), Box<dyn Error>> {
+        let h = ExecutorHandle::spawn(Default::default())?;
+        let events = h.subscribe();
+        assert_eq!(
+            call(&h, "prefs.set", json!({"values":{"interface.theme":"dark","files.backups.count":3}})).status,
+            Status::Ok
+        );
+        let changes: Vec<_> = events.try_iter().filter(|e| e.name == "prefs.changed").collect();
+        assert_eq!(changes.len(), 1);
+        assert_eq!(changes[0].payload["keys"], json!(["interface.theme"]), "unchanged defaults are not changes");
+        Ok(())
+    }
+
+    #[test]
+    fn atomic_disk_defaults_reload_access_and_reset() -> Result<(), Box<dyn Error>> {
+        let root = std::env::temp_dir().join(format!("tt-c41-prefs-{}", tt_executor::random_token(8)));
+        let dirs = tt_executor::UserDirs::under(&root);
+        let over = || {
+            ExecutorHandle::spawn_with_options(ExecutorOptions {
+                persist: PersistOptions { user_dirs: Some(dirs.clone()), ..Default::default() },
+                ..Default::default()
+            })
+        };
+        let h = over()?;
+        assert_eq!(call(&h, "prefs.set", json!({"values":{"interface.theme":"dark"}})).status, Status::Ok);
+        let path = dirs.settings.join("preferences.json");
+        let before = std::fs::read(&path)?;
+        assert_ne!(
+            call(&h, "prefs.set", json!({"values":{"interface.theme":"light","unknown.review":1}})).status,
+            Status::Ok
+        );
+        assert_eq!(std::fs::read(&path)?, before);
+        assert_eq!(
+            call(&h, "prefs.get", json!({"keys":["interface.theme"]})).result.ok_or("get")?["values"]["interface.theme"],
+            "dark"
+        );
+        assert_eq!(call(&h, "prefs.set", json!({"values":{"interface.theme":"system"}})).status, Status::Ok);
+        let stored: Value = serde_json::from_slice(&std::fs::read(&path)?)?;
+        assert!(stored["data"].get("interface.theme").is_none());
+        let mut inv = Invocation {
+            command: "prefs.set".into(),
+            params: json!({"values":{"agent.server.enabled":true}}),
+            options: Default::default(),
+            origin: Origin::Agent {
+                session: "review".into(),
+                name: "review".into(),
+                scopes: [tt_registry::Scope::Prefs, tt_registry::Scope::App].into_iter().collect(),
+            },
+        };
+        assert_ne!(h.invoke(inv.clone()).status, Status::Ok);
+        inv.origin = Origin::User;
+        assert_eq!(h.invoke(inv).status, Status::Ok);
+        for params in [
+            json!({"keys":["agent.server.enabled"]}),
+            json!({"prefix":"interface."}),
+            json!({"prefix":""}),
+            json!({"keys":[]}),
+            json!({"prefix":"unknown."}),
+        ] {
+            assert_eq!(call(&h, "prefs.reset", params).status, Status::Ok);
+        }
+        assert_ne!(call(&h, "prefs.reset", json!({})).status, Status::Ok);
+        assert_ne!(call(&h, "prefs.reset", json!({"keys":["unknown.review"]})).status, Status::Ok);
+        drop(h);
+        tt_persist::settings::write(
+            &dirs.settings,
+            "preferences",
+            &json!({"files.backups.count":99,"interface.theme":"dark"}),
+        )?;
+        let h = over()?;
+        let values =
+            call(&h, "prefs.get", json!({"keys":["files.backups.count","interface.theme"]})).result.ok_or("get")?;
+        assert_eq!(values["values"]["files.backups.count"], 3);
+        assert_eq!(values["values"]["interface.theme"], "dark");
+        drop(h);
+        std::fs::remove_dir_all(root)?;
+        Ok(())
+    }
+}
+
+mod part_d_agent_policy {
+    use super::*;
+
+    #[test]
+    fn generic_preferences_enforce_agent_policy_limits() -> Result<(), Box<dyn Error>> {
+        let h = ExecutorHandle::spawn(Default::default())?;
+        for bad in [
+            json!({"policy":"unknown"}),
+            json!({"maxJobs":0}),
+            json!({"maxJobs":9}),
+            json!({"maxBatchSteps":0}),
+            json!({"maxBatchSteps":100001}),
+            json!({"maxInlineImagePx":255}),
+            json!({"maxInlineImagePx":8193}),
+        ] {
+            let env = h.invoke(Invocation {
+                command: "prefs.set".into(),
+                params: json!({"values":{"agent.policy.defaults":bad}}),
+                options: Default::default(),
+                origin: Origin::User,
+            });
+            assert_ne!(
+                env.status,
+                tt_executor::Status::Ok,
+                "invalid policy accepted through generic preferences: {bad}"
+            );
+        }
+        Ok(())
+    }
+}

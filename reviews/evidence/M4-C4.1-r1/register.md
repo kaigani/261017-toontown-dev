@@ -30,3 +30,8 @@ Status covers the charter item, including explicit remaining limitations.
 | A HTTP remainder | 10 | divergent | C41-R1-06; authority_matrix; part-c-http.txt; part-c-lifecycle.json; source reasoning and residual risks in report |
 | B Bypass | 1 | implemented | part-c-bypass.md; part-c-invokes.txt; trusted-webview and diagnostic exceptions explicitly documented |
 | C User priority | 8 | divergent | existing C41-R1-01; two part_c_priority tests pass, measured 80 ms waits; caller-side ordering limitation recorded |
+| D Cancellation | 9 | divergent | C41-R1-07 P3; host.rs:121-152; App.test.tsx:184-201; collision/unwind source trace |
+| E Settings remainder | 5 | divergent | C41-R1-08/09; part_d_settings (2 expected failures); part-d-settings.txt; source matrix in report |
+| F Preferences | 3 | divergent | C41-R1-10/11; complete 79-key part-d-preferences.md; 2 passing matrix tests, 2 expected failures |
+
+Part D final validation: workspace fmt and executor all-target clippy with test-hooks and required lint flags pass; frontend cancellation Vitest 1/1 passes. D/E/F all adjudicated; cumulative P0 0 / P1 1 / P2 9 / P3 1. Prior pending rows retain unrelated review scope only.
