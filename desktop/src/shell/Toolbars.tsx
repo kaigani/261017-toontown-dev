@@ -1,28 +1,15 @@
 // The main toolbar (01 §5.7) and the tool-palette rail (binding UI convention: palettes vertical on the left; view
 // toolbars live in their views; workspace toolbars at the top). Every item is a command reference; group items and
-// drop-downs show their members. Items whose command is not implemented yet stay visible and disabled, with their
-// owner in the tooltip.
-import { useSlice } from '../state/context';
-import type { Arrangement, Layout, WorkspaceEntry } from '../state/types';
+// drop-downs show their members. Whether an item is enabled, checked and how it is labelled comes from the kernel's
+// availability (ruling O-10), the source the native menu and the key dispatch use too; until it has answered, an
+// item is disabled. Items whose command belongs to a later checkpoint stay visible and disabled, with the reason.
 import { COMMAND_INDEX } from '../ipc/generated/commands';
 import { TOOL_PALETTES } from '../panels/catalogue';
+import { useSlice } from '../state/context';
+import type { Arrangement, Layout, WorkspaceEntry } from '../state/types';
 import { useActions } from './actionsApi';
-
-/** Display names of the group items and command references of the main toolbar (01 §5.7). */
-const ITEM_LABELS: Readonly<Record<string, string>> = {
-  gridType: 'Grid type',
-  gridOverlay: 'Overlay',
-  onionSkinPrevious: 'Previous drawings',
-  onionSkinNext: 'Next drawings',
-  firstFrame: 'First frame',
-  previousFrame: 'Previous frame',
-  playStop: 'Play/Stop',
-  nextFrame: 'Next frame',
-  lastFrame: 'Last frame',
-  cameraList: 'Camera',
-  sceneList: 'Scene',
-  workspaceList: 'Workspace',
-};
+import { refKey, type Availability } from './availability';
+import { ITEM_LABELS, ITEM_OWNERS, itemRef } from './toolbarItems';
 
 const INDEX = COMMAND_INDEX as unknown as Readonly<
   Record<string, { readonly label?: string; readonly milestone?: string } | undefined>
@@ -33,19 +20,9 @@ function commandLabel(id: string): string {
   return INDEX[id]?.label ?? id;
 }
 
-/** Items whose behaviour belongs to a later checkpoint (shown disabled with the owner). */
-const ITEM_OWNERS: Readonly<Record<string, string>> = {
-  gridType: 'M4 C4.2',
-  gridOverlay: 'M4 C4.2',
-  onionSkinPrevious: 'M4 C4.2',
-  onionSkinNext: 'M4 C4.2',
-  playStop: 'M5 C5.1',
-  cameraList: 'M4 C4.3',
-  sceneList: 'M9',
-};
-
 export function MainToolbar({ layout, fullScreen }: { layout: Layout | undefined; fullScreen: boolean }) {
   const actions = useActions();
+  const availability = (useSlice('availability') as Readonly<Record<string, Availability>> | undefined) ?? {};
   const a: Arrangement | undefined = layout ? (fullScreen ? layout.fullScreen : layout) : undefined;
   if (!a?.mainToolbar.visible) return null;
   return (
@@ -61,35 +38,29 @@ export function MainToolbar({ layout, fullScreen }: { layout: Layout | undefined
         if (item === 'space') return <span key={i} className="toolbar-space" />;
         if (item === 'flexibleSpace') return <span key={i} className="toolbar-flex" />;
         if (item === 'workspaceList') return <WorkspaceList key={i} />;
-        const frameStep: Record<string, Record<string, unknown>> = {
-          firstFrame: { frame: 1 },
-          previousFrame: { direction: 'previous' },
-          nextFrame: { direction: 'next' },
-        };
-        // A command whose implementation belongs to a later checkpoint stays visible, disabled, with its owner.
-        const owner = ITEM_OWNERS[item] ?? INDEX[item]?.milestone;
-        const isCommand = item.includes('.');
-        const command = isCommand
-          ? item
-          : item in frameStep
-            ? item === 'firstFrame'
-              ? 'app.frame.set'
-              : 'app.frame.move'
-            : null;
-        const params = isCommand ? {} : (frameStep[item] ?? {});
-        const label = ITEM_LABELS[item] ?? commandLabel(item);
+        const ref = itemRef(item);
+        const facts = ref ? availability[refKey(ref)] : undefined;
+        const owner = ITEM_OWNERS[item];
+        const staticLabel = ITEM_LABELS[item] ?? commandLabel(item);
+        const label = facts?.label ?? staticLabel;
+        const enabled = ref !== null && facts?.enabled === true;
+        const why = owner ? `arrives with ${owner}` : facts?.reason;
         return (
           <button
             key={i}
             type="button"
-            disabled={owner !== undefined || command === null}
-            title={owner ? `${label} — arrives with ${owner}` : label}
+            disabled={!enabled}
+            aria-label={label}
+            {...(facts?.checked !== undefined ? { 'aria-pressed': facts.checked } : {})}
+            title={why ? `${label} — ${why}` : label}
             data-tt-role="button"
             data-tt-id={`mainToolbar.${item}`}
             data-tt-label={label}
-            {...(command ? { 'data-tt-command': command, 'data-tt-params': JSON.stringify(params) } : {})}
+            {...(ref
+              ? { 'data-tt-command': ref.commandId, 'data-tt-params': JSON.stringify(ref.params) }
+              : {})}
             onClick={() => {
-              if (command) void actions.perform(command, params);
+              if (ref) void actions.perform(ref.commandId, ref.params);
             }}
           >
             {label}

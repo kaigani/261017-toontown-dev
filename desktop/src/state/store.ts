@@ -4,6 +4,7 @@
 // number of the last engine event it applied, so the host can tell when the GUI has caught up (`inspect_ui`
 // freshness) and a gap in the numbering triggers a full resync.
 import type { EngineApi, EngineEvent, Envelope } from '../ipc';
+import { refKey, type Availability, type CommandRef } from '../shell/availability';
 
 /** A slice name and the query that fills it. */
 export const SLICES = {
@@ -24,7 +25,7 @@ export const SLICES = {
   agents: ['agent.server.status', {}],
 } as const satisfies Record<string, readonly [string, Record<string, unknown>]>;
 
-export type SliceName = keyof typeof SLICES;
+export type SliceName = keyof typeof SLICES | 'availability';
 
 /** Which slices an engine event makes stale (01 §12.3 events). */
 export function slicesFor(event: string): SliceName[] {
@@ -87,6 +88,11 @@ export interface Store {
   refresh(names: readonly SliceName[]): Promise<void>;
   /** Called for every event after it is applied (dialogs opened by `shell.*` notices, notifications). */
   onEvent(hook: EventHook): () => void;
+  /**
+   * The command references the GUI shows (toolbars, rail): their availability is kept in the `availability` slice,
+   * keyed by `refKey`, and re-read from the kernel after every refresh (ruling O-10).
+   */
+  watch(refs: readonly CommandRef[]): void;
 }
 
 export function createStore(engine: EngineApi): Store {
@@ -100,11 +106,28 @@ export function createStore(engine: EngineApi): Store {
     });
   };
 
+  let watched: CommandRef[] = [];
+  const readAvailability = async () => {
+    if (watched.length === 0) return;
+    const asked = watched;
+    try {
+      const list = await engine.availability(asked);
+      const map: Record<string, Availability> = {};
+      list.forEach((a, i) => {
+        const ref = asked[i];
+        if (ref) map[refKey(ref)] = a;
+      });
+      set({ ...state, slices: { ...state.slices, availability: map } });
+    } catch {
+      // Without an answer every watched item stays disabled (the safe default).
+    }
+  };
+
   const refresh = async (names: readonly SliceName[]) => {
     const unique = [...new Set(names)];
     const results = await Promise.all(
       unique.map(async (name): Promise<[SliceName, Envelope]> => {
-        const [command, params] = SLICES[name];
+        const [command, params] = SLICES[name as keyof typeof SLICES];
         return [name, await engine.run(command, params).done];
       }),
     );
@@ -124,6 +147,7 @@ export function createStore(engine: EngineApi): Store {
     // Errors of the slices refreshed now are replaced; the others keep theirs.
     const kept = Object.fromEntries(Object.entries(state.errors).filter(([k]) => !fresh.has(k as SliceName)));
     set({ ...state, slices, errors: { ...kept, ...failed } });
+    await readAvailability();
   };
 
   const store: Store = {
@@ -163,7 +187,7 @@ export function createStore(engine: EngineApi): Store {
       });
     },
     async resync() {
-      await refresh(Object.keys(SLICES) as SliceName[]);
+      await refresh(Object.keys(SLICES) as (keyof typeof SLICES)[]);
     },
     refresh,
     onEvent(hook) {
@@ -171,6 +195,12 @@ export function createStore(engine: EngineApi): Store {
       return () => {
         hooks.delete(hook);
       };
+    },
+    watch(refs) {
+      const before = new Set(watched.map(refKey));
+      watched = [...refs];
+      if (watched.some((r) => !before.has(refKey(r))) || watched.length !== before.size)
+        void readAvailability();
     },
   };
   return store;

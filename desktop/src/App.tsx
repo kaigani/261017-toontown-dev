@@ -17,6 +17,7 @@ import { MessageHost } from './shell/messages';
 import { useMessages } from './shell/messagesApi';
 import { StatusBar } from './shell/StatusBar';
 import { MainToolbar, ToolPaletteRail } from './shell/Toolbars';
+import { toolbarRefs } from './shell/toolbarItems';
 import { collectUiTree } from './shell/uiTree';
 import { StartScreen } from './start/StartScreen';
 import { useShell, useSlice, useStoreState, type ShellServices } from './state/context';
@@ -405,6 +406,12 @@ function Window() {
   }, [appState]);
 
   const fullScreen = appState?.fullScreen === true;
+  // The toolbar's command references: their availability is read from the kernel with every refresh (ruling O-10).
+  const items = (fullScreen ? layout?.fullScreen : layout)?.mainToolbar.items;
+  const itemsKey = (items ?? []).join('|');
+  useEffect(() => {
+    services.store.watch(toolbarRefs(itemsKey ? itemsKey.split('|') : []));
+  }, [itemsKey, services]);
   // The applied theme is part of the reported tree (the app group's value), so an agent sees what the user sees.
   const appliedTheme = useAppliedTheme();
   return (

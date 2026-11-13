@@ -301,3 +301,15 @@ fn an_idle_session_expires_and_its_id_answers_404() {
     let r = post(&srv, Some(&sid), &json!({"jsonrpc": "2.0", "id": 2, "method": "tools/list"}));
     assert_eq!(r.status, 404, "an expired id answers 404 so the client initialises again");
 }
+
+#[test]
+fn the_key_tool_does_not_run_a_disabled_command() {
+    // No project: Undo is disabled, so Primary+Z is reported as such and nothing runs (ruling O-10).
+    let h = executor(&tmp());
+    let (mut c, _) = Client::connect(&h, ServerOptions::default(), json!({}));
+    let r = c.call("key", json!({ "keys": "Primary+Z" }))["structuredContent"].clone();
+    assert_eq!(r["status"], "ok", "{r}");
+    assert_eq!(r["result"]["commandId"], "edit.undo", "{r}");
+    assert_eq!(r["result"]["enabled"], false, "{r}");
+    assert_eq!(r["result"]["handled"], false, "{r}");
+}

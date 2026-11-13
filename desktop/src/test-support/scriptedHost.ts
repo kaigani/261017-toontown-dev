@@ -81,6 +81,13 @@ export interface ScriptedHost extends HostTransport {
   menu(command: string, params?: Record<string, unknown>): void;
   /** Answers to `dispatch_key`. */
   keys: Record<string, unknown>;
+  /** Answers to `availability` (ruling O-10): the kernel's facts for one reference. */
+  available: (ref: { commandId: string; params: Record<string, unknown> }) => {
+    enabled: boolean;
+    checked?: boolean;
+    label?: string;
+    reason?: string;
+  };
   /** Answers to `pick_path` (null: cancelled). */
   picked: string | null;
   readonly reports: Record<string, unknown>[];
@@ -103,6 +110,10 @@ export function createScriptedHost(overrides: Record<string, Handler> = {}): Scr
     rawReports: [],
     cancelled: [],
     keys: {},
+    available: (ref) =>
+      ref.commandId === 'edit.undo' || ref.commandId === 'edit.redo'
+        ? { enabled: false, reason: 'there is nothing to undo' }
+        : { enabled: true },
     picked: null,
     handlers: {
       'app.state.get': () => ok(NO_PROJECT_STATE),
@@ -193,6 +204,17 @@ export function createScriptedHost(overrides: Record<string, Handler> = {}): Scr
           return Promise.resolve(
             host.keys[String(json['keys'])] ?? { outcome: 'unbound', keys: json['keys'] },
           );
+        case 'availability': {
+          const refs = (json['refs'] ?? []) as { commandId: string; params?: Record<string, unknown> }[];
+          return Promise.resolve(
+            refs.map((r) => ({
+              commandId: r.commandId,
+              params: r.params ?? {},
+              dialog: false,
+              ...host.available({ commandId: r.commandId, params: r.params ?? {} }),
+            })),
+          );
+        }
         case 'pick_path':
           return Promise.resolve({ path: host.picked });
         case 'startup':

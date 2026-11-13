@@ -64,6 +64,7 @@ describe('M0 diagnostics gating (C0.4)', () => {
       'cancel_request',
       'report_shell',
       'dispatch_key',
+      'availability',
       'pick_path',
       'startup',
       'restart_engine',

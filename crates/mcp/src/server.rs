@@ -1098,6 +1098,13 @@ fn key_tool(
         }
     };
     match resolved {
+        // A disabled command is not run: the key dispatch refuses it as every other surface does (ruling O-10).
+        tt_executor::host::KeyResolution::Command { command_id, enabled: false, .. } => {
+            let v = json!({ "outcome": "command", "commandId": command_id, "enabled": false, "handled": false });
+            let env = Envelope::ok(v, None);
+            shared.handle.audit_call(origin, "key", "key", &params, &env, started.elapsed());
+            ("key".to_owned(), env)
+        }
         tt_executor::host::KeyResolution::Command { command_id, params: cparams, .. } => {
             let inv = Invocation {
                 command: command_id.clone(),

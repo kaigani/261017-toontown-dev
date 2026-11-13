@@ -277,3 +277,42 @@ fn a_tree_is_fresh_only_with_its_own_sequence() {
     h.report_shell(wire(&format!(r#"{{"renderedSeq":{now}}}"#)));
     assert!(!h.await_rendered(Duration::ZERO));
 }
+
+#[test]
+fn availability_is_the_pipelines_own_answer_for_every_surface() {
+    let none = tt_executor::ExecutorHandle::spawn(Default::default()).unwrap();
+    let refs = |ids: &[(&str, Value)]| -> Vec<(String, serde_json::Map<String, Value>)> {
+        ids.iter().map(|(c, p)| ((*c).to_owned(), p.as_object().cloned().unwrap_or_default())).collect()
+    };
+    let a = none
+        .availability(refs(&[
+            ("edit.undo", json!({})),
+            ("project.create", json!({})),
+            ("ui.statusBar.set", json!({})),
+            ("window.panel.set", json!({ "panelId": "timeline" })),
+            ("drawAid.grid.set", json!({})),
+        ]))
+        .unwrap();
+    assert!(!a[0].enabled && a[0].reason.is_some(), "no project: nothing to undo {:?}", a[0]);
+    assert!(a[1].enabled, "{:?}", a[1]);
+    assert_eq!((a[2].checked, a[2].params.clone()), (Some(true), json!({ "visible": false })), "a toggle's check mark");
+    assert_eq!(a[3].checked, Some(true), "the timeline panel is shown");
+    assert_eq!(a[4].reason.as_deref(), Some("no project is open"), "the pipeline's order: project first");
+    // After an edit, Undo is enabled and labelled with the step; the key dispatch reads the same answer.
+    let h = fixture();
+    ok(&h, "doc.object.patch", json!({ "targets": ["@current"], "props": { "name": "Renamed" } }));
+    let later = &h.availability(refs(&[("drawAid.grid.set", json!({}))])).unwrap()[0];
+    assert!(!later.enabled && later.reason.as_deref().is_some_and(|r| r.contains("arrives with")), "{later:?}");
+    let undo = &h.availability(refs(&[("edit.undo", json!({}))])).unwrap()[0];
+    assert!(undo.enabled && undo.label.as_deref().is_some_and(|l| l.starts_with("Undo ")), "{undo:?}");
+    match h.resolve_key("primary+z").unwrap() {
+        KeyResolution::Command { command_id, enabled, .. } => {
+            assert_eq!((command_id.as_str(), enabled), ("edit.undo", true))
+        }
+        other => panic!("{other:?}"),
+    }
+    match none.resolve_key("primary+z").unwrap() {
+        KeyResolution::Command { enabled, .. } => assert!(!enabled, "the key dispatch refuses what the menu disables"),
+        other => panic!("{other:?}"),
+    }
+}

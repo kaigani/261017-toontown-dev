@@ -169,33 +169,30 @@ pub fn refreshes(event: &str) -> bool {
     )
 }
 
-/// The live facts the menu shows, read from the executor as the user.
+/// The live facts the menu shows, read from the executor as the user: the availability of every command item (the one
+/// source every GUI surface reads; ruling O-10), the keymap for accelerators, the recent list and the workspaces.
 struct Facts {
-    project: bool,
-    history: Option<Value>,
-    panels: Vec<Value>,
-    layout: Value,
-    full_screen: bool,
-    status_bar: bool,
+    availability: BTreeMap<String, tt_executor::host::Availability>,
     keymap: Vec<Value>,
     recent: Vec<Value>,
     workspaces: Vec<Value>,
 }
 
-fn facts(host: &Host) -> Facts {
+fn facts(app: &AppHandle, host: &Host) -> Facts {
     let q = |cmd: &str, params: Value| host.run(cmd, params, false, None).result.unwrap_or(Value::Null);
-    let state = q("app.state.get", json!({}));
     let arr = |v: Value| v.as_array().cloned().unwrap_or_default();
+    let items: Vec<(String, String, serde_json::Map<String, Value>)> = app
+        .try_state::<MenuSlot>()
+        .map(|slot| {
+            let st = slot.0.lock().unwrap_or_else(PoisonError::into_inner);
+            st.entries.iter().map(|(id, e)| (id.clone(), e.item.command.clone(), e.item.params_object())).collect()
+        })
+        .unwrap_or_default();
+    let refs = items.iter().map(|(_, c, p)| (c.clone(), p.clone())).collect();
+    let list = host.exec().availability(refs).unwrap_or_default();
+    let availability = items.into_iter().map(|(id, _, _)| id).zip(list).collect();
     Facts {
-        project: state.get("project").is_some_and(|p| !p.is_null()),
-        history: Some(q("edit.history.get", json!({ "limit": 1000 }))).filter(|h| !h.is_null()),
-        panels: arr(q("window.panel.list", json!({}))),
-        layout: q("workspace.get", json!({})),
-        full_screen: state.get("fullScreen").and_then(Value::as_bool).unwrap_or(false),
-        status_bar: q("prefs.get", json!({ "keys": ["interface.statusBar.visible"] }))
-            .pointer("/values/interface.statusBar.visible")
-            .and_then(Value::as_bool)
-            .unwrap_or(true),
+        availability,
         keymap: arr(q("keymap.list", json!({ "context": "global" }))),
         recent: arr(q("project.recent.list", json!({}))),
         workspaces: arr(q("workspace.list", json!({}))),
@@ -243,62 +240,10 @@ fn native_label(keys: &str) -> String {
     keys.replace("CmdOrCtrl", "Ctrl")
 }
 
-fn checked(f: &Facts, check: &str) -> bool {
-    match check {
-        "statusBar" => f.status_bar,
-        "fullScreen" => f.full_screen,
-        "mainToolbar" => f.layout.pointer("/mainToolbar/visible").and_then(Value::as_bool).unwrap_or(true),
-        "sidePanelsExtended" => f.layout.get("corners").and_then(Value::as_str) == Some("sides"),
-        c if c.starts_with("panel:") => {
-            let id = &c["panel:".len()..];
-            f.panels.iter().any(|p| p.get("panelId").and_then(Value::as_str) == Some(id) && p["visible"] == json!(true))
-        }
-        c if c.starts_with("palette:") => {
-            let id = &c["palette:".len()..];
-            f.layout
-                .get("toolPalettes")
-                .and_then(Value::as_array)
-                .is_some_and(|ps| ps.iter().any(|p| p["id"] == json!(id) && p["visible"] == json!(true)))
-        }
-        _ => false,
-    }
-}
-
-fn enabled(f: &Facts, item: &CommandItem) -> bool {
-    let Ok(registry) = tt_executor::registry() else { return false };
-    let Some(e) = registry.get(&item.command) else { return false };
-    if !matches!(e.status(), tt_executor::DeclarationStatus::Implemented) {
-        return false;
-    }
-    if !f.project && !item.enabled_without_project {
-        return false;
-    }
-    let position = f.history.as_ref().and_then(|h| h.get("position")).and_then(Value::as_u64).unwrap_or(0);
-    let count = f.history.as_ref().and_then(|h| h.get("entries")).and_then(Value::as_array).map_or(0, Vec::len);
-    match item.command.as_str() {
-        "edit.undo" => position > 0,
-        "edit.redo" => (position as usize) < count,
-        _ => true,
-    }
-}
-
-/// "Undo Move Peg — agent: Assistant" (01 §6.1).
-fn history_label(f: &Facts, undo: bool) -> Option<String> {
-    let h = f.history.as_ref()?;
-    let position = h.get("position").and_then(Value::as_u64)? as usize;
-    let entries = h.get("entries").and_then(Value::as_array)?;
-    let e = if undo { entries.get(position.checked_sub(1)?)? } else { entries.get(position)? };
-    let mut label = format!("{} {}", if undo { "Undo" } else { "Redo" }, e.get("label").and_then(Value::as_str)?);
-    if e.get("source").and_then(Value::as_str) == Some("agent") {
-        label.push_str(&format!(" \u{2014} agent: {}", e.get("agentName").and_then(Value::as_str).unwrap_or("agent")));
-    }
-    Some(label)
-}
-
 /// Re-reads the facts and updates every item on the main thread.
 pub fn refresh(app: &AppHandle) {
     let host = app.state::<Host>();
-    let f = facts(&host);
+    let f = facts(app, &host);
     let app2 = app.clone();
     let _ = app.run_on_main_thread(move || apply(&app2, &f));
 }
@@ -307,14 +252,11 @@ fn apply(app: &AppHandle, f: &Facts) {
     let Some(slot) = app.try_state::<MenuSlot>() else { return };
     let mut st = slot.0.lock().unwrap_or_else(PoisonError::into_inner);
     let mac = Platform::current() == Platform::Macos;
-    for entry in st.entries.values() {
-        let on = enabled(f, &entry.item);
+    for (id, entry) in &st.entries {
+        let a = f.availability.get(id);
+        let on = a.is_some_and(|a| a.enabled);
         let acc = accelerator(&f.keymap, &entry.item);
-        let mut label = match entry.item.command.as_str() {
-            "edit.undo" => history_label(f, true).unwrap_or_else(|| entry.item.label.clone()),
-            "edit.redo" => history_label(f, false).unwrap_or_else(|| entry.item.label.clone()),
-            _ => entry.item.label.clone(),
-        };
+        let mut label = a.and_then(|a| a.label.clone()).unwrap_or_else(|| entry.item.label.clone());
         if !mac && let Some(a) = &acc {
             label = format!("{label}\t{}", native_label(a));
         }
@@ -329,8 +271,8 @@ fn apply(app: &AppHandle, f: &Facts) {
             Handle::Check(m) => {
                 let _ = m.set_enabled(on);
                 let _ = m.set_text(&label);
-                if let Some(c) = &entry.item.check {
-                    let _ = m.set_checked(checked(f, c));
+                if entry.item.check.is_some() {
+                    let _ = m.set_checked(a.and_then(|a| a.checked).unwrap_or(false));
                 }
                 if mac {
                     let _ = m.set_accelerator(acc.as_deref());

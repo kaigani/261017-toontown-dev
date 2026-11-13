@@ -3,6 +3,7 @@
 //
 // Every value crosses as JSON text (ADR-0012). Command parameters are validated against the generated schemas
 // before they are sent and every answer is validated as a command envelope, so UI code only ever sees checked data.
+import { isAvailability, type Availability, type CommandRef } from '../shell/availability';
 import { COMMAND_DEFS, COMMAND_INDEX } from './generated/commands';
 import type { Defs, Schema } from './schema';
 import { violations } from './schema';
@@ -94,6 +95,8 @@ export interface EngineApi {
   cancel(token: string): Promise<void>;
   dispatchKey(keys: string): Promise<KeyOutcome>;
   report(report: ShellReport): Promise<void>;
+  /** The availability of command references (ruling O-10): the kernel's one answer for every GUI surface. */
+  availability(refs: readonly CommandRef[]): Promise<Availability[]>;
   pickPath(request: PickRequest): Promise<string | null>;
   onEvent(handler: (event: EngineEvent) => void): Promise<Unlisten>;
 }
@@ -204,6 +207,10 @@ export function createEngineApi(transport: HostTransport): EngineApi {
     },
     async report(report) {
       await invoke('report_shell', report);
+    },
+    async availability(refs) {
+      const v = decode(await invoke('availability', { refs }));
+      return Array.isArray(v) ? v.filter(isAvailability) : [];
     },
     async pickPath(request) {
       const v = decode(await invoke('pick_path', request));

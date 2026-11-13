@@ -158,6 +158,49 @@ pub async fn dispatch_key(app: AppHandle, json: String) -> Result<Response, Stri
     }
 }
 
+/// `availability` request: the command references a GUI surface shows.
+#[derive(Debug, Deserialize)]
+#[serde(deny_unknown_fields)]
+struct AvailabilityRequest {
+    refs: Vec<CommandRef>,
+}
+
+#[derive(Debug, Deserialize)]
+#[serde(rename_all = "camelCase", deny_unknown_fields)]
+struct CommandRef {
+    command_id: String,
+    #[serde(default)]
+    params: Map<String, Value>,
+}
+
+/// The most references one availability request may name.
+const MAX_REFS: usize = 1024;
+
+/// The availability of command references (ruling O-10): enabled, check mark, dynamic label and the parameters as run,
+/// from the kernel, the one source the native menu, toolbars, the tool rail and the key dispatch share.
+///
+/// # Errors
+/// The JSON text of `arg.invalid` for a malformed or oversized request, or `command.timeout`.
+#[tauri::command]
+pub async fn availability(app: AppHandle, json: String) -> Result<Response, String> {
+    let req: AvailabilityRequest = parse(&json)?;
+    if req.refs.len() > MAX_REFS {
+        return Err(error_json(&tt_engine::ErrorInfo {
+            code: "arg.invalid".into(),
+            message: format!("at most {MAX_REFS} references per request"),
+            details: json!({ "pointer": "/refs", "max": MAX_REFS }),
+        }));
+    }
+    let refs = req.refs.into_iter().map(|r| (r.command_id, r.params)).collect();
+    let r = tauri::async_runtime::spawn_blocking(move || app.state::<Host>().exec().availability(refs))
+        .await
+        .map_err(|e| internal(e.to_string()))?;
+    match r {
+        Ok(list) => respond(&list),
+        Err(e) => Err(error_json(&tt_engine::ErrorInfo { code: e.code, message: e.message, details: *e.details })),
+    }
+}
+
 /// `pick_path` request.
 #[derive(Debug, Deserialize)]
 #[serde(rename_all = "camelCase", deny_unknown_fields)]

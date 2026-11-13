@@ -8,6 +8,7 @@ import { App } from './App';
 import { createHostApi, HostProvider } from './ipc';
 import {
   createScriptedHost,
+  DEFAULT_LAYOUT,
   fail,
   NO_PROJECT_STATE,
   ok,
@@ -432,5 +433,67 @@ describe('M0 diagnostics (C0.4)', () => {
       expect(reports).toHaveLength(1);
     });
     expect(reports[0]).toMatchObject({ count: 1 });
+  });
+});
+
+describe('one source of availability (ruling O-10)', () => {
+  /** Every toolbar button and rail item against the kernel's facts the scripted host answers. */
+  function compare(host: ScriptedHost) {
+    const toolbar = screen.getByRole('toolbar', { name: 'Main toolbar' });
+    const buttons = within(toolbar).getAllByRole('button');
+    expect(buttons.length).toBe(6);
+    for (const b of buttons) {
+      const command = b.getAttribute('data-tt-command');
+      if (command === null) {
+        // A group item of a later checkpoint runs no command and is disabled.
+        expect((b as HTMLButtonElement).disabled).toBe(true);
+        continue;
+      }
+      const params = JSON.parse(b.getAttribute('data-tt-params') ?? '{}') as Record<string, unknown>;
+      const facts = host.available({ commandId: command, params });
+      expect({ command, disabled: (b as HTMLButtonElement).disabled }).toEqual({
+        command,
+        disabled: !facts.enabled,
+      });
+      if (facts.label !== undefined) expect(b.getAttribute('data-tt-label')).toBe(facts.label);
+    }
+    // The tool rail's palettes carry no command reference (their tools arrive with their owners).
+    const rail = screen.queryByRole('navigation', { name: 'Tool palettes' });
+    for (const item of rail ? Array.from(rail.querySelectorAll('[data-tt-role="toolPalette"]')) : []) {
+      expect(item.getAttribute('data-tt-command')).toBeNull();
+    }
+  }
+
+  it('the toolbar follows the kernel in the no-project and the project state', async () => {
+    let project = false;
+    const items = ['edit.undo', 'edit.redo', 'separator', 'firstFrame', 'nextFrame', 'gridType', 'playStop'];
+    const layout = { ...DEFAULT_LAYOUT, mainToolbar: { visible: true, items: [...items, 'workspaceList'] } };
+    const host = createScriptedHost({
+      'app.state.get': () => ok(project ? PROJECT_STATE : NO_PROJECT_STATE),
+      'workspace.get': () => ok({ ...layout, fullScreen: layout }),
+    });
+    host.available = (ref) => {
+      if (ref.commandId === 'edit.undo')
+        return project
+          ? { enabled: true, label: 'Undo Move Peg' }
+          : { enabled: false, reason: 'no project is open' };
+      if (ref.commandId === 'edit.redo') return { enabled: false, reason: 'there is nothing to redo' };
+      if (ref.commandId.startsWith('app.frame')) return { enabled: project };
+      return { enabled: true };
+    };
+    renderApp(host);
+    await screen.findByRole('toolbar', { name: 'Main toolbar' });
+    await vi.waitFor(() => {
+      expect(screen.getByRole('button', { name: 'Undo' })).toHaveProperty('disabled', true);
+    });
+    compare(host);
+    project = true;
+    act(() => {
+      host.event('project.opened', { projectId: 'pr_1' });
+    });
+    await vi.waitFor(() => {
+      expect(screen.getByRole('button', { name: 'Undo Move Peg' })).toHaveProperty('disabled', false);
+    });
+    compare(host);
   });
 });

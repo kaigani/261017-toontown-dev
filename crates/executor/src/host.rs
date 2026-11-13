@@ -244,8 +244,118 @@ fn resolve_on(core: &mut crate::run::Core, keys: &str) -> Result<KeyResolution, 
     let Some(b) = crate::keymap::resolve(&bindings, &canonical, mode).cloned() else {
         return Ok(KeyResolution::Unbound { keys: canonical });
     };
-    let (params, enabled, dialog) = complete(registry, s, &b.command_id, b.params.clone().unwrap_or_default());
-    Ok(KeyResolution::Command { keys: canonical, command_id: b.command_id, params, enabled, dialog })
+    // The key dispatch reads the same availability as every other surface (ruling O-10).
+    let a = availability_in(registry, &probe_cx(s), &b.command_id, b.params.clone().unwrap_or_default());
+    Ok(KeyResolution::Command {
+        keys: canonical,
+        command_id: b.command_id,
+        params: a.params,
+        enabled: a.enabled,
+        dialog: a.dialog,
+    })
+}
+
+/// Whether a command reference can run now, what it shows and how it runs, for every GUI surface (ruling O-10): the
+/// native menu, toolbars, the tool rail, context menus, dialog buttons and the key dispatch all read this one answer.
+#[derive(Debug, Clone, PartialEq, Serialize)]
+#[serde(rename_all = "camelCase")]
+pub struct Availability {
+    /// Command id.
+    pub command_id: String,
+    /// The parameters as the GUI runs them (a toggle the reference leaves open gets its next state).
+    pub params: Value,
+    /// The command can run now: registered, not an event, implemented, a project when it needs one, and its
+    /// enablement rule satisfied (the same checks the transaction pipeline makes, 11 §8).
+    pub enabled: bool,
+    /// Why not, when disabled.
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub reason: Option<String>,
+    /// The check mark of a toggle: its current state (a panel: shown).
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub checked: Option<bool>,
+    /// A label that depends on the state ("Undo Move Peg — agent: Assistant", 01 §6.1); `None`: the static label.
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub label: Option<String>,
+    /// Required parameters are still missing: the GUI collects them with a dialog (01 §0).
+    pub dialog: bool,
+}
+
+/// Why a command cannot run now (`None`: it can), by the pipeline's own checks in their order (11 §8).
+fn unavailable(registry: &tt_registry::Registry, cx: &crate::cx::Cx, command_id: &str) -> Option<String> {
+    let Some(entry) = registry.get(command_id) else { return Some(format!("`{command_id}` is not registered")) };
+    if entry.spec.kind == Kind::Event {
+        return Some("an event cannot be invoked".into());
+    }
+    if let Some(c) = entry.command {
+        if c.decl.needs_project && cx.session().project.is_none() {
+            return Some("no project is open".into());
+        }
+        if let Some(check) = c.decl.enablement.check
+            && let Err(d) = check(cx)
+        {
+            return Some(d.reason);
+        }
+    }
+    match entry.status() {
+        tt_registry::Status::Implemented => None,
+        tt_registry::Status::NotImplemented { owner } => Some(format!("arrives with {owner}")),
+    }
+}
+
+/// The check mark of a toggle reference: the toggled state now.
+fn checked_of(s: &crate::session::Session, command_id: &str, params: &Map<String, Value>) -> Option<bool> {
+    if command_id == "window.panel.set" {
+        let id = params.get("panelId").and_then(Value::as_str)?;
+        return Some(s.ui.panels().into_iter().any(|p| p.panel_id == id && p.visible));
+    }
+    toggle_fill(s, command_id, params).map(|(_, next)| !next)
+}
+
+/// "Undo <label>" / "Redo <label>", with the agent's name for an agent's step (01 §6.1).
+fn history_label(s: &crate::session::Session, undo: bool) -> Option<String> {
+    let h = &s.project.as_ref()?.history;
+    let position = h.position();
+    let step = if undo { h.steps().get(position.checked_sub(1)?)? } else { h.steps().get(position)? };
+    let mut label = format!("{} {}", if undo { "Undo" } else { "Redo" }, step.label);
+    if let crate::types::Origin::Agent { name, .. } = &step.origin {
+        label.push_str(&format!(" \u{2014} agent: {name}"));
+    }
+    Some(label)
+}
+
+/// The availability of one reference in `cx` (a dry-run context of the session).
+pub(crate) fn availability_in(
+    registry: &tt_registry::Registry,
+    cx: &crate::cx::Cx,
+    command_id: &str,
+    params: Map<String, Value>,
+) -> Availability {
+    let s = cx.session();
+    let checked = registry
+        .get(command_id)
+        .filter(|e| e.spec.kind == Kind::Toggle)
+        .and_then(|_| checked_of(s, command_id, &params));
+    let (params, _, dialog) = complete(registry, s, command_id, params);
+    let reason = unavailable(registry, cx, command_id);
+    let label = match command_id {
+        "edit.undo" => history_label(s, true),
+        "edit.redo" => history_label(s, false),
+        _ => None,
+    };
+    Availability {
+        command_id: command_id.to_owned(),
+        params,
+        enabled: reason.is_none(),
+        reason,
+        checked,
+        label,
+        dialog,
+    }
+}
+
+/// A dry-run context over the session, for availability checks (nothing it does is committed).
+fn probe_cx(s: &crate::session::Session) -> crate::cx::Cx {
+    crate::cx::Cx::new(s.clone(), Origin::User, "availability", true)
 }
 
 /// Completes a command reference as the GUI invokes it: a toggle the reference leaves open gets its next state;
@@ -405,8 +515,29 @@ impl ExecutorHandle {
         crate::Poster(self.tx.clone()).run(self.config.budget, move |core| {
             let registry = core.registry();
             let Some(s) = core.session() else { return Err(CommandError::internal("the session is unavailable")) };
-            let (params, enabled, dialog) = complete(registry, s, &id, params);
-            Ok(KeyResolution::Command { keys: String::new(), command_id: id, params, enabled, dialog })
+            let a = availability_in(registry, &probe_cx(s), &id, params);
+            Ok(KeyResolution::Command {
+                keys: String::new(),
+                command_id: id,
+                params: a.params,
+                enabled: a.enabled,
+                dialog: a.dialog,
+            })
+        })?
+    }
+
+    /// The availability of command references for the GUI (ruling O-10): enabled, check mark, dynamic label and the
+    /// parameters as run, for each reference, from one dry-run context of the current state. The native menu, the
+    /// toolbars, the tool rail and the key dispatch all read this.
+    ///
+    /// # Errors
+    /// `command.timeout` when the document thread does not answer within the budget.
+    pub fn availability(&self, refs: Vec<(String, Map<String, Value>)>) -> Result<Vec<Availability>, CommandError> {
+        crate::Poster(self.tx.clone()).run(self.config.budget, move |core| {
+            let registry = core.registry();
+            let Some(s) = core.session() else { return Err(CommandError::internal("the session is unavailable")) };
+            let cx = probe_cx(s);
+            Ok(refs.into_iter().map(|(id, params)| availability_in(registry, &cx, &id, params)).collect())
         })?
     }
 
