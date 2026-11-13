@@ -94,10 +94,12 @@ impl Windows {
                 if let Some(o) = node.as_object_mut() {
                     o.insert("id".into(), json!(l));
                 }
-                if let Some(children) = root.as_object_mut().map(|o| o.entry("children").or_insert_with(|| json!([]))) {
-                    if let Some(a) = children.as_array_mut() {
-                        a.push(node);
-                    }
+                if let Some(a) = root
+                    .as_object_mut()
+                    .map(|o| o.entry("children").or_insert_with(|| json!([])))
+                    .and_then(Value::as_array_mut)
+                {
+                    a.push(node);
                 }
             }
             m.insert("uiTree".into(), root);

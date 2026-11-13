@@ -17,6 +17,9 @@ use crate::host::Host;
 /// Label prefix of the float windows (`float-<panelId>`).
 pub const PREFIX: &str = "float-";
 
+/// A logical geometry `(x, y, width, height)`.
+pub type Rect = (i32, i32, u32, u32);
+
 /// A float the kernel wants shown.
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub struct Wanted {
@@ -25,7 +28,7 @@ pub struct Wanted {
     /// Window title (the panel's title).
     pub title: String,
     /// Logical geometry `(x, y, width, height)`.
-    pub geometry: (i32, i32, u32, u32),
+    pub geometry: Rect,
 }
 
 /// What the host does to the OS windows.
@@ -36,7 +39,7 @@ pub enum Action {
     /// Close the window of a panel no longer floating or shown.
     Close(String),
     /// Move or resize a window to its kernel geometry.
-    Place(String, (i32, i32, u32, u32)),
+    Place(String, Rect),
 }
 
 /// The window label of a panel.
@@ -48,7 +51,7 @@ pub fn label(panel_id: &str) -> String {
 /// The reconciliation: from the floats the kernel wants and the float windows open now (label and logical geometry),
 /// the windows to open, close and place. Pure; a geometry within 1 px is left alone (rounding of scaled sizes).
 #[must_use]
-pub fn plan(wanted: &[Wanted], open: &[(String, (i32, i32, u32, u32))]) -> Vec<Action> {
+pub fn plan(wanted: &[Wanted], open: &[(String, Rect)]) -> Vec<Action> {
     let mut actions = Vec::new();
     let wanted_labels: BTreeSet<String> = wanted.iter().map(|w| label(&w.panel_id)).collect();
     for (l, _) in open {
@@ -104,16 +107,16 @@ static APPLYING: Mutex<BTreeSet<String>> = Mutex::new(BTreeSet::new());
 
 /// The geometry the host last gave each float (or last reported for it): an OS move or resize that ends there is the
 /// host's own placement echoing back, not a user gesture.
-static PLACED: Mutex<Vec<(String, (i32, i32, u32, u32))>> = Mutex::new(Vec::new());
+static PLACED: Mutex<Vec<(String, Rect)>> = Mutex::new(Vec::new());
 
-fn placed(label: &str, g: (i32, i32, u32, u32)) {
+fn placed(label: &str, g: Rect) {
     let mut p = PLACED.lock().unwrap_or_else(PoisonError::into_inner);
     p.retain(|(l, _)| l != label);
     p.push((label.to_owned(), g));
 }
 
 /// Whether `g` is (within 1 px) the geometry the host last placed for `label`.
-fn is_placed(label: &str, g: (i32, i32, u32, u32)) -> bool {
+fn is_placed(label: &str, g: Rect) -> bool {
     let near = |a: i64, b: i64| (a - b).abs() <= 1;
     PLACED.lock().unwrap_or_else(PoisonError::into_inner).iter().any(|(l, p)| {
         l == label
@@ -151,7 +154,7 @@ pub fn reconcile(app: &AppHandle) {
 }
 
 fn apply(app: &AppHandle, wanted: &[Wanted]) {
-    let open: Vec<(String, (i32, i32, u32, u32))> = app
+    let open: Vec<(String, Rect)> = app
         .webview_windows()
         .into_iter()
         .filter(|(l, _)| l.starts_with(PREFIX))
@@ -301,8 +304,7 @@ pub fn on_window_event(window: &tauri::Window, event: &WindowEvent) {
                     std::thread::sleep(Duration::from_millis(250));
                     let latest = {
                         let mut p = PENDING.lock().unwrap_or_else(PoisonError::into_inner);
-                        let found = p.iter().position(|(k, _)| *k == panel_id).map(|i| p.remove(i).1);
-                        found
+                        p.iter().position(|(k, _)| *k == panel_id).map(|i| p.remove(i).1)
                     };
                     if let Some(g) = latest {
                         let host = app.state::<Host>();
@@ -324,7 +326,7 @@ pub fn on_window_event(window: &tauri::Window, event: &WindowEvent) {
 mod tests {
     use super::*;
 
-    fn w(id: &str, g: (i32, i32, u32, u32)) -> Wanted {
+    fn w(id: &str, g: Rect) -> Wanted {
         Wanted { panel_id: id.into(), title: id.into(), geometry: g }
     }
 
