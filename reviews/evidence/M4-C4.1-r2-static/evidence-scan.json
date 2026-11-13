@@ -1,0 +1,330 @@
+[
+  {
+    "file": "c41-r1-http-lifecycle.json",
+    "bytes": 3633,
+    "sha256": "a9ba364830ddeb46749908779bcd3edbdd6c57b349a1f03d274d82e2e7dd6ed1",
+    "credential": 0,
+    "home": 0,
+    "prohibited_name": 0
+  },
+  {
+    "file": "ci-gui-macos/01-start-screen.png",
+    "bytes": 119027,
+    "sha256": "6172cfa2c5c340b15e020776d5b508fa072399896e66addba8a4e0b66cd0dee0",
+    "credential": 0,
+    "home": 0,
+    "prohibited_name": 3
+  },
+  {
+    "file": "ci-gui-macos/02-project.png",
+    "bytes": 121605,
+    "sha256": "1bfcdf1dd787b81280abee89493d8366750a65cb036ff445991b28b1809fbffa",
+    "credential": 0,
+    "home": 0,
+    "prohibited_name": 3
+  },
+  {
+    "file": "ci-gui-macos/03-preferences.png",
+    "bytes": 182237,
+    "sha256": "34a9cd9cd97c1096db713d265f5187814a06b9706ece0257352a3d1237e38ffa",
+    "credential": 0,
+    "home": 0,
+    "prohibited_name": 3
+  },
+  {
+    "file": "ci-gui-macos/04-restart.png",
+    "bytes": 120189,
+    "sha256": "379ba5a80886de8322fa36c956a6bcd2d0b80e4bad88ea39829ce69cf7a6afcf",
+    "credential": 0,
+    "home": 0,
+    "prohibited_name": 3
+  },
+  {
+    "file": "ci-gui-macos/activity.json",
+    "bytes": 14745,
+    "sha256": "d388c68d1b0947906cac3b5c776bcd427ade7bf216aab87d682bbf9515e39881",
+    "credential": 0,
+    "home": 0,
+    "prohibited_name": 0
+  },
+  {
+    "file": "ci-gui-macos/c41-r1-http-lifecycle.json",
+    "bytes": 3633,
+    "sha256": "a9ba364830ddeb46749908779bcd3edbdd6c57b349a1f03d274d82e2e7dd6ed1",
+    "credential": 0,
+    "home": 0,
+    "prohibited_name": 0
+  },
+  {
+    "file": "ci-gui-macos/discovery.json",
+    "bytes": 158,
+    "sha256": "a480e0ed2c13ac37eec2e677f3ee4d9c18c03bbc55249ed898fc8932a4397a91",
+    "credential": 0,
+    "home": 0,
+    "prohibited_name": 0
+  },
+  {
+    "file": "ci-gui-macos/discovery.log",
+    "bytes": 159,
+    "sha256": "1604fba9dffa03107e527c5fb056f01a09a4fae5316dd36d55540c01323be7d7",
+    "credential": 0,
+    "home": 0,
+    "prohibited_name": 0
+  },
+  {
+    "file": "ci-gui-macos/manifest.json",
+    "bytes": 537,
+    "sha256": "cac31f16439f4ddce91648c53bf0271b0b73a8ebc2cbdda1b0b29cb29d07de8b",
+    "credential": 0,
+    "home": 0,
+    "prohibited_name": 0
+  },
+  {
+    "file": "ci-gui-macos/mcp-conformance-http.json",
+    "bytes": 6322,
+    "sha256": "3a54c4fdba99835c2ede2dd2169693bcbc602ffa8d2cd5cfe916136e7fc75e65",
+    "credential": 0,
+    "home": 0,
+    "prohibited_name": 0
+  },
+  {
+    "file": "ci-gui-macos/transcript.json",
+    "bytes": 13057,
+    "sha256": "89eb622219f2cdb7b8dd2413ae99b6b3947689fec45a0f87ff863577e982c4f3",
+    "credential": 0,
+    "home": 0,
+    "prohibited_name": 0
+  },
+  {
+    "file": "ci-gui-macos/tree-01-start.json",
+    "bytes": 19250,
+    "sha256": "ffa2a462c0a83d7473cb6e664eafc762d95141ce1f610571e3ea5f231857973d",
+    "credential": 0,
+    "home": 0,
+    "prohibited_name": 0
+  },
+  {
+    "file": "ci-gui-macos/tree-02-project.json",
+    "bytes": 17401,
+    "sha256": "d2f71f1f2d6de1ae1f8f526ad2392f80d682cfc0b6bf3ef468e6be482a5cd609",
+    "credential": 0,
+    "home": 0,
+    "prohibited_name": 0
+  },
+  {
+    "file": "ci-gui-macos/tree-04-restart.json",
+    "bytes": 15710,
+    "sha256": "13f9cf2374eea43b88e9b07275dcc05e79dd608b3a6e5602ff91a8269e22c3cb",
+    "credential": 0,
+    "home": 0,
+    "prohibited_name": 0
+  },
+  {
+    "file": "ci-gui-windows/01-start-screen.png",
+    "bytes": 37327,
+    "sha256": "9c77bda6ba6aa8ec54bab98dde49d2b8f4cda5046532aa798fd29e1640460dbc",
+    "credential": 0,
+    "home": 0,
+    "prohibited_name": 0
+  },
+  {
+    "file": "ci-gui-windows/02-project.png",
+    "bytes": 38638,
+    "sha256": "656a3aa8262f2586555cc8c90536a05bd283dd6612ae8298b4902bf29fda1561",
+    "credential": 0,
+    "home": 0,
+    "prohibited_name": 0
+  },
+  {
+    "file": "ci-gui-windows/03-preferences.png",
+    "bytes": 42610,
+    "sha256": "35eb5dc083b28ede1ffbbef0bc2ea98639d38cd6b79b55b3af817b8b014ed412",
+    "credential": 0,
+    "home": 0,
+    "prohibited_name": 0
+  },
+  {
+    "file": "ci-gui-windows/04-restart.png",
+    "bytes": 23631,
+    "sha256": "695308252466d91e957b6a764fb96c897396114877af408d19895528dc10cc30",
+    "credential": 0,
+    "home": 0,
+    "prohibited_name": 0
+  },
+  {
+    "file": "ci-gui-windows/activity.json",
+    "bytes": 12717,
+    "sha256": "9d7e0538b4d8c57d6acc553c6da23bda982e34ded4eaae66af4c521ec98a9c82",
+    "credential": 0,
+    "home": 0,
+    "prohibited_name": 0
+  },
+  {
+    "file": "ci-gui-windows/c41-r1-http-lifecycle.json",
+    "bytes": 3633,
+    "sha256": "a9ba364830ddeb46749908779bcd3edbdd6c57b349a1f03d274d82e2e7dd6ed1",
+    "credential": 0,
+    "home": 0,
+    "prohibited_name": 0
+  },
+  {
+    "file": "ci-gui-windows/discovery.json",
+    "bytes": 158,
+    "sha256": "387ae42a41326513567dd2586f21c5f75008df689cdfb42895178772fbd7ad02",
+    "credential": 0,
+    "home": 0,
+    "prohibited_name": 0
+  },
+  {
+    "file": "ci-gui-windows/discovery.log",
+    "bytes": 159,
+    "sha256": "cb155fb8455cf0f26b475dcbec01129ba55971dd71394ad3bbb852e063f75bc4",
+    "credential": 0,
+    "home": 0,
+    "prohibited_name": 0
+  },
+  {
+    "file": "ci-gui-windows/manifest.json",
+    "bytes": 539,
+    "sha256": "061c219682face11a10156de668b016b6054cc3cc47ca9a35508b2bf482b2098",
+    "credential": 0,
+    "home": 0,
+    "prohibited_name": 0
+  },
+  {
+    "file": "ci-gui-windows/mcp-conformance-http.json",
+    "bytes": 6390,
+    "sha256": "4c59706ee5f5ffcdbde76e9c170bce2a61378b0467f78f64192059f5ba15d73b",
+    "credential": 0,
+    "home": 0,
+    "prohibited_name": 0
+  },
+  {
+    "file": "ci-gui-windows/transcript.json",
+    "bytes": 13069,
+    "sha256": "9239c788ea6a577ddcdf69e3407164d2f1325c3d1e045b401db12d42e46632b3",
+    "credential": 0,
+    "home": 0,
+    "prohibited_name": 0
+  },
+  {
+    "file": "ci-gui-windows/tree-01-start.json",
+    "bytes": 19250,
+    "sha256": "ffa2a462c0a83d7473cb6e664eafc762d95141ce1f610571e3ea5f231857973d",
+    "credential": 0,
+    "home": 0,
+    "prohibited_name": 0
+  },
+  {
+    "file": "ci-gui-windows/tree-02-project.json",
+    "bytes": 17401,
+    "sha256": "d2f71f1f2d6de1ae1f8f526ad2392f80d682cfc0b6bf3ef468e6be482a5cd609",
+    "credential": 0,
+    "home": 0,
+    "prohibited_name": 0
+  },
+  {
+    "file": "ci-gui-windows/tree-04-restart.json",
+    "bytes": 15710,
+    "sha256": "13f9cf2374eea43b88e9b07275dcc05e79dd608b3a6e5602ff91a8269e22c3cb",
+    "credential": 0,
+    "home": 0,
+    "prohibited_name": 0
+  },
+  {
+    "file": "local-windows/01-start-screen.png",
+    "bytes": 34212,
+    "sha256": "3db370818deb6cd408f887e66a07684e1ab36d5e2463630aa1cdec5bf4c5d932",
+    "credential": 0,
+    "home": 0,
+    "prohibited_name": 0
+  },
+  {
+    "file": "local-windows/02-project.png",
+    "bytes": 47218,
+    "sha256": "d2f909675255e3978464246ba17e5a25fdde695b1916fddfe700498610742415",
+    "credential": 0,
+    "home": 0,
+    "prohibited_name": 0
+  },
+  {
+    "file": "local-windows/03-preferences.png",
+    "bytes": 46574,
+    "sha256": "2dd5e62915ee6b65cb8c2ffec64c5f351f159194dfbe3c9b3735bddd83efeab1",
+    "credential": 0,
+    "home": 0,
+    "prohibited_name": 0
+  },
+  {
+    "file": "local-windows/04-restart.png",
+    "bytes": 27565,
+    "sha256": "02a3167e1facd391fdeba9d427f0069883a6fac74df93d905d049a47a4285e5a",
+    "credential": 0,
+    "home": 0,
+    "prohibited_name": 0
+  },
+  {
+    "file": "local-windows/activity.json",
+    "bytes": 12715,
+    "sha256": "b9a1f2af5eedddfe7d385c7a92f2a787cb4f94c35f9a3a846da3b4bb203ee237",
+    "credential": 0,
+    "home": 0,
+    "prohibited_name": 0
+  },
+  {
+    "file": "local-windows/discovery.json",
+    "bytes": 159,
+    "sha256": "928b03a1443ee72d8328b8ca6e17129c2f81ad0e7b72d97f05d5231046d72e24",
+    "credential": 0,
+    "home": 0,
+    "prohibited_name": 0
+  },
+  {
+    "file": "local-windows/discovery.log",
+    "bytes": 159,
+    "sha256": "2f1640baa189448fe46534c8757de7aa8be1b8f2236649f3de0e5a170f048117",
+    "credential": 0,
+    "home": 0,
+    "prohibited_name": 0
+  },
+  {
+    "file": "local-windows/manifest.json",
+    "bytes": 531,
+    "sha256": "6e8f7e9a01d9c97e4bd0ec5e3e3d3787ae6c8b7a10ffc22552d9ffba6f7d0ed7",
+    "credential": 0,
+    "home": 0,
+    "prohibited_name": 0
+  },
+  {
+    "file": "local-windows/transcript.json",
+    "bytes": 13292,
+    "sha256": "12e223476a46004b45fd909c264d2f497c994e207e4e00285e5fc536ae12ca92",
+    "credential": 0,
+    "home": 0,
+    "prohibited_name": 0
+  },
+  {
+    "file": "local-windows/tree-01-start.json",
+    "bytes": 19250,
+    "sha256": "ffa2a462c0a83d7473cb6e664eafc762d95141ce1f610571e3ea5f231857973d",
+    "credential": 0,
+    "home": 0,
+    "prohibited_name": 0
+  },
+  {
+    "file": "local-windows/tree-02-project.json",
+    "bytes": 17401,
+    "sha256": "d2f71f1f2d6de1ae1f8f526ad2392f80d682cfc0b6bf3ef468e6be482a5cd609",
+    "credential": 0,
+    "home": 0,
+    "prohibited_name": 0
+  },
+  {
+    "file": "local-windows/tree-04-restart.json",
+    "bytes": 15710,
+    "sha256": "13f9cf2374eea43b88e9b07275dcc05e79dd608b3a6e5602ff91a8269e22c3cb",
+    "credential": 0,
+    "home": 0,
+    "prohibited_name": 0
+  }
+]
