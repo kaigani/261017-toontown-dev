@@ -292,8 +292,15 @@ fn token_ok(presented: Option<&String>, token: &str) -> bool {
 }
 
 /// Writes an SSE stream from `rx` until `done` says the stream is complete or the client goes away.
-fn stream_sse(stream: &mut TcpStream, extra: &[(&str, String)], rx: &Receiver<String>, until_response_for: Option<&str>) {
-    let mut head = String::from("HTTP/1.1 200 OK\r\nContent-Type: text/event-stream\r\nCache-Control: no-cache\r\nConnection: close\r\n");
+fn stream_sse(
+    stream: &mut TcpStream,
+    extra: &[(&str, String)],
+    rx: &Receiver<String>,
+    until_response_for: Option<&str>,
+) {
+    let mut head = String::from(
+        "HTTP/1.1 200 OK\r\nContent-Type: text/event-stream\r\nCache-Control: no-cache\r\nConnection: close\r\n",
+    );
     for (k, v) in extra {
         head.push_str(&format!("{k}: {v}\r\n"));
     }
@@ -376,7 +383,9 @@ fn serve_connection(
         return;
     }
     // DNS-rebinding and cross-origin protection (11 §4): loopback Host and Origin only.
-    if !req.headers.get("host").is_some_and(|h| loopback_host(h)) || req.headers.get("origin").is_some_and(|o| !loopback_host(o)) {
+    if !req.headers.get("host").is_some_and(|h| loopback_host(h))
+        || req.headers.get("origin").is_some_and(|o| !loopback_host(o))
+    {
         json_error(stream, "403 Forbidden", "non-local origin or host");
         return;
     }
@@ -509,9 +518,15 @@ mod tests {
             r.requests.push(("2".into(), None, b));
             r.get = Some(g);
         }
-        route(&routes, r#"{"jsonrpc":"2.0","method":"notifications/progress","params":{"progressToken":"p1","progress":1}}"#);
+        route(
+            &routes,
+            r#"{"jsonrpc":"2.0","method":"notifications/progress","params":{"progressToken":"p1","progress":1}}"#,
+        );
         route(&routes, r#"{"jsonrpc":"2.0","id":9,"method":"elicitation/create","params":{}}"#);
-        route(&routes, r#"{"jsonrpc":"2.0","method":"notifications/resources/updated","params":{"uri":"app://state"}}"#);
+        route(
+            &routes,
+            r#"{"jsonrpc":"2.0","method":"notifications/resources/updated","params":{"uri":"app://state"}}"#,
+        );
         route(&routes, r#"{"jsonrpc":"2.0","id":1,"result":{}}"#);
         assert!(ra.try_recv().unwrap_or_default().contains("progress"));
         assert!(ra.try_recv().unwrap_or_default().contains("result"));
