@@ -180,7 +180,7 @@ pub struct ActiveTool {
     pub tool_id: String,
 }
 
-/// A modal GUI state (never set by the kernel: 11 P5).
+/// A modal GUI state (reported by the desktop host, never set by a command: 11 P5).
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, JsonSchema)]
 pub struct Modal {
     /// `dialog`, `gesture` or `progress`.
@@ -219,7 +219,7 @@ pub struct AppState {
     pub playback: PlaybackState,
     /// Start screen shown (no project).
     pub start_screen_visible: bool,
-    /// Modal state (always `null` in the kernel).
+    /// Modal state (reported by the desktop host; `null` headless).
     pub modal: Option<Modal>,
     /// Connected agent sessions.
     pub agent_sessions: Vec<AgentSessionState>,
@@ -475,7 +475,8 @@ impl AppContext {
             workspace: WorkspaceState { name: workspace, modified },
             playback: PlaybackState { playing: false },
             start_screen_visible: ui.shell().start_screen_visible(project.as_ref().map(|(_, info)| info.id.as_str())),
-            modal: None,
+            // The modal state the desktop host reports (M4 C4.1; never set by a command, 11 P5).
+            modal: ui.shell().sensors.modal.as_ref().map(|m| Modal { kind: m.kind.clone(), title: m.title.clone() }),
             agent_sessions: Vec::new(),
             agent: None,
             full_screen: ui.full_screen(),

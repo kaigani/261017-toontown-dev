@@ -959,9 +959,15 @@ fn call_tool(
             }
             let options = InvokeOptions { dry_run, expect_rev: expect, request_id, confirm_token, confirm };
             let inv = Invocation { command: id.clone(), params: params.clone(), options, origin: origin.clone() };
+            // `inspect_ui` describes the GUI after the commands before it (M4 C4.1): wait, bounded, until the front
+            // end has rendered every event broadcast so far; a tree that did not catch up is marked stale.
+            let fresh = name != "inspect_ui" || shared.handle.await_rendered(INSPECT_UI_FRESHNESS);
             let (mut env, mut cached) = shared.handle.invoke_served_until(inv.clone(), &|| shared.is_cancelled(rid));
             if name == "get_state" {
                 env = project_state(env, args);
+            }
+            if !fresh && let Some(Value::Object(m)) = env.result.as_mut() {
+                m.insert("stale".into(), Value::Bool(true));
             }
             // A confirmation the client can ask its user for (11 §6.3 rule 1). The answer settles the same logical
             // call: it is re-invoked with its token and its requestId, so the executor remembers the final outcome
@@ -1038,6 +1044,10 @@ fn call_tool(
                 };
                 ("batch".to_owned(), env, false)
             }
+            "key" => {
+                let (command, env) = key_tool(shared, rid, &origin, args, started);
+                return ToolOutcome::Result(tool_result(name, &command, &env));
+            }
             "job_wait" => match job_wait(shared, rid, &origin, args, progress) {
                 Some(env) => ("job.wait".to_owned(), env, false),
                 None => return ToolOutcome::Cancelled,
@@ -1050,6 +1060,74 @@ fn call_tool(
     }
     mark(shared, "app://activity");
     ToolOutcome::Result(tool_result(name, &command, &env))
+}
+
+/// How long `inspect_ui` waits for the front end to render the events before it (M4 C4.1).
+const INSPECT_UI_FRESHNESS: Duration = Duration::from_secs(2);
+
+/// The `key` tool (11 §7.6; M4 C4.1): the key goes through the one keymap dispatch real key presses use
+/// (`ExecutorHandle::resolve_key`), then the bound command runs as this session's call, audited once as the logical
+/// call. An unbound or suspended key answers `{handled: false}`.
+fn key_tool(
+    shared: &Arc<Shared>,
+    rid: &Value,
+    origin: &tt_executor::Origin,
+    args: &Map<String, Value>,
+    started: Instant,
+) -> (String, Envelope) {
+    let keys = args.get("keys").and_then(Value::as_str).unwrap_or_default();
+    let params = Value::Object(args.clone());
+    if args.contains_key("view") {
+        let env = envelope_error(
+            "command.notImplemented",
+            "targeting a view with `key` needs the interactive views (M4 C4.2); omit `view` to use the active one"
+                .into(),
+            json!({ "tool": "key", "milestone": "M4 C4.2" }),
+            None,
+        );
+        shared.handle.audit_call(origin, "key", "key", &params, &env, started.elapsed());
+        return ("key".to_owned(), env);
+    }
+    let resolved = match shared.handle.resolve_key(keys) {
+        Ok(r) => r,
+        Err(e) => {
+            let env = Envelope::error(e, None);
+            shared.handle.audit_call(origin, "key", "key", &params, &env, started.elapsed());
+            return ("key".to_owned(), env);
+        }
+    };
+    match resolved {
+        tt_executor::host::KeyResolution::Command { command_id, params: cparams, .. } => {
+            let inv = Invocation {
+                command: command_id.clone(),
+                params: cparams.clone(),
+                options: InvokeOptions::default(),
+                origin: origin.clone(),
+            };
+            let (env, cached) = shared.handle.invoke_served_until(inv, &|| shared.is_cancelled(rid));
+            shared.handle.audit_logical_call(
+                origin,
+                &AuditCall {
+                    tool: "key",
+                    command: &command_id,
+                    params: &cparams,
+                    env: &env,
+                    took: started.elapsed(),
+                    cached,
+                },
+            );
+            (command_id, env)
+        }
+        other => {
+            let mut v = serde_json::to_value(&other).unwrap_or(Value::Null);
+            if let Some(m) = v.as_object_mut() {
+                m.insert("handled".into(), Value::Bool(false));
+            }
+            let env = Envelope::ok(v, None);
+            shared.handle.audit_call(origin, "key", "key", &params, &env, started.elapsed());
+            ("key".to_owned(), env)
+        }
+    }
 }
 
 /// Runs work the server does itself under [`SERVER_WORK_BUDGET`] (C14-R1-05): the call thread is free again when
@@ -1380,6 +1458,8 @@ fn pump_events(shared: &Shared, rx: &mpsc::Receiver<tt_executor::Event>) {
     let mut last_poll = Instant::now();
     loop {
         match rx.recv_timeout(Duration::from_millis(20)) {
+            // `shell.*` notices are for the desktop host alone (native window, agent indicator; ADR-0021).
+            Ok(ev) if ev.name.starts_with("shell.") => {}
             Ok(ev) => on_event(shared, &ev),
             Err(RecvTimeoutError::Timeout) => {}
             Err(RecvTimeoutError::Disconnected) => break,

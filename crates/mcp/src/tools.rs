@@ -660,10 +660,8 @@ pub fn plan(name: &str, args: &Map<String, Value>) -> Result<Plan, String> {
             milestone: "M2 C2.3",
             reason: "pointer gestures produce the structured commands of the drawing tools (gesture equivalence, 11 §7.6), which arrive with M2",
         },
-        "key" => Plan::Unavailable {
-            milestone: "M4 C4.2",
-            reason: "key input reaches commands through the keymap of the desktop shell (M4)",
-        },
+        // The keymap dispatch of the desktop shell (M4 C4.1), answered by the server (`key_tool`).
+        "key" => Plan::Server,
         "type_text" => Plan::Unavailable {
             milestone: "M4 C4.2",
             reason: "typing targets widgets of the UI tree (inspect_ui), which arrives with the desktop shell (M4)",

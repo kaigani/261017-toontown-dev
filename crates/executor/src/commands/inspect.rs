@@ -870,17 +870,129 @@ pub(crate) fn inspect_contact_sheet_render(cx: &mut Cx, p: ContactSheetParams) -
     })
 }
 
-/// `inspect.ui.tree` parameters.
+/// `inspect.ui.tree` parameters (11 §7.5 `inspect_ui`).
 #[derive(Debug, Deserialize, JsonSchema)]
 #[serde(deny_unknown_fields)]
 pub(crate) struct UiTreeParams {
-    /// Window, panel or dialog.
+    /// `window` (default), a panel or view id (01 §5.2), a tool palette id, or `dialogs`.
     #[serde(default)]
+    #[schemars(length(max = 256))]
     target: Option<String>,
-    /// Depth.
+    /// Levels below the target to include (default: all).
     #[serde(default)]
     #[schemars(range(min = 1, max = 32))]
     depth: Option<u32>,
+}
+
+/// A node of the virtual UI tree (headless, or before the GUI has reported one).
+fn node(role: &str, id: &str, label: &str) -> Map<String, Value> {
+    let mut m = Map::new();
+    m.insert("role".into(), json!(role));
+    m.insert("id".into(), json!(id));
+    m.insert("label".into(), json!(label));
+    m
+}
+
+/// The tree the kernel can describe itself (11 §3 virtual views): window, main toolbar, tool palettes, panels with
+/// their place, view windows with type, size and transform, status bar, start screen. Every widget that invokes a
+/// command names it.
+fn virtual_tree(cx: &Cx) -> Value {
+    let ui = cx.ui();
+    let layout = ui.layout();
+    let mut root = node("window", "main", crate::help::APP_TITLE);
+    root.insert("fullScreen".into(), json!(ui.full_screen()));
+    let mut children: Vec<Value> = Vec::new();
+    let mut toolbar = node("toolbar", "mainToolbar", "Main toolbar");
+    toolbar.insert("visible".into(), json!(layout.main_toolbar.visible));
+    toolbar.insert(
+        "children".into(),
+        Value::Array(
+            layout
+                .main_toolbar
+                .items
+                .iter()
+                .map(|i| {
+                    let mut b = node("button", i, i);
+                    if i.contains('.') {
+                        b.insert("command".into(), json!({ "commandId": i }));
+                    }
+                    Value::Object(b)
+                })
+                .collect(),
+        ),
+    );
+    children.push(Value::Object(toolbar));
+    for p in &layout.tool_palettes {
+        let mut t = node("toolPalette", &p.id, &p.id);
+        t.insert("visible".into(), json!(p.visible));
+        t.insert("floating".into(), json!(p.floating));
+        children.push(Value::Object(t));
+    }
+    for p in ui.panels() {
+        let mut n = node("panel", &p.panel_id, &p.title);
+        n.insert("visible".into(), json!(p.visible));
+        n.insert("floating".into(), json!(p.floating));
+        n.insert("focused".into(), json!(p.focused));
+        if let Some(a) = &p.area {
+            n.insert("area".into(), json!(a));
+        }
+        if let Ok(v) = ui.shell().view(&p.panel_id) {
+            let t = v.transform();
+            n.insert(
+                "view".into(),
+                json!({ "viewId": v.view_id, "type": v.ty.as_str(), "size": v.size,
+                        "transform": { "zoom": t.zoom, "rotationDegrees": t.rotation_degrees, "centre": t.centre } }),
+            );
+        }
+        children.push(Value::Object(n));
+    }
+    let mut bar = node("statusBar", "statusBar", "Status bar");
+    bar.insert(
+        "visible".into(),
+        json!(cx.pref("interface.statusBar.visible").and_then(|v| v.as_bool()).unwrap_or(true)),
+    );
+    bar.insert(
+        "children".into(),
+        json!([
+            { "role": "text", "id": "status.description", "value": ui.shell().sensors.description },
+            { "role": "text", "id": "status.pointer", "value": ui.shell().sensors.pointer },
+            { "role": "text", "id": "status.agent", "value": super::ui_shell::agent_indicator(cx) }
+        ]),
+    );
+    children.push(Value::Object(bar));
+    let project = cx.session().project.as_ref().map(|p| p.doc.project().id().as_str().to_owned());
+    if ui.shell().start_screen_visible(project.as_deref()) {
+        let mut st = node("startScreen", "startScreen", "Start screen");
+        st.insert("children".into(), json!([
+            { "role": "button", "id": "start.create", "label": "Create", "command": { "commandId": "project.create" } },
+            { "role": "button", "id": "start.open", "label": "Open other", "command": { "commandId": "project.open" } }
+        ]));
+        children.push(Value::Object(st));
+    }
+    children.push(json!({ "role": "dialogs", "id": "dialogs", "label": "Dialogs", "children": [] }));
+    root.insert("children".into(), Value::Array(children));
+    Value::Object(root)
+}
+
+fn find<'a>(n: &'a Value, id: &str) -> Option<&'a Value> {
+    if n.get("id").and_then(Value::as_str) == Some(id) {
+        return Some(n);
+    }
+    n.get("children").and_then(Value::as_array).and_then(|c| c.iter().find_map(|x| find(x, id)))
+}
+
+fn prune(n: &mut Value, depth: u32) {
+    if let Some(m) = n.as_object_mut() {
+        if depth == 0 {
+            if let Some(c) = m.shift_remove("children") {
+                m.insert("childCount".into(), json!(c.as_array().map_or(0, Vec::len)));
+            }
+            return;
+        }
+        if let Some(Value::Array(c)) = m.get_mut("children") {
+            c.iter_mut().for_each(|x| prune(x, depth - 1));
+        }
+    }
 }
 
 #[command(
@@ -888,12 +1000,37 @@ pub(crate) struct UiTreeParams {
     kind = query,
     label = "UI tree",
     scopes = [read],
-    not_implemented = "M4 C4.2",
-    example(title = "The window's accessibility tree, 3 levels", params = r#"{"depth": 3}"#),
-    agent_only = "agents inspect the GUI (11 §7.8 inspect_ui)",
+    example(title = "The window's UI tree, 3 levels", params = r#"{"depth": 3}"#),
+    example(title = "The History panel", params = r#"{"target": "history"}"#),
+    agent_only = "agents inspect the GUI (11 §7.5 inspect_ui)",
 )]
-pub(crate) fn inspect_ui_tree(_cx: &mut Cx, _p: UiTreeParams) -> Result<Map<String, Value>, CommandError> {
-    Err(CommandError::not_implemented("inspect.ui.tree", "M4 C4.2"))
+pub(crate) fn inspect_ui_tree(cx: &mut Cx, p: UiTreeParams) -> Result<Map<String, Value>, CommandError> {
+    // Attached mode: the tree the front end rendered and reported (ADR-0021); headless: the virtual tree.
+    let (source, tree) = match cx.ui().shell().sensors.ui_tree.clone() {
+        Some(t) if t.is_object() => ("gui", t),
+        _ => ("virtual", virtual_tree(cx)),
+    };
+    let target = p.target.unwrap_or_else(|| "window".to_owned());
+    let mut sub = if target == "window" {
+        tree
+    } else {
+        find(&tree, &target).cloned().ok_or_else(|| {
+            CommandError::with_details(
+                "window.panelNotFound",
+                format!("the UI tree has no `{target}`"),
+                json!({ "target": target }),
+            )
+            .hint("targets are window, dialogs, a panel or view id (01 §5.2) or a tool palette id")
+        })?
+    };
+    if let Some(d) = p.depth {
+        prune(&mut sub, d);
+    }
+    let mut out = Map::new();
+    out.insert("source".into(), json!(source));
+    out.insert("target".into(), json!(target));
+    out.insert("root".into(), sub);
+    Ok(out)
 }
 
 /// `inspect.screenshot` parameters.

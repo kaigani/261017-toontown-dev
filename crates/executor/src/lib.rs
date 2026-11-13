@@ -31,6 +31,7 @@ pub mod commands;
 mod cx;
 mod help;
 mod history;
+pub mod host;
 mod jobs;
 pub mod keymap;
 mod load_repair;
@@ -233,7 +234,9 @@ pub struct ExecutorHandle {
     tx: Sender<Request>,
     registry: &'static Registry,
     jobs: Arc<JobTable>,
-    subscribers: Arc<Mutex<Vec<Sender<Event>>>>,
+    subscribers: Arc<host::Bus>,
+    /// Facts the desktop host reports and the user-priority state agent calls consult (M4 C4.1; ADR-0021).
+    shell: Arc<host::ShellShared>,
     config: ExecutorConfig,
     /// The document thread's watchdog cancellation state (C23-R1-07).
     cancel: Arc<tt_vector::work::CancelState>,
@@ -294,7 +297,7 @@ impl ExecutorHandle {
         // The system font list (text layout, missingFonts lint) is read once, off the document thread.
         tt_vector::fonts::warm();
         let (tx, rx) = mpsc::channel::<Request>();
-        let subscribers: Arc<Mutex<Vec<Sender<Event>>>> = Arc::new(Mutex::new(Vec::new()));
+        let subscribers: Arc<host::Bus> = Arc::new(host::Bus::default());
         let job_subs = subscribers.clone();
         let jobs = Arc::new(JobTable::with_notifier(Box::new(move |e| broadcast(&job_subs, std::slice::from_ref(&e)))));
         let mut env = store::Env::new(&persist);
@@ -345,7 +348,8 @@ impl ExecutorHandle {
                 .map_err(|e| CommandError::internal(format!("cannot start the maintenance thread: {e}")))?;
         }
         let guard = Arc::new(ShutdownGuard(tx.clone(), Mutex::new(Some(done_rx))));
-        Ok(Self { tx, registry, jobs, subscribers, config, cancel, _guard: guard })
+        let shell = Arc::new(host::ShellShared::default());
+        Ok(Self { tx, registry, jobs, subscribers, shell, config, cancel, _guard: guard })
     }
 
     /// Grants an agent session file-system roots (11 §6.2): paths given by that session must lie inside one of them
@@ -558,6 +562,10 @@ impl ExecutorHandle {
         }
         let what = inv.command.clone();
         let params = inv.params.clone();
+        // User priority (M4 C4.1): an agent change waits for the user's dialog or gesture, on this thread.
+        if let Err(e) = self.user_priority(&inv.origin, &what, cancelled) {
+            return (Envelope::error(e, None), false);
+        }
         // A query changes nothing: it is not refused before it begins and the worker never asks its caller; a
         // cancellation marks its token, which stops it at its next work-account check, and a link carries only the
         // notice that it was discarded (ADR-0020 decision 8).
@@ -574,6 +582,9 @@ impl ExecutorHandle {
     /// Runs a batch (11 §7.3).
     #[must_use]
     pub fn batch(&self, req: BatchRequest, origin: Origin) -> Envelope {
+        if let Err(e) = self.user_priority(&origin, "batch", &not_cancelled) {
+            return Envelope::error(e, None);
+        }
         self.call("batch", |r| Request::Batch(req, origin, r)).unwrap_or_else(|e| Envelope::error(e, None))
     }
 
@@ -583,6 +594,9 @@ impl ExecutorHandle {
     /// (ADR-0020 decision 8).
     #[must_use]
     pub fn batch_until(&self, req: BatchRequest, origin: Origin, cancelled: Cancelled<'_>) -> Envelope {
+        if let Err(e) = self.user_priority(&origin, "batch", cancelled) {
+            return Envelope::error(e, None);
+        }
         self.call_until("batch", |r| Request::Batch(req, origin, r), cancelled)
             .unwrap_or_else(|e| Envelope::error(e, None))
     }
@@ -772,7 +786,7 @@ impl ExecutorHandle {
     #[must_use]
     pub fn subscribe(&self) -> Receiver<Event> {
         let (tx, rx) = mpsc::channel();
-        self.subscribers.lock().unwrap_or_else(PoisonError::into_inner).push(tx);
+        self.subscribers.subs.lock().unwrap_or_else(PoisonError::into_inner).push(tx);
         rx
     }
 
@@ -843,7 +857,7 @@ impl ExecutorHandle {
 fn document_thread(
     mut core: run::Core,
     rx: &Receiver<Request>,
-    subscribers: &Mutex<Vec<Sender<Event>>>,
+    subscribers: &host::Bus,
     cancel: &Arc<tt_vector::work::CancelState>,
     budget: Duration,
 ) {
@@ -880,14 +894,18 @@ fn document_thread(
         let shutdown = matches!(req, Request::Shutdown);
         match req {
             Request::Invoke(inv, reply) => {
+                host::acting(subscribers, &inv.origin, &inv.command, true);
                 let env = core.invoke(&inv);
                 let cached = core.take_served_from_cache();
                 flush(&mut core);
+                host::acting(subscribers, &inv.origin, &inv.command, false);
                 let _ = reply.send((env, cached));
             }
             Request::Batch(b, origin, reply) => {
+                host::acting(subscribers, &origin, "batch", true);
                 let env = core.batch(&b, &origin);
                 flush(&mut core);
+                host::acting(subscribers, &origin, "batch", false);
                 let _ = reply.send(env);
             }
             Request::Open(doc, options, origin, reply) => {
@@ -944,12 +962,14 @@ fn document_thread(
 }
 
 /// Delivers events to every live subscriber (dropping closed ones).
-fn broadcast(subscribers: &Mutex<Vec<Sender<Event>>>, events: &[Event]) {
+fn broadcast(bus: &host::Bus, events: &[Event]) {
     if events.is_empty() {
         return;
     }
-    let mut subs = subscribers.lock().unwrap_or_else(PoisonError::into_inner);
+    let mut subs = bus.subs.lock().unwrap_or_else(PoisonError::into_inner);
     subs.retain(|s| events.iter().all(|e| s.send(e.clone()).is_ok()));
+    // Counted under the lock, after delivery: a subscriber that has seen N events finds the count at least N.
+    bus.seq.fetch_add(u64::try_from(events.len()).unwrap_or(u64::MAX), std::sync::atomic::Ordering::AcqRel);
 }
 
 /// `list_commands` on the document thread: enablement is evaluated against the current context.

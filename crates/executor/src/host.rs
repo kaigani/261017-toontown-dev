@@ -1,0 +1,416 @@
+//! The kernel API of the desktop host (M4 C4.1; ADR-0021, `reviews/M4-design-busy-arbitration.md`): sensor reports,
+//! key dispatch, user priority for agent calls, and the event count the UI-freshness wait uses.
+//!
+//! None of these are commands. A sensor report changes no document, setting or layout and is not audited; agents
+//! cannot send one. Key dispatch only *resolves* a key to a command reference: the caller then invokes that command
+//! through the ordinary entry points, so a key press and an agent's `key` tool run exactly the same command.
+
+use std::sync::atomic::{AtomicU64, Ordering};
+use std::sync::mpsc::Sender;
+use std::sync::{Mutex, PoisonError};
+use std::time::{Duration, Instant};
+
+use serde::{Deserialize, Serialize};
+use serde_json::{Map, Value, json};
+use tt_registry::{CommandError, Kind};
+
+use crate::session::Event;
+use crate::shell::{ModalReport, Screen, Size};
+use crate::{ExecutorHandle, Origin};
+
+/// The event bus: subscribers and the number of events broadcast so far.
+#[derive(Debug, Default)]
+pub(crate) struct Bus {
+    pub subs: Mutex<Vec<Sender<Event>>>,
+    pub seq: AtomicU64,
+}
+
+/// State shared between the document thread, the host and agent callers.
+#[derive(Debug)]
+pub(crate) struct ShellShared {
+    /// The reported modal state (also kept in the session for `app.state.get`).
+    modal: Mutex<Option<ModalReport>>,
+    /// The last engine event the front end has rendered (with its reported UI tree).
+    rendered: AtomicU64,
+    /// `waitForUserMs` (01 §12.1 rule 8, 11 §6.4), in milliseconds.
+    wait_for_user_ms: AtomicU64,
+    /// A host window renders the UI (attached mode).
+    attached: std::sync::atomic::AtomicBool,
+}
+
+impl Default for ShellShared {
+    fn default() -> Self {
+        Self {
+            modal: Mutex::new(None),
+            rendered: AtomicU64::new(0),
+            wait_for_user_ms: AtomicU64::new(10_000),
+            attached: std::sync::atomic::AtomicBool::new(false),
+        }
+    }
+}
+
+/// Broadcasts the agent-activity notice (`shell.agentActing`, host only) around an agent request, so the agent
+/// indicator can show the acting state while the command runs (01 §12.1 rule 9).
+pub(crate) fn acting(bus: &Bus, origin: &Origin, command: &str, on: bool) {
+    if let Origin::Agent { session, name, .. } = origin {
+        let e = Event {
+            name: "shell.agentActing".to_owned(),
+            payload: json!({ "sessionId": session, "client": name, "commandId": command, "acting": on }),
+        };
+        let mut subs = bus.subs.lock().unwrap_or_else(PoisonError::into_inner);
+        subs.retain(|s| s.send(e.clone()).is_ok());
+        bus.seq.fetch_add(1, Ordering::AcqRel);
+    }
+}
+
+/// A sensor report (ADR-0021): every member present replaces that fact; absent members are left as they are.
+#[derive(Debug, Clone, Default, PartialEq, Serialize, Deserialize)]
+#[serde(rename_all = "camelCase", deny_unknown_fields)]
+pub struct ShellReport {
+    /// The modal state: `{kind, title}`, or `null` when it ended.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub modal: Option<Option<ModalReport>>,
+    /// A text field has focus.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub text_focus: Option<bool>,
+    /// The status bar's description segment.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub description: Option<String>,
+    /// The status bar's pointer segment.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub pointer: Option<String>,
+    /// View canvas sizes by view id.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub view_sizes: Option<std::collections::BTreeMap<String, Size>>,
+    /// The screens.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub screens: Option<Vec<Screen>>,
+    /// The main window is up (attached mode).
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub attached: Option<bool>,
+    /// The rendered UI tree (11 §7.5 `inspect_ui`) and the last engine event number it reflects.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub ui_tree: Option<Value>,
+    /// The engine event number the front end has rendered (with `ui_tree`).
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub rendered_seq: Option<u64>,
+    /// A message the GUI showed (emitted as `ui.message.shown` with `source: "user"`).
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub message_shown: Option<Value>,
+}
+
+/// What a key sequence runs (01 §8.4).
+#[derive(Debug, Clone, PartialEq, Serialize)]
+#[serde(rename_all = "camelCase", tag = "outcome")]
+pub enum KeyResolution {
+    /// No binding in the current mode or `global`.
+    Unbound {
+        /// Canonical sequence.
+        keys: String,
+    },
+    /// Shortcuts are suspended (`modal`) or the key belongs to the focused text field (`textField`).
+    Suspended {
+        /// Canonical sequence.
+        keys: String,
+        /// Why.
+        reason: String,
+    },
+    /// The bound command and its parameters (fixed parameters, plus a toggle's next state when the binding leaves
+    /// it open). `dialog` is true when required parameters are still missing: the GUI collects them with a dialog
+    /// (01 §0); an agent's call fails with `arg.missing`.
+    Command {
+        /// Canonical sequence.
+        keys: String,
+        /// Command id.
+        command_id: String,
+        /// Parameters.
+        params: Value,
+        /// The command is disabled now: the key is consumed silently (01 §8.4).
+        enabled: bool,
+        /// Required parameters are missing.
+        dialog: bool,
+    },
+}
+
+/// Focus-changing `ui` commands refused for agents while a user dialog is open (11 §6.4 `ui.modalOpen`).
+const FOCUS_CHANGING: &[&str] = &[
+    "window.panel.set",
+    "window.panel.move",
+    "view.active.set",
+    "view.type.set",
+    "app.mode.set",
+    "workspace.select",
+    "workspace.layout.set",
+    "workspace.reset",
+    "window.fullScreen.set",
+    "window.minimized.set",
+    "window.raiseAll.run",
+    "window.geometry.set",
+    "ui.preferences.open",
+    "ui.help.open",
+    "ui.startScreen.set",
+];
+
+/// The poll interval of a waiting agent caller.
+const WAIT_POLL: Duration = Duration::from_millis(20);
+
+/// The next state of a toggle the binding leaves open: the boolean parameter and its negated current value.
+fn toggle_fill(
+    s: &crate::session::Session,
+    command: &str,
+    params: &Map<String, Value>,
+) -> Option<(&'static str, bool)> {
+    let ui = &s.ui;
+    Some(match command {
+        "window.fullScreen.set" => ("enabled", !ui.full_screen()),
+        "window.floatingPanels.set" => ("visible", !ui.floating_visible()),
+        "window.sidePanelsExtended.set" => ("enabled", !ui.side_panels_extended()),
+        "window.minimized.set" => ("minimized", !ui.shell().minimized),
+        "ui.contextHelpMode.set" => ("enabled", !ui.shell().context_help),
+        "ui.statusBar.set" => {
+            ("visible", !s.env.pref("interface.statusBar.visible").and_then(|v| v.as_bool()).unwrap_or(true))
+        }
+        "ui.startScreen.set" => {
+            let project = s.project.as_ref().map(|p| p.doc.project().id().as_str().to_owned());
+            ("visible", !ui.shell().start_screen_visible(project.as_deref()))
+        }
+        "window.panel.set" => {
+            // Shown and in front: hide; hidden or behind another tab: show and bring forward (01 §5.4).
+            let id = params.get("panelId").and_then(Value::as_str)?;
+            let entry = ui.panels().into_iter().find(|p| p.panel_id == id);
+            ("visible", !entry.is_some_and(|p| p.visible && (p.current || p.floating)))
+        }
+        "window.toolbar.set" => {
+            let id = params.get("toolbarId").and_then(Value::as_str)?;
+            let l = ui.layout();
+            let visible = if id == "main" {
+                l.main_toolbar.visible
+            } else {
+                l.tool_palettes.iter().find(|p| p.id == id).is_some_and(|p| p.visible)
+            };
+            ("visible", !visible)
+        }
+        _ => return None,
+    })
+}
+
+fn resolve_on(core: &mut crate::run::Core, keys: &str) -> Result<KeyResolution, CommandError> {
+    let platform = crate::keymap::Platform::current();
+    let seq = crate::keymap::parse(keys, platform)?;
+    let canonical = seq.canonical();
+    let registry = core.registry();
+    let Some(s) = core.session() else { return Err(CommandError::internal("the session is unavailable")) };
+    if s.ui.shell().sensors.modal.as_ref().is_some_and(|m| m.kind == "dialog") {
+        return Ok(KeyResolution::Suspended { keys: canonical, reason: "modal".into() });
+    }
+    if s.ui.shell().sensors.text_focus && !seq.primary && !seq.alt && !seq.ctrl {
+        return Ok(KeyResolution::Suspended { keys: canonical, reason: "textField".into() });
+    }
+    let bindings = crate::keymap::effective(&s.env.settings.keymap, platform);
+    let mode = match s.ui.mode() {
+        crate::app::Mode::Drawing => crate::keymap::Context::Drawing,
+        crate::app::Mode::Staging => crate::keymap::Context::Staging,
+    };
+    let mode = s.project.as_ref().map(|_| mode);
+    let Some(b) = crate::keymap::resolve(&bindings, &canonical, mode).cloned() else {
+        return Ok(KeyResolution::Unbound { keys: canonical });
+    };
+    let mut params = b.params.clone().unwrap_or_default();
+    let entry = registry.get(&b.command_id);
+    if entry.is_some_and(|e| e.spec.kind == Kind::Toggle)
+        && let Some((name, next)) = toggle_fill(s, &b.command_id, &params)
+        && !params.contains_key(name)
+    {
+        params.insert(name.to_owned(), json!(next));
+    }
+    let schema = entry.map(tt_registry::Entry::params_schema).unwrap_or(Value::Null);
+    let dialog = schema
+        .get("required")
+        .and_then(Value::as_array)
+        .is_some_and(|r| r.iter().filter_map(Value::as_str).any(|k| !params.contains_key(k)));
+    let enabled = entry.is_some_and(|e| {
+        e.spec.kind != Kind::Event
+            && matches!(e.status(), tt_registry::Status::Implemented)
+            && e.command.is_none_or(|c| !c.decl.needs_project || s.project.is_some())
+    });
+    Ok(KeyResolution::Command {
+        keys: canonical,
+        command_id: b.command_id,
+        params: Value::Object(params),
+        enabled,
+        dialog,
+    })
+}
+
+fn ui_busy(m: &ModalReport, waited: Duration) -> CommandError {
+    CommandError::with_details(
+        "ui.busy",
+        format!("the user is busy ({} \u{201C}{}\u{201D}); the agent's change waited and gave up", m.kind, m.title),
+        json!({ "blockedBy": { "kind": m.kind, "title": m.title }, "waitedMs": u64::try_from(waited.as_millis()).unwrap_or(u64::MAX) }),
+    )
+    .hint("retry when the user is done; app.state.get reports `modal`")
+}
+
+impl ExecutorHandle {
+    /// Applies a sensor report from the desktop host (ADR-0021). Never blocks: the modal flag is shared at once, the
+    /// rest is posted to the document thread and applied between requests.
+    pub fn report_shell(&self, report: ShellReport) {
+        if let Some(m) = &report.modal {
+            *self.shell.modal.lock().unwrap_or_else(PoisonError::into_inner) = m.clone();
+        }
+        if let Some(seq) = report.rendered_seq {
+            self.shell.rendered.fetch_max(seq, Ordering::AcqRel);
+        }
+        if let Some(a) = report.attached {
+            self.shell.attached.store(a, Ordering::Release);
+        }
+        let _ = self.tx.send(crate::Request::Run(Box::new(move |core| {
+            let Some(s) = core.session_mut() else { return };
+            // `app.state.changed` follows a reported change of an `AppState` field (`modal`; 01 §12.3).
+            let before = crate::run::observe(s);
+            let sh = s.ui.shell_mut();
+            if let Some(m) = report.modal {
+                sh.sensors.modal = m;
+            }
+            if let Some(t) = report.text_focus {
+                sh.sensors.text_focus = t;
+            }
+            if let Some(d) = report.description {
+                sh.sensors.description = d;
+            }
+            if let Some(p) = report.pointer {
+                sh.sensors.pointer = p;
+            }
+            if let Some(a) = report.attached {
+                sh.sensors.attached = a;
+            }
+            if let Some(sizes) = report.view_sizes {
+                for (id, size) in sizes {
+                    if let Ok(v) = sh.view_mut(&id)
+                        && size.width.is_finite()
+                        && size.height.is_finite()
+                        && size.width >= 1.0
+                        && size.height >= 1.0
+                    {
+                        v.size = size;
+                    }
+                }
+            }
+            if let Some(screens) = report.screens.filter(|s| !s.is_empty()) {
+                sh.screens = screens;
+                let clamped = sh.clamp(sh.window);
+                sh.window = clamped;
+            }
+            if let Some(tree) = report.ui_tree {
+                sh.sensors.ui_tree = Some(tree);
+            }
+            if let Some(msg) = report.message_shown {
+                let mut m = msg.as_object().cloned().unwrap_or_default();
+                m.insert("source".into(), json!("user"));
+                m.entry("suppressed").or_insert(json!(false));
+                s.emit("ui.message.shown", Value::Object(m));
+            }
+            crate::run::Core::settle(s, &before);
+        })));
+    }
+
+    /// Resolves a key sequence to the command it runs now (01 §8.4); the caller invokes it.
+    ///
+    /// # Errors
+    /// `keymap.invalidSequence` and `keymap.reservedKey` for a malformed sequence; `command.timeout` when the
+    /// document thread does not answer within the budget.
+    pub fn resolve_key(&self, keys: &str) -> Result<KeyResolution, CommandError> {
+        let keys = keys.to_owned();
+        crate::Poster(self.tx.clone()).run(self.config.budget, move |core| resolve_on(core, &keys))?
+    }
+
+    /// Sets `waitForUserMs` (01 §12.1 rule 8): how long a conflicting agent change waits for the user's modal
+    /// interaction to end before `ui.busy`. 0 fails at once.
+    pub fn set_wait_for_user(&self, wait: Duration) {
+        self.shell.wait_for_user_ms.store(u64::try_from(wait.as_millis()).unwrap_or(u64::MAX), Ordering::Release);
+    }
+
+    /// The number of engine events broadcast so far.
+    #[must_use]
+    pub fn events_broadcast(&self) -> u64 {
+        self.subscribers.seq.load(Ordering::Acquire)
+    }
+
+    /// Whether a host window renders the UI (attached mode, reported by the host).
+    #[must_use]
+    pub fn attached(&self) -> bool {
+        self.shell.attached.load(Ordering::Acquire)
+    }
+
+    /// Waits on the caller's thread until the front end has rendered every event broadcast before the call, at most
+    /// `bound`; `true` when it has (headless: always, nothing renders). (`inspect_ui` freshness.)
+    #[must_use]
+    pub fn await_rendered(&self, bound: Duration) -> bool {
+        if !self.attached() {
+            return true;
+        }
+        let target = self.events_broadcast();
+        let start = Instant::now();
+        loop {
+            if self.shell.rendered.load(Ordering::Acquire) >= target {
+                return true;
+            }
+            if start.elapsed() >= bound {
+                return false;
+            }
+            std::thread::sleep(WAIT_POLL.min(bound.saturating_sub(start.elapsed())));
+        }
+    }
+
+    /// User priority for an agent call (01 §12.1 rule 8, 11 §6.4), on the caller's thread before anything is
+    /// queued: a focus-changing `ui` command under a user dialog is refused (`ui.modalOpen`); an action, a job or a
+    /// batch waits while a dialog or gesture is open, up to `waitForUserMs` and the call's budget, then `ui.busy`. A
+    /// cancellation during the wait answers `command.timeout` with `reason: "cancelled"`. User calls and queries are
+    /// never held.
+    pub(crate) fn user_priority(
+        &self,
+        origin: &Origin,
+        command: &str,
+        cancelled: &dyn Fn() -> bool,
+    ) -> Result<(), CommandError> {
+        if !matches!(origin, Origin::Agent { .. }) {
+            return Ok(());
+        }
+        let kind =
+            if command == "batch" { Some(Kind::Action) } else { self.registry.get(command).map(|e| e.spec.kind) };
+        let modal = || self.shell.modal.lock().unwrap_or_else(PoisonError::into_inner).clone();
+        let Some(m) = modal() else { return Ok(()) };
+        match kind {
+            Some(Kind::Ui | Kind::Toggle) if m.kind == "dialog" && FOCUS_CHANGING.contains(&command) => {
+                Err(CommandError::with_details(
+                    "ui.modalOpen",
+                    format!("the user has a dialog open (\u{201C}{}\u{201D}); `{command}` would change focus", m.title),
+                    json!({ "blockedBy": { "kind": m.kind, "title": m.title } }),
+                ))
+            }
+            Some(Kind::Action | Kind::Job) if m.kind == "dialog" || m.kind == "gesture" => {
+                let wait =
+                    Duration::from_millis(self.shell.wait_for_user_ms.load(Ordering::Acquire)).min(self.config.budget);
+                let start = Instant::now();
+                loop {
+                    match modal() {
+                        None => return Ok(()),
+                        Some(now) if now.kind != "dialog" && now.kind != "gesture" => return Ok(()),
+                        Some(now) => {
+                            if cancelled() {
+                                return Err(crate::request_cancelled_error(command));
+                            }
+                            if start.elapsed() >= wait {
+                                return Err(ui_busy(&now, start.elapsed()));
+                            }
+                        }
+                    }
+                    std::thread::sleep(
+                        WAIT_POLL.min(wait.saturating_sub(start.elapsed())).max(Duration::from_millis(1)),
+                    );
+                }
+            }
+            _ => Ok(()),
+        }
+    }
+}

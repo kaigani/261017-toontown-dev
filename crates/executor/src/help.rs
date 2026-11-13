@@ -7,6 +7,9 @@ use tt_registry::{CommandError, Status};
 
 use crate::keymap::Binding;
 
+/// The main window's title without a project (01 §5.1).
+pub(crate) const APP_TITLE: &str = "Toontown";
+
 /// Messages of 01 §12.1 rule 7 and the generic codes it names, with what each conveys (01 §9.5: the message id is the
 /// agent error code). Suppressible tips are listed in `commands::ui_shell::TIPS` and included.
 pub(crate) const MESSAGES: &[(&str, &str)] = &[

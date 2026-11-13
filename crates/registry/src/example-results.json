@@ -30,7 +30,7 @@
     {
       "title": "Accept a request",
       "result": {
-        "confirmationId": "cf_f09504f94d86f9645472b397",
+        "confirmationId": "cf_2c67c3f311ef4ee253378a7e",
         "accepted": true
       },
       "varies": [
@@ -71,7 +71,7 @@
         "endpoint": null,
         "sessions": [
           {
-            "sessionId": "s1-5841c1",
+            "sessionId": "s1-1f4ff2",
             "client": "Example agent",
             "policy": "assist",
             "scopes": [
@@ -83,7 +83,7 @@
               "files.write",
               "library.global"
             ],
-            "connectedAt": "2026-11-13T03:03:18.201Z",
+            "connectedAt": "2026-11-13T03:16:11.270Z",
             "lastActivity": null,
             "paused": false,
             "transport": ""
@@ -91,8 +91,8 @@
         ],
         "pendingConfirmations": [
           {
-            "confirmationId": "cf_fe31e46ad1d5b9c7644b4e69",
-            "sessionId": "s1-5841c1",
+            "confirmationId": "cf_18b10509289136c626127369",
+            "sessionId": "s1-1f4ff2",
             "commandId": "project.saveAs",
             "summary": "Overwrite `/tmp/Short.animpkg`",
             "consequences": [
@@ -127,7 +127,7 @@
     {
       "title": "Let a session edit",
       "result": {
-        "sessionId": "s1-0acb29",
+        "sessionId": "s1-a30bf5",
         "policy": "assist",
         "scopes": [
           "read",
@@ -145,7 +145,7 @@
       "title": "Pause every session",
       "result": {
         "paused": [
-          "s1-d22bbc"
+          "s1-0c3def"
         ]
       },
       "varies": [
@@ -1902,7 +1902,7 @@
       "result": [
         {
           "name": "before-walk",
-          "createdAt": "2026-11-13T03:03:19.583Z",
+          "createdAt": "2026-11-13T03:16:12.638Z",
           "documentRev": 1,
           "origin": "user"
         }
@@ -2315,7 +2315,7 @@
             "version": "0.0.1",
             "platform": "windows-x64"
           },
-          "exportedAt": "2026-11-13T03:03:20.155Z",
+          "exportedAt": "2026-11-13T03:16:13.211Z",
           "sourceProjectId": "pr_01K742SG00BK0VXTWDM5JRXV37",
           "scope": {
             "kind": "scenes",
@@ -7185,7 +7185,7 @@
             "stepId": "u-1",
             "label": "Set meta",
             "source": "user",
-            "time": "2026-11-13T03:03:21.495Z",
+            "time": "2026-11-13T03:16:14.591Z",
             "objectCount": 1
           },
           {
@@ -7193,7 +7193,7 @@
             "stepId": "u-2",
             "label": "Set meta",
             "source": "user",
-            "time": "2026-11-13T03:03:21.496Z",
+            "time": "2026-11-13T03:16:14.591Z",
             "objectCount": 1
           }
         ],
@@ -8571,6 +8571,465 @@
       "varies": []
     }
   ],
+  "inspect.ui.tree": [
+    {
+      "title": "The window's UI tree, 3 levels",
+      "result": {
+        "source": "virtual",
+        "target": "window",
+        "root": {
+          "role": "window",
+          "id": "main",
+          "label": "Toontown",
+          "fullScreen": false,
+          "children": [
+            {
+              "role": "toolbar",
+              "id": "mainToolbar",
+              "label": "Main toolbar",
+              "visible": true,
+              "children": [
+                {
+                  "role": "button",
+                  "id": "drawAid.grid.set",
+                  "label": "drawAid.grid.set",
+                  "command": {
+                    "commandId": "drawAid.grid.set"
+                  }
+                },
+                {
+                  "role": "button",
+                  "id": "gridType",
+                  "label": "gridType"
+                },
+                {
+                  "role": "button",
+                  "id": "gridOverlay",
+                  "label": "gridOverlay"
+                },
+                {
+                  "role": "button",
+                  "id": "separator",
+                  "label": "separator"
+                },
+                {
+                  "role": "button",
+                  "id": "drawAid.onionSkin.set",
+                  "label": "drawAid.onionSkin.set",
+                  "command": {
+                    "commandId": "drawAid.onionSkin.set"
+                  }
+                },
+                {
+                  "role": "button",
+                  "id": "onionSkinPrevious",
+                  "label": "onionSkinPrevious"
+                },
+                {
+                  "role": "button",
+                  "id": "onionSkinNext",
+                  "label": "onionSkinNext"
+                },
+                {
+                  "role": "button",
+                  "id": "drawAid.autoLightTable.set",
+                  "label": "drawAid.autoLightTable.set",
+                  "command": {
+                    "commandId": "drawAid.autoLightTable.set"
+                  }
+                },
+                {
+                  "role": "button",
+                  "id": "separator",
+                  "label": "separator"
+                },
+                {
+                  "role": "button",
+                  "id": "firstFrame",
+                  "label": "firstFrame"
+                },
+                {
+                  "role": "button",
+                  "id": "playStop",
+                  "label": "playStop"
+                },
+                {
+                  "role": "button",
+                  "id": "lastFrame",
+                  "label": "lastFrame"
+                },
+                {
+                  "role": "button",
+                  "id": "playback.loop.set",
+                  "label": "playback.loop.set",
+                  "command": {
+                    "commandId": "playback.loop.set"
+                  }
+                },
+                {
+                  "role": "button",
+                  "id": "space",
+                  "label": "space"
+                },
+                {
+                  "role": "button",
+                  "id": "lipsync.panel.open",
+                  "label": "lipsync.panel.open",
+                  "command": {
+                    "commandId": "lipsync.panel.open"
+                  }
+                },
+                {
+                  "role": "button",
+                  "id": "flexibleSpace",
+                  "label": "flexibleSpace"
+                },
+                {
+                  "role": "button",
+                  "id": "cameraList",
+                  "label": "cameraList"
+                },
+                {
+                  "role": "button",
+                  "id": "sceneList",
+                  "label": "sceneList"
+                },
+                {
+                  "role": "button",
+                  "id": "workspaceList",
+                  "label": "workspaceList"
+                }
+              ]
+            },
+            {
+              "role": "toolPalette",
+              "id": "drawingTools",
+              "label": "drawingTools",
+              "visible": true,
+              "floating": false
+            },
+            {
+              "role": "toolPalette",
+              "id": "animationTools",
+              "label": "animationTools",
+              "visible": true,
+              "floating": false
+            },
+            {
+              "role": "toolPalette",
+              "id": "boneTools",
+              "label": "boneTools",
+              "visible": true,
+              "floating": false
+            },
+            {
+              "role": "toolPalette",
+              "id": "effectTools",
+              "label": "effectTools",
+              "visible": true,
+              "floating": false
+            },
+            {
+              "role": "toolPalette",
+              "id": "soundTools",
+              "label": "soundTools",
+              "visible": false,
+              "floating": false
+            },
+            {
+              "role": "panel",
+              "id": "cameraView",
+              "label": "Camera view",
+              "visible": true,
+              "floating": false,
+              "focused": true,
+              "area": "central",
+              "view": {
+                "viewId": "cameraView",
+                "type": "camera",
+                "size": {
+                  "width": 960.0,
+                  "height": 540.0
+                },
+                "transform": {
+                  "zoom": 1.0,
+                  "rotationDegrees": 0.0,
+                  "centre": {
+                    "x": 0.0,
+                    "y": 0.0
+                  }
+                }
+              }
+            },
+            {
+              "role": "panel",
+              "id": "drawingView",
+              "label": "Drawing view",
+              "visible": false,
+              "floating": false,
+              "focused": false,
+              "view": {
+                "viewId": "drawingView",
+                "type": "drawing",
+                "size": {
+                  "width": 960.0,
+                  "height": 540.0
+                },
+                "transform": {
+                  "zoom": 1.0,
+                  "rotationDegrees": 0.0,
+                  "centre": {
+                    "x": 0.0,
+                    "y": 0.0
+                  }
+                }
+              }
+            },
+            {
+              "role": "panel",
+              "id": "topView",
+              "label": "Top view",
+              "visible": false,
+              "floating": false,
+              "focused": false,
+              "view": {
+                "viewId": "topView",
+                "type": "top",
+                "size": {
+                  "width": 960.0,
+                  "height": 540.0
+                },
+                "transform": {
+                  "zoom": 1.0,
+                  "rotationDegrees": 0.0,
+                  "centre": {
+                    "x": 0.0,
+                    "y": 0.0
+                  }
+                }
+              }
+            },
+            {
+              "role": "panel",
+              "id": "sideView",
+              "label": "Side view",
+              "visible": false,
+              "floating": false,
+              "focused": false,
+              "view": {
+                "viewId": "sideView",
+                "type": "side",
+                "size": {
+                  "width": 960.0,
+                  "height": 540.0
+                },
+                "transform": {
+                  "zoom": 1.0,
+                  "rotationDegrees": 0.0,
+                  "centre": {
+                    "x": 0.0,
+                    "y": 0.0
+                  }
+                }
+              }
+            },
+            {
+              "role": "panel",
+              "id": "timeline",
+              "label": "Timeline",
+              "visible": true,
+              "floating": false,
+              "focused": false,
+              "area": "bottom"
+            },
+            {
+              "role": "panel",
+              "id": "xsheet",
+              "label": "Exposure sheet",
+              "visible": true,
+              "floating": false,
+              "focused": false,
+              "area": "bottom"
+            },
+            {
+              "role": "panel",
+              "id": "functionEditor",
+              "label": "Function editor",
+              "visible": true,
+              "floating": false,
+              "focused": false,
+              "area": "bottom"
+            },
+            {
+              "role": "panel",
+              "id": "properties",
+              "label": "Properties",
+              "visible": true,
+              "floating": false,
+              "focused": false,
+              "area": "right"
+            },
+            {
+              "role": "panel",
+              "id": "colour",
+              "label": "Colour",
+              "visible": true,
+              "floating": false,
+              "focused": false,
+              "area": "right"
+            },
+            {
+              "role": "panel",
+              "id": "pen",
+              "label": "Pen",
+              "visible": true,
+              "floating": false,
+              "focused": false,
+              "area": "right"
+            },
+            {
+              "role": "panel",
+              "id": "text",
+              "label": "Text",
+              "visible": true,
+              "floating": false,
+              "focused": false,
+              "area": "right"
+            },
+            {
+              "role": "panel",
+              "id": "cells",
+              "label": "Cells",
+              "visible": true,
+              "floating": false,
+              "focused": false,
+              "area": "right"
+            },
+            {
+              "role": "panel",
+              "id": "library",
+              "label": "Library",
+              "visible": true,
+              "floating": false,
+              "focused": false,
+              "area": "right"
+            },
+            {
+              "role": "panel",
+              "id": "storyline",
+              "label": "Storyline",
+              "visible": true,
+              "floating": false,
+              "focused": false,
+              "area": "bottom"
+            },
+            {
+              "role": "panel",
+              "id": "sceneManager",
+              "label": "Scene manager",
+              "visible": false,
+              "floating": false,
+              "focused": false
+            },
+            {
+              "role": "panel",
+              "id": "effectPreview",
+              "label": "Effect preview",
+              "visible": false,
+              "floating": false,
+              "focused": false
+            },
+            {
+              "role": "panel",
+              "id": "motionRecording",
+              "label": "Motion recording",
+              "visible": false,
+              "floating": false,
+              "focused": false
+            },
+            {
+              "role": "panel",
+              "id": "lipSync",
+              "label": "Lip-sync",
+              "visible": false,
+              "floating": false,
+              "focused": false
+            },
+            {
+              "role": "panel",
+              "id": "history",
+              "label": "History",
+              "visible": false,
+              "floating": false,
+              "focused": false
+            },
+            {
+              "role": "panel",
+              "id": "soundEditor",
+              "label": "Sound element editor",
+              "visible": false,
+              "floating": false,
+              "focused": false
+            },
+            {
+              "role": "panel",
+              "id": "capture",
+              "label": "Capture window",
+              "visible": false,
+              "floating": false,
+              "focused": false
+            },
+            {
+              "role": "statusBar",
+              "id": "statusBar",
+              "label": "Status bar",
+              "visible": true,
+              "children": [
+                {
+                  "role": "text",
+                  "id": "status.description",
+                  "value": ""
+                },
+                {
+                  "role": "text",
+                  "id": "status.pointer",
+                  "value": ""
+                },
+                {
+                  "role": "text",
+                  "id": "status.agent",
+                  "value": ""
+                }
+              ]
+            },
+            {
+              "role": "dialogs",
+              "id": "dialogs",
+              "label": "Dialogs",
+              "children": []
+            }
+          ]
+        }
+      },
+      "varies": []
+    },
+    {
+      "title": "The History panel",
+      "result": {
+        "source": "virtual",
+        "target": "history",
+        "root": {
+          "role": "panel",
+          "id": "history",
+          "label": "History",
+          "visible": false,
+          "floating": false,
+          "focused": false
+        }
+      },
+      "varies": []
+    }
+  ],
   "job.cancel": [
     {
       "title": "Cancel a job",
@@ -8580,7 +9039,7 @@
         "state": "succeeded",
         "progress": 1.0,
         "message": "",
-        "startedAt": "2026-11-13T03:03:22.454Z",
+        "startedAt": "2026-11-13T03:16:15.502Z",
         "result": {},
         "session": "user"
       },
@@ -8599,7 +9058,7 @@
           "state": "succeeded",
           "progress": 1.0,
           "message": "",
-          "startedAt": "2026-11-13T03:03:22.465Z",
+          "startedAt": "2026-11-13T03:16:15.514Z",
           "result": {},
           "session": "user"
         }
@@ -8618,7 +9077,7 @@
         "state": "succeeded",
         "progress": 1.0,
         "message": "",
-        "startedAt": "2026-11-13T03:03:22.476Z",
+        "startedAt": "2026-11-13T03:16:15.525Z",
         "result": {},
         "session": "user"
       },
@@ -8885,10 +9344,10 @@
     {
       "title": "A 1920×1080, 24 fps project",
       "result": {
-        "projectId": "pr_01M79DR74NHR4EGJ6VMGWHR9MZ",
-        "sceneId": "sc_01M79DR74PAE0TSAKGAVFYJWY9",
-        "cameraId": "el_01M79DR74PAE0TSAKGAVFYJWYB",
-        "elementId": "el_01M79DR74PAE0TSAKGAVFYJWYC"
+        "projectId": "pr_01M79EFT2SKNDQA0S3Z655JEZV",
+        "sceneId": "sc_01M79EFT2SKNDQA0S3Z655JF3Z",
+        "cameraId": "el_01M79EFT2SKNDQA0S3Z655JF41",
+        "elementId": "el_01M79EFT2SKNDQA0S3Z655JF42"
       },
       "varies": [
         "/cameraId",
@@ -9144,7 +9603,7 @@
         {
           "path": "/tmp/Sample.animpkg",
           "name": "Sample",
-          "lastOpened": "2026-11-13T03:03:23.357Z",
+          "lastOpened": "2026-11-13T03:16:16.411Z",
           "exists": true
         }
       ],

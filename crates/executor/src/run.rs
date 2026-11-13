@@ -259,7 +259,7 @@ impl Rollback {
 
 /// What observers see of the session, to emit `app.state.changed`, `edit.selection.changed`, `workspace.changed`,
 /// `edit.history.changed` and `project.dirty.changed` only when something changed.
-struct Observed {
+pub(crate) struct Observed {
     state: Value,
     history: Option<(usize, usize)>,
     dirty: Option<bool>,
@@ -273,7 +273,7 @@ struct Observed {
 
 /// The observed application state. The selection lists are kept as shared lists rather than serialised, so a large
 /// cell selection costs nothing per call; the full state is built only when something changed.
-fn observe(s: &Session) -> Observed {
+pub(crate) fn observe(s: &Session) -> Observed {
     Observed {
         state: crate::commands::app::app_state_without_selection_ids(s),
         selection: s.app.selection.ids.clone(),
@@ -1069,7 +1069,7 @@ impl Core {
     }
 
     /// Repairs the context after a change and emits the state events.
-    fn settle(s: &mut Session, before: &Observed) {
+    pub(crate) fn settle(s: &mut Session, before: &Observed) {
         if let Some(p) = &s.project {
             let doc = p.doc.clone();
             let cache = s.planar.clone();

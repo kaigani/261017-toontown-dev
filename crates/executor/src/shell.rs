@@ -211,6 +211,8 @@ pub struct Sensors {
     pub pointer: String,
     /// The host's main window is up (attached mode): native-window commands are applied.
     pub attached: bool,
+    /// The UI tree the front end rendered last (11 §7.5 `inspect_ui`).
+    pub ui_tree: Option<serde_json::Value>,
 }
 
 /// Everything in this module, part of [`crate::ui::UiState`] so that rollback and savepoints carry it.
