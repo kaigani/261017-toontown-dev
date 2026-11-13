@@ -1068,7 +1068,10 @@ const INSPECT_UI_FRESHNESS: Duration = Duration::from_secs(2);
 
 /// The `key` tool (11 §7.6; M4 C4.1): the key goes through the one keymap dispatch real key presses use
 /// (`ExecutorHandle::resolve_key`), then the bound command runs as this session's call, audited once as the logical
-/// call. An unbound or suspended key answers `{handled: false}`.
+/// call. 11 §7.6: the result is the envelope of the command the key invoked, or `{handled: false}` for a key bound to
+/// nothing. A key bound to a command that cannot run now answers that command's `command.disabled` (with the reason);
+/// while the user's dialog has the keyboard the call fails with `ui.modalOpen`, and while the user is editing a text
+/// field with `ui.busy` (11 §6.4; C41-R2-09).
 fn key_tool(
     shared: &Arc<Shared>,
     rid: &Value,
@@ -1092,16 +1095,22 @@ fn key_tool(
     let resolved = match shared.handle.resolve_key(keys) {
         Ok(r) => r,
         Err(e) => {
+            // A refused bound command is recorded under its own id, as a run would be (the activity log says which
+            // command the key reached).
+            let command = e.details.get("commandId").and_then(Value::as_str).unwrap_or("key").to_owned();
             let env = Envelope::error(e, None);
-            shared.handle.audit_call(origin, "key", "key", &params, &env, started.elapsed());
-            return ("key".to_owned(), env);
+            shared.handle.audit_call(origin, "key", &command, &params, &env, started.elapsed());
+            return (command, env);
         }
     };
     match resolved {
-        // A disabled command is not run: the key dispatch refuses it as every other surface does (ruling O-10).
-        tt_executor::host::KeyResolution::Command { command_id, enabled: false, .. } => {
-            let v = json!({ "outcome": "command", "commandId": command_id, "enabled": false, "handled": false });
-            let env = Envelope::ok(v, None);
+        tt_executor::host::KeyResolution::Suspended { keys, reason } => {
+            let (code, message) = if reason == "modal" {
+                ("ui.modalOpen", "a dialog the user opened has the keyboard; keys reach it, not the application")
+            } else {
+                ("ui.busy", "the user is editing a text field; unmodified keys belong to it")
+            };
+            let env = envelope_error(code, message.into(), json!({ "keys": keys, "reason": reason }), None);
             shared.handle.audit_call(origin, "key", "key", &params, &env, started.elapsed());
             ("key".to_owned(), env)
         }

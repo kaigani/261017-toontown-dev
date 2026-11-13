@@ -306,12 +306,24 @@ fn an_idle_session_expires_and_its_id_answers_404() {
 
 #[test]
 fn the_key_tool_does_not_run_a_disabled_command() {
-    // No project: Undo is disabled, so Primary+Z is reported as such and nothing runs (ruling O-10).
+    // No project: Undo is disabled, so Primary+Z answers Undo's own refusal and nothing runs (ruling O-10). Round 2
+    // (C41-R2-09; declared change): the answer is `command.disabled` with the reason (11 §7.6, §10), no longer a
+    // success with `handled: false`, which is only for a key bound to nothing.
     let h = executor(&tmp());
     let (mut c, _) = Client::connect(&h, ServerOptions::default(), json!({}));
     let r = c.call("key", json!({ "keys": "Primary+Z" }))["structuredContent"].clone();
-    assert_eq!(r["status"], "ok", "{r}");
-    assert_eq!(r["result"]["commandId"], "edit.undo", "{r}");
-    assert_eq!(r["result"]["enabled"], false, "{r}");
-    assert_eq!(r["result"]["handled"], false, "{r}");
+    assert_eq!(r["status"], "error", "{r}");
+    assert_eq!(r["error"]["code"], "command.disabled", "{r}");
+    assert_eq!(r["error"]["details"]["commandId"], "edit.undo", "{r}");
+    assert!(r["error"]["details"]["reason"].as_str().is_some_and(|s| !s.is_empty()), "{r}");
+    // A key bound to nothing is not handled, and not an error.
+    let r = c.call("key", json!({ "keys": "F9" }))["structuredContent"].clone();
+    assert_eq!((r["status"].clone(), r["result"]["handled"].clone()), (json!("ok"), json!(false)), "{r}");
+    // While the user's dialog has the keyboard, or the user edits a text field: typed refusals (11 §6.4).
+    h.report_shell(serde_json::from_value(json!({ "modal": { "kind": "dialog", "title": "Preferences" } })).unwrap());
+    let r = c.call("key", json!({ "keys": "Primary+S" }))["structuredContent"].clone();
+    assert_eq!(r["error"]["code"], "ui.modalOpen", "{r}");
+    h.report_shell(serde_json::from_value(json!({ "modal": null, "textFocus": true })).unwrap());
+    let r = c.call("key", json!({ "keys": "Delete" }))["structuredContent"].clone();
+    assert_eq!(r["error"]["code"], "ui.busy", "{r}");
 }

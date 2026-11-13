@@ -163,10 +163,12 @@ fn keys_resolve_through_the_keymap() {
     assert!(matches!(h.resolve_key("F9").unwrap(), KeyResolution::Unbound { .. }));
     assert_eq!(h.resolve_key("Hyper+Q").unwrap_err().code, "keymap.invalidSequence");
     // A user binding wins at once (the dispatch reads the accepted keymap).
+    // Round 2 (C41-R2-09; declared change): a key bound to a command that cannot run now answers that command's
+    // `command.disabled` with the reason, no longer a success with `enabled: false`.
     ok(&h, "keymap.set", json!({ "commandId": "edit.undo", "keys": "F9" }));
-    assert!(
-        matches!(h.resolve_key("F9").unwrap(), KeyResolution::Command { ref command_id, .. } if command_id == "edit.undo")
-    );
+    let e = h.resolve_key("F9").unwrap_err();
+    assert_eq!((e.code.as_str(), e.details["commandId"].as_str()), ("command.disabled", Some("edit.undo")));
+    assert_eq!(e.details["reason"], "there is nothing to undo");
     // A toggle the binding leaves open gets its next state.
     let fs = if cfg!(target_os = "macos") { "Primary+Ctrl+F" } else { "F11" };
     match h.resolve_key(fs).unwrap() {
@@ -311,8 +313,41 @@ fn availability_is_the_pipelines_own_answer_for_every_surface() {
         }
         other => panic!("{other:?}"),
     }
-    match none.resolve_key("primary+z").unwrap() {
-        KeyResolution::Command { enabled, .. } => assert!(!enabled, "the key dispatch refuses what the menu disables"),
-        other => panic!("{other:?}"),
-    }
+    // The key dispatch refuses what the menu disables, with the menu's reason (C41-R2-09).
+    let e = none.resolve_key("primary+z").unwrap_err();
+    assert_eq!(e.code, "command.disabled");
+    assert_eq!(e.details["reason"].as_str(), a[0].reason.as_deref());
+}
+
+/// C41-R2-08: the selection commands are enabled exactly when their handler would act: without `objectIds` they need
+/// a selection in their context. Both directions, availability against a dry run of the same reference.
+#[test]
+fn selection_commands_are_available_exactly_when_they_run() {
+    const BOB: &str = "scene:\"Intro\"/element:\"Bob\"";
+    let refs = |ids: &[(&str, Value)]| -> Vec<(String, serde_json::Map<String, Value>)> {
+        ids.iter().map(|(c, p)| ((*c).to_owned(), p.as_object().cloned().unwrap_or_default())).collect()
+    };
+    let h = fixture();
+    let ids = ["edit.copy", "edit.cut", "edit.cutSpecial", "edit.delete"];
+    let check = |selected: bool| {
+        for id in ids {
+            let params = json!({ "context": "staging" });
+            let a = h.availability(refs(&[(id, params.clone())])).unwrap().remove(0);
+            let e = with(&h, id, params, InvokeOptions { dry_run: true, ..Default::default() });
+            assert_eq!(a.enabled, selected, "{id}: {a:?}");
+            assert_eq!(e.is_ok(), selected, "{id}: {e:?}");
+            if !selected {
+                assert_eq!(e.error.unwrap().code, "command.disabled");
+                assert!(a.reason.is_some_and(|r| r.contains("nothing is selected")));
+            }
+        }
+        // An explicit target needs no selection.
+        let a = h.availability(refs(&[("edit.copy", json!({ "context": "staging", "objectIds": [BOB] }))])).unwrap();
+        assert!(a[0].enabled, "{:?}", a[0]);
+    };
+    check(false);
+    ok(&h, "edit.selection.set", json!({ "context": "staging", "ids": [BOB] }));
+    check(true);
+    ok(&h, "edit.selection.set", json!({ "context": "staging", "ids": [] }));
+    check(false);
 }

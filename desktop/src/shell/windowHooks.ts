@@ -89,10 +89,10 @@ export function useShortcuts(
         .dispatchKey(seq)
         .then(async (outcome) => {
           if (outcome.outcome !== 'command' || !outcome.commandId) return;
-          // A disabled command consumes its key silently (01 §8.4).
-          if (outcome.enabled === false) return;
           await actions.perform(outcome.commandId, outcome.params ?? {});
         })
+        // A key bound to a disabled command answers its `command.disabled` (C41-R2-09): the key is consumed silently,
+        // never with a message box (01 §8.4).
         .catch(() => undefined);
     };
     window.addEventListener('keydown', onKey);

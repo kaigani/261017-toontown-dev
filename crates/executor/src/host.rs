@@ -154,7 +154,9 @@ pub enum KeyResolution {
         command_id: String,
         /// Parameters.
         params: Value,
-        /// The command is disabled now: the key is consumed silently (01 §8.4).
+        /// The command can run now. Always true from [`ExecutorHandle::resolve_key`], which answers a disabled command's
+        /// `command.disabled` instead (C41-R2-09); a menu or toolbar reference ([`ExecutorHandle::complete_reference`])
+        /// can be disabled.
         enabled: bool,
         /// Required parameters are missing.
         dialog: bool,
@@ -244,8 +246,18 @@ fn resolve_on(core: &mut crate::run::Core, keys: &str) -> Result<KeyResolution, 
     let Some(b) = crate::keymap::resolve(&bindings, &canonical, mode).cloned() else {
         return Ok(KeyResolution::Unbound { keys: canonical });
     };
-    // The key dispatch reads the same availability as every other surface (ruling O-10).
+    // The key dispatch reads the same availability as every other surface (ruling O-10). A key bound to a command
+    // that cannot run now answers that command's own refusal (11 §7.6: the envelope of the command the key invoked;
+    // §10 `command.disabled` with the reason; C41-R2-09): the GUI consumes it with no message box (01 §8.4).
     let a = availability_in(registry, &probe_cx(s), &b.command_id, b.params.clone().unwrap_or_default());
+    if !a.enabled {
+        let reason = a.reason.unwrap_or_default();
+        return Err(CommandError::with_details(
+            tt_registry::codes::COMMAND_DISABLED,
+            format!("`{}` is not enabled: {reason}", b.command_id),
+            json!({ "commandId": b.command_id, "reason": reason, "keys": canonical }),
+        ));
+    }
     Ok(KeyResolution::Command {
         keys: canonical,
         command_id: b.command_id,
@@ -280,8 +292,14 @@ pub struct Availability {
     pub dialog: bool,
 }
 
-/// Why a command cannot run now (`None`: it can), by the pipeline's own checks in their order (11 §8).
-fn unavailable(registry: &tt_registry::Registry, cx: &crate::cx::Cx, command_id: &str) -> Option<String> {
+/// Why a command reference cannot run now (`None`: it can), by the pipeline's own checks in their order (11 §8), then
+/// the state rule its handler applies to the reference (the selection rule of the selection commands, C41-R2-08).
+fn unavailable(
+    registry: &tt_registry::Registry,
+    cx: &crate::cx::Cx,
+    command_id: &str,
+    params: &Map<String, Value>,
+) -> Option<String> {
     let Some(entry) = registry.get(command_id) else { return Some(format!("`{command_id}` is not registered")) };
     if entry.spec.kind == Kind::Event {
         return Some("an event cannot be invoked".into());
@@ -297,7 +315,9 @@ fn unavailable(registry: &tt_registry::Registry, cx: &crate::cx::Cx, command_id:
         }
     }
     match entry.status() {
-        tt_registry::Status::Implemented => None,
+        tt_registry::Status::Implemented => {
+            crate::commands::edit_ops::selection_rule(cx, command_id, params).map(|e| e.message)
+        }
         tt_registry::Status::NotImplemented { owner } => Some(format!("arrives with {owner}")),
     }
 }
@@ -336,7 +356,7 @@ pub(crate) fn availability_in(
         .filter(|e| e.spec.kind == Kind::Toggle)
         .and_then(|_| checked_of(s, command_id, &params));
     let (params, _, dialog) = complete(registry, s, command_id, params);
-    let reason = unavailable(registry, cx, command_id);
+    let reason = unavailable(registry, cx, command_id, params.as_object().unwrap_or(&Map::new()));
     let label = match command_id {
         "edit.undo" => history_label(s, true),
         "edit.redo" => history_label(s, false),
@@ -493,7 +513,8 @@ impl ExecutorHandle {
     /// Resolves a key sequence to the command it runs now (01 §8.4); the caller invokes it.
     ///
     /// # Errors
-    /// `keymap.invalidSequence` and `keymap.reservedKey` for a malformed sequence; `command.timeout` when the
+    /// `keymap.invalidSequence` and `keymap.reservedKey` for a malformed sequence; `command.disabled` (details
+    /// `commandId`, `reason`, `keys`) for a key bound to a command that cannot run now; `command.timeout` when the
     /// document thread does not answer within the budget.
     pub fn resolve_key(&self, keys: &str) -> Result<KeyResolution, CommandError> {
         let keys = keys.to_owned();

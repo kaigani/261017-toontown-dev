@@ -1006,9 +1006,12 @@ fn prune(n: &mut Value, depth: u32) {
 )]
 pub(crate) fn inspect_ui_tree(cx: &mut Cx, p: UiTreeParams) -> Result<Map<String, Value>, CommandError> {
     // Attached mode: the tree the front end rendered and reported (ADR-0021); headless: the virtual tree.
-    let (source, tree) = match cx.ui().shell().sensors.ui_tree.clone() {
-        Some(t) if t.is_object() => ("gui", t),
-        _ => ("virtual", virtual_tree(cx)),
+    // `renderedSeq`: the engine event the accepted GUI tree reflects (C41-R2-07, SI-121); `null` when the tree is not
+    // vouched for or is the headless virtual tree.
+    let sensors = &cx.ui().shell().sensors;
+    let (source, tree, seq) = match sensors.ui_tree.clone() {
+        Some(t) if t.is_object() => ("gui", t, sensors.ui_tree_seq),
+        _ => ("virtual", virtual_tree(cx), None),
     };
     let target = p.target.unwrap_or_else(|| "window".to_owned());
     let mut sub = if target == "window" {
@@ -1030,6 +1033,7 @@ pub(crate) fn inspect_ui_tree(cx: &mut Cx, p: UiTreeParams) -> Result<Map<String
     out.insert("source".into(), json!(source));
     out.insert("target".into(), json!(target));
     out.insert("root".into(), sub);
+    out.insert("renderedSeq".into(), json!(seq));
     Ok(out)
 }
 

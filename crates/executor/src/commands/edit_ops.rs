@@ -258,6 +258,21 @@ fn has_exposure(doc: &Document, element: &str) -> bool {
     Id::parse(element).ok().and_then(|id| doc.element(&id).map(|e| e.element_type().has_exposure())).unwrap_or(false)
 }
 
+/// The commands that act on the selection of their context when no `objectIds` are given.
+const ON_SELECTION: &[&str] = &["edit.cut", "edit.copy", "edit.cutSpecial", "edit.delete"];
+
+/// The selection rule of [`ON_SELECTION`], as one predicate for the handlers ([`pick`]) and the availability every GUI
+/// surface reads (C41-R2-08, ruling O-10): a reference without `objectIds` needs a selection in its context. `None`
+/// when the rule does not apply or holds.
+pub(crate) fn selection_rule(cx: &Cx, command_id: &str, params: &Map<String, Value>) -> Option<CommandError> {
+    if !ON_SELECTION.contains(&command_id) || params.get("objectIds").is_some_and(|v| !v.is_null()) {
+        return None;
+    }
+    let context = params.get("context").cloned().map_or(Ok(EditContext::Auto), serde_json::from_value).ok()?;
+    let context = resolve_context(cx, context);
+    selection_in(cx, context).is_empty().then(|| nothing_selected(context))
+}
+
 fn pick(cx: &Cx, context: EditContext, object_ids: Option<Vec<String>>) -> Result<Picked, CommandError> {
     let ids = object_ids.unwrap_or_else(|| selection_in(cx, context));
     if ids.is_empty() {

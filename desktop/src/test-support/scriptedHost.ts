@@ -85,7 +85,7 @@ export interface ScriptedHost extends HostTransport {
   generation: number;
   /** How many restarts were asked. */
   restarts: number;
-  /** Answers to `dispatch_key`. */
+  /** Answers to `dispatch_key` (`{error}`: the host's refusal). */
   keys: Record<string, unknown>;
   /** Answers to `availability` (ruling O-10): the kernel's facts for one reference. */
   available: (ref: { commandId: string; params: Record<string, unknown> }) => {
@@ -206,10 +206,12 @@ export function createScriptedHost(overrides: Record<string, Handler> = {}): Scr
           host.reports.push(json);
           host.rawReports.push(String(args?.['json']));
           return Promise.resolve({});
-        case 'dispatch_key':
-          return Promise.resolve(
-            host.keys[String(json['keys'])] ?? { outcome: 'unbound', keys: json['keys'] },
-          );
+        case 'dispatch_key': {
+          const answer = host.keys[String(json['keys'])] ?? { outcome: 'unbound', keys: json['keys'] };
+          // `{error: {...}}`: the host refuses (a key bound to a disabled command answers `command.disabled`).
+          const refusal = (answer as { error?: unknown }).error;
+          return refusal ? Promise.reject(new Error(JSON.stringify(refusal))) : Promise.resolve(answer);
+        }
         case 'availability': {
           const refs = (json['refs'] ?? []) as { commandId: string; params?: Record<string, unknown> }[];
           return Promise.resolve(

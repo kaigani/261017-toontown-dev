@@ -291,13 +291,13 @@ describe('shortcuts (01 §8.4)', () => {
 
   it('a disabled command consumes its key silently; a text field keeps unmodified keys', async () => {
     const host = createScriptedHost({ 'app.state.get': () => ok(PROJECT_STATE) });
+    // The host answers a key bound to a disabled command with that command's refusal (C41-R2-09).
     host.keys['Primary+Z'] = {
-      outcome: 'command',
-      keys: 'Primary+Z',
-      commandId: 'edit.undo',
-      params: {},
-      enabled: false,
-      dialog: false,
+      error: {
+        code: 'command.disabled',
+        message: '`edit.undo` is not enabled: there is nothing to undo',
+        details: { commandId: 'edit.undo', reason: 'there is nothing to undo', keys: 'Primary+Z' },
+      },
     };
     renderApp(host);
     await screen.findByRole('toolbar', { name: 'Main toolbar' });
