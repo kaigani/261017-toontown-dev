@@ -3,8 +3,8 @@
     "check": "the application started and serves attached mode",
     "ok": true,
     "detail": {
-      "endpoint": "http://127.0.0.1:57203/mcp",
-      "startS": 0.5
+      "endpoint": "http://127.0.0.1:58629/mcp",
+      "startS": 1.0
     }
   },
   {
@@ -111,7 +111,7 @@
         "code": "project.pathRequired",
         "message": "the project has no location yet",
         "details": {
-          "projectId": "pr_01M79MZW4TWTVB8D3QTZ1570K6"
+          "projectId": "pr_01M79VME4JYFN4X0THK9N0A4TV"
         },
         "hint": "save with project.saveAs {path}"
       }
@@ -194,12 +194,12 @@
               "kind": "dialog",
               "title": "Preferences"
             },
-            "waitedMs": 10001
+            "waitedMs": 10000
           },
           "hint": "retry when the user is done; app.state.get reports `modal`"
         }
       },
-      "waitedS": 10.005071099993074
+      "waitedS": 10.004348999995273
     }
   },
   {
@@ -220,6 +220,27 @@
           }
         }
       }
+    }
+  },
+  {
+    "check": "the window took the requested size",
+    "ok": true,
+    "detail": {
+      "x": 40,
+      "y": 30,
+      "width": 860,
+      "height": 600,
+      "maximized": false,
+      "fullScreen": false,
+      "screens": [
+        {
+          "x": 0,
+          "y": 0,
+          "width": 1920,
+          "height": 1032,
+          "scale": 1.0
+        }
+      ]
     }
   },
   {
@@ -276,21 +297,29 @@
     "check": "the window geometry persisted",
     "ok": true,
     "detail": {
-      "x": 120,
-      "y": 90,
-      "width": 1100,
-      "height": 720,
-      "maximized": false,
-      "fullScreen": false,
-      "screens": [
-        {
-          "x": 0,
-          "y": 0,
-          "width": 1920,
-          "height": 1080,
-          "scale": 1.0
-        }
-      ]
+      "before": {
+        "x": 40,
+        "y": 30,
+        "width": 860,
+        "height": 600
+      },
+      "after": {
+        "x": 40,
+        "y": 30,
+        "width": 860,
+        "height": 600,
+        "maximized": false,
+        "fullScreen": false,
+        "screens": [
+          {
+            "x": 0,
+            "y": 0,
+            "width": 1920,
+            "height": 1080,
+            "scale": 1.0
+          }
+        ]
+      }
     }
   },
   {
@@ -315,7 +344,7 @@
     "detail": [
       "agent-discovery.json",
       "instance.json",
-      "keymap.corrupt-2026-11-13T05-10-10.495Z.json",
+      "keymap.corrupt-2026-11-13T07-06-15.380Z.json",
       "preferences.json",
       "state.json",
       "workspaces.json"

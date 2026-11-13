@@ -1,8 +1,8 @@
 [
   {
     "seq": 1,
-    "time": "2026-11-13T05:09:52.580Z",
-    "sessionId": "s1-e23e2e",
+    "time": "2026-11-13T07:05:57.739Z",
+    "sessionId": "s1-26810e",
     "client": "mcp",
     "tool": "inspect_ui",
     "commandId": "inspect.ui.tree",
@@ -17,8 +17,8 @@
   },
   {
     "seq": 2,
-    "time": "2026-11-13T05:09:53.758Z",
-    "sessionId": "s1-e23e2e",
+    "time": "2026-11-13T07:05:59.002Z",
+    "sessionId": "s1-26810e",
     "client": "mcp",
     "tool": "run_command",
     "commandId": "window.panel.list",
@@ -31,8 +31,8 @@
   },
   {
     "seq": 3,
-    "time": "2026-11-13T05:09:53.763Z",
-    "sessionId": "s1-e23e2e",
+    "time": "2026-11-13T07:05:59.012Z",
+    "sessionId": "s1-26810e",
     "client": "mcp",
     "tool": "run_command",
     "commandId": "window.panel.set",
@@ -48,8 +48,8 @@
   },
   {
     "seq": 4,
-    "time": "2026-11-13T05:09:53.806Z",
-    "sessionId": "s1-e23e2e",
+    "time": "2026-11-13T07:05:59.078Z",
+    "sessionId": "s1-26810e",
     "client": "mcp",
     "tool": "inspect_ui",
     "commandId": "inspect.ui.tree",
@@ -60,12 +60,12 @@
     "undoStepId": null,
     "changedCount": 0,
     "documentRev": null,
-    "durationMs": 41
+    "durationMs": 61
   },
   {
     "seq": 5,
-    "time": "2026-11-13T05:09:53.838Z",
-    "sessionId": "s1-e23e2e",
+    "time": "2026-11-13T07:05:59.084Z",
+    "sessionId": "s1-26810e",
     "client": "mcp",
     "tool": "run_command",
     "commandId": "ui.statusBar.set",
@@ -76,12 +76,12 @@
     "undoStepId": null,
     "changedCount": 0,
     "documentRev": null,
-    "durationMs": 27
+    "durationMs": 2
   },
   {
     "seq": 6,
-    "time": "2026-11-13T05:09:53.882Z",
-    "sessionId": "s1-e23e2e",
+    "time": "2026-11-13T07:05:59.130Z",
+    "sessionId": "s1-26810e",
     "client": "mcp",
     "tool": "inspect_ui",
     "commandId": "inspect.ui.tree",
@@ -92,12 +92,12 @@
     "undoStepId": null,
     "changedCount": 0,
     "documentRev": null,
-    "durationMs": 41
+    "durationMs": 40
   },
   {
     "seq": 7,
-    "time": "2026-11-13T05:09:53.899Z",
-    "sessionId": "s1-e23e2e",
+    "time": "2026-11-13T07:05:59.136Z",
+    "sessionId": "s1-26810e",
     "client": "mcp",
     "tool": "run_command",
     "commandId": "ui.statusBar.set",
@@ -108,12 +108,12 @@
     "undoStepId": null,
     "changedCount": 0,
     "documentRev": null,
-    "durationMs": 14
+    "durationMs": 2
   },
   {
     "seq": 8,
-    "time": "2026-11-13T05:09:53.942Z",
-    "sessionId": "s1-e23e2e",
+    "time": "2026-11-13T07:05:59.181Z",
+    "sessionId": "s1-26810e",
     "client": "mcp",
     "tool": "inspect_ui",
     "commandId": "inspect.ui.tree",
@@ -128,8 +128,8 @@
   },
   {
     "seq": 9,
-    "time": "2026-11-13T05:09:54.000Z",
-    "sessionId": "s1-e23e2e",
+    "time": "2026-11-13T07:05:59.229Z",
+    "sessionId": "s1-26810e",
     "client": "mcp",
     "tool": "run_command",
     "commandId": "project.create",
@@ -141,12 +141,12 @@
     "undoStepId": null,
     "changedCount": 0,
     "documentRev": 1,
-    "durationMs": 54
+    "durationMs": 44
   },
   {
     "seq": 10,
-    "time": "2026-11-13T05:09:54.044Z",
-    "sessionId": "s1-e23e2e",
+    "time": "2026-11-13T07:05:59.275Z",
+    "sessionId": "s1-26810e",
     "client": "mcp",
     "tool": "inspect_ui",
     "commandId": "inspect.ui.tree",
@@ -161,8 +161,8 @@
   },
   {
     "seq": 11,
-    "time": "2026-11-13T05:09:54.957Z",
-    "sessionId": "s1-e23e2e",
+    "time": "2026-11-13T07:06:00.211Z",
+    "sessionId": "s1-26810e",
     "client": "mcp",
     "tool": "run_command",
     "commandId": "workspace.select",
@@ -173,12 +173,12 @@
     "undoStepId": null,
     "changedCount": 0,
     "documentRev": 1,
-    "durationMs": 18
+    "durationMs": 2
   },
   {
     "seq": 12,
-    "time": "2026-11-13T05:09:55.024Z",
-    "sessionId": "s1-e23e2e",
+    "time": "2026-11-13T07:06:00.257Z",
+    "sessionId": "s1-26810e",
     "client": "mcp",
     "tool": "inspect_ui",
     "commandId": "inspect.ui.tree",
@@ -189,12 +189,12 @@
     "undoStepId": null,
     "changedCount": 0,
     "documentRev": 1,
-    "durationMs": 61
+    "durationMs": 41
   },
   {
     "seq": 13,
-    "time": "2026-11-13T05:09:55.028Z",
-    "sessionId": "s1-e23e2e",
+    "time": "2026-11-13T07:06:00.261Z",
+    "sessionId": "s1-26810e",
     "client": "mcp",
     "tool": "get_state",
     "commandId": "app.state.get",
@@ -207,8 +207,8 @@
   },
   {
     "seq": 14,
-    "time": "2026-11-13T05:09:55.059Z",
-    "sessionId": "s1-e23e2e",
+    "time": "2026-11-13T07:06:00.273Z",
+    "sessionId": "s1-26810e",
     "client": "mcp",
     "tool": "run_command",
     "commandId": "prefs.set",
@@ -222,12 +222,12 @@
     "undoStepId": null,
     "changedCount": 0,
     "documentRev": 1,
-    "durationMs": 26
+    "durationMs": 2
   },
   {
     "seq": 15,
-    "time": "2026-11-13T05:09:55.083Z",
-    "sessionId": "s1-e23e2e",
+    "time": "2026-11-13T07:06:00.280Z",
+    "sessionId": "s1-26810e",
     "client": "mcp",
     "tool": "run_command",
     "commandId": "keymap.set",
@@ -239,12 +239,12 @@
     "undoStepId": null,
     "changedCount": 0,
     "documentRev": 1,
-    "durationMs": 18
+    "durationMs": 3
   },
   {
     "seq": 16,
-    "time": "2026-11-13T05:09:55.088Z",
-    "sessionId": "s1-e23e2e",
+    "time": "2026-11-13T07:06:00.284Z",
+    "sessionId": "s1-26810e",
     "client": "mcp",
     "tool": "key",
     "commandId": "project.save",
@@ -254,12 +254,12 @@
     "undoStepId": null,
     "changedCount": 0,
     "documentRev": 1,
-    "durationMs": 1
+    "durationMs": 0
   },
   {
     "seq": 17,
-    "time": "2026-11-13T05:09:55.105Z",
-    "sessionId": "s1-e23e2e",
+    "time": "2026-11-13T07:06:00.289Z",
+    "sessionId": "s1-26810e",
     "client": "mcp",
     "tool": "run_command",
     "commandId": "workspace.create",
@@ -270,31 +270,31 @@
     "undoStepId": null,
     "changedCount": 0,
     "documentRev": 1,
-    "durationMs": 13
+    "durationMs": 2
   },
   {
     "seq": 18,
-    "time": "2026-11-13T05:09:55.139Z",
-    "sessionId": "s1-e23e2e",
+    "time": "2026-11-13T07:06:00.294Z",
+    "sessionId": "s1-26810e",
     "client": "mcp",
     "tool": "run_command",
     "commandId": "window.geometry.set",
     "params": {
-      "x": 120,
-      "y": 90,
-      "width": 1100,
-      "height": 720
+      "x": 40,
+      "y": 30,
+      "width": 860,
+      "height": 600
     },
     "status": "ok",
     "undoStepId": null,
     "changedCount": 0,
     "documentRev": 1,
-    "durationMs": 30
+    "durationMs": 2
   },
   {
     "seq": 19,
-    "time": "2026-11-13T05:09:55.144Z",
-    "sessionId": "s1-e23e2e",
+    "time": "2026-11-13T07:06:00.298Z",
+    "sessionId": "s1-26810e",
     "client": "mcp",
     "tool": "run_command",
     "commandId": "prefs.set",
@@ -312,8 +312,8 @@
   },
   {
     "seq": 20,
-    "time": "2026-11-13T05:09:55.147Z",
-    "sessionId": "s1-e23e2e",
+    "time": "2026-11-13T07:06:00.301Z",
+    "sessionId": "s1-26810e",
     "client": "mcp",
     "tool": "run_command",
     "commandId": "keymap.set",
@@ -331,8 +331,8 @@
   },
   {
     "seq": 21,
-    "time": "2026-11-13T05:09:55.151Z",
-    "sessionId": "s1-e23e2e",
+    "time": "2026-11-13T07:06:00.305Z",
+    "sessionId": "s1-26810e",
     "client": "mcp",
     "tool": "run_command",
     "commandId": "ui.preferences.open",
@@ -343,12 +343,12 @@
     "undoStepId": null,
     "changedCount": 0,
     "documentRev": 1,
-    "durationMs": 1
+    "durationMs": 0
   },
   {
     "seq": 22,
-    "time": "2026-11-13T05:09:55.195Z",
-    "sessionId": "s1-e23e2e",
+    "time": "2026-11-13T07:06:00.348Z",
+    "sessionId": "s1-26810e",
     "client": "mcp",
     "tool": "inspect_ui",
     "commandId": "inspect.ui.tree",
@@ -363,8 +363,8 @@
   },
   {
     "seq": 23,
-    "time": "2026-11-13T05:09:56.053Z",
-    "sessionId": "s1-e23e2e",
+    "time": "2026-11-13T07:06:01.208Z",
+    "sessionId": "s1-26810e",
     "client": "mcp",
     "tool": "get_state",
     "commandId": "app.state.get",
@@ -377,8 +377,8 @@
   },
   {
     "seq": 24,
-    "time": "2026-11-13T05:10:06.058Z",
-    "sessionId": "s1-e23e2e",
+    "time": "2026-11-13T07:06:11.212Z",
+    "sessionId": "s1-26810e",
     "client": "mcp",
     "tool": "run_command",
     "commandId": "doc.object.patch",
@@ -397,12 +397,12 @@
     "undoStepId": null,
     "changedCount": 0,
     "documentRev": null,
-    "durationMs": 10001
+    "durationMs": 10000
   },
   {
     "seq": 25,
-    "time": "2026-11-13T05:10:06.062Z",
-    "sessionId": "s1-e23e2e",
+    "time": "2026-11-13T07:06:11.216Z",
+    "sessionId": "s1-26810e",
     "client": "mcp",
     "tool": "run_command",
     "commandId": "window.panel.set",

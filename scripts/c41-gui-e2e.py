@@ -38,6 +38,7 @@ from mcp.client.streamable_http import streamable_http_client
 APP_START_BOUND_S = 120
 APP_PID: dict = {"pid": None}  # first webview start on a cold CI runner; generous on purpose
 TREE_BOUND_S = 60
+GEOMETRY = {"x": 40, "y": 30, "width": 860, "height": 600}
 
 
 class Run:
@@ -46,6 +47,7 @@ class Run:
         self.transcript: list[dict] = []
         self.failures: list[str] = []
         self.shots: list[str] = []
+        self.geometry: dict = {}
 
     def check(self, ok: bool, what: str, detail: object = None) -> bool:
         self.transcript.append({"check": what, "ok": bool(ok), "detail": detail})
@@ -230,7 +232,9 @@ async def first_session(url: str, token: str, run: Run) -> None:
                 run.check(env.get("status") in ("ok", "error") and "save" in json.dumps(env), "the key tool runs the bound command", env)
                 env = await run_cmd(session, "workspace.create", {"name": "E2E"})
                 run.check(env.get("status") == "ok", "workspace.create E2E", env.get("error"))
-                env = await run_cmd(session, "window.geometry.set", {"x": 120, "y": 90, "width": 1100, "height": 720})
+                # A geometry that fits small runner displays (the Windows runner's is about 1024 x 768: the OS clamps a
+                # larger window and the kernel then stores the real size, as it should).
+                env = await run_cmd(session, "window.geometry.set", GEOMETRY)
                 run.check(env.get("status") == "ok", "window.geometry.set", env.get("error"))
 
                 # Typed refusals reach the agent with their codes.
@@ -252,6 +256,10 @@ async def first_session(url: str, token: str, run: Run) -> None:
                 env = await run_cmd(session, "window.panel.set", {"panelId": "colour", "visible": True})
                 run.check((env.get("error") or {}).get("code") == "ui.modalOpen", "a focus change under a user dialog is ui.modalOpen", env)
                 run.save("activity.json", (await run_cmd(session, "agent.activity.list", {"limit": 100})).get("result"))
+                # The geometry the kernel holds before the restart (the window's real size, reported by the host).
+                run.geometry = (await run_cmd(session, "window.geometry.get")).get("result") or {}
+                size = (run.geometry.get("width"), run.geometry.get("height"))
+                run.check(size == (GEOMETRY["width"], GEOMETRY["height"]), "the window took the requested size", run.geometry)
 
 
 async def second_session(url: str, token: str, run: Run) -> None:
@@ -267,7 +275,8 @@ async def second_session(url: str, token: str, run: Run) -> None:
                 names = [w["name"] for w in (await run_cmd(session, "workspace.list")).get("result") or []]
                 run.check("E2E" in names, "the user workspace persisted", names)
                 g = (await run_cmd(session, "window.geometry.get")).get("result") or {}
-                run.check((g.get("width"), g.get("height")) == (1100, 720), "the window geometry persisted", g)
+                before = {k: run.geometry.get(k) for k in ("x", "y", "width", "height")}
+                run.check({k: g.get(k) for k in before} == before, "the window geometry persisted", {"before": before, "after": g})
                 root = await gui_tree(session, run, lambda r: by_id(r, "startScreen") is not None, "the restarted GUI shows the start screen")
                 run.save("tree-04-restart.json", root)
                 run.shot("04-restart", APP_PID["pid"])

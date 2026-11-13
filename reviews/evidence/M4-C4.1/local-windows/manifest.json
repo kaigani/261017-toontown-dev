@@ -2,8 +2,8 @@
   "kind": "toontown.c41.gui-e2e",
   "os": "Windows-11-10.0.26200-SP0",
   "app": "toontown.exe",
-  "durationS": 19.3,
-  "checks": 27,
+  "durationS": 19.6,
+  "checks": 28,
   "failed": [],
   "screenshots": [
     "01-start-screen.png",
