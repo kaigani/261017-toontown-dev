@@ -77,6 +77,11 @@ jobs:
           PY=python3
           if [ "$RUNNER_OS" = "Windows" ]; then PY=python; fi
           $PY scripts/run-reviewer-python-suites.py
+      - name: Every message id has help content (C4.1 ruling O-11)
+        run: |
+          PY=python3
+          if [ "$RUNNER_OS" = "Windows" ]; then PY=python; fi
+          $PY -I scripts/check-message-help.py
           # The M3 merge note's open-issue inventory follows the register (M3 C3.4 round 2).
           $PY scripts/check-merge-note-inventory.py
           # Reviewer-owned C2.4 files differ only by the ruled, declared edits (M2 C2.4 round 2, edit 57).
