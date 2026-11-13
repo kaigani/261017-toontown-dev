@@ -340,3 +340,181 @@ mod part_d_agent_policy {
         Ok(())
     }
 }
+
+mod part_e_keymap {
+    use super::*;
+    use tt_executor::Status;
+    fn call(h: &ExecutorHandle, id: &str, p: serde_json::Value) -> tt_executor::Envelope {
+        h.invoke(Invocation::user(id, p))
+    }
+    #[test]
+    fn import_preserves_typed_binding_errors() -> Result<(), Box<dyn Error>> {
+        let root = std::env::temp_dir().join(format!("tt-key-errors-{}", tt_executor::random_token(8)));
+        std::fs::create_dir_all(&root)?;
+        let h = ExecutorHandle::spawn(Default::default())?;
+        let path = root.join("exchange.json");
+        let mut errors = Vec::new();
+        for mode in ["merge", "replace"] {
+            for (command, keys, expected) in
+                [("project.save", "Escape", "keymap.reservedKey"), ("missing.review", "F2", "keymap.unknownCommand")]
+            {
+                std::fs::write(
+                    &path,
+                    serde_json::to_vec(
+                        &json!({"format":"toontown-keymap","bindings":[{"commandId":command,"keys":keys,"context":"global"}]}),
+                    )?,
+                )?;
+                let e = call(&h, "keymap.import", json!({"path":path,"mode":mode}));
+                if e.error.as_ref().map(|e| e.code.as_str()) != Some(expected) {
+                    errors.push(format!("{mode}/{expected}: {:?}", e.error));
+                }
+            }
+        }
+        std::fs::remove_dir_all(root)?;
+        assert!(errors.is_empty(), "{}", errors.join("; "));
+        Ok(())
+    }
+    #[test]
+    fn empty_sequence_has_keymap_error() -> Result<(), Box<dyn Error>> {
+        let h = ExecutorHandle::spawn(Default::default())?;
+        let e = call(&h, "keymap.set", json!({"commandId":"project.save","keys":""}));
+        assert_eq!(e.error.as_ref().map(|e| e.code.as_str()), Some("keymap.invalidSequence"));
+        Ok(())
+    }
+    #[test]
+    fn canonical_conflicts_override_reset_and_defaults() -> Result<(), Box<dyn Error>> {
+        let h = ExecutorHandle::spawn(Default::default())?;
+        for p in [tt_executor::keymap::Platform::Windows, tt_executor::keymap::Platform::Macos] {
+            assert!(tt_executor::keymap::default_problems(p).is_empty());
+            for b in tt_executor::keymap::defaults(p) {
+                assert!(tt_executor::registry().map_err(|e| e.0)?.get(&b.command_id).is_some());
+            }
+        }
+        for keys in ["Primary+Shift+F2", "shift+primary+f2"] {
+            assert_eq!(call(&h, "keymap.set", json!({"commandId":"project.save","keys":keys})).status, Status::Ok);
+        }
+        let conflict =
+            call(&h, "keymap.set", json!({"commandId":"project.open","keys":"shift+primary+f2","context":"drawing"}));
+        assert_eq!(conflict.error.as_ref().map(|e| e.code.as_str()), Some("keymap.conflict"));
+        assert_eq!(
+            call(
+                &h,
+                "keymap.set",
+                json!({"commandId":"project.open","keys":"Primary+Shift+F2","onConflict":"override"})
+            )
+            .status,
+            Status::Ok
+        );
+        let save = call(&h, "keymap.list", json!({"commandId":"project.save"})).result.ok_or("list")?;
+        assert!(!save.to_string().contains("F2"));
+        assert_eq!(call(&h, "keymap.reset", json!({"commandId":"project.save"})).status, Status::Ok);
+        assert_eq!(call(&h, "keymap.reset", json!({"all":true})).status, Status::Ok);
+        Ok(())
+    }
+}
+mod part_e_freshness {
+    use super::*;
+    use std::time::{Duration, Instant};
+    #[test]
+    fn older_tree_cannot_inherit_newer_acknowledgement() -> Result<(), Box<dyn Error>> {
+        let h = ExecutorHandle::spawn(Default::default())?;
+        let _ = h.invoke(Invocation::user("prefs.set", json!({"values":{"interface.theme":"dark"}})));
+        let seq = h.events_broadcast();
+        assert!(seq > 0);
+        h.report_shell(ShellReport {
+            attached: Some(true),
+            ui_tree: Some(json!({"id":"window","label":"new"})),
+            rendered_seq: Some(seq),
+            ..Default::default()
+        });
+        h.report_shell(ShellReport {
+            ui_tree: Some(json!({"id":"window","label":"old"})),
+            rendered_seq: Some(0),
+            ..Default::default()
+        });
+        let tree = h.invoke(Invocation::user("inspect.ui.tree", json!({}))).result.ok_or("tree")?;
+        assert!(
+            !h.await_rendered(Duration::ZERO) || tree["root"]["label"] != "old",
+            "old tree was accepted as fresh: {tree}"
+        );
+        Ok(())
+    }
+    #[test]
+    fn future_acknowledgement_cannot_make_tree_fresh() -> Result<(), Box<dyn Error>> {
+        let h = ExecutorHandle::spawn(Default::default())?;
+        h.report_shell(ShellReport {
+            attached: Some(true),
+            ui_tree: Some(json!({"id":"window"})),
+            rendered_seq: Some(u64::MAX),
+            ..Default::default()
+        });
+        let _ = h.invoke(Invocation::user("prefs.set", json!({"values":{"interface.theme":"dark"}})));
+        assert!(!h.await_rendered(Duration::ZERO), "future acknowledgement blessed an older tree");
+        Ok(())
+    }
+    #[test]
+    fn bounded_concurrent_waits_leave_document_thread_free() -> Result<(), Box<dyn Error>> {
+        let h = ExecutorHandle::spawn(Default::default())?;
+        assert!(h.await_rendered(Duration::ZERO));
+        let tree = h.invoke(Invocation::user("inspect.ui.tree", json!({}))).result.ok_or("tree")?;
+        assert_eq!(tree["source"], "virtual");
+        h.report_shell(ShellReport { attached: Some(true), ..Default::default() });
+        let _ = h.invoke(Invocation::user("prefs.set", json!({"values":{"interface.theme":"dark"}})));
+        let start = Instant::now();
+        let joins: Vec<_> = (0..16)
+            .map(|_| {
+                let h = h.clone();
+                std::thread::spawn(move || h.await_rendered(Duration::from_secs(2)))
+            })
+            .collect();
+        let user = Instant::now();
+        assert!(h.invoke(Invocation::user("app.state.get", json!({}))).is_ok());
+        assert!(user.elapsed() < Duration::from_secs(1));
+        for j in joins {
+            assert!(!j.join().map_err(|_| "wait panic")?);
+        }
+        assert!(start.elapsed() < Duration::from_secs(4));
+        Ok(())
+    }
+}
+
+mod part_e_restart {
+    use super::*;
+    use std::time::{Duration, Instant};
+    #[test]
+    fn release_does_not_steal_another_live_engines_recovery() -> Result<(), Box<dyn Error>> {
+        let root = std::env::temp_dir().join(format!("tt-live-recovery-{}", tt_executor::random_token(8)));
+        let over = || {
+            ExecutorHandle::spawn_with_options(tt_executor::ExecutorOptions {
+                persist: tt_executor::PersistOptions {
+                    user_dirs: Some(tt_executor::UserDirs::under(&root)),
+                    maintenance: tt_executor::Maintenance {
+                        tick: Duration::ZERO,
+                        autosave: Some(Duration::ZERO),
+                        ..Default::default()
+                    },
+                    ..Default::default()
+                },
+                ..Default::default()
+            })
+        };
+        let first = over()?;
+        assert!(first.invoke(Invocation::user("project.create", json!({"name":"Still live"}))).is_ok());
+        first.run_maintenance(true)?;
+        let start = Instant::now();
+        while !std::fs::read_dir(root.join("Recovery"))
+            .map(|rd| rd.filter_map(Result::ok).any(|e| e.path().join("recovery.json").exists()))
+            .unwrap_or(false)
+        {
+            assert!(start.elapsed() < Duration::from_secs(30));
+            std::thread::yield_now();
+        }
+        let second = over()?;
+        let released = second.release_abandoned_recovery()?;
+        drop(second);
+        drop(first);
+        std::fs::remove_dir_all(root)?;
+        assert_eq!(released, 0, "another live engine still owns its recovery");
+        Ok(())
+    }
+}
