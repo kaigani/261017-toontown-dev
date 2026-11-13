@@ -179,3 +179,125 @@ fn sessions_answer_over_sse_share_the_executor_and_end_on_delete() {
     assert_eq!(r.status, 200);
     srv.stop();
 }
+
+// ----- Round 1: binding, strict heads, admission, deadlines, session expiry (C41-R1-02/03/05, O-7) -------------
+
+fn raw(addr: SocketAddr, bytes: &[u8]) -> String {
+    let mut s = TcpStream::connect(addr).unwrap();
+    s.set_read_timeout(Some(READ_BOUND)).unwrap();
+    s.write_all(bytes).unwrap();
+    let mut out = Vec::new();
+    let _ = s.read_to_end(&mut out);
+    String::from_utf8_lossy(&out).into_owned()
+}
+
+fn status_of(reply: &str) -> u16 {
+    reply.split(' ').nth(1).and_then(|c| c.parse().ok()).unwrap_or(0)
+}
+
+fn limited(limits: tt_mcp::http::Limits) -> HttpServer {
+    tt_mcp::http::start_with(
+        executor(&tmp()),
+        HttpOptions { bind: "127.0.0.1:0".parse().unwrap(), token: TOKEN.into(), server: ServerOptions::default() },
+        limits,
+    )
+    .unwrap()
+}
+
+#[test]
+fn non_loopback_binds_are_refused_with_a_typed_error_in_both_families() {
+    for bad in ["0.0.0.0:0", "[::]:0", "192.0.2.1:0", "[2001:db8::1]:0"] {
+        let r = tt_mcp::http::start(
+            executor(&tmp()),
+            HttpOptions { bind: bad.parse().unwrap(), token: TOKEN.into(), server: ServerOptions::default() },
+        );
+        assert!(matches!(r, Err(tt_mcp::http::StartError::RemoteBind(_))), "{bad}: {r:?}");
+    }
+    // The IPv6 loopback is allowed (a runner without IPv6 may still fail to bind it, but never as RemoteBind).
+    let v6 = tt_mcp::http::start(
+        executor(&tmp()),
+        HttpOptions { bind: "[::1]:0".parse().unwrap(), token: TOKEN.into(), server: ServerOptions::default() },
+    );
+    assert!(!matches!(v6, Err(tt_mcp::http::StartError::RemoteBind(_))), "{v6:?}");
+}
+
+#[test]
+fn malformed_heads_are_400_with_no_session_side_effect() {
+    let (srv, _dir) = server();
+    let ok = format!("Host: localhost\r\nAuthorization: {BEARER}\r\n");
+    let init = r#"{"jsonrpc":"2.0","id":1,"method":"initialize","params":{}}"#;
+    let cases = [
+        format!("POST /mcp HTTP/1.1\n{ok}Content-Length: {}\r\n\r\n{init}", init.len()),
+        format!("POST /mcp HTTP/1.1\r\n{ok} folded: x\r\nContent-Length: {}\r\n\r\n{init}", init.len()),
+        format!("POST /mcp HTTP/1.1\r\n{ok}NoColon\r\nContent-Length: {}\r\n\r\n{init}", init.len()),
+        format!("POST  /mcp HTTP/1.1\r\n{ok}Content-Length: {}\r\n\r\n{init}", init.len()),
+        format!("POST /mcp HTTP/1.0\r\n{ok}Content-Length: {}\r\n\r\n{init}", init.len()),
+        format!("POST /mcp HTTP/1.1\r\n{ok}Content-Length: +{}\r\n\r\n{init}", init.len()),
+        format!("POST /mcp HTTP/1.1\r\n{ok}Content-Length: abc\r\n\r\n{init}"),
+        format!("POST /mcp HTTP/1.1\r\n{ok}Content-Length: {0}\r\nContent-Length: {0}\r\n\r\n{init}", init.len()),
+        format!("POST /mcp HTTP/1.1\r\n{ok}Transfer-Encoding: chunked\r\n\r\n{init}"),
+        format!("POST /mcp HTTP/1.1\r\n{ok}Origin: http://localhost\r\nOrigin: http://localhost\r\n\r\n{init}"),
+        format!("POST /mcp HTTP/1.1\r\n{ok}Authorization: {BEARER}\r\nContent-Length: {}\r\n\r\n{init}", init.len()),
+    ];
+    for c in &cases {
+        let reply = raw(srv.addr, c.as_bytes());
+        assert_eq!(status_of(&reply), 400, "{c:?} -> {reply}");
+    }
+    assert_eq!(srv.session_count(), 0, "no refused request opened a session");
+}
+
+#[test]
+fn a_body_over_the_limit_is_refused_before_it_is_read() {
+    let srv = limited(tt_mcp::http::Limits { max_body: Some(1024), ..Default::default() });
+    // Only the head is sent: the answer comes without the server waiting for a body.
+    let mut s = TcpStream::connect(srv.addr).unwrap();
+    s.set_read_timeout(Some(READ_BOUND)).unwrap();
+    write!(s, "POST /mcp HTTP/1.1\r\nHost: localhost\r\nAuthorization: {BEARER}\r\nContent-Length: 1025\r\n\r\n")
+        .unwrap();
+    let mut line = [0u8; 12];
+    s.read_exact(&mut line).unwrap();
+    assert_eq!(&line, b"HTTP/1.1 413");
+}
+
+#[test]
+fn connections_before_their_token_check_are_capped() {
+    let srv = limited(tt_mcp::http::Limits { max_unauthenticated: 2, ..Default::default() });
+    // Two silent connections hold the unauthenticated slots.
+    let silent: Vec<TcpStream> = (0..2).map(|_| TcpStream::connect(srv.addr).unwrap()).collect();
+    // The next connection is refused at once with 503 (polled: the silent ones are admitted asynchronously).
+    let started = std::time::Instant::now();
+    loop {
+        let reply = raw(srv.addr, b"");
+        if status_of(&reply) == 503 {
+            assert!(reply.contains("Retry-After: 1"), "{reply}");
+            break;
+        }
+        assert!(started.elapsed() < READ_BOUND, "no 503: {reply}");
+    }
+    drop(silent);
+}
+
+#[test]
+fn a_head_that_never_completes_is_answered_408_at_its_deadline() {
+    let srv = limited(tt_mcp::http::Limits { head_deadline: Duration::from_millis(200), ..Default::default() });
+    let reply = raw(srv.addr, b"POST /mcp HTTP/1.1\r\nHost: localhost\r\n");
+    assert_eq!(status_of(&reply), 408, "{reply}");
+}
+
+#[test]
+fn an_idle_session_expires_and_its_id_answers_404() {
+    let srv = limited(tt_mcp::http::Limits {
+        session_idle: Duration::from_millis(100),
+        sweep: Duration::from_millis(20),
+        ..Default::default()
+    });
+    let sid = initialize(&srv);
+    assert_eq!(srv.session_count(), 1);
+    let started = std::time::Instant::now();
+    while srv.session_count() > 0 {
+        assert!(started.elapsed() < READ_BOUND, "the idle session never expired");
+        std::thread::yield_now();
+    }
+    let r = post(&srv, Some(&sid), &json!({"jsonrpc": "2.0", "id": 2, "method": "tools/list"}));
+    assert_eq!(r.status, 404, "an expired id answers 404 so the client initialises again");
+}

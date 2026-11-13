@@ -223,6 +223,12 @@ pub fn on_window_event(window: &tauri::Window, event: &WindowEvent) {
                 let _ = window.emit_to("main", crate::menu::MENU_COMMAND_EVENT, text);
             }
         }
+        WindowEvent::Destroyed => {
+            // The window's reports end with it (ruling O-9).
+            if let Some(host) = window.app_handle().try_state::<Host>() {
+                host.forget_window_reports(window.label());
+            }
+        }
         WindowEvent::Moved(_) | WindowEvent::Resized(_) => {
             if APPLYING.load(Ordering::Acquire) {
                 return;

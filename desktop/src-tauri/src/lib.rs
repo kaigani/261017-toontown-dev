@@ -139,6 +139,15 @@ pub fn run() -> Result<(), DesktopError> {
         .menu(move |app| menu::build(app, &menu_manifest))
         .on_menu_event(move |app, event| menu::on_event(app, event.id().as_ref()))
         .on_window_event(shell::on_window_event)
+        // A reloaded page reports from scratch: what the old page reported ends with it (ruling O-9).
+        .on_page_load(|webview, payload| {
+            if matches!(payload.event(), tauri::webview::PageLoadEvent::Started) {
+                use tauri::Manager;
+                if let Some(host) = webview.app_handle().try_state::<host::Host>() {
+                    host.forget_window_reports(webview.label());
+                }
+            }
+        })
         .setup(move |app| {
             let handle = app.handle().clone();
             shell::start_event_pump(&handle);

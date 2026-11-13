@@ -130,11 +130,20 @@ impl Host {
         match token {
             None => self.exec().invoke(inv),
             Some(t) => {
-                let flag = Arc::new(AtomicBool::new(false));
-                self.cancels.lock().unwrap_or_else(PoisonError::into_inner).insert(t.to_owned(), flag.clone());
+                let Some(guard) = TokenGuard::claim(&self.cancels, t) else {
+                    return Envelope::error(
+                        tt_executor::CommandError::with_details(
+                            "arg.invalid",
+                            format!("the request token `{t}` is already in flight"),
+                            json!({ "pointer": "/requestToken", "reason": "requestTokenInUse" }),
+                        ),
+                        None,
+                    );
+                };
+                let flag = guard.flag.clone();
                 let probe = move || flag.load(Ordering::Acquire);
                 let (env, _) = self.exec().invoke_served_until(inv, &probe);
-                self.cancels.lock().unwrap_or_else(PoisonError::into_inner).remove(t);
+                drop(guard);
                 env
             }
         }
@@ -150,6 +159,16 @@ impl Host {
         if let Some(f) = self.cancels.lock().unwrap_or_else(PoisonError::into_inner).get(token) {
             f.store(true, Ordering::Release);
         }
+    }
+
+    /// Clears the sensor facts a window reported (ruling O-9): its modal state and text focus end with it when it is
+    /// destroyed, reloaded or replaced, so a report whose reporter went away cannot block agents or shortcuts.
+    /// Today every report comes from the main window; per-window composition arrives with the float windows (ruling
+    /// O-2; `reviews/M4-design-floating-windows.md`), where `label` selects the window's own reports.
+    pub fn forget_window_reports(&self, _label: &str) {
+        let report: tt_executor::host::ShellReport =
+            serde_json::from_value(json!({ "modal": null, "textFocus": false })).unwrap_or_default();
+        self.exec().report_shell(report);
     }
 
     /// The next engine-event number.
@@ -270,6 +289,35 @@ impl Host {
     }
 }
 
+/// One request's cancellation flag under its token (C41-R1-07): claimed only when the token is not in flight, and
+/// removed by its own owner only, also when the invocation unwinds.
+struct TokenGuard<'a> {
+    map: &'a Mutex<HashMap<String, Arc<AtomicBool>>>,
+    token: String,
+    flag: Arc<AtomicBool>,
+}
+
+impl<'a> TokenGuard<'a> {
+    fn claim(map: &'a Mutex<HashMap<String, Arc<AtomicBool>>>, token: &str) -> Option<Self> {
+        let mut m = map.lock().unwrap_or_else(PoisonError::into_inner);
+        if m.contains_key(token) {
+            return None;
+        }
+        let flag = Arc::new(AtomicBool::new(false));
+        m.insert(token.to_owned(), flag.clone());
+        Some(Self { map, token: token.to_owned(), flag })
+    }
+}
+
+impl Drop for TokenGuard<'_> {
+    fn drop(&mut self) {
+        let mut m = self.map.lock().unwrap_or_else(PoisonError::into_inner);
+        if m.get(&self.token).is_some_and(|f| Arc::ptr_eq(f, &self.flag)) {
+            m.remove(&self.token);
+        }
+    }
+}
+
 /// Writes a file atomically, readable by its owner only (POSIX; the per-user folder is private on Windows).
 fn write_private(target: &std::path::Path, bytes: &[u8]) -> std::io::Result<()> {
     let tmp = target.with_extension(format!("tmp-{}", std::process::id()));
@@ -286,3 +334,75 @@ fn write_private(target: &std::path::Path, bytes: &[u8]) -> std::io::Result<()> 
 
 /// How long the host waits for the document thread at quit.
 pub const QUIT_GRACE: Duration = Duration::from_secs(5);
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    fn host() -> (Host, PathBuf) {
+        let dir = std::env::temp_dir().join(format!("tt-host-test-{}", tt_executor::random_token(8)));
+        let options = HostOptions { user_dir: Some(dir.clone()), mcp_http: None, discovery: None, open: Vec::new() };
+        match Host::start(options) {
+            Ok(h) => (h, dir),
+            Err(e) => std::panic::resume_unwind(Box::new(e.message)),
+        }
+    }
+
+    #[test]
+    fn a_request_token_is_owned_by_its_invocation() {
+        let map: Mutex<HashMap<String, Arc<AtomicBool>>> = Mutex::new(HashMap::new());
+        let first = TokenGuard::claim(&map, "t1");
+        assert!(first.is_some());
+        assert!(TokenGuard::claim(&map, "t1").is_none(), "a token in flight is refused");
+        // Another owner's entry under the same name is never removed by a stale guard.
+        if let Some(g) = first {
+            map.lock().unwrap_or_else(PoisonError::into_inner).insert("t1".into(), Arc::new(AtomicBool::new(false)));
+            drop(g);
+        }
+        assert!(map.lock().unwrap_or_else(PoisonError::into_inner).contains_key("t1"), "kept: not the guard's own");
+        map.lock().unwrap_or_else(PoisonError::into_inner).clear();
+        // An unwinding invocation still releases its own entry.
+        let unwound = std::panic::catch_unwind(std::panic::AssertUnwindSafe(|| {
+            let _g = TokenGuard::claim(&map, "t2");
+            std::panic::resume_unwind(Box::new("unwind"));
+        }));
+        assert!(unwound.is_err());
+        assert!(map.lock().unwrap_or_else(PoisonError::into_inner).is_empty(), "released while unwinding");
+    }
+
+    #[test]
+    fn run_refuses_a_token_already_in_flight() {
+        let (h, dir) = host();
+        let held = TokenGuard::claim(&h.cancels, "busy");
+        let env = h.run("app.state.get", json!({}), false, Some("busy"));
+        let e = env.error.map(|e| (e.code, e.details["reason"].clone()));
+        assert_eq!(e, Some(("arg.invalid".to_owned(), json!("requestTokenInUse"))));
+        drop(held);
+        assert!(h.run("app.state.get", json!({}), false, Some("busy")).is_ok());
+        assert!(h.cancels.lock().unwrap_or_else(PoisonError::into_inner).is_empty());
+        let _ = std::fs::remove_dir_all(dir);
+    }
+
+    #[test]
+    fn a_planted_token_is_replaced_and_a_stale_endpoint_is_cleared() {
+        let (h, dir) = host();
+        let file = h.settings_dir.join("agent-discovery.json");
+        let _ = std::fs::create_dir_all(&h.settings_dir);
+        let planted = json!({ "format": "toontown-agent-discovery", "formatVersion": "1.0",
+            "endpoint": "http://127.0.0.1:1/mcp", "token": "letmein", "processId": 1 });
+        let _ = std::fs::write(&file, planted.to_string());
+        let token = h.token().unwrap_or_default();
+        assert!(tt_executor::is_secret_token(&token, tt_executor::AGENT_TOKEN_BYTES), "{token}");
+        // A file advertising an endpoint with no server running is cleared, the well-formed token kept.
+        let live = json!({ "format": "toontown-agent-discovery", "formatVersion": "1.0",
+            "endpoint": "http://127.0.0.1:1/mcp", "token": token, "processId": 1 });
+        let _ = std::fs::write(&file, live.to_string());
+        h.stop_http();
+        let after: Value =
+            serde_json::from_str(&std::fs::read_to_string(&file).unwrap_or_default()).unwrap_or_default();
+        assert_eq!(after["endpoint"], Value::Null);
+        assert_eq!(after["processId"], Value::Null);
+        assert_eq!(after["token"], json!(token));
+        let _ = std::fs::remove_dir_all(dir);
+    }
+}
