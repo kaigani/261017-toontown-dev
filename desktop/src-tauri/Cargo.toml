@@ -28,6 +28,12 @@ tauri-build.workspace = true
 
 [dependencies]
 tt-engine.workspace = true
+# M4 C4.1: the host is a client of the executor (one command entry, events, request cancellation) and serves attached
+# mode over Streamable HTTP (ADR-0021, ADR-0022).
+tt-executor.workspace = true
+tt-mcp.workspace = true
+# Native Open / Save As / folder pickers (01 §3.2, §3.6; driven from Rust only, no front-end package).
+tauri-plugin-dialog = "2.8"
 serde.workspace = true
 serde_json.workspace = true
 tauri.workspace = true
