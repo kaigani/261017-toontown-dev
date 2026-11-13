@@ -10,6 +10,7 @@
 //! Spec sections: 11 §4; 11 §6–§7; 11 §9–§13; 11 §15. Milestone: M1 (C1.4).
 
 pub mod docs;
+pub mod http;
 pub mod jsonrpc;
 pub mod prompts;
 pub mod resources;

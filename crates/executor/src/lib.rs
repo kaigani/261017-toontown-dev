@@ -65,12 +65,13 @@ pub use maintenance::Timings as MaintenanceTimings;
 pub use run::LoadGrant;
 pub use session::Event;
 pub use store::{Maintenance, PersistOptions};
+pub use tt_persist::fsx::random_token;
 pub use tt_persist::settings::UserDirs;
 pub use types::{
     BatchRequest, BatchStep, ChangeRecord, Envelope, Invocation, InvokeOptions, OpenOptions, Origin, Status, UndoRef,
     UnsavedPolicy, Warning,
 };
-pub use ui::{Layout, PanelEntry, WorkspaceEntry};
+pub use ui::{Layout, PANELS as PANEL_CATALOGUE, PanelEntry, TOOL_PALETTES, WorkspaceEntry};
 
 /// Crate name as linked into the engine (the headless self-test lists it to prove the crate is present).
 pub const NAME: &str = env!("CARGO_PKG_NAME");

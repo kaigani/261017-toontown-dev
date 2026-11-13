@@ -1,8 +1,9 @@
-//! The UI-bindings manifest (`desktop/src/ui-bindings/menu.json`): every main-menu item and the command id it is
-//! bound to (11 §2 "GUI binding"). This module is pure data and logic, independent of the Tauri runtime, so it is
-//! unit-tested and, from M1, diffed against the command registry by the parity test (11 §14.1).
+//! The UI-bindings manifest (`desktop/src/ui-bindings/menu.json`, version 2; M4 C4.1): every main-menu item and the
+//! command reference it is bound to (11 §2 "GUI binding"). Pure data and logic, independent of the Tauri runtime, so
+//! it is unit-tested and diffed against the command registry by the parity test (11 §14.1).
 
 use serde::Deserialize;
+use serde_json::Value;
 
 /// The manifest source, embedded at compile time.
 pub const MENU_MANIFEST_JSON: &str = include_str!("../../src/ui-bindings/menu.json");
@@ -44,18 +45,6 @@ impl Platform {
     }
 }
 
-/// Who executes a bound command in this build.
-#[derive(Debug, Clone, Copy, PartialEq, Eq, Deserialize)]
-#[serde(rename_all = "camelCase")]
-pub enum Handler {
-    /// Executed natively by the Tauri host.
-    Host,
-    /// Forwarded to and executed by the web front end.
-    Frontend,
-    /// Bound but not implemented in this build; invoking it reports the milestone.
-    Pending,
-}
-
 /// Native items supplied by the OS menu implementation (not commands; exempt from the parity test).
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Deserialize)]
 #[serde(rename_all = "camelCase")]
@@ -72,39 +61,7 @@ pub enum Predefined {
     ShowAll,
 }
 
-/// A keyboard accelerator: one string for every platform, or one per platform.
-#[derive(Debug, Clone, PartialEq, Eq, Deserialize)]
-#[serde(untagged)]
-pub enum Accelerator {
-    /// Same accelerator everywhere (`CmdOrCtrl+S`).
-    All(String),
-    /// Per platform.
-    PerPlatform {
-        /// On Windows.
-        windows: Option<String>,
-        /// On macOS.
-        macos: Option<String>,
-        /// On Linux.
-        linux: Option<String>,
-    },
-}
-
-impl Accelerator {
-    /// The accelerator for `platform`, if any.
-    #[must_use]
-    pub fn for_platform(&self, platform: Platform) -> Option<&str> {
-        match self {
-            Self::All(s) => Some(s),
-            Self::PerPlatform { windows, macos, linux } => match platform {
-                Platform::Windows => windows.as_deref(),
-                Platform::Macos => macos.as_deref(),
-                Platform::Linux => linux.as_deref(),
-            },
-        }
-    }
-}
-
-/// A bound command item.
+/// A bound command item: a command reference (id plus fixed parameters) and how it is shown.
 #[derive(Debug, Clone, PartialEq, Deserialize)]
 #[serde(rename_all = "camelCase", deny_unknown_fields)]
 pub struct CommandItem {
@@ -112,22 +69,32 @@ pub struct CommandItem {
     pub command: String,
     /// Menu label.
     pub label: String,
-    /// Keyboard accelerator.
+    /// Fixed parameters.
     #[serde(default)]
-    pub accelerator: Option<Accelerator>,
-    /// Fixed parameters passed with the command.
-    #[serde(default)]
-    pub params: Option<serde_json::Value>,
+    pub params: Option<Value>,
     /// Enabled when no project is open (01 §1.3).
     pub enabled_without_project: bool,
-    /// Who executes it in this build.
-    pub handler: Handler,
-    /// For `pending` items: the milestone that implements it.
+    /// The state shown as a check mark (`statusBar`, `mainToolbar`, `fullScreen`, `sidePanelsExtended`,
+    /// `panel:<id>`, `palette:<id>`).
     #[serde(default)]
-    pub milestone: Option<String>,
+    pub check: Option<String>,
+    /// The dialog that collects the parameters the user must give (documentation; the front end opens it).
+    #[serde(default)]
+    pub dialog: Option<String>,
     /// Platforms that show the item (default: all).
     #[serde(default)]
     pub platforms: Option<Vec<Platform>>,
+}
+
+impl CommandItem {
+    /// The fixed parameters as an object (empty when none).
+    #[must_use]
+    pub fn params_object(&self) -> serde_json::Map<String, Value> {
+        match &self.params {
+            Some(Value::Object(m)) => m.clone(),
+            _ => serde_json::Map::new(),
+        }
+    }
 }
 
 /// One menu item.
@@ -154,13 +121,32 @@ pub enum Item {
         #[serde(default)]
         platforms: Option<Vec<Platform>>,
     },
+    /// A submenu.
+    Submenu {
+        /// Stable id.
+        id: String,
+        /// Title.
+        label: String,
+        /// Items.
+        items: Vec<Item>,
+        /// Platforms that show the item (default: all).
+        #[serde(default)]
+        platforms: Option<Vec<Platform>>,
+    },
+    /// The recent-projects entries (`project.open {path}` each), filled at run time.
+    Recent,
+    /// The workspaces (`workspace.select {name}` each), filled at run time.
+    Workspaces,
 }
 
 impl Item {
     fn platforms(&self) -> Option<&[Platform]> {
         match self {
             Self::Command(c) => c.platforms.as_deref(),
-            Self::Separator { platforms } | Self::Predefined { platforms, .. } => platforms.as_deref(),
+            Self::Separator { platforms } | Self::Predefined { platforms, .. } | Self::Submenu { platforms, .. } => {
+                platforms.as_deref()
+            }
+            Self::Recent | Self::Workspaces => None,
         }
     }
 
@@ -207,6 +193,16 @@ pub struct Manifest {
     pub menus: Vec<Menu>,
 }
 
+fn walk<'a>(items: &'a [Item], platform: Platform, out: &mut Vec<&'a CommandItem>) {
+    for i in items.iter().filter(|i| i.on(platform)) {
+        match i {
+            Item::Command(c) => out.push(c),
+            Item::Submenu { items, .. } => walk(items, platform, out),
+            _ => {}
+        }
+    }
+}
+
 impl Manifest {
     /// Parses and validates the embedded manifest.
     ///
@@ -226,24 +222,24 @@ impl Manifest {
         Ok(manifest)
     }
 
-    /// Command items visible on `platform`, in menu order.
-    pub fn commands(&self, platform: Platform) -> impl Iterator<Item = &CommandItem> {
-        self.menus.iter().filter(move |m| m.on(platform)).flat_map(move |m| {
-            m.items.iter().filter(move |i| i.on(platform)).filter_map(|i| match i {
-                Item::Command(c) => Some(c),
-                _ => None,
-            })
-        })
+    /// Command items visible on `platform`, in menu order (submenus flattened).
+    #[must_use]
+    pub fn commands(&self, platform: Platform) -> Vec<&CommandItem> {
+        let mut out = Vec::new();
+        for m in self.menus.iter().filter(|m| m.on(platform)) {
+            walk(&m.items, platform, &mut out);
+        }
+        out
     }
 
-    /// The binding for `command` on `platform` (command ids are unique per platform).
+    /// The first binding of `command` on `platform`.
     #[must_use]
     pub fn find(&self, platform: Platform, command: &str) -> Option<&CommandItem> {
-        self.commands(platform).find(|c| c.command == command)
+        self.commands(platform).into_iter().find(|c| c.command == command)
     }
 
     fn validate(&self) -> Result<(), BindingsError> {
-        if self.version != 1 {
+        if self.version != 2 {
             return Err(BindingsError::Invalid(format!("unsupported version {}", self.version)));
         }
         for platform in [Platform::Windows, Platform::Macos, Platform::Linux] {
@@ -252,11 +248,13 @@ impl Manifest {
                 if !is_command_id(&c.command) {
                     return Err(BindingsError::Invalid(format!("`{}` is not a command id", c.command)));
                 }
-                if !seen.insert(c.command.as_str()) {
-                    return Err(BindingsError::Invalid(format!("`{}` bound twice on {platform:?}", c.command)));
+                if c.params.as_ref().is_some_and(|p| !p.is_object()) {
+                    return Err(BindingsError::Invalid(format!("`{}` has params that are not an object", c.command)));
                 }
-                if c.handler == Handler::Pending && c.milestone.is_none() {
-                    return Err(BindingsError::Invalid(format!("pending `{}` has no milestone", c.command)));
+                // One command reference (id + parameters) per platform.
+                let key = (c.command.clone(), serde_json::to_string(&c.params_object()).unwrap_or_default());
+                if !seen.insert(key) {
+                    return Err(BindingsError::Invalid(format!("`{}` bound twice on {platform:?}", c.command)));
                 }
             }
         }
@@ -282,7 +280,7 @@ mod tests {
     #[test]
     fn embedded_manifest_is_valid() {
         let m = Manifest::embedded().unwrap();
-        assert!(m.commands(Platform::Windows).count() > 10);
+        assert!(m.commands(Platform::Windows).len() > 60);
     }
 
     #[test]
@@ -290,32 +288,39 @@ mod tests {
         let m = Manifest::embedded().unwrap();
         for platform in [Platform::Windows, Platform::Macos] {
             let ids: Vec<_> = m.menus.iter().filter(|x| x.on(platform)).map(|x| x.id.as_str()).collect();
-            for required in ["file", "edit", "view", "help"] {
+            for required in ["file", "edit", "view", "window", "help"] {
                 assert!(ids.contains(&required), "{required} missing on {platform:?}: {ids:?}");
             }
         }
-        // macOS: the application menu comes first and holds Quit (01 §5.1).
+        // macOS: the application menu comes first and holds Settings and Quit (01 §5.1).
         let mac_first = m.menus.iter().find(|x| x.on(Platform::Macos)).unwrap();
         assert_eq!(mac_first.id, "app");
-        assert!(mac_first.items.iter().any(|i| matches!(i, Item::Command(c) if c.command == "app.quit")));
+        let mac_cmds: Vec<&str> = {
+            let mut out = Vec::new();
+            walk(&mac_first.items, Platform::Macos, &mut out);
+            out.iter().map(|c| c.command.as_str()).collect()
+        };
+        assert!(mac_cmds.contains(&"app.quit") && mac_cmds.contains(&"ui.preferences.open"));
     }
 
     #[test]
-    fn quit_is_bound_on_every_platform() {
+    fn every_panel_and_palette_has_a_checkable_item() {
         let m = Manifest::embedded().unwrap();
-        for p in [Platform::Windows, Platform::Macos, Platform::Linux] {
-            assert_eq!(m.find(p, "app.quit").map(|c| c.handler), Some(Handler::Host));
+        let checks: Vec<String> =
+            m.commands(Platform::Windows).iter().filter_map(|c| c.check.clone()).collect();
+        for (p, _) in tt_executor::PANEL_CATALOGUE {
+            assert!(checks.contains(&format!("panel:{p}")), "{p}");
         }
+        assert!(checks.iter().filter(|c| c.starts_with("palette:")).count() == 5);
     }
 
     #[test]
     fn enablement_without_project_follows_01_1_3() {
-        // 01 §1.3: without a project, edit and project-scoped commands are disabled.
         let m = Manifest::embedded().unwrap();
         for c in m.commands(Platform::Windows) {
             let must_be_disabled = c.command.starts_with("edit.")
                 || c.command.starts_with("view.")
-                || matches!(c.command.as_str(), "project.save" | "project.saveAs" | "project.close");
+                || matches!(c.command.as_str(), "project.save" | "project.saveAs" | "project.close" | "project.properties.set");
             if must_be_disabled {
                 assert!(!c.enabled_without_project, "{} must be disabled without a project", c.command);
             }
@@ -323,38 +328,31 @@ mod tests {
     }
 
     #[test]
-    fn per_platform_accelerators() {
-        let m = Manifest::embedded().unwrap();
-        let fs = m.find(Platform::Macos, "window.fullScreen.set").unwrap();
-        let acc = fs.accelerator.as_ref().unwrap();
-        assert_eq!(acc.for_platform(Platform::Macos), Some("Ctrl+Cmd+F"));
-        assert_eq!(acc.for_platform(Platform::Windows), Some("F11"));
-    }
-
-    #[test]
-    fn rejects_duplicates_bad_ids_and_missing_milestones() {
-        let dup = r#"{"version":1,"menus":[{"id":"f","label":"F","items":[
-            {"kind":"command","command":"a.b","label":"x","enabledWithoutProject":true,"handler":"host"},
-            {"kind":"command","command":"a.b","label":"y","enabledWithoutProject":true,"handler":"host"}]}]}"#;
+    fn rejects_duplicates_bad_ids_and_unknown_fields() {
+        let dup = r#"{"version":2,"menus":[{"id":"f","label":"F","items":[
+            {"kind":"command","command":"a.b","label":"x","enabledWithoutProject":true},
+            {"kind":"command","command":"a.b","label":"y","enabledWithoutProject":true}]}]}"#;
         assert!(matches!(Manifest::parse(dup), Err(BindingsError::Invalid(_))));
-        let bad_id = r#"{"version":1,"menus":[{"id":"f","label":"F","items":[
-            {"kind":"command","command":"Quit","label":"x","enabledWithoutProject":true,"handler":"host"}]}]}"#;
+        let same_id_other_params = r#"{"version":2,"menus":[{"id":"f","label":"F","items":[
+            {"kind":"command","command":"a.b","label":"x","params":{"n":1},"enabledWithoutProject":true},
+            {"kind":"command","command":"a.b","label":"y","params":{"n":2},"enabledWithoutProject":true}]}]}"#;
+        assert!(Manifest::parse(same_id_other_params).is_ok());
+        let bad_id = r#"{"version":2,"menus":[{"id":"f","label":"F","items":[
+            {"kind":"command","command":"Quit","label":"x","enabledWithoutProject":true}]}]}"#;
         assert!(matches!(Manifest::parse(bad_id), Err(BindingsError::Invalid(_))));
-        let no_ms = r#"{"version":1,"menus":[{"id":"f","label":"F","items":[
-            {"kind":"command","command":"a.b","label":"x","enabledWithoutProject":true,"handler":"pending"}]}]}"#;
-        assert!(matches!(Manifest::parse(no_ms), Err(BindingsError::Invalid(_))));
-        let unknown_field = r#"{"version":1,"menus":[{"id":"f","label":"F","items":[
-            {"kind":"command","command":"a.b","label":"x","enabledWithoutProject":true,"handler":"host","x":1}]}]}"#;
+        let unknown_field = r#"{"version":2,"menus":[{"id":"f","label":"F","items":[
+            {"kind":"command","command":"a.b","label":"x","enabledWithoutProject":true,"x":1}]}]}"#;
         assert!(matches!(Manifest::parse(unknown_field), Err(BindingsError::Malformed(_))));
+        let old = r#"{"version":1,"menus":[]}"#;
+        assert!(matches!(Manifest::parse(old), Err(BindingsError::Invalid(_))));
     }
 
     #[test]
-    fn platform_specific_duplicates_are_allowed() {
-        // app.quit appears in the macOS app menu and in File on Windows/Linux, never twice on one platform.
+    fn quit_appears_once_per_platform() {
         let m = Manifest::embedded().unwrap();
-        let count = |p| m.commands(p).filter(|c| c.command == "app.quit").count();
-        assert_eq!(count(Platform::Macos), 1);
-        assert_eq!(count(Platform::Windows), 1);
+        for p in [Platform::Macos, Platform::Windows] {
+            assert_eq!(m.commands(p).iter().filter(|c| c.command == "app.quit").count(), 1);
+        }
     }
 
     #[test]

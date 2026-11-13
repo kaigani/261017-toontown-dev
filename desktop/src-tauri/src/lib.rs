@@ -3,16 +3,21 @@
 //! Hosts the engine in-process (attached run mode, 11 §3), builds the native menu bar from the UI-bindings
 //! manifest, and exposes a small set of typed commands to the web front end (React + dockview in `desktop/src`).
 //!
-//! The host holds no document state of its own: from M1 every command it receives is routed to the engine's
-//! serialized executor (11 P2). Shell features still to come are in spec 01 (M4).
+//! The host holds no document state of its own (M4 C4.1, ADR-0021): every GUI action reaches the executor through
+//! `run_command` as a registered command, exactly as an agent's call does (11 P2); engine events are forwarded to the
+//! webviews; native-window changes are applied from the executor's `shell.*` notices; attached mode serves MCP over
+//! Streamable HTTP (ADR-0022).
 //!
 //! **M0 diagnostics** (`--ipc-bench`, `--spike …` and their commands) exist only in builds with the Cargo feature
 //! `m0-diagnostics` (C0.4). The default build registers the product commands alone; [`COMMANDS`] lists them.
 
 pub mod bindings;
 pub mod diagnostics;
+pub mod host;
+pub mod instance;
 pub mod ipc;
 pub mod menu;
+pub mod shell;
 // Spike code is compiled into a build only with the feature; unit tests always compile it so its tests keep running.
 #[cfg(any(test, feature = "m0-diagnostics"))]
 pub mod spikes;
@@ -35,12 +40,27 @@ macro_rules! command_registry {
 }
 
 #[cfg(not(feature = "m0-diagnostics"))]
-command_registry![ipc::ping, ipc::app_info];
+command_registry![
+    ipc::ping,
+    ipc::app_info,
+    ipc::run_command,
+    ipc::cancel_request,
+    ipc::report_shell,
+    ipc::dispatch_key,
+    ipc::pick_path,
+    ipc::startup,
+];
 
 #[cfg(feature = "m0-diagnostics")]
 command_registry![
     ipc::ping,
     ipc::app_info,
+    ipc::run_command,
+    ipc::cancel_request,
+    ipc::report_shell,
+    ipc::dispatch_key,
+    ipc::pick_path,
+    ipc::startup,
     diagnostics::bench_plan,
     diagnostics::bench_report,
     spikes::tablet::spike_mode,
@@ -75,6 +95,9 @@ pub enum DesktopError {
     /// Tauri failed.
     #[error("window system error: {0}")]
     Tauri(#[from] tauri::Error),
+    /// The executor did not start.
+    #[error("the executor did not start ({}): {}", .0.code, .0.message)]
+    Executor(tt_registry::CommandError),
 }
 
 /// Starts the desktop application and blocks until it exits.
@@ -89,44 +112,77 @@ pub fn run() -> Result<(), DesktopError> {
     }
     let engine = Engine::new(EngineConfig { run_mode: RunMode::Attached })?;
     let manifest = Arc::new(bindings::Manifest::embedded()?);
+    let options = host::HostOptions {
+        user_dir: launch.user_dir.clone(),
+        mcp_http: launch.mcp_http,
+        discovery: launch.mcp_discovery.clone(),
+        open: launch.open.clone(),
+    };
+    let host = host::Host::start(options).map_err(DesktopError::Executor)?;
+    // 01 §1.1 rule 1: one instance per user session; a second one forwards its documents and exits.
+    let settings = host.settings_dir.clone();
+    let listener = match instance::claim(&settings, &launch.open) {
+        instance::Start::Forwarded => return Ok(()),
+        instance::Start::First(listener, key) => listener.map(|l| (l, key)),
+    };
     let menu_manifest = Arc::clone(&manifest);
+    #[cfg(feature = "m0-diagnostics")]
+    let diagnostics_launch = launch.clone();
     let builder = tauri::Builder::default()
+        .plugin(tauri_plugin_dialog::init())
         .manage(engine)
+        .manage(host)
+        .manage(menu::MenuSlot::default())
         .menu(move |app| menu::build(app, &menu_manifest))
-        .on_menu_event(move |app, event| menu::on_event(app, &manifest, event.id().as_ref()));
+        .on_menu_event(move |app, event| menu::on_event(app, event.id().as_ref()))
+        .on_window_event(shell::on_window_event)
+        .setup(move |app| {
+            let handle = app.handle().clone();
+            shell::start_event_pump(&handle);
+            menu::refresh(&handle);
+            shell::sync_agent_server(&handle);
+            if let Some((listener, key)) = listener {
+                let h = handle.clone();
+                instance::serve(listener, key, move |paths| shell::open_documents(&h, &paths));
+            }
+            #[cfg(feature = "m0-diagnostics")]
+            m0_setup(&handle, &diagnostics_launch);
+            Ok(())
+        });
     #[cfg(feature = "m0-diagnostics")]
     let builder = with_m0_diagnostics(builder, &launch);
     builder.invoke_handler(invoke_handler()).run(tauri::generate_context!())?;
+    instance::release(&settings);
     Ok(())
 }
 
-/// Managed state and start-up hooks of the M0 diagnostics (benchmark and spikes).
+/// Managed state of the M0 diagnostics (benchmark and spikes).
 #[cfg(feature = "m0-diagnostics")]
 fn with_m0_diagnostics(
     builder: tauri::Builder<tauri::Wry>,
     launch: &diagnostics::LaunchOptions,
 ) -> tauri::Builder<tauri::Wry> {
-    let bench = launch.bench.clone();
-    let spike = launch.spike.clone();
     builder
-        .manage(diagnostics::Diagnostics { bench: bench.clone() })
-        .manage(spikes::tablet::TabletSpike::new(spike.clone()))
-        .manage(spikes::canvas::CanvasSpike::new(spike.clone()))
-        .setup(move |app| {
-            if let Some(settings) = &bench {
-                diagnostics::arm_timeout(app.handle(), settings);
+        .manage(diagnostics::Diagnostics { bench: launch.bench.clone() })
+        .manage(spikes::tablet::TabletSpike::new(launch.spike.clone()))
+        .manage(spikes::canvas::CanvasSpike::new(launch.spike.clone()))
+}
+
+/// Start-up hooks of the M0 diagnostics, run from the application's setup.
+#[cfg(feature = "m0-diagnostics")]
+fn m0_setup(app: &tauri::AppHandle, launch: &diagnostics::LaunchOptions) {
+    if let Some(settings) = &launch.bench {
+        diagnostics::arm_timeout(app, settings);
+    }
+    if let Some(settings) = &launch.spike {
+        spikes::tablet::arm_auto_timeout(app, settings);
+        if settings.name == "canvas" {
+            // Measure on the largest canvas the display allows (the page records the actual size).
+            if let Some(window) = tauri::Manager::get_webview_window(app, "main") {
+                let _ = window.maximize();
             }
-            if let Some(settings) = &spike {
-                spikes::tablet::arm_auto_timeout(app.handle(), settings);
-                if settings.name == "canvas" {
-                    // Measure on the largest canvas the display allows (the page records the actual size).
-                    if let Some(window) = tauri::Manager::get_webview_window(app, "main") {
-                        let _ = window.maximize();
-                    }
-                }
-            }
-            Ok(())
-        })
+        }
+    }
 }
 
 #[cfg(test)]
@@ -152,7 +208,7 @@ mod tests {
     #[cfg(not(feature = "m0-diagnostics"))]
     #[test]
     fn default_build_registers_no_diagnostic_commands() {
-        assert_eq!(names(), ["ping", "app_info"]);
+        assert_eq!(names(), ["ping", "app_info", "run_command", "cancel_request", "report_shell", "dispatch_key", "pick_path", "startup"]);
         for path in COMMANDS {
             assert!(!path.contains("spike") && !path.contains("bench") && !path.contains("diagnostics"), "{path}");
         }
@@ -163,7 +219,7 @@ mod tests {
     #[test]
     fn diagnostics_build_registers_the_m0_commands() {
         let names = names();
-        assert_eq!(&names[..2], ["ping", "app_info"]);
+        assert_eq!(&names[..8], ["ping", "app_info", "run_command", "cancel_request", "report_shell", "dispatch_key", "pick_path", "startup"]);
         assert!(names.contains(&"bench_plan") && names.contains(&"bench_report"));
         assert_eq!(names.iter().filter(|n| n.starts_with("spike_")).count(), 10);
     }

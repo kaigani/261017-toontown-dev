@@ -5,6 +5,7 @@
 // an `ErrorInfo`, and emits events as JSON text. Text is parsed losslessly (64-bit integers survive as bigint) and
 // validated against the generated schemas. A transport that hands over objects instead (in-process test doubles)
 // goes through `certify`: plain data only, structured-clone-able (no Proxy), snapshotted, validated.
+import { createEngineApi, type EngineApi } from './engine';
 import { certify, type Schema } from './schema';
 import { createBenchApi, createSpikeApi, type BenchApi, type SpikeApi } from './spikeApi';
 import type { HostTransport, Unlisten } from './transport';
@@ -39,6 +40,10 @@ export class HostError extends Error {
 
 export interface HostApi extends BenchApi {
   readonly transportKind: HostTransport['kind'];
+  /** The engine: one entry point for every command, events, sensor reports, key dispatch (M4 C4.1). */
+  readonly engine: EngineApi;
+  /** Documents to open at start (01 §1.1 rule 8), taken once. */
+  startup(): Promise<{ open: string[] }>;
   ping(request: PingRequest): Promise<PingResponse>;
   appInfo(): Promise<EngineInfo>;
   onMenuCommand(handler: (event: MenuCommandEvent) => void): Promise<Unlisten>;
@@ -128,9 +133,25 @@ async function call<T>(
   return data;
 }
 
+const STARTUP_SCHEMA: Schema = {
+  type: 'object',
+  properties: { open: { type: 'array', items: { type: 'string' } } },
+  required: ['open'],
+  additionalProperties: false,
+};
+
+function isStartup(v: unknown): v is { open: string[] } {
+  return typeof v === 'object' && v !== null && Array.isArray((v as { open?: unknown }).open);
+}
+
 export function createHostApi(transport: HostTransport): HostApi {
   return {
     transportKind: transport.kind,
+    engine: createEngineApi(transport),
+    startup: () =>
+      call(transport, 'startup', undefined, STARTUP_SCHEMA, isStartup).catch(() => ({
+        open: [] as string[],
+      })),
     ping: (request) => call(transport, 'ping', request, pingResponseSchema, isPingResponse),
     appInfo: () => call(transport, 'app_info', undefined, engineInfoSchema, isEngineInfo),
     onMenuCommand: (handler) =>

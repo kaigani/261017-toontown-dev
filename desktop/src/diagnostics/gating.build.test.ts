@@ -56,7 +56,17 @@ async function emitted(mode: 'production' | 'diagnostics'): Promise<Map<string, 
 
 describe('M0 diagnostics gating (C0.4)', () => {
   it('reads both registries from lib.rs', () => {
-    expect(PRODUCT).toEqual(['ping', 'app_info']);
+    // M4 C4.1 adds the shell's product commands (ADR-0021); the diagnostic ones are unchanged.
+    expect(PRODUCT).toEqual([
+      'ping',
+      'app_info',
+      'run_command',
+      'cancel_request',
+      'report_shell',
+      'dispatch_key',
+      'pick_path',
+      'startup',
+    ]);
     expect(DIAGNOSTIC).toContain('bench_plan');
     expect(DIAGNOSTIC).toContain('spike_canvas_scene');
     expect(DIAGNOSTIC.length).toBe(12);

@@ -66,6 +66,9 @@ pub enum ArgsError {
     /// `--spike-auto` without `--spike` and `--spike-log`.
     #[error("--spike-auto needs --spike <name> and --spike-log <file>")]
     AutoWithoutLog,
+    /// `--mcp-http` with something that is not a socket address.
+    #[error("--mcp-http needs an address such as 127.0.0.1:0, got `{0}`")]
+    BadAddress(String),
 }
 
 /// Parses `toontown` arguments (without the program name). `Ok(None)` = normal interactive start.
@@ -79,6 +82,10 @@ pub fn parse_args<I: IntoIterator<Item = String>>(args: I) -> Result<LaunchOptio
     let mut spike_log = None;
     let mut spike_auto = false;
     let mut renderer = None;
+    let mut user_dir = None;
+    let mut mcp_http = None;
+    let mut mcp_discovery = None;
+    let mut open = Vec::new();
     let mut it = args.into_iter();
     while let Some(arg) = it.next() {
         match arg.as_str() {
@@ -103,8 +110,19 @@ pub fn parse_args<I: IntoIterator<Item = String>>(args: I) -> Result<LaunchOptio
                 }
                 renderer = Some(r);
             }
+            // M4 C4.1 (ADR-0021, ADR-0022): the per-user folder, attached mode and its discovery file.
+            "--user-dir" => user_dir = Some(PathBuf::from(it.next().ok_or(ArgsError::MissingValue("--user-dir"))?)),
+            "--mcp-http" => {
+                let v = it.next().ok_or(ArgsError::MissingValue("--mcp-http"))?;
+                mcp_http = Some(v.parse::<std::net::SocketAddr>().map_err(|_| ArgsError::BadAddress(v))?);
+            }
+            "--mcp-discovery" => {
+                mcp_discovery = Some(PathBuf::from(it.next().ok_or(ArgsError::MissingValue("--mcp-discovery"))?));
+            }
             // macOS adds `-psn_…` when launched from Finder on older systems.
             other if other.starts_with("-psn_") => {}
+            // A document to open (01 §1.1: command line and OS open-document requests).
+            other if !other.starts_with('-') => open.push(PathBuf::from(other)),
             other => return Err(ArgsError::Unknown(other.to_owned())),
         }
     }
@@ -125,6 +143,10 @@ pub fn parse_args<I: IntoIterator<Item = String>>(args: I) -> Result<LaunchOptio
             auto: spike_auto,
             renderer: renderer.filter(|r| r != "auto"),
         }),
+        user_dir,
+        mcp_http,
+        mcp_discovery,
+        open,
     })
 }
 
@@ -148,6 +170,14 @@ pub struct LaunchOptions {
     pub bench: Option<BenchSettings>,
     /// `--spike tablet [--spike-log <file>]` (M0 spike, C0.2).
     pub spike: Option<SpikeSettings>,
+    /// `--user-dir <dir>`: the per-user folder (settings, recovery, backups) instead of the platform's.
+    pub user_dir: Option<PathBuf>,
+    /// `--mcp-http <address>`: serve attached mode on this address whatever the preference says.
+    pub mcp_http: Option<std::net::SocketAddr>,
+    /// `--mcp-discovery <file>`: also write the discovery file here.
+    pub mcp_discovery: Option<PathBuf>,
+    /// Documents to open.
+    pub open: Vec<PathBuf>,
 }
 
 impl LaunchOptions {

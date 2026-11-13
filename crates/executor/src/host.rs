@@ -101,7 +101,7 @@ pub struct ShellReport {
 
 /// What a key sequence runs (01 §8.4).
 #[derive(Debug, Clone, PartialEq, Serialize)]
-#[serde(rename_all = "camelCase", tag = "outcome")]
+#[serde(rename_all = "camelCase", rename_all_fields = "camelCase", tag = "outcome")]
 pub enum KeyResolution {
     /// No binding in the current mode or `global`.
     Unbound {
@@ -215,10 +215,21 @@ fn resolve_on(core: &mut crate::run::Core, keys: &str) -> Result<KeyResolution, 
     let Some(b) = crate::keymap::resolve(&bindings, &canonical, mode).cloned() else {
         return Ok(KeyResolution::Unbound { keys: canonical });
     };
-    let mut params = b.params.clone().unwrap_or_default();
-    let entry = registry.get(&b.command_id);
+    let (params, enabled, dialog) = complete(registry, s, &b.command_id, b.params.clone().unwrap_or_default());
+    Ok(KeyResolution::Command { keys: canonical, command_id: b.command_id, params, enabled, dialog })
+}
+
+/// Completes a command reference as the GUI invokes it: a toggle the reference leaves open gets its next state;
+/// `enabled` says whether the command can run now; `dialog` whether required parameters are still missing.
+fn complete(
+    registry: &tt_registry::Registry,
+    s: &crate::session::Session,
+    command_id: &str,
+    mut params: Map<String, Value>,
+) -> (Value, bool, bool) {
+    let entry = registry.get(command_id);
     if entry.is_some_and(|e| e.spec.kind == Kind::Toggle)
-        && let Some((name, next)) = toggle_fill(s, &b.command_id, &params)
+        && let Some((name, next)) = toggle_fill(s, command_id, &params)
         && !params.contains_key(name)
     {
         params.insert(name.to_owned(), json!(next));
@@ -233,13 +244,7 @@ fn resolve_on(core: &mut crate::run::Core, keys: &str) -> Result<KeyResolution, 
             && matches!(e.status(), tt_registry::Status::Implemented)
             && e.command.is_none_or(|c| !c.decl.needs_project || s.project.is_some())
     });
-    Ok(KeyResolution::Command {
-        keys: canonical,
-        command_id: b.command_id,
-        params: Value::Object(params),
-        enabled,
-        dialog,
-    })
+    (Value::Object(params), enabled, dialog)
 }
 
 fn ui_busy(m: &ModalReport, waited: Duration) -> CommandError {
@@ -322,6 +327,22 @@ impl ExecutorHandle {
     pub fn resolve_key(&self, keys: &str) -> Result<KeyResolution, CommandError> {
         let keys = keys.to_owned();
         crate::Poster(self.tx.clone()).run(self.config.budget, move |core| resolve_on(core, &keys))?
+    }
+
+    /// Completes a command reference the way the GUI invokes it (menus, toolbars): a toggle the reference leaves open
+    /// gets its next state, and the answer says whether the command is enabled and whether a dialog must collect
+    /// missing parameters. The same completion the key dispatch applies.
+    ///
+    /// # Errors
+    /// `command.timeout` when the document thread does not answer within the budget.
+    pub fn complete_reference(&self, command_id: &str, params: Map<String, Value>) -> Result<KeyResolution, CommandError> {
+        let id = command_id.to_owned();
+        crate::Poster(self.tx.clone()).run(self.config.budget, move |core| {
+            let registry = core.registry();
+            let Some(s) = core.session() else { return Err(CommandError::internal("the session is unavailable")) };
+            let (params, enabled, dialog) = complete(registry, s, &id, params);
+            Ok(KeyResolution::Command { keys: String::new(), command_id: id, params, enabled, dialog })
+        })?
     }
 
     /// Sets `waitForUserMs` (01 §12.1 rule 8): how long a conflicting agent change waits for the user's modal

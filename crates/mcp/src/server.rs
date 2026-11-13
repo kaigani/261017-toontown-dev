@@ -721,7 +721,8 @@ fn initialize(shared: &Arc<Shared>, id: &Value, params: &Value) -> Value {
             scopes: o.scopes.clone(),
             roots: o.roots.clone(),
             preauthorized: o.preauthorized.clone(),
-            transport: "stdio".to_owned(),
+            // Attached mode serves Streamable HTTP (M4 C4.1, ADR-0022); headless serves stdio.
+            transport: if o.run_mode == "attached" { "http" } else { "stdio" }.to_owned(),
         };
         match shared.handle.connect_agent(connect) {
             Ok(s) => st.session = Some(s),
