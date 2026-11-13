@@ -1,0 +1,6 @@
+Product 43508ba, Windows, sequential cargo, no timing sleeps.
+MCP c41_r2_review: ipv6_bind_edges PASS; strict_header_edges PASS; authority_edges PASS; short_body_has_absolute_deadline PASS; pipelined_request_is_not_dispatched PASS; concurrent_initialization_obeys_session_cap PASS; idle_session_expires_with_short_configured_clock PASS; credential_format_and_uniqueness PASS.
+idle_unauthenticated_clients_leave_authenticated_service_available FAIL: expected 404, observed HTTP/1.1 503 Service Unavailable. Suite elapsed 0.17 s.
+Desktop c41_r2_review: malformed_token_and_dead_endpoint_are_replaced_then_cleared PASS; 0.25 s tests, 40.78 s build.
+MCP all-target clippy with tt-persist/test-hooks and requested warning flags passed (19.34 s), before the added session/credential and A3 tests; final validation recorded separately.
+Frontend: pnpm install --frozen-lockfile PASS; pnpm --dir desktop build PASS, IPC dist boundary PASS.

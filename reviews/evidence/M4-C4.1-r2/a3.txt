@@ -1,0 +1,11 @@
+Product head 43508ba; Windows; no simultaneous cargo builds.
+Final MCP suite: 11 tests, 8 pass / 3 fail, 1.25 s.
+PASS authority_edges; concurrent_initialization_obeys_session_cap; credential_format_and_uniqueness; idle_session_expires_with_short_configured_clock; ipv6_bind_edges; pipelined_request_is_not_dispatched; short_body_has_absolute_deadline; strict_header_edges.
+FAIL idle_unauthenticated_clients_leave_authenticated_service_available: HTTP/1.1 503 instead of 404.
+FAIL refused_connections_do_not_escape_thread_cap: cap=1, added 64 threads in 163.2147 ms.
+FAIL session_is_not_expired_while_authenticated_body_is_in_flight: HTTP/1.1 404 instead of 202.
+Build embedded debug application: exit 0, 7.41 s.
+HTTP SDK conformance: exit 0, 24 passed, 0 failed, 3.55 s; separate structured receipt.
+cargo fmt --check: exit 0.
+MCP and desktop combined required all-target clippy: exit 0, 33.43 s before final body-in-flight test; final repeat below recorded in report.
+Final combined all-target clippy after final reviewer test: exit 0, 0.58 s.
