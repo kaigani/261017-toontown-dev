@@ -384,3 +384,58 @@ mod part_b_splitter {
         );
     }
 }
+
+mod part_c1_freshness {
+    use super::*;
+    use std::time::{Duration, Instant};
+    use tt_executor::host::ShellReport;
+    #[test]
+    fn report_order_and_wait_bounds() {
+        let h = ExecutorHandle::spawn(Default::default()).unwrap();
+        ok(&h, "prefs.set", json!({"values":{"interface.theme":"dark"}}));
+        let seq = h.events_broadcast();
+        let report = |label: &str, n| {
+            h.report_shell(ShellReport {
+                attached: Some(true),
+                ui_tree: Some(json!({"id":"main","label":label})),
+                rendered_seq: n,
+                ..Default::default()
+            })
+        };
+        for (label, n, want, fresh) in [
+            ("old", Some(0), "old", false),
+            ("new", Some(seq), "new", true),
+            ("older", Some(0), "new", true),
+            ("equal", Some(seq), "equal", true),
+            ("future", Some(seq + 1), "equal", true),
+            ("none", None, "none", false),
+        ] {
+            report(label, n);
+            assert_eq!(ok(&h, "inspect.ui.tree", json!({}))["root"]["label"], want);
+            assert_eq!(h.await_rendered(Duration::ZERO), fresh);
+        }
+        let start = Instant::now();
+        assert!(!h.await_rendered(Duration::from_secs(2)));
+        assert!((Duration::from_millis(1950)..Duration::from_secs(3)).contains(&start.elapsed()));
+        let other = h.clone();
+        let waiter = std::thread::spawn(move || other.await_rendered(Duration::from_secs(2)));
+        assert!(h.invoke(Invocation::user("app.state.get", json!({}))).is_ok());
+        let release = Instant::now();
+        report("fresh", Some(seq));
+        assert!(waiter.join().unwrap());
+        assert!(release.elapsed() < Duration::from_millis(500));
+    }
+    #[test]
+    fn tree_exposes_its_vouching_sequence() {
+        let h = ExecutorHandle::spawn(Default::default()).unwrap();
+        let seq = h.events_broadcast();
+        h.report_shell(ShellReport {
+            attached: Some(true),
+            ui_tree: Some(json!({"id":"main"})),
+            rendered_seq: Some(seq),
+            ..Default::default()
+        });
+        let tree = ok(&h, "inspect.ui.tree", json!({}));
+        assert_eq!(tree["renderedSeq"], seq, "the agent must know which events this tree reflects: {tree}");
+    }
+}

@@ -26,3 +26,37 @@ fn malformed_token_and_dead_endpoint_are_replaced_then_cleared() -> Result<(), B
     std::fs::remove_dir_all(dir)?;
     Ok(())
 }
+
+mod part_c1_freshness {
+    use super::*;
+    use serde_json::json;
+    use std::time::Duration;
+    #[test]
+    fn unreported_float_prevents_combined_freshness() -> Result<(), Box<dyn Error>> {
+        let h = Host::start(HostOptions::default())?;
+        h.report_from("float-history", json!({"generation":0,"textFocus":false}))?;
+        let seq = h.exec().events_broadcast();
+        h.report_from("main", json!({"generation":0,"attached":true,"uiTree":{"id":"main"},"renderedSeq":seq}))?;
+        assert!(!h.exec().await_rendered(Duration::ZERO), "a known float has supplied no tree");
+        h.forget_window_reports("float-history");
+        assert!(h.exec().await_rendered(Duration::ZERO));
+        Ok(())
+    }
+    #[test]
+    fn generations_and_closed_float() -> Result<(), Box<dyn Error>> {
+        let h = Host::start(HostOptions::default())?;
+        for generation in [1, u64::MAX] {
+            assert_eq!(
+                h.report_from("main", json!({"generation":generation,"uiTree":{"id":"wrong"}}))?["ignored"],
+                "staleGeneration"
+            );
+        }
+        h.report_from("float-history", json!({"generation":0,"uiTree":{"id":"float"}}))?;
+        let seq = h.exec().events_broadcast();
+        h.report_from("main", json!({"generation":0,"attached":true,"uiTree":{"id":"main"},"renderedSeq":seq}))?;
+        assert!(!h.exec().await_rendered(Duration::ZERO));
+        h.forget_window_reports("float-history");
+        assert!(h.exec().await_rendered(Duration::ZERO));
+        Ok(())
+    }
+}
