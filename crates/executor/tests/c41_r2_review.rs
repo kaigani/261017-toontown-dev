@@ -483,3 +483,68 @@ mod part_c1_restart {
         std::fs::remove_dir_all(r).unwrap();
     }
 }
+
+mod part_c1_availability {
+    use super::*;
+    #[test]
+    fn disabled_key_has_typed_refusal() {
+        let h = ExecutorHandle::spawn(Default::default()).unwrap();
+        assert!(h.resolve_key("Primary+Z").is_err(), "disabled Undo must give a typed refusal");
+    }
+    #[test]
+    fn availability_matches_dry_run_in_three_states() {
+        let h = ExecutorHandle::spawn(Default::default()).unwrap();
+        let registry = tt_executor::registry().unwrap();
+        let mut mismatches = Vec::new();
+        for state in 0..3 {
+            if state == 1 {
+                ok(&h, "project.create", json!({"name":"Availability"}));
+            }
+            if state == 2 {
+                ok(&h, "project.properties.set", json!({"frameRate":12}));
+            }
+            for entry in registry.entries() {
+                let a = h.availability(vec![(entry.id().to_owned(), Default::default())]).unwrap().remove(0);
+                if !a.enabled || !a.dialog {
+                    let mut inv = Invocation::user(entry.id(), a.params.clone());
+                    inv.options.dry_run = true;
+                    let e = h.invoke(inv);
+                    if !a.enabled && e.is_ok() {
+                        mismatches.push(format!("state {state} {} disabled but succeeds", entry.id()));
+                    }
+                    if a.enabled
+                        && let Some(err) = e.error
+                        && ["command.disabled", "project.notOpen", "command.notImplemented"]
+                            .contains(&err.code.as_str())
+                    {
+                        mismatches.push(format!("state {state} {} enabled but {}", entry.id(), err.code));
+                    }
+                }
+            }
+        }
+        assert!(mismatches.is_empty(), "{}", mismatches.join("\n"));
+    }
+    #[test]
+    fn undo_redo_labels_and_toggle_follow_state() {
+        let h = ExecutorHandle::spawn(Default::default()).unwrap();
+        let facts = || {
+            h.availability(vec![
+                ("edit.undo".into(), Default::default()),
+                ("edit.redo".into(), Default::default()),
+                ("ui.statusBar.set".into(), Default::default()),
+            ])
+            .unwrap()
+        };
+        assert!(!facts()[0].enabled);
+        ok(&h, "project.create", json!({"name":"History"}));
+        assert!(!facts()[0].enabled);
+        ok(&h, "project.properties.set", json!({"frameRate":12}));
+        assert!(facts()[0].enabled);
+        assert!(facts()[0].label.as_ref().unwrap().starts_with("Undo "));
+        ok(&h, "edit.undo", json!({}));
+        assert!(facts()[1].enabled);
+        assert!(facts()[1].label.as_ref().unwrap().starts_with("Redo "));
+        ok(&h, "ui.statusBar.set", json!({"visible":false}));
+        assert_eq!(facts()[2].checked, Some(false));
+    }
+}
