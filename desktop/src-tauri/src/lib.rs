@@ -53,6 +53,8 @@ command_registry![
     ipc::pick_path,
     ipc::startup,
     ipc::restart_engine,
+    ipc::canvas_scene,
+    ipc::canvas_load,
 ];
 
 #[cfg(feature = "m0-diagnostics")]
@@ -67,6 +69,8 @@ command_registry![
     ipc::pick_path,
     ipc::startup,
     ipc::restart_engine,
+    ipc::canvas_scene,
+    ipc::canvas_load,
     diagnostics::bench_plan,
     diagnostics::bench_report,
     spikes::tablet::spike_mode,
@@ -243,7 +247,9 @@ mod tests {
                 "availability",
                 "pick_path",
                 "startup",
-                "restart_engine"
+                "restart_engine",
+                "canvas_scene",
+                "canvas_load"
             ]
         );
         for path in COMMANDS {
@@ -257,7 +263,7 @@ mod tests {
     fn diagnostics_build_registers_the_m0_commands() {
         let names = names();
         assert_eq!(
-            &names[..10],
+            &names[..12],
             [
                 "ping",
                 "app_info",
@@ -268,7 +274,9 @@ mod tests {
                 "availability",
                 "pick_path",
                 "startup",
-                "restart_engine"
+                "restart_engine",
+                "canvas_scene",
+                "canvas_load"
             ]
         );
         assert!(names.contains(&"bench_plan") && names.contains(&"bench_report"));

@@ -809,6 +809,20 @@ impl ExecutorHandle {
         self.call("snapshot", Request::Snapshot)
     }
 
+    /// The composition of a Drawing view for the interactive canvas (M4 C4.2b; design note 1 §9): the drawings shown
+    /// with their revisions, the background, the grid and the solid colour values. A read on the document thread.
+    ///
+    /// # Errors
+    /// `view.notFound`, `no.project`, `command.timeout`, `internal`.
+    pub fn canvas_scene(&self, view_id: &str) -> Result<canvas::Scene, CommandError> {
+        let view = view_id.to_owned();
+        self.call("canvas", |r| {
+            Request::Run(Box::new(move |core| {
+                let _ = r.send(core.canvas_scene(&view));
+            }))
+        })?
+    }
+
     /// The interactive canvas's payload of one drawing (M4 C4.2b; design note 1): `drawing_id`, or the current drawing
     /// when `None`, at `generation` and zoom `bucket`. The document thread only takes the snapshot; the walk, the
     /// tessellation and the encoding run on the calling thread.

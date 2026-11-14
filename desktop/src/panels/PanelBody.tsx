@@ -2,6 +2,7 @@
 // honest placeholder that names the checkpoint bringing its content, where a user would look for it.
 import { useEffect, useRef } from 'react';
 
+import { CanvasView } from '../canvas/CanvasView';
 import { useActions } from '../shell/actionsApi';
 import { useShell, useSlice } from '../state/context';
 import type { History } from '../state/types';
@@ -101,9 +102,11 @@ export function ViewPanel({ panelId }: { panelId: string }) {
   const actions = useActions();
   const canvas = useRef<HTMLDivElement | null>(null);
   const info = panelInfo(panelId);
+  // The Drawing view's canvas reports its own size (M4 C4.2b); the other view windows keep the placeholder (C4.3).
+  const drawing = panelId === 'drawingView';
   useEffect(() => {
     const el = canvas.current;
-    if (!el || typeof ResizeObserver === 'undefined') return undefined;
+    if (drawing || !el || typeof ResizeObserver === 'undefined') return undefined;
     const ro = new ResizeObserver((entries) => {
       const r = entries[0]?.contentRect;
       if (r && r.width >= 1 && r.height >= 1) {
@@ -116,7 +119,7 @@ export function ViewPanel({ panelId }: { panelId: string }) {
     return () => {
       ro.disconnect();
     };
-  }, [engine, panelId]);
+  }, [engine, panelId, drawing]);
   return (
     <div
       className="view-panel"
@@ -152,9 +155,13 @@ export function ViewPanel({ panelId }: { panelId: string }) {
           Focus
         </button>
       </div>
-      <div ref={canvas} className="view-canvas" data-tt-role="canvas" data-tt-id={`${panelId}.canvas`}>
-        <p>{info?.owner ? `The interactive canvas arrives with ${info.owner}.` : ''}</p>
-      </div>
+      {drawing ? (
+        <CanvasView engine={engine} viewId={panelId} />
+      ) : (
+        <div ref={canvas} className="view-canvas" data-tt-role="canvas" data-tt-id={`${panelId}.canvas`}>
+          <p>{info?.owner ? `The interactive canvas arrives with ${info.owner}.` : ''}</p>
+        </div>
+      )}
     </div>
   );
 }

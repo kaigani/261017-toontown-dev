@@ -284,3 +284,60 @@ pub async fn restart_engine(app: AppHandle) -> Result<Response, String> {
     crate::menu::refresh(&app);
     respond(&json!({ "generation": generation }))
 }
+
+/// `canvas_scene` request (design note 1 §9).
+#[derive(Debug, Deserialize)]
+#[serde(rename_all = "camelCase", deny_unknown_fields)]
+struct CanvasSceneRequest {
+    view_id: String,
+}
+
+/// The composition of a Drawing view for the interactive canvas (M4 C4.2b; design note 1 §9): `{generation, scene}`,
+/// the drawings shown with their revisions, the background, the grid and the solid colour values. A read; it runs off
+/// the main thread.
+///
+/// # Errors
+/// The JSON text of `arg.invalid` for a malformed request, or of the kernel's refusal (`view.notFound`, `no.project`).
+#[tauri::command]
+pub async fn canvas_scene(app: AppHandle, json: String) -> Result<Response, String> {
+    let req: CanvasSceneRequest = parse(&json)?;
+    let answer = tauri::async_runtime::spawn_blocking(move || {
+        let host = app.state::<Host>();
+        let generation = host.generation();
+        host.exec().canvas_scene(&req.view_id).map(|scene| json!({ "generation": generation, "scene": scene }))
+    })
+    .await
+    .map_err(|e| internal(e.to_string()))?;
+    respond(&answer.map_err(|e| error_json(&engine_error(&e)))?)
+}
+
+/// `canvas_load` request (design note 1 §9).
+#[derive(Debug, Deserialize)]
+#[serde(rename_all = "camelCase", deny_unknown_fields)]
+struct CanvasLoadRequest {
+    drawing_id: String,
+    bucket: i16,
+}
+
+/// One drawing's TTRD payload for the interactive canvas (M4 C4.2b; design note 1 §2, §8, §9), binary, at the
+/// drawing's current revision and the engine's generation. The walk, tessellation and encoding run off the main thread
+/// and off the document thread.
+///
+/// # Errors
+/// The JSON text of `arg.invalid` for a malformed request, or of the kernel's refusal (`ref.notFound`, ...).
+#[tauri::command]
+pub async fn canvas_load(app: AppHandle, json: String) -> Result<Response, String> {
+    let req: CanvasLoadRequest = parse(&json)?;
+    let answer = tauri::async_runtime::spawn_blocking(move || {
+        let host = app.state::<Host>();
+        let generation = host.generation();
+        host.exec().canvas_drawing(Some(&req.drawing_id), generation, req.bucket.clamp(-8, 8))
+    })
+    .await
+    .map_err(|e| internal(e.to_string()))?;
+    answer.map(|p| Response::new(p.bytes)).map_err(|e| error_json(&engine_error(&e)))
+}
+
+fn engine_error(e: &tt_executor::CommandError) -> tt_engine::ErrorInfo {
+    tt_engine::ErrorInfo { code: e.code.clone(), message: e.message.clone(), details: (*e.details).clone() }
+}

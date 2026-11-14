@@ -806,3 +806,17 @@ select:focus-visible {
   flex: 1;
   overflow: auto;
 }
+
+/* The interactive canvas (M4 C4.2b): the surface fills its view window; the backing store is sized in device pixels. */
+.view-canvas {
+  position: relative;
+  overflow: hidden;
+}
+.view-canvas-surface {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+  touch-action: none;
+}

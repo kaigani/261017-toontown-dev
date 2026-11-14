@@ -122,3 +122,122 @@ pub(crate) fn payload(src: &CanvasSource, generation: u64, bucket: i16) -> Resul
     let bytes = canvas::encode(&drawing).map_err(|e| CommandError::internal(e.to_string()))?;
     Ok(CanvasPayload { drawing_id: src.drawing.as_str().to_owned(), rev: drawing.identity.rev, bytes, warnings })
 }
+
+/// One drawing shown in the Drawing view (02 §4.2 layers 3 to 7), back to front.
+#[derive(Debug, Clone, PartialEq, serde::Serialize, schemars::JsonSchema)]
+#[serde(rename_all = "camelCase")]
+pub struct SceneEntry {
+    /// The drawing id.
+    pub drawing_id: String,
+    /// Its revision: the canvas loads it when it holds another one.
+    pub rev: u64,
+    /// `current`, `onion`, `autoLight`, `staticUnder` or `staticOver`.
+    pub role: String,
+    /// Coverage multiplier, 0-1 (SI-139).
+    pub opacity: f32,
+    /// A tint replacing the colour, keeping coverage (SI-139); `null` for none.
+    pub tint: Option<[u8; 4]>,
+    /// Washed out (SI-139: 40 % opacity).
+    pub shade: bool,
+    /// Outlines only (02 §10.2).
+    pub outline: bool,
+}
+
+/// The grid settings the canvas draws (02 §10.1).
+#[derive(Debug, Clone, PartialEq, serde::Serialize, schemars::JsonSchema)]
+#[serde(rename_all = "camelCase")]
+pub struct SceneGrid {
+    /// Shown.
+    pub visible: bool,
+    /// `normal`, `field12` or `field16`.
+    #[serde(rename = "type")]
+    pub ty: String,
+    /// Over the drawings (layer 8) rather than under them (layer 2).
+    pub overlay: bool,
+}
+
+/// The Drawing view's composition (design note 1 §9): what `canvas_scene` answers.
+#[derive(Debug, Clone, PartialEq, serde::Serialize, schemars::JsonSchema)]
+#[serde(rename_all = "camelCase")]
+pub struct Scene {
+    /// The view (`drawingView` or a float of it).
+    pub view_id: String,
+    /// The background (02 §10.7), straight-alpha RGBA8.
+    pub background: [u8; 4],
+    /// The grid (02 §10.1).
+    pub grid: SceneGrid,
+    /// The drawings shown, back to front.
+    pub entries: Vec<SceneEntry>,
+    /// Every solid colour id's value (the palette's first style, as the final renderer's walk resolves it).
+    pub colours: std::collections::BTreeMap<String, [u8; 4]>,
+    /// Changes when any palette, style or swatch changes: drawings with gradient or texture slots reload on it.
+    pub palette_stamp: u64,
+}
+
+fn rgba(text: &str, fallback: [u8; 4]) -> [u8; 4] {
+    tt_model::value::Colour::parse(text).map_or(fallback, |c| c.channels())
+}
+
+/// The composition of the Drawing view `view_id` from the session (document thread; reads only).
+///
+/// # Errors
+/// `view.notFound` for a view that is not a Drawing view window; `no.project`.
+pub(crate) fn scene(s: &crate::session::Session, view_id: &str) -> Result<Scene, CommandError> {
+    if view_id != "drawingView" {
+        return Err(CommandError::with_details(
+            "view.notFound",
+            format!("`{view_id}` is not a Drawing view"),
+            json!({ "viewId": view_id }),
+        ));
+    }
+    let p = s.project.as_ref().ok_or_else(crate::cx::no_project)?;
+    let doc = &p.doc;
+    let aids = &s.ui.drawing().aids;
+    let background = if aids.background.use_scene_colour {
+        s.app.scene.as_ref().and_then(|sc| doc.scene(sc)).map_or_else(
+            || rgba(&aids.background.colour, [240, 240, 240, 255]),
+            |sc| rgba(&sc.background_colour().to_string(), [240, 240, 240, 255]),
+        )
+    } else {
+        rgba(&aids.background.colour, [240, 240, 240, 255])
+    };
+    let mut entries = Vec::new();
+    if let Some(id) = s.app.current_drawing(doc)
+        && let Some(d) = doc.drawing(&id)
+    {
+        entries.push(SceneEntry {
+            drawing_id: id.as_str().to_owned(),
+            rev: *d.rev(),
+            role: "current".into(),
+            opacity: 1.0,
+            tint: None,
+            shade: false,
+            outline: false,
+        });
+    }
+    let mut colours = std::collections::BTreeMap::new();
+    let mut stamp: u64 = 0;
+    for pal in doc.palettes() {
+        let first = pal.styles().first().map(|st| st.id().clone());
+        for st in pal.styles() {
+            stamp = stamp.wrapping_mul(31).wrapping_add(*st.rev());
+        }
+        for sw in pal.swatches() {
+            stamp = stamp.wrapping_mul(31).wrapping_add(*sw.rev());
+            if let Some(tt_model::entities::palette::SwatchValue::Solid(c)) =
+                first.as_ref().and_then(|f| sw.values().get(f))
+            {
+                colours.insert(sw.colour_id().as_str().to_owned(), c.rgba.channels());
+            }
+        }
+        stamp = stamp.wrapping_mul(31).wrapping_add(pal.swatches().len() as u64);
+    }
+    Ok(Scene {
+        view_id: view_id.to_owned(),
+        background,
+        grid: SceneGrid { visible: aids.grid.visible, ty: aids.grid.ty.clone(), overlay: aids.grid.overlay },
+        entries,
+        colours,
+        palette_stamp: stamp,
+    })
+}

@@ -1094,6 +1094,11 @@ impl Core {
         self.session.as_ref()
     }
 
+    /// The Drawing view's composition for the canvas (M4 C4.2b; design note 1 §9).
+    pub(crate) fn canvas_scene(&self, view_id: &str) -> Result<crate::canvas::Scene, CommandError> {
+        crate::canvas::scene(self.session().ok_or_else(crate::cx::no_project)?, view_id)
+    }
+
     /// The snapshot an interactive canvas payload is built from (M4 C4.2b; design note 1 §6): the document by
     /// reference count, the drawing (`drawing` or the current one), the planar cache's handle and the blob store.
     pub(crate) fn canvas_source(&self, drawing: Option<&str>) -> Result<crate::canvas::CanvasSource, CommandError> {

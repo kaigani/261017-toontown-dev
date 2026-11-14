@@ -108,6 +108,11 @@ export interface EngineApi {
   availability(refs: readonly CommandRef[]): Promise<Availability[]>;
   pickPath(request: PickRequest): Promise<string | null>;
   onEvent(handler: (event: EngineEvent) => void): Promise<Unlisten>;
+  /** `canvas_scene` (M4 C4.2b; design note 1 §9): a Drawing view's composition, still unvalidated
+   *  (`canvas/scene.ts` validates it). Rejects with the host's error value. */
+  canvasScene(viewId: string): Promise<unknown>;
+  /** `canvas_load`: one drawing's TTRD payload (validated by `canvas/format.ts`). Rejects with the host's error value. */
+  canvasLoad(drawingId: string, bucket: number): Promise<ArrayBuffer>;
 }
 
 export const ENGINE_EVENT = 'engine-event';
@@ -245,6 +250,13 @@ export function createEngineApi(transport: HostTransport): EngineApi {
         return typeof path === 'string' ? path : null;
       }
       return null;
+    },
+    async canvasScene(viewId) {
+      return decode(await invoke('canvas_scene', { viewId }));
+    },
+    async canvasLoad(drawingId, bucket) {
+      if (!transport.invokeBinary) throw new Error('ipc.unsupported: this transport has no binary commands');
+      return transport.invokeBinary('canvas_load', { json: stringifyWireJson({ drawingId, bucket }) });
     },
     onEvent(handler) {
       return transport.listen(ENGINE_EVENT, (payload) => {

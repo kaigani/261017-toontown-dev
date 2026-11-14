@@ -131,3 +131,30 @@ fn a_payload_names_its_refusals() {
     let e = h.canvas_drawing(None, 1, 0).unwrap_err();
     assert_eq!(e.code, "drawing.noTarget", "{e:?}");
 }
+
+#[test]
+fn the_scene_lists_the_current_drawing_at_its_revision_with_the_aids_and_the_solid_colours() {
+    let h = built();
+    let s = h.canvas_scene("drawingView").unwrap();
+    let v = serde_json::to_value(&s).unwrap();
+    let rev = ok(&h, "draw.drawing.get", json!({ "drawingId": D1 }))["rev"].clone();
+    assert_eq!(
+        v["entries"],
+        json!([{ "drawingId": D1, "rev": rev, "role": "current", "opacity": 1.0, "tint": null, "shade": false, "outline": false }])
+    );
+    assert_eq!(v["background"], json!([240, 240, 240, 255]), "02 §10.7's default");
+    assert_eq!(v["grid"], json!({ "visible": false, "type": "normal", "overlay": false }));
+    // Every solid swatch's value is there; the gradient swatches are not (their records carry the stops).
+    let doc = h.snapshot().unwrap().unwrap();
+    for sw in doc.palettes().flat_map(|p| p.swatches().iter()) {
+        let solid = format!("{:?}", sw.kind()).to_lowercase() == "solid";
+        assert_eq!(v["colours"].get(sw.colour_id().as_str()).is_some(), solid, "{}", sw.name());
+    }
+    // The aids follow their commands; a palette edit moves the stamp; the canvas never derives these itself.
+    ok(&h, "drawAid.grid.set", json!({ "visible": true, "type": "field12", "overlay": true }));
+    ok(&h, "drawAid.background.set", json!({ "colour": "#102030FF" }));
+    let t = serde_json::to_value(h.canvas_scene("drawingView").unwrap()).unwrap();
+    assert_eq!(t["grid"], json!({ "visible": true, "type": "field12", "overlay": true }));
+    assert_eq!(t["background"], json!([16, 32, 48, 255]));
+    assert_eq!(h.canvas_scene("cameraView").unwrap_err().code, "view.notFound");
+}
