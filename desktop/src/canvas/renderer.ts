@@ -30,11 +30,13 @@ export interface BackendStats {
   /** Bytes of geometry and slot data held on the GPU (the resident account of design note 1 §5). */
   residentBytes: number;
   residentDrawings: number;
-  /** Drawings drawn in the last frame. */
+  /** Drawings drawn in the last redraw of the static layers. */
   drawn: number;
   /** Frames whose static layers were redrawn / reused (overlay buffering, 06 §6.9). */
   staticRedraws: number;
   staticReuses: number;
+  /** The back end's last error report (a GL error code, a device error), or null. */
+  lastError: string | null;
 }
 
 export interface Renderer extends ResidentSink {

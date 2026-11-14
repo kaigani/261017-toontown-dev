@@ -144,6 +144,8 @@ fn the_scene_lists_the_current_drawing_at_its_revision_with_the_aids_and_the_sol
     );
     assert_eq!(v["background"], json!([240, 240, 240, 255]), "02 §10.7's default");
     assert_eq!(v["grid"], json!({ "visible": false, "type": "normal", "overlay": false }));
+    // The stamp crosses JSON as an exact number (a wrapping hash would not: found in the running application).
+    assert!(s.palette_stamp < (1 << 53), "{}", s.palette_stamp);
     // Every solid swatch's value is there; the gradient swatches are not (their records carry the stops).
     let doc = h.snapshot().unwrap().unwrap();
     for sw in doc.palettes().flat_map(|p| p.swatches().iter()) {

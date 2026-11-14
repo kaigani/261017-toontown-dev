@@ -238,6 +238,7 @@ pub(crate) fn scene(s: &crate::session::Session, view_id: &str) -> Result<Scene,
         grid: SceneGrid { visible: aids.grid.visible, ty: aids.grid.ty.clone(), overlay: aids.grid.overlay },
         entries,
         colours,
-        palette_stamp: stamp,
+        // Within 2^53, so it crosses JSON as an exact number.
+        palette_stamp: stamp & ((1 << 53) - 1),
     })
 }

@@ -254,6 +254,7 @@ export function createWebGL2(canvas: HTMLCanvasElement, opts: WebGL2Options = {}
   const drawings = new Map<string, GpuDrawing>();
   let colours: Record<string, FormatRgba> = {};
   const counters = { drawn: 0, staticRedraws: 0, staticReuses: 0 };
+  let lastError: string | null = null;
 
   const slotTexture = (d: GpuDrawing) => {
     gl.bindTexture(gl.TEXTURE_2D, d.slots);
@@ -443,7 +444,6 @@ export function createWebGL2(canvas: HTMLCanvasElement, opts: WebGL2Options = {}
       const fresh = scene.w !== W || scene.h !== H;
       scene.ensure(W, H);
       group.ensure(W, H);
-      counters.drawn = 0;
       const ops: LayerOps = {
         background(c) {
           gl.bindFramebuffer(gl.FRAMEBUFFER, scene.drawFb());
@@ -489,14 +489,18 @@ export function createWebGL2(canvas: HTMLCanvasElement, opts: WebGL2Options = {}
         },
       };
       const redraw = input.staticDirty || fresh;
-      if (redraw) counters.staticRedraws++;
-      else counters.staticReuses++;
+      if (redraw) {
+        counters.staticRedraws++;
+        counters.drawn = 0;
+      } else counters.staticReuses++;
       drawFrame(input.scene, ops, (id) => drawings.has(id), redraw);
     },
     stats(): BackendStats {
       let residentBytes = scene.bytes() + group.bytes();
       for (const d of drawings.values()) residentBytes += d.bytes;
-      return { kind: 'webgl2', residentBytes, residentDrawings: drawings.size, ...counters };
+      const e = gl.getError();
+      if (e !== gl.NO_ERROR) lastError = `GL error 0x${e.toString(16)}`;
+      return { kind: 'webgl2', residentBytes, residentDrawings: drawings.size, ...counters, lastError };
     },
     destroy() {
       for (const id of [...drawings.keys()]) drop(id);

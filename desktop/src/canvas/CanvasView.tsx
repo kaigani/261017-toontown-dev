@@ -157,6 +157,13 @@ export function CanvasView({
         backend: renderer.kind,
         generation: engine.generation(),
         drawings: [...model.resident.entries()].map(([id, r]) => ({ id, rev: r.rev, bucket: r.bucket })),
+        failures: model.failures.slice(-3),
+        ...(({ drawn, residentDrawings, residentBytes, lastError }) => ({
+          drawn,
+          residentDrawings,
+          residentBytes,
+          lastError,
+        }))(renderer.stats()),
       });
       if (next !== summary) {
         summary = next;

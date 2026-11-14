@@ -277,6 +277,10 @@ export async function createWebGPU(canvas: HTMLCanvasElement): Promise<Renderer>
   const drawings = new Map<string, GpuDrawing>();
   let colours: Record<string, FormatRgba> = {};
   const counters = { drawn: 0, staticRedraws: 0, staticReuses: 0 };
+  let lastError: string | null = null;
+  device.addEventListener('uncapturederror', (e) => {
+    lastError = (e as GPUUncapturedErrorEvent).error.message;
+  });
 
   const writeSlots = (d: GpuDrawing) => {
     device.queue.writeTexture({ texture: d.slots }, d.slotValues, { bytesPerRow: d.slotValues.byteLength }, [
@@ -530,7 +534,6 @@ export async function createWebGPU(canvas: HTMLCanvasElement): Promise<Renderer>
           pass.drawIndexed(m.count);
         }
       };
-      counters.drawn = 0;
       const fresh = scene.w !== W || scene.h !== H;
       const ops: LayerOps = {
         background(c) {
@@ -572,8 +575,10 @@ export async function createWebGPU(canvas: HTMLCanvasElement): Promise<Renderer>
         },
       };
       const redraw = input.staticDirty || fresh;
-      if (redraw) counters.staticRedraws++;
-      else counters.staticReuses++;
+      if (redraw) {
+        counters.staticRedraws++;
+        counters.drawn = 0;
+      } else counters.staticReuses++;
       drawFrame(input.scene, ops, (id) => drawings.has(id), redraw);
       (pass as GPURenderPassEncoder | null)?.end();
       device.queue.writeBuffer(uniforms, 0, staging, 0, (slot * DRAW_STRIDE) / 4);
@@ -582,7 +587,7 @@ export async function createWebGPU(canvas: HTMLCanvasElement): Promise<Renderer>
     stats(): BackendStats {
       let residentBytes = scene.bytes() + group.bytes();
       for (const d of drawings.values()) residentBytes += d.bytes;
-      return { kind: 'webgpu', residentBytes, residentDrawings: drawings.size, ...counters };
+      return { kind: 'webgpu', residentBytes, residentDrawings: drawings.size, ...counters, lastError };
     },
     destroy() {
       for (const id of [...drawings.keys()]) drop(id);
