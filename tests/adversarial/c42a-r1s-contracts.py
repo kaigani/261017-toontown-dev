@@ -16,6 +16,9 @@ elif mode=='gestures':
  if '"mapping"' not in p:bad.append('C42A-R1-25: Paint drag never emits gradient/texture mapping')
 elif mode=='issues':
  if '("colour.pick", m)' in g and 'colour.current.set' not in g:bad.append('C42A-R1-23: Dropper never selects the picked colour despite explicit spec requirement')
+elif mode=='zoom':
+ if '"view.zoom.set", obj(json!({ "viewId": g.view_id, "steps": steps' in g and 'let params = json!({ "viewId": view_id, "steps": steps' in g:
+  bad.append('C42A-R1-26: wheel and Zoom route to table steps rather than the required powers-of-two ladder')
 elif mode=='handoff':
  if '(filled in at the push)' in read('reviews/M4-C4.2a-handoff.md'):bad.append('C42A-R1-27: head and CI are still placeholder')
 print('\n'.join(bad) if bad else 'PASS: '+mode)
