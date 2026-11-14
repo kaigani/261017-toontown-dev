@@ -37,6 +37,13 @@ NOT_SUITES = {
     "float checks are the builder e2e's",
     "c41-r2-desktop-keys.py": "Windows keymap and menu probe: needs the application binary and a receipt path; CI runs "
     "it in the `desktop gui` job on Windows against the bundled product build (receipt desktop-gui-Windows)",
+    # M4 C4.1 round 3 (declared in reviews/M4-C4.1-r3-response.md): Windows desktop probes of the running application.
+    "c41-r3-desktop-changes.py": "Windows agent-server, freshness and policy probe: needs the application binary and a "
+    "receipt path; CI runs it in the `desktop gui` job on Windows against the bundled product build (receipt "
+    "desktop-gui-Windows)",
+    "c41-r3-desktop-visibility.py": "Windows float-visibility sequence probe: needs the application binary and a receipt "
+    "path; the reviewer's receipt is reviews/evidence/M4-C4.1-r3/c2-visibility.json (C41-R2-10 closed); the same "
+    "sequences are in the builder e2e and the round-2 float probe in CI",
     "c34-r2-inventory.py": "round-2 receipt pinned to 1cbd190..967229a that writes reviews/evidence/M3-C3.4-r2/"
     "inventory.json and asserts the register ends at SI-110 (SI-111 is ruled in round 2); its live counterpart is "
     "scripts/check-merge-note-inventory.py",

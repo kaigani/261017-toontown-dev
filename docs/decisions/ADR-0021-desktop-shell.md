@@ -96,6 +96,12 @@ the agent indicator, messages, persisted settings, and the user-priority rule of
     - **Stale values fall back per member (ruling O-17).** For an object-typed key the fallback above applies to each
       member: a stored member that is missing, of the wrong type or outside its domain takes its default; valid members
       are kept; unknown members are ignored. A stored value that is not an object at all falls back whole.
+    **Message help coverage (ruling O-11; round 3, ruling O-19).** Every message id has help, checked in `check` by
+    `scripts/check-message-help.py`: a text scanner of the product sources (code literals at constructor sites,
+    constants named there, the kernel's shown messages, the front end's message ids, the host's notices), whose own
+    coverage is tested with fixtures. Its limit: a code built at run time (formatted, computed or passed in) is not
+    seen by a text scanner. The durable fix is deferred to **M11 C11.1** (owner): error codes constructed only from one
+    catalogue type, so a Rust test iterates the catalogue and checks that every code has help.
 11. **Themes.** `light`, `dark`, `system` (follows the OS appearance live), and user theme files in
     `<settings>/Themes/*.json` with a closed token set; invalid files are ignored. A theme is a set of CSS custom
     properties applied at once.

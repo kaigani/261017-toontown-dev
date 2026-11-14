@@ -61345,9 +61345,43 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
     additionalProperties: false,
   },
   "inspect.ui.tree.result": {
-    title: "Map_of_AnyValue",
+    title: "UiTreeResult",
+    description: "`inspect.ui.tree` result (11 §7.5; additive fields `renderedSeq` and `stale`: ADR-0021 decision 5, SI-121).",
     type: "object",
-    additionalProperties: true,
+    properties: {
+      source: {
+        description: "`gui` (the tree the front end rendered and reported) or `virtual` (the kernel's tree, headless).",
+        type: "string",
+      },
+      target: {
+        description: "The target the tree starts at.",
+        type: "string",
+      },
+      root: {
+        description: "The tree: nodes with `role`, `id`, `label`, `value`, `enabled`, `checked`, `visible`, `command`, `children`.",
+      },
+      renderedSeq: {
+        description: "The engine event number the tree vouches for: every window of the freshness quorum rendered the events up to\nit; `null` when the tree is not vouched for or is the headless virtual tree.",
+        type: [
+          "integer",
+          "null",
+        ],
+        maximum: 18446744073709551615n,
+        minimum: 0,
+      },
+      stale: {
+        description: "Set by the MCP `inspect_ui` tool only: `true` when the front end had not rendered the events before the call\nwithin 2 s (the tree is the last one it has).",
+        type: [
+          "boolean",
+          "null",
+        ],
+      },
+    },
+    required: [
+      "source",
+      "target",
+      "root",
+    ],
   },
   "job.cancel.params": {
     title: "JobIdParams",
@@ -98223,7 +98257,19 @@ export interface inspect_ui_tree_params {
   depth?: number | null;
 }
 
-export type inspect_ui_tree_result = Record<string, unknown>;
+/** `inspect.ui.tree` result (11 §7.5; additive fields `renderedSeq` and `stale`: ADR-0021 decision 5, SI-121). */
+export interface inspect_ui_tree_result {
+  /** `gui` (the tree the front end rendered and reported) or `virtual` (the kernel's tree, headless). */
+  source: string;
+  /** The target the tree starts at. */
+  target: string;
+  /** The tree: nodes with `role`, `id`, `label`, `value`, `enabled`, `checked`, `visible`, `command`, `children`. */
+  root: unknown;
+  /** The engine event number the tree vouches for: every window of the freshness quorum rendered the events up to it; `null` when the tree is not vouched for or is the headless virtual tree. */
+  renderedSeq?: number | bigint | null;
+  /** Set by the MCP `inspect_ui` tool only: `true` when the front end had not rendered the events before the call within 2 s (the tree is the last one it has). */
+  stale?: boolean | null;
+}
 
 /** `{jobId}` parameters. */
 export interface job_cancel_params {

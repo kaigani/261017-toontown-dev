@@ -56,6 +56,15 @@ class Scanner(unittest.TestCase):
         for code in ["a.multiLine", "b.model", "c.disabled", "d.info", "e.mcp", "f.json", "g.shown"]:
             self.assertIn(code, codes)
 
+    def test_a_code_named_by_a_constant_is_resolved(self):
+        codes = self.rust(
+            'fn f() { const CODE: &str = "local.constant"; CommandError::new(CODE, "x"); }\n'
+            'pub mod codes {\n    pub const FAR: &str = "module.constant";\n}\n'
+            'fn g() { CommandError::with_details(codes::FAR, "x", json!({})); }\n'
+        )
+        self.assertIn("local.constant", codes)
+        self.assertIn("module.constant", codes)
+
     def test_code_module_constants_are_collected(self):
         codes = self.rust('pub mod codes {\n    pub const NEW_ONE: &str = "h.constant";\n}\n')
         self.assertIn("h.constant", codes)

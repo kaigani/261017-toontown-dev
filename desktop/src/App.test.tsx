@@ -289,6 +289,25 @@ describe('shortcuts (01 §8.4)', () => {
     });
   });
 
+  it('a shortcut refused as ui.busy or ui.modalOpen is consumed silently: no command, no message box (round 3)', async () => {
+    const host = createScriptedHost({ 'app.state.get': () => ok(PROJECT_STATE) });
+    host.keys['Primary+S'] = {
+      error: { code: 'ui.modalOpen', message: 'a dialog has the keyboard', details: {} },
+    };
+    host.keys['Primary+Z'] = {
+      error: { code: 'ui.busy', message: 'the user is editing a text field', details: {} },
+    };
+    renderApp(host);
+    await screen.findByRole('toolbar', { name: 'Main toolbar' });
+    fireEvent.keyDown(window, { key: 's', code: 'KeyS', ctrlKey: true });
+    fireEvent.keyDown(window, { key: 'z', code: 'KeyZ', ctrlKey: true });
+    await act(async () => {
+      await Promise.resolve();
+    });
+    expect(host.actions().some((a) => a.command === 'project.save' || a.command === 'edit.undo')).toBe(false);
+    expect(screen.queryByRole('alertdialog')).toBeNull();
+  });
+
   it('a disabled command consumes its key silently; a text field keeps unmodified keys', async () => {
     const host = createScriptedHost({ 'app.state.get': () => ok(PROJECT_STATE) });
     // The host answers a key bound to a disabled command with that command's refusal (C41-R2-09).
@@ -357,6 +376,52 @@ describe('preferences (01 §7.1)', () => {
       await Promise.resolve();
     });
     expect(host.actions().filter((a) => a.command === 'prefs.set')).toHaveLength(1);
+  });
+
+  it('a refused object preference keeps the window open with the refusal; only that one prefs.set is sent (O-16, round 3)', async () => {
+    const key = 'edit.pasteSpecial.timeline';
+    const host = createScriptedHost({
+      'prefs.list': () =>
+        ok([
+          {
+            key,
+            type: 'object',
+            default: { overwriteDrawings: true, extendExposures: false },
+            value: { overwriteDrawings: true, extendExposures: false },
+            applies: 'live',
+            description: 'Remembered paste-special options.',
+          },
+        ]),
+      'prefs.set': () =>
+        fail('prefs.invalidValue', '`edit.pasteSpecial.timeline` has no member `extendExposures`', {
+          key,
+          member: 'extendExposures',
+        }),
+    });
+    renderApp(host);
+    await screen.findByRole('toolbar', { name: 'Main toolbar' });
+    act(() => {
+      host.event('shell.preferences', { category: 'edit' });
+    });
+    const dialog = await screen.findByRole('dialog', { name: 'Preferences' });
+    fireEvent.click(within(dialog).getByRole('checkbox', { name: 'extendExposures' }));
+    fireEvent.click(within(dialog).getByRole('button', { name: 'OK' }));
+    await vi.waitFor(() => {
+      // The refusal is shown, also at the field it names.
+      const alerts = within(dialog)
+        .getAllByRole('alert')
+        .map((a) => a.textContent);
+      expect(alerts.length).toBeGreaterThan(0);
+      expect(alerts.every((t) => t.includes('prefs.invalidValue'))).toBe(true);
+    });
+    // The whole object is sent (the kernel merges it over the present value and validates it whole); nothing else.
+    expect(
+      host
+        .actions()
+        .filter((a) => a.command === 'prefs.set')
+        .map((a) => a.params),
+    ).toEqual([{ values: { [key]: { overwriteDrawings: true, extendExposures: true } } }]);
+    expect(screen.getByRole('dialog', { name: 'Preferences' })).toBeTruthy();
   });
 
   it('an out-of-range value keeps the window open and focuses the field', async () => {

@@ -13,8 +13,17 @@ The message id is the agent error code (01 §9.5), so the set to cover is mechan
    other value is reported as unresolved, so a computed id cannot evade the check;
 3. every notice the desktop host sends (`notice(app, "id", ...)`).
 
+A constructor whose code is an identifier rather than a literal (`CommandError::new(CODE, ...)`,
+`codes::NOT_FOUND`) is resolved to the `const NAME: &str = "..."` of that name in the same file, or else to the
+constants of the code modules (round 3, C41-R3-20).
+
 Collection does not depend on the shape of a code; the grammar is checked separately: a collected code must be
 lower camel case words joined by dots (`internal`, `ui.busy`, `prefs.saveFailed`).
+
+**Limit (ruling O-19).** This is a text scanner: it sees codes written in the source as literals or named constants.
+It cannot prove coverage of a code built at run time (formatted, computed, or passed in from elsewhere). The durable
+fix is deferred to M11 C11.1 (owner): error codes constructed only from one catalogue type, so that a Rust test
+iterates the catalogue and checks every code has help. Until then a code built at run time is outside this gate.
 
 The help catalogue is `MESSAGES` in crates/executor/src/help.rs plus the suppressible tips (`TIPS`) in
 crates/executor/src/commands/ui_shell.rs; `help::message` serves both (`ui.help.get {messageId}`).
@@ -39,6 +48,15 @@ CONSTRUCTOR = re.compile(
     r"|\benvelope_error\(\s*"
     r'|"code"\s*:\s*)' + LITERAL
 )
+#: Error constructor sites whose code is an identifier or a path: resolved through constants.
+CONSTRUCTOR_NAME = re.compile(
+    r"(?:(?:CommandError|ModelError)::(?:new|with_details)\(\s*"
+    r"|\bDisabled\s*\{\s*code:\s*"
+    r"|\bErrorInfo\s*\{\s*code:\s*"
+    r"|\benvelope_error\(\s*)"
+    r"((?:[A-Za-z_]\w*::)*([A-Z][A-Z0-9_]*))\b"
+)
+ANY_CONSTANT = re.compile(r"\bconst\s+([A-Z][A-Z0-9_]*)\s*:\s*&(?:'static\s+)?str\s*=\s*" + LITERAL)
 MESSAGE_ID = re.compile(r'"messageId"\s*:\s*' + LITERAL)
 CONSTANT = re.compile(r"pub(?:\(crate\))?\s+const\s+[A-Z0-9_]+\s*:\s*&str\s*=\s*" + LITERAL)
 
@@ -78,11 +96,22 @@ def strip_tests(text):
 
 def produced_codes():
     codes = {}
-    for p in rust_sources():
-        text = strip_tests(p.read_text(encoding="utf-8"))
-        rel = p.relative_to(ROOT).as_posix()
+    sources = [(p.relative_to(ROOT).as_posix(), strip_tests(p.read_text(encoding="utf-8"))) for p in rust_sources()]
+    # Constants of the code modules, for constructor sites that name one by path (`codes::NOT_FOUND`).
+    module_constants = {}
+    for rel, text in sources:
+        if rel.endswith("/codes.rs") or "pub mod codes" in text:
+            for m in ANY_CONSTANT.finditer(text):
+                module_constants.setdefault(m.group(1), m.group(2))
+    for rel, text in sources:
+        local = {m.group(1): m.group(2) for m in ANY_CONSTANT.finditer(text)}
         for m in CONSTRUCTOR.finditer(text):
             codes.setdefault(m.group(1), rel)
+        for m in CONSTRUCTOR_NAME.finditer(text):
+            value = local.get(m.group(2)) if "::" not in m.group(1) else None
+            value = value or module_constants.get(m.group(2))
+            if value is not None:
+                codes.setdefault(value, rel)
         # Messages the kernel shows itself (`ui.message.shown` payloads such as `prefs.corrupt`).
         for m in MESSAGE_ID.finditer(text):
             codes.setdefault(m.group(1), rel)

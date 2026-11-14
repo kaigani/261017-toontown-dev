@@ -995,6 +995,9 @@ jobs:
       - name: Reviewer keymap and menu probe (C4.1 round 2; Windows only) against the running application
         if: always() && runner.os == 'Windows'
         run: PYTHONIOENCODING=utf-8 .venv-gui/Scripts/python -I tests/adversarial/c41-r2-desktop-keys.py desktop-artifact/default-build/toontown.exe desktop-gui/c41-r2-desktop-keys.json
+      - name: Reviewer agent-server and freshness probe (C4.1 round 3; Windows only) against the running application
+        if: always() && runner.os == 'Windows'
+        run: PYTHONIOENCODING=utf-8 .venv-gui/Scripts/python -I tests/adversarial/c41-r3-desktop-changes.py desktop-artifact/default-build/toontown.exe desktop-gui/c41-r3-desktop-changes.json
       - uses: actions/upload-artifact@v7
         if: always()
         with:

@@ -995,6 +995,25 @@ fn prune(n: &mut Value, depth: u32) {
     }
 }
 
+/// `inspect.ui.tree` result (11 §7.5; additive fields `renderedSeq` and `stale`: ADR-0021 decision 5, SI-121).
+#[derive(Debug, Serialize, JsonSchema)]
+#[serde(rename_all = "camelCase")]
+pub(crate) struct UiTreeResult {
+    /// `gui` (the tree the front end rendered and reported) or `virtual` (the kernel's tree, headless).
+    source: String,
+    /// The target the tree starts at.
+    target: String,
+    /// The tree: nodes with `role`, `id`, `label`, `value`, `enabled`, `checked`, `visible`, `command`, `children`.
+    root: Value,
+    /// The engine event number the tree vouches for: every window of the freshness quorum rendered the events up to
+    /// it; `null` when the tree is not vouched for or is the headless virtual tree.
+    rendered_seq: Option<u64>,
+    /// Set by the MCP `inspect_ui` tool only: `true` when the front end had not rendered the events before the call
+    /// within 2 s (the tree is the last one it has).
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    stale: Option<bool>,
+}
+
 #[command(
     id = "inspect.ui.tree",
     kind = query,
@@ -1004,7 +1023,7 @@ fn prune(n: &mut Value, depth: u32) {
     example(title = "The History panel", params = r#"{"target": "history"}"#),
     agent_only = "agents inspect the GUI (11 §7.5 inspect_ui)",
 )]
-pub(crate) fn inspect_ui_tree(cx: &mut Cx, p: UiTreeParams) -> Result<Map<String, Value>, CommandError> {
+pub(crate) fn inspect_ui_tree(cx: &mut Cx, p: UiTreeParams) -> Result<UiTreeResult, CommandError> {
     // Attached mode: the tree the front end rendered and reported (ADR-0021); headless: the virtual tree.
     // `renderedSeq`: the engine event the accepted GUI tree reflects (C41-R2-07, SI-121); `null` when the tree is not
     // vouched for or is the headless virtual tree.
@@ -1029,12 +1048,7 @@ pub(crate) fn inspect_ui_tree(cx: &mut Cx, p: UiTreeParams) -> Result<Map<String
     if let Some(d) = p.depth {
         prune(&mut sub, d);
     }
-    let mut out = Map::new();
-    out.insert("source".into(), json!(source));
-    out.insert("target".into(), json!(target));
-    out.insert("root".into(), sub);
-    out.insert("renderedSeq".into(), json!(seq));
-    Ok(out)
+    Ok(UiTreeResult { source: source.to_owned(), target, root: sub, rendered_seq: seq, stale: None })
 }
 
 /// `inspect.screenshot` parameters.
