@@ -44,7 +44,8 @@ transformation); `no-camera` (a new project with a drawing element and no camera
 copied); `clipboard-cells` (Bob's frame-1 cell copied, Bob current); `clipboard-cells-no-element` (cells copied, then
 the Camera view focused); `frame-3` (Bob current at frame 3); `no-project` (no project open); `drawing-view` (the
 Drawing view window made active, M4 C4.2); `painted-zone-selected` (a closed rectangle on a new layer, its zone
-painted and selected, no brush stroke; M4 C4.2). A JSON object after a state name gives the reference's parameters in that state.
+painted and selected, no brush stroke; M4 C4.2); `drawing-view-as-camera` (the Drawing view window switched to the
+Camera view type; M4 C4.2). A JSON object after a state name gives the reference's parameters in that state.
 
 ## Every command
 
@@ -866,6 +867,7 @@ painted and selected, no brush stroke; M4 C4.2). A JSON object after a state nam
 | `view.coordinates.convert` | `anim.notFound` | parameter | scene space (the caller's `from` or `to`) evaluates the current element, which the evaluator does not know |  |
 | `view.coordinates.convert` | `anim.valueOutOfRange` | parameter | scene space (the caller's `from` or `to`) evaluates a transform out of range |  |
 | `view.coordinates.convert` | `arg.invalid` | parameter | a parameter value or combination is invalid |  |
+| `view.coordinates.convert` | `command.notImplemented` | precheck | the view window shows a staging view (Camera, Top or Side: M4 C4.3) | refuse: drawing+drawing-view-as-camera {"viewId": "drawingView", "from": "view", "to": "drawing", "point": {"x": 960, "y": 540}} · pass: drawing {"viewId": "drawingView", "from": "view", "to": "drawing", "point": {"x": 960, "y": 540}} |
 | `view.pan.set` | `arg.invalid` | parameter | a parameter value or combination is invalid |  |
 | `view.pan.set` | `arg.missing` | parameter | none of `centre`, `by` and `atPointer` is given |  |
 | `view.rotation.set` | `arg.invalid` | parameter | both `degrees` and `steps` are given, or a value is not finite |  |

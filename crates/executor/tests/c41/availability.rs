@@ -468,6 +468,8 @@ fn apply_state(h: &ExecutorHandle, part: &str, vars: &mut BTreeMap<&'static str,
         "element-selected" => select_rows(h, &[BOB]),
         // M4 C4.2: the Drawing view window active (the `activeView` composition renders it, SI-107).
         "drawing-view" => ok(h, "view.active.set", json!({ "viewId": "drawingView" })),
+        // C42A-R1-08: the Drawing view window switched to the Camera view type.
+        "drawing-view-as-camera" => ok(h, "view.type.set", json!({ "viewId": "drawingView", "type": "camera" })),
         "peg-selected" => {
             let peg = created_id(h, "peg");
             select_rows(h, &[&peg]);

@@ -652,8 +652,29 @@ fn scene_of(cx: &Cx, p: Point, into_scene: bool) -> Result<Point, CommandError> 
     }
 }
 
+/// Conversions in a view window showing a staging view arrive with the Camera view (M4 C4.3); the precheck and the
+/// handler give the same refusal (ruling O-24; C42A-R1-08).
+fn staging_refusal(w: &ViewWindow, converts: bool) -> Result<(), CommandError> {
+    if w.ty != ViewType::Drawing && converts {
+        return Err(CommandError::with_details(
+            codes::COMMAND_NOT_IMPLEMENTED,
+            format!("conversions in the {} view arrive with that view (M4 C4.3)", w.ty.as_str()),
+            json!({ "pointer": "/viewId", "viewId": w.view_id, "viewType": w.ty, "milestone": "M4 C4.3" }),
+        ));
+    }
+    Ok(())
+}
+
+/// `view.coordinates.convert`: the view window's type (O(1)).
+pub(crate) fn precheck_convert(cx: &Cx, v: &Value) -> Result<(), CommandError> {
+    let Some(id) = v.get("viewId").and_then(Value::as_str) else { return Ok(()) };
+    let Ok(w) = cx.ui().shell().view(id) else { return Ok(()) };
+    staging_refusal(w, v.get("from") != v.get("to"))
+}
+
 #[command(
     id = "view.coordinates.convert",
+    precheck = precheck_convert,
     kind = query,
     label = "Convert view coordinates",
     scopes = [read],
@@ -664,13 +685,7 @@ fn scene_of(cx: &Cx, p: Point, into_scene: bool) -> Result<Point, CommandError> 
 pub(crate) fn view_coordinates_convert(cx: &mut Cx, p: ConvertParams) -> Result<PointResult, CommandError> {
     let point = finite(p.point, "/point")?;
     let w = cx.ui().shell().view(&p.view_id)?.clone();
-    if w.ty != ViewType::Drawing && (p.from != p.to) {
-        return Err(CommandError::with_details(
-            codes::ARG_INVALID,
-            "conversions in the staging views arrive with the Camera view (M4 C4.3)",
-            json!({ "pointer": "/viewId", "viewId": p.view_id }),
-        ));
-    }
+    staging_refusal(&w, p.from != p.to)?;
     // Into drawing space, then out of it.
     let d = match p.from {
         Space::View => to_drawing(&w, point),

@@ -392,6 +392,34 @@ fn rect(a: Point, b: Point) -> Value {
     json!({ "x": a.x.min(b.x), "y": a.y.min(b.y), "width": (a.x - b.x).abs(), "height": (a.y - b.y).abs() })
 }
 
+/// The equivalent commands of a gesture (02 §13.3), in order: one command for every tool, except a Zoom-tool marquee,
+/// which fits its rectangle with `view.zoom.set` then `view.pan.set` (02 §7.5 line 658; 02 §13.3 gives Zoom "`view.*`
+/// commands"). The fitted zoom is exact (clamped to 6.25 %-6400 %), not a ladder value: the ladder applies to steps.
+///
+/// # Errors
+/// As [`to_command`].
+pub fn to_commands(cx: &Cx, g: &Gesture) -> Result<Vec<(String, Value)>, CommandError> {
+    if g.tool == "zoom"
+        && let Some(st) = g.strokes.first()
+        && !st.is_click()
+        && let (Some(p0), Some(pn)) = (st.first(), st.last())
+    {
+        let w = cx.ui().shell().view(&g.view_id)?;
+        let (rw, rh) = ((pn.v.x - p0.v.x).abs(), (pn.v.y - p0.v.y).abs());
+        if rw > 0.0 && rh > 0.0 {
+            let z = w.transform().zoom;
+            let fit =
+                (z * (w.size.width / rw).min(w.size.height / rh)).clamp(crate::shell::ZOOM_MIN, crate::shell::ZOOM_MAX);
+            let centre = Point { x: (p0.d.x + pn.d.x) / 2.0, y: (p0.d.y + pn.d.y) / 2.0 };
+            return Ok(vec![
+                ("view.zoom.set".into(), json!({ "viewId": g.view_id, "zoom": fit })),
+                ("view.pan.set".into(), json!({ "viewId": g.view_id, "centre": pt(centre) })),
+            ]);
+        }
+    }
+    Ok(to_command(cx, g)?.into_iter().collect())
+}
+
 /// The equivalent command of a gesture (02 §13.3), with every current setting explicit. `None`: the gesture does
 /// nothing (a Polyline of one click).
 ///
@@ -502,10 +530,10 @@ pub fn to_command(cx: &Cx, g: &Gesture) -> Result<Option<(String, Value)>, Comma
             ("colour.gap.close", m)
         }
         "zoom" => {
-            // The ladder of 02 §4.3 (SI-122): one power of two in, or out with the alternate modifier.
-            let z = cx.ui().shell().view(&g.view_id).map(|w| w.transform().zoom).unwrap_or(1.0);
-            let next = ladder_step(z, if st.mods.alternate { -1 } else { 1 });
-            ("view.zoom.set", obj(json!({ "viewId": g.view_id, "zoom": next, "anchor": pt(p0.v) })))
+            // A click steps the zoom about the click (in, or out with the alternate modifier); a marquee fits its
+            // rectangle ([`to_commands`]).
+            let steps = if st.mods.alternate { -1 } else { 1 };
+            ("view.zoom.set", obj(json!({ "viewId": g.view_id, "steps": steps, "anchor": pt(p0.v) })))
         }
         "grabber" => {
             let by = Point { x: pn.v.x - p0.v.x, y: pn.v.y - p0.v.y };
@@ -942,19 +970,23 @@ fn polyline_closed(core: &mut crate::run::Core, g: &Gesture) -> bool {
 /// Builds and invokes a finished gesture's command; `false` when it was refused (the call ends).
 fn finish(core: &mut crate::run::Core, origin: &Origin, g: &Gesture, out: &mut PointerOutcome) -> bool {
     let built =
-        core.with_lent_session(|cx| to_command(cx, g)).unwrap_or_else(|| Err(CommandError::internal("no session")));
+        core.with_lent_session(|cx| to_commands(cx, g)).unwrap_or_else(|| Err(CommandError::internal("no session")));
     match built {
-        Ok(None) => true,
-        Ok(Some((command, params))) => {
-            let env = core.invoke(&Invocation {
-                command: command.clone(),
-                params: params.clone(),
-                options: InvokeOptions::default(),
-                origin: origin.clone(),
-            });
-            let ok = env.is_ok();
-            out.commands.push(Answered { command_id: command, params, envelope: env });
-            ok
+        Ok(commands) => {
+            for (command, params) in commands {
+                let env = core.invoke(&Invocation {
+                    command: command.clone(),
+                    params: params.clone(),
+                    options: InvokeOptions::default(),
+                    origin: origin.clone(),
+                });
+                let ok = env.is_ok();
+                out.commands.push(Answered { command_id: command, params, envelope: env });
+                if !ok {
+                    return false;
+                }
+            }
+            true
         }
         Err(e) => {
             let rev = core.session().and_then(|s| s.project.as_ref()).map(|p| p.doc.document_rev());

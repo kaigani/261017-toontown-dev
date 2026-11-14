@@ -126,12 +126,14 @@ fn queries_user_calls_and_gestures_are_not_blocked() {
     let st = ok(&h, "app.state.get", json!({}));
     assert_eq!(st["modal"]["kind"], "dialog", "app.state.get reports the modal state");
     ok(&h, "doc.object.patch", json!({ "targets": ["@current"], "props": { "name": "User edit" } }));
-    // A focus-changing agent ui command under a user dialog is refused at once; under a gesture it runs.
+    // A focus-changing agent ui command under a user dialog is refused at once; under a gesture every agent command
+    // that writes session state waits and then answers `ui.busy` (M4 C4.2, ruling D-12); queries still run.
     let env = h.invoke(agent_inv("window.panel.set", json!({ "panelId": "history", "visible": true })));
     assert_eq!(env.error.unwrap().code, "ui.modalOpen");
     h.report_shell(modal("gesture"));
     let env = h.invoke(agent_inv("window.panel.set", json!({ "panelId": "history", "visible": true })));
-    assert_eq!(env.status, Status::Ok, "{:?}", env.error);
+    assert_eq!(env.error.map(|e| e.code), Some("ui.busy".to_owned()));
+    assert_eq!(h.invoke(agent_inv("app.state.get", json!({}))).status, Status::Ok);
 }
 
 #[test]
