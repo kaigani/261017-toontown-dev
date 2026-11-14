@@ -1,0 +1,492 @@
+[
+  {
+    "command": "agent.activity.export",
+    "code": "internal",
+    "classification": "execution",
+    "reason": "an internal invariant failed (never a state the GUI can see)",
+    "site": "crates/executor/src/commands/agent.rs:808",
+    "function": "commands::agent::agent_activity_export",
+    "constructibleStateRefusalWithoutMissingParameters": false,
+    "assessment": "Serialization/model invariant or work outcome, not a constructible pre-work state refusal."
+  },
+  {
+    "command": "anim.camera.create",
+    "code": "internal",
+    "classification": "execution",
+    "reason": "an internal invariant failed (never a state the GUI can see)",
+    "site": "crates/executor/src/cx.rs:200",
+    "function": "cx::model_error",
+    "constructibleStateRefusalWithoutMissingParameters": false,
+    "assessment": "Serialization/model invariant or work outcome, not a constructible pre-work state refusal."
+  },
+  {
+    "command": "app.quit",
+    "code": "doc.limitExceeded",
+    "classification": "execution",
+    "reason": "the document's revision counter is exhausted (10 REV-01; cannot happen in practice)",
+    "site": "crates/executor/src/cx.rs:191",
+    "function": "cx::revisions_exhausted",
+    "constructibleStateRefusalWithoutMissingParameters": false,
+    "assessment": "Serialization/model invariant or work outcome, not a constructible pre-work state refusal."
+  },
+  {
+    "command": "cell.clipboard.apply",
+    "code": "doc.limitExceeded",
+    "classification": "execution",
+    "reason": "the document's revision counter is exhausted (10 REV-01; cannot happen in practice)",
+    "site": "crates/executor/src/cx.rs:191",
+    "function": "cx::revisions_exhausted",
+    "constructibleStateRefusalWithoutMissingParameters": false,
+    "assessment": "Serialization/model invariant or work outcome, not a constructible pre-work state refusal."
+  },
+  {
+    "command": "colour.fillMapping.get",
+    "code": "internal",
+    "classification": "execution",
+    "reason": "an internal invariant failed (never a state the GUI can see)",
+    "site": "crates/executor/src/cx.rs:200",
+    "function": "cx::model_error",
+    "constructibleStateRefusalWithoutMissingParameters": false,
+    "assessment": "Serialization/model invariant or work outcome, not a constructible pre-work state refusal."
+  },
+  {
+    "command": "doc.asset.embed",
+    "code": "internal",
+    "classification": "execution",
+    "reason": "an internal invariant failed (never a state the GUI can see)",
+    "site": "crates/executor/src/cx.rs:200",
+    "function": "cx::model_error",
+    "constructibleStateRefusalWithoutMissingParameters": false,
+    "assessment": "Serialization/model invariant or work outcome, not a constructible pre-work state refusal."
+  },
+  {
+    "command": "draw.arrange.apply",
+    "code": "doc.limitExceeded",
+    "classification": "execution",
+    "reason": "the document's revision counter is exhausted (10 REV-01; cannot happen in practice)",
+    "site": "crates/executor/src/cx.rs:191",
+    "function": "cx::revisions_exhausted",
+    "constructibleStateRefusalWithoutMissingParameters": false,
+    "assessment": "Serialization/model invariant or work outcome, not a constructible pre-work state refusal."
+  },
+  {
+    "command": "edit.copy",
+    "code": "edit.clipboardInvalid",
+    "classification": "execution",
+    "reason": "a consistency check of content copied from a valid document",
+    "site": "crates/executor/src/commands/edit.rs:671",
+    "function": "commands::edit::clipboard_invalid",
+    "constructibleStateRefusalWithoutMissingParameters": false,
+    "assessment": "Serialization/model invariant or work outcome, not a constructible pre-work state refusal."
+  },
+  {
+    "command": "element.annotation.set",
+    "code": "internal",
+    "classification": "execution",
+    "reason": "an internal invariant failed (never a state the GUI can see)",
+    "site": "crates/executor/src/cx.rs:200",
+    "function": "cx::model_error",
+    "constructibleStateRefusalWithoutMissingParameters": false,
+    "assessment": "Serialization/model invariant or work outcome, not a constructible pre-work state refusal."
+  },
+  {
+    "command": "keymap.export",
+    "code": "internal",
+    "classification": "execution",
+    "reason": "an internal invariant failed (never a state the GUI can see)",
+    "site": "crates/executor/src/commands/keymap.rs:485",
+    "function": "commands::keymap::keymap_export",
+    "constructibleStateRefusalWithoutMissingParameters": false,
+    "assessment": "Serialization/model invariant or work outcome, not a constructible pre-work state refusal."
+  },
+  {
+    "command": "prefs.list",
+    "code": "internal",
+    "classification": "execution",
+    "reason": "an internal invariant failed (never a state the GUI can see)",
+    "site": "crates/executor/src/commands/prefs.rs:86",
+    "function": "commands::prefs::prefs_list",
+    "constructibleStateRefusalWithoutMissingParameters": false,
+    "assessment": "Serialization/model invariant or work outcome, not a constructible pre-work state refusal."
+  },
+  {
+    "command": "project.backup.open",
+    "code": "doc.limitExceeded",
+    "classification": "execution",
+    "reason": "the document's revision counter is exhausted (10 REV-01; cannot happen in practice)",
+    "site": "crates/executor/src/cx.rs:191",
+    "function": "cx::revisions_exhausted",
+    "constructibleStateRefusalWithoutMissingParameters": false,
+    "assessment": "Serialization/model invariant or work outcome, not a constructible pre-work state refusal."
+  },
+  {
+    "command": "render.frame.run",
+    "code": "command.timeout",
+    "classification": "execution",
+    "reason": "the caller's watchdog budget passed while the work ran",
+    "site": "crates/executor/src/commands/render.rs:577",
+    "function": "commands::render::observe_cancel",
+    "constructibleStateRefusalWithoutMissingParameters": false,
+    "assessment": "Serialization/model invariant or work outcome, not a constructible pre-work state refusal."
+  },
+  {
+    "command": "tool.symmetry.set",
+    "code": "internal",
+    "classification": "execution",
+    "reason": "an internal invariant failed (never a state the GUI can see)",
+    "site": "crates/executor/src/commands/tool_symmetry.rs:78",
+    "function": "commands::tool_symmetry::tool_symmetry_set",
+    "constructibleStateRefusalWithoutMissingParameters": false,
+    "assessment": "Serialization/model invariant or work outcome, not a constructible pre-work state refusal."
+  },
+  {
+    "command": "ui.help.get",
+    "code": "internal",
+    "classification": "execution",
+    "reason": "an internal invariant failed (never a state the GUI can see)",
+    "site": "crates/executor/src/help.rs:173",
+    "function": "help::command",
+    "constructibleStateRefusalWithoutMissingParameters": false,
+    "assessment": "Serialization/model invariant or work outcome, not a constructible pre-work state refusal."
+  },
+  {
+    "command": "window.toolbar.items.set",
+    "code": "internal",
+    "classification": "execution",
+    "reason": "an internal invariant failed (never a state the GUI can see)",
+    "site": "crates/executor/src/commands/window.rs:382",
+    "function": "commands::window::window_toolbar_items_set",
+    "constructibleStateRefusalWithoutMissingParameters": false,
+    "assessment": "Serialization/model invariant or work outcome, not a constructible pre-work state refusal."
+  },
+  {
+    "command": "workspace.export",
+    "code": "internal",
+    "classification": "execution",
+    "reason": "an internal invariant failed (never a state the GUI can see)",
+    "site": "crates/executor/src/commands/workspace.rs:287",
+    "function": "commands::workspace::workspace_export",
+    "constructibleStateRefusalWithoutMissingParameters": false,
+    "assessment": "Serialization/model invariant or work outcome, not a constructible pre-work state refusal."
+  },
+  {
+    "command": "xsheet.exposures.set",
+    "code": "doc.limitExceeded",
+    "classification": "execution",
+    "reason": "the document's revision counter is exhausted (10 REV-01; cannot happen in practice)",
+    "site": "crates/executor/src/commands/timing.rs:178",
+    "function": "commands::timing::check_length",
+    "constructibleStateRefusalWithoutMissingParameters": false,
+    "assessment": "Frame-array output bound, not revision exhaustion. These handlers bound requested endpoints before writing; no over-limit output established. Wildcard reason is too narrow (observation)."
+  },
+  {
+    "command": "agent.policy.defaults.set",
+    "code": "internal",
+    "classification": "execution",
+    "reason": "an internal invariant failed (never a state the GUI can see)",
+    "site": "crates/executor/src/commands/agent.rs:380",
+    "function": "commands::agent::agent_policy_defaults_set",
+    "constructibleStateRefusalWithoutMissingParameters": false,
+    "assessment": "Serialization/model invariant or work outcome, not a constructible pre-work state refusal."
+  },
+  {
+    "command": "anim.camera.current.set",
+    "code": "internal",
+    "classification": "execution",
+    "reason": "an internal invariant failed (never a state the GUI can see)",
+    "site": "crates/executor/src/cx.rs:200",
+    "function": "cx::model_error",
+    "constructibleStateRefusalWithoutMissingParameters": false,
+    "assessment": "Serialization/model invariant or work outcome, not a constructible pre-work state refusal."
+  },
+  {
+    "command": "app.quit",
+    "code": "internal",
+    "classification": "execution",
+    "reason": "an internal invariant failed (never a state the GUI can see)",
+    "site": "crates/executor/src/cx.rs:1147",
+    "function": "cx::record",
+    "constructibleStateRefusalWithoutMissingParameters": false,
+    "assessment": "Serialization/model invariant or work outcome, not a constructible pre-work state refusal."
+  },
+  {
+    "command": "cell.clipboard.apply",
+    "code": "internal",
+    "classification": "execution",
+    "reason": "an internal invariant failed (never a state the GUI can see)",
+    "site": "crates/executor/src/commands/edit_ops.rs:48",
+    "function": "commands::edit_ops::internal",
+    "constructibleStateRefusalWithoutMissingParameters": false,
+    "assessment": "Serialization/model invariant or work outcome, not a constructible pre-work state refusal."
+  },
+  {
+    "command": "colour.fillMapping.set",
+    "code": "doc.limitExceeded",
+    "classification": "execution",
+    "reason": "the document's revision counter is exhausted (10 REV-01; cannot happen in practice)",
+    "site": "crates/executor/src/cx.rs:191",
+    "function": "cx::revisions_exhausted",
+    "constructibleStateRefusalWithoutMissingParameters": false,
+    "assessment": "Serialization/model invariant or work outcome, not a constructible pre-work state refusal."
+  },
+  {
+    "command": "doc.asset.relink",
+    "code": "internal",
+    "classification": "execution",
+    "reason": "an internal invariant failed (never a state the GUI can see)",
+    "site": "crates/executor/src/cx.rs:200",
+    "function": "cx::model_error",
+    "constructibleStateRefusalWithoutMissingParameters": false,
+    "assessment": "Serialization/model invariant or work outcome, not a constructible pre-work state refusal."
+  },
+  {
+    "command": "draw.arrange.apply",
+    "code": "internal",
+    "classification": "execution",
+    "reason": "an internal invariant failed (never a state the GUI can see)",
+    "site": "crates/executor/src/cx.rs:1147",
+    "function": "cx::record",
+    "constructibleStateRefusalWithoutMissingParameters": false,
+    "assessment": "Serialization/model invariant or work outcome, not a constructible pre-work state refusal."
+  },
+  {
+    "command": "edit.copy",
+    "code": "internal",
+    "classification": "execution",
+    "reason": "an internal invariant failed (never a state the GUI can see)",
+    "site": "crates/executor/src/commands/timing.rs:63",
+    "function": "commands::timing::internal",
+    "constructibleStateRefusalWithoutMissingParameters": false,
+    "assessment": "Serialization/model invariant or work outcome, not a constructible pre-work state refusal."
+  },
+  {
+    "command": "element.childExposure.apply",
+    "code": "doc.limitExceeded",
+    "classification": "execution",
+    "reason": "the document's revision counter is exhausted (10 REV-01; cannot happen in practice)",
+    "site": "crates/executor/src/commands/timing.rs:178",
+    "function": "commands::timing::check_length",
+    "constructibleStateRefusalWithoutMissingParameters": false,
+    "assessment": "Frame-array output bound, not revision exhaustion. These handlers bound requested endpoints before writing; no over-limit output established. Wildcard reason is too narrow (observation)."
+  },
+  {
+    "command": "project.backup.open",
+    "code": "internal",
+    "classification": "execution",
+    "reason": "an internal invariant failed (never a state the GUI can see)",
+    "site": "crates/executor/src/cx.rs:1147",
+    "function": "cx::record",
+    "constructibleStateRefusalWithoutMissingParameters": false,
+    "assessment": "Serialization/model invariant or work outcome, not a constructible pre-work state refusal."
+  },
+  {
+    "command": "render.frame.run",
+    "code": "limit.exceeded",
+    "classification": "execution",
+    "reason": "a work or size budget reached while the work runs (11 \u00a78 never-block rule)",
+    "site": "crates/executor/src/commands/render.rs:262",
+    "function": "commands::render::output_size",
+    "constructibleStateRefusalWithoutMissingParameters": false,
+    "assessment": "Output dimensions depend on supplied dimensions/scale; work-size bound. No missing-parameter state refusal established."
+  },
+  {
+    "command": "window.toolbar.set",
+    "code": "internal",
+    "classification": "execution",
+    "reason": "an internal invariant failed (never a state the GUI can see)",
+    "site": "crates/executor/src/commands/window.rs:341",
+    "function": "commands::window::window_toolbar_set",
+    "constructibleStateRefusalWithoutMissingParameters": false,
+    "assessment": "Serialization/model invariant or work outcome, not a constructible pre-work state refusal."
+  },
+  {
+    "command": "app.quit",
+    "code": "project.none",
+    "classification": "unreachable",
+    "reason": "`resolve_unsaved` returns at once without a project; nothing else reads it",
+    "site": "crates/executor/src/cx.rs:211",
+    "function": "cx::no_project",
+    "constructibleStateRefusalWithoutMissingParameters": false,
+    "assessment": "Guard excludes this path for this handler; no constructible refusing state."
+  },
+  {
+    "command": "cell.clipboard.apply",
+    "code": "command.notImplemented",
+    "classification": "unreachable",
+    "reason": "`paste_elements` pastes an elements clipboard: this is a refusal of another kind's branch of `paste`",
+    "site": "crates/executor/src/commands/edit_ops.rs:1550",
+    "function": "commands::edit_ops::paste",
+    "constructibleStateRefusalWithoutMissingParameters": false,
+    "assessment": "Guard excludes this path for this handler; no constructible refusing state."
+  },
+  {
+    "command": "cell.clipboard.apply",
+    "code": "drawing.locked",
+    "classification": "unreachable",
+    "reason": "`paste_elements` pastes an elements clipboard: this is a refusal of another kind's branch of `paste`",
+    "site": "crates/executor/src/commands/edit_ops.rs:496",
+    "function": "commands::edit_ops::check_drawing_unlocked",
+    "constructibleStateRefusalWithoutMissingParameters": false,
+    "assessment": "Guard excludes this path for this handler; no constructible refusing state."
+  },
+  {
+    "command": "cell.clipboard.apply",
+    "code": "edit.clipboardEmpty",
+    "classification": "unreachable",
+    "reason": "`paste_elements` runs only when the clipboard holds elements",
+    "site": "crates/executor/src/commands/edit_ops.rs:1583",
+    "function": "commands::edit_ops::clipboard",
+    "constructibleStateRefusalWithoutMissingParameters": false,
+    "assessment": "Guard excludes this path for this handler; no constructible refusing state."
+  },
+  {
+    "command": "cell.clipboard.apply",
+    "code": "edit.wrongElementType",
+    "classification": "unreachable",
+    "reason": "`paste_elements` pastes an elements clipboard: this is a refusal of another kind's branch of `paste`",
+    "site": "crates/executor/src/commands/edit_ops.rs:1250",
+    "function": "commands::edit_ops::paste",
+    "constructibleStateRefusalWithoutMissingParameters": false,
+    "assessment": "Guard excludes this path for this handler; no constructible refusing state."
+  },
+  {
+    "command": "cell.clipboard.set",
+    "code": "command.disabled",
+    "classification": "unreachable",
+    "reason": "the targets are never empty (`cell_target` refuses first with `cell.noTarget`)",
+    "site": "crates/executor/src/commands/edit_ops.rs:64",
+    "function": "commands::edit_ops::nothing_selected",
+    "constructibleStateRefusalWithoutMissingParameters": false,
+    "assessment": "Guard excludes this path for this handler; no constructible refusing state."
+  },
+  {
+    "command": "cell.clipboard.set",
+    "code": "drawing.locked",
+    "classification": "unreachable",
+    "reason": "whole elements are cut as elements: the drawing-object branch of the deletion refusals does not apply",
+    "site": "crates/executor/src/commands/edit_ops.rs:496",
+    "function": "commands::edit_ops::check_drawing_unlocked",
+    "constructibleStateRefusalWithoutMissingParameters": false,
+    "assessment": "Guard excludes this path for this handler; no constructible refusing state."
+  },
+  {
+    "command": "cell.columnate.apply",
+    "code": "element.notCellBased",
+    "classification": "unreachable",
+    "reason": "`applicable` admits only element kinds with a drawing bank, before `bank_of_element`",
+    "site": "crates/executor/src/commands/timing.rs:611",
+    "function": "commands::timing::bank_of_element",
+    "constructibleStateRefusalWithoutMissingParameters": false,
+    "assessment": "Guard excludes this path for this handler; no constructible refusing state."
+  },
+  {
+    "command": "cell.drawing.duplicate",
+    "code": "element.notCellBased",
+    "classification": "unreachable",
+    "reason": "`applicable` admits only element kinds with a drawing bank, before `bank_of_element`",
+    "site": "crates/executor/src/commands/timing.rs:611",
+    "function": "commands::timing::bank_of_element",
+    "constructibleStateRefusalWithoutMissingParameters": false,
+    "assessment": "Guard excludes this path for this handler; no constructible refusing state."
+  },
+  {
+    "command": "cell.label.set",
+    "code": "element.notCellBased",
+    "classification": "unreachable",
+    "reason": "`applicable` admits only element kinds with a drawing bank, before `bank_of_element`",
+    "site": "crates/executor/src/commands/timing.rs:611",
+    "function": "commands::timing::bank_of_element",
+    "constructibleStateRefusalWithoutMissingParameters": false,
+    "assessment": "Guard excludes this path for this handler; no constructible refusing state."
+  },
+  {
+    "command": "cell.range.add",
+    "code": "element.notCellBased",
+    "classification": "unreachable",
+    "reason": "`applicable` admits only element kinds with a drawing bank, before `bank_of_element`",
+    "site": "crates/executor/src/commands/timing.rs:611",
+    "function": "commands::timing::bank_of_element",
+    "constructibleStateRefusalWithoutMissingParameters": false,
+    "assessment": "Guard excludes this path for this handler; no constructible refusing state."
+  },
+  {
+    "command": "element.drawing.create",
+    "code": "element.notCellBased",
+    "classification": "unreachable",
+    "reason": "`applicable` admits only element kinds with a drawing bank, before `bank_of_element`",
+    "site": "crates/executor/src/commands/timing.rs:611",
+    "function": "commands::timing::bank_of_element",
+    "constructibleStateRefusalWithoutMissingParameters": false,
+    "assessment": "Guard excludes this path for this handler; no constructible refusing state."
+  },
+  {
+    "command": "element.drawingContent.delete",
+    "code": "element.notFound",
+    "classification": "unreachable",
+    "reason": "`bank_users` lists existing elements",
+    "site": "crates/executor/src/commands/timing.rs:115",
+    "function": "commands::timing::element",
+    "constructibleStateRefusalWithoutMissingParameters": false,
+    "assessment": "Guard excludes this path for this handler; no constructible refusing state."
+  },
+  {
+    "command": "element.drawingLock.set",
+    "code": "element.notFound",
+    "classification": "unreachable",
+    "reason": "`bank_users` lists existing elements",
+    "site": "crates/executor/src/commands/timing.rs:115",
+    "function": "commands::timing::element",
+    "constructibleStateRefusalWithoutMissingParameters": false,
+    "assessment": "Guard excludes this path for this handler; no constructible refusing state."
+  },
+  {
+    "command": "element.timing.set",
+    "code": "anim.notFound",
+    "classification": "unreachable",
+    "reason": "`data_of` reads targets `targets` resolved (they exist)",
+    "site": "crates/executor/src/commands/anim_common.rs:33",
+    "function": "commands::anim_common::not_found",
+    "constructibleStateRefusalWithoutMissingParameters": false,
+    "assessment": "Guard excludes this path for this handler; no constructible refusing state."
+  },
+  {
+    "command": "project.backup.open",
+    "code": "project.none",
+    "classification": "unreachable",
+    "reason": "`resolve_unsaved` returns at once without a project; nothing else reads it",
+    "site": "crates/executor/src/cx.rs:211",
+    "function": "cx::no_project",
+    "constructibleStateRefusalWithoutMissingParameters": false,
+    "assessment": "Guard excludes this path for this handler; no constructible refusing state."
+  },
+  {
+    "command": "project.create",
+    "code": "project.none",
+    "classification": "unreachable",
+    "reason": "`resolve_unsaved` returns at once without a project; nothing else reads it",
+    "site": "crates/executor/src/cx.rs:211",
+    "function": "cx::no_project",
+    "constructibleStateRefusalWithoutMissingParameters": false,
+    "assessment": "Guard excludes this path for this handler; no constructible refusing state."
+  },
+  {
+    "command": "project.open",
+    "code": "project.none",
+    "classification": "unreachable",
+    "reason": "`resolve_unsaved` returns at once without a project; nothing else reads it",
+    "site": "crates/executor/src/cx.rs:211",
+    "function": "cx::no_project",
+    "constructibleStateRefusalWithoutMissingParameters": false,
+    "assessment": "Guard excludes this path for this handler; no constructible refusing state."
+  },
+  {
+    "command": "project.recovery.open",
+    "code": "project.none",
+    "classification": "unreachable",
+    "reason": "`resolve_unsaved` returns at once without a project; nothing else reads it",
+    "site": "crates/executor/src/cx.rs:211",
+    "function": "cx::no_project",
+    "constructibleStateRefusalWithoutMissingParameters": false,
+    "assessment": "Guard excludes this path for this handler; no constructible refusing state."
+  }
+]

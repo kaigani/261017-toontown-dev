@@ -1,0 +1,1 @@
+error: the package 'tt-desktop' does not contain this feature: tt-persist/test-hooks

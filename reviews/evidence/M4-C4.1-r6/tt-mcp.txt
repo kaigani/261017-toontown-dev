@@ -1,0 +1,71 @@
+   Compiling tt-registry-macros v0.0.1 (C:\Users\kaiga\work\review\m4-c41-r6\crates\registry-macros)
+   Compiling tt-model v0.0.1 (C:\Users\kaiga\work\review\m4-c41-r6\crates\model)
+   Compiling tt-anim v0.0.1 (C:\Users\kaiga\work\review\m4-c41-r6\crates\anim)
+   Compiling tt-vector v0.0.1 (C:\Users\kaiga\work\review\m4-c41-r6\crates\vector)
+   Compiling tt-colour v0.0.1 (C:\Users\kaiga\work\review\m4-c41-r6\crates\colour)
+   Compiling tt-persist v0.0.1 (C:\Users\kaiga\work\review\m4-c41-r6\crates\persist)
+   Compiling tt-audio v0.0.1 (C:\Users\kaiga\work\review\m4-c41-r6\crates\audio)
+   Compiling tt-registry v0.0.1 (C:\Users\kaiga\work\review\m4-c41-r6\crates\registry)
+   Compiling tt-lipsync v0.0.1 (C:\Users\kaiga\work\review\m4-c41-r6\crates\lipsync)
+   Compiling tt-fx v0.0.1 (C:\Users\kaiga\work\review\m4-c41-r6\crates\fx)
+   Compiling tt-render v0.0.1 (C:\Users\kaiga\work\review\m4-c41-r6\crates\render)
+   Compiling tt-io v0.0.1 (C:\Users\kaiga\work\review\m4-c41-r6\crates\io)
+   Compiling tt-executor v0.0.1 (C:\Users\kaiga\work\review\m4-c41-r6\crates\executor)
+   Compiling tt-engine v0.0.1 (C:\Users\kaiga\work\review\m4-c41-r6\crates\engine)
+   Compiling tt-mcp v0.0.1 (C:\Users\kaiga\work\review\m4-c41-r6\crates\mcp)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 1m 16s
+     Running tests\c41_r1_review.rs (target\debug\deps\c41_r1_review-3cc845d70dd3db2c.exe)
+
+running 8 tests
+test remote_bind_is_refused ... ok
+test duplicate_authorization_is_refused ... ok
+test unauthenticated_large_body_is_refused_before_reading_payload ... ok
+test ambiguous_transfer_framing_is_refused ... ok
+test duplicate_foreign_host_is_refused ... ok
+test part_c_http::dns_host_case_is_insensitive ... ok
+test part_c_http::host_cannot_contain_url_path ... ok
+test part_c_http::authority_matrix ... ok
+
+test result: ok. 8 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.02s
+
+     Running tests\c41_r2_review.rs (target\debug\deps\c41_r2_review-df9fb16017678e4b.exe)
+
+running 14 tests
+test ipv6_bind_edges ... ok
+test credential_format_and_uniqueness ... ok
+test pipelined_request_is_not_dispatched ... ok
+test idle_unauthenticated_clients_leave_authenticated_service_available ... ok
+test part_c1_keys::modal_key_is_typed_error ... ok
+test part_c1_keys::disabled_key_is_typed_error ... ok
+test strict_header_edges ... ok
+test concurrent_initialization_obeys_session_cap ... ok
+test authority_edges ... ok
+test idle_session_expires_with_short_configured_clock ... ok
+test short_body_has_absolute_deadline ... ok
+test refused_connections_do_not_escape_thread_cap ... ok
+test session_is_not_expired_while_authenticated_body_is_in_flight ... ok
+test part_c1_keys::stale_inspect_is_bounded_and_keeps_last_tree ... ok
+
+test result: ok. 14 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 2.01s
+
+     Running tests\c41_r3_review.rs (target\debug\deps\c41_r3_review-372644e668201e0f.exe)
+
+running 8 tests
+test trickling_oldest_is_evicted_without_answer ... ok
+test stop_releases_authenticated_body_workers ... ok
+test delete_during_body_does_not_resurrect_request_routes ... ok
+test part_b_keys::unbound_disabled_modal_and_text_focus ... ok
+test in_flight_sessions_still_count_against_session_cap ... ok
+test saturated_pools_obey_thread_formula_and_unread_refusals_do_not_stall ... ok
+test many_guards_release_and_expire_after_last_disconnect ... ok
+test executing_command_holds_session_past_idle_bound ... ok
+
+test result: ok. 8 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.87s
+
+     Running tests\c41_r4_review.rs (target\debug\deps\c41_r4_review-f78419dc0212f718.exe)
+
+running 1 test
+test large_body_is_fast_and_absolute_deadline_survives_slices ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.32s
+

@@ -1,0 +1,72 @@
+[
+  {
+    "name": "tt-mcp",
+    "code": 0,
+    "seconds": 81.65368560000206
+  },
+  {
+    "name": "tt-executor",
+    "code": 0,
+    "seconds": 67.52522030001273
+  },
+  {
+    "name": "tt-desktop",
+    "code": 101,
+    "seconds": 0.05481470000813715
+  },
+  {
+    "name": "tt-desktop-corrected",
+    "code": 0,
+    "seconds": 42.089268399984576
+  },
+  {
+    "name": "c41-r1s-messages",
+    "code": 0,
+    "seconds": 0.051415599999018013
+  },
+  {
+    "name": "c41-r1s-parity",
+    "code": 0,
+    "seconds": 2.902459800010547
+  },
+  {
+    "name": "c41-r1s-prefs",
+    "code": 0,
+    "seconds": 0.08860149999964051
+  },
+  {
+    "name": "c41-r2s-keymap-schema",
+    "code": 0,
+    "seconds": 0.06568969998625107
+  },
+  {
+    "name": "c41-r2s-message-coverage",
+    "code": 0,
+    "seconds": 0.12776750000193715
+  },
+  {
+    "name": "c41-r3s-generated-sequence",
+    "code": 0,
+    "seconds": 0.06383820000337437
+  },
+  {
+    "name": "c41-r3s-message-constant",
+    "code": 0,
+    "seconds": 0.08480780001264066
+  },
+  {
+    "name": "inventory",
+    "code": 0,
+    "seconds": 4.585705900011817
+  },
+  {
+    "name": "every_gui_reference_is_enabled_exactly_when_it_runs",
+    "code": 0,
+    "seconds": 4.961169999995036
+  },
+  {
+    "name": "every_precheck_pair_refuses_and_passes_as_the_table_says",
+    "code": 0,
+    "seconds": 2.642656700016232
+  }
+]

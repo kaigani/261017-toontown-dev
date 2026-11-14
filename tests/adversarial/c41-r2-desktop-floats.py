@@ -72,13 +72,15 @@ async def main(app,out):
     u.SetWindowPos(h['handle'],None,round(260*scale),round(230*scale),round(450*scale),round(350*scale),4)
     p=await poll(geom,lambda p:abs((p.get('geometry') or {}).get('x',0)-260)<=2)
     check('OS move written back',abs((p.get('geometry') or {}).get('x',0)-260)<=2,p)
-    def moves(env):
-     es=env.get('result') or []
-     if isinstance(es,dict): es=es.get('entries') or []
-     return [v for v in es if v.get('commandId')=='window.panel.set']
-    logs=[]; end=time.monotonic()+2
-    while time.monotonic()<end: logs.append(await cmd('agent.activity.list',{'limit':100}))
-    check('move activity settles',len(logs)>1 and moves(logs[-1])==moves(logs[len(logs)//2]),dict(before=moves(before),after=moves(logs[-1]) if logs else None))
+    baseline_geometry=p.get('geometry')
+    baseline_os=next(r for r in windows(proc.pid) if r['title']=='History')
+    stable=True; samples=0; end=time.monotonic()+2
+    while time.monotonic()<end:
+     current=(await geom()).get('geometry')
+     current_os=next((r for r in windows(proc.pid) if r['title']=='History'),None)
+     stable=stable and current==baseline_geometry and current_os==baseline_os
+     samples+=1
+    check('move activity settles',stable and samples>1 and abs((baseline_geometry or {}).get('x',0)-260)<=2 and abs((baseline_geometry or {}).get('y',0)-230)<=2,dict(geometry=baseline_geometry,os=baseline_os,samples=samples))
     await cmd('window.panel.set',dict(panelId='history',geometry=dict(x=99999,y=99999,width=380,height=280)))
     p=await geom(); check('far geometry clamped',(p.get('geometry') or {}).get('x')!=99999,p)
     for setting in [dict(floating=False),dict(floating=True,visible=True),dict(visible=False),dict(visible=True)]:
