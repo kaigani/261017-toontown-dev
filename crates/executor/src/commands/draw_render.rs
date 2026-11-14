@@ -696,13 +696,13 @@ pub(crate) fn rasterise_with(
             }
         }
     }
-    if o.show_selection {
-        if let Some(sb) = src.selection {
-            let (a, c) = (d2p.apply(P::new(sb.min_x, sb.min_y)), d2p.apply(P::new(sb.max_x, sb.max_y)));
-            let rect =
-                vec![El::MoveTo(a.x, a.y), El::LineTo(c.x, a.y), El::LineTo(c.x, c.y), El::LineTo(a.x, c.y), El::Close];
-            b.items.push(Item::Stroke { path: rect, width: 1.0, paint: Paint::Solid([32, 128, 255, 255]) });
-        }
+    if o.show_selection
+        && let Some(sb) = src.selection
+    {
+        let (a, c) = (d2p.apply(P::new(sb.min_x, sb.min_y)), d2p.apply(P::new(sb.max_x, sb.max_y)));
+        let rect =
+            vec![El::MoveTo(a.x, a.y), El::LineTo(c.x, a.y), El::LineTo(c.x, c.y), El::LineTo(a.x, c.y), El::Close];
+        b.items.push(Item::Stroke { path: rect, width: 1.0, paint: Paint::Solid([32, 128, 255, 255]) });
     }
     let scene = Scene { width, height, background, items: std::mem::take(&mut b.items) };
     let warnings = std::mem::take(&mut b.warnings);
