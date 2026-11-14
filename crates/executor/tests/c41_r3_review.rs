@@ -2,6 +2,85 @@
 #![allow(clippy::unwrap_used, reason = "review assertions")]
 use serde_json::{Value, json};
 use tt_executor::{ExecutorHandle, ExecutorOptions, Invocation, PersistOptions, UserDirs};
+mod part_b_recovery {
+    use super::*;
+    #[test]
+    fn unrelated_live_pid_is_conservatively_kept() {
+        let root = std::env::temp_dir().join(format!("tt-r3-pid-{}", tt_executor::random_token(8)));
+        let folder = root.join("Recovery/rc_abcd0003");
+        std::fs::create_dir_all(&folder).unwrap();
+        let mut child = std::process::Command::new("powershell.exe")
+            .args(["-NoProfile", "-Command", "$null = [Console]::ReadLine()"])
+            .stdin(std::process::Stdio::piped())
+            .stdout(std::process::Stdio::null())
+            .spawn()
+            .unwrap();
+        std::fs::write(folder.join("engine"), format!("en_other\n{}\n{}", child.id(), tt_persist::host::host()))
+            .unwrap();
+        let file = std::fs::OpenOptions::new().write(true).open(folder.join("engine")).unwrap();
+        file.set_times(std::fs::FileTimes::new().set_modified(std::time::SystemTime::UNIX_EPOCH)).unwrap();
+        drop(file);
+        let h = ExecutorHandle::spawn_with_options(ExecutorOptions {
+            persist: PersistOptions { user_dirs: Some(UserDirs::under(&root)), ..Default::default() },
+            ..Default::default()
+        })
+        .unwrap();
+        let kept = folder.exists();
+        drop(h);
+        drop(child.stdin.take());
+        child.wait().unwrap();
+        std::fs::remove_dir_all(root).unwrap();
+        assert!(kept, "a live PID is conservatively kept even when its record is stale");
+    }
+    use std::sync::{
+        Arc,
+        atomic::{AtomicBool, AtomicUsize, Ordering},
+    };
+    #[test]
+    fn release_before_write_begins_preserves_both_owners() {
+        let root = std::env::temp_dir().join(format!("tt-r3-fence-{}", tt_executor::random_token(8)));
+        let doc = tt_model::fixture::sample_document(1).unwrap();
+        let preserved = Default::default();
+        let blobs = Default::default();
+        let input = tt_persist::save::SaveInput {
+            doc: &doc,
+            preserved: &preserved,
+            blobs: &blobs,
+            session: None,
+            saved_at: "2026-11-13T00:00:00Z".into(),
+        };
+        let mut info: tt_persist::recovery::RecoveryInfo = serde_json::from_value(json!({"recoveryId":"rc_abcd0001","projectId":"pr_test","projectName":"Review","originalPath":null,"savedAt":"2026-11-13T00:00:00Z","documentRev":1,"appVersion":"0","processId":std::process::id(),"host":tt_persist::host::host(),"heartbeatAt":"2026-11-13T00:00:00Z"})).unwrap();
+        let fence = AtomicBool::new(false);
+        assert!(tt_persist::recovery::write_owned(&root, &info, &input, "en_old", &fence).unwrap().is_some());
+        fence.store(true, Ordering::Release);
+        assert_eq!(tt_persist::recovery::release_engine(&root, "en_old", None), 1);
+        let old_path = root.join(&info.recovery_id).join("recovery.json");
+        let old = std::fs::read(&old_path).unwrap();
+        info.recovery_id = "rc_abcd0002".into();
+        assert!(
+            tt_persist::recovery::write_owned(&root, &info, &input, "en_new", &AtomicBool::new(false))
+                .unwrap()
+                .is_some()
+        );
+        let new_path = root.join(&info.recovery_id).join("recovery.json");
+        let new = std::fs::read(&new_path).unwrap();
+        let reached = Arc::new(AtomicUsize::new(0));
+        let count = reached.clone();
+        tt_persist::lock::hooks::set(Some(Arc::new(move |boundary, _| {
+            if boundary == tt_persist::lock::Boundary::RecoveryWriteChecked {
+                count.fetch_add(1, Ordering::SeqCst);
+            }
+        })));
+        info.recovery_id = "rc_abcd0001".into();
+        let result = tt_persist::recovery::write_owned(&root, &info, &input, "en_old", &fence);
+        tt_persist::lock::hooks::set(None);
+        assert!(result.unwrap().is_none());
+        assert_eq!(reached.load(Ordering::SeqCst), 0);
+        assert_eq!(std::fs::read(old_path).unwrap(), old);
+        assert_eq!(std::fs::read(new_path).unwrap(), new);
+        std::fs::remove_dir_all(root).unwrap();
+    }
+}
 mod part_b_availability {
     use super::*;
     #[test]
