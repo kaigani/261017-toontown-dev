@@ -223,3 +223,19 @@ fn a_stale_member_falls_back_alone() {
     drop(h);
     let _ = std::fs::remove_dir_all(&r);
 }
+
+/// C41-R2-10: hiding or showing every float (`window.floatingPanels.set`) is announced with `workspace.changed`, so
+/// the host reconciles the float windows and the menu's check mark follows; repeating the same value announces nothing.
+#[test]
+fn toggling_floating_windows_is_announced() {
+    let h = ExecutorHandle::spawn(Default::default()).unwrap();
+    let run = |id: &str, p: Value| assert_eq!(h.invoke(Invocation::user(id, p)).status, Status::Ok);
+    run("window.panel.set", json!({ "panelId": "history", "floating": true, "visible": true }));
+    let events = h.subscribe();
+    run("window.floatingPanels.set", json!({ "visible": false }));
+    assert_eq!(events.try_iter().filter(|e| e.name == "workspace.changed").count(), 1);
+    run("window.floatingPanels.set", json!({ "visible": false }));
+    assert_eq!(events.try_iter().filter(|e| e.name == "workspace.changed").count(), 0);
+    run("window.floatingPanels.set", json!({ "visible": true }));
+    assert_eq!(events.try_iter().filter(|e| e.name == "workspace.changed").count(), 1);
+}

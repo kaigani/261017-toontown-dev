@@ -261,7 +261,11 @@ pub fn reconcile(app: &AppHandle) {
     }
     let app = app.clone();
     let spawned = std::thread::Builder::new().name("tt-float-reconcile".into()).spawn(move || {
-        while let Some(n) = passes().next_pass() {
+        loop {
+            // A statement of its own: the lock is released before the pass (a `while let` scrutinee would hold it for
+            // the whole body, and the main-thread closure below takes it).
+            let next = passes().next_pass();
+            let Some(n) = next else { break };
             let host = app.state::<Host>();
             let panels = host
                 .run("window.panel.list", json!({}), false, None)

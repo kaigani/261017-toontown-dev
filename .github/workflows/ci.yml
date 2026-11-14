@@ -987,6 +987,14 @@ jobs:
             app=desktop-artifact/Toontown.app/Contents/MacOS/toontown; VPY=.venv-gui/bin/python
           fi
           PYTHONIOENCODING=utf-8 $VPY -I tests/adversarial/c41-r1-http-lifecycle.py "$app" "desktop-gui/c41-r1-http-lifecycle.json"
+      # The reviewer's round-2 desktop probes use the Win32 window APIs (ctypes) and run on Windows only; on macOS the
+      # builder e2e above carries the float-window checks (open, move, resize, hide, global visibility, restore).
+      - name: Reviewer float-window probe (C4.1 round 2; Windows only) against the running application
+        if: always() && runner.os == 'Windows'
+        run: PYTHONIOENCODING=utf-8 .venv-gui/Scripts/python -I tests/adversarial/c41-r2-desktop-floats.py desktop-artifact/default-build/toontown.exe desktop-gui/c41-r2-desktop-floats.json
+      - name: Reviewer keymap and menu probe (C4.1 round 2; Windows only) against the running application
+        if: always() && runner.os == 'Windows'
+        run: PYTHONIOENCODING=utf-8 .venv-gui/Scripts/python -I tests/adversarial/c41-r2-desktop-keys.py desktop-artifact/default-build/toontown.exe desktop-gui/c41-r2-desktop-keys.json
       - uses: actions/upload-artifact@v7
         if: always()
         with:

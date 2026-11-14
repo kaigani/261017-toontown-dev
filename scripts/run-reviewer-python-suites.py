@@ -30,6 +30,13 @@ NOT_SUITES = {
     # M4 C4.1 round 1 (declared in reviews/M4-C4.1-r1-response.md): a probe of the running application.
     "c41-r1-http-lifecycle.py": "attached-mode probe: needs the application binary and a receipt path; CI runs it in "
     "the `desktop gui` job on both OSes against the bundled product build (receipt desktop-gui-<OS>)",
+    # M4 C4.1 round 2 (declared in reviews/M4-C4.1-r2-response.md): Windows desktop probes of the running application
+    # (Win32 window APIs through ctypes); without a binary argument they print `skipped: no application`.
+    "c41-r2-desktop-floats.py": "Windows float-window probe: needs the application binary and a receipt path; CI runs "
+    "it in the `desktop gui` job on Windows against the bundled product build (receipt desktop-gui-Windows); macOS "
+    "float checks are the builder e2e's",
+    "c41-r2-desktop-keys.py": "Windows keymap and menu probe: needs the application binary and a receipt path; CI runs "
+    "it in the `desktop gui` job on Windows against the bundled product build (receipt desktop-gui-Windows)",
     "c34-r2-inventory.py": "round-2 receipt pinned to 1cbd190..967229a that writes reviews/evidence/M3-C3.4-r2/"
     "inventory.json and asserts the register ends at SI-110 (SI-111 is ruled in round 2); its live counterpart is "
     "scripts/check-merge-note-inventory.py",

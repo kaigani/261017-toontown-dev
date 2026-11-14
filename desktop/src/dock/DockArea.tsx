@@ -127,6 +127,8 @@ export function PanelChecklist({ at, onClose }: { at: { x: number; y: number }; 
   );
 }
 
+const SIDES: readonly Area[] = ['left', 'right', 'top', 'bottom'];
+
 const components: Record<string, FunctionComponent<IDockviewPanelProps<{ panelId: string }>>> = {
   panel: PanelComponent,
 };
@@ -154,25 +156,29 @@ export function DockArea({ layout, fullScreen }: { layout: Layout | undefined; f
 
   useEffect(render, [arrangement, render]);
 
+  // The rendered size of each side area (the width of left and right, the height of top and bottom), as dockview laid
+  // it out: reported in the UI tree (`area.<side>` nodes) so a splitter's effect can be checked in the GUI, not only in
+  // the kernel (round 2 e2e adequacy).
+  const measure = useCallback((): Partial<Record<Area, number>> => {
+    const api = apiRef.current;
+    const a = arrangementRef.current;
+    const out: Partial<Record<Area, number>> = {};
+    if (!api || !a) return out;
+    for (const area of SIDES) {
+      const first = a.docks[area][0];
+      const group = first ? api.getPanel(first.current)?.group : undefined;
+      if (group) out[area] = area === 'left' || area === 'right' ? group.api.width : group.api.height;
+    }
+    return out;
+  }, []);
+  const [sizes, setSizes] = useState<Partial<Record<Area, number>>>({});
+
   // The end of a splitter drag records the side areas' new sizes with the same-place `window.panel.move` (SI-118,
   // interim ruling O-3a). Sizes are measured when the drag starts and when it ends; only a changed area is sent.
   const hostRef = useRef<HTMLDivElement>(null);
   useEffect(() => {
     const host = hostRef.current;
     if (!host) return;
-    const AREAS: readonly Area[] = ['left', 'right', 'top', 'bottom'];
-    const measure = (): Partial<Record<Area, number>> => {
-      const api = apiRef.current;
-      const a = arrangementRef.current;
-      const out: Partial<Record<Area, number>> = {};
-      if (!api || !a) return out;
-      for (const area of AREAS) {
-        const first = a.docks[area][0];
-        const group = first ? api.getPanel(first.current)?.group : undefined;
-        if (group) out[area] = area === 'left' || area === 'right' ? group.api.width : group.api.height;
-      }
-      return out;
-    };
     let start: Partial<Record<Area, number>> | null = null;
     const down = (e: PointerEvent) => {
       start = e.target instanceof Element && e.target.closest('.dv-sash') ? measure() : null;
@@ -181,7 +187,7 @@ export function DockArea({ layout, fullScreen }: { layout: Layout | undefined; f
       const a = arrangementRef.current;
       if (!start || !a) return;
       const end = measure();
-      for (const area of AREAS) {
+      for (const area of SIDES) {
         const before = start[area];
         const after = end[area];
         if (before === undefined || after === undefined || Math.abs(after - before) < 2) continue;
@@ -196,11 +202,15 @@ export function DockArea({ layout, fullScreen }: { layout: Layout | undefined; f
       host.removeEventListener('pointerdown', down, true);
       window.removeEventListener('pointerup', up, true);
     };
-  }, [actions]);
+  }, [actions, measure]);
 
   const onReady = useCallback(
     (e: DockviewReadyEvent) => {
       apiRef.current = e.api;
+      e.api.onDidLayoutChange(() => {
+        const next = measure();
+        setSizes((old) => (JSON.stringify(old) === JSON.stringify(next) ? old : next));
+      });
       // Docking gestures become commands: dockview never rearranges by itself (gesture equivalence, 11 §2).
       e.api.onWillDrop((drop) => {
         drop.preventDefault();
@@ -213,7 +223,7 @@ export function DockArea({ layout, fullScreen }: { layout: Layout | undefined; f
       });
       render();
     },
-    [actions, render],
+    [actions, render, measure],
   );
 
   return (
@@ -225,6 +235,18 @@ export function DockArea({ layout, fullScreen }: { layout: Layout | undefined; f
         className="tt-dockview"
         theme={dark ? themeDark : themeLight}
       />
+      {SIDES.map((area) => {
+        const size = sizes[area];
+        return size === undefined ? null : (
+          <span
+            key={area}
+            hidden
+            data-tt-role="area"
+            data-tt-id={`area.${area}`}
+            data-tt-value={String(Math.round(size))}
+          />
+        );
+      })}
     </div>
   );
 }

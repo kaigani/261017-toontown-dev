@@ -48,6 +48,7 @@ class Run:
         self.failures: list[str] = []
         self.shots: list[str] = []
         self.geometry: dict = {}
+        self.splitter_area: str | None = None
 
     def check(self, ok: bool, what: str, detail: object = None) -> bool:
         self.transcript.append({"check": what, "ok": bool(ok), "detail": detail})
@@ -84,12 +85,42 @@ class Run:
             elif sys.platform == "darwin" and os.environ.get("CI"):
                 subprocess.run(["screencapture", "-x", str(path)], timeout=30, check=False, capture_output=True)
             if path.exists() and path.stat().st_size > 0:
+                # Captures carry no ancillary metadata (round 2 ruling on the image metadata, C41-R2-23).
+                strip_png(path)
                 self.shots.append(path.name)
                 self.transcript.append({"screenshot": path.name})
             else:
                 self.transcript.append({"screenshot": path.name, "captured": False})
         except Exception as e:  # noqa: BLE001 - evidence only
             self.transcript.append({"screenshot": path.name, "captured": False, "error": str(e)})
+
+
+#: PNG chunks kept by `strip_png`: the critical ones and `tRNS` (transparency changes pixels); every other ancillary
+#: chunk (colour profile, gamma, text, time, physical size) is metadata and is dropped.
+PNG_KEEP = {b"IHDR", b"PLTE", b"tRNS", b"IDAT", b"IEND"}
+
+
+def strip_png(path: Path) -> bool:
+    """Rewrites a PNG without its ancillary metadata chunks; the image data (and so every pixel) is unchanged. Returns
+    whether the file was a PNG and was rewritten."""
+    data = path.read_bytes()
+    sig = b"\x89PNG\r\n\x1a\n"
+    if not data.startswith(sig):
+        return False
+    out, i = [sig], len(sig)
+    while i + 8 <= len(data):
+        n = int.from_bytes(data[i:i + 4], "big")
+        kind = data[i + 4:i + 8]
+        chunk = data[i:i + 12 + n]
+        if len(chunk) < 12 + n:
+            return False
+        if kind in PNG_KEEP:
+            out.append(chunk)
+        i += 12 + n
+        if kind == b"IEND":
+            break
+    path.write_bytes(b"".join(out))
+    return True
 
 
 def os_escape(pid: int | None) -> dict:
@@ -101,8 +132,15 @@ def os_escape(pid: int | None) -> dict:
         ps = (
             "Add-Type -AssemblyName System.Windows.Forms;"
             "Add-Type -TypeDefinition 'using System;using System.Runtime.InteropServices;"
-            "public static class F{[DllImport(\"user32.dll\")]public static extern bool SetForegroundWindow(IntPtr h);}';"
-            f"$p=Get-Process -Id {pid};[F]::SetForegroundWindow($p.MainWindowHandle)|Out-Null;Start-Sleep -Milliseconds 300;"
+            "public static class F{[DllImport(\"user32.dll\")]public static extern bool SetForegroundWindow(IntPtr h);"
+            "[DllImport(\"user32.dll\")]public static extern IntPtr GetForegroundWindow();"
+            "[DllImport(\"user32.dll\")]public static extern void keybd_event(byte k,byte s,uint f,UIntPtr e);}';"
+            # A workstation's foreground lock refuses SetForegroundWindow to a background process; a released Alt key
+            # lifts it. Only when another window is in front: in our own window a released Alt would open its menu bar
+            # and the Escape would only close that (CI runners have no other foreground window).
+            f"$p=Get-Process -Id {pid};$h=$p.MainWindowHandle;"
+            "if([F]::GetForegroundWindow() -ne $h){[F]::keybd_event(0x12,0,0,[UIntPtr]::Zero);[F]::keybd_event(0x12,0,2,[UIntPtr]::Zero)};"
+            "[F]::SetForegroundWindow($h)|Out-Null;Start-Sleep -Milliseconds 300;"
             "[System.Windows.Forms.SendKeys]::SendWait('{ESC}')"
         )
         r = subprocess.run(["powershell", "-NoProfile", "-Command", ps], timeout=30, check=False, capture_output=True, text=True)
@@ -316,6 +354,81 @@ def by_id(node: dict, ident: str) -> dict | None:
     return find(node, lambda n: n.get("id") == ident)
 
 
+def area_size(root: dict, area: str | None) -> int | None:
+    """The rendered size of a dock area (`area.<side>` node of the GUI tree: width of left/right, height of top/bottom)."""
+    node = by_id(root, f"area.{area}") if area else None
+    try:
+        return int(node["value"]) if node else None
+    except (KeyError, TypeError, ValueError):
+        return None
+
+
+async def os_titles(want, bound_s: float = 15.0) -> set[str]:
+    """The titles of the application's visible OS windows once `want(titles)` holds, bounded."""
+    start = time.monotonic()
+    titles: set[str] = set()
+    while time.monotonic() - start < bound_s:
+        titles = {r["title"] for r in (os_windows(APP_PID["pid"]) or [])}
+        if want(titles):
+            return titles
+        await asyncio.sleep(0.25)
+    return titles
+
+
+async def stays(want, hold_s: float = 1.5) -> bool:
+    """Whether `want(titles)` keeps holding for `hold_s` (a late reconciliation must not undo it)."""
+    start = time.monotonic()
+    while time.monotonic() - start < hold_s:
+        if not want({r["title"] for r in (os_windows(APP_PID["pid"]) or [])}):
+            return False
+        await asyncio.sleep(0.25)
+    return True
+
+
+async def float_visibility(session: ClientSession, run: Run) -> None:
+    """Global float visibility (C41-R2-10): three floats; minimise and restore, then Toggle floating windows off and on;
+    and the other order (off, minimise, restore, on). Every path that shows floats respects the global flag, and no
+    superseded reconciliation shows them again."""
+    panels = {p["panelId"]: p.get("title") for p in (await run_cmd(session, "window.panel.list")).get("result") or []}
+    ids = ["history", "colour", "properties"]
+    titles = {panels.get(i) or i for i in ids}
+    for i in ids[1:]:
+        await run_cmd(session, "window.panel.set", {"panelId": i, "floating": True, "visible": True})
+    all_shown = lambda t: titles <= t
+    none_shown = lambda t: not (titles & t)
+    seen = await os_titles(all_shown)
+    run.check(all_shown(seen), "three floats are OS windows of the application", sorted(seen))
+    # Minimise, restore, then hide them all (the order of the round-2 reproduction).
+    await run_cmd(session, "window.minimized.set", {"minimized": True})
+    hidden = await os_titles(none_shown)
+    await run_cmd(session, "window.minimized.set", {"minimized": False})
+    back = await os_titles(all_shown)
+    run.check(none_shown(hidden) and all_shown(back), "minimising the main window hides the floats; restoring shows them",
+              {"minimised": sorted(hidden), "restored": sorted(back)})
+    env = await run_cmd(session, "window.floatingPanels.set", {"visible": False})
+    gone = await os_titles(none_shown)
+    run.check(env.get("status") == "ok" and none_shown(gone) and await stays(none_shown),
+              "window.floatingPanels.set visible false after minimise and restore: every float window goes and stays gone",
+              {"os": sorted(gone), "error": env.get("error")})
+    env = await run_cmd(session, "window.floatingPanels.set", {"visible": True})
+    back = await os_titles(all_shown)
+    run.check(env.get("status") == "ok" and all_shown(back), "window.floatingPanels.set visible true: the three floats return", sorted(back))
+    # The other order: hidden first; minimise and restore must not show them; then show.
+    await run_cmd(session, "window.floatingPanels.set", {"visible": False})
+    await os_titles(none_shown)
+    await run_cmd(session, "window.minimized.set", {"minimized": True})
+    await asyncio.sleep(0.5)
+    await run_cmd(session, "window.minimized.set", {"minimized": False})
+    held = await stays(none_shown, 2.0)
+    env = await run_cmd(session, "window.floatingPanels.set", {"visible": True})
+    back = await os_titles(all_shown)
+    run.check(held and env.get("status") == "ok" and all_shown(back),
+              "hidden floats stay hidden through minimise and restore, and return when shown again", sorted(back))
+    for i in ids[1:]:
+        await run_cmd(session, "window.panel.set", {"panelId": i, "floating": False})
+    await os_titles(lambda t: not ({panels.get(i) or i for i in ids[1:]} & t))
+
+
 async def gui_tree(session: ClientSession, run: Run, pred, what: str) -> dict:
     """The rendered tree once `pred(root)` holds (the GUI catches up asynchronously), bounded."""
     start = time.monotonic()
@@ -457,10 +570,14 @@ async def first_session(url: str, token: str, run: Run) -> None:
                     after = (env.get("result") or {})
                     expected = json.loads(json.dumps(lay))
                     expected["docks"][area][0]["size"] = 300
-                    root = await gui_tree(session, run, lambda r: True, "the GUI tree after the resize")
-                    run.check(env.get("status") == "ok" and after.get("docks") == expected["docks"] and tabs(root) == tabs_before,
-                              "the same-place window.panel.move sets the area size only (kernel and GUI tabs unchanged)",
-                              {"area": area, "panel": panel, "error": env.get("error")})
+                    root = await gui_tree(session, run, lambda r: area_size(r, area) is not None and abs(area_size(r, area) - 300) <= 3,
+                                          "the GUI renders the area at the new size")
+                    run.check(env.get("status") == "ok" and after.get("docks") == expected["docks"] and tabs(root) == tabs_before
+                              and abs((area_size(root, area) or 0) - 300) <= 3,
+                              "the same-place window.panel.move sets the area size only: the kernel, the GUI tabs unchanged, "
+                              "and the GUI renders the area at the new size",
+                              {"area": area, "panel": panel, "rendered": area_size(root, area), "error": env.get("error")})
+                    run.splitter_area = area
 
                 # A floating panel is a window of its own (ruling O-2): the OS lists it, the one inspect_ui tree has its
                 # node, a geometry change moves it. It stays floating across the restart below.
@@ -475,6 +592,8 @@ async def first_session(url: str, token: str, run: Run) -> None:
                 row = await os_window_titled("History", lambda r: r is not None and size_matches({"width": 380, "height": 280}, r))
                 run.check(env.get("status") == "ok" and size_matches({"width": 380, "height": 280}, row),
                           "window.panel.set geometry: the OS float window takes the size", {"os": row, "error": env.get("error")})
+                await float_visibility(session, run)
+
                 # Stored with the workspace (as at quit with autosave on, which agents cannot run), restored at start.
                 env = await run_cmd(session, "workspace.save", {})
                 run.check(env.get("status") == "ok", "workspace.save stores the arrangement with its float", env.get("error"))
@@ -517,6 +636,15 @@ async def second_session(url: str, token: str, run: Run) -> None:
                 root = await gui_tree(session, run, lambda r: by_id(r, "startScreen") is not None, "the restarted GUI shows the start screen")
                 root = await gui_tree(session, run, lambda r: (by_id(r, "app") or {}).get("value") == "dark", "the restarted GUI applies the dark theme")
                 run.check((by_id(root, "app") or {}).get("value") == "dark", "the persisted theme is applied by the restarted GUI")
+                # The splitter's size came back with the workspace: the restarted GUI renders the area at the size the
+                # kernel restored.
+                area = run.splitter_area
+                lay = (await run_cmd(session, "workspace.get")).get("result") or {}
+                stored = (((lay.get("docks") or {}).get(area) or [{}])[0] or {}).get("size") if area else None
+                root = await gui_tree(session, run, lambda r: isinstance(stored, int) and area_size(r, area) is not None
+                                      and abs(area_size(r, area) - stored) <= 3, "the restarted GUI renders the restored area size")
+                run.check(isinstance(stored, int) and abs((area_size(root, area) or 0) - stored) <= 3,
+                          "after the restart the GUI renders the area at the size the splitter set", {"area": area, "kernel": stored, "rendered": area_size(root, area)})
                 run.save("tree-04-restart.json", root)
                 run.shot("04-restart", APP_PID["pid"])
 
