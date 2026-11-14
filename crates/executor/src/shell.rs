@@ -352,23 +352,45 @@ pub fn pixels_per_unit(ty: ViewType, camera_width: f64) -> f64 {
     }
 }
 
-/// Document point → view pixel (y up in documents, y down in views; clockwise view rotation).
+/// The affine `[a, b, c, d, e, f]` (x' = a x + c y + e, y' = b x + d y + f) of document space → view pixels: y up in
+/// documents, y down in views, clockwise view rotation about the view centre (design note 6). The linear coefficients
+/// are built analytically from the rotation, the y inversion and the zoom, and the translation separately, so a large
+/// pan costs no precision (C42A-R1-01): no coefficient is a difference of transformed points.
 #[must_use]
-pub fn doc_to_view(t: &ViewTransform, size: Size, ppu: f64, p: Point) -> Point {
+pub fn doc_to_view_matrix(t: &ViewTransform, size: Size, ppu: f64) -> [f64; 6] {
     let s = t.zoom * ppu;
-    let (dx, dy) = ((p.x - t.centre.x) * s, -(p.y - t.centre.y) * s);
     let (sin, cos) = t.rotation_degrees.to_radians().sin_cos();
-    Point { x: size.width / 2.0 + dx * cos - dy * sin, y: size.height / 2.0 + dx * sin + dy * cos }
+    let (a, b, c, d) = (s * cos, s * sin, s * sin, -s * cos);
+    let (cx, cy) = (t.centre.x, t.centre.y);
+    [a, b, c, d, size.width / 2.0 - (a * cx + c * cy), size.height / 2.0 - (b * cx + d * cy)]
 }
 
-/// View pixel → document point (the inverse of [`doc_to_view`]).
+/// The inverse affine of [`doc_to_view_matrix`] (view pixels → document space), built the same way.
+#[must_use]
+pub fn view_to_doc_matrix(t: &ViewTransform, size: Size, ppu: f64) -> [f64; 6] {
+    let s = t.zoom * ppu;
+    let (sin, cos) = t.rotation_degrees.to_radians().sin_cos();
+    let (a, b, c, d) = (cos / s, sin / s, sin / s, -cos / s);
+    let (hw, hh) = (size.width / 2.0, size.height / 2.0);
+    [a, b, c, d, t.centre.x - (a * hw + c * hh), t.centre.y - (b * hw + d * hh)]
+}
+
+/// Applies an affine `[a, b, c, d, e, f]` to a point.
+#[must_use]
+pub fn apply(m: &[f64; 6], p: Point) -> Point {
+    Point { x: m[0] * p.x + m[2] * p.y + m[4], y: m[1] * p.x + m[3] * p.y + m[5] }
+}
+
+/// Document point → view pixel: [`doc_to_view_matrix`] applied (the published matrix and the conversion are one).
+#[must_use]
+pub fn doc_to_view(t: &ViewTransform, size: Size, ppu: f64, p: Point) -> Point {
+    apply(&doc_to_view_matrix(t, size, ppu), p)
+}
+
+/// View pixel → document point: [`view_to_doc_matrix`] applied.
 #[must_use]
 pub fn view_to_doc(t: &ViewTransform, size: Size, ppu: f64, v: Point) -> Point {
-    let s = t.zoom * ppu;
-    let (vx, vy) = (v.x - size.width / 2.0, v.y - size.height / 2.0);
-    let (sin, cos) = t.rotation_degrees.to_radians().sin_cos();
-    let (dx, dy) = (vx * cos + vy * sin, -vx * sin + vy * cos);
-    Point { x: t.centre.x + dx / s, y: t.centre.y - dy / s }
+    apply(&view_to_doc_matrix(t, size, ppu), v)
 }
 
 #[cfg(test)]

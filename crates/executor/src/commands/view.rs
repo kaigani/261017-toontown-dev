@@ -15,26 +15,16 @@ use crate::types::Origin;
 // ----- the mapping ----------------------------------------------------------------------------------------------------
 
 /// The affine `[a, b, c, d, e, f]` (x' = a x + c y + e, y' = b x + d y + f) of drawing space → view pixels for a view
-/// window's current transform and size (the one mapping, design note 6 §2).
+/// window's current transform and size (the one mapping, design note 6 §2; the coefficients conversions apply).
 #[must_use]
 pub(crate) fn drawing_to_view(w: &ViewWindow) -> [f64; 6] {
-    let t = w.transform();
-    let ppu = shell::pixels_per_unit(w.ty, 1920.0);
-    let o = shell::doc_to_view(&t, w.size, ppu, Point { x: 0.0, y: 0.0 });
-    let ex = shell::doc_to_view(&t, w.size, ppu, Point { x: 1.0, y: 0.0 });
-    let ey = shell::doc_to_view(&t, w.size, ppu, Point { x: 0.0, y: 1.0 });
-    [ex.x - o.x, ex.y - o.y, ey.x - o.x, ey.y - o.y, o.x, o.y]
+    shell::doc_to_view_matrix(&w.transform(), w.size, shell::pixels_per_unit(w.ty, 1920.0))
 }
 
 /// The inverse affine (view pixels → drawing space).
 #[must_use]
 pub(crate) fn view_to_drawing(w: &ViewWindow) -> [f64; 6] {
-    let t = w.transform();
-    let ppu = shell::pixels_per_unit(w.ty, 1920.0);
-    let o = shell::view_to_doc(&t, w.size, ppu, Point { x: 0.0, y: 0.0 });
-    let ex = shell::view_to_doc(&t, w.size, ppu, Point { x: 1.0, y: 0.0 });
-    let ey = shell::view_to_doc(&t, w.size, ppu, Point { x: 0.0, y: 1.0 });
-    [ex.x - o.x, ex.y - o.y, ey.x - o.x, ey.y - o.y, o.x, o.y]
+    shell::view_to_doc_matrix(&w.transform(), w.size, shell::pixels_per_unit(w.ty, 1920.0))
 }
 
 /// A view point → drawing space with a window's mapping (the function itself, not the matrix).
