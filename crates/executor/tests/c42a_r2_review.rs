@@ -223,3 +223,192 @@ fn thread_count() -> Option<usize> {
     #[cfg(not(any(target_os = "windows", target_os = "macos")))]
     None
 }
+
+mod part_b_equivalence {
+    use super::*;
+    use tt_executor::ExecutorHandle;
+    fn events(ps: &[(f64, f64)], mods: &[&str]) -> Value {
+        json!(ps.iter().enumerate().map(|(i,(x,y))|json!({"type":if i==0 {"down"} else if i+1==ps.len(){"up"}else{"move"},"x":x,"y":y,"modifiers":mods})).collect::<Vec<_>>())
+    }
+    fn canonical(h: &ExecutorHandle) -> Vec<String> {
+        let d = h.snapshot().unwrap().unwrap();
+        d.entry_keys()
+            .iter()
+            .map(|k| tt_model::canonical::to_canonical_string(&d.entry_raw_json(k).unwrap()).unwrap())
+            .collect()
+    }
+    fn hist(h: &ExecutorHandle) -> Vec<Value> {
+        ok(h, "edit.history.get", json!({}))["entries"]
+            .as_array()
+            .unwrap()
+            .iter()
+            .map(|e| json!({"label":e["label"],"rev":e["rev"]}))
+            .collect()
+    }
+    fn colour(h: &ExecutorHandle) -> Value {
+        json!(
+            h.snapshot()
+                .unwrap()
+                .unwrap()
+                .palettes()
+                .find_map(|p| p.swatches().first().map(|s| s.colour_id().as_str().to_owned()))
+                .unwrap()
+        )
+    }
+    fn style(h: &ExecutorHandle, mut p: Value) -> Value {
+        let pens = ok(h, "tool.pen.list", json!({}));
+        let pen = &pens["pens"].as_array().unwrap().iter().find(|p| p["type"] == "brush").unwrap();
+        p["penId"] = pen["penId"].clone();
+        p["thickness"] = pen["maxSize"].clone();
+        p["colourId"] = colour(h);
+        p["layer"] = json!("auto");
+        p["symmetry"] = json!(true);
+        p
+    }
+    fn check(a: &ExecutorHandle, b: &ExecutorHandle, tool: &str, ev: Value, id: &str, p: Value) {
+        let ha = hist(a);
+        let hb = hist(b);
+        assert_eq!(ha, hb);
+        let e = a.pointer(tt_executor::Origin::User, json!({"view":"drawing","tool":tool,"events":ev}));
+        let direct = run(b, id, p.clone());
+        assert_eq!(e.status, direct.status, "{tool}: pointer {e:?}, direct {direct:?}");
+        if e.is_ok() {
+            let c = e.result.as_ref().unwrap()["commands"]
+                .as_array()
+                .unwrap()
+                .iter()
+                .find(|c| c["commandId"] == id)
+                .unwrap();
+            assert_eq!(c["commandId"], id);
+            assert_eq!(c["params"], p, "{tool}");
+        } else {
+            assert_eq!(e.error.as_ref().unwrap().code, direct.error.as_ref().unwrap().code);
+        }
+        assert_eq!(canonical(a), canonical(b), "bytes and ids {tool}");
+        assert_eq!(hist(a), hist(b), "history {tool}");
+        assert_eq!(ok(a, "draw.selection.get", json!({})), ok(b, "draw.selection.get", json!({})), "selection {tool}");
+    }
+
+    fn view(h: &ExecutorHandle, z: f64) {
+        ok(h, "view.zoom.set", json!({"viewId":"drawingView","zoom":z}));
+        ok(h, "view.rotation.set", json!({"viewId":"drawingView","degrees":37.5}));
+        ok(h, "view.pan.set", json!({"viewId":"drawingView","centre":{"x":10000,"y":-10000}}));
+    }
+    fn mapped(h: &ExecutorHandle, x: f64, y: f64) -> Value {
+        ok(
+            h,
+            "view.coordinates.convert",
+            json!({"viewId":"drawingView","from":"view","to":"drawing","point":{"x":x,"y":y}}),
+        )["point"]
+            .clone()
+    }
+    // Derivation: 02 section 13.3 rows, explicitly resolved project pen and swatch;
+    // point mapping is obtained on a third executor before either tested path runs.
+    #[test]
+    fn b1_transformed_creation_and_navigation() {
+        for z in [4.0, 0.25] {
+            for tool in ["brush", "pencil", "rectangle", "ellipse", "line", "grabber", "zoom"] {
+                let (a, b, m) = (ready(), ready(), ready());
+                for h in [&a, &b, &m] {
+                    view(h, z);
+                }
+                let from = mapped(&m, 1000.0, 500.0);
+                let to = mapped(&m, 1080.0, 460.0);
+                let (id, p, ev) = match tool {
+                    "brush" | "pencil" => {
+                        let mut points = vec![from.clone(), to.clone()];
+                        points[0]["pressure"] = json!(0.25);
+                        points[1]["pressure"] = json!(0.85);
+                        let mut p = style(&b, json!({"kind":tool,"points":points,"fit":true}));
+                        if tool == "brush" {
+                            p.as_object_mut().unwrap().remove("thickness");
+                        }
+                        let mut ev = events(&[(1000.0, 500.0), (1080.0, 460.0)], &[]);
+                        ev[0]["pressure"] = json!(0.25);
+                        ev[1]["pressure"] = json!(0.85);
+                        ("draw.stroke.add".to_string(), p, ev)
+                    }
+                    "grabber" => (
+                        "view.pan.set".into(),
+                        json!({"viewId":"drawingView","by":{"x":80.0,"y":-40.0}}),
+                        events(&[(1000.0, 500.0), (1080.0, 460.0)], &[]),
+                    ),
+                    "zoom" => (
+                        "view.zoom.set".into(),
+                        json!({"viewId":"drawingView","steps":1,"anchor":{"x":1000.0,"y":500.0}}),
+                        events(&[(1000.0, 500.0), (1000.0, 500.0)], &[]),
+                    ),
+                    _ => {
+                        let mut p = json!({"from":from,"to":to});
+                        if tool == "line" {
+                            p["constrainAngle"] = json!(false);
+                            p["continuePrevious"] = json!(false);
+                        } else {
+                            p[if tool == "rectangle" { "square" } else { "circle" }] = json!(false);
+                            p["fromCentre"] = json!(false);
+                        }
+                        (format!("draw.{tool}.add"), style(&b, p), events(&[(1000.0, 500.0), (1080.0, 460.0)], &[]))
+                    }
+                };
+                check(&a, &b, tool, ev, &id, p);
+                assert_eq!(
+                    ok(&a, "view.transform.get", json!({"viewId":"drawingView"})),
+                    ok(&b, "view.transform.get", json!({"viewId":"drawingView"}))
+                );
+            }
+        }
+    }
+    #[test]
+    fn b1_transformed_lasso_selection_and_eraser() {
+        for z in [4.0, 0.25] {
+            for tool in ["eraser", "cutter", "select", "polyline"] {
+                let (a, b, m) = (ready(), ready(), ready());
+                for h in [&a, &b, &m] {
+                    view(h, z);
+                }
+                let ps = [(1000.0, 500.0), (1080.0, 500.0), (1080.0, 460.0), (1000.0, 500.0)];
+                let points: Vec<Value> = ps.iter().map(|(x, y)| mapped(&m, *x, *y)).collect();
+                let (id, p, ev) = match tool {
+                    "eraser" => {
+                        let mut path = points.clone();
+                        for p in &mut path {
+                            p["pressure"] = json!(1.0);
+                        }
+                        let pens = ok(&b, "tool.pen.list", json!({"type":"eraser"}));
+                        ("draw.erase.apply", json!({"path":path,"penId":pens["pens"][0]["penId"]}), events(&ps, &[]))
+                    }
+                    "cutter" => ("draw.cut.apply", json!({"polygon":points}), events(&ps, &[])),
+                    "select" => {
+                        let f = &points[0];
+                        let t = &points[2];
+                        let x = f["x"].as_f64().unwrap();
+                        let y = f["y"].as_f64().unwrap();
+                        let tx = t["x"].as_f64().unwrap();
+                        let ty = t["y"].as_f64().unwrap();
+                        (
+                            "draw.selection.set",
+                            json!({"by":"rect","rect":{"x":x.min(tx),"y":y.min(ty),"width":(tx-x).abs(),"height":(ty-y).abs()},"mode":"replace","rectRule":"inside"}),
+                            events(&[ps[0], ps[2]], &[]),
+                        )
+                    }
+                    _ => {
+                        let mut ev = Vec::new();
+                        for (x, y) in ps {
+                            ev.push(json!({"type":"down","x":x,"y":y}));
+                            ev.push(json!({"type":"up","x":x,"y":y}));
+                        }
+                        (
+                            "draw.polyline.add",
+                            style(
+                                &b,
+                                json!({"points":&points[..3],"closed":true,"snap":true,"snapRadius":8.0,"view":"drawingView"}),
+                            ),
+                            json!(ev),
+                        )
+                    }
+                };
+                check(&a, &b, tool, ev, id, p);
+            }
+        }
+    }
+}
